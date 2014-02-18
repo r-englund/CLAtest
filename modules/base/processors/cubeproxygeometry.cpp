@@ -55,6 +55,8 @@ CubeProxyGeometry::CubeProxyGeometry()
     addProperty(clipY_);
     addProperty(clipZ_);
     dims_ = uvec3(1,1,1);
+
+    inport_.onChange(this,&CubeProxyGeometry::onVolumeChange);
 }
 
 CubeProxyGeometry::~CubeProxyGeometry() {}
@@ -68,14 +70,6 @@ void CubeProxyGeometry::deinitialize() {
 }
 
 void CubeProxyGeometry::process() {
-    if (inport_.hasData() && (dims_ != inport_.getData()->getDimension() || basis_ != inport_.getData()->getBasisAndOffset())) {
-        dims_ = inport_.getData()->getDimension();
-        basis_ = inport_.getData()->getBasisAndOffset();
-        clipX_.setRangeMax(static_cast<int>(dims_.x));
-        clipY_.setRangeMax(static_cast<int>(dims_.y));
-        clipZ_.setRangeMax(static_cast<int>(dims_.z));
-    }
-
     glm::vec3 pos(0.0f);
     glm::vec3 p1(1.0f,0.0f,0.0f);
     glm::vec3 p2(0.0f,1.0f,0.0f);
@@ -119,6 +113,34 @@ void CubeProxyGeometry::process() {
     geom->setBasisAndOffset(inport_.getData()->getBasisAndOffset());
     geom->setWorldTransform(inport_.getData()->getWorldTransform());
     outport_.setData(geom);
+}
+
+void CubeProxyGeometry::onVolumeChange(){
+
+    vec2 x,y,z;
+
+    x = clipX_.get();
+    y = clipY_.get();
+    z = clipZ_.get();
+
+    x /= static_cast<float>(clipX_.getRangeMax());
+    y /= static_cast<float>(clipY_.getRangeMax());
+    z /= static_cast<float>(clipZ_.getRangeMax());
+
+    dims_ = inport_.getData()->getDimension();
+    
+    clipX_.setRangeMax(dims_.x);
+    clipY_.setRangeMax(dims_.y);
+    clipZ_.setRangeMax(dims_.z);
+
+    
+
+    clipX_.set(x * static_cast<float>(dims_.x));
+    clipY_.set(y * static_cast<float>(dims_.y));
+    clipZ_.set(z * static_cast<float>(dims_.z));
+
+
+
 }
 
 } // namespace

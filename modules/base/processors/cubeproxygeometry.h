@@ -56,6 +56,8 @@ public:
 protected:
     virtual void process();
 
+    void onVolumeChange();
+
 private:
     VolumeInport inport_;
     GeometryOutport outport_;
@@ -67,7 +69,6 @@ private:
     IntMinMaxProperty clipZ_;
 
     uvec3 dims_;
-    glm::mat4 basis_;
 };
 
 } // namespace
