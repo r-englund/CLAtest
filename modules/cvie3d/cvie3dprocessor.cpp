@@ -116,6 +116,9 @@ void CVIE3DProcessor::destroyCVIE3DInstance(){
 }
 
 bool CVIE3DProcessor::setupEnhancement(){
+    if(!cvieContextCreated_)
+        createCVIE3DInstance();
+
     if(cvieContextCreated_){
         uvec3 volSize = inport_.getData()->getDimension();
         ECVIE3D cvieError = CVIE3DSetupEnhance(cvieHandle_, static_cast<int>(volSize.x), static_cast<int>(volSize.y), static_cast<int>(volSize.z), CVIE3D_DATA_U8, CVIE3D_Volume, parameterSetting_.get());

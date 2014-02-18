@@ -28,7 +28,6 @@ CVIE2DProcessor::CVIE2DProcessor()
     inport_("image.inport"),
     outport_("image.outport"),
     enabled_("enabled", "Filtering Enabled", false),
-    confFile_("confFile", "Configuration file", InviwoApplication::getPtr()->getPath(InviwoApplication::PATH_MODULES)+"cvie/ext/CVIESDK/bin/CVIE.conf"),
     parameterFileDirectory_("parameterFileDirectory", "Parameter file directory", InviwoApplication::getPtr()->getPath(InviwoApplication::PATH_MODULES)+"cvie/ext/CVIESDK/par"),
     findParameterFiles_("findParameterFiles", "Find parameter files"),
     parameterFile_("parameterFile", "Selected parameter file"),
@@ -39,9 +38,6 @@ CVIE2DProcessor::CVIE2DProcessor()
     addPort(outport_);
 
     addProperty(enabled_);
-
-    confFile_.onChange(this, &CVIE2DProcessor::updateConfigurationFile);
-    addProperty(confFile_);
 
     addProperty(parameterFileDirectory_);
 
@@ -60,6 +56,7 @@ CVIE2DProcessor::~CVIE2DProcessor() {}
 
 void CVIE2DProcessor::initialize() {
     Processor::initialize();
+    createCVIEInstance();
 }
 
 void CVIE2DProcessor::deinitialize() {
@@ -116,6 +113,9 @@ void CVIE2DProcessor::destroyCVIEInstance(){
 }
 
 bool CVIE2DProcessor::setupEnhancement(){
+    if(!cvieContextCreated_)
+        createCVIEInstance();
+
     if(cvieContextCreated_){
         uvec2 imageSize = inport_.getData()->getDimension();
         ECVIE cvieError = CVIEEnhanceSetup(cvieHandle_, static_cast<int>(imageSize.x), static_cast<int>(imageSize.y), CVIE_DATA_U8, parameterSetting_.get(), 0);
@@ -167,25 +167,15 @@ bool CVIE2DProcessor::runEnhancement(){
         return false;
 }
 
-void CVIE2DProcessor::updateConfigurationFile(){
-    destroyCVIEInstance();
-    createCVIEInstance();
-    updateParameterFile();
-}
-
 void CVIE2DProcessor::updateParameterFile(){
     // Set parameter file
     int nSettings = 0;
     //LogInfo("parameterFile: " << parameterFile_.get());
-
-    if(URLParser::fileExists(parameterFile_.get().c_str())){
-        char * writable = new char[parameterFile_.get().size() + 1];
-        std::copy(parameterFile_.get().begin(), parameterFile_.get().end(), writable);
-        writable[parameterFile_.get().size()] = '\0';
-
-        ECVIE cvieError = CVIESetParameterFile(cvieHandle_, writable, &nSettings);
-
-        delete[] writable;
+    std::string parameterFile = parameterFile_.get();
+    if(URLParser::fileExists(parameterFile.c_str())){
+        std::vector<char> parameterFileChar(parameterFile.begin(), parameterFile.end());
+        parameterFileChar.push_back('\0');
+        ECVIE cvieError = CVIESetParameterFile(cvieHandle_, &parameterFileChar[0], &nSettings);
 
         if (cvieError != CVIE_E_OK) {
             char errstr[512];

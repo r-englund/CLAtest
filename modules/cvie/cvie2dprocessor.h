@@ -22,7 +22,6 @@
 #include <inviwo/core/properties/boolproperty.h>
 #include <inviwo/core/properties/buttonproperty.h>
 #include <inviwo/core/properties/directoryproperty.h>
-#include <inviwo/core/properties/fileproperty.h>
 #include <inviwo/core/properties/optionproperties.h>
 #include <inviwo/core/properties/ordinalproperty.h>
 #include <CVIE.h>
@@ -49,7 +48,6 @@ protected:
     bool setupEnhancement();
     bool runEnhancement();
 
-    void updateConfigurationFile();
     void updateParameterFile();
 
     void findParameterFiles();
@@ -59,7 +57,6 @@ private:
     ImageOutport outport_;
 
     BoolProperty enabled_;
-    FileProperty confFile_;
     DirectoryProperty parameterFileDirectory_;
     ButtonProperty findParameterFiles_;
     StringOptionProperty parameterFile_;
