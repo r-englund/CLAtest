@@ -369,7 +369,7 @@ float shadingFunctionPdf(read_only image3d_t volumeTex, float volumeSample, cons
     return pdf;
 }
 
-float3 applyShading(const float3 toCameraDir, const float3 toLightDir, const float3 materialDiffuse, const float3 materialSpecular, const float4 material, float3 gradient, float rnd, float pBRDF, const ShadingType shadingType) {
+float3 applyShading(const float3 toCameraDir, const float3 toLightDir, const float3 materialDiffuse, const float3 materialSpecular, const float4 material, float3 gradient, const ShadingType shadingType) {
     float3 f; 
     float3 Nu = cross(gradient, toCameraDir);
     if ( dot(Nu, Nu) < 1.e-3f ) {
