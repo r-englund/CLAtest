@@ -1,20 +1,20 @@
- /*********************************************************************************
+/*********************************************************************************
  *
  * Inviwo - Interactive Visualization Workshop
  * Version 0.6b
  *
  * Copyright (c) 2013-2014 Inviwo Foundation
  * All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met: 
- * 
+ * modification, are permitted provided that the following conditions are met:
+ *
  * 1. Redistributions of source code must retain the above copyright notice, this
- * list of conditions and the following disclaimer. 
+ * list of conditions and the following disclaimer.
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  * this list of conditions and the following disclaimer in the documentation
- * and/or other materials provided with the distribution. 
- * 
+ * and/or other materials provided with the distribution.
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
  * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
@@ -25,7 +25,7 @@
  * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- * 
+ *
  * Main file authors: Sathish Kottravel, Timo Ropinski
  *
  *********************************************************************************/
@@ -138,11 +138,15 @@ std::string URLParser::getRelativePath(const std::string& bPath, const std::stri
 
 bool URLParser::isAbsolutePath(const std::string& path) {
 #ifdef WIN32
+
     if (toupper(path[0])>='A'&&toupper(path[0])<='Z'&&path[1]==':') return true;
     else return false;
+
 #else
+
     if (path[0]=='/') return true;
     else return false;
+
 #endif
 }
 
@@ -150,8 +154,10 @@ bool URLParser::sameDrive(const std::string& absPath1, const std::string absPath
 #ifdef WIN32
     ivwAssert(isAbsolutePath(absPath1), "Given path is not absolute.");
     ivwAssert(isAbsolutePath(absPath2), "Given path is not absolute.");
+
     if (toupper(absPath1[0])==toupper(absPath2[0])) return true;
     else return false;
+
 #else
     return true;
 #endif

@@ -1,20 +1,20 @@
- /*********************************************************************************
+/*********************************************************************************
  *
  * Inviwo - Interactive Visualization Workshop
  * Version 0.6b
  *
  * Copyright (c) 2014 Inviwo Foundation
  * All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met: 
- * 
+ * modification, are permitted provided that the following conditions are met:
+ *
  * 1. Redistributions of source code must retain the above copyright notice, this
- * list of conditions and the following disclaimer. 
+ * list of conditions and the following disclaimer.
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  * this list of conditions and the following disclaimer in the documentation
- * and/or other materials provided with the distribution. 
- * 
+ * and/or other materials provided with the distribution.
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
  * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
@@ -25,7 +25,7 @@
  * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- * 
+ *
  * Main file author: Daniel Jönsson
  *
  *********************************************************************************/
@@ -39,7 +39,7 @@
 
 namespace inviwo {
 
-ProcessorClassName(EntryExitPointsCL, "EntryExitPointsCL"); 
+ProcessorClassName(EntryExitPointsCL, "EntryExitPointsCL");
 ProcessorCategory(EntryExitPointsCL, "Geometry Rendering");
 ProcessorCodeState(EntryExitPointsCL, CODE_STATE_STABLE);
 
@@ -56,14 +56,13 @@ EntryExitPointsCL::EntryExitPointsCL()
     addPort(geometryPort_);
     addPort(entryPort_, "ImagePortGroup1");
     addPort(exitPort_, "ImagePortGroup1");
-
     addProperty(camera_);
     addProperty(workGroupSize_);
     addProperty(useGLSharing_);
     addProperty(handleInteractionEvents_);
     handleInteractionEvents_.onChange(this, &EntryExitPointsCL::handleInteractionEventsChanged);
     trackball_ = new Trackball(&camera_);
-	addInteractionHandler(trackball_);
+    addInteractionHandler(trackball_);
     entryPort_.addResizeEventListener(&camera_);
 }
 
@@ -72,12 +71,12 @@ EntryExitPointsCL::~EntryExitPointsCL() {}
 void EntryExitPointsCL::initialize() {
     Processor::initialize();
 
-	try {
-		cl::Program* program = KernelManager::getRef().buildProgram(InviwoApplication::getPtr()->getPath(InviwoApplication::PATH_MODULES)+"basecl/cl/entryexitpoints.cl");
-		entryExitKernel_ = KernelManager::getRef().getKernel(program, "entryexitpoints");
-	} catch (cl::Error&) {
-
-	}
+    try {
+        cl::Program* program = KernelManager::getRef().buildProgram(InviwoApplication::getPtr()->getPath(InviwoApplication::PATH_MODULES)
+                               +"basecl/cl/entryexitpoints.cl");
+        entryExitKernel_ = KernelManager::getRef().getKernel(program, "entryexitpoints");
+    } catch (cl::Error&) {
+    }
 }
 
 void EntryExitPointsCL::deinitialize() {
@@ -87,19 +86,20 @@ void EntryExitPointsCL::deinitialize() {
 void EntryExitPointsCL::process() {
     const Geometry* geom = geometryPort_.getData();
     const Mesh* mesh = dynamic_cast<const Mesh*>(geom);
+
     if (!mesh) return;
-	// the rendered plane is specified in camera coordinates
-	// thus we must transform from camera to world to texture coordinates
+
+    // the rendered plane is specified in camera coordinates
+    // thus we must transform from camera to world to texture coordinates
     mat4 worldToTexMat = geom->getCoordinateTransformer().getWorldToTextureMatrix();
-	uvec2 outportDim = exitPort_.getDimension();
-
-	mat4 NDCToTextureMat = worldToTexMat*camera_.inverseViewMatrix()*camera_.inverseProjectionMatrix();
-
+    uvec2 outportDim = exitPort_.getDimension();
+    mat4 NDCToTextureMat = worldToTexMat*camera_.inverseViewMatrix()*camera_.inverseProjectionMatrix();
 #if IVW_PROFILING
-    cl::Event* profilingEvent = new cl::Event(); 
-#else 
+    cl::Event* profilingEvent = new cl::Event();
+#else
     cl::Event* profilingEvent = NULL;
 #endif
+
     if (useGLSharing_.get()) {
         SyncCLGL glSync;
         LayerCLGL* entryCL = entryPort_.getData()->getEditableRepresentation<ImageCLGL>()->getLayerCL();
@@ -116,31 +116,35 @@ void EntryExitPointsCL::process() {
         const cl::Image& exit = exitPort_.getData()->getEditableRepresentation<ImageCL>()->getLayerCL()->get();
         computeEntryExitPoints(NDCToTextureMat, entry, exit, outportDim, profilingEvent);
     }
+
 #if IVW_PROFILING
+
     try {
         profilingEvent->wait();
         LogInfo("Exec time: " << profilingEvent->getElapsedTime() << " ms");
     } catch (cl::Error& err) {
         LogError(getCLErrorString(err));
     }
+
     delete profilingEvent;
 #endif
-
 }
 
-void EntryExitPointsCL::computeEntryExitPoints(const mat4& NDCToTextureMat, const cl::Image& entryPointsCL, const cl::Image& exitPointsCL, const uvec2& outportDim, cl::Event* profilingEvent)
+void EntryExitPointsCL::computeEntryExitPoints(const mat4& NDCToTextureMat, const cl::Image& entryPointsCL, const cl::Image& exitPointsCL,
+        const uvec2& outportDim, cl::Event* profilingEvent)
 {
     svec2 localWorkGroupSize(workGroupSize_.get());
-    svec2 globalWorkGroupSize(getGlobalWorkGroupSize(entryPort_.getData()->getDimension().x, localWorkGroupSize.x), getGlobalWorkGroupSize(entryPort_.getData()->getDimension().y, localWorkGroupSize.y));
-    
+    svec2 globalWorkGroupSize(getGlobalWorkGroupSize(entryPort_.getData()->getDimension().x, localWorkGroupSize.x),
+                              getGlobalWorkGroupSize(entryPort_.getData()->getDimension().y, localWorkGroupSize.y));
+
     try
     {
         cl_uint arg = 0;
         entryExitKernel_->setArg(arg++, NDCToTextureMat);
         entryExitKernel_->setArg(arg++, entryPointsCL);
         entryExitKernel_->setArg(arg++, exitPointsCL);
-        OpenCL::instance()->getQueue().enqueueNDRangeKernel(*entryExitKernel_, cl::NullRange, globalWorkGroupSize, localWorkGroupSize, NULL, profilingEvent);
-
+        OpenCL::instance()->getQueue().enqueueNDRangeKernel(*entryExitKernel_, cl::NullRange, globalWorkGroupSize, localWorkGroupSize, NULL,
+                profilingEvent);
     } catch (cl::Error& err) {
         LogError(getCLErrorString(err));
     }

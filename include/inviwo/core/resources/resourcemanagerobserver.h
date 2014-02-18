@@ -1,4 +1,4 @@
- /*********************************************************************************
+/*********************************************************************************
  *
  * Inviwo - Interactive Visualization Workshop
  * Version 0.6b
@@ -41,11 +41,11 @@ namespace inviwo {
 
 
 /** \class ResourceManagerObserver
-*
-* Observer for list type objects, such as std::vector.
-*
-* @see ListObservable
-*/
+ *
+ * Observer for list type objects, such as std::vector.
+ *
+ * @see ListObservable
+ */
 class IVW_CORE_API ResourceManagerObserver: public Observer {
 public:
     ResourceManagerObserver(): Observer() {};
@@ -65,12 +65,12 @@ public:
 
 
 /** \class ListObservable
-*
-* Observable for list type objects. Should call notifyResourceAdded as soon as an item
-* has been added to the list and notifyResourceRemoved when an item has been removed.
-*
-* @see ListObserver
-*/
+ *
+ * Observable for list type objects. Should call notifyResourceAdded as soon as an item
+ * has been added to the list and notifyResourceRemoved when an item has been removed.
+ *
+ * @see ListObserver
+ */
 class IVW_CORE_API ResourceManagerObservable: public Observable<ResourceManagerObserver> {
 public:
     ResourceManagerObservable(): Observable<ResourceManagerObserver>() {};

@@ -12,7 +12,7 @@
 namespace inviwo {
 
 class IVW_CORE_API DialogFactory : public Factory,
-                                   public Singleton<DialogFactory> {
+    public Singleton<DialogFactory> {
 public:
     DialogFactory();
     virtual ~DialogFactory();

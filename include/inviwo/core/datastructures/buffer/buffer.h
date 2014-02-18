@@ -1,4 +1,4 @@
- /*********************************************************************************
+/*********************************************************************************
  *
  * Inviwo - Interactive Visualization Workshop
  * Version 0.6b
@@ -84,7 +84,7 @@ template<typename T, size_t B, BufferType A>
 class Attributes : public Buffer {
 
 public:
-    Attributes(size_t size = 0, BufferUsage usage = STATIC) 
+    Attributes(size_t size = 0, BufferUsage usage = STATIC)
         : Buffer(size, DataFormat<T,B>::get(), A, usage) {
     }
     Attributes(BufferUsage usage)
@@ -94,13 +94,14 @@ public:
         : Buffer(rhs) {
     }
     Attributes& operator=(const Attributes& that) {
-        if(this != &that) {
+        if (this != &that) {
             Buffer::operator=(that);
         }
+
         return *this;
     }
     virtual Attributes<T, B, A>* clone() const {
-        return new Attributes<T, B, A>(*this); 
+        return new Attributes<T, B, A>(*this);
     }
 
     virtual ~Attributes() { }

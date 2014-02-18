@@ -1,20 +1,20 @@
- /*********************************************************************************
+/*********************************************************************************
  *
  * Inviwo - Interactive Visualization Workshop
  * Version 0.6b
  *
  * Copyright (c) 2014 Inviwo Foundation
  * All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met: 
- * 
+ * modification, are permitted provided that the following conditions are met:
+ *
  * 1. Redistributions of source code must retain the above copyright notice, this
- * list of conditions and the following disclaimer. 
+ * list of conditions and the following disclaimer.
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  * this list of conditions and the following disclaimer in the documentation
- * and/or other materials provided with the distribution. 
- * 
+ * and/or other materials provided with the distribution.
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
  * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
@@ -25,7 +25,7 @@
  * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- * 
+ *
  * Main file authors: Erik Sundén, Daniel Jönsson
  *
  *********************************************************************************/
@@ -37,10 +37,10 @@ namespace inviwo {
 ImageCL::ImageCL()
     : ImageRepresentation(), layerCL_(NULL) {}
 
-ImageCL::ImageCL(const ImageCL& rhs )
-    : ImageRepresentation(rhs){}
+ImageCL::ImageCL(const ImageCL& rhs)
+    : ImageRepresentation(rhs) {}
 
-ImageCL::~ImageCL() { 
+ImageCL::~ImageCL() {
 }
 
 ImageCL* ImageCL::clone() const {
@@ -53,7 +53,7 @@ void ImageCL::initialize() {
 void ImageCL::deinitialize() {
 }
 
-LayerCL* ImageCL::getLayerCL(){
+LayerCL* ImageCL::getLayerCL() {
     return layerCL_;
 }
 
@@ -65,16 +65,17 @@ bool ImageCL::copyAndResizeRepresentation(DataRepresentation* targetRep) const {
     ImageCL* targetCL = dynamic_cast<ImageCL*>(targetRep);
 
     if (!targetCL) return false;
-	
-	return this->getLayerCL()->copyAndResizeLayer(targetCL->getLayerCL());
+
+    return this->getLayerCL()->copyAndResizeLayer(targetCL->getLayerCL());
 }
 
 void ImageCL::update(bool editable) {
     //TODO: Convert more then just first color layer
     layerCL_ = NULL;
+
     if (editable) {
         layerCL_ = owner_->getColorLayer()->getEditableRepresentation<LayerCL>();
-    } else{
+    } else {
         layerCL_ = const_cast<LayerCL*>(owner_->getColorLayer()->getRepresentation<LayerCL>());
     }
 }
@@ -85,7 +86,7 @@ namespace cl {
 
 template <>
 cl_int Kernel::setArg(cl_uint index, const inviwo::ImageCL& value) {
-	return setArg(index, value.getLayerCL()->get());
+    return setArg(index, value.getLayerCL()->get());
 }
 
 } // namespace cl

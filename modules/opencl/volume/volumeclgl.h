@@ -1,20 +1,20 @@
- /*********************************************************************************
+/*********************************************************************************
  *
  * Inviwo - Interactive Visualization Workshop
  * Version 0.6b
  *
  * Copyright (c) 2013-2014 Inviwo Foundation
  * All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met: 
- * 
+ * modification, are permitted provided that the following conditions are met:
+ *
  * 1. Redistributions of source code must retain the above copyright notice, this
- * list of conditions and the following disclaimer. 
+ * list of conditions and the following disclaimer.
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  * this list of conditions and the following disclaimer in the documentation
- * and/or other materials provided with the distribution. 
- * 
+ * and/or other materials provided with the distribution.
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
  * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
@@ -25,7 +25,7 @@
  * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- * 
+ *
  * Main file author: Daniel Jönsson
  *
  *********************************************************************************/
@@ -52,10 +52,10 @@ public:
     virtual VolumeCLGL* clone() const;
     virtual ~VolumeCLGL();
     virtual std::string getClassName() const { return "VolumeCLGL"; }
-    virtual void initialize(){};
+    virtual void initialize() {};
     virtual void deinitialize();
-    
-    
+
+
     void initialize(Texture3D* texture);
     virtual void setDimension(uvec3 dimensions);
 
@@ -76,11 +76,12 @@ public:
     virtual void notifyAfterTextureInitialization();
 
     void aquireGLObject(std::vector<cl::Event>* syncEvents = NULL, const cl::CommandQueue& queue = OpenCL::instance()->getQueue()) const {
-        std::vector<cl::Memory> syncImages(1, *clImage_); 
+        std::vector<cl::Memory> syncImages(1, *clImage_);
         queue.enqueueAcquireGLObjects(&syncImages, syncEvents);
     }
-    void releaseGLObject(std::vector<cl::Event>* syncEvents = NULL, cl::Event* event= NULL, const cl::CommandQueue& queue = OpenCL::instance()->getQueue()) const {
-        std::vector<cl::Memory> syncImages(1, *clImage_); 
+    void releaseGLObject(std::vector<cl::Event>* syncEvents = NULL, cl::Event* event= NULL,
+                         const cl::CommandQueue& queue = OpenCL::instance()->getQueue()) const {
+        std::vector<cl::Memory> syncImages(1, *clImage_);
         queue.enqueueReleaseGLObjects(&syncImages, syncEvents, event);
     }
 
@@ -92,7 +93,7 @@ protected:
 
 namespace cl {
 
-// Kernel argument specializations for VolumeCLGL type 
+// Kernel argument specializations for VolumeCLGL type
 // (enables calling cl::Queue::setArg with VolumeCLGL)
 template <>
 IVW_MODULE_OPENCL_API cl_int Kernel::setArg(cl_uint index, const inviwo::VolumeCLGL& value);

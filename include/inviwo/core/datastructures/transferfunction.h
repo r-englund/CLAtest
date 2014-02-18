@@ -1,4 +1,4 @@
- /*********************************************************************************
+/*********************************************************************************
  *
  * Inviwo - Interactive Visualization Workshop
  * Version 0.6b
@@ -31,9 +31,9 @@
  *********************************************************************************/
 
 /** \Class for holding transfer function data
-*
-*  This class holds transfer function data, currently one parameter in the variable data_.
-*/
+ *
+ *  This class holds transfer function data, currently one parameter in the variable data_.
+ */
 
 #ifndef IVW_TRANSFERFUNCTION_H
 #define IVW_TRANSFERFUNCTION_H

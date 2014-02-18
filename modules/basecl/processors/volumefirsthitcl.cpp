@@ -1,20 +1,20 @@
- /*********************************************************************************
+/*********************************************************************************
  *
  * Inviwo - Interactive Visualization Workshop
  * Version 0.6b
  *
  * Copyright (c) 2014 Inviwo Foundation
  * All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met: 
- * 
+ * modification, are permitted provided that the following conditions are met:
+ *
  * 1. Redistributions of source code must retain the above copyright notice, this
- * list of conditions and the following disclaimer. 
+ * list of conditions and the following disclaimer.
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  * this list of conditions and the following disclaimer in the documentation
- * and/or other materials provided with the distribution. 
- * 
+ * and/or other materials provided with the distribution.
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
  * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
@@ -25,7 +25,7 @@
  * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- * 
+ *
  * Main file author: Daniel Jönsson
  *
  *********************************************************************************/
@@ -41,7 +41,7 @@
 
 namespace inviwo {
 
-ProcessorClassName(VolumeFirstHitCL, "VolumeFirstHitCL"); 
+ProcessorClassName(VolumeFirstHitCL, "VolumeFirstHitCL");
 ProcessorCategory(VolumeFirstHitCL, "Volume Rendering");
 ProcessorCodeState(VolumeFirstHitCL, CODE_STATE_EXPERIMENTAL);
 
@@ -61,7 +61,6 @@ VolumeFirstHitCL::VolumeFirstHitCL()
     addPort(entryPort_, "ImagePortGroup1");
     addPort(exitPort_, "ImagePortGroup1");
     addPort(outport_, "ImagePortGroup1");
-
     addProperty(samplingRate_);
     addProperty(transferFunction_);
     addProperty(workGroupSize_);
@@ -72,14 +71,13 @@ VolumeFirstHitCL::~VolumeFirstHitCL() {}
 
 void VolumeFirstHitCL::initialize() {
     Processor::initialize();
+
     try {
-        cl::Program* program = KernelManager::getRef().buildProgram(InviwoApplication::getPtr()->getPath(InviwoApplication::PATH_MODULES)+"basecl/cl/volumefirsthit.cl");
+        cl::Program* program = KernelManager::getRef().buildProgram(InviwoApplication::getPtr()->getPath(InviwoApplication::PATH_MODULES)
+                               +"basecl/cl/volumefirsthit.cl");
         kernel_ = KernelManager::getRef().getKernel(program, "volumeFirstHit");
-
     } catch (cl::Error&) {
-        
     }
-
 }
 
 void VolumeFirstHitCL::deinitialize() {
@@ -87,24 +85,23 @@ void VolumeFirstHitCL::deinitialize() {
 }
 
 void VolumeFirstHitCL::process() {
-    if( kernel_ == NULL) {
+    if (kernel_ == NULL) {
         return;
     }
+
     uvec2 outportDim = outport_.getDimension();
-
-
-
     mat4 volumeTextureToWorld = volumePort_.getData()->getCoordinateTransformer().getTextureToWorldMatrix();
     uvec3 volumeDim = volumePort_.getData()->getDimension();
     float stepSize = 1.f/(samplingRate_.get()*static_cast<float>(std::max(volumeDim.x, std::max(volumeDim.y, volumeDim.z))));
-
     svec2 localWorkGroupSize(workGroupSize_.get());
-    svec2 globalWorkGroupSize(getGlobalWorkGroupSize(entryPort_.getData()->getDimension().x, localWorkGroupSize.x), getGlobalWorkGroupSize(entryPort_.getData()->getDimension().y, localWorkGroupSize.y));
+    svec2 globalWorkGroupSize(getGlobalWorkGroupSize(entryPort_.getData()->getDimension().x, localWorkGroupSize.x),
+                              getGlobalWorkGroupSize(entryPort_.getData()->getDimension().y, localWorkGroupSize.y));
 #if IVW_PROFILING
-    cl::Event* profilingEvent = new cl::Event(); 
-#else 
+    cl::Event* profilingEvent = new cl::Event();
+#else
     cl::Event* profilingEvent = NULL;
 #endif
+
     if (useGLSharing_.get()) {
         // Will synchronize with OpenGL upon creation and destruction
         SyncCLGL glSync;
@@ -142,19 +139,23 @@ void VolumeFirstHitCL::process() {
         const cl::Image& tf = tfCL->get();
         firstHit(volumeCL, entryCL, exitCL, tf, outImageCL, stepSize, globalWorkGroupSize, localWorkGroupSize, profilingEvent);
     }
-    
+
 #if IVW_PROFILING
+
     try {
         profilingEvent->wait();
         LogInfo("Exec time: " << profilingEvent->getElapsedTime() << " ms");
     } catch (cl::Error& err) {
         LogError(getCLErrorString(err));
     }
+
     delete profilingEvent;
 #endif
 }
 
-void VolumeFirstHitCL::firstHit( const cl::Image& volumeCL, const cl::Image& entryPoints, const cl::Image& exitPoints, const cl::Image& transferFunctionCL, const cl::Image& output, float stepSize, svec2 globalWorkGroupSize, svec2 localWorkGroupSize, cl::Event* profilingEvent ) {
+void VolumeFirstHitCL::firstHit(const cl::Image& volumeCL, const cl::Image& entryPoints, const cl::Image& exitPoints,
+                                const cl::Image& transferFunctionCL, const cl::Image& output, float stepSize, svec2 globalWorkGroupSize, svec2 localWorkGroupSize,
+                                cl::Event* profilingEvent) {
     try
     {
         cl_uint arg = 0;

@@ -1,20 +1,20 @@
- /*********************************************************************************
+/*********************************************************************************
  *
  * Inviwo - Interactive Visualization Workshop
  * Version 0.6b
  *
  * Copyright (c) 2013-2014 Inviwo Foundation
  * All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met: 
- * 
+ * modification, are permitted provided that the following conditions are met:
+ *
  * 1. Redistributions of source code must retain the above copyright notice, this
- * list of conditions and the following disclaimer. 
+ * list of conditions and the following disclaimer.
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  * this list of conditions and the following disclaimer in the documentation
- * and/or other materials provided with the distribution. 
- * 
+ * and/or other materials provided with the distribution.
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
  * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
@@ -25,12 +25,12 @@
  * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- * 
+ *
  * Main file author: Daniel Jönsson
  *
  *********************************************************************************/
 
-#ifndef IVW_BUFFERCLGLCONVERTER_H 
+#ifndef IVW_BUFFERCLGLCONVERTER_H
 #define IVW_BUFFERCLGLCONVERTER_H
 
 #include <inviwo/core/common/inviwo.h>
@@ -53,7 +53,7 @@ class IVW_MODULE_OPENCL_API BufferCLGL2RAMConverter : public RepresentationConve
 
 public:
     BufferCLGL2RAMConverter();
-    virtual ~BufferCLGL2RAMConverter(){};
+    virtual ~BufferCLGL2RAMConverter() {};
 
     inline bool canConvertFrom(const DataRepresentation* source) const {
         return dynamic_cast<const BufferCLGL*>(source) != NULL;
@@ -65,7 +65,7 @@ public:
 class IVW_MODULE_OPENCL_API BufferCLGL2GLConverter : public RepresentationConverterType<BufferGL> {
 public:
     BufferCLGL2GLConverter(): RepresentationConverterType<BufferGL>() {};
-    virtual ~BufferCLGL2GLConverter(){};
+    virtual ~BufferCLGL2GLConverter() {};
 
     inline bool canConvertFrom(const DataRepresentation* source) const {
         return dynamic_cast<const BufferCLGL*>(source) != NULL;

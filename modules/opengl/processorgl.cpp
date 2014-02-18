@@ -1,20 +1,20 @@
- /*********************************************************************************
+/*********************************************************************************
  *
  * Inviwo - Interactive Visualization Workshop
  * Version 0.6b
  *
  * Copyright (c) 2012-2014 Inviwo Foundation
  * All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met: 
- * 
+ * modification, are permitted provided that the following conditions are met:
+ *
  * 1. Redistributions of source code must retain the above copyright notice, this
- * list of conditions and the following disclaimer. 
+ * list of conditions and the following disclaimer.
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  * this list of conditions and the following disclaimer in the documentation
- * and/or other materials provided with the distribution. 
- * 
+ * and/or other materials provided with the distribution.
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
  * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
@@ -25,7 +25,7 @@
  * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- * 
+ *
  * Main file authors: Erik Sundén, Timo Ropinski
  *
  *********************************************************************************/
@@ -39,7 +39,7 @@ ProcessorGL::ProcessorGL()
 {}
 ProcessorGL::~ProcessorGL() {}
 
-void ProcessorGL::activateTarget(ImageOutport& outport){
+void ProcessorGL::activateTarget(ImageOutport& outport) {
     Image* outImage = outport.getData();
     ImageGL* outImageGL = outImage->getEditableRepresentation<ImageGL>();
     outImageGL->activateBuffer();
@@ -63,7 +63,7 @@ void ProcessorGL::activateAndClearTargets(PortGroup& portGroup) {
     clearCurrentTarget();
 }
 
-void ProcessorGL::updateAndActivateTarget(ImageOutport& outport, ImageInport& inport){
+void ProcessorGL::updateAndActivateTarget(ImageOutport& outport, ImageInport& inport) {
     Image* outImage = outport.getData();
     ImageGL* outImageGL = outImage->getEditableRepresentation<ImageGL>();
     outImageGL->updateFrom(inport.getData()->getRepresentation<ImageGL>());
@@ -120,7 +120,7 @@ void ProcessorGL::bindTextures(const ImageOutport& outport, GLenum colorTexUnit,
     outImageGL->getDepthLayerGL()->bindTexture(depthTexUnit);
 }
 
-void ProcessorGL::bindTextures(const ImageInport& inport, GLenum colorTexUnit, GLenum depthTexUnit, GLenum pickingTexUnit){
+void ProcessorGL::bindTextures(const ImageInport& inport, GLenum colorTexUnit, GLenum depthTexUnit, GLenum pickingTexUnit) {
     const Image* inImage = inport.getData();
     const ImageGL* inImageGL = inImage->getRepresentation<ImageGL>();
     inImageGL->getColorLayerGL()->bindTexture(colorTexUnit);
@@ -128,7 +128,7 @@ void ProcessorGL::bindTextures(const ImageInport& inport, GLenum colorTexUnit, G
     inImageGL->getPickingLayerGL()->bindTexture(pickingTexUnit);
 }
 
-void ProcessorGL::bindTextures(const ImageOutport& outport, GLenum colorTexUnit, GLenum depthTexUnit, GLenum pickingTexUnit){
+void ProcessorGL::bindTextures(const ImageOutport& outport, GLenum colorTexUnit, GLenum depthTexUnit, GLenum pickingTexUnit) {
     const Image* outImage = outport.getConstData();
     const ImageGL* outImageGL = outImage->getRepresentation<ImageGL>();
     outImageGL->getColorLayerGL()->bindTexture(colorTexUnit);
@@ -206,13 +206,16 @@ void ProcessorGL::setGlobalShaderParameters(Shader* shader) {
 
 void ProcessorGL::setGlobalShaderParameters(Shader* shader, const std::vector<Outport*>& outports) {
     vec2 screenDimensions = vec2(0.0f,0.0f);
+
     for (size_t i=0; i<outports.size(); i++) {
         ImageOutport* imageOutport = dynamic_cast<ImageOutport*>(outports[i]);
+
         if (imageOutport) {
             screenDimensions = imageOutport->getDimension();
             break;
         }
     }
+
     shader->setUniform("screenDim_", screenDimensions);
     shader->setUniform("screenDimRCP_", vec2(1.0f,1.0f)/screenDimensions);
 }

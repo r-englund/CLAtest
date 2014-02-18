@@ -2,12 +2,12 @@
 <InviwoTreeData version="1.0">
     <!-- Don't edit the following code -->
     <Processors>
-        <Processor type="SimpleRaycaster" identifier="SimpleRaycaster" id="ref6">
+        <Processor type="SimpleRaycaster" identifier="SimpleRaycaster" id="ref0">
             <MetaDataList>
                 <MetaData type="ProcessorMetaData">
                     <position x="-475" y="-450" />
                     <visibility content="1" />
-                    <selection content="1" />
+                    <selection content="0" />
                 </MetaData>
             </MetaDataList>
             <Properties>
@@ -15,25 +15,25 @@
                     <MetaDataList />
                     <value content="0" />
                 </Property>
-                <Property type="CameraProperty" identifier="camera" displayName="Camera" key="camera" id="ref7">
+                <Property type="CameraProperty" identifier="camera" displayName="Camera" key="camera" id="ref1">
                     <MetaDataList />
                     <lookFrom type="FloatVec3Property" identifier="lookFrom" displayName="Look from">
                         <MetaDataList />
-                        <value x="4.407094" y="3.2382526" z="-3.4177458" />
+                        <value x="3.4465029" y="3.5096908" z="-4.1705432" />
                         <minvalue x="-10" y="-10" z="-10" />
                         <maxvalue x="10" y="10" z="10" />
                         <increment x="0.1" y="0.1" z="0.1" />
                     </lookFrom>
                     <lookTo type="FloatVec3Property" identifier="lookTo" displayName="Look to">
                         <MetaDataList />
-                        <value x="-0.062342875" y="-0.014372798" z="-0.090751931" />
+                        <value x="-0.074688219" y="-0.023412909" z="-0.078756794" />
                         <minvalue x="-10" y="-10" z="-10" />
                         <maxvalue x="10" y="10" z="10" />
                         <increment x="0.1" y="0.1" z="0.1" />
                     </lookTo>
                     <lookUp type="FloatVec3Property" identifier="lookUp" displayName="Look up">
                         <MetaDataList />
-                        <value x="0.74549228" y="-0.4311322" z="0.49836358" />
+                        <value x="0.85588634" y="-0.34126964" z="0.37549159" />
                         <minvalue x="-10" y="-10" z="-10" />
                         <maxvalue x="10" y="10" z="10" />
                         <increment x="0.1" y="0.1" z="0.1" />
@@ -145,7 +145,7 @@
                             <position x="1407" y="1205" />
                             <dimension x="935" y="409" />
                             <visibility content="0" />
-                            <dockstatus content="Floating" />
+                            <dockstatus content="DockedRight" />
                         </MetaData>
                     </MetaDataList>
                     <size content="8" />
@@ -173,7 +173,7 @@
                 </Property>
             </Properties>
         </Processor>
-        <Processor type="CubeProxyGeometry" identifier="CubeProxyGeometry" id="ref5">
+        <Processor type="CubeProxyGeometry" identifier="CubeProxyGeometry" id="ref4">
             <MetaDataList>
                 <MetaData type="ProcessorMetaData">
                     <position x="-450" y="-625" />
@@ -206,7 +206,7 @@
                 </Property>
             </Properties>
         </Processor>
-        <Processor type="EntryExitPoints" identifier="EntryExitPoints" id="ref1">
+        <Processor type="EntryExitPoints" identifier="EntryExitPoints" id="ref2">
             <MetaDataList>
                 <MetaData type="ProcessorMetaData">
                     <position x="-450" y="-550" />
@@ -351,25 +351,25 @@
                 </InteractionHandler>
             </InteractonHandlers>
             <Properties>
-                <Property type="CameraProperty" identifier="camera" displayName="Camera" key="camera" id="ref2">
+                <Property type="CameraProperty" identifier="camera" displayName="Camera" key="camera" id="ref3">
                     <MetaDataList />
                     <lookFrom type="FloatVec3Property" identifier="lookFrom" displayName="Look from">
                         <MetaDataList />
-                        <value x="4.407094" y="3.2382526" z="-3.4177458" />
+                        <value x="3.4465029" y="3.5096908" z="-4.1705432" />
                         <minvalue x="-10" y="-10" z="-10" />
                         <maxvalue x="10" y="10" z="10" />
                         <increment x="0.1" y="0.1" z="0.1" />
                     </lookFrom>
                     <lookTo type="FloatVec3Property" identifier="lookTo" displayName="Look to">
                         <MetaDataList />
-                        <value x="-0.062342875" y="-0.014372798" z="-0.090751931" />
+                        <value x="-0.074688219" y="-0.023412909" z="-0.078756794" />
                         <minvalue x="-10" y="-10" z="-10" />
                         <maxvalue x="10" y="10" z="10" />
                         <increment x="0.1" y="0.1" z="0.1" />
                     </lookTo>
                     <lookUp type="FloatVec3Property" identifier="lookUp" displayName="Look up">
                         <MetaDataList />
-                        <value x="0.74549228" y="-0.4311322" z="0.49836358" />
+                        <value x="0.85588634" y="-0.34126964" z="0.37549159" />
                         <minvalue x="-10" y="-10" z="-10" />
                         <maxvalue x="10" y="10" z="10" />
                         <increment x="0.1" y="0.1" z="0.1" />
@@ -407,9 +407,13 @@
                     <MetaDataList />
                     <value content="1" />
                 </Property>
+                <Property type="BoolProperty" identifier="handleEvents" displayName="Handle interaction events" key="handleEvents">
+                    <MetaDataList />
+                    <value content="1" />
+                </Property>
             </Properties>
         </Processor>
-        <Processor type="CanvasGL" identifier="CanvasGL" id="ref3">
+        <Processor type="CanvasGL" identifier="CanvasGL" id="ref5">
             <MetaDataList>
                 <MetaData type="ProcessorMetaData">
                     <position x="-475" y="-300" />
@@ -417,7 +421,7 @@
                     <selection content="0" />
                 </MetaData>
                 <MetaData type="ProcessorWidgetMetaData">
-                    <position x="642" y="506" />
+                    <position x="653" y="550" />
                     <dimension x="512" y="512" />
                     <visibility content="1" />
                 </MetaData>
@@ -433,21 +437,6 @@
                 <Property type="DirectoryProperty" identifier="layerDir" displayName="Output Directory" key="layerDir">
                     <MetaDataList />
                     <directory content="tests/../../images" />
-                    <files>
-                        <file content="canvasgl-20140202_185007.png" />
-                        <file content="canvasgl-20140202_185746.png" />
-                        <file content="canvasgl-20140202_185843.png" />
-                        <file content="canvasgl-20140202_185916.png" />
-                        <file content="canvasgl-20140202_192401.png" />
-                        <file content="canvasgl-20140202_195142.png" />
-                        <file content="canvasgl-20140202_195143.png" />
-                        <file content="imageFileName_swirl_swirl.inv" />
-                        <file content="placeholder.png" />
-                        <file content="snapshot_TemporaryExternalNetwork_swirlCanvasGLimageFileName_swirl_swirl.png" />
-                        <file content="swirl.inv" />
-                        <file content="swirl.tga" />
-                        <file content="swirl1.tga" />
-                    </files>
                 </Property>
                 <Property type="ButtonProperty" identifier="saveLayer" displayName="Save Image Layer" key="saveLayer">
                     <MetaDataList />
@@ -458,53 +447,22 @@
                 </Property>
             </Properties>
         </Processor>
-        <Processor type="VolumeSource" identifier="VolumeSource" id="ref4">
+        <Processor type="VolumeSource" identifier="VolumeSource" id="ref6">
             <MetaDataList>
                 <MetaData type="ProcessorMetaData">
                     <position x="-475" y="-700" />
                     <visibility content="1" />
-                    <selection content="0" />
+                    <selection content="1" />
                 </MetaData>
             </MetaDataList>
             <Properties>
-                <Property type="IntVec2Property" identifier="dataRange" displayName="Data range" key="dataRange">
+                <Property type="FloatMinMaxProperty" identifier="dataRange" displayName="Data range" key="dataRange">
                     <MetaDataList />
                     <value x="0" y="65535" />
-                    <minvalue x="0" y="0" />
-                    <maxvalue x="65535" y="65535" />
-                    <increment x="1" y="1" />
+                    <range x="0" y="65535" />
+                    <increment content="-1.0737418e+008" />
                 </Property>
-                <Property type="IntVec3Property" identifier="rawDims" displayName="" key="rawDims">
-                    <MetaDataList />
-                    <value x="0" y="0" z="0" />
-                    <minvalue x="0" y="0" z="0" />
-                    <maxvalue x="10" y="10" z="10" />
-                    <increment x="1" y="1" z="1" />
-                </Property>
-                <Property type="BoolProperty" identifier="rawEndianess" displayName="" key="rawEndianess">
-                    <MetaDataList />
-                    <value content="1" />
-                </Property>
-                <Property type="StringProperty" identifier="rawFileName" displayName="" key="rawFileName">
-                    <MetaDataList />
-                    <value content="" />
-                </Property>
-                <Property type="StringProperty" identifier="rawFormatStr" displayName="" key="rawFormatStr">
-                    <MetaDataList />
-                    <value content="" />
-                </Property>
-                <Property type="FloatVec2Property" identifier="valueRange" displayName="Value range" key="valueRange">
-                    <MetaDataList />
-                    <value x="0" y="1" />
-                    <minvalue x="0" y="0" />
-                    <maxvalue x="1" y="1" />
-                    <increment x="0.0099999998" y="0.0099999998" />
-                </Property>
-                <Property type="StringProperty" identifier="valueUnit" displayName="Value unit" key="valueUnit">
-                    <MetaDataList />
-                    <value content="" />
-                </Property>
-                <Property type="FileProperty" identifier="volumeFileName" displayName="Volume file" key="volumeFileName">
+                <Property type="FileProperty" identifier="filename" displayName="Volume file" key="filename">
                     <MetaDataList />
                     <url content="../volumes/boron.dat" />
                     <nameFilter>
@@ -516,9 +474,19 @@
                     <acceptMode content="0" />
                     <fileMode content="0" />
                 </Property>
+                <Property type="FloatMinMaxProperty" identifier="valueRange" displayName="Value range" key="valueRange">
+                    <MetaDataList />
+                    <value x="0" y="1" />
+                    <range x="0" y="0" />
+                    <increment content="-1.0737418e+008" />
+                </Property>
+                <Property type="StringProperty" identifier="valueUnit" displayName="Value unit" key="valueUnit">
+                    <MetaDataList />
+                    <value content="" />
+                </Property>
             </Properties>
         </Processor>
-        <Processor type="Background" identifier="Background" id="ref0">
+        <Processor type="Background" identifier="Background" id="ref7">
             <MetaDataList>
                 <MetaData type="ProcessorMetaData">
                     <position x="-475" y="-375" />
@@ -551,58 +519,58 @@
     <Connections>
         <Connection>
             <OutPort identifier="geometry.outport">
-                <Processor type="CubeProxyGeometry" identifier="CubeProxyGeometry" reference="ref5" />
+                <Processor type="CubeProxyGeometry" identifier="CubeProxyGeometry" reference="ref4" />
             </OutPort>
             <InPort identifier="geometry">
-                <Processor type="EntryExitPoints" identifier="EntryExitPoints" reference="ref1" />
+                <Processor type="EntryExitPoints" identifier="EntryExitPoints" reference="ref2" />
             </InPort>
         </Connection>
         <Connection>
             <OutPort identifier="entry-points">
-                <Processor type="EntryExitPoints" identifier="EntryExitPoints" reference="ref1" />
+                <Processor type="EntryExitPoints" identifier="EntryExitPoints" reference="ref2" />
             </OutPort>
             <InPort identifier="entry-points">
-                <Processor type="SimpleRaycaster" identifier="SimpleRaycaster" reference="ref6" />
+                <Processor type="SimpleRaycaster" identifier="SimpleRaycaster" reference="ref0" />
             </InPort>
         </Connection>
         <Connection>
             <OutPort identifier="exit-points">
-                <Processor type="EntryExitPoints" identifier="EntryExitPoints" reference="ref1" />
+                <Processor type="EntryExitPoints" identifier="EntryExitPoints" reference="ref2" />
             </OutPort>
             <InPort identifier="exit-points">
-                <Processor type="SimpleRaycaster" identifier="SimpleRaycaster" reference="ref6" />
+                <Processor type="SimpleRaycaster" identifier="SimpleRaycaster" reference="ref0" />
             </InPort>
         </Connection>
         <Connection>
-            <OutPort identifier="volume">
-                <Processor type="VolumeSource" identifier="VolumeSource" reference="ref4" />
+            <OutPort identifier="outport">
+                <Processor type="SimpleRaycaster" identifier="SimpleRaycaster" reference="ref0" />
+            </OutPort>
+            <InPort identifier="inport">
+                <Processor type="Background" identifier="Background" reference="ref7" />
+            </InPort>
+        </Connection>
+        <Connection>
+            <OutPort identifier="outport">
+                <Processor type="Background" identifier="Background" reference="ref7" />
+            </OutPort>
+            <InPort identifier="inport">
+                <Processor type="CanvasGL" identifier="CanvasGL" reference="ref5" />
+            </InPort>
+        </Connection>
+        <Connection>
+            <OutPort identifier="data">
+                <Processor type="VolumeSource" identifier="VolumeSource" reference="ref6" />
             </OutPort>
             <InPort identifier="volume.inport">
-                <Processor type="CubeProxyGeometry" identifier="CubeProxyGeometry" reference="ref5" />
+                <Processor type="CubeProxyGeometry" identifier="CubeProxyGeometry" reference="ref4" />
             </InPort>
         </Connection>
         <Connection>
-            <OutPort identifier="volume">
-                <Processor type="VolumeSource" identifier="VolumeSource" reference="ref4" />
+            <OutPort identifier="data">
+                <Processor type="VolumeSource" identifier="VolumeSource" reference="ref6" />
             </OutPort>
             <InPort identifier="volume">
-                <Processor type="SimpleRaycaster" identifier="SimpleRaycaster" reference="ref6" />
-            </InPort>
-        </Connection>
-        <Connection>
-            <OutPort identifier="outport">
-                <Processor type="SimpleRaycaster" identifier="SimpleRaycaster" reference="ref6" />
-            </OutPort>
-            <InPort identifier="inport">
-                <Processor type="Background" identifier="Background" reference="ref0" />
-            </InPort>
-        </Connection>
-        <Connection>
-            <OutPort identifier="outport">
-                <Processor type="Background" identifier="Background" reference="ref0" />
-            </OutPort>
-            <InPort identifier="inport">
-                <Processor type="CanvasGL" identifier="CanvasGL" reference="ref3" />
+                <Processor type="SimpleRaycaster" identifier="SimpleRaycaster" reference="ref0" />
             </InPort>
         </Connection>
     </Connections>
@@ -611,14 +579,14 @@
             <PropertyLinks>
                 <PropertyLink>
                     <Properties>
-                        <Property type="CameraProperty" identifier="camera" displayName="Camera" key="camera" reference="ref7" />
-                        <Property type="CameraProperty" identifier="camera" displayName="Camera" key="camera" reference="ref2" />
+                        <Property type="CameraProperty" identifier="camera" displayName="Camera" key="camera" reference="ref1" />
+                        <Property type="CameraProperty" identifier="camera" displayName="Camera" key="camera" reference="ref3" />
                     </Properties>
                 </PropertyLink>
                 <PropertyLink>
                     <Properties>
-                        <Property type="CameraProperty" identifier="camera" displayName="Camera" key="camera" reference="ref2" />
-                        <Property type="CameraProperty" identifier="camera" displayName="Camera" key="camera" reference="ref7" />
+                        <Property type="CameraProperty" identifier="camera" displayName="Camera" key="camera" reference="ref3" />
+                        <Property type="CameraProperty" identifier="camera" displayName="Camera" key="camera" reference="ref1" />
                     </Properties>
                 </PropertyLink>
             </PropertyLinks>

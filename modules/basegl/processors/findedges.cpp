@@ -1,20 +1,20 @@
- /*********************************************************************************
+/*********************************************************************************
  *
  * Inviwo - Interactive Visualization Workshop
  * Version 0.6b
  *
  * Copyright (c) 2013-2014 Inviwo Foundation
  * All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met: 
- * 
+ * modification, are permitted provided that the following conditions are met:
+ *
  * 1. Redistributions of source code must retain the above copyright notice, this
- * list of conditions and the following disclaimer. 
+ * list of conditions and the following disclaimer.
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  * this list of conditions and the following disclaimer in the documentation
- * and/or other materials provided with the distribution. 
- * 
+ * and/or other materials provided with the distribution.
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
  * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
@@ -25,7 +25,7 @@
  * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- * 
+ *
  * Main file authors: Viktor Axelsson, Erik Sundén
  *
  *********************************************************************************/
@@ -35,7 +35,7 @@
 
 namespace inviwo {
 
-ProcessorClassName(FindEdges, "FindEdges"); 
+ProcessorClassName(FindEdges, "FindEdges");
 ProcessorCategory(FindEdges, "Image Operation");
 ProcessorCodeState(FindEdges, CODE_STATE_EXPERIMENTAL);
 
@@ -47,7 +47,6 @@ FindEdges::FindEdges()
 {
     addPort(inport_);
     addPort(outport_);
-
     addProperty(alpha_);
 }
 
@@ -63,17 +62,15 @@ void FindEdges::deinitialize() {
     Processor::deinitialize();
 }
 
-void FindEdges::process() {    
+void FindEdges::process() {
     activateTarget(outport_);
     bindColorTexture(inport_, GL_TEXTURE0);
-
     shader_->activate();
     shader_->setUniform("inport_", 0);
     shader_->setUniform("alpha_", alpha_.get());
     shader_->setUniform("dimension_", vec2(1.f / outport_.getDimension()[0], 1.f / outport_.getDimension()[1]));
     renderImagePlaneRect();
     shader_->deactivate();
-
     deactivateCurrentTarget();
 }
 

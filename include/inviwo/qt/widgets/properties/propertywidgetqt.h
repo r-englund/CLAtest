@@ -1,4 +1,4 @@
- /*********************************************************************************
+/*********************************************************************************
  *
  * Inviwo - Interactive Visualization Workshop
  * Version 0.6b
@@ -60,7 +60,7 @@ public:
     void showWidget();
     void hideWidget();
     //void notify();
-    void updateContextMenu();    
+    void updateContextMenu();
 public slots:
     void visibilityModified(int mode);
     void showContextMenu(const QPoint& pos);
@@ -86,7 +86,7 @@ protected:
     void updateModuleMenuActions();
     virtual void initializeEditorWidgetsMetaData();
 
-    void paintEvent(QPaintEvent *pe);
+    void paintEvent(QPaintEvent* pe);
 
     QAction* developerViewModeAction_;
     QAction* applicationViewModeAction_;

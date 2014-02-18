@@ -1,4 +1,4 @@
- /*********************************************************************************
+/*********************************************************************************
  *
  * Inviwo - Interactive Visualization Workshop
  * Version 0.6b
@@ -41,9 +41,9 @@
 
 namespace inviwo {
 /** \class TextFileReader
-*
-* Reader for text files.
-*/
+ *
+ * Reader for text files.
+ */
 class IVW_CORE_API TextFileReader {
 
 public:

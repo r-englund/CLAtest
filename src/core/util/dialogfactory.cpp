@@ -8,17 +8,19 @@ DialogFactory::~DialogFactory() {}
 
 void DialogFactory::registerObject(DialogFactoryObject* dialog) {
     std::string className = dialog->getClassName();
-  
+
     if (map_.find(className) != map_.end()) {
         LogWarn("Dialog already registed: " << className);
     }
+
     map_.insert(std::make_pair(className, dialog));
 }
 
 
 Dialog* DialogFactory::getDialog(std::string className) const {
     DialogMap::const_iterator it = map_.find(className);
-    if(it != map_.end()) {
+
+    if (it != map_.end()) {
         return it->second->create();
     } else {
         return NULL;
@@ -31,7 +33,7 @@ IvwSerializable* DialogFactory::create(std::string className) const {
 }
 
 bool DialogFactory::isValidType(std::string className) const {
-    if(map_.find(className) != map_.end())
+    if (map_.find(className) != map_.end())
         return true;
     else
         return false;

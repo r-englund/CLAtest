@@ -1,20 +1,20 @@
- /*********************************************************************************
+/*********************************************************************************
  *
  * Inviwo - Interactive Visualization Workshop
  * Version 0.6b
  *
  * Copyright (c) 2012-2014 Inviwo Foundation
  * All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met: 
- * 
+ * modification, are permitted provided that the following conditions are met:
+ *
  * 1. Redistributions of source code must retain the above copyright notice, this
- * list of conditions and the following disclaimer. 
+ * list of conditions and the following disclaimer.
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  * this list of conditions and the following disclaimer in the documentation
- * and/or other materials provided with the distribution. 
- * 
+ * and/or other materials provided with the distribution.
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
  * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
@@ -25,7 +25,7 @@
  * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- * 
+ *
  * Main file author: Erik Sundén
  *
  *********************************************************************************/
@@ -36,7 +36,7 @@ namespace inviwo {
 
 Texture2DArray::Texture2DArray(uvec3 dimensions, GLFormats::GLFormat glFormat, GLenum filtering, GLint level)
     : Texture(GL_TEXTURE_2D_ARRAY, glFormat, filtering, level)
-    , dimensions_(dimensions) 
+    , dimensions_(dimensions)
 {
     setTextureParameterFunction(this, &Texture2DArray::default2DArrayTextureParameterFunction);
 }
@@ -50,10 +50,10 @@ Texture2DArray::Texture2DArray(uvec3 dimensions, GLint format, GLint internalfor
 
 Texture2DArray::Texture2DArray(const Texture2DArray& rhs)
     : Texture(rhs)
-    , dimensions_(rhs.dimensions_) 
+    , dimensions_(rhs.dimensions_)
 {
     setTextureParameterFunction(this, &Texture2DArray::default2DArrayTextureParameterFunction);
-    initialize(NULL);   
+    initialize(NULL);
     // TODO: Copy texture from other
     // bind();
     // glCopyTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, 0, dimensions_.x, dimensions_.y);
@@ -67,6 +67,7 @@ Texture2DArray& Texture2DArray::operator=(const Texture2DArray& rhs) {
         initialize(NULL);
         // TODO: Copy other texture content
     }
+
     return *this;
 }
 
@@ -79,29 +80,32 @@ Texture2DArray* Texture2DArray::clone() const {
 void Texture2DArray::initialize(const void* data) {
     // Notify observers
     ObserverSet::iterator endIt = observers_->end();
-    for(ObserverSet::iterator it = observers_->begin(); it != endIt; ++it) {
+
+    for (ObserverSet::iterator it = observers_->begin(); it != endIt; ++it) {
         // static_cast can be used since only template class objects can be added
-        static_cast<TextureObserver*>(*it)->notifyBeforeTextureInitialization();    
+        static_cast<TextureObserver*>(*it)->notifyBeforeTextureInitialization();
     }
+
     // Allocate data
     bind();
     glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
     texParameterCallback_->invoke(this);
     glTexImage3D(GL_TEXTURE_2D_ARRAY, level_, internalformat_, dimensions_.x, dimensions_.y, dimensions_.z, 0, format_, dataType_, data);
     LGL_ERROR;
-    for(ObserverSet::iterator it = observers_->begin(); it != endIt; ++it) {
+
+    for (ObserverSet::iterator it = observers_->begin(); it != endIt; ++it) {
         // static_cast can be used since only template class objects can be added
-        static_cast<TextureObserver*>(*it)->notifyAfterTextureInitialization();    
+        static_cast<TextureObserver*>(*it)->notifyAfterTextureInitialization();
     }
 }
 
-size_t Texture2DArray::getNumberOfValues() const{
+size_t Texture2DArray::getNumberOfValues() const {
     return static_cast<size_t>(dimensions_.x*dimensions_.y*dimensions_.z);
 }
 
 void Texture2DArray::upload(const void* data) {
     bind();
-    glTexSubImage3D(GL_TEXTURE_2D_ARRAY, 0, 0, 0, 0, dimensions_.x, dimensions_.y, dimensions_.z, format_, dataType_, data);  
+    glTexSubImage3D(GL_TEXTURE_2D_ARRAY, 0, 0, 0, 0, dimensions_.x, dimensions_.y, dimensions_.z, format_, dataType_, data);
     LGL_ERROR;
 }
 
@@ -110,7 +114,7 @@ void Texture2DArray::uploadAndResize(const void* data, const uvec3& dim) {
     initialize(data);
 }
 
-void Texture2DArray::default2DArrayTextureParameterFunction(Texture* tex){
+void Texture2DArray::default2DArrayTextureParameterFunction(Texture* tex) {
     glTexParameteri(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
     glTexParameteri(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
     glTexParameteri(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_MIN_FILTER, tex->getFiltering());

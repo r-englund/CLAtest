@@ -1,4 +1,4 @@
- /*********************************************************************************
+/*********************************************************************************
  *
  * Inviwo - Interactive Visualization Workshop
  * Version 0.6b
@@ -43,10 +43,10 @@
 namespace inviwo {
 
 /** \class Timer
-*
-* Interface for Timer classes.
-* A class deriving from Timer should execute onIntervalEvent() when the interval has passed.
-*/
+ *
+ * Interface for Timer classes.
+ * A class deriving from Timer should execute onIntervalEvent() when the interval has passed.
+ */
 class IVW_CORE_API Timer {
 public:
     Timer() {};
@@ -100,11 +100,11 @@ protected:
 static void CALLBACK TimerCallback(void* param, bool timerOrWaitFired);
 
 /** \class WindowsTimer
-*
-* Windows only timer. Uses the Windows API to create a timed event. Typically millisecond resolution.
-* @note Does not work when used with Qt together with OpenGL (probably due to OpenGL context and parallel execution)
-* @see Timer
-*/
+ *
+ * Windows only timer. Uses the Windows API to create a timed event. Typically millisecond resolution.
+ * @note Does not work when used with Qt together with OpenGL (probably due to OpenGL context and parallel execution)
+ * @see Timer
+ */
 class IVW_CORE_API WindowsTimer: public Timer {
 public:
     WindowsTimer();

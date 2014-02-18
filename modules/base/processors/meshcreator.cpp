@@ -1,20 +1,20 @@
- /*********************************************************************************
+/*********************************************************************************
  *
  * Inviwo - Interactive Visualization Workshop
  * Version 0.6b
  *
  * Copyright (c) 2013-2014 Inviwo Foundation
  * All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met: 
- * 
+ * modification, are permitted provided that the following conditions are met:
+ *
  * 1. Redistributions of source code must retain the above copyright notice, this
- * list of conditions and the following disclaimer. 
+ * list of conditions and the following disclaimer.
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  * this list of conditions and the following disclaimer in the documentation
- * and/or other materials provided with the distribution. 
- * 
+ * and/or other materials provided with the distribution.
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
  * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
@@ -25,7 +25,7 @@
  * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- * 
+ *
  * Main file author: Erik Sundén
  *
  *********************************************************************************/
@@ -35,9 +35,9 @@
 
 namespace inviwo {
 
-ProcessorClassName(MeshCreator, "MeshCreator"); 
+ProcessorClassName(MeshCreator, "MeshCreator");
 ProcessorCategory(MeshCreator, "Geometry Creation");
-ProcessorCodeState(MeshCreator, CODE_STATE_STABLE); 
+ProcessorCodeState(MeshCreator, CODE_STATE_STABLE);
 
 MeshCreator::MeshCreator()
     : Processor(),
@@ -46,7 +46,6 @@ MeshCreator::MeshCreator()
       meshType_("meshType", "Mesh Type")
 {
     addPort(outport_);
-
     meshType_.addOption("cube", "Cube");
     meshType_.addOption("sphere", "Sphere");
     meshType_.set("sphere");
@@ -64,18 +63,18 @@ void MeshCreator::deinitialize() {
     Processor::deinitialize();
 }
 
-SimpleMesh* MeshCreator::createMesh(){
-    if(meshType_.get() == "sphere"){
+SimpleMesh* MeshCreator::createMesh() {
+    if (meshType_.get() == "sphere") {
         return SimpleMeshCreator::sphere(0.5f*meshScale_.get(), 8, 16);
     }
-    else{
+    else {
         vec3 posLLF = vec3(0.0f);
         vec3 posURB = vec3(1.0f)*meshScale_.get();
         return SimpleMeshCreator::rectangularPrism(posLLF, posURB, posLLF, posURB, vec4(posLLF, 1.f), vec4(posURB, 1.f));
     }
 }
 
-void MeshCreator::process() {  
+void MeshCreator::process() {
     outport_.setData(createMesh());
 }
 

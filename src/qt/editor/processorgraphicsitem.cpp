@@ -1,20 +1,20 @@
- /*********************************************************************************
+/*********************************************************************************
  *
  * Inviwo - Interactive Visualization Workshop
  * Version 0.6b
  *
  * Copyright (c) 2012-2014 Inviwo Foundation
  * All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met: 
- * 
+ * modification, are permitted provided that the following conditions are met:
+ *
  * 1. Redistributions of source code must retain the above copyright notice, this
- * list of conditions and the following disclaimer. 
+ * list of conditions and the following disclaimer.
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  * this list of conditions and the following disclaimer in the documentation
- * and/or other materials provided with the distribution. 
- * 
+ * and/or other materials provided with the distribution.
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
  * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
@@ -25,7 +25,7 @@
  * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- * 
+ *
  * Main file author: Timo Ropinski
  *
  *********************************************************************************/
@@ -61,7 +61,7 @@ int pointSizeToPixelSize(const int pointSize) {
 }
 
 ProcessorGraphicsItem::ProcessorGraphicsItem()
-    : ProcessorObserver(), processor_(0) {
+    : ProcessorObserver(), processor_(NULL) {
     setZValue(PROCESSORGRAPHICSITEM_DEPTH);
     setFlags(ItemIsMovable | ItemIsSelectable | ItemIsFocusable | ItemSendsGeometryChanges);
     setRect(-width/2, -height/2, width, height);
@@ -204,10 +204,10 @@ Port* ProcessorGraphicsItem::getSelectedPort(const QPointF pos) const {
 
 void ProcessorGraphicsItem::paintStatusIndicator(QPainter* p, QPointF pos,
         bool isOn, QColor baseColor) {
-
     qreal ledRadius = 5.0;
     QColor ledColor;
     QColor borderColor;
+
     if (isOn) {
         ledColor = baseColor;
         borderColor = QColor(124,124,124);
@@ -226,18 +226,20 @@ void ProcessorGraphicsItem::paintStatusIndicator(QPainter* p, QPointF pos,
     // draw light highlight
     QPointF highLightPos = pos;
     p->setPen(Qt::NoPen);
+
     while (ledRadius > 0.0) {
         ledColor = ledColor.light(120);
         p->setBrush(QBrush(ledColor));
         p->drawEllipse(highLightPos, ledRadius, ledRadius);
         ledRadius -= 0.25;
         p->drawEllipse(highLightPos, ledRadius, ledRadius);
-        ledRadius -= 0.25;        
+        ledRadius -= 0.25;
         p->drawEllipse(highLightPos, ledRadius, ledRadius);
-        ledRadius -= 0.25;        
+        ledRadius -= 0.25;
         highLightPos.setX(highLightPos.x()-0.25);
         highLightPos.setY(highLightPos.y()-0.25);
     }
+
     // deinitialize painter
     p->restore();
 }
@@ -378,16 +380,21 @@ bool ProcessorGraphicsItem::isEditingProcessorName() {
 void ProcessorGraphicsItem::setIdentifier(QString text) {
     std::string oldName = getProcessor()->getIdentifier();
     std::string newName = text.toLocal8Bit().constData();
-    if(oldName == newName)
+
+    if (oldName == newName)
         return;
-    if(newName.size()==0){
+
+    if (newName.size()==0) {
         nameLabel_->setText(oldName.c_str());
         return;
     }
+
     std::string updatedNewName = getProcessor()->setIdentifier(newName);
-    if(updatedNewName != newName){
+
+    if (updatedNewName != newName) {
         nameLabel_->setText(updatedNewName.c_str());
     }
+
     ProcessorWidgetQt* processorWidgetQt = dynamic_cast<ProcessorWidgetQt*>(getProcessor()->getProcessorWidget());
 
     if (processorWidgetQt)

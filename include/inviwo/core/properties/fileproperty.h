@@ -1,4 +1,4 @@
- /*********************************************************************************
+/*********************************************************************************
  *
  * Inviwo - Interactive Visualization Workshop
  * Version 0.6b
@@ -38,11 +38,11 @@
 
 namespace inviwo {
 /** class FileProperty
-*  A class for file representations.
-*  Holds the value of the path to a file as a string.
-*
-* @see TemplateProperty
-*/
+ *  A class for file representations.
+ *  Holds the value of the path to a file as a string.
+ *
+ * @see TemplateProperty
+ */
 
 class IVW_CORE_API FileProperty : public TemplateProperty<std::string> {
 

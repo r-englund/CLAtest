@@ -1,20 +1,20 @@
- /*********************************************************************************
+/*********************************************************************************
  *
  * Inviwo - Interactive Visualization Workshop
  * Version 0.6b
  *
  * Copyright (c) 2012-2014 Inviwo Foundation
  * All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met: 
- * 
+ * modification, are permitted provided that the following conditions are met:
+ *
  * 1. Redistributions of source code must retain the above copyright notice, this
- * list of conditions and the following disclaimer. 
+ * list of conditions and the following disclaimer.
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  * this list of conditions and the following disclaimer in the documentation
- * and/or other materials provided with the distribution. 
- * 
+ * and/or other materials provided with the distribution.
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
  * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
@@ -25,7 +25,7 @@
  * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- * 
+ *
  * Main file author: Erik Sundén
  *
  *********************************************************************************/
@@ -41,16 +41,17 @@ VolumeGL::VolumeGL(uvec3 dimensions, const DataFormatBase* format, Texture3D* te
     initialize();
 }
 
-VolumeGL::VolumeGL(const VolumeGL& rhs) 
-    : VolumeRepresentation(rhs){
+VolumeGL::VolumeGL(const VolumeGL& rhs)
+    : VolumeRepresentation(rhs) {
     volumeTexture_ = rhs.volumeTexture_->clone();
 }
 
 VolumeGL& VolumeGL::operator=(const VolumeGL& rhs) {
-    if(this != &rhs) {
+    if (this != &rhs) {
         VolumeRepresentation::operator=(rhs);
         volumeTexture_ = rhs.volumeTexture_->clone();
     }
+
     return *this;
 }
 
@@ -63,39 +64,39 @@ VolumeGL* VolumeGL::clone() const {
 }
 
 void VolumeGL::initialize() {
-    if(!volumeTexture_){
+    if (!volumeTexture_) {
         GLFormats::GLFormat glFormat = getGLFormats()->getGLFormat(getDataFormatId());
         volumeTexture_ = new Texture3D(dimensions_, glFormat, GL_LINEAR);
     }
 }
 
 void VolumeGL::deinitialize() {
-    if(volumeTexture_ && volumeTexture_->decreaseRefCount() <= 0){
+    if (volumeTexture_ && volumeTexture_->decreaseRefCount() <= 0) {
         delete volumeTexture_;
         volumeTexture_ = NULL;
     }
 }
 
-void VolumeGL::bindTexture(GLenum texUnit) const{
+void VolumeGL::bindTexture(GLenum texUnit) const {
     glActiveTexture(texUnit);
     volumeTexture_->bind();
 }
 
-void VolumeGL::unbindTexture() const{
+void VolumeGL::unbindTexture() const {
     volumeTexture_->unbind();
 }
 
-void VolumeGL::setDimension(uvec3 dimensions){
+void VolumeGL::setDimension(uvec3 dimensions) {
     dimensions_ = dimensions;
     volumeTexture_->uploadAndResize(NULL, dimensions_);
 }
 
-Texture3D* VolumeGL::getTexture() { 
-    return volumeTexture_; 
+Texture3D* VolumeGL::getTexture() {
+    return volumeTexture_;
 }
 
-const Texture3D* VolumeGL::getTexture() const { 
-    return volumeTexture_; 
+const Texture3D* VolumeGL::getTexture() const {
+    return volumeTexture_;
 }
 
 } // namespace

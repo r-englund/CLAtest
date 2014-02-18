@@ -1,20 +1,20 @@
- /*********************************************************************************
+/*********************************************************************************
  *
  * Inviwo - Interactive Visualization Workshop
  * Version 0.6b
  *
  * Copyright (c) 2013-2014 Inviwo Foundation
  * All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met: 
- * 
+ * modification, are permitted provided that the following conditions are met:
+ *
  * 1. Redistributions of source code must retain the above copyright notice, this
- * list of conditions and the following disclaimer. 
+ * list of conditions and the following disclaimer.
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  * this list of conditions and the following disclaimer in the documentation
- * and/or other materials provided with the distribution. 
- * 
+ * and/or other materials provided with the distribution.
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
  * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
@@ -25,7 +25,7 @@
  * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- * 
+ *
  * Main file author: Rickard Englund
  *
  *********************************************************************************/
@@ -64,8 +64,9 @@ PythonScript::~PythonScript() {
 }
 
 bool PythonScript::compile(bool outputInfo) {
-    if(outputInfo)
+    if (outputInfo)
         LogInfo("Compiling script");
+
     Py_XDECREF(BYTE_CODE);
     byteCode_ = Py_CompileString(source_.c_str(), "", Py_file_input);
     isCompileNeeded_ = !checkCompileError();
@@ -82,20 +83,20 @@ bool PythonScript::run(bool outputInfo) {
     PyObject* glb = PyDict_New();
     PyDict_SetItemString(glb, "__builtins__", PyEval_GetBuiltins());
 
-    if(isCompileNeeded_ && !compile(outputInfo)){
+    if (isCompileNeeded_ && !compile(outputInfo)) {
         LogError("Failed to run script, script could not be compiled");
         return false;
     }
 
     ivwAssert(byteCode_!=0, "No byte code");
-    if(outputInfo)
+
+    if (outputInfo)
         LogInfo("Running compiled script ...");
+
     PyObject* ret = PyEval_EvalCode(static_cast<PyCodeObject*>(byteCode_), glb, glb);
     bool success = checkRuntimeError();
-    
-    Py_XDECREF(ret); 
+    Py_XDECREF(ret);
     Py_XDECREF(glb);
-
     return success;
 }
 
@@ -114,20 +115,19 @@ bool PythonScript::checkCompileError() {
     if (!PyErr_Occurred())
         return true;
 
-    PyObject *errtype, *errvalue, *traceback;
+    PyObject* errtype, *errvalue, *traceback;
     PyErr_Fetch(&errtype, &errvalue, &traceback);
-
-
     std::string log = "";
     int errorLine = -1;
     int errorCol = -1;
-
     char* msg = 0;
     PyObject* obj = 0;
+
     if (PyArg_ParseTuple(errvalue, "sO", &msg, &obj)) {
         int line, col;
-        char *code = 0;
-        char *mod = 0;
+        char* code = 0;
+        char* mod = 0;
+
         if (PyArg_ParseTuple(obj, "siis", &mod, &line, &col, &code)) {
             errorLine = line;
             errorCol = col;
@@ -139,19 +139,17 @@ bool PythonScript::checkCompileError() {
     if (log.empty()) {
         LogWarn("Failed to parse exception, printing as string:");
         PyObject* s = PyObject_Str(errvalue);
+
         if (s && PyValueParser::is<std::string>(s)) {
             log = std::string(PyValueParser::parse<std::string>(s));
             Py_XDECREF(s);
         }
     }
 
-   
     Py_XDECREF(errtype);
     Py_XDECREF(errvalue);
     Py_XDECREF(traceback);
-
     LogError(log);
-
     return false;
 }
 
@@ -165,17 +163,19 @@ bool PythonScript::checkRuntimeError() {
     PyObject* pyError_traceback = 0;
     PyObject* pyError_string = 0;
     PyErr_Fetch(&pyError_type, &pyError_value, &pyError_traceback);
-
     int errorLine = -1;
-
     std::string stacktraceStr;
+
     if (pyError_traceback) {
         PyTracebackObject* traceback = (PyTracebackObject*)pyError_traceback;
+
         while (traceback) {
             PyFrameObject* frame = traceback->tb_frame;
             std::string stacktraceLine;
+
             if (frame && frame->f_code) {
                 PyCodeObject* codeObject = frame->f_code;
+
                 if (PyValueParser::is<std::string>(codeObject->co_filename))
                     stacktraceLine.append(std::string("  File \"") + PyValueParser::parse<std::string>(codeObject->co_filename) + std::string("\", "));
 
@@ -185,9 +185,9 @@ bool PythonScript::checkRuntimeError() {
                 if (PyValueParser::is<std::string>(codeObject->co_name))
                     stacktraceLine.append(std::string(", in ") + PyValueParser::parse<std::string>(codeObject->co_name));
             }
+
             stacktraceLine.append("\n");
             stacktraceStr = stacktraceLine + stacktraceStr;
-
             traceback = traceback->tb_next;
         }
     }
@@ -195,6 +195,7 @@ bool PythonScript::checkRuntimeError() {
     std::stringstream s;
     s << errorLine;
     pyException.append(std::string("[") + s.str() + std::string("] "));
+
     if (pyError_value && (pyError_string = PyObject_Str(pyError_value)) != 0 && (PyValueParser::is<std::string>(pyError_string))) {
         pyException.append(PyValueParser::parse<std::string>(pyError_string));
         Py_XDECREF(pyError_string);
@@ -203,6 +204,7 @@ bool PythonScript::checkRuntimeError() {
     else {
         pyException.append("<No data available>");
     }
+
     pyException.append("\n");
 
     // finally append stacktrace string
@@ -218,10 +220,8 @@ bool PythonScript::checkRuntimeError() {
     Py_XDECREF(pyError_type);
     Py_XDECREF(pyError_value);
     Py_XDECREF(pyError_traceback);
-
-   LogError(pyException);
-   PythonExecutionOutputObeserver::pyhonExecutionOutputEvent(pyException,PythonExecutionOutputObeserver::error);
-
+    LogError(pyException);
+    PythonExecutionOutputObeserver::pyhonExecutionOutputEvent(pyException,PythonExecutionOutputObeserver::error);
     return false;
 }
 

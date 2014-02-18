@@ -1,4 +1,4 @@
- /*********************************************************************************
+/*********************************************************************************
  *
  * Inviwo - Interactive Visualization Workshop
  * Version 0.6b
@@ -41,10 +41,10 @@
 namespace inviwo {
 
 /** class BaseOptionProperty
-*   Base class for the option properties
-*
-* @see TemplateOptionProperty
-*/
+ *   Base class for the option properties
+ *
+ * @see TemplateOptionProperty
+ */
 class IVW_CORE_API BaseOptionProperty : public Property {
 public:
 
@@ -83,11 +83,11 @@ public:
 
 
 /** class TemplateOptionProperty
-*   Template class for option properties
-*
-* @see OptionProperties
-* @see BaseOptionProperty
-*/
+ *   Template class for option properties
+ *
+ * @see OptionProperties
+ * @see BaseOptionProperty
+ */
 template<typename T>
 class TemplateOptionProperty : public BaseOptionProperty {
 
@@ -183,11 +183,11 @@ public:
     }
     // TODO: Only selected option is converted right now in getVariant()
     // since it was done incorrectly before and changing it
-    // now will not work for old workspaces. 
+    // now will not work for old workspaces.
     // To discuss: Serializing and deserializing options will prevent
     // new options from being added, which we probably don't want.
     /**
-     * \brief  Variants are used while linking. 
+     * \brief  Variants are used while linking.
      * All options are converted to strings (including values) and hence variant type is string.
      *
      *  values must have overloaded streaming operator <<
@@ -340,35 +340,32 @@ template<typename T>
 Variant inviwo::TemplateOptionProperty<T>::getVariant() {
     std::stringstream ss;
     ss << getSelectedOption() << std::endl;
-
     //for (size_t i=0; i<options_.size(); i++) {
     //    ss << options_[i].first.first << std::endl;
     //    ss << options_[i].first.second << std::endl;
     //    ss << options_[i].second << std::endl;
     //}
-
     return Variant(ss.str());
 }
 
 template<typename T>
-void inviwo::TemplateOptionProperty<T>::setVariant( const Variant& inVariant ) {
+void inviwo::TemplateOptionProperty<T>::setVariant(const Variant& inVariant) {
     std::string textLine;
     std::istringstream ss(inVariant.getString());
     int seletctedOption=0;
     getline(ss, textLine);
     seletctedOption = atoi(textLine.c_str());
     //options_.clear();
-    //while(!ss.eof()) { 
+    //while(!ss.eof()) {
     //    std::string identifier, displayName, valStr;
-    //    getline(ss, identifier);        
-    //    getline(ss, displayName);  
+    //    getline(ss, identifier);
+    //    getline(ss, displayName);
     //    getline(ss, valStr);
     //    std::stringstream stream(valStr);
     //    T val;
     //    stream >> val;
     //    addOption(identifier, displayName, val);
     //}
-
     setSelectedOption(seletctedOption);
 }
 

@@ -1,20 +1,20 @@
- /*********************************************************************************
+/*********************************************************************************
  *
  * Inviwo - Interactive Visualization Workshop
  * Version 0.6b
  *
  * Copyright (c) 2013-2014 Inviwo Foundation
  * All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met: 
- * 
+ * modification, are permitted provided that the following conditions are met:
+ *
  * 1. Redistributions of source code must retain the above copyright notice, this
- * list of conditions and the following disclaimer. 
+ * list of conditions and the following disclaimer.
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  * this list of conditions and the following disclaimer in the documentation
- * and/or other materials provided with the distribution. 
- * 
+ * and/or other materials provided with the distribution.
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
  * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
@@ -25,7 +25,7 @@
  * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- * 
+ *
  * Main file authors: Daniel Jönsson, Peter Steneteg
  *
  *********************************************************************************/
@@ -39,26 +39,24 @@ namespace inviwo {
 VolumeCLGL::VolumeCLGL(const DataFormatBase* format, Texture3D* data)
     : VolumeRepresentation(data != NULL ? data->getDimension(): uvec3(64), format)
     , texture_(data) {
-
-    if(data) {
+    if (data) {
         initialize(data);
     }
 }
 
 VolumeCLGL::VolumeCLGL(const uvec3& dimensions, const DataFormatBase* format, Texture3D* data)
     : VolumeRepresentation(dimensions, format)
-    , texture_(data){
-
+    , texture_(data) {
     initialize(data);
 }
 
-VolumeCLGL::VolumeCLGL(const VolumeCLGL& rhs) 
+VolumeCLGL::VolumeCLGL(const VolumeCLGL& rhs)
     : VolumeRepresentation(rhs) {
     initialize(rhs.texture_);
 }
 
-VolumeCLGL::~VolumeCLGL() { 
-    deinitialize(); 
+VolumeCLGL::~VolumeCLGL() {
+    deinitialize();
 }
 
 void VolumeCLGL::initialize(Texture3D* texture) {
@@ -66,6 +64,7 @@ void VolumeCLGL::initialize(Texture3D* texture) {
     // Indicate that the texture should not be deleted.
     texture->increaseRefCount();
     CLTextureSharingMap::iterator it = OpenCLImageSharing::clImageSharingMap_.find(texture);
+
     if (it == OpenCLImageSharing::clImageSharingMap_.end()) {
         clImage_ = new cl::Image3DGL(OpenCL::instance()->getContext(), CL_MEM_READ_WRITE, GL_TEXTURE_3D, 0, texture->getID());
         OpenCLImageSharing::clImageSharingMap_.insert(TextureCLImageSharingPair(texture_, new OpenCLImageSharing(clImage_)));
@@ -73,6 +72,7 @@ void VolumeCLGL::initialize(Texture3D* texture) {
         clImage_ = it->second->sharedMemory_;
         it->second->increaseRefCount();
     }
+
     texture->addObserver(this);
     VolumeCLGL::initialize();
 }
@@ -84,14 +84,17 @@ VolumeCLGL* VolumeCLGL::clone() const {
 void VolumeCLGL::deinitialize() {
     // Delete OpenCL image before texture
     CLTextureSharingMap::iterator it = OpenCLImageSharing::clImageSharingMap_.find(texture_);
+
     if (it != OpenCLImageSharing::clImageSharingMap_.end()) {
         if (it->second->decreaseRefCount() == 0) {
-            delete it->second->sharedMemory_; it->second->sharedMemory_ = 0;
+            delete it->second->sharedMemory_;
+            it->second->sharedMemory_ = 0;
             delete it->second;
             OpenCLImageSharing::clImageSharingMap_.erase(it);
         }
     }
-    if(texture_ && texture_->decreaseRefCount() <= 0){
+
+    if (texture_ && texture_->decreaseRefCount() <= 0) {
         delete texture_;
         texture_ = NULL;
     }
@@ -99,31 +102,37 @@ void VolumeCLGL::deinitialize() {
 
 void VolumeCLGL::notifyBeforeTextureInitialization() {
     CLTextureSharingMap::iterator it = OpenCLImageSharing::clImageSharingMap_.find(texture_);
+
     if (it != OpenCLImageSharing::clImageSharingMap_.end()) {
         if (it->second->decreaseRefCount() == 0) {
-            delete it->second->sharedMemory_; it->second->sharedMemory_ = 0;
+            delete it->second->sharedMemory_;
+            it->second->sharedMemory_ = 0;
         }
     }
-    clImage_ = 0; 
+
+    clImage_ = 0;
 }
 
 void VolumeCLGL::notifyAfterTextureInitialization() {
     CLTextureSharingMap::iterator it = OpenCLImageSharing::clImageSharingMap_.find(texture_);
+
     if (it != OpenCLImageSharing::clImageSharingMap_.end()) {
         if (it->second->getRefCount() == 0) {
             it->second->sharedMemory_ = new cl::Image3DGL(OpenCL::instance()->getContext(), CL_MEM_READ_WRITE, GL_TEXTURE_3D, 0, texture_->getID());
         }
+
         clImage_ = it->second->sharedMemory_;
         it->second->increaseRefCount();
     }
 }
 
-void VolumeCLGL::setDimension( uvec3 dimensions ) {
+void VolumeCLGL::setDimension(uvec3 dimensions) {
     if (dimensions == dimensions_) {
         return;
     }
+
     // Make sure that the OpenCL layer is deleted before resizing the texture
-    // By observing the texture we will make sure that the OpenCL layer is 
+    // By observing the texture we will make sure that the OpenCL layer is
     // deleted and reattached after resizing is done.
     const_cast<Texture3D*>(texture_)->uploadAndResize(NULL, dimensions);
     VolumeRepresentation::setDimension(dimensions);

@@ -1,20 +1,20 @@
- /*********************************************************************************
+/*********************************************************************************
  *
  * Inviwo - Interactive Visualization Workshop
  * Version 0.6b
  *
  * Copyright (c) 2014 Inviwo Foundation
  * All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met: 
- * 
+ * modification, are permitted provided that the following conditions are met:
+ *
  * 1. Redistributions of source code must retain the above copyright notice, this
- * list of conditions and the following disclaimer. 
+ * list of conditions and the following disclaimer.
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  * this list of conditions and the following disclaimer in the documentation
- * and/or other materials provided with the distribution. 
- * 
+ * and/or other materials provided with the distribution.
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
  * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
@@ -25,7 +25,7 @@
  * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- * 
+ *
  * Main file author: Erik Sundén
  *
  *********************************************************************************/
@@ -42,16 +42,17 @@ LayerGL::LayerGL(uvec2 dimensions, LayerType type, const DataFormatBase* format,
     initialize();
 }
 
-LayerGL::LayerGL(const LayerGL& rhs) 
+LayerGL::LayerGL(const LayerGL& rhs)
     : LayerRepresentation(rhs) {
     texture_ = rhs.texture_->clone();
 }
 
 LayerGL& LayerGL::operator=(const LayerGL& rhs) {
-    if(this != &rhs) {
+    if (this != &rhs) {
         LayerRepresentation::operator=(rhs);
         texture_ = rhs.texture_->clone();
     }
+
     return *this;
 }
 
@@ -64,19 +65,20 @@ LayerGL* LayerGL::clone() const {
 }
 
 void LayerGL::initialize() {
-    if(!texture_){
+    if (!texture_) {
         GLFormats::GLFormat glFormat = getGLFormats()->getGLFormat(getDataFormatId());
-        if(getLayerType() == DEPTH_LAYER){
+
+        if (getLayerType() == DEPTH_LAYER) {
             texture_ = new Texture2D(getDimension(), GL_DEPTH_COMPONENT, GL_DEPTH_COMPONENT24, glFormat.type, GL_NEAREST);
         }
-        else{
+        else {
             texture_ = new Texture2D(getDimension(), glFormat, GL_LINEAR);
         }
     }
 }
 
 void LayerGL::deinitialize() {
-    if(texture_ && texture_->decreaseRefCount() <= 0){
+    if (texture_ && texture_->decreaseRefCount() <= 0) {
         delete texture_;
         texture_ = NULL;
     }
@@ -91,7 +93,7 @@ void LayerGL::unbindTexture() const {
     texture_->unbind();
 }
 
-bool LayerGL::copyAndResizeLayer(DataRepresentation* targetLayerGL) const{
+bool LayerGL::copyAndResizeLayer(DataRepresentation* targetLayerGL) const {
     /*const LayerGL* source = this;
     LayerGL* target = dynamic_cast<LayerGL*>(targetLayerGL);
     if(!target){
@@ -103,15 +105,15 @@ bool LayerGL::copyAndResizeLayer(DataRepresentation* targetLayerGL) const{
     Texture2D* tTex = target->getTexture();
     tTex->uploadFromPBO(sTex);
     LGL_ERROR;*/
-
     return false;
 }
 
 void LayerGL::resize(uvec2 dimensions) {
     dimensions_ = dimensions;
-    if(texture_){
+
+    if (texture_) {
         texture_->unbind();
-        texture_->resize(dimensions_);    
+        texture_->resize(dimensions_);
         texture_->unbind();
     }
 }

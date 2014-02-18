@@ -1,20 +1,20 @@
- /*********************************************************************************
+/*********************************************************************************
  *
  * Inviwo - Interactive Visualization Workshop
  * Version 0.6b
  *
  * Copyright (c) 2013-2014 Inviwo Foundation
  * All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met: 
- * 
+ * modification, are permitted provided that the following conditions are met:
+ *
  * 1. Redistributions of source code must retain the above copyright notice, this
- * list of conditions and the following disclaimer. 
+ * list of conditions and the following disclaimer.
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  * this list of conditions and the following disclaimer in the documentation
- * and/or other materials provided with the distribution. 
- * 
+ * and/or other materials provided with the distribution.
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
  * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
@@ -25,7 +25,7 @@
  * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- * 
+ *
  * Main file authors: Erik Sundén, Daniel Jönsson
  *
  *********************************************************************************/
@@ -44,23 +44,24 @@ namespace inviwo {
 class IVW_MODULE_OPENCL_API LayerCL : public LayerCLBase, public LayerRepresentation {
 
 public:
-    LayerCL(uvec2 dimensions = uvec2(128,128), LayerType type = COLOR_LAYER, const DataFormatBase* format = DataFormatBase::get(), const void* data = NULL);
+    LayerCL(uvec2 dimensions = uvec2(128,128), LayerType type = COLOR_LAYER, const DataFormatBase* format = DataFormatBase::get(),
+            const void* data = NULL);
     LayerCL(const LayerCL& other);
     virtual ~LayerCL();
     virtual std::string getClassName() const { return "LayerCL"; }
-    virtual void initialize(){};
+    virtual void initialize() {};
     virtual void deinitialize();
     virtual LayerCL* clone() const;
-    
+
     void initialize(const void* texels);
     void upload(const void* data);
     /**
      * Download data to preallocated memory.
-     * 
+     *
      * @param data (void *) Preallocated pointer that will contain data after function returns.
      * @return (void)
      */
-    void download(void* data) const; 
+    void download(void* data) const;
     virtual void setDimension(uvec2 dimensions);
     virtual void resize(uvec2 dimensions);
     virtual bool copyAndResizeLayer(DataRepresentation* target) const;
@@ -77,7 +78,7 @@ protected:
 
 namespace cl {
 
-// Kernel argument specializations for LayerCL type 
+// Kernel argument specializations for LayerCL type
 // (enables calling cl::Queue::setArg with LayerCL)
 template <>
 IVW_MODULE_OPENCL_API cl_int Kernel::setArg(cl_uint index, const inviwo::LayerCL& value);

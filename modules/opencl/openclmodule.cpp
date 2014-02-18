@@ -1,20 +1,20 @@
- /*********************************************************************************
+/*********************************************************************************
  *
  * Inviwo - Interactive Visualization Workshop
  * Version 0.6b
  *
  * Copyright (c) 2013-2014 Inviwo Foundation
  * All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met: 
- * 
+ * modification, are permitted provided that the following conditions are met:
+ *
  * 1. Redistributions of source code must retain the above copyright notice, this
- * list of conditions and the following disclaimer. 
+ * list of conditions and the following disclaimer.
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  * this list of conditions and the following disclaimer in the documentation
- * and/or other materials provided with the distribution. 
- * 
+ * and/or other materials provided with the distribution.
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
  * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
@@ -25,7 +25,7 @@
  * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- * 
+ *
  * Main file authors: Daniel Jönsson, Peter Steneteg, Erik Sundén
  *
  *********************************************************************************/
@@ -52,12 +52,10 @@ namespace inviwo {
 
 OpenCLModule::OpenCLModule() : InviwoModule(), btnOpenCLInfo_("printOpenCLInfo", "Print OpenCL Info") {
     setIdentifier("OpenCL");
-
     // Buffer CL
     registerRepresentationConverter(new BufferRAM2CLConverter());
     registerRepresentationConverter(new BufferCL2RAMConverter());
     registerRepresentationConverter(new BufferGL2CLConverter());
-
     // Buffer CLGL
     registerRepresentationConverter(new BufferRAM2CLGLConverter());
     registerRepresentationConverter(new BufferCLGL2RAMConverter());
@@ -65,15 +63,12 @@ OpenCLModule::OpenCLModule() : InviwoModule(), btnOpenCLInfo_("printOpenCLInfo",
     registerRepresentationConverter(new BufferCL2GLConverter());
     registerRepresentationConverter(new BufferCLGL2CLConverter());
     registerRepresentationConverter(new BufferCL2CLGLConverter());
-
-
     // LayerCL
     registerRepresentationConverter(new LayerDisk2CLConverter());
     registerRepresentationConverter(new LayerRAM2CLConverter());
     registerRepresentationConverter(new LayerCL2RAMConverter());
     registerRepresentationConverter(new LayerGL2CLConverter());
     registerRepresentationConverter(new LayerCL2GLConverter());
-
     // LayerCLGL
     registerRepresentationConverter(new LayerDisk2CLGLConverter());
     registerRepresentationConverter(new LayerRAM2CLGLConverter());
@@ -83,12 +78,10 @@ OpenCLModule::OpenCLModule() : InviwoModule(), btnOpenCLInfo_("printOpenCLInfo",
     registerRepresentationConverter(new LayerCLGL2CLConverter());
     registerRepresentationConverter(new LayerCLGL2GLConverter());
     registerRepresentationConverter(new LayerGL2CLGLConverter());
-
     // VolumeCL
     registerRepresentationConverter(new VolumeDisk2CLConverter());
     registerRepresentationConverter(new VolumeRAM2CLConverter());
     registerRepresentationConverter(new VolumeCL2RAMConverter());
-
     // VolumeCLGL
     registerRepresentationConverter(new VolumeDisk2CLGLConverter());
     registerRepresentationConverter(new VolumeRAM2CLGLConverter());
@@ -97,8 +90,6 @@ OpenCLModule::OpenCLModule() : InviwoModule(), btnOpenCLInfo_("printOpenCLInfo",
     registerRepresentationConverter(new VolumeCLGL2RAMConverter());
     registerRepresentationConverter(new VolumeCLGL2CLConverter());
     registerRepresentationConverter(new VolumeGL2CLGLConverter());
-
-
     registerCapabilities(new OpenCLCapabilities());
     registerSettings(new OpenCLSettings());
     // Processors
@@ -109,24 +100,25 @@ OpenCLModule::OpenCLModule() : InviwoModule(), btnOpenCLInfo_("printOpenCLInfo",
 void OpenCLModule::initialize() {
     OpenCL::instance()->addCommonIncludeDirectory(InviwoApplication::getPtr()->getPath(InviwoApplication::PATH_MODULES)+"opencl/cl");
     KernelManager::init();
-
     InviwoModule::initialize();
 }
 
 void OpenCLModule::deinitialize() {
-    
 }
 
-void OpenCLModule::setupModuleSettings(){
+void OpenCLModule::setupModuleSettings() {
     //New OpengCLSettings class can be created if required.
     SystemSettings* settings = InviwoApplication::getPtr()->getSettingsByType<SystemSettings>();
-    if (settings){
+
+    if (settings) {
         OpenCLCapabilities* openclInfo = getTypeFromVector<OpenCLCapabilities>(getCapabilities());
-        if (openclInfo){
+
+        if (openclInfo) {
             btnOpenCLInfo_.onChange(openclInfo, &OpenCLCapabilities::printInfo);
             settings->addProperty(&btnOpenCLInfo_);
-        }           
+        }
     }
+
     InviwoModule::setupModuleSettings();
 }
 

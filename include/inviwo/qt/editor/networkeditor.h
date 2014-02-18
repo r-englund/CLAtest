@@ -1,4 +1,4 @@
- /*********************************************************************************
+/*********************************************************************************
  *
  * Inviwo - Interactive Visualization Workshop
  * Version 0.6b
@@ -85,7 +85,8 @@ public:
      * @param pos Position in the network editor, wher ethe graphical representation should be located
      * @param visible Shall the graphical representation be visible
      */
-    void addProcessor(Processor* processor, QPointF pos, bool showProcessor=true, bool selectProcessor=true, bool showPropertyWidgets=true, bool showProcessorWidget=true);
+    void addProcessor(Processor* processor, QPointF pos, bool showProcessor=true, bool selectProcessor=true, bool showPropertyWidgets=true,
+                      bool showProcessorWidget=true);
     void removeProcessor(Processor* processor);
 
     void addConnection(Outport* outport, Inport* inport);
@@ -177,7 +178,8 @@ private:
     QTimer hoverTimer_;
     QThread* workerThread_;
 
-    void addProcessorRepresentations(Processor* processor, QPointF pos, bool showProcessor=true, bool selectProcessor=true, bool showPropertyWidgets=true,
+    void addProcessorRepresentations(Processor* processor, QPointF pos, bool showProcessor=true, bool selectProcessor=true,
+                                     bool showPropertyWidgets=true,
                                      bool showProcessorWidget=true);
     void removeProcessorRepresentations(Processor* processor);
     void addProcessorGraphicsItem(Processor* processor, QPointF pos, bool visible=true, bool selected=true);

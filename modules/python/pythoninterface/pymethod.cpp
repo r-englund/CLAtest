@@ -1,20 +1,20 @@
- /*********************************************************************************
+/*********************************************************************************
  *
  * Inviwo - Interactive Visualization Workshop
  * Version 0.6b
  *
  * Copyright (c) 2013-2014 Inviwo Foundation
  * All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met: 
- * 
+ * modification, are permitted provided that the following conditions are met:
+ *
  * 1. Redistributions of source code must retain the above copyright notice, this
- * list of conditions and the following disclaimer. 
+ * list of conditions and the following disclaimer.
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  * this list of conditions and the following disclaimer in the documentation
- * and/or other materials provided with the distribution. 
- * 
+ * and/or other materials provided with the distribution.
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
  * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
@@ -25,7 +25,7 @@
  * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- * 
+ *
  * Main file author: Rickard Englund
  *
  *********************************************************************************/
@@ -34,29 +34,27 @@
 
 #include "pymodule.h"
 
-namespace inviwo{
+namespace inviwo {
 
-    PyParamBase::PyParamBase(std::string paramName,bool optional)
-        : name_(paramName)
-        , optional_(optional)
-    {
+PyParamBase::PyParamBase(std::string paramName,bool optional)
+    : name_(paramName)
+    , optional_(optional)
+{
+}
 
-    }
-
-std::string PyParamBase::getParamName()const{
+std::string PyParamBase::getParamName()const {
     return name_;
 }
 
-bool PyParamBase::isOptional()const{
+bool PyParamBase::isOptional()const {
     return optional_;
 }
 
-PyMethod::PyMethod():optionalParams_(0){
-
+PyMethod::PyMethod():optionalParams_(0) {
 }
 
 
-PyMethodDef* PyMethod::getDef(){
+PyMethodDef* PyMethod::getDef() {
     def_.ml_doc   = getDesc().c_str();
     def_.ml_flags = getFlags();
     def_.ml_meth  = getFunc();
@@ -64,43 +62,46 @@ PyMethodDef* PyMethod::getDef(){
     return &def_;
 }
 
-std::string PyMethod::getParamDesc(){
-    if(params_.empty()){
+std::string PyMethod::getParamDesc() {
+    if (params_.empty()) {
         return "None";
     }
 
     std::stringstream ss;
-    for(size_t i = 0;i<params_.size();i++){
-        if(i!=0)
+
+    for (size_t i = 0; i<params_.size(); i++) {
+        if (i!=0)
             ss << " , ";
-        if(params_[i]->isOptional())
+
+        if (params_[i]->isOptional())
             ss << "[";
+
         ss << params_[i]->paramType() << " " << params_[i]->getParamName();
 
-        if(params_[i]->isOptional())
+        if (params_[i]->isOptional())
             ss << "]";
-
     }
-
-    
 
     return ss.str();
 }
 
-bool PyMethod::testParams(PyObject* args)const{
+bool PyMethod::testParams(PyObject* args)const {
     size_t size = static_cast<size_t>(PyTuple_Size(args));
-    if(size > params_.size() || size < (params_.size()-optionalParams_)){
+
+    if (size > params_.size() || size < (params_.size()-optionalParams_)) {
         std::stringstream ss;
         ss << getName() << "() expects " << params_.size()-optionalParams_ << " parameters ";
-        if(optionalParams_!=0){
+
+        if (optionalParams_!=0) {
             ss << " and may have " << optionalParams_ << " additional parameters";
         }
+
         PyErr_SetString(PyExc_TypeError,ss.str().c_str());
         return false;
     }
 
-    for(size_t i = 0;i<size;i++){
-        if(!params_[i]->testParam(PyTuple_GetItem(args,i))){
+    for (size_t i = 0; i<size; i++) {
+        if (!params_[i]->testParam(PyTuple_GetItem(args,i))) {
             std::stringstream ss;
             ss << getName() << "() expects a " << params_[i]->paramType() << " for its " << i+1 << ":th parameter";
             PyErr_SetString(PyExc_TypeError,ss.str().c_str());
@@ -111,11 +112,13 @@ bool PyMethod::testParams(PyObject* args)const{
     return true;
 }
 
-void PyMethod::addParam(PyParamBase* param){
-    ivwAssert(optionalParams_ == 0 || ( optionalParams_ != 0 && param->isOptional()),"Once one paramter has been marked as optional, the rest of the has to as well");
+void PyMethod::addParam(PyParamBase* param) {
+    ivwAssert(optionalParams_ == 0 || (optionalParams_ != 0
+                                       && param->isOptional()),"Once one paramter has been marked as optional, the rest of the has to as well");
     params_.push_back(param);
-    if(param->isOptional())
-       optionalParams_++;     
+
+    if (param->isOptional())
+        optionalParams_++;
 }
 
 

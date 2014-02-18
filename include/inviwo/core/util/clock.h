@@ -1,4 +1,4 @@
- /*********************************************************************************
+/*********************************************************************************
  *
  * Inviwo - Interactive Visualization Workshop
  * Version 0.6b
@@ -39,9 +39,9 @@
 namespace inviwo {
 
 /** \class Clock
-*
-* Class for measure time.
-*/
+ *
+ * Class for measure time.
+ */
 class IVW_CORE_API Clock {
 public:
     Clock();

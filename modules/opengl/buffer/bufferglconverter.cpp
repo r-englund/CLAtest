@@ -1,20 +1,20 @@
- /*********************************************************************************
+/*********************************************************************************
  *
  * Inviwo - Interactive Visualization Workshop
  * Version 0.6b
  *
  * Copyright (c) 2013-2014 Inviwo Foundation
  * All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met: 
- * 
+ * modification, are permitted provided that the following conditions are met:
+ *
  * 1. Redistributions of source code must retain the above copyright notice, this
- * list of conditions and the following disclaimer. 
+ * list of conditions and the following disclaimer.
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  * this list of conditions and the following disclaimer in the documentation
- * and/or other materials provided with the distribution. 
- * 
+ * and/or other materials provided with the distribution.
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
  * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
@@ -25,7 +25,7 @@
  * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- * 
+ *
  * Main file author: Daniel Jönsson
  *
  *********************************************************************************/
@@ -35,51 +35,53 @@
 namespace inviwo {
 
 BufferRAM2GLConverter::BufferRAM2GLConverter()
-    : RepresentationConverterType<BufferGL>(){
+    : RepresentationConverterType<BufferGL>() {
 }
 
 BufferRAM2GLConverter::~BufferRAM2GLConverter() {}
 
-DataRepresentation* BufferRAM2GLConverter::createFrom(const DataRepresentation* source) {     
+DataRepresentation* BufferRAM2GLConverter::createFrom(const DataRepresentation* source) {
     const BufferRAM* bufferRAM = static_cast<const BufferRAM*>(source);
-    BufferGL* bufferGL = new BufferGL(bufferRAM->getSize(), bufferRAM->getDataFormat(), bufferRAM->getBufferType(), bufferRAM->getBufferUsage());
+    BufferGL* bufferGL = new BufferGL(bufferRAM->getSize(), bufferRAM->getDataFormat(), bufferRAM->getBufferType(),
+                                      bufferRAM->getBufferUsage());
     bufferGL->initialize(bufferRAM->getData(), bufferRAM->getSize()*bufferRAM->getSizeOfElement());
-
     return bufferGL;
 }
 void BufferRAM2GLConverter::update(const DataRepresentation* source, DataRepresentation* destination) {
     const BufferRAM* src = static_cast<const BufferRAM*>(source);
     BufferGL* dst = static_cast<BufferGL*>(destination);
     dst->upload(src->getData(), src->getSize()*src->getSizeOfElement());
-
 }
 
 
 BufferGL2RAMConverter::BufferGL2RAMConverter()
-: RepresentationConverterType<BufferRAM>()
+    : RepresentationConverterType<BufferRAM>()
 {}
 
 BufferGL2RAMConverter::~BufferGL2RAMConverter() {}
 
 DataRepresentation* BufferGL2RAMConverter::createFrom(const DataRepresentation* source) {
     const BufferGL* src = static_cast<const BufferGL*>(source);
-    BufferRAM* dst = createBufferRAM(src->getSize(), src->getDataFormat(), src->getBufferType(), src->getBufferUsage()); 
+    BufferRAM* dst = createBufferRAM(src->getSize(), src->getDataFormat(), src->getBufferType(), src->getBufferUsage());
+
     if (dst) {
         src->download(dst->getData());
-
         return dst;
     } else {
         LogError("Cannot convert format from GL to RAM:" << src->getDataFormat()->getString());
     }
+
     return NULL;
 }
 
 void BufferGL2RAMConverter::update(const DataRepresentation* source, DataRepresentation* destination) {
     const BufferGL* src = static_cast<const BufferGL*>(source);
     BufferRAM* dst = static_cast<BufferRAM*>(destination);
-    if(src->getSize() != dst->getSize()) {
+
+    if (src->getSize() != dst->getSize()) {
         dst->resize(src->getSize());
     }
+
     src->download(dst->getData());
 }
 

@@ -1,4 +1,4 @@
- /*********************************************************************************
+/*********************************************************************************
  *
  * Inviwo - Interactive Visualization Workshop
  * Version 0.6b
@@ -97,7 +97,8 @@ MinMaxProperty<T>::MinMaxProperty(std::string identifier, std::string displayNam
                                   T valueMin, T valueMax, T rangeMin, T rangeMax, T increment,
                                   PropertyOwner::InvalidationLevel invalidationLevel,
                                   PropertySemantics semantics)
-    : TemplateProperty<glm::detail::tvec2<T, glm::defaultp> >(identifier, displayName, glm::detail::tvec2<T, glm::defaultp>(valueMin, valueMax), invalidationLevel,
+    : TemplateProperty<glm::detail::tvec2<T, glm::defaultp> >(identifier, displayName, glm::detail::tvec2<T, glm::defaultp>(valueMin, valueMax),
+            invalidationLevel,
             semantics),
     range_(glm::detail::tvec2<T, glm::defaultp>(rangeMin, rangeMax)),
     increment_(increment)
@@ -125,7 +126,8 @@ glm::detail::tvec2<T, glm::defaultp> MinMaxProperty<T>::getRange() const {
 
 template <typename T>
 void MinMaxProperty<T>::setRangeMin(const T& value) {
-    if (TemplateProperty<glm::detail::tvec2<T, glm::defaultp> >::value_.x < value || TemplateProperty<glm::detail::tvec2<T, glm::defaultp> >::value_.x == range_.x)
+    if (TemplateProperty<glm::detail::tvec2<T, glm::defaultp> >::value_.x < value
+        || TemplateProperty<glm::detail::tvec2<T, glm::defaultp> >::value_.x == range_.x)
         TemplateProperty<glm::detail::tvec2<T, glm::defaultp> >::value_.x = value;
 
     range_.x = value;
@@ -134,7 +136,8 @@ void MinMaxProperty<T>::setRangeMin(const T& value) {
 
 template <typename T>
 void MinMaxProperty<T>::setRangeMax(const T& value) {
-    if (TemplateProperty<glm::detail::tvec2<T, glm::defaultp> >::value_.y > value || TemplateProperty<glm::detail::tvec2<T, glm::defaultp> >::value_.y == range_.y)
+    if (TemplateProperty<glm::detail::tvec2<T, glm::defaultp> >::value_.y > value
+        || TemplateProperty<glm::detail::tvec2<T, glm::defaultp> >::value_.y == range_.y)
         TemplateProperty<glm::detail::tvec2<T, glm::defaultp> >::value_.y = value;
 
     range_.y = value;

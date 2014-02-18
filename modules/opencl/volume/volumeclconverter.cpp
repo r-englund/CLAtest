@@ -1,20 +1,20 @@
- /*********************************************************************************
+/*********************************************************************************
  *
  * Inviwo - Interactive Visualization Workshop
  * Version 0.6b
  *
  * Copyright (c) 2013-2014 Inviwo Foundation
  * All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met: 
- * 
+ * modification, are permitted provided that the following conditions are met:
+ *
  * 1. Redistributions of source code must retain the above copyright notice, this
- * list of conditions and the following disclaimer. 
+ * list of conditions and the following disclaimer.
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  * this list of conditions and the following disclaimer in the documentation
- * and/or other materials provided with the distribution. 
- * 
+ * and/or other materials provided with the distribution.
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
  * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
@@ -25,7 +25,7 @@
  * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- * 
+ *
  * Main file authors: Daniel Jönsson, Erik Sundén
  *
  *********************************************************************************/
@@ -40,22 +40,23 @@ VolumeRAM2CLConverter::VolumeRAM2CLConverter()
     : RepresentationConverterType<VolumeCL>()
 {}
 
-DataRepresentation* VolumeRAM2CLConverter::createFrom(const DataRepresentation* source) {     
+DataRepresentation* VolumeRAM2CLConverter::createFrom(const DataRepresentation* source) {
     DataRepresentation* destination = 0;
     const VolumeRAM* volumeRAM = static_cast<const VolumeRAM*>(source);
     uvec3 dimension = volumeRAM->getDimension();
     const void* data = volumeRAM->getData();
     destination = new VolumeCL(dimension, volumeRAM->getDataFormat(), data);
-
     return destination;
 }
 
 void VolumeRAM2CLConverter::update(const DataRepresentation* source, DataRepresentation* destination) {
     const VolumeRAM* volumeSrc = static_cast<const VolumeRAM*>(source);
     VolumeCL* volumeDst = static_cast<VolumeCL*>(destination);
-    if(volumeSrc->getDimension() != volumeDst->getDimension()) {
+
+    if (volumeSrc->getDimension() != volumeDst->getDimension()) {
         volumeDst->setDimension(volumeSrc->getDimension());
     }
+
     volumeDst->upload(volumeSrc->getData());
 }
 
@@ -64,7 +65,7 @@ VolumeCL2RAMConverter::VolumeCL2RAMConverter()
 {}
 
 
-DataRepresentation* VolumeCL2RAMConverter::createFrom(const DataRepresentation* source) {     
+DataRepresentation* VolumeCL2RAMConverter::createFrom(const DataRepresentation* source) {
     DataRepresentation* destination = 0;
     const VolumeCL* volumeCL = static_cast<const VolumeCL*>(source);
     uvec3 dimension = volumeCL->getDimension();
@@ -75,18 +76,22 @@ DataRepresentation* VolumeCL2RAMConverter::createFrom(const DataRepresentation* 
         volumeCL->download(volumeRAM->getData());
         //const cl::CommandQueue& queue = OpenCL::getInstance()->getQueue();
         //queue.enqueueReadImage(volumeCL->getVolume(), true, glm::svec3(0), glm::svec3(dimension), 0, 0, volumeRAM->getData());
-    }      
+    }
+
     return destination;
 }
 
 void VolumeCL2RAMConverter::update(const DataRepresentation* source, DataRepresentation* destination) {
     const VolumeCL* volumeSrc = static_cast<const VolumeCL*>(source);
     VolumeRAM* volumeDst = static_cast<VolumeRAM*>(destination);
-    if(volumeSrc->getDimension() != volumeDst->getDimension()) {
+
+    if (volumeSrc->getDimension() != volumeDst->getDimension()) {
         volumeDst->setDimension(volumeSrc->getDimension());
     }
+
     volumeSrc->download(volumeDst->getData());
-    if(volumeDst->hasNormalizedHistogram())
+
+    if (volumeDst->hasNormalizedHistogram())
         volumeDst->getNormalizedHistogram()->setValid(false);
 }
 

@@ -1,20 +1,20 @@
- /*********************************************************************************
+/*********************************************************************************
  *
  * Inviwo - Interactive Visualization Workshop
  * Version 0.6b
  *
  * Copyright (c) 2013-2014 Inviwo Foundation
  * All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met: 
- * 
+ * modification, are permitted provided that the following conditions are met:
+ *
  * 1. Redistributions of source code must retain the above copyright notice, this
- * list of conditions and the following disclaimer. 
+ * list of conditions and the following disclaimer.
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  * this list of conditions and the following disclaimer in the documentation
- * and/or other materials provided with the distribution. 
- * 
+ * and/or other materials provided with the distribution.
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
  * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
@@ -25,7 +25,7 @@
  * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- * 
+ *
  * Main file author: Daniel Jönsson
  *
  *********************************************************************************/
@@ -50,31 +50,35 @@ BufferCLGL2RAMConverter::BufferCLGL2RAMConverter()
 {
 }
 
-DataRepresentation* BufferCLGL2RAMConverter::createFrom(const DataRepresentation* source) {     
+DataRepresentation* BufferCLGL2RAMConverter::createFrom(const DataRepresentation* source) {
     DataRepresentation* destination = 0;
     const BufferCLGL* src = static_cast<const BufferCLGL*>(source);
     size_t size = src->getSize();
-    destination = createBufferRAM(size, src->getDataFormat(), src->getBufferType(), src->getBufferUsage()); 
+    destination = createBufferRAM(size, src->getDataFormat(), src->getBufferType(), src->getBufferUsage());
     BufferObject* buffer = src->getBufferGL();
+
     if (destination) {
         BufferRAM* dst = static_cast<BufferRAM*>(destination);
         buffer->download(dst->getData());
     } else {
         LogError("Invalid conversion or not implemented");
     }
+
     return destination;
 }
 
 void BufferCLGL2RAMConverter::update(const DataRepresentation* source, DataRepresentation* destination) {
     const BufferCLGL* src = static_cast<const BufferCLGL*>(source);
     BufferRAM* dst = static_cast<BufferRAM*>(destination);
-    if(src->getSize() != dst->getSize()) {
+
+    if (src->getSize() != dst->getSize()) {
         dst->setSize(src->getSize());
     }
+
     src->getBufferGL()->download(dst->getData());
 }
 
-DataRepresentation* BufferCLGL2GLConverter::createFrom( const DataRepresentation* source ) {
+DataRepresentation* BufferCLGL2GLConverter::createFrom(const DataRepresentation* source) {
     DataRepresentation* destination = 0;
     const BufferCLGL* src = static_cast<const BufferCLGL*>(source);
     BufferObject* data = const_cast<BufferObject*>(src->getBufferGL());
@@ -84,29 +88,31 @@ DataRepresentation* BufferCLGL2GLConverter::createFrom( const DataRepresentation
     return destination;
 }
 
-void BufferCLGL2GLConverter::update( const DataRepresentation* source, DataRepresentation* destination ) {
+void BufferCLGL2GLConverter::update(const DataRepresentation* source, DataRepresentation* destination) {
     // Do nothing since they share data
 }
 
-DataRepresentation* BufferGL2CLGLConverter::createFrom(const DataRepresentation* source )
+DataRepresentation* BufferGL2CLGLConverter::createFrom(const DataRepresentation* source)
 {
     DataRepresentation* destination = 0;
     const BufferGL* src = static_cast<const BufferGL*>(source);
-    destination = new BufferCLGL(src->getSize(), src->getDataFormat(), src->getBufferType(), src->getBufferUsage(), const_cast<BufferGL*>(src)->getBufferObject());
+    destination = new BufferCLGL(src->getSize(), src->getDataFormat(), src->getBufferType(), src->getBufferUsage(),
+                                 const_cast<BufferGL*>(src)->getBufferObject());
     return destination;
 }
 
 void BufferGL2CLGLConverter::update(const DataRepresentation* source, DataRepresentation* destination) {
-
     const BufferGL* src = static_cast<const BufferGL*>(source);
     BufferCLGL* dst = static_cast<BufferCLGL*>(destination);
-    if(src->getSize() != dst->getSize()) {
+
+    if (src->getSize() != dst->getSize()) {
         dst->setSize(src->getSize());
     }
+
     // FIXME: Do we need to recreate shared CLGL buffer?
 }
 
-DataRepresentation* BufferCLGL2CLConverter::createFrom(const DataRepresentation* source )
+DataRepresentation* BufferCLGL2CLConverter::createFrom(const DataRepresentation* source)
 {
     DataRepresentation* destination = 0;
     const BufferCLGL* src = static_cast<const BufferCLGL*>(source);
@@ -116,21 +122,21 @@ DataRepresentation* BufferCLGL2CLConverter::createFrom(const DataRepresentation*
     src->aquireGLObject(glSync.getGLSyncEvent());
     OpenCL::instance()->getQueue().enqueueCopyBuffer(src->getBuffer(), static_cast<BufferCL*>(destination)->getBuffer(), 0, 0, size);
     src->releaseGLObject(glSync.getGLSyncEvent());
-
     return destination;
 }
 
 void BufferCLGL2CLConverter::update(const DataRepresentation* source, DataRepresentation* destination) {
     const BufferCLGL* src = static_cast<const BufferCLGL*>(source);
     BufferCL* dst = static_cast<BufferCL*>(destination);
-    if(src->getSize() != dst->getSize()) {
+
+    if (src->getSize() != dst->getSize()) {
         dst->setSize(src->getSize());
     }
+
     SyncCLGL glSync;
     src->aquireGLObject(glSync.getGLSyncEvent());
     OpenCL::instance()->getQueue().enqueueCopyBuffer(src->getBuffer(), dst->getBuffer(), 0, 0, src->getSize());
     src->releaseGLObject(glSync.getGLSyncEvent());
-
 }
 
 BufferCL2CLGLConverter::BufferCL2CLGLConverter() : RepresentationConverterPackage<BufferCLGL>()

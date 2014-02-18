@@ -1,4 +1,4 @@
- /*********************************************************************************
+/*********************************************************************************
  *
  * Inviwo - Interactive Visualization Workshop
  * Version 0.6b
@@ -31,8 +31,8 @@
  *********************************************************************************/
 
 /** \ Widget for containing the TransferFunctionEditor QGraphicsScene
-*       Widget that contains the TransferFunctionEditor and the painted representation
-*/
+ *       Widget that contains the TransferFunctionEditor and the painted representation
+ */
 
 #ifndef IVW_TRANSFERFUNCTIONPROPERTYDIALOG_H
 #define IVW_TRANSFERFUNCTIONPROPERTYDIALOG_H

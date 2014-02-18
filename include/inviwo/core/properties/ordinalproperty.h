@@ -1,4 +1,4 @@
- /*********************************************************************************
+/*********************************************************************************
  *
  * Inviwo - Interactive Visualization Workshop
  * Version 0.6b
@@ -45,15 +45,15 @@ template<typename T>
 struct Defaultvalues {};
 
 #define DEFAULTVALUES(type, name, val, min, max, inc) \
-template<> \
-struct Defaultvalues<type> { \
-public: \
-    static type getVal() { return val; } \
-    static type getMin() { return min; } \
-    static type getMax() { return max; } \
-    static type getInc() { return inc; } \
-    static std::string getName() { return name; } \
-};
+    template<> \
+    struct Defaultvalues<type> { \
+    public: \
+        static type getVal() { return val; } \
+        static type getMin() { return min; } \
+        static type getMax() { return max; } \
+        static type getInc() { return inc; } \
+        static std::string getName() { return name; } \
+    };
 
 DEFAULTVALUES(float, "Float", 0.0f, 0.0f, 1.0f, 0.01f)
 DEFAULTVALUES(double, "Double", 0.0, 0.0, 1.0, 0.01)
@@ -115,7 +115,7 @@ typedef OrdinalProperty<float> FloatProperty;
 typedef OrdinalProperty<int> IntProperty;
 typedef OrdinalProperty<double> DoubleProperty;
 
-//Vector properties 
+//Vector properties
 typedef OrdinalProperty<vec2> FloatVec2Property;
 typedef OrdinalProperty<vec3> FloatVec3Property;
 typedef OrdinalProperty<vec4> FloatVec4Property;

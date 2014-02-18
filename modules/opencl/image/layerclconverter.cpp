@@ -1,20 +1,20 @@
- /*********************************************************************************
+/*********************************************************************************
  *
  * Inviwo - Interactive Visualization Workshop
  * Version 0.6b
  *
  * Copyright (c) 2013-2014 Inviwo Foundation
  * All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met: 
- * 
+ * modification, are permitted provided that the following conditions are met:
+ *
  * 1. Redistributions of source code must retain the above copyright notice, this
- * list of conditions and the following disclaimer. 
+ * list of conditions and the following disclaimer.
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  * this list of conditions and the following disclaimer in the documentation
- * and/or other materials provided with the distribution. 
- * 
+ * and/or other materials provided with the distribution.
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
  * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
@@ -25,7 +25,7 @@
  * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- * 
+ *
  * Main file authors: Erik Sundén, Daniel Jönsson
  *
  *********************************************************************************/
@@ -40,21 +40,22 @@ LayerRAM2CLConverter::LayerRAM2CLConverter()
     : RepresentationConverterType<LayerCL>()
 {}
 
-DataRepresentation* LayerRAM2CLConverter::createFrom(const DataRepresentation* source) {     
+DataRepresentation* LayerRAM2CLConverter::createFrom(const DataRepresentation* source) {
     DataRepresentation* destination = 0;
     const LayerRAM* layerRAM = static_cast<const LayerRAM*>(source);
     uvec2 dimension = layerRAM->getDimension();;
     const void* data = layerRAM->getData();
-    destination = new LayerCL(dimension, layerRAM->getLayerType(), layerRAM->getDataFormat(), data);        
-   
+    destination = new LayerCL(dimension, layerRAM->getLayerType(), layerRAM->getDataFormat(), data);
     return destination;
 }
 void LayerRAM2CLConverter::update(const DataRepresentation* source, DataRepresentation* destination) {
     const LayerRAM* layerSrc = static_cast<const LayerRAM*>(source);
     LayerCL* layerDst = static_cast<LayerCL*>(destination);
-    if(layerSrc->getDimension() != layerDst->getDimension()) {
+
+    if (layerSrc->getDimension() != layerDst->getDimension()) {
         layerDst->resize(layerSrc->getDimension());
     }
+
     layerDst->upload(layerSrc->getData());
 }
 
@@ -63,12 +64,12 @@ LayerCL2RAMConverter::LayerCL2RAMConverter()
 {}
 
 
-DataRepresentation* LayerCL2RAMConverter::createFrom(const DataRepresentation* source) {     
+DataRepresentation* LayerCL2RAMConverter::createFrom(const DataRepresentation* source) {
     DataRepresentation* destination = 0;
     const LayerCL* layerCL = static_cast<const LayerCL*>(source);
     uvec2 dimension = layerCL->getDimension();
-    destination = createLayerRAM(dimension, layerCL->getLayerType(), layerCL->getDataFormat()); 
-    
+    destination = createLayerRAM(dimension, layerCL->getLayerType(), layerCL->getDataFormat());
+
     if (destination) {
         LayerRAM* layerRAM = static_cast<LayerRAM*>(destination);
         layerCL->download(layerRAM->getData());
@@ -77,17 +78,19 @@ DataRepresentation* LayerCL2RAMConverter::createFrom(const DataRepresentation* s
     } else {
         LogError("Invalid conversion or not implemented");
     }
+
     return destination;
 }
 
 void LayerCL2RAMConverter::update(const DataRepresentation* source, DataRepresentation* destination) {
     const LayerCL* layerSrc = static_cast<const LayerCL*>(source);
     LayerRAM* layerDst = static_cast<LayerRAM*>(destination);
-    if(layerSrc->getDimension() != layerDst->getDimension()) {
+
+    if (layerSrc->getDimension() != layerDst->getDimension()) {
         layerDst->resize(layerSrc->getDimension());
     }
-    layerSrc->download(layerDst->getData());
 
+    layerSrc->download(layerDst->getData());
 }
 
 } // namespace

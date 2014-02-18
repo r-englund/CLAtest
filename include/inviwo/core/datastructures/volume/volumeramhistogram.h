@@ -1,4 +1,4 @@
- /*********************************************************************************
+/*********************************************************************************
  *
  * Inviwo - Interactive Visualization Workshop
  * Version 0.6b
@@ -89,10 +89,9 @@ void VolumeRAMNormalizedHistogram::evaluate() {
 
     //Calculate number of bins in data
     double numberOfBinsInData = std::pow(2.0, static_cast<double>(dataFormat->getBitsStored()));
-    
     size_t numberOfBinsInHistogram;
 
-    if(numberOfBinsInData > static_cast<double>(maxNumberOfBins_)) {
+    if (numberOfBinsInData > static_cast<double>(maxNumberOfBins_)) {
         numberOfBinsInHistogram = maxNumberOfBins_;
     } else {
         numberOfBinsInHistogram = static_cast<size_t>(numberOfBinsInData);

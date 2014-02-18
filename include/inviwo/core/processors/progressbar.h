@@ -1,4 +1,4 @@
- /*********************************************************************************
+/*********************************************************************************
  *
  * Inviwo - Interactive Visualization Workshop
  * Version 0.6b
@@ -41,12 +41,12 @@ namespace inviwo {
 
 
 /** \class ProgressBarObserver
-*
-* Observer for ProgressBar
-*
-* @see ProgressBar
-* @see ProgressBarObservable
-*/
+ *
+ * Observer for ProgressBar
+ *
+ * @see ProgressBar
+ * @see ProgressBarObservable
+ */
 class IVW_CORE_API ProgressBarObserver: public Observer {
 public:
     ProgressBarObserver(): Observer() {};
@@ -66,12 +66,12 @@ public:
 
 
 /** \class ProgressBarObservable
-*
-* Observable for ProgressBar.
-*
-* @see ProgressBar
-* @see ProgressBarObserver
-*/
+ *
+ * Observable for ProgressBar.
+ *
+ * @see ProgressBar
+ * @see ProgressBarObserver
+ */
 class IVW_CORE_API ProgressBarObservable: public Observable<ProgressBarObserver> {
 public:
     ProgressBarObservable(): Observable<ProgressBarObserver>() {};
@@ -98,13 +98,13 @@ public:
 };
 
 /** \class ProgressBar
-*
-* Simple progressbar to be used in a ProgressBarOwner.
-*
-* @note Use ProgressBarOwner when using it for a Processor
-* @see ProgressBarOwner
-* @see ProgressBarObserver
-*/
+ *
+ * Simple progressbar to be used in a ProgressBarOwner.
+ *
+ * @note Use ProgressBarOwner when using it for a Processor
+ * @see ProgressBarOwner
+ * @see ProgressBarObserver
+ */
 class IVW_CORE_API ProgressBar : public IvwSerializable, ProgressBarObservable {
 
 public:

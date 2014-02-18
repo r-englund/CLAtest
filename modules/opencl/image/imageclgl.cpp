@@ -1,20 +1,20 @@
- /*********************************************************************************
+/*********************************************************************************
  *
  * Inviwo - Interactive Visualization Workshop
  * Version 0.6b
  *
  * Copyright (c) 2014 Inviwo Foundation
  * All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met: 
- * 
+ * modification, are permitted provided that the following conditions are met:
+ *
  * 1. Redistributions of source code must retain the above copyright notice, this
- * list of conditions and the following disclaimer. 
+ * list of conditions and the following disclaimer.
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  * this list of conditions and the following disclaimer in the documentation
- * and/or other materials provided with the distribution. 
- * 
+ * and/or other materials provided with the distribution.
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
  * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
@@ -25,7 +25,7 @@
  * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- * 
+ *
  * Main file author: Erik Sundén
  *
  *********************************************************************************/
@@ -39,11 +39,11 @@ ImageCLGL::ImageCLGL()
     : ImageRepresentation(), layerCLGL_(NULL)
 {}
 
-ImageCLGL::ImageCLGL(const ImageCLGL& rhs )
+ImageCLGL::ImageCLGL(const ImageCLGL& rhs)
     : ImageRepresentation(rhs)
 {}
 
-ImageCLGL::~ImageCLGL() { 
+ImageCLGL::~ImageCLGL() {
 }
 
 ImageCLGL* ImageCLGL::clone() const {
@@ -56,7 +56,7 @@ void ImageCLGL::initialize() {
 void ImageCLGL::deinitialize() {
 }
 
-LayerCLGL* ImageCLGL::getLayerCL(){
+LayerCLGL* ImageCLGL::getLayerCL() {
     return layerCLGL_;
 }
 
@@ -68,17 +68,18 @@ bool ImageCLGL::copyAndResizeRepresentation(DataRepresentation* targetRep) const
     ImageCLGL* targetCLGL = dynamic_cast<ImageCLGL*>(targetRep);
 
     if (!targetCLGL) return false;
-	
-	return layerCLGL_->copyAndResizeLayer(targetCLGL->getLayerCL());
+
+    return layerCLGL_->copyAndResizeLayer(targetCLGL->getLayerCL());
 }
 
 void ImageCLGL::update(bool editable) {
     //TODO: Convert more then just first color layer
     layerCLGL_ = NULL;
-    if(editable){
+
+    if (editable) {
         layerCLGL_ = owner_->getColorLayer()->getEditableRepresentation<LayerCLGL>();
     }
-    else{
+    else {
         layerCLGL_ = const_cast<LayerCLGL*>(owner_->getColorLayer()->getRepresentation<LayerCLGL>());
     }
 }

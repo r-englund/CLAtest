@@ -1,20 +1,20 @@
- /*********************************************************************************
+/*********************************************************************************
  *
  * Inviwo - Interactive Visualization Workshop
  * Version 0.6b
  *
  * Copyright (c) 2014 Inviwo Foundation
  * All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met: 
- * 
+ * modification, are permitted provided that the following conditions are met:
+ *
  * 1. Redistributions of source code must retain the above copyright notice, this
- * list of conditions and the following disclaimer. 
+ * list of conditions and the following disclaimer.
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  * this list of conditions and the following disclaimer in the documentation
- * and/or other materials provided with the distribution. 
- * 
+ * and/or other materials provided with the distribution.
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
  * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
@@ -25,7 +25,7 @@
  * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- * 
+ *
  * Main file author: Erik Sundén
  *
  *********************************************************************************/
@@ -82,7 +82,7 @@ Texture::Texture(const Texture& other)
     , byteSize_(other.byteSize_)
     , numChannels_(other.numChannels_)
     , dataInReadBackPBO_(false)
-{        
+{
     glGenTextures(1, &id_);
     glGenBuffers(1, &pboBack_);
     LGL_ERROR_SUPPRESS;
@@ -91,9 +91,10 @@ Texture::Texture(const Texture& other)
 Texture& Texture::operator=(const Texture& rhs) {
     if (this != &rhs) {
         // Check if this object is shared with OpenCL/CUDA/DirectX
-        if(getRefCount() > 1) {
+        if (getRefCount() > 1) {
             LogError("This object is shared and cannot changed (size/format etc.) until the shared object has been released");
         }
+
         target_ = rhs.target_;
         format_ = rhs.format_;
         internalformat_ = rhs.internalformat_;
@@ -102,6 +103,7 @@ Texture& Texture::operator=(const Texture& rhs) {
         numChannels_ = rhs.numChannels_;
         byteSize_ = rhs.byteSize_;
     }
+
     return *this;
 }
 
@@ -112,99 +114,100 @@ Texture::~Texture() {
     LGL_ERROR;
 }
 
-GLuint Texture::getID() const { 
-    return id_; 
+GLuint Texture::getID() const {
+    return id_;
 }
 
-GLenum Texture::getTarget() const{
+GLenum Texture::getTarget() const {
     return target_;
 }
 
-GLenum Texture::getFormat() const{
+GLenum Texture::getFormat() const {
     return format_;
 }
 
-GLenum Texture::getInternalFormat() const{
+GLenum Texture::getInternalFormat() const {
     return internalformat_;
 }
 
-GLenum Texture::getDataType() const{
+GLenum Texture::getDataType() const {
     return dataType_;
 }
 
-GLenum Texture::getFiltering() const{
+GLenum Texture::getFiltering() const {
     return filtering_;
 }
 
-GLint Texture::getLevel() const{
+GLint Texture::getLevel() const {
     return level_;
 }
 
-GLuint Texture::getNChannels() const { 
-    return numChannels_; 
+GLuint Texture::getNChannels() const {
+    return numChannels_;
 }
 
-GLuint Texture::getSizeInBytes() const { 
-    return byteSize_; 
+GLuint Texture::getSizeInBytes() const {
+    return byteSize_;
 }
 
-void Texture::bind() const{
+void Texture::bind() const {
     glBindTexture(target_, id_);
     LGL_ERROR;
 }
 
-void Texture::unbind() const{
+void Texture::unbind() const {
     glBindTexture(target_, 0);
     LGL_ERROR;
 }
 
-void Texture::bindFromPBO() const{
-    if(!dataInReadBackPBO_){
+void Texture::bindFromPBO() const {
+    if (!dataInReadBackPBO_) {
         downloadToPBO();
     }
+
     glBindBuffer(GL_PIXEL_UNPACK_BUFFER_ARB, pboBack_);
     LGL_ERROR;
 }
 
-void Texture::bindToPBO() const{
+void Texture::bindToPBO() const {
     glBindBuffer(GL_PIXEL_PACK_BUFFER_ARB, pboBack_);
     LGL_ERROR;
 }
 
-void Texture::unbindFromPBO() const{
+void Texture::unbindFromPBO() const {
     glBindBuffer(GL_PIXEL_UNPACK_BUFFER_ARB, 0);
     LGL_ERROR;
 }
 
-void Texture::unbindToPBO() const{
+void Texture::unbindToPBO() const {
     glBindBuffer(GL_PIXEL_PACK_BUFFER_ARB, 0);
     LGL_ERROR;
 }
 
 void Texture::download(void* data) const {
-    if(dataInReadBackPBO_){
+    if (dataInReadBackPBO_) {
         // Copy from PBO
         bindToPBO();
-        void* mem = glMapBuffer(GL_PIXEL_PACK_BUFFER_ARB, GL_READ_ONLY);   
+        void* mem = glMapBuffer(GL_PIXEL_PACK_BUFFER_ARB, GL_READ_ONLY);
         assert(mem);
         memcpy(data, mem, getNumberOfValues()*getSizeInBytes());
-
         //Release PBO data
         glUnmapBuffer(GL_PIXEL_PACK_BUFFER_ARB);
         unbindToPBO();
         dataInReadBackPBO_ = false;
     }
-    else{
+    else {
         bind();
         glPixelStorei(GL_PACK_ALIGNMENT, 1);
         glGetTexImage(target_, 0, format_, dataType_, data);
         unbind();
     }
+
     LGL_ERROR;
 }
 
-void Texture::downloadToPBO() const{
-    if(!dataInReadBackPBO_){
+void Texture::downloadToPBO() const {
+    if (!dataInReadBackPBO_) {
         bind();
         bindToPBO();
         glPixelStorei(GL_PACK_ALIGNMENT, 1);
@@ -214,7 +217,7 @@ void Texture::downloadToPBO() const{
     }
 }
 
-void Texture::loadFromPBO(const Texture* src){
+void Texture::loadFromPBO(const Texture* src) {
     setupAsyncReadBackPBO();
     src->bindFromPBO();
     upload(NULL);
@@ -223,11 +226,11 @@ void Texture::loadFromPBO(const Texture* src){
     LGL_ERROR;
 }
 
-void Texture::invalidatePBO(){
+void Texture::invalidatePBO() {
     dataInReadBackPBO_ = false;
 }
 
-void Texture::setupAsyncReadBackPBO(){
+void Texture::setupAsyncReadBackPBO() {
     bind();
     glBindBuffer(GL_PIXEL_PACK_BUFFER_ARB, pboBack_);
     glBufferDataARB(GL_PIXEL_PACK_BUFFER_ARB, getNumberOfValues()*getSizeInBytes(), NULL, GL_STREAM_READ_ARB);
@@ -237,52 +240,60 @@ void Texture::setupAsyncReadBackPBO(){
     LGL_ERROR;
 }
 
-void Texture::setNChannels(){
+void Texture::setNChannels() {
     switch (format_) {
         case GL_STENCIL_INDEX:
         case GL_DEPTH_COMPONENT:
-        case GL_DEPTH_STENCIL: 
+        case GL_DEPTH_STENCIL:
         case GL_RED:
         case GL_GREEN:
         case GL_BLUE:
         case GL_ALPHA:
             numChannels_ = 1;
             break;
+
         case GL_RGB:
         case GL_BGR:
             numChannels_ = 3;
             break;
+
         case GL_RGBA:
         case GL_BGRA:
             numChannels_ = 4;
             break;
+
         default:
             numChannels_ = 0;
             LogError("Invalid format: " << format_);
     }
 }
 
-void Texture::setSizeInBytes(){
+void Texture::setSizeInBytes() {
     GLuint dataTypeSize;
+
     switch (dataType_) {
         case GL_UNSIGNED_BYTE:
         case GL_BYTE:
             dataTypeSize = 1;
             break;
+
         case GL_UNSIGNED_SHORT:
         case GL_SHORT:
         case GL_HALF_FLOAT:
             dataTypeSize = 2;
             break;
+
         case GL_UNSIGNED_INT:
         case GL_INT:
         case GL_FLOAT:
             dataTypeSize = 4;
             break;
+
         default:
             dataTypeSize = 0;
             LogError("Invalid data type: " << dataTypeSize);
     }
+
     byteSize_ = numChannels_*dataTypeSize;
 }
 

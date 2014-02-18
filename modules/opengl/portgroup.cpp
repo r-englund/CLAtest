@@ -1,20 +1,20 @@
- /*********************************************************************************
+/*********************************************************************************
  *
  * Inviwo - Interactive Visualization Workshop
  * Version 0.6b
  *
  * Copyright (c) 2013-2014 Inviwo Foundation
  * All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met: 
- * 
+ * modification, are permitted provided that the following conditions are met:
+ *
  * 1. Redistributions of source code must retain the above copyright notice, this
- * list of conditions and the following disclaimer. 
+ * list of conditions and the following disclaimer.
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  * this list of conditions and the following disclaimer in the documentation
- * and/or other materials provided with the distribution. 
- * 
+ * and/or other materials provided with the distribution.
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
  * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
@@ -25,7 +25,7 @@
  * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- * 
+ *
  * Main file authors: Timo Ropinski, Erik Sundén
  *
  *********************************************************************************/
@@ -50,19 +50,19 @@ void PortGroup::initialize() {
 
 void PortGroup::deinitialize() {
     delete frameBufferObject_;
-    frameBufferObject_ = 0;
+    frameBufferObject_ = NULL;
     delete ports_;
 }
 
 void PortGroup::activate() {
-    ivwAssert(frameBufferObject_!=0, "PortGroup not initialized.");
+    ivwAssert(frameBufferObject_!=NULL, "PortGroup not initialized.");
     frameBufferObject_->activate();
     frameBufferObject_->defineDrawBuffers();
     LGL_ERROR;
 }
 
 void PortGroup::deactivate() {
-    ivwAssert(frameBufferObject_!=0, "PortGroup not initialized.");
+    ivwAssert(frameBufferObject_!=NULL, "PortGroup not initialized.");
     frameBufferObject_->deactivate();
 }
 
@@ -71,13 +71,14 @@ void PortGroup::addPort(ImageOutport& port) {
 }
 
 void PortGroup::reattachTargets() {
-    ivwAssert(frameBufferObject_!=0, "PortGroup not initialized.");
+    ivwAssert(frameBufferObject_!=NULL, "PortGroup not initialized.");
     ivwAssert(!ports_->empty(), "PortGroup is empty.");
-
     // acquire all images to be attached
     std::vector<ImageGL*> images;
+
     for (size_t i=0; i<ports_->size(); i++) {
         Image* image = ports_->at(i)->getData();
+
         if (image)
             images.push_back(image->getEditableRepresentation<ImageGL>());
         else LogWarn("Empty image in outport.");
@@ -87,8 +88,10 @@ void PortGroup::reattachTargets() {
     frameBufferObject_->activate();
     frameBufferObject_->defineDrawBuffers();
     frameBufferObject_->detachAllTextures();
+
     for (unsigned int i=0; i<static_cast<unsigned int>(images.size()); i++) {
         frameBufferObject_->attachColorTexture(images[i]->getColorLayerGL()->getTexture(), i);
+
         if (i==0)
             // depth values only valid for the first render target
             frameBufferObject_->attachTexture(images[i]->getDepthLayerGL()->getTexture(), static_cast<GLenum>(GL_DEPTH_ATTACHMENT_EXT));
@@ -102,6 +105,7 @@ void PortGroup::reattachTargets() {
 void PortGroup::addShaderDefines(Shader* shader) {
     for (size_t i=0; i<ports_->size(); i++) {
         shader->getFragmentShaderObject()->addShaderDefine("OP"+toString(i));
+
         if (i!=0)
             // FragData0 is already defined in openglinfo.cpp
             shader->getFragmentShaderObject()->addOutDeclaration("FragData"+toString(i));

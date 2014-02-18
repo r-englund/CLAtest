@@ -6,7 +6,7 @@
 
 namespace inviwo {
 
-class IVW_CORE_API Dialog { 
+class IVW_CORE_API Dialog {
 public:
     Dialog() {};
     virtual ~Dialog() {};

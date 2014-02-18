@@ -1,20 +1,20 @@
- /*********************************************************************************
+/*********************************************************************************
  *
  * Inviwo - Interactive Visualization Workshop
  * Version 0.6b
  *
  * Copyright (c) 2013-2014 Inviwo Foundation
  * All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met: 
- * 
+ * modification, are permitted provided that the following conditions are met:
+ *
  * 1. Redistributions of source code must retain the above copyright notice, this
- * list of conditions and the following disclaimer. 
+ * list of conditions and the following disclaimer.
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  * this list of conditions and the following disclaimer in the documentation
- * and/or other materials provided with the distribution. 
- * 
+ * and/or other materials provided with the distribution.
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
  * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
@@ -25,7 +25,7 @@
  * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- * 
+ *
  * Main file authors: Erik Sundén, Alexander Johansson, Sathish Kottravel
  *
  *********************************************************************************/
@@ -38,19 +38,19 @@
 
 namespace inviwo {
 /** class ButtonProperty
-* \brief  The Button property class provides buttons that you can bind functions to buttons.
-*
-* The button property has a widget witch creates a button and register a function to it.
-* You can only assign one function to the property.
-* To bind a function to a button property use the registerClassMemberFunction.
-* Example usage
-* myButton_.registerClassMemberFunction(this, &MyButton::doSomethingFunction);
-* A button property are normally used by a processor.
-* The button property is created and added in the constructor of the processor.
-*
-*
-* @see ButtonPropertyWidgetQt
-*/
+ * \brief  The Button property class provides buttons that you can bind functions to buttons.
+ *
+ * The button property has a widget witch creates a button and register a function to it.
+ * You can only assign one function to the property.
+ * To bind a function to a button property use the registerClassMemberFunction.
+ * Example usage
+ * myButton_.registerClassMemberFunction(this, &MyButton::doSomethingFunction);
+ * A button property are normally used by a processor.
+ * The button property is created and added in the constructor of the processor.
+ *
+ *
+ * @see ButtonPropertyWidgetQt
+ */
 class ButtonProperty : public Property {
 
 public:

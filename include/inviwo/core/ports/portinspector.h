@@ -1,4 +1,4 @@
- /*********************************************************************************
+/*********************************************************************************
  *
  * Inviwo - Interactive Visualization Workshop
  * Version 0.6b
@@ -76,7 +76,7 @@ private:
     std::vector<PortConnection*> connections_;
     std::vector<ProcessorLink*> processorLinks_;
     CanvasProcessor* canvasProcessor_;
-    
+
     virtual void fileChanged(std::string fileName);
 };
 

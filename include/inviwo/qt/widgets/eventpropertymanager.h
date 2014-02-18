@@ -1,4 +1,4 @@
- /*********************************************************************************
+/*********************************************************************************
  *
  * Inviwo - Interactive Visualization Workshop
  * Version 0.6b
@@ -43,15 +43,15 @@
 namespace inviwo {
 
 /** class EventPropertyManager
-*
-* A manager which finds and contain all eventproperties in the workspace.
-* All remapping of existing eventproperties are done through the manager.
-* The eventpropertymanager is owned by the mappingwidget and the calls
-* to the remap-functions comes from MappingPopup.
-* @see EventProperty
-* @see MappingWidget
-* @see MappingPopup
-*/
+ *
+ * A manager which finds and contain all eventproperties in the workspace.
+ * All remapping of existing eventproperties are done through the manager.
+ * The eventpropertymanager is owned by the mappingwidget and the calls
+ * to the remap-functions comes from MappingPopup.
+ * @see EventProperty
+ * @see MappingWidget
+ * @see MappingPopup
+ */
 class IVW_QTWIDGETS_API EventPropertyManager : public VoidObservable {
 
 public:

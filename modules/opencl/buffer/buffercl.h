@@ -1,20 +1,20 @@
- /*********************************************************************************
+/*********************************************************************************
  *
  * Inviwo - Interactive Visualization Workshop
  * Version 0.6b
  *
  * Copyright (c) 2013-2014 Inviwo Foundation
  * All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met: 
- * 
+ * modification, are permitted provided that the following conditions are met:
+ *
  * 1. Redistributions of source code must retain the above copyright notice, this
- * list of conditions and the following disclaimer. 
+ * list of conditions and the following disclaimer.
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  * this list of conditions and the following disclaimer in the documentation
- * and/or other materials provided with the distribution. 
- * 
+ * and/or other materials provided with the distribution.
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
  * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
@@ -25,7 +25,7 @@
  * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- * 
+ *
  * Main file author: Daniel Jönsson
  *
  *********************************************************************************/
@@ -45,22 +45,23 @@ class IVW_MODULE_OPENCL_API BufferCL: public BufferRepresentation {
 public:
     /**
      * .
-     * 
-     * @param size 
-     * @param type 
-     * @param format 
+     *
+     * @param size
+     * @param type
+     * @param format
      * @param data Data to transfer. Does not transfer data if data is NULL.
      * @param readWriteFlag Determine how memory will be used by Kernels: CL_MEM_READ_ONLY, CL_MEM_WRITE_ONLY, CL_MEM_READ_WRITE
      */
-    BufferCL(size_t size, const DataFormatBase* format, BufferType type, BufferUsage usage = STATIC, const void* data = NULL, cl_mem_flags readWriteFlag = CL_MEM_READ_WRITE);
-    BufferCL( const BufferCL& rhs );
+    BufferCL(size_t size, const DataFormatBase* format, BufferType type, BufferUsage usage = STATIC, const void* data = NULL,
+             cl_mem_flags readWriteFlag = CL_MEM_READ_WRITE);
+    BufferCL(const BufferCL& rhs);
     virtual ~BufferCL();
 
     virtual void initialize();
     virtual void deinitialize();
     virtual BufferCL* clone() const;
-    virtual void setSize(size_t size) {  BufferRepresentation::setSize(size);deinitialize(); initialize(NULL); }
-    virtual void resize(size_t size) { BufferRepresentation::resize(size);deinitialize(); initialize(NULL); }
+    virtual void setSize(size_t size) {  BufferRepresentation::setSize(size); deinitialize(); initialize(NULL); }
+    virtual void resize(size_t size) { BufferRepresentation::resize(size); deinitialize(); initialize(NULL); }
 
     const Buffer* getAttribute() const;
 
@@ -74,7 +75,7 @@ protected:
 
     /**
      * Create and optionally transfer data to device.
-     * 
+     *
      * @param data Data to transfer. Does not transfer data if data is NULL.
      */
     void initialize(const void* data);
@@ -89,14 +90,14 @@ protected:
 
 namespace cl {
 
-// Kernel argument specializations for BufferCL type 
+// Kernel argument specializations for BufferCL type
 // (enables calling cl::Queue::setArg with BufferCL)
 template <>
 IVW_MODULE_OPENCL_API cl_int Kernel::setArg(cl_uint index, const inviwo::BufferCL& value);
 
-// Kernel argument specializations for Buffer type 
+// Kernel argument specializations for Buffer type
 // (enables calling cl::Queue::setArg with Buffer)
-// @note This function is only valid for buffers 
+// @note This function is only valid for buffers
 // that does not change the buffer data.
 template <>
 IVW_MODULE_OPENCL_API cl_int Kernel::setArg(cl_uint index, const inviwo::Buffer& value);

@@ -1,4 +1,4 @@
- /*********************************************************************************
+/*********************************************************************************
  *
  * Inviwo - Interactive Visualization Workshop
  * Version 0.6b
@@ -120,7 +120,7 @@ public:
     void unregisterLogger(Logger* logger);
     void log(std::string logSource, unsigned int logLevel, const char* fileName, const char* functionName, int lineNumber, std::string logMsg);
 
-    void setLogStacktrace(const bool &logStacktrace = true);
+    void setLogStacktrace(const bool& logStacktrace = true);
     bool getLogStacktrace()const;
 
 private:

@@ -1,20 +1,20 @@
- /*********************************************************************************
+/*********************************************************************************
  *
  * Inviwo - Interactive Visualization Workshop
  * Version 0.6b
  *
  * Copyright (c) 2013-2014 Inviwo Foundation
  * All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met: 
- * 
+ * modification, are permitted provided that the following conditions are met:
+ *
  * 1. Redistributions of source code must retain the above copyright notice, this
- * list of conditions and the following disclaimer. 
+ * list of conditions and the following disclaimer.
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  * this list of conditions and the following disclaimer in the documentation
- * and/or other materials provided with the distribution. 
- * 
+ * and/or other materials provided with the distribution.
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
  * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
@@ -25,7 +25,7 @@
  * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- * 
+ *
  * Main file author: Timo Ropinski
  *
  *********************************************************************************/
@@ -66,31 +66,32 @@ void TransferFunctionEditor::resetTransferFunction() {
 
 void TransferFunctionEditor::mousePressEvent(QGraphicsSceneMouseEvent* e) {
     TransferFunctionEditorControlPoint* controlPointGraphicsItem = getControlPointGraphicsItemAt(e->scenePos());
-
     QGraphicsItem* item = QGraphicsScene::mouseGrabberItem();
 
-    switch(e->button()) {
-    case Qt::LeftButton:
-        if(controlPointGraphicsItem) {
-            mouseDrag_ = true;
-        } else {
-            if(e->modifiers() == Qt::NoModifier && QGraphicsScene::selectedItems().isEmpty()) {
-                addControlPoint(e->scenePos());
+    switch (e->button()) {
+        case Qt::LeftButton:
+            if (controlPointGraphicsItem) {
                 mouseDrag_ = true;
-            } else if(e->modifiers() == Qt::ControlModifier) {
-                views().front()->setDragMode(QGraphicsView::RubberBandDrag);
-            }            
-        }
-        break;
+            } else {
+                if (e->modifiers() == Qt::NoModifier && QGraphicsScene::selectedItems().isEmpty()) {
+                    addControlPoint(e->scenePos());
+                    mouseDrag_ = true;
+                } else if (e->modifiers() == Qt::ControlModifier) {
+                    views().front()->setDragMode(QGraphicsView::RubberBandDrag);
+                }
+            }
 
-    case Qt::RightButton:
-        if(controlPointGraphicsItem && !mouseDrag_) {
-            removeControlPoint(controlPointGraphicsItem);
-        }                         
-        break;
+            break;
 
-    default:
-        break;
+        case Qt::RightButton:
+            if (controlPointGraphicsItem && !mouseDrag_) {
+                removeControlPoint(controlPointGraphicsItem);
+            }
+
+            break;
+
+        default:
+            break;
     }
 
     QGraphicsScene::mousePressEvent(e);
@@ -110,6 +111,7 @@ void TransferFunctionEditor::keyPressEvent(QKeyEvent* e) {
     // mark all keys
     if (e->key() == 'A' && e->modifiers()==Qt::ControlModifier) {
         QList<QGraphicsItem*> itemList = items();
+
         for (int i=0; i<itemList.size(); i++) {
             itemList[i]->setSelected(true);
         }

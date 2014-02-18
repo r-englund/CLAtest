@@ -1,20 +1,20 @@
- /*********************************************************************************
+/*********************************************************************************
  *
  * Inviwo - Interactive Visualization Workshop
  * Version 0.6b
  *
  * Copyright (c) 2013-2014 Inviwo Foundation
  * All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met: 
- * 
+ * modification, are permitted provided that the following conditions are met:
+ *
  * 1. Redistributions of source code must retain the above copyright notice, this
- * list of conditions and the following disclaimer. 
+ * list of conditions and the following disclaimer.
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  * this list of conditions and the following disclaimer in the documentation
- * and/or other materials provided with the distribution. 
- * 
+ * and/or other materials provided with the distribution.
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
  * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
@@ -25,7 +25,7 @@
  * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- * 
+ *
  * Main file authors: Timo Ropinski, Viktor Axelsson, Sathish Kottravel
  *
  *********************************************************************************/
@@ -35,7 +35,8 @@
 
 namespace inviwo {
 
-TransferFunctionPropertyWidgetQt::TransferFunctionPropertyWidgetQt(TransferFunctionProperty* property) : property_(property), transferFunctionDialog_(NULL) {
+TransferFunctionPropertyWidgetQt::TransferFunctionPropertyWidgetQt(TransferFunctionProperty* property) : property_(property),
+    transferFunctionDialog_(NULL) {
     PropertyWidgetQt::setProperty(property_);
     generateWidget();
     updateFromProperty();
@@ -53,7 +54,6 @@ void TransferFunctionPropertyWidgetQt::generateWidget() {
     InviwoApplicationQt* app = dynamic_cast<InviwoApplicationQt*>(InviwoApplication::getPtr());
     transferFunctionDialog_ = new TransferFunctionPropertyDialog(property_, app->getMainWindow());
     setEditorWidget(transferFunctionDialog_);
-    
     // notify the transfer function dialog, that the volume with the histogram is already there
     property_->notifyObservers();
     QHBoxLayout* hLayout = new QHBoxLayout();
@@ -73,9 +73,8 @@ void TransferFunctionPropertyWidgetQt::generateWidget() {
     hLayout->addWidget(btnOpenTF_);
     setLayout(hLayout);
     updateFromProperty();
-
     //initializes position, visibility,size of the widget from meta data
-    initializeEditorWidgetsMetaData();    
+    initializeEditorWidgetsMetaData();
 }
 
 void TransferFunctionPropertyWidgetQt::updateFromProperty() {

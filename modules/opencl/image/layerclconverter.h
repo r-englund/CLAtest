@@ -1,20 +1,20 @@
- /*********************************************************************************
+/*********************************************************************************
  *
  * Inviwo - Interactive Visualization Workshop
  * Version 0.6b
  *
  * Copyright (c) 2013-2014 Inviwo Foundation
  * All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met: 
- * 
+ * modification, are permitted provided that the following conditions are met:
+ *
  * 1. Redistributions of source code must retain the above copyright notice, this
- * list of conditions and the following disclaimer. 
+ * list of conditions and the following disclaimer.
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  * this list of conditions and the following disclaimer in the documentation
- * and/or other materials provided with the distribution. 
- * 
+ * and/or other materials provided with the distribution.
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
  * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
@@ -25,7 +25,7 @@
  * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- * 
+ *
  * Main file authors: Erik Sundén, Daniel Jönsson
  *
  *********************************************************************************/
@@ -35,9 +35,9 @@
 
 #include <inviwo/core/datastructures/representationconverter.h>
 #include <inviwo/core/datastructures/image/layerram.h>
-#include <inviwo/core/datastructures/image/layerramconverter.h> 
+#include <inviwo/core/datastructures/image/layerramconverter.h>
 #include <inviwo/core/datastructures/image/layerdisk.h>
-#include <modules/opengl/image/layerglconverter.h> 
+#include <modules/opengl/image/layerglconverter.h>
 #include <modules/opencl/image/layercl.h>
 
 namespace inviwo {
@@ -69,7 +69,7 @@ class IVW_MODULE_OPENCL_API LayerCL2RAMConverter : public RepresentationConverte
 
 public:
     LayerCL2RAMConverter();
-    virtual ~LayerCL2RAMConverter(){};
+    virtual ~LayerCL2RAMConverter() {};
 
     inline bool canConvertFrom(const DataRepresentation* source) const {
         return dynamic_cast<const LayerCL*>(source) != NULL;

@@ -1,20 +1,20 @@
- /*********************************************************************************
+/*********************************************************************************
  *
  * Inviwo - Interactive Visualization Workshop
  * Version 0.6b
  *
  * Copyright (c) 2013-2014 Inviwo Foundation
  * All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met: 
- * 
+ * modification, are permitted provided that the following conditions are met:
+ *
  * 1. Redistributions of source code must retain the above copyright notice, this
- * list of conditions and the following disclaimer. 
+ * list of conditions and the following disclaimer.
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  * this list of conditions and the following disclaimer in the documentation
- * and/or other materials provided with the distribution. 
- * 
+ * and/or other materials provided with the distribution.
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
  * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
@@ -25,7 +25,7 @@
  * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- * 
+ *
  * Main file author: Timo Ropinski
  *
  *********************************************************************************/
@@ -49,12 +49,12 @@
 #include <modules/opengl/glwrap/textureunit.h>
 
 namespace inviwo {
-    class Trackball;
+
 class IVW_MODULE_OPENGL_API VolumeRaycasterGL : public ProcessorGL {
 
 public:
     VolumeRaycasterGL();
-    VolumeRaycasterGL(std::string programFileName);
+    VolumeRaycasterGL(std::string shaderFileName);
 
     virtual void initialize();
     virtual void deinitialize();
@@ -62,14 +62,15 @@ public:
     // overloaded method called when INVALID_RESOURCE property is set
     virtual void initializeResources();
 
+    // convenience functions for texture/volume binding
     void bindTransferFunction(const TransferFunction& tf, GLenum tfTexUnit);
     void bindVolume(const VolumeInport& inport, GLenum volTexUnit);
     void setVolumeParameters(const VolumeInport& inport, Shader* shader, const std::string samplerID);
     void setGlobalShaderParameters(Shader* shader);
 
 protected:
-    Shader* raycastPrg_;
-    std::string programFileName_;
+    Shader* shader_;
+    std::string shaderFileName_;
 
     FloatProperty samplingRate_;
     FloatProperty isoValue_;
@@ -84,7 +85,6 @@ protected:
     FloatVec3Property lightColorDiffuse_;
     FloatVec3Property lightColorSpecular_;
     IntProperty lightSpecularExponent_;
-
     BoolProperty applyLightAttenuation_;
     FloatVec3Property lightAttenuation_;
 

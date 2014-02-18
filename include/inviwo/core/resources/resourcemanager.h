@@ -1,4 +1,4 @@
- /*********************************************************************************
+/*********************************************************************************
  *
  * Inviwo - Interactive Visualization Workshop
  * Version 0.6b
@@ -41,11 +41,11 @@
 
 namespace inviwo {
 /** \class ResourceManager
-* Manager for resources.
-* Resources added are owned by the ResourceManager and they will be deleted when the ResourceManager is destroyed.
-* Use an identifier to find resources added to the ResourceManager. The identifier can be the file name if it is a file resource.
-* @see ResourceTemplate
-*/
+ * Manager for resources.
+ * Resources added are owned by the ResourceManager and they will be deleted when the ResourceManager is destroyed.
+ * Use an identifier to find resources added to the ResourceManager. The identifier can be the file name if it is a file resource.
+ * @see ResourceTemplate
+ */
 // TODO: Should we add resource counting?
 // TODO: How do we generate identifiers for different resources?
 class IVW_CORE_API ResourceManager: public ResourceManagerObservable {

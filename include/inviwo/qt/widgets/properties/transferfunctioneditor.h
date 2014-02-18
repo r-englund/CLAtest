@@ -1,4 +1,4 @@
- /*********************************************************************************
+/*********************************************************************************
  *
  * Inviwo - Interactive Visualization Workshop
  * Version 0.6b
@@ -31,10 +31,10 @@
  *********************************************************************************/
 
 /** \Inherited from QGraphicsScene for editing a transfer function (TransferFunction)
-*
-*  Class for graphical configuration of a transfer function
-*
-*/
+ *
+ *  Class for graphical configuration of a transfer function
+ *
+ */
 
 #ifndef IVW_TRANSFERFUNCTIONEDITOR_H
 #define IVW_TRANSFERFUNCTIONEDITOR_H

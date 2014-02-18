@@ -1,4 +1,4 @@
- /*********************************************************************************
+/*********************************************************************************
  *
  * Inviwo - Interactive Visualization Workshop
  * Version 0.6b
@@ -51,7 +51,7 @@ typedef UniformData<Data::TYPE3D, RectiLinearVolume> UniformRectiLinearVolume;
 typedef NonUniformData<Data::TYPE3D, RectiLinearVolume> NonUniformRectiLinearVolume;
 typedef UniformData<Data::TYPE3D, CurviLinearVolume> UniformCurviLinearVolume;
 typedef NonUniformData<Data::TYPE3D, CurviLinearVolume> NonUniformCurviLinearVolume;
-*/
+ */
 
 //TODO: So for now use classes are used instead of typedefs
 

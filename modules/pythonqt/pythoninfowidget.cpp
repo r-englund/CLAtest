@@ -1,20 +1,20 @@
- /*********************************************************************************
+/*********************************************************************************
  *
  * Inviwo - Interactive Visualization Workshop
  * Version 0.6b
  *
  * Copyright (c) 2014 Inviwo Foundation
  * All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met: 
- * 
+ * modification, are permitted provided that the following conditions are met:
+ *
  * 1. Redistributions of source code must retain the above copyright notice, this
- * list of conditions and the following disclaimer. 
+ * list of conditions and the following disclaimer.
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  * this list of conditions and the following disclaimer in the documentation
- * and/or other materials provided with the distribution. 
- * 
+ * and/or other materials provided with the distribution.
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
  * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
@@ -25,7 +25,7 @@
  * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- * 
+ *
  * Main file author: Rickard Englund
  *
  *********************************************************************************/
@@ -42,89 +42,74 @@
 #include <modules/python/pyinviwo.h>
 
 namespace inviwo {
-    PythonInfoWidget::PythonInfoWidget(QWidget *parent) 
-        :  InviwoDockWidget(tr("Python API Documentation"),parent){
-        setObjectName("PythonInfoWidget");
-        setAllowedAreas(Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea);
-        setFloating(true);
-        setVisible(false);
+PythonInfoWidget::PythonInfoWidget(QWidget* parent)
+    :  InviwoDockWidget(tr("Python API Documentation"),parent) {
+    setObjectName("PythonInfoWidget");
+    setAllowedAreas(Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea);
+    setFloating(true);
+    setVisible(false);
+    buildWidget();
+    resize(500,700);
+}
 
-        buildWidget();
-        resize(500,700);
+PythonInfoWidget::~PythonInfoWidget() {
+}
+
+
+void PythonInfoWidget::buildWidget() {
+    QWidget* content = new QWidget(this);
+    QVBoxLayout* layout_ = new QVBoxLayout();
+    tabWidget_ = new QTabWidget(content);
+    layout_->addWidget(tabWidget_);
+    std::vector<PyModule*> modules = PyInviwo::getPtr()->getAllPythonModules();
+
+    for (size_t i = 0; i<modules.size(); ++i) {
+        onModuleRegistered(modules[i]);
     }
 
-    PythonInfoWidget::~PythonInfoWidget(){
+    content->setLayout(layout_);
+    setWidget(content);
+}
 
+void PythonInfoWidget::onModuleRegistered(PyModule* module) {
+    QScrollArea* tab = new QScrollArea(tabWidget_);
+    tab->setWidgetResizable(true);
+    QWidget* content = new QWidget(tab);
+    std::vector<PyMethod*> methods =  module->getPyMethods();
+    QGridLayout* layout = new QGridLayout();
+    layout->setColumnStretch(2,1);
+    QLabel* funcLabel = new QLabel("Function");
+    QLabel* paramLabel = new QLabel("Parameters");
+    QLabel* descLabel = new QLabel("Description");
+    QFont font = funcLabel->font();
+    font.setPointSize(font.pointSize()+1);
+    font.setBold(true);
+    funcLabel->setFont(font);
+    paramLabel->setFont(font);
+    descLabel->setFont(font);
+    layout->addWidget(funcLabel,0,0);
+    layout->addWidget(paramLabel,0,1);
+    layout->addWidget(descLabel,0,2);
+    layout->addWidget(new QLabel("<hr />"),1,0,1,3);
+
+    for (int i = 0; i<static_cast<int>(methods.size()); ++i) {
+        int row = i*2 + 2;
+        QLabel* functionNameLabel = new QLabel(methods[i]->getName().c_str());
+        functionNameLabel->setTextInteractionFlags(Qt::TextSelectableByMouse);
+        layout->addWidget(functionNameLabel,row,0);
+        std::string params = methods[i]->getParamDesc();
+        replaceInString(params," , ","<br />");
+        layout->addWidget(new QLabel(params.c_str()),row,1);
+        QLabel* desc = new QLabel(methods[i]->getDesc().c_str());
+        desc->setWordWrap(true);
+        layout->addWidget(desc,row,2);
+        layout->addWidget(new QLabel("<hr />"),row+1,0,1,3);
     }
 
-
-    void PythonInfoWidget::buildWidget(){
-
-        QWidget* content = new QWidget(this);
-        QVBoxLayout* layout_ = new QVBoxLayout();
-
-        tabWidget_ = new QTabWidget(content);
-        layout_->addWidget(tabWidget_);
-
-        std::vector<PyModule*> modules = PyInviwo::getPtr()->getAllPythonModules();
-        for (size_t i = 0;i<modules.size();++i){
-            onModuleRegistered(modules[i]);
-        }
-
-        content->setLayout(layout_);
-        setWidget(content);
-    }
-
-    void PythonInfoWidget::onModuleRegistered( PyModule* module ) {
-        QScrollArea* tab = new QScrollArea(tabWidget_);
-        tab->setWidgetResizable(true);
-        QWidget* content = new QWidget(tab);
-
-        std::vector<PyMethod*> methods =  module->getPyMethods();
-        
-        QGridLayout* layout = new QGridLayout();
-        layout->setColumnStretch(2,1);
-
-        QLabel* funcLabel = new QLabel("Function");
-        QLabel* paramLabel = new QLabel("Parameters");
-        QLabel* descLabel = new QLabel("Description");
-        QFont font = funcLabel->font();
-        font.setPointSize(font.pointSize()+1);
-        font.setBold(true);
-        funcLabel->setFont(font);
-        paramLabel->setFont(font);
-        descLabel->setFont(font);
-
-        layout->addWidget(funcLabel,0,0);
-        layout->addWidget(paramLabel,0,1);
-        layout->addWidget(descLabel,0,2);
-
-
-        layout->addWidget(new QLabel("<hr />"),1,0,1,3);
-
-        for(int i = 0;i<static_cast<int>(methods.size());++i){
-            int row = i*2 + 2;
-            QLabel* functionNameLabel = new QLabel(methods[i]->getName().c_str());
-            functionNameLabel->setTextInteractionFlags(Qt::TextSelectableByMouse);
-            layout->addWidget(functionNameLabel,row,0);
-
-            std::string params = methods[i]->getParamDesc();
-            replaceInString(params," , ","<br />");
-            layout->addWidget(new QLabel(params.c_str()),row,1);
-
-            QLabel* desc = new QLabel(methods[i]->getDesc().c_str());
-            desc->setWordWrap(true);
-            layout->addWidget(desc,row,2);
-
-            layout->addWidget(new QLabel("<hr />"),row+1,0,1,3);
-        }
-
-        
-        content->setLayout(layout);
-        tab->setWidget(content);
-        tabWidget_->addTab(tab,module->getModuleName());
-
-    }
+    content->setLayout(layout);
+    tab->setWidget(content);
+    tabWidget_->addTab(tab,module->getModuleName());
+}
 
 } // namespace
 

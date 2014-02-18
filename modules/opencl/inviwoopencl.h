@@ -1,20 +1,20 @@
- /*********************************************************************************
+/*********************************************************************************
  *
  * Inviwo - Interactive Visualization Workshop
  * Version 0.6b
  *
  * Copyright (c) 2013-2014 Inviwo Foundation
  * All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met: 
- * 
+ * modification, are permitted provided that the following conditions are met:
+ *
  * 1. Redistributions of source code must retain the above copyright notice, this
- * list of conditions and the following disclaimer. 
+ * list of conditions and the following disclaimer.
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  * this list of conditions and the following disclaimer in the documentation
- * and/or other materials provided with the distribution. 
- * 
+ * and/or other materials provided with the distribution.
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
  * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
@@ -25,7 +25,7 @@
  * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- * 
+ *
  * Main file author: Daniel Jönsson
  *
  *********************************************************************************/
@@ -62,11 +62,11 @@ using cl::ImageFormat;
 
 namespace inviwo {
 
-/** \class OpenCL 
-*
-* Singleton class that manages OpenCL context and queues. 
-*
-*/
+/** \class OpenCL
+ *
+ * Singleton class that manages OpenCL context and queues.
+ *
+ */
 class IVW_MODULE_OPENCL_API OpenCL {
 public:
 
@@ -77,13 +77,13 @@ public:
     }
     /**
      * Get queue that can perform tasks in serial (no need to explicitly manage events).
-     * This should be the first choice of use. Expert users may want to use the 
+     * This should be the first choice of use. Expert users may want to use the
      * asynchronous queue.
      */
     const cl::CommandQueue& getQueue() const { return synchronosGPUQueue_; }
     /**
      * Get queue that can perform tasks in parallel (need to explicitly manage events).
-     * This is for expert users. be the first choice of use. Expert users may want to use the 
+     * This is for expert users. be the first choice of use. Expert users may want to use the
      * asynchronous queue.
      */
     const cl::CommandQueue& getAsyncQueue() const { return asyncGPUQueue_; }
@@ -97,9 +97,9 @@ public:
      * Get default OpenCL device.
      */
     const cl::Device& getDevice() const { return gpuDevice_; }
-    
+
     /**
-     * Set default OpenCL device. 
+     * Set default OpenCL device.
      * Note that this may have an effect on all allocated OpenCL resources (queue changes).
      * Therefore make sure that no OpenCL resources are used before calling this function.
      * This can be done by closing the workspace.
@@ -123,7 +123,7 @@ public:
 
     /**
      * Outputs formatted build hint to logger.
-     * 
+     *
      * @param devices (const std::vector<cl::Device> &)
      * @param program (const cl::Program &)
      * @param filename (const std::string &)
@@ -133,34 +133,34 @@ public:
 
     static void printBuildError(const cl::Device& device, const cl::Program& program, const std::string& filename = "");
 
-    /** 
+    /**
      * Get OpenGL sharing properties depending on operating system.
      */
     static std::vector<cl_context_properties> getGLSharingContextProperties();
 
-    /** 
+    /**
      * Get all devices on the system.
      */
     static std::vector<cl::Device> getAllDevices();
 
     /**
      * Add a directory as an include path to be used when compiling OpenCL kernels.
-     * 
+     *
      * @param directoryPath Directory path to include
      */
     void addCommonIncludeDirectory(const std::string& directoryPath);
 
     /**
      * Remove common include path.
-     * 
+     *
      * @param directoryPath Directory path to remove
      */
     void removeCommonIncludeDirectory(const std::string& directoryPath);
 
     const std::vector<std::string>& getCommonIncludeDirectories() const { return includeDirectories_; }
 
-    
-private: 
+
+private:
     OpenCL();
     OpenCL(OpenCL const&) {};
     void operator=(OpenCL const&) {};
@@ -168,18 +168,18 @@ private:
     /// Initialize OpenCL context and queues.
     void initialize(bool enableOpenGLSharing);
 
-    /** 
+    /**
      *  Get the device that has most compute units.
      *  @param bestDevice Set to found device, if found.
      *  @param onPlatform Set to platform that device exist on, if found.
-     *  @return True if any device found, false otherwise. 
+     *  @return True if any device found, false otherwise.
      */
     static bool getBestGPUDevice(cl::Device& bestDevice, cl::Platform& onPlatform);
 
-    
+
     /**
-     * Merges all include directories into a string. Each include directory will be preceded by -I 
-     * 
+     * Merges all include directories into a string. Each include directory will be preceded by -I
+     *
      * @return Define to be used when building the programs
      */
     std::string getIncludeDefine() const;
@@ -201,10 +201,10 @@ private:
 /**
  * Computes the nearest multiple of local work group size.
  * global work group size = localWorkGroupSize*ceil((float)nItems/(float)localWorkGroupSize)
- * 
- * @param nItems 
+ *
+ * @param nItems
  * @param localWorkGroupSize Local work group size of kernel
- * @return 
+ * @return
  */
 IVW_MODULE_OPENCL_API size_t getGlobalWorkGroupSize(size_t nItems, size_t localWorkGroupSize);
 
@@ -213,21 +213,21 @@ IVW_MODULE_OPENCL_API svec3 getGlobalWorkGroupSize(svec3 nItems, glm::svec3 loca
 
 
 /**
- * Creates a readable hint report from an OpenCL exception. 
+ * Creates a readable hint report from an OpenCL exception.
  * Example usage: LogError(getCLErrorString(err))
- * 
+ *
  * @param err OpenCL exception
  * @return Error report string.
  */
- IVW_MODULE_OPENCL_API std::string getCLErrorString(const cl::Error& err);
+IVW_MODULE_OPENCL_API std::string getCLErrorString(const cl::Error& err);
 
 /**
  * Creates an error report and outputs it using the log functionality.
- * 
+ *
  * @param err OpenCL error code
  * @param message Message to be passed along with the error.
  */
- IVW_MODULE_OPENCL_API void LogOpenCLError(cl_int err, const char* message = "");
+IVW_MODULE_OPENCL_API void LogOpenCLError(cl_int err, const char* message = "");
 
 /** \brief Get string representation of hint code according to definitions in CL/cl.h
  *
@@ -236,9 +236,9 @@ IVW_MODULE_OPENCL_API svec3 getGlobalWorkGroupSize(svec3 nItems, glm::svec3 loca
 IVW_MODULE_OPENCL_API std::string errorCodeToString(cl_int err);
 
 /**
- * Returns hints on how to resolve a particular OpenCL hint. 
- * 
- * @param err 
+ * Returns hints on how to resolve a particular OpenCL hint.
+ *
+ * @param err
  * @return A hint on what could cause the hint.
  */
 IVW_MODULE_OPENCL_API std::string getCLErrorResolveHint(cl_int err);
@@ -249,14 +249,14 @@ IVW_MODULE_OPENCL_API std::string getCLErrorResolveHint(cl_int err);
 #define LogCLError
 #endif
 
-// 
+//
 /**
- * Create a cl::ImageFormat based on DataFormatId. 
+ * Create a cl::ImageFormat based on DataFormatId.
  * Outputs an error message if a corresponding format does not exist and then returns the default ImageFormat.
  *
  * @see DataFormat
  * @param format Id of a DataFormat
- * @return Default ImageFormat created by the constructor 
+ * @return Default ImageFormat created by the constructor
  * if a corresponding format does not exist, otherwise an ImageFormat with corresponding channel and data type.
  */
 IVW_MODULE_OPENCL_API cl::ImageFormat dataFormatToCLImageFormat(DataFormatId format);

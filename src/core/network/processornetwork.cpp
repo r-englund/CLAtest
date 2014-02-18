@@ -1,20 +1,20 @@
- /*********************************************************************************
+/*********************************************************************************
  *
  * Inviwo - Interactive Visualization Workshop
  * Version 0.6b
  *
  * Copyright (c) 2012-2014 Inviwo Foundation
  * All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met: 
- * 
+ * modification, are permitted provided that the following conditions are met:
+ *
  * 1. Redistributions of source code must retain the above copyright notice, this
- * list of conditions and the following disclaimer. 
+ * list of conditions and the following disclaimer.
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  * this list of conditions and the following disclaimer in the documentation
- * and/or other materials provided with the distribution. 
- * 
+ * and/or other materials provided with the distribution.
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
  * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
@@ -25,7 +25,7 @@
  * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- * 
+ *
  * Main file author: Sathish Kottravel
  *
  *********************************************************************************/
@@ -36,22 +36,22 @@
 namespace inviwo {
 
 namespace {
-    class KeepTrueWhileInScope {
-    public:
-        KeepTrueWhileInScope(bool *b) :variable_(b) {
-            (*variable_) = true;
-        }
+class KeepTrueWhileInScope {
+public:
+    KeepTrueWhileInScope(bool* b) :variable_(b) {
+        (*variable_) = true;
+    }
 
-        ~KeepTrueWhileInScope() {
-            (*variable_) = false;
-        }
+    ~KeepTrueWhileInScope() {
+        (*variable_) = false;
+    }
 
-    private:
-        bool* variable_;;
-    };
+private:
+    bool* variable_;;
+};
 }
 
-ProcessorNetwork::ProcessorNetwork() 
+ProcessorNetwork::ProcessorNetwork()
     : VoidObservable()
     , ProcessorObserver()
     , modified_(true)
@@ -63,7 +63,6 @@ ProcessorNetwork::ProcessorNetwork()
     , linking_(false)
     , linkInvalidationInitiator_(NULL)
     , linkEvaluator_(NULL) {
-
     linkEvaluator_ = new LinkEvaluator();
 }
 
@@ -111,9 +110,9 @@ void ProcessorNetwork::removeAndDeleteProcessor(Processor* processor) {
 }
 
 Processor* ProcessorNetwork::getProcessorByName(std::string identifier) const {
-    for(size_t i = 0; i < processors_.size(); i++)
-    if(processors_[i]->getIdentifier() == identifier)
-        return processors_[i];
+    for (size_t i = 0; i < processors_.size(); i++)
+        if (processors_[i]->getIdentifier() == identifier)
+            return processors_[i];
 
     return 0;
 }
@@ -150,17 +149,17 @@ void ProcessorNetwork::removeConnection(Outport* sourcePort, Inport* destPort) {
 }
 
 bool ProcessorNetwork::isConnected(Outport* sourcePort, Inport* destPort) {
-    if(getConnection(sourcePort, destPort))
+    if (getConnection(sourcePort, destPort))
         return true;
 
     return false;
 }
 
 PortConnection* ProcessorNetwork::getConnection(Outport* sourcePort, Inport* destPort) {
-    for(size_t i = 0; i < portConnections_.size(); i++) {
-        if(portConnections_[i]->getOutport() == sourcePort &&
-           portConnections_[i]->getInport() == destPort)
-           return portConnections_[i];
+    for (size_t i = 0; i < portConnections_.size(); i++) {
+        if (portConnections_[i]->getOutport() == sourcePort &&
+            portConnections_[i]->getInport() == destPort)
+            return portConnections_[i];
     }
 
     return NULL;
@@ -174,7 +173,7 @@ std::vector<PortConnection*> ProcessorNetwork::getConnections() const {
 ProcessorLink* ProcessorNetwork::addLink(Processor* sourceProcessor, Processor* destProcessor) {
     ProcessorLink* link = getLink(sourceProcessor, destProcessor);
 
-    if(!link) {
+    if (!link) {
         link = new ProcessorLink(sourceProcessor, destProcessor);
         processorLinks_.push_back(link);
         modified();
@@ -184,11 +183,11 @@ ProcessorLink* ProcessorNetwork::addLink(Processor* sourceProcessor, Processor* 
 }
 
 void ProcessorNetwork::removeLink(Processor* sourceProcessor, Processor* destProcessor) {
-    for(size_t i = 0; i < processorLinks_.size(); i++) {
-        if((processorLinks_[i]->getSourceProcessor() == sourceProcessor &&
-            processorLinks_[i]->getDestinationProcessor() == destProcessor) ||
+    for (size_t i = 0; i < processorLinks_.size(); i++) {
+        if ((processorLinks_[i]->getSourceProcessor() == sourceProcessor &&
+             processorLinks_[i]->getDestinationProcessor() == destProcessor) ||
             (processorLinks_[i]->getDestinationProcessor() == sourceProcessor &&
-            processorLinks_[i]->getSourceProcessor() == destProcessor)) {
+             processorLinks_[i]->getSourceProcessor() == destProcessor)) {
             delete processorLinks_[i];
             processorLinks_.erase(processorLinks_.begin() + i);
             break;
@@ -204,11 +203,11 @@ bool ProcessorNetwork::isLinked(Processor* src, Processor* dst) {
 }
 
 ProcessorLink* ProcessorNetwork::getLink(Processor* processor1, Processor* processor2) const {
-    for(size_t i = 0; i < processorLinks_.size(); i++) {
-        if((processorLinks_[i]->getSourceProcessor() == processor1 &&
-            processorLinks_[i]->getDestinationProcessor() == processor2) ||
+    for (size_t i = 0; i < processorLinks_.size(); i++) {
+        if ((processorLinks_[i]->getSourceProcessor() == processor1 &&
+             processorLinks_[i]->getDestinationProcessor() == processor2) ||
             (processorLinks_[i]->getDestinationProcessor() == processor1 &&
-            processorLinks_[i]->getSourceProcessor() == processor2))
+             processorLinks_[i]->getSourceProcessor() == processor2))
             return processorLinks_[i];
     }
 
@@ -234,8 +233,9 @@ void ProcessorNetwork::notifyInvalidationBegin(Processor* p) {
     if (!isInvalidating()) {
         invalidationInitiator_ = p;
         invalidating_ = true;
+
         if (linking_ && !linkInvalidationInitiator_)
-            linkInvalidationInitiator_ = p;        
+            linkInvalidationInitiator_ = p;
     }
 }
 
@@ -247,9 +247,9 @@ void ProcessorNetwork::notifyInvalidationEnd(Processor* p) {
 }
 
 void ProcessorNetwork::notifyRequestEvaluate(Processor*) {
-    if(linking_)
+    if (linking_)
         evaluationQueued_ = true;
-    else{
+    else {
         notifyObservers();
         evaluationQueued_ = false;
     }
@@ -271,9 +271,7 @@ void ProcessorNetwork::evaluatePropertyLinks(Property* modifiedProperty) {
         return;
 
     lock();
-
     linking_ = true;
-
     //perform linking
     std::vector<ProcessorLink*> sortedModifiableLinks = getSortedProcessorLinksFromProperty(modifiedProperty);
     //This saves expensive branched search. But can be still optimized.
@@ -298,13 +296,15 @@ void ProcessorNetwork::evaluatePropertyLinks(Property* modifiedProperty) {
 
     for (size_t i=0; i<destinationProperties.size(); i++)
         linkEvaluator_->evaluate(modifiedProperty, destinationProperties[i]);
-    
+
     unlock();
 
     if (linking_) {
         linking_ = false;
-        if(evaluationQueued_ && linkInvalidationInitiator_!=invalidationInitiator_)
+
+        if (evaluationQueued_ && linkInvalidationInitiator_!=invalidationInitiator_)
             notifyRequestEvaluate(linkInvalidationInitiator_);
+
         linkInvalidationInitiator_ = NULL;
     }
 }
@@ -382,10 +382,9 @@ void ProcessorNetwork::serialize(IvwSerializer& s) const {
 }
 
 void ProcessorNetwork::deserialize(IvwDeserializer& d) throw (Exception) {
-    // This will set deserializing_ to true while keepTrueWillAlive is in scope 
-    // and set it to false no matter how we leave the scope 
+    // This will set deserializing_ to true while keepTrueWillAlive is in scope
+    // and set it to false no matter how we leave the scope
     KeepTrueWhileInScope keepTrueWillAlive(&deserializing_);
-    
     std::vector<PortConnection*> portConnections;
     std::vector<ProcessorLink*> processorLinks;
 
@@ -484,7 +483,7 @@ void ProcessorNetwork::deserialize(IvwDeserializer& d) throw (Exception) {
     notifyObservers();
 }
 
-bool ProcessorNetwork::isDeserializing()const{
+bool ProcessorNetwork::isDeserializing()const {
     return deserializing_;
 }
 

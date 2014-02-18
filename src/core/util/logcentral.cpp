@@ -1,20 +1,20 @@
- /*********************************************************************************
+/*********************************************************************************
  *
  * Inviwo - Interactive Visualization Workshop
  * Version 0.6b
  *
  * Copyright (c) 2012-2014 Inviwo Foundation
  * All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met: 
- * 
+ * modification, are permitted provided that the following conditions are met:
+ *
  * 1. Redistributions of source code must retain the above copyright notice, this
- * list of conditions and the following disclaimer. 
+ * list of conditions and the following disclaimer.
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  * this list of conditions and the following disclaimer in the documentation
- * and/or other materials provided with the distribution. 
- * 
+ * and/or other materials provided with the distribution.
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
  * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
@@ -25,7 +25,7 @@
  * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- * 
+ *
  * Main file authors: Timo Ropinski, Erik Sundén
  *
  *********************************************************************************/
@@ -113,26 +113,30 @@ void LogCentral::unregisterLogger(Logger* logger) {
 void LogCentral::log(std::string logSource, unsigned int logLevel, const char* fileName, const char* functionName, int lineNumber,
                      std::string logMsg) {
     std::string msg = logMsg;
-    if(logStacktrace_ && logLevel == Error){
+
+    if (logStacktrace_ && logLevel == Error) {
         std::stringstream ss;
         ss << logMsg;
         std::vector<std::string> stacktrace = getStackTrace();
-        for(size_t i = 3;i < stacktrace.size();++i){ //start at i == 3 to remove log and getStacktrace from stackgrace
+
+        for (size_t i = 3; i < stacktrace.size(); ++i) { //start at i == 3 to remove log and getStacktrace from stackgrace
             ss << std::endl << stacktrace[i];
         }
+
         ss << std::endl; //append an extra line break to easier seperate several stacktraces in a row
         msg = ss.str();
     }
+
     if (logLevel >= logLevel_)
         for (size_t i=0; i<loggers_->size(); i++)
             loggers_->at(i)->log(logSource, logLevel, fileName, functionName, lineNumber, msg);
 }
 
-void LogCentral::setLogStacktrace(const bool &logStacktrace){
+void LogCentral::setLogStacktrace(const bool& logStacktrace) {
     logStacktrace_ = logStacktrace;
 }
 
-bool LogCentral::getLogStacktrace()const{
+bool LogCentral::getLogStacktrace()const {
     return logStacktrace_;
 }
 

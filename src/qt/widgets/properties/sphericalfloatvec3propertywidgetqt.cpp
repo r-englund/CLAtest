@@ -1,20 +1,20 @@
- /*********************************************************************************
+/*********************************************************************************
  *
  * Inviwo - Interactive Visualization Workshop
  * Version 0.6b
  *
  * Copyright (c) 2014 Inviwo Foundation
  * All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met: 
- * 
+ * modification, are permitted provided that the following conditions are met:
+ *
  * 1. Redistributions of source code must retain the above copyright notice, this
- * list of conditions and the following disclaimer. 
+ * list of conditions and the following disclaimer.
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  * this list of conditions and the following disclaimer in the documentation
- * and/or other materials provided with the distribution. 
- * 
+ * and/or other materials provided with the distribution.
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
  * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
@@ -25,7 +25,7 @@
  * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- * 
+ *
  * Main file author: Peter Steneteg
  *
  *********************************************************************************/
@@ -43,7 +43,7 @@ SphericalFloatVec3PropertyWidgetQt::SphericalFloatVec3PropertyWidgetQt(FloatVec3
     , valueVec3Max_(property->getMaxValue())
     , valueVec3Min_(property->getMinValue())
     , valueIncrement_(property->getIncrement())
-    , settingsWidget_(0){
+    , settingsWidget_(0) {
     PropertyWidgetQt::setProperty(property_);
     PropertyWidgetQt::generateContextMenu();
     generateWidget();
@@ -53,7 +53,7 @@ SphericalFloatVec3PropertyWidgetQt::SphericalFloatVec3PropertyWidgetQt(FloatVec3
         generatesSettingsWidget();
 }
 
-SphericalFloatVec3PropertyWidgetQt::~SphericalFloatVec3PropertyWidgetQt(){
+SphericalFloatVec3PropertyWidgetQt::~SphericalFloatVec3PropertyWidgetQt() {
     delete settingsWidget_;
 }
 

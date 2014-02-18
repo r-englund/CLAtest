@@ -1,20 +1,20 @@
- /*********************************************************************************
+/*********************************************************************************
  *
  * Inviwo - Interactive Visualization Workshop
  * Version 0.6b
  *
  * Copyright (c) 2013-2014 Inviwo Foundation
  * All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met: 
- * 
+ * modification, are permitted provided that the following conditions are met:
+ *
  * 1. Redistributions of source code must retain the above copyright notice, this
- * list of conditions and the following disclaimer. 
+ * list of conditions and the following disclaimer.
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  * this list of conditions and the following disclaimer in the documentation
- * and/or other materials provided with the distribution. 
- * 
+ * and/or other materials provided with the distribution.
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
  * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
@@ -25,7 +25,7 @@
  * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- * 
+ *
  * Main file author: Erik Sundén
  *
  *********************************************************************************/
@@ -37,7 +37,7 @@
 
 namespace inviwo {
 
-ProcessorClassName(LightVolumeGL, "LightVolumeGL"); 
+ProcessorClassName(LightVolumeGL, "LightVolumeGL");
 ProcessorCategory(LightVolumeGL, "Illumination");
 ProcessorCodeState(LightVolumeGL, CODE_STATE_EXPERIMENTAL);
 
@@ -45,8 +45,8 @@ GLfloat borderColor_[4] = {
     1.f, 1.f, 1.f, 1.f
 };
 
-static const int faceAxis_[6] = { 
-    0, 0, 1, 1, 2, 2 
+static const int faceAxis_[6] = {
+    0, 0, 1, 1, 2, 2
 };
 
 static const vec3 faceCenters_[6] = {
@@ -68,34 +68,36 @@ static const vec3 faceNormals_[6] = {
 };
 
 //Defines permutation axis based on face index for chosen propagation axis.
-inline void definePermutationMatrices(mat4& permMat, mat4& permLightMat, int permFaceIndex) { 
+inline void definePermutationMatrices(mat4& permMat, mat4& permLightMat, int permFaceIndex) {
     permMat = mat4(0.f);
     permMat[3][3] = 1.f;
 
     //Permutation of x and y
-    switch(faceAxis_[permFaceIndex]){
+    switch (faceAxis_[permFaceIndex]) {
         case 0:
             permMat[0][2] = 1.f;
             permMat[1][1] = 1.f;
             break;
+
         case 1:
             permMat[0][0] = 1.f;
             permMat[1][2] = 1.f;
             break;
+
         case 2:
             permMat[0][0] = 1.f;
             permMat[1][1] = 1.f;
             break;
     }
-    permLightMat = permMat;
 
+    permLightMat = permMat;
     //Permutation of z
     float closestAxisZ = (faceNormals_[permFaceIndex])[faceAxis_[permFaceIndex]];
     permMat[2][faceAxis_[permFaceIndex]] = closestAxisZ;
     permLightMat[2][faceAxis_[permFaceIndex]] = glm::abs<float>(closestAxisZ);
 
     //For reverse axis-aligned
-    if(closestAxisZ < 0.f){
+    if (closestAxisZ < 0.f) {
         permMat[3][faceAxis_[permFaceIndex]] = 1.f;
     }
 }
@@ -120,19 +122,15 @@ LightVolumeGL::LightVolumeGL()
 {
     addPort(inport_);
     addPort(outport_);
-
     addPort(lightSource_);
-
     supportColoredLight_.onChange(this, &LightVolumeGL::supportColoredLightChanged);
     addProperty(supportColoredLight_);
-
     volumeSizeOption_.addOption("1","Full of incoming volume", 1);
     volumeSizeOption_.addOption("1/2","Half of incoming volume", 2);
     volumeSizeOption_.addOption("1/4","Quarter of incoming volume", 4);
     volumeSizeOption_.setSelectedOption(1);
     volumeSizeOption_.onChange(this, &LightVolumeGL::volumeSizeOptionChanged);
     addProperty(volumeSizeOption_);
-
     addProperty(transferFunction_);
 }
 
@@ -141,32 +139,27 @@ LightVolumeGL::~LightVolumeGL() {
 
 void LightVolumeGL::initialize() {
     ProcessorGL::initialize();
-
     propagationShader_ = new Shader("lighting/lightpropagation.vert", "lighting/lightpropagation.geom", "lighting/lightpropagation.frag", true);
     mergeShader_ = new Shader("lighting/lightvolumeblend.vert", "lighting/lightvolumeblend.geom", "lighting/lightvolumeblend.frag", true);
 
-    for(int i=0; i<2; ++i){
+    for (int i=0; i<2; ++i) {
         propParams_[i].fbo = new FrameBufferObject();
     }
 
     mergeFBO_ = new FrameBufferObject();
-
     supportColoredLightChanged();
 }
 
 void LightVolumeGL::deinitialize() {
     ProcessorGL::deinitialize();
-
     delete propagationShader_;
     propagationShader_ = NULL;
-
     delete mergeShader_;
     mergeShader_ = NULL;
 
-    for(int i=0; i<2; ++i){
+    for (int i=0; i<2; ++i) {
         delete propParams_[i].fbo;
         propParams_[i].fbo = NULL;
-
         delete propParams_[i].vol;
         propParams_[i].vol = NULL;
     }
@@ -175,7 +168,7 @@ void LightVolumeGL::deinitialize() {
     mergeFBO_ = NULL;
 }
 
-void LightVolumeGL::propagation3DTextureParameterFunction(Texture*){
+void LightVolumeGL::propagation3DTextureParameterFunction(Texture*) {
     glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER);
     glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);
     glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_BORDER);
@@ -186,66 +179,60 @@ void LightVolumeGL::propagation3DTextureParameterFunction(Texture*){
 
 void LightVolumeGL::process() {
     bool lightColorChanged = false;
-    if(lightSource_.getInvalidationLevel() >= INVALID_OUTPUT) {
+
+    if (lightSource_.getInvalidationLevel() >= INVALID_OUTPUT) {
         lightColorChanged = lightSourceChanged();
     }
 
     bool reattach = false;
-    if(internalVolumesInvalid_ || lightColorChanged || inport_.getInvalidationLevel() >= INVALID_OUTPUT) {
+
+    if (internalVolumesInvalid_ || lightColorChanged || inport_.getInvalidationLevel() >= INVALID_OUTPUT) {
         reattach = volumeChanged(lightColorChanged);
     }
 
     VolumeGL* outVolumeGL = outport_.getData()->getEditableRepresentation<VolumeGL>();
-
     TextureUnit volUnit;
     const VolumeGL* inVolumeGL = inport_.getData()->getRepresentation<VolumeGL>();
     inVolumeGL->bindTexture(volUnit.getEnum());
-
     TextureUnit transFuncUnit;
     const Layer* tfLayer = transferFunction_.get().getData();
     const LayerGL* transferFunctionGL = tfLayer->getRepresentation<LayerGL>();
     transferFunctionGL->bindTexture(transFuncUnit.getEnum());
-
     TextureUnit lightVolUnit[2];
     propParams_[0].vol->bindTexture(lightVolUnit[0].getEnum());
     propParams_[1].vol->bindTexture(lightVolUnit[1].getEnum());
-
     propagationShader_->activate();
-
     propagationShader_->setUniform("volume_", volUnit.getUnitNumber());
     propagationShader_->setUniform("volumeParameters_.dimensions_", volumeDimInF_);
     propagationShader_->setUniform("volumeParameters_.dimensionsRCP_", volumeDimInFRCP_);
     propagationShader_->setUniform("volumeParameters_.volumeToWorldTransform_", inport_.getData()->getWorldTransform());
-
     propagationShader_->setUniform("transferFunc_", transFuncUnit.getUnitNumber());
-
     propagationShader_->setUniform("lightVolumeParameters_.dimensions_", volumeDimOutF_);
     propagationShader_->setUniform("lightVolumeParameters_.dimensionsRCP_", volumeDimOutFRCP_);
-
     CanvasGL::enableDrawImagePlaneRect();
 
     //Perform propagation passes
-    for(int i=0; i<2; ++i){
+    for (int i=0; i<2; ++i) {
         propParams_[i].fbo->activate();
         glViewport(0, 0, volumeDimOut_.x, volumeDimOut_.y);
 
-        if(reattach)
+        if (reattach)
             propParams_[i].fbo->attachColorTexture(propParams_[i].vol->getTexture(), 0);
 
         propagationShader_->setUniform("lightVolume_", lightVolUnit[i].getUnitNumber());
         propagationShader_->setUniform("permutationMatrix_", propParams_[i].axisPermutation);
 
-        if(lightSource_.getData()->getLightSourceType() == LightSourceType::LIGHT_POINT){
+        if (lightSource_.getData()->getLightSourceType() == LightSourceType::LIGHT_POINT) {
             propagationShader_->setUniform("pointLight_", true);
             propagationShader_->setUniform("lightPos_", lightPos_);
             propagationShader_->setUniform("permutedLightMatrix_", propParams_[i].axisPermutationLight);
         }
-        else{
+        else {
             propagationShader_->setUniform("pointLight_", false);
-            propagationShader_->setUniform("permutedLightDirection_", propParams_[i].permutedLightDirection);     
+            propagationShader_->setUniform("permutedLightDirection_", propParams_[i].permutedLightDirection);
         }
 
-        for(unsigned int z=0; z<volumeDimOut_.z; ++z){
+        for (unsigned int z=0; z<volumeDimOut_.z; ++z) {
             glFramebufferTexture3DEXT(GL_FRAMEBUFFER_EXT, GL_COLOR_ATTACHMENT0_EXT, GL_TEXTURE_3D, propParams_[i].vol->getTexture()->getID(), 0, z);
             propagationShader_->setUniform("sliceNum_", static_cast<GLint>(z));
             CanvasGL::singleDrawImagePlaneRect();
@@ -255,65 +242,62 @@ void LightVolumeGL::process() {
     }
 
     CanvasGL::disableDrawImagePlaneRect();
-
     propagationShader_->deactivate();
-
     mergeShader_->activate();
-
     mergeShader_->setUniform("lightVolume_", lightVolUnit[0].getUnitNumber());
     mergeShader_->setUniform("lightVolumeSec_", lightVolUnit[1].getUnitNumber());
-
     mergeShader_->setUniform("lightVolumeParameters_.dimensions_", volumeDimOutF_);
     mergeShader_->setUniform("lightVolumeParameters_.dimensionsRCP_", volumeDimOutFRCP_);
-
     mergeShader_->setUniform("permMatInv_", propParams_[0].axisPermutationINV);
     mergeShader_->setUniform("permMatInvSec_", propParams_[1].axisPermutationINV);
-
     mergeShader_->setUniform("blendingFactor_", blendingFactor_);
-
     //Perform merge pass
     mergeFBO_->activate();
     glViewport(0, 0, volumeDimOut_.x, volumeDimOut_.y);
 
-    if(reattach)
+    if (reattach)
         mergeFBO_->attachColorTexture(outVolumeGL->getTexture(), 0);
 
     CanvasGL::renderImagePlaneRect(static_cast<int>(volumeDimOut_.z));
-
     mergeShader_->deactivate();
-
     mergeFBO_->deactivate();
 }
 
-bool LightVolumeGL::lightSourceChanged(){
+bool LightVolumeGL::lightSourceChanged() {
     vec3 color = vec3(1.f);
     vec3 directionToCenterOfVolume = vec3(0.f);
 
-    switch(lightSource_.getData()->getLightSourceType())
+    switch (lightSource_.getData()->getLightSourceType())
     {
-        case LightSourceType::LIGHT_DIRECTIONAL:{
-            if(lightType_ != LightSourceType::LIGHT_DIRECTIONAL){
+        case LightSourceType::LIGHT_DIRECTIONAL: {
+            if (lightType_ != LightSourceType::LIGHT_DIRECTIONAL) {
                 lightType_ = LightSourceType::LIGHT_DIRECTIONAL;
                 propagationShader_->getFragmentShaderObject()->removeShaderDefine("POINT_LIGHT");
                 propagationShader_->getFragmentShaderObject()->build();
                 propagationShader_->link();
             }
+
             const DirectionalLight* directionLight = dynamic_cast<const DirectionalLight*>(lightSource_.getData());
-            if(directionLight){
+
+            if (directionLight) {
                 directionToCenterOfVolume = directionLight->getDirection();
                 color = directionLight->getIntensity();
             }
+
             break;
         }
-        case LightSourceType::LIGHT_POINT:{
-            if(lightType_ != LightSourceType::LIGHT_POINT){
+
+        case LightSourceType::LIGHT_POINT: {
+            if (lightType_ != LightSourceType::LIGHT_POINT) {
                 lightType_ = LightSourceType::LIGHT_POINT;
                 propagationShader_->getFragmentShaderObject()->addShaderDefine("POINT_LIGHT");
                 propagationShader_->getFragmentShaderObject()->build();
                 propagationShader_->link();
             }
+
             const PointLight* pointLight = dynamic_cast<const PointLight*>(lightSource_.getData());
-            if(pointLight){
+
+            if (pointLight) {
                 mat4 toWorld = inport_.getData()->getWorldTransform();
                 vec4 volumeCenterWorldW = toWorld * vec4(0.f, 0.f, 0.f, 1.f);
                 vec3 volumeCenterWorld = volumeCenterWorldW.xyz();
@@ -321,25 +305,29 @@ bool LightVolumeGL::lightSourceChanged(){
                 directionToCenterOfVolume = glm::normalize(volumeCenterWorld - lightPos_);
                 color = pointLight->getIntensity();
             }
+
             break;
         }
+
         default:
             LogWarn("Light source not supported, can only handle Directional or Point Light");
             break;
     }
 
     updatePermuationMatrices(directionToCenterOfVolume, &propParams_[0], &propParams_[1]);
-
     bool lightColorChanged = false;
-    if(color.r != lightColor_.r){
+
+    if (color.r != lightColor_.r) {
         lightColor_.r = color.r;
         lightColorChanged = true;
     }
-    if(color.g != lightColor_.g){
+
+    if (color.g != lightColor_.g) {
         lightColor_.g = color.g;
         lightColorChanged = true;
     }
-    if(color.b != lightColor_.b){
+
+    if (color.b != lightColor_.b) {
         lightColor_.b = color.b;
         lightColorChanged = true;
     }
@@ -347,47 +335,45 @@ bool LightVolumeGL::lightSourceChanged(){
     return lightColorChanged;
 }
 
-bool LightVolumeGL::volumeChanged(bool lightColorChanged){
+bool LightVolumeGL::volumeChanged(bool lightColorChanged) {
     const Volume* input = inport_.getData();
     glm::uvec3 inDim = input->getDimension();
     glm::uvec3 outDim = uvec3(inDim.x/volumeSizeOption_.get(), inDim.y/volumeSizeOption_.get(), inDim.z/volumeSizeOption_.get());
 
-    if(internalVolumesInvalid_ || (volumeDimOut_ != outDim)){
+    if (internalVolumesInvalid_ || (volumeDimOut_ != outDim)) {
         volumeDimOut_ = outDim;
         volumeDimOutF_ = vec3(volumeDimOut_);
         volumeDimOutFRCP_ = vec3(1.0f)/volumeDimOutF_;
         volumeDimInF_ = vec3(inDim);
         volumeDimInFRCP_ = vec3(1.0f)/volumeDimInF_;
-
         const DataFormatBase* format;
-        if(supportColoredLight_.get())
+
+        if (supportColoredLight_.get())
             format = DataVec4UINT8::get();
         else
             format = DataUINT8::get();
 
-        for(int i=0; i<2; ++i){
-            if(!propParams_[i].vol || propParams_[i].vol->getDataFormat() != format){
-                if(propParams_[i].vol)
+        for (int i=0; i<2; ++i) {
+            if (!propParams_[i].vol || propParams_[i].vol->getDataFormat() != format) {
+                if (propParams_[i].vol)
                     delete propParams_[i].vol;
 
                 propParams_[i].vol = new VolumeGL(volumeDimOut_, format);
                 propParams_[i].vol->getTexture()->setTextureParameterFunction(this, &LightVolumeGL::propagation3DTextureParameterFunction);
                 propParams_[i].vol->getTexture()->initialize(NULL);
             }
-            else{
+            else {
                 propParams_[i].vol->setDimension(volumeDimOut_);
             }
         }
 
         Volume* volume = new Volume(volumeDimOut_, format);
         outport_.setData(volume);
-
         internalVolumesInvalid_ = false;
-
         return true;
     }
-    else if(lightColorChanged){
-        for(int i=0; i<2; ++i){
+    else if (lightColorChanged) {
+        for (int i=0; i<2; ++i) {
             propParams_[i].vol->getTexture()->bind();
             borderColorTextureParameterFunction();
             propParams_[i].vol->getTexture()->unbind();
@@ -397,17 +383,17 @@ bool LightVolumeGL::volumeChanged(bool lightColorChanged){
     return false;
 }
 
-void LightVolumeGL::volumeSizeOptionChanged(){
-    if(inport_.hasData()){
-        if((inport_.getData()->getDimension()/uvec3(volumeSizeOption_.get())) != volumeDimOut_){
+void LightVolumeGL::volumeSizeOptionChanged() {
+    if (inport_.hasData()) {
+        if ((inport_.getData()->getDimension()/uvec3(volumeSizeOption_.get())) != volumeDimOut_) {
             internalVolumesInvalid_ = true;
         }
     }
 }
 
-void LightVolumeGL::supportColoredLightChanged(){
-    if(propagationShader_){
-        if(supportColoredLight_.get())
+void LightVolumeGL::supportColoredLightChanged() {
+    if (propagationShader_) {
+        if (supportColoredLight_.get())
             propagationShader_->getFragmentShaderObject()->addShaderDefine("SUPPORT_LIGHT_COLOR");
         else
             propagationShader_->getFragmentShaderObject()->removeShaderDefine("SUPPORT_LIGHT_COLOR");
@@ -416,67 +402,64 @@ void LightVolumeGL::supportColoredLightChanged(){
         propagationShader_->link();
     }
 
-    if(outport_.hasData()){
+    if (outport_.hasData()) {
         int components = outport_.getData()->getDataFormat()->getComponents();
-        if((components < 3 && supportColoredLight_.get()) || (components > 1 && !supportColoredLight_.get()))
+
+        if ((components < 3 && supportColoredLight_.get()) || (components > 1 && !supportColoredLight_.get()))
             internalVolumesInvalid_ = true;
     }
 }
 
-void LightVolumeGL::borderColorTextureParameterFunction(){
-    if(supportColoredLight_.get())
+void LightVolumeGL::borderColorTextureParameterFunction() {
+    if (supportColoredLight_.get())
         glTexParameterfv(GL_TEXTURE_3D, GL_TEXTURE_BORDER_COLOR, glm::value_ptr(lightColor_));
     else
         glTexParameterfv(GL_TEXTURE_3D, GL_TEXTURE_BORDER_COLOR, borderColor_);
 }
 
-void LightVolumeGL::updatePermuationMatrices(const vec3& lightDir, PropagationParameters* closest, PropagationParameters* secondClosest){
-    if(calculatedOnes_ && lightDir==lightDir_)
+void LightVolumeGL::updatePermuationMatrices(const vec3& lightDir, PropagationParameters* closest, PropagationParameters* secondClosest) {
+    if (calculatedOnes_ && lightDir==lightDir_)
         return;
 
     lightDir_ = lightDir;
-
     vec3 invertedLightPos = -lightDir;
     vec3 invertedLightPosNorm = glm::normalize(invertedLightPos);
-
     //Calculate closest and second closest axis-aligned face.
     float thisVal = glm::dot(faceNormals_[0], invertedLightPosNorm - faceCenters_[0]);
     float closestVal = thisVal;
     float secondClosestVal = 0.f;
     int closestFace = 0;
     int secondClosestFace = -1;
-    for(int i=1; i<6; ++i){
+
+    for (int i=1; i<6; ++i) {
         thisVal = glm::dot(faceNormals_[i], invertedLightPosNorm - faceCenters_[i]);
-        if(thisVal < closestVal){
+
+        if (thisVal < closestVal) {
             secondClosestVal = closestVal;
             secondClosestFace = closestFace;
             closestVal = thisVal;
             closestFace = i;
         }
-        else if(thisVal < secondClosestVal){
+        else if (thisVal < secondClosestVal) {
             secondClosestVal = thisVal;
             secondClosestFace = i;
         }
     }
 
     vec4 tmpLightDir = vec4(lightDir.x, lightDir.y, lightDir.z, 1.f);
-
     //Perform permutation calculation for closest face
     definePermutationMatrices(closest->axisPermutation, closest->axisPermutationLight, closestFace);
     //LogInfo("1st Axis Permutation: " << closest->axisPermutation);
     closest->axisPermutationINV = glm::inverse(closest->axisPermutation);
     closest->permutedLightDirection = closest->axisPermutationLight * tmpLightDir;
-
     //Perform permutation calculation for second closest face
     definePermutationMatrices(secondClosest->axisPermutation, secondClosest->axisPermutationLight, secondClosestFace);
     //LogInfo("2nd Axis Permutation: " << secondClosest->axisPermutation);
     secondClosest->axisPermutationINV = glm::inverse(secondClosest->axisPermutation);
     secondClosest->permutedLightDirection = secondClosest->axisPermutationLight * tmpLightDir;
-
     //Calculate the blending factor
     blendingFactor_ = static_cast<float>(1.f-(2.f*glm::acos<float>(glm::dot(invertedLightPosNorm, -faceNormals_[closestFace]))/M_PI));
     //LogInfo("Blending Factor: " << blendingFactor_);
-
     calculatedOnes_ = true;
 }
 

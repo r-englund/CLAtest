@@ -1,20 +1,20 @@
- /*********************************************************************************
+/*********************************************************************************
  *
  * Inviwo - Interactive Visualization Workshop
  * Version 0.6b
  *
  * Copyright (c) 2014 Inviwo Foundation
  * All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met: 
- * 
+ * modification, are permitted provided that the following conditions are met:
+ *
  * 1. Redistributions of source code must retain the above copyright notice, this
- * list of conditions and the following disclaimer. 
+ * list of conditions and the following disclaimer.
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  * this list of conditions and the following disclaimer in the documentation
- * and/or other materials provided with the distribution. 
- * 
+ * and/or other materials provided with the distribution.
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
  * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
@@ -25,7 +25,7 @@
  * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- * 
+ *
  * Main file author: Peter Steneteg
  *
  *********************************************************************************/
@@ -41,7 +41,6 @@ PortInspector::PortInspector(std::string portClassName, std::string inspectorWor
     , active_(false)
     , needsUpdate_(false)
     , inspectorNetwork_(NULL) {
-    
     InviwoApplication::getPtr()->registerFileObserver(this);
 }
 
@@ -90,33 +89,32 @@ std::vector<Processor*> PortInspector::getProcessors() {
     return processors_;
 }
 
-void PortInspector::fileChanged(std::string fileName){
+void PortInspector::fileChanged(std::string fileName) {
     needsUpdate_ = true;
 }
 
 void PortInspector::initialize() {
-    if(active_ == false && needsUpdate_) {
-        if(inspectorNetwork_) {
+    if (active_ == false && needsUpdate_) {
+        if (inspectorNetwork_) {
             delete inspectorNetwork_;
             inspectorNetwork_ = NULL;
-
             processors_.clear();
             inPorts_.clear();
             connections_.clear();
             processorLinks_.clear();
             canvasProcessor_ = NULL;
         }
+
         stopFileObservation(inspectorNetworkFileName_);
         needsUpdate_ = false;
     }
-    if(inspectorNetwork_) {
+
+    if (inspectorNetwork_) {
         return;
     }
 
-
     //Observe the filename;
     startFileObservation(inspectorNetworkFileName_);
-    
     // Deserialize the network
     IvwDeserializer xmlDeserializer(inspectorNetworkFileName_);
     inspectorNetwork_ = new ProcessorNetwork();
@@ -142,7 +140,6 @@ void PortInspector::initialize() {
 
         if (canvasProcessor)
             canvasProcessor_ = canvasProcessor;
-
     }
 
     // Store the connections and and disconnect them.

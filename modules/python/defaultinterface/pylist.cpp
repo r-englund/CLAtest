@@ -1,20 +1,20 @@
- /*********************************************************************************
+/*********************************************************************************
  *
  * Inviwo - Interactive Visualization Workshop
  * Version 0.6b
  *
  * Copyright (c) 2013-2014 Inviwo Foundation
  * All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met: 
- * 
+ * modification, are permitted provided that the following conditions are met:
+ *
  * 1. Redistributions of source code must retain the above copyright notice, this
- * list of conditions and the following disclaimer. 
+ * list of conditions and the following disclaimer.
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  * this list of conditions and the following disclaimer in the documentation
- * and/or other materials provided with the distribution. 
- * 
+ * and/or other materials provided with the distribution.
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
  * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
@@ -25,7 +25,7 @@
  * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- * 
+ *
  * Main file author: Rickard Englund
  *
  *********************************************************************************/
@@ -41,9 +41,10 @@
 namespace inviwo {
 
 
-PyObject* py_listProperties(PyObject* /*self*/, PyObject* args){
+PyObject* py_listProperties(PyObject* /*self*/, PyObject* args) {
     static PyListPropertiesMethod p;
-    if(!p.testParams(args))
+
+    if (!p.testParams(args))
         return 0;
 
     if (PyTuple_Size(args) != 1) {
@@ -61,35 +62,38 @@ PyObject* py_listProperties(PyObject* /*self*/, PyObject* args){
     }
 
     std::string processorName = PyValueParser::parse<std::string>(PyTuple_GetItem(args, 0));
-    
-    Processor* processor = InviwoApplication::getPtr()->getProcessorNetwork ()->getProcessorByName(processorName);
-    if(!processor){
+    Processor* processor = InviwoApplication::getPtr()->getProcessorNetwork()->getProcessorByName(processorName);
+
+    if (!processor) {
         std::ostringstream errStr;
         errStr << "listProperties(): no processor with name " << processorName << " could be found";
         PyErr_SetString(PyExc_TypeError, errStr.str().c_str());
-    }else{
+    } else {
         std::vector<Property*> props = processor->getProperties();
-        for(std::vector<Property*>::const_iterator p = props.begin(); p != props.end();++p){
+
+        for (std::vector<Property*>::const_iterator p = props.begin(); p != props.end(); ++p) {
             std::string name = (*p)->getIdentifier();
             std::string type  = (*p)->getClassName();
             PyRun_SimpleString(("print \""+ name + " : "+ type + "\"").c_str());
         }
-
     }
+
     Py_RETURN_NONE;
 }
 
 
 
-PyObject* py_listProcesoors(PyObject* /*self*/, PyObject* /*args*/){
-    if(InviwoApplication::getPtr() && InviwoApplication::getPtr()->getProcessorNetwork()){
+PyObject* py_listProcesoors(PyObject* /*self*/, PyObject* /*args*/) {
+    if (InviwoApplication::getPtr() && InviwoApplication::getPtr()->getProcessorNetwork()) {
         std::vector<Processor*> processors  = InviwoApplication::getPtr()->getProcessorNetwork()->getProcessors();
-        for(std::vector<Processor*>::const_iterator processor = processors.begin();processor!=processors.end();++processor){
+
+        for (std::vector<Processor*>::const_iterator processor = processors.begin(); processor!=processors.end(); ++processor) {
             std::string name = (*processor)->getIdentifier();
             std::string type  = (*processor)->getClassName();
             PyRun_SimpleString(("print \""+ name + " : "+ type + "\"").c_str());
         }
     }
+
     Py_RETURN_NONE;
 }
 

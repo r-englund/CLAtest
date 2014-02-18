@@ -1,20 +1,20 @@
- /*********************************************************************************
+/*********************************************************************************
  *
  * Inviwo - Interactive Visualization Workshop
  * Version 0.6b
  *
  * Copyright (c) 2013-2014 Inviwo Foundation
  * All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met: 
- * 
+ * modification, are permitted provided that the following conditions are met:
+ *
  * 1. Redistributions of source code must retain the above copyright notice, this
- * list of conditions and the following disclaimer. 
+ * list of conditions and the following disclaimer.
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  * this list of conditions and the following disclaimer in the documentation
- * and/or other materials provided with the distribution. 
- * 
+ * and/or other materials provided with the distribution.
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
  * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
@@ -25,7 +25,7 @@
  * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- * 
+ *
  * Main file authors: Alexander Johansson, Rickard Englund
  *
  *********************************************************************************/
@@ -126,7 +126,7 @@ PropertySettingsWidgetQt::~PropertySettingsWidgetQt() {
 }
 
 #define FIX_TAB_ORDER(e) if(e){order.push_back(e);}
-void PropertySettingsWidgetQt::fixTabOrder(){
+void PropertySettingsWidgetQt::fixTabOrder() {
     std::vector<QWidget*> order;
     FIX_TAB_ORDER(lineEditMinX_);
     FIX_TAB_ORDER(lineEditMinY_);
@@ -144,7 +144,7 @@ void PropertySettingsWidgetQt::fixTabOrder(){
     FIX_TAB_ORDER(btnApply_);
     FIX_TAB_ORDER(btnCancel_);
 
-    for(size_t i = 0;i<order.size()-1;i++){
+    for (size_t i = 0; i<order.size()-1; i++) {
         setTabOrder(order[i],order[i+1]);
     }
 
@@ -157,58 +157,48 @@ void PropertySettingsWidgetQt::generateWidget() {
     connect(btnApply_,SIGNAL(clicked()),this,SLOT(save()));
     connect(btnCancel_,SIGNAL(clicked()),this,SLOT(cancel()));
     gridLayout_ = new QGridLayout(this);
-
     minValueLabel_ = new QLabel("Min value",this);
     maxValueLabel_ = new QLabel("Max value",this);
     incValueLabel_ = new QLabel("Increment",this);
-
-
     gridLayout_->addWidget(minValueLabel_,1,1);
     gridLayout_->addWidget(maxValueLabel_,2,1);
     gridLayout_->addWidget(incValueLabel_,3,1);
 
-
-
-    if (floatProperty_!= NULL || intProperty_!= NULL){
+    if (floatProperty_!= NULL || intProperty_!= NULL) {
         generateSingleWidget();
         gridLayout_->addWidget(btnApply_,4,1);
         gridLayout_->addWidget(btnCancel_,4,2);
     }
 
-    if (floatVec2Property_ != NULL || intVec2Property_ != NULL){
+    if (floatVec2Property_ != NULL || intVec2Property_ != NULL) {
         generateVec2Widget();
         gridLayout_->addWidget(btnApply_,5,1,1,2);
         gridLayout_->addWidget(btnCancel_,5,3,1,2);
     }
 
-    if (floatVec3Property_ != NULL || intVec3Property_ != NULL){
+    if (floatVec3Property_ != NULL || intVec3Property_ != NULL) {
         generateVec3Widget();
         gridLayout_->addWidget(btnApply_,5,2,1,2);
         gridLayout_->addWidget(btnCancel_,5,4,1,1);
     }
 
-    if (floatVec4Property_!=NULL || intVec4Property_!=NULL){
+    if (floatVec4Property_!=NULL || intVec4Property_!=NULL) {
         generateVec4Widget();
         gridLayout_->addWidget(btnApply_,5,2,1,2);
         gridLayout_->addWidget(btnCancel_,5,4,1,2);
     }
 
-
     setLayout(gridLayout_);
-
     fixTabOrder();
-
     reload();
     setWindowTitle(QString::fromStdString(property_->getDisplayName()));
 }
 
-void PropertySettingsWidgetQt::generateSingleWidget(){
+void PropertySettingsWidgetQt::generateSingleWidget() {
     xValueLabel_ = new QLabel("X",this);
     lineEditMinX_ = new QLineEdit(this);
     lineEditMaxX_ = new QLineEdit(this);
     lineEditIcrementX_ = new QLineEdit(this);
-
-    
     gridLayout_->addWidget(xValueLabel_      ,0,2,1,1,Qt::AlignHCenter);
     gridLayout_->addWidget(lineEditMinX_     ,1,2);
     gridLayout_->addWidget(lineEditMaxX_     ,2,2);
@@ -222,8 +212,6 @@ void PropertySettingsWidgetQt::generateVec2Widget() {
     lineEditMinY_ = new QLineEdit(this);
     lineEditMaxY_ = new QLineEdit(this);
     lineEditIcrementY_ = new QLineEdit(this);
-
-
     gridLayout_->addWidget(yValueLabel_      ,0,3,1,1,Qt::AlignHCenter);
     gridLayout_->addWidget(lineEditMinY_     ,1,3);
     gridLayout_->addWidget(lineEditMaxY_     ,2,3);
@@ -237,8 +225,6 @@ void PropertySettingsWidgetQt::generateVec3Widget() {
     lineEditMinZ_ = new QLineEdit(this);
     lineEditMaxZ_ = new QLineEdit(this);
     lineEditIcrementZ_ = new QLineEdit(this);
-
-
     gridLayout_->addWidget(zValueLabel_      ,0,4,1,1,Qt::AlignHCenter);
     gridLayout_->addWidget(lineEditMinZ_     ,1,4);
     gridLayout_->addWidget(lineEditMaxZ_     ,2,4);
@@ -252,8 +238,6 @@ void PropertySettingsWidgetQt::generateVec4Widget() {
     lineEditMinW_ = new QLineEdit(this);
     lineEditMaxW_ = new QLineEdit(this);
     lineEditIcrementW_ = new QLineEdit(this);
-
-
     gridLayout_->addWidget(wValueLabel_      ,0,5,1,1,Qt::AlignHCenter);
     gridLayout_->addWidget(lineEditMinW_     ,1,5);
     gridLayout_->addWidget(lineEditMaxW_     ,2,5);

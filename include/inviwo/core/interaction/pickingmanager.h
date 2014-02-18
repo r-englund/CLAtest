@@ -1,4 +1,4 @@
- /*********************************************************************************
+/*********************************************************************************
  *
  * Inviwo - Interactive Visualization Workshop
  * Version 0.6b
@@ -39,8 +39,8 @@
 
 namespace inviwo {
 /** \class PickingManager
-* Manager for picking objects.
-*/
+ * Manager for picking objects.
+ */
 
 class FindPickingObject {
 public:

@@ -1,20 +1,20 @@
- /*********************************************************************************
+/*********************************************************************************
  *
  * Inviwo - Interactive Visualization Workshop
  * Version 0.6b
  *
  * Copyright (c) 2012-2014 Inviwo Foundation
  * All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met: 
- * 
+ * modification, are permitted provided that the following conditions are met:
+ *
  * 1. Redistributions of source code must retain the above copyright notice, this
- * list of conditions and the following disclaimer. 
+ * list of conditions and the following disclaimer.
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  * this list of conditions and the following disclaimer in the documentation
- * and/or other materials provided with the distribution. 
- * 
+ * and/or other materials provided with the distribution.
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
  * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
@@ -25,7 +25,7 @@
  * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- * 
+ *
  * Main file authors: Erik Sundén, Timo Ropinski
  *
  *********************************************************************************/
@@ -212,7 +212,6 @@ void ProcessorTreeWidget::addProcessorsToTree() {
 
         processorTree_->sortItems(0, Qt::AscendingOrder);
     }
-
     else if (listView_->currentIndex() == 1) { // By Category
         for (size_t curModuleId=0; curModuleId<inviwoApp->getModules().size(); curModuleId++) {
             std::vector<ProcessorFactoryObject*> curProcessorList = inviwoApp->getModules()[curModuleId]->getProcessors();
@@ -236,7 +235,6 @@ void ProcessorTreeWidget::addProcessorsToTree() {
 
         processorTree_->sortItems(0, Qt::AscendingOrder);
     }
-
     else if (listView_->currentIndex() == 2) { //By Code State
         QTreeWidgetItem* stableItems = new QTreeWidgetItem(QStringList(QString("Stable Processors")));
         QTreeWidgetItem* experimentalItems = new QTreeWidgetItem(QStringList(QString("Experimental Processors")));
@@ -283,7 +281,6 @@ void ProcessorTreeWidget::addProcessorsToTree() {
             brokenItems->sortChildren(0, Qt::AscendingOrder);
         }
     }
-
     else if (listView_->currentIndex() == 3) { //By Module
         for (size_t curModuleId=0; curModuleId<inviwoApp->getModules().size(); curModuleId++) {
             QTreeWidgetItem* moduleItem = new QTreeWidgetItem(QStringList(QString::fromStdString(

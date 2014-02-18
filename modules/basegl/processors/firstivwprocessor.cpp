@@ -1,20 +1,20 @@
- /*********************************************************************************
+/*********************************************************************************
  *
  * Inviwo - Interactive Visualization Workshop
  * Version 0.6b
  *
  * Copyright (c) 2012-2014 Inviwo Foundation
  * All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met: 
- * 
+ * modification, are permitted provided that the following conditions are met:
+ *
  * 1. Redistributions of source code must retain the above copyright notice, this
- * list of conditions and the following disclaimer. 
+ * list of conditions and the following disclaimer.
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  * this list of conditions and the following disclaimer in the documentation
- * and/or other materials provided with the distribution. 
- * 
+ * and/or other materials provided with the distribution.
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
  * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
@@ -25,7 +25,7 @@
  * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- * 
+ *
  * Main file authors: Timo Ropinski, Erik Sundén
  *
  *********************************************************************************/
@@ -34,7 +34,7 @@
 
 namespace inviwo {
 
-ProcessorClassName(FirstIvwProcessor, "FirstIVWProcessor"); 
+ProcessorClassName(FirstIvwProcessor, "FirstIVWProcessor");
 ProcessorCategory(FirstIvwProcessor, "Various");
 ProcessorCodeState(FirstIvwProcessor, CODE_STATE_STABLE);
 
@@ -49,7 +49,6 @@ FirstIvwProcessor::FirstIvwProcessor()
 
 void FirstIvwProcessor::process() {
     activateAndClearTarget(outport_);
-
     glMatrixMode(GL_MODELVIEW);
     glPushMatrix();
     glLoadIdentity();
@@ -58,22 +57,20 @@ void FirstIvwProcessor::process() {
     glLoadIdentity();
     glColor4f(color_.get().x, color_.get().y, color_.get().z, 1.0);
     glBegin(GL_QUADS);
-        glVertex3f(-1.0f,  1.0f, 0.999f);
-        glVertex3f( 1.0f,  1.0f, 0.999f);
-        glVertex3f( 1.0f, -1.0f, 0.999f);
-        glVertex3f(-1.0f, -1.0f, 0.999f);
+    glVertex3f(-1.0f,  1.0f, 0.999f);
+    glVertex3f(1.0f,  1.0f, 0.999f);
+    glVertex3f(1.0f, -1.0f, 0.999f);
+    glVertex3f(-1.0f, -1.0f, 0.999f);
     glEnd();
-
     glColor4f(0.0, 1.0, 0.0, 1.0);
     glBegin(GL_TRIANGLES);
-        glVertex3f( 0.0f,  1.0f, 0.0f);
-        glVertex3f(-1.0f, -1.0f, 0.0f);
-        glVertex3f( 1.0f, -1.0f, 0.0f);
+    glVertex3f(0.0f,  1.0f, 0.0f);
+    glVertex3f(-1.0f, -1.0f, 0.0f);
+    glVertex3f(1.0f, -1.0f, 0.0f);
     glEnd();
     glPopMatrix();
     glMatrixMode(GL_MODELVIEW);
     glPopMatrix();
-    
     deactivateCurrentTarget();
 }
 

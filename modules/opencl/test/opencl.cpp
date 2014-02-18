@@ -1,20 +1,20 @@
- /*********************************************************************************
+/*********************************************************************************
  *
  * Inviwo - Interactive Visualization Workshop
  * Version 0.6b
  *
  * Copyright (c) 2013 Inviwo Foundation
  * All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met: 
- * 
+ * modification, are permitted provided that the following conditions are met:
+ *
  * 1. Redistributions of source code must retain the above copyright notice, this
- * list of conditions and the following disclaimer. 
+ * list of conditions and the following disclaimer.
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  * this list of conditions and the following disclaimer in the documentation
- * and/or other materials provided with the distribution. 
- * 
+ * and/or other materials provided with the distribution.
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
  * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
@@ -25,7 +25,7 @@
  * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- * 
+ *
  * Main file author: Daniel Jönsson
  *
  *********************************************************************************/
@@ -48,23 +48,20 @@
 
 int test_buffer()
 {
-	int error(0);
-    
+    int error(0);
     int test[4] = {0, 1, 2, 3};
+
     try {
-        cl::Buffer buffer(CL_MEM_READ_WRITE | CL_MEM_USE_HOST_PTR, sizeof(test), test); 
-        
+        cl::Buffer buffer(CL_MEM_READ_WRITE | CL_MEM_USE_HOST_PTR, sizeof(test), test);
         int result[4];
         inviwo::OpenCL::getInstance()->getQueue().enqueueReadBuffer(buffer, true, 0, sizeof(test), result);
-        for(int i = 0; i < 4; ++i) {
+
+        for (int i = 0; i < 4; ++i) {
             error |= test[i] != result[i];
-            
         }
-    } catch(cl::Error) {
+    } catch (cl::Error) {
         error +=1;
     }
-
-    
 
     return error;
 }
@@ -78,7 +75,6 @@ int test_image() {
     //    0, 0, 0, 0,
     //    0, 0, 0, 0,
     //    0, 0, 0, 0};
-
     //cl::Image2D img(*inviwo::OpenCL::getInstance()->getContext(), CL_MEM_READ_WRITE | CL_MEM_USE_HOST_PTR, CL_FLOAT, 4, 4, imageData);
     uvec2 imageSize(512, 503);
     std::vector<uint8_t> imageData(imageSize.x*imageSize.y);
@@ -86,13 +82,15 @@ int test_image() {
     inviwo::ImageRAM* ram = image.getRepresentation<inviwo::ImageRAM>();
 
     try {
-        inviwo::ImageCL *imageCL = image.getRepresentation<inviwo::ImageCL>();
-        inviwo::OpenCL::getInstance()->getQueue().enqueueWriteImage(*(imageCL->getImage()), true, glm::svec3(0), glm::svec3(imageSize, 1), 0, 0, &imageData[0]);
+        inviwo::ImageCL* imageCL = image.getRepresentation<inviwo::ImageCL>();
+        inviwo::OpenCL::getInstance()->getQueue().enqueueWriteImage(*(imageCL->getImage()), true, glm::svec3(0), glm::svec3(imageSize, 1), 0, 0,
+                &imageData[0]);
         uvec2 resizeTo(212, 103);
         imageCL->resize(resizeTo);
         std::vector<uint8_t> resizedImageData(resizeTo.x*resizeTo.y);
-        inviwo::OpenCL::getInstance()->getQueue().enqueueReadImage(*(imageCL->getImage()), true, glm::svec3(0), glm::svec3(resizeTo, 1), 0, 0, &resizedImageData[0]);
-    } catch(cl::Error) {
+        inviwo::OpenCL::getInstance()->getQueue().enqueueReadImage(*(imageCL->getImage()), true, glm::svec3(0), glm::svec3(resizeTo, 1), 0, 0,
+                &resizedImageData[0]);
+    } catch (cl::Error) {
         error +=1;
     }
 
@@ -103,12 +101,9 @@ int main()
 {
     // Enable output to console
     inviwo::LogCentral::instance()->registerLogger(new inviwo::ConsoleLogger());
-    
-	int error(0);
-
-	error += test_buffer();
+    int error(0);
+    error += test_buffer();
     error += test_image();
-
-	return error;
+    return error;
 }
 

@@ -1,4 +1,4 @@
- /*********************************************************************************
+/*********************************************************************************
  *
  * Inviwo - Interactive Visualization Workshop
  * Version 0.6b
@@ -41,12 +41,12 @@
 namespace inviwo {
 
 /** \class MultiInport
-*
-* Support class for inports that can handle multiple inputs.
-* This class allows us to check if an Inport
-* can handle multiple connections through dynamic_cast.
-* @see MultiDataInport
-*/
+ *
+ * Support class for inports that can handle multiple inputs.
+ * This class allows us to check if an Inport
+ * can handle multiple connections through dynamic_cast.
+ * @see MultiDataInport
+ */
 class IVW_CORE_API MultiInport : public Inport {
 public:
     typedef std::set< Inport* > InportSet;
@@ -68,7 +68,7 @@ public:
     std::vector<Outport*> getConnectedOutports() const;
     size_t getNumConnectedOutports() const { return inports_->size(); }
 
-    void disconnectFrom(Outport* outport); 
+    void disconnectFrom(Outport* outport);
 
 protected:
 

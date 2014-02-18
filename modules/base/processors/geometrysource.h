@@ -9,7 +9,7 @@
 
 namespace inviwo {
 
-class IVW_MODULE_BASE_API GeometrySource : public DataSource<Geometry, GeometryOutport> { 
+class IVW_MODULE_BASE_API GeometrySource : public DataSource<Geometry, GeometryOutport> {
 public:
     GeometrySource();
     virtual ~GeometrySource();

@@ -1,4 +1,4 @@
- /*********************************************************************************
+/*********************************************************************************
  *
  * Inviwo - Interactive Visualization Workshop
  * Version 0.6b
@@ -41,13 +41,13 @@ namespace inviwo {
 class Processor;
 
 /** \class ProcessorObserver
-*
-* Processor observer that knows which processor did the notification.
-* Has notification for begin and end of it's invalidation.
-* Inherits from VoidObserver.
-*
-* @see ProcessorObservable
-*/
+ *
+ * Processor observer that knows which processor did the notification.
+ * Has notification for begin and end of it's invalidation.
+ * Inherits from VoidObserver.
+ *
+ * @see ProcessorObservable
+ */
 class IVW_CORE_API ProcessorObserver: public VoidObserver {
 public:
     ProcessorObserver(): VoidObserver() {};
@@ -61,17 +61,18 @@ public:
 
 
 /** \class ProcessorObservable
-*
-* Can call notifyObserversInvalidationBegin and notifyObserversInvalidationEnd
-*
-* @see ProcessorObserver
-*/
+ *
+ * Can call notifyObserversInvalidationBegin and notifyObserversInvalidationEnd
+ *
+ * @see ProcessorObserver
+ */
 class IVW_CORE_API ProcessorObservable: public Observable<ProcessorObserver> {
 public:
     ProcessorObservable(): Observable<ProcessorObserver>() {};
 
     void notifyObservers() const {
         ObserverSet localObservers = *observers_;
+
         for (ObserverSet::reverse_iterator it = localObservers.rbegin(); it != localObservers.rend(); ++it) {
             static_cast<ProcessorObserver*>(*it)->notify();
         }
@@ -79,6 +80,7 @@ public:
 
     void notifyObservers(Processor* p) const {
         ObserverSet localObservers = *observers_;
+
         for (ObserverSet::reverse_iterator it = localObservers.rbegin(); it != localObservers.rend(); ++it) {
             static_cast<ProcessorObserver*>(*it)->notifyProcessorObserver(p);
         }
@@ -87,6 +89,7 @@ public:
     //TODO: Use seperate class for property observation if necessary
     void notifyObserversAboutPropertyChange(Property* p) const {
         ObserverSet localObservers = *observers_;
+
         for (ObserverSet::reverse_iterator it = localObservers.rbegin(); it != localObservers.rend(); ++it) {
             static_cast<ProcessorObserver*>(*it)->notifyObserversAboutPropertyChange(p);
         }
@@ -94,6 +97,7 @@ public:
 
     void notifyObserversInvalidationBegin(Processor* p) const {
         ObserverSet localObservers = *observers_;
+
         for (ObserverSet::reverse_iterator it = localObservers.rbegin(); it != localObservers.rend(); ++it) {
             static_cast<ProcessorObserver*>(*it)->notifyInvalidationBegin(p);
         }
@@ -101,6 +105,7 @@ public:
 
     void notifyObserversInvalidationEnd(Processor* p) const {
         ObserverSet localObservers = *observers_;
+
         for (ObserverSet::reverse_iterator it = localObservers.rbegin(); it != localObservers.rend(); ++it) {
             static_cast<ProcessorObserver*>(*it)->notifyInvalidationEnd(p);
         }
@@ -108,6 +113,7 @@ public:
 
     void notifyObserversRequestEvaluate(Processor* p) const {
         ObserverSet localObservers = *observers_;
+
         for (ObserverSet::reverse_iterator it = localObservers.rbegin(); it != localObservers.rend(); ++it) {
             static_cast<ProcessorObserver*>(*it)->notifyRequestEvaluate(p);
         }

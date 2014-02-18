@@ -1,4 +1,4 @@
- /*********************************************************************************
+/*********************************************************************************
  *
  * Inviwo - Interactive Visualization Workshop
  * Version 0.6b
@@ -39,31 +39,31 @@
 namespace inviwo {
 
 /** \class ProgressBarOwner
-*
-* Class to support processors owning a ProgressBar.
-* This class allows a progress bar contained within a processor to be visible in the network.
-*
-* \section example Example
-* Example of how to apply it to a processor.
-* @code
-*    class IVW_XXX_API MyProcessor: public Processor, public ProgressBarOwner {
-*    public:
-*        MyProcessor(): Processor(), ProgressBarOwner() {};
-*        // Need to overload serialize/deseralize
-*        virtual void serialize(IvwSerializer& s) const {
-*           Processor::serialize(s);
-*           s.serialize("ProgressBar", getProgressBar());
-*        }
-*        virtual void deserialize(IvwDeserializer& d) {
-*           Processor::deserialize(d);
-*           d.deserialize("ProgressBar", getProgressBar());
-*        }
-*    };
-*
-* @endcode
-* @see ProgressBar
-* @see ProgressBarObservable
-*/
+ *
+ * Class to support processors owning a ProgressBar.
+ * This class allows a progress bar contained within a processor to be visible in the network.
+ *
+ * \section example Example
+ * Example of how to apply it to a processor.
+ * @code
+ *    class IVW_XXX_API MyProcessor: public Processor, public ProgressBarOwner {
+ *    public:
+ *        MyProcessor(): Processor(), ProgressBarOwner() {};
+ *        // Need to overload serialize/deseralize
+ *        virtual void serialize(IvwSerializer& s) const {
+ *           Processor::serialize(s);
+ *           s.serialize("ProgressBar", getProgressBar());
+ *        }
+ *        virtual void deserialize(IvwDeserializer& d) {
+ *           Processor::deserialize(d);
+ *           d.deserialize("ProgressBar", getProgressBar());
+ *        }
+ *    };
+ *
+ * @endcode
+ * @see ProgressBar
+ * @see ProgressBarObservable
+ */
 class IVW_CORE_API ProgressBarOwner  {
 public:
     ProgressBarOwner() {};

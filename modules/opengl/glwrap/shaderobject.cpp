@@ -1,20 +1,20 @@
- /*********************************************************************************
+/*********************************************************************************
  *
  * Inviwo - Interactive Visualization Workshop
  * Version 0.6b
  *
  * Copyright (c) 2012-2014 Inviwo Foundation
  * All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met: 
- * 
+ * modification, are permitted provided that the following conditions are met:
+ *
  * 1. Redistributions of source code must retain the above copyright notice, this
- * list of conditions and the following disclaimer. 
+ * list of conditions and the following disclaimer.
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  * this list of conditions and the following disclaimer in the documentation
- * and/or other materials provided with the distribution. 
- * 
+ * and/or other materials provided with the distribution.
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
  * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
@@ -25,7 +25,7 @@
  * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- * 
+ *
  * Main file author: Timo Ropinski
  *
  *********************************************************************************/
@@ -55,18 +55,22 @@ ShaderObject::~ShaderObject() {
 bool ShaderObject::initialize(bool compileShader) {
     // Help developer to spot errors
     std::string fileExtension = URLParser::getFileExtension(fileName_);
-    if( (fileExtension == "vert" && shaderType_ != GL_VERTEX_SHADER)
-     || (fileExtension == "geom" && shaderType_ != GL_GEOMETRY_SHADER)
-     || (fileExtension == "frag" && shaderType_ != GL_FRAGMENT_SHADER)) {
+
+    if ((fileExtension == "vert" && shaderType_ != GL_VERTEX_SHADER)
+        || (fileExtension == "geom" && shaderType_ != GL_GEOMETRY_SHADER)
+        || (fileExtension == "frag" && shaderType_ != GL_FRAGMENT_SHADER)) {
         LogWarn("File extension does not match shader type: " << fileName_);
     }
+
     id_ = glCreateShader(shaderType_);
     LGL_ERROR;
     loadSource(fileName_);
     preprocess();
     upload();
     bool result = true;
+
     if (compileShader) result = compile();
+
     return result;
 }
 
@@ -94,28 +98,36 @@ void ShaderObject::preprocess() {
 
 std::string ShaderObject::embeddDefines(std::string source) {
     std::ostringstream result;
+
     for (size_t i=0; i<shaderDefines_.size(); i++) {
         std::pair<std::string, std::string> curDefine = shaderDefines_[i];
         result << "#define " << curDefine.first << " " << curDefine.second << "\n";
         lineNumberResolver_.push_back(std::pair<std::string, unsigned int>("Define", 0));
     }
+
     std::string curLine;
     std::string globalGLSLHeader = ShaderManager::getRef().getGlobalGLSLHeader();
-    if(shaderType_ == GL_FRAGMENT_SHADER)
+
+    if (shaderType_ == GL_FRAGMENT_SHADER)
         globalGLSLHeader += ShaderManager::getRef().getGlobalGLSLFragmentDefines();
+
     std::istringstream globalGLSLHeaderStream(globalGLSLHeader);
+
     while (std::getline(globalGLSLHeaderStream, curLine))
         lineNumberResolver_.push_back(std::pair<std::string, unsigned int>("GlobalGLSLSHeader", 0));
+
     return globalGLSLHeader + result.str();
 }
 
 std::string ShaderObject::embeddOutDeclarations(std::string source) {
     std::ostringstream result;
+
     for (size_t i=0; i<outDeclarations_.size(); i++) {
         std::string curDeclaration = outDeclarations_[i];
         result << "out vec4 " << curDeclaration << ";\n";
         lineNumberResolver_.push_back(std::pair<std::string, unsigned int>("Out Declaration", 0));
     }
+
     return result.str();
 }
 
@@ -124,16 +136,18 @@ std::string ShaderObject::embeddIncludes(std::string source, std::string fileNam
     std::string curLine;
     std::istringstream shaderSource(source);
     int localLineNumber = 1;
+
     while (std::getline(shaderSource, curLine)) {
         std::string::size_type posInclude = curLine.find("#include");
         std::string::size_type posComment = curLine.find("//");
+
         if (posInclude!=std::string::npos && (posComment==std::string::npos || posComment>posInclude)) {
             std::string::size_type pathBegin = curLine.find("\"", posInclude+1);
             std::string::size_type pathEnd = curLine.find("\"", pathBegin+1);
             std::string includeFileName(curLine, pathBegin+1, pathEnd-pathBegin-1);
-
             bool includeFileFound = false;
             std::vector<std::string> shaderSearchPaths = ShaderManager::getRef().getShaderSearchPaths();
+
             for (size_t i=0; i<shaderSearchPaths.size(); i++) {
                 if (URLParser::fileExists(shaderSearchPaths[i]+"/"+includeFileName)) {
                     includeFileName = shaderSearchPaths[i]+"/"+includeFileName;
@@ -141,33 +155,40 @@ std::string ShaderObject::embeddIncludes(std::string source, std::string fileNam
                     std::ifstream includeFileStream(includeFileName.c_str());
                     std::stringstream buffer;
                     buffer << includeFileStream.rdbuf();
-                    std::string includeSource = buffer.str();            
+                    std::string includeSource = buffer.str();
+
                     if (!includeSource.empty())
                         result << embeddIncludes(includeSource, includeFileName);// << "\n";
+
                     includeFileFound = true;
                     break;
                 }
             }
+
             if (!includeFileFound)
                 LogWarn("Include file " << includeFileName << " not found in shader search paths.");
         } else {
             result << curLine << "\n";
             lineNumberResolver_.push_back(std::pair<std::string, unsigned int>(fileName, localLineNumber));
         }
+
         localLineNumber++;
-    } 
+    }
+
     return result.str();
 }
 
 bool ShaderObject::loadSource(std::string fileName) {
     source_ = "";
+
     if (fileName.length() > 0) {
         if (URLParser::fileExists(fileName)) {
-            // Absolute path was given 
+            // Absolute path was given
             absoluteFileName_ = fileName;
         } else {
             // Search in include directories added by modules
             std::vector<std::string> shaderSearchPaths = ShaderManager::getRef().getShaderSearchPaths();
+
             for (size_t i=0; i<shaderSearchPaths.size(); i++) {
                 if (URLParser::fileExists(shaderSearchPaths[i]+"/"+fileName)) {
                     absoluteFileName_ = shaderSearchPaths[i]+"/"+fileName;
@@ -175,20 +196,20 @@ bool ShaderObject::loadSource(std::string fileName) {
                 }
             }
         }
-        
+
         std::ifstream fileStream(absoluteFileName_.c_str());
         TextFileReader fileReader(absoluteFileName_);
+
         try
         {
             source_ = fileReader.read();
         }
         catch (std::ifstream::failure&)
         {
-        	return false;
+            return false;
         }
-        
-        return true;
 
+        return true;
     } else return false;
 }
 
@@ -202,6 +223,7 @@ std::string ShaderObject::getShaderInfoLog() {
     GLint maxLogLength;
     glGetShaderiv(id_, GL_INFO_LOG_LENGTH, &maxLogLength);
     LGL_ERROR;
+
     if (maxLogLength > 1) {
         GLchar* shaderInfoLog = new GLchar[maxLogLength];
         ivwAssert(shaderInfoLog!=0, "could not allocate memory for compiler log");
@@ -218,14 +240,17 @@ int ShaderObject::getLogLineNumber(const std::string& compileLogLine) {
     int result = 0;
     std::istringstream input(compileLogLine);
     int num;
+
     if (input>>num) {
         char c;
+
         if (input>>c && c=='(') {
             if (input>>result) {
                 return result;
             }
         }
     }
+
     return result;
 }
 
@@ -233,6 +258,7 @@ std::string ShaderObject::reformatShaderInfoLog(const std::string shaderInfoLog)
     std::ostringstream result;
     std::string curLine;
     std::istringstream origShaderInfoLog(shaderInfoLog);
+
     while (std::getline(origShaderInfoLog, curLine)) {
         unsigned int origLineNumber = getLogLineNumber(curLine);
         unsigned int lineNumber = lineNumberResolver_[origLineNumber-1].second;
@@ -240,6 +266,7 @@ std::string ShaderObject::reformatShaderInfoLog(const std::string shaderInfoLog)
         // TODO: adapt substr call to ATI compile log syntax
         result << "\n" << fileName << " (" << lineNumber << "): " << curLine.substr(curLine.find(":")+1);
     }
+
     return result.str();
 }
 
@@ -247,12 +274,14 @@ bool ShaderObject::compile() {
     glCompileShader(id_);
     GLint compiledOk = 0;
     glGetShaderiv(id_, GL_COMPILE_STATUS, &compiledOk);
+
     if (!compiledOk) {
         std::string compilerLog = getShaderInfoLog();
         compilerLog = reformatShaderInfoLog(compilerLog);
         LogError(compilerLog);
         return false;
     }
+
     return true;
 }
 
@@ -275,9 +304,11 @@ void ShaderObject::clearShaderDefines() {
 
 void ShaderObject::addOutDeclaration(std::string name) {
     bool outExists = false;
+
     for (size_t i=0; i<outDeclarations_.size(); i++)
         if (outDeclarations_[i] == name)
             outExists = true;
+
     if (!outExists)
         outDeclarations_.push_back(name);
 }

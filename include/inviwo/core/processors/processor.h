@@ -1,4 +1,4 @@
- /*********************************************************************************
+/*********************************************************************************
  *
  * Inviwo - Interactive Visualization Workshop
  * Version 0.6b
@@ -72,7 +72,7 @@ public:
     virtual ~Processor();
 
     InviwoProcessorInfo();
-    
+
     /**
      * Sets the identifier of the Processor. If there already exist a processor with that identifier it will append a number, starting at 2 to ensure uniqueness of identifiers.
      * @param the new identifier
@@ -118,7 +118,7 @@ public:
     virtual void initializeResources() {} // reload shaders etc. here
 
     /**
-     * Adds the interaction handler such that it receives events propagated 
+     * Adds the interaction handler such that it receives events propagated
      * to the processor. Will not add the interaction handler if it has been added before.
      * @note The processor will not take ownership of the interaction handler.
      * @see InteractionHandler

@@ -1,4 +1,4 @@
- /*********************************************************************************
+/*********************************************************************************
  *
  * Inviwo - Interactive Visualization Workshop
  * Version 0.6b
@@ -39,13 +39,13 @@
 namespace inviwo {
 
 /** \class Resource
-* This is an abstract class for Resources.
-* A Resource is a container for data. The data is owned by the Resource and deleted upon Resource destruction.
-* Resource implementations must implement the == operator for both other resources and a string identifier.
-* The string identifier is used to request resources from the resource manager and should be unique.
-* @see ResourceTemplate
-* @see ResourceManager
-*/
+ * This is an abstract class for Resources.
+ * A Resource is a container for data. The data is owned by the Resource and deleted upon Resource destruction.
+ * Resource implementations must implement the == operator for both other resources and a string identifier.
+ * The string identifier is used to request resources from the resource manager and should be unique.
+ * @see ResourceTemplate
+ * @see ResourceManager
+ */
 class IVW_CORE_API Resource {
 
 public:

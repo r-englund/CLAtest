@@ -1,20 +1,20 @@
- /*********************************************************************************
+/*********************************************************************************
  *
  * Inviwo - Interactive Visualization Workshop
  * Version 0.6b
  *
  * Copyright (c) 2012-2014 Inviwo Foundation
  * All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met: 
- * 
+ * modification, are permitted provided that the following conditions are met:
+ *
  * 1. Redistributions of source code must retain the above copyright notice, this
- * list of conditions and the following disclaimer. 
+ * list of conditions and the following disclaimer.
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  * this list of conditions and the following disclaimer in the documentation
- * and/or other materials provided with the distribution. 
- * 
+ * and/or other materials provided with the distribution.
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
  * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
@@ -25,7 +25,7 @@
  * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- * 
+ *
  * Main file authors: Erik Sundén, Timo Ropinski
  *
  *********************************************************************************/
@@ -47,11 +47,12 @@ Processor::Processor()
     , processorWidget_(0)
     , identifier_("")
     , initialized_(false) {
-        setIdentifier("undefined");
+    setIdentifier("undefined");
 }
 
 Processor::~Processor() {
     usedIdentifiers_.erase(identifier_);
+
     while (!metaData_.empty()) {
         delete metaData_.back();
         metaData_.pop_back();
@@ -81,19 +82,21 @@ void Processor::addPort(Outport& port, std::string portDependencySet) {
 }
 
 std::string Processor::setIdentifier(const std::string& identifier) {
-    if(identifier == identifier_) //nothing changed
+    if (identifier == identifier_) //nothing changed
         return identifier_;
 
-    if(usedIdentifiers_.find(identifier_) != usedIdentifiers_.end()){
+    if (usedIdentifiers_.find(identifier_) != usedIdentifiers_.end()) {
         usedIdentifiers_.erase(identifier_); //remove old identifier
     }
 
     std::string baseIdentifier = identifier;
     std::string newIdentifier = identifier;
     int i = 2;
-    while(usedIdentifiers_.find(newIdentifier) != usedIdentifiers_.end()){
+
+    while (usedIdentifiers_.find(newIdentifier) != usedIdentifiers_.end()) {
         newIdentifier = baseIdentifier + toString(i++);
     }
+
     usedIdentifiers_.insert(newIdentifier);
     identifier_ = newIdentifier;
     return identifier_;
@@ -208,7 +211,8 @@ void Processor::invalidate(PropertyOwner::InvalidationLevel invalidationLevel, P
     notifyObserversInvalidationBegin(this);
     PropertyOwner::invalidate(invalidationLevel);
     notifyObserversAboutPropertyChange(modifiedProperty);
-    if(PropertyOwner::isValid()){
+
+    if (PropertyOwner::isValid()) {
         notifyObserversInvalidationEnd(this);
         return;
     }
@@ -243,6 +247,7 @@ void Processor::addInteractionHandler(InteractionHandler* interactionHandler) {
 
 void Processor::removeInteractionHandler(InteractionHandler* interactionHandler) {
     std::vector<InteractionHandler*>::iterator it = std::find(interactionHandlers_.begin(), interactionHandlers_.end(), interactionHandler);
+
     if (it != interactionHandlers_.end()) {
         interactionHandlers_.erase(it);
     }
@@ -284,7 +289,6 @@ void Processor::serialize(IvwSerializer& s) const {
     s.serialize("type", getClassName(), true);
     s.serialize("identifier", identifier_, true);
     s.serialize("MetaDataList", metaData_, "MetaData") ;
-
 
     if (interactionHandlers_.size() != 0)
         s.serialize("InteractonHandlers", interactionHandlers_, "InteractionHandler");

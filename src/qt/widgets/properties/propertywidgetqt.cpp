@@ -1,20 +1,20 @@
- /*********************************************************************************
+/*********************************************************************************
  *
  * Inviwo - Interactive Visualization Workshop
  * Version 0.6b
  *
  * Copyright (c) 2012-2014 Inviwo Foundation
  * All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met: 
- * 
+ * modification, are permitted provided that the following conditions are met:
+ *
  * 1. Redistributions of source code must retain the above copyright notice, this
- * list of conditions and the following disclaimer. 
+ * list of conditions and the following disclaimer.
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  * this list of conditions and the following disclaimer in the documentation
- * and/or other materials provided with the distribution. 
- * 
+ * and/or other materials provided with the distribution.
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
  * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
@@ -25,7 +25,7 @@
  * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- * 
+ *
  * Main file authors: Sathish Kottravel, Alexander Johansson
  *
  *********************************************************************************/
@@ -70,15 +70,14 @@ void PropertyWidgetQt::hideWidget() {
 
 void PropertyWidgetQt::initializeEditorWidgetsMetaData() {
     if (hasEditorWidget()) {
-
         //Validates editor widget position
         PropertyEditorWidgetQt* propertyEditorWidget = dynamic_cast<PropertyEditorWidgetQt*>(getEditorWidget());
         InviwoApplicationQt* app = dynamic_cast<InviwoApplicationQt*>(InviwoApplication::getPtr());
+
         if (!propertyEditorWidget)
             return;
 
         //set widget meta data stuff
-
         PropertyEditorWidgetDockStatus docStatus = propertyEditorWidget->getEditorDockStatus();
 
         if (docStatus == PropertyEditorWidgetDockStatus::DockedLeft) {
@@ -94,11 +93,9 @@ void PropertyWidgetQt::initializeEditorWidgetsMetaData() {
             propertyEditorWidget->setFloating(true);
         }
 
-        propertyEditorWidget->hide();    
-
+        propertyEditorWidget->hide();
         ivec2 widgetDimension = getEditorWidget()->getEditorDimensionMetaData();
         propertyEditorWidget->resize(QSize(widgetDimension.x, widgetDimension.y));
-
         //TODO: Desktop screen info should be added to system capabilities
         ivec2 pos = getEditorWidget()->getEditorPositionMetaData();
         QDesktopWidget* desktop = QApplication::desktop();
@@ -108,42 +105,42 @@ void PropertyWidgetQt::initializeEditorWidgetsMetaData() {
 
         for (int i=0; i<desktop->screenCount(); i++) {
             if (i!=primaryScreenIndex)
-                wholeScreenGeometry = wholeScreenGeometry.united(desktop->screenGeometry(i));        
+                wholeScreenGeometry = wholeScreenGeometry.united(desktop->screenGeometry(i));
         }
 
         wholeScreenGeometry.setRect(wholeScreenGeometry.x()-10, wholeScreenGeometry.y()-10,
-            wholeScreenGeometry.width()+20, wholeScreenGeometry.height()+20);
+                                    wholeScreenGeometry.width()+20, wholeScreenGeometry.height()+20);
         QPoint bottomRight = QPoint(pos.x+this->width(), pos.y+this->height());
-
         QPoint appPos = app->getMainWindow()->pos();
 
         if (!wholeScreenGeometry.contains(QPoint(pos.x, pos.y)) || !wholeScreenGeometry.contains(bottomRight)) {
-                pos = ivec2(appPos.x(), appPos.y()) ;
-            pos += ivec2( primaryScreenGeometry.width()/2, primaryScreenGeometry.height()/2);
+            pos = ivec2(appPos.x(), appPos.y()) ;
+            pos += ivec2(primaryScreenGeometry.width()/2, primaryScreenGeometry.height()/2);
             propertyEditorWidget->move(pos.x, pos.y);
         }
-        else {        
-            if (!(pos.x == 0 && pos.y == 0))            
+        else {
+            if (!(pos.x == 0 && pos.y == 0))
                 propertyEditorWidget->move(pos.x, pos.y);
             else {
                 pos = ivec2(appPos.x(), appPos.y()) ;
-                pos += ivec2( primaryScreenGeometry.width()/2, primaryScreenGeometry.height()/2);
+                pos += ivec2(primaryScreenGeometry.width()/2, primaryScreenGeometry.height()/2);
                 propertyEditorWidget->move(pos.x, pos.y);
             }
         }
 
         bool visible = getEditorWidget()->getEditorVisibilityMetaData();
+
         if (!visible) propertyEditorWidget->hide();
         else propertyEditorWidget->show();
     }
 }
 
-void PropertyWidgetQt::paintEvent(QPaintEvent *pe) {                                                                                                                                        
-    QStyleOption o;                                                                                                                                                                  
-    o.initFrom(this);                                                                                                                                                                
-    QPainter p(this);                                                                                                                                                                
+void PropertyWidgetQt::paintEvent(QPaintEvent* pe) {
+    QStyleOption o;
+    o.initFrom(this);
+    QPainter p(this);
     style()->drawPrimitive(
-        QStyle::PE_Widget, &o, &p, this);                                                                                                                         
+        QStyle::PE_Widget, &o, &p, this);
 };
 
 void PropertyWidgetQt::visibilityModified(int mode) {}
@@ -326,16 +323,16 @@ void PropertyWidgetQt::setProperty(Property* property) {
 //////////////////////////////////////////////////////////////////////////
 
 PropertyEditorWidgetQt::PropertyEditorWidgetQt(std::string widgetName, QWidget* parent)
-: InviwoDockWidget(QString(widgetName.c_str()), parent)
-, VoidObserver()
-, PropertyEditorWidget()
-{    
+    : InviwoDockWidget(QString(widgetName.c_str()), parent)
+    , VoidObserver()
+    , PropertyEditorWidget()
+{
 }
 
 PropertyEditorWidgetQt::~PropertyEditorWidgetQt() { }
 
 void PropertyEditorWidgetQt::initialize(Property* property) {
-    PropertyEditorWidget::initialize(property);   
+    PropertyEditorWidget::initialize(property);
 }
 
 void PropertyEditorWidgetQt::deinitialize() {

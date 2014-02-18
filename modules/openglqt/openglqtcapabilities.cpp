@@ -1,20 +1,20 @@
- /*********************************************************************************
+/*********************************************************************************
  *
  * Inviwo - Interactive Visualization Workshop
  * Version 0.6b
  *
  * Copyright (c) 2013-2014 Inviwo Foundation
  * All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met: 
- * 
+ * modification, are permitted provided that the following conditions are met:
+ *
  * 1. Redistributions of source code must retain the above copyright notice, this
- * list of conditions and the following disclaimer. 
+ * list of conditions and the following disclaimer.
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  * this list of conditions and the following disclaimer in the documentation
- * and/or other materials provided with the distribution. 
- * 
+ * and/or other materials provided with the distribution.
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
  * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
@@ -25,7 +25,7 @@
  * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- * 
+ *
  * Main file authors: Sathish Kottravel, Erik Sundén
  *
  *********************************************************************************/
@@ -43,30 +43,22 @@ OpenGLQtCapabilities::OpenGLQtCapabilities() {}
 
 OpenGLQtCapabilities::~OpenGLQtCapabilities() {}
 
-void OpenGLQtCapabilities::printInfo(){
+void OpenGLQtCapabilities::printInfo() {
     //Qt General Info
 }
 
-std::vector<int> OpenGLQtCapabilities::getGLVersion() {    
-
-    const GLubyte *glversion = glGetString(GL_VERSION);
+std::vector<int> OpenGLQtCapabilities::getGLVersion() {
+    const GLubyte* glversion = glGetString(GL_VERSION);
     std::string glVersionStr = std::string((glversion!=NULL ? reinterpret_cast<const char*>(glversion) : "INVALID"));
-
     std::vector<std::string> versionInfoStr = splitString(glVersionStr,'.');
-
     //ivwAssert(versionInfo.size()!=0, "Cannot retrieve GL version.");
-
     std::string majorVersion = versionInfoStr[0];
     std::string minorVersion = versionInfoStr[1];
-
     int major = stringTo<int>(majorVersion);
     int minor = stringTo<int>(minorVersion);
-    
     std::vector<int> versionInfo;
-    
     versionInfo.push_back(major);
-    versionInfo.push_back(minor);   
-
+    versionInfo.push_back(minor);
     return versionInfo;
 }
 

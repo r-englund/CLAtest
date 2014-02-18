@@ -1,4 +1,4 @@
- /*********************************************************************************
+/*********************************************************************************
  *
  * Inviwo - Interactive Visualization Workshop
  * Version 0.6b
@@ -54,11 +54,11 @@ private:
 };
 
 /** class ImageEditorProperty
-*  A class for file representations.
-*  Holds the value of the path to a file as a string.
-*
-* @see FileProperty
-*/
+ *  A class for file representations.
+ *  Holds the value of the path to a file as a string.
+ *
+ * @see FileProperty
+ */
 
 class IVW_CORE_API ImageEditorProperty : public FileProperty {
 

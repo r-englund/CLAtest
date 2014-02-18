@@ -1,20 +1,20 @@
- /*********************************************************************************
+/*********************************************************************************
  *
  * Inviwo - Interactive Visualization Workshop
  * Version 0.6b
  *
  * Copyright (c) 2013-2014 Inviwo Foundation
  * All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met: 
- * 
+ * modification, are permitted provided that the following conditions are met:
+ *
  * 1. Redistributions of source code must retain the above copyright notice, this
- * list of conditions and the following disclaimer. 
+ * list of conditions and the following disclaimer.
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  * this list of conditions and the following disclaimer in the documentation
- * and/or other materials provided with the distribution. 
- * 
+ * and/or other materials provided with the distribution.
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
  * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
@@ -25,7 +25,7 @@
  * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- * 
+ *
  * Main file author: Alexander Johansson
  *
  *********************************************************************************/
@@ -174,8 +174,8 @@ void IntVec2PropertyWidgetQt::showContextMenuY(const QPoint& pos) {
         updateContextMenu();
         QPoint globalPos = sliderY_->mapToGlobal(pos);
         QAction* selecteditem = settingsMenu_->exec(globalPos);
-        
-        if(selecteditem){
+
+        if (selecteditem) {
             if (selecteditem->text() == "Property settings") {
                 settingsWidget_->reload();
                 settingsWidget_->show();
@@ -186,14 +186,14 @@ void IntVec2PropertyWidgetQt::showContextMenuY(const QPoint& pos) {
                 valueVecMin_.y = sliderY_->getValue();
                 property_->setMinValue(valueVecMin_);
                 updateFromProperty();
-           }
-           else if ( selecteditem->text() == "Set as Max") {
-               //Set current value of the slider to max value of the property
-               valueVecMax_ = property_->getMaxValue();
-               valueVecMax_.y = sliderY_->getValue();
-               property_->setMaxValue(valueVecMax_);
-               updateFromProperty();
-           }
+            }
+            else if (selecteditem->text() == "Set as Max") {
+                //Set current value of the slider to max value of the property
+                valueVecMax_ = property_->getMaxValue();
+                valueVecMax_.y = sliderY_->getValue();
+                property_->setMaxValue(valueVecMax_);
+                updateFromProperty();
+            }
         }
     }
 }

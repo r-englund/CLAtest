@@ -1,4 +1,4 @@
- /*********************************************************************************
+/*********************************************************************************
  *
  * Inviwo - Interactive Visualization Workshop
  * Version 0.6b
@@ -39,12 +39,12 @@
 namespace inviwo {
 
 /** \class TemplateResource
-*
-* A TemplateResource is a container for data of type T.
-*
-* @see Resource
-* @see ResourceManager
-*/
+ *
+ * A TemplateResource is a container for data of type T.
+ *
+ * @see Resource
+ * @see ResourceManager
+ */
 template<typename T>
 class TemplateResource : public Resource {
 

@@ -1,4 +1,4 @@
- /*********************************************************************************
+/*********************************************************************************
  *
  * Inviwo - Interactive Visualization Workshop
  * Version 0.6b
@@ -73,9 +73,9 @@ public:
                  T x3, T y3, T z3, T w3,
                  T x4, T y4, T z4, T w4) :
         glm::detail::tmat4x4<T, glm::defaultp>(x1, y1, z1, w1,
-                                x2, y2, z2, w2,
-                                x3, y3, z3, w3,
-                                x4, y4, z4, w4) {};
+                                               x2, y2, z2, w2,
+                                               x3, y3, z3, w3,
+                                               x4, y4, z4, w4) {};
     glm::detail::tmat4x4<T, glm::defaultp> getGLM() const {
         return *this;
     };
@@ -94,8 +94,8 @@ public:
                  T x2, T y2, T z2,
                  T x3, T y3, T z3) :
         glm::detail::tmat3x3<T, glm::defaultp>(x1, y1, z1,
-                                x2, y2, z2,
-                                x3, y3, z3) {};
+                                               x2, y2, z2,
+                                               x3, y3, z3) {};
     glm::detail::tmat3x3<T, glm::defaultp> getGLM() const {
         return *this;
     };
@@ -112,7 +112,7 @@ public:
     Matrix<2, T>(T x1, T y1,
                  T x2, T y2) :
         glm::detail::tmat2x2<T, glm::defaultp>(x1, y1,
-                                x2, y2) {};
+                                               x2, y2) {};
     glm::detail::tmat2x2<T, glm::defaultp> getGLM() const {
         return *this;
     };
@@ -285,14 +285,14 @@ public:
     typedef T type;
     static const size_t bits = B;
 
-    DataFormat() : DataFormatBase(id(), 
-                                  bitsAllocated(), 
-                                  bitsStored(), 
-                                  components(), 
-                                  maxToDouble(), 
-                                  minToDouble(), 
-                                  numericType(),
-                                  str()) {
+    DataFormat() : DataFormatBase(id(),
+                                      bitsAllocated(),
+                                      bitsStored(),
+                                      components(),
+                                      maxToDouble(),
+                                      minToDouble(),
+                                      numericType(),
+                                      str()) {
     }
 
     virtual ~DataFormat() {}

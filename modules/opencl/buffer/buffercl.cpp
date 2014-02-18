@@ -1,20 +1,20 @@
- /*********************************************************************************
+/*********************************************************************************
  *
  * Inviwo - Interactive Visualization Workshop
  * Version 0.6b
  *
  * Copyright (c) 2013-2014 Inviwo Foundation
  * All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met: 
- * 
+ * modification, are permitted provided that the following conditions are met:
+ *
  * 1. Redistributions of source code must retain the above copyright notice, this
- * list of conditions and the following disclaimer. 
+ * list of conditions and the following disclaimer.
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  * this list of conditions and the following disclaimer in the documentation
- * and/or other materials provided with the distribution. 
- * 
+ * and/or other materials provided with the distribution.
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
  * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
@@ -25,7 +25,7 @@
  * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- * 
+ *
  * Main file author: Daniel Jönsson
  *
  *********************************************************************************/
@@ -34,14 +34,15 @@
 
 namespace inviwo {
 
-BufferCL::BufferCL(size_t size, const DataFormatBase* format, BufferType type, BufferUsage usage, const void* data, cl_mem_flags readWriteFlag)
+BufferCL::BufferCL(size_t size, const DataFormatBase* format, BufferType type, BufferUsage usage, const void* data,
+                   cl_mem_flags readWriteFlag)
     : BufferRepresentation(size, format, type, usage), readWriteFlag_(readWriteFlag), buffer_(NULL)
 {
     initialize(data);
 }
 
-BufferCL::BufferCL( const BufferCL& rhs )
-: BufferRepresentation(rhs.getSize(), rhs.getDataFormat(), rhs.getBufferType(), rhs.getBufferUsage()), readWriteFlag_(rhs.readWriteFlag_)
+BufferCL::BufferCL(const BufferCL& rhs)
+    : BufferRepresentation(rhs.getSize(), rhs.getDataFormat(), rhs.getBufferType(), rhs.getBufferUsage()), readWriteFlag_(rhs.readWriteFlag_)
 {
     initialize(NULL);
     OpenCL::instance()->getQueue().enqueueCopyBuffer(rhs.getBuffer(), *buffer_ , 0, 0, getSize()*getSizeOfElement());
@@ -53,35 +54,31 @@ BufferCL::~BufferCL() {
 
 
 
-void BufferCL::upload( const void* data, size_t size)
-{   
+void BufferCL::upload(const void* data, size_t size)
+{
     // Resize buffer if necessary
-    if( size > getSize()*getSizeOfElement()) {
+    if (size > getSize()*getSizeOfElement()) {
         deinitialize();
         setSize(size/getSizeOfElement());
         initialize(data);
     } else {
         OpenCL::instance()->getQueue().enqueueWriteBuffer(*buffer_, true, 0, size, const_cast<void*>(data));
     }
-    
-
 }
 
-void BufferCL::download( void* data ) const
+void BufferCL::download(void* data) const
 {
     OpenCL::instance()->getQueue().enqueueReadBuffer(*buffer_, true, 0, getSize()*getSizeOfElement(), data);
 }
 
-BufferCL* BufferCL::clone() const{
+BufferCL* BufferCL::clone() const {
     return new BufferCL(*this);
 }
 
-void BufferCL::initialize(){
-    
-    
+void BufferCL::initialize() {
 }
 
-void BufferCL::deinitialize(){
+void BufferCL::deinitialize() {
     delete buffer_;
     buffer_ = NULL;
 }
@@ -90,13 +87,13 @@ void BufferCL::initialize(const void* data) {
     // Generate a new buffer
     if (data != NULL) {
         // CL_MEM_COPY_HOST_PTR can be used with CL_MEM_ALLOC_HOST_PTR to initialize the contents of the cl_mem object allocated using host-accessible (e.g. PCIe) memory.
-        buffer_ = new cl::Buffer(OpenCL::instance()->getContext(), 
-            readWriteFlag_ | CL_MEM_COPY_HOST_PTR | CL_MEM_ALLOC_HOST_PTR, 
-            getSize()*getSizeOfElement(), const_cast<void*>(data));
-
+        buffer_ = new cl::Buffer(OpenCL::instance()->getContext(),
+                                 readWriteFlag_ | CL_MEM_COPY_HOST_PTR | CL_MEM_ALLOC_HOST_PTR,
+                                 getSize()*getSizeOfElement(), const_cast<void*>(data));
     } else {
         buffer_ = new cl::Buffer(OpenCL::instance()->getContext(), readWriteFlag_, getSize()*getSizeOfElement());
     }
+
     BufferCL::initialize();
 }
 

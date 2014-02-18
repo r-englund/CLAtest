@@ -1,20 +1,20 @@
- /*********************************************************************************
+/*********************************************************************************
  *
  * Inviwo - Interactive Visualization Workshop
  * Version 0.6b
  *
  * Copyright (c) 2013-2014 Inviwo Foundation
  * All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met: 
- * 
+ * modification, are permitted provided that the following conditions are met:
+ *
  * 1. Redistributions of source code must retain the above copyright notice, this
- * list of conditions and the following disclaimer. 
+ * list of conditions and the following disclaimer.
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  * this list of conditions and the following disclaimer in the documentation
- * and/or other materials provided with the distribution. 
- * 
+ * and/or other materials provided with the distribution.
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
  * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
@@ -25,7 +25,7 @@
  * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- * 
+ *
  * Main file author: Sathish Kottravel
  *
  *********************************************************************************/
@@ -71,11 +71,14 @@ void PythonScriptRecorderUtil::recordNetworkChanges() {
     if (recordScript_) {
         ProcessorNetwork* network = InviwoApplication::getPtr()->getProcessorNetwork();
         bool networkModified = network->isModified();
+
         //network modified
         if (networkModified) {
             std::vector<Processor*> processors = network->getProcessors();
+
             for (size_t i=0; i<processors.size(); i++) {
                 std::vector<Property*> properties = processors[i]->getProperties();
+
                 for (size_t j=0; j<properties.size(); j++) {
                     //property modified
                     if (properties[j]->isPropertyModified()) {
@@ -92,13 +95,11 @@ void PythonScriptRecorderUtil::recordNetworkChanges() {
 
 std::string PythonScriptRecorderUtil::getPyProperty(Property* property) {
     std::string propertyCommand("");
-
     std::string commandOpen = "inviwo.setPropertyValue(";
     std::string processorName = "\"" + dynamic_cast<Processor*>(property->getOwner())->getIdentifier() + "\"";
     std::string propertyName = "\"" + property->getIdentifier() + "\"";
     std::string propertyValue = "";
     std::string commandClose = ")";
-
     //FIXME: Replace all property values to string variants??
     std::stringstream ss;
 
@@ -113,7 +114,6 @@ std::string PythonScriptRecorderUtil::getPyProperty(Property* property) {
     else if (dynamic_cast<CompositeProperty*>(property)) {
         if (dynamic_cast<CameraProperty*>(property)) {
             CameraProperty* prop = dynamic_cast<CameraProperty*>(property);
-
             ss << "(";
             vec3 from = prop->getLookFrom();
             ss << "(";
@@ -121,25 +121,20 @@ std::string PythonScriptRecorderUtil::getPyProperty(Property* property) {
             ss << from.y << ",";
             ss << from.z ;
             ss << "),";
-
             vec3 to = prop->getLookTo();
             ss << "(";
             ss << to.x << ",";
             ss << to.y << ",";
             ss << to.z ;
             ss << "),";
-
             vec3 up = prop->getLookUp();
             ss << "(";
             ss << up.x << ",";
             ss << up.y << ",";
             ss << up.z ;
             ss << ")";
-
             ss << ")";
-
             propertyValue = ss.str();
-
         }
         else
             commandOpen =+ "# NOT IMPLEMENTED # " + commandOpen ;

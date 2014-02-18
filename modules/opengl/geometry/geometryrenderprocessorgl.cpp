@@ -1,20 +1,20 @@
- /*********************************************************************************
+/*********************************************************************************
  *
  * Inviwo - Interactive Visualization Workshop
  * Version 0.6b
  *
  * Copyright (c) 2013-2014 Inviwo Foundation
  * All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met: 
- * 
+ * modification, are permitted provided that the following conditions are met:
+ *
  * 1. Redistributions of source code must retain the above copyright notice, this
- * list of conditions and the following disclaimer. 
+ * list of conditions and the following disclaimer.
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  * this list of conditions and the following disclaimer in the documentation
- * and/or other materials provided with the distribution. 
- * 
+ * and/or other materials provided with the distribution.
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
  * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
@@ -25,7 +25,7 @@
  * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- * 
+ *
  * Main file authors: Daniel Jönsson, Erik Sundén
  *
  *********************************************************************************/
@@ -38,7 +38,7 @@
 
 namespace inviwo {
 
-ProcessorClassName(GeometryRenderProcessorGL, "GeometryRenderGL"); 
+ProcessorClassName(GeometryRenderProcessorGL, "GeometryRenderGL");
 ProcessorCategory(GeometryRenderProcessorGL, "Geometry Rendering");
 ProcessorCodeState(GeometryRenderProcessorGL, CODE_STATE_STABLE);
 
@@ -51,21 +51,18 @@ GeometryRenderProcessorGL::GeometryRenderProcessorGL()
 {
     addPort(inport_);
     addPort(outport_);
-
     addProperty(camera_);
     trackball_ = new Trackball(&camera_);
     addInteractionHandler(trackball_);
-
     centerViewOnGeometry_.onChange(this, &GeometryRenderProcessorGL::centerViewOnGeometry);
     addProperty(centerViewOnGeometry_);
     outport_.addResizeEventListener(&camera_);
-
     inport_.onChange(this,&GeometryRenderProcessorGL::updateRenderers);
-
 }
 
 void GeometryRenderProcessorGL::deinitialize() {
     delete trackball_;
+
     // Delete all renderers
     for (std::vector<GeometryRenderer*>::iterator it = renderers_.begin(), endIt = renderers_.end(); it != endIt; ++it) {
         delete *it;
@@ -77,16 +74,17 @@ void GeometryRenderProcessorGL::process() {
     if (!inport_.hasData()) {
         return;
     }
-    if(renderers_.empty()) {
+
+    if (renderers_.empty()) {
         return;
     }
+
     glMatrixMode(GL_PROJECTION);
     glPushMatrix();
     glLoadMatrixf(glm::value_ptr(camera_.projectionMatrix()));
     glMatrixMode(GL_MODELVIEW);
     glPushMatrix();
     glLoadMatrixf(glm::value_ptr(camera_.viewMatrix()));
-
     glEnable(GL_DEPTH_TEST);
     glDepthMask(GL_TRUE);
     activateAndClearTarget(outport_);
@@ -97,87 +95,96 @@ void GeometryRenderProcessorGL::process() {
 
     deactivateCurrentTarget();
     glDisable(GL_DEPTH_TEST);
-
     glPopMatrix();
     glMatrixMode(GL_PROJECTION);
     glPopMatrix();
 }
 
 void GeometryRenderProcessorGL::centerViewOnGeometry() {
-	std::vector<const Geometry*> geometries = inport_.getData();
-	if (geometries.empty()) return;
+    std::vector<const Geometry*> geometries = inport_.getData();
+
+    if (geometries.empty()) return;
 
     const Mesh* geom = dynamic_cast<const Mesh*>(geometries[0]);
+
     if (geom == NULL) {
         return;
     }
+
     const Position3dBufferRAM* posBuffer = dynamic_cast<const Position3dBufferRAM*>(geom->getAttributes(0)->getRepresentation<BufferRAM>());
+
     if (posBuffer == NULL) {
         return;
     }
+
     const std::vector<vec3>* pos = posBuffer->getDataContainer();
     vec3 maxPos, minPos;
+
     if (pos->size() > 0) {
         maxPos = (*pos)[0];
         minPos = maxPos;
     }
+
     for (size_t i = 0; i < pos->size(); ++i) {
         maxPos = glm::max(maxPos, (*pos)[i]);
         minPos = glm::min(minPos, (*pos)[i]);
     }
+
     vec3 centerPos = (geom->getWorldTransform()*geom->getBasisAndOffset()*vec4(0.5f*(maxPos+minPos), 1.f)).xyz();
     vec3 lookFrom = camera_.getLookFrom();
     vec3 dir = centerPos - lookFrom;
+
     if (glm::length(dir) < 1e-6f) {
         dir = vec3(0.f, 0.f, -1.f);
     }
+
     dir = glm::normalize(dir);
     vec3 worldMin = (geom->getWorldTransform()*geom->getBasisAndOffset()*vec4(minPos, 1.f)).xyz();
     vec3 worldMax = (geom->getWorldTransform()*geom->getBasisAndOffset()*vec4(maxPos, 1.f)).xyz();
     vec3 newLookFrom = lookFrom -dir*glm::length(worldMax-worldMin);
     camera_.setLook(newLookFrom, centerPos, camera_.getLookUp());
-
-
 }
 
-void GeometryRenderProcessorGL::updateRenderers(){
+void GeometryRenderProcessorGL::updateRenderers() {
     std::vector<const Geometry*> geometries = inport_.getData();
-    if(geometries.empty()){
-        while(!renderers_.empty()){
+
+    if (geometries.empty()) {
+        while (!renderers_.empty()) {
             delete renderers_.back();
             renderers_.pop_back();
         }
     }
 
-    if(!renderers_.empty()){
+    if (!renderers_.empty()) {
         std::vector<GeometryRenderer*>::iterator it = renderers_.begin();
-        while(it!=renderers_.end()) {
+
+        while (it!=renderers_.end()) {
             const Geometry* geo = (*it)->getGeometry();
-        
             bool geometryRemoved = true;
-            for(size_t j = 0; j < geometries.size();j++){
-                if(geo == geometries[j]){
+
+            for (size_t j = 0; j < geometries.size(); j++) {
+                if (geo == geometries[j]) {
                     geometryRemoved = false;
                     geometries.erase(geometries.begin()+j); //nothing needs to be changed for this geometry
                     break;
                 }
             }
 
-            if(geometryRemoved) {
+            if (geometryRemoved) {
                 GeometryRenderer* tmp = (*it);
                 bool first = it == renderers_.begin();
                 it = renderers_.erase(it); //geometry removed, so we delete the old renderer
                 delete tmp;
-            }else{
+            } else {
                 ++it;
             }
         }
     }
 
+    for (size_t i = 0; i < geometries.size() ; ++i) { //create new renderer for new geometries
+        GeometryRenderer* renderer = GeometryRendererFactory::getPtr()->create(geometries[i]);
 
-    for(size_t i = 0; i < geometries.size() ; ++i){ //create new renderer for new geometries
-        GeometryRenderer *renderer = GeometryRendererFactory::getPtr()->create(geometries[i]);
-        if(renderer){
+        if (renderer) {
             renderers_.push_back(renderer);
         }
     }

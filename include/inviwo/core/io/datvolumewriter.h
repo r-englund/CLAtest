@@ -1,4 +1,4 @@
- /*********************************************************************************
+/*********************************************************************************
  *
  * Inviwo - Interactive Visualization Workshop
  * Version 0.6b
@@ -61,15 +61,18 @@ private:
 };
 
 template<typename T>
-void inviwo::DatVolumeWriter::writeKeyToString(std::stringstream& ss, const std::string& key, const glm::detail::tvec2<T, glm::defaultp>& vec) const {
+void inviwo::DatVolumeWriter::writeKeyToString(std::stringstream& ss, const std::string& key,
+        const glm::detail::tvec2<T, glm::defaultp>& vec) const {
     ss << key << ": " << vec.x << " " << vec.y << std::endl;
 }
 template<typename T>
-void inviwo::DatVolumeWriter::writeKeyToString(std::stringstream& ss, const std::string& key, const glm::detail::tvec3<T, glm::defaultp>& vec) const {
+void inviwo::DatVolumeWriter::writeKeyToString(std::stringstream& ss, const std::string& key,
+        const glm::detail::tvec3<T, glm::defaultp>& vec) const {
     ss << key << ": " << vec.x << " " << vec.y << " " << vec.z << std::endl;
 }
 template<typename T>
-void inviwo::DatVolumeWriter::writeKeyToString(std::stringstream& ss, const std::string& key, const glm::detail::tvec4<T, glm::defaultp>& vec) const {
+void inviwo::DatVolumeWriter::writeKeyToString(std::stringstream& ss, const std::string& key,
+        const glm::detail::tvec4<T, glm::defaultp>& vec) const {
     ss << key << ": " << vec.x << " " << vec.y << " " << vec.z << " " << vec.w << std::endl;
 }
 

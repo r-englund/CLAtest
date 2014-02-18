@@ -1,20 +1,20 @@
- /*********************************************************************************
+/*********************************************************************************
  *
  * Inviwo - Interactive Visualization Workshop
  * Version 0.6b
  *
  * Copyright (c) 2013-2014 Inviwo Foundation
  * All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met: 
- * 
+ * modification, are permitted provided that the following conditions are met:
+ *
  * 1. Redistributions of source code must retain the above copyright notice, this
- * list of conditions and the following disclaimer. 
+ * list of conditions and the following disclaimer.
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  * this list of conditions and the following disclaimer in the documentation
- * and/or other materials provided with the distribution. 
- * 
+ * and/or other materials provided with the distribution.
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
  * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
@@ -25,7 +25,7 @@
  * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- * 
+ *
  * Main file author: Erik Sundén
  *
  *********************************************************************************/
@@ -37,57 +37,48 @@ namespace inviwo {
 
 CompositeProcessorGL::CompositeProcessorGL()
     : ProcessorGL(),
-    programFileName_("composite.frag"), compositeShader_(NULL)
+      shaderFileName_("composite.frag"), shader_(NULL)
 {}
 
 CompositeProcessorGL::CompositeProcessorGL(std::string programFileName)
     : ProcessorGL(),
-    programFileName_(programFileName), compositeShader_(NULL)
+      shaderFileName_(programFileName), shader_(NULL)
 {}
 
 void CompositeProcessorGL::initialize() {
     ProcessorGL::initialize();
-    compositeShader_ = new Shader(programFileName_);
+    shader_ = new Shader(shaderFileName_);
 }
 
 void CompositeProcessorGL::deinitialize() {
-    delete compositeShader_;
-    compositeShader_ = NULL;
+    delete shader_;
+    shader_ = NULL;
     ProcessorGL::deinitialize();
 }
 
-void CompositeProcessorGL::compositePortsToOutport(ImageOutport& outport, ImageInport& inport){
+void CompositeProcessorGL::compositePortsToOutport(ImageOutport& outport, ImageInport& inport) {
     if (inport.isReady() && outport.isReady()) {
         activateTarget(outport);
-
         TextureUnit inportColorUnit, inportDepthUnit, inportPickingUnit;
         bindTextures(inport, inportColorUnit.getEnum(), inportDepthUnit.getEnum(), inportPickingUnit.getEnum());
-
         TextureUnit outportColorUnit, outportDepthUnit, outportPickingUnit;
         bindTextures(outport, outportColorUnit.getEnum(), outportDepthUnit.getEnum(), outportPickingUnit.getEnum());
-
-        compositeShader_->activate();
-
-        setGlobalShaderParameters(compositeShader_);
-
-        compositeShader_->setUniform("texColor0_", inportColorUnit.getUnitNumber());
-        compositeShader_->setUniform("texDepth0_", inportDepthUnit.getUnitNumber());
-        compositeShader_->setUniform("texPicking0_", inportPickingUnit.getUnitNumber());
-
-        compositeShader_->setUniform("texColor1_", outportColorUnit.getUnitNumber());
-        compositeShader_->setUniform("texDepth1_", outportDepthUnit.getUnitNumber());
-        compositeShader_->setUniform("texPicking1_", outportPickingUnit.getUnitNumber());
-
+        shader_->activate();
+        setGlobalShaderParameters(shader_);
+        shader_->setUniform("texColor0_", inportColorUnit.getUnitNumber());
+        shader_->setUniform("texDepth0_", inportDepthUnit.getUnitNumber());
+        shader_->setUniform("texPicking0_", inportPickingUnit.getUnitNumber());
+        shader_->setUniform("texColor1_", outportColorUnit.getUnitNumber());
+        shader_->setUniform("texDepth1_", outportDepthUnit.getUnitNumber());
+        shader_->setUniform("texPicking1_", outportPickingUnit.getUnitNumber());
         renderImagePlaneRect();
-
-        compositeShader_->deactivate();
-
+        shader_->deactivate();
         deactivateCurrentTarget();
     }
 }
 
 void CompositeProcessorGL::initializeResources() {
-    compositeShader_->rebuild();
+    shader_->rebuild();
 }
 
 } // namespace

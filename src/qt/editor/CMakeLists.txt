@@ -10,7 +10,6 @@ set(MOC_FILES
     ${IVW_INCLUDE_DIR}/inviwo/qt/editor/mappingwidget.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/editor/networkeditor.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/editor/processorlistwidget.h
-    ${IVW_INCLUDE_DIR}/inviwo/qt/editor/processorpropertywidget.h
 	${IVW_INCLUDE_DIR}/inviwo/qt/editor/resourcemanagerwidget.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/editor/settingswidget.h
 )
@@ -42,7 +41,6 @@ set(SOURCE_FILES
     networkeditorview.cpp
     processorlistwidget.cpp
     processorgraphicsitem.cpp
-    processorpropertywidget.cpp
 	resourcemanagerwidget.cpp
     settingswidget.cpp
     

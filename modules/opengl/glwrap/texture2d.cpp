@@ -1,20 +1,20 @@
- /*********************************************************************************
+/*********************************************************************************
  *
  * Inviwo - Interactive Visualization Workshop
  * Version 0.6b
  *
  * Copyright (c) 2012-2014 Inviwo Foundation
  * All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met: 
- * 
+ * modification, are permitted provided that the following conditions are met:
+ *
  * 1. Redistributions of source code must retain the above copyright notice, this
- * list of conditions and the following disclaimer. 
+ * list of conditions and the following disclaimer.
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  * this list of conditions and the following disclaimer in the documentation
- * and/or other materials provided with the distribution. 
- * 
+ * and/or other materials provided with the distribution.
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
  * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
@@ -25,7 +25,7 @@
  * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- * 
+ *
  * Main file authors: Erik Sundén, Daniel Jönsson
  *
  *********************************************************************************/
@@ -36,24 +36,24 @@ namespace inviwo {
 
 Texture2D::Texture2D(uvec2 dimensions, GLFormats::GLFormat glFormat, GLenum filtering, GLint level)
     : Texture(GL_TEXTURE_2D, glFormat, filtering, level)
-    , dimensions_(dimensions) 
+    , dimensions_(dimensions)
 {
     setTextureParameterFunction(this, &Texture2D::default2DTextureParameterFunction);
 }
 
 Texture2D::Texture2D(uvec2 dimensions, GLint format, GLint internalformat, GLenum dataType, GLenum filtering, GLint level)
     : Texture(GL_TEXTURE_2D, format, internalformat, dataType, filtering, level)
-    , dimensions_(dimensions) 
+    , dimensions_(dimensions)
 {
     setTextureParameterFunction(this, &Texture2D::default2DTextureParameterFunction);
 }
 
 Texture2D::Texture2D(const Texture2D& rhs)
     : Texture(rhs)
-    , dimensions_(rhs.dimensions_) 
+    , dimensions_(rhs.dimensions_)
 {
     setTextureParameterFunction(this, &Texture2D::default2DTextureParameterFunction);
-    initialize(NULL);   
+    initialize(NULL);
     // TODO: Copy texture from other
     // bind();
     // glCopyTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, 0, dimensions_.x, dimensions_.y);
@@ -67,6 +67,7 @@ Texture2D& Texture2D::operator=(const Texture2D& rhs) {
         initialize(NULL);
         // TODO: Copy other texture content
     }
+
     return *this;
 }
 
@@ -79,25 +80,28 @@ Texture2D* Texture2D::clone() const {
 void Texture2D::initialize(const void* data) {
     // Notify observers
     ObserverSet::iterator endIt = observers_->end();
-    for(ObserverSet::iterator it = observers_->begin(); it != endIt; ++it) {
+
+    for (ObserverSet::iterator it = observers_->begin(); it != endIt; ++it) {
         // static_cast can be used since only template class objects can be added
-        static_cast<TextureObserver*>(*it)->notifyBeforeTextureInitialization();    
+        static_cast<TextureObserver*>(*it)->notifyBeforeTextureInitialization();
     }
+
     bind();
     texParameterCallback_->invoke(this);
     glTexImage2D(GL_TEXTURE_2D, level_, internalformat_, dimensions_.x, dimensions_.y, 0, format_, dataType_, data);
     LGL_ERROR;
-    for(ObserverSet::iterator it = observers_->begin(); it != endIt; ++it) {
+
+    for (ObserverSet::iterator it = observers_->begin(); it != endIt; ++it) {
         // static_cast can be used since only template class objects can be added
-        static_cast<TextureObserver*>(*it)->notifyAfterTextureInitialization();    
+        static_cast<TextureObserver*>(*it)->notifyAfterTextureInitialization();
     }
 }
 
-size_t Texture2D::getNumberOfValues() const{
+size_t Texture2D::getNumberOfValues() const {
     return static_cast<size_t>(dimensions_.x*dimensions_.y);
 }
 
-void Texture2D::upload(const void* data ) {
+void Texture2D::upload(const void* data) {
     bind();
     glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, dimensions_.x, dimensions_.y, format_, dataType_, data);
     LGL_ERROR;
@@ -108,7 +112,7 @@ void Texture2D::resize(uvec2 dimension) {
     initialize(NULL);
 }
 
-void Texture2D::default2DTextureParameterFunction(Texture* tex){
+void Texture2D::default2DTextureParameterFunction(Texture* tex) {
     glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
     glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, tex->getFiltering());

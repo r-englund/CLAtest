@@ -1,20 +1,20 @@
- /*********************************************************************************
+/*********************************************************************************
  *
  * Inviwo - Interactive Visualization Workshop
  * Version 0.6b
  *
  * Copyright (c) 2013-2014 Inviwo Foundation
  * All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met: 
- * 
+ * modification, are permitted provided that the following conditions are met:
+ *
  * 1. Redistributions of source code must retain the above copyright notice, this
- * list of conditions and the following disclaimer. 
+ * list of conditions and the following disclaimer.
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  * this list of conditions and the following disclaimer in the documentation
- * and/or other materials provided with the distribution. 
- * 
+ * and/or other materials provided with the distribution.
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
  * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
@@ -25,7 +25,7 @@
  * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- * 
+ *
  * Main file authors: Daniel Jönsson, Erik Sundén
  *
  *********************************************************************************/
@@ -41,27 +41,28 @@
 #include <modules/opencl/image/layerclbase.h>
 
 namespace inviwo {
-/** \class LayerCLGL 
-*
-* LayerCLGL handles shared texture2D between OpenCL and OpenGL.
-* It will make sure that the texture 
-* is not released while a shared representation exist
-* and also release and reattach the shared representation
-* when the texture is resized (handled through the TexturObserver)
-*
-* @see Observable
-*/
+/** \class LayerCLGL
+ *
+ * LayerCLGL handles shared texture2D between OpenCL and OpenGL.
+ * It will make sure that the texture
+ * is not released while a shared representation exist
+ * and also release and reattach the shared representation
+ * when the texture is resized (handled through the TexturObserver)
+ *
+ * @see Observable
+ */
 class IVW_MODULE_OPENCL_API LayerCLGL : public LayerCLBase, public LayerRepresentation, public TextureObserver {
 public:
-    LayerCLGL(uvec2 dimensions = uvec2(64), LayerType type = COLOR_LAYER, const DataFormatBase* format = DataFormatBase::get(), Texture2D* data = NULL);
+    LayerCLGL(uvec2 dimensions = uvec2(64), LayerType type = COLOR_LAYER, const DataFormatBase* format = DataFormatBase::get(),
+              Texture2D* data = NULL);
     virtual ~LayerCLGL();
     LayerCLGL(const LayerCLGL& rhs);
 
     virtual std::string getClassName() const { return "LayerCLGL"; }
-    virtual void initialize(){};
+    virtual void initialize() {};
     virtual void deinitialize();
     virtual LayerCLGL* clone() const;
-    
+
     void initialize(Texture2D* texture);
 
     virtual void setDimension(uvec2 dimensions) { dimensions_ = dimensions; deinitialize(); initialize(texture_); }
@@ -85,11 +86,11 @@ public:
     virtual void notifyAfterTextureInitialization();
 
     void aquireGLObject(std::vector<cl::Event>* syncEvents = NULL) const {
-        std::vector<cl::Memory> syncLayers(1, *clImage_); 
+        std::vector<cl::Memory> syncLayers(1, *clImage_);
         OpenCL::instance()->getQueue().enqueueAcquireGLObjects(&syncLayers, syncEvents);
     }
     void releaseGLObject(std::vector<cl::Event>* syncEvents = NULL, cl::Event* event= NULL) const {
-        std::vector<cl::Memory> syncLayers(1, *clImage_); 
+        std::vector<cl::Memory> syncLayers(1, *clImage_);
         OpenCL::instance()->getQueue().enqueueReleaseGLObjects(&syncLayers, syncEvents, event);
     }
 
@@ -103,7 +104,7 @@ protected:
 
 namespace cl {
 
-// Kernel argument specializations for LayerCLGL type 
+// Kernel argument specializations for LayerCLGL type
 // (enables calling cl::Queue::setArg with LayerCLGL)
 template <>
 IVW_MODULE_OPENCL_API cl_int Kernel::setArg(cl_uint index, const inviwo::LayerCLGL& value);

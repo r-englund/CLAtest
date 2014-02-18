@@ -1,4 +1,4 @@
- /*********************************************************************************
+/*********************************************************************************
  *
  * Inviwo - Interactive Visualization Workshop
  * Version 0.6b
@@ -38,15 +38,15 @@
 namespace inviwo {
 
 /** class StringProperty
-* \brief  The StringProperty holds a string as value.
-*
-* The string property has 2 different widgets, one that just displays the value of the string.
-* The other one makes it possible to edit the string.
-* To use the editor widget you must specify it in the constructor and set the property semantics to Editor.
-*
-* @see StringPropertyWidgetQt
-* @see TextEditorWidgetQt
-*/
+ * \brief  The StringProperty holds a string as value.
+ *
+ * The string property has 2 different widgets, one that just displays the value of the string.
+ * The other one makes it possible to edit the string.
+ * To use the editor widget you must specify it in the constructor and set the property semantics to Editor.
+ *
+ * @see StringPropertyWidgetQt
+ * @see TextEditorWidgetQt
+ */
 
 class IVW_CORE_API StringProperty : public TemplateProperty<std::string> {
 

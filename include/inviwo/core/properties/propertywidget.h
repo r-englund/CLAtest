@@ -1,4 +1,4 @@
- /*********************************************************************************
+/*********************************************************************************
  *
  * Inviwo - Interactive Visualization Workshop
  * Version 0.6b
@@ -55,7 +55,7 @@ public:
 
     void setEditorWidget(PropertyEditorWidget* processorWidget);
     PropertyEditorWidget* getEditorWidget() const;
-    bool hasEditorWidget() const;    
+    bool hasEditorWidget() const;
 
     virtual Property* getProperty();
     virtual void setProperty(Property* property);

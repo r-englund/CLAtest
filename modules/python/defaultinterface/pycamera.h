@@ -1,20 +1,20 @@
- /*********************************************************************************
+/*********************************************************************************
  *
  * Inviwo - Interactive Visualization Workshop
  * Version 0.6b
  *
  * Copyright (c) 2013-2014 Inviwo Foundation
  * All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met: 
- * 
+ * modification, are permitted provided that the following conditions are met:
+ *
  * 1. Redistributions of source code must retain the above copyright notice, this
- * list of conditions and the following disclaimer. 
+ * list of conditions and the following disclaimer.
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  * this list of conditions and the following disclaimer in the documentation
- * and/or other materials provided with the distribution. 
- * 
+ * and/or other materials provided with the distribution.
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
  * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
@@ -25,7 +25,7 @@
  * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- * 
+ *
  * Main file author: Rickard Englund
  *
  *********************************************************************************/
@@ -44,49 +44,49 @@ PyObject* py_setCameraUp(PyObject* /*self*/, PyObject* /*args*/);
 PyObject* py_setCameraPos(PyObject* /*self*/, PyObject* /*args*/);
 
 
-    class IVW_MODULE_PYTHON_API PySetCameraFocusMethod : public PyMethod{
-    public:
-        PySetCameraFocusMethod();
-        virtual ~PySetCameraFocusMethod(){}
+class IVW_MODULE_PYTHON_API PySetCameraFocusMethod : public PyMethod {
+public:
+    PySetCameraFocusMethod();
+    virtual ~PySetCameraFocusMethod() {}
 
-        virtual std::string getName()const{return "setCameraFocus";}
-        virtual std::string getDesc()const{return "Function to set the cameras focal point.";}
-        virtual PyCFunction getFunc(){return py_setCameraFocus;}
-    private:
-        PyParamString processor_;
-        PyParamString property_;
-        PyParamVec3   focusPoint_;
-    };
+    virtual std::string getName()const {return "setCameraFocus";}
+    virtual std::string getDesc()const {return "Function to set the cameras focal point.";}
+    virtual PyCFunction getFunc() {return py_setCameraFocus;}
+private:
+    PyParamString processor_;
+    PyParamString property_;
+    PyParamVec3   focusPoint_;
+};
 
-    class IVW_MODULE_PYTHON_API PySetCameraUpMethod : public PyMethod{
-    public:
-        PySetCameraUpMethod();
-        virtual ~PySetCameraUpMethod(){}
+class IVW_MODULE_PYTHON_API PySetCameraUpMethod : public PyMethod {
+public:
+    PySetCameraUpMethod();
+    virtual ~PySetCameraUpMethod() {}
 
-        virtual std::string getName()const{return "setCameraUp";}
-        virtual std::string getDesc()const{return "Function to set the cameras up direction.";}
-        virtual PyCFunction getFunc(){return py_setCameraUp;}
-    private:
-        PyParamString processor_;
-        PyParamString property_;
-        PyParamVec3   upVector_;
+    virtual std::string getName()const {return "setCameraUp";}
+    virtual std::string getDesc()const {return "Function to set the cameras up direction.";}
+    virtual PyCFunction getFunc() {return py_setCameraUp;}
+private:
+    PyParamString processor_;
+    PyParamString property_;
+    PyParamVec3   upVector_;
 
-    };
+};
 
-    class IVW_MODULE_PYTHON_API PySetCameraPosMethod : public PyMethod{
-    public:
-        PySetCameraPosMethod();
-        virtual ~PySetCameraPosMethod(){}
+class IVW_MODULE_PYTHON_API PySetCameraPosMethod : public PyMethod {
+public:
+    PySetCameraPosMethod();
+    virtual ~PySetCameraPosMethod() {}
 
-        virtual std::string getName()const{return "setCameraPosition";}
-        virtual std::string getDesc()const{return "Function to set the cameras position.";}
-        virtual PyCFunction getFunc(){return py_setCameraPos;}
-    private:
-        PyParamString processor_;
-        PyParamString property_;
-        PyParamVec3   position_;
+    virtual std::string getName()const {return "setCameraPosition";}
+    virtual std::string getDesc()const {return "Function to set the cameras position.";}
+    virtual PyCFunction getFunc() {return py_setCameraPos;}
+private:
+    PyParamString processor_;
+    PyParamString property_;
+    PyParamVec3   position_;
 
-    };
+};
 
 } //namespace
 

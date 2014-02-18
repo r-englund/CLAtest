@@ -1,20 +1,20 @@
- /*********************************************************************************
+/*********************************************************************************
  *
  * Inviwo - Interactive Visualization Workshop
  * Version 0.6b
  *
  * Copyright (c) 2013-2014 Inviwo Foundation
  * All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met: 
- * 
+ * modification, are permitted provided that the following conditions are met:
+ *
  * 1. Redistributions of source code must retain the above copyright notice, this
- * list of conditions and the following disclaimer. 
+ * list of conditions and the following disclaimer.
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  * this list of conditions and the following disclaimer in the documentation
- * and/or other materials provided with the distribution. 
- * 
+ * and/or other materials provided with the distribution.
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
  * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
@@ -25,7 +25,7 @@
  * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- * 
+ *
  * Main file authors: Daniel Jönsson, Erik Sundén
  *
  *********************************************************************************/
@@ -41,20 +41,18 @@ LayerCL::LayerCL(uvec2 dimensions, LayerType type, const DataFormatBase* format,
     initialize(data);
 }
 
-LayerCL::LayerCL( const LayerCL& rhs )
+LayerCL::LayerCL(const LayerCL& rhs)
     : LayerRepresentation(rhs)
     , layerFormat_(rhs.layerFormat_) {
-
     initialize(NULL);
     OpenCL::instance()->getQueue().enqueueCopyImage(rhs.get(), *clImage_ , glm::svec3(0), glm::svec3(0), glm::svec3(dimensions_, 1));
 }
 
-LayerCL::~LayerCL() { 
-    deinitialize(); 
+LayerCL::~LayerCL() {
+    deinitialize();
 }
 
 void LayerCL::initialize(const void* texels) {
-
     if (texels != NULL) {
         // Could performance be increased by using pinned memory?
         // 3.1.1 http://www.nvidia.com/content/cudazone/CUDABrowser/downloads/papers/NVIDIA_OpenCL_BestPracticesGuide.pdf
@@ -63,17 +61,18 @@ void LayerCL::initialize(const void* texels) {
         //memcpy(mappedMem, texels, sizeof(texels));
         //OpenCL::instance()->getQueue().enqueueWriteLayer(*layer2D_, true, glm::svec3(0), glm::svec3(dimensions_, 1), 0, 0, mappedMem);
         //OpenCL::instance()->getQueue().enqueueUnmapMemObject(pinnedMem, mappedMem);
-
         // This should also use pinned memory...
-        clImage_ = new cl::Image2D(OpenCL::instance()->getContext(), 
-            CL_MEM_READ_WRITE | CL_MEM_COPY_HOST_PTR | CL_MEM_ALLOC_HOST_PTR, 
-            getFormat(), static_cast<size_t>(dimensions_.x), static_cast<size_t>(dimensions_.y), 0, const_cast<void*>(texels));
+        clImage_ = new cl::Image2D(OpenCL::instance()->getContext(),
+                                   CL_MEM_READ_WRITE | CL_MEM_COPY_HOST_PTR | CL_MEM_ALLOC_HOST_PTR,
+                                   getFormat(), static_cast<size_t>(dimensions_.x), static_cast<size_t>(dimensions_.y), 0, const_cast<void*>(texels));
         // Alternatively first allocate memory on device and then transfer
         //layer2D_ = new cl::Layer2D(OpenCL::instance()->getContext(), CL_MEM_READ_WRITE, getFormat(), dimensions_.x, dimensions_.y);
         //OpenCL::instance()->getQueue().enqueueWriteLayer(*layer2D_, true, glm::svec3(0), glm::svec3(dimensions_, 1), 0, 0, texels);
     } else {
-        clImage_ = new cl::Image2D(OpenCL::instance()->getContext(), CL_MEM_READ_WRITE, getFormat(), static_cast<size_t>(dimensions_.x), static_cast<size_t>(dimensions_.y));
+        clImage_ = new cl::Image2D(OpenCL::instance()->getContext(), CL_MEM_READ_WRITE, getFormat(), static_cast<size_t>(dimensions_.x),
+                                   static_cast<size_t>(dimensions_.y));
     }
+
     LayerCL::initialize();
 }
 
@@ -82,14 +81,14 @@ LayerCL* LayerCL::clone() const {
 }
 
 void LayerCL::deinitialize() {
-	delete clImage_; 
+    delete clImage_;
 }
 
-void LayerCL::upload( const void* data ) {
+void LayerCL::upload(const void* data) {
     OpenCL::instance()->getQueue().enqueueWriteImage(*clImage_, true, glm::svec3(0), glm::svec3(dimensions_, 1), 0, 0, const_cast<void*>(data));
 }
 
-void LayerCL::download( void* data ) const {
+void LayerCL::download(void* data) const {
     OpenCL::instance()->getQueue().enqueueReadImage(*clImage_, true, glm::svec3(0), glm::svec3(dimensions_, 1), 0, 0, data);
 }
 
@@ -97,6 +96,7 @@ void LayerCL::resize(uvec2 dimensions) {
     if (dimensions == dimensions_) {
         return;
     }
+
     cl::Image2D* resizedLayer2D = new cl::Image2D(OpenCL::instance()->getContext(), CL_MEM_READ_WRITE, getFormat(), dimensions.x, dimensions.y);
     LayerCLResizer::resize(*clImage_, *resizedLayer2D, dimensions);
     delete clImage_;
@@ -110,11 +110,10 @@ bool LayerCL::copyAndResizeLayer(DataRepresentation* target) const {
     if (!targetCL) return false;
 
     LayerCLResizer::resize(*clImage_, (targetCL->get()), targetCL->getDimension());
-	
-	return true;
+    return true;
 }
 
-void LayerCL::setDimension( uvec2 dimensions ) {
+void LayerCL::setDimension(uvec2 dimensions) {
     delete clImage_;
     clImage_ = new cl::Image2D(OpenCL::instance()->getContext(), CL_MEM_READ_WRITE, getFormat(), dimensions.x, dimensions.y);
 }

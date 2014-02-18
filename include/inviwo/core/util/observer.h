@@ -1,4 +1,4 @@
- /*********************************************************************************
+/*********************************************************************************
  *
  * Inviwo - Interactive Visualization Workshop
  * Version 0.6b
@@ -41,10 +41,10 @@ namespace inviwo {
 class ObservableInterface;
 
 /** \class Observer
-*
-* Class to support observer pattern. An example of usage is given in the Observable class.
-* @see Observable
-*/
+ *
+ * Class to support observer pattern. An example of usage is given in the Observable class.
+ * @see Observable
+ */
 class IVW_CORE_API Observer {
 
     friend class ObservableInterface;
@@ -88,13 +88,13 @@ protected:
 };
 
 /** \class ObservableInterface
-*
-* Class to support observer pattern.
-* This is an interface only, inherit from Observable<DerivedObserver> to define your own "notify()" method.
-* An example of usage is given in the Observable class.
-* @see Observable
-* @see Observer
-*/
+ *
+ * Class to support observer pattern.
+ * This is an interface only, inherit from Observable<DerivedObserver> to define your own "notify()" method.
+ * An example of usage is given in the Observable class.
+ * @see Observable
+ * @see Observer
+ */
 class IVW_CORE_API ObservableInterface {
     friend class Observer;
 public:
@@ -131,36 +131,36 @@ protected:
 };
 
 /** \class Observable
-*
-* Class to support observer pattern.
-*
-* \section example Example
-* Example of how to apply it to a simple button.
-* @code
-*    class IVW_XXX_API ButtonObserver: public Observer {
-*    public:
-*        ButtonObserver(): Observer() {};
-*        // Will be notified when the observed button is pressed.
-*        void buttonPressed(){};
-*    };
-*
-*    class IVW_XXX_API Button: public Observable<ButtonObserver> {
-*    public:
-*        Button(): Observable<ButtonObserver>() {};
-*        void pressButton() {
-*            // Do stuff
-*            // Notify observers
-*            ObserverSet::iterator endIt = observers_->end();
-*            for(ObserverSet::iterator it = observers_->begin(); it != endIt; ++it) {
-*               // static_cast can be used since only template class objects can be added
-*               static_cast<ButtonObserver*>(*it)->buttonPressed();
-*            }
-*        }
-*    };
-* @endcode
-* @see Observer
-* @see VoidObserver
-*/
+ *
+ * Class to support observer pattern.
+ *
+ * \section example Example
+ * Example of how to apply it to a simple button.
+ * @code
+ *    class IVW_XXX_API ButtonObserver: public Observer {
+ *    public:
+ *        ButtonObserver(): Observer() {};
+ *        // Will be notified when the observed button is pressed.
+ *        void buttonPressed(){};
+ *    };
+ *
+ *    class IVW_XXX_API Button: public Observable<ButtonObserver> {
+ *    public:
+ *        Button(): Observable<ButtonObserver>() {};
+ *        void pressButton() {
+ *            // Do stuff
+ *            // Notify observers
+ *            ObserverSet::iterator endIt = observers_->end();
+ *            for(ObserverSet::iterator it = observers_->begin(); it != endIt; ++it) {
+ *               // static_cast can be used since only template class objects can be added
+ *               static_cast<ButtonObserver*>(*it)->buttonPressed();
+ *            }
+ *        }
+ *    };
+ * @endcode
+ * @see Observer
+ * @see VoidObserver
+ */
 template<typename T>
 class Observable: public ObservableInterface {
 public:
@@ -189,13 +189,13 @@ public:
 
 
 /** \class VoidObserver
-*
-* Simple observer that does not require any arguments
-* when observed object changes. The observer therefore
-* does not know what changed, only that it changed.
-*
-* @see VoidObservable
-*/
+ *
+ * Simple observer that does not require any arguments
+ * when observed object changes. The observer therefore
+ * does not know what changed, only that it changed.
+ *
+ * @see VoidObservable
+ */
 class IVW_CORE_API VoidObserver: public Observer {
 public:
     VoidObserver(): Observer() {};
@@ -209,13 +209,13 @@ public:
 
 
 /** \class VoidObservable
-*
-* Simple observable that should call notifyObservers as soon as it
-* has changed. The observer
-* does not know what changed, only that it changed.
-*
-* @see VoidObserver
-*/
+ *
+ * Simple observable that should call notifyObservers as soon as it
+ * has changed. The observer
+ * does not know what changed, only that it changed.
+ *
+ * @see VoidObserver
+ */
 class IVW_CORE_API VoidObservable: public Observable<VoidObserver> {
 public:
     VoidObservable(): Observable<VoidObserver>() {};

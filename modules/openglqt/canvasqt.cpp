@@ -1,20 +1,20 @@
- /*********************************************************************************
+/*********************************************************************************
  *
  * Inviwo - Interactive Visualization Workshop
  * Version 0.6b
  *
  * Copyright (c) 2013-2014 Inviwo Foundation
  * All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met: 
- * 
+ * modification, are permitted provided that the following conditions are met:
+ *
  * 1. Redistributions of source code must retain the above copyright notice, this
- * list of conditions and the following disclaimer. 
+ * list of conditions and the following disclaimer.
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  * this list of conditions and the following disclaimer in the documentation
- * and/or other materials provided with the distribution. 
- * 
+ * and/or other materials provided with the distribution.
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
  * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
@@ -25,7 +25,7 @@
  * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- * 
+ *
  * Main file authors: Erik Sundén, Sathish Kottravel
  *
  *********************************************************************************/
@@ -40,11 +40,11 @@ QGLFormat CanvasQt::sharedFormat_ = QGLFormat(QGL::Rgba | QGL::DoubleBuffer | QG
 bool CanvasQt::sharedInitialized_ = false;
 
 CanvasQt::CanvasQt(QWidget* parent, uvec2 dim)
-: QGLWidget(sharedFormat_, parent, sharedWidget_),
-  CanvasGL(dim),
-  swapBuffersAllowed_(false)
+    : QGLWidget(sharedFormat_, parent, sharedWidget_),
+      CanvasGL(dim),
+      swapBuffersAllowed_(false)
 {
-    if(sharedWidget_ && !sharedInitialized_){
+    if (sharedWidget_ && !sharedInitialized_) {
         sharedWidget_->makeCurrent();
         initializeSquare();
         sharedInitialized_ = true;
@@ -53,7 +53,7 @@ CanvasQt::CanvasQt(QWidget* parent, uvec2 dim)
     //This is our default rendering context
     //Initialized once. So "THE" first object of this class will not have any shared context (or widget)
     //But Following objects, will share the context of initial object
-    if (!sharedWidget_){
+    if (!sharedWidget_) {
         QGLFormat f = this->format();
         f.setVersion(10, 0);  //Will choose highest available version
         f.setProfile(QGLFormat::CompatibilityProfile);
@@ -64,7 +64,7 @@ CanvasQt::CanvasQt(QWidget* parent, uvec2 dim)
     }
 
     setAutoBufferSwap(false);
-	setFocusPolicy(Qt::TabFocus);
+    setFocusPolicy(Qt::TabFocus);
     setAttribute(Qt::WA_OpaquePaintEvent);
 }
 
@@ -89,8 +89,8 @@ void CanvasQt::initializeGL() {
     activate();
 }
 
-void CanvasQt::glSwapBuffers(){
-    if(swapBuffersAllowed_){
+void CanvasQt::glSwapBuffers() {
+    if (swapBuffersAllowed_) {
         activate();
         QGLWidget::swapBuffers();
     }
@@ -111,9 +111,10 @@ void CanvasQt::paintGL() {
 
 void CanvasQt::mousePressEvent(QMouseEvent* e) {
     if (!processorNetworkEvaluator_) return;
-    MouseEvent* mouseEvent = new MouseEvent(ivec2(e->pos().x(), e->pos().y()), 
-        EventConverterQt::getMouseButton(e), MouseEvent::MOUSE_STATE_PRESS, 
-        EventConverterQt::getModifier(e), dimensions_);
+
+    MouseEvent* mouseEvent = new MouseEvent(ivec2(e->pos().x(), e->pos().y()),
+                                            EventConverterQt::getMouseButton(e), MouseEvent::MOUSE_STATE_PRESS,
+                                            EventConverterQt::getModifier(e), dimensions_);
     e->accept();
     Canvas::mousePressEvent(mouseEvent);
     delete mouseEvent;
@@ -121,9 +122,10 @@ void CanvasQt::mousePressEvent(QMouseEvent* e) {
 
 void CanvasQt::mouseReleaseEvent(QMouseEvent* e) {
     if (!processorNetworkEvaluator_) return;
-    MouseEvent* mouseEvent = new MouseEvent(ivec2(e->pos().x(), e->pos().y()), 
-        EventConverterQt::getMouseButton(e),MouseEvent::MOUSE_STATE_RELEASE, 
-        EventConverterQt::getModifier(e), dimensions_);
+
+    MouseEvent* mouseEvent = new MouseEvent(ivec2(e->pos().x(), e->pos().y()),
+                                            EventConverterQt::getMouseButton(e),MouseEvent::MOUSE_STATE_RELEASE,
+                                            EventConverterQt::getModifier(e), dimensions_);
     e->accept();
     Canvas::mouseReleaseEvent(mouseEvent);
     delete mouseEvent;
@@ -133,10 +135,11 @@ void CanvasQt::mouseMoveEvent(QMouseEvent* e) {
     if (!processorNetworkEvaluator_) return;
 
     MouseEvent* mouseEvent = NULL;
+
     if (e->buttons() == Qt::LeftButton || e->buttons() == Qt::RightButton || e->buttons() == Qt::MiddleButton) {
-        mouseEvent = new MouseEvent(ivec2(e->pos().x(), e->pos().y()), 
-            EventConverterQt::getMouseButton(e), MouseEvent::MOUSE_STATE_PRESS, 
-            EventConverterQt::getModifier(e), dimensions_);
+        mouseEvent = new MouseEvent(ivec2(e->pos().x(), e->pos().y()),
+                                    EventConverterQt::getMouseButton(e), MouseEvent::MOUSE_STATE_PRESS,
+                                    EventConverterQt::getModifier(e), dimensions_);
         e->accept();
         Canvas::mouseMoveEvent(mouseEvent);
         delete mouseEvent;
@@ -144,24 +147,26 @@ void CanvasQt::mouseMoveEvent(QMouseEvent* e) {
 }
 
 void CanvasQt::keyPressEvent(QKeyEvent* e) {
-	if (!processorNetworkEvaluator_) return;
-	KeyboardEvent* keyEvent = new KeyboardEvent( 
-		EventConverterQt::getKeyButton(e),  
-		EventConverterQt::getModifier(e),
-		KeyboardEvent::KEY_STATE_PRESS);
+    if (!processorNetworkEvaluator_) return;
+
+    KeyboardEvent* keyEvent = new KeyboardEvent(
+        EventConverterQt::getKeyButton(e),
+        EventConverterQt::getModifier(e),
+        KeyboardEvent::KEY_STATE_PRESS);
     e->accept();
-	Canvas::keyPressEvent(keyEvent);
+    Canvas::keyPressEvent(keyEvent);
     delete keyEvent;
 }
 
 void CanvasQt::keyReleaseEvent(QKeyEvent* e) {
-	if (!processorNetworkEvaluator_) return;
-	KeyboardEvent* keyEvent = new KeyboardEvent( 
-		EventConverterQt::getKeyButton(e),  
-		EventConverterQt::getModifier(e),
-		KeyboardEvent::KEY_STATE_RELEASE);
+    if (!processorNetworkEvaluator_) return;
+
+    KeyboardEvent* keyEvent = new KeyboardEvent(
+        EventConverterQt::getKeyButton(e),
+        EventConverterQt::getModifier(e),
+        KeyboardEvent::KEY_STATE_RELEASE);
     e->accept();
-	Canvas::keyReleaseEvent(keyEvent);
+    Canvas::keyReleaseEvent(keyEvent);
     delete keyEvent;
 }
 

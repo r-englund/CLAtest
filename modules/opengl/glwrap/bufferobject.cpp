@@ -1,20 +1,20 @@
- /*********************************************************************************
+/*********************************************************************************
  *
  * Inviwo - Interactive Visualization Workshop
  * Version 0.6b
  *
  * Copyright (c) 2013-2014 Inviwo Foundation
  * All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met: 
- * 
+ * modification, are permitted provided that the following conditions are met:
+ *
  * 1. Redistributions of source code must retain the above copyright notice, this
- * list of conditions and the following disclaimer. 
+ * list of conditions and the following disclaimer.
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  * this list of conditions and the following disclaimer in the documentation
- * and/or other materials provided with the distribution. 
- * 
+ * and/or other materials provided with the distribution.
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
  * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
@@ -25,7 +25,7 @@
  * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- * 
+ *
  * Main file authors: Daniel Jönsson
  *
  *********************************************************************************/
@@ -34,26 +34,29 @@
 
 namespace inviwo {
 
-BufferObject::BufferObject(size_t size, const DataFormatBase* format, BufferType type, BufferUsage usage, GLenum target /*= GL_ARRAY_BUFFER*/)
+BufferObject::BufferObject(size_t size, const DataFormatBase* format, BufferType type, BufferUsage usage,
+                           GLenum target /*= GL_ARRAY_BUFFER*/)
     : Observable<BufferObjectObserver>(), ReferenceCounter()
     , target_(target)
     , type_(type), glFormat_(getGLFormats()->getGLFormat(format->getId())) {
-    // 
-    switch(usage)
+    //
+    switch (usage)
     {
         case DYNAMIC:
             usageGL_ = GL_DYNAMIC_DRAW;
             break;
+
         default:
             usageGL_ = GL_STATIC_DRAW;
             break;
     }
+
     initialize();
     LGL_ERROR_SUPPRESS;
 }
 
-BufferObject::BufferObject( const BufferObject& rhs ) {
-    // TODO: Copy data 
+BufferObject::BufferObject(const BufferObject& rhs) {
+    // TODO: Copy data
 }
 
 BufferObject::~BufferObject() {
@@ -96,68 +99,76 @@ void BufferObject::specifyLocation() const {
 }
 
 
-void BufferObject::initialize( const void* data, GLsizeiptr sizeInBytes) {
+void BufferObject::initialize(const void* data, GLsizeiptr sizeInBytes) {
     sizeInBytes_ = sizeInBytes;
 
     //Specify location and state
-    switch(getBufferType())
+    switch (getBufferType())
     {
-    case COLOR_ATTRIB:
-        locationPointerFunc_ = &BufferObject::colorPointer;
-        state_ = GL_COLOR_ARRAY;
-        break;
-    case NORMAL_ATTRIB:
-        locationPointerFunc_ = &BufferObject::normalPointer;
-        state_ = GL_NORMAL_ARRAY;
-        break;
-    case TEXCOORD_ATTRIB:
-        locationPointerFunc_ = &BufferObject::texCoordPointer;
-        state_ = GL_TEXTURE_COORD_ARRAY;
-        break;
-    case POSITION_ATTRIB:
-        locationPointerFunc_ = &BufferObject::vertexPointer;
-        state_ = GL_VERTEX_ARRAY;
-        break;
-    default:
-        locationPointerFunc_ = &BufferObject::emptyFunc;
-        state_ = GL_VERTEX_ARRAY;
-        break;
+        case COLOR_ATTRIB:
+            locationPointerFunc_ = &BufferObject::colorPointer;
+            state_ = GL_COLOR_ARRAY;
+            break;
+
+        case NORMAL_ATTRIB:
+            locationPointerFunc_ = &BufferObject::normalPointer;
+            state_ = GL_NORMAL_ARRAY;
+            break;
+
+        case TEXCOORD_ATTRIB:
+            locationPointerFunc_ = &BufferObject::texCoordPointer;
+            state_ = GL_TEXTURE_COORD_ARRAY;
+            break;
+
+        case POSITION_ATTRIB:
+            locationPointerFunc_ = &BufferObject::vertexPointer;
+            state_ = GL_VERTEX_ARRAY;
+            break;
+
+        default:
+            locationPointerFunc_ = &BufferObject::emptyFunc;
+            state_ = GL_VERTEX_ARRAY;
+            break;
     }
+
     // Notify observers
     ObserverSet::iterator endIt = observers_->end();
-    for(ObserverSet::iterator it = observers_->begin(); it != endIt; ++it) {
+
+    for (ObserverSet::iterator it = observers_->begin(); it != endIt; ++it) {
         // static_cast can be used since only template class objects can be added
-        static_cast<BufferObjectObserver*>(*it)->notifyBeforeBufferInitialization();    
+        static_cast<BufferObjectObserver*>(*it)->notifyBeforeBufferInitialization();
     }
+
     bind();
     // Allocate and transfer possible data
     glBufferData(target_, sizeInBytes, data, usageGL_);
     specifyLocation();
-    for(ObserverSet::iterator it = observers_->begin(); it != endIt; ++it) {
+
+    for (ObserverSet::iterator it = observers_->begin(); it != endIt; ++it) {
         // static_cast can be used since only template class objects can be added
-        static_cast<BufferObjectObserver*>(*it)->notifyAfterBufferInitialization();    
+        static_cast<BufferObjectObserver*>(*it)->notifyAfterBufferInitialization();
     }
 }
 
-void BufferObject::upload( const void* data, GLsizeiptr sizeInBytes ) {
+void BufferObject::upload(const void* data, GLsizeiptr sizeInBytes) {
     bind();
     glBufferSubData(target_, 0, sizeInBytes, data);
 }
 
-void BufferObject::download( void* data ) const {
+void BufferObject::download(void* data) const {
     bind();
     // Map data
     void* gldata = glMapBuffer(target_, GL_READ_ONLY);
+
     // Copy data if valid pointer
-    if(gldata)
+    if (gldata)
     {
         memcpy(data, gldata, sizeInBytes_);
         // Unmap buffer after using it
-        glUnmapBufferARB(target_); 
+        glUnmapBufferARB(target_);
     } else {
         LogError("Unable to map data");
     }
-
 }
 
 void BufferObject::colorPointer() const {

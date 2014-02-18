@@ -1,20 +1,20 @@
- /*********************************************************************************
+/*********************************************************************************
  *
  * Inviwo - Interactive Visualization Workshop
  * Version 0.6b
  *
  * Copyright (c) 2012-2014 Inviwo Foundation
  * All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met: 
- * 
+ * modification, are permitted provided that the following conditions are met:
+ *
  * 1. Redistributions of source code must retain the above copyright notice, this
- * list of conditions and the following disclaimer. 
+ * list of conditions and the following disclaimer.
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  * this list of conditions and the following disclaimer in the documentation
- * and/or other materials provided with the distribution. 
- * 
+ * and/or other materials provided with the distribution.
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
  * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
@@ -25,7 +25,7 @@
  * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- * 
+ *
  * Main file authors: Timo Ropinski, Sathish Kottravel, Erik Sundén
  *
  *********************************************************************************/
@@ -35,9 +35,9 @@
 
 namespace inviwo {
 
-ProcessorClassName(ImageMixer, "ImageMixer"); 
+ProcessorClassName(ImageMixer, "ImageMixer");
 ProcessorCategory(ImageMixer, "Image Operation");
-ProcessorCodeState(ImageMixer, CODE_STATE_EXPERIMENTAL); 
+ProcessorCodeState(ImageMixer, CODE_STATE_EXPERIMENTAL);
 
 ImageMixer::ImageMixer()
     : ProcessorGL(),
@@ -64,23 +64,20 @@ void ImageMixer::deinitialize() {
     ProcessorGL::deinitialize();
 }
 
-void ImageMixer::process() {    
+void ImageMixer::process() {
     ivwAssert(inport0_.getData()!=0, "Inport0 empty.");
     ivwAssert(inport1_.getData()!=0, "Inport1 empty.");
     uvec2 csize = outport_.getData()->getDimension();
-
     bindColorTexture(inport0_, GL_TEXTURE1);
     TextureUnit::setZeroUnit();
-
     bindColorTexture(inport1_, GL_TEXTURE2);
     TextureUnit::setZeroUnit();
-
     activateAndClearTarget(outport_);
     shader_->activate();
     shader_->setUniform("inport0_", 1);
     shader_->setUniform("inport1_", 2);
     shader_->setUniform("alpha_", alpha_.get());
-    shader_->setUniform("screenDimRCP_", vec2(1.f / csize[0], 1.f / csize[1]) );
+    shader_->setUniform("screenDimRCP_", vec2(1.f / csize[0], 1.f / csize[1]));
     renderImagePlaneRect();
     shader_->deactivate();
     deactivateCurrentTarget();

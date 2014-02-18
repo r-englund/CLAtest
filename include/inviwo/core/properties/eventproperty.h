@@ -1,4 +1,4 @@
- /*********************************************************************************
+/*********************************************************************************
  *
  * Inviwo - Interactive Visualization Workshop
  * Version 0.6b
@@ -40,10 +40,10 @@
 namespace inviwo {
 
 /** class EventProperty
-*
-* Property which contains one event and one action to represent the current key binding for the contained action.
-* @see EventPropertyWidgetQt
-*/
+ *
+ * Property which contains one event and one action to represent the current key binding for the contained action.
+ * @see EventPropertyWidgetQt
+ */
 class IVW_CORE_API EventProperty : public Property {
 public:
     /**

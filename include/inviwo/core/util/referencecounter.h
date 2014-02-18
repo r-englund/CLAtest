@@ -1,4 +1,4 @@
- /*********************************************************************************
+/*********************************************************************************
  *
  * Inviwo - Interactive Visualization Workshop
  * Version 0.6b
@@ -39,9 +39,9 @@
 namespace inviwo {
 
 /** \class ReferenceCounter
-*
-* Reference counter for an object. Object should be removed when reference count equals zero.
-*/
+ *
+ * Reference counter for an object. Object should be removed when reference count equals zero.
+ */
 class ReferenceCounter {
 public:
     ReferenceCounter(): referenceCount_(1) {};

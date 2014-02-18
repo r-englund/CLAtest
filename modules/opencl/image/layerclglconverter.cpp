@@ -1,20 +1,20 @@
- /*********************************************************************************
+/*********************************************************************************
  *
  * Inviwo - Interactive Visualization Workshop
  * Version 0.6b
  *
  * Copyright (c) 2013-2014 Inviwo Foundation
  * All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met: 
- * 
+ * modification, are permitted provided that the following conditions are met:
+ *
  * 1. Redistributions of source code must retain the above copyright notice, this
- * list of conditions and the following disclaimer. 
+ * list of conditions and the following disclaimer.
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  * this list of conditions and the following disclaimer in the documentation
- * and/or other materials provided with the distribution. 
- * 
+ * and/or other materials provided with the distribution.
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
  * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
@@ -25,7 +25,7 @@
  * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- * 
+ *
  * Main file authors: Daniel Jönsson, Erik Sundén
  *
  *********************************************************************************/
@@ -49,12 +49,13 @@ LayerCLGL2RAMConverter::LayerCLGL2RAMConverter()
 }
 
 
-DataRepresentation* LayerCLGL2RAMConverter::createFrom(const DataRepresentation* source) {     
+DataRepresentation* LayerCLGL2RAMConverter::createFrom(const DataRepresentation* source) {
     DataRepresentation* destination = 0;
     const LayerCLGL* layerCLGL = static_cast<const LayerCLGL*>(source);
     uvec2 dimension = layerCLGL->getDimension();
-    destination = createLayerRAM(dimension, layerCLGL->getLayerType(), layerCLGL->getDataFormat()); 
+    destination = createLayerRAM(dimension, layerCLGL->getLayerType(), layerCLGL->getDataFormat());
     const Texture2D* texture = layerCLGL->getTexture();
+
     if (destination) {
         LayerRAM* layerRAM = static_cast<LayerRAM*>(destination);
         texture->download(layerRAM->getData());
@@ -63,26 +64,28 @@ DataRepresentation* LayerCLGL2RAMConverter::createFrom(const DataRepresentation*
     } else {
         LogError("Invalid conversion or not implemented");
     }
+
     return destination;
 }
 
 void LayerCLGL2RAMConverter::update(const DataRepresentation* source, DataRepresentation* destination) {
     const LayerCLGL* layerSrc = static_cast<const LayerCLGL*>(source);
     LayerRAM* layerDst = static_cast<LayerRAM*>(destination);
-    if(layerSrc->getDimension() != layerDst->getDimension()) {
+
+    if (layerSrc->getDimension() != layerDst->getDimension()) {
         layerDst->setDimension(layerSrc->getDimension());
     }
+
     layerSrc->getTexture()->download(layerDst->getData());
 }
 
 LayerCLGL2GLConverter::LayerCLGL2GLConverter(): RepresentationConverterType<LayerGL>() {
-
 }
 
-DataRepresentation* LayerCLGL2GLConverter::createFrom( const DataRepresentation* source ) {
+DataRepresentation* LayerCLGL2GLConverter::createFrom(const DataRepresentation* source) {
     DataRepresentation* destination = 0;
     const LayerCLGL* src = static_cast<const LayerCLGL*>(source);
-    // TODO: Do we need to check if the LayerCLGL texture is valid to use? 
+    // TODO: Do we need to check if the LayerCLGL texture is valid to use?
     // It should not have been deleted since no LayerGL representation existed.
     Texture2D* tex = const_cast<Texture2D*>(src->getTexture());
     destination = new LayerGL(src->getDimension(), src->getLayerType(), src->getDataFormat(), const_cast<Texture2D*>(src->getTexture()));
@@ -91,7 +94,7 @@ DataRepresentation* LayerCLGL2GLConverter::createFrom( const DataRepresentation*
     return destination;
 }
 
-void LayerCLGL2GLConverter::update( const DataRepresentation* source, DataRepresentation* destination ) {
+void LayerCLGL2GLConverter::update(const DataRepresentation* source, DataRepresentation* destination) {
     // Do nothing since they share data
 }
 
@@ -102,39 +105,44 @@ DataRepresentation* LayerCLGL2CLConverter::createFrom(const DataRepresentation* 
     DataRepresentation* destination = 0;
     const LayerCLGL* src = static_cast<const LayerCLGL*>(source);
     destination = new LayerCL(src->getDimension(), src->getLayerType(), src->getDataFormat());
-    {SyncCLGL glSync;
-    src->aquireGLObject(glSync.getGLSyncEvent());
-    OpenCL::instance()->getQueue().enqueueCopyImage(src->get(), static_cast<LayerCL*>(destination)->get(), glm::svec3(0), glm::svec3(0), glm::svec3(src->getDimension(), 1));
-    src->releaseGLObject(NULL, glSync.getLastReleaseGLEvent());
+    {   SyncCLGL glSync;
+        src->aquireGLObject(glSync.getGLSyncEvent());
+        OpenCL::instance()->getQueue().enqueueCopyImage(src->get(), static_cast<LayerCL*>(destination)->get(), glm::svec3(0), glm::svec3(0),
+                glm::svec3(src->getDimension(), 1));
+        src->releaseGLObject(NULL, glSync.getLastReleaseGLEvent());
     }
     return destination;
 }
 
-void LayerCLGL2CLConverter::update( const DataRepresentation* source, DataRepresentation* destination ) {
+void LayerCLGL2CLConverter::update(const DataRepresentation* source, DataRepresentation* destination) {
     const LayerCLGL* src = static_cast<const LayerCLGL*>(source);
     LayerCL* dst = static_cast<LayerCL*>(destination);
-    if(src->getDimension() != dst->getDimension()) {
+
+    if (src->getDimension() != dst->getDimension()) {
         dst->setDimension(src->getDimension());
     }
-    {SyncCLGL glSync;
-    src->aquireGLObject(glSync.getGLSyncEvent());
-    OpenCL::instance()->getQueue().enqueueCopyImage(src->get(), dst->get(), glm::svec3(0), glm::svec3(0), glm::svec3(src->getDimension(), 1));
-    src->releaseGLObject(NULL, glSync.getLastReleaseGLEvent());
+
+    {   SyncCLGL glSync;
+        src->aquireGLObject(glSync.getGLSyncEvent());
+        OpenCL::instance()->getQueue().enqueueCopyImage(src->get(), dst->get(), glm::svec3(0), glm::svec3(0), glm::svec3(src->getDimension(), 1));
+        src->releaseGLObject(NULL, glSync.getLastReleaseGLEvent());
     }
 }
 
 
-DataRepresentation* LayerGL2CLGLConverter::createFrom(const DataRepresentation* source ) {
+DataRepresentation* LayerGL2CLGLConverter::createFrom(const DataRepresentation* source) {
     DataRepresentation* destination = 0;
     const LayerGL* layerGL = static_cast<const LayerGL*>(source);
-    destination = new LayerCLGL(layerGL->getDimension(), layerGL->getLayerType(), layerGL->getDataFormat(), const_cast<Texture2D*>(layerGL->getTexture()));
+    destination = new LayerCLGL(layerGL->getDimension(), layerGL->getLayerType(), layerGL->getDataFormat(),
+                                const_cast<Texture2D*>(layerGL->getTexture()));
     return destination;
 }
 
 void LayerGL2CLGLConverter::update(const DataRepresentation* source, DataRepresentation* destination) {
     const LayerGL* layerSrc = static_cast<const LayerGL*>(source);
     LayerCLGL* layerDst = static_cast<LayerCLGL*>(destination);
-    if(layerSrc->getDimension() != layerDst->getDimension()) {
+
+    if (layerSrc->getDimension() != layerDst->getDimension()) {
         layerDst->setDimension(layerSrc->getDimension());
     }
 }

@@ -1,20 +1,20 @@
- /*********************************************************************************
+/*********************************************************************************
  *
  * Inviwo - Interactive Visualization Workshop
  * Version 0.6b
  *
  * Copyright (c) 2012-2014 Inviwo Foundation
  * All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met: 
- * 
+ * modification, are permitted provided that the following conditions are met:
+ *
  * 1. Redistributions of source code must retain the above copyright notice, this
- * list of conditions and the following disclaimer. 
+ * list of conditions and the following disclaimer.
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  * this list of conditions and the following disclaimer in the documentation
- * and/or other materials provided with the distribution. 
- * 
+ * and/or other materials provided with the distribution.
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
  * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
@@ -25,7 +25,7 @@
  * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- * 
+ *
  * Main file author: Erik Sundén
  *
  *********************************************************************************/
@@ -54,7 +54,7 @@ public:
     virtual void glSwapBuffers();
     virtual void update();
 
-    static inline void enableDrawImagePlaneRect(){
+    static inline void enableDrawImagePlaneRect() {
         glEnableClientState(GL_VERTEX_ARRAY);
         glBindBuffer(GL_ARRAY_BUFFER, screenAlignedVerticesId_);
         glVertexPointer(2, GL_FLOAT, 0, 0);
@@ -63,26 +63,26 @@ public:
         glTexCoordPointer(2, GL_FLOAT, 0, 0);
     }
 
-    static inline void disableDrawImagePlaneRect(){
+    static inline void disableDrawImagePlaneRect() {
         glDisableClientState(GL_VERTEX_ARRAY);
         glDisableClientState(GL_TEXTURE_COORD_ARRAY);
     }
 
-    static inline void singleDrawImagePlaneRect(){
+    static inline void singleDrawImagePlaneRect() {
         glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
     }
 
-    static inline void multiDrawImagePlaneRect(int instances){
+    static inline void multiDrawImagePlaneRect(int instances) {
         glDrawArraysInstanced(GL_TRIANGLE_STRIP, 0, 4, instances);
     }
 
-    static inline void renderImagePlaneRect(){
+    static inline void renderImagePlaneRect() {
         enableDrawImagePlaneRect();
         singleDrawImagePlaneRect();
         disableDrawImagePlaneRect();
     }
 
-    static inline void renderImagePlaneRect(int instances){
+    static inline void renderImagePlaneRect(int instances) {
         enableDrawImagePlaneRect();
         multiDrawImagePlaneRect(instances);
         disableDrawImagePlaneRect();

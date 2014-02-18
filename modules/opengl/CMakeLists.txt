@@ -41,7 +41,6 @@ set(HEADER_FILES
     ${IVW_MODULE_DIR}/opengl/rendering/meshrenderer.h
     ${IVW_MODULE_DIR}/opengl/volume/volumegl.h
     ${IVW_MODULE_DIR}/opengl/volume/volumeglconverter.h
-    ${IVW_MODULE_DIR}/opengl/volume/volumeprocessorgl.h
     ${IVW_MODULE_DIR}/opengl/volume/volumeraycastergl.h
 )
 ivw_group("Header Files" ${HEADER_FILES})
@@ -82,7 +81,6 @@ set(SOURCE_FILES
     ${IVW_MODULE_DIR}/opengl/rendering/meshrenderer.cpp
     ${IVW_MODULE_DIR}/opengl/volume/volumegl.cpp
     ${IVW_MODULE_DIR}/opengl/volume/volumeglconverter.cpp
-    ${IVW_MODULE_DIR}/opengl/volume/volumeprocessorgl.cpp
     ${IVW_MODULE_DIR}/opengl/volume/volumeraycastergl.cpp
 )
 ivw_group("Source Files" ${SOURCE_FILES})
@@ -112,7 +110,6 @@ set(SHADER_FILES
     ${IVW_MODULE_DIR}/opengl/glsl/include/inc_compositing.frag
     ${IVW_MODULE_DIR}/opengl/glsl/include/inc_depth.frag
     ${IVW_MODULE_DIR}/opengl/glsl/include/inc_gradients.frag
-    ${IVW_MODULE_DIR}/opengl/glsl/include/inc_normdepth.frag
     ${IVW_MODULE_DIR}/opengl/glsl/include/inc_raycasting.frag
     ${IVW_MODULE_DIR}/opengl/glsl/include/inc_sampler2d.frag
     ${IVW_MODULE_DIR}/opengl/glsl/include/inc_sampler3d.frag
