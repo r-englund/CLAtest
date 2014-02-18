@@ -102,8 +102,8 @@ void EntryExitPointsCL::process() {
 #endif
     if (useGLSharing_.get()) {
         SyncCLGL glSync;
-        LayerCLGL* entryCL = entryPort_.getData()->getEditableRepresentation<ImageCLGL>()->getLayerCLGL();
-        LayerCLGL* exitCL = exitPort_.getData()->getEditableRepresentation<ImageCLGL>()->getLayerCLGL();
+        LayerCLGL* entryCL = entryPort_.getData()->getEditableRepresentation<ImageCLGL>()->getLayerCL();
+        LayerCLGL* exitCL = exitPort_.getData()->getEditableRepresentation<ImageCLGL>()->getLayerCL();
         entryCL->aquireGLObject(glSync.getGLSyncEvent());
         exitCL->aquireGLObject();
         const cl::Image& entry = entryCL->get();

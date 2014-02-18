@@ -56,11 +56,11 @@ void ImageCLGL::initialize() {
 void ImageCLGL::deinitialize() {
 }
 
-LayerCLGL* ImageCLGL::getLayerCLGL(){
+LayerCLGL* ImageCLGL::getLayerCL(){
     return layerCLGL_;
 }
 
-const LayerCLGL* ImageCLGL::getLayerCLGL() const {
+const LayerCLGL* ImageCLGL::getLayerCL() const {
     return layerCLGL_;
 }
 
@@ -69,7 +69,7 @@ bool ImageCLGL::copyAndResizeRepresentation(DataRepresentation* targetRep) const
 
     if (!targetCLGL) return false;
 	
-	return layerCLGL_->copyAndResizeLayer(targetCLGL->getLayerCLGL());
+	return layerCLGL_->copyAndResizeLayer(targetCLGL->getLayerCL());
 }
 
 void ImageCLGL::update(bool editable) {
@@ -89,7 +89,7 @@ namespace cl {
 
 template <>
 cl_int Kernel::setArg(cl_uint index, const inviwo::ImageCLGL& value) {
-    return setArg(index, value.getLayerCLGL()->get());
+    return setArg(index, value.getLayerCL()->get());
 }
 
 } // namespace cl

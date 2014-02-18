@@ -52,8 +52,8 @@ public:
     virtual void initialize();
     virtual void deinitialize();
 
-    LayerCLGL* getLayerCLGL();
-    const LayerCLGL* getLayerCLGL() const;
+    LayerCLGL* getLayerCL();
+    const LayerCLGL* getLayerCL() const;
     
     virtual bool copyAndResizeRepresentation(DataRepresentation*) const;
 

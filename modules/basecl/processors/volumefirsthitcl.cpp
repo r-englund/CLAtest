@@ -114,19 +114,19 @@ void VolumeFirstHitCL::process() {
         const VolumeCLGL* volume = volumePort_.getData()->getRepresentation<VolumeCLGL>();
         const LayerCLGL* tfCL = transferFunction_.get().getData()->getRepresentation<LayerCLGL>();
         volume->aquireGLObject(glSync.getGLSyncEvent());
-        entry->getLayerCLGL()->aquireGLObject();
-        exit->getLayerCLGL()->aquireGLObject();
-        output->getLayerCLGL()->aquireGLObject();
+        entry->getLayerCL()->aquireGLObject();
+        exit->getLayerCL()->aquireGLObject();
+        output->getLayerCL()->aquireGLObject();
         tfCL->aquireGLObject();
         const cl::Image& volumeCL = volume->get();
-        const cl::Image& entryCL = entry->getLayerCLGL()->get();
-        const cl::Image& exitCL = exit->getLayerCLGL()->get();
-        const cl::Image& outImageCL = output->getLayerCLGL()->get();
+        const cl::Image& entryCL = entry->getLayerCL()->get();
+        const cl::Image& exitCL = exit->getLayerCL()->get();
+        const cl::Image& outImageCL = output->getLayerCL()->get();
         const cl::Image& tf = tfCL->get();
         firstHit(volumeCL, entryCL, exitCL, tf, outImageCL, stepSize, globalWorkGroupSize, localWorkGroupSize, profilingEvent);
-        entry->getLayerCLGL()->releaseGLObject();
-        exit->getLayerCLGL()->releaseGLObject();
-        output->getLayerCLGL()->releaseGLObject();
+        entry->getLayerCL()->releaseGLObject();
+        exit->getLayerCL()->releaseGLObject();
+        output->getLayerCL()->releaseGLObject();
         tfCL->releaseGLObject();
         volume->releaseGLObject(NULL, glSync.getLastReleaseGLEvent());
     } else {

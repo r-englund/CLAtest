@@ -97,17 +97,17 @@ void VolumeRaycasterCL::process() {
     const ImageCL* entryCLGL = entryPort_.getData()->getRepresentation<ImageCL>();
     // Will synchronize with OpenGL upon creation and destruction
     //SyncCLGL glSync;
-    //entryCLGL->getLayerCLGL()->aquireGLObject(glSync.getGLSyncEvent());
+    //entryCLGL->getLayerCL()->aquireGLObject(glSync.getGLSyncEvent());
 
     //const ImageCLGL* exitCLGL = exitPort_.getData()->getRepresentation<ImageCLGL>();
     const ImageCL* exitCLGL = exitPort_.getData()->getRepresentation<ImageCL>();
-    //exitCLGL->getLayerCLGL()->aquireGLObject();
+    //exitCLGL->getLayerCL()->aquireGLObject();
 
     Image* outImage = outport_.getData();
     ImageCL* outImageCL = outImage->getEditableRepresentation<ImageCL>();
     //ImageCLGL* outImageCL = outImage->getEditableRepresentation<ImageCLGL>();
     uvec2 outportDim = outImage->getDimension();
-    //outImageCL->getLayerCLGL()->aquireGLObject();
+    //outImageCL->getLayerCL()->aquireGLObject();
 
 
     const Volume* volume = volumePort_.getData();
@@ -142,9 +142,9 @@ void VolumeRaycasterCL::process() {
 
     
     //volumeCL->releaseGLObject();
-    //outImageCL->getLayerCLGL()->releaseGLObject();
-    //exitCLGL->getLayerCLGL()->releaseGLObject();
-    //entryCLGL->getLayerCLGL()->releaseGLObject(NULL, glSync.getLastReleaseGLEvent());
+    //outImageCL->getLayerCL()->releaseGLObject();
+    //exitCLGL->getLayerCL()->releaseGLObject();
+    //entryCLGL->getLayerCL()->releaseGLObject(NULL, glSync.getLastReleaseGLEvent());
 #if IVW_PROFILING
     try {
         profilingEvent->wait();
