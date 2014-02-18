@@ -30,6 +30,14 @@
  *
  *********************************************************************************/
 
+/*********************************************************************************
+* Parts of code is courtesy of (viewed latest at 2014-02-18):
+* https://github.com/liuyanghejerry/Qt-Plus
+* README text:
+* Welcome to the small world of QtPlus.info.
+* All the code here is free for you.
+ *********************************************************************************/
+
 #include <inviwo/qt/widgets/colorwheel.h>
 
 namespace inviwo {
