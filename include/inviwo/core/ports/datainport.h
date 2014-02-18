@@ -57,6 +57,7 @@ public:
     virtual const T* getData() const;
 
     bool hasData() const;
+    virtual std::string getContentInfo() const;
 
     virtual bool isReady() const { return isConnected() && hasData(); }
 };
@@ -112,6 +113,14 @@ bool DataInport<T>::hasData() const {
         return static_cast< DataOutport<T>* >(connectedOutport_)->hasData();
     } else
         return false;
+}
+
+template <typename T>
+std::string DataInport<T>::getContentInfo() const {
+    if(hasData())
+        return getData()->getDataInfo();
+    else
+        return getClassName() + " has no data.";
 }
 
 } // namespace

@@ -49,7 +49,9 @@ DataBase& DataBase::operator=(const DataBase& that) {
 }
 DataBase::~DataBase() {}
 
-
+std::string DataBase::getDataInfo() const{
+    return "";
+}
 
 Data::Data()
     : DataBase()

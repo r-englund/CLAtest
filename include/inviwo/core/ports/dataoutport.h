@@ -62,6 +62,7 @@ public:
 
     bool hasData() const;
     bool isDataOwner() const;
+    virtual std::string getContentInfo() const;
 
     virtual bool isReady() const { return isConnected(); }
 
@@ -75,7 +76,7 @@ protected:
 template <typename T>
 DataOutport<T>::DataOutport(std::string identifier, PropertyOwner::InvalidationLevel invalidationLevel)
     : Outport(identifier, invalidationLevel),
-      data_(NULL), ownsData_(false)
+    data_(NULL), ownsData_(false)
 {
 }
 
@@ -135,6 +136,14 @@ bool DataOutport<T>::hasData() const {
 template <typename T>
 bool DataOutport<T>::isDataOwner() const {
     return ownsData_;
+}
+
+template <typename T>
+std::string DataOutport<T>::getContentInfo() const {
+    if(hasData())
+        return data_->getDataInfo();
+    else
+        return getClassName() + " has no data.";
 }
 
 } // namespace

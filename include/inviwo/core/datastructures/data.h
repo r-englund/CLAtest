@@ -49,9 +49,8 @@ public:
     DataBase& operator=(const DataBase& rhs);
     virtual DataBase* clone() const = 0;
     virtual ~DataBase();
+    virtual std::string getDataInfo() const;
 };
-
-
 
 /** \brief The base class for all data objects.
  *

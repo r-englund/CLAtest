@@ -69,6 +69,7 @@ public:
     std::vector<Processor*> getPredecessors();
 
     virtual std::string getClassName() const {return "Inport";}
+    virtual std::string getContentInfo() const {return "";}
 
     template <typename T>
     void onChange(T* o, void (T::*m)()) {

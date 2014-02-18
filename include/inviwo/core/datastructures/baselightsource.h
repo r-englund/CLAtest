@@ -88,6 +88,9 @@ public:
      * @param newSize
      */
     void setSize(const vec2& newSize) { size_ = newSize; }
+
+    virtual std::string getDataInfo() const { return "LightSource"; }
+
 protected:
     mat4 objectToTextureSpaceMatrix_; // Transformation matrix from object to texture space coordinates
     float fieldOfView_; // Field of view in radians
