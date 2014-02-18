@@ -88,8 +88,6 @@ void GeometryRenderProcessorGL::process() {
     glLoadMatrixf(glm::value_ptr(camera_.viewMatrix()));
 
     glEnable(GL_DEPTH_TEST);
-    glEnable(GL_CULL_FACE);
-    glCullFace(GL_FRONT);
     glDepthMask(GL_TRUE);
     activateAndClearTarget(outport_);
 
@@ -98,7 +96,6 @@ void GeometryRenderProcessorGL::process() {
     }
 
     deactivateCurrentTarget();
-    glDisable(GL_CULL_FACE);
     glDisable(GL_DEPTH_TEST);
 
     glPopMatrix();
