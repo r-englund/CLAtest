@@ -1,5 +1,5 @@
 /**********************************************************************
- * Copyright (C) 2013-2014 Vistinct AB
+ * Copyright (C) 2104 Vistinct AB
  * All Rights Reserved.
  * 
  * Unauthorized copying of this file, via any medium is strictly prohibited
@@ -12,27 +12,26 @@
  *
  **********************************************************************/
 
-#ifndef IVW_CVIE3DPROCESSOR_H
-#define IVW_CVIE3DPROCESSOR_H
+#ifndef IVW_CVIE2DIMAGEPROCESSOR_H
+#define IVW_CVIE2DIMAGEPROCESSOR_H
 
-#include <modules/cvie3d/cvie3dmoduledefine.h>
+#include <modules/cvie/cviemoduledefine.h>
 #include <inviwo/core/common/inviwo.h>
-#include <inviwo/core/ports/volumeport.h>
+#include <inviwo/core/ports/imageport.h>
 #include <inviwo/core/processors/processor.h>
 #include <inviwo/core/properties/boolproperty.h>
 #include <inviwo/core/properties/buttonproperty.h>
 #include <inviwo/core/properties/directoryproperty.h>
-#include <inviwo/core/properties/fileproperty.h>
 #include <inviwo/core/properties/optionproperties.h>
 #include <inviwo/core/properties/ordinalproperty.h>
-#include <CVIE3D.h>
+#include <CVIE.h>
 
 namespace inviwo {
 
-class IVW_MODULE_CVIE3D_API CVIE3DProcessor : public Processor {
+class IVW_MODULE_CVIE_API CVIE2DImageProcessor : public Processor {
 public:
-    CVIE3DProcessor();
-    ~CVIE3DProcessor();
+    CVIE2DImageProcessor();
+    ~CVIE2DImageProcessor();
 
     InviwoProcessorInfo();
 
@@ -43,32 +42,30 @@ protected:
     virtual void process();
     void passthrough();
 
-    bool createCVIE3DInstance();
-    void destroyCVIE3DInstance();
+    bool createCVIEInstance();
+    void destroyCVIEInstance();
 
     bool setupEnhancement();
     bool runEnhancement();
 
-    void updateConfigurationFile();
     void updateParameterFile();
 
     void findParameterFiles();
 
 private:
-    VolumeInport inport_;
-    VolumeOutport outport_;
+    ImageInport inport_;
+    ImageOutport outport_;
 
     BoolProperty enabled_;
-    FileProperty confFile_;
     DirectoryProperty parameterFileDirectory_;
     ButtonProperty findParameterFiles_;
     StringOptionProperty parameterFile_;
     IntProperty parameterSetting_;
 
-    HCVIE3D cvieHandle_;
+    HCVIE cvieHandle_;
     bool cvieContextCreated_;
 };
 
 } // namespace
 
-#endif // IVW_CVIE3DPROCESSOR_H
+#endif // IVW_CVIE2DIMAGEPROCESSOR_H

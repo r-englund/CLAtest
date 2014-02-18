@@ -1,5 +1,5 @@
 /**********************************************************************
- * Copyright (C) 2013 Vistinct AB
+ * Copyright (C) 2104 Vistinct AB
  * All Rights Reserved.
  * 
  * Unauthorized copying of this file, via any medium is strictly prohibited
@@ -12,8 +12,8 @@
  *
  **********************************************************************/
 
-#ifndef IVW_CVIE2DPROCESSOR_H
-#define IVW_CVIE2DPROCESSOR_H
+#ifndef IVW_CVIE2DVOLUMEPROCESSOR_H
+#define IVW_CVIE2DVOLUMEPROCESSOR_H
 
 #include <modules/cvie/cviemoduledefine.h>
 #include <inviwo/core/common/inviwo.h>
@@ -28,10 +28,10 @@
 
 namespace inviwo {
 
-class IVW_MODULE_CVIE_API CVIE2DProcessor : public Processor {
+class IVW_MODULE_CVIE_API CVIE2DVolumeProcessor : public Processor {
 public:
-    CVIE2DProcessor();
-    ~CVIE2DProcessor();
+    CVIE2DVolumeProcessor();
+    ~CVIE2DVolumeProcessor();
 
     InviwoProcessorInfo();
 
@@ -51,12 +51,15 @@ protected:
     void updateParameterFile();
 
     void findParameterFiles();
+    void sliceOnlyChanged();
 
 private:
-    ImageInport inport_;
-    ImageOutport outport_;
+    VolumeInport inport_;
+    VolumeOutport outport_;
 
     BoolProperty enabled_;
+    BoolProperty onlyProcessSelectedSlice_;
+    IntProperty sliceNumber_;
     DirectoryProperty parameterFileDirectory_;
     ButtonProperty findParameterFiles_;
     StringOptionProperty parameterFile_;
@@ -68,4 +71,4 @@ private:
 
 } // namespace
 
-#endif // IVW_CVIE2DPROCESSOR_H
+#endif // IVW_CVIE2DVOLUMEPROCESSOR_H

@@ -5,14 +5,16 @@ ivw_module(CVIE)
 #--------------------------------------------------------------------
 # Add header files
 set(HEADER_FILES
-    ${IVW_MODULE_DIR}/cvie/cvie2dprocessor.h
+    ${IVW_MODULE_DIR}/cvie/cvie2dimageprocessor.h
+    ${IVW_MODULE_DIR}/cvie/cvie2dvolumeprocessor.h
 )
 ivw_group("Header Files" ${HEADER_FILES})
 
 #--------------------------------------------------------------------
 # Add source files
 set(SOURCE_FILES
-    ${IVW_MODULE_DIR}/cvie/cvie2dprocessor.cpp
+    ${IVW_MODULE_DIR}/cvie/cvie2dimageprocessor.cpp
+    ${IVW_MODULE_DIR}/cvie/cvie2dvolumeprocessor.cpp
 )
 ivw_group("Source Files" ${SOURCE_FILES})
 

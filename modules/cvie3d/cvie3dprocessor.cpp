@@ -1,5 +1,5 @@
 /**********************************************************************
- * Copyright (C) 2013 Vistinct AB
+ * Copyright (C) 2013-2014 Vistinct AB
  * All Rights Reserved.
  * 
  * Unauthorized copying of this file, via any medium is strictly prohibited
@@ -121,7 +121,36 @@ bool CVIE3DProcessor::setupEnhancement(){
 
     if(cvieContextCreated_){
         uvec3 volSize = inport_.getData()->getDimension();
-        ECVIE3D cvieError = CVIE3DSetupEnhance(cvieHandle_, static_cast<int>(volSize.x), static_cast<int>(volSize.y), static_cast<int>(volSize.z), CVIE3D_DATA_U8, CVIE3D_Volume, parameterSetting_.get());
+
+        bool dataTypeSupported = true;
+        CVIE3D_DataType dataType;
+        switch (inport_.getData()->getDataFormat()->getId())
+        {
+        case UINT8:
+            dataType = CVIE3D_DATA_U8;
+            break;
+        case UINT12:
+        case UINT16:
+            dataType = CVIE3D_DATA_U16;
+            break;
+        case INT12:
+        case INT16:
+            dataType = CVIE3D_DATA_S16;
+            break;
+        case FLOAT16:
+        case FLOAT32:
+            dataType = CVIE3D_DATA_F32;
+            break;
+        default:
+            LogError("Error in CVIESetupEnhance: DataFormat " << inport_.getData()->getDataFormat()->getString() << " unsupported");
+            dataTypeSupported = false;
+        }
+
+        ECVIE3D cvieError;
+        if(dataTypeSupported)
+            cvieError = CVIE3DSetupEnhance(cvieHandle_, static_cast<int>(volSize.x), static_cast<int>(volSize.y), static_cast<int>(volSize.z), dataType, CVIE3D_Volume, parameterSetting_.get());
+        else
+            cvieError = ECVIE3D_UnknownError;
 
         if (cvieError != ECVIE3D_Ok) {
             char errstr[512];
@@ -175,16 +204,21 @@ void CVIE3DProcessor::updateConfigurationFile(){
 }
 
 void CVIE3DProcessor::updateParameterFile(){
-    // Set parameter file
-    int nSettings = 0;
-    //LogInfo("parameterFile: " << parameterFile_.get());
+    if(!cvieContextCreated_)
+        createCVIE3DInstance();
 
-    if(URLParser::fileExists(parameterFile_.get().c_str())){
-        ECVIE3D cvieError = CVIE3DSetParameterFile(cvieHandle_, parameterFile_.get().c_str(), &nSettings);
-        if (cvieError != ECVIE3D_Ok) {
-            char errstr[512];
-            LogError("Error in CVIE3DSetParameterFile: " << CVEMGetLastError(cvieHandle_, errstr, sizeof(errstr)));
-            //destroyCVIE3DInstance();
+    if(cvieContextCreated_){
+        // Set parameter file
+        int nSettings = 0;
+        //LogInfo("parameterFile: " << parameterFile_.get());
+
+        if(URLParser::fileExists(parameterFile_.get().c_str())){
+            ECVIE3D cvieError = CVIE3DSetParameterFile(cvieHandle_, parameterFile_.get().c_str(), &nSettings);
+            if (cvieError != ECVIE3D_Ok) {
+                char errstr[512];
+                LogError("Error in CVIE3DSetParameterFile: " << CVEMGetLastError(cvieHandle_, errstr, sizeof(errstr)));
+                //destroyCVIE3DInstance();
+            }
         }
     }
 }

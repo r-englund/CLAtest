@@ -1,5 +1,5 @@
 /**********************************************************************
- * Copyright (C) 2013 Vistinct AB
+ * Copyright (C) 2104 Vistinct AB
  * All Rights Reserved.
  * 
  * Unauthorized copying of this file, via any medium is strictly prohibited
@@ -13,14 +13,16 @@
  **********************************************************************/
 
 #include <modules/cvie/cviemodule.h>
-#include <modules/cvie/cvie2dprocessor.h>
+#include <modules/cvie/cvie2dimageprocessor.h>
+#include <modules/cvie/cvie2dvolumeprocessor.h>
 
 namespace inviwo {
 
 CVIEModule::CVIEModule() : InviwoModule() {
     setIdentifier("CVIE");
 
-    registerProcessor(CVIE2DProcessor);
+    registerProcessor(CVIE2DImageProcessor);
+    registerProcessor(CVIE2DVolumeProcessor);
 	
 }
 
