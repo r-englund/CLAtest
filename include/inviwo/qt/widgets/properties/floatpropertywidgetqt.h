@@ -132,23 +132,23 @@ class OrdinalPropertyWidgetQt : public TemplateOrdinalPropertyWidgetQt<BT, T> {
 public:
     OrdinalPropertyWidgetQt(OrdinalProperty<T>* property)
         : TemplateOrdinalPropertyWidgetQt<BT, T>(property) {
-            generateWidget();
+            BaseOrdinalPropertyWidgetQt::generateWidget();
             updateFromProperty();
         }
 
 
     void updateFromProperty() {
-        if(property_->getReadOnly()) {
-            readOnlyLabel_->setText(QString(getPropertyText().c_str()));
-            readOnlyLabel_->setToolTip(QString(getPropertyToolTip().c_str()));
+        if(this->property_->getReadOnly()) {
+            this->readOnlyLabel_->setText(QString(this->getPropertyText().c_str()));
+            this->readOnlyLabel_->setToolTip(QString(this->getPropertyToolTip().c_str()));
         } else {
-            T min = property_->getMinValue();
-            T max = property_->getMaxValue();
-            T inc = property_->getIncrement();
-            T val = property_->get();
+            T min = this->property_->getMinValue();
+            T max = this->property_->getMaxValue();
+            T inc = this->property_->getIncrement();
+            T val = this->property_->get();
 
-            for(size_t i = 0; i < property_->getDim(); i++) {
-                SliderWidgetQt<BT>* widget = static_cast<SliderWidgetQt<BT>*>(sliderWidgets_[i]);
+            for(size_t i = 0; i < this->property_->getDim(); i++) {
+                SliderWidgetQt<BT>* widget = static_cast<SliderWidgetQt<BT>*>(this->sliderWidgets_[i]);
                 widget->setRange(min[i], max[i]);
                 widget->setIncrement(inc[i]);
                 widget->initValue(val[i]);
@@ -159,38 +159,38 @@ public:
 protected:
     // Connected to sliderwidget valueChanged()
     void setPropertyValue(int sliderId) {
-        T propValue = property_->get();
+        T propValue = this->property_->get();
 
-        propValue[sliderId] = static_cast<SliderWidgetQt<BT>*>(sliderWidgets_[sliderId])->getValue();
+        propValue[sliderId] = static_cast<SliderWidgetQt<BT>*>(this->sliderWidgets_[sliderId])->getValue();
 
-        property_->setInitiatingWidget(this);
-        property_->set(propValue);
-        property_->clearInitiatingWidget();
+        this->property_->setInitiatingWidget(this);
+        this->property_->set(propValue);
+        this->property_->clearInitiatingWidget();
 
-        emit modified();
+        emit this->modified();
     }
     void setAsMin() {
-        SliderWidgetQt<BT>* slider = static_cast<SliderWidgetQt<BT>*>(sliderWidgets_[sliderId_]);
-        T propValue = property_->getMinValue();
-        propValue[sliderId_] = slider->getValue();
+        SliderWidgetQt<BT>* slider = static_cast<SliderWidgetQt<BT>*>(this->sliderWidgets_[this->sliderId_]);
+        T propValue = this->property_->getMinValue();
+        propValue[this->sliderId_] = slider->getValue();
 
-        property_->setInitiatingWidget(this);
-        property_->setMinValue(propValue);
-        property_->clearInitiatingWidget();
+        this->property_->setInitiatingWidget(this);
+        this->property_->setMinValue(propValue);
+        this->property_->clearInitiatingWidget();
 
-        slider->setMinValue(propValue[sliderId_]);
+        slider->setMinValue(propValue[this->sliderId_]);
     }
 
     void setAsMax() {
-        SliderWidgetQt<BT>* slider = static_cast<SliderWidgetQt<BT>*>(sliderWidgets_[sliderId_]);
-        T propValue = property_->getMaxValue();
-        propValue[sliderId_] = slider->getValue();
+        SliderWidgetQt<BT>* slider = static_cast<SliderWidgetQt<BT>*>(this->sliderWidgets_[this->sliderId_]);
+        T propValue = this->property_->getMaxValue();
+        propValue[this->sliderId_] = slider->getValue();
 
-        property_->setInitiatingWidget(this);
-        property_->setMaxValue(propValue);
-        property_->clearInitiatingWidget();
+        this->property_->setInitiatingWidget(this);
+        this->property_->setMaxValue(propValue);
+        this->property_->clearInitiatingWidget();
 
-        slider->setMaxValue(propValue[sliderId_]);
+        slider->setMaxValue(propValue[this->sliderId_]);
     }
 };
 
@@ -200,23 +200,23 @@ class OrdinalPropertyWidgetQt<T, T> : public TemplateOrdinalPropertyWidgetQt<T, 
 public:
     OrdinalPropertyWidgetQt(OrdinalProperty<T>* property)
         : TemplateOrdinalPropertyWidgetQt<T, T>(property) {
-            generateWidget();
+            BaseOrdinalPropertyWidgetQt::generateWidget();
             updateFromProperty();
         }
 
 
     void updateFromProperty() {
 
-        if(property_->getReadOnly()) {
-            readOnlyLabel_->setText(QString(getPropertyText().c_str()));
-            readOnlyLabel_->setToolTip(QString(getPropertyToolTip().c_str()));
+        if(this->property_->getReadOnly()) {
+            this->readOnlyLabel_->setText(QString(this->getPropertyText().c_str()));
+            this->readOnlyLabel_->setToolTip(QString(this->getPropertyToolTip().c_str()));
         } else {
-            T min = property_->getMinValue();
-            T max = property_->getMaxValue();
-            T inc = property_->getIncrement();
-            T val = property_->get();
+            T min = this->property_->getMinValue();
+            T max = this->property_->getMaxValue();
+            T inc = this->property_->getIncrement();
+            T val = this->property_->get();
 
-            SliderWidgetQt<T>* widget = static_cast<SliderWidgetQt<T>*>(sliderWidgets_[0]);
+            SliderWidgetQt<T>* widget = static_cast<SliderWidgetQt<T>*>(this->sliderWidgets_[0]);
             widget->setRange(min, max);
             widget->setIncrement(inc);
             widget->initValue(val);
@@ -226,240 +226,41 @@ public:
 protected:
     // Connected to sliderwidget valueChanged()
     void setPropertyValue(int sliderId) {
-        T propValue = property_->get();
+        T propValue = this->property_->get();
 
-        propValue = static_cast<SliderWidgetQt<T>*>(sliderWidgets_[sliderId])->getValue();
+        propValue = static_cast<SliderWidgetQt<T>*>(this->sliderWidgets_[sliderId])->getValue();
 
-        property_->setInitiatingWidget(this);
-        property_->set(propValue);
-        property_->clearInitiatingWidget();
+        this->property_->setInitiatingWidget(this);
+        this->property_->set(propValue);
+        this->property_->clearInitiatingWidget();
 
-        emit modified();
+        emit this->modified();
     }
     void setAsMin() {
-        SliderWidgetQt<T>* slider = static_cast<SliderWidgetQt<T>*>(sliderWidgets_[sliderId_]);
+        SliderWidgetQt<T>* slider = static_cast<SliderWidgetQt<T>*>(this->sliderWidgets_[this->sliderId_]);
         T propValue = slider->getValue();
 
-        property_->setInitiatingWidget(this);
-        property_->setMinValue(propValue);
-        property_->clearInitiatingWidget();
+        this->property_->setInitiatingWidget(this);
+        this->property_->setMinValue(propValue);
+        this->property_->clearInitiatingWidget();
 
         slider->setMinValue(propValue);
     }
 
     void setAsMax() {
-        SliderWidgetQt<T>* slider = static_cast<SliderWidgetQt<T>*>(sliderWidgets_[sliderId_]);
-        T propValue = property_->getMaxValue();
+        SliderWidgetQt<T>* slider = static_cast<SliderWidgetQt<T>*>(this->sliderWidgets_[this->sliderId_]);
+        T propValue = this->property_->getMaxValue();
         propValue = slider->getValue();
 
-        property_->setInitiatingWidget(this);
-        property_->setMaxValue(propValue);
-        property_->clearInitiatingWidget();
+        this->property_->setInitiatingWidget(this);
+        this->property_->setMaxValue(propValue);
+        this->property_->clearInitiatingWidget();
 
         slider->setMaxValue(propValue);
     }
 };
 
 
-/*
-//Specialization for floats
-template <>
-class OrdinalPropertyWidgetQt<float, float> : public TemplateOrdinalPropertyWidgetQt<float, float>{
-public:
-    OrdinalPropertyWidgetQt(OrdinalProperty<float>* property)
-        : TemplateOrdinalPropertyWidgetQt<float, float>(property) {
-            generateWidget();
-            updateFromProperty();
-        }
-
-
-    void updateFromProperty() {
-
-        if(property_->getReadOnly()) {
-            readOnlyLabel_->setText(QString(getPropertyText().c_str()));
-            readOnlyLabel_->setToolTip(QString(getPropertyToolTip().c_str()));
-        } else {
-            float min = property_->getMinValue();
-            float max = property_->getMaxValue();
-            float inc = property_->getIncrement();
-            float val = property_->get();
-
-            SliderWidgetQt<float>* widget = static_cast<SliderWidgetQt<float>*>(sliderWidgets_[0]);
-            widget->setRange(min, max);
-            widget->setIncrement(inc);
-            widget->initValue(val);
-        }
-    }
-
-protected:
-    // Connected to sliderwidget valueChanged()
-    void setPropertyValue(int sliderId) {
-        float propValue = property_->get();
-
-        propValue = static_cast<SliderWidgetQt<float>*>(sliderWidgets_[sliderId])->getValue();
-
-        property_->setInitiatingWidget(this);
-        property_->set(propValue);
-        property_->clearInitiatingWidget();
-
-        emit modified();
-    }
-    void setAsMin() {
-        SliderWidgetQt<float>* slider = static_cast<SliderWidgetQt<float>*>(sliderWidgets_[sliderId_]);
-        float propValue = slider->getValue();
-
-        property_->setInitiatingWidget(this);
-        property_->setMinValue(propValue);
-        property_->clearInitiatingWidget();
-
-        slider->setMinValue(propValue);
-    }
-
-    void setAsMax() {
-        SliderWidgetQt<float>* slider = static_cast<SliderWidgetQt<float>*>(sliderWidgets_[sliderId_]);
-        float propValue = property_->getMaxValue();
-        propValue = slider->getValue();
-
-        property_->setInitiatingWidget(this);
-        property_->setMaxValue(propValue);
-        property_->clearInitiatingWidget();
-
-        slider->setMaxValue(propValue);
-    }
-};
-
-//Specialization for double
-template <>
-class OrdinalPropertyWidgetQt<double, double> : public TemplateOrdinalPropertyWidgetQt<double, double>{
-public:
-    OrdinalPropertyWidgetQt(OrdinalProperty<double>* property)
-        : TemplateOrdinalPropertyWidgetQt<double, double>(property) {
-            generateWidget();
-            updateFromProperty();
-        }
-
-
-    void updateFromProperty() {
-
-        if(property_->getReadOnly()) {
-            readOnlyLabel_->setText(QString(getPropertyText().c_str()));
-            readOnlyLabel_->setToolTip(QString(getPropertyToolTip().c_str()));
-        } else {
-            double min = property_->getMinValue();
-            double max = property_->getMaxValue();
-            double inc = property_->getIncrement();
-            double val = property_->get();
-
-            SliderWidgetQt<double>* widget = static_cast<SliderWidgetQt<double>*>(sliderWidgets_[0]);
-            widget->setRange(min, max);
-            widget->setIncrement(inc);
-            widget->initValue(val);
-        }
-    }
-
-protected:
-    // Connected to sliderwidget valueChanged()
-    void setPropertyValue(int sliderId) {
-        double propValue = property_->get();
-
-        propValue = static_cast<SliderWidgetQt<double>*>(sliderWidgets_[sliderId])->getValue();
-
-        property_->setInitiatingWidget(this);
-        property_->set(propValue);
-        property_->clearInitiatingWidget();
-
-        emit modified();
-    }
-    void setAsMin() {
-        SliderWidgetQt<double>* slider = static_cast<SliderWidgetQt<double>*>(sliderWidgets_[sliderId_]);
-        double propValue = slider->getValue();
-
-        property_->setInitiatingWidget(this);
-        property_->setMinValue(propValue);
-        property_->clearInitiatingWidget();
-
-        slider->setMinValue(propValue);
-    }
-
-    void setAsMax() {
-        SliderWidgetQt<double>* slider = static_cast<SliderWidgetQt<double>*>(sliderWidgets_[sliderId_]);
-        double propValue = property_->getMaxValue();
-        propValue = slider->getValue();
-
-        property_->setInitiatingWidget(this);
-        property_->setMaxValue(propValue);
-        property_->clearInitiatingWidget();
-
-        slider->setMaxValue(propValue);
-    }
-};
-
-//Specialization for ints
-template <>
-class OrdinalPropertyWidgetQt<int, int> : public TemplateOrdinalPropertyWidgetQt<int, int>{
-public:
-    OrdinalPropertyWidgetQt(OrdinalProperty<int>* property)
-        : TemplateOrdinalPropertyWidgetQt<int, int>(property) {
-            generateWidget();
-            updateFromProperty();
-        }
-
-
-    void updateFromProperty() {
-
-        if(property_->getReadOnly()) {
-            readOnlyLabel_->setText(QString(getPropertyText().c_str()));
-            readOnlyLabel_->setToolTip(QString(getPropertyToolTip().c_str()));
-        } else {
-            int min = property_->getMinValue();
-            int max = property_->getMaxValue();
-            int inc = property_->getIncrement();
-            int val = property_->get();
-
-            SliderWidgetQt<int>* widget = static_cast<SliderWidgetQt<int>*>(sliderWidgets_[0]);
-            widget->setRange(min, max);
-            widget->setIncrement(inc);
-            widget->initValue(val);
-        }
-    }
-
-protected:
-    // Connected to sliderwidget valueChanged()
-    void setPropertyValue(int sliderId) {
-        int propValue = property_->get();
-
-        propValue = static_cast<SliderWidgetQt<int>*>(sliderWidgets_[sliderId])->getValue();
-
-        property_->setInitiatingWidget(this);
-        property_->set(propValue);
-        property_->clearInitiatingWidget();
-
-        emit modified();
-    }
-    void setAsMin() {
-        SliderWidgetQt<int>* slider = static_cast<SliderWidgetQt<int>*>(sliderWidgets_[sliderId_]);
-        int propValue = slider->getValue();
-
-        property_->setInitiatingWidget(this);
-        property_->setMinValue(propValue);
-        property_->clearInitiatingWidget();
-
-        slider->setMinValue(propValue);
-    }
-
-    void setAsMax() {
-        SliderWidgetQt<int>* slider = static_cast<SliderWidgetQt<int>*>(sliderWidgets_[sliderId_]);
-        int propValue = property_->getMaxValue();
-        propValue = slider->getValue();
-
-        property_->setInitiatingWidget(this);
-        property_->setMaxValue(propValue);
-        property_->clearInitiatingWidget();
-
-        slider->setMaxValue(propValue);
-    }
-};
-*/
 
 typedef OrdinalPropertyWidgetQt<float, float> FloatPropertyWidgetQt;
 typedef OrdinalPropertyWidgetQt<float, vec2> FloatVec2PropertyWidgetQt;

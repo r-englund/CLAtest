@@ -121,10 +121,10 @@ public:
 protected:  
     // Defines the transform
     virtual T sliderToRepr(int val) {
-        return minValue_ + (static_cast<T>(val) * (maxValue_ - minValue_) / static_cast<T>(SLIDER_MAX));
+        return this->minValue_ + (static_cast<T>(val) * (this->maxValue_ - this->minValue_) / static_cast<T>(SLIDER_MAX));
     }
     virtual int reprToSlider(T val) {
-        return static_cast<int>((val - minValue_) / (maxValue_ - minValue_) * SLIDER_MAX);
+        return static_cast<int>((val - this->minValue_) / (this->maxValue_ - this->minValue_) * SLIDER_MAX);
     } 
     virtual T spinnerToRepr(double val) {
         return static_cast<T>(val);
