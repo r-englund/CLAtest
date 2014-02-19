@@ -168,6 +168,7 @@ public:
      * to data model coordinates, i.e. from (-inf, inf) to (data min, data max)
      */
     virtual const Matrix<N+1, float> getWorldToModelMatrix() const = 0;
+
 };
 
 template <unsigned int N> class SpatialEntity;
@@ -214,7 +215,7 @@ public:
         for (int i=0; i<N; i++)
             mat[i][i]=(float)dim[i];
 
-        mat[N+1][N+1]=1.0f;
+        mat[N][N]=1.0f;
         return mat;
     }
 
@@ -227,11 +228,12 @@ template <unsigned int N>
 class SpatialEntity {
 public:
     SpatialEntity();
+    SpatialEntity(CoordinateTransformer<N>* transformer);
     SpatialEntity(const SpatialEntity<N>&);
-    SpatialEntity(const Vector<N,float>& offset);
-    SpatialEntity(const Matrix<N,float>& basis);
-    SpatialEntity(const Matrix<N+1,float>& mat);
-    SpatialEntity(const Matrix<N,float>& basis, const Vector<N,float>& offset);
+    SpatialEntity(const Vector<N,float>& offset, CoordinateTransformer<N>* transformer);
+    SpatialEntity(const Matrix<N,float>& basis, CoordinateTransformer<N>* transformer);
+    SpatialEntity(const Matrix<N+1,float>& mat, CoordinateTransformer<N>* transformer);
+    SpatialEntity(const Matrix<N,float>& basis, const Vector<N,float>& offset, CoordinateTransformer<N>* transformer);
 
     SpatialEntity<N>& operator=(const SpatialEntity<N>& that);
     virtual SpatialEntity<N>* clone() const = 0;
@@ -253,7 +255,7 @@ public:
     virtual const CoordinateTransformer<N>& getCoordinateTransformer() const;
 
 protected:
-    virtual void initTransformer();
+    virtual CoordinateTransformer<N>* createTransformer(const SpatialEntity<N>* owner) const;
     CoordinateTransformer<N>* transformer_;
     Matrix<N+1, float> basisAndOffset_;
     Matrix<N+1, float> worldTransform_;
@@ -282,7 +284,7 @@ public:
     void setDimension(const Vector<N, unsigned int>& dimension);
 
 protected:
-    virtual void initTransformer();
+    virtual CoordinateTransformer<N>* createTransformer(const SpatialEntity<N>* owner) const;
     Vector<N, unsigned int> dimension_;
 };
 
@@ -294,54 +296,58 @@ protected:
 
 template <unsigned int N>
 SpatialEntity<N>::SpatialEntity()
-    : transformer_(NULL)
+    : transformer_(new SpatialCoordinateTransformer<N>(this))
     , worldTransform_(1.0f) {
-    Vector<N,float> offset(-1.0f);
-    Matrix<N,float> basis(2.0f);
-    setBasis(basis);
-    setOffset(offset);
-    initTransformer();
+        Vector<N,float> offset(-1.0f);
+        Matrix<N,float> basis(2.0f);
+        setBasis(basis);
+        setOffset(offset);
 }
 
 template <unsigned int N>
-SpatialEntity<N>::SpatialEntity(const Vector<N,float>& offset)
-    : transformer_(NULL)
+SpatialEntity<N>::SpatialEntity(CoordinateTransformer<N>* transformer)
+    : transformer_(transformer)
+    , worldTransform_(1.0f) {
+    Vector<N,float> offset(-1.0f);
+    Matrix<N,float> basis(2.0f);
+    setBasis(basis);
+    setOffset(offset);
+}
+
+template <unsigned int N>
+SpatialEntity<N>::SpatialEntity(const Vector<N,float>& offset, CoordinateTransformer<N>* transformer)
+    : transformer_(transformer)
     , worldTransform_(1.0f) {
     Matrix<N,float> basis(2.0f);
     setBasis(basis);
     setOffset(offset);
-    initTransformer();
 }
 template <unsigned int N>
-SpatialEntity<N>::SpatialEntity(const Matrix<N,float>& basis)
-    : transformer_(NULL)
+SpatialEntity<N>::SpatialEntity(const Matrix<N,float>& basis, CoordinateTransformer<N>* transformer)
+    : transformer_(transformer)
     , worldTransform_(1.0f) {
     Vector<N,float> offset(-1.0f);
     setBasis(basis);
     setOffset(offset);
-    initTransformer();
 }
 template <unsigned int N>
-SpatialEntity<N>::SpatialEntity(const Matrix<N+1,float>& mat)
-    : transformer_(NULL)
+SpatialEntity<N>::SpatialEntity(const Matrix<N+1,float>& mat, CoordinateTransformer<N>* transformer)
+    : transformer_(transformer)
     , worldTransform_(1.0f) {
     setBasisAndOffset(mat);
-    initTransformer();
 }
 template <unsigned int N>
-SpatialEntity<N>::SpatialEntity(const Matrix<N,float>& basis, const Vector<N,float>& offset)
-    : transformer_(NULL)
+SpatialEntity<N>::SpatialEntity(const Matrix<N,float>& basis, const Vector<N,float>& offset, CoordinateTransformer<N>* transformer)
+    : transformer_(transformer)
     , worldTransform_(1.0f) {
     setBasis(basis);
     setOffset(offset);
-    initTransformer();
 }
 template <unsigned int N>
 SpatialEntity<N>::SpatialEntity(const SpatialEntity<N>& rhs)
-    : transformer_(NULL)
+    : transformer_(rhs.createTransformer(this))
     , basisAndOffset_(rhs.basisAndOffset_)
     , worldTransform_(rhs.worldTransform_) {
-    initTransformer();
 }
 
 template <unsigned int N>
@@ -353,15 +359,15 @@ SpatialEntity<N>& SpatialEntity<N>::operator=(const SpatialEntity<N>& that) {
         if (transformer_)
             delete transformer_;
 
-        initTransformer();
+        transformer_ = that.createTransformer(this);
     }
 
     return *this;
 }
 
 template <unsigned int N>
-void SpatialEntity<N>::initTransformer() {
-    transformer_ = new SpatialCoordinateTransformer<N>(this);
+CoordinateTransformer<N>* SpatialEntity<N>::createTransformer(const SpatialEntity<N>* owner) const {
+    return new SpatialCoordinateTransformer<N>(owner);
 }
 
 template <unsigned int N>
@@ -452,28 +458,28 @@ const CoordinateTransformer<N>& SpatialEntity<N>::getCoordinateTransformer() con
 
 template <unsigned int N>
 StructuredGridEntity<N>::StructuredGridEntity(const Vector<N, unsigned int>& dimension)
-    : SpatialEntity<N>()
+    : SpatialEntity<N>(new StructuredCoordinateTransformer<N>(this))
     , dimension_(dimension) {
 }
 
 template <unsigned int N>
 StructuredGridEntity<N>::StructuredGridEntity(const Vector<N,float>& offset,
         const Vector<N, unsigned int>& dimension)
-    : SpatialEntity<N>(offset)
+    : SpatialEntity<N>(offset, new StructuredCoordinateTransformer<N>(this))
     , dimension_(dimension) {
 }
 
 template <unsigned int N>
 StructuredGridEntity<N>::StructuredGridEntity(const Matrix<N,float>& basis,
         const Vector<N, unsigned int>& dimension)
-    : SpatialEntity<N>(basis)
+    : SpatialEntity<N>(basis, new StructuredCoordinateTransformer<N>(this))
     , dimension_(dimension) {
 }
 template <unsigned int N>
 StructuredGridEntity<N>::StructuredGridEntity(const Matrix<N,float>& basis,
         const Vector<N,float>& offset,
         const Vector<N, unsigned int>& dimension)
-    : SpatialEntity<N>(basis, offset)
+    : SpatialEntity<N>(basis, offset, new StructuredCoordinateTransformer<N>(this))
     , dimension_(dimension) {
 }
 
@@ -494,8 +500,11 @@ StructuredGridEntity<N>& StructuredGridEntity<N>::operator=(const StructuredGrid
 }
 
 template <unsigned int N>
-void StructuredGridEntity<N>::initTransformer() {
-    SpatialEntity<N>::transformer_ = new StructuredCoordinateTransformer<N>(this);
+CoordinateTransformer<N>* StructuredGridEntity<N>::createTransformer(const SpatialEntity<N>* owner) const {
+    const StructuredGridEntity<N>* casted = dynamic_cast<const StructuredGridEntity<N>*>(owner);
+    if (casted)
+        return new StructuredCoordinateTransformer<N>(casted);
+    else return new SpatialCoordinateTransformer<N>(owner);
 }
 
 template <unsigned int N>
