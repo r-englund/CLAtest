@@ -60,6 +60,9 @@ protected:
     virtual void closeEvent(QCloseEvent*);
     virtual void showEvent(QShowEvent*);
     virtual void moveEvent(QMoveEvent*);
+
+private:
+    ivec2 offsetWidget();
 };
 
 } // namespace
