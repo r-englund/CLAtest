@@ -33,6 +33,8 @@
 #ifndef IVW_SPATIALDATA_H
 #define IVW_SPATIALDATA_H
 
+#pragma warning(disable : 4355)
+
 #include <inviwo/core/common/inviwocoredefine.h>
 #include <inviwo/core/common/inviwo.h>
 
