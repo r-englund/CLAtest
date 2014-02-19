@@ -69,7 +69,7 @@ void ImageInport::changeDataDimensions(ResizeEvent* resizeEvent) {
             for (size_t j=0; j<portSet.size(); j++) {
                 ImageOutport* imageOutport = dynamic_cast<ImageOutport*>(portSet[j]);
 
-                if (imageOutport) {
+                if (imageOutport && imageOutport->isConnected()) {
                     hasImageOutport = true;
                     uvec2 dim = imageOutport->getDimension();
 
