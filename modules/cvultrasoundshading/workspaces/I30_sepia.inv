@@ -2,7 +2,7 @@
 <InviwoTreeData version="1.0">
     <!-- Don't edit the following code -->
     <Processors>
-        <Processor type="CubeProxyGeometry" identifier="CubeProxyGeometry" id="ref0">
+        <Processor type="CubeProxyGeometry" identifier="CubeProxyGeometry" id="ref1">
             <MetaDataList>
                 <MetaData type="ProcessorMetaData">
                     <position x="-600" y="-625" />
@@ -35,7 +35,7 @@
                 </Property>
             </Properties>
         </Processor>
-        <Processor type="EntryExitPoints" identifier="EntryExitPoints" id="ref1">
+        <Processor type="EntryExitPoints" identifier="EntryExitPoints" id="ref0">
             <MetaDataList>
                 <MetaData type="ProcessorMetaData">
                     <position x="-600" y="-550" />
@@ -184,7 +184,7 @@
                     <MetaDataList />
                     <lookFrom type="FloatVec3Property" identifier="lookFrom" displayName="Look from">
                         <MetaDataList />
-                        <value x="-0.10184361" y="-1.8775802" z="1.6342763" />
+                        <value x="0.53697556" y="-2.8310659" z="2.1385515" />
                         <minvalue x="-5.9848218" y="-5.9848218" z="-5.9848218" />
                         <maxvalue x="5.9848218" y="5.9848218" z="5.9848218" />
                         <increment x="0.1" y="0.1" z="0.1" />
@@ -198,7 +198,7 @@
                     </lookTo>
                     <lookUp type="FloatVec3Property" identifier="lookUp" displayName="Look up">
                         <MetaDataList />
-                        <value x="0.98929262" y="-0.018370509" z="0.10471211" />
+                        <value x="0.98671204" y="0.12782305" z="-0.0079097431" />
                         <minvalue x="-10" y="-10" z="-10" />
                         <maxvalue x="10" y="10" z="10" />
                         <increment x="0.1" y="0.1" z="0.1" />
@@ -247,10 +247,10 @@
                 <MetaData type="ProcessorMetaData">
                     <position x="-625" y="-350" />
                     <visibility content="1" />
-                    <selection content="1" />
+                    <selection content="0" />
                 </MetaData>
                 <MetaData type="ProcessorWidgetMetaData">
-                    <position x="2128" y="489" />
+                    <position x="121" y="449" />
                     <dimension x="512" y="512" />
                     <visibility content="1" />
                 </MetaData>
@@ -293,7 +293,7 @@
                 </Property>
                 <Property type="FileProperty" identifier="filename" displayName="Volume file" key="filename">
                     <MetaDataList />
-                    <url content="../../../data/workspaces/../../../../ContextVision_FTP/I30/I0000030_ENH-2_SC-679x307x174_segmented.dat" />
+                    <url content="D:/ContextVision_FTP/I30/I0000030_ENH-2_SC-679x307x174_segmented.dat" />
                     <nameFilter>
                         <filter content="All Files (*.*)" />
                         <filter content="Inviwo dat file format (*.dat)" />
@@ -320,7 +320,7 @@
                 <MetaData type="ProcessorMetaData">
                     <position x="-625" y="-450" />
                     <visibility content="1" />
-                    <selection content="0" />
+                    <selection content="1" />
                 </MetaData>
             </MetaDataList>
             <Properties>
@@ -336,21 +336,21 @@
                     </phaseFunction>
                     <IOR type="FloatProperty" identifier="IOR" displayName="Index of refraction">
                         <MetaDataList />
-                        <value content="1.4959" />
+                        <value content="1.5035" />
                         <minvalue content="1" />
                         <maxvalue content="20" />
                         <increment content="0.0099999998" />
                     </IOR>
                     <roughness type="FloatProperty" identifier="roughness" displayName="Roughness">
                         <MetaDataList />
-                        <value content="0.21314801" />
+                        <value content="0.35877699" />
                         <minvalue content="0.0099999998" />
                         <maxvalue content="1" />
                         <increment content="0.0099999998" />
                     </roughness>
                     <specularColor type="FloatVec4Property" identifier="specularColor" displayName="Specular color">
                         <MetaDataList />
-                        <value x="1" y="1" z="1" w="1" />
+                        <value x="1" y="0.9254902" z="0.73725492" w="1" />
                         <minvalue x="0" y="0" z="0" w="0" />
                         <maxvalue x="1" y="1" z="1" w="1" />
                         <increment x="0.0099999998" y="0.0099999998" z="0.0099999998" w="0.0099999998" />
@@ -373,17 +373,23 @@
                 <Property type="TransferFunctionProperty" identifier="transferFunction" displayName="Transfer function" key="transferFunction">
                     <MetaDataList>
                         <MetaData type="PropertyEditorWidgetMetaData">
-                            <position x="1386" y="554" />
-                            <dimension x="534" y="368" />
+                            <position x="1386" y="568" />
+                            <dimension x="534" y="388" />
                             <visibility content="1" />
                             <dockstatus content="DockedRight" />
                         </MetaData>
                     </MetaDataList>
-                    <size content="2" />
-                    <pos0 x="0.19678716" y="0" />
+                    <size content="5" />
+                    <pos0 x="0.25702813" y="0" />
                     <rgba0 x="0" y="0" z="0" w="0" />
-                    <pos1 x="0.3253012" y="0.12601626" />
-                    <rgba1 x="0.71764708" y="0.39047837" z="0.084428169" w="0.12601626" />
+                    <pos1 x="0.31325302" y="0.16233717" />
+                    <rgba1 x="0.28235295" y="0.11773861" z="0.035431448" w="0.16233717" />
+                    <pos2 x="0.34939763" y="0.42701149" />
+                    <rgba2 x="0.68627453" y="0.24826428" z="0.10226596" w="0.42701149" />
+                    <pos3 x="0.41767067" y="0.47685918" />
+                    <rgba3 x="0.99215686" y="0.5953002" z="0.29181352" w="0.47685918" />
+                    <pos4 x="0.68273091" y="0.55172414" />
+                    <rgba4 x="0.8392157" y="0.59041733" z="0.2863203" w="0.55172414" />
                     <mask_ x="0" y="1" />
                     <zoomH_ x="0" y="1" />
                     <zoomV_ x="0" y="1" />
@@ -417,7 +423,7 @@
                 </Property>
                 <Property type="FloatVec3Property" identifier="lightPosition" displayName="Light Source Position" key="lightPosition">
                     <MetaDataList />
-                    <value x="1" y="0.64999998" z="0.64999998" />
+                    <value x="-1.2963289" y="0.2184824" z="0.34175611" />
                     <minvalue x="-1" y="-1" z="-1" />
                     <maxvalue x="1" y="1" z="1" />
                     <increment x="0.0099999998" y="0.0099999998" z="0.0099999998" />
@@ -442,10 +448,10 @@
     <Connections>
         <Connection>
             <OutPort identifier="geometry.outport">
-                <Processor type="CubeProxyGeometry" identifier="CubeProxyGeometry" reference="ref0" />
+                <Processor type="CubeProxyGeometry" identifier="CubeProxyGeometry" reference="ref1" />
             </OutPort>
             <InPort identifier="geometry">
-                <Processor type="EntryExitPoints" identifier="EntryExitPoints" reference="ref1" />
+                <Processor type="EntryExitPoints" identifier="EntryExitPoints" reference="ref0" />
             </InPort>
         </Connection>
         <Connection>
@@ -453,7 +459,7 @@
                 <Processor type="VolumeSource" identifier="VolumeSource" reference="ref3" />
             </OutPort>
             <InPort identifier="volume.inport">
-                <Processor type="CubeProxyGeometry" identifier="CubeProxyGeometry" reference="ref0" />
+                <Processor type="CubeProxyGeometry" identifier="CubeProxyGeometry" reference="ref1" />
             </InPort>
         </Connection>
         <Connection>
@@ -466,7 +472,7 @@
         </Connection>
         <Connection>
             <OutPort identifier="entry-points">
-                <Processor type="EntryExitPoints" identifier="EntryExitPoints" reference="ref1" />
+                <Processor type="EntryExitPoints" identifier="EntryExitPoints" reference="ref0" />
             </OutPort>
             <InPort identifier="entry-points">
                 <Processor type="VolumeSepiaShadingCL" identifier="VolumeSepiaShadingCL" reference="ref4" />
@@ -474,7 +480,7 @@
         </Connection>
         <Connection>
             <OutPort identifier="exit-points">
-                <Processor type="EntryExitPoints" identifier="EntryExitPoints" reference="ref1" />
+                <Processor type="EntryExitPoints" identifier="EntryExitPoints" reference="ref0" />
             </OutPort>
             <InPort identifier="exit-points">
                 <Processor type="VolumeSepiaShadingCL" identifier="VolumeSepiaShadingCL" reference="ref4" />
