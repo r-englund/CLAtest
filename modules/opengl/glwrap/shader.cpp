@@ -36,14 +36,6 @@
 
 namespace inviwo {
 
-Shader::Shader(std::string fragmentFilename) {
-    initialize();
-    createAndAddShader(GL_VERTEX_SHADER, "img_identity.vert", true);
-    createAndAddShader(GL_FRAGMENT_SHADER, fragmentFilename, true);
-    attachAllShaderObjects();
-    linkAndRegister(true);
-}
-
 Shader::Shader(std::string fragmentFilename, bool linkShader) {
     initialize();
     createAndAddShader(GL_VERTEX_SHADER, "img_identity.vert", linkShader);
@@ -68,6 +60,35 @@ Shader::Shader(std::string vertexFilename, std::string geometryFilename, std::st
     attachAllShaderObjects();
     linkAndRegister(linkShader);
 }
+
+
+Shader::Shader(const char* fragmentFilename, bool linkShader) {
+    initialize();
+    createAndAddShader(GL_VERTEX_SHADER, "img_identity.vert", linkShader);
+    createAndAddShader(GL_FRAGMENT_SHADER, fragmentFilename, linkShader);
+    attachAllShaderObjects();
+    linkAndRegister(linkShader);
+}
+
+
+Shader::Shader(const char* vertexFilename,const char* fragmentFilename, bool linkShader) {
+    initialize();
+    createAndAddShader(GL_VERTEX_SHADER, vertexFilename, linkShader);
+    createAndAddShader(GL_FRAGMENT_SHADER, fragmentFilename, linkShader);
+    attachAllShaderObjects();
+    linkAndRegister(linkShader);
+}
+
+
+Shader::Shader(const char* vertexFilename,const char* geometryFilename,const char* fragmentFilename, bool linkShader) {
+    initialize();
+    createAndAddShader(GL_VERTEX_SHADER, vertexFilename, linkShader);
+    createAndAddShader(GL_GEOMETRY_SHADER, geometryFilename, linkShader);
+    createAndAddShader(GL_FRAGMENT_SHADER, fragmentFilename, linkShader);
+    attachAllShaderObjects();
+    linkAndRegister(linkShader);
+}
+
 
 Shader::Shader(std::vector<ShaderObject*>& shaderObjects, bool linkShader) {
     initialize();
