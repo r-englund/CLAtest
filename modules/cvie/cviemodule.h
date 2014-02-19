@@ -1,5 +1,5 @@
 /**********************************************************************
- * Copyright (C) 2104 Vistinct AB
+ * Copyright (C) 2104 ContextVision AB
  * All Rights Reserved.
  * 
  * Unauthorized copying of this file, via any medium is strictly prohibited
