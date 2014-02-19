@@ -14,10 +14,10 @@
 
 #include "gradients.cl" 
 #include "samplers.cl"
-#include "shading/shading.cl" 
-
+#include "shading/shading.cl"  
+ 
 __constant float REF_SAMPLING_INTERVAL = 150.f;
-
+     
 __kernel void volumeSepiaShading(read_only image3d_t volume
                         , read_only image2d_t entryPoints
                         , read_only image2d_t exitPoints
@@ -49,7 +49,7 @@ __kernel void volumeSepiaShading(read_only image3d_t volume
     float volumeSample;
     float extinction = 0.f;  
     while(t < tEnd) {
-        float3 pos = entry.xyz+t*direction;
+        float3 pos = entry.xyz+t*direction; 
         volumeSample = read_imagef(volume, smpNormClampEdgeLinear, as_float4(pos)).x; 
         // xyz == diffuse color, w = absorption
         float4 materialDiffuse = read_imagef(transferFunction, smpNormClampEdgeLinear, (float2)(volumeSample, 0.5f));
@@ -60,7 +60,7 @@ __kernel void volumeSepiaShading(read_only image3d_t volume
         gradient = normalize(gradient);
 
 
-        float3 f = applyShading(direction, -lightDirection, materialDiffuse.xyz, materialSpecular.xyz, material, gradient, shadingType);
+        float3 f = applyShading(-direction, -lightDirection, materialDiffuse.xyz, materialSpecular.xyz, material, gradient, shadingType);
         // Taylor expansion approximation
         materialDiffuse.w = 1.f - native_powr(1.f - materialDiffuse.w, stepSize * REF_SAMPLING_INTERVAL);
 		result.xyz = result.xyz + (1.f - result.w) * materialDiffuse.w * f * lightPower;
