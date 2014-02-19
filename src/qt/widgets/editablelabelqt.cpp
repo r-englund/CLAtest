@@ -37,16 +37,20 @@ namespace inviwo {
 EditableLabelQt::EditableLabelQt(QWidget* parent, std::string text, bool shortenText)
     : QWidget(parent)
     , text_(text)
+    , baseMenu_(NULL)
     , contextMenu_(NULL)
     , shortenText_(shortenText) {
+
     generateWidget();
 }
 
 EditableLabelQt::EditableLabelQt(QWidget* parent, std::string text, QMenu* contextMenu, bool shortenText)
     : QWidget(parent)
     , text_(text)
-    , contextMenu_(contextMenu)
+    , baseMenu_(contextMenu)
+    , contextMenu_(NULL)
     , shortenText_(shortenText) {
+
     generateWidget();
 }
 
@@ -63,23 +67,26 @@ void EditableLabelQt::generateWidget() {
     hLayout->addWidget(lineEdit_);
     lineEdit_->hide();
     lineEdit_->setAlignment(Qt::AlignLeft);
+    lineEdit_->setContentsMargins(0,0,0,0);
     hLayout->addWidget(label_);
     setLayout(hLayout);
-
-    if (contextMenu_ == NULL)
-        contextMenu_ = new QMenu(this);
-
-    contextMenu_->addAction("Rename");
+    
     label_->setContextMenuPolicy(Qt::CustomContextMenu);
-    connect(label_,SIGNAL(customContextMenuRequested(const QPoint&)),this,SLOT(showContextMenu(const QPoint&)));
-    connect(lineEdit_, SIGNAL(editingFinished()),this, SLOT(finishEditing()));
+    connect(label_,
+            SIGNAL(customContextMenuRequested(const QPoint&)),
+            this,
+            SLOT(showContextMenu(const QPoint&)));
+
+    connect(lineEdit_,
+            SIGNAL(editingFinished()),
+            this,
+            SLOT(finishEditing()));
 }
 
 void EditableLabelQt::edit() {
     label_->hide();
     lineEdit_->setText(QString::fromStdString(text_));
     lineEdit_->show();
-    lineEdit_->setContentsMargins(0,0,0,0);
     lineEdit_->setFocus();
     lineEdit_->selectAll();
 }
@@ -92,10 +99,11 @@ void EditableLabelQt::finishEditing() {
     lineEdit_->hide();
     text_ = lineEdit_->text().toLocal8Bit().constData();
 
-    if (shortenText_)
+    if (shortenText_){
         label_->setText(QString::fromStdString(shortenText()));
-    else
+    } else {
         label_->setText(QString::fromStdString(text_));
+    }
 
     label_->show();
     emit textChanged();
@@ -108,11 +116,21 @@ void EditableLabelQt::setText(std::string txt) {
 }
 
 void EditableLabelQt::showContextMenu(const QPoint& pos) {
-    QPoint globalPos = label_->mapToGlobal(pos);
-    QAction* selecteditem = contextMenu_->exec(globalPos);
 
-    if (selecteditem == contextMenu_->actions().at(0))
-        edit();
+    if (!contextMenu_){
+        contextMenu_ = new QMenu(this);
+    
+        if(baseMenu_){
+            contextMenu_->addActions(baseMenu_->actions());
+        }
+        
+        renameAction_ = new QAction(tr("&Rename"), this);
+        contextMenu_->addAction(renameAction_);
+        connect(renameAction_, SIGNAL(triggered()), this, SLOT(edit()));
+    }
+
+    contextMenu_->exec(label_->mapToGlobal(pos));
+
 }
 
 std::string EditableLabelQt::shortenText() {

@@ -77,6 +77,16 @@ public:
 
     void registerWidget(PropertyWidget* propertyWidget);
     void deregisterWidget(PropertyWidget* propertyWidget);
+    /**
+     *  This function should be called by propertywidgets before they initiate a property
+     *  change. This is needed becouse when the property is modified it needs to update all
+     *  of its widgets. And since it won't know if the change started in one of them we will
+     *  update the propertywidget that started the change...
+     *
+     *  @param PropertyWidget* <#PropertyWidget* description#>
+     */
+    void setInitiatingWidget(PropertyWidget*);
+    void clearInitiatingWidget();
     void updateWidgets();
     bool hasWidgets()const;
     MetaData* getMetaData(std::string meta);
@@ -131,6 +141,8 @@ private:
     std::string groupID_;
     std::string groupDisplayName_;
     static std::map<std::string,std::string> groupDisplayNames_;
+
+    PropertyWidget* initiatingWidget_;
 
     //TODO: Use map (Refer Processor meta-data list)
     std::vector<MetaData*> metaData_;

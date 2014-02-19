@@ -10,8 +10,7 @@ set(MOC_FILES
     ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/customsliderwidgetqt.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/editablelabelqt.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/eventpropertymanagerwidget.h
-    ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/floatsliderwidgetqt.h
-    ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/intsliderwidgetqt.h
+    ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/sliderwidgetqt.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/inviwoapplicationqt.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/inviwodockwidget.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/lightpositionwidgetqt.h
@@ -36,16 +35,9 @@ set(MOC_FILES
     ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/properties/floatmat4propertywidgetqt.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/properties/floatminmaxpropertywidgetqt.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/properties/floatpropertywidgetqt.h
-    ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/properties/floatvec2propertywidgetqt.h
-    ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/properties/floatvec3propertywidgetqt.h
-    ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/properties/floatvec4propertywidgetqt.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/properties/htmleditorwidgetqt.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/properties/htmllistwidgetqt.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/properties/intminmaxpropertywidgetqt.h
-    ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/properties/intpropertywidgetqt.h
-    ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/properties/intvec2propertywidgetqt.h
-    ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/properties/intvec3propertywidgetqt.h
-    ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/properties/intvec4propertywidgetqt.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/properties/imageeditorwidgetqt.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/properties/lightpropertywidgetqt.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/properties/optionpropertywidgetqt.h
@@ -87,19 +79,11 @@ set(SOURCE_FILES
     eventconverterqt.cpp
     eventpropertymanager.cpp
     eventpropertymanagerwidget.cpp
-    floatsliderwidgetqt.cpp
-    intsliderwidgetqt.cpp
     inviwoapplicationqt.cpp
     inviwodockwidget.cpp
     labelgraphicsitem.cpp
     lightpositionwidgetqt.cpp
     mappingpopup.cpp
-    propertylistwidget.cpp
-    propertyselectiontreewidget.cpp
-    qtwidgetmodule.cpp
-    rangesliderqt.cpp
-    rawdatareaderdialogqt.cpp
-    spinboxrangesliderwidgetqt.cpp
     processors/processorwidgetqt.cpp
     properties/boolpropertywidgetqt.cpp
     properties/buttonpropertywidgetqt.cpp  
@@ -115,18 +99,11 @@ set(SOURCE_FILES
     properties/floatmat4propertywidgetqt.cpp
     properties/floatminmaxpropertywidgetqt.cpp
     properties/floatpropertywidgetqt.cpp
-    properties/floatvec2propertywidgetqt.cpp
-    properties/floatvec3propertywidgetqt.cpp
-    properties/floatvec4propertywidgetqt.cpp
     properties/glslsyntaxhighlighter.cpp
     properties/htmleditorwidgetqt.cpp
     properties/htmllistwidgetqt.cpp
     properties/imageeditorwidgetqt.cpp
     properties/intminmaxpropertywidgetqt.cpp
-    properties/intpropertywidgetqt.cpp
-    properties/intvec2propertywidgetqt.cpp
-    properties/intvec3propertywidgetqt.cpp
-    properties/intvec4propertywidgetqt.cpp    
     properties/lightpropertywidgetqt.cpp  
     properties/optionpropertywidgetqt.cpp
     properties/propertysettingswidgetqt.cpp
@@ -141,6 +118,13 @@ set(SOURCE_FILES
     properties/transferfunctioneditorview.cpp
     properties/transferfunctionpropertydialog.cpp
     properties/transferfunctionpropertywidgetqt.cpp 
+    propertylistwidget.cpp
+    propertyselectiontreewidget.cpp
+    qtwidgetmodule.cpp
+    rangesliderqt.cpp
+    rawdatareaderdialogqt.cpp
+    spinboxrangesliderwidgetqt.cpp
+    sliderwidgetqt.cpp
 )
 
 ivw_group("Source Files" ${SOURCE_FILES})

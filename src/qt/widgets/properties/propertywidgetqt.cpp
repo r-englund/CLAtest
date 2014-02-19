@@ -1,20 +1,20 @@
-/*********************************************************************************
+ /*********************************************************************************
  *
  * Inviwo - Interactive Visualization Workshop
  * Version 0.6b
  *
  * Copyright (c) 2012-2014 Inviwo Foundation
  * All rights reserved.
- *
+ * 
  * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met:
- *
+ * modification, are permitted provided that the following conditions are met: 
+ * 
  * 1. Redistributions of source code must retain the above copyright notice, this
- * list of conditions and the following disclaimer.
+ * list of conditions and the following disclaimer. 
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  * this list of conditions and the following disclaimer in the documentation
- * and/or other materials provided with the distribution.
- *
+ * and/or other materials provided with the distribution. 
+ * 
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
  * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
@@ -25,7 +25,7 @@
  * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- *
+ * 
  * Main file authors: Sathish Kottravel, Alexander Johansson
  *
  *********************************************************************************/
@@ -45,13 +45,38 @@ namespace inviwo {
 
 PropertyWidgetQt::PropertyWidgetQt()
     : PropertyWidget()
+    , contextMenu_(NULL)
     , viewModeItem_(NULL) {
+    
+    InviwoApplication* inviwoApp = InviwoApplication::getPtr();
+    this->addObservation(static_cast<OptionPropertyInt*>(
+        inviwoApp->getSettingsByType<SystemSettings>()->getPropertyByIdentifier("viewMode"))
+        );
+    
+    this->setContextMenuPolicy(Qt::CustomContextMenu);
+    connect(this,
+            SIGNAL(customContextMenuRequested(const QPoint&)),
+            this,
+            SLOT(showContextMenu(const QPoint&)));
 }
 
 PropertyWidgetQt::PropertyWidgetQt(Property* property)
     : PropertyWidget(property)
+    , contextMenu_(NULL)
     , viewModeItem_(NULL) {
-    this->setToolTip(property_->getIdentifier().c_str());
+    
+    this->setToolTip(("id: " + property_->getIdentifier()).c_str());
+    
+    InviwoApplication* inviwoApp = InviwoApplication::getPtr();
+    this->addObservation(static_cast<OptionPropertyInt*>(
+        inviwoApp->getSettingsByType<SystemSettings>()->getPropertyByIdentifier("viewMode"))
+        );
+    
+    this->setContextMenuPolicy(Qt::CustomContextMenu);
+    connect(this,
+            SIGNAL(customContextMenuRequested(const QPoint&)),
+            this,
+            SLOT(showContextMenu(const QPoint&)));
 }
 
 PropertyWidgetQt::~PropertyWidgetQt() {
@@ -68,16 +93,33 @@ void PropertyWidgetQt::hideWidget() {
     emit visibilityChange();
 }
 
+void PropertyWidgetQt::notify(){
+    PropertyVisibilityMode appVisibilityMode  = getApplicationViewMode();
+   
+    if (appVisibilityMode == DEVELOPMENT) {
+        if(developerViewModeAction_)
+            developerViewModeAction_->setEnabled(true);
+        if(applicationViewModeAction_)
+            applicationViewModeAction_->setEnabled(true);
+    }else{
+        if(developerViewModeAction_)
+            developerViewModeAction_->setEnabled(false);
+        if(applicationViewModeAction_)
+            applicationViewModeAction_->setEnabled(false);
+    }
+}
+
 void PropertyWidgetQt::initializeEditorWidgetsMetaData() {
     if (hasEditorWidget()) {
+
         //Validates editor widget position
         PropertyEditorWidgetQt* propertyEditorWidget = dynamic_cast<PropertyEditorWidgetQt*>(getEditorWidget());
         InviwoApplicationQt* app = dynamic_cast<InviwoApplicationQt*>(InviwoApplication::getPtr());
-
         if (!propertyEditorWidget)
             return;
 
         //set widget meta data stuff
+
         PropertyEditorWidgetDockStatus docStatus = propertyEditorWidget->getEditorDockStatus();
 
         if (docStatus == PropertyEditorWidgetDockStatus::DockedLeft) {
@@ -93,9 +135,11 @@ void PropertyWidgetQt::initializeEditorWidgetsMetaData() {
             propertyEditorWidget->setFloating(true);
         }
 
-        propertyEditorWidget->hide();
+        propertyEditorWidget->hide();    
+
         ivec2 widgetDimension = getEditorWidget()->getEditorDimensionMetaData();
         propertyEditorWidget->resize(QSize(widgetDimension.x, widgetDimension.y));
+
         //TODO: Desktop screen info should be added to system capabilities
         ivec2 pos = getEditorWidget()->getEditorPositionMetaData();
         QDesktopWidget* desktop = QApplication::desktop();
@@ -105,113 +149,109 @@ void PropertyWidgetQt::initializeEditorWidgetsMetaData() {
 
         for (int i=0; i<desktop->screenCount(); i++) {
             if (i!=primaryScreenIndex)
-                wholeScreenGeometry = wholeScreenGeometry.united(desktop->screenGeometry(i));
+                wholeScreenGeometry = wholeScreenGeometry.united(desktop->screenGeometry(i));        
         }
 
         wholeScreenGeometry.setRect(wholeScreenGeometry.x()-10, wholeScreenGeometry.y()-10,
-                                    wholeScreenGeometry.width()+20, wholeScreenGeometry.height()+20);
+            wholeScreenGeometry.width()+20, wholeScreenGeometry.height()+20);
         QPoint bottomRight = QPoint(pos.x+this->width(), pos.y+this->height());
+
         QPoint appPos = app->getMainWindow()->pos();
 
         if (!wholeScreenGeometry.contains(QPoint(pos.x, pos.y)) || !wholeScreenGeometry.contains(bottomRight)) {
-            pos = ivec2(appPos.x(), appPos.y()) ;
-            pos += ivec2(primaryScreenGeometry.width()/2, primaryScreenGeometry.height()/2);
+                pos = ivec2(appPos.x(), appPos.y()) ;
+            pos += ivec2( primaryScreenGeometry.width()/2, primaryScreenGeometry.height()/2);
             propertyEditorWidget->move(pos.x, pos.y);
         }
-        else {
-            if (!(pos.x == 0 && pos.y == 0))
+        else {        
+            if (!(pos.x == 0 && pos.y == 0))            
                 propertyEditorWidget->move(pos.x, pos.y);
             else {
                 pos = ivec2(appPos.x(), appPos.y()) ;
-                pos += ivec2(primaryScreenGeometry.width()/2, primaryScreenGeometry.height()/2);
+                pos += ivec2( primaryScreenGeometry.width()/2, primaryScreenGeometry.height()/2);
                 propertyEditorWidget->move(pos.x, pos.y);
             }
         }
 
         bool visible = getEditorWidget()->getEditorVisibilityMetaData();
-
         if (!visible) propertyEditorWidget->hide();
         else propertyEditorWidget->show();
     }
 }
 
-void PropertyWidgetQt::paintEvent(QPaintEvent* pe) {
-    QStyleOption o;
-    o.initFrom(this);
-    QPainter p(this);
+void PropertyWidgetQt::paintEvent(QPaintEvent *pe) {                                                                                                                                        
+    QStyleOption o;                                                                                                                                                                  
+    o.initFrom(this);                                                                                                                                                                
+    QPainter p(this);                                                                                                                                                                
     style()->drawPrimitive(
-        QStyle::PE_Widget, &o, &p, this);
+        QStyle::PE_Widget, &o, &p, this);                                                                                                                         
 };
 
 void PropertyWidgetQt::visibilityModified(int mode) {}
 
 void PropertyWidgetQt::generateContextMenu() {
-    InviwoApplication* inviwoApp = InviwoApplication::getPtr();
-    ivwAssert(inviwoApp->isInitialized()!=false, "InviwoApplication not initialized.This should not be the case.");
-    this->addObservation(static_cast<OptionPropertyInt*>(inviwoApp->getSettingsByType<SystemSettings>()->getPropertyByIdentifier("viewMode")));
-    this->setContextMenuPolicy(Qt::CustomContextMenu);
-    contextMenu_ = new QMenu(this);
-    viewModeItem_ = new QMenu(tr("&View mode"),contextMenu_);
-    developerViewModeAction_ = new QAction(tr("&Developer"),this);
-    developerViewModeAction_->setCheckable(true);
-    viewModeItem_->addAction(developerViewModeAction_);
-    applicationViewModeAction_ = new QAction(tr("&Application"),this);
-    applicationViewModeAction_->setCheckable(true);
-    viewModeItem_->addAction(applicationViewModeAction_);
-    viewModeActionGroup_ = new QActionGroup(this);
-    viewModeActionGroup_->addAction(developerViewModeAction_);
-    viewModeActionGroup_->addAction(applicationViewModeAction_);
-    contextMenu_->addMenu(viewModeItem_);
-    generateModuleMenuActions();
-    QMapIterator<QString,QMenu*> it(moduleSubMenus_);
+    if (!contextMenu_) {
+    
+        contextMenu_ = new QMenu(this);
 
-    while (it.hasNext()) {
-        it.next();
-        contextMenu_->addMenu(it.value());
-    }
-
-    updateContextMenu();
-    connect(this,SIGNAL(customContextMenuRequested(const QPoint&)),this,SLOT(showContextMenu(const QPoint&)));
-    connect(developerViewModeAction_,SIGNAL(triggered(bool)),this, SLOT(setDeveloperViewMode(bool)));
-    connect(applicationViewModeAction_,SIGNAL(triggered(bool)),this, SLOT(setApplicationViewMode(bool)));
-}
-
-void PropertyWidgetQt::showContextMenu(const QPoint& pos) {
-    PropertyVisibilityMode appVisibilityMode  = getApplicationViewMode();
-
-    if (appVisibilityMode == DEVELOPMENT) {
-        updateContextMenu();
-        QPoint globalPos = this->mapToGlobal(pos);
-        contextMenu_->exec(globalPos);
-    }
-}
-QMenu* PropertyWidgetQt::generatePropertyWidgetMenu() {
-    QMenu* contextMenu = new QMenu(this);
-
-    if (viewModeItem_ != NULL)
-        contextMenu->addMenu(viewModeItem_);
-    else {
+        // View mode actions (Developer / Application)
+        viewModeItem_ = new QMenu(tr("&View mode"), contextMenu_);
         developerViewModeAction_ = new QAction(tr("&Developer"),this);
         developerViewModeAction_->setCheckable(true);
         viewModeItem_->addAction(developerViewModeAction_);
+    
         applicationViewModeAction_ = new QAction(tr("&Application"),this);
         applicationViewModeAction_->setCheckable(true);
         viewModeItem_->addAction(applicationViewModeAction_);
+
         viewModeActionGroup_ = new QActionGroup(this);
         viewModeActionGroup_->addAction(developerViewModeAction_);
         viewModeActionGroup_->addAction(applicationViewModeAction_);
-        contextMenu->addMenu(viewModeItem_);
+        contextMenu_->addMenu(viewModeItem_);
+
+        connect(developerViewModeAction_,
+                SIGNAL(triggered(bool)),
+                this,
+                SLOT(setDeveloperViewMode(bool)));
+
+        connect(applicationViewModeAction_,
+                SIGNAL(triggered(bool)),
+                this,
+                SLOT(setApplicationViewMode(bool)));
+
+
+        // Module actions.
+        generateModuleMenuActions();
+        QMapIterator<QString,QMenu*> it(moduleSubMenus_);
+
+        while (it.hasNext()) {
+            it.next();
+            contextMenu_->addMenu(it.value());
+        }
+
+        // Update to current state.
+        updateContextMenu();
     }
+}
 
-    generateModuleMenuActions();
-    QMapIterator<QString,QMenu*> it(moduleSubMenus_);
-
-    while (it.hasNext()) {
-        it.next();
-        contextMenu->addMenu(it.value());
+void PropertyWidgetQt::showContextMenu(const QPoint& pos) {
+    if (!contextMenu_) {
+        generateContextMenu();
     }
+    updateContextMenu();
+    contextMenu_->exec(this->mapToGlobal(pos));
+}
 
-    return contextMenu;
+QMenu* PropertyWidgetQt::getContextMenu(){
+    if (!contextMenu_) {
+        generateContextMenu();
+    }
+    return contextMenu_;
+}
+
+// Refactor to use getContextMenu() and remove
+QMenu* PropertyWidgetQt::generatePropertyWidgetMenu() {
+    return getContextMenu();
 }
 
 void PropertyWidgetQt::generateModuleMenuActions() {
@@ -272,19 +312,18 @@ void PropertyWidgetQt::updateModuleMenuActions() {
 
 void PropertyWidgetQt::setDeveloperViewMode(bool value) {
     property_->setVisibility(DEVELOPMENT);
-    developerViewModeAction_->setChecked(true);
     updateContextMenu();
 }
 
 void PropertyWidgetQt::setApplicationViewMode(bool value) {
     property_->setVisibility(APPLICATION);
-    applicationViewModeAction_->setChecked(true);
     updateContextMenu();
 }
 
 PropertyVisibilityMode PropertyWidgetQt::getApplicationViewMode() {
     Settings* mainSettings = InviwoApplication::getPtr()->getSettingsByType<SystemSettings>();
-    PropertyVisibilityMode appMode =  static_cast<PropertyVisibilityMode>(dynamic_cast<OptionPropertyInt*>
+    PropertyVisibilityMode appMode =
+        static_cast<PropertyVisibilityMode>(dynamic_cast<OptionPropertyInt*>
                                       (mainSettings->getPropertyByIdentifier("viewMode"))->get());
     return appMode;
 }
@@ -307,11 +346,21 @@ void PropertyWidgetQt::moduleAction() {
 }
 
 void PropertyWidgetQt::updateContextMenu() {
-    if (property_->getVisibilityMode() == DEVELOPMENT)
+
+    if (property_ && property_->getVisibilityMode() == DEVELOPMENT)
         developerViewModeAction_->setChecked(true);
-    else if (property_->getVisibilityMode() == APPLICATION)
+    else if (property_ && property_->getVisibilityMode() == APPLICATION)
         applicationViewModeAction_->setChecked(true);
 
+    PropertyVisibilityMode appVisibilityMode  = getApplicationViewMode();
+
+    if (appVisibilityMode == DEVELOPMENT) {
+        developerViewModeAction_->setEnabled(true);
+        applicationViewModeAction_->setEnabled(true);
+    }else{
+        developerViewModeAction_->setEnabled(false);
+        applicationViewModeAction_->setEnabled(false);
+    }
     updateModuleMenuActions();
 }
 
@@ -325,14 +374,13 @@ void PropertyWidgetQt::setProperty(Property* property) {
 PropertyEditorWidgetQt::PropertyEditorWidgetQt(std::string widgetName, QWidget* parent)
     : InviwoDockWidget(QString(widgetName.c_str()), parent)
     , VoidObserver()
-    , PropertyEditorWidget()
-{
+    , PropertyEditorWidget(){
 }
 
 PropertyEditorWidgetQt::~PropertyEditorWidgetQt() { }
 
 void PropertyEditorWidgetQt::initialize(Property* property) {
-    PropertyEditorWidget::initialize(property);
+    PropertyEditorWidget::initialize(property);   
 }
 
 void PropertyEditorWidgetQt::deinitialize() {

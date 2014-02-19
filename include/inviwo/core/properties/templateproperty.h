@@ -54,6 +54,7 @@ public:
     virtual void set(const T& value);
     virtual void set(const Property* srcProperty);
 
+    typedef T valueType;
 protected:
     T value_;
 };

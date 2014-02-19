@@ -218,9 +218,14 @@ void NetworkEditor::autoLinkOnAddedProcessor(Processor* addedProcessor) {
             }
         }
     }
-
-    for (size_t i=0; i<newLinks.size(); i++)
-        newLinks[i]->setSourceModified();
+    if (newLinks.size()>0) {
+        processorNetwork_->lock();
+        for (size_t i=1; i<newLinks.size(); i++) {
+            newLinks[i]->setSourceModified();
+        }
+        processorNetwork_->unlock();
+        newLinks[0]->setSourceModified();
+    }
 }
 
 

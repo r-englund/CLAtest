@@ -34,107 +34,168 @@
 
 namespace inviwo {
 
-FloatPropertyWidgetQt::FloatPropertyWidgetQt(FloatProperty* property)
-    : property_(property)
-    , settingsWidget_(0) {
-    PropertyWidgetQt::setProperty(property_);
-    PropertyWidgetQt::generateContextMenu();
-    generateWidget();
-    updateFromProperty();
-
-    if (!property->getReadOnly())
-        generatesSettingsWidget();
+BaseOrdinalPropertyWidgetQt::BaseOrdinalPropertyWidgetQt(Property* property)
+    : PropertyWidgetQt(property)
+    , contextMenu_(NULL)
+    , settingsWidget_(NULL) {
 }
 
-FloatPropertyWidgetQt::~FloatPropertyWidgetQt() {
+BaseOrdinalPropertyWidgetQt::~BaseOrdinalPropertyWidgetQt() {
     settingsWidget_->deleteLater();
 }
 
-void FloatPropertyWidgetQt::generateWidget() {
+void BaseOrdinalPropertyWidgetQt::generateWidget() {
+    signalMapperSetPropertyValue_ = new QSignalMapper(this);
+    signalMapperContextMenu_ = new QSignalMapper(this);
+    
     QHBoxLayout* hLayout = new QHBoxLayout();
+    
+    hLayout->setContentsMargins(0,0,0,0);
+    hLayout->setSpacing(0);
+
+    label_ = new EditableLabelQt(this,
+                                 property_->getDisplayName(),
+                                 PropertyWidgetQt::getContextMenu());
+    hLayout->addWidget(label_);
+
+    QSizePolicy labelPol = label_->sizePolicy();
+    labelPol.setHorizontalStretch(1);
+    label_->setSizePolicy(labelPol);
+    connect(label_, SIGNAL(textChanged()),this, SLOT(setPropertyDisplayName()));
 
     if (property_->getReadOnly()) {
-        hLayout->addWidget(new QLabel(QString::fromStdString(property_->getDisplayName())));
         readOnlyLabel_ = new QLabel();
         hLayout->addWidget(readOnlyLabel_);
-        setLayout(hLayout);
-    }
-    else {
-        label_ = new EditableLabelQt(this,property_->getDisplayName(),PropertyWidgetQt::generatePropertyWidgetMenu());
-        hLayout->addWidget(label_);
-        sliderWidget_ = new FloatSliderWidgetQt();
-        hLayout->addWidget(sliderWidget_);
-        setLayout(hLayout);
-        QSizePolicy labelPol = label_->sizePolicy();
-        labelPol.setHorizontalStretch(1);
-        label_->setSizePolicy(labelPol);
-        QSizePolicy sliderPol = sliderWidget_->sizePolicy();
+        QSizePolicy sliderPol = readOnlyLabel_->sizePolicy();
         sliderPol.setHorizontalStretch(3);
-        sliderWidget_->setSizePolicy(sliderPol);
-        connect(label_, SIGNAL(textChanged()),this, SLOT(setPropertyDisplayName()));
-        connect(sliderWidget_, SIGNAL(valueChanged(float)), this, SLOT(setPropertyValue(float)));
+        readOnlyLabel_->setSizePolicy(sliderPol);
+    } else {
+        
+        QWidget* sliderWidget = new QWidget();
+        QSizePolicy sliderPol = sliderWidget->sizePolicy();
+        sliderPol.setHorizontalStretch(3);
+        sliderWidget->setSizePolicy(sliderPol);
+        
+        QVBoxLayout* vLayout = new QVBoxLayout();
+        sliderWidget->setLayout(vLayout);
+        vLayout->setContentsMargins(0,0,0,0);
+        vLayout->setSpacing(0);
+        
+        sliderWidgets_ = makeSliders();
+
+        for(size_t i = 0; i < sliderWidgets_.size(); i++){
+            sliderWidgets_[i]->setContextMenuPolicy(Qt::CustomContextMenu);
+            connect(sliderWidgets_[i],
+                    SIGNAL(customContextMenuRequested(const QPoint&)),
+                    signalMapperContextMenu_,
+                    SLOT(map()));
+            
+            connect(sliderWidgets_[i],
+                    SIGNAL(valueChanged()),
+                    signalMapperSetPropertyValue_,
+                    SLOT(map()));
+            
+            signalMapperContextMenu_->setMapping(sliderWidgets_[i], i);
+            signalMapperSetPropertyValue_->setMapping(sliderWidgets_[i], i);
+    
+            vLayout->addWidget(sliderWidgets_[i]);
+        }
+        
+        hLayout->addWidget(sliderWidget);
+
+        connect(signalMapperContextMenu_,
+                SIGNAL(mapped(int)),
+                this,
+                SLOT(showContextMenuSlider(int)));
+        
+        connect(signalMapperSetPropertyValue_,
+                SIGNAL(mapped(int)),
+                this,
+                SLOT(setPropertyValue(int)));        
     }
+    
+    setLayout(hLayout);
 }
 
-void FloatPropertyWidgetQt::setPropertyValue(float value) {
-    property_->set(value);
-    emit modified();
+
+void BaseOrdinalPropertyWidgetQt::generatesSettingsWidget() {
+
+    settingsAction_ = new QAction(tr("&Property settings..."), this);
+    minAction_ = new QAction(tr("&Set as Min"), this);
+    maxAction_ = new QAction(tr("&Set as Max"), this);
+
+    connect(settingsAction_,
+            SIGNAL(triggered()),
+            this,
+            SLOT(showSettings()));
+
+    connect(minAction_,
+            SIGNAL(triggered()),
+            this,
+            SLOT(setAsMin()));
+    
+    connect(maxAction_,
+            SIGNAL(triggered()),
+            this,
+            SLOT(setAsMax()));
+    
+    contextMenu_ = new QMenu();
+    contextMenu_->addActions(PropertyWidgetQt::getContextMenu()->actions());
+    contextMenu_->addAction(settingsAction_);
+    contextMenu_->addAction(minAction_);
+    contextMenu_->addAction(maxAction_);
 }
 
-void FloatPropertyWidgetQt::updateFromProperty() {
-    float value = property_->get();
+/****************************************************************************/
+// Slots:
 
-    if (property_->getReadOnly()) {
-        readOnlyLabel_->setText(QString::number(property_->get()));
-        readOnlyLabel_->setToolTip("Min: " +QString::number(property_->getMinValue())+
-                                   "  Max: " +QString::number(property_->getMaxValue()));
-    }
-    else {
-        sliderWidget_->blockSignals(true);
-        sliderWidget_->initValue(value);
-        sliderWidget_->setRange(property_->getMinValue(), property_->getMaxValue());
-        sliderWidget_->setIncrement(property_->getIncrement());
-        sliderWidget_->setValue(value);
-        sliderWidget_->blockSignals(false);
-    }
+// Connected to label_ textChanged
+void BaseOrdinalPropertyWidgetQt::setPropertyDisplayName() {
+    property_->setDisplayName(label_->getText());
 }
 
-void FloatPropertyWidgetQt::showContextMenuSlider(const QPoint& pos) {
+// connected to sliderWidget_ customContextMenuRequested
+void BaseOrdinalPropertyWidgetQt::showContextMenuSlider(int sliderId) {
+    sliderId_ = sliderId;
+
+    if (!contextMenu_){
+        generatesSettingsWidget();
+    }
+
+    PropertyWidgetQt::updateContextMenu();
     PropertyVisibilityMode appVisibilityMode  = getApplicationViewMode();
 
     if (appVisibilityMode == DEVELOPMENT) {
-        updateContextMenu();
-        QPoint globalPos = sliderWidget_->mapToGlobal(pos);
-        QAction* selecteditem = settingsMenu_->exec(globalPos);
-
-        if (selecteditem && selecteditem->text() == "Property settings") {
-            settingsWidget_->reload();
-            settingsWidget_->show();
-        } else if (selecteditem && selecteditem->text() == "Set as Min") {
-            // set current value of the slider to min value of the property
-            property_->setMinValue(sliderWidget_->getValue());
-            updateFromProperty();
-        } else if (selecteditem && selecteditem->text() == "Set as Max") {
-            // set current value of the slider to max value of the property
-            property_->setMaxValue(sliderWidget_->getValue());
-            updateFromProperty();
-        }
+        settingsAction_->setVisible(true);
+        minAction_->setVisible(true);
+        maxAction_->setVisible(true);
+    }else{
+        settingsAction_->setVisible(false);
+        minAction_->setVisible(false);
+        maxAction_->setVisible(false);
     }
+    
+    if (property_->getReadOnly()){
+        settingsAction_->setEnabled(false);
+        minAction_->setEnabled(false);
+        maxAction_->setEnabled(false);
+    }else{
+        settingsAction_->setEnabled(true);
+        minAction_->setEnabled(true);
+        maxAction_->setEnabled(true);
+    }
+    contextMenu_->exec(QCursor::pos());
+
 }
 
-void FloatPropertyWidgetQt::generatesSettingsWidget() {
-    settingsWidget_ = new PropertySettingsWidgetQt(property_);
-    settingsMenu_ = PropertyWidgetQt::generatePropertyWidgetMenu();
-    settingsMenu_->addAction("Property settings");
-    settingsMenu_->addAction("Set as Min");
-    settingsMenu_->addAction("Set as Max");
-    sliderWidget_->setContextMenuPolicy(Qt::CustomContextMenu);
-    connect(sliderWidget_, SIGNAL(customContextMenuRequested(const QPoint&)),
-            this, SLOT(showContextMenuSlider(const QPoint&)));
+void BaseOrdinalPropertyWidgetQt::showSettings(){
+    if (!settingsWidget_){
+        settingsWidget_ = new PropertySettingsWidgetQt(property_);
+    }
+    settingsWidget_->reload();
+    settingsWidget_->show();
 }
 
-void FloatPropertyWidgetQt::setPropertyDisplayName() {
-    property_->setDisplayName(label_->getText());
-}
+
 
 } // namespace

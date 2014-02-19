@@ -148,49 +148,37 @@ QWidget* PropertyListWidget::getProcessorPropertiesItem(Processor* processor) {
 
 QWidget* PropertyListWidget::createNewProcessorPropertiesItem(Processor* processor) {
     // create property widget and store it in the map
-    CollapsibleGroupBoxWidgetQt* processorPropertyWidget = new CollapsibleGroupBoxWidgetQt(processor->getIdentifier(),
-            processor->getIdentifier());
+    CollapsibleGroupBoxWidgetQt* processorPropertyWidget
+        = new CollapsibleGroupBoxWidgetQt(processor->getIdentifier(),
+                                          processor->getIdentifier());
     processorPropertyWidget->setParent(this);
-    properties_ = processor->getProperties();
-    std::vector<Property*> addedProperties;
+    
+    typedef std::map<std::string, CollapsibleGroupBoxWidgetQt*> GroupMap;
+    std::vector<Property*> props = processor->getProperties();
+    GroupMap groups;
 
-    for (size_t i=0; i<properties_.size(); i++) {
-        Property* curProperty = properties_[i];
-
-        // check if the property is already added
-        if (std::find(addedProperties.begin(),addedProperties.end(),curProperty) != addedProperties.end())
-            continue;
-        // add to group box if one is assigned to the property
-        else if (curProperty->getGroupID() != "") {
-            CollapsibleGroupBoxWidgetQt* group = new CollapsibleGroupBoxWidgetQt(curProperty->getGroupID(), curProperty->getGroupDisplayName());
-            group->setIdentifier(curProperty->getGroupDisplayName());
-
-            // add all the properties with the same group assigned
-            for (size_t k=0; k<properties_.size(); k++) {
-                Property* tmpProperty = properties_[k];
-
-                if (curProperty->getGroupID() == tmpProperty->getGroupID()) {
-                    group->addProperty(tmpProperty);
-                    addedProperties.push_back(tmpProperty);
-                }
+    for (size_t i=0; i<props.size(); i++) {
+        if (props[i]->getGroupID() != "") {
+            GroupMap::iterator it = groups.find(props[i]->getGroupID());
+            if(it == groups.end()){
+                CollapsibleGroupBoxWidgetQt* group =
+                    new CollapsibleGroupBoxWidgetQt(props[i]->getGroupDisplayName(),
+                                                    props[i]->getGroupDisplayName());
+                processorPropertyWidget->addWidget(group);
+                groups.insert(std::make_pair(props[i]->getGroupID(), group));
+                group->addProperty(props[i]);
+            }else{
+                it->second->addProperty(props[i]);
             }
-
-            group->generatePropertyWidgets();
-            processorPropertyWidget->addWidget(group);
-        }
-        else {
-            PropertyWidgetQt* propertyWidget =
-                static_cast<PropertyWidgetQt*>(PropertyWidgetFactory::getRef().create(curProperty));
-
-            if (propertyWidget) {
-                curProperty->registerWidget(propertyWidget);
-                processorPropertyWidget->addWidget(propertyWidget);
-                connect(propertyWidget, SIGNAL(modified()), this, SLOT(propertyModified()));
-                addedProperties.push_back(curProperty);
-            }
+        }else{
+            processorPropertyWidget->addProperty(props[i]);
         }
     }
-
+    processorPropertyWidget->generatePropertyWidgets();
+    for (GroupMap::const_iterator it = groups.begin(); it != groups.end(); ++it){
+        it->second->generatePropertyWidgets();
+    }
+    
     propertyWidgetMap_.insert(std::make_pair(processor->getIdentifier(), processorPropertyWidget));
     return processorPropertyWidget;
 }

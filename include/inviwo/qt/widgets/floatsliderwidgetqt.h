@@ -42,116 +42,73 @@
 #include <sstream>
 
 namespace inviwo {
-
-class IVW_QTWIDGETS_API FloatSliderWidgetQt : public QWidget {
-    Q_OBJECT
-public:
-
-    FloatSliderWidgetQt();
-
-    virtual ~FloatSliderWidgetQt();
-
-    /**
-     * \brief Returns the float value of the slider
-     *
-     * <DESCRIBE THE METHOD>
-     *
-     * @return float the current value of the slider
-     */
-    float getValue();
-    /**
-     * \brief Sets the float value of the slider.
-     *
-     * Sets the float value of the slider, in order to update the spinbox updateValueSpinbox needs to be called after setting the value
-     *
-     * @param float tmpValue Must be between minValue and maxValue of the slider
-     * @return void <DESCRIBE ME>
-     */
-    void setValue(float value);
-
-    /**
-     * \brief In contrast to setValue(float), initValue(float) does not emit signals. Also this is added due to lack of constructor.
-     *
-     * Sets the float value
-     *
-     * @param float tmpValue Must be between minValue and maxValue of the slider
-     * @return void <DESCRIBE ME>
-     */
-    void initValue(float value) { value_ = value; }
-
-    /**
-     * \brief sets the maximum value of the spin box and slider
-     *
-     * <DESCRIBE THE METHOD>
-     *
-     * @param float max <DESCRIBE ME>
-     * @return void <DESCRIBE ME>
-     */
-    void setMaxValue(float maxValue);
-    /**
-     * \brief sets the minimum value of the spin box and slider
-     *
-     * <DESCRIBE THE METHOD>
-     *
-     * @param float min <DESCRIBE ME>
-     * @return void <DESCRIBE ME>
-     */
-    void setMinValue(float minValue);
-
-
-    void setRange(float minValue, float maxValue);
-
-    /**
-     * \brief Sets the increment of the spinbox and slider
-     *
-     * <DESCRIBE THE METHOD>
-     *
-     * @param float increment <DESCRIBE ME>
-     * @return void <DESCRIBE ME>
-     */void setIncrement(float increment);
-
-
-
-private slots:
-    void updateFromSlider();
-    void updateFromSpinBox();
-
-
-signals:
-    void valueChanged(float value);
-
-private:
-    float value_;
-    float minValue_;
-    float maxValue_;
-    float increment_;
-    static const int SLIDER_MAX = 10000;
-
-    CustomDoubleSpinBoxQt* spinBox_;
-    //QSlider* slider_;
-    CustomSliderWidgetQt* slider_;
-
-    void generateWidget();
-    /**
-     * \brief updates the value of the spin box from the slider value
-     *
-     * <DESCRIBE THE METHOD>
-     *
-     * @return void <DESCRIBE ME>
-     */
-    void updateSpinBox();
-    /**
-     * \brief updates the value of the slider from the spin box value
-     *
-     * <DESCRIBE THE METHOD>
-     *
-     * @return void <DESCRIBE ME>
-     */
-
-    void updateSlider();
-
-    void setSpinBoxDecimals(float increment);
-};
+    
+//class IVW_QTWIDGETS_API FloatSliderWidgetQt : public QWidget {
+//    Q_OBJECT
+//public:
+//
+//    FloatSliderWidgetQt();
+//
+//    virtual ~FloatSliderWidgetQt();
+//
+//    /**
+//     * \brief Returns the float value of the slider
+//     *
+//     * @return float the current value of the slider
+//     */
+//    float getValue();
+//    /**
+//     * \brief Sets the float value of the slider.
+//     *
+//     * Sets the float value of the slider, in order to update the spinbox updateValueSpinbox needs to be called after setting the value
+//     *
+//     * @param float tmpValue Must be between minValue and maxValue of the slider
+//     */
+//    void setValue(float value);
+//
+//    /**
+//     * \brief In contrast to setValue(float), initValue(float) does not emit signals. Also this is added due to lack of constructor.
+//     *
+//     * Sets the float value
+//     *
+//     * @param float tmpValue Must be between minValue and maxValue of the slider
+//     */
+//    void initValue(float value);
+//    void setMaxValue(float maxValue);
+//    void setMinValue(float minValue);
+//    void setRange(float minValue, float maxValue);
+//    void setIncrement(float increment);
+//
+//private slots:
+//    void updateFromSlider();
+//    void updateFromSpinBox();
+//
+//signals:
+//    void valueChanged(float value);
+//
+//private:
+//    float value_;
+//    float minValue_;
+//    float maxValue_;
+//    float increment_;
+//    static const int SLIDER_MAX = 10000;
+//
+//    CustomDoubleSpinBoxQt* spinBox_;
+//    CustomSliderWidgetQt* slider_;
+//
+//    void generateWidget();
+//    /**
+//     * \brief updates the value of the spin box from the slider value
+//     */
+//    void updateSpinBox();
+//    /**
+//     * \brief updates the value of the slider from the spin box value
+//     */
+//    void updateSlider();
+//
+//    void setSpinBoxDecimals(float increment);
+    
+//};
 
 }//namespace
 

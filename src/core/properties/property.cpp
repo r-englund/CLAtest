@@ -44,6 +44,7 @@ Property::Property(std::string identifier,
                    PropertyOwner::InvalidationLevel invalidationLevel,
                    PropertySemantics semantics)
     : VoidObservable()
+    , VoidObserver()
     , identifier_(identifier)
     , displayName_(displayName)
     , readOnly_(false)
@@ -51,14 +52,26 @@ Property::Property(std::string identifier,
     , visibilityMode_(APPLICATION)
     , propertyModified_(false)
     , invalidationLevel_(invalidationLevel)
-    , owner_(0)
-    , groupID_("") {
+    , owner_(NULL)
+    , groupID_("")
+    , groupDisplayName_("")
+    , initiatingWidget_(NULL) {
 }
 
 Property::Property()
-    : identifier_("")
+    : VoidObservable()
+    , VoidObserver()
+    , identifier_("")
     , displayName_("")
-    , propertyModified_(false) {
+    , readOnly_(false)
+    , semantics_(PropertySemantics::Default)
+    , visibilityMode_(APPLICATION)
+    , propertyModified_(false)
+    , invalidationLevel_(PropertyOwner::INVALID_OUTPUT)
+    , owner_(NULL)
+    , groupID_("")
+    , groupDisplayName_("")
+    , initiatingWidget_(NULL)  {
 }
 
 Property::~Property() {
@@ -131,9 +144,15 @@ void Property::deregisterWidget(PropertyWidget* propertyWidget) {
     }
 }
 
+void Property::setInitiatingWidget(PropertyWidget* propertyWidget){
+    initiatingWidget_ = propertyWidget;
+}
+void Property::clearInitiatingWidget() {
+    initiatingWidget_ = NULL;
+}
 void Property::updateWidgets() {
     for (size_t i=0; i<propertyWidgets_.size(); i++)
-        if (propertyWidgets_[i] != 0)
+        if (propertyWidgets_[i] != 0 && propertyWidgets_[i] != initiatingWidget_)
             propertyWidgets_[i]->updateFromProperty();
 }
 
@@ -149,9 +168,9 @@ std::string Property::getGroupID()const {
     return groupID_;
 }
 
-
 void Property::propertyModified() {
     onChangeCallback_.invoke();
+    notifyObservers();
     setPropertyModified(true);
 
     //FIXME: if set() is called before addProperty(), getOwner() will be 0 ( case for option properties )

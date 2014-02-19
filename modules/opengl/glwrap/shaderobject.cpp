@@ -237,7 +237,7 @@ std::string ShaderObject::getShaderInfoLog() {
 
 int ShaderObject::getLogLineNumber(const std::string& compileLogLine) {
     // TODO: adapt to ATI compile log syntax
-    int result = 0;
+    int result = -1;
     std::istringstream input(compileLogLine);
     int num;
 
@@ -260,7 +260,10 @@ std::string ShaderObject::reformatShaderInfoLog(const std::string shaderInfoLog)
     std::istringstream origShaderInfoLog(shaderInfoLog);
 
     while (std::getline(origShaderInfoLog, curLine)) {
-        unsigned int origLineNumber = getLogLineNumber(curLine);
+        int origLineNumber = getLogLineNumber(curLine);
+        if(origLineNumber<1){       // Temp bugfix until we can parse ATI errors...
+            return shaderInfoLog;   // ... Peter 20140214
+        }                           // ...
         unsigned int lineNumber = lineNumberResolver_[origLineNumber-1].second;
         std::string fileName = lineNumberResolver_[origLineNumber-1].first;
         // TODO: adapt substr call to ATI compile log syntax

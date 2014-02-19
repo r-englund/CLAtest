@@ -98,8 +98,8 @@ private:
      *
      * Generates the appropriate widget depending on the property in the constructor
      *
-     * @return void <DESCRIBE ME>
-     */void generateWidget();
+     */
+     void generateWidget();
 
 
     void generateSingleWidget();
@@ -108,15 +108,14 @@ private:
      *
      * Generates a 2D-vector widget, it is called from the generatewidget method in the constructor
      *
-     * @return void <DESCRIBE ME>
-     */void generateVec2Widget();
+     */
+     void generateVec2Widget();
 
     /**
      * \brief Generates a 3D-vector widget
      *
      * Generates a 3D-vector widget, it is called from the generatewidget method in the constructor
      *
-     * @return void <DESCRIBE ME>
      */void generateVec3Widget();
 
     /**
@@ -124,7 +123,6 @@ private:
      *
      *Generates a 4D-vector widget, it is called from the generatewidget method in the constructor
      *
-     * @return void <DESCRIBE ME>
      */void generateVec4Widget();
 
 public slots:
@@ -132,30 +130,21 @@ public slots:
     /**
      * \brief Saves the values from the widget
      *
-     * <DESCRIBE THE METHOD>
-     *
-     * @return void <DESCRIBE ME>
      */
     void save();
 
 
     /**
      * \brief Updates the values in the line edits of the widget
-     *
-     * <DESCRIBE THE METHOD>
-     *
-     * @return void <DESCRIBE ME>
-     */void reload();
+     */
+    void reload();
 
 
     /**
      * \brief Hides the widget and discard the changes
      *
-     * <DESCRIBE THE METHOD>
-     *
-     * @return void <DESCRIBE ME>
-     */void cancel();
-
+     */
+    void cancel();
 
     void fixTabOrder();
 };

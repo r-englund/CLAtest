@@ -1,4 +1,4 @@
-/*********************************************************************************
+ /*********************************************************************************
  *
  * Inviwo - Interactive Visualization Workshop
  * Version 0.6b
@@ -57,40 +57,46 @@ public:
     virtual ~PropertyWidgetQt();
     PropertyWidgetQt* create();
 
-    void showWidget();
-    void hideWidget();
-    //void notify();
+    virtual void showWidget();
+    virtual void hideWidget();
     void updateContextMenu();
+    
 public slots:
     void visibilityModified(int mode);
     void showContextMenu(const QPoint& pos);
     void setDeveloperViewMode(bool value);
     void setApplicationViewMode(bool value);
     void moduleAction();
-
 signals:
     void modified();
     void visibilityChange();
-private:
-    QMenu* contextMenu_;
-    QMap<QString,QMenu*> moduleSubMenus_;
-    QActionGroup* viewModeActionGroup_;
-    QMenu* viewModeItem_;
+
 protected:
     void setProperty(Property* property);
     PropertyVisibilityMode getApplicationViewMode();
-    QMenu* getContextMenu() {return contextMenu_;}
+
+    // Application viewModeNotification
+    virtual void notify();
+
+    // Context menu
+    QMenu* getContextMenu();
     void generateContextMenu();
-    QMenu* generatePropertyWidgetMenu();
+    QMenu* generatePropertyWidgetMenu(); //< Should not be used, use getContext menu...
     void generateModuleMenuActions();
     void updateModuleMenuActions();
     virtual void initializeEditorWidgetsMetaData();
 
-    void paintEvent(QPaintEvent* pe);
-
+    void paintEvent(QPaintEvent *pe);
+    
+    // Actions
     QAction* developerViewModeAction_;
     QAction* applicationViewModeAction_;
+    QActionGroup* viewModeActionGroup_;
 
+private:
+    QMenu* contextMenu_;
+    QMenu* viewModeItem_;
+    QMap<QString,QMenu*> moduleSubMenus_;
 };
 
 //PropertyEditorWidget owned by PropertyWidget

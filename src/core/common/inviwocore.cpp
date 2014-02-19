@@ -159,6 +159,9 @@ InviwoCore::InviwoCore() : InviwoModule() {
     registerProperty(FloatVec2Property);
     registerProperty(FloatVec3Property);
     registerProperty(FloatVec4Property);
+    registerProperty(DoubleVec2Property);
+    registerProperty(DoubleVec3Property);
+    registerProperty(DoubleVec4Property);
     registerProperty(IntMinMaxProperty);
     registerProperty(IntVec2Property);
     registerProperty(IntVec3Property);

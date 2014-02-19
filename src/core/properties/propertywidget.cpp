@@ -84,8 +84,6 @@ void PropertyEditorWidget::initialize(Property* property) {
 }
 
 void PropertyEditorWidget::deinitialize() {
-    //Not yet tested
-    //metaData_ = NULL;
 }
 
 void PropertyEditorWidget::setEditorVisibility(bool visible) {

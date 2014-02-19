@@ -46,12 +46,12 @@ class IVW_QTWIDGETS_API EditableLabelQt: public QWidget {
 public:
     EditableLabelQt(QWidget* parent, std::string text, bool shortenText=true);
     EditableLabelQt(QWidget* parent, std::string text, QMenu* contextMenu, bool shortenText=true);
-    void edit();
     std::string getText() {return text_;};
     void setText(std::string txt);
     void setContextMenu(QMenu* menu) {contextMenu_ = menu;};
     void setShortenText(bool shorten);
 public slots:
+    void edit();
     void finishEditing();
     void showContextMenu(const QPoint& pos);
 
@@ -60,7 +60,9 @@ private:
     QLineEdit* lineEdit_;
     std::string text_;
     void generateWidget();
+    QMenu* baseMenu_;
     QMenu* contextMenu_;
+    QAction* renameAction_;
     void mouseDoubleClickEvent(QMouseEvent* event);
     std::string shortenText();
     bool shortenText_;

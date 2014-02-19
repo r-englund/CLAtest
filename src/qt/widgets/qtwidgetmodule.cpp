@@ -44,7 +44,6 @@
 #include <inviwo/core/properties/stringproperty.h>
 #include <inviwo/core/properties/transferfunctionproperty.h>
 
-
 #include <inviwo/qt/widgets/properties/boolpropertywidgetqt.h>
 #include <inviwo/qt/widgets/properties/buttonpropertywidgetqt.h>
 #include <inviwo/qt/widgets/properties/camerapropertywidgetqt.h>
@@ -59,15 +58,8 @@
 #include <inviwo/qt/widgets/properties/floatmat4propertywidgetqt.h>
 #include <inviwo/qt/widgets/properties/floatminmaxpropertywidgetqt.h>
 #include <inviwo/qt/widgets/properties/floatpropertywidgetqt.h>
-#include <inviwo/qt/widgets/properties/floatvec2propertywidgetqt.h>
-#include <inviwo/qt/widgets/properties/floatvec3propertywidgetqt.h>
-#include <inviwo/qt/widgets/properties/floatvec4propertywidgetqt.h>
 #include <inviwo/qt/widgets/properties/imageeditorwidgetqt.h>
 #include <inviwo/qt/widgets/properties/intminmaxpropertywidgetqt.h>
-#include <inviwo/qt/widgets/properties/intpropertywidgetqt.h>
-#include <inviwo/qt/widgets/properties/intvec2propertywidgetqt.h>
-#include <inviwo/qt/widgets/properties/intvec3propertywidgetqt.h>
-#include <inviwo/qt/widgets/properties/intvec4propertywidgetqt.h>
 #include <inviwo/qt/widgets/properties/lightpropertywidgetqt.h>
 #include <inviwo/qt/widgets/properties/optionpropertywidgetqt.h>
 #include <inviwo/qt/widgets/properties/stringpropertywidgetqt.h>
@@ -101,6 +93,10 @@ QtWidgetModule::QtWidgetModule() : InviwoModule() {
     registerPropertyWidget(FloatVec2PropertyWidgetQt, FloatVec2Property, "Default");
     registerPropertyWidget(FloatVec3PropertyWidgetQt, FloatVec3Property, "Default");
     registerPropertyWidget(FloatVec4PropertyWidgetQt, FloatVec4Property, "Default");
+    registerPropertyWidget(DoublePropertyWidgetQt, DoubleProperty, "Default");
+    registerPropertyWidget(DoubleVec2PropertyWidgetQt, DoubleVec2Property, "Default");
+    registerPropertyWidget(DoubleVec3PropertyWidgetQt, DoubleVec3Property, "Default");
+    registerPropertyWidget(DoubleVec4PropertyWidgetQt, DoubleVec4Property, "Default");
     registerPropertyWidget(ImageEditorWidgetQt, FileProperty, "ImageEditor");
     registerPropertyWidget(ImageEditorWidgetQt, ImageEditorProperty, "Default");
     registerPropertyWidget(ImageEditorWidgetQt, ImageEditorProperty, "ImageEditor");

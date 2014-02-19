@@ -35,7 +35,7 @@
 
 #include <inviwo/qt/widgets/inviwoqtwidgetsdefine.h>
 #include <inviwo/qt/widgets/editablelabelqt.h>
-#include <inviwo/qt/widgets/floatsliderwidgetqt.h>
+#include <inviwo/qt/widgets/sliderwidgetqt.h>
 #include <inviwo/qt/widgets/properties/propertysettingswidgetqt.h>
 #include <QMenu>
 #include <math.h>

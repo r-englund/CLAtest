@@ -60,7 +60,7 @@ void SystemSettings::initialize() {
     viewModeProperty_.addOption("developerMode","developerMode",0);
     viewModeProperty_.addOption("applicationMode","applicationMode",1);
     addProperty(&viewModeProperty_);
-    viewModeProperty_.setVisibility(INVISIBLE);
+    //viewModeProperty_.setVisibility(INVISIBLE);
     addProperty(&txtEditorProperty_);
     addProperty(&shaderReloadingProperty_);
     addProperty(&enablePortInspectorsProperty_);
