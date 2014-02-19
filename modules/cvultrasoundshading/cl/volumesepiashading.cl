@@ -35,7 +35,7 @@ __kernel void volumeSepiaShading(read_only image3d_t volume
     if( any(globalId >= get_image_dim(output)) ) {
         return;
     }
-
+     
     float4 entry = read_imagef(entryPoints, smpUNormNoClampNearest, globalId);  
     
     float4 result = (float4)(0.f); 
@@ -45,7 +45,7 @@ __kernel void volumeSepiaShading(read_only image3d_t volume
     direction = fast_normalize(direction);
     float3 p = entry.xyz;
     float t = 0.0f; 
-
+     
     float volumeSample;
     float extinction = 0.f;  
     while(t < tEnd) {
@@ -54,7 +54,6 @@ __kernel void volumeSepiaShading(read_only image3d_t volume
         // xyz == diffuse color, w = absorption
         float4 materialDiffuse = read_imagef(transferFunction, smpNormClampEdgeLinear, (float2)(volumeSample, 0.5f));
 
-        float4 materialSpecular = 1.f;
         float3 gradient = calcGradient(as_float4(pos), volume, as_float4(voxelSpacing)).xyz;
 
         gradient = normalize(gradient);
