@@ -111,7 +111,7 @@ const Image* ImageInport::getData() const {
     if (isConnected()) {
         ImageOutport* outport = dynamic_cast<ImageOutport*>(getConnectedOutport());
 
-        if (isOutportDeterminingSize() && dimensions_==outport->getDimension())
+        if (isOutportDeterminingSize() && getDimension()==outport->getDimension())
             return outport->getConstData();
         else
             return const_cast<const Image*>(outport->getResizedImageData(dimensions_));
