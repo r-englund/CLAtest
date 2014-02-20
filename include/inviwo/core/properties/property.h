@@ -45,6 +45,27 @@ namespace inviwo {
 
 class Variant;
 
+/** \class Property
+ * 
+ *  Concepts:
+ *   - Owner: A property can have a owner, usually a processor. If the property is modified, by 
+ *     calling propertyModified() then the property will set it's owner's invalidation level to the 
+ *     property's invalidation level, usually INVALID_OUTPUT. This will in turn trigger a network 
+ *     evaluation that will update the processors to a valid state again.
+ *   
+ *   - Reset: A property has a default state specified in the constructor, or optionally be calling
+ *     setCurrentStateAsDefault. The property can then also be reset to it's default state by calling
+ *     resetToDefaultState. Both these functions are virtual and all property subclasses that
+ *     introduce more state should make sure to implement these two functions and also in their
+ *     implementation make sure that to call the base class implementation.
+ *
+ *   - Widget: A property can have one or multiple PropertyWidgets. The widget are used in the user 
+ *     interface to implement interactivity.
+ *     
+ *   
+ */
+
+
 class IVW_CORE_API Property : public IvwSerializable, public VoidObservable, public VoidObserver {
 
 public:
@@ -55,13 +76,17 @@ public:
     Property();
     virtual ~Property();
 
-    virtual std::string getIdentifier() const;
-    virtual void setIdentifier(const std::string& identifier);
-
     virtual std::string getClassName()  const { return "undefined"; }
 
+    virtual std::string getIdentifier() const;
+    virtual void setIdentifier(const std::string& identifier);
     virtual std::string getDisplayName() const;
     virtual void setDisplayName(const std::string& displayName);
+    std::string getGroupID()const;
+    void setGroupID(const std::string& groupID);
+    std::string getGroupDisplayName()const;
+    static void setGroupDisplayName(const std::string& groupID, const std::string& groupDisplayName);
+
 
     virtual PropertySemantics getSemantics() const;
     virtual void setSemantics(const PropertySemantics& semantics);
@@ -75,8 +100,11 @@ public:
     PropertyOwner* getOwner();
     virtual void setOwner(PropertyOwner* owner);
 
+
+    // Widget calls
     void registerWidget(PropertyWidget* propertyWidget);
     void deregisterWidget(PropertyWidget* propertyWidget);
+    
     /**
      *  This function should be called by propertywidgets before they initiate a property
      *  change. This is needed becouse when the property is modified it needs to update all
@@ -89,13 +117,14 @@ public:
     void clearInitiatingWidget();
     void updateWidgets();
     bool hasWidgets()const;
+
+
     MetaData* getMetaData(std::string meta);
 
-    std::string getGroupID()const;
-    void setGroupID(const std::string& groupID);
+    
+    //virtual void setCurrentStateAsDefault();
+    //virtual void resetToDefaultState();
 
-    std::string getGroupDisplayName()const;
-    static void setGroupDisplayName(const std::string& groupID,const std::string& groupDisplayName);
 
     virtual void propertyModified();
     virtual void setPropertyModified(bool modified);
