@@ -227,10 +227,10 @@ int OrdinalProperty<T>::getVariantType() {
 template<typename T>
 void OrdinalProperty<T>::serialize(IvwSerializer& s) const {
     Property::serialize(s);
+    s.serialize("minvalue", minValue_);
+    s.serialize("maxvalue", maxValue_);
+    s.serialize("increment", increment_);
     s.serialize("value", TemplateProperty<T>::get());
-    s.serialize("minvalue", getMinValue());
-    s.serialize("maxvalue", getMaxValue());
-    s.serialize("increment", getIncrement());
 }
 
 
@@ -238,14 +238,11 @@ template<typename T>
 void OrdinalProperty<T>::deserialize(IvwDeserializer& d) {
     Property::deserialize(d);
     T value;
+    d.deserialize("minvalue", minValue_);
+    d.deserialize("maxvalue", maxValue_);
+    d.deserialize("increment", increment_);
     d.deserialize("value", value);
     set(value);
-    d.deserialize("minvalue", value);
-    setMinValue(value);
-    d.deserialize("maxvalue", value);
-    setMaxValue(value);
-    d.deserialize("increment", value);
-    setIncrement(value);
 }
 
 

@@ -36,19 +36,31 @@ void BaseSliderWidgetQt::applyValue() {
     emit valueChanged();
 }
 void BaseSliderWidgetQt::applyMinValue() {
+    spinBox_->blockSignals(true);
     spinBox_->setMinimum(transformMinValueToSpinner());
+    spinBox_->blockSignals(false);
+    slider_->blockSignals(true);
     slider_->setMinimum(transformMinValueToSlider());
+    slider_->blockSignals(false);
     updateSlider();
 }
 void BaseSliderWidgetQt::applyMaxValue() {
+    spinBox_->blockSignals(true);
     spinBox_->setMaximum(transformMaxValueToSpinner());
+    spinBox_->blockSignals(false);
+    slider_->blockSignals(true);
     slider_->setMaximum(transformMaxValueToSlider());
+    slider_->blockSignals(false);
     updateSlider();
 }
 void BaseSliderWidgetQt::applyIncrement() {
+    spinBox_->blockSignals(true);
     spinBox_->setSingleStep(transformIncrementToSpinner());
     spinBox_->setDecimals(transformIncrementToSpinnerDecimals());
+    spinBox_->blockSignals(false);
+    slider_->blockSignals(true);
     slider_->setSingleStep(transformIncrementToSlider());
+    slider_->blockSignals(false);
 }
 
 void BaseSliderWidgetQt::updateFromSlider() {
@@ -63,9 +75,9 @@ void BaseSliderWidgetQt::updateFromSlider() {
 
 void BaseSliderWidgetQt::updateFromSpinBox() {
     double newValue = spinBox_->value();
-    if (fabs(newValue - sliderValue_) > std::numeric_limits<double>::epsilon()) {
-        sliderValue_ = newValue;
-        newSpinnerValue(sliderValue_);
+    if(fabs(newValue - spinnerValue_) > std::numeric_limits<double>::epsilon()) {
+        spinnerValue_ = newValue;
+        newSpinnerValue(spinnerValue_);
         updateSlider();
         emit valueChanged();
     }
