@@ -33,6 +33,7 @@
 #include "shaderobject.h"
 #include <stdio.h>
 #include <fstream>
+#include <string>
 
 #include <inviwo/core/io/textfilereader.h>
 #include <inviwo/core/util/urlparser.h>
@@ -250,20 +251,33 @@ int ShaderObject::getLogLineNumber(const std::string& compileLogLine) {
             }
         }
     }
-
+    
+    
+    // ATI parsing:
+    // ATI error: "ERROR: 0:145: Call to undeclared function 'texelFetch'\n"
+    std::vector<std::string> elems;
+    std::stringstream ss(compileLogLine);
+    std::string item;
+    while (std::getline(ss, item, ':')) {
+        elems.push_back(item);
+    }
+    if (elems.size() >= 3) {
+        std::stringstream number;
+        number << elems[2];
+        number >> result;
+    }
+    
     return result;
 }
 
 std::string ShaderObject::reformatShaderInfoLog(const std::string shaderInfoLog) {
+    
     std::ostringstream result;
     std::string curLine;
     std::istringstream origShaderInfoLog(shaderInfoLog);
 
     while (std::getline(origShaderInfoLog, curLine)) {
         int origLineNumber = getLogLineNumber(curLine);
-        if(origLineNumber<1){       // Temp bugfix until we can parse ATI errors...
-            return shaderInfoLog;   // ... Peter 20140214
-        }                           // ...
         unsigned int lineNumber = lineNumberResolver_[origLineNumber-1].second;
         std::string fileName = lineNumberResolver_[origLineNumber-1].first;
         // TODO: adapt substr call to ATI compile log syntax

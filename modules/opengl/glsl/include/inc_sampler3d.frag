@@ -48,5 +48,9 @@ vec4 getVoxel(VOLUME_TYPE volume, VOLUME_PARAMETERS volumeParams, vec3 samplePos
 }
 
 vec4 getVoxel(VOLUME_TYPE volume, VOLUME_PARAMETERS volumeParams, ivec3 samplePos) {
+#ifdef GLSL_VERSION_140
     return texelFetch(volume, samplePos, 0)*(1.0-volumeParams.formatScaling_);
+#else
+    return texture3D(volume, samplePos)*(1.0-volumeParams.formatScaling_);
+#endif
 }
