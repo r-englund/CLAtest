@@ -41,7 +41,7 @@ namespace inviwo {
 SystemSettings::SystemSettings(std::string id) :
     Settings(id)
     , allocTest_(0)
-    , viewModeProperty_("viewMode","",0)
+    , viewModeProperty_("viewMode","View Mode",0)
     , txtEditorProperty_("txtEditor", "Use system text editor", true)
     , shaderReloadingProperty_("shaderReloading", "Automatically reload shaders", true)
     , enablePortInspectorsProperty_("enablePortInspectors", "Enable port inspectors", true)
@@ -50,15 +50,16 @@ SystemSettings::SystemSettings(std::string id) :
     , useRAMPercentProperty_("useRAMPercent", "Max Use Mem %", 50, 1, 100)
     , logStackTraceProperty_("logStackTraceProperty","Log Stack Trance on Error",false)
     , btnAllocTestProperty_("allocTest", "Perform Allocation Test")
-    , btnSysInfoProperty_("printSysInfo", "Print System Info") {
+    , btnSysInfoProperty_("printSysInfo", "Print System Info")
+{
 }
 
 SystemSettings::~SystemSettings() {
 }
 
 void SystemSettings::initialize() {
-    viewModeProperty_.addOption("developerMode","developerMode",0);
-    viewModeProperty_.addOption("applicationMode","applicationMode",1);
+    viewModeProperty_.addOption("developerMode","Developer Mode",0);
+    viewModeProperty_.addOption("applicationMode","Application Mode",1);
     addProperty(&viewModeProperty_);
     //viewModeProperty_.setVisibility(INVISIBLE);
     addProperty(&txtEditorProperty_);
