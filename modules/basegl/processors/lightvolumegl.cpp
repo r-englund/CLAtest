@@ -203,9 +203,7 @@ void LightVolumeGL::process() {
     propParams_[1].vol->bindTexture(lightVolUnit[1].getEnum());
     propagationShader_->activate();
     propagationShader_->setUniform("volume_", volUnit.getUnitNumber());
-    propagationShader_->setUniform("volumeParameters_.dimensions_", volumeDimInF_);
-    propagationShader_->setUniform("volumeParameters_.dimensionsRCP_", volumeDimInFRCP_);
-    propagationShader_->setUniform("volumeParameters_.volumeToWorldTransform_", inport_.getData()->getWorldTransform());
+    inVolumeGL->setVolumeUniforms(inport_.getData(), propagationShader_, "volumeParameters_");
     propagationShader_->setUniform("transferFunc_", transFuncUnit.getUnitNumber());
     propagationShader_->setUniform("lightVolumeParameters_.dimensions_", volumeDimOutF_);
     propagationShader_->setUniform("lightVolumeParameters_.dimensionsRCP_", volumeDimOutFRCP_);

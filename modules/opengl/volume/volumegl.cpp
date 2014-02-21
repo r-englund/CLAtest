@@ -31,6 +31,8 @@
  *********************************************************************************/
 
 #include "volumegl.h"
+#include <inviwo/core/datastructures/volume/volume.h>
+#include <modules/opengl/glwrap/shader.h>
 
 namespace inviwo {
 
@@ -97,6 +99,14 @@ Texture3D* VolumeGL::getTexture() {
 
 const Texture3D* VolumeGL::getTexture() const {
     return volumeTexture_;
+}
+
+void VolumeGL::setVolumeUniforms(const Volume* volume, Shader* shader, const std::string& samplerID) const {
+    vec3 dimF = vec3(dimensions_);
+    shader->setUniform(samplerID + ".dimensions_", dimF);
+    shader->setUniform(samplerID + ".dimensionsRCP_", vec3(1.f)/dimF);
+    shader->setUniform(samplerID + ".volumeToWorldTransform_", volume->getWorldTransform());
+    shader->setUniform(samplerID + ".formatScaling_", getGLFormats()->getGLFormat(getDataFormatId()).scaling);
 }
 
 } // namespace
