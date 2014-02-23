@@ -1,4 +1,5 @@
 #include <inviwo/qt/widgets/sliderwidgetqt.h>
+#include <limits>
 
 namespace inviwo {
 

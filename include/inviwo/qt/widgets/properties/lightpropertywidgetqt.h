@@ -34,12 +34,10 @@
 #define IVW_LIGHTPROPERTYWIDGETQT_H
 
 #include <inviwo/qt/widgets/inviwoqtwidgetsdefine.h>
+#include <inviwo/core/properties/ordinalproperty.h>
 #include <inviwo/qt/widgets/editablelabelqt.h>
 #include <inviwo/qt/widgets/lightpositionwidgetqt.h>
-
 #include <inviwo/qt/widgets/properties/propertywidgetqt.h>
-
-
 #include <QtCore/qmath.h>
 
 namespace inviwo {
