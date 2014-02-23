@@ -7,16 +7,14 @@
                 <MetaData type="ProcessorMetaData">
                     <position x="-600" y="-625" />
                     <visibility content="1" />
-                    <selection content="0" />
                 </MetaData>
             </MetaDataList>
             <Properties>
-                <Property type="FloatVec3Property" identifier="color" displayName="Color" key="color">
-                    <MetaDataList />
+                <Property identifier="color" displayName="Color">
+                    <value x="1" y="0.55309999" z="1" />
                     <minvalue x="0" y="0" z="0" />
                     <maxvalue x="1" y="1" z="1" />
                     <increment x="0.1" y="0.1" z="0.1" />
-                    <value x="1" y="0.55309999" z="1" />
                 </Property>
             </Properties>
         </Processor>
@@ -25,33 +23,21 @@
                 <MetaData type="ProcessorMetaData">
                     <position x="-650" y="-425" />
                     <visibility content="1" />
-                    <selection content="0" />
                 </MetaData>
                 <MetaData type="ProcessorWidgetMetaData">
-                    <position x="978" y="441" />
-                    <dimension x="267" y="253" />
+                    <position x="987" y="382" />
+                    <dimension x="256" y="256" />
                     <visibility content="1" />
                 </MetaData>
             </MetaDataList>
             <Properties>
-                <Property type="IntVec2Property" identifier="dimensions" displayName="Dimensions" key="dimensions">
-                    <MetaDataList />
+                <Property identifier="dimensions" displayName="Dimensions">
+                    <value x="256" y="256" />
                     <minvalue x="128" y="128" />
                     <maxvalue x="4096" y="4096" />
                     <increment x="1" y="1" />
-                    <value x="267" y="253" />
                 </Property>
-                <Property type="DirectoryProperty" identifier="layerDir" displayName="Output Directory" key="layerDir">
-                    <MetaDataList />
-                    <directory content="../../images" />
-                </Property>
-                <Property type="ButtonProperty" identifier="saveLayer" displayName="Save Image Layer" key="saveLayer">
-                    <MetaDataList />
-                </Property>
-                <Property type="OptionPropertyInt" identifier="visibleLayer" displayName="Visible Layer" key="visibleLayer">
-                    <MetaDataList />
-                    <value content="0" />
-                </Property>
+                <Property identifier="snapshot" displayName="Create Snapshot" />
             </Properties>
         </Processor>
     </Processors>
