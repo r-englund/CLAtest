@@ -35,10 +35,13 @@
 
 #include <inviwo/qt/widgets/inviwoqtwidgetsdefine.h>
 #include <inviwo/core/properties/ordinalproperty.h>
+#include <inviwo/qt/widgets/customdoublespinboxqt.h>
 #include <inviwo/qt/widgets/editablelabelqt.h>
 #include <inviwo/qt/widgets/lightpositionwidgetqt.h>
 #include <inviwo/qt/widgets/properties/propertywidgetqt.h>
+
 #include <QtCore/qmath.h>
+#include <QSpinBox>
 
 namespace inviwo {
 
@@ -55,12 +58,15 @@ public:
 private:
     FloatVec3Property* property_;
     LightPositionWidgetQt* lightWidget_;
+    QLabel* radiusLabel_;
+    CustomDoubleSpinBoxQt* radiusSpinBox_;
     EditableLabelQt* label_;
 
     void generateWidget();
 
 public slots:
-    void setPropertyValue();
+    void onPositionLightWidgetChanged();
+    void onRadiusSpinBoxChanged(double radius);
     void setPropertyDisplayName();
 };
 
