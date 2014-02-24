@@ -135,7 +135,7 @@ void VolumeSepiaShadingCL::compute( const VolumeCLBase& volumeCL, const LayerCLB
     vec3 voxelSpacing(1.f/glm::length(textureToIndexMatrix[0]), 1.f/glm::length(textureToIndexMatrix[1]), 1.f/glm::length(textureToIndexMatrix[2]));
     float stepSize = samplingRate_.get()*static_cast<float>(std::min(voxelSpacing.x, std::min(voxelSpacing.y, voxelSpacing.z)));
     const vec3& lightDirection = light->getDirection();
-    const vec3& lightPower = light->getPower();
+    const vec3& lightPower = light->getIntensity();
     ShadingFunctionEnum::Enum scatteringFunction = advancedMaterial_.getPhaseFunctionEnum();
 
     svec2 localWorkGroupSize(workGroupSize_.get());
