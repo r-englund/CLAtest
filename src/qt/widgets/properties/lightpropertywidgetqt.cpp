@@ -44,9 +44,6 @@ LightPropertyWidgetQt::LightPropertyWidgetQt(FloatVec3Property* property) : prop
 
 LightPropertyWidgetQt::~LightPropertyWidgetQt() {
     delete lightWidget_;
-    delete label_;
-    delete radiusLabel_;
-    delete radiusSpinBox_;
 }
 
 void LightPropertyWidgetQt::generateWidget() {
