@@ -44,31 +44,56 @@ LightPropertyWidgetQt::LightPropertyWidgetQt(FloatVec3Property* property) : prop
 
 LightPropertyWidgetQt::~LightPropertyWidgetQt() {
     delete lightWidget_;
+    delete label_;
+    delete radiusLabel_;
+    delete radiusSpinBox_;
 }
 
 void LightPropertyWidgetQt::generateWidget() {
     lightWidget_ = new LightPositionWidgetQt();
-    QHBoxLayout* hLayout = new QHBoxLayout();
+
     label_ = new EditableLabelQt(this,property_->getDisplayName(),PropertyWidgetQt::generatePropertyWidgetMenu());
-    hLayout->addWidget(label_);
+    radiusLabel_ = new QLabel(this);
+    radiusLabel_->setText("Radius");
+    radiusSpinBox_ = new CustomDoubleSpinBoxQt(this);
+    radiusSpinBox_->setSingleStep(0.1);
+    radiusSpinBox_->setKeyboardTracking(false); // don't emit the valueChanged() signal while typing
     connect(label_, SIGNAL(textChanged()), this, SLOT(setPropertyDisplayName()));
-    connect(lightWidget_,SIGNAL(positionChanged()), this, SLOT(setPropertyValue()));
-    hLayout->addWidget(lightWidget_);
-    setLayout(hLayout);
+    connect(lightWidget_,SIGNAL(positionChanged()), this, SLOT(onPositionLightWidgetChanged()));
+    connect(radiusSpinBox_, SIGNAL(valueChanged(double)), this, SLOT(onRadiusSpinBoxChanged(double)));
+
+    QGridLayout* layout = new QGridLayout();
+    layout->addWidget(label_, 0, 0);
+    layout->addWidget(lightWidget_, 0, 1);
+    layout->addWidget(radiusLabel_, 1, 0);
+    layout->addWidget(radiusSpinBox_, 1, 1);
+    setLayout(layout);
+
 
     if (property_->getReadOnly())
         label_->finishEditing();
-
-    lightWidget_->setPosition(property_->get());
 }
 
-void LightPropertyWidgetQt::setPropertyValue() {
+void LightPropertyWidgetQt::onPositionLightWidgetChanged() {
     property_->set(lightWidget_->getPosition());
     emit modified();
 }
 
+void LightPropertyWidgetQt::onRadiusSpinBoxChanged(double radius) {
+    lightWidget_->setRadius(radius);
+}
+
 void LightPropertyWidgetQt::updateFromProperty() {
+    // Prevent widgets from signaling changes
+    // just after setting them
+    lightWidget_->blockSignals(true);
+    radiusSpinBox_->blockSignals(true);
+
     lightWidget_->setPosition(property_->get());
+    radiusSpinBox_->setValue(glm::length(property_->get()));
+
+    lightWidget_->blockSignals(false);
+    radiusSpinBox_->blockSignals(false);
 }
 
 void LightPropertyWidgetQt::setPropertyDisplayName() {

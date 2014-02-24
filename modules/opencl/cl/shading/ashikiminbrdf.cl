@@ -46,7 +46,7 @@ float AshikimBRDF(const float3 wo, const float3 wi, const float3 N, const float 
     //    return (float)(0.f);
 
     if ( cosThetaWo == 0.f || cosThetaWi == 0.f ) 
-        return (float)(0.f);
+        return 0.f;
 
     float3 wh = wo+wi;
     //if ( all(wh < 1e-5f) ) 

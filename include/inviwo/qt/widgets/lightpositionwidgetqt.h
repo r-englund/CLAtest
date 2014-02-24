@@ -66,6 +66,8 @@ public:
     float getY() const { return radius_*sin(theta_)*sin(phi_); };
     float getZ() const { return radius_*cos(theta_); };
 
+    void setRadius(float radius) { radius_ = radius; positionChanged(); }
+    float getRadius() const { return radius_; }
 
 signals:
     void positionChanged();
@@ -74,6 +76,7 @@ signals:
 private:
     QPixmap* gradientPixmap_;
     QRadialGradient* gradient_;
+    
     QPainter* painter_;
     bool mouseDown_;
     void generateWidget();
