@@ -44,7 +44,7 @@
 #include <QThread>
 
 namespace inviwo {
-class IVW_QTWIDGETS_API TransferFunctionEditorView : public QGraphicsView, public VoidObserver {
+class IVW_QTWIDGETS_API TransferFunctionEditorView : public QGraphicsView, public TransferFunctionObserver {
 
     Q_OBJECT
 
@@ -52,7 +52,7 @@ public:
     TransferFunctionEditorView(TransferFunctionProperty* tfProperty);
 
     void setMask(float maskMin, float maskMax) { if (maskMax<maskMin) maskMax=maskMin; mask_ = vec2(maskMin, maskMax); }
-    virtual void notify();
+    virtual void onTransferFunctionChange();
     void setShowHistogram(bool);
 
 signals:

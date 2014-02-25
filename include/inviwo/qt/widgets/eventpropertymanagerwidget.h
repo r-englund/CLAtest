@@ -42,14 +42,14 @@
 
 namespace inviwo {
 
-class IVW_QTWIDGETS_API EventPropertyManagerWidget : public QWidget, public VoidObserver {
+class IVW_QTWIDGETS_API EventPropertyManagerWidget : public QWidget, public EventPropertyManagerObserver {
     Q_OBJECT
 
 public:
     EventPropertyManagerWidget(EventPropertyManager* eventPropertyManager);
     ~EventPropertyManagerWidget();
 
-    void notify();
+    void onEventPropertyManagerChange();
 private:
     void emptyLayout(QVBoxLayout* layout);
     void drawEventPropertyWidgets();

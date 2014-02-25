@@ -44,7 +44,7 @@ namespace inviwo {
 
 class Canvas;
 
-class IVW_CORE_API ProcessorNetworkEvaluator : public ProcessorObserver {
+class IVW_CORE_API ProcessorNetworkEvaluator : public ProcessorNetworkObserver, public ProcessorObserver {
 
     friend class Processor;
 
@@ -70,8 +70,8 @@ public:
 
     Processor* retrieveCanvasProcessor(Canvas* canvas);
 
-    void notifyInvalidationEnd(Processor*);
-    void notify();
+    void onProcessorInvalidationEnd(Processor*);
+    void onProcessorNetworkChange();
 
     static ProcessorNetworkEvaluator* getProcessorNetworkEvaluatorForProcessorNetwork(ProcessorNetwork* network);
 

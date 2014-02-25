@@ -37,7 +37,7 @@
 namespace inviwo {
 
 TransferFunction::TransferFunction()
-    : VoidObservable() {
+    : TransferFunctionObservable() {
     textureSize_ = 1024;
     maskMin_ = 0.0f;
     maskMax_ = 1.0f;
@@ -195,7 +195,7 @@ void TransferFunction::calcTransferValues() {
     for (int i=int(maskMax_*textureSize_); i<textureSize_; i++)
         dataArray[i].a = 0.0;
 
-    notifyObservers();
+    notifyTransferFunctionObservers();
 }
 
 }

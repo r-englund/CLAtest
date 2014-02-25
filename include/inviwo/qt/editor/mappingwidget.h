@@ -49,12 +49,12 @@ class Processor;
 class ProcessorNetwork;
 class EventPropertyManager;
 
-class IVW_QTEDITOR_API MappingWidget : public InviwoDockWidget, public VoidObserver {
+class IVW_QTEDITOR_API MappingWidget : public InviwoDockWidget, public ProcessorNetworkObserver {
     Q_OBJECT
 public:
     MappingWidget(QWidget* parent);
     ~MappingWidget();
-    void notify();
+    void onProcessorNetworkChange();
 
 private:
     void updateWidget();

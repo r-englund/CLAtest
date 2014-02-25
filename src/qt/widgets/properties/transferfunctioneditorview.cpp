@@ -38,7 +38,7 @@
 namespace inviwo {
 
 TransferFunctionEditorView::TransferFunctionEditorView(TransferFunctionProperty* tfProperty)
-    : VoidObserver(), tfProperty_(tfProperty), volumeInport_(tfProperty->getVolumeInport()), showHistogram_(tfProperty->getShowHistogram()),
+    : TransferFunctionObserver(), tfProperty_(tfProperty), volumeInport_(tfProperty->getVolumeInport()), showHistogram_(tfProperty->getShowHistogram()),
       histogramTheadWorking_(false)
 {
     setMouseTracking(true);
@@ -46,7 +46,7 @@ TransferFunctionEditorView::TransferFunctionEditorView(TransferFunctionProperty*
     setViewportUpdateMode(QGraphicsView::FullViewportUpdate);
 
     if (volumeInport_)
-        volumeInport_->onChange(this, &TransferFunctionEditorView::notify);
+        volumeInport_->onChange(this, &TransferFunctionEditorView::onTransferFunctionChange);
 }
 
 void TransferFunctionEditorView::resizeEvent(QResizeEvent* event) {
@@ -71,11 +71,11 @@ void TransferFunctionEditorView::drawForeground(QPainter* painter, const QRectF&
     QGraphicsView::drawForeground(painter, rect);
 }
 
-void TransferFunctionEditorView::notify() {
+void TransferFunctionEditorView::onTransferFunctionChange() {
     volumeInport_ = tfProperty_->getVolumeInport();
 
     if (volumeInport_)
-        volumeInport_->onChange(this, &TransferFunctionEditorView::notify);
+        volumeInport_->onChange(this, &TransferFunctionEditorView::onTransferFunctionChange);
 
     update();
 }

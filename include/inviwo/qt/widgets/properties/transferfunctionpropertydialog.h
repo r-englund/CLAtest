@@ -62,7 +62,7 @@ namespace inviwo {
 
 class TransferFunctionPropertyWidgetQt;
 
-class IVW_QTWIDGETS_API TransferFunctionPropertyDialog : public PropertyEditorWidgetQt {
+class IVW_QTWIDGETS_API TransferFunctionPropertyDialog : public PropertyEditorWidgetQt, public TransferFunctionObserver {
 
     Q_OBJECT
 
@@ -79,7 +79,7 @@ public:
 
     QLinearGradient* getTFGradient() { return gradient_; }
 
-    virtual void notify();
+    virtual void onTransferFunctionChange();
 
 public slots:
     void setPointColor();

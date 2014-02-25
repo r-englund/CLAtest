@@ -34,12 +34,13 @@
 #define IVW_PROPERTY_H
 
 #include <inviwo/core/common/inviwocoredefine.h>
+#include <inviwo/core/properties/propertyobserver.h>
 #include <inviwo/core/properties/propertyowner.h>
 #include <inviwo/core/properties/propertywidget.h>
 #include <inviwo/core/properties/propertysemantics.h>
 #include <inviwo/core/properties/propertyvisibility.h>
 #include <inviwo/core/util/callback.h>
-#include <inviwo/core/util/observer.h>
+
 
 namespace inviwo {
 
@@ -66,7 +67,7 @@ class Variant;
  */
 
 
-class IVW_CORE_API Property : public IvwSerializable, public VoidObserver {
+class IVW_CORE_API Property : public IvwSerializable, public PropertyObserver {
 
 public:
     Property(std::string identifier,

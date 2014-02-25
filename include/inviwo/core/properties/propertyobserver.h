@@ -26,73 +26,36 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  * 
- * Main file authors: Erik Sundén, Timo Ropinski
+ * Main file author: Daniel Jönsson
  *
  *********************************************************************************/
 
-#ifndef IVW_LABELGRAPHICSITEM_H
-#define IVW_LABELGRAPHICSITEM_H
+#ifndef IVW_PROPERTY_OBSERVER_H
+#define IVW_PROPERTY_OBSERVER_H
 
-#include <inviwo/qt/widgets/inviwoqtwidgetsdefine.h>
-#include <QGraphicsTextItem>
+#include <inviwo/core/common/inviwocoredefine.h>
 #include <inviwo/core/util/observer.h>
 
 namespace inviwo {
 
-class IVW_QTWIDGETS_API LabelGraphicsItemObserver: public Observer {
+class IVW_CORE_API PropertyObserver: public Observer {
 public:
-    LabelGraphicsItemObserver(): Observer() {};
+    PropertyObserver(): Observer() {};
 
     /**
     * This method will be called when observed object changes.
     * Override it to add behavior.
     */
-    virtual void onLabelGraphicsItemChange() {};
-};
-class IVW_QTWIDGETS_API LabelGraphicsItemObservable: public Observable<LabelGraphicsItemObserver> {
-public:
-    LabelGraphicsItemObservable(): Observable<LabelGraphicsItemObserver>() {};
-
-    void notifyLabelGraphicsItemObservers() const {
-        // Notify observers
-        for (ObserverSet::reverse_iterator it = observers_->rbegin(); it != observers_->rend(); ++it) {
-            // static_cast can be used since only template class objects can be added
-            static_cast<LabelGraphicsItemObserver*>(*it)->onLabelGraphicsItemChange();
-        }
-    }
+    virtual void onPropertyChange() {};
 };
 
-class IVW_QTWIDGETS_API LabelGraphicsItem : public QGraphicsTextItem, public LabelGraphicsItemObservable {
-
+class IVW_CORE_API PropertyObservable: public Observable<PropertyObserver> {
 public:
-    LabelGraphicsItem(QGraphicsItem* parent);
-    ~LabelGraphicsItem();
+    PropertyObservable(): Observable<PropertyObserver>() {};
 
-    QString text() const;
-    void setText(const QString&);
-
-    QString croppedText() const;
-    void setCrop(int, int);
-    bool isCropped() const;
-
-    void setNoFocusOut();
-    bool isFocusOut() const;
-
-protected:
-    bool doCrop(const QString& str);
-    void updateCrop();
-
-    void keyPressEvent(QKeyEvent* event);
-    void focusInEvent(QFocusEvent* event);
-    void focusOutEvent(QFocusEvent* event);
-
-private:
-    int maxBefore_;
-    int maxAfter_;
-    bool focusOut_;
-    QString orgText_;
+    void notifyPropertyObservers() const;
 };
 
 } // namespace
 
-#endif // IVW_LABELGRAPHICSITEM_H
+#endif // IVW_PROPERTY_OBSERVER_H

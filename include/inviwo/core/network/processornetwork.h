@@ -38,6 +38,7 @@
 #include <inviwo/core/processors/processor.h>
 #include <inviwo/core/processors/processorobserver.h>
 #include <inviwo/core/network/portconnection.h>
+#include <inviwo/core/network/processornetworkobserver.h>
 #include <inviwo/core/links/processorlink.h>
 #include <inviwo/core/links/linkevaluator.h>
 #include <inviwo/core/util/observer.h>
@@ -62,7 +63,7 @@ namespace inviwo {
  * which means that no graphical representations are generated for the added entities. Adding
  * and removing of the graphical representations is done in the NetworkEditor.
  */
-class IVW_CORE_API ProcessorNetwork : public IvwSerializable, public VoidObservable, public ProcessorObserver {
+class IVW_CORE_API ProcessorNetwork : public IvwSerializable, public ProcessorNetworkObservable, public ProcessorObserver {
 
 public:
 
@@ -228,10 +229,10 @@ public:
     bool isModified() const { return modified_; }
 
     bool isInvalidating() const { return invalidating_; }
-    void notifyObserversAboutPropertyChange(Property*);
-    void notifyInvalidationBegin(Processor*);
-    void notifyInvalidationEnd(Processor*);
-    void notifyRequestEvaluate(Processor* p = NULL);
+    void onAboutPropertyChange(Property*);
+    void onProcessorInvalidationBegin(Processor*);
+    void onProcessorInvalidationEnd(Processor*);
+    void onProcessorRequestEvaluate(Processor* p = NULL);
     Processor* getInvalidationInitiator() { return invalidationInitiator_; }
 
     inline void lock() { locked_++; }

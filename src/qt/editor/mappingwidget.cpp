@@ -38,7 +38,7 @@
 
 namespace inviwo {
 
-MappingWidget::MappingWidget(QWidget* parent) : InviwoDockWidget(tr("Input Mapping"), parent), VoidObserver() {
+MappingWidget::MappingWidget(QWidget* parent) : InviwoDockWidget(tr("Input Mapping"), parent), ProcessorNetworkObserver() {
     setObjectName("MappingWidget");
     setAllowedAreas(Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea);
     processorNetwork_ = InviwoApplication::getPtr()->getProcessorNetwork();
@@ -79,7 +79,7 @@ void MappingWidget::buildLayout() {
     QObject::connect(comboBox_, SIGNAL(activated(int)), this, SLOT(comboBoxChange()));
 }
 
-void MappingWidget::notify() {
+void MappingWidget::onProcessorNetworkChange() {
     findProcessorsWithInteractionHandlers(processorsWithInteractionHandlers_, processorNetwork_->getProcessors());
 
     if (processorsWithInteractionHandlers_->size() != prevProcessorsWithInteractionHandlersSize_)
@@ -125,7 +125,7 @@ void MappingWidget::updateWidget() {
         std::string identifier = (const char*)comboBox_->currentText().toLatin1();
         eventPropertyManager_->setActiveProcessor(identifier.c_str());
     } else
-        eventPropertyManager_->notifyObservers();
+        eventPropertyManager_->notifyEventPropertyManagerObservers();
 
     prevProcessorsWithInteractionHandlersSize_ = processorsWithInteractionHandlers_->size();
 }

@@ -626,7 +626,7 @@ void NetworkEditor::addPortInspector(std::string processorIdentifier, std::strin
 
         processorNetwork_->unlock();
         processorNetwork_->modified();
-        processorNetwork_->notifyRequestEvaluate();
+        processorNetwork_->onProcessorRequestEvaluate();
 
         for (size_t i = 0; i < newLinks.size(); i++)
             newLinks[i]->setSourceModified();
@@ -1465,7 +1465,7 @@ bool NetworkEditor::loadNetwork(std::string fileName) {
     processorNetwork_->unlock();
 
     if (evaluate)
-        processorNetwork_->notifyRequestEvaluate(NULL);
+        processorNetwork_->onProcessorRequestEvaluate(NULL);
 
     // create all property (should be all non-visible) widgets in a thread (as it can take a long time to create them)
     workerThread_ = new QThread();

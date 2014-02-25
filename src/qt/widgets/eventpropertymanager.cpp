@@ -34,7 +34,7 @@
 
 namespace inviwo {
 
-EventPropertyManager::EventPropertyManager() : VoidObservable() {}
+EventPropertyManager::EventPropertyManager() : EventPropertyManagerObservable() {}
 EventPropertyManager::~EventPropertyManager() {}
 
 // Remap with a mouse event
@@ -59,7 +59,7 @@ void EventPropertyManager::changeMouseMapping(EventProperty* eventProperty, Mous
     } else
         LogWarn("Can only be bound with a keyboard event");
 
-    notifyObservers();
+    notifyEventPropertyManagerObservers();
 }
 
 // Remap with a keyboard event
@@ -83,7 +83,7 @@ void EventPropertyManager::changeKeyMapping(EventProperty* eventProperty, char b
     } else
         LogWarn("Can only be bound with a mouse event");
 
-    notifyObservers();
+    notifyEventPropertyManagerObservers();
 }
 
 void EventPropertyManager::setEventPropertyMap(std::map<std::string, std::vector<EventProperty*> > eventPropertyMap) {
@@ -98,7 +98,7 @@ std::vector<EventProperty*> EventPropertyManager::getEventPropertiesFromMap() {
 
 void EventPropertyManager::setActiveProcessor(std::string processorIdentifier) {
     activeProcessor_ = processorIdentifier;
-    notifyObservers();
+    notifyEventPropertyManagerObservers();
 }
 
 bool EventPropertyManager::isEmpty() {

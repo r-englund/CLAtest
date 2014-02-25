@@ -39,7 +39,7 @@
 namespace inviwo {
 
 TransferFunctionPropertyDialog::TransferFunctionPropertyDialog(TransferFunctionProperty* tfProperty, QWidget* parent)
-    : PropertyEditorWidgetQt("Transfer Function", parent)
+    : PropertyEditorWidgetQt("Transfer Function", parent), TransferFunctionObserver()
     , tfProperty_(tfProperty)
     , tfPixmap_(NULL)
 {
@@ -50,6 +50,7 @@ TransferFunctionPropertyDialog::TransferFunctionPropertyDialog(TransferFunctionP
     setAllowedAreas(Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea);
     generateWidget();
     tfProperty_->get().addObserver(this);
+    //tfProperty_->addObserver(this);
 
     if (!tfProperty_->getVolumeInport())
         chkShowHistogram_->setVisible(false);
@@ -74,7 +75,8 @@ void TransferFunctionPropertyDialog::generateWidget() {
     arrayHeight_ = 256;
     tfEditorView_ = new TransferFunctionEditorView(tfProperty_);
     //VoidObserver::addObservation(tfProperty_);
-    tfProperty_->addObserver(tfEditorView_);
+    tfProperty_->get().addObserver(tfEditorView_);
+    //tfProperty_->addObserver(tfEditorView_);
     // put origin to bottom left corner
     tfEditorView_->scale(1.0, -1.0);
     tfEditorView_->setAlignment(Qt::AlignLeft | Qt::AlignBottom);
@@ -341,11 +343,16 @@ void TransferFunctionPropertyDialog::dockLocationChanged(Qt::DockWidgetArea dock
         setDockStatus(PropertyEditorWidgetDockStatus::Floating);
 }
 
-void TransferFunctionPropertyDialog::notify() {
+void TransferFunctionPropertyDialog::onTransferFunctionChange() {
     tfEditor_->recalculateControlPoints();
     updateFromProperty();
     tfProperty_->propertyModified();
 }
+
+//void TransferFunctionPropertyDialog::onPropertyChange() {
+//    tfEditor_->recalculateControlPoints();
+//    updateFromProperty();
+//}
 
 
 } // namespace

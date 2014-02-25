@@ -40,7 +40,7 @@
 namespace inviwo {
 
 LabelGraphicsItem::LabelGraphicsItem(QGraphicsItem* parent)
-    : QGraphicsTextItem(parent)
+    : QGraphicsTextItem(parent), LabelGraphicsItemObservable()
     , maxBefore_(0)
     , maxAfter_(0)
     , focusOut_(false)
@@ -123,7 +123,7 @@ void LabelGraphicsItem::focusOutEvent(QFocusEvent* event) {
     cur.clearSelection();
     setTextCursor(cur);
     updateCrop();
-    notifyObservers();
+    notifyLabelGraphicsItemObservers();
     focusOut_ = false;
 }
 

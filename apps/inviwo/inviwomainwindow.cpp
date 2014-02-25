@@ -55,7 +55,7 @@
 
 namespace inviwo {
 
-InviwoMainWindow::InviwoMainWindow() : QMainWindow(), VoidObserver() {
+InviwoMainWindow::InviwoMainWindow() : QMainWindow(), PropertyListWidgetObserver(), ProcessorNetworkObserver() {
     NetworkEditor::init();
     // initialize console widget first to receive log messages
     consoleWidget_ = new ConsoleWidget(this);
@@ -84,7 +84,7 @@ void InviwoMainWindow::initialize() {
     addDockWidget(Qt::LeftDockWidgetArea, processorTreeWidget_);
     propertyListWidget_ = new PropertyListWidget(this);
     addDockWidget(Qt::RightDockWidgetArea, propertyListWidget_);
-    VoidObserver::addObservation(propertyListWidget_);
+    PropertyListWidgetObserver::addObservation(propertyListWidget_);
     propertyListWidget_->addObserver(this);
     addDockWidget(Qt::BottomDockWidgetArea, consoleWidget_);
     // load settings and restore window state
@@ -137,11 +137,11 @@ void InviwoMainWindow::deinitialize() {
 
 void InviwoMainWindow::initializeWorkspace() {
     ProcessorNetwork* processorNetwork = const_cast<ProcessorNetwork*>(networkEditorView_->getNetworkEditor()->getProcessorNetwork());
-    VoidObserver::addObservation(processorNetwork);
+    ProcessorNetworkObserver::addObservation(processorNetwork);
     processorNetwork->addObserver(this);
 }
 
-void InviwoMainWindow::notify() {
+void InviwoMainWindow::onProcessorNetworkChange() {
     workspaceModified_ = true;
     updateWindowTitle();
 }
