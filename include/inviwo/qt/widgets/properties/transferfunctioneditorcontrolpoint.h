@@ -68,8 +68,6 @@ public:
     void hoverEnterEvent(QGraphicsSceneHoverEvent* event);
     void hoverLeaveEvent(QGraphicsSceneHoverEvent* event);
 
-    void notify();
-
     //override for qgraphicsitem_cast (refer qt documentation)
     enum { Type = UserType + 255 };
     int type() const  {return Type; }

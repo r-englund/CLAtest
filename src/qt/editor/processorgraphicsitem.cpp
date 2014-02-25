@@ -61,7 +61,7 @@ int pointSizeToPixelSize(const int pointSize) {
 }
 
 ProcessorGraphicsItem::ProcessorGraphicsItem()
-    : ProcessorObserver(), processor_(NULL) {
+    : ProcessorObserver(), LabelGraphicsItemObserver(), processor_(NULL) {
     setZValue(PROCESSORGRAPHICSITEM_DEPTH);
     setFlags(ItemIsMovable | ItemIsSelectable | ItemIsFocusable | ItemSendsGeometryChanges);
     setRect(-width/2, -height/2, width, height);
@@ -76,7 +76,7 @@ ProcessorGraphicsItem::ProcessorGraphicsItem()
     QFont nameFont("Segoe", labelHeight, QFont::Black, false);
     nameFont.setPixelSize(pointSizeToPixelSize(labelHeight));
     nameLabel_->setFont(nameFont);
-    addObservation(nameLabel_);
+    LabelGraphicsItemObserver::addObservation(nameLabel_);
     classLabel_ = new LabelGraphicsItem(this);
     classLabel_->setCrop(9, 8);
     classLabel_->setPos(-width/2.0+labelHeight, -height/2.0+labelHeight*2.5);
@@ -95,7 +95,7 @@ void ProcessorGraphicsItem::setProcessor(Processor* processor) {
     if (processor) {
         nameLabel_->setText(QString::fromStdString(processor_->getIdentifier()));
         classLabel_->setText(QString::fromStdString(processor_->getClassName()));
-        addObservation(processor_);
+        ProcessorObserver::addObservation(processor_);
         processor_->addObserver(this);
     } else {
         nameLabel_->setText("");
@@ -453,7 +453,7 @@ void ProcessorGraphicsItem::updateMetaData() {
     processorMeta->setSelected(isSelected());
 }
 
-void ProcessorGraphicsItem::notify() {
+void ProcessorGraphicsItem::onLabelGraphicsItemChange() {
     if (nameLabel_->isFocusOut()) {
         NetworkEditor::getPtr()->renamingFinished();
         setIdentifier(nameLabel_->text());

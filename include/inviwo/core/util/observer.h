@@ -187,48 +187,6 @@ public:
     }
 };
 
-
-/** \class VoidObserver
- *
- * Simple observer that does not require any arguments
- * when observed object changes. The observer therefore
- * does not know what changed, only that it changed.
- *
- * @see VoidObservable
- */
-class IVW_CORE_API VoidObserver: public Observer {
-public:
-    VoidObserver(): Observer() {};
-
-    /**
-    * This method will be called when observed object changes.
-    * Override it to add behavior.
-    */
-    virtual void notify() {};
-};
-
-
-/** \class VoidObservable
- *
- * Simple observable that should call notifyObservers as soon as it
- * has changed. The observer
- * does not know what changed, only that it changed.
- *
- * @see VoidObserver
- */
-class IVW_CORE_API VoidObservable: public Observable<VoidObserver> {
-public:
-    VoidObservable(): Observable<VoidObserver>() {};
-
-    void notifyObservers() const {
-        // Notify observers
-        for (ObserverSet::reverse_iterator it = observers_->rbegin(); it != observers_->rend(); ++it) {
-            // static_cast can be used since only template class objects can be added
-            static_cast<VoidObserver*>(*it)->notify();
-        }
-    }
-};
-
 } // namespace
 
 #endif // IVW_OBSERVER_H

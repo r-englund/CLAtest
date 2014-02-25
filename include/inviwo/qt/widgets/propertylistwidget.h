@@ -44,7 +44,31 @@
 
 namespace inviwo {
 
-class IVW_QTWIDGETS_API PropertyListWidget : public InviwoDockWidget, public VoidObservable {
+class IVW_QTWIDGETS_API PropertyListWidgetObserver: public Observer {
+public:
+    PropertyListWidgetObserver(): Observer() {};
+
+    /**
+    * This method will be called when observed object changes.
+    * Override it to add behavior.
+    */
+    virtual void onPropertyListWidgetChange() {};
+};
+
+class IVW_QTWIDGETS_API PropertyListWidgetObservable: public Observable<PropertyListWidgetObserver> {
+public:
+    PropertyListWidgetObservable(): Observable<PropertyListWidgetObserver>() {};
+
+    void notifyPropertyListWidgetObservers() const {
+        // Notify observers
+        for (ObserverSet::reverse_iterator it = observers_->rbegin(); it != observers_->rend(); ++it) {
+            // static_cast can be used since only template class objects can be added
+            static_cast<PropertyListWidgetObserver*>(*it)->onPropertyListWidgetChange();
+        }
+    }
+};
+
+class IVW_QTWIDGETS_API PropertyListWidget : public InviwoDockWidget, public PropertyListWidgetObservable {
     Q_OBJECT
 
 public:
@@ -60,7 +84,7 @@ public:
     void changeName(std::string oldName, std::string newName);
 
     void saveState();
-    void notify();
+
     PropertyVisibilityMode getViewMode();
 
     void cacheProcessorPropertiesItem(Processor* processor);

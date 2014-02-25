@@ -117,6 +117,7 @@ set(HEADER_FILES
     ${IVW_INCLUDE_DIR}/inviwo/core/metadata/propertyeditorwidgetmetadata.h
     ${IVW_INCLUDE_DIR}/inviwo/core/network/portconnection.h
     ${IVW_INCLUDE_DIR}/inviwo/core/network/processornetwork.h
+	${IVW_INCLUDE_DIR}/inviwo/core/network/processornetworkobserver.h
     ${IVW_INCLUDE_DIR}/inviwo/core/network/processornetworkevaluator.h
     ${IVW_INCLUDE_DIR}/inviwo/core/ports/datainport.h
     ${IVW_INCLUDE_DIR}/inviwo/core/ports/dataoutport.h
@@ -160,6 +161,7 @@ set(HEADER_FILES
     ${IVW_INCLUDE_DIR}/inviwo/core/properties/property.h
     ${IVW_INCLUDE_DIR}/inviwo/core/properties/propertyfactory.h
     ${IVW_INCLUDE_DIR}/inviwo/core/properties/propertyfactoryobject.h
+	${IVW_INCLUDE_DIR}/inviwo/core/properties/propertyobserver.h
     ${IVW_INCLUDE_DIR}/inviwo/core/properties/propertyowner.h
     ${IVW_INCLUDE_DIR}/inviwo/core/properties/propertysemantics.h
     ${IVW_INCLUDE_DIR}/inviwo/core/properties/propertyvisibility.h
@@ -304,6 +306,7 @@ set(SOURCE_FILES
     metadata/propertyeditorwidgetmetadata.cpp
     network/portconnection.cpp
     network/processornetwork.cpp
+	network/processornetworkobserver.cpp
     network/processornetworkevaluator.cpp
     ports/geometryport.cpp
     ports/imageport.cpp
@@ -336,6 +339,7 @@ set(SOURCE_FILES
     properties/property.cpp
     properties/propertyfactory.cpp
     properties/propertyfactoryobject.cpp
+	properties/propertyobserver.cpp
     properties/propertyowner.cpp
     properties/propertysemantics.cpp
     properties/propertywidget.cpp

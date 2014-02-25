@@ -48,15 +48,15 @@ class Processor;
  *
  * @see ProcessorObservable
  */
-class IVW_CORE_API ProcessorObserver: public VoidObserver {
+class IVW_CORE_API ProcessorObserver: public Observer {
 public:
-    ProcessorObserver(): VoidObserver() {};
+    ProcessorObserver(): Observer() {};
     //TODO: Use seperate class for property observation if necessary
-    virtual void notifyObserversAboutPropertyChange(Property*) {};
-    virtual void notifyProcessorObserver(Processor*) {};
-    virtual void notifyInvalidationBegin(Processor*) {};
-    virtual void notifyInvalidationEnd(Processor*) {};
-    virtual void notifyRequestEvaluate(Processor*) {};
+    virtual void onAboutPropertyChange(Property*) {};
+    virtual void onProcessorChanged(Processor*) {};
+    virtual void onProcessorInvalidationBegin(Processor*) {};
+    virtual void onProcessorInvalidationEnd(Processor*) {};
+    virtual void onProcessorRequestEvaluate(Processor*) {};
 };
 
 
@@ -70,19 +70,11 @@ class IVW_CORE_API ProcessorObservable: public Observable<ProcessorObserver> {
 public:
     ProcessorObservable(): Observable<ProcessorObserver>() {};
 
-    void notifyObservers() const {
-        ObserverSet localObservers = *observers_;
-
-        for (ObserverSet::reverse_iterator it = localObservers.rbegin(); it != localObservers.rend(); ++it) {
-            static_cast<ProcessorObserver*>(*it)->notify();
-        }
-    }
-
     void notifyObservers(Processor* p) const {
         ObserverSet localObservers = *observers_;
 
         for (ObserverSet::reverse_iterator it = localObservers.rbegin(); it != localObservers.rend(); ++it) {
-            static_cast<ProcessorObserver*>(*it)->notifyProcessorObserver(p);
+            static_cast<ProcessorObserver*>(*it)->onProcessorChanged(p);
         }
     }
 
@@ -91,7 +83,7 @@ public:
         ObserverSet localObservers = *observers_;
 
         for (ObserverSet::reverse_iterator it = localObservers.rbegin(); it != localObservers.rend(); ++it) {
-            static_cast<ProcessorObserver*>(*it)->notifyObserversAboutPropertyChange(p);
+            static_cast<ProcessorObserver*>(*it)->onAboutPropertyChange(p);
         }
     }
 
@@ -99,7 +91,7 @@ public:
         ObserverSet localObservers = *observers_;
 
         for (ObserverSet::reverse_iterator it = localObservers.rbegin(); it != localObservers.rend(); ++it) {
-            static_cast<ProcessorObserver*>(*it)->notifyInvalidationBegin(p);
+            static_cast<ProcessorObserver*>(*it)->onProcessorInvalidationBegin(p);
         }
     }
 
@@ -107,7 +99,7 @@ public:
         ObserverSet localObservers = *observers_;
 
         for (ObserverSet::reverse_iterator it = localObservers.rbegin(); it != localObservers.rend(); ++it) {
-            static_cast<ProcessorObserver*>(*it)->notifyInvalidationEnd(p);
+            static_cast<ProcessorObserver*>(*it)->onProcessorInvalidationEnd(p);
         }
     }
 
@@ -115,7 +107,7 @@ public:
         ObserverSet localObservers = *observers_;
 
         for (ObserverSet::reverse_iterator it = localObservers.rbegin(); it != localObservers.rend(); ++it) {
-            static_cast<ProcessorObserver*>(*it)->notifyRequestEvaluate(p);
+            static_cast<ProcessorObserver*>(*it)->onProcessorRequestEvaluate(p);
         }
     }
 };

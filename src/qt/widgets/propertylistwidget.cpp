@@ -44,7 +44,7 @@ namespace inviwo {
 
 PropertyListWidget* PropertyListWidget::propertyListWidget_ = 0;
 
-PropertyListWidget::PropertyListWidget(QWidget* parent) : InviwoDockWidget(tr("Properties"), parent), VoidObservable() {
+PropertyListWidget::PropertyListWidget(QWidget* parent) : InviwoDockWidget(tr("Properties"), parent), PropertyListWidgetObservable() {
     setObjectName("ProcessorListWidget");
     setAllowedAreas(Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea);
     propertyListWidget_ = this;
@@ -184,7 +184,7 @@ QWidget* PropertyListWidget::createNewProcessorPropertiesItem(Processor* process
 }
 
 void PropertyListWidget::propertyModified() {
-    notifyObservers();
+    notifyPropertyListWidgetObservers();
 }
 
 PropertyListWidget* PropertyListWidget::instance() {
@@ -227,6 +227,5 @@ PropertyVisibilityMode PropertyListWidget::getViewMode() {
         return APPLICATION;
 }
 
-void PropertyListWidget::notify() {}
 
 } // namespace

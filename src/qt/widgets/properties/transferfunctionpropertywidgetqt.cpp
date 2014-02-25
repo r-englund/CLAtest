@@ -35,9 +35,8 @@
 
 namespace inviwo {
 
-TransferFunctionPropertyWidgetQt::TransferFunctionPropertyWidgetQt(TransferFunctionProperty* property) : property_(property),
-    transferFunctionDialog_(NULL) {
-    PropertyWidgetQt::setProperty(property_);
+TransferFunctionPropertyWidgetQt::TransferFunctionPropertyWidgetQt(TransferFunctionProperty* property) 
+    : PropertyWidgetQt(property), transferFunctionDialog_(NULL) {
     generateWidget();
     updateFromProperty();
     PropertyWidgetQt::generateContextMenu();
@@ -52,10 +51,11 @@ TransferFunctionPropertyWidgetQt::~TransferFunctionPropertyWidgetQt() {
 
 void TransferFunctionPropertyWidgetQt::generateWidget() {
     InviwoApplicationQt* app = dynamic_cast<InviwoApplicationQt*>(InviwoApplication::getPtr());
-    transferFunctionDialog_ = new TransferFunctionPropertyDialog(property_, app->getMainWindow());
+    transferFunctionDialog_ = new TransferFunctionPropertyDialog(static_cast<TransferFunctionProperty*>(property_), app->getMainWindow());
     setEditorWidget(transferFunctionDialog_);
     // notify the transfer function dialog, that the volume with the histogram is already there
-    property_->notifyObservers();
+    // TODO: Make sure that this work without notify
+    static_cast<TransferFunctionProperty*>(property_)->get().notifyTransferFunctionObservers();
     QHBoxLayout* hLayout = new QHBoxLayout();
     btnOpenTF_ = new QPushButton();
     btnOpenTF_->setFixedSize(200, 40);
@@ -92,18 +92,19 @@ void TransferFunctionPropertyWidgetQt::updateFromProperty() {
     checkerBoardPainter.end();
     tfPainter.fillRect(0, 0, gradientWidth, btnOpenTF_->height(), QBrush(checkerBoard));
     tfPainter.fillRect(0, 0, gradientWidth, btnOpenTF_->height(), *gradient);
-
+    // Cast for convenience (safe to static cast since we know that property_ is a TransferFunctionProperty)
+    TransferFunctionProperty* tfProperty = static_cast<TransferFunctionProperty*>(property_);
     // draw masking indicators
-    if (property_->getMask().x > 0.0f) {
-        tfPainter.fillRect(0, 0, static_cast<int>(property_->getMask().x*gradientWidth), btnOpenTF_->height(), QColor(25,25,25,100));
-        tfPainter.drawLine(static_cast<int>(property_->getMask().x*gradientWidth), 0, static_cast<int>(property_->getMask().x*gradientWidth),
+    if (tfProperty->getMask().x > 0.0f) {
+        tfPainter.fillRect(0, 0, static_cast<int>(tfProperty->getMask().x*gradientWidth), btnOpenTF_->height(), QColor(25,25,25,100));
+        tfPainter.drawLine(static_cast<int>(tfProperty->getMask().x*gradientWidth), 0, static_cast<int>(tfProperty->getMask().x*gradientWidth),
                            btnOpenTF_->height());
     }
 
-    if (property_->getMask().y < 1.0f) {
-        tfPainter.fillRect(static_cast<int>(property_->getMask().y*gradientWidth), 0,
-                           static_cast<int>(gradientWidth-(property_->getMask().y*gradientWidth)+10), btnOpenTF_->height(), QColor(25,25,25,150));
-        tfPainter.drawLine(static_cast<int>(property_->getMask().y*gradientWidth), 0, static_cast<int>(property_->getMask().y*gradientWidth),
+    if (tfProperty->getMask().y < 1.0f) {
+        tfPainter.fillRect(static_cast<int>(tfProperty->getMask().y*gradientWidth), 0,
+                           static_cast<int>(gradientWidth-(tfProperty->getMask().y*gradientWidth)+10), btnOpenTF_->height(), QColor(25,25,25,150));
+        tfPainter.drawLine(static_cast<int>(tfProperty->getMask().y*gradientWidth), 0, static_cast<int>(tfProperty->getMask().y*gradientWidth),
                            btnOpenTF_->height());
     }
 

@@ -3,18 +3,18 @@
  * Inviwo - Interactive Visualization Workshop
  * Version 0.6b
  *
- * Copyright (c) 2013-2014 Inviwo Foundation
+ * Copyright (c) 2012-2014 Inviwo Foundation
  * All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met: 
- * 
+ * modification, are permitted provided that the following conditions are met:
+ *
  * 1. Redistributions of source code must retain the above copyright notice, this
- * list of conditions and the following disclaimer. 
+ * list of conditions and the following disclaimer.
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  * this list of conditions and the following disclaimer in the documentation
- * and/or other materials provided with the distribution. 
- * 
+ * and/or other materials provided with the distribution.
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
  * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
@@ -25,46 +25,22 @@
  * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- * 
- * Main file author: Viktor Axelsson
+ *
+ * Main file author: Daniel Jönsson
  *
  *********************************************************************************/
 
-#ifndef IVW_TRANSFERFUNCTIONPROPERTYWIDGET_H
-#define IVW_TRANSFERFUNCTIONPROPERTYWIDGET_H
+#include <inviwo/core/network/processornetworkobserver.h>
 
-#include <inviwo/qt/widgets/properties/propertywidgetqt.h>
-#include <inviwo/qt/widgets/properties/transferfunctionpropertydialog.h>
-#include <inviwo/qt/widgets/inviwoapplicationqt.h>
-#include <inviwo/qt/widgets/editablelabelqt.h>
-#include <QHBoxLayout>
 
 namespace inviwo {
 
-class IVW_QTWIDGETS_API TransferFunctionPropertyWidgetQt : public PropertyWidgetQt {
-    Q_OBJECT
+void ProcessorNetworkObservable::notifyProcessorNetworkObservers() const {
+    // Notify observers
+    for (ObserverSet::reverse_iterator it = observers_->rbegin(); it != observers_->rend(); ++it) {
+        // static_cast can be used since only template class objects can be added
+        static_cast<ProcessorNetworkObserver*>(*it)->onProcessorNetworkChange();
+    }
+}
 
-public:
-    TransferFunctionPropertyWidgetQt(TransferFunctionProperty* property);
-    ~TransferFunctionPropertyWidgetQt();
-
-    void updateFromProperty();
-
-private:
-    EditableLabelQt* label_;
-    QPushButton* btnOpenTF_;
-
-    //TODO: Remove redundant reference to property editor widget
-    TransferFunctionPropertyDialog* transferFunctionDialog_;
-
-    void generateWidget();
-
-public slots:
-    void setPropertyValue();
-    void openTransferFunctionDialog();
-    void setPropertyDisplayName();
-};
-
-}//namespace
-
-#endif //IVW_TRANSFERFUNCTIONPROPERTYWIDGET_H
+} // namespace

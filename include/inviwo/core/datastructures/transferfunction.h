@@ -47,7 +47,30 @@
 
 namespace inviwo {
 
-class IVW_CORE_API TransferFunction : public VoidObservable {
+class IVW_CORE_API TransferFunctionObserver: public Observer {
+public:
+    TransferFunctionObserver(): Observer() {};
+
+    /**
+    * This method will be called when observed object changes.
+    * Override it to add behavior.
+    */
+    virtual void onTransferFunctionChange() {};
+};
+class IVW_CORE_API TransferFunctionObservable: public Observable<TransferFunctionObserver> {
+public:
+    TransferFunctionObservable(): Observable<TransferFunctionObserver>() {};
+
+    void notifyTransferFunctionObservers() const {
+        // Notify observers
+        for (ObserverSet::reverse_iterator it = observers_->rbegin(); it != observers_->rend(); ++it) {
+            // static_cast can be used since only template class objects can be added
+            static_cast<TransferFunctionObserver*>(*it)->onTransferFunctionChange();
+        }
+    }
+};
+
+class IVW_CORE_API TransferFunction : public TransferFunctionObservable {
 public:
 
     enum InterpolationType {
@@ -90,6 +113,7 @@ private:
     std::vector<TransferFunctionDataPoint*> dataPoints_;
     InterpolationType interpolationType_;
 };
+
 
 } // namespace
 #endif // IVW_TRANSFERFUNCTION_H

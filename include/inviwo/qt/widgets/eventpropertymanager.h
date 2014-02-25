@@ -42,6 +42,29 @@
 
 namespace inviwo {
 
+class EventPropertyManagerObserver: public Observer {
+public:
+    EventPropertyManagerObserver(): Observer() {};
+
+    /**
+    * This method will be called when observed object changes.
+    * Override it to add behavior.
+    */
+    virtual void onEventPropertyManagerChange() {};
+};
+
+class EventPropertyManagerObservable: public Observable<EventPropertyManagerObserver> {
+public:
+    EventPropertyManagerObservable(): Observable<EventPropertyManagerObserver>() {};
+
+    void notifyEventPropertyManagerObservers() const {
+        // Notify observers
+        for (ObserverSet::reverse_iterator it = observers_->rbegin(); it != observers_->rend(); ++it) {
+            // static_cast can be used since only template class objects can be added
+            static_cast<EventPropertyManagerObserver*>(*it)->onEventPropertyManagerChange();
+        }
+    }
+};
 /** class EventPropertyManager
  *
  * A manager which finds and contain all eventproperties in the workspace.
@@ -52,7 +75,7 @@ namespace inviwo {
  * @see MappingWidget
  * @see MappingPopup
  */
-class IVW_QTWIDGETS_API EventPropertyManager : public VoidObservable {
+class IVW_QTWIDGETS_API EventPropertyManager : public EventPropertyManagerObservable {
 
 public:
     EventPropertyManager();

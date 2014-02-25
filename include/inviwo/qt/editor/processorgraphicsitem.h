@@ -52,7 +52,7 @@ IVW_QTEDITOR_API enum InviwoUserGraphicsItemType {
     LinkGraphicsType = 3
 };
 
-class IVW_QTEDITOR_API ProcessorGraphicsItem : public QGraphicsRectItem, public ProcessorObserver {
+class IVW_QTEDITOR_API ProcessorGraphicsItem : public QGraphicsRectItem, public ProcessorObserver, public LabelGraphicsItemObserver {
 
 public:
     ProcessorGraphicsItem();
@@ -71,7 +71,7 @@ public:
     QPointF getShortestBoundaryPointTo(ProcessorGraphicsItem* processorGraphicsItem);
     QPointF getShortestBoundaryPointTo(QPointF inPos);
 
-    void notify();
+    void onLabelGraphicsItemChange();
     bool isEditingProcessorName();
 
     //override for qgraphicsitem_cast (refer qt documentation)

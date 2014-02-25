@@ -47,7 +47,7 @@ namespace inviwo {
 
 class Property;
 
-class IVW_QTWIDGETS_API PropertyWidgetQt : public QWidget, public PropertyWidget, public VoidObserver {
+class IVW_QTWIDGETS_API PropertyWidgetQt : public QWidget, public PropertyWidget {
 
     Q_OBJECT
 
@@ -101,7 +101,7 @@ private:
 
 //PropertyEditorWidget owned by PropertyWidget
 
-class IVW_QTWIDGETS_API PropertyEditorWidgetQt : public InviwoDockWidget, public VoidObserver, public PropertyEditorWidget {
+class IVW_QTWIDGETS_API PropertyEditorWidgetQt : public InviwoDockWidget, public PropertyEditorWidget {
     Q_OBJECT
 public:
     PropertyEditorWidgetQt(std::string widgetName, QWidget* parent);

@@ -52,7 +52,7 @@ private:
 }
 
 ProcessorNetwork::ProcessorNetwork()
-    : VoidObservable()
+    : ProcessorNetworkObservable()
     , ProcessorObserver()
     , modified_(true)
     , locked_(0)
@@ -229,7 +229,7 @@ void ProcessorNetwork::modified() {
     modified_ = true;
 }
 
-void ProcessorNetwork::notifyInvalidationBegin(Processor* p) {
+void ProcessorNetwork::onProcessorInvalidationBegin(Processor* p) {
     if (!isInvalidating()) {
         invalidationInitiator_ = p;
         invalidating_ = true;
@@ -239,25 +239,25 @@ void ProcessorNetwork::notifyInvalidationBegin(Processor* p) {
     }
 }
 
-void ProcessorNetwork::notifyInvalidationEnd(Processor* p) {
+void ProcessorNetwork::onProcessorInvalidationEnd(Processor* p) {
     if (invalidationInitiator_ == p) {
         invalidating_ = false;
         invalidationInitiator_ = NULL;
     }
 }
 
-void ProcessorNetwork::notifyRequestEvaluate(Processor*) {
+void ProcessorNetwork::onProcessorRequestEvaluate(Processor*) {
     if (linking_)
         evaluationQueued_ = true;
     else {
-        notifyObservers();
+        notifyProcessorNetworkObservers();
         evaluationQueued_ = false;
     }
 }
 
 //linking helpers
 
-void ProcessorNetwork::notifyObserversAboutPropertyChange(Property* modifiedProperty) {
+void ProcessorNetwork::onAboutPropertyChange(Property* modifiedProperty) {
     performLinkingOnPropertyChange(modifiedProperty);
 }
 
@@ -303,7 +303,7 @@ void ProcessorNetwork::evaluatePropertyLinks(Property* modifiedProperty) {
         linking_ = false;
 
         if (evaluationQueued_ && linkInvalidationInitiator_!=invalidationInitiator_)
-            notifyRequestEvaluate(linkInvalidationInitiator_);
+            onProcessorRequestEvaluate(linkInvalidationInitiator_);
 
         linkInvalidationInitiator_ = NULL;
     }
@@ -480,7 +480,7 @@ void ProcessorNetwork::deserialize(IvwDeserializer& d) throw (Exception) {
         throw AbortException("Unknown Exception.");
     }
 
-    notifyObservers();
+    notifyProcessorNetworkObservers();
 }
 
 bool ProcessorNetwork::isDeserializing()const {

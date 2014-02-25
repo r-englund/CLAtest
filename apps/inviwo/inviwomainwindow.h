@@ -56,8 +56,9 @@ class NetworkEditorView;
 class NetworkEditor;
 
 class InviwoMainWindow : public QMainWindow,
-    public VoidObserver,
-    public NetworkEditorObserver {
+    public PropertyListWidgetObserver,
+    public NetworkEditorObserver,
+    public ProcessorNetworkObserver {
     Q_OBJECT
 public:
     static const unsigned int maxNumRecentFiles_ = 10;
@@ -76,7 +77,7 @@ public:
 
     bool processCommandLineArgs();
 
-    virtual void notify();
+    virtual void onProcessorNetworkChange();
     virtual void onNetworkEditorFileChanged(const std::string& filename);
 
 public slots:

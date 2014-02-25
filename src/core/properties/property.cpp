@@ -43,8 +43,8 @@ Property::Property(std::string identifier,
                    std::string displayName,
                    PropertyOwner::InvalidationLevel invalidationLevel,
                    PropertySemantics semantics)
-    : VoidObserver()
-    , identifier_(identifier)
+    : 
+    identifier_(identifier)
     , displayName_(displayName)
     , readOnly_(false)
     , semantics_(semantics)
@@ -58,8 +58,8 @@ Property::Property(std::string identifier,
 }
 
 Property::Property()
-    : VoidObserver()
-    , identifier_("")
+    : 
+     identifier_("")
     , displayName_("")
     , readOnly_(false)
     , semantics_(PropertySemantics::Default)

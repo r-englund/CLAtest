@@ -43,8 +43,7 @@
 namespace inviwo {
 
 class IVW_CORE_API TransferFunctionProperty 
-    : public TemplateProperty<TransferFunction>
-    , public VoidObservable {
+    : public TemplateProperty<TransferFunction>, public TransferFunctionObserver {
 
 public:
     TransferFunctionProperty(std::string identifier, std::string displayName, TransferFunction value = TransferFunction(),

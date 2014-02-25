@@ -375,7 +375,6 @@ void PropertyWidgetQt::setProperty(Property* property) {
 
 PropertyEditorWidgetQt::PropertyEditorWidgetQt(std::string widgetName, QWidget* parent)
     : InviwoDockWidget(QString(widgetName.c_str()), parent)
-    , VoidObserver()
     , PropertyEditorWidget(){
 }
 

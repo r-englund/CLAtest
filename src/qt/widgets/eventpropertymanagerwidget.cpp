@@ -36,7 +36,7 @@
 
 namespace inviwo {
 
-EventPropertyManagerWidget::EventPropertyManagerWidget(EventPropertyManager* eventPropertyManager) : VoidObserver() {
+EventPropertyManagerWidget::EventPropertyManagerWidget(EventPropertyManager* eventPropertyManager) : EventPropertyManagerObserver() {
     eventPropertyManager_ = eventPropertyManager;
     addObservation(eventPropertyManager_);
     eventPropertyManager_->addObserver(this);
@@ -51,7 +51,7 @@ EventPropertyManagerWidget::EventPropertyManagerWidget(EventPropertyManager* eve
 
 EventPropertyManagerWidget::~EventPropertyManagerWidget() {}
 
-void EventPropertyManagerWidget::notify() {
+void EventPropertyManagerWidget::onEventPropertyManagerChange() {
     emptyLayout(mainLayout_);
 
     if (!eventPropertyManager_->isEmpty())
