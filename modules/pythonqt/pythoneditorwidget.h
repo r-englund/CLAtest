@@ -37,6 +37,7 @@
 #include <modules/python/pythonscript.h>
 #include <modules/python/pythonmodule.h>
 #include <modules/python/pythonexecutionoutputobeserver.h>
+#include <inviwo/core/network/processornetworkobserver.h>
 #include <inviwo/core/util/fileobserver.h>
 #include <inviwo/qt/widgets/inviwodockwidget.h>
 #include <QTextEdit>
@@ -50,7 +51,7 @@ class SyntaxHighligther;
 class IVW_MODULE_PYTHONQT_API PythonEditorWidget : public InviwoDockWidget
     , public FileObserver
     , public PythonExecutionOutputObeserver
-    , public VoidObserver {
+    , public ProcessorNetworkObserver {
     Q_OBJECT
 
 public:
@@ -63,7 +64,7 @@ public:
 
     virtual void onPyhonExecutionOutput(std::string msg,OutputType outputType);
 
-    virtual void notify();
+    virtual void onProcessorNetworkChange();
     bool hasFocus()const;
     static PythonEditorWidget* getPtr();
 private:
