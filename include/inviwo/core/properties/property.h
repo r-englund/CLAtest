@@ -66,7 +66,7 @@ class Variant;
  */
 
 
-class IVW_CORE_API Property : public IvwSerializable, public VoidObservable, public VoidObserver {
+class IVW_CORE_API Property : public IvwSerializable, public VoidObserver {
 
 public:
     Property(std::string identifier,
@@ -121,8 +121,19 @@ public:
 
     MetaData* getMetaData(std::string meta);
 
-    
+    /**
+     *  Save the current state of the property as the default. This state will then be used as a 
+     *  reference when serializing, only state different from the default will be serialized.
+     *  This method should usually only be called once directly after construction in the processor 
+     *  constructor after setting property specific state.
+     *  It is important that all overriding properties make sure to call the base class implementation.
+     */
     //virtual void setCurrentStateAsDefault();
+    
+    /**
+     * Reset the state of the property back to it's default value.
+     * It is important that all overriding properties make sure to call the base class implementation.
+     */
     //virtual void resetToDefaultState();
 
 

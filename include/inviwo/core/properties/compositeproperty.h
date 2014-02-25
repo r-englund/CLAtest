@@ -53,7 +53,6 @@ public:
     void addProperty(Property& property);
     std::vector<Property*> getSubProperties() const { return subProperties_; }
     void setOwner(PropertyOwner* owner);
-    void notify();
     virtual std::string getClassName()  const { return "CompositeProperty"; }
     void updateVisibility();
     void setVisible(bool val);

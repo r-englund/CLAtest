@@ -48,10 +48,11 @@ PropertyWidgetQt::PropertyWidgetQt()
     , contextMenu_(NULL)
     , viewModeItem_(NULL) {
     
-    InviwoApplication* inviwoApp = InviwoApplication::getPtr();
-    this->addObservation(static_cast<OptionPropertyInt*>(
-        inviwoApp->getSettingsByType<SystemSettings>()->getPropertyByIdentifier("viewMode"))
-        );
+    static_cast<OptionPropertyInt*>(
+        InviwoApplication::getPtr()->
+            getSettingsByType<SystemSettings>()->
+                getPropertyByIdentifier("viewMode")
+        )->onChange(this, &PropertyWidgetQt::onViewModeChange);
     
     this->setContextMenuPolicy(Qt::CustomContextMenu);
     connect(this,
@@ -67,10 +68,11 @@ PropertyWidgetQt::PropertyWidgetQt(Property* property)
     
     this->setToolTip(("id: " + property_->getIdentifier()).c_str());
     
-    InviwoApplication* inviwoApp = InviwoApplication::getPtr();
-    this->addObservation(static_cast<OptionPropertyInt*>(
-        inviwoApp->getSettingsByType<SystemSettings>()->getPropertyByIdentifier("viewMode"))
-        );
+    static_cast<OptionPropertyInt*>(
+        InviwoApplication::getPtr()->
+            getSettingsByType<SystemSettings>()->
+                getPropertyByIdentifier("viewMode")
+        )->onChange(this, &PropertyWidgetQt::onViewModeChange);
     
     this->setContextMenuPolicy(Qt::CustomContextMenu);
     connect(this,
@@ -93,7 +95,7 @@ void PropertyWidgetQt::hideWidget() {
     emit visibilityChange();
 }
 
-void PropertyWidgetQt::notify(){
+void PropertyWidgetQt::onViewModeChange() {
     PropertyVisibilityMode appVisibilityMode  = getApplicationViewMode();
    
     if (appVisibilityMode == DEVELOPMENT) {

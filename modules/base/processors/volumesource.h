@@ -43,7 +43,7 @@
 #include <inviwo/core/properties/minmaxproperty.h>
 #include <inviwo/core/properties/stringproperty.h>
 #include <inviwo/core/ports/volumeport.h>
-
+#include <inviwo/core/properties/ordinalproperty.h>
 
 namespace inviwo {
 
@@ -54,14 +54,24 @@ public:
 
     InviwoProcessorInfo();
 
+    void onOverrideChange();
+
 protected:
     virtual void dataLoaded(Volume* data);
     virtual void invalidateOutput();
+
+    virtual void process();
 
 private:
     FloatMinMaxProperty dataRange_;
     FloatMinMaxProperty valueRange_;
     StringProperty valueUnit_;
+
+    BoolProperty overRideDefaults_;
+
+    FloatVec3Property lengths_;
+    FloatVec3Property angels_;
+    FloatVec3Property offset_;
 };
 
 } // namespace

@@ -71,7 +71,6 @@ protected:
     virtual SliderVector makeSliders() = 0;
     void generateWidget();
     SliderVector sliderWidgets_;
-    QLabel* readOnlyLabel_;
     int sliderId_;
 
 private:
@@ -138,21 +137,18 @@ public:
 
 
     void updateFromProperty() {
-        if(this->property_->getReadOnly()) {
-            this->readOnlyLabel_->setText(QString(this->getPropertyText().c_str()));
-            this->readOnlyLabel_->setToolTip(QString(this->getPropertyToolTip().c_str()));
-        } else {
-            T min = this->property_->getMinValue();
-            T max = this->property_->getMaxValue();
-            T inc = this->property_->getIncrement();
-            T val = this->property_->get();
+        this->setEnabled(!property_->getReadOnly());
 
-            for(size_t i = 0; i < this->property_->getDim(); i++) {
-                SliderWidgetQt<BT>* widget = static_cast<SliderWidgetQt<BT>*>(this->sliderWidgets_[i]);
-                widget->setRange(min[i], max[i]);
-                widget->setIncrement(inc[i]);
-                widget->initValue(val[i]);
-            }
+        T min = this->property_->getMinValue();
+        T max = this->property_->getMaxValue();
+        T inc = this->property_->getIncrement();
+        T val = this->property_->get();
+
+        for(size_t i = 0; i < this->property_->getDim(); i++) {
+            SliderWidgetQt<BT>* widget = static_cast<SliderWidgetQt<BT>*>(this->sliderWidgets_[i]);
+            widget->setRange(min[i], max[i]);
+            widget->setIncrement(inc[i]);
+            widget->initValue(val[i]);
         }
     }
 
@@ -206,21 +202,16 @@ public:
 
 
     void updateFromProperty() {
+        this->setEnabled(!property_->getReadOnly());
+        T min = this->property_->getMinValue();
+        T max = this->property_->getMaxValue();
+        T inc = this->property_->getIncrement();
+        T val = this->property_->get();
 
-        if(this->property_->getReadOnly()) {
-            this->readOnlyLabel_->setText(QString(this->getPropertyText().c_str()));
-            this->readOnlyLabel_->setToolTip(QString(this->getPropertyToolTip().c_str()));
-        } else {
-            T min = this->property_->getMinValue();
-            T max = this->property_->getMaxValue();
-            T inc = this->property_->getIncrement();
-            T val = this->property_->get();
-
-            SliderWidgetQt<T>* widget = static_cast<SliderWidgetQt<T>*>(this->sliderWidgets_[0]);
-            widget->setRange(min, max);
-            widget->setIncrement(inc);
-            widget->initValue(val);
-        }
+        SliderWidgetQt<T>* widget = static_cast<SliderWidgetQt<T>*>(this->sliderWidgets_[0]);
+        widget->setRange(min, max);
+        widget->setIncrement(inc);
+        widget->initValue(val);
     }
 
 protected:

@@ -43,8 +43,7 @@ Property::Property(std::string identifier,
                    std::string displayName,
                    PropertyOwner::InvalidationLevel invalidationLevel,
                    PropertySemantics semantics)
-    : VoidObservable()
-    , VoidObserver()
+    : VoidObserver()
     , identifier_(identifier)
     , displayName_(displayName)
     , readOnly_(false)
@@ -59,8 +58,7 @@ Property::Property(std::string identifier,
 }
 
 Property::Property()
-    : VoidObservable()
-    , VoidObserver()
+    : VoidObserver()
     , identifier_("")
     , displayName_("")
     , readOnly_(false)
@@ -108,6 +106,11 @@ void Property::setSemantics(const PropertySemantics& semantics) {
 
 void Property::setReadOnly(const bool& value) {
     readOnly_ = value;
+    for(size_t i = 0; i < propertyWidgets_.size(); i++) {
+        if(propertyWidgets_[i] != 0 && propertyWidgets_[i] != initiatingWidget_) {
+            propertyWidgets_[i]->updateFromProperty();
+        }
+    }
 }
 
 bool Property::getReadOnly()const {
@@ -151,9 +154,11 @@ void Property::clearInitiatingWidget() {
     initiatingWidget_ = NULL;
 }
 void Property::updateWidgets() {
-    for (size_t i=0; i<propertyWidgets_.size(); i++)
-        if (propertyWidgets_[i] != 0 && propertyWidgets_[i] != initiatingWidget_)
+    for(size_t i = 0; i < propertyWidgets_.size(); i++) {
+        if(propertyWidgets_[i] != 0 && propertyWidgets_[i] != initiatingWidget_) {
             propertyWidgets_[i]->updateFromProperty();
+        }
+    }
 }
 
 bool Property::hasWidgets() const {
@@ -170,7 +175,6 @@ std::string Property::getGroupID()const {
 
 void Property::propertyModified() {
     onChangeCallback_.invoke();
-    notifyObservers();
     setPropertyModified(true);
 
     //FIXME: if set() is called before addProperty(), getOwner() will be 0 ( case for option properties )
@@ -238,7 +242,7 @@ bool Property::operator==(const Property& prop) {
     else return false;
 }
 
-void Property::setGroupDisplayName(const std::string& groupID,const std::string& groupDisplayName) {
+void Property::setGroupDisplayName(const std::string& groupID, const std::string& groupDisplayName) {
     Property::groupDisplayNames_.insert(std::pair<std::string,std::string>(groupID, groupDisplayName));
 }
 
