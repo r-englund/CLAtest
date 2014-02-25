@@ -51,7 +51,7 @@ class IVW_QTWIDGETS_API PropertySettingsWidgetQt : public QWidget {
 
     Q_OBJECT
 public:
-    PropertySettingsWidgetQt(Property* property);
+    PropertySettingsWidgetQt(Property*, QWidget*);
     virtual ~PropertySettingsWidgetQt();
 
 private:

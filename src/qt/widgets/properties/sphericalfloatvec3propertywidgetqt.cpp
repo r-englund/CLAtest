@@ -54,7 +54,6 @@ SphericalFloatVec3PropertyWidgetQt::SphericalFloatVec3PropertyWidgetQt(FloatVec3
 }
 
 SphericalFloatVec3PropertyWidgetQt::~SphericalFloatVec3PropertyWidgetQt() {
-    delete settingsWidget_;
 }
 
 void SphericalFloatVec3PropertyWidgetQt::generateWidget() {
@@ -130,7 +129,7 @@ void SphericalFloatVec3PropertyWidgetQt::updateFromProperty() {
 
 
 void SphericalFloatVec3PropertyWidgetQt::generatesSettingsWidget() {
-    settingsWidget_ = new PropertySettingsWidgetQt(property_);
+    settingsWidget_ = new PropertySettingsWidgetQt(property_, this);
     settingsMenu_ = PropertyWidgetQt::generatePropertyWidgetMenu();
     settingsMenu_->addAction("Property settings");
     settingsMenu_->addAction("Set as Min");
