@@ -41,7 +41,7 @@ namespace inviwo {
 ResourceManagerWidget::ResourceManagerWidget(QWidget* parent) : InviwoDockWidget(tr("Resources"), parent), ResourceManagerObserver() {
     setObjectName("ResourceManagerWidget");
     setAllowedAreas(Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea);
-    ResourceManager::instance()->addObserver(this);
+    ResourceManager::getPtr()->addObserver(this);
     buildLayout();
 }
 
@@ -95,7 +95,7 @@ void ResourceManagerWidget::removeSelectedItems()
 
     for (size_t i=0; i<rows.size(); i++) {
         std::string resrcIdentifier(model_->item(rows[i])->text().toLocal8Bit().constData());
-        ResourceManager::instance()->removeResource(resrcIdentifier);
+        ResourceManager::getPtr()->removeResource(resrcIdentifier);
     }
 
     listView_->setUpdatesEnabled(true);
