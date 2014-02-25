@@ -138,63 +138,74 @@ public:
         }
 
 
-    void updateFromProperty() {
-        this->setEnabled(!ordinalproperty_->getReadOnly());
-
-        T min = this->ordinalproperty_->getMinValue();
-        T max = this->ordinalproperty_->getMaxValue();
-        T inc = this->ordinalproperty_->getIncrement();
-        T val = this->ordinalproperty_->get();
-
-        for(size_t i = 0; i < this->ordinalproperty_->getDim(); i++) {
-            SliderWidgetQt<BT>* widget = static_cast<SliderWidgetQt<BT>*>(this->sliderWidgets_[i]);
-            widget->setRange(min[i], max[i]);
-            widget->setIncrement(inc[i]);
-            widget->initValue(val[i]);
-        }
-    }
+    void updateFromProperty();
 
 protected:
     // Connected to sliderwidget valueChanged()
-    void setPropertyValue(int sliderId) {
-        T propValue = this->ordinalproperty_->get();
-
-        propValue[sliderId] = static_cast<SliderWidgetQt<BT>*>(this->sliderWidgets_[sliderId])->getValue();
-
-        this->ordinalproperty_->setInitiatingWidget(this);
-        this->ordinalproperty_->set(propValue);
-        this->ordinalproperty_->clearInitiatingWidget();
-
-        emit this->modified();
-    }
-    void setAsMin() {
-        SliderWidgetQt<BT>* slider = static_cast<SliderWidgetQt<BT>*>(this->sliderWidgets_[this->sliderId_]);
-        T propValue = this->ordinalproperty_->getMinValue();
-        propValue[this->sliderId_] = slider->getValue();
-
-        this->ordinalproperty_->setInitiatingWidget(this);
-        this->ordinalproperty_->setMinValue(propValue);
-        this->ordinalproperty_->clearInitiatingWidget();
-
-        slider->setMinValue(propValue[this->sliderId_]);
-    }
-
-    void setAsMax() {
-        SliderWidgetQt<BT>* slider = static_cast<SliderWidgetQt<BT>*>(this->sliderWidgets_[this->sliderId_]);
-        T propValue = this->ordinalproperty_->getMaxValue();
-        propValue[this->sliderId_] = slider->getValue();
-
-        this->ordinalproperty_->setInitiatingWidget(this);
-        this->ordinalproperty_->setMaxValue(propValue);
-        this->ordinalproperty_->clearInitiatingWidget();
-
-        slider->setMaxValue(propValue[this->sliderId_]);
-    }
+    void setPropertyValue(int);
+    void setAsMin();
+    void setAsMax();
 };
+
+template <typename BT, typename T>
+void OrdinalPropertyWidgetQt<BT, T>::updateFromProperty() {
+    this->setEnabled(!this->ordinalproperty_->getReadOnly());
+
+    T min = this->ordinalproperty_->getMinValue();
+    T max = this->ordinalproperty_->getMaxValue();
+    T inc = this->ordinalproperty_->getIncrement();
+    T val = this->ordinalproperty_->get();
+
+    for(size_t i = 0; i < this->ordinalproperty_->getDim(); i++) {
+        SliderWidgetQt<BT>* widget = static_cast<SliderWidgetQt<BT>*>(this->sliderWidgets_[i]);
+        widget->setRange(min[i], max[i]);
+        widget->setIncrement(inc[i]);
+        widget->initValue(val[i]);
+    }
+}
+
+template <typename BT, typename T>
+void OrdinalPropertyWidgetQt<BT, T>::setPropertyValue(int sliderId) {
+    T propValue = this->ordinalproperty_->get();
+
+    propValue[sliderId] = static_cast<SliderWidgetQt<BT>*>(this->sliderWidgets_[sliderId])->getValue();
+
+    this->ordinalproperty_->setInitiatingWidget(this);
+    this->ordinalproperty_->set(propValue);
+    this->ordinalproperty_->clearInitiatingWidget();
+
+    emit this->modified();
+}
+
+template <typename BT, typename T>
+void OrdinalPropertyWidgetQt<BT, T>::setAsMin() {
+    SliderWidgetQt<BT>* slider = static_cast<SliderWidgetQt<BT>*>(this->sliderWidgets_[this->sliderId_]);
+    T propValue = this->ordinalproperty_->getMinValue();
+    propValue[this->sliderId_] = slider->getValue();
+
+    this->ordinalproperty_->setInitiatingWidget(this);
+    this->ordinalproperty_->setMinValue(propValue);
+    this->ordinalproperty_->clearInitiatingWidget();
+
+    slider->setMinValue(propValue[this->sliderId_]);
+}
+
+template <typename BT, typename T>
+void OrdinalPropertyWidgetQt<BT, T>::setAsMax() {
+    SliderWidgetQt<BT>* slider = static_cast<SliderWidgetQt<BT>*>(this->sliderWidgets_[this->sliderId_]);
+    T propValue = this->ordinalproperty_->getMaxValue();
+    propValue[this->sliderId_] = slider->getValue();
+
+    this->ordinalproperty_->setInitiatingWidget(this);
+    this->ordinalproperty_->setMaxValue(propValue);
+    this->ordinalproperty_->clearInitiatingWidget();
+
+    slider->setMaxValue(propValue[this->sliderId_]);
+}
 
 // Specialization for primitive types
 template <typename T>
-class OrdinalPropertyWidgetQt<T, T> : public TemplateOrdinalPropertyWidgetQt<T, T>{
+class OrdinalPropertyWidgetQt<T, T>: public TemplateOrdinalPropertyWidgetQt<T, T>{
 public:
     OrdinalPropertyWidgetQt(OrdinalProperty<T>* property)
         : TemplateOrdinalPropertyWidgetQt<T, T>(property) {
@@ -203,55 +214,66 @@ public:
         }
 
 
-    void updateFromProperty() {
-        this->setEnabled(!ordinalproperty_->getReadOnly());
-        T min = this->ordinalproperty_->getMinValue();
-        T max = this->ordinalproperty_->getMaxValue();
-        T inc = this->ordinalproperty_->getIncrement();
-        T val = this->ordinalproperty_->get();
-
-        SliderWidgetQt<T>* widget = static_cast<SliderWidgetQt<T>*>(this->sliderWidgets_[0]);
-        widget->setRange(min, max);
-        widget->setIncrement(inc);
-        widget->initValue(val);
-    }
+    void updateFromProperty();
 
 protected:
     // Connected to sliderwidget valueChanged()
-    void setPropertyValue(int sliderId) {
-        T propValue = this->ordinalproperty_->get();
-
-        propValue = static_cast<SliderWidgetQt<T>*>(this->sliderWidgets_[sliderId])->getValue();
-
-        this->ordinalproperty_->setInitiatingWidget(this);
-        this->ordinalproperty_->set(propValue);
-        this->ordinalproperty_->clearInitiatingWidget();
-
-        emit this->modified();
-    }
-    void setAsMin() {
-        SliderWidgetQt<T>* slider = static_cast<SliderWidgetQt<T>*>(this->sliderWidgets_[this->sliderId_]);
-        T propValue = slider->getValue();
-
-        this->ordinalproperty_->setInitiatingWidget(this);
-        this->ordinalproperty_->setMinValue(propValue);
-        this->ordinalproperty_->clearInitiatingWidget();
-
-        slider->setMinValue(propValue);
-    }
-
-    void setAsMax() {
-        SliderWidgetQt<T>* slider = static_cast<SliderWidgetQt<T>*>(this->sliderWidgets_[this->sliderId_]);
-        T propValue = this->ordinalproperty_->getMaxValue();
-        propValue = slider->getValue();
-
-        this->ordinalproperty_->setInitiatingWidget(this);
-        this->ordinalproperty_->setMaxValue(propValue);
-        this->ordinalproperty_->clearInitiatingWidget();
-
-        slider->setMaxValue(propValue);
-    }
+    void setPropertyValue(int);
+    void setAsMin();
+    void setAsMax();
 };
+
+template <typename T>
+void OrdinalPropertyWidgetQt<T, T>::updateFromProperty() {
+    this->setEnabled(!this->ordinalproperty_->getReadOnly());
+    T min = this->ordinalproperty_->getMinValue();
+    T max = this->ordinalproperty_->getMaxValue();
+    T inc = this->ordinalproperty_->getIncrement();
+    T val = this->ordinalproperty_->get();
+
+    SliderWidgetQt<T>* widget = static_cast<SliderWidgetQt<T>*>(this->sliderWidgets_[0]);
+    widget->setRange(min, max);
+    widget->setIncrement(inc);
+    widget->initValue(val);
+}
+
+template <typename T>
+void OrdinalPropertyWidgetQt<T, T>::setPropertyValue(int sliderId) {
+    T propValue = this->ordinalproperty_->get();
+
+    propValue = static_cast<SliderWidgetQt<T>*>(this->sliderWidgets_[sliderId])->getValue();
+
+    this->ordinalproperty_->setInitiatingWidget(this);
+    this->ordinalproperty_->set(propValue);
+    this->ordinalproperty_->clearInitiatingWidget();
+
+    emit this->modified();
+}
+
+template <typename T>
+void OrdinalPropertyWidgetQt<T, T>::setAsMin() {
+    SliderWidgetQt<T>* slider = static_cast<SliderWidgetQt<T>*>(this->sliderWidgets_[this->sliderId_]);
+    T propValue = slider->getValue();
+
+    this->ordinalproperty_->setInitiatingWidget(this);
+    this->ordinalproperty_->setMinValue(propValue);
+    this->ordinalproperty_->clearInitiatingWidget();
+
+    slider->setMinValue(propValue);
+}
+
+template <typename T>
+void OrdinalPropertyWidgetQt<T, T>::setAsMax() {
+    SliderWidgetQt<T>* slider = static_cast<SliderWidgetQt<T>*>(this->sliderWidgets_[this->sliderId_]);
+    T propValue = this->ordinalproperty_->getMaxValue();
+    propValue = slider->getValue();
+
+    this->ordinalproperty_->setInitiatingWidget(this);
+    this->ordinalproperty_->setMaxValue(propValue);
+    this->ordinalproperty_->clearInitiatingWidget();
+
+    slider->setMaxValue(propValue);
+}
 
 
 
