@@ -62,7 +62,7 @@ PythonEditorWidget* PythonEditorWidget::getPtr() {
 
 PythonEditorWidget::PythonEditorWidget(QWidget* parent)
     : InviwoDockWidget(tr("Python Editor"), parent)
-    , VoidObserver()
+    , ProcessorNetworkObserver()
     , infoTextColor_(153,153,153)
     , errorTextColor_(255,107,107)
     , script_()
@@ -81,7 +81,7 @@ PythonEditorWidget::PythonEditorWidget(QWidget* parent)
     InviwoApplication::getRef().registerFileObserver(this);
 }
 
-void PythonEditorWidget::notify() {
+void PythonEditorWidget::onProcessorNetworkChange() {
     if (script_.getScriptRecorder()->isRecording()) {
         script_.getScriptRecorder()->recordNetworkChanges();
         std::string currentScriptInEditor = pythonCode_->toPlainText().toLocal8Bit().constData();
