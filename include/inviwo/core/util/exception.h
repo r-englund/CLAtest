@@ -33,11 +33,12 @@
 #ifndef IVW_EXCEPTION_H
 #define IVW_EXCEPTION_H
 
+#include <inviwo/core/common/inviwocoredefine.h>
 #include <iostream>
 
 namespace inviwo {
 
-class Exception : public std::exception {
+class IVW_CORE_API Exception : public std::exception {
 
 public:
     Exception(const std::string& message = "");
@@ -50,19 +51,19 @@ protected:
 };
 
 
-class IgnoreException : public Exception {
+class IVW_CORE_API IgnoreException : public Exception {
 public:
     IgnoreException(const std::string& message = "");
     virtual ~IgnoreException() throw() {}
 };
 
-class AbortException : public Exception {
+class IVW_CORE_API AbortException : public Exception {
 public:
     AbortException(const std::string& message = "");
     virtual ~AbortException() throw() {}
 };
 
-class SerializationException : public Exception {
+class IVW_CORE_API SerializationException : public Exception {
 public:
     SerializationException(const std::string& message = "");
     virtual ~SerializationException() throw() {}
