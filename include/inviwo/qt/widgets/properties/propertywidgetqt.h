@@ -57,6 +57,9 @@ public:
     virtual ~PropertyWidgetQt();
     PropertyWidgetQt* create();
 
+    // Application viewModeNotification
+    virtual void onViewModeChange();
+
     virtual void showWidget();
     virtual void hideWidget();
     void updateContextMenu();
@@ -74,10 +77,7 @@ signals:
 protected:
     void setProperty(Property* property);
     PropertyVisibilityMode getApplicationViewMode();
-
-    // Application viewModeNotification
-    virtual void notify();
-
+    
     // Context menu
     QMenu* getContextMenu();
     void generateContextMenu();

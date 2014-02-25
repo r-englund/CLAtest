@@ -65,6 +65,7 @@ public:
 
     void setVisibilityMode(PropertyVisibilityMode visibilityMode) {visibilityMode_ = visibilityMode;};
     PropertyVisibilityMode getVisibilityMode() {return visibilityMode_;};
+    void onViewModeChange();
 
     void updateFromProperty();
     void addProperty(Property* tmpProperty);
@@ -76,6 +77,7 @@ public:
     std::vector<PropertyWidgetQt*> getPropertyWidgets() {return propertyWidgets_; };
     void addWidget(QWidget* widget);
     void removeWidget(QWidget* widget);
+    
 
     virtual void serialize(IvwSerializer& s) const;
     virtual void deserialize(IvwDeserializer& d);
@@ -103,8 +105,7 @@ private:
     QMenu* viewModeItem_;
 
 public slots:
-    void hide();
-    void show();
+    void toggleFold();
     void updateVisibility();
     void showContextMenu(const QPoint& pos);
     void setDeveloperViewMode(bool value);

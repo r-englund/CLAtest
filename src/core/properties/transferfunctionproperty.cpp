@@ -50,7 +50,6 @@ TransferFunctionProperty::TransferFunctionProperty(std::string identifier,
 
 TransferFunctionProperty::~TransferFunctionProperty() {
     volumeInport_ = NULL;
-    notifyObservers();
 }
 
 void TransferFunctionProperty::serialize(IvwSerializer& s) const {

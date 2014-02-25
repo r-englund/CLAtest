@@ -41,13 +41,22 @@ CollapsibleGroupBoxWidgetQt::CollapsibleGroupBoxWidgetQt(std::string identifier,
     : PropertyWidgetQt()
     , identifier_(identifier)
     , displayName_(displayName)
-    , visibilityMode_(APPLICATION) {
+    , visibilityMode_(APPLICATION)
+    , collapsed_(false)
+    , contextMenu_(NULL)
+    , viewModeActionGroup_(NULL) 
+    , viewModeItem_(NULL) {
+
     setObjectName("CollapsibleGroupBoxWidgetQt");
-    collapsed_ = false;
-    
-    InviwoApplication* inviwoApp = InviwoApplication::getPtr();
-    this->addObservation(static_cast<OptionPropertyInt*>(inviwoApp->getSettingsByType<SystemSettings>()->getPropertyByIdentifier("viewMode")));
-       
+  
+    OptionPropertyInt* viewmode = static_cast<OptionPropertyInt*>(
+        InviwoApplication::getPtr()->
+            getSettingsByType<SystemSettings>()->
+                getPropertyByIdentifier("viewMode")
+        );
+
+    viewmode->onChange(this, &CollapsibleGroupBoxWidgetQt::onViewModeChange);
+
     generateWidget();
     updateFromProperty();
 }
@@ -70,7 +79,13 @@ void CollapsibleGroupBoxWidgetQt::generateWidget() {
     groupBox_->setLayout(vLayout_);
 
     QHBoxLayout* heading = new QHBoxLayout();
+    
     btnCollapse_ = new QToolButton(this);
+    connect(btnCollapse_, 
+            SIGNAL(clicked()), 
+            this, 
+            SLOT(toggleFold()));
+
     heading->addWidget(btnCollapse_);
     label_ = new EditableLabelQt(this, displayName_, PropertyWidgetQt::getContextMenu());
     heading->addWidget(label_);
@@ -93,25 +108,21 @@ void CollapsibleGroupBoxWidgetQt::generateWidget() {
     hLayout->setSpacing(0);
  
     setLayout(hLayout);
-    show();
+    btnCollapse_->setIcon(QIcon(":/stylesheets/images/arrow_darker_down.png"));
 }
 
 void CollapsibleGroupBoxWidgetQt::updateFromProperty() {}
 
-void CollapsibleGroupBoxWidgetQt::show() {
-    collapsed_ = false;
-    groupBox_->show();
-    btnCollapse_->setIcon(QIcon(":/stylesheets/images/arrow_darker_down.png"));
-    disconnect(btnCollapse_, SIGNAL(clicked()), this, SLOT(show()));
-    connect(btnCollapse_, SIGNAL(clicked()), this, SLOT(hide()));
-}
-
-void CollapsibleGroupBoxWidgetQt::hide() {
-    collapsed_= true;
-    groupBox_->hide();
-    btnCollapse_->setIcon(QIcon(":/stylesheets/images/arrow_darker_right.png"));
-    disconnect(btnCollapse_, SIGNAL(clicked()), this, SLOT(hide()));
-    connect(btnCollapse_, SIGNAL(clicked()), this, SLOT(show()));
+void CollapsibleGroupBoxWidgetQt::toggleFold() {
+    if(collapsed_) {
+        groupBox_->show();
+        btnCollapse_->setIcon(QIcon(":/stylesheets/images/arrow_darker_down.png"));
+    } else {
+        groupBox_->hide();
+        btnCollapse_->setIcon(QIcon(":/stylesheets/images/arrow_darker_right.png"));
+    }
+    collapsed_ = !collapsed_;
+    
 }
 
 void CollapsibleGroupBoxWidgetQt::addProperty(Property* prop) {
@@ -178,21 +189,15 @@ void CollapsibleGroupBoxWidgetQt::updateVisibility() {
     PropertyVisibilityMode visibilityMode  = getApplicationViewMode();
 
     if (visibilityMode == DEVELOPMENT) {
-        this->setContextMenuPolicy(Qt::CustomContextMenu);
-
         for (size_t i=0; i<properties_.size(); i++) {
-            if (properties_[i]->getVisibilityMode()!= INVISIBLE) {
+            if (properties_[i]->getVisibilityMode() != INVISIBLE) {
                 this->setVisible(true);
                 break;
             }
             this->setVisible(false);
         }
-    }
-
-    if (visibilityMode == APPLICATION) {
-        this->setContextMenuPolicy(Qt::NoContextMenu);
-
-        for (size_t i=0; i<properties_.size(); i++) {
+    }else if (visibilityMode == APPLICATION) {
+         for (size_t i=0; i<properties_.size(); i++) {
             if (properties_[i]->getVisibilityMode()== APPLICATION) {
                 this->setVisible(true);
                 break;
@@ -322,6 +327,10 @@ void CollapsibleGroupBoxWidgetQt::removeWidget(QWidget* widget) {
             propertyWidgets_.erase(it);
         }
     }
+}
+
+void CollapsibleGroupBoxWidgetQt::onViewModeChange() {
+    // TODO figure out what to do here.... // Peter 20140225
 }
 
 } // namespace

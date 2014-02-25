@@ -39,13 +39,13 @@ ProcessorCategory(VolumeBasisTransformer, "Volume Operation");
 ProcessorCodeState(VolumeBasisTransformer, CODE_STATE_EXPERIMENTAL);
 
 VolumeBasisTransformer::VolumeBasisTransformer()
-    : Processor(),
-      inport_("volume.in"),
-      outport_("volume.out"),
-      lengths_("length_", "Lengths", vec3(1.0f), vec3(0.0f), vec3(10.0f)),
-      angels_("angles_", "Angles", vec3(90.0f), vec3(0.0f), vec3(180.0f), vec3(1.0f)),
-      offset_("offset_", "Offset", vec3(0.0f), vec3(-10.0f), vec3(10.0f)),
-      orgBasisAndOffset_(0.0f) {
+    : Processor()
+    , inport_("volume.in")
+    , outport_("volume.out")
+    , lengths_("length_", "Lengths", vec3(1.0f), vec3(0.0f), vec3(10.0f))
+    , angels_("angles_", "Angles", vec3(90.0f), vec3(0.0f), vec3(180.0f), vec3(1.0f))
+    , offset_("offset_", "Offset", vec3(0.0f), vec3(-10.0f), vec3(10.0f))
+    , orgBasisAndOffset_(0.0f) {
     addPort(inport_);
     addPort(outport_);
     addProperty(lengths_);

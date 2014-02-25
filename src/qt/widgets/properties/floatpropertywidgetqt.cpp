@@ -63,57 +63,50 @@ void BaseOrdinalPropertyWidgetQt::generateWidget() {
     label_->setSizePolicy(labelPol);
     connect(label_, SIGNAL(textChanged()),this, SLOT(setPropertyDisplayName()));
 
-    if (property_->getReadOnly()) {
-        readOnlyLabel_ = new QLabel();
-        hLayout->addWidget(readOnlyLabel_);
-        QSizePolicy sliderPol = readOnlyLabel_->sizePolicy();
-        sliderPol.setHorizontalStretch(3);
-        readOnlyLabel_->setSizePolicy(sliderPol);
-    } else {
-        
-        QWidget* sliderWidget = new QWidget();
-        QSizePolicy sliderPol = sliderWidget->sizePolicy();
-        sliderPol.setHorizontalStretch(3);
-        sliderWidget->setSizePolicy(sliderPol);
-        
-        QVBoxLayout* vLayout = new QVBoxLayout();
-        sliderWidget->setLayout(vLayout);
-        vLayout->setContentsMargins(0,0,0,0);
-        vLayout->setSpacing(0);
-        
-        sliderWidgets_ = makeSliders();
+       
+    QWidget* sliderWidget = new QWidget();
+    QSizePolicy sliderPol = sliderWidget->sizePolicy();
+    sliderPol.setHorizontalStretch(3);
+    sliderWidget->setSizePolicy(sliderPol);
 
-        for(size_t i = 0; i < sliderWidgets_.size(); i++){
-            sliderWidgets_[i]->setContextMenuPolicy(Qt::CustomContextMenu);
-            connect(sliderWidgets_[i],
-                    SIGNAL(customContextMenuRequested(const QPoint&)),
-                    signalMapperContextMenu_,
-                    SLOT(map()));
-            
-            connect(sliderWidgets_[i],
-                    SIGNAL(valueChanged()),
-                    signalMapperSetPropertyValue_,
-                    SLOT(map()));
-            
-            signalMapperContextMenu_->setMapping(sliderWidgets_[i], i);
-            signalMapperSetPropertyValue_->setMapping(sliderWidgets_[i], i);
-    
-            vLayout->addWidget(sliderWidgets_[i]);
-        }
-        
-        hLayout->addWidget(sliderWidget);
+    QVBoxLayout* vLayout = new QVBoxLayout();
+    sliderWidget->setLayout(vLayout);
+    vLayout->setContentsMargins(0, 0, 0, 0);
+    vLayout->setSpacing(0);
 
-        connect(signalMapperContextMenu_,
-                SIGNAL(mapped(int)),
-                this,
-                SLOT(showContextMenuSlider(int)));
-        
-        connect(signalMapperSetPropertyValue_,
-                SIGNAL(mapped(int)),
-                this,
-                SLOT(setPropertyValue(int)));        
+    sliderWidgets_ = makeSliders();
+
+    for(size_t i = 0; i < sliderWidgets_.size(); i++) {
+        sliderWidgets_[i]->setContextMenuPolicy(Qt::CustomContextMenu);
+        connect(sliderWidgets_[i],
+                SIGNAL(customContextMenuRequested(const QPoint&)),
+                signalMapperContextMenu_,
+                SLOT(map()));
+
+        connect(sliderWidgets_[i],
+                SIGNAL(valueChanged()),
+                signalMapperSetPropertyValue_,
+                SLOT(map()));
+
+        signalMapperContextMenu_->setMapping(sliderWidgets_[i], i);
+        signalMapperSetPropertyValue_->setMapping(sliderWidgets_[i], i);
+
+        vLayout->addWidget(sliderWidgets_[i]);
     }
-    
+
+    hLayout->addWidget(sliderWidget);
+
+    connect(signalMapperContextMenu_,
+            SIGNAL(mapped(int)),
+            this,
+            SLOT(showContextMenuSlider(int)));
+
+    connect(signalMapperSetPropertyValue_,
+            SIGNAL(mapped(int)),
+            this,
+            SLOT(setPropertyValue(int)));
+
+    this->setEnabled(!property_->getReadOnly());
     setLayout(hLayout);
 }
 
