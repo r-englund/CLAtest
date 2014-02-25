@@ -239,6 +239,7 @@ void PythonEditorWidget::readFile() {
     std::string text((std::istreambuf_iterator<char>(file)),
                      std::istreambuf_iterator<char>());
     file.close();
+    replaceInString(text,"\t","    ");
     pythonCode_->setPlainText(text.c_str());
     script_.setSource(text);
     unsavedChanges_ = false;
@@ -347,7 +348,24 @@ void PythonEditorWidget::clearOutput() {
 
 void PythonEditorWidget::onTextChange() {
     unsavedChanges_ = true;
-    const std::string source = pythonCode_->toPlainText().toLocal8Bit().constData();
+    std::string source = pythonCode_->toPlainText().toLocal8Bit().constData();
+    int size = source.length();
+
+    replaceInString(source,"\t","    ");
+
+    int prevPos = pythonCode_->textCursor().position();
+    if(size + 3 == source.size()){ // a tab was added
+        prevPos += 3;
+    }
+
+    pythonCode_->blockSignals(true);
+    pythonCode_->setPlainText(source.c_str());
+    pythonCode_->blockSignals(false);
+
+    QTextCursor cursor = pythonCode_->textCursor();
+    cursor.setPosition(prevPos);
+    pythonCode_->setTextCursor(cursor);
+
     script_.setSource(source);
 }
 
