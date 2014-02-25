@@ -34,8 +34,8 @@
 
 namespace inviwo {
 
-PropertySettingsWidgetQt::PropertySettingsWidgetQt(Property* property)
-    : QWidget(0)
+PropertySettingsWidgetQt::PropertySettingsWidgetQt(Property* property, QWidget* parent)
+    : QWidget(parent)
     , property_(property)
     , floatProperty_(NULL)
     , intProperty_(NULL)

@@ -41,7 +41,6 @@ BaseOrdinalPropertyWidgetQt::BaseOrdinalPropertyWidgetQt(Property* property)
 }
 
 BaseOrdinalPropertyWidgetQt::~BaseOrdinalPropertyWidgetQt() {
-    settingsWidget_->deleteLater();
 }
 
 void BaseOrdinalPropertyWidgetQt::generateWidget() {
@@ -183,7 +182,7 @@ void BaseOrdinalPropertyWidgetQt::showContextMenuSlider(int sliderId) {
 
 void BaseOrdinalPropertyWidgetQt::showSettings(){
     if (!settingsWidget_){
-        settingsWidget_ = new PropertySettingsWidgetQt(property_);
+        settingsWidget_ = new PropertySettingsWidgetQt(property_, this);
     }
     settingsWidget_->reload();
     settingsWidget_->show();
