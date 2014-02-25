@@ -184,52 +184,52 @@
                     <MetaDataList />
                     <lookFrom type="FloatVec3Property" identifier="lookFrom" displayName="Look from">
                         <MetaDataList />
-                        <value x="0.53697556" y="-2.8310659" z="2.1385515" />
-                        <minvalue x="-5.9848218" y="-5.9848218" z="-5.9848218" />
-                        <maxvalue x="5.9848218" y="5.9848218" z="5.9848218" />
+                        <minvalue x="-4.6299558" y="-4.6299558" z="-4.6299558" />
+                        <maxvalue x="4.6299558" y="4.6299558" z="4.6299558" />
                         <increment x="0.1" y="0.1" z="0.1" />
+                        <value x="-0.13560763" y="-1.2563957" z="2.1747582" />
                     </lookFrom>
                     <lookTo type="FloatVec3Property" identifier="lookTo" displayName="Look to">
                         <MetaDataList />
-                        <value x="0" y="0" z="0" />
-                        <minvalue x="-5.9848218" y="-5.9848218" z="-5.9848218" />
-                        <maxvalue x="5.9848218" y="5.9848218" z="5.9848218" />
+                        <minvalue x="-4.6299558" y="-4.6299558" z="-4.6299558" />
+                        <maxvalue x="4.6299558" y="4.6299558" z="4.6299558" />
                         <increment x="0.1" y="0.1" z="0.1" />
+                        <value x="0" y="0" z="0" />
                     </lookTo>
                     <lookUp type="FloatVec3Property" identifier="lookUp" displayName="Look up">
                         <MetaDataList />
-                        <value x="0.98671204" y="0.12782305" z="-0.0079097431" />
                         <minvalue x="-10" y="-10" z="-10" />
                         <maxvalue x="10" y="10" z="10" />
                         <increment x="0.1" y="0.1" z="0.1" />
+                        <value x="0.97798187" y="0.088130124" z="0.16058074" />
                     </lookUp>
                     <fovy type="FloatProperty" identifier="fov" displayName="FOV">
                         <MetaDataList />
-                        <value content="30" />
                         <minvalue content="30" />
                         <maxvalue content="360" />
                         <increment content="0.1" />
+                        <value content="30" />
                     </fovy>
                     <aspectRatio type="FloatProperty" identifier="aspectRatio" displayName="Aspect Ratio">
                         <MetaDataList />
-                        <value content="1" />
                         <minvalue content="0" />
                         <maxvalue content="1" />
                         <increment content="0.1" />
+                        <value content="1" />
                     </aspectRatio>
                     <nearPlane type="FloatProperty" identifier="near" displayName="Near Plane">
                         <MetaDataList />
-                        <value content="0.1" />
                         <minvalue content="0.001" />
                         <maxvalue content="10" />
                         <increment content="0.001" />
+                        <value content="0.1" />
                     </nearPlane>
                     <farPlane type="FloatProperty" identifier="far" displayName="Far Plane">
                         <MetaDataList />
-                        <value content="59.848221" />
                         <minvalue content="1" />
-                        <maxvalue content="598.48224" />
+                        <maxvalue content="462.99564" />
                         <increment content="1" />
+                        <value content="46.299561" />
                     </farPlane>
                 </Property>
                 <Property type="BoolProperty" identifier="capNearClipping" displayName="Cap near plane clipping" key="capNearClipping">
@@ -242,7 +242,7 @@
                 </Property>
             </Properties>
         </Processor>
-        <Processor type="CanvasGL" identifier="CanvasGL" id="ref2">
+        <Processor type="CanvasGL" identifier="Sepia" id="ref2">
             <MetaDataList>
                 <MetaData type="ProcessorMetaData">
                     <position x="-625" y="-350" />
@@ -250,7 +250,7 @@
                     <selection content="0" />
                 </MetaData>
                 <MetaData type="ProcessorWidgetMetaData">
-                    <position x="121" y="449" />
+                    <position x="2785" y="484" />
                     <dimension x="512" y="512" />
                     <visibility content="1" />
                 </MetaData>
@@ -258,14 +258,14 @@
             <Properties>
                 <Property type="IntVec2Property" identifier="dimensions" displayName="Dimensions" key="dimensions">
                     <MetaDataList />
-                    <value x="512" y="512" />
                     <minvalue x="128" y="128" />
                     <maxvalue x="4096" y="4096" />
                     <increment x="1" y="1" />
+                    <value x="512" y="512" />
                 </Property>
                 <Property type="DirectoryProperty" identifier="layerDir" displayName="Output Directory" key="layerDir">
                     <MetaDataList />
-                    <directory content="../../../data/workspaces/tests/../../images" />
+                    <directory content="../../progressivephotonmapping/workspaces/../../../data/workspaces/../../modules/cvultrasoundshading/workspaces/../../../data/workspaces/tests/../../images" />
                 </Property>
                 <Property type="ButtonProperty" identifier="saveLayer" displayName="Save Image Layer" key="saveLayer">
                     <MetaDataList />
@@ -279,7 +279,7 @@
         <Processor type="VolumeSource" identifier="VolumeSource" id="ref3">
             <MetaDataList>
                 <MetaData type="ProcessorMetaData">
-                    <position x="-625" y="-700" />
+                    <position x="-600" y="-725" />
                     <visibility content="1" />
                     <selection content="0" />
                 </MetaData>
@@ -293,7 +293,7 @@
                 </Property>
                 <Property type="FileProperty" identifier="filename" displayName="Volume file" key="filename">
                     <MetaDataList />
-                    <url content="D:/ContextVision_FTP/I30/I0000030_ENH-2_SC-679x307x174_segmented.dat" />
+                    <url content="../../progressivephotonmapping/workspaces/../../../data/workspaces/../../modules/cvultrasoundshading/workspaces/../../../data/workspaces/../../../../ContextVision_FTP/I30/I0000030_ENH-2_SC-679x307x174_segmented.dat" />
                     <nameFilter>
                         <filter content="All Files (*.*)" />
                         <filter content="Inviwo dat file format (*.dat)" />
@@ -320,7 +320,7 @@
                 <MetaData type="ProcessorMetaData">
                     <position x="-625" y="-450" />
                     <visibility content="1" />
-                    <selection content="1" />
+                    <selection content="0" />
                 </MetaData>
             </MetaDataList>
             <Properties>
@@ -336,60 +336,54 @@
                     </phaseFunction>
                     <IOR type="FloatProperty" identifier="IOR" displayName="Index of refraction">
                         <MetaDataList />
-                        <value content="1.5035" />
                         <minvalue content="1" />
                         <maxvalue content="20" />
                         <increment content="0.0099999998" />
+                        <value content="1.4959" />
                     </IOR>
                     <roughness type="FloatProperty" identifier="roughness" displayName="Roughness">
                         <MetaDataList />
-                        <value content="0.35877699" />
                         <minvalue content="0.0099999998" />
                         <maxvalue content="1" />
                         <increment content="0.0099999998" />
+                        <value content="0.21314801" />
                     </roughness>
                     <specularColor type="FloatVec4Property" identifier="specularColor" displayName="Specular color">
                         <MetaDataList />
-                        <value x="1" y="0.9254902" z="0.73725492" w="1" />
                         <minvalue x="0" y="0" z="0" w="0" />
                         <maxvalue x="1" y="1" z="1" w="1" />
                         <increment x="0.0099999998" y="0.0099999998" z="0.0099999998" w="0.0099999998" />
+                        <value x="1" y="1" z="1" w="1" />
                     </specularColor>
                     <anisotropy type="FloatProperty" identifier="anisotropy" displayName="Anisotropy (g)">
                         <MetaDataList />
-                        <value content="0" />
                         <minvalue content="-1" />
                         <maxvalue content="1" />
                         <increment content="0.0099999998" />
+                        <value content="0" />
                     </anisotropy>
                 </Property>
                 <Property type="FloatProperty" identifier="samplingRate" displayName="Sampling rate" key="samplingRate">
                     <MetaDataList />
-                    <value content="1" />
                     <minvalue content="1" />
                     <maxvalue content="15" />
                     <increment content="0.0099999998" />
+                    <value content="1" />
                 </Property>
                 <Property type="TransferFunctionProperty" identifier="transferFunction" displayName="Transfer function" key="transferFunction">
                     <MetaDataList>
                         <MetaData type="PropertyEditorWidgetMetaData">
-                            <position x="1386" y="568" />
-                            <dimension x="534" y="388" />
-                            <visibility content="1" />
+                            <position x="2611" y="151" />
+                            <dimension x="534" y="368" />
+                            <visibility content="0" />
                             <dockstatus content="DockedRight" />
                         </MetaData>
                     </MetaDataList>
-                    <size content="5" />
-                    <pos0 x="0.25702813" y="0" />
+                    <size content="2" />
+                    <pos0 x="0.25301206" y="0" />
                     <rgba0 x="0" y="0" z="0" w="0" />
-                    <pos1 x="0.31325302" y="0.16233717" />
-                    <rgba1 x="0.28235295" y="0.11773861" z="0.035431448" w="0.16233717" />
-                    <pos2 x="0.34939763" y="0.42701149" />
-                    <rgba2 x="0.68627453" y="0.24826428" z="0.10226596" w="0.42701149" />
-                    <pos3 x="0.41767067" y="0.47685918" />
-                    <rgba3 x="0.99215686" y="0.5953002" z="0.29181352" w="0.47685918" />
-                    <pos4 x="0.68273091" y="0.55172414" />
-                    <rgba4 x="0.8392157" y="0.59041733" z="0.2863203" w="0.55172414" />
+                    <pos1 x="0.437751" y="0.19105691" />
+                    <rgba1 x="0.80784315" y="0.54543376" z="0.3579919" w="0.19105691" />
                     <mask_ x="0" y="1" />
                     <zoomH_ x="0" y="1" />
                     <zoomV_ x="0" y="1" />
@@ -398,17 +392,17 @@
                 </Property>
                 <Property type="IntVec2Property" identifier="wgsize" displayName="Work group size" key="wgsize">
                     <MetaDataList />
-                    <value x="8" y="8" />
                     <minvalue x="0" y="0" />
                     <maxvalue x="256" y="256" />
                     <increment x="1" y="1" />
+                    <value x="8" y="8" />
                 </Property>
             </Properties>
         </Processor>
         <Processor type="Directional light source" identifier="Directional light source" id="ref5">
             <MetaDataList>
                 <MetaData type="ProcessorMetaData">
-                    <position x="-400" y="-550" />
+                    <position x="-425" y="-600" />
                     <visibility content="1" />
                     <selection content="0" />
                 </MetaData>
@@ -416,31 +410,31 @@
             <Properties>
                 <Property type="FloatVec4Property" identifier="lightDiffuse" displayName="Color" key="lightDiffuse">
                     <MetaDataList />
-                    <value x="1" y="1" z="1" w="1" />
                     <minvalue x="0" y="0" z="0" w="0" />
                     <maxvalue x="1" y="1" z="1" w="1" />
                     <increment x="0.0099999998" y="0.0099999998" z="0.0099999998" w="0.0099999998" />
+                    <value x="1" y="1" z="1" w="1" />
                 </Property>
                 <Property type="FloatVec3Property" identifier="lightPosition" displayName="Light Source Position" key="lightPosition">
                     <MetaDataList />
-                    <value x="-1.2963289" y="0.2184824" z="0.34175611" />
-                    <minvalue x="-1" y="-1" z="-1" />
-                    <maxvalue x="1" y="1" z="1" />
+                    <minvalue x="-100" y="-100" z="-100" />
+                    <maxvalue x="100" y="100" z="100" />
                     <increment x="0.0099999998" y="0.0099999998" z="0.0099999998" />
+                    <value x="0.46569735" y="-0.84084231" z="0.27588066" />
                 </Property>
                 <Property type="FloatProperty" identifier="lightPower" displayName="Light power (%)" key="lightPower">
                     <MetaDataList />
-                    <value content="4" />
                     <minvalue content="0" />
                     <maxvalue content="100" />
                     <increment content="0.0099999998" />
+                    <value content="12.56" />
                 </Property>
                 <Property type="FloatVec2Property" identifier="lightSize" displayName="Light size" key="lightSize">
                     <MetaDataList />
-                    <value x="1.5" y="1.5" />
                     <minvalue x="0" y="0" />
                     <maxvalue x="3" y="3" />
                     <increment x="0.0099999998" y="0.0099999998" />
+                    <value x="1" y="1" />
                 </Property>
             </Properties>
         </Processor>
@@ -487,19 +481,19 @@
             </InPort>
         </Connection>
         <Connection>
-            <OutPort identifier="outport">
-                <Processor type="VolumeSepiaShadingCL" identifier="VolumeSepiaShadingCL" reference="ref4" />
-            </OutPort>
-            <InPort identifier="inport">
-                <Processor type="CanvasGL" identifier="CanvasGL" reference="ref2" />
-            </InPort>
-        </Connection>
-        <Connection>
             <OutPort identifier="DirectionalLightSource">
                 <Processor type="Directional light source" identifier="Directional light source" reference="ref5" />
             </OutPort>
             <InPort identifier="lightSource">
                 <Processor type="VolumeSepiaShadingCL" identifier="VolumeSepiaShadingCL" reference="ref4" />
+            </InPort>
+        </Connection>
+        <Connection>
+            <OutPort identifier="outport">
+                <Processor type="VolumeSepiaShadingCL" identifier="VolumeSepiaShadingCL" reference="ref4" />
+            </OutPort>
+            <InPort identifier="inport">
+                <Processor type="CanvasGL" identifier="Sepia" reference="ref2" />
             </InPort>
         </Connection>
     </Connections>
