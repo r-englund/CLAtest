@@ -54,7 +54,6 @@ PythonMenu::PythonMenu() {
 }
 
 PythonMenu::~PythonMenu() {
-    // infoWidget_->deleteLater();
 }
 
 } // namespace
