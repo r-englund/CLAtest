@@ -11,7 +11,7 @@ BaseSliderWidgetQt::~BaseSliderWidgetQt() {}
 
 void BaseSliderWidgetQt::generateWidget() {
     QHBoxLayout* hLayout = new QHBoxLayout();
-    slider_ = new CustomSliderWidgetQt();
+    slider_ = new QSlider();
     slider_->setOrientation(Qt::Horizontal);
     slider_->setPageStep(1);
     slider_->setMaximum(SLIDER_MAX);
