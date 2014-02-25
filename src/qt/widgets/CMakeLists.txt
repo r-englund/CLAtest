@@ -7,7 +7,6 @@ ivw_project(inviwo-qtwidgets)
 set(MOC_FILES
     ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/colorwheel.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/customdoublespinboxqt.h
-    ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/customsliderwidgetqt.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/editablelabelqt.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/eventpropertymanagerwidget.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/sliderwidgetqt.h

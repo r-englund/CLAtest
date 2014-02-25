@@ -85,20 +85,20 @@ void CubeProxyGeometry::process() {
 
     if (clippingEnabled_.get()) {
         pos = pos + p1*static_cast<float>(clipX_.get().x)/static_cast<float>(dims_.x)
-              + p2*static_cast<float>(clipY_.get().x)/static_cast<float>(dims_.y)
-              + p3*static_cast<float>(clipZ_.get().x)/static_cast<float>(dims_.z);
+                  + p2*static_cast<float>(clipY_.get().x)/static_cast<float>(dims_.y)
+                  + p3*static_cast<float>(clipZ_.get().x)/static_cast<float>(dims_.z);
         p1 = p1*(static_cast<float>(clipX_.get().y)-static_cast<float>(clipX_.get().x))/static_cast<float>(dims_.x);
         p2 = p2*(static_cast<float>(clipY_.get().y)-static_cast<float>(clipY_.get().x))/static_cast<float>(dims_.y);
         p3 = p3*(static_cast<float>(clipZ_.get().y)-static_cast<float>(clipZ_.get().x))/static_cast<float>(dims_.z);
         tex = tex + t1*static_cast<float>(clipX_.get().x)/static_cast<float>(dims_.x)
-              + t2*static_cast<float>(clipY_.get().x)/static_cast<float>(dims_.y)
-              + t3*static_cast<float>(clipZ_.get().x)/static_cast<float>(dims_.z);
+                  + t2*static_cast<float>(clipY_.get().x)/static_cast<float>(dims_.y)
+                  + t3*static_cast<float>(clipZ_.get().x)/static_cast<float>(dims_.z);
         t1 = t1*(static_cast<float>(clipX_.get().y)-static_cast<float>(clipX_.get().x))/static_cast<float>(dims_.x);
         t2 = t2*(static_cast<float>(clipY_.get().y)-static_cast<float>(clipY_.get().x))/static_cast<float>(dims_.y);
         t3 = t3*(static_cast<float>(clipZ_.get().y)-static_cast<float>(clipZ_.get().x))/static_cast<float>(dims_.z);
         col = col + c1*static_cast<float>(clipX_.get().x)/static_cast<float>(dims_.x)
-              + c2*static_cast<float>(clipY_.get().x)/static_cast<float>(dims_.y)
-              + c3*static_cast<float>(clipZ_.get().x)/static_cast<float>(dims_.z);
+                  + c2*static_cast<float>(clipY_.get().x)/static_cast<float>(dims_.y)
+                  + c3*static_cast<float>(clipZ_.get().x)/static_cast<float>(dims_.z);
         c1 = c1*(static_cast<float>(clipX_.get().y)-static_cast<float>(clipX_.get().x))/static_cast<float>(dims_.x);
         c2 = c2*(static_cast<float>(clipY_.get().y)-static_cast<float>(clipY_.get().x))/static_cast<float>(dims_.y);
         c3 = c3*(static_cast<float>(clipZ_.get().y)-static_cast<float>(clipZ_.get().x))/static_cast<float>(dims_.z);

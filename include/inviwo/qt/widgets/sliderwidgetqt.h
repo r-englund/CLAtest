@@ -2,7 +2,6 @@
 #define IVW_SLIDETWIDGETQT_H
 
 #include <inviwo/qt/widgets/inviwoqtwidgetsdefine.h>
-#include <inviwo/qt/widgets/customsliderwidgetqt.h>
 #include <inviwo/qt/widgets/customdoublespinboxqt.h>
 
 #include <QSlider>
@@ -61,7 +60,7 @@ private:
 
     static const int SLIDER_MAX = 10000;
     CustomDoubleSpinBoxQt* spinBox_;
-    CustomSliderWidgetQt* slider_;
+    QSlider* slider_;
     double spinnerValue_;
     int sliderValue_;
 

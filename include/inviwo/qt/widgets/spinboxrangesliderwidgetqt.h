@@ -34,7 +34,6 @@
 #define IVW_SPINBOXRANGESLIDERQT_H
 
 #include <inviwo/qt/widgets/inviwoqtwidgetsdefine.h>
-#include <inviwo/qt/widgets/customsliderwidgetqt.h>
 #include <inviwo/qt/widgets/rangesliderqt.h>
 #include <QHBoxLayout>
 #include <QSpinBox>
