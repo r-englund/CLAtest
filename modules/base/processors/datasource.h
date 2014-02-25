@@ -67,7 +67,7 @@ bool DataSource<DataType, PortType>::isReady() const {
 
 template <typename DataType, typename PortType>
 void DataSource<DataType, PortType>::load() {
-    TemplateResource<DataType>* resource = ResourceManager::instance()->getResourceAs<TemplateResource<DataType> >(file_.get());
+    TemplateResource<DataType>* resource = ResourceManager::getPtr()->getResourceAs<TemplateResource<DataType> >(file_.get());
 
     if (resource) {
         port_.setData(resource->getData(), false);
@@ -79,7 +79,7 @@ void DataSource<DataType, PortType>::load() {
         if (reader) {
             try {
                 DataType* data = reader->readMetaData(file_.get());
-                ResourceManager::instance()->addResource(new TemplateResource<DataType>(file_.get(), data));
+                ResourceManager::getPtr()->addResource(new TemplateResource<DataType>(file_.get(), data));
                 port_.setData(data, false);
                 dataLoaded(data);
             } catch (DataReaderException const& e) {

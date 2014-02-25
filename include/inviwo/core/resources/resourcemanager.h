@@ -48,13 +48,9 @@ namespace inviwo {
  */
 // TODO: Should we add resource counting?
 // TODO: How do we generate identifiers for different resources?
-class IVW_CORE_API ResourceManager: public ResourceManagerObservable {
-
+class IVW_CORE_API ResourceManager: public Singleton<ResourceManager>, public ResourceManagerObservable {
+friend class Singleton<ResourceManager>; // Allow access to constructor
 public:
-    static ResourceManager* instance() {
-        static ResourceManager instance;// Guaranteed to be destroyed. Instantiated on first use.
-        return &instance;
-    }
     ~ResourceManager();
 
 
@@ -129,11 +125,15 @@ public:
     std::vector<Resource*>* getResources() { return resources_; }
 
 protected:
-
-private:
+    // This would preferably be private 
+    // but it is not possible with current 
+    // Singleton implementation
     ResourceManager(): ResourceManagerObservable() {
         resources_ = new std::vector<Resource*>();
     };
+private:
+    // Do not allow the Resource manager to be
+    // copied
     ResourceManager(ResourceManager const&) {
         resources_ = new std::vector<Resource*>();
     };

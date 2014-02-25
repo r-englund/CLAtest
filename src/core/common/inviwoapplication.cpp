@@ -44,6 +44,7 @@
 #include <inviwo/core/properties/propertyfactory.h>
 #include <inviwo/core/properties/propertywidgetfactory.h>
 #include <inviwo/core/rendering/geometryrendererfactory.h>
+#include <inviwo/core/resources/resourcemanager.h>
 
 namespace inviwo {
 
@@ -89,7 +90,8 @@ InviwoApplication::~InviwoApplication() {
 
 void InviwoApplication::initialize(registerModuleFuncPtr regModuleFunc) {
     printApplicationInfo();
-    // initialize singleton factories
+    // initialize singletons 
+    ResourceManager::init();
     DataReaderFactory::init();
     DataWriterFactory::init();
     DialogFactory::init();
@@ -112,6 +114,11 @@ void InviwoApplication::initialize(registerModuleFuncPtr regModuleFunc) {
 }
 
 void InviwoApplication::deinitialize() {
+    // Deinitialize Resource manager before modules
+    // to prevent them from using module specific 
+    // (OpenGL/OpenCL) features after their module 
+    // has been deinitialized
+    ResourceManager::deleteInstance();
     for (size_t i=0; i<modules_.size(); i++)
         modules_[i]->deinitialize();
 

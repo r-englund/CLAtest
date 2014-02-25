@@ -1381,7 +1381,7 @@ void NetworkEditor::placeProcessorOnProcessor(ProcessorGraphicsItem* processorIt
 ///////////////////////////////
 void NetworkEditor::clearNetwork() {
     processorNetwork_->lock();
-    ResourceManager::instance()->clearAllResources();
+    ResourceManager::getPtr()->clearAllResources();
     removePortInspector(inspection_.processorIdentifier_, inspection_.portIdentifier_);
     std::vector<Processor*> processors = processorNetwork_->getProcessors();
 
