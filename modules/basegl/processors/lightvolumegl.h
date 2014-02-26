@@ -80,6 +80,7 @@ protected:
 
     void volumeSizeOptionChanged();
     void supportColoredLightChanged();
+    void floatPrecisionChanged();
 
     void borderColorTextureParameterFunction();
 
@@ -94,6 +95,7 @@ private:
     BoolProperty supportColoredLight_;
     OptionPropertyInt volumeSizeOption_;
     TransferFunctionProperty transferFunction_;
+    BoolProperty floatPrecision_;
 
     Shader* propagationShader_;
     Shader* mergeShader_;

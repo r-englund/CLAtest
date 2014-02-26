@@ -110,6 +110,7 @@ LightVolumeGL::LightVolumeGL()
       supportColoredLight_("supportColoredLight", "Support Light Color", false),
       volumeSizeOption_("volumeSizeOption", "Light Volume Size"),
       transferFunction_("transferFunction", "Transfer function", TransferFunction(), &inport_),
+      floatPrecision_("floatPrecision", "Float Precision", false),
       propagationShader_(NULL),
       mergeShader_(NULL),
       mergeFBO_(NULL),
@@ -132,6 +133,8 @@ LightVolumeGL::LightVolumeGL()
     volumeSizeOption_.onChange(this, &LightVolumeGL::volumeSizeOptionChanged);
     addProperty(volumeSizeOption_);
     addProperty(transferFunction_);
+    floatPrecision_.onChange(this, &LightVolumeGL::floatPrecisionChanged);
+    addProperty(floatPrecision_);
 }
 
 LightVolumeGL::~LightVolumeGL() {
@@ -346,10 +349,18 @@ bool LightVolumeGL::volumeChanged(bool lightColorChanged) {
         volumeDimInFRCP_ = vec3(1.0f)/volumeDimInF_;
         const DataFormatBase* format;
 
-        if (supportColoredLight_.get())
-            format = DataVec4UINT8::get();
-        else
-            format = DataUINT8::get();
+        if (supportColoredLight_.get()){
+            if(floatPrecision_.get())
+                format = DataVec4FLOAT32::get();
+            else
+                format = DataVec4UINT8::get();
+        }
+        else{
+            if(floatPrecision_.get())
+                format = DataFLOAT32::get();
+            else
+                format = DataUINT8::get();
+        }
 
         for (int i=0; i<2; ++i) {
             if (!propParams_[i].vol || propParams_[i].vol->getDataFormat() != format) {
@@ -406,6 +417,10 @@ void LightVolumeGL::supportColoredLightChanged() {
         if ((components < 3 && supportColoredLight_.get()) || (components > 1 && !supportColoredLight_.get()))
             internalVolumesInvalid_ = true;
     }
+}
+
+void LightVolumeGL::floatPrecisionChanged() {
+    internalVolumesInvalid_ = true;
 }
 
 void LightVolumeGL::borderColorTextureParameterFunction() {
