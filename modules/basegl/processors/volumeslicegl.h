@@ -58,8 +58,28 @@ public:
     void initialize();
     void deinitialize();
 
+    void shiftSlice(int);
+
 protected:
-    virtual void process();
+    void process();
+
+    class VolumeSliceGLInteractationHandler : public InteractionHandler {
+    public:
+        VolumeSliceGLInteractationHandler(VolumeSliceGL* vs);
+        ~VolumeSliceGLInteractationHandler(){};
+
+        void invokeEvent(Event* event);
+    private:
+        MouseEvent scrollEvent_;
+
+        KeyboardEvent upEvent_;
+        KeyboardEvent downEvent_;
+
+        VolumeSliceGL* slicer_;
+
+        ivec2 lastMousePos_;
+        bool isMouseBeingPressedAndHold_;
+    };
 
     void planeSettingsChanged();
     void tfMappingEnabledChanged();

@@ -68,6 +68,7 @@ VolumeSliceGL::VolumeSliceGL()
     addProperty(tfMappingEnabled_);
     addProperty(transferFunction_);
     volumeDimensions_ = uvec3(256);
+    addInteractionHandler(new VolumeSliceGLInteractationHandler(this));
 }
 
 VolumeSliceGL::~VolumeSliceGL() {}
@@ -113,6 +114,12 @@ void VolumeSliceGL::process() {
     renderImagePlaneRect();
     shader_->deactivate();
     deactivateCurrentTarget();
+}
+
+void VolumeSliceGL::shiftSlice(int shift){
+    int newSlice = sliceNumber_.get()+shift;
+    if(newSlice >= sliceNumber_.getMinValue() && newSlice <= sliceNumber_.getMaxValue())
+        sliceNumber_.set(newSlice);
 }
 
 void VolumeSliceGL::planeSettingsChanged() {
@@ -167,6 +174,62 @@ void VolumeSliceGL::volumeDimensionChanged() {
         case YZ:
             sliceNumber_.setMaxValue(static_cast<int>(volumeDimensions_.x));
             break;
+    }
+}
+
+VolumeSliceGL::VolumeSliceGLInteractationHandler::VolumeSliceGLInteractationHandler(VolumeSliceGL* vs) 
+    : InteractionHandler()
+    , scrollEvent_(MouseEvent::MOUSE_BUTTON_MIDDLE, InteractionEvent::MODIFIER_NONE)
+    , upEvent_('W',InteractionEvent::MODIFIER_NONE, KeyboardEvent::KEY_STATE_PRESS)
+    , downEvent_('S',InteractionEvent::MODIFIER_NONE, KeyboardEvent::KEY_STATE_PRESS)
+    , slicer_(vs)
+    , isMouseBeingPressedAndHold_(false) {
+}
+
+void VolumeSliceGL::VolumeSliceGLInteractationHandler::invokeEvent(Event* event){
+    KeyboardEvent* keyEvent = dynamic_cast<KeyboardEvent*>(event);
+    if (keyEvent) {
+        int button = keyEvent->button();
+        KeyboardEvent::KeyState state = keyEvent->state();
+        InteractionEvent::Modifier modifier = keyEvent->modifier();
+
+        if (button == upEvent_.button()
+            && modifier == upEvent_.modifier()
+            && state == KeyboardEvent::KEY_STATE_PRESS)
+            slicer_->shiftSlice(1);
+        else if (button == downEvent_.button()
+            && modifier == downEvent_.modifier()
+            && state == KeyboardEvent::KEY_STATE_PRESS)
+            slicer_->shiftSlice(-1);
+
+        return;
+    }
+
+    MouseEvent* mouseEvent = dynamic_cast<MouseEvent*>(event);
+    if (mouseEvent) {
+        int button = mouseEvent->button();
+        MouseEvent::MouseState state = mouseEvent->state();
+        InteractionEvent::Modifier modifier = mouseEvent->modifier();
+
+        if (button == scrollEvent_.button()
+            && modifier == scrollEvent_.modifier()
+            && state == MouseEvent::MOUSE_STATE_PRESS) {
+                ivec2 curMousePos = mouseEvent->pos();
+                if (!isMouseBeingPressedAndHold_) {
+                    lastMousePos_ = curMousePos;
+                    isMouseBeingPressedAndHold_ = true;
+                }
+                else{
+                    ivec2 diff = curMousePos-lastMousePos_;
+                    slicer_->shiftSlice(diff.y);
+                    lastMousePos_ = curMousePos;
+                }
+        }
+        else if (state == MouseEvent::MOUSE_STATE_RELEASE){
+            isMouseBeingPressedAndHold_ = false;
+        }
+
+        return;
     }
 }
 

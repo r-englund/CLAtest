@@ -349,7 +349,7 @@ void PythonEditorWidget::clearOutput() {
 void PythonEditorWidget::onTextChange() {
     unsavedChanges_ = true;
     std::string source = pythonCode_->toPlainText().toLocal8Bit().constData();
-    int size = source.length();
+    int size = static_cast<int>(source.length());
 
     replaceInString(source,"\t","    ");
 
