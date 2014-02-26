@@ -37,7 +37,7 @@ namespace inviwo {
 Exception::Exception(const std::string& message)
     : message_(new std::string(message)) {}
 
-Exception::~Exception(){
+Exception::~Exception() throw () {
     delete message_;
     message_ = NULL;
 }
