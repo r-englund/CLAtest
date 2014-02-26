@@ -351,7 +351,8 @@ void InviwoMainWindow::newWorkspace() {
 #endif
 
     if (currentWorkspaceFileName_ != "")
-        askToSaveWorkspaceChanges();
+        if(!askToSaveWorkspaceChanges())
+            return;
 
     networkEditorView_->getNetworkEditor()->clearNetwork();
     setCurrentWorkspace(rootDir_ + "workspaces/untitled.inv");
@@ -423,8 +424,8 @@ void InviwoMainWindow::openRecentWorkspace() {
     QAction* action = qobject_cast<QAction*>(sender());
 
     if (action) {
-        askToSaveWorkspaceChanges();
-        openWorkspace(action->data().toString());
+        if(askToSaveWorkspaceChanges())
+            openWorkspace(action->data().toString());
     }
 }
 
