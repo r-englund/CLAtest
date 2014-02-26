@@ -53,9 +53,12 @@ PropertyListWidget::PropertyListWidget(QWidget* parent) : InviwoDockWidget(tr("P
     scrollArea_->setMinimumWidth(300);
     scrollArea_->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     scrollArea_->setFrameShape(QFrame::NoFrame);
+    scrollArea_->setContentsMargins(0, 0, 0, 0);
     listWidget_ = new QWidget();
     listWidgetLayout_ = new QVBoxLayout(listWidget_);
     listWidgetLayout_->setAlignment(Qt::AlignTop);
+    listWidgetLayout_->setContentsMargins(7, 7, 7, 7);
+    listWidgetLayout_->setSpacing(7);
     scrollArea_->setWidget(listWidget_);
     setWidget(scrollArea_);
     QSettings settings("Inviwo", "Inviwo");

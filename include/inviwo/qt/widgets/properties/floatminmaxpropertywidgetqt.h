@@ -55,7 +55,6 @@ public:
 private:
     FloatMinMaxProperty* property_;
     vec2 valueVec_;
-    QLabel* readOnlyLabel_;
     RangeSliderQt* slider_;
     CustomDoubleSpinBoxQt* spinBoxMin_;
     CustomDoubleSpinBoxQt* spinBoxMax_;

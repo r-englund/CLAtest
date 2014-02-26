@@ -73,8 +73,8 @@ void CollapsibleGroupBoxWidgetQt::generateWidget() {
     vLayout_ = new QVBoxLayout();
     vLayout_->setAlignment(Qt::AlignRight);
     vLayout_->setAlignment(Qt::AlignTop);
-    vLayout_->setContentsMargins(0,0,0,0);
-    vLayout_->setSpacing(11);
+    vLayout_->setContentsMargins(7,7,7,7);
+    vLayout_->setSpacing(7);
 
     groupBox_ = new QGroupBox(this);
     groupBox_->setFlat(true);
@@ -94,7 +94,10 @@ void CollapsibleGroupBoxWidgetQt::generateWidget() {
     label_ = new EditableLabelQt(this, displayName_, PropertyWidgetQt::getContextMenu());
     heading->addWidget(label_);
     heading->addStretch(10);
-    QPushButton* resetButton = new QPushButton(tr("&Reset"), this);
+    QToolButton* resetButton = new QToolButton(this);
+    resetButton->setIcon(QIcon(":/icons/edit-undo-icon.png"));
+    resetButton->setIconSize(QSize(20, 20));
+
     connect(resetButton,
             SIGNAL(clicked()),
             this,

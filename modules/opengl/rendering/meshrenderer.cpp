@@ -179,9 +179,7 @@ void MeshRenderer::initializeIndexBuffer(const Buffer* indexBuffer, Mesh::Attrib
     // check draw mode if there exists another indexBuffer
     if (drawMethods_[ai.rt].elementBufferList.size() != 0) {
         if (getDrawMode(ai.rt, ai.ct) != drawMethods_[ai.rt].drawMode) {
-            std::ostringstream str;
-            str << "draw mode mismatch (element buffer " << ai.rt << ")";
-            LogWarn(str);
+            LogWarn("draw mode mismatch (element buffer " << ai.rt << ")");
         }
     } 
     else {
