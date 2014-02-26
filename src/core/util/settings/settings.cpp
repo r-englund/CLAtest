@@ -60,4 +60,24 @@ std::string Settings::getIdentifier() {
     return identifier_;
 }
 
+void Settings::loadFromDisk(){
+    std::stringstream ss;
+    ss << getIdentifier() << ".ivs";
+    std::string filename = InviwoApplication::getPtr()->getPath(InviwoApplication::PATH_SETTINGS,ss.str());
+
+    if(URLParser::fileExists(filename)){
+        IvwDeserializer d(filename);
+        deserialize(d);
+    }
+    
+}
+
+void Settings::saveToDisk()const{
+    std::stringstream ss;
+    ss << identifier_ << ".ivs";
+    IvwSerializer s(InviwoApplication::getPtr()->getPath(InviwoApplication::PATH_SETTINGS,ss.str()));
+    serialize(s);
+    s.writeFile();
+}
+
 } // namespace

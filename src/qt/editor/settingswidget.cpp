@@ -37,7 +37,6 @@
 #include <inviwo/core/common/inviwoapplication.h>
 #include <QLayout>
 #include <QFrame>
-#include <QSettings>
 
 namespace inviwo {
 
@@ -63,12 +62,11 @@ SettingsWidget::~SettingsWidget() {
     }
 }
 
-//Load settings from QSettings
 void SettingsWidget::loadSettings() {
     std::vector<Settings*> settings = InviwoApplication::getPtr()->getModuleSettings();
-    QSettings qmainsettings("Inviwo", "Inviwo");
 
     for (size_t i=0; i<settings.size(); i++) {
+        settings[i]->loadFromDisk();
         //Holder widget
         QVBoxLayout* vLayout =  new QVBoxLayout();
         vLayout->setSpacing(0);
@@ -84,19 +82,10 @@ void SettingsWidget::loadSettings() {
         scrollAreaTab->setWidget(tabHolder);
         std::map<std::string, std::vector<Property*> > groups;
         std::vector<Property*> properties = settings[i]->getProperties();
-        qmainsettings.beginGroup(tr(settings[i]->getIdentifier().c_str()));
-        QStringList keys = qmainsettings.allKeys();
 
         for (size_t j=0; j<properties.size(); j++) {
             Property* curProperty = properties[j];
             QString name = QString::fromStdString(curProperty->getIdentifier());
-
-            if (keys.contains(name)) {
-                QVariant qval = qmainsettings.value(name);
-                Variant val(std::string(qval.toString().toLocal8Bit().constData()));
-                curProperty->setVariant(val);
-            }
-
             if (curProperty->getGroupID() != "")
                 groups[curProperty->getGroupID()].push_back(curProperty);
             else {
@@ -124,28 +113,15 @@ void SettingsWidget::loadSettings() {
             vLayout->addWidget(group);
         }
 
-        qmainsettings.endGroup();
         tabWidget_->addTab(scrollAreaTab, tr(settings[i]->getIdentifier().c_str()));
         vLayout->addStretch(0);
     }
 }
 
-//Save application settings to QSettings
 void SettingsWidget::saveSettings() {
     const std::vector<Settings*> settings = InviwoApplication::getRef().getModuleSettings();
-    QSettings qmainsettings("Inviwo", "Inviwo");
-
     for (size_t i=0; i<settings.size(); i++) {
-        std::vector<Property*> properties = settings[i]->getProperties();
-        qmainsettings.beginGroup(tr(settings[i]->getIdentifier().c_str()));
-
-        for (size_t j=0; j<properties.size(); j++) {
-            Property* curProperty = properties[j];
-            qmainsettings.setValue(QString::fromStdString(curProperty->getIdentifier()),
-                                   QVariant(QString::fromStdString(curProperty->getVariant().getString())));
-        }
-
-        qmainsettings.endGroup();
+        settings[i]->saveToDisk();
     }
 }
 
