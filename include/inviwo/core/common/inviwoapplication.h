@@ -71,6 +71,7 @@ public:
         PATH_WORKSPACES,// data/workspaces/
         PATH_IMAGES,     // data/images/
         PATH_RESOURCES,  // resources/
+        PATH_SETTINGS,  // settings/
         PATH_TRANSFERFUNCTIONS  // data/transferfunctions/
     };
 
