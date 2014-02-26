@@ -63,9 +63,11 @@ public:
     virtual void showWidget();
     virtual void hideWidget();
     void updateContextMenu();
+
     
 public slots:
     void visibilityModified(int mode);
+    virtual void resetPropertyToDefaultState();
     void showContextMenu(const QPoint& pos);
     void setDeveloperViewMode(bool value);
     void setApplicationViewMode(bool value);

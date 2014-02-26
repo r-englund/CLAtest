@@ -70,7 +70,6 @@ public:
     void updateFromProperty();
     void addProperty(Property* tmpProperty);
     QVBoxLayout* vLayout_;
-    void generatePropertyWidgets();
     void generateEventPropertyWidgets(EventPropertyManager* eventPropertyManager);
     std::vector<Property*> getProperties();
     bool isCollapsed() { return collapsed_; };
@@ -103,6 +102,7 @@ private:
     QMenu* contextMenu_;
     QActionGroup* viewModeActionGroup_;
     QMenu* viewModeItem_;
+    QAction* resetAction_;
 
 public slots:
     void toggleFold();
@@ -110,6 +110,7 @@ public slots:
     void showContextMenu(const QPoint& pos);
     void setDeveloperViewMode(bool value);
     void setApplicationViewMode(bool value);
+    virtual void resetPropertyToDefaultState();
 
 protected slots:
     void setGroupDisplayName();

@@ -55,8 +55,6 @@ void CompositePropertyWidgetQt::generateWidget() {
         collapsiveGroupBoxWidget_->addProperty(curProperty);
     }
 
-    collapsiveGroupBoxWidget_->generatePropertyWidgets();
-    vLayout->addWidget(collapsiveGroupBoxWidget_);
     vLayout->setContentsMargins(0,0,0,0);
     vLayout->setSpacing(0);
     setLayout(vLayout);
@@ -82,6 +80,10 @@ void CompositePropertyWidgetQt::hideWidget() {
 
 void CompositePropertyWidgetQt::setDisplayModeFromGroupBox() {
     property_->setVisibility(collapsiveGroupBoxWidget_->getVisibilityMode());
+}
+
+void CompositePropertyWidgetQt::resetPropertyToDefaultState() {
+    collapsiveGroupBoxWidget_->resetPropertyToDefaultState();
 }
 
 

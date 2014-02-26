@@ -47,15 +47,18 @@
 
 namespace inviwo {
 
-FilePropertyWidgetQt::FilePropertyWidgetQt(FileProperty* property) : property_(property) {
-    PropertyWidgetQt::setProperty(property_);
-    PropertyWidgetQt::generateContextMenu();
+FilePropertyWidgetQt::FilePropertyWidgetQt(FileProperty* property)
+    : PropertyWidgetQt(property)
+    , property_(property) {
+
     generateWidget();
     updateFromProperty();
 }
 
 void FilePropertyWidgetQt::generateWidget() {
     QHBoxLayout* hLayout = new QHBoxLayout();
+    hLayout->setContentsMargins(0, 0, 0, 0);
+    hLayout->setSpacing(0);
     label_ = new EditableLabelQt(this,property_->getDisplayName(),PropertyWidgetQt::generatePropertyWidgetMenu());
     hLayout->addWidget(label_);
     lineEdit_ = new QLineEdit(this);

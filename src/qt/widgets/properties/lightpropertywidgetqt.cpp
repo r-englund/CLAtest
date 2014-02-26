@@ -35,9 +35,9 @@
 
 namespace inviwo {
 
-LightPropertyWidgetQt::LightPropertyWidgetQt(FloatVec3Property* property) : property_(property) {
-    PropertyWidgetQt::setProperty(property_);
-    PropertyWidgetQt::generateContextMenu();
+LightPropertyWidgetQt::LightPropertyWidgetQt(FloatVec3Property* property) 
+    : PropertyWidgetQt(property)
+    , property_(property) {
     generateWidget();
     updateFromProperty();
 }
@@ -47,11 +47,16 @@ LightPropertyWidgetQt::~LightPropertyWidgetQt() {
 }
 
 void LightPropertyWidgetQt::generateWidget() {
+    QHBoxLayout* hLayout = new QHBoxLayout();
+    hLayout->setContentsMargins(0, 0, 0, 0);
+    hLayout->setSpacing(0);
+    
     lightWidget_ = new LightPositionWidgetQt();
-
     label_ = new EditableLabelQt(this,property_->getDisplayName(),PropertyWidgetQt::generatePropertyWidgetMenu());
-    radiusLabel_ = new QLabel(this);
-    radiusLabel_->setText("Radius");
+    QLabel* radiusLabel = new QLabel(this);
+    radiusLabel->setText("Distance");
+    QLabel* dirLabel = new QLabel(this);
+    dirLabel->setText("Direction");
     radiusSpinBox_ = new CustomDoubleSpinBoxQt(this);
     radiusSpinBox_->setSingleStep(0.1);
     radiusSpinBox_->setKeyboardTracking(false); // don't emit the valueChanged() signal while typing
@@ -59,16 +64,24 @@ void LightPropertyWidgetQt::generateWidget() {
     connect(lightWidget_,SIGNAL(positionChanged()), this, SLOT(onPositionLightWidgetChanged()));
     connect(radiusSpinBox_, SIGNAL(valueChanged(double)), this, SLOT(onRadiusSpinBoxChanged(double)));
 
+
+    QGroupBox* groupBox = new QGroupBox(this);
+    groupBox->setFlat(true);
     QGridLayout* layout = new QGridLayout();
-    layout->addWidget(label_, 0, 0);
+    groupBox->setLayout(layout);
+
+    layout->setContentsMargins(0, 0, 0, 0);
+    layout->setSpacing(3);
+    layout->addWidget(dirLabel, 0, 0);
     layout->addWidget(lightWidget_, 0, 1);
-    layout->addWidget(radiusLabel_, 1, 0);
+    layout->addWidget(radiusLabel, 1, 0);
     layout->addWidget(radiusSpinBox_, 1, 1);
-    setLayout(layout);
-
-
-    if (property_->getReadOnly())
-        label_->finishEditing();
+    
+    hLayout->addWidget(label_);
+    hLayout->addStretch(1);
+    hLayout->addWidget(groupBox);
+    
+    setLayout(hLayout);
 }
 
 void LightPropertyWidgetQt::onPositionLightWidgetChanged() {

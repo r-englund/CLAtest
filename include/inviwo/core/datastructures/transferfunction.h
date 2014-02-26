@@ -30,7 +30,7 @@
  *
  *********************************************************************************/
 
-/** \Class for holding transfer function data
+/** \class for holding transfer function data
  *
  *  This class holds transfer function data, currently one parameter in the variable data_.
  */

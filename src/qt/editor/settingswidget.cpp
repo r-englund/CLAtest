@@ -109,7 +109,6 @@ void SettingsWidget::loadSettings() {
                 group->addProperty(curProperty);
             }
 
-            group->generatePropertyWidgets();
             vLayout->addWidget(group);
         }
 

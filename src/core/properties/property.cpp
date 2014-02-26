@@ -43,10 +43,11 @@ Property::Property(std::string identifier,
                    std::string displayName,
                    PropertyOwner::InvalidationLevel invalidationLevel,
                    PropertySemantics semantics)
-    : 
-    identifier_(identifier)
+    : IvwSerializable()
+    , identifier_(identifier)
     , displayName_(displayName)
     , readOnly_(false)
+    , lockInvalidation_(false)
     , semantics_(semantics)
     , visibilityMode_(APPLICATION)
     , propertyModified_(false)
@@ -58,8 +59,8 @@ Property::Property(std::string identifier,
 }
 
 Property::Property()
-    : 
-     identifier_("")
+    : IvwSerializable()
+    , identifier_("")
     , displayName_("")
     , readOnly_(false)
     , semantics_(PropertySemantics::Default)
@@ -178,7 +179,7 @@ void Property::propertyModified() {
     setPropertyModified(true);
 
     //FIXME: if set() is called before addProperty(), getOwner() will be 0 ( case for option properties )
-    if (getOwner()) getOwner()->invalidate(getInvalidationLevel(), this);
+    if (getOwner() && !lockInvalidation_) getOwner()->invalidate(getInvalidationLevel(), this);
 
     updateWidgets();
 }
@@ -285,6 +286,16 @@ void Property::setVisible(bool val) {
         setVisibility(APPLICATION);
     else
         setVisibility(INVISIBLE);
+}
+
+void Property::setCurrentStateAsDefault() {}
+
+void Property::resetToDefaultState() {
+    propertyModified();
+}
+
+void Property::lockInvalidation(bool val) {
+    lockInvalidation_ = val;
 }
 
 } // namespace

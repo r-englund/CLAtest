@@ -34,28 +34,29 @@
 
 namespace inviwo {
 
-BoolPropertyWidgetQt::BoolPropertyWidgetQt(BoolProperty* property) : property_(property) {
-    PropertyWidgetQt::setProperty(property_);
-    PropertyWidgetQt::generateContextMenu();
+BoolPropertyWidgetQt::BoolPropertyWidgetQt(BoolProperty* property) 
+    : PropertyWidgetQt(property)
+    , property_(property) {
+
     generateWidget();
     updateFromProperty();
 }
 
 void BoolPropertyWidgetQt::generateWidget() {
     QHBoxLayout* hLayout = new QHBoxLayout();
+    hLayout->setContentsMargins(0, 0, 0, 0);
+    hLayout->setSpacing(0);
+    
+    label_ = new EditableLabelQt(this, property_->getDisplayName(), PropertyWidgetQt::generatePropertyWidgetMenu());
+    label_->setShortenText(false);
+    connect(label_, SIGNAL(textChanged()), this, SLOT(setPropertyDisplayName()));
+    hLayout->addWidget(label_);
+
     checkBox_ = new QCheckBox();
+    checkBox_->setEnabled(!property_->getReadOnly());
+    connect(checkBox_, SIGNAL(clicked()), this, SLOT(setPropertyValue()));
 
-    if (property_->getReadOnly()) {
-        hLayout->addWidget(new QLabel(QString::fromStdString(property_->getDisplayName())));
-        checkBox_->setDisabled(true);
-    }
-    else {
-        label_ = new EditableLabelQt(this,property_->getDisplayName(),PropertyWidgetQt::generatePropertyWidgetMenu());
-        hLayout->addWidget(label_);
-        connect(label_, SIGNAL(textChanged()),this, SLOT(setPropertyDisplayName()));
-        connect(checkBox_, SIGNAL(clicked()), this, SLOT(setPropertyValue()));
-    }
-
+    hLayout->addStretch(1);
     hLayout->addWidget(checkBox_);
     setLayout(hLayout);
 }

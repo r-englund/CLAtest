@@ -31,6 +31,8 @@
  *********************************************************************************/
 
 #include <inviwo/qt/widgets/properties/collapsiblegroupboxwidgetqt.h>
+#include <inviwo/qt/widgets/properties/compositepropertywidgetqt.h>
+#include <inviwo/qt/widgets/properties/camerapropertywidgetqt.h>
 #include <inviwo/core/common/inviwoapplication.h>
 #include <inviwo/core/util/settings/systemsettings.h>
 #include <inviwo/core/properties/propertywidgetfactory.h>
@@ -79,8 +81,10 @@ void CollapsibleGroupBoxWidgetQt::generateWidget() {
     groupBox_->setLayout(vLayout_);
 
     QHBoxLayout* heading = new QHBoxLayout();
-    
+    heading->setSpacing(7);
+
     btnCollapse_ = new QToolButton(this);
+    btnCollapse_->setIcon(QIcon(":/stylesheets/images/arrow_darker_down.png"));
     connect(btnCollapse_, 
             SIGNAL(clicked()), 
             this, 
@@ -89,7 +93,16 @@ void CollapsibleGroupBoxWidgetQt::generateWidget() {
     heading->addWidget(btnCollapse_);
     label_ = new EditableLabelQt(this, displayName_, PropertyWidgetQt::getContextMenu());
     heading->addWidget(label_);
-    heading->setSpacing(7);
+    heading->addStretch(10);
+    QPushButton* resetButton = new QPushButton(tr("&Reset"), this);
+    connect(resetButton,
+            SIGNAL(clicked()),
+            this,
+            SLOT(resetPropertyToDefaultState()));
+    resetButton->setToolTip(tr("&Reset the group of properties to its default state"));
+ 
+    heading->addWidget(resetButton);
+
     
     QGridLayout* gridLayout = new QGridLayout();
     gridLayout->setContentsMargins(0,0,0,0);
@@ -108,7 +121,7 @@ void CollapsibleGroupBoxWidgetQt::generateWidget() {
     hLayout->setSpacing(0);
  
     setLayout(hLayout);
-    btnCollapse_->setIcon(QIcon(":/stylesheets/images/arrow_darker_down.png"));
+    
 }
 
 void CollapsibleGroupBoxWidgetQt::updateFromProperty() {}
@@ -141,9 +154,6 @@ void CollapsibleGroupBoxWidgetQt::addProperty(Property* prop) {
     }
 }
 
-void CollapsibleGroupBoxWidgetQt::generatePropertyWidgets() {
-}
-
 void CollapsibleGroupBoxWidgetQt::generateEventPropertyWidgets(EventPropertyManager* epm) {
     for (size_t i=0; i<properties_.size(); i++) {
         EventPropertyWidgetQt* ep = dynamic_cast<EventPropertyWidgetQt*>(properties_[i]);
@@ -152,7 +162,6 @@ void CollapsibleGroupBoxWidgetQt::generateEventPropertyWidgets(EventPropertyMana
         }
     }
 }
-
 
 std::string CollapsibleGroupBoxWidgetQt::getIdentifier() const {
     return identifier_;
@@ -220,6 +229,9 @@ void CollapsibleGroupBoxWidgetQt::generateContextMenu() {
     viewModeActionGroup_->addAction(developerViewModeAction_);
     viewModeActionGroup_->addAction(applicationViewModeAction_);
     contextMenu_->addMenu(viewModeItem_);
+    resetAction_ = new QAction(tr("&Reset"), this);
+    contextMenu_->addAction(resetAction_);
+    
     updateContextMenu();
     
     connect(developerViewModeAction_,
@@ -231,6 +243,11 @@ void CollapsibleGroupBoxWidgetQt::generateContextMenu() {
             SIGNAL(triggered(bool)),
             this,
             SLOT(setApplicationViewMode(bool)));
+
+    connect(resetAction_,
+            SIGNAL(triggered(bool)),
+            this,
+            SLOT(resetPropertyToDefaultState()));
 }
 
 void CollapsibleGroupBoxWidgetQt::showContextMenu(const QPoint& pos) {
@@ -331,6 +348,36 @@ void CollapsibleGroupBoxWidgetQt::removeWidget(QWidget* widget) {
 
 void CollapsibleGroupBoxWidgetQt::onViewModeChange() {
     // TODO figure out what to do here.... // Peter 20140225
+}
+
+void CollapsibleGroupBoxWidgetQt::resetPropertyToDefaultState() {
+    PropertyOwner::InvalidationLevel invalidationLevel = PropertyOwner::VALID;
+    for (size_t i = 0; i < properties_.size(); i++) {
+        properties_[i]->lockInvalidation(true);
+        properties_[i]->resetToDefaultState();
+        properties_[i]->lockInvalidation(false);
+        invalidationLevel = std::max(invalidationLevel, properties_[i]->getInvalidationLevel());
+    }
+    if (properties_[0]->getOwner()) {
+        properties_[0]->getOwner()->invalidate(invalidationLevel, properties_[0]);
+    }
+
+    for (size_t i = 0; i < propertyWidgets_.size(); i++) {
+        CollapsibleGroupBoxWidgetQt* widget = dynamic_cast<CollapsibleGroupBoxWidgetQt*>(propertyWidgets_[i]);
+        if (widget) {
+            widget->resetPropertyToDefaultState();
+        }
+
+        CompositePropertyWidgetQt* compWidget = dynamic_cast<CompositePropertyWidgetQt*>(propertyWidgets_[i]);
+        if (compWidget) {
+            compWidget->resetPropertyToDefaultState();
+        }
+
+        CameraPropertyWidgetQt* camWidget = dynamic_cast<CameraPropertyWidgetQt*>(propertyWidgets_[i]);
+        if(camWidget) {
+            camWidget->resetPropertyToDefaultState();
+        }
+    }
 }
 
 } // namespace

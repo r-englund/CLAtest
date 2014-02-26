@@ -54,10 +54,14 @@ public:
     void showWidget();
     void hideWidget();
 
+public slots:
+    virtual void resetPropertyToDefaultState();
 
 protected slots:
     void propertyModified();
     void setDisplayModeFromGroupBox();
+    
+
 private:
     CompositeProperty* property_;
     CollapsibleGroupBoxWidgetQt* collapsiveGroupBoxWidget_;

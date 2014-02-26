@@ -129,16 +129,16 @@ public:
      *  constructor after setting property specific state.
      *  It is important that all overriding properties make sure to call the base class implementation.
      */
-    //virtual void setCurrentStateAsDefault();
+    virtual void setCurrentStateAsDefault();
     
     /**
      * Reset the state of the property back to it's default value.
      * It is important that all overriding properties make sure to call the base class implementation.
      */
-    //virtual void resetToDefaultState();
-
+    virtual void resetToDefaultState();
 
     virtual void propertyModified();
+    virtual void lockInvalidation(bool val);
     virtual void setPropertyModified(bool modified);
     virtual bool isPropertyModified() const;
     virtual Variant getVariant();
@@ -170,6 +170,7 @@ private:
     std::string displayName_;
 
     bool readOnly_;
+    bool lockInvalidation_;
     PropertySemantics semantics_;
     PropertyVisibilityMode visibilityMode_;
 

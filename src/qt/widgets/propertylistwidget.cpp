@@ -174,10 +174,6 @@ QWidget* PropertyListWidget::createNewProcessorPropertiesItem(Processor* process
             processorPropertyWidget->addProperty(props[i]);
         }
     }
-    processorPropertyWidget->generatePropertyWidgets();
-    for (GroupMap::const_iterator it = groups.begin(); it != groups.end(); ++it){
-        it->second->generatePropertyWidgets();
-    }
     
     propertyWidgetMap_.insert(std::make_pair(processor->getIdentifier(), processorPropertyWidget));
     return processorPropertyWidget;

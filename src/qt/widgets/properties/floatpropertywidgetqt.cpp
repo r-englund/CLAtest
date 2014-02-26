@@ -113,8 +113,11 @@ void BaseOrdinalPropertyWidgetQt::generateWidget() {
 void BaseOrdinalPropertyWidgetQt::generatesSettingsWidget() {
 
     settingsAction_ = new QAction(tr("&Property settings..."), this);
+    settingsAction_->setToolTip(tr("&Open the property settings dialog to adjust min, max, and increment values"));
     minAction_ = new QAction(tr("&Set as Min"), this);
+    minAction_->setToolTip(tr("&Use the current value as the min value for the property"));
     maxAction_ = new QAction(tr("&Set as Max"), this);
+    maxAction_->setToolTip(tr("&Use the current value as the max value for the property"));
 
     connect(settingsAction_,
             SIGNAL(triggered()),
@@ -130,7 +133,7 @@ void BaseOrdinalPropertyWidgetQt::generatesSettingsWidget() {
             SIGNAL(triggered()),
             this,
             SLOT(setAsMax()));
-    
+               
     contextMenu_ = new QMenu();
     contextMenu_->addActions(PropertyWidgetQt::getContextMenu()->actions());
     contextMenu_->addAction(settingsAction_);
@@ -187,6 +190,7 @@ void BaseOrdinalPropertyWidgetQt::showSettings(){
     settingsWidget_->reload();
     settingsWidget_->show();
 }
+
 
 
 
