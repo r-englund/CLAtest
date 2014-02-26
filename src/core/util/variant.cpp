@@ -1718,34 +1718,37 @@ void Variant::deserialize(IvwDeserializer& d) {
 
 Variant& Variant::operator= (const Variant& rhs) {
     if (this != &rhs) {
-        switch (rhs.getType()) {
+        std::string rhs_string = rhs.getString();
+        Variant temp_rhs(rhs_string);
+
+        switch (this->getType()) {
             case VariantTypeInvalid:
                 deleteValue();
                 currentType_ = VariantTypeInvalid;
                 break;
 
             case VariantTypeBool:
-                set<bool>(rhs.getBool(), VariantTypeBool);
+                set<bool>(temp_rhs.getBool(), VariantTypeBool);
                 break;
 
             case VariantTypeDouble:
-                set<double>(rhs.getDouble(), VariantTypeDouble);
+                set<double>(temp_rhs.getDouble(), VariantTypeDouble);
                 break;
 
             case VariantTypeFloat:
-                set<float>(rhs.getFloat(), VariantTypeFloat);
+                set<float>(temp_rhs.getFloat(), VariantTypeFloat);
                 break;
 
             case VariantTypeInteger:
-                set<int>(rhs.getInt(), VariantTypeInteger);
+                set<int>(temp_rhs.getInt(), VariantTypeInteger);
                 break;
 
             case VariantTypeLong:
-                set<long>(rhs.getLong(), VariantTypeLong);
+                set<long>(temp_rhs.getLong(), VariantTypeLong);
                 break;
 
             case VariantTypeString:
-                set<std::string>(rhs.getString(), VariantTypeString);
+                set<std::string>(temp_rhs.getString(), VariantTypeString);
                 break;
 
             case VariantTypeIVec2:
@@ -1753,11 +1756,11 @@ Variant& Variant::operator= (const Variant& rhs) {
                 break;
 
             case VariantTypeIVec3:
-                set<ivec3>(rhs.getIVec3(), VariantTypeIVec3);
+                set<ivec3>(temp_rhs.getIVec3(), VariantTypeIVec3);
                 break;
 
             case VariantTypeIVec4:
-                set<ivec4>(rhs.getIVec4(), VariantTypeIVec4);
+                set<ivec4>(temp_rhs.getIVec4(), VariantTypeIVec4);
                 break;
 
             case VariantTypeVec2:
@@ -1765,35 +1768,35 @@ Variant& Variant::operator= (const Variant& rhs) {
                 break;
 
             case VariantTypeVec3:
-                set<vec3>(rhs.getVec3(), VariantTypeVec3);
+                set<vec3>(temp_rhs.getVec3(), VariantTypeVec3);
                 break;
 
             case VariantTypeVec4:
-                set<vec4>(rhs.getVec4(), VariantTypeVec4);
+                set<vec4>(temp_rhs.getVec4(), VariantTypeVec4);
                 break;
 
             case VariantTypeDVec2:
-                set<dvec2>(rhs.getDVec2(), VariantTypeDVec2);
+                set<dvec2>(temp_rhs.getDVec2(), VariantTypeDVec2);
                 break;
 
             case VariantTypeDVec3:
-                set<dvec3>(rhs.getDVec3(), VariantTypeDVec3);
+                set<dvec3>(temp_rhs.getDVec3(), VariantTypeDVec3);
                 break;
 
             case VariantTypeDVec4:
-                set<dvec4>(rhs.getDVec4(), VariantTypeDVec4);
+                set<dvec4>(temp_rhs.getDVec4(), VariantTypeDVec4);
                 break;
 
             case VariantTypeMat2:
-                set<mat2>(rhs.getMat2(), VariantTypeMat2);
+                set<mat2>(temp_rhs.getMat2(), VariantTypeMat2);
                 break;
 
             case VariantTypeMat3:
-                set<mat3>(rhs.getMat3(), VariantTypeMat3);
+                set<mat3>(temp_rhs.getMat3(), VariantTypeMat3);
                 break;
 
             case VariantTypeMat4:
-                set<mat4>(rhs.getMat4(), VariantTypeMat4);
+                set<mat4>(temp_rhs.getMat4(), VariantTypeMat4);
                 break;
 
             default:

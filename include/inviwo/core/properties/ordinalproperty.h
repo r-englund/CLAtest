@@ -215,8 +215,14 @@ Variant OrdinalProperty<T>::getVariant() {
 
 template <typename T>
 void OrdinalProperty<T>::setVariant(const Variant& v) {
-    if (v.canConvert(getVariantType()))
-        this->set(v.get<T>());
+    if (v.canConvert(getVariantType())) {
+        //Input variant type can be different from property variant type
+        Variant currentVariant(getVariant());
+        //Invokes conversion during assignment operation
+        currentVariant = v;
+        //Get from variants and set
+        this->set(currentVariant.get<T>());
+    }
 }
 
 template <typename T>
