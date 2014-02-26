@@ -47,7 +47,7 @@ __kernel void volumeSepiaShading(read_only image3d_t volume
     float t = 0.0f; 
      
     float volumeSample;
-    float extinction = 0.f;  
+    bool firstHit = false;
     while(t < tEnd) {
         float3 pos = entry.xyz+t*direction; 
         volumeSample = read_imagef(volume, smpNormClampEdgeLinear, as_float4(pos)).x; 
@@ -55,20 +55,30 @@ __kernel void volumeSepiaShading(read_only image3d_t volume
         float4 materialDiffuse = read_imagef(transferFunction, smpNormClampEdgeLinear, (float2)(volumeSample, 0.5f));
 
         float3 gradient = calcGradient(as_float4(pos), volume, as_float4(voxelSpacing)).xyz;
-
+        float gradLen = length(gradient);
         gradient = normalize(gradient);
 
 
         float3 f = applyShading(-direction, -lightDirection, materialDiffuse.xyz, materialSpecular.xyz, material, gradient, shadingType);
-        // Taylor expansion approximation
-        materialDiffuse.w = 1.f - native_powr(1.f - materialDiffuse.w, stepSize * REF_SAMPLING_INTERVAL);
-		result.xyz = result.xyz + (1.f - result.w) * materialDiffuse.w * f * lightPower;
+
+        //if (materialDiffuse.w > 0.f && !firstHit) {
+        //    firstHit = true;
+        //} else 
+        //    f = (float3)(materialDiffuse.xyz*isotropicPhaseFunction());
+        //if (gradLen < 15.0f) {
+        //    f = (float3)(materialDiffuse.xyz*isotropicPhaseFunction());
+        //} 
+        
+        // Opacity
+        materialDiffuse.w = 1.f-native_exp(-materialDiffuse.w*stepSize*REF_SAMPLING_INTERVAL);
+		// Taylor expansion approximation
+        result.xyz = result.xyz + (1.f - result.w) * materialDiffuse.w * f*lightPower;
         result.w = result.w + (1.f - result.w) * materialDiffuse.w;	
 
         t += stepSize;   
  
     }
-         
+
     write_imagef(output, globalId,  result);      
   
 }
