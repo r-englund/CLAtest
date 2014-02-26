@@ -35,6 +35,7 @@
 
 #include <inviwo/qt/widgets/inviwoqtwidgetsdefine.h>
 #include <QMouseEvent>
+#include <QWheelEvent>
 #include <QInputEvent>
 #include <inviwo/core/interaction/events/mouseevent.h>
 
@@ -46,6 +47,7 @@ public:
     ~EventConverterQt();
 
     static MouseEvent::MouseButton getMouseButton(QMouseEvent* e);
+    static MouseEvent::MouseButton getMouseWheelButton(QWheelEvent* e);
     static InteractionEvent::Modifier getModifier(QInputEvent* e);
     static char getKeyButton(QKeyEvent* e);
 };

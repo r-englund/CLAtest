@@ -137,6 +137,10 @@ void Canvas::mouseMoveEvent(MouseEvent* e) {
         interactionEvent(e);
 }
 
+void Canvas::mouseWheelEvent(MouseEvent* e) {
+    interactionEvent(e);
+}
+
 void Canvas::keyPressEvent(KeyboardEvent* e) {
     interactionEvent(e);
 }

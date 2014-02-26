@@ -146,6 +146,27 @@ void CanvasQt::mouseMoveEvent(QMouseEvent* e) {
     }
 }
 
+void CanvasQt::wheelEvent(QWheelEvent* e){
+    if (!processorNetworkEvaluator_) return;
+
+    MouseEvent::MouseWheelOrientation orientation;
+    if (e->orientation() == Qt::Horizontal) {
+        orientation = MouseEvent::MOUSE_WHEEL_HORIZONTAL;
+    } else {
+        orientation = MouseEvent::MOUSE_WHEEL_VERTICAL;
+    }
+
+    int numDegrees = e->delta() / 8;
+    int numSteps = numDegrees / 15;
+
+    MouseEvent* mouseEvent = new MouseEvent(ivec2(e->pos().x(), e->pos().y()), numSteps,
+        EventConverterQt::getMouseWheelButton(e), MouseEvent::MOUSE_STATE_WHEEL, orientation,
+        EventConverterQt::getModifier(e), dimensions_);
+    e->accept();
+    Canvas::mouseWheelEvent(mouseEvent);
+    delete mouseEvent;
+}
+
 void CanvasQt::keyPressEvent(QKeyEvent* e) {
     if (!processorNetworkEvaluator_) return;
 
