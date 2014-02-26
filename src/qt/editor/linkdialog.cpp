@@ -674,7 +674,8 @@ void LinkDialogGraphicsScene::mouseReleaseEvent(QGraphicsSceneMouseEvent* e) {
         if (endProperty_ && (endProperty_!=startProperty_)) {
             Property* sProp = startProperty_->getGraphicsItemData();
             Property* eProp = endProperty_->getGraphicsItemData();
-            addPropertyLink(sProp, eProp, true);
+            if (SimpleCondition::canLink(sProp, eProp))
+                addPropertyLink(sProp, eProp, true);
         }
 
         startProperty_ = 0;
