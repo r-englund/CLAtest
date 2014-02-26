@@ -74,7 +74,7 @@ protected:
     struct DrawMethod {
         DrawFunc drawFunc;
         GLenum drawMode;
-        const Buffer* elementBuffer;
+        std::vector<const Buffer*> elementBufferList;
     };
 
     DrawMethod drawMethods_[NUMBER_OF_RENDER_TYPES];

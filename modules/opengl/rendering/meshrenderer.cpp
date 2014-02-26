@@ -60,7 +60,13 @@ MeshRenderer::~MeshRenderer()
 }
 
 void MeshRenderer::render() {
-    render(NOT_SPECIFIED);
+    const MeshGL* meshGL = getMeshGL();
+    meshGL->enable();
+    // try to render all rendertypes except the default one
+    for(int i=1; i<NUMBER_OF_RENDER_TYPES; i++){
+        (this->*drawMethods_[i].drawFunc)(static_cast<RenderType>(i));
+    }
+    meshGL->disable(); 
 }
 
 void MeshRenderer::render(RenderType rt) {
@@ -138,26 +144,31 @@ void MeshRenderer::renderArray(RenderType rt) const
 
 void MeshRenderer::renderElements(RenderType rt) const
 {
-    const ElementBufferGL* elementBufferGL = drawMethods_[rt].elementBuffer->getRepresentation<ElementBufferGL>();
-    elementBufferGL->enable();
-    glDrawElements(drawMethods_[rt].drawMode, static_cast<GLsizei>(elementBufferGL->getSize()), elementBufferGL->getFormatType(), 0);
+    std::vector<const Buffer*>::const_iterator it = drawMethods_[rt].elementBufferList.begin();
+    while (it != drawMethods_[rt].elementBufferList.end()) {
+        const ElementBufferGL* elementBufferGL = (*it)->getRepresentation<ElementBufferGL>();
+        elementBufferGL->enable();
+        glDrawElements(drawMethods_[rt].drawMode, static_cast<GLsizei>(elementBufferGL->getSize()), elementBufferGL->getFormatType(), 0);
+        ++it;
+    }
 }
 
 void MeshRenderer::initialize(Mesh::AttributesInfo ai)
 {
     drawMethods_[0].drawFunc = &MeshRenderer::emptyFunc;
     drawMethods_[0].drawMode = getDrawMode(ai.rt, ai.ct);
-    drawMethods_[0].elementBuffer = NULL;
+    drawMethods_[0].elementBufferList.clear();
 
     for (int i=1; i<NUMBER_OF_RENDER_TYPES; i++) {
         drawMethods_[i].drawFunc = drawMethods_[0].drawFunc;
         drawMethods_[i].drawMode = drawMethods_[0].drawMode;
-        drawMethods_[i].elementBuffer = drawMethods_[0].elementBuffer;
+        drawMethods_[i].elementBufferList.clear();
     }
 
+    drawMethods_[ai.rt].drawFunc = &MeshRenderer::renderArray;
     drawMethods_[NOT_SPECIFIED].drawFunc = &MeshRenderer::renderArray;
-    drawMethods_[POINTS].drawFunc = &MeshRenderer::renderArray;
-    drawMethods_[POINTS].drawMode = GL_POINTS;
+    //drawMethods_[POINTS].drawFunc = &MeshRenderer::renderArray;
+    //drawMethods_[POINTS].drawMode = GL_POINTS;
 
     for (size_t i=0; i < meshToRender_->getNumberOfIndicies(); ++i) {
         if (meshToRender_->getIndicies(i)->getSize() > 0)
@@ -165,15 +176,25 @@ void MeshRenderer::initialize(Mesh::AttributesInfo ai)
     }
 }
 void MeshRenderer::initializeIndexBuffer(const Buffer* indexBuffer, Mesh::AttributesInfo ai) {
-    drawMethods_[ai.rt].drawFunc = &MeshRenderer::renderElements;
-    drawMethods_[ai.rt].drawMode = getDrawMode(ai.rt, ai.ct);
-    drawMethods_[ai.rt].elementBuffer = indexBuffer;
+    // check draw mode if there exists another indexBuffer
+    if (drawMethods_[ai.rt].elementBufferList.size() != 0) {
+        if (getDrawMode(ai.rt, ai.ct) != drawMethods_[ai.rt].drawMode) {
+            std::ostringstream str;
+            str << "draw mode mismatch (element buffer " << ai.rt << ")";
+            LogWarn(str);
+        }
+    } 
+    else {
+        drawMethods_[ai.rt].drawFunc = &MeshRenderer::renderElements;
+        drawMethods_[ai.rt].drawMode = getDrawMode(ai.rt, ai.ct);
+    }
+    drawMethods_[ai.rt].elementBufferList.push_back(indexBuffer);
 
     // Specify first element buffer as default rendering method
-    if (!drawMethods_[NOT_SPECIFIED].elementBuffer) {
+    if(drawMethods_[NOT_SPECIFIED].elementBufferList.size() == 0) {
         drawMethods_[NOT_SPECIFIED].drawFunc = drawMethods_[ai.rt].drawFunc;
         drawMethods_[NOT_SPECIFIED].drawMode = drawMethods_[ai.rt].drawMode;
-        drawMethods_[NOT_SPECIFIED].elementBuffer = drawMethods_[ai.rt].elementBuffer;
+        drawMethods_[NOT_SPECIFIED].elementBufferList.push_back(drawMethods_[ai.rt].elementBufferList.at(0));
     }
 }
 

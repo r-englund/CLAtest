@@ -48,7 +48,6 @@ void IntMinMaxPropertyWidgetQt::generateWidget() {
 
     if (property_->getReadOnly()) {
         valueVec_ = property_->get();
-        valueVec_ = property_->get();
         hLayout->addWidget(new QLabel(QString::fromStdString(property_->getDisplayName())));
         readOnlyLabel_ = new QLabel();
         hLayout->addWidget(readOnlyLabel_);

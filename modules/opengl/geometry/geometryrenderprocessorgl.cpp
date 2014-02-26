@@ -48,6 +48,9 @@ GeometryRenderProcessorGL::GeometryRenderProcessorGL()
     , outport_("image.outport")
     , camera_("camera", "Camera")
     , centerViewOnGeometry_("centerView", "Center view on geometry")
+    , resetViewParams_("resetView", "Reset Camera")
+    , cullFace_("cullFace", "Cull Face")
+    , polygonMode_("polygonMode", "Polygon Mode")
 {
     addPort(inport_);
     addPort(outport_);
@@ -56,8 +59,23 @@ GeometryRenderProcessorGL::GeometryRenderProcessorGL()
     addInteractionHandler(trackball_);
     centerViewOnGeometry_.onChange(this, &GeometryRenderProcessorGL::centerViewOnGeometry);
     addProperty(centerViewOnGeometry_);
+    resetViewParams_.onChange(this, &GeometryRenderProcessorGL::resetViewParams);
+    addProperty(resetViewParams_);
     outport_.addResizeEventListener(&camera_);
     inport_.onChange(this,&GeometryRenderProcessorGL::updateRenderers);
+    cullFace_.addOption("culldisable", "Disable", 0);
+    cullFace_.addOption("cullfront", "Front", GL_FRONT);
+    cullFace_.addOption("cullback", "Back", GL_BACK);
+    cullFace_.addOption("cullfrontback", "Front & Back", GL_FRONT_AND_BACK);
+    cullFace_.set(0);
+
+    polygonMode_.addOption("polypoint", "Points", GL_POINT);
+    polygonMode_.addOption("polyline", "Lines", GL_LINE);
+    polygonMode_.addOption("polyfill", "Fill", GL_FILL);
+    polygonMode_.set(GL_FILL);
+
+    addProperty(cullFace_);
+    addProperty(polygonMode_);
 }
 
 void GeometryRenderProcessorGL::deinitialize() {
@@ -79,31 +97,53 @@ void GeometryRenderProcessorGL::process() {
         return;
     }
 
+    int prevPolygonMode[2];
+    glGetIntegerv(GL_POLYGON_MODE, prevPolygonMode);
+    glPolygonMode(GL_FRONT_AND_BACK, polygonMode_.get());
+
+    GLboolean depthTest = glIsEnabled(GL_DEPTH_TEST);
+    if (!depthTest) {    
+        glEnable(GL_DEPTH_TEST);
+    }
     glMatrixMode(GL_PROJECTION);
     glPushMatrix();
     glLoadMatrixf(glm::value_ptr(camera_.projectionMatrix()));
     glMatrixMode(GL_MODELVIEW);
     glPushMatrix();
     glLoadMatrixf(glm::value_ptr(camera_.viewMatrix()));
-    glEnable(GL_DEPTH_TEST);
-    glDepthMask(GL_TRUE);
+
     activateAndClearTarget(outport_);
+    bool culling = (cullFace_.get() != 0);
+    if (culling) {
+        glEnable(GL_CULL_FACE); 
+        glCullFace(cullFace_.get());
+    }
 
     for (std::vector<GeometryRenderer*>::const_iterator it = renderers_.begin(), endIt = renderers_.end(); it != endIt; ++it) {
         (*it)->render();
     }
 
     deactivateCurrentTarget();
-    glDisable(GL_DEPTH_TEST);
+
     glPopMatrix();
     glMatrixMode(GL_PROJECTION);
     glPopMatrix();
+
+    if (culling) {
+        glDisable(GL_CULL_FACE);
+    }
+    if (!depthTest) {
+        glDisable(GL_DEPTH_TEST);
+    }
+    // restore polygon mode
+    glPolygonMode(GL_FRONT, prevPolygonMode[0]);
+    glPolygonMode(GL_BACK, prevPolygonMode[1]);
 }
 
 void GeometryRenderProcessorGL::centerViewOnGeometry() {
     std::vector<const Geometry*> geometries = inport_.getData();
-
     if (geometries.empty()) return;
+
 
     const Mesh* geom = dynamic_cast<const Mesh*>(geometries[0]);
 
@@ -190,4 +230,7 @@ void GeometryRenderProcessorGL::updateRenderers() {
     }
 }
 
+void GeometryRenderProcessorGL::resetViewParams() {
+    camera_.resetCamera();
+}
 } // namespace

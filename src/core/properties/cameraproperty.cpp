@@ -55,7 +55,12 @@ CameraProperty::CameraProperty(std::string identifier, std::string displayName,
     , lockInvalidation_(false)
     , inport_(inport)
     , data_(0)
-    , oldBasis_(2) {
+    , oldBasis_(2)
+    , initialEye_(eye)
+    , initialCenter_(center)
+    , initialUp_(lookUp)
+    , initialFovy_(60.0f)
+{
     lookFrom_.onChange(this, &CameraProperty::updateViewMatrix);
     lookTo_.onChange(this, &CameraProperty::updateViewMatrix);
     lookUp_.onChange(this, &CameraProperty::updateViewMatrix);
@@ -81,6 +86,11 @@ CameraProperty::CameraProperty(std::string identifier, std::string displayName,
 
 CameraProperty::~CameraProperty() {}
 
+void CameraProperty::resetCamera() {
+    setLook(initialEye_, initialCenter_, initialUp_);
+    setFovy(initialFovy_);
+}
+
 void CameraProperty::setLookFrom(vec3 lookFrom) {
     lookFrom_.set(lookFrom);
 }
@@ -91,6 +101,10 @@ void CameraProperty::setLookTo(vec3 lookTo) {
 
 void CameraProperty::setLookUp(vec3 lookUp) {
     lookUp_.set(lookUp);
+}
+
+void CameraProperty::setFovy(float fovy) {
+    fovy_.set(fovy);
 }
 
 void CameraProperty::setLook(vec3 lookFrom, vec3 lookTo, vec3 lookUp) {
