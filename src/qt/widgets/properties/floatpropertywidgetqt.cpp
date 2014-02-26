@@ -87,8 +87,8 @@ void BaseOrdinalPropertyWidgetQt::generateWidget() {
                 signalMapperSetPropertyValue_,
                 SLOT(map()));
 
-        signalMapperContextMenu_->setMapping(sliderWidgets_[i], i);
-        signalMapperSetPropertyValue_->setMapping(sliderWidgets_[i], i);
+        signalMapperContextMenu_->setMapping(sliderWidgets_[i], static_cast<int>(i));
+        signalMapperSetPropertyValue_->setMapping(sliderWidgets_[i], static_cast<int>(i));
 
         vLayout->addWidget(sliderWidgets_[i]);
     }

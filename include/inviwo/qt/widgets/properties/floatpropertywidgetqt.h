@@ -158,9 +158,9 @@ void OrdinalPropertyWidgetQt<BT, T>::updateFromProperty() {
 
     for(size_t i = 0; i < this->ordinalproperty_->getDim(); i++) {
         SliderWidgetQt<BT>* widget = static_cast<SliderWidgetQt<BT>*>(this->sliderWidgets_[i]);
-        widget->setRange(min[i], max[i]);
-        widget->setIncrement(inc[i]);
-        widget->initValue(val[i]);
+        widget->setRange(min[static_cast<glm::length_t>(i)], max[static_cast<glm::length_t>(i)]);
+        widget->setIncrement(inc[static_cast<glm::length_t>(i)]);
+        widget->initValue(val[static_cast<glm::length_t>(i)]);
     }
 }
 

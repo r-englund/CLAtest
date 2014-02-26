@@ -42,12 +42,12 @@ class IVW_CORE_API Exception : public std::exception {
 
 public:
     Exception(const std::string& message = "");
-    virtual ~Exception() throw() {}
+    virtual ~Exception();
 
-    virtual const std::string getMessage() const throw();
+    virtual const std::string& getMessage() const throw();
 
 protected:
-    std::string message_;
+    std::string* message_;
 };
 
 

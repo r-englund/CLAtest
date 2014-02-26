@@ -35,10 +35,15 @@
 namespace inviwo {
 
 Exception::Exception(const std::string& message)
-    : message_(message) {}
+    : message_(new std::string(message)) {}
 
-const std::string Exception::getMessage() const throw() {
-    return message_;
+Exception::~Exception(){
+    delete message_;
+    message_ = NULL;
+}
+
+const std::string& Exception::getMessage() const throw() {
+    return *message_;
 };
 
 IgnoreException::IgnoreException(const std::string& message)
