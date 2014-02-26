@@ -50,66 +50,55 @@ void IntMinMaxPropertyWidgetQt::generateWidget() {
     hLayout->setContentsMargins(0, 0, 0, 0);
     hLayout->setSpacing(0);
 
-    if (property_->getReadOnly()) {
-        valueVec_ = property_->get();
-        hLayout->addWidget(new QLabel(QString::fromStdString(property_->getDisplayName())));
-        readOnlyLabel_ = new QLabel();
-        hLayout->addWidget(readOnlyLabel_);
-        setLayout(hLayout);
-    }
-    else {
-        label_ = new EditableLabelQt(this,property_->getDisplayName(),PropertyWidgetQt::generatePropertyWidgetMenu());
-        hLayout->addWidget(label_);
-        QHBoxLayout* hSliderLayout = new QHBoxLayout();
-        QWidget* sliderWidget = new QWidget();
-        sliderWidget->setLayout(hSliderLayout);
-        hSliderLayout->setContentsMargins(0,0,0,0);
-        spinBoxMin_ = new QSpinBox(this);
-        spinBoxMin_->setKeyboardTracking(false); // don't emit the valueChanged() signal while typing
-        spinBoxMin_->setFixedWidth(50);
-        hSliderLayout->addWidget(spinBoxMin_);
-        slider_ = new RangeSliderQt(Qt::Horizontal, this);
-        slider_->setRange(0, 99);
-        hSliderLayout->addWidget(slider_);
-        spinBoxMax_ = new QSpinBox(this);
-        spinBoxMax_->setKeyboardTracking(false); // don't emit the valueChanged() signal while typing
-        spinBoxMax_->setFixedWidth(50);
-        hSliderLayout->addWidget(spinBoxMax_);
-        hLayout->addWidget(sliderWidget);
-        setLayout(hLayout);
-        QSizePolicy labelPol = label_->sizePolicy();
-        labelPol.setHorizontalStretch(1);
-        labelPol.setControlType(QSizePolicy::Label);
-        label_->setSizePolicy(labelPol);
-        QSizePolicy slidersPol = sliderWidget->sizePolicy();
-        slidersPol.setHorizontalStretch(3);
-        sliderWidget->setSizePolicy(slidersPol);
-        connect(label_, SIGNAL(textChanged()),this, SLOT(setPropertyDisplayName()));
-        connect(slider_, SIGNAL(valuesChanged(int,int)), this, SLOT(updateFromSlider(int,int)));
-        connect(spinBoxMin_, SIGNAL(valueChanged(int)), this, SLOT(updateFromSpinBoxMin(int)));
-        connect(spinBoxMax_, SIGNAL(valueChanged(int)), this, SLOT(updateFromSpinBoxMax(int)));
-    }
+    label_ = new EditableLabelQt(this,property_->getDisplayName(),PropertyWidgetQt::generatePropertyWidgetMenu());
+    hLayout->addWidget(label_);
+    QHBoxLayout* hSliderLayout = new QHBoxLayout();
+    QWidget* sliderWidget = new QWidget();
+    sliderWidget->setLayout(hSliderLayout);
+    hSliderLayout->setContentsMargins(0,0,0,0);
+    spinBoxMin_ = new QSpinBox(this);
+    spinBoxMin_->setKeyboardTracking(false); // don't emit the valueChanged() signal while typing
+    spinBoxMin_->setFixedWidth(50);
+    hSliderLayout->addWidget(spinBoxMin_);
+    slider_ = new RangeSliderQt(Qt::Horizontal, this);
+    slider_->setRange(0, 99);
+    hSliderLayout->addWidget(slider_);
+    spinBoxMax_ = new QSpinBox(this);
+    spinBoxMax_->setKeyboardTracking(false); // don't emit the valueChanged() signal while typing
+    spinBoxMax_->setFixedWidth(50);
+    hSliderLayout->addWidget(spinBoxMax_);
+    hLayout->addWidget(sliderWidget);
+    setLayout(hLayout);
+    QSizePolicy labelPol = label_->sizePolicy();
+    labelPol.setHorizontalStretch(1);
+    labelPol.setControlType(QSizePolicy::Label);
+    label_->setSizePolicy(labelPol);
+    QSizePolicy slidersPol = sliderWidget->sizePolicy();
+    slidersPol.setHorizontalStretch(3);
+    sliderWidget->setSizePolicy(slidersPol);
+    connect(label_, SIGNAL(textChanged()),this, SLOT(setPropertyDisplayName()));
+    connect(slider_, SIGNAL(valuesChanged(int,int)), this, SLOT(updateFromSlider(int,int)));
+    connect(spinBoxMin_, SIGNAL(valueChanged(int)), this, SLOT(updateFromSpinBoxMin(int)));
+    connect(spinBoxMax_, SIGNAL(valueChanged(int)), this, SLOT(updateFromSpinBoxMax(int)));
+
+    this->setEnabled(!property_->getReadOnly());
+
 }
 
 void IntMinMaxPropertyWidgetQt::updateFromProperty() {
     updatingFromProperty_ = true;
     valueVec_ = property_->get();
 
-    if (property_->getReadOnly()) {
-        readOnlyLabel_->setText(QString::number(valueVec_.x)+","+QString::number(valueVec_.y));
-        updatingFromProperty_ = false;
-    }
-    else {
-        slider_->setRange(property_->getRangeMin(), property_->getRangeMax());
-        spinBoxMin_->setRange(property_->getRangeMin(), property_->getRangeMax());
-        spinBoxMax_->setRange(property_->getRangeMin(), property_->getRangeMax());
-        spinBoxMin_->setSingleStep(property_->getIncrement());
-        spinBoxMax_->setSingleStep(property_->getIncrement());
-        slider_->setValue(valueVec_.x, valueVec_.y);
-        spinBoxMin_->setValue(valueVec_.x);
-        spinBoxMax_->setValue(valueVec_.y);
-        updatingFromProperty_ = false;
-    }
+    slider_->setRange(property_->getRangeMin(), property_->getRangeMax());
+    spinBoxMin_->setRange(property_->getRangeMin(), property_->getRangeMax());
+    spinBoxMax_->setRange(property_->getRangeMin(), property_->getRangeMax());
+    spinBoxMin_->setSingleStep(property_->getIncrement());
+    spinBoxMax_->setSingleStep(property_->getIncrement());
+    slider_->setValue(valueVec_.x, valueVec_.y);
+    spinBoxMin_->setValue(valueVec_.x);
+    spinBoxMax_->setValue(valueVec_.y);
+    updatingFromProperty_ = false;
+
 }
 
 

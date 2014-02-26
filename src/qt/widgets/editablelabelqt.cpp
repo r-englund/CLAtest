@@ -56,6 +56,8 @@ EditableLabelQt::EditableLabelQt(QWidget* parent, std::string text, QMenu* conte
 
 void EditableLabelQt::generateWidget() {
     QHBoxLayout* hLayout = new QHBoxLayout();
+    hLayout->setContentsMargins(0, 0, 0, 0);
+    hLayout->setSpacing(0);
     label_ = new QLabel(this);
 
     if (shortenText_)
@@ -71,6 +73,10 @@ void EditableLabelQt::generateWidget() {
     hLayout->addWidget(label_);
     setLayout(hLayout);
     
+    QSizePolicy labelPol = this->sizePolicy();
+    labelPol.setHorizontalStretch(1);
+    this->setSizePolicy(labelPol);
+
     label_->setContextMenuPolicy(Qt::CustomContextMenu);
     connect(label_,
             SIGNAL(customContextMenuRequested(const QPoint&)),
