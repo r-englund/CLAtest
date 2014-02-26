@@ -70,15 +70,12 @@ protected:
 
         void invokeEvent(Event* event);
     private:
-        MouseEvent scrollEvent_;
+        MouseEvent wheelEvent_;
 
         KeyboardEvent upEvent_;
         KeyboardEvent downEvent_;
 
         VolumeSliceGL* slicer_;
-
-        ivec2 lastMousePos_;
-        bool isMouseBeingPressedAndHold_;
     };
 
     void planeSettingsChanged();

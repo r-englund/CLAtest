@@ -34,11 +34,32 @@
 
 namespace inviwo {
 
+MouseEvent::MouseEvent(ivec2 position, int delta, MouseEvent::MouseButton button,
+                       MouseEvent::MouseState state, MouseEvent::MouseWheelOrientation orientation, 
+                       InteractionEvent::Modifier modifier, uvec2 canvasSize)
+    : InteractionEvent(),
+      position_(position),
+      wheelSteps_(delta),
+      state_(state),
+      wheelOrientation_(orientation),
+      canvasSize_(canvasSize) {
+    buttonNames_[MOUSE_BUTTON_LEFT] = "Left mouse button";
+    buttonNames_[MOUSE_BUTTON_RIGHT] = "Right mouse button";
+    buttonNames_[MOUSE_BUTTON_MIDDLE] = "Middle mouse button";
+    buttonNames_[MOUSE_BUTTON_NONE] = "";
+    modifierName_ = modifierNames_[modifier];
+    modifier_ = modifier;
+    buttonName_ = buttonNames_[button];
+    button_ = button;
+}
+
 MouseEvent::MouseEvent(ivec2 position, MouseEvent::MouseButton button,
                        MouseEvent::MouseState state, InteractionEvent::Modifier modifier, uvec2 canvasSize)
     : InteractionEvent(),
       position_(position),
+      wheelSteps_(0),
       state_(state),
+      wheelOrientation_(MOUSE_WHEEL_NONE),
       canvasSize_(canvasSize) {
     buttonNames_[MOUSE_BUTTON_LEFT] = "Left mouse button";
     buttonNames_[MOUSE_BUTTON_RIGHT] = "Right mouse button";
@@ -51,7 +72,12 @@ MouseEvent::MouseEvent(ivec2 position, MouseEvent::MouseButton button,
 }
 
 MouseEvent::MouseEvent(MouseEvent::MouseButton button, InteractionEvent::Modifier modifier)
-    : InteractionEvent() {
+    : InteractionEvent(), 
+    position_(ivec2(0)),
+    wheelSteps_(0),
+    state_(MOUSE_STATE_NONE),
+    wheelOrientation_(MOUSE_WHEEL_NONE),
+    canvasSize_(uvec2(0)) {
     buttonNames_[MOUSE_BUTTON_LEFT] = "Left mouse button";
     buttonNames_[MOUSE_BUTTON_RIGHT] = "Right mouse button";
     buttonNames_[MOUSE_BUTTON_MIDDLE] = "Middle mouse button";
