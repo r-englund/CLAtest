@@ -38,8 +38,9 @@ namespace inviwo {
 CompositeProperty::CompositeProperty(std::string identifier, std::string displayName,
                                      PropertyOwner::InvalidationLevel invalidationLevel,
                                      PropertySemantics semantics)
-    : Property(identifier, displayName, invalidationLevel, semantics), PropertyOwner()
-{}
+    : Property(identifier, displayName, invalidationLevel, semantics)
+    , PropertyOwner() {
+}
 
 CompositeProperty::~CompositeProperty() {}
 
@@ -101,9 +102,9 @@ void CompositeProperty::set(const Property* srcProperty) {
 
         for (size_t i=0; i<subProperties.size(); i++)
             this->subProperties_[i]->set(subProperties[i]);
-    }
-    else
+    } else {
         this->setVariant(const_cast<Property*>(srcProperty)->getVariant());
+    }
 
     propertyModified();
 }

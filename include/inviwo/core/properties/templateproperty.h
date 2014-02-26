@@ -54,18 +54,35 @@ public:
     virtual void set(const T& value);
     virtual void set(const Property* srcProperty);
 
+    virtual void setCurrentStateAsDefault();
+    virtual void resetToDefaultState();
+
     typedef T valueType;
 protected:
     T value_;
+    T defaultValue_;
 };
+
+template<typename T>
+void inviwo::TemplateProperty<T>::resetToDefaultState() { 
+    value_ = defaultValue_;
+    Property::resetToDefaultState();
+}
+
+template<typename T>
+void inviwo::TemplateProperty<T>::setCurrentStateAsDefault() {
+    Property::setCurrentStateAsDefault();
+    defaultValue_ = value_;
+}
 
 template <typename T>
 TemplateProperty<T>::TemplateProperty(std::string identifier, std::string displayName, T value,
                                       PropertyOwner::InvalidationLevel invalidationLevel,
                                       PropertySemantics semantics)
-    : Property(identifier, displayName, invalidationLevel, semantics),
-      value_(value)
-{}
+    : Property(identifier, displayName, invalidationLevel, semantics)
+    , value_(value)
+    , defaultValue_(value) {
+}
 
 template <typename T>
 T& TemplateProperty<T>::get() {

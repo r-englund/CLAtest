@@ -55,6 +55,7 @@ public slots:
     void setPropertyValue();
     void setPropertyDisplayName();
     void visibilityModified(int mode);
+    virtual void resetPropertyToDefaultState();
 
 private:
     CameraProperty* property_;

@@ -37,9 +37,10 @@
 
 namespace inviwo {
 
-ColorPropertyWidgetQt::ColorPropertyWidgetQt(Property* property) : property_(property) {
-    PropertyWidgetQt::setProperty(property_);
-    PropertyWidgetQt::generateContextMenu();
+ColorPropertyWidgetQt::ColorPropertyWidgetQt(Property* property)
+    : PropertyWidgetQt(property)
+    , property_(property) {
+
     generateWidget();
     updateFromProperty();
 }
@@ -50,23 +51,21 @@ ColorPropertyWidgetQt::~ColorPropertyWidgetQt() {
 
 void ColorPropertyWidgetQt::generateWidget() {
     QHBoxLayout* hLayout = new QHBoxLayout();
+    hLayout->setContentsMargins(0, 0, 0, 0);
+    hLayout->setSpacing(0);
     currentColor_ = new QColor();
     colorDialog_ = new QColorDialog(this);
     btnColor_ = new QPushButton(this);
     btnColor_->setFixedWidth(100);
     btnColor_->setFixedHeight(30);
 
-    if (property_->getReadOnly()) {
-        hLayout->addWidget(new QLabel(QString::fromStdString(property_->getDisplayName()),this));
-        btnColor_->setDisabled(true);
-    }
-    else {
-        connect(btnColor_, SIGNAL(clicked()), this, SLOT(openColorDialog()));
-        connect(colorDialog_, SIGNAL(currentColorChanged(QColor)), this, SLOT(setPropertyValue()));
-        label_ = new EditableLabelQt(this,property_->getDisplayName() ,PropertyWidgetQt::generatePropertyWidgetMenu());
-        hLayout->addWidget(label_);
-        connect(label_, SIGNAL(textChanged()), this, SLOT(setPropertyDisplayName()));
-    }
+    btnColor_->setEnabled(!property_->getReadOnly());
+
+    connect(btnColor_, SIGNAL(clicked()), this, SLOT(openColorDialog()));
+    connect(colorDialog_, SIGNAL(currentColorChanged(QColor)), this, SLOT(setPropertyValue()));
+    label_ = new EditableLabelQt(this,property_->getDisplayName() ,PropertyWidgetQt::generatePropertyWidgetMenu());
+    hLayout->addWidget(label_);
+    connect(label_, SIGNAL(textChanged()), this, SLOT(setPropertyDisplayName()));
 
     hLayout->addWidget(btnColor_);
     setLayout(hLayout);

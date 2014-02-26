@@ -34,34 +34,30 @@
 #include <QComboBox>
 #include <typeinfo>
 namespace inviwo {
-OptionPropertyWidgetQt::OptionPropertyWidgetQt(BaseOptionProperty* property) : property_(property),
+OptionPropertyWidgetQt::OptionPropertyWidgetQt(BaseOptionProperty* property) 
+    : PropertyWidgetQt(property)
+    , property_(property),
     updating_(false) {
-    PropertyWidgetQt::setProperty(property_);
-    PropertyWidgetQt::generateContextMenu();
     generateWidget();
     updateFromProperty();
 }
 
 void OptionPropertyWidgetQt::generateWidget() {
     QHBoxLayout* hLayout = new QHBoxLayout();
+    hLayout->setContentsMargins(0, 0, 0, 0);
+    hLayout->setSpacing(0);
     comboBox_ = new QComboBox();
     fillComboBox();
     updateFromProperty();
 
-    if (property_->getReadOnly()) {
-        comboBox_->setDisabled(true);
-        hLayout->addWidget(new QLabel(QString::fromStdString(property_->getDisplayName())));
-        hLayout->addWidget(comboBox_);
-        setLayout(hLayout);
-    }
-    else {
-        label_ = new EditableLabelQt(this,property_->getDisplayName(),PropertyWidgetQt::generatePropertyWidgetMenu());
-        hLayout->addWidget(label_);
-        hLayout->addWidget(comboBox_);
-        setLayout(hLayout);
-        connect(comboBox_, SIGNAL(currentIndexChanged(int)),this, SLOT(optionChanged()));
-        connect(label_, SIGNAL(textChanged()),this, SLOT(setPropertyDisplayName()));
-    }
+    comboBox_->setEnabled(!property_->getReadOnly());
+
+    label_ = new EditableLabelQt(this,property_->getDisplayName(),PropertyWidgetQt::generatePropertyWidgetMenu());
+    hLayout->addWidget(label_);
+    hLayout->addWidget(comboBox_);
+    setLayout(hLayout);
+    connect(comboBox_, SIGNAL(currentIndexChanged(int)),this, SLOT(optionChanged()));
+    connect(label_, SIGNAL(textChanged()),this, SLOT(setPropertyDisplayName()));   
 }
 
 void OptionPropertyWidgetQt::fillComboBox() {

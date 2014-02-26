@@ -47,15 +47,18 @@
 
 namespace inviwo {
 
-DirectoryPropertyWidgetQt::DirectoryPropertyWidgetQt(DirectoryProperty* property) : property_(property) {
-    PropertyWidgetQt::setProperty(property_);
-    PropertyWidgetQt::generateContextMenu();
+DirectoryPropertyWidgetQt::DirectoryPropertyWidgetQt(DirectoryProperty* property)
+    : PropertyWidgetQt(property)
+    , property_(property) {
+
     generateWidget();
     updateFromProperty();
 }
 
 void DirectoryPropertyWidgetQt::generateWidget() {
     QHBoxLayout* hLayout = new QHBoxLayout();
+    hLayout->setContentsMargins(0, 0, 0, 0);
+    hLayout->setSpacing(0);
     directoryLabel_ = new EditableLabelQt(this,property_->getDisplayName(),PropertyWidgetQt::generatePropertyWidgetMenu());
     hLayout->addWidget(directoryLabel_);
     lineEdit_ = new QLineEdit(this);

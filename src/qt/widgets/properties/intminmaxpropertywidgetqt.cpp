@@ -36,15 +36,19 @@
 
 namespace inviwo {
 
-IntMinMaxPropertyWidgetQt::IntMinMaxPropertyWidgetQt(IntMinMaxProperty* property) : property_(property), updatingFromProperty_(false) {
-    PropertyWidgetQt::setProperty(property_);
-    PropertyWidgetQt::generateContextMenu();
+IntMinMaxPropertyWidgetQt::IntMinMaxPropertyWidgetQt(IntMinMaxProperty* property) 
+    : PropertyWidgetQt(property)
+    , property_(property)
+    , updatingFromProperty_(false) {
+
     generateWidget();
     updateFromProperty();
 }
 
 void IntMinMaxPropertyWidgetQt::generateWidget() {
     QHBoxLayout* hLayout = new QHBoxLayout();
+    hLayout->setContentsMargins(0, 0, 0, 0);
+    hLayout->setSpacing(0);
 
     if (property_->getReadOnly()) {
         valueVec_ = property_->get();

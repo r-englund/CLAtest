@@ -52,7 +52,6 @@ void CameraPropertyWidgetQt::generateWidget() {
         collapsiveGroupBoxWidget_->addProperty(curProperty);
     }
 
-    collapsiveGroupBoxWidget_->generatePropertyWidgets();
     vLayout->addWidget(collapsiveGroupBoxWidget_);
     vLayout->setContentsMargins(0,0,0,0);
     vLayout->setSpacing(0);
@@ -75,6 +74,10 @@ void CameraPropertyWidgetQt::visibilityModified(int mode) {
 
     for (size_t i=0; i<subProperties.size(); i++)
         subProperties[i]->setVisibility(static_cast<PropertyVisibilityMode>(mode));
+}
+
+void CameraPropertyWidgetQt::resetPropertyToDefaultState() {
+    collapsiveGroupBoxWidget_->resetPropertyToDefaultState();
 }
 
 } // namespace

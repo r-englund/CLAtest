@@ -100,6 +100,9 @@ public:
     void setMaxValue(const T& value);
     void setIncrement(const T& value);
 
+    virtual void setCurrentStateAsDefault();
+    virtual void resetToDefaultState();
+
     virtual std::string getClassName() const;
 
     virtual Variant getVariant();
@@ -115,6 +118,10 @@ private:
     T minValue_;
     T maxValue_;
     T increment_;
+
+    T defaultMinValue_;
+    T defaultMaxValue_;
+    T defaultIncrement_;
 };
 
 //Scalar properties
@@ -153,11 +160,14 @@ OrdinalProperty<T>::OrdinalProperty(std::string identifier, std::string displayN
                                     T minValue, T maxValue, T increment,
                                     PropertyOwner::InvalidationLevel invalidationLevel,
                                     PropertySemantics semantics)
-    : TemplateProperty<T>(identifier, displayName, value, invalidationLevel, semantics),
-      minValue_(minValue),
-      maxValue_(maxValue),
-      increment_(increment)
-{}
+    : TemplateProperty<T>(identifier, displayName, value, invalidationLevel, semantics)
+    , minValue_(minValue)
+    , maxValue_(maxValue)
+    , increment_(increment)
+    , defaultMinValue_(minValue)
+    , defaultMaxValue_(maxValue)
+    , defaultIncrement_(increment) {
+}
 
 template <typename T>
 void OrdinalProperty<T>::set(const Property* srcProperty) {
@@ -229,6 +239,23 @@ template <typename T>
 int OrdinalProperty<T>::getVariantType() {
     return getVariant().getType();
 }
+
+template<typename T>
+void inviwo::OrdinalProperty<T>::resetToDefaultState() {   
+    minValue_ = defaultMinValue_;
+    maxValue_ = defaultMaxValue_;
+    increment_ = defaultIncrement_;
+    TemplateProperty<T>::resetToDefaultState();
+}
+
+template<typename T>
+void inviwo::OrdinalProperty<T>::setCurrentStateAsDefault() {
+    TemplateProperty<T>::setCurrentStateAsDefault();
+    defaultMinValue_ = minValue_;
+    defaultMaxValue_ = maxValue_;
+    defaultIncrement_ = increment_;
+}
+
 
 template<typename T>
 void OrdinalProperty<T>::serialize(IvwSerializer& s) const {

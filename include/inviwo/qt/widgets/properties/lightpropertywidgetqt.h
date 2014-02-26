@@ -58,7 +58,6 @@ public:
 private:
     FloatVec3Property* property_;
     LightPositionWidgetQt* lightWidget_;
-    QLabel* radiusLabel_;
     CustomDoubleSpinBoxQt* radiusSpinBox_;
     EditableLabelQt* label_;
 

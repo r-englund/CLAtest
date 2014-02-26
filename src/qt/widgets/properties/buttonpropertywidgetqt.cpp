@@ -37,16 +37,20 @@
 
 namespace inviwo {
 
-ButtonPropertyWidgetQt::ButtonPropertyWidgetQt(ButtonProperty* property) : property_(property) {
-    PropertyWidgetQt::setProperty(property_);
-    PropertyWidgetQt::generateContextMenu();
+ButtonPropertyWidgetQt::ButtonPropertyWidgetQt(ButtonProperty* property) 
+    : PropertyWidgetQt(property)
+    , property_(property) {
+
     generateWidget();
     updateFromProperty();
 }
 
 void ButtonPropertyWidgetQt::generateWidget() {
     QHBoxLayout* hLayout = new QHBoxLayout();
+    hLayout->setContentsMargins(0, 0, 0, 0);
+    hLayout->setSpacing(0);
     button_ = new QPushButton();
+    button_->setEnabled(!property_->getReadOnly());
     button_->setText(QString::fromStdString(property_->getDisplayName()));
     connect(button_, SIGNAL(released()), this, SLOT(handleButton()));
     hLayout->addWidget(button_);

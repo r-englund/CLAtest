@@ -71,6 +71,10 @@ VolumeSource::VolumeSource()
     angels_.setReadOnly(true);
     offset_.setReadOnly(true);
 
+    orgLengths_ = lengths_.get();
+    orgAngles_ = angels_.get();
+    orgOffet_ = offset_.get();
+
     overRideDefaults_.onChange(this, &VolumeSource::onOverrideChange);
 
     addProperty(overRideDefaults_);
@@ -83,10 +87,29 @@ VolumeSource::~VolumeSource() {}
 
 void VolumeSource::onOverrideChange() {
     if(!overRideDefaults_.get()) {
+        vec3 tmpLength = lengths_.get();
+        vec3 tmpAngle = angels_.get();
+        vec3 tmpOffset = offset_.get();       
+        lengths_.set(orgLengths_);
+        angels_.set(orgAngles_);
+        offset_.set(orgOffet_);
+        orgLengths_ = tmpLength;
+        orgAngles_ = tmpAngle;
+        orgOffet_ = tmpOffset;
         lengths_.setReadOnly(true);
         angels_.setReadOnly(true);
         offset_.setReadOnly(true);
+
     } else {
+        vec3 tmpLength = lengths_.get();
+        vec3 tmpAngle = angels_.get();
+        vec3 tmpOffset = offset_.get();
+        lengths_.set(orgLengths_);
+        angels_.set(orgAngles_);
+        offset_.set(orgOffet_);
+        orgLengths_ = tmpLength;
+        orgAngles_ = tmpAngle;
+        orgOffet_ = tmpOffset;
         lengths_.setReadOnly(false);
         angels_.setReadOnly(false);
         offset_.setReadOnly(false);
@@ -133,6 +156,14 @@ void VolumeSource::dataLoaded(Volume* volume) {
     lengths_.set(vec3(glm::length(a), glm::length(b), glm::length(c)));
     angels_.set(vec3(alpha, beta, gamma));
     offset_.set(offset);
+
+    lengths_.setCurrentStateAsDefault();
+    angels_.setCurrentStateAsDefault();
+    offset_.setCurrentStateAsDefault();
+
+    orgLengths_ = lengths_.get();
+    orgAngles_ = angels_.get();
+    orgOffet_ = offset_.get();
 
     valueRange_.set(volume->getMetaData<Vec2MetaData>("ValueRange", dataRange_.get()));
     valueUnit_.set(volume->getMetaData<StringMetaData>("ValueUnit", valueUnit_.get()));

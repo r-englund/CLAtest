@@ -211,6 +211,10 @@ void PropertyWidgetQt::generateContextMenu() {
         viewModeActionGroup_->addAction(applicationViewModeAction_);
         contextMenu_->addMenu(viewModeItem_);
 
+        QAction* resetAction = new QAction(tr("&Reset to default"), this);
+        resetAction->setToolTip(tr("&Reset the property back to it's initial state"));
+        contextMenu_->addAction(resetAction);
+
         connect(developerViewModeAction_,
                 SIGNAL(triggered(bool)),
                 this,
@@ -221,6 +225,10 @@ void PropertyWidgetQt::generateContextMenu() {
                 this,
                 SLOT(setApplicationViewMode(bool)));
 
+        connect(resetAction,
+                SIGNAL(triggered()),
+                this,
+                SLOT(resetPropertyToDefaultState()));
 
         // Module actions.
         generateModuleMenuActions();
@@ -369,6 +377,10 @@ void PropertyWidgetQt::updateContextMenu() {
 void PropertyWidgetQt::setProperty(Property* property) {
     PropertyWidget::setProperty(property);
     setToolTip(("id: " + property_->getIdentifier()).c_str());
+}
+
+void PropertyWidgetQt::resetPropertyToDefaultState() {
+    property_->resetToDefaultState();
 }
 
 //////////////////////////////////////////////////////////////////////////
