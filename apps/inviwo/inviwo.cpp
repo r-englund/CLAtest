@@ -60,8 +60,11 @@ int main(int argc, char** argv) {
     inviwoApp.setMainWindow(&mainWin);
     // initialize and show splash screen
     inviwo::InviwoSplashScreen splashScreen;
-    splashScreen.show();
-    splashScreen.showMessage("Loading application...");
+    bool showSplashScreen = inviwoApp.getCommandLineParser()->getShowSplashScreen();
+    if (showSplashScreen) {
+        splashScreen.show();
+        splashScreen.showMessage("Loading application...");
+    }
     QFile styleSheetFile(":/stylesheets/inviwo.qss");
     styleSheetFile.open(QFile::ReadOnly);
     QString styleSheet = QLatin1String(styleSheetFile.readAll());

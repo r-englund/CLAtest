@@ -51,6 +51,11 @@ public:
     static SimpleMesh* rectangle(glm::vec3 posLl, glm::vec3 posUr);
 
     static SimpleMesh* sphere(float radius, unsigned int numLoops, unsigned int segmentsPerLoop);
+
+    // create a plane centered at pos with normal pointing toward z 
+    // given extent and mesh resolution
+    static SimpleMesh* plane(glm::vec3 pos, glm::vec2 extent, 
+        unsigned int meshResX, unsigned int meshResY);
 };
 
 } // namespace

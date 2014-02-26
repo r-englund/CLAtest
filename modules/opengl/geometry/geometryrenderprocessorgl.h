@@ -57,6 +57,7 @@ public:
 protected:
     virtual void process();
     void centerViewOnGeometry();
+    void resetViewParams();
 
     void updateRenderers();
 
@@ -65,9 +66,13 @@ protected:
 
     CameraProperty camera_;
     ButtonProperty centerViewOnGeometry_;
+    ButtonProperty resetViewParams_;
     Trackball* trackball_;
 
     std::vector<GeometryRenderer*> renderers_;
+    
+    OptionPropertyInt cullFace_;
+    OptionPropertyInt polygonMode_;
 };
 
 } // namespace

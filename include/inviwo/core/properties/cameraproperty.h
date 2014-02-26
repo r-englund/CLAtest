@@ -55,6 +55,8 @@ public:
                    PropertySemantics semantics = PropertySemantics::Default);
     virtual ~CameraProperty();
 
+    void resetCamera();
+
     vec3 getLookFrom() const { return lookFrom_.get(); }
     void setLookFrom(vec3 lookFrom);
     vec3 getLookTo() const { return lookTo_.get(); }
@@ -62,6 +64,9 @@ public:
     vec3 getLookUp() const { return lookUp_.get(); }
     void setLookUp(vec3 lookUp);
     vec3 getLookRight() const { return lookRight_; }
+
+    float getFovy() const { return fovy_.get(); }
+    void setFovy(float fovy);
 
     void setLook(vec3 lookFrom, vec3 lookTo, vec3 lookUp);
 
@@ -118,6 +123,11 @@ private:
     Inport* inport_;
     const SpatialEntity<3>* data_;
     mat3 oldBasis_;
+
+    const glm::vec3 initialEye_;
+    const glm::vec3 initialCenter_;
+    const glm::vec3 initialUp_;
+    const float initialFovy_;
 };
 
 } // namespace
