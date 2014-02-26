@@ -44,11 +44,11 @@ namespace inviwo {
 class IVW_CORE_API Settings : public PropertyOwner {
 
 public:
-    Settings(std::string id);
+    Settings(std::string id = "");
     virtual ~Settings();
 
-    virtual void initialize()=0;
-    virtual void deinitialize()=0;
+    virtual void initialize(){};
+    virtual void deinitialize(){};
 
     virtual void invalidate(PropertyOwner::InvalidationLevel invalidationLevel,
                             Property* modifiedProperty=0);
@@ -58,6 +58,9 @@ public:
 
     virtual void serialize(IvwSerializer& s) const;
     virtual void deserialize(IvwDeserializer& d);
+
+    void loadFromDisk();
+    void saveToDisk()const;
 
     virtual std::string getIdentifier();
 protected:
