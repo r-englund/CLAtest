@@ -119,6 +119,7 @@ set(HEADER_FILES
     ${IVW_INCLUDE_DIR}/inviwo/core/network/processornetwork.h
 	${IVW_INCLUDE_DIR}/inviwo/core/network/processornetworkobserver.h
     ${IVW_INCLUDE_DIR}/inviwo/core/network/processornetworkevaluator.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/ports/bufferport.h
     ${IVW_INCLUDE_DIR}/inviwo/core/ports/datainport.h
     ${IVW_INCLUDE_DIR}/inviwo/core/ports/dataoutport.h
     ${IVW_INCLUDE_DIR}/inviwo/core/ports/geometryport.h
@@ -308,6 +309,7 @@ set(SOURCE_FILES
     network/processornetwork.cpp
 	network/processornetworkobserver.cpp
     network/processornetworkevaluator.cpp
+    ports/bufferport.cpp
     ports/geometryport.cpp
     ports/imageport.cpp
     ports/inport.cpp
