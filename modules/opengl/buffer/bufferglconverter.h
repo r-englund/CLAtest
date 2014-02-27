@@ -35,7 +35,7 @@
 
 #include <modules/opengl/openglmoduledefine.h>
 #include <modules/opengl/inviwoopengl.h>
-#include <modules/opengl/geometry/attributebuffergl.h>
+#include <modules/opengl/buffer/buffergl.h>
 #include <inviwo/core/datastructures/buffer/bufferram.h>
 #include <inviwo/core/datastructures/geometry/attributes.h>
 

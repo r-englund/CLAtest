@@ -30,7 +30,7 @@
  *
  *********************************************************************************/
 
-#include <modules/opengl/geometry/attributebuffergl.h>
+#include <modules/opengl/buffer/buffergl.h>
 
 namespace inviwo {
 
