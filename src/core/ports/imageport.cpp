@@ -51,7 +51,6 @@ void ImageInport::initialize() {}
 void ImageInport::deinitialize() {}
 
 void ImageInport::changeDataDimensions(ResizeEvent* resizeEvent) {
-    uvec2 prevDim = dimensions_;
     uvec2 dimensions = resizeEvent->size();
     //set dimension based on port groups
     std::vector<std::string> portDependencySets = getProcessor()->getPortDependencySets();
@@ -89,8 +88,7 @@ void ImageInport::changeDataDimensions(ResizeEvent* resizeEvent) {
 
     resizeEvent->setSize(dimensions_);
     propagateResizeToPredecessor(resizeEvent);
-    if(prevDim != dimensions_)
-        invalidate(PropertyOwner::INVALID_OUTPUT);
+    invalidate(PropertyOwner::INVALID_OUTPUT);
 }
 
 void ImageInport::propagateResizeToPredecessor(ResizeEvent* resizeEvent) {
@@ -177,7 +175,6 @@ void ImageOutport::initialize() {}
 void ImageOutport::deinitialize() {}
 
 void ImageOutport::propagateResizeEventToPredecessor(ResizeEvent* resizeEvent) {
-    uvec2 prevDim = dimensions_;
     Processor* processor = getProcessor();
     std::vector<Inport*> inPorts = processor->getInports();
 
@@ -190,10 +187,8 @@ void ImageOutport::propagateResizeEventToPredecessor(ResizeEvent* resizeEvent) {
         }
     }
 
-    if(prevDim != dimensions_){
-        processor->invalidate(PropertyOwner::INVALID_OUTPUT);
-        invalidate(PropertyOwner::INVALID_OUTPUT);
-    }
+    processor->invalidate(PropertyOwner::INVALID_OUTPUT);
+    invalidate(PropertyOwner::INVALID_OUTPUT);
 }
 
 void ImageOutport::invalidate(PropertyOwner::InvalidationLevel invalidationLevel) {
