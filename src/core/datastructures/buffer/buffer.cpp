@@ -68,13 +68,17 @@ Buffer* Buffer::clone() const {
 Buffer::~Buffer() {
 }
 
-void Buffer::resize(size_t size) {
+size_t Buffer::getSizeInBytes() {
+    return size_ * format_->getBytesStored();
+}
+
+void Buffer::setSize(size_t size) {
     if (size != size_) {
         size_ = size;
 
         if (lastValidRepresentation_) {
             // Resize last valid representation and remove the other ones
-            static_cast<BufferRepresentation*>(lastValidRepresentation_)->resize(size);
+            static_cast<BufferRepresentation*>(lastValidRepresentation_)->setSize(size);
             std::vector<DataRepresentation*>::iterator it = std::find(representations_.begin(), representations_.end(), lastValidRepresentation_);
 
             // First delete the representations before erasing them from the vector
@@ -97,14 +101,6 @@ void Buffer::resize(size_t size) {
         }
         setAllRepresentationsAsInvalid();
     }
-}
-
-size_t Buffer::getSizeInBytes() {
-    return size_ * format_->getBytesStored();
-}
-
-void Buffer::setSize(size_t size) {
-    resize(size);
 }
 
 

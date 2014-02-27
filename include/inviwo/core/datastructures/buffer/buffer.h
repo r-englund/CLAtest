@@ -62,7 +62,6 @@ public:
     virtual Buffer* clone() const;
     virtual ~Buffer();
 
-    void resize(size_t size);
     void resizeBufferRepresentations(Buffer* targetBuffer, size_t targetSize);
 
     size_t getSize() const;

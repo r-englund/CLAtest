@@ -51,7 +51,6 @@ public:
     virtual ~BufferRepresentation() {};
     virtual void performOperation(DataOperation*) const {};
     virtual void setSize(size_t size) {  size_ = size; }
-    virtual void resize(size_t size) { size_ = size; }
 
 
     virtual std::string getClassName() const { return "BufferRepresentation"; }

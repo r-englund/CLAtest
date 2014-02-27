@@ -79,7 +79,7 @@ void BufferGL2RAMConverter::update(const DataRepresentation* source, DataReprese
     BufferRAM* dst = static_cast<BufferRAM*>(destination);
 
     if (src->getSize() != dst->getSize()) {
-        dst->resize(src->getSize());
+        dst->setSize(src->getSize());
     }
 
     src->download(dst->getData());
