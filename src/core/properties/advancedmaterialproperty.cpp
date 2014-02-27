@@ -42,8 +42,8 @@ AdvancedMaterialProperty::AdvancedMaterialProperty(std::string identifier, std::
     , indexOfRefractionProp("IOR", "Index of refraction", 1.f, 1.f, 20.f)
     , roughnessProp("roughness", "Roughness", 0.1f, 0.01f, 1.f)
     , specularColorProp("specularColor", "Specular color", vec4(1.f))
-    , anisotropyProp("anisotropy", "Anisotropy (g)", 0.f, -1.f, 1.f)
-{
+    , anisotropyProp("anisotropy", "Anisotropy (g)", 0.f, -1.f, 1.f) {
+
     phaseFunctionProp.addOption("isotropic", "Isotropic");
     phaseFunctionProp.addOption("HenyeyGreenstein", "Henyey-Greenstein");
     phaseFunctionProp.addOption("Schlick", "Schlick");
@@ -53,6 +53,7 @@ AdvancedMaterialProperty::AdvancedMaterialProperty(std::string identifier, std::
     phaseFunctionProp.addOption("CookTorrance", "Cook-Torrance");
     phaseFunctionProp.addOption("ABCMicrofacet", "ABC microfacet");
     phaseFunctionProp.addOption("mix", "Mix");
+    phaseFunctionProp.setCurrentStateAsDefault();
     std::string materialGroupID = getGroupId();
     Property::setGroupDisplayName(materialGroupID, "Material");
     indexOfRefractionProp.setGroupID(materialGroupID);

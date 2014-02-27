@@ -45,7 +45,7 @@ BoolPropertyWidgetQt::BoolPropertyWidgetQt(BoolProperty* property)
 void BoolPropertyWidgetQt::generateWidget() {
     QHBoxLayout* hLayout = new QHBoxLayout();
     hLayout->setContentsMargins(0, 0, 0, 0);
-    hLayout->setSpacing(0);
+    hLayout->setSpacing(7);
     
     label_ = new EditableLabelQt(this, property_->getDisplayName(), PropertyWidgetQt::generatePropertyWidgetMenu());
     label_->setShortenText(false);
@@ -56,7 +56,7 @@ void BoolPropertyWidgetQt::generateWidget() {
     checkBox_->setEnabled(!property_->getReadOnly());
     connect(checkBox_, SIGNAL(clicked()), this, SLOT(setPropertyValue()));
 
-    hLayout->addStretch(1);
+    hLayout->addStretch(3);
     hLayout->addWidget(checkBox_);
     setLayout(hLayout);
 }

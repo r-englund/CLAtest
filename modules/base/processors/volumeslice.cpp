@@ -51,6 +51,7 @@ VolumeSlice::VolumeSlice()
     coordinatePlane_.addOption("xz", "XZ Plane", XZ);
     coordinatePlane_.addOption("yz", "YZ Plane", YZ);
     coordinatePlane_.set(XY);
+    coordinatePlane_.setCurrentStateAsDefault();
     addProperty(coordinatePlane_);
     addProperty(sliceNumber_);
 }

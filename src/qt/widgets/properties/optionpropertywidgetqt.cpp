@@ -45,7 +45,7 @@ OptionPropertyWidgetQt::OptionPropertyWidgetQt(BaseOptionProperty* property)
 void OptionPropertyWidgetQt::generateWidget() {
     QHBoxLayout* hLayout = new QHBoxLayout();
     hLayout->setContentsMargins(0, 0, 0, 0);
-    hLayout->setSpacing(0);
+    hLayout->setSpacing(7);
     comboBox_ = new QComboBox();
     fillComboBox();
     updateFromProperty();
@@ -62,16 +62,17 @@ void OptionPropertyWidgetQt::generateWidget() {
 
 void OptionPropertyWidgetQt::fillComboBox() {
     comboBox_->clear();
+    std::vector<std::string> names = property_->getDisplayNames();
 
-    for (int i=0; i<property_->numOptions(); i++) {
-        QString option = QString::fromStdString(property_->getOptionDisplayNames()[i]);
+    for (size_t i = 0; i < names.size(); i++) {
+        QString option = QString::fromStdString(names[i]);
         comboBox_->addItem(option);
     }
 }
 void OptionPropertyWidgetQt::optionChanged() {
     if (!updating_) {
         if (comboBox_->count() && comboBox_->currentIndex()>=0) {
-            property_->setSelectedOption(comboBox_->currentIndex());
+            property_->setSelectedIndex(comboBox_->currentIndex());
             emit modified();
         }
     }
@@ -79,7 +80,7 @@ void OptionPropertyWidgetQt::optionChanged() {
 
 void OptionPropertyWidgetQt::updateFromProperty() {
     updating_ = true;
-    int index = property_->getSelectedOption();
+    size_t index = property_->getSelectedIndex();
     fillComboBox();
     comboBox_->setCurrentIndex(index);
     updating_ = false;

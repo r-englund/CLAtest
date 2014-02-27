@@ -361,7 +361,7 @@ void CollapsibleGroupBoxWidgetQt::resetPropertyToDefaultState() {
         properties_[i]->lockInvalidation(false);
         invalidationLevel = std::max(invalidationLevel, properties_[i]->getInvalidationLevel());
     }
-    if (properties_[0]->getOwner()) {
+    if (properties_.size() > 0 && properties_[0]->getOwner()) {
         properties_[0]->getOwner()->invalidate(invalidationLevel, properties_[0]);
     }
 

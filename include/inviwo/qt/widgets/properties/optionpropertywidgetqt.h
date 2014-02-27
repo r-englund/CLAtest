@@ -48,17 +48,13 @@
 namespace inviwo {
 
 class IVW_QTWIDGETS_API OptionPropertyWidgetQt : public PropertyWidgetQt {
-
     Q_OBJECT
 
 public:
-
     OptionPropertyWidgetQt(BaseOptionProperty* property);
-
     void updateFromProperty();
 
 private:
-
     BaseOptionProperty* property_;
     QComboBox* comboBox_;
     EditableLabelQt* label_;

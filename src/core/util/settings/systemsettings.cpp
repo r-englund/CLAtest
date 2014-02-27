@@ -41,7 +41,7 @@ namespace inviwo {
 SystemSettings::SystemSettings(std::string id) :
     Settings(id)
     , allocTest_(0)
-    , viewModeProperty_("viewMode","View Mode",0)
+    , viewModeProperty_("viewMode","View Mode")
     , txtEditorProperty_("txtEditor", "Use system text editor", true)
     , shaderReloadingProperty_("shaderReloading", "Automatically reload shaders", true)
     , enablePortInspectorsProperty_("enablePortInspectors", "Enable port inspectors", true)
@@ -60,6 +60,7 @@ SystemSettings::~SystemSettings() {
 void SystemSettings::initialize() {
     viewModeProperty_.addOption("developerMode","Developer Mode",0);
     viewModeProperty_.addOption("applicationMode","Application Mode",1);
+    viewModeProperty_.setCurrentStateAsDefault();
     addProperty(&viewModeProperty_);
     //viewModeProperty_.setVisibility(INVISIBLE);
     addProperty(&txtEditorProperty_);

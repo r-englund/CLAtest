@@ -49,7 +49,7 @@ LightPropertyWidgetQt::~LightPropertyWidgetQt() {
 void LightPropertyWidgetQt::generateWidget() {
     QHBoxLayout* hLayout = new QHBoxLayout();
     hLayout->setContentsMargins(0, 0, 0, 0);
-    hLayout->setSpacing(0);
+    hLayout->setSpacing(7);
     
     lightWidget_ = new LightPositionWidgetQt();
     label_ = new EditableLabelQt(this,property_->getDisplayName(),PropertyWidgetQt::generatePropertyWidgetMenu());

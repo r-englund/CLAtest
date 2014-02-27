@@ -74,7 +74,7 @@ protected:
     ImageInport inport_;
 
     IntVec2Property dimensions_;
-    IntOptionProperty visibleLayer_; // LayerType enum (Cannot serialize/deserialize enums so we use an int and cast it)
+    OptionPropertyInt visibleLayer_; // LayerType enum (Cannot serialize/deserialize enums so we use an int and cast it)
     DirectoryProperty saveLayerDirectory_;
     ButtonProperty saveLayerButton_;
 

@@ -69,7 +69,8 @@ void SettingsWidget::loadSettings() {
         settings[i]->loadFromDisk();
         //Holder widget
         QVBoxLayout* vLayout =  new QVBoxLayout();
-        vLayout->setSpacing(0);
+        vLayout->setSpacing(7);
+        vLayout->setContentsMargins(7,7,7,7);
         vLayout->setAlignment(Qt::AlignTop);
         QWidget* tabHolder = new QWidget();
         tabHolder->setLayout(vLayout);

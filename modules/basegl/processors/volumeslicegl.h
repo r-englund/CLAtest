@@ -86,7 +86,7 @@ private:
     VolumeInport inport_;
     ImageOutport outport_;
 
-    IntOptionProperty coordinatePlane_;  // CoordinatePlane enum (Cannot serialize/deserialize enums so we use an int and cast it)
+    OptionPropertyInt coordinatePlane_;  // CoordinatePlane enum (Cannot serialize/deserialize enums so we use an int and cast it)
     BoolProperty flipHorizontal_;
     BoolProperty flipVertical_;
     IntProperty sliceNumber_;
