@@ -82,7 +82,7 @@ void OptionPropertyWidgetQt::updateFromProperty() {
     updating_ = true;
     size_t index = property_->getSelectedIndex();
     fillComboBox();
-    comboBox_->setCurrentIndex(index);
+    comboBox_->setCurrentIndex(static_cast<size_t>(index));
     updating_ = false;
 }
 

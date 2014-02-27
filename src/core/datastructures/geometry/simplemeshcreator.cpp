@@ -149,7 +149,7 @@ SimpleMesh* SimpleMeshCreator::sphere(float radius, unsigned int numLoops, unsig
     //Create Vertices
     NormalBuffer *normalBuffer = new NormalBuffer();
     NormalBufferRAM *normals = normalBuffer->getEditableRepresentation<NormalBufferRAM>();
-    normals->resize((numLoops + 1) * (segmentsPerLoop + 1));
+    normals->setSize((numLoops + 1) * (segmentsPerLoop + 1));
 
     unsigned int pointsPerLine = segmentsPerLoop + 1;
     for (unsigned int i = 0; i <= numLoops; ++i) {
@@ -183,7 +183,7 @@ SimpleMesh* SimpleMeshCreator::sphere(float radius, unsigned int numLoops, unsig
         IndexBuffer *indexBuf = new IndexBuffer();
         IndexBufferRAM * indices = indexBuf->getEditableRepresentation<IndexBufferRAM>();
 
-        indices->resize(pointsPerLine * 2); 
+        indices->setSize(pointsPerLine * 2); 
 
         unsigned int offset = y * pointsPerLine;
         std::size_t count = 0;
@@ -221,7 +221,7 @@ SimpleMesh* SimpleMeshCreator::plane(glm::vec3 pos, glm::vec2 extent,
 
     NormalBuffer *normalBuffer = new NormalBuffer();
     NormalBufferRAM *normals = normalBuffer->getEditableRepresentation<NormalBufferRAM>();
-    normals->resize((meshResX + 1) * (meshResY + 1));
+    normals->setSize((meshResX + 1) * (meshResY + 1));
     for (unsigned int y=0; y<=meshResY; ++y) {
         for (unsigned int x=0; x<=meshResX; ++x) {
             glm::vec3 tCoord(texCoordDelta * glm::vec3(x, y, 0.0f));
@@ -239,7 +239,7 @@ SimpleMesh* SimpleMeshCreator::plane(glm::vec3 pos, glm::vec2 extent,
         IndexBuffer *indexBuf = new IndexBuffer();
         IndexBufferRAM * indices = indexBuf->getEditableRepresentation<IndexBufferRAM>();
 
-        indices->resize(pointsPerLine * 2); 
+        indices->setSize(pointsPerLine * 2); 
 
         unsigned int offset = y * pointsPerLine;
         std::size_t count = 0;

@@ -66,14 +66,8 @@ void BufferRAM::deinitialize() {
 
 void BufferRAM::setSize(size_t size) {
     size_ = size;
+    // Delete and reallocate data_ to new size
     deinitialize();
-    initialize();
-}
-
-void BufferRAM::resize(size_t size) {
-    size_ = size;
-    //Delete and reallocate data_ to new size
-    BufferRAM::deinitialize();
     initialize();
 }
 
