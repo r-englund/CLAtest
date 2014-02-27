@@ -84,8 +84,6 @@ void CanvasProcessor::resizeCanvas() {
 }
 
 void CanvasProcessor::setCanvasSize(ivec2 dim) {
-    if(dimensions_.get() == dim)
-        return;
     disableResize_ = true;
     dimensions_.set(dim);
 

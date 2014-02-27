@@ -78,10 +78,11 @@ NetworkEditor::NetworkEditor() :
     , filename_("")
     , renamingProcessor_(false) 
     , modified_(false)
+    , processorNetwork_(0)
 {
     setSceneRect(-1000,-1000,1000,1000);
-    workerThreadReset();
     processorNetwork_ = new ProcessorNetwork();
+    workerThreadReset();
     InviwoApplication::getRef().setProcessorNetwork(processorNetwork_);
     processorNetworkEvaluator_ = new ProcessorNetworkEvaluator(processorNetwork_);
     processorNetwork_->addObserver(this);
@@ -124,6 +125,7 @@ void NetworkEditor::addProcessor(Processor* processor, QPointF pos, bool showPro
     // add processor representations
     addProcessorRepresentations(processor, pos, showProcessor, showPropertyWidgets, selectProcessor);
     autoLinkOnAddedProcessor(processor);
+    setModified(true);
 }
 
 void NetworkEditor::removeProcessor(Processor* processor) {
@@ -134,6 +136,7 @@ void NetworkEditor::removeProcessor(Processor* processor) {
     processorNetworkEvaluator_->activateDefaultRenderContext();
     // remove the processor from the network
     processorNetwork_->removeAndDeleteProcessor(processor);
+    setModified(true);
 }
 
 
@@ -156,6 +159,7 @@ void NetworkEditor::addConnection(Outport* outport, Inport* inport) {
     for (size_t i=0; i<processorGraphicsItems_.size(); i++) {
         processorGraphicsItems_[i]->update();
     }
+    setModified(true);
 }
 
 void NetworkEditor::removeConnection(Outport* outport, Inport* inport) {
@@ -165,6 +169,7 @@ void NetworkEditor::removeConnection(Outport* outport, Inport* inport) {
     for (size_t i=0; i<processorGraphicsItems_.size(); i++) {
         processorGraphicsItems_[i]->update();
     }
+    setModified(true);
 }
 
 
@@ -172,12 +177,14 @@ void NetworkEditor::addLink(Processor* processor1, Processor* processor2) {
     if (!processorNetwork_->getLink(processor1, processor2)) {
         processorNetwork_->addLink(processor1, processor2);
         addLinkGraphicsItem(processor1, processor2);
+        setModified(true);
     }
 }
 
 void NetworkEditor::removeLink(Processor* processor1, Processor* processor2) {
     removeLinkGraphicsItem(getLinkGraphicsItem(processor1, processor2));
     processorNetwork_->removeLink(processor1, processor2);
+    setModified(true);
 }
 
 void NetworkEditor::autoLinkOnAddedProcessor(Processor* addedProcessor) {
@@ -667,7 +674,8 @@ void NetworkEditor::removePortInspector(std::string processorIdentifier, std::st
 
 
 void NetworkEditor::workerThreadReset() {
-    workerThread_ = NULL;    
+    workerThread_ = NULL;
+    processorNetwork_->addObserver(this);    
 }
 
 void NetworkEditor::workerThreadQuit() {
@@ -1475,12 +1483,6 @@ bool NetworkEditor::loadNetwork(std::string fileName) {
             if (meta->isVisible()) {
                 processors[i]->getProcessorWidget()->show();
                 evaluate = true;
-                CanvasProcessor* canvas = dynamic_cast<CanvasProcessor*>(processors[i]);
-                if(canvas){
-                    ResizeEvent* resizeEvent =  new ResizeEvent(canvas->getCanvasSize());
-                    processorNetworkEvaluator_->propagateResizeEvent(canvas->getCanvas(),resizeEvent);
-                    delete resizeEvent;
-                }
             }
         }
     }
@@ -1501,7 +1503,8 @@ bool NetworkEditor::loadNetwork(std::string fileName) {
     connect(worker, SIGNAL(finished()), worker, SLOT(deleteLater()));
     connect(workerThread_, SIGNAL(finished()), workerThread_, SLOT(deleteLater()));
     connect(workerThread_, SIGNAL(finished()), this, SLOT(workerThreadReset()));
-    setModified(false);
+
+    processorNetwork_->removeObserver(this);
     workerThread_->start();
 
     for (ObserverSet::reverse_iterator it = observers_->rbegin(); it != observers_->rend(); ++it)
