@@ -78,7 +78,7 @@ public:
 
 
     // Material properties
-    StringOptionProperty phaseFunctionProp;
+    OptionPropertyString phaseFunctionProp;
     FloatProperty indexOfRefractionProp;
     FloatProperty roughnessProp;
     FloatVec4Property specularColorProp;

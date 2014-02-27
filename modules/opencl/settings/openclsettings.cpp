@@ -40,7 +40,7 @@ namespace inviwo {
 
 OpenCLSettings::OpenCLSettings(std::string id) :
     Settings(id)
-    , openCLDeviceProperty_("openCLDevice","Default device",0)
+    , openCLDeviceProperty_("openCLDevice","Default device")
     , enableOpenGLSharing_("glsharing", "Enable OpenGL sharing", true)
 {}
 
@@ -54,7 +54,7 @@ void OpenCLSettings::initialize() {
         std::string name = devices[i].getInfo<CL_DEVICE_NAME>();
         openCLDeviceProperty_.addOption(name, name, static_cast<int>(i));
     }
-
+    openCLDeviceProperty_.setCurrentStateAsDefault();
     addProperty(openCLDeviceProperty_);
     addProperty(enableOpenGLSharing_);
     openCLDeviceProperty_.onChange(this, &OpenCLSettings::changeDevice);

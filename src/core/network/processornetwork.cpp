@@ -101,6 +101,7 @@ void ProcessorNetwork::removeProcessor(Processor* processor) {
     // remove processor itself
     processors_.erase(std::remove(processors_.begin(), processors_.end(), processor), processors_.end());
     processor->removeObserver(this);
+    modified();
 }
 
 void ProcessorNetwork::removeAndDeleteProcessor(Processor* processor) {
@@ -190,6 +191,7 @@ void ProcessorNetwork::removeLink(Processor* sourceProcessor, Processor* destPro
              processorLinks_[i]->getSourceProcessor() == destProcessor)) {
             delete processorLinks_[i];
             processorLinks_.erase(processorLinks_.begin() + i);
+            modified();
             break;
         }
     }

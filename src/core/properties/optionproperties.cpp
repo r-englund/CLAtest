@@ -34,6 +34,7 @@
 
 namespace inviwo {
 
+    /*
 OptionPropertyInt::OptionPropertyInt(std::string identifier, std::string displayName,
                                      PropertyOwner::InvalidationLevel invalidationLevel,
                                      PropertySemantics semantics)
@@ -89,5 +90,6 @@ void OptionPropertyString::addOption(std::string identifier, std::string display
 void OptionPropertyString::addOption(std::string identifier, std::string displayName, std::string value) {
     TemplateOptionProperty<std::string>::addOption(identifier, displayName, value);
 }
+*/
 
 } // namespace

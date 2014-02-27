@@ -42,18 +42,18 @@ namespace inviwo {
  *   The widget for the property consist of a combobox with the display names for each mapped value
  * @see TemplateOptionProperty
  */
-class IVW_CORE_API OptionPropertyInt : public TemplateOptionProperty<int> {
+//class IVW_CORE_API OptionPropertyInt : public TemplateOptionProperty<int> {
 
-public:
-    OptionPropertyInt(std::string identifier, std::string displayName,
-                      PropertyOwner::InvalidationLevel invalidationLevel=PropertyOwner::INVALID_OUTPUT,
-                      PropertySemantics semantics=PropertySemantics::Default);
-    OptionPropertyInt(std::string identifier, std::string displayName, int value,
-                      PropertyOwner::InvalidationLevel invalidationLevel=PropertyOwner::INVALID_OUTPUT,
-                      PropertySemantics semantics=PropertySemantics::Default);
-
-    virtual std::string getClassName()  const { return "OptionPropertyInt"; }
-};
+//public:
+//    OptionPropertyInt(std::string identifier, std::string displayName,
+//                      PropertyOwner::InvalidationLevel invalidationLevel=PropertyOwner::INVALID_OUTPUT,
+//                      PropertySemantics semantics=PropertySemantics::Default);
+//    OptionPropertyInt(std::string identifier, std::string displayName, int value,
+//                      PropertyOwner::InvalidationLevel invalidationLevel=PropertyOwner::INVALID_OUTPUT,
+//                      PropertySemantics semantics=PropertySemantics::Default);
+//
+//    virtual std::string getClassName()  const { return "OptionPropertyInt"; }
+//};
 
 
 /** class OptionPropertyFloat
@@ -62,15 +62,15 @@ public:
  *  The widget for the property consist of a combobox with the display names for each mapped value
  * @see TemplateOptionProperty
  */
-class IVW_CORE_API OptionPropertyFloat : public TemplateOptionProperty<float> {
+//class IVW_CORE_API OptionPropertyFloat : public TemplateOptionProperty<float> {
 
-public:
-    OptionPropertyFloat(std::string identifier, std::string displayName,
-                        PropertyOwner::InvalidationLevel invalidationLevel=PropertyOwner::INVALID_OUTPUT,
-                        PropertySemantics semantics=PropertySemantics::Default);
-    OptionPropertyFloat(std::string identifier, std::string displayName, float value,
-                        PropertyOwner::InvalidationLevel invalidationLevel=PropertyOwner::INVALID_OUTPUT,
-                        PropertySemantics semantics=PropertySemantics::Default);
+//public:
+//    OptionPropertyFloat(std::string identifier, std::string displayName,
+//                        PropertyOwner::InvalidationLevel invalidationLevel=PropertyOwner::INVALID_OUTPUT,
+//                        PropertySemantics semantics=PropertySemantics::Default);
+//    OptionPropertyFloat(std::string identifier, std::string displayName, float value,
+//                        PropertyOwner::InvalidationLevel invalidationLevel=PropertyOwner::INVALID_OUTPUT,
+//                        PropertySemantics semantics=PropertySemantics::Default);
     ///**
     // * \brief  Variants are used while linking. All options are converted to strings (including values) and hence variant type is string.
     // *
@@ -88,8 +88,8 @@ public:
     // */
     //virtual void setVariant(const Variant& inVariant);
 
-    virtual std::string getClassName()  const { return "OptionPropertyFloat"; }
-};
+//    virtual std::string getClassName()  const { return "OptionPropertyFloat"; }
+//};
 
 /** class OptionPropertyDouble
  * \brief The OptionPropertyDouble is a property holding different options stored with a display name and the double value
@@ -97,15 +97,15 @@ public:
  *  The widget for the property consist of a combobox with the display names for each mapped value
  * @see TemplateOptionProperty
  */
-class IVW_CORE_API OptionPropertyDouble : public TemplateOptionProperty<double> {
-
-public:
-    OptionPropertyDouble(std::string identifier, std::string displayName,
-                         PropertyOwner::InvalidationLevel invalidationLevel=PropertyOwner::INVALID_OUTPUT,
-                         PropertySemantics semantics=PropertySemantics::Default);
-    OptionPropertyDouble(std::string identifier, std::string displayName, double value,
-                         PropertyOwner::InvalidationLevel invalidationLevel=PropertyOwner::INVALID_OUTPUT,
-                         PropertySemantics semantics=PropertySemantics::Default);
+//class IVW_CORE_API OptionPropertyDouble : public TemplateOptionProperty<double> {
+//
+//public:
+//    OptionPropertyDouble(std::string identifier, std::string displayName,
+//                         PropertyOwner::InvalidationLevel invalidationLevel=PropertyOwner::INVALID_OUTPUT,
+//                         PropertySemantics semantics=PropertySemantics::Default);
+//    OptionPropertyDouble(std::string identifier, std::string displayName, double value,
+//                         PropertyOwner::InvalidationLevel invalidationLevel=PropertyOwner::INVALID_OUTPUT,
+//                         PropertySemantics semantics=PropertySemantics::Default);
     ///**
     // * \brief  Variants are used while linking. All options are converted to strings (including values) and hence variant type is string.
     // *
@@ -123,35 +123,35 @@ public:
     // */
     //virtual void setVariant(const Variant& inVariant);
 
-    virtual std::string getClassName()  const { return "OptionPropertyDouble"; }
-};
-
+//    virtual std::string getClassName()  const { return "OptionPropertyDouble"; }
+//};
+//
 
 /** class OptionPropertyString
  * \brief The OptionPropertyString is a property holding different options stored with a display name and the string value
  * The widget for the property consist of a combobox with the display names for each mapped value
  * @see TemplateOptionProperty
  */
-class IVW_CORE_API OptionPropertyString : public TemplateOptionProperty<std::string> {
+//class IVW_CORE_API OptionPropertyString : public TemplateOptionProperty<std::string> {
+//
+//public:
+//    OptionPropertyString(std::string identifier, std::string displayName, std::string value,
+//                         PropertyOwner::InvalidationLevel invalidationLevel=PropertyOwner::INVALID_OUTPUT,
+//                         PropertySemantics semantics=PropertySemantics::Default);
+//    OptionPropertyString(std::string identifier, std::string displayName,
+//                         PropertyOwner::InvalidationLevel invalidationLevel=PropertyOwner::INVALID_OUTPUT,
+//                         PropertySemantics semantics=PropertySemantics::Default);
+//
+//    void addOption(std::string identifier, std::string displayName);
+//    void addOption(std::string identifier, std::string displayName, std::string value);
+//
+//    virtual std::string getClassName()  const { return "OptionPropertyString"; }
+//};
 
-public:
-    OptionPropertyString(std::string identifier, std::string displayName, std::string value,
-                         PropertyOwner::InvalidationLevel invalidationLevel=PropertyOwner::INVALID_OUTPUT,
-                         PropertySemantics semantics=PropertySemantics::Default);
-    OptionPropertyString(std::string identifier, std::string displayName,
-                         PropertyOwner::InvalidationLevel invalidationLevel=PropertyOwner::INVALID_OUTPUT,
-                         PropertySemantics semantics=PropertySemantics::Default);
-
-    void addOption(std::string identifier, std::string displayName);
-    void addOption(std::string identifier, std::string displayName, std::string value);
-
-    virtual std::string getClassName()  const { return "OptionPropertyString"; }
-};
-
-typedef OptionPropertyDouble DoubleOptionProperty; // deprecated
-typedef OptionPropertyFloat  FloatOptionProperty;  // deprecated
-typedef OptionPropertyInt    IntOptionProperty;    // deprecated
-typedef OptionPropertyString StringOptionProperty; // deprecated
+//typedef OptionPropertyDouble DoubleOptionProperty; // deprecated
+//typedef OptionPropertyFloat  FloatOptionProperty;  // deprecated
+//typedef OptionPropertyInt    IntOptionProperty;    // deprecated
+//typedef OptionPropertyString StringOptionProperty; // deprecated
 
 } // namespace
 

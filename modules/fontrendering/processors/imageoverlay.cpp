@@ -67,7 +67,7 @@ ImageOverlay::ImageOverlay()
     optionPropertyIntFontSize_.addOption("48","48",48);
     optionPropertyIntFontSize_.addOption("60","60",60);
     optionPropertyIntFontSize_.addOption("72","72",72);
-    optionPropertyIntFontSize_.setSelectedOption(3);
+    optionPropertyIntFontSize_.setSelectedIndex(3);
 }
 
 ImageOverlay::~ImageOverlay() {}
@@ -167,7 +167,7 @@ void ImageOverlay::process() {
     glVertexAttribPointer(attribute_location, 4, GL_FLOAT, GL_FALSE, 0, 0);
     float sx = 2.f / outImageGL->getDimension().x;
     float sy = 2.f / outImageGL->getDimension().y;
-    font_size_ = optionPropertyIntFontSize_.getValue();
+    font_size_ = optionPropertyIntFontSize_.getSelecetedValue();
     xpos_ = floatVec2FontPos_.get().x * outImageGL->getDimension().x;
     ypos_ = floatVec2FontPos_.get().y * outImageGL->getDimension().y + float(font_size_);
     shader_->activate();

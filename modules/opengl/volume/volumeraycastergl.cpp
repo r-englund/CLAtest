@@ -86,14 +86,16 @@ void VolumeRaycasterGL::addBasicProperties() {
     addProperty(samplingRate_);
     classificationMode_.addOption("none", "None");
     classificationMode_.addOption("transfer-function", "Transfer function");
-    classificationMode_.set("transfer-function");
+    classificationMode_.setSelectedIdentifier("transfer-function");
+    classificationMode_.setCurrentStateAsDefault();
     addProperty(classificationMode_);
     gradientComputationMode_.addOption("none", "None");
     gradientComputationMode_.addOption("forward", "Forward differences");
     gradientComputationMode_.addOption("backward", "Backward differences");
     gradientComputationMode_.addOption("central", "Central differences");
     gradientComputationMode_.addOption("central-higher", "Higher order central differences");
-    gradientComputationMode_.set("forward");
+    gradientComputationMode_.setSelectedIdentifier("forward");
+    gradientComputationMode_.setCurrentStateAsDefault();
     addProperty(gradientComputationMode_);
     // light properties are only initialized here and need to be added by derived raycasters
     shadingMode_.addOption("none", "No Shading");
@@ -101,7 +103,8 @@ void VolumeRaycasterGL::addBasicProperties() {
     shadingMode_.addOption("diffuse", "Diffuse");
     shadingMode_.addOption("specular", "Specular");
     shadingMode_.addOption("phong", "Phong");
-    shadingMode_.set("phong");
+    shadingMode_.setSelectedIdentifier("phong");
+    shadingMode_.setCurrentStateAsDefault();
     lightPosition_.setSemantics(PropertySemantics::LightPosition);
     lightColorAmbient_.setSemantics(PropertySemantics::Color);
     lightColorDiffuse_.setSemantics(PropertySemantics::Color);
@@ -112,7 +115,8 @@ void VolumeRaycasterGL::addBasicProperties() {
     compositingMode_.addOption("fhn", "First hit normals");
     compositingMode_.addOption("iso", "Iso surface rendering");
     compositingMode_.addOption("ison", "Iso surface normal rendering");
-    compositingMode_.set("dvr");
+    compositingMode_.setSelectedIdentifier("dvr");
+    compositingMode_.setCurrentStateAsDefault();
     addProperty(compositingMode_);
     addProperty(camera_);
 }
@@ -166,15 +170,15 @@ void VolumeRaycasterGL::initializeResources() {
         "RC_CALC_GRADIENTS(voxel, samplePos, volume_, volumeStruct_, t, rayDirection, entryPoints_, entryParameters_)";
     std::string gradientComputationValue = "";
 
-    if (gradientComputationMode_.isSelected("none"))
+    if (gradientComputationMode_.isSelectedIdentifier("none"))
         gradientComputationValue = "voxel.xyz;";
-    else if (gradientComputationMode_.isSelected("forward"))
+    else if(gradientComputationMode_.isSelectedIdentifier("forward"))
         gradientComputationValue = "gradientForwardDiff(voxel.r, volume_, volumeStruct_, samplePos);";
-    else if (gradientComputationMode_.isSelected("central"))
+    else if(gradientComputationMode_.isSelectedIdentifier("central"))
         gradientComputationValue = "gradientCentralDiff(voxel.r, volume_, volumeStruct_, samplePos);";
-    else if (gradientComputationMode_.isSelected("central-higher"))
+    else if(gradientComputationMode_.isSelectedIdentifier("central-higher"))
         gradientComputationValue = "gradientCentralDiffH(voxel.r, volume_, volumeStruct_, samplePos);";
-    else if (gradientComputationMode_.isSelected("backward"))
+    else if(gradientComputationMode_.isSelectedIdentifier("backward"))
         gradientComputationValue = "gradientBackwardDiff(voxel.r, volume_, volumeStruct_, samplePos);";
 
     shader_->getFragmentShaderObject()->addShaderDefine(gradientComputationKey, gradientComputationValue);
@@ -182,9 +186,9 @@ void VolumeRaycasterGL::initializeResources() {
     std::string classificationKey = "RC_APPLY_CLASSIFICATION(transferFunc_, voxel)";
     std::string classificationValue = "";
 
-    if (classificationMode_.isSelected("none"))
+    if(classificationMode_.isSelectedIdentifier("none"))
         classificationValue = "vec4(voxel.r);";
-    else if (classificationMode_.isSelected("transfer-function"))
+    else if(classificationMode_.isSelectedIdentifier("transfer-function"))
         classificationValue = "applyTF(transferFunc_, voxel);";
 
     shader_->getFragmentShaderObject()->addShaderDefine(classificationKey, classificationValue);
@@ -192,15 +196,15 @@ void VolumeRaycasterGL::initializeResources() {
     std::string shadingKey = "RC_APPLY_SHADING(colorAmb, colorDiff, colorSpec, samplePos, gradient, lightPos, cameraPos)";
     std::string shadingValue = "";
 
-    if (shadingMode_.isSelected("none"))
+    if(shadingMode_.isSelectedIdentifier("none"))
         shadingValue = "colorAmb;";
-    else if (shadingMode_.isSelected("ambient"))
+    else if(shadingMode_.isSelectedIdentifier("ambient"))
         shadingValue = "shadeAmbient(colorAmb);";
-    else if (shadingMode_.isSelected("diffuse"))
+    else if(shadingMode_.isSelectedIdentifier("diffuse"))
         shadingValue = "shadeDiffuse(colorDiff, samplePos, gradient, lightPos);";
-    else if (shadingMode_.isSelected("specular"))
+    else if(shadingMode_.isSelectedIdentifier("specular"))
         shadingValue = "shadeSpecular(colorSpec, samplePos, gradient, lightPos, cameraPos);";
-    else if (shadingMode_.isSelected("phong"))
+    else if(shadingMode_.isSelectedIdentifier("phong"))
         shadingValue = "shadePhong(colorAmb, colorDiff, colorSpec, samplePos, gradient, lightPos, cameraPos);";
 
     shader_->getFragmentShaderObject()->addShaderDefine(shadingKey, shadingValue);
@@ -208,17 +212,17 @@ void VolumeRaycasterGL::initializeResources() {
     std::string compositingKey = "RC_APPLY_COMPOSITING(result, color, samplePos, gradient, t, tDepth, tIncr)";
     std::string compositingValue = "";
 
-    if (compositingMode_.isSelected("dvr"))
+    if (compositingMode_.isSelectedIdentifier("dvr"))
         compositingValue = "compositeDVR(result, color, t, tDepth, tIncr);";
-    else if (compositingMode_.isSelected("mip"))
+    else if (compositingMode_.isSelectedIdentifier("mip"))
         compositingValue = "compositeMIP(result, color, t, tDepth);";
-    else if (compositingMode_.isSelected("fhp"))
+    else if (compositingMode_.isSelectedIdentifier("fhp"))
         compositingValue = "compositeFHP(result, color, samplePos, t, tDepth);";
-    else if (compositingMode_.isSelected("fhn"))
+    else if (compositingMode_.isSelectedIdentifier("fhn"))
         compositingValue = "compositeFHN(result, color, gradient, t, tDepth);";
-    else if (compositingMode_.isSelected("iso"))
+    else if (compositingMode_.isSelectedIdentifier("iso"))
         compositingValue = "compositeISO(result, color, t, tDepth, tIncr, isoValue_);";
-    else if (compositingMode_.isSelected("ison"))
+    else if (compositingMode_.isSelectedIdentifier("ison"))
         compositingValue = "compositeISON(result, color, gradient, t, tDepth, isoValue_);";
 
     shader_->getFragmentShaderObject()->addShaderDefine(compositingKey, compositingValue);

@@ -40,347 +40,470 @@
 
 namespace inviwo {
 
-/** class BaseOptionProperty
- *   Base class for the option properties
- *
- * @see TemplateOptionProperty
+/** \class BaseOptionProperty
+ *  Base class for the option properties 
+ *  @see TemplateOptionProperty
  */
 class IVW_CORE_API BaseOptionProperty : public Property {
 public:
 
-    BaseOptionProperty(std::string identifier, std::string displayName,
+    BaseOptionProperty(std::string identifier,
+                       std::string displayName,
                        PropertyOwner::InvalidationLevel invalidationLevel=PropertyOwner::INVALID_OUTPUT,
                        PropertySemantics semantics=PropertySemantics::Default)
-        : Property(identifier, displayName, invalidationLevel, semantics)
-    {}
+        : Property(identifier, displayName, invalidationLevel, semantics) {
+    }
 
-    virtual int numOptions() const = 0;
-    virtual int getSelectedOption() const = 0;
-    virtual void setSelectedOption(int option) = 0;
     virtual void clearOptions() = 0;
 
+    virtual size_t size() const = 0;
+    virtual size_t getSelectedIndex() const = 0;
+    virtual std::string getSelectedIdentifier() const = 0;
+    virtual std::string getSelectedDisplayName() const = 0;
+    virtual std::vector<std::string> getIdentifiers() const = 0;
+    virtual std::vector<std::string> getDisplayNames() const = 0;
+
+    virtual bool setSelectedIndex(size_t index) = 0;
+    virtual bool setSelectedIdentifier(std::string identifier) = 0;
+    virtual bool setSelectedDisplayName(std::string name) = 0;
+
+    virtual bool isSelectedIndex(size_t index) const = 0;
+    virtual bool isSelectedIdentifier(std::string identifier) const = 0;
+    virtual bool isSelectedDisplayName(std::string name) const = 0;
+
+    virtual std::string getClassName() const { return "BaseOptionProperty"; }
     virtual void set(const Property* srcProperty) {
         const BaseOptionProperty* optionSrcProp = dynamic_cast<const BaseOptionProperty*>(srcProperty);
 
-        if (optionSrcProp) {
-            int option = optionSrcProp->getSelectedOption();
+        if(optionSrcProp) {
+            size_t option = optionSrcProp->getSelectedIndex();
 
-            if (option<numOptions())
-                setSelectedOption(option);
-            else
-                setSelectedOption(numOptions()-1);
+            if(option < size()) {
+                setSelectedIndex(option);
+            } else {
+                setSelectedIndex(size() - 1);
+            }
         }
-
-        //TODO: variants of option property (or composite property in general) does not work
-        /*else
-            this->setVariant(const_cast<Property*>(srcProperty)->getVariant());*/
         propertyModified();
     }
-
-    virtual std::vector<std::string> getOptionDisplayNames() const = 0;
-    virtual std::string getClassName()  const { return "BaseOptionProperty"; }
 };
 
 
-/** class TemplateOptionProperty
- *   Template class for option properties
- *
- * @see OptionProperties
- * @see BaseOptionProperty
+/** \class TemplateOptionProperty
+ *  Template class for option properties
+ *  @see OptionProperties
+ *  @see BaseOptionProperty
  */
 template<typename T>
-class TemplateOptionProperty : public BaseOptionProperty {
+class BaseTemplateOptionProperty : public BaseOptionProperty {
 
-    //FIXME: use struct instead of std::pair combination for options
-    /*
     template <typename T>
-    struct Option {
-        std::string identifier;
-        std::string displayName;
-        T value;
+    struct Option : public IvwSerializable {
+        Option() {}
+        Option(const std::string& id, const std::string& name, T value)
+        : id_(id), name_(name), value_(value) {}
+
+        std::string id_;
+        std::string name_;
+        T value_;
+
+        virtual void serialize(IvwSerializer& s) const {
+            s.serialize("id", id_);
+            s.serialize("name", name_);
+            s.serialize("value", value_);
+        }
+        virtual void deserialize(IvwDeserializer& d) {
+            d.deserialize("id", id_);
+            d.deserialize("name", name_);
+            d.deserialize("value", value_);
+        }
+
+        bool operator==(const Option<T>& that) {
+            return ((id_ == that.id_) && (name_ == that.name_) && (value_ == that.value_));
+        }
     };
-    */
+    template <typename T>
+    struct MatchId {
+        MatchId(const std::string& s) : s_(s) {}
+        bool operator()(const Option<T>& obj) const {
+            return obj.id_ == s_;
+        }
+    private:
+        const std::string& s_;
+    };
+    template <typename T>
+    struct MatchName {
+        MatchName(const std::string& s) : s_(s) {}
+        bool operator()(const Option<T>& obj) const {
+            return obj.name_ == s_;
+        }
+    private:
+        const std::string& s_;
+    };
+    template <typename T>
+    struct MatchValue {
+        MatchValue(const T& s) : s_(s) {}
+        bool operator()(const Option<T>& obj) const {
+            return obj.value_ == s_;
+        }
+    private:
+        const T& s_;
+    };
+
+    
 
 public:
-    TemplateOptionProperty(std::string identifier, std::string displayName,
-                           PropertyOwner::InvalidationLevel invalidationLevel=PropertyOwner::INVALID_OUTPUT,
-                           PropertySemantics semantics=PropertySemantics::Default);
-    TemplateOptionProperty(std::string identifier, std::string displayName, T value,
-                           PropertyOwner::InvalidationLevel invalidationLevel=PropertyOwner::INVALID_OUTPUT,
-                           PropertySemantics semantics=PropertySemantics::Default);
-
-
+    BaseTemplateOptionProperty(std::string identifier, 
+                               std::string displayName,
+                               PropertyOwner::InvalidationLevel invalidationLevel=PropertyOwner::INVALID_OUTPUT,
+                               PropertySemantics semantics=PropertySemantics::Default);
+    
     /**
      * \brief Adds an option to the property
      *
-     * Adds a option to the property and stores it as a pair in the options_
+     * Adds a option to the property and stores it as a struct in the options_
      * The option name is the name of the option that will be displayed in the widget.
      *
      * @param std::string identifier identifier name
      * @param T value the value of the option
      */
     virtual void addOption(std::string identifier, std::string displayName, T value);
-
-
-    /**
-     * \brief returns a vector of keys from the option vector
-     *
-     *
-     * @return std::vector< std::string > <DESCRIBE ME>
-     */
-    virtual std::vector<std::string> getOptionDisplayNames() const;
-
-    virtual int numOptions() const;
-
-    /**
-     * \brief Returns the current selected option of the property
-     *
-     *
-     * @return int the index of the selected option
-     */
-    virtual int getSelectedOption() const;
-
-
-    virtual void setSelectedOption(int option);
-
-    void getAllOptions(std::vector<T>& allValues) const;
-
+    virtual void removeOption(size_t index);
     virtual void clearOptions();
 
-    virtual void replaceOptions(std::vector<std::string> ids, std::vector<std::string> displayNames, std::vector<T> values);
+    virtual size_t size() const;
+    virtual size_t getSelectedIndex() const;
+    virtual std::string getSelectedIdentifier() const;
+    virtual std::string getSelectedDisplayName() const;
+    virtual T getSelecetedValue() const;
+    virtual std::vector<std::string> getIdentifiers() const;
+    virtual std::vector<std::string> getDisplayNames() const;
+    virtual std::vector<T> getValues() const;
 
-    bool isSelected(std::string identifier) const;
+    virtual bool setSelectedIndex(size_t index);
+    virtual bool setSelectedIdentifier(std::string identifier);
+    virtual bool setSelectedDisplayName(std::string name);
+    virtual bool setSelectedValue(T val);
+    
+    virtual bool isSelectedIndex(size_t index) const;
+    virtual bool isSelectedIdentifier(std::string identifier) const;
+    virtual bool isSelectedDisplayName(std::string name) const;
+    virtual bool isSelectedValue(T val) const;
 
-    /**
-     * \brief returns the value of the currently selected option
-     *
-     *
-     * @return T <DESCRIBE ME>
-     */
-    T getValue() const; // deprecated
-    T get() const;
-
-    /**
-     * \brief Set the currently selected option
-     *
-     * <DESCRIBE THE METHOD>
-     *
-     * @param std::string the key to the desiered value
-     */
-    virtual void set(const Property* srcProperty);
+    virtual T get() const;
     virtual void set(const T& value);
-
-    void setToID(std::string identifier);
-    void selectByKey(std::string identifier);
+    virtual void set(const Property* srcProperty);
 
     /**
-     * \brief Variants are used while linking. All options are converted to strings (including values) and hence variant type is string.
-     *
+     * Sets the default state, since the constructor can't add any default state, you must call this
+     * function after adding all the default options, usually in the processor constructor.
+     * @see Property::setCurrentStateAsDefault()
+     */
+    virtual void setCurrentStateAsDefault();
+    virtual void resetToDefaultState();
+
+    /**
+     * Variants are used while linking. All options are converted to strings 
+     * (including values) and hence variant type is string.
      * @return int VariantType as integer
      */
     virtual int getVariantType() {
         return Variant::VariantTypeString;
     }
-    // TODO: Only selected option is converted right now in getVariant()
-    // since it was done incorrectly before and changing it
-    // now will not work for old workspaces.
-    // To discuss: Serializing and deserializing options will prevent
-    // new options from being added, which we probably don't want.
+
     /**
-     * \brief  Variants are used while linking.
-     * All options are converted to strings (including values) and hence variant type is string.
-     *
+     *  Variants are used while linking.
+     *  All options are converted to strings (including values) and hence variant type is string.
      *  values must have overloaded streaming operator <<
-     *
-     * @return inviwo::Variant variant
+     *  @return inviwo::Variant variant
      */
     virtual Variant getVariant();
+
     /**
-     * \brief Variants are used while linking. All options are converted to strings (including values) and hence variant type is string.
-     *
+     * Variants are used while linking. All options are converted to strings 
+     * (including values) and hence variant type is string.
      * values must have overloaded streaming operator >>
-     *
      * @param const Variant & input source variant
      */
     virtual void setVariant(const Variant& inVariant);
 
     virtual void serialize(IvwSerializer& s) const;
-
     virtual void deserialize(IvwDeserializer& d);
 
+
 protected:
-    T value_;
-    std::vector< std::pair<std::pair<std::string, std::string>, T> > options_;
+    typedef std::vector<Option<T> > OptionVector;
+    size_t selectedIndex_;
+    OptionVector options_;
+
+private: 
+    size_t defaultSelectedIndex_;
+    OptionVector defaultOptions_;
 };
 
-template <typename T>
-TemplateOptionProperty<T>::TemplateOptionProperty(std::string identifier, std::string displayName,
-        PropertyOwner::InvalidationLevel invalidationLevel,
-        PropertySemantics semantics)
-    : BaseOptionProperty(identifier, displayName, invalidationLevel, semantics)
-{}
+template<typename T>
+class TemplateOptionProperty : public BaseTemplateOptionProperty<T> {
+public:
+    TemplateOptionProperty(std::string identifier,
+                           std::string displayName,
+                           PropertyOwner::InvalidationLevel invalidationLevel = PropertyOwner::INVALID_OUTPUT,
+                           PropertySemantics semantics = PropertySemantics::Default)
+        : BaseTemplateOptionProperty<T>(identifier, displayName, invalidationLevel, semantics) {
+    }
+};
+
+// Specialization for strings.
+template<>
+class TemplateOptionProperty<std::string> : public BaseTemplateOptionProperty<std::string>{
+public:
+    TemplateOptionProperty(std::string identifier,
+                           std::string displayName,
+                           PropertyOwner::InvalidationLevel invalidationLevel = PropertyOwner::INVALID_OUTPUT,
+                           PropertySemantics semantics = PropertySemantics::Default) 
+        : BaseTemplateOptionProperty<std::string>(identifier, displayName, invalidationLevel, semantics) {
+    }
+    virtual void addOption(std::string identifier, std::string displayName, std::string value) {
+        BaseTemplateOptionProperty<std::string>::addOption(identifier, displayName, value);
+    }
+    virtual void addOption(std::string identifier, std::string displayName) {
+        BaseTemplateOptionProperty<std::string>::addOption(identifier, displayName, identifier);
+    }
+};
+
+typedef TemplateOptionProperty<int> OptionPropertyInt;
+typedef TemplateOptionProperty<float> OptionPropertyFloat;
+typedef TemplateOptionProperty<double> OptionPropertyDouble;
+typedef TemplateOptionProperty<std::string> OptionPropertyString;
+
 
 template <typename T>
-TemplateOptionProperty<T>::TemplateOptionProperty(std::string identifier, std::string displayName, T value,
-        PropertyOwner::InvalidationLevel invalidationLevel,
-        PropertySemantics semantics)
-    : BaseOptionProperty(identifier, displayName, invalidationLevel, semantics),
-      value_(value)
-{}
+BaseTemplateOptionProperty<T>::BaseTemplateOptionProperty(std::string identifier,
+                                                  std::string displayName,
+                                                  PropertyOwner::InvalidationLevel invalidationLevel,
+                                                  PropertySemantics semantics)
+    : BaseOptionProperty(identifier, displayName, invalidationLevel, semantics)
+    , selectedIndex_(0) {
+}
 
 template<typename T>
-void TemplateOptionProperty<T>::addOption(std::string optionIdentifier, std::string optionDisplayName, T optionValue) {
-    options_.push_back(std::make_pair(std::make_pair(optionIdentifier, optionDisplayName), optionValue));
+void BaseTemplateOptionProperty<T>::addOption(std::string identifier, std::string displayName, T value) {
+    options_.push_back(Option<T>(identifier, displayName, value));
 
     // in case we add the first option, we also select it
-    if (options_.size() == 1) setSelectedOption(0);
-    else propertyModified();
-}
-
-template<typename T>
-int TemplateOptionProperty<T>::numOptions() const {
-    return static_cast<int>(options_.size());
-}
-
-template<typename T>
-std::vector<std::string> TemplateOptionProperty<T>::getOptionDisplayNames() const {
-    std::vector<std::string> result;
-
-    for (size_t i=0; i<options_.size(); i++)
-        result.push_back(options_[i].first.second);
-
-    return result;
-}
-
-template<typename T>
-int TemplateOptionProperty<T>::getSelectedOption() const {
-    for (int i=0; i<static_cast<int>(options_.size()); i++) {
-        if (options_[i].second == value_)
-            return i;
-    }
-
-    return 0;
-}
-
-template<typename T>
-void TemplateOptionProperty<T>::getAllOptions(std::vector<T>& allValues) const {
-    for (int i=0; i<static_cast<int>(options_.size()); i++)
-        allValues.push_back(options_[i].second);
-}
-
-
-template<typename T>
-void TemplateOptionProperty<T>::setSelectedOption(int option) {
-    set(options_[option].second);
-}
-
-template<typename T>
-void TemplateOptionProperty<T>::clearOptions() {
-    options_.clear();
-}
-
-template<typename T>
-void TemplateOptionProperty<T>::replaceOptions(std::vector<std::string> ids, std::vector<std::string> displayNames, std::vector<T> values) {
-    options_.clear();
-
-    for (size_t i=0; i<ids.size(); i++)
-        options_.push_back(std::make_pair(std::make_pair(ids[i], displayNames[i]), values[i]));
-
-    setSelectedOption(0);
-}
-
-template<typename T>
-bool TemplateOptionProperty<T>::isSelected(std::string identifier) const {
-    for (size_t i=0; i<options_.size(); i++)
-        if (options_[i].first.first == identifier)
-            return (options_[i].second == value_);
-
-    LogWarn("Querying non-existent option.");
-    return false;
-}
-
-template<typename T>
-T TemplateOptionProperty<T>::getValue() const {
-    ivwDeprecatedMethod("get");
-    return get();
-}
-
-template<typename T>
-T TemplateOptionProperty<T>::get() const {
-    return value_;
-}
-
-template<typename T>
-void TemplateOptionProperty<T>::set(const T& value) {
-    value_ = value;
+    if(options_.size() == 1) {
+        selectedIndex_ = 0;
+    } 
+    
     propertyModified();
 }
 
 template<typename T>
-void TemplateOptionProperty<T>::set(const Property* srcProperty) {
+void inviwo::BaseTemplateOptionProperty<T>::removeOption(size_t index) {
+    std::string id = getSelectedIdentifier();
+    options_.erase(options_.begin() + index);
+    if (!setSelectedIdentifier(id)) {
+        selectedIndex_ = 0;
+    }
+}
+
+template<typename T>
+void BaseTemplateOptionProperty<T>::clearOptions() {
+    options_.clear();
+    selectedIndex_ = 0;
+}
+
+
+// Getters
+template<typename T>
+size_t BaseTemplateOptionProperty<T>::size() const {
+    return options_.size();
+}
+
+template<typename T>
+size_t BaseTemplateOptionProperty<T>::getSelectedIndex() const {
+    return selectedIndex_;
+}
+
+template<typename T>
+std::string inviwo::BaseTemplateOptionProperty<T>::getSelectedIdentifier() const {
+    return options_[selectedIndex_].id_;
+}
+
+template<typename T>
+std::string inviwo::BaseTemplateOptionProperty<T>::getSelectedDisplayName() const {
+    return options_[selectedIndex_].name_;
+}
+
+template<typename T>
+T inviwo::BaseTemplateOptionProperty<T>::getSelecetedValue() const {
+    return options_[selectedIndex_].value_;
+}
+
+template<typename T>
+std::vector<std::string> BaseTemplateOptionProperty<T>::getIdentifiers() const {
+    std::vector<std::string> result;
+    for(size_t i = 0; i < options_.size(); i++) {
+        result.push_back(options_[i].id_);
+    }
+    return result;
+}
+
+template<typename T>
+std::vector<std::string> BaseTemplateOptionProperty<T>::getDisplayNames() const {
+    std::vector<std::string> result;
+    for(size_t i = 0; i < options_.size(); i++) {
+        result.push_back(options_[i].name_);
+    }
+    return result;
+}
+
+template<typename T>
+std::vector<T> BaseTemplateOptionProperty<T>::getValues() const {
+    std::vector<T> result;
+    for(size_t i = 0; i < options_.size(); i++) {
+        result.push_back(options_[i].value_);
+    }
+    return result;
+}
+
+
+// Setters
+template<typename T>
+bool BaseTemplateOptionProperty<T>::setSelectedIndex(size_t option) {
+    if(option < options_.size()) {
+        selectedIndex_ = option;
+        propertyModified();
+        return true;
+    } else {
+        return false;
+    }
+}
+
+template<typename T>
+bool inviwo::BaseTemplateOptionProperty<T>::setSelectedIdentifier(std::string identifier) {
+    OptionVector::iterator it = std::find_if(options_.begin(), options_.end(), MatchId<T>(identifier));
+    if (it != options_.end()) {
+        selectedIndex_ = std::distance(options_.begin(), it);
+        propertyModified();
+        return true;
+    } else {
+        return false;
+    }
+}
+
+template<typename T>
+bool inviwo::BaseTemplateOptionProperty<T>::setSelectedDisplayName(std::string name) {
+    OptionVector::iterator it = std::find_if(options_.begin(), options_.end(), MatchName<T>(name));
+    if(it != options_.end()) {
+        selectedIndex_ = std::distance(options_.begin(), it);
+        propertyModified();
+        return true;
+    } else {
+        return false;
+    }
+}
+
+template<typename T>
+bool inviwo::BaseTemplateOptionProperty<T>::setSelectedValue(T val) {
+    OptionVector::iterator it = std::find_if(options_.begin(), options_.end(), MatchValue<T>(val));
+    if(it != options_.end()) {
+        selectedIndex_ = std::distance(options_.begin(), it);
+        propertyModified();
+        return true;
+    } else {
+        return false;
+    }
+}
+
+
+// Is...
+template<typename T>
+bool inviwo::BaseTemplateOptionProperty<T>::isSelectedIndex(size_t index) const {
+    return index == selectedIndex_;
+}
+
+template<typename T>
+bool BaseTemplateOptionProperty<T>::isSelectedIdentifier(std::string identifier) const {
+    return identifier == options_[selectedIndex_].id_;
+}
+
+template<typename T>
+bool inviwo::BaseTemplateOptionProperty<T>::isSelectedDisplayName(std::string name) const {
+    return name == options_[selectedIndex_].name_;
+}
+
+template<typename T>
+bool inviwo::BaseTemplateOptionProperty<T>::isSelectedValue(T val) const {
+    return val == options_[selectedIndex_].value_;
+}
+
+// Convenience 
+template<typename T>
+T BaseTemplateOptionProperty<T>::get() const {
+    return options_[selectedIndex_].value_;
+}
+
+template<typename T>
+void BaseTemplateOptionProperty<T>::set(const T& value) {
+    setSelectedValue(value);
+}
+
+template<typename T>
+void BaseTemplateOptionProperty<T>::set(const Property* srcProperty) {
     BaseOptionProperty::set(srcProperty);
 }
 
 template<typename T>
-void TemplateOptionProperty<T>::setToID(std::string identifier) {
-    for (size_t i=0; i<options_.size(); i++)
-        if (options_[i].first.second == identifier) {
-            set(options_[i].second);
-            return;
-        }
+void inviwo::BaseTemplateOptionProperty<T>::resetToDefaultState() {
+    options_ = defaultOptions_;
+    selectedIndex_ = defaultSelectedIndex_;
+    Property::resetToDefaultState();
 }
 
 template<typename T>
-void TemplateOptionProperty<T>::selectByKey(std::string identifier) {
-    ivwDeprecatedMethod("setToID");
-    setToID(identifier);
+void inviwo::BaseTemplateOptionProperty<T>::setCurrentStateAsDefault() {
+    Property::setCurrentStateAsDefault();
+    defaultSelectedIndex_ = selectedIndex_;
+    defaultOptions_ = options_;
 }
 
 template<typename T>
-Variant inviwo::TemplateOptionProperty<T>::getVariant() {
+Variant inviwo::BaseTemplateOptionProperty<T>::getVariant() {
     std::stringstream ss;
-    ss << getSelectedOption() << std::endl;
-    //for (size_t i=0; i<options_.size(); i++) {
-    //    ss << options_[i].first.first << std::endl;
-    //    ss << options_[i].first.second << std::endl;
-    //    ss << options_[i].second << std::endl;
-    //}
+    ss << getSelectedIndex() << std::endl;
     return Variant(ss.str());
 }
 
 template<typename T>
-void inviwo::TemplateOptionProperty<T>::setVariant(const Variant& inVariant) {
+void inviwo::BaseTemplateOptionProperty<T>::setVariant(const Variant& inVariant) {
     std::string textLine;
     std::istringstream ss(inVariant.getString());
     int seletctedOption=0;
     getline(ss, textLine);
     seletctedOption = atoi(textLine.c_str());
-    //options_.clear();
-    //while(!ss.eof()) {
-    //    std::string identifier, displayName, valStr;
-    //    getline(ss, identifier);
-    //    getline(ss, displayName);
-    //    getline(ss, valStr);
-    //    std::stringstream stream(valStr);
-    //    T val;
-    //    stream >> val;
-    //    addOption(identifier, displayName, val);
-    //}
-    setSelectedOption(seletctedOption);
+    setSelectedIndex(seletctedOption);
 }
 
 template<typename T>
-void TemplateOptionProperty<T>::serialize(IvwSerializer& s) const {
+void BaseTemplateOptionProperty<T>::serialize(IvwSerializer& s) const {
     BaseOptionProperty::serialize(s) ;
-    s.serialize("value", get());
+    s.serialize("options", options_, "option");
+    s.serialize("selectedIdentifier", getSelectedIdentifier());
 }
 
 template<typename T>
-void TemplateOptionProperty<T>::deserialize(IvwDeserializer& d) {
+void BaseTemplateOptionProperty<T>::deserialize(IvwDeserializer& d) {
     BaseOptionProperty::deserialize(d) ;
-    T value = get(); // Set to default value if property did not exist
-    d.deserialize("value", value);
-    set(value);
+    
+    d.deserialize("options", options_, "option");
+
+    std::string id = getSelectedIdentifier();
+    d.deserialize("selectedIdentifier", id);
+    if(id == getSelectedIdentifier()) {
+        T value = getSelecetedValue();
+        d.deserialize("value", value);
+        setSelectedValue(value);
+    }
 }
 
 } // namespace inviwo

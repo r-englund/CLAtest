@@ -52,7 +52,7 @@ ColorPropertyWidgetQt::~ColorPropertyWidgetQt() {
 void ColorPropertyWidgetQt::generateWidget() {
     QHBoxLayout* hLayout = new QHBoxLayout();
     hLayout->setContentsMargins(0, 0, 0, 0);
-    hLayout->setSpacing(0);
+    hLayout->setSpacing(7);
     currentColor_ = new QColor();
     colorDialog_ = new QColorDialog(this);
     btnColor_ = new QPushButton(this);
