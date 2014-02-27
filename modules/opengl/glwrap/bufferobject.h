@@ -64,6 +64,12 @@ public:
 
     void bind() const;
 
+    /**
+     * Set the size of the buffer in bytes. 
+     * Convenience function for calling initialize(NULL, sizeInBytes)
+     * @param GLsizeiptr sizeInBytes
+     */
+    void setSize(GLsizeiptr sizeInBytes) { initialize(NULL, sizeInBytes); }
     void initialize(const void* data, GLsizeiptr sizeInBytes);
     void upload(const void* data, GLsizeiptr sizeInBytes);
 

@@ -53,6 +53,8 @@ public:
     virtual void deinitialize();
     virtual BufferGL* clone() const;
 
+    virtual void setSize(size_t size);
+
     GLenum getFormatType() const;
     GLuint getId() const;
     BufferObject* getBufferObject() { return buffer_; }

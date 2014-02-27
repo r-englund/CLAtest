@@ -54,10 +54,12 @@ public:
     virtual void deinitialize();
     virtual BufferCLGL* clone() const;
 
+    virtual void setSize(size_t size);
+
     void initialize(BufferObject* data);
 
     const cl::Buffer& getBuffer() const { return *(buffer_); }
-    BufferObject* getBufferGL() const { return bufferGL_; }
+    BufferObject* getBufferGL() const { return bufferObject_; }
 
     void aquireGLObject(std::vector<cl::Event>* syncEvents = NULL) const {
         std::vector<cl::Memory> syncBuffers(1, *buffer_);
@@ -73,7 +75,7 @@ public:
     void notifyBeforeBufferInitialization();
 protected:
     cl::BufferGL* buffer_;
-    BufferObject* bufferGL_;
+    BufferObject* bufferObject_;
     cl_mem_flags readWriteFlag_;
 };
 
