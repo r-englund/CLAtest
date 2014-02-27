@@ -72,12 +72,29 @@ void Buffer::resize(size_t size) {
     if (size != size_) {
         size_ = size;
 
-        for (size_t i=0; i<representations_.size(); i++) {
-            // Static cast is ok because the representations must be BufferRepresentations.
-            BufferRepresentation* bufferRepresentation = static_cast<BufferRepresentation*>(representations_[i]) ;
-            bufferRepresentation->resize(size);
-        }
+        if (lastValidRepresentation_) {
+            // Resize last valid representation and remove the other ones
+            static_cast<BufferRepresentation*>(lastValidRepresentation_)->resize(size);
+            std::vector<DataRepresentation*>::iterator it = std::find(representations_.begin(), representations_.end(), lastValidRepresentation_);
 
+            // First delete the representations before erasing them from the vector
+            for (size_t i=0; i<representations_.size(); i++) {
+                if (representations_[i] != lastValidRepresentation_) {
+                    delete representations_[i];
+                    representations_[i] = NULL;
+                }
+            }
+
+            // Erasing representations: start from the back
+            if (it != --representations_.end()) {
+                std::vector<DataRepresentation*>::iterator eraseFrom = it + 1;
+                representations_.erase(eraseFrom, representations_.end());
+            }
+
+            // and then erase the ones infront of the valid representation
+            if (representations_.begin() != it)
+                representations_.erase(representations_.begin(), it);
+        }
         setAllRepresentationsAsInvalid();
     }
 }
@@ -96,8 +113,7 @@ DataRepresentation* Buffer::createDefaultRepresentation() {
     return createBufferRAM(getSize(), format_, type_, usage_);
 }
 
-size_t Buffer::getSize() const
-{
+size_t Buffer::getSize() const {
     // We need to update the size if a representation has changed size
     if (lastValidRepresentation_)
         const_cast<Buffer*>(this)->size_ = static_cast<const BufferRepresentation*>(lastValidRepresentation_)->getSize();
