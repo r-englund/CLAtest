@@ -58,6 +58,23 @@ public:
                    PropertyOwner::InvalidationLevel invalidationLevel=PropertyOwner::INVALID_OUTPUT,
                    PropertySemantics semantics = PropertySemantics::Default) : Property(identifier,displayName,invalidationLevel,semantics) {}
 
+    /**
+     * Overrides the default implementation to 
+     * enable buttons to be linked.
+     * Will cause the button to be pressed 
+     * when a linked button is pressed.
+     * 
+     * @param src Button property
+     */
+    virtual void set(const Property* src) { pressButton(); }
+
+    /**
+     * Causes onChange to be called. 
+     * @see propertyModified
+     * @see onChange
+     */
+    virtual void pressButton() { propertyModified(); }
+
     virtual void serialize(IvwSerializer& s) const {
         Property::serialize(s);
     }
