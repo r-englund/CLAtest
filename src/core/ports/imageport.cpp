@@ -87,7 +87,6 @@ void ImageInport::changeDataDimensions(ResizeEvent* resizeEvent) {
     else
         dimensions_ = dimMax;
 
-    
     resizeEvent->setSize(dimensions_);
     propagateResizeToPredecessor(resizeEvent);
     if(prevDim != dimensions_)
@@ -136,7 +135,6 @@ ImageOutport::ImageOutport(std::string identifier,
                            PropertyOwner::InvalidationLevel invalidationLevel)
     : DataOutport<Image>(identifier, invalidationLevel), dimensions_(uvec2(256,256))
 {
-    ownsData_ = true;
     Image* im = new Image(dimensions_);
     data_ = im;
     dataChanged();
@@ -147,7 +145,6 @@ ImageOutport::ImageOutport(std::string identifier, ImageType type, const DataFor
                            PropertyOwner::InvalidationLevel invalidationLevel)
     : DataOutport<Image>(identifier, invalidationLevel), dimensions_(uvec2(256,256))
 {
-    ownsData_ = true;
     Image* im = new Image(dimensions_, type, format);
     data_ = im;
     dataChanged();
@@ -157,7 +154,6 @@ ImageOutport::ImageOutport(std::string identifier, ImageType type, const DataFor
 ImageOutport::ImageOutport(std::string identifier, ImageInport* src, ImageType type, PropertyOwner::InvalidationLevel invalidationLevel)
     : DataOutport<Image>(identifier, invalidationLevel), EventHandler(), dimensions_(uvec2(256,256))
 {
-    ownsData_ = true;
     Image* im = new Image(dimensions_, type);
     data_ = im;
     dataChanged();
@@ -389,12 +385,9 @@ void ImageOutport::setInputSource(LayerType layer, ImageInport* src) {
 }
 
 void ImageOutport::updateInputSources() {
-    Image* im = dynamic_cast<Image*>(data_);
+    Image* im = static_cast<Image*>(data_);
 
-    auto asdf = inputSources_.begin();
-    auto aqwersdf = inputSources_.end();
-
-    for (ImageInSourceMap::iterator it = inputSources_.begin(); it != inputSources_.end(); ++it)
+    for (ImageInSourceMap::iterator it = inputSources_.begin(); it != inputSources_.end(); it++)
         im->setInputSource(it->first, it->second->getData());
 }
 
