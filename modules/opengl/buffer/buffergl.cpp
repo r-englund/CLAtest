@@ -49,6 +49,14 @@ BufferGL::~BufferGL() {
     deinitialize();
 }
 
+void BufferGL::setSize( size_t size ) {
+    if (size == getSize()) {
+        return;
+    }
+    initialize(NULL, size*getSizeOfElement());
+    BufferRepresentation::setSize(size);
+}
+
 GLuint BufferGL::getId() const {
     return buffer_->getId();
 }
@@ -69,8 +77,7 @@ void BufferGL::bind() const {
     buffer_->bind();
 }
 
-void BufferGL::initialize(const void* data, GLsizeiptr sizeInBytes)
-{
+void BufferGL::initialize(const void* data, GLsizeiptr sizeInBytes) {
     buffer_->initialize(data, sizeInBytes);
 }
 
@@ -97,11 +104,6 @@ void BufferGL::deinitialize() {
 void BufferGL::download(void* data) const {
     buffer_->download(data);
 }
-
-
-
-
-
 
 } // namespace
 

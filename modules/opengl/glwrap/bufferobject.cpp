@@ -55,8 +55,19 @@ BufferObject::BufferObject(size_t size, const DataFormatBase* format, BufferType
     LGL_ERROR_SUPPRESS;
 }
 
-BufferObject::BufferObject(const BufferObject& rhs) {
-    // TODO: Copy data
+BufferObject::BufferObject(const BufferObject& rhs)
+    : Observable<BufferObjectObserver>(), ReferenceCounter()
+    , target_(rhs.target_)
+    , type_(rhs.type_), glFormat_(rhs.glFormat_)
+    , usageGL_(rhs.usageGL_) {
+    initialize();
+    // TODO: Verify that data copying works. What about backwards compability?
+    // Initialize size of buffer
+    initialize(NULL, rhs.sizeInBytes_);
+    // Now bind the second buffer, this buffer is already bound 
+    glBindBuffer(GL_COPY_READ_BUFFER, rhs.getId());
+    // Copy data (OpenGL 3.1 functionality...)
+    glCopyBufferSubData(GL_COPY_READ_BUFFER, target_, 0, 0, sizeInBytes_);
 }
 
 BufferObject::~BufferObject() {
