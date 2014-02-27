@@ -225,15 +225,15 @@ public:
     std::vector<ProcessorLink*> getLinks() const;
 
     void modified();
-    void setModified(bool modified) { modified_ = modified; }
-    bool isModified() const { return modified_; }
+    void setModified(bool modified);
+    bool isModified() const;
 
-    bool isInvalidating() const { return invalidating_; }
+    bool isInvalidating() const;
     void onAboutPropertyChange(Property*);
     void onProcessorInvalidationBegin(Processor*);
     void onProcessorInvalidationEnd(Processor*);
     void onProcessorRequestEvaluate(Processor* p = NULL);
-    Processor* getInvalidationInitiator() { return invalidationInitiator_; }
+    Processor* getInvalidationInitiator();
 
     inline void lock() { locked_++; }
     inline void unlock() { (locked_>0)?locked_--:locked_=0; }

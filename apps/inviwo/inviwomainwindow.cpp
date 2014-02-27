@@ -55,7 +55,11 @@
 
 namespace inviwo {
 
-InviwoMainWindow::InviwoMainWindow() : QMainWindow(), PropertyListWidgetObserver(), ProcessorNetworkObserver() {
+InviwoMainWindow::InviwoMainWindow() 
+    : QMainWindow()
+    , PropertyListWidgetObserver()
+    , ProcessorNetworkObserver() 
+{
     NetworkEditor::init();
     // initialize console widget first to receive log messages
     consoleWidget_ = new ConsoleWidget(this);
@@ -142,7 +146,6 @@ void InviwoMainWindow::initializeWorkspace() {
 }
 
 void InviwoMainWindow::onProcessorNetworkChange() {
-    workspaceModified_ = true;
     updateWindowTitle();
 }
 
@@ -301,7 +304,7 @@ void InviwoMainWindow::updateWindowTitle() {
     QString windowTitle = QString("Inviwo - Interactive Visualization Workshop - ");
     windowTitle.append(currentWorkspaceFileName_);
 
-    if (workspaceModified_)
+    if (networkEditorView_->getNetworkEditor()->isModified())
         windowTitle.append("*");
 
     setWindowTitle(windowTitle);
@@ -356,11 +359,8 @@ void InviwoMainWindow::newWorkspace() {
 
     networkEditorView_->getNetworkEditor()->clearNetwork();
     setCurrentWorkspace(rootDir_ + "workspaces/untitled.inv");
-    // set workspaceModified_ to true to get a * indicator in the window title
-    workspaceModified_ = true;
+    networkEditorView_->getNetworkEditor()->setModified(false);
     updateWindowTitle();
-    // set it back to false to not ask to save an unmodified new workspace on exit
-    workspaceModified_ = false;
 }
 
 void InviwoMainWindow::openWorkspace(QString workspaceFileName) {
@@ -372,13 +372,16 @@ void InviwoMainWindow::openWorkspace(QString workspaceFileName) {
     }
 
     networkEditorView_->getNetworkEditor()->loadNetwork(workspaceFileName.toLocal8Bit().constData());
-    workspaceModified_ = false;
     onNetworkEditorFileChanged(workspaceFileName.toLocal8Bit().constData());
 }
 
 void InviwoMainWindow::onNetworkEditorFileChanged(const std::string& filename) {
     setCurrentWorkspace(filename.c_str());
     addToRecentWorkspaces(filename.c_str());
+}
+
+void InviwoMainWindow::onModifiedStatusChanged(const bool &newStatus){
+    updateWindowTitle();
 }
 
 void InviwoMainWindow::openLastWorkspace() {
@@ -442,7 +445,6 @@ void InviwoMainWindow::saveWorkspace() {
     if (currentWorkspaceFileName_.contains("untitled.inv")) saveWorkspaceAs();
     else {
         networkEditorView_->getNetworkEditor()->saveNetwork(currentWorkspaceFileName_.toLocal8Bit().constData());
-        workspaceModified_ = false;
         updateWindowTitle();
     }
 
@@ -485,7 +487,6 @@ void InviwoMainWindow::saveWorkspaceAs() {
         if (!path.endsWith(".inv")) path.append(".inv");
 
         networkEditorView_->getNetworkEditor()->saveNetwork(path.toLocal8Bit().constData());
-        workspaceModified_ = false;
         setCurrentWorkspace(path);
         addToRecentWorkspaces(path);
     }
@@ -546,7 +547,7 @@ void InviwoMainWindow::closeEvent(QCloseEvent* event) {
 bool InviwoMainWindow::askToSaveWorkspaceChanges() {
     bool continueOperation = true;
 
-    if (workspaceModified_) {
+    if (networkEditorView_->getNetworkEditor()->isModified()) {
         QMessageBox msgBox;
         msgBox.setText("Workspace Modified");
         msgBox.setInformativeText("Do you want to save your changes?");

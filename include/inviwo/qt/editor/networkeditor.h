@@ -56,6 +56,7 @@ namespace inviwo {
 class NetworkEditorObserver : public Observer {
 public:
     virtual void onNetworkEditorFileChanged(const std::string& newFilename) = 0;
+    virtual void onModifiedStatusChanged(const bool &newStatus) = 0;
 };
 
 /**
@@ -65,9 +66,12 @@ public:
  * - graphical representation automatically managed
  * - inspector networks
  */
-class IVW_QTEDITOR_API NetworkEditor : public QGraphicsScene,
-    public Singleton<NetworkEditor>,
-    public Observable<NetworkEditorObserver>         {
+class IVW_QTEDITOR_API NetworkEditor 
+    : public QGraphicsScene
+    , public Singleton<NetworkEditor>
+    , public Observable<NetworkEditorObserver>
+    , public ProcessorNetworkObserver
+{
     Q_OBJECT
 public:
     NetworkEditor();
@@ -113,6 +117,11 @@ public:
 
     void renamingFinished();
 
+    bool isModified()const;
+    void setModified(const bool modified = true);
+
+    virtual void onProcessorNetworkChange() {setModified();};
+
 public slots:
     void managePortInspectors();
     void workerThreadReset();
@@ -141,6 +150,7 @@ protected:
     void autoLinkOnAddedProcessor(Processor*);
 
     void workerThreadQuit();
+
 
 private:
     enum NetworkEditorFlags {
@@ -218,6 +228,7 @@ private:
 
     std::string filename_;
     bool renamingProcessor_;
+    bool modified_;
 };
 
 class IVW_QTEDITOR_API ProcessorWorkerQt : public QObject {
