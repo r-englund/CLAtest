@@ -172,7 +172,7 @@ OrdinalProperty<T>::OrdinalProperty(std::string identifier, std::string displayN
 
 template <typename T>
 void OrdinalProperty<T>::set(const T& value) {
-    if(value_ != value){
+    if(TemplateProperty<T>::value_ != value){
         TemplateProperty<T>::set(value);
     }
 }
