@@ -70,9 +70,11 @@ bool PythonScriptRecorderUtil::isRecording() {
 void PythonScriptRecorderUtil::recordNetworkChanges() {
     if (recordScript_) {
         ProcessorNetwork* network = InviwoApplication::getPtr()->getProcessorNetwork();
-        bool networkModified = network->isModified();
+        //FIXME: Network isModified() status is not set while invalidation or when property is modified
+        bool networkModified = network->isModified() || network->isInvalidating();
 
         //network modified
+        //TODO: Have to avoid recording too small differences in property values
         if (networkModified) {
             std::vector<Processor*> processors = network->getProcessors();
 
