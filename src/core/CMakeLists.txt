@@ -157,7 +157,6 @@ set(HEADER_FILES
     ${IVW_INCLUDE_DIR}/inviwo/core/properties/fileproperty.h
     ${IVW_INCLUDE_DIR}/inviwo/core/properties/imageeditorproperty.h    
     ${IVW_INCLUDE_DIR}/inviwo/core/properties/minmaxproperty.h
-    ${IVW_INCLUDE_DIR}/inviwo/core/properties/optionproperties.h
     ${IVW_INCLUDE_DIR}/inviwo/core/properties/ordinalproperty.h
     ${IVW_INCLUDE_DIR}/inviwo/core/properties/property.h
     ${IVW_INCLUDE_DIR}/inviwo/core/properties/propertyfactory.h
@@ -337,7 +336,6 @@ set(SOURCE_FILES
     properties/eventproperty.cpp
     properties/fileproperty.cpp
     properties/imageeditorproperty.cpp   
-    properties/optionproperties.cpp
     properties/property.cpp
     properties/propertyfactory.cpp
     properties/propertyfactoryobject.cpp
