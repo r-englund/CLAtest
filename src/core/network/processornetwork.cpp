@@ -229,6 +229,20 @@ void ProcessorNetwork::modified() {
     modified_ = true;
 }
 
+
+void ProcessorNetwork::setModified(bool modified) { 
+    modified_ = modified; 
+}
+
+bool ProcessorNetwork::isModified() const { 
+    return modified_; 
+}
+
+
+bool ProcessorNetwork::isInvalidating() const { 
+    return invalidating_; 
+}
+
 void ProcessorNetwork::onProcessorInvalidationBegin(Processor* p) {
     if (!isInvalidating()) {
         invalidationInitiator_ = p;
@@ -253,6 +267,11 @@ void ProcessorNetwork::onProcessorRequestEvaluate(Processor*) {
         notifyProcessorNetworkObservers();
         evaluationQueued_ = false;
     }
+}
+
+
+Processor* ProcessorNetwork::getInvalidationInitiator() { 
+    return invalidationInitiator_; 
 }
 
 //linking helpers

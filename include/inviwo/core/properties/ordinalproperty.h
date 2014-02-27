@@ -94,7 +94,7 @@ public:
     T getMaxValue() const;
     T getIncrement() const;
 
-    virtual void set(const T& value) { TemplateProperty<T>::set(value); } // Need to implement this to avoid compiler confusion with set(const Property*)
+    virtual void set(const T& value); // Need to implement this to avoid compiler confusion with set(const Property*)
     virtual void set(const Property* src);
     void setMinValue(const T& value);
     void setMaxValue(const T& value);
@@ -167,6 +167,14 @@ OrdinalProperty<T>::OrdinalProperty(std::string identifier, std::string displayN
     , defaultMinValue_(minValue)
     , defaultMaxValue_(maxValue)
     , defaultIncrement_(increment) {
+}
+
+
+template <typename T>
+void OrdinalProperty<T>::set(const T& value) {
+    if(value_ != value){
+        TemplateProperty<T>::set(value);
+    }
 }
 
 template <typename T>

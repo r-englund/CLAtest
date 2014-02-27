@@ -51,6 +51,7 @@ void ImageInport::initialize() {}
 void ImageInport::deinitialize() {}
 
 void ImageInport::changeDataDimensions(ResizeEvent* resizeEvent) {
+    uvec2 prevDim = dimensions_;
     uvec2 dimensions = resizeEvent->size();
     //set dimension based on port groups
     std::vector<std::string> portDependencySets = getProcessor()->getPortDependencySets();
@@ -86,9 +87,11 @@ void ImageInport::changeDataDimensions(ResizeEvent* resizeEvent) {
     else
         dimensions_ = dimMax;
 
+    
     resizeEvent->setSize(dimensions_);
     propagateResizeToPredecessor(resizeEvent);
-    invalidate(PropertyOwner::INVALID_OUTPUT);
+    if(prevDim != dimensions_)
+        invalidate(PropertyOwner::INVALID_OUTPUT);
 }
 
 void ImageInport::propagateResizeToPredecessor(ResizeEvent* resizeEvent) {
@@ -133,6 +136,7 @@ ImageOutport::ImageOutport(std::string identifier,
                            PropertyOwner::InvalidationLevel invalidationLevel)
     : DataOutport<Image>(identifier, invalidationLevel), dimensions_(uvec2(256,256))
 {
+    ownsData_ = true;
     Image* im = new Image(dimensions_);
     data_ = im;
     dataChanged();
@@ -143,6 +147,7 @@ ImageOutport::ImageOutport(std::string identifier, ImageType type, const DataFor
                            PropertyOwner::InvalidationLevel invalidationLevel)
     : DataOutport<Image>(identifier, invalidationLevel), dimensions_(uvec2(256,256))
 {
+    ownsData_ = true;
     Image* im = new Image(dimensions_, type, format);
     data_ = im;
     dataChanged();
@@ -152,6 +157,7 @@ ImageOutport::ImageOutport(std::string identifier, ImageType type, const DataFor
 ImageOutport::ImageOutport(std::string identifier, ImageInport* src, ImageType type, PropertyOwner::InvalidationLevel invalidationLevel)
     : DataOutport<Image>(identifier, invalidationLevel), EventHandler(), dimensions_(uvec2(256,256))
 {
+    ownsData_ = true;
     Image* im = new Image(dimensions_, type);
     data_ = im;
     dataChanged();
@@ -175,6 +181,7 @@ void ImageOutport::initialize() {}
 void ImageOutport::deinitialize() {}
 
 void ImageOutport::propagateResizeEventToPredecessor(ResizeEvent* resizeEvent) {
+    uvec2 prevDim = dimensions_;
     Processor* processor = getProcessor();
     std::vector<Inport*> inPorts = processor->getInports();
 
@@ -187,8 +194,10 @@ void ImageOutport::propagateResizeEventToPredecessor(ResizeEvent* resizeEvent) {
         }
     }
 
-    processor->invalidate(PropertyOwner::INVALID_OUTPUT);
-    invalidate(PropertyOwner::INVALID_OUTPUT);
+    if(prevDim != dimensions_){
+        processor->invalidate(PropertyOwner::INVALID_OUTPUT);
+        invalidate(PropertyOwner::INVALID_OUTPUT);
+    }
 }
 
 void ImageOutport::invalidate(PropertyOwner::InvalidationLevel invalidationLevel) {
@@ -380,9 +389,12 @@ void ImageOutport::setInputSource(LayerType layer, ImageInport* src) {
 }
 
 void ImageOutport::updateInputSources() {
-    Image* im = static_cast<Image*>(data_);
+    Image* im = dynamic_cast<Image*>(data_);
 
-    for (ImageInSourceMap::iterator it = inputSources_.begin(); it != inputSources_.end(); it++)
+    auto asdf = inputSources_.begin();
+    auto aqwersdf = inputSources_.end();
+
+    for (ImageInSourceMap::iterator it = inputSources_.begin(); it != inputSources_.end(); ++it)
         im->setInputSource(it->first, it->second->getData());
 }
 

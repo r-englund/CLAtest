@@ -76,12 +76,15 @@ NetworkEditor::NetworkEditor() :
     , inspection_()
     , gridSnapping_(true)
     , filename_("")
-    , renamingProcessor_(false) {
+    , renamingProcessor_(false) 
+    , modified_(false)
+{
     setSceneRect(-1000,-1000,1000,1000);
     workerThreadReset();
     processorNetwork_ = new ProcessorNetwork();
     InviwoApplication::getRef().setProcessorNetwork(processorNetwork_);
     processorNetworkEvaluator_ = new ProcessorNetworkEvaluator(processorNetwork_);
+    processorNetwork_->addObserver(this);
     hoverTimer_.setSingleShot(true);
     connect(&hoverTimer_, SIGNAL(timeout()), this, SLOT(managePortInspectors()));
 }
@@ -664,7 +667,7 @@ void NetworkEditor::removePortInspector(std::string processorIdentifier, std::st
 
 
 void NetworkEditor::workerThreadReset() {
-    workerThread_ = NULL;
+    workerThread_ = NULL;    
 }
 
 void NetworkEditor::workerThreadQuit() {
@@ -675,15 +678,28 @@ void NetworkEditor::workerThreadQuit() {
     }
 }
 
+
+bool NetworkEditor::isModified()const{
+    return modified_;
+}
+void NetworkEditor::setModified(const bool modified){
+    if(modified != modified_){
+        modified_ = modified;
+        for (ObserverSet::reverse_iterator it = observers_->rbegin(); it != observers_->rend(); ++it)
+            static_cast<NetworkEditorObserver*>(*it)->onModifiedStatusChanged(modified);
+    }
+}
+
 void NetworkEditor::cacheProcessorProperty(Processor* p) {
     std::vector<Processor*> processors = processorNetwork_->getProcessors();
-
+    bool preModifiedStatus = modified_;
     if (std::find(processors.begin(), processors.end(), p) != processors.end()) {
         PropertyListWidget* propertyListWidget_ = PropertyListWidget::instance();
         processorNetwork_->lock();
         propertyListWidget_->cacheProcessorPropertiesItem(p);
         processorNetwork_->unlock();
     }
+    setModified(preModifiedStatus);
 }
 
 ////////////////////////////////////////////////////////
@@ -1389,6 +1405,7 @@ void NetworkEditor::clearNetwork() {
         removeProcessor(processors[i]);
 
     processorNetwork_->unlock();
+    setModified(true);
 }
 
 bool NetworkEditor::saveNetwork(std::string fileName) {
@@ -1398,6 +1415,7 @@ bool NetworkEditor::saveNetwork(std::string fileName) {
     processorNetwork_->setModified(false);
     xmlSerializer.writeFile();
     filename_ = fileName;
+    setModified(false);
     return true;
 }
 
@@ -1457,6 +1475,12 @@ bool NetworkEditor::loadNetwork(std::string fileName) {
             if (meta->isVisible()) {
                 processors[i]->getProcessorWidget()->show();
                 evaluate = true;
+                CanvasProcessor* canvas = dynamic_cast<CanvasProcessor*>(processors[i]);
+                if(canvas){
+                    ResizeEvent* resizeEvent =  new ResizeEvent(canvas->getCanvasSize());
+                    processorNetworkEvaluator_->propagateResizeEvent(canvas->getCanvas(),resizeEvent);
+                    delete resizeEvent;
+                }
             }
         }
     }
@@ -1477,12 +1501,14 @@ bool NetworkEditor::loadNetwork(std::string fileName) {
     connect(worker, SIGNAL(finished()), worker, SLOT(deleteLater()));
     connect(workerThread_, SIGNAL(finished()), workerThread_, SLOT(deleteLater()));
     connect(workerThread_, SIGNAL(finished()), this, SLOT(workerThreadReset()));
+    setModified(false);
     workerThread_->start();
 
     for (ObserverSet::reverse_iterator it = observers_->rbegin(); it != observers_->rend(); ++it)
         static_cast<NetworkEditorObserver*>(*it)->onNetworkEditorFileChanged(fileName);
 
     filename_ = fileName;
+    setModified(false);
     return true;
 }
 

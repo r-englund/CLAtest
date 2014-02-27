@@ -79,6 +79,7 @@ public:
 
     virtual void onProcessorNetworkChange();
     virtual void onNetworkEditorFileChanged(const std::string& filename);
+    virtual void onModifiedStatusChanged(const bool &newStatus);
 
 public slots:
     void newWorkspace();
@@ -143,7 +144,6 @@ private:
 
     // settings
     bool lastExitWithoutErrors_;
-    bool workspaceModified_;
     bool maximized_;
 
     // paths
