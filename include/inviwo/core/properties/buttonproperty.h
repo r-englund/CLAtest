@@ -42,9 +42,9 @@ namespace inviwo {
  *
  * The button property has a widget witch creates a button and register a function to it.
  * You can only assign one function to the property.
- * To bind a function to a button property use the registerClassMemberFunction.
+ * To bind a function to a button property use onChange.
  * Example usage
- * myButton_.registerClassMemberFunction(this, &MyButton::doSomethingFunction);
+ * myButton_.onChange(this, &MyButton::doSomethingFunction);
  * A button property are normally used by a processor.
  * The button property is created and added in the constructor of the processor.
  *
@@ -54,17 +54,6 @@ namespace inviwo {
 class ButtonProperty : public Property {
 
 public:
-    /**
-     * \brief Constructs a button property
-     *
-     * <DESCRIBE THE METHOD>
-     *
-     * @param std::string identifier <DESCRIBE ME>
-     * @param std::string displayName <DESCRIBE ME>
-     * @param PropertyOwner::InvalidationLevel invalidationLevel <DESCRIBE ME>
-     * @param PropertySemantics semantics <DESCRIBE ME>
-     * @return  <DESCRIBE ME>
-     */
     ButtonProperty(std::string identifier, std::string displayName,
                    PropertyOwner::InvalidationLevel invalidationLevel=PropertyOwner::INVALID_OUTPUT,
                    PropertySemantics semantics = PropertySemantics::Default) : Property(identifier,displayName,invalidationLevel,semantics) {}
