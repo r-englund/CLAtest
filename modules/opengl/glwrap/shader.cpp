@@ -288,6 +288,15 @@ void Shader::setUniform(const std::string name, ivec4 value) {
     //LogWarn("Unable to set uniform " + name + " in shader " + vertexFilename_ + "/" + fragmentFilename_);
 }
 
+void Shader::setUniform(const std::string name, GLint* value, int count) {
+    GLint uniformLocation = glGetUniformLocation(id_, name.c_str());
+
+    if (uniformLocation != -1) glUniform1iv(uniformLocation, count, value);
+
+    //else
+    //LogWarn("Unable to set uniform " + name + " in shader " + vertexFilename_ + "/" + fragmentFilename_);
+}
+
 void Shader::setUniform(const std::string name, GLfloat* value, int count) {
     GLint uniformLocation = glGetUniformLocation(id_, name.c_str());
 
