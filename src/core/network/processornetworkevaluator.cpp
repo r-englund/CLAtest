@@ -155,7 +155,8 @@ std::set<Processor*> ProcessorNetworkEvaluator::getDirectPredecessors(Processor*
         for (std::vector<Outport*>::const_iterator connectedPortIt = connectedOutPorts.begin(),
              connectedPortItEnd = connectedOutPorts.end();
              connectedPortIt!=connectedPortItEnd; ++connectedPortIt)
-            predecessors.insert((*connectedPortIt)->getProcessor());
+            if(*connectedPortIt)
+                predecessors.insert((*connectedPortIt)->getProcessor());
     }
 
     return predecessors;

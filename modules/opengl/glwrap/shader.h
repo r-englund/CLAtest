@@ -62,6 +62,7 @@ public:
     void build();
     void rebuild();
 
+    unsigned int getID() const { return id_; }
     const ShaderObjectMap* getShaderObjects() { return shaderObjects_; }
 
     ShaderObject* getVertexShaderObject() { return (*shaderObjects_)[GL_VERTEX_SHADER]; }
@@ -72,6 +73,7 @@ public:
     void deactivate();
 
     void setUniform(const std::string name, GLint value);
+    void setUniform(const std::string name, GLint* value, int count);
     void setUniform(const std::string name, GLfloat value);
     void setUniform(const std::string name, GLfloat* value, int count);
     void setUniform(const std::string name, vec2 value);
