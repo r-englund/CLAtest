@@ -62,6 +62,32 @@ using cl::ImageFormat;
 
 namespace inviwo {
 
+// This macro will create an OpenCL event called "profilingEvent" that should be
+// used when executing the kernel. If IVW_PROFILING is defined it will 
+// call LogInfo with the execution time.
+// Example:
+// BEGIN_OPENCL_PROFILING
+// OpenCL::instance()->getQueue().enqueueNDRangeKernel(*ernel_, cl::NullRange, globalWorkGroupSize, localWorkGroupSize, NULL, profilingEvent);
+// END_OPENCL_PROFILING
+
+#if IVW_PROFILING 
+    #define BEGIN_OPENCL_PROFILING cl::Event* profilingEvent = new cl::Event(); 
+#else 
+    #define BEGIN_OPENCL_PROFILING cl::Event* profilingEvent = NULL; 
+#endif 
+#if IVW_PROFILING 
+    #define END_OPENCL_PROFILING \
+    try { \
+        profilingEvent->wait(); \
+        LogInfo("Exec time: " << profilingEvent->getElapsedTime() << " ms"); \
+    } catch (cl::Error& err) { \
+        LogError(getCLErrorString(err)); \
+    } \
+    delete profilingEvent; 
+#else 
+    #define END_OPENCL_PROFILING
+#endif
+
 /** \class OpenCL
  *
  * Singleton class that manages OpenCL context and queues.
