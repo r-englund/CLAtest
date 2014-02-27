@@ -97,15 +97,15 @@ public:
 template<typename T>
 class BaseTemplateOptionProperty : public BaseOptionProperty {
 
-    template <typename T>
+    template <typename U>
     struct Option : public IvwSerializable {
         Option() {}
-        Option(const std::string& id, const std::string& name, T value)
+        Option(const std::string& id, const std::string& name, U value)
         : id_(id), name_(name), value_(value) {}
 
         std::string id_;
         std::string name_;
-        T value_;
+        U value_;
 
         virtual void serialize(IvwSerializer& s) const {
             s.serialize("id", id_);
@@ -122,32 +122,32 @@ class BaseTemplateOptionProperty : public BaseOptionProperty {
             return ((id_ == that.id_) && (name_ == that.name_) && (value_ == that.value_));
         }
     };
-    template <typename T>
+    template <typename U>
     struct MatchId {
         MatchId(const std::string& s) : s_(s) {}
-        bool operator()(const Option<T>& obj) const {
+        bool operator()(const Option<U>& obj) const {
             return obj.id_ == s_;
         }
     private:
         const std::string& s_;
     };
-    template <typename T>
+    template <typename U>
     struct MatchName {
         MatchName(const std::string& s) : s_(s) {}
-        bool operator()(const Option<T>& obj) const {
+        bool operator()(const Option<U>& obj) const {
             return obj.name_ == s_;
         }
     private:
         const std::string& s_;
     };
-    template <typename T>
+    template <typename U>
     struct MatchValue {
         MatchValue(const T& s) : s_(s) {}
-        bool operator()(const Option<T>& obj) const {
+        bool operator()(const Option<U>& obj) const {
             return obj.value_ == s_;
         }
     private:
-        const T& s_;
+        const U& s_;
     };
 
     
@@ -232,13 +232,12 @@ public:
 
 
 protected:
-    typedef std::vector<Option<T> > OptionVector;
     size_t selectedIndex_;
-    OptionVector options_;
+    std::vector<Option<T> > options_;
 
 private: 
     size_t defaultSelectedIndex_;
-    OptionVector defaultOptions_;
+    std::vector<Option<T> > defaultOptions_;
 };
 
 template<typename T>
@@ -381,7 +380,7 @@ bool BaseTemplateOptionProperty<T>::setSelectedIndex(size_t option) {
 
 template<typename T>
 bool inviwo::BaseTemplateOptionProperty<T>::setSelectedIdentifier(std::string identifier) {
-    OptionVector::iterator it = std::find_if(options_.begin(), options_.end(), MatchId<T>(identifier));
+    typename std::vector<Option<T> >::iterator it = std::find_if(options_.begin(), options_.end(), MatchId<T>(identifier));
     if (it != options_.end()) {
         selectedIndex_ = std::distance(options_.begin(), it);
         propertyModified();
@@ -393,7 +392,7 @@ bool inviwo::BaseTemplateOptionProperty<T>::setSelectedIdentifier(std::string id
 
 template<typename T>
 bool inviwo::BaseTemplateOptionProperty<T>::setSelectedDisplayName(std::string name) {
-    OptionVector::iterator it = std::find_if(options_.begin(), options_.end(), MatchName<T>(name));
+    typename std::vector<Option<T> >::iterator it = std::find_if(options_.begin(), options_.end(), MatchName<T>(name));
     if(it != options_.end()) {
         selectedIndex_ = std::distance(options_.begin(), it);
         propertyModified();
@@ -405,7 +404,7 @@ bool inviwo::BaseTemplateOptionProperty<T>::setSelectedDisplayName(std::string n
 
 template<typename T>
 bool inviwo::BaseTemplateOptionProperty<T>::setSelectedValue(T val) {
-    OptionVector::iterator it = std::find_if(options_.begin(), options_.end(), MatchValue<T>(val));
+    typename std::vector<Option<T> >::iterator it = std::find_if(options_.begin(), options_.end(), MatchValue<T>(val));
     if(it != options_.end()) {
         selectedIndex_ = std::distance(options_.begin(), it);
         propertyModified();
