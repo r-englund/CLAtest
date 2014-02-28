@@ -57,19 +57,26 @@ DirectoryPropertyWidgetQt::DirectoryPropertyWidgetQt(DirectoryProperty* property
 
 void DirectoryPropertyWidgetQt::generateWidget() {
     QHBoxLayout* hLayout = new QHBoxLayout();
-    hLayout->setContentsMargins(0, 0, 0, 0);
-    hLayout->setSpacing(7);
+    
     directoryLabel_ = new EditableLabelQt(this,property_->getDisplayName(),PropertyWidgetQt::generatePropertyWidgetMenu());
-    hLayout->addWidget(directoryLabel_);
+    
     lineEdit_ = new QLineEdit(this);
     lineEdit_->setReadOnly(true);
+
     openButton_ = new QToolButton(this);
     openButton_->setIcon(QIcon(":/icons/open.png"));
-    connect(directoryLabel_, SIGNAL(textChanged()),this, SLOT(setPropertyDisplayName()));
-    connect(openButton_, SIGNAL(pressed()), this, SLOT(setPropertyValue()));
+
+    hLayout->addWidget(directoryLabel_);
     hLayout->addWidget(lineEdit_);
     hLayout->addWidget(openButton_);
+    hLayout->setContentsMargins(0, 0, 0, 0);
+    hLayout->setSpacing(0);
+    hLayout->setStretch(1,1);
+
     setLayout(hLayout);
+
+    connect(directoryLabel_, SIGNAL(textChanged()),this, SLOT(setPropertyDisplayName()));
+    connect(openButton_, SIGNAL(pressed()), this, SLOT(setPropertyValue()));
 }
 
 void DirectoryPropertyWidgetQt::setPropertyValue() {

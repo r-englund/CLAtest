@@ -113,10 +113,11 @@ QtWidgetModule::QtWidgetModule() : InviwoModule() {
     registerPropertyWidget(OptionPropertyWidgetQt, OptionPropertyString, "Default");
 //    registerPropertyWidget(SphericalFloatVec3PropertyWidgetQt, FloatVec3Property, "Spherical");
     registerPropertyWidget(StringPropertyWidgetQt, StringProperty, "Default");
+    registerPropertyWidget(StringPropertyWidgetQt, StringProperty, "Password");
     registerPropertyWidget(TextEditorWidgetQt, FileProperty, "TextEditor"); // TODO: fix "imageEditor..."
-    registerPropertyWidget(TextEditorWidgetQt, FileProperty, "Shader");
+    registerPropertyWidget(TextEditorWidgetQt, FileProperty, "ShaderEditor");
     registerPropertyWidget(TextEditorWidgetQt, StringProperty, "Editor");
-    registerPropertyWidget(TextEditorWidgetQt, StringProperty, "Shader");
+    registerPropertyWidget(TextEditorWidgetQt, StringProperty, "ShaderEditor");
     registerPropertyWidget(TransferFunctionPropertyWidgetQt, TransferFunctionProperty, "Default");
     registerDialog("RawVolumeReader", RawDataReaderDialogQt);
 }

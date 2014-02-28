@@ -44,8 +44,6 @@ OptionPropertyWidgetQt::OptionPropertyWidgetQt(BaseOptionProperty* property)
 
 void OptionPropertyWidgetQt::generateWidget() {
     QHBoxLayout* hLayout = new QHBoxLayout();
-    hLayout->setContentsMargins(0, 0, 0, 0);
-    hLayout->setSpacing(7);
     comboBox_ = new QComboBox();
     fillComboBox();
     updateFromProperty();
@@ -55,6 +53,9 @@ void OptionPropertyWidgetQt::generateWidget() {
     label_ = new EditableLabelQt(this,property_->getDisplayName(),PropertyWidgetQt::generatePropertyWidgetMenu());
     hLayout->addWidget(label_);
     hLayout->addWidget(comboBox_);
+    hLayout->setContentsMargins(0, 0, 0, 0);
+    hLayout->setSpacing(0);
+    hLayout->setStretch(1,1);
     setLayout(hLayout);
     connect(comboBox_, SIGNAL(currentIndexChanged(int)),this, SLOT(optionChanged()));
     connect(label_, SIGNAL(textChanged()),this, SLOT(setPropertyDisplayName()));   
