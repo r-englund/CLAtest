@@ -1,6 +1,6 @@
 #--------------------------------------------------------------------
 # Dependencies for OpenGL module
 set(dependencies 
-    GLEW
+    glew
     OpenGL
 )
