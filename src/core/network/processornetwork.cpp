@@ -126,7 +126,7 @@ std::vector<Processor*> ProcessorNetwork::getProcessors() const {
 PortConnection* ProcessorNetwork::addConnection(Outport* sourcePort, Inport* destPort) {
     PortConnection* connection = getConnection(sourcePort, destPort);
 
-    if (!connection) {
+    if (!connection && sourcePort && destPort) {
         modified();
         destPort->connectTo(sourcePort);
         connection = new PortConnection(sourcePort, destPort);

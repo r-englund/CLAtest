@@ -1308,7 +1308,12 @@ void NetworkEditor::dropEvent(QGraphicsSceneDragDropEvent* e) {
         if (!className.isEmpty()) {
             // create processor, add it to processor network, and generate it's widgets
             Processor* processor = static_cast<Processor*>(ProcessorFactory::getRef().create(className.toLocal8Bit().constData()));
-            addProcessor(processor, e->scenePos());
+
+            if(oldProcessorTarget_)
+                addProcessor(processor, e->scenePos());
+            else
+                addProcessor(processor, e->scenePos());
+
             ProcessorGraphicsItem* processorGraphicsItem = getProcessorGraphicsItem(processor->getIdentifier());
             clearSelection();
 
