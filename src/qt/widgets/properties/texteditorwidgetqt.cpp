@@ -115,8 +115,8 @@ TextEditorWidgetQt::TextEditorWidgetQt(Property* property) : property_(property)
 }
 
 TextEditorWidgetQt::~TextEditorWidgetQt() {
-    textEditorWidget_->deleteLater();
-    htmlEditorWidget_->deleteLater();
+    delete textEditorWidget_;
+    delete htmlEditorWidget_;
 }
 
 void TextEditorWidgetQt::generateWidget() {
@@ -127,17 +127,17 @@ void TextEditorWidgetQt::generateWidget() {
     if (dynamic_cast<FileProperty*>(property_)) {
         fileWidget_ = new FilePropertyWidgetQt(static_cast<FileProperty*>(property_));
         connect(btnEdit_,SIGNAL(clicked()),this,SLOT(editFile()));
-        fileWidget_->layout()->addWidget(btnEdit_);
+        //fileWidget_->layout()->addWidget(btnEdit_);
         hLayout->addWidget(fileWidget_);
     }
     else if (dynamic_cast<StringProperty*>(property_)) {
         stringWidget_ = new StringPropertyWidgetQt(static_cast<StringProperty*>(property_));
         connect(btnEdit_,SIGNAL(clicked()),this,SLOT(editString()));
-        stringWidget_->layout()->addWidget(btnEdit_);
+        //stringWidget_->layout()->addWidget(btnEdit_);
         hLayout->addWidget(stringWidget_);
     }
 
-    //hLayout->addWidget(btnEdit_);
+    hLayout->addWidget(btnEdit_);
     setLayout(hLayout);
     hLayout->setContentsMargins(QMargins(0,0,0,0));
     textEditorWidget_= new ModifiedWidget();

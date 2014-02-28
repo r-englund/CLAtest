@@ -57,19 +57,26 @@ FilePropertyWidgetQt::FilePropertyWidgetQt(FileProperty* property)
 
 void FilePropertyWidgetQt::generateWidget() {
     QHBoxLayout* hLayout = new QHBoxLayout();
-    hLayout->setContentsMargins(0, 0, 0, 0);
-    hLayout->setSpacing(7);
+    
     label_ = new EditableLabelQt(this,property_->getDisplayName(),PropertyWidgetQt::generatePropertyWidgetMenu());
-    hLayout->addWidget(label_);
+
     lineEdit_ = new QLineEdit(this);
     lineEdit_->setReadOnly(true);
+
     openButton_ = new QToolButton(this);
     openButton_->setIcon(QIcon(":/icons/open.png"));
-    connect(label_, SIGNAL(textChanged()),this, SLOT(setPropertyDisplayName()));
-    connect(openButton_, SIGNAL(pressed()), this, SLOT(setPropertyValue()));
+
+    hLayout->addWidget(label_);
     hLayout->addWidget(lineEdit_);
     hLayout->addWidget(openButton_);
+    hLayout->setContentsMargins(0, 0, 0, 0);
+    hLayout->setSpacing(0);
+    hLayout->setStretch(1,1);
+
     setLayout(hLayout);
+
+    connect(label_, SIGNAL(textChanged()),this, SLOT(setPropertyDisplayName()));
+    connect(openButton_, SIGNAL(pressed()), this, SLOT(setPropertyValue()));
 }
 
 void FilePropertyWidgetQt::setPropertyValue() {
