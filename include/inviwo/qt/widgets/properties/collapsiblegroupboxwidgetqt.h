@@ -93,7 +93,6 @@ private:
     std::vector<PropertyWidgetQt*> propertyWidgets_;
     bool collapsed_;
     EditableLabelQt* label_;
-    void generateContextMenu();
     void generateWidget();
     void updateContextMenu();
     PropertyVisibilityMode visibilityMode_;
@@ -107,7 +106,6 @@ private:
 public slots:
     void toggleFold();
     void updateVisibility();
-    void showContextMenu(const QPoint& pos);
     void setDeveloperViewMode(bool value);
     void setApplicationViewMode(bool value);
     virtual void resetPropertyToDefaultState();

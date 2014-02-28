@@ -259,11 +259,6 @@ QMenu* PropertyWidgetQt::getContextMenu(){
     return contextMenu_;
 }
 
-// Refactor to use getContextMenu() and remove
-QMenu* PropertyWidgetQt::generatePropertyWidgetMenu() {
-    return getContextMenu();
-}
-
 void PropertyWidgetQt::generateModuleMenuActions() {
     moduleSubMenus_.clear();
     InviwoApplication* app = InviwoApplication::getPtr();

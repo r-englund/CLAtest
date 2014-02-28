@@ -117,7 +117,7 @@ void FloatMat4PropertyWidgetQt::generateWidget() {
                 this, SLOT(set3x2Value()));
         connect(mat3x3_, SIGNAL(editingFinished()),
                 this, SLOT(set3x3Value()));
-        label_ = new EditableLabelQt(this,property_->getDisplayName(),PropertyWidgetQt::generatePropertyWidgetMenu());
+        label_ = new EditableLabelQt(this,property_->getDisplayName(),PropertyWidgetQt::getContextMenu());
         hLayout->addWidget(label_);
         connect(label_, SIGNAL(textChanged()),this, SLOT(setPropertyDisplayName()));
     }

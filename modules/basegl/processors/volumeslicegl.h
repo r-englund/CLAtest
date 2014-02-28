@@ -40,7 +40,7 @@
 #include <inviwo/core/ports/volumeport.h>
 #include <inviwo/core/ports/imageport.h>
 #include <inviwo/core/properties/boolproperty.h>
-#include <inviwo/core/properties/optionproperties.h>
+#include <inviwo/core/properties/baseoptionproperty.h>
 #include <inviwo/core/properties/ordinalproperty.h>
 #include <inviwo/core/properties/transferfunctionproperty.h>
 #include <inviwo/core/datastructures/geometry/geometrytype.h>

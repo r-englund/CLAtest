@@ -56,10 +56,6 @@ void BaseOrdinalPropertyWidgetQt::generateWidget() {
                                  property_->getDisplayName(),
                                  PropertyWidgetQt::getContextMenu());
     hLayout->addWidget(label_);
-
-    //QSizePolicy labelPol = label_->sizePolicy();
-    //labelPol.setHorizontalStretch(1);
-    //label_->setSizePolicy(labelPol);
     connect(label_, SIGNAL(textChanged()),this, SLOT(setPropertyDisplayName()));
 
        

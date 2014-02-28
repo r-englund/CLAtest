@@ -65,7 +65,7 @@ void SphericalFloatVec3PropertyWidgetQt::generateWidget() {
         hLayout->addWidget(readOnlyLabel_);
         setLayout(hLayout);
     } else {
-        label_ = new EditableLabelQt(this, property_->getDisplayName(), PropertyWidgetQt::generatePropertyWidgetMenu());
+        label_ = new EditableLabelQt(this, property_->getDisplayName(), PropertyWidgetQt::getContextMenu());
         hLayout->addWidget(label_);
         QWidget* sliderWidget = new QWidget();
         QVBoxLayout* vLayout = new QVBoxLayout();
@@ -130,7 +130,7 @@ void SphericalFloatVec3PropertyWidgetQt::updateFromProperty() {
 
 void SphericalFloatVec3PropertyWidgetQt::generatesSettingsWidget() {
     settingsWidget_ = new PropertySettingsWidgetQt(property_, this);
-    settingsMenu_ = PropertyWidgetQt::generatePropertyWidgetMenu();
+    settingsMenu_ = PropertyWidgetQt::getContextMenu();
     settingsMenu_->addAction("Property settings");
     settingsMenu_->addAction("Set as Min");
     settingsMenu_->addAction("Set as Max");

@@ -49,6 +49,7 @@ MeshCreator::MeshCreator()
     meshType_.addOption("cube", "Cube");
     meshType_.addOption("sphere", "Sphere");
     meshType_.set("sphere");
+    meshType_.setCurrentStateAsDefault();
     addProperty(meshType_);
     addProperty(meshScale_);
 }

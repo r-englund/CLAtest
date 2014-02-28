@@ -49,14 +49,15 @@ VolumeSliceGL::VolumeSliceGL()
       sliceNumber_("sliceNumber", "Slice Number", 1, 1, 256),
       tfMappingEnabled_("tfMappingEnabled", "Enable Transfer Function", true),
       transferFunction_("transferFunction", "Transfer function", TransferFunction(), &inport_),
-      shader_(NULL)
-{
+      shader_(NULL) {
+      
     addPort(inport_);
     addPort(outport_);
     coordinatePlane_.addOption("xy", "XY Plane", XY);
     coordinatePlane_.addOption("xz", "XZ Plane", XZ);
     coordinatePlane_.addOption("yz", "YZ Plane", YZ);
     coordinatePlane_.set(XY);
+    coordinatePlane_.setCurrentStateAsDefault();
     coordinatePlane_.onChange(this, &VolumeSliceGL::planeSettingsChanged);
     addProperty(coordinatePlane_);
     flipHorizontal_.onChange(this, &VolumeSliceGL::planeSettingsChanged);

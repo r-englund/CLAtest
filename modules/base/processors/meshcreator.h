@@ -38,7 +38,7 @@
 #include <inviwo/core/processors/processor.h>
 #include <inviwo/core/ports/geometryport.h>
 #include <inviwo/core/datastructures/geometry/simplemesh.h>
-#include <inviwo/core/properties/optionproperties.h>
+#include <inviwo/core/properties/baseoptionproperty.h>
 #include <inviwo/core/properties/ordinalproperty.h>
 
 namespace inviwo {

@@ -58,7 +58,7 @@ FilePropertyWidgetQt::FilePropertyWidgetQt(FileProperty* property)
 void FilePropertyWidgetQt::generateWidget() {
     QHBoxLayout* hLayout = new QHBoxLayout();
     
-    label_ = new EditableLabelQt(this,property_->getDisplayName(),PropertyWidgetQt::generatePropertyWidgetMenu());
+    label_ = new EditableLabelQt(this,property_->getDisplayName(),PropertyWidgetQt::getContextMenu());
 
     lineEdit_ = new QLineEdit(this);
     lineEdit_->setReadOnly(true);

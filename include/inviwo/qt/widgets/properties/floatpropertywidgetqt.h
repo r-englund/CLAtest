@@ -173,8 +173,6 @@ void OrdinalPropertyWidgetQt<BT, T>::setPropertyValue(int sliderId) {
     this->ordinalproperty_->setInitiatingWidget(this);
     this->ordinalproperty_->set(propValue);
     this->ordinalproperty_->clearInitiatingWidget();
-
-    emit this->modified();
 }
 
 template <typename BT, typename T>
@@ -212,8 +210,6 @@ public:
             BaseOrdinalPropertyWidgetQt::generateWidget();
             updateFromProperty();
         }
-
-
     void updateFromProperty();
 
 protected:
@@ -274,8 +270,6 @@ void OrdinalPropertyWidgetQt<T, T>::setAsMax() {
 
     slider->setMaxValue(propValue);
 }
-
-
 
 typedef OrdinalPropertyWidgetQt<float, float> FloatPropertyWidgetQt;
 typedef OrdinalPropertyWidgetQt<float, vec2> FloatVec2PropertyWidgetQt;
