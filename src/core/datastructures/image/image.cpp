@@ -123,6 +123,15 @@ Image::~Image() {
     deinitialize();
 }
 
+std::string Image::getDataInfo() const{
+    std::ostringstream stream;
+    stream << "Type: image\n";
+    stream << "Format: " << getDataFormat()->getString() << "\n";
+    stream << "Width: " << getDimension().x << "\n";
+    stream << "Height: " << getDimension().y << "\n";
+    return stream.str();
+}
+
 void Image::deinitialize() {
     for (std::vector<Layer*>::iterator it = colorLayers_.begin(); it != colorLayers_.end(); ++it)
         delete(*it);

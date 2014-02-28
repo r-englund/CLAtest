@@ -44,6 +44,7 @@ SystemSettings::SystemSettings(std::string id) :
     , viewModeProperty_("viewMode","View Mode")
     , txtEditorProperty_("txtEditor", "Use system text editor", true)
     , shaderReloadingProperty_("shaderReloading", "Automatically reload shaders", true)
+    , enablePortInformationProperty_("enablePortInformation", "Enable port information", true)
     , enablePortInspectorsProperty_("enablePortInspectors", "Enable port inspectors", true)
     , portInspectorSize_("portInspectorSize", "Port Inspector size", 128, 1, 1024)
     , enableSoundProperty_("enableSound", "Enable sound", true)
@@ -65,6 +66,7 @@ void SystemSettings::initialize() {
     //viewModeProperty_.setVisibility(INVISIBLE);
     addProperty(&txtEditorProperty_);
     addProperty(&shaderReloadingProperty_);
+    addProperty(&enablePortInformationProperty_);
     addProperty(&enablePortInspectorsProperty_);
     addProperty(&portInspectorSize_);
     addProperty(&enableSoundProperty_);

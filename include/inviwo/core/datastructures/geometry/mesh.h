@@ -56,6 +56,8 @@ public:
     Mesh(const Mesh& rhs);
     Mesh(RenderType rt, ConnectivityType ct);
     virtual ~Mesh();
+    virtual std::string getDataInfo() const;
+
     virtual void performOperation(DataOperation*) const {};
     virtual void initialize();
     virtual void deinitialize();

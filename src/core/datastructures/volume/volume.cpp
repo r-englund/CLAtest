@@ -56,6 +56,16 @@ Volume* Volume::clone() const {
 }
 Volume::~Volume() {}
 
+std::string Volume::getDataInfo() const{
+    std::ostringstream stream;
+    stream << "Type: volume\n";
+    stream << "Format: " << getDataFormat()->getString() << "\n";
+    stream << "Width: " << getDimension().x << "\n";
+    stream << "Height: " << getDimension().y << "\n";
+    stream << "Depth: " << getDimension().z << "\n";
+    return stream.str();
+}
+
 uvec3 Volume::getDimension() const {
     return StructuredGridEntity<3>::getDimension();
 }
