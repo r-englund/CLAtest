@@ -74,7 +74,7 @@
 #include <inviwo/core/properties/fileproperty.h>
 #include <inviwo/core/properties/imageeditorproperty.h>
 #include <inviwo/core/properties/minmaxproperty.h>
-#include <inviwo/core/properties/optionproperties.h>
+#include <inviwo/core/properties/baseoptionproperty.h>
 #include <inviwo/core/properties/ordinalproperty.h>
 #include <inviwo/core/properties/stringproperty.h>
 #include <inviwo/core/properties/transferfunctionproperty.h>

@@ -36,8 +36,7 @@
 namespace inviwo {
 OptionPropertyWidgetQt::OptionPropertyWidgetQt(BaseOptionProperty* property) 
     : PropertyWidgetQt(property)
-    , property_(property),
-    updating_(false) {
+    , property_(property) {
     generateWidget();
     updateFromProperty();
 }
@@ -45,12 +44,19 @@ OptionPropertyWidgetQt::OptionPropertyWidgetQt(BaseOptionProperty* property)
 void OptionPropertyWidgetQt::generateWidget() {
     QHBoxLayout* hLayout = new QHBoxLayout();
     comboBox_ = new QComboBox();
-    fillComboBox();
     updateFromProperty();
 
     comboBox_->setEnabled(!property_->getReadOnly());
-
-    label_ = new EditableLabelQt(this,property_->getDisplayName(),PropertyWidgetQt::generatePropertyWidgetMenu());
+    comboBox_->setContextMenuPolicy(Qt::CustomContextMenu);
+    connect(comboBox_,
+            SIGNAL(customContextMenuRequested(const QPoint&)),
+            this,
+            SLOT(showContextMenu(const QPoint&)));
+    
+    label_ = new EditableLabelQt(this,
+                                 property_->getDisplayName(),
+                                 PropertyWidgetQt::getContextMenu());
+    
     hLayout->addWidget(label_);
     hLayout->addWidget(comboBox_);
     hLayout->setContentsMargins(0, 0, 0, 0);
@@ -61,7 +67,18 @@ void OptionPropertyWidgetQt::generateWidget() {
     connect(label_, SIGNAL(textChanged()),this, SLOT(setPropertyDisplayName()));   
 }
 
-void OptionPropertyWidgetQt::fillComboBox() {
+void OptionPropertyWidgetQt::optionChanged() {
+    if (comboBox_->count()
+        && comboBox_->currentIndex() >= 0
+        && comboBox_->currentIndex() != property_->getSelectedIndex()) {
+        property_->setInitiatingWidget(this);
+        property_->setSelectedIndex(comboBox_->currentIndex());
+        property_->clearInitiatingWidget();
+    }
+}
+
+void OptionPropertyWidgetQt::updateFromProperty() {
+    comboBox_->blockSignals(true);
     comboBox_->clear();
     std::vector<std::string> names = property_->getDisplayNames();
 
@@ -69,22 +86,8 @@ void OptionPropertyWidgetQt::fillComboBox() {
         QString option = QString::fromStdString(names[i]);
         comboBox_->addItem(option);
     }
-}
-void OptionPropertyWidgetQt::optionChanged() {
-    if (!updating_) {
-        if (comboBox_->count() && comboBox_->currentIndex()>=0) {
-            property_->setSelectedIndex(comboBox_->currentIndex());
-            emit modified();
-        }
-    }
-}
-
-void OptionPropertyWidgetQt::updateFromProperty() {
-    updating_ = true;
-    size_t index = property_->getSelectedIndex();
-    fillComboBox();
-    comboBox_->setCurrentIndex(static_cast<int>(index));
-    updating_ = false;
+    comboBox_->setCurrentIndex(property_->getSelectedIndex());
+    comboBox_->blockSignals(false);
 }
 
 void OptionPropertyWidgetQt::setPropertyDisplayName() {

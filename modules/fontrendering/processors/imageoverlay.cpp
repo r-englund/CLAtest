@@ -68,6 +68,7 @@ ImageOverlay::ImageOverlay()
     optionPropertyIntFontSize_.addOption("60","60",60);
     optionPropertyIntFontSize_.addOption("72","72",72);
     optionPropertyIntFontSize_.setSelectedIndex(3);
+    optionPropertyIntFontSize_.setCurrentStateAsDefault();
 }
 
 ImageOverlay::~ImageOverlay() {}

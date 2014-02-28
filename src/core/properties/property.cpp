@@ -47,7 +47,6 @@ Property::Property(std::string identifier,
     , identifier_(identifier)
     , displayName_(displayName)
     , readOnly_(false)
-    , lockInvalidation_(false)
     , semantics_(semantics)
     , visibilityMode_(APPLICATION)
     , propertyModified_(false)
@@ -177,10 +176,9 @@ std::string Property::getGroupID()const {
 void Property::propertyModified() {
     onChangeCallback_.invoke();
     setPropertyModified(true);
-
-    //FIXME: if set() is called before addProperty(), getOwner() will be 0 ( case for option properties )
-    if (getOwner() && !lockInvalidation_) getOwner()->invalidate(getInvalidationLevel(), this);
-
+    if (getOwner()) {
+        getOwner()->invalidate(getInvalidationLevel(), this);
+    }
     updateWidgets();
 }
 
@@ -294,8 +292,5 @@ void Property::resetToDefaultState() {
     propertyModified();
 }
 
-void Property::lockInvalidation(bool val) {
-    lockInvalidation_ = val;
-}
 
 } // namespace

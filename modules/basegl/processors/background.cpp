@@ -45,13 +45,14 @@ Background::Background()
       outport_("outport", &inport_, COLOR_ONLY),
       backgroundStyle_("backgroundStyle", "Style", PropertyOwner::INVALID_RESOURCES),
       color1_("color1", "Color 1", vec4(0.0)),
-      color2_("color2", "Color 2", vec4(1.0))
-{
+      color2_("color2", "Color 2", vec4(1.0)) {
+      
     addPort(inport_);
     addPort(outport_);
     backgroundStyle_.addOption("linearGradient", "Linear gradient", 0);
     backgroundStyle_.addOption("uniformColor", "Uniform color", 1);
     backgroundStyle_.addOption("checkerBoard", "Checker board", 2);
+    backgroundStyle_.setCurrentStateAsDefault();
     addProperty(backgroundStyle_);
     color1_.setSemantics(PropertySemantics::Color);
     addProperty(color1_);

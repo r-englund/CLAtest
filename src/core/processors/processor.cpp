@@ -217,13 +217,15 @@ void Processor::invalidate(PropertyOwner::InvalidationLevel invalidationLevel, P
         return;
     }
 
-    for (std::vector<Outport*>::iterator it = outports_.begin(); it != outports_.end(); ++it)
+    for (std::vector<Outport*>::iterator it = outports_.begin(); it != outports_.end(); ++it){
         (*it)->invalidate(PropertyOwner::INVALID_OUTPUT);
+    }
 
     notifyObserversInvalidationEnd(this);
 
-    if (isEndProcessor())
+    if (isEndProcessor()) {
         performEvaluateRequest();
+    }
 }
 
 bool Processor::isEndProcessor() const {

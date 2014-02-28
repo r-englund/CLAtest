@@ -41,7 +41,7 @@
 #include <inviwo/core/ports/datainport.h>
 #include <inviwo/core/datastructures/baselightsource.h>
 #include <inviwo/core/properties/boolproperty.h>
-#include <inviwo/core/properties/optionproperties.h>
+#include <inviwo/core/properties/baseoptionproperty.h>
 #include <inviwo/core/properties/transferfunctionproperty.h>
 #include <modules/opengl/glwrap/framebufferobject.h>
 #include <modules/opengl/volume/volumegl.h>

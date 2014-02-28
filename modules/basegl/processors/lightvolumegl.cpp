@@ -130,6 +130,7 @@ LightVolumeGL::LightVolumeGL()
     volumeSizeOption_.addOption("1/2","Half of incoming volume", 2);
     volumeSizeOption_.addOption("1/4","Quarter of incoming volume", 4);
     volumeSizeOption_.setSelectedIndex(1);
+    volumeSizeOption_.setCurrentStateAsDefault();
     volumeSizeOption_.onChange(this, &LightVolumeGL::volumeSizeOptionChanged);
     addProperty(volumeSizeOption_);
     addProperty(transferFunction_);

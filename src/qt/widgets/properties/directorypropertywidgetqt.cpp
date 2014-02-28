@@ -58,7 +58,7 @@ DirectoryPropertyWidgetQt::DirectoryPropertyWidgetQt(DirectoryProperty* property
 void DirectoryPropertyWidgetQt::generateWidget() {
     QHBoxLayout* hLayout = new QHBoxLayout();
     
-    directoryLabel_ = new EditableLabelQt(this,property_->getDisplayName(),PropertyWidgetQt::generatePropertyWidgetMenu());
+    directoryLabel_ = new EditableLabelQt(this,property_->getDisplayName(),PropertyWidgetQt::getContextMenu());
     
     lineEdit_ = new QLineEdit(this);
     lineEdit_->setReadOnly(true);

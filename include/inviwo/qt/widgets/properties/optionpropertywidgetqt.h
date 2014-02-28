@@ -40,7 +40,6 @@
 
 #include <inviwo/qt/widgets/properties/propertywidgetqt.h>
 #include <inviwo/core/properties/baseoptionproperty.h>
-#include <inviwo/core/properties/optionproperties.h>
 #include <inviwo/core/properties/property.h>
 #include <inviwo/qt/widgets/editablelabelqt.h>
 #include <typeinfo>
@@ -59,13 +58,10 @@ private:
     QComboBox* comboBox_;
     EditableLabelQt* label_;
     void generateWidget();
-    void fillComboBox();
-    bool updating_;
 
 public slots:
     void optionChanged();
     void setPropertyDisplayName();
-
 };
 
 } // namespace

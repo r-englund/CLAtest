@@ -68,7 +68,7 @@ public:
 public slots:
     void visibilityModified(int mode);
     virtual void resetPropertyToDefaultState();
-    void showContextMenu(const QPoint& pos);
+    virtual void showContextMenu(const QPoint& pos);
     void setDeveloperViewMode(bool value);
     void setApplicationViewMode(bool value);
     void moduleAction();
@@ -83,7 +83,6 @@ protected:
     // Context menu
     QMenu* getContextMenu();
     void generateContextMenu();
-    QMenu* generatePropertyWidgetMenu(); //< Should not be used, use getContext menu...
     void generateModuleMenuActions();
     void updateModuleMenuActions();
     virtual void initializeEditorWidgetsMetaData();

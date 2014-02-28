@@ -36,6 +36,7 @@
 #include <inviwo/core/common/inviwoapplication.h>
 #include <inviwo/core/util/settings/systemsettings.h>
 #include <inviwo/core/properties/propertywidgetfactory.h>
+#include <inviwo/core/network/processornetwork.h>
 
 namespace inviwo {
 
@@ -43,8 +44,8 @@ CollapsibleGroupBoxWidgetQt::CollapsibleGroupBoxWidgetQt(std::string identifier,
     : PropertyWidgetQt()
     , identifier_(identifier)
     , displayName_(displayName)
-    , visibilityMode_(APPLICATION)
     , collapsed_(false)
+    , visibilityMode_(APPLICATION)
     , contextMenu_(NULL)
     , viewModeActionGroup_(NULL) 
     , viewModeItem_(NULL) {
@@ -64,12 +65,6 @@ CollapsibleGroupBoxWidgetQt::CollapsibleGroupBoxWidgetQt(std::string identifier,
 }
 
 void CollapsibleGroupBoxWidgetQt::generateWidget() {
-    this->setContextMenuPolicy(Qt::CustomContextMenu);
-    connect(this,
-            SIGNAL(customContextMenuRequested(const QPoint&)),
-            this,
-            SLOT(showContextMenu(const QPoint&)));
-
     vLayout_ = new QVBoxLayout();
     vLayout_->setAlignment(Qt::AlignRight);
     vLayout_->setAlignment(Qt::AlignTop);
@@ -219,55 +214,6 @@ void CollapsibleGroupBoxWidgetQt::updateVisibility() {
     }
 }
 
-void CollapsibleGroupBoxWidgetQt::generateContextMenu() {
-    contextMenu_ = new QMenu(this);
-    QMenu* viewModeItem_ = new QMenu(tr("&View mode"),contextMenu_);
-    developerViewModeAction_ = new QAction(tr("&Developer"),this);
-    developerViewModeAction_->setCheckable(true);
-    viewModeItem_->addAction(developerViewModeAction_);
-    applicationViewModeAction_ = new QAction(tr("&Application"),this);
-    applicationViewModeAction_->setCheckable(true);
-    viewModeItem_->addAction(applicationViewModeAction_);
-    viewModeActionGroup_ = new QActionGroup(this);
-    viewModeActionGroup_->addAction(developerViewModeAction_);
-    viewModeActionGroup_->addAction(applicationViewModeAction_);
-    contextMenu_->addMenu(viewModeItem_);
-    resetAction_ = new QAction(tr("&Reset"), this);
-    contextMenu_->addAction(resetAction_);
-    
-    updateContextMenu();
-    
-    connect(developerViewModeAction_,
-            SIGNAL(triggered(bool)),
-            this,
-            SLOT(setDeveloperViewMode(bool)));
-    
-    connect(applicationViewModeAction_,
-            SIGNAL(triggered(bool)),
-            this,
-            SLOT(setApplicationViewMode(bool)));
-
-    connect(resetAction_,
-            SIGNAL(triggered(bool)),
-            this,
-            SLOT(resetPropertyToDefaultState()));
-}
-
-void CollapsibleGroupBoxWidgetQt::showContextMenu(const QPoint& pos) {
-    
-    if(!contextMenu_){
-        generateContextMenu();
-    }
-
-    PropertyVisibilityMode appVisibilityMode  = getApplicationViewMode();
-
-    if (appVisibilityMode == DEVELOPMENT) {
-        updateContextMenu();
-        QPoint globalPos = this->mapToGlobal(pos);
-        contextMenu_->exec(globalPos);
-    }
-}
-
 
 void CollapsibleGroupBoxWidgetQt::setDeveloperViewMode(bool value) {
     visibilityMode_ = DEVELOPMENT;
@@ -300,13 +246,6 @@ void CollapsibleGroupBoxWidgetQt::setApplicationViewMode(bool value) {
     emit visibilityModified();
 }
 
-void CollapsibleGroupBoxWidgetQt::updateContextMenu() {
-    if (visibilityMode_ == DEVELOPMENT)
-        developerViewModeAction_->setChecked(true);
-
-    if (visibilityMode_ == APPLICATION)
-        applicationViewModeAction_->setChecked(true);
-}
 
 void CollapsibleGroupBoxWidgetQt::updateWidgets() {
     for (size_t i=0; i<propertyWidgets_.size(); i++)
@@ -354,17 +293,10 @@ void CollapsibleGroupBoxWidgetQt::onViewModeChange() {
 }
 
 void CollapsibleGroupBoxWidgetQt::resetPropertyToDefaultState() {
-    PropertyOwner::InvalidationLevel invalidationLevel = PropertyOwner::VALID;
     for (size_t i = 0; i < properties_.size(); i++) {
-        properties_[i]->lockInvalidation(true);
         properties_[i]->resetToDefaultState();
-        properties_[i]->lockInvalidation(false);
-        invalidationLevel = std::max(invalidationLevel, properties_[i]->getInvalidationLevel());
     }
-    if (properties_.size() > 0 && properties_[0]->getOwner()) {
-        properties_[0]->getOwner()->invalidate(invalidationLevel, properties_[0]);
-    }
-
+    
     for (size_t i = 0; i < propertyWidgets_.size(); i++) {
         CollapsibleGroupBoxWidgetQt* widget = dynamic_cast<CollapsibleGroupBoxWidgetQt*>(propertyWidgets_[i]);
         if (widget) {
@@ -381,6 +313,7 @@ void CollapsibleGroupBoxWidgetQt::resetPropertyToDefaultState() {
             camWidget->resetPropertyToDefaultState();
         }
     }
+
 }
 
 } // namespace

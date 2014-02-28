@@ -138,7 +138,6 @@ public:
     virtual void resetToDefaultState();
 
     virtual void propertyModified();
-    virtual void lockInvalidation(bool val);
     virtual void setPropertyModified(bool modified);
     virtual bool isPropertyModified() const;
     virtual Variant getVariant();
@@ -170,7 +169,6 @@ private:
     std::string displayName_;
 
     bool readOnly_;
-    bool lockInvalidation_;
     PropertySemantics semantics_;
     PropertyVisibilityMode visibilityMode_;
 

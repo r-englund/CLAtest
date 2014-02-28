@@ -67,6 +67,7 @@ const int NetworkEditor::GRID_SPACING = 25;
 
 NetworkEditor::NetworkEditor() :
     QGraphicsScene()
+    , processorNetwork_(NULL)
     , oldConnectionTarget_(NULL)
     , oldProcessorTarget_(NULL)
     , connectionCurve_(NULL)
@@ -77,10 +78,9 @@ NetworkEditor::NetworkEditor() :
     , inspection_()
     , gridSnapping_(true)
     , filename_("")
-    , renamingProcessor_(false) 
-    , modified_(false)
-    , processorNetwork_(NULL)
-{
+    , renamingProcessor_(false)
+    , modified_(false) {
+    
     setSceneRect(-1000,-1000,1000,1000);
     processorNetwork_ = new ProcessorNetwork();
     workerThreadReset();

@@ -69,7 +69,7 @@ void FloatMat2PropertyWidgetQt::generateWidget() {
                 this, SLOT(set1x0Value()));
         connect(mat1x1_, SIGNAL(editingFinished()),
                 this, SLOT(set1x1Value()));
-        label_ = new EditableLabelQt(this,property_->getDisplayName(),PropertyWidgetQt::generatePropertyWidgetMenu());
+        label_ = new EditableLabelQt(this,property_->getDisplayName(),PropertyWidgetQt::getContextMenu());
         hLayout->addWidget(label_);
         connect(label_, SIGNAL(textChanged()),this, SLOT(setPropertyDisplayName()));
     }

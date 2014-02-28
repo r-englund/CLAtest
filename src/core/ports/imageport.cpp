@@ -39,10 +39,13 @@ namespace inviwo {
 uvec3 ImageInport::colorCode = uvec3(90,127,183);
 
 // Image Inport
-ImageInport::ImageInport(std::string identifier, bool outportDeterminesSize,
+ImageInport::ImageInport(std::string identifier,
+                         bool outportDeterminesSize,
                          PropertyOwner::InvalidationLevel invalidationLevel)
-    : DataInport<Image>(identifier, invalidationLevel), outportDeterminesSize_(outportDeterminesSize), dimensions_(uvec2(256,256))
-{}
+    : DataInport<Image>(identifier, invalidationLevel)
+    , dimensions_(uvec2(256,256))
+    , outportDeterminesSize_(outportDeterminesSize) {
+}
 
 ImageInport::~ImageInport() {}
 
@@ -115,9 +118,9 @@ const Image* ImageInport::getData() const {
             return outport->getConstData();
         else
             return const_cast<const Image*>(outport->getResizedImageData(dimensions_));
-    }
-    else
+    } else {
         return NULL;
+    }
 }
 
 uvec3 ImageInport::getColorCode() const {
