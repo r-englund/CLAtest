@@ -56,14 +56,27 @@ void Settings::deserialize(IvwDeserializer& d) {
     PropertyOwner::deserialize(d);
 }
 
+
+void Settings::addProperty(Property* property){
+    PropertyOwner::addProperty(property);
+    property->onChange(this,&Settings::saveToDisk);
+}
+void Settings::addProperty(Property& property){
+    PropertyOwner::addProperty(property);
+    property.onChange(this,&Settings::saveToDisk);
+
+}
+
 std::string Settings::getIdentifier() {
     return identifier_;
 }
 
 void Settings::loadFromDisk(){
     std::stringstream ss;
-    ss << getIdentifier() << ".ivs";
-    std::string filename = InviwoApplication::getPtr()->getPath(InviwoApplication::PATH_SETTINGS,ss.str());
+    ss << identifier_ << ".ivs";
+    std::string filename = ss.str();
+    replaceInString(filename," ","_");
+    filename = InviwoApplication::getPtr()->getPath(InviwoApplication::PATH_SETTINGS,filename);
 
     if(URLParser::fileExists(filename)){
         IvwDeserializer d(filename);
@@ -72,10 +85,12 @@ void Settings::loadFromDisk(){
     
 }
 
-void Settings::saveToDisk()const{
+void Settings::saveToDisk(){
     std::stringstream ss;
     ss << identifier_ << ".ivs";
-    IvwSerializer s(InviwoApplication::getPtr()->getPath(InviwoApplication::PATH_SETTINGS,ss.str()));
+    std::string filename = ss.str();
+    replaceInString(filename," ","_");
+    IvwSerializer s(InviwoApplication::getPtr()->getPath(InviwoApplication::PATH_SETTINGS,filename));
     serialize(s);
     s.writeFile();
 }

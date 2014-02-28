@@ -59,8 +59,12 @@ public:
     virtual void serialize(IvwSerializer& s) const;
     virtual void deserialize(IvwDeserializer& d);
 
+
+    virtual void addProperty(Property* property);
+    virtual void addProperty(Property& property);
+
     void loadFromDisk();
-    void saveToDisk()const;
+    void saveToDisk();
 
     virtual std::string getIdentifier();
 protected:
