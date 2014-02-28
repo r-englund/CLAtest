@@ -116,7 +116,7 @@ void BufferCLGL::notifyBeforeBufferInitialization() {
         }
     }
 
-    bufferObject_ = 0;
+    buffer_ = 0;
 }
 
 void BufferCLGL::notifyAfterBufferInitialization() {
