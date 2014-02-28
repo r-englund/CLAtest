@@ -33,14 +33,16 @@
 #ifndef IVW_BUFFERCL_H
 #define IVW_BUFFERCL_H
 
+#include <modules/opencl/buffer/bufferclbase.h>
 #include <modules/opencl/openclmoduledefine.h>
 #include <modules/opencl/inviwoopencl.h>
+
 #include <inviwo/core/datastructures/buffer/bufferrepresentation.h>
 #include <inviwo/core/datastructures/geometry/attributes.h>
 
 namespace inviwo {
 
-class IVW_MODULE_OPENCL_API BufferCL: public BufferRepresentation {
+class IVW_MODULE_OPENCL_API BufferCL: public BufferCLBase, public BufferRepresentation {
 
 public:
     /**
@@ -64,8 +66,8 @@ public:
 
     const Buffer* getAttribute() const;
 
-    cl::Buffer getEditableBuffer() { return *buffer_; }
-    const cl::Buffer& getBuffer() const { return *const_cast<const cl::Buffer*>(buffer_); }
+    cl::Buffer getEditableBuffer() { return *clBuffer_; }
+    const cl::Buffer& getBuffer() const { return *const_cast<const cl::Buffer*>(clBuffer_); }
 
     void upload(const void* data, size_t size);
     void download(void* data) const;
@@ -79,10 +81,7 @@ protected:
      */
     void initialize(const void* data);
 
-    cl::Buffer* buffer_;
     cl_mem_flags readWriteFlag_;
-
-
 };
 
 } // namespace

@@ -35,6 +35,8 @@
 
 #include <inviwo/core/common/inviwo.h>
 #include <inviwo/core/datastructures/buffer/bufferrepresentation.h>
+
+#include <modules/opencl/buffer/bufferclbase.h>
 #include <modules/opencl/inviwoopencl.h>
 #include <modules/opencl/openclmoduledefine.h>
 #include <modules/opengl/buffer/bufferobjectobserver.h>
@@ -42,7 +44,7 @@
 
 namespace inviwo {
 
-class IVW_MODULE_OPENCL_API BufferCLGL : public BufferRepresentation, public BufferObjectObserver {
+class IVW_MODULE_OPENCL_API BufferCLGL : public BufferCLBase, public BufferRepresentation, public BufferObjectObserver {
 
 public:
     BufferCLGL(size_t size, const DataFormatBase* format, BufferType type, BufferUsage usage = STATIC, BufferObject* data = NULL,
@@ -58,23 +60,22 @@ public:
 
     void initialize(BufferObject* data);
 
-    const cl::Buffer& getBuffer() const { return *(buffer_); }
+    const cl::Buffer& getBuffer() const { return *(clBuffer_); }
     BufferObject* getBufferGL() const { return bufferObject_; }
 
     void aquireGLObject(std::vector<cl::Event>* syncEvents = NULL) const {
-        std::vector<cl::Memory> syncBuffers(1, *buffer_);
+        std::vector<cl::Memory> syncBuffers(1, *clBuffer_);
         OpenCL::instance()->getQueue().enqueueAcquireGLObjects(&syncBuffers, syncEvents);
     }
 
     void releaseGLObject(std::vector<cl::Event>* syncEvents = NULL, cl::Event* event= NULL) const {
-        std::vector<cl::Memory> syncBuffers(1, *buffer_);
+        std::vector<cl::Memory> syncBuffers(1, *clBuffer_);
         OpenCL::instance()->getQueue().enqueueReleaseGLObjects(&syncBuffers, syncEvents, event);
     }
 
     void notifyAfterBufferInitialization();
     void notifyBeforeBufferInitialization();
 protected:
-    cl::BufferGL* buffer_;
     BufferObject* bufferObject_;
     cl_mem_flags readWriteFlag_;
 };

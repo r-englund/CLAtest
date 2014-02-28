@@ -6,6 +6,7 @@ ivw_module(OpenCL)
 # Add header files
 set(HEADER_FILES
     ${IVW_MODULE_DIR}/opencl/buffer/buffercl.h
+    ${IVW_MODULE_DIR}/opencl/buffer/bufferclbase.h
     ${IVW_MODULE_DIR}/opencl/buffer/bufferclconverter.h
     ${IVW_MODULE_DIR}/opencl/buffer/bufferclgl.h
     ${IVW_MODULE_DIR}/opencl/buffer/bufferclglconverter.h
@@ -40,6 +41,7 @@ ivw_group("Header Files" ${HEADER_FILES})
 # Add source files
 set(SOURCE_FILES
     ${IVW_MODULE_DIR}/opencl/buffer/buffercl.cpp
+    ${IVW_MODULE_DIR}/opencl/buffer/bufferclbase.cpp
     ${IVW_MODULE_DIR}/opencl/buffer/bufferclconverter.cpp
     ${IVW_MODULE_DIR}/opencl/buffer/bufferclgl.cpp
     ${IVW_MODULE_DIR}/opencl/buffer/bufferclglconverter.cpp
