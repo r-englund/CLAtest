@@ -184,6 +184,7 @@ public:
     virtual bool setSelectedIdentifier(std::string identifier);
     virtual bool setSelectedDisplayName(std::string name);
     virtual bool setSelectedValue(T val);
+    virtual void replaceOptions(std::vector<std::string> ids, std::vector<std::string> displayNames, std::vector<T> values);
     
     virtual bool isSelectedIndex(size_t index) const;
     virtual bool isSelectedIdentifier(std::string identifier) const;
@@ -414,6 +415,14 @@ bool inviwo::BaseTemplateOptionProperty<T>::setSelectedValue(T val) {
     }
 }
 
+template<typename T>
+void TemplateOptionProperty<T>::replaceOptions(std::vector<std::string> ids, std::vector<std::string> displayNames, std::vector<T> values) {
+    options_.clear();
+    for (size_t i=0; i<ids.size(); i++)
+        options_.push_back(Option<T>(ids[i], displayNames[i], values[i]));
+    
+    setSelectedIndex(0);
+}
 
 // Is...
 template<typename T>
