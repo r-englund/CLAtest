@@ -62,7 +62,7 @@ private:
     FileProperty confFile_;
     DirectoryProperty parameterFileDirectory_;
     ButtonProperty findParameterFiles_;
-    StringOptionProperty parameterFile_;
+    OptionPropertyString parameterFile_;
     IntProperty parameterSetting_;
 
     HCVIE3D cvieHandle_;
