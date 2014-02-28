@@ -58,8 +58,8 @@ public:
         INVALID_RENDERING=INVALID_OUTPUT // deprecated
     };
 
-    void addProperty(Property* property);
-    void addProperty(Property& property);
+    virtual void addProperty(Property* property);
+    virtual void addProperty(Property& property);
 
     Property* getPropertyByIdentifier(std::string identifier);
     std::vector<Property*> getProperties() { return properties_; }
