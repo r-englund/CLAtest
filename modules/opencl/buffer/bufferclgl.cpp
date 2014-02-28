@@ -38,7 +38,7 @@ namespace inviwo {
 
 BufferCLGL::BufferCLGL(size_t size, const DataFormatBase* format, BufferType type, BufferUsage usage, BufferObject* data,
                        cl_mem_flags readWriteFlag)
-    : BufferRepresentation(size, format, type, usage), bufferObject_(data), readWriteFlag_(readWriteFlag)
+    : BufferCLBase(), BufferRepresentation(size, format, type, usage), bufferObject_(data), readWriteFlag_(readWriteFlag)
 {
     if (data) {
         initialize(data);
@@ -61,10 +61,10 @@ void BufferCLGL::initialize(BufferObject* data) {
     CLBufferSharingMap::iterator it = OpenCLBufferSharing::clBufferSharingMap_.find(data);
 
     if (it == OpenCLBufferSharing::clBufferSharingMap_.end()) {
-        buffer_ = new cl::BufferGL(OpenCL::instance()->getContext(), readWriteFlag_, data->getId());
-        OpenCLBufferSharing::clBufferSharingMap_.insert(BufferSharingPair(data, new OpenCLBufferSharing(buffer_)));
+        clBuffer_ = new cl::BufferGL(OpenCL::instance()->getContext(), readWriteFlag_, data->getId());
+        OpenCLBufferSharing::clBufferSharingMap_.insert(BufferSharingPair(data, new OpenCLBufferSharing(clBuffer_)));
     } else {
-        buffer_ = static_cast<cl::BufferGL*>(it->second->sharedMemory_);
+        clBuffer_ = static_cast<cl::BufferGL*>(it->second->sharedMemory_);
         it->second->increaseRefCount();
     }
 
@@ -102,7 +102,7 @@ void BufferCLGL::setSize(size_t size) {
     // Make sure that the OpenCL buffer is deleted before changing the size.
     // By observing the BufferObject we will make sure that the shared OpenCL buffer is
     // deleted and reattached after resizing is done.
-    bufferObject_->setSize(size);
+    bufferObject_->setSize(size*getSizeOfElement());
     BufferRepresentation::setSize(size);
 }
 
@@ -116,7 +116,7 @@ void BufferCLGL::notifyBeforeBufferInitialization() {
         }
     }
 
-    buffer_ = 0;
+    clBuffer_ = 0;
 }
 
 void BufferCLGL::notifyAfterBufferInitialization() {
@@ -127,7 +127,7 @@ void BufferCLGL::notifyAfterBufferInitialization() {
             it->second->sharedMemory_ = new cl::BufferGL(OpenCL::instance()->getContext(), readWriteFlag_, bufferObject_->getId());
         }
 
-        buffer_ = static_cast<cl::BufferGL*>(it->second->sharedMemory_);
+        clBuffer_ = static_cast<cl::BufferGL*>(it->second->sharedMemory_);
         it->second->increaseRefCount();
     }
 }
