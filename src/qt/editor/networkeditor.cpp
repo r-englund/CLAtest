@@ -1310,7 +1310,7 @@ void NetworkEditor::dropEvent(QGraphicsSceneDragDropEvent* e) {
             Processor* processor = static_cast<Processor*>(ProcessorFactory::getRef().create(className.toLocal8Bit().constData()));
 
             if(oldProcessorTarget_)
-                addProcessor(processor, e->scenePos());
+                addProcessor(processor, oldProcessorTarget_->scenePos());
             else
                 addProcessor(processor, e->scenePos());
 
