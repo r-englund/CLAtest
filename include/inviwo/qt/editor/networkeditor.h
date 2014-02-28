@@ -123,7 +123,7 @@ public:
     virtual void onProcessorNetworkChange() {setModified();};
 
 public slots:
-    void managePortInspectors();
+    void managePortInspection();
     void workerThreadReset();
     void cacheProcessorProperty(Processor*);
 
@@ -150,7 +150,8 @@ protected:
     void autoLinkOnAddedProcessor(Processor*);
 
     void workerThreadQuit();
-
+    
+    bool isPortInformationActive();
 
 private:
     enum NetworkEditorFlags {
@@ -181,6 +182,7 @@ private:
     Port* startPort_;
     Port* endPort_;
 
+    BoolProperty* portInformationActive_;
     Inspection inspection_;
 
     bool gridSnapping_;
@@ -217,6 +219,9 @@ private:
 
     void addPortInspector(std::string processorIdentifier, std::string portIdentifier, QPointF pos);
     void removePortInspector(std::string processorIdentifier, std::string portIdentifier);
+
+    void addPortInformation(std::string processorIdentifier, std::string portIdentifier, std::string portInformation, QPointF pos);
+    void removePortInformation(std::string processorIdentifier, std::string portIdentifier);
 
     void addExternalNetwork(std::string fileName, std::string processorPrefix, ivec2 pos, unsigned int networkEditorFlags=NetworkEditor::None,
                             ivec2 canvasSize=ivec2(128));

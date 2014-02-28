@@ -53,6 +53,29 @@ Mesh::~Mesh() {
     deinitialize();
 }
 
+std::string Mesh::getDataInfo() const{
+    std::ostringstream stream;
+    stream << "Type: mesh\n";
+
+    stream << "Data: ";
+    switch(getAttributesInfo().rt){
+        case POINTS:
+            stream << "Points";
+            break;
+        case LINES:
+            stream << "Lines";
+            break;
+        case TRIANGLES:
+            stream << "Triangles";
+            break;
+        default:
+            stream << "Not specified"; 
+    }
+    stream << "\n";
+    
+    return stream.str();
+}
+
 Mesh* Mesh::clone() const {
     return new Mesh(*this);
 }

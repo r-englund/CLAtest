@@ -54,6 +54,8 @@ public:
     };
 
     bool isActive();
+    bool isInspectorActive();
+    bool isInformationActive();
     int size();
     inviwo::Inspection::State state() const;
     void setState(inviwo::Inspection::State val);
@@ -67,10 +69,8 @@ public:
 
 private:
     State state_;
-
-
-
-    BoolProperty* active_;
+    BoolProperty* inspectorNetworkActive_;
+    BoolProperty* inspectorInformationActive_;
     IntProperty* size_;
 };
 

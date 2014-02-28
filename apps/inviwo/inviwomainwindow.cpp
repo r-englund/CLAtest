@@ -124,6 +124,7 @@ void InviwoMainWindow::initialize() {
     rootDir_ = QString::fromStdString(InviwoApplication::getPtr()->getPath(InviwoApplication::PATH_DATA));
     workspaceFileDir_ = rootDir_ + "workspaces/";
     settingsWidget_->loadSettings();
+
     // initialize menus
     addMenus();
     addMenuActions();

@@ -40,7 +40,8 @@ Inspection::Inspection()
     : processorIdentifier_("")
     , portIdentifier_("")
     , state_(Start)
-    , active_(NULL)
+    , inspectorNetworkActive_(NULL)
+    , inspectorInformationActive_(NULL)
     , size_(NULL) {
 }
 
@@ -48,17 +49,35 @@ Inspection::~Inspection() {
 }
 
 bool Inspection::isActive() {
-    if (!active_) {
+    return (isInspectorActive() || isInformationActive());
+}
+
+bool Inspection::isInspectorActive() {
+    if (!inspectorNetworkActive_) {
         if (InviwoApplication::getPtr()) {
-            active_ = dynamic_cast<BoolProperty*>(
-                          InviwoApplication::getPtr()->
-                          getSettingsByType<SystemSettings>()->
-                          getPropertyByIdentifier("enablePortInspectors"));
+            inspectorNetworkActive_ = dynamic_cast<BoolProperty*>(
+                InviwoApplication::getPtr()->
+                getSettingsByType<SystemSettings>()->
+                getPropertyByIdentifier("enablePortInspectors"));
         } else
             return false;
     }
 
-    return active_->get();
+    return inspectorNetworkActive_->get();
+}
+
+bool Inspection::isInformationActive() {
+    if (!inspectorInformationActive_) {
+        if (InviwoApplication::getPtr()) {
+            inspectorInformationActive_ = dynamic_cast<BoolProperty*>(
+                InviwoApplication::getPtr()->
+                getSettingsByType<SystemSettings>()->
+                getPropertyByIdentifier("enablePortInformation"));
+        } else
+            return false;
+    }
+
+    return inspectorInformationActive_->get();
 }
 
 int Inspection::size() {

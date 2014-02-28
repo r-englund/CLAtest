@@ -51,6 +51,7 @@ public:
     Image& operator=(const Image& that);
     virtual Image* clone() const;
     virtual ~Image();
+    virtual std::string getDataInfo() const;
 
     void deinitialize();
 

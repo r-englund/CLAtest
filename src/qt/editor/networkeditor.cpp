@@ -69,16 +69,17 @@ NetworkEditor::NetworkEditor() :
     QGraphicsScene()
     , oldConnectionTarget_(NULL)
     , oldProcessorTarget_(NULL)
-    , connectionCurve_(0)
-    , linkCurve_(0)
-    , startProcessor_(0)
-    , endProcessor_(0)
+    , connectionCurve_(NULL)
+    , linkCurve_(NULL)
+    , startProcessor_(NULL)
+    , endProcessor_(NULL)
+    , portInformationActive_(NULL)
     , inspection_()
     , gridSnapping_(true)
     , filename_("")
     , renamingProcessor_(false) 
     , modified_(false)
-    , processorNetwork_(0)
+    , processorNetwork_(NULL)
 {
     setSceneRect(-1000,-1000,1000,1000);
     processorNetwork_ = new ProcessorNetwork();
@@ -87,7 +88,7 @@ NetworkEditor::NetworkEditor() :
     processorNetworkEvaluator_ = new ProcessorNetworkEvaluator(processorNetwork_);
     processorNetwork_->addObserver(this);
     hoverTimer_.setSingleShot(true);
-    connect(&hoverTimer_, SIGNAL(timeout()), this, SLOT(managePortInspectors()));
+    connect(&hoverTimer_, SIGNAL(timeout()), this, SLOT(managePortInspection()));
 }
 
 #define DELETE_VECTOR_ENTRIES(vec) while(!vec.empty()){delete vec.back();vec.pop_back();}
@@ -468,7 +469,7 @@ void NetworkEditor::renamingFinished() {
 //   PORT INSPECTOR FUNCTIONALITY   //
 //////////////////////////////////////
 
-void NetworkEditor::managePortInspectors() {
+void NetworkEditor::managePortInspection() {
     QPointF pos(inspection_.pos_.x, inspection_.pos_.y);
     Port* port = 0;
     ProcessorGraphicsItem* processor = getProcessorGraphicsItemAt(pos);
@@ -485,7 +486,8 @@ void NetworkEditor::managePortInspectors() {
         port = connection->getOutport();
 
     if (!port) { // return to start
-        removePortInspector(inspection_.processorIdentifier_, inspection_.portIdentifier_);
+        if(inspection_.isInspectorActive())
+            removePortInspector(inspection_.processorIdentifier_, inspection_.portIdentifier_);
         hoverTimer_.stop();
         inspection_.resetPort();
         inspection_.setState(Inspection::Start);
@@ -501,13 +503,24 @@ void NetworkEditor::managePortInspectors() {
         if (inspection_.samePort(port)) {
             if (hoverTimer_.isActive()) {
                 //Keep waiting
-            } else {
-                // add port inspector
-                inspection_.setState(Inspection::Inspect);
-                QPoint p = QCursor::pos();
-                addPortInspector(inspection_.processorIdentifier_,
-                                 inspection_.portIdentifier_,
-                                 QPoint(p.x()+5, p.y()+5));
+            } 
+            else{ 
+                if(inspection_.isInspectorActive()) {
+                    // add port inspector
+                    inspection_.setState(Inspection::Inspect);
+                    QPoint p = QCursor::pos();
+                    addPortInspector(inspection_.processorIdentifier_,
+                                     inspection_.portIdentifier_,
+                                     QPoint(p.x()+5, p.y()+5));
+                }
+                if(inspection_.isInformationActive()) {
+                    inspection_.setState(Inspection::Inspect);
+                    QPoint p = QCursor::pos();
+                    addPortInformation(inspection_.processorIdentifier_,
+                                       inspection_.portIdentifier_,
+                                       port->getContentInfo(),
+                                       QPoint(p.x()+5, p.y()+5));
+                }
             }
         } else { // Left port before time out, reset.
             hoverTimer_.stop();
@@ -518,7 +531,9 @@ void NetworkEditor::managePortInspectors() {
         if (inspection_.samePort(port)) {
             // Keep showing inspector
         } else {
-            removePortInspector(inspection_.processorIdentifier_, inspection_.portIdentifier_);
+            if(inspection_.isInspectorActive())
+                removePortInspector(inspection_.processorIdentifier_, inspection_.portIdentifier_);
+
             inspection_.setState(Inspection::Start);
             inspection_.resetPort();
         }
@@ -672,6 +687,15 @@ void NetworkEditor::removePortInspector(std::string processorIdentifier, std::st
     }
 }
 
+void NetworkEditor::addPortInformation(std::string processorIdentifier, std::string portIdentifier, std::string portInformation, QPointF pos) {
+    if(!portInformation.empty())
+        LogInfo("\nPort: " << portIdentifier << "\n" << portInformation);
+}
+
+void NetworkEditor::removePortInformation(std::string, std::string) {
+    
+}
+
 
 void NetworkEditor::workerThreadReset() {
     workerThread_ = NULL;
@@ -686,7 +710,6 @@ void NetworkEditor::workerThreadQuit() {
     }
 }
 
-
 bool NetworkEditor::isModified()const{
     return modified_;
 }
@@ -696,6 +719,15 @@ void NetworkEditor::setModified(const bool modified){
         for (ObserverSet::reverse_iterator it = observers_->rbegin(); it != observers_->rend(); ++it)
             static_cast<NetworkEditorObserver*>(*it)->onModifiedStatusChanged(modified);
     }
+}
+
+bool NetworkEditor::isPortInformationActive() {
+    if(!portInformationActive_){
+        portInformationActive_ = dynamic_cast<BoolProperty*>(InviwoApplication::getPtr()->getSettingsByType<SystemSettings>()->getPropertyByIdentifier("enablePortInformation"));
+        if(!portInformationActive_)
+            return false;
+    }
+    return portInformationActive_->get();   
 }
 
 void NetworkEditor::cacheProcessorProperty(Processor* p) {
@@ -1032,10 +1064,10 @@ void NetworkEditor::mouseMoveEvent(QGraphicsSceneMouseEvent* e) {
         linkCurve_->setEndPoint(e->scenePos());
         linkCurve_->update();
         e->accept();
-    } else if (inspection_.isActive() && e->button() == Qt::NoButton) {
+    } else if (inspection_.isActive() && e->button() == Qt::NoButton){
         // Port inspector hover effect
         inspection_.pos_ = ivec2(e->scenePos().x(),e->scenePos().y());
-        managePortInspectors();
+        managePortInspection();
     }
 
     QGraphicsScene::mouseMoveEvent(e);

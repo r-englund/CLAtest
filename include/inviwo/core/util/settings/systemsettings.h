@@ -59,6 +59,7 @@ private:
     OptionPropertyInt viewModeProperty_;
     BoolProperty txtEditorProperty_;
     BoolProperty shaderReloadingProperty_;
+    BoolProperty enablePortInformationProperty_;
     BoolProperty enablePortInspectorsProperty_;
     IntProperty portInspectorSize_;
     BoolProperty enableSoundProperty_;

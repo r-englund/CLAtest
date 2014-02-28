@@ -49,7 +49,7 @@ public:
     Volume& operator=(const Volume& that);
     virtual Volume* clone() const;
     virtual ~Volume();
-
+    virtual std::string getDataInfo() const;
 
     uvec3 getDimension() const;
     void setDimension(const uvec3& dim);
