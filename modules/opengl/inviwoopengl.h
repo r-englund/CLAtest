@@ -44,7 +44,7 @@
 #ifdef WIN32
 #include <modules/opengl/ext/glew/include/GL/wglew.h>
 #else
-#include <modules/opengl/ext/glew/include/GL/glxew.h>
+//#include <modules/opengl/ext/glew/include/GL/glxew.h>
 #endif
 
 #ifdef __APPLE__
