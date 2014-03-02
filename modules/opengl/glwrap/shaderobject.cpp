@@ -277,11 +277,15 @@ std::string ShaderObject::reformatShaderInfoLog(const std::string shaderInfoLog)
     std::istringstream origShaderInfoLog(shaderInfoLog);
 
     while (std::getline(origShaderInfoLog, curLine)) {
-        int origLineNumber = getLogLineNumber(curLine);
-        unsigned int lineNumber = lineNumberResolver_[origLineNumber-1].second;
-        std::string fileName = lineNumberResolver_[origLineNumber-1].first;
-        // TODO: adapt substr call to ATI compile log syntax
-        result << "\n" << fileName << " (" << lineNumber << "): " << curLine.substr(curLine.find(":")+1);
+        if(!curLine.empty()){
+            int origLineNumber = getLogLineNumber(curLine);
+            if(origLineNumber>0){
+                unsigned int lineNumber = lineNumberResolver_[origLineNumber-1].second;
+                std::string fileName = lineNumberResolver_[origLineNumber-1].first;
+                // TODO: adapt substr call to ATI compile log syntax
+                result << "\n" << fileName << " (" << lineNumber << "): " << curLine.substr(curLine.find(":")+1);
+            }
+        }
     }
 
     return result.str();
