@@ -32,7 +32,7 @@
 
 #extension GL_EXT_gpu_shader4: enable
 #extension GL_EXT_geometry_shader4: enable
-#extension GL_EXT_geometry_shader4: enable
+#extension GL_ARB_geometry_shader4: enable
 
 #include "include/inc_sampler3d.frag"
 
@@ -58,7 +58,7 @@ void main() {
     texCoord_.w = 1.f;
     gl_Layer = instanceID_[0];
 
-    for (i = 0; i<gl_VerticesIn; ++i) {
+    for (i = 0; i<gl_in.length(); ++i) {
         gl_Position = gl_PositionIn[i];
         texCoord_.xy = texCoord2D_[i];
         permutedPosInv_ = permMatInv_ * texCoord_;
