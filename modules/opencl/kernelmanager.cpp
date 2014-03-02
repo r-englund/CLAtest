@@ -149,17 +149,16 @@ void KernelManager::fileChanged(std::string fileName) {
                     for (size_t j = 0; j < index; ++j, ++oldKernelIt) {};
 
                     *(oldKernelIt->second) = *newKernelIt;
-
-                    //(*programKernels)[index] = *newKernelIt;
+                    // Notify that kernel has been recompiled
+                    std::pair<KernelOwnerMap::iterator, KernelOwnerMap::iterator> kernelOwnerRange = kernelOwners_.equal_range(oldKernelIt->second);
+                    for (KernelOwnerMap::iterator kernelOwnerIt = kernelOwnerRange.first; kernelOwnerIt != kernelOwnerRange.second; ++kernelOwnerIt) {
+                        kernelOwnerIt->second->onKernelCompiled(&(*newKernelIt));
+                    }
                 } else {
+                    // New kernel, no need to notify KernelOwner since there cannot be any
                     kernels_.insert(std::pair<cl::Program*, cl::Kernel*>(program, new cl::Kernel(*newKernelIt)));
-                    //programKernels->push_back(*newKernelIt);
                 }
-                // Notify that kernel has been recompiled
-                std::pair<KernelOwnerMap::iterator, KernelOwnerMap::iterator> kernelOwnerRange = kernelOwners_.equal_range(&(*newKernelIt));
-                for (KernelOwnerMap::iterator kernelOwnerIt = kernelOwnerRange.first; kernelOwnerIt != kernelOwnerRange.second; ++kernelOwnerIt) {
-                    kernelOwnerIt->second->onKernelCompiled(&(*newKernelIt));
-                }
+
             }
 
             InviwoApplication::getRef().playSound(InviwoApplication::IVW_OK);
