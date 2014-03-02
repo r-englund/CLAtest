@@ -40,6 +40,7 @@
 #include <inviwo/core/util/fileobserver.h>
 #include <inviwo/core/util/singleton.h>
 #include <modules/opencl/inviwoopencl.h>
+#include <modules/opencl/kernelowner.h>
 #include <map>
 
 namespace inviwo {
@@ -59,8 +60,8 @@ public:
         std::string defines;
     };
     typedef std::multimap<std::string, ProgramIdentifier> ProgramMap; ///< File name and unique identifier for program
-    typedef std::multimap<cl::Program*, cl::Kernel*> KernelMap;
-    //typedef std::map<cl::Program*, std::vector<cl::Kernel>> KernelMap;
+    typedef std::multimap<cl::Program*, cl::Kernel*> KernelMap; ///< All kernels belonging to a program
+    typedef std::multimap<cl::Kernel*, KernelOwner*> KernelOwnerMap; ///< Owners of the kernels, enables invalidation of owner when kernel changed
 
     KernelManager();
     virtual ~KernelManager();
@@ -82,17 +83,19 @@ public:
      * Makes sure that it is up to date when program is rebuilt.
      *
      * @see cl::Program, cl::Kernel
-     * @param program (cl::Program *)
-     * @param kernelName (const std::string &)
-     * @return (cl::Kernel*) Pointer to cl::Kernel. KernelManager manages memory of Kernel, do not delete it.
+     * @param program The program containing the Kernel
+     * @param kernelName Name of kernel
+     * @return (cl::Kernel*) Pointer to cl::Kernel, NULL if not found. KernelManager manages memory of Kernel, do not delete it.
      */
-    cl::Kernel* getKernel(cl::Program* program, const std::string& kernelName);
+    cl::Kernel* getKernel(cl::Program* program, const std::string& kernelName, KernelOwner* owner);
+
+    void stopObservingKernels(KernelOwner* owner);
 
     /**
      * Reloads programs from file and notifies processors.
      *
      */
-    virtual void fileChanged(std::string fileName);;
+    virtual void fileChanged(std::string fileName);
 
     /**
      * Remove all kernels and stop observing the files.
@@ -103,6 +106,7 @@ public:
 private:
     ProgramMap programs_;
     KernelMap kernels_;
+    KernelOwnerMap kernelOwners_;
 };
 
 } // namespace

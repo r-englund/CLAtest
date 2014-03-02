@@ -1,4 +1,4 @@
-project(glew)
+project(GLEW)
 
 set(GLEW_MAJOR_VERSION 1)
 set(GLEW_MINOR_VERSION 10)
@@ -47,11 +47,11 @@ source_group("CMake Files" FILES ${CMAKE_CURRENT_SOURCE_DIR}/CMakeLists.txt)
 
 #--------------------------------------------------------------------
 # Create a target for the library
-add_library(glew ${SOURCE_FILES} ${HEADER_FILES})
+add_library(GLEW ${SOURCE_FILES} ${HEADER_FILES})
 
 # InViWo Macros
-ivw_vs_folder(glew ext)
+ivw_vs_folder(GLEW ext)
 
-target_link_libraries(glew
+target_link_libraries(GLEW
     ${OPENGL_LIBRARIES}
 )

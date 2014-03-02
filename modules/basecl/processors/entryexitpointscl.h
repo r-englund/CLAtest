@@ -42,10 +42,11 @@
 #include <inviwo/core/ports/volumeport.h>
 #include <inviwo/core/common/inviwoapplication.h>
 #include <modules/opencl/inviwoopencl.h>
+#include <modules/opencl/kernelowner.h>
 
 namespace inviwo {
 
-class IVW_MODULE_BASECL_API EntryExitPointsCL : public Processor {
+class IVW_MODULE_BASECL_API EntryExitPointsCL : public Processor, public ProcessorKernelOwner {
 public:
     EntryExitPointsCL();
     virtual ~EntryExitPointsCL();

@@ -34,7 +34,7 @@
 #include <inviwo/core/common/inviwoapplication.h>
 #include <inviwo/core/util/vectoroperations.h>
 #include <modules/opengl/openglmodule.h>
-#include <modules/opengl/processorgl.h>
+#include <modules/opencl/kernelowner.h>
 
 namespace inviwo {
 
@@ -82,14 +82,17 @@ cl::Program* KernelManager::buildProgram(const std::string& fileName, const std:
     return program;
 }
 
-cl::Kernel* KernelManager::getKernel(cl::Program* program, const std::string& kernelName) {
-    std::pair <KernelMap::iterator, KernelMap::iterator> kernelRange = kernels_.equal_range(program);
-
+cl::Kernel* KernelManager::getKernel(cl::Program* program, const std::string& kernelName, KernelOwner* owner) {
+    std::pair<KernelMap::iterator, KernelMap::iterator> kernelRange = kernels_.equal_range(program);
+    
     for (KernelMap::iterator kernelIt = kernelRange.first; kernelIt != kernelRange.second; ++kernelIt) {
         std::string thisKernelName;
         kernelIt->second->getInfo(CL_KERNEL_FUNCTION_NAME, &thisKernelName);
 
         if (thisKernelName == kernelName) {
+            // Add KernelOwner and Kernel pair to map if owner is not NULL
+            if (owner != NULL)
+                kernelOwners_.insert(std::pair<cl::Kernel*, KernelOwner*>(kernelIt->second, owner));
             return kernelIt->second;
         }
     }
@@ -152,14 +155,29 @@ void KernelManager::fileChanged(std::string fileName) {
                     kernels_.insert(std::pair<cl::Program*, cl::Kernel*>(program, new cl::Kernel(*newKernelIt)));
                     //programKernels->push_back(*newKernelIt);
                 }
+                // Notify that kernel has been recompiled
+                std::pair<KernelOwnerMap::iterator, KernelOwnerMap::iterator> kernelOwnerRange = kernelOwners_.equal_range(&(*newKernelIt));
+                for (KernelOwnerMap::iterator kernelOwnerIt = kernelOwnerRange.first; kernelOwnerIt != kernelOwnerRange.second; ++kernelOwnerIt) {
+                    kernelOwnerIt->second->onKernelCompiled(&(*newKernelIt));
+                }
             }
 
             InviwoApplication::getRef().playSound(InviwoApplication::IVW_OK);
+
             std::vector<Processor*> processors = InviwoApplication::getRef().getProcessorNetwork()->getProcessors();
 
-            for (size_t i=0; i<processors.size(); i++) {
-                processors[i]->invalidate(PropertyOwner::INVALID_RESOURCES);
-            }
+            //for (size_t i=0; i<processors.size(); i++) {
+            //    KernelOwner* processor = dynamic_cast<KernelOwner*>(processors[i]);
+            //    if (processor) {
+            //        // See if this processor has any of the kernels
+            //        for (std::vector<cl::Kernel>::iterator newKernelIt = newKernels.begin(); newKernelIt != newKernels.end(); ++newKernelIt) {
+            //            if (std::find(processor->getKernels().begin(), processor->getKernels().end(), &(*newKernelIt)) != processor->getKernels().end()) {
+            //                processor->onKernelCompiled(&(*newKernelIt));
+            //            }
+            //        }
+            //    }
+            //    //processors[i]->invalidate(PropertyOwner::INVALID_RESOURCES);
+            //}
         } catch (cl::Error& err) {
             LogError(fileName << " Failed to create kernels, error:" << err.what() << "(" << err.err() << "), " << errorCodeToString(
                          err.err()) << std::endl);
@@ -181,6 +199,19 @@ void KernelManager::clear() {
     for (ProgramMap::iterator programIt = programs_.begin(); programIt != programs_.end(); ++programIt) {
         delete programIt->second.program;
         programIt->second.program = NULL;
+    }
+    kernelOwners_.clear();
+}
+
+void KernelManager::stopObservingKernels( KernelOwner* owner ) {
+    std::vector<KernelOwnerMap::iterator> toBeErased;
+    for (KernelOwnerMap::iterator kernelOwnerIt = kernelOwners_.begin(); kernelOwnerIt != kernelOwners_.end(); ++kernelOwnerIt) {
+        if (kernelOwnerIt->second == owner) {
+            toBeErased.push_back(kernelOwnerIt);
+        }
+    }
+    for (std::vector<KernelOwnerMap::iterator>::iterator it=toBeErased.begin(); it!=toBeErased.end(); ++it) {
+        kernelOwners_.erase(*it);
     }
 }
 

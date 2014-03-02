@@ -106,7 +106,7 @@ void BufferCLGL::setSize(size_t size) {
     BufferRepresentation::setSize(size);
 }
 
-void BufferCLGL::notifyBeforeBufferInitialization() {
+void BufferCLGL::onBeforeBufferInitialization() {
     CLBufferSharingMap::iterator it = OpenCLBufferSharing::clBufferSharingMap_.find(bufferObject_);
 
     if (it != OpenCLBufferSharing::clBufferSharingMap_.end()) {
@@ -119,7 +119,7 @@ void BufferCLGL::notifyBeforeBufferInitialization() {
     clBuffer_ = 0;
 }
 
-void BufferCLGL::notifyAfterBufferInitialization() {
+void BufferCLGL::onAfterBufferInitialization() {
     CLBufferSharingMap::iterator it = OpenCLBufferSharing::clBufferSharingMap_.find(bufferObject_);
 
     if (it != OpenCLBufferSharing::clBufferSharingMap_.end()) {

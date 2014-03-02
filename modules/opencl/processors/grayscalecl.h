@@ -41,10 +41,12 @@
 
 
 #include <modules/opencl/inviwoopencl.h>
+#include <modules/opencl/kernelowner.h>
+
 
 namespace inviwo {
 
-class IVW_MODULE_OPENCL_API GrayscaleCL : public Processor {
+class IVW_MODULE_OPENCL_API GrayscaleCL : public Processor, public ProcessorKernelOwner {
 public:
     GrayscaleCL();
     ~GrayscaleCL();

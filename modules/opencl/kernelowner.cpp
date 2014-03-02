@@ -30,44 +30,35 @@
  *
  *********************************************************************************/
 
-#ifndef IVW_BUFFERGL_OBJECT_OBSERVER_H
-#define IVW_BUFFERGL_OBJECT_OBSERVER_H
-
-#include <modules/opengl/openglmoduledefine.h>
-#include <inviwo/core/common/inviwo.h>
-#include <inviwo/core/util/observer.h>
-
-
+#include <modules/opencl/kernelowner.h>
+#include <modules/opencl/kernelmanager.h>
 namespace inviwo {
 
-/** \class BufferObjectObserver
- *
- * This observer is notified before and after
- * a buffer is initialized (glBufferData is called).
- * This enables shared objects to release and rebind the buffer.
- *
- *
- * @see Observable
- * @see BufferObject
- */
-class IVW_MODULE_OPENGL_API BufferObjectObserver: public Observer {
-public:
-    BufferObjectObserver(): Observer() {};
 
-    /**
-    * This method will be called before the buffer is initialized.
-    * Override it to add behavior.
-    */
-    virtual void onBeforeBufferInitialization() {};
 
-    /**
-    * This method will be called after the buffer has been initialized.
-    * Override it to add behavior.
-    */
-    virtual void onAfterBufferInitialization() {};
-};
+bool KernelOwner::addKernel( const std::string& filePath, const std::string& kernelName, const std::string& defines /*= ""*/ ) {
+    cl::Program* program = KernelManager::getRef().buildProgram(filePath, defines);
 
+    cl::Kernel* kernel = KernelManager::getRef().getKernel(program, kernelName, this);
+    if (kernel) {
+        kernels_.push_back(kernel);
+        return true;
+    }
+    return false;
+}
+
+KernelOwner::~KernelOwner() {
+    // Make sure that we are not notifed after destruction
+    KernelManager::getRef().stopObservingKernels(this);
+}
+
+
+ProcessorKernelOwner::ProcessorKernelOwner( Processor* processor ) : KernelOwner(), processor_(processor) {
+
+}
+
+void ProcessorKernelOwner::onKernelCompiled( const cl::Kernel* kernel ) {
+    processor_->invalidate(PropertyOwner::INVALID_RESOURCES);
+}
 
 } // namespace
-
-#endif // IVW_BUFFERGL_OBJECT_OBSERVER_H

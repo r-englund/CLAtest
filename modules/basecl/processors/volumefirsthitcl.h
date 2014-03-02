@@ -41,10 +41,11 @@
 #include <inviwo/core/properties/transferfunctionproperty.h>
 
 #include <modules/opencl/inviwoopencl.h>
+#include <modules/opencl/kernelowner.h>
 
 namespace inviwo {
 
-class IVW_MODULE_BASECL_API VolumeFirstHitCL : public Processor {
+class IVW_MODULE_BASECL_API VolumeFirstHitCL : public Processor, public ProcessorKernelOwner {
 public:
     VolumeFirstHitCL();
     ~VolumeFirstHitCL();
