@@ -88,8 +88,8 @@ public:
     std::string getCurrentGlobalGLSLHeader();
     std::string getCurrentGlobalGLSLFragmentDefines();
 
-    int getCurrentAvailableTextureMem() throw (Exception);
-    int getTotalAvailableTextureMem() throw (Exception);
+    glm::u64 getCurrentAvailableTextureMem() throw (Exception);
+    glm::u64 getTotalAvailableTextureMem() throw (Exception);
 
     int getMaxProgramLoopCount();
     int getMaxTexSize();
