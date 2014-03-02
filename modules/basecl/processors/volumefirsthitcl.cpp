@@ -37,7 +37,6 @@
 #include <modules/opencl/image/imageclgl.h>
 #include <modules/opencl/volume/volumecl.h>
 #include <modules/opencl/volume/volumeclgl.h>
-#include <modules/opencl/kernelmanager.h>
 
 namespace inviwo {
 
@@ -46,7 +45,7 @@ ProcessorCategory(VolumeFirstHitCL, "Volume Rendering");
 ProcessorCodeState(VolumeFirstHitCL, CODE_STATE_EXPERIMENTAL);
 
 VolumeFirstHitCL::VolumeFirstHitCL()
-    : Processor()
+    : Processor(), ProcessorKernelOwner(this)
     , volumePort_("volume")
     , entryPort_("entry-points")
     , exitPort_("exit-points")
@@ -71,12 +70,9 @@ VolumeFirstHitCL::~VolumeFirstHitCL() {}
 
 void VolumeFirstHitCL::initialize() {
     Processor::initialize();
-
-    try {
-        cl::Program* program = KernelManager::getRef().buildProgram(InviwoApplication::getPtr()->getPath(InviwoApplication::PATH_MODULES)
-                               +"basecl/cl/volumefirsthit.cl");
-        kernel_ = KernelManager::getRef().getKernel(program, "volumeFirstHit");
-    } catch (cl::Error&) {
+    if (addKernel(InviwoApplication::getPtr()->getPath(InviwoApplication::PATH_MODULES)
+        + "basecl/cl/volumefirsthit.cl", "volumeFirstHit")) {
+            kernel_ = kernels_.back();
     }
 }
 

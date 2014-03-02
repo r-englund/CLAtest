@@ -39,12 +39,12 @@ PFNCLCREATEEVENTFROMGLSYNCKHR clCreateEventFromGLsync = (PFNCLCREATEEVENTFROMGLS
 
 namespace inviwo {
 
-SyncCLGL::SyncCLGL(): releaseEvent_(NULL), syncEvents_(NULL) {
+SyncCLGL::SyncCLGL(const cl::Context& context, const cl::CommandQueue& queue): context_(context), queue_(queue), releaseEvent_(NULL), syncEvents_(NULL) {
 #if defined(CL_VERSION_1_1) && defined(GL_ARB_cl_event) && defined(CL_COMMAND_GL_FENCE_SYNC_OBJECT_KHR)
-    // FIXME: Get unresolved symbol from clCreateEventFromGLsyncKHR, why? This has been reported as a bug to NVIDIA.
+    // FIXME: We can only do this if it is supported by the device, otherwise we get unresolved symbol from clCreateEventFromGLsyncKHR
     //glFenceSync_ = glFenceSync(GL_SYNC_GPU_COMMANDS_COMPLETE, 0);
     //cl_int err;
-    //glSync_ = clCreateEventFromGLsyncKHR(OpenCL::instance()->getContext()(), glFenceSync_, &err);
+    //glSync_ = clCreateEventFromGLsyncKHR(context(), glFenceSync_, &err);
     //syncEvents_ = new std::vector<cl::Event>(1, glSync_);
     //if(err != CL_SUCCESS) {
     //    LogError("Failed to create sync event");
@@ -58,19 +58,45 @@ SyncCLGL::SyncCLGL(): releaseEvent_(NULL), syncEvents_(NULL) {
 
 SyncCLGL::~SyncCLGL() {
     try {
+        releaseAllGLObjects();
 #if defined(CL_VERSION_1_1) && defined(GL_ARB_cl_event) && defined(CL_COMMAND_GL_FENCE_SYNC_OBJECT_KHR)
-        //GLsync clSync = glCreateSyncFromCLeventARB(OpenCL::instance()->getContext()(), (*releaseEvent_)(), 0);
+        //GLsync clSync = glCreateSyncFromCLeventARB(context_(), (*releaseEvent_)(), 0);
         //glWaitSync(clSync, 0, GL_TIMEOUT_IGNORED);
         //glDeleteSync(glFenceSync_);
         //delete syncEvents_;
         //delete releaseEvent_;
-        OpenCL::instance()->getQueue().finish();
+        queue_.finish();
 #else
-        OpenCL::instance()->getQueue().finish();
+        queue_.finish();
 #endif
     } catch (cl::Error& err) {
         LogError(getCLErrorString(err));
     }
+}
+
+void SyncCLGL::addToAquireGLObjectList( const BufferCLGL* object ) {
+    syncedObjects_.push_back(object->get());
+}
+
+void SyncCLGL::addToAquireGLObjectList( const LayerCLGL* object ) {
+    syncedObjects_.push_back(object->get());
+}
+
+void SyncCLGL::addToAquireGLObjectList( const ImageCLGL* object ) {
+    addToAquireGLObjectList(object->getLayerCL());
+}
+
+void SyncCLGL::addToAquireGLObjectList( const VolumeCLGL* object ) {
+    syncedObjects_.push_back(object->get());
+}
+
+void SyncCLGL::aquireAllObjects() const {
+    queue_.enqueueAcquireGLObjects(&syncedObjects_, syncEvents_);
+}
+
+void SyncCLGL::releaseAllGLObjects() const {
+    if (!syncedObjects_.empty())
+        queue_.enqueueReleaseGLObjects(&syncedObjects_, NULL, releaseEvent_);
 }
 
 } // end namespace

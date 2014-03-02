@@ -30,46 +30,63 @@
  *
  *********************************************************************************/
 
-#ifndef IVW_VOLUME_RAYCASTER_CL_H
-#define IVW_VOLUME_RAYCASTER_CL_H
+#ifndef IVW_PROCESSOR_CL_H
+#define IVW_PROCESSOR_CL_H
 
 #include <modules/opencl/openclmoduledefine.h>
-#include <inviwo/core/common/inviwo.h>
-#include <inviwo/core/ports/imageport.h>
-#include <inviwo/core/ports/volumeport.h>
-#include <inviwo/core/processors/processor.h>
-#include <inviwo/core/properties/transferfunctionproperty.h>
-
 #include <modules/opencl/inviwoopencl.h>
-#include <modules/opencl/kernelowner.h>
 
 namespace inviwo {
-
-class IVW_MODULE_OPENCL_API VolumeRaycasterCL : public Processor, public ProcessorKernelOwner {
+/** \class KernelOwner
+ * Interface for processors that use OpenCL features.
+ * Inherit from this class to enable invalidation of processor
+ * when a kernel has been compiled.
+ * @see ProcessorKernelOwner
+ */
+class IVW_MODULE_OPENCL_API KernelOwner {
 public:
-    VolumeRaycasterCL();
-    ~VolumeRaycasterCL();
+    KernelOwner() {};
+    virtual ~KernelOwner();
 
-    InviwoProcessorInfo();
+    /**
+     * Override this method to perform operations after a successful kernel 
+     * compilation. 
+     * @param kernel The kernel that was compiled
+     */
+    virtual void onKernelCompiled(const cl::Kernel* kernel) = 0;
 
-    void initialize();
-    void deinitialize();
+    /**
+     * Builds and adds the kernel if successfully built.
+     * @param filePath Path to file containing kernel
+     * @param kernelName Name of kernel
+     * @param defines Defines to be set when building kernel
+     * @return bool True if successfully built, otherwise false
+     */
+    bool addKernel(const std::string& filePath, const std::string& kernelName, const std::string& defines = "");
+
+    const std::vector<cl::Kernel*>& getKernels() const { return kernels_; }
 
 protected:
-    virtual void process();
+    std::vector<cl::Kernel*> kernels_;
+};
+/** \class ProcessorKernelOwner
+* Convenience class for processors. Will call invalidate with INVALID_RESOURCES
+* when a kernel has been recompiled
+*/
+class IVW_MODULE_OPENCL_API ProcessorKernelOwner: public KernelOwner {
+public:
+    ProcessorKernelOwner(Processor* processor);
+    virtual ~ProcessorKernelOwner() {};
 
-private:
-    VolumeInport volumePort_;
-    ImageInport entryPort_;
-    ImageInport exitPort_;
-    ImageOutport outport_;
-
-    FloatVec3Property lightSourcePos_;
-    FloatProperty samplingRate_;
-    TransferFunctionProperty transferFunction_;
-    IntVec2Property workGroupSize_;
-
-    cl::Kernel* kernel_;
+    /**
+     * Calls invalidate on Processor specified in the constructor.
+     * Override this method to perform operations after a successful kernel 
+     * compilation. 
+     * @param kernel The kernel that was compiled
+     */
+    virtual void onKernelCompiled(const cl::Kernel* kernel);
+protected:
+    Processor* processor_;
 };
 
 } // namespace

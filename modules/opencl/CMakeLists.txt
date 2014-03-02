@@ -30,6 +30,7 @@ set(HEADER_FILES
     ${IVW_MODULE_DIR}/opencl/glmcl.h
 	${IVW_MODULE_DIR}/opencl/inviwoopencl.h
 	${IVW_MODULE_DIR}/opencl/kernelmanager.h
+	${IVW_MODULE_DIR}/opencl/kernelowner.h
 	${IVW_MODULE_DIR}/opencl/openclcapabilities.h
     ${IVW_MODULE_DIR}/opencl/openclmodule.h
     ${IVW_MODULE_DIR}/opencl/openclsharing.h
@@ -66,6 +67,7 @@ set(SOURCE_FILES
     ${IVW_MODULE_DIR}/opencl/glmcl.cpp
     ${IVW_MODULE_DIR}/opencl/inviwoopencl.cpp
 	${IVW_MODULE_DIR}/opencl/kernelmanager.cpp
+	${IVW_MODULE_DIR}/opencl/kernelowner.cpp
     ${IVW_MODULE_DIR}/opencl/openclmodule.cpp
     ${IVW_MODULE_DIR}/opencl/openclcapabilities.cpp
     ${IVW_MODULE_DIR}/opencl/openclsharing.cpp

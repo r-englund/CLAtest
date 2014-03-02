@@ -92,13 +92,21 @@ GLuint BufferObject::getId() const {
 }
 
 void BufferObject::enable() const {
-    glEnableClientState(state_);
+    if (state_ == GL_VERTEX_ARRAY) {
+         glEnableVertexAttribArray(0);
+    } else {
+        glEnableClientState(state_);
+    }
     bind();
     specifyLocation();
 }
 
 void BufferObject::disable() const {
-    glDisableClientState(state_);
+    if (state_ == GL_VERTEX_ARRAY) {
+        glDisableVertexAttribArray(0);
+    } else {
+        glDisableClientState(state_);
+    }
 }
 
 void BufferObject::bind() const {
@@ -147,7 +155,7 @@ void BufferObject::initialize(const void* data, GLsizeiptr sizeInBytes) {
 
     for (ObserverSet::iterator it = observers_->begin(); it != endIt; ++it) {
         // static_cast can be used since only template class objects can be added
-        static_cast<BufferObjectObserver*>(*it)->notifyBeforeBufferInitialization();
+        static_cast<BufferObjectObserver*>(*it)->onBeforeBufferInitialization();
     }
 
     bind();
@@ -157,7 +165,7 @@ void BufferObject::initialize(const void* data, GLsizeiptr sizeInBytes) {
 
     for (ObserverSet::iterator it = observers_->begin(); it != endIt; ++it) {
         // static_cast can be used since only template class objects can be added
-        static_cast<BufferObjectObserver*>(*it)->notifyAfterBufferInitialization();
+        static_cast<BufferObjectObserver*>(*it)->onAfterBufferInitialization();
     }
 }
 
@@ -195,7 +203,9 @@ void BufferObject::texCoordPointer() const {
 }
 
 void BufferObject::vertexPointer() const {
-    glVertexPointer(glFormat_.channels, glFormat_.type, 0, 0);
+    // FIXME: Use glVertexAttribPointer to support single channel data and more data formats
+    glVertexAttribPointer(0, glFormat_.channels, glFormat_.type, GL_FALSE, 0, 0);
+    // glVertexPointer(std::max(2u, glFormat_.channels), glFormat_.type, 0, 0);
 }
 
 void BufferObject::emptyFunc() const {}

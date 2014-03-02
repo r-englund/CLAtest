@@ -46,7 +46,7 @@ ProcessorCategory(VolumeRaycasterCL, "Volume Rendering");
 ProcessorCodeState(VolumeRaycasterCL, CODE_STATE_EXPERIMENTAL);
 
 VolumeRaycasterCL::VolumeRaycasterCL()
-    : Processor()
+    : Processor(), ProcessorKernelOwner(this)
     , volumePort_("volume")
     , entryPort_("entry-points")
     , exitPort_("exit-points")
@@ -71,14 +71,9 @@ VolumeRaycasterCL::~VolumeRaycasterCL() {}
 
 void VolumeRaycasterCL::initialize() {
     Processor::initialize();
-
-    try {
-        cl::Program* program = KernelManager::getRef().buildProgram(InviwoApplication::getPtr()->getPath(InviwoApplication::PATH_MODULES)
-                               +"opencl/cl/volumeraycaster.cl");
-        kernel_ = KernelManager::getRef().getKernel(program, "raycaster");
-        //cl::Program program = OpenCL::buildProgram(InviwoApplication::getPtr()->getPath(InviwoApplication::PATH_MODULES)+"opencl/cl/volumeraycaster.cl");
-        //kernel_ = new cl::Kernel(program, "raycaster");
-    } catch (cl::Error&) {
+    if (addKernel(InviwoApplication::getPtr()->getPath(InviwoApplication::PATH_MODULES)
+                 + "opencl/cl/volumeraycaster.cl", "raycaster")) {
+            kernel_ = kernels_.back();
     }
 }
 

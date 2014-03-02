@@ -43,10 +43,10 @@ ProcessorCategory(GrayscaleCL, "Image Operation");
 ProcessorCodeState(GrayscaleCL, CODE_STATE_EXPERIMENTAL);
 
 GrayscaleCL::GrayscaleCL()
-    : Processor(),
-      inputPort_("color image"),
-      outport_("outport"),
-      kernel_(NULL)
+    : Processor(), ProcessorKernelOwner(this)
+    , inputPort_("color image")
+    , outport_("outport")
+    , kernel_(NULL)
 {
     addPort(inputPort_, "ImagePortGroup1");
     addPort(outport_, "ImagePortGroup1");
@@ -56,12 +56,9 @@ GrayscaleCL::~GrayscaleCL() {}
 
 void GrayscaleCL::initialize() {
     Processor::initialize();
-
-    try {
-        cl::Program* program = KernelManager::getRef().buildProgram(InviwoApplication::getPtr()->getPath(InviwoApplication::PATH_MODULES)
-                               +"opencl/cl/grayscale.cl");
-        kernel_ = KernelManager::getRef().getKernel(program, "grayscaleKernel");
-    } catch (cl::Error&) {
+    if (addKernel(InviwoApplication::getPtr()->getPath(InviwoApplication::PATH_MODULES)
+        +"opencl/cl/grayscale.cl", "grayscaleKernel")) {
+            kernel_ = kernels_.back();
     }
 }
 

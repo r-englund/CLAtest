@@ -73,8 +73,15 @@ public:
         OpenCL::instance()->getQueue().enqueueReleaseGLObjects(&syncBuffers, syncEvents, event);
     }
 
-    void notifyAfterBufferInitialization();
-    void notifyBeforeBufferInitialization();
+    /**
+     * Release shared object before it is initialized.
+     */
+    void onBeforeBufferInitialization();
+    /**
+     * Reattach shared object after it has been initialized.
+     */
+    void onAfterBufferInitialization();
+
 protected:
     BufferObject* bufferObject_;
     cl_mem_flags readWriteFlag_;

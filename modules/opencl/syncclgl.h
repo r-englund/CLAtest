@@ -35,6 +35,10 @@
 
 #include <modules/opencl/openclmoduledefine.h>
 #include <modules/opencl/inviwoopencl.h>
+#include <modules/opencl/buffer/bufferclgl.h>
+#include <modules/opencl/image/imageclgl.h>
+#include <modules/opencl/image/layerclgl.h>
+#include <modules/opencl/volume/volumeclgl.h>
 
 #ifdef CL_VERSION_1_1
 #ifdef __APPLE__
@@ -48,20 +52,66 @@ namespace inviwo {
 
 class IVW_MODULE_OPENCL_API SyncCLGL {
 public:
-    SyncCLGL();
+    SyncCLGL(const cl::Context& context= OpenCL::instance()->getContext(), const cl::CommandQueue& queue = OpenCL::instance()->getQueue());
     ~SyncCLGL();
+
+    /**
+     * Added object will be enquired when calling aquireAllObject.
+     * The added object will be released upon destruction of this SyncCLGL object.
+     * @note aquireAllObjects need to be called to actually enquire the added object.
+     * @param const BufferCLGL * object
+     */
+    void addToAquireGLObjectList(const BufferCLGL* object);
+    /**
+     * Added object will be enquired when calling aquireAllObject.
+     * The added object will be released upon destruction of this SyncCLGL object.
+     * @note aquireAllObjects need to be called to actually enquire the added object.
+     * @param const LayerCLGL * object
+     */
+    void addToAquireGLObjectList(const LayerCLGL* object);
+    /**
+     * Currently only adds the color layer to the list of objects that
+     * will be enquired when calling aquireAllObject.
+     * The added object will be released upon destruction of this SyncCLGL object.
+     * @note aquireAllObjects need to be called to actually enquire the added object.
+     * @param const ImageCLGL * object
+     */
+    void addToAquireGLObjectList(const ImageCLGL* object);
+    /**
+     * Added object will be enquired when calling aquireAllObject.
+     * The added object will be released upon destruction of this SyncCLGL object.
+     * @note aquireAllObjects need to be called to actually enquire the added object.
+     * @param const VolumeCLGL * object
+     */
+    void addToAquireGLObjectList(const VolumeCLGL* object);
+
+    /**
+     * Calls enqueueAcquireGLObjects on all previously added objects
+     *
+     * @note Do not call enqueueReleaseGLObjects on an added object as this
+     * will be done upon destruction of this object.
+     */
+    void aquireAllObjects() const;
 
     std::vector<cl::Event>* getGLSyncEvent() { return syncEvents_; }
 
     cl::Event* getLastReleaseGLEvent() { return releaseEvent_; }
 
 protected:
+    /**
+     * Release all added objects.
+     */
+    void releaseAllGLObjects() const;
+
+    std::vector<cl::Memory> syncedObjects_;
 #if defined(CL_VERSION_1_1)
     GLsync glFenceSync_;
     cl::Event glSync_;
 #endif
     cl::Event* releaseEvent_;
     std::vector<cl::Event>* syncEvents_;
+    const cl::Context& context_;
+    const cl::CommandQueue& queue_;
 };
 
 }

@@ -34,7 +34,6 @@
 #include <inviwo/core/datastructures/geometry/mesh.h>
 #include <modules/opencl/image/imagecl.h>
 #include <modules/opencl/image/imageclgl.h>
-#include <modules/opencl/kernelmanager.h>
 #include <modules/opencl/syncclgl.h>
 
 namespace inviwo {
@@ -44,7 +43,7 @@ ProcessorCategory(EntryExitPointsCL, "Geometry Rendering");
 ProcessorCodeState(EntryExitPointsCL, CODE_STATE_STABLE);
 
 EntryExitPointsCL::EntryExitPointsCL()
-    : Processor()
+    : Processor(), ProcessorKernelOwner(this)
     , geometryPort_("geometry")
     , entryPort_("entry-points", COLOR_DEPTH, DataVec4FLOAT32::get()) // Using 8-bits will create artifacts when entering the volume
     , exitPort_("exit-points", COLOR_DEPTH, DataVec4FLOAT32::get())
@@ -70,12 +69,8 @@ EntryExitPointsCL::~EntryExitPointsCL() {}
 
 void EntryExitPointsCL::initialize() {
     Processor::initialize();
-
-    try {
-        cl::Program* program = KernelManager::getRef().buildProgram(InviwoApplication::getPtr()->getPath(InviwoApplication::PATH_MODULES)
-                               +"basecl/cl/entryexitpoints.cl");
-        entryExitKernel_ = KernelManager::getRef().getKernel(program, "entryexitpoints");
-    } catch (cl::Error&) {
+    if (addKernel(InviwoApplication::getPtr()->getPath(InviwoApplication::PATH_MODULES)+"basecl/cl/entryexitpoints.cl", "entryexitpoints")) {
+        entryExitKernel_ = kernels_.back();
     }
 }
 
