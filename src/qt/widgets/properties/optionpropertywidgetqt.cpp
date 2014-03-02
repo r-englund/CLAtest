@@ -86,7 +86,7 @@ void OptionPropertyWidgetQt::updateFromProperty() {
         QString option = QString::fromStdString(names[i]);
         comboBox_->addItem(option);
     }
-    comboBox_->setCurrentIndex(property_->getSelectedIndex());
+    comboBox_->setCurrentIndex(static_cast<int>(property_->getSelectedIndex()));
     comboBox_->blockSignals(false);
 }
 
