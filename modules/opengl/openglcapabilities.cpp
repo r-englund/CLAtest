@@ -121,9 +121,9 @@ void OpenGLCapabilities::printInfo() {
 
     if (isTexturesSupported()) {
         LogInfo("Max number of texture units: " << getNumTexUnits());
-        int totalMem = getTotalAvailableTextureMem();
+        glm::u64 totalMem = getTotalAvailableTextureMem();
         LogInfo("Total available texture memory: " << (totalMem>0 ? formatBytesToString(totalMem) : "UNKNOWN"));
-        int curMem = getCurrentAvailableTextureMem();
+        glm::u64 curMem = getCurrentAvailableTextureMem();
         LogInfo("Current available texture memory: " << (curMem>0 ? formatBytesToString(curMem) : "UNKNOWN"));
     }
 }
@@ -212,24 +212,24 @@ std::string OpenGLCapabilities::getCurrentGlobalGLSLFragmentDefines() {
     return currentGlobalGLSLFragmentDefines_;
 }
 
-int OpenGLCapabilities::getCurrentAvailableTextureMem() throw (Exception) {
-    int currentAvailableTexMeminBytes = 0;
+glm::u64 OpenGLCapabilities::getCurrentAvailableTextureMem() throw (Exception) {
+    glm::u64 currentAvailableTexMeminBytes = 0;
 
     try {
-        GLint nCurAvailMemoryInKB = 0;
+        GLint nCurAvailMemoryInKB[4] = {0};
 
         if (glVendor_ == NVIDIA) {
 #ifdef GL_NVX_gpu_memory_info
-            glGetIntegerv(GL_GPU_MEMORY_INFO_CURRENT_AVAILABLE_VIDMEM_NVX, &nCurAvailMemoryInKB);
+            glGetIntegerv(GL_GPU_MEMORY_INFO_CURRENT_AVAILABLE_VIDMEM_NVX, nCurAvailMemoryInKB);
 #endif
         }
         else if (glVendor_ == AMD) {
 #ifdef GL_ATI_meminfo
-            glGetIntegerv(GL_TEXTURE_FREE_MEMORY_ATI, &nCurAvailMemoryInKB);
+            glGetIntegerv(GL_TEXTURE_FREE_MEMORY_ATI, nCurAvailMemoryInKB);
 #endif
         }
 
-        currentAvailableTexMeminBytes = KILOBYTES_TO_BYTES(static_cast<int>(nCurAvailMemoryInKB));
+        currentAvailableTexMeminBytes = KILOBYTES_TO_BYTES(static_cast<glm::u64>(nCurAvailMemoryInKB[0]));
     }
     catch (const Exception& e) {
         LogWarn("Failed to fetch current available texture memory: " << e.what());
@@ -238,19 +238,42 @@ int OpenGLCapabilities::getCurrentAvailableTextureMem() throw (Exception) {
     return currentAvailableTexMeminBytes;
 }
 
-int OpenGLCapabilities::getTotalAvailableTextureMem() throw (Exception) {
-    int totalAvailableTexMemInBytes = 0;
+glm::u64 OpenGLCapabilities::getTotalAvailableTextureMem() throw (Exception) {
+    glm::u64 totalAvailableTexMemInBytes = 0;
 
     try {
-        GLint nTotalAvailMemoryInKB = 0;
-
         if (glVendor_ == NVIDIA) {
 #ifdef GL_NVX_gpu_memory_info
-            glGetIntegerv(GL_GPU_MEMORY_INFO_TOTAL_AVAILABLE_MEMORY_NVX, &nTotalAvailMemoryInKB);
+            GLint nTotalAvailMemoryInKB[4] = {0};
+            glGetIntegerv(GL_GPU_MEMORY_INFO_TOTAL_AVAILABLE_MEMORY_NVX, nTotalAvailMemoryInKB);
+            totalAvailableTexMemInBytes = KILOBYTES_TO_BYTES(static_cast<glm::u64>(nTotalAvailMemoryInKB[0]));
 #endif
         }
-
-        totalAvailableTexMemInBytes = KILOBYTES_TO_BYTES(static_cast<int>(nTotalAvailMemoryInKB));
+        else if (glVendor_ == AMD) {
+#if defined(WGL_AMD_gpu_association)
+            UINT n = wglGetGPUIDsAMD(0, 0);
+            UINT *ids = new UINT[n];
+            size_t total_mem_mb = 0;
+            wglGetGPUIDsAMD(n, ids);
+            wglGetGPUInfoAMD(ids[0], 
+                WGL_GPU_RAM_AMD, 
+                GL_UNSIGNED_INT, 
+                sizeof(size_t),
+                &total_mem_mb);
+            totalAvailableTexMemInBytes = MEGABYTES_TO_BYTES(static_cast<glm::u64>(total_mem_mb));
+#elif defined(GLX_AMD_gpu_association)
+            UINT n = glXGetGPUIDsAMD(0, 0);
+            UINT *ids = new UINT[n];
+            size_t total_mem_mb = 0;
+            glXGetGPUIDsAMD(n, ids);
+            glXGetGPUInfoAMD(ids[0], 
+                GLX_GPU_RAM_AMD, 
+                GL_UNSIGNED_INT, 
+                sizeof(size_t),
+                &total_mem_mb);
+            totalAvailableTexMemInBytes = MEGABYTES_TO_BYTES(static_cast<glm::u64>(total_mem_mb));
+#endif
+        }
     }
     catch (const Exception& e) {
         LogWarn("Failed to fetch total available texture memory: " << e.what());
