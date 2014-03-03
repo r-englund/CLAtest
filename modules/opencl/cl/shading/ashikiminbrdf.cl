@@ -50,9 +50,10 @@ float AshikimBRDF(const float3 wo, const float3 wi, const float3 N, const float 
 
     float3 wh = wo+wi;
     //if ( all(wh < 1e-5f) ) 
+    //if ( dot(wh,wh) < 1e-3f ) 
     //    return (float)(0.f);
-
-    wh = fast_normalize(wh);
+    // Using fast_normalize creates errors on Intel devices
+    wh = normalize(wh);
 
     float NdotWh = absCosTheta(wh);
     // Fresnel term

@@ -72,6 +72,12 @@ void OpenCLSettings::changeDevice() {
     // Assuming that the number of devices did not change since initialize()
     // was called
     if (openCLDeviceProperty_.get() < static_cast<int>(devices.size())) {
+        if (!devices[openCLDeviceProperty_.get()].getInfo<CL_DEVICE_EXTENSIONS>().find("cl_khr_gl_sharing")) {
+            enableOpenGLSharing_.set(false);
+            enableOpenGLSharing_.setReadOnly(true);
+        } else {
+            enableOpenGLSharing_.setReadOnly(false);
+        }
         OpenCL::instance()->setDevice(devices[openCLDeviceProperty_.get()], enableOpenGLSharing_.get());
     }
 }
