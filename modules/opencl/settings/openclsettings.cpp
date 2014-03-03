@@ -49,11 +49,17 @@ OpenCLSettings::~OpenCLSettings() {
 
 void OpenCLSettings::initialize() {
     std::vector<cl::Device> devices = OpenCL::getAllDevices();
-
+    int defaultSelected = 0; 
+    cl::Device bestDevice; cl::Platform platform;
+    OpenCL::getBestGPUDeviceOnSystem(bestDevice, platform);
     for (size_t i = 0; i < devices.size(); ++i) {
         std::string name = devices[i].getInfo<CL_DEVICE_NAME>();
+        if (bestDevice.getInfo<CL_DEVICE_NAME>() == name) {
+            defaultSelected = static_cast<int>(i);
+        }        
         openCLDeviceProperty_.addOption(name, name, static_cast<int>(i));
     }
+    openCLDeviceProperty_.setSelectedIndex(defaultSelected);
     openCLDeviceProperty_.setCurrentStateAsDefault();
     addProperty(openCLDeviceProperty_);
     addProperty(enableOpenGLSharing_);
