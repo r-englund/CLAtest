@@ -209,8 +209,7 @@ void PropertyListWidget::setViewMode(PropertyVisibilityMode viewMode) {
     developerViewMode_ = (viewMode == DEVELOPMENT);
 
     for(std::map<std::string, CollapsibleGroupBoxWidgetQt*>::const_iterator it = propertyWidgetMap_.begin(); it != propertyWidgetMap_.end(); it++)
-        if(it->second->isVisible())
-            it->second->updateVisibility();
+       it->second->updateVisibility();
 }
 
 void PropertyListWidget::saveState() {

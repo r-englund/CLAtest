@@ -203,7 +203,7 @@ void CollapsibleGroupBoxWidgetQt::updateVisibility() {
         if(collapsiveWidget){
             if(appMode > collapsiveWidget->getVisibilityMode())
                 collapsiveWidget->setVisible(false);
-            else
+            else if(isVisible())
                 collapsiveWidget->setVisible(true);
             collapsiveWidget->updateVisibility();
         }
