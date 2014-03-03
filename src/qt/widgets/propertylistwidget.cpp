@@ -34,6 +34,7 @@
 #include <inviwo/core/properties/propertywidgetfactory.h>
 #include <inviwo/core/common/inviwoapplication.h>
 #include <inviwo/core/util/settings/systemsettings.h>
+#include <inviwo/qt/widgets/properties/collapsiblegroupboxwidgetqt.h>
 #include <QLabel>
 #include <QVBoxLayout>
 #include <QSignalMapper>
@@ -81,7 +82,7 @@ void PropertyListWidget::addProcessorProperties(Processor* processor) {
 }
 
 void PropertyListWidget::removeProcessorProperties(Processor* processor) {
-    std::map<std::string, QWidget*>::iterator it = propertyWidgetMap_.find(processor->getIdentifier());
+    std::map<std::string, CollapsibleGroupBoxWidgetQt*>::iterator it = propertyWidgetMap_.find(processor->getIdentifier());
 
     if (it != propertyWidgetMap_.end()) {
         it->second->setVisible(false);
@@ -90,12 +91,12 @@ void PropertyListWidget::removeProcessorProperties(Processor* processor) {
 }
 
 void PropertyListWidget::removeAndDeleteProcessorProperties(Processor* processor) {
-    std::map<std::string, QWidget*>::iterator it = propertyWidgetMap_.find(processor->getIdentifier());
+    std::map<std::string, CollapsibleGroupBoxWidgetQt*>::iterator it = propertyWidgetMap_.find(processor->getIdentifier());
 
     if (it != propertyWidgetMap_.end()) {
         it->second->setVisible(false);
         listWidgetLayout_->removeWidget(it->second);
-        CollapsibleGroupBoxWidgetQt* collapsiveGropWidget = static_cast<CollapsibleGroupBoxWidgetQt*>(it->second);
+        CollapsibleGroupBoxWidgetQt* collapsiveGropWidget = it->second;
         std::vector<PropertyWidgetQt*> propertyWidgets = collapsiveGropWidget->getPropertyWidgets();
         std::vector<Property*> properties = processor->getProperties();
 
@@ -121,10 +122,10 @@ void PropertyListWidget::removeAndDeleteProcessorProperties(Processor* processor
 
 void PropertyListWidget::changeName(std::string oldName, std::string newName) {
     // check if processor widget exists
-    std::map<std::string, QWidget*>::iterator it = propertyWidgetMap_.find(oldName);
+    std::map<std::string, CollapsibleGroupBoxWidgetQt*>::iterator it = propertyWidgetMap_.find(oldName);
 
     if (it != propertyWidgetMap_.end()) {
-        CollapsibleGroupBoxWidgetQt* processorPropertyWidget = dynamic_cast<CollapsibleGroupBoxWidgetQt*>(it->second);
+        CollapsibleGroupBoxWidgetQt* processorPropertyWidget = it->second;
         processorPropertyWidget->setIdentifier(newName);
         propertyWidgetMap_.erase(it);
         propertyWidgetMap_[newName] = processorPropertyWidget;
@@ -137,7 +138,7 @@ void PropertyListWidget::cacheProcessorPropertiesItem(Processor* processor) {
 
 QWidget* PropertyListWidget::getProcessorPropertiesItem(Processor* processor) {
     // check if processor widget has been already generated
-    std::map<std::string, QWidget*>::iterator it = propertyWidgetMap_.find(processor->getIdentifier());
+    std::map<std::string, CollapsibleGroupBoxWidgetQt*>::iterator it = propertyWidgetMap_.find(processor->getIdentifier());
     QWidget* processorPropertyWidget = 0;
 
     if (it != propertyWidgetMap_.end()) {
@@ -207,8 +208,9 @@ void PropertyListWidget::setViewMode(PropertyVisibilityMode viewMode) {
     applicationViewMode_ = (viewMode == APPLICATION);
     developerViewMode_ = (viewMode == DEVELOPMENT);
 
-    for (size_t i = 0; i < properties_.size(); i++)
-        properties_[i]->updateVisibility();
+    for(std::map<std::string, CollapsibleGroupBoxWidgetQt*>::const_iterator it = propertyWidgetMap_.begin(); it != propertyWidgetMap_.end(); it++)
+        if(it->second->isVisible())
+            it->second->updateVisibility();
 }
 
 void PropertyListWidget::saveState() {

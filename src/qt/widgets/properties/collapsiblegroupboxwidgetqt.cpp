@@ -146,7 +146,7 @@ void CollapsibleGroupBoxWidgetQt::addProperty(Property* prop) {
         addWidget(propertyWidget);
         prop->registerWidget(propertyWidget);
         connect(propertyWidget, SIGNAL(modified()), this, SLOT(propertyModified()));
-        connect(propertyWidget, SIGNAL(visibilityChange()), this, SLOT(updateVisibility()));
+        //connect(propertyWidget, SIGNAL(visibilityChange()), this, SLOT(updateVisibility()));
     } else{
         LogWarn("Could not find a widget for property: " << prop->getClassName());
     }
@@ -193,27 +193,22 @@ void CollapsibleGroupBoxWidgetQt::setGroupDisplayName() {
 }
 
 void CollapsibleGroupBoxWidgetQt::updateVisibility() {
-    PropertyVisibilityMode visibilityMode  = getApplicationViewMode();
+    for (size_t i=0; i<properties_.size(); i++) {
+        properties_[i]->updateVisibility();
+    }
 
-    if (visibilityMode == DEVELOPMENT) {
-        for (size_t i=0; i<properties_.size(); i++) {
-            if (properties_[i]->getVisibilityMode() != INVISIBLE) {
-                this->setVisible(true);
-                break;
-            }
-            this->setVisible(false);
-        }
-    }else if (visibilityMode == APPLICATION) {
-         for (size_t i=0; i<properties_.size(); i++) {
-            if (properties_[i]->getVisibilityMode()== APPLICATION) {
-                this->setVisible(true);
-                break;
-            }
-            this->setVisible(false);
+    PropertyVisibilityMode appMode  = getApplicationViewMode();
+    for (size_t i = 0; i < propertyWidgets_.size(); i++) {
+        CollapsibleGroupBoxWidgetQt* collapsiveWidget = dynamic_cast<CollapsibleGroupBoxWidgetQt*>(propertyWidgets_[i]);
+        if(collapsiveWidget){
+            if(appMode > collapsiveWidget->getVisibilityMode())
+                collapsiveWidget->setVisible(false);
+            else
+                collapsiveWidget->setVisible(true);
+            collapsiveWidget->updateVisibility();
         }
     }
 }
-
 
 void CollapsibleGroupBoxWidgetQt::setDeveloperViewMode(bool value) {
     visibilityMode_ = DEVELOPMENT;
