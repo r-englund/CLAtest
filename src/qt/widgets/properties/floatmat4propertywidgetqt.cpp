@@ -37,9 +37,7 @@
 
 namespace inviwo {
 
-FloatMat4PropertyWidgetQt::FloatMat4PropertyWidgetQt(FloatMat4Property* property) : property_(property) {
-    PropertyWidgetQt::setProperty(property_);
-    PropertyWidgetQt::generateContextMenu();
+FloatMat4PropertyWidgetQt::FloatMat4PropertyWidgetQt(FloatMat4Property* property) : PropertyWidgetQt(property), property_(property) {
     generateWidget();
     updateFromProperty();
 }
