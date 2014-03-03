@@ -31,6 +31,7 @@
  *********************************************************************************/
 
 #include <inviwo/qt/widgets/properties/transferfunctionpropertywidgetqt.h>
+#include <inviwo/qt/widgets/properties/collapsiblegroupboxwidgetqt.h>
 #include <inviwo/qt/widgets/inviwoapplicationqt.h>
 
 namespace inviwo {

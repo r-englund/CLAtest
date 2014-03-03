@@ -35,14 +35,14 @@
 
 #include <inviwo/qt/widgets/inviwoqtwidgetsdefine.h>
 #include <inviwo/core/processors/processor.h>
-
 #include <inviwo/qt/widgets/inviwodockwidget.h>
-#include <inviwo/qt/widgets/properties/collapsiblegroupboxwidgetqt.h>
 #include <inviwo/qt/widgets/properties/propertywidgetqt.h>
 #include <QCheckBox>
 #include <QScrollArea>
 
 namespace inviwo {
+
+class CollapsibleGroupBoxWidgetQt;
 
 class IVW_QTWIDGETS_API PropertyListWidgetObserver: public Observer {
 public:
@@ -109,11 +109,9 @@ private:
     QWidget* listWidget_;
     QScrollArea* scrollArea_;
 
-    std::vector<Property*> properties_;
-
 protected:
     static PropertyListWidget* propertyListWidget_;
-    mutable std::map<std::string, QWidget*> propertyWidgetMap_;
+    mutable std::map<std::string, CollapsibleGroupBoxWidgetQt*> propertyWidgetMap_;
 };
 
 } // namespace
