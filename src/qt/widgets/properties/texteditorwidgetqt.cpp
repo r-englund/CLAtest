@@ -142,6 +142,8 @@ void TextEditorWidgetQt::generateWidget() {
     hLayout->setContentsMargins(QMargins(0,0,0,0));
     textEditorWidget_= new ModifiedWidget();
     textEditorWidget_->setParent(this);
+    if(property_->getSemantics().getString()=="ShaderEditor")
+        textEditorWidget_->getSyntaxHighligther()->setSyntax<GLSL>();
     htmlEditorWidget_ = new HtmlEditorWidgetQt();
     htmlEditorWidget_->setParent(this);
 }
