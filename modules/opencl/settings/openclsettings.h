@@ -48,6 +48,7 @@ public:
     virtual void initialize();
     virtual void deinitialize();
 
+    bool isSharingEnabled() const { return enableOpenGLSharing_.get(); }
 protected:
     void changeDevice();
 

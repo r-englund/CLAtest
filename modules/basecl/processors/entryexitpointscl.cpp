@@ -34,6 +34,7 @@
 #include <inviwo/core/datastructures/geometry/mesh.h>
 #include <modules/opencl/image/imagecl.h>
 #include <modules/opencl/image/imageclgl.h>
+#include <modules/opencl/settings/openclsettings.h>
 #include <modules/opencl/syncclgl.h>
 
 namespace inviwo {
@@ -71,6 +72,10 @@ void EntryExitPointsCL::initialize() {
     Processor::initialize();
     if (addKernel(InviwoApplication::getPtr()->getPath(InviwoApplication::PATH_MODULES)+"basecl/cl/entryexitpoints.cl", "entryexitpoints")) {
         entryExitKernel_ = kernels_.back();
+    }
+    if (!InviwoApplication::getPtr()->getSettingsByType<OpenCLSettings>()->isSharingEnabled()) {
+        useGLSharing_.setReadOnly(true);
+        useGLSharing_.set(false);
     }
 }
 
