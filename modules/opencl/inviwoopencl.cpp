@@ -73,7 +73,7 @@ void OpenCL::initialize(bool glSharing) {
 
         cl::Platform platform;
         cl::Device device;
-        getBestGPUDevice(device, platform);
+        getBestGPUDeviceOnSystem(device, platform);
         setDevice(device, glSharing);
     } catch (cl::Error& err) {
         LogError("ERROR: Failed to initialize OpenCL. " << err.what() << "(" << err.err() << "), " << errorCodeToString(err.err()) << std::endl);
@@ -110,12 +110,12 @@ bool OpenCL::isValidVolumeFormat(const cl::Context& context, const cl::ImageForm
     *  @param onPlatform Set to platform that device exist on, if found.
     *  \return True if any device found, false otherwise.
     */
-bool OpenCL::getBestGPUDevice(cl::Device& bestDevice, cl::Platform& onPlatform) {
+bool OpenCL::getBestGPUDeviceOnSystem(cl::Device& bestDevice, cl::Platform& onPlatform) {
     bool foundDevice = false;
     std::vector<cl::Platform> platforms;
     cl::Platform::get(&platforms);
     cl_uint maxComputeUnits = 0;
-
+    cl_device_type deviceType = CL_DEVICE_TYPE_DEFAULT;
     // Search for best device
     for (::size_t i = 0; i < platforms.size(); ++i) {
         std::vector<cl::Device> devices;
@@ -127,13 +127,15 @@ bool OpenCL::getBestGPUDevice(cl::Device& bestDevice, cl::Platform& onPlatform) 
             for (::size_t j = 0; j < devices.size(); ++j) {
                 cl_uint tmpMaxComputeUnits;
                 devices[j].getInfo(CL_DEVICE_MAX_COMPUTE_UNITS, &tmpMaxComputeUnits);
-
-                if (maxComputeUnits < tmpMaxComputeUnits) {
+                cl_device_type otherDeviceType = devices[j].getInfo<CL_DEVICE_TYPE>();
+                if (maxComputeUnits < tmpMaxComputeUnits ||
+                    deviceType != CL_DEVICE_TYPE_GPU && (otherDeviceType == CL_DEVICE_TYPE_GPU)) {
                     bestDevice = devices[j];
                     onPlatform = platforms[i];
                     maxComputeUnits = tmpMaxComputeUnits;
+                    deviceType = otherDeviceType;
                     foundDevice = true;
-                }
+                } 
             }
         }  catch (cl::Error&) {
             // Error getting device, continue with others
@@ -142,6 +144,7 @@ bool OpenCL::getBestGPUDevice(cl::Device& bestDevice, cl::Platform& onPlatform) 
 
     return foundDevice;
 }
+
 void OpenCL::printBuildError(const std::vector<cl::Device>& devices, const cl::Program& program, const std::string& filename) {
     for (::size_t i = 0; i < devices.size(); ++i) {
         cl_build_status status = program.getBuildInfo<CL_PROGRAM_BUILD_STATUS>(devices[i]);

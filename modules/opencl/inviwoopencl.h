@@ -185,7 +185,13 @@ public:
 
     const std::vector<std::string>& getCommonIncludeDirectories() const { return includeDirectories_; }
 
-
+    /**
+     *  Get the device that has most compute units.
+     *  @param bestDevice Set to found device, if found.
+     *  @param onPlatform Set to platform that device exist on, if found.
+     *  @return True if any device found, false otherwise.
+     */
+    static bool getBestGPUDeviceOnSystem(cl::Device& bestDevice, cl::Platform& onPlatform);
 private:
     OpenCL();
     OpenCL(OpenCL const&) {};
@@ -194,13 +200,7 @@ private:
     /// Initialize OpenCL context and queues.
     void initialize(bool enableOpenGLSharing);
 
-    /**
-     *  Get the device that has most compute units.
-     *  @param bestDevice Set to found device, if found.
-     *  @param onPlatform Set to platform that device exist on, if found.
-     *  @return True if any device found, false otherwise.
-     */
-    static bool getBestGPUDevice(cl::Device& bestDevice, cl::Platform& onPlatform);
+
 
 
     /**
