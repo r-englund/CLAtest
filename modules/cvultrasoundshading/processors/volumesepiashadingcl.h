@@ -26,11 +26,12 @@
 
 #include <modules/opencl/inviwoopencl.h>
 #include <modules/opencl/image/layerclbase.h>
+#include <modules/opencl/kernelowner.h>
 #include <modules/opencl/volume/volumeclbase.h>
 
 namespace inviwo {
 
-class IVW_MODULE_CVULTRASOUNDSHADING_API VolumeSepiaShadingCL: public Processor {
+class IVW_MODULE_CVULTRASOUNDSHADING_API VolumeSepiaShadingCL: public Processor, public ProcessorKernelOwner {
 public:
     VolumeSepiaShadingCL();
     ~VolumeSepiaShadingCL();

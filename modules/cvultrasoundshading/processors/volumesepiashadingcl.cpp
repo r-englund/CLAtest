@@ -20,7 +20,6 @@
 #include <modules/opencl/image/imageclgl.h>
 #include <modules/opencl/volume/volumecl.h>
 #include <modules/opencl/volume/volumeclgl.h>
-#include <modules/opencl/kernelmanager.h>
 
 namespace inviwo {
 
@@ -29,7 +28,7 @@ ProcessorCategory(VolumeSepiaShadingCL, "Volume Rendering");
 ProcessorCodeState(VolumeSepiaShadingCL, CODE_STATE_EXPERIMENTAL);
 
 VolumeSepiaShadingCL::VolumeSepiaShadingCL()
-    : Processor()
+    : Processor(), ProcessorKernelOwner(this)
     , volumePort_("volume")
     , entryPort_("entry-points")
     , exitPort_("exit-points")
@@ -59,14 +58,10 @@ VolumeSepiaShadingCL::~VolumeSepiaShadingCL() {}
 
 void VolumeSepiaShadingCL::initialize() {
     Processor::initialize();
-    try {
-        cl::Program* program = KernelManager::getRef().buildProgram(InviwoApplication::getPtr()->getPath(InviwoApplication::PATH_MODULES)+"cvultrasoundshading/cl/volumesepiashading.cl");
-        kernel_ = KernelManager::getRef().getKernel(program, "volumeSepiaShading");
-
-    } catch (cl::Error&) {
-        
+    if (addKernel(InviwoApplication::getPtr()->getPath(InviwoApplication::PATH_MODULES)
+        + "cvultrasoundshading/cl/volumesepiashading.cl", "volumeSepiaShading")) {
+            kernel_ = kernels_.back();
     }
-
 }
 
 void VolumeSepiaShadingCL::deinitialize() {
