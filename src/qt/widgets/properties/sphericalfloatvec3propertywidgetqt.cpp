@@ -39,13 +39,12 @@
 namespace inviwo {
 
 SphericalFloatVec3PropertyWidgetQt::SphericalFloatVec3PropertyWidgetQt(FloatVec3Property* property)
-    : property_(property)
+    : PropertyWidgetQt(property)
+    , property_(property)
     , valueVec3Max_(property->getMaxValue())
     , valueVec3Min_(property->getMinValue())
     , valueIncrement_(property->getIncrement())
     , settingsWidget_(0) {
-    PropertyWidgetQt::setProperty(property_);
-    PropertyWidgetQt::generateContextMenu();
     generateWidget();
     updateFromProperty();
 

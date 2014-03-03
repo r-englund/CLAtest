@@ -39,7 +39,6 @@ TransferFunctionPropertyWidgetQt::TransferFunctionPropertyWidgetQt(TransferFunct
     : PropertyWidgetQt(property), transferFunctionDialog_(NULL) {
     generateWidget();
     updateFromProperty();
-    PropertyWidgetQt::generateContextMenu();
 }
 
 TransferFunctionPropertyWidgetQt::~TransferFunctionPropertyWidgetQt() {

@@ -79,6 +79,8 @@ PropertyWidgetQt::PropertyWidgetQt(Property* property)
             SIGNAL(customContextMenuRequested(const QPoint&)),
             this,
             SLOT(showContextMenu(const QPoint&)));
+
+    generateContextMenu();
 }
 
 PropertyWidgetQt::~PropertyWidgetQt() {
