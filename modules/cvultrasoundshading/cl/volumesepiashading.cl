@@ -54,10 +54,7 @@ __kernel void volumeSepiaShading(read_only image3d_t volume
         // xyz == diffuse color, w = absorption
         float4 materialDiffuse = read_imagef(transferFunction, smpNormClampEdgeLinear, (float2)(volumeSample, 0.5f));
 
-        float3 gradient = calcGradient(as_float4(pos), volume, as_float4(voxelSpacing)).xyz;
-        float gradLen = length(gradient);
-        gradient = normalize(gradient);
-
+        float3 gradient = normalize(calcGradient(as_float4(pos), volume, as_float4(voxelSpacing)).xyz);
 
         float3 f = applyShading(-direction, -lightDirection, materialDiffuse.xyz, materialSpecular.xyz, material, gradient, shadingType);
 
