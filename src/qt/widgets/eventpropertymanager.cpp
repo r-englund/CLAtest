@@ -41,6 +41,10 @@ EventPropertyManager::~EventPropertyManager() {}
 void EventPropertyManager::changeMouseMapping(EventProperty* eventProperty, MouseEvent::MouseButton button,
         InteractionEvent::Modifier modifier) {
     if (dynamic_cast<MouseEvent*>(eventProperty->getEvent())) {
+        
+        if(eventPropertyMap_.empty())
+            return;
+
         // Look for event conflicts
         std::vector<EventProperty*> eventProperties = eventPropertyMap_[activeProcessor_];
 
@@ -84,10 +88,6 @@ void EventPropertyManager::changeKeyMapping(EventProperty* eventProperty, char b
         LogWarn("Can only be bound with a mouse event");
 
     notifyEventPropertyManagerObservers();
-}
-
-void EventPropertyManager::setEventPropertyMap(std::map<std::string, std::vector<EventProperty*> > eventPropertyMap) {
-    eventPropertyMap_ = eventPropertyMap;
 }
 
 std::vector<EventProperty*> EventPropertyManager::getEventPropertiesFromMap() {

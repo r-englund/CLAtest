@@ -92,15 +92,11 @@ public:
     std::vector<EventProperty*> getEventPropertiesFromMap();
 
     /**
-     * \brief Updates the manager with eventproperties
+     * \brief Get the eventproperties
      *
-     * Sets the map of eventproperties to a new map of all current eventproperties.
-     * This function is called every time a processor is added or removed from the workspace.
-     *
-     * @param std::map<std::string, std::vector<EventProperty * > > eventPropertyMap The new map of eventpropeties
-     * @return void
+     * Gets the map of eventproperties.
      */
-    void setEventPropertyMap(std::map<std::string, std::vector<EventProperty*> > eventPropertyMap);
+    std::map<std::string, std::vector<EventProperty*> >* getEventPropertyMap() { return &eventPropertyMap_; }
 
     /**
      * \brief Sets the active processor
@@ -144,8 +140,7 @@ public:
     bool isEmpty();
 
 private:
-    std::map<std::string, std::vector<EventProperty*> >
-    eventPropertyMap_; ///< map<Processor identifier, vector of the processors eventproperties>
+    std::map<std::string, std::vector<EventProperty*> > eventPropertyMap_; ///< map<Processor identifier, vector of the processors eventproperties>
     std::string activeProcessor_; ///< The identifier of the currently seletected processor in the combobox in the mappingwidget
 };
 
