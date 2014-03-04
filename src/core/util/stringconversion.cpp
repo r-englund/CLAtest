@@ -32,7 +32,7 @@
 
 #include <inviwo/core/util/stringconversion.h>
 
-#if defined(__clang__)
+#if defined(__clang__) || defined(__GNUC__)
 #include <cstdlib>
 #include <memory>
 #include <cxxabi.h>
@@ -85,7 +85,7 @@ void replaceInString(std::string& str, const std::string& oldStr, const std::str
 }
 
 std::string parseTypeIdName(std::string str) {
-#if defined(__clang__)
+#if defined(__clang__) || defined(__GNUC__)
     struct handle {
         char* p;
         handle(char* ptr) : p(ptr) { }
