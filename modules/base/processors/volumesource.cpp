@@ -117,28 +117,28 @@ void VolumeSource::onOverrideChange() {
 }
 
 void VolumeSource::invalidateOutput() {
-    Volume* volume = DataSource<Volume, VolumeOutport>::port_.getData();
-
-    if (volume) {
-        volume->setMetaData<Vec2MetaData>("DataRange", dataRange_.get());
-        volume->setMetaData<Vec2MetaData>("ValueRange", valueRange_.get());
-        volume->setMetaData<StringMetaData>("ValueUnit", valueUnit_.get());
-    }
-
-    DataSource<Volume, VolumeOutport>::invalidateOutput();
+//    Volume* volume = DataSource<Volume, VolumeOutport>::port_.getData();
+//
+//    if (volume) {
+//        volume->setMetaData<Vec2MetaData>("DataRange", dataRange_.get());
+//        volume->setMetaData<Vec2MetaData>("ValueRange", valueRange_.get());
+//        volume->setMetaData<StringMetaData>("ValueUnit", valueUnit_.get());
+//    }
+//
+//    DataSource<Volume, VolumeOutport>::invalidateOutput();
 }
 
 void VolumeSource::dataLoaded(Volume* volume) {
     float max = static_cast<float>(volume->getDataFormat()->getMax());
     float min = static_cast<float>(volume->getDataFormat()->getMin());
-    dataRange_.setRangeMin(min);
-    dataRange_.setRangeMax(max);
+    //dataRange_.setRangeMin(min);
+    //dataRange_.setRangeMax(max);
 
-    if (volume->hasMetaData<DVec2MetaData>("DataRange")) {
-        dataRange_.set(volume->getMetaData<Vec2MetaData>("DataRange", dataRange_.get()));
-    } else {
-        dataRange_.set(vec2(min, max));
-    }
+    //if (volume->hasMetaData<DVec2MetaData>("DataRange")) {
+    //    dataRange_.set(volume->getMetaData<Vec2MetaData>("DataRange", dataRange_.get()));
+    //} else {
+    //    dataRange_.set(vec2(min, max));
+    //}
 
     vec3 a(volume->getBasis()[0]);
     vec3 b(volume->getBasis()[1]);
@@ -165,9 +165,9 @@ void VolumeSource::dataLoaded(Volume* volume) {
     orgAngles_ = angels_.get();
     orgOffet_ = offset_.get();
 
-    valueRange_.set(volume->getMetaData<Vec2MetaData>("ValueRange", dataRange_.get()));
-    valueUnit_.set(volume->getMetaData<StringMetaData>("ValueUnit", valueUnit_.get()));
-    invalidateOutput();
+    //valueRange_.set(volume->getMetaData<Vec2MetaData>("ValueRange", dataRange_.get()));
+    //valueUnit_.set(volume->getMetaData<StringMetaData>("ValueUnit", valueUnit_.get()));
+    //invalidateOutput();
 }
 
 void VolumeSource::process() {
