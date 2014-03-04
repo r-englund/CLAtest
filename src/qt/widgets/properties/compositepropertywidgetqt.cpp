@@ -52,7 +52,7 @@ void CompositePropertyWidgetQt::generateWidget() {
         Property* curProperty = subProperties[i];
         collapsiveGroupBoxWidget_->addProperty(curProperty);
     }
-
+    vLayout->addWidget(collapsiveGroupBoxWidget_);
     vLayout->setContentsMargins(0,0,0,0);
     vLayout->setSpacing(0);
     setLayout(vLayout);
