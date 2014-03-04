@@ -47,7 +47,8 @@ CustomDoubleSpinBoxQt::CustomDoubleSpinBoxQt(QWidget* parent /*= 0*/) {
 }
 
 QString CustomDoubleSpinBoxQt::textFromValue(double value) const {
-    return QString::number(value, 'f', displayDecimals_);
+    const static QLocale local;
+    return local.toString(value, 'f', displayDecimals_);
 }
 
 void CustomDoubleSpinBoxQt::setDecimals(int decimals) {
