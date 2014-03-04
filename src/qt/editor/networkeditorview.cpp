@@ -76,14 +76,18 @@ NetworkEditor* NetworkEditorView::getNetworkEditor() const {
 
 void NetworkEditorView::hideNetwork(bool hide){
     if(hide){
-        scrollPos_.x = horizontalScrollBar()->value();
-        scrollPos_.y = verticalScrollBar()->value();
-        QGraphicsView::setScene(NULL);
+        if(scene()){
+            scrollPos_.x = horizontalScrollBar()->value();
+            scrollPos_.y = verticalScrollBar()->value();
+            QGraphicsView::setScene(NULL);
+        }
     }
     else{
-        QGraphicsView::setScene(networkEditor_);
-        horizontalScrollBar()->setValue(scrollPos_.x);
-        verticalScrollBar()->setValue(scrollPos_.y);
+        if(scene() != networkEditor_){
+            QGraphicsView::setScene(networkEditor_);
+            horizontalScrollBar()->setValue(scrollPos_.x);
+            verticalScrollBar()->setValue(scrollPos_.y);
+        }
     }
 }
 
