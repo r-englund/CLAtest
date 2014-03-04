@@ -212,6 +212,9 @@ void CVIE3DProcessor::updateParameterFile(){
         int nSettings = 0;
         //LogInfo("parameterFile: " << parameterFile_.get());
 
+        if(parameterFile_.getValues().empty())
+            return;
+
         if(URLParser::fileExists(parameterFile_.get().c_str())){
             ECVIE3D cvieError = CVIE3DSetParameterFile(cvieHandle_, parameterFile_.get().c_str(), &nSettings);
             if (cvieError != ECVIE3D_Ok) {
