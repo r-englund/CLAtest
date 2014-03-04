@@ -525,14 +525,14 @@ void InviwoMainWindow::showAboutBox() {
 
 void InviwoMainWindow::viewModeChangedInSettings(){
     if(viewModeProperty_){
-        PropertyVisibilityMode viewMode = static_cast<PropertyVisibilityMode>(viewModeProperty_->getSelectedIndex());
-        if (viewMode == DEVELOPMENT) {
+        int selectedIdx = viewModeProperty_->getSelectedIndex();
+        if (selectedIdx == 0) {
             if(!viewModeActionDeveloper_->isChecked()){ 
                 viewModeActionDeveloper_->setChecked(true);
             }
             propertyListWidget_->setDeveloperViewMode(true);
             setDeveloperViewMode(true);
-        } else if (viewMode == APPLICATION) {
+        } else if (selectedIdx == 1) {
             if(!viewModeActionApplication_->isChecked()){
                 viewModeActionApplication_->setChecked(true);
             }
@@ -543,11 +543,19 @@ void InviwoMainWindow::viewModeChangedInSettings(){
 }
 
 void InviwoMainWindow::setDeveloperViewMode(bool value) {
+    int selectedIdx = viewModeProperty_->getSelectedIndex();
+    if(selectedIdx != 0)
+        viewModeProperty_->setSelectedIndex(0);
+
     if (value)
         networkEditorView_->hideNetwork(false);
 }
 
 void InviwoMainWindow::setApplicationViewMode(bool value) {
+    int selectedIdx = viewModeProperty_->getSelectedIndex();
+    if(selectedIdx != 1)
+        viewModeProperty_->setSelectedIndex(1);
+
     if (value)
         networkEditorView_->hideNetwork(true);
 }
