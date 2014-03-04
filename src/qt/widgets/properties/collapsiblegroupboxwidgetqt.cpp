@@ -51,15 +51,6 @@ CollapsibleGroupBoxWidgetQt::CollapsibleGroupBoxWidgetQt(std::string identifier,
     , viewModeItem_(NULL) {
 
     setObjectName("CollapsibleGroupBoxWidgetQt");
-  
-    OptionPropertyInt* viewmode = static_cast<OptionPropertyInt*>(
-        InviwoApplication::getPtr()->
-            getSettingsByType<SystemSettings>()->
-                getPropertyByIdentifier("viewMode")
-        );
-
-    viewmode->onChange(this, &CollapsibleGroupBoxWidgetQt::onViewModeChange);
-
     generateWidget();
     updateFromProperty();
 }
