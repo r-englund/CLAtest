@@ -28,23 +28,39 @@ CVSCProcessor::CVSCProcessor()
     inport_("volume.inport"),
     outport_("volume.outport"),
     enabled_("enabled", "Filtering Enabled", false),
-    parameterFile_("parameterFile", "Parameter file", InviwoApplication::getPtr()->getPath(InviwoApplication::PATH_VOLUMES)),
+    scanDepth_("scanDepth", "Scan Depth (mm)", 60.0f, 1.0f, 500.0f, 1.0f),
+    transRadius_("transRadius", "Transducer Radius (mm)", 70.0f, 0.0f, 500.0f, 1.0f),
+    transAngleSpan_("transAngleSpan", "Transducer Span (deg.)", 60.0f, 0.1f, 360.0f, 0.1f),
+    tiltRadius_("tiltRadius", "Tilt Radius (mm)", 60.0f, 0.0f, 500.0f, 1.0f),
+    tiltAngleSpan_("tiltAngleSpan", "Tilt Span (deg.)", 60.0f, 0.1f, 360.0f, 0.1f),
+    voxelSize_("voxelSize", "Voxel Size (mm)", 1.0f, 0.01f, 10.0f, 0.01f),
     cvscInit_(false)
 {
     addPort(inport_);
     addPort(outport_);
 
+    enabled_.onChange(this, &CVSCProcessor::cvscEnabled);
     addProperty(enabled_);
 
-    parameterFile_.onChange(this, &CVSCProcessor::updateParameterFile);
-    addProperty(parameterFile_);
+    addProperty(scanDepth_);
+    addProperty(transRadius_);
+    addProperty(transAngleSpan_);
+    addProperty(tiltRadius_);
+    addProperty(tiltAngleSpan_);
+    addProperty(voxelSize_);
 }
 
 CVSCProcessor::~CVSCProcessor() {}
 
 void CVSCProcessor::initialize() {
     Processor::initialize();
-    updateParameterFile();
+
+    params_.ScanDepth = scanDepth_.get();
+    params_.TransRadius = transRadius_.get();
+    params_.TransAngleSpan = transAngleSpan_.get();
+    params_.TiltRadius  = tiltRadius_.get();
+    params_.TiltAngleSpan  = tiltAngleSpan_.get();
+    params_.VoxelSize    = voxelSize_.get();
 }
 
 void CVSCProcessor::deinitialize() {
@@ -162,22 +178,27 @@ bool CVSCProcessor::runScanConversion(){
         return false;
 }
 
-void CVSCProcessor::updateParameterFile(){
-    //if(URLParser::fileExists(parameterFile_.get().c_str())){
-        params_.ScanDepth = 69.9417f;
-        params_.TransRadius = 77.5694f;
-        params_.TransAngleSpan = glm::degrees(1.0085f);
-        params_.TiltRadius  = 57.5994f;
-        params_.TiltAngleSpan  = glm::degrees(0.9638f);
-        params_.VoxelSize    = 0.25f;
+void CVSCProcessor::cvscEnabled(){
+    scanDepth_.setReadOnly(enabled_.get());
+    transRadius_.setReadOnly(enabled_.get());
+    transAngleSpan_.setReadOnly(enabled_.get());
+    tiltRadius_.setReadOnly(enabled_.get());
+    tiltAngleSpan_.setReadOnly(enabled_.get());
+    voxelSize_.setReadOnly(enabled_.get());
 
-        LogInfo("Scan Depth           (mm) : " << params_.ScanDepth);
-        LogInfo("Transducer Radius    (mm) : " << params_.TransRadius)
-        LogInfo("Transducer Span (degrees) : " << params_.TransAngleSpan)
-        LogInfo("Tilt Radius          (mm) : " << params_.TiltRadius)
-        LogInfo("Tilt Span       (degrees) : " << params_.TiltAngleSpan)
-        LogInfo("Voxel Size           (mm) : " << params_.VoxelSize)
-   // }
+    params_.ScanDepth = scanDepth_.get();
+    params_.TransRadius = transRadius_.get();
+    params_.TransAngleSpan = transAngleSpan_.get();
+    params_.TiltRadius  = tiltRadius_.get();
+    params_.TiltAngleSpan  = tiltAngleSpan_.get();
+    params_.VoxelSize    = voxelSize_.get();
+
+    LogInfo("Scan Depth           (mm) : " << params_.ScanDepth);
+    LogInfo("Transducer Radius    (mm) : " << params_.TransRadius)
+    LogInfo("Transducer Span (degrees) : " << params_.TransAngleSpan)
+    LogInfo("Tilt Radius          (mm) : " << params_.TiltRadius)
+    LogInfo("Tilt Span       (degrees) : " << params_.TiltAngleSpan)
+    LogInfo("Voxel Size           (mm) : " << params_.VoxelSize)
 }
 
 } // namespace
