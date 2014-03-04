@@ -79,11 +79,11 @@ NetworkEditor::NetworkEditor() :
     , gridSnapping_(true)
     , filename_("")
     , renamingProcessor_(false)
-    , modified_(false) {
+    , modified_(false)
+    , workerThread_(NULL) {
     
     setSceneRect(-1000,-1000,1000,1000);
     processorNetwork_ = new ProcessorNetwork();
-    workerThreadReset();
     InviwoApplication::getRef().setProcessorNetwork(processorNetwork_);
     processorNetworkEvaluator_ = new ProcessorNetworkEvaluator(processorNetwork_);
     processorNetwork_->addObserver(this);
@@ -699,7 +699,10 @@ void NetworkEditor::removePortInformation(std::string, std::string) {
 
 void NetworkEditor::workerThreadReset() {
     workerThread_ = NULL;
-    processorNetwork_->addObserver(this);    
+    processorNetwork_->addObserver(this);
+    Property* viewModeProperty = InviwoApplication::getPtr()->getSettingsByType<SystemSettings>()->getPropertyByIdentifier("viewMode");
+    if(viewModeProperty)
+        viewModeProperty->propertyModified();
 }
 
 void NetworkEditor::workerThreadQuit() {

@@ -41,7 +41,7 @@
 #include <QMenu>
 #include <QMenuBar>
 #include <QAction>
-
+#include <inviwo/core/properties/baseoptionproperty.h>
 #include <inviwo/qt/editor/mappingwidget.h>
 #include <inviwo/qt/editor/settingswidget.h>
 #include <inviwo/qt/editor/consolewidget.h>
@@ -81,6 +81,8 @@ public:
     virtual void onNetworkEditorFileChanged(const std::string& filename);
     virtual void onModifiedStatusChanged(const bool &newStatus);
 
+    void viewModeChangedInSettings();
+
 public slots:
     void newWorkspace();
     void openWorkspace();
@@ -90,6 +92,8 @@ public slots:
     void exitInviwo();
     void disableEvaluation(bool);
     void showAboutBox();
+    void setDeveloperViewMode(bool value);
+    void setApplicationViewMode(bool value);
 
 private:
     void addMenus();
@@ -106,6 +110,7 @@ private:
     void updateWindowTitle();
 
     NetworkEditorView* networkEditorView_;
+    BaseOptionProperty* viewModeProperty_;
 
     // mainwindow toolbar
     QToolBar* basicToolbar_;

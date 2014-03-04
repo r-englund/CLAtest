@@ -265,14 +265,19 @@ void InviwoMainWindow::addMenuActions() {
     viewModeActionGroup->addAction(viewModeActionApplication_);
     PropertyVisibilityMode viewMode = propertyListWidget_->getViewMode();
 
-    if (viewMode == DEVELOPMENT) {
-        viewModeActionDeveloper_->setChecked(true);
-    } else if (viewMode == APPLICATION) {
-        viewModeActionApplication_->setChecked(true);
+    Property* vmp = InviwoApplication::getPtr()->getSettingsByType<SystemSettings>()->getPropertyByIdentifier("viewMode");
+    if(vmp){
+        viewModeProperty_ = dynamic_cast<BaseOptionProperty*>(vmp);
+        vmp->onChange(this, &InviwoMainWindow::viewModeChangedInSettings);
     }
 
+    connect(viewModeActionDeveloper_, SIGNAL(triggered(bool)), this, SLOT(setDeveloperViewMode(bool)));
+    connect(viewModeActionApplication_, SIGNAL(triggered(bool)), this, SLOT(setApplicationViewMode(bool)));
     connect(viewModeActionDeveloper_, SIGNAL(triggered(bool)), propertyListWidget_, SLOT(setDeveloperViewMode(bool)));
     connect(viewModeActionApplication_, SIGNAL(triggered(bool)), propertyListWidget_, SLOT(setApplicationViewMode(bool)));
+
+    viewModeChangedInSettings();
+
     enableDisableEvaluationButton_ = new QToolButton(this);
     enableDisableEvaluationButton_->setToolTip(tr("Enable/Disable Evaluation"));
     enableDisableEvaluationButton_->setCheckable(true);
@@ -515,6 +520,31 @@ void InviwoMainWindow::showAboutBox() {
     aboutText.append("<p><b>Former Developers:</b><br>");
     aboutText.append("Hans-Christian Helltegen, Andreas Valter, Emanuel Winblad</p>");
     QMessageBox::about(this, QString::fromStdString("Inviwo V"+IVW_VERSION), QString::fromStdString(aboutText));
+}
+
+void InviwoMainWindow::viewModeChangedInSettings(){
+    if(viewModeProperty_){
+        PropertyVisibilityMode viewMode = static_cast<PropertyVisibilityMode>(viewModeProperty_->getSelectedIndex());
+        if (viewMode == DEVELOPMENT) {
+            if(!viewModeActionDeveloper_->isChecked())
+                viewModeActionDeveloper_->setChecked(true);
+            setDeveloperViewMode(true);
+        } else if (viewMode == APPLICATION) {
+            if(!viewModeActionApplication_->isChecked())
+                viewModeActionApplication_->setChecked(true);
+            setApplicationViewMode(true);
+        }
+    }
+}
+
+void InviwoMainWindow::setDeveloperViewMode(bool value) {
+    if (value)
+        networkEditorView_->hideNetwork(false);
+}
+
+void InviwoMainWindow::setApplicationViewMode(bool value) {
+    if (value)
+        networkEditorView_->hideNetwork(true);
 }
 
 void InviwoMainWindow::exitInviwo() {

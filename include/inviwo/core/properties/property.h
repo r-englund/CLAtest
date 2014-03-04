@@ -162,7 +162,7 @@ public:
     virtual void updateVisibility();
 
 protected:
-    SingleCallBack onChangeCallback_;
+    CallBackList onChangeCallback_;
 
 private:
     std::string identifier_;

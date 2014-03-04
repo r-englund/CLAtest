@@ -33,6 +33,7 @@
 #include <QMatrix>
 #include <QMouseEvent>
 #include <QWheelEvent>
+#include <QScrollBar>
 #include <inviwo/core/common/inviwoapplication.h>
 #include <inviwo/core/util/settings/linksettings.h>
 #include <inviwo/core/util/settings/systemsettings.h>
@@ -71,6 +72,19 @@ void NetworkEditorView::setNetworkEditor(NetworkEditor* networkEditor) {
 
 NetworkEditor* NetworkEditorView::getNetworkEditor() const {
     return networkEditor_;
+}
+
+void NetworkEditorView::hideNetwork(bool hide){
+    if(hide){
+        scrollPos_.x = horizontalScrollBar()->value();
+        scrollPos_.y = verticalScrollBar()->value();
+        QGraphicsView::setScene(NULL);
+    }
+    else{
+        QGraphicsView::setScene(networkEditor_);
+        horizontalScrollBar()->setValue(scrollPos_.x);
+        verticalScrollBar()->setValue(scrollPos_.y);
+    }
 }
 
 void NetworkEditorView::setZoomLevel(int zoomLevel) {

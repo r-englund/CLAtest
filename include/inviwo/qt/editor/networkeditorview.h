@@ -49,6 +49,8 @@ public:
     void setNetworkEditor(NetworkEditor* networkEditor);
     NetworkEditor* getNetworkEditor() const;
 
+    void hideNetwork(bool);
+
 protected:
     void mouseDoubleClickEvent(QMouseEvent* e);
     void resizeEvent(QResizeEvent* re);
@@ -56,6 +58,7 @@ protected:
 
 private:
     NetworkEditor* networkEditor_;
+    ivec2 scrollPos_;
 
     int zoomLevel_;
     float zoomValue_;

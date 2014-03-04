@@ -174,7 +174,7 @@ std::string Property::getGroupID()const {
 }
 
 void Property::propertyModified() {
-    onChangeCallback_.invoke();
+    onChangeCallback_.invokeAll();
     setPropertyModified(true);
     if (getOwner()) {
         getOwner()->invalidate(getInvalidationLevel(), this);

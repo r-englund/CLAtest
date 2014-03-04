@@ -98,18 +98,20 @@ void PropertyWidgetQt::hideWidget() {
 }
 
 void PropertyWidgetQt::onViewModeChange() {
-    PropertyVisibilityMode appVisibilityMode  = getApplicationViewMode();
-   
-    if (appVisibilityMode == DEVELOPMENT) {
-        if(developerViewModeAction_)
-            developerViewModeAction_->setEnabled(true);
-        if(applicationViewModeAction_)
-            applicationViewModeAction_->setEnabled(true);
-    }else{
-        if(developerViewModeAction_)
-            developerViewModeAction_->setEnabled(false);
-        if(applicationViewModeAction_)
-            applicationViewModeAction_->setEnabled(false);
+    if(viewModeItem_){
+        PropertyVisibilityMode appVisibilityMode  = getApplicationViewMode();
+       
+        if (appVisibilityMode == DEVELOPMENT) {
+            if(developerViewModeAction_)
+                developerViewModeAction_->setEnabled(true);
+            if(applicationViewModeAction_)
+                applicationViewModeAction_->setEnabled(true);
+        }else{
+            if(developerViewModeAction_)
+                developerViewModeAction_->setEnabled(false);
+            if(applicationViewModeAction_)
+                applicationViewModeAction_->setEnabled(false);
+        }
     }
 }
 
@@ -353,22 +355,23 @@ void PropertyWidgetQt::moduleAction() {
 }
 
 void PropertyWidgetQt::updateContextMenu() {
+    if(viewModeItem_){
+        if (property_ && property_->getVisibilityMode() == DEVELOPMENT)
+            developerViewModeAction_->setChecked(true);
+        else if (property_ && property_->getVisibilityMode() == APPLICATION)
+            applicationViewModeAction_->setChecked(true);
 
-    if (property_ && property_->getVisibilityMode() == DEVELOPMENT)
-        developerViewModeAction_->setChecked(true);
-    else if (property_ && property_->getVisibilityMode() == APPLICATION)
-        applicationViewModeAction_->setChecked(true);
+        PropertyVisibilityMode appVisibilityMode  = getApplicationViewMode();
 
-    PropertyVisibilityMode appVisibilityMode  = getApplicationViewMode();
-
-    if (appVisibilityMode == DEVELOPMENT) {
-        developerViewModeAction_->setEnabled(true);
-        applicationViewModeAction_->setEnabled(true);
-    }else{
-        developerViewModeAction_->setEnabled(false);
-        applicationViewModeAction_->setEnabled(false);
+        if (appVisibilityMode == DEVELOPMENT) {
+            developerViewModeAction_->setEnabled(true);
+            applicationViewModeAction_->setEnabled(true);
+        }else{
+            developerViewModeAction_->setEnabled(false);
+            applicationViewModeAction_->setEnabled(false);
+        }
+        updateModuleMenuActions();
     }
-    updateModuleMenuActions();
 }
 
 void PropertyWidgetQt::setProperty(Property* property) {
