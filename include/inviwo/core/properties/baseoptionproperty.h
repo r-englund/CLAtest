@@ -496,6 +496,10 @@ template<typename T>
 void BaseTemplateOptionProperty<T>::serialize(IvwSerializer& s) const {
     BaseOptionProperty::serialize(s) ;
     s.serialize("options", options_, "option");
+
+    if(options_.empty())
+        return;
+
     s.serialize("selectedIdentifier", getSelectedIdentifier());
 }
 
@@ -504,6 +508,9 @@ void BaseTemplateOptionProperty<T>::deserialize(IvwDeserializer& d) {
     BaseOptionProperty::deserialize(d) ;
     
     d.deserialize("options", options_, "option");
+
+    if(options_.empty())
+        return;
 
     std::string id = getSelectedIdentifier();
     d.deserialize("selectedIdentifier", id);
