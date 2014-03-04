@@ -75,13 +75,17 @@ PropertyWidgetQt::~PropertyWidgetQt() {
 
 
 void PropertyWidgetQt::showWidget() {
-    this->show();
-    emit visibilityChange();
+    if(isHidden()){
+        this->show();
+        emit visibilityChange();
+    }
 }
 
 void PropertyWidgetQt::hideWidget() {
-    this->hide();
-    emit visibilityChange();
+    if(isVisible()){
+        this->hide();
+        emit visibilityChange();
+    }
 }
 
 void PropertyWidgetQt::onViewModeChange() {
