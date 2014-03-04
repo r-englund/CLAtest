@@ -525,7 +525,7 @@ void InviwoMainWindow::showAboutBox() {
 
 void InviwoMainWindow::viewModeChangedInSettings(){
     if(viewModeProperty_){
-        int selectedIdx = viewModeProperty_->getSelectedIndex();
+        size_t selectedIdx = viewModeProperty_->getSelectedIndex();
         if (selectedIdx == 0) {
             if(!viewModeActionDeveloper_->isChecked()){ 
                 viewModeActionDeveloper_->setChecked(true);
@@ -543,7 +543,7 @@ void InviwoMainWindow::viewModeChangedInSettings(){
 }
 
 void InviwoMainWindow::setDeveloperViewMode(bool value) {
-    int selectedIdx = viewModeProperty_->getSelectedIndex();
+    size_t selectedIdx = viewModeProperty_->getSelectedIndex();
     if(selectedIdx != 0)
         viewModeProperty_->setSelectedIndex(0);
 
@@ -552,7 +552,7 @@ void InviwoMainWindow::setDeveloperViewMode(bool value) {
 }
 
 void InviwoMainWindow::setApplicationViewMode(bool value) {
-    int selectedIdx = viewModeProperty_->getSelectedIndex();
+    size_t selectedIdx = viewModeProperty_->getSelectedIndex();
     if(selectedIdx != 1)
         viewModeProperty_->setSelectedIndex(1);
 
