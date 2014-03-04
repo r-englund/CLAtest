@@ -59,6 +59,7 @@ InviwoMainWindow::InviwoMainWindow()
     : QMainWindow()
     , PropertyListWidgetObserver()
     , ProcessorNetworkObserver() 
+    , viewModeProperty_(NULL)
 {
     NetworkEditor::init();
     // initialize console widget first to receive log messages
@@ -526,12 +527,16 @@ void InviwoMainWindow::viewModeChangedInSettings(){
     if(viewModeProperty_){
         PropertyVisibilityMode viewMode = static_cast<PropertyVisibilityMode>(viewModeProperty_->getSelectedIndex());
         if (viewMode == DEVELOPMENT) {
-            if(!viewModeActionDeveloper_->isChecked())
+            if(!viewModeActionDeveloper_->isChecked()){ 
                 viewModeActionDeveloper_->setChecked(true);
+            }
+            propertyListWidget_->setDeveloperViewMode(true);
             setDeveloperViewMode(true);
         } else if (viewMode == APPLICATION) {
-            if(!viewModeActionApplication_->isChecked())
+            if(!viewModeActionApplication_->isChecked()){
                 viewModeActionApplication_->setChecked(true);
+            }
+            propertyListWidget_->setApplicationViewMode(true);
             setApplicationViewMode(true);
         }
     }

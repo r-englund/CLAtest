@@ -202,9 +202,6 @@ void PropertyListWidget::setApplicationViewMode(bool value) {
 }
 
 void PropertyListWidget::setViewMode(PropertyVisibilityMode viewMode) {
-    InviwoApplication* inviwoApp = InviwoApplication::getPtr();
-    SystemSettings* mainSettings = inviwoApp->getSettingsByType<SystemSettings>();
-    dynamic_cast<OptionPropertyInt*>(mainSettings->getPropertyByIdentifier("viewMode"))->set(static_cast<int>(viewMode));
     applicationViewMode_ = (viewMode == APPLICATION);
     developerViewMode_ = (viewMode == DEVELOPMENT);
 
