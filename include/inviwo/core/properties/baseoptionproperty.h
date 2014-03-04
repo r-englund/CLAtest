@@ -505,13 +505,9 @@ void BaseTemplateOptionProperty<T>::deserialize(IvwDeserializer& d) {
     
     d.deserialize("options", options_, "option");
 
-    std::string id = getSelectedIdentifier();
+    std::string id;
     d.deserialize("selectedIdentifier", id);
-    if(id == getSelectedIdentifier()) {
-        T value = getSelecetedValue();
-        d.deserialize("value", value);
-        setSelectedValue(value);
-    }
+    setSelectedIdentifier(id);
 }
 
 } // namespace inviwo
