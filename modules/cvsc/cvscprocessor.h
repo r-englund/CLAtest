@@ -20,6 +20,7 @@
 #include <inviwo/core/ports/volumeport.h>
 #include <inviwo/core/processors/processor.h>
 #include <inviwo/core/properties/boolproperty.h>
+#include <inviwo/core/properties/ordinalproperty.h>
 #include <inviwo/core/properties/fileproperty.h>
 #include <cvsc.h>
 
@@ -45,14 +46,19 @@ protected:
     bool setupScanConversion();
     bool runScanConversion();
 
-    void updateParameterFile();
+    void cvscEnabled();
 
 private:
     VolumeInport inport_;
     VolumeOutport outport_;
 
     BoolProperty enabled_;
-    FileProperty parameterFile_;
+    FloatProperty scanDepth_;
+    FloatProperty transRadius_;
+    FloatProperty transAngleSpan_;
+    FloatProperty tiltRadius_;
+    FloatProperty tiltAngleSpan_;
+    FloatProperty voxelSize_;
 
     CVSC_Parameters params_;
     CVSC_Volume outVolume_;
