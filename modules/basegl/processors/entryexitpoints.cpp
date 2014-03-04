@@ -173,7 +173,7 @@ void EntryExitPoints::process() {
 
 void EntryExitPoints::handleInteractionEventsChanged() {
     if (handleInteractionEvents_.get()) {
-        //addInteractionHandler(trackball_);
+        addInteractionHandler(trackball_);
     } else {
         removeInteractionHandler(trackball_);
     }
