@@ -105,6 +105,7 @@ public:
     // Widget calls
     void registerWidget(PropertyWidget* propertyWidget);
     void deregisterWidget(PropertyWidget* propertyWidget);
+    const std::vector<PropertyWidget*>& getWidgets() const { return propertyWidgets_; }
     
     /**
      *  This function should be called by propertywidgets before they initiate a property

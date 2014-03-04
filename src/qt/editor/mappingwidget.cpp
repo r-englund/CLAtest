@@ -93,7 +93,7 @@ void MappingWidget::updateWidget() {
     comboBox_->clear();
     std::vector<EventProperty*> eventProperties, tmp;
     std::vector<InteractionHandler*> interactionHandlers;
-    std::map<std::string, std::vector<EventProperty*> > eventPropertyMap;
+    std::map<std::string, std::vector<EventProperty*> >* eventPropertyMap = eventPropertyManager_->getEventPropertyMap();
     PropertyOwner* eventPropertyOwner;
 
     // Get all eventproperties from the processornetwork
@@ -110,14 +110,12 @@ void MappingWidget::updateWidget() {
         }
 
         // Add vector of eventproperties to map with processor identifier as key
-        eventPropertyMap[processorsWithInteractionHandlers_->at(i)->getIdentifier()] = eventProperties;
+        eventPropertyMap->insert(std::pair<std::string, std::vector<EventProperty*> >(processorsWithInteractionHandlers_->at(i)->getIdentifier(), eventProperties));
         comboBox_->addItem(processorsWithInteractionHandlers_->at(i)->getIdentifier().c_str());
         eventProperties.clear();
     }
 
     if (currentIndex_ > comboBox_->count()-1) currentIndex_ = 0;
-
-    eventPropertyManager_->setEventPropertyMap(eventPropertyMap);
 
     // Set selected processor and draw eventpropertywidgets
     if (comboBox_->count() > 0) {

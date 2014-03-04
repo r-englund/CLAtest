@@ -145,9 +145,12 @@ void CollapsibleGroupBoxWidgetQt::addProperty(Property* prop) {
 
 void CollapsibleGroupBoxWidgetQt::generateEventPropertyWidgets(EventPropertyManager* epm) {
     for (size_t i=0; i<properties_.size(); i++) {
-        EventPropertyWidgetQt* ep = dynamic_cast<EventPropertyWidgetQt*>(properties_[i]);
-        if (ep) {
-            ep->setManager(epm);
+        const std::vector<PropertyWidget*>& widgets = properties_[i]->getWidgets();
+        for (size_t j=0; j<widgets.size(); j++) {
+            EventPropertyWidgetQt* ep = dynamic_cast<EventPropertyWidgetQt*>(widgets[j]);
+            if (ep) {
+                ep->setManager(epm);
+            }
         }
     }
 }
