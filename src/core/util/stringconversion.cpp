@@ -85,6 +85,7 @@ void replaceInString(std::string& str, const std::string& oldStr, const std::str
 }
 
 std::string parseTypeIdName(std::string str) {
+    replaceInString(str, "inviwo::", "");
 #if defined(__clang__) || defined(__GNUC__)
     struct handle {
         char* p;
@@ -98,7 +99,6 @@ std::string parseTypeIdName(std::string str) {
 #endif
     replaceInString(str, "class", "");
     replaceInString(str, "const", "");
-    replaceInString(str, "inviwo::", "");
 #if defined(_WIN64) || defined(__x86_64__) || defined(__ppc64)
     replaceInString(str, "__ptr64", "");
 #endif
