@@ -31,11 +31,12 @@
  *********************************************************************************/
 
 #include <inviwo/qt/widgets/properties/propertysettingswidgetqt.h>
+#include <inviwo/qt/widgets/inviwoapplicationqt.h>
 
 namespace inviwo {
 
 PropertySettingsWidgetQt::PropertySettingsWidgetQt(Property* property, QWidget* parent)
-    : QWidget(parent)
+    : QWidget(NULL) // Adding the parent here make the widget not appear... /Peter
     , property_(property)
     , floatProperty_(NULL)
     , intProperty_(NULL)
@@ -96,7 +97,6 @@ PropertySettingsWidgetQt::PropertySettingsWidgetQt(Property* property, QWidget* 
     generateWidget();
     this->setWindowFlags(Qt::WindowStaysOnTopHint);
     this->setWindowModality(Qt::ApplicationModal);
-    //this->setFixedSize(300,125);
 }
 
 #define DELETE_LATER(prop) if(prop) delete prop;
