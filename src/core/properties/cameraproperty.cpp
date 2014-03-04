@@ -150,7 +150,7 @@ void CameraProperty::setProjectionMatrix(float fovy, float aspect, float nearPla
 }
 
 void CameraProperty::updateProjectionMatrix() {
-    projectionMatrix_ = glm::perspective(fovy_.get(), aspectRatio_.get(), getNearPlaneDist(), getFarPlaneDist());
+    projectionMatrix_ = glm::perspective(glm::radians(fovy_.get()), aspectRatio_.get(), getNearPlaneDist(), getFarPlaneDist());
     inverseProjectionMatrix_ = glm::inverse(projectionMatrix_);
     invalidate();
 }

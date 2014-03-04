@@ -271,7 +271,7 @@ void Trackball::rotateCamera(MouseEvent* mouseEvent) {
         //glEnd();
 
         // obtain rotation axis
-        if (rotationAngle > pixelWidth_) {
+        if (glm::degrees(rotationAngle) > pixelWidth_) {
             //rotation axis
             vec3 rotationAxis = glm::cross(currentCamPos, nextCamPos);
             // generate quaternion and rotate camera
@@ -398,7 +398,7 @@ void Trackball::stepRotateCamera(Direction dir) {
     vec3 nextCamPos = currentCamPos + mappedTrackBallOffsetVector;
 
     // obtain rotation axis
-    if (rotationAngle > pixelWidth_) {
+    if (glm::degrees(rotationAngle) > pixelWidth_) {
         //rotation axis
         vec3 rotationAxis = glm::cross(currentCamPos, nextCamPos);
         // generate quaternion and rotate camera
