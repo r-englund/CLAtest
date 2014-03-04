@@ -145,9 +145,9 @@ void VolumeSource::dataLoaded(Volume* volume) {
     vec3 c(volume->getBasis()[2]);
     vec3 offset(volume->getOffset());
 
-    float alpha = glm::angle(b, c);
-    float beta = glm::angle(c, a);
-    float gamma = glm::angle(a, b);
+    float alpha = glm::degrees(glm::angle(b, c));
+    float beta = glm::degrees(glm::angle(c, a));
+    float gamma = glm::degrees(glm::angle(a, b));
 
     lengths_.setMaxValue(vec3(2.0f * (glm::length(a) + glm::length(b) + glm::length(c))));
     offset_.setMaxValue(vec3(5.0*glm::length(offset)));
