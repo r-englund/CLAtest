@@ -47,6 +47,7 @@ public:
     * Override it to add behavior.
     */
     virtual void onProcessorNetworkChange() {};
+    virtual void onProcessorNetworkEvaluateRequest() {};
 };
 
 class IVW_CORE_API ProcessorNetworkObservable: public Observable<ProcessorNetworkObserver> {
@@ -54,6 +55,7 @@ public:
     ProcessorNetworkObservable(): Observable<ProcessorNetworkObserver>() {};
 
     void notifyProcessorNetworkObservers() const;
+    void notifyProcessorNetworkEvaluateRequestObservers() const;
 };
 
 } // namespace

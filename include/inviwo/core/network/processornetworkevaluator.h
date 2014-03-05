@@ -71,7 +71,7 @@ public:
     Processor* retrieveCanvasProcessor(Canvas* canvas);
 
     void onProcessorInvalidationEnd(Processor*);
-    void onProcessorNetworkChange();
+    void onProcessorNetworkEvaluateRequest();
 
     static ProcessorNetworkEvaluator* getProcessorNetworkEvaluatorForProcessorNetwork(ProcessorNetwork* network);
 
