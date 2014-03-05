@@ -49,6 +49,7 @@ class Trackball;
 class IVW_MODULE_OPENGL_API GeometryRenderProcessorGL : public ProcessorGL {
 public:
     GeometryRenderProcessorGL();
+    ~GeometryRenderProcessorGL();
 
     InviwoProcessorInfo();
 

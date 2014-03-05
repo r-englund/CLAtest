@@ -78,9 +78,13 @@ GeometryRenderProcessorGL::GeometryRenderProcessorGL()
     addProperty(polygonMode_);
 }
 
-void GeometryRenderProcessorGL::deinitialize() {
+GeometryRenderProcessorGL::~GeometryRenderProcessorGL() {
+    removeInteractionHandler(trackball_);
     delete trackball_;
+    trackball_ = NULL;
+}
 
+void GeometryRenderProcessorGL::deinitialize() {
     // Delete all renderers
     for (std::vector<GeometryRenderer*>::iterator it = renderers_.begin(), endIt = renderers_.end(); it != endIt; ++it) {
         delete *it;
