@@ -62,6 +62,8 @@ void CanvasGL::initialize() {
     glDepthFunc(GL_LEQUAL);
     glEnable(GL_COLOR_MATERIAL);
     glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
+    glEnable(GL_TEXTURE_2D);
+    glEnable(GL_TEXTURE_3D);
     LGL_ERROR;
     shader_ = new Shader("img_texturequad.frag");
     LGL_ERROR;
