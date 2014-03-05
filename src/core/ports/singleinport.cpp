@@ -49,7 +49,7 @@ SingleInport::~SingleInport() {}
 void SingleInport::connectTo(Outport* outport) {
     connectedOutport_ = outport;
     outport->connectTo(this);
-    invalidate(invalidationLevel_);
+    invalidate(PropertyOwner::INVALID_OUTPUT);
 }
 
 void SingleInport::disconnectFrom(Outport* outport) {
