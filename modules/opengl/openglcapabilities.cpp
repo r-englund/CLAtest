@@ -330,7 +330,7 @@ void OpenGLCapabilities::retrieveStaticInfo() {
     GLint numberOfSupportedVersions = 0;
     const GLubyte* glslStrByte = NULL;
 #ifdef GL_VERSION_4_3
-    if(GLEW_VERSION_4_3){
+    //if(GLEW_VERSION_4_3){
         glslStrByte = glGetString(GL_SHADING_LANGUAGE_VERSION);
         glslVersionStr_ = std::string((glslStrByte!=NULL ? reinterpret_cast<const char*>(glslStrByte) : "000"));
         glGetIntegerv(GL_NUM_SHADING_LANGUAGE_VERSIONS, &numberOfSupportedVersions);
@@ -338,7 +338,7 @@ void OpenGLCapabilities::retrieveStaticInfo() {
         for (int i=0; i<numberOfSupportedVersions; i++) {
             parseAndAddShaderVersion(toString<const GLubyte*>(glGetStringi(GL_SHADING_LANGUAGE_VERSION, i)));
         }
-    }
+    //}
 #endif
 
     if (numberOfSupportedVersions == 0) {
