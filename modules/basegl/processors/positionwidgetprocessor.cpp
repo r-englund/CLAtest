@@ -59,7 +59,14 @@ PositionWidgetProcessor::PositionWidgetProcessor()
     addInteractionHandler(new Trackball(&camera_));
 }
 
-PositionWidgetProcessor::~PositionWidgetProcessor() {}
+PositionWidgetProcessor::~PositionWidgetProcessor() {
+    const std::vector<InteractionHandler*>& interactionHandlers = getInteractionHandlers();
+    for(size_t i=0; i<interactionHandlers.size(); ++i) {
+        InteractionHandler* handler = interactionHandlers[i];
+        removeInteractionHandler(handler);
+        delete handler;
+    }
+}
 
 void PositionWidgetProcessor::initialize() {
     CompositeProcessorGL::initialize();
