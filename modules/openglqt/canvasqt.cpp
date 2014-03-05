@@ -38,6 +38,7 @@ namespace inviwo {
 inline QGLFormat GetQGLFormat() {
   QGLFormat sharedFormat = QGLFormat(QGL::Rgba | QGL::DoubleBuffer | QGL::AlphaChannel | QGL::DepthBuffer | QGL::StencilBuffer);
   sharedFormat.setProfile(QGLFormat::CompatibilityProfile);
+  sharedFormat.setVersion(10, 0);
   return sharedFormat;
 }   
 
