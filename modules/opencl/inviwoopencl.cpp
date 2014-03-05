@@ -128,8 +128,10 @@ bool OpenCL::getBestGPUDeviceOnSystem(cl::Device& bestDevice, cl::Platform& onPl
                 cl_uint tmpMaxComputeUnits;
                 devices[j].getInfo(CL_DEVICE_MAX_COMPUTE_UNITS, &tmpMaxComputeUnits);
                 cl_device_type otherDeviceType = devices[j].getInfo<CL_DEVICE_TYPE>();
-                if (maxComputeUnits < tmpMaxComputeUnits ||
-                    deviceType != CL_DEVICE_TYPE_GPU && (otherDeviceType == CL_DEVICE_TYPE_GPU)) {
+                // Select if the current device is not a GPU device
+                // or if the new one has more compute units than the previous GPU device
+                if (deviceType != CL_DEVICE_TYPE_GPU || 
+                    (otherDeviceType == CL_DEVICE_TYPE_GPU && maxComputeUnits < tmpMaxComputeUnits)) {
                     bestDevice = devices[j];
                     onPlatform = platforms[i];
                     maxComputeUnits = tmpMaxComputeUnits;
