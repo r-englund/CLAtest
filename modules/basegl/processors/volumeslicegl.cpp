@@ -74,11 +74,11 @@ VolumeSliceGL::VolumeSliceGL()
 
 VolumeSliceGL::~VolumeSliceGL() {
     const std::vector<InteractionHandler*>& interactionHandlers = getInteractionHandlers();
-    for(int i=0; i<interactionHandlers.size(); ++i) {
-        removeInteractionHandler(interactionHandlers[i]);
-        delete interactionHandlers[i];
+    for(size_t i=0; i<interactionHandlers.size(); ++i) {
+        InteractionHandler* handler = interactionHandlers[i];
+        removeInteractionHandler(handler);
+        delete handler;
     }
-    deinitialize();
 }
 
 void VolumeSliceGL::initialize() {
