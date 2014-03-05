@@ -53,7 +53,6 @@ void main() {
     int i;
     texCoord_.z = (instanceID_[0] * lightVolumeParameters_.dimensionsRCP_.z) + (0.5 * lightVolumeParameters_.dimensionsRCP_.z);
     texCoord_.w = 1.f;
-    gl_Layer = instanceID_[0];
 
     for (i = 0; i<gl_in.length(); ++i) {
         gl_Position = gl_PositionIn[i];
