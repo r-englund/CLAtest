@@ -118,6 +118,7 @@ DataRepresentation* VolumeCLGL2CLConverter::createFrom(const DataRepresentation*
     }
     return destination;
 }
+
 void VolumeCLGL2CLConverter::update(const DataRepresentation* source, DataRepresentation* destination) {
     const VolumeCLGL* volumeSrc = static_cast<const VolumeCLGL*>(source);
     VolumeCL* volumeDst = static_cast<VolumeCL*>(destination);
@@ -134,13 +135,27 @@ void VolumeCLGL2CLConverter::update(const DataRepresentation* source, DataRepres
     }
 }
 
+DataRepresentation* VolumeCLGL2GLConverter::createFrom(const DataRepresentation* source) {
+    DataRepresentation* destination = 0;
+    const VolumeCLGL* src = static_cast<const VolumeCLGL*>(source);
+    Texture3D* tex = const_cast<Texture3D*>(src->getTexture());
+    destination = new VolumeGL(src->getDimension(), src->getDataFormat(), const_cast<Texture3D*>(src->getTexture()));
+    // Increase reference count to indicate that LayerGL is also using the texture
+    tex->increaseRefCount();
+    return destination;
+}
 
+void VolumeCLGL2GLConverter::update(const DataRepresentation* source, DataRepresentation* destination) {
+    // Do nothing since they share data
+}
 
-VolumeCL2CLGLConverter::VolumeCL2CLGLConverter() : RepresentationConverterPackage<VolumeCLGL>()
-{
+VolumeCL2CLGLConverter::VolumeCL2CLGLConverter() : RepresentationConverterPackage<VolumeCLGL>() {
     addConverter(new VolumeCL2RAMConverter());
     addConverter(new VolumeRAM2GLConverter());
     addConverter(new VolumeGL2CLGLConverter());
 }
+
+
+
 
 } // namespace

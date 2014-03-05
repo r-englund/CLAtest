@@ -91,6 +91,18 @@ public:
     void update(const DataRepresentation* source, DataRepresentation* destination);
 };
 
+class IVW_MODULE_OPENCL_API VolumeCLGL2GLConverter : public RepresentationConverterType<VolumeGL> {
+public:
+    VolumeCLGL2GLConverter() : RepresentationConverterType<VolumeGL>() {};
+    virtual ~VolumeCLGL2GLConverter() {};
+
+    inline bool canConvertFrom(const DataRepresentation* source) const {
+        return dynamic_cast<const VolumeCLGL*>(source) != NULL;
+    }
+    DataRepresentation* createFrom(const DataRepresentation* source);
+    void update(const DataRepresentation* source, DataRepresentation* destination);
+};
+
 class IVW_MODULE_OPENCL_API VolumeCL2CLGLConverter : public RepresentationConverterPackage<VolumeCLGL> {
 public:
     VolumeCL2CLGLConverter();
