@@ -37,6 +37,7 @@
 #include <inviwo/core/datastructures/volume/volumeram.h>
 #include <inviwo/core/datastructures/volume/volumeramconverter.h>
 #include <inviwo/core/datastructures/volume/volumedisk.h>
+#include <modules/opengl/volume/volumeglconverter.h>
 #include <modules/opencl/volume/volumecl.h>
 
 namespace inviwo {
@@ -77,7 +78,25 @@ public:
     void update(const DataRepresentation* source, DataRepresentation* destination);
 };
 
+class IVW_MODULE_OPENCL_API VolumeGL2CLConverter : public RepresentationConverterPackage<VolumeCL> {
 
+public:
+    VolumeGL2CLConverter() : RepresentationConverterPackage<VolumeCL>() {
+        addConverter(new VolumeGL2RAMConverter());
+        addConverter(new VolumeRAM2CLConverter());
+    };
+    virtual ~VolumeGL2CLConverter() {};
+};
+
+class IVW_MODULE_OPENCL_API VolumeCL2GLConverter : public RepresentationConverterPackage<VolumeGL> {
+
+public:
+    VolumeCL2GLConverter() : RepresentationConverterPackage<VolumeGL>() {
+        addConverter(new VolumeCL2RAMConverter());
+        addConverter(new VolumeRAM2GLConverter());
+    };
+    virtual ~VolumeCL2GLConverter() {};
+};
 
 } // namespace
 

@@ -82,6 +82,8 @@ OpenCLModule::OpenCLModule() : InviwoModule(), btnOpenCLInfo_("printOpenCLInfo",
     registerRepresentationConverter(new VolumeDisk2CLConverter());
     registerRepresentationConverter(new VolumeRAM2CLConverter());
     registerRepresentationConverter(new VolumeCL2RAMConverter());
+    registerRepresentationConverter(new VolumeGL2CLConverter());
+    registerRepresentationConverter(new VolumeCL2GLConverter());
     // VolumeCLGL
     registerRepresentationConverter(new VolumeDisk2CLGLConverter());
     registerRepresentationConverter(new VolumeRAM2CLGLConverter());
@@ -89,6 +91,7 @@ OpenCLModule::OpenCLModule() : InviwoModule(), btnOpenCLInfo_("printOpenCLInfo",
     registerRepresentationConverter(new VolumeCL2CLGLConverter());
     registerRepresentationConverter(new VolumeCLGL2RAMConverter());
     registerRepresentationConverter(new VolumeCLGL2CLConverter());
+    registerRepresentationConverter(new VolumeCLGL2GLConverter());
     registerRepresentationConverter(new VolumeGL2CLGLConverter());
     registerCapabilities(new OpenCLCapabilities());
     registerSettings(new OpenCLSettings());
