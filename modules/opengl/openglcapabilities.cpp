@@ -329,16 +329,15 @@ void OpenGLCapabilities::retrieveStaticInfo() {
     shadersAreSupportedARB_ = isExtensionSupported("GL_ARB_fragment_program");
     GLint numberOfSupportedVersions = 0;
     const GLubyte* glslStrByte = NULL;
-#ifdef GLEW_VERSION_4_3
-    glslStrByte = glGetString(GL_SHADING_LANGUAGE_VERSION);
-    glslVersionStr_ = std::string((glslStrByte!=NULL ? reinterpret_cast<const char*>(glslStrByte) : "000"));
-    glGetIntegerv(GL_NUM_SHADING_LANGUAGE_VERSIONS, &numberOfSupportedVersions);
+    if(GLEW_VERSION_4_3){
+        glslStrByte = glGetString(GL_SHADING_LANGUAGE_VERSION);
+        glslVersionStr_ = std::string((glslStrByte!=NULL ? reinterpret_cast<const char*>(glslStrByte) : "000"));
+        glGetIntegerv(GL_NUM_SHADING_LANGUAGE_VERSIONS, &numberOfSupportedVersions);
 
-    for (int i=0; i<numberOfSupportedVersions; i++) {
-        parseAndAddShaderVersion(toString<const GLubyte*>(glGetStringi(GL_SHADING_LANGUAGE_VERSION, i)));
+        for (int i=0; i<numberOfSupportedVersions; i++) {
+            parseAndAddShaderVersion(toString<const GLubyte*>(glGetStringi(GL_SHADING_LANGUAGE_VERSION, i)));
+        }
     }
-
-#endif
 
     if (numberOfSupportedVersions == 0) {
         if (isShadersSupported())
@@ -350,46 +349,46 @@ void OpenGLCapabilities::retrieveStaticInfo() {
         int glslVersion = parseAndRetrieveShaderVersion(glslVersionStr_);
 
         if (glslVersion != 0) {
-#ifdef GLEW_VERSION_4_4
-            addShaderVersionIfEqualOrLower(GLSLShaderVersion(440, "core"), glslVersion);
-            addShaderVersionIfEqualOrLower(GLSLShaderVersion(440, "compatibility"), glslVersion);
-#endif
-#ifdef GLEW_VERSION_4_3
-            addShaderVersionIfEqualOrLower(GLSLShaderVersion(430, "core"), glslVersion);
-            addShaderVersionIfEqualOrLower(GLSLShaderVersion(430, "compatibility"), glslVersion);
-#endif
-#ifdef GLEW_VERSION_4_2
-            addShaderVersionIfEqualOrLower(GLSLShaderVersion(420, "core"), glslVersion);
-            addShaderVersionIfEqualOrLower(GLSLShaderVersion(420, "compatibility"), glslVersion);
-#endif
-#ifdef GLEW_VERSION_4_1
-            addShaderVersionIfEqualOrLower(GLSLShaderVersion(410, "core"), glslVersion);
-            addShaderVersionIfEqualOrLower(GLSLShaderVersion(410, "compatibility"), glslVersion);
-#endif
-#ifdef GLEW_VERSION_4_0
-            addShaderVersionIfEqualOrLower(GLSLShaderVersion(400, "core"), glslVersion);
-            addShaderVersionIfEqualOrLower(GLSLShaderVersion(400, "compatibility"), glslVersion);
-#endif
-#ifdef GLEW_VERSION_3_3
-            addShaderVersionIfEqualOrLower(GLSLShaderVersion(330, "core"), glslVersion);
-            addShaderVersionIfEqualOrLower(GLSLShaderVersion(330, "compatibility"), glslVersion);
-#endif
-#ifdef GLEW_VERSION_3_2
-            addShaderVersionIfEqualOrLower(GLSLShaderVersion(150, "core"), glslVersion);
-            addShaderVersionIfEqualOrLower(GLSLShaderVersion(150, "compatibility"), glslVersion);
-#endif
-#ifdef GLEW_VERSION_3_1
-            addShaderVersionIfEqualOrLower(GLSLShaderVersion(140), glslVersion);
-#endif
-#ifdef GLEW_VERSION_3_0
-            addShaderVersionIfEqualOrLower(GLSLShaderVersion(130), glslVersion);
-#endif
-#ifdef GLEW_VERSION_2_1
-            addShaderVersionIfEqualOrLower(GLSLShaderVersion(120), glslVersion);
-#endif
-#ifdef GLEW_VERSION_2_0
-            addShaderVersionIfEqualOrLower(GLSLShaderVersion(110), glslVersion);
-#endif
+            if(GLEW_VERSION_4_4){
+                addShaderVersionIfEqualOrLower(GLSLShaderVersion(440, "core"), glslVersion);
+                addShaderVersionIfEqualOrLower(GLSLShaderVersion(440, "compatibility"), glslVersion);
+            }
+            if(GLEW_VERSION_4_3){
+                addShaderVersionIfEqualOrLower(GLSLShaderVersion(430, "core"), glslVersion);
+                addShaderVersionIfEqualOrLower(GLSLShaderVersion(430, "compatibility"), glslVersion);
+            }
+            if(GLEW_VERSION_4_2){
+                addShaderVersionIfEqualOrLower(GLSLShaderVersion(420, "core"), glslVersion);
+                addShaderVersionIfEqualOrLower(GLSLShaderVersion(420, "compatibility"), glslVersion);
+            }
+            if(GLEW_VERSION_4_1){
+                addShaderVersionIfEqualOrLower(GLSLShaderVersion(410, "core"), glslVersion);
+                addShaderVersionIfEqualOrLower(GLSLShaderVersion(410, "compatibility"), glslVersion);
+            }
+            if(GLEW_VERSION_4_0){
+                addShaderVersionIfEqualOrLower(GLSLShaderVersion(400, "core"), glslVersion);
+                addShaderVersionIfEqualOrLower(GLSLShaderVersion(400, "compatibility"), glslVersion);
+            }
+            if(GLEW_VERSION_3_3){
+                addShaderVersionIfEqualOrLower(GLSLShaderVersion(330, "core"), glslVersion);
+                addShaderVersionIfEqualOrLower(GLSLShaderVersion(330, "compatibility"), glslVersion);
+            }
+            if(GLEW_VERSION_3_2){
+                addShaderVersionIfEqualOrLower(GLSLShaderVersion(150, "core"), glslVersion);
+                addShaderVersionIfEqualOrLower(GLSLShaderVersion(150, "compatibility"), glslVersion);
+            }
+            if(GLEW_VERSION_3_1){
+                addShaderVersionIfEqualOrLower(GLSLShaderVersion(140), glslVersion);
+            }
+            if(GLEW_VERSION_3_0){
+                addShaderVersionIfEqualOrLower(GLSLShaderVersion(130), glslVersion);
+            }
+            if(GLEW_VERSION_2_1){
+                addShaderVersionIfEqualOrLower(GLSLShaderVersion(120), glslVersion);
+            }
+            if(GLEW_VERSION_2_0){
+                addShaderVersionIfEqualOrLower(GLSLShaderVersion(110), glslVersion);
+            }
         }
     }
 
