@@ -93,6 +93,7 @@ void MappingWidget::updateWidget() {
     comboBox_->clear();
     std::vector<EventProperty*> eventProperties, tmp;
     std::map<std::string, std::vector<EventProperty*> >* eventPropertyMap = eventPropertyManager_->getEventPropertyMap();
+    eventPropertyMap->clear();
     PropertyOwner* eventPropertyOwner;
 
     // Get all eventproperties from the processornetwork
