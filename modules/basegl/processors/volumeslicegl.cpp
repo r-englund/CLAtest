@@ -72,7 +72,14 @@ VolumeSliceGL::VolumeSliceGL()
     addInteractionHandler(new VolumeSliceGLInteractationHandler(this));
 }
 
-VolumeSliceGL::~VolumeSliceGL() {}
+VolumeSliceGL::~VolumeSliceGL() {
+    const std::vector<InteractionHandler*>& interactionHandlers = getInteractionHandlers();
+    for(int i=0; i<interactionHandlers.size(); ++i) {
+        removeInteractionHandler(interactionHandlers[i]);
+        delete interactionHandlers[i];
+    }
+    deinitialize();
+}
 
 void VolumeSliceGL::initialize() {
     ProcessorGL::initialize();

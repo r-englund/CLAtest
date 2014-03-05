@@ -65,8 +65,10 @@ EntryExitPoints::EntryExitPoints()
 }
 
 EntryExitPoints::~EntryExitPoints() {
-    deinitialize();
+    removeInteractionHandler(trackball_);
     delete trackball_;
+    trackball_ = NULL;
+    deinitialize();
 }
 
 

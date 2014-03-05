@@ -92,7 +92,7 @@ void MappingWidget::updateWidget() {
 
     comboBox_->clear();
     std::vector<EventProperty*> eventProperties, tmp;
-    std::vector<InteractionHandler*> interactionHandlers;
+    const std::vector<InteractionHandler*>& interactionHandlers;
     std::map<std::string, std::vector<EventProperty*> >* eventPropertyMap = eventPropertyManager_->getEventPropertyMap();
     PropertyOwner* eventPropertyOwner;
 
