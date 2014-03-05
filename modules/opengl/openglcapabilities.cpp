@@ -329,7 +329,7 @@ void OpenGLCapabilities::retrieveStaticInfo() {
     shadersAreSupportedARB_ = isExtensionSupported("GL_ARB_fragment_program");
     GLint numberOfSupportedVersions = 0;
     const GLubyte* glslStrByte = NULL;
-#ifdef GLEW_VERSION_4_3
+#ifdef GL_VERSION_4_3
     if(GLEW_VERSION_4_3){
         glslStrByte = glGetString(GL_SHADING_LANGUAGE_VERSION);
         glslVersionStr_ = std::string((glslStrByte!=NULL ? reinterpret_cast<const char*>(glslStrByte) : "000"));
@@ -351,64 +351,64 @@ void OpenGLCapabilities::retrieveStaticInfo() {
         int glslVersion = parseAndRetrieveShaderVersion(glslVersionStr_);
 
         if (glslVersion != 0) {
-#ifdef GLEW_VERSION_4_4
+#ifdef GL_VERSION_4_4
             if(GLEW_VERSION_4_4){
                 addShaderVersionIfEqualOrLower(GLSLShaderVersion(440, "core"), glslVersion);
                 addShaderVersionIfEqualOrLower(GLSLShaderVersion(440, "compatibility"), glslVersion);
             }
 #endif
-#ifdef GLEW_VERSION_4_3
+#ifdef GL_VERSION_4_3
             if(GLEW_VERSION_4_3){
                 addShaderVersionIfEqualOrLower(GLSLShaderVersion(430, "core"), glslVersion);
                 addShaderVersionIfEqualOrLower(GLSLShaderVersion(430, "compatibility"), glslVersion);
             }
 #endif
-#ifdef GLEW_VERSION_4_2
+#ifdef GL_VERSION_4_2
             if(GLEW_VERSION_4_2){
                 addShaderVersionIfEqualOrLower(GLSLShaderVersion(420, "core"), glslVersion);
                 addShaderVersionIfEqualOrLower(GLSLShaderVersion(420, "compatibility"), glslVersion);
             }
 #endif
-#ifdef GLEW_VERSION_4_1
+#ifdef GL_VERSION_4_1
             if(GLEW_VERSION_4_1){
                 addShaderVersionIfEqualOrLower(GLSLShaderVersion(410, "core"), glslVersion);
                 addShaderVersionIfEqualOrLower(GLSLShaderVersion(410, "compatibility"), glslVersion);
             }
 #endif
-#ifdef GLEW_VERSION_4_0
+#ifdef GL_VERSION_4_0
             if(GLEW_VERSION_4_0){
                 addShaderVersionIfEqualOrLower(GLSLShaderVersion(400, "core"), glslVersion);
                 addShaderVersionIfEqualOrLower(GLSLShaderVersion(400, "compatibility"), glslVersion);
             }
 #endif
-#ifdef GLEW_VERSION_3_3
+#ifdef GL_VERSION_3_3
             if(GLEW_VERSION_3_3){
                 addShaderVersionIfEqualOrLower(GLSLShaderVersion(330, "core"), glslVersion);
                 addShaderVersionIfEqualOrLower(GLSLShaderVersion(330, "compatibility"), glslVersion);
             }
 #endif
-#ifdef GLEW_VERSION_3_2
+#ifdef GL_VERSION_3_2
             if(GLEW_VERSION_3_2){
                 addShaderVersionIfEqualOrLower(GLSLShaderVersion(150, "core"), glslVersion);
                 addShaderVersionIfEqualOrLower(GLSLShaderVersion(150, "compatibility"), glslVersion);
             }
 #endif
-#ifdef GLEW_VERSION_3_1
+#ifdef GL_VERSION_3_1
             if(GLEW_VERSION_3_1){
                 addShaderVersionIfEqualOrLower(GLSLShaderVersion(140), glslVersion);
             }
 #endif
-#ifdef GLEW_VERSION_3_0
+#ifdef GL_VERSION_3_0
             if(GLEW_VERSION_3_0){
                 addShaderVersionIfEqualOrLower(GLSLShaderVersion(130), glslVersion);
             }
 #endif
-#ifdef GLEW_VERSION_2_1
+#ifdef GL_VERSION_2_1
             if(GLEW_VERSION_2_1){
                 addShaderVersionIfEqualOrLower(GLSLShaderVersion(120), glslVersion);
             }
 #endif
-#ifdef GLEW_VERSION_2_0
+#ifdef GL_VERSION_2_0
             if(GLEW_VERSION_2_0){
                 addShaderVersionIfEqualOrLower(GLSLShaderVersion(110), glslVersion);
             }
@@ -440,7 +440,7 @@ void OpenGLCapabilities::retrieveStaticInfo() {
     }
 
     //Texturing
-#ifdef GLEW_VERSION_1_1
+#ifdef GL_VERSION_1_1
 if(GLEW_VERSION_1_1){
     texSupported_ = true;
     glGetIntegerv(GL_MAX_TEXTURE_SIZE, (GLint*)&maxTexSize_);
@@ -448,10 +448,10 @@ if(GLEW_VERSION_1_1){
 #endif
     texSupported_ = isExtensionSupported("GL_EXT_texture");
     maxTexSize_ = 0;
-#ifdef GLEW_VERSION_1_1
+#ifdef GL_VERSION_1_1
 }
 #endif
-#ifdef GLEW_VERSION_1_2
+#ifdef GL_VERSION_1_2
 if(GLEW_VERSION_1_2){
     tex3DSupported_ = true;
     glGetIntegerv(GL_MAX_3D_TEXTURE_SIZE, (GLint*)&max3DTexSize_);
@@ -463,10 +463,10 @@ if(GLEW_VERSION_1_2){
         glGetIntegerv(GL_MAX_3D_TEXTURE_SIZE_EXT, (GLint*)&max3DTexSize_);
     else
         max3DTexSize_ = 0;
-#ifdef GLEW_VERSION_1_2
+#ifdef GL_VERSION_1_2
 }
 #endif
-#ifdef GLEW_VERSION_3_0
+#ifdef GL_VERSION_3_0
 if(GLEW_VERSION_3_0){
     texArraySupported_ = true;
     glGetIntegerv(GL_MAX_ARRAY_TEXTURE_LAYERS, (GLint*)&maxArrayTexSize_);
@@ -478,7 +478,7 @@ if(GLEW_VERSION_3_0){
         glGetIntegerv(GL_MAX_ARRAY_TEXTURE_LAYERS_EXT, (GLint*)&maxArrayTexSize_);
     else
         maxArrayTexSize_ = 0;
-#ifdef GLEW_VERSION_3_0
+#ifdef GL_VERSION_3_0
 }
 #endif
     numTexUnits_ = -1;
