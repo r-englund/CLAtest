@@ -92,7 +92,6 @@ std::vector<Processor*> Outport::getDirectSuccessors() {
 void Outport::connectTo(Inport* inport) {
     if (std::find(connectedInports_.begin(), connectedInports_.end(), inport) == connectedInports_.end()) {
         connectedInports_.push_back(inport);
-        Port::invalidate(invalidationLevel_);
     }
 }
 
