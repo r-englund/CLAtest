@@ -266,7 +266,7 @@ void ProcessorNetwork::onProcessorRequestEvaluate(Processor*) {
     if (linking_)
         evaluationQueued_ = true;
     else {
-        notifyProcessorNetworkObservers();
+        notifyProcessorNetworkEvaluateRequestObservers();
         evaluationQueued_ = false;
     }
 }

@@ -326,7 +326,7 @@ void ProcessorNetworkEvaluator::onProcessorInvalidationEnd(Processor* p) {
     }
 }
 
-void ProcessorNetworkEvaluator::onProcessorNetworkChange() {
+void ProcessorNetworkEvaluator::onProcessorNetworkEvaluateRequest() {
     requestEvaluate();
 }
 
