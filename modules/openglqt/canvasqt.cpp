@@ -38,7 +38,6 @@ namespace inviwo {
 inline QGLFormat GetQGLFormat() {
   QGLFormat sharedFormat = QGLFormat(QGL::Rgba | QGL::DoubleBuffer | QGL::AlphaChannel | QGL::DepthBuffer | QGL::StencilBuffer);
   sharedFormat.setProfile(QGLFormat::CompatibilityProfile);
-  sharedFormat.setVersion(10, 0);
   return sharedFormat;
 }   
 
@@ -61,9 +60,9 @@ CanvasQt::CanvasQt(QWidget* parent, uvec2 dim)
     //Initialized once. So "THE" first object of this class will not have any shared context (or widget)
     //But Following objects, will share the context of initial object
     if (!sharedWidget_) {
+        sharedFormat_ = this->format();
         sharedWidget_ = this;
         QGLWidget::glInit();
-        sharedFormat_ = this->format();
     }
 
     setAutoBufferSwap(false);
