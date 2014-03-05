@@ -259,7 +259,7 @@ bool Processor::hasInteractionHandler() const {
     return !interactionHandlers_.empty();
 }
 
-std::vector<InteractionHandler*> Processor::getInteractionHandlers() const {
+const std::vector<InteractionHandler*>& Processor::getInteractionHandlers() const {
     return interactionHandlers_;
 }
 

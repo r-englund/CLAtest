@@ -132,7 +132,7 @@ public:
      */
     void removeInteractionHandler(InteractionHandler* interactionHandler);
     bool hasInteractionHandler() const;
-    std::vector<InteractionHandler*> getInteractionHandlers() const;
+    const std::vector<InteractionHandler*>& getInteractionHandlers() const;
     void invokeInteractionEvent(Event* event);
 
     virtual void serialize(IvwSerializer& s) const;
