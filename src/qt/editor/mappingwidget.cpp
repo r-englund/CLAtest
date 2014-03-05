@@ -92,13 +92,12 @@ void MappingWidget::updateWidget() {
 
     comboBox_->clear();
     std::vector<EventProperty*> eventProperties, tmp;
-    const std::vector<InteractionHandler*>& interactionHandlers;
     std::map<std::string, std::vector<EventProperty*> >* eventPropertyMap = eventPropertyManager_->getEventPropertyMap();
     PropertyOwner* eventPropertyOwner;
 
     // Get all eventproperties from the processornetwork
     for (size_t i = 0; i < processorsWithInteractionHandlers_->size(); ++i) {
-        interactionHandlers = processorsWithInteractionHandlers_->at(i)->getInteractionHandlers();
+        const std::vector<InteractionHandler*>& interactionHandlers = processorsWithInteractionHandlers_->at(i)->getInteractionHandlers();
 
         for (size_t j = 0; j < interactionHandlers.size(); ++j) {
             eventPropertyOwner = dynamic_cast<PropertyOwner*>(interactionHandlers.at(j));
