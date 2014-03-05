@@ -324,13 +324,14 @@ void OpenGLCapabilities::retrieveStaticInfo() {
     glRenderStr_ = std::string((glrender!=NULL ? reinterpret_cast<const char*>(glrender) : "INVALID"));
     const GLubyte* glversion = glGetString(GL_VERSION);
     glVersionStr_ = std::string((glversion!=NULL ? reinterpret_cast<const char*>(glversion) : "INVALID"));
+    int glVersion = parseAndRetrieveVersion(glVersionStr_);
     //GLSL
-    shadersAreSupported_ = isSupported("GL_VERSION_2_0");
+    shadersAreSupported_ = (glVersion >= 200);
     shadersAreSupportedARB_ = isExtensionSupported("GL_ARB_fragment_program");
     GLint numberOfSupportedVersions = 0;
     const GLubyte* glslStrByte = NULL;
 #ifdef GL_VERSION_4_3
-    if(isSupported("GL_VERSION_4_3")){
+    if(glVersion >= 430){
         glslStrByte = glGetString(GL_SHADING_LANGUAGE_VERSION);
         glslVersionStr_ = std::string((glslStrByte!=NULL ? reinterpret_cast<const char*>(glslStrByte) : "000"));
         glGetIntegerv(GL_NUM_SHADING_LANGUAGE_VERSIONS, &numberOfSupportedVersions);
@@ -348,7 +349,7 @@ void OpenGLCapabilities::retrieveStaticInfo() {
             glslStrByte = glGetString(GL_SHADING_LANGUAGE_VERSION_ARB);
 
         glslVersionStr_ = std::string((glslStrByte!=NULL ? reinterpret_cast<const char*>(glslStrByte) : "000"));
-        int glslVersion = parseAndRetrieveShaderVersion(glslVersionStr_);
+        int glslVersion = parseAndRetrieveVersion(glslVersionStr_);
 
         if (glslVersion != 0) {
 #ifdef GL_VERSION_4_4
@@ -438,16 +439,20 @@ void OpenGLCapabilities::retrieveStaticInfo() {
 
 #endif
 #ifdef GL_VERSION_3_0
-    texArraySupported_ = true;
-    glGetIntegerv(GL_MAX_ARRAY_TEXTURE_LAYERS, (GLint*)&maxArrayTexSize_);
-#else
-    texArraySupported_ = isExtensionSupported("GL_EXT_texture_array");
+    if(glVersion >= 300){
+        texArraySupported_ = true;
+        glGetIntegerv(GL_MAX_ARRAY_TEXTURE_LAYERS, (GLint*)&maxArrayTexSize_);
+    }
+    else{
+#endif
+        texArraySupported_ = isExtensionSupported("GL_EXT_texture_array");
 
-    if (isTextureArraysSupported())
-        glGetIntegerv(GL_MAX_ARRAY_TEXTURE_LAYERS_EXT, (GLint*)&maxArrayTexSize_);
-    else
-        maxArrayTexSize_ = 0;
-
+        if (isTextureArraysSupported())
+            glGetIntegerv(GL_MAX_ARRAY_TEXTURE_LAYERS_EXT, (GLint*)&maxArrayTexSize_);
+        else
+            maxArrayTexSize_ = 0;
+#ifdef GL_VERSION_3_0
+    }
 #endif
     numTexUnits_ = -1;
 
@@ -526,7 +531,7 @@ void OpenGLCapabilities::parseAndAddShaderVersion(std::string versionStr) {
     }
 }
 
-int OpenGLCapabilities::parseAndRetrieveShaderVersion(std::string versionStr) {
+int OpenGLCapabilities::parseAndRetrieveVersion(std::string versionStr) {
     //Assumes <version><space><desc>
     if (!versionStr.empty()) {
         std::vector<std::string> versionSplit = splitString(versionStr);
