@@ -73,7 +73,7 @@ void ProcessorWidgetQt::initialize() {
     QPoint appPos = app->getMainWindow()->pos();
 
 
-    if (!wholeScreenGeometry.contains(QPoint(pos.x, pos.y)) || !wholeScreenGeometry.contains(bottomRight)) { //if the widget is outside visibale screen
+    if (!wholeScreenGeometry.contains(QPoint(pos.x, pos.y)) || !wholeScreenGeometry.contains(bottomRight)) { //if the widget is outside visible screen
         pos = ivec2(appPos.x(), appPos.y());
         pos += offsetWidget();
         QWidget::move(pos.x, pos.y);
