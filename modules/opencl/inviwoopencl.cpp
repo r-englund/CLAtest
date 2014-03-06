@@ -190,6 +190,19 @@ std::vector<cl::Device> OpenCL::getAllDevices() {
     std::vector<cl::Device> allDevices;
 
     for (::size_t i = 0; i < platforms.size(); ++i) {
+        // Use a set here to get unique devices.
+        // Some weird bug on NVIDIA cards causes duplicate platforms 
+        // to be returned (when reinstalling CUDA 5.5...)
+        bool foundDuplicate = false;
+        for (::size_t j = i+1; j < platforms.size(); j++) {
+            if (platforms[i]() == platforms[j]()) {
+                foundDuplicate = true; 
+                break;
+            }
+        }
+        if (foundDuplicate) {
+            continue;
+        }
         std::vector<cl::Device> devices;
 
         try {

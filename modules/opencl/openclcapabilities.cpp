@@ -44,6 +44,10 @@ std::string imageFormatToString(const cl::ImageFormat& format) {
             order = "CL_R";
             break;
 
+        case CL_A:
+            order = "CL_A";
+            break;
+
         case CL_RG:
             order = "CL_RG";
             break;
@@ -180,31 +184,41 @@ void OpenCLCapabilities::retrieveDynamicInfo() {
 
 void OpenCLCapabilities::printInfo() {
     OpenCLCapabilities::printDeviceInfo(OpenCL::instance()->getDevice());
-    //// Supported image 2D formats
-    //std::vector<cl::ImageFormat> formats;
-    //OpenCL::instance()->getContext().getSupportedImageFormats(CL_MEM_READ_WRITE, CL_MEM_OBJECT_IMAGE2D, &formats);
-    //std::ostringstream stream;
-    ////stream << "Supported 2D READ_WRITE formats: " << imageFormatToString(formats[0]);
-    ////for(::size_t i = 1; i < formats.size(); ++i) {
-    ////    stream << ", " << imageFormatToString(formats[i]) << std::endl;
-    ////}
-    //stream << "Supported 2D READ_WRITE formats: " << std::endl;
-    //for(::size_t i = 0; i < formats.size(); ++i) {
-    //    stream << imageFormatToString(formats[i]) << std::endl;
-    //}
-    //LogInfo(stream.str())
-    //formats.clear();
-    //OpenCL::instance()->getContext().getSupportedImageFormats(CL_MEM_READ_WRITE, CL_MEM_OBJECT_IMAGE3D, &formats);
-    //stream.clear();
-    ////stream << "Supported 3D READ_WRITE formats: " << imageFormatToString(formats[0]);
-    ////for(::size_t i = 1; i < formats.size(); ++i) {
-    ////    stream << ", " << imageFormatToString(formats[i]) << std::endl;
-    ////}
-    //stream << "Supported 3D READ_WRITE formats: " << std::endl;
-    //for(::size_t i = 0; i < formats.size(); ++i) {
-    //    stream << imageFormatToString(formats[i]) << std::endl;
-    //}
-    //LogInfo(stream.str())
+    try 
+    {
+        // Supported image 2D formats
+        std::vector<cl::ImageFormat> formats;
+        OpenCL::instance()->getContext().getSupportedImageFormats(CL_MEM_READ_WRITE, CL_MEM_OBJECT_IMAGE2D, &formats);
+        {
+            std::ostringstream stream;
+            stream << "Supported 2D READ_WRITE formats: ";
+            for(::size_t i = 0; i < formats.size(); ++i) {
+                stream << imageFormatToString(formats[i]);
+                if (i != formats.size()-1) {
+                    stream << ", ";
+                }
+            }
+            stream << std::endl;
+            LogInfo(stream.str())
+        }
+        formats.clear();
+        {
+            std::ostringstream stream;
+
+            OpenCL::instance()->getContext().getSupportedImageFormats(CL_MEM_READ_WRITE, CL_MEM_OBJECT_IMAGE3D, &formats);
+            stream << "Supported 3D READ_WRITE formats: ";
+            for(::size_t i = 0; i < formats.size(); ++i) {
+                stream << imageFormatToString(formats[i]);
+                if (i != formats.size()-1) {
+                    stream << ", ";
+                }
+            }
+            LogInfo(stream.str())
+        }
+    } catch (cl::Error& e)
+    {
+        LogInfoCustom("OpenCL", "Device does not have the following info: " << e.what());
+    }
 }
 
 void OpenCLCapabilities::printDeviceInfo(const cl::Device& device) {
