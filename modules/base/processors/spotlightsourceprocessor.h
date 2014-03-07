@@ -30,22 +30,22 @@
  *
  *********************************************************************************/
 
-#ifndef IVW_POINT_LIGHT_SOURCE_PROCESSOR_H
-#define IVW_POINT_LIGHT_SOURCE_PROCESSOR_H
+#ifndef IVW_SPOT_LIGHT_SOURCE_PROCESSOR_H
+#define IVW_SPOT_LIGHT_SOURCE_PROCESSOR_H
 
 #include <modules/base/basemoduledefine.h>
 #include <inviwo/core/common/inviwo.h>
-#include <inviwo/core/datastructures/light/pointlight.h>
+#include <inviwo/core/datastructures/light/spotlight.h>
 #include <inviwo/core/ports/dataoutport.h>
 #include <inviwo/core/properties/ordinalproperty.h>
 #include <inviwo/core/processors/processor.h>
 
 namespace inviwo {
 
-class IVW_MODULE_BASE_API PointLightSourceProcessor : public Processor {
+class IVW_MODULE_BASE_API SpotLightSourceProcessor : public Processor {
 public:
-    PointLightSourceProcessor();
-    virtual ~PointLightSourceProcessor();
+    SpotLightSourceProcessor();
+    virtual ~SpotLightSourceProcessor();
 
     InviwoProcessorInfo();
 
@@ -58,7 +58,7 @@ protected:
      * @param lightSource
      * @return
      */
-    void updatePointLightSource(PointLight* lightSource);
+    void updateSpotLightSource(SpotLight* lightSource);
 
 private:
     DataOutport<LightSource> outport_;
@@ -68,10 +68,11 @@ private:
 
     FloatVec4Property lightDiffuse_;
     FloatVec3Property lightPosition_;
+    FloatProperty lightCuttOffAngle_;
 
-    PointLight* lightSource_;
+    SpotLight* lightSource_;
 };
 
 } // namespace
 
-#endif // IVW_POINT_LIGHT_SOURCE_PROCESSOR_H
+#endif // IVW_SPOT_LIGHT_SOURCE_PROCESSOR_H

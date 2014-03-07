@@ -53,7 +53,7 @@ public:
     virtual vec3 getPower() const { return getIntensity()*getArea(); }
 
 
-    LightSourceType::Enum getLightSourceType() const { return LightSourceType::LIGHT_POINT; }
+    LightSourceType::Enum getLightSourceType() const { return LightSourceType::LIGHT_CONE; }
 
     /**
      * Get world position of light source.
@@ -68,6 +68,48 @@ public:
      * @param position World position of light source.
      */
     void setPosition(const vec3& position) { position_ = position; }
+
+    /**
+     * Get normalized general direction of light source.
+     *
+     * @return Normalized direction of light source.
+     */
+    const vec3& getDirection() const { return direction_; }
+
+    /**
+     * Set normalized direction of light source.
+     *
+     * @param direction Normalized direction of light source.
+     */
+    void setDirection(const vec3& direction) { direction_ = direction; }
+
+    /**
+     * Get cut off angle of the light source.
+     *
+     * @return Cut off angle of the light source.
+     */
+    const float& getCutOffAngle() const { return cutOffAngle_; }
+
+    /**
+     * Set the cut off angle of the light source.
+     *
+     * @param angle Cut off angle of the light source.
+     */
+    void setCutOffAngle(const float& angle) { cutOffAngle_ = angle; }
+
+    /**
+     * Get cut off factor of the light source.
+     *
+     * @return Cut off factor of the light source.
+     */
+    const float& getCutOffFactor() const { return cutOffFactor_; }
+
+    /**
+     * Set the cut off factor of the light source.
+     *
+     * @param angle Cut off factor of the light source.
+     */
+    void setCutOffFactor(const float& factor) { cutOffFactor_ = factor; }
 
     /**
      * Set the intensity (color) from the light source given in watt per steradian (flux density per solid angle, W*s*r^-1).
@@ -85,6 +127,9 @@ public:
 
 protected:
     vec3 position_;
+    vec3 direction_;
+    float cutOffAngle_;
+    float cutOffFactor_;
     vec3 intensity_; // Color of light source, flux density per solid angle (given in watt per steradian W*s*r^-1)
 
 };

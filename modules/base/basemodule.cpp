@@ -40,6 +40,7 @@
 #include <modules/base/processors/meshclipping.h>
 #include <modules/base/processors/meshcreator.h>
 #include <modules/base/processors/pointlightsourceprocessor.h>
+#include <modules/base/processors/spotlightsourceprocessor.h>
 #include <modules/base/processors/volumesource.h>
 #include <modules/base/processors/volumeexport.h>
 #include <modules/base/processors/volumebasistransformer.h>
@@ -59,6 +60,7 @@ BaseModule::BaseModule() : InviwoModule() {
     registerProcessor(MeshClipping);
     registerProcessor(MeshCreator);
     registerProcessor(PointLightSourceProcessor);
+    registerProcessor(SpotLightSourceProcessor);
     registerProcessor(VolumeSource);
     registerProcessor(VolumeExport);
     registerProcessor(VolumeBasisTransformer);
