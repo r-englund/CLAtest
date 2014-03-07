@@ -462,6 +462,9 @@ void OpenGLCapabilities::retrieveStaticInfo() {
     if (getNumTexUnits() < 0)
         glGetIntegerv(GL_MAX_TEXTURE_UNITS, (GLint*)&numTexUnits_);
 
+    if(numTexUnits_<0)
+        numTexUnits_ = 0;
+
     TextureUnit::initialize(numTexUnits_);
     //FBO
     fboSupported_ = isExtensionSupported("GL_EXT_framebuffer_object");
