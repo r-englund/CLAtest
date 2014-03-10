@@ -53,6 +53,8 @@ public:
 
     virtual std::string getClassName() const { return "LayerGL"; }
 
+    virtual void setDimension(uvec2 dimensions) { resize(dimensions); }
+
     void bindTexture(GLenum texUnit) const;
     void unbindTexture() const;
 
