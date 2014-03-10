@@ -90,8 +90,8 @@ void VolumeFirstHitCL::process() {
     uvec3 volumeDim = volumePort_.getData()->getDimension();
     float stepSize = 1.f/(samplingRate_.get()*static_cast<float>(std::max(volumeDim.x, std::max(volumeDim.y, volumeDim.z))));
     svec2 localWorkGroupSize(workGroupSize_.get());
-    svec2 globalWorkGroupSize(getGlobalWorkGroupSize(entryPort_.getData()->getDimension().x, localWorkGroupSize.x),
-                              getGlobalWorkGroupSize(entryPort_.getData()->getDimension().y, localWorkGroupSize.y));
+    svec2 globalWorkGroupSize(getGlobalWorkGroupSize(entryPort_.getDimension().x, localWorkGroupSize.x),
+                              getGlobalWorkGroupSize(entryPort_.getDimension().y, localWorkGroupSize.y));
 #if IVW_PROFILING
     cl::Event* profilingEvent = new cl::Event();
 #else
