@@ -68,7 +68,9 @@ private:
 
     FloatVec4Property lightDiffuse_;
     FloatVec3Property lightPosition_;
-    FloatProperty lightCuttOffAngle_;
+
+    FloatProperty lightConeRadiusAngle_;
+    FloatProperty lightFallOffAngle_;
 
     SpotLight* lightSource_;
 };

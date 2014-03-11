@@ -45,16 +45,19 @@ SpotLightSourceProcessor::SpotLightSourceProcessor()
     , lightSize_("lightSize", "Light size", vec2(1.5f, 1.5f), vec2(0.0f, 0.0f), vec2(3.0f, 3.0f))
     , lightDiffuse_("lightDiffuse", "Color", vec4(1.0f))
     , lightPosition_("lightPosition", "Light Source Position", vec3(1.f, 0.65f, 0.65f), vec3(-1.f), vec3(1.f)) 
-    , lightCuttOffAngle_("lightCuttOffAngle", "Light Cut Off Angle", 30.f, 5.f, 90.f) {
+    , lightConeRadiusAngle_("lightConeRadiusAngle", "Light Cone Radius Angle", 30.f, 1.f, 90.f)
+    , lightFallOffAngle_("lightFallOffAngle", "Light Fall Off Angle", 5.f, 0.f, 30.f){
     addPort(outport_);
     addProperty(lightPosition_);
-    addProperty(lightCuttOffAngle_);
+    addProperty(lightConeRadiusAngle_);
+    addProperty(lightFallOffAngle_);
     addProperty(lightDiffuse_);
     addProperty(lightPowerProp_);
     addProperty(lightSize_);
     // assign lighting properties to property group
     lightPosition_.setGroupID("lighting");
-    lightCuttOffAngle_.setGroupID("lighting");
+    lightConeRadiusAngle_.setGroupID("lighting");
+    lightFallOffAngle_.setGroupID("lighting");
     lightDiffuse_.setGroupID("lighting");
     lightPowerProp_.setGroupID("lighting");
     lightSize_.setGroupID("lighting");
@@ -83,8 +86,8 @@ void SpotLightSourceProcessor::updateSpotLightSource(SpotLight* lightSource) {
     lightSource->setIntensity(lightPowerProp_.get()*diffuseLight);
     lightSource->setPosition(lightPosition_.get());
     lightSource->setDirection(dir);
-    lightSource->setCutOffAngle(lightCuttOffAngle_.get());
-    lightSource->setCutOffFactor(glm::cos<float>(glm::radians(lightCuttOffAngle_.get())));
+    lightSource->setConeRadiusAngle(lightConeRadiusAngle_.get());
+    lightSource->setConeFallOffAngle(lightFallOffAngle_.get());
 }
 
 } // namespace

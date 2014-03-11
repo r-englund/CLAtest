@@ -84,32 +84,32 @@ public:
     void setDirection(const vec3& direction) { direction_ = direction; }
 
     /**
-     * Get cut off angle of the light source.
+     * Get cone radius angle of the light source.
      *
-     * @return Cut off angle of the light source.
+     * @return Cone radius angle of the light source.
      */
-    const float& getCutOffAngle() const { return cutOffAngle_; }
+    const float& getConeRadiusAngle() const { return coneRadiusAngle_; }
 
     /**
-     * Set the cut off angle of the light source.
+     * Set the cone radius angle of the light source.
      *
-     * @param angle Cut off angle of the light source.
+     * @param angle Cone radius angle of the light source.
      */
-    void setCutOffAngle(const float& angle) { cutOffAngle_ = angle; }
+    void setConeRadiusAngle(const float& angle) { coneRadiusAngle_ = angle; }
 
     /**
-     * Get cut off factor of the light source.
+     * Get fall off angle of the light source.
      *
-     * @return Cut off factor of the light source.
+     * @return Fall off angle of the light source.
      */
-    const float& getCutOffFactor() const { return cutOffFactor_; }
+    const float& getConeFallOffAngle() const { return coneFallOffAngle_; }
 
     /**
-     * Set the cut off factor of the light source.
+     * Set the fall off angle of the light source.
      *
-     * @param angle Cut off factor of the light source.
+     * @param angle Fall off angle of the light source.
      */
-    void setCutOffFactor(const float& factor) { cutOffFactor_ = factor; }
+    void setConeFallOffAngle(const float& angle) { coneFallOffAngle_ = angle; }
 
     /**
      * Set the intensity (color) from the light source given in watt per steradian (flux density per solid angle, W*s*r^-1).
@@ -125,11 +125,25 @@ public:
      */
     const vec3& getIntensity() const { return intensity_; }
 
+    /**
+     * Get value for checking full visibility (inside cone angle) against the light source.
+     *
+     * @return Value for checking full visibility (inside cone angle against the light source.
+     */
+    float getFullVisbilityValue() const { return glm::cos<float>(glm::radians(coneRadiusAngle_)); }
+
+    /**
+     * Get value for checking partial visibility (inside cone + falloff angle) against the light source.
+     *
+     * @return Value for checking partial visibility (inside cone + falloff angle) against the light source.
+     */
+    float getPartialVisbilityValue() const { return glm::cos<float>(glm::radians(coneRadiusAngle_+coneFallOffAngle_)); }
+
 protected:
     vec3 position_;
     vec3 direction_;
-    float cutOffAngle_;
-    float cutOffFactor_;
+    float coneRadiusAngle_;
+    float coneFallOffAngle_;
     vec3 intensity_; // Color of light source, flux density per solid angle (given in watt per steradian W*s*r^-1)
 
 };
