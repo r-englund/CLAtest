@@ -35,7 +35,7 @@
 
 namespace inviwo {
 
-#ifdef GL_VERSION_3_3
+#if GL_VERSION_3_3 && GL_ARB_timer_query
 ClockGL::ClockGL() {
     // Note that this can take
     // Generate start and end queries
