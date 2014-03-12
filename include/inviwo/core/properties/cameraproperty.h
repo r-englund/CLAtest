@@ -102,8 +102,6 @@ public:
     virtual std::string getClassName()  const { return "CameraProperty"; }
 
     void setInport(Inport* inport);
-    void fitCameraToVolume(const Volume* volume);
-    void fitCameraToGeomtry(const Geometry* volume);
     void fitWithBasis(const mat3& basis);
     void inportChanged();
 

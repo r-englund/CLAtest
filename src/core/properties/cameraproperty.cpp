@@ -55,7 +55,7 @@ CameraProperty::CameraProperty(std::string identifier, std::string displayName,
     , lockInvalidation_(false)
     , inport_(inport)
     , data_(0)
-    , oldBasis_(2)
+    , oldBasis_(0)
     , initialEye_(eye)
     , initialCenter_(center)
     , initialUp_(lookUp)
@@ -211,15 +211,6 @@ void CameraProperty::setInport(Inport* inport) {
     inport_ = inport;
 }
 
-void CameraProperty::fitCameraToVolume(const Volume* volume) {
-    mat3 newBasis = volume->getBasis();
-    fitWithBasis(newBasis);
-}
-
-void CameraProperty::fitCameraToGeomtry(const Geometry* geometry) {
-    mat3 newBasis = geometry->getBasis();
-    fitWithBasis(newBasis);
-}
 
 void CameraProperty::fitWithBasis(const mat3& basis) {
     lockInvalidation();
@@ -252,33 +243,20 @@ void CameraProperty::inportChanged() {
     const SpatialEntity<3>* data = 0; //using SpatialEntity since Geometry is not derived from data
 
     if (volumeInport) {
-        const Volume* newVolume = volumeInport->getData();
-        data = newVolume;
+        data = volumeInport->getData();
     } else if (geometryInport) {
-        const Geometry* newGeometry = geometryInport->getData();
-        data = newGeometry;
+        data = geometryInport->getData();
     }
 
-    if (data_ == 0) { // first time only
-        data_ = data;
-
-        if (InviwoApplication::getPtr()->getProcessorNetwork()->isDeserializing()) {
-            if (volumeInport)
-                oldBasis_ = volumeInport->getData()->getBasis();
-            else if (geometryInport)
-                oldBasis_ = geometryInport->getData()->getBasis();
-
-            return;
+    if (data_ == 0 && oldBasis_ == mat3(0.0f)) { // first time only
+        if (volumeInport) {
+            oldBasis_ = volumeInport->getData()->getBasis();
+        } else if (geometryInport) {
+            oldBasis_ = geometryInport->getData()->getBasis();
         }
-    }
-
-    if (data_ == data) // nothing changed change
-        return;
-
-    if (volumeInport)
-        fitCameraToVolume(volumeInport->getData());
-    else if (geometryInport)
-        fitCameraToGeomtry(geometryInport->getData());
+    } else if (data_ != data) {
+        fitWithBasis(data->getBasis());
+    } 
 
     data_ = data;
 }
