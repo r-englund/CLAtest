@@ -7,6 +7,7 @@ ivw_module(OpenGL)
 set(HEADER_FILES
     ${IVW_MODULE_DIR}/opengl/canvasgl.h
     ${IVW_MODULE_DIR}/opengl/canvasprocessorgl.h
+    ${IVW_MODULE_DIR}/opengl/clockgl.h
     ${IVW_MODULE_DIR}/opengl/glformats.h
     ${IVW_MODULE_DIR}/opengl/inviwoopengl.h
     ${IVW_MODULE_DIR}/opengl/openglcapabilities.h
@@ -48,6 +49,7 @@ ivw_group("Header Files" ${HEADER_FILES})
 #--------------------------------------------------------------------
 # Add source files
 set(SOURCE_FILES
+    ${IVW_MODULE_DIR}/opengl/clockgl.cpp
     ${IVW_MODULE_DIR}/opengl/canvasgl.cpp
     ${IVW_MODULE_DIR}/opengl/canvasprocessorgl.cpp
     ${IVW_MODULE_DIR}/opengl/inviwoopengl.cpp
