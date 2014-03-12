@@ -42,12 +42,8 @@ namespace inviwo {
 TransferFunctionPropertyDialog::TransferFunctionPropertyDialog(TransferFunctionProperty* tfProperty, QWidget* parent)
     : PropertyEditorWidgetQt("Transfer Function", parent), TransferFunctionObserver()
     , tfProperty_(tfProperty)
-    , tfPixmap_(NULL)
-{
-    std::string processorName = (dynamic_cast<Processor*>(tfProperty_->getOwner()))->getIdentifier();
-    QString windowTitle = QString::fromStdString("Transfer Function (")+
-                          QString::fromStdString(processorName)+QString::fromStdString(")");
-    setWindowTitle(windowTitle);
+    , tfPixmap_(NULL) {
+
     setAllowedAreas(Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea);
     generateWidget();
     tfProperty_->get().addObserver(this);
@@ -231,6 +227,11 @@ void TransferFunctionPropertyDialog::updateTFPreview() {
 }
 
 void TransferFunctionPropertyDialog::updateFromProperty() {
+    std::string processorName = (dynamic_cast<Processor*>(tfProperty_->getOwner()))->getIdentifier();
+    QString windowTitle = QString::fromStdString(tfProperty_->getDisplayName() + " (") +
+        QString::fromStdString(processorName) + QString::fromStdString(")");
+    setWindowTitle(windowTitle);
+
     TransferFunction& transFunc = tfProperty_->get();
     QVector<QGradientStop> gradientStops;
 
@@ -325,7 +326,9 @@ void TransferFunctionPropertyDialog::importTransferFunction() {
     if (importFileDialog.exec()) {
         QString file = importFileDialog.selectedFiles().at(0);
         IvwDeserializer deserializer(file.toLocal8Bit().constData());
-        tfProperty_->deserialize(deserializer);
+        TransferFunction tf;
+        tf.deserialize(deserializer);
+        tfProperty_->set(tf);
         tfEditor_->recalculateControlPoints();
         updateFromProperty();
     }
@@ -349,7 +352,7 @@ void TransferFunctionPropertyDialog::exportTransferFunction() {
         }
 
         IvwSerializer serializer(file);
-        tfProperty_->serialize(serializer);
+        tfProperty_->get().serialize(serializer);
         serializer.writeFile();
     }
 }
