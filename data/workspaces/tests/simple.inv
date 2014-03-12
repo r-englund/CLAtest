@@ -1,55 +1,55 @@
-<?xml version="1.0" ?>
+<?xml version="1.0" encoding="utf-8"?>
 <InviwoTreeData version="1.0">
-    <!-- Don't edit the following code -->
-    <Processors>
-        <Processor type="FirstIVWProcessor" identifier="FirstIVWProcessor" id="ref0">
-            <MetaDataList>
-                <MetaData type="ProcessorMetaData">
-                    <position x="-600" y="-625" />
-                    <visibility content="1" />
-                </MetaData>
-            </MetaDataList>
-            <Properties>
-                <Property identifier="color" displayName="Color">
-                    <value x="1" y="0.55309999" z="1" />
-                    <minvalue x="0" y="0" z="0" />
-                    <maxvalue x="1" y="1" z="1" />
-                    <increment x="0.1" y="0.1" z="0.1" />
-                </Property>
-            </Properties>
-        </Processor>
-        <Processor type="CanvasGL" identifier="CanvasGL" id="ref1">
-            <MetaDataList>
-                <MetaData type="ProcessorMetaData">
-                    <position x="-650" y="-425" />
-                    <visibility content="1" />
-                </MetaData>
-                <MetaData type="ProcessorWidgetMetaData">
-                    <position x="987" y="382" />
-                    <dimension x="256" y="256" />
-                    <visibility content="1" />
-                </MetaData>
-            </MetaDataList>
-            <Properties>
-                <Property identifier="dimensions" displayName="Dimensions">
-                    <value x="256" y="256" />
-                    <minvalue x="128" y="128" />
-                    <maxvalue x="4096" y="4096" />
-                    <increment x="1" y="1" />
-                </Property>
-                <Property identifier="snapshot" displayName="Create Snapshot" />
-            </Properties>
-        </Processor>
-    </Processors>
-    <Connections>
-        <Connection>
-            <OutPort identifier="outport">
-                <Processor type="FirstIVWProcessor" identifier="FirstIVWProcessor" reference="ref0" />
-            </OutPort>
-            <InPort identifier="inport">
-                <Processor type="CanvasGL" identifier="CanvasGL" reference="ref1" />
-            </InPort>
-        </Connection>
-    </Connections>
-    <ProcessorLinks />
+ <!-- Don't edit the following code -->
+ <Processors>
+  <Processor id="ref0" identifier="FirstIVWProcessor" type="FirstIVWProcessor">
+   <MetaDataList>
+    <MetaData type="ProcessorMetaData">
+     <position x="-600" y="-625"/>
+     <visibility content="1"/>
+    </MetaData>
+   </MetaDataList>
+   <Properties>
+    <Property displayName="Color" identifier="color">
+     <value x="1" y="0.55309999" z="1"/>
+     <minvalue x="0" y="0" z="0"/>
+     <maxvalue x="1" y="1" z="1"/>
+     <increment x="0.1" y="0.1" z="0.1"/>
+    </Property>
+   </Properties>
+  </Processor>
+  <Processor id="ref1" identifier="CanvasGL" type="CanvasGL">
+   <MetaDataList>
+    <MetaData type="ProcessorMetaData">
+     <position x="-650" y="-425"/>
+     <visibility content="1"/>
+    </MetaData>
+    <MetaData type="ProcessorWidgetMetaData">
+     <position x="987" y="382"/>
+     <dimension x="256" y="256"/>
+     <visibility content="1"/>
+    </MetaData>
+   </MetaDataList>
+   <Properties>
+    <Property displayName="Dimensions" identifier="dimensions">
+     <value x="256" y="256"/>
+     <minvalue x="128" y="128"/>
+     <maxvalue x="4096" y="4096"/>
+     <increment x="1" y="1"/>
+    </Property>
+    <Property displayName="Create Snapshot" identifier="snapshot"/>
+   </Properties>
+  </Processor>
+ </Processors>
+ <Connections>
+  <Connection>
+   <OutPort identifier="outport">
+    <Processor identifier="FirstIVWProcessor" reference="ref0" type="FirstIVWProcessor"/>
+   </OutPort>
+   <InPort identifier="inport">
+    <Processor identifier="CanvasGL" reference="ref1" type="CanvasGL"/>
+   </InPort>
+  </Connection>
+ </Connections>
+ <ProcessorLinks/>
 </InviwoTreeData>

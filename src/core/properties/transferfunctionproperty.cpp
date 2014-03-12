@@ -35,13 +35,12 @@
 namespace inviwo {
 
 TransferFunctionProperty::TransferFunctionProperty(std::string identifier,
-        std::string displayName,
-        TransferFunction value,
-        VolumeInport* volumeInport,
-        PropertyOwner::InvalidationLevel invalidationLevel,
-        PropertySemantics semantics)
+                                                   std::string displayName,
+                                                   TransferFunction value,
+                                                   VolumeInport* volumeInport,
+                                                   PropertyOwner::InvalidationLevel invalidationLevel,
+                                                   PropertySemantics semantics)
     : TemplateProperty<TransferFunction>(identifier, displayName, value, invalidationLevel, semantics)
-    , mask_(0.0f, 1.0f)
     , zoomH_(0.0f, 1.0f)
     , zoomV_(0.0f, 1.0f)
     , showHistogram_(true)
@@ -50,63 +49,6 @@ TransferFunctionProperty::TransferFunctionProperty(std::string identifier,
 
 TransferFunctionProperty::~TransferFunctionProperty() {
     volumeInport_ = NULL;
-}
-
-void TransferFunctionProperty::serialize(IvwSerializer& s) const {
-    Property::serialize(s);
-    std::stringstream stream;
-    s.serialize("size", (int)value_.getNumDataPoints());
-
-    for (size_t i=0; i<value_.getNumDataPoints(); i++) {
-        stream << "pos" << i;
-        s.serialize(stream.str(), value_.getPoint(static_cast<int>(i))->getPos());
-        stream.clear();
-        stream.str(std::string());
-        stream << "rgba" << i;
-        s.serialize(stream.str(), value_.getPoint(static_cast<int>(i))->getRGBA());
-        stream.clear();
-        stream.str(std::string());
-    }
-
-    s.serialize("mask_", mask_);
-    s.serialize("zoomH_", zoomH_);
-    s.serialize("zoomV_", zoomV_);
-    TransferFunction::InterpolationType interpolationType = value_.getInterpolationType();
-    s.serialize("interpolationType_", interpolationType);
-    s.serialize("showHistogram_", showHistogram_);
-}
-
-void TransferFunctionProperty::deserialize(IvwDeserializer& d) {
-    Property::deserialize(d);
-    int size;
-    vec2 pos;
-    vec4 rgba;
-    std::stringstream stream;
-    d.deserialize("size", size);
-    value_.clearPoints();
-
-    for (int i = 0; i < size; i++) {
-        stream << "pos" << i;
-        d.deserialize(stream.str(), pos);
-        stream.clear();
-        stream.str(std::string());
-        stream << "rgba" << i;
-        d.deserialize(stream.str(), rgba);
-        stream.clear();
-        stream.str(std::string());
-        value_.addPoint(pos, rgba);
-    }
-
-    d.deserialize("mask_", mask_);
-    get().setMaskMin(mask_.x);
-    get().setMaskMax(mask_.y);
-    d.deserialize("zoomH_", zoomH_);
-    d.deserialize("zoomV_", zoomV_);
-    int interpolationType;
-    d.deserialize("interpolationType_", interpolationType);
-    get().setInterpolationType(static_cast<TransferFunction::InterpolationType>(interpolationType));
-    d.deserialize("showHistogram_", showHistogram_);
-    propertyModified();
 }
 
 void TransferFunctionProperty::setShowHistogram(bool show) {
@@ -120,5 +62,23 @@ bool TransferFunctionProperty::getShowHistogram() {
 VolumeInport* TransferFunctionProperty::getVolumeInport() {
     return volumeInport_;
 }
+
+void TransferFunctionProperty::serialize(IvwSerializer& s) const {
+    Property::serialize(s);
+    s.serialize("zoomH_", zoomH_);
+    s.serialize("zoomV_", zoomV_);
+    s.serialize("showHistogram_", showHistogram_);
+    s.serialize("transferFunction", this->value_);
+}
+
+void TransferFunctionProperty::deserialize(IvwDeserializer& d) {
+    Property::deserialize(d);
+    d.deserialize("zoomH_", zoomH_);
+    d.deserialize("zoomV_", zoomV_);
+    d.deserialize("showHistogram_", showHistogram_);
+    d.deserialize("transferFunction", this->value_);
+    propertyModified();
+}
+
 
 } // namespace

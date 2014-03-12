@@ -43,33 +43,62 @@
 namespace inviwo {
 
 class IVW_CORE_API TransferFunctionProperty 
-    : public TemplateProperty<TransferFunction>, public TransferFunctionObserver {
+    : public TemplateProperty<TransferFunction>
+    , public TransferFunctionObserver {
 
 public:
-    TransferFunctionProperty(std::string identifier, std::string displayName, TransferFunction value = TransferFunction(),
-                             VolumeInport* volumeInport = NULL, PropertyOwner::InvalidationLevel invalidationLevel=PropertyOwner::INVALID_OUTPUT,
+    TransferFunctionProperty(std::string identifier,
+                             std::string displayName,
+                             TransferFunction value = TransferFunction(),
+                             VolumeInport* volumeInport = NULL,
+                             PropertyOwner::InvalidationLevel invalidationLevel=PropertyOwner::INVALID_OUTPUT,
                              PropertySemantics semantics=PropertySemantics::Default);
+        
     ~TransferFunctionProperty();
 
-    virtual void serialize(IvwSerializer& s) const;
-    virtual void deserialize(IvwDeserializer& d);
     virtual std::string getClassName()  const { return "TransferFunctionProperty"; }
 
-    const vec2& getMask() const { return mask_; }
-    void setMask(float maskMin, float maskMax) { if (maskMax<maskMin) maskMax=maskMin; mask_ = vec2(maskMin, maskMax); get().setMaskMin(mask_.x); get().setMaskMax(mask_.y); }
 
-    const vec2& getZoomH() const { return zoomH_; }
-    void setZoomH(float zoomHMin, float zoomHMax) { if (zoomHMax<zoomHMin) zoomHMax=zoomHMin; zoomH_ = vec2(zoomHMin, zoomHMax); }
+    const vec2 getMask() const {
+        return vec2(this->value_.getMaskMin(), this->value_.getMaskMax());
+    }
+    void setMask(float maskMin, float maskMax) {
+        if (maskMax < maskMin) {
+            maskMax=maskMin;
+        }
+        this->value_.setMaskMin(maskMin);
+        this->value_.setMaskMax(maskMax);
+    }
 
-    const vec2& getZoomV() const { return zoomV_; }
-    void setZoomV(float zoomVMin, float zoomVMax) { if (zoomVMax<zoomVMin) zoomVMax=zoomVMin; zoomV_ = vec2(zoomVMin, zoomVMax); }
+
+    const vec2& getZoomH() const {
+        return zoomH_;
+    }
+    void setZoomH(float zoomHMin, float zoomHMax) {
+        if (zoomHMax < zoomHMin) {
+            zoomHMax=zoomHMin;
+        }
+        zoomH_ = vec2(zoomHMin, zoomHMax);
+    }
+
+    const vec2& getZoomV() const {
+        return zoomV_;
+    }
+    void setZoomV(float zoomVMin, float zoomVMax) {
+        if (zoomVMax<zoomVMin) {
+            zoomVMax=zoomVMin;
+        }
+        zoomV_ = vec2(zoomVMin, zoomVMax);
+    }
 
     void setShowHistogram(bool);
     bool getShowHistogram();
     VolumeInport* getVolumeInport();
 
+    virtual void serialize(IvwSerializer& s) const;
+    virtual void deserialize(IvwDeserializer& d);
+
 private:
-    vec2 mask_;
     vec2 zoomH_;
     vec2 zoomV_;
     bool showHistogram_;

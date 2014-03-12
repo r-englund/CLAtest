@@ -50,15 +50,16 @@ void FloatMat2PropertyWidgetQt::generateWidget() {
     mat1x0_ = new QLineEdit;
     mat1x1_ = new QLineEdit;
 
+    label_ = new EditableLabelQt(this,property_->getDisplayName());
+    hLayout->addWidget(label_);
+    connect(label_, SIGNAL(textChanged()),this, SLOT(setPropertyDisplayName()));
+
     if (property_->getReadOnly()) {
-        hLayout->addWidget(new QLabel(QString::fromStdString(property_->getDisplayName())));
         mat0x0_->setDisabled(true);
         mat0x1_->setDisabled(true);
         mat1x0_->setDisabled(true);
         mat1x1_->setDisabled(true);
-    }
-    else
-    {
+    } else {
         connect(mat0x0_, SIGNAL(editingFinished()),
                 this, SLOT(set0x0Value()));
         connect(mat0x1_, SIGNAL(editingFinished()),
@@ -67,9 +68,7 @@ void FloatMat2PropertyWidgetQt::generateWidget() {
                 this, SLOT(set1x0Value()));
         connect(mat1x1_, SIGNAL(editingFinished()),
                 this, SLOT(set1x1Value()));
-        label_ = new EditableLabelQt(this,property_->getDisplayName(),PropertyWidgetQt::getContextMenu());
-        hLayout->addWidget(label_);
-        connect(label_, SIGNAL(textChanged()),this, SLOT(setPropertyDisplayName()));
+
     }
 
     QGridLayout* gridLayout = new QGridLayout;
@@ -78,7 +77,6 @@ void FloatMat2PropertyWidgetQt::generateWidget() {
     gridLayout->addWidget(mat1x0_,1,0);
     gridLayout->addWidget(mat1x1_,1,1);
     matrixgroup->setLayout(gridLayout);
-    label_ = new EditableLabelQt(this,property_->getDisplayName());
     hLayout->addWidget(matrixgroup);
     setLayout(hLayout);
 }

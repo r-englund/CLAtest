@@ -35,48 +35,57 @@
 
 namespace inviwo {
 
-TransferFunctionDataPoint::TransferFunctionDataPoint(TransferFunction* transFunc, const vec2& pos, const vec4& rgba)
+TransferFunctionDataPoint::TransferFunctionDataPoint(const vec2& pos, const vec4& rgba)
     : pos_(pos)
-    , rgba_(rgba)
-    , transFunc_(transFunc) {
+    , rgba_(rgba) {
 }
 
 TransferFunctionDataPoint::~TransferFunctionDataPoint() {}
 
-const vec2& TransferFunctionDataPoint::getPos() const {
-    return pos_;
-}
-
 void TransferFunctionDataPoint::setPos(const vec2& pos) {
     pos_ = pos;
-    transFunc_->calcTransferValues();
-}
-
-const vec4& TransferFunctionDataPoint::getRGBA() const {
-    return rgba_;
+    notifyTransferFunctionPointObservers();
 }
 
 void TransferFunctionDataPoint::setRGBA(const vec4& rgba) {
     rgba_ = rgba;
-    transFunc_->calcTransferValues();
+    notifyTransferFunctionPointObservers();
 }
 
 void TransferFunctionDataPoint::setRGB(const vec3& rgb) {
     rgba_.r = rgb.r;
     rgba_.g = rgb.g;
     rgba_.b = rgb.b;
-    transFunc_->calcTransferValues();
+    notifyTransferFunctionPointObservers();
 }
 
 void TransferFunctionDataPoint::setA(float alpha) {
     rgba_.a = alpha;
-    transFunc_->calcTransferValues();
+    notifyTransferFunctionPointObservers();
 }
 
 void TransferFunctionDataPoint::setPosA(const vec2& pos, float alpha) {
     pos_ = pos;
     rgba_.a = alpha;
-    transFunc_->calcTransferValues();
+    notifyTransferFunctionPointObservers();
+}
+
+void TransferFunctionDataPoint::notifyTransferFunctionPointObservers() const {
+    // Notify observers
+    for (ObserverSet::reverse_iterator it = observers_->rbegin(); it != observers_->rend(); ++it) {
+        // static_cast can be used since only template class objects can be added
+        static_cast<TransferFunctionPointObserver*>(*it)->onTransferFunctionPointChange(this);
+    }
+}
+
+void TransferFunctionDataPoint::serialize(IvwSerializer& s) const {
+    s.serialize("pos", pos_);
+    s.serialize("rgba", rgba_);
+}
+
+void TransferFunctionDataPoint::deserialize(IvwDeserializer& d) {
+    d.deserialize("pos", pos_);
+    d.deserialize("rgba", rgba_);
 }
 
 } // namespace

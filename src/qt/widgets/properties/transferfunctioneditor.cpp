@@ -66,7 +66,6 @@ void TransferFunctionEditor::resetTransferFunction() {
 
 void TransferFunctionEditor::mousePressEvent(QGraphicsSceneMouseEvent* e) {
     TransferFunctionEditorControlPoint* controlPointGraphicsItem = getControlPointGraphicsItemAt(e->scenePos());
-    QGraphicsItem* item = QGraphicsScene::mouseGrabberItem();
 
     switch (e->button()) {
         case Qt::LeftButton:
@@ -155,11 +154,18 @@ void TransferFunctionEditor::addControlPoint(QPointF pos) {
 }
 
 void TransferFunctionEditor::addControlPoint(QPointF pos, vec4 color) {
-    ivwAssert(pos.x()>=0.0 && pos.x()<width(), "Transfer function control point's x coordinate out of range.");
-    ivwAssert(pos.y()>=0.0 && pos.y()<height(), "Transfer function control point's y coordinate out of range.");
     // add control point to transfer function
-    TransferFunctionDataPoint* dataPoint = new TransferFunctionDataPoint(transferFunction_, vec2(pos.x()/width(), pos.y()/height()), color);
-    transferFunction_->addPoint(dataPoint);
+    if (pos.x() < 0.0) {
+        pos.setX(0.0);
+    } else if (pos.x() > width()) {
+        pos.setX(width());
+    }
+    if (pos.y() < 0.0) {
+        pos.setY(0.0);
+    } else if (pos.y() > height()) {
+        pos.setY(height());
+    }
+    transferFunction_->addPoint(vec2(pos.x()/width(), pos.y()/height()), color);
 }
 
 void TransferFunctionEditor::addControlPoint(QPointF pos, TransferFunctionDataPoint* dataPoint) {
@@ -200,54 +206,65 @@ void TransferFunctionEditor::recalculateControlPoints() {
     redrawConnections();
 }
 
-bool controlPointComparison(TransferFunctionEditorControlPoint* controlPoint0, TransferFunctionEditorControlPoint* controlPoint1) {
+bool controlPointComparison(TransferFunctionEditorControlPoint* controlPoint0,
+                            TransferFunctionEditorControlPoint* controlPoint1) {
     return (controlPoint0->x() < controlPoint1->x());
 }
 
 void TransferFunctionEditor::redrawConnections() {
-    // We need at least two points
-    if (controlPoints_.size()<2)
-        return;
-
+    
     // sort control point vector
     std::sort(controlPoints_.begin(), controlPoints_.end(), controlPointComparison);
     QPainterPath path;
 
-    if (transferFunction_->getInterpolationType()==TransferFunction::InterpolationCubic) {
-        // draw cubic path
-        QPointF p0(QPointF(0.0, controlPoints_[0]->pos().y()));
-        QPointF p1(QPointF(controlPoints_[0]->pos().x(), controlPoints_[0]->pos().y()));
-        path.moveTo(p0);
-        qreal deltaX = p1.x()-p0.x();
-        path.cubicTo(QPointF(p0.x()+deltaX/2, p0.y()), QPointF(p0.x()+deltaX/2, p0.y()), p1);
-
-        for (size_t i=0; i<controlPoints_.size()-1; i++) {
-            p0 = controlPoints_[i]->pos();
-            p1 = controlPoints_[i+1]->pos();
-            deltaX = p1.x()-p0.x();
-            path.cubicTo(QPointF(p0.x()+deltaX/2, p0.y()), QPointF(p0.x()+deltaX/2, p0.y()), p1);
-        }
-
-        // add last path segment
-        p0 = QPointF(controlPoints_[controlPoints_.size()-1]->pos().x(),
-                     controlPoints_[controlPoints_.size()-1]->pos().y());
-        p1 = QPointF(width(), p0.y());
-        deltaX = p1.x()-p0.x();
-        path.moveTo(p0);
-        path.cubicTo(QPointF(p0.x()+deltaX/2, p0.y()), QPointF(p0.x()+deltaX/2, p0.y()), p1);
-    } else {
-        // draw linear path
+    if (controlPoints_.size() == 1){
         path.moveTo(QPointF(0.0, controlPoints_[0]->pos().y()));
+        path.lineTo(QPointF(width(), controlPoints_[0]->pos().y()));
+    } else {
+        switch (transferFunction_->getInterpolationType()) {
+        case TransferFunction::InterpolationCubic: {
+            // draw cubic path
+            QPointF p0(QPointF(0.0, controlPoints_[0]->pos().y()));
+            QPointF p1(QPointF(controlPoints_[0]->pos().x(), controlPoints_[0]->pos().y()));
+            path.moveTo(p0);
+            qreal deltaX = p1.x()-p0.x();
+            path.cubicTo(QPointF(p0.x()+deltaX/2, p0.y()), QPointF(p0.x()+deltaX/2, p0.y()), p1);
 
-        for (size_t i=0; i<controlPoints_.size(); i++)
-            path.lineTo(QPointF(controlPoints_[i]->pos().x(), controlPoints_[i]->pos().y()));
+            for (size_t i=0; i<controlPoints_.size()-1; i++) {
+                p0 = controlPoints_[i]->pos();
+                p1 = controlPoints_[i+1]->pos();
+                deltaX = p1.x()-p0.x();
+                path.cubicTo(QPointF(p0.x()+deltaX/2, p0.y()), QPointF(p0.x()+deltaX/2, p0.y()), p1);
+            }
 
-        // add last path segment
-        path.lineTo(QPointF(width(), controlPoints_[controlPoints_.size()-1]->pos().y()));
+            // add last path segment
+            p0 = QPointF(controlPoints_[controlPoints_.size()-1]->pos().x(),
+                         controlPoints_[controlPoints_.size()-1]->pos().y());
+            p1 = QPointF(width(), p0.y());
+            deltaX = p1.x()-p0.x();
+            path.moveTo(p0);
+            path.cubicTo(QPointF(p0.x()+deltaX/2, p0.y()), QPointF(p0.x()+deltaX/2, p0.y()), p1);
+            break;
+            }
+        
+        default: {
+            // draw linear path
+            path.moveTo(QPointF(0.0, controlPoints_[0]->pos().y()));
+
+            for (size_t i=0; i<controlPoints_.size(); i++) {
+                path.lineTo(QPointF(controlPoints_[i]->pos().x(), controlPoints_[i]->pos().y()));
+            }
+
+            // add last path segment
+            path.lineTo(QPointF(width(), controlPoints_[controlPoints_.size()-1]->pos().y()));
+            break;
+            }
+        }
     }
-
     graphicsPathItem_->setPath(path);
+
 }
+
 
 TransferFunctionEditorControlPoint* TransferFunctionEditor::getControlPointGraphicsItemAt(const QPointF pos) const {
     QList<QGraphicsItem*> graphicsItems = items(pos);

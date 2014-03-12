@@ -168,8 +168,9 @@ protected:
 private:
     std::string identifier_;
     std::string displayName_;
-
     bool readOnly_;
+    bool defaultReadOnly_;
+
     PropertySemantics semantics_;
     PropertyVisibilityMode visibilityMode_;
 

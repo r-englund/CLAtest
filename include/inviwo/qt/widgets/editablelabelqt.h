@@ -34,6 +34,7 @@
 #define EDITABLELABELQT_H
 
 #include <inviwo/qt/widgets/inviwoqtwidgetsdefine.h>
+#include <inviwo/qt/widgets/properties/propertywidgetqt.h>
 #include <QLabel>
 #include <QLineEdit>
 #include <QHBoxLayout>
@@ -45,7 +46,7 @@ class IVW_QTWIDGETS_API EditableLabelQt: public QWidget {
     Q_OBJECT
 public:
     EditableLabelQt(QWidget* parent, std::string text, bool shortenText=true);
-    EditableLabelQt(QWidget* parent, std::string text, QMenu* contextMenu, bool shortenText=true);
+    EditableLabelQt(PropertyWidgetQt* parent, std::string text, bool shortenText=true);
     std::string getText() {return text_;};
     void setText(std::string txt);
     void setContextMenu(QMenu* menu) {contextMenu_ = menu;};
@@ -60,7 +61,7 @@ private:
     QLineEdit* lineEdit_;
     std::string text_;
     void generateWidget();
-    QMenu* baseMenu_;
+    PropertyWidgetQt* propertyWidget_;
     QMenu* contextMenu_;
     QAction* renameAction_;
     void mouseDoubleClickEvent(QMouseEvent* event);

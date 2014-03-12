@@ -37,15 +37,16 @@
 namespace inviwo {
 
 TransferFunction::TransferFunction()
-    : TransferFunctionObservable() {
-    textureSize_ = 1024;
-    maskMin_ = 0.0f;
-    maskMax_ = 1.0f;
-    interpolationType_ = InterpolationLinear;
-    data_ = new Layer(uvec2(textureSize_, 1), DataVec4FLOAT32::get());
+    : TransferFunctionObservable()
+    , maskMin_(0.0f)
+    , maskMax_(1.0f)
+    , interpolationType_(InterpolationLinear)
+    , textureSize_(1024)
+    , data_(new Layer(uvec2(textureSize_, 1), DataVec4FLOAT32::get())) {
+
     // initialize with standard ramp
-    addPoint(new TransferFunctionDataPoint(this, vec2(0.0f,0.0f), vec4(0.0f,0.0f,0.0f,0.0f)));
-    addPoint(new TransferFunctionDataPoint(this, vec2(1.0f,1.0f), vec4(1.0f,1.0f,1.0f,1.0f)));
+    addPoint(vec2(0.0f,0.0f), vec4(0.0f,0.0f,0.0f,0.0f));
+    addPoint(vec2(1.0f,1.0f), vec4(1.0f,1.0f,1.0f,1.0f));
 }
 
 TransferFunction::TransferFunction(const TransferFunction& rhs) {
@@ -63,12 +64,9 @@ TransferFunction& TransferFunction::operator=(const TransferFunction& rhs) {
         maskMax_ = rhs.maskMax_;
         interpolationType_ = rhs.interpolationType_;
 
-        //for (size_t i=0; i<rhs.getNumDataPoints(); i++)
-        //    addPoint(new TransferFunctionDataPoint(*rhs.getPoint(static_cast<int>(i))));
         for (size_t i=0; i<rhs.getNumDataPoints(); i++) {
             TransferFunctionDataPoint* oldPoint = rhs.getPoint(static_cast<int>(i));
-            TransferFunctionDataPoint* newPoint = new TransferFunctionDataPoint(this, oldPoint->getPos(), oldPoint->getRGBA());
-            addPoint(newPoint);
+            addPoint(oldPoint->getPos(), oldPoint->getRGBA());
         }
     }
 
@@ -87,27 +85,25 @@ TransferFunctionDataPoint* TransferFunction::getPoint(int i) const {
 }
 
 void TransferFunction::addPoint(const vec2& pos, const vec4& color) {
-    addPoint(new TransferFunctionDataPoint(this, pos, color));
+    addPoint(new TransferFunctionDataPoint(pos, color));
 }
 
 void TransferFunction::addPoint(TransferFunctionDataPoint* dataPoint) {
-    std::vector<TransferFunctionDataPoint*>::iterator iter = dataPoints_.begin();
+    
     float pointPosition = dataPoint->getPos().x;
     float iterPosition;
 
-    if (dataPoints_.size() == 0)
-        dataPoints_.push_back(dataPoint);
-    else {
-        if (pointPosition > dataPoints_.back()->getPos().x)
-            dataPoints_.push_back(dataPoint);
-        else {
-            for (iter = dataPoints_.begin(); iter != dataPoints_.end(); iter++) {
-                iterPosition = (*iter)->getPos().x;
+    dataPoint->addObserver(this);
 
-                if (iterPosition > pointPosition) {
-                    dataPoints_.insert(iter, dataPoint);
-                    break;
-                }
+    if (dataPoints_.size() == 0 || pointPosition > dataPoints_.back()->getPos().x) {
+        dataPoints_.push_back(dataPoint);
+    } else {
+        for (TFPoints::iterator iter = dataPoints_.begin(); iter != dataPoints_.end(); iter++) {
+            iterPosition = (*iter)->getPos().x;
+            
+            if (iterPosition > pointPosition) {
+                dataPoints_.insert(iter, dataPoint);
+                break;
             }
         }
     }
@@ -116,7 +112,7 @@ void TransferFunction::addPoint(TransferFunctionDataPoint* dataPoint) {
 }
 
 void TransferFunction::removePoint(TransferFunctionDataPoint* dataPoint) {
-    std::vector<TransferFunctionDataPoint*>::iterator it = std::find(dataPoints_.begin(), dataPoints_.end(), dataPoint);
+    TFPoints::iterator it = std::find(dataPoints_.begin(), dataPoints_.end(), dataPoint);
 
     if (it != dataPoints_.end()) {
         delete *it;
@@ -128,7 +124,7 @@ void TransferFunction::removePoint(TransferFunctionDataPoint* dataPoint) {
 
 void TransferFunction::clearPoints() {
     if (dataPoints_.size() > 0) {
-        for (std::vector<TransferFunctionDataPoint*>::iterator iter = dataPoints_.begin(); iter != dataPoints_.end();) {
+        for (TFPoints::iterator iter = dataPoints_.begin(); iter != dataPoints_.end();) {
             delete *iter;
             iter = dataPoints_.erase(iter);
         }
@@ -137,18 +133,25 @@ void TransferFunction::clearPoints() {
     }
 }
 
+void TransferFunction::onTransferFunctionPointChange(const TransferFunctionDataPoint* p){
+    calcTransferValues();
+}
+
+
 void TransferFunction::calcTransferValues() {
     vec4* dataArray = static_cast<vec4*>(data_->getEditableRepresentation<LayerRAM>()->getData());
 
     // in case of 0 points
     if ((int)dataPoints_.size() == 0) {
-        for (int i = 0; i <= (textureSize_ - 1); i++)
+        for (int i = 0; i <= (textureSize_ - 1); i++) {
             dataArray[i] = vec4((float)i/(textureSize_ - 1.0), (float)i/(textureSize_ - 1.0), (float)i/(textureSize_ - 1.0), 1.0);
+        }
     }
     // in case of 1 point
     else if ((int)dataPoints_.size() == 1) {
-        for (size_t i = 0; i <= (size_t)(textureSize_ - 1) ; ++i)
+        for (size_t i = 0; i <= (size_t)(textureSize_ - 1) ; ++i) {
             dataArray[i] = dataPoints_[0]->getRGBA();
+        }
     }
     // in case of more than 1 points
     else {
@@ -197,5 +200,27 @@ void TransferFunction::calcTransferValues() {
 
     notifyTransferFunctionObservers();
 }
+
+void TransferFunction::serialize(IvwSerializer& s) const {
+    s.serialize("maskMin", maskMin_);
+    s.serialize("maskMax", maskMax_);
+    s.serialize("dataPoints", dataPoints_, "point");
+    s.serialize("interpolationType_", static_cast<int>(interpolationType_));
+}
+
+void TransferFunction::deserialize(IvwDeserializer& d) {
+    d.deserialize("maskMin", maskMin_);
+    d.deserialize("maskMax", maskMax_);
+    d.deserialize("dataPoints", dataPoints_, "point");
+    for (TFPoints::iterator it = dataPoints_.begin(); it != dataPoints_.end(); ++it) {
+        (*it)->addObserver(this);
+    }
+    int type = static_cast<int>(interpolationType_);
+    d.deserialize("interpolationType_", type);
+    interpolationType_ = static_cast<TransferFunction::InterpolationType>(type);
+    
+    calcTransferValues();
+}
+
 
 }

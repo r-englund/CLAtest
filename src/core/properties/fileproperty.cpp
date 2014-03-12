@@ -58,12 +58,11 @@ void  FileProperty::setVariant(const Variant& val) {
 }
 
 void FileProperty::serialize(IvwSerializer& s) const {
-    Property::serialize(s) ;
+    Property::serialize(s);
+    
     std::string basePath = s.getFileName();
     std::string absoluteFilePath = get();
 
-    //FIXME: Make sure valid base path is set
-    //ivwAssert(!basePath.empty(), "File name cannot be empty.");
     if (basePath.empty())
         basePath = InviwoApplication::getPtr()->getPath(InviwoApplication::PATH_WORKSPACES);
 
@@ -81,13 +80,12 @@ void FileProperty::serialize(IvwSerializer& s) const {
 }
 
 void FileProperty::deserialize(IvwDeserializer& d) {
-    Property::deserialize(d) ;
+    Property::deserialize(d);
     std::string serializePath;
+    
     d.deserialize("url", serializePath);
 
     if (!URLParser::isAbsolutePath(serializePath)) {
-        //FIXME: Make sure valid base path is set
-        //ivwAssert(!basePath.empty(), "File name cannot be empty.")
         std::string basePath = d.getFileName();
 
         if (basePath.empty())

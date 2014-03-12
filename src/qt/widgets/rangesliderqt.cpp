@@ -56,8 +56,11 @@ RangeSliderQt::RangeSliderQt(Qt::Orientation orientation, QWidget* parent) : QSp
                              "}"
                          ));
 
-    if (orientation == Qt::Horizontal) setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Maximum);
-    else setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Expanding);
+    if (orientation == Qt::Horizontal) {
+        setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Maximum);
+    } else {
+        setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Expanding);
+    }
 
     connect(this, SIGNAL(splitterMoved(int, int)), this, SLOT(updateSplitterPosition(int, int)));
     range_[0] = 0;

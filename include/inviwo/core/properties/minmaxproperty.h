@@ -72,12 +72,17 @@ public:
     virtual void setVariant(const Variant& v);
     virtual int getVariantType();
 
+    virtual void setCurrentStateAsDefault();
+    virtual void resetToDefaultState();
+
     virtual void serialize(IvwSerializer& s) const;
     virtual void deserialize(IvwDeserializer& s);
 
 private:
     glm::detail::tvec2<T, glm::defaultp> range_;
+    glm::detail::tvec2<T, glm::defaultp> defaultRange_;
     T increment_;
+    T defaultIncrement_;
 };
 
 typedef MinMaxProperty<float> FloatMinMaxProperty;
@@ -93,16 +98,25 @@ std::string MinMaxProperty<T>::getClassName() const {
 }
 
 template <typename T>
-MinMaxProperty<T>::MinMaxProperty(std::string identifier, std::string displayName,
-                                  T valueMin, T valueMax, T rangeMin, T rangeMax, T increment,
+MinMaxProperty<T>::MinMaxProperty(std::string identifier,
+                                  std::string displayName,
+                                  T valueMin,
+                                  T valueMax,
+                                  T rangeMin,
+                                  T rangeMax,
+                                  T increment,
                                   PropertyOwner::InvalidationLevel invalidationLevel,
                                   PropertySemantics semantics)
-    : TemplateProperty<glm::detail::tvec2<T, glm::defaultp> >(identifier, displayName, glm::detail::tvec2<T, glm::defaultp>(valueMin, valueMax),
-            invalidationLevel,
-            semantics),
-    range_(glm::detail::tvec2<T, glm::defaultp>(rangeMin, rangeMax)),
-    increment_(increment)
-{}
+    : TemplateProperty<glm::detail::tvec2<T, glm::defaultp> >(identifier,
+                                                              displayName,
+                                                              glm::detail::tvec2<T, glm::defaultp>(valueMin, valueMax),
+                                                              invalidationLevel,
+                                                              semantics)
+    , range_(glm::detail::tvec2<T, glm::defaultp>(rangeMin, rangeMax))
+    , defaultRange_(glm::detail::tvec2<T, glm::defaultp>(rangeMin, rangeMax))
+    , increment_(increment)
+    , defaultIncrement_(increment) {
+}
 
 template <typename T>
 T MinMaxProperty<T>::getRangeMin() const {
@@ -172,24 +186,42 @@ int MinMaxProperty<T>::getVariantType() {
 }
 
 template <typename T>
+void MinMaxProperty<T>::resetToDefaultState() {
+    range_ = defaultRange_;
+    increment_ = defaultIncrement_;
+    TemplateProperty<glm::detail::tvec2<T, glm::defaultp> >::resetToDefaultState();
+}
+
+template <typename T>
+void MinMaxProperty<T>::setCurrentStateAsDefault() {
+    TemplateProperty<glm::detail::tvec2<T, glm::defaultp> >::setCurrentStateAsDefault();
+    defaultRange_ = range_;
+    defaultIncrement_ = increment_;
+}
+
+
+template <typename T>
 void MinMaxProperty<T>::serialize(IvwSerializer& s) const {
-    Property::serialize(s);
-    s.serialize("value", TemplateProperty<glm::detail::tvec2<T, glm::defaultp> >::get());
-    s.serialize("range", MinMaxProperty<T>::getRange());
-    s.serialize("increment", MinMaxProperty<T>::getIncrement());
+    TemplateProperty<glm::detail::tvec2<T, glm::defaultp> >::serialize(s);
+    
+    if (range_ != defaultRange_) {
+        s.serialize("range", range_);
+    }
+    if (increment_ != defaultIncrement_) {
+        s.serialize("increment", MinMaxProperty<T>::getIncrement());
+    }
 }
 
 template <typename T>
 void MinMaxProperty<T>::deserialize(IvwDeserializer& d) {
-    Property::deserialize(d);
     glm::detail::tvec2<T, glm::defaultp> value;
     d.deserialize("range", value);
     MinMaxProperty<T>::setRange(value);
     T increment;
     d.deserialize("increment", increment);
     MinMaxProperty<T>::setIncrement(increment);
-    d.deserialize("value", value);
-    TemplateProperty<glm::detail::tvec2<T, glm::defaultp> >::set(value);
+
+    TemplateProperty<glm::detail::tvec2<T, glm::defaultp> >::deserialize(d);
 }
 
 } // namespace

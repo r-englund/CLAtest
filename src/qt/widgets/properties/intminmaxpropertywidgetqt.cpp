@@ -50,7 +50,7 @@ void IntMinMaxPropertyWidgetQt::generateWidget() {
     hLayout->setContentsMargins(0, 0, 0, 0);
     hLayout->setSpacing(7);
 
-    label_ = new EditableLabelQt(this,property_->getDisplayName(),PropertyWidgetQt::getContextMenu());
+    label_ = new EditableLabelQt(this,property_->getDisplayName());
     hLayout->addWidget(label_);
     QHBoxLayout* hSliderLayout = new QHBoxLayout();
     QWidget* sliderWidget = new QWidget();

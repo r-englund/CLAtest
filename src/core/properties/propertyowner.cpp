@@ -37,7 +37,8 @@
 namespace inviwo {
 
 PropertyOwner::PropertyOwner()
-    : invalidationLevel_(PropertyOwner::VALID) {}
+    : invalidationLevel_(PropertyOwner::VALID) {
+}
 
 PropertyOwner::~PropertyOwner() {
     properties_.clear();
@@ -102,6 +103,5 @@ void PropertyOwner::deserialize(IvwDeserializer& d) {
 
     d.deserialize("Properties", propertyMap, "Property", "identifier") ;
 }
-
 
 } // namespace

@@ -267,25 +267,28 @@ void inviwo::OrdinalProperty<T>::setCurrentStateAsDefault() {
 
 template<typename T>
 void OrdinalProperty<T>::serialize(IvwSerializer& s) const {
-    Property::serialize(s);
-    s.serialize("minvalue", minValue_);
-    s.serialize("maxvalue", maxValue_);
-    s.serialize("increment", increment_);
-    s.serialize("value", TemplateProperty<T>::get());
+    if (minValue_ != defaultMinValue_) {
+        s.serialize("minvalue", minValue_);
+    }
+    if (maxValue_ != defaultMaxValue_) {
+        s.serialize("maxvalue", maxValue_);
+    }
+    if (increment_ != defaultIncrement_) {
+        s.serialize("increment", increment_);
+    }
+    
+    TemplateProperty<T>::serialize(s);
 }
 
 
 template<typename T>
 void OrdinalProperty<T>::deserialize(IvwDeserializer& d) {
-    Property::deserialize(d);
-    T value;
     d.deserialize("minvalue", minValue_);
     d.deserialize("maxvalue", maxValue_);
     d.deserialize("increment", increment_);
-    d.deserialize("value", value);
-    set(value);
+    
+    TemplateProperty<T>::deserialize(d);
 }
-
 
 } // namespace
 

@@ -64,7 +64,7 @@ void SphericalFloatVec3PropertyWidgetQt::generateWidget() {
         hLayout->addWidget(readOnlyLabel_);
         setLayout(hLayout);
     } else {
-        label_ = new EditableLabelQt(this, property_->getDisplayName(), PropertyWidgetQt::getContextMenu());
+        label_ = new EditableLabelQt(this, property_->getDisplayName());
         hLayout->addWidget(label_);
         QWidget* sliderWidget = new QWidget();
         QVBoxLayout* vLayout = new QVBoxLayout();
