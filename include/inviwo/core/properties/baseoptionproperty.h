@@ -88,7 +88,6 @@ public:
     }
 };
 
-
 /** \class TemplateOptionProperty
  *  Template class for option properties
  *  @see OptionProperties
@@ -96,12 +95,12 @@ public:
  */
 template<typename T>
 class BaseTemplateOptionProperty : public BaseOptionProperty {
-
+    
     template <typename U>
     struct Option : public IvwSerializable {
         Option() {}
         Option(const std::string& id, const std::string& name, U value)
-        : id_(id), name_(name), value_(value) {}
+            : id_(id), name_(name), value_(value) {}
 
         std::string id_;
         std::string name_;
@@ -118,10 +117,15 @@ class BaseTemplateOptionProperty : public BaseOptionProperty {
             d.deserialize("value", value_);
         }
 
-        bool operator==(const Option<T>& that) {
-            return ((id_ == that.id_) && (name_ == that.name_) && (value_ == that.value_));
+        bool operator==(const Option<U>& rhs) const {
+            return id_ == rhs.id_ && name_ == rhs.name_ && value_ == rhs.value_;
+        }
+        bool operator!=(const Option<U>& rhs) const {
+            return !operator==(rhs);
         }
     };
+
+
     template <typename U>
     struct MatchId {
         MatchId(const std::string& s) : s_(s) {}
@@ -149,8 +153,6 @@ class BaseTemplateOptionProperty : public BaseOptionProperty {
     private:
         const U& s_;
     };
-
-    
 
 public:
     BaseTemplateOptionProperty(std::string identifier, 
@@ -231,7 +233,6 @@ public:
     virtual void serialize(IvwSerializer& s) const;
     virtual void deserialize(IvwDeserializer& d);
 
-
 protected:
     size_t selectedIndex_;
     std::vector<Option<T> > options_;
@@ -240,6 +241,7 @@ private:
     size_t defaultSelectedIndex_;
     std::vector<Option<T> > defaultOptions_;
 };
+
 
 template<typename T>
 class TemplateOptionProperty : public BaseTemplateOptionProperty<T> {
@@ -494,31 +496,35 @@ void inviwo::BaseTemplateOptionProperty<T>::setVariant(const Variant& inVariant)
 
 template<typename T>
 void BaseTemplateOptionProperty<T>::serialize(IvwSerializer& s) const {
-    BaseOptionProperty::serialize(s) ;
-    s.serialize("options", options_, "option");
-
-    if(options_.empty())
-        return;
-
-    s.serialize("selectedIdentifier", getSelectedIdentifier());
+    BaseOptionProperty::serialize(s);
+    if (options_ != defaultOptions_ && options_.size() > 0) {
+        s.serialize("options", options_, "option");
+    }
+    if (selectedIndex_ != defaultSelectedIndex_ && options_.size() > 0) {
+        s.serialize("selectedIdentifier", getSelectedIdentifier());
+    }
 }
 
 template<typename T>
 void BaseTemplateOptionProperty<T>::deserialize(IvwDeserializer& d) {
     BaseOptionProperty::deserialize(d) ;
     
-    d.deserialize("options", options_, "option");
+    std::vector<Option<T> > opts_ = options_;
+    d.deserialize("options", opts_, "option");
 
     if(options_.empty())
         return;
 
     std::string id = getSelectedIdentifier();
     d.deserialize("selectedIdentifier", id);
+
+    options_ = opts_;
     setSelectedIdentifier(id);
 
     T value = getSelecetedValue();
     d.deserialize("value", value);
     setSelectedValue(value);
+
 }
 
 } // namespace inviwo

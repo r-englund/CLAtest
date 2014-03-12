@@ -47,6 +47,13 @@ PropertyWidgetQt::PropertyWidgetQt()
     : PropertyWidget()
     , contextMenu_(NULL)
     , viewModeItem_(NULL) {
+    /*
+    static_cast<OptionPropertyInt*>(
+        InviwoApplication::getPtr()->
+            getSettingsByType<SystemSettings>()->
+                getPropertyByIdentifier("viewMode")
+        )->onChange(this, &PropertyWidgetQt::onViewModeChange);
+    */
     this->setContextMenuPolicy(Qt::CustomContextMenu);
     connect(this,
             SIGNAL(customContextMenuRequested(const QPoint&)),
@@ -60,14 +67,19 @@ PropertyWidgetQt::PropertyWidgetQt(Property* property)
     , viewModeItem_(NULL) {
     
     this->setToolTip(("id: " + property_->getIdentifier()).c_str());
+    /*
+    static_cast<OptionPropertyInt*>(
+        InviwoApplication::getPtr()->
+            getSettingsByType<SystemSettings>()->
+                getPropertyByIdentifier("viewMode")
+        )->onChange(this, &PropertyWidgetQt::onViewModeChange);
+    */
     
     this->setContextMenuPolicy(Qt::CustomContextMenu);
     connect(this,
             SIGNAL(customContextMenuRequested(const QPoint&)),
             this,
             SLOT(showContextMenu(const QPoint&)));
-
-    generateContextMenu();
 }
 
 PropertyWidgetQt::~PropertyWidgetQt() {

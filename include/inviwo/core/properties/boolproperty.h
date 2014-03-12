@@ -50,25 +50,14 @@ namespace inviwo {
 class IVW_CORE_API BoolProperty : public TemplateProperty<bool> {
 
 public:
-    /**
-     * \brief Constructs a bool property
-     *
-     * <DESCRIBE THE METHOD>
-     *
-     * @param std::string identifier <DESCRIBE ME>
-     * @param std::string displayName <DESCRIBE ME>
-     * @param bool value <DESCRIBE ME>
-     * @param PropertyOwner::InvalidationLevel invalidationLevel <DESCRIBE ME>
-     * @param PropertySemantics semantics <DESCRIBE ME>
-     * @return  <DESCRIBE ME>
-     */
-
-    BoolProperty(std::string identifier, std::string displayName, bool value = false,
+    BoolProperty(std::string identifier,
+                 std::string displayName,
+                 bool value = false,
                  PropertyOwner::InvalidationLevel invalidationLevel=PropertyOwner::INVALID_OUTPUT,
                  PropertySemantics semantics = PropertySemantics::Default);
-    virtual void serialize(IvwSerializer& s) const;
-    virtual void deserialize(IvwDeserializer& d);
+
     virtual std::string getClassName()  const { return "BoolProperty"; }
+    
     virtual Variant getVariant();
     virtual void setVariant(const Variant&);
     virtual int getVariantType();

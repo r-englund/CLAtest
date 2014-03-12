@@ -1,118 +1,118 @@
-<?xml version="1.0" ?>
+<?xml version="1.0" encoding="utf-8"?>
 <InviwoTreeData version="1.0">
-    <!-- Don't edit the following code -->
-    <Processors>
-        <Processor type="FirstIVWProcessor" identifier="FirstIVWProcessor" id="ref0">
-            <MetaDataList>
-                <MetaData type="ProcessorMetaData">
-                    <position x="-600" y="-750" />
-                    <visibility content="1" />
-                </MetaData>
-            </MetaDataList>
-            <Properties>
-                <Property type="FloatVec3Property" identifier="color" displayName="Color">
-                    <value x="1" y="1" z="1" />
-                    <minvalue x="0" y="0" z="0" />
-                    <maxvalue x="1" y="1" z="1" />
-                    <increment x="0.1" y="0.1" z="0.1" />
-                </Property>
-            </Properties>
-        </Processor>
-        <Processor type="CanvasGL" identifier="CanvasGL" id="ref2">
-            <MetaDataList>
-                <MetaData type="ProcessorMetaData">
-                    <position x="-700" y="-550" />
-                    <visibility content="1" />
-                </MetaData>
-                <MetaData type="ProcessorWidgetMetaData">
-                    <position x="288" y="717" />
-                    <dimension x="256" y="256" />
-                    <visibility content="1" />
-                </MetaData>
-            </MetaDataList>
-            <Properties>
-                <Property type="IntVec2Property" identifier="dimensions" displayName="Dimensions">
-                    <value x="256" y="128" />
-                    <minvalue x="128" y="128" />
-                    <maxvalue x="4096" y="4096" />
-                    <increment x="1" y="1" />
-                </Property>
-                <Property type="BaseOptionProperty" identifier="displayedLayer_" displayName="Display Layer" />
-                <Property type="ButtonProperty" identifier="snapshot" displayName="Create Snapshot" />
-            </Properties>
-        </Processor>
-        <Processor type="CanvasGL" identifier="CanvasGL1" id="ref1">
-            <MetaDataList>
-                <MetaData type="ProcessorMetaData">
-                    <position x="-400" y="-550" />
-                    <visibility content="1" />
-                </MetaData>
-                <MetaData type="ProcessorWidgetMetaData">
-                    <position x="1112" y="186" />
-                    <dimension x="512" y="512" />
-                    <visibility content="1" />
-                </MetaData>
-            </MetaDataList>
-            <Properties>
-                <Property type="IntVec2Property" identifier="dimensions" displayName="Dimensions">
-                    <value x="256" y="128" />
-                    <minvalue x="128" y="128" />
-                    <maxvalue x="4096" y="4096" />
-                    <increment x="1" y="1" />
-                </Property>
-                <Property type="BaseOptionProperty" identifier="displayedLayer_" displayName="Display Layer" />
-                <Property type="ButtonProperty" identifier="snapshot" displayName="Create Snapshot" />
-            </Properties>
-        </Processor>
-        <Processor type="CanvasGL" identifier="CanvasGL2" id="ref3">
-            <MetaDataList>
-                <MetaData type="ProcessorMetaData">
-                    <position x="-550" y="-550" />
-                    <visibility content="1" />
-                </MetaData>
-                <MetaData type="ProcessorWidgetMetaData">
-                    <position x="607" y="456" />
-                    <dimension x="384" y="384" />
-                    <visibility content="1" />
-                </MetaData>
-            </MetaDataList>
-            <Properties>
-                <Property type="IntVec2Property" identifier="dimensions" displayName="Dimensions">
-                    <value x="256" y="128" />
-                    <minvalue x="128" y="128" />
-                    <maxvalue x="4096" y="4096" />
-                    <increment x="1" y="1" />
-                </Property>
-                <Property type="BaseOptionProperty" identifier="displayedLayer_" displayName="Display Layer" />
-                <Property type="ButtonProperty" identifier="snapshot" displayName="Create Snapshot" />
-            </Properties>
-        </Processor>
-    </Processors>
-    <Connections>
-        <Connection>
-            <OutPort identifier="outport">
-                <Processor type="FirstIVWProcessor" identifier="FirstIVWProcessor" reference="ref0" />
-            </OutPort>
-            <InPort identifier="inport">
-                <Processor type="CanvasGL" identifier="CanvasGL" reference="ref2" />
-            </InPort>
-        </Connection>
-        <Connection>
-            <OutPort identifier="outport">
-                <Processor type="FirstIVWProcessor" identifier="FirstIVWProcessor" reference="ref0" />
-            </OutPort>
-            <InPort identifier="inport">
-                <Processor type="CanvasGL" identifier="CanvasGL1" reference="ref1" />
-            </InPort>
-        </Connection>
-        <Connection>
-            <OutPort identifier="outport">
-                <Processor type="FirstIVWProcessor" identifier="FirstIVWProcessor" reference="ref0" />
-            </OutPort>
-            <InPort identifier="inport">
-                <Processor type="CanvasGL" identifier="CanvasGL2" reference="ref3" />
-            </InPort>
-        </Connection>
-    </Connections>
-    <ProcessorLinks />
+ <!-- Don't edit the following code -->
+ <Processors>
+  <Processor id="ref0" identifier="FirstIVWProcessor" type="FirstIVWProcessor">
+   <MetaDataList>
+    <MetaData type="ProcessorMetaData">
+     <position x="-600" y="-750"/>
+     <visibility content="1"/>
+    </MetaData>
+   </MetaDataList>
+   <Properties>
+    <Property displayName="Color" identifier="color" type="FloatVec3Property">
+     <value x="1" y="1" z="1"/>
+     <minvalue x="0" y="0" z="0"/>
+     <maxvalue x="1" y="1" z="1"/>
+     <increment x="0.1" y="0.1" z="0.1"/>
+    </Property>
+   </Properties>
+  </Processor>
+  <Processor id="ref2" identifier="CanvasGL" type="CanvasGL">
+   <MetaDataList>
+    <MetaData type="ProcessorMetaData">
+     <position x="-700" y="-550"/>
+     <visibility content="1"/>
+    </MetaData>
+    <MetaData type="ProcessorWidgetMetaData">
+     <position x="288" y="717"/>
+     <dimension x="256" y="256"/>
+     <visibility content="1"/>
+    </MetaData>
+   </MetaDataList>
+   <Properties>
+    <Property displayName="Dimensions" identifier="dimensions" type="IntVec2Property">
+     <value x="256" y="128"/>
+     <minvalue x="128" y="128"/>
+     <maxvalue x="4096" y="4096"/>
+     <increment x="1" y="1"/>
+    </Property>
+    <Property displayName="Display Layer" identifier="displayedLayer_" type="BaseOptionProperty"/>
+    <Property displayName="Create Snapshot" identifier="snapshot" type="ButtonProperty"/>
+   </Properties>
+  </Processor>
+  <Processor id="ref1" identifier="CanvasGL1" type="CanvasGL">
+   <MetaDataList>
+    <MetaData type="ProcessorMetaData">
+     <position x="-400" y="-550"/>
+     <visibility content="1"/>
+    </MetaData>
+    <MetaData type="ProcessorWidgetMetaData">
+     <position x="1112" y="186"/>
+     <dimension x="512" y="512"/>
+     <visibility content="1"/>
+    </MetaData>
+   </MetaDataList>
+   <Properties>
+    <Property displayName="Dimensions" identifier="dimensions" type="IntVec2Property">
+     <value x="256" y="128"/>
+     <minvalue x="128" y="128"/>
+     <maxvalue x="4096" y="4096"/>
+     <increment x="1" y="1"/>
+    </Property>
+    <Property displayName="Display Layer" identifier="displayedLayer_" type="BaseOptionProperty"/>
+    <Property displayName="Create Snapshot" identifier="snapshot" type="ButtonProperty"/>
+   </Properties>
+  </Processor>
+  <Processor id="ref3" identifier="CanvasGL2" type="CanvasGL">
+   <MetaDataList>
+    <MetaData type="ProcessorMetaData">
+     <position x="-550" y="-550"/>
+     <visibility content="1"/>
+    </MetaData>
+    <MetaData type="ProcessorWidgetMetaData">
+     <position x="607" y="456"/>
+     <dimension x="384" y="384"/>
+     <visibility content="1"/>
+    </MetaData>
+   </MetaDataList>
+   <Properties>
+    <Property displayName="Dimensions" identifier="dimensions" type="IntVec2Property">
+     <value x="256" y="128"/>
+     <minvalue x="128" y="128"/>
+     <maxvalue x="4096" y="4096"/>
+     <increment x="1" y="1"/>
+    </Property>
+    <Property displayName="Display Layer" identifier="displayedLayer_" type="BaseOptionProperty"/>
+    <Property displayName="Create Snapshot" identifier="snapshot" type="ButtonProperty"/>
+   </Properties>
+  </Processor>
+ </Processors>
+ <Connections>
+  <Connection>
+   <OutPort identifier="outport">
+    <Processor identifier="FirstIVWProcessor" reference="ref0" type="FirstIVWProcessor"/>
+   </OutPort>
+   <InPort identifier="inport">
+    <Processor identifier="CanvasGL" reference="ref2" type="CanvasGL"/>
+   </InPort>
+  </Connection>
+  <Connection>
+   <OutPort identifier="outport">
+    <Processor identifier="FirstIVWProcessor" reference="ref0" type="FirstIVWProcessor"/>
+   </OutPort>
+   <InPort identifier="inport">
+    <Processor identifier="CanvasGL1" reference="ref1" type="CanvasGL"/>
+   </InPort>
+  </Connection>
+  <Connection>
+   <OutPort identifier="outport">
+    <Processor identifier="FirstIVWProcessor" reference="ref0" type="FirstIVWProcessor"/>
+   </OutPort>
+   <InPort identifier="inport">
+    <Processor identifier="CanvasGL2" reference="ref3" type="CanvasGL"/>
+   </InPort>
+  </Connection>
+ </Connections>
+ <ProcessorLinks/>
 </InviwoTreeData>

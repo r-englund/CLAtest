@@ -70,7 +70,11 @@ public:
     }
 };
 
-class IVW_CORE_API TransferFunction : public TransferFunctionObservable {
+class IVW_CORE_API TransferFunction
+    : public IvwSerializable
+    , public TransferFunctionObservable
+    , public TransferFunctionPointObserver {
+    
 public:
 
     enum InterpolationType {
@@ -97,22 +101,56 @@ public:
 
     void calcTransferValues();
 
-    float getMaskMin() { return maskMin_; }
-    void setMaskMin(float maskMin) { maskMin_ = maskMin; }
-    float getMaskMax() { return maskMax_; }
-    void setMaskMax(float maskMax) { maskMax_ = maskMax; }
+    float getMaskMin() const {
+        return maskMin_;
+    }
+    void setMaskMin(float maskMin) {
+        maskMin_ = maskMin;
+    }
+    float getMaskMax() const {
+        return maskMax_;
+    }
+    void setMaskMax(float maskMax) {
+        maskMax_ = maskMax;
+    }
+    void setInterpolationType(InterpolationType interpolationType) {
+        interpolationType_ = interpolationType;
+    }
+    InterpolationType getInterpolationType() const {
+        return interpolationType_;
+    }
+    
+    virtual void onTransferFunctionPointChange(const TransferFunctionDataPoint* p);
+    
+    virtual void serialize(IvwSerializer& s) const;
+    virtual void deserialize(IvwDeserializer& d);
 
-    void setInterpolationType(InterpolationType interpolationType) { interpolationType_ = interpolationType; }
-    InterpolationType getInterpolationType() const { return interpolationType_; }
+    typedef std::vector<TransferFunctionDataPoint*> TFPoints;
 
+    friend bool operator==(const TransferFunction& lhs,
+                           const TransferFunction& rhs);
 private:
     float maskMin_;
     float maskMax_;
+    TFPoints dataPoints_;
+    InterpolationType interpolationType_;
+
     int textureSize_;
     Layer* data_;
-    std::vector<TransferFunctionDataPoint*> dataPoints_;
-    InterpolationType interpolationType_;
 };
+
+inline bool operator==(const TransferFunction& lhs,
+                       const TransferFunction& rhs){
+    return lhs.maskMin_ == rhs.maskMin_
+        && lhs.maskMax_ == rhs.maskMax_
+        && lhs.interpolationType_ == rhs.interpolationType_
+        && lhs.dataPoints_ == rhs.dataPoints_;
+    
+}
+inline bool operator!=(const TransferFunction& lhs,
+                       const TransferFunction& rhs) {
+                       return !operator==(lhs,rhs);
+}
 
 
 } // namespace

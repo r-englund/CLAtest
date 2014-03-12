@@ -53,9 +53,7 @@ void OptionPropertyWidgetQt::generateWidget() {
             this,
             SLOT(showContextMenu(const QPoint&)));
     
-    label_ = new EditableLabelQt(this,
-                                 property_->getDisplayName(),
-                                 PropertyWidgetQt::getContextMenu());
+    label_ = new EditableLabelQt(this, property_->getDisplayName());
     
     hLayout->addWidget(label_);
     hLayout->addWidget(comboBox_);

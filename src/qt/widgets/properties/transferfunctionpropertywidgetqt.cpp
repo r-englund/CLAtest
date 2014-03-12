@@ -96,16 +96,23 @@ void TransferFunctionPropertyWidgetQt::updateFromProperty() {
     TransferFunctionProperty* tfProperty = static_cast<TransferFunctionProperty*>(property_);
     // draw masking indicators
     if (tfProperty->getMask().x > 0.0f) {
-        tfPainter.fillRect(0, 0, static_cast<int>(tfProperty->getMask().x*gradientWidth), btnOpenTF_->height(), QColor(25,25,25,100));
-        tfPainter.drawLine(static_cast<int>(tfProperty->getMask().x*gradientWidth), 0, static_cast<int>(tfProperty->getMask().x*gradientWidth),
-                           btnOpenTF_->height());
+        tfPainter.fillRect(0, 0,
+                           static_cast<int>(tfProperty->getMask().x*gradientWidth), btnOpenTF_->height(),
+                           QColor(25,25,25,100));
+
+        tfPainter.drawLine(static_cast<int>(tfProperty->getMask().x*gradientWidth), 0,
+                           static_cast<int>(tfProperty->getMask().x*gradientWidth), btnOpenTF_->height());
     }
 
     if (tfProperty->getMask().y < 1.0f) {
-        tfPainter.fillRect(static_cast<int>(tfProperty->getMask().y*gradientWidth), 0,
-                           static_cast<int>(gradientWidth-(tfProperty->getMask().y*gradientWidth)+10), btnOpenTF_->height(), QColor(25,25,25,150));
-        tfPainter.drawLine(static_cast<int>(tfProperty->getMask().y*gradientWidth), 0, static_cast<int>(tfProperty->getMask().y*gradientWidth),
-                           btnOpenTF_->height());
+        tfPainter.fillRect(static_cast<int>(tfProperty->getMask().y*gradientWidth),
+                           0,
+                           static_cast<int>((1.0f - tfProperty->getMask().y)*gradientWidth)+1,
+                           btnOpenTF_->height(),
+                           QColor(25,25,25,150));
+        
+        tfPainter.drawLine(static_cast<int>(tfProperty->getMask().y*gradientWidth), 0,
+                           static_cast<int>(tfProperty->getMask().y*gradientWidth), btnOpenTF_->height());
     }
 
     btnOpenTF_->setIcon(tfPixmap);

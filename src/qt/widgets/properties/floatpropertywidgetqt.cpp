@@ -52,9 +52,7 @@ void BaseOrdinalPropertyWidgetQt::generateWidget() {
     hLayout->setContentsMargins(0,0,0,0);
     hLayout->setSpacing(7);
 
-    label_ = new EditableLabelQt(this,
-                                 property_->getDisplayName(),
-                                 PropertyWidgetQt::getContextMenu());
+    label_ = new EditableLabelQt(this, property_->getDisplayName());
     hLayout->addWidget(label_);
     connect(label_, SIGNAL(textChanged()),this, SLOT(setPropertyDisplayName()));
 

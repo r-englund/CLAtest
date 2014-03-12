@@ -77,7 +77,7 @@ void CollapsibleGroupBoxWidgetQt::generateWidget() {
             SLOT(toggleFold()));
 
     heading->addWidget(btnCollapse_);
-    label_ = new EditableLabelQt(this, displayName_, PropertyWidgetQt::getContextMenu());
+    label_ = new EditableLabelQt(this, displayName_, false);
     heading->addWidget(label_);
     heading->addStretch(10);
     QToolButton* resetButton = new QToolButton(this);

@@ -1,444 +1,444 @@
-<?xml version="1.0" ?>
+<?xml version="1.0" encoding="utf-8"?>
 <InviwoTreeData version="1.0">
-    <!-- Don't edit the following code -->
-    <Processors>
-        <Processor type="CubeProxyGeometry" identifier="CubeProxyGeometry" id="ref4">
-            <MetaDataList>
-                <MetaData type="ProcessorMetaData">
-                    <position x="-325" y="-575" />
-                    <visibility content="1" />
-                    <selection content="0" />
-                </MetaData>
-            </MetaDataList>
-            <Properties>
-                <Property type="IntMinMaxProperty" identifier="clipX" displayName="Clip X Slices" key="clipX">
-                    <MetaDataList />
-                    <value x="70" y="80" />
-                    <range x="0" y="128" />
-                    <increment content="1" />
-                </Property>
-                <Property type="IntMinMaxProperty" identifier="clipY" displayName="Clip Y Slices" key="clipY">
-                    <MetaDataList />
-                    <value x="0" y="128" />
-                    <range x="0" y="128" />
-                    <increment content="1" />
-                </Property>
-                <Property type="IntMinMaxProperty" identifier="clipZ" displayName="Clip Z Slices" key="clipZ">
-                    <MetaDataList />
-                    <value x="0" y="128" />
-                    <range x="0" y="128" />
-                    <increment content="1" />
-                </Property>
-                <Property type="BoolProperty" identifier="clippingEnabled" displayName="Enable Clipping" key="clippingEnabled">
-                    <MetaDataList />
-                    <value content="1" />
-                </Property>
-            </Properties>
-        </Processor>
-        <Processor type="VolumeSource" identifier="VolumeSource" id="ref2">
-            <MetaDataList>
-                <MetaData type="ProcessorMetaData">
-                    <position x="-475" y="-700" />
-                    <visibility content="1" />
-                    <selection content="1" />
-                </MetaData>
-            </MetaDataList>
-            <Properties>
-                <Property type="FloatMinMaxProperty" identifier="dataRange" displayName="Data range" key="dataRange">
-                    <MetaDataList />
-                    <value x="0" y="255" />
-                    <range x="0" y="255" />
-                    <increment content="2.7609124e+19" />
-                </Property>
-                <Property type="FileProperty" identifier="filename" displayName="Volume file" key="filename">
-                    <MetaDataList />
-                    <url content="../../volumes/hydrogenatom.dat" />
-                    <nameFilter>
-                        <filter content="All Files (*.*)" />
-                        <filter content="Inviwo dat file format (*.dat)" />
-                        <filter content="Inviwo ivf file format (*.ivf)" />
-                        <filter content="Raw binary file (*.raw)" />
-                    </nameFilter>
-                    <acceptMode content="0" />
-                    <fileMode content="0" />
-                </Property>
-                <Property type="FloatMinMaxProperty" identifier="valueRange" displayName="Value range" key="valueRange">
-                    <MetaDataList />
-                    <value x="0" y="1" />
-                    <range x="0" y="0" />
-                    <increment content="2.7609124e+19" />
-                </Property>
-                <Property type="StringProperty" identifier="valueUnit" displayName="Value unit" key="valueUnit">
-                    <MetaDataList />
-                    <value content="" />
-                </Property>
-            </Properties>
-        </Processor>
-        <Processor type="CubeProxyGeometry" identifier="CubeProxyGeometry2" id="ref3">
-            <MetaDataList>
-                <MetaData type="ProcessorMetaData">
-                    <position x="-500" y="-575" />
-                    <visibility content="1" />
-                    <selection content="0" />
-                </MetaData>
-            </MetaDataList>
-            <Properties>
-                <Property type="IntMinMaxProperty" identifier="clipX" displayName="Clip X Slices" key="clipX">
-                    <MetaDataList />
-                    <value x="0" y="128" />
-                    <range x="0" y="128" />
-                    <increment content="1" />
-                </Property>
-                <Property type="IntMinMaxProperty" identifier="clipY" displayName="Clip Y Slices" key="clipY">
-                    <MetaDataList />
-                    <value x="70" y="80" />
-                    <range x="0" y="128" />
-                    <increment content="1" />
-                </Property>
-                <Property type="IntMinMaxProperty" identifier="clipZ" displayName="Clip Z Slices" key="clipZ">
-                    <MetaDataList />
-                    <value x="0" y="128" />
-                    <range x="0" y="128" />
-                    <increment content="1" />
-                </Property>
-                <Property type="BoolProperty" identifier="clippingEnabled" displayName="Enable Clipping" key="clippingEnabled">
-                    <MetaDataList />
-                    <value content="1" />
-                </Property>
-            </Properties>
-        </Processor>
-        <Processor type="CubeProxyGeometry" identifier="CubeProxyGeometry3" id="ref5">
-            <MetaDataList>
-                <MetaData type="ProcessorMetaData">
-                    <position x="-700" y="-575" />
-                    <visibility content="1" />
-                    <selection content="0" />
-                </MetaData>
-            </MetaDataList>
-            <Properties>
-                <Property type="IntMinMaxProperty" identifier="clipX" displayName="Clip X Slices" key="clipX">
-                    <MetaDataList />
-                    <value x="0" y="128" />
-                    <range x="0" y="128" />
-                    <increment content="1" />
-                </Property>
-                <Property type="IntMinMaxProperty" identifier="clipY" displayName="Clip Y Slices" key="clipY">
-                    <MetaDataList />
-                    <value x="0" y="128" />
-                    <range x="0" y="128" />
-                    <increment content="1" />
-                </Property>
-                <Property type="IntMinMaxProperty" identifier="clipZ" displayName="Clip Z Slices" key="clipZ">
-                    <MetaDataList />
-                    <value x="70" y="80" />
-                    <range x="0" y="128" />
-                    <increment content="1" />
-                </Property>
-                <Property type="BoolProperty" identifier="clippingEnabled" displayName="Enable Clipping" key="clippingEnabled">
-                    <MetaDataList />
-                    <value content="1" />
-                </Property>
-            </Properties>
-        </Processor>
-        <Processor type="GeometryRenderGL" identifier="GeometryRenderGL" id="ref0">
-            <MetaDataList>
-                <MetaData type="ProcessorMetaData">
-                    <position x="-575" y="-400" />
-                    <visibility content="1" />
-                    <selection content="0" />
-                </MetaData>
-            </MetaDataList>
-            <InteractonHandlers>
-                <InteractionHandler type="Trackball">
-                    <Properties>
-                        <Property type="EventProperty" identifier="stepPanDown" displayName="Step pan down" key="stepPanDown">
-                            <MetaDataList />
-                            <Event type="KeyboardEvent">
-                                <modifier content="Shift" />
-                                <button content="S" />
-                            </Event>
-                            <Action type="TrackballAction">
-                                <action content="Step pan down" />
-                            </Action>
-                        </Property>
-                        <Property type="EventProperty" identifier="stepPanLeft" displayName="Step pan left" key="stepPanLeft">
-                            <MetaDataList />
-                            <Event type="KeyboardEvent">
-                                <modifier content="Shift" />
-                                <button content="A" />
-                            </Event>
-                            <Action type="TrackballAction">
-                                <action content="Step pan left" />
-                            </Action>
-                        </Property>
-                        <Property type="EventProperty" identifier="stepPanRight" displayName="Step pan right" key="stepPanRight">
-                            <MetaDataList />
-                            <Event type="KeyboardEvent">
-                                <modifier content="Shift" />
-                                <button content="D" />
-                            </Event>
-                            <Action type="TrackballAction">
-                                <action content="Step pan right" />
-                            </Action>
-                        </Property>
-                        <Property type="EventProperty" identifier="stepPanUp" displayName="Step pan up" key="stepPanUp">
-                            <MetaDataList />
-                            <Event type="KeyboardEvent">
-                                <modifier content="Shift" />
-                                <button content="W" />
-                            </Event>
-                            <Action type="TrackballAction">
-                                <action content="Step pan up" />
-                            </Action>
-                        </Property>
-                        <Property type="EventProperty" identifier="stepRotateDown" displayName="Step rotate down" key="stepRotateDown">
-                            <MetaDataList />
-                            <Event type="KeyboardEvent">
-                                <modifier content="" />
-                                <button content="S" />
-                            </Event>
-                            <Action type="TrackballAction">
-                                <action content="Step rotate down" />
-                            </Action>
-                        </Property>
-                        <Property type="EventProperty" identifier="stepRotateLeft" displayName="Step rotate left" key="stepRotateLeft">
-                            <MetaDataList />
-                            <Event type="KeyboardEvent">
-                                <modifier content="" />
-                                <button content="A" />
-                            </Event>
-                            <Action type="TrackballAction">
-                                <action content="Step rotate left" />
-                            </Action>
-                        </Property>
-                        <Property type="EventProperty" identifier="stepRotateRight" displayName="Step rotate right" key="stepRotateRight">
-                            <MetaDataList />
-                            <Event type="KeyboardEvent">
-                                <modifier content="" />
-                                <button content="D" />
-                            </Event>
-                            <Action type="TrackballAction">
-                                <action content="Step rotate right" />
-                            </Action>
-                        </Property>
-                        <Property type="EventProperty" identifier="stepRotateUp" displayName="Step rotate up" key="stepRotateUp">
-                            <MetaDataList />
-                            <Event type="KeyboardEvent">
-                                <modifier content="" />
-                                <button content="W" />
-                            </Event>
-                            <Action type="TrackballAction">
-                                <action content="Step rotate up" />
-                            </Action>
-                        </Property>
-                        <Property type="EventProperty" identifier="stepZoomIn" displayName="Step zoom in" key="stepZoomIn">
-                            <MetaDataList />
-                            <Event type="KeyboardEvent">
-                                <modifier content="" />
-                                <button content="R" />
-                            </Event>
-                            <Action type="TrackballAction">
-                                <action content="Step zoom in" />
-                            </Action>
-                        </Property>
-                        <Property type="EventProperty" identifier="stepZoomOut" displayName="Step zoom out" key="stepZoomOut">
-                            <MetaDataList />
-                            <Event type="KeyboardEvent">
-                                <modifier content="" />
-                                <button content="F" />
-                            </Event>
-                            <Action type="TrackballAction">
-                                <action content="Step zoom out" />
-                            </Action>
-                        </Property>
-                        <Property type="EventProperty" identifier="trackballPan" displayName="Pan" key="trackballPan">
-                            <MetaDataList />
-                            <Event type="MouseEvent">
-                                <modifier content="" />
-                                <button content="Middle mouse button" />
-                            </Event>
-                            <Action type="TrackballAction">
-                                <action content="Trackball pan" />
-                            </Action>
-                        </Property>
-                        <Property type="EventProperty" identifier="trackballRotate" displayName="Rotate" key="trackballRotate">
-                            <MetaDataList />
-                            <Event type="MouseEvent">
-                                <modifier content="" />
-                                <button content="Left mouse button" />
-                            </Event>
-                            <Action type="TrackballAction">
-                                <action content="Trackball rotate" />
-                            </Action>
-                        </Property>
-                        <Property type="EventProperty" identifier="trackballZoom" displayName="Zoom" key="trackballZoom">
-                            <MetaDataList />
-                            <Event type="MouseEvent">
-                                <modifier content="" />
-                                <button content="Right mouse button" />
-                            </Event>
-                            <Action type="TrackballAction">
-                                <action content="Trackball zoom" />
-                            </Action>
-                        </Property>
-                    </Properties>
-                </InteractionHandler>
-            </InteractonHandlers>
-            <Properties>
-                <Property type="CameraProperty" identifier="camera" displayName="Camera" key="camera">
-                    <MetaDataList />
-                    <lookFrom type="FloatVec3Property" identifier="lookFrom" displayName="Look from">
-                        <MetaDataList />
-                        <value x="-2.3592722" y="-1.5995932" z="-1.6125195" />
-                        <minvalue x="-10" y="-10" z="-10" />
-                        <maxvalue x="10" y="10" z="10" />
-                        <increment x="0.1" y="0.1" z="0.1" />
-                    </lookFrom>
-                    <lookTo type="FloatVec3Property" identifier="lookTo" displayName="Look to">
-                        <MetaDataList />
-                        <value x="0" y="0" z="0" />
-                        <minvalue x="-10" y="-10" z="-10" />
-                        <maxvalue x="10" y="10" z="10" />
-                        <increment x="0.1" y="0.1" z="0.1" />
-                    </lookTo>
-                    <lookUp type="FloatVec3Property" identifier="lookUp" displayName="Look up">
-                        <MetaDataList />
-                        <value x="0.69181496" y="-0.55627662" z="-0.4603757" />
-                        <minvalue x="-10" y="-10" z="-10" />
-                        <maxvalue x="10" y="10" z="10" />
-                        <increment x="0.1" y="0.1" z="0.1" />
-                    </lookUp>
-                    <fovy type="FloatProperty" identifier="fov" displayName="FOV">
-                        <MetaDataList />
-                        <value content="60" />
-                        <minvalue content="30" />
-                        <maxvalue content="360" />
-                        <increment content="0.1" />
-                    </fovy>
-                    <aspectRatio type="FloatProperty" identifier="aspectRatio" displayName="Aspect Ratio">
-                        <MetaDataList />
-                        <value content="1.0131868" />
-                        <minvalue content="0" />
-                        <maxvalue content="100" />
-                        <increment content="0.1" />
-                    </aspectRatio>
-                    <nearPlane type="FloatProperty" identifier="near" displayName="Near Plane">
-                        <MetaDataList />
-                        <value content="0.1" />
-                        <minvalue content="0.001" />
-                        <maxvalue content="10" />
-                        <increment content="0.001" />
-                    </nearPlane>
-                    <farPlane type="FloatProperty" identifier="far" displayName="Far Plane">
-                        <MetaDataList />
-                        <value content="100" />
-                        <minvalue content="1" />
-                        <maxvalue content="1000" />
-                        <increment content="1" />
-                    </farPlane>
-                </Property>
-                <Property type="ButtonProperty" identifier="centerView" displayName="Center view on geometry" key="centerView">
-                    <MetaDataList />
-                </Property>
-            </Properties>
-        </Processor>
-        <Processor type="CanvasGL" identifier="CanvasGL" id="ref1">
-            <MetaDataList>
-                <MetaData type="ProcessorMetaData">
-                    <position x="-575" y="-275" />
-                    <visibility content="1" />
-                    <selection content="0" />
-                </MetaData>
-                <MetaData type="ProcessorWidgetMetaData">
-                    <position x="1545" y="656" />
-                    <dimension x="461" y="455" />
-                    <visibility content="1" />
-                </MetaData>
-            </MetaDataList>
-            <Properties>
-                <Property type="IntVec2Property" identifier="dimensions" displayName="Dimensions" key="dimensions">
-                    <MetaDataList />
-                    <value x="461" y="455" />
-                    <minvalue x="128" y="128" />
-                    <maxvalue x="4096" y="4096" />
-                    <increment x="1" y="1" />
-                </Property>
-                <Property type="DirectoryProperty" identifier="layerDir" displayName="Output Directory" key="layerDir">
-                    <MetaDataList />
-                    <directory content="../../images" />
-                    <files>
-                        <file content="placeholder.png" />
-                        <file content="swirl.tga" />
-                        <file content="swirl1.tga" />
-                    </files>
-                </Property>
-                <Property type="ButtonProperty" identifier="saveLayer" displayName="Save Image Layer" key="saveLayer">
-                    <MetaDataList />
-                </Property>
-                <Property type="OptionPropertyInt" identifier="visibleLayer" displayName="Visible Layer" key="visibleLayer">
-                    <MetaDataList />
-                    <value content="0" />
-                </Property>
-            </Properties>
-        </Processor>
-    </Processors>
-    <Connections>
-        <Connection>
-            <OutPort identifier="image.outport">
-                <Processor type="GeometryRenderGL" identifier="GeometryRenderGL" reference="ref0" />
-            </OutPort>
-            <InPort identifier="inport">
-                <Processor type="CanvasGL" identifier="CanvasGL" reference="ref1" />
-            </InPort>
-        </Connection>
-        <Connection>
-            <OutPort identifier="geometry.outport">
-                <Processor type="CubeProxyGeometry" identifier="CubeProxyGeometry" reference="ref4" />
-            </OutPort>
-            <InPort identifier="geometry.inport">
-                <Processor type="GeometryRenderGL" identifier="GeometryRenderGL" reference="ref0" />
-            </InPort>
-        </Connection>
-        <Connection>
-            <OutPort identifier="geometry.outport">
-                <Processor type="CubeProxyGeometry" identifier="CubeProxyGeometry2" reference="ref3" />
-            </OutPort>
-            <InPort identifier="geometry.inport">
-                <Processor type="GeometryRenderGL" identifier="GeometryRenderGL" reference="ref0" />
-            </InPort>
-        </Connection>
-        <Connection>
-            <OutPort identifier="geometry.outport">
-                <Processor type="CubeProxyGeometry" identifier="CubeProxyGeometry3" reference="ref5" />
-            </OutPort>
-            <InPort identifier="geometry.inport">
-                <Processor type="GeometryRenderGL" identifier="GeometryRenderGL" reference="ref0" />
-            </InPort>
-        </Connection>
-        <Connection>
-            <OutPort identifier="data">
-                <Processor type="VolumeSource" identifier="VolumeSource" reference="ref2" />
-            </OutPort>
-            <InPort identifier="volume.inport">
-                <Processor type="CubeProxyGeometry" identifier="CubeProxyGeometry3" reference="ref5" />
-            </InPort>
-        </Connection>
-        <Connection>
-            <OutPort identifier="data">
-                <Processor type="VolumeSource" identifier="VolumeSource" reference="ref2" />
-            </OutPort>
-            <InPort identifier="volume.inport">
-                <Processor type="CubeProxyGeometry" identifier="CubeProxyGeometry2" reference="ref3" />
-            </InPort>
-        </Connection>
-        <Connection>
-            <OutPort identifier="data">
-                <Processor type="VolumeSource" identifier="VolumeSource" reference="ref2" />
-            </OutPort>
-            <InPort identifier="volume.inport">
-                <Processor type="CubeProxyGeometry" identifier="CubeProxyGeometry" reference="ref4" />
-            </InPort>
-        </Connection>
-    </Connections>
-    <ProcessorLinks />
+ <!-- Don't edit the following code -->
+ <Processors>
+  <Processor id="ref4" identifier="CubeProxyGeometry" type="CubeProxyGeometry">
+   <MetaDataList>
+    <MetaData type="ProcessorMetaData">
+     <position x="-325" y="-575"/>
+     <visibility content="1"/>
+     <selection content="0"/>
+    </MetaData>
+   </MetaDataList>
+   <Properties>
+    <Property displayName="Clip X Slices" identifier="clipX" key="clipX" type="IntMinMaxProperty">
+     <MetaDataList/>
+     <value x="70" y="80"/>
+     <range x="0" y="128"/>
+     <increment content="1"/>
+    </Property>
+    <Property displayName="Clip Y Slices" identifier="clipY" key="clipY" type="IntMinMaxProperty">
+     <MetaDataList/>
+     <value x="0" y="128"/>
+     <range x="0" y="128"/>
+     <increment content="1"/>
+    </Property>
+    <Property displayName="Clip Z Slices" identifier="clipZ" key="clipZ" type="IntMinMaxProperty">
+     <MetaDataList/>
+     <value x="0" y="128"/>
+     <range x="0" y="128"/>
+     <increment content="1"/>
+    </Property>
+    <Property displayName="Enable Clipping" identifier="clippingEnabled" key="clippingEnabled" type="BoolProperty">
+     <MetaDataList/>
+     <value content="1"/>
+    </Property>
+   </Properties>
+  </Processor>
+  <Processor id="ref2" identifier="VolumeSource" type="VolumeSource">
+   <MetaDataList>
+    <MetaData type="ProcessorMetaData">
+     <position x="-475" y="-700"/>
+     <visibility content="1"/>
+     <selection content="1"/>
+    </MetaData>
+   </MetaDataList>
+   <Properties>
+    <Property displayName="Data range" identifier="dataRange" key="dataRange" type="FloatMinMaxProperty">
+     <MetaDataList/>
+     <value x="0" y="255"/>
+     <range x="0" y="255"/>
+     <increment content="2.7609124e+19"/>
+    </Property>
+    <Property displayName="Volume file" identifier="filename" key="filename" type="FileProperty">
+     <MetaDataList/>
+     <url content="../../volumes/hydrogenatom.dat"/>
+     <nameFilter>
+      <filter content="All Files (*.*)"/>
+      <filter content="Inviwo dat file format (*.dat)"/>
+      <filter content="Inviwo ivf file format (*.ivf)"/>
+      <filter content="Raw binary file (*.raw)"/>
+     </nameFilter>
+     <acceptMode content="0"/>
+     <fileMode content="0"/>
+    </Property>
+    <Property displayName="Value range" identifier="valueRange" key="valueRange" type="FloatMinMaxProperty">
+     <MetaDataList/>
+     <value x="0" y="1"/>
+     <range x="0" y="0"/>
+     <increment content="2.7609124e+19"/>
+    </Property>
+    <Property displayName="Value unit" identifier="valueUnit" key="valueUnit" type="StringProperty">
+     <MetaDataList/>
+     <value content=""/>
+    </Property>
+   </Properties>
+  </Processor>
+  <Processor id="ref3" identifier="CubeProxyGeometry2" type="CubeProxyGeometry">
+   <MetaDataList>
+    <MetaData type="ProcessorMetaData">
+     <position x="-500" y="-575"/>
+     <visibility content="1"/>
+     <selection content="0"/>
+    </MetaData>
+   </MetaDataList>
+   <Properties>
+    <Property displayName="Clip X Slices" identifier="clipX" key="clipX" type="IntMinMaxProperty">
+     <MetaDataList/>
+     <value x="0" y="128"/>
+     <range x="0" y="128"/>
+     <increment content="1"/>
+    </Property>
+    <Property displayName="Clip Y Slices" identifier="clipY" key="clipY" type="IntMinMaxProperty">
+     <MetaDataList/>
+     <value x="70" y="80"/>
+     <range x="0" y="128"/>
+     <increment content="1"/>
+    </Property>
+    <Property displayName="Clip Z Slices" identifier="clipZ" key="clipZ" type="IntMinMaxProperty">
+     <MetaDataList/>
+     <value x="0" y="128"/>
+     <range x="0" y="128"/>
+     <increment content="1"/>
+    </Property>
+    <Property displayName="Enable Clipping" identifier="clippingEnabled" key="clippingEnabled" type="BoolProperty">
+     <MetaDataList/>
+     <value content="1"/>
+    </Property>
+   </Properties>
+  </Processor>
+  <Processor id="ref5" identifier="CubeProxyGeometry3" type="CubeProxyGeometry">
+   <MetaDataList>
+    <MetaData type="ProcessorMetaData">
+     <position x="-700" y="-575"/>
+     <visibility content="1"/>
+     <selection content="0"/>
+    </MetaData>
+   </MetaDataList>
+   <Properties>
+    <Property displayName="Clip X Slices" identifier="clipX" key="clipX" type="IntMinMaxProperty">
+     <MetaDataList/>
+     <value x="0" y="128"/>
+     <range x="0" y="128"/>
+     <increment content="1"/>
+    </Property>
+    <Property displayName="Clip Y Slices" identifier="clipY" key="clipY" type="IntMinMaxProperty">
+     <MetaDataList/>
+     <value x="0" y="128"/>
+     <range x="0" y="128"/>
+     <increment content="1"/>
+    </Property>
+    <Property displayName="Clip Z Slices" identifier="clipZ" key="clipZ" type="IntMinMaxProperty">
+     <MetaDataList/>
+     <value x="70" y="80"/>
+     <range x="0" y="128"/>
+     <increment content="1"/>
+    </Property>
+    <Property displayName="Enable Clipping" identifier="clippingEnabled" key="clippingEnabled" type="BoolProperty">
+     <MetaDataList/>
+     <value content="1"/>
+    </Property>
+   </Properties>
+  </Processor>
+  <Processor id="ref0" identifier="GeometryRenderGL" type="GeometryRenderGL">
+   <MetaDataList>
+    <MetaData type="ProcessorMetaData">
+     <position x="-575" y="-400"/>
+     <visibility content="1"/>
+     <selection content="0"/>
+    </MetaData>
+   </MetaDataList>
+   <InteractonHandlers>
+    <InteractionHandler type="Trackball">
+     <Properties>
+      <Property displayName="Step pan down" identifier="stepPanDown" key="stepPanDown" type="EventProperty">
+       <MetaDataList/>
+       <Event type="KeyboardEvent">
+        <modifier content="Shift"/>
+        <button content="S"/>
+       </Event>
+       <Action type="TrackballAction">
+        <action content="Step pan down"/>
+       </Action>
+      </Property>
+      <Property displayName="Step pan left" identifier="stepPanLeft" key="stepPanLeft" type="EventProperty">
+       <MetaDataList/>
+       <Event type="KeyboardEvent">
+        <modifier content="Shift"/>
+        <button content="A"/>
+       </Event>
+       <Action type="TrackballAction">
+        <action content="Step pan left"/>
+       </Action>
+      </Property>
+      <Property displayName="Step pan right" identifier="stepPanRight" key="stepPanRight" type="EventProperty">
+       <MetaDataList/>
+       <Event type="KeyboardEvent">
+        <modifier content="Shift"/>
+        <button content="D"/>
+       </Event>
+       <Action type="TrackballAction">
+        <action content="Step pan right"/>
+       </Action>
+      </Property>
+      <Property displayName="Step pan up" identifier="stepPanUp" key="stepPanUp" type="EventProperty">
+       <MetaDataList/>
+       <Event type="KeyboardEvent">
+        <modifier content="Shift"/>
+        <button content="W"/>
+       </Event>
+       <Action type="TrackballAction">
+        <action content="Step pan up"/>
+       </Action>
+      </Property>
+      <Property displayName="Step rotate down" identifier="stepRotateDown" key="stepRotateDown" type="EventProperty">
+       <MetaDataList/>
+       <Event type="KeyboardEvent">
+        <modifier content=""/>
+        <button content="S"/>
+       </Event>
+       <Action type="TrackballAction">
+        <action content="Step rotate down"/>
+       </Action>
+      </Property>
+      <Property displayName="Step rotate left" identifier="stepRotateLeft" key="stepRotateLeft" type="EventProperty">
+       <MetaDataList/>
+       <Event type="KeyboardEvent">
+        <modifier content=""/>
+        <button content="A"/>
+       </Event>
+       <Action type="TrackballAction">
+        <action content="Step rotate left"/>
+       </Action>
+      </Property>
+      <Property displayName="Step rotate right" identifier="stepRotateRight" key="stepRotateRight" type="EventProperty">
+       <MetaDataList/>
+       <Event type="KeyboardEvent">
+        <modifier content=""/>
+        <button content="D"/>
+       </Event>
+       <Action type="TrackballAction">
+        <action content="Step rotate right"/>
+       </Action>
+      </Property>
+      <Property displayName="Step rotate up" identifier="stepRotateUp" key="stepRotateUp" type="EventProperty">
+       <MetaDataList/>
+       <Event type="KeyboardEvent">
+        <modifier content=""/>
+        <button content="W"/>
+       </Event>
+       <Action type="TrackballAction">
+        <action content="Step rotate up"/>
+       </Action>
+      </Property>
+      <Property displayName="Step zoom in" identifier="stepZoomIn" key="stepZoomIn" type="EventProperty">
+       <MetaDataList/>
+       <Event type="KeyboardEvent">
+        <modifier content=""/>
+        <button content="R"/>
+       </Event>
+       <Action type="TrackballAction">
+        <action content="Step zoom in"/>
+       </Action>
+      </Property>
+      <Property displayName="Step zoom out" identifier="stepZoomOut" key="stepZoomOut" type="EventProperty">
+       <MetaDataList/>
+       <Event type="KeyboardEvent">
+        <modifier content=""/>
+        <button content="F"/>
+       </Event>
+       <Action type="TrackballAction">
+        <action content="Step zoom out"/>
+       </Action>
+      </Property>
+      <Property displayName="Pan" identifier="trackballPan" key="trackballPan" type="EventProperty">
+       <MetaDataList/>
+       <Event type="MouseEvent">
+        <modifier content=""/>
+        <button content="Middle mouse button"/>
+       </Event>
+       <Action type="TrackballAction">
+        <action content="Trackball pan"/>
+       </Action>
+      </Property>
+      <Property displayName="Rotate" identifier="trackballRotate" key="trackballRotate" type="EventProperty">
+       <MetaDataList/>
+       <Event type="MouseEvent">
+        <modifier content=""/>
+        <button content="Left mouse button"/>
+       </Event>
+       <Action type="TrackballAction">
+        <action content="Trackball rotate"/>
+       </Action>
+      </Property>
+      <Property displayName="Zoom" identifier="trackballZoom" key="trackballZoom" type="EventProperty">
+       <MetaDataList/>
+       <Event type="MouseEvent">
+        <modifier content=""/>
+        <button content="Right mouse button"/>
+       </Event>
+       <Action type="TrackballAction">
+        <action content="Trackball zoom"/>
+       </Action>
+      </Property>
+     </Properties>
+    </InteractionHandler>
+   </InteractonHandlers>
+   <Properties>
+    <Property displayName="Camera" identifier="camera" key="camera" type="CameraProperty">
+     <MetaDataList/>
+     <lookFrom displayName="Look from" identifier="lookFrom" type="FloatVec3Property">
+      <MetaDataList/>
+      <value x="-2.3592722" y="-1.5995932" z="-1.6125195"/>
+      <minvalue x="-10" y="-10" z="-10"/>
+      <maxvalue x="10" y="10" z="10"/>
+      <increment x="0.1" y="0.1" z="0.1"/>
+     </lookFrom>
+     <lookTo displayName="Look to" identifier="lookTo" type="FloatVec3Property">
+      <MetaDataList/>
+      <value x="0" y="0" z="0"/>
+      <minvalue x="-10" y="-10" z="-10"/>
+      <maxvalue x="10" y="10" z="10"/>
+      <increment x="0.1" y="0.1" z="0.1"/>
+     </lookTo>
+     <lookUp displayName="Look up" identifier="lookUp" type="FloatVec3Property">
+      <MetaDataList/>
+      <value x="0.69181496" y="-0.55627662" z="-0.4603757"/>
+      <minvalue x="-10" y="-10" z="-10"/>
+      <maxvalue x="10" y="10" z="10"/>
+      <increment x="0.1" y="0.1" z="0.1"/>
+     </lookUp>
+     <fovy displayName="FOV" identifier="fov" type="FloatProperty">
+      <MetaDataList/>
+      <value content="60"/>
+      <minvalue content="30"/>
+      <maxvalue content="360"/>
+      <increment content="0.1"/>
+     </fovy>
+     <aspectRatio displayName="Aspect Ratio" identifier="aspectRatio" type="FloatProperty">
+      <MetaDataList/>
+      <value content="1.0131868"/>
+      <minvalue content="0"/>
+      <maxvalue content="100"/>
+      <increment content="0.1"/>
+     </aspectRatio>
+     <nearPlane displayName="Near Plane" identifier="near" type="FloatProperty">
+      <MetaDataList/>
+      <value content="0.1"/>
+      <minvalue content="0.001"/>
+      <maxvalue content="10"/>
+      <increment content="0.001"/>
+     </nearPlane>
+     <farPlane displayName="Far Plane" identifier="far" type="FloatProperty">
+      <MetaDataList/>
+      <value content="100"/>
+      <minvalue content="1"/>
+      <maxvalue content="1000"/>
+      <increment content="1"/>
+     </farPlane>
+    </Property>
+    <Property displayName="Center view on geometry" identifier="centerView" key="centerView" type="ButtonProperty">
+     <MetaDataList/>
+    </Property>
+   </Properties>
+  </Processor>
+  <Processor id="ref1" identifier="CanvasGL" type="CanvasGL">
+   <MetaDataList>
+    <MetaData type="ProcessorMetaData">
+     <position x="-575" y="-275"/>
+     <visibility content="1"/>
+     <selection content="0"/>
+    </MetaData>
+    <MetaData type="ProcessorWidgetMetaData">
+     <position x="1545" y="656"/>
+     <dimension x="461" y="455"/>
+     <visibility content="1"/>
+    </MetaData>
+   </MetaDataList>
+   <Properties>
+    <Property displayName="Dimensions" identifier="dimensions" key="dimensions" type="IntVec2Property">
+     <MetaDataList/>
+     <value x="461" y="455"/>
+     <minvalue x="128" y="128"/>
+     <maxvalue x="4096" y="4096"/>
+     <increment x="1" y="1"/>
+    </Property>
+    <Property displayName="Output Directory" identifier="layerDir" key="layerDir" type="DirectoryProperty">
+     <MetaDataList/>
+     <directory content="../../images"/>
+     <files>
+      <file content="placeholder.png"/>
+      <file content="swirl.tga"/>
+      <file content="swirl1.tga"/>
+     </files>
+    </Property>
+    <Property displayName="Save Image Layer" identifier="saveLayer" key="saveLayer" type="ButtonProperty">
+     <MetaDataList/>
+    </Property>
+    <Property displayName="Visible Layer" identifier="visibleLayer" key="visibleLayer" type="OptionPropertyInt">
+     <MetaDataList/>
+     <value content="0"/>
+    </Property>
+   </Properties>
+  </Processor>
+ </Processors>
+ <Connections>
+  <Connection>
+   <OutPort identifier="image.outport">
+    <Processor identifier="GeometryRenderGL" reference="ref0" type="GeometryRenderGL"/>
+   </OutPort>
+   <InPort identifier="inport">
+    <Processor identifier="CanvasGL" reference="ref1" type="CanvasGL"/>
+   </InPort>
+  </Connection>
+  <Connection>
+   <OutPort identifier="geometry.outport">
+    <Processor identifier="CubeProxyGeometry" reference="ref4" type="CubeProxyGeometry"/>
+   </OutPort>
+   <InPort identifier="geometry.inport">
+    <Processor identifier="GeometryRenderGL" reference="ref0" type="GeometryRenderGL"/>
+   </InPort>
+  </Connection>
+  <Connection>
+   <OutPort identifier="geometry.outport">
+    <Processor identifier="CubeProxyGeometry2" reference="ref3" type="CubeProxyGeometry"/>
+   </OutPort>
+   <InPort identifier="geometry.inport">
+    <Processor identifier="GeometryRenderGL" reference="ref0" type="GeometryRenderGL"/>
+   </InPort>
+  </Connection>
+  <Connection>
+   <OutPort identifier="geometry.outport">
+    <Processor identifier="CubeProxyGeometry3" reference="ref5" type="CubeProxyGeometry"/>
+   </OutPort>
+   <InPort identifier="geometry.inport">
+    <Processor identifier="GeometryRenderGL" reference="ref0" type="GeometryRenderGL"/>
+   </InPort>
+  </Connection>
+  <Connection>
+   <OutPort identifier="data">
+    <Processor identifier="VolumeSource" reference="ref2" type="VolumeSource"/>
+   </OutPort>
+   <InPort identifier="volume.inport">
+    <Processor identifier="CubeProxyGeometry3" reference="ref5" type="CubeProxyGeometry"/>
+   </InPort>
+  </Connection>
+  <Connection>
+   <OutPort identifier="data">
+    <Processor identifier="VolumeSource" reference="ref2" type="VolumeSource"/>
+   </OutPort>
+   <InPort identifier="volume.inport">
+    <Processor identifier="CubeProxyGeometry2" reference="ref3" type="CubeProxyGeometry"/>
+   </InPort>
+  </Connection>
+  <Connection>
+   <OutPort identifier="data">
+    <Processor identifier="VolumeSource" reference="ref2" type="VolumeSource"/>
+   </OutPort>
+   <InPort identifier="volume.inport">
+    <Processor identifier="CubeProxyGeometry" reference="ref4" type="CubeProxyGeometry"/>
+   </InPort>
+  </Connection>
+ </Connections>
+ <ProcessorLinks/>
 </InviwoTreeData>

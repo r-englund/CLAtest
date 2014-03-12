@@ -82,7 +82,9 @@ public:
     virtual void onTransferFunctionChange();
 
 public slots:
-    void setPointColor();
+//    void setPointColor();
+
+    void setPointColor(QColor color);
     void setPointColorDialog();
     void updateColorWheel();
     void showColorDialog();
@@ -120,8 +122,8 @@ private:
 
     bool colorChange_;
     void generateWidget();
-    void setPointColor(QColor color);
     void updateTFPreview();
+    
 protected:
     virtual void resizeEvent(QResizeEvent*);
     virtual void closeEvent(QCloseEvent*);

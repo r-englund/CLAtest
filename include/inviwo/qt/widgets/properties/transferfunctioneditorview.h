@@ -51,7 +51,13 @@ class IVW_QTWIDGETS_API TransferFunctionEditorView : public QGraphicsView, publi
 public:
     TransferFunctionEditorView(TransferFunctionProperty* tfProperty);
 
-    void setMask(float maskMin, float maskMax) { if (maskMax<maskMin) maskMax=maskMin; mask_ = vec2(maskMin, maskMax); }
+    void setMask(float maskMin, float maskMax) {
+        if (maskMax<maskMin) {
+            maskMax=maskMin;
+        }
+        mask_ = vec2(maskMin, maskMax);
+    }
+    
     virtual void onTransferFunctionChange();
     void setShowHistogram(bool);
 

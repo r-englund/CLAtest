@@ -41,30 +41,71 @@
 
 namespace inviwo {
 
-class TransferFunction;
+class TransferFunctionDataPoint;
 
-class IVW_CORE_API TransferFunctionDataPoint {
+class IVW_CORE_API TransferFunctionPointObserver: public Observer {
+public:
+    TransferFunctionPointObserver(): Observer() {};
+
+    /**
+    * This method will be called when observed object changes.
+    * Override it to add behavior.
+    */
+    virtual void onTransferFunctionPointChange(const TransferFunctionDataPoint* p) {};
+};
+
+class IVW_CORE_API TransferFunctionPointObservable: public Observable<TransferFunctionPointObserver> {
+public:
+    TransferFunctionPointObservable(): Observable<TransferFunctionPointObserver>() {};
+
+    void notifyTransferFunctionPointObservers() const;
+};
+
+
+class IVW_CORE_API TransferFunctionDataPoint : public TransferFunctionPointObservable, public IvwSerializable {
 
 public:
-    TransferFunctionDataPoint(TransferFunction* transFunc, const vec2& pos, const vec4& rgba);
+    TransferFunctionDataPoint(const vec2& pos = vec2(0), const vec4& rgba = vec4(0));
     virtual ~TransferFunctionDataPoint();
 
-    const vec2& getPos() const;
+    inline const vec2& getPos() const {
+        return pos_;
+    };
+
+    inline const vec4& getRGBA() const {
+        return rgba_;
+    }
+
     void setPos(const vec2& pos);
-
-    const vec4& getRGBA() const;
     void setRGBA(const vec4& rgba);
-
     void setRGB(const vec3& rgb);
     void setA(float alpha);
-
     void setPosA(const vec2& pos, float alpha);
+    
+    void notifyTransferFunctionPointObservers() const;
+    
+    virtual void serialize(IvwSerializer& s) const;
+    virtual void deserialize(IvwDeserializer& d);
+
+    friend inline bool operator==(const TransferFunctionDataPoint& lhs,
+                                  const TransferFunctionDataPoint& rhs);
 
 private:
     vec2 pos_;
     vec4 rgba_;
-    TransferFunction* transFunc_;
 };
+
+inline bool operator==(const TransferFunctionDataPoint& lhs,
+                       const TransferFunctionDataPoint& rhs){
+    return lhs.pos_ == rhs.pos_ && lhs.rgba_ == rhs.rgba_;
+    
+}
+inline bool operator!=(const TransferFunctionDataPoint& lhs,
+                       const TransferFunctionDataPoint& rhs) {
+                       return !operator==(lhs,rhs);
+}
+
+
 
 } // namespace
 

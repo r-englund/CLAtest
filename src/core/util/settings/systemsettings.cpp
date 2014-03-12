@@ -63,7 +63,7 @@ void SystemSettings::initialize() {
     viewModeProperty_.addOption("applicationMode","Application Mode",1);
     viewModeProperty_.setCurrentStateAsDefault();
     addProperty(&viewModeProperty_);
-    //viewModeProperty_.setVisibility(INVISIBLE);
+    viewModeProperty_.setVisibility(INVISIBLE);
     addProperty(&txtEditorProperty_);
     addProperty(&shaderReloadingProperty_);
     addProperty(&enablePortInformationProperty_);

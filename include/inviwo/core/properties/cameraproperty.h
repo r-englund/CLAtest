@@ -106,6 +106,7 @@ public:
     void fitCameraToGeomtry(const Geometry* volume);
     void fitWithBasis(const mat3& basis);
     void inportChanged();
+
 private:
     FloatVec3Property lookFrom_;
     FloatVec3Property lookTo_;

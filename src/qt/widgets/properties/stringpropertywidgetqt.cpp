@@ -49,7 +49,7 @@ void StringPropertyWidgetQt::generateWidget() {
     if(property_->getSemantics().getString() == "Password"){
         lineEdit_->setEchoMode(QLineEdit::PasswordEchoOnEdit);
     }
-    label_ = new EditableLabelQt(this,property_->getDisplayName(),PropertyWidgetQt::getContextMenu());
+    label_ = new EditableLabelQt(this,property_->getDisplayName());
 
     hLayout->addWidget(label_);
     hLayout->addWidget(lineEdit_);

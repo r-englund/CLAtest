@@ -52,7 +52,7 @@ void LightPropertyWidgetQt::generateWidget() {
     hLayout->setSpacing(7);
     
     lightWidget_ = new LightPositionWidgetQt();
-    label_ = new EditableLabelQt(this,property_->getDisplayName(),PropertyWidgetQt::getContextMenu());
+    label_ = new EditableLabelQt(this,property_->getDisplayName());
     QLabel* radiusLabel = new QLabel(this);
     radiusLabel->setText("Distance");
     QLabel* dirLabel = new QLabel(this);

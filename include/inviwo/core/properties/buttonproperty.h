@@ -38,7 +38,7 @@
 
 namespace inviwo {
 /** class ButtonProperty
- * \brief  The Button property class provides buttons that you can bind functions to buttons.
+ * \brief The Button property class provides buttons that you can bind functions to.
  *
  * The button property has a widget witch creates a button and register a function to it.
  * You can only assign one function to the property.
@@ -48,15 +48,17 @@ namespace inviwo {
  * A button property are normally used by a processor.
  * The button property is created and added in the constructor of the processor.
  *
- *
  * @see ButtonPropertyWidgetQt
  */
 class ButtonProperty : public Property {
 
 public:
-    ButtonProperty(std::string identifier, std::string displayName,
+    ButtonProperty(std::string identifier,
+                   std::string displayName,
                    PropertyOwner::InvalidationLevel invalidationLevel=PropertyOwner::INVALID_OUTPUT,
-                   PropertySemantics semantics = PropertySemantics::Default) : Property(identifier,displayName,invalidationLevel,semantics) {}
+                   PropertySemantics semantics = PropertySemantics::Default)
+        : Property(identifier,displayName,invalidationLevel,semantics) {
+    }
 
     /**
      * Overrides the default implementation to 
@@ -75,15 +77,9 @@ public:
      */
     virtual void pressButton() { propertyModified(); }
 
-    virtual void serialize(IvwSerializer& s) const {
-        Property::serialize(s);
+    virtual std::string getClassName()  const {
+        return "ButtonProperty";
     }
-
-    virtual void deserialize(IvwDeserializer& d) {
-        Property::deserialize(d);
-    }
-
-    virtual std::string getClassName()  const { return "ButtonProperty"; }
 
 };
 

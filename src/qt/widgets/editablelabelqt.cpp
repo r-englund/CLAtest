@@ -37,17 +37,17 @@ namespace inviwo {
 EditableLabelQt::EditableLabelQt(QWidget* parent, std::string text, bool shortenText)
     : QWidget(parent)
     , text_(text)
-    , baseMenu_(NULL)
+    , propertyWidget_(NULL)
     , contextMenu_(NULL)
     , shortenText_(shortenText) {
 
     generateWidget();
 }
 
-EditableLabelQt::EditableLabelQt(QWidget* parent, std::string text, QMenu* contextMenu, bool shortenText)
+EditableLabelQt::EditableLabelQt(PropertyWidgetQt* parent, std::string text, bool shortenText)
     : QWidget(parent)
     , text_(text)
-    , baseMenu_(contextMenu)
+    , propertyWidget_(parent)
     , contextMenu_(NULL)
     , shortenText_(shortenText) {
 
@@ -126,8 +126,8 @@ void EditableLabelQt::showContextMenu(const QPoint& pos) {
     if (!contextMenu_){
         contextMenu_ = new QMenu(this);
     
-        if(baseMenu_){
-            contextMenu_->addActions(baseMenu_->actions());
+        if(propertyWidget_){
+            contextMenu_->addActions(propertyWidget_->getContextMenu()->actions());
         }
         
         renameAction_ = new QAction(tr("&Rename"), this);

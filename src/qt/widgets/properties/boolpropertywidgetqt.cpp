@@ -47,7 +47,7 @@ void BoolPropertyWidgetQt::generateWidget() {
     hLayout->setContentsMargins(0, 0, 0, 0);
     hLayout->setSpacing(7);
     
-    label_ = new EditableLabelQt(this, property_->getDisplayName(), PropertyWidgetQt::getContextMenu());
+    label_ = new EditableLabelQt(this, property_->getDisplayName());
     label_->setShortenText(false);
     connect(label_, SIGNAL(textChanged()), this, SLOT(setPropertyDisplayName()));
     hLayout->addWidget(label_);

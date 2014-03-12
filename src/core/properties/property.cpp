@@ -47,6 +47,7 @@ Property::Property(std::string identifier,
     , identifier_(identifier)
     , displayName_(displayName)
     , readOnly_(false)
+    , defaultReadOnly_(false)
     , semantics_(semantics)
     , visibilityMode_(APPLICATION)
     , propertyModified_(false)
@@ -62,6 +63,7 @@ Property::Property()
     , identifier_("")
     , displayName_("")
     , readOnly_(false)
+    , defaultReadOnly_(false)
     , semantics_(PropertySemantics::Default)
     , visibilityMode_(APPLICATION)
     , propertyModified_(false)
@@ -224,7 +226,12 @@ void Property::serialize(IvwSerializer& s) const {
     s.serialize("type", getClassName(), true);
     s.serialize("identifier", identifier_, true);
     s.serialize("displayName", displayName_, true);
-    s.serialize("MetaDataList", metaData_, "MetaData") ;
+    if (readOnly_ != defaultReadOnly_) {
+        s.serialize("readonly", readOnly_);
+    }
+    if (metaData_.size() > 0) {
+        s.serialize("MetaDataList", metaData_, "MetaData");
+    }
 }
 
 void Property::deserialize(IvwDeserializer& d) {
@@ -232,7 +239,8 @@ void Property::deserialize(IvwDeserializer& d) {
     d.deserialize("type", className, true);
     d.deserialize("identifier", identifier_, true);
     d.deserialize("displayName", displayName_, true);
-    d.deserialize("MetaDataList", metaData_, "MetaData") ;
+    d.deserialize("readonly", readOnly_);
+    d.deserialize("MetaDataList", metaData_, "MetaData");
 }
 
 bool Property::operator==(const Property& prop) {
@@ -286,9 +294,12 @@ void Property::setVisible(bool val) {
         setVisibility(INVISIBLE);
 }
 
-void Property::setCurrentStateAsDefault() {}
+void Property::setCurrentStateAsDefault() {
+    defaultReadOnly_ = readOnly_;
+}
 
 void Property::resetToDefaultState() {
+    readOnly_ = defaultReadOnly_;
     propertyModified();
 }
 

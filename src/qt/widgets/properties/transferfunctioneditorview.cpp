@@ -38,15 +38,19 @@
 namespace inviwo {
 
 TransferFunctionEditorView::TransferFunctionEditorView(TransferFunctionProperty* tfProperty)
-    : TransferFunctionObserver(), tfProperty_(tfProperty), volumeInport_(tfProperty->getVolumeInport()), showHistogram_(tfProperty->getShowHistogram()),
-      histogramTheadWorking_(false)
-{
+    : TransferFunctionObserver()
+    , tfProperty_(tfProperty)
+    , volumeInport_(tfProperty->getVolumeInport())
+    , showHistogram_(tfProperty->getShowHistogram())
+    , histogramTheadWorking_(false) {
+    
     setMouseTracking(true);
     setRenderHint(QPainter::Antialiasing, true);
     setViewportUpdateMode(QGraphicsView::FullViewportUpdate);
 
-    if (volumeInport_)
+    if (volumeInport_) {
         volumeInport_->onChange(this, &TransferFunctionEditorView::onTransferFunctionChange);
+    }
 }
 
 void TransferFunctionEditorView::resizeEvent(QResizeEvent* event) {
@@ -57,14 +61,15 @@ void TransferFunctionEditorView::resizeEvent(QResizeEvent* event) {
 void TransferFunctionEditorView::drawForeground(QPainter* painter, const QRectF& rect) {
     if (mask_.x > 0.0f) {
         int leftMaskBorder = mask_.x*sceneRect().width();
-        painter->fillRect(0, 0, leftMaskBorder, rect.height(), QColor(25,25,25,100));
+        painter->fillRect(0, -5, leftMaskBorder, rect.height()+10, QColor(25,25,25,100));
         painter->drawLine(leftMaskBorder, 0, leftMaskBorder, rect.height());
     }
 
     if (mask_.y < 1.0f) {
         int rightMaskBorder = mask_.y*sceneRect().width();
         // add 10 to width to compensate scaling differences between scene and view
-        painter->fillRect(rightMaskBorder, 0, sceneRect().width()-rightMaskBorder+10, rect.height(), QColor(25,25,25,100));
+        painter->fillRect(rightMaskBorder, -5, sceneRect().width()-rightMaskBorder+10,
+                          rect.height()+10, QColor(25,25,25,100));
         painter->drawLine(rightMaskBorder, 0, rightMaskBorder, rect.height());
     }
 
@@ -128,8 +133,9 @@ void TransferFunctionEditorView::drawBackground(QPainter* painter, const QRectF&
     qreal right = int(sRect.right()) - (int(sRect.right()) % gridSpacing);
     QVarLengthArray<QLineF, 100> lines;
 
-    for (qreal x=sRect.left(); x<=right; x+=gridSpacing)
+    for (qreal x=sRect.left(); x<=right; x+=gridSpacing) {
         lines.append(QLineF(x, sRect.top(), x, sRect.bottom()));
+    }
 
     QPen gridPen;
     gridPen.setColor(QColor(102,102,102));
@@ -159,26 +165,33 @@ void TransferFunctionEditorView::drawBackground(QPainter* painter, const QRectF&
 }
 
 void TransferFunctionEditorView::updateZoom() {
-    QRectF zoomRect;
-    zoomRect.setLeft(zoomH_.x*scene()->sceneRect().width());
-    zoomRect.setRight(zoomH_.y*scene()->sceneRect().width());
-    zoomRect.setBottom(zoomV_.x*scene()->sceneRect().height());
-    zoomRect.setTop(zoomV_.y*scene()->sceneRect().height());
-    fitInView(zoomRect, Qt::IgnoreAspectRatio);
+    fitInView(zoomH_.x * scene()->sceneRect().width(),
+              zoomV_.x * scene()->sceneRect().height(),
+              (zoomH_.y - zoomH_.x) * scene()->sceneRect().width(),
+              (zoomV_.y - zoomV_.x) * scene()->sceneRect().height(),
+              Qt::IgnoreAspectRatio);
 }
 
 void TransferFunctionEditorView::zoomHorizontally(int zoomHMin, int zoomHMax) {
     // normalize zoom values, as sliders in TransferFunctionPropertyDialog
     // have the range [0...100]
-    zoomH_.x = zoomHMin / 100.0f;
-    zoomH_.y = zoomHMax / 100.0f;
+    
+    zoomHMin = zoomHMin > 100 ? 100 : zoomHMin;
+    zoomHMin = zoomHMin < 0 ? 0 : zoomHMin;
+
+    zoomHMax = zoomHMax > 100 ? 100 : zoomHMax;
+    zoomHMax = zoomHMax < 0 ? 0 : zoomHMax;
+    
+    zoomH_.x = (100.0f - static_cast<float>(zoomHMax)) / 100.0f;
+    zoomH_.y = (100.0f - static_cast<float>(zoomHMin)) / 100.0f;
 
     // avoid degenerated zoom area
     if (abs(zoomH_.x-zoomH_.y)<0.05f) {
-        if (zoomH_.y == 1.0f)
+        if ( (zoomH_.x+zoomH_.y)/2.0 < 0.5f) {
+            zoomH_.y = zoomH_.x + 0.05f;
+        } else {
             zoomH_.x=zoomH_.y-0.05f;
-        else
-            zoomH_.y=zoomH_.x+0.05f;
+        }
     }
 
     updateZoom();
@@ -188,15 +201,24 @@ void TransferFunctionEditorView::zoomVertically(int zoomVMin, int zoomVMax) {
     // normalize zoom values, as sliders in TransferFunctionPropertyDialog
     // have the range [0...100]
     // and flip/rescale values to compensate slider layout
-    zoomV_.x = (100.0-zoomVMax) / 100.0f;
-    zoomV_.y = (100.0-zoomVMin) / 100.0f;
+    
+    zoomVMin = zoomVMin > 100 ? 100 : zoomVMin;
+    zoomVMin = zoomVMin < 0 ? 0 : zoomVMin;
+
+    zoomVMax = zoomVMax > 100 ? 100 : zoomVMax;
+    zoomVMax = zoomVMax < 0 ? 0 : zoomVMax;
+    
+    
+    zoomV_.x = (100.0f - static_cast<float>(zoomVMax)) / 100.0f;
+    zoomV_.y = (100.0f - static_cast<float>(zoomVMin)) / 100.0f;
 
     // avoid degenerated zoom area
     if (abs(zoomV_.x-zoomV_.y)<0.05f) {
-        if (zoomV_.y == 1.0f)
+        if ( (zoomV_.x + zoomV_.y)/2.0 < 0.5f) {
+            zoomV_.y = zoomV_.x + 0.05f;
+        } else {
             zoomV_.x=zoomV_.y-0.05f;
-        else
-            zoomV_.y=zoomV_.x+0.05f;
+        }
     }
 
     updateZoom();

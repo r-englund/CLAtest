@@ -55,8 +55,11 @@ void FloatMat3PropertyWidgetQt::generateWidget() {
     mat2x1_ = new QLineEdit;
     mat2x2_ = new QLineEdit;
 
+    label_ = new EditableLabelQt(this,property_->getDisplayName());
+    hLayout->addWidget(label_);
+    connect(label_, SIGNAL(textChanged()),this, SLOT(setPropertyDisplayName()));
+    
     if (property_->getReadOnly()) {
-        hLayout->addWidget(new QLabel(QString::fromStdString(property_->getDisplayName())));
         mat0x0_->setDisabled(true);
         mat0x1_->setDisabled(true);
         mat0x2_->setDisabled(true);
@@ -66,8 +69,7 @@ void FloatMat3PropertyWidgetQt::generateWidget() {
         mat2x0_->setDisabled(true);
         mat2x1_->setDisabled(true);
         mat2x2_->setDisabled(true);
-    }
-    else {
+    } else {
         connect(mat0x0_, SIGNAL(editingFinished()),
                 this, SLOT(set0x0Value()));
         connect(mat0x1_, SIGNAL(editingFinished()),
@@ -86,9 +88,7 @@ void FloatMat3PropertyWidgetQt::generateWidget() {
                 this, SLOT(set2x1Value()));
         connect(mat2x2_, SIGNAL(editingFinished()),
                 this, SLOT(set2x2Value()));
-        label_ = new EditableLabelQt(this,property_->getDisplayName(),PropertyWidgetQt::getContextMenu());
-        hLayout->addWidget(label_);
-        connect(label_, SIGNAL(textChanged()),this, SLOT(setPropertyDisplayName()));
+
     }
 
     QGridLayout* gridLayout = new QGridLayout;

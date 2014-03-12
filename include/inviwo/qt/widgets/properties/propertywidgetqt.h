@@ -63,7 +63,7 @@ public:
     virtual void showWidget();
     virtual void hideWidget();
     void updateContextMenu();
-
+    QMenu* getContextMenu();
     
 public slots:
     void visibilityModified(int mode);
@@ -81,7 +81,7 @@ protected:
     PropertyVisibilityMode getApplicationViewMode();
     
     // Context menu
-    QMenu* getContextMenu();
+
     void generateContextMenu();
     void generateModuleMenuActions();
     void updateModuleMenuActions();

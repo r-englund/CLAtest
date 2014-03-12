@@ -56,6 +56,9 @@ public:
 
     virtual void setCurrentStateAsDefault();
     virtual void resetToDefaultState();
+            
+    virtual void serialize(IvwSerializer& s) const;
+    virtual void deserialize(IvwDeserializer& d);
 
     typedef T valueType;
 protected:
@@ -104,6 +107,21 @@ void TemplateProperty<T>::set(const Property* srcProperty) {
     else
         this->setVariant(const_cast<Property*>(srcProperty)->getVariant());
 
+    propertyModified();
+}
+
+template <typename T>
+void TemplateProperty<T>::serialize(IvwSerializer& s) const {
+    Property::serialize(s);
+    if (value_ != defaultValue_) {
+        s.serialize("value", value_);
+    }
+}
+
+template <typename T>
+void TemplateProperty<T>::deserialize(IvwDeserializer& d) {
+    Property::deserialize(d);
+    d.deserialize("value", value_);
     propertyModified();
 }
 
