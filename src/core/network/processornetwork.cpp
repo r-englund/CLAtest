@@ -126,7 +126,7 @@ std::vector<Processor*> ProcessorNetwork::getProcessors() const {
 PortConnection* ProcessorNetwork::addConnection(Outport* sourcePort, Inport* destPort) {
     PortConnection* connection = getConnection(sourcePort, destPort);
 
-    if (!connection && sourcePort && destPort) {
+    if (!connection && sourcePort && destPort && destPort->canConnectTo(sourcePort)) {
         modified();
         destPort->connectTo(sourcePort);
         connection = new PortConnection(sourcePort, destPort);
@@ -447,9 +447,7 @@ void ProcessorNetwork::deserialize(IvwDeserializer& d) throw (Exception) {
                 Outport* outPort = portConnections[i]->getOutport();
                 Inport* inPort = portConnections[i]->getInport();
 
-                if (outPort && inPort)
-                    addConnection(outPort, inPort);
-                else
+                if (!(outPort && inPort && addConnection(outPort, inPort)))
                     LogWarn("Unable to establish port connection.");
 
                 delete portConnections[i];
