@@ -55,7 +55,7 @@ public:
         if (maskMax<maskMin) {
             maskMax=maskMin;
         }
-        mask_ = vec2(maskMin, maskMax);
+        tfProperty_->setMask(maskMin, maskMax);
     }
     
     virtual void onTransferFunctionChange();
@@ -80,9 +80,6 @@ protected:
 
 private:
     TransferFunctionProperty* tfProperty_;
-    vec2 mask_;
-    vec2 zoomH_;
-    vec2 zoomV_;
     VolumeInport* volumeInport_;
     bool showHistogram_;
 

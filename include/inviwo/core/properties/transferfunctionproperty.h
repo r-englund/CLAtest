@@ -95,13 +95,19 @@ public:
     bool getShowHistogram();
     VolumeInport* getVolumeInport();
 
+    virtual void setCurrentStateAsDefault();
+    virtual void resetToDefaultState();
+
     virtual void serialize(IvwSerializer& s) const;
     virtual void deserialize(IvwDeserializer& d);
 
 private:
     vec2 zoomH_;
+    vec2 defaultZoomH_;
     vec2 zoomV_;
+    vec2 defaultZoomV_;
     bool showHistogram_;
+    bool defaultShowHistogram_;
 
     VolumeInport* volumeInport_;
 };

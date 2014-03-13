@@ -44,9 +44,9 @@ CubeProxyGeometry::CubeProxyGeometry()
       inport_("volume.inport"),
       outport_("geometry.outport"),
       clippingEnabled_("clippingEnabled", "Enable Clipping", true),
-      clipX_("clipX", "Clip X Slices", 0, 256, 0, 256),
-      clipY_("clipY", "Clip Y Slices", 0, 256, 0, 256),
-      clipZ_("clipZ", "Clip Z Slices", 0, 256, 0, 256)
+      clipX_("clipX", "Clip X Slices", 0, 256, 0, 256, 1, 1),
+      clipY_("clipY", "Clip Y Slices", 0, 256, 0, 256, 1, 1),
+      clipZ_("clipZ", "Clip Z Slices", 0, 256, 0, 256, 1, 1)
 {
     addPort(inport_);
     addPort(outport_);
