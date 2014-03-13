@@ -79,6 +79,7 @@ void PropertyListWidget::addProcessorProperties(Processor* processor) {
         processorPropertyWidget->setVisible(true);
         static_cast<CollapsibleGroupBoxWidgetQt*>(processorPropertyWidget)->show();
     }
+    QWidget::raise();
 }
 
 void PropertyListWidget::removeProcessorProperties(Processor* processor) {
