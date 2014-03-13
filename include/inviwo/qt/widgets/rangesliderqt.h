@@ -51,10 +51,12 @@ public slots:
     int maxValue();
     int minRange();
     int maxRange();
+    int minSeperation();
 
     void setValue(int, int);
     void setMinValue(int);
     void setMaxValue(int);
+    void setMinSeperation(int);
 
     void setRange(int, int);
     void setMinRange(int);
@@ -65,23 +67,20 @@ signals:
     void valuesSet(int min, int max);
 
 protected:
-    int constrainValues(int idx);
     void resizeEvent(QResizeEvent* event);
 
-    int fromInternalToExternal(int val);
-    int fromExternalToInternal(int val);
+    void updateStateFromSiders();
+    void updateSlidersFromState();
 
-    int getHandleWidth();
 
 protected slots:
     void updateSplitterPosition(int pos, int idx);
 
 private:
-    int internalRange_[2];
-    int internalValue_[2];
-
     int range_[2];
     int value_[2];
+    QFrame* middle_;
+    int minSeperation_;
 };
 
 }//namespace

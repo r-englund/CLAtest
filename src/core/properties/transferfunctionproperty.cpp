@@ -42,8 +42,11 @@ TransferFunctionProperty::TransferFunctionProperty(std::string identifier,
                                                    PropertySemantics semantics)
     : TemplateProperty<TransferFunction>(identifier, displayName, value, invalidationLevel, semantics)
     , zoomH_(0.0f, 1.0f)
+    , defaultZoomH_(0.0f, 1.0f)
     , zoomV_(0.0f, 1.0f)
+    , defaultZoomV_(0.0f, 1.0f)
     , showHistogram_(true)
+    , defaultShowHistogram_(true)
     , volumeInport_(volumeInport) {
 }
 
@@ -63,12 +66,33 @@ VolumeInport* TransferFunctionProperty::getVolumeInport() {
     return volumeInport_;
 }
 
+void TransferFunctionProperty::resetToDefaultState() {
+    zoomH_ = defaultZoomH_;
+    zoomV_ = defaultZoomV_;
+    showHistogram_ = defaultShowHistogram_;
+    TemplateProperty<TransferFunction>::resetToDefaultState();
+}
+void TransferFunctionProperty::setCurrentStateAsDefault() {
+    TemplateProperty<TransferFunction>::setCurrentStateAsDefault();
+    defaultZoomH_ = zoomH_;
+    defaultZoomV_ = zoomV_;
+    defaultShowHistogram_ = showHistogram_;
+}
+
 void TransferFunctionProperty::serialize(IvwSerializer& s) const {
     Property::serialize(s);
-    s.serialize("zoomH_", zoomH_);
-    s.serialize("zoomV_", zoomV_);
-    s.serialize("showHistogram_", showHistogram_);
-    s.serialize("transferFunction", this->value_);
+    if (zoomH_ != defaultZoomH_) {
+        s.serialize("zoomH_", zoomH_);
+    }
+    if (zoomV_ != defaultZoomV_) {
+        s.serialize("zoomV_", zoomV_);
+    }
+    if (showHistogram_ != defaultShowHistogram_) {
+        s.serialize("showHistogram_", showHistogram_);
+    }
+    if (this->value_ != this->defaultValue_) {
+        s.serialize("transferFunction", this->value_);
+    }
 }
 
 void TransferFunctionProperty::deserialize(IvwDeserializer& d) {

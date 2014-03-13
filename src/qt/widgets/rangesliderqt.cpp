@@ -35,12 +35,15 @@
 
 namespace inviwo {
 
-RangeSliderQt::RangeSliderQt(Qt::Orientation orientation, QWidget* parent) : QSplitter(orientation, parent) {
+RangeSliderQt::RangeSliderQt(Qt::Orientation orientation, QWidget* parent) 
+    : QSplitter(orientation, parent)
+    , minSeperation_(0) {
+
     QFrame* left = new QFrame(this);
-    QFrame* middle = new QFrame(this);
+    middle_ = new QFrame(this);
     QFrame* right = new QFrame(this);
     addWidget(left);
-    addWidget(middle);
+    addWidget(middle_);
     addWidget(right);
     left->setStyleSheet(QString(
                             "QSplitter QFrame {"
@@ -48,7 +51,7 @@ RangeSliderQt::RangeSliderQt(Qt::Orientation orientation, QWidget* parent) : QSp
                             "  border-bottom-right-radius: 0px;"
                             "}"
                         ));
-    middle->setObjectName("valueArea");
+    middle_->setObjectName("valueArea");
     right->setStyleSheet(QString(
                              "QSplitter QFrame {"
                              "  border-top-left-radius: 0px;"
@@ -56,23 +59,24 @@ RangeSliderQt::RangeSliderQt(Qt::Orientation orientation, QWidget* parent) : QSp
                              "}"
                          ));
 
+    range_[0] = 0;
+    range_[1] = 10;
+    value_[0] = 0;
+    value_[1] = 10;
+
     if (orientation == Qt::Horizontal) {
+        left->setMinimumWidth(0);
+        right->setMinimumWidth(0);
         setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Maximum);
     } else {
         setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Expanding);
+        left->setMinimumHeight(0);
+        right->setMinimumHeight(0);
     }
-
+    setMinSeperation(minSeperation_);
+    QSplitter::setChildrenCollapsible(false);    
     connect(this, SIGNAL(splitterMoved(int, int)), this, SLOT(updateSplitterPosition(int, int)));
-    range_[0] = 0;
-    range_[1] = 0;
-    value_[0] = 0;
-    value_[1] = 0;
-    internalRange_[0] = 0;
-    internalRange_[1] = 0;
-    internalValue_[0] = 0;
-    internalValue_[1] = 0;
-    getRange(1, &internalRange_[0], &internalValue_[1]);
-    getRange(2, &internalValue_[0], &internalRange_[1]);
+    updateSlidersFromState();
 }
 
 RangeSliderQt::~RangeSliderQt() {}
@@ -93,6 +97,10 @@ int RangeSliderQt::maxRange() {
     return range_[1];
 }
 
+int RangeSliderQt::minSeperation() {
+    return minSeperation_;
+}
+
 void RangeSliderQt::setValue(int minVal, int maxVal) {
     setMinValue(minVal);
     setMaxValue(maxVal);
@@ -101,16 +109,31 @@ void RangeSliderQt::setValue(int minVal, int maxVal) {
 void RangeSliderQt::setMinValue(int minVal) {
     if (value_[0] != minVal) {
         value_[0] = minVal;
-        internalValue_[0] = closestLegalPosition(fromExternalToInternal(minVal), 1);
-        moveSplitter(internalValue_[0], 1);
+
+        if (value_[0] > range_[1] - minSeperation_) {
+            value_[0] = range_[1] - minSeperation_;
+        }
+        
+        if (value_[1] - value_[0] < minSeperation_) {
+            value_[1] = value_[0] + minSeperation_;
+        }
+
+        updateSlidersFromState();
     }
 }
 
 void RangeSliderQt::setMaxValue(int maxVal) {
     if (value_[1] != maxVal) {
         value_[1] = maxVal;
-        internalValue_[1] = closestLegalPosition(fromExternalToInternal(maxVal)+getHandleWidth(), 2);
-        moveSplitter(internalValue_[1], 2);
+        if (value_[1] < minSeperation_) {
+            value_[1] = minSeperation_;
+        }
+
+        if (value_[1] - value_[0] < minSeperation_) {
+            value_[0] = value_[1] - minSeperation_;
+        }
+
+        updateSlidersFromState();
     }
 }
 
@@ -119,89 +142,82 @@ void RangeSliderQt::setRange(int minR, int maxR) {
     setMaxRange(maxR);
 }
 
+void RangeSliderQt::setMinSeperation(int sep) {
+    minSeperation_ = sep;
+    QList<int> sizes = QSplitter::sizes();
+    int range = sizes[0] + sizes[1] + sizes[2];
+    
+    int size = range_[1] - range_[0];
+    if (size <= 0) {
+        return;
+    }
+
+    if (QSplitter::orientation() == Qt::Horizontal) {
+        middle_->setMinimumWidth(range * minSeperation_/ size);
+    } else {
+        middle_->setMinimumHeight(range * minSeperation_ / size);
+    }
+}
+
 void RangeSliderQt::setMinRange(int minR) {
     range_[0] = minR;
 
-    if (minR>value_[0])
+    if (minR > value_[0]) {
         setMinValue(minR);
+    }
 }
 
 void RangeSliderQt::setMaxRange(int maxR) {
     range_[1] = maxR;
 
-    if (maxR<value_[1])
+    if (maxR < value_[1]) {
         setMaxValue(maxR);
-}
-
-//Index 1 = Min, Index 2 = Max
-int RangeSliderQt::constrainValues(int lastIdxChanged) {
-    if (lastIdxChanged == 2) {
-        internalValue_[1] -= getHandleWidth();
-
-        if (internalValue_[0] > internalValue_[1]) {
-            internalValue_[0] = internalValue_[1];
-            return 1;
-        }
     }
-    else if (internalValue_[0] > internalValue_[1]) {
-        internalValue_[1] = internalValue_[0];
-        return 2;
-    }
-
-    return -1;
 }
 
 void RangeSliderQt::resizeEvent(QResizeEvent* event) {
     QSplitter::resizeEvent(event);
-    getRange(1, &internalRange_[0], &internalValue_[1]);
-    getRange(2, &internalValue_[0], &internalRange_[1]);
+    setMinSeperation(minSeperation_);
+}
 
-    if (internalValue_[0]<0 || internalValue_[1]<0)
+void RangeSliderQt::updateStateFromSiders() {
+    QList<int> sizes = QSplitter::sizes();
+    int range = sizes[0] + sizes[1] + sizes[2];
+
+    int pos1 = sizes[0];
+    int pos2 = sizes[0] + sizes[1];
+
+    value_[0] = range_[0] + range_[1] * pos1 / range;
+    value_[1] = range_[0] + range_[1] * pos2 / range;    
+}
+
+void RangeSliderQt::updateSlidersFromState() {
+    QList<int> sizes = QSplitter::sizes();
+    int range = sizes[0] + sizes[1] + sizes[2];
+
+    int size = range_[1] - range_[0];
+    if (size <= 0) {
         return;
+    }
 
-    internalRange_[1] -= getHandleWidth();
-    internalValue_[0] = closestLegalPosition(fromExternalToInternal(value_[0]), 1);
-    moveSplitter(internalValue_[0], 1);
-    internalValue_[1] = closestLegalPosition(fromExternalToInternal(value_[1])+getHandleWidth(), 2);
-    moveSplitter(internalValue_[1], 2);
-}
+    sizes.clear();
+    sizes.append(range * (value_[0] - range_[0]) / size);
+    sizes.append(range * (value_[1] - value_[0]) / size);
+    sizes.append(range * (range_[1] - value_[1]) / size);
 
-int RangeSliderQt::fromInternalToExternal(int val) {
-    return (val*((static_cast<float>(maxRange()-minRange()))/(static_cast<float>(internalRange_[1]-internalRange_[0]))))+minRange();
-}
-
-int RangeSliderQt::fromExternalToInternal(int val) {
-    return (val-minRange())*((static_cast<float>(internalRange_[1]-internalRange_[0]))/(static_cast<float>(maxRange()-minRange())));
-}
-
-int RangeSliderQt::getHandleWidth() {
-    return handleWidth();
+    QSplitter::blockSignals(true);
+    QSplitter::setSizes(sizes);
+    QSplitter::blockSignals(false);
 }
 
 //Index 1 = Min, Index 2 = Max
 void RangeSliderQt::updateSplitterPosition(int pos, int idx) {
-    //Return if invalid position
-    if (pos<0)
-        return;
-
-    int loc = idx-1;
-    //Check if interaction came from handle
-    bool changedFromHandle = (internalValue_[loc] == pos ? false : true);
-    internalValue_[loc] = pos;
-    //Constrain min/max values against each other
-    int otherIdx = constrainValues(idx);
-    int otherLoc = otherIdx-1;
-
-    //Change value if it was changed from handle
-    if (changedFromHandle)
-        value_[loc] = fromInternalToExternal(internalValue_[loc]);
-
-    //Perform change of other handle if constrain was performed
-    if (otherIdx > 0)
-        value_[otherLoc] = fromInternalToExternal(internalValue_[otherLoc]);
+    updateStateFromSiders();
 
     //Emit
     emit valuesChanged(value_[0], value_[1]);
 }
+
+
 
 } // namespace inviwo

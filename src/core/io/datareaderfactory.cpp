@@ -48,6 +48,5 @@ void DataReaderFactory::registerObject(DataReader* reader) {
 }
 
 
-
 } // namespace
 

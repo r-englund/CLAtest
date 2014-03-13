@@ -38,7 +38,7 @@ TransferFunctionEditor::TransferFunctionEditor(TransferFunction* transferFunctio
     : QGraphicsScene()
     , view_(view)
     , transferFunction_(transferFunction) {
-    setSceneRect(0.0, 0.0, 512.0, 256.0);
+    setSceneRect(0.0, 0.0, 512.0, 512.0);
     // initialize graphicsitem for path through control points
     graphicsPathItem_ = new QGraphicsPathItem();
     QPen pathPen(QColor(66,66,66));

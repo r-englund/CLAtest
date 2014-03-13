@@ -51,18 +51,21 @@ public:
                    T rangeMin = Defaultvalues<T>::getMin(),
                    T rangeMax = Defaultvalues<T>::getMax(),
                    T increment = Defaultvalues<T>::getInc(),
+                   T minSeperation = 0,
                    PropertyOwner::InvalidationLevel invalidationLevel = PropertyOwner::INVALID_OUTPUT,
                    PropertySemantics semantics = PropertySemantics::Default);
 
     T getRangeMin() const;
     T getRangeMax() const;
     T getIncrement() const;
+    T getMinSeperation() const;
 
     glm::detail::tvec2<T, glm::defaultp> getRange() const;
 
     void setRangeMin(const T& value);
     void setRangeMax(const T& value);
     void setIncrement(const T& value);
+    void setMinSeperation(const T& value);
 
     void setRange(const glm::detail::tvec2<T, glm::defaultp>& value);
 
@@ -83,6 +86,8 @@ private:
     glm::detail::tvec2<T, glm::defaultp> defaultRange_;
     T increment_;
     T defaultIncrement_;
+    T minSeperation_;
+    T defaultMinSeperation_;
 };
 
 typedef MinMaxProperty<float> FloatMinMaxProperty;
@@ -105,6 +110,7 @@ MinMaxProperty<T>::MinMaxProperty(std::string identifier,
                                   T rangeMin,
                                   T rangeMax,
                                   T increment,
+                                  T minSeperation,
                                   PropertyOwner::InvalidationLevel invalidationLevel,
                                   PropertySemantics semantics)
     : TemplateProperty<glm::detail::tvec2<T, glm::defaultp> >(identifier,
@@ -115,7 +121,9 @@ MinMaxProperty<T>::MinMaxProperty(std::string identifier,
     , range_(glm::detail::tvec2<T, glm::defaultp>(rangeMin, rangeMax))
     , defaultRange_(glm::detail::tvec2<T, glm::defaultp>(rangeMin, rangeMax))
     , increment_(increment)
-    , defaultIncrement_(increment) {
+    , defaultIncrement_(increment)
+    , minSeperation_(minSeperation)
+    , defaultMinSeperation_(minSeperation) {
 }
 
 template <typename T>
@@ -131,6 +139,11 @@ T MinMaxProperty<T>::getRangeMax() const {
 template <typename T>
 T MinMaxProperty<T>::getIncrement() const {
     return increment_;
+}
+
+template<typename T>
+T inviwo::MinMaxProperty<T>::getMinSeperation() const {
+    return minSeperation_;
 }
 
 template <typename T>
@@ -161,6 +174,13 @@ void MinMaxProperty<T>::setRangeMax(const T& value) {
 template <typename T>
 void MinMaxProperty<T>::setIncrement(const T& value) {
     increment_ = value;
+    TemplateProperty<glm::detail::tvec2<T, glm::defaultp> >::propertyModified();
+}
+
+template<typename T>
+void inviwo::MinMaxProperty<T>::setMinSeperation(const T& value) {
+    minSeperation_ = value;
+    TemplateProperty<glm::detail::tvec2<T, glm::defaultp> >::propertyModified();
 }
 
 template <typename T>
@@ -189,6 +209,7 @@ template <typename T>
 void MinMaxProperty<T>::resetToDefaultState() {
     range_ = defaultRange_;
     increment_ = defaultIncrement_;
+    minSeperation_ = defaultMinSeperation_;
     TemplateProperty<glm::detail::tvec2<T, glm::defaultp> >::resetToDefaultState();
 }
 
@@ -197,6 +218,7 @@ void MinMaxProperty<T>::setCurrentStateAsDefault() {
     TemplateProperty<glm::detail::tvec2<T, glm::defaultp> >::setCurrentStateAsDefault();
     defaultRange_ = range_;
     defaultIncrement_ = increment_;
+    defaultMinSeperation_ = minSeperation_;
 }
 
 
@@ -210,17 +232,16 @@ void MinMaxProperty<T>::serialize(IvwSerializer& s) const {
     if (increment_ != defaultIncrement_) {
         s.serialize("increment", MinMaxProperty<T>::getIncrement());
     }
+    if (minSeperation_ != defaultMinSeperation_) {
+        s.serialize("minSeperation", minSeperation_);
+    }
 }
 
 template <typename T>
 void MinMaxProperty<T>::deserialize(IvwDeserializer& d) {
-    glm::detail::tvec2<T, glm::defaultp> value;
-    d.deserialize("range", value);
-    MinMaxProperty<T>::setRange(value);
-    T increment;
-    d.deserialize("increment", increment);
-    MinMaxProperty<T>::setIncrement(increment);
-
+    d.deserialize("range", range_);
+    d.deserialize("increment", increment_);
+    d.deserialize("minSeperation", minSeperation_);
     TemplateProperty<glm::detail::tvec2<T, glm::defaultp> >::deserialize(d);
 }
 

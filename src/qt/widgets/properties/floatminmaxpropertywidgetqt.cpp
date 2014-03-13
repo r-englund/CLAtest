@@ -95,6 +95,7 @@ void FloatMinMaxPropertyWidgetQt::updateFromProperty() {
     sliderMin_ = static_cast<int>((valueVec_.x - property_->getRangeMin())*maxNumberOfValues_);
     sliderMax_ = static_cast<int>((valueVec_.y - property_->getRangeMin())*maxNumberOfValues_);
     slider_->setValue(sliderMin_, sliderMax_);
+    slider_->setMinSeperation(property_->getMinSeperation() / property_->getIncrement());
     blockSignals(true);
     spinBoxMin_->setValue(valueVec_.x);
     spinBoxMax_->setValue(valueVec_.y);

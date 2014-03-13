@@ -85,6 +85,7 @@ void TransferFunctionPropertyDialog::generateWidget() {
 
     zoomVSlider_ = new RangeSliderQt(Qt::Vertical, this);
     zoomVSlider_->setRange(0, 100);
+    zoomVSlider_->setMinSeperation(5);
     zoomVSlider_->setValue(static_cast<int>(tfProperty_->getZoomV().x*100),
                            static_cast<int>(tfProperty_->getZoomV().y*100));
     connect(zoomVSlider_, SIGNAL(valuesChanged(int, int)),
@@ -92,6 +93,7 @@ void TransferFunctionPropertyDialog::generateWidget() {
     
     zoomHSlider_ = new RangeSliderQt(Qt::Horizontal, this);
     zoomHSlider_->setRange(0, 100);
+    zoomHSlider_->setMinSeperation(5);
     zoomHSlider_->setValue(static_cast<int>(tfProperty_->getZoomH().x*100),
                            static_cast<int>(tfProperty_->getZoomH().y*100));
     connect(zoomHSlider_, SIGNAL(valuesChanged(int, int)),
@@ -118,7 +120,10 @@ void TransferFunctionPropertyDialog::generateWidget() {
     connect(btnExportTF_, SIGNAL(clicked()), this, SLOT(exportTransferFunction()));
     
     tfPreview_ = new QLabel();
-    tfPreview_->setMinimumSize(1,1);
+    tfPreview_->setMinimumSize(1,20);
+    QSizePolicy sliderPol = tfPreview_->sizePolicy();
+    sliderPol.setHorizontalStretch(3);
+    tfPreview_->setSizePolicy(sliderPol);
     
     cmbInterpolation_ = new QComboBox();
     cmbInterpolation_->addItem("linear interpolation");
@@ -192,7 +197,7 @@ void TransferFunctionPropertyDialog::updateTFPreview() {
         }
         tfPixmap_ = new QPixmap(gradientWidth, 20);
     }
-    
+
     QPainter tfPainter(tfPixmap_);
     QPixmap checkerBoard(10, 10);
     QPainter checkerBoardPainter(&checkerBoard);
@@ -365,9 +370,12 @@ void TransferFunctionPropertyDialog::showHistogram(bool show) {
 void TransferFunctionPropertyDialog::resizeEvent(QResizeEvent* event) {
     setEditorDimension(ivec2(event->size().width(), event->size().height()));
     QWidget::resizeEvent(event);
+    updateTFPreview();
 }
 
 void TransferFunctionPropertyDialog::showEvent(QShowEvent* event) {
+    updateTFPreview();
+    tfEditorView_->update();
     showEditor();
 }
 
