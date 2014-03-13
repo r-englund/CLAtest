@@ -131,7 +131,7 @@ public:
     *
     * @param[in] sourcePort The outport.
     * @param[in] destPort The inport.
-    * @return The newly created connection.
+    * @return The newly created connection. NULL if a connection could not be made.
     * @see removeConnection()
     */
     PortConnection* addConnection(Outport* sourcePort, Inport* destPort);

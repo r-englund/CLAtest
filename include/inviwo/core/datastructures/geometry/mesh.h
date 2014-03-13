@@ -62,8 +62,20 @@ public:
     virtual void initialize();
     virtual void deinitialize();
     virtual Mesh* clone() const;
+    /**
+     * Add a buffer with rendering data, such as positions/colors/normals. 
+     * The Mesh will take ownership of the added buffer.
+     * @param att Data to be rendered, will be owned by mesh.
+     */
+    void addAttribute(Buffer* att);
 
-    void addAttribute(Buffer*);
+    /**
+     * Add index buffer. The indices will be used as look up 
+     * values into the buffers during rendering. 
+     * The Mesh will take ownership of the added buffer.
+     * @param info Rendering type and connectivity.
+     * @param ind Index buffer, will be owned by mesh.
+     */
     void addIndicies(AttributesInfo info, IndexBuffer* ind);
 
     const std::vector<Buffer*>& getBuffers() { return attributes_; }
