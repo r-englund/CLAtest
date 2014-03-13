@@ -36,6 +36,7 @@
 #include <inviwo/core/util/settings/systemsettings.h>
 #include <modules/opengl/buffer/bufferglconverter.h>
 #include <modules/opengl/buffer/elementbuffergl.h>
+#include <modules/opengl/buffer/elementbufferglconverter.h>
 #include <modules/opengl/canvasprocessorgl.h>
 #include <modules/opengl/geometry/geometryrenderprocessorgl.h>
 #include <modules/opengl/glwrap/shadermanager.h>
@@ -62,6 +63,7 @@ OpenGLModule::OpenGLModule() :
     registerRepresentationConverter(new VolumeDisk2GLConverter());
     registerRepresentationConverter(new BufferRAM2GLConverter());
     registerRepresentationConverter(new BufferRAM2ElementGLConverter());
+    registerRepresentationConverter(new ElementBufferRAM2GLConverter());
     registerProcessor(CanvasProcessorGL);
     registerProcessor(GeometryRenderProcessorGL);
     registerCapabilities(new OpenGLCapabilities());

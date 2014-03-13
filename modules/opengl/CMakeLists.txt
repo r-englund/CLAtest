@@ -17,6 +17,7 @@ set(HEADER_FILES
     ${IVW_MODULE_DIR}/opengl/textureobserver.h
     ${IVW_MODULE_DIR}/opengl/buffer/bufferglconverter.h
     ${IVW_MODULE_DIR}/opengl/buffer/elementbuffergl.h
+    ${IVW_MODULE_DIR}/opengl/buffer/elementbufferglconverter.h
     ${IVW_MODULE_DIR}/opengl/buffer/buffergl.h
     ${IVW_MODULE_DIR}/opengl/geometry/geometrygl.h
     ${IVW_MODULE_DIR}/opengl/geometry/geometryrenderprocessorgl.h
@@ -59,6 +60,7 @@ set(SOURCE_FILES
     ${IVW_MODULE_DIR}/opengl/processorgl.cpp
     ${IVW_MODULE_DIR}/opengl/buffer/bufferglconverter.cpp
     ${IVW_MODULE_DIR}/opengl/buffer/elementbuffergl.cpp
+    ${IVW_MODULE_DIR}/opengl/buffer/elementbufferglconverter.cpp
     ${IVW_MODULE_DIR}/opengl/buffer/buffergl.cpp
     ${IVW_MODULE_DIR}/opengl/geometry/geometrygl.cpp
     ${IVW_MODULE_DIR}/opengl/geometry/geometryrenderprocessorgl.cpp
