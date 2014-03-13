@@ -10,6 +10,8 @@ set(HEADER_FILES
     ${IVW_MODULE_DIR}/opencl/buffer/bufferclconverter.h
     ${IVW_MODULE_DIR}/opencl/buffer/bufferclgl.h
     ${IVW_MODULE_DIR}/opencl/buffer/bufferclglconverter.h
+    ${IVW_MODULE_DIR}/opencl/buffer/elementbufferclgl.h
+    ${IVW_MODULE_DIR}/opencl/buffer/elementbufferclglconverter.h
     ${IVW_MODULE_DIR}/opencl/image/imagecl.h
     ${IVW_MODULE_DIR}/opencl/image/imageclgl.h
     ${IVW_MODULE_DIR}/opencl/image/layercl.h
@@ -46,7 +48,8 @@ set(SOURCE_FILES
     ${IVW_MODULE_DIR}/opencl/buffer/bufferclconverter.cpp
     ${IVW_MODULE_DIR}/opencl/buffer/bufferclgl.cpp
     ${IVW_MODULE_DIR}/opencl/buffer/bufferclglconverter.cpp
-
+    ${IVW_MODULE_DIR}/opencl/buffer/elementbufferclgl.cpp
+    ${IVW_MODULE_DIR}/opencl/buffer/elementbufferclglconverter.cpp
     ${IVW_MODULE_DIR}/opencl/image/imagecl.cpp
     ${IVW_MODULE_DIR}/opencl/image/imageclgl.cpp
     ${IVW_MODULE_DIR}/opencl/image/layercl.cpp

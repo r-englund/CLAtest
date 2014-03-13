@@ -33,6 +33,7 @@
 #include <modules/opencl/inviwoopencl.h>
 #include <modules/opencl/buffer/bufferclconverter.h>
 #include <modules/opencl/buffer/bufferclglconverter.h>
+#include <modules/opencl/buffer/elementbufferclglconverter.h>
 #include <modules/opencl/image/layerclconverter.h>
 #include <modules/opencl/image/layerclglconverter.h>
 #include <modules/opencl/openclmodule.h>
@@ -63,6 +64,11 @@ OpenCLModule::OpenCLModule() : InviwoModule(), btnOpenCLInfo_("printOpenCLInfo",
     registerRepresentationConverter(new BufferCL2GLConverter());
     registerRepresentationConverter(new BufferCLGL2CLConverter());
     registerRepresentationConverter(new BufferCL2CLGLConverter());
+    // ElementBuffer CLGL
+    registerRepresentationConverter(new ElementBufferRAM2CLGLConverter());
+    registerRepresentationConverter(new ElementBufferCLGL2GLConverter());
+    registerRepresentationConverter(new ElementBufferGL2CLGLConverter());
+    registerRepresentationConverter(new ElementBufferCL2CLGLConverter());
     // LayerCL
     registerRepresentationConverter(new LayerDisk2CLConverter());
     registerRepresentationConverter(new LayerRAM2CLConverter());
