@@ -142,7 +142,9 @@ void NetworkEditor::removeProcessor(Processor* processor) {
 
 
 void NetworkEditor::addConnection(Outport* outport, Inport* inport) {
-    processorNetwork_->addConnection(outport, inport);
+    if (processorNetwork_->addConnection(outport, inport) == NULL) {
+        return;   
+    }
     addConnectionGraphicsItem(outport, inport);
     CanvasProcessor* canvasProcessor = dynamic_cast<CanvasProcessor*>(inport->getProcessor());
     ImageInport* imageInport = dynamic_cast<ImageInport*>(inport);
