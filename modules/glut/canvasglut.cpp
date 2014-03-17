@@ -38,8 +38,6 @@ namespace inviwo {
 static const unsigned int MAX_CANVAS_NUMBER = 256;
 CanvasGLUT* CanvasGLUT::canvases_[MAX_CANVAS_NUMBER];
 
-EventHandler* CanvasGLUT::eventHandler_;
-
 CanvasGLUT::CanvasGLUT(std::string windowTitle, uvec2 dimensions)
     : CanvasGL(dimensions), windowTitle_(windowTitle),
       mouseButton_(MouseEvent::MOUSE_BUTTON_NONE),
@@ -65,8 +63,6 @@ void CanvasGLUT::initializeGL() {
     glutReshapeFunc(reshape);
     glutDisplayFunc(display);
     glutIdleFunc(idle);
-    glutKeyboardFunc(keyboard);
-    glutSpecialFunc(keyboardSpecial);
     glutMouseFunc(mouse);
     glutMouseWheelFunc(mouseWheel);
     glutMotionFunc(mouseMotion);
@@ -103,14 +99,17 @@ void CanvasGLUT::display(void) {}
 
 void CanvasGLUT::idle() {}
 
-void CanvasGLUT::keyboard(unsigned char /*key*/, int /*x*/, int /*y*/) {
-    KeyboardEvent* keyboardEvent = new KeyboardEvent();
-    eventHandler_->broadcast(keyboardEvent);
-}
+void CanvasGLUT::keyboard(unsigned char key, int x, int y) {
+    CanvasGLUT* thisCanvas = canvases_[glutGetWindow()];
 
-void CanvasGLUT::keyboardSpecial(int /*key*/, int /*x*/, int /*y*/) {
-    KeyboardEvent* keyboardEvent = new KeyboardEvent();
-    eventHandler_->broadcast(keyboardEvent);
+    KeyboardEvent* keyEvent = new KeyboardEvent(
+        key,
+        mapModifiers(glutGetModifiers()),
+        KeyboardEvent::KEY_STATE_PRESS);
+    
+    canvases_[glutGetWindow()]->keyPressEvent(keyEvent);
+
+    delete keyEvent;
 }
 
 MouseEvent::MouseButton CanvasGLUT::mapMouseButton(int mouseButtonGLUT) {
