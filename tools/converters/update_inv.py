@@ -1,23 +1,30 @@
-#!/usr/bin/env python3
+#requires lxml, and beautifulsoup4
 
-#requires python3, lxml, and beautifulsoup4
+#To install lxml
+#Install lxml on Windows: https://pypi.python.org/pypi/lxml/3.3.3
+
+#To install beautifulsoup4
+#In Windows, run cmd as admin"
+#Run "python get-pip.py" script to install pip
+#Navigate to "PythonPath/Scripts"
+#Run "pip install beautifulsoup4"
 
 import sys
 import os
 from bs4 import BeautifulSoup
 
-for f in sys.argv[1:]:
+def perform(f):
     print("Open file " + f)
 
     with open(f, 'r') as file:
         filestr = "\n".join(file.readlines())
 
     soup = BeautifulSoup(filestr, 'xml')
-	
-    treedata = soup.find_all("InviwoTreeData")
 
-    for tf in treedata:
-		
+    tfs = soup.find_all(type="TransferFunctionProperty")
+
+    for tf in tfs:
+
         if "reference" in tf.attrs:
             continue
 
@@ -29,7 +36,7 @@ for f in sys.argv[1:]:
 
         tf.size.decompose()
     
-        newtf = soup.new_tag("InviwoTreeData")
+        newtf = soup.new_tag("transferFunction")
 
         newtf.append(soup.new_tag("maskMin", content=tf.mask_["x"]))
         newtf.append(soup.new_tag("maskMax", content=tf.mask_["y"]))
@@ -56,10 +63,8 @@ for f in sys.argv[1:]:
         ipt.name = "interpolationType_"
         newtf.append(ipt)
 
-        tf.decompose()
-		
-        soup.append(newtf)
-        print(newtf.prettify())
+        tf.append(newtf)
+        print(tf.prettify())
         print("DONE   " + 60*"#")
 
         
@@ -68,4 +73,7 @@ for f in sys.argv[1:]:
     with open(f, 'w') as fout:
         fout.write(soup.prettify())
 
+if __name__ == '__main__':        
+    for f in sys.argv[1:]:
+        perform(f)
 
