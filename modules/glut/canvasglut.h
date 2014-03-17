@@ -43,8 +43,6 @@ namespace inviwo {
 
 class IVW_MODULE_GLUT_API CanvasGLUT : public CanvasGL {
 public:
-    static EventHandler* eventHandler_;
-
     CanvasGLUT(std::string title, uvec2 dimensions);
     ~CanvasGLUT();
 
@@ -67,7 +65,6 @@ public:
     static InteractionEvent::Modifier mapModifiers(const int modifiersGLUT);
 
     static void keyboard(unsigned char key, int x, int y);
-    static void keyboardSpecial(int key, int x, int y);
     static void mouse(int button, int state, int x, int y);
     static void mouseWheel(int button, int state, int x, int y);
     static void mouseMotion(int x, int y);

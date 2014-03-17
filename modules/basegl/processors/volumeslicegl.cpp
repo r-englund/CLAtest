@@ -188,8 +188,8 @@ void VolumeSliceGL::volumeDimensionChanged() {
 VolumeSliceGL::VolumeSliceGLInteractationHandler::VolumeSliceGLInteractationHandler(VolumeSliceGL* vs) 
     : InteractionHandler()
     , wheelEvent_(MouseEvent::MOUSE_BUTTON_NONE, InteractionEvent::MODIFIER_NONE)
-    , upEvent_('W',InteractionEvent::MODIFIER_NONE, KeyboardEvent::KEY_STATE_PRESS)
-    , downEvent_('S',InteractionEvent::MODIFIER_NONE, KeyboardEvent::KEY_STATE_PRESS)
+    , upEvent_('w',InteractionEvent::MODIFIER_NONE, KeyboardEvent::KEY_STATE_PRESS)
+    , downEvent_('s',InteractionEvent::MODIFIER_NONE, KeyboardEvent::KEY_STATE_PRESS)
     , slicer_(vs) {
 }
 

@@ -75,18 +75,15 @@ void deinitialize() {
 }
 
 
-void keyPressed(unsigned char key, int /*x*/, int /*y*/) {
+void keyPressed(unsigned char key, int x, int y) {
     switch (key) {
         case 27: // ESC key
             deinitialize();
             exit(0);
             break;
     }
+    canvas->keyboard(key, x, y);
 }
-
-void keyPressedSpecial(int /*key*/, int /*x*/, int /*y*/) {
-}
-
 
 int main(int argc, char** argv) {
     InviwoApplication inviwoApp(argc, argv, "Inviwo "+IVW_VERSION + " - GLUTApp", inviwo::filesystem::findBasePath());
@@ -112,7 +109,7 @@ int main(int argc, char** argv) {
     if (cmdparser->getLoadWorkspaceFromArg())
         workspace = cmdparser->getWorkspacePath();
     else
-        workspace = inviwoApp.getPath(InviwoApplication::PATH_WORKSPACES, "tests/simple.inv");
+        workspace = inviwoApp.getPath(InviwoApplication::PATH_WORKSPACES, "tests/simpleslicergl.inv");
 
     IvwDeserializer xmlDeserializer(workspace);
     processorNetwork->deserialize(xmlDeserializer);
@@ -158,7 +155,6 @@ int main(int argc, char** argv) {
         return 0;
 
     glutKeyboardFunc(keyPressed);
-    glutSpecialFunc(keyPressedSpecial);
     glutMainLoop();
     return 0;
 }
