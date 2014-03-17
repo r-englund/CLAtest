@@ -68,6 +68,7 @@ void CanvasGLUT::initializeGL() {
     glutKeyboardFunc(keyboard);
     glutSpecialFunc(keyboardSpecial);
     glutMouseFunc(mouse);
+    glutMouseWheelFunc(mouseWheel);
     glutMotionFunc(mouseMotion);
     glutPassiveMotionFunc(mouseMotion);
     initializeGLEW();
@@ -147,6 +148,19 @@ void CanvasGLUT::mouse(int button, int state, int x, int y) {
 
     if (thisCanvas->mouseState_ == MouseEvent::MOUSE_STATE_PRESS) canvases_[glutGetWindow()]->mousePressEvent(mouseEvent);
     else if (thisCanvas->mouseState_ == MouseEvent::MOUSE_STATE_RELEASE) canvases_[glutGetWindow()]->mouseReleaseEvent(mouseEvent);
+
+    delete mouseEvent;
+}
+
+void CanvasGLUT::mouseWheel(int button, int direction, int x, int y) {
+    CanvasGLUT* thisCanvas = canvases_[glutGetWindow()];
+    thisCanvas->mouseButton_ = mapMouseButton(button);
+    thisCanvas->mouseState_ = MouseEvent::MOUSE_STATE_WHEEL;
+    thisCanvas->mouseModifiers_ = mapModifiers(glutGetModifiers());
+    MouseEvent* mouseEvent = new MouseEvent(ivec2(x, y), direction, thisCanvas->mouseButton_,
+        thisCanvas->mouseState_, MouseEvent::MOUSE_WHEEL_VERTICAL, thisCanvas->mouseModifiers_, thisCanvas->dimensions_);
+
+    canvases_[glutGetWindow()]->mouseWheelEvent(mouseEvent);
 
     delete mouseEvent;
 }
