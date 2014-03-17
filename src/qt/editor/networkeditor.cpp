@@ -517,7 +517,7 @@ void NetworkEditor::managePortInspection() {
                                      inspection_.portIdentifier_,
                                      QPoint(p.x()+5, p.y()+5));
                 }
-                if(inspection_.isInformationActive()) {
+                if(inspection_.isInformationActive() && processor) {
                     inspection_.setState(Inspection::Inspect);
                     QPoint p = QCursor::pos();
                     Port* selectedPort = processor->getSelectedPort(pos);
