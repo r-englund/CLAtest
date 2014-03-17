@@ -95,7 +95,7 @@ void ImageInport::changeDataDimensions(ResizeEvent* resizeEvent) {
 }
 
 void ImageInport::propagateResizeToPredecessor(ResizeEvent* resizeEvent) {
-    if (!isOutportDeterminingSize() && equalColorCode(getConnectedOutport())) {
+    if (equalColorCode(getConnectedOutport())) {
         ImageOutport* imageOutport = static_cast<ImageOutport*>(getConnectedOutport());
         imageOutport->changeDataDimensions(resizeEvent);
     }
@@ -131,10 +131,14 @@ bool ImageInport::isOutportDeterminingSize() const {
     return outportDeterminesSize_;
 }
 
+void ImageInport::setOutportDeterminesSize(bool outportDeterminesSize) {
+    outportDeterminesSize_ = outportDeterminesSize;
+}
+
 // Image Outport
 ImageOutport::ImageOutport(std::string identifier,
-                           PropertyOwner::InvalidationLevel invalidationLevel)
-    : DataOutport<Image>(identifier, invalidationLevel), dimensions_(uvec2(256,256))
+                           PropertyOwner::InvalidationLevel invalidationLevel, bool handleResizeEvents)
+    : DataOutport<Image>(identifier, invalidationLevel), dimensions_(uvec2(256,256)), handleResizeEvents_(handleResizeEvents)
 {
     Image* im = new Image(dimensions_);
     data_ = im;
@@ -143,8 +147,8 @@ ImageOutport::ImageOutport(std::string identifier,
 }
 
 ImageOutport::ImageOutport(std::string identifier, ImageType type, const DataFormatBase* format,
-                           PropertyOwner::InvalidationLevel invalidationLevel)
-    : DataOutport<Image>(identifier, invalidationLevel), dimensions_(uvec2(256,256))
+                           PropertyOwner::InvalidationLevel invalidationLevel, bool handleResizeEvents)
+    : DataOutport<Image>(identifier, invalidationLevel), dimensions_(uvec2(256,256)), handleResizeEvents_(handleResizeEvents)
 {
     Image* im = new Image(dimensions_, type, format);
     data_ = im;
@@ -152,8 +156,8 @@ ImageOutport::ImageOutport(std::string identifier, ImageType type, const DataFor
     mapDataInvalid_ = true;
 }
 
-ImageOutport::ImageOutport(std::string identifier, ImageInport* src, ImageType type, PropertyOwner::InvalidationLevel invalidationLevel)
-    : DataOutport<Image>(identifier, invalidationLevel), EventHandler(), dimensions_(uvec2(256,256))
+ImageOutport::ImageOutport(std::string identifier, ImageInport* src, ImageType type, PropertyOwner::InvalidationLevel invalidationLevel, bool handleResizeEvents)
+    : DataOutport<Image>(identifier, invalidationLevel), EventHandler(), dimensions_(uvec2(256,256)), handleResizeEvents_(handleResizeEvents)
 {
     Image* im = new Image(dimensions_, type);
     data_ = im;
@@ -178,15 +182,16 @@ void ImageOutport::initialize() {}
 void ImageOutport::deinitialize() {}
 
 void ImageOutport::propagateResizeEventToPredecessor(ResizeEvent* resizeEvent) {
+    if (!isHandlingResizeEvents()) {
+        return;
+    }
     Processor* processor = getProcessor();
     std::vector<Inport*> inPorts = processor->getInports();
 
     for (size_t i=0; i<inPorts.size(); i++) {
         if (equalColorCode(inPorts[i])) {
             ImageInport* imageInport = static_cast<ImageInport*>(inPorts[i]);
-
-            if (!imageInport->isOutportDeterminingSize())
-                imageInport->changeDataDimensions(resizeEvent);
+            imageInport->changeDataDimensions(resizeEvent);
         }
     }
 
@@ -211,6 +216,9 @@ void ImageOutport::dataChanged() {
 }
 
 void ImageOutport::changeDataDimensions(ResizeEvent* resizeEvent) {
+    if (!handleResizeEvents_) {
+        return;
+    }
     //This function should check which dimension request exists, by going through the successors and checking registeredDimensions.
     //We do only want to propagate when there is not a registeredDimension which is larger then the resizeevent size.
     //Allocates space holder, sets largest data, cleans up un-used data

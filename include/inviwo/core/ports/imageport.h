@@ -58,6 +58,7 @@ public:
     uvec2 getDimension() const;
     const Image* getData() const;
     uvec3 getColorCode() const;
+    void setOutportDeterminesSize(bool outportDeterminesSize);
     bool isOutportDeterminingSize() const;
     static uvec3 colorCode;
     virtual std::string getClassName() const {return "ImageInport";}
@@ -74,11 +75,11 @@ class IVW_CORE_API ImageOutport : public DataOutport<Image>, public EventHandler
     friend class ImageInport;
 
 public:
-    ImageOutport(std::string identifier, PropertyOwner::InvalidationLevel invalidationLevel=PropertyOwner::INVALID_OUTPUT);
+    ImageOutport(std::string identifier, PropertyOwner::InvalidationLevel invalidationLevel=PropertyOwner::INVALID_OUTPUT, bool handleResizeEvents = true);
     ImageOutport(std::string identifier, ImageType type, const DataFormatBase* format = DataVec4UINT8::get(),
-                 PropertyOwner::InvalidationLevel invalidationLevel=PropertyOwner::INVALID_OUTPUT);
+                 PropertyOwner::InvalidationLevel invalidationLevel=PropertyOwner::INVALID_OUTPUT, bool handleResizeEvents = true);
     ImageOutport(std::string identifier, ImageInport* src, ImageType type = COLOR_DEPTH,
-                 PropertyOwner::InvalidationLevel invalidationLevel=PropertyOwner::INVALID_OUTPUT);
+                 PropertyOwner::InvalidationLevel invalidationLevel=PropertyOwner::INVALID_OUTPUT, bool handleResizeEvents = true);
     virtual ~ImageOutport();
 
     void initialize();
@@ -110,6 +111,15 @@ public:
     bool addResizeEventListener(EventListener*);
     bool removeResizeEventListener(EventListener*);
 
+    /** 
+     * Determine if the image data should be 
+     * resized during a resize event. 
+     * Also prevents resize events from being propagated further.
+     * @param handleResizeEvents True if data should be resized during a resize propagation, otherwise false
+     */
+    void setHandleResizeEvents(bool handleResizeEvents) { handleResizeEvents_ = handleResizeEvents; }
+    bool isHandlingResizeEvents() const { return handleResizeEvents_; }
+
     void setInputSource(LayerType, ImageInport*);
 
 protected:
@@ -122,6 +132,7 @@ protected:
 private:
     uvec2 dimensions_;
     bool mapDataInvalid_;
+    bool handleResizeEvents_; // True if data should be resized during a resize propagation, otherwise false
     typedef std::map<std::string, Image*> ImagePortMap;
     ImagePortMap imageDataMap_;
     typedef std::map<LayerType, const ImageInport*> ImageInSourceMap;
