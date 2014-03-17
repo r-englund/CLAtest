@@ -44,8 +44,8 @@ ProcessorCodeState(ImageSource, CODE_STATE_EXPERIMENTAL);
 
 ImageSource::ImageSource()
     : Processor(),
-      outport_("image.outport"),
-      imageFileName_("imageFileName", "Image file name", "")
+     outport_("image.outport", COLOR_ONLY, DataVec4UINT8::get(), PropertyOwner::INVALID_OUTPUT, false),
+     imageFileName_("imageFileName", "Image file name", "")
 {
     addPort(outport_);
     addProperty(imageFileName_);
@@ -72,16 +72,20 @@ void ImageSource::process() {
     Image* outImage = outport_.getData();
 
     if (outImage) {
-        LayerDisk* outLayerDisk = outImage->getColorLayer()->getEditableRepresentation<LayerDisk>();
+        LayerDisk* outLayerDisk;
+        if(outImage->getColorLayer()->hasRepresentation<LayerDisk>()){
+            outLayerDisk = outImage->getColorLayer()->getEditableRepresentation<LayerDisk>();
+        }
+        else{
+            outLayerDisk = new LayerDisk(imageFileName_.get());
+            outImage->getColorLayer()->addRepresentation(outLayerDisk);
+        }
 
-        if (!outLayerDisk || outLayerDisk->getSourceFile() != imageFileName_.get()) {
+        if (outLayerDisk->getSourceFile() != imageFileName_.get()) {
             outLayerDisk = new LayerDisk(imageFileName_.get());
             outImage->getColorLayer()->clearRepresentations();
             outImage->getColorLayer()->addRepresentation(outLayerDisk);
         }
-
-        //Original image dimension loaded from disk may differ from requested dimension.
-        outLayerDisk->resize(outImage->getDimension());
     }
 }
 

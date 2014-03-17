@@ -36,15 +36,14 @@
 namespace inviwo {
 
 Image::Image(uvec2 dimensions, ImageType comb, const DataFormatBase* format, bool allowMissingLayers)
-    : DataGroup(), StructuredGridEntity<2>(dimensions)
+    : DataGroup()
     , allowMissingLayers_(allowMissingLayers)
     , imageType_(comb) {
-    initialize(format);
+    initialize(dimensions, format);
 }
 
 Image::Image(const Image& rhs)
     : DataGroup(rhs)
-    , StructuredGridEntity<2>(rhs)
     , allowMissingLayers_(rhs.allowMissingLayers_)
     , imageType_(rhs.imageType_)
     , inputSources_(rhs.inputSources_) {
@@ -78,7 +77,6 @@ Image::Image(const Image& rhs)
 Image& Image::operator=(const Image& that) {
     if (this != &that) {
         DataGroup::operator=(that);
-        StructuredGridEntity<2>::operator=(that);
         allowMissingLayers_ = that.allowMissingLayers_;
         imageType_ = that.imageType_;
         inputSources_ = that.inputSources_;
@@ -140,20 +138,20 @@ void Image::deinitialize() {
     delete pickingLayer_;
 }
 
-void Image::initialize(const DataFormatBase* format) {
-    addColorLayer(new Layer(getDimension(), format));
+void Image::initialize(uvec2 dimensions, const DataFormatBase* format) {
+    addColorLayer(new Layer(dimensions, format));
     depthLayer_ = NULL;
     pickingLayer_ = NULL;
 
     if (!allowMissingLayers_ || typeContainsDepth(getImageType())) {
-        depthLayer_ = new Layer(getDimension(), DataFLOAT32::get(), DEPTH_LAYER);
+        depthLayer_ = new Layer(dimensions, DataFLOAT32::get(), DEPTH_LAYER);
         addLayer(depthLayer_);
     }
     else
         depthLayer_ = NULL;
 
     if (!allowMissingLayers_ || typeContainsPicking(getImageType())) {
-        pickingLayer_ = new Layer(getDimension(), format);
+        pickingLayer_ = new Layer(dimensions, format);
         addLayer(pickingLayer_);
     }
     else
@@ -161,12 +159,7 @@ void Image::initialize(const DataFormatBase* format) {
 }
 
 uvec2 Image::getDimension() const {
-    return StructuredGridEntity<2>::getDimension();
-}
-
-void Image::setDimension(const uvec2& dim) {
-    StructuredGridEntity<2>::setDimension(dim);
-    setRepresentationsAsInvalid();
+    return getColorLayer()->getDimension();
 }
 
 size_t Image::addColorLayer(Layer* layer) {
@@ -253,7 +246,7 @@ Layer* Image::getPickingLayer() {
 }
 
 void Image::resize(uvec2 dimensions) {
-    setDimension(dimensions);
+    setRepresentationsAsInvalid();
 
     //Resize all layers
     for (std::vector<Layer*>::iterator it = colorLayers_.begin() ; it != colorLayers_.end(); ++it)

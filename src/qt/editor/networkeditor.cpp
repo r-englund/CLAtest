@@ -474,11 +474,13 @@ void NetworkEditor::renamingFinished() {
 void NetworkEditor::managePortInspection() {
     QPointF pos(inspection_.pos_.x, inspection_.pos_.y);
     Port* port = 0;
+    Port* selectedPort = 0;
     ProcessorGraphicsItem* processor = getProcessorGraphicsItemAt(pos);
     ConnectionGraphicsItem* connection = getConnectionGraphicsItemAt(pos);
 
     if (processor) {
-        port = processor->getSelectedPort(pos);
+        selectedPort = processor->getSelectedPort(pos);
+        port = selectedPort;
         // If we hover over an inport get its connected outport instead
         Inport* inport = dynamic_cast<Inport*>(port);
 
@@ -518,9 +520,10 @@ void NetworkEditor::managePortInspection() {
                 if(inspection_.isInformationActive()) {
                     inspection_.setState(Inspection::Inspect);
                     QPoint p = QCursor::pos();
-                    addPortInformation(inspection_.processorIdentifier_,
-                                       inspection_.portIdentifier_,
-                                       port->getContentInfo(),
+                    Port* selectedPort = processor->getSelectedPort(pos);
+                    addPortInformation(selectedPort->getProcessor()->getIdentifier(),
+                                       selectedPort->getIdentifier(),
+                                       selectedPort->getContentInfo(),
                                        QPoint(p.x()+5, p.y()+5));
                 }
             }
