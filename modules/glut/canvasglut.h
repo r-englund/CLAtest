@@ -36,7 +36,7 @@
 #include "modules/glut/glutmoduledefine.h"
 #include <stdlib.h>
 #include "modules/opengl/inviwoopengl.h"
-#include <GL/glut.h>
+#include <GL/freeglut.h>
 #include "modules/opengl/canvasgl.h"
 
 namespace inviwo {
@@ -69,6 +69,7 @@ public:
     static void keyboard(unsigned char key, int x, int y);
     static void keyboardSpecial(int key, int x, int y);
     static void mouse(int button, int state, int x, int y);
+    static void mouseWheel(int button, int state, int x, int y);
     static void mouseMotion(int x, int y);
 
 private:
