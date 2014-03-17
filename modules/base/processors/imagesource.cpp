@@ -82,8 +82,9 @@ void ImageSource::process() {
         }
 
         if (outLayerDisk->getSourceFile() != imageFileName_.get()) {
+            outImage = new Image();
+            outport_.setData(outImage);
             outLayerDisk = new LayerDisk(imageFileName_.get());
-            outImage->getColorLayer()->clearRepresentations();
             outImage->getColorLayer()->addRepresentation(outLayerDisk);
         }
     }

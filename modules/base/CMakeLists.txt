@@ -16,6 +16,7 @@ set(HEADER_FILES
     ${IVW_MODULE_DIR}/base/processors/meshcreator.h
     ${IVW_MODULE_DIR}/base/processors/pointlightsourceprocessor.h
     ${IVW_MODULE_DIR}/base/processors/spotlightsourceprocessor.h
+    ${IVW_MODULE_DIR}/base/processors/tonemappingcpuprocessor.h
     ${IVW_MODULE_DIR}/base/processors/volumebasistransformer.h
     ${IVW_MODULE_DIR}/base/processors/volumeexport.h
     ${IVW_MODULE_DIR}/base/processors/volumeslice.h
@@ -38,6 +39,7 @@ set(SOURCE_FILES
     ${IVW_MODULE_DIR}/base/processors/meshcreator.cpp
     ${IVW_MODULE_DIR}/base/processors/pointlightsourceprocessor.cpp
     ${IVW_MODULE_DIR}/base/processors/spotlightsourceprocessor.cpp
+    ${IVW_MODULE_DIR}/base/processors/tonemappingcpuprocessor.cpp
     ${IVW_MODULE_DIR}/base/processors/volumebasistransformer.cpp
     ${IVW_MODULE_DIR}/base/processors/volumeexport.cpp
     ${IVW_MODULE_DIR}/base/processors/volumeslice.cpp
