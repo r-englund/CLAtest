@@ -35,7 +35,6 @@
 
 #include <inviwo/core/common/inviwocoredefine.h>
 #include <inviwo/core/datastructures/datagroup.h>
-#include <inviwo/core/datastructures/spatialdata.h>
 #include <inviwo/core/datastructures/image/layer.h>
 #include <inviwo/core/datastructures/image/imagetypes.h>
 
@@ -43,9 +42,9 @@ namespace inviwo {
 
 class ImageRepresentation;
 
-class IVW_CORE_API Image : public DataGroup, public StructuredGridEntity<2> {
+class IVW_CORE_API Image : public DataGroup {
 public:
-    Image(uvec2 dimensions = uvec2(256,256), ImageType type = COLOR_DEPTH, const DataFormatBase* format = DataVec4UINT8::get(),
+    Image(uvec2 dimensions = uvec2(32,32), ImageType type = COLOR_DEPTH, const DataFormatBase* format = DataVec4UINT8::get(),
           bool allowMissingLayers = false);
     Image(const Image&);
     Image& operator=(const Image& that);
@@ -55,7 +54,7 @@ public:
 
     void deinitialize();
 
-    void initialize(const DataFormatBase*);
+    void initialize(uvec2 dimensions, const DataFormatBase*);
 
     uvec2 getDimension() const;
 
@@ -87,8 +86,6 @@ public:
 
 protected:
     void addLayer(Layer*);
-
-    void setDimension(const uvec2& dim);
 
     std::vector<Layer*> colorLayers_;
     Layer* depthLayer_;

@@ -340,6 +340,8 @@ void ImageGL::update(bool editable) {
     if (editable) {
         for (size_t i=0; i<owner_->getNumberOfColorLayers(); ++i) {
             colorLayersGL_.push_back(owner_->getColorLayer(i)->getEditableRepresentation<LayerGL>());
+            owner_->getColorLayer(i)->setDataFormat(getColorLayerGL(i)->getDataFormat());
+            owner_->getColorLayer(i)->setDimension(getColorLayerGL(i)->getDimension());
         }
 
         Layer* depthLayer = owner_->getDepthLayer();
@@ -349,12 +351,17 @@ void ImageGL::update(bool editable) {
 
         Layer* pickingLayer = owner_->getPickingLayer();
 
-        if (pickingLayer)
+        if (pickingLayer){
+            pickingLayer->setDataFormat(getColorLayerGL()->getDataFormat());
+            pickingLayer->setDimension(getColorLayerGL()->getDimension());
             pickingLayerGL_ = pickingLayer->getEditableRepresentation<LayerGL>();
+        }
     }
     else {
         for (size_t i=0; i<owner_->getNumberOfColorLayers(); ++i) {
             colorLayersGL_.push_back(const_cast<LayerGL*>(owner_->getColorLayer(i)->getRepresentation<LayerGL>()));
+            owner_->getColorLayer(i)->setDataFormat(getColorLayerGL(i)->getDataFormat());
+            owner_->getColorLayer(i)->setDimension(getColorLayerGL(i)->getDimension());
         }
 
         Layer* depthLayer = owner_->getDepthLayer();
@@ -364,8 +371,11 @@ void ImageGL::update(bool editable) {
 
         Layer* pickingLayer = owner_->getPickingLayer();
 
-        if (pickingLayer)
+        if (pickingLayer){
+            pickingLayer->setDataFormat(getColorLayerGL()->getDataFormat());
+            pickingLayer->setDimension(getColorLayerGL()->getDimension());
             pickingLayerGL_ = const_cast<LayerGL*>(pickingLayer->getRepresentation<LayerGL>());
+        }
     }
 
     //Attach all targets

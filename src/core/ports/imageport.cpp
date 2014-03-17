@@ -135,6 +135,13 @@ void ImageInport::setOutportDeterminesSize(bool outportDeterminesSize) {
     outportDeterminesSize_ = outportDeterminesSize;
 }
 
+std::string ImageInport::getContentInfo() const {
+    if(hasData())
+        return getData()->getDataInfo();
+    else
+        return getClassName() + " has no data.";
+}
+
 // Image Outport
 ImageOutport::ImageOutport(std::string identifier,
                            PropertyOwner::InvalidationLevel invalidationLevel, bool handleResizeEvents)

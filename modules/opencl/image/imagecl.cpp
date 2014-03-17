@@ -78,6 +78,11 @@ void ImageCL::update(bool editable) {
     } else {
         layerCL_ = const_cast<LayerCL*>(owner_->getColorLayer()->getRepresentation<LayerCL>());
     }
+
+    if(layerCL_->getDataFormat() != getOwner()->getDataFormat()){
+        owner_->getColorLayer()->setDataFormat(layerCL_->getDataFormat());
+        owner_->getColorLayer()->setDimension(layerCL_->getDimension());
+    }
 }
 
 } // namespace

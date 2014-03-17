@@ -62,6 +62,7 @@ public:
     bool isOutportDeterminingSize() const;
     static uvec3 colorCode;
     virtual std::string getClassName() const {return "ImageInport";}
+    virtual std::string getContentInfo() const;
 protected:
     void propagateResizeToPredecessor(ResizeEvent* resizeEvent);
 

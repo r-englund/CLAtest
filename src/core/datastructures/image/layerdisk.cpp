@@ -98,6 +98,4 @@ void* LayerDisk::loadFileDataAndRescale(void* dst, uvec2 dstDimesion, DataFormat
     return NULL;
 }
 
-
-
 } // namespace
