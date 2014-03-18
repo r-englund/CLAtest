@@ -8,6 +8,10 @@ cmake_policy(VERSION 2.8.4)
 endif()
 project(inviwo-projects)
 set(IVW_VERSION 0.6b)
+
+# Build
+option(SHARED_LIBS "Build shared libs, else static libs" ON)
+
 include(cmake/globalconfig.cmake)
 
 #--------------------------------------------------------------------

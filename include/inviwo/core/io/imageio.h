@@ -92,6 +92,16 @@ public:
 
     static bool isValidImageFile(std::string fileExtension);
 
+    /**
+    * Create bitmap from image.
+    */
+    static FIBITMAP* createBitmapFromData(const LayerRAM* inputImage);
+
+    /**
+    * Copy bitmap to layer
+    */
+    static void copyBitmapToData(FIBITMAP* bitmap, LayerRAM* outImage);
+
 private:
     /**
     * Internal function to load a image
@@ -105,11 +115,6 @@ private:
     * Initializes freeimage if needed.
     **/
     static void initLoader();
-
-    /**
-    * Create bitmap from image.
-    */
-    static FIBITMAP* createBitmapFromData(const LayerRAM* inputImage);
 
     /**
     * Converts image to byte array.

@@ -379,6 +379,7 @@ FIBITMAP* ImageIO::handleBitmapCreations(const T* data, FREE_IMAGE_TYPE type, uv
 }
 
 FIBITMAP* ImageIO::createBitmapFromData(const LayerRAM* inputLayer) {
+    initLoader();
     FREE_IMAGE_TYPE formatType = getFreeImageFormatFromDataFormat(inputLayer->getDataFormatId());
 
     switch (inputLayer->getDataFormatId())
@@ -395,6 +396,22 @@ FIBITMAP* ImageIO::createBitmapFromData(const LayerRAM* inputLayer) {
     }
 
     return NULL;
+}
+
+void ImageIO::copyBitmapToData(FIBITMAP* bitmap, LayerRAM* outImage){
+    initLoader();
+    switch (outImage->getDataFormat()->getId())
+    {
+    case NOT_SPECIALIZED:
+        LogErrorCustom("loadImageToData", "Invalid format");
+        break;
+#define DataFormatIdMacro(i) case inviwo::i: fiBitmapToDataArray<Data##i::type>(outImage->getData(), bitmap, Data##i::bitsAllocated(), Data##i::components()); break;
+#include <inviwo/core/util/formatsdefinefunc.h>
+
+    default:
+        LogErrorCustom("loadImageToData", "Invalid format or not implemented");
+        break;
+    }
 }
 
 template<typename T>
