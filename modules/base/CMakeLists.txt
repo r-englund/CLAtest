@@ -10,6 +10,7 @@ set(HEADER_FILES
     ${IVW_MODULE_DIR}/base/processors/diffuselightsourceprocessor.h
     ${IVW_MODULE_DIR}/base/processors/directionallightsourceprocessor.h
     ${IVW_MODULE_DIR}/base/processors/geometrysource.h
+    ${IVW_MODULE_DIR}/base/processors/imageexport.h
     ${IVW_MODULE_DIR}/base/processors/imagesource.h
     ${IVW_MODULE_DIR}/base/processors/imagesourceseries.h
     ${IVW_MODULE_DIR}/base/processors/meshclipping.h
@@ -33,6 +34,7 @@ set(SOURCE_FILES
     ${IVW_MODULE_DIR}/base/processors/diffuselightsourceprocessor.cpp
     ${IVW_MODULE_DIR}/base/processors/directionallightsourceprocessor.cpp
     ${IVW_MODULE_DIR}/base/processors/geometrysource.cpp
+    ${IVW_MODULE_DIR}/base/processors/imageexport.cpp
     ${IVW_MODULE_DIR}/base/processors/imagesource.cpp
     ${IVW_MODULE_DIR}/base/processors/imagesourceseries.cpp
     ${IVW_MODULE_DIR}/base/processors/meshclipping.cpp
