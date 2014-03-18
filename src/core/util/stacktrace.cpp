@@ -39,7 +39,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #elif defined(_MSC_VER)
-#include <ext/stackwalker/StackWalker.h>
+#include <stackwalker/StackWalker.h>
 #endif
 
 #include <inviwo/core/util/stringconversion.h>

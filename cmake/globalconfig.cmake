@@ -30,6 +30,8 @@
  #
  #################################################################################
  
+ set(IVW_VERSION 0.6b)
+ 
 set_property(GLOBAL PROPERTY USE_FOLDERS On)
 set_property(GLOBAL PROPERTY PREDEFINED_TARGETS_FOLDER ext)
 
@@ -84,11 +86,11 @@ endif(NOT LIBRARY_OUTPUT_PATH)
 mark_as_advanced(EXECUTABLE_OUTPUT_PATH LIBRARY_OUTPUT_PATH)
 
 # Set Common Variables
-get_filename_component(INVIWO_TRUNK ${CMAKE_CURRENT_LIST_DIR} PATH)
-set(IVW_INCLUDE_DIR ${INVIWO_TRUNK}/include)
-set(IVW_MODULE_DIR ${INVIWO_TRUNK}/modules)
-set(IVW_SOURCE_DIR ${INVIWO_TRUNK}/src)
-set(IVW_EXTENSIONS_DIR ${INVIWO_TRUNK}/ext)
+get_filename_component(IVW_ROOT_DIR ${CMAKE_CURRENT_LIST_DIR} PATH)
+set(IVW_INCLUDE_DIR ${IVW_ROOT_DIR}/include)
+set(IVW_MODULE_DIR ${IVW_ROOT_DIR}/modules)
+set(IVW_SOURCE_DIR ${IVW_ROOT_DIR}/src)
+set(IVW_EXTENSIONS_DIR ${IVW_ROOT_DIR}/ext)
 set(IVW_BINARY_DIR ${CMAKE_BINARY_DIR})
 set(IVW_LIBRARY_DIR ${LIBRARY_OUTPUT_PATH})
 set(IVW_EXECUTABLE_DIR ${EXECUTABLE_OUTPUT_PATH})
