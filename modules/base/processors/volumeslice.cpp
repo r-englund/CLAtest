@@ -36,7 +36,7 @@ namespace inviwo {
 
 ProcessorClassName(VolumeSlice, "VolumeSlice");
 ProcessorCategory(VolumeSlice, "Volume Operation");
-ProcessorCodeState(VolumeSlice, CODE_STATE_EXPERIMENTAL);
+ProcessorCodeState(VolumeSlice, CODE_STATE_BROKEN);
 
 VolumeSlice::VolumeSlice()
     : Processor(),
@@ -50,8 +50,7 @@ VolumeSlice::VolumeSlice()
     coordinatePlane_.addOption("xy", "XY Plane", XY);
     coordinatePlane_.addOption("xz", "XZ Plane", XZ);
     coordinatePlane_.addOption("yz", "YZ Plane", YZ);
-    coordinatePlane_.set(XY);
-    coordinatePlane_.setCurrentStateAsDefault();
+    coordinatePlane_.setSelectedIndex(0);
     addProperty(coordinatePlane_);
     addProperty(sliceNumber_);
 }
@@ -84,10 +83,14 @@ void VolumeSlice::process() {
             break;
     }
 
-    //const VolumeRAM* vol = inport_.getData()->getRepresentation<VolumeRAM>();
-    //LayerRAM* sliceImage = VolumeRAMSlice::apply(vol, coordinatePlane_.get(), static_cast<unsigned int>(sliceNumber_.get()-1));
+    const VolumeRAM* vol = inport_.getData()->getRepresentation<VolumeRAM>();
+    LayerRAM* sliceImage = VolumeRAMSlice::apply(vol, static_cast<CoordinatePlane>(coordinatePlane_.get()), static_cast<unsigned int>(sliceNumber_.get()-1));
     //sliceImage->resize(outport_.getData()->getDimension());
-    //outport_.setData(new Image(sliceImage));
+
+    Image* outImage = new Image(sliceImage->getDimension(), COLOR_ONLY, sliceImage->getDataFormat());
+    outImage->addColorLayer(new Layer(sliceImage));
+
+    outport_.setData(outImage);
 }
 
 } // inviwo namespace
