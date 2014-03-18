@@ -30,8 +30,8 @@
  #
  #################################################################################
 
-include(clean_library_list)
-include(cotire)
+include(${CMAKE_CURRENT_LIST_DIR}/clean_library_list.cmake)
+include(${CMAKE_CURRENT_LIST_DIR}/cotire.cmake)
 
 mark_as_advanced(COTIRE_ADDITIONAL_PREFIX_HEADER_IGNORE_EXTENSIONS 
 COTIRE_ADDITIONAL_PREFIX_HEADER_IGNORE_PATH 
