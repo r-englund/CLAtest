@@ -150,7 +150,7 @@ void NetworkEditor::addConnection(Outport* outport, Inport* inport) {
     ImageInport* imageInport = dynamic_cast<ImageInport*>(inport);
     ImageOutport* imageOutport = dynamic_cast<ImageOutport*>(outport);
 
-    if (imageInport && imageOutport) {
+    if (imageInport && imageOutport && inport->getProcessor()->isReady()) {
         ResizeEvent resizeEvent(imageInport->getDimension());
         imageOutport->changeDataDimensions(&resizeEvent);
     }
