@@ -32,6 +32,13 @@
 
 #include "include/inc_sampler2d.frag"
 
+vec4 colorMix(vec4 colorA, vec4 colorB, vec4 param) {
+    return mix(colorA, colorB, param);
+}
+vec4 colorAdd(vec4 colorA, vec4 colorB) {
+    return colorA+colorB;
+}
+
 uniform sampler2D inport0_;
 uniform sampler2D inport1_;
 uniform float alpha_;
@@ -39,9 +46,8 @@ uniform vec2 dimension_;
 
 void main() {
     vec2 texCoords = gl_FragCoord.xy * screenDimRCP_;
-    vec3 color0 = texture2D(inport0_, texCoords).rgb;
-    vec3 color1 = texture2D(inport1_, texCoords).rgb;
-    vec4 color = vec4(mix(color0, color1, alpha_), 1.0);
-    FragData0 = color;
+    vec4 color0 = texture2D(inport0_, texCoords);
+    vec4 color1 = texture2D(inport1_, texCoords);
+    FragData0 = COLOR_BLENDING(color0, color1, vec4(alpha_));
     gl_FragDepth = 0.0;
 }
