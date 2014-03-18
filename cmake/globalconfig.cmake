@@ -51,10 +51,10 @@ endfunction()
 
 #--------------------------------------------------------------------
 # Add own cmake modules
-set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/")
+set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_CURRENT_LIST_DIR}/")
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_BINARY_DIR}/cmake/")
 
-include(globalmacros)
+include(${CMAKE_CURRENT_LIST_DIR}/globalmacros.cmake)
 
 #--------------------------------------------------------------------
 # Output paths for the executables, runtimes, archives and libraries
@@ -84,14 +84,15 @@ endif(NOT LIBRARY_OUTPUT_PATH)
 mark_as_advanced(EXECUTABLE_OUTPUT_PATH LIBRARY_OUTPUT_PATH)
 
 # Set Common Variables
-set(IVW_INCLUDE_DIR ${CMAKE_SOURCE_DIR}/include)
-set(IVW_MODULE_DIR ${CMAKE_SOURCE_DIR}/modules)
-set(IVW_SOURCE_DIR ${CMAKE_SOURCE_DIR}/src)
-set(IVW_EXTENSIONS_DIR ${CMAKE_SOURCE_DIR}/ext)
+get_filename_component(INVIWO_TRUNK ${CMAKE_CURRENT_LIST_DIR} PATH)
+set(IVW_INCLUDE_DIR ${INVIWO_TRUNK}/include)
+set(IVW_MODULE_DIR ${INVIWO_TRUNK}/modules)
+set(IVW_SOURCE_DIR ${INVIWO_TRUNK}/src)
+set(IVW_EXTENSIONS_DIR ${INVIWO_TRUNK}/ext)
 set(IVW_BINARY_DIR ${CMAKE_BINARY_DIR})
 set(IVW_LIBRARY_DIR ${LIBRARY_OUTPUT_PATH})
 set(IVW_EXECUTABLE_DIR ${EXECUTABLE_OUTPUT_PATH})
-set(IVW_CMAKE_SOURCE_MODULE_DIR ${CMAKE_SOURCE_DIR}/cmake)
+set(IVW_CMAKE_SOURCE_MODULE_DIR ${CMAKE_CURRENT_LIST_DIR})
 set(IVW_CMAKE_BINARY_MODULE_DIR ${CMAKE_BINARY_DIR}/cmake)
 
 configure_file(${IVW_CMAKE_SOURCE_MODULE_DIR}/inviwocommondefines_template.h ${IVW_INCLUDE_DIR}/inviwo/core/common/inviwocommondefines.h @ONLY IMMEDIATE)
