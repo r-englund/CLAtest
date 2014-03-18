@@ -50,15 +50,17 @@ namespace inviwo {
 
 // TODO: are the first two constructors needed? Otherwise remove.
 InviwoApplication::InviwoApplication()
-    : displayName_("Inviwo"), basePath_("")
-{
+    : displayName_("Inviwo")
+    , basePath_("")
+    , commandLineParser_(NULL){
     init(this);
 }
 
 InviwoApplication::InviwoApplication(std::string displayName,
                                      std::string basePath)
     : displayName_(displayName)
-    , basePath_(basePath) {
+    , basePath_(basePath)
+    , commandLineParser_(NULL) {
     init(this);
 }
 
