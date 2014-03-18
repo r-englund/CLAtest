@@ -31,19 +31,26 @@
  *********************************************************************************/
 
 #include "tonemappingcpuprocessor.h"
+#include <inviwo/core/datastructures/image/imageram.h>
 #include <inviwo/core/io/imageio.h>
 
 namespace inviwo {
 
-ProcessorClassName(ToneMappingCPUProcessor, "ToneMappingCPUProcessor");
+ProcessorClassName(ToneMappingCPUProcessor, "ToneMappingCPU");
 ProcessorCategory(ToneMappingCPUProcessor, "Image Processing");
-ProcessorCodeState(ToneMappingCPUProcessor, CODE_STATE_EXPERIMENTAL);
+ProcessorCodeState(ToneMappingCPUProcessor, CODE_STATE_BROKEN);
 
 ToneMappingCPUProcessor::ToneMappingCPUProcessor()
     : Processor(),
       inport_("image.inport"),
-      outport_("image.outport"),
-      toneMappingMethod_("toneMappingMethod", "Tone Mapping Method")
+      outport_("image.outport", COLOR_ONLY, DataVec3UINT8::get()),
+      toneMappingMethod_("toneMappingMethod", "Tone Mapping Method"),
+      drago03Gamma_("drago03Gamma", "Gamma", 2.2, 0.0, 5.0),
+      drago03Exposure_("drago03Exposure", "Exposure", 0.0, 0.0, 5.0),
+      reinhard05Intensity_("reinhard05Intensity", "Intensity", 0.0, 0.0, 5.0),
+      reinhard05Contrast_("reinhard05Contrast", "Contrast", 0.0, 0.0, 5.0),
+      fattal02Saturation_("fattal02Saturation", "Saturation", 0.5, 0.0, 5.0),
+      fattal02Attenuation_("fattal02Attenuation", "Attenuation", 0.85, 0.0, 5.0)
 {
     addPort(inport_);
     addPort(outport_);
@@ -55,6 +62,15 @@ ToneMappingCPUProcessor::ToneMappingCPUProcessor()
     toneMappingMethod_.setSelectedIndex(0);
     toneMappingMethod_.onChange(this, &ToneMappingCPUProcessor::toneMappingMethodChanged);
     addProperty(toneMappingMethod_);
+
+    addProperty(drago03Gamma_);
+    addProperty(drago03Exposure_);
+
+    addProperty(reinhard05Intensity_);
+    addProperty(reinhard05Contrast_);
+
+    addProperty(fattal02Saturation_);
+    addProperty(fattal02Attenuation_);
 }
 
 ToneMappingCPUProcessor::~ToneMappingCPUProcessor() {}
@@ -70,29 +86,44 @@ void ToneMappingCPUProcessor::deinitialize() {
 
 void ToneMappingCPUProcessor::process() {
     if(passSelected_){
-        outport_.setConstData(inport_.getData());
+        outport_.setData(inport_.getData()->clone());
         return;
     }
 
-    const LayerRAM* imageRam = inport_.getData()->getColorLayer()->getRepresentation<LayerRAM>();
-    if(imageRam){
+    const ImageRAM* inImageRam = inport_.getData()->getRepresentation<ImageRAM>();
+    if(inImageRam){
         FREE_IMAGE_TMO tmo;
         double first = 0.0;
         double second = 0.0;
+
         if(drago03Selected_){
             tmo = FITMO_DRAGO03;
+            first = drago03Gamma_.get();
+            second = drago03Exposure_.get();
         }
-        else if(drago03Selected_){
+        else if(reinhard05Selected_){
             tmo = FITMO_REINHARD05;
+            first = reinhard05Intensity_.get();
+            second = reinhard05Contrast_.get();
         }
         else{
             tmo = FITMO_FATTAL02;
+            first = fattal02Saturation_.get();
+            second = fattal02Attenuation_.get();
         }
 
-        //ImageIO::initLoader();
-        //FIBITMAP* bitmap = ImageIO::createBitmapFromData(imageRam);
-        //FIBITMAP* result = FreeImage_ToneMapping(bitmap, tmo, first, second);
-        //FreeImage_Unload(bitmap);
+        FIBITMAP* bitmap = ImageIO::createBitmapFromData(inImageRam->getColorLayerRAM());
+        FIBITMAP* result = FreeImage_ToneMapping(bitmap, tmo, first, second);
+
+        if(outport_.getData()->getDataFormat() != DataVec3UINT8::get() || outport_.getData()->getDimension() != inImageRam->getDimension()){
+            outport_.setData(new Image(outport_.getData()->getDimension(), COLOR_ONLY, DataVec3UINT8::get()));
+        }
+        
+        ImageRAM* outImageRam = outport_.getData()->getEditableRepresentation<ImageRAM>();
+        LayerRAM* out = outImageRam->getColorLayerRAM();
+        ImageIO::copyBitmapToData(bitmap, out);
+
+        FreeImage_Unload(bitmap);
     }
 }
 
@@ -101,6 +132,15 @@ void ToneMappingCPUProcessor::toneMappingMethodChanged() {
     reinhard05Selected_ = (toneMappingMethod_.getSelectedIdentifier() == "REINHARD05");
     fattal02Selected_ = (toneMappingMethod_.getSelectedIdentifier() == "FATTAL02");
     passSelected_ = (toneMappingMethod_.getSelectedIdentifier() == "PASS");
+
+    drago03Gamma_.setVisible(drago03Selected_);
+    drago03Exposure_.setVisible(drago03Selected_);
+
+    reinhard05Intensity_.setVisible(reinhard05Selected_);
+    reinhard05Contrast_.setVisible(reinhard05Selected_);
+
+    fattal02Saturation_.setVisible(fattal02Selected_);
+    fattal02Attenuation_.setVisible(fattal02Selected_);
 }
 
 } // namespace

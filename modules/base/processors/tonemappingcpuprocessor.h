@@ -37,6 +37,7 @@
 #include <inviwo/core/common/inviwo.h>
 #include <inviwo/core/processors/processor.h>
 #include <inviwo/core/ports/imageport.h>
+#include <inviwo/core/properties/ordinalproperty.h>
 #include <inviwo/core/properties/baseoptionproperty.h>
 
 namespace inviwo {
@@ -61,6 +62,15 @@ private:
     ImageOutport outport_;
 
     OptionPropertyString toneMappingMethod_;
+
+    DoubleProperty drago03Gamma_;
+    DoubleProperty drago03Exposure_;
+
+    DoubleProperty reinhard05Intensity_;
+    DoubleProperty reinhard05Contrast_;
+
+    DoubleProperty fattal02Saturation_;
+    DoubleProperty fattal02Attenuation_;
 
     bool drago03Selected_;
     bool reinhard05Selected_;

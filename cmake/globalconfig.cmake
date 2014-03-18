@@ -124,7 +124,6 @@ if(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
 endif(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
 
 # Build shared libs or static libs
-option(SHARED_LIBS "Build shared libs, else static libs" ON)
 option(IVW_PROFILING "Enable profiling" OFF)
 option(IVW_ENABLE_MSVC_MEMLEAK_TEST "Run memoryleak test within Visual Studio" OFF)
 #mark_as_advanced(SHARED_LIBS)
