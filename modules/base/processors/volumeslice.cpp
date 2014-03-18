@@ -36,7 +36,7 @@ namespace inviwo {
 
 ProcessorClassName(VolumeSlice, "VolumeSlice");
 ProcessorCategory(VolumeSlice, "Volume Operation");
-ProcessorCodeState(VolumeSlice, CODE_STATE_BROKEN);
+ProcessorCodeState(VolumeSlice, CODE_STATE_EXPERIMENTAL);
 
 VolumeSlice::VolumeSlice()
     : Processor(),
@@ -85,10 +85,9 @@ void VolumeSlice::process() {
 
     const VolumeRAM* vol = inport_.getData()->getRepresentation<VolumeRAM>();
     LayerRAM* sliceImage = VolumeRAMSlice::apply(vol, static_cast<CoordinatePlane>(coordinatePlane_.get()), static_cast<unsigned int>(sliceNumber_.get()-1));
-    //sliceImage->resize(outport_.getData()->getDimension());
 
     Image* outImage = new Image(sliceImage->getDimension(), COLOR_ONLY, sliceImage->getDataFormat());
-    outImage->addColorLayer(new Layer(sliceImage));
+    outImage->getColorLayer()->addRepresentation(sliceImage);
 
     outport_.setData(outImage);
 }

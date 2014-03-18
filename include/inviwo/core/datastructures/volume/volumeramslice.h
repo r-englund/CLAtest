@@ -75,7 +75,6 @@ void VolumeRAMSlice::evaluate() {
         return;
     }
 
-    /*
     uvec3 dataDims = volume->getDimension();
     if(cPlane_ == XY){ //XY Plane
         if (sliceNum_ >= dataDims.z){
@@ -84,11 +83,11 @@ void VolumeRAMSlice::evaluate() {
         }
 
         //allocate space
-        ImageRAMPrecision<T>* sliceImage;
+        LayerRAMPrecision<T>* sliceImage;
         if (volume->getDataFormat()->getBitsAllocated() != B)
-            sliceImage = new ImageRAMCustomPrecision<T, B>(dataDims.xy(),  COLOR_ONLY);
+            sliceImage = new LayerRAMCustomPrecision<T, B>(dataDims.xy());
         else
-            sliceImage = new ImageRAMPrecision<T>(dataDims.xy(),  COLOR_ONLY);
+            sliceImage = new LayerRAMPrecision<T>(dataDims.xy());
 
         const T* src = reinterpret_cast<const T*>(volume->getData());
         T* dst = reinterpret_cast<T*>(sliceImage->getData());
@@ -110,11 +109,11 @@ void VolumeRAMSlice::evaluate() {
         }
 
         //allocate space
-        ImageRAMPrecision<T>* sliceImage;
+        LayerRAMPrecision<T>* sliceImage;
         if (volume->getDataFormat()->getBitsAllocated() != B)
-            sliceImage = new ImageRAMCustomPrecision<T, B>(dataDims.xz(),  COLOR_ONLY);
+            sliceImage = new LayerRAMCustomPrecision<T, B>(dataDims.xz());
         else
-            sliceImage = new ImageRAMPrecision<T>(dataDims.xz(),  COLOR_ONLY);
+            sliceImage = new LayerRAMPrecision<T>(dataDims.xz());
 
         const T* src = reinterpret_cast<const T*>(volume->getData());
         T* dst = reinterpret_cast<T*>(sliceImage->getData());
@@ -138,26 +137,27 @@ void VolumeRAMSlice::evaluate() {
         }
 
         //allocate space
-        ImageRAMPrecision<T>* sliceImage;
+        LayerRAMPrecision<T>* sliceImage;
         if (volume->getDataFormat()->getBitsAllocated() != B)
-            sliceImage = new ImageRAMCustomPrecision<T, B>(dataDims.yz(),  COLOR_ONLY);
+            sliceImage = new LayerRAMCustomPrecision<T, B>(dataDims.yz());
         else
-            sliceImage = new ImageRAMPrecision<T>(dataDims.yz(),  COLOR_ONLY);
+            sliceImage = new LayerRAMPrecision<T>(dataDims.yz());
 
-        //const T* src = reinterpret_cast<const T*>(volume->getData());
-        //T* dst = reinterpret_cast<T*>(sliceImage->getData());
+        const T* src = reinterpret_cast<const T*>(volume->getData());
+        T* dst = reinterpret_cast<T*>(sliceImage->getData());
 
         //copy data
-        //size_t offsetVolume;
-     //size_t offsetImage;
-     // for (size_t i=0; i < dataDims.z; i++) {
-     //      for (size_t j=0; j < dataDims.y; j++) {
-     //         offsetImage = (i*dataDims.z)+j;
-     //         dst[offsetImage] = src[];
-     //     }
-     // }
+        size_t offsetVolume;
+        size_t offsetImage;
+        for (size_t i=0; i < dataDims.z; i++) {
+            for (size_t j=0; j < dataDims.y; j++) {
+                offsetVolume = (i*dataDims.x*dataDims.y) + (j*dataDims.x) + sliceNum_;
+                offsetImage = (i*dataDims.z)+j;
+                dst[offsetImage] = src[offsetVolume];
+            }
+        }
         setOutput(sliceImage);
-    }*/
+    }
 }
 
 } // namespace
