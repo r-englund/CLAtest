@@ -36,6 +36,7 @@
 #include <inviwo/core/util/urlparser.h>
 #include <inviwo/core/io/datareaderfactory.h>
 #include <inviwo/core/io/rawvolumereader.h>
+#include <glm/gtx/vector_angle.hpp>
 #include <math.h>
 
 namespace inviwo {
