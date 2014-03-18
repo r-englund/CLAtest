@@ -40,23 +40,30 @@ ProcessorCategory(ImageMixer, "Image Operation");
 ProcessorCodeState(ImageMixer, CODE_STATE_EXPERIMENTAL);
 
 ImageMixer::ImageMixer()
-    : ProcessorGL(),
-      inport0_("inport0"),
-      inport1_("inport1"),
-      outport_("outport", &inport0_, COLOR_ONLY),
-      alpha_("alpha", "Alpha", 0.5f, 0.0f, 1.0f)
+    : ProcessorGL()
+    , inport0_("inport0")
+    , inport1_("inport1")
+    , outport_("outport", &inport0_, COLOR_ONLY)
+    , alpha_("alpha", "Alpha", 0.5f, 0.0f, 1.0f)
+    , blendingMode_("compositingMode", "Compositing", PropertyOwner::INVALID_RESOURCES)
 {
     addPort(inport0_);
     addPort(inport1_);
     addPort(outport_);
     addProperty(alpha_);
+    blendingMode_.addOption("mix", "Mix");
+    blendingMode_.addOption("add", "Add");
+    blendingMode_.setSelectedIdentifier("mix");
+    blendingMode_.setCurrentStateAsDefault();
+    addProperty(blendingMode_);
 }
 
 ImageMixer::~ImageMixer() {}
 
 void ImageMixer::initialize() {
     ProcessorGL::initialize();
-    shader_ = new Shader("img_mix.frag");
+    shader_ = new Shader("img_mix.frag", false);
+    initializeResources();
 }
 
 void ImageMixer::deinitialize() {
@@ -81,6 +88,22 @@ void ImageMixer::process() {
     renderImagePlaneRect();
     shader_->deactivate();
     deactivateCurrentTarget();
+}
+
+void ImageMixer::initializeResources() {
+    // compositing defines
+    std::string compositingKey = "COLOR_BLENDING(colorA, colorB, param)";
+    std::string compositingValue = "";
+
+    if (blendingMode_.isSelectedIdentifier("mix")) {
+        compositingValue = "colorMix(colorA, colorB, param);";
+        alpha_.setVisible(true);
+    } else if (blendingMode_.isSelectedIdentifier("add")) {
+        compositingValue = "colorAdd(colorA, colorB);";
+        alpha_.setVisible(false);
+    }
+    shader_->getFragmentShaderObject()->addShaderDefine(compositingKey, compositingValue);
+    shader_->build();
 }
 
 } // namespace

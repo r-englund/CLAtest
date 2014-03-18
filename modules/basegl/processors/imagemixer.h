@@ -55,12 +55,14 @@ public:
 
 protected:
     virtual void process();
-
+    void initializeResources();
 private:
     ImageInport inport0_;
     ImageInport inport1_;
     ImageOutport outport_;
     FloatProperty alpha_;
+
+    OptionPropertyString blendingMode_;
 
     Shader* shader_;
 };
