@@ -114,11 +114,17 @@ static const int canConvertMatrix[Variant::VariantTypeLastBaseType + 1] =
     1 << Variant::VariantTypeVec2       | 1 << Variant::VariantTypeVec3     | 1 << Variant::VariantTypeVec4     |
     1 << Variant::VariantTypeDVec2      | 1 << Variant::VariantTypeDVec3    | 1 << Variant::VariantTypeString   ,
 
-    1 << Variant::VariantTypeString     ,
+    1 << Variant::VariantTypeString,
 
-    1 << Variant::VariantTypeString     ,
+    1 << Variant::VariantTypeString,
 
-    1 << Variant::VariantTypeString     ,
+    1 << Variant::VariantTypeString,
+
+    1 << Variant::VariantTypeString,
+
+    1 << Variant::VariantTypeString,
+
+    1 << Variant::VariantTypeString,
 
     0
 };
@@ -220,6 +226,18 @@ Variant::Variant(const Variant& obj)
             set<mat4>(obj.getMat4(), VariantTypeMat4);
             break;
 
+        case VariantTypeDMat2:
+            set<dmat2>(obj.getDMat2(), VariantTypeDMat2);
+            break;
+
+        case VariantTypeDMat3:
+            set<dmat3>(obj.getDMat3(), VariantTypeDMat3);
+            break;
+
+        case VariantTypeDMat4:
+            set<dmat4>(obj.getDMat4(), VariantTypeDMat4);
+            break;
+
         default:
             break;
     }
@@ -304,6 +322,17 @@ Variant::Variant(const mat3& value) : value_(0), currentType_(VariantTypeMat3) {
 
 Variant::Variant(const mat4& value) : value_(0), currentType_(VariantTypeMat4) {
     set<mat4>(value, VariantTypeMat4);
+}
+Variant::Variant(const dmat2& value) : value_(0), currentType_(VariantTypeDMat2) {
+    set<dmat2>(value, VariantTypeDMat2);
+}
+
+Variant::Variant(const dmat3& value) : value_(0), currentType_(VariantTypeDMat3) {
+    set<dmat3>(value, VariantTypeDMat3);
+}
+
+Variant::Variant(const dmat4& value) : value_(0), currentType_(VariantTypeDMat4) {
+    set<dmat4>(value, VariantTypeDMat4);
 }
 
 Variant::Variant(const VariantType& type) : value_(0), currentType_(type) {
@@ -399,6 +428,18 @@ void Variant::deleteValue() {
 
             case VariantTypeMat4:
                 delete static_cast<mat4*>(value_);
+                break;
+            
+            case VariantTypeDMat2:
+                delete static_cast<dmat2*>(value_);
+                break;
+
+            case VariantTypeDMat3:
+                delete static_cast<dmat3*>(value_);
+                break;
+
+            case VariantTypeDMat4:
+                delete static_cast<dmat4*>(value_);
                 break;
 
             default:
@@ -498,6 +539,18 @@ std::string Variant::typeToName(VariantType type) {
                 return "mat4";
                 break;
 
+            case VariantTypeDMat2:
+                return "dmat2";
+                break;
+
+            case VariantTypeDMat3:
+                return "dmat3";
+                break;
+
+            case VariantTypeDMat4:
+                return "dmat4";
+                break;
+
             default:
                 return "<undefined>";
         }
@@ -543,6 +596,12 @@ Variant::VariantType Variant::nameToType(const std::string& typeName) {
         return VariantTypeMat3;
     else if (typeName == "mat4")
         return VariantTypeMat4;
+    else if (typeName == "dmat2")
+        return VariantTypeDMat2;
+    else if (typeName == "dmat3")
+        return VariantTypeDMat3;
+    else if (typeName == "dmat4")
+        return VariantTypeDMat4;
     else if (typeName > "user-defined")
         return VariantTypeUserType;
     else
@@ -895,6 +954,36 @@ std::string Variant::getString() const {
                     m[2][0], m[2][1], m[2][2], m[2][3],
                     m[3][0], m[3][1], m[3][2], m[3][3]);
             return std::string(result);
+        }
+
+        case VariantTypeDMat2:
+        {
+                                char result[VALUETOSTRINGBUFFERSIZE];
+                                dmat2 m = VP(dmat2);
+                                sprintf(result, MAT2STRINGFORMAT, m[0][0], m[0][1],
+                                        m[1][0], m[1][1]);
+                                return std::string(result);
+        }
+
+        case VariantTypeDMat3:
+        {
+                                char result[VALUETOSTRINGBUFFERSIZE];
+                                dmat3 m = VP(dmat3);
+                                sprintf(result, MAT3STRINGFORMAT, m[0][0], m[0][1], m[0][2],
+                                        m[1][0], m[1][1], m[1][2],
+                                        m[2][0], m[2][1], m[2][2]);
+                                return std::string(result);
+        }
+
+        case VariantTypeDMat4:
+        {
+                                char result[VALUETOSTRINGBUFFERSIZE];
+                                dmat4 m = VP(dmat4);
+                                sprintf(result, MAT4STRINGFORMAT, m[0][0], m[0][1], m[0][2], m[0][3],
+                                        m[1][0], m[1][1], m[1][2], m[1][3],
+                                        m[2][0], m[2][1], m[2][2], m[2][3],
+                                        m[3][0], m[3][1], m[3][2], m[3][3]);
+                                return std::string(result);
         }
 
         case VariantTypeInvalid:
@@ -1397,6 +1486,83 @@ mat4 Variant::getMat4() const {
     return mat4(1.0);
 }
 
+dmat2 Variant::getDMat2() const {
+    switch (currentType_) {
+    case VariantTypeDMat2:
+        return VP(dmat2);
+        break;
+
+    case VariantTypeString:
+    {
+                              dmat2 result;
+                              sscanf(VP(std::string).c_str(), MAT2STRINGFORMAT, &result[0][0], &result[0][1], &result[1][0], &result[1][1]);
+                              return result;
+    }
+
+    case VariantTypeInvalid:
+        throw Exception("");
+
+    default:
+        throw Exception("Variant: Conversion from " + typeToName(currentType_) + " to dmat2 not implemented");
+        break;
+    }
+
+    return dmat2(1.0);
+}
+
+dmat3 Variant::getDMat3() const {
+    switch (currentType_) {
+    case VariantTypeDMat3:
+        return VP(dmat3);
+        break;
+
+    case VariantTypeString:
+    {
+                              dmat3 result;
+                              sscanf(VP(std::string).c_str(), MAT3STRINGFORMAT, &result[0][0], &result[0][1], &result[0][2],
+                                     &result[1][0], &result[1][1], &result[1][2],
+                                     &result[2][0], &result[2][1], &result[2][2]);
+                              return result;
+    }
+
+    case VariantTypeInvalid:
+        throw Exception("");
+
+    default:
+        throw Exception("Variant: Conversion from " + typeToName(currentType_) + " to dmat3 not implemented");
+        break;
+    }
+
+    return dmat3(1.0);
+}
+
+dmat4 Variant::getDMat4() const {
+    switch (currentType_) {
+    case VariantTypeDMat4:
+        return VP(dmat4);
+        break;
+
+    case VariantTypeString:
+    {
+                              dmat4 result;
+                              sscanf(VP(std::string).c_str(), MAT4STRINGFORMAT, &result[0][0], &result[0][1], &result[0][2], &result[0][3],
+                                     &result[1][0], &result[1][1], &result[1][2], &result[1][3],
+                                     &result[2][0], &result[2][1], &result[2][2], &result[2][3],
+                                     &result[3][0], &result[3][1], &result[3][2], &result[3][3]);
+                              return result;
+    }
+
+    case VariantTypeInvalid:
+        throw Exception("");
+
+    default:
+        throw Exception("Variant: Conversion from " + typeToName(currentType_) + " to dmat4 not implemented");
+        break;
+    }
+
+    return dmat4(1.0);
+}
+
 void Variant::setBool(const bool& value) {
     set<bool>(value, VariantTypeBool);
 }
@@ -1468,6 +1634,18 @@ void Variant::setMat3(const mat3& value) {
 
 void Variant::setMat4(const mat4& value) {
     set<mat4>(value, VariantTypeMat4);
+}
+
+void Variant::setDMat2(const dmat2& value) {
+    set<dmat2>(value, VariantTypeDMat2);
+}
+
+void Variant::setDMat3(const dmat3& value) {
+    set<dmat3>(value, VariantTypeDMat3);
+}
+
+void Variant::setDMat4(const dmat4& value) {
+    set<dmat4>(value, VariantTypeDMat4);
 }
 
 void Variant::serialize(IvwSerializer& s) const {
@@ -1544,6 +1722,18 @@ void Variant::serialize(IvwSerializer& s) const {
 
         case VariantTypeMat4:
             s.serialize("value", getMat4());
+            break;
+
+        case VariantTypeDMat2:
+            s.serialize("value", getDMat2());
+            break;
+
+        case VariantTypeDMat3:
+            s.serialize("value", getDMat3());
+            break;
+
+        case VariantTypeDMat4:
+            s.serialize("value", getDMat4());
             break;
 
         case VariantTypeInvalid:
@@ -1706,6 +1896,30 @@ void Variant::deserialize(IvwDeserializer& d) {
             break;
         }
 
+        case VariantTypeDMat2:
+        {
+            dmat2 value;
+            d.deserialize("value", value);
+            setDMat2(value);
+            break;
+        }
+
+        case VariantTypeDMat3:
+        {
+            dmat3 value;
+            d.deserialize("value", value);
+            setDMat3(value);
+            break;
+        }
+
+        case VariantTypeDMat4:
+        {
+            dmat4 value;
+            d.deserialize("value", value);
+            setDMat4(value);
+            break;
+        }
+
         case VariantTypeInvalid:
             throw Exception("Tried to deserialize an invalid variant");
             break;
@@ -1797,6 +2011,18 @@ Variant& Variant::operator= (const Variant& rhs) {
 
             case VariantTypeMat4:
                 set<mat4>(temp_rhs.getMat4(), VariantTypeMat4);
+                break;
+
+            case VariantTypeDMat2:
+                set<dmat2>(temp_rhs.getDMat2(), VariantTypeDMat2);
+                break;
+
+            case VariantTypeDMat3:
+                set<dmat3>(temp_rhs.getDMat3(), VariantTypeDMat3);
+                break;
+
+            case VariantTypeDMat4:
+                set<dmat4>(temp_rhs.getDMat4(), VariantTypeDMat4);
                 break;
 
             default:
@@ -1902,6 +2128,21 @@ Variant& Variant::operator= (const mat4& rhs) {
     return *this;
 }
 
+Variant& Variant::operator= (const dmat2& rhs) {
+    set<dmat2>(rhs, VariantTypeDMat2);
+    return *this;
+}
+
+Variant& Variant::operator= (const dmat3& rhs) {
+    set<dmat3>(rhs, VariantTypeDMat3);
+    return *this;
+}
+
+Variant& Variant::operator= (const dmat4& rhs) {
+    set<dmat4>(rhs, VariantTypeDMat4);
+    return *this;
+}
+
 bool Variant::operator== (const Variant& rhs) const {
     if (getType() != rhs.getType())
         return false;
@@ -1963,6 +2204,15 @@ bool Variant::operator== (const Variant& rhs) const {
 
             case VariantTypeMat4:
                 return (getMat4() == rhs.getMat4());
+
+            case VariantTypeDMat2:
+                return (getDMat2() == rhs.getDMat2());
+
+            case VariantTypeDMat3:
+                return (getDMat3() == rhs.getDMat3());
+
+            case VariantTypeDMat4:
+                return (getDMat4() == rhs.getDMat4());
 
             default:
                 return currentType_ == rhs.currentType_ && value_ == rhs.value_;

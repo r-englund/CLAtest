@@ -30,9 +30,6 @@ set(MOC_FILES
     ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/properties/directorypropertywidgetqt.h       
     ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/properties/eventpropertywidgetqt.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/properties/filepropertywidgetqt.h
-    ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/properties/floatmat2propertywidgetqt.h
-    ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/properties/floatmat3propertywidgetqt.h
-    ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/properties/floatmat4propertywidgetqt.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/properties/floatminmaxpropertywidgetqt.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/properties/floatpropertywidgetqt.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/properties/htmleditorwidgetqt.h
@@ -94,9 +91,6 @@ set(SOURCE_FILES
     properties/directorypropertywidgetqt.cpp    
     properties/eventpropertywidgetqt.cpp
     properties/filepropertywidgetqt.cpp
-    properties/floatmat2propertywidgetqt.cpp
-    properties/floatmat3propertywidgetqt.cpp
-    properties/floatmat4propertywidgetqt.cpp
     properties/floatminmaxpropertywidgetqt.cpp
     properties/floatpropertywidgetqt.cpp
     properties/glslsyntaxhighlighter.cpp

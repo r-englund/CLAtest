@@ -17,10 +17,11 @@ public:
 protected: 
     virtual QString transformValueToEditor() = 0;
     virtual void newEditorValue(QString) = 0;
-    virtual QValidator* createValidator() = 0;
 
     void applyInit();
     void applyValue();
+
+    QLineEdit* editor_;
 
 private slots:
     void updateFromEditor();
@@ -32,11 +33,11 @@ private:
     void generateWidget();
     void updateEditor();
 
-    QLineEdit* editor_;
+
 };
 
 template <typename T>
-class TemplateOrdinalEditorWidget : public BaseOrdinalEditorWidget, public OrdinalBaseWidget<T>{
+class TemplateOrdinalEditorWidget : public BaseOrdinalEditorWidget, public OrdinalBaseWidget<T> {
 public:
     TemplateOrdinalEditorWidget() : BaseOrdinalEditorWidget() {}
     virtual ~TemplateOrdinalEditorWidget() {}
@@ -69,20 +70,18 @@ protected:
 template <typename T>
 class OrdinalEditorWidget : public TemplateOrdinalEditorWidget<T> {
 public:
-    OrdinalEditorWidget() : TemplateOrdinalEditorWidget<T>() {}
+    OrdinalEditorWidget() : TemplateOrdinalEditorWidget<T>() {
+        editor_->setValidator(new QDoubleValidator(this));
+    }
     virtual ~OrdinalEditorWidget() {}
 
 protected:  
     // Defines the transform
     virtual T editorToRepr(QString val) {
-        return 0;
+        return static_cast<T>(val.toDouble());
     }
     virtual QString reprToEditor(T val) {
-        return "";
-    }
-    
-    virtual QValidator* createValidator(){
-        return new QDoubleValidator(this);
+        return QString::number(val);
     }
 };
 
@@ -90,19 +89,18 @@ protected:
 template <>
 class OrdinalEditorWidget<int> : public TemplateOrdinalEditorWidget<int>{
 public:
-    OrdinalEditorWidget() : TemplateOrdinalEditorWidget<int>() {}
+    OrdinalEditorWidget() : TemplateOrdinalEditorWidget<int>() {
+        editor_->setValidator(new QIntValidator(this));
+    }
     virtual ~OrdinalEditorWidget() {}
 
 protected:
     // Defines the transform
     virtual int editorToRepr(QString val) {
-        return 0;
+        return val.toInt();
     }
     virtual QString reprToEditor(int val) {
-        return "";
-    }
-    virtual QValidator* createValidator(){
-        return new QIntValidator(this);
+        return QString::number(val);
     }
 };
 

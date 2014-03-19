@@ -147,6 +147,9 @@ InviwoCore::InviwoCore() : InviwoModule() {
     registerProperty(FloatMat2Property);
     registerProperty(FloatMat3Property);
     registerProperty(FloatMat4Property);
+    registerProperty(DoubleMat2Property);
+    registerProperty(DoubleMat3Property);
+    registerProperty(DoubleMat4Property);
     registerProperty(OptionPropertyInt);
     registerProperty(OptionPropertyFloat);
     registerProperty(OptionPropertyDouble);

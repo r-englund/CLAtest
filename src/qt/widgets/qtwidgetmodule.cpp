@@ -53,9 +53,6 @@
 #include <inviwo/qt/widgets/properties/directorypropertywidgetqt.h>
 #include <inviwo/qt/widgets/properties/eventpropertywidgetqt.h>
 #include <inviwo/qt/widgets/properties/filepropertywidgetqt.h>
-#include <inviwo/qt/widgets/properties/floatmat2propertywidgetqt.h>
-#include <inviwo/qt/widgets/properties/floatmat3propertywidgetqt.h>
-#include <inviwo/qt/widgets/properties/floatmat4propertywidgetqt.h>
 #include <inviwo/qt/widgets/properties/floatminmaxpropertywidgetqt.h>
 #include <inviwo/qt/widgets/properties/floatpropertywidgetqt.h>
 #include <inviwo/qt/widgets/properties/imageeditorwidgetqt.h>
@@ -88,6 +85,9 @@ QtWidgetModule::QtWidgetModule() : InviwoModule() {
     registerPropertyWidget(FloatMat2PropertyWidgetQt, FloatMat2Property, "Default");
     registerPropertyWidget(FloatMat3PropertyWidgetQt, FloatMat3Property, "Default");
     registerPropertyWidget(FloatMat4PropertyWidgetQt, FloatMat4Property, "Default");
+    registerPropertyWidget(DoubleMat2PropertyWidgetQt, DoubleMat2Property, "Default");
+    registerPropertyWidget(DoubleMat3PropertyWidgetQt, DoubleMat3Property, "Default");
+    registerPropertyWidget(DoubleMat4PropertyWidgetQt, DoubleMat4Property, "Default");
     registerPropertyWidget(FloatMinMaxPropertyWidgetQt, FloatMinMaxProperty, "Default");
     registerPropertyWidget(FloatPropertyWidgetQt, FloatProperty, "Default");
     registerPropertyWidget(FloatVec2PropertyWidgetQt, FloatVec2Property, "Default");

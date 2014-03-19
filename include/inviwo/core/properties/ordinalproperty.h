@@ -76,6 +76,10 @@ DEFAULTVALUES(mat2, uvec2(2,2), "FloatMat2", mat2(0.f), mat2(0.f), mat2(1.f), ma
 DEFAULTVALUES(mat3, uvec2(3,3), "FloatMat3", mat3(0.f), mat3(0.f), mat3(1.f), mat3(0.01f))
 DEFAULTVALUES(mat4, uvec2(4,4), "FloatMat4", mat4(0.f), mat4(0.f), mat4(1.f), mat4(0.01f))
 
+DEFAULTVALUES(dmat2, uvec2(2, 2), "DoubleMat2", dmat2(0.), dmat2(0.), dmat2(1.), dmat2(0.01))
+DEFAULTVALUES(dmat3, uvec2(3, 3), "DoubleMat3", dmat3(0.), dmat3(0.), dmat3(1.), dmat3(0.01))
+DEFAULTVALUES(dmat4, uvec2(4, 4), "DoubleMat4", dmat4(0.), dmat4(0.), dmat4(1.), dmat4(0.01))
+
 #undef DEFAULTVALUES
 
 template<typename T>
@@ -146,6 +150,10 @@ typedef OrdinalProperty<ivec4> IntVec4Property;
 typedef OrdinalProperty<mat2> FloatMat2Property;
 typedef OrdinalProperty<mat3> FloatMat3Property;
 typedef OrdinalProperty<mat4> FloatMat4Property;
+
+typedef OrdinalProperty<dmat2> DoubleMat2Property;
+typedef OrdinalProperty<dmat3> DoubleMat3Property;
+typedef OrdinalProperty<dmat4> DoubleMat4Property;
 
 
 template<typename T>

@@ -106,6 +106,9 @@ typedef glm::uvec4 uvec4;
 typedef glm::mat2 mat2;
 typedef glm::mat3 mat3;
 typedef glm::mat4 mat4;
+typedef glm::dmat2 dmat2;
+typedef glm::dmat3 dmat3;
+typedef glm::dmat4 dmat4;
 typedef glm::quat quat;
 
 #include <inviwo/core/util/glmstreamoperators.h>

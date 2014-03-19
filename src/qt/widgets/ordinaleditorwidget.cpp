@@ -11,8 +11,7 @@ BaseOrdinalEditorWidget::~BaseOrdinalEditorWidget() {
 
 void BaseOrdinalEditorWidget::generateWidget() {
     QHBoxLayout* hLayout = new QHBoxLayout();
-    editor_ = new QLineEdit();
-    editor_->setValidator(createValidator());
+    editor_ = new QLineEdit(this);
     hLayout->addWidget(editor_);
     hLayout->setContentsMargins(0, 0, 0, 0);
     hLayout->setSpacing(0);
