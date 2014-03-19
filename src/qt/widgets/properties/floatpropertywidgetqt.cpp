@@ -58,16 +58,7 @@ void BaseOrdinalPropertyWidgetQt::generateWidget() {
 
        
     QWidget* sliderWidget = new QWidget();
-    QSizePolicy sliderPol = sliderWidget->sizePolicy();
-    sliderPol.setHorizontalStretch(3);
-    sliderWidget->setSizePolicy(sliderPol);
-
-    QGridLayout* vLayout = new QGridLayout();
-    sliderWidget->setLayout(vLayout);
-    vLayout->setContentsMargins(0, 0, 0, 0);
-    vLayout->setSpacing(0);
-
-    sliderWidgets_ = makeSliders();
+    sliderWidgets_ = makeSliders(sliderWidget);
 
     for(size_t i = 0; i < sliderWidgets_.size(); i++) {
         sliderWidgets_[i]->setContextMenuPolicy(Qt::CustomContextMenu);
@@ -83,8 +74,6 @@ void BaseOrdinalPropertyWidgetQt::generateWidget() {
 
         signalMapperContextMenu_->setMapping(sliderWidgets_[i], static_cast<int>(i));
         signalMapperSetPropertyValue_->setMapping(sliderWidgets_[i], static_cast<int>(i));
-
-        vLayout->addWidget(sliderWidgets_[i],i,0);
     }
 
     hLayout->addWidget(sliderWidget);

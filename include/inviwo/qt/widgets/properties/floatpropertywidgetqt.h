@@ -38,6 +38,7 @@
 #include <QSignalMapper>
 #include <inviwo/qt/widgets/editablelabelqt.h>
 #include <inviwo/qt/widgets/sliderwidgetqt.h>
+#include <inviwo/qt/widgets/ordinaleditorwidget.h>
 #include <inviwo/qt/widgets/properties/propertysettingswidgetqt.h>
 #include <inviwo/qt/widgets/properties/propertywidgetqt.h>
 #include <inviwo/core/properties/ordinalproperty.h>
@@ -58,7 +59,7 @@ public:
     virtual ~BaseOrdinalPropertyWidgetQt();
     virtual void updateFromProperty() = 0;
 
-    typedef std::vector<BaseSliderWidgetQt*> SliderVector;
+    typedef std::vector<QWidget*> SliderVector;
 
 public slots:
     virtual void setPropertyValue(int sliderId) = 0;
@@ -70,7 +71,7 @@ public slots:
     void showSettings();
 
 protected:
-    virtual SliderVector makeSliders() = 0;
+    virtual SliderVector makeSliders(QWidget* widget) = 0;
     void generateWidget();
     SliderVector sliderWidgets_;
     int sliderId_;
@@ -101,11 +102,29 @@ public:
     virtual void updateFromProperty() = 0;
 
 protected:
-    virtual SliderVector makeSliders() {
+    virtual SliderVector makeSliders(QWidget* widget) {
+        QSizePolicy sliderPol = widget->sizePolicy();
+        sliderPol.setHorizontalStretch(3);
+        widget->setSizePolicy(sliderPol);
+
+        QGridLayout* vLayout = new QGridLayout();
+        widget->setLayout(vLayout);
+        vLayout->setContentsMargins(0, 0, 0, 0);
+        vLayout->setSpacing(0);
+        
         SliderVector sliders;
-        for(size_t i = 0; i < ordinalproperty_->getDim().x; i++) {
-            sliders.push_back(new SliderWidgetQt<BT>());
-        }
+        QWidget* controlWidget;
+        for (size_t i = 0; i < ordinalproperty_->getDim().x; i++) {
+             for (size_t j = 0; j < ordinalproperty_->getDim().y; j++) {
+                if (ordinalproperty_->getDim().y > 1) {
+                    controlWidget = new OrdinalEditorWidget<BT>();
+                } else {
+                    controlWidget = new SliderWidgetQt<BT>();
+                }
+                sliders.push_back(controlWidget);
+                vLayout->addWidget(controlWidget, i, j);
+            }
+        } 
         return sliders;
     }
 
@@ -115,7 +134,7 @@ protected:
 
     virtual std::string getPropertyToolTip() const {
         return "Min: " + glm::to_string(ordinalproperty_->getMinValue()) +
-            "  Max: " + glm::to_string(ordinalproperty_->getMaxValue());
+             "  Max: " + glm::to_string(ordinalproperty_->getMaxValue());
     }
 
 
@@ -126,6 +145,92 @@ protected:
     OrdinalProperty<T>* ordinalproperty_;
 };
 
+template <typename BT, typename T>
+class glmwrapper {};
+
+template <typename T>
+class glmwrapper<T, glm::detail::tmat4x4<T, glm::defaultp> > {
+public:
+    static T getval(glm::detail::tmat4x4<T, glm::defaultp> mat, size_t const ind) {
+        return mat[ind/4][ind % 4];
+    }
+    static glm::detail::tmat4x4<T, glm::defaultp> setval(glm::detail::tmat4x4<T, glm::defaultp> mat,
+                                                          size_t const ind, T val) {
+        mat[ind / 4][ind % 4] = val;
+        return mat;
+    }
+};
+template <typename T>
+class glmwrapper<T, glm::detail::tmat3x3<T, glm::defaultp> > {
+public:
+    static T getval(glm::detail::tmat3x3<T, glm::defaultp> mat, size_t const ind) {
+        return mat[ind / 3][ind % 3];
+    }
+    static glm::detail::tmat3x3<T, glm::defaultp> setval(glm::detail::tmat3x3<T, glm::defaultp> mat,
+                                                          size_t const ind, T val) {
+        mat[ind / 3][ind % 3] = val;
+        return mat;
+    }
+};
+template <typename T>
+class glmwrapper<T, glm::detail::tmat2x2<T, glm::defaultp> > {
+public:
+    static T getval(glm::detail::tmat2x2<T, glm::defaultp> mat, size_t const ind) {
+        return mat[ind / 2][ind % 2];
+    }
+    static glm::detail::tmat2x2<T, glm::defaultp> setval(glm::detail::tmat2x2<T, glm::defaultp> mat,
+                                                          size_t const ind, T val) {
+        mat[ind / 2][ind % 2] = val;
+        return mat;
+    }
+};
+
+template <typename T>
+class glmwrapper<T, glm::detail::tvec4<T, glm::defaultp> > {
+public:
+    static T getval(glm::detail::tvec4<T, glm::defaultp> vec, size_t const ind) {
+        return vec[ind];
+    }
+    static glm::detail::tvec4<T, glm::defaultp> setval(glm::detail::tvec4<T, glm::defaultp> vec,
+                                                       size_t const ind, T val) {
+        vec[ind] = val;
+        return vec;
+    }
+};
+template <typename T>
+class glmwrapper<T, glm::detail::tvec3<T, glm::defaultp> > {
+public:
+    static T getval(glm::detail::tvec3<T, glm::defaultp> vec, size_t const ind) {
+        return vec[ind];
+    }
+    static glm::detail::tvec3<T, glm::defaultp> setval(glm::detail::tvec3<T, glm::defaultp> vec,
+                                                       size_t const ind, T val) {
+        vec[ind] = val;
+        return vec;
+    }
+};
+template <typename T>
+class glmwrapper<T, glm::detail::tvec2<T, glm::defaultp> > {
+public:
+    static T getval(glm::detail::tvec2<T, glm::defaultp> vec, size_t const ind) {
+        return vec[ind];
+    }
+    static glm::detail::tvec2<T, glm::defaultp> setval(glm::detail::tvec2<T, glm::defaultp> vec,
+                                                       size_t const ind, T val) {
+        vec[ind] = val;
+        return vec;
+    }
+};
+template <typename T>
+class glmwrapper<T, T> {
+public:
+    static T getval(T val, size_t const ind) {
+        return val;
+    }
+    static T setval(T org, size_t const ind, T val) {
+        return val;
+    }
+};
 
 // Default case for glm vec properties
 template <typename BT, typename T>
@@ -136,8 +241,6 @@ public:
             BaseOrdinalPropertyWidgetQt::generateWidget();
             updateFromProperty();
         }
-
-
     void updateFromProperty();
 
 protected:
@@ -156,11 +259,11 @@ void OrdinalPropertyWidgetQt<BT, T>::updateFromProperty() {
     T inc = this->ordinalproperty_->getIncrement();
     T val = this->ordinalproperty_->get();
 
-    for(size_t i = 0; i < this->ordinalproperty_->getDim().x; i++) {
-        SliderWidgetQt<BT>* widget = static_cast<SliderWidgetQt<BT>*>(this->sliderWidgets_[i]);
-        widget->setRange(min[static_cast<glm::length_t>(i)], max[static_cast<glm::length_t>(i)]);
-        widget->setIncrement(inc[static_cast<glm::length_t>(i)]);
-        widget->initValue(val[static_cast<glm::length_t>(i)]);
+    for (size_t i = 0; i < this->ordinalproperty_->getDim().x*this->ordinalproperty_->getDim().y; i++) {
+        OrdinalBaseWidget<BT>* widget = dynamic_cast<OrdinalBaseWidget<BT>*>(this->sliderWidgets_[i]);
+        widget->setRange(glmwrapper<BT,T>::getval(min, i), glmwrapper<BT,T>::getval(max,i));
+        widget->setIncrement(glmwrapper<BT,T>::getval(inc, i));
+        widget->initValue(glmwrapper<BT,T>::getval(val, i));
     }
 }
 
@@ -168,7 +271,7 @@ template <typename BT, typename T>
 void OrdinalPropertyWidgetQt<BT, T>::setPropertyValue(int sliderId) {
     T propValue = this->ordinalproperty_->get();
 
-    propValue[sliderId] = static_cast<SliderWidgetQt<BT>*>(this->sliderWidgets_[sliderId])->getValue();
+    propValue = glmwrapper<BT, T>::setval(propValue, sliderId, dynamic_cast<OrdinalBaseWidget<BT>*>(this->sliderWidgets_[sliderId])->getValue());
 
     this->ordinalproperty_->setInitiatingWidget(this);
     this->ordinalproperty_->set(propValue);
@@ -177,99 +280,30 @@ void OrdinalPropertyWidgetQt<BT, T>::setPropertyValue(int sliderId) {
 
 template <typename BT, typename T>
 void OrdinalPropertyWidgetQt<BT, T>::setAsMin() {
-    SliderWidgetQt<BT>* slider = static_cast<SliderWidgetQt<BT>*>(this->sliderWidgets_[this->sliderId_]);
-    T propValue = this->ordinalproperty_->getMinValue();
-    propValue[this->sliderId_] = slider->getValue();
+    OrdinalBaseWidget<BT>* slider = dynamic_cast<OrdinalBaseWidget<BT>*>(this->sliderWidgets_[this->sliderId_]);
+    T propValue = this->ordinalproperty_->getMinValue();  
+    propValue = glmwrapper<BT, T>::setval(propValue, this->sliderId_, slider->getValue());
 
     this->ordinalproperty_->setInitiatingWidget(this);
     this->ordinalproperty_->setMinValue(propValue);
     this->ordinalproperty_->clearInitiatingWidget();
 
-    slider->setMinValue(propValue[this->sliderId_]);
+    slider->setMinValue(glmwrapper<BT,T>::getval(propValue, this->sliderId_));
 }
 
 template <typename BT, typename T>
 void OrdinalPropertyWidgetQt<BT, T>::setAsMax() {
-    SliderWidgetQt<BT>* slider = static_cast<SliderWidgetQt<BT>*>(this->sliderWidgets_[this->sliderId_]);
+    OrdinalBaseWidget<BT>* slider = dynamic_cast<OrdinalBaseWidget<BT>*>(this->sliderWidgets_[this->sliderId_]);
     T propValue = this->ordinalproperty_->getMaxValue();
-    propValue[this->sliderId_] = slider->getValue();
+    propValue = glmwrapper<BT, T>::setval(propValue, this->sliderId_, slider->getValue());
 
     this->ordinalproperty_->setInitiatingWidget(this);
     this->ordinalproperty_->setMaxValue(propValue);
     this->ordinalproperty_->clearInitiatingWidget();
 
-    slider->setMaxValue(propValue[this->sliderId_]);
+    slider->setMaxValue(glmwrapper<BT,T>::getval(propValue, this->sliderId_));
 }
 
-// Specialization for primitive types
-template <typename T>
-class OrdinalPropertyWidgetQt<T, T>: public TemplateOrdinalPropertyWidgetQt<T, T>{
-public:
-    OrdinalPropertyWidgetQt(OrdinalProperty<T>* property)
-        : TemplateOrdinalPropertyWidgetQt<T, T>(property) {
-            BaseOrdinalPropertyWidgetQt::generateWidget();
-            updateFromProperty();
-        }
-    void updateFromProperty();
-
-protected:
-    // Connected to sliderwidget valueChanged()
-    void setPropertyValue(int);
-    void setAsMin();
-    void setAsMax();
-};
-
-template <typename T>
-void OrdinalPropertyWidgetQt<T, T>::updateFromProperty() {
-    this->setEnabled(!this->ordinalproperty_->getReadOnly());
-    T min = this->ordinalproperty_->getMinValue();
-    T max = this->ordinalproperty_->getMaxValue();
-    T inc = this->ordinalproperty_->getIncrement();
-    T val = this->ordinalproperty_->get();
-
-    SliderWidgetQt<T>* widget = static_cast<SliderWidgetQt<T>*>(this->sliderWidgets_[0]);
-    widget->setRange(min, max);
-    widget->setIncrement(inc);
-    widget->initValue(val);
-}
-
-template <typename T>
-void OrdinalPropertyWidgetQt<T, T>::setPropertyValue(int sliderId) {
-    T propValue = this->ordinalproperty_->get();
-
-    propValue = static_cast<SliderWidgetQt<T>*>(this->sliderWidgets_[sliderId])->getValue();
-
-    this->ordinalproperty_->setInitiatingWidget(this);
-    this->ordinalproperty_->set(propValue);
-    this->ordinalproperty_->clearInitiatingWidget();
-
-    emit this->modified();
-}
-
-template <typename T>
-void OrdinalPropertyWidgetQt<T, T>::setAsMin() {
-    SliderWidgetQt<T>* slider = static_cast<SliderWidgetQt<T>*>(this->sliderWidgets_[this->sliderId_]);
-    T propValue = slider->getValue();
-
-    this->ordinalproperty_->setInitiatingWidget(this);
-    this->ordinalproperty_->setMinValue(propValue);
-    this->ordinalproperty_->clearInitiatingWidget();
-
-    slider->setMinValue(propValue);
-}
-
-template <typename T>
-void OrdinalPropertyWidgetQt<T, T>::setAsMax() {
-    SliderWidgetQt<T>* slider = static_cast<SliderWidgetQt<T>*>(this->sliderWidgets_[this->sliderId_]);
-    T propValue = this->ordinalproperty_->getMaxValue();
-    propValue = slider->getValue();
-
-    this->ordinalproperty_->setInitiatingWidget(this);
-    this->ordinalproperty_->setMaxValue(propValue);
-    this->ordinalproperty_->clearInitiatingWidget();
-
-    slider->setMaxValue(propValue);
-}
 
 typedef OrdinalPropertyWidgetQt<float, float> FloatPropertyWidgetQt;
 typedef OrdinalPropertyWidgetQt<float, vec2> FloatVec2PropertyWidgetQt;
@@ -285,6 +319,14 @@ typedef OrdinalPropertyWidgetQt<int, int> IntPropertyWidgetQt;
 typedef OrdinalPropertyWidgetQt<int, ivec2> IntVec2PropertyWidgetQt;
 typedef OrdinalPropertyWidgetQt<int, ivec3> IntVec3PropertyWidgetQt;
 typedef OrdinalPropertyWidgetQt<int, ivec4> IntVec4PropertyWidgetQt;
+
+typedef OrdinalPropertyWidgetQt<float, mat2> FloatMat2PropertyWidgetQt;
+typedef OrdinalPropertyWidgetQt<float, mat3> FloatMat3PropertyWidgetQt;
+typedef OrdinalPropertyWidgetQt<float, mat4> FloatMat4PropertyWidgetQt;
+
+typedef OrdinalPropertyWidgetQt<double, dmat2> DoubleMat2PropertyWidgetQt;
+typedef OrdinalPropertyWidgetQt<double, dmat3> DoubleMat3PropertyWidgetQt;
+typedef OrdinalPropertyWidgetQt<double, dmat4> DoubleMat4PropertyWidgetQt;
 
 } // namespace
 

@@ -65,7 +65,10 @@ public:
         VariantTypeMat2 = 16,
         VariantTypeMat3 = 17,
         VariantTypeMat4 = 18,
-        VariantTypeLastBaseType = 19,
+        VariantTypeDMat2 = 19,
+        VariantTypeDMat3 = 20,
+        VariantTypeDMat4 = 21,
+        VariantTypeLastBaseType = 22,
         VariantTypeUserType = 32
     };
 
@@ -87,9 +90,12 @@ public:
     explicit Variant(const dvec2& value);
     explicit Variant(const dvec3& value);
     explicit Variant(const dvec4& value);
-    explicit Variant(const mat2& value) ;
-    explicit Variant(const mat3& value) ;
-    explicit Variant(const mat4& value) ;
+    explicit Variant(const mat2& value);
+    explicit Variant(const mat3& value);
+    explicit Variant(const mat4& value);
+    explicit Variant(const dmat2& value);
+    explicit Variant(const dmat3& value);
+    explicit Variant(const dmat4& value);
     explicit Variant(const VariantType& type);
 
     Variant deepCopy() const;
@@ -125,6 +131,9 @@ public:
     mat2 getMat2() const;
     mat3 getMat3() const;
     mat4 getMat4() const;
+    dmat2 getDMat2() const;
+    dmat3 getDMat3() const;
+    dmat4 getDMat4() const;
 
 
     void setBool(const bool& value);
@@ -145,6 +154,9 @@ public:
     void setMat2(const mat2& value);
     void setMat3(const mat3& value);
     void setMat4(const mat4& value);
+    void setDMat2(const dmat2& value);
+    void setDMat3(const dmat3& value);
+    void setDMat4(const dmat4& value);
 
     template<class T>
     void set(const T& value, VariantType type);
@@ -178,6 +190,9 @@ public:
     Variant& operator=(const mat2& rhs);
     Variant& operator=(const mat3& rhs);
     Variant& operator=(const mat4& rhs);
+    Variant& operator=(const dmat2& rhs);
+    Variant& operator=(const dmat3& rhs);
+    Variant& operator=(const dmat4& rhs);
     bool operator==(const Variant& rhs) const;
     bool operator!=(const Variant& rhs) const;
 
