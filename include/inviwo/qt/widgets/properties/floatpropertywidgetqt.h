@@ -103,7 +103,7 @@ public:
 protected:
     virtual SliderVector makeSliders() {
         SliderVector sliders;
-        for(size_t i = 0; i < ordinalproperty_->getDim(); i++) {
+        for(size_t i = 0; i < ordinalproperty_->getDim().x; i++) {
             sliders.push_back(new SliderWidgetQt<BT>());
         }
         return sliders;
@@ -156,7 +156,7 @@ void OrdinalPropertyWidgetQt<BT, T>::updateFromProperty() {
     T inc = this->ordinalproperty_->getIncrement();
     T val = this->ordinalproperty_->get();
 
-    for(size_t i = 0; i < this->ordinalproperty_->getDim(); i++) {
+    for(size_t i = 0; i < this->ordinalproperty_->getDim().x; i++) {
         SliderWidgetQt<BT>* widget = static_cast<SliderWidgetQt<BT>*>(this->sliderWidgets_[i]);
         widget->setRange(min[static_cast<glm::length_t>(i)], max[static_cast<glm::length_t>(i)]);
         widget->setIncrement(inc[static_cast<glm::length_t>(i)]);

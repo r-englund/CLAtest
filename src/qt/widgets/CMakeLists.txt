@@ -14,6 +14,7 @@ set(MOC_FILES
     ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/inviwodockwidget.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/lightpositionwidgetqt.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/mappingpopup.h
+    ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/ordinaleditorwidget.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/propertylistwidget.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/rangesliderqt.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/rawdatareaderdialogqt.h
@@ -59,7 +60,7 @@ set(HEADER_FILES
     ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/eventconverterqt.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/eventpropertymanager.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/inviwoqtwidgetsdefine.h
-    ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/labelgraphicsitem.h   
+    ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/labelgraphicsitem.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/properties/transferfunctioneditorcontrolpoint.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/qtwidgetmodule.h
     ${MOC_FILES}
@@ -122,8 +123,9 @@ set(SOURCE_FILES
     qtwidgetmodule.cpp
     rangesliderqt.cpp
     rawdatareaderdialogqt.cpp
-    spinboxrangesliderwidgetqt.cpp
     sliderwidgetqt.cpp
+    spinboxrangesliderwidgetqt.cpp
+    ordinaleditorwidget.cpp
 )
 
 ivw_group("Source Files" ${SOURCE_FILES})

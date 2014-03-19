@@ -90,7 +90,7 @@ void FloatMat2PropertyWidgetQt::set0x0Value() {
 }
 
 void FloatMat2PropertyWidgetQt::set0x1Value() {
-    float valuef =(mat0x1_->text()).toFloat();
+    float valuef = (mat0x1_->text()).toFloat();
     mat2 valueMat2 =property_->get();
     valueMat2[0][1] = valuef;
     property_->set(valueMat2);

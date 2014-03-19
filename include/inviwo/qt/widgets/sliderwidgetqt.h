@@ -67,18 +67,29 @@ private:
 };
 
 template <typename T>
-class TemplateSliderWidget : public BaseSliderWidgetQt {
+class OrdinalBaseWidget {
+    virtual T getValue() = 0;
+    virtual void setValue(T value) = 0;
+    virtual void initValue(T value) = 0;
+    virtual void setMinValue(T minValue) = 0;
+    virtual void setMaxValue(T maxValue) = 0;
+    virtual void setRange(T minValue, T maxValue) = 0;
+    virtual void setIncrement(T increment) = 0;
+};
+
+template <typename T>
+class TemplateSliderWidget : public BaseSliderWidgetQt, public OrdinalBaseWidget<T>{
 public:
     TemplateSliderWidget() : BaseSliderWidgetQt() {}
     virtual ~TemplateSliderWidget() {}
 
-    T getValue();
-    void setValue(T value);
-    void initValue(T value);
-    void setMinValue(T minValue);
-    void setMaxValue(T maxValue);
-    void setRange(T minValue, T maxValue);
-    void setIncrement(T increment);
+    virtual T getValue();
+    virtual void setValue(T value);
+    virtual void initValue(T value);
+    virtual void setMinValue(T minValue);
+    virtual void setMaxValue(T maxValue);
+    virtual void setRange(T minValue, T maxValue);
+    virtual void setIncrement(T increment);
 
 protected:
     // Define the transforms
