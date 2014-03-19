@@ -62,7 +62,7 @@ void BaseOrdinalPropertyWidgetQt::generateWidget() {
     sliderPol.setHorizontalStretch(3);
     sliderWidget->setSizePolicy(sliderPol);
 
-    QVBoxLayout* vLayout = new QVBoxLayout();
+    QGridLayout* vLayout = new QGridLayout();
     sliderWidget->setLayout(vLayout);
     vLayout->setContentsMargins(0, 0, 0, 0);
     vLayout->setSpacing(0);
@@ -84,7 +84,7 @@ void BaseOrdinalPropertyWidgetQt::generateWidget() {
         signalMapperContextMenu_->setMapping(sliderWidgets_[i], static_cast<int>(i));
         signalMapperSetPropertyValue_->setMapping(sliderWidgets_[i], static_cast<int>(i));
 
-        vLayout->addWidget(sliderWidgets_[i]);
+        vLayout->addWidget(sliderWidgets_[i],i,0);
     }
 
     hLayout->addWidget(sliderWidget);

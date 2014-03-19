@@ -52,29 +52,29 @@ public: \
     static type getMin() { return min; } \
     static type getMax() { return max; } \
     static type getInc() { return inc; } \
-    static unsigned int getDim() { return dim; } \
+    static uvec2 getDim() { return dim; } \
     static std::string getName() { return name; } \
 };
 
-DEFAULTVALUES(float, 1, "Float", 0.0f, 0.0f, 1.0f, 0.01f)
-DEFAULTVALUES(double, 1, "Double", 0.0, 0.0, 1.0, 0.01)
-DEFAULTVALUES(int, 1, "Int", 0, -100, 100, 1)
+DEFAULTVALUES(float, uvec2(1,1), "Float", 0.0f, 0.0f, 1.0f, 0.01f)
+DEFAULTVALUES(double, uvec2(1,1), "Double", 0.0, 0.0, 1.0, 0.01)
+DEFAULTVALUES(int, uvec2(1,1), "Int", 0, -100, 100, 1)
 
-DEFAULTVALUES(vec2, 2, "FloatVec2", vec2(0.f), vec2(0.f), vec2(1.f), vec2(0.01f))
-DEFAULTVALUES(vec3, 3, "FloatVec3", vec3(0.f), vec3(0.f), vec3(1.f), vec3(0.01f))
-DEFAULTVALUES(vec4, 4, "FloatVec4", vec4(0.f), vec4(0.f), vec4(1.f), vec4(0.01f))
+DEFAULTVALUES(vec2, uvec2(2,1), "FloatVec2", vec2(0.f), vec2(0.f), vec2(1.f), vec2(0.01f))
+DEFAULTVALUES(vec3, uvec2(3,1), "FloatVec3", vec3(0.f), vec3(0.f), vec3(1.f), vec3(0.01f))
+DEFAULTVALUES(vec4, uvec2(4,1), "FloatVec4", vec4(0.f), vec4(0.f), vec4(1.f), vec4(0.01f))
 
-DEFAULTVALUES(dvec2, 2, "DoubleVec2", dvec2(0.), dvec2(0.), dvec2(1.), dvec2(0.01))
-DEFAULTVALUES(dvec3, 3, "DoubleVec3", dvec3(0.), dvec3(0.), dvec3(1.), dvec3(0.01))
-DEFAULTVALUES(dvec4, 4, "DoubleVec4", dvec4(0.), dvec4(0.), dvec4(1.), dvec4(0.01))
+DEFAULTVALUES(dvec2, uvec2(2,1), "DoubleVec2", dvec2(0.), dvec2(0.), dvec2(1.), dvec2(0.01))
+DEFAULTVALUES(dvec3, uvec2(3,1), "DoubleVec3", dvec3(0.), dvec3(0.), dvec3(1.), dvec3(0.01))
+DEFAULTVALUES(dvec4, uvec2(4,1), "DoubleVec4", dvec4(0.), dvec4(0.), dvec4(1.), dvec4(0.01))
 
-DEFAULTVALUES(ivec2, 2, "IntVec2", ivec2(0), ivec2(0), ivec2(10), ivec2(1))
-DEFAULTVALUES(ivec3, 3, "IntVec3", ivec3(0), ivec3(0), ivec3(10), ivec3(1))
-DEFAULTVALUES(ivec4, 4, "IntVec4", ivec4(0), ivec4(0), ivec4(10), ivec4(1))
+DEFAULTVALUES(ivec2, uvec2(2,1), "IntVec2", ivec2(0), ivec2(0), ivec2(10), ivec2(1))
+DEFAULTVALUES(ivec3, uvec2(3,1), "IntVec3", ivec3(0), ivec3(0), ivec3(10), ivec3(1))
+DEFAULTVALUES(ivec4, uvec2(4,1), "IntVec4", ivec4(0), ivec4(0), ivec4(10), ivec4(1))
 
-DEFAULTVALUES(mat2, 2, "FloatMat2", mat2(0.f), mat2(0.f), mat2(1.f), mat2(0.01f))
-DEFAULTVALUES(mat3, 3, "FloatMat3", mat3(0.f), mat3(0.f), mat3(1.f), mat3(0.01f))
-DEFAULTVALUES(mat4, 4, "FloatMat4", mat4(0.f), mat4(0.f), mat4(1.f), mat4(0.01f))
+DEFAULTVALUES(mat2, uvec2(2,2), "FloatMat2", mat2(0.f), mat2(0.f), mat2(1.f), mat2(0.01f))
+DEFAULTVALUES(mat3, uvec2(3,3), "FloatMat3", mat3(0.f), mat3(0.f), mat3(1.f), mat3(0.01f))
+DEFAULTVALUES(mat4, uvec2(4,4), "FloatMat4", mat4(0.f), mat4(0.f), mat4(1.f), mat4(0.01f))
 
 #undef DEFAULTVALUES
 
@@ -112,7 +112,7 @@ public:
     virtual void serialize(IvwSerializer& s) const;
     virtual void deserialize(IvwDeserializer& d);
     
-    static unsigned int getDim() {return Defaultvalues<T>::getDim(); }
+    static uvec2 getDim() {return Defaultvalues<T>::getDim(); }
    
 private:
     T minValue_;
