@@ -42,6 +42,7 @@
 #include <inviwo/qt/widgets/properties/propertysettingswidgetqt.h>
 #include <inviwo/qt/widgets/properties/propertywidgetqt.h>
 #include <inviwo/core/properties/ordinalproperty.h>
+#include <math.h>
 
 namespace inviwo {
 
@@ -232,15 +233,108 @@ public:
     }
 };
 
-// Default case for glm vec properties
+template <typename T>
+class PropertyTransformer {
+public:
+    PropertyTransformer(OrdinalProperty<T>* prop) : property_(prop) {
+    }
+    virtual T value(T val) = 0;
+    virtual T min(T val) = 0;
+    virtual T max(T val) = 0;
+    virtual T inc(T val) = 0;
+
+    virtual T invValue(T val) = 0;
+    virtual T invMin(T val) = 0;
+    virtual T invMax(T val) = 0;
+    virtual T invInc(T val) = 0;
+protected:
+    OrdinalProperty<T>* property_;
+};
+
+template <typename T>
+class IdentityPropertyTransformer : public PropertyTransformer<T> {
+public:
+    IdentityPropertyTransformer(OrdinalProperty<T>* prop)
+        : PropertyTransformer<T>(prop) {
+    }
+    virtual T value(T val) { return val; }
+    virtual T min(T val) { return val; }
+    virtual T max(T val) { return val; }
+    virtual T inc(T val) { return val; }
+    
+    virtual T invValue(T val) { return val; }
+    virtual T invMin(T val) { return val; }
+    virtual T invMax(T val) { return val; }
+    virtual T invInc(T val) { return val; }
+};
+
+template <typename T>
+class SphericalPropertyTransformer : public IdentityPropertyTransformer<T> {
+public:
+    SphericalPropertyTransformer(OrdinalProperty<T>* prop)
+        : IdentityPropertyTransformer<T>(prop) {
+    }
+};
+
+template <typename T>
+class SphericalPropertyTransformer<glm::detail::tvec3<T, glm::defaultp> > 
+    : public PropertyTransformer<glm::detail::tvec3<T, glm::defaultp> > {
+public:
+    typedef glm::detail::tvec3<T, glm::defaultp> V;
+
+    SphericalPropertyTransformer(OrdinalProperty<V>* prop)
+        : PropertyTransformer<V>(prop) {
+    }
+    
+    virtual V value(V val) {
+        return V(std::sqrt(val[0] * val[0] + val[1] * val[1] + val[2] * val[2]),
+                 arctan(val[2], std::sqrt(val[0] * val[0] + val[1] * val[1])),
+                 arctan(val[0], val[1]));
+    }
+    virtual V min(V val) { return V(0, 0, -M_PI); }
+    virtual V max(V val) { return V(3*std::sqrt(val[0] * val[0] + val[1] * val[1] + val[2] * val[2]), M_PI, M_PI); }
+    virtual V inc(V val) { return V(0.01, 0.01, 0.01); }
+            
+    virtual V invValue(V val) { 
+        return V(val[0] * std::sin(val[1]) * std::cos(val[2]),
+                 val[0] * std::sin(val[1]) * std::sin(val[2]),
+                 val[0] * std::cos(val[1]));
+    }
+    virtual V invMin(V val) { return this->property_->getMinValue(); }
+    virtual V invMax(V val) { return this->property_->getMaxValue(); }
+    virtual V invInc(V val) { return this->property_->getIncrement(); }
+
+private:
+    inline T arctan(T x, T y) {
+        if (x == 0) {
+            return 0;
+        } else if (x < 0 && y > 0) {
+            return std::atan(y / x) + M_PI;
+        } else if (x < 0 && y < 0) {
+            return std::atan(y / x) - M_PI;
+        } else {
+            return std::atan(y / x);
+        }
+    }
+};
+
 template <typename BT, typename T>
 class OrdinalPropertyWidgetQt : public TemplateOrdinalPropertyWidgetQt<BT, T> {
 public:
-    OrdinalPropertyWidgetQt(OrdinalProperty<T>* property)
+    OrdinalPropertyWidgetQt(OrdinalProperty<T>* property) 
         : TemplateOrdinalPropertyWidgetQt<BT, T>(property) {
-            BaseOrdinalPropertyWidgetQt::generateWidget();
-            updateFromProperty();
+        
+        if (property->getSemantics() == PropertySemantics("Spherical")) {
+            transformer_ = new SphericalPropertyTransformer<T>(property);
+        } else {
+            transformer_ = new IdentityPropertyTransformer<T>(property);
         }
+        BaseOrdinalPropertyWidgetQt::generateWidget();
+        updateFromProperty();
+    }
+    virtual ~OrdinalPropertyWidgetQt() {
+        delete transformer_;
+    }
     void updateFromProperty();
 
 protected:
@@ -248,16 +342,18 @@ protected:
     void setPropertyValue(int);
     void setAsMin();
     void setAsMax();
+
+    PropertyTransformer<T>* transformer_;
 };
 
 template <typename BT, typename T>
 void OrdinalPropertyWidgetQt<BT, T>::updateFromProperty() {
     this->setEnabled(!this->ordinalproperty_->getReadOnly());
 
-    T min = this->ordinalproperty_->getMinValue();
-    T max = this->ordinalproperty_->getMaxValue();
-    T inc = this->ordinalproperty_->getIncrement();
-    T val = this->ordinalproperty_->get();
+    T min = transformer_->min(this->ordinalproperty_->getMinValue());
+    T max = transformer_->max(this->ordinalproperty_->getMaxValue());
+    T inc = transformer_->inc(this->ordinalproperty_->getIncrement());
+    T val = transformer_->value(this->ordinalproperty_->get());
 
     for (size_t i = 0; i < this->ordinalproperty_->getDim().x*this->ordinalproperty_->getDim().y; i++) {
         OrdinalBaseWidget<BT>* widget = dynamic_cast<OrdinalBaseWidget<BT>*>(this->sliderWidgets_[i]);
@@ -269,23 +365,23 @@ void OrdinalPropertyWidgetQt<BT, T>::updateFromProperty() {
 
 template <typename BT, typename T>
 void OrdinalPropertyWidgetQt<BT, T>::setPropertyValue(int sliderId) {
-    T propValue = this->ordinalproperty_->get();
+    T propValue = transformer_->value(this->ordinalproperty_->get());
 
     propValue = glmwrapper<BT, T>::setval(propValue, sliderId, dynamic_cast<OrdinalBaseWidget<BT>*>(this->sliderWidgets_[sliderId])->getValue());
 
     this->ordinalproperty_->setInitiatingWidget(this);
-    this->ordinalproperty_->set(propValue);
+    this->ordinalproperty_->set(transformer_->invValue(propValue));
     this->ordinalproperty_->clearInitiatingWidget();
 }
 
 template <typename BT, typename T>
 void OrdinalPropertyWidgetQt<BT, T>::setAsMin() {
     OrdinalBaseWidget<BT>* slider = dynamic_cast<OrdinalBaseWidget<BT>*>(this->sliderWidgets_[this->sliderId_]);
-    T propValue = this->ordinalproperty_->getMinValue();  
+    T propValue = transformer_->min(this->ordinalproperty_->getMinValue());  
     propValue = glmwrapper<BT, T>::setval(propValue, this->sliderId_, slider->getValue());
 
     this->ordinalproperty_->setInitiatingWidget(this);
-    this->ordinalproperty_->setMinValue(propValue);
+    this->ordinalproperty_->setMinValue(transformer_->invMin(propValue));
     this->ordinalproperty_->clearInitiatingWidget();
 
     slider->setMinValue(glmwrapper<BT,T>::getval(propValue, this->sliderId_));
@@ -294,11 +390,11 @@ void OrdinalPropertyWidgetQt<BT, T>::setAsMin() {
 template <typename BT, typename T>
 void OrdinalPropertyWidgetQt<BT, T>::setAsMax() {
     OrdinalBaseWidget<BT>* slider = dynamic_cast<OrdinalBaseWidget<BT>*>(this->sliderWidgets_[this->sliderId_]);
-    T propValue = this->ordinalproperty_->getMaxValue();
+    T propValue = transformer_->max(this->ordinalproperty_->getMaxValue());
     propValue = glmwrapper<BT, T>::setval(propValue, this->sliderId_, slider->getValue());
 
     this->ordinalproperty_->setInitiatingWidget(this);
-    this->ordinalproperty_->setMaxValue(propValue);
+    this->ordinalproperty_->setMaxValue(transformer_->invMax(propValue));
     this->ordinalproperty_->clearInitiatingWidget();
 
     slider->setMaxValue(glmwrapper<BT,T>::getval(propValue, this->sliderId_));

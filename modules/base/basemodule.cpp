@@ -41,6 +41,7 @@
 #include <modules/base/processors/meshclipping.h>
 #include <modules/base/processors/meshcreator.h>
 #include <modules/base/processors/pointlightsourceprocessor.h>
+#include <modules/base/processors/ordinalpropertyanimator.h>
 #include <modules/base/processors/spotlightsourceprocessor.h>
 #include <modules/base/processors/tonemappingcpuprocessor.h>
 #include <modules/base/processors/volumesource.h>
@@ -63,6 +64,7 @@ BaseModule::BaseModule() : InviwoModule() {
     registerProcessor(MeshClipping);
     registerProcessor(MeshCreator);
     registerProcessor(PointLightSourceProcessor);
+    registerProcessor(OrdinalPropertyAnimator);
     registerProcessor(SpotLightSourceProcessor);
     registerProcessor(ToneMappingCPUProcessor);
     registerProcessor(VolumeSource);
