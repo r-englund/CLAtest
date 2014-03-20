@@ -71,7 +71,7 @@ template <typename T>
 class OrdinalEditorWidget : public TemplateOrdinalEditorWidget<T> {
 public:
     OrdinalEditorWidget() : TemplateOrdinalEditorWidget<T>() {
-        editor_->setValidator(new QDoubleValidator(this));
+        this->editor_->setValidator(new QDoubleValidator(this));
     }
     virtual ~OrdinalEditorWidget() {}
 
