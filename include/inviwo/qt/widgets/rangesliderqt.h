@@ -56,7 +56,7 @@ public slots:
     void setValue(int, int);
     void setMinValue(int);
     void setMaxValue(int);
-    void setMinSeperation(int);
+    void setMinSeparation(int);
 
     void setRange(int, int);
     void setMinRange(int);

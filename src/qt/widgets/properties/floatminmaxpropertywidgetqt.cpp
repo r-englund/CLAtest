@@ -89,7 +89,7 @@ void FloatMinMaxPropertyWidgetQt::updateFromProperty() {
 
     maxNumberOfValues_ = (property_->getRangeMax() - property_->getRangeMin()) / property_->getIncrement();
     slider_->setRange(0, static_cast<int>(maxNumberOfValues_));
-    slider_->setMinSeperation(property_->getMinSeperation() / property_->getIncrement());
+    slider_->setMinSeparation(property_->getMinSeparation() / property_->getIncrement());
 
     spinBoxMin_->setRange(property_->getRangeMin(), property_->getRangeMax());
     spinBoxMin_->setSingleStep(property_->getIncrement());
@@ -135,7 +135,7 @@ void FloatMinMaxPropertyWidgetQt::updateFromSpinBoxMin(double val) {
             float upperVal = property_->get().y;
             if (upperVal < valf) {
                 // new minimum is higher, adjust max val
-                upperVal = valf + property_->getMinSeperation();
+                upperVal = valf + property_->getMinSeparation();
             }
             setPropertyValue(valf, upperVal);
         }
@@ -149,7 +149,7 @@ void FloatMinMaxPropertyWidgetQt::updateFromSpinBoxMax(double val) {
             float lowerVal = property_->get().x;
             if (lowerVal > valf) {
                 // new maximum is lower, adjust min val
-                lowerVal = valf - property_->getMinSeperation();
+                lowerVal = valf - property_->getMinSeparation();
             }
             setPropertyValue(lowerVal, valf);
         }
