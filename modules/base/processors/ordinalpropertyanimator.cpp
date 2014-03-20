@@ -38,8 +38,10 @@ OrdinalPropertyAnimator::OrdinalPropertyAnimator()
     addProperty(delay_);
     addProperty(pbc_);
 
-    for (std::vector<BaseProp*>::const_iterator it = properties_.cbegin(); it != properties_.cend(); ++it) {
-        type_.addOption((*it)->classname_, (*it)->displayName_, std::distance(properties_.cbegin(), it));
+    std::vector<BaseProp*>::const_iterator itBegin = properties_.begin(); // FIXME: std::distance requires a const iterator for properties_.begin()...
+    // FIXME: gcc on Jenkins seems to have no support for .cbegin() and .cend() in std::vector
+    for (std::vector<BaseProp*>::const_iterator it = itBegin; it != properties_.end(); ++it) {
+        type_.addOption((*it)->classname_, (*it)->displayName_, std::distance(itBegin, it));
         Property* prop = (*it)->getProp();
         Property* delta = (*it)->getDelta();
 
@@ -63,7 +65,7 @@ OrdinalPropertyAnimator::~OrdinalPropertyAnimator() {
     timer_->stop();
     delete timer_;
 
-    for (std::vector<BaseProp*>::const_iterator it = properties_.cbegin(); it != properties_.cend(); ++it) {
+    for (std::vector<BaseProp*>::const_iterator it = properties_.begin(); it != properties_.end(); ++it) {
         delete *it;
     }
     properties_.clear();
@@ -95,7 +97,7 @@ void OrdinalPropertyAnimator::timerEvent() {
 void OrdinalPropertyAnimator::changeProperty() {
     int ind = type_.get();
     
-    for (std::vector<BaseProp*>::const_iterator it = properties_.cbegin(); it != properties_.cend(); ++it) {
+    for (std::vector<BaseProp*>::const_iterator it = properties_.begin(); it != properties_.end(); ++it) {
         Property* prop = (*it)->getProp();
         Property* delta = (*it)->getDelta();
         prop->setVisible(false);
