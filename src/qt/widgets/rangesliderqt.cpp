@@ -201,9 +201,9 @@ void RangeSliderQt::updateSlidersFromState() {
     }
 
     sizes.clear();
-    sizes.append(range * (value_[0] - range_[0]) / size);
-    sizes.append(range * (value_[1] - value_[0]) / size);
-    sizes.append(range * (range_[1] - value_[1]) / size);
+    sizes.append((range * (value_[0] - range_[0])) / size);
+    sizes.append((range * (value_[1] - value_[0])) / size);
+    sizes.append((range * (range_[1] - value_[1])) / size);
 
     QSplitter::blockSignals(true);
     QSplitter::setSizes(sizes);

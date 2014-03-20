@@ -37,6 +37,7 @@
 #include <inviwo/core/common/inviwo.h>
 #include <inviwo/core/properties/templateproperty.h>
 #include <inviwo/core/properties/ordinalproperty.h>
+#include <algorithm>
 
 namespace inviwo {
 
@@ -62,6 +63,8 @@ public:
 
     glm::detail::tvec2<T, glm::defaultp> getRange() const;
 
+    virtual void set(const glm::detail::tvec2<T, glm::defaultp>& value);
+
     void setRangeMin(const T& value);
     void setRangeMax(const T& value);
     void setIncrement(const T& value);
@@ -81,12 +84,15 @@ public:
     virtual void serialize(IvwSerializer& s) const;
     virtual void deserialize(IvwDeserializer& s);
 
+protected:
+    void validateValues();
+
 private:
     glm::detail::tvec2<T, glm::defaultp> range_;
     glm::detail::tvec2<T, glm::defaultp> defaultRange_;
     T increment_;
     T defaultIncrement_;
-    T minSeperation_;
+    T minSeparation_;
     T defaultMinSeperation_;
 };
 
@@ -122,7 +128,7 @@ MinMaxProperty<T>::MinMaxProperty(std::string identifier,
     , defaultRange_(glm::detail::tvec2<T, glm::defaultp>(rangeMin, rangeMax))
     , increment_(increment)
     , defaultIncrement_(increment)
-    , minSeperation_(minSeperation)
+    , minSeparation_(minSeperation)
     , defaultMinSeperation_(minSeperation) {
 }
 
@@ -143,12 +149,19 @@ T MinMaxProperty<T>::getIncrement() const {
 
 template<typename T>
 T inviwo::MinMaxProperty<T>::getMinSeperation() const {
-    return minSeperation_;
+    return minSeparation_;
 }
 
 template <typename T>
 glm::detail::tvec2<T, glm::defaultp> MinMaxProperty<T>::getRange() const {
     return range_;
+}
+
+template <typename T>
+void MinMaxProperty<T>::set(const glm::detail::tvec2<T, glm::defaultp>& value) {
+    TemplateProperty<glm::detail::tvec2<T, glm::defaultp> >::value_ = value;
+    validateValues();
+    //TemplateProperty<glm::detail::tvec2<T, glm::defaultp> >::set(value);
 }
 
 template <typename T>
@@ -180,7 +193,7 @@ void MinMaxProperty<T>::setIncrement(const T& value) {
 template<typename T>
 void inviwo::MinMaxProperty<T>::setMinSeperation(const T& value) {
     minSeperation_ = value;
-    TemplateProperty<glm::detail::tvec2<T, glm::defaultp> >::propertyModified();
+    validateValues();
 }
 
 template <typename T>
@@ -209,7 +222,7 @@ template <typename T>
 void MinMaxProperty<T>::resetToDefaultState() {
     range_ = defaultRange_;
     increment_ = defaultIncrement_;
-    minSeperation_ = defaultMinSeperation_;
+    minSeparation_ = defaultMinSeperation_;
     TemplateProperty<glm::detail::tvec2<T, glm::defaultp> >::resetToDefaultState();
 }
 
@@ -218,7 +231,7 @@ void MinMaxProperty<T>::setCurrentStateAsDefault() {
     TemplateProperty<glm::detail::tvec2<T, glm::defaultp> >::setCurrentStateAsDefault();
     defaultRange_ = range_;
     defaultIncrement_ = increment_;
-    defaultMinSeperation_ = minSeperation_;
+    defaultMinSeperation_ = minSeparation_;
 }
 
 
@@ -232,8 +245,8 @@ void MinMaxProperty<T>::serialize(IvwSerializer& s) const {
     if (increment_ != defaultIncrement_) {
         s.serialize("increment", MinMaxProperty<T>::getIncrement());
     }
-    if (minSeperation_ != defaultMinSeperation_) {
-        s.serialize("minSeperation", minSeperation_);
+    if (minSeparation_ != defaultMinSeperation_) {
+        s.serialize("minSeperation", minSeparation_);
     }
 }
 
@@ -241,9 +254,35 @@ template <typename T>
 void MinMaxProperty<T>::deserialize(IvwDeserializer& d) {
     d.deserialize("range", range_);
     d.deserialize("increment", increment_);
-    d.deserialize("minSeperation", minSeperation_);
+    d.deserialize("minSeperation", minSeparation_);
     TemplateProperty<glm::detail::tvec2<T, glm::defaultp> >::deserialize(d);
 }
+
+template <typename T>
+void MinMaxProperty<T>::validateValues() {
+    glm::detail::tvec2<T, glm::defaultp> &val = TemplateProperty<glm::detail::tvec2<T, glm::defaultp> >::value_;
+
+    if (val.x > val.y)
+        std::swap(val.x, val.y);
+    // check bounds
+    val.x = std::min(std::max(val.x, range_.x), range_.y);
+    val.y = std::min(std::max(val.y, range_.x), range_.y);
+
+    // check whether updated min/max values are separated properly, i.e. > minSeperation_
+    if  (std::abs(val.y - val.x) < minSeparation_ - glm::epsilon<T>()) {
+        // adjust max value if possible, i.e. less equal than max range
+        if (val.x + minSeparation_ < range_.y + glm::epsilon<T>()) {
+            val.y = std::max(val.x + minSeparation_, val.y);
+        }
+        else {
+            // otherwise adjust min value
+            val.y = range_.y;
+            val.x = range_.y - minSeparation_;
+        }
+    }
+    TemplateProperty<glm::detail::tvec2<T, glm::defaultp> >::propertyModified();
+}
+
 
 } // namespace
 
