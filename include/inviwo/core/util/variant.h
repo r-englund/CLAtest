@@ -68,8 +68,8 @@ public:
         VariantTypeDMat2 = 19,
         VariantTypeDMat3 = 20,
         VariantTypeDMat4 = 21,
-        VariantTypeLastBaseType = 22,
-        VariantTypeUserType = 32
+        VariantTypeInt64 = 22, // TODO: correct?
+        VariantTypeLastBaseType = 23,        VariantTypeUserType = 32
     };
 
     Variant();
@@ -96,6 +96,7 @@ public:
     explicit Variant(const dmat2& value);
     explicit Variant(const dmat3& value);
     explicit Variant(const dmat4& value);
+    explicit Variant(int64_t value) ;
     explicit Variant(const VariantType& type);
 
     Variant deepCopy() const;
@@ -134,6 +135,7 @@ public:
     dmat2 getDMat2() const;
     dmat3 getDMat3() const;
     dmat4 getDMat4() const;
+    int64_t getInt64() const;
 
 
     void setBool(const bool& value);
@@ -157,6 +159,7 @@ public:
     void setDMat2(const dmat2& value);
     void setDMat3(const dmat3& value);
     void setDMat4(const dmat4& value);
+    void setInt64(const int64_t& value);
 
     template<class T>
     void set(const T& value, VariantType type);
@@ -193,6 +196,7 @@ public:
     Variant& operator=(const dmat2& rhs);
     Variant& operator=(const dmat3& rhs);
     Variant& operator=(const dmat4& rhs);
+    Variant& operator=(const int64_t& rhs);
     bool operator==(const Variant& rhs) const;
     bool operator!=(const Variant& rhs) const;
 
