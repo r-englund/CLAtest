@@ -32,6 +32,7 @@
 
 #include <inviwo/core/util/variant.h>
 
+#include <cstdint>
 #include <sstream>
 
 #define IVEC2STRINGFORMAT "( %i %i )"
@@ -46,6 +47,15 @@
 #define MAT2STRINGFORMAT "( ( %f %f ) ( %f %f ) )"
 #define MAT3STRINGFORMAT "( ( %f %f %f ) ( %f %f %f ) ( %f %f %f ) )"
 #define MAT4STRINGFORMAT "( ( %f %f %f %f ) ( %f %f %f %f ) ( %f %f %f %f ) ( %f %f %f %f ) )"
+
+#ifdef WIN32
+// inttypes.h is not available
+#  define INT64STRINGFORMAT "%I64d"
+#else
+#  include <inttypes.h>
+#  define INT64STRINGFORMAT "%" PRId64
+#endif
+
 #define VALUETOSTRINGBUFFERSIZE 2048
 
 namespace inviwo {
@@ -57,26 +67,26 @@ static const int canConvertMatrix[Variant::VariantTypeLastBaseType + 1] =
     0,
 
     1 << Variant::VariantTypeDouble     | 1 << Variant::VariantTypeFloat    | 1 << Variant::VariantTypeInteger  |
-    1 << Variant::VariantTypeLong       | 1 << Variant::VariantTypeString   ,
+    1 << Variant::VariantTypeLong       | 1 << Variant::VariantTypeString   | 1 << Variant::VariantTypeInt64,
 
     1 << Variant::VariantTypeBool       | 1 << Variant::VariantTypeFloat    | 1 << Variant::VariantTypeInteger  |
-    1 << Variant::VariantTypeLong       | 1 << Variant::VariantTypeString   ,
+    1 << Variant::VariantTypeLong       | 1 << Variant::VariantTypeString   | 1 << Variant::VariantTypeInt64,
 
     1 << Variant::VariantTypeBool       | 1 << Variant::VariantTypeDouble   | 1 << Variant::VariantTypeInteger  |
-    1 << Variant::VariantTypeLong       | 1 << Variant::VariantTypeString   ,
+    1 << Variant::VariantTypeLong       | 1 << Variant::VariantTypeString   | 1 << Variant::VariantTypeInt64,
 
     1 << Variant::VariantTypeBool       | 1 << Variant::VariantTypeDouble   | 1 << Variant::VariantTypeFloat    |
-    1 << Variant::VariantTypeLong       | 1 << Variant::VariantTypeString   ,
+    1 << Variant::VariantTypeLong       | 1 << Variant::VariantTypeString   | 1 << Variant::VariantTypeInt64,
 
     1 << Variant::VariantTypeBool       | 1 << Variant::VariantTypeDouble   | 1 << Variant::VariantTypeFloat    |
-    1 << Variant::VariantTypeInteger    | 1 << Variant::VariantTypeString   ,
+    1 << Variant::VariantTypeInteger    | 1 << Variant::VariantTypeString   | 1 << Variant::VariantTypeInt64,
 
     1 << Variant::VariantTypeBool       | 1 << Variant::VariantTypeDouble   | 1 << Variant::VariantTypeFloat    |
     1 << Variant::VariantTypeInteger    | 1 << Variant::VariantTypeLong     | 1 << Variant::VariantTypeIVec2    |
     1 << Variant::VariantTypeIVec3      | 1 << Variant::VariantTypeIVec4    | 1 << Variant::VariantTypeVec2     |
     1 << Variant::VariantTypeVec3       | 1 << Variant::VariantTypeVec4     | 1 << Variant::VariantTypeDVec2    |
     1 << Variant::VariantTypeDVec3      | 1 << Variant::VariantTypeDVec4    | 1 << Variant::VariantTypeMat2     |
-    1 << Variant::VariantTypeMat3       | 1 << Variant::VariantTypeMat4     ,
+    1 << Variant::VariantTypeMat3       | 1 << Variant::VariantTypeMat4     | 1 << Variant::VariantTypeInt64,
 
     1 << Variant::VariantTypeIVec3      | 1 << Variant::VariantTypeIVec4    | 1 << Variant::VariantTypeVec2     |
     1 << Variant::VariantTypeVec3       | 1 << Variant::VariantTypeVec4     | 1 << Variant::VariantTypeDVec2    |
@@ -125,6 +135,9 @@ static const int canConvertMatrix[Variant::VariantTypeLastBaseType + 1] =
     1 << Variant::VariantTypeString,
 
     1 << Variant::VariantTypeString,
+
+    1 << Variant::VariantTypeBool       | 1 << Variant::VariantTypeDouble   | 1 << Variant::VariantTypeFloat    |
+    1 << Variant::VariantTypeInteger   | 1 << Variant::VariantTypeLong      | 1 << Variant::VariantTypeString,
 
     0
 };
@@ -238,6 +251,10 @@ Variant::Variant(const Variant& obj)
             set<dmat4>(obj.getDMat4(), VariantTypeDMat4);
             break;
 
+        case VariantTypeInt64:
+            set<long>(obj.getInt64(), VariantTypeInt64);
+            break;
+
         default:
             break;
     }
@@ -333,6 +350,10 @@ Variant::Variant(const dmat3& value) : value_(0), currentType_(VariantTypeDMat3)
 
 Variant::Variant(const dmat4& value) : value_(0), currentType_(VariantTypeDMat4) {
     set<dmat4>(value, VariantTypeDMat4);
+}
+
+Variant::Variant(int64_t value) : value_(0), currentType_(VariantTypeInt64) {
+    set<int64_t>(value, VariantTypeInt64);
 }
 
 Variant::Variant(const VariantType& type) : value_(0), currentType_(type) {
@@ -440,6 +461,10 @@ void Variant::deleteValue() {
 
             case VariantTypeDMat4:
                 delete static_cast<dmat4*>(value_);
+                break;
+
+            case VariantTypeInt64:
+                delete static_cast<int64_t*>(value_);
                 break;
 
             default:
@@ -551,6 +576,10 @@ std::string Variant::typeToName(VariantType type) {
                 return "dmat4";
                 break;
 
+            case VariantTypeInt64:
+                return "int64";
+                break;
+
             default:
                 return "<undefined>";
         }
@@ -602,6 +631,8 @@ Variant::VariantType Variant::nameToType(const std::string& typeName) {
         return VariantTypeDMat3;
     else if (typeName == "dmat4")
         return VariantTypeDMat4;
+    else if (typeName == "int64")
+        return VariantTypeInt64;
     else if (typeName > "user-defined")
         return VariantTypeUserType;
     else
@@ -674,6 +705,9 @@ bool Variant::getBool() const {
         case VariantTypeLong:
             return static_cast<bool>(VP(long)!= 0); // != 0 gets rid of performance warning
 
+        case VariantTypeInt64:
+            return static_cast<bool>(VP(int64_t)!= 0); // != 0 gets rid of performance warning
+
         case VariantTypeInvalid:
             throw Exception("");
 
@@ -714,6 +748,9 @@ double Variant::getDouble() const {
             return result;
         }
 
+        case VariantTypeInt64:
+            return static_cast<double>(VP(int64_t)!= 0); // != 0 gets rid of performance warning
+
         case VariantTypeInvalid:
             throw Exception("");
 
@@ -750,6 +787,9 @@ float Variant::getFloat() const {
 
             return result;
         }
+
+        case VariantTypeInt64:
+            return static_cast<float>(VP(int64_t)!= 0); // != 0 gets rid of performance warning
 
         case VariantTypeInvalid:
             throw Exception("");
@@ -788,6 +828,9 @@ int Variant::getInt() const {
             return result;
         }
 
+        case VariantTypeInt64:
+            return static_cast<int>(VP(int64_t)!= 0); // != 0 gets rid of performance warning
+
         case VariantTypeInvalid:
             throw Exception("");
 
@@ -824,6 +867,9 @@ long Variant::getLong() const {
 
             return result;
         }
+
+        case VariantTypeInt64:
+            return static_cast<long>(VP(int64_t)!= 0); // != 0 gets rid of performance warning
 
         case VariantTypeInvalid:
             throw Exception("");
@@ -986,12 +1032,55 @@ std::string Variant::getString() const {
                                 return std::string(result);
         }
 
+        case VariantTypeInt64:
+            return toString<int64_t>(VP(int64_t));
+        
         case VariantTypeInvalid:
             throw Exception("");
 
         default:
             throw Exception("Variant: Conversion from " + typeToName(currentType_) + " to string not implemented");
             break;
+    }
+}
+
+int64_t Variant::getInt64() const {
+    switch (currentType_) {
+    case VariantTypeBool:
+        return static_cast<int64_t>(VP(bool));
+
+    case VariantTypeDouble:
+        return static_cast<int64_t>(VP(double));
+
+    case VariantTypeFloat:
+        return static_cast<int64_t>(VP(float));
+
+    case VariantTypeInteger:
+        return static_cast<int64_t>(VP(int));
+
+    case VariantTypeLong:
+        return static_cast<int64_t>(VP(long));
+
+    case VariantTypeString:
+        {
+            std::stringstream s(VP(std::string));
+            int64_t result;
+
+            if ((s >> result).fail())
+                throw Exception("String->Int conversion failed");
+
+            return result;
+        }
+
+    case VariantTypeInt64:
+        return VP(int64_t);
+
+    case VariantTypeInvalid:
+        throw Exception("");
+
+    default:
+        throw Exception("Variant: Conversion from " + typeToName(currentType_) + " to int64 not implemented");
+        break;
     }
 }
 
@@ -1648,6 +1737,10 @@ void Variant::setDMat4(const dmat4& value) {
     set<dmat4>(value, VariantTypeDMat4);
 }
 
+void Variant::setInt64(const int64_t& value) {
+    set<int64_t>(value, VariantTypeInt64);
+}
+
 void Variant::serialize(IvwSerializer& s) const {
     s.serialize("VariantType", typeToName(currentType_));
 
@@ -1734,6 +1827,10 @@ void Variant::serialize(IvwSerializer& s) const {
 
         case VariantTypeDMat4:
             s.serialize("value", getDMat4());
+            break;
+
+        case VariantTypeInt64:
+            s.serialize("value", getInt64());
             break;
 
         case VariantTypeInvalid:
@@ -1920,6 +2017,14 @@ void Variant::deserialize(IvwDeserializer& d) {
             break;
         }
 
+        case VariantTypeInt64:
+        {
+            int64_t value;
+            d.deserialize("value", value);
+            setInt64(value);
+            break;
+        }
+
         case VariantTypeInvalid:
             throw Exception("Tried to deserialize an invalid variant");
             break;
@@ -2025,6 +2130,10 @@ Variant& Variant::operator= (const Variant& rhs) {
                 set<dmat4>(temp_rhs.getDMat4(), VariantTypeDMat4);
                 break;
 
+            case VariantTypeInt64:
+                set<int64_t>(temp_rhs.getInt64(), VariantTypeInt64);
+                break;
+
             default:
                 break;
         }
@@ -2060,6 +2169,11 @@ Variant& Variant::operator= (const int& rhs) {
 
 Variant& Variant::operator= (const long& rhs) {
     set<long>(rhs, VariantTypeLong);
+    return *this;
+}
+
+Variant& Variant::operator= (const int64_t& rhs) {
+    set<int64_t>(rhs, VariantTypeInt64);
     return *this;
 }
 
@@ -2165,6 +2279,9 @@ bool Variant::operator== (const Variant& rhs) const {
 
             case VariantTypeLong:
                 return (getLong() == rhs.getLong());
+
+            case VariantTypeInt64:
+                return (getInt64() == rhs.getInt64());
 
             case VariantTypeString:
                 return (getString() == rhs.getString());
