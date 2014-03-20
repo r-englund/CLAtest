@@ -132,7 +132,7 @@ private:
 //Scalar properties
 typedef OrdinalProperty<float> FloatProperty;
 typedef OrdinalProperty<int> IntProperty;
-typedef OrdinalProperty<int64_t> Int64Property;
+typedef OrdinalProperty<glm::i64> Int64Property;
 typedef OrdinalProperty<double> DoubleProperty;
 
 //Vector properties 
