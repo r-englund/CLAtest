@@ -32,7 +32,6 @@
 
 #include <inviwo/core/util/variant.h>
 
-#include <cstdint>
 #include <sstream>
 
 #define IVEC2STRINGFORMAT "( %i %i )"
@@ -47,14 +46,6 @@
 #define MAT2STRINGFORMAT "( ( %f %f ) ( %f %f ) )"
 #define MAT3STRINGFORMAT "( ( %f %f %f ) ( %f %f %f ) ( %f %f %f ) )"
 #define MAT4STRINGFORMAT "( ( %f %f %f %f ) ( %f %f %f %f ) ( %f %f %f %f ) ( %f %f %f %f ) )"
-
-#ifdef WIN32
-// inttypes.h is not available
-#  define INT64STRINGFORMAT "%I64d"
-#else
-#  include <inttypes.h>
-#  define INT64STRINGFORMAT "%" PRId64
-#endif
 
 #define VALUETOSTRINGBUFFERSIZE 2048
 
