@@ -60,6 +60,15 @@ namespace detail
 		return detail::format("uint(%d)", x);
 	}
 
+	GLM_FUNC_QUALIFIER std::string to_string(glm::i64 x)
+	{
+#ifdef WIN32
+		return detail::format("int64(%I64d)", x);
+#else
+		return detail::format("int64(%lld)", x);
+#endif
+	}
+
 	////////////////////////////////
 	// Bool vectors
 
