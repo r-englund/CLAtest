@@ -73,7 +73,7 @@ RangeSliderQt::RangeSliderQt(Qt::Orientation orientation, QWidget* parent)
         left->setMinimumHeight(0);
         right->setMinimumHeight(0);
     }
-    setMinSeperation(minSeperation_);
+    setMinSeparation(minSeperation_);
     QSplitter::setChildrenCollapsible(false);    
     connect(this, SIGNAL(splitterMoved(int, int)), this, SLOT(updateSplitterPosition(int, int)));
     updateSlidersFromState();
@@ -142,7 +142,7 @@ void RangeSliderQt::setRange(int minR, int maxR) {
     setMaxRange(maxR);
 }
 
-void RangeSliderQt::setMinSeperation(int sep) {
+void RangeSliderQt::setMinSeparation(int sep) {
     minSeperation_ = sep;
     QList<int> sizes = QSplitter::sizes();
     int range = sizes[0] + sizes[1] + sizes[2];
@@ -177,7 +177,7 @@ void RangeSliderQt::setMaxRange(int maxR) {
 
 void RangeSliderQt::resizeEvent(QResizeEvent* event) {
     QSplitter::resizeEvent(event);
-    setMinSeperation(minSeperation_);
+    setMinSeparation(minSeperation_);
 }
 
 void RangeSliderQt::updateStateFromSiders() {

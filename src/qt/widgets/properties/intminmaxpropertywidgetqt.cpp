@@ -62,7 +62,7 @@ void IntMinMaxPropertyWidgetQt::generateWidget() {
     hSliderLayout->addWidget(spinBoxMin_);
     slider_ = new RangeSliderQt(Qt::Horizontal, this);
     slider_->setRange(0, 99);
-    slider_->setMinSeperation(property_->getMinSeperation());
+    slider_->setMinSeparation(property_->getMinSeparation());
     hSliderLayout->addWidget(slider_);
     spinBoxMax_ = new QSpinBox(this);
     spinBoxMax_->setKeyboardTracking(false); // don't emit the valueChanged() signal while typing
@@ -98,7 +98,7 @@ void IntMinMaxPropertyWidgetQt::updateFromProperty() {
     slider_->setValue(valueVec_.x, valueVec_.y);
     spinBoxMin_->setValue(valueVec_.x);
     spinBoxMax_->setValue(valueVec_.y);
-    slider_->setMinSeperation(property_->getMinSeperation());
+    slider_->setMinSeparation(property_->getMinSeparation());
     updatingFromProperty_ = false;
 
 }
