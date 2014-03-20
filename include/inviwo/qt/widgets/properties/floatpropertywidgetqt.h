@@ -123,7 +123,7 @@ protected:
                     controlWidget = new SliderWidgetQt<BT>();
                 }
                 sliders.push_back(controlWidget);
-                vLayout->addWidget(controlWidget, i, j);
+                vLayout->addWidget(controlWidget, static_cast<int>(i), static_cast<int>(j));
             }
         } 
         return sliders;
@@ -153,11 +153,11 @@ template <typename T>
 class glmwrapper<T, glm::detail::tmat4x4<T, glm::defaultp> > {
 public:
     static T getval(glm::detail::tmat4x4<T, glm::defaultp> mat, size_t const ind) {
-        return mat[ind/4][ind % 4];
+        return mat[static_cast<int>(ind)/4][static_cast<int>(ind) % 4];
     }
     static glm::detail::tmat4x4<T, glm::defaultp> setval(glm::detail::tmat4x4<T, glm::defaultp> mat,
                                                           size_t const ind, T val) {
-        mat[ind / 4][ind % 4] = val;
+        mat[static_cast<int>(ind) / 4][static_cast<int>(ind) % 4] = val;
         return mat;
     }
 };
@@ -165,11 +165,11 @@ template <typename T>
 class glmwrapper<T, glm::detail::tmat3x3<T, glm::defaultp> > {
 public:
     static T getval(glm::detail::tmat3x3<T, glm::defaultp> mat, size_t const ind) {
-        return mat[ind / 3][ind % 3];
+        return mat[static_cast<int>(ind) / 3][static_cast<int>(ind) % 3];
     }
     static glm::detail::tmat3x3<T, glm::defaultp> setval(glm::detail::tmat3x3<T, glm::defaultp> mat,
                                                           size_t const ind, T val) {
-        mat[ind / 3][ind % 3] = val;
+        mat[static_cast<int>(ind) / 3][static_cast<int>(ind) % 3] = val;
         return mat;
     }
 };
@@ -177,11 +177,11 @@ template <typename T>
 class glmwrapper<T, glm::detail::tmat2x2<T, glm::defaultp> > {
 public:
     static T getval(glm::detail::tmat2x2<T, glm::defaultp> mat, size_t const ind) {
-        return mat[ind / 2][ind % 2];
+        return mat[static_cast<int>(ind) / 2][static_cast<int>(ind) % 2];
     }
     static glm::detail::tmat2x2<T, glm::defaultp> setval(glm::detail::tmat2x2<T, glm::defaultp> mat,
                                                           size_t const ind, T val) {
-        mat[ind / 2][ind % 2] = val;
+        mat[static_cast<int>(ind) / 2][static_cast<int>(ind) % 2] = val;
         return mat;
     }
 };
@@ -190,11 +190,11 @@ template <typename T>
 class glmwrapper<T, glm::detail::tvec4<T, glm::defaultp> > {
 public:
     static T getval(glm::detail::tvec4<T, glm::defaultp> vec, size_t const ind) {
-        return vec[ind];
+        return vec[static_cast<int>(ind)];
     }
     static glm::detail::tvec4<T, glm::defaultp> setval(glm::detail::tvec4<T, glm::defaultp> vec,
                                                        size_t const ind, T val) {
-        vec[ind] = val;
+        vec[static_cast<int>(ind)] = val;
         return vec;
     }
 };
@@ -202,11 +202,11 @@ template <typename T>
 class glmwrapper<T, glm::detail::tvec3<T, glm::defaultp> > {
 public:
     static T getval(glm::detail::tvec3<T, glm::defaultp> vec, size_t const ind) {
-        return vec[ind];
+        return vec[static_cast<int>(ind)];
     }
     static glm::detail::tvec3<T, glm::defaultp> setval(glm::detail::tvec3<T, glm::defaultp> vec,
                                                        size_t const ind, T val) {
-        vec[ind] = val;
+        vec[static_cast<int>(ind)] = val;
         return vec;
     }
 };
@@ -214,11 +214,11 @@ template <typename T>
 class glmwrapper<T, glm::detail::tvec2<T, glm::defaultp> > {
 public:
     static T getval(glm::detail::tvec2<T, glm::defaultp> vec, size_t const ind) {
-        return vec[ind];
+        return vec[static_cast<int>(ind)];
     }
     static glm::detail::tvec2<T, glm::defaultp> setval(glm::detail::tvec2<T, glm::defaultp> vec,
                                                        size_t const ind, T val) {
-        vec[ind] = val;
+        vec[static_cast<int>(ind)] = val;
         return vec;
     }
 };
@@ -424,6 +424,7 @@ typedef OrdinalPropertyWidgetQt<double, dmat2> DoubleMat2PropertyWidgetQt;
 typedef OrdinalPropertyWidgetQt<double, dmat3> DoubleMat3PropertyWidgetQt;
 typedef OrdinalPropertyWidgetQt<double, dmat4> DoubleMat4PropertyWidgetQt;
 
+typedef OrdinalPropertyWidgetQt<glm::i64, glm::i64> Int64PropertyWidgetQt;
 } // namespace
 
 #endif // IVW_FLOATPROPERTYWIDGETQT_H

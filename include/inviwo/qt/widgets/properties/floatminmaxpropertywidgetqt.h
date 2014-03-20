@@ -74,11 +74,13 @@ protected slots:
 
 protected:
     void setSpinBoxDecimals(float increment);
+    void setSliderMinValue(float val);
+    void setSliderMaxValue(float val);
 
 private:
     float maxNumberOfValues_;
-    int sliderMin_;
-    int sliderMax_;
+    //int sliderMin_;
+    //int sliderMax_;
 };
 
 } // namespace
