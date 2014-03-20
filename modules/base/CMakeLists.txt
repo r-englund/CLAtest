@@ -15,6 +15,7 @@ set(HEADER_FILES
     ${IVW_MODULE_DIR}/base/processors/imagesourceseries.h
     ${IVW_MODULE_DIR}/base/processors/meshclipping.h
     ${IVW_MODULE_DIR}/base/processors/meshcreator.h
+    ${IVW_MODULE_DIR}/base/processors/ordinalpropertyanimator.h
     ${IVW_MODULE_DIR}/base/processors/pointlightsourceprocessor.h
     ${IVW_MODULE_DIR}/base/processors/spotlightsourceprocessor.h
     ${IVW_MODULE_DIR}/base/processors/tonemappingcpuprocessor.h
@@ -39,6 +40,7 @@ set(SOURCE_FILES
     ${IVW_MODULE_DIR}/base/processors/imagesourceseries.cpp
     ${IVW_MODULE_DIR}/base/processors/meshclipping.cpp
     ${IVW_MODULE_DIR}/base/processors/meshcreator.cpp
+    ${IVW_MODULE_DIR}/base/processors/ordinalpropertyanimator.cpp
     ${IVW_MODULE_DIR}/base/processors/pointlightsourceprocessor.cpp
     ${IVW_MODULE_DIR}/base/processors/spotlightsourceprocessor.cpp
     ${IVW_MODULE_DIR}/base/processors/tonemappingcpuprocessor.cpp

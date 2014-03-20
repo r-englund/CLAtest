@@ -60,7 +60,6 @@
 #include <inviwo/qt/widgets/properties/lightpropertywidgetqt.h>
 #include <inviwo/qt/widgets/properties/optionpropertywidgetqt.h>
 #include <inviwo/qt/widgets/properties/stringpropertywidgetqt.h>
-#include <inviwo/qt/widgets/properties/sphericalfloatvec3propertywidgetqt.h>
 #include <inviwo/qt/widgets/properties/texteditorwidgetqt.h>
 #include <inviwo/qt/widgets/properties/transferfunctionpropertywidgetqt.h>
 
@@ -92,6 +91,7 @@ QtWidgetModule::QtWidgetModule() : InviwoModule() {
     registerPropertyWidget(FloatPropertyWidgetQt, FloatProperty, "Default");
     registerPropertyWidget(FloatVec2PropertyWidgetQt, FloatVec2Property, "Default");
     registerPropertyWidget(FloatVec3PropertyWidgetQt, FloatVec3Property, "Default");
+    registerPropertyWidget(FloatVec3PropertyWidgetQt, FloatVec3Property, "Spherical");
     registerPropertyWidget(FloatVec4PropertyWidgetQt, FloatVec4Property, "Default");
     registerPropertyWidget(DoublePropertyWidgetQt, DoubleProperty, "Default");
     registerPropertyWidget(DoubleVec2PropertyWidgetQt, DoubleVec2Property, "Default");
@@ -111,7 +111,6 @@ QtWidgetModule::QtWidgetModule() : InviwoModule() {
     registerPropertyWidget(OptionPropertyWidgetQt, OptionPropertyFloat, "Default");
     registerPropertyWidget(OptionPropertyWidgetQt, OptionPropertyDouble, "Default");
     registerPropertyWidget(OptionPropertyWidgetQt, OptionPropertyString, "Default");
-//    registerPropertyWidget(SphericalFloatVec3PropertyWidgetQt, FloatVec3Property, "Spherical");
     registerPropertyWidget(StringPropertyWidgetQt, StringProperty, "Default");
     registerPropertyWidget(StringPropertyWidgetQt, StringProperty, "Password");
     registerPropertyWidget(TextEditorWidgetQt, FileProperty, "TextEditor"); // TODO: fix "imageEditor..."
