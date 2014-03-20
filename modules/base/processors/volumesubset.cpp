@@ -44,9 +44,9 @@ VolumeSubset::VolumeSubset()
       inport_("volume.inport"),
       outport_("volume.outport"),
       enabled_("enabled", "Enable Operation", true),
-      rangeX_("rangeX", "X Slices", 0, 256, 0, 256),
-      rangeY_("rangeY", "Y Slices", 0, 256, 0, 256),
-      rangeZ_("rangeZ", "Z Slices", 0, 256, 0, 256)
+      rangeX_("rangeX", "X Slices", 0, 256, 0, 256, 1, 1),
+      rangeY_("rangeY", "Y Slices", 0, 256, 0, 256, 1, 1),
+      rangeZ_("rangeZ", "Z Slices", 0, 256, 0, 256, 1, 1)
 {
     addPort(inport_);
     addPort(outport_);
@@ -87,6 +87,11 @@ void VolumeSubset::process() {
             outport_.setConstData(inport_.getData());
         else {
             Volume* volume = new Volume(VolumeRAMSubSet::apply(vol, dim, offset));
+            // pass meta data on
+            const MetaDataOwner *metaOwner = dynamic_cast<const MetaDataOwner *>(inport_.getData());
+            if (metaOwner) {
+                volume->MetaDataOwner::operator=(*metaOwner);
+            }
             outport_.setData(volume);
         }
     }

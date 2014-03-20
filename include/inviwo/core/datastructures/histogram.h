@@ -45,7 +45,10 @@ class IVW_CORE_API NormalizedHistogram {
 public:
     NormalizedHistogram(size_t);
     NormalizedHistogram(const NormalizedHistogram*);
+    NormalizedHistogram(const NormalizedHistogram&);
     virtual ~NormalizedHistogram();
+
+    NormalizedHistogram& operator=(const NormalizedHistogram&);
 
     std::vector<float>* getData();
     const std::vector<float>* getData() const;

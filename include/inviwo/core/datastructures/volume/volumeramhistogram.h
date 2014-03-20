@@ -53,8 +53,8 @@ public:
     template<typename T, size_t B>
     void evaluate();
 
-    static inline NormalizedHistogram* apply(const VolumeRepresentation* in, NormalizedHistogram* oldHist=NULL, int delta=1) {
-        VolumeRAMNormalizedHistogram subsetOP = VolumeRAMNormalizedHistogram(in, oldHist, delta);
+    static inline NormalizedHistogram* apply(const VolumeRepresentation* in, NormalizedHistogram* oldHist=NULL, int delta=1, size_t maxNumberOfBins = 2048) {
+        VolumeRAMNormalizedHistogram subsetOP = VolumeRAMNormalizedHistogram(in, oldHist, delta, maxNumberOfBins);
         in->performOperation(&subsetOP);
         return subsetOP.getOutput<NormalizedHistogram>();
     }
@@ -87,10 +87,40 @@ void VolumeRAMNormalizedHistogram::evaluate() {
         return;
     }
 
-    //Calculate number of bins in data
-    double numberOfBinsInData = std::pow(2.0, static_cast<double>(dataFormat->getBitsStored()));
-    size_t numberOfBinsInHistogram;
+    // check whether the histogram should cover only a specified range or the entire data type range
+    glm::vec2 dataRange;
+    bool customDataRange = false;
+    
+    float datatypeMax = static_cast<float>(volume->getDataFormat()->getMax());
+    float datatypeMin = static_cast<float>(volume->getDataFormat()->getMin());
+    if (volume->getOwner()) {
+        const Volume *vol = volume->getOwner();
+        if (vol->hasMetaData<Vec2MetaData>("DataRange")) {
 
+            dataRange = vol->getMetaData<Vec2MetaData>("DataRange", dataRange);
+            customDataRange = ((std::abs(datatypeMin - dataRange.x) > glm::epsilon<float>())
+                || (std::abs(datatypeMax - dataRange.y) > glm::epsilon<float>()));
+            if (customDataRange) {
+                std::stringstream str;
+                str << "custom histogram resolution: " << glm::to_string(dataRange);
+                LogInfo(str.str());
+            }
+        }
+    }
+
+    double numberOfBinsInData = 0.0;
+    if (customDataRange) {
+        // TODO: is there a better way for non-float types?
+        numberOfBinsInData = dataRange.y - dataRange.x;
+    }
+    else {
+        // no data range given for the volume
+        
+        //Calculate number of bins in data
+        numberOfBinsInData = std::pow(2.0, static_cast<double>(dataFormat->getBitsStored()));
+    }
+
+    size_t numberOfBinsInHistogram;
     if (numberOfBinsInData > static_cast<double>(maxNumberOfBins_)) {
         numberOfBinsInHistogram = maxNumberOfBins_;
     } else {
@@ -113,10 +143,19 @@ void VolumeRAMNormalizedHistogram::evaluate() {
     size_t idx;
     float intensity;
 
-    for (size_t z=0; z<dim.z-delta_; z+=delta_) {
-        for (size_t y=0; y<dim.y-delta_; y+=delta_) {
-            for (size_t x=0; x<dim.x-delta_; x+=delta_) {
+    for (size_t z=0; z<dim.z; z+=delta_) {
+        for (size_t y=0; y<dim.y; y+=delta_) {
+            for (size_t x=0; x<dim.x; x+=delta_) {
                 intensity = dataFormat->valueToNormalizedFloat(&src[x+(y*dim.x)+(z*dimXY)]);
+                if (customDataRange) {
+                    // TODO: this is so ugly...
+                    if (dataFormat->getNumericType() != FLOAT_TYPE) {
+                        // renormalize intensity [0,1] to data type range unless it is a float type
+                        intensity = intensity * (datatypeMax - datatypeMin) - datatypeMin;
+                    }
+                    // do custom renormalization
+                    intensity = (intensity + dataRange.x) / (dataRange.y - dataRange.x);
+                }
                 // Temporary fix for intensity values outside of 0,1. needed for for float types where
                 // the values are not normalized.
                 intensity = std::min(std::max(0.0f, intensity), 1.0f);

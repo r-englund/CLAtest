@@ -70,7 +70,7 @@ private:
     BoolProperty overRideDefaults_;
 
     FloatVec3Property lengths_;
-    FloatVec3Property angels_;
+    FloatVec3Property angles_;
     FloatVec3Property offset_;
 
     vec3 orgLengths_;

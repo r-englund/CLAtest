@@ -35,7 +35,7 @@
 namespace inviwo {
 
 ImageRepresentation::ImageRepresentation()
-    : DataGroupRepresentation() {
+    : DataGroupRepresentation(), owner_(0) {
 }
 
 ImageRepresentation::ImageRepresentation(const ImageRepresentation& rhs)
