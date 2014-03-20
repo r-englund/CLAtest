@@ -85,27 +85,29 @@ bool VolumeRAM::hasNormalizedHistogram() const {
     return (histogram_ != NULL);
 }
 
-NormalizedHistogram* VolumeRAM::getNormalizedHistogram() {
+NormalizedHistogram* VolumeRAM::getNormalizedHistogram(int delta, std::size_t maxNumberOfBins) {
     if (!calculatingHistogram_ && data_ && (!histogram_ || !histogram_->isValid()))
-        calculateHistogram();
+        calculateHistogram(delta, maxNumberOfBins);
 
     return histogram_;
 }
 
-const NormalizedHistogram* VolumeRAM::getNormalizedHistogram() const {
+const NormalizedHistogram* VolumeRAM::getNormalizedHistogram(int delta, std::size_t maxNumberOfBins) const {
     if (!calculatingHistogram_ && data_ && (!histogram_ || !histogram_->isValid()))
-        calculateHistogram();
+        calculateHistogram(delta, maxNumberOfBins);
 
     return histogram_;
 }
 
-void VolumeRAM::calculateHistogram() const {
+void VolumeRAM::calculateHistogram(int delta, std::size_t maxNumberOfBins) const {
     calculatingHistogram_ = true;
     // TODO: using delta should be changeable from outside when requesting
     //       the histogram through getNormalizedHistogram()
-    int maxDim = std::max(dimensions_.x, std::max(dimensions_.y, dimensions_.z));
-    int delta = std::max(1, int(float(maxDim)/64.0f));
-    histogram_ = VolumeRAMNormalizedHistogram::apply(this, histogram_, delta);
+    if (delta < 0) {
+        int maxDim = std::max(dimensions_.x, std::max(dimensions_.y, dimensions_.z));
+        delta = std::max(1, int(float(maxDim)/64.0f));
+    }
+    histogram_ = VolumeRAMNormalizedHistogram::apply(this, histogram_, delta, maxNumberOfBins);
     calculatingHistogram_ = false;
 }
 

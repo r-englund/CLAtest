@@ -52,7 +52,7 @@ VolumeSource::VolumeSource()
     , valueUnit_("valueUnit", "Value unit", "")
     , overRideDefaults_("override", "Override", false)
     , lengths_("length_", "Lengths", vec3(1.0f), vec3(0.0f), vec3(10.0f))
-    , angels_("angles_", "Angles", vec3(90.0f), vec3(0.0f), vec3(180.0f), vec3(1.0f))
+    , angles_("angles_", "Angles", vec3(90.0f), vec3(0.0f), vec3(180.0f), vec3(1.0f))
     , offset_("offset_", "Offset", vec3(0.0f), vec3(-10.0f), vec3(10.0f)) {
 
     DataSource<Volume, VolumeOutport>::file_.setDisplayName("Volume file");
@@ -66,21 +66,21 @@ VolumeSource::VolumeSource()
     overRideDefaults_.setGroupDisplayName("Basis", "Basis and offset");
     overRideDefaults_.setGroupID("Basis");
     lengths_.setGroupID("Basis");
-    angels_.setGroupID("Basis");
+    angles_.setGroupID("Basis");
     offset_.setGroupID("Basis");
     lengths_.setReadOnly(true);
-    angels_.setReadOnly(true);
+    angles_.setReadOnly(true);
     offset_.setReadOnly(true);
 
     orgLengths_ = lengths_.get();
-    orgAngles_ = angels_.get();
+    orgAngles_ = angles_.get();
     orgOffet_ = offset_.get();
 
     overRideDefaults_.onChange(this, &VolumeSource::onOverrideChange);
 
     addProperty(overRideDefaults_);
     addProperty(lengths_);
-    addProperty(angels_);
+    addProperty(angles_);
     addProperty(offset_);
 }
 
@@ -89,58 +89,57 @@ VolumeSource::~VolumeSource() {}
 void VolumeSource::onOverrideChange() {
     if(!overRideDefaults_.get()) {
         vec3 tmpLength = lengths_.get();
-        vec3 tmpAngle = angels_.get();
+        vec3 tmpAngle = angles_.get();
         vec3 tmpOffset = offset_.get();       
         lengths_.set(orgLengths_);
-        angels_.set(orgAngles_);
+        angles_.set(orgAngles_);
         offset_.set(orgOffet_);
         orgLengths_ = tmpLength;
         orgAngles_ = tmpAngle;
         orgOffet_ = tmpOffset;
         lengths_.setReadOnly(true);
-        angels_.setReadOnly(true);
+        angles_.setReadOnly(true);
         offset_.setReadOnly(true);
 
     } else {
         vec3 tmpLength = lengths_.get();
-        vec3 tmpAngle = angels_.get();
+        vec3 tmpAngle = angles_.get();
         vec3 tmpOffset = offset_.get();
         lengths_.set(orgLengths_);
-        angels_.set(orgAngles_);
+        angles_.set(orgAngles_);
         offset_.set(orgOffet_);
         orgLengths_ = tmpLength;
         orgAngles_ = tmpAngle;
         orgOffet_ = tmpOffset;
         lengths_.setReadOnly(false);
-        angels_.setReadOnly(false);
+        angles_.setReadOnly(false);
         offset_.setReadOnly(false);
     }
 }
 
 void VolumeSource::invalidateOutput() {
-//    Volume* volume = DataSource<Volume, VolumeOutport>::port_.getData();
-//
-//    if (volume) {
-//        volume->setMetaData<Vec2MetaData>("DataRange", dataRange_.get());
+    Volume* volume = DataSource<Volume, VolumeOutport>::port_.getData();
+
+    if (volume) {
+        volume->setMetaData<Vec2MetaData>("DataRange", dataRange_.get());
 //        volume->setMetaData<Vec2MetaData>("ValueRange", valueRange_.get());
 //        volume->setMetaData<StringMetaData>("ValueUnit", valueUnit_.get());
-//    }
-//
-//    DataSource<Volume, VolumeOutport>::invalidateOutput();
+    }
+
+    DataSource<Volume, VolumeOutport>::invalidateOutput();
 }
 
 void VolumeSource::dataLoaded(Volume* volume) {
     float max = static_cast<float>(volume->getDataFormat()->getMax());
     float min = static_cast<float>(volume->getDataFormat()->getMin());
-    //dataRange_.setRangeMin(min);
-    //dataRange_.setRangeMax(max);
+    dataRange_.setRangeMin(min);
+    dataRange_.setRangeMax(max);
 
-    //if (volume->hasMetaData<DVec2MetaData>("DataRange")) {
-    //    dataRange_.set(volume->getMetaData<Vec2MetaData>("DataRange", dataRange_.get()));
-    //} else {
-    //    dataRange_.set(vec2(min, max));
-    //}
-
+    if (volume->hasMetaData<Vec2MetaData>("DataRange")) {
+        dataRange_.set(volume->getMetaData<Vec2MetaData>("DataRange", dataRange_.get()));
+    } else {
+        dataRange_.set(vec2(min, max));
+    }
     vec3 a(volume->getBasis()[0]);
     vec3 b(volume->getBasis()[1]);
     vec3 c(volume->getBasis()[2]);
@@ -155,20 +154,20 @@ void VolumeSource::dataLoaded(Volume* volume) {
     offset_.setMinValue(vec3(-5.0*glm::length(offset)));
 
     lengths_.set(vec3(glm::length(a), glm::length(b), glm::length(c)));
-    angels_.set(vec3(alpha, beta, gamma));
+    angles_.set(vec3(alpha, beta, gamma));
     offset_.set(offset);
 
     lengths_.setCurrentStateAsDefault();
-    angels_.setCurrentStateAsDefault();
+    angles_.setCurrentStateAsDefault();
     offset_.setCurrentStateAsDefault();
 
     orgLengths_ = lengths_.get();
-    orgAngles_ = angels_.get();
+    orgAngles_ = angles_.get();
     orgOffet_ = offset_.get();
 
     //valueRange_.set(volume->getMetaData<Vec2MetaData>("ValueRange", dataRange_.get()));
     //valueUnit_.set(volume->getMetaData<StringMetaData>("ValueUnit", valueUnit_.get()));
-    //invalidateOutput();
+    invalidateOutput();
 }
 
 void VolumeSource::process() {
@@ -181,9 +180,9 @@ void VolumeSource::process() {
         float b = lengths_.get()[1];
         float c = lengths_.get()[2];
         vec3 offset = offset_.get();
-        float alpha = glm::radians(angels_.get()[0]);
-        float beta = glm::radians(angels_.get()[1]);
-        float gamma = glm::radians(angels_.get()[2]);
+        float alpha = glm::radians(angles_.get()[0]);
+        float beta = glm::radians(angles_.get()[1]);
+        float gamma = glm::radians(angles_.get()[2]);
         float v = std::sqrt(1 - std::cos(alpha)*std::cos(alpha) - std::cos(beta)*std::cos(beta) - std::cos(gamma)*std::cos(gamma)
                             - 2 * std::cos(alpha)*std::cos(beta)*std::cos(gamma));
         mat4 newBasisAndOffset(

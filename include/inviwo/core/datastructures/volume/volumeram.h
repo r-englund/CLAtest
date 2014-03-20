@@ -72,8 +72,8 @@ public:
     }
 
     bool hasNormalizedHistogram() const;
-    NormalizedHistogram* getNormalizedHistogram();
-    const NormalizedHistogram* getNormalizedHistogram() const;
+    NormalizedHistogram* getNormalizedHistogram(int delta=-1, std::size_t maxNumberOfBins=2048u);
+    const NormalizedHistogram* getNormalizedHistogram(int delta=-1, std::size_t maxNumberOfBins=2048u) const;
 
     virtual void setValueFromSingleFloat(const uvec3& pos, float val) = 0;
     virtual void setValueFromVec2Float(const uvec3& pos, vec2 val) = 0;
@@ -90,7 +90,7 @@ public:
     }
 
 protected:
-    void calculateHistogram() const;
+    void calculateHistogram(int delta, std::size_t maxNumberOfBins) const;
 
     void* data_;
     mutable NormalizedHistogram* histogram_;

@@ -41,6 +41,7 @@ Volume::Volume(const Volume& rhs) : Data(rhs), StructuredGridEntity<3>(rhs) {}
 
 Volume::Volume(VolumeRepresentation* in) : Data(in->getDataFormat()), StructuredGridEntity<3>(in->getDimension()) {
     addRepresentation(in);
+    in->setPointerToOwner(this);
 }
 
 Volume& Volume::operator=(const Volume& that) {
@@ -102,7 +103,9 @@ void Volume::setWorldTransform(const mat4& mat) {
 }
 
 DataRepresentation* Volume::createDefaultRepresentation() {
-    return new VolumeDisk(getDimension(), getDataFormat());
+    VolumeDisk *volDisk = new VolumeDisk(getDimension(), getDataFormat());
+    volDisk->setPointerToOwner(this);
+    return volDisk;
 }
 
 

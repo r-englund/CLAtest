@@ -39,6 +39,8 @@ struct VOLUME_PARAMETERS {
     float formatScaling_; //Reversed, meaning scaling = (1-bitScaling_), as 0 is default for single uniforms.
 };
 
+// TODO: consider data offset for proper format scaling
+
 vec4 getVoxel(VOLUME_TYPE volume, VOLUME_PARAMETERS volumeParams, vec3 samplePos) {
 #ifdef GLSL_VERSION_140
     return texture(volume, samplePos)*(1.0-volumeParams.formatScaling_);

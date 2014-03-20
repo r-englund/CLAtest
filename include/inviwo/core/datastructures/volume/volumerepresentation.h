@@ -38,7 +38,11 @@
 
 namespace inviwo {
 
+class Volume;
+
 class IVW_CORE_API VolumeRepresentation : public DataRepresentation {
+
+    friend class Volume;
 
 public:
     /// struct volume borders
@@ -75,9 +79,16 @@ public:
     const uvec3& getDimension() const {return dimensions_;}
     uvec3 getDimensionWithBorder() const { return dimensions_+getBorderLLF()+getBorderURB(); }
     bool hasBorder() const {return borders_.hasBorder;}
+
+    const Volume* getOwner() const;
+
 protected:
     uvec3 dimensions_;
     VolumeBorders borders_;
+
+    virtual void setPointerToOwner(Data*);
+
+    Volume* owner_;
 };
 
 } // namespace

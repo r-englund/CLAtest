@@ -31,6 +31,8 @@
  *********************************************************************************/
 
 #include <inviwo/core/datastructures/histogram.h>
+#include <algorithm>
+#include <functional>
 
 namespace inviwo {
 
@@ -45,7 +47,7 @@ NormalizedHistogram::NormalizedHistogram(const NormalizedHistogram* rhs) {
         maximumBinValue_ = rhs->getMaximumBinValue();
         valid_ = rhs->isValid();
         data_ = new std::vector<float>(rhs->getData()->size(), 0.f);
-        std::copy(rhs->getData()->begin(), rhs->getData()->end(), std::back_inserter(*data_));
+        std::copy(rhs->getData()->begin(), rhs->getData()->end(), data_->begin());
     }
     else {
         data_ = new std::vector<float>(256, 0.f);
@@ -54,10 +56,33 @@ NormalizedHistogram::NormalizedHistogram(const NormalizedHistogram* rhs) {
     }
 }
 
+NormalizedHistogram::NormalizedHistogram(const NormalizedHistogram &rhs) {
+    maximumBinValue_ = rhs.getMaximumBinValue();
+    valid_ = rhs.isValid();
+    data_ = new std::vector<float>(rhs.getData()->size(), 0.f);
+    std::copy(rhs.getData()->begin(), rhs.getData()->end(), data_->begin());
+}
+
 NormalizedHistogram::~NormalizedHistogram() {
     delete data_;
     data_ = NULL;
 }
+
+NormalizedHistogram& NormalizedHistogram::operator=(const NormalizedHistogram &rhs) {
+    if (this != &rhs) {
+        maximumBinValue_ = rhs.getMaximumBinValue();
+        valid_ = rhs.isValid();
+        if (!data_) {
+            data_ = new std::vector<float>(rhs.getData()->size(), 0.f);
+        }
+        else {
+            data_->resize(rhs.getData()->size());
+        }
+        std::copy(rhs.getData()->begin(), rhs.getData()->end(), data_->begin());
+    }
+    return *this;
+}
+
 
 std::vector<float>* NormalizedHistogram::getData() {
     return data_;
@@ -89,18 +114,10 @@ void NormalizedHistogram::resize(size_t numberOfBins) {
 
 void NormalizedHistogram::performNormalization() {
     //Find bin with largest count
-    maximumBinValue_ = 0.f;
-
-    for (std::vector<float>::const_iterator it = data_->begin()+1 ; it != data_->end(); ++it) {
-        if ((*it)>maximumBinValue_)
-            maximumBinValue_ = (*it);
-    }
+    maximumBinValue_ = *std::max_element(data_->begin(), data_->end());
 
     //Normalize all bins with the largest count
-    for (std::vector<float>::iterator it = data_->begin() ; it != data_->end(); ++it)
-        (*it) /= maximumBinValue_;
-
-    data_->at(0) = 1.0f;
+    std::transform(data_->begin(), data_->end(), data_->begin(), std::bind2nd(std::multiplies<float>(), 1.0f / maximumBinValue_));
 }
 
 float NormalizedHistogram::getMaximumBinValue() const {
