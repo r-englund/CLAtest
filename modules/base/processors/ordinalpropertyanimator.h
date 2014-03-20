@@ -4,6 +4,7 @@
 #include <modules/base/basemoduledefine.h>
 #include <inviwo/core/common/inviwo.h>
 #include <inviwo/core/util/timer.h>
+#include <inviwo/core/properties/propertyfactory.h>
 
 namespace inviwo {
 
@@ -69,8 +70,8 @@ private:
             T dmin = delta_->getMinValue();
             T dmax = delta_->getMaxValue();
 
-            T newMin = -T(static_cast<T::value_type>(0.1))*max;
-            T newMax =  T(static_cast<T::value_type>(0.1))*max;
+            T newMin = -T(static_cast<typename T::value_type>(0.1))*max;
+            T newMax =  T(static_cast<typename T::value_type>(0.1))*max;
 
             if (dmin != newMin) {
                 delta_->setMinValue(newMin);
