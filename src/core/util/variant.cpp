@@ -352,8 +352,8 @@ Variant::Variant(const dmat4& value) : value_(0), currentType_(VariantTypeDMat4)
     set<dmat4>(value, VariantTypeDMat4);
 }
 
-Variant::Variant(int64_t value) : value_(0), currentType_(VariantTypeInt64) {
-    set<int64_t>(value, VariantTypeInt64);
+Variant::Variant(glm::i64 value) : value_(0), currentType_(VariantTypeInt64) {
+    set<glm::i64>(value, VariantTypeInt64);
 }
 
 Variant::Variant(const VariantType& type) : value_(0), currentType_(type) {
@@ -464,7 +464,7 @@ void Variant::deleteValue() {
                 break;
 
             case VariantTypeInt64:
-                delete static_cast<int64_t*>(value_);
+                delete static_cast<glm::i64*>(value_);
                 break;
 
             default:
@@ -706,7 +706,7 @@ bool Variant::getBool() const {
             return static_cast<bool>(VP(long)!= 0); // != 0 gets rid of performance warning
 
         case VariantTypeInt64:
-            return static_cast<bool>(VP(int64_t)!= 0); // != 0 gets rid of performance warning
+            return static_cast<bool>(VP(glm::i64)!= 0); // != 0 gets rid of performance warning
 
         case VariantTypeInvalid:
             throw Exception("");
@@ -749,7 +749,7 @@ double Variant::getDouble() const {
         }
 
         case VariantTypeInt64:
-            return static_cast<double>(VP(int64_t)!= 0); // != 0 gets rid of performance warning
+            return static_cast<double>(VP(glm::i64)!= 0); // != 0 gets rid of performance warning
 
         case VariantTypeInvalid:
             throw Exception("");
@@ -789,7 +789,7 @@ float Variant::getFloat() const {
         }
 
         case VariantTypeInt64:
-            return static_cast<float>(VP(int64_t)!= 0); // != 0 gets rid of performance warning
+            return static_cast<float>(VP(glm::i64)!= 0); // != 0 gets rid of performance warning
 
         case VariantTypeInvalid:
             throw Exception("");
@@ -829,7 +829,7 @@ int Variant::getInt() const {
         }
 
         case VariantTypeInt64:
-            return static_cast<int>(VP(int64_t)!= 0); // != 0 gets rid of performance warning
+            return static_cast<int>(VP(glm::i64)!= 0); // != 0 gets rid of performance warning
 
         case VariantTypeInvalid:
             throw Exception("");
@@ -869,7 +869,7 @@ long Variant::getLong() const {
         }
 
         case VariantTypeInt64:
-            return static_cast<long>(VP(int64_t)!= 0); // != 0 gets rid of performance warning
+            return static_cast<long>(VP(glm::i64)!= 0); // != 0 gets rid of performance warning
 
         case VariantTypeInvalid:
             throw Exception("");
@@ -1033,7 +1033,7 @@ std::string Variant::getString() const {
         }
 
         case VariantTypeInt64:
-            return toString<int64_t>(VP(int64_t));
+            return toString<glm::i64>(VP(glm::i64));
         
         case VariantTypeInvalid:
             throw Exception("");
@@ -1044,27 +1044,27 @@ std::string Variant::getString() const {
     }
 }
 
-int64_t Variant::getInt64() const {
+glm::i64 Variant::getInt64() const {
     switch (currentType_) {
     case VariantTypeBool:
-        return static_cast<int64_t>(VP(bool));
+        return static_cast<glm::i64>(VP(bool));
 
     case VariantTypeDouble:
-        return static_cast<int64_t>(VP(double));
+        return static_cast<glm::i64>(VP(double));
 
     case VariantTypeFloat:
-        return static_cast<int64_t>(VP(float));
+        return static_cast<glm::i64>(VP(float));
 
     case VariantTypeInteger:
-        return static_cast<int64_t>(VP(int));
+        return static_cast<glm::i64>(VP(int));
 
     case VariantTypeLong:
-        return static_cast<int64_t>(VP(long));
+        return static_cast<glm::i64>(VP(long));
 
     case VariantTypeString:
         {
             std::stringstream s(VP(std::string));
-            int64_t result;
+            glm::i64 result;
 
             if ((s >> result).fail())
                 throw Exception("String->Int conversion failed");
@@ -1073,7 +1073,7 @@ int64_t Variant::getInt64() const {
         }
 
     case VariantTypeInt64:
-        return VP(int64_t);
+        return VP(glm::i64);
 
     case VariantTypeInvalid:
         throw Exception("");
@@ -1737,8 +1737,8 @@ void Variant::setDMat4(const dmat4& value) {
     set<dmat4>(value, VariantTypeDMat4);
 }
 
-void Variant::setInt64(const int64_t& value) {
-    set<int64_t>(value, VariantTypeInt64);
+void Variant::setInt64(const glm::i64& value) {
+    set<glm::i64>(value, VariantTypeInt64);
 }
 
 void Variant::serialize(IvwSerializer& s) const {
@@ -2019,7 +2019,7 @@ void Variant::deserialize(IvwDeserializer& d) {
 
         case VariantTypeInt64:
         {
-            int64_t value;
+            glm::i64 value;
             d.deserialize("value", value);
             setInt64(value);
             break;
@@ -2131,7 +2131,7 @@ Variant& Variant::operator= (const Variant& rhs) {
                 break;
 
             case VariantTypeInt64:
-                set<int64_t>(temp_rhs.getInt64(), VariantTypeInt64);
+                set<glm::i64>(temp_rhs.getInt64(), VariantTypeInt64);
                 break;
 
             default:
@@ -2172,8 +2172,8 @@ Variant& Variant::operator= (const long& rhs) {
     return *this;
 }
 
-Variant& Variant::operator= (const int64_t& rhs) {
-    set<int64_t>(rhs, VariantTypeInt64);
+Variant& Variant::operator= (const glm::i64& rhs) {
+    set<glm::i64>(rhs, VariantTypeInt64);
     return *this;
 }
 

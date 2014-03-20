@@ -59,7 +59,7 @@ public: \
 DEFAULTVALUES(float, uvec2(1,1), "Float", 0.0f, 0.0f, 1.0f, 0.01f)
 DEFAULTVALUES(double, uvec2(1,1), "Double", 0.0, 0.0, 1.0, 0.01)
 DEFAULTVALUES(int, uvec2(1,1), "Int", 0, -100, 100, 1)
-DEFAULTVALUES(int64_t, uvec2(1,1), "Int64", 0, 0, 1024, 1)
+DEFAULTVALUES(glm::i64, uvec2(1,1), "Int64", 0, 0, 1024, 1)
 
 DEFAULTVALUES(vec2, uvec2(2,1), "FloatVec2", vec2(0.f), vec2(0.f), vec2(1.f), vec2(0.01f))
 DEFAULTVALUES(vec3, uvec2(3,1), "FloatVec3", vec3(0.f), vec3(0.f), vec3(1.f), vec3(0.01f))
