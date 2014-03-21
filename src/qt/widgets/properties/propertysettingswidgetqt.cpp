@@ -99,30 +99,30 @@ PropertySettingsWidgetQt::PropertySettingsWidgetQt(Property* property, QWidget* 
     this->setWindowModality(Qt::ApplicationModal);
 }
 
-#define DELETE_LATER(prop) if(prop) delete prop;
+#define DELETE_NOW(prop) if(prop) delete prop;
 PropertySettingsWidgetQt::~PropertySettingsWidgetQt() {
-    DELETE_LATER(lineEditMaxX_);
-    DELETE_LATER(lineEditMaxY_);
-    DELETE_LATER(lineEditMaxZ_);
-    DELETE_LATER(lineEditMaxW_);
-    DELETE_LATER(lineEditMinX_);
-    DELETE_LATER(lineEditMinY_);
-    DELETE_LATER(lineEditMinZ_);
-    DELETE_LATER(lineEditMinW_);
-    DELETE_LATER(lineEditIcrementX_);
-    DELETE_LATER(lineEditIcrementY_);
-    DELETE_LATER(lineEditIcrementZ_);
-    DELETE_LATER(lineEditIcrementW_);;
-    DELETE_LATER(xValueLabel_);
-    DELETE_LATER(yValueLabel_);
-    DELETE_LATER(zValueLabel_);
-    DELETE_LATER(wValueLabel_);
-    DELETE_LATER(minValueLabel_);
-    DELETE_LATER(maxValueLabel_);
-    DELETE_LATER(incValueLabel_);
-    DELETE_LATER(gridLayout_);
-    DELETE_LATER(btnApply_);
-    DELETE_LATER(btnCancel_);
+    DELETE_NOW(lineEditMaxX_);
+    DELETE_NOW(lineEditMaxY_);
+    DELETE_NOW(lineEditMaxZ_);
+    DELETE_NOW(lineEditMaxW_);
+    DELETE_NOW(lineEditMinX_);
+    DELETE_NOW(lineEditMinY_);
+    DELETE_NOW(lineEditMinZ_);
+    DELETE_NOW(lineEditMinW_);
+    DELETE_NOW(lineEditIcrementX_);
+    DELETE_NOW(lineEditIcrementY_);
+    DELETE_NOW(lineEditIcrementZ_);
+    DELETE_NOW(lineEditIcrementW_);;
+    DELETE_NOW(xValueLabel_);
+    DELETE_NOW(yValueLabel_);
+    DELETE_NOW(zValueLabel_);
+    DELETE_NOW(wValueLabel_);
+    DELETE_NOW(minValueLabel_);
+    DELETE_NOW(maxValueLabel_);
+    DELETE_NOW(incValueLabel_);
+    DELETE_NOW(gridLayout_);
+    DELETE_NOW(btnApply_);
+    DELETE_NOW(btnCancel_);
 }
 
 #define FIX_TAB_ORDER(e) if(e){order.push_back(e);}
@@ -140,15 +140,14 @@ void PropertySettingsWidgetQt::fixTabOrder(){
     FIX_TAB_ORDER(lineEditIcrementY_);
     FIX_TAB_ORDER(lineEditIcrementZ_);
     FIX_TAB_ORDER(lineEditIcrementW_);
-    FIX_TAB_ORDER(lineEditIcrementW_);
     FIX_TAB_ORDER(btnApply_);
     FIX_TAB_ORDER(btnCancel_);
 
+    setTabOrder(order.back(),order[0]);
     for(size_t i = 0;i<order.size()-1;i++){
         setTabOrder(order[i],order[i+1]);
     }
 
-    setTabOrder(order.back(),order[0]);
 }
 
 void PropertySettingsWidgetQt::generateWidget() {

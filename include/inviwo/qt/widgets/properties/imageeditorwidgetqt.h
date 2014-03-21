@@ -123,7 +123,7 @@ class IVW_QTWIDGETS_API SimpleGraphicsView : public QGraphicsView {
     Q_OBJECT
 public:
     SimpleGraphicsView(QWidget* parent=0);
-    ~SimpleGraphicsView();
+    virtual ~SimpleGraphicsView();
     void setDialogScene(QGraphicsScene* scene);
     void addRectangle(QPointF mstartPoint, QPointF mendPoint,ivec3 color = ivec3(0,0,255), int uniqueIndex=0);
     std::vector<ImgRect> getRectList();
@@ -162,6 +162,10 @@ class IVW_QTWIDGETS_API ImageLabelWidget : public QWidget {
     Q_OBJECT
 public:
     ImageLabelWidget();
+    virtual ~ImageLabelWidget(){
+        delete backGroundImage_;
+        delete view_;
+    }
     bool saveDialog();
     void setParent(ImageEditorWidgetQt*);
     QGraphicsScene* getScene() {return scene_;}
@@ -206,7 +210,7 @@ class IVW_QTWIDGETS_API ImageEditorWidgetQt : public PropertyWidgetQt {
     Q_OBJECT
 public:
     ImageEditorWidgetQt(Property* property);
-    ~ImageEditorWidgetQt();
+    virtual ~ImageEditorWidgetQt();
     void updateFromProperty();
     bool saveDialog();
 private:

@@ -45,6 +45,7 @@ class IVW_MODULE_OPENGL_API CompositeProcessorGL : public ProcessorGL {
 public:
     CompositeProcessorGL();
     CompositeProcessorGL(std::string programFileName);
+    virtual ~CompositeProcessorGL(){}
 
     void initialize();
     void deinitialize();
