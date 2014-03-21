@@ -49,6 +49,7 @@ class IVW_QTWIDGETS_API CameraPropertyWidgetQt : public PropertyWidgetQt {
 
 public:
     CameraPropertyWidgetQt(CameraProperty* property);
+    virtual ~CameraPropertyWidgetQt();
     void updateFromProperty();
 
 public slots:

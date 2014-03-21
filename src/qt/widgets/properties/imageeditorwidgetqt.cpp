@@ -89,7 +89,7 @@ SimpleGraphicsView::SimpleGraphicsView(QWidget* parent)
     setRenderHint(QPainter::Antialiasing, true);
     setMouseTracking(true);
     setDragMode(QGraphicsView::RubberBandDrag);
-    shadowEffect_ = new QGraphicsDropShadowEffect();
+    shadowEffect_ = new QGraphicsDropShadowEffect(this);
     shadowEffect_->setOffset(3.0);
     shadowEffect_->setBlurRadius(3.0);
 }
@@ -346,7 +346,12 @@ void SimpleGraphicsView::clearRectItems() {
 }
 /////////////////////////////////////////////////
 // Image Labeling widget
-ImageLabelWidget::ImageLabelWidget() : scene_(0), view_(0),sceneScaleFactor_(1.2f) {
+ImageLabelWidget::ImageLabelWidget() 
+    : scene_(0)
+    , view_(0)
+    , sceneScaleFactor_(1.2f)
+    , backGroundImage_(0)
+{
     generateWidget();
 }
 

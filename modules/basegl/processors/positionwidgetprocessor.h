@@ -41,6 +41,7 @@
 #include <modules/opengl/image/compositeprocessorgl.h>
 #include <inviwo/core/interaction/pickingobject.h>
 #include <inviwo/core/properties/cameraproperty.h>
+#include <inviwo/core/interaction/trackball.h>
 
 
 namespace inviwo {
@@ -48,7 +49,7 @@ namespace inviwo {
 class IVW_MODULE_BASEGL_API PositionWidgetProcessor : public CompositeProcessorGL {
 public:
     PositionWidgetProcessor();
-    ~PositionWidgetProcessor();
+    virtual ~PositionWidgetProcessor();
 
     InviwoProcessorInfo();
 
@@ -74,6 +75,8 @@ private:
     const PickingObject* widgetPickingObject_;
 
     Shader* shader_;
+
+    Trackball* trackball_;
 };
 
 } // namespace

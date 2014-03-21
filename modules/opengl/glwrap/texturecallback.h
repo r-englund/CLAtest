@@ -55,6 +55,8 @@ public:
         : functionPtr_(functionPtr)
         , obj_(obj) {}
 
+    virtual ~MemberFunctionTextureCallback() {}
+
     void invoke(Texture* p) const {
         if (functionPtr_)(*obj_.*functionPtr_)(p);
     }
@@ -78,6 +80,8 @@ public:
 
     template <typename T>
     void addMemberFunction(T* o, void (T::*m)(Texture*)) {
+        if(callBack_)
+            delete callBack_;
         callBack_ = new MemberFunctionTextureCallback<T>(o,m);
     }
 

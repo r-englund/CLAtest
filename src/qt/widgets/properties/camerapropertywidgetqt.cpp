@@ -37,10 +37,15 @@
 
 namespace inviwo {
 
-CameraPropertyWidgetQt::CameraPropertyWidgetQt(CameraProperty* property) : property_(property) {
+CameraPropertyWidgetQt::CameraPropertyWidgetQt(CameraProperty* property) : property_(property),collapsiveGroupBoxWidget_(0) {
     generateWidget();
     updateFromProperty();
 }
+
+CameraPropertyWidgetQt::~CameraPropertyWidgetQt(){
+    delete collapsiveGroupBoxWidget_;
+}
+
 
 void CameraPropertyWidgetQt::generateWidget() {
     QVBoxLayout* vLayout = new QVBoxLayout();

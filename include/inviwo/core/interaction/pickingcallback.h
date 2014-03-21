@@ -70,6 +70,10 @@ private:
 class PickingCallback {
 public:
     PickingCallback() : callBack_(0) {}
+    virtual ~PickingCallback() {
+        delete callBack_;
+    }
+
 
     void invoke(const PickingObject* p) const {
         if (callBack_)

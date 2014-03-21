@@ -46,7 +46,10 @@ namespace inviwo {
 PropertyWidgetQt::PropertyWidgetQt()
     : PropertyWidget()
     , contextMenu_(NULL)
-    , viewModeItem_(NULL) {
+    , viewModeItem_(NULL)
+    , developerViewModeAction_(NULL)
+    , applicationViewModeAction_(NULL)
+{
     /*
     static_cast<OptionPropertyInt*>(
         InviwoApplication::getPtr()->
