@@ -377,8 +377,11 @@ bool LightVolumeGL::volumeChanged(bool lightColorChanged) {
             }
         }
 
-        Volume* volume = new Volume(volumeDimOut_, format);
-        outport_.setData(volume);
+        outport_.setData(NULL);
+        VolumeGL* volumeGL = new VolumeGL(volumeDimOut_, format);
+        volumeGL->getTexture()->initialize(NULL);
+        outport_.setData(new Volume(volumeGL));
+
         internalVolumesInvalid_ = false;
         return true;
     }
