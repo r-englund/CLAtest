@@ -186,133 +186,85 @@ void Shader::detachAllShaderObject() {
     }
 }
 
-void Shader::setUniform(const std::string name, GLint value) {
+
+//#define IVW_ELSE_WARN else LogWarn("Unable to set uniform " + name + " in shader " + getVertexShaderObject()->getFileName() + "/"+((getGeometryShaderObject())?getGeometryShaderObject()->getFileName():"")+"/" + getFragmentShaderObject()->getFileName());
+#define IVW_ELSE_WARN
+
+void Shader::setUniform(const std::string &name,const GLint &value) const {
     GLint uniformLocation = glGetUniformLocation(id_, name.c_str());
 
     if (uniformLocation != -1) glUniform1i(uniformLocation, value);
-
-    //else
-    //LogWarn("Unable to set uniform " + name + " in shader " + vertexFilename_ + "/" + fragmentFilename_);
+    IVW_ELSE_WARN
 }
 
-void Shader::setUniform(const std::string name, GLfloat value) {
+void Shader::setUniform(const std::string &name,const GLfloat &value) const {
     GLint uniformLocation = glGetUniformLocation(id_, name.c_str());
 
     if (uniformLocation != -1) glUniform1f(uniformLocation, value);
-
-    //else
-    //LogWarn("Unable to set uniform " + name + " in shader " + vertexFilename_ + "/" + fragmentFilename_);
+    IVW_ELSE_WARN
 }
 
-void Shader::setUniform(const std::string name, vec2 value) {
+void Shader::setUniform(const std::string &name,const vec2 &value) const {
     GLint uniformLocation = glGetUniformLocation(id_, name.c_str());
-    GLfloat* glvalues = new GLfloat[2];
-    glvalues[0] = value[0];
-    glvalues[1] = value[1];
-    delete glvalues;
 
     if (uniformLocation != -1) glUniform2fv(uniformLocation, 1, glm::value_ptr(value));
-
-    //else
-    //LogWarn("Unable to set uniform " + name + " in shader " + vertexFilename_ + "/" + fragmentFilename_);
+    IVW_ELSE_WARN
 }
 
-void Shader::setUniform(const std::string name, vec3 value) {
+void Shader::setUniform(const std::string &name,const vec3 &value) const {
     GLint uniformLocation = glGetUniformLocation(id_, name.c_str());
-    GLfloat* glvalues = new GLfloat[3];
-    glvalues[0] = value[0];
-    glvalues[1] = value[1];
-    glvalues[2] = value[2];
-    delete glvalues;
 
     if (uniformLocation != -1) glUniform3fv(uniformLocation, 1, glm::value_ptr(value));
-
-    //else
-    //LogWarn("Unable to set uniform " + name + " in shader " + vertexFilename_ + "/" + fragmentFilename_);
+    IVW_ELSE_WARN
 }
 
-void Shader::setUniform(const std::string name, vec4 value) {
+void Shader::setUniform(const std::string &name,const vec4 &value) const {
     GLint uniformLocation = glGetUniformLocation(id_, name.c_str());
-    GLfloat* glvalues = new GLfloat[4];
-    glvalues[0] = value[0];
-    glvalues[1] = value[1];
-    glvalues[2] = value[2];
-    glvalues[3] = value[3];
-    delete glvalues;
 
     if (uniformLocation != -1) glUniform4fv(uniformLocation, 1, glm::value_ptr(value));
-
-    //else
-    //LogWarn("Unable to set uniform " + name + " in shader " + vertexFilename_ + "/" + fragmentFilename_);
+    IVW_ELSE_WARN
 }
 
-void Shader::setUniform(const std::string name, ivec2 value) {
+void Shader::setUniform(const std::string &name,const ivec2 &value) const {
     GLint uniformLocation = glGetUniformLocation(id_, name.c_str());
-    GLint* glvalues = new GLint[2];
-    glvalues[0] = value[0];
-    glvalues[1] = value[1];
-    delete glvalues;
 
     if (uniformLocation != -1) glUniform2iv(uniformLocation, 1, glm::value_ptr(value));
-
-    //else
-    //LogWarn("Unable to set uniform " + name + " in shader " + vertexFilename_ + "/" + fragmentFilename_);
+    IVW_ELSE_WARN
 }
 
-void Shader::setUniform(const std::string name, ivec3 value) {
+void Shader::setUniform(const std::string &name,const ivec3 &value) const {
     GLint uniformLocation = glGetUniformLocation(id_, name.c_str());
-    GLint* glvalues = new GLint[3];
-    glvalues[0] = value[0];
-    glvalues[1] = value[1];
-    glvalues[2] = value[2];
-    delete glvalues;
 
     if (uniformLocation != -1) glUniform3iv(uniformLocation, 1, glm::value_ptr(value));
-
-    //else
-    //LogWarn("Unable to set uniform " + name + " in shader " + vertexFilename_ + "/" + fragmentFilename_);
+    IVW_ELSE_WARN
 }
 
-void Shader::setUniform(const std::string name, ivec4 value) {
+void Shader::setUniform(const std::string &name,const ivec4 &value) const {
     GLint uniformLocation = glGetUniformLocation(id_, name.c_str());
-    GLint* glvalues = new GLint[4];
-    glvalues[0] = value[0];
-    glvalues[1] = value[1];
-    glvalues[2] = value[2];
-    glvalues[3] = value[3];
-    delete glvalues;
 
     if (uniformLocation != -1) glUniform4iv(uniformLocation, 1, glm::value_ptr(value));
-
-    //else
-    //LogWarn("Unable to set uniform " + name + " in shader " + vertexFilename_ + "/" + fragmentFilename_);
+    IVW_ELSE_WARN
 }
 
-void Shader::setUniform(const std::string name, GLint* value, int count) {
+void Shader::setUniform(const std::string &name, const GLint* value, int count) const {
     GLint uniformLocation = glGetUniformLocation(id_, name.c_str());
 
     if (uniformLocation != -1) glUniform1iv(uniformLocation, count, value);
-
-    //else
-    //LogWarn("Unable to set uniform " + name + " in shader " + vertexFilename_ + "/" + fragmentFilename_);
+    IVW_ELSE_WARN
 }
 
-void Shader::setUniform(const std::string name, GLfloat* value, int count) {
+void Shader::setUniform(const std::string &name, const GLfloat* value, int count) const {
     GLint uniformLocation = glGetUniformLocation(id_, name.c_str());
 
     if (uniformLocation != -1) glUniform1fv(uniformLocation, count, value);
-
-    //else
-    //LogWarn("Unable to set uniform " + name + " in shader " + vertexFilename_ + "/" + fragmentFilename_);
+    IVW_ELSE_WARN
 }
 
-void Shader::setUniform(const std::string name, mat4 value) {
+void Shader::setUniform(const std::string &name,const mat4 &value) const {
     GLint uniformLocation = glGetUniformLocation(id_, name.c_str());
 
     if (uniformLocation != -1) glUniformMatrix4fv(uniformLocation, 1, GL_FALSE, glm::value_ptr(value));
-
-    //else
-    //LogWarn("Unable to set uniform " + name + " in shader " + vertexFilename_ + "/" + fragmentFilename_);
+    IVW_ELSE_WARN
 }
 
 } // namespace

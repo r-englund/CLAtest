@@ -124,7 +124,7 @@ void GeometryRenderProcessorGL::process() {
     }
 
     for (std::vector<GeometryRenderer*>::const_iterator it = renderers_.begin(), endIt = renderers_.end(); it != endIt; ++it) {
-        (*it)->render();
+        (*it)->render(outport_.getDimension());
     }
 
     deactivateCurrentTarget();

@@ -113,6 +113,7 @@ void VolumeRaycasterGL::addBasicProperties() {
     compositingMode_.addOption("mip", "Maximum intensity projection");
     compositingMode_.addOption("fhp", "First hit points");
     compositingMode_.addOption("fhn", "First hit normals");
+    compositingMode_.addOption("fhd", "First hit depth");
     compositingMode_.addOption("iso", "Iso surface rendering");
     compositingMode_.addOption("ison", "Iso surface normal rendering");
     compositingMode_.setSelectedIdentifier("dvr");
@@ -220,6 +221,8 @@ void VolumeRaycasterGL::initializeResources() {
         compositingValue = "compositeFHP(result, color, samplePos, t, tDepth);";
     else if (compositingMode_.isSelectedIdentifier("fhn"))
         compositingValue = "compositeFHN(result, color, gradient, t, tDepth);";
+    else if (compositingMode_.isSelectedIdentifier("fhd"))
+        compositingValue = "compositeFHD(result, color, gradient, t, tDepth);";
     else if (compositingMode_.isSelectedIdentifier("iso"))
         compositingValue = "compositeISO(result, color, t, tDepth, tIncr, isoValue_);";
     else if (compositingMode_.isSelectedIdentifier("ison"))
