@@ -72,17 +72,17 @@ public:
     void activate();
     void deactivate();
 
-    void setUniform(const std::string name, GLint value);
-    void setUniform(const std::string name, GLint* value, int count);
-    void setUniform(const std::string name, GLfloat value);
-    void setUniform(const std::string name, GLfloat* value, int count);
-    void setUniform(const std::string name, vec2 value);
-    void setUniform(const std::string name, vec3 value);
-    void setUniform(const std::string name, vec4 value);
-    void setUniform(const std::string name, ivec2 value);
-    void setUniform(const std::string name, ivec3 value);
-    void setUniform(const std::string name, ivec4 value);
-    void setUniform(const std::string name, mat4 value);
+    void setUniform(const std::string &name, const GLint &value)const;
+    void setUniform(const std::string &name, const GLint* value, int count)const;
+    void setUniform(const std::string &name, const GLfloat &value)const;
+    void setUniform(const std::string &name, const GLfloat* value, int count)const;
+    void setUniform(const std::string &name, const vec2 &value)const;
+    void setUniform(const std::string &name, const vec3 &value)const;
+    void setUniform(const std::string &name, const vec4 &value)const;
+    void setUniform(const std::string &name, const ivec2 &value)const;
+    void setUniform(const std::string &name, const ivec3 &value)const;
+    void setUniform(const std::string &name, const ivec4 &value)const;
+    void setUniform(const std::string &name, const mat4 &value)const;
 
 private:
     unsigned int id_;

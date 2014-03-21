@@ -116,7 +116,7 @@ void PropertyListWidget::removeAndDeleteProcessorProperties(Processor* processor
             delete propertyWidgets[i];
         }
 
-        it->second->deleteLater();
+        delete it->second;
         propertyWidgetMap_.erase(it);
     }
 }
