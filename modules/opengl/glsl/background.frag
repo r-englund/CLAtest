@@ -35,6 +35,9 @@
 uniform TEXTURE_TYPE srcColorTex_;
 uniform TEXTURE_PARAMETERS srcColorParameters_;
 
+uniform TEXTURE_TYPE depth_;
+
+
 uniform bool hasData_;
 uniform int backgroundStyle_;
 uniform vec4 color1_;
@@ -59,4 +62,5 @@ void main() {
     resultColor.rgb = srcColor.rgb + backgroundColor.rgb * backgroundColor.a * (1.0 - srcColor.a);
     resultColor.a = srcColor.a + backgroundColor.a * (1.0 - srcColor.a);
     FragData0 = resultColor;
+	gl_FragDepth = texture2D(depth_, texCoords).r;
 }
