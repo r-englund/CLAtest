@@ -116,7 +116,7 @@ QtWidgetModule::QtWidgetModule() : InviwoModule() {
     registerPropertyWidget(StringPropertyWidgetQt, StringProperty, "Password");
     registerPropertyWidget(TextEditorWidgetQt, FileProperty, "TextEditor"); // TODO: fix "imageEditor..."
     registerPropertyWidget(TextEditorWidgetQt, FileProperty, "ShaderEditor");
-    registerPropertyWidget(TextEditorWidgetQt, StringProperty, "Editor");
+    registerPropertyWidget(TextEditorWidgetQt, StringProperty, "TextEditor");
     registerPropertyWidget(TextEditorWidgetQt, StringProperty, "ShaderEditor");
     registerPropertyWidget(TransferFunctionPropertyWidgetQt, TransferFunctionProperty, "Default");
     registerDialog("RawVolumeReader", RawDataReaderDialogQt);
