@@ -37,6 +37,11 @@ namespace detail
 	static const char* False = "false";
 }//namespace detail
 
+    GLM_FUNC_QUALIFIER std::string to_string(bool x)
+    {
+        return x ? detail::True : detail::False;
+    }
+
 	////////////////////////////////
 	// Scalars
 
