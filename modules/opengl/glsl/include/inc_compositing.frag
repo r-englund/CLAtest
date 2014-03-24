@@ -92,14 +92,13 @@ vec4 compositeFHD(in vec4 curResult, in vec4 color, in vec3 samplePos, in float 
 
 vec4 compositeISO(in vec4 curResult, in vec4 color, in float t, inout float tDepth, in float tIncr, in float isoValue) {
     vec4 result = curResult;
-
-    float epsilon = 0.01;
-    if (color.a >= isoValue-epsilon && color.a <= isoValue+epsilon) {
-        result = color;
-        result.a = 1.0;
-        tDepth = t;
+    if (color.a >= isoValue-0.01 && color.a <= isoValue+0.01) {
+        if (tDepth == -1.0)
+            tDepth = t;
+        color.a = 1.0 - pow(1.0 - color.a, tIncr * REF_SAMPLING_INTERVAL);
+        result.rgb = result.rgb + (1.0 - result.a) * color.a * color.rgb;
+        result.a = result.a + (1.0 - result.a) * color.a;
     }
-
     return result;
 }
 
