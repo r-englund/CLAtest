@@ -228,6 +228,11 @@ void InviwoMainWindow::addMenuActions() {
     workspaceActionSaveAs_->setShortcut(QKeySequence::SaveAs);
     connect(workspaceActionSaveAs_, SIGNAL(triggered()), this, SLOT(saveWorkspaceAs()));
     fileMenuItem_->addAction(workspaceActionSaveAs_);
+
+    workspaceActionSaveAsCopy_ = new QAction(QIcon(":/icons/saveas.png"), tr("&Save Workspace As Copy"), this);
+    connect(workspaceActionSaveAsCopy_, SIGNAL(triggered()), this, SLOT(saveWorkspaceAsCopy()));
+    fileMenuItem_->addAction(workspaceActionSaveAsCopy_);
+
     recentFileSeparator_ = fileMenuItem_->addSeparator();
 
     for (int i=0; i<maxNumRecentFiles_; i++) {
@@ -300,6 +305,7 @@ void InviwoMainWindow::addToolBars() {
     workspaceToolBar_->addAction(workspaceActionOpen_);
     workspaceToolBar_->addAction(workspaceActionSave_);
     workspaceToolBar_->addAction(workspaceActionSaveAs_);
+   // workspaceToolBar_->addAction(workspaceActionSaveAsCopy_);
     viewModeToolBar_ = addToolBar("View");
     viewModeToolBar_->setObjectName("viewModeToolBar");
     viewModeToolBar_->addAction(viewModeActionDeveloper_);
@@ -498,6 +504,40 @@ void InviwoMainWindow::saveWorkspaceAs() {
         addToRecentWorkspaces(path);
     }
 }
+
+
+
+void InviwoMainWindow::saveWorkspaceAsCopy() {
+    // dialog window settings
+    QStringList extension;
+    extension << "Inviwo File (*.inv)";
+    QList<QUrl> sidebarURLs;
+    sidebarURLs << QUrl::fromLocalFile(QDir(workspaceFileDir_).absolutePath());
+    //TODO: create InviwoFileDialog to avoid frequent version checks
+#if (QT_VERSION >= QT_VERSION_CHECK(5, 0, 0))
+    sidebarURLs << QUrl::fromLocalFile(QStandardPaths::writableLocation(QStandardPaths::DesktopLocation));
+    sidebarURLs << QUrl::fromLocalFile(QStandardPaths::writableLocation(QStandardPaths::HomeLocation));
+#else
+    sidebarURLs << QUrl::fromLocalFile(QDesktopServices::storageLocation(QDesktopServices::DesktopLocation));
+    sidebarURLs << QUrl::fromLocalFile(QDesktopServices::storageLocation(QDesktopServices::HomeLocation));
+#endif
+    QFileDialog saveFileDialog(this, tr("Save Workspace as Copy ..."), QDir(workspaceFileDir_).absolutePath());
+    saveFileDialog.setFileMode(QFileDialog::AnyFile);
+    saveFileDialog.setAcceptMode(QFileDialog::AcceptSave);
+    saveFileDialog.setConfirmOverwrite(true);
+    saveFileDialog.setNameFilters(extension);
+    saveFileDialog.setSidebarUrls(sidebarURLs);
+
+    if (saveFileDialog.exec()) {
+        QString path = saveFileDialog.selectedFiles().at(0);
+
+        if (!path.endsWith(".inv")) path.append(".inv");
+
+        networkEditorView_->getNetworkEditor()->saveNetwork(path.toLocal8Bit().constData());
+        addToRecentWorkspaces(path);
+    }
+}
+
 
 void InviwoMainWindow::disableEvaluation(bool disable) {
     if (disable)
