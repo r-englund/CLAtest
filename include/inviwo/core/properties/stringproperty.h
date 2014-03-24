@@ -73,11 +73,11 @@ public:
 
     virtual std::string getClassName()  const { return "StringProperty"; }
 
-    Variant StringProperty::getVariant();
+    Variant getVariant();
 
-    void StringProperty::setVariant(const Variant& v);
+    void setVariant(const Variant& v);
 
-    int StringProperty::getVariantType();
+    int getVariantType();
 };
 
 } // namespace
