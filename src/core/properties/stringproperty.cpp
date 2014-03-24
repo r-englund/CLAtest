@@ -42,4 +42,24 @@ StringProperty::StringProperty(std::string identifier,
     : TemplateProperty<std::string>(identifier, displayName,value, invalidationLevel, semantics) {
 }
 
+//FIXME:Avoid duplication of set, get variant functions
+Variant StringProperty::getVariant() {
+    return Variant(TemplateProperty<std::string>::value_);
+}
+
+void StringProperty::setVariant(const Variant& v) {
+    if (v.canConvert(getVariantType())) {
+        //Input variant type can be different from property variant type
+        Variant currentVariant(getVariant());
+        //Invokes conversion during assignment operation
+        currentVariant = v;
+        //Get from variants and set
+        this->set(currentVariant.get<std::string>());
+    }
+}
+
+int StringProperty::getVariantType() {
+    return getVariant().getType();
+}
+
 } // namespace

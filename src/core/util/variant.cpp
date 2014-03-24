@@ -733,8 +733,10 @@ double Variant::getDouble() const {
             std::stringstream s(VP(std::string));
             double result;
 
-            if ((s >> result).fail())
-                throw Exception("String->Double conversion failed");
+            if ((s >> result).fail()) {
+                LogWarn("String->Double conversion failed");
+                result=0.0;
+            }
 
             return result;
         }
@@ -773,8 +775,10 @@ float Variant::getFloat() const {
             std::stringstream s(VP(std::string));
             float result;
 
-            if ((s >> result).fail())
-                throw Exception("String->Double conversion failed");
+            if ((s >> result).fail()) {
+                LogWarn("String->Double conversion failed");
+                result = 0.0f;
+            }
 
             return result;
         }
@@ -813,8 +817,10 @@ int Variant::getInt() const {
             std::stringstream s(VP(std::string));
             int result;
 
-            if ((s >> result).fail())
-                throw Exception("String->Int conversion failed");
+            if ((s >> result).fail()) {
+                LogWarn("String->Int conversion failed");
+                result = 0;
+            }
 
             return result;
         }
@@ -853,8 +859,10 @@ long Variant::getLong() const {
             std::stringstream s(VP(std::string));
             long result;
 
-            if ((s >> result).fail())
-                throw Exception("String->Int conversion failed");
+            if ((s >> result).fail()) {
+                LogWarn("String->Long conversion failed");
+                result = 0;
+            }
 
             return result;
         }
@@ -1057,8 +1065,10 @@ glm::i64 Variant::getInt64() const {
             std::stringstream s(VP(std::string));
             glm::i64 result;
 
-            if ((s >> result).fail())
-                throw Exception("String->Int conversion failed");
+            if ((s >> result).fail()) {
+                LogWarn("String->Int64 conversion failed");
+                result = 0;
+            }
 
             return result;
         }
