@@ -49,7 +49,7 @@ enum LinkingConditions { NoLinkCondition=0,
 class IVW_CORE_API SimpleCondition {
 public:
     SimpleCondition() {}
-    static bool canLink(Property* src, Property* dst);
+    static bool canLink(Property* src, Property* dst, bool compareVariants=false);
     static LinkingConditions conditionType() { return LinkMatchingTypes;}
     static std::string conditionName() { return "Matching Type";}
 };
