@@ -62,5 +62,6 @@ void main() {
     resultColor.rgb = srcColor.rgb + backgroundColor.rgb * backgroundColor.a * (1.0 - srcColor.a);
     resultColor.a = srcColor.a + backgroundColor.a * (1.0 - srcColor.a);
     FragData0 = resultColor;
-	gl_FragDepth = texture2D(depth_, texCoords).r;
+
+	gl_FragDepth = texture2D(depth_, texCoords).z;
 }
