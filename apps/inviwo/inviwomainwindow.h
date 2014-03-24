@@ -89,6 +89,12 @@ public slots:
     void openRecentWorkspace();
     void saveWorkspace();
     void saveWorkspaceAs();
+
+    /*
+    * Save the current workspace into a new workspace file, 
+    * leaves the current workspace file as current workspace
+    */
+    void saveWorkspaceAsCopy();
     void exitInviwo();
     void disableEvaluation(bool);
     void showAboutBox();
@@ -135,6 +141,7 @@ private:
     QAction* workspaceActionOpen_;
     QAction* workspaceActionSave_;
     QAction* workspaceActionSaveAs_;
+    QAction* workspaceActionSaveAsCopy_;
     QAction* exitAction_;
     QAction* recentFileSeparator_;
     QAction* workspaceActionRecent_[maxNumRecentFiles_];
