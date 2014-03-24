@@ -118,7 +118,7 @@ void Background::process() {
     shader_->activate();
     setGlobalShaderParameters(shader_);
     shader_->setUniform("srcColorTex_", srcColorUnit.getUnitNumber());
-    shader_->setUniform("depth_", srcColorUnit.getUnitNumber());
+    shader_->setUniform("depth_", srcDepthUnit.getUnitNumber());
 
     if (inport_.hasData())
         setTextureParameters(inport_, shader_, "srcColorParameters_");
