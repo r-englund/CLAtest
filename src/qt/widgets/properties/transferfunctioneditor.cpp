@@ -118,9 +118,11 @@ void TransferFunctionEditor::keyPressEvent(QKeyEvent* e) {
 
     // delete selected keys
     if (e->key() == Qt::Key_Delete) {
-        for (size_t i=0; i<controlPoints_.size(); i++)
-            if (controlPoints_[i]->isSelected())
+        for (size_t i = 0; i < controlPoints_.size(); i++) {
+            if (controlPoints_[i]->isSelected()) {
                 removeControlPoint(controlPoints_[i]);
+            }
+        }
     }
 }
 

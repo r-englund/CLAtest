@@ -1097,7 +1097,7 @@ void LinkDialog::initDialog() {
     QHBoxLayout* commonButtonLayout = new QHBoxLayout;
     //auto link button
     QHBoxLayout* autoLinkPushButtonLayout = new QHBoxLayout;
-    autoLinkPushButtonLayout->setAlignment(Qt::AlignLeft);
+    autoLinkPushButtonLayout->setAlignment(Qt::AlignLeft);                  
     //qt documentation
     //auto link button
     autoLinkPushButton_ = new QPushButton("AutoLink", this);
