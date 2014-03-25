@@ -65,7 +65,9 @@ public:
 
     std::string processorIdentifier_;
     std::string portIdentifier_;
+    std::string portInformation_;
     ivec2 pos_;
+    ivec2 gpos_;
 
 private:
     State state_;

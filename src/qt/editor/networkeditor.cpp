@@ -479,11 +479,13 @@ void NetworkEditor::managePortInspection() {
         port = selectedPort;
         // If we hover over an inport get its connected outport instead
         Inport* inport = dynamic_cast<Inport*>(port);
-
-        if (inport)
+        if (inport) {
             port = inport->getConnectedOutport();
-    } else if (connection)
+        }
+
+    } else if (connection) {
         port = connection->getOutport();
+    }
 
     if (!port) { // return to start
         if(inspection_.isInspectorActive())
@@ -503,24 +505,22 @@ void NetworkEditor::managePortInspection() {
         if (inspection_.samePort(port)) {
             if (hoverTimer_.isActive()) {
                 //Keep waiting
-            } 
-            else{ 
-                if(inspection_.isInspectorActive()) {
+            } else { 
+                if (inspection_.isInspectorActive()) {
                     // add port inspector
                     inspection_.setState(Inspection::Inspect);
-                    QPoint p = QCursor::pos();
                     addPortInspector(inspection_.processorIdentifier_,
                                      inspection_.portIdentifier_,
-                                     QPoint(p.x()+5, p.y()+5));
+                                     QPoint(inspection_.gpos_.x + 5,
+                                            inspection_.gpos_.y + 5));
                 }
-                if(inspection_.isInformationActive() && processor) {
+                if (inspection_.isInformationActive()) {
                     inspection_.setState(Inspection::Inspect);
-                    QPoint p = QCursor::pos();
-                    Port* selectedPort = processor->getSelectedPort(pos);
-                    addPortInformation(selectedPort->getProcessor()->getIdentifier(),
-                                       selectedPort->getIdentifier(),
-                                       selectedPort->getContentInfo(),
-                                       QPoint(p.x()+5, p.y()+5));
+                    addPortInformation(inspection_.processorIdentifier_,
+                                       inspection_.portIdentifier_,
+                                       inspection_.portInformation_,
+                                       QPoint(inspection_.gpos_.x + 5,
+                                              inspection_.gpos_.y + 5));
                 }
             }
         } else { // Left port before time out, reset.
@@ -532,9 +532,9 @@ void NetworkEditor::managePortInspection() {
         if (inspection_.samePort(port)) {
             // Keep showing inspector
         } else {
-            if(inspection_.isInspectorActive())
+            if (inspection_.isInspectorActive()) {
                 removePortInspector(inspection_.processorIdentifier_, inspection_.portIdentifier_);
-
+            }
             inspection_.setState(Inspection::Start);
             inspection_.resetPort();
         }
@@ -1071,6 +1071,7 @@ void NetworkEditor::mouseMoveEvent(QGraphicsSceneMouseEvent* e) {
     } else if (inspection_.isActive() && e->button() == Qt::NoButton){
         // Port inspector hover effect
         inspection_.pos_ = ivec2(e->scenePos().x(),e->scenePos().y());
+        inspection_.gpos_ = ivec2(e->screenPos().x(), e->screenPos().y());
         managePortInspection();
     }
 

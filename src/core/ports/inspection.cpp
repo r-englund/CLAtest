@@ -39,6 +39,7 @@ namespace inviwo {
 Inspection::Inspection()
     : processorIdentifier_("")
     , portIdentifier_("")
+    , portInformation_("")
     , state_(Start)
     , inspectorNetworkActive_(NULL)
     , inspectorInformationActive_(NULL)
@@ -105,6 +106,7 @@ void Inspection::setState(State val) {
 void Inspection::setPort(Port* port) {
     processorIdentifier_ = port->getProcessor()->getIdentifier();
     portIdentifier_ = port->getIdentifier();
+    portInformation_ = port->getContentInfo();
 }
 
 bool Inspection::samePort(Port* port) {
@@ -118,6 +120,7 @@ bool Inspection::samePort(Port* port) {
 void Inspection::resetPort() {
     processorIdentifier_ = "";
     portIdentifier_ = "";
+    portInformation_ = "";
 }
 
 } // namespace

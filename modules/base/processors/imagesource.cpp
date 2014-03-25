@@ -75,8 +75,7 @@ void ImageSource::process() {
         LayerDisk* outLayerDisk;
         if(outImage->getColorLayer()->hasRepresentation<LayerDisk>()){
             outLayerDisk = outImage->getColorLayer()->getEditableRepresentation<LayerDisk>();
-        }
-        else{
+        } else {
             outLayerDisk = new LayerDisk(imageFileName_.get());
             outImage->getColorLayer()->addRepresentation(outLayerDisk);
         }
