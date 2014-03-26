@@ -337,6 +337,8 @@ public:
     }
     void updateFromProperty();
 
+    virtual std::string getToolTipText();
+
 protected:
     // Connected to sliderwidget valueChanged()
     void setPropertyValue(int);
@@ -345,6 +347,31 @@ protected:
 
     PropertyTransformer<T>* transformer_;
 };
+
+template <typename BT, typename T>
+std::string OrdinalPropertyWidgetQt<BT, T>::getToolTipText() {
+    std::stringstream ss;
+
+    ss << TemplateOrdinalPropertyWidgetQt<BT, T>::getToolTipText() << std::endl;
+
+    T min = transformer_->min(this->ordinalproperty_->getMinValue());
+    T max = transformer_->max(this->ordinalproperty_->getMaxValue());
+    T inc = transformer_->inc(this->ordinalproperty_->getIncrement());
+    T val = transformer_->value(this->ordinalproperty_->get());
+
+    size_t size = this->ordinalproperty_->getDim().x*this->ordinalproperty_->getDim().y;
+    for (size_t i = 0; i < size; i++) {
+        ss << i << ": " << glmwrapper<BT, T>::getval(val, i)
+           << " [" << glmwrapper<BT, T>::getval(min, i) 
+           << ", " << glmwrapper<BT, T>::getval(max, i) << "]" 
+           << " inc: " << glmwrapper<BT, T>::getval(inc, i);
+        if (i < size - 1) {
+            ss << std::endl;
+        }
+    }
+
+    return ss.str(); 
+}
 
 template <typename BT, typename T>
 void OrdinalPropertyWidgetQt<BT, T>::updateFromProperty() {

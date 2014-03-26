@@ -77,10 +77,10 @@ protected:
     void setSliderMinValue(float val);
     void setSliderMaxValue(float val);
 
+    virtual std::string getToolTipText();
+
 private:
     float maxNumberOfValues_;
-    //int sliderMin_;
-    //int sliderMax_;
 };
 
 } // namespace

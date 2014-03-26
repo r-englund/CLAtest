@@ -161,7 +161,6 @@ template <typename T>
 void MinMaxProperty<T>::set(const glm::detail::tvec2<T, glm::defaultp>& value) {
     TemplateProperty<glm::detail::tvec2<T, glm::defaultp> >::value_ = value;
     validateValues();
-    //TemplateProperty<glm::detail::tvec2<T, glm::defaultp> >::set(value);
 }
 
 template <typename T>

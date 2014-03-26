@@ -157,10 +157,7 @@ void FloatMinMaxPropertyWidgetQt::updateFromSpinBoxMax(double val) {
 }
 
 void FloatMinMaxPropertyWidgetQt::setPropertyValue(float minVal, float maxVal) {
-    //property_->setInitiatingWidget(this);
     property_->set(glm::vec2(minVal, maxVal));
-    //property_->clearInitiatingWidget();
-    //emit modified();
 }
 
 void FloatMinMaxPropertyWidgetQt::setSliderMinValue(float val) {
@@ -183,6 +180,18 @@ void FloatMinMaxPropertyWidgetQt::setSpinBoxDecimals(float increment) {
 
 void FloatMinMaxPropertyWidgetQt::setPropertyDisplayName() {
     property_->setDisplayName(label_->getText());
+}
+
+std::string FloatMinMaxPropertyWidgetQt::getToolTipText() {
+    std::stringstream ss;
+
+    ss << PropertyWidgetQt::getToolTipText() << std::endl;
+    ss << "Value: [" << property_->get().x << ", " << property_->get().y << "]" << std::endl
+       << "Range: [" << property_->getRangeMin() << ", " << property_->getRangeMax() << "]" << std::endl 
+       << "Inc: " << property_->getIncrement() << " Sep: " << property_->getMinSeparation();
+
+    return ss.str();
+
 }
 
 } //namespace

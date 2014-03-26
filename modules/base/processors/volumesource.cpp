@@ -36,6 +36,7 @@
 #include <inviwo/core/util/urlparser.h>
 #include <inviwo/core/io/datareaderfactory.h>
 #include <inviwo/core/io/rawvolumereader.h>
+#include <inviwo/core/network/processornetwork.h>
 #include <glm/gtx/vector_angle.hpp>
 #include <math.h>
 
@@ -51,18 +52,14 @@ VolumeSource::VolumeSource()
     , valueRange_("valueRange", "Value range", 0.f, 255.0f, 0.f, 255.0f)
     , valueUnit_("valueUnit", "Value unit", "")
     , overRideDefaults_("override", "Override", false)
-    , lengths_("length_", "Lengths", vec3(1.0f), vec3(0.0f), vec3(10.0f))
-    , angles_("angles_", "Angles", vec3(90.0f), vec3(0.0f), vec3(180.0f), vec3(1.0f))
-    , offset_("offset_", "Offset", vec3(0.0f), vec3(-10.0f), vec3(10.0f)) {
+    , lengths_("length", "Lengths", vec3(1.0f), vec3(0.0f), vec3(10.0f))
+    , angles_("angles", "Angles", vec3(90.0f), vec3(0.0f), vec3(180.0f), vec3(1.0f))
+    , offset_("offset", "Offset", vec3(0.0f), vec3(-10.0f), vec3(10.0f))
+    , dimensions_("dimensions", "Dimensions")
+    , format_("format", "Format","") {
 
     DataSource<Volume, VolumeOutport>::file_.setDisplayName("Volume file");
-    dataRange_.onChange(this, &VolumeSource::invalidateOutput);
-    addProperty(dataRange_);
-    valueRange_.onChange(this, &VolumeSource::invalidateOutput);
-    addProperty(valueRange_);
-    valueUnit_.onChange(this, &VolumeSource::invalidateOutput);
-    addProperty(valueUnit_);
-
+    
     overRideDefaults_.setGroupDisplayName("Basis", "Basis and offset");
     overRideDefaults_.setGroupID("Basis");
     lengths_.setGroupID("Basis");
@@ -71,12 +68,30 @@ VolumeSource::VolumeSource()
     lengths_.setReadOnly(true);
     angles_.setReadOnly(true);
     offset_.setReadOnly(true);
+    dimensions_.setReadOnly(true);
+    format_.setReadOnly(true);
+    dimensions_.setCurrentStateAsDefault();
+    format_.setCurrentStateAsDefault();
+
+    dimensions_.setGroupDisplayName("Information", "Data information");
+    dimensions_.setGroupID("Information");
+    format_.setGroupID("Information");
+    dataRange_.setGroupID("Information");
+    valueRange_.setGroupID("Information");
+    valueUnit_.setGroupID("Information");
 
     orgLengths_ = lengths_.get();
     orgAngles_ = angles_.get();
     orgOffet_ = offset_.get();
 
     overRideDefaults_.onChange(this, &VolumeSource::onOverrideChange);
+
+    addProperty(dimensions_);
+    addProperty(format_);
+
+    addProperty(dataRange_);
+    addProperty(valueRange_);
+    addProperty(valueUnit_);
 
     addProperty(overRideDefaults_);
     addProperty(lengths_);
@@ -87,6 +102,10 @@ VolumeSource::VolumeSource()
 VolumeSource::~VolumeSource() {}
 
 void VolumeSource::onOverrideChange() {
+    if (this->isDeserializing_) {
+        return;
+    }
+    
     if(!overRideDefaults_.get()) {
         vec3 tmpLength = lengths_.get();
         vec3 tmpAngle = angles_.get();
@@ -117,29 +136,27 @@ void VolumeSource::onOverrideChange() {
     }
 }
 
-void VolumeSource::invalidateOutput() {
-    Volume* volume = DataSource<Volume, VolumeOutport>::port_.getData();
-
-    if (volume) {
-        volume->setMetaData<Vec2MetaData>("DataRange", dataRange_.get());
-//        volume->setMetaData<Vec2MetaData>("ValueRange", valueRange_.get());
-//        volume->setMetaData<StringMetaData>("ValueUnit", valueUnit_.get());
-    }
-
-    DataSource<Volume, VolumeOutport>::invalidateOutput();
-}
-
 void VolumeSource::dataLoaded(Volume* volume) {
+    InviwoApplication::getPtr()->getProcessorNetwork()->lock();
+    // We should use double here... but at the moment there is no double min max widget...
     float max = static_cast<float>(volume->getDataFormat()->getMax());
     float min = static_cast<float>(volume->getDataFormat()->getMin());
+    
+    // Default values
     dataRange_.setRangeMin(min);
     dataRange_.setRangeMax(max);
+    valueRange_.setRangeMin(min);
+    valueRange_.setRangeMax(max);
+    dataRange_.set(vec2(min, max));
+    valueRange_.set(vec2(min, max));
+    valueUnit_.set("No unit");
 
-    if (volume->hasMetaData<Vec2MetaData>("DataRange")) {
-        dataRange_.set(volume->getMetaData<Vec2MetaData>("DataRange", dataRange_.get()));
-    } else {
-        dataRange_.set(vec2(min, max));
-    }
+    // Overide with metadata from volume
+    dataRange_.set(volume->getMetaData<Vec2MetaData>("DataRange", dataRange_.get()));
+    valueRange_.set(volume->getMetaData<Vec2MetaData>("ValueRange", valueRange_.get()));
+    valueUnit_.set(volume->getMetaData<StringMetaData>("ValueUnit", valueUnit_.get()));
+
+    // calculate and set properties.
     vec3 a(volume->getBasis()[0]);
     vec3 b(volume->getBasis()[1]);
     vec3 c(volume->getBasis()[2]);
@@ -165,13 +182,19 @@ void VolumeSource::dataLoaded(Volume* volume) {
     orgAngles_ = angles_.get();
     orgOffet_ = offset_.get();
 
-    //valueRange_.set(volume->getMetaData<Vec2MetaData>("ValueRange", dataRange_.get()));
-    //valueUnit_.set(volume->getMetaData<StringMetaData>("ValueUnit", valueUnit_.get()));
+    dimensions_.set(glm::to_string(volume->getDimension()));
+    format_.set(volume->getDataFormat()->getString());
+    
+    InviwoApplication::getPtr()->getProcessorNetwork()->unlock();
     invalidateOutput();
 }
 
 void VolumeSource::process() {
     Volume* out;
+
+    if (this->isDeserializing_) {
+        return;
+    }
 
     if(port_.hasData()) {
         out = port_.getData();
@@ -192,7 +215,20 @@ void VolumeSource::process() {
             0.0f, 0.0f, 0.0f, 1.0f
             );
         out->setBasisAndOffset(glm::transpose(newBasisAndOffset));
+
+        out->setMetaData<Vec2MetaData>("DataRange", dataRange_.get());
+        out->setMetaData<Vec2MetaData>("ValueRange", valueRange_.get());
+        out->setMetaData<StringMetaData>("ValueUnit", valueUnit_.get());
     }
+}
+
+void VolumeSource::serialize(IvwSerializer& s) const {
+    DataSource<Volume, VolumeOutport>::serialize(s);
+}
+
+void VolumeSource::deserialize(IvwDeserializer& d) {
+    DataSource<Volume, VolumeOutport>::deserialize(d);
+    onOverrideChange();
 }
 
 
