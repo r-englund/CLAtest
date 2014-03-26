@@ -25,18 +25,22 @@ protected:
 
     virtual void dataLoaded(DataType* data) {};
 
+    virtual void invalidateOutput();
+
+    virtual void serialize(IvwSerializer& s) const;
+    virtual void deserialize(IvwDeserializer& d);
+
     PortType port_;
     FileProperty file_;
-
-    virtual void invalidateOutput();
+    bool isDeserializing_;
 };
-
 
 template <typename DataType, typename PortType>
 DataSource<DataType, PortType>::DataSource()
     : Processor()
     , port_("data")
-    , file_("filename", "File") {
+    , file_("filename", "File")
+    , isDeserializing_(false) {
     addPort(port_);
     file_.onChange(this, &DataSource::load);
     std::vector<FileExtension> ext = DataReaderFactory::getRef().getExtensionsForType<DataType>();
@@ -67,6 +71,9 @@ bool DataSource<DataType, PortType>::isReady() const {
 
 template <typename DataType, typename PortType>
 void DataSource<DataType, PortType>::load() {
+    if (isDeserializing_) {
+        return;
+    }
     TemplateResource<DataType>* resource = ResourceManager::getPtr()->getResourceAs<TemplateResource<DataType> >(file_.get());
 
     if (resource) {
@@ -90,6 +97,19 @@ void DataSource<DataType, PortType>::load() {
         }
     }
 }
+
+template <typename DataType, typename PortType>
+void inviwo::DataSource<DataType, PortType>::serialize(IvwSerializer& s) const {
+    Processor::serialize(s);
+}
+template <typename DataType, typename PortType>
+void inviwo::DataSource<DataType, PortType>::deserialize(IvwDeserializer& d) {
+    isDeserializing_ = true;
+    Processor::deserialize(d);
+    isDeserializing_ = false;
+    load();
+}
+
 
 } // namespace
 

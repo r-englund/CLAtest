@@ -40,6 +40,8 @@
 
 #include <QStyleOption>
 #include <QPainter>
+#include <QToolTip>
+#include <QHelpEvent>
 
 namespace inviwo {
 
@@ -48,15 +50,8 @@ PropertyWidgetQt::PropertyWidgetQt()
     , contextMenu_(NULL)
     , viewModeItem_(NULL)
     , developerViewModeAction_(NULL)
-    , applicationViewModeAction_(NULL)
-{
-    /*
-    static_cast<OptionPropertyInt*>(
-        InviwoApplication::getPtr()->
-            getSettingsByType<SystemSettings>()->
-                getPropertyByIdentifier("viewMode")
-        )->onChange(this, &PropertyWidgetQt::onViewModeChange);
-    */
+    , applicationViewModeAction_(NULL) {
+ 
     this->setContextMenuPolicy(Qt::CustomContextMenu);
     connect(this,
             SIGNAL(customContextMenuRequested(const QPoint&)),
@@ -68,16 +63,7 @@ PropertyWidgetQt::PropertyWidgetQt(Property* property)
     : PropertyWidget(property)
     , contextMenu_(NULL)
     , viewModeItem_(NULL) {
-    
-    this->setToolTip(("id: " + property_->getIdentifier()).c_str());
-    /*
-    static_cast<OptionPropertyInt*>(
-        InviwoApplication::getPtr()->
-            getSettingsByType<SystemSettings>()->
-                getPropertyByIdentifier("viewMode")
-        )->onChange(this, &PropertyWidgetQt::onViewModeChange);
-    */
-    
+        
     this->setContextMenuPolicy(Qt::CustomContextMenu);
     connect(this,
             SIGNAL(customContextMenuRequested(const QPoint&)),
@@ -380,14 +366,32 @@ void PropertyWidgetQt::updateContextMenu() {
     }
 }
 
+bool PropertyWidgetQt::event(QEvent *event) {
+    if (event->type() == QEvent::ToolTip) {
+        QHelpEvent *helpEvent = static_cast<QHelpEvent *>(event);
+        QToolTip::showText(helpEvent->globalPos(),QString::fromStdString(getToolTipText()));
+        return true;
+    }
+    return QWidget::event(event);
+}
+
+std::string PropertyWidgetQt::getToolTipText() {
+    if (property_) {
+        return "id: " + property_->getIdentifier();
+    } else {
+        return "";
+    }
+}
+
 void PropertyWidgetQt::setProperty(Property* property) {
     PropertyWidget::setProperty(property);
-    setToolTip(("id: " + property_->getIdentifier()).c_str());
 }
 
 void PropertyWidgetQt::resetPropertyToDefaultState() {
     property_->resetToDefaultState();
 }
+
+
 
 //////////////////////////////////////////////////////////////////////////
 

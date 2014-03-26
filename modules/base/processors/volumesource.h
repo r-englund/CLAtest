@@ -56,9 +56,11 @@ public:
 
     void onOverrideChange();
 
+    virtual void serialize(IvwSerializer& s) const;
+    virtual void deserialize(IvwDeserializer& d);
+
 protected:
     virtual void dataLoaded(Volume* data);
-    virtual void invalidateOutput();
 
     virtual void process();
 
@@ -76,6 +78,8 @@ private:
     vec3 orgLengths_;
     vec3 orgAngles_;
     vec3 orgOffet_;
+    StringProperty dimensions_;
+    StringProperty format_;
 };
 
 } // namespace

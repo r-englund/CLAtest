@@ -87,6 +87,9 @@ protected:
     void updateModuleMenuActions();
     virtual void initializeEditorWidgetsMetaData();
 
+    virtual bool event(QEvent *event); //< for custom tooltips.
+    virtual std::string getToolTipText();
+
     void paintEvent(QPaintEvent *pe);
     
     // Actions
