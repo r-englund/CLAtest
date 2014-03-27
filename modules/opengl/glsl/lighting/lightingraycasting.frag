@@ -79,7 +79,7 @@ vec4 rayTraversal(vec3 entryPoint, vec3 exitPoint, vec2 texCoords) {
 #else
         color.rgb *= lightVoxel.r;
 #endif
-        result = RC_APPLY_COMPOSITING(result, color, samplePos, gradient, t, tDepth, tIncr);
+        result = RC_APPLY_COMPOSITING(result, color, samplePos, voxel, gradient, t, tDepth, tIncr);
 
         // early ray termination
         if (result.a > ERT_THRESHOLD) t = tEnd;

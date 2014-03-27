@@ -211,7 +211,7 @@ void VolumeRaycasterGL::initializeResources() {
 
     shader_->getFragmentShaderObject()->addShaderDefine(shadingKey, shadingValue);
     // compositing defines
-    std::string compositingKey = "RC_APPLY_COMPOSITING(result, color, samplePos, gradient, t, tDepth, tIncr)";
+    std::string compositingKey = "RC_APPLY_COMPOSITING(result, color, samplePos, voxel, gradient, t, tDepth, tIncr)";
     std::string compositingValue = "";
 
     if (compositingMode_.isSelectedIdentifier("dvr"))
@@ -227,9 +227,9 @@ void VolumeRaycasterGL::initializeResources() {
     else if (compositingMode_.isSelectedIdentifier("fhd"))
         compositingValue = "compositeFHD(result, color, gradient, t, tDepth);";
     else if (compositingMode_.isSelectedIdentifier("iso"))
-        compositingValue = "compositeISO(result, color, t, tDepth, tIncr, isoValue_);";
+        compositingValue = "compositeISO(result, color, voxel.r, t, tDepth, tIncr, isoValue_);";
     else if (compositingMode_.isSelectedIdentifier("ison"))
-        compositingValue = "compositeISON(result, color, gradient, t, tDepth, isoValue_);";
+        compositingValue = "compositeISON(result, color, voxel.r, gradient, t, tDepth, isoValue_);";
 
     shader_->getFragmentShaderObject()->addShaderDefine(compositingKey, compositingValue);
     shader_->build();
