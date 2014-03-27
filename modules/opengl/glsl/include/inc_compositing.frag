@@ -102,9 +102,9 @@ vec4 compositeFHD(in vec4 curResult, in vec4 color, in vec3 samplePos, in float 
     return result;
 }
 
-vec4 compositeISO(in vec4 curResult, in vec4 color, in float t, inout float tDepth, in float tIncr, in float isoValue) {
+vec4 compositeISO(in vec4 curResult, in vec4 color, in float intensity, in float t, inout float tDepth, in float tIncr, in float isoValue) {
     vec4 result = curResult;
-    if (color.a >= isoValue-0.01 && color.a <= isoValue+0.01) {
+    if (intensity >= isoValue-0.01 && intensity <= isoValue+0.01) {
         if (tDepth == -1.0)
             tDepth = t;
         color.a = 1.0 - pow(1.0 - color.a, tIncr * REF_SAMPLING_INTERVAL);
@@ -114,10 +114,10 @@ vec4 compositeISO(in vec4 curResult, in vec4 color, in float t, inout float tDep
     return result;
 }
 
-vec4 compositeISON(in vec4 curResult, in vec4 color, in vec3 gradient, in float t, inout float tDepth, in float isoValue) {
+vec4 compositeISON(in vec4 curResult, in vec4 color, in float intensity, in vec3 gradient, in float t, inout float tDepth, in float isoValue) {
     vec4 result = curResult;
 
-    if (color.a >= isoValue-0.01 && color.a <= isoValue+0.01) {
+    if (intensity >= isoValue-0.01 && intensity <= isoValue+0.01) {
         result = compositeFHN(curResult, color, gradient, t, tDepth);
     }
 
