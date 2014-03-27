@@ -38,6 +38,7 @@
 #include <inviwo/core/datastructures/light/pointlight.h>
 #include <inviwo/core/ports/dataoutport.h>
 #include <inviwo/core/properties/ordinalproperty.h>
+#include <inviwo/core/properties/boolproperty.h>
 #include <inviwo/core/processors/processor.h>
 
 namespace inviwo {
@@ -68,6 +69,8 @@ private:
 
     FloatVec4Property lightDiffuse_;
     FloatVec3Property lightPosition_;
+
+    BoolProperty lightEnabled_;
 
     PointLight* lightSource_;
 };
