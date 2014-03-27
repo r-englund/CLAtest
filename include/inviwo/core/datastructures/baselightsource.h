@@ -89,12 +89,27 @@ public:
      */
     void setSize(const vec2& newSize) { size_ = newSize; }
 
+    /**
+     * Get is enabled.
+     *
+     * @return
+     */
+    bool isEnabled() const { return enabled_; }
+
+    /**
+     * Set if enabled.
+     *
+     * @param enable
+     */
+    void setEnabled(bool enable) { enabled_ = enable; }
+
     virtual std::string getDataInfo() const { return "LightSource"; }
 
 protected:
     mat4 objectToTextureSpaceMatrix_; // Transformation matrix from object to texture space coordinates
     float fieldOfView_; // Field of view in radians
     vec2 size_; // width, height in texture space
+    bool enabled_;
 };
 
 // Data type that can be transfered to OpenCL device
