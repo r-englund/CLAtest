@@ -83,7 +83,7 @@ vec4 compositeFHN_VS(in vec4 curResult, in vec4 color, in vec3 gradient, in floa
 
     if (result == vec4(0.0) && color.a > 0.0) {
         tDepth = t;	
-        vec4 fh_normal = vec4(normalize(gradient), 1.0);
+        vec4 fh_normal = vec4(normalize(gradient), 0.0);
         vec4 transformed_normal = cameraViewMatrix * fh_normal;
         result = vec4(normalize(transformed_normal.xyz)*0.5+0.5, 1.0);
     }
