@@ -2,7 +2,7 @@
 <InviwoTreeData version="1.0">
     <!-- Don't edit the following code -->
     <Processors>
-        <Processor type="SimpleRaycaster" identifier="SimpleRaycaster" id="ref0">
+        <Processor type="SimpleRaycaster" identifier="SimpleRaycaster" id="ref1">
             <MetaDataList>
                 <MetaData type="ProcessorMetaData">
                     <position x="-475" y="-450" />
@@ -11,134 +11,57 @@
                 </MetaData>
             </MetaDataList>
             <Properties>
-                <Property type="BoolProperty" identifier="applyLightAttenuation" displayName="Light attenuation" key="applyLightAttenuation">
-                    <MetaDataList />
-                    <value content="0" />
-                </Property>
-                <Property type="CameraProperty" identifier="camera" displayName="Camera" key="camera" id="ref1">
-                    <MetaDataList />
+                <Property type="BoolProperty" identifier="applyLightAttenuation" displayName="Light attenuation" key="applyLightAttenuation" />
+                <Property type="CameraProperty" identifier="camera" displayName="Camera" key="camera" id="ref2">
                     <lookFrom type="FloatVec3Property" identifier="lookFrom" displayName="Look from">
-                        <MetaDataList />
-                        <value x="3.4465029" y="3.5096908" z="-4.1705432" />
-                        <minvalue x="-10" y="-10" z="-10" />
-                        <maxvalue x="10" y="10" z="10" />
-                        <increment x="0.1" y="0.1" z="0.1" />
+                        <value x="12.103707" y="12.196181" z="-14.230612" />
                     </lookFrom>
                     <lookTo type="FloatVec3Property" identifier="lookTo" displayName="Look to">
-                        <MetaDataList />
                         <value x="-0.074688219" y="-0.023412909" z="-0.078756794" />
-                        <minvalue x="-10" y="-10" z="-10" />
-                        <maxvalue x="10" y="10" z="10" />
-                        <increment x="0.1" y="0.1" z="0.1" />
                     </lookTo>
                     <lookUp type="FloatVec3Property" identifier="lookUp" displayName="Look up">
-                        <MetaDataList />
                         <value x="0.85588634" y="-0.34126964" z="0.37549159" />
-                        <minvalue x="-10" y="-10" z="-10" />
-                        <maxvalue x="10" y="10" z="10" />
-                        <increment x="0.1" y="0.1" z="0.1" />
                     </lookUp>
                     <fovy type="FloatProperty" identifier="fov" displayName="FOV">
-                        <MetaDataList />
                         <value content="30" />
-                        <minvalue content="30" />
-                        <maxvalue content="360" />
-                        <increment content="0.1" />
                     </fovy>
                     <aspectRatio type="FloatProperty" identifier="aspectRatio" displayName="Aspect Ratio">
-                        <MetaDataList />
-                        <value content="1" />
                         <minvalue content="0" />
                         <maxvalue content="1" />
                         <increment content="0.1" />
                     </aspectRatio>
-                    <nearPlane type="FloatProperty" identifier="near" displayName="Near Plane">
-                        <MetaDataList />
-                        <value content="0.1" />
-                        <minvalue content="0.001" />
-                        <maxvalue content="10" />
-                        <increment content="0.001" />
-                    </nearPlane>
-                    <farPlane type="FloatProperty" identifier="far" displayName="Far Plane">
-                        <MetaDataList />
-                        <value content="100" />
-                        <minvalue content="1" />
-                        <maxvalue content="1000" />
-                        <increment content="1" />
-                    </farPlane>
+                    <nearPlane type="FloatProperty" identifier="near" displayName="Near Plane" />
+                    <farPlane type="FloatProperty" identifier="far" displayName="Far Plane" />
                 </Property>
-                <Property type="OptionPropertyString" identifier="classificationMode" displayName="Classification" key="classificationMode">
-                    <MetaDataList />
-                    <value content="transfer-function" />
+                <Property type="BaseOptionProperty" identifier="classificationMode" displayName="Classification" key="classificationMode" />
+                <Property type="BaseOptionProperty" identifier="compositingMode" displayName="Compositing" key="compositingMode" />
+                <Property type="BaseOptionProperty" identifier="gradientComputationMode" displayName="Gradient computation" key="gradientComputationMode">
+                    <selectedIdentifier content="central" />
                 </Property>
-                <Property type="OptionPropertyString" identifier="compositingMode" displayName="Compositing" key="compositingMode">
-                    <MetaDataList />
-                    <value content="dvr" />
-                </Property>
-                <Property type="OptionPropertyString" identifier="gradientComputationMode" displayName="Gradient computation" key="gradientComputationMode">
-                    <MetaDataList />
-                    <value content="central" />
-                </Property>
-                <Property type="FloatProperty" identifier="isoValue" displayName="Iso value" key="isoValue">
-                    <MetaDataList />
-                    <value content="0.5" />
-                    <minvalue content="0" />
-                    <maxvalue content="1" />
-                    <increment content="0.0099999998" />
-                </Property>
-                <Property type="FloatVec3Property" identifier="lightAttenuation" displayName="Light attenuation values" key="lightAttenuation">
-                    <MetaDataList />
-                    <value x="0.5" y="0.5" z="0.5" />
-                    <minvalue x="0" y="0" z="0" />
-                    <maxvalue x="1" y="1" z="1" />
-                    <increment x="0.0099999998" y="0.0099999998" z="0.0099999998" />
-                </Property>
+                <Property type="FloatProperty" identifier="isoValue" displayName="Iso value" key="isoValue" />
+                <Property type="FloatVec3Property" identifier="lightAttenuation" displayName="Light attenuation values" key="lightAttenuation" />
                 <Property type="FloatVec3Property" identifier="lightColorAmbient" displayName="Ambient color" key="lightColorAmbient">
-                    <MetaDataList />
                     <value x="0.93333334" y="0.93333334" z="0.93333334" />
-                    <minvalue x="0" y="0" z="0" />
-                    <maxvalue x="1" y="1" z="1" />
-                    <increment x="0.0099999998" y="0.0099999998" z="0.0099999998" />
                 </Property>
                 <Property type="FloatVec3Property" identifier="lightColorDiffuse" displayName="Diffuse color" key="lightColorDiffuse">
-                    <MetaDataList />
                     <value x="0.49803922" y="0.49803922" z="0.49803922" />
-                    <minvalue x="0" y="0" z="0" />
-                    <maxvalue x="1" y="1" z="1" />
-                    <increment x="0.0099999998" y="0.0099999998" z="0.0099999998" />
                 </Property>
                 <Property type="FloatVec3Property" identifier="lightColorSpecular" displayName="Specular color" key="lightColorSpecular">
-                    <MetaDataList />
                     <value x="1" y="1" z="1" />
-                    <minvalue x="0" y="0" z="0" />
-                    <maxvalue x="1" y="1" z="1" />
-                    <increment x="0.0099999998" y="0.0099999998" z="0.0099999998" />
                 </Property>
                 <Property type="FloatVec3Property" identifier="lightPosition" displayName="Position" key="lightPosition">
-                    <MetaDataList />
-                    <value x="0.45033321" y="-0.43301272" z="0.59974992" />
                     <minvalue x="0" y="0" z="0" />
                     <maxvalue x="1" y="1" z="1" />
-                    <increment x="0.0099999998" y="0.0099999998" z="0.0099999998" />
+                    <value x="0.45033321" y="-0.43301272" z="0.59974992" />
                 </Property>
                 <Property type="IntProperty" identifier="materialShininess" displayName="Material shininess" key="materialShininess">
-                    <MetaDataList />
                     <value content="3" />
-                    <minvalue content="0" />
-                    <maxvalue content="180" />
-                    <increment content="1" />
                 </Property>
                 <Property type="FloatProperty" identifier="samplingRate" displayName="Sampling rate" key="samplingRate">
-                    <MetaDataList />
-                    <value content="3" />
-                    <minvalue content="1" />
-                    <maxvalue content="10" />
                     <increment content="0.1" />
+                    <value content="3" />
                 </Property>
-                <Property type="OptionPropertyString" identifier="shadingMode" displayName="Shading" key="shadingMode">
-                    <MetaDataList />
-                    <value content="phong" />
-                </Property>
+                <Property type="BaseOptionProperty" identifier="shadingMode" displayName="Shading" key="shadingMode" />
                 <Property type="TransferFunctionProperty" identifier="transferFunction" displayName="Transfer function" key="transferFunction">
                     <MetaDataList>
                         <MetaData type="PropertyEditorWidgetMetaData">
@@ -148,32 +71,49 @@
                             <dockstatus content="DockedRight" />
                         </MetaData>
                     </MetaDataList>
-                    <size content="8" />
-                    <pos0 x="0.027757775" y="0" />
-                    <rgba0 x="0" y="0" z="0" w="0" />
-                    <pos1 x="0.031947628" y="0.2857143" />
-                    <rgba1 x="0.10818647" y="0.78823531" z="0.14219883" w="0.2857143" />
-                    <pos2 x="0.041636664" y="0" />
-                    <rgba2 x="0.035294119" y="0.035294119" z="0.035294119" w="0" />
-                    <pos3 x="0.1078887" y="0" />
-                    <rgba3 x="0.054901961" y="0.054901961" z="0.054901961" w="0" />
-                    <pos4 x="0.12713583" y="0.34285715" />
-                    <rgba4 x="0.72941178" y="0.10583658" z="0.39684138" w="0.34285715" />
-                    <pos5 x="0.14599018" y="0" />
-                    <rgba5 x="0.086274512" y="0.086274512" z="0.086274512" w="0" />
-                    <pos6 x="0.34369886" y="0" />
-                    <rgba6 x="0.11372549" y="0.11372549" z="0.11372549" w="0" />
-                    <pos7 x="0.35811234" y="1" />
-                    <rgba7 x="0.12062257" y="0.73069352" z="0.99215686" w="1" />
-                    <mask_ x="0" y="1" />
-                    <zoomH_ x="0" y="1" />
-                    <zoomV_ x="0" y="1" />
-                    <interpolationType_ content="0" />
-                    <showHistogram_ content="1" />
+                    <transferFunction>
+                        <maskMin content="0" />
+                        <maskMax content="1" />
+                        <dataPoints>
+                            <point>
+                                <pos x="0.027757775" y="0" />
+                                <rgba x="0" y="0" z="0" w="0" />
+                            </point>
+                            <point>
+                                <pos x="0.031947628" y="0.2857143" />
+                                <rgba x="0.10818647" y="0.78823531" z="0.14219883" w="0.2857143" />
+                            </point>
+                            <point>
+                                <pos x="0.041636664" y="0" />
+                                <rgba x="0.035294119" y="0.035294119" z="0.035294119" w="0" />
+                            </point>
+                            <point>
+                                <pos x="0.1078887" y="0" />
+                                <rgba x="0.054901961" y="0.054901961" z="0.054901961" w="0" />
+                            </point>
+                            <point>
+                                <pos x="0.12713583" y="0.34285715" />
+                                <rgba x="0.72941178" y="0.10583658" z="0.39684138" w="0.34285715" />
+                            </point>
+                            <point>
+                                <pos x="0.14599018" y="0" />
+                                <rgba x="0.086274512" y="0.086274512" z="0.086274512" w="0" />
+                            </point>
+                            <point>
+                                <pos x="0.34369886" y="0" />
+                                <rgba x="0.11372549" y="0.11372549" z="0.11372549" w="0" />
+                            </point>
+                            <point>
+                                <pos x="0.35811234" y="1" />
+                                <rgba x="0.12062257" y="0.73069352" z="0.99215686" w="1" />
+                            </point>
+                        </dataPoints>
+                        <interpolationType_ content="0" />
+                    </transferFunction>
                 </Property>
             </Properties>
         </Processor>
-        <Processor type="CubeProxyGeometry" identifier="CubeProxyGeometry" id="ref4">
+        <Processor type="CubeProxyGeometry" identifier="CubeProxyGeometry" id="ref5">
             <MetaDataList>
                 <MetaData type="ProcessorMetaData">
                     <position x="-450" y="-625" />
@@ -183,30 +123,21 @@
             </MetaDataList>
             <Properties>
                 <Property type="IntMinMaxProperty" identifier="clipX" displayName="Clip X Slices" key="clipX">
-                    <MetaDataList />
                     <value x="0" y="150" />
                     <range x="0" y="150" />
-                    <increment content="1" />
                 </Property>
                 <Property type="IntMinMaxProperty" identifier="clipY" displayName="Clip Y Slices" key="clipY">
-                    <MetaDataList />
                     <value x="0" y="150" />
                     <range x="0" y="150" />
-                    <increment content="1" />
                 </Property>
                 <Property type="IntMinMaxProperty" identifier="clipZ" displayName="Clip Z Slices" key="clipZ">
-                    <MetaDataList />
                     <value x="0" y="150" />
                     <range x="0" y="150" />
-                    <increment content="1" />
                 </Property>
-                <Property type="BoolProperty" identifier="clippingEnabled" displayName="Enable Clipping" key="clippingEnabled">
-                    <MetaDataList />
-                    <value content="1" />
-                </Property>
+                <Property type="BoolProperty" identifier="clippingEnabled" displayName="Enable Clipping" key="clippingEnabled" />
             </Properties>
         </Processor>
-        <Processor type="EntryExitPoints" identifier="EntryExitPoints" id="ref2">
+        <Processor type="EntryExitPoints" identifier="EntryExitPoints" id="ref3">
             <MetaDataList>
                 <MetaData type="ProcessorMetaData">
                     <position x="-450" y="-550" />
@@ -218,7 +149,6 @@
                 <InteractionHandler type="Trackball">
                     <Properties>
                         <Property type="EventProperty" identifier="stepPanDown" displayName="Step pan down" key="stepPanDown">
-                            <MetaDataList />
                             <Event type="KeyboardEvent">
                                 <modifier content="Shift" />
                                 <button content="S" />
@@ -228,7 +158,6 @@
                             </Action>
                         </Property>
                         <Property type="EventProperty" identifier="stepPanLeft" displayName="Step pan left" key="stepPanLeft">
-                            <MetaDataList />
                             <Event type="KeyboardEvent">
                                 <modifier content="Shift" />
                                 <button content="A" />
@@ -238,7 +167,6 @@
                             </Action>
                         </Property>
                         <Property type="EventProperty" identifier="stepPanRight" displayName="Step pan right" key="stepPanRight">
-                            <MetaDataList />
                             <Event type="KeyboardEvent">
                                 <modifier content="Shift" />
                                 <button content="D" />
@@ -248,7 +176,6 @@
                             </Action>
                         </Property>
                         <Property type="EventProperty" identifier="stepPanUp" displayName="Step pan up" key="stepPanUp">
-                            <MetaDataList />
                             <Event type="KeyboardEvent">
                                 <modifier content="Shift" />
                                 <button content="W" />
@@ -258,7 +185,6 @@
                             </Action>
                         </Property>
                         <Property type="EventProperty" identifier="stepRotateDown" displayName="Step rotate down" key="stepRotateDown">
-                            <MetaDataList />
                             <Event type="KeyboardEvent">
                                 <modifier content="" />
                                 <button content="S" />
@@ -268,7 +194,6 @@
                             </Action>
                         </Property>
                         <Property type="EventProperty" identifier="stepRotateLeft" displayName="Step rotate left" key="stepRotateLeft">
-                            <MetaDataList />
                             <Event type="KeyboardEvent">
                                 <modifier content="" />
                                 <button content="A" />
@@ -278,7 +203,6 @@
                             </Action>
                         </Property>
                         <Property type="EventProperty" identifier="stepRotateRight" displayName="Step rotate right" key="stepRotateRight">
-                            <MetaDataList />
                             <Event type="KeyboardEvent">
                                 <modifier content="" />
                                 <button content="D" />
@@ -288,7 +212,6 @@
                             </Action>
                         </Property>
                         <Property type="EventProperty" identifier="stepRotateUp" displayName="Step rotate up" key="stepRotateUp">
-                            <MetaDataList />
                             <Event type="KeyboardEvent">
                                 <modifier content="" />
                                 <button content="W" />
@@ -298,7 +221,6 @@
                             </Action>
                         </Property>
                         <Property type="EventProperty" identifier="stepZoomIn" displayName="Step zoom in" key="stepZoomIn">
-                            <MetaDataList />
                             <Event type="KeyboardEvent">
                                 <modifier content="" />
                                 <button content="R" />
@@ -308,7 +230,6 @@
                             </Action>
                         </Property>
                         <Property type="EventProperty" identifier="stepZoomOut" displayName="Step zoom out" key="stepZoomOut">
-                            <MetaDataList />
                             <Event type="KeyboardEvent">
                                 <modifier content="" />
                                 <button content="F" />
@@ -318,7 +239,6 @@
                             </Action>
                         </Property>
                         <Property type="EventProperty" identifier="trackballPan" displayName="Pan" key="trackballPan">
-                            <MetaDataList />
                             <Event type="MouseEvent">
                                 <modifier content="" />
                                 <button content="Middle mouse button" />
@@ -328,7 +248,6 @@
                             </Action>
                         </Property>
                         <Property type="EventProperty" identifier="trackballRotate" displayName="Rotate" key="trackballRotate">
-                            <MetaDataList />
                             <Event type="MouseEvent">
                                 <modifier content="" />
                                 <button content="Left mouse button" />
@@ -338,7 +257,6 @@
                             </Action>
                         </Property>
                         <Property type="EventProperty" identifier="trackballZoom" displayName="Zoom" key="trackballZoom">
-                            <MetaDataList />
                             <Event type="MouseEvent">
                                 <modifier content="" />
                                 <button content="Right mouse button" />
@@ -351,69 +269,32 @@
                 </InteractionHandler>
             </InteractonHandlers>
             <Properties>
-                <Property type="CameraProperty" identifier="camera" displayName="Camera" key="camera" id="ref3">
-                    <MetaDataList />
+                <Property type="CameraProperty" identifier="camera" displayName="Camera" key="camera" id="ref4">
                     <lookFrom type="FloatVec3Property" identifier="lookFrom" displayName="Look from">
-                        <MetaDataList />
-                        <value x="3.4465029" y="3.5096908" z="-4.1705432" />
-                        <minvalue x="-10" y="-10" z="-10" />
-                        <maxvalue x="10" y="10" z="10" />
-                        <increment x="0.1" y="0.1" z="0.1" />
+                        <value x="12.103707" y="12.196181" z="-14.230612" />
                     </lookFrom>
                     <lookTo type="FloatVec3Property" identifier="lookTo" displayName="Look to">
-                        <MetaDataList />
                         <value x="-0.074688219" y="-0.023412909" z="-0.078756794" />
-                        <minvalue x="-10" y="-10" z="-10" />
-                        <maxvalue x="10" y="10" z="10" />
-                        <increment x="0.1" y="0.1" z="0.1" />
                     </lookTo>
                     <lookUp type="FloatVec3Property" identifier="lookUp" displayName="Look up">
-                        <MetaDataList />
                         <value x="0.85588634" y="-0.34126964" z="0.37549159" />
-                        <minvalue x="-10" y="-10" z="-10" />
-                        <maxvalue x="10" y="10" z="10" />
-                        <increment x="0.1" y="0.1" z="0.1" />
                     </lookUp>
                     <fovy type="FloatProperty" identifier="fov" displayName="FOV">
-                        <MetaDataList />
                         <value content="30" />
-                        <minvalue content="30" />
-                        <maxvalue content="360" />
-                        <increment content="0.1" />
                     </fovy>
                     <aspectRatio type="FloatProperty" identifier="aspectRatio" displayName="Aspect Ratio">
-                        <MetaDataList />
-                        <value content="1" />
                         <minvalue content="0" />
                         <maxvalue content="1" />
                         <increment content="0.1" />
                     </aspectRatio>
-                    <nearPlane type="FloatProperty" identifier="near" displayName="Near Plane">
-                        <MetaDataList />
-                        <value content="0.1" />
-                        <minvalue content="0.001" />
-                        <maxvalue content="10" />
-                        <increment content="0.001" />
-                    </nearPlane>
-                    <farPlane type="FloatProperty" identifier="far" displayName="Far Plane">
-                        <MetaDataList />
-                        <value content="100" />
-                        <minvalue content="1" />
-                        <maxvalue content="1000" />
-                        <increment content="1" />
-                    </farPlane>
+                    <nearPlane type="FloatProperty" identifier="near" displayName="Near Plane" />
+                    <farPlane type="FloatProperty" identifier="far" displayName="Far Plane" />
                 </Property>
-                <Property type="BoolProperty" identifier="capNearClipping" displayName="Cap near plane clipping" key="capNearClipping">
-                    <MetaDataList />
-                    <value content="1" />
-                </Property>
-                <Property type="BoolProperty" identifier="handleEvents" displayName="Handle interaction events" key="handleEvents">
-                    <MetaDataList />
-                    <value content="1" />
-                </Property>
+                <Property type="BoolProperty" identifier="capNearClipping" displayName="Cap near plane clipping" key="capNearClipping" />
+                <Property type="BoolProperty" identifier="handleEvents" displayName="Handle interaction events" key="handleEvents" />
             </Properties>
         </Processor>
-        <Processor type="CanvasGL" identifier="CanvasGL" id="ref5">
+        <Processor type="CanvasGL" identifier="CanvasGL" id="ref6">
             <MetaDataList>
                 <MetaData type="ProcessorMetaData">
                     <position x="-475" y="-300" />
@@ -421,33 +302,42 @@
                     <selection content="0" />
                 </MetaData>
                 <MetaData type="ProcessorWidgetMetaData">
-                    <position x="653" y="550" />
+                    <position x="342" y="230" />
                     <dimension x="512" y="512" />
                     <visibility content="1" />
                 </MetaData>
             </MetaDataList>
             <Properties>
                 <Property type="IntVec2Property" identifier="dimensions" displayName="Dimensions" key="dimensions">
-                    <MetaDataList />
                     <value x="512" y="512" />
-                    <minvalue x="128" y="128" />
-                    <maxvalue x="4096" y="4096" />
-                    <increment x="1" y="1" />
                 </Property>
                 <Property type="DirectoryProperty" identifier="layerDir" displayName="Output Directory" key="layerDir">
-                    <MetaDataList />
                     <directory content="tests/../../images" />
                 </Property>
-                <Property type="ButtonProperty" identifier="saveLayer" displayName="Save Image Layer" key="saveLayer">
-                    <MetaDataList />
-                </Property>
-                <Property type="OptionPropertyInt" identifier="visibleLayer" displayName="Visible Layer" key="visibleLayer">
-                    <MetaDataList />
-                    <value content="0" />
+                <Property type="ButtonProperty" identifier="saveLayer" displayName="Save Image Layer" key="saveLayer" />
+                <Property type="BaseOptionProperty" identifier="visibleLayer" displayName="Visible Layer" key="visibleLayer">
+                    <options>
+                        <option>
+                            <id content="color" />
+                            <name content="Color layer" />
+                            <value content="0" />
+                        </option>
+                        <option>
+                            <id content="depth" />
+                            <name content="Depth layer" />
+                            <value content="1" />
+                        </option>
+                        <option>
+                            <id content="picking" />
+                            <name content="Picking layer" />
+                            <value content="2" />
+                        </option>
+                    </options>
+                    <selectedIdentifier content="color" />
                 </Property>
             </Properties>
         </Processor>
-        <Processor type="VolumeSource" identifier="VolumeSource" id="ref6">
+        <Processor type="VolumeSource" identifier="VolumeSource" id="ref7">
             <MetaDataList>
                 <MetaData type="ProcessorMetaData">
                     <position x="-475" y="-700" />
@@ -456,14 +346,13 @@
                 </MetaData>
             </MetaDataList>
             <Properties>
+                <Property type="FloatVec3Property" identifier="angles_" displayName="Angles" key="angles_" />
                 <Property type="FloatMinMaxProperty" identifier="dataRange" displayName="Data range" key="dataRange">
-                    <MetaDataList />
                     <value x="0" y="65535" />
                     <range x="0" y="65535" />
                     <increment content="-1.0737418e+008" />
                 </Property>
                 <Property type="FileProperty" identifier="filename" displayName="Volume file" key="filename">
-                    <MetaDataList />
                     <url content="../volumes/boron.dat" />
                     <nameFilter>
                         <filter content="All Files (*.*)" />
@@ -474,19 +363,18 @@
                     <acceptMode content="0" />
                     <fileMode content="0" />
                 </Property>
+                <Property type="FloatVec3Property" identifier="length_" displayName="Lengths" key="length_" />
+                <Property type="FloatVec3Property" identifier="offset_" displayName="Offset" key="offset_" />
+                <Property type="BoolProperty" identifier="override" displayName="Override" key="override" />
                 <Property type="FloatMinMaxProperty" identifier="valueRange" displayName="Value range" key="valueRange">
-                    <MetaDataList />
                     <value x="0" y="1" />
                     <range x="0" y="0" />
                     <increment content="-1.0737418e+008" />
                 </Property>
-                <Property type="StringProperty" identifier="valueUnit" displayName="Value unit" key="valueUnit">
-                    <MetaDataList />
-                    <value content="" />
-                </Property>
+                <Property type="StringProperty" identifier="valueUnit" displayName="Value unit" key="valueUnit" />
             </Properties>
         </Processor>
-        <Processor type="Background" identifier="Background" id="ref7">
+        <Processor type="Background" identifier="Background" id="ref0">
             <MetaDataList>
                 <MetaData type="ProcessorMetaData">
                     <position x="-475" y="-375" />
@@ -495,23 +383,12 @@
                 </MetaData>
             </MetaDataList>
             <Properties>
-                <Property type="OptionPropertyInt" identifier="backgroundStyle" displayName="Style" key="backgroundStyle">
-                    <MetaDataList />
-                    <value content="0" />
-                </Property>
+                <Property type="BaseOptionProperty" identifier="backgroundStyle" displayName="Style" key="backgroundStyle" />
                 <Property type="FloatVec4Property" identifier="color1" displayName="Color 1" key="color1">
-                    <MetaDataList />
                     <value x="0.3137255" y="0.3137255" z="0.3137255" w="1" />
-                    <minvalue x="0" y="0" z="0" w="0" />
-                    <maxvalue x="1" y="1" z="1" w="1" />
-                    <increment x="0.0099999998" y="0.0099999998" z="0.0099999998" w="0.0099999998" />
                 </Property>
                 <Property type="FloatVec4Property" identifier="color2" displayName="Color 2" key="color2">
-                    <MetaDataList />
                     <value x="0.60000002" y="0.60000002" z="0.60000002" w="1" />
-                    <minvalue x="0" y="0" z="0" w="0" />
-                    <maxvalue x="1" y="1" z="1" w="1" />
-                    <increment x="0.0099999998" y="0.0099999998" z="0.0099999998" w="0.0099999998" />
                 </Property>
             </Properties>
         </Processor>
@@ -519,58 +396,58 @@
     <Connections>
         <Connection>
             <OutPort identifier="geometry.outport">
-                <Processor type="CubeProxyGeometry" identifier="CubeProxyGeometry" reference="ref4" />
+                <Processor type="CubeProxyGeometry" identifier="CubeProxyGeometry" reference="ref5" />
             </OutPort>
             <InPort identifier="geometry">
-                <Processor type="EntryExitPoints" identifier="EntryExitPoints" reference="ref2" />
+                <Processor type="EntryExitPoints" identifier="EntryExitPoints" reference="ref3" />
             </InPort>
         </Connection>
         <Connection>
             <OutPort identifier="entry-points">
-                <Processor type="EntryExitPoints" identifier="EntryExitPoints" reference="ref2" />
+                <Processor type="EntryExitPoints" identifier="EntryExitPoints" reference="ref3" />
             </OutPort>
             <InPort identifier="entry-points">
-                <Processor type="SimpleRaycaster" identifier="SimpleRaycaster" reference="ref0" />
+                <Processor type="SimpleRaycaster" identifier="SimpleRaycaster" reference="ref1" />
             </InPort>
         </Connection>
         <Connection>
             <OutPort identifier="exit-points">
-                <Processor type="EntryExitPoints" identifier="EntryExitPoints" reference="ref2" />
+                <Processor type="EntryExitPoints" identifier="EntryExitPoints" reference="ref3" />
             </OutPort>
             <InPort identifier="exit-points">
-                <Processor type="SimpleRaycaster" identifier="SimpleRaycaster" reference="ref0" />
+                <Processor type="SimpleRaycaster" identifier="SimpleRaycaster" reference="ref1" />
             </InPort>
         </Connection>
         <Connection>
             <OutPort identifier="outport">
-                <Processor type="SimpleRaycaster" identifier="SimpleRaycaster" reference="ref0" />
+                <Processor type="SimpleRaycaster" identifier="SimpleRaycaster" reference="ref1" />
             </OutPort>
             <InPort identifier="inport">
-                <Processor type="Background" identifier="Background" reference="ref7" />
+                <Processor type="Background" identifier="Background" reference="ref0" />
             </InPort>
         </Connection>
         <Connection>
             <OutPort identifier="outport">
-                <Processor type="Background" identifier="Background" reference="ref7" />
+                <Processor type="Background" identifier="Background" reference="ref0" />
             </OutPort>
             <InPort identifier="inport">
-                <Processor type="CanvasGL" identifier="CanvasGL" reference="ref5" />
+                <Processor type="CanvasGL" identifier="CanvasGL" reference="ref6" />
             </InPort>
         </Connection>
         <Connection>
             <OutPort identifier="data">
-                <Processor type="VolumeSource" identifier="VolumeSource" reference="ref6" />
+                <Processor type="VolumeSource" identifier="VolumeSource" reference="ref7" />
             </OutPort>
             <InPort identifier="volume.inport">
-                <Processor type="CubeProxyGeometry" identifier="CubeProxyGeometry" reference="ref4" />
+                <Processor type="CubeProxyGeometry" identifier="CubeProxyGeometry" reference="ref5" />
             </InPort>
         </Connection>
         <Connection>
             <OutPort identifier="data">
-                <Processor type="VolumeSource" identifier="VolumeSource" reference="ref6" />
+                <Processor type="VolumeSource" identifier="VolumeSource" reference="ref7" />
             </OutPort>
             <InPort identifier="volume">
-                <Processor type="SimpleRaycaster" identifier="SimpleRaycaster" reference="ref0" />
+                <Processor type="SimpleRaycaster" identifier="SimpleRaycaster" reference="ref1" />
             </InPort>
         </Connection>
     </Connections>
@@ -579,14 +456,14 @@
             <PropertyLinks>
                 <PropertyLink>
                     <Properties>
-                        <Property type="CameraProperty" identifier="camera" displayName="Camera" key="camera" reference="ref1" />
-                        <Property type="CameraProperty" identifier="camera" displayName="Camera" key="camera" reference="ref3" />
+                        <Property type="CameraProperty" identifier="camera" displayName="Camera" key="camera" reference="ref2" />
+                        <Property type="CameraProperty" identifier="camera" displayName="Camera" key="camera" reference="ref4" />
                     </Properties>
                 </PropertyLink>
                 <PropertyLink>
                     <Properties>
-                        <Property type="CameraProperty" identifier="camera" displayName="Camera" key="camera" reference="ref3" />
-                        <Property type="CameraProperty" identifier="camera" displayName="Camera" key="camera" reference="ref1" />
+                        <Property type="CameraProperty" identifier="camera" displayName="Camera" key="camera" reference="ref4" />
+                        <Property type="CameraProperty" identifier="camera" displayName="Camera" key="camera" reference="ref2" />
                     </Properties>
                 </PropertyLink>
             </PropertyLinks>
