@@ -59,7 +59,7 @@ MeshRenderer::~MeshRenderer()
 {
 }
 
-void MeshRenderer::render(const uvec2 &renderTargetSize) {
+void MeshRenderer::render() {
     const MeshGL* meshGL = getMeshGL();
     meshGL->enable();
     // try to render all rendertypes except the default one

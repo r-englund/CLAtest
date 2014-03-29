@@ -50,7 +50,7 @@ public:
     MeshRenderer(const Mesh* mesh, RenderType rt, ConnectivityType ct);
     virtual ~MeshRenderer();
 
-    virtual void render(const uvec2 &renderTargetSize = uvec2(-1,-1));
+    virtual void render();
     virtual void render(RenderType rt);
 
     const MeshGL* getMeshGL() const;
