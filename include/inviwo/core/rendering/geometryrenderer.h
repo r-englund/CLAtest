@@ -82,7 +82,7 @@ public:
      * Render the geometry the renderer was created for.
      *
      */
-    virtual void render(const uvec2 &renderTargetSize = uvec2(-1,-1)) = 0;
+    virtual void render() = 0;
 
     /**
      * Get the geometry to render.
