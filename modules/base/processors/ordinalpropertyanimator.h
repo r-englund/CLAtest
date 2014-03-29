@@ -96,7 +96,7 @@ private:
             T p = prop_->get();
             T d = delta_->get();
             T r = p+d;
-            for (size_t i = 0; i<prop_->getDim().x; ++i) {
+            for (glm::length_t i = 0; i<static_cast<glm::length_t>(prop_->getDim().x); ++i) {
                 if (r[i]>prop_->getMaxValue()[i]) {
                     if (pbc) {
                         r[i] = r[i] - (prop_->getMaxValue()[i] - prop_->getMinValue()[i]);
