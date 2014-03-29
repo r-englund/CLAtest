@@ -287,18 +287,18 @@ public:
     }
     
     virtual V value(V val) {
-        return V(std::sqrt(val[0] * val[0] + val[1] * val[1] + val[2] * val[2]),
-                 arctan(val[2], std::sqrt(val[0] * val[0] + val[1] * val[1])),
+        return V(std::sqrt(static_cast<float>(val[0] * val[0] + val[1] * val[1] + val[2] * val[2])),
+                 arctan(val[2], std::sqrt(static_cast<float>(val[0] * val[0] + val[1] * val[1]))),
                  arctan(val[0], val[1]));
     }
     virtual V min(V val) { return V(0, 0, -M_PI); }
-    virtual V max(V val) { return V(3*std::sqrt(val[0] * val[0] + val[1] * val[1] + val[2] * val[2]), M_PI, M_PI); }
+    virtual V max(V val) { return V(3*std::sqrt(static_cast<float>(val[0] * val[0] + val[1] * val[1] + val[2] * val[2])), M_PI, M_PI); }
     virtual V inc(V val) { return V(0.01, 0.01, 0.01); }
             
     virtual V invValue(V val) { 
-        return V(val[0] * std::sin(val[1]) * std::cos(val[2]),
-                 val[0] * std::sin(val[1]) * std::sin(val[2]),
-                 val[0] * std::cos(val[1]));
+        return V(val[0] * std::sin(static_cast<float>(val[1])) * std::cos(static_cast<float>(val[2])),
+                 val[0] * std::sin(static_cast<float>(val[1])) * std::sin(static_cast<float>(val[2])),
+                 val[0] * std::cos(static_cast<float>(val[1])));
     }
     virtual V invMin(V val) { return this->property_->getMinValue(); }
     virtual V invMax(V val) { return this->property_->getMaxValue(); }
@@ -309,11 +309,11 @@ private:
         if (x == 0) {
             return 0;
         } else if (x < 0 && y > 0) {
-            return std::atan(y / x) + M_PI;
+            return std::atan(static_cast<float>(y / x)) + M_PI;
         } else if (x < 0 && y < 0) {
-            return std::atan(y / x) - M_PI;
+            return std::atan(static_cast<float>(y / x)) - M_PI;
         } else {
-            return std::atan(y / x);
+            return std::atan(static_cast<float>(y / x));
         }
     }
 };
