@@ -314,13 +314,13 @@ public:
 private:
     inline T arctan(T x, T y) {
         if (x == 0) {
-            return M_PI / 2;
+            return static_cast<T>(M_PI_2);
         } else if (x < 0 && y > 0) {
-            return std::atan(static_cast<double>(y / x)) + M_PI;
+            return static_cast<T>(std::atan(static_cast<double>(y / x)) + M_PI);
         } else if (x < 0 && y < 0) {
-            return std::atan(static_cast<double>(y / x)) - M_PI;
+            return static_cast<T>(std::atan(static_cast<double>(y / x)) - M_PI);
         } else {
-            return std::atan(static_cast<double>(y / x));
+            return static_cast<T>(std::atan(static_cast<double>(y / x)));
         }
     }
 };
