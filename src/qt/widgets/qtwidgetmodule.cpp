@@ -53,12 +53,11 @@
 #include <inviwo/qt/widgets/properties/directorypropertywidgetqt.h>
 #include <inviwo/qt/widgets/properties/eventpropertywidgetqt.h>
 #include <inviwo/qt/widgets/properties/filepropertywidgetqt.h>
-#include <inviwo/qt/widgets/properties/floatminmaxpropertywidgetqt.h>
-#include <inviwo/qt/widgets/properties/floatpropertywidgetqt.h>
 #include <inviwo/qt/widgets/properties/imageeditorwidgetqt.h>
-#include <inviwo/qt/widgets/properties/intminmaxpropertywidgetqt.h>
 #include <inviwo/qt/widgets/properties/lightpropertywidgetqt.h>
 #include <inviwo/qt/widgets/properties/optionpropertywidgetqt.h>
+#include <inviwo/qt/widgets/properties/ordinalminmaxpropertywidgetqt.h>
+#include <inviwo/qt/widgets/properties/ordinalpropertywidgetqt.h>
 #include <inviwo/qt/widgets/properties/stringpropertywidgetqt.h>
 #include <inviwo/qt/widgets/properties/texteditorwidgetqt.h>
 #include <inviwo/qt/widgets/properties/transferfunctionpropertywidgetqt.h>
@@ -93,6 +92,7 @@ QtWidgetModule::QtWidgetModule() : InviwoModule() {
     registerPropertyWidget(FloatVec3PropertyWidgetQt, FloatVec3Property, "Default");
     registerPropertyWidget(FloatVec3PropertyWidgetQt, FloatVec3Property, "Spherical");
     registerPropertyWidget(FloatVec4PropertyWidgetQt, FloatVec4Property, "Default");
+    registerPropertyWidget(DoubleMinMaxPropertyWidgetQt, DoubleMinMaxProperty, "Default");
     registerPropertyWidget(DoublePropertyWidgetQt, DoubleProperty, "Default");
     registerPropertyWidget(DoubleVec2PropertyWidgetQt, DoubleVec2Property, "Default");
     registerPropertyWidget(DoubleVec3PropertyWidgetQt, DoubleVec3Property, "Default");

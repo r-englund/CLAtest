@@ -34,9 +34,10 @@
 #include <modules/opencl/kernelmanager.h>
 namespace inviwo {
 
-
-
-bool KernelOwner::addKernel( const std::string& filePath, const std::string& kernelName, const std::string& defines /*= ""*/ ) {
+bool KernelOwner::addKernel(const std::string& filePath,
+                            const std::string& kernelName,
+                            const std::string& defines /*= ""*/ ) {
+    
     cl::Program* program = KernelManager::getRef().buildProgram(filePath, defines);
 
     cl::Kernel* kernel = KernelManager::getRef().getKernel(program, kernelName, this);
@@ -52,9 +53,9 @@ KernelOwner::~KernelOwner() {
     KernelManager::getRef().stopObservingKernels(this);
 }
 
-
-ProcessorKernelOwner::ProcessorKernelOwner( Processor* processor ) : KernelOwner(), processor_(processor) {
-
+ProcessorKernelOwner::ProcessorKernelOwner(Processor* processor)
+    : KernelOwner()
+    , processor_(processor) {
 }
 
 void ProcessorKernelOwner::onKernelCompiled( const cl::Kernel* kernel ) {

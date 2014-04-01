@@ -59,10 +59,10 @@ ProcessorNetwork::ProcessorNetwork()
     , deserializing_(false)
     , invalidating_(false)
     , invalidationInitiator_(NULL)
+    , linkEvaluator_(NULL)
     , evaluationQueued_(false)
     , linking_(false)
-    , linkInvalidationInitiator_(NULL)
-    , linkEvaluator_(NULL) {
+    , linkInvalidationInitiator_(NULL) {
     linkEvaluator_ = new LinkEvaluator();
 }
 

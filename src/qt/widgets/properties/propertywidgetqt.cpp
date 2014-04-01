@@ -47,10 +47,10 @@ namespace inviwo {
 
 PropertyWidgetQt::PropertyWidgetQt()
     : PropertyWidget()
-    , contextMenu_(NULL)
-    , viewModeItem_(NULL)
     , developerViewModeAction_(NULL)
-    , applicationViewModeAction_(NULL) {
+    , applicationViewModeAction_(NULL)
+    , contextMenu_(NULL)
+    , viewModeItem_(NULL) {
  
     this->setContextMenuPolicy(Qt::CustomContextMenu);
     connect(this,

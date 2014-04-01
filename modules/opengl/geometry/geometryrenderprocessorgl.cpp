@@ -35,6 +35,7 @@
 #include <inviwo/core/interaction/trackball.h>
 #include <inviwo/core/rendering/geometryrendererfactory.h>
 #include <modules/opengl/rendering/meshrenderer.h>
+#include <inviwo/core/processors/processor.h>
 
 namespace inviwo {
 
@@ -50,8 +51,8 @@ GeometryRenderProcessorGL::GeometryRenderProcessorGL()
     , centerViewOnGeometry_("centerView", "Center view on geometry")
     , resetViewParams_("resetView", "Reset Camera")
     , cullFace_("cullFace", "Cull Face")
-    , polygonMode_("polygonMode", "Polygon Mode")
-{
+    , polygonMode_("polygonMode", "Polygon Mode") {
+    
     addPort(inport_);
     addPort(outport_);
     addProperty(camera_);
@@ -216,7 +217,6 @@ void GeometryRenderProcessorGL::updateRenderers() {
 
             if (geometryRemoved) {
                 GeometryRenderer* tmp = (*it);
-                bool first = it == renderers_.begin();
                 it = renderers_.erase(it); //geometry removed, so we delete the old renderer
                 delete tmp;
             } else {

@@ -59,7 +59,6 @@ void ProcessorWidgetQt::initialize() {
     QDesktopWidget* desktop = QApplication::desktop();
     int primaryScreenIndex = desktop->primaryScreen();
     QRect wholeScreenGeometry = desktop->screenGeometry(primaryScreenIndex);
-    QRect primaryScreenGeometry = desktop->screenGeometry(primaryScreenIndex);
 
     for (int i=0; i<desktop->screenCount(); i++) {
         if (i!=primaryScreenIndex)

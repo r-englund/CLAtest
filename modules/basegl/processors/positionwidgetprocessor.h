@@ -75,8 +75,6 @@ private:
     const PickingObject* widgetPickingObject_;
 
     Shader* shader_;
-
-    Trackball* trackball_;
 };
 
 } // namespace

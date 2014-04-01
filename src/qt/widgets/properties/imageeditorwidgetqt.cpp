@@ -349,9 +349,9 @@ void SimpleGraphicsView::clearRectItems() {
 ImageLabelWidget::ImageLabelWidget() 
     : scene_(0)
     , view_(0)
-    , sceneScaleFactor_(1.2f)
     , backGroundImage_(0)
-{
+    , sceneScaleFactor_(1.2f) {
+    
     generateWidget();
 }
 
