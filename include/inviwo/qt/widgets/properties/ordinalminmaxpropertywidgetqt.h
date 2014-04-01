@@ -126,7 +126,7 @@ protected:
 
 
 template <typename T>
-class IVW_QTWIDGETS_API OrdinalMinMaxPropertyWidgetQt : public BaseOrdinalMinMaxPropertyWidgetQt {
+class OrdinalMinMaxPropertyWidgetQt : public BaseOrdinalMinMaxPropertyWidgetQt {
 
 public:
     OrdinalMinMaxPropertyWidgetQt(MinMaxProperty<T>* property);
