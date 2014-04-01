@@ -39,18 +39,19 @@ ProcessorClassName(VolumeSubset, "VolumeSubset");
 ProcessorCategory(VolumeSubset, "Volume Operation");
 ProcessorCodeState(VolumeSubset, CODE_STATE_STABLE);
 
-VolumeSubset::VolumeSubset()
-    : Processor(),
-      inport_("volume.inport"),
-      outport_("volume.outport"),
-      enabled_("enabled", "Enable Operation", true),
-      rangeX_("rangeX", "X Slices", 0, 256, 0, 256, 1, 1),
-      rangeY_("rangeY", "Y Slices", 0, 256, 0, 256, 1, 1),
-      rangeZ_("rangeZ", "Z Slices", 0, 256, 0, 256, 1, 1)
+VolumeSubset::VolumeSubset() : Processor()
+      , inport_("volume.inport")
+      , outport_("volume.outport")
+      , enabled_("enabled", "Enable Operation", true)
+      , adjustBasisAndOffset_("adjustBasisAndOffset", "Adjust Basis and Offset", false)
+      , rangeX_("rangeX", "X Slices", 0, 256, 0, 256, 1, 1)
+      , rangeY_("rangeY", "Y Slices", 0, 256, 0, 256, 1, 1)
+      , rangeZ_("rangeZ", "Z Slices", 0, 256, 0, 256, 1, 1)
 {
     addPort(inport_);
     addPort(outport_);
     addProperty(enabled_);
+    addProperty(adjustBasisAndOffset_);
     addProperty(rangeX_);
     addProperty(rangeY_);
     addProperty(rangeZ_);
@@ -92,11 +93,47 @@ void VolumeSubset::process() {
             if (metaOwner) {
                 volume->MetaDataOwner::operator=(*metaOwner);
             }
+
+            if (adjustBasisAndOffset_.get()) {
+                vec3 volOffset = inport_.getData()->getOffset() + vec3(offset) / vec3(dims_);
+                mat3 volBasis = inport_.getData()->getBasis();
+
+                vec3 aVec(volBasis[0]);
+                vec3 bVec(volBasis[1]);
+                vec3 cVec(volBasis[2]);
+
+                float alpha = glm::angle(bVec, cVec);
+                float beta = glm::angle(cVec, aVec);
+                float gamma = glm::angle(aVec, bVec);
+
+                vec3 volLength(glm::length(aVec), glm::length(bVec), glm::length(cVec));
+                // adjust volLength
+                volLength *= vec3(dim) / vec3(dims_);
+
+                float a = volLength.x;
+                float b = volLength.y;
+                float c = volLength.z;
+                
+                float v = std::sqrt(1 - std::cos(alpha)*std::cos(alpha) - std::cos(beta)*std::cos(beta) - std::cos(gamma)*std::cos(gamma)
+                    - 2 * std::cos(alpha)*std::cos(beta)*std::cos(gamma));
+                mat4 newBasisAndOffset(
+                    a, b*std::cos(gamma), c*std::cos(beta), volOffset[0],
+                    0.0f, b*std::sin(gamma), c*(std::cos(alpha) - std::cos(beta)*std::cos(gamma)) / std::sin(gamma), volOffset[1],
+                    0.0f, 0.0f, c*v / std::sin(gamma), volOffset[2],
+                    0.0f, 0.0f, 0.0f, 1.0f
+                    );
+                volume->setBasisAndOffset(glm::transpose(newBasisAndOffset));
+            }
+            else {
+                // copy basis and offset
+                volume->setBasisAndOffset(inport_.getData()->getBasisAndOffset());
+            }
             outport_.setData(volume);
         }
     }
-    else
+    else {
         outport_.setConstData(inport_.getData());
+    }
 }
 
 } // inviwo namespace

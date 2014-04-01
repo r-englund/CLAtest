@@ -60,6 +60,7 @@ private:
     VolumeOutport outport_;
 
     BoolProperty enabled_;
+    BoolProperty adjustBasisAndOffset_;
 
     IntMinMaxProperty rangeX_;
     IntMinMaxProperty rangeY_;
