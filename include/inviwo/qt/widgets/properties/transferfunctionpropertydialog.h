@@ -82,8 +82,6 @@ public:
     virtual void onTransferFunctionChange();
 
 public slots:
-//    void setPointColor();
-
     void setPointColor(QColor color);
     void setPointColorDialog();
     void updateColorWheel();
@@ -91,11 +89,22 @@ public slots:
     void switchInterpolationType(int interpolationType);
     void changeMask(int maskMin, int maskMax);
 
+    void changeVerticalZoom(int zoomMin, int zoomMax);
+    void changeHorizontalZoom(int zoomMin, int zoomMax);
+
     void importTransferFunction();
     void exportTransferFunction();
     void showHistogram(bool);
     void dockLocationChanged(Qt::DockWidgetArea dockArea);
+
+protected:
+    virtual void resizeEvent(QResizeEvent*);
+    virtual void closeEvent(QCloseEvent*);
+    virtual void showEvent(QShowEvent*);
+    virtual void moveEvent(QMoveEvent*);
 private:
+    const int sliderRange_;
+
     int arrayWidth_;
     int arrayHeight_;
 
@@ -123,12 +132,6 @@ private:
     bool colorChange_;
     void generateWidget();
     void updateTFPreview();
-    
-protected:
-    virtual void resizeEvent(QResizeEvent*);
-    virtual void closeEvent(QCloseEvent*);
-    virtual void showEvent(QShowEvent*);
-    virtual void moveEvent(QMoveEvent*);
 };
 
 } // namespace

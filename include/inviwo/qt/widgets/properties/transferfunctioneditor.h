@@ -77,16 +77,16 @@ public :
     TransferFunctionEditor(TransferFunction* transferFunction, QGraphicsView* view);
     ~TransferFunctionEditor();
 
-    const float getZoomRangeXMin() { return zoomRangeXMin_; }
+    float getZoomRangeXMin() const { return zoomRangeXMin_; }
     void setZoomRangeXMin(float min) { zoomRangeXMin_ = min; }
 
-    const float getZoomRangeXMax() { return zoomRangeXMax_; }
+    float getZoomRangeXMax() const { return zoomRangeXMax_; }
     void setZoomRangeXMax(float max) { zoomRangeXMax_ = max; }
 
-    const float getZoomRangeYMin() { return zoomRangeYMin_; }
+    float getZoomRangeYMin() const { return zoomRangeYMin_; }
     void setZoomRangeYMin(float min) { zoomRangeYMin_ = min; }
 
-    const float getZoomRangeYMax() { return zoomRangeYMax_; }
+    float getZoomRangeYMax() const { return zoomRangeYMax_; }
     void setZoomRangeYMax(float max) { zoomRangeYMax_ = max; }
 
     QGraphicsView* getView() { return view_; }
