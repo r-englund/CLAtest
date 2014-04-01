@@ -61,6 +61,7 @@ public:
 
 protected:
     virtual void dataLoaded(Volume* data);
+    virtual void metaPropertyChanged();
 
     virtual void process();
 
@@ -80,6 +81,8 @@ private:
     vec3 orgOffet_;
     StringProperty dimensions_;
     StringProperty format_;
+
+    bool loadingInProgress_;
 };
 
 } // namespace
