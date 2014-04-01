@@ -48,12 +48,19 @@ namespace inviwo {
 class IVW_MODULE_OPENGL_API ElementBufferGL: public BufferGL {
 
 public:
-    ElementBufferGL(size_t size, const DataFormatBase* format, BufferType type, BufferUsage usage, ElementBufferObject* data = NULL);
+    ElementBufferGL(size_t size,
+                    const DataFormatBase* format,
+                    BufferType type,
+                    BufferUsage usage,
+                    ElementBufferObject* data = NULL);
+    
     virtual ~ElementBufferGL();
 
     virtual ElementBufferGL* clone() const;
 
-    void initialize(const void* data, GLsizeiptr sizeInBytes) { BufferGL::initialize(data, sizeInBytes); }
+    void initialize(const void* data, GLsizeiptr sizeInBytes) {
+        BufferGL::initialize(data, sizeInBytes);
+    }
 
 };
 

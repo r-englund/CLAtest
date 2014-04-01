@@ -125,8 +125,8 @@ void RangeSliderQt::setMinValue(int minVal) {
 void RangeSliderQt::setMaxValue(int maxVal) {
     if (value_[1] != maxVal) {
         value_[1] = maxVal;
-        if (value_[1] < minSeperation_) {
-            value_[1] = minSeperation_;
+        if (value_[1] < range_[0] + minSeperation_) {
+            value_[1] = range_[0] + minSeperation_;
         }
 
         if (value_[1] - value_[0] < minSeperation_) {
@@ -187,8 +187,8 @@ void RangeSliderQt::updateStateFromSiders() {
     int pos1 = sizes[0];
     int pos2 = sizes[0] + sizes[1];
 
-    value_[0] = range_[0] + range_[1] * pos1 / range;
-    value_[1] = range_[0] + range_[1] * pos2 / range;    
+    value_[0] = range_[0] + (range_[1]-range_[0]) * pos1 / range;
+    value_[1] = range_[0] + (range_[1]-range_[0]) * pos2 / range;
 }
 
 void RangeSliderQt::updateSlidersFromState() {

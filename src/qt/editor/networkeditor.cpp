@@ -77,10 +77,10 @@ NetworkEditor::NetworkEditor() :
     , portInformationActive_(NULL)
     , inspection_()
     , gridSnapping_(true)
+    , workerThread_(NULL)
     , filename_("")
     , renamingProcessor_(false)
-    , modified_(false)
-    , workerThread_(NULL) {
+    , modified_(false) {
     
     setSceneRect(-1000,-1000,1000,1000);
     processorNetwork_ = new ProcessorNetwork();

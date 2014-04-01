@@ -210,7 +210,6 @@ SimpleMesh* SimpleMeshCreator::plane(glm::vec3 pos, glm::vec2 extent,
     meshResY = std::max(1u, meshResY);
 
     glm::vec3 p0(pos - glm::vec3(extent, 0.0f) * 0.5f);
-    glm::vec3 p1(pos + glm::vec3(extent, 0.0f) * 0.5f);
 
     glm::vec3 texCoordDelta(1.0f / glm::vec2(meshResX, meshResY), 0.0f);
     glm::vec3 stepDelta(extent.x * texCoordDelta.x, extent.y * texCoordDelta.y, 0.0f);

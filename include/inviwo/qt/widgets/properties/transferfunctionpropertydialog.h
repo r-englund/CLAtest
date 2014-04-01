@@ -43,7 +43,7 @@
 #include <inviwo/qt/widgets/properties/transferfunctioneditorview.h>
 #include <inviwo/qt/widgets/colorwheel.h>
 #include <inviwo/qt/widgets/rangesliderqt.h>
-#include <inviwo/qt/widgets/properties/intminmaxpropertywidgetqt.h>
+#include <inviwo/qt/widgets/properties/ordinalminmaxpropertywidgetqt.h>
 #include <inviwo/qt/widgets/properties/optionpropertywidgetqt.h>
 #include <inviwo/core/properties/propertywidget.h>
 

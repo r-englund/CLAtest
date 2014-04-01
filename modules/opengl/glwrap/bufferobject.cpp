@@ -38,8 +38,9 @@ BufferObject::BufferObject(size_t size, const DataFormatBase* format, BufferType
                            GLenum target /*= GL_ARRAY_BUFFER*/)
     : Observable<BufferObjectObserver>(), ReferenceCounter()
     , target_(target)
-    , type_(type), glFormat_(getGLFormats()->getGLFormat(format->getId())) {
-    //
+    , glFormat_(getGLFormats()->getGLFormat(format->getId()))
+    , type_(type) {
+    
     switch (usage)
     {
         case DYNAMIC:
@@ -57,9 +58,11 @@ BufferObject::BufferObject(size_t size, const DataFormatBase* format, BufferType
 
 BufferObject::BufferObject(const BufferObject& rhs)
     : Observable<BufferObjectObserver>(), ReferenceCounter()
+    , usageGL_(rhs.usageGL_)
     , target_(rhs.target_)
-    , type_(rhs.type_), glFormat_(rhs.glFormat_)
-    , usageGL_(rhs.usageGL_) {
+    , glFormat_(rhs.glFormat_)
+    , type_(rhs.type_) {
+    
     initialize();
     // TODO: Verify that data copying works. What about backwards compability?
     // Initialize size of buffer

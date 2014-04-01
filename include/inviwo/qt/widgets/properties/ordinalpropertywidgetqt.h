@@ -30,8 +30,8 @@
  *
  *********************************************************************************/
 
-#ifndef IVW_FLOATPROPERTYWIDGETQT_H
-#define IVW_FLOATPROPERTYWIDGETQT_H
+#ifndef IVW_ORDINALPROPERTYWIDGETQT_H
+#define IVW_ORDINALPROPERTYWIDGETQT_H
 
 #include <inviwo/qt/widgets/inviwoqtwidgetsdefine.h>
 #include <QMenu>
@@ -100,6 +100,9 @@ public:
         , ordinalproperty_(property) {
 
     }
+    
+    virtual ~TemplateOrdinalPropertyWidgetQt(){};
+    
     virtual void updateFromProperty() = 0;
 
 protected:
@@ -238,6 +241,7 @@ class PropertyTransformer {
 public:
     PropertyTransformer(OrdinalProperty<T>* prop) : property_(prop) {
     }
+    virtual ~PropertyTransformer(){};
     virtual T value(T val) = 0;
     virtual T min(T val) = 0;
     virtual T max(T val) = 0;
@@ -257,6 +261,7 @@ public:
     IdentityPropertyTransformer(OrdinalProperty<T>* prop)
         : PropertyTransformer<T>(prop) {
     }
+    virtual ~IdentityPropertyTransformer(){};
     virtual T value(T val) { return val; }
     virtual T min(T val) { return val; }
     virtual T max(T val) { return val; }
@@ -274,6 +279,7 @@ public:
     SphericalPropertyTransformer(OrdinalProperty<T>* prop)
         : IdentityPropertyTransformer<T>(prop) {
     }
+    virtual ~SphericalPropertyTransformer(){};
 };
 
 template <typename T>
@@ -285,20 +291,21 @@ public:
     SphericalPropertyTransformer(OrdinalProperty<V>* prop)
         : PropertyTransformer<V>(prop) {
     }
+    virtual ~SphericalPropertyTransformer(){};
     
     virtual V value(V val) {
-        return V(std::sqrt(static_cast<float>(val[0] * val[0] + val[1] * val[1] + val[2] * val[2])),
-                 arctan(val[2], std::sqrt(static_cast<float>(val[0] * val[0] + val[1] * val[1]))),
+        return V(std::sqrt(static_cast<double>(val[0] * val[0] + val[1] * val[1] + val[2] * val[2])),
+                 arctan(val[2], std::sqrt(static_cast<double>(val[0] * val[0] + val[1] * val[1]))),
                  arctan(val[0], val[1]));
     }
     virtual V min(V val) { return V(0, 0, -M_PI); }
-    virtual V max(V val) { return V(3*std::sqrt(static_cast<float>(val[0] * val[0] + val[1] * val[1] + val[2] * val[2])), M_PI, M_PI); }
+    virtual V max(V val) { return V(3*std::sqrt(static_cast<double>(val[0] * val[0] + val[1] * val[1] + val[2] * val[2])), M_PI, M_PI); }
     virtual V inc(V val) { return V(0.01, 0.01, 0.01); }
             
     virtual V invValue(V val) { 
-        return V(val[0] * std::sin(static_cast<float>(val[1])) * std::cos(static_cast<float>(val[2])),
-                 val[0] * std::sin(static_cast<float>(val[1])) * std::sin(static_cast<float>(val[2])),
-                 val[0] * std::cos(static_cast<float>(val[1])));
+        return V(val[0] * std::sin(static_cast<double>(val[1])) * std::cos(static_cast<double>(val[2])),
+                 val[0] * std::sin(static_cast<double>(val[1])) * std::sin(static_cast<double>(val[2])),
+                 val[0] * std::cos(static_cast<double>(val[1])));
     }
     virtual V invMin(V val) { return this->property_->getMinValue(); }
     virtual V invMax(V val) { return this->property_->getMaxValue(); }
@@ -307,13 +314,13 @@ public:
 private:
     inline T arctan(T x, T y) {
         if (x == 0) {
-            return 0;
+            return M_PI / 2;
         } else if (x < 0 && y > 0) {
-            return std::atan(static_cast<float>(y / x)) + M_PI;
+            return std::atan(static_cast<double>(y / x)) + M_PI;
         } else if (x < 0 && y < 0) {
-            return std::atan(static_cast<float>(y / x)) - M_PI;
+            return std::atan(static_cast<double>(y / x)) - M_PI;
         } else {
-            return std::atan(static_cast<float>(y / x));
+            return std::atan(static_cast<double>(y / x));
         }
     }
 };
@@ -454,4 +461,4 @@ typedef OrdinalPropertyWidgetQt<double, dmat4> DoubleMat4PropertyWidgetQt;
 typedef OrdinalPropertyWidgetQt<glm::i64, glm::i64> Int64PropertyWidgetQt;
 } // namespace
 
-#endif // IVW_FLOATPROPERTYWIDGETQT_H
+#endif // IVW_ORDINALPROPERTYWIDGETQT_H

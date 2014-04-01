@@ -40,12 +40,16 @@
 #define VEC2STRINGFORMAT "( %f %f )"
 #define VEC3STRINGFORMAT "( %f %f %f )"
 #define VEC4STRINGFORMAT "( %f %f %f %f )"
-#define DVEC2STRINGFORMAT "( %f %f )"
-#define DVEC3STRINGFORMAT "( %f %f %f )"
-#define DVEC4STRINGFORMAT "( %f %f %f %f )"
+#define DVEC2STRINGFORMAT "( %lf %lf )"
+#define DVEC3STRINGFORMAT "( %lf %lf %lf )"
+#define DVEC4STRINGFORMAT "( %lf %lf %lf %lf )"
 #define MAT2STRINGFORMAT "( ( %f %f ) ( %f %f ) )"
 #define MAT3STRINGFORMAT "( ( %f %f %f ) ( %f %f %f ) ( %f %f %f ) )"
 #define MAT4STRINGFORMAT "( ( %f %f %f %f ) ( %f %f %f %f ) ( %f %f %f %f ) ( %f %f %f %f ) )"
+
+#define DMAT2STRINGFORMAT "( ( %lf %lf ) ( %lf %lf ) )"
+#define DMAT3STRINGFORMAT "( ( %lf %lf %lf ) ( %lf %lf %lf ) ( %lf %lf %lf ) )"
+#define DMAT4STRINGFORMAT "( ( %lf %lf %lf %lf ) ( %lf %lf %lf %lf ) ( %lf %lf %lf %lf ) ( %lf %lf %lf %lf ) )"
 
 #define VALUETOSTRINGBUFFERSIZE 2048
 
@@ -1389,9 +1393,9 @@ dvec2 Variant::getDVec2() const {
 
         case VariantTypeString:
         {
-            vec2 result;
+            dvec2 result;
             sscanf(VP(std::string).c_str(), DVEC2STRINGFORMAT, &result.x, &result.y);
-            return dvec2(result);
+            return result;
         }
 
         case VariantTypeInvalid:
@@ -1434,9 +1438,9 @@ dvec3 Variant::getDVec3() const {
 
         case VariantTypeString:
         {
-            vec3 result;
+            dvec3 result;
             sscanf(VP(std::string).c_str(), DVEC3STRINGFORMAT, &result.x, &result.y, &result.z);
-            return dvec3(result);
+            return result;
         }
 
         case VariantTypeInvalid:
@@ -1483,9 +1487,9 @@ dvec4 Variant::getDVec4() const {
 
         case VariantTypeString:
         {
-            vec4 result;
+            dvec4 result;
             sscanf(VP(std::string).c_str(), DVEC4STRINGFORMAT, &result.x, &result.y, &result.z, &result.w);
-            return dvec4(result);
+            return result;
         }
 
         case VariantTypeInvalid:
@@ -1584,9 +1588,10 @@ dmat2 Variant::getDMat2() const {
 
     case VariantTypeString:
     {
-                              dmat2 result;
-                              sscanf(VP(std::string).c_str(), MAT2STRINGFORMAT, &result[0][0], &result[0][1], &result[1][0], &result[1][1]);
-                              return result;
+        dmat2 result;
+        sscanf(VP(std::string).c_str(), DMAT2STRINGFORMAT,
+               &result[0][0], &result[0][1], &result[1][0], &result[1][1]);
+        return result;
     }
 
     case VariantTypeInvalid:
@@ -1608,11 +1613,12 @@ dmat3 Variant::getDMat3() const {
 
     case VariantTypeString:
     {
-                              dmat3 result;
-                              sscanf(VP(std::string).c_str(), MAT3STRINGFORMAT, &result[0][0], &result[0][1], &result[0][2],
-                                     &result[1][0], &result[1][1], &result[1][2],
-                                     &result[2][0], &result[2][1], &result[2][2]);
-                              return result;
+        dmat3 result;
+        sscanf(VP(std::string).c_str(), DMAT3STRINGFORMAT,
+               &result[0][0], &result[0][1], &result[0][2],
+               &result[1][0], &result[1][1], &result[1][2],
+               &result[2][0], &result[2][1], &result[2][2]);
+        return result;
     }
 
     case VariantTypeInvalid:
@@ -1634,12 +1640,13 @@ dmat4 Variant::getDMat4() const {
 
     case VariantTypeString:
     {
-                              dmat4 result;
-                              sscanf(VP(std::string).c_str(), MAT4STRINGFORMAT, &result[0][0], &result[0][1], &result[0][2], &result[0][3],
-                                     &result[1][0], &result[1][1], &result[1][2], &result[1][3],
-                                     &result[2][0], &result[2][1], &result[2][2], &result[2][3],
-                                     &result[3][0], &result[3][1], &result[3][2], &result[3][3]);
-                              return result;
+        dmat4 result;
+        sscanf(VP(std::string).c_str(), DMAT4STRINGFORMAT,
+               &result[0][0], &result[0][1], &result[0][2], &result[0][3],
+               &result[1][0], &result[1][1], &result[1][2], &result[1][3],
+               &result[2][0], &result[2][1], &result[2][2], &result[2][3],
+               &result[3][0], &result[3][1], &result[3][2], &result[3][3]);
+        return result;
     }
 
     case VariantTypeInvalid:

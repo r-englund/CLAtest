@@ -30,7 +30,7 @@
  *
  *********************************************************************************/
 
-#include <inviwo/qt/widgets/properties/floatpropertywidgetqt.h>
+#include <inviwo/qt/widgets/properties/ordinalpropertywidgetqt.h>
 
 namespace inviwo {
 

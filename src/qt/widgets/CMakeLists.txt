@@ -30,14 +30,13 @@ set(MOC_FILES
     ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/properties/directorypropertywidgetqt.h       
     ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/properties/eventpropertywidgetqt.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/properties/filepropertywidgetqt.h
-    ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/properties/floatminmaxpropertywidgetqt.h
-    ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/properties/floatpropertywidgetqt.h
+    ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/properties/ordinalpropertywidgetqt.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/properties/htmleditorwidgetqt.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/properties/htmllistwidgetqt.h
-    ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/properties/intminmaxpropertywidgetqt.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/properties/imageeditorwidgetqt.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/properties/lightpropertywidgetqt.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/properties/optionpropertywidgetqt.h
+    ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/properties/ordinalminmaxpropertywidgetqt.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/properties/propertysettingswidgetqt.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/properties/propertywidgetqt.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/properties/stringpropertywidgetqt.h
@@ -80,6 +79,7 @@ set(SOURCE_FILES
     labelgraphicsitem.cpp
     lightpositionwidgetqt.cpp
     mappingpopup.cpp
+    ordinaleditorwidget.cpp
     processors/processorwidgetqt.cpp
     properties/boolpropertywidgetqt.cpp
     properties/buttonpropertywidgetqt.cpp  
@@ -90,15 +90,14 @@ set(SOURCE_FILES
     properties/directorypropertywidgetqt.cpp    
     properties/eventpropertywidgetqt.cpp
     properties/filepropertywidgetqt.cpp
-    properties/floatminmaxpropertywidgetqt.cpp
-    properties/floatpropertywidgetqt.cpp
+    properties/ordinalpropertywidgetqt.cpp
     properties/glslsyntaxhighlighter.cpp
     properties/htmleditorwidgetqt.cpp
     properties/htmllistwidgetqt.cpp
     properties/imageeditorwidgetqt.cpp
-    properties/intminmaxpropertywidgetqt.cpp
-    properties/lightpropertywidgetqt.cpp  
+    properties/lightpropertywidgetqt.cpp
     properties/optionpropertywidgetqt.cpp
+    properties/ordinalminmaxpropertywidgetqt.cpp
     properties/propertysettingswidgetqt.cpp
     properties/propertywidgetqt.cpp
     properties/pythonsyntaxhighlighter.cpp
@@ -117,7 +116,6 @@ set(SOURCE_FILES
     rawdatareaderdialogqt.cpp
     sliderwidgetqt.cpp
     spinboxrangesliderwidgetqt.cpp
-    ordinaleditorwidget.cpp
 )
 
 ivw_group("Source Files" ${SOURCE_FILES})

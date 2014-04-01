@@ -121,6 +121,7 @@ void TransferFunctionEditor::keyPressEvent(QKeyEvent* e) {
         for (size_t i = 0; i < controlPoints_.size(); i++) {
             if (controlPoints_[i]->isSelected()) {
                 removeControlPoint(controlPoints_[i]);
+                break; // FIXME can't remove more then one point without crashing.../Peter 140331
             }
         }
     }

@@ -269,7 +269,6 @@ void InviwoMainWindow::addMenuActions() {
     QActionGroup* viewModeActionGroup = new QActionGroup(this);
     viewModeActionGroup->addAction(viewModeActionDeveloper_);
     viewModeActionGroup->addAction(viewModeActionApplication_);
-    PropertyVisibilityMode viewMode = propertyListWidget_->getViewMode();
 
     Property* vmp = InviwoApplication::getPtr()->getSettingsByType<SystemSettings>()->getPropertyByIdentifier("viewMode");
     if(vmp){
