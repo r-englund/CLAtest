@@ -56,9 +56,15 @@ VolumeSource::VolumeSource()
     , angles_("angles", "Angles", vec3(90.0f), vec3(0.0f), vec3(180.0f), vec3(1.0f))
     , offset_("offset", "Offset", vec3(0.0f), vec3(-10.0f), vec3(10.0f))
     , dimensions_("dimensions", "Dimensions")
-    , format_("format", "Format","") {
+    , format_("format", "Format","") 
+    , loadingInProgress_(false)
+{
 
     DataSource<Volume, VolumeOutport>::file_.setDisplayName("Volume file");
+    
+    dataRange_.onChange(this, &VolumeSource::metaPropertyChanged);
+    //valueRange_.onChange(this, &VolumeSource::metaPropertyChanged);
+    //valueUnit_.onChange(this, &VolumeSource::metaPropertyChanged);
     
     overRideDefaults_.setGroupDisplayName("Basis", "Basis and offset");
     overRideDefaults_.setGroupID("Basis");
@@ -137,24 +143,45 @@ void VolumeSource::onOverrideChange() {
 }
 
 void VolumeSource::dataLoaded(Volume* volume) {
+    loadingInProgress_ = true;
     InviwoApplication::getPtr()->getProcessorNetwork()->lock();
     // We should use double here... but at the moment there is no double min max widget...
     float max = static_cast<float>(volume->getDataFormat()->getMax());
     float min = static_cast<float>(volume->getDataFormat()->getMin());
-    
+
+    // store saved metadata as temporaries, which has already been restored due to deserialization
+    vec2 dataRangeSaved(dataRange_.get());
+    vec2 valueRangeSaved(valueRange_.get());
+    std::string valueUnitSaved(valueUnit_.get());
+
     // Default values
     dataRange_.setRangeMin(min);
     dataRange_.setRangeMax(max);
     valueRange_.setRangeMin(min);
     valueRange_.setRangeMax(max);
+
+    // overwrite restored values with data from volume data
     dataRange_.set(vec2(min, max));
     valueRange_.set(vec2(min, max));
     valueUnit_.set("No unit");
 
-    // Overide with metadata from volume
-    dataRange_.set(volume->getMetaData<Vec2MetaData>("DataRange", dataRange_.get()));
-    valueRange_.set(volume->getMetaData<Vec2MetaData>("ValueRange", valueRange_.get()));
-    valueUnit_.set(volume->getMetaData<StringMetaData>("ValueUnit", valueUnit_.get()));
+    // use data range from volume data as default
+    dataRange_.setCurrentStateAsDefault();
+    valueRange_.setCurrentStateAsDefault();
+    valueUnit_.setCurrentStateAsDefault();
+
+    // restore properties from metadata
+    if (dataRangeSaved != dataRange_.get())
+        dataRange_.set(dataRangeSaved);
+    if (valueRangeSaved != valueRange_.get())
+        valueRange_.set(valueRangeSaved);
+    if (valueUnitSaved != valueUnit_.get())
+        valueUnit_.set(valueUnitSaved);
+
+    // set metadata properties
+    volume->setMetaData<Vec2MetaData>("DataRange", dataRange_.get());
+    volume->setMetaData<Vec2MetaData>("ValueRange", valueRange_.get());
+    volume->setMetaData<StringMetaData>("ValueUnit", valueUnit_.get());
 
     // calculate and set properties.
     vec3 a(volume->getBasis()[0]);
@@ -184,10 +211,27 @@ void VolumeSource::dataLoaded(Volume* volume) {
 
     dimensions_.set(glm::to_string(volume->getDimension()));
     format_.set(volume->getDataFormat()->getString());
-    
+
     InviwoApplication::getPtr()->getProcessorNetwork()->unlock();
+    loadingInProgress_ = false;
     invalidateOutput();
 }
+
+void VolumeSource::metaPropertyChanged() {
+    if (loadingInProgress_)
+        return;
+
+    Volume* volume = DataSource<Volume, VolumeOutport>::port_.getData();
+
+    if (volume) {
+        volume->setMetaData<Vec2MetaData>("DataRange", dataRange_.get());
+        volume->setMetaData<Vec2MetaData>("ValueRange", valueRange_.get());
+        volume->setMetaData<StringMetaData>("ValueUnit", valueUnit_.get());
+    }
+
+    invalidateOutput();
+}
+
 
 void VolumeSource::process() {
     Volume* out;
