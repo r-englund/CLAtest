@@ -55,7 +55,8 @@ public:
         if (maskMax<maskMin) {
             maskMax=maskMin;
         }
-        tfProperty_->setMask(maskMin, maskMax);
+        maskHorizontal_ = vec2(maskMin, maskMax);
+        this->viewport()->update();
     }
     
     virtual void onTransferFunctionChange();
@@ -66,31 +67,39 @@ signals:
 
 public slots:
     void histogramThreadFinished();
-    void zoomHorizontally(int zoomHMin, int zoomHMax);
-    void zoomVertically(int zoomVMin, int zoomVMax);
+    //void zoomHorizontally(int zoomHMin, int zoomHMax);
+    //void zoomVertically(int zoomVMin, int zoomVMax);
 
+    void updateZoom();
 protected:
     const NormalizedHistogram* getNormalizedHistogram();
 
-    void updateZoom();
     void resizeEvent(QResizeEvent* event);
 
     void drawForeground(QPainter* painter, const QRectF& rect);
     void drawBackground(QPainter* painter, const QRectF& rect);
 
+    void updateHistogram();
+    void onVolumeInportChange();
 private:
     TransferFunctionProperty* tfProperty_;
     VolumeInport* volumeInport_;
     bool showHistogram_;
 
+    double barWidth_;
+    std::vector<QLineF> histogramBars_;
+
     bool histogramTheadWorking_;
     QThread* workerThread_;
+    
+    bool invalidatedHistogram_;
+    vec2 maskHorizontal_;
 };
 
 class IVW_QTWIDGETS_API HistogramWorkerQt : public QObject {
     Q_OBJECT
 public:
-    HistogramWorkerQt(const VolumeRAM* volumeRAM) : volumeRAM_(volumeRAM) {}
+    HistogramWorkerQt(const VolumeRAM* volumeRAM, std::size_t numBins=2048u) : volumeRAM_(volumeRAM), numBins_(numBins) {}
     ~HistogramWorkerQt() { volumeRAM_ = NULL; };
 
 public slots:
@@ -101,6 +110,7 @@ signals:
 
 private:
     const VolumeRAM* volumeRAM_;
+    const std::size_t numBins_;
 };
 
 } // namespace

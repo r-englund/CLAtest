@@ -36,6 +36,10 @@ namespace inviwo {
 
 TransferFunctionEditor::TransferFunctionEditor(TransferFunction* transferFunction, QGraphicsView* view)
     : QGraphicsScene()
+    , zoomRangeXMin_(0.0)
+    , zoomRangeXMax_(1.0)
+    , zoomRangeYMin_(0.0)
+    , zoomRangeYMax_(1.0)
     , view_(view)
     , transferFunction_(transferFunction) {
     setSceneRect(0.0, 0.0, 512.0, 512.0);

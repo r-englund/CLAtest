@@ -41,8 +41,10 @@ namespace inviwo {
 
 TransferFunctionPropertyDialog::TransferFunctionPropertyDialog(TransferFunctionProperty* tfProperty, QWidget* parent)
     : PropertyEditorWidgetQt("Transfer Function", parent), TransferFunctionObserver()
+    , sliderRange_(1000)
     , tfProperty_(tfProperty)
-    , tfPixmap_(NULL) {
+    , tfPixmap_(0)
+{
 
     setAllowedAreas(Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea);
     generateWidget();
@@ -84,25 +86,25 @@ void TransferFunctionPropertyDialog::generateWidget() {
     tfEditorView_->setScene(tfEditor_);
 
     zoomVSlider_ = new RangeSliderQt(Qt::Vertical, this);
-    zoomVSlider_->setRange(0, 100);
+    zoomVSlider_->setRange(0, sliderRange_);
     zoomVSlider_->setMinSeparation(5);
-    zoomVSlider_->setValue(static_cast<int>(tfProperty_->getZoomV().x*100),
-                           static_cast<int>(tfProperty_->getZoomV().y*100));
+    zoomVSlider_->setValue(static_cast<int>(tfProperty_->getZoomV().x*sliderRange_),
+                           static_cast<int>(tfProperty_->getZoomV().y*sliderRange_));
     connect(zoomVSlider_, SIGNAL(valuesChanged(int, int)),
-            tfEditorView_, SLOT(zoomVertically(int, int)));
+            this, SLOT(changeVerticalZoom(int, int)));
     
     zoomHSlider_ = new RangeSliderQt(Qt::Horizontal, this);
-    zoomHSlider_->setRange(0, 100);
+    zoomHSlider_->setRange(0, sliderRange_);
     zoomHSlider_->setMinSeparation(5);
-    zoomHSlider_->setValue(static_cast<int>(tfProperty_->getZoomH().x*100),
-                           static_cast<int>(tfProperty_->getZoomH().y*100));
+    zoomHSlider_->setValue(static_cast<int>(tfProperty_->getZoomH().x*sliderRange_),
+                           static_cast<int>(tfProperty_->getZoomH().y*sliderRange_));
     connect(zoomHSlider_, SIGNAL(valuesChanged(int, int)),
-            tfEditorView_, SLOT(zoomHorizontally(int, int)));
+            this, SLOT(changeHorizontalZoom(int, int)));
 
     maskSlider_ = new RangeSliderQt(Qt::Horizontal, this);
-    maskSlider_->setRange(0, 100);
-    maskSlider_->setValue(static_cast<int>(tfProperty_->getMask().x*100),
-                          static_cast<int>(tfProperty_->getMask().y*100));
+    maskSlider_->setRange(0, sliderRange_);
+    maskSlider_->setValue(static_cast<int>(tfProperty_->getMask().x*sliderRange_),
+                          static_cast<int>(tfProperty_->getMask().y*sliderRange_));
     connect(maskSlider_, SIGNAL(valuesChanged(int, int)),
             this, SLOT(changeMask(int, int)));
     
@@ -308,15 +310,34 @@ void TransferFunctionPropertyDialog::setPointColor(QColor color) {
     }
 }
 
+void TransferFunctionPropertyDialog::changeVerticalZoom(int zoomMin, int zoomMax) {
+    // normalize zoom values, as sliders in TransferFunctionPropertyDialog
+    // have the range [0...100]
+    // and flip/rescale values to compensate slider layout
+    float zoomMaxF = static_cast<float>(sliderRange_ - zoomMin)/sliderRange_;
+    float zoomMinF = static_cast<float>(sliderRange_ - zoomMax)/sliderRange_;
+
+    tfProperty_->setZoomV(zoomMinF, zoomMaxF);
+    tfEditorView_->updateZoom();
+}
+
+void TransferFunctionPropertyDialog::changeHorizontalZoom(int zoomMin, int zoomMax) {
+    float zoomMinF = static_cast<float>(zoomMin)/sliderRange_;
+    float zoomMaxF = static_cast<float>(zoomMax)/sliderRange_;
+
+    tfProperty_->setZoomH(zoomMinF, zoomMaxF);
+    tfEditorView_->updateZoom();
+}
+
 // Connected to valuesChanged on the maskSlider
 void TransferFunctionPropertyDialog::changeMask(int maskMin, int maskMax) {
-    float maskMinF = static_cast<float>(maskMin)/100.0;
-    float maskMaxF = static_cast<float>(maskMax)/100.0;
+    float maskMinF = static_cast<float>(maskMin)/sliderRange_;
+    float maskMaxF = static_cast<float>(maskMax)/sliderRange_;
     tfProperty_->setMask(maskMinF, maskMaxF);
     tfEditorView_->setMask(maskMinF, maskMaxF);
 
     updateTFPreview();
-    tfEditorView_->update();
+    //tfEditorView_->update();
     tfProperty_->get().calcTransferValues();
     tfProperty_->propertyModified();
 }
@@ -407,7 +428,5 @@ void TransferFunctionPropertyDialog::onTransferFunctionChange() {
     updateFromProperty();
     tfProperty_->propertyModified();
 }
-
-
 
 } // namespace

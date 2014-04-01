@@ -42,12 +42,33 @@ TransferFunctionEditorView::TransferFunctionEditorView(TransferFunctionProperty*
     , tfProperty_(tfProperty)
     , volumeInport_(tfProperty->getVolumeInport())
     , showHistogram_(tfProperty->getShowHistogram())
-    , histogramTheadWorking_(false) {
+    , barWidth_(1.0)
+    , histogramTheadWorking_(false)
+    , invalidatedHistogram_(true)
+    , maskHorizontal_(0.0f, 1.0f)
+ {
     
     setMouseTracking(true);
     setRenderHint(QPainter::Antialiasing, true);
     setViewportUpdateMode(QGraphicsView::FullViewportUpdate);
 
+    this->setCacheMode(QGraphicsView::CacheBackground);
+
+    // TODO: enable this block for OpenGL rendering of the Transfer Function
+/*
+    QGLFormat format;
+    // we only need a Depth buffer and a RGB frame buffer
+    // double buffering is nice, too!
+    format.setOption(QGL::DeprecatedFunctions);
+    format.setDoubleBuffer(true);
+    format.setDepth(true);
+    format.setRgba(true);
+    format.setAlpha(true);
+    format.setAccum(false);
+    format.setStencil(false);
+    format.setStereo(false);
+    this->setViewport(new QGLWidget(format));
+*/
     if (volumeInport_) {
         volumeInport_->onChange(this, &TransferFunctionEditorView::onTransferFunctionChange);
     }
@@ -55,22 +76,34 @@ TransferFunctionEditorView::TransferFunctionEditorView(TransferFunctionProperty*
 
 void TransferFunctionEditorView::resizeEvent(QResizeEvent* event) {
     updateZoom();
+    invalidatedHistogram_ = true;
     QGraphicsView::resizeEvent(event);
+    this->resetCachedContent();
 }
 
 void TransferFunctionEditorView::drawForeground(QPainter* painter, const QRectF& rect) {
-    if (tfProperty_->getMask().x > 0.0f) {
-        int leftMaskBorder = tfProperty_->getMask().x*sceneRect().width();
-        painter->fillRect(0, -5, leftMaskBorder, rect.height()+10, QColor(25,25,25,100));
-        painter->drawLine(leftMaskBorder, 0, leftMaskBorder, rect.height());
+    QPen pen;
+    pen.setCosmetic(true);
+    pen.setWidthF(1.5);
+    pen.setColor(Qt::lightGray);
+    painter->setPen(pen);
+
+    QRectF sRect = sceneRect();
+    
+    if (maskHorizontal_.x > 0.0f) {
+        double leftMaskBorder = maskHorizontal_.x * sRect.width();
+        QRectF r(0.0, rect.top(), leftMaskBorder, rect.height());
+        QLineF line(leftMaskBorder, rect.top(), leftMaskBorder, rect.bottom());
+        painter->fillRect(r, QColor(25,25,25,100));
+        painter->drawLine(line);
     }
 
-    if (tfProperty_->getMask().y < 1.0f) {
-        int rightMaskBorder = tfProperty_->getMask().y*sceneRect().width();
-        // add 10 to width to compensate scaling differences between scene and view
-        painter->fillRect(rightMaskBorder, -5, sceneRect().width()-rightMaskBorder+10,
-                          rect.height()+10, QColor(25,25,25,100));
-        painter->drawLine(rightMaskBorder, 0, rightMaskBorder, rect.height());
+    if (maskHorizontal_.y < 1.0f) {
+        double rightMaskBorder = maskHorizontal_.y * sRect.width();
+        QRectF r(rightMaskBorder, rect.top(), sRect.right() - rightMaskBorder, rect.height());
+        QLineF line(rightMaskBorder, rect.top(), rightMaskBorder, rect.bottom());
+        painter->fillRect(r, QColor(25,25,25,100));
+        painter->drawLine(line);
     }
 
     QGraphicsView::drawForeground(painter, rect);
@@ -80,19 +113,49 @@ void TransferFunctionEditorView::onTransferFunctionChange() {
     volumeInport_ = tfProperty_->getVolumeInport();
 
     if (volumeInport_)
-        volumeInport_->onChange(this, &TransferFunctionEditorView::onTransferFunctionChange);
+        volumeInport_->onChange(this, &TransferFunctionEditorView::onVolumeInportChange);
+    
+    this->viewport()->update();
+}
 
-    update();
+void TransferFunctionEditorView::onVolumeInportChange() {
+    invalidatedHistogram_ = true;
+    this->resetCachedContent();
 }
 
 void TransferFunctionEditorView::setShowHistogram(bool show) {
     showHistogram_ = show;
-    update();
+    this->resetCachedContent();
 }
 
 void TransferFunctionEditorView::histogramThreadFinished() {
     histogramTheadWorking_ = false;
-    update();
+    invalidatedHistogram_ = true;
+    this->resetCachedContent();
+}
+
+void TransferFunctionEditorView::updateHistogram() {
+    if (!invalidatedHistogram_)
+        return;
+
+    histogramBars_.clear();
+
+    const NormalizedHistogram* normHistogram = getNormalizedHistogram();
+    if (normHistogram) {
+        QRectF sRect = sceneRect();
+
+        const std::vector<float>* normHistogramData = normHistogram->getData();
+        histogramBars_.reserve(normHistogramData->size());
+
+        barWidth_ = sRect.width() / normHistogramData->size();
+
+        for (size_t i=0; i<normHistogramData->size(); i++) {
+            histogramBars_.push_back(QLineF(((float)i/(float)normHistogramData->size())*sRect.width(), 0.0,
+                ((float)i/(float)normHistogramData->size())*sRect.width(), normHistogramData->at(i)*sRect.height()));
+        }
+    }
+
+    invalidatedHistogram_ = false;
 }
 
 const NormalizedHistogram* TransferFunctionEditorView::getNormalizedHistogram() {
@@ -126,7 +189,8 @@ const NormalizedHistogram* TransferFunctionEditorView::getNormalizedHistogram() 
 
 void TransferFunctionEditorView::drawBackground(QPainter* painter, const QRectF& rect) {
     painter->fillRect(rect, QColor(89,89,89));
-    painter->drawRect(rect);
+    //painter->drawRect(rect); // border around the TF
+
     // overlay grid
     int gridSpacing = 25;
     QRectF sRect = sceneRect();
@@ -146,20 +210,14 @@ void TransferFunctionEditorView::drawBackground(QPainter* painter, const QRectF&
 
     // histogram
     if (showHistogram_) {
-        const NormalizedHistogram* normHistogram = getNormalizedHistogram();
-
-        if (normHistogram) {
-            const std::vector<float>* normHistogramData = normHistogram->getData();
-            QVarLengthArray<QLineF, 100> bars;
-
-            for (size_t i=0; i<normHistogramData->size(); i++) {
-                bars.append(QLineF(((float)i/(float)normHistogramData->size())*sRect.width(), 0.0,
-                                   ((float)i/(float)normHistogramData->size())*sRect.width(), normHistogramData->at(i)*sRect.height()));
-            }
-
-            qreal lineWidth = sRect.width()/normHistogramData->size();
-            painter->setPen(QPen(QColor(68,102,170,150), lineWidth));
-            painter->drawLines(bars.data(), bars.size());
+        updateHistogram();
+        if (histogramBars_.size() > 0) {
+            QPen pen;
+            pen.setColor(QColor(68,102,170,150));
+            //pen.setCosmetic(true);
+            pen.setWidthF(barWidth_);
+            painter->setPen(pen);
+            painter->drawLines(&histogramBars_[0], static_cast<int>(histogramBars_.size()));
         }
     }
 }
@@ -172,30 +230,10 @@ void TransferFunctionEditorView::updateZoom() {
               Qt::IgnoreAspectRatio);
 }
 
-void TransferFunctionEditorView::zoomHorizontally(int zoomHMin, int zoomHMax) {
-    // normalize zoom values, as sliders in TransferFunctionPropertyDialog
-    // have the range [0...100]
-
-    tfProperty_->setZoomH(static_cast<float>(zoomHMin) / 100.0f,
-                          static_cast<float>(zoomHMax) / 100.0f);
-
-    updateZoom();
-}
-
-void TransferFunctionEditorView::zoomVertically(int zoomVMin, int zoomVMax) {
-    // normalize zoom values, as sliders in TransferFunctionPropertyDialog
-    // have the range [0...100]
-    // and flip/rescale values to compensate slider layout
-
-    tfProperty_->setZoomV((100.0f - static_cast<float>(zoomVMax)) / 100.0f,
-                          (100.0f - static_cast<float>(zoomVMin)) / 100.0f);
-
-    updateZoom();
-}
 
 
 void HistogramWorkerQt::process() {
-    volumeRAM_->getNormalizedHistogram();
+    volumeRAM_->getNormalizedHistogram(1, numBins_);
     emit finished();
 }
 
