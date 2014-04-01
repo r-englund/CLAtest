@@ -100,11 +100,11 @@ void VolumeRAMNormalizedHistogram::evaluate() {
             dataRange = vol->getMetaData<Vec2MetaData>("DataRange", dataRange);
             customDataRange = ((std::abs(datatypeMin - dataRange.x) > glm::epsilon<float>())
                 || (std::abs(datatypeMax - dataRange.y) > glm::epsilon<float>()));
-            if (customDataRange) {
-                std::stringstream str;
-                str << "custom histogram resolution: " << glm::to_string(dataRange);
-                LogInfo(str.str());
-            }
+            //if (customDataRange) {
+            //    std::stringstream str;
+            //    str << "custom histogram resolution: " << glm::to_string(dataRange);
+            //    LogInfo(str.str());
+            //}
         }
     }
 
