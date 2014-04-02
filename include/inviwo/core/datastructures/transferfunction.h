@@ -85,9 +85,10 @@ public:
     TransferFunction();
     TransferFunction(const TransferFunction& rhs);
     TransferFunction& operator=(const TransferFunction& rhs);
+
     virtual ~TransferFunction();
 
-    const Layer* getData() const { return data_; }
+    const Layer* getData() const;
     size_t getNumDataPoints() const { return dataPoints_.size(); }
     int getTextureSize() { return textureSize_; }
 
@@ -98,8 +99,6 @@ public:
     void removePoint(TransferFunctionDataPoint* dataPoint);
 
     void clearPoints();
-
-    void calcTransferValues();
 
     float getMaskMin() const {
         return maskMin_;
@@ -119,6 +118,10 @@ public:
     InterpolationType getInterpolationType() const {
         return interpolationType_;
     }
+    /** 
+     * Notify that the layer data (texture) needs to be updated next time it is requested.
+     */
+    void invalidate();
     
     virtual void onTransferFunctionPointChange(const TransferFunctionDataPoint* p);
     
@@ -129,13 +132,17 @@ public:
 
     friend bool operator==(const TransferFunction& lhs,
                            const TransferFunction& rhs);
+protected:
+    void calcTransferValues();
 private:
+
     float maskMin_;
     float maskMax_;
     TFPoints dataPoints_;
     InterpolationType interpolationType_;
 
     int textureSize_;
+    bool invalidData_;
     Layer* data_;
 };
 

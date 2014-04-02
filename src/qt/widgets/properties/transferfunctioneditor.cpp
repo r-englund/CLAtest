@@ -204,13 +204,18 @@ void TransferFunctionEditor::recalculateControlPoints() {
                 vec2 pos = dataPoint->getPos();
                 pos.x *= width();
                 pos.y *= height();
-                addControlPoint(QPointF(pos.x,pos.y), dataPoint);
+                // Same code as in addControlPoint. Note: do not use addControlPoint here as it will redraw each time
+                TransferFunctionEditorControlPoint* pointGraphicsItem = new TransferFunctionEditorControlPoint(dataPoint);
+                pointGraphicsItem->setPos(QPointF(pos.x,pos.y));
+                controlPoints_.push_back(pointGraphicsItem);
+                addItem(pointGraphicsItem);
             }
         }
     }
 
-    update();
+    
     redrawConnections();
+    update(sceneRect());
 }
 
 bool controlPointComparison(TransferFunctionEditorControlPoint* controlPoint0,
@@ -219,7 +224,6 @@ bool controlPointComparison(TransferFunctionEditorControlPoint* controlPoint0,
 }
 
 void TransferFunctionEditor::redrawConnections() {
-    
     // sort control point vector
     std::sort(controlPoints_.begin(), controlPoints_.end(), controlPointComparison);
     QPainterPath path;
@@ -227,7 +231,7 @@ void TransferFunctionEditor::redrawConnections() {
     if (controlPoints_.size() == 1){
         path.moveTo(QPointF(0.0, controlPoints_[0]->pos().y()));
         path.lineTo(QPointF(width(), controlPoints_[0]->pos().y()));
-    } else {
+    } else if (controlPoints_.size() > 1) {
         switch (transferFunction_->getInterpolationType()) {
         case TransferFunction::InterpolationCubic: {
             // draw cubic path
@@ -269,7 +273,6 @@ void TransferFunctionEditor::redrawConnections() {
         }
     }
     graphicsPathItem_->setPath(path);
-
 }
 
 

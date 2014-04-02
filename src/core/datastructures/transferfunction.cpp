@@ -42,7 +42,8 @@ TransferFunction::TransferFunction()
     , maskMax_(1.0f)
     , interpolationType_(InterpolationLinear)
     , textureSize_(1024)
-    , data_(new Layer(uvec2(textureSize_, 1), DataVec4FLOAT32::get())) {
+    , data_(new Layer(uvec2(textureSize_, 1), DataVec4FLOAT32::get()))
+    , invalidData_(true) {
 
     // initialize with standard ramp
     addPoint(vec2(0.0f,0.0f), vec4(0.0f,0.0f,0.0f,0.0f));
@@ -69,8 +70,7 @@ TransferFunction& TransferFunction::operator=(const TransferFunction& rhs) {
             addPoint(oldPoint->getPos(), oldPoint->getRGBA());
         }
     }
-
-    calcTransferValues();
+    invalidate();
     return *this;
 }
 
@@ -108,7 +108,8 @@ void TransferFunction::addPoint(TransferFunctionDataPoint* dataPoint) {
         }
     }
 
-    calcTransferValues();
+    invalidate();
+    notifyTransferFunctionObservers();
 }
 
 void TransferFunction::removePoint(TransferFunctionDataPoint* dataPoint) {
@@ -119,7 +120,8 @@ void TransferFunction::removePoint(TransferFunctionDataPoint* dataPoint) {
         dataPoints_.erase(it);
     }
 
-    calcTransferValues();
+    invalidate();
+    notifyTransferFunctionObservers();
 }
 
 void TransferFunction::clearPoints() {
@@ -131,16 +133,19 @@ void TransferFunction::clearPoints() {
 
         dataPoints_.clear();
     }
+    invalidate();
+    notifyTransferFunctionObservers();
 }
 
 void TransferFunction::onTransferFunctionPointChange(const TransferFunctionDataPoint* p){
-    calcTransferValues();
+    invalidate();
+    notifyTransferFunctionObservers();
 }
 
 
 void TransferFunction::calcTransferValues() {
     vec4* dataArray = static_cast<vec4*>(data_->getEditableRepresentation<LayerRAM>()->getData());
-
+    
     // in case of 0 points
     if ((int)dataPoints_.size() == 0) {
         for (int i = 0; i <= (textureSize_ - 1); i++) {
@@ -198,7 +203,7 @@ void TransferFunction::calcTransferValues() {
     for (int i=int(maskMax_*textureSize_); i<textureSize_; i++)
         dataArray[i].a = 0.0;
 
-    notifyTransferFunctionObservers();
+    invalidData_ = false;
 }
 
 void TransferFunction::serialize(IvwSerializer& s) const {
@@ -219,7 +224,18 @@ void TransferFunction::deserialize(IvwDeserializer& d) {
     d.deserialize("interpolationType_", type);
     interpolationType_ = static_cast<TransferFunction::InterpolationType>(type);
     
-    calcTransferValues();
+    invalidate();
+}
+
+const Layer* TransferFunction::getData() const {
+    if (invalidData_) {
+        const_cast<TransferFunction*>(this)->calcTransferValues();
+    }
+    return data_;
+}
+
+void TransferFunction::invalidate() {
+    invalidData_ = true;
 }
 
 
