@@ -338,7 +338,7 @@ void TransferFunctionPropertyDialog::changeMask(int maskMin, int maskMax) {
 
     updateTFPreview();
     //tfEditorView_->update();
-    tfProperty_->get().calcTransferValues();
+    tfProperty_->get().invalidateLayerData();
     tfProperty_->propertyModified();
 }
 
