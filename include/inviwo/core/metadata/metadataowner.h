@@ -53,6 +53,11 @@ public:
     virtual MetaDataOwner* clone() const;
     virtual ~MetaDataOwner();
 
+    // copy the meta data from src to *this
+    void copyMetaDataFrom(const MetaDataOwner& src);
+    // copy the meta data from *this to dst
+    void copyMetaDataTo(MetaDataOwner &dst);
+
     //MetaData
     template<typename T, typename U>
     void setMetaData(std::string key, U value);
