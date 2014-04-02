@@ -90,10 +90,7 @@ void VolumeSubset::process() {
         else {
             Volume* volume = new Volume(VolumeRAMSubSet::apply(vol, dim, offset));
             // pass meta data on
-            const MetaDataOwner *metaOwner = dynamic_cast<const MetaDataOwner *>(inport_.getData());
-            if (metaOwner) {
-                volume->MetaDataOwner::operator=(*metaOwner);
-            }
+            volume->copyMetaDataFrom(*inport_.getData());
 
             if (adjustBasisAndOffset_.get()) {
                 vec3 volOffset = inport_.getData()->getOffset() + vec3(offset) / vec3(dims_);

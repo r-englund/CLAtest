@@ -56,5 +56,17 @@ MetaDataOwner::~MetaDataOwner() {
     delete metaData_;
 }
 
+void MetaDataOwner::copyMetaDataFrom(const MetaDataOwner& src) { 
+    if (&src == this)
+        return;
+    *this = src;
+}
+
+void MetaDataOwner::copyMetaDataTo(MetaDataOwner &dst) {
+    if (&dst == this)
+        return;
+    dst = *this;
+}
+
 
 } // namespace
