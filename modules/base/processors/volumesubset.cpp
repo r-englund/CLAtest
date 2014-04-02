@@ -32,6 +32,7 @@
 
 #include "volumesubset.h"
 #include <inviwo/core/datastructures/volume/volumeramsubset.h>
+#include <glm/gtx/vector_angle.hpp>
 
 namespace inviwo {
 
