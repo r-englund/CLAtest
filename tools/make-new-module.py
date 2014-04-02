@@ -1,11 +1,11 @@
-#!/usr/bin/env python
-# make a new pair (.h, .cpp) of files
+from __future__ import print_function
 
 import os
 import argparse
 import re
 import subprocess
 import sys
+
 	
 def find_inv_path():
 	path = os.path.abspath(sys.argv[0])

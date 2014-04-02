@@ -1,5 +1,4 @@
-#!/usr/bin/env python
-# make a new pair (.h, .cpp) of files
+from __future__ import print_function
 
 import os
 import argparse
