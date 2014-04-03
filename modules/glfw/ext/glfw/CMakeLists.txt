@@ -22,7 +22,7 @@ mark_as_advanced(GLFW_BUILD_EXAMPLES)
 mark_as_advanced(GLFW_BUILD_TESTS)
 mark_as_advanced(GLFW_BUILD_DOCS)
 mark_as_advanced(GLFW_INSTALL)
-#mark_as_advanced(GLFW_DOCUMENT_INTERNALS)
+mark_as_advanced(GLFW_DOCUMENT_INTERNALS)
 mark_as_advanced(GLFW_DIR)
 mark_as_advanced(GLFW_LIBRARIES)
 
