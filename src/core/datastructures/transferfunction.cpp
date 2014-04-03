@@ -158,16 +158,11 @@ void TransferFunction::removePoint(TransferFunctionDataPoint* dataPoint) {
     TFPoints::iterator it = std::find(dataPoints_.begin(), dataPoints_.end(), dataPoint);
 
     if (it != dataPoints_.end()) {
-        
-        
         dataPoints_.erase(it);
         invalidate();
         notifyControlPointRemoved(dataPoint);
         delete dataPoint;
     }
-
-
-    
 }
 
 void TransferFunction::clearPoints() {
@@ -182,8 +177,6 @@ void TransferFunction::clearPoints() {
 
         dataPoints_.clear();
     }
-    
-    //notifyTransferFunctionObservers();
 }
 
 void TransferFunction::onTransferFunctionPointChange(const TransferFunctionDataPoint* p){
