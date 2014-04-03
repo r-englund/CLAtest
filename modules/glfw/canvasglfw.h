@@ -56,6 +56,9 @@ public:
     void setWindowTitle(std::string);
     void setWindowSize(uvec2);
 
+    static void closeWindow(GLFWwindow*);
+    static int getWindowCount();
+
     //static void refresh(GLFWwindow*);
     static void reshape(GLFWwindow*, int, int);
 
@@ -79,6 +82,8 @@ private:
     MouseEvent::MouseState mouseState_;
     InteractionEvent::Modifier mouseModifiers_;
 
+    static GLFWwindow* sharedContext_;
+    static int glfwWindowCount_;
 };
 
 } // namespace

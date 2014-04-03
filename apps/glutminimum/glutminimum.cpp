@@ -102,6 +102,7 @@ int main(int argc, char** argv) {
     canvas->initialize();
     canvas->activate();
     // Load simple scene
+    processorNetworkEvaluator->disableEvaluation();
     processorNetwork->lock();
     const CommandLineParser* cmdparser = (inviwo::InviwoApplication::getRef()).getCommandLineParser();
     std::string workspace;
@@ -140,7 +141,7 @@ int main(int argc, char** argv) {
 
     processorNetwork->setModified(true);
     processorNetwork->unlock();
-    processorNetwork->modified();
+    processorNetworkEvaluator->enableEvaluation();
 
     if (cmdparser->getCaptureAfterStartup()) {
         std::string path = cmdparser->getOutputPath();

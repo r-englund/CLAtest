@@ -35,6 +35,9 @@
 
 namespace inviwo {
 
+GLFWwindow* CanvasGLFW::sharedContext_ = NULL;
+int CanvasGLFW::glfwWindowCount_ = 0;
+
 CanvasGLFW::CanvasGLFW(std::string windowTitle, uvec2 dimensions)
     : CanvasGL(dimensions), windowTitle_(windowTitle),
       glWindow_(NULL),
@@ -45,6 +48,7 @@ CanvasGLFW::CanvasGLFW(std::string windowTitle, uvec2 dimensions)
 
 CanvasGLFW::~CanvasGLFW() {
     glfwDestroyWindow(glWindow_);
+    glWindow_ = NULL;
 }
 
 void CanvasGLFW::initialize() {
@@ -52,13 +56,19 @@ void CanvasGLFW::initialize() {
 }
 
 void CanvasGLFW::initializeGL() {
-    glWindow_ = glfwCreateWindow(getDimension().x, getDimension().y, windowTitle_.c_str(), NULL, NULL);
+    glWindow_ = glfwCreateWindow(getDimension().x, getDimension().y, windowTitle_.c_str(), NULL, sharedContext_);
 
     if (!glWindow_){
         glfwTerminate();
         LogError("Could not create GLFW window.");
     }
 
+    if(!sharedContext_)
+        sharedContext_ = glWindow_;
+
+    glfwWindowCount_++;
+
+    glfwSetWindowCloseCallback(glWindow_, closeWindow);
     glfwSetWindowUserPointer(glWindow_, this);
     glfwSetWindowSizeCallback(glWindow_, reshape);
     glfwMakeContextCurrent(glWindow_);
@@ -85,6 +95,15 @@ void CanvasGLFW::setWindowTitle(std::string windowTitle) {
 
 void CanvasGLFW::setWindowSize(uvec2 size) {
     glfwSetWindowSize(glWindow_, static_cast<int>(size.x), static_cast<int>(size.y));
+}
+
+void CanvasGLFW::closeWindow(GLFWwindow* window) {
+    glfwWindowCount_--;
+    glfwDestroyWindow(window);
+}
+
+int CanvasGLFW::getWindowCount(){
+    return glfwWindowCount_;
 }
 
 //void CanvasGLFW::refresh(void) {}

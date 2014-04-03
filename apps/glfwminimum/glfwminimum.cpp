@@ -109,6 +109,7 @@ int main(int argc, char** argv) {
     canvas->activate();
 
     // Load simple scene
+    processorNetworkEvaluator->disableEvaluation();
     processorNetwork->lock();
     const CommandLineParser* cmdparser = (inviwo::InviwoApplication::getRef()).getCommandLineParser();
     std::string workspace;
@@ -116,7 +117,7 @@ int main(int argc, char** argv) {
     if (cmdparser->getLoadWorkspaceFromArg())
         workspace = cmdparser->getWorkspacePath();
     else
-        workspace = inviwoApp.getPath(InviwoApplication::PATH_WORKSPACES, "tests/simpleraycaster.inv");
+        workspace = inviwoApp.getPath(InviwoApplication::PATH_WORKSPACES, "tests/simpeslicergl.inv");
 
     IvwDeserializer xmlDeserializer(workspace);
     processorNetwork->deserialize(xmlDeserializer);
@@ -128,18 +129,19 @@ int main(int argc, char** argv) {
         CanvasProcessor* canvasProcessor = dynamic_cast<CanvasProcessor*>((*it));
 
         if (canvasProcessor) {
+            CanvasGLFW* currentC;
             if (i==0) {
-                processorNetworkEvaluator->registerCanvas(canvas, canvasProcessor->getIdentifier());
-                canvas->setWindowTitle(inviwoApp.getDisplayName() + " : " + canvasProcessor->getIdentifier());
-                canvas->setWindowSize(uvec2(canvasProcessor->getCanvasSize()));
+                currentC = canvas;
             }
             else {
-                CanvasGLFW* newC = new CanvasGLFW(canvasProcessor->getIdentifier(), uvec2(canvasProcessor->getCanvasSize()));
-                processorNetworkEvaluator->registerCanvas(newC, canvasProcessor->getIdentifier());
-                newC->initializeGL();
-                newC->setNetworkEvaluator(processorNetworkEvaluator);
-                newC->initialize();
+                currentC = new CanvasGLFW(canvasProcessor->getIdentifier(), uvec2(canvasProcessor->getCanvasSize()));
+                currentC->initializeGL();
+                currentC->setNetworkEvaluator(processorNetworkEvaluator);
+                currentC->initialize();
             }
+            processorNetworkEvaluator->registerCanvas(currentC, canvasProcessor->getIdentifier());
+            currentC->setWindowTitle(inviwoApp.getDisplayName() + " : " + canvasProcessor->getIdentifier());
+            currentC->setWindowSize(uvec2(canvasProcessor->getCanvasSize()));
 
             i++;
         }
@@ -147,7 +149,7 @@ int main(int argc, char** argv) {
 
     processorNetwork->setModified(true);
     processorNetwork->unlock();
-    processorNetwork->modified();
+    processorNetworkEvaluator->enableEvaluation();
 
     if (cmdparser->getCaptureAfterStartup()) {
         std::string path = cmdparser->getOutputPath();
@@ -163,7 +165,7 @@ int main(int argc, char** argv) {
         return 0;
     }
 
-    while (!glfwWindowShouldClose(glfwGetCurrentContext()))
+    while (CanvasGLFW::getWindowCount()>0)
     {
         glfwWaitEvents();
     }
