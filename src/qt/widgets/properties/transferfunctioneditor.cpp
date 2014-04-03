@@ -132,32 +132,18 @@ void TransferFunctionEditor::keyPressEvent(QKeyEvent* e) {
 }
 
 void TransferFunctionEditor::addControlPoint(QPointF pos) {
-    // determine color
-    vec4 color = vec4(0.5f, 0.5f, 0.5f, pos.y()/height());
-
-    if (controlPoints_.size() > 0) {
-        int leftNeighborID = 0;
-        int rightNeighborID = 0;
-
-        for (size_t i=0; i<controlPoints_.size(); i++)
-            if (controlPoints_[i]->pos().x()<=pos.x()) leftNeighborID=static_cast<int>(i);
-            else if (rightNeighborID==0 && controlPoints_[i]->pos().x()>pos.x()) rightNeighborID=static_cast<int>(i);
-
-        vec4 colorL = controlPoints_[leftNeighborID]->getPoint()->getRGBA();
-        vec4 colorR = controlPoints_[rightNeighborID]->getPoint()->getRGBA();
-        float a = 0.5f;
-        float denom = controlPoints_[rightNeighborID]->pos().x() - controlPoints_[leftNeighborID]->pos().x();
-
-        if (denom > 0.0)
-            a = (controlPoints_[rightNeighborID]->pos().x() - pos.x()) / denom;
-
-        color = vec4(a*colorL.r+(1.0-a)*colorR.r,
-                     a*colorL.g+(1.0-a)*colorR.g,
-                     a*colorL.b+(1.0-a)*colorR.b,
-                     pos.y()/height());
+    if (pos.x() < 0.0) {
+        pos.setX(0.0);
+    } else if (pos.x() > width()) {
+        pos.setX(width());
     }
+    if (pos.y() < 0.0) {
+        pos.setY(0.0);
+    } else if (pos.y() > height()) {
+        pos.setY(height());
+    }
+    transferFunction_->addPoint(vec2(pos.x()/width(), pos.y()/height()));
 
-    addControlPoint(pos, color);
 }
 
 void TransferFunctionEditor::addControlPoint(QPointF pos, vec4 color) {
@@ -204,11 +190,11 @@ void TransferFunctionEditor::recalculateControlPoints() {
                 vec2 pos = dataPoint->getPos();
                 pos.x *= width();
                 pos.y *= height();
-                // Same code as in addControlPoint. Note: do not use addControlPoint here as it will redraw each time
                 TransferFunctionEditorControlPoint* pointGraphicsItem = new TransferFunctionEditorControlPoint(dataPoint);
                 pointGraphicsItem->setPos(QPointF(pos.x,pos.y));
                 controlPoints_.push_back(pointGraphicsItem);
                 addItem(pointGraphicsItem);
+                //addControlPoint(QPointF(pos.x,pos.y), dataPoint);
             }
         }
     }

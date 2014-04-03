@@ -63,6 +63,7 @@ public:
     */
     ~TransferFunctionEditorControlPoint();
 
+    void setDataPoint(TransferFunctionDataPoint* dataPoint) { dataPoint_ = dataPoint; }
     TransferFunctionDataPoint* getPoint() const { return dataPoint_; }
 
     void hoverEnterEvent(QGraphicsSceneHoverEvent* event);

@@ -60,6 +60,7 @@ public:
     }
     
     virtual void onTransferFunctionChange();
+    virtual void onControlPointChanged(const TransferFunctionDataPoint* p);
     void setShowHistogram(bool);
 
 signals:

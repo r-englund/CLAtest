@@ -51,22 +51,25 @@ class IVW_CORE_API TransferFunctionObserver: public Observer {
 public:
     TransferFunctionObserver(): Observer() {};
 
-    /**
-    * This method will be called when observed object changes.
-    * Override it to add behavior.
-    */
-    virtual void onTransferFunctionChange() {};
+    virtual void onControlPointAdded(const TransferFunctionDataPoint* p) {};
+    virtual void onControlPointRemoved(const TransferFunctionDataPoint* p) {};
+    virtual void onControlPointChanged(const TransferFunctionDataPoint* p) {};
 };
 class IVW_CORE_API TransferFunctionObservable: public Observable<TransferFunctionObserver> {
 public:
     TransferFunctionObservable(): Observable<TransferFunctionObserver>() {};
 
-    void notifyTransferFunctionObservers() const {
-        // Notify observers
-        for (ObserverSet::reverse_iterator it = observers_->rbegin(); it != observers_->rend(); ++it) {
-            // static_cast can be used since only template class objects can be added
-            static_cast<TransferFunctionObserver*>(*it)->onTransferFunctionChange();
-        }
+    void notifyControlPointAdded(const TransferFunctionDataPoint* p) const {
+        for (ObserverSet::reverse_iterator it = observers_->rbegin(); it != observers_->rend(); ++it) 
+            static_cast<TransferFunctionObserver*>(*it)->onControlPointAdded(p);
+    }
+    void notifyControlPointRemoved(const TransferFunctionDataPoint* p) const {
+        for (ObserverSet::reverse_iterator it = observers_->rbegin(); it != observers_->rend(); ++it) 
+            static_cast<TransferFunctionObserver*>(*it)->onControlPointRemoved(p);
+    }
+    void notifyControlPointChanged(const TransferFunctionDataPoint* p) const {
+        for (ObserverSet::reverse_iterator it = observers_->rbegin(); it != observers_->rend(); ++it) 
+            static_cast<TransferFunctionObserver*>(*it)->onControlPointChanged(p);
     }
 };
 
@@ -96,6 +99,7 @@ public:
 
     void addPoint(const vec2& pos, const vec4& color);
     void addPoint(TransferFunctionDataPoint* dataPoint);
+    void addPoint(const vec2& pos);
     void removePoint(TransferFunctionDataPoint* dataPoint);
 
     void clearPoints();

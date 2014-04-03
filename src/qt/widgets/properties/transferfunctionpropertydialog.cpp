@@ -423,7 +423,19 @@ void TransferFunctionPropertyDialog::dockLocationChanged(Qt::DockWidgetArea dock
         setDockStatus(PropertyEditorWidgetDockStatus::Floating);
 }
 
-void TransferFunctionPropertyDialog::onTransferFunctionChange() {
+void TransferFunctionPropertyDialog::onControlPointAdded(const TransferFunctionDataPoint* p) {
+    tfEditor_->recalculateControlPoints();
+    updateFromProperty();
+    tfProperty_->propertyModified();
+}
+
+void TransferFunctionPropertyDialog::onControlPointRemoved(const TransferFunctionDataPoint* p) {
+    tfEditor_->recalculateControlPoints();
+    updateFromProperty();
+    tfProperty_->propertyModified();
+}
+
+void TransferFunctionPropertyDialog::onControlPointChanged(const TransferFunctionDataPoint* p) {
     tfEditor_->recalculateControlPoints();
     updateFromProperty();
     tfProperty_->propertyModified();
