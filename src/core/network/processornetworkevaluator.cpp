@@ -353,9 +353,6 @@ ProcessorNetworkEvaluator* ProcessorNetworkEvaluator::getProcessorNetworkEvaluat
 }
 
 void ProcessorNetworkEvaluator::requestEvaluate() {
-    if (processorNetwork_->islocked())
-        return;
-
     //evaluation has been triggered but not performed yet
     if (evaulationQueued_)
         return;
@@ -365,6 +362,9 @@ void ProcessorNetworkEvaluator::requestEvaluate() {
         evaulationQueued_ = true;
         return;
     }
+
+    if (processorNetwork_->islocked())
+        return;
 
     //wait for invalidation to finish before evaluating
     if (processorNetwork_->isInvalidating()) {
