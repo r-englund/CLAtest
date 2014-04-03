@@ -104,9 +104,12 @@ public:
     const CommandLineParser* getCommandLineParser() const { return commandLineParser_; }
     template<class T> T* getModuleByType();
 
-    virtual void registerFileObserver(FileObserver* fileObserver) { LogWarn("This Inviwo application does not support FileObservers."); }
-    virtual void startFileObservation(std::string fileName) { LogWarn("This Inviwo application does not support FileObservers."); }
-    virtual void stopFileObservation(std::string fileName) { LogWarn("This Inviwo application does not support FileObservers."); }
+    virtual void registerFileObserver(FileObserver* fileObserver) { //LogWarn("This Inviwo application does not support FileObservers."); 
+    }
+    virtual void startFileObservation(std::string fileName) { //LogWarn("This Inviwo application does not support FileObservers."); 
+    }
+    virtual void stopFileObservation(std::string fileName) {// LogWarn("This Inviwo application does not support FileObservers."); 
+    }
 
     std::string getDisplayName()const {return displayName_;}
 
