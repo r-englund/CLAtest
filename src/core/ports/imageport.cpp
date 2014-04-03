@@ -246,6 +246,9 @@ void ImageOutport::changeDataDimensions(ResizeEvent* resizeEvent) {
         }
     }
 
+    if(registeredDimensions.empty())
+        return;
+
     std::vector<std::string> registeredDimensionsStrings;
 
     for (size_t i=0; i<registeredDimensions.size(); i++) {
