@@ -93,7 +93,7 @@ MARK_AS_ADVANCED(
 # Build FreeGLUT lib
 if(NOT FREEGLUT_FOUND)
     set(BUILD_FREEGLUT 1)
-	set(FREEGLUT_INCLUDE_DIR ${CMAKE_SOURCE_DIR}/modules/glut/ext/freeglut/include)
+	set(FREEGLUT_INCLUDE_DIR  ${IVW_MODULE_DIR}/glut/ext/freeglut/include)
 	set(FREEGLUT_LIBRARY freeglut)
 	set(FREEGLUT_LIBRARY_DIR ${LIBRARY_OUTPUT_PATH})
 	mark_as_advanced(FORCE  FREEGLUT_INCLUDE_DIR )

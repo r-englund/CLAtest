@@ -5,7 +5,7 @@
 # Build GLFW lib
 if(NOT GLFW_FOUND)
     set(BUILD_GLFW 1)
-	set(GLFW_INCLUDE_DIR ${CMAKE_SOURCE_DIR}/modules/glfw/ext/glfw/include)
+	set(GLFW_INCLUDE_DIR  ${IVW_MODULE_DIR}/glfw/ext/glfw/include)
 	set(GLFW_LIBRARY glfw)
 	set(GLFW_LIBRARY_DIR ${LIBRARY_OUTPUT_PATH})
 	mark_as_advanced(FORCE  GLFW_INCLUDE_DIR )
