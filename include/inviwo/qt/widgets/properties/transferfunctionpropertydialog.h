@@ -79,7 +79,13 @@ public:
 
     QLinearGradient* getTFGradient() { return gradient_; }
 
-    virtual void onTransferFunctionChange();
+    TransferFunctionEditorView* getEditorView() { return tfEditorView_; } 
+
+    virtual void onControlPointAdded(const TransferFunctionDataPoint* p);
+    virtual void onControlPointRemoved(const TransferFunctionDataPoint* p);
+    virtual void onControlPointChanged(const TransferFunctionDataPoint* p);
+
+
 
 public slots:
     void setPointColor(QColor color);

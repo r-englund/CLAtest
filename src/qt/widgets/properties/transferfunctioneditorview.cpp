@@ -118,6 +118,12 @@ void TransferFunctionEditorView::onTransferFunctionChange() {
     this->viewport()->update();
 }
 
+
+void TransferFunctionEditorView::onControlPointChanged(const TransferFunctionDataPoint* p) {
+    onTransferFunctionChange();
+}
+
+
 void TransferFunctionEditorView::onVolumeInportChange() {
     invalidatedHistogram_ = true;
     this->resetCachedContent();

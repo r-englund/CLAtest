@@ -53,9 +53,9 @@ void TransferFunctionPropertyWidgetQt::generateWidget() {
     InviwoApplicationQt* app = dynamic_cast<InviwoApplicationQt*>(InviwoApplication::getPtr());
     transferFunctionDialog_ = new TransferFunctionPropertyDialog(static_cast<TransferFunctionProperty*>(property_), app->getMainWindow());
     setEditorWidget(transferFunctionDialog_);
-    // notify the transfer function dialog, that the volume with the histogram is already there
-    // TODO: Make sure that this work without notify
-    static_cast<TransferFunctionProperty*>(property_)->get().notifyTransferFunctionObservers();
+    // notify the transfer function dialog that the volume with the histogram is already there
+    // TODO: Make sure that this work without notify. Can we do this in another way? It seems very weird...
+    transferFunctionDialog_->getEditorView()->onTransferFunctionChange();
     QHBoxLayout* hLayout = new QHBoxLayout();
     btnOpenTF_ = new QPushButton();
     btnOpenTF_->setFixedSize(200, 40);
