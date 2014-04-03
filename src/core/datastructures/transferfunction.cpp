@@ -188,7 +188,6 @@ void TransferFunction::clearPoints() {
 
 void TransferFunction::onTransferFunctionPointChange(const TransferFunctionDataPoint* p){
     invalidate();
-
     notifyControlPointChanged(p);
 }
 

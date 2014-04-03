@@ -51,19 +51,19 @@ class IVW_CORE_API TransferFunctionObserver: public Observer {
 public:
     TransferFunctionObserver(): Observer() {};
 
-    virtual void onControlPointAdded(const TransferFunctionDataPoint* p) {};
-    virtual void onControlPointRemoved(const TransferFunctionDataPoint* p) {};
+    virtual void onControlPointAdded(TransferFunctionDataPoint* p) {};
+    virtual void onControlPointRemoved(TransferFunctionDataPoint* p) {};
     virtual void onControlPointChanged(const TransferFunctionDataPoint* p) {};
 };
 class IVW_CORE_API TransferFunctionObservable: public Observable<TransferFunctionObserver> {
 public:
     TransferFunctionObservable(): Observable<TransferFunctionObserver>() {};
 
-    void notifyControlPointAdded(const TransferFunctionDataPoint* p) const {
+    void notifyControlPointAdded(TransferFunctionDataPoint* p) const {
         for (ObserverSet::reverse_iterator it = observers_->rbegin(); it != observers_->rend(); ++it) 
             static_cast<TransferFunctionObserver*>(*it)->onControlPointAdded(p);
     }
-    void notifyControlPointRemoved(const TransferFunctionDataPoint* p) const {
+    void notifyControlPointRemoved(TransferFunctionDataPoint* p) const {
         for (ObserverSet::reverse_iterator it = observers_->rbegin(); it != observers_->rend(); ++it) 
             static_cast<TransferFunctionObserver*>(*it)->onControlPointRemoved(p);
     }

@@ -94,6 +94,10 @@ public :
 
     void recalculateControlPoints();
 
+    virtual void onControlPointAdded(TransferFunctionDataPoint* p);
+    virtual void onControlPointRemoved(TransferFunctionDataPoint* p);
+    virtual void onControlPointChanged(const TransferFunctionDataPoint* p);
+
 signals:
     void doubleClick();
 
@@ -119,6 +123,8 @@ protected:
     void removeControlPoint(TransferFunctionEditorControlPoint* p);
 
     TransferFunctionEditorControlPoint* getControlPointGraphicsItemAt(const QPointF pos) const;
+
+
 
 private :
     void addControlPoint(QPointF pos, TransferFunctionDataPoint* dataPoint);
