@@ -91,7 +91,7 @@ TransferFunction::~TransferFunction() {
 }
 
 TransferFunctionDataPoint* TransferFunction::getPoint(int i) const {
-    ivwAssert(i<getNumDataPoints(), "Trying to access non-existent data point.");
+    ivwAssert(i<static_cast<int>(getNumDataPoints()), "Trying to access non-existent data point.");
     return dataPoints_[i];
 }
 
