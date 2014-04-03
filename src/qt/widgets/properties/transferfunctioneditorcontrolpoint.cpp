@@ -39,13 +39,14 @@
 namespace inviwo {
 
 TransferFunctionEditorControlPoint::TransferFunctionEditorControlPoint(TransferFunctionDataPoint* datapoint)
-    : dataPoint_(datapoint)
+    : dataPoint_(datapoint), isEditingPoint_(false)
 {
     size_ = 14.0f;
     showLabel_ = false;
     setFlags(ItemIgnoresTransformations | ItemIsFocusable | ItemIsMovable | ItemIsSelectable | ItemSendsGeometryChanges);
     setZValue(1);
     setAcceptHoverEvents(true);
+    datapoint->addObserver(this);
 }
 
 TransferFunctionEditorControlPoint::~TransferFunctionEditorControlPoint() {}
@@ -111,13 +112,27 @@ QVariant TransferFunctionEditorControlPoint::itemChange(GraphicsItemChange chang
 
         // update the associated transfer function data point
         QPointF controlPointPos = pos();
-        dataPoint_->setPosA(vec2(controlPointPos.x()/rect.width(), controlPointPos.y()/rect.height()),
-                            controlPointPos.y()/rect.height());
+        if (!isEditingPoint_) {
+            isEditingPoint_ = true;
+            dataPoint_->setPosA(vec2(controlPointPos.x()/rect.width(), controlPointPos.y()/rect.height()),
+                controlPointPos.y()/rect.height());
+            isEditingPoint_ = false;
+        }
+
         // return the constraint position
         return newPos;
     }
 
     return QGraphicsItem::itemChange(change, value);
+}
+
+void TransferFunctionEditorControlPoint::onTransferFunctionPointChange(const TransferFunctionDataPoint* p) {
+    if (!isEditingPoint_) {
+        isEditingPoint_ = true; 
+        QRectF rect = scene()->sceneRect();
+        setPos(p->getPos().x*rect.width(), p->getPos().y*rect.height());
+        isEditingPoint_ = false;
+    }
 }
 
 } // namespace

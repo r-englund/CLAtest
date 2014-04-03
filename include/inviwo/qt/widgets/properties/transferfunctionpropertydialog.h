@@ -81,8 +81,8 @@ public:
 
     TransferFunctionEditorView* getEditorView() { return tfEditorView_; } 
 
-    virtual void onControlPointAdded(const TransferFunctionDataPoint* p);
-    virtual void onControlPointRemoved(const TransferFunctionDataPoint* p);
+    virtual void onControlPointAdded(TransferFunctionDataPoint* p);
+    virtual void onControlPointRemoved(TransferFunctionDataPoint* p);
     virtual void onControlPointChanged(const TransferFunctionDataPoint* p);
 
 

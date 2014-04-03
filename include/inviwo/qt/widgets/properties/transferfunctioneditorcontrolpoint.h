@@ -40,6 +40,7 @@
 #define IVW_TRANSFERFUNCTIONEDITORCONTROLPOINT_H
 
 #include <inviwo/qt/widgets/inviwoqtwidgetsdefine.h>
+#include <inviwo/core/datastructures/transferfunctiondatapoint.h>
 #include <QGraphicsLineItem>
 #include <QGraphicsScene>
 #include <QGraphicsSceneEvent>
@@ -51,7 +52,7 @@ namespace inviwo {
 
 class TransferFunctionDataPoint;
 
-class IVW_QTWIDGETS_API TransferFunctionEditorControlPoint : public QGraphicsItem {
+class IVW_QTWIDGETS_API TransferFunctionEditorControlPoint : public QGraphicsItem, public TransferFunctionPointObserver {
 
 public:
     /** \TransferFunctionEditorControlPoint constructor
@@ -73,6 +74,10 @@ public:
     enum { Type = UserType + 255 };
     int type() const  {return Type; }
 
+    virtual void onTransferFunctionPointChange(const TransferFunctionDataPoint* p);
+
+    bool operator==(const TransferFunctionDataPoint* point) const { return dataPoint_ == point; }
+
 protected:
     /**Paint method
     * Overloaded paint method from QGraphicsItem. Here the actual representation is drawn.
@@ -85,7 +90,9 @@ protected:
 private:
     float size_; ///< size for drawing the points
     bool showLabel_;
+    bool isEditingPoint_;
     TransferFunctionDataPoint* dataPoint_; ///<The TransferFunctionDataPoint the control point gets all its data from
+
 };
 
 }// namespace

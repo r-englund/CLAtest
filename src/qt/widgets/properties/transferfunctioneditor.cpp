@@ -34,6 +34,17 @@
 
 namespace inviwo {
 
+class ControlPointEquals {
+public:
+    ControlPointEquals(const TransferFunctionDataPoint* p) : p_(p) {}
+    bool operator()(TransferFunctionEditorControlPoint* editorPoint) 
+    { return editorPoint->getPoint()==p_; }
+    bool operator<(TransferFunctionEditorControlPoint* editorPoint) 
+    { return editorPoint->getPoint()->getPos().x < p_->getPos().x; }
+private:
+    const TransferFunctionDataPoint* p_;
+};
+
 TransferFunctionEditor::TransferFunctionEditor(TransferFunction* transferFunction, QGraphicsView* view)
     : QGraphicsScene()
     , zoomRangeXMin_(0.0)
@@ -171,7 +182,7 @@ void TransferFunctionEditor::addControlPoint(QPointF pos, TransferFunctionDataPo
 
 void TransferFunctionEditor::removeControlPoint(TransferFunctionEditorControlPoint* controlPoint) {
     if (transferFunction_->getNumDataPoints() > 1)
-        transferFunction_->removePoint(controlPoint->getPoint());
+        transferFunction_->removePoint(const_cast<TransferFunctionDataPoint*>(controlPoint->getPoint()));
 }
 
 void TransferFunctionEditor::recalculateControlPoints() {
@@ -273,6 +284,32 @@ TransferFunctionEditorControlPoint* TransferFunctionEditor::getControlPointGraph
     }
 
     return 0;
+}
+
+void TransferFunctionEditor::onControlPointAdded(TransferFunctionDataPoint* p) {
+    addControlPoint(QPointF(p->getPos().x*width(), p->getPos().y*height()), p);
+}
+
+void TransferFunctionEditor::onControlPointRemoved(TransferFunctionDataPoint* p) {
+    std::vector<TransferFunctionEditorControlPoint*>::iterator it = std::find_if(controlPoints_.begin(), controlPoints_.end(), ControlPointEquals(p));
+    if (it!= controlPoints_.end()) {
+        removeItem((*it));
+        delete *it;
+        controlPoints_.erase(it);
+        redrawConnections();
+    }
+}
+
+void TransferFunctionEditor::onControlPointChanged(const TransferFunctionDataPoint* p) {
+    redrawConnections();
+    update();
+    //std::vector<TransferFunctionEditorControlPoint*>::iterator it = std::find_if(controlPoints_.begin(), controlPoints_.end(), ControlPointEquals(p));
+    //if (it!= controlPoints_.end()) {
+    //    (*it)->update();
+    //    redrawConnections();
+    //    update();
+    //}
+
 }
 
 }
