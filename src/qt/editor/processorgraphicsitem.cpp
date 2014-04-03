@@ -84,6 +84,10 @@ ProcessorGraphicsItem::ProcessorGraphicsItem()
     QFont classFont("Segoe", labelHeight, QFont::Normal, true);
     classFont.setPixelSize(pointSizeToPixelSize(labelHeight));
     classLabel_->setFont(classFont);
+    ProgressBarOwner* progressBarOwner = dynamic_cast<ProgressBarOwner*>(processor_);
+    if (progressBarOwner) {
+        progressBarOwner->getProgressBar().addObserver(this);
+    }
     progressBarTimer_.start();
 }
 
@@ -97,6 +101,11 @@ void ProcessorGraphicsItem::setProcessor(Processor* processor) {
         classLabel_->setText(QString::fromStdString(processor_->getClassName()));
         ProcessorObserver::addObservation(processor_);
         processor_->addObserver(this);
+
+        ProgressBarOwner* progressBarOwner = dynamic_cast<ProgressBarOwner*>(processor_);
+        if (progressBarOwner) {
+            progressBarOwner->getProgressBar().addObserver(this);
+        }
     } else {
         nameLabel_->setText("");
         classLabel_->setText("");
@@ -248,7 +257,7 @@ void ProcessorGraphicsItem::paintProgressBar(QPainter* p, float progress) {
     QPointF position(-(width/2.0f)+7.0f, 9.0f);
     QSize dimensions(width-14.0f, 5.0f);
     p->save();
-    QColor progressColor = Qt::darkGray;
+    QColor progressColor = Qt::lightGray;
     QRectF progressBarRect(position, dimensions);
     QLinearGradient progressGrad(progressBarRect.topLeft(), progressBarRect.topRight());
     progressGrad.setColorAt(0.0f, progressColor);
@@ -366,10 +375,10 @@ void ProcessorGraphicsItem::paint(QPainter* p, const QStyleOptionGraphicsItem* o
     paintStatusIndicator(p, QPointF(64.0f, -15.0f),
                          processor_->isReady(), QColor(0,170,0));
     //TODO: Fix progressbar to true indicator or just make a processing wheel.
-    /*ProgressBarOwner* progressBarOwner = dynamic_cast<ProgressBarOwner*>(processor_);
-    if (progressBarOwner != NULL) {
+    ProgressBarOwner* progressBarOwner = dynamic_cast<ProgressBarOwner*>(processor_);
+    if ((progressBarOwner != NULL) && progressBarOwner->getProgressBar().isVisible()) {
         paintProgressBar(p, progressBarOwner->getProgressBar().getProgress());
-    }*/
+    }
     p->restore();
 }
 
@@ -459,6 +468,33 @@ void ProcessorGraphicsItem::onLabelGraphicsItemChange() {
         setIdentifier(nameLabel_->text());
         nameLabel_->setNoFocusOut();
     }
+}
+
+void ProcessorGraphicsItem::progressChanged() {
+    ProgressBarOwner* progressBarOwner = dynamic_cast<ProgressBarOwner*>(processor_);
+    if ((progressBarOwner != NULL) && progressBarOwner->getProgressBar().isVisible()) {
+        // mark item as dirty to force an redraw
+        this->update();
+        // let Qt take care of events like update for 25ms, but exclude user input (we do not want any interference)
+        qApp->processEvents(QEventLoop::ExcludeUserInputEvents, 25);
+    }
+}
+
+void ProcessorGraphicsItem::progressBarVisibilityChanged() {
+    ProgressBarOwner* progressBarOwner = dynamic_cast<ProgressBarOwner*>(processor_);
+    if (progressBarOwner != NULL) {
+        // mark item as dirty to force an redraw
+        this->update();
+        // let Qt take care of events like update for 25ms, but exclude user input (we do not want any interference)
+        qApp->processEvents(QEventLoop::ExcludeUserInputEvents, 25);
+    }
+}
+
+void ProcessorGraphicsItem::updateViews() {
+    foreach(QGraphicsView *view, this->scene()->views()) {
+        view->viewport()->update();
+    }
+    qApp->processEvents(QEventLoop::ExcludeUserInputEvents);
 }
 
 } // namespace

@@ -105,7 +105,7 @@ public:
  * @see ProgressBarOwner
  * @see ProgressBarObserver
  */
-class IVW_CORE_API ProgressBar : public IvwSerializable, ProgressBarObservable {
+class IVW_CORE_API ProgressBar : public IvwSerializable, public ProgressBarObservable {
 
 public:
     ProgressBar();
