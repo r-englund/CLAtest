@@ -71,6 +71,7 @@ void Background::initialize() {
 
 void Background::deinitialize() {
     delete shader_;
+    shader_ = NULL;
     Processor::deinitialize();
 }
 
