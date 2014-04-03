@@ -3,7 +3,7 @@
  * Inviwo - Interactive Visualization Workshop
  * Version 0.6b
  *
- * Copyright (c) 2012-2014 Inviwo Foundation
+ * Copyright (c) 2014 Inviwo Foundation
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -26,7 +26,7 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
- * Main file authors: Erik Sundén, Timo Ropinski
+ * Main file authors: Erik Sundén
  *
  *********************************************************************************/
 
@@ -39,8 +39,7 @@
 #endif
 
 #include <modules/opengl/inviwoopengl.h>
-#include <GL/glut.h>
-#include <modules/glut/canvasglut.h>
+#include <modules/glfw/canvasglfw.h>
 
 #include <inviwo/core/common/inviwo.h>
 #include <inviwo/core/common/inviwoapplication.h>
@@ -54,7 +53,7 @@
 
 using namespace inviwo;
 
-CanvasGLUT* canvas = 0;
+CanvasGLFW* canvas = 0;
 InviwoApplication* app = 0;
 ProcessorNetwork* processorNetwork = 0;
 ProcessorNetworkEvaluator* processorNetworkEvaluator = 0;
@@ -70,10 +69,9 @@ void deinitialize() {
 
     delete app;
     app = NULL;
-    //for(unsigned int i=0; i<CanvasGLUT::canvasCount_; ++i)
-    //    delete CanvasGLUT::canvases_[i];
-}
 
+    glfwTerminate();
+}
 
 void keyPressed(unsigned char key, int x, int y) {
     switch (key) {
@@ -82,25 +80,34 @@ void keyPressed(unsigned char key, int x, int y) {
             exit(0);
             break;
     }
-    canvas->keyboard(key, x, y);
+    //canvas->keyboard(key, x, y);
 }
 
 int main(int argc, char** argv) {
-    InviwoApplication inviwoApp(argc, argv, "Inviwo "+IVW_VERSION + " - GLUTApp", inviwo::filesystem::findBasePath());
-    glutInit(&argc, argv);
-    canvas = new CanvasGLUT(inviwoApp.getDisplayName(), uvec2(128,128));
+    InviwoApplication inviwoApp(argc, argv, "Inviwo "+IVW_VERSION + " - GLFWApp", inviwo::filesystem::findBasePath());
+
+    if(!glfwInit()){
+        LogErrorCustom("GLFWMinimum", "GLFW could not be initialized.");
+        return 0;
+    }
+
+    canvas = new CanvasGLFW(inviwoApp.getDisplayName(), uvec2(128,128));
     canvas->initializeGL();
     inviwoApp.initialize(&inviwo::registerAllModules);
+
     // Create process network
     processorNetwork = new ProcessorNetwork();
     inviwoApp.setProcessorNetwork(processorNetwork);
+
     // Create process network evaluator
     processorNetworkEvaluator = new ProcessorNetworkEvaluator(processorNetwork);
     processorNetworkEvaluator->setDefaultRenderContext(canvas);
+
     canvas->setNetworkEvaluator(processorNetworkEvaluator);
     canvas->initializeSquare();
     canvas->initialize();
     canvas->activate();
+
     // Load simple scene
     processorNetwork->lock();
     const CommandLineParser* cmdparser = (inviwo::InviwoApplication::getRef()).getCommandLineParser();
@@ -109,7 +116,7 @@ int main(int argc, char** argv) {
     if (cmdparser->getLoadWorkspaceFromArg())
         workspace = cmdparser->getWorkspacePath();
     else
-        workspace = inviwoApp.getPath(InviwoApplication::PATH_WORKSPACES, "tests/simpleslicergl.inv");
+        workspace = inviwoApp.getPath(InviwoApplication::PATH_WORKSPACES, "tests/simpleraycaster.inv");
 
     IvwDeserializer xmlDeserializer(workspace);
     processorNetwork->deserialize(xmlDeserializer);
@@ -127,7 +134,7 @@ int main(int argc, char** argv) {
                 canvas->setWindowSize(uvec2(canvasProcessor->getCanvasSize()));
             }
             else {
-                CanvasGLUT* newC = new CanvasGLUT(canvasProcessor->getIdentifier(), uvec2(canvasProcessor->getCanvasSize()));
+                CanvasGLFW* newC = new CanvasGLFW(canvasProcessor->getIdentifier(), uvec2(canvasProcessor->getCanvasSize()));
                 processorNetworkEvaluator->registerCanvas(newC, canvasProcessor->getIdentifier());
                 newC->initializeGL();
                 newC->setNetworkEvaluator(processorNetworkEvaluator);
@@ -151,10 +158,16 @@ int main(int argc, char** argv) {
         processorNetworkEvaluator->saveSnapshotAllCanvases(path, cmdparser->getSnapshotName());
     }
 
-    if (cmdparser->getQuitApplicationAfterStartup())
+    if (cmdparser->getQuitApplicationAfterStartup()){
+        deinitialize();
         return 0;
+    }
 
-    glutKeyboardFunc(keyPressed);
-    glutMainLoop();
+    while (!glfwWindowShouldClose(glfwGetCurrentContext()))
+    {
+        glfwWaitEvents();
+    }
+
+    deinitialize();
     return 0;
 }

@@ -1,3 +1,7 @@
+if(IVW_TINY_GLFW_APPLICATION)
+    add_subdirectory(glfwminimum)
+endif()
+
 if(IVW_TINY_GLUT_APPLICATION)
     add_subdirectory(glutminimum)
 endif()
