@@ -34,6 +34,7 @@
 #define IVW_PROCESSORGRAPHICSITEM_H
 
 #include <inviwo/core/processors/processor.h>
+#include <inviwo/core/processors/progressbar.h>
 #include <inviwo/qt/widgets/labelgraphicsitem.h>
 #include <inviwo/qt/editor/inviwoqteditordefine.h>
 #include <QGraphicsRectItem>
@@ -52,7 +53,7 @@ IVW_QTEDITOR_API enum InviwoUserGraphicsItemType {
     LinkGraphicsType = 3
 };
 
-class IVW_QTEDITOR_API ProcessorGraphicsItem : public QGraphicsRectItem, public ProcessorObserver, public LabelGraphicsItemObserver {
+class IVW_QTEDITOR_API ProcessorGraphicsItem : public QGraphicsRectItem, public ProcessorObserver, public LabelGraphicsItemObserver, public ProgressBarObserver {
 
 public:
     ProcessorGraphicsItem();
@@ -78,12 +79,17 @@ public:
     enum { Type = UserType + ProcessorGraphicsType };
     int type() const  {return Type; }
 
+
 protected:
     void setIdentifier(QString text);
     void paint(QPainter* p, const QStyleOptionGraphicsItem* options, QWidget* widget);
     void paintStatusIndicator(QPainter* p, QPointF pos, bool status, QColor baseColor);
     void paintProgressBar(QPainter* p, float progress);
     virtual QVariant itemChange(GraphicsItemChange change, const QVariant& value);
+
+    virtual void progressChanged();
+    virtual void progressBarVisibilityChanged();
+    void updateViews();
 
 private:
     Processor* processor_;
