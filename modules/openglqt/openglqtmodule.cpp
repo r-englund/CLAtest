@@ -49,6 +49,7 @@ OpenGLQtModule::OpenGLQtModule() : InviwoModule() {
         if (network) {
             ProcessorNetworkEvaluator* evaluator = ProcessorNetworkEvaluator::getProcessorNetworkEvaluatorForProcessorNetwork(network);
             qtGLSharedCanvas_->setNetworkEvaluator(evaluator);
+            qtGLSharedCanvas_->initializeSquare();
             evaluator->setDefaultRenderContext(qtGLSharedCanvas_);
         }
     }

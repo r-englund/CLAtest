@@ -80,6 +80,10 @@ void CanvasQt::initialize() {
     CanvasGL::initialize();
 }
 
+void CanvasQt::initializeSquare() {
+    CanvasGL::initializeSquare();
+}
+
 void CanvasQt::deinitialize() {
     CanvasGL::deinitialize();
 }
