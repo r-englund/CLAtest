@@ -140,10 +140,16 @@ bool DataOutport<T>::isDataOwner() const {
 
 template <typename T>
 std::string DataOutport<T>::getContentInfo() const {
-    if(hasData())
-        return data_->getDataInfo();
-    else
+    if (hasData()) {
+        const DataBase* data = dynamic_cast<const DataBase*>(data_);
+        if (data) {
+            return data->getDataInfo();
+        } else {
+            return "Not a BaseData Object";
+        }
+    } else {
         return getClassName() + " has no data.";
+    }
 }
 
 } // namespace

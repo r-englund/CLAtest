@@ -117,10 +117,17 @@ bool DataInport<T>::hasData() const {
 
 template <typename T>
 std::string DataInport<T>::getContentInfo() const {
-    if(hasData())
-        return getData()->getDataInfo();
-    else
+    
+    if (hasData()) {
+        const DataBase* data = dynamic_cast<const DataBase*>(getData());
+        if (data) {
+            return data->getDataInfo();
+        } else {
+            return "Not a BaseData Object";
+        }
+    } else {
         return getClassName() + " has no data.";
+    }
 }
 
 } // namespace

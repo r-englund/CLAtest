@@ -200,11 +200,11 @@ for name in args.names:
 				for i in mess.splitlines():
 					print("... " + i)
 	
-		if(args.builddir != ""):
-			print("... run cmake...")
-			mess = subprocess.Popen(CMAKE + " " + str(args.builddir[0]), stdout=subprocess.PIPE, universal_newlines=True).stdout.read()
-			for i in mess.splitlines():
-				print("... " + i)
+if(args.builddir != ""):
+	print("... run cmake...")
+	mess = subprocess.Popen(CMAKE + " " + str(args.builddir[0]), stdout=subprocess.PIPE, universal_newlines=True).stdout.read()
+	for i in mess.splitlines():
+		print("... " + i)
 
 
 
