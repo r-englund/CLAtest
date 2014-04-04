@@ -63,11 +63,7 @@ TransferFunction& TransferFunction::operator=(const TransferFunction& rhs) {
     if (this != &rhs) {
         delete data_;
         data_ = new Layer(*rhs.data_);
-        for (TFPoints::iterator iter = dataPoints_.begin(); iter != dataPoints_.end();) {
-            delete *iter;
-            iter = dataPoints_.erase(iter);
-        }
-        dataPoints_.clear();
+        clearPoints();
         textureSize_ = rhs.textureSize_;
         maskMin_ = rhs.maskMin_;
         maskMax_ = rhs.maskMax_;
@@ -75,10 +71,7 @@ TransferFunction& TransferFunction::operator=(const TransferFunction& rhs) {
 
         for (size_t i=0; i<rhs.getNumDataPoints(); i++) {
             TransferFunctionDataPoint* oldPoint = rhs.getPoint(static_cast<int>(i));
-            TransferFunctionDataPoint* newPoint = new TransferFunctionDataPoint(oldPoint->getPos(), oldPoint->getRGBA());
-            newPoint->addObserver(this);
-            dataPoints_.push_back(newPoint);
-            //addPoint(oldPoint->getPos(), oldPoint->getRGBA());
+            addPoint(oldPoint->getPos(), oldPoint->getRGBA());
         }
     }
     invalidate();
