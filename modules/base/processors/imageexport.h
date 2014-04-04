@@ -57,11 +57,15 @@ public:
 protected:
     virtual void process();
 
+    void processExport();
+
 private:
     ImageInport imagePort_;
     FileProperty imageFile_;
     ButtonProperty exportImageButton_;
     BoolProperty overwrite_;
+
+    bool exportQueued_;
 };
 
 } // namespace

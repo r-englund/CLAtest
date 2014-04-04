@@ -56,6 +56,7 @@ public:
     ~CanvasQt();
 
     void initialize();
+    void initializeSquare();
     void deinitialize();
     void activate();
     void glSwapBuffers();

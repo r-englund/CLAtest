@@ -50,7 +50,8 @@ ImageExport::ImageExport()
     , imageFile_("imageFileName", "Image file name",
                   InviwoApplication::getPtr()->getPath(InviwoApplication::PATH_DATA)+"images/newimage.png")
     , exportImageButton_("snapshot", "Export Image", PropertyOwner::VALID)
-    , overwrite_("overwrite", "Overwrite", false) {
+    , overwrite_("overwrite", "Overwrite", false)
+    , exportQueued_(false){
     std::vector<FileExtension> ext = DataWriterFactory::getRef().getExtensionsForType<Image>();
 
     for (std::vector<FileExtension>::const_iterator it = ext.begin();
@@ -79,6 +80,20 @@ void ImageExport::deinitialize() {
 }
 
 void ImageExport::exportImage() {
+    if(!isValid()){
+        exportQueued_ = true;
+        return;
+    }
+    processExport();
+}
+
+void ImageExport::process() {
+    if(exportQueued_)
+        processExport();
+}
+
+void ImageExport::processExport(){
+    exportQueued_ = false;
     const Image* image = imagePort_.getData();
     if (image && !imageFile_.get().empty()) {
         const Layer* layer = image->getColorLayer();
@@ -90,6 +105,4 @@ void ImageExport::exportImage() {
     }
 }
 
-void ImageExport::process() {}
-
-} // namespace
+}// namespace
