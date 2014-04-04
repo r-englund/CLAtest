@@ -34,7 +34,7 @@
 #include <modules/opencl/kernelmanager.h>
 namespace inviwo {
 
-bool KernelOwner::addKernel(const std::string& filePath,
+cl::Kernel* KernelOwner::addKernel(const std::string& filePath,
                             const std::string& kernelName,
                             const std::string& defines /*= ""*/ ) {
     
@@ -42,10 +42,9 @@ bool KernelOwner::addKernel(const std::string& filePath,
 
     cl::Kernel* kernel = KernelManager::getRef().getKernel(program, kernelName, this);
     if (kernel) {
-        kernels_.push_back(kernel);
-        return true;
+        kernels_.insert(kernel);
     }
-    return false;
+    return kernel;
 }
 
 KernelOwner::~KernelOwner() {

@@ -56,10 +56,8 @@ GrayscaleCL::~GrayscaleCL() {}
 
 void GrayscaleCL::initialize() {
     Processor::initialize();
-    if (addKernel(InviwoApplication::getPtr()->getPath(InviwoApplication::PATH_MODULES)
-        +"opencl/cl/grayscale.cl", "grayscaleKernel")) {
-            kernel_ = kernels_.back();
-    }
+    kernel_ = addKernel(InviwoApplication::getPtr()->getPath(InviwoApplication::PATH_MODULES)
+        +"opencl/cl/grayscale.cl", "grayscaleKernel");
 }
 
 void GrayscaleCL::deinitialize() {
