@@ -45,7 +45,8 @@ Background::Background()
       outport_("outport", &inport_, COLOR_ONLY),
       backgroundStyle_("backgroundStyle", "Style", PropertyOwner::INVALID_RESOURCES),
       color1_("color1", "Color 1", vec4(0.0)),
-      color2_("color2", "Color 2", vec4(1.0)) {
+      color2_("color2", "Color 2", vec4(1.0)),
+      shader_(NULL) {
       
     addPort(inport_);
     addPort(outport_);
