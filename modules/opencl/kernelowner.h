@@ -56,18 +56,19 @@ public:
     virtual void onKernelCompiled(const cl::Kernel* kernel) = 0;
 
     /**
-     * Builds and adds the kernel if successfully built.
+     * Builds, adds and returns the kernel if successfully built. 
+     * @note Do not delete the returned kernel
      * @param filePath Path to file containing kernel
      * @param kernelName Name of kernel
      * @param defines Defines to be set when building kernel
-     * @return bool True if successfully built, otherwise false
+     * @return bool Kernel if successfully built, otherwise NULL
      */
-    bool addKernel(const std::string& filePath, const std::string& kernelName, const std::string& defines = "");
+    cl::Kernel* addKernel(const std::string& filePath, const std::string& kernelName, const std::string& defines = "");
 
-    const std::vector<cl::Kernel*>& getKernels() const { return kernels_; }
+    const std::set<cl::Kernel*>& getKernels() const { return kernels_; }
 
 protected:
-    std::vector<cl::Kernel*> kernels_;
+    std::set<cl::Kernel*> kernels_;
 };
 /** \class ProcessorKernelOwner
 * Convenience class for processors. Will call invalidate with INVALID_RESOURCES
