@@ -3,7 +3,7 @@
  * Inviwo - Interactive Visualization Workshop
  * Version 0.6b
  *
- * Copyright (c) 2013 Inviwo Foundation
+ * Copyright (c) 2013-2014 Inviwo Foundation
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -26,21 +26,38 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
- * Main file author: Peter Steneteg
+ * Main file author: Martin Falk
  *
  *********************************************************************************/
 
-#include <modules/example/examplemodule.h>
+#ifndef IVW_EXAMPLEPROGRESSBAR_H
+#define IVW_EXAMPLEPROGRESSBAR_H
 
-#include <modules/example/exampleprocessor.h>
-#include <modules/example/exampleprogressbar.h>
+#include <modules/example/examplemoduledefine.h>
+
+#include <inviwo/core/common/inviwo.h>
+#include <inviwo/core/ports/imageport.h>
+#include <inviwo/core/processors/processor.h>
+#include <inviwo/core/processors/progressbarowner.h>
 
 namespace inviwo {
 
-ExampleModule::ExampleModule() : InviwoModule() {
-    setIdentifier("Example");
-    registerProcessor(ExampleProcessor);
-    registerProcessor(ExampleProgressBar);
+// for a progressbar the processor has to be derived from ProgressBarOwner
+class IVW_MODULE_EXAMPLE_API ExampleProgressBar : public Processor, public ProgressBarOwner {
+public:
+    ExampleProgressBar();
+    virtual ~ExampleProgressBar();
+
+    InviwoProcessorInfo();
+
+protected:
+    virtual void process();
+
+private:    
+    ImageInport inport_;
+    ImageOutport outport_;
+};
+
 }
 
-} // namespace
+#endif //IVW_EXAMPLEPROGRESSBAR_H
