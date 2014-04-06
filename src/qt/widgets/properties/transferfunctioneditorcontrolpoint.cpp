@@ -39,8 +39,9 @@
 namespace inviwo {
 
 TransferFunctionEditorControlPoint::TransferFunctionEditorControlPoint(TransferFunctionDataPoint* datapoint)
-    : dataPoint_(datapoint), isEditingPoint_(false)
-{
+    : isEditingPoint_(false)
+    , dataPoint_(datapoint) {
+        
     size_ = 14.0f;
     showLabel_ = false;
     setFlags(ItemIgnoresTransformations | ItemIsFocusable | ItemIsMovable | ItemIsSelectable | ItemSendsGeometryChanges);
