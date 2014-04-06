@@ -58,8 +58,10 @@ void OptionPropertyWidgetQt::generateWidget() {
     hLayout->addWidget(label_);
     hLayout->addWidget(comboBox_);
     hLayout->setContentsMargins(0, 0, 0, 0);
-    hLayout->setSpacing(0);
-    hLayout->setStretch(1,1);
+    hLayout->setSpacing(7);
+    QSizePolicy slidersPol = comboBox_->sizePolicy();
+    slidersPol.setHorizontalStretch(3);
+    comboBox_->setSizePolicy(slidersPol);
     setLayout(hLayout);
     connect(comboBox_, SIGNAL(currentIndexChanged(int)),this, SLOT(optionChanged()));
     connect(label_, SIGNAL(textChanged()),this, SLOT(setPropertyDisplayName()));   

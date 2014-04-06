@@ -46,8 +46,8 @@ TransferFunction::TransferFunction()
     , maskMax_(1.0f)
     , interpolationType_(InterpolationLinear)
     , textureSize_(1024)
-    , data_(new Layer(uvec2(textureSize_, 1), DataVec4FLOAT32::get()))
-    , invalidData_(true) {
+    , invalidData_(true)
+    , data_(new Layer(uvec2(textureSize_, 1), DataVec4FLOAT32::get())) {
 
     // initialize with standard ramp
     addPoint(vec2(0.0f,0.0f), vec4(0.0f,0.0f,0.0f,0.0f));

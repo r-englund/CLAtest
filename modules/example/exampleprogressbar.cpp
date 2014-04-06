@@ -31,7 +31,7 @@
  *********************************************************************************/
 
 #include "exampleprogressbar.h"
-#include <inviwo/qt/widgets/inviwoapplicationqt.h>
+//include <inviwo/qt/widgets/inviwoapplicationqt.h>
 #ifndef WIN32
 #  include <unistd.h>
 #endif
