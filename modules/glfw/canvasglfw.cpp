@@ -68,6 +68,9 @@ void CanvasGLFW::initializeGL() {
 
     glfwWindowCount_++;
 
+    glfwSetKeyCallback(glWindow_, keyboard);
+    glfwSetMouseButtonCallback(glWindow_, mouse);
+    glfwSetScrollCallback(glWindow_, scroll);
     glfwSetWindowCloseCallback(glWindow_, closeWindow);
     glfwSetWindowUserPointer(glWindow_, this);
     glfwSetWindowSizeCallback(glWindow_, reshape);
@@ -116,79 +119,88 @@ CanvasGLFW* CanvasGLFW::getCanvasGLFW(GLFWwindow* window){
     return static_cast<CanvasGLFW*>(glfwGetWindowUserPointer(window));
 }
 
-//void CanvasGLFW::idle() {}
+void CanvasGLFW::keyboard(GLFWwindow* window, int key, int scancode, int action, int mods){
+    if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS){
+        glfwSetWindowShouldClose(window, GL_TRUE);
+        return;
+    }
 
-/*void CanvasGLFW::keyboard(unsigned char key, int x, int y) {
-    CanvasGLFW* thisCanvas = canvases_[glfwGetWindow()];
+    CanvasGLFW* thisCanvas = getCanvasGLFW(window);
 
     KeyboardEvent* keyEvent = new KeyboardEvent(
         key,
-        mapModifiers(glfwGetModifiers()),
+        KeyboardEvent::MODIFIER_NONE,
         KeyboardEvent::KEY_STATE_PRESS);
-    
-    canvases_[glfwGetWindow()]->keyPressEvent(keyEvent);
+
+    thisCanvas->keyPressEvent(keyEvent);
 
     delete keyEvent;
 }
 
+void CanvasGLFW::mouse(GLFWwindow* window, int button, int action, int mods) {
+    CanvasGLFW* thisCanvas = getCanvasGLFW(window);
+    thisCanvas->mouseButton_ = mapMouseButton(button);
+    thisCanvas->mouseState_ = mapMouseState(action);
+    thisCanvas->mouseModifiers_ = mapModifiers(mods);
+    double x;
+    double y;
+    glfwGetCursorPos(window, &x, &y);
+    MouseEvent* mouseEvent = new MouseEvent(ivec2(floor(x), floor(y)), thisCanvas->mouseButton_,
+        thisCanvas->mouseState_, thisCanvas->mouseModifiers_, thisCanvas->dimensions_);
+
+    if (thisCanvas->mouseState_ == MouseEvent::MOUSE_STATE_PRESS) thisCanvas->mousePressEvent(mouseEvent);
+    else if (thisCanvas->mouseState_ == MouseEvent::MOUSE_STATE_RELEASE) thisCanvas->mouseReleaseEvent(mouseEvent);
+
+    delete mouseEvent;
+}
+
+void CanvasGLFW::scroll(GLFWwindow* window, double xoffset, double yoffset) {
+    CanvasGLFW* thisCanvas = getCanvasGLFW(window);
+    thisCanvas->mouseButton_ = MouseEvent::MOUSE_BUTTON_MIDDLE;
+    thisCanvas->mouseState_ = MouseEvent::MOUSE_STATE_WHEEL;
+    thisCanvas->mouseModifiers_ = KeyboardEvent::MODIFIER_NONE;
+    double x;
+    double y;
+    glfwGetCursorPos(window, &x, &y);
+    MouseEvent* mouseEvent = new MouseEvent(ivec2(floor(x), floor(y)), floor(yoffset), thisCanvas->mouseButton_,
+        thisCanvas->mouseState_, MouseEvent::MOUSE_WHEEL_VERTICAL, thisCanvas->mouseModifiers_, thisCanvas->dimensions_);
+
+    thisCanvas->mouseWheelEvent(mouseEvent);
+
+    delete mouseEvent;
+}
+
+/*void CanvasGLFW::mouseMotion(int x, int y) {
+    CanvasGLFW* thisCanvas = canvases_[glfwGetWindow()];
+    MouseEvent* mouseEvent = new MouseEvent(ivec2(x, y), thisCanvas->mouseButton_,
+        thisCanvas->mouseState_, thisCanvas->mouseModifiers_, thisCanvas->dimensions_);
+    canvases_[glfwGetWindow()]->mouseMoveEvent(mouseEvent);
+    delete mouseEvent;
+}*/
+
 MouseEvent::MouseButton CanvasGLFW::mapMouseButton(int mouseButtonGLFW) {
-    if (mouseButtonGLFW == GLFW_LEFT_BUTTON) return MouseEvent::MOUSE_BUTTON_LEFT;
-    else if (mouseButtonGLFW == GLFW_MIDDLE_BUTTON) return MouseEvent::MOUSE_BUTTON_MIDDLE;
-    else if (mouseButtonGLFW == GLFW_RIGHT_BUTTON) return MouseEvent::MOUSE_BUTTON_RIGHT;
+    if (mouseButtonGLFW == GLFW_MOUSE_BUTTON_LEFT) return MouseEvent::MOUSE_BUTTON_LEFT;
+    else if (mouseButtonGLFW == GLFW_MOUSE_BUTTON_MIDDLE) return MouseEvent::MOUSE_BUTTON_MIDDLE;
+    else if (mouseButtonGLFW == GLFW_MOUSE_BUTTON_RIGHT) return MouseEvent::MOUSE_BUTTON_RIGHT;
     else return MouseEvent::MOUSE_BUTTON_NONE;
 }
 
 MouseEvent::MouseState CanvasGLFW::mapMouseState(int mouseStateGLFW) {
-    if (mouseStateGLFW == GLFW_DOWN) return MouseEvent::MOUSE_STATE_PRESS;
-    else if (mouseStateGLFW == GLFW_UP) return MouseEvent::MOUSE_STATE_RELEASE;
+    if (mouseStateGLFW == GLFW_PRESS) return MouseEvent::MOUSE_STATE_PRESS;
+    else if (mouseStateGLFW == GLFW_RELEASE) return MouseEvent::MOUSE_STATE_RELEASE;
     else return MouseEvent::MOUSE_STATE_NONE;
 }
 
 InteractionEvent::Modifier CanvasGLFW::mapModifiers(int modifiersGLFW) {
     int result = KeyboardEvent::MODIFIER_NONE;
 
-    if (modifiersGLFW & GLFW_ACTIVE_ALT) result |= InteractionEvent::MODIFIER_ALT;
+    if (modifiersGLFW & GLFW_MOD_ALT) result |= InteractionEvent::MODIFIER_ALT;
 
-    if (modifiersGLFW & GLFW_ACTIVE_CTRL) result |= InteractionEvent::MODIFIER_CTRL;
+    if (modifiersGLFW & GLFW_MOD_CONTROL) result |= InteractionEvent::MODIFIER_CTRL;
 
-    if (modifiersGLFW & GLFW_ACTIVE_SHIFT) result |= InteractionEvent::MODIFIER_SHIFT;
+    if (modifiersGLFW & GLFW_MOD_SHIFT) result |= InteractionEvent::MODIFIER_SHIFT;
 
     return static_cast<InteractionEvent::Modifier>(result);
 }
-
-void CanvasGLFW::mouse(int button, int state, int x, int y) {
-    CanvasGLFW* thisCanvas = canvases_[glfwGetWindow()];
-    thisCanvas->mouseButton_ = mapMouseButton(button);
-    thisCanvas->mouseState_ = mapMouseState(state);
-    thisCanvas->mouseModifiers_ = mapModifiers(glfwGetModifiers());
-    MouseEvent* mouseEvent = new MouseEvent(ivec2(x, y), thisCanvas->mouseButton_,
-                                            thisCanvas->mouseState_, thisCanvas->mouseModifiers_, thisCanvas->dimensions_);
-
-    if (thisCanvas->mouseState_ == MouseEvent::MOUSE_STATE_PRESS) canvases_[glfwGetWindow()]->mousePressEvent(mouseEvent);
-    else if (thisCanvas->mouseState_ == MouseEvent::MOUSE_STATE_RELEASE) canvases_[glfwGetWindow()]->mouseReleaseEvent(mouseEvent);
-
-    delete mouseEvent;
-}
-
-void CanvasGLFW::mouseWheel(int button, int direction, int x, int y) {
-    CanvasGLFW* thisCanvas = canvases_[glfwGetWindow()];
-    thisCanvas->mouseButton_ = mapMouseButton(button);
-    thisCanvas->mouseState_ = MouseEvent::MOUSE_STATE_WHEEL;
-    thisCanvas->mouseModifiers_ = mapModifiers(glfwGetModifiers());
-    MouseEvent* mouseEvent = new MouseEvent(ivec2(x, y), direction, thisCanvas->mouseButton_,
-        thisCanvas->mouseState_, MouseEvent::MOUSE_WHEEL_VERTICAL, thisCanvas->mouseModifiers_, thisCanvas->dimensions_);
-
-    canvases_[glfwGetWindow()]->mouseWheelEvent(mouseEvent);
-
-    delete mouseEvent;
-}
-
-void CanvasGLFW::mouseMotion(int x, int y) {
-    CanvasGLFW* thisCanvas = canvases_[glfwGetWindow()];
-    MouseEvent* mouseEvent = new MouseEvent(ivec2(x, y), thisCanvas->mouseButton_,
-                                            thisCanvas->mouseState_, thisCanvas->mouseModifiers_, thisCanvas->dimensions_);
-    canvases_[glfwGetWindow()]->mouseMoveEvent(mouseEvent);
-    delete mouseEvent;
-}*/
 
 } // namespace

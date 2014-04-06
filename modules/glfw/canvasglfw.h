@@ -59,17 +59,15 @@ public:
     static void closeWindow(GLFWwindow*);
     static int getWindowCount();
 
-    //static void refresh(GLFWwindow*);
     static void reshape(GLFWwindow*, int, int);
 
-    /*static MouseEvent::MouseButton mapMouseButton(const int mouseButtonGLFW);
+    static void keyboard(GLFWwindow*, int, int, int, int);
+    static void mouse(GLFWwindow*, int, int, int);
+    static void scroll(GLFWwindow*, double, double);
+
+    static MouseEvent::MouseButton mapMouseButton(const int mouseButtonGLFW);
     static MouseEvent::MouseState mapMouseState(const int mouseStateGLFW);
     static InteractionEvent::Modifier mapModifiers(const int modifiersGLFW);
-
-    static void keyboard(unsigned char key, int x, int y);
-    static void mouse(int button, int state, int x, int y);
-    static void mouseWheel(int button, int state, int x, int y);
-    static void mouseMotion(int x, int y);*/
 
 protected:
     static CanvasGLFW* getCanvasGLFW(GLFWwindow*);
