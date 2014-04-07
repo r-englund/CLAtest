@@ -228,7 +228,7 @@ cl::Program OpenCL::buildProgram(const std::string& fileName, const std::string&
         prog = fileReader.read();
     } catch (std::ifstream::failure&) {}
 
-    std::string concatenatedDefines = OpenCL::instance()->getIncludeDefine() + defines;
+    std::string concatenatedDefines = OpenCL::getPtr()->getIncludeDefine() + defines;
     cl::Program::Sources source(1, std::make_pair(prog.c_str(), prog.length()+1));
     cl::Program program(context, source);
 
@@ -249,7 +249,7 @@ cl::Program OpenCL::buildProgram(const std::string& fileName, const std::string&
 
 cl::Program OpenCL::buildProgram(const std::string& fileName, const std::string& defines /*= ""*/)
 {
-    return OpenCL::buildProgram(fileName, defines, OpenCL::instance()->getQueue());
+    return OpenCL::buildProgram(fileName, defines, OpenCL::getPtr()->getQueue());
 }
 
 void OpenCL::addCommonIncludeDirectory(const std::string& directoryPath)
@@ -1022,9 +1022,9 @@ cl::ImageFormat dataFormatToCLImageFormat(inviwo::DataFormatId format)
 
 #ifdef DEBUG
 
-    if (!inviwo::OpenCL::isValidImageFormat(inviwo::OpenCL::instance()->getContext(), clFormat)) {
+    if (!inviwo::OpenCL::isValidImageFormat(inviwo::OpenCL::getPtr()->getContext(), clFormat)) {
         LogErrorCustom("cl::ImageFormat typeToImageFormat", "OpenCL device does not support format");
-        ivwAssert(inviwo::OpenCL::isValidImageFormat(inviwo::OpenCL::instance()->getContext(), clFormat),
+        ivwAssert(inviwo::OpenCL::isValidImageFormat(inviwo::OpenCL::getPtr()->getContext(), clFormat),
                   "cl::ImageFormat typeToImageFormat: OpenCL device does not support format");
     };
 

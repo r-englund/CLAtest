@@ -123,7 +123,7 @@ void VolumeRaycasterCL::process() {
         kernel_->setArg(arg++, volumeDim);
         kernel_->setArg(arg++, *outImageCL->getLayerCL());
         //
-        OpenCL::instance()->getQueue().enqueueNDRangeKernel(*kernel_, cl::NullRange, globalWorkGroupSize, localWorkGroupSize, NULL, profilingEvent);
+        OpenCL::getPtr()->getQueue().enqueueNDRangeKernel(*kernel_, cl::NullRange, globalWorkGroupSize, localWorkGroupSize, NULL, profilingEvent);
     } catch (cl::Error& err) {
         LogError(getCLErrorString(err));
     }

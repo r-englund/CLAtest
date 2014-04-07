@@ -52,7 +52,7 @@ namespace inviwo {
 
 class IVW_MODULE_OPENCL_API SyncCLGL {
 public:
-    SyncCLGL(const cl::Context& context= OpenCL::instance()->getContext(), const cl::CommandQueue& queue = OpenCL::instance()->getQueue());
+    SyncCLGL(const cl::Context& context= OpenCL::getPtr()->getContext(), const cl::CommandQueue& queue = OpenCL::getPtr()->getQueue());
     ~SyncCLGL();
 
     /**

@@ -75,12 +75,12 @@ public:
     */
     virtual void notifyAfterTextureInitialization();
 
-    void aquireGLObject(std::vector<cl::Event>* syncEvents = NULL, const cl::CommandQueue& queue = OpenCL::instance()->getQueue()) const {
+    void aquireGLObject(std::vector<cl::Event>* syncEvents = NULL, const cl::CommandQueue& queue = OpenCL::getPtr()->getQueue()) const {
         std::vector<cl::Memory> syncImages(1, *clImage_);
         queue.enqueueAcquireGLObjects(&syncImages, syncEvents);
     }
     void releaseGLObject(std::vector<cl::Event>* syncEvents = NULL, cl::Event* event= NULL,
-                         const cl::CommandQueue& queue = OpenCL::instance()->getQueue()) const {
+                         const cl::CommandQueue& queue = OpenCL::getPtr()->getQueue()) const {
         std::vector<cl::Memory> syncImages(1, *clImage_);
         queue.enqueueReleaseGLObjects(&syncImages, syncEvents, event);
     }

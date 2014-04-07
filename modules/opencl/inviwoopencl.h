@@ -98,12 +98,6 @@ class IVW_MODULE_OPENCL_API OpenCL: public Singleton<OpenCL> {
 public:
     OpenCL();
 
-    static OpenCL* instance() {
-        //static OpenCL instance;// Guaranteed to be destroyed. Instantiated on first use.
-        //return &instance;
-        return getPtr(); // TODO: Refactor such that getPtr is used directly
-    }
-
     /**
      * Get queue that can perform tasks in serial (no need to explicitly manage events).
      * This should be the first choice of use. Expert users may want to use the

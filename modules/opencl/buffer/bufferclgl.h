@@ -65,12 +65,12 @@ public:
 
     void aquireGLObject(std::vector<cl::Event>* syncEvents = NULL) const {
         std::vector<cl::Memory> syncBuffers(1, *clBuffer_);
-        OpenCL::instance()->getQueue().enqueueAcquireGLObjects(&syncBuffers, syncEvents);
+        OpenCL::getPtr()->getQueue().enqueueAcquireGLObjects(&syncBuffers, syncEvents);
     }
 
     void releaseGLObject(std::vector<cl::Event>* syncEvents = NULL, cl::Event* event= NULL) const {
         std::vector<cl::Memory> syncBuffers(1, *clBuffer_);
-        OpenCL::instance()->getQueue().enqueueReleaseGLObjects(&syncBuffers, syncEvents, event);
+        OpenCL::getPtr()->getQueue().enqueueReleaseGLObjects(&syncBuffers, syncEvents, event);
     }
 
     /**

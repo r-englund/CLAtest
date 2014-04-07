@@ -84,7 +84,7 @@ void OpenCLSettings::changeDevice() {
         } else {
             enableOpenGLSharing_.setReadOnly(false);
         }
-        OpenCL::instance()->setDevice(devices[openCLDeviceProperty_.get()], enableOpenGLSharing_.get());
+        OpenCL::getPtr()->setDevice(devices[openCLDeviceProperty_.get()], enableOpenGLSharing_.get());
     }
 }
 

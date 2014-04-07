@@ -141,7 +141,7 @@ void EntryExitPointsCL::computeEntryExitPoints(const mat4& NDCToTextureMat, cons
         entryExitKernel_->setArg(arg++, NDCToTextureMat);
         entryExitKernel_->setArg(arg++, entryPointsCL);
         entryExitKernel_->setArg(arg++, exitPointsCL);
-        OpenCL::instance()->getQueue().enqueueNDRangeKernel(*entryExitKernel_, cl::NullRange, globalWorkGroupSize, localWorkGroupSize, NULL,
+        OpenCL::getPtr()->getQueue().enqueueNDRangeKernel(*entryExitKernel_, cl::NullRange, globalWorkGroupSize, localWorkGroupSize, NULL,
                 profilingEvent);
     } catch (cl::Error& err) {
         LogError(getCLErrorString(err));

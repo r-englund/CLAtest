@@ -183,12 +183,12 @@ void OpenCLCapabilities::retrieveDynamicInfo() {
 }
 
 void OpenCLCapabilities::printInfo() {
-    OpenCLCapabilities::printDeviceInfo(OpenCL::instance()->getDevice());
+    OpenCLCapabilities::printDeviceInfo(OpenCL::getPtr()->getDevice());
     try 
     {
         // Supported image 2D formats
         std::vector<cl::ImageFormat> formats;
-        OpenCL::instance()->getContext().getSupportedImageFormats(CL_MEM_READ_WRITE, CL_MEM_OBJECT_IMAGE2D, &formats);
+        OpenCL::getPtr()->getContext().getSupportedImageFormats(CL_MEM_READ_WRITE, CL_MEM_OBJECT_IMAGE2D, &formats);
         {
             std::ostringstream stream;
             stream << "Supported 2D READ_WRITE formats: ";
@@ -205,7 +205,7 @@ void OpenCLCapabilities::printInfo() {
         {
             std::ostringstream stream;
 
-            OpenCL::instance()->getContext().getSupportedImageFormats(CL_MEM_READ_WRITE, CL_MEM_OBJECT_IMAGE3D, &formats);
+            OpenCL::getPtr()->getContext().getSupportedImageFormats(CL_MEM_READ_WRITE, CL_MEM_OBJECT_IMAGE3D, &formats);
             stream << "Supported 3D READ_WRITE formats: ";
             for(::size_t i = 0; i < formats.size(); ++i) {
                 stream << imageFormatToString(formats[i]);

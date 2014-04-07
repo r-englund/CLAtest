@@ -78,7 +78,7 @@ void GrayscaleCL::process() {
     cl_uint arg = 0;
     kernel_->setArg(arg++, *colorImageCL->getLayerCL());
     kernel_->setArg(arg++, *outImageCL->getLayerCL());
-    OpenCL::instance()->getQueue().enqueueNDRangeKernel(*kernel_, cl::NullRange, static_cast<glm::svec2>(outportDim));
+    OpenCL::getPtr()->getQueue().enqueueNDRangeKernel(*kernel_, cl::NullRange, static_cast<glm::svec2>(outportDim));
 }
 
 } // namespace
