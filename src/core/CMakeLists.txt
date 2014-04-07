@@ -64,6 +64,7 @@ set(HEADER_FILES
     ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/volume/volumeram.h
     ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/volume/volumeramconverter.h
     ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/volume/volumeramhistogram.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/volume/volumerammaskop.h
     ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/volume/volumeramoperationexecuter.h
     ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/volume/volumeramprecision.h
     ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/volume/volumeramslice.h
@@ -136,6 +137,7 @@ set(HEADER_FILES
     ${IVW_INCLUDE_DIR}/inviwo/core/ports/portinspector.h
     ${IVW_INCLUDE_DIR}/inviwo/core/ports/portinspectorfactory.h
     ${IVW_INCLUDE_DIR}/inviwo/core/ports/singleinport.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/ports/vectordataport.h
     ${IVW_INCLUDE_DIR}/inviwo/core/ports/volumeport.h
     ${IVW_INCLUDE_DIR}/inviwo/core/processors/canvasprocessor.h
     ${IVW_INCLUDE_DIR}/inviwo/core/processors/processor.h
@@ -322,6 +324,7 @@ set(SOURCE_FILES
     ports/portinspector.cpp
     ports/portinspectorfactory.cpp
     ports/singleinport.cpp
+    ports/vectordataport.cpp
     ports/volumeport.cpp
     processors/canvasprocessor.cpp
     processors/processor.cpp
