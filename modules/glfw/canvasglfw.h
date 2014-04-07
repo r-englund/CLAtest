@@ -50,6 +50,7 @@ public:
     void initializeGL();
     void initializeSquare();
     void deinitialize();
+    void activate();
 
     void glSwapBuffers();
 
@@ -62,7 +63,8 @@ public:
     static void reshape(GLFWwindow*, int, int);
 
     static void keyboard(GLFWwindow*, int, int, int, int);
-    static void mouse(GLFWwindow*, int, int, int);
+    static void mouseButton(GLFWwindow*, int, int, int);
+    static void mouseMotion(GLFWwindow*, double, double);
     static void scroll(GLFWwindow*, double, double);
 
     static MouseEvent::MouseButton mapMouseButton(const int mouseButtonGLFW);

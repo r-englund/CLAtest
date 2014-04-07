@@ -47,7 +47,7 @@
 #include <inviwo/core/network/processornetworkevaluator.h>
 #include <inviwo/core/processors/canvasprocessor.h>
 #include <inviwo/core/util/filesystem.h>
-
+#include <modules/base/processors/imageexport.h>
 #include <moduleregistration.h>
 
 
@@ -75,7 +75,7 @@ void deinitialize() {
 
 void keyPressed(unsigned char key, int x, int y) {
     switch (key) {
-        case 27: // ESC key
+        case GLFW_KEY_ESCAPE: // ESC key
             deinitialize();
             exit(0);
             break;
@@ -171,5 +171,8 @@ int main(int argc, char** argv) {
     }
 
     deinitialize();
+
+    exit(0);
+
     return 0;
 }
