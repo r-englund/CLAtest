@@ -33,7 +33,6 @@
 #ifndef IVW_VECTORDATA_PORT_H
 #define IVW_VECTORDATA_PORT_H
 
-#include <modules/mesh/meshmoduledefine.h>
 #include <inviwo/core/ports/datainport.h>
 #include <inviwo/core/ports/dataoutport.h>
 #include <vector>
