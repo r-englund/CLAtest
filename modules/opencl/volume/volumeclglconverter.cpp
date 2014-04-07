@@ -61,7 +61,7 @@ DataRepresentation* VolumeCLGL2RAMConverter::createFrom(const DataRepresentation
     if (destination) {
         VolumeRAM* volumeRAM = static_cast<VolumeRAM*>(destination);
         texture->download(volumeRAM->getData());
-        //const cl::CommandQueue& queue = OpenCL::instance()->getQueue();
+        //const cl::CommandQueue& queue = OpenCL::getPtr()->getQueue();
         //queue.enqueueReadVolume(volumeCL->get(), true, glm::svec3(0), glm::svec3(dimension, 1), 0, 0, volumeRAM->getData());
     } else {
         LogError("Invalid conversion or not implemented");

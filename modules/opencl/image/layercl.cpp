@@ -56,18 +56,18 @@ void LayerCL::initialize(const void* texels) {
     if (texels != NULL) {
         // Could performance be increased by using pinned memory?
         // 3.1.1 http://www.nvidia.com/content/cudazone/CUDABrowser/downloads/papers/NVIDIA_OpenCL_BestPracticesGuide.pdf
-        //cl::Buffer pinnedMem(OpenCL::instance()->getContext(), CL_MEM_READ_ONLY | CL_MEM_ALLOC_HOST_PTR, sizeof(texels), NULL, NULL);
-        //unsigned char* mappedMem = (unsigned char*)OpenCL::instance()->getQueue().enqueueMapBuffer(pinnedMem, true, CL_MAP_WRITE, 0, sizeof(texels), 0);
+        //cl::Buffer pinnedMem(OpenCL::getPtr()->getContext(), CL_MEM_READ_ONLY | CL_MEM_ALLOC_HOST_PTR, sizeof(texels), NULL, NULL);
+        //unsigned char* mappedMem = (unsigned char*)OpenCL::getPtr()->getQueue().enqueueMapBuffer(pinnedMem, true, CL_MAP_WRITE, 0, sizeof(texels), 0);
         //memcpy(mappedMem, texels, sizeof(texels));
-        //OpenCL::instance()->getQueue().enqueueWriteLayer(*layer2D_, true, glm::svec3(0), glm::svec3(dimensions_, 1), 0, 0, mappedMem);
-        //OpenCL::instance()->getQueue().enqueueUnmapMemObject(pinnedMem, mappedMem);
+        //OpenCL::getPtr()->getQueue().enqueueWriteLayer(*layer2D_, true, glm::svec3(0), glm::svec3(dimensions_, 1), 0, 0, mappedMem);
+        //OpenCL::getPtr()->getQueue().enqueueUnmapMemObject(pinnedMem, mappedMem);
         // This should also use pinned memory...
         clImage_ = new cl::Image2D(OpenCL::getPtr()->getContext(),
                                    CL_MEM_READ_WRITE | CL_MEM_COPY_HOST_PTR | CL_MEM_ALLOC_HOST_PTR,
                                    getFormat(), static_cast<size_t>(dimensions_.x), static_cast<size_t>(dimensions_.y), 0, const_cast<void*>(texels));
         // Alternatively first allocate memory on device and then transfer
-        //layer2D_ = new cl::Layer2D(OpenCL::instance()->getContext(), CL_MEM_READ_WRITE, getFormat(), dimensions_.x, dimensions_.y);
-        //OpenCL::instance()->getQueue().enqueueWriteLayer(*layer2D_, true, glm::svec3(0), glm::svec3(dimensions_, 1), 0, 0, texels);
+        //layer2D_ = new cl::Layer2D(OpenCL::getPtr()->getContext(), CL_MEM_READ_WRITE, getFormat(), dimensions_.x, dimensions_.y);
+        //OpenCL::getPtr()->getQueue().enqueueWriteLayer(*layer2D_, true, glm::svec3(0), glm::svec3(dimensions_, 1), 0, 0, texels);
     } else {
         clImage_ = new cl::Image2D(OpenCL::getPtr()->getContext(), CL_MEM_READ_WRITE, getFormat(), static_cast<size_t>(dimensions_.x),
                                    static_cast<size_t>(dimensions_.y));
