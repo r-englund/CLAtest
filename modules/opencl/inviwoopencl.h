@@ -68,7 +68,7 @@ namespace inviwo {
 // call LogInfo with the execution time.
 // Example:
 // BEGIN_OPENCL_PROFILING
-// OpenCL::instance()->getQueue().enqueueNDRangeKernel(*ernel_, cl::NullRange, globalWorkGroupSize, localWorkGroupSize, NULL, profilingEvent);
+// OpenCL::getPtr()->getQueue().enqueueNDRangeKernel(*ernel_, cl::NullRange, globalWorkGroupSize, localWorkGroupSize, NULL, profilingEvent);
 // END_OPENCL_PROFILING
 
 #if IVW_PROFILING 
