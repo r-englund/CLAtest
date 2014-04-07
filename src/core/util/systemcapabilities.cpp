@@ -202,8 +202,36 @@ void SystemCapabilities::printInfo() {
 
     // Try to retrieve CPU information
     if (successCPUInfo_) {
-        for (unsigned long i=0; i<infoCPUs_.size(); i++)
-            LogInfoCustom("SystemInfo","CPU " << i+1 << ": " << infoCPUs_[i].vendor << " " << infoCPUs_[i].model << " " << infoCPUs_[i].mhz << " Mhz");
+        std::string prevCPU = std::string("");
+        std::ostringstream cpuStream;
+        unsigned long count=0;
+        for (unsigned long i=0; i<infoCPUs_.size(); i++){
+            cpuStream.str("");
+            cpuStream << infoCPUs_[i].vendor << " " << infoCPUs_[i].model << " " << infoCPUs_[i].mhz;
+            if(prevCPU != cpuStream.str()){
+                if(!prevCPU.empty()){
+                    if(count>0){
+                        LogInfoCustom("SystemInfo","CPU " << i+1 << "-" << i+1+count << ": " << prevCPU << " Mhz");
+                    }
+                    else{
+                        LogInfoCustom("SystemInfo","CPU " << i+1 << ": " << prevCPU << " Mhz");
+                    }
+                }
+                prevCPU = cpuStream.str();
+                count = 0;
+            }
+            else{
+                count++;
+            }
+        }
+        if(!prevCPU.empty()){
+            if(count>0){
+                LogInfoCustom("SystemInfo","CPU " << infoCPUs_.size()-count << "-" << infoCPUs_.size() << ": " << prevCPU << " Mhz");
+            }
+            else{
+                LogInfoCustom("SystemInfo","CPU " << infoCPUs_.size() << ": " << prevCPU << " Mhz");
+            }
+        }
     }
     else
         SystemInfoNotFound("CPU:");

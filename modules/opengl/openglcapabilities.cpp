@@ -87,6 +87,28 @@ void OpenGLCapabilities::printInfo() {
     if (isShadersSupported()) {
         LogInfoCustom("OpenGLInfo","GLSL version: " << glslVersionStr_);
         LogInfoCustom("OpenGLInfo","Current set global GLSL version: " << getCurrentShaderVersion().getVersionAndProfileAsString());
+    }
+    else if (isShadersSupportedARB()) {
+        LogInfoCustom("OpenGLInfo","GLSL version: " << glslVersionStr_);
+        LogInfoCustom("OpenGLInfo","Current set global GLSL version: " << getCurrentShaderVersion().getVersionAndProfileAsString());
+    }
+
+    if (isTexturesSupported()) {
+        glm::u64 totalMem = getTotalAvailableTextureMem();
+        LogInfoCustom("OpenGLInfo","Dedicated video memory: " << (totalMem>0 ? formatBytesToString(totalMem) : "UNKNOWN"));
+    }
+}
+
+void OpenGLCapabilities::printDetailedInfo() {
+    //OpenGL General Info
+    LogInfoCustom("OpenGLInfo","Vendor: " << glVendorStr_);
+    LogInfoCustom("OpenGLInfo","Renderer: " << glRenderStr_);
+    LogInfoCustom("OpenGLInfo","Version: " << glVersionStr_);
+
+    //GLSL
+    if (isShadersSupported()) {
+        LogInfoCustom("OpenGLInfo","GLSL version: " << glslVersionStr_);
+        LogInfoCustom("OpenGLInfo","Current set global GLSL version: " << getCurrentShaderVersion().getVersionAndProfileAsString());
         LogInfoCustom("OpenGLInfo","Shaders supported: YES");
     }
     else if (isShadersSupportedARB()) {
