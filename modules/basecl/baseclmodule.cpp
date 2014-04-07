@@ -44,7 +44,7 @@ BaseCLModule::BaseCLModule() : InviwoModule() {
 }
 
 void BaseCLModule::initialize() {
-    OpenCL::instance()->addCommonIncludeDirectory(InviwoApplication::getPtr()->getPath(InviwoApplication::PATH_MODULES)+"basecl/cl");
+    OpenCL::getPtr()->addCommonIncludeDirectory(InviwoApplication::getPtr()->getPath(InviwoApplication::PATH_MODULES)+"basecl/cl");
     InviwoModule::initialize();
 }
 

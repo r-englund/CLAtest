@@ -159,7 +159,7 @@ void VolumeFirstHitCL::firstHit(const cl::Image& volumeCL, const cl::Image& entr
         kernel_->setArg(arg++, transferFunctionCL);
         kernel_->setArg(arg++, stepSize);
         kernel_->setArg(arg++, output);
-        OpenCL::instance()->getQueue().enqueueNDRangeKernel(*kernel_, cl::NullRange, globalWorkGroupSize, localWorkGroupSize, NULL, profilingEvent);
+        OpenCL::getPtr()->getQueue().enqueueNDRangeKernel(*kernel_, cl::NullRange, globalWorkGroupSize, localWorkGroupSize, NULL, profilingEvent);
     } catch (cl::Error& err) {
         LogError(getCLErrorString(err));
     }

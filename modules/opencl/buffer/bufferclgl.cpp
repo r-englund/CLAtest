@@ -61,7 +61,7 @@ void BufferCLGL::initialize(BufferObject* data) {
     CLBufferSharingMap::iterator it = OpenCLBufferSharing::clBufferSharingMap_.find(data);
 
     if (it == OpenCLBufferSharing::clBufferSharingMap_.end()) {
-        clBuffer_ = new cl::BufferGL(OpenCL::instance()->getContext(), readWriteFlag_, data->getId());
+        clBuffer_ = new cl::BufferGL(OpenCL::getPtr()->getContext(), readWriteFlag_, data->getId());
         OpenCLBufferSharing::clBufferSharingMap_.insert(BufferSharingPair(data, new OpenCLBufferSharing(clBuffer_)));
     } else {
         clBuffer_ = static_cast<cl::BufferGL*>(it->second->sharedMemory_);
@@ -124,7 +124,7 @@ void BufferCLGL::onAfterBufferInitialization() {
 
     if (it != OpenCLBufferSharing::clBufferSharingMap_.end()) {
         if (it->second->getRefCount() == 0) {
-            it->second->sharedMemory_ = new cl::BufferGL(OpenCL::instance()->getContext(), readWriteFlag_, bufferObject_->getId());
+            it->second->sharedMemory_ = new cl::BufferGL(OpenCL::getPtr()->getContext(), readWriteFlag_, bufferObject_->getId());
         }
 
         clBuffer_ = static_cast<cl::BufferGL*>(it->second->sharedMemory_);

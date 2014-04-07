@@ -45,7 +45,7 @@ BufferCL::BufferCL(const BufferCL& rhs)
     : BufferRepresentation(rhs.getSize(), rhs.getDataFormat(), rhs.getBufferType(), rhs.getBufferUsage()), readWriteFlag_(rhs.readWriteFlag_)
 {
     initialize(NULL);
-    OpenCL::instance()->getQueue().enqueueCopyBuffer(rhs.getBuffer(), *clBuffer_ , 0, 0, getSize()*getSizeOfElement());
+    OpenCL::getPtr()->getQueue().enqueueCopyBuffer(rhs.getBuffer(), *clBuffer_ , 0, 0, getSize()*getSizeOfElement());
 }
 
 BufferCL::~BufferCL() {
@@ -62,13 +62,13 @@ void BufferCL::upload(const void* data, size_t size)
         setSize(size/getSizeOfElement());
         initialize(data);
     } else {
-        OpenCL::instance()->getQueue().enqueueWriteBuffer(*clBuffer_, true, 0, size, const_cast<void*>(data));
+        OpenCL::getPtr()->getQueue().enqueueWriteBuffer(*clBuffer_, true, 0, size, const_cast<void*>(data));
     }
 }
 
 void BufferCL::download(void* data) const
 {
-    OpenCL::instance()->getQueue().enqueueReadBuffer(*clBuffer_, true, 0, getSize()*getSizeOfElement(), data);
+    OpenCL::getPtr()->getQueue().enqueueReadBuffer(*clBuffer_, true, 0, getSize()*getSizeOfElement(), data);
 }
 
 BufferCL* BufferCL::clone() const {
@@ -87,11 +87,11 @@ void BufferCL::initialize(const void* data) {
     // Generate a new buffer
     if (data != NULL) {
         // CL_MEM_COPY_HOST_PTR can be used with CL_MEM_ALLOC_HOST_PTR to initialize the contents of the cl_mem object allocated using host-accessible (e.g. PCIe) memory.
-        clBuffer_ = new cl::Buffer(OpenCL::instance()->getContext(),
+        clBuffer_ = new cl::Buffer(OpenCL::getPtr()->getContext(),
                                  readWriteFlag_ | CL_MEM_COPY_HOST_PTR | CL_MEM_ALLOC_HOST_PTR,
                                  getSize()*getSizeOfElement(), const_cast<void*>(data));
     } else {
-        clBuffer_ = new cl::Buffer(OpenCL::instance()->getContext(), readWriteFlag_, getSize()*getSizeOfElement());
+        clBuffer_ = new cl::Buffer(OpenCL::getPtr()->getContext(), readWriteFlag_, getSize()*getSizeOfElement());
     }
 
     BufferCL::initialize();

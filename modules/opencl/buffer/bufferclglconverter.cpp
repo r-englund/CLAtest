@@ -120,7 +120,7 @@ DataRepresentation* BufferCLGL2CLConverter::createFrom(const DataRepresentation*
     destination = new BufferCL(size, src->getDataFormat(), src->getBufferType(), src->getBufferUsage());
     SyncCLGL glSync;
     src->aquireGLObject(glSync.getGLSyncEvent());
-    OpenCL::instance()->getQueue().enqueueCopyBuffer(src->getBuffer(), static_cast<BufferCL*>(destination)->getBuffer(), 0, 0, size);
+    OpenCL::getPtr()->getQueue().enqueueCopyBuffer(src->getBuffer(), static_cast<BufferCL*>(destination)->getBuffer(), 0, 0, size);
     src->releaseGLObject(glSync.getGLSyncEvent());
     return destination;
 }
@@ -135,7 +135,7 @@ void BufferCLGL2CLConverter::update(const DataRepresentation* source, DataRepres
 
     SyncCLGL glSync;
     src->aquireGLObject(glSync.getGLSyncEvent());
-    OpenCL::instance()->getQueue().enqueueCopyBuffer(src->getBuffer(), dst->getBuffer(), 0, 0, src->getSize());
+    OpenCL::getPtr()->getQueue().enqueueCopyBuffer(src->getBuffer(), dst->getBuffer(), 0, 0, src->getSize());
     src->releaseGLObject(glSync.getGLSyncEvent());
 }
 

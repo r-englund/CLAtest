@@ -61,7 +61,7 @@ void LayerCLGL::initialize(Texture2D* texture) {
     CLTextureSharingMap::iterator it = OpenCLImageSharing::clImageSharingMap_.find(texture);
 
     if (it == OpenCLImageSharing::clImageSharingMap_.end()) {
-        clImage_ = new cl::Image2DGL(OpenCL::instance()->getContext(), CL_MEM_READ_WRITE, GL_TEXTURE_2D, 0, texture->getID());
+        clImage_ = new cl::Image2DGL(OpenCL::getPtr()->getContext(), CL_MEM_READ_WRITE, GL_TEXTURE_2D, 0, texture->getID());
         OpenCLImageSharing::clImageSharingMap_.insert(TextureCLImageSharingPair(texture_, new OpenCLImageSharing(clImage_)));
     } else {
         clImage_ = it->second->sharedMemory_;
@@ -136,7 +136,7 @@ void LayerCLGL::notifyAfterTextureInitialization() {
 
     if (it != OpenCLImageSharing::clImageSharingMap_.end()) {
         if (it->second->getRefCount() == 0) {
-            it->second->sharedMemory_ = new cl::Image2DGL(OpenCL::instance()->getContext(), CL_MEM_READ_WRITE, GL_TEXTURE_2D, 0, texture_->getID());
+            it->second->sharedMemory_ = new cl::Image2DGL(OpenCL::getPtr()->getContext(), CL_MEM_READ_WRITE, GL_TEXTURE_2D, 0, texture_->getID());
         }
 
         clImage_ = it->second->sharedMemory_;

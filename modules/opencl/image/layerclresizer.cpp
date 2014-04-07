@@ -54,7 +54,7 @@ void LayerCLResizer::resize(const cl::Image& src, const cl::Image& dst, const uv
         instance.getResizeKernel()->setArg(0, src);
         instance.getResizeKernel()->setArg(1, dst);
         cl::Event event;
-        OpenCL::instance()->getQueue().enqueueNDRangeKernel(instance.resizeKernel_, cl::NullRange, cl::NDRange(resizeToDimension[0],
+        OpenCL::getPtr()->getQueue().enqueueNDRangeKernel(instance.resizeKernel_, cl::NullRange, cl::NDRange(resizeToDimension[0],
                 resizeToDimension[1]),
                 cl::NullRange, NULL, &event);
         event.wait();

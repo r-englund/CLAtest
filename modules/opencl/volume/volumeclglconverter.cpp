@@ -112,7 +112,7 @@ DataRepresentation* VolumeCLGL2CLConverter::createFrom(const DataRepresentation*
     destination = new VolumeCL(dimension, volumeCLGL->getDataFormat());
     {   SyncCLGL glSync;
         volumeCLGL->aquireGLObject(glSync.getGLSyncEvent());
-        OpenCL::instance()->getQueue().enqueueCopyImage(volumeCLGL->get(), static_cast<VolumeCL*>(destination)->get(), glm::svec3(0), glm::svec3(0),
+        OpenCL::getPtr()->getQueue().enqueueCopyImage(volumeCLGL->get(), static_cast<VolumeCL*>(destination)->get(), glm::svec3(0), glm::svec3(0),
                 glm::svec3(dimension));
         volumeCLGL->releaseGLObject(NULL, glSync.getLastReleaseGLEvent());
     }
@@ -129,7 +129,7 @@ void VolumeCLGL2CLConverter::update(const DataRepresentation* source, DataRepres
 
     {   SyncCLGL glSync;
         volumeSrc->aquireGLObject(glSync.getGLSyncEvent());
-        OpenCL::instance()->getQueue().enqueueCopyImage(volumeSrc->get(), volumeDst->get(), glm::svec3(0), glm::svec3(0),
+        OpenCL::getPtr()->getQueue().enqueueCopyImage(volumeSrc->get(), volumeDst->get(), glm::svec3(0), glm::svec3(0),
                 glm::svec3(volumeSrc->getDimension()));
         volumeSrc->releaseGLObject(NULL, glSync.getLastReleaseGLEvent());
     }
