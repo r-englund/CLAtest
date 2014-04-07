@@ -135,6 +135,7 @@ void TransferFunctionEditorView::setShowHistogram(bool show) {
 }
 
 void TransferFunctionEditorView::histogramThreadFinished() {
+    workerThread_ = 0;
     histogramTheadWorking_ = false;
     invalidatedHistogram_ = true;
     this->resetCachedContent();
