@@ -126,7 +126,7 @@ void OpenCLModule::setupModuleSettings() {
         OpenCLCapabilities* openclInfo = getTypeFromVector<OpenCLCapabilities>(getCapabilities());
 
         if (openclInfo) {
-            btnOpenCLInfo_.onChange(openclInfo, &OpenCLCapabilities::printInfo);
+            btnOpenCLInfo_.onChange(openclInfo, &OpenCLCapabilities::printDetailedInfo);
             settings->addProperty(&btnOpenCLInfo_);
         }
     }

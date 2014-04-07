@@ -183,6 +183,18 @@ void OpenCLCapabilities::retrieveDynamicInfo() {
 }
 
 void OpenCLCapabilities::printInfo() {
+    const cl::Device& device = OpenCL::getPtr()->getDevice();
+    try
+    {
+    __DEVICE_INFO_GENERAL(__CL_PRINT_DEVICE_INFO)
+    }
+    catch (cl::Error& e)
+    {
+        LogInfoCustom("OpenCL", "Device does not have the following info: " << e.what());
+    }
+}
+
+void OpenCLCapabilities::printDetailedInfo() {
     OpenCLCapabilities::printDeviceInfo(OpenCL::getPtr()->getDevice());
     try 
     {
@@ -225,11 +237,12 @@ void OpenCLCapabilities::printDeviceInfo(const cl::Device& device) {
     try
     {
         // Macros will print print supported device info
+        __DEVICE_INFO_GENERAL(__CL_PRINT_DEVICE_INFO)
         __DEVICE_INFO_1_0(__CL_PRINT_DEVICE_INFO)
-#if defined(CL_VERSION_1_1)
+#if defined(__DEVICE_INFO_1_1)
         __DEVICE_INFO_1_1(__CL_PRINT_DEVICE_INFO)
 #endif
-#if defined(CL_VERSION_1_2)
+#if defined(__DEVICE_INFO_1_2)
         __DEVICE_INFO_1_2(__CL_PRINT_DEVICE_INFO)
 #endif
 #if defined(USE_CL_DEVICE_FISSION)
