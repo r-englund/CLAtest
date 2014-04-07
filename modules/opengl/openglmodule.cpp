@@ -82,7 +82,7 @@ void OpenGLModule::setupModuleSettings() {
         OpenGLCapabilities* openglInfo = getTypeFromVector<OpenGLCapabilities>(getCapabilities());
 
         if (openglInfo) {
-            btnOpenGLInfo_.onChange(openglInfo, &OpenGLCapabilities::printInfo);
+            btnOpenGLInfo_.onChange(openglInfo, &OpenGLCapabilities::printDetailedInfo);
             settings->addProperty(&btnOpenGLInfo_);
         }
     }
