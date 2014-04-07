@@ -38,7 +38,7 @@
 
 namespace inviwo {
 
-#define OpenGLInfoNotFound(message) { LogInfo(message << " Info could not be retrieved"); }
+#define OpenGLInfoNotFound(message) { LogInfoCustom("OpenGLInfo",message << " Info could not be retrieved"); }
 
 OpenGLCapabilities::GLSLShaderVersion::GLSLShaderVersion() : number_(0), profile_("") {}
 
@@ -79,52 +79,52 @@ OpenGLCapabilities::~OpenGLCapabilities() {
 
 void OpenGLCapabilities::printInfo() {
     //OpenGL General Info
-    LogInfo("Vendor: " << glVendorStr_);
-    LogInfo("Renderer: " << glRenderStr_);
-    LogInfo("Version: " << glVersionStr_);
+    LogInfoCustom("OpenGLInfo","Vendor: " << glVendorStr_);
+    LogInfoCustom("OpenGLInfo","Renderer: " << glRenderStr_);
+    LogInfoCustom("OpenGLInfo","Version: " << glVersionStr_);
 
     //GLSL
     if (isShadersSupported()) {
-        LogInfo("GLSL version: " << glslVersionStr_);
-        LogInfo("Current set global GLSL version: " << getCurrentShaderVersion().getVersionAndProfileAsString());
-        LogInfo("Shaders supported: YES");
+        LogInfoCustom("OpenGLInfo","GLSL version: " << glslVersionStr_);
+        LogInfoCustom("OpenGLInfo","Current set global GLSL version: " << getCurrentShaderVersion().getVersionAndProfileAsString());
+        LogInfoCustom("OpenGLInfo","Shaders supported: YES");
     }
     else if (isShadersSupportedARB()) {
-        LogInfo("GLSL version: " << glslVersionStr_);
-        LogInfo("Current set global GLSL version: " << getCurrentShaderVersion().getVersionAndProfileAsString());
-        LogInfo("Shaders supported: YES(ARB)");
+        LogInfoCustom("OpenGLInfo","GLSL version: " << glslVersionStr_);
+        LogInfoCustom("OpenGLInfo","Current set global GLSL version: " << getCurrentShaderVersion().getVersionAndProfileAsString());
+        LogInfoCustom("OpenGLInfo","Shaders supported: YES(ARB)");
     }
     else
-        LogInfo("Shaders supported: NO");
+        LogInfoCustom("OpenGLInfo","Shaders supported: NO");
 
-    LogInfo("Framebuffer objects supported: " << (isFboSupported() ? "YES" : "NO "));
+    LogInfoCustom("OpenGLInfo","Framebuffer objects supported: " << (isFboSupported() ? "YES" : "NO "));
     // Texturing
-    LogInfo("1D/2D textures supported: " << (isTexturesSupported() ? "YES" : "NO "));
-    LogInfo("3D textures supported: " << (is3DTexturesSupported() ? "YES" : "NO "));
-    LogInfo("Array textures supported: " << (isTextureArraysSupported() ? "YES" : "NO "));
+    LogInfoCustom("OpenGLInfo","1D/2D textures supported: " << (isTexturesSupported() ? "YES" : "NO "));
+    LogInfoCustom("OpenGLInfo","3D textures supported: " << (is3DTexturesSupported() ? "YES" : "NO "));
+    LogInfoCustom("OpenGLInfo","Array textures supported: " << (isTextureArraysSupported() ? "YES" : "NO "));
 
     if (isTexturesSupported()) {
-        LogInfo("Max 1D/2D texture size: " << getMaxTexSize());
+        LogInfoCustom("OpenGLInfo","Max 1D/2D texture size: " << getMaxTexSize());
     }
 
     if (is3DTexturesSupported()) {
-        LogInfo("Max 3D texture size: " << getMax3DTexSize());
+        LogInfoCustom("OpenGLInfo","Max 3D texture size: " << getMax3DTexSize());
     }
 
     if (isTextureArraysSupported()) {
-        LogInfo("Max array texture size: " << getMaxArrayTexSize());
+        LogInfoCustom("OpenGLInfo","Max array texture size: " << getMaxArrayTexSize());
     }
 
     if (isFboSupported()) {
-        LogInfo("Max color attachments: " << getMaxColorAttachments());
+        LogInfoCustom("OpenGLInfo","Max color attachments: " << getMaxColorAttachments());
     }
 
     if (isTexturesSupported()) {
-        LogInfo("Max number of texture units: " << getNumTexUnits());
+        LogInfoCustom("OpenGLInfo","Max number of texture units: " << getNumTexUnits());
         glm::u64 totalMem = getTotalAvailableTextureMem();
-        LogInfo("Total available texture memory: " << (totalMem>0 ? formatBytesToString(totalMem) : "UNKNOWN"));
+        LogInfoCustom("OpenGLInfo","Total available texture memory: " << (totalMem>0 ? formatBytesToString(totalMem) : "UNKNOWN"));
         glm::u64 curMem = getCurrentAvailableTextureMem();
-        LogInfo("Current available texture memory: " << (curMem>0 ? formatBytesToString(curMem) : "UNKNOWN"));
+        LogInfoCustom("OpenGLInfo","Current available texture memory: " << (curMem>0 ? formatBytesToString(curMem) : "UNKNOWN"));
     }
 }
 

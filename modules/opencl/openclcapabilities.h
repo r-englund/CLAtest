@@ -56,6 +56,7 @@ public:
     virtual ~OpenCLCapabilities();
 
     void printInfo();
+    void printDetailedInfo();
     /**
      * Print all available information on device.
      */
@@ -282,13 +283,15 @@ std::string deviceInfoToString<cl_sampler>(cl_device_info, const cl_sampler& val
 // is updated, and call the macro in OpenCL::printDeviceInfo(const cl::Device& device)
 #define STRING_CLASS std::string
 
-#define __DEVICE_INFO_1_0(F) \
+#define __DEVICE_INFO_GENERAL(F) \
     F(cl_device_info, CL_DEVICE_TYPE, cl_device_type) \
     F(cl_device_info, CL_DEVICE_NAME, STRING_CLASS) \
     F(cl_device_info, CL_DEVICE_VENDOR, STRING_CLASS) \
     F(cl_device_info, CL_DRIVER_VERSION, STRING_CLASS) \
     F(cl_device_info, CL_DEVICE_PROFILE, STRING_CLASS) \
-    F(cl_device_info, CL_DEVICE_VERSION, STRING_CLASS) \
+    F(cl_device_info, CL_DEVICE_VERSION, STRING_CLASS)
+
+#define __DEVICE_INFO_1_0(F) \
     F(cl_device_info, CL_DEVICE_EXTENSIONS, STRING_CLASS) \
     F(cl_device_info, CL_DEVICE_MAX_COMPUTE_UNITS, cl_uint) \
     F(cl_device_info, CL_DEVICE_MAX_WORK_ITEM_DIMENSIONS, cl_uint) \

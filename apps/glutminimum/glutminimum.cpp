@@ -86,21 +86,29 @@ void keyPressed(unsigned char key, int x, int y) {
 }
 
 int main(int argc, char** argv) {
+    inviwo::ConsoleLogger consoleLogger;
+    inviwo::LogCentral::instance()->registerLogger(&consoleLogger);
     InviwoApplication inviwoApp(argc, argv, "Inviwo "+IVW_VERSION + " - GLUTApp", inviwo::filesystem::findBasePath());
+
     glutInit(&argc, argv);
     canvas = new CanvasGLUT(inviwoApp.getDisplayName(), uvec2(128,128));
     canvas->initializeGL();
+
     inviwoApp.initialize(&inviwo::registerAllModules);
+
     // Create process network
     processorNetwork = new ProcessorNetwork();
     inviwoApp.setProcessorNetwork(processorNetwork);
+
     // Create process network evaluator
     processorNetworkEvaluator = new ProcessorNetworkEvaluator(processorNetwork);
+
     processorNetworkEvaluator->setDefaultRenderContext(canvas);
     canvas->setNetworkEvaluator(processorNetworkEvaluator);
     canvas->initializeSquare();
     canvas->initialize();
     canvas->activate();
+
     // Load simple scene
     processorNetworkEvaluator->disableEvaluation();
     processorNetwork->lock();
