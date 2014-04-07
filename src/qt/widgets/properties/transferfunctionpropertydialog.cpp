@@ -88,8 +88,9 @@ void TransferFunctionPropertyDialog::generateWidget() {
     zoomVSlider_ = new RangeSliderQt(Qt::Vertical, this);
     zoomVSlider_->setRange(0, sliderRange_);
     zoomVSlider_->setMinSeparation(5);
-    zoomVSlider_->setValue(static_cast<int>(tfProperty_->getZoomV().x*sliderRange_),
-                           static_cast<int>(tfProperty_->getZoomV().y*sliderRange_));
+    // flip slider values to compensate for vertical slider layout
+    zoomVSlider_->setValue(sliderRange_ - static_cast<int>(tfProperty_->getZoomV().y*sliderRange_),
+                           sliderRange_ - static_cast<int>(tfProperty_->getZoomV().x*sliderRange_));
     connect(zoomVSlider_, SIGNAL(valuesChanged(int, int)),
             this, SLOT(changeVerticalZoom(int, int)));
     
