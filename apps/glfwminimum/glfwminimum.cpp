@@ -75,7 +75,7 @@ void deinitialize() {
 
 void keyPressed(unsigned char key, int x, int y) {
     switch (key) {
-        case 27: // ESC key
+        case GLFW_KEY_ESCAPE: // ESC key
             deinitialize();
             exit(0);
             break;
@@ -120,9 +120,7 @@ int main(int argc, char** argv) {
     if (cmdparser->getLoadWorkspaceFromArg())
         workspace = cmdparser->getWorkspacePath();
     else
-        workspace = inviwoApp.getPath(InviwoApplication::PATH_WORKSPACES, "tests/simpleraycaster.inv");
-
-    workspace = "C:/ContextVision/CVV/svn/trunk/data/workspaces/babyheadlightingGL.inv";
+        workspace = inviwoApp.getPath(InviwoApplication::PATH_WORKSPACES, "tests/simpleslicergl.inv");
 
     IvwDeserializer xmlDeserializer(workspace);
     processorNetwork->deserialize(xmlDeserializer);
@@ -176,5 +174,8 @@ int main(int argc, char** argv) {
     }
 
     deinitialize();
+
+    exit(0);
+
     return 0;
 }
