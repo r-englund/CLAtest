@@ -64,7 +64,6 @@ set(HEADER_FILES
     ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/volume/volumeram.h
     ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/volume/volumeramconverter.h
     ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/volume/volumeramhistogram.h
-    ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/volume/volumerammaskop.h
     ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/volume/volumeramoperationexecuter.h
     ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/volume/volumeramprecision.h
     ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/volume/volumeramslice.h
