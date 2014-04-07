@@ -50,7 +50,7 @@ template <typename T>
 class VectorData : public DataBase {
 public:
     VectorData() {}
-    VectorData(const DataBase& rhs) : DataBase(rhs),vector(rhs.vector) {}
+    VectorData(const VectorData& rhs) : DataBase(rhs),vector(rhs.vector) {}
     VectorData& operator=(const VectorData& rhs) { 
         if (this != rhs) {
             this = rhs;
