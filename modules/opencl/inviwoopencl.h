@@ -37,6 +37,7 @@
 #include <glm/glm.hpp>
 
 #include <inviwo/core/util/formats.h>
+#include <inviwo/core/util/singleton.h>
 
 #include <modules/opencl/cl.hpp>
 #include <modules/opencl/glmcl.h>
@@ -93,14 +94,16 @@ namespace inviwo {
  * Singleton class that manages OpenCL context and queues.
  *
  */
-class IVW_MODULE_OPENCL_API OpenCL {
+class IVW_MODULE_OPENCL_API OpenCL: public Singleton<OpenCL> {
 public:
-
+    OpenCL();
 
     static OpenCL* instance() {
-        static OpenCL instance;// Guaranteed to be destroyed. Instantiated on first use.
-        return &instance;
+        //static OpenCL instance;// Guaranteed to be destroyed. Instantiated on first use.
+        //return &instance;
+        return getPtr(); // TODO: Refactor such that getPtr is used directly
     }
+
     /**
      * Get queue that can perform tasks in serial (no need to explicitly manage events).
      * This should be the first choice of use. Expert users may want to use the
@@ -193,15 +196,11 @@ public:
      */
     static bool getBestGPUDeviceOnSystem(cl::Device& bestDevice, cl::Platform& onPlatform);
 private:
-    OpenCL();
     OpenCL(OpenCL const&) {};
     void operator=(OpenCL const&) {};
 
     /// Initialize OpenCL context and queues.
     void initialize(bool enableOpenGLSharing);
-
-
-
 
     /**
      * Merges all include directories into a string. Each include directory will be preceded by -I
@@ -222,7 +221,6 @@ private:
     std::vector<std::string> includeDirectories_;
 
 };
-
 
 /**
  * Computes the nearest multiple of local work group size.
