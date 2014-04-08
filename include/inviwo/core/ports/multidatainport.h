@@ -37,6 +37,7 @@
 #include <inviwo/core/common/inviwocoredefine.h>
 #include <inviwo/core/ports/datainport.h>
 #include <inviwo/core/ports/multiinport.h>
+#include <inviwo/core/ports/vectordataport.h>
 #include <set>
 
 namespace inviwo {
@@ -66,6 +67,8 @@ public:
     virtual bool canConnectTo(Port* port) const {
         if (dynamic_cast<DataOutport<T>*>(port))
             return true;
+        else if (dynamic_cast<VectorDataOutport<T*>*>(port))
+            return true;
         else
             return false;
     };
@@ -91,10 +94,18 @@ MultiDataInport<T, U>::~MultiDataInport() {
 
 template <typename T, typename U>
 void MultiDataInport<T, U>::connectTo(Outport* outport) {
-    ivwAssert(dynamic_cast<DataOutport<T>*>(outport)!=NULL, "Trying to connect incompatible ports.")
+    ivwAssert(dynamic_cast<DataOutport<T>*>(outport)!=NULL
+              || dynamic_cast<VectorDataOutport<T*>*>(outport) != NULL
+              , "Trying to connect incompatible ports.")
     // U is a Port class
-    U* inport = new U(getIdentifier());
-    inports_->insert(inport);
+    Inport* inport;
+    if (dynamic_cast<DataOutport<T>*>(outport)) {
+        inport = new DataInport<T>(getIdentifier());
+        inports_->insert(inport);
+    } else if (dynamic_cast<VectorDataOutport<T*>*>(outport)) {
+        inport = new VectorDataInport<T*>(getIdentifier());
+        vectorInports_->insert(inport);
+    }
     setProcessorHelper(inport, getProcessor());
     inport->connectTo(outport);
 }
@@ -105,8 +116,17 @@ std::vector<const T*> inviwo::MultiDataInport<T, U>::getData() const {
     InportSet::const_iterator it = inports_->begin();
     InportSet::const_iterator endIt = inports_->end();
 
-    for (; it != endIt; ++it)
-        data.push_back(static_cast<U*>(*it)->getData());
+    for (; it != endIt; ++it) {
+        data.push_back(static_cast<DataInport<T>*>(*it)->getData());
+    }
+    
+    it = vectorInports_->begin();
+    endIt = vectorInports_->end();
+    for (; it != endIt; ++it) {
+        const VectorData<T*>* vecdata = static_cast<VectorDataInport<T*>*>(*it)->getData();
+        data.insert(data.end(), vecdata->vector.begin(), vecdata->vector.end());
+    }
+
 
     return data;
 }
@@ -118,7 +138,14 @@ bool inviwo::MultiDataInport<T, U>::hasData() const {
         InportSet::const_iterator endIt = inports_->end();
 
         for (; it != endIt; ++it) {
-            if (!static_cast<U*>(*it)->hasData())
+            if (!static_cast<DataInport<T>*>(*it)->hasData())
+                return false;
+        }
+
+        it = vectorInports_->begin();
+        endIt = vectorInports_->end();
+        for (; it != endIt; ++it) {
+            if (!static_cast<VectorDataInport<T*>*>(*it)->hasData())
                 return false;
         }
 

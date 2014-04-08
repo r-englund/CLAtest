@@ -71,13 +71,13 @@ public:
 };
 
 template <typename Type>
-class VectorDataPort : public DataInport<VectorData<Type> > {
+class VectorDataInport : public DataInport<VectorData<Type> > {
 
 public:
-    VectorDataPort(std::string identifier,
+    VectorDataInport(std::string identifier,
         PropertyOwner::InvalidationLevel invalidationLevel=PropertyOwner::INVALID_OUTPUT)
         : DataInport<VectorData<Type> >(identifier, invalidationLevel) {}
-    virtual ~VectorDataPort() {}
+    virtual ~VectorDataInport() {}
 
     void initialize() {}
     void deinitialize() {}
