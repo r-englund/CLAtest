@@ -35,7 +35,9 @@
 namespace inviwo {
 
 MultiInport::MultiInport(std::string identifier)
-    : Inport(identifier), inports_(new InportSet()) {
+    : Inport(identifier)
+    , inports_(new InportSet())
+    , vectorInports_(new InportSet()) {
 }
 
 void MultiInport::setProcessorHelper(Port* port, Processor* processor) {
@@ -51,6 +53,15 @@ MultiInport::~MultiInport() {
 
     delete inports_;
     inports_ = NULL;
+
+    it = vectorInports_->begin();
+    endIt = vectorInports_->end();
+
+    for (; it != endIt; ++it)
+        delete *it;
+
+    delete vectorInports_;
+    vectorInports_ = NULL;
 }
 
 PropertyOwner::InvalidationLevel MultiInport::getInvalidationLevel() const {
@@ -61,13 +72,22 @@ PropertyOwner::InvalidationLevel MultiInport::getInvalidationLevel() const {
     for (; it != endIt; ++it)
         maxInvalidationLevel = std::max(maxInvalidationLevel, (*it)->getInvalidationLevel());
 
+    it = vectorInports_->begin();
+    endIt = vectorInports_->end();
+    for (; it != endIt; ++it)
+        maxInvalidationLevel = std::max(maxInvalidationLevel, (*it)->getInvalidationLevel());
+
     return maxInvalidationLevel;
 }
 
 void MultiInport::setInvalidationLevel(PropertyOwner::InvalidationLevel invalidationLevel) {
     InportSet::iterator it = inports_->begin();
     InportSet::iterator endIt = inports_->end();
+    for (; it != endIt; ++it)
+        (*it)->setInvalidationLevel(invalidationLevel);
 
+    it = vectorInports_->begin();
+    endIt = vectorInports_->end();
     for (; it != endIt; ++it)
         (*it)->setInvalidationLevel(invalidationLevel);
 }
@@ -76,6 +96,12 @@ bool MultiInport::isConnectedTo(Outport* outport) const {
     InportSet::const_iterator it = inports_->begin();
     InportSet::const_iterator endIt = inports_->end();
 
+    for (; it != endIt; ++it) {
+        if ((*it)->isConnectedTo(outport))
+            return true;
+    }
+    it = vectorInports_->begin();
+    endIt = vectorInports_->end();
     for (; it != endIt; ++it) {
         if ((*it)->isConnectedTo(outport))
             return true;
@@ -101,6 +127,18 @@ std::vector<Outport*> MultiInport::getConnectedOutports() const {
             connectedOutports.push_back(*outportIt);
     }
 
+    it = vectorInports_->begin();
+    endIt = vectorInports_->end();
+    for (; it != endIt; ++it) {
+        std::vector<Outport*> inportConnectedOutports = (*it)->getConnectedOutports();
+        std::vector<Outport*>::const_iterator outportIt = inportConnectedOutports.begin();
+        std::vector<Outport*>::const_iterator outportEndIt = inportConnectedOutports.end();
+
+        for (; outportIt != outportEndIt; ++outportIt)
+            connectedOutports.push_back(*outportIt);
+    }
+
+
     return connectedOutports;
 }
 
@@ -117,19 +155,39 @@ void MultiInport::disconnectFrom(Outport* outport) {
             break;
         }
     }
+    for (it = vectorInports_->begin(); it != vectorInports_->end(); ++it) {
+        // Find connected port
+        if ((*it)->isConnectedTo(outport)) {
+            (*it)->disconnectFrom(outport);
+            delete *it;
+            vectorInports_->erase(it);
+            invalidate(PropertyOwner::INVALID_OUTPUT);
+            break;
+        }
+    }
 }
 
 Outport* MultiInport::getConnectedOutport() const {
-    if (isConnected())
-        return (*(inports_->begin()))->getConnectedOutport();
-    else
+    if (isConnected()) {
+        if (inports_->size() > 0) {
+            return (*(inports_->begin()))->getConnectedOutport();
+        } else {
+            return (*(vectorInports_->begin()))->getConnectedOutport();
+        }
+    } else {
         return NULL;
+    }
 }
 
 void MultiInport::invalidate(PropertyOwner::InvalidationLevel invalidationLevel) {
     InportSet::iterator it = inports_->begin();
     InportSet::iterator endIt = inports_->end();
 
+    for (; it != endIt; ++it)
+        (*it)->invalidate(invalidationLevel);
+
+    it = vectorInports_->begin();
+    endIt = vectorInports_->end();
     for (; it != endIt; ++it)
         (*it)->invalidate(invalidationLevel);
 }

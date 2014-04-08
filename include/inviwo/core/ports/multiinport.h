@@ -85,6 +85,7 @@ protected:
     void setProcessorHelper(Port* port, Processor* processor);
 
     InportSet* inports_;
+    InportSet* vectorInports_;
 };
 
 } // namespace
