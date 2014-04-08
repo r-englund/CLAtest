@@ -19,8 +19,11 @@ parser.add_argument('names', type=str, nargs='+', action="store", help='Classes 
 parser.add_argument("--dummy", action="store_true", dest="dummy", help="Write local testfiles instead")
 parser.add_argument("--svn", action="store_true", dest="svn", help="Add files to svn, and set file ending to native")
 parser.add_argument("--cmake", type=str, nargs=1, action="store", dest="builddir", help="Rerun cmake in the specified build directory", default="")
-parser.add_argument("--no-header", action="store_true", dest="no_header", help="Don't write header file")
-parser.add_argument("--no-source", action="store_true", dest="no_source", help="Don't write source file")
+parser.add_argument("--no-header", action="store_false", default=True, dest="header", help="Don't write header file")
+parser.add_argument("--no-source", action="store_false", default=True, dest="source", help="Don't write source file")
+parser.add_argument("--frag", action="store_true", dest="frag", help="Add fragment shader")
+parser.add_argument("--vert", action="store_true", dest="vert", help="Add vertex shader")
+
 
 args = parser.parse_args()
 
@@ -57,42 +60,64 @@ def makeSource(incfile):
 	str+= "\n"
 	return str
 
+def makeFrag():
+	str = ""
+	str += "void main(void) { \n"
+	str += "    \n"
+	str += "}\n"
+	str += "\n"
+	return str
+	
+def makeVert():
+	str = ""
+	str += "void main(void) { \n"
+	str += "    \n"
+	str += "}\n"
+	str += "\n"
+	return str
+	
 def findCMakeList(pathlist):
 	for i in range(len(pathlist),0,-1):
 		if os.path.exists(os.sep.join(pathlist[:i] + ["CMakeLists.txt"])):
 			return pathlist[:i] + ["CMakeLists.txt"]
 	return []
+
+def addFileToCMakeLists(cmlines, group, file):
+	m1 = re.compile(r"\s*set\(" + group + "\s*")
+	m0 = re.compile(r"\s*\)\s*")
+	it = iter(cmlines)
 	
-def updateCMakeLists(cmakefile, hfile, cfile):
-	with open(cmakefile, "r") as cm:
-		m1 = re.compile(r"\s*set\(HEADER_FILES\s*")
-		m2 = re.compile(r"\s*set\(SOURCE_FILES\s*")
-		m0 = re.compile(r"\s*\)\s*")
-		
-		def sortAndInsertLine(f, line):
-			lines = []
-			for l in f:
-				if m0.match(l):
-					lines.append(line)
-					lines.sort()
-					lines.append(l)
-					break
-				elif l.strip() != "":	
-					lines.append(l.replace("\t","    "))
-						
-			return lines
-		
+	def sortAndInsertLine(f, line):
 		lines = []
-		for line in cm:
-			if hfile != "" and m1.match(line):
+		for l in f:
+			if m0.match(l):
 				lines.append(line)
-				lines.extend(sortAndInsertLine(cm, hfile))						
-			elif cfile != "" and m2.match(line):
-				lines.append(line)
-				lines.extend(sortAndInsertLine(cm, cfile))
-			else:
-				lines.append(line)
+				lines.sort()
+				lines.append(l)
+				break
+			elif l.strip() != "":	
+				lines.append(l.replace("\t","    "))
+				
+		return lines
+		
+	lines = []
+	for line in it:
+		if m1.match(line):
+			lines.append(line)
+			lines.extend(sortAndInsertLine(it, file))						
+		else:
+			lines.append(line)
+			
 	return lines
+
+def addFileToSvn(file):
+	mess = subprocess.Popen(SVN + " add " + file, stdout=subprocess.PIPE, universal_newlines=True).stdout.read()
+	for i in mess.splitlines():
+		print("... " + i)
+	mess = subprocess.Popen(SVN + " propset svn:eol-style native " + file, stdout=subprocess.PIPE, universal_newlines=True).stdout.read()
+	for i in mess.splitlines():
+		print("... " + i)
+
 	
 print("Adding files to inwivo")
 	
@@ -136,6 +161,8 @@ for name in args.names:
 		moddef = "<modules/" + mod + "/" + mod + "moduledefine.h>"
 		cmhfile = "    " + "/".join(["${IVW_MODULE_DIR}"] + incfilepath + [file.lower() + ".h"]) + "\n"
 		cmcfile = "    " + "/".join(["${IVW_MODULE_DIR}"] + incfilepath + [file.lower() + ".cpp"]) + "\n"
+		cmvertfile = "    " + "/".join(["${IVW_MODULE_DIR}"] + incfilepath + [file.lower() + ".vert"]) + "\n"
+		cmfragfile = "    " + "/".join(["${IVW_MODULE_DIR}"] + incfilepath + [file.lower() + ".frag"]) + "\n"
 		api = "IVW_MODULE_"+mod.upper()+"_API"
 	
 	else:
@@ -143,62 +170,98 @@ for name in args.names:
 	
 	hfilename = os.sep.join(hpath + [file.lower() + ".h"])
 	cfilename = os.sep.join(cpath + [file.lower() + ".cpp"])
+	vertfilename = os.sep.join(cpath + [file.lower() + ".vert"])
+	fragfilename = os.sep.join(cpath + [file.lower() + ".frag"])
+	
 	cmakefile = os.sep.join(findCMakeList(cpath))
-		
-	print("Classname: " + file)
-	print("... h-file: " + hfilename)
-	print("... c-file: " + cfilename)
-	print("... incfile: " + incfile)
+	
+	if args.frag or args.vert:
+		args.header = False
+		args.source = False
+	
+	if args.frag or args.vert:
+		if args.frag:
+			print("... vert-file: " + hfilename)
+		if args.vert:
+			print("... frag-file: " + cfilename)
+	else:
+		print("Classname: " + file)
+		print("... h-file: " + hfilename)
+		print("... c-file: " + cfilename)
+		print("... incfile: " + incfile)
+	
 	print("... cmake: " + cmakefile)
 	 
 	
-	if args.no_header:
-		cmhfile = ""
-	if args.no_source:
-		cmcfile = ""
-	lines = updateCMakeLists(cmakefile, cmhfile, cmcfile)	
+	lines = []
+	with open(cmakefile, "r") as f:
+		for l in f:
+			lines.append(l)
+	
+	
+	if args.header:
+		lines = addFileToCMakeLists(lines, "HEADER_FILES", cmhfile)
+
+	if args.source:
+		lines = addFileToCMakeLists(lines, "SOURCE_FILES", cmcfile)
+
+	if args.frag:
+		lines = addFileToCMakeLists(lines, "SHADER_FILES", cmfragfile)
+	
+	if args.vert:
+		lines = addFileToCMakeLists(lines, "SHADER_FILES", cmvertfile)
 	
 	if(args.dummy):
 		hfilename = file.lower() + ".h"
 		cfilename = file.lower() + ".cpp"
 		cmakefile = file.lower() + ".cmake"
+		fragfilename = file.lower() + ".frag"
+		vertfilename = file.lower() + ".vert"
 	
-	if os.path.exists(hfilename) and not args.no_header:
+	if os.path.exists(hfilename) and args.header:
 		print("... ERROR file already exists: " + hfilename)
-	elif os.path.exists(cfilename) and not args.no_source:
+	elif os.path.exists(cfilename) and args.source:
 		print("... ERROR file already exists: " + cfilename)
 	else:
-		if not args.no_header:
+		if args.header:
 			with open(hfilename, "w") as f:
 				print("... Writing h-file: " + hfilename)
 				f.write(makeHeader(file, moddef, api))
-		if not args.no_source:
+
+		if args.source:
 			with open(cfilename, "w") as f:
 				print("... Writing c-file: " + cfilename)
-				f.write(makeSource(incfile))		
+				f.write(makeSource(incfile))
+
+		if args.frag:
+			with open(fragfilename, "w") as f:
+				print("... Writing frag-file: " + fragfilename)
+				f.write(makeFrag())
+
+		if args.vert:
+			with open(vertfilename, "w") as f:
+				print("... Writing vert-file: " + vertfilename)
+				f.write(makeVert())	
+		
 		with open(cmakefile, "w") as f:
 			print("... Updating cmakelists: " + cmakefile)
 			for l in lines:
 				f.write(l)
 	
-		if(args.svn):
+		if args.svn:
 			print("... Adding to svn...")
 			# Do an svn add...
-			if not args.no_header:
-				mess = subprocess.Popen(SVN + " add " + hfilename, stdout=subprocess.PIPE, universal_newlines=True).stdout.read()
-				for i in mess.splitlines():
-					print("... " + i)
-				mess = subprocess.Popen(SVN + " propset svn:eol-style native " + hfilename, stdout=subprocess.PIPE, universal_newlines=True).stdout.read()
-				for i in mess.splitlines():
-					print("... " + i)
+			if args.header:
+				addFileToSvn(hfilename)
 				
-			if not args.no_source:
-				mess = subprocess.Popen(SVN + " add " + cfilename, stdout=subprocess.PIPE, universal_newlines=True).stdout.read()
-				for i in mess.splitlines():
-					print("... " + i)
-				mess = subprocess.Popen(SVN + " propset svn:eol-style native " + cfilename, stdout=subprocess.PIPE, universal_newlines=True).stdout.read()
-				for i in mess.splitlines():
-					print("... " + i)
+			if args.source:
+				addFileToSvn(cfilename)
+				
+			if args.frag:
+				addFileToSvn(fragfilename)
+				
+			if args.vert:
+				addFileToSvn(vertfilename)
 	
 if(args.builddir != ""):
 	print("... run cmake...")
