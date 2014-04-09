@@ -43,7 +43,7 @@ TextureUnit::TextureUnit()
     ivwAssert(textureUnits_!=NULL, "Texture unit handler not initialized.");
 
     // check which texture unit is available
-    for (size_t i=0; i<textureUnits_->size(); i++) {
+    for (size_t i=1; i<textureUnits_->size(); i++) {
         if (textureUnits_->at(i) == false) {
             // unit previously unused, mark as used now
             textureUnits_->at(i) = true;
