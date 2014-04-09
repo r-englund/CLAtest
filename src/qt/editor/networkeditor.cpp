@@ -1000,14 +1000,17 @@ void NetworkEditor::mousePressEvent(QGraphicsSceneMouseEvent* e) {
 
                         /// initialize parameters for new connection
                         ConnectionGraphicsItem* connectionGraphicsItem = getConnectionGraphicsItemAt(e->scenePos());
-                        QPointF startPoint = connectionGraphicsItem->getStartPoint();
-                        removeConnection(connectionGraphicsItem);
-                        startProcessor_ = getProcessorGraphicsItemAt(startPoint);
-                        // generate new curve
-                        connectionCurve_ = new CurveGraphicsItem(startPoint, e->scenePos(), startPort_->getColorCode());
-                        addItem(connectionCurve_);
-                        connectionCurve_->show();
-                        e->accept();
+                        if (connectionGraphicsItem) {
+                            QPointF startPoint = connectionGraphicsItem->getStartPoint();
+                            removeConnection(connectionGraphicsItem);
+                            startProcessor_ = getProcessorGraphicsItemAt(startPoint);
+                            // generate new curve
+                            connectionCurve_ = new CurveGraphicsItem(startPoint, e->scenePos(), startPort_->getColorCode());
+                            addItem(connectionCurve_);
+                            connectionCurve_->show();
+                            e->accept();
+                        }
+
                         return;
                     }
                 }

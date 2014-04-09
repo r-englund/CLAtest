@@ -85,8 +85,7 @@ void VolumeCLGL2RAMConverter::update(const DataRepresentation* source, DataRepre
 }
 
 
-DataRepresentation* VolumeGL2CLGLConverter::createFrom(const DataRepresentation* source)
-{
+DataRepresentation* VolumeGL2CLGLConverter::createFrom(const DataRepresentation* source) {
     DataRepresentation* destination = 0;
     const VolumeGL* volumeGL = static_cast<const VolumeGL*>(source);
     destination = new VolumeCLGL(volumeGL->getDimension(), volumeGL->getDataFormat(), const_cast<Texture3D*>(volumeGL->getTexture()));
@@ -104,17 +103,19 @@ void VolumeGL2CLGLConverter::update(const DataRepresentation* source, DataRepres
 }
 
 
-DataRepresentation* VolumeCLGL2CLConverter::createFrom(const DataRepresentation* source)
-{
+DataRepresentation* VolumeCLGL2CLConverter::createFrom(const DataRepresentation* source) {
+#ifdef _DEBUG
+    LogWarn("Performance warning: Use shared CLGL representation instead of CL ");
+#endif
     DataRepresentation* destination = 0;
     const VolumeCLGL* volumeCLGL = static_cast<const VolumeCLGL*>(source);
     uvec3 dimension = volumeCLGL->getDimension();;
     destination = new VolumeCL(dimension, volumeCLGL->getDataFormat());
     {   SyncCLGL glSync;
-        volumeCLGL->aquireGLObject(glSync.getGLSyncEvent());
+        glSync.addToAquireGLObjectList(volumeCLGL);
+        glSync.aquireAllObjects();
         OpenCL::getPtr()->getQueue().enqueueCopyImage(volumeCLGL->get(), static_cast<VolumeCL*>(destination)->get(), glm::svec3(0), glm::svec3(0),
                 glm::svec3(dimension));
-        volumeCLGL->releaseGLObject(NULL, glSync.getLastReleaseGLEvent());
     }
     return destination;
 }
@@ -128,10 +129,10 @@ void VolumeCLGL2CLConverter::update(const DataRepresentation* source, DataRepres
     }
 
     {   SyncCLGL glSync;
-        volumeSrc->aquireGLObject(glSync.getGLSyncEvent());
+        glSync.addToAquireGLObjectList(volumeSrc);
+        glSync.aquireAllObjects();
         OpenCL::getPtr()->getQueue().enqueueCopyImage(volumeSrc->get(), volumeDst->get(), glm::svec3(0), glm::svec3(0),
                 glm::svec3(volumeSrc->getDimension()));
-        volumeSrc->releaseGLObject(NULL, glSync.getLastReleaseGLEvent());
     }
 }
 
