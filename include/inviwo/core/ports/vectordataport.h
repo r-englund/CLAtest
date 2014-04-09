@@ -52,9 +52,10 @@ public:
     VectorData() {}
     VectorData(const VectorData& rhs) : DataBase(rhs),vector(rhs.vector) {}
     VectorData& operator=(const VectorData& rhs) { 
-        if (this != rhs) {
-            this = rhs;
+        if (this != &rhs) {
+            this->vector = rhs.vector;
         }
+        return *this;
     }
     virtual VectorData* clone() const { return new VectorData(*this); }
     virtual ~VectorData() {}

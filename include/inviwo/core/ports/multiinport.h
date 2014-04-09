@@ -55,7 +55,7 @@ public:
 
     virtual void invalidate(PropertyOwner::InvalidationLevel invalidationLevel);
 
-    bool isConnected() const { return !inports_->empty(); }
+    bool isConnected() const { return !inports_->empty() || !vectorInports_->empty(); }
 
     bool isConnectedTo(Outport* outport) const;
 
