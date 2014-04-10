@@ -1008,6 +1008,67 @@ DataNormalizedUnsignedVec4(DataVec4UINT16, DataUINT16)
 DataNormalizedUnsignedVec4(DataVec4UINT32, DataUINT32)
 DataNormalizedUnsignedVec4(DataVec4UINT64, DataUINT64)
 
+
+
+
+#define CallFunctionWithTemplateArgsForType(fun, id) \
+    switch (id) {\
+    case FLOAT16: fun<DataFLOAT16::type, DataFLOAT16::bits>(); break; \
+    case FLOAT32: fun<DataFLOAT32::type, DataFLOAT32::bits>(); break; \
+    case FLOAT64: fun<DataFLOAT64::type, DataFLOAT64::bits>(); break; \
+    case INT8: fun<DataINT8::type, DataINT8::bits>(); break; \
+    case INT12: fun<DataINT12::type, DataINT12::bits>(); break; \
+    case INT16: fun<DataINT16::type, DataINT16::bits>(); break; \
+    case INT32: fun<DataINT32::type, DataINT32::bits>(); break; \
+    case INT64: fun<DataINT64::type, DataINT64::bits>(); break; \
+    case UINT8: fun<DataUINT8::type, DataUINT8::bits>(); break; \
+    case UINT12: fun<DataUINT12::type, DataUINT12::bits>(); break; \
+    case UINT16: fun<DataUINT16::type, DataUINT16::bits>(); break; \
+    case UINT32: fun<DataUINT32::type, DataUINT32::bits>(); break; \
+    case UINT64: fun<DataUINT64::type, DataUINT64::bits>(); break; \
+    case Vec2FLOAT16: fun<DataVec2FLOAT16::type, DataVec2FLOAT16::bits>(); break; \
+    case Vec2FLOAT32: fun<DataVec2FLOAT32::type, DataVec2FLOAT32::bits>(); break; \
+    case Vec2FLOAT64: fun<DataVec2FLOAT64::type, DataVec2FLOAT64::bits>(); break; \
+    case Vec2INT8: fun<DataVec2INT8::type, DataVec2INT8::bits>(); break; \
+    case Vec2INT12: fun<DataVec2INT12::type, DataVec2INT12::bits>(); break; \
+    case Vec2INT16: fun<DataVec2INT16::type, DataVec2INT16::bits>(); break; \
+    case Vec2INT32: fun<DataVec2INT32::type, DataVec2INT32::bits>(); break; \
+    case Vec2INT64: fun<DataVec2INT64::type, DataVec2INT64::bits>(); break; \
+    case Vec2UINT8: fun<DataVec2UINT8::type, DataVec2UINT8::bits>(); break; \
+    case Vec2UINT12: fun<DataVec2UINT12::type, DataVec2UINT12::bits>(); break; \
+    case Vec2UINT16: fun<DataVec2UINT16::type, DataVec2UINT16::bits>(); break; \
+    case Vec2UINT32: fun<DataVec2UINT32::type, DataVec2UINT32::bits>(); break; \
+    case Vec2UINT64: fun<DataVec2UINT64::type, DataVec2UINT64::bits>(); break; \
+    case Vec3FLOAT16: fun<DataVec3FLOAT16::type, DataVec3FLOAT16::bits>(); break; \
+    case Vec3FLOAT32: fun<DataVec3FLOAT32::type, DataVec3FLOAT32::bits>(); break; \
+    case Vec3FLOAT64: fun<DataVec3FLOAT64::type, DataVec3FLOAT64::bits>(); break; \
+    case Vec3INT8: fun<DataVec3INT8::type, DataVec3INT8::bits>(); break; \
+    case Vec3INT12: fun<DataVec3INT12::type, DataVec3INT12::bits>(); break; \
+    case Vec3INT16: fun<DataVec3INT16::type, DataVec3INT16::bits>(); break; \
+    case Vec3INT32: fun<DataVec3INT32::type, DataVec3INT32::bits>(); break; \
+    case Vec3INT64: fun<DataVec3INT64::type, DataVec3INT64::bits>(); break; \
+    case Vec3UINT8: fun<DataVec3UINT8::type, DataVec3UINT8::bits>(); break; \
+    case Vec3UINT12: fun<DataVec3UINT12::type, DataVec3UINT12::bits>(); break; \
+    case Vec3UINT16: fun<DataVec3UINT16::type, DataVec3UINT16::bits>(); break; \
+    case Vec3UINT32: fun<DataVec3UINT32::type, DataVec3UINT32::bits>(); break; \
+    case Vec3UINT64: fun<DataVec3UINT64::type, DataVec3UINT64::bits>(); break; \
+    case Vec4FLOAT16: fun<DataVec4FLOAT16::type, DataVec4FLOAT16::bits>(); break; \
+    case Vec4FLOAT32: fun<DataVec4FLOAT32::type, DataVec4FLOAT32::bits>(); break; \
+    case Vec4FLOAT64: fun<DataVec4FLOAT64::type, DataVec4FLOAT64::bits>(); break; \
+    case Vec4INT8: fun<DataVec4INT8::type, DataVec4INT8::bits>(); break; \
+    case Vec4INT12: fun<DataVec4INT12::type, DataVec4INT12::bits>(); break; \
+    case Vec4INT16: fun<DataVec4INT16::type, DataVec4INT16::bits>(); break; \
+    case Vec4INT32: fun<DataVec4INT32::type, DataVec4INT32::bits>(); break; \
+    case Vec4INT64: fun<DataVec4INT64::type, DataVec4INT64::bits>(); break; \
+    case Vec4UINT8: fun<DataVec4UINT8::type, DataVec4UINT8::bits>(); break; \
+    case Vec4UINT12: fun<DataVec4UINT12::type, DataVec4UINT12::bits>(); break; \
+    case Vec4UINT16: fun<DataVec4UINT16::type, DataVec4UINT16::bits>(); break; \
+    case Vec4UINT32: fun<DataVec4UINT32::type, DataVec4UINT32::bits>(); break; \
+    case Vec4UINT64: fun<DataVec4UINT64::type, DataVec4UINT64::bits>(); break; \
+    default: break; \
+}
+
+
 }
 
 #endif

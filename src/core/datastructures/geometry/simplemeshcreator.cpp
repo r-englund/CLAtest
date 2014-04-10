@@ -198,6 +198,68 @@ SimpleMesh* SimpleMeshCreator::sphere(float radius, unsigned int numLoops, unsig
     return spheremesh;
 }
 
+SimpleMesh* SimpleMeshCreator::sphere(float radius, unsigned int numLoops, unsigned int segmentsPerLoop, vec4 color) {
+    SimpleMesh* spheremesh = new SimpleMesh();
+
+    numLoops = std::max(4u, numLoops);
+    segmentsPerLoop = std::max(8u, segmentsPerLoop);
+
+    spheremesh->initialize();
+    // Set identity matrix
+    spheremesh->setBasisAndOffset(mat4(1.f));
+
+    //Create Vertices
+    NormalBuffer *normalBuffer = new NormalBuffer();
+    NormalBufferRAM *normals = normalBuffer->getEditableRepresentation<NormalBufferRAM>();
+    normals->setSize((numLoops + 1) * (segmentsPerLoop + 1));
+
+    unsigned int pointsPerLine = segmentsPerLoop + 1;
+    for (unsigned int i = 0; i <= numLoops; ++i) {
+        for (unsigned int j = 0; j <= segmentsPerLoop; ++j) {
+            float theta = (i * static_cast<float>(M_PI) / numLoops); // + ((static_cast<float>(M_PI) * j) / (segmentsPerLoop * numLoops));
+
+            if (i == numLoops)
+                theta = static_cast<float>(M_PI);
+
+            float phi = j * 2 * static_cast<float>(M_PI) / segmentsPerLoop;
+            float sinTheta = std::sin(theta);
+            float sinPhi = std::sin(phi);
+            float cosTheta = std::cos(theta);
+            float cosPhi = std::cos(phi);
+            vec3 normal(cosPhi * sinTheta, sinPhi * sinTheta, cosTheta);
+            vec3 vert(normal * radius);
+            vec3 texCoord(static_cast<float>(j) / segmentsPerLoop,
+                          static_cast<float>(i) / numLoops,
+                          0.0f);
+            spheremesh->addVertex(vert, texCoord, color);
+            normals->set(i * pointsPerLine + j, normal);
+        }
+    }
+    spheremesh->addAttribute(normalBuffer);
+
+    //Create Indices
+    // compute indices
+    spheremesh->setIndicesInfo(TRIANGLES, NONE);
+    for (unsigned int y = 0; y < numLoops; ++y) {
+
+        IndexBuffer *indexBuf = new IndexBuffer();
+        IndexBufferRAM * indices = indexBuf->getEditableRepresentation<IndexBufferRAM>();
+
+        indices->setSize(pointsPerLine * 2);
+
+        unsigned int offset = y * pointsPerLine;
+        std::size_t count = 0;
+        for (unsigned int x = 0; x < pointsPerLine; ++x) {
+            indices->set(count++, offset + x);
+            indices->set(count++, offset + x + pointsPerLine);
+        }
+
+        spheremesh->addIndicies(Mesh::AttributesInfo(TRIANGLES, STRIP), indexBuf);
+    }
+
+    return spheremesh;
+}
+
 
 SimpleMesh* SimpleMeshCreator::plane(glm::vec3 pos, glm::vec2 extent, 
                   unsigned int meshResX, unsigned int meshResY) {

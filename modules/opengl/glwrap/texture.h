@@ -69,7 +69,7 @@ public:
     GLuint getSizeInBytes() const;
 
     template <typename T>
-    void setTextureParameterFunction(T* o, void (T::*m)(Texture*)) {
+    void setTextureParameterFunction(T* o, void (T::*m)(Texture*)) const {
         texParameterCallback_->addMemberFunction(o,m);
     }
 

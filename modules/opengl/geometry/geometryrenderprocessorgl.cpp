@@ -175,7 +175,6 @@ void GeometryRenderProcessorGL::process() {
     int prevPolygonMode[2];
     glGetIntegerv(GL_POLYGON_MODE, prevPolygonMode);
     glPolygonMode(GL_FRONT_AND_BACK, polygonMode_.get());
-
     GLboolean depthTest = glIsEnabled(GL_DEPTH_TEST);
     if (!depthTest) {    
         glEnable(GL_DEPTH_TEST);
