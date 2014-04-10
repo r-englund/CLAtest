@@ -636,6 +636,7 @@ void NetworkEditor::addPortInspector(std::string processorIdentifier, std::strin
         ivwAssert(processorWidgetQt, "Processor widget not found in inspector network.");
         processorWidgetQt->setMinimumSize(inspection_.size(), inspection_.size());
         processorWidgetQt->setMaximumSize(inspection_.size(), inspection_.size());
+	processorWidgetQt->setWindowFlags(Qt::CustomizeWindowHint | Qt::Tool);
         processorWidgetQt->move(ivec2(pos.x(),pos.y()));
         processorWidgetQt->show();
         // Connect the port to inspect to the inports of the inspector network
