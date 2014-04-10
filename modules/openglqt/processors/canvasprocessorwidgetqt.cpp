@@ -73,7 +73,8 @@ void CanvasProcessorWidgetQt::initialize() {
 #else
         Qt::Tool
 #endif
-        );
+        | Qt::CustomizeWindowHint
+        | Qt::WindowStaysOnTopHint);
 
     canvasProcessor_->setCanvas(static_cast<Canvas*>(canvas_));
     QWidget::resize(dim.x, dim.y);

@@ -348,7 +348,8 @@ void NetworkEditor::addProcessorWidget(Processor* processor, bool visible) {
 #else
             Qt::Tool
 #endif
-            );
+            | Qt::CustomizeWindowHint
+            | Qt::WindowStaysOnTopHint);
         processor->setProcessorWidget(processorWidgetQt);
         processor->getProcessorWidget()->initialize();
         //TODO: Serialize if visible and check this on network load
