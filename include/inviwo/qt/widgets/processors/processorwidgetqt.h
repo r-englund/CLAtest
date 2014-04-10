@@ -36,11 +36,10 @@
 #include <inviwo/qt/widgets/inviwoqtwidgetsdefine.h>
 #include <QWidget>
 #include <inviwo/core/processors/processorwidget.h>
-#include <inviwo/qt/widgets/inviwodockwidget.h>
 
 namespace inviwo {
 
-class IVW_QTWIDGETS_API ProcessorWidgetQt : public InviwoDockWidget, public ProcessorWidget {
+class IVW_QTWIDGETS_API ProcessorWidgetQt : public QWidget, public ProcessorWidget {
     Q_OBJECT
 
 public:

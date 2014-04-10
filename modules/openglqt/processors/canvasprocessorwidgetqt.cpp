@@ -30,6 +30,7 @@
  *
  *********************************************************************************/
 
+#include <QGridLayout>
 #include <modules/openglqt/processors/canvasprocessorwidgetqt.h>
 
 namespace inviwo {
@@ -38,13 +39,10 @@ CanvasProcessorWidgetQt::CanvasProcessorWidgetQt()
     : ProcessorWidgetQt(),
       canvas_(0)
 {
-    setAllowedAreas(Qt::NoDockWidgetArea);
-    setFeatures(DockWidgetClosable|DockWidgetMovable|DockWidgetFloatable);
     setMinimumSize(32, 32);
-
-    QWidget::move(0, 0);
-    QWidget::resize(32, 32);
-    QWidget::setVisible(false);
+    setFocusPolicy(Qt::NoFocus);
+    setAttribute(Qt::WA_OpaquePaintEvent);
+    setWindowTitle(QString::fromStdString("untitled canvas"));
 }
 
 CanvasProcessorWidgetQt::~CanvasProcessorWidgetQt() {}
@@ -63,17 +61,17 @@ void CanvasProcessorWidgetQt::initialize() {
     canvas_ = new CanvasQt(NULL, uvec2(dim.x, dim.y));
     canvas_->initialize();
     canvas_->setMouseTracking(true);
-
-    setWidget(static_cast<QWidget*>(canvas_));
-
-    setFloating(true);
+    QGridLayout* gridLayout = new QGridLayout;
+    gridLayout->setContentsMargins(0, 0, 0, 0);
+    gridLayout->addWidget(static_cast<QWidget*>(canvas_), 0, 0);
+    setLayout(gridLayout);
     setWindowFlags(
 #ifdef WIN32        
         Qt::Window
 #else
         Qt::Tool
 #endif
-        | Qt::CustomizeWindowHint
+        | Qt::X11BypassWindowManagerHint
         | Qt::WindowStaysOnTopHint);
 
     canvasProcessor_->setCanvas(static_cast<Canvas*>(canvas_));
@@ -107,16 +105,12 @@ void CanvasProcessorWidgetQt::show() {
 }
 
 void CanvasProcessorWidgetQt::showEvent(QShowEvent* event) {
-    show();
+    ProcessorWidgetQt::showEvent(event);
 }
 
 void CanvasProcessorWidgetQt::hide() {
     canvas_->hide();
     ProcessorWidgetQt::hide();
-}
-
-void CanvasProcessorWidgetQt::hideEvent(QHideEvent* event) {
-    hide();
 }
 
 void CanvasProcessorWidgetQt::closeEvent(QCloseEvent* event) {

@@ -348,7 +348,7 @@ void NetworkEditor::addProcessorWidget(Processor* processor, bool visible) {
 #else
             Qt::Tool
 #endif
-            | Qt::CustomizeWindowHint
+            | Qt::X11BypassWindowManagerHint
             | Qt::WindowStaysOnTopHint);
         processor->setProcessorWidget(processorWidgetQt);
         processor->getProcessorWidget()->initialize();
