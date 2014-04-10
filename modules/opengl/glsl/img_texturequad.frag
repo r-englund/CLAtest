@@ -33,5 +33,9 @@
 uniform sampler2D tex_;
 
 void main() {
+#ifdef SINGLE_CHANNEL
+    FragData0 = vec4(vec3(texture2D(tex_, gl_TexCoord[0].st).r), 1.0);
+#else
     FragData0 = texture2D(tex_, gl_TexCoord[0].st);
+#endif
 }
