@@ -42,11 +42,8 @@
 namespace inviwo {
 
 ProcessorWidgetQt::ProcessorWidgetQt()
-    : QWidget(NULL), ProcessorWidget()
+    : InviwoDockWidget("", NULL), ProcessorWidget()
 {
-    QWidget::move(0, 0);
-    QWidget::resize(32, 32);
-    QWidget::setVisible(false);
 }
 
 ProcessorWidgetQt::~ProcessorWidgetQt() {}
