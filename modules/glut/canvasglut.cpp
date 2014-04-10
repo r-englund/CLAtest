@@ -63,10 +63,12 @@ void CanvasGLUT::initializeGL() {
     glutReshapeFunc(reshape);
     glutDisplayFunc(display);
     glutIdleFunc(idle);
+    glutKeyboardFunc(keyboard);
     glutMouseFunc(mouse);
     glutMouseWheelFunc(mouseWheel);
     glutMotionFunc(mouseMotion);
     glutPassiveMotionFunc(mouseMotion);
+    glutSetOption(GLUT_ACTION_ON_WINDOW_CLOSE, GLUT_ACTION_CONTINUE_EXECUTION);
     initializeGLEW();
 }
 
@@ -100,10 +102,16 @@ void CanvasGLUT::display(void) {}
 void CanvasGLUT::idle() {}
 
 void CanvasGLUT::keyboard(unsigned char key, int x, int y) {
+    switch (key) {
+        case 27: // ESC key
+            exit(0);
+            break;
+    }
+
     CanvasGLUT* thisCanvas = canvases_[glutGetWindow()];
 
     KeyboardEvent* keyEvent = new KeyboardEvent(
-        key,
+        toupper(key),
         mapModifiers(glutGetModifiers()),
         KeyboardEvent::KEY_STATE_PRESS);
     

@@ -48,42 +48,9 @@
 #include <inviwo/core/network/processornetworkevaluator.h>
 #include <inviwo/core/processors/canvasprocessor.h>
 #include <inviwo/core/util/filesystem.h>
-
 #include <moduleregistration.h>
 
-
 using namespace inviwo;
-
-CanvasGLUT* canvas = 0;
-InviwoApplication* app = 0;
-ProcessorNetwork* processorNetwork = 0;
-ProcessorNetworkEvaluator* processorNetworkEvaluator = 0;
-
-
-void deinitialize() {
-    delete processorNetwork;
-    processorNetwork = 0;
-    delete processorNetworkEvaluator;
-    processorNetworkEvaluator = 0;
-
-    if (app) app->deinitialize();
-
-    delete app;
-    app = NULL;
-    //for(unsigned int i=0; i<CanvasGLUT::canvasCount_; ++i)
-    //    delete CanvasGLUT::canvases_[i];
-}
-
-
-void keyPressed(unsigned char key, int x, int y) {
-    switch (key) {
-        case 27: // ESC key
-            deinitialize();
-            exit(0);
-            break;
-    }
-    canvas->keyboard(key, x, y);
-}
 
 int main(int argc, char** argv) {
     inviwo::ConsoleLogger consoleLogger;
@@ -91,27 +58,27 @@ int main(int argc, char** argv) {
     InviwoApplication inviwoApp(argc, argv, "Inviwo "+IVW_VERSION + " - GLUTApp", inviwo::filesystem::findBasePath());
 
     glutInit(&argc, argv);
-    canvas = new CanvasGLUT(inviwoApp.getDisplayName(), uvec2(128,128));
+    CanvasGLUT* canvas = new CanvasGLUT(inviwoApp.getDisplayName(), uvec2(128,128));
     canvas->initializeGL();
 
     inviwoApp.initialize(&inviwo::registerAllModules);
 
     // Create process network
-    processorNetwork = new ProcessorNetwork();
-    inviwoApp.setProcessorNetwork(processorNetwork);
+    ProcessorNetwork processorNetwork;
+    inviwoApp.setProcessorNetwork(&processorNetwork);
 
     // Create process network evaluator
-    processorNetworkEvaluator = new ProcessorNetworkEvaluator(processorNetwork);
+    ProcessorNetworkEvaluator processorNetworkEvaluator(&processorNetwork);
 
-    processorNetworkEvaluator->setDefaultRenderContext(canvas);
-    canvas->setNetworkEvaluator(processorNetworkEvaluator);
+    processorNetworkEvaluator.setDefaultRenderContext(canvas);
+    canvas->setNetworkEvaluator(&processorNetworkEvaluator);
     canvas->initializeSquare();
     canvas->initialize();
     canvas->activate();
 
     // Load simple scene
-    processorNetworkEvaluator->disableEvaluation();
-    processorNetwork->lock();
+    processorNetworkEvaluator.disableEvaluation();
+    processorNetwork.lock();
     const CommandLineParser* cmdparser = (inviwo::InviwoApplication::getRef()).getCommandLineParser();
     std::string workspace;
 
@@ -121,8 +88,8 @@ int main(int argc, char** argv) {
         workspace = inviwoApp.getPath(InviwoApplication::PATH_WORKSPACES, "tests/simpleslicergl.inv");
 
     IvwDeserializer xmlDeserializer(workspace);
-    processorNetwork->deserialize(xmlDeserializer);
-    std::vector<Processor*> processors = processorNetwork->getProcessors();
+    processorNetwork.deserialize(xmlDeserializer);
+    std::vector<Processor*> processors = processorNetwork.getProcessors();
     int i=0;
 
     for (std::vector<Processor*>::iterator it = processors.begin(); it!=processors.end(); it++) {
@@ -131,15 +98,15 @@ int main(int argc, char** argv) {
 
         if (canvasProcessor) {
             if (i==0) {
-                processorNetworkEvaluator->registerCanvas(canvas, canvasProcessor->getIdentifier());
+                processorNetworkEvaluator.registerCanvas(canvas, canvasProcessor->getIdentifier());
                 canvas->setWindowTitle(inviwoApp.getDisplayName() + " : " + canvasProcessor->getIdentifier());
                 canvas->setWindowSize(uvec2(canvasProcessor->getCanvasSize()));
             }
             else {
                 CanvasGLUT* newC = new CanvasGLUT(canvasProcessor->getIdentifier(), uvec2(canvasProcessor->getCanvasSize()));
-                processorNetworkEvaluator->registerCanvas(newC, canvasProcessor->getIdentifier());
+                processorNetworkEvaluator.registerCanvas(newC, canvasProcessor->getIdentifier());
                 newC->initializeGL();
-                newC->setNetworkEvaluator(processorNetworkEvaluator);
+                newC->setNetworkEvaluator(&processorNetworkEvaluator);
                 newC->initialize();
             }
 
@@ -147,9 +114,9 @@ int main(int argc, char** argv) {
         }
     }
 
-    processorNetwork->setModified(true);
-    processorNetwork->unlock();
-    processorNetworkEvaluator->enableEvaluation();
+    processorNetwork.setModified(true);
+    processorNetwork.unlock();
+    processorNetworkEvaluator.enableEvaluation();
 
     if (cmdparser->getCaptureAfterStartup()) {
         std::string path = cmdparser->getOutputPath();
@@ -157,13 +124,16 @@ int main(int argc, char** argv) {
         if (path.empty())
             path = InviwoApplication::getPtr()->getPath(InviwoApplication::PATH_IMAGES);
 
-        processorNetworkEvaluator->saveSnapshotAllCanvases(path, cmdparser->getSnapshotName());
+        processorNetworkEvaluator.saveSnapshotAllCanvases(path, cmdparser->getSnapshotName());
     }
 
     if (cmdparser->getQuitApplicationAfterStartup())
         return 0;
 
-    glutKeyboardFunc(keyPressed);
     glutMainLoop();
+
+    if(i==0)
+        delete canvas;
+
     return 0;
 }
