@@ -59,7 +59,7 @@ DirectionalLightSourceProcessor::DirectionalLightSourceProcessor()
     lightSize_.setGroupID("lighting");
     lightEnabled_.setGroupID("lighting");
     Property::setGroupDisplayName("lighting", "Light Parameters");
-    //lightPosition_.setSemantics(PropertySemantics::LightPosition);
+    lightPosition_.setSemantics(PropertySemantics::LightPosition);
     lightDiffuse_.setSemantics(PropertySemantics::Color);
     lightSource_ = new DirectionalLight();
 }
