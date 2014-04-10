@@ -65,15 +65,7 @@ void CanvasProcessorWidgetQt::initialize() {
     gridLayout->setContentsMargins(0, 0, 0, 0);
     gridLayout->addWidget(static_cast<QWidget*>(canvas_), 0, 0);
     setLayout(gridLayout);
-    setWindowFlags(
-#ifdef WIN32        
-        Qt::Window
-#else
-        Qt::Tool
-#endif
-        | Qt::X11BypassWindowManagerHint
-        | Qt::WindowStaysOnTopHint);
-
+    setWindowFlags(Qt::Window | Qt::WindowStaysOnTopHint);
     canvasProcessor_->setCanvas(static_cast<Canvas*>(canvas_));
     QWidget::resize(dim.x, dim.y);
 }
