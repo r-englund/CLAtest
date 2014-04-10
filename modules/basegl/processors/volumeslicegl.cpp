@@ -46,7 +46,7 @@ VolumeSliceGL::VolumeSliceGL()
       coordinatePlane_("coordinatePlane", "Coordinate Plane"),
       flipHorizontal_("flipHorizontal", "Flip Horizontal View", false),
       flipVertical_("flipVertical", "Flip Vertical View", false),
-      sliceNumber_("sliceNumber", "Slice Number", 1, 1, 256),
+      sliceNumber_("sliceNumber", "Slice Number", 4, 1, 8),
       tfMappingEnabled_("tfMappingEnabled", "Enable Transfer Function", true),
       transferFunction_("transferFunction", "Transfer function", TransferFunction(), &inport_),
       shader_(NULL) {
@@ -68,7 +68,7 @@ VolumeSliceGL::VolumeSliceGL()
     tfMappingEnabled_.onChange(this, &VolumeSliceGL::tfMappingEnabledChanged);
     addProperty(tfMappingEnabled_);
     addProperty(transferFunction_);
-    volumeDimensions_ = uvec3(256);
+    volumeDimensions_ = uvec3(8);
     addInteractionHandler(new VolumeSliceGLInteractationHandler(this));
 }
 
@@ -150,7 +150,8 @@ void VolumeSliceGL::planeSettingsChanged() {
                 break;
         }
 
-        shader_->rebuild();
+        shader_->getFragmentShaderObject()->build();
+        shader_->link();
     }
 }
 
@@ -165,7 +166,8 @@ void VolumeSliceGL::tfMappingEnabledChanged() {
             transferFunction_.setVisible(false);
         }
 
-        shader_->rebuild();
+        shader_->getFragmentShaderObject()->build();
+        shader_->link();
     }
 }
 
@@ -173,14 +175,17 @@ void VolumeSliceGL::volumeDimensionChanged() {
     switch (coordinatePlane_.get()) {
         case XY:
             sliceNumber_.setMaxValue(static_cast<int>(volumeDimensions_.z));
+            sliceNumber_.set(static_cast<int>(volumeDimensions_.z)/2);
             break;
 
         case XZ:
             sliceNumber_.setMaxValue(static_cast<int>(volumeDimensions_.y));
+            sliceNumber_.set(static_cast<int>(volumeDimensions_.y)/2);
             break;
 
         case YZ:
             sliceNumber_.setMaxValue(static_cast<int>(volumeDimensions_.x));
+            sliceNumber_.set(static_cast<int>(volumeDimensions_.x)/2);
             break;
     }
 }
@@ -188,8 +193,8 @@ void VolumeSliceGL::volumeDimensionChanged() {
 VolumeSliceGL::VolumeSliceGLInteractationHandler::VolumeSliceGLInteractationHandler(VolumeSliceGL* vs) 
     : InteractionHandler()
     , wheelEvent_(MouseEvent::MOUSE_BUTTON_NONE, InteractionEvent::MODIFIER_NONE)
-    , upEvent_('w',InteractionEvent::MODIFIER_NONE, KeyboardEvent::KEY_STATE_PRESS)
-    , downEvent_('s',InteractionEvent::MODIFIER_NONE, KeyboardEvent::KEY_STATE_PRESS)
+    , upEvent_('W',InteractionEvent::MODIFIER_NONE, KeyboardEvent::KEY_STATE_PRESS)
+    , downEvent_('S',InteractionEvent::MODIFIER_NONE, KeyboardEvent::KEY_STATE_PRESS)
     , slicer_(vs) {
 }
 

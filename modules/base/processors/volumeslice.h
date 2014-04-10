@@ -54,8 +54,25 @@ public:
     void initialize();
     void deinitialize();
 
+    void shiftSlice(int);
+
 protected:
     virtual void process();
+
+    class VolumeSliceInteractationHandler : public InteractionHandler {
+    public:
+        VolumeSliceInteractationHandler(VolumeSlice* vs);
+        ~VolumeSliceInteractationHandler(){};
+
+        void invokeEvent(Event* event);
+    private:
+        MouseEvent wheelEvent_;
+
+        KeyboardEvent upEvent_;
+        KeyboardEvent downEvent_;
+
+        VolumeSlice* slicer_;
+    };
 
 private:
     VolumeInport inport_;
