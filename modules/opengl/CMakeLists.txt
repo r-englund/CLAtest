@@ -98,6 +98,8 @@ set(SHADER_FILES
     ${IVW_MODULE_DIR}/opengl/glsl/fontrendering_freetype.frag
     ${IVW_MODULE_DIR}/opengl/glsl/fontrendering_freetype.vert
     ${IVW_MODULE_DIR}/opengl/glsl/fontrendering_passthrough.frag
+    ${IVW_MODULE_DIR}/opengl/glsl/geometryrendering.frag
+    ${IVW_MODULE_DIR}/opengl/glsl/geometryrendering.vert
     ${IVW_MODULE_DIR}/opengl/glsl/img_classify.frag
     ${IVW_MODULE_DIR}/opengl/glsl/img_copy.frag
     ${IVW_MODULE_DIR}/opengl/glsl/img_findedges.frag

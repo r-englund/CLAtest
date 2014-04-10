@@ -252,7 +252,6 @@ void VolumeRaycasterGL::setVolumeParameters(const VolumeInport& inport, Shader* 
     volGL->setVolumeUniforms(inport.getData(), shader, samplerID);
     mat4 viewToVoxel = inport.getData()->getCoordinateTransformer().getWorldToTextureMatrix();
     shader->setUniform("viewToVoxel_", viewToVoxel);
-    shader->setUniform("viewMatrix_", camera_.viewMatrix());
 }
 
 void VolumeRaycasterGL::setGlobalShaderParameters(Shader* shader) {
@@ -260,6 +259,7 @@ void VolumeRaycasterGL::setGlobalShaderParameters(Shader* shader) {
     // sampling uniform
     shader->setUniform("samplingRate_", samplingRate_.get());
     // camera uniform
+    shader->setUniform("viewMatrix_", camera_.viewMatrix());
     shader->setUniform("cameraPosition_", camera_.getLookFrom());
     // illumination uniforms
     shader->setUniform("lightPosition_", lightPosition_.get());
