@@ -43,8 +43,8 @@ ProcessorCodeState(EntryExitPoints, CODE_STATE_STABLE);
 EntryExitPoints::EntryExitPoints()
     : ProcessorGL()
     , geometryPort_("geometry")
-    , entryPort_("entry-points", COLOR_DEPTH, DataVec4UINT16::get()) // Using 8-bits will create artifacts when entering the volume
-    , exitPort_("exit-points", COLOR_DEPTH, DataVec4UINT16::get())
+    , entryPort_("entry-points", COLOR_DEPTH, DataVec4FLOAT32::get()) // Using 8-bits will create artifacts when entering the volume
+    , exitPort_("exit-points", COLOR_DEPTH, DataVec4FLOAT32::get())
     , camera_("camera", "Camera", vec3(0.0f, 0.0f, -2.0f), vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 1.0f, 0.0f), &geometryPort_)
     , capNearClipping_("capNearClipping", "Cap near plane clipping", true)
     , handleInteractionEvents_("handleEvents", "Handle interaction events", true)

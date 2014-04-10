@@ -7,6 +7,7 @@ ivw_module(BaseCL)
 set(HEADER_FILES
     ${IVW_MODULE_DIR}/basecl/processors/entryexitpointscl.h
     ${IVW_MODULE_DIR}/basecl/processors/volumefirsthitcl.h
+	${IVW_MODULE_DIR}/basecl/processors/volumemaxcl.h
 )
 ivw_group("Header Files" ${HEADER_FILES})
 
@@ -15,6 +16,7 @@ ivw_group("Header Files" ${HEADER_FILES})
 set(SOURCE_FILES
     ${IVW_MODULE_DIR}/basecl/processors/entryexitpointscl.cpp
     ${IVW_MODULE_DIR}/basecl/processors/volumefirsthitcl.cpp
+	${IVW_MODULE_DIR}/basecl/processors/volumemaxcl.cpp
 )
 ivw_group("Source Files" ${SOURCE_FILES})
 
@@ -23,6 +25,7 @@ ivw_group("Source Files" ${SOURCE_FILES})
 set(SHADER_FILES
     ${IVW_MODULE_DIR}/basecl/cl/entryexitpoints.cl
     ${IVW_MODULE_DIR}/basecl/cl/volumefirsthit.cl
+	${IVW_MODULE_DIR}/basecl/cl/volumemax.cl
 )
 ivw_group("Shader Files" ${SHADER_FILES})
 
