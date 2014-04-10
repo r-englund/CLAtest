@@ -636,11 +636,6 @@ void NetworkEditor::addPortInspector(std::string processorIdentifier, std::strin
         ivwAssert(processorWidgetQt, "Processor widget not found in inspector network.");
         processorWidgetQt->setMinimumSize(inspection_.size(), inspection_.size());
         processorWidgetQt->setMaximumSize(inspection_.size(), inspection_.size());
-        processorWidgetQt->setWindowFlags(Qt::CustomizeWindowHint
-                                          | Qt::Tool
-                                          | Qt::WindowStaysOnTopHint
-                                          //| Qt::FramelessWindowHint
-                                         );
         processorWidgetQt->move(ivec2(pos.x(),pos.y()));
         processorWidgetQt->show();
         // Connect the port to inspect to the inports of the inspector network
@@ -775,7 +770,6 @@ void NetworkEditor::addExternalNetwork(std::string fileName, std::string identif
                 processorWidgetQt->setMaximumSize(canvasSize[0], canvasSize[1]);
             }
 
-            processorWidgetQt->setWindowFlags(Qt::Tool | Qt::CustomizeWindowHint | Qt::WindowStaysOnTopHint);
             processorWidgetQt->move(pos);
             processorWidgetQt->show();
             processorNetworkEvaluator_->registerCanvas(canvasProcessor->getCanvas(),
