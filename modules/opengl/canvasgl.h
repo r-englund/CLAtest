@@ -96,6 +96,8 @@ protected:
     void renderNoise();
     void renderTexture(GLint);
 
+    void checkChannels(int);
+
 private:
     static bool glewInitialized_;
     static GLuint screenAlignedVerticesId_;
@@ -105,6 +107,7 @@ private:
     LayerType layerType_;
     Shader* shader_;
     Shader* noiseShader_;
+    int singleChannel_;
 
 };
 

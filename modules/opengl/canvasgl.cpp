@@ -44,11 +44,12 @@ GLuint CanvasGL::screenAlignedVerticesId_ = 0;
 GLuint CanvasGL::screenAlignedTexCoordsId_ = 1;
 
 CanvasGL::CanvasGL(uvec2 dimensions)
-    : Canvas(dimensions) {
-    imageGL_ = NULL;
-    shader_ = NULL;
-    noiseShader_ = NULL;
-    layerType_ = COLOR_LAYER;
+    : Canvas(dimensions)
+    , imageGL_(NULL)
+    , shader_(NULL)
+    , noiseShader_(NULL)
+    , layerType_(COLOR_LAYER)
+    , singleChannel_(false) {
 }
 
 CanvasGL::~CanvasGL() {}
@@ -103,6 +104,7 @@ void CanvasGL::render(const Image* image, LayerType layerType) {
         imageGL_ = image->getRepresentation<ImageGL>();
         layerType_ = layerType;
         pickingContainer_->setPickingSource(image);
+        checkChannels(image->getDataFormat()->getComponents());
         renderLayer();
     } else {
         pickingContainer_->setPickingSource(NULL);
@@ -162,6 +164,19 @@ void CanvasGL::renderTexture(GLint unitNumber) {
     shader_->deactivate();
     glDisable(GL_BLEND);
     glSwapBuffers();
+}
+
+void CanvasGL::checkChannels(int channels){
+    if(!singleChannel_ && channels==1){
+        shader_->getFragmentShaderObject()->addShaderDefine("SINGLE_CHANNEL");
+        shader_->getFragmentShaderObject()->build();
+        shader_->link();
+    }
+    else if(singleChannel_ && channels==4){
+        shader_->getFragmentShaderObject()->removeShaderDefine("SINGLE_CHANNEL");
+        shader_->getFragmentShaderObject()->build();
+        shader_->link();
+    }
 }
 
 } // namespace
