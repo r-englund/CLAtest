@@ -41,15 +41,17 @@ CanvasProcessorWidgetQt::CanvasProcessorWidgetQt()
 {
     setMinimumSize(32, 32);
     setFocusPolicy(Qt::NoFocus);
+    //setMask(geometry());
     setAttribute(Qt::WA_OpaquePaintEvent);
-    setWindowFlags(windowFlags() | 
+    setWindowFlags( 
 #ifdef Q_OS_MAC
         Qt::SubWindow | 
 #else
         Qt::Tool |
 #endif
         Qt::CustomizeWindowHint |
-        Qt::WindowStaysOnTopHint);
+        Qt::WindowStaysOnTopHint |
+        Qt::X11BypassWindowManagerHint);
     setWindowTitle(QString::fromStdString("untitled canvas"));
 }
 
