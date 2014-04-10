@@ -28,7 +28,7 @@ else(WIN32)
 		/opt/local/include
 		DOC "The directory where GL/glew.h resides")
 	find_library( GLEW_LIBRARY
-		NAMES GLEW glew
+		NAMES glew GLEW
 		PATHS
 		/usr/lib64
 		/usr/lib
@@ -57,7 +57,7 @@ mark_as_advanced(GLEW_FOUND)
 if(NOT GLEW_FOUND)
     set(BUILD_GLEW 1)
 	set(GLEW_INCLUDE_DIR ${IVW_MODULE_DIR}/opengl/ext/glew/include)
-	set(GLEW_LIBRARY glew)
+	set(GLEW_LIBRARY GLEW)
 	set(GLEW_LIBRARY_DIR ${LIBRARY_OUTPUT_PATH})
 	mark_as_advanced(FORCE  GLEW_INCLUDE_DIR)
 	mark_as_advanced(FORCE  GLEW_LIBRARY)

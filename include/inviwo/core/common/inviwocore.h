@@ -34,7 +34,6 @@
 #define IVW_INVIWOCORE_H
 
 #include <inviwo/core/common/inviwocoredefine.h>
-#include <inviwo/core/common/inviwoapplication.h>
 #include <inviwo/core/common/inviwomodule.h>
 
 namespace inviwo {

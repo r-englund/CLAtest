@@ -34,7 +34,6 @@
 #define IVW_STRINGCONVERSION_H
 
 #include <inviwo/core/common/inviwocoredefine.h>
-#include <inviwo/core/common/inviwo.h>
 #include <algorithm>
 #include <string>
 #include <sstream>
