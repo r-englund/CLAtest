@@ -31,6 +31,7 @@
  *********************************************************************************/
 
 #include <inviwo/core/common/inviwocore.h>
+#include <inviwo/core/common/inviwoapplication.h>
 
 //Data Structures
 #include <inviwo/core/datastructures/volume/volumeramconverter.h>
