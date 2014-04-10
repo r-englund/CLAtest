@@ -126,18 +126,16 @@ CanvasGLFW* CanvasGLFW::getCanvasGLFW(GLFWwindow* window){
 
 void CanvasGLFW::keyboard(GLFWwindow* window, int key, int scancode, int action, int mods){
     if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS){
-        glfwSetWindowShouldClose(window, GL_TRUE);
+        //glfwSetWindowShouldClose(window, GL_TRUE);
+        glfwTerminate();
+        exit(0);
         return;
     }
-
-    //Convert large characters to small characters
-    if(key >= 65 && key <= 90)
-        key += 32;
 
     CanvasGLFW* thisCanvas = getCanvasGLFW(window);
 
     KeyboardEvent* keyEvent = new KeyboardEvent(
-        key,
+        toupper(key),
         KeyboardEvent::MODIFIER_NONE,
         KeyboardEvent::KEY_STATE_PRESS);
 
