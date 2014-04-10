@@ -67,7 +67,13 @@ void CanvasProcessorWidgetQt::initialize() {
     setWidget(static_cast<QWidget*>(canvas_));
 
     setFloating(true);
-    setWindowFlags(Qt::Window);
+    setWindowFlags(
+#ifdef WIN32        
+        Qt::Window
+#else
+        Qt::Tool
+#endif
+        );
 
     canvasProcessor_->setCanvas(static_cast<Canvas*>(canvas_));
     QWidget::resize(dim.x, dim.y);
