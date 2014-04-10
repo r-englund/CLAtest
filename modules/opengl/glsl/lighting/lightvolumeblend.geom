@@ -30,8 +30,7 @@
 *
 *********************************************************************************/
 
-#extension GL_EXT_gpu_shader4: enable
-#extension GL_EXT_geometry_shader4: enable
+#extension GL_ARB_gpu_shader4: enable
 #extension GL_ARB_geometry_shader4: enable
 
 #include "include/inc_sampler3d.frag"
