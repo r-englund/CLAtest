@@ -40,7 +40,6 @@ CanvasProcessorWidgetQt::CanvasProcessorWidgetQt()
 {
     setAllowedAreas(Qt::NoDockWidgetArea);
     setFeatures(DockWidgetClosable|DockWidgetMovable|DockWidgetFloatable);
-    setWindowFlags(Qt::SubWindow);
     setMinimumSize(32, 32);
 
     QWidget::move(0, 0);
@@ -66,6 +65,9 @@ void CanvasProcessorWidgetQt::initialize() {
     canvas_->setMouseTracking(true);
 
     setWidget(static_cast<QWidget*>(canvas_));
+
+    setFloating(true);
+    setWindowFlags(Qt::Window);
 
     canvasProcessor_->setCanvas(static_cast<Canvas*>(canvas_));
     QWidget::resize(dim.x, dim.y);
