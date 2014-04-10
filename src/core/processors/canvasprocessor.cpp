@@ -45,7 +45,7 @@ CanvasProcessor::CanvasProcessor()
     , visibleLayer_("visibleLayer", "Visible Layer")
     , saveLayerDirectory_("layerDir", "Output Directory", InviwoApplication::getPtr()->getPath(InviwoApplication::PATH_DATA)+"images")
     , saveLayerButton_("saveLayer", "Save Image Layer", PropertyOwner::VALID)
-    , canvas_(0)
+    , canvas_(NULL)
     , disableResize_(false)
     , queuedRequest_(false)
 {
@@ -72,6 +72,9 @@ void CanvasProcessor::initialize() {
 void CanvasProcessor::deinitialize() {
     if (processorWidget_)
         processorWidget_->hide();
+
+    delete canvas_;
+    canvas_ = NULL;
 
     Processor::deinitialize();
 }

@@ -44,7 +44,9 @@ struct ResourceComparer {
 };
 
 ResourceManager::~ResourceManager() {
-    clearAllResources();
+    for (std::vector<Resource*>::iterator it = resources_->begin(); it != resources_->end(); ++it) {
+        delete *it;
+    }
     delete resources_;
 }
 

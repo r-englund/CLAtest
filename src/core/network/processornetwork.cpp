@@ -67,7 +67,8 @@ ProcessorNetwork::ProcessorNetwork()
 }
 
 ProcessorNetwork::~ProcessorNetwork() {
-    clear();
+    for (size_t i=0; i<processors_.size(); i++)
+        delete processors_[i];
     delete linkEvaluator_;
 }
 
