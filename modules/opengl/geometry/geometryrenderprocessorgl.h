@@ -37,8 +37,10 @@
 #include <inviwo/core/interaction/trackball.h>
 #include <inviwo/core/ports/geometryport.h>
 #include <inviwo/core/ports/imageport.h>
-#include <inviwo/core/properties/cameraproperty.h>
+#include <inviwo/core/properties/boolproperty.h>
 #include <inviwo/core/properties/buttonproperty.h>
+#include <inviwo/core/properties/cameraproperty.h>
+#include <inviwo/core/properties/ordinalproperty.h>
 #include <inviwo/core/rendering/geometryrenderer.h>
 #include <modules/opengl/openglmoduledefine.h>
 #include <modules/opengl/processorgl.h>
@@ -53,11 +55,15 @@ public:
 
     InviwoProcessorInfo();
 
-    void deinitialize();
+    virtual void initialize();
+    virtual void deinitialize();
+
+    virtual void initializeResources();
 
 protected:
     virtual void process();
     void centerViewOnGeometry();
+    void setGlobalShaderParameters(Shader*);
     void resetViewParams();
 
     void updateRenderers();
@@ -74,6 +80,16 @@ protected:
     
     OptionPropertyInt cullFace_;
     OptionPropertyInt polygonMode_;
+
+    Shader* shader_;
+    OptionPropertyString shadingMode_;
+    FloatVec3Property lightPosition_;
+    FloatVec3Property lightColorAmbient_;
+    FloatVec3Property lightColorDiffuse_;
+    FloatVec3Property lightColorSpecular_;
+    IntProperty lightSpecularExponent_;
+    BoolProperty applyLightAttenuation_;
+    FloatVec3Property lightAttenuation_;
 };
 
 } // namespace
