@@ -111,7 +111,6 @@ Texture::~Texture() {
     glDeleteTextures(1, &id_);
     glDeleteBuffers(1, &pboBack_);
     delete texParameterCallback_;
-    LGL_ERROR;
 }
 
 GLuint Texture::getID() const {
