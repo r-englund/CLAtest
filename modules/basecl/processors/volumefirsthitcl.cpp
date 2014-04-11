@@ -90,7 +90,7 @@ void VolumeFirstHitCL::process() {
     svec2 localWorkGroupSize(workGroupSize_.get());
     svec2 globalWorkGroupSize(getGlobalWorkGroupSize(entryPort_.getDimension().x, localWorkGroupSize.x),
                               getGlobalWorkGroupSize(entryPort_.getDimension().y, localWorkGroupSize.y));
-    BEGIN_OPENCL_PROFILING
+    IVW_BEGIN_OPENCL_PROFILING
 
     if (useGLSharing_.get()) {
         // Will synchronize with OpenGL upon creation and destruction
@@ -130,7 +130,7 @@ void VolumeFirstHitCL::process() {
         firstHit(volumeCL, entryCL, exitCL, tf, outImageCL, stepSize, globalWorkGroupSize, localWorkGroupSize, profilingEvent);
     }
 
-    END_OPENCL_PROFILING
+    IVW_END_OPENCL_PROFILING
 }
 
 void VolumeFirstHitCL::firstHit(const cl::Image& volumeCL, const cl::Image& entryPoints, const cl::Image& exitPoints,
