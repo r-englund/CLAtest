@@ -40,6 +40,7 @@ in vec3 normal_;
 void main() {
     vec4 fragColor = vec4(1.0);
 
+
     fragColor.rgb = APPLY_SHADING(gl_Color.rgb, gl_Color.rgb, gl_Color.rgb, worldPosition_.xyz, normal_, lightPosition_, cameraPosition_);
 
     FragData0 = fragColor;
