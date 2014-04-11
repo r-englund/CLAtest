@@ -67,17 +67,17 @@ namespace inviwo {
 // used when executing the kernel. If IVW_PROFILING is defined it will 
 // call LogInfo with the execution time.
 // Example:
-// BEGIN_OPENCL_PROFILING
+// IVW_BEGIN_OPENCL_PROFILING
 // OpenCL::getPtr()->getQueue().enqueueNDRangeKernel(*ernel_, cl::NullRange, globalWorkGroupSize, localWorkGroupSize, NULL, profilingEvent);
-// END_OPENCL_PROFILING
+// IVW_END_OPENCL_PROFILING
 
 #if IVW_PROFILING 
-    #define BEGIN_OPENCL_PROFILING cl::Event* profilingEvent = new cl::Event(); 
+    #define IVW_BEGIN_OPENCL_PROFILING cl::Event* profilingEvent = new cl::Event(); 
 #else 
-    #define BEGIN_OPENCL_PROFILING cl::Event* profilingEvent = NULL; 
+    #define IVW_BEGIN_OPENCL_PROFILING cl::Event* profilingEvent = NULL; 
 #endif 
 #if IVW_PROFILING 
-    #define END_OPENCL_PROFILING \
+    #define IVW_END_OPENCL_PROFILING \
     try { \
         profilingEvent->wait(); \
         LogInfo("Exec time: " << profilingEvent->getElapsedTime() << " ms"); \
@@ -86,7 +86,7 @@ namespace inviwo {
     } \
     delete profilingEvent; 
 #else 
-    #define END_OPENCL_PROFILING
+    #define IVW_END_OPENCL_PROFILING
 #endif
 
 /** \class OpenCL
