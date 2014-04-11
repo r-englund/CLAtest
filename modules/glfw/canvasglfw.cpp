@@ -56,6 +56,11 @@ void CanvasGLFW::initialize() {
 }
 
 void CanvasGLFW::initializeGL() {
+    //glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
+    //glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+    //glfwWindowHint(GLFW_OPENGL_COMPAT_PROFILE, GL_TRUE);
+    //glfwWindowHint(GLFW_OPENGL_CORE_PROFILE, GL_TRUE);
+
     glWindow_ = glfwCreateWindow(getDimension().x, getDimension().y, windowTitle_.c_str(), NULL, sharedContext_);
 
     if (!glWindow_){

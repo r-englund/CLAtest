@@ -108,33 +108,31 @@ void ShaderManager::fileChanged(std::string shaderFilename) {
 }
 
 std::string ShaderManager::getGlobalGLSLHeader() {
-    if (!openGLInfoRef_) {
-        OpenGLModule* openGLModule = getTypeFromVector<OpenGLModule>(InviwoApplication::getRef().getModules());
-
-        if (openGLModule)
-            openGLInfoRef_ = getTypeFromVector<OpenGLCapabilities>(openGLModule->getCapabilities());
-    }
-
-    if (openGLInfoRef_) {
-        return openGLInfoRef_->getCurrentGlobalGLSLHeader();
-    }
-
-    return "";
+    OpenGLCapabilities* glCaps = getOpenGLCapabilitiesObject();
+    return glCaps->getCurrentGlobalGLSLHeader();
 }
 
 std::string ShaderManager::getGlobalGLSLFragmentDefines() {
+    OpenGLCapabilities* glCaps = getOpenGLCapabilitiesObject();
+    return glCaps->getCurrentGlobalGLSLFragmentDefines();
+}
+
+void ShaderManager::bindCommonAttributes(unsigned int programID) {
+    OpenGLCapabilities* glCaps = getOpenGLCapabilitiesObject();
+    if(glCaps->getCurrentShaderVersion().getVersion() < 330 && glCaps->getCurrentShaderVersion().getVersion() >= 130){
+        glBindFragDataLocation(programID, 0, "FragData0");
+        glBindFragDataLocation(programID, glCaps->getMaxColorAttachments()-1, "PickingData");
+    }
+}
+
+OpenGLCapabilities* ShaderManager::getOpenGLCapabilitiesObject(){
     if (!openGLInfoRef_) {
         OpenGLModule* openGLModule = getTypeFromVector<OpenGLModule>(InviwoApplication::getRef().getModules());
 
         if (openGLModule)
             openGLInfoRef_ = getTypeFromVector<OpenGLCapabilities>(openGLModule->getCapabilities());
     }
-
-    if (openGLInfoRef_) {
-        return openGLInfoRef_->getCurrentGlobalGLSLFragmentDefines();
-    }
-
-    return "";
+    return openGLInfoRef_;
 }
 
 } // namespace

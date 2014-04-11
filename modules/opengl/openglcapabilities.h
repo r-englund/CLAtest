@@ -108,7 +108,7 @@ protected:
 
     void addShaderVersion(GLSLShaderVersion);
     void addShaderVersionIfEqualOrLower(GLSLShaderVersion, int);
-    void parseAndAddShaderVersion(std::string);
+    void parseAndAddShaderVersion(std::string, int);
     int parseAndRetrieveVersion(std::string);
 
 private:

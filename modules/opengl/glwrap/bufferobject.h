@@ -41,16 +41,18 @@
 
 namespace inviwo {
 
+class BufferObjectArray;
+
 class IVW_MODULE_OPENGL_API BufferObject: public Observable<BufferObjectObserver>, public ReferenceCounter  {
 
 public:
     BufferObject(size_t size, const DataFormatBase* format, BufferType type, BufferUsage usage, GLenum target = GL_ARRAY_BUFFER);
-    virtual ~BufferObject();
     BufferObject(const BufferObject& rhs);
-
-    virtual void initialize();
-    virtual void deinitialize();
+    virtual ~BufferObject();
     virtual BufferObject* clone() const;
+
+    void initialize();
+    void deinitialize();
 
     const Buffer* getAttribute() const;
     GLenum getFormatType() const;
@@ -59,10 +61,11 @@ public:
     GLFormats::GLFormat getGLFormat() const { return glFormat_; }
     BufferType getBufferType() const { return type_; }
 
-    virtual void enable() const;
-    virtual void disable() const;
+    void enable() const;
+    void disable() const;
 
     void bind() const;
+    void unbind() const;
 
     /**
      * Set the size of the buffer in bytes. 
@@ -96,6 +99,8 @@ private:
     BufferType type_;
     GLsizeiptr sizeInBytes_;
     void (BufferObject::*locationPointerFunc_)() const;
+
+    BufferObjectArray* arrayObject_;
 
 };
 

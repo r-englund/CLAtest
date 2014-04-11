@@ -31,6 +31,7 @@
  *********************************************************************************/
 
 #include <modules/opengl/glwrap/bufferobject.h>
+#include <modules/opengl/glwrap/bufferobjectarray.h>
 
 namespace inviwo {
 
@@ -39,7 +40,8 @@ BufferObject::BufferObject(size_t size, const DataFormatBase* format, BufferType
     : Observable<BufferObjectObserver>(), ReferenceCounter()
     , target_(target)
     , glFormat_(getGLFormats()->getGLFormat(format->getId()))
-    , type_(type) {
+    , type_(type)
+    , arrayObject_(NULL) {
     
     switch (usage)
     {
@@ -61,7 +63,8 @@ BufferObject::BufferObject(const BufferObject& rhs)
     , usageGL_(rhs.usageGL_)
     , target_(rhs.target_)
     , glFormat_(rhs.glFormat_)
-    , type_(rhs.type_) {
+    , type_(rhs.type_)
+    , arrayObject_(NULL) {
     
     initialize();
     // TODO: Verify that data copying works. What about backwards compability?
@@ -96,7 +99,7 @@ GLuint BufferObject::getId() const {
 
 void BufferObject::enable() const {
     if (state_ == GL_VERTEX_ARRAY) {
-         glEnableVertexAttribArray(0);
+        glEnableVertexAttribArray(0);
     } else {
         glEnableClientState(state_);
     }
@@ -114,6 +117,10 @@ void BufferObject::disable() const {
 
 void BufferObject::bind() const {
     glBindBuffer(target_, id_);
+}
+
+void BufferObject::unbind() const {
+    glBindBuffer(target_, 0);
 }
 
 void BufferObject::specifyLocation() const {
