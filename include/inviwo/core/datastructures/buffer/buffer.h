@@ -74,7 +74,6 @@ protected:
     virtual DataRepresentation* createDefaultRepresentation();
 private:
     size_t size_;
-    const DataFormatBase* format_;
     BufferType type_;
     BufferUsage usage_;
 };
