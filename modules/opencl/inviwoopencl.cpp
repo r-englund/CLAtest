@@ -308,11 +308,11 @@ void OpenCL::setDevice(cl::Device device, bool glSharing) {
             gpuContext_ = cl::Context(gpuDevice_, &properties[0]);
         } catch (cl::Error&)
         {
-            LogError("ERROR: Unable to create OpenCL context. Trying to create without openGL sharing... ");
+            LogInfo("ERROR: Unable to create OpenCL context. Trying to create without openGL sharing... ");
             properties.clear();
             properties.insert(properties.end(), platformProperties, platformProperties+ sizeof(platformProperties)/sizeof(cl_context_properties));
             gpuContext_ = cl::Context(gpuDevice_, &properties[0]);
-            LogError("Succeeded creating OpenCL without OpenGL sharing. ");
+            LogInfo("Succeeded creating OpenCL without OpenGL sharing. ");
         }
 
         cl_command_queue_properties queueProperties = 0;
