@@ -85,8 +85,16 @@ public:
     virtual vec3 getValueAsVec3Float(const uvec3& pos) const = 0;
     virtual vec4 getValueAsVec4Float(const uvec3& pos) const = 0;
 
-    static inline unsigned int posToIndex(const uvec3& pos, const uvec3& dim) {
+    template< typename T >
+    static inline T posToIndex(const glm::detail::tvec3<T, glm::defaultp>& pos,
+                               const glm::detail::tvec3<T, glm::defaultp>& dim) {
         return pos.x+(pos.y*dim.x)+(pos.z*dim.x *dim.y);
+    }
+    template< typename T>
+    static inline T periodicPosToIndex(const glm::detail::tvec3<T, glm::defaultp>& posIn,
+                                       const glm::detail::tvec3<T, glm::defaultp>& dim) {
+        glm::detail::tvec3<T, glm::defaultp> pos = glm::mod(posIn, dim);
+        return pos.x + (pos.y*dim.x) + (pos.z*dim.x *dim.y);
     }
 
 protected:

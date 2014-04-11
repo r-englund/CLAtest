@@ -95,7 +95,8 @@ GeometryRenderProcessorGL::GeometryRenderProcessorGL()
     shadingMode_.setSelectedIdentifier("none");
     shadingMode_.setCurrentStateAsDefault();
 
-    lightPosition_.setSemantics(PropertySemantics::LightPosition);
+    ///lightPosition_.setSemantics(PropertySemantics::LightPosition);
+    lightPosition_.setSemantics(PropertySemantics("Spherical"));
     lightColorAmbient_.setSemantics(PropertySemantics::Color);
     lightColorDiffuse_.setSemantics(PropertySemantics::Color);
     lightColorSpecular_.setSemantics(PropertySemantics::Color);
