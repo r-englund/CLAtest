@@ -53,7 +53,7 @@ namespace inviwo {
 
 OpenCLModule::OpenCLModule() : InviwoModule(), btnOpenCLInfo_("printOpenCLInfo", "Print OpenCL Info") {
     setIdentifier("OpenCL");
-    OpenCL::init();
+
     // Buffer CL
     registerRepresentationConverter(new BufferRAM2CLConverter());
     registerRepresentationConverter(new BufferCL2RAMConverter());
@@ -109,6 +109,8 @@ OpenCLModule::OpenCLModule() : InviwoModule(), btnOpenCLInfo_("printOpenCLInfo",
 }
 
 void OpenCLModule::initialize() {
+    OpenCL::init();
+
     OpenCL::getPtr()->addCommonIncludeDirectory(InviwoApplication::getPtr()->getPath(InviwoApplication::PATH_MODULES)+"opencl/cl");
     
     KernelManager::init();
