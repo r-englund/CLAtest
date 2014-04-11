@@ -3,7 +3,7 @@
  * Inviwo - Interactive Visualization Workshop
  * Version 0.6b
  *
- * Copyright (c) 2013-2014 Inviwo Foundation
+ * Copyright (c) 2014 Inviwo Foundation
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -26,52 +26,49 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
- * Main file authors: Timo Ropinski, Erik Sundén
+ * Main file authors: Erik Sundén
  *
  *********************************************************************************/
 
-#ifndef IVW_SHADERMANAGER_H
-#define IVW_SHADERMANAGER_H
+#ifndef IVW_BUFFER_OBJECT_ARRAY_H
+#define IVW_BUFFER_OBJECT_ARRAY_H
 
 #include <modules/opengl/openglmoduledefine.h>
-#include <inviwo/core/common/inviwo.h>
 #include <modules/opengl/inviwoopengl.h>
-#include <modules/opengl/openglcapabilities.h>
-#include <modules/opengl/glwrap/shader.h>
-#include <inviwo/core/util/fileobserver.h>
-#include <inviwo/core/util/singleton.h>
 
 namespace inviwo {
 
-class IVW_MODULE_OPENGL_API ShaderManager : public Singleton<ShaderManager>, public FileObserver {
+class BufferObject;
+
+class IVW_MODULE_OPENGL_API BufferObjectArray {
 
 public:
-    ShaderManager();
+    BufferObjectArray();
+    BufferObjectArray(const BufferObjectArray& rhs);
+    virtual ~BufferObjectArray();
+    virtual BufferObjectArray* clone() const;
 
-    void registerShader(Shader* shader);
-    void unregisterShader(Shader* shader);
+    void initialize();
+    void deinitialize();
 
-    virtual void fileChanged(std::string shaderFilename);
+    GLuint getId() const;
 
-    std::string getGlobalGLSLHeader();
-    std::string getGlobalGLSLFragmentDefines();
+    void enable() const;
+    void disable() const;
 
-    void bindCommonAttributes(unsigned int);
+    void bind() const;
 
-    std::vector<std::string> getShaderSearchPaths() { return shaderSearchPaths_; }
-    void addShaderSearchPath(std::string shaderSearchPath) {
-        shaderSearchPaths_.push_back(shaderSearchPath);
-    }
+    void attachBufferObject(const BufferObject*);
 
-protected:
-    OpenGLCapabilities* getOpenGLCapabilitiesObject();
+    const BufferObject* getBufferObject(size_t idx = 0) const;
 
 private:
-    std::vector<Shader*> shaders_;
-    OpenGLCapabilities* openGLInfoRef_;
-    std::vector<std::string> shaderSearchPaths_;
+    GLuint id_;
+    std::vector<const BufferObject*> attachedBuffers_;
+
 };
+
 
 } // namespace
 
-#endif // IVW_SHADERMANAGER_H
+#endif // IVW_BUFFER_OBJECT_ARRAY_H

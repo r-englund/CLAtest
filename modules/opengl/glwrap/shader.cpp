@@ -106,6 +106,9 @@ Shader::~Shader() {
 
 void Shader::initialize() {
     id_ = glCreateProgram();
+
+    ShaderManager::getRef().bindCommonAttributes(id_);
+
     LGL_ERROR;
     shaderObjects_ = new ShaderObjectMap();
 }

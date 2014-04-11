@@ -3,7 +3,7 @@
  * Inviwo - Interactive Visualization Workshop
  * Version 0.6b
  *
- * Copyright (c) 2013-2014 Inviwo Foundation
+ * Copyright (c) 2014 Inviwo Foundation
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -26,52 +26,71 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
- * Main file authors: Timo Ropinski, Erik Sundén
+ * Main file authors: Erik Sundén
  *
  *********************************************************************************/
 
-#ifndef IVW_SHADERMANAGER_H
-#define IVW_SHADERMANAGER_H
-
-#include <modules/opengl/openglmoduledefine.h>
-#include <inviwo/core/common/inviwo.h>
-#include <modules/opengl/inviwoopengl.h>
-#include <modules/opengl/openglcapabilities.h>
-#include <modules/opengl/glwrap/shader.h>
-#include <inviwo/core/util/fileobserver.h>
-#include <inviwo/core/util/singleton.h>
+#include <modules/opengl/glwrap/bufferobjectarray.h>
+#include <modules/opengl/glwrap/bufferobject.h>
 
 namespace inviwo {
 
-class IVW_MODULE_OPENGL_API ShaderManager : public Singleton<ShaderManager>, public FileObserver {
+BufferObjectArray::BufferObjectArray(){
+    initialize();
+}
 
-public:
-    ShaderManager();
+BufferObjectArray::BufferObjectArray(const BufferObjectArray& rhs) {
+    initialize();
 
-    void registerShader(Shader* shader);
-    void unregisterShader(Shader* shader);
-
-    virtual void fileChanged(std::string shaderFilename);
-
-    std::string getGlobalGLSLHeader();
-    std::string getGlobalGLSLFragmentDefines();
-
-    void bindCommonAttributes(unsigned int);
-
-    std::vector<std::string> getShaderSearchPaths() { return shaderSearchPaths_; }
-    void addShaderSearchPath(std::string shaderSearchPath) {
-        shaderSearchPaths_.push_back(shaderSearchPath);
+    for (std::vector<const BufferObject*>::const_iterator it = rhs.attachedBuffers_.begin(); it != rhs.attachedBuffers_.end(); ++it) {
+        attachBufferObject((*it));
     }
+}
 
-protected:
-    OpenGLCapabilities* getOpenGLCapabilitiesObject();
+BufferObjectArray* BufferObjectArray::clone() const {
+    return new BufferObjectArray(*this);
+}
 
-private:
-    std::vector<Shader*> shaders_;
-    OpenGLCapabilities* openGLInfoRef_;
-    std::vector<std::string> shaderSearchPaths_;
-};
+BufferObjectArray::~BufferObjectArray() {
+    deinitialize();
+}
+
+void BufferObjectArray::initialize() {
+    glGenVertexArrays(1, &id_);
+}
+
+void BufferObjectArray::deinitialize() {
+    glDeleteVertexArrays(1, &id_);
+}
+
+GLuint BufferObjectArray::getId() const {
+    return id_;
+}
+
+void BufferObjectArray::enable() const {
+    glEnableVertexAttribArray(id_);
+}
+
+void BufferObjectArray::disable() const {
+    glDisableVertexAttribArray(0);
+}
+
+void BufferObjectArray::bind() const {
+    glBindVertexArray(id_);
+}
+
+void BufferObjectArray::attachBufferObject(const BufferObject* bo) {
+    bo->bind();
+    glVertexAttribPointer((GLuint)0, bo->getGLFormat().channels, bo->getGLFormat().type, GL_FALSE, 0, 0);
+    bo->unbind();
+}
+
+const BufferObject* BufferObjectArray::getBufferObject(size_t idx) const{
+    if(idx<attachedBuffers_.size())
+        return attachedBuffers_[idx];
+    else
+        return NULL;
+}
 
 } // namespace
 
-#endif // IVW_SHADERMANAGER_H

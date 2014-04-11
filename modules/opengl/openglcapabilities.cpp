@@ -357,9 +357,10 @@ void OpenGLCapabilities::retrieveStaticInfo() {
         glslStrByte = glGetString(GL_SHADING_LANGUAGE_VERSION);
         glslVersionStr_ = std::string((glslStrByte!=NULL ? reinterpret_cast<const char*>(glslStrByte) : "000"));
         glGetIntegerv(GL_NUM_SHADING_LANGUAGE_VERSIONS, &numberOfSupportedVersions);
+        int glslVersion = parseAndRetrieveVersion(glslVersionStr_);
 
         for (int i=0; i<numberOfSupportedVersions; i++) {
-            parseAndAddShaderVersion(toString<const GLubyte*>(glGetStringi(GL_SHADING_LANGUAGE_VERSION, i)));
+            parseAndAddShaderVersion(toString<const GLubyte*>(glGetStringi(GL_SHADING_LANGUAGE_VERSION, i)), glslVersion);
         }
     }
 #endif
@@ -445,17 +446,17 @@ void OpenGLCapabilities::retrieveStaticInfo() {
     texSupported_ = true;
     glGetIntegerv(GL_MAX_TEXTURE_SIZE, (GLint*)&maxTexSize_);
 #else
-    texSupported_ = isExtensionSupported("GL_EXT_texture");
+    texSupported_ = isExtensionSupported("GL_texture");
     maxTexSize_ = 0;
 #endif
 #ifdef GL_VERSION_1_2
     tex3DSupported_ = true;
     glGetIntegerv(GL_MAX_3D_TEXTURE_SIZE, (GLint*)&max3DTexSize_);
 #else
-    tex3DSupported_ = isExtensionSupported("GL_EXT_texture3D");
+    tex3DSupported_ = isExtensionSupported("GL_texture3D");
 
     if (is3DTexturesSupported())
-        glGetIntegerv(GL_MAX_3D_TEXTURE_SIZE_EXT, (GLint*)&max3DTexSize_);
+        glGetIntegerv(GL_MAX_3D_TEXTURE_SIZE, (GLint*)&max3DTexSize_);
     else
         max3DTexSize_ = 0;
 
@@ -467,10 +468,10 @@ void OpenGLCapabilities::retrieveStaticInfo() {
     }
     else{
 #endif
-        texArraySupported_ = isExtensionSupported("GL_EXT_texture_array");
+        texArraySupported_ = isExtensionSupported("GL_texture_array");
 
         if (isTextureArraysSupported())
-            glGetIntegerv(GL_MAX_ARRAY_TEXTURE_LAYERS_EXT, (GLint*)&maxArrayTexSize_);
+            glGetIntegerv(GL_MAX_ARRAY_TEXTURE_LAYERS, (GLint*)&maxArrayTexSize_);
         else
             maxArrayTexSize_ = 0;
 #ifdef GL_VERSION_3_0
@@ -489,11 +490,11 @@ void OpenGLCapabilities::retrieveStaticInfo() {
 
     TextureUnit::initialize(numTexUnits_);
     //FBO
-    fboSupported_ = isExtensionSupported("GL_EXT_framebuffer_object");
+    fboSupported_ = isExtensionSupported("GL_framebuffer_object");
     maxColorAttachments_ = 0;
 
     if (isFboSupported())
-        glGetIntegerv(GL_MAX_COLOR_ATTACHMENTS_EXT, &maxColorAttachments_);
+        glGetIntegerv(GL_MAX_COLOR_ATTACHMENTS, &maxColorAttachments_);
 }
 
 void OpenGLCapabilities::retrieveDynamicInfo() {
@@ -526,9 +527,13 @@ void OpenGLCapabilities::rebuildGLSLHeader() {
 void OpenGLCapabilities::rebuildGLSLFragmentDefines() {
     currentGlobalGLSLFragmentDefines_ = "";
 
-    if (supportedShaderVersions_[currentGlobalGLSLVersionIdx_].getVersion() >= 130) {
+    if (supportedShaderVersions_[currentGlobalGLSLVersionIdx_].getVersion() >= 330) {
         currentGlobalGLSLFragmentDefines_ += "layout(location = 0) out vec4 FragData0;\n";
         currentGlobalGLSLFragmentDefines_ += "layout(location = " + toString(getMaxColorAttachments()-1) + ") out vec4 PickingData;\n";
+    }
+    else if (supportedShaderVersions_[currentGlobalGLSLVersionIdx_].getVersion() >= 130) {
+        currentGlobalGLSLFragmentDefines_ += "out vec4 FragData0;\n";
+        currentGlobalGLSLFragmentDefines_ += "out vec4 PickingData;\n";
     } else {
         currentGlobalGLSLFragmentDefines_ += "#define FragData0 gl_FragColor\n";
         currentGlobalGLSLFragmentDefines_ += "#define PickingData gl_FragData[" + toString(getMaxColorAttachments()-1) + "]\n";
@@ -544,15 +549,15 @@ void OpenGLCapabilities::addShaderVersionIfEqualOrLower(GLSLShaderVersion versio
         addShaderVersion(version);
 }
 
-void OpenGLCapabilities::parseAndAddShaderVersion(std::string versionStr) {
+void OpenGLCapabilities::parseAndAddShaderVersion(std::string versionStr, int compVersion) {
     //Assumes <version><space><profile> or <version>, example 420 core or 140
     if (!versionStr.empty()) {
         std::vector<std::string> versionSplit = splitString(versionStr);
 
         if (versionSplit.size() > 1)
-            addShaderVersion(GLSLShaderVersion(stringTo<int>(versionSplit[0]), versionSplit[1]));
+            addShaderVersionIfEqualOrLower(GLSLShaderVersion(stringTo<int>(versionSplit[0]), versionSplit[1]), compVersion);
         else
-            addShaderVersion(GLSLShaderVersion(stringTo<int>(versionSplit[0])));
+            addShaderVersionIfEqualOrLower(GLSLShaderVersion(stringTo<int>(versionSplit[0])), compVersion);
     }
 }
 

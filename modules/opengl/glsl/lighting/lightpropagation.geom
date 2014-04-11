@@ -30,8 +30,10 @@
 *
 *********************************************************************************/
 
-#extension GL_ARB_gpu_shader4: enable
-#extension GL_ARB_geometry_shader4: enable
+#ifndef GLSL_VERSION_150
+#extension GL_EXT_gpu_shader4: enable
+#extension GL_EXT_geometry_shader4: enable
+#endif
 
 #include "include/inc_sampler3d.frag"
 
@@ -54,7 +56,11 @@ void main() {
     texCoord_.w = 1.f;
 
     for (i = 0; i<gl_in.length(); ++i) {
+#ifndef GLSL_VERSION_150
         gl_Position = gl_PositionIn[i];
+#else
+        gl_Position = gl_in[i].gl_Position;
+#endif
         texCoord_.xy = texCoord2D_[i];
         permutedTexCoord_ = permutationMatrix_ * texCoord_;
         EmitVertex();
