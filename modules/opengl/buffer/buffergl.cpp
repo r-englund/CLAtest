@@ -36,17 +36,23 @@ namespace inviwo {
 
 BufferGL::BufferGL(size_t size, const DataFormatBase* format, BufferType type, BufferUsage usage, BufferObject* data)
     : BufferRepresentation(size, format, type, usage)
-    , buffer_(data) {
+    , buffer_(data)
+    , bufferArray_(NULL) {
     initialize();
     LGL_ERROR_SUPPRESS;
 }
 
 BufferGL::BufferGL(const BufferGL& rhs): BufferRepresentation(rhs) {
+    bufferArray_ = NULL;
     buffer_ = rhs.getBufferObject()->clone();
 }
 
 BufferGL::~BufferGL() {
     deinitialize();
+}
+
+BufferGL* BufferGL::clone() const {
+    return new BufferGL(*this);
 }
 
 void BufferGL::setSize( size_t size ) {
@@ -65,14 +71,6 @@ GLenum BufferGL::getFormatType() const {
     return buffer_->getFormatType();
 }
 
-void BufferGL::enable() const {
-    buffer_->enable();
-}
-
-void BufferGL::disable() const {
-    buffer_->disable();
-}
-
 void BufferGL::bind() const {
     buffer_->bind();
 }
@@ -85,10 +83,6 @@ void BufferGL::upload(const void* data, GLsizeiptr sizeInBytes) {
     buffer_->upload(data, sizeInBytes);
 }
 
-BufferGL* BufferGL::clone() const {
-    return new BufferGL(*this);
-}
-
 void BufferGL::initialize() {
     if (!buffer_) {
         buffer_ = new BufferObject(getSize(), getDataFormat(), getBufferType(), getBufferUsage());
@@ -99,10 +93,27 @@ void BufferGL::deinitialize() {
     if (buffer_ && buffer_->decreaseRefCount() <= 0) {
         delete buffer_;
     }
+    delete bufferArray_;
+    bufferArray_ = NULL;
 }
 
 void BufferGL::download(void* data) const {
     buffer_->download(data);
+}
+
+void BufferGL::enable() const {
+    if(!bufferArray_){
+        bufferArray_ = new BufferObjectArray();
+        bufferArray_->bind();
+        bufferArray_->attachBufferObject(buffer_);
+    }
+    else
+        bufferArray_->bind();
+}
+
+void BufferGL::disable() const {
+    if(bufferArray_)
+        bufferArray_->unbind();
 }
 
 } // namespace

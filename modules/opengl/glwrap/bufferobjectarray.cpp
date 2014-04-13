@@ -42,9 +42,11 @@ BufferObjectArray::BufferObjectArray(){
 BufferObjectArray::BufferObjectArray(const BufferObjectArray& rhs) {
     initialize();
 
+    bind();
     for (std::vector<const BufferObject*>::const_iterator it = rhs.attachedBuffers_.begin(); it != rhs.attachedBuffers_.end(); ++it) {
         attachBufferObject((*it));
     }
+    unbind();
 }
 
 BufferObjectArray* BufferObjectArray::clone() const {
@@ -57,6 +59,8 @@ BufferObjectArray::~BufferObjectArray() {
 
 void BufferObjectArray::initialize() {
     glGenVertexArrays(1, &id_);
+    attachedBuffers_.resize(NUMBER_OF_BUFFER_TYPES);
+    attachedNum_ = 0;
 }
 
 void BufferObjectArray::deinitialize() {
@@ -67,22 +71,49 @@ GLuint BufferObjectArray::getId() const {
     return id_;
 }
 
-void BufferObjectArray::enable() const {
-    glEnableVertexAttribArray(id_);
-}
-
-void BufferObjectArray::disable() const {
-    glDisableVertexAttribArray(0);
+void BufferObjectArray::clear() {
+    for (GLuint i=0; i < static_cast<GLuint>(attachedBuffers_.size()); ++i) {
+        glDisableVertexAttribArray(i);
+        attachedBuffers_[i] = NULL;
+    }
+    attachedNum_ = 0;
 }
 
 void BufferObjectArray::bind() const {
     glBindVertexArray(id_);
 }
 
-void BufferObjectArray::attachBufferObject(const BufferObject* bo) {
+void BufferObjectArray::unbind() const {
+    glBindVertexArray(0);
+}
+
+void BufferObjectArray::attachBufferObjectToGenericLocation(const BufferObject* bo){
+    if(!attachedBuffers_[bo->getBufferType()]){
+        pointToObject(bo, static_cast<GLuint>(bo->getBufferType()));
+        attachedBuffers_[bo->getBufferType()] = bo;
+        attachedNum_++;
+    }
+    else{
+        attachBufferObject(bo, static_cast<GLuint>(attachedNum_));
+    }
+}
+
+void BufferObjectArray::attachBufferObject(const BufferObject* bo){
+    attachBufferObject(bo, static_cast<GLuint>(attachedNum_));
+}
+
+void BufferObjectArray::attachBufferObject(const BufferObject* bo, GLuint location) {
+    if(bo)
+        pointToObject(bo, location);
+
+    attachedBuffers_.insert(attachedBuffers_.begin()+location, bo);
+    attachedNum_++;
+}
+
+void BufferObjectArray::pointToObject(const BufferObject* bo, GLuint location) {
+    glEnableVertexAttribArray(location);
     bo->bind();
-    glVertexAttribPointer((GLuint)0, bo->getGLFormat().channels, bo->getGLFormat().type, GL_FALSE, 0, 0);
-    bo->unbind();
+    glVertexAttribPointer(location, bo->getGLFormat().channels, bo->getGLFormat().type, GL_FALSE, 0, (void*)0);
 }
 
 const BufferObject* BufferObjectArray::getBufferObject(size_t idx) const{

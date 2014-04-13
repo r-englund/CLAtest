@@ -89,7 +89,7 @@ int main(int argc, char** argv) {
     if (cmdparser->getLoadWorkspaceFromArg())
         workspace = cmdparser->getWorkspacePath();
     else
-        workspace = inviwoApp.getPath(InviwoApplication::PATH_WORKSPACES, "tests/lightingraycaster.inv");
+        workspace = inviwoApp.getPath(InviwoApplication::PATH_WORKSPACES, "tests/simpleslicergl.inv");
 
     IvwDeserializer xmlDeserializer(workspace);
     processorNetwork.deserialize(xmlDeserializer);

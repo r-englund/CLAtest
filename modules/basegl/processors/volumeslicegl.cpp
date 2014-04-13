@@ -83,7 +83,7 @@ VolumeSliceGL::~VolumeSliceGL() {
 
 void VolumeSliceGL::initialize() {
     ProcessorGL::initialize();
-    shader_ = new Shader("volumeslice.frag", false);
+    shader_ = new Shader("img_texturequad.vert", "volumeslice.frag", false);
     planeSettingsChanged();
     tfMappingEnabledChanged();
     volumeDimensionChanged();

@@ -3,7 +3,7 @@
  * Inviwo - Interactive Visualization Workshop
  * Version 0.6b
  *
- * Copyright (c) 2013-2014 Inviwo Foundation
+ * Copyright (c) 2012-2014 Inviwo Foundation
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -26,32 +26,10 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
- * Main file author: Daniel Jönsson
+ * Main file authors: Erik Sundén
  *
  *********************************************************************************/
 
-#include <inviwo/core/datastructures/geometry/attributes.h>
-
-
-namespace inviwo {
-
-
-//DataFormatBase* createDataFormatFromAttributeType( BufferType attributeType )
-//{
-//    DataFormatBase* result = NULL;
-//    // TODO: Make 2d Position and TexCoordinate work
-//    switch(attributeType) {
-//        case COLOR_ATTRIB: result = new DataVec4FLOAT32(); break;
-//        case CURVATURE_ATTRIB: result = new DataFLOAT32(); break;
-//        case INDEX_ATTRIB: result = new DataUINT32(); break;
-//        case NORMAL_ATTRIB: result = new DataUINT32(); break;
-//        case POSITION_ATTRIB: result = new DataVec3FLOAT32(); break;
-//        case TEXCOORD_ATTRIB: result = new DataVec3FLOAT32(); break;
-//    }
-//    // Safeguard against added attribute types in the future.
-//    ivwAssert(result != NULL, "Attribute creation not implemented.")
-//        return result;
-//}
-
+void main() {
+    gl_Position = in_Vertex;
 }
-

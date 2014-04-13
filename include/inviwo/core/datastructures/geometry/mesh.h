@@ -35,7 +35,7 @@
 
 #include <inviwo/core/common/inviwocoredefine.h>
 #include <inviwo/core/common/inviwo.h>
-#include <inviwo/core/datastructures/geometry/attributes.h>
+#include <inviwo/core/datastructures/buffer/buffer.h>
 #include <inviwo/core/datastructures/geometry/geometry.h>
 #include <inviwo/core/datastructures/geometry/geometrytype.h>
 #include <utility>

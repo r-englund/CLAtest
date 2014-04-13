@@ -34,7 +34,6 @@
 #define IVW_MESHGLRENDERER_H
 
 #include <modules/opengl/geometry/meshgl.h>
-#include <inviwo/core/datastructures/geometry/attributes.h>
 #include <inviwo/core/datastructures/geometry/mesh.h>
 #include <inviwo/core/rendering/geometryrenderer.h>
 #include <vector>

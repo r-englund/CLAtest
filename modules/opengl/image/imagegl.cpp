@@ -64,7 +64,7 @@ void ImageGL::initialize() {
     if (shader_)
         delete shader_;
 
-    shader_ = new Shader("img_copy.frag");
+    shader_ = new Shader("standard.vert", "img_copy.frag");
 
     if (frameBufferObject_)
         delete frameBufferObject_;
@@ -163,16 +163,11 @@ bool ImageGL::copyAndResizeRepresentation(DataRepresentation* targetRep) const {
     shader_->setUniform("color_", colorUnit.getUnitNumber());
     shader_->setUniform("depth_", depthUnit.getUnitNumber());
     shader_->setUniform("picking_", pickingUnit.getUnitNumber());
-    glMatrixMode(GL_MODELVIEW);
-    glPushMatrix();
-    glLoadMatrixf(glm::value_ptr(scale));
-    glEnable(GL_DEPTH_TEST);
+    shader_->setUniform("modelViewProjectionMatrix_", scale);
     glDepthMask(GL_TRUE);
     glDepthFunc(GL_ALWAYS);
     CanvasGL::renderImagePlaneRect();
     glDepthFunc(GL_LESS);
-    glDisable(GL_DEPTH_TEST);
-    glPopMatrix();
     shader_->deactivate();
     target->deactivateBuffer();
     source->getColorLayerGL()->unbindTexture();

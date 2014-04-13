@@ -54,6 +54,7 @@ public:
     virtual void fileChanged(std::string shaderFilename);
 
     std::string getGlobalGLSLHeader();
+    std::string getGlobalGLSLVertexDefines();
     std::string getGlobalGLSLFragmentDefines();
 
     void bindCommonAttributes(unsigned int);

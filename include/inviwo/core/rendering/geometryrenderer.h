@@ -90,6 +90,7 @@ public:
      * @return
      */
     virtual const Geometry* getGeometry() const = 0;
+
 protected:
 
     /**

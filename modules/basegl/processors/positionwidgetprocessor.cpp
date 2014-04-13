@@ -70,7 +70,7 @@ PositionWidgetProcessor::~PositionWidgetProcessor() {
 
 void PositionWidgetProcessor::initialize() {
     CompositeProcessorGL::initialize();
-    shader_ = new Shader("picking.frag");
+    shader_ = new Shader("standard.vert", "picking.frag");
     widgetPickingObject_ = PickingManager::instance()->registerPickingCallback(this, &PositionWidgetProcessor::updateWidgetPositionFromPicking);
 }
 
@@ -102,22 +102,19 @@ void PositionWidgetProcessor::process() {
     MeshRenderer renderer(static_cast<const Mesh*>(geometryInport_.getData()));
     shader_->activate();
     shader_->setUniform("pickingColor_", widgetPickingObject_->getPickingColor());
-    glMatrixMode(GL_PROJECTION);
-    glPushMatrix();
-    glLoadMatrixf(glm::value_ptr(camera_.projectionMatrix()));
-    glMatrixMode(GL_MODELVIEW);
-    glPushMatrix();
-    glLoadMatrixf(glm::value_ptr(camera_.viewMatrix()*glm::translate(position_.get())));
-    glEnable(GL_DEPTH_TEST);
+
+    mat4 modelViewProjectionMatrix_ = 
+        camera_.projectionMatrix()
+        * camera_.viewMatrix()
+        * glm::translate(position_.get())
+        * geometryInport_.getData()->getWorldTransform()
+        * geometryInport_.getData()->getBasisAndOffset();
+    shader_->setUniform("modelViewProjectionMatrix_", modelViewProjectionMatrix_);
+
     glDepthFunc(GL_ALWAYS);
     renderer.render();
     glDepthFunc(GL_LESS);
-    glMatrixMode(GL_PROJECTION);
-    glPopMatrix();
-    glLoadIdentity();
-    glMatrixMode(GL_MODELVIEW);
-    glPopMatrix();
-    glLoadIdentity();
+
     shader_->deactivate();
     deactivateCurrentTarget();
     compositePortsToOutport(outport_, imageInport_);

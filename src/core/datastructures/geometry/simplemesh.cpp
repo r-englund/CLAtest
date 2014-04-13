@@ -31,6 +31,7 @@
  *********************************************************************************/
 
 #include <inviwo/core/datastructures/geometry/simplemesh.h>
+#include <inviwo/core/datastructures/buffer/bufferramprecision.h>
 
 namespace inviwo {
 

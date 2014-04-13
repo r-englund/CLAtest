@@ -37,8 +37,8 @@
 #include <modules/opengl/inviwoopengl.h>
 #include <modules/opengl/buffer/bufferglobjectid.h>
 #include <modules/opengl/glwrap/bufferobject.h>
+#include <modules/opengl/glwrap/bufferobjectarray.h>
 #include <inviwo/core/datastructures/buffer/bufferrepresentation.h>
-#include <inviwo/core/datastructures/geometry/attributes.h>
 
 namespace inviwo {
 
@@ -46,22 +46,20 @@ class IVW_MODULE_OPENGL_API BufferGL: public BufferRepresentation {
 
 public:
     BufferGL(size_t size, const DataFormatBase* format, BufferType type, BufferUsage usage, BufferObject* data = NULL);
-    virtual ~BufferGL();
     BufferGL(const BufferGL& rhs);
-
+    virtual ~BufferGL();
+    virtual BufferGL* clone() const;
+    
     virtual void initialize();
     virtual void deinitialize();
-    virtual BufferGL* clone() const;
 
     virtual void setSize(size_t size);
 
     GLenum getFormatType() const;
     GLuint getId() const;
+
     BufferObject* getBufferObject() { return buffer_; }
     const BufferObject* getBufferObject() const { return buffer_; }
-
-    void enable() const;
-    void disable() const;
 
     void bind() const;
 
@@ -70,12 +68,12 @@ public:
 
     void download(void* data) const;
 
-protected:
-    void enableArray() const;
-    void disableArray() const;
+    void enable() const;
+    void disable() const;
 
+private:
     BufferObject* buffer_;
-
+    mutable BufferObjectArray* bufferArray_;
 };
 
 

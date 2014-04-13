@@ -31,17 +31,16 @@
  *********************************************************************************/
 
 #include "canvasgl.h"
-#include <modules/opengl/glwrap/textureunit.h>
 #include <inviwo/core/datastructures/geometry/mesh.h>
-#include <modules/opengl/image/imagegl.h>
 #include <modules/opengl/buffer/buffergl.h>
+#include <modules/opengl/glwrap/textureunit.h>
+#include <modules/opengl/image/imagegl.h>
 #include <modules/opengl/rendering/meshrenderer.h>
 
 namespace inviwo {
 
 bool CanvasGL::glewInitialized_ = false;
-GLuint CanvasGL::screenAlignedVerticesId_ = 0;
-GLuint CanvasGL::screenAlignedTexCoordsId_ = 1;
+const MeshGL* CanvasGL::screenAlignedRectGL_ = NULL;
 
 CanvasGL::CanvasGL(uvec2 dimensions)
     : Canvas(dimensions)
@@ -49,26 +48,22 @@ CanvasGL::CanvasGL(uvec2 dimensions)
     , shader_(NULL)
     , noiseShader_(NULL)
     , layerType_(COLOR_LAYER)
-    , singleChannel_(false) {
+    , singleChannel_(false)
+    , rectArray_(NULL) {
 }
 
 CanvasGL::~CanvasGL() {}
 
 void CanvasGL::initialize() {
-    glShadeModel(GL_SMOOTH);
     glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
     glClearDepth(1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glEnable(GL_DEPTH_TEST);
     glDepthFunc(GL_LEQUAL);
-    glEnable(GL_COLOR_MATERIAL);
-    glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
-    glEnable(GL_TEXTURE_2D);
-    glEnable(GL_TEXTURE_3D);
     LGL_ERROR;
-    shader_ = new Shader("img_texturequad.frag");
+    shader_ = new Shader("img_texturequad.vert", "img_texturequad.frag");
     LGL_ERROR;
-    noiseShader_ = new Shader("img_noise.frag");
+    noiseShader_ = new Shader("img_texturequad.vert", "img_noise.frag");
     LGL_ERROR;
 }
 
@@ -87,8 +82,7 @@ void CanvasGL::initializeSquare() {
     const Mesh* screenAlignedRectMesh = dynamic_cast<const Mesh*>(screenAlignedRect_);
 
     if (screenAlignedRectMesh) {
-        screenAlignedVerticesId_ = screenAlignedRectMesh->getAttributes(0)->getRepresentation<BufferGL>()->getId();
-        screenAlignedTexCoordsId_ = screenAlignedRectMesh->getAttributes(1)->getRepresentation<BufferGL>()->getId();
+        screenAlignedRectGL_ = screenAlignedRectMesh->getRepresentation<MeshGL>();
         LGL_ERROR;
     }
 }
@@ -98,6 +92,8 @@ void CanvasGL::deinitialize() {
     shader_ = NULL;
     delete noiseShader_;
     noiseShader_ = NULL;
+    delete rectArray_;
+    rectArray_ = NULL;
 }
 
 void CanvasGL::activate() {}
@@ -135,6 +131,15 @@ void CanvasGL::update() {
     }
 }
 
+void CanvasGL::attachImagePlanRect(BufferObjectArray* arrayObject){
+    if(arrayObject){
+        arrayObject->bind();
+        arrayObject->attachBufferObjectToGenericLocation(screenAlignedRectGL_->getBufferGL(0)->getBufferObject());
+        arrayObject->attachBufferObjectToGenericLocation(screenAlignedRectGL_->getBufferGL(1)->getBufferObject());
+        arrayObject->unbind();
+    }
+}
+
 void CanvasGL::renderLayer() {
     const LayerGL* layerGL = imageGL_->getLayerGL(layerType_);
     TextureUnit textureUnit;
@@ -149,7 +154,7 @@ void CanvasGL::renderNoise() {
     glViewport(0, 0, dimensions_[0], dimensions_[1]);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
     noiseShader_->activate();
-    renderImagePlaneRect();
+    drawRect();
     noiseShader_->deactivate();
     glSwapBuffers();
 }
@@ -163,10 +168,24 @@ void CanvasGL::renderTexture(GLint unitNumber) {
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     shader_->activate();
     shader_->setUniform("tex_", unitNumber);
-    renderImagePlaneRect();
+    drawRect();
     shader_->deactivate();
     glDisable(GL_BLEND);
     glSwapBuffers();
+}
+
+void CanvasGL::drawRect(){
+    if(!rectArray_){
+        rectArray_ = new BufferObjectArray();
+        rectArray_->bind();
+        rectArray_->attachBufferObjectToGenericLocation(screenAlignedRectGL_->getBufferGL(0)->getBufferObject());
+        rectArray_->attachBufferObjectToGenericLocation(screenAlignedRectGL_->getBufferGL(1)->getBufferObject());
+    }
+    else{
+        rectArray_->bind();
+    }
+    glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+    rectArray_->unbind();
 }
 
 void CanvasGL::checkChannels(int channels){

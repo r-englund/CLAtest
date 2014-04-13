@@ -31,6 +31,7 @@
  *********************************************************************************/
 
 #include "firstivwprocessor.h"
+#include <inviwo/core/datastructures/buffer/bufferramprecision.h>
 
 namespace inviwo {
 
@@ -47,30 +48,50 @@ FirstIvwProcessor::FirstIvwProcessor()
     addPort(outport_);
 }
 
+void FirstIvwProcessor::initialize() {
+    ProcessorGL::initialize();
+    shader_ = new Shader("minimal.vert", "img_color.frag");
+
+    quad_ = new Position2dBuffer();
+    Position2dBufferRAM* quadRAM = quad_->getEditableRepresentation<Position2dBufferRAM>();
+    quadRAM->add(vec2(-1.0f, -1.0f));
+    quadRAM->add(vec2(1.0f, -1.0f));
+    quadRAM->add(vec2(-1.0f, 1.0f));
+    quadRAM->add(vec2(1.0f, 1.0f));
+    quadGL_ = quad_->getRepresentation<BufferGL>();
+
+    triangle_ = new Position2dBuffer();
+    Position2dBufferRAM* triangleRAM = triangle_->getEditableRepresentation<Position2dBufferRAM>();
+    triangleRAM->add(vec2(0.0f, 1.0f));
+    triangleRAM->add(vec2(-1.0f, -1.0f));
+    triangleRAM->add(vec2(1.0f, -1.0f));
+    triangleGL_ = triangle_->getRepresentation<BufferGL>();
+}
+
+void FirstIvwProcessor::deinitialize() {
+    delete shader_;
+    delete quad_;
+    delete triangle_;
+    ProcessorGL::deinitialize();
+}
+
 void FirstIvwProcessor::process() {
     activateAndClearTarget(outport_);
-    glMatrixMode(GL_MODELVIEW);
-    glPushMatrix();
-    glLoadIdentity();
-    glMatrixMode(GL_PROJECTION);
-    glPushMatrix();
-    glLoadIdentity();
-    glColor4f(color_.get().x, color_.get().y, color_.get().z, 1.0);
-    glBegin(GL_QUADS);
-    glVertex3f(-1.0f,  1.0f, 0.999f);
-    glVertex3f(1.0f,  1.0f, 0.999f);
-    glVertex3f(1.0f, -1.0f, 0.999f);
-    glVertex3f(-1.0f, -1.0f, 0.999f);
-    glEnd();
-    glColor4f(0.0, 1.0, 0.0, 1.0);
-    glBegin(GL_TRIANGLES);
-    glVertex3f(0.0f,  1.0f, 0.0f);
-    glVertex3f(-1.0f, -1.0f, 0.0f);
-    glVertex3f(1.0f, -1.0f, 0.0f);
-    glEnd();
-    glPopMatrix();
-    glMatrixMode(GL_MODELVIEW);
-    glPopMatrix();
+    shader_->activate();
+
+    //Render Quad
+    shader_->setUniform("color_", vec4(color_.get().x, color_.get().y, color_.get().z, 1.f));
+    quadGL_->enable();
+    glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+    quadGL_->disable();
+
+    //Render Triangle
+    shader_->setUniform("color_", vec4(0.f, 1.f, 0.f, 1.f));
+    triangleGL_->enable();
+    glDrawArrays(GL_TRIANGLES, 0, 3);
+    triangleGL_->disable();
+
+    shader_->deactivate();
     deactivateCurrentTarget();
 }
 

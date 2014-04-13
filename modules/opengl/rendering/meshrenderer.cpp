@@ -149,7 +149,7 @@ void MeshRenderer::renderElements(RenderType rt) const {
     std::vector<const Buffer*>::const_iterator it = drawMethods_[rt].elementBufferList.begin();
     while (it != drawMethods_[rt].elementBufferList.end()) {
         const ElementBufferGL* elementBufferGL = (*it)->getRepresentation<ElementBufferGL>();
-        elementBufferGL->enable();
+        elementBufferGL->bind();
         glDrawElements(drawMethods_[rt].drawMode,
                        static_cast<GLsizei>(elementBufferGL->getSize()),
                        elementBufferGL->getFormatType(),
