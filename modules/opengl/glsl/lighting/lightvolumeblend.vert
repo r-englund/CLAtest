@@ -36,5 +36,5 @@ out int instanceID_;
 void main() {
     texCoord2D_ = in_TexCoord.xy;
     instanceID_ = gl_InstanceID;
-    gl_Position = gl_ProjectionMatrix * gl_ModelViewMatrix * in_Vertex;
+    gl_Position = in_Vertex;
 }
