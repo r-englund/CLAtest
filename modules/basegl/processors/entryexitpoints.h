@@ -72,6 +72,7 @@ private:
     BoolProperty handleInteractionEvents_; ///< Enable or disable camera movements from canvas
 
     Trackball* trackball_;
+    Shader* genericShader_;
     Shader* capNearClippingPrg_;
     Image* tmpEntryPoints_;
     GeometryRenderer* renderer_;

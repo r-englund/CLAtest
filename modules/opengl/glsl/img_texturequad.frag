@@ -26,16 +26,18 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
- * Main file authors: Timo Ropinski, Erik Sundén
+ * Main file authors: Erik Sundén
  *
  *********************************************************************************/
 
 uniform sampler2D tex_;
 
+in vec3 texCoord_;
+
 void main() {
 #ifdef SINGLE_CHANNEL
-    FragData0 = vec4(vec3(texture2D(tex_, gl_TexCoord[0].st).r), 1.0);
+    FragData0 = vec4(vec3(texture2D(tex_, texCoord_.xy).r), 1.0);
 #else
-    FragData0 = texture2D(tex_, gl_TexCoord[0].st);
+    FragData0 = texture2D(tex_, texCoord_.xy);
 #endif
 }

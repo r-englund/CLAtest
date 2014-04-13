@@ -49,6 +49,7 @@ EntryExitPoints::EntryExitPoints()
     , capNearClipping_("capNearClipping", "Cap near plane clipping", true)
     , handleInteractionEvents_("handleEvents", "Handle interaction events", true)
     , trackball_(NULL)
+    , genericShader_(NULL)
     , capNearClippingPrg_(NULL)
     , tmpEntryPoints_(NULL)
     , renderer_(NULL) {
@@ -73,12 +74,15 @@ EntryExitPoints::~EntryExitPoints() {
 
 void EntryExitPoints::initialize() {
     ProcessorGL::initialize();
-    capNearClippingPrg_ = new Shader("capnearclipping.frag");
+    genericShader_ =  new Shader("standard.vert", "standard.frag");
+    capNearClippingPrg_ = new Shader("img_identity.vert", "capnearclipping.frag");
 }
 
 void EntryExitPoints::deinitialize() {
     delete tmpEntryPoints_;
     tmpEntryPoints_ = NULL;
+    delete genericShader_;
+    genericShader_ = NULL;
     delete capNearClippingPrg_;
     capNearClippingPrg_ = NULL;
     delete renderer_;
@@ -103,17 +107,14 @@ void EntryExitPoints::process() {
     }
 
     glEnable(GL_CULL_FACE);
-    glMatrixMode(GL_PROJECTION);
-    glPushMatrix();
-    glLoadMatrixf(glm::value_ptr(camera_.projectionMatrix()));
-    glMatrixMode(GL_MODELVIEW);
-    glPushMatrix();
-    glLoadMatrixf(glm::value_ptr(camera_.viewMatrix()));
     glEnable(GL_DEPTH_TEST);
     glDepthFunc(GL_ALWAYS);
     // generate exit points
     activateAndClearTarget(exitPort_);
     glCullFace(GL_FRONT);
+    genericShader_->activate();
+    mat4 modelMatrix = geom->getWorldTransform()*geom->getBasisAndOffset();
+    genericShader_->setUniform("modelViewProjectionMatrix_", camera_.projectionMatrix()*camera_.viewMatrix()*modelMatrix);
     renderer_->render();
     deactivateCurrentTarget();
     // generate entry points
@@ -137,6 +138,7 @@ void EntryExitPoints::process() {
 
     glCullFace(GL_BACK);
     renderer_->render();
+    genericShader_->deactivate();
     deactivateCurrentTarget();
 
     if (capNearClipping_.get()) {
@@ -165,10 +167,6 @@ void EntryExitPoints::process() {
     }
 
     glDepthFunc(GL_LESS);
-    glMatrixMode(GL_PROJECTION);
-    glPopMatrix();
-    glMatrixMode(GL_MODELVIEW);
-    glPopMatrix();
     glDisable(GL_CULL_FACE);
 }
 

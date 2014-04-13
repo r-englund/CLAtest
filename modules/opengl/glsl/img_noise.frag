@@ -30,11 +30,13 @@
  *
  *********************************************************************************/
 
+in vec3 texCoord_;
+
 float rand(vec2 pos) {
     return fract(sin(dot(pos.xy ,vec2(12.9898,78.233))) * 43758.5453);
 }
 
 void main() {
-    gl_FragColor = vec4(vec3(rand(gl_TexCoord[0].st)), 1.0);
+    gl_FragColor = vec4(vec3(rand(texCoord_.xy)), 1.0);
     gl_FragDepth = 0.0;
 }

@@ -1,6 +1,11 @@
 #include <inviwo/core/datastructures/geometry/basicmesh.h>
 #include <inviwo/core/datastructures/buffer/bufferramprecision.h>
 
+#ifdef WIN32
+#define _USE_MATH_DEFINES
+#include <math.h>
+#endif
+
 namespace inviwo {
 BasicMesh::BasicMesh()
     : Mesh() {
@@ -61,7 +66,7 @@ void BasicMesh::append(const BasicMesh* mesh) {
         //transform(newinds->begin(), newinds->end(), ind->getDataContainer()->end(),
         //          bind2nd(std::plus<unsigned int>(), size));
         
-        for (std::vector<unsigned int>::const_iterator it = newinds->cbegin(); it!=newinds->cend(); ++it) {
+        for (std::vector<unsigned int>::const_iterator it = newinds->begin(); it!=newinds->end(); ++it) {
             ind->add(*it + size);
         }
     }

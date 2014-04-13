@@ -35,9 +35,11 @@
 namespace inviwo {
 
 ProcessorGL::ProcessorGL()
-    : Processor()
+    : Processor(), rectArray_(NULL)
 {}
-ProcessorGL::~ProcessorGL() {}
+ProcessorGL::~ProcessorGL() {
+    delete rectArray_;
+}
 
 void ProcessorGL::activateTarget(ImageOutport& outport) {
     Image* outImage = outport.getData();
@@ -218,6 +220,36 @@ void ProcessorGL::setGlobalShaderParameters(Shader* shader, const std::vector<Ou
 
     shader->setUniform("screenDim_", screenDimensions);
     shader->setUniform("screenDimRCP_", vec2(1.0f,1.0f)/screenDimensions);
+}
+
+void ProcessorGL::renderImagePlaneRect() {
+    if(!rectArray_){
+        rectArray_ = new BufferObjectArray();
+        CanvasGL::attachImagePlanRect(rectArray_);
+    }
+    glDepthFunc(GL_ALWAYS);
+    rectArray_->bind();
+    CanvasGL::singleDrawImagePlaneRect();
+    rectArray_->unbind();
+    glDepthFunc(GL_LESS);
+}
+
+void ProcessorGL::renderImagePlaneRect(int instances) {
+    if(!rectArray_){
+        rectArray_ = new BufferObjectArray();
+        CanvasGL::attachImagePlanRect(rectArray_);
+    }
+    glDepthFunc(GL_ALWAYS);
+    rectArray_->bind();
+    CanvasGL::multiDrawImagePlaneRect(instances);
+    rectArray_->unbind();
+    glDepthFunc(GL_LESS);
+}
+
+// deprecated
+void ProcessorGL::renderQuad() {
+    ivwDeprecatedMethod("renderImagePlaneRect()");
+    renderImagePlaneRect();
 }
 
 } // namespace

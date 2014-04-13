@@ -36,12 +36,12 @@ uniform vec3 cameraPosition_;
 
 in vec4 worldPosition_;
 in vec3 normal_;
+in vec4 color_;
 
 void main() {
     vec4 fragColor = vec4(1.0);
 
-
-    fragColor.rgb = APPLY_SHADING(gl_Color.rgb, gl_Color.rgb, gl_Color.rgb, worldPosition_.xyz, normal_, lightPosition_, cameraPosition_);
+    fragColor.rgb = APPLY_SHADING(color_.rgb, color_.rgb, color_.rgb, worldPosition_.xyz, normal_, lightPosition_, cameraPosition_);
 
     FragData0 = fragColor;
 }

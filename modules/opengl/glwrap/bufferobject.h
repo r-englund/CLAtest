@@ -36,12 +36,9 @@
 #include <modules/opengl/openglmoduledefine.h>
 #include <modules/opengl/inviwoopengl.h>
 #include <modules/opengl/buffer/bufferobjectobserver.h>
-#include <inviwo/core/datastructures/geometry/attributes.h>
 #include <inviwo/core/util/referencecounter.h>
 
 namespace inviwo {
-
-class BufferObjectArray;
 
 class IVW_MODULE_OPENGL_API BufferObject: public Observable<BufferObjectObserver>, public ReferenceCounter  {
 
@@ -61,9 +58,6 @@ public:
     GLFormats::GLFormat getGLFormat() const { return glFormat_; }
     BufferType getBufferType() const { return type_; }
 
-    void enable() const;
-    void disable() const;
-
     void bind() const;
     void unbind() const;
 
@@ -78,30 +72,13 @@ public:
 
     void download(void* data) const;
 
-protected:
-    void enableArray() const;
-    void disableArray() const;
-    void specifyLocation() const;
-
-    void colorPointer() const;
-    void normalPointer() const;
-    void texCoordPointer() const;
-    void vertexPointer() const;
-
-    void emptyFunc() const;
-
 private:
     GLuint id_;
     GLenum usageGL_;
-    GLenum state_;
     GLenum target_;
     GLFormats::GLFormat glFormat_;
     BufferType type_;
     GLsizeiptr sizeInBytes_;
-    void (BufferObject::*locationPointerFunc_)() const;
-
-    BufferObjectArray* arrayObject_;
-
 };
 
 

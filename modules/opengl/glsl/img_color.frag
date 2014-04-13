@@ -3,7 +3,7 @@
  * Inviwo - Interactive Visualization Workshop
  * Version 0.6b
  *
- * Copyright (c) 2013-2014 Inviwo Foundation
+ * Copyright (c) 2014 Inviwo Foundation
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -26,15 +26,12 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
- * Main file author: Erik Sundén
+ * Main file authors: Erik Sundén
  *
  *********************************************************************************/
 
-uniform vec3 pickingColor_;
-
-in vec4 color_;
+uniform vec4 color_;
 
 void main() {
     FragData0 = color_;
-    PickingData = vec4(pickingColor_, 1.0);
 }

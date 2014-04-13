@@ -53,18 +53,24 @@ public:
 
     GLuint getId() const;
 
-    void enable() const;
-    void disable() const;
-
     void bind() const;
+    void unbind() const;
 
+    void clear();
+
+    void attachBufferObjectToGenericLocation(const BufferObject*);
     void attachBufferObject(const BufferObject*);
+    void attachBufferObject(const BufferObject*, GLuint);
 
     const BufferObject* getBufferObject(size_t idx = 0) const;
 
 private:
+    void pointToObject(const BufferObject*, GLuint);
+
+private:
     GLuint id_;
     std::vector<const BufferObject*> attachedBuffers_;
+    size_t attachedNum_;
 
 };
 

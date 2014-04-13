@@ -38,58 +38,64 @@
 namespace inviwo {
 
 MeshGL::MeshGL()
-    : GeometryGL() {
+    : GeometryGL()
+    , attributesArray_(NULL) {
 }
 
 MeshGL::MeshGL(const MeshGL& rhs)
-    : GeometryGL(rhs) {
+    : GeometryGL(rhs)
+    , attributesArray_(NULL){
 }
 
 MeshGL::~MeshGL() {
     deinitialize();
 }
 
-void MeshGL::initialize() {}
+void MeshGL::initialize() {
+    attributesArray_ = new BufferObjectArray();
+}
 
-void MeshGL::deinitialize() {}
+void MeshGL::deinitialize() {
+    delete attributesArray_;
+    attributesArray_ = NULL;
+}
 
 MeshGL* MeshGL::clone() const {
     return new MeshGL(*this);
 }
 
 void MeshGL::enable() const {
-    for (std::vector<const BufferGL*>::const_iterator it = attributesGL_.begin(); it != attributesGL_.end(); ++it) {
-        (*it)->enable();
-    }
-
-    glPushMatrix();
-    mat4 modelToWorld = owner_->getWorldTransform();
-    glMultMatrixf(glm::value_ptr(modelToWorld));
-    mat4 dataToModel = owner_->getBasisAndOffset();
-    glMultMatrixf(glm::value_ptr(dataToModel));
+    attributesArray_->bind();
 }
 
 void MeshGL::disable() const {
-    glPopMatrix();
+    attributesArray_->unbind();
+}
 
-    for (std::vector<const BufferGL*>::const_iterator it = attributesGL_.begin(); it != attributesGL_.end(); ++it) {
-        (*it)->disable();
-    }
+const BufferGL* MeshGL::getBufferGL(size_t idx) const{
+    return attributesGL_[idx];
 }
 
 void MeshGL::update(bool editable) {
     attributesGL_.clear();
 
+    attributesArray_->clear();
+    attributesArray_->bind();
     if (editable) {
         for (std::vector<Buffer*>::const_iterator it = owner_->getBuffers().begin(); it != owner_->getBuffers().end(); ++it) {
-            attributesGL_.push_back((*it)->getEditableRepresentation<BufferGL>());
+            BufferGL* bufGL = (*it)->getEditableRepresentation<BufferGL>();
+            attributesGL_.push_back(bufGL);
+            attributesArray_->attachBufferObjectToGenericLocation(bufGL->getBufferObject());
         }
     }
     else {
         for (std::vector<Buffer*>::const_iterator it = owner_->getBuffers().begin(); it != owner_->getBuffers().end(); ++it) {
-            attributesGL_.push_back((*it)->getRepresentation<BufferGL>());
+            const BufferGL* bufGL = (*it)->getRepresentation<BufferGL>();
+            attributesGL_.push_back(bufGL);
+            attributesArray_->attachBufferObjectToGenericLocation(bufGL->getBufferObject());
         }
     }
+    attributesArray_->unbind();
 }
 
 void MeshGL::setPointerToOwner(DataGroup* owner) {

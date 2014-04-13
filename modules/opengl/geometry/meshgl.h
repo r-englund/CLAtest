@@ -39,6 +39,7 @@ namespace inviwo {
 
 class Mesh;
 class BufferGL;
+class BufferObjectArray;
 
 class IVW_MODULE_OPENGL_API MeshGL : public GeometryGL {
 
@@ -53,6 +54,8 @@ public:
     void enable() const;
     void disable() const;
 
+    const BufferGL* getBufferGL(size_t idx=0) const;
+
 protected:
     virtual void update(bool editable);
 
@@ -62,6 +65,7 @@ private:
     Mesh* owner_;
 
     std::vector<const BufferGL*> attributesGL_;
+    BufferObjectArray* attributesArray_;
 
 };
 

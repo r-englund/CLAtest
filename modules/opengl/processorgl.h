@@ -90,43 +90,14 @@ public:
 
     static void setGlobalShaderParameters(Shader* shader, const std::vector<Outport*>& outports);
 
-    static inline void renderImagePlaneRect() {
-        glMatrixMode(GL_MODELVIEW);
-        glPushMatrix();
-        glLoadIdentity();
-        glMatrixMode(GL_PROJECTION);
-        glPushMatrix();
-        glLoadIdentity();
-        glEnable(GL_DEPTH_TEST);
-        glDepthFunc(GL_ALWAYS);
-        CanvasGL::renderImagePlaneRect();
-        glDepthFunc(GL_LESS);
-        glPopMatrix();
-        glMatrixMode(GL_MODELVIEW);
-        glPopMatrix();
-    }
-
-    static inline void renderImagePlaneRect(int instances) {
-        glMatrixMode(GL_MODELVIEW);
-        glPushMatrix();
-        glLoadIdentity();
-        glMatrixMode(GL_PROJECTION);
-        glPushMatrix();
-        glLoadIdentity();
-        glEnable(GL_DEPTH_TEST);
-        glDepthFunc(GL_ALWAYS);
-        CanvasGL::renderImagePlaneRect(instances);
-        glDepthFunc(GL_LESS);
-        glPopMatrix();
-        glMatrixMode(GL_MODELVIEW);
-        glPopMatrix();
-    }
+    void renderImagePlaneRect();
+    void renderImagePlaneRect(int instances);
 
     // deprecated
-    static inline void renderQuad() {
-        ivwDeprecatedMethod("renderImagePlaneRect()");
-        renderImagePlaneRect();
-    }
+    inline void renderQuad();
+
+private:
+    BufferObjectArray* rectArray_;
 };
 
 } // namespace

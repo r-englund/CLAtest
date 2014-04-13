@@ -30,13 +30,18 @@
  *
  *********************************************************************************/
 
+uniform mat4 modelViewMatrix_;
+uniform mat4 projectionMatrix_;
+
 out vec4 worldPosition_;
 out vec3 normal_;
+out vec4 color_;
+out vec3 texCoord_;
  
 void main() {
-    gl_FrontColor = gl_Color;
-    gl_TexCoord[0] = gl_MultiTexCoord0;
-    worldPosition_ = gl_ModelViewMatrix * gl_Vertex;
-    normal_ = gl_Normal;
-    gl_Position = gl_ProjectionMatrix * gl_ModelViewMatrix * gl_Vertex;
+    color_ = in_Color;
+    texCoord_ = in_TexCoord;
+    worldPosition_ = modelViewMatrix_ * in_Vertex;
+    normal_ = in_Normal;
+    gl_Position = projectionMatrix_ * worldPosition_;
 }

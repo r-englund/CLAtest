@@ -34,6 +34,7 @@
 #include <inviwo/core/datastructures/geometry/edge.h>
 #include <inviwo/core/datastructures/geometry/polygon.h>
 #include <inviwo/core/datastructures/geometry/simplemeshcreator.h>
+#include <inviwo/core/datastructures/buffer/bufferramprecision.h>
 #include <vector>
 
 namespace inviwo {

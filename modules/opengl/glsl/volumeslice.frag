@@ -40,9 +40,10 @@ uniform VOLUME_PARAMETERS volumeParameters_;
 uniform vec2 dimension_;
 uniform float sliceNum_;
 
+in vec3 texCoord_;
+
 void main() {
-    vec2 texC = gl_FragCoord.xy * screenDimRCP_;
-    vec4 voxel = getVoxel(volume_, volumeParameters_, vec3(coordPlanePermute(texC.x, texC.y, sliceNum_)));
+    vec4 voxel = getVoxel(volume_, volumeParameters_, vec3(coordPlanePermute(texCoord_.x, texCoord_.y, sliceNum_)));
 #ifdef TF_MAPPING_ENABLED
     voxel = applyTF(transferFunc_, voxel);
 #endif

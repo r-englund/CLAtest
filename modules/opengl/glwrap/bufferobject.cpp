@@ -31,7 +31,6 @@
  *********************************************************************************/
 
 #include <modules/opengl/glwrap/bufferobject.h>
-#include <modules/opengl/glwrap/bufferobjectarray.h>
 
 namespace inviwo {
 
@@ -40,8 +39,7 @@ BufferObject::BufferObject(size_t size, const DataFormatBase* format, BufferType
     : Observable<BufferObjectObserver>(), ReferenceCounter()
     , target_(target)
     , glFormat_(getGLFormats()->getGLFormat(format->getId()))
-    , type_(type)
-    , arrayObject_(NULL) {
+    , type_(type) {
     
     switch (usage)
     {
@@ -63,8 +61,7 @@ BufferObject::BufferObject(const BufferObject& rhs)
     , usageGL_(rhs.usageGL_)
     , target_(rhs.target_)
     , glFormat_(rhs.glFormat_)
-    , type_(rhs.type_)
-    , arrayObject_(NULL) {
+    , type_(rhs.type_) {
     
     initialize();
     // TODO: Verify that data copying works. What about backwards compability?
@@ -78,6 +75,10 @@ BufferObject::BufferObject(const BufferObject& rhs)
 
 BufferObject::~BufferObject() {
     deinitialize();
+}
+
+BufferObject* BufferObject::clone() const {
+    return new BufferObject(*this);
 }
 
 void BufferObject::initialize() {
@@ -97,24 +98,6 @@ GLuint BufferObject::getId() const {
     return id_;
 }
 
-void BufferObject::enable() const {
-    if (state_ == GL_VERTEX_ARRAY) {
-        glEnableVertexAttribArray(0);
-    } else {
-        glEnableClientState(state_);
-    }
-    bind();
-    specifyLocation();
-}
-
-void BufferObject::disable() const {
-    if (state_ == GL_VERTEX_ARRAY) {
-        glDisableVertexAttribArray(0);
-    } else {
-        glDisableClientState(state_);
-    }
-}
-
 void BufferObject::bind() const {
     glBindBuffer(target_, id_);
 }
@@ -123,42 +106,8 @@ void BufferObject::unbind() const {
     glBindBuffer(target_, 0);
 }
 
-void BufferObject::specifyLocation() const {
-    (this->*locationPointerFunc_)();
-}
-
-
 void BufferObject::initialize(const void* data, GLsizeiptr sizeInBytes) {
     sizeInBytes_ = sizeInBytes;
-
-    //Specify location and state
-    switch (getBufferType())
-    {
-        case COLOR_ATTRIB:
-            locationPointerFunc_ = &BufferObject::colorPointer;
-            state_ = GL_COLOR_ARRAY;
-            break;
-
-        case NORMAL_ATTRIB:
-            locationPointerFunc_ = &BufferObject::normalPointer;
-            state_ = GL_NORMAL_ARRAY;
-            break;
-
-        case TEXCOORD_ATTRIB:
-            locationPointerFunc_ = &BufferObject::texCoordPointer;
-            state_ = GL_TEXTURE_COORD_ARRAY;
-            break;
-
-        case POSITION_ATTRIB:
-            locationPointerFunc_ = &BufferObject::vertexPointer;
-            state_ = GL_VERTEX_ARRAY;
-            break;
-
-        default:
-            locationPointerFunc_ = &BufferObject::emptyFunc;
-            state_ = GL_VERTEX_ARRAY;
-            break;
-    }
 
     // Notify observers
     ObserverSet::iterator endIt = observers_->end();
@@ -171,7 +120,6 @@ void BufferObject::initialize(const void* data, GLsizeiptr sizeInBytes) {
     bind();
     // Allocate and transfer possible data
     glBufferData(target_, sizeInBytes, data, usageGL_);
-    specifyLocation();
 
     for (ObserverSet::iterator it = observers_->begin(); it != endIt; ++it) {
         // static_cast can be used since only template class objects can be added
@@ -199,37 +147,6 @@ void BufferObject::download(void* data) const {
         LogError("Unable to map data");
     }
 }
-
-void BufferObject::colorPointer() const {
-    glColorPointer(glFormat_.channels, glFormat_.type, 0, 0);
-}
-
-void BufferObject::normalPointer() const {
-    glNormalPointer(glFormat_.type, 0, 0);
-}
-
-void BufferObject::texCoordPointer() const {
-    glTexCoordPointer(glFormat_.channels, glFormat_.type, 0, 0);
-}
-
-void BufferObject::vertexPointer() const {
-    // FIXME: Use glVertexAttribPointer to support single channel data and more data formats
-    glVertexAttribPointer(0, glFormat_.channels, glFormat_.type, GL_FALSE, 0, 0);
-    // glVertexPointer(std::max(2u, glFormat_.channels), glFormat_.type, 0, 0);
-}
-
-void BufferObject::emptyFunc() const {}
-
-BufferObject* BufferObject::clone() const {
-    return new BufferObject(*this);
-}
-
-
-
-
-
-
-
 
 } // namespace
 

@@ -36,8 +36,11 @@
 #include <modules/basegl/baseglmoduledefine.h>
 #include <inviwo/core/common/inviwo.h>
 #include <inviwo/core/properties/ordinalproperty.h>
+#include <inviwo/core/datastructures/buffer/buffer.h>
 #include <modules/opengl/inviwoopengl.h>
 #include <modules/opengl/processorgl.h>
+#include <modules/opengl/glwrap/shader.h>
+#include <modules/opengl/buffer/buffergl.h>
 
 namespace inviwo {
 
@@ -47,12 +50,23 @@ public:
 
     InviwoProcessorInfo();
 
+    void initialize();
+    void deinitialize();
+
 protected:
     virtual void process();
 
 private:
     FloatVec3Property color_;
     ImageOutport outport_;
+
+    Position2dBuffer* quad_;
+    const BufferGL* quadGL_;
+
+    Position2dBuffer* triangle_;
+    const BufferGL* triangleGL_;
+
+    Shader* shader_;
 };
 
 } // namespace

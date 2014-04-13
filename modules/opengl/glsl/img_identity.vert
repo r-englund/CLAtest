@@ -26,12 +26,15 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
- * Main file authors: Timo Ropinski, Erik Sundén
+ * Main file authors: Erik Sundén
  *
  *********************************************************************************/
 
+out vec4 color_;
+out vec3 texCoord_;
+
 void main() {
-    gl_FrontColor = gl_Color;
-    gl_TexCoord[0] = gl_MultiTexCoord0;
-    gl_Position = gl_ProjectionMatrix * gl_ModelViewMatrix * gl_Vertex;
+    color_ = in_Color;
+    texCoord_ = in_TexCoord;
+    gl_Position = in_Vertex;
 }

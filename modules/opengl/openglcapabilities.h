@@ -87,6 +87,7 @@ public:
 
     GLSLShaderVersion getCurrentShaderVersion();
     std::string getCurrentGlobalGLSLHeader();
+    std::string getCurrentGlobalGLSLVertexDefines();
     std::string getCurrentGlobalGLSLFragmentDefines();
 
     glm::u64 getCurrentAvailableTextureMem() throw (Exception);
@@ -104,6 +105,7 @@ protected:
     void retrieveDynamicInfo();
 
     void rebuildGLSLHeader();
+    void rebuildGLSLVertexDefines();
     void rebuildGLSLFragmentDefines();
 
     void addShaderVersion(GLSLShaderVersion);
@@ -126,6 +128,7 @@ private:
 
     size_t currentGlobalGLSLVersionIdx_;
     std::string currentGlobalGLSLHeader_;
+    std::string currentGlobalGLSLVertexDefines_;
     std::string currentGlobalGLSLFragmentDefines_;
     std::string preferredGLSLProfile_;
     std::vector<GLSLShaderVersion> supportedShaderVersions_;

@@ -40,12 +40,13 @@
 namespace inviwo {
 
 enum BufferType {
+    POSITION_ATTRIB,
+    NORMAL_ATTRIB,
     COLOR_ATTRIB,
+    TEXCOORD_ATTRIB,
     CURVATURE_ATTRIB,
     INDEX_ATTRIB,
-    NORMAL_ATTRIB,
-    POSITION_ATTRIB,
-    TEXCOORD_ATTRIB
+    NUMBER_OF_BUFFER_TYPES
 };
 
 enum BufferUsage {
@@ -113,14 +114,14 @@ private:
 
 #define DataFormatBuffers(D, BUFFER_TYPE) Attributes<D::type, D::bits, BUFFER_TYPE>
 
-typedef DataFormatBuffers(DataVec4FLOAT32, COLOR_ATTRIB) ColorBuffer;
-typedef DataFormatBuffers(DataFLOAT32, CURVATURE_ATTRIB) CurvatureBuffer;
-typedef DataFormatBuffers(DataUINT32, INDEX_ATTRIB) IndexBuffer;
 typedef DataFormatBuffers(DataVec2FLOAT32, POSITION_ATTRIB) Position2dBuffer;
 typedef DataFormatBuffers(DataVec2FLOAT32, TEXCOORD_ATTRIB) TexCoord2dBuffer;
 typedef DataFormatBuffers(DataVec3FLOAT32, POSITION_ATTRIB) Position3dBuffer;
-typedef DataFormatBuffers(DataVec3FLOAT32, TEXCOORD_ATTRIB) TexCoord3dBuffer;
+typedef DataFormatBuffers(DataVec4FLOAT32, COLOR_ATTRIB) ColorBuffer;
 typedef DataFormatBuffers(DataVec3FLOAT32, NORMAL_ATTRIB) NormalBuffer;
+typedef DataFormatBuffers(DataVec3FLOAT32, TEXCOORD_ATTRIB) TexCoord3dBuffer;
+typedef DataFormatBuffers(DataFLOAT32, CURVATURE_ATTRIB) CurvatureBuffer;
+typedef DataFormatBuffers(DataUINT32, INDEX_ATTRIB) IndexBuffer;
 
 #define DataFormatIdMacro(i) typedef Attributes<Data##i::type, Data##i::bits, POSITION_ATTRIB> Buffer_##i;
 #include <inviwo/core/util/formatsdefinefunc.h>

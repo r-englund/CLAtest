@@ -69,6 +69,7 @@ bool OpenGLCapabilities::GLSLShaderVersion::hasProfile() {
 OpenGLCapabilities::OpenGLCapabilities() {
     supportedShaderVersions_.clear();
     currentGlobalGLSLHeader_ = "";
+    currentGlobalGLSLVertexDefines_ = "";
     currentGlobalGLSLFragmentDefines_ = "";
     preferredGLSLProfile_ = "compatibility";
 }
@@ -225,6 +226,13 @@ std::string OpenGLCapabilities::getCurrentGlobalGLSLHeader() {
         rebuildGLSLHeader();
 
     return currentGlobalGLSLHeader_;
+}
+
+std::string OpenGLCapabilities::getCurrentGlobalGLSLVertexDefines() {
+    if (currentGlobalGLSLVertexDefines_ == "")
+        rebuildGLSLVertexDefines();
+
+    return currentGlobalGLSLVertexDefines_;
 }
 
 std::string OpenGLCapabilities::getCurrentGlobalGLSLFragmentDefines() {
@@ -524,6 +532,23 @@ void OpenGLCapabilities::rebuildGLSLHeader() {
     }
 }
 
+void OpenGLCapabilities::rebuildGLSLVertexDefines() {
+    currentGlobalGLSLVertexDefines_ = "";
+
+    if (supportedShaderVersions_[currentGlobalGLSLVersionIdx_].getVersion() >= 330) {
+        currentGlobalGLSLVertexDefines_ += "layout(location = 0) in vec4 in_Vertex;\n";
+        currentGlobalGLSLVertexDefines_ += "layout(location = 1) in vec3 in_Normal;\n";
+        currentGlobalGLSLVertexDefines_ += "layout(location = 2) in vec4 in_Color;\n";
+        currentGlobalGLSLVertexDefines_ += "layout(location = 3) in vec3 in_TexCoord;\n";
+    }
+    else {
+        currentGlobalGLSLVertexDefines_ += "in vec4 in_Vertex;\n";
+        currentGlobalGLSLVertexDefines_ += "in vec3 in_Normal;\n";
+        currentGlobalGLSLVertexDefines_ += "in vec4 in_Color;\n";
+        currentGlobalGLSLVertexDefines_ += "in vec3 in_TexCoord;\n";
+    }
+}
+
 void OpenGLCapabilities::rebuildGLSLFragmentDefines() {
     currentGlobalGLSLFragmentDefines_ = "";
 
@@ -534,7 +559,8 @@ void OpenGLCapabilities::rebuildGLSLFragmentDefines() {
     else if (supportedShaderVersions_[currentGlobalGLSLVersionIdx_].getVersion() >= 130) {
         currentGlobalGLSLFragmentDefines_ += "out vec4 FragData0;\n";
         currentGlobalGLSLFragmentDefines_ += "out vec4 PickingData;\n";
-    } else {
+    } 
+    else {
         currentGlobalGLSLFragmentDefines_ += "#define FragData0 gl_FragColor\n";
         currentGlobalGLSLFragmentDefines_ += "#define PickingData gl_FragData[" + toString(getMaxColorAttachments()-1) + "]\n";
     }

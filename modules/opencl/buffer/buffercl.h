@@ -38,7 +38,6 @@
 #include <modules/opencl/inviwoopencl.h>
 
 #include <inviwo/core/datastructures/buffer/bufferrepresentation.h>
-#include <inviwo/core/datastructures/geometry/attributes.h>
 
 namespace inviwo {
 

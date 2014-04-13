@@ -109,7 +109,9 @@ std::string ShaderObject::embeddDefines(std::string source) {
     std::string curLine;
     std::string globalGLSLHeader = ShaderManager::getRef().getGlobalGLSLHeader();
 
-    if (shaderType_ == GL_FRAGMENT_SHADER)
+    if (shaderType_ == GL_VERTEX_SHADER)
+        globalGLSLHeader += ShaderManager::getRef().getGlobalGLSLVertexDefines();
+    else if (shaderType_ == GL_FRAGMENT_SHADER)
         globalGLSLHeader += ShaderManager::getRef().getGlobalGLSLFragmentDefines();
 
     std::istringstream globalGLSLHeaderStream(globalGLSLHeader);

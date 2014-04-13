@@ -31,6 +31,7 @@
  *********************************************************************************/
 
 #include <inviwo/core/datastructures/geometry/simplemeshcreator.h>
+#include <inviwo/core/datastructures/buffer/bufferramprecision.h>
 
 namespace inviwo {
 

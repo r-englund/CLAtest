@@ -32,6 +32,7 @@
 
 #include "geometryrenderprocessorgl.h"
 #include <modules/opengl/geometry/geometrygl.h>
+#include <inviwo/core/datastructures/buffer/bufferramprecision.h>
 #include <inviwo/core/interaction/trackball.h>
 #include <inviwo/core/rendering/geometryrendererfactory.h>
 #include <modules/opengl/rendering/meshrenderer.h>
@@ -180,17 +181,12 @@ void GeometryRenderProcessorGL::process() {
     if (!depthTest) {    
         glEnable(GL_DEPTH_TEST);
     }
-    glMatrixMode(GL_PROJECTION);
-    glPushMatrix();
-    glLoadMatrixf(glm::value_ptr(camera_.projectionMatrix()));
-    glMatrixMode(GL_MODELVIEW);
-    glPushMatrix();
-    glLoadMatrixf(glm::value_ptr(camera_.viewMatrix()));
 
     activateAndClearTarget(outport_);
 
     shader_->activate();
     setGlobalShaderParameters(shader_);
+    shader_->setUniform("projectionMatrix_", camera_.projectionMatrix());
 
     bool culling = (cullFace_.get() != 0);
     if (culling) {
@@ -200,17 +196,14 @@ void GeometryRenderProcessorGL::process() {
 
     for (std::vector<GeometryRenderer*>::const_iterator it = renderers_.begin(), endIt = renderers_.end(); it != endIt; ++it) {
         shader_->setUniform("viewToVoxel_", (*it)->getGeometry()->getCoordinateTransformer().getWorldToModelMatrix());
-
+        mat4 modelViewMatrix = camera_.viewMatrix()*(*it)->getGeometry()->getWorldTransform()*(*it)->getGeometry()->getBasisAndOffset();
+        shader_->setUniform("modelViewMatrix_", modelViewMatrix);
         (*it)->render();
     }
 
     shader_->deactivate();
 
     deactivateCurrentTarget();
-
-    glPopMatrix();
-    glMatrixMode(GL_PROJECTION);
-    glPopMatrix();
 
     if (culling) {
         glDisable(GL_CULL_FACE);

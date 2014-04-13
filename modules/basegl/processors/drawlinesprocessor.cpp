@@ -31,6 +31,7 @@
  *********************************************************************************/
 
 #include "drawlinesprocessor.h"
+#include <inviwo/core/datastructures/buffer/bufferramprecision.h>
 
 namespace inviwo {
 

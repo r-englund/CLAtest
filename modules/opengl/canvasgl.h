@@ -38,6 +38,8 @@
 #include <inviwo/core/util/canvas.h>
 #include <modules/opengl/glwrap/shader.h>
 #include <modules/opengl/image/imagegl.h>
+#include <modules/opengl/geometry/meshgl.h>
+#include <modules/opengl/glwrap/bufferobjectarray.h>
 
 namespace inviwo {
 
@@ -54,18 +56,14 @@ public:
     virtual void glSwapBuffers();
     virtual void update();
 
+    static void attachImagePlanRect(BufferObjectArray*);
+
     static inline void enableDrawImagePlaneRect() {
-        glEnableClientState(GL_VERTEX_ARRAY);
-        glBindBuffer(GL_ARRAY_BUFFER, screenAlignedVerticesId_);
-        glVertexPointer(2, GL_FLOAT, 0, 0);
-        glEnableClientState(GL_TEXTURE_COORD_ARRAY);
-        glBindBuffer(GL_ARRAY_BUFFER, screenAlignedTexCoordsId_);
-        glTexCoordPointer(2, GL_FLOAT, 0, 0);
+        screenAlignedRectGL_->enable();
     }
 
     static inline void disableDrawImagePlaneRect() {
-        glDisableClientState(GL_VERTEX_ARRAY);
-        glDisableClientState(GL_TEXTURE_COORD_ARRAY);
+        screenAlignedRectGL_->disable();
     }
 
     static inline void singleDrawImagePlaneRect() {
@@ -96,13 +94,14 @@ protected:
     void renderNoise();
     void renderTexture(GLint);
 
+    void drawRect();
     void checkChannels(int);
 
 private:
     static bool glewInitialized_;
-    static GLuint screenAlignedVerticesId_;
-    static GLuint screenAlignedTexCoordsId_;
+    static const MeshGL* screenAlignedRectGL_;
 
+    BufferObjectArray* rectArray_;
     const ImageGL* imageGL_;
     LayerType layerType_;
     Shader* shader_;
