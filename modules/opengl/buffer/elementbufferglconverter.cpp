@@ -42,12 +42,16 @@ ElementBufferRAM2GLConverter::~ElementBufferRAM2GLConverter() {}
 
 DataRepresentation* ElementBufferRAM2GLConverter::createFrom(const DataRepresentation* source) {
     const BufferRAM* bufferRAM = static_cast<const BufferRAM*>(source);
-    ElementBufferGL* bufferGL = new ElementBufferGL(bufferRAM->getSize(), bufferRAM->getDataFormat(), bufferRAM->getBufferType(),
-                                      bufferRAM->getBufferUsage());
-    bufferGL->initialize(bufferRAM->getData(), bufferRAM->getSize()*bufferRAM->getSizeOfElement());
+    ElementBufferGL* bufferGL = new ElementBufferGL(bufferRAM->getSize(),
+                                                    bufferRAM->getDataFormat(),
+                                                    bufferRAM->getBufferType(),
+                                                    bufferRAM->getBufferUsage());
+    bufferGL->initialize(bufferRAM->getData(),
+                         bufferRAM->getSize()*bufferRAM->getSizeOfElement());
     return bufferGL;
 }
-void ElementBufferRAM2GLConverter::update(const DataRepresentation* source, DataRepresentation* destination) {
+void ElementBufferRAM2GLConverter::update(const DataRepresentation* source,
+                                          DataRepresentation* destination) {
     const BufferRAM* src = static_cast<const BufferRAM*>(source);
     ElementBufferGL* dst = static_cast<ElementBufferGL*>(destination);
     dst->upload(src->getData(), src->getSize()*src->getSizeOfElement());

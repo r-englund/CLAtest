@@ -25,7 +25,7 @@ set(HEADER_FILES
     ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/datarepresentation.h
     ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/datatypeclassification.h
     ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/diskrepresentation.h
-    ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/geometry/attributes.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/geometry/basicmesh.h
     ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/geometry/edge.h
     ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/geometry/geometry.h
     ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/geometry/geometryram.h
@@ -118,8 +118,8 @@ set(HEADER_FILES
     ${IVW_INCLUDE_DIR}/inviwo/core/metadata/propertyeditorwidgetmetadata.h
     ${IVW_INCLUDE_DIR}/inviwo/core/network/portconnection.h
     ${IVW_INCLUDE_DIR}/inviwo/core/network/processornetwork.h
-	${IVW_INCLUDE_DIR}/inviwo/core/network/processornetworkobserver.h
     ${IVW_INCLUDE_DIR}/inviwo/core/network/processornetworkevaluator.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/network/processornetworkobserver.h
     ${IVW_INCLUDE_DIR}/inviwo/core/ports/bufferport.h
     ${IVW_INCLUDE_DIR}/inviwo/core/ports/datainport.h
     ${IVW_INCLUDE_DIR}/inviwo/core/ports/dataoutport.h
@@ -148,7 +148,7 @@ set(HEADER_FILES
     ${IVW_INCLUDE_DIR}/inviwo/core/processors/processorwidgetfactory.h
     ${IVW_INCLUDE_DIR}/inviwo/core/processors/progressbar.h
     ${IVW_INCLUDE_DIR}/inviwo/core/processors/progressbarowner.h
-	${IVW_INCLUDE_DIR}/inviwo/core/properties/advancedmaterialproperty.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/properties/advancedmaterialproperty.h
     ${IVW_INCLUDE_DIR}/inviwo/core/properties/baseoptionproperty.h
     ${IVW_INCLUDE_DIR}/inviwo/core/properties/boolproperty.h
     ${IVW_INCLUDE_DIR}/inviwo/core/properties/buttonproperty.h
@@ -163,7 +163,7 @@ set(HEADER_FILES
     ${IVW_INCLUDE_DIR}/inviwo/core/properties/property.h
     ${IVW_INCLUDE_DIR}/inviwo/core/properties/propertyfactory.h
     ${IVW_INCLUDE_DIR}/inviwo/core/properties/propertyfactoryobject.h
-	${IVW_INCLUDE_DIR}/inviwo/core/properties/propertyobserver.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/properties/propertyobserver.h
     ${IVW_INCLUDE_DIR}/inviwo/core/properties/propertyowner.h
     ${IVW_INCLUDE_DIR}/inviwo/core/properties/propertysemantics.h
     ${IVW_INCLUDE_DIR}/inviwo/core/properties/propertyvisibility.h
@@ -235,7 +235,7 @@ set(SOURCE_FILES
     datastructures/dataoperation.cpp
     datastructures/datarepresentation.cpp
     datastructures/diskrepresentation.cpp
-    datastructures/geometry/attributes.cpp
+    datastructures/geometry/basicmesh.cpp
     datastructures/geometry/geometry.cpp
     datastructures/geometry/geometryram.cpp
     datastructures/geometry/geometryrepresentation.cpp
@@ -308,8 +308,8 @@ set(SOURCE_FILES
     metadata/propertyeditorwidgetmetadata.cpp
     network/portconnection.cpp
     network/processornetwork.cpp
-	network/processornetworkobserver.cpp
     network/processornetworkevaluator.cpp
+    network/processornetworkobserver.cpp
     ports/bufferport.cpp
     ports/geometryport.cpp
     ports/imageport.cpp
@@ -331,7 +331,7 @@ set(SOURCE_FILES
     processors/processorwidget.cpp
     processors/processorwidgetfactory.cpp
     processors/progressbar.cpp
-	properties/advancedmaterialproperty.cpp
+    properties/advancedmaterialproperty.cpp
     properties/boolproperty.cpp
     properties/cameraproperty.cpp
     properties/compositeproperty.cpp
@@ -342,7 +342,7 @@ set(SOURCE_FILES
     properties/property.cpp
     properties/propertyfactory.cpp
     properties/propertyfactoryobject.cpp
-	properties/propertyobserver.cpp
+    properties/propertyobserver.cpp
     properties/propertyowner.cpp
     properties/propertysemantics.cpp
     properties/propertywidget.cpp

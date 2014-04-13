@@ -35,8 +35,7 @@
 namespace inviwo {
 
 SimpleMesh::SimpleMesh(RenderType rt, ConnectivityType ct)
-    : Mesh(rt, ct)
-{
+    : Mesh(rt, ct) {
 }
 
 SimpleMesh::~SimpleMesh() {

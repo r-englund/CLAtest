@@ -40,30 +40,32 @@ namespace inviwo {
 MeshRenderer::MeshRenderer(): meshToRender_(NULL) {
 }
 
-MeshRenderer::MeshRenderer(const Mesh* mesh): meshToRender_(mesh)
-{
+MeshRenderer::MeshRenderer(const Mesh* mesh)
+    : meshToRender_(mesh) {
+        
     initialize(mesh->getAttributesInfo());
 }
 
-MeshRenderer::MeshRenderer(const Mesh* mesh, Mesh::AttributesInfo ai): meshToRender_(mesh)
-{
+MeshRenderer::MeshRenderer(const Mesh* mesh, Mesh::AttributesInfo ai)
+    : meshToRender_(mesh) {
+        
     initialize(ai);
 }
 
-MeshRenderer::MeshRenderer(const Mesh* mesh, RenderType rt, ConnectivityType ct): meshToRender_(mesh)
-{
+MeshRenderer::MeshRenderer(const Mesh* mesh, RenderType rt, ConnectivityType ct)
+    : meshToRender_(mesh) {
+        
     initialize(Mesh::AttributesInfo(rt, ct));
 }
 
-MeshRenderer::~MeshRenderer()
-{
+MeshRenderer::~MeshRenderer() {
 }
 
 void MeshRenderer::render() {
     const MeshGL* meshGL = getMeshGL();
     meshGL->enable();
     // try to render all rendertypes except the default one
-    for(int i=1; i<NUMBER_OF_RENDER_TYPES; i++){
+    for(int i=1; i<NUMBER_OF_RENDER_TYPES; i++) {
         (this->*drawMethods_[i].drawFunc)(static_cast<RenderType>(i));
     }
     meshGL->disable(); 
@@ -84,8 +86,7 @@ GLenum MeshRenderer::getDefaultDrawMode() {
     return drawMethods_[0].drawMode;
 }
 
-GLenum MeshRenderer::getDrawMode(RenderType rt, ConnectivityType ct)
-{
+GLenum MeshRenderer::getDrawMode(RenderType rt, ConnectivityType ct) {
     switch (rt)
     {
         case TRIANGLES:
@@ -137,18 +138,22 @@ GLenum MeshRenderer::getDrawMode(RenderType rt, ConnectivityType ct)
     }
 }
 
-void MeshRenderer::renderArray(RenderType rt) const
-{
-    glDrawArrays(drawMethods_[rt].drawMode, 0, static_cast<GLsizei>(meshToRender_->getAttributes(0)->getSize()));
+void MeshRenderer::renderArray(RenderType rt) const {
+    glDrawArrays(drawMethods_[rt].drawMode,
+                 0,
+                 static_cast<GLsizei>(meshToRender_->getAttributes(0)->getSize()));
 }
 
-void MeshRenderer::renderElements(RenderType rt) const
-{
+void MeshRenderer::renderElements(RenderType rt) const {
+    
     std::vector<const Buffer*>::const_iterator it = drawMethods_[rt].elementBufferList.begin();
     while (it != drawMethods_[rt].elementBufferList.end()) {
         const ElementBufferGL* elementBufferGL = (*it)->getRepresentation<ElementBufferGL>();
         elementBufferGL->enable();
-        glDrawElements(drawMethods_[rt].drawMode, static_cast<GLsizei>(elementBufferGL->getSize()), elementBufferGL->getFormatType(), 0);
+        glDrawElements(drawMethods_[rt].drawMode,
+                       static_cast<GLsizei>(elementBufferGL->getSize()),
+                       elementBufferGL->getFormatType(),
+                       0);
         ++it;
     }
 }

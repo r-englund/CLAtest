@@ -43,8 +43,11 @@ namespace inviwo {
 class IVW_CORE_API BufferRepresentation : public DataRepresentation {
 
 public:
-    BufferRepresentation(size_t size, const DataFormatBase* format = DataFormatBase::get(), BufferType type = POSITION_ATTRIB,
+    BufferRepresentation(size_t size,
+                         const DataFormatBase* format = DataFormatBase::get(),
+                         BufferType type = POSITION_ATTRIB,
                          BufferUsage usage = STATIC);
+    
     BufferRepresentation(const BufferRepresentation& rhs);
     BufferRepresentation& operator=(const BufferRepresentation& that);
     virtual BufferRepresentation* clone() const = 0;

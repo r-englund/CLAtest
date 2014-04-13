@@ -61,8 +61,12 @@ public:
     virtual const Geometry* getGeometry() const { return meshToRender_; }
 
 protected:
-    virtual GeometryRenderer* create(const Geometry* geom) const { return new MeshRenderer(static_cast<const Mesh*>(geom)); }
-    virtual bool canRender(const Geometry* geom) const { return dynamic_cast<const Mesh*>(geom) != NULL; }
+    virtual GeometryRenderer* create(const Geometry* geom) const {
+        return new MeshRenderer(static_cast<const Mesh*>(geom));
+    }
+    virtual bool canRender(const Geometry* geom) const {
+        return dynamic_cast<const Mesh*>(geom) != NULL;
+    }
 
     virtual void initialize(Mesh::AttributesInfo = Mesh::AttributesInfo());
     void initializeIndexBuffer(const Buffer* indexBuffer, Mesh::AttributesInfo ai);

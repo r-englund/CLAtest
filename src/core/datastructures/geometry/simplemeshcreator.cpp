@@ -154,8 +154,8 @@ SimpleMesh* SimpleMeshCreator::sphere(float radius, unsigned int numLoops, unsig
     unsigned int pointsPerLine = segmentsPerLoop + 1;
     for (unsigned int i = 0; i <= numLoops; ++i) {
         for (unsigned int j = 0; j <= segmentsPerLoop; ++j) {
-            float theta = (i * static_cast<float>(M_PI) / numLoops); // + ((static_cast<float>(M_PI) * j) / (segmentsPerLoop * numLoops));
-
+            float theta = (i * static_cast<float>(M_PI) / numLoops);
+            
             if (i == numLoops)
                 theta = static_cast<float>(M_PI);
 
