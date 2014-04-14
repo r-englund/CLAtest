@@ -78,7 +78,6 @@ protected:
 private:
     static QGLWidget* sharedWidget_; //For rendering-context sharing
     static QGLFormat sharedFormat_;
-    static bool sharedInitialized_;
     bool swapBuffersAllowed_;
 };
 

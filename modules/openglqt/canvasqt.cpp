@@ -46,19 +46,12 @@ inline QGLFormat GetQGLFormat() {
 
 QGLWidget* CanvasQt::sharedWidget_ = NULL;
 QGLFormat CanvasQt::sharedFormat_ = GetQGLFormat();
-bool CanvasQt::sharedInitialized_ = false;
 
 CanvasQt::CanvasQt(QWidget* parent, uvec2 dim)
     : QGLWidget(sharedFormat_, parent, sharedWidget_),
       CanvasGL(dim),
       swapBuffersAllowed_(false)
 {
-    if (sharedWidget_ && !sharedInitialized_) {
-        sharedWidget_->makeCurrent();
-        initializeSquare();
-        sharedInitialized_ = true;
-    }
-
     //This is our default rendering context
     //Initialized once. So "THE" first object of this class will not have any shared context (or widget)
     //But Following objects, will share the context of initial object

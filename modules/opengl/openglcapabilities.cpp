@@ -80,31 +80,21 @@ OpenGLCapabilities::~OpenGLCapabilities() {
 
 void OpenGLCapabilities::printInfo() {
     //OpenGL General Info
-    LogInfoCustom("OpenGLInfo","Vendor: " << glVendorStr_);
-    LogInfoCustom("OpenGLInfo","Renderer: " << glRenderStr_);
-    LogInfoCustom("OpenGLInfo","Version: " << glVersionStr_);
-
-    //GLSL
-    if (isShadersSupported()) {
-        LogInfoCustom("OpenGLInfo","GLSL version: " << glslVersionStr_);
-        LogInfoCustom("OpenGLInfo","Current set global GLSL version: " << getCurrentShaderVersion().getVersionAndProfileAsString());
-    }
-    else if (isShadersSupportedARB()) {
-        LogInfoCustom("OpenGLInfo","GLSL version: " << glslVersionStr_);
-        LogInfoCustom("OpenGLInfo","Current set global GLSL version: " << getCurrentShaderVersion().getVersionAndProfileAsString());
-    }
-
+    LogInfoCustom("OpenGLInfo","GPU Vendor: " << glVendorStr_);
+    LogInfoCustom("OpenGLInfo","GPU Renderer: " << glRenderStr_);
     if (isTexturesSupported()) {
         glm::u64 totalMem = getTotalAvailableTextureMem();
         LogInfoCustom("OpenGLInfo","Dedicated video memory: " << (totalMem>0 ? formatBytesToString(totalMem) : "UNKNOWN"));
     }
+    LogInfoCustom("OpenGLInfo","OpenGL Version: " << glVersionStr_);
+    LogInfoCustom("OpenGLInfo","GLSL version: " << glslVersionStr_);
 }
 
 void OpenGLCapabilities::printDetailedInfo() {
     //OpenGL General Info
-    LogInfoCustom("OpenGLInfo","Vendor: " << glVendorStr_);
-    LogInfoCustom("OpenGLInfo","Renderer: " << glRenderStr_);
-    LogInfoCustom("OpenGLInfo","Version: " << glVersionStr_);
+    LogInfoCustom("OpenGLInfo","GPU Vendor: " << glVendorStr_);
+    LogInfoCustom("OpenGLInfo","GPU Renderer: " << glRenderStr_);
+    LogInfoCustom("OpenGLInfo","OpenGL Version: " << glVersionStr_);
 
     //GLSL
     if (isShadersSupported()) {
@@ -334,6 +324,26 @@ int OpenGLCapabilities::getMaxArrayTexSize() {
 
 int OpenGLCapabilities::getMaxColorAttachments() {
     return maxColorAttachments_;
+}
+
+bool OpenGLCapabilities::setPreferredGLSLProfile(std::string profile, bool showMessage){
+    preferredGLSLProfile_ = profile;
+
+    size_t i = 0;
+    while (i<supportedShaderVersions_.size() && (supportedShaderVersions_[i].hasProfile()
+        && supportedShaderVersions_[i].getProfile() != preferredGLSLProfile_))
+        i++;
+
+    bool changed = false;
+    if(i != currentGlobalGLSLVersionIdx_){
+        currentGlobalGLSLVersionIdx_ = i;
+        changed = true;
+    }
+
+    if(changed || showMessage)
+        LogInfoCustom("OpenGLInfo","Current set global GLSL version: " << getCurrentShaderVersion().getVersionAndProfileAsString());
+
+    return changed;
 }
 
 void OpenGLCapabilities::retrieveStaticInfo() {

@@ -35,6 +35,7 @@
 
 #include <modules/opengl/openglmoduledefine.h>
 #include <inviwo/core/common/inviwomodule.h>
+#include <inviwo/core/properties/baseoptionproperty.h>
 #include <inviwo/core/properties/buttonproperty.h>
 
 namespace inviwo {
@@ -45,11 +46,16 @@ public:
     OpenGLModule();
     ~OpenGLModule();
 
+    void updateProfile();
+
 protected:
     virtual void setupModuleSettings();
 
 private:
     ButtonProperty btnOpenGLInfo_;
+    OptionPropertyString selectedOpenGLProfile_;
+
+    bool hasOutputedGLSLVersionOnce_;
 };
 
 } // namespace

@@ -64,6 +64,8 @@ public:
         shaderSearchPaths_.push_back(shaderSearchPath);
     }
 
+    void rebuildAllShaders();
+
 protected:
     OpenGLCapabilities* getOpenGLCapabilitiesObject();
 

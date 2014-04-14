@@ -177,7 +177,7 @@ public:
     virtual size_t getSelectedIndex() const;
     virtual std::string getSelectedIdentifier() const;
     virtual std::string getSelectedDisplayName() const;
-    virtual T getSelecetedValue() const;
+    virtual T getSelectedValue() const;
     virtual std::vector<std::string> getIdentifiers() const;
     virtual std::vector<std::string> getDisplayNames() const;
     virtual std::vector<T> getValues() const;
@@ -337,7 +337,7 @@ std::string inviwo::BaseTemplateOptionProperty<T>::getSelectedDisplayName() cons
 }
 
 template<typename T>
-T inviwo::BaseTemplateOptionProperty<T>::getSelecetedValue() const {
+T inviwo::BaseTemplateOptionProperty<T>::getSelectedValue() const {
     return options_[selectedIndex_].value_;
 }
 
@@ -516,7 +516,7 @@ void BaseTemplateOptionProperty<T>::deserialize(IvwDeserializer& d) {
         d.deserialize("selectedIdentifier", id);
         setSelectedIdentifier(id);
 
-        T value = getSelecetedValue();
+        T value = getSelectedValue();
         d.deserialize("value", value);
         setSelectedValue(value);
     }
