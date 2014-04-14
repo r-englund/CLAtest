@@ -41,7 +41,8 @@ ImageGL::ImageGL()
     : ImageRepresentation()
     , frameBufferObject_(NULL)
     , shader_(NULL)
-    , initialized_(false) {
+    , initialized_(false)
+    , rectArray_(NULL) {
     initialize();
 }
 
@@ -49,7 +50,8 @@ ImageGL::ImageGL(const ImageGL& rhs)
     : ImageRepresentation(rhs)
     , frameBufferObject_(NULL)
     , shader_(NULL)
-    , initialized_(false) {
+    , initialized_(false)
+    , rectArray_(NULL) {
     initialize();
 }
 
@@ -79,6 +81,8 @@ void ImageGL::deinitialize() {
     frameBufferObject_ = NULL;
     delete shader_;
     shader_ = NULL;
+    delete rectArray_;
+    rectArray_ = NULL;
 }
 
 ImageGL* ImageGL::clone() const {
@@ -132,11 +136,13 @@ void ImageGL::activateBuffer() {
     //invalidatePBOs();
     frameBufferObject_->activate();
     frameBufferObject_->defineDrawBuffers();
+    //glPushAttrib(GL_VIEWPORT_BIT);
     uvec2 dim = getDimension();
     glViewport(0, 0, dim.x, dim.y);
 }
 
 void ImageGL::deactivateBuffer() {
+    //glPopAttrib();
     frameBufferObject_->deactivate();
 }
 
@@ -165,9 +171,10 @@ bool ImageGL::copyAndResizeRepresentation(DataRepresentation* targetRep) const {
     shader_->setUniform("picking_", pickingUnit.getUnitNumber());
     shader_->setUniform("modelViewProjectionMatrix_", scale);
     glDepthMask(GL_TRUE);
-    glDepthFunc(GL_ALWAYS);
+    /*glDepthFunc(GL_ALWAYS);
     CanvasGL::renderImagePlaneRect();
-    glDepthFunc(GL_LESS);
+    glDepthFunc(GL_LESS);*/
+    target->renderImagePlaneRect();
     shader_->deactivate();
     target->deactivateBuffer();
     source->getColorLayerGL()->unbindTexture();
@@ -376,6 +383,18 @@ void ImageGL::update(bool editable) {
     //Attach all targets
     if (reAttachTargets)
         reAttachAllLayers(true);
+}
+
+void ImageGL::renderImagePlaneRect() const{
+    if(!rectArray_){
+        rectArray_ = new BufferObjectArray();
+        CanvasGL::attachImagePlanRect(rectArray_);
+    }
+    glDepthFunc(GL_ALWAYS);
+    rectArray_->bind();
+    CanvasGL::singleDrawImagePlaneRect();
+    rectArray_->unbind();
+    glDepthFunc(GL_LESS);
 }
 
 } // namespace

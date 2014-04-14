@@ -67,7 +67,7 @@ void BasicMesh::append(const BasicMesh* mesh) {
         //          bind2nd(std::plus<unsigned int>(), size));
         
         for (std::vector<unsigned int>::const_iterator it = newinds->begin(); it!=newinds->end(); ++it) {
-            ind->add(*it + size);
+            ind->add(static_cast<const unsigned int>(*it + size));
         }
     }
 }
@@ -120,8 +120,8 @@ BasicMesh* BasicMesh::disk(const vec3& center,
         t = tc + glm::rotate(to,static_cast<float>(i) * angle, tn);
         mesh->addVertex(p, normal, t, color);
         inds->add(0);
-        inds->add(1+i);
-        inds->add(1+( (i+1) % segments));
+        inds->add(static_cast<const unsigned int>(1+i));
+        inds->add(static_cast<const unsigned int>(1+( (i+1) % segments)));
     }
     return mesh;
 }
