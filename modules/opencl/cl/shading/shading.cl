@@ -372,36 +372,84 @@ float shadingFunctionPdf(read_only image3d_t volumeTex, float volumeSample, cons
 
 float3 applyShading(const float3 toCameraDir, const float3 toLightDir, const float3 materialDiffuse, const float3 materialSpecular, const float4 material, float3 gradient, const ShadingType shadingType) {
     float3 f; 
-    float3 Nu = cross(gradient, toCameraDir);
-    if ( dot(Nu, Nu) < 1.e-3f ) {
-        Nu = cross( gradient, (float3)( 1.0f, 0.0f, 0.0f ) ); 
-        //if ( dot(Nu, Nu) < 1.e-3f ) {
-        //    Nu = normalize(cross( gradient, (float3)( 0.0f, 1.0f, 0.0f ) ));
-        //}
-        //if ( dot(Nu, Nu) < 1.e-3f ) {
-        //    Nu = normalize(cross( gradient, (float3)( 0.0f, 0.0f, 1.0f ) ));
-        //}
-    }
-    Nu = normalize(Nu);
-    float3 Nv = normalize(cross(gradient, Nu));
-    float3 wo = worldToShading(Nu, Nv, gradient, toCameraDir); 
-    float3 wi = worldToShading(Nu, Nv, gradient, toLightDir); 
+    //float3 Nu = cross(gradient, toCameraDir);
+    //if ( dot(Nu, Nu) < 1.e-3f ) {
+    //    Nu = cross( gradient, (float3)( 1.0f, 0.0f, 0.0f ) ); 
+    //    //if ( dot(Nu, Nu) < 1.e-3f ) {
+    //    //    Nu = normalize(cross( gradient, (float3)( 0.0f, 1.0f, 0.0f ) ));
+    //    //}
+    //    //if ( dot(Nu, Nu) < 1.e-3f ) {
+    //    //    Nu = normalize(cross( gradient, (float3)( 0.0f, 0.0f, 1.0f ) ));
+    //    //}
+    //}
+    //Nu = normalize(Nu);
+    //float3 Nv = normalize(cross(gradient, Nu));
+    //float3 wo = worldToShading(Nu, Nv, gradient, toCameraDir); 
+    //float3 wi = worldToShading(Nu, Nv, gradient, toLightDir); 
 #ifdef PERFORMANCE 
 #if PHASE_FUNCTION == PHASE_FUNCTION_HENYEY_GREENSTEIN
     f = materialDiffuse*HenyeyGreensteinPhaseFunction(toCameraDir, toLightDir, material.z);
 #elif PHASE_FUNCTION == PHASE_FUNCTION_SCHLICK
     f = materialDiffuse*SchlickPhaseFunction(toCameraDir, toLightDir, material.z); 
 #elif PHASE_FUNCTION == PHASE_FUNCTION_BLINN_PHONG
-    f = materialDiffuse*lambertianBRDF()+materialSpecular*BlinnBRDF(wo, wi, material.y)*fabs(wi.z);
+    float3 Nu = cross(gradient, toCameraDir);
+    if ( dot(Nu, Nu) < 1.e-3f ) {
+        Nu = cross( gradient, (float3)( 1.0f, 0.0f, 0.0f ) ); 
+    }
+    Nu = fast_normalize(Nu);
+    float3 Nv = fast_normalize(cross(gradient, Nu));
+    float3 wo = worldToShading(Nu, Nv, gradient, toCameraDir); 
+    float3 wi = worldToShading(Nu, Nv, gradient, toLightDir); 
+    f = materialDiffuse*isotropicPhaseFunction()+materialSpecular*BlinnBRDF(wo, wi, material.y)*fabs(wi.z);
 #elif PHASE_FUNCTION == PHASE_FUNCTION_WARD
-    f = materialDiffuse*lambertianBRDF()+materialSpecular*WardBRDF(wo, wi, material.y, material.y)*fabs(wi.z);
+    float3 Nu = cross(gradient, toCameraDir);
+    if ( dot(Nu, Nu) < 1.e-3f ) {
+        Nu = cross( gradient, (float3)( 1.0f, 0.0f, 0.0f ) ); 
+    }
+    Nu = fast_normalize(Nu);
+    float3 Nv = fast_normalize(cross(gradient, Nu));
+    float3 wo = worldToShading(Nu, Nv, gradient, toCameraDir); 
+    float3 wi = worldToShading(Nu, Nv, gradient, toLightDir); 
+    f = materialDiffuse*isotropicPhaseFunction()+materialSpecular*WardBRDF(wo, wi, material.y, material.y)*fabs(wi.z);
 #elif PHASE_FUNCTION == PHASE_FUNCTION_COOK_TORRANCE
-    f = materialDiffuse*lambertianBRDF()+materialSpecular*CookTorranceBRDF(wo, wi, material.x, material.y)*fabs(wi.z);
+    float3 Nu = cross(gradient, toCameraDir);
+    if ( dot(Nu, Nu) < 1.e-3f ) {
+        Nu = cross( gradient, (float3)( 1.0f, 0.0f, 0.0f ) ); 
+    }
+    Nu = fast_normalize(Nu);
+    float3 Nv = fast_normalize(cross(gradient, Nu));
+    float3 wo = worldToShading(Nu, Nv, gradient, toCameraDir); 
+    float3 wi = worldToShading(Nu, Nv, gradient, toLightDir); 
+    f = materialDiffuse*isotropicPhaseFunction()+materialSpecular*CookTorranceBRDF(wo, wi, material.x, material.y)*fabs(wi.z);
 #elif PHASE_FUNCTION == PHASE_FUNCTION_ABC_MICROFACET
-    f = materialDiffuse*lambertianBRDF()+materialSpecular*ABCMicrofacetBRDF(wo, wi, material.x, material.y, material.z)*fabs(wi.z);
+    float3 Nu = cross(gradient, toCameraDir);
+    if ( dot(Nu, Nu) < 1.e-3f ) {
+        Nu = cross( gradient, (float3)( 1.0f, 0.0f, 0.0f ) ); 
+    }
+    Nu = fast_normalize(Nu);
+    float3 Nv = fast_normalize(cross(gradient, Nu));
+    float3 wo = worldToShading(Nu, Nv, gradient, toCameraDir); 
+    float3 wi = worldToShading(Nu, Nv, gradient, toLightDir); 
+    f = materialDiffuse*isotropicPhaseFunction()+materialSpecular*ABCMicrofacetBRDF(wo, wi, material.x, material.y, material.z)*fabs(wi.z);
 #elif PHASE_FUNCTION == PHASE_FUNCTION_ASHIKHMIN
-    f = materialDiffuse*lambertianBRDF()+materialSpecular*AshikimBRDF(wo, wi, gradient, material.x, material.y)*fabs(wi.z);
+    float3 Nu = cross(gradient, toCameraDir);
+    if ( dot(Nu, Nu) < 1.e-3f ) {
+        Nu = cross( gradient, (float3)( 1.0f, 0.0f, 0.0f ) ); 
+    }
+    Nu = fast_normalize(Nu);
+    float3 Nv = fast_normalize(cross(gradient, Nu));
+    float3 wo = worldToShading(Nu, Nv, gradient, toCameraDir); 
+    float3 wi = worldToShading(Nu, Nv, gradient, toLightDir); 
+    f = materialDiffuse*isotropicPhaseFunction()+materialSpecular*AshikimBRDF(wo, wi, gradient, material.x, material.y)*fabs(wi.z);
 #elif PHASE_FUNCTION == PHASE_FUNCTION_MIX
+    float3 Nu = cross(gradient, toCameraDir);
+    if ( dot(Nu, Nu) < 1.e-3f ) {
+        Nu = cross( gradient, (float3)( 1.0f, 0.0f, 0.0f ) ); 
+    }
+    Nu = fast_normalize(Nu);
+    float3 Nv = fast_normalize(cross(gradient, Nu));
+    float3 wo = worldToShading(Nu, Nv, gradient, toCameraDir); 
+    float3 wi = worldToShading(Nu, Nv, gradient, toLightDir); 
     f = mix(materialDiffuse*isotropicPhaseFunction(), materialDiffuse*lambertianBRDF()+materialSpecular*AshikimBRDF(wo, wi, gradient, material.x, material.y), material.w)*fabs(wi.z);
 #else  
     f = materialDiffuse*isotropicPhaseFunction();   
@@ -412,16 +460,64 @@ float3 applyShading(const float3 toCameraDir, const float3 toLightDir, const flo
     } else if ( shadingType == SCHLICK ) {
         f = materialDiffuse*SchlickPhaseFunction(toCameraDir, -toLightDir, material.z); 
     } else if ( shadingType == BLINN_PHONG ) {
+        float3 Nu = cross(gradient, toCameraDir);
+        if ( dot(Nu, Nu) < 1.e-3f ) {
+            Nu = cross( gradient, (float3)( 1.0f, 0.0f, 0.0f ) ); 
+        }
+        Nu = fast_normalize(Nu);
+        float3 Nv = fast_normalize(cross(gradient, Nu));
+        float3 wo = worldToShading(Nu, Nv, gradient, toCameraDir); 
+        float3 wi = worldToShading(Nu, Nv, gradient, toLightDir); 
         f = materialDiffuse*isotropicPhaseFunction()+materialSpecular*BlinnBRDF(wo, wi, material.x, material.y)*fabs(wi.z);
     } else if ( shadingType == WARD ) {
+        float3 Nu = cross(gradient, toCameraDir);
+        if ( dot(Nu, Nu) < 1.e-3f ) {
+            Nu = cross( gradient, (float3)( 1.0f, 0.0f, 0.0f ) ); 
+        }
+        Nu = fast_normalize(Nu);
+        float3 Nv = fast_normalize(cross(gradient, Nu));
+        float3 wo = worldToShading(Nu, Nv, gradient, toCameraDir); 
+        float3 wi = worldToShading(Nu, Nv, gradient, toLightDir); 
         f = materialDiffuse*isotropicPhaseFunction()+materialSpecular*WardBRDF(wo, wi, material.x, material.y, material.y)*fabs(wi.z);
     } else if ( shadingType == COOK_TORRANCE ) {
+        float3 Nu = cross(gradient, toCameraDir);
+        if ( dot(Nu, Nu) < 1.e-3f ) {
+            Nu = cross( gradient, (float3)( 1.0f, 0.0f, 0.0f ) ); 
+        }
+        Nu = fast_normalize(Nu);
+        float3 Nv = fast_normalize(cross(gradient, Nu));
+        float3 wo = worldToShading(Nu, Nv, gradient, toCameraDir); 
+        float3 wi = worldToShading(Nu, Nv, gradient, toLightDir); 
         f = materialDiffuse*isotropicPhaseFunction()+materialSpecular*CookTorranceBRDF(wo, wi, material.x, material.y)*fabs(wi.z);
     } else if ( shadingType == ABC_MICROFACET ) {
+        float3 Nu = cross(gradient, toCameraDir);
+        if ( dot(Nu, Nu) < 1.e-3f ) {
+            Nu = cross( gradient, (float3)( 1.0f, 0.0f, 0.0f ) ); 
+        }
+        Nu = fast_normalize(Nu);
+        float3 Nv = fast_normalize(cross(gradient, Nu));
+        float3 wo = worldToShading(Nu, Nv, gradient, toCameraDir); 
+        float3 wi = worldToShading(Nu, Nv, gradient, toLightDir); 
         f = materialDiffuse*isotropicPhaseFunction()+materialSpecular*ABCMicrofacetBRDF(wo, wi, material.x, material.y, material.z)*fabs(wi.z);
     } else if ( shadingType == ASHIKHMIN ) {
+        float3 Nu = cross(gradient, toCameraDir);
+        if ( dot(Nu, Nu) < 1.e-3f ) {
+            Nu = cross( gradient, (float3)( 1.0f, 0.0f, 0.0f ) ); 
+        }
+        Nu = fast_normalize(Nu);
+        float3 Nv = fast_normalize(cross(gradient, Nu));
+        float3 wo = worldToShading(Nu, Nv, gradient, toCameraDir); 
+        float3 wi = worldToShading(Nu, Nv, gradient, toLightDir); 
         f = materialDiffuse*isotropicPhaseFunction()+materialSpecular*AshikimBRDF(wo, wi, gradient, material.x, material.y)*fabs(wi.z);  
     } else if ( shadingType == MIX ) {
+        float3 Nu = cross(gradient, toCameraDir);
+        if ( dot(Nu, Nu) < 1.e-3f ) {
+            Nu = cross( gradient, (float3)( 1.0f, 0.0f, 0.0f ) ); 
+        }
+        Nu = fast_normalize(Nu);
+        float3 Nv = fast_normalize(cross(gradient, Nu));
+        float3 wo = worldToShading(Nu, Nv, gradient, toCameraDir); 
+        float3 wi = worldToShading(Nu, Nv, gradient, toLightDir); 
         f = mix(materialDiffuse*isotropicPhaseFunction(), materialDiffuse*isotropicPhaseFunction()+materialSpecular*AshikimBRDF(wo, wi, gradient, material.x, material.y)*fabs(wi.z), material.w);
     } else {
         f = materialDiffuse*isotropicPhaseFunction(); 
