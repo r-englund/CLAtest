@@ -97,6 +97,10 @@ vec3 BasicMesh::orthvec(const vec3& vec){
     }
 }
 
+vec3 BasicMesh::calcnormal(const vec3& r, const vec3& p) {
+    return glm::normalize(r + glm::dot(r, r - p) / glm::dot(p - r, p - r)* (p-r));
+}
+
 BasicMesh* BasicMesh::disk(const vec3& center,
                            const vec3& normal,
                            const vec4& color,
@@ -126,7 +130,46 @@ BasicMesh* BasicMesh::disk(const vec3& center,
     return mesh;
 }
     
-    
+BasicMesh* BasicMesh::cone(const vec3& start,
+                           const vec3& stop,
+                           const vec4& color,
+                           const float& radius,
+                           const size_t& segments) {
+    vec3 tc = vec3(0.5f, 0.5f, 0.0f);
+    vec3 tn = vec3(0.0f, 0.0f, 1.0f);
+    vec3 to = vec3(0.5f, 0.0f, 0.0f);
+
+    BasicMesh* mesh = new BasicMesh();
+    IndexBufferRAM* inds = mesh->addIndexBuffer(TRIANGLES, NONE);
+    vec3 normal = glm::normalize(stop-start);
+    vec3 orth = orthvec(normal);
+    float angle = M_2_PI / segments;
+    float j;
+    for (size_t i = 0; i < segments; ++i) {
+        j = static_cast<float>(i);
+        mesh->addVertex(stop, 
+                        calcnormal(glm::rotate(orth, (j + 0.5f) * angle, normal), stop - start), 
+                        tc, 
+                        color);
+
+        mesh->addVertex(start + radius*glm::rotate(orth, j * angle, normal),
+                        calcnormal(glm::rotate(orth, j * angle, normal), stop - start),
+                        tc + to*glm::rotate(orth, j * angle, tn),
+                        color);
+
+        mesh->addVertex(start + radius*glm::rotate(orth, (j+1.0f) * angle, normal),
+                        calcnormal(glm::rotate(orth, (j+1.0f) * angle, normal), stop - start),
+                        tc + to*glm::rotate(orth, (j+1) * angle, tn),
+                        color);
+
+        inds->add(i * 3 + 0);
+        inds->add(i * 3 + 1);
+        inds->add(i * 3 + 2);
+    }
+
+    return mesh;
+}
+
     
     
 } // namespace
