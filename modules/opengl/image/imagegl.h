@@ -37,6 +37,7 @@
 #include <inviwo/core/common/inviwo.h>
 #include <inviwo/core/datastructures/image/imagerepresentation.h>
 #include <modules/opengl/image/layergl.h>
+#include <modules/opengl/glwrap/bufferobjectarray.h>
 #include <modules/opengl/glwrap/framebufferobject.h>
 #include <modules/opengl/glwrap/shader.h>
 
@@ -78,6 +79,7 @@ public:
     const LayerGL* getPickingLayerGL() const;
 
     void updateExistingLayers() const;
+    void renderImagePlaneRect() const;
 
 protected:
     virtual void update(bool editable);
@@ -87,6 +89,7 @@ private:
     LayerGL* depthLayerGL_;
     LayerGL* pickingLayerGL_;
 
+    mutable BufferObjectArray* rectArray_;
     FrameBufferObject* frameBufferObject_;
     GLenum pickingAttachmentID_;
     Shader* shader_;

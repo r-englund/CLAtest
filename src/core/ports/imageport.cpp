@@ -195,15 +195,19 @@ void ImageOutport::propagateResizeEventToPredecessor(ResizeEvent* resizeEvent) {
     Processor* processor = getProcessor();
     std::vector<Inport*> inPorts = processor->getInports();
 
+    bool propagationEnded = true;
     for (size_t i=0; i<inPorts.size(); i++) {
         if (equalColorCode(inPorts[i])) {
+            propagationEnded = false;
             ImageInport* imageInport = static_cast<ImageInport*>(inPorts[i]);
             imageInport->changeDataDimensions(resizeEvent);
         }
     }
 
-    processor->invalidate(PropertyOwner::INVALID_OUTPUT);
-    invalidate(PropertyOwner::INVALID_OUTPUT);
+    if(propagationEnded){
+        processor->invalidate(PropertyOwner::INVALID_OUTPUT);
+        invalidate(PropertyOwner::INVALID_OUTPUT);
+    }
 }
 
 void ImageOutport::invalidate(PropertyOwner::InvalidationLevel invalidationLevel) {
@@ -268,8 +272,12 @@ void ImageOutport::changeDataDimensions(ResizeEvent* resizeEvent) {
     if (imageDataMap_.find(reqDimensionString)!= imageDataMap_.end())
         resultImage = imageDataMap_[reqDimensionString];
 
+    bool invalidPort = false;
+
     //requiredDimension does not exist
     if (!resultImage) {
+        invalidPort = true;
+
         //Decide whether to resize data with previousDimensions
         bool canResize = false;
 
@@ -318,12 +326,14 @@ void ImageOutport::changeDataDimensions(ResizeEvent* resizeEvent) {
     //Set largest data
     setLargestImageData(resizeEvent);
 
-    //Only invalidate largest image is equal to the resize event size, then stop resize propagation
-    if (largestDim != resizeEvent->size())
+    //Stop resize propagation if outport change hasn't change.
+    //Invalid to output new size
+    if (largestDim != getDimension()){
+        //Propagate the resize event
+        propagateResizeEventToPredecessor(resizeEvent);
+    }
+    else if(invalidPort)
         invalidate(PropertyOwner::INVALID_OUTPUT);
-
-    //Propagate the resize event
-    propagateResizeEventToPredecessor(resizeEvent);
 }
 
 uvec2 ImageOutport::getDimension() const {
