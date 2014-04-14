@@ -147,4 +147,14 @@ OpenGLCapabilities* ShaderManager::getOpenGLCapabilitiesObject(){
     return openGLInfoRef_;
 }
 
+void ShaderManager::rebuildAllShaders(){
+    if(shaders_.empty())
+        return;
+
+    for (std::vector<Shader*>::iterator it = shaders_.begin(); it != shaders_.end(); ++it) {
+        (*it)->rebuild();
+    }
+    LogInfo("Rebuild of all shaders completed");
+}
+
 } // namespace

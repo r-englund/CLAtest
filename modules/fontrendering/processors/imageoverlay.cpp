@@ -168,7 +168,7 @@ void ImageOverlay::process() {
     glVertexAttribPointer(attribute_location, 4, GL_FLOAT, GL_FALSE, 0, 0);
     float sx = 2.f / outImageGL->getDimension().x;
     float sy = 2.f / outImageGL->getDimension().y;
-    font_size_ = optionPropertyIntFontSize_.getSelecetedValue();
+    font_size_ = optionPropertyIntFontSize_.getSelectedValue();
     xpos_ = floatVec2FontPos_.get().x * outImageGL->getDimension().x;
     ypos_ = floatVec2FontPos_.get().y * outImageGL->getDimension().y + float(font_size_);
     shader_->activate();

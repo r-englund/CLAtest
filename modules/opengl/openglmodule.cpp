@@ -50,7 +50,13 @@ namespace inviwo {
 
 OpenGLModule::OpenGLModule() :
     InviwoModule()
-    ,btnOpenGLInfo_("printOpenGLInfo", "Print OpenGL Info") {
+    , btnOpenGLInfo_("printOpenGLInfo", "Print OpenGL Info")
+    , selectedOpenGLProfile_("selectedOpenGLProfile", "OpenGL Profile")
+    , hasOutputedGLSLVersionOnce_(false) {
+    selectedOpenGLProfile_.addOption("core", "Core");
+    selectedOpenGLProfile_.addOption("compatibility", "Compatibility");
+    selectedOpenGLProfile_.setSelectedIdentifier("compatibility");
+    selectedOpenGLProfile_.setCurrentStateAsDefault();
     setIdentifier("OpenGL");
     ShaderManager::init();
     ShaderManager::getPtr()->addShaderSearchPath(InviwoApplication::getPtr()->getPath(InviwoApplication::PATH_MODULES)+"opengl/glsl");
@@ -74,6 +80,17 @@ OpenGLModule::OpenGLModule() :
 OpenGLModule::~OpenGLModule() {
 }
 
+void OpenGLModule::updateProfile(){
+    OpenGLCapabilities* openglInfo = getTypeFromVector<OpenGLCapabilities>(getCapabilities());
+
+    if (openglInfo) {
+        if(openglInfo->setPreferredGLSLProfile(selectedOpenGLProfile_.getSelectedValue(), !hasOutputedGLSLVersionOnce_)){
+            ShaderManager::getPtr()->rebuildAllShaders();
+        }
+        hasOutputedGLSLVersionOnce_ = true;
+    }
+}
+
 void OpenGLModule::setupModuleSettings() {
     //New OpengGLSettings class can be created if required.
     SystemSettings* settings = InviwoApplication::getPtr()->getSettingsByType<SystemSettings>();
@@ -84,6 +101,11 @@ void OpenGLModule::setupModuleSettings() {
         if (openglInfo) {
             btnOpenGLInfo_.onChange(openglInfo, &OpenGLCapabilities::printDetailedInfo);
             settings->addProperty(&btnOpenGLInfo_);
+
+            if(openglInfo->getCurrentShaderVersion().getVersion() >= 150){
+                selectedOpenGLProfile_.onChange(this, &OpenGLModule::updateProfile);
+                settings->addProperty(&selectedOpenGLProfile_);
+            }
         }
     }
 }

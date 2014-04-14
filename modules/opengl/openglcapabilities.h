@@ -100,6 +100,8 @@ public:
     int getMaxColorAttachments();
     int getNumTexUnits();
 
+    bool setPreferredGLSLProfile(std::string, bool);
+
 protected:
     void retrieveStaticInfo();
     void retrieveDynamicInfo();

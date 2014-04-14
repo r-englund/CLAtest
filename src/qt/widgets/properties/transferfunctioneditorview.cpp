@@ -46,6 +46,7 @@ TransferFunctionEditorView::TransferFunctionEditorView(TransferFunctionProperty*
     , histogramTheadWorking_(false)
     , invalidatedHistogram_(true)
     , maskHorizontal_(0.0f, 1.0f)
+    , workerThread_(NULL)
  {
     
     setMouseTracking(true);
@@ -125,6 +126,8 @@ void TransferFunctionEditorView::onControlPointChanged(const TransferFunctionDat
 
 
 void TransferFunctionEditorView::onVolumeInportChange() {
+    if(workerThread_)
+        workerThread_->quit();
     invalidatedHistogram_ = true;
     this->resetCachedContent();
 }
@@ -135,7 +138,7 @@ void TransferFunctionEditorView::setShowHistogram(bool show) {
 }
 
 void TransferFunctionEditorView::histogramThreadFinished() {
-    workerThread_ = 0;
+    workerThread_ = NULL;
     histogramTheadWorking_ = false;
     invalidatedHistogram_ = true;
     this->resetCachedContent();
