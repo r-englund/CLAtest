@@ -23,32 +23,36 @@ public:
     
     void append(const BasicMesh* mesh);
     
-    static vec3 orthvec(const vec3& vec);
+
     static BasicMesh* disk(const vec3& center,
                            const vec3& normal,
-                           const vec4& color,
-                           const float& radius,
+                           const vec4& color = vec4(1.0f,0.0f,0.0f,1.0f),
+                           const float& radius = 1.0f,
                            const size_t& segments=16);
     static BasicMesh* cone(const vec3& start,
                            const vec3& stop,
-                           const vec4& color,
-                           const float& radius,
+                           const vec4& color = vec4(1.0f, 0.0f, 0.0f, 1.0f),
+                           const float& radius = 1.0f,
                            const size_t& segments=16);
     static BasicMesh* cylinder(const vec3& start,
                                const vec3& stop,
-                               const vec4& color,
-                               const float& radius,
+                               const vec4& color = vec4(1.0f, 0.0f, 0.0f, 1.0f),
+                               const float& radius = 1.0f,
                                const size_t& segments=16);
     static BasicMesh* arrow(const vec3& start,
                             const vec3& stop,
-                            const vec4& color,
-                            const float& radius,
-                            const float& arrowfraction,
-                            const float& arrowRadius,
+                            const vec4& color = vec4(1.0f, 0.0f, 0.0f, 1.0f),
+                            const float& radius = 1.0f,
+                            const float& arrowfraction = 0.15f,
+                            const float& arrowRadius = 2.0f,
                             const size_t& segemnts=16);
     
     
 protected:
+    static vec3 orthvec(const vec3& vec);
+    static vec3 calcnormal(const vec3& r, const vec3& p);
+
+
     Position3dBuffer* vertices_;
     TexCoord3dBuffer* texCoords_;
     ColorBuffer* colors_;

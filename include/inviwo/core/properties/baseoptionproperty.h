@@ -509,22 +509,17 @@ template<typename T>
 void BaseTemplateOptionProperty<T>::deserialize(IvwDeserializer& d) {
     BaseOptionProperty::deserialize(d) ;
     
-    std::vector<Option<T> > opts_ = options_;
-    d.deserialize("options", opts_, "option");
+    d.deserialize("options", options_, "option");
 
-    if(options_.empty())
-        return;
+    if (!options_.empty()) {
+        std::string id = getSelectedIdentifier();
+        d.deserialize("selectedIdentifier", id);
+        setSelectedIdentifier(id);
 
-    std::string id = getSelectedIdentifier();
-    d.deserialize("selectedIdentifier", id);
-
-    options_ = opts_;
-    setSelectedIdentifier(id);
-
-    T value = getSelecetedValue();
-    d.deserialize("value", value);
-    setSelectedValue(value);
-
+        T value = getSelecetedValue();
+        d.deserialize("value", value);
+        setSelectedValue(value);
+    }
 }
 
 } // namespace inviwo
