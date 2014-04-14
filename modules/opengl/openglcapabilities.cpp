@@ -357,7 +357,7 @@ void OpenGLCapabilities::retrieveStaticInfo() {
     int glVersion = parseAndRetrieveVersion(glVersionStr_);
     //GLSL
     shadersAreSupported_ = (glVersion >= 200);
-    shadersAreSupportedARB_ = isExtensionSupported("GL_ARB_fragment_program");
+    shadersAreSupportedARB_ = isExtensionSupported("GL_EXT_ARB_fragment_program");
     GLint numberOfSupportedVersions = 0;
     const GLubyte* glslStrByte = NULL;
 #ifdef GL_VERSION_4_3
@@ -454,14 +454,14 @@ void OpenGLCapabilities::retrieveStaticInfo() {
     texSupported_ = true;
     glGetIntegerv(GL_MAX_TEXTURE_SIZE, (GLint*)&maxTexSize_);
 #else
-    texSupported_ = isExtensionSupported("GL_texture");
+    texSupported_ = isExtensionSupported("GL_EXT_texture");
     maxTexSize_ = 0;
 #endif
 #ifdef GL_VERSION_1_2
     tex3DSupported_ = true;
     glGetIntegerv(GL_MAX_3D_TEXTURE_SIZE, (GLint*)&max3DTexSize_);
 #else
-    tex3DSupported_ = isExtensionSupported("GL_texture3D");
+    tex3DSupported_ = isExtensionSupported("GL_EXT_texture3D");
 
     if (is3DTexturesSupported())
         glGetIntegerv(GL_MAX_3D_TEXTURE_SIZE, (GLint*)&max3DTexSize_);
@@ -476,7 +476,7 @@ void OpenGLCapabilities::retrieveStaticInfo() {
     }
     else{
 #endif
-        texArraySupported_ = isExtensionSupported("GL_texture_array");
+        texArraySupported_ = isExtensionSupported("GL_EXT_texture_array");
 
         if (isTextureArraysSupported())
             glGetIntegerv(GL_MAX_ARRAY_TEXTURE_LAYERS, (GLint*)&maxArrayTexSize_);
@@ -498,7 +498,7 @@ void OpenGLCapabilities::retrieveStaticInfo() {
 
     TextureUnit::initialize(numTexUnits_);
     //FBO
-    fboSupported_ = isExtensionSupported("GL_framebuffer_object");
+    fboSupported_ = isExtensionSupported("GL_EXT_framebuffer_object");
     maxColorAttachments_ = 0;
 
     if (isFboSupported())

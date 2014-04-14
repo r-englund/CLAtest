@@ -211,7 +211,7 @@ void LightVolumeGL::process() {
     propagationShader_->setUniform("transferFunc_", transFuncUnit.getUnitNumber());
     propagationShader_->setUniform("lightVolumeParameters_.dimensions_", volumeDimOutF_);
     propagationShader_->setUniform("lightVolumeParameters_.dimensionsRCP_", volumeDimOutFRCP_);
-    CanvasGL::enableDrawImagePlaneRect();
+    enableDrawImagePlaneRect();
 
     //Perform propagation passes
     for (int i=0; i<2; ++i) {
@@ -235,16 +235,16 @@ void LightVolumeGL::process() {
         }
 
         for (unsigned int z=0; z<volumeDimOut_.z; ++z) {
-            glFramebufferTexture3D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_3D, propParams_[i].vol->getTexture()->getID(), 0, z);
+            glFramebufferTexture3DEXT(GL_FRAMEBUFFER_EXT, GL_COLOR_ATTACHMENT0_EXT, GL_TEXTURE_3D, propParams_[i].vol->getTexture()->getID(), 0, z);
             propagationShader_->setUniform("sliceNum_", static_cast<GLint>(z));
-            CanvasGL::singleDrawImagePlaneRect();
+            singleDrawImagePlaneRect();
             glFlush();
         }
 
         propParams_[i].fbo->deactivate();
     }
 
-    CanvasGL::disableDrawImagePlaneRect();
+    disableDrawImagePlaneRect();
     propagationShader_->deactivate();
     mergeShader_->activate();
     mergeShader_->setUniform("lightVolume_", lightVolUnit[0].getUnitNumber());
@@ -261,7 +261,7 @@ void LightVolumeGL::process() {
     if (reattach)
         mergeFBO_->attachColorTexture(outVolumeGL->getTexture(), 0);
 
-    CanvasGL::renderImagePlaneRect(static_cast<int>(volumeDimOut_.z));
+    renderImagePlaneRect(static_cast<int>(volumeDimOut_.z));
     mergeShader_->deactivate();
     mergeFBO_->deactivate();
 }

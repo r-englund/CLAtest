@@ -42,7 +42,6 @@
 #include <modules/opengl/glwrap/shader.h>
 #include <modules/opengl/glwrap/textureunit.h>
 #include <modules/opengl/image/imagegl.h>
-#include <modules/opengl/canvasgl.h>
 
 namespace inviwo {
 
@@ -90,11 +89,22 @@ public:
 
     static void setGlobalShaderParameters(Shader* shader, const std::vector<Outport*>& outports);
 
+    static inline void singleDrawImagePlaneRect() {
+        glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+    }
+
+    static inline void multiDrawImagePlaneRect(int instances) {
+        glDrawArraysInstanced(GL_TRIANGLE_STRIP, 0, 4, instances);
+    }
+
+    void enableDrawImagePlaneRect();
+    void disableDrawImagePlaneRect();
+
     void renderImagePlaneRect();
     void renderImagePlaneRect(int instances);
 
     // deprecated
-    inline void renderQuad();
+    void renderQuad();
 
 private:
     BufferObjectArray* rectArray_;
