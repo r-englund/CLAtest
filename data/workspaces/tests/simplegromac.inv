@@ -2,12 +2,12 @@
 <InviwoTreeData version="1.0">
     <!-- Don't edit the following code -->
     <Processors>
-        <Processor type="Gromacs source" identifier="Gromacs source" id="ref1">
+        <Processor type="Gromacs source" identifier="Gromacs source" id="ref2">
             <MetaDataList>
                 <MetaData type="ProcessorMetaData">
                     <position x="-550" y="-700" />
                     <visibility content="1" />
-                    <selection content="1" />
+                    <selection content="0" />
                 </MetaData>
             </MetaDataList>
             <Properties>
@@ -20,19 +20,29 @@
                     <acceptMode content="0" />
                     <fileMode content="0" />
                 </Property>
+                <Property type="IntProperty" identifier="timeStepOffset" displayName="Time Step Offset" key="timeStepOffset" />
             </Properties>
         </Processor>
-        <Processor type="Gromacs to geometry" identifier="Gromacs to geometry" id="ref0">
+        <Processor type="Gromacs to geometry" identifier="Gromacs to geometry" id="ref5">
             <MetaDataList>
                 <MetaData type="ProcessorMetaData">
                     <position x="-550" y="-625" />
                     <visibility content="1" />
-                    <selection content="0" />
+                    <selection content="1" />
                 </MetaData>
             </MetaDataList>
-            <Properties />
+            <Properties>
+                <Property type="FloatVec3Property" identifier="boundingBox" displayName="Bounding Box" key="boundingBox">
+                    <readonly content="1" />
+                    <value x="43.200001" y="2.3383" z="32.400002" />
+                </Property>
+                <Property type="IntProperty" identifier="timeStep" displayName="Time Step" key="timeStep" id="ref6">
+                    <maxvalue content="100" />
+                    <value content="95" />
+                </Property>
+            </Properties>
         </Processor>
-        <Processor type="CanvasGL" identifier="CanvasGL" id="ref2">
+        <Processor type="CanvasGL" identifier="CanvasGL" id="ref3">
             <MetaDataList>
                 <MetaData type="ProcessorMetaData">
                     <position x="-550" y="-400" />
@@ -40,14 +50,14 @@
                     <selection content="0" />
                 </MetaData>
                 <MetaData type="ProcessorWidgetMetaData">
-                    <position x="791" y="312" />
-                    <dimension x="512" y="512" />
+                    <position x="871" y="223" />
+                    <dimension x="451" y="431" />
                     <visibility content="1" />
                 </MetaData>
             </MetaDataList>
             <Properties>
                 <Property type="IntVec2Property" identifier="dimensions" displayName="Dimensions" key="dimensions">
-                    <value x="512" y="512" />
+                    <value x="451" y="431" />
                 </Property>
                 <Property type="DirectoryProperty" identifier="layerDir" displayName="Output Directory" key="layerDir">
                     <directory content="../../images" />
@@ -75,7 +85,7 @@
                 </Property>
             </Properties>
         </Processor>
-        <Processor type="SpriteGeometryGLProcessor" identifier="SpriteGeometryGLProcessor" id="ref3">
+        <Processor type="SpriteGeometryGLProcessor" identifier="SpriteGeometryGLProcessor" id="ref4">
             <MetaDataList>
                 <MetaData type="ProcessorMetaData">
                     <position x="-550" y="-550" />
@@ -209,11 +219,11 @@
             <Properties>
                 <Property type="CameraProperty" identifier="camera" displayName="Camera" key="camera">
                     <lookFrom type="FloatVec3Property" identifier="lookFrom" displayName="Look from">
-                        <value x="-25.988749" y="-24.573011" z="-27.580259" />
+                        <value x="114.14758" y="-34.91967" z="34.607258" />
                     </lookFrom>
                     <lookTo type="FloatVec3Property" identifier="lookTo" displayName="Look to" />
                     <lookUp type="FloatVec3Property" identifier="lookUp" displayName="Look up">
-                        <value x="-0.187231" y="0.81444061" z="-0.54920888" />
+                        <value x="-0.2232132" y="0.21303864" z="0.95120198" />
                     </lookUp>
                     <fovy type="FloatProperty" identifier="fov" displayName="FOV" />
                     <aspectRatio type="FloatProperty" identifier="aspectRatio" displayName="Aspect Ratio" />
@@ -245,11 +255,11 @@
                     <selectedIdentifier content="regular-sprites" />
                 </Property>
                 <Property type="FloatProperty" identifier="sphereRadius" displayName="Sphere Radius" key="sphereRadius">
-                    <value content="0.092990801" />
+                    <value content="0.1999801" />
                 </Property>
             </Properties>
         </Processor>
-        <Processor type="Background" identifier="Background" id="ref4">
+        <Processor type="Background" identifier="Background" id="ref0">
             <MetaDataList>
                 <MetaData type="ProcessorMetaData">
                     <position x="-550" y="-475" />
@@ -267,40 +277,70 @@
                 <Property type="FloatVec4Property" identifier="color2" displayName="Color 2" key="color2" />
             </Properties>
         </Processor>
+        <Processor type="Timer Processor" identifier="Timer Processor">
+            <MetaDataList>
+                <MetaData type="ProcessorMetaData">
+                    <position x="-750" y="-625" />
+                    <visibility content="1" />
+                    <selection content="0" />
+                </MetaData>
+            </MetaDataList>
+            <Properties>
+                <Property type="FloatProperty" identifier="incrementfloat" displayName="Increment (Float)" key="incrementfloat" />
+                <Property type="IntProperty" identifier="incrementint" displayName="Increment (Int)" key="incrementint" id="ref1">
+                    <maxvalue content="10" />
+                </Property>
+                <Property type="IntProperty" identifier="intervalinteger" displayName="Interval (ms)" key="intervalinteger" />
+                <Property type="ButtonProperty" identifier="pause" displayName="Pause Timer" key="pause" />
+                <Property type="ButtonProperty" identifier="reset" displayName="Reset Timer" key="reset" />
+                <Property type="ButtonProperty" identifier="start" displayName="Start Timer" key="start" />
+            </Properties>
+        </Processor>
     </Processors>
     <Connections>
         <Connection>
             <OutPort identifier="gromacs">
-                <Processor type="Gromacs source" identifier="Gromacs source" reference="ref1" />
+                <Processor type="Gromacs source" identifier="Gromacs source" reference="ref2" />
             </OutPort>
             <InPort identifier="gromacs">
-                <Processor type="Gromacs to geometry" identifier="Gromacs to geometry" reference="ref0" />
+                <Processor type="Gromacs to geometry" identifier="Gromacs to geometry" reference="ref5" />
             </InPort>
         </Connection>
         <Connection>
             <OutPort identifier="geometry">
-                <Processor type="Gromacs to geometry" identifier="Gromacs to geometry" reference="ref0" />
+                <Processor type="Gromacs to geometry" identifier="Gromacs to geometry" reference="ref5" />
             </OutPort>
             <InPort identifier="geometryInport">
-                <Processor type="SpriteGeometryGLProcessor" identifier="SpriteGeometryGLProcessor" reference="ref3" />
+                <Processor type="SpriteGeometryGLProcessor" identifier="SpriteGeometryGLProcessor" reference="ref4" />
             </InPort>
         </Connection>
         <Connection>
             <OutPort identifier="outport">
-                <Processor type="SpriteGeometryGLProcessor" identifier="SpriteGeometryGLProcessor" reference="ref3" />
+                <Processor type="SpriteGeometryGLProcessor" identifier="SpriteGeometryGLProcessor" reference="ref4" />
             </OutPort>
             <InPort identifier="inport">
-                <Processor type="Background" identifier="Background" reference="ref4" />
+                <Processor type="Background" identifier="Background" reference="ref0" />
             </InPort>
         </Connection>
         <Connection>
             <OutPort identifier="outport">
-                <Processor type="Background" identifier="Background" reference="ref4" />
+                <Processor type="Background" identifier="Background" reference="ref0" />
             </OutPort>
             <InPort identifier="inport">
-                <Processor type="CanvasGL" identifier="CanvasGL" reference="ref2" />
+                <Processor type="CanvasGL" identifier="CanvasGL" reference="ref3" />
             </InPort>
         </Connection>
     </Connections>
-    <ProcessorLinks />
+    <ProcessorLinks>
+        <ProcessorLink>
+            <PropertyLinks>
+                <PropertyLink>
+                    <Properties>
+                        <Property type="IntProperty" identifier="incrementint" displayName="Increment (Int)" key="incrementint" reference="ref1" />
+                        <Property type="IntProperty" identifier="timeStep" displayName="Time Step" key="timeStep" reference="ref6" />
+                    </Properties>
+                </PropertyLink>
+            </PropertyLinks>
+        </ProcessorLink>
+    </ProcessorLinks>
 </InviwoTreeData>
