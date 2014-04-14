@@ -170,7 +170,85 @@ BasicMesh* BasicMesh::cone(const vec3& start,
     return mesh;
 }
 
+BasicMesh* BasicMesh::cylinder(const vec3& start,
+                               const vec3& stop,
+                               const vec4& color,
+                               const float& radius,
+                               const size_t& segments) {
     
+    BasicMesh* mesh = new BasicMesh();
+    IndexBufferRAM* inds = mesh->addIndexBuffer(TRIANGLES, STRIP);
+
+    BasicMesh* startcap = disk(start, glm::normalize(start-stop), color, radius, segments);
+    BasicMesh* endcap = disk(stop, glm::normalize(stop-start), color, radius, segments);
+    
+    mesh->append(startcap);
+    mesh->append(endcap);
+    
+    delete startcap;
+    delete endcap;
+    
+    vec3 normal = glm::normalize(stop-start);
+    vec3 orth = orthvec(normal);
+    vec3 o;
+    float angle = M_2_PI / segments;
+    float j;
+    for (size_t i = 0; i < segments; ++i) {
+        j = static_cast<float>(i);
+        o = glm::rotate(orth, j * angle, normal);
+        mesh->addVertex(start + radius*o, o, vec3(j/segments,0.0f,0.0f), color);
+        mesh->addVertex(stop + radius*o, o, vec3(j/segments,1.0f,0.0f), color);
+        inds->add(i * 2 + 0);
+        inds->add(i * 2 + 1);
+    }
+    
+    return mesh;
+}
+
+    
+BasicMesh* BasicMesh::arrow(const vec3& start,
+                            const vec3& stop,
+                            const vec4& color,
+                            const float& radius,
+                            const float& arrowfraction,
+                            const float& arrowRadius,
+                            const size_t& segments) {
+    
+    BasicMesh* mesh = new BasicMesh();
+
+    vec3 mid = start + (1-arrowfraction)*(stop-start);
+    BasicMesh* cylinderpart = cylinder(start, mid, color, radius, segments);
+    mesh->append(cylinderpart);
+    delete cylinderpart;
+    
+    BasicMesh* diskpart = disk(mid, start-mid, color, arrowRadius, segments);
+    mesh->append(diskpart);
+    delete diskpart;
+    
+    BasicMesh* conepart = cone(mid, stop, color, arrowRadius, segments);
+    mesh->append(conepart);
+    delete conepart;
+    
+    return mesh;
+}
+    
+BasicMesh* BasicMesh::colorsphere(const vec3& center,
+                                  const float& radius,
+                                  const size_t& segments) {
+   
+    BasicMesh* mesh = new BasicMesh();
+    
+    
+    
+    return mesh;
+}
+
     
 } // namespace
+
+
+
+
+
+
 
