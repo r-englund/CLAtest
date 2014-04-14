@@ -136,13 +136,11 @@ void ImageGL::activateBuffer() {
     //invalidatePBOs();
     frameBufferObject_->activate();
     frameBufferObject_->defineDrawBuffers();
-    //glPushAttrib(GL_VIEWPORT_BIT);
     uvec2 dim = getDimension();
     glViewport(0, 0, dim.x, dim.y);
 }
 
 void ImageGL::deactivateBuffer() {
-    //glPopAttrib();
     frameBufferObject_->deactivate();
 }
 
@@ -171,9 +169,6 @@ bool ImageGL::copyAndResizeRepresentation(DataRepresentation* targetRep) const {
     shader_->setUniform("picking_", pickingUnit.getUnitNumber());
     shader_->setUniform("modelViewProjectionMatrix_", scale);
     glDepthMask(GL_TRUE);
-    /*glDepthFunc(GL_ALWAYS);
-    CanvasGL::renderImagePlaneRect();
-    glDepthFunc(GL_LESS);*/
     target->renderImagePlaneRect();
     shader_->deactivate();
     target->deactivateBuffer();
@@ -203,7 +198,7 @@ bool ImageGL::updateFrom(const ImageGL* source) {
     if (srcFBO->hasStencilAttachment() && tgtFBO->hasStencilAttachment())
         mask |= GL_STENCIL_BUFFER_BIT;
 
-    glBlitFramebuffer(0, 0, sTex->getWidth(), sTex->getHeight(),
+    glBlitFramebufferEXT(0, 0, sTex->getWidth(), sTex->getHeight(),
                          0, 0, tTex->getWidth(), tTex->getHeight(),
                          mask, GL_NEAREST);
     bool pickingCopied = false;
@@ -212,7 +207,7 @@ bool ImageGL::updateFrom(const ImageGL* source) {
         if (srcIDs[i] != GL_NONE && srcIDs[i] == targetIDs[i]) {
             glReadBuffer(srcIDs[i]);
             glDrawBuffer(targetIDs[i]);
-            glBlitFramebuffer(0, 0, sTex->getWidth(), sTex->getHeight(),
+            glBlitFramebufferEXT(0, 0, sTex->getWidth(), sTex->getHeight(),
                                  0, 0, tTex->getWidth(), tTex->getHeight(),
                                  GL_COLOR_BUFFER_BIT, GL_NEAREST);
 
@@ -221,8 +216,8 @@ bool ImageGL::updateFrom(const ImageGL* source) {
         }
     }
 
-    glReadBuffer(GL_COLOR_ATTACHMENT0);
-    glDrawBuffer(GL_COLOR_ATTACHMENT0);
+    glReadBuffer(GL_COLOR_ATTACHMENT0_EXT);
+    glDrawBuffer(GL_COLOR_ATTACHMENT0_EXT);
     srcFBO->setRead_Blit(false);
     tgtFBO->setDraw_Blit(false);
     FrameBufferObject::deactivate();

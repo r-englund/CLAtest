@@ -150,7 +150,6 @@ void CanvasGL::renderLayer() {
 
 void CanvasGL::renderNoise() {
     activate();
-    //FIXME: glViewport should not be here, which indicates this context is not active.
     glViewport(0, 0, dimensions_[0], dimensions_[1]);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
     noiseShader_->activate();
@@ -161,7 +160,6 @@ void CanvasGL::renderNoise() {
 
 void CanvasGL::renderTexture(GLint unitNumber) {
     activate();
-    //FIXME: glViewport should not be here, which indicates this context is not active.
     glViewport(0, 0, dimensions_[0], dimensions_[1]);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
     glEnable(GL_BLEND);

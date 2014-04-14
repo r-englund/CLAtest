@@ -31,6 +31,7 @@
  *********************************************************************************/
 
 #include "processorgl.h"
+#include <modules/opengl/canvasgl.h>
 
 namespace inviwo {
 
@@ -221,29 +222,30 @@ void ProcessorGL::setGlobalShaderParameters(Shader* shader, const std::vector<Ou
     shader->setUniform("screenDim_", screenDimensions);
     shader->setUniform("screenDimRCP_", vec2(1.0f,1.0f)/screenDimensions);
 }
-
-void ProcessorGL::renderImagePlaneRect() {
+void ProcessorGL::enableDrawImagePlaneRect() {
     if(!rectArray_){
         rectArray_ = new BufferObjectArray();
         CanvasGL::attachImagePlanRect(rectArray_);
     }
     glDepthFunc(GL_ALWAYS);
     rectArray_->bind();
-    CanvasGL::singleDrawImagePlaneRect();
+}
+
+void ProcessorGL::disableDrawImagePlaneRect() {
     rectArray_->unbind();
     glDepthFunc(GL_LESS);
 }
 
+void ProcessorGL::renderImagePlaneRect() {
+    enableDrawImagePlaneRect();
+    singleDrawImagePlaneRect();
+    disableDrawImagePlaneRect();
+}
+
 void ProcessorGL::renderImagePlaneRect(int instances) {
-    if(!rectArray_){
-        rectArray_ = new BufferObjectArray();
-        CanvasGL::attachImagePlanRect(rectArray_);
-    }
-    glDepthFunc(GL_ALWAYS);
-    rectArray_->bind();
-    CanvasGL::multiDrawImagePlaneRect(instances);
-    rectArray_->unbind();
-    glDepthFunc(GL_LESS);
+    enableDrawImagePlaneRect();
+    multiDrawImagePlaneRect(instances);
+    disableDrawImagePlaneRect();
 }
 
 // deprecated

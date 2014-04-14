@@ -58,14 +58,6 @@ public:
 
     static void attachImagePlanRect(BufferObjectArray*);
 
-    static inline void enableDrawImagePlaneRect() {
-        screenAlignedRectGL_->enable();
-    }
-
-    static inline void disableDrawImagePlaneRect() {
-        screenAlignedRectGL_->disable();
-    }
-
     static inline void singleDrawImagePlaneRect() {
         glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
     }
@@ -96,6 +88,14 @@ protected:
 
     void drawRect();
     void checkChannels(int);
+
+    static inline void enableDrawImagePlaneRect() {
+        screenAlignedRectGL_->enable();
+    }
+
+    static inline void disableDrawImagePlaneRect() {
+        screenAlignedRectGL_->disable();
+    }
 
 private:
     static bool glewInitialized_;
