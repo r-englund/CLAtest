@@ -45,7 +45,12 @@ public:
                             const float& radius = 1.0f,
                             const float& arrowfraction = 0.15f,
                             const float& arrowRadius = 2.0f,
-                            const size_t& segemnts=16);
+                            const size_t& segments=16);
+
+    static BasicMesh* colorsphere(const vec3& center,
+                                  const float& radius,
+                                  const size_t& segments=16);
+
     
     
 protected:
