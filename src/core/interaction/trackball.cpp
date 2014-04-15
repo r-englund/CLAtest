@@ -254,14 +254,6 @@ void Trackball::rotateCamera(MouseEvent* mouseEvent) {
         vec3 currentCamPos = camera_->getLookFrom();
         vec3 nextCamPos = currentCamPos + mappedTrackBallOffsetVector;
 
-        // FOR DEBUGGING
-        // Draws a line with the trackball x and y. Color with z.
-        //glBegin(GL_LINES);
-        //    glColor3f(1.0f, curTrackballPos.z, 0.0f);
-        //    glVertex3f(0.0f,0,0.0f);
-        //    glVertex3f(curTrackballPos.x, curTrackballPos.y, 0.0f);
-        //glEnd();
-
         // obtain rotation axis
         if (glm::degrees(rotationAngle) > pixelWidth_) {
             //rotation axis
