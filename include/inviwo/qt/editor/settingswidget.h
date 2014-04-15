@@ -49,7 +49,7 @@ public:
     SettingsWidget(QString title, QWidget* parent);
     ~SettingsWidget();
     virtual void generateWidget();
-    virtual void loadSettings();
+    virtual void updateSettingsWidget();
     virtual void saveSettings();
 
 protected:

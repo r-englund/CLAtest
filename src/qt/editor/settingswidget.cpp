@@ -62,11 +62,10 @@ SettingsWidget::~SettingsWidget() {
     }
 }
 
-void SettingsWidget::loadSettings() {
+void SettingsWidget::updateSettingsWidget() {
     std::vector<Settings*> settings = InviwoApplication::getPtr()->getModuleSettings();
 
     for (size_t i=0; i<settings.size(); i++) {
-        settings[i]->loadFromDisk();
         //Holder widget
         QVBoxLayout* vLayout =  new QVBoxLayout();
         vLayout->setSpacing(7);
