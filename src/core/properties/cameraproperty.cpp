@@ -205,8 +205,8 @@ void CameraProperty::deserialize(IvwDeserializer& d) {
 }
 
 void CameraProperty::setInport(Inport* inport) {
-    if (inport_ != inport)
-        inport->onChange(this,&CameraProperty::inportChanged);
+   // if (inport_ != inport)
+     //   inport->onChange(this,&CameraProperty::inportChanged);
 
     inport_ = inport;
 }
