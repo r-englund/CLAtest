@@ -116,8 +116,10 @@ void CanvasGL::resize(uvec2 size) {
     if (imageGL_)
         imageGL_->updateExistingLayers();
 
-    Canvas::resize(size);
+    activate();
     glViewport(0, 0, size[0], size[1]);
+    getNetworkEvaluator()->activateDefaultRenderContext();
+    Canvas::resize(size);
 }
 
 void CanvasGL::glSwapBuffers() {
@@ -150,7 +152,6 @@ void CanvasGL::renderLayer() {
 
 void CanvasGL::renderNoise() {
     activate();
-    glViewport(0, 0, dimensions_[0], dimensions_[1]);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
     noiseShader_->activate();
     drawRect();
@@ -160,15 +161,11 @@ void CanvasGL::renderNoise() {
 
 void CanvasGL::renderTexture(GLint unitNumber) {
     activate();
-    glViewport(0, 0, dimensions_[0], dimensions_[1]);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
-    glEnable(GL_BLEND);
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     shader_->activate();
     shader_->setUniform("tex_", unitNumber);
     drawRect();
     shader_->deactivate();
-    glDisable(GL_BLEND);
     glSwapBuffers();
 }
 
