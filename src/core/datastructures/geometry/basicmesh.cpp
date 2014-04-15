@@ -162,9 +162,9 @@ BasicMesh* BasicMesh::cone(const vec3& start,
                         tc + to*glm::rotate(orth, (j+1) * angle, tn),
                         color);
 
-        inds->add(i * 3 + 0);
-        inds->add(i * 3 + 1);
-        inds->add(i * 3 + 2);
+        inds->add(static_cast<const unsigned int>(i * 3 + 0));
+        inds->add(static_cast<const unsigned int>(i * 3 + 1));
+        inds->add(static_cast<const unsigned int>(i * 3 + 2));
     }
 
     return mesh;
@@ -198,8 +198,8 @@ BasicMesh* BasicMesh::cylinder(const vec3& start,
         o = glm::rotate(orth, j * angle, normal);
         mesh->addVertex(start + radius*o, o, vec3(j/segments,0.0f,0.0f), color);
         mesh->addVertex(stop + radius*o, o, vec3(j/segments,1.0f,0.0f), color);
-        inds->add(i * 2 + 0);
-        inds->add(i * 2 + 1);
+        inds->add(static_cast<const unsigned int>(i * 2 + 0));
+        inds->add(static_cast<const unsigned int>(i * 2 + 1));
     }
     
     return mesh;
