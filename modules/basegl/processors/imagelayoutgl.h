@@ -3,7 +3,7 @@
  * Inviwo - Interactive Visualization Workshop
  * Version 0.6b
  *
- * Copyright (c) 2013-2014 Inviwo Foundation
+ * Copyright (c) 2014 Inviwo Foundation
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -30,43 +30,45 @@
  *
  *********************************************************************************/
 
-#include <modules/basegl/baseglmodule.h>
+#ifndef IVW_IMAGELAYOUTGL_H
+#define IVW_IMAGELAYOUTGL_H
 
-#include <modules/basegl/processors/background.h>
-#include <modules/basegl/processors/drawlinesprocessor.h>
-#include <modules/basegl/processors/entryexitpoints.h>
-#include <modules/basegl/processors/findedges.h>
-#include <modules/basegl/processors/firstivwprocessor.h>
-#include <modules/basegl/processors/imageclassify.h>
-#include <modules/basegl/processors/imagegrayscale.h>
-#include <modules/basegl/processors/imagelayoutgl.h>
-#include <modules/basegl/processors/imagemixer.h>
-#include <modules/basegl/processors/lightingraycaster.h>
-#include <modules/basegl/processors/lightvolumegl.h>
-#include <modules/basegl/processors/positionwidgetprocessor.h>
-#include <modules/basegl/processors/redgreenprocessor.h>
-#include <modules/basegl/processors/simpleraycaster.h>
-#include <modules/basegl/processors/volumeslicegl.h>
+#include <modules/basegl/baseglmoduledefine.h>
+#include <inviwo/core/common/inviwo.h>
+#include <inviwo/core/properties/baseoptionproperty.h>
+#include <inviwo/core/properties/ordinalproperty.h>
+#include <inviwo/core/ports/imageport.h>
+#include <inviwo/core/ports/multidatainport.h>
+#include <modules/opengl/inviwoopengl.h>
+#include <modules/opengl/processorgl.h>
+#include <modules/opengl/glwrap/shader.h>
 
 namespace inviwo {
 
-BaseGLModule::BaseGLModule() : InviwoModule() {
-    setIdentifier("BaseGL");
-    registerProcessor(Background);
-    registerProcessor(DrawLinesProcessor);
-    registerProcessor(EntryExitPoints);
-    registerProcessor(FindEdges);
-    registerProcessor(FirstIvwProcessor);
-    registerProcessor(ImageClassify);
-    registerProcessor(ImageGrayscale);
-    registerProcessor(ImageLayoutGL);
-    registerProcessor(ImageMixer);
-    registerProcessor(LightingRaycaster);
-    registerProcessor(LightVolumeGL);
-    registerProcessor(PositionWidgetProcessor);
-    registerProcessor(RedGreenProcessor);
-    registerProcessor(SimpleRaycaster);
-    registerProcessor(VolumeSliceGL);
-}
+class IVW_MODULE_BASEGL_API ImageLayoutGL : public ProcessorGL {
+public:
+    ImageLayoutGL();
+    ~ImageLayoutGL();
+
+    InviwoProcessorInfo();
+
+    void initialize();
+    void deinitialize();
+
+protected:
+    void process();
+
+private:
+    MultiDataInport<Image, ImageInport> multiinport_;
+    ImageOutport outport_;
+
+    OptionPropertyInt layout_;
+    FloatProperty horizontalSplitter_;
+    FloatProperty verticalSplitter_;
+
+    Shader* shader_;
+};
 
 } // namespace
+
+#endif // IVW_IMAGELAYOUTGL_H

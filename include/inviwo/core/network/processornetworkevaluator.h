@@ -80,7 +80,7 @@ private:
 
     bool hasBeenVisited(Processor* processor);
     bool hasBeenVisited(Property* property);
-    std::set<Processor*> getDirectPredecessors(Processor* processor);
+    std::set<Processor*> getDirectPredecessors(Processor* processor, Event* event = NULL);
     void traversePredecessors(Processor* processor);
     void determineProcessingOrder();
 

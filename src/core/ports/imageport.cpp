@@ -44,7 +44,8 @@ ImageInport::ImageInport(std::string identifier,
                          PropertyOwner::InvalidationLevel invalidationLevel)
     : DataInport<Image>(identifier, invalidationLevel)
     , dimensions_(uvec2(256,256))
-    , outportDeterminesSize_(outportDeterminesSize) {
+    , outportDeterminesSize_(outportDeterminesSize)
+    , resizeScale_(vec2(1.f,1.f)) {
 }
 
 ImageInport::~ImageInport() {}
@@ -99,6 +100,14 @@ void ImageInport::propagateResizeToPredecessor(ResizeEvent* resizeEvent) {
         ImageOutport* imageOutport = static_cast<ImageOutport*>(getConnectedOutport());
         imageOutport->changeDataDimensions(resizeEvent);
     }
+}
+
+void ImageInport::setResizeScale(vec2 scaling){
+    resizeScale_ = scaling;
+}
+
+vec2 ImageInport::getResizeScale(){
+    return resizeScale_;
 }
 
 uvec2 ImageInport::getDimension() const {
@@ -196,17 +205,21 @@ void ImageOutport::propagateResizeEventToPredecessor(ResizeEvent* resizeEvent) {
     std::vector<Inport*> inPorts = processor->getInports();
 
     bool propagationEnded = true;
+    uvec2 size = resizeEvent->size();
+    uvec2 prevSize = resizeEvent->previousSize();
     for (size_t i=0; i<inPorts.size(); i++) {
         if (equalColorCode(inPorts[i])) {
             propagationEnded = false;
             ImageInport* imageInport = static_cast<ImageInport*>(inPorts[i]);
-            imageInport->changeDataDimensions(resizeEvent);
+            imageInport->changeDataDimensions(scaleResizeEvent(imageInport, resizeEvent));
+            resizeEvent->setSize(size);
+            resizeEvent->setPreviousSize(prevSize);
         }
     }
 
     if(propagationEnded){
         processor->invalidate(PropertyOwner::INVALID_OUTPUT);
-        invalidate(PropertyOwner::INVALID_OUTPUT);
+        //invalidate(PropertyOwner::INVALID_OUTPUT);
     }
 }
 
@@ -423,6 +436,14 @@ void ImageOutport::setDimension(const uvec2& newDimension) {
     dataChanged();
     // Set new dimension
     DataOutport<Image>::getData()->resize(newDimension);
+}
+
+ResizeEvent* ImageOutport::scaleResizeEvent(ImageInport* imageInport, ResizeEvent* sizeEvent){
+    vec2 scale = imageInport->getResizeScale();
+    sizeEvent->setPreviousSize(imageInport->getDimension());
+    sizeEvent->setSize(uvec2(static_cast<unsigned int>(static_cast<float>(sizeEvent->size().x*scale.x)),
+        static_cast<unsigned int>(static_cast<float>(sizeEvent->size().y*scale.y))));
+    return sizeEvent;
 }
 
 } // namespace
