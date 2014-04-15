@@ -172,6 +172,9 @@ void VolumeSliceGL::tfMappingEnabledChanged() {
 }
 
 void VolumeSliceGL::volumeDimensionChanged() {
+    if (inport_.getData() == NULL) {
+        return;
+    }
     uvec3 dims = inport_.getData()->getDimension();
     switch (coordinatePlane_.get())
     {
