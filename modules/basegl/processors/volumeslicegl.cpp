@@ -172,21 +172,29 @@ void VolumeSliceGL::tfMappingEnabledChanged() {
 }
 
 void VolumeSliceGL::volumeDimensionChanged() {
-    switch (coordinatePlane_.get()) {
-        case XY:
-            sliceNumber_.setMaxValue(static_cast<int>(volumeDimensions_.z));
-            sliceNumber_.set(static_cast<int>(volumeDimensions_.z)/2);
-            break;
+    uvec3 dims = inport_.getData()->getDimension();
+    switch (coordinatePlane_.get())
+    {
+    case XY:
+        if(dims.z!=sliceNumber_.getMaxValue()){
+            sliceNumber_.setMaxValue(static_cast<int>(dims.z));
+            sliceNumber_.set(static_cast<int>(dims.z)/2);
+        }
+        break;
 
-        case XZ:
-            sliceNumber_.setMaxValue(static_cast<int>(volumeDimensions_.y));
-            sliceNumber_.set(static_cast<int>(volumeDimensions_.y)/2);
-            break;
+    case XZ:
+        if(dims.y!=sliceNumber_.getMaxValue()){
+            sliceNumber_.setMaxValue(static_cast<int>(dims.y));
+            sliceNumber_.set(static_cast<int>(dims.y)/2);
+        }
+        break;
 
-        case YZ:
-            sliceNumber_.setMaxValue(static_cast<int>(volumeDimensions_.x));
-            sliceNumber_.set(static_cast<int>(volumeDimensions_.x)/2);
-            break;
+    case YZ:
+        if(dims.x!=sliceNumber_.getMaxValue()){
+            sliceNumber_.setMaxValue(static_cast<int>(dims.x));
+            sliceNumber_.set(static_cast<int>(dims.x)/2);
+        }
+        break;
     }
 }
 
