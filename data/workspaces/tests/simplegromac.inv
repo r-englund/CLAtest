@@ -2,10 +2,10 @@
 <InviwoTreeData version="1.0">
     <!-- Don't edit the following code -->
     <Processors>
-        <Processor type="Gromacs source" identifier="Gromacs source" id="ref2">
+        <Processor type="Gromacs source" identifier="Gromacs source" id="ref7">
             <MetaDataList>
                 <MetaData type="ProcessorMetaData">
-                    <position x="-550" y="-700" />
+                    <position x="-525" y="-725" />
                     <visibility content="1" />
                     <selection content="0" />
                 </MetaData>
@@ -23,74 +23,148 @@
                 <Property type="IntProperty" identifier="timeStepOffset" displayName="Time Step Offset" key="timeStepOffset" />
             </Properties>
         </Processor>
-        <Processor type="Gromacs to geometry" identifier="Gromacs to geometry" id="ref5">
+        <Processor type="GromacsStaticAdditionalInfo" identifier="GromacsStaticAdditionalInfo" id="ref4">
             <MetaDataList>
                 <MetaData type="ProcessorMetaData">
-                    <position x="-550" y="-625" />
-                    <visibility content="1" />
-                    <selection content="1" />
-                </MetaData>
-            </MetaDataList>
-            <Properties>
-                <Property type="FloatVec3Property" identifier="boundingBox" displayName="Bounding Box" key="boundingBox">
-                    <readonly content="1" />
-                    <value x="43.200001" y="2.3383" z="32.400002" />
-                </Property>
-                <Property type="IntProperty" identifier="timeStep" displayName="Time Step" key="timeStep" id="ref6">
-                    <maxvalue content="100" />
-                    <value content="95" />
-                </Property>
-            </Properties>
-        </Processor>
-        <Processor type="CanvasGL" identifier="CanvasGL" id="ref3">
-            <MetaDataList>
-                <MetaData type="ProcessorMetaData">
-                    <position x="-550" y="-400" />
+                    <position x="-350" y="-725" />
                     <visibility content="1" />
                     <selection content="0" />
                 </MetaData>
-                <MetaData type="ProcessorWidgetMetaData">
-                    <position x="871" y="223" />
-                    <dimension x="451" y="431" />
-                    <visibility content="1" />
-                </MetaData>
             </MetaDataList>
             <Properties>
-                <Property type="IntVec2Property" identifier="dimensions" displayName="Dimensions" key="dimensions">
-                    <value x="451" y="431" />
-                </Property>
-                <Property type="DirectoryProperty" identifier="layerDir" displayName="Output Directory" key="layerDir">
-                    <directory content="../../images" />
-                </Property>
-                <Property type="ButtonProperty" identifier="saveLayer" displayName="Save Image Layer" key="saveLayer" />
-                <Property type="BaseOptionProperty" identifier="visibleLayer" displayName="Visible Layer" key="visibleLayer">
+                <Property type="BaseOptionProperty" identifier="colorScale" displayName="Color Scale" key="colorScale">
                     <options>
                         <option>
-                            <id content="color" />
-                            <name content="Color layer" />
-                            <value content="0" />
+                            <id content="Random" />
+                            <name content="Random" />
+                            <value content="Random" />
                         </option>
                         <option>
-                            <id content="depth" />
-                            <name content="Depth layer" />
-                            <value content="1" />
+                            <id content="RWB" />
+                            <name content="RWB" />
+                            <value content="RWB" />
                         </option>
                         <option>
-                            <id content="picking" />
-                            <name content="Picking layer" />
-                            <value content="2" />
+                            <id content="BWR" />
+                            <name content="BWR" />
+                            <value content="BWR" />
+                        </option>
+                        <option>
+                            <id content="RGrB" />
+                            <name content="RGrB" />
+                            <value content="RGrB" />
+                        </option>
+                        <option>
+                            <id content="BGrR" />
+                            <name content="BGrR" />
+                            <value content="BGrR" />
+                        </option>
+                        <option>
+                            <id content="RGB" />
+                            <name content="RGB" />
+                            <value content="RGB" />
+                        </option>
+                        <option>
+                            <id content="BGR" />
+                            <name content="BGR" />
+                            <value content="BGR" />
+                        </option>
+                        <option>
+                            <id content="RWG" />
+                            <name content="RWG" />
+                            <value content="RWG" />
+                        </option>
+                        <option>
+                            <id content="GWR" />
+                            <name content="GWR" />
+                            <value content="GWR" />
+                        </option>
+                        <option>
+                            <id content="GWB" />
+                            <name content="GWB" />
+                            <value content="GWB" />
+                        </option>
+                        <option>
+                            <id content="BWG" />
+                            <name content="BWG" />
+                            <value content="BWG" />
+                        </option>
+                        <option>
+                            <id content="BlkW" />
+                            <name content="BlkW" />
+                            <value content="BlkW" />
+                        </option>
+                        <option>
+                            <id content="WBlk" />
+                            <name content="WBlk" />
+                            <value content="WBlk" />
                         </option>
                     </options>
-                    <selectedIdentifier content="color" />
+                    <selectedIdentifier content="BWR" />
+                </Property>
+                <Property type="FileProperty" identifier="fileName" displayName="Gromacs static info file" key="fileName">
+                    <url content="" />
+                    <nameFilter>
+                        <filter content="All Files (*.*)" />
+                        <filter content="Static Additional Gromacs Info (*.sag)" />
+                    </nameFilter>
+                    <acceptMode content="0" />
+                    <fileMode content="0" />
+                </Property>
+                <Property type="IntProperty" identifier="maximumCBuffer" displayName="Maximum Color Buffer Size" key="maximumCBuffer">
+                    <value content="64" />
                 </Property>
             </Properties>
         </Processor>
-        <Processor type="SpriteGeometryGLProcessor" identifier="SpriteGeometryGLProcessor" id="ref4">
+        <Processor type="Gromacs to geometry" identifier="Gromacs to geometry" id="ref8">
             <MetaDataList>
                 <MetaData type="ProcessorMetaData">
-                    <position x="-550" y="-550" />
+                    <position x="-425" y="-625" />
                     <visibility content="1" />
                     <selection content="0" />
+                </MetaData>
+            </MetaDataList>
+            <Properties>
+                <Property type="FloatVec3Property" identifier="boundingBox" displayName="Bounding Box" key="boundingBox" id="ref10">
+                    <readonly content="1" />
+                    <value x="2.460345" y="2.48455" z="1.7792449" />
+                </Property>
+                <Property type="IntProperty" identifier="timeStep" displayName="Time Step" key="timeStep" id="ref9">
+                    <maxvalue content="0" />
+                </Property>
+            </Properties>
+        </Processor>
+        <Processor type="Occlusion Density Volume" identifier="Occlusion Density Volume" id="ref1">
+            <MetaDataList>
+                <MetaData type="ProcessorMetaData">
+                    <position x="-400" y="-550" />
+                    <visibility content="1" />
+                    <selection content="0" />
+                </MetaData>
+            </MetaDataList>
+            <Properties>
+                <Property type="FloatVec3Property" identifier="boundingBoxll" displayName="Bounding Box (LL)" key="boundingBoxll">
+                    <value x="-0.30934501" y="-0.31054997" z="-0.24024504" />
+                </Property>
+                <Property type="FloatVec3Property" identifier="boundingBoxur" displayName="Bounding Box (UR)" key="boundingBoxur" id="ref2">
+                    <value x="2.460345" y="2.48455" z="1.7792449" />
+                </Property>
+                <Property type="IntProperty" identifier="cachesize" displayName="Cache Size" key="cachesize" />
+                <Property type="ButtonProperty" identifier="clearcache" displayName="Clear Cache" key="clearcache" />
+                <Property type="ButtonProperty" identifier="computeboundingbox" displayName="Compute Bounding Box" key="computeboundingbox" />
+                <Property type="IntVec3Property" identifier="densityvolumeresolution" displayName="Density Volume Resolution" key="densityvolumeresolution">
+                    <value x="8" y="8" z="8" />
+                </Property>
+                <Property type="ButtonProperty" identifier="expandboundingbox" displayName="Expand Bounding Box" key="expandboundingbox" />
+                <Property type="ButtonProperty" identifier="recomputevolume" displayName="Recompute Volume Density" key="recomputevolume" />
+            </Properties>
+        </Processor>
+        <Processor type="AOSpriteGeometryGLProcessor" identifier="AOSpriteGeometryGLProcessor" id="ref5">
+            <MetaDataList>
+                <MetaData type="ProcessorMetaData">
+                    <position x="-425" y="-475" />
+                    <visibility content="1" />
+                    <selection content="1" />
                 </MetaData>
             </MetaDataList>
             <InteractonHandlers>
@@ -217,22 +291,71 @@
                 </InteractionHandler>
             </InteractonHandlers>
             <Properties>
+                <Property type="FloatProperty" identifier="aoIntensity" displayName="AO Intensity" key="aoIntensity">
+                    <value content="0.49752298" />
+                </Property>
                 <Property type="CameraProperty" identifier="camera" displayName="Camera" key="camera">
                     <lookFrom type="FloatVec3Property" identifier="lookFrom" displayName="Look from">
-                        <value x="114.14758" y="-34.91967" z="34.607258" />
+                        <value x="5.1545062" y="5.4570765" z="-4.454433" />
                     </lookFrom>
-                    <lookTo type="FloatVec3Property" identifier="lookTo" displayName="Look to" />
+                    <lookTo type="FloatVec3Property" identifier="lookTo" displayName="Look to">
+                        <value x="1.151" y="1.174" z="0.53900003" />
+                    </lookTo>
                     <lookUp type="FloatVec3Property" identifier="lookUp" displayName="Look up">
-                        <value x="-0.2232132" y="0.21303864" z="0.95120198" />
+                        <value x="-0.73903728" y="0.13459048" z="-0.66008407" />
                     </lookUp>
                     <fovy type="FloatProperty" identifier="fov" displayName="FOV" />
                     <aspectRatio type="FloatProperty" identifier="aspectRatio" displayName="Aspect Ratio" />
-                    <nearPlane type="FloatProperty" identifier="near" displayName="Near Plane">
-                        <value content="0.12898719" />
-                    </nearPlane>
-                    <farPlane type="FloatProperty" identifier="far" displayName="Far Plane">
-                        <value content="668.03229" />
-                    </farPlane>
+                    <nearPlane type="FloatProperty" identifier="near" displayName="Near Plane" />
+                    <farPlane type="FloatProperty" identifier="far" displayName="Far Plane" />
+                </Property>
+                <Property type="ButtonProperty" identifier="centerView" displayName="Center view on geometry" key="centerView" />
+                <Property type="BaseOptionProperty" identifier="cullFace" displayName="Cull Face" key="cullFace">
+                    <options>
+                        <option>
+                            <id content="culldisable" />
+                            <name content="Disable" />
+                            <value content="0" />
+                        </option>
+                        <option>
+                            <id content="cullfront" />
+                            <name content="Front" />
+                            <value content="1028" />
+                        </option>
+                        <option>
+                            <id content="cullback" />
+                            <name content="Back" />
+                            <value content="1029" />
+                        </option>
+                        <option>
+                            <id content="cullfrontback" />
+                            <name content="Front &amp; Back" />
+                            <value content="1032" />
+                        </option>
+                    </options>
+                    <selectedIdentifier content="culldisable" />
+                </Property>
+                <Property type="BoolProperty" identifier="enableSpecular" displayName="Enable Specular" key="enableSpecular" />
+                <Property type="BoolProperty" identifier="enableao" displayName="Enable AO" key="enableao" />
+                <Property type="BaseOptionProperty" identifier="polygonMode" displayName="Polygon Mode" key="polygonMode">
+                    <options>
+                        <option>
+                            <id content="polypoint" />
+                            <name content="Points" />
+                            <value content="6912" />
+                        </option>
+                        <option>
+                            <id content="polyline" />
+                            <name content="Lines" />
+                            <value content="6913" />
+                        </option>
+                        <option>
+                            <id content="polyfill" />
+                            <name content="Fill" />
+                            <value content="6914" />
+                        </option>
+                    </options>
+                    <selectedIdentifier content="polyfill" />
                 </Property>
                 <Property type="BaseOptionProperty" identifier="rendermode" displayName="Render Mode" key="rendermode">
                     <options>
@@ -252,17 +375,21 @@
                             <value content="2" />
                         </option>
                     </options>
-                    <selectedIdentifier content="regular-sprites" />
+                    <selectedIdentifier content="fov-aware-glyph" />
+                </Property>
+                <Property type="ButtonProperty" identifier="resetView" displayName="Reset Camera" key="resetView" />
+                <Property type="BoolProperty" identifier="showAOOnly" displayName="Show AO only" key="showAOOnly">
+                    <value content="1" />
                 </Property>
                 <Property type="FloatProperty" identifier="sphereRadius" displayName="Sphere Radius" key="sphereRadius">
-                    <value content="0.1999801" />
+                    <value content="0.1179883" />
                 </Property>
             </Properties>
         </Processor>
-        <Processor type="Background" identifier="Background" id="ref0">
+        <Processor type="Background" identifier="Background" id="ref3">
             <MetaDataList>
                 <MetaData type="ProcessorMetaData">
-                    <position x="-550" y="-475" />
+                    <position x="-425" y="-400" />
                     <visibility content="1" />
                     <selection content="0" />
                 </MetaData>
@@ -277,18 +404,61 @@
                 <Property type="FloatVec4Property" identifier="color2" displayName="Color 2" key="color2" />
             </Properties>
         </Processor>
+        <Processor type="CanvasGL" identifier="CanvasGL" id="ref0">
+            <MetaDataList>
+                <MetaData type="ProcessorMetaData">
+                    <position x="-425" y="-325" />
+                    <visibility content="1" />
+                    <selection content="0" />
+                </MetaData>
+                <MetaData type="ProcessorWidgetMetaData">
+                    <position x="255" y="293" />
+                    <dimension x="512" y="512" />
+                    <visibility content="1" />
+                </MetaData>
+            </MetaDataList>
+            <Properties>
+                <Property type="IntVec2Property" identifier="dimensions" displayName="Dimensions" key="dimensions">
+                    <value x="512" y="512" />
+                </Property>
+                <Property type="DirectoryProperty" identifier="layerDir" displayName="Output Directory" key="layerDir">
+                    <directory content="../../images" />
+                </Property>
+                <Property type="ButtonProperty" identifier="saveLayer" displayName="Save Image Layer" key="saveLayer" />
+                <Property type="BaseOptionProperty" identifier="visibleLayer" displayName="Visible Layer" key="visibleLayer">
+                    <options>
+                        <option>
+                            <id content="color" />
+                            <name content="Color layer" />
+                            <value content="0" />
+                        </option>
+                        <option>
+                            <id content="depth" />
+                            <name content="Depth layer" />
+                            <value content="1" />
+                        </option>
+                        <option>
+                            <id content="picking" />
+                            <name content="Picking layer" />
+                            <value content="2" />
+                        </option>
+                    </options>
+                    <selectedIdentifier content="color" />
+                </Property>
+            </Properties>
+        </Processor>
         <Processor type="Timer Processor" identifier="Timer Processor">
             <MetaDataList>
                 <MetaData type="ProcessorMetaData">
-                    <position x="-750" y="-625" />
+                    <position x="-225" y="-625" />
                     <visibility content="1" />
                     <selection content="0" />
                 </MetaData>
             </MetaDataList>
             <Properties>
                 <Property type="FloatProperty" identifier="incrementfloat" displayName="Increment (Float)" key="incrementfloat" />
-                <Property type="IntProperty" identifier="incrementint" displayName="Increment (Int)" key="incrementint" id="ref1">
-                    <maxvalue content="10" />
+                <Property type="IntProperty" identifier="incrementint" displayName="Increment (Int)" key="incrementint" id="ref6">
+                    <maxvalue content="256" />
                 </Property>
                 <Property type="IntProperty" identifier="intervalinteger" displayName="Interval (ms)" key="intervalinteger" />
                 <Property type="ButtonProperty" identifier="pause" displayName="Pause Timer" key="pause" />
@@ -299,35 +469,59 @@
     </Processors>
     <Connections>
         <Connection>
-            <OutPort identifier="gromacs">
-                <Processor type="Gromacs source" identifier="Gromacs source" reference="ref2" />
+            <OutPort identifier="image.outport">
+                <Processor type="AOSpriteGeometryGLProcessor" identifier="AOSpriteGeometryGLProcessor" reference="ref5" />
             </OutPort>
-            <InPort identifier="gromacs">
-                <Processor type="Gromacs to geometry" identifier="Gromacs to geometry" reference="ref5" />
+            <InPort identifier="inport">
+                <Processor type="Background" identifier="Background" reference="ref3" />
+            </InPort>
+        </Connection>
+        <Connection>
+            <OutPort identifier="outport">
+                <Processor type="Background" identifier="Background" reference="ref3" />
+            </OutPort>
+            <InPort identifier="inport">
+                <Processor type="CanvasGL" identifier="CanvasGL" reference="ref0" />
+            </InPort>
+        </Connection>
+        <Connection>
+            <OutPort identifier="gromacs">
+                <Processor type="Gromacs source" identifier="Gromacs source" reference="ref7" />
+            </OutPort>
+            <InPort identifier="gromacs.timestep">
+                <Processor type="Gromacs to geometry" identifier="Gromacs to geometry" reference="ref8" />
+            </InPort>
+        </Connection>
+        <Connection>
+            <OutPort identifier="gromacs.staticinfo">
+                <Processor type="GromacsStaticAdditionalInfo" identifier="GromacsStaticAdditionalInfo" reference="ref4" />
+            </OutPort>
+            <InPort identifier="gromacs.staticInfo">
+                <Processor type="Gromacs to geometry" identifier="Gromacs to geometry" reference="ref8" />
             </InPort>
         </Connection>
         <Connection>
             <OutPort identifier="geometry">
-                <Processor type="Gromacs to geometry" identifier="Gromacs to geometry" reference="ref5" />
+                <Processor type="Gromacs to geometry" identifier="Gromacs to geometry" reference="ref8" />
             </OutPort>
-            <InPort identifier="geometryInport">
-                <Processor type="SpriteGeometryGLProcessor" identifier="SpriteGeometryGLProcessor" reference="ref4" />
+            <InPort identifier="geometry.inport">
+                <Processor type="AOSpriteGeometryGLProcessor" identifier="AOSpriteGeometryGLProcessor" reference="ref5" />
             </InPort>
         </Connection>
         <Connection>
-            <OutPort identifier="outport">
-                <Processor type="SpriteGeometryGLProcessor" identifier="SpriteGeometryGLProcessor" reference="ref4" />
+            <OutPort identifier="volumeout">
+                <Processor type="Occlusion Density Volume" identifier="Occlusion Density Volume" reference="ref1" />
             </OutPort>
-            <InPort identifier="inport">
-                <Processor type="Background" identifier="Background" reference="ref0" />
+            <InPort identifier="densityvolume.inport">
+                <Processor type="AOSpriteGeometryGLProcessor" identifier="AOSpriteGeometryGLProcessor" reference="ref5" />
             </InPort>
         </Connection>
         <Connection>
-            <OutPort identifier="outport">
-                <Processor type="Background" identifier="Background" reference="ref0" />
+            <OutPort identifier="geometry">
+                <Processor type="Gromacs to geometry" identifier="Gromacs to geometry" reference="ref8" />
             </OutPort>
-            <InPort identifier="inport">
-                <Processor type="CanvasGL" identifier="CanvasGL" reference="ref3" />
+            <InPort identifier="geometryin">
+                <Processor type="Occlusion Density Volume" identifier="Occlusion Density Volume" reference="ref1" />
             </InPort>
         </Connection>
     </Connections>
@@ -336,8 +530,24 @@
             <PropertyLinks>
                 <PropertyLink>
                     <Properties>
-                        <Property type="IntProperty" identifier="incrementint" displayName="Increment (Int)" key="incrementint" reference="ref1" />
-                        <Property type="IntProperty" identifier="timeStep" displayName="Time Step" key="timeStep" reference="ref6" />
+                        <Property type="FloatVec3Property" identifier="boundingBox" displayName="Bounding Box" key="boundingBox" reference="ref10" />
+                        <Property type="FloatVec3Property" identifier="boundingBoxur" displayName="Bounding Box (UR)" key="boundingBoxur" reference="ref2" />
+                    </Properties>
+                </PropertyLink>
+                <PropertyLink>
+                    <Properties>
+                        <Property type="FloatVec3Property" identifier="boundingBoxur" displayName="Bounding Box (UR)" key="boundingBoxur" reference="ref2" />
+                        <Property type="FloatVec3Property" identifier="boundingBox" displayName="Bounding Box" key="boundingBox" reference="ref10" />
+                    </Properties>
+                </PropertyLink>
+            </PropertyLinks>
+        </ProcessorLink>
+        <ProcessorLink>
+            <PropertyLinks>
+                <PropertyLink>
+                    <Properties>
+                        <Property type="IntProperty" identifier="incrementint" displayName="Increment (Int)" key="incrementint" reference="ref6" />
+                        <Property type="IntProperty" identifier="timeStep" displayName="Time Step" key="timeStep" reference="ref9" />
                     </Properties>
                 </PropertyLink>
             </PropertyLinks>
