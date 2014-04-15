@@ -90,6 +90,7 @@ void Canvas::resize(uvec2 size) {
     dimensions_ = size;
 
     if (processorNetworkEvaluator_) {
+        processorNetworkEvaluator_->activateDefaultRenderContext();
         ResizeEvent* resizeEvent = new ResizeEvent(dimensions_);
         resizeEvent->setPreviousSize(previousDimensions);
         processorNetworkEvaluator_->propagateResizeEvent(this, resizeEvent);
