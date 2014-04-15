@@ -414,9 +414,6 @@ void ProcessorNetworkEvaluator::evaluate() {
 
                 // do the actual processing
                 (*it)->process();
-
-                //re-activate context, as it could have changed
-                activateDefaultRenderContext();
             }
         }
     }

@@ -109,8 +109,15 @@ void InviwoApplication::initialize(registerModuleFuncPtr regModuleFunc) {
     registerModule(new InviwoCore());
     (*regModuleFunc)(this);
 
+    //initialize modules
     for (size_t i = 0; i < modules_.size(); i++)
         modules_[i]->initialize();
+
+    //load settings
+    std::vector<Settings*> settings = getModuleSettings();
+    for (std::vector<Settings*>::iterator it = settings.begin(); it!=settings.end(); ++it) {
+        (*it)->loadFromDisk();
+    }
 
     initialized_ = true;
 }
