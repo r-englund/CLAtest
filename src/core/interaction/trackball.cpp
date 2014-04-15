@@ -156,14 +156,6 @@ void Trackball::invokeEvent(Event* event) {
     MouseEvent* mouseEvent = dynamic_cast<MouseEvent*>(event);
     KeyboardEvent* keyEvent = dynamic_cast<KeyboardEvent*>(event);
 
-    // FOR DEBUGGING
-    // Draws the camera direction. Should only be seen as a single white pixel in a perfect world
-    //glBegin(GL_LINES);
-    //    glColor3f(1.0f,1.0f,1.0f);
-    //    glVertex3f(camera_->lookTo().x, camera_->lookTo().y, camera_->lookTo().z);
-    //    glVertex3f(camera_->lookFrom().x, camera_->lookFrom().y, camera_->lookFrom().z);
-    //glEnd();
-
     if (keyEvent) {
         int button = keyEvent->button();
         KeyboardEvent::KeyState state = keyEvent->state();
