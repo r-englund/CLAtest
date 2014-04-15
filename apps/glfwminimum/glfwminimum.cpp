@@ -96,7 +96,7 @@ int main(int argc, char** argv) {
     std::vector<Processor*> processors = processorNetwork.getProcessors();
     int i=0;
 
-    for (std::vector<Processor*>::iterator it = processors.begin(); it!=processors.end(); it++) {
+    for (std::vector<Processor*>::iterator it = processors.begin(); it!=processors.end(); ++it) {
         (*it)->invalidate(PropertyOwner::INVALID_RESOURCES);
         CanvasProcessor* canvasProcessor = dynamic_cast<CanvasProcessor*>((*it));
 

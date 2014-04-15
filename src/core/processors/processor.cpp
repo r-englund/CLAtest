@@ -154,6 +154,10 @@ const std::vector<Outport*>& Processor::getOutports() const {
     return outports_;
 }
 
+const std::vector<Inport*>& Processor::getInports(Event*) const {
+    return inports_;
+}
+
 std::vector<Port*> Processor::getPortsByDependencySet(std::string portDependencySet) const {
     return portDependencySets_.getGroupedData(portDependencySet);
 }

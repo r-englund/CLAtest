@@ -42,8 +42,6 @@
 
 namespace inviwo {
 
-class CanvasProcessor;
-
 class IVW_CORE_API ImageInport : public DataInport<Image> {
 
 public:
@@ -63,11 +61,16 @@ public:
     static uvec3 colorCode;
     virtual std::string getClassName() const {return "ImageInport";}
     virtual std::string getContentInfo() const;
+
+    void setResizeScale(vec2);
+    vec2 getResizeScale();
+
 protected:
     void propagateResizeToPredecessor(ResizeEvent* resizeEvent);
 
 private:
     uvec2 dimensions_;
+    vec2 resizeScale_;
     bool outportDeterminesSize_;
 };
 
@@ -127,7 +130,7 @@ protected:
     Image* getResizedImageData(uvec2 dimensions);
     void setLargestImageData(ResizeEvent* resizeEvent);
     void propagateResizeEventToPredecessor(ResizeEvent* resizeEvent);
-
+    ResizeEvent* scaleResizeEvent(ImageInport*, ResizeEvent*);
     void updateInputSources();
 
 private:

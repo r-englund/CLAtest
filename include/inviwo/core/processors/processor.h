@@ -97,6 +97,9 @@ public:
 
     const std::vector<Inport*>& getInports() const;
     const std::vector<Outport*>& getOutports() const;
+
+    virtual const std::vector<Inport*>& getInports(Event*) const;
+
     std::vector<std::string> getPortDependencySets() const;
     std::vector<Port*> getPortsByDependencySet(std::string portDependencySet) const;
     std::string getPortDependencySet(Port* port) const;
