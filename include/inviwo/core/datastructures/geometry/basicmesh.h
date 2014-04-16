@@ -16,6 +16,8 @@ public:
     void addVertex(vec3 pos, vec3 normal, vec3 texCoord, vec4 color);
     IndexBufferRAM* addIndexBuffer(RenderType rt, ConnectivityType ct);
 
+    virtual std::string getDataInfo() const;
+
     const Position3dBuffer* getVertices() const;
     const TexCoord3dBuffer* getTexCoords() const;
     const ColorBuffer* getColors() const;
@@ -48,15 +50,18 @@ public:
                             const size_t& segments=16);
 
     static BasicMesh* colorsphere(const vec3& center,
-                                  const float& radius,
-                                  const size_t& segments=16);
+                                  const float& radius);
+
+
+    static BasicMesh* coordindicator(const vec3& center,
+                                     const float& size);
 
     
     
 protected:
     static vec3 orthvec(const vec3& vec);
     static vec3 calcnormal(const vec3& r, const vec3& p);
-
+    static vec3 tospherical(const vec2& v);
 
     Position3dBuffer* vertices_;
     TexCoord3dBuffer* texCoords_;

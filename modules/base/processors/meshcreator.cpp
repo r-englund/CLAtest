@@ -32,6 +32,7 @@
 
 #include "meshcreator.h"
 #include <inviwo/core/datastructures/geometry/simplemeshcreator.h>
+#include <inviwo/core/datastructures/geometry/basicmesh.h>
 
 namespace inviwo {
 
@@ -43,11 +44,17 @@ MeshCreator::MeshCreator()
     : Processor(),
       outport_("outport"),
       meshScale_("scale", "Size scaling", 1.f, 0.01f, 10.f),
-      meshType_("meshType", "Mesh Type")
-{
+      meshType_("meshType", "Mesh Type") {
+
     addPort(outport_);
     meshType_.addOption("cube", "Cube");
     meshType_.addOption("sphere", "Sphere");
+    meshType_.addOption("coord", "Coordinate Indicator");
+    meshType_.addOption("disk", "Disk");
+    meshType_.addOption("cone", "Cone");
+    meshType_.addOption("cylinder", "Cyinder");
+    meshType_.addOption("arrow", "Arrow");
+    meshType_.addOption("colorsphere", "Color Sphere");
     meshType_.set("sphere");
     meshType_.setCurrentStateAsDefault();
     addProperty(meshType_);
@@ -64,14 +71,52 @@ void MeshCreator::deinitialize() {
     Processor::deinitialize();
 }
 
-SimpleMesh* MeshCreator::createMesh() {
-    if (meshType_.get() == "sphere") {
-        return SimpleMeshCreator::sphere(0.5f*meshScale_.get(), 8, 16);
-    }
-    else {
+Mesh* MeshCreator::createMesh() {
+    switch (meshType_.getSelectedIndex()) {
+    case 0: { // Cube
         vec3 posLLF = vec3(0.0f);
         vec3 posURB = vec3(1.0f)*meshScale_.get();
         return SimpleMeshCreator::rectangularPrism(posLLF, posURB, posLLF, posURB, vec4(posLLF, 1.f), vec4(posURB, 1.f));
+        break;
+    }
+    case 1: // Sphere
+        return SimpleMeshCreator::sphere(0.5f*meshScale_.get(), 8, 16);
+        break;
+    case 2: // Coord indicator
+        return BasicMesh::coordindicator(vec3(0.0f, 0.0f, 0.0f), meshScale_.get());
+        break;
+    case 3: // Disk
+        return BasicMesh::disk(vec3(0.0f, 0.0f, 0.0f), 
+                               vec3(0.0f, 0.0f, 1.0f), 
+                               vec4(1.0f,0.0f,0.0f,1.0f),
+                               meshScale_.get());
+        break;
+    case 4: // Cone
+        return BasicMesh::cone(vec3(0.0f, 0.0f, -meshScale_.get()), 
+                               vec3(0.0f, 0.0f, meshScale_.get()), 
+                               vec4(1.0f, 0.0f, 0.0f, 1.0f), 
+                               meshScale_.get());
+        break;
+    case 5: // Cylinder
+        return BasicMesh::cylinder(vec3(0.0f, 0.0f, -3*meshScale_.get()),
+                                   vec3(0.0f, 0.0f, 3*meshScale_.get()),
+                                   vec4(1.0f, 0.0f, 0.0f, 1.0f), meshScale_.get());
+        break;
+    case 6: // Arrow
+        return BasicMesh::arrow(vec3(0.0f, 0.0f, -3 * meshScale_.get()),
+                                vec3(0.0f, 0.0f, 3 * meshScale_.get()),
+                                vec4(1.0f, 0.0f, 0.0f, 1.0f),
+                                meshScale_.get(),
+                                0.15f,
+                                meshScale_.get()*2
+                                );
+        break;
+    case 7: // Color sphere
+        return BasicMesh::colorsphere(vec3(0.0f, 0.0f, 0.0f), meshScale_.get());
+        break;
+    default:
+        return SimpleMeshCreator::sphere(0.5f*meshScale_.get(), 8, 16);
+        break;
     }
 }
 
