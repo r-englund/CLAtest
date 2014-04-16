@@ -2,7 +2,7 @@
 <InviwoTreeData version="1.0">
     <!-- Don't edit the following code -->
     <Processors>
-        <Processor type="CubeProxyGeometry" identifier="CubeProxyGeometry" id="ref7">
+        <Processor type="CubeProxyGeometry" identifier="CubeProxyGeometry" id="ref1">
             <MetaDataList>
                 <MetaData type="ProcessorMetaData">
                     <position x="-775" y="-625" />
@@ -28,7 +28,7 @@
                 </Property>
             </Properties>
         </Processor>
-        <Processor type="EntryExitPoints" identifier="EntryExitPoints" id="ref0">
+        <Processor type="EntryExitPoints" identifier="EntryExitPoints" id="ref6">
             <MetaDataList>
                 <MetaData type="ProcessorMetaData">
                     <position x="-775" y="-550" />
@@ -160,7 +160,7 @@
                 </InteractionHandler>
             </InteractonHandlers>
             <Properties>
-                <Property type="CameraProperty" identifier="camera" displayName="Camera" key="camera" id="ref1">
+                <Property type="CameraProperty" identifier="camera" displayName="Camera" key="camera" id="ref7">
                     <lookFrom type="FloatVec3Property" identifier="lookFrom" displayName="Look from">
                         <value x="2.2114346" y="-4.2041035" z="-0.93176794" />
                     </lookFrom>
@@ -183,7 +183,7 @@
                 <Property type="BoolProperty" identifier="handleEvents" displayName="Handle interaction events" key="handleEvents" />
             </Properties>
         </Processor>
-        <Processor type="CanvasGL" identifier="CanvasGL" id="ref2">
+        <Processor type="CanvasGL" identifier="CanvasGL" id="ref5">
             <MetaDataList>
                 <MetaData type="ProcessorMetaData">
                     <position x="-625" y="-350" />
@@ -191,7 +191,7 @@
                     <selection content="0" />
                 </MetaData>
                 <MetaData type="ProcessorWidgetMetaData">
-                    <position x="916" y="624" />
+                    <position x="917" y="511" />
                     <dimension x="256" y="256" />
                     <visibility content="1" />
                 </MetaData>
@@ -220,11 +220,10 @@
                             <value content="2" />
                         </option>
                     </options>
-                    <selectedIdentifier content="color" />
                 </Property>
             </Properties>
         </Processor>
-        <Processor type="VolumeSource" identifier="VolumeSource" id="ref3">
+        <Processor type="VolumeSource" identifier="VolumeSource" id="ref0">
             <MetaDataList>
                 <MetaData type="ProcessorMetaData">
                     <position x="-625" y="-700" />
@@ -356,7 +355,7 @@
                 </Property>
             </Properties>
         </Processor>
-        <Processor type="LightVolumeGL" identifier="LightVolumeGL" id="ref14">
+        <Processor type="LightVolumeGL" identifier="LightVolumeGL" id="ref2">
             <MetaDataList>
                 <MetaData type="ProcessorMetaData">
                     <position x="-525" y="-575" />
@@ -366,8 +365,8 @@
             </MetaDataList>
             <Properties>
                 <Property type="BoolProperty" identifier="floatPrecision" displayName="Float Precision" key="floatPrecision" />
-                <Property type="BoolProperty" identifier="supportColoredLight" displayName="Support Light Color" key="supportColoredLight" id="ref15" />
-                <Property type="TransferFunctionProperty" identifier="transferFunction" displayName="Transfer function" key="transferFunction" id="ref16">
+                <Property type="BoolProperty" identifier="supportColoredLight" displayName="Support Light Color" key="supportColoredLight" id="ref3" />
+                <Property type="TransferFunctionProperty" identifier="transferFunction" displayName="Transfer function" key="transferFunction" id="ref4">
                     <MetaDataList>
                         <MetaData type="PropertyEditorWidgetMetaData">
                             <position x="0" y="0" />
@@ -409,7 +408,7 @@
                 </Property>
             </Properties>
         </Processor>
-        <Processor type="Directional light source" identifier="Directional light source" id="ref4">
+        <Processor type="Directional light source" identifier="Directional light source" id="ref14">
             <MetaDataList>
                 <MetaData type="ProcessorMetaData">
                     <position x="-375" y="-650" />
@@ -418,11 +417,11 @@
                 </MetaData>
             </MetaDataList>
             <Properties>
-                <Property type="FloatVec4Property" identifier="lightDiffuse" displayName="Color" key="lightDiffuse" id="ref5">
+                <Property type="FloatVec4Property" identifier="lightDiffuse" displayName="Color" key="lightDiffuse" id="ref15">
                     <value x="0.27450982" y="0.38431373" z="1" w="1" />
                 </Property>
                 <Property type="BoolProperty" identifier="lightEnabled" displayName="Enabled" key="lightEnabled" />
-                <Property type="FloatVec3Property" identifier="lightPosition" displayName="Light Source Position" key="lightPosition" id="ref6">
+                <Property type="FloatVec3Property" identifier="lightPosition" displayName="Light Source Position" key="lightPosition" id="ref16">
                     <value x="0.5704903" y="-0.70632136" z="1.0102762" />
                 </Property>
                 <Property type="FloatProperty" identifier="lightPower" displayName="Light power (%)" key="lightPower">
@@ -437,23 +436,23 @@
     <Connections>
         <Connection>
             <OutPort identifier="geometry.outport">
-                <Processor type="CubeProxyGeometry" identifier="CubeProxyGeometry" reference="ref7" />
+                <Processor type="CubeProxyGeometry" identifier="CubeProxyGeometry" reference="ref1" />
             </OutPort>
             <InPort identifier="geometry">
-                <Processor type="EntryExitPoints" identifier="EntryExitPoints" reference="ref0" />
+                <Processor type="EntryExitPoints" identifier="EntryExitPoints" reference="ref6" />
             </InPort>
         </Connection>
         <Connection>
             <OutPort identifier="data">
-                <Processor type="VolumeSource" identifier="VolumeSource" reference="ref3" />
+                <Processor type="VolumeSource" identifier="VolumeSource" reference="ref0" />
             </OutPort>
             <InPort identifier="volume.inport">
-                <Processor type="CubeProxyGeometry" identifier="CubeProxyGeometry" reference="ref7" />
+                <Processor type="CubeProxyGeometry" identifier="CubeProxyGeometry" reference="ref1" />
             </InPort>
         </Connection>
         <Connection>
             <OutPort identifier="entry-points">
-                <Processor type="EntryExitPoints" identifier="EntryExitPoints" reference="ref0" />
+                <Processor type="EntryExitPoints" identifier="EntryExitPoints" reference="ref6" />
             </OutPort>
             <InPort identifier="entry-points">
                 <Processor type="LightingRaycaster" identifier="LightingRaycaster" reference="ref8" />
@@ -461,7 +460,7 @@
         </Connection>
         <Connection>
             <OutPort identifier="exit-points">
-                <Processor type="EntryExitPoints" identifier="EntryExitPoints" reference="ref0" />
+                <Processor type="EntryExitPoints" identifier="EntryExitPoints" reference="ref6" />
             </OutPort>
             <InPort identifier="exit-points">
                 <Processor type="LightingRaycaster" identifier="LightingRaycaster" reference="ref8" />
@@ -472,28 +471,28 @@
                 <Processor type="LightingRaycaster" identifier="LightingRaycaster" reference="ref8" />
             </OutPort>
             <InPort identifier="inport">
-                <Processor type="CanvasGL" identifier="CanvasGL" reference="ref2" />
+                <Processor type="CanvasGL" identifier="CanvasGL" reference="ref5" />
             </InPort>
         </Connection>
         <Connection>
             <OutPort identifier="data">
-                <Processor type="VolumeSource" identifier="VolumeSource" reference="ref3" />
+                <Processor type="VolumeSource" identifier="VolumeSource" reference="ref0" />
             </OutPort>
             <InPort identifier="inport">
-                <Processor type="LightVolumeGL" identifier="LightVolumeGL" reference="ref14" />
+                <Processor type="LightVolumeGL" identifier="LightVolumeGL" reference="ref2" />
             </InPort>
         </Connection>
         <Connection>
             <OutPort identifier="DirectionalLightSource">
-                <Processor type="Directional light source" identifier="Directional light source" reference="ref4" />
+                <Processor type="Directional light source" identifier="Directional light source" reference="ref14" />
             </OutPort>
             <InPort identifier="lightSource">
-                <Processor type="LightVolumeGL" identifier="LightVolumeGL" reference="ref14" />
+                <Processor type="LightVolumeGL" identifier="LightVolumeGL" reference="ref2" />
             </InPort>
         </Connection>
         <Connection>
             <OutPort identifier="data">
-                <Processor type="VolumeSource" identifier="VolumeSource" reference="ref3" />
+                <Processor type="VolumeSource" identifier="VolumeSource" reference="ref0" />
             </OutPort>
             <InPort identifier="volume">
                 <Processor type="LightingRaycaster" identifier="LightingRaycaster" reference="ref8" />
@@ -501,7 +500,7 @@
         </Connection>
         <Connection>
             <OutPort identifier="outport">
-                <Processor type="LightVolumeGL" identifier="LightVolumeGL" reference="ref14" />
+                <Processor type="LightVolumeGL" identifier="LightVolumeGL" reference="ref2" />
             </OutPort>
             <InPort identifier="lightVolume">
                 <Processor type="LightingRaycaster" identifier="LightingRaycaster" reference="ref8" />
@@ -513,25 +512,25 @@
             <PropertyLinks>
                 <PropertyLink>
                     <Properties>
-                        <Property type="TransferFunctionProperty" identifier="transferFunction" displayName="Transfer function" key="transferFunction" reference="ref16" />
+                        <Property type="TransferFunctionProperty" identifier="transferFunction" displayName="Transfer function" key="transferFunction" reference="ref4" />
                         <Property type="TransferFunctionProperty" identifier="transferFunction" displayName="Transfer function" key="transferFunction" reference="ref12" />
                     </Properties>
                 </PropertyLink>
                 <PropertyLink>
                     <Properties>
                         <Property type="TransferFunctionProperty" identifier="transferFunction" displayName="Transfer function" key="transferFunction" reference="ref12" />
-                        <Property type="TransferFunctionProperty" identifier="transferFunction" displayName="Transfer function" key="transferFunction" reference="ref16" />
+                        <Property type="TransferFunctionProperty" identifier="transferFunction" displayName="Transfer function" key="transferFunction" reference="ref4" />
                     </Properties>
                 </PropertyLink>
                 <PropertyLink>
                     <Properties>
                         <Property type="BoolProperty" identifier="supportColoredLight" displayName="Enable Light Color" key="supportColoredLight" reference="ref13" />
-                        <Property type="BoolProperty" identifier="supportColoredLight" displayName="Support Light Color" key="supportColoredLight" reference="ref15" />
+                        <Property type="BoolProperty" identifier="supportColoredLight" displayName="Support Light Color" key="supportColoredLight" reference="ref3" />
                     </Properties>
                 </PropertyLink>
                 <PropertyLink>
                     <Properties>
-                        <Property type="BoolProperty" identifier="supportColoredLight" displayName="Support Light Color" key="supportColoredLight" reference="ref15" />
+                        <Property type="BoolProperty" identifier="supportColoredLight" displayName="Support Light Color" key="supportColoredLight" reference="ref3" />
                         <Property type="BoolProperty" identifier="supportColoredLight" displayName="Enable Light Color" key="supportColoredLight" reference="ref13" />
                     </Properties>
                 </PropertyLink>
@@ -541,26 +540,26 @@
             <PropertyLinks>
                 <PropertyLink>
                     <Properties>
-                        <Property type="FloatVec3Property" identifier="lightPosition" displayName="Light Source Position" key="lightPosition" reference="ref6" />
+                        <Property type="FloatVec3Property" identifier="lightPosition" displayName="Light Source Position" key="lightPosition" reference="ref16" />
                         <Property type="FloatVec3Property" identifier="lightPosition" displayName="Position" key="lightPosition" reference="ref9" />
                     </Properties>
                 </PropertyLink>
                 <PropertyLink>
                     <Properties>
                         <Property type="FloatVec3Property" identifier="lightPosition" displayName="Position" key="lightPosition" reference="ref9" />
-                        <Property type="FloatVec3Property" identifier="lightPosition" displayName="Light Source Position" key="lightPosition" reference="ref6" />
+                        <Property type="FloatVec3Property" identifier="lightPosition" displayName="Light Source Position" key="lightPosition" reference="ref16" />
                     </Properties>
                 </PropertyLink>
                 <PropertyLink>
                     <Properties>
-                        <Property type="FloatVec4Property" identifier="lightDiffuse" displayName="Color" key="lightDiffuse" reference="ref5" />
+                        <Property type="FloatVec4Property" identifier="lightDiffuse" displayName="Color" key="lightDiffuse" reference="ref15" />
                         <Property type="FloatVec3Property" identifier="lightColorDiffuse" displayName="Diffuse color" key="lightColorDiffuse" reference="ref10" />
                     </Properties>
                 </PropertyLink>
                 <PropertyLink>
                     <Properties>
                         <Property type="FloatVec3Property" identifier="lightColorDiffuse" displayName="Diffuse color" key="lightColorDiffuse" reference="ref10" />
-                        <Property type="FloatVec4Property" identifier="lightDiffuse" displayName="Color" key="lightDiffuse" reference="ref5" />
+                        <Property type="FloatVec4Property" identifier="lightDiffuse" displayName="Color" key="lightDiffuse" reference="ref15" />
                     </Properties>
                 </PropertyLink>
             </PropertyLinks>
@@ -570,12 +569,12 @@
                 <PropertyLink>
                     <Properties>
                         <Property type="CameraProperty" identifier="camera" displayName="Camera" key="camera" reference="ref11" />
-                        <Property type="CameraProperty" identifier="camera" displayName="Camera" key="camera" reference="ref1" />
+                        <Property type="CameraProperty" identifier="camera" displayName="Camera" key="camera" reference="ref7" />
                     </Properties>
                 </PropertyLink>
                 <PropertyLink>
                     <Properties>
-                        <Property type="CameraProperty" identifier="camera" displayName="Camera" key="camera" reference="ref1" />
+                        <Property type="CameraProperty" identifier="camera" displayName="Camera" key="camera" reference="ref7" />
                         <Property type="CameraProperty" identifier="camera" displayName="Camera" key="camera" reference="ref11" />
                     </Properties>
                 </PropertyLink>
