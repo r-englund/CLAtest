@@ -5,16 +5,16 @@ ivw_project(inviwo)
 #--------------------------------------------------------------------
 # Add header files
 set(HEADER_FILES
-    ${CMAKE_SOURCE_DIR}/apps/inviwo/inviwomainwindow.h
-    ${CMAKE_SOURCE_DIR}/apps/inviwo/inviwosplashscreen.h
+    ${IVW_APPLICATION_DIR}/inviwo/inviwomainwindow.h
+    ${IVW_APPLICATION_DIR}/inviwo/inviwosplashscreen.h
 )
 ivw_group("Header Files" ${HEADER_FILES})
 
 #--------------------------------------------------------------------
 # Add header files
 set(MOC_FILES
-     ${CMAKE_SOURCE_DIR}/apps/inviwo/inviwomainwindow.h
-     ${CMAKE_SOURCE_DIR}/apps/inviwo/inviwosplashscreen.h
+     ${IVW_APPLICATION_DIR}/inviwo/inviwomainwindow.h
+     ${IVW_APPLICATION_DIR}/inviwo/inviwosplashscreen.h
 )
 
 if(DESIRED_QT_VERSION MATCHES 5)
@@ -28,20 +28,20 @@ source_group("MOC Files" FILES ${MOC_FILES})
 #--------------------------------------------------------------------
 # Add source files
 set(SOURCE_FILES
-    ${CMAKE_SOURCE_DIR}/apps/inviwo/inviwo.cpp
-    ${CMAKE_SOURCE_DIR}/apps/inviwo/inviwomainwindow.cpp
-    ${CMAKE_SOURCE_DIR}/apps/inviwo/inviwosplashscreen.cpp
+    ${IVW_APPLICATION_DIR}/inviwo/inviwo.cpp
+    ${IVW_APPLICATION_DIR}/inviwo/inviwomainwindow.cpp
+    ${IVW_APPLICATION_DIR}/inviwo/inviwosplashscreen.cpp
 )
 ivw_group("Source Files" ${SOURCE_FILES})
 
-source_group("Resource Files" FILES ${CMAKE_SOURCE_DIR}/resources/inviwo.qrc)
+source_group("Resource Files" FILES ${IVW_RESOURCES_DIR}/inviwo.qrc)
 
 #--------------------------------------------------------------------
 # Add resource file
 if(DESIRED_QT_VERSION MATCHES 5)
-    qt5_add_resources(QRC_FILE "${CMAKE_SOURCE_DIR}/resources/inviwo.qrc")
+    qt5_add_resources(QRC_FILE "${IVW_RESOURCES_DIR}/inviwo.qrc")
 else()
-    qt4_add_resources(QRC_FILE "${CMAKE_SOURCE_DIR}/resources/inviwo.qrc")
+    qt4_add_resources(QRC_FILE "${IVW_RESOURCES_DIR}/inviwo.qrc")
 endif()
         
 #--------------------------------------------------------------------
@@ -79,7 +79,7 @@ endif()
 
 set(RES_FILES "")
 IF(WIN32)
-    set(RES_FILES "${CMAKE_SOURCE_DIR}/resources/inviwo.rc")
+    set(RES_FILES "${IVW_RESOURCES_DIR}/inviwo.rc")
 ENDIF(WIN32)
 
 #--------------------------------------------------------------------
