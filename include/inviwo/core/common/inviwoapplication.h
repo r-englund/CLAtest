@@ -130,7 +130,7 @@ public:
 
     virtual std::vector<ModuleCallbackAction*> getCallbackActions();
 
-    std::vector<Settings*> getModuleSettings();
+    std::vector<Settings*> getModuleSettings(size_t startIdx = 0);
 
 protected:
     void printApplicationInfo();

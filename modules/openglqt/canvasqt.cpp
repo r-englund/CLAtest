@@ -31,13 +31,29 @@
  *********************************************************************************/
 
 #include <modules/openglqt/canvasqt.h>
-
+#include <inviwo/core/common/inviwoapplication.h>
+#include <inviwo/core/properties/baseoptionproperty.h>
+#include <inviwo/core/util/settings/systemsettings.h>
 
 namespace inviwo {
 
 inline QGLFormat GetQGLFormat() {
   QGLFormat sharedFormat = QGLFormat(QGL::Rgba | QGL::DoubleBuffer | QGL::AlphaChannel | QGL::DepthBuffer | QGL::StencilBuffer);
-  sharedFormat.setProfile(QGLFormat::CompatibilityProfile);
+  sharedFormat.setProfile(QGLFormat::CoreProfile);
+  SystemSettings* systemSets = InviwoApplication::getPtr()->getSettingsByType<SystemSettings>();
+  if(systemSets){
+    systemSets->loadFromDisk();
+    Property* selpro = systemSets->getPropertyByIdentifier("selectedOpenGLProfile");
+    if(selpro){
+	  OptionPropertyString* selProProperty_ = dynamic_cast<OptionPropertyString*>(selpro);
+	  if(selProProperty_){
+	    if(selProProperty_->getSelectedIdentifier() == "core")
+	      sharedFormat.setProfile(QGLFormat::CoreProfile);
+	    else if(selProProperty_->getSelectedIdentifier() == "compatibility")
+	      sharedFormat.setProfile(QGLFormat::CompatibilityProfile);
+	  }
+    }
+  }
 #if (QT_VERSION >= QT_VERSION_CHECK(5, 0, 0))
   sharedFormat.setVersion(10, 0);
 #endif
@@ -45,10 +61,10 @@ inline QGLFormat GetQGLFormat() {
 }   
 
 QGLWidget* CanvasQt::sharedWidget_ = NULL;
-QGLFormat CanvasQt::sharedFormat_ = GetQGLFormat();
+QGLFormat CanvasQt::sharedFormat_ = QGLFormat();
 
 CanvasQt::CanvasQt(QWidget* parent, uvec2 dim)
-    : QGLWidget(sharedFormat_, parent, sharedWidget_),
+    : QGLWidget(GetQGLFormat(), parent, sharedWidget_),
       CanvasGL(dim),
       swapBuffersAllowed_(false)
 {

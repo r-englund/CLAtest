@@ -106,15 +106,29 @@ void InviwoApplication::initialize(registerModuleFuncPtr regModuleFunc) {
     PropertyFactory::init();
     PropertyWidgetFactory::init();
     RepresentationConverterFactory::init();
-    registerModule(new InviwoCore());
+    
+    //Create and register core
+    InviwoCore* ivwCore = new InviwoCore();
+    registerModule(ivwCore);
+    
+    //Initialize core
+    ivwCore->initialize();
+    
+    //Load settings from core
+    const std::vector<Settings*> coreSettings = ivwCore->getSettings();
+    for (std::vector<Settings*>::const_iterator it = coreSettings.begin(); it!=coreSettings.end(); ++it) {
+        (*it)->loadFromDisk();
+    }
+    
+    //Create and register other modules
     (*regModuleFunc)(this);
 
-    //initialize modules
-    for (size_t i = 0; i < modules_.size(); i++)
+    //Initialize other modules
+    for (size_t i = 1; i < modules_.size(); i++)
         modules_[i]->initialize();
 
-    //load settings
-    std::vector<Settings*> settings = getModuleSettings();
+    //Load settings from other modules
+    std::vector<Settings*> settings = getModuleSettings(1);
     for (std::vector<Settings*>::iterator it = settings.begin(); it!=settings.end(); ++it) {
         (*it)->loadFromDisk();
     }
@@ -202,10 +216,10 @@ std::vector<ModuleCallbackAction*> InviwoApplication::getCallbackActions() {
     return moudleCallbackActions_;
 }
 
-std::vector<Settings*> InviwoApplication::getModuleSettings() {
+std::vector<Settings*> InviwoApplication::getModuleSettings(size_t startIdx) {
     std::vector<Settings*> allModuleSettings;
 
-    for (size_t i=0; i<modules_.size(); i++) {
+    for (size_t i=startIdx; i<modules_.size(); i++) {
         const std::vector<Settings*> modSettings = modules_[i]->getSettings();
         allModuleSettings.insert(allModuleSettings.end(), modSettings.begin(), modSettings.end());
     }
