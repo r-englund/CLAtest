@@ -116,7 +116,7 @@ def addFileToSvn(file):
 				universal_newlines=True).stdout.read()
 	for i in mess.splitlines():
 		print("... " + i)
-	mess = subprocess.Popen([SVN, "propset svn:eol-style native " + file], 
+	mess = subprocess.Popen([SVN, "propset", "svn:eol-style", "native", file], 
 				stdout=subprocess.PIPE, 
 				universal_newlines=True).stdout.read()
 	for i in mess.splitlines():
