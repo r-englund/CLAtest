@@ -53,7 +53,7 @@ public:
     void initialize();
     void deinitialize();
 
-    SimpleMesh* createMesh();
+    Mesh* createMesh();
 
 protected:
     virtual void process();
