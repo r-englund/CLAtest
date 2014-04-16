@@ -69,6 +69,7 @@ void CanvasGL::initialize() {
 
 void CanvasGL::initializeGLEW() {
     if (!glewInitialized_) {
+        glewExperimental = GL_TRUE;
         GLenum glewError = glewInit();
         if (GLEW_OK != glewError){
             LogError(glewGetErrorString(glewError));
