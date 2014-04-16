@@ -207,14 +207,14 @@ void SystemCapabilities::printInfo() {
         unsigned long count=0;
         for (unsigned long i=0; i<infoCPUs_.size(); i++){
             cpuStream.str("");
-            cpuStream << infoCPUs_[i].vendor << " " << infoCPUs_[i].model << " " << infoCPUs_[i].mhz;
+            cpuStream << infoCPUs_[i].vendor << " " << infoCPUs_[i].model;
             if(prevCPU != cpuStream.str()){
                 if(!prevCPU.empty()){
                     if(count>0){
-                        LogInfoCustom("SystemInfo","CPU " << i+1 << "-" << i+1+count << ": " << prevCPU << " Mhz");
+                        LogInfoCustom("SystemInfo","CPU " << i+1 << "-" << i+1+count << ": " << prevCPU);
                     }
                     else{
-                        LogInfoCustom("SystemInfo","CPU " << i+1 << ": " << prevCPU << " Mhz");
+                        LogInfoCustom("SystemInfo","CPU " << i+1 << ": " << prevCPU);
                     }
                 }
                 prevCPU = cpuStream.str();
@@ -226,10 +226,10 @@ void SystemCapabilities::printInfo() {
         }
         if(!prevCPU.empty()){
             if(count>0){
-                LogInfoCustom("SystemInfo","CPU " << infoCPUs_.size()-count << "-" << infoCPUs_.size() << ": " << prevCPU << " Mhz");
+                LogInfoCustom("SystemInfo","CPU " << infoCPUs_.size()-count << "-" << infoCPUs_.size() << ": " << prevCPU);
             }
             else{
-                LogInfoCustom("SystemInfo","CPU " << infoCPUs_.size() << ": " << prevCPU << " Mhz");
+                LogInfoCustom("SystemInfo","CPU " << infoCPUs_.size() << ": " << prevCPU);
             }
         }
     }
