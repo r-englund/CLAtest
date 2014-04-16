@@ -54,6 +54,27 @@ ProcessorWidgetQt::~ProcessorWidgetQt() {}
 void ProcessorWidgetQt::initialize() {
     ProcessorWidget::initialize();
     ivec2 pos = ProcessorWidget::getPositionMetaData();
+
+    // fix window offset when restoring old position for correct positioning
+    
+    // FIXME: the frame size should be determined only once before starting up the 
+    // main application and stored in InviwoApplicationQt
+
+    // determine size of window border (frame size) 
+    // as long as widget is not shown, no border exists, i.e. this->pos() == this->geometry().topLeft()
+    ivec2 dim = ProcessorWidget::getDimensionMetaData();
+    QWidget::move(-5000,-5000);
+    // resize widget to requested size, otherwise it will end up 31x31 large (canvas_ in processor widget does not exist yet)
+    QWidget::resize(dim.x, dim.y);
+    QWidget::show();
+    QPoint widgetPos = this->pos();
+    QRect widgetGeo = this->geometry();
+    ivec2 delta = ivec2(widgetGeo.left() - widgetPos.x(), widgetGeo.top() - widgetPos.y());
+    QWidget::hide();
+    // adjust window position by delta (do this only once when creating the widget!)
+    pos -= delta;
+
+
     // check if geometry is on screen and alter otherwise
     //TODO: Desktop screen info should be added to system capabilities
     QDesktopWidget* desktop = QApplication::desktop();
