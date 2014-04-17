@@ -105,7 +105,13 @@ void OpenGLCapabilities::printInfo() {
         LogInfoCustom("OpenGLInfo","Dedicated video memory: " << (totalMem>0 ? formatBytesToString(totalMem) : "UNKNOWN"));
     }
     LogInfoCustom("OpenGLInfo","OpenGL Version: " << glVersionStr_);
-    LogInfoCustom("OpenGLInfo","GLSL version: " << glslVersionStr_);
+    std::string profile = preferredProfile_;
+    profile[0] = toupper(profile[0]);
+    LogInfoCustom("OpenGLInfo","OpenGL Profile: " << profile);
+
+    if (isShadersSupported()) {
+        LogInfoCustom("OpenGLInfo","GLSL version: " << glslVersionStr_);
+    }
 }
 
 void OpenGLCapabilities::printDetailedInfo() {
@@ -113,6 +119,9 @@ void OpenGLCapabilities::printDetailedInfo() {
     LogInfoCustom("OpenGLInfo","GPU Vendor: " << glVendorStr_);
     LogInfoCustom("OpenGLInfo","GPU Renderer: " << glRenderStr_);
     LogInfoCustom("OpenGLInfo","OpenGL Version: " << glVersionStr_);
+    std::string profile = preferredProfile_;
+    profile[0] = toupper(profile[0]);
+    LogInfoCustom("OpenGLInfo","OpenGL Profile: " << profile);
 
     //GLSL
     if (isShadersSupported()) {

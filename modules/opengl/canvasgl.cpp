@@ -77,7 +77,7 @@ void CanvasGL::initializeGLEW() {
         if (GLEW_OK != glewError){
             LogError(glewGetErrorString(glewError));
         }
-        LGL_ERROR;
+        LGL_ERROR_SUPPRESS;
         glewInitialized_ = true;
     }
 }
