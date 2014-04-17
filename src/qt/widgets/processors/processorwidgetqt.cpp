@@ -62,7 +62,7 @@ void ProcessorWidgetQt::initialize() {
 
     // determine size of window border (frame size) 
     // as long as widget is not shown, no border exists, i.e. this->pos() == this->geometry().topLeft()
-    ivec2 dim = ProcessorWidget::getDimensionMetaData();
+    /*ivec2 dim = ProcessorWidget::getDimensionMetaData();
     QWidget::move(-5000,-5000);
     // resize widget to requested size, otherwise it will end up 31x31 large (canvas_ in processor widget does not exist yet)
     QWidget::resize(dim.x, dim.y);
@@ -72,7 +72,7 @@ void ProcessorWidgetQt::initialize() {
     ivec2 delta = ivec2(widgetGeo.left() - widgetPos.x(), widgetGeo.top() - widgetPos.y());
     QWidget::hide();
     // adjust window position by delta (do this only once when creating the widget!)
-    pos -= delta;
+    pos -= delta;*/
 
 
     // check if geometry is on screen and alter otherwise
