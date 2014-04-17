@@ -78,6 +78,8 @@ public:
     const LayerGL* getDepthLayerGL() const;
     const LayerGL* getPickingLayerGL() const;
 
+    GLenum getPickingAttachmentID() const;
+
     void updateExistingLayers() const;
     void renderImagePlaneRect() const;
 

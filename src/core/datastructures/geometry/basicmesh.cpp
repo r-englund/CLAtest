@@ -440,6 +440,60 @@ BasicMesh* BasicMesh::coordindicator(const vec3& center,
     return mesh;
 }
 
+BasicMesh* BasicMesh::boundingbox(const mat4& basisandoffset, const vec4& color) {
+    BasicMesh* mesh = new BasicMesh();
+    mesh->setBasisAndOffset(mat4(1.f));
+
+    mesh->addVertex(vec3(0.0, 0.0, 0.0), vec3(1.0, 1.0, 1.0), vec3(0.0, 0.0, 0.0), color);
+    mesh->addVertex(vec3(1.0, 0.0, 0.0), vec3(1.0, 1.0, 1.0), vec3(1.0, 0.0, 0.0), color);
+    mesh->addVertex(vec3(0.0, 1.0, 0.0), vec3(1.0, 1.0, 1.0), vec3(0.0, 1.0, 0.0), color);
+    mesh->addVertex(vec3(0.0, 0.0, 1.0), vec3(1.0, 1.0, 1.0), vec3(0.0, 0.0, 1.0), color);
+    mesh->addVertex(vec3(1.0, 1.0, 0.0), vec3(1.0, 1.0, 1.0), vec3(1.0, 1.0, 0.0), color);
+    mesh->addVertex(vec3(0.0, 1.0, 1.0), vec3(1.0, 1.0, 1.0), vec3(0.0, 1.0, 1.0), color);
+    mesh->addVertex(vec3(1.0, 0.0, 1.0), vec3(1.0, 1.0, 1.0), vec3(1.0, 0.0, 1.0), color);
+    mesh->addVertex(vec3(1.0, 1.0, 1.0), vec3(1.0, 1.0, 1.0), vec3(1.0, 1.0, 1.0), color);
+
+    IndexBufferRAM* inds = mesh->addIndexBuffer(LINES, NONE);
+
+    inds->add(0);
+    inds->add(1);
+
+    inds->add(0);
+    inds->add(2);
+
+    inds->add(0);
+    inds->add(3);
+
+    inds->add(1);
+    inds->add(6);
+
+    inds->add(1);
+    inds->add(4);
+
+    inds->add(2);
+    inds->add(5);
+
+    inds->add(2);
+    inds->add(4);
+
+    inds->add(3);
+    inds->add(5);
+
+    inds->add(3);
+    inds->add(6);
+
+    inds->add(5);
+    inds->add(7);
+
+    inds->add(6);
+    inds->add(7);
+
+    inds->add(4);
+    inds->add(7);
+
+    return mesh;
+}
+
 
 
 

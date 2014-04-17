@@ -55,6 +55,7 @@ MeshCreator::MeshCreator()
     meshType_.addOption("cylinder", "Cyinder");
     meshType_.addOption("arrow", "Arrow");
     meshType_.addOption("colorsphere", "Color Sphere");
+    meshType_.addOption("linecube", "Line cube");
     meshType_.set("sphere");
     meshType_.setCurrentStateAsDefault();
     addProperty(meshType_);
@@ -114,6 +115,10 @@ Mesh* MeshCreator::createMesh() {
     case 7: // Color sphere
         return BasicMesh::colorsphere(vec3(0.0f, 0.0f, 0.0f), meshScale_.get());
         break;
+    case 8: // Line cube
+        return BasicMesh::boundingbox(mat4(1.0), vec4(1.0f, 0.0f, 0.0f, 1.0f));
+        break;
+
     default:
         return SimpleMeshCreator::sphere(0.5f*meshScale_.get(), 8, 16);
         break;
