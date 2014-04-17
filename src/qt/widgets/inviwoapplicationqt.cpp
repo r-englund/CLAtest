@@ -97,6 +97,10 @@ void InviwoApplicationQt::fileChanged(QString fileName) {
             if (std::find(observedFiles.begin(), observedFiles.end(), fileNameStd) != observedFiles.end())
                 fileObservers_[i]->fileChanged(fileNameStd);
         }
+   
+        if (!fileWatcher_->files().contains(fileName)) {
+            fileWatcher_->addPath(fileName);
+        }
     }
 }
 
