@@ -30,12 +30,28 @@
  *
  *********************************************************************************/
 
-#include "modules/glfw/glfwmodule.h"
+#include <modules/glfw/glfwmodule.h>
+#include <inviwo/core/common/inviwoapplication.h>
 
 namespace inviwo {
 
 GLFWModule::GLFWModule() : InviwoModule() {
     setIdentifier("GLFW");
+
+    GLFWSharedCanvas_ = new CanvasGLFW(InviwoApplication::getPtr()->getDisplayName(), uvec2(128,128));
+    GLFWSharedCanvas_->initializeGL();
+
+    ProcessorNetwork* network = InviwoApplication::getPtr()->getProcessorNetwork();
+    if (network) {
+        ProcessorNetworkEvaluator* evaluator = ProcessorNetworkEvaluator::getProcessorNetworkEvaluatorForProcessorNetwork(network);
+        GLFWSharedCanvas_->setNetworkEvaluator(evaluator);
+        evaluator->setDefaultRenderContext(GLFWSharedCanvas_);
+    }
 }
+
+GLFWModule::~GLFWModule() {
+    delete GLFWSharedCanvas_;
+}
+
 
 } // namespace

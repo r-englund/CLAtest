@@ -56,8 +56,11 @@ public:
     void deregisterCanvas(Canvas* canvas);
     void saveSnapshotAllCanvases(std::string dir, std::string default_name = "", std::string ext = ".png");
     std::vector<Canvas*> getRegisteredCanvases() { return registeredCanvases_; }
+
+    Canvas* getDefaultRenderContext() { return defaultContext_; }
     void setDefaultRenderContext(Canvas* canvas) { defaultContext_ = canvas; }
     void activateDefaultRenderContext();
+    
     void initializeNetwork();
 
     void disableEvaluation();

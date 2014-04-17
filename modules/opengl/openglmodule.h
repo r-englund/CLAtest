@@ -56,6 +56,7 @@ private:
     OptionPropertyString selectedOpenGLProfile_;
 
     bool hasOutputedGLSLVersionOnce_;
+    std::string contextMode_;
 };
 
 } // namespace

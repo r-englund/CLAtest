@@ -35,7 +35,7 @@
 
 namespace inviwo {
 
-Settings::Settings(std::string id) : identifier_(id) {}
+Settings::Settings(std::string id) : identifier_(id), isDeserializing_(false) {}
 
 Settings::~Settings() {
 }
@@ -79,14 +79,18 @@ void Settings::loadFromDisk(){
     replaceInString(filename," ","_");
     filename = InviwoApplication::getPtr()->getPath(InviwoApplication::PATH_SETTINGS,filename);
 
+    isDeserializing_ = true;
     if(URLParser::fileExists(filename)){
         IvwDeserializer d(filename);
         deserialize(d);
     }
-    
+    isDeserializing_ = false;
 }
 
 void Settings::saveToDisk(){
+    if(isDeserializing_)
+        return;
+
     std::stringstream ss;
     ss << identifier_ << ".ivs";
     std::string filename = ss.str();

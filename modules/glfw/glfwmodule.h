@@ -33,8 +33,9 @@
 #ifndef IVW_GLFWMODULE_H
 #define IVW_GLFWMODULE_H
 
-#include "modules/glfw/glfwmoduledefine.h"
-#include "inviwo/core/common/inviwomodule.h"
+#include <modules/glfw/glfwmoduledefine.h>
+#include <inviwo/core/common/inviwomodule.h>
+#include <modules/glfw/canvasglfw.h>
 
 namespace inviwo {
 
@@ -42,6 +43,10 @@ class IVW_MODULE_GLFW_API GLFWModule : public InviwoModule {
 
 public:
     GLFWModule();
+    virtual ~GLFWModule();
+
+private:
+    CanvasGLFW* GLFWSharedCanvas_;
 
 };
 

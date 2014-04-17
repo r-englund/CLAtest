@@ -55,6 +55,8 @@ public:
     CanvasQt(QWidget* parent = NULL, uvec2 dim = uvec2(256,256));
     ~CanvasQt();
 
+    static void defineDefaultContextFormat();
+
     void initialize();
     void initializeSquare();
     void deinitialize();

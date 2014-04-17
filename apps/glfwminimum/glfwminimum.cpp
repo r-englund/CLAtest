@@ -63,22 +63,23 @@ int main(int argc, char** argv) {
         return 0;
     }
 
-    CanvasGLFW* canvas = new CanvasGLFW(inviwoApp.getDisplayName(), uvec2(128,128));
-    canvas->initializeGL();
-    inviwoApp.initialize(&inviwo::registerAllModules);
-
     // Create process network
     ProcessorNetwork processorNetwork;
+
+    // Create process network evaluator and associate the canvas
+    ProcessorNetworkEvaluator processorNetworkEvaluator(&processorNetwork);
+
+    //Set processor network to application
     inviwoApp.setProcessorNetwork(&processorNetwork);
 
-    // Create process network evaluator
-    ProcessorNetworkEvaluator processorNetworkEvaluator(&processorNetwork);
-    processorNetworkEvaluator.setDefaultRenderContext(canvas);
+    //Initialize all modules
+    inviwoApp.initialize(&inviwo::registerAllModules);
 
-    canvas->setNetworkEvaluator(&processorNetworkEvaluator);
-    canvas->initializeSquare();
-    canvas->initialize();
-    canvas->activate();
+    //Continue initialization of default context
+    CanvasGLFW* sharedCanvas = static_cast<CanvasGLFW*>(processorNetworkEvaluator.getDefaultRenderContext());
+    sharedCanvas->initializeSquare();
+    sharedCanvas->initialize();
+    sharedCanvas->activate();
 
     // Load simple scene
     processorNetworkEvaluator.disableEvaluation();
@@ -103,7 +104,7 @@ int main(int argc, char** argv) {
         if (canvasProcessor) {
             CanvasGLFW* currentC;
             if (i==0) {
-                currentC = canvas;
+                currentC = sharedCanvas;
             }
             else {
                 currentC = new CanvasGLFW(canvasProcessor->getIdentifier(), uvec2(canvasProcessor->getCanvasSize()));
@@ -143,9 +144,6 @@ int main(int argc, char** argv) {
     }
 
     glfwTerminate();
-
-    if(i==0)
-        delete canvas;
 
     return 0;
 }

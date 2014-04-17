@@ -69,6 +69,7 @@ public:
     virtual std::string getIdentifier();
 protected:
     std::string identifier_;
+    bool isDeserializing_;
 };
 
 } // namespace

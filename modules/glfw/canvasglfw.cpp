@@ -32,6 +32,7 @@
 
 #include "canvasglfw.h"
 #include "inviwo/core/network/processornetworkevaluator.h"
+#include <modules/opengl/openglcapabilities.h>
 
 namespace inviwo {
 
@@ -56,10 +57,15 @@ void CanvasGLFW::initialize() {
 }
 
 void CanvasGLFW::initializeGL() {
-    //glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
-    //glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-    //glfwWindowHint(GLFW_OPENGL_COMPAT_PROFILE, GL_TRUE);
-    glfwWindowHint(GLFW_OPENGL_CORE_PROFILE, GL_TRUE);
+    if(!sharedContext_){
+        //glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
+        //glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+        std::string preferProfile = OpenGLCapabilities::getPreferredProfile();
+        if(preferProfile == "core")
+            glfwWindowHint(GLFW_OPENGL_CORE_PROFILE, GL_TRUE);
+        else if(preferProfile == "compatibility")
+            glfwWindowHint(GLFW_OPENGL_COMPAT_PROFILE, GL_TRUE);
+    }
 
     glWindow_ = glfwCreateWindow(getDimension().x, getDimension().y, windowTitle_.c_str(), NULL, sharedContext_);
 
