@@ -392,4 +392,8 @@ void ImageGL::renderImagePlaneRect() const{
     glDepthFunc(GL_LESS);
 }
 
+GLenum ImageGL::getPickingAttachmentID() const {
+    return pickingAttachmentID_;
+}
+
 } // namespace

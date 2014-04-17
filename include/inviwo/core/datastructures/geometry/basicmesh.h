@@ -56,6 +56,8 @@ public:
     static BasicMesh* coordindicator(const vec3& center,
                                      const float& size);
 
+    static BasicMesh* boundingbox(const mat4& basisandoffset, const vec4& color);
+
     
     
 protected:
