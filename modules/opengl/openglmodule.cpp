@@ -55,8 +55,13 @@ OpenGLModule::OpenGLModule() :
     , hasOutputedGLSLVersionOnce_(false) {
     selectedOpenGLProfile_.addOption("core", "Core");
     selectedOpenGLProfile_.addOption("compatibility", "Compatibility");
-    selectedOpenGLProfile_.setSelectedIdentifier("compatibility");
+    selectedOpenGLProfile_.setSelectedIdentifier(OpenGLCapabilities::getPreferredProfile());
     selectedOpenGLProfile_.setCurrentStateAsDefault();
+    SystemSettings* settings = InviwoApplication::getPtr()->getSettingsByType<SystemSettings>();
+    if(settings){
+        settings->addProperty(&selectedOpenGLProfile_);
+        settings->loadFromDisk();
+    }
     setIdentifier("OpenGL");
     ShaderManager::init();
     ShaderManager::getPtr()->addShaderSearchPath(InviwoApplication::getPtr()->getPath(InviwoApplication::PATH_MODULES)+"opengl/glsl");
@@ -73,6 +78,7 @@ OpenGLModule::OpenGLModule() :
     registerProcessor(CanvasProcessorGL);
     registerProcessor(GeometryRenderProcessorGL);
     registerCapabilities(new OpenGLCapabilities());
+    contextMode_ = OpenGLCapabilities::getPreferredProfile();
 }
 
 
@@ -84,8 +90,10 @@ void OpenGLModule::updateProfile(){
     OpenGLCapabilities* openglInfo = getTypeFromVector<OpenGLCapabilities>(getCapabilities());
 
     if (openglInfo) {
-        if(openglInfo->setPreferredGLSLProfile(selectedOpenGLProfile_.getSelectedValue(), !hasOutputedGLSLVersionOnce_)){
+        if(openglInfo->setPreferredProfile(selectedOpenGLProfile_.getSelectedValue(), !hasOutputedGLSLVersionOnce_)){
             ShaderManager::getPtr()->rebuildAllShaders();
+            if(contextMode_ != selectedOpenGLProfile_.getSelectedValue())
+                LogInfoCustom("OpenGLInfo", "Restart application to enable " << selectedOpenGLProfile_.getSelectedValue() << " mode.");
         }
         hasOutputedGLSLVersionOnce_ = true;
     }
@@ -104,8 +112,10 @@ void OpenGLModule::setupModuleSettings() {
 
             if(openglInfo->getCurrentShaderVersion().getVersion() >= 150){
                 selectedOpenGLProfile_.onChange(this, &OpenGLModule::updateProfile);
-                settings->addProperty(&selectedOpenGLProfile_);
+                updateProfile();
             }
+            else
+                selectedOpenGLProfile_.setVisible(false);
         }
     }
 }

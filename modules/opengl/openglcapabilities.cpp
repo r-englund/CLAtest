@@ -35,8 +35,17 @@
 #include <inviwo/core/util/formatconversion.h>
 #include <inviwo/core/util/logcentral.h>
 #include <inviwo/core/util/stringconversion.h>
+#include <inviwo/core/common/inviwoapplication.h>
+#include <inviwo/core/properties/baseoptionproperty.h>
+#include <inviwo/core/util/settings/systemsettings.h>
 
 namespace inviwo {
+
+#ifdef __APPLE__
+std::string OpenGLCapabilities::preferredProfile_ = "core";
+#else
+std::string OpenGLCapabilities::preferredProfile_ = "compatibility";
+#endif
 
 #define OpenGLInfoNotFound(message) { LogInfoCustom("OpenGLInfo",message << " Info could not be retrieved"); }
 
@@ -71,7 +80,16 @@ OpenGLCapabilities::OpenGLCapabilities() {
     currentGlobalGLSLHeader_ = "";
     currentGlobalGLSLVertexDefines_ = "";
     currentGlobalGLSLFragmentDefines_ = "";
-    preferredGLSLProfile_ = "compatibility";
+    SystemSettings* systemSets = InviwoApplication::getPtr()->getSettingsByType<SystemSettings>();
+    if(systemSets){
+        Property* selpro = systemSets->getPropertyByIdentifier("selectedOpenGLProfile");
+        if(selpro){
+            OptionPropertyString* selProProperty_ = dynamic_cast<OptionPropertyString*>(selpro);
+            if(selProProperty_){
+                preferredProfile_ = selProProperty_->getSelectedIdentifier();
+            }
+        }
+    }
 }
 
 OpenGLCapabilities::~OpenGLCapabilities() {
@@ -326,12 +344,16 @@ int OpenGLCapabilities::getMaxColorAttachments() {
     return maxColorAttachments_;
 }
 
-bool OpenGLCapabilities::setPreferredGLSLProfile(std::string profile, bool showMessage){
-    preferredGLSLProfile_ = profile;
+std::string OpenGLCapabilities::getPreferredProfile(){
+    return preferredProfile_;
+}
+
+bool OpenGLCapabilities::setPreferredProfile(std::string profile, bool showMessage){
+    preferredProfile_ = profile;
 
     size_t i = 0;
     while (i<supportedShaderVersions_.size() && (supportedShaderVersions_[i].hasProfile()
-        && supportedShaderVersions_[i].getProfile() != preferredGLSLProfile_))
+        && supportedShaderVersions_[i].getProfile() != preferredProfile_))
         i++;
 
     bool changed = false;
@@ -441,7 +463,7 @@ void OpenGLCapabilities::retrieveStaticInfo() {
         size_t i = 0;
 
         while (i<supportedShaderVersions_.size() && (supportedShaderVersions_[i].hasProfile()
-                && supportedShaderVersions_[i].getProfile() != preferredGLSLProfile_))
+                && supportedShaderVersions_[i].getProfile() != preferredProfile_))
             i++;
 
         currentGlobalGLSLVersionIdx_ = i;
@@ -521,7 +543,7 @@ void OpenGLCapabilities::retrieveDynamicInfo() {
 void OpenGLCapabilities::rebuildGLSLHeader() {
     currentGlobalGLSLHeader_ = "#version " + supportedShaderVersions_[currentGlobalGLSLVersionIdx_].getVersionAndProfileAsString() + "\n";
 
-    if (supportedShaderVersions_[currentGlobalGLSLVersionIdx_].getVersion() == 140 && preferredGLSLProfile_ == "compatibility")
+    if (supportedShaderVersions_[currentGlobalGLSLVersionIdx_].getVersion() == 140 && preferredProfile_ == "compatibility")
         currentGlobalGLSLHeader_ += "#extension GL_ARB_compatibility : enable\n";
 
     if (supportedShaderVersions_[currentGlobalGLSLVersionIdx_].hasProfile()) {

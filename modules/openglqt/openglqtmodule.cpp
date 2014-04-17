@@ -41,6 +41,7 @@ namespace inviwo {
 OpenGLQtModule::OpenGLQtModule() : InviwoModule() {
     setIdentifier("OpenGLQt");
     //Create GL Context
+    CanvasQt::defineDefaultContextFormat();
     qtGLSharedCanvas_ = new CanvasQt();
 
     if (InviwoApplication::getPtr()) {

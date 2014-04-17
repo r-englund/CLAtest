@@ -100,7 +100,8 @@ public:
     int getMaxColorAttachments();
     int getNumTexUnits();
 
-    bool setPreferredGLSLProfile(std::string, bool);
+    static std::string getPreferredProfile();
+    bool setPreferredProfile(std::string, bool);
 
 protected:
     void retrieveStaticInfo();
@@ -116,6 +117,8 @@ protected:
     int parseAndRetrieveVersion(std::string);
 
 private:
+    static std::string preferredProfile_;
+
     GlVendor glVendor_;
 
     std::string glVendorStr_;
@@ -132,7 +135,6 @@ private:
     std::string currentGlobalGLSLHeader_;
     std::string currentGlobalGLSLVertexDefines_;
     std::string currentGlobalGLSLFragmentDefines_;
-    std::string preferredGLSLProfile_;
     std::vector<GLSLShaderVersion> supportedShaderVersions_;
 
     //Texturing

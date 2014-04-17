@@ -36,6 +36,7 @@
 #include <modules/opengl/glwrap/textureunit.h>
 #include <modules/opengl/image/imagegl.h>
 #include <modules/opengl/rendering/meshrenderer.h>
+#include <modules/opengl/openglcapabilities.h>
 
 namespace inviwo {
 
@@ -69,7 +70,9 @@ void CanvasGL::initialize() {
 
 void CanvasGL::initializeGLEW() {
     if (!glewInitialized_) {
-        glewExperimental = GL_TRUE;
+        std::string preferProfile = OpenGLCapabilities::getPreferredProfile();
+        if(preferProfile == "core")
+            glewExperimental = GL_TRUE;
         GLenum glewError = glewInit();
         if (GLEW_OK != glewError){
             LogError(glewGetErrorString(glewError));
