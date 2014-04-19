@@ -85,7 +85,7 @@ public:
         InterpolationCubic
     };
 
-    TransferFunction();
+    TransferFunction(int textureSize=1024);
     TransferFunction(const TransferFunction& rhs);
     TransferFunction& operator=(const TransferFunction& rhs);
 

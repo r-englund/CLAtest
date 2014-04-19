@@ -40,12 +40,12 @@ bool TFPointComparer(TransferFunctionDataPoint* a, TransferFunctionDataPoint* b)
     return a->getPos().x < b->getPos().x;
 }
 
-TransferFunction::TransferFunction()
+TransferFunction::TransferFunction(int textureSize)
     : TransferFunctionObservable()
     , maskMin_(0.0f)
     , maskMax_(1.0f)
     , interpolationType_(InterpolationLinear)
-    , textureSize_(1024)
+    , textureSize_(textureSize)
     , invalidData_(true)
     , data_(new Layer(uvec2(textureSize_, 1), DataVec4FLOAT32::get())) {
 
