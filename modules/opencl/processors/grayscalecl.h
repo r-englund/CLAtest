@@ -63,6 +63,8 @@ private:
     ImageInport inputPort_;
     ImageOutport outport_;
 
+    BoolProperty useGLSharing_;
+
     cl::Kernel* kernel_;
 };
 

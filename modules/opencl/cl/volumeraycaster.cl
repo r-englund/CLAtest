@@ -44,7 +44,7 @@ __kernel void raycaster(read_only image3d_t volume
                         , write_only image2d_t output) 
 {
     int2 globalId = (int2)(get_global_id(0), get_global_id(1));      
-    //uint3 volumeDimension = (uint3)(128,128, 128); 
+
     if (any(globalId >= get_image_dim(output))) {
         return;
     }
@@ -54,40 +54,33 @@ __kernel void raycaster(read_only image3d_t volume
     if(any(entry.xyz != 0.f)) {     
         float4 exit = read_imagef(exitPoints, smpUNormNoClampNearest, globalId);   
         float3 direction = exit.xyz - entry.xyz;   
-        float tEnd = length(direction);
-        float tIncr = 1.f/(stepSize*length(direction*convert_float3(volumeDimension)));
-        direction = normalize(direction);
+        float tEnd = fast_length(direction);
+        float tIncr = min(tEnd, 1.f/(stepSize*length(direction*convert_float3(volumeDimension))));
+        direction = fast_normalize(direction);
         float3 p = entry.xyz;
-        float t = 0.0f; 
-        //float t = 0.5f*tIncr; 
+        
+        float t = 0.5f*tIncr; 
         float volumeSample;
         float extinction = 0.f;  
+        float4 emissionAbsorption;
         while(t < tEnd) {
             float3 pos = entry.xyz+t*direction;
             volumeSample = read_imagef(volume, smpNormClampEdgeLinear, as_float4(pos)).x; 
             // xyz == emission, w = absorption
-            float4 emissionAbsorption = read_imagef(transferFunction, smpNormClampEdgeLinear, (float2)(volumeSample, 0.5f));
-            //emissionAbsorption.xyz *= 10.f;
-            //float4 emissionAbsorption2 = read_imagef(transferFunction, smpNormClampLinear, (float2)(volumeSample, 0.5f));
-            //float4 emissionAbsorption = (float4)((float3)(volumeSample*10.f), volumeSample)+0.00000001f*emissionAbsorption2;
+            emissionAbsorption = read_imagef(transferFunction, smpNormClampEdgeLinear, (float2)(volumeSample, 0.5f));
             // Taylor expansion approximation
-            emissionAbsorption.w = 1.f - pow(1.f - emissionAbsorption.w, tIncr * REF_SAMPLING_INTERVAL);
-			result.xyz = result.xyz + (1.f - result.w) * emissionAbsorption.w * emissionAbsorption.xyz;
-            result.w = result.w + (1.f - result.w) * emissionAbsorption.w;	
-            
-            // This code should be more correct but for some reason it makes the result vary with different sampling rates. 
-            // Need to verify
-            //emissionAbsorption.w = 1.f-pow(1.f - emissionAbsorption.w, tIncr * REF_SAMPLING_INTERVAL);
-            ////emissionAbsorption.w = emissionAbsorption.w*tIncr*REF_SAMPLING_INTERVAL;            
-            //
-            //result.xyz += emissionAbsorption.w*emissionAbsorption.xyz*result.w;
-            //extinction += emissionAbsorption.w;
-            //result.w = exp(-extinction);
+            float opacity = 1.f - native_powr(1.f - emissionAbsorption.w, tIncr * REF_SAMPLING_INTERVAL);
+			result.xyz = result.xyz + (1.f - result.w) * opacity * emissionAbsorption.xyz;
+            result.w = result.w + (1.f - result.w) * opacity;	
 
             if (result.w > ERT_THRESHOLD) t = tEnd;   
             else t += tIncr;   
- 
         }
+        // Remove last part of integration
+        float dt = tEnd-(t-0.5f*tIncr);
+        float opacity = 1.f - native_powr(1.f - emissionAbsorption.w, dt * REF_SAMPLING_INTERVAL);
+		result.xyz = result.xyz + (1.f - result.w) * opacity * emissionAbsorption.xyz;
+        result.w = result.w + (1.f - result.w) * opacity;	
     }
          
     write_imagef(output, globalId,  result);     
