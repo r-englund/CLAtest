@@ -70,6 +70,7 @@ private:
     std::string rawFile_;
     bool littleEndian_;
     glm::uvec3 dimension_;
+    unsigned int timeSteps_;
     const DataFormatBase* format_;
 };
 
