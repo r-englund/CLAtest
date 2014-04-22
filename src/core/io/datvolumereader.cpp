@@ -95,6 +95,7 @@ Volume* DatVolumeReader::readMetaData(std::string filePath)  {
     glm::mat4 wtm(1.0f);
     glm::vec3 a(0.0f), b(0.0f), c(0.0f);
     std::string key;
+    timeSteps_ = 1;
 
     while (!f->eof()) {
         getline(*f, textLine);
@@ -165,8 +166,12 @@ Volume* DatVolumeReader::readMetaData(std::string filePath)  {
         } else if (key == "format") {
             ss >> formatFlag;
             format_ = DataFormatBase::get(formatFlag);
-        } else
+        } else if(key == "timesteps"){
+          ss >> timeSteps_;
+          }
+        else{
             volume->setMetaData<StringMetaData>(key, ss.str());
+        }
     };
 
     delete f;
@@ -208,10 +213,12 @@ Volume* DatVolumeReader::readMetaData(std::string filePath)  {
     volume->setWorldTransform(wtm);
     volume->setDimension(dimension_);
     volume->setDataFormat(format_);
+    volume->setMetaData<IntMetaData>("timesteps",timeSteps_);
+
     VolumeDisk* vd = new VolumeDisk(filePath, dimension_, format_);
     vd->setDataReader(this);
     volume->addRepresentation(vd);
-    std::string size = formatBytesToString(dimension_.x*dimension_.y*dimension_.z*(format_->getBytesStored()));
+    std::string size = formatBytesToString(dimension_.x*dimension_.y*dimension_.z*(format_->getBytesStored()) * timeSteps_);
     LogInfo("Loaded volume: " << filePath << " size: " << size);
     return volume;
 }
@@ -220,7 +227,7 @@ void DatVolumeReader::readDataInto(void* destination) const {
     std::fstream fin(rawFile_.c_str(), std::ios::in | std::ios::binary);
 
     if (fin.good()) {
-        std::size_t size = dimension_.x*dimension_.y*dimension_.z*(format_->getBytesStored());
+        std::size_t size = dimension_.x*dimension_.y*dimension_.z*(format_->getBytesStored()) * timeSteps_;
         fin.read(static_cast<char*>(destination), size);
 
         if (!littleEndian_ && format_->getBytesStored()>1) {
@@ -244,7 +251,7 @@ void DatVolumeReader::readDataInto(void* destination) const {
 }
 
 void* DatVolumeReader::readData() const {
-    std::size_t size = dimension_.x*dimension_.y*dimension_.z*(format_->getBytesStored());
+    std::size_t size = dimension_.x*dimension_.y*dimension_.z*(format_->getBytesStored()) * timeSteps_;
     char* data = new char[size];
 
     if (data)
