@@ -33,6 +33,9 @@
 #include "grayscalecl.h"
 #include <modules/opencl/inviwoopencl.h>
 #include <modules/opencl/image/imagecl.h>
+#include <modules/opencl/image/imageclgl.h>
+#include <modules/opencl/settings/openclsettings.h>
+#include <modules/opencl/syncclgl.h>
 #include <modules/opencl/volume/volumecl.h>
 #include <modules/opencl/kernelmanager.h>
 
@@ -46,10 +49,13 @@ GrayscaleCL::GrayscaleCL()
     : Processor(), ProcessorKernelOwner(this)
     , inputPort_("color image")
     , outport_("outport")
+    , useGLSharing_("glsharing", "Use OpenGL sharing", true)
     , kernel_(NULL)
 {
     addPort(inputPort_, "ImagePortGroup1");
     addPort(outport_, "ImagePortGroup1");
+
+    addProperty(useGLSharing_);
 }
 
 GrayscaleCL::~GrayscaleCL() {}
@@ -58,6 +64,10 @@ void GrayscaleCL::initialize() {
     Processor::initialize();
     kernel_ = addKernel(InviwoApplication::getPtr()->getPath(InviwoApplication::PATH_MODULES)
         +"opencl/cl/grayscale.cl", "grayscaleKernel");
+    if (!InviwoApplication::getPtr()->getSettingsByType<OpenCLSettings>()->isSharingEnabled()) {
+        useGLSharing_.setReadOnly(true);
+        useGLSharing_.set(false);
+    }
 }
 
 void GrayscaleCL::deinitialize() {
@@ -70,15 +80,34 @@ void GrayscaleCL::process() {
     }
 
     Image* outImage = outport_.getData();
-    const Image* inImage = inputPort_.getData();
-    const ImageCL* colorImageCL = inImage->getRepresentation<ImageCL>();
-    outImage->resize(inImage->getDimension());
+
+    //outImage->resize(inImage->getDimension());
     uvec2 outportDim = outImage->getDimension();
-    ImageCL* outImageCL = outImage->getEditableRepresentation<ImageCL>();
-    cl_uint arg = 0;
-    kernel_->setArg(arg++, *colorImageCL->getLayerCL());
-    kernel_->setArg(arg++, *outImageCL->getLayerCL());
-    OpenCL::getPtr()->getQueue().enqueueNDRangeKernel(*kernel_, cl::NullRange, static_cast<glm::svec2>(outportDim));
+    const Image* inImage = inputPort_.getData();
+    try {
+        if (useGLSharing_.get()) {
+            SyncCLGL glSync;
+
+            const ImageCLGL* colorImageCL = inImage->getRepresentation<ImageCLGL>();
+            ImageCLGL* outImageCL = outImage->getEditableRepresentation<ImageCLGL>();
+            glSync.addToAquireGLObjectList(colorImageCL);
+            glSync.addToAquireGLObjectList(outImageCL);
+            glSync.aquireAllObjects();
+            cl_uint arg = 0;
+            kernel_->setArg(arg++, *colorImageCL);
+            kernel_->setArg(arg++, *outImageCL);
+            OpenCL::getPtr()->getQueue().enqueueNDRangeKernel(*kernel_, cl::NullRange, static_cast<glm::svec2>(outportDim));
+        } else {
+            const ImageCL* colorImageCL = inImage->getRepresentation<ImageCL>();
+            ImageCL* outImageCL = outImage->getEditableRepresentation<ImageCL>();
+            cl_uint arg = 0;
+            kernel_->setArg(arg++, *colorImageCL);
+            kernel_->setArg(arg++, *outImageCL);
+            OpenCL::getPtr()->getQueue().enqueueNDRangeKernel(*kernel_, cl::NullRange, static_cast<glm::svec2>(outportDim));
+        }
+    } catch (cl::Error& err) {
+        LogError(getCLErrorString(err));
+    }
 }
 
 } // namespace
