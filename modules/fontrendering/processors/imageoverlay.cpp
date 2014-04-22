@@ -101,7 +101,7 @@ void ImageOverlay::deinitialize() {
     ProcessorGL::deinitialize();
 }
 
-void ImageOverlay::render_text(const char* text, float x, float y, float sx, float sy) {
+void ImageOverlay::render_text(const char* text, float x, float y, float sx, float sy, unsigned int unitNumber) {
     const char* p;
     FT_Set_Pixel_Sizes(fontface_, 0, optionPropertyIntFontSize_.get());
 
@@ -132,7 +132,7 @@ void ImageOverlay::render_text(const char* text, float x, float y, float sx, flo
             {x2,     -y2 - h, 0, 1},
             {x2 + w, -y2 - h, 1, 1},
         };
-        shader_->setUniform("texture", 0);
+        shader_->setUniform("texture", (GLint)unitNumber);
         shader_->setUniform("color", floatColor_.get());
         glBufferData(GL_ARRAY_BUFFER, sizeof(box), box, GL_STREAM_DRAW);
         glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
@@ -147,15 +147,16 @@ void ImageOverlay::process() {
     const ImageGL* inImageGL = inputImage->getRepresentation<ImageGL>();
     ImageGL* outImageGL = outImage->getEditableRepresentation<ImageGL>();
     activateTarget(outport_);
-    bindColorTexture(inport0_, GL_TEXTURE0);
+    TextureUnit texUnit0;
+    bindColorTexture(inport0_, texUnit0.getEnum());
     shader_passthrough_->activate();
-    shader_passthrough_->setUniform("inport0_",0);
+    shader_passthrough_->setUniform("inport0_", texUnit0.getUnitNumber());
     shader_passthrough_->setUniform("dimension_", vec2(1.f / outImageGL->getDimension().x, 1.f / outImageGL->getDimension().y));
     renderImagePlaneRect();
     shader_passthrough_->deactivate();
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-    glActiveTexture(GL_TEXTURE0);
+    glActiveTexture(texUnit0.getEnum());
     glBindTexture(GL_TEXTURE_2D, texCharacter_);
     glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_WRAP_S,GL_CLAMP_TO_EDGE);
     glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_WRAP_T,GL_CLAMP_TO_EDGE);
@@ -177,7 +178,8 @@ void ImageOverlay::process() {
         -1 + xpos_ * sx,
         1 - (ypos_) * sy,
         sx,
-        sy);
+        sy,
+        texUnit0.getUnitNumber());
     shader_->deactivate();
     deactivateCurrentTarget();
     glDisableVertexAttribArray(attribute_location);
