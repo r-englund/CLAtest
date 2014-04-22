@@ -55,16 +55,13 @@ __kernel void raycaster(read_only image3d_t volume
     float4 result = (float4)(0.f); 
     if(tEnd > 0.f) {     
         direction = fast_normalize(direction);
-        float tIncr = min(tEnd, 1.f/(stepSize*length(direction*convert_float3(volumeDimension))));
-        float3 p = entry.xyz;
-        
+        float tIncr = min(tEnd, 1.f/(stepSize*length(direction*convert_float3(volumeDimension)))); 
+        // Start integrating at the center of the bins
         float t = 0.5f*tIncr; 
-        float volumeSample;
-        float extinction = 0.f;  
         float4 emissionAbsorption;
         while(t < tEnd) {
             float3 pos = entry.xyz+t*direction;
-            volumeSample = read_imagef(volume, smpNormClampEdgeLinear, as_float4(pos)).x; 
+            float volumeSample = read_imagef(volume, smpNormClampEdgeLinear, as_float4(pos)).x; 
             // xyz == emission, w = absorption
             emissionAbsorption = read_imagef(transferFunction, smpNormClampEdgeLinear, (float2)(volumeSample, 0.5f));
             // Taylor expansion approximation
@@ -75,7 +72,7 @@ __kernel void raycaster(read_only image3d_t volume
             if (result.w > ERT_THRESHOLD) t = tEnd;   
             else t += tIncr;   
         }
-        // Remove the last part of the integration, which we was too much.
+        // Remove the last part of the integration that was too much.
         float dt = tEnd-(t-0.5f*tIncr);
         float opacity = 1.f - native_powr(1.f - emissionAbsorption.w, dt * REF_SAMPLING_INTERVAL);
 		result.xyz = result.xyz + (1.f - result.w) * opacity * emissionAbsorption.xyz;
