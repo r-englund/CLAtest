@@ -49,14 +49,13 @@ __kernel void raycaster(read_only image3d_t volume
         return;
     }
     float4 entry = read_imagef(entryPoints, smpUNormNoClampNearest, globalId);  
-    
+    float4 exit = read_imagef(exitPoints, smpUNormNoClampNearest, globalId);
+    float3 direction = exit.xyz - entry.xyz;   
+    float tEnd = fast_length(direction);
     float4 result = (float4)(0.f); 
-    if(any(entry.xyz != 0.f)) {     
-        float4 exit = read_imagef(exitPoints, smpUNormNoClampNearest, globalId);   
-        float3 direction = exit.xyz - entry.xyz;   
-        float tEnd = fast_length(direction);
-        float tIncr = min(tEnd, 1.f/(stepSize*length(direction*convert_float3(volumeDimension))));
+    if(tEnd > 0.f) {     
         direction = fast_normalize(direction);
+        float tIncr = min(tEnd, 1.f/(stepSize*length(direction*convert_float3(volumeDimension))));
         float3 p = entry.xyz;
         
         float t = 0.5f*tIncr; 
@@ -76,7 +75,7 @@ __kernel void raycaster(read_only image3d_t volume
             if (result.w > ERT_THRESHOLD) t = tEnd;   
             else t += tIncr;   
         }
-        // Remove last part of integration
+        // Remove the last part of the integration, which we was too much.
         float dt = tEnd-(t-0.5f*tIncr);
         float opacity = 1.f - native_powr(1.f - emissionAbsorption.w, dt * REF_SAMPLING_INTERVAL);
 		result.xyz = result.xyz + (1.f - result.w) * opacity * emissionAbsorption.xyz;
