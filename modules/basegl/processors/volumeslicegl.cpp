@@ -132,7 +132,7 @@ void VolumeSliceGL::shiftSlice(int shift){
 
 void VolumeSliceGL::planeSettingsChanged() {
     std::string fH = (flipHorizontal_.get() ? "1.0-" : "");
-    std::string fV = (flipVertical_.get() ? "1.0-" : "");
+    std::string fV = (flipVertical_.get() ? "" : "1.0-");
 
     if (shader_) {
         switch (coordinatePlane_.get())
@@ -142,11 +142,11 @@ void VolumeSliceGL::planeSettingsChanged() {
                 break;
 
             case XZ:
-                shader_->getFragmentShaderObject()->addShaderDefine("coordPlanePermute(x,y,z)", fH + "x,z," + fV + "y");
+                shader_->getFragmentShaderObject()->addShaderDefine("coordPlanePermute(x,y,z)", fH + "z," + fV + "y,x");
                 break;
 
             case YZ:
-                shader_->getFragmentShaderObject()->addShaderDefine("coordPlanePermute(x,y,z)", fV + "y,z," + fH + "x");
+                shader_->getFragmentShaderObject()->addShaderDefine("coordPlanePermute(x,y,z)", fH + "x,z," + fV + "y");
                 break;
         }
 
