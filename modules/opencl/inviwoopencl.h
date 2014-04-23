@@ -277,7 +277,7 @@ IVW_MODULE_OPENCL_API std::string getCLErrorResolveHint(cl_int err);
  * @return Default ImageFormat created by the constructor
  * if a corresponding format does not exist, otherwise an ImageFormat with corresponding channel and data type.
  */
-IVW_MODULE_OPENCL_API cl::ImageFormat dataFormatToCLImageFormat(DataFormatId format);
+IVW_MODULE_OPENCL_API cl::ImageFormat dataFormatToCLImageFormat(DataFormatEnums::Id format);
 
 
 }

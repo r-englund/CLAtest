@@ -84,14 +84,14 @@ void LayerDisk::resize(uvec2 dim) {
     dimensions_ = dim;
 }
 
-void* LayerDisk::loadFileData(void* dst, uvec2& outDimension, DataFormatId& outFormatId) const {
+void* LayerDisk::loadFileData(void* dst, uvec2& outDimension, DataFormatEnums::Id& outFormatId) const {
     if (hasSourceFile())
         return ImageIO::loadImageToData(dst, getSourceFile(), outDimension, outFormatId);
 
     return NULL;
 }
 
-void* LayerDisk::loadFileDataAndRescale(void* dst, uvec2 dstDimesion, DataFormatId& outFormatId) const {
+void* LayerDisk::loadFileDataAndRescale(void* dst, uvec2 dstDimesion, DataFormatEnums::Id& outFormatId) const {
     if (hasSourceFile())
         return ImageIO::loadImageToDataAndRescale(dst, getSourceFile(), dstDimesion, outFormatId);
 

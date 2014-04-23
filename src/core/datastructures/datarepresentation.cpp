@@ -63,7 +63,7 @@ std::string DataRepresentation::getDataFormatString() const {
     return std::string(dataFormatBase_->getString());
 }
 
-DataFormatId DataRepresentation::getDataFormatId() const {
+DataFormatEnums::Id DataRepresentation::getDataFormatId() const {
     return dataFormatBase_->getId();
 }
 

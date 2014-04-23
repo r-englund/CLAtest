@@ -150,8 +150,10 @@ public:
     glm::detail::tvec2<T, glm::defaultp> getGLM() const { return *this; };
 };
 
+namespace DataFormatEnums {
+
 //Do not set enums specifically, as NUMBER_OF_FORMATS is used to count the number of enums
-enum DataFormatId {
+enum Id {
     NOT_SPECIALIZED,
     FLOAT16,
     FLOAT32,
@@ -215,17 +217,19 @@ enum NumericType {
     SIGNED_INTEGER_TYPE
 };
 
+}
+
 class IVW_CORE_API DataFormatBase {
 public:
     DataFormatBase();
-    DataFormatBase(DataFormatId t, size_t bA, size_t bS, int c, double max, double min, NumericType nt, std::string s);
+    DataFormatBase(DataFormatEnums::Id t, size_t bA, size_t bS, int c, double max, double min, DataFormatEnums::NumericType nt, std::string s);
     virtual ~DataFormatBase();
 
     static const DataFormatBase* get() {
-        if (!instance_[NOT_SPECIALIZED])
-            instance_[NOT_SPECIALIZED] = new DataFormatBase();
+        if (!instance_[DataFormatEnums::NOT_SPECIALIZED])
+            instance_[DataFormatEnums::NOT_SPECIALIZED] = new DataFormatBase();
 
-        return instance_[NOT_SPECIALIZED];
+        return instance_[DataFormatEnums::NOT_SPECIALIZED];
     }
 
     static void cleanDataFormatBases();
@@ -235,9 +239,9 @@ public:
     static size_t bitsAllocated() { return 0; }
     static size_t bitsStored() { return 0; }
     static int components() { return 0; }
-    static NumericType numericType() { return NOT_SPECIALIZED_TYPE; }
+    static DataFormatEnums::NumericType numericType() { return DataFormatEnums::NOT_SPECIALIZED_TYPE; }
     static std::string str() { return "Error, type specialization not implemented"; }
-    static DataFormatId id() { return NOT_SPECIALIZED; }
+    static DataFormatEnums::Id id() { return DataFormatEnums::NOT_SPECIALIZED; }
 
     virtual float valueToNormalizedFloat(void*) const;
     virtual vec2 valueToNormalizedVec2Float(void*) const;
@@ -254,25 +258,25 @@ public:
     size_t getBytesAllocated() const;
     size_t getBytesStored() const;
     int getComponents() const;
-    NumericType getNumericType() const;
+    DataFormatEnums::NumericType getNumericType() const;
     double getMax() const;
     double getMin() const;
     const char* getString() const;
-    DataFormatId getId() const;
+    DataFormatEnums::Id getId() const;
 
 
 protected:
-    static DataFormatBase* instance_[NUMBER_OF_FORMATS];
+    static DataFormatBase* instance_[DataFormatEnums::NUMBER_OF_FORMATS];
 
-    static DataFormatBase* getNonConst(DataFormatId id) {
+    static DataFormatBase* getNonConst(DataFormatEnums::Id id) {
         return instance_[id];
     }
 
-    DataFormatId formatId_;
+    DataFormatEnums::Id formatId_;
     size_t bitsAllocated_;
     size_t bitsStored_;
     int components_;
-    NumericType numericType_;
+    DataFormatEnums::NumericType numericType_;
     double max_;
     double min_;
     std::string* formatStr_;
@@ -311,7 +315,7 @@ public:
     static size_t bitsAllocated() { return B; }
     static size_t bitsStored() { return B; }
     static int components() { return 1; }
-    static NumericType numericType() { return NOT_SPECIALIZED_TYPE; }
+    static DataFormatEnums::NumericType numericType() { return DataFormatEnums::DataFormatEnums::NOT_SPECIALIZED_TYPE; }
 
     static T max() { return std::numeric_limits<T>::max(); }
     static T min() { return std::numeric_limits<T>::min(); }
@@ -320,7 +324,7 @@ public:
     static double minToDouble() { return static_cast<double>(min()); }
 
     static std::string str() { return DataFormatBase::str(); }
-    static DataFormatId id() { return DataFormatBase::id(); }
+    static DataFormatEnums::Id id() { return DataFormatBase::id(); }
 
     inline float valueToNormalizedFloat(void* val) const { return DataFormatBase::valueToNormalizedFloat(val); }
     inline vec2 valueToNormalizedVec2Float(void* val) const { return DataFormatBase::valueToNormalizedVec2Float(val); }
@@ -563,21 +567,21 @@ template<> inline DataUINT12::type DataUINT12::max() { return static_cast<DataUI
 template<> inline DataUINT12::type DataUINT12::min() { return static_cast<DataUINT12::type>(0); }
 
 // Type Function Specializations
-template<> inline DataFormatId DataFLOAT16::id() { return FLOAT16; }
-template<> inline DataFormatId DataFLOAT32::id() { return FLOAT32; }
-template<> inline DataFormatId DataFLOAT64::id() { return FLOAT64; }
+template<> inline DataFormatEnums::Id DataFLOAT16::id() { return DataFormatEnums::FLOAT16; }
+template<> inline DataFormatEnums::Id DataFLOAT32::id() { return DataFormatEnums::FLOAT32; }
+template<> inline DataFormatEnums::Id DataFLOAT64::id() { return DataFormatEnums::FLOAT64; }
 
-template<> inline DataFormatId DataINT8::id() { return INT8; }
-template<> inline DataFormatId DataINT12::id() { return INT12; }
-template<> inline DataFormatId DataINT16::id() { return INT16; }
-template<> inline DataFormatId DataINT32::id() { return INT32; }
-template<> inline DataFormatId DataINT64::id() { return INT64; }
+template<> inline DataFormatEnums::Id DataINT8::id() { return DataFormatEnums::INT8; }
+template<> inline DataFormatEnums::Id DataINT12::id() { return DataFormatEnums::INT12; }
+template<> inline DataFormatEnums::Id DataINT16::id() { return DataFormatEnums::INT16; }
+template<> inline DataFormatEnums::Id DataINT32::id() { return DataFormatEnums::INT32; }
+template<> inline DataFormatEnums::Id DataINT64::id() { return DataFormatEnums::INT64; }
 
-template<> inline DataFormatId DataUINT8::id() { return UINT8; }
-template<> inline DataFormatId DataUINT12::id() { return UINT12; }
-template<> inline DataFormatId DataUINT16::id() { return UINT16; }
-template<> inline DataFormatId DataUINT32::id() { return UINT32; }
-template<> inline DataFormatId DataUINT64::id() { return UINT64; }
+template<> inline DataFormatEnums::Id DataUINT8::id() { return DataFormatEnums::UINT8; }
+template<> inline DataFormatEnums::Id DataUINT12::id() { return DataFormatEnums::UINT12; }
+template<> inline DataFormatEnums::Id DataUINT16::id() { return DataFormatEnums::UINT16; }
+template<> inline DataFormatEnums::Id DataUINT32::id() { return DataFormatEnums::UINT32; }
+template<> inline DataFormatEnums::Id DataUINT64::id() { return DataFormatEnums::UINT64; }
 
 // String Function Specializations
 template<> inline std::string DataFLOAT16::str() { return "FLOAT16"; }
@@ -604,7 +608,7 @@ template<> inline std::string DataUINT64::str() { return "UINT64"; }
     template<> inline void F::vec4ToValue(vec4 val, void* loc) const { *static_cast<F::type*>(loc) = static_cast<F::type>(val.x); }
 
 #define DataUnchanged(F) \
-    template<> inline NumericType F::numericType() { return FLOAT_TYPE; } \
+    template<> inline DataFormatEnums::NumericType F::numericType() { return DataFormatEnums::FLOAT_TYPE; } \
     template<> inline float F::valueToNormalizedFloat(void* val) const { return *static_cast<float*>(val); } \
     template<> inline vec2 F::valueToNormalizedVec2Float(void* val) const { return singleToVec2<float>(*static_cast<float*>(val)); } \
     template<> inline vec3 F::valueToNormalizedVec3Float(void* val) const { return singleToVec3<float>(*static_cast<float*>(val)); } \
@@ -612,7 +616,7 @@ template<> inline std::string DataUINT64::str() { return "UINT64"; }
     DatatoFloat(F)
 
 #define DataNormalizedSignedSingle(F) \
-    template<> inline NumericType F::numericType() { return SIGNED_INTEGER_TYPE; } \
+    template<> inline DataFormatEnums::NumericType F::numericType() { return DataFormatEnums::SIGNED_INTEGER_TYPE; } \
     template<> inline float F::valueToNormalizedFloat(void* val) const { return normalizeSignedSingle<float, F::type>(val); } \
     template<> inline vec2 F::valueToNormalizedVec2Float(void* val) const { return singleToVec2<float>(normalizeSignedSingle<float, F::type>(val)); } \
     template<> inline vec3 F::valueToNormalizedVec3Float(void* val) const { return singleToVec3<float>(normalizeSignedSingle<float, F::type>(val)); } \
@@ -620,7 +624,7 @@ template<> inline std::string DataUINT64::str() { return "UINT64"; }
     DatatoFloat(F)
 
 #define DataNormalizedUnsignedSingle(F) \
-    template<> inline NumericType F::numericType() { return UNSIGNED_INTEGER_TYPE; } \
+    template<> inline DataFormatEnums::NumericType F::numericType() { return DataFormatEnums::UNSIGNED_INTEGER_TYPE; } \
     template<> inline float F::valueToNormalizedFloat(void* val) const { return normalizeUnsignedSingle<float, F::type>(val); } \
     template<> inline vec2 F::valueToNormalizedVec2Float(void* val) const { return singleToVec2<float>(normalizeUnsignedSingle<float, F::type>(val)); } \
     template<> inline vec3 F::valueToNormalizedVec3Float(void* val) const { return singleToVec3<float>(normalizeUnsignedSingle<float, F::type>(val)); } \
@@ -681,21 +685,21 @@ template<> inline DataVec2UINT64::type DataVec2UINT64::max() { return DataVec2UI
 template<> inline DataVec2UINT64::type DataVec2UINT64::min() { return DataVec2UINT64::type(DataUINT64::min()); }
 
 // Type Function Specializations
-template<> inline DataFormatId DataVec2FLOAT16::id() { return Vec2FLOAT16; }
-template<> inline DataFormatId DataVec2FLOAT32::id() { return Vec2FLOAT32; }
-template<> inline DataFormatId DataVec2FLOAT64::id() { return Vec2FLOAT64; }
+template<> inline DataFormatEnums::Id DataVec2FLOAT16::id() { return DataFormatEnums::Vec2FLOAT16; }
+template<> inline DataFormatEnums::Id DataVec2FLOAT32::id() { return DataFormatEnums::Vec2FLOAT32; }
+template<> inline DataFormatEnums::Id DataVec2FLOAT64::id() { return DataFormatEnums::Vec2FLOAT64; }
 
-template<> inline DataFormatId DataVec2INT8::id() { return Vec2INT8; }
-template<> inline DataFormatId DataVec2INT12::id() { return Vec2INT12; }
-template<> inline DataFormatId DataVec2INT16::id() { return Vec2INT16; }
-template<> inline DataFormatId DataVec2INT32::id() { return Vec2INT32; }
-template<> inline DataFormatId DataVec2INT64::id() { return Vec2INT64; }
+template<> inline DataFormatEnums::Id DataVec2INT8::id() { return DataFormatEnums::Vec2INT8; }
+template<> inline DataFormatEnums::Id DataVec2INT12::id() { return DataFormatEnums::Vec2INT12; }
+template<> inline DataFormatEnums::Id DataVec2INT16::id() { return DataFormatEnums::Vec2INT16; }
+template<> inline DataFormatEnums::Id DataVec2INT32::id() { return DataFormatEnums::Vec2INT32; }
+template<> inline DataFormatEnums::Id DataVec2INT64::id() { return DataFormatEnums::Vec2INT64; }
 
-template<> inline DataFormatId DataVec2UINT8::id() { return Vec2UINT8; }
-template<> inline DataFormatId DataVec2UINT12::id() { return Vec2UINT12; }
-template<> inline DataFormatId DataVec2UINT16::id() { return Vec2UINT16; }
-template<> inline DataFormatId DataVec2UINT32::id() { return Vec2UINT32; }
-template<> inline DataFormatId DataVec2UINT64::id() { return Vec2UINT64; }
+template<> inline DataFormatEnums::Id DataVec2UINT8::id() { return DataFormatEnums::Vec2UINT8; }
+template<> inline DataFormatEnums::Id DataVec2UINT12::id() { return DataFormatEnums::Vec2UINT12; }
+template<> inline DataFormatEnums::Id DataVec2UINT16::id() { return DataFormatEnums::Vec2UINT16; }
+template<> inline DataFormatEnums::Id DataVec2UINT32::id() { return DataFormatEnums::Vec2UINT32; }
+template<> inline DataFormatEnums::Id DataVec2UINT64::id() { return DataFormatEnums::Vec2UINT64; }
 
 // String Function Specializations
 template<> inline std::string DataVec2FLOAT16::str() { return "Vec2FLOAT16"; }
@@ -729,7 +733,7 @@ template<> inline std::string DataVec2UINT64::str() { return "Vec2UINT64"; }
     template<> inline void F::vec4ToValue(vec4 val, void* loc) const { *static_cast<F::type*>(loc) = F::type(static_cast<G::type>(val.x), static_cast<G::type>(val.y)); }
 
 #define DataUnchangedVec2(F, G) \
-    template<> inline NumericType F::numericType() { return FLOAT_TYPE; } \
+    template<> inline DataFormatEnums::NumericType F::numericType() { return DataFormatEnums::FLOAT_TYPE; } \
     template<> inline float F::valueToNormalizedFloat(void* val) const { return static_cast<float>(static_cast<F::type*>(val)->x); } \
     template<> inline vec2 F::valueToNormalizedVec2Float(void* val) const { return vec2(*static_cast<F::type*>(val)); } \
     template<> inline vec3 F::valueToNormalizedVec3Float(void* val) const { return vec2ToVec3<float>(vec2(*static_cast<F::type*>(val))); } \
@@ -737,7 +741,7 @@ template<> inline std::string DataVec2UINT64::str() { return "Vec2UINT64"; }
     DatatoVec2t(F, G)
 
 #define DataNormalizedSignedVec2(F, G) \
-    template<> inline NumericType F::numericType() { return SIGNED_INTEGER_TYPE; } \
+    template<> inline DataFormatEnums::NumericType F::numericType() { return DataFormatEnums::SIGNED_INTEGER_TYPE; } \
     template<> inline float F::valueToNormalizedFloat(void* val) const { return normalizeSignedVec2<float, G::type>(val).x; } \
     template<> inline vec2 F::valueToNormalizedVec2Float(void* val) const { return normalizeSignedVec2<float, G::type>(val); } \
     template<> inline vec3 F::valueToNormalizedVec3Float(void* val) const { return vec2ToVec3<float>(normalizeSignedVec2<float, G::type>(val)); } \
@@ -745,7 +749,7 @@ template<> inline std::string DataVec2UINT64::str() { return "Vec2UINT64"; }
     DatatoVec2t(F, G)
 
 #define DataNormalizedUnsignedVec2(F, G) \
-    template<> inline NumericType F::numericType() { return UNSIGNED_INTEGER_TYPE; } \
+    template<> inline DataFormatEnums::NumericType F::numericType() { return DataFormatEnums::UNSIGNED_INTEGER_TYPE; } \
     template<> inline float F::valueToNormalizedFloat(void* val) const { return normalizeUnsignedVec2<float, G::type>(val).x; } \
     template<> inline vec2 F::valueToNormalizedVec2Float(void* val) const { return normalizeUnsignedVec2<float, G::type>(val); } \
     template<> inline vec3 F::valueToNormalizedVec3Float(void* val) const { return vec2ToVec3<float>(normalizeUnsignedVec2<float, G::type>(val)); } \
@@ -806,21 +810,21 @@ template<> inline DataVec3UINT64::type DataVec3UINT64::max() { return DataVec3UI
 template<> inline DataVec3UINT64::type DataVec3UINT64::min() { return DataVec3UINT64::type(DataUINT64::min()); }
 
 // Type Function Specializations
-template<> inline DataFormatId DataVec3FLOAT16::id() { return Vec3FLOAT16; }
-template<> inline DataFormatId DataVec3FLOAT32::id() { return Vec3FLOAT32; }
-template<> inline DataFormatId DataVec3FLOAT64::id() { return Vec3FLOAT64; }
+template<> inline DataFormatEnums::Id DataVec3FLOAT16::id() { return DataFormatEnums::Vec3FLOAT16; }
+template<> inline DataFormatEnums::Id DataVec3FLOAT32::id() { return DataFormatEnums::Vec3FLOAT32; }
+template<> inline DataFormatEnums::Id DataVec3FLOAT64::id() { return DataFormatEnums::Vec3FLOAT64; }
 
-template<> inline DataFormatId DataVec3INT8::id() { return Vec3INT8; }
-template<> inline DataFormatId DataVec3INT12::id() { return Vec3INT12; }
-template<> inline DataFormatId DataVec3INT16::id() { return Vec3INT16; }
-template<> inline DataFormatId DataVec3INT32::id() { return Vec3INT32; }
-template<> inline DataFormatId DataVec3INT64::id() { return Vec3INT64; }
+template<> inline DataFormatEnums::Id DataVec3INT8::id() { return DataFormatEnums::Vec3INT8; }
+template<> inline DataFormatEnums::Id DataVec3INT12::id() { return DataFormatEnums::Vec3INT12; }
+template<> inline DataFormatEnums::Id DataVec3INT16::id() { return DataFormatEnums::Vec3INT16; }
+template<> inline DataFormatEnums::Id DataVec3INT32::id() { return DataFormatEnums::Vec3INT32; }
+template<> inline DataFormatEnums::Id DataVec3INT64::id() { return DataFormatEnums::Vec3INT64; }
 
-template<> inline DataFormatId DataVec3UINT8::id() { return Vec3UINT8; }
-template<> inline DataFormatId DataVec3UINT12::id() { return Vec3UINT12; }
-template<> inline DataFormatId DataVec3UINT16::id() { return Vec3UINT16; }
-template<> inline DataFormatId DataVec3UINT32::id() { return Vec3UINT32; }
-template<> inline DataFormatId DataVec3UINT64::id() { return Vec3UINT64; }
+template<> inline DataFormatEnums::Id DataVec3UINT8::id() { return DataFormatEnums::Vec3UINT8; }
+template<> inline DataFormatEnums::Id DataVec3UINT12::id() { return DataFormatEnums::Vec3UINT12; }
+template<> inline DataFormatEnums::Id DataVec3UINT16::id() { return DataFormatEnums::Vec3UINT16; }
+template<> inline DataFormatEnums::Id DataVec3UINT32::id() { return DataFormatEnums::Vec3UINT32; }
+template<> inline DataFormatEnums::Id DataVec3UINT64::id() { return DataFormatEnums::Vec3UINT64; }
 
 // String Function Specializations
 template<> inline std::string DataVec3FLOAT16::str() { return "Vec3FLOAT16"; }
@@ -849,7 +853,7 @@ template<> inline std::string DataVec3UINT64::str() { return "Vec3UINT64"; }
     template<> inline void F::vec4ToValue(vec4 val, void* loc) const { *static_cast<F::type*>(loc) = F::type(static_cast<G::type>(val.x), static_cast<G::type>(val.y), static_cast<G::type>(val.z)); }
 
 #define DataUnchangedVec3(F, G) \
-    template<> inline NumericType F::numericType() { return FLOAT_TYPE; } \
+    template<> inline DataFormatEnums::NumericType F::numericType() { return DataFormatEnums::FLOAT_TYPE; } \
     template<> inline float F::valueToNormalizedFloat(void* val) const { return static_cast<float>(static_cast<F::type*>(val)->x); } \
     template<> inline vec2 F::valueToNormalizedVec2Float(void* val) const { return vec2(static_cast<F::type*>(val)->x, static_cast<F::type*>(val)->y); } \
     template<> inline vec3 F::valueToNormalizedVec3Float(void* val) const { return vec3(static_cast<F::type*>(val)->x, static_cast<F::type*>(val)->y, static_cast<F::type*>(val)->z); } \
@@ -857,7 +861,7 @@ template<> inline std::string DataVec3UINT64::str() { return "Vec3UINT64"; }
     DataToVec3t(F, G)
 
 #define DataNormalizedSignedVec3(F, G) \
-    template<> inline NumericType F::numericType() { return SIGNED_INTEGER_TYPE; } \
+    template<> inline DataFormatEnums::NumericType F::numericType() { return DataFormatEnums::SIGNED_INTEGER_TYPE; } \
     template<> inline float F::valueToNormalizedFloat(void* val) const { return normalizeSignedVec3<float, G::type>(val).x; } \
     template<> inline vec2 F::valueToNormalizedVec2Float(void* val) const { return normalizeSignedVec2<float, G::type>(val).xy(); } \
     template<> inline vec3 F::valueToNormalizedVec3Float(void* val) const { return normalizeSignedVec3<float, G::type>(val); } \
@@ -865,7 +869,7 @@ template<> inline std::string DataVec3UINT64::str() { return "Vec3UINT64"; }
     DataToVec3t(F, G)
 
 #define DataNormalizedUnsignedVec3(F, G) \
-    template<> inline NumericType F::numericType() { return UNSIGNED_INTEGER_TYPE; } \
+    template<> inline DataFormatEnums::NumericType F::numericType() { return DataFormatEnums::UNSIGNED_INTEGER_TYPE; } \
     template<> inline float F::valueToNormalizedFloat(void* val) const { return normalizeUnsignedVec3<float, G::type>(val).x; } \
     template<> inline vec2 F::valueToNormalizedVec2Float(void* val) const { return normalizeUnsignedVec3<float, G::type>(val).xy(); } \
     template<> inline vec3 F::valueToNormalizedVec3Float(void* val) const { return normalizeUnsignedVec3<float, G::type>(val); } \
@@ -926,21 +930,21 @@ template<> inline DataVec4UINT64::type DataVec4UINT64::max() { return DataVec4UI
 template<> inline DataVec4UINT64::type DataVec4UINT64::min() { return DataVec4UINT64::type(DataUINT64::min()); }
 
 // Type Function Specializations
-template<> inline DataFormatId DataVec4FLOAT16::id() { return Vec4FLOAT16; }
-template<> inline DataFormatId DataVec4FLOAT32::id() { return Vec4FLOAT32; }
-template<> inline DataFormatId DataVec4FLOAT64::id() { return Vec4FLOAT64; }
+template<> inline DataFormatEnums::Id DataVec4FLOAT16::id() { return DataFormatEnums::Vec4FLOAT16; }
+template<> inline DataFormatEnums::Id DataVec4FLOAT32::id() { return DataFormatEnums::Vec4FLOAT32; }
+template<> inline DataFormatEnums::Id DataVec4FLOAT64::id() { return DataFormatEnums::Vec4FLOAT64; }
 
-template<> inline DataFormatId DataVec4INT8::id() { return Vec4INT8; }
-template<> inline DataFormatId DataVec4INT12::id() { return Vec4INT12; }
-template<> inline DataFormatId DataVec4INT16::id() { return Vec4INT16; }
-template<> inline DataFormatId DataVec4INT32::id() { return Vec4INT32; }
-template<> inline DataFormatId DataVec4INT64::id() { return Vec4INT64; }
+template<> inline DataFormatEnums::Id DataVec4INT8::id() { return DataFormatEnums::Vec4INT8; }
+template<> inline DataFormatEnums::Id DataVec4INT12::id() { return DataFormatEnums::Vec4INT12; }
+template<> inline DataFormatEnums::Id DataVec4INT16::id() { return DataFormatEnums::Vec4INT16; }
+template<> inline DataFormatEnums::Id DataVec4INT32::id() { return DataFormatEnums::Vec4INT32; }
+template<> inline DataFormatEnums::Id DataVec4INT64::id() { return DataFormatEnums::Vec4INT64; }
 
-template<> inline DataFormatId DataVec4UINT8::id() { return Vec4UINT8; }
-template<> inline DataFormatId DataVec4UINT12::id() { return Vec4UINT12; }
-template<> inline DataFormatId DataVec4UINT16::id() { return Vec4UINT16; }
-template<> inline DataFormatId DataVec4UINT32::id() { return Vec4UINT32; }
-template<> inline DataFormatId DataVec4UINT64::id() { return Vec4UINT64; }
+template<> inline DataFormatEnums::Id DataVec4UINT8::id() { return DataFormatEnums::Vec4UINT8; }
+template<> inline DataFormatEnums::Id DataVec4UINT12::id() { return DataFormatEnums::Vec4UINT12; }
+template<> inline DataFormatEnums::Id DataVec4UINT16::id() { return DataFormatEnums::Vec4UINT16; }
+template<> inline DataFormatEnums::Id DataVec4UINT32::id() { return DataFormatEnums::Vec4UINT32; }
+template<> inline DataFormatEnums::Id DataVec4UINT64::id() { return DataFormatEnums::Vec4UINT64; }
 
 // String Function Specializations
 template<> inline std::string DataVec4FLOAT16::str() { return "Vec4FLOAT16"; }
@@ -969,7 +973,7 @@ template<> inline std::string DataVec4UINT64::str() { return "Vec4UINT64"; }
     template<> inline void F::vec4ToValue(vec4 val, void* loc) const { *static_cast<F::type*>(loc) = F::type(static_cast<G::type>(val.x), static_cast<G::type>(val.y), static_cast<G::type>(val.z), static_cast<G::type>(val.w)); }
 
 #define DataUnchangedVec4(F, G) \
-    template<> inline NumericType F::numericType() { return FLOAT_TYPE; } \
+    template<> inline DataFormatEnums::NumericType F::numericType() { return DataFormatEnums::FLOAT_TYPE; } \
     template<> inline float F::valueToNormalizedFloat(void* val) const { return static_cast<float>((*static_cast<F::type*>(val)).x); } \
     template<> inline vec2 F::valueToNormalizedVec2Float(void* val) const { return vec2(static_cast<F::type*>(val)->x, static_cast<F::type*>(val)->y); } \
     template<> inline vec3 F::valueToNormalizedVec3Float(void* val) const { return vec3(static_cast<F::type*>(val)->x, static_cast<F::type*>(val)->y, static_cast<F::type*>(val)->z); } \
@@ -977,7 +981,7 @@ template<> inline std::string DataVec4UINT64::str() { return "Vec4UINT64"; }
     DataToVec4t(F, G)
 
 #define DataNormalizedSignedVec4(F, G) \
-    template<> inline NumericType F::numericType() { return SIGNED_INTEGER_TYPE; } \
+    template<> inline DataFormatEnums::NumericType F::numericType() { return DataFormatEnums::SIGNED_INTEGER_TYPE; } \
     template<> inline float F::valueToNormalizedFloat(void* val) const { return normalizeSignedVec4<float, G::type>(val).x; } \
     template<> inline vec2 F::valueToNormalizedVec2Float(void* val) const { return normalizeSignedVec4<float, G::type>(val).xy(); } \
     template<> inline vec3 F::valueToNormalizedVec3Float(void* val) const { return normalizeSignedVec4<float, G::type>(val).xyz(); } \
@@ -985,7 +989,7 @@ template<> inline std::string DataVec4UINT64::str() { return "Vec4UINT64"; }
     DataToVec4t(F, G)
 
 #define DataNormalizedUnsignedVec4(F, G) \
-    template<> inline NumericType F::numericType() { return UNSIGNED_INTEGER_TYPE; } \
+    template<> inline DataFormatEnums::NumericType F::numericType() { return DataFormatEnums::UNSIGNED_INTEGER_TYPE; } \
     template<> inline float F::valueToNormalizedFloat(void* val) const { return normalizeUnsignedVec4<float, G::type>(val).x; } \
     template<> inline vec2 F::valueToNormalizedVec2Float(void* val) const { return normalizeUnsignedVec4<float, G::type>(val).xy(); } \
     template<> inline vec3 F::valueToNormalizedVec3Float(void* val) const { return normalizeUnsignedVec4<float, G::type>(val).xyz(); } \
@@ -1013,58 +1017,58 @@ DataNormalizedUnsignedVec4(DataVec4UINT64, DataUINT64)
 
 #define CallFunctionWithTemplateArgsForType(fun, id) \
     switch (id) {\
-    case FLOAT16: fun<DataFLOAT16::type, DataFLOAT16::bits>(); break; \
-    case FLOAT32: fun<DataFLOAT32::type, DataFLOAT32::bits>(); break; \
-    case FLOAT64: fun<DataFLOAT64::type, DataFLOAT64::bits>(); break; \
-    case INT8: fun<DataINT8::type, DataINT8::bits>(); break; \
-    case INT12: fun<DataINT12::type, DataINT12::bits>(); break; \
-    case INT16: fun<DataINT16::type, DataINT16::bits>(); break; \
-    case INT32: fun<DataINT32::type, DataINT32::bits>(); break; \
-    case INT64: fun<DataINT64::type, DataINT64::bits>(); break; \
-    case UINT8: fun<DataUINT8::type, DataUINT8::bits>(); break; \
-    case UINT12: fun<DataUINT12::type, DataUINT12::bits>(); break; \
-    case UINT16: fun<DataUINT16::type, DataUINT16::bits>(); break; \
-    case UINT32: fun<DataUINT32::type, DataUINT32::bits>(); break; \
-    case UINT64: fun<DataUINT64::type, DataUINT64::bits>(); break; \
-    case Vec2FLOAT16: fun<DataVec2FLOAT16::type, DataVec2FLOAT16::bits>(); break; \
-    case Vec2FLOAT32: fun<DataVec2FLOAT32::type, DataVec2FLOAT32::bits>(); break; \
-    case Vec2FLOAT64: fun<DataVec2FLOAT64::type, DataVec2FLOAT64::bits>(); break; \
-    case Vec2INT8: fun<DataVec2INT8::type, DataVec2INT8::bits>(); break; \
-    case Vec2INT12: fun<DataVec2INT12::type, DataVec2INT12::bits>(); break; \
-    case Vec2INT16: fun<DataVec2INT16::type, DataVec2INT16::bits>(); break; \
-    case Vec2INT32: fun<DataVec2INT32::type, DataVec2INT32::bits>(); break; \
-    case Vec2INT64: fun<DataVec2INT64::type, DataVec2INT64::bits>(); break; \
-    case Vec2UINT8: fun<DataVec2UINT8::type, DataVec2UINT8::bits>(); break; \
-    case Vec2UINT12: fun<DataVec2UINT12::type, DataVec2UINT12::bits>(); break; \
-    case Vec2UINT16: fun<DataVec2UINT16::type, DataVec2UINT16::bits>(); break; \
-    case Vec2UINT32: fun<DataVec2UINT32::type, DataVec2UINT32::bits>(); break; \
-    case Vec2UINT64: fun<DataVec2UINT64::type, DataVec2UINT64::bits>(); break; \
-    case Vec3FLOAT16: fun<DataVec3FLOAT16::type, DataVec3FLOAT16::bits>(); break; \
-    case Vec3FLOAT32: fun<DataVec3FLOAT32::type, DataVec3FLOAT32::bits>(); break; \
-    case Vec3FLOAT64: fun<DataVec3FLOAT64::type, DataVec3FLOAT64::bits>(); break; \
-    case Vec3INT8: fun<DataVec3INT8::type, DataVec3INT8::bits>(); break; \
-    case Vec3INT12: fun<DataVec3INT12::type, DataVec3INT12::bits>(); break; \
-    case Vec3INT16: fun<DataVec3INT16::type, DataVec3INT16::bits>(); break; \
-    case Vec3INT32: fun<DataVec3INT32::type, DataVec3INT32::bits>(); break; \
-    case Vec3INT64: fun<DataVec3INT64::type, DataVec3INT64::bits>(); break; \
-    case Vec3UINT8: fun<DataVec3UINT8::type, DataVec3UINT8::bits>(); break; \
-    case Vec3UINT12: fun<DataVec3UINT12::type, DataVec3UINT12::bits>(); break; \
-    case Vec3UINT16: fun<DataVec3UINT16::type, DataVec3UINT16::bits>(); break; \
-    case Vec3UINT32: fun<DataVec3UINT32::type, DataVec3UINT32::bits>(); break; \
-    case Vec3UINT64: fun<DataVec3UINT64::type, DataVec3UINT64::bits>(); break; \
-    case Vec4FLOAT16: fun<DataVec4FLOAT16::type, DataVec4FLOAT16::bits>(); break; \
-    case Vec4FLOAT32: fun<DataVec4FLOAT32::type, DataVec4FLOAT32::bits>(); break; \
-    case Vec4FLOAT64: fun<DataVec4FLOAT64::type, DataVec4FLOAT64::bits>(); break; \
-    case Vec4INT8: fun<DataVec4INT8::type, DataVec4INT8::bits>(); break; \
-    case Vec4INT12: fun<DataVec4INT12::type, DataVec4INT12::bits>(); break; \
-    case Vec4INT16: fun<DataVec4INT16::type, DataVec4INT16::bits>(); break; \
-    case Vec4INT32: fun<DataVec4INT32::type, DataVec4INT32::bits>(); break; \
-    case Vec4INT64: fun<DataVec4INT64::type, DataVec4INT64::bits>(); break; \
-    case Vec4UINT8: fun<DataVec4UINT8::type, DataVec4UINT8::bits>(); break; \
-    case Vec4UINT12: fun<DataVec4UINT12::type, DataVec4UINT12::bits>(); break; \
-    case Vec4UINT16: fun<DataVec4UINT16::type, DataVec4UINT16::bits>(); break; \
-    case Vec4UINT32: fun<DataVec4UINT32::type, DataVec4UINT32::bits>(); break; \
-    case Vec4UINT64: fun<DataVec4UINT64::type, DataVec4UINT64::bits>(); break; \
+    case DataFormatEnums::FLOAT16: fun<DataFLOAT16::type, DataFLOAT16::bits>(); break; \
+    case DataFormatEnums::FLOAT32: fun<DataFLOAT32::type, DataFLOAT32::bits>(); break; \
+    case DataFormatEnums::FLOAT64: fun<DataFLOAT64::type, DataFLOAT64::bits>(); break; \
+    case DataFormatEnums::INT8: fun<DataINT8::type, DataINT8::bits>(); break; \
+    case DataFormatEnums::INT12: fun<DataINT12::type, DataINT12::bits>(); break; \
+    case DataFormatEnums::INT16: fun<DataINT16::type, DataINT16::bits>(); break; \
+    case DataFormatEnums::INT32: fun<DataINT32::type, DataINT32::bits>(); break; \
+    case DataFormatEnums::INT64: fun<DataINT64::type, DataINT64::bits>(); break; \
+    case DataFormatEnums::UINT8: fun<DataUINT8::type, DataUINT8::bits>(); break; \
+    case DataFormatEnums::UINT12: fun<DataUINT12::type, DataUINT12::bits>(); break; \
+    case DataFormatEnums::UINT16: fun<DataUINT16::type, DataUINT16::bits>(); break; \
+    case DataFormatEnums::UINT32: fun<DataUINT32::type, DataUINT32::bits>(); break; \
+    case DataFormatEnums::UINT64: fun<DataUINT64::type, DataUINT64::bits>(); break; \
+    case DataFormatEnums::Vec2FLOAT16: fun<DataVec2FLOAT16::type, DataVec2FLOAT16::bits>(); break; \
+    case DataFormatEnums::Vec2FLOAT32: fun<DataVec2FLOAT32::type, DataVec2FLOAT32::bits>(); break; \
+    case DataFormatEnums::Vec2FLOAT64: fun<DataVec2FLOAT64::type, DataVec2FLOAT64::bits>(); break; \
+    case DataFormatEnums::Vec2INT8: fun<DataVec2INT8::type, DataVec2INT8::bits>(); break; \
+    case DataFormatEnums::Vec2INT12: fun<DataVec2INT12::type, DataVec2INT12::bits>(); break; \
+    case DataFormatEnums::Vec2INT16: fun<DataVec2INT16::type, DataVec2INT16::bits>(); break; \
+    case DataFormatEnums::Vec2INT32: fun<DataVec2INT32::type, DataVec2INT32::bits>(); break; \
+    case DataFormatEnums::Vec2INT64: fun<DataVec2INT64::type, DataVec2INT64::bits>(); break; \
+    case DataFormatEnums::Vec2UINT8: fun<DataVec2UINT8::type, DataVec2UINT8::bits>(); break; \
+    case DataFormatEnums::Vec2UINT12: fun<DataVec2UINT12::type, DataVec2UINT12::bits>(); break; \
+    case DataFormatEnums::Vec2UINT16: fun<DataVec2UINT16::type, DataVec2UINT16::bits>(); break; \
+    case DataFormatEnums::Vec2UINT32: fun<DataVec2UINT32::type, DataVec2UINT32::bits>(); break; \
+    case DataFormatEnums::Vec2UINT64: fun<DataVec2UINT64::type, DataVec2UINT64::bits>(); break; \
+    case DataFormatEnums::Vec3FLOAT16: fun<DataVec3FLOAT16::type, DataVec3FLOAT16::bits>(); break; \
+    case DataFormatEnums::Vec3FLOAT32: fun<DataVec3FLOAT32::type, DataVec3FLOAT32::bits>(); break; \
+    case DataFormatEnums::Vec3FLOAT64: fun<DataVec3FLOAT64::type, DataVec3FLOAT64::bits>(); break; \
+    case DataFormatEnums::Vec3INT8: fun<DataVec3INT8::type, DataVec3INT8::bits>(); break; \
+    case DataFormatEnums::Vec3INT12: fun<DataVec3INT12::type, DataVec3INT12::bits>(); break; \
+    case DataFormatEnums::Vec3INT16: fun<DataVec3INT16::type, DataVec3INT16::bits>(); break; \
+    case DataFormatEnums::Vec3INT32: fun<DataVec3INT32::type, DataVec3INT32::bits>(); break; \
+    case DataFormatEnums::Vec3INT64: fun<DataVec3INT64::type, DataVec3INT64::bits>(); break; \
+    case DataFormatEnums::Vec3UINT8: fun<DataVec3UINT8::type, DataVec3UINT8::bits>(); break; \
+    case DataFormatEnums::Vec3UINT12: fun<DataVec3UINT12::type, DataVec3UINT12::bits>(); break; \
+    case DataFormatEnums::Vec3UINT16: fun<DataVec3UINT16::type, DataVec3UINT16::bits>(); break; \
+    case DataFormatEnums::Vec3UINT32: fun<DataVec3UINT32::type, DataVec3UINT32::bits>(); break; \
+    case DataFormatEnums::Vec3UINT64: fun<DataVec3UINT64::type, DataVec3UINT64::bits>(); break; \
+    case DataFormatEnums::Vec4FLOAT16: fun<DataVec4FLOAT16::type, DataVec4FLOAT16::bits>(); break; \
+    case DataFormatEnums::Vec4FLOAT32: fun<DataVec4FLOAT32::type, DataVec4FLOAT32::bits>(); break; \
+    case DataFormatEnums::Vec4FLOAT64: fun<DataVec4FLOAT64::type, DataVec4FLOAT64::bits>(); break; \
+    case DataFormatEnums::Vec4INT8: fun<DataVec4INT8::type, DataVec4INT8::bits>(); break; \
+    case DataFormatEnums::Vec4INT12: fun<DataVec4INT12::type, DataVec4INT12::bits>(); break; \
+    case DataFormatEnums::Vec4INT16: fun<DataVec4INT16::type, DataVec4INT16::bits>(); break; \
+    case DataFormatEnums::Vec4INT32: fun<DataVec4INT32::type, DataVec4INT32::bits>(); break; \
+    case DataFormatEnums::Vec4INT64: fun<DataVec4INT64::type, DataVec4INT64::bits>(); break; \
+    case DataFormatEnums::Vec4UINT8: fun<DataVec4UINT8::type, DataVec4UINT8::bits>(); break; \
+    case DataFormatEnums::Vec4UINT12: fun<DataVec4UINT12::type, DataVec4UINT12::bits>(); break; \
+    case DataFormatEnums::Vec4UINT16: fun<DataVec4UINT16::type, DataVec4UINT16::bits>(); break; \
+    case DataFormatEnums::Vec4UINT32: fun<DataVec4UINT32::type, DataVec4UINT32::bits>(); break; \
+    case DataFormatEnums::Vec4UINT64: fun<DataVec4UINT64::type, DataVec4UINT64::bits>(); break; \
     default: break; \
 }
 

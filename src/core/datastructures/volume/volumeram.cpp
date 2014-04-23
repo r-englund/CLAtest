@@ -117,10 +117,10 @@ VolumeRAM* createVolumeRAM(const uvec3& dimension, const DataFormatBase* format)
 
     switch (format->getId())
     {
-        case NOT_SPECIALIZED:
+        case DataFormatEnums::NOT_SPECIALIZED:
             LogErrorCustom("createVolumeRAM", "Invalid format");
             break;
-#define DataFormatIdMacro(i) case i: return new VolumeRAMCustomPrecision<Data##i::type, Data##i::bits>(dimension); break;
+#define DataFormatIdMacro(i) case DataFormatEnums::i: return new VolumeRAMCustomPrecision<Data##i::type, Data##i::bits>(dimension); break;
 #include <inviwo/core/util/formatsdefinefunc.h>
 
         default:

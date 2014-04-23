@@ -54,7 +54,7 @@ public:
     virtual std::string getClassName() const;
     const DataFormatBase* getDataFormat() const;
     std::string getDataFormatString() const;
-    DataFormatId getDataFormatId() const;
+    DataFormatEnums::Id getDataFormatId() const;
     virtual void performOperation(DataOperation*) const = 0;
 
 protected:

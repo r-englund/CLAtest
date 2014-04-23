@@ -44,7 +44,7 @@ DataFormatBase::DataFormatBase()
     formatStr_ = new std::string(str());
 }
 
-DataFormatBase::DataFormatBase(DataFormatId t, size_t bA, size_t bS, int c, double max, double min, NumericType nt, std::string s)
+DataFormatBase::DataFormatBase(DataFormatEnums::Id t, size_t bA, size_t bS, int c, double max, double min, DataFormatEnums::NumericType nt, std::string s)
     : formatId_(t)
     , bitsAllocated_(bA)
     , bitsStored_(bS)
@@ -60,7 +60,7 @@ DataFormatBase::~DataFormatBase() {
 }
 
 const DataFormatBase* DataFormatBase::get(std::string name) {
-    if (name == "") return instance_[NOT_SPECIALIZED];
+    if (name == "") return instance_[DataFormatEnums::NOT_SPECIALIZED];
 
 #define DataFormatIdMacro(i) else if(name == #i) return Data##i::get();
 #include <inviwo/core/util/formatsdefinefunc.h>
@@ -73,11 +73,11 @@ const DataFormatBase* DataFormatBase::get(std::string name) {
     else if (name == "INT") return DataINT32::get();
     else if (name == "FLOAT") return DataFLOAT32::get();
     else if (name == "DOUBLE") return DataFLOAT64::get();
-    else return instance_[NOT_SPECIALIZED];
+    else return instance_[DataFormatEnums::NOT_SPECIALIZED];
 }
 
 void DataFormatBase::cleanDataFormatBases() {
-    for (int i = 0; i<NUMBER_OF_FORMATS; i++) {
+    for (int i = 0; i<DataFormatEnums::NUMBER_OF_FORMATS; i++) {
         if (instance_[i]) {
             delete instance_[i];
             instance_[i] = 0;
@@ -121,7 +121,7 @@ size_t DataFormatBase::getBitsAllocated() const {
     return bitsAllocated_;
 }
 
-NumericType DataFormatBase::getNumericType() const {
+DataFormatEnums::NumericType DataFormatBase::getNumericType() const {
     return numericType_;
 }
 
@@ -153,7 +153,7 @@ const char* DataFormatBase::getString() const {
     return formatStr_->c_str();
 }
 
-DataFormatId DataFormatBase::getId() const {
+DataFormatEnums::Id DataFormatBase::getId() const {
     return formatId_;
 }
 
