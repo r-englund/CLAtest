@@ -21,6 +21,7 @@ set(HEADER_FILES
     ${IVW_INCLUDE_DIR}/inviwo/qt/editor/connectiongraphicsitem.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/editor/linkgraphicsitem.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/editor/networkeditorview.h
+    ${IVW_INCLUDE_DIR}/inviwo/qt/editor/portinfographicsitem.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/editor/processorgraphicsitem.h
     ${MOC_FILES}
 )
@@ -39,6 +40,7 @@ set(SOURCE_FILES
     mappingwidget.cpp
     networkeditor.cpp
     networkeditorview.cpp
+    portinfographicsitem.cpp
     processorlistwidget.cpp
     processorgraphicsitem.cpp
 	resourcemanagerwidget.cpp
