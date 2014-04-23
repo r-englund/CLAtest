@@ -17,7 +17,6 @@ set(MOC_FILES
     ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/ordinaleditorwidget.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/propertylistwidget.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/rangesliderqt.h
-    ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/rawdatareaderdialogqt.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/spinboxrangesliderwidgetqt.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/timerqt.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/processors/processorwidgetqt.h
@@ -56,6 +55,7 @@ set(HEADER_FILES
     ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/eventpropertymanager.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/inviwoqtwidgetsdefine.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/labelgraphicsitem.h
+     ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/rawdatareaderdialogqt.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/properties/transferfunctioneditorcontrolpoint.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/qtwidgetmodule.h
     ${MOC_FILES}
