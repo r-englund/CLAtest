@@ -34,7 +34,7 @@
 
 bool ImageIO::loader_initialized = false;
 
-inline DataFormatId getDataFormatFromBitmap(FIBITMAP* bitmap) {
+inline DataFormatEnums::Id getDataFormatFromBitmap(FIBITMAP* bitmap) {
     FREE_IMAGE_TYPE type = FreeImage_GetImageType(bitmap);
     unsigned int bpp = FreeImage_GetBPP(bitmap);
 
@@ -47,100 +47,100 @@ inline DataFormatId getDataFormatFromBitmap(FIBITMAP* bitmap) {
                 case 1:
                 case 4:
                 case 8:
-                    return inviwo::UINT8;
+                    return inviwo::DataFormatEnums::UINT8;
 
                 case 16:
-                    return inviwo::Vec2UINT8;
+                    return inviwo::DataFormatEnums::Vec2UINT8;
 
                 case 24:
                 case 32:
-                    return inviwo::Vec4UINT8;
+                    return inviwo::DataFormatEnums::Vec4UINT8;
             }
 
             break;
 
         case FIT_UINT16:
-            return inviwo::UINT16;
+            return inviwo::DataFormatEnums::UINT16;
 
         case FIT_INT16:
-            return inviwo::INT16;
+            return inviwo::DataFormatEnums::INT16;
 
         case FIT_UINT32:
-            return inviwo::UINT32;
+            return inviwo::DataFormatEnums::UINT32;
 
         case FIT_INT32:
-            return inviwo::INT32;
+            return inviwo::DataFormatEnums::INT32;
 
         case FIT_FLOAT:
-            return inviwo::FLOAT32;
+            return inviwo::DataFormatEnums::FLOAT32;
 
         case FIT_DOUBLE:
-            return inviwo::FLOAT64;
+            return inviwo::DataFormatEnums::FLOAT64;
 
         case FIT_COMPLEX:
-            return inviwo::Vec2FLOAT64;
+            return inviwo::DataFormatEnums::Vec2FLOAT64;
 
         case FIT_RGB16:
-            return inviwo::Vec3UINT16;
+            return inviwo::DataFormatEnums::Vec3UINT16;
 
         case FIT_RGBA16:
-            return inviwo::Vec4UINT16;
+            return inviwo::DataFormatEnums::Vec4UINT16;
 
         case FIT_RGBF:
-            return inviwo::Vec3FLOAT32;
+            return inviwo::DataFormatEnums::Vec3FLOAT32;
 
         case FIT_RGBAF:
-            return inviwo::Vec4FLOAT32;
+            return inviwo::DataFormatEnums::Vec4FLOAT32;
 
         default:
             break;
     }
 
-    return inviwo::NOT_SPECIALIZED;
+    return inviwo::DataFormatEnums::NOT_SPECIALIZED;
 }
 
-inline FREE_IMAGE_TYPE getFreeImageFormatFromDataFormat(DataFormatId formatId) {
+inline FREE_IMAGE_TYPE getFreeImageFormatFromDataFormat(inviwo::DataFormatEnums::Id formatId) {
     switch (formatId) {
-        case inviwo::NOT_SPECIALIZED:
+        case inviwo::DataFormatEnums::NOT_SPECIALIZED:
             break;
 
-        case inviwo::UINT8:
-        case inviwo::Vec2UINT8:
-        case inviwo::Vec3UINT8:
-        case inviwo::Vec4UINT8:
+        case inviwo::DataFormatEnums::UINT8:
+        case inviwo::DataFormatEnums::Vec2UINT8:
+        case inviwo::DataFormatEnums::Vec3UINT8:
+        case inviwo::DataFormatEnums::Vec4UINT8:
             return FIT_BITMAP;
 
-        case inviwo::UINT16:
+        case inviwo::DataFormatEnums::UINT16:
             return FIT_UINT16;
 
-        case inviwo::INT16:
+        case inviwo::DataFormatEnums::INT16:
             return FIT_INT16;
 
-        case inviwo::UINT32:
+        case inviwo::DataFormatEnums::UINT32:
             return FIT_UINT32;
 
-        case inviwo::INT32:
+        case inviwo::DataFormatEnums::INT32:
             return FIT_INT32;
 
-        case inviwo::FLOAT32:
+        case inviwo::DataFormatEnums::FLOAT32:
             return FIT_FLOAT;
 
-        case inviwo::FLOAT64:
+        case inviwo::DataFormatEnums::FLOAT64:
             return FIT_DOUBLE;
 
-        case inviwo::Vec2FLOAT64:
+        case inviwo::DataFormatEnums::Vec2FLOAT64:
             return FIT_COMPLEX;
 
-        case inviwo::Vec3UINT16:
+        case inviwo::DataFormatEnums::Vec3UINT16:
             return FIT_RGB16;
 
-        case inviwo::Vec4UINT16:
+        case inviwo::DataFormatEnums::Vec4UINT16:
             return FIT_RGBA16;
 
-        case inviwo::Vec3FLOAT32:
+        case inviwo::DataFormatEnums::Vec3FLOAT32:
             return FIT_RGBF;
 
-        case inviwo::Vec4FLOAT32:
+        case inviwo::DataFormatEnums::Vec4FLOAT32:
             return FIT_RGBAF;
 
         default:
@@ -222,11 +222,11 @@ bool ImageIO::isValidImageFile(std::string filename) {
     return (imageFormat != FIF_UNKNOWN);
 }
 
-void* ImageIO::loadImageToData(void* data, std::string filename, uvec2& out_dim, DataFormatId& out_format) {
+void* ImageIO::loadImageToData(void* data, std::string filename, uvec2& out_dim, inviwo::DataFormatEnums::Id& out_format) {
     initLoader();
     FIBITMAP* bitmap = 0;
     void* outData = data;
-    out_format = NOT_SPECIALIZED;
+    out_format = DataFormatEnums::NOT_SPECIALIZED;
 
     if (readInImage(filename, &bitmap)) {
         unsigned int width = FreeImage_GetWidth(bitmap);
@@ -236,10 +236,10 @@ void* ImageIO::loadImageToData(void* data, std::string filename, uvec2& out_dim,
 
         switch (out_format)
         {
-            case NOT_SPECIALIZED:
+        case inviwo::DataFormatEnums::NOT_SPECIALIZED:
                 LogErrorCustom("loadImageToData", "Invalid format");
                 break;
-#define DataFormatIdMacro(i) case inviwo::i: outData = fiBitmapToDataArray<Data##i::type>(data, bitmap, Data##i::bitsAllocated(), Data##i::components()); break;
+#define DataFormatIdMacro(i) case inviwo::DataFormatEnums::i: outData = fiBitmapToDataArray<Data##i::type>(data, bitmap, Data##i::bitsAllocated(), Data##i::components()); break;
 #include <inviwo/core/util/formatsdefinefunc.h>
 
             default:
@@ -252,21 +252,21 @@ void* ImageIO::loadImageToData(void* data, std::string filename, uvec2& out_dim,
     return outData;
 }
 
-void* ImageIO::loadImageToDataAndRescale(void* data, std::string filename, uvec2 dst_dim, DataFormatId& out_format) {
+void* ImageIO::loadImageToDataAndRescale(void* data, std::string filename, uvec2 dst_dim, inviwo::DataFormatEnums::Id& out_format) {
     initLoader();
     FIBITMAP* bitmap = 0;
     void* outData = data;
-    out_format = NOT_SPECIALIZED;
+    out_format = inviwo::DataFormatEnums::NOT_SPECIALIZED;
 
     if (readInImage(filename, &bitmap)) {
         out_format = getDataFormatFromBitmap(bitmap);
 
         switch (out_format)
         {
-            case NOT_SPECIALIZED:
+        case inviwo::DataFormatEnums::NOT_SPECIALIZED:
                 LogErrorCustom("loadImageToDataAndRescale", "Invalid format");
                 break;
-#define DataFormatIdMacro(i) case inviwo::i: outData = fiBitmapToDataArrayAndRescale<Data##i::type>(data, bitmap, dst_dim, Data##i::bitsAllocated(), Data##i::components()); break;
+#define DataFormatIdMacro(i) case inviwo::DataFormatEnums::i: outData = fiBitmapToDataArrayAndRescale<Data##i::type>(data, bitmap, dst_dim, Data##i::bitsAllocated(), Data##i::components()); break;
 #include <inviwo/core/util/formatsdefinefunc.h>
 
             default:
@@ -293,11 +293,11 @@ void* ImageIO::rescaleLayerRAM(const LayerRAM* srcLayerRam, uvec2 dst_dim) {
 
     switch (srcLayerRam->getDataFormatId())
     {
-        case NOT_SPECIALIZED:
+    case inviwo::DataFormatEnums::NOT_SPECIALIZED:
             LogErrorCustom("rescaleLayerRAM", "Invalid format");
             rawData = NULL;
             break;
-#define DataFormatIdMacro(i) case inviwo::i: bitmap = handleBitmapCreations<Data##i::type>(static_cast<const Data##i::type*>(srcLayerRam->getData()), formatType, srcLayerRam->getDimension(), Data##i::bitsAllocated(), Data##i::components(), srcLayerRam->getDataFormat()); \
+#define DataFormatIdMacro(i) case inviwo::DataFormatEnums::i: bitmap = handleBitmapCreations<Data##i::type>(static_cast<const Data##i::type*>(srcLayerRam->getData()), formatType, srcLayerRam->getDimension(), Data##i::bitsAllocated(), Data##i::components(), srcLayerRam->getDataFormat()); \
         rawData = fiBitmapToDataArrayAndRescale<Data##i::type>(NULL, bitmap, dst_dim, Data##i::bitsAllocated(), Data##i::components()); break;
 #include <inviwo/core/util/formatsdefinefunc.h>
 
@@ -384,10 +384,10 @@ FIBITMAP* ImageIO::createBitmapFromData(const LayerRAM* inputLayer) {
 
     switch (inputLayer->getDataFormatId())
     {
-        case NOT_SPECIALIZED:
+    case inviwo::DataFormatEnums::NOT_SPECIALIZED:
             LogErrorCustom("createBitmapFromData", "Invalid format");
             return NULL;
-#define DataFormatIdMacro(i) case inviwo::i: return handleBitmapCreations<Data##i::type>(static_cast<const Data##i::type*>(inputLayer->getData()), formatType, inputLayer->getDimension(), Data##i::bitsAllocated(), Data##i::components(), inputLayer->getDataFormat());
+#define DataFormatIdMacro(i) case inviwo::DataFormatEnums::i: return handleBitmapCreations<Data##i::type>(static_cast<const Data##i::type*>(inputLayer->getData()), formatType, inputLayer->getDimension(), Data##i::bitsAllocated(), Data##i::components(), inputLayer->getDataFormat());
 #include <inviwo/core/util/formatsdefinefunc.h>
 
         default:
@@ -402,10 +402,10 @@ void ImageIO::copyBitmapToData(FIBITMAP* bitmap, LayerRAM* outImage){
     initLoader();
     switch (outImage->getDataFormat()->getId())
     {
-    case NOT_SPECIALIZED:
+    case inviwo::DataFormatEnums::NOT_SPECIALIZED:
         LogErrorCustom("loadImageToData", "Invalid format");
         break;
-#define DataFormatIdMacro(i) case inviwo::i: fiBitmapToDataArray<Data##i::type>(outImage->getData(), bitmap, Data##i::bitsAllocated(), Data##i::components()); break;
+#define DataFormatIdMacro(i) case inviwo::DataFormatEnums::i: fiBitmapToDataArray<Data##i::type>(outImage->getData(), bitmap, Data##i::bitsAllocated(), Data##i::components()); break;
 #include <inviwo/core/util/formatsdefinefunc.h>
 
     default:

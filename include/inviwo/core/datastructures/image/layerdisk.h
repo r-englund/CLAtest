@@ -58,19 +58,19 @@ public:
      *
      * @param void* the destination of the raw data
      * @param uvec2 dimension of the loaded image
-     * @param DataFormatId the loaded format
+     * @param DataFormatEnums::Id the loaded format
      *
      */
-    void* loadFileData(void*, uvec2&, DataFormatId&) const;
+    void* loadFileData(void*, uvec2&, DataFormatEnums::Id&) const;
     /**
      * \brief loads and rescales data from url.
      *
      * @param void* the destination of the raw data
      * @param uvec2 dimension to scale image to
-     * @param DataFormatId the loaded format
+     * @param DataFormatEnums::Id the loaded format
      *
      */
-    void* loadFileDataAndRescale(void*, uvec2, DataFormatId&) const;
+    void* loadFileDataAndRescale(void*, uvec2, DataFormatEnums::Id&) const;
 };
 
 } // namespace

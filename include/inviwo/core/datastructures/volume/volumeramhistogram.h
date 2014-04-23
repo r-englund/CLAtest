@@ -149,7 +149,7 @@ void VolumeRAMNormalizedHistogram::evaluate() {
                 intensity = dataFormat->valueToNormalizedFloat(&src[x+(y*dim.x)+(z*dimXY)]);
                 if (customDataRange) {
                     // TODO: this is so ugly...
-                    if (dataFormat->getNumericType() != FLOAT_TYPE) {
+                    if (dataFormat->getNumericType() != DataFormatEnums::FLOAT_TYPE) {
                         // renormalize intensity [0,1] to data type range unless it is a float type
                         intensity = intensity * (datatypeMax - datatypeMin) - datatypeMin;
                     }

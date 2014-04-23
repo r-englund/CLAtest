@@ -785,7 +785,7 @@ std::string getCLErrorResolveHint(cl_int err) {
     return hint;
 }
 
-cl::ImageFormat dataFormatToCLImageFormat(inviwo::DataFormatId format)
+cl::ImageFormat dataFormatToCLImageFormat(inviwo::DataFormatEnums::Id format)
 {
     // Difference between SNORM/UNORM and SIGNED/UNSIGNED INT
     // SNORM/UNORM:
@@ -802,215 +802,215 @@ cl::ImageFormat dataFormatToCLImageFormat(inviwo::DataFormatId format)
     cl::ImageFormat clFormat;
 
     switch (format) {
-        case NOT_SPECIALIZED:
+        case DataFormatEnums::NOT_SPECIALIZED:
             LogErrorCustom("cl::ImageFormat typeToImageFormat", "Invalid conversion");
             break;
 
-        case FLOAT16:
+        case DataFormatEnums::FLOAT16:
             clFormat = cl::ImageFormat(CL_R, CL_HALF_FLOAT);
             break;
 
-        case FLOAT32:
+        case DataFormatEnums::FLOAT32:
             clFormat = cl::ImageFormat(CL_R, CL_FLOAT);
             break;
 
-        case FLOAT64:
+        case DataFormatEnums::FLOAT64:
             LogErrorCustom("cl::ImageFormat typeToImageFormat", "Invalid conversion");
             break;
 
-        case INT8:
+        case DataFormatEnums::INT8:
             clFormat = cl::ImageFormat(CL_R, CL_SNORM_INT8);
             break;
 
-        case INT12:
+        case DataFormatEnums::INT12:
             clFormat = cl::ImageFormat(CL_R, CL_SNORM_INT16);
             break;
 
-        case INT16:
+        case DataFormatEnums::INT16:
             clFormat = cl::ImageFormat(CL_R, CL_SNORM_INT16);
             break;
 
-        case INT32:
+        case DataFormatEnums::INT32:
             clFormat = cl::ImageFormat(CL_R, CL_SIGNED_INT32);
             break;
 
-        case INT64:
+        case DataFormatEnums::INT64:
             LogErrorCustom("cl::ImageFormat typeToImageFormat", "Invalid conversion");
             break;
 
-        case UINT8:
+        case DataFormatEnums::UINT8:
             clFormat = cl::ImageFormat(CL_R, CL_UNORM_INT8);
             break;
 
-        case UINT12:
+        case DataFormatEnums::UINT12:
             clFormat = cl::ImageFormat(CL_R, CL_UNORM_INT16);
             break;
 
-        case UINT16:
+        case DataFormatEnums::UINT16:
             clFormat = cl::ImageFormat(CL_R, CL_UNORM_INT16);
             break;
 
-        case UINT32:
+        case DataFormatEnums::UINT32:
             clFormat = cl::ImageFormat(CL_R, CL_UNSIGNED_INT32);
             break;
 
-        case UINT64:
+        case DataFormatEnums::UINT64:
             LogErrorCustom("cl::ImageFormat typeToImageFormat", "Invalid conversion");
             break;
 
-        case Vec2FLOAT16:
+        case DataFormatEnums::Vec2FLOAT16:
             clFormat = cl::ImageFormat(CL_RG, CL_HALF_FLOAT);
             break;
 
-        case Vec2FLOAT32:
+        case DataFormatEnums::Vec2FLOAT32:
             clFormat = cl::ImageFormat(CL_RG, CL_FLOAT);
             break;
 
-        case Vec2FLOAT64:
+        case DataFormatEnums::Vec2FLOAT64:
             LogErrorCustom("cl::ImageFormat typeToImageFormat", "Invalid conversion");
             break;
 
-        case Vec2INT8:
+        case DataFormatEnums::Vec2INT8:
             clFormat = cl::ImageFormat(CL_RG, CL_SNORM_INT8);
             break;
 
-        case Vec2INT12:
+        case DataFormatEnums::Vec2INT12:
             clFormat = cl::ImageFormat(CL_RG, CL_SNORM_INT16);
             break;
 
-        case Vec2INT16:
+        case DataFormatEnums::Vec2INT16:
             clFormat = cl::ImageFormat(CL_RG, CL_SNORM_INT16);
             break;
 
-        case Vec2INT32:
+        case DataFormatEnums::Vec2INT32:
             clFormat = cl::ImageFormat(CL_RG, CL_SIGNED_INT32);
             break;
 
-        case Vec2INT64:
+        case DataFormatEnums::Vec2INT64:
             LogErrorCustom("cl::ImageFormat typeToImageFormat", "Invalid conversion");
             break;
 
-        case Vec2UINT8:
+        case DataFormatEnums::Vec2UINT8:
             clFormat = cl::ImageFormat(CL_RG, CL_UNORM_INT8);
             break;
 
-        case Vec2UINT12:
+        case DataFormatEnums::Vec2UINT12:
             clFormat = cl::ImageFormat(CL_RG, CL_UNORM_INT16);
             break;
 
-        case Vec2UINT16:
+        case DataFormatEnums::Vec2UINT16:
             clFormat = cl::ImageFormat(CL_RG, CL_UNORM_INT16);
             break;
 
-        case Vec2UINT32:
+        case DataFormatEnums::Vec2UINT32:
             clFormat = cl::ImageFormat(CL_RG, CL_UNSIGNED_INT32);
             break;
 
-        case Vec2UINT64:
+        case DataFormatEnums::Vec2UINT64:
             LogErrorCustom("cl::ImageFormat typeToImageFormat", "Invalid conversion");
             break;
 
-        case Vec3FLOAT16:
+        case DataFormatEnums::Vec3FLOAT16:
             LogErrorCustom("cl::ImageFormat typeToImageFormat", "Invalid conversion");
             break;
 
-        case Vec3FLOAT32:
+        case DataFormatEnums::Vec3FLOAT32:
             LogErrorCustom("cl::ImageFormat typeToImageFormat", "Invalid conversion");
             break;
 
-        case Vec3FLOAT64:
+        case DataFormatEnums::Vec3FLOAT64:
             LogErrorCustom("cl::ImageFormat typeToImageFormat", "Invalid conversion");
             break;
 
-        case Vec3INT8:
+        case DataFormatEnums::Vec3INT8:
             LogErrorCustom("cl::ImageFormat typeToImageFormat", "Invalid conversion");
             break;
 
-        case Vec3INT12:
+        case DataFormatEnums::Vec3INT12:
             LogErrorCustom("cl::ImageFormat typeToImageFormat", "Invalid conversion");
             break;
 
-        case Vec3INT16:
+        case DataFormatEnums::Vec3INT16:
             LogErrorCustom("cl::ImageFormat typeToImageFormat", "Invalid conversion");
             break;
 
-        case Vec3INT32:
+        case DataFormatEnums::Vec3INT32:
             LogErrorCustom("cl::ImageFormat typeToImageFormat", "Invalid conversion");
             break;
 
-        case Vec3INT64:
+        case DataFormatEnums::Vec3INT64:
             LogErrorCustom("cl::ImageFormat typeToImageFormat", "Invalid conversion");
             break;
 
-        case Vec3UINT8:
+        case DataFormatEnums::Vec3UINT8:
             LogErrorCustom("cl::ImageFormat typeToImageFormat", "Invalid conversion");
             break;
 
-        case Vec3UINT12:
+        case DataFormatEnums::Vec3UINT12:
             LogErrorCustom("cl::ImageFormat typeToImageFormat", "Invalid conversion");
             break;
 
-        case Vec3UINT16:
+        case DataFormatEnums::Vec3UINT16:
             LogErrorCustom("cl::ImageFormat typeToImageFormat", "Invalid conversion");
             break;
 
-        case Vec3UINT32:
+        case DataFormatEnums::Vec3UINT32:
             LogErrorCustom("cl::ImageFormat typeToImageFormat", "Invalid conversion");
             break;
 
-        case Vec3UINT64:
+        case DataFormatEnums::Vec3UINT64:
             LogErrorCustom("cl::ImageFormat typeToImageFormat", "Invalid conversion");
             break;
 
-        case Vec4FLOAT16:
+        case DataFormatEnums::Vec4FLOAT16:
             clFormat = cl::ImageFormat(CL_RGBA, CL_HALF_FLOAT);
             break;
 
-        case Vec4FLOAT32:
+        case DataFormatEnums::Vec4FLOAT32:
             clFormat = cl::ImageFormat(CL_RGBA, CL_FLOAT);
             break;
 
-        case Vec4FLOAT64:
+        case DataFormatEnums::Vec4FLOAT64:
             LogErrorCustom("cl::ImageFormat typeToImageFormat", "Invalid conversion");
             break;
 
-        case Vec4INT8:
+        case DataFormatEnums::Vec4INT8:
             clFormat = cl::ImageFormat(CL_RGBA, CL_SNORM_INT8);
             break;
 
-        case Vec4INT12:
+        case DataFormatEnums::Vec4INT12:
             clFormat = cl::ImageFormat(CL_RGBA, CL_SNORM_INT16);
             break;
 
-        case Vec4INT16:
+        case DataFormatEnums::Vec4INT16:
             clFormat = cl::ImageFormat(CL_RGBA, CL_SNORM_INT16);
             break;
 
-        case Vec4INT32:
+        case DataFormatEnums::Vec4INT32:
             clFormat = cl::ImageFormat(CL_RGBA, CL_SIGNED_INT32);
             break;
 
-        case Vec4INT64:
+        case DataFormatEnums::Vec4INT64:
             LogErrorCustom("cl::ImageFormat typeToImageFormat", "Invalid conversion");
             break;
 
-        case Vec4UINT8:
+        case DataFormatEnums::Vec4UINT8:
             clFormat = cl::ImageFormat(CL_RGBA, CL_UNORM_INT8);
             break; // TODO: Find out why CL_UNORM_INT8 does not work
 
-        case Vec4UINT12:
+        case DataFormatEnums::Vec4UINT12:
             clFormat = cl::ImageFormat(CL_RGBA, CL_UNORM_INT16);
             break;
 
-        case Vec4UINT16:
+        case DataFormatEnums::Vec4UINT16:
             clFormat = cl::ImageFormat(CL_RGBA, CL_UNORM_INT16);
             break;
 
-        case Vec4UINT32:
+        case DataFormatEnums::Vec4UINT32:
             clFormat = cl::ImageFormat(CL_RGBA, CL_UNSIGNED_INT32);
             break;
 
-        case Vec4UINT64:
+        case DataFormatEnums::Vec4UINT64:
             LogErrorCustom("cl::ImageFormat typeToImageFormat", "Invalid conversion");
             break;
 

@@ -51,9 +51,9 @@ public:
     * Loads an image through bitmap.
     * @param void* will point to the raw data
     * @param filename is the file that is to be loaded
-    * @return DataFormatId the data format
+    * @return DataFormatEnums::Id the data format
     */
-    static void* loadImageToData(void* data, std::string filename, uvec2& out_dim, DataFormatId& out_format);
+    static void* loadImageToData(void* data, std::string filename, uvec2& out_dim, DataFormatEnums::Id& out_format);
 
     /**
      * \brief Loads an image through bitmap and rescale
@@ -61,9 +61,9 @@ public:
      * @param void* will point to the raw data
      * @param std::string filename is the file that is to be loaded
      * @param uvec2 dst_dim is destination dimensions
-     * @return DataFormatId the data format
+     * @return DataFormatEnums::Id the data format
      */
-    static void* loadImageToDataAndRescale(void* data, std::string filename, uvec2 dist_dim, DataFormatId& out_format);
+    static void* loadImageToDataAndRescale(void* data, std::string filename, uvec2 dist_dim, DataFormatEnums::Id& out_format);
 
     /**
     * Saves an layer of an image to a specified filename.
