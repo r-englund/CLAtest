@@ -315,7 +315,7 @@ public:
     static size_t bitsAllocated() { return B; }
     static size_t bitsStored() { return B; }
     static int components() { return 1; }
-    static DataFormatEnums::NumericType numericType() { return DataFormatEnums::DataFormatEnums::NOT_SPECIALIZED_TYPE; }
+    static DataFormatEnums::NumericType numericType() { return DataFormatEnums::NOT_SPECIALIZED_TYPE; }
 
     static T max() { return std::numeric_limits<T>::max(); }
     static T min() { return std::numeric_limits<T>::min(); }
