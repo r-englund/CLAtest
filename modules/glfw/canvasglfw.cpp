@@ -58,11 +58,15 @@ void CanvasGLFW::initialize() {
 
 void CanvasGLFW::initializeGL() {
     if(!sharedContext_){
-        //glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
-        //glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+#ifdef __APPLE__
+        glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
+        glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 1);
+      	glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
+#endif
         std::string preferProfile = OpenGLCapabilities::getPreferredProfile();
-        if(preferProfile == "core")
+        if(preferProfile == "core"){
             glfwWindowHint(GLFW_OPENGL_CORE_PROFILE, GL_TRUE);
+	}
         else if(preferProfile == "compatibility")
             glfwWindowHint(GLFW_OPENGL_COMPAT_PROFILE, GL_TRUE);
     }
