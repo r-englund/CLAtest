@@ -33,7 +33,9 @@
 #include <inviwo/core/util/systemcapabilities.h>
 #include <inviwo/core/util/formatconversion.h>
 #include <inviwo/core/util/logcentral.h>
+#ifdef IVW_SIGAR
 #include <sigar/include/sigar.h>
+#endif
 
 namespace inviwo {
 
@@ -75,6 +77,7 @@ void SystemCapabilities::retrieveDynamicInfo() {
 }
 
 bool SystemCapabilities::lookupOSInfo() {
+#ifdef IVW_SIGAR
     int status;
     sigar_t* sigar;
     sigar_open(&sigar);
@@ -93,10 +96,15 @@ bool SystemCapabilities::lookupOSInfo() {
 
     sigar_close(sigar);
     return SUCCESS;
+#else
+    return false;
+#endif
+    
 }
 
 bool SystemCapabilities::lookupCPUInfo() {
     infoCPUs_.clear();
+#ifdef IVW_SIGAR
     int status;
     sigar_t* sigar;
     sigar_open(&sigar);
@@ -118,9 +126,13 @@ bool SystemCapabilities::lookupCPUInfo() {
     sigar_cpu_info_list_destroy(sigar, &cpulinfolist);
     sigar_close(sigar);
     return SUCCESS;
+#else
+    return false;
+#endif
 }
 
 bool SystemCapabilities::lookupMemoryInfo() {
+#ifdef IVW_SIGAR
     int status;
     sigar_t* sigar;
     sigar_open(&sigar);
@@ -135,10 +147,14 @@ bool SystemCapabilities::lookupMemoryInfo() {
 
     sigar_close(sigar);
     return SUCCESS;
+#else
+    return false;
+#endif
 }
 
 bool SystemCapabilities::lookupDiskInfo() {
     infoDisks_.clear();
+#ifdef IVW_SIGAR
     int status;
     sigar_t* sigar;
     sigar_open(&sigar);
@@ -170,9 +186,13 @@ bool SystemCapabilities::lookupDiskInfo() {
     sigar_file_system_list_destroy(sigar, &diskinfolist);
     sigar_close(sigar);
     return SUCCESS;
+#else
+    return false;
+#endif
 }
 
 bool SystemCapabilities::lookupProcessMemoryInfo() {
+#ifdef IVW_SIGAR
     int status;
     sigar_t* sigar;
     sigar_open(&sigar);
@@ -188,6 +208,9 @@ bool SystemCapabilities::lookupProcessMemoryInfo() {
 
     sigar_close(sigar);
     return SUCCESS;
+#else
+    return false;
+#endif
 }
 
 void SystemCapabilities::printInfo() {

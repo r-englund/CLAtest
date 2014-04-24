@@ -18,6 +18,7 @@ if(WIN32)
 endif()
 
 add_definitions(-D_CRT_SECURE_NO_WARNINGS)
+add_definitions(-DIVW_SIGAR)
     
 source_group("CMake Files" FILES ${CMAKE_CURRENT_SOURCE_DIR}/CMakeLists.txt)
 
