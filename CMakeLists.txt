@@ -16,6 +16,8 @@ include(cmake/globalconfig.cmake)
 #--------------------------------------------------------------------
 # Default setup of options for the build
 
+option(IVW_SIGAR "Use sigar to detect system capabilities" ON)
+
 # Modules
 build_module(Base)
 build_module(BaseGL)
@@ -40,7 +42,9 @@ option(IVW_UNIT_TEST_APPLICATION "Build Inviwo Unit tests Application" OFF)
 
 add_subdirectory(ext/ticpp)
 add_subdirectory(ext/tinythread) 
+if(IVW_SIGAR)
 add_subdirectory(ext/sigar)
+endif()
 add_subdirectory(ext/freeimage)
 if(WIN32)
 add_subdirectory(ext/stackwalker)

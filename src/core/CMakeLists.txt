@@ -432,9 +432,13 @@ ivw_include_directories(${IVW_ROOT_DIR})
 # Add core dependencies to this list
 ivw_add_dependencies(
     TiCPP
-    Sigar
     FreeImage
 )
+if(IVW_SIGAR)
+ivw_add_dependencies(
+    Sigar
+)
+endif()
 
 if(WIN32)
 ivw_add_dependencies(
