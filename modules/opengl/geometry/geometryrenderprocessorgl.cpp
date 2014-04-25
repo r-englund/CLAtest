@@ -53,6 +53,7 @@ GeometryRenderProcessorGL::GeometryRenderProcessorGL()
     , resetViewParams_("resetView", "Reset Camera")
     , cullFace_("cullFace", "Cull Face")
     , polygonMode_("polygonMode", "Polygon Mode")
+    , renderPointSize_("renderPointSize", "Point Size", 1.0f, 0.001f, 15.0f, 0.001f)
     , shadingMode_("shadingMode", "Shading", PropertyOwner::INVALID_RESOURCES)
     , lightPosition_("lightPosition", "Position", vec3(0.0f, 0.7071f, 0.7071f) , vec3(-10,-10,-10) , vec3(10,10,10))
     , lightColorAmbient_("lightColorAmbient", "Ambient color", vec3(1.f, 1.f, 1.f))
@@ -86,6 +87,7 @@ GeometryRenderProcessorGL::GeometryRenderProcessorGL()
 
     addProperty(cullFace_);
     addProperty(polygonMode_);
+    addProperty(renderPointSize_);
 
     // add shading properties
     shadingMode_.addOption("none", "No Shading");
@@ -194,12 +196,22 @@ void GeometryRenderProcessorGL::process() {
         glCullFace(cullFace_.get());
     }
 
+    if (polygonMode_.get()==GL_LINE) {
+        glEnable(GL_LINE_SMOOTH);
+        glLineWidth((GLfloat)renderPointSize_.get());
+    }
+    else if (polygonMode_.get()==GL_POINT)
+        glPointSize((GLfloat)renderPointSize_.get());
+
     for (std::vector<GeometryRenderer*>::const_iterator it = renderers_.begin(), endIt = renderers_.end(); it != endIt; ++it) {
         shader_->setUniform("viewToVoxel_", (*it)->getGeometry()->getCoordinateTransformer().getWorldToModelMatrix());
         mat4 modelViewMatrix = camera_.viewMatrix()*(*it)->getGeometry()->getWorldTransform()*(*it)->getGeometry()->getBasisAndOffset();
         shader_->setUniform("modelViewMatrix_", modelViewMatrix);
         (*it)->render();
     }
+
+    if (polygonMode_.get()==GL_LINE)
+        glDisable(GL_LINE_SMOOTH);
 
     shader_->deactivate();
 
