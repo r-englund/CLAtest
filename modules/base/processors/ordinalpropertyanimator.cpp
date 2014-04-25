@@ -81,7 +81,7 @@ void OrdinalPropertyAnimator::deinitialize() {
 }
 
 void OrdinalPropertyAnimator::process() {
-
+    if (!active_.get()) timer_->stop();
 }
 
 void OrdinalPropertyAnimator::updateTimerInterval() {
