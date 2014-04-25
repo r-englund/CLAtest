@@ -105,6 +105,13 @@ void ImageOverlay::render_text(const char* text, float x, float y, float sx, flo
     const char* p;
     FT_Set_Pixel_Sizes(fontface_, 0, optionPropertyIntFontSize_.get());
 
+    float offset = 0;
+    float inputX = x;
+
+    //TODO: To make things more reliable ask the system for proper ascii
+    char lf = (char) 0xA; //Line Feed Ascii for std::endl, \n
+    char tab = (char) 0x9; //Tab Ascii
+
     for (p = text; *p; p++) {
         if (FT_Load_Char(fontface_, *p, FT_LOAD_RENDER)) {
             std::cout << "FT could not render char\n";
@@ -125,7 +132,25 @@ void ImageOverlay::render_text(const char* text, float x, float y, float sx, flo
         float x2 = x + fontface_->glyph->bitmap_left * sx;
         float y2 = -y - fontface_->glyph->bitmap_top * sy;
         float w = fontface_->glyph->bitmap.width * sx;
-        float h = fontface_->glyph->bitmap.rows * sy;
+        float h = fontface_->glyph->bitmap.rows * sy;  
+
+        if ( *p == lf) { 
+            offset+=(2*h);
+            x += (fontface_->glyph->advance.x >> 6) * sx;
+            y += (fontface_->glyph->advance.y >> 6) * sy;
+            x=inputX;
+            //p++;
+            continue; 
+        } else if (*p==tab) {
+            x += (fontface_->glyph->advance.x >> 6) * sx;
+            y += (fontface_->glyph->advance.y >> 6) * sy;
+            x+=(4*w); //4 times glyph character width
+            //p++;
+            continue; 
+        }
+
+        y2+=offset;
+
         GLfloat box[4][4] = {
             {x2,     -y2,     0, 0},
             {x2 + w, -y2,     1, 0},

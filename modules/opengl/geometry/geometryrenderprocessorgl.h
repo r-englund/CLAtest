@@ -80,6 +80,7 @@ protected:
     
     OptionPropertyInt cullFace_;
     OptionPropertyInt polygonMode_;
+    FloatProperty renderPointSize_;
 
     Shader* shader_;
     OptionPropertyString shadingMode_;
