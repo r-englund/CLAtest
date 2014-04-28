@@ -142,7 +142,7 @@ void VolumeSliceGL::planeSettingsChanged() {
                 break;
 
             case XZ:
-                shader_->getFragmentShaderObject()->addShaderDefine("coordPlanePermute(x,y,z)", fH + "z," + fV + "y,x");
+                shader_->getFragmentShaderObject()->addShaderDefine("coordPlanePermute(x,y,z)", "z," + fV + "y," + fH + "x");
                 break;
 
             case YZ:
