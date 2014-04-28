@@ -117,9 +117,6 @@ void OpenCLModule::initialize() {
     InviwoModule::initialize();
 }
 
-void OpenCLModule::deinitialize() {
-}
-
 void OpenCLModule::setupModuleSettings() {
     //New OpengCLSettings class can be created if required.
     SystemSettings* settings = InviwoApplication::getPtr()->getSettingsByType<SystemSettings>();

@@ -45,7 +45,6 @@ public:
     OpenCLModule();
 
     void initialize();
-    void deinitialize();
 
 protected:
     void setupModuleSettings();
