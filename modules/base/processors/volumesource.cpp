@@ -184,6 +184,11 @@ void VolumeSource::dataLoaded(Volume* volume) {
     volume->setMetaData<StringMetaData>("ValueUnit", valueUnit_.get());
 
     // calculate and set properties.
+
+    vec3 tmpLength = lengths_.get();
+    vec3 tmpAngle = angles_.get();
+    vec3 tmpOffset = offset_.get();
+
     vec3 a(volume->getBasis()[0]);
     vec3 b(volume->getBasis()[1]);
     vec3 c(volume->getBasis()[2]);
@@ -208,6 +213,12 @@ void VolumeSource::dataLoaded(Volume* volume) {
     orgLengths_ = lengths_.get();
     orgAngles_ = angles_.get();
     orgOffet_ = offset_.get();
+
+    if(overRideDefaults_.get()){
+        lengths_.set(tmpLength);
+        angles_.set(tmpAngle);
+        offset_.set(tmpOffset);
+    }
 
     dimensions_.set(glm::to_string(volume->getDimension()));
     format_.set(volume->getDataFormat()->getString());
@@ -272,6 +283,9 @@ void VolumeSource::serialize(IvwSerializer& s) const {
 
 void VolumeSource::deserialize(IvwDeserializer& d) {
     DataSource<Volume, VolumeOutport>::deserialize(d);
+    orgLengths_ = lengths_.get();
+    orgAngles_ = angles_.get();
+    orgOffet_ = offset_.get();
     onOverrideChange();
 }
 
