@@ -56,6 +56,7 @@ VolumeSliceGL::VolumeSliceGL()
     coordinatePlane_.addOption("xy", "XY Plane", XY);
     coordinatePlane_.addOption("xz", "XZ Plane", XZ);
     coordinatePlane_.addOption("yz", "YZ Plane", YZ);
+    coordinatePlane_.addOption("yz", "ZY Plane", ZY);
     coordinatePlane_.set(XY);
     coordinatePlane_.setCurrentStateAsDefault();
     coordinatePlane_.onChange(this, &VolumeSliceGL::planeSettingsChanged);
@@ -133,6 +134,10 @@ void VolumeSliceGL::shiftSlice(int shift){
 void VolumeSliceGL::planeSettingsChanged() {
     std::string fH = (flipHorizontal_.get() ? "1.0-" : "");
     std::string fV = (flipVertical_.get() ? "" : "1.0-");
+    // map (x, y, z) to volume texture space coordinates
+    // Input:
+    // z is the direction in which we slice
+    // x is the horizontal direction and y is the vertical direction of the output image
 
     if (shader_) {
         switch (coordinatePlane_.get())
@@ -142,11 +147,15 @@ void VolumeSliceGL::planeSettingsChanged() {
                 break;
 
             case XZ:
-                shader_->getFragmentShaderObject()->addShaderDefine("coordPlanePermute(x,y,z)", "z," + fV + "y," + fH + "x");
+                shader_->getFragmentShaderObject()->addShaderDefine("coordPlanePermute(x,y,z)", fH + "x,z," + fV + "y");
                 break;
 
             case YZ:
-                shader_->getFragmentShaderObject()->addShaderDefine("coordPlanePermute(x,y,z)", fH + "x,z," + fV + "y");
+                shader_->getFragmentShaderObject()->addShaderDefine("coordPlanePermute(x,y,z)", "z," + fH +"x," + fV + "y");
+                break;
+
+            case ZY:
+                shader_->getFragmentShaderObject()->addShaderDefine("coordPlanePermute(x,y,z)", "z," + fV + "y,"  + fH +"x");
                 break;
         }
 
@@ -193,6 +202,7 @@ void VolumeSliceGL::volumeDimensionChanged() {
         break;
 
     case YZ:
+    case ZY:
         if(dims.x!=sliceNumber_.getMaxValue()){
             sliceNumber_.setMaxValue(static_cast<int>(dims.x));
             sliceNumber_.set(static_cast<int>(dims.x)/2);

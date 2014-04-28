@@ -130,7 +130,7 @@ void VolumeRAMSlice::evaluate() {
         }
         setOutput(sliceImage);
     }
-    else{ //YZ Plane
+    else if (cPlane_ == YZ){ //YZ lane
         if (sliceNum_ >= dataDims.x){
             setOutput(NULL);
             return;
@@ -153,6 +153,34 @@ void VolumeRAMSlice::evaluate() {
             for (size_t j=0; j < dataDims.y; j++) {
                 offsetVolume = (i*dataDims.x*dataDims.y) + (j*dataDims.x) + sliceNum_;
                 offsetImage = (i*dataDims.z)+j;
+                dst[offsetImage] = src[offsetVolume];
+            }
+        }
+        setOutput(sliceImage);
+    }
+    else if (cPlane_ == ZY){ // ZY Plane
+        if (sliceNum_ >= dataDims.x){
+            setOutput(NULL);
+            return;
+        }
+
+        //allocate space
+        LayerRAMPrecision<T>* sliceImage;
+        if (volume->getDataFormat()->getBitsAllocated() != B)
+            sliceImage = new LayerRAMCustomPrecision<T, B>(dataDims.zy());
+        else
+            sliceImage = new LayerRAMPrecision<T>(dataDims.zy());
+
+        const T* src = reinterpret_cast<const T*>(volume->getData());
+        T* dst = reinterpret_cast<T*>(sliceImage->getData());
+
+        //copy data
+        size_t offsetVolume;
+        size_t offsetImage;
+        for (size_t i=0; i < dataDims.z; i++) {
+            for (size_t j=0; j < dataDims.y; j++) {
+                offsetVolume = (i*dataDims.x*dataDims.y) + (j*dataDims.x) + sliceNum_;
+                offsetImage = (j*dataDims.z)+i;
                 dst[offsetImage] = src[offsetVolume];
             }
         }

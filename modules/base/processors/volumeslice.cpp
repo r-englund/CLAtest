@@ -50,6 +50,7 @@ VolumeSlice::VolumeSlice()
     coordinatePlane_.addOption("xy", "XY Plane", XY);
     coordinatePlane_.addOption("xz", "XZ Plane", XZ);
     coordinatePlane_.addOption("yz", "YZ Plane", YZ);
+    coordinatePlane_.addOption("zy", "ZY Plane", ZY);
     coordinatePlane_.setSelectedIndex(0);
     addProperty(coordinatePlane_);
     addProperty(sliceNumber_);
@@ -99,6 +100,7 @@ void VolumeSlice::process() {
             break;
 
         case YZ:
+        case ZY:
             if(dims.x!=sliceNumber_.getMaxValue()){
                 sliceNumber_.setMaxValue(static_cast<int>(dims.x));
                 sliceNumber_.set(static_cast<int>(dims.x)/2);

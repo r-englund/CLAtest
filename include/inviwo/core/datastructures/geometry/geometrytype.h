@@ -38,7 +38,8 @@ namespace inviwo {
 enum CoordinatePlane {
     XY,
     XZ,
-    YZ
+    YZ,
+    ZY
 };
 
 enum RenderType {
