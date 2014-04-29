@@ -289,7 +289,7 @@ void ProcessorNetwork::performLinkingOnPropertyChange(Property* modifiedProperty
 }
 
 void ProcessorNetwork::evaluatePropertyLinks(Property* modifiedProperty) {
-    if (islocked())
+    if (linking_)
         return;
 
     lock();
