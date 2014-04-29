@@ -8,6 +8,8 @@
 # PYTHON_INCLUDE_DIR
 # PYTHON_LIBRARY_DIR
 # PYTHON_VERSION
+# PYTHON_NUMPY_FOUND
+# PYTHON_NUMPY_INCLUDE_DIR
 #
 #
 # FOR UNIX
@@ -36,8 +38,45 @@ if(WIN32)
         find_library(PYTHON_LIBRARIES NAMES ${PYTHON_LIBS} PATHS ${PYTHON_LIBRARY_DIR})
         #get_filename_component(PYTHON_LIBRARIES ${PYTHON_LIBRARIES} NAME)
 	endif(PYTHON_BASE_DIR)
+
+	if(PYTHON_BASE_DIR)	    
+	    execute_process(COMMAND "${PYTHON_EXECUTABLE}" "-c"
+	    				"try: import numpy; print(numpy.__version__);\nexcept: pass\n"
+	    				RESULT_VARIABLE NUMPY_STATUS
+	    				OUTPUT_VARIABLE NUMPY_OUTPUT_VERSION
+	    				ERROR_VARIABLE NUMPY_ERROR
+	    				OUTPUT_STRIP_TRAILING_WHITESPACE
+	                   )
+
+	    execute_process(COMMAND "${PYTHON_EXECUTABLE}" "-c"
+	    				"try: import numpy; print numpy.get_include()\nexcept: pass\n"
+	    				RESULT_VARIABLE NUMPY_STATUS
+	    				OUTPUT_VARIABLE NUMPY_OUTPUT_INCLUDES
+	    				ERROR_VARIABLE NUMPY_ERROR
+	    				OUTPUT_STRIP_TRAILING_WHITESPACE
+	                   )
+
+	    if (NUMPY_STATUS MATCHES 0)
+	    	set(PYTHON_NUMPY_FOUND TRUE CACHE INTERNAL "Python numpy development package is available")	    	
+	    	#string(REGEX REPLACE ";" " " NUMPY_OUTPUT_VERSION ${NUMPY_OUTPUT_VERSION})
+	    	#message (FATAL_ERROR "Numpy found" ${NUMPY_OUTPUT_VERSION})
+	    	#message (FATAL_ERROR "Numpy includes at" ${PYTHON_NUMPY_INCLUDE_DIR})
+			find_path(PYTHON_NUMPY_INCLUDE_DIR arrayobject.h
+		              "${NUMPY_OUTPUT_INCLUDES}"          
+		              DOC "Directory where the arrayobject.h header file can be found. This file is part of the numpy package"
+		             )
+		    LIST(APPEND PYTHON_INCLUDE_DIR "${PYTHON_NUMPY_INCLUDE_DIR}")
+		else()	
+			#message (FATAL_ERROR "Numpy not found")
+			set(PYTHON_NUMPY_FOUND FALSE)
+		endif()
+	endif()	   
     
 	FIND_PACKAGE_HANDLE_STANDARD_ARGS( Python DEFAULT_MSG PYTHON_LIBRARY_DIR PYTHON_INCLUDE_DIR )
+
+	if(PYTHON_NUMPY_FOUND)
+	#message (FATAL_ERROR "Numpy version " "${NUMPY_VERSION}" )
+	endif()
 
 	mark_as_advanced(PYTHON_FOUND)
 	mark_as_advanced(PYTHON_VERSION)
@@ -45,6 +84,9 @@ if(WIN32)
 	mark_as_advanced(PYTHON_LIBRARY_DIR)
     mark_as_advanced(PYTHON_LIBRARY)
     mark_as_advanced(PYTHON_LIBRARIES)
+    mark_as_advanced(PYTHON_BASE_DIR)
+    mark_as_advanced(PYTHON_NUMPY_FOUND)
+    mark_as_advanced(PYTHON_NUMPY_INCLUDE_DIR)
 
 elseif(APPLE)
 	set(APPLE_INCLUDE_PATHS /System/Library/Frameworks/Python.framework/Headers)
