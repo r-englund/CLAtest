@@ -124,11 +124,9 @@ Image::~Image() {
 std::string Image::getDataInfo() const{
     std::ostringstream stream;
     stream << "Type: image\n";
-    stream << "Format: " << getDataFormat()->getString() << std::endl;
-    stream << "Width: " << getDimension().x << std::endl;
-    stream << "Height: " << getDimension().y << std::endl;
-    stream << "Picking: " << (getPickingLayer() ? "Yes" : "No") << std::endl;
-    stream << "Depth: " << (getDepthLayer() ? "Yes" : "No") << std::endl;
+    stream << "Format: " << getDataFormat()->getString() << "\n";
+    stream << "Width: " << getDimension().x << "\n";
+    stream << "Height: " << getDimension().y << "\n";
     return stream.str();
 }
 
@@ -153,7 +151,7 @@ void Image::initialize(uvec2 dimensions, const DataFormatBase* format) {
         depthLayer_ = NULL;
 
     if (!allowMissingLayers_ || typeContainsPicking(getImageType())) {
-        pickingLayer_ = new Layer(dimensions, format, PICKING_LAYER);
+        pickingLayer_ = new Layer(dimensions, format);
         addLayer(pickingLayer_);
     }
     else
@@ -235,10 +233,6 @@ Layer* Image::getDepthLayer() {
 }
 
 const Layer* Image::getPickingLayer() const {
-    
-    if (pickingLayer_ != NULL && pickingLayer_->getLayerType() == PICKING_LAYER) 
-        return pickingLayer_;
-
     ImageSourceMap::const_iterator it = inputSources_.find(PICKING_LAYER);
 
     if (it != inputSources_.end() && it->second)
