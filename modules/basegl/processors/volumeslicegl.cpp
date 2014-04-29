@@ -84,7 +84,7 @@ VolumeSliceGL::~VolumeSliceGL() {
 
 void VolumeSliceGL::initialize() {
     ProcessorGL::initialize();
-    shader_ = new Shader("img_texturequad.vert", "volumeslice.frag", false);
+    shader_ = new Shader("img_texturequad.vert", "volumeslice.frag", true);
     planeSettingsChanged();
     tfMappingEnabledChanged();
     volumeDimensionChanged();
@@ -158,6 +158,8 @@ void VolumeSliceGL::planeSettingsChanged() {
                 shader_->getFragmentShaderObject()->addShaderDefine("coordPlanePermute(x,y,z)", "z," + fV + "y,"  + fH +"x");
                 break;
         }
+
+        shader_->getFragmentShaderObject()->addShaderDefine("COORD_PLANE_PERMUTE");
 
         shader_->getFragmentShaderObject()->build();
         shader_->link();

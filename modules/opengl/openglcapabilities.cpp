@@ -559,6 +559,11 @@ void OpenGLCapabilities::rebuildGLSLHeader() {
         currentGlobalGLSLHeader_ += "#define GLSL_PROFILE_" + toUpper(supportedShaderVersions_[currentGlobalGLSLVersionIdx_].getProfile()) + "\n";
     }
 
+    if (supportedShaderVersions_[currentGlobalGLSLVersionIdx_].getVersion() < 150){
+        currentGlobalGLSLHeader_ += "#define texture(t, s) texture2D(t, s)\n";
+        currentGlobalGLSLHeader_ += "#define texture(t, s) texture3D(t, s)\n";
+    }
+
     int lastVersion = -1;
 
     for (size_t i=currentGlobalGLSLVersionIdx_; i<supportedShaderVersions_.size(); i++) {
