@@ -107,6 +107,9 @@ public:
     void renderQuad();
 
 private:
+    static inline void bindTextures(const Image* image, bool color, bool depth, bool picking, GLenum colorTexUnit, GLenum depthTexUnit, GLenum pickingTexUnit);
+    static inline void unbindTextures(const Image* image, bool color, bool depth, bool picking);
+
     BufferObjectArray* rectArray_;
 };
 
