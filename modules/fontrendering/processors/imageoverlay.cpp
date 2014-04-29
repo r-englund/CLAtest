@@ -42,7 +42,7 @@ ProcessorCodeState(ImageOverlay, CODE_STATE_EXPERIMENTAL);
 ImageOverlay::ImageOverlay()
     : ProcessorGL(),
       inport0_("inport0"),
-      outport_("outport"),
+      outport_("outport", &inport0_, COLOR_ONLY),
       textStringProperty_("Text","Text","Lorem ipsum etc.",PropertyOwner::INVALID_OUTPUT,PropertySemantics::TextEditor),
       font_size_(20),
       xpos_(0),
