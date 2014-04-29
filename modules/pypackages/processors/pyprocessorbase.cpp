@@ -33,6 +33,8 @@
 #include <modules/pypackages/processors/pyprocessorbase.h>
 #include <inviwo/core/util/formats.h>
 #include <inviwo/core/datastructures/buffer/bufferram.h>
+#include <modules/pypackages/pyscriptrunner.h>
+#include <inviwo/core/datastructures/buffer/bufferramprecision.h>
 
 namespace inviwo {
 
@@ -77,27 +79,18 @@ void PyProcessorBase::loadPythonScriptFile() {
 	std::ifstream file(scriptFileName.c_str());
 	std::string text((std::istreambuf_iterator<char>(file)), std::istreambuf_iterator<char>());
 	file.close();
-	script_.setSource(text);
+    PyScriptRunner::getPtr()->setScript(text);
 }
 
 void PyProcessorBase::runScript() {	
-	if (URLParser::fileExists(pythonScriptFile_.get())) {
-		
-		Clock c;
-        c.start();
-		//TODO: Remove try catch
-		try {			
-			if (script_.run()) {
-				LogInfo("PyCUDAImageInverter script ended")
-			}
-			c.stop();
-		}
-		catch(...) {
-			c.stop();
-			LogError("PyCUDAImageInverter script failed to run");
-		}
-		LogInfo("Execution time: " << c.getElapsedMiliseconds() << " ms");
-	}	 
+	PyScriptRunner::getPtr()->run();
+    std::string retError = PyScriptRunner::getPtr()->getError();
+    if (retError!="") {
+        LogWarn(retError);
+        return;
+    }    
+    std::string status = PyScriptRunner::getPtr()->getStandardOutput();
+    if (status!="") LogInfo(status);    
 }
 
 bool PyProcessorBase::allocatePyBuffer(std::string bufferName, std::string bufferType, size_t bufferSize) {
@@ -150,12 +143,12 @@ void* PyProcessorBase::getAllocatedPyBufferData(std::string bufferName) {
     Buffer* buffer = 0;
     if (pyBufferMap_.find(bufferName)!=pyBufferMap_.end()) {
         buffer = pyBufferMap_[bufferName];   
-        bufferData = buffer->getEditableRepresentation<BufferRAM>()->getData();        
+        bufferData = buffer->getEditableRepresentation<BufferRAM>()->getData();
     }
     return bufferData;
 }
 
-bool PyProcessorBase::isValidPyBufferData(std::string bufferName) {
+bool PyProcessorBase::isValidPyBuffer(std::string bufferName) {
 	//retrieve allocated buffer	
 	if (pyBufferMap_.find(bufferName)!=pyBufferMap_.end()) {		
 		return true;
@@ -207,6 +200,27 @@ void PyProcessorBase::freeAllBuffers() {
     }
     pyBufferMap_.clear();
 
+}
+
+
+
+Buffer* PyProcessorBase::convertLayerToBuffer(LayerRAM* layer) {
+
+    ivec2 dim = layer->getDimension();
+    const DataFormatBase* format = layer->getDataFormat();
+    Buffer* buffer = new Buffer(dim.x*dim.y, format);
+    BufferRAM* bufferRAM = 0;
+    bufferRAM = createBufferRAM(dim.x*dim.y, format, COLOR_ATTRIB, STATIC);  
+
+    #define DataFormatIdMacro(i) \
+    if ( dynamic_cast< BufferRAMCustomPrecision<Data##i::type, Data##i::bits> *>(bufferRAM) ) { \
+    dynamic_cast< BufferRAMCustomPrecision<Data##i::type, Data##i::bits> *>(bufferRAM)->initialize(layer->getData()); \
+    LogWarn("Buffer format is ", format->getString());}
+    #include <inviwo/core/util/formatsdefinefunc.h>
+
+    //dynamic_cast<BufferRAMCustomPrecision<DataINT32::type, DataINT32::bits> *>(bufferRAM)->initialize(layer->getData());
+    buffer->addRepresentation(bufferRAM);
+    return buffer;
 }
 
 } // namespace

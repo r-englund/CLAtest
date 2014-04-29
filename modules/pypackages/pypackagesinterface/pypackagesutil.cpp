@@ -44,114 +44,8 @@
 
 namespace inviwo {
 
-//Global variable access
-//TODO: Use variants to generalize all data types
-
-//FIXME: Possible memory leak clear the map during de-initialization
-std::map<std::string, void*> globalVariableMap_;
-
-PyObject* py_declareGlobalString(PyObject* /*self*/, PyObject* args) {
-    static PyDeclareGlobalString p;
-
-    if (!p.testParams(args))
-        return 0;
-
-    const char* varName = 0;
-    const char* val = 0;
-    
-    if (!PyArg_ParseTuple(args, "ss:declareGlobalString", &varName, &val))
-        return 0;
-
-    if (varName && val) {
-        std::string variableName(varName);
-        std::string* value = new std::string(val);
-        if (globalVariableMap_[variableName]!=0) delete globalVariableMap_[variableName];
-        globalVariableMap_[variableName] = value;
-        std::cout << "Setting global string variables: " <<  variableName << " with value = " << *value << std::endl;        
-    }
-
-    Py_RETURN_NONE;
-
-}
-
-PyObject* py_setGlobalString(PyObject* /*self*/, PyObject* args) {
-    static PySetGlobalString p;
-
-    if (!p.testParams(args))
-        return 0;
-
-    const char* varName = 0;
-    const char* val = 0;   
-
-    if (!PyArg_ParseTuple(args, "ss:setGlobalString", &varName, &val))
-        return 0;
-
-    if (varName && val) {
-        std::string variableName(varName);
-        std::string* value = new std::string(val);
-        std::cout << "Setting global string variables: " <<  variableName << " with value = " << *value << std::endl;
-        if (globalVariableMap_[variableName]!=0) delete globalVariableMap_[variableName];
-        globalVariableMap_[variableName] = value;
-    }
-
-    Py_RETURN_NONE;
-}
-
-PyObject* py_getGlobalString(PyObject* /*self*/, PyObject* args) {
-    static PyGetGlobalString p;
-
-    if (!p.testParams(args))
-        return 0;
-
-    const char* varName = 0;
-
-    if (!PyArg_ParseTuple(args, "s:getGlobalString", &varName))
-        return 0;
-
-    if (varName) {
-        std::string variableName(varName);    
-        std::string* value = 0;
-        if (globalVariableMap_[variableName])
-            value = static_cast<std::string*>(globalVariableMap_[variableName]);
-        std::cout << "Getting global string variables: " <<  variableName << " with value = " << *value;
-        return PyValueParser::toPyObject(*value);
-    }
-
-    Py_RETURN_NONE;
-}
-
-
-PyDeclareGlobalString::PyDeclareGlobalString()
-    : variableName_("variablename")
-    , value_("value")
-{
-    addParam(&variableName_);
-    addParam(&value_);
-}
-
-PySetGlobalString::PySetGlobalString()
-    : variableName_("variablename")
-    , value_("value","")
-{
-    addParam(&variableName_);
-    addParam(&value_);
-}
-
-
-PyGetGlobalString::PyGetGlobalString()
-    : variableName_("variablename")
-{
-    addParam(&variableName_);
-}
-
-std::string PyGetGlobalString::getGlobalStringValue(std::string variableName) {
-    std::string* stringVal = static_cast<std::string*> (globalVariableMap_[variableName]);
-    if (!stringVal)
-        return std::string("");
-    return *stringVal;
-}
-
-////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////
+//Buffers
 
 PyObject* py_declareBufferData(PyObject* /*self*/, PyObject* args) {
     static PyDeclareBufferData p;
@@ -219,7 +113,7 @@ PyObject* py_getBufferData(PyObject* /*self*/, PyObject* args) {
 						void* bufferData = 0;
                         std::string bufferTypeStr("");
                         size_t bufferSize = 0;
-						if (pyProcessor->isValidPyBufferData(bufferName)) {
+						if (pyProcessor->isValidPyBuffer(bufferName)) {
                             rawBuffer = pyProcessor->getAllocatedPyBuffer(bufferName);
                             bufferData = pyProcessor->getAllocatedPyBufferData(bufferName);
                             bufferTypeStr = pyProcessor->getPyBufferType(bufferName);

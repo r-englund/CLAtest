@@ -61,9 +61,6 @@ void PyPackagesModule::initPyPackagesInterface() {
 
 	PyModule* pyPackageMod = new PyModule("pypackagesutil");
 	pyInviwo->registerPyModule(pyPackageMod);
-	pyPackageMod->addMethod(new PyDeclareGlobalString());
-    pyPackageMod->addMethod(new PySetGlobalString());
-    pyPackageMod->addMethod(new PyGetGlobalString());
 	pyPackageMod->addMethod(new PyDeclareBufferData());
 	pyPackageMod->addMethod(new PyGetBufferData());
 
@@ -105,7 +102,7 @@ void PyPackagesModule::initPyPackagesInterface() {
         }
 
         //Initialize numpy
-        import_array();        
+        import_array();
 
         //Retrive available packages
         isPackageAvailable("pycuda");
