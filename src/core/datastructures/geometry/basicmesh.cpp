@@ -442,7 +442,7 @@ BasicMesh* BasicMesh::coordindicator(const vec3& center,
 
 BasicMesh* BasicMesh::boundingbox(const mat4& basisandoffset, const vec4& color) {
     BasicMesh* mesh = new BasicMesh();
-    mesh->setBasisAndOffset(mat4(1.f));
+    mesh->setBasisAndOffset(basisandoffset);
 
     mesh->addVertex(vec3(0.0, 0.0, 0.0), vec3(1.0, 1.0, 1.0), vec3(0.0, 0.0, 0.0), color);
     mesh->addVertex(vec3(1.0, 0.0, 0.0), vec3(1.0, 1.0, 1.0), vec3(1.0, 0.0, 0.0), color);
