@@ -39,20 +39,30 @@ PyScriptRunner::PyScriptRunner() : script_() { init(this); }
 PyScriptRunner::~PyScriptRunner() {}
 
 void PyScriptRunner::onPyhonExecutionOutput(std::string msg,OutputType outputType) {
-    clear();
-    if (outputType==PythonExecutionOutputObeserver::standard)
-        standard_ = msg;
-    else if (outputType==PythonExecutionOutputObeserver::error)
-        error_ = msg;
+    if (outputType==PythonExecutionOutputObeserver::standard) {
+        if (standard_.empty())
+            standard_ += msg;
+        else
+            standard_ += ("\n" + msg);
+    }
+    else if (outputType==PythonExecutionOutputObeserver::error) {
+        if (error_.empty())
+            error_ += msg;
+        else
+            error_ += ("\n" + msg);
+    }
+}
+
+void PyScriptRunner::setScript(std::string simpleScript) {    
+    script_.setSource(simpleScript);
 }
 
 void PyScriptRunner::run(std::string simpleScript) {
-    
-    if (!simpleScript.size())
-        return;    
+    setScript(simpleScript);
+    run();
+}
 
-    script_.setSource(simpleScript);
-
+void PyScriptRunner::run() {
     clear();
     Clock c;
     c.start();

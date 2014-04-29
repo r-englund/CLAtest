@@ -39,6 +39,7 @@
 #include <inviwo/core/processors/processor.h>
 #include <modules/python/pythonscript.h>
 #include <inviwo/core/datastructures/buffer/buffer.h>
+#include <inviwo/core/datastructures/image/layerram.h>
 
 namespace inviwo {
 
@@ -50,14 +51,18 @@ public:
     virtual void initialize();
     virtual void deinitialize();
     virtual void process();
+
+    //Buffer management
 	bool allocatePyBuffer(std::string bufferName, std::string bufferType, size_t bufferSize);    
-	bool isValidPyBufferData(std::string bufferName);
+	bool isValidPyBuffer(std::string bufferName);
     void* getAllocatedPyBufferData(std::string bufferName);
     Buffer* getAllocatedPyBuffer(std::string bufferName);
     std::string getPyBufferType(std::string bufferName);
 	std::vector<std::string> getSupportedBufferTypes();
     void deallocatePyBuffer(std::string bufferName);
     void freeAllBuffers();
+    Buffer* convertLayerToBuffer(LayerRAM* layer);
+
 	void runScript();
     void onRunScriptButtonClicked();
 protected:

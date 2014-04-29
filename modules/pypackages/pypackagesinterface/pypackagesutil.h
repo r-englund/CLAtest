@@ -40,48 +40,8 @@
 
 namespace inviwo {
 
-//Global variable access
-PyObject* py_declareGlobalString(PyObject* /*self*/, PyObject* /*args*/);
-PyObject* py_setGlobalString(PyObject* /*self*/, PyObject* /*args*/);
-PyObject* py_getGlobalString(PyObject* /*self*/, PyObject* /*args*/);
-
-class IVW_MODULE_PYPACKAGES_API PySetGlobalString : public PyMethod {
-public:
-    PySetGlobalString();
-    virtual ~PySetGlobalString() {}
-    virtual std::string getName()const {return "setGlobalString";}
-    virtual std::string getDesc()const {return "Set global variable that can be accessed by Inviwo.";}
-    virtual PyCFunction getFunc() {return py_setGlobalString;}
-private:
-    PyParamString variableName_;
-    PyParamString value_;
-};
-
-class IVW_MODULE_PYPACKAGES_API PyGetGlobalString : public PyMethod {
-public:
-    PyGetGlobalString();
-    virtual ~PyGetGlobalString() {}
-    virtual std::string getName()const {return "getGlobalString";}
-    virtual std::string getDesc()const {return "Get global variable that can be accessed by Inviwo.";}
-    virtual PyCFunction getFunc() {return py_getGlobalString;}
-    static std::string getGlobalStringValue(std::string variableName);
-private:
-    PyParamString variableName_;
-};
-
-
-class IVW_MODULE_PYPACKAGES_API PyDeclareGlobalString : public PyMethod {
-public:
-    PyDeclareGlobalString();
-    virtual ~PyDeclareGlobalString() {}
-    virtual std::string getName()const {return "declareGlobalString";}
-    virtual std::string getDesc()const {return "Allocate global variable that can be accessed with inviwo.";}
-    virtual PyCFunction getFunc() {return py_declareGlobalString;}
-private:
-    PyParamString variableName_;
-    PyParamString value_;
-};
-
+//////////////////////////////////////////////////////////////////////////
+//Buffers
 PyObject* py_declareBufferData(PyObject* /*self*/, PyObject* /*args*/);
 PyObject* py_getBufferData(PyObject* /*self*/, PyObject* /*args*/);
 

@@ -140,12 +140,12 @@ void PyCUDAImageInverter::loadCUDAKernelFile() {
 	PyProcessorBase::allocatePyBuffer("ImageInvert_KernelSrc", DataUINT8::str(), bufferSize);
 	void* kernelSrc = 0;
 	//fetch buffer data
-	if (PyProcessorBase::isValidPyBufferData("ImageInvert_KernelSrc")) {
+	if (PyProcessorBase::isValidPyBuffer("ImageInvert_KernelSrc")) {
         kernelSrc = PyProcessorBase::getAllocatedPyBufferData("ImageInvert_KernelSrc");
 		if (kernelSrc) {
 			char* csrc = static_cast<char*>(kernelSrc);
 			//copy to buffer data which is later accessed by python
-			std::strcpy(csrc, text.c_str());
+			std::strncpy(csrc, text.c_str(), bufferSize);
 		}
 		else
 			LogWarn("Invalid buffer data requested")
