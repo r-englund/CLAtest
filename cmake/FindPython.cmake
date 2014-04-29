@@ -39,7 +39,7 @@ if(WIN32)
         #get_filename_component(PYTHON_LIBRARIES ${PYTHON_LIBRARIES} NAME)
 	endif(PYTHON_BASE_DIR)
 
-	if(PYTHON_BASE_DIR)	    
+	if(PYTHON_BASE_DIR AND IVW_MODULE_PYPACKAGES)	    
 	    execute_process(COMMAND "${PYTHON_EXECUTABLE}" "-c"
 	    				"try: import numpy; print(numpy.__version__);\nexcept: pass\n"
 	    				RESULT_VARIABLE NUMPY_STATUS
