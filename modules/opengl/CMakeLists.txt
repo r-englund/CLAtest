@@ -113,6 +113,7 @@ set(SHADER_FILES
     ${IVW_MODULE_DIR}/opengl/glsl/img_texturequad.frag
     ${IVW_MODULE_DIR}/opengl/glsl/img_texturequad.vert
     ${IVW_MODULE_DIR}/opengl/glsl/minimal.vert
+    ${IVW_MODULE_DIR}/opengl/glsl/multiplanar.frag
     ${IVW_MODULE_DIR}/opengl/glsl/picking.frag
     ${IVW_MODULE_DIR}/opengl/glsl/raycasting.frag
     ${IVW_MODULE_DIR}/opengl/glsl/standard.frag

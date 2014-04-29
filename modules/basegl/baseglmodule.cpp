@@ -43,6 +43,7 @@
 #include <modules/basegl/processors/imagemixer.h>
 #include <modules/basegl/processors/lightingraycaster.h>
 #include <modules/basegl/processors/lightvolumegl.h>
+#include <modules/basegl/processors/multiplanar.h>
 #include <modules/basegl/processors/positionwidgetprocessor.h>
 #include <modules/basegl/processors/redgreenprocessor.h>
 #include <modules/basegl/processors/simpleraycaster.h>
@@ -63,6 +64,7 @@ BaseGLModule::BaseGLModule() : InviwoModule() {
     registerProcessor(ImageMixer);
     registerProcessor(LightingRaycaster);
     registerProcessor(LightVolumeGL);
+    registerProcessor(MultiPlanar);
     registerProcessor(PositionWidgetProcessor);
     registerProcessor(RedGreenProcessor);
     registerProcessor(SimpleRaycaster);

@@ -100,7 +100,6 @@ protected:
 
 };
 
-
 } // namespace
 
 #endif // IVW_MESH_H

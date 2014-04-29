@@ -249,8 +249,8 @@ void VolumeRaycasterGL::bindVolume(const VolumeInport& inport, GLenum volTexUnit
 }
 
 void VolumeRaycasterGL::setVolumeParameters(const VolumeInport& inport, Shader* shader, const std::string samplerID) {
-    const VolumeGL* volGL = inport.getData()->getRepresentation<VolumeGL>();
-    volGL->setVolumeUniforms(inport.getData(), shader, samplerID);
+    const VolumeGL* volumeGL = inport.getData()->getRepresentation<VolumeGL>();
+    volumeGL->setVolumeUniforms(inport.getData(), shader, samplerID);
     mat4 viewToVoxel = inport.getData()->getCoordinateTransformer().getWorldToTextureMatrix();
     shader->setUniform("viewToVoxel_", viewToVoxel);
 }

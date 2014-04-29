@@ -104,7 +104,7 @@ void CubeProxyGeometry::process() {
         c3 = c3*(static_cast<float>(clipZ_.get().y)-static_cast<float>(clipZ_.get().x))/static_cast<float>(dims_.z);
     }
 
-    //Create parallelepiped and set it to the outport
+    // Create parallelepiped and set it to the outport
     Geometry* geom =
         SimpleMeshCreator::parallelepiped(pos, p1, p2, p3,
                                           tex, t1, t2, t3,
@@ -115,8 +115,7 @@ void CubeProxyGeometry::process() {
     outport_.setData(geom);
 }
 
-void CubeProxyGeometry::onVolumeChange(){
-
+void CubeProxyGeometry::onVolumeChange() {
     vec2 x,y,z;
 
     x = clipX_.get();
@@ -133,14 +132,9 @@ void CubeProxyGeometry::onVolumeChange(){
     clipY_.setRangeMax(dims_.y);
     clipZ_.setRangeMax(dims_.z);
 
-    
-
     clipX_.set(x * static_cast<float>(dims_.x));
     clipY_.set(y * static_cast<float>(dims_.y));
     clipZ_.set(z * static_cast<float>(dims_.z));
-
-
-
 }
 
 } // namespace
