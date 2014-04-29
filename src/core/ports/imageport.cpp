@@ -158,11 +158,10 @@ ImageOutport::ImageOutport(std::string identifier,
     : DataOutport<Image>(identifier, invalidationLevel)
     , dimensions_(uvec2(256,256))
     , handleResizeEvents_(handleResizeEvents)
+    , mapDataInvalid_(true)
 {
-    Image* im = new Image(dimensions_);
-    data_ = im;
+    data_ = new Image(dimensions_, COLOR_DEPTH, DataVec4UINT8::get(), true);
     dataChanged();
-    mapDataInvalid_ = true;
 }
 
 ImageOutport::ImageOutport(std::string identifier, 
@@ -173,11 +172,10 @@ ImageOutport::ImageOutport(std::string identifier,
     : DataOutport<Image>(identifier, invalidationLevel)
     , dimensions_(uvec2(256,256))
     , handleResizeEvents_(handleResizeEvents)
+    , mapDataInvalid_(true)
 {
-    Image* im = new Image(dimensions_, type, format);
-    data_ = im;
+    data_ = new Image(dimensions_, type, format, true);
     dataChanged();
-    mapDataInvalid_ = true;
 }
 
 ImageOutport::ImageOutport(std::string identifier,
@@ -188,11 +186,10 @@ ImageOutport::ImageOutport(std::string identifier,
     : DataOutport<Image>(identifier, invalidationLevel)
     , EventHandler(), dimensions_(uvec2(256,256))
     , handleResizeEvents_(handleResizeEvents)
+    , mapDataInvalid_(true)
 {
-    Image* im = new Image(dimensions_, type, DataVec4UINT8::get(), true);
-    data_ = im;
+    data_ = new Image(dimensions_, type, DataVec4UINT8::get(), true);
     dataChanged();
-    mapDataInvalid_ = true;
     inputSources_[COLOR_LAYER] = src;
     inputSources_[DEPTH_LAYER] = src;
     inputSources_[PICKING_LAYER] = src;

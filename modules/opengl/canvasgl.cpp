@@ -45,7 +45,7 @@ const MeshGL* CanvasGL::screenAlignedRectGL_ = NULL;
 
 CanvasGL::CanvasGL(uvec2 dimensions)
     : Canvas(dimensions)
-    , imageGL_(NULL)
+    , image_(NULL)
     , shader_(NULL)
     , noiseShader_(NULL)
     , layerType_(COLOR_LAYER)
@@ -104,21 +104,21 @@ void CanvasGL::activate() {}
 
 void CanvasGL::render(const Image* image, LayerType layerType) {
     if (image) {
-        imageGL_ = image->getRepresentation<ImageGL>();
+        image_ = image;
         layerType_ = layerType;
         pickingContainer_->setPickingSource(image);
         checkChannels(image->getDataFormat()->getComponents());
         renderLayer();
     } else {
         pickingContainer_->setPickingSource(NULL);
-        imageGL_  = NULL;
+        image_  = NULL;
         renderNoise();
     }
 }
 
 void CanvasGL::resize(uvec2 size) {
-    if (imageGL_)
-        imageGL_->updateExistingLayers();
+    if (image_)
+        image_->getRepresentation<ImageGL>()->updateExistingLayers();
 
     activate();
     glViewport(0, 0, size[0], size[1]);
@@ -129,11 +129,7 @@ void CanvasGL::glSwapBuffers() {
 }
 
 void CanvasGL::update() {
-    if (imageGL_) {
-        renderLayer();
-    } else {
-        renderNoise();
-    }
+    renderLayer();
 }
 
 void CanvasGL::attachImagePlanRect(BufferObjectArray* arrayObject){
@@ -146,11 +142,20 @@ void CanvasGL::attachImagePlanRect(BufferObjectArray* arrayObject){
 }
 
 void CanvasGL::renderLayer() {
-    const LayerGL* layerGL = imageGL_->getLayerGL(layerType_);
-    TextureUnit textureUnit;
-    layerGL->bindTexture(textureUnit.getEnum());
-    renderTexture(textureUnit.getUnitNumber());
-    layerGL->unbindTexture();
+    if (image_) {
+        const Layer* layer = image_->getLayer(layerType_);
+        if (layer) {
+            const LayerGL* layerGL = layer->getRepresentation<LayerGL>();
+            if (layerGL) {
+                TextureUnit textureUnit;
+                layerGL->bindTexture(textureUnit.getEnum());
+                renderTexture(textureUnit.getUnitNumber());
+                layerGL->unbindTexture();
+                return;
+            }
+        }
+    }
+    renderNoise();
 }
 
 void CanvasGL::renderNoise() {
@@ -196,8 +201,7 @@ void CanvasGL::checkChannels(int channels){
         shader_->getFragmentShaderObject()->addShaderDefine("SINGLE_CHANNEL");
         shader_->getFragmentShaderObject()->build();
         shader_->link();
-    }
-    else if(singleChannel_ && channels==4){
+    } else if(singleChannel_ && channels==4){
         shader_->getFragmentShaderObject()->removeShaderDefine("SINGLE_CHANNEL");
         shader_->getFragmentShaderObject()->build();
         shader_->link();
