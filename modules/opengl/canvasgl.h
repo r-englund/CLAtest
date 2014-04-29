@@ -102,7 +102,7 @@ private:
     static const MeshGL* screenAlignedRectGL_;
 
     BufferObjectArray* rectArray_;
-    const Image* image_;
+    const ImageGL* imageGL_;
     LayerType layerType_;
     Shader* shader_;
     Shader* noiseShader_;
