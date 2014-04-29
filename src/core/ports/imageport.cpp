@@ -153,8 +153,11 @@ std::string ImageInport::getContentInfo() const {
 
 // Image Outport
 ImageOutport::ImageOutport(std::string identifier,
-                           PropertyOwner::InvalidationLevel invalidationLevel, bool handleResizeEvents)
-    : DataOutport<Image>(identifier, invalidationLevel), dimensions_(uvec2(256,256)), handleResizeEvents_(handleResizeEvents)
+                           PropertyOwner::InvalidationLevel invalidationLevel,
+                           bool handleResizeEvents)
+    : DataOutport<Image>(identifier, invalidationLevel)
+    , dimensions_(uvec2(256,256))
+    , handleResizeEvents_(handleResizeEvents)
 {
     Image* im = new Image(dimensions_);
     data_ = im;
@@ -162,9 +165,14 @@ ImageOutport::ImageOutport(std::string identifier,
     mapDataInvalid_ = true;
 }
 
-ImageOutport::ImageOutport(std::string identifier, ImageType type, const DataFormatBase* format,
-                           PropertyOwner::InvalidationLevel invalidationLevel, bool handleResizeEvents)
-    : DataOutport<Image>(identifier, invalidationLevel), dimensions_(uvec2(256,256)), handleResizeEvents_(handleResizeEvents)
+ImageOutport::ImageOutport(std::string identifier, 
+                           ImageType type, 
+                           const DataFormatBase* format,
+                           PropertyOwner::InvalidationLevel invalidationLevel,
+                           bool handleResizeEvents)
+    : DataOutport<Image>(identifier, invalidationLevel)
+    , dimensions_(uvec2(256,256))
+    , handleResizeEvents_(handleResizeEvents)
 {
     Image* im = new Image(dimensions_, type, format);
     data_ = im;
@@ -172,10 +180,16 @@ ImageOutport::ImageOutport(std::string identifier, ImageType type, const DataFor
     mapDataInvalid_ = true;
 }
 
-ImageOutport::ImageOutport(std::string identifier, ImageInport* src, ImageType type, PropertyOwner::InvalidationLevel invalidationLevel, bool handleResizeEvents)
-    : DataOutport<Image>(identifier, invalidationLevel), EventHandler(), dimensions_(uvec2(256,256)), handleResizeEvents_(handleResizeEvents)
+ImageOutport::ImageOutport(std::string identifier,
+                           ImageInport* src,
+                           ImageType type,
+                           PropertyOwner::InvalidationLevel invalidationLevel, 
+                           bool handleResizeEvents)
+    : DataOutport<Image>(identifier, invalidationLevel)
+    , EventHandler(), dimensions_(uvec2(256,256))
+    , handleResizeEvents_(handleResizeEvents)
 {
-    Image* im = new Image(dimensions_, type);
+    Image* im = new Image(dimensions_, type, DataVec4UINT8::get(), true);
     data_ = im;
     dataChanged();
     mapDataInvalid_ = true;
