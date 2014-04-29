@@ -112,7 +112,7 @@ void Background::process() {
     }
 
     activateTarget(outport_);
-    TextureUnit srcColorUnit,srcDepthUnit;
+    TextureUnit srcColorUnit, srcDepthUnit;
 
     if (inport_.hasData())
         bindTextures(inport_, srcColorUnit.getEnum(),srcDepthUnit.getEnum());
