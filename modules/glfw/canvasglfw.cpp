@@ -40,11 +40,12 @@ GLFWwindow* CanvasGLFW::sharedContext_ = NULL;
 int CanvasGLFW::glfwWindowCount_ = 0;
 
 CanvasGLFW::CanvasGLFW(std::string windowTitle, uvec2 dimensions)
-    : CanvasGL(dimensions), windowTitle_(windowTitle),
-      glWindow_(NULL),
-      mouseButton_(MouseEvent::MOUSE_BUTTON_NONE),
-      mouseState_(MouseEvent::MOUSE_STATE_NONE),
-      mouseModifiers_(InteractionEvent::MODIFIER_NONE)
+    : CanvasGL(dimensions)
+    , windowTitle_(windowTitle)
+    , glWindow_(NULL)
+    , mouseButton_(MouseEvent::MOUSE_BUTTON_NONE)
+    , mouseState_(MouseEvent::MOUSE_STATE_NONE)
+    , mouseModifiers_(InteractionEvent::MODIFIER_NONE)
 {}
 
 CanvasGLFW::~CanvasGLFW() {
@@ -58,27 +59,25 @@ void CanvasGLFW::initialize() {
 
 void CanvasGLFW::initializeGL() {
     if(!sharedContext_){
-#ifdef __APPLE__
-        glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
-        glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 1);
-      	glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
-#endif
         std::string preferProfile = OpenGLCapabilities::getPreferredProfile();
-        if(preferProfile == "core"){
-            glfwWindowHint(GLFW_OPENGL_CORE_PROFILE, GL_TRUE);
-	}
-        else if(preferProfile == "compatibility")
-            glfwWindowHint(GLFW_OPENGL_COMPAT_PROFILE, GL_TRUE);
+#ifdef __APPLE__
+        if (preferProfile == "core") {
+            glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+            glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 2);
+            glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
+            glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+        } 
+#endif
     }
 
     glWindow_ = glfwCreateWindow(getDimension().x, getDimension().y, windowTitle_.c_str(), NULL, sharedContext_);
 
-    if (!glWindow_){
+    if (!glWindow_) {
         glfwTerminate();
         LogError("Could not create GLFW window.");
     }
 
-    if(!sharedContext_){
+    if (!sharedContext_) {
         sharedContext_ = glWindow_;
     }
 

@@ -157,7 +157,7 @@ void ImageOverlay::render_text(const char* text, float x, float y, float sx, flo
             {x2,     -y2 - h, 0, 1},
             {x2 + w, -y2 - h, 1, 1},
         };
-        shader_->setUniform("texture", (GLint)unitNumber);
+        shader_->setUniform("tex", (GLint)unitNumber);
         shader_->setUniform("color", floatColor_.get());
         glBufferData(GL_ARRAY_BUFFER, sizeof(box), box, GL_STREAM_DRAW);
         glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);

@@ -41,10 +41,10 @@ struct TEXTURE_PARAMETERS {
 };
 
 
-vec4 textureLookup2Dnormalized(TEXTURE_TYPE texture, TEXTURE_PARAMETERS textureParams, vec2 samplePos) {
-    return texture2D(texture, samplePos);
+vec4 textureLookup2Dnormalized(TEXTURE_TYPE tex, TEXTURE_PARAMETERS textureParams, vec2 samplePos) {
+    return texture(tex, samplePos);
 }
 
-vec4 textureLookup2Dscreen(TEXTURE_TYPE texture, TEXTURE_PARAMETERS textureParams, vec2 samplePos) {
-    return texture2D(texture, samplePos*screenDimRCP_);
+vec4 textureLookup2Dscreen(TEXTURE_TYPE tex, TEXTURE_PARAMETERS textureParams, vec2 samplePos) {
+    return texture(tex, samplePos*screenDimRCP_);
 }

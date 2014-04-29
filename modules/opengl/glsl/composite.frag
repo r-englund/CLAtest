@@ -42,12 +42,12 @@ uniform TEXTURE_TYPE texPicking1_;
 
 void main() {
     vec2 texCoords = gl_FragCoord.xy * screenDimRCP_;
-    vec4 color0 = texture2D(texColor0_, texCoords);
-    vec4 picking0 = texture2D(texPicking0_, texCoords);
-    float depth0 = texture2D(texDepth0_, texCoords).z;
-    vec4 color1 = texture2D(texColor1_, texCoords);
-    vec4 picking1 = texture2D(texPicking1_, texCoords);
-    float depth1 = texture2D(texDepth1_, texCoords).z;
+    vec4 color0 = texture(texColor0_, texCoords);
+    vec4 picking0 = texture(texPicking0_, texCoords);
+    float depth0 = texture(texDepth0_, texCoords).z;
+    vec4 color1 = texture(texColor1_, texCoords);
+    vec4 picking1 = texture(texPicking1_, texCoords);
+    float depth1 = texture(texDepth1_, texCoords).z;
     vec4 colorOut;
     vec4 pickingOut;
     float depthOut;

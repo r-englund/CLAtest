@@ -46,8 +46,8 @@ uniform vec2 dimension_;
 
 void main() {
     vec2 texCoords = gl_FragCoord.xy * screenDimRCP_;
-    vec4 color0 = texture2D(inport0_, texCoords);
-    vec4 color1 = texture2D(inport1_, texCoords);
+    vec4 color0 = texture(inport0_, texCoords);
+    vec4 color1 = texture(inport1_, texCoords);
     FragData0 = COLOR_BLENDING(color0, color1, vec4(alpha_));
     gl_FragDepth = 0.0;
 }

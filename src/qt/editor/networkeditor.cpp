@@ -242,21 +242,31 @@ void NetworkEditor::autoLinkOnAddedProcessor(Processor* addedProcessor) {
 ////////////////////////////////////////////////////////
 //   PRIVATE METHODS FOR ADDING/REMOVING PROCESSORS   //
 ////////////////////////////////////////////////////////
-void NetworkEditor::addProcessorRepresentations(Processor* processor, QPointF pos, bool showProcessor, bool selectProcessor,
-        bool showPropertyWidgets,
-        bool showProcessorWidget) {
+void NetworkEditor::addProcessorRepresentations(Processor* processor,
+                                                QPointF pos,
+                                                bool showProcessor,
+                                                bool selectProcessor,
+                                                bool showPropertyWidgets,
+                                                bool showProcessorWidget) {
+    
     // generate GUI representations (graphics item, property widget, processor widget)
     addProcessorGraphicsItem(processor, pos, showProcessor, selectProcessor);
 
     if (showPropertyWidgets)
         addPropertyWidgets(processor);
 
-    addProcessorWidget(processor, showProcessorWidget);
+    addProcessorWidget(processor, false); //showProcessorWidget);
+    
     // TODO: Generalize by registering output/end processors (can also be e.g. VolumeSave)
     CanvasProcessor* canvasProcessor = dynamic_cast<CanvasProcessor*>(processor);
+    if (canvasProcessor) {
+        processorNetworkEvaluator_->registerCanvas(canvasProcessor->getCanvas(),
+                                                   canvasProcessor->getIdentifier());
+    }
 
-    if (canvasProcessor)
-        processorNetworkEvaluator_->registerCanvas(canvasProcessor->getCanvas(), canvasProcessor->getIdentifier());
+    if (processor->hasProcessorWidget()) {
+        processor->getProcessorWidget()->setVisible(showProcessorWidget);
+    }
 }
 
 void NetworkEditor::removeProcessorRepresentations(Processor* processor) {

@@ -45,8 +45,8 @@ uniform float nearDist_;
 in vec3 texCoord_;
 
 void main() {
-    float entryDepth = texture2D(entryDepthTex_, texCoord_.xy).z;
-    float exitDepth = texture2D(exitDepthTex_, texCoord_.xy).z;
+    float entryDepth = texture(entryDepthTex_, texCoord_.xy).z;
+    float exitDepth = texture(exitDepthTex_, texCoord_.xy).z;
     vec4 entryColor;
 
     if (entryDepth > exitDepth) {
@@ -57,7 +57,7 @@ void main() {
         entryColor = NDCToTextureMat_ * cameraCoordinates * nearDist_;
         entryDepth = 0.0f;
     } else {
-        entryColor = texture2D(entryColorTex_, texCoord_.xy);
+        entryColor = texture(entryColorTex_, texCoord_.xy);
     }
 
     FragData0 = entryColor;
