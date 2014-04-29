@@ -30,12 +30,12 @@
  *
  *********************************************************************************/
 
-uniform sampler2D texture;
+uniform sampler2D tex;
 uniform vec4 color;
 
 in vec2 texCoord;
 
 void main(void) {
-    FragData0 = vec4(1.0f,1.0f,1.0f, texture2D(texture, texCoord).a) * color;
+    FragData0 = vec4(1.0f,1.0f,1.0f, texture(tex, texCoord).a) * color;
     gl_FragDepth = 0.0;
 }

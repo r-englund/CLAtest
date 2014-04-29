@@ -37,6 +37,6 @@ float rand(vec2 pos) {
 }
 
 void main() {
-    gl_FragColor = vec4(vec3(rand(texCoord_.xy)), 1.0);
+    FragData0 = vec4(vec3(rand(texCoord_.xy)), 1.0);
     gl_FragDepth = 0.0;
 }

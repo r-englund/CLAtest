@@ -96,7 +96,7 @@ void Background::initializeResources() {
     shader_->getFragmentShaderObject()->addShaderDefine("BACKGROUND_STYLE_FUNCTION", shaderDefine);
 
     if (inport_.hasData()) {
-        shader_->getFragmentShaderObject()->addShaderDefine("SRC_COLOR", "texture2D(srcColorTex_, texCoords)");
+        shader_->getFragmentShaderObject()->addShaderDefine("SRC_COLOR", "texture(srcColorTex_, texCoords)");
         hadData_ = true;
     } else {
         shader_->getFragmentShaderObject()->addShaderDefine("SRC_COLOR", "vec4(0.0,0.0,0.0,0.0)");

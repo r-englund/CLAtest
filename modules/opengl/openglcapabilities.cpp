@@ -634,10 +634,17 @@ void OpenGLCapabilities::parseAndAddShaderVersion(std::string versionStr, int co
 }
 
 int OpenGLCapabilities::parseAndRetrieveVersion(std::string versionStr) {
-    //Assumes <version><space><desc>
+    // Assumes format <version><space><desc> example "4.1 ATI-1.20.11"
+    // Version to int mapping, 4.1 => 410, 4.40 => 440
     if (!versionStr.empty()) {
-        std::vector<std::string> versionSplit = splitString(versionStr);
-        return stringTo<int>(removeFromString(versionSplit[0], '.'));
+        std::vector<std::string> versionSplit = splitString(versionStr, ' ');
+        std::vector<std::string> numberSplit = splitString(versionSplit[0], '.');
+        int factor = 1;
+        if (numberSplit.size() > 1 && numberSplit[1].size() == 1) {
+            factor = 10;
+        }
+
+        return stringTo<int>(numberSplit[0])*100 + stringTo<int>(numberSplit[1]) * factor;
     }
 
     return 0;

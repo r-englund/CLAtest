@@ -75,7 +75,7 @@ vec4 rayTraversal(vec3 entryPoint, vec3 exitPoint, vec2 texCoords) {
     }
 
     if (tDepth != -1.0)
-        tDepth = calculateDepthValue(tDepth, texture2D(entryDepthTex_, texCoords).z, texture2D(exitDepthTex_, texCoords).z);
+        tDepth = calculateDepthValue(tDepth, texture(entryDepthTex_, texCoords).z, texture(exitDepthTex_, texCoords).z);
     else
         tDepth = 1.0;
 
@@ -85,8 +85,8 @@ vec4 rayTraversal(vec3 entryPoint, vec3 exitPoint, vec2 texCoords) {
 
 void main() {
     vec2 texCoords = gl_FragCoord.xy * screenDimRCP_;
-    vec3 entryPoint = texture2D(entryColorTex_, texCoords).rgb;
-    vec3 exitPoint = texture2D(exitColorTex_, texCoords).rgb;
+    vec3 entryPoint = texture(entryColorTex_, texCoords).rgb;
+    vec3 exitPoint = texture(exitColorTex_, texCoords).rgb;
 
     if (entryPoint == exitPoint) discard;
 

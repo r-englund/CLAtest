@@ -37,7 +37,7 @@ uniform sampler2D picking_;
 in vec3 texCoord_;
 
 void main() {
-    FragData0 = texture2D(color_, texCoord_.xy);
-    PickingData = texture2D(picking_, texCoord_.xy);
-    gl_FragDepth = texture2D(depth_, texCoord_.xy).r;
+    FragData0 = texture(color_, texCoord_.xy);
+    PickingData = texture(picking_, texCoord_.xy);
+    gl_FragDepth = texture(depth_, texCoord_.xy).r;
 }

@@ -57,7 +57,9 @@ TextureUnit::TextureUnit()
 }
 
 TextureUnit::~TextureUnit() {
-    textureUnits_->at(static_cast<int>(unitNumber_)) = false;
+    if (textureUnits_ && static_cast<int>(textureUnits_->size()) > static_cast<int>(unitNumber_)) {
+        textureUnits_->at(static_cast<int>(unitNumber_)) = false;
+    }
 }
 
 void TextureUnit::initialize(int numUnits) {
