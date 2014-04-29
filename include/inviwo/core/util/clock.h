@@ -80,8 +80,18 @@ protected:
     clock_t stopTime_;
 #endif
 
-
-
+#if IVW_PROFILING 
+#define IVW_BEGIN_CPU_PROFILING { Clock clock; clock.start();
+#else 
+#define IVW_BEGIN_CPU_PROFILING  
+#endif 
+#if IVW_PROFILING 
+#define IVW_END_CPU_PROFILING \
+    clock.stop(); \
+    LogInfo("Exec time: " << clock.getElapsedMiliseconds() << " ms"); }
+#else 
+#define IVW_END_CPU_PROFILING
+#endif
 
 };
 
