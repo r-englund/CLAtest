@@ -36,6 +36,8 @@
 #include <inviwo/core/processors/processor.h>
 #include <modules/opengl/canvasprocessorgl.h>
 #include <modules/pypackages/processors/pyprocessorbase.h>
+#include <inviwo/core/datastructures/buffer/bufferramprecision.h>
+
 
 #define NPY_NO_DEPRECATED_API NPY_1_7_API_VERSION
 #define PY_ARRAY_UNIQUE_SYMBOL PYPACKAGE_ARRAY_API
@@ -103,10 +105,10 @@ PyObject* py_getBufferData(PyObject* /*self*/, PyObject* args) {
 		if (InviwoApplication::getPtr() && InviwoApplication::getPtr()->getProcessorNetwork()) {
 			std::vector<Processor*> processors  = InviwoApplication::getPtr()->getProcessorNetwork()->getProcessors();
 
-			for (std::vector<Processor*>::const_iterator processor = processors.begin(); processor!=processors.end(); ++processor) {
-				if (pyProcessorId == (*processor)->getIdentifier()) {
+			for (std::vector<Processor*>::const_iterator processorIt = processors.begin(); processorIt!=processors.end(); ++processorIt) {
+				if (pyProcessorId == (*processorIt)->getIdentifier()) {
 					//check type
-					PyProcessorBase* pyProcessor = dynamic_cast<PyProcessorBase*>(*processor);					
+					PyProcessorBase* pyProcessor = dynamic_cast<PyProcessorBase*>(*processorIt);					
 					if (pyProcessor) {
 						std::string bufferName(bufferDataName);
                         Buffer* rawBuffer = 0;
@@ -115,7 +117,7 @@ PyObject* py_getBufferData(PyObject* /*self*/, PyObject* args) {
                         size_t bufferSize = 0;
 						if (pyProcessor->isValidPyBuffer(bufferName)) {
                             rawBuffer = pyProcessor->getAllocatedPyBuffer(bufferName);
-                            bufferData = pyProcessor->getAllocatedPyBufferData(bufferName);
+                            bufferData = pyProcessor->getPyBufferData(bufferName);
                             bufferTypeStr = pyProcessor->getPyBufferType(bufferName);
                             bufferSize = rawBuffer->getSize();
 							std::cout << "Getting Buffer data : " <<  bufferName << " of type " << bufferTypeStr << " " \
@@ -127,22 +129,78 @@ PyObject* py_getBufferData(PyObject* /*self*/, PyObject* args) {
 
 						if (!bufferData)  Py_RETURN_NONE;
                         if (rawBuffer->getDataFormat()->getComponents()==1) {
-                            if (bufferTypeStr == DataFLOAT16::str()) return PyPackageParser::toPyObject<DataFLOAT16>(bufferData, bufferSize);
-                            if (bufferTypeStr == DataFLOAT32::str()) return PyPackageParser::toPyObject<DataFLOAT32>(bufferData, bufferSize);
-                            if (bufferTypeStr == DataFLOAT64::str()) return PyPackageParser::toPyObject<DataFLOAT64>(bufferData, bufferSize);
-                            if (bufferTypeStr == DataINT8::str()) return PyPackageParser::toPyObject<DataINT8>(bufferData, bufferSize);
-                            if (bufferTypeStr == DataINT16::str()) return PyPackageParser::toPyObject<DataINT16>(bufferData, bufferSize);
-                            if (bufferTypeStr == DataINT32::str()) return PyPackageParser::toPyObject<DataINT32>(bufferData, bufferSize);
-                            if (bufferTypeStr == DataINT64::str()) return PyPackageParser::toPyObject<DataINT64>(bufferData, bufferSize);
-                            if (bufferTypeStr == DataUINT8::str()) return PyPackageParser::toPyObject<DataUINT8>(bufferData, bufferSize);
-                            if (bufferTypeStr == DataUINT16::str()) return PyPackageParser::toPyObject<DataUINT16>(bufferData, bufferSize);
-                            if (bufferTypeStr == DataUINT32::str()) return PyPackageParser::toPyObject<DataUINT32>(bufferData, bufferSize);
-                            if (bufferTypeStr == DataUINT64::str()) return PyPackageParser::toPyObject<DataUINT64>(bufferData, bufferSize);
+
+                            #define RETURN_PYOBJECT(i) \
+                            case DataFormatEnums::##i: return PyPackageParser::toPyObject<Data##i>(bufferData, bufferSize);
+                            #include <modules/pypackages/pypackagesformatsmacro.h>
+
+                            switch (rawBuffer->getDataFormat()->getId()) {
+                                PYPACKAGES_FORMAT_MACRO_EXPANDER(RETURN_PYOBJECT)
+                                default: break;
+                            }
                         }
 					}
 				}
 			}
 		}         
+    }
+
+    Py_RETURN_NONE;
+}
+
+PyObject* py_getLayerData(PyObject* /*self*/, PyObject* args) {
+    static PyGetLayerData p;
+
+    if (!p.testParams(args))
+        return 0;
+
+    const char* pyProcessorId = 0;
+    const char* layerDataName = 0;
+
+    if (!PyArg_ParseTuple(args, "ss:getLayerData", &pyProcessorId, &layerDataName))
+        return 0;
+
+    if (pyProcessorId && layerDataName) {        
+        if (InviwoApplication::getPtr() && InviwoApplication::getPtr()->getProcessorNetwork()) {
+            std::vector<Processor*> processors  = InviwoApplication::getPtr()->getProcessorNetwork()->getProcessors();
+
+            for (std::vector<Processor*>::const_iterator processorIt = processors.begin(); processorIt!=processors.end(); ++processorIt) {
+                if (pyProcessorId == (*processorIt)->getIdentifier()) {
+                    //check type
+                    PyProcessorBase* pyProcessor = dynamic_cast<PyProcessorBase*>(*processorIt);					
+                    if (pyProcessor) {
+                        std::string layerName(layerDataName);
+                        Layer* rawLayer = 0;
+                        void* layerData = 0;
+                        std::string layerTypeStr("");
+                        ivec2 layerDim;
+                        if (pyProcessor->isValidPyBuffer(layerName)) {
+                            rawLayer = pyProcessor->getAllocatedLayer(layerName);
+                            layerData = pyProcessor->getLayerData(layerName);
+                            layerTypeStr = pyProcessor->getLayerType(layerName);
+                            layerDim = rawLayer->getDimension();
+                            std::cout << "Getting Layer data : " <<  layerName << " of type " << layerTypeStr << " " \
+                                << "-" << " with dim " << layerDim.x << " " << layerDim.y << std::endl;
+                        }
+                        else {
+                            std::cout << "Layer fetch failed" << std::endl;
+                        }
+
+                        if (!layerData)  Py_RETURN_NONE;
+                        if (rawLayer->getDataFormat()->getComponents()==2) {
+                            #define RETURN_PYOBJECT(i) \
+                            case DataFormatEnums::##i: return PyPackageParser::toPyObject<Data##i>(layerData, layerDim);
+                            #include <modules/pypackages/pypackagesformatsmacro.h>
+
+                            switch (rawLayer->getDataFormat()->getId()) {
+                                PYPACKAGES_FORMAT_MACRO_EXPANDER(RETURN_PYOBJECT)
+                                default: break;
+                            }
+                        }
+                    }
+                }
+            }
+        }         
     }
 
     Py_RETURN_NONE;
@@ -166,6 +224,14 @@ PyGetBufferData::PyGetBufferData()
 {
     addParam(&pyprocessorId_);
     addParam(&bufferVariableName_);
+}
+
+PyGetLayerData::PyGetLayerData()
+    : pyprocessorId_("pyprocessorid")
+    , layerVariableName_("layervariablename")
+{
+    addParam(&pyprocessorId_);
+    addParam(&layerVariableName_);
 }
 
 }

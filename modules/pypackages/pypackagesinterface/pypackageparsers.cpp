@@ -37,6 +37,24 @@
 #define NO_IMPORT_ARRAY
 #include <arrayobject.h>
 
+#define TOPYOBJ_1D_DEFINITION(i) \
+    template <> PyObject* PyPackageParser::toPyObject<Data##i>(void *ptr, size_t dim) { \
+    npy_intp ndims[1] = {dim}; \
+    PyObject* data = PyArray_SimpleNewFromData(1, ndims, NPY_##i, ptr); \
+    return data; }
+
+#define TOPYOBJ_2D_DEFINITION(i) \
+    template <> PyObject* PyPackageParser::toPyObject<Data##i>(void *ptr, ivec2 dim) { \
+    npy_intp ndims[2] = {dim.x, dim.y}; \
+    PyObject* data = PyArray_SimpleNewFromData(1, ndims, NPY_##i, ptr); \
+    return data; }
+
+#define TOPYOBJ_3D_DEFINITION(i) \
+    template <> PyObject* PyPackageParser::toPyObject<Data##i>(void *ptr, ivec3 dim) { \
+    npy_intp ndims[3] = {dim.x, dim.y, dim.z}; \
+    PyObject* data = PyArray_SimpleNewFromData(1, ndims, NPY_##i, ptr); \
+    return data; }
+
 namespace inviwo {
 
 void* parsePtr(PyObject* args) {
@@ -47,74 +65,18 @@ PyPackageParser::PyPackageParser() { }
 
 template <> void* PyPackageParser::parse(PyObject* args) {  return parsePtr(args);    }
 
-//Float
-template <> PyObject* PyPackageParser::toPyObject<DataFLOAT16>(void *ptr, size_t dim) {
-    npy_intp ndims[1] = {dim};
-    PyObject* data = PyArray_SimpleNewFromData(1, ndims, NPY_FLOAT16, ptr);
-    return data;
-}
+//1d
+#include <modules/pypackages/pypackagesformatsmacro.h>
+PYPACKAGES_FORMAT_MACRO_EXPANDER(TOPYOBJ_1D_DEFINITION)
 
-template <> PyObject* PyPackageParser::toPyObject<DataFLOAT32>(void *ptr, size_t dim) {
-    npy_intp ndims[1] = {dim};
-    PyObject* data = PyArray_SimpleNewFromData(1, ndims, NPY_FLOAT32, ptr);
-    return data;
-}
+//2d
+#include <modules/pypackages/pypackagesformatsmacro.h>
+PYPACKAGES_FORMAT_MACRO_EXPANDER(TOPYOBJ_2D_DEFINITION)
 
-template <> PyObject* PyPackageParser::toPyObject<DataFLOAT64>(void *ptr, size_t dim) {
-    npy_intp ndims[1] = {dim};
-    PyObject* data = PyArray_SimpleNewFromData(1, ndims, NPY_FLOAT64, ptr);
-    return data;
-}
+//3d
+#include <modules/pypackages/pypackagesformatsmacro.h>
+PYPACKAGES_FORMAT_MACRO_EXPANDER(TOPYOBJ_3D_DEFINITION)
 
-//Int
-template <> PyObject* PyPackageParser::toPyObject<DataINT8>(void *ptr, size_t dim) {
-    npy_intp ndims[1] = {dim}; 
-    PyObject* data = PyArray_SimpleNewFromData(1, ndims, NPY_INT8, ptr);
-    return data;
-}
-
-template <> PyObject* PyPackageParser::toPyObject<DataINT16>(void *ptr, size_t dim) {
-    npy_intp ndims[1] = {dim}; 
-    PyObject* data = PyArray_SimpleNewFromData(1, ndims, NPY_INT16, ptr);
-    return data;
-}
-
-template <> PyObject* PyPackageParser::toPyObject<DataINT32>(void *ptr, size_t dim) {
-    npy_intp ndims[1] = {dim}; 
-    PyObject* data = PyArray_SimpleNewFromData(1, ndims, NPY_INT32, ptr);
-    return data;
-}
-
-template <> PyObject* PyPackageParser::toPyObject<DataINT64>(void *ptr, size_t dim) {
-    npy_intp ndims[1] = {dim}; 
-    PyObject* data = PyArray_SimpleNewFromData(1, ndims, NPY_INT64, ptr);
-    return data;
-}
-
-//Unsigned Int
-template <> PyObject* PyPackageParser::toPyObject<DataUINT8>(void *ptr, size_t dim) {
-    npy_intp ndims[1] = {dim}; 
-    PyObject* data = PyArray_SimpleNewFromData(1, ndims, NPY_UINT8, ptr);
-    return data;
-}
-
-template <> PyObject* PyPackageParser::toPyObject<DataUINT16>(void *ptr, size_t dim) {
-    npy_intp ndims[1] = {dim}; 
-    PyObject* data = PyArray_SimpleNewFromData(1, ndims, NPY_UINT16, ptr);
-    return data;
-}
-
-template <> PyObject* PyPackageParser::toPyObject<DataUINT32>(void *ptr, size_t dim) {
-    npy_intp ndims[1] = {dim}; 
-    PyObject* data = PyArray_SimpleNewFromData(1, ndims, NPY_UINT32, ptr);
-    return data;
-}
-
-template <> PyObject* PyPackageParser::toPyObject<DataUINT64>(void *ptr, size_t dim) {
-    npy_intp ndims[1] = {dim}; 
-    PyObject* data = PyArray_SimpleNewFromData(1, ndims, NPY_UINT64, ptr);
-    return data;
-}
 
 template <> bool IVW_MODULE_PYPACKAGES_API PyPackageParser::is<void*>(PyObject* arg) {
     return PyArray_Check(arg);

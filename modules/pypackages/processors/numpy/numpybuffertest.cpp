@@ -64,20 +64,20 @@ void NumpyBufferTest::process() {
 
 void NumpyBufferTest::allocateBuffers() {
     allocatePyBuffer("integerBuffer", DataINT32::str(), 10);
-    glm::int32* intBufferData = static_cast<glm::int32*>(getAllocatedPyBufferData("integerBuffer"));
+    glm::int32* intBufferData = static_cast<glm::int32*>(getPyBufferData("integerBuffer"));
     for (size_t i=0; i<10; i++) intBufferData[i] = 1;
 
     allocatePyBuffer("unsignedIntegerBuffer", DataUINT32::str(), 10);
-    glm::uint32* uintBufferData = static_cast<glm::uint32*>(getAllocatedPyBufferData("unsignedIntegerBuffer"));
+    glm::uint32* uintBufferData = static_cast<glm::uint32*>(getPyBufferData("unsignedIntegerBuffer"));
     for (size_t i=0; i<10; i++) uintBufferData[i] = 1;
 
     allocatePyBuffer("floatBuffer", DataFLOAT32::str(), 10);
-    glm::float32* floatBufferData = static_cast<glm::float32*>(getAllocatedPyBufferData("floatBuffer"));
+    glm::float32* floatBufferData = static_cast<glm::float32*>(getPyBufferData("floatBuffer"));
     for (size_t i=0; i<10; i++) floatBufferData[i] = 1.0f;
 }
 
 void NumpyBufferTest::deAllocateBuffers() {
-    PyProcessorBase::freeAllBuffers();
+    PyProcessorBase::freeAll();
 }
 
 

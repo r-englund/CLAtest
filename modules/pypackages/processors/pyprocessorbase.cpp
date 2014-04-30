@@ -69,30 +69,54 @@ void PyProcessorBase::process() {
 	runScript();
 }
 
+//General
 void PyProcessorBase::onRunScriptButtonClicked() {	
     loadPythonScriptFile();
     //runScript();
 }
 
 void PyProcessorBase::loadPythonScriptFile() {
-	std::string scriptFileName = pythonScriptFile_.get();
-	std::ifstream file(scriptFileName.c_str());
-	std::string text((std::istreambuf_iterator<char>(file)), std::istreambuf_iterator<char>());
-	file.close();
+    std::string scriptFileName = pythonScriptFile_.get();
+    std::ifstream file(scriptFileName.c_str());
+    std::string text((std::istreambuf_iterator<char>(file)), std::istreambuf_iterator<char>());
+    file.close();
     PyScriptRunner::getPtr()->setScript(text);
 }
 
 void PyProcessorBase::runScript() {	
-	PyScriptRunner::getPtr()->run();
+    PyScriptRunner::getPtr()->run();
     std::string retError = PyScriptRunner::getPtr()->getError();
     if (retError!="") {
         LogWarn(retError);
         return;
-    }    
+    }
     std::string status = PyScriptRunner::getPtr()->getStandardOutput();
     if (status!="") LogInfo(status);    
 }
 
+Buffer* PyProcessorBase::convertLayerToBuffer(LayerRAM* layer) {
+    ivec2 dim = layer->getDimension();
+    const DataFormatBase* format = layer->getDataFormat();
+    Buffer* buffer = new Buffer(dim.x*dim.y, format);
+    BufferRAM* bufferRAM = 0;
+    bufferRAM = createBufferRAM(dim.x*dim.y, format, COLOR_ATTRIB, STATIC);
+
+#define DataFormatIdMacro(i) \
+    if ( dynamic_cast< BufferRAMCustomPrecision<Data##i::type, Data##i::bits> *>(bufferRAM) ) { \
+    dynamic_cast< BufferRAMCustomPrecision<Data##i::type, Data##i::bits> *>(bufferRAM)->initialize(layer->getData()); \
+    LogWarn("Buffer format is " << format->getString()); }
+#include <inviwo/core/util/formatsdefinefunc.h>
+
+    buffer->addRepresentation(bufferRAM);
+    return buffer;
+}
+
+ void PyProcessorBase::freeAll() {
+     freeAllBuffers();
+     freeAllLayers();
+ }
+
+//Buffer management
 bool PyProcessorBase::allocatePyBuffer(std::string bufferName, std::string bufferType, size_t bufferSize) {
 	//allocate and cache buffer
 	if (pyBufferMap_.find(bufferName)==pyBufferMap_.end()) {
@@ -118,6 +142,7 @@ bool PyProcessorBase::allocatePyBuffer(std::string bufferName, std::string buffe
 		}
 
 		pyBufferMap_[bufferName] = buffer;
+        pyBufferOwnershipMap_[bufferName] = true;
 		buffer->setSize(bufferSize);
 		BufferRAM* bufferRAM = buffer->getEditableRepresentation<BufferRAM>();		
 		bufferRAM->initialize();
@@ -128,17 +153,34 @@ bool PyProcessorBase::allocatePyBuffer(std::string bufferName, std::string buffe
 	return false;
 }
 
+void PyProcessorBase::addExistingPyBuffer(std::string bufferName, Buffer* buffer) {
+    if (pyBufferMap_.find(bufferName)!=pyBufferMap_.end())
+        LogWarn("Replacing buffer with similar name")
+    pyBufferMap_[bufferName] = buffer;
+    pyBufferOwnershipMap_[bufferName] = false;
+}
+
 Buffer* PyProcessorBase::getAllocatedPyBuffer(std::string bufferName) {
-    //retrieve allocated buffer
     Buffer* buffer = 0;
-    if (pyBufferMap_.find(bufferName)!=pyBufferMap_.end()) {
-        buffer = pyBufferMap_[bufferName];        
-    }
+    if (pyBufferMap_.find(bufferName)!=pyBufferMap_.end())
+        buffer = pyBufferMap_[bufferName];    
     return buffer;
 }
 
-void* PyProcessorBase::getAllocatedPyBufferData(std::string bufferName) {
-    //retrieve allocated buffer
+bool PyProcessorBase::isValidPyBuffer(std::string bufferName) {
+	if (pyBufferMap_.find(bufferName)!=pyBufferMap_.end())
+		return true;	
+	return false;
+}
+
+std::string PyProcessorBase::getPyBufferType(std::string bufferName) {
+    Buffer* buffer = getAllocatedPyBuffer(bufferName);
+    if (buffer)
+        return buffer->getEditableRepresentation<BufferRAM>()->getDataFormat()->getString();    
+    return "";
+}
+
+void* PyProcessorBase::getPyBufferData(std::string bufferName) {
     void* bufferData=0;
     Buffer* buffer = 0;
     if (pyBufferMap_.find(bufferName)!=pyBufferMap_.end()) {
@@ -148,79 +190,98 @@ void* PyProcessorBase::getAllocatedPyBufferData(std::string bufferName) {
     return bufferData;
 }
 
-bool PyProcessorBase::isValidPyBuffer(std::string bufferName) {
-	//retrieve allocated buffer	
-	if (pyBufferMap_.find(bufferName)!=pyBufferMap_.end()) {		
-		return true;
-	}	
-	return false;
-}
-
-std::string PyProcessorBase::getPyBufferType(std::string bufferName) {
-    //retrieve allocated buffer
-    Buffer* buffer = 0;
-    if (pyBufferMap_.find(bufferName)!=pyBufferMap_.end()) {
-        buffer = pyBufferMap_[bufferName];
-        return buffer->getEditableRepresentation<BufferRAM>()->getDataFormat()->getString();
-    }
-    return "";
-}
-
-std::vector<std::string> PyProcessorBase::getSupportedBufferTypes() {
-	std::vector<std::string> bufferTypes;
-	bufferTypes.push_back(DataFLOAT16::str());
-	bufferTypes.push_back(DataFLOAT32::str());
-	bufferTypes.push_back(DataFLOAT64::str());		
-	bufferTypes.push_back(DataINT8::str());
-	//bufferTypes.push_back(DataINT12::str());
-	bufferTypes.push_back(DataINT16::str());
-	bufferTypes.push_back(DataINT32::str());
-	bufferTypes.push_back(DataINT64::str());		
-	bufferTypes.push_back(DataUINT8::str());
-	//bufferTypes.push_back(DataUINT12::str());
-	bufferTypes.push_back(DataUINT16::str()); 
-	bufferTypes.push_back(DataUINT32::str());
-	bufferTypes.push_back(DataUINT64::str()); 
-	return bufferTypes;
-}
-
 void PyProcessorBase::deallocatePyBuffer(std::string bufferName) {
     std::map<std::string, Buffer*>::iterator it = pyBufferMap_.find(bufferName);
+    std::map<std::string, bool>::iterator itb = pyBufferOwnershipMap_.find(bufferName);
     if (it!=pyBufferMap_.end()) {
         Buffer* buffer = it->second;
-        pyBufferMap_.erase(it);
-        delete buffer;
+        if (pyBufferOwnershipMap_[bufferName]) {
+            pyBufferMap_.erase(it);
+            delete buffer;
+            pyBufferOwnershipMap_.erase(itb);
+        }
+        else
+            LogInfo("Processor does not own the buffer. Cannot delete buffer " + bufferName)
     }
 }
 
 void PyProcessorBase::freeAllBuffers() {
     std::map<std::string, Buffer*>::iterator it;
-    for (it=pyBufferMap_.begin(); it!=pyBufferMap_.end(); ++it) {
-        delete it->second;
-    }
+    std::vector<std::string> bufferNames;
+    for (it=pyBufferMap_.begin(); it!=pyBufferMap_.end(); ++it)
+        bufferNames.push_back(it->first);
+    for (size_t i=0; i<bufferNames.size(); i++)
+        deallocatePyBuffer(bufferNames[i]);
     pyBufferMap_.clear();
-
 }
 
-
-
-Buffer* PyProcessorBase::convertLayerToBuffer(LayerRAM* layer) {
-
-    ivec2 dim = layer->getDimension();
-    const DataFormatBase* format = layer->getDataFormat();
-    Buffer* buffer = new Buffer(dim.x*dim.y, format);
-    BufferRAM* bufferRAM = 0;
-    bufferRAM = createBufferRAM(dim.x*dim.y, format, COLOR_ATTRIB, STATIC);  
-
-    #define DataFormatIdMacro(i) \
-    if ( dynamic_cast< BufferRAMCustomPrecision<Data##i::type, Data##i::bits> *>(bufferRAM) ) { \
-    dynamic_cast< BufferRAMCustomPrecision<Data##i::type, Data##i::bits> *>(bufferRAM)->initialize(layer->getData()); \
-    LogWarn("Buffer format is ", format->getString());}
-    #include <inviwo/core/util/formatsdefinefunc.h>
-
-    //dynamic_cast<BufferRAMCustomPrecision<DataINT32::type, DataINT32::bits> *>(bufferRAM)->initialize(layer->getData());
-    buffer->addRepresentation(bufferRAM);
-    return buffer;
+//Layer management
+bool PyProcessorBase::allocateLayer(std::string layerName, std::string layerType, ivec2 layerDim) {
+    LogWarn("Not implemented")
+    return false;
 }
+
+void PyProcessorBase::addExistingLayer(std::string layerName, Layer* layer) {
+    if (pyBufferMap_.find(layerName)!=pyBufferMap_.end())
+        LogWarn("Replacing layer with similar name")
+        pyLayerMap_[layerName] = layer;
+    pyLayerOwnershipMap_[layerName] = false;
+}
+
+Layer* PyProcessorBase::getAllocatedLayer(std::string layerName) {
+    Layer* layer = 0;
+    if (pyLayerMap_.find(layerName)!=pyLayerMap_.end())
+        layer = pyLayerMap_[layerName];    
+    return layer;
+}
+
+bool PyProcessorBase::isValidLayer(std::string layerName) {
+    if (pyLayerMap_.find(layerName)!=pyLayerMap_.end())
+        return true;	
+    return false;
+}
+
+std::string PyProcessorBase::getLayerType(std::string layerName) {
+    Layer* layer = getAllocatedLayer(layerName);
+    if (layer)
+        return layer->getEditableRepresentation<LayerRAM>()->getDataFormat()->getString();    
+    return "";
+}
+
+void* PyProcessorBase::getLayerData(std::string layerName) {
+    void* layerData=0;
+    Layer* layer = 0;
+    if (pyLayerMap_.find(layerName)!=pyLayerMap_.end()) {
+        layer = pyLayerMap_[layerName];
+        layerData = layer->getEditableRepresentation<LayerRAM>()->getData();
+    }
+    return layerData;
+}
+
+void PyProcessorBase::deallocateLayer(std::string layerName) {
+    std::map<std::string, Layer*>::iterator it = pyLayerMap_.find(layerName);
+    std::map<std::string, bool>::iterator itb = pyLayerOwnershipMap_.find(layerName);
+    if (it!=pyLayerMap_.end()) {
+        Layer* layer = it->second;
+        if (pyLayerOwnershipMap_[layerName]) {
+            pyLayerMap_.erase(it);
+            delete layer;
+            pyLayerOwnershipMap_.erase(itb);
+        }
+        else
+            LogInfo("Processor does not own the layer. Cannot delete layer " + layerName)
+    }
+}
+
+void PyProcessorBase::freeAllLayers() {
+    std::map<std::string, Layer*>::iterator it;
+    std::vector<std::string> layerNames;
+    for (it=pyLayerMap_.begin(); it!=pyLayerMap_.end(); ++it)
+        layerNames.push_back(it->first);
+    for (size_t i=0; i<layerNames.size(); i++)
+        deallocateLayer(layerNames[i]);
+    pyBufferMap_.clear();
+}
+
 
 } // namespace

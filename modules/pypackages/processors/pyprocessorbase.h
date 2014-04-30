@@ -52,26 +52,44 @@ public:
     virtual void deinitialize();
     virtual void process();
 
+    //General    
+    void runScript();
+    void onRunScriptButtonClicked();
+    Buffer* convertLayerToBuffer(LayerRAM* layer);
+    void freeAll();
+
     //Buffer management
 	bool allocatePyBuffer(std::string bufferName, std::string bufferType, size_t bufferSize);    
-	bool isValidPyBuffer(std::string bufferName);
-    void* getAllocatedPyBufferData(std::string bufferName);
+    void addExistingPyBuffer(std::string bufferName, Buffer*);	
     Buffer* getAllocatedPyBuffer(std::string bufferName);
+    bool isValidPyBuffer(std::string bufferName);
     std::string getPyBufferType(std::string bufferName);
-	std::vector<std::string> getSupportedBufferTypes();
+    void* getPyBufferData(std::string bufferName);
     void deallocatePyBuffer(std::string bufferName);
-    void freeAllBuffers();
-    Buffer* convertLayerToBuffer(LayerRAM* layer);
+    void freeAllBuffers();    
 
-	void runScript();
-    void onRunScriptButtonClicked();
+    //Layer management
+    bool allocateLayer(std::string layerName, std::string layerType, ivec2 layerDim);
+    void addExistingLayer(std::string layerName, Layer*);
+    Layer* getAllocatedLayer(std::string layerName);
+    bool isValidLayer(std::string layerName);    
+    std::string getLayerType(std::string layerName);
+    void* getLayerData(std::string layerName);
+    void deallocateLayer(std::string bufferName);
+    void freeAllLayers();
+    
 protected:
 	virtual void loadPythonScriptFile();
 	FileProperty pythonScriptFile_;
     ButtonProperty runScript_;
 private:
 	PythonScript script_;
+    //Buffers
 	std::map<std::string, Buffer*> pyBufferMap_;
+    std::map<std::string, bool> pyBufferOwnershipMap_;
+    //Layers
+    std::map<std::string, Layer*> pyLayerMap_;
+    std::map<std::string, bool> pyLayerOwnershipMap_;
 };
 
 } // namespace
