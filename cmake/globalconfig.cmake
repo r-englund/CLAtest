@@ -44,7 +44,7 @@ function(message)
      MessageType STREQUAL WARNING OR
      MessageType STREQUAL AUTHOR_WARNING)
     list(REMOVE_AT ARGV 0)
-    _message(STATUS "${ARGV}")
+    _message(${MessageType} "${ARGV}")
   endif()
 endfunction()
 function(ivw_message)
