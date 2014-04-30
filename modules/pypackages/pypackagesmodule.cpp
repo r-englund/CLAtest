@@ -135,11 +135,11 @@ bool PyPackagesModule::isPackageAvailable(std::string packageName) {
     else {
         std::string status = PyScriptRunner::getPtr()->getStandardOutput();
         if (status=="available") {
-            LogInfo("Pacakage ", packageName, " is available");
+            LogInfo("Pacakage " + packageName + " is available");
             found = true;
         }
         else {
-            LogInfo("Pacakage ", packageName, " is not available");
+            LogInfo("Pacakage " + packageName + " is not available");
             found = false;
         }
     }

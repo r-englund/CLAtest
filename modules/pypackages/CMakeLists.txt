@@ -8,6 +8,7 @@ set(HEADER_FILES
     ${IVW_MODULE_DIR}/pypackages/pypackagesmodule.h
     ${IVW_MODULE_DIR}/pypackages/pypackagesmoduledefine.h
     ${IVW_MODULE_DIR}/pypackages/pyscriptrunner.h
+	${IVW_MODULE_DIR}/pypackages/pypackagesformatsmacro.h
     ${IVW_MODULE_DIR}/pypackages/pypackagesinterface/pypackagesutil.h
 	${IVW_MODULE_DIR}/pypackages/pypackagesinterface/pypackageparsers.h
 	${IVW_MODULE_DIR}/pypackages/processors/pyprocessorbase.h

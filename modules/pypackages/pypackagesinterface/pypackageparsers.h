@@ -49,6 +49,10 @@
 
 namespace inviwo {
 
+#define TOPYOBJ_1D_DECLARATION(i) template <> PyObject* PyPackageParser::toPyObject<Data##i>(void *, size_t);
+#define TOPYOBJ_2D_DECLARATION(i) template <> PyObject* PyPackageParser::toPyObject<Data##i>(void *, ivec2);
+#define TOPYOBJ_3D_DECLARATION(i) template <> PyObject* PyPackageParser::toPyObject<Data##i>(void *, ivec3);
+
 class IVW_MODULE_PYPACKAGES_API PyPackageParser {
     PyPackageParser();
 public:
@@ -59,18 +63,20 @@ public:
     template<typename T> static bool is(PyObject* arg);
 };
 
-template <> void        IVW_MODULE_PYPACKAGES_API *PyPackageParser::parse(PyObject* args);
-template <> PyObject* PyPackageParser::toPyObject<DataFLOAT16>(void *ptr, size_t dim);
-template <> PyObject* PyPackageParser::toPyObject<DataFLOAT32>(void *ptr, size_t dim);
-template <> PyObject* PyPackageParser::toPyObject<DataFLOAT64>(void *ptr, size_t dim);
-template <> PyObject* PyPackageParser::toPyObject<DataINT8>(void *ptr, size_t dim);
-template <> PyObject* PyPackageParser::toPyObject<DataINT16>(void *ptr, size_t dim);
-template <> PyObject* PyPackageParser::toPyObject<DataINT32>(void *ptr, size_t dim);
-template <> PyObject* PyPackageParser::toPyObject<DataINT64>(void *ptr, size_t dim);
-template <> PyObject* PyPackageParser::toPyObject<DataUINT8>(void *ptr, size_t dim);
-template <> PyObject* PyPackageParser::toPyObject<DataUINT16>(void *ptr, size_t dim);
-template <> PyObject* PyPackageParser::toPyObject<DataUINT32>(void *ptr, size_t dim);
-template <> PyObject* PyPackageParser::toPyObject<DataUINT64>(void *ptr, size_t dim);
+template <> void IVW_MODULE_PYPACKAGES_API *PyPackageParser::parse(PyObject* args);
+
+//1d
+#include <modules/pypackages/pypackagesformatsmacro.h>
+PYPACKAGES_FORMAT_MACRO_EXPANDER(TOPYOBJ_1D_DECLARATION)  
+
+//2d
+#include <modules/pypackages/pypackagesformatsmacro.h>
+PYPACKAGES_FORMAT_MACRO_EXPANDER(TOPYOBJ_2D_DECLARATION) 
+
+//3d
+#include <modules/pypackages/pypackagesformatsmacro.h>
+PYPACKAGES_FORMAT_MACRO_EXPANDER(TOPYOBJ_3D_DECLARATION) 
+
 template <> bool IVW_MODULE_PYPACKAGES_API PyPackageParser::is<void*>(PyObject* arg);
 
 

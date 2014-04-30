@@ -122,7 +122,7 @@ void PyCUDAImageInverter::allocateBuffers() {
 }
 
 void PyCUDAImageInverter::deAllocateBuffers() {
-    PyProcessorBase::freeAllBuffers();
+    PyProcessorBase::freeAll();
 }
 
 void PyCUDAImageInverter::loadCUDAKernelFile() {
@@ -141,7 +141,7 @@ void PyCUDAImageInverter::loadCUDAKernelFile() {
 	void* kernelSrc = 0;
 	//fetch buffer data
 	if (PyProcessorBase::isValidPyBuffer("ImageInvert_KernelSrc")) {
-        kernelSrc = PyProcessorBase::getAllocatedPyBufferData("ImageInvert_KernelSrc");
+        kernelSrc = PyProcessorBase::getPyBufferData("ImageInvert_KernelSrc");
 		if (kernelSrc) {
 			char* csrc = static_cast<char*>(kernelSrc);
 			//copy to buffer data which is later accessed by python
