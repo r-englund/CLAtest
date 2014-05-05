@@ -280,7 +280,12 @@ public:
     virtual StructuredGridEntity<N>* clone() const = 0;
 
     virtual ~StructuredGridEntity() {}
-
+    /** 
+     * Calculates basis vector and offset for a uniformly spaced grid centered around origo.
+     *
+     * @param const Vector<N,float>& spacing Distance between grid points in meters
+     */
+    void setBasisAndOffsetWithUniformSpacing(const Vector<N,float>& spacing);
 
     Vector<N, unsigned int> getDimension() const;
     void setDimension(const Vector<N, unsigned int>& dimension);
@@ -435,6 +440,7 @@ template <unsigned int N>
 Matrix<N+1,float> SpatialEntity<N>::getBasisAndOffset() const {
     return basisAndOffset_;
 }
+
 template <unsigned int N>
 void SpatialEntity<N>::setBasisAndOffset(const Matrix<N+1,float>& mat) {
     basisAndOffset_ = mat;
@@ -507,6 +513,21 @@ CoordinateTransformer<N>* StructuredGridEntity<N>::createTransformer(const Spati
     if (casted)
         return new StructuredCoordinateTransformer<N>(casted);
     else return new SpatialCoordinateTransformer<N>(owner);
+}
+
+template <unsigned int N>
+void StructuredGridEntity<N>::setBasisAndOffsetWithUniformSpacing(const Vector<N,float>& spacing) {
+    basisAndOffset_ = Matrix<N+1,float>(2.f);
+    basisAndOffset_[N][N] = 1.f;
+    if (spacing != Vector<N,float>(0.0f)) {
+        for (int i=0; i<N; i++) {
+            basisAndOffset_[i][i] = dimension_[i]*spacing[i];
+        }
+    } 
+    // Center the data around origo.
+    for (int i=0; i<N; i++) {
+        basisAndOffset_[N][i] = -basisAndOffset_[i][i] / 2.0f;
+    }
 }
 
 template <unsigned int N>
