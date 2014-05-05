@@ -40,7 +40,7 @@ if(WIN32)
 	endif(PYTHON_BASE_DIR)
 
 	if(PYTHON_BASE_DIR AND IVW_MODULE_PYPACKAGES)	    
-	    execute_process(COMMAND "${PYTHON_EXECUTABLE}" "-c"
+	    execute_process(COMMAND "${PYTHON_BASE_DIR}/python.exe" "-c"
 	    				"try: import numpy; print(numpy.__version__);\nexcept: pass\n"
 	    				RESULT_VARIABLE NUMPY_STATUS
 	    				OUTPUT_VARIABLE NUMPY_OUTPUT_VERSION
@@ -48,7 +48,7 @@ if(WIN32)
 	    				OUTPUT_STRIP_TRAILING_WHITESPACE
 	                   )
 
-	    execute_process(COMMAND "${PYTHON_EXECUTABLE}" "-c"
+	    execute_process(COMMAND "${PYTHON_BASE_DIR}/python.exe" "-c"
 	    				"try: import numpy; print numpy.get_include()\nexcept: pass\n"
 	    				RESULT_VARIABLE NUMPY_STATUS
 	    				OUTPUT_VARIABLE NUMPY_OUTPUT_INCLUDES
@@ -57,15 +57,12 @@ if(WIN32)
 	                   )
 
 	    if (NUMPY_STATUS MATCHES 0)
-	    	set(PYTHON_NUMPY_FOUND TRUE CACHE INTERNAL "Python numpy development package is available")	    	
-	    	#string(REGEX REPLACE ";" " " NUMPY_OUTPUT_VERSION ${NUMPY_OUTPUT_VERSION})
-	    	#message (FATAL_ERROR "Numpy found" ${NUMPY_OUTPUT_VERSION})
-	    	#message (FATAL_ERROR "Numpy includes at" ${PYTHON_NUMPY_INCLUDE_DIR})
+	    	set(PYTHON_NUMPY_FOUND TRUE CACHE INTERNAL "Python numpy development package is available")   	
 			find_path(PYTHON_NUMPY_INCLUDE_DIR arrayobject.h
-		              "${NUMPY_OUTPUT_INCLUDES}"          
+		              "${NUMPY_OUTPUT_INCLUDES}\\numpy"          
 		              DOC "Directory where the arrayobject.h header file can be found. This file is part of the numpy package"
 		             )
-		    LIST(APPEND PYTHON_INCLUDE_DIR "${PYTHON_NUMPY_INCLUDE_DIR}")
+		    LIST(APPEND PYTHON_INCLUDE_DIR "${PYTHON_NUMPY_INCLUDE_DIR}") 	
 		else()	
 			#message (FATAL_ERROR "Numpy not found")
 			set(PYTHON_NUMPY_FOUND FALSE)
@@ -74,9 +71,10 @@ if(WIN32)
     
 	FIND_PACKAGE_HANDLE_STANDARD_ARGS( Python DEFAULT_MSG PYTHON_LIBRARY_DIR PYTHON_INCLUDE_DIR )
 
-	if(PYTHON_NUMPY_FOUND)
-	#message (FATAL_ERROR "Numpy version " "${NUMPY_VERSION}" )
-	endif()
+	#if(PYTHON_NUMPY_FOUND)
+	#message (FATAL_ERROR "Numpy version " "${NUMPY_OUTPUT_VERSION}" )
+	#message (FATAL_ERROR "Numpy includes at" ${PYTHON_INCLUDE_DIR})
+	#endif()
 
 	mark_as_advanced(PYTHON_FOUND)
 	mark_as_advanced(PYTHON_VERSION)
