@@ -223,7 +223,8 @@ void GeometryRenderProcessorGL::process() {
     if (!depthTest) {
         glDisable(GL_DEPTH_TEST);
     }
-    // restore polygon mode
+    // restore
+    glPointSize(1.f);
     glPolygonMode(GL_FRONT, prevPolygonMode[0]);
     glPolygonMode(GL_BACK, prevPolygonMode[1]);
 }

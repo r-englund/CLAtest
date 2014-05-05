@@ -111,6 +111,7 @@ void EntryExitPoints::process() {
     glDepthFunc(GL_ALWAYS);
     // generate exit points
     activateAndClearTarget(exitPort_);
+    glPointSize(1.f);
     glCullFace(GL_FRONT);
     genericShader_->activate();
     mat4 modelMatrix = geom->getWorldTransform()*geom->getBasisAndOffset();
