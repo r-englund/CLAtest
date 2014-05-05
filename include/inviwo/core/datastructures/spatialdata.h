@@ -283,7 +283,7 @@ public:
     /** 
      * Calculates basis vector and offset for a uniformly spaced grid centered around origo.
      *
-     * @param const Vector<N,float>& spacing Distance between grid points in meters
+     * @param const Vector<N,float>& spacing Distance between grid points
      */
     void setBasisAndOffsetWithUniformSpacing(const Vector<N,float>& spacing);
 
@@ -517,16 +517,16 @@ CoordinateTransformer<N>* StructuredGridEntity<N>::createTransformer(const Spati
 
 template <unsigned int N>
 void StructuredGridEntity<N>::setBasisAndOffsetWithUniformSpacing(const Vector<N,float>& spacing) {
-    basisAndOffset_ = Matrix<N+1,float>(2.f);
-    basisAndOffset_[N][N] = 1.f;
+    this->basisAndOffset_ = Matrix<N+1,float>(2.f);
+    this->basisAndOffset_[N][N] = 1.f;
     if (spacing != Vector<N,float>(0.0f)) {
         for (int i=0; i<N; i++) {
-            basisAndOffset_[i][i] = dimension_[i]*spacing[i];
+            this->basisAndOffset_[i][i] = dimension_[i]*spacing[i];
         }
     } 
     // Center the data around origo.
     for (int i=0; i<N; i++) {
-        basisAndOffset_[N][i] = -basisAndOffset_[i][i] / 2.0f;
+        this->basisAndOffset_[N][i] = -this->basisAndOffset_[i][i] / 2.0f;
     }
 }
 
