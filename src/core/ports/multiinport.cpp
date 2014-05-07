@@ -142,6 +142,10 @@ std::vector<Outport*> MultiInport::getConnectedOutports() const {
     return connectedOutports;
 }
 
+size_t MultiInport::getNumConnectedOutports() const {
+    return getConnectedOutports().size();
+}
+
 void MultiInport::disconnectFrom(Outport* outport) {
     InportSet::iterator it;
 
@@ -191,5 +195,7 @@ void MultiInport::invalidate(PropertyOwner::InvalidationLevel invalidationLevel)
     for (; it != endIt; ++it)
         (*it)->invalidate(invalidationLevel);
 }
+
+
 
 } // namespace

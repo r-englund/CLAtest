@@ -66,7 +66,7 @@ public:
 
     virtual Outport* getConnectedOutport() const;
     std::vector<Outport*> getConnectedOutports() const;
-    size_t getNumConnectedOutports() const { return inports_->size(); }
+    size_t getNumConnectedOutports() const;
 
     void disconnectFrom(Outport* outport);
 
