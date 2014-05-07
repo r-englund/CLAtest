@@ -190,16 +190,18 @@ void ProcessorGL::unbindTextures(const Image* image, bool color, bool depth, boo
     }
 }
 
-void ProcessorGL::setTextureParameters(const ImageInport& inport, Shader* shader, const std::string samplerID) {
-    vec2 dimensions = vec2(inport.getDimension());
+void ProcessorGL::setTextureParameters(const Image* image, Shader* shader, const std::string samplerID) {
+    vec2 dimensions = vec2(image->getDimension());
     shader->setUniform(samplerID + ".dimensions_", dimensions);
     shader->setUniform(samplerID + ".dimensionsRCP_", vec2(1.0f)/dimensions);
 }
 
+void ProcessorGL::setTextureParameters(const ImageInport& inport, Shader* shader, const std::string samplerID) {
+    setTextureParameters(inport.getData(), shader, samplerID);
+}
+
 void ProcessorGL::setTextureParameters(const ImageOutport& outport, Shader* shader, const std::string samplerID) {
-    vec2 dimensions = vec2(outport.getDimension());
-    shader->setUniform(samplerID + ".dimensions_", dimensions);
-    shader->setUniform(samplerID + ".dimensionsRCP_", vec2(1.0f)/dimensions);
+    setTextureParameters(outport.getConstData(), shader, samplerID);
 }
 
 void ProcessorGL::setGlobalShaderParameters(Shader* shader) {
