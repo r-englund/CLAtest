@@ -1421,18 +1421,22 @@ void NetworkEditor::placeProcessorOnProcessor(ProcessorGraphicsItem* processorIt
 
     for (size_t i = 0; i < std::min(inports.size(), oldInports.size()); ++i) {
         if (inports.at(i)->canConnectTo(oldInports.at(i)->getConnectedOutport())) {
-            // save new connection connectionOutportoldInport-processorInport
-            newConnections.push_back(std::make_pair(oldInports.at(i)->getConnectedOutport(), inports.at(i)));
+            // MultiInports may have several connected outports
+            std::vector<Outport*> previouslyConnectedOutports = oldInports.at(i)->getConnectedOutports();
+            for (std::vector<Outport*>::iterator it = previouslyConnectedOutports.begin(), itEnd = previouslyConnectedOutports.end(); it != itEnd; ++it) {
+                // save new connection connectionOutportoldInport-processorInport
+                newConnections.push_back(std::make_pair(*it, inports.at(i)));
+            }
         }
     }
 
     for (size_t i = 0; i < std::min(outports.size(), oldOutports.size()); ++i) {
-        std::vector<Inport*> connectionInports = oldOutports.at(i)->getConnectedInports();
+        std::vector<Inport*> previouslyConnectedInports = oldOutports.at(i)->getConnectedInports();
 
-        for (size_t j = 0; j < connectionInports.size(); ++j) {
-            if (connectionInports.at(j)->canConnectTo(outports.at(i))) {
+        for (size_t j = 0; j < previouslyConnectedInports.size(); ++j) {
+            if (previouslyConnectedInports.at(j)->canConnectTo(outports.at(i))) {
                 // save new connection processorOutport-connectionInport
-                newConnections.push_back(std::make_pair(outports.at(i), connectionInports.at(j)));
+                newConnections.push_back(std::make_pair(outports.at(i), previouslyConnectedInports.at(j)));
             }
         }
     }
