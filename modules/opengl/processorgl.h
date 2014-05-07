@@ -82,6 +82,12 @@ public:
     static void unbindTextures(const ImageInport& inport);
     static void unbindTextures(const ImageOutport& outport);
 
+    /** 
+     * Convenience method for setting texture dimension and inverse dimension 
+     * as uniform variables for the given shader and texture samplerID
+     * 
+     */
+    static void setTextureParameters(const Image* image, Shader* shader, const std::string samplerID);
     static void setTextureParameters(const ImageInport& inport, Shader* shader, const std::string samplerID);
     static void setTextureParameters(const ImageOutport& outport, Shader* shader, const std::string samplerID);
 
