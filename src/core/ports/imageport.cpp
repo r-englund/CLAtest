@@ -114,19 +114,19 @@ uvec2 ImageInport::getDimension() const {
     if (isOutportDeterminingSize() && isConnected()) {
         ImageOutport* outport = dynamic_cast<ImageOutport*>(getConnectedOutport());
         return outport->getDimension();
-    }
-    else
+    } else {
         return dimensions_;
+    }
 }
 
 const Image* ImageInport::getData() const {
     if (isConnected()) {
         ImageOutport* outport = dynamic_cast<ImageOutport*>(getConnectedOutport());
-
-        if (isOutportDeterminingSize() && getDimension()==outport->getDimension())
+        if (isOutportDeterminingSize()) {
             return outport->getConstData();
-        else
+        } else {
             return const_cast<const Image*>(outport->getResizedImageData(dimensions_));
+        }
     } else {
         return NULL;
     }
@@ -153,32 +153,44 @@ std::string ImageInport::getContentInfo() const {
 
 // Image Outport
 ImageOutport::ImageOutport(std::string identifier,
-                           PropertyOwner::InvalidationLevel invalidationLevel, bool handleResizeEvents)
-    : DataOutport<Image>(identifier, invalidationLevel), dimensions_(uvec2(256,256)), handleResizeEvents_(handleResizeEvents)
-{
-    Image* im = new Image(dimensions_);
-    data_ = im;
+                           PropertyOwner::InvalidationLevel invalidationLevel,
+                           bool handleResizeEvents)
+    : DataOutport<Image>(identifier, invalidationLevel)
+    , dimensions_(uvec2(256,256))
+    , handleResizeEvents_(handleResizeEvents)
+    , mapDataInvalid_(true) {
+
+    data_ = new Image(dimensions_);
     dataChanged();
-    mapDataInvalid_ = true;
 }
 
-ImageOutport::ImageOutport(std::string identifier, ImageType type, const DataFormatBase* format,
-                           PropertyOwner::InvalidationLevel invalidationLevel, bool handleResizeEvents)
-    : DataOutport<Image>(identifier, invalidationLevel), dimensions_(uvec2(256,256)), handleResizeEvents_(handleResizeEvents)
-{
-    Image* im = new Image(dimensions_, type, format);
-    data_ = im;
+ImageOutport::ImageOutport(std::string identifier,
+                           ImageType type, 
+                           const DataFormatBase* format,
+                           PropertyOwner::InvalidationLevel invalidationLevel,
+                           bool handleResizeEvents)
+    : DataOutport<Image>(identifier, invalidationLevel)
+    , dimensions_(uvec2(256,256))
+    , handleResizeEvents_(handleResizeEvents)
+    , mapDataInvalid_(true) {
+
+    data_ = new Image(dimensions_, type, format);
     dataChanged();
-    mapDataInvalid_ = true;
 }
 
-ImageOutport::ImageOutport(std::string identifier, ImageInport* src, ImageType type, PropertyOwner::InvalidationLevel invalidationLevel, bool handleResizeEvents)
-    : DataOutport<Image>(identifier, invalidationLevel), EventHandler(), dimensions_(uvec2(256,256)), handleResizeEvents_(handleResizeEvents)
-{
-    Image* im = new Image(dimensions_, type);
-    data_ = im;
+ImageOutport::ImageOutport(std::string identifier,
+                           ImageInport* src, 
+                           ImageType type,
+                           PropertyOwner::InvalidationLevel invalidationLevel,
+                           bool handleResizeEvents)
+    : DataOutport<Image>(identifier, invalidationLevel)
+    , EventHandler()
+    , dimensions_(uvec2(256,256))
+    , handleResizeEvents_(handleResizeEvents)
+    , mapDataInvalid_(true) {
+
+    data_ = new Image(dimensions_, type);
     dataChanged();
-    mapDataInvalid_ = true;
     inputSources_[COLOR_LAYER] = src;
     inputSources_[DEPTH_LAYER] = src;
     inputSources_[PICKING_LAYER] = src;

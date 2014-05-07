@@ -123,10 +123,12 @@ Image::~Image() {
 
 std::string Image::getDataInfo() const{
     std::ostringstream stream;
-    stream << "Type: image\n";
-    stream << "Format: " << getDataFormat()->getString() << "\n";
-    stream << "Width: " << getDimension().x << "\n";
-    stream << "Height: " << getDimension().y << "\n";
+    stream << "Type: image (Color: " << colorLayers_.size() 
+        << ", Depth: " << (getDepthLayer() ? "Yes" : "No") 
+        << ", Picking: " << (getPickingLayer() ? "Yes" : "No") << ")" << std::endl;
+    stream << "Format: " << getDataFormat()->getString() << std::endl;
+    stream << "Width: " << getDimension().x << std::endl;
+    stream << "Height: " << getDimension().y << std::endl;
     return stream.str();
 }
 
@@ -151,7 +153,7 @@ void Image::initialize(uvec2 dimensions, const DataFormatBase* format) {
         depthLayer_ = NULL;
 
     if (!allowMissingLayers_ || typeContainsPicking(getImageType())) {
-        pickingLayer_ = new Layer(dimensions, format);
+        pickingLayer_ = new Layer(dimensions, format, PICKING_LAYER);
         addLayer(pickingLayer_);
     }
     else
@@ -220,12 +222,21 @@ size_t Image::getNumberOfColorLayers() const {
 }
 
 const Layer* Image::getDepthLayer() const {
+    // Get local depth layer if available. 
+    if (typeContainsDepth(getImageType())
+        && depthLayer_
+        && depthLayer_->getLayerType() == DEPTH_LAYER) {
+        return depthLayer_;
+    }
+
+    // Look for a depth layer upwards in the network using the uinput sources.
     ImageSourceMap::const_iterator it = inputSources_.find(DEPTH_LAYER);
-
-    if (it != inputSources_.end() && it->second)
+    if (it != inputSources_.end() && it->second) {
         return it->second->getDepthLayer();
+    }
 
-    return depthLayer_;
+    // No depth layer found.
+    return NULL;
 }
 
 Layer* Image::getDepthLayer() {
@@ -233,12 +244,21 @@ Layer* Image::getDepthLayer() {
 }
 
 const Layer* Image::getPickingLayer() const {
+    // Get local picking layer if available.
+    if (typeContainsPicking(getImageType())
+        && pickingLayer_
+        && pickingLayer_->getLayerType() == PICKING_LAYER) {
+        return pickingLayer_;
+    } 
+
+    // Look for a picking layer upwards in the network using the input sources
     ImageSourceMap::const_iterator it = inputSources_.find(PICKING_LAYER);
-
-    if (it != inputSources_.end() && it->second)
+    if (it != inputSources_.end() && it->second) {
         return it->second->getPickingLayer();
-
-    return pickingLayer_;
+    }
+   
+    // No picking layer found.
+    return NULL;
 }
 
 Layer* Image::getPickingLayer() {
