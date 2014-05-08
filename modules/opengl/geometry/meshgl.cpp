@@ -79,17 +79,18 @@ const BufferGL* MeshGL::getBufferGL(size_t idx) const{
 void MeshGL::update(bool editable) {
     attributesGL_.clear();
 
+    Mesh *owner = this->getOwner();
     attributesArray_->clear();
     attributesArray_->bind();
     if (editable) {
-        for (std::vector<Buffer*>::const_iterator it = owner_->getBuffers().begin(); it != owner_->getBuffers().end(); ++it) {
+        for (std::vector<Buffer*>::const_iterator it = owner->getBuffers().begin(); it != owner->getBuffers().end(); ++it) {
             BufferGL* bufGL = (*it)->getEditableRepresentation<BufferGL>();
             attributesGL_.push_back(bufGL);
             attributesArray_->attachBufferObjectToGenericLocation(bufGL->getBufferObject());
         }
     }
     else {
-        for (std::vector<Buffer*>::const_iterator it = owner_->getBuffers().begin(); it != owner_->getBuffers().end(); ++it) {
+        for (std::vector<Buffer*>::const_iterator it = owner->getBuffers().begin(); it != owner->getBuffers().end(); ++it) {
             const BufferGL* bufGL = (*it)->getRepresentation<BufferGL>();
             attributesGL_.push_back(bufGL);
             attributesArray_->attachBufferObjectToGenericLocation(bufGL->getBufferObject());
@@ -98,8 +99,12 @@ void MeshGL::update(bool editable) {
     attributesArray_->unbind();
 }
 
-void MeshGL::setPointerToOwner(DataGroup* owner) {
-    owner_ = dynamic_cast<Mesh*>(owner);
+Mesh* MeshGL::getOwner() {
+    return dynamic_cast<Mesh *>(DataRepresentation::getOwner());
+}
+
+const Mesh* MeshGL::getOwner() const {
+    return dynamic_cast<const Mesh *>(DataRepresentation::getOwner());
 }
 
 

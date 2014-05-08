@@ -80,15 +80,12 @@ public:
     uvec3 getDimensionWithBorder() const { return dimensions_+getBorderLLF()+getBorderURB(); }
     bool hasBorder() const {return borders_.hasBorder;}
 
-    const Volume* getOwner() const;
+    virtual Volume* getOwner();
+    virtual const Volume* getOwner() const;
 
 protected:
     uvec3 dimensions_;
     VolumeBorders borders_;
-
-    virtual void setPointerToOwner(Data*);
-
-    Volume* owner_;
 };
 
 } // namespace

@@ -39,9 +39,7 @@
 #include <inviwo/core/datastructures/image/image.h>
 
 namespace inviwo {
-
-class Image;
-
+    
 class IVW_CORE_API ImageRepresentation : public DataGroupRepresentation {
 
     friend class Image;
@@ -60,14 +58,11 @@ public:
 
     virtual bool copyAndResizeRepresentation(DataRepresentation*) const = 0;
 
-    const Image* getOwner() const;
+    virtual Image* getOwner();
+    virtual const Image* getOwner() const;
 
 protected:
     virtual void update(bool) = 0;
-
-    virtual void setPointerToOwner(DataGroup*);
-
-    Image* owner_;
 };
 
 } // namespace

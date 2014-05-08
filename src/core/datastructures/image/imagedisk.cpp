@@ -69,30 +69,31 @@ bool ImageDisk::copyAndResizeRepresentation(DataRepresentation*) const {
 }
 
 void ImageDisk::update(bool editable) {
+    Image *owner = this->getOwner();
     if (editable) {
-        for (size_t i=0; i<owner_->getNumberOfColorLayers(); ++i)
-            owner_->getColorLayer(i)->getEditableRepresentation<LayerDisk>();
+        for (size_t i=0; i<owner->getNumberOfColorLayers(); ++i)
+            owner->getColorLayer(i)->getEditableRepresentation<LayerDisk>();
 
-        Layer* depthLayer = owner_->getDepthLayer();
+        Layer* depthLayer = owner->getDepthLayer();
 
         if (depthLayer)
             depthLayer->getEditableRepresentation<LayerDisk>();
 
-        Layer* pickingLayer = owner_->getPickingLayer();
+        Layer* pickingLayer = owner->getPickingLayer();
 
         if (pickingLayer)
             pickingLayer->getEditableRepresentation<LayerDisk>();
     }
     else {
-        for (size_t i=0; i<owner_->getNumberOfColorLayers(); ++i)
-            owner_->getColorLayer(i)->getRepresentation<LayerDisk>();
+        for (size_t i=0; i<owner->getNumberOfColorLayers(); ++i)
+            owner->getColorLayer(i)->getRepresentation<LayerDisk>();
 
-        Layer* depthLayer = owner_->getDepthLayer();
+        Layer* depthLayer = owner->getDepthLayer();
 
         if (depthLayer)
             depthLayer->getRepresentation<LayerDisk>();
 
-        Layer* pickingLayer = owner_->getPickingLayer();
+        Layer* pickingLayer = owner->getPickingLayer();
 
         if (pickingLayer)
             pickingLayer->getRepresentation<LayerDisk>();

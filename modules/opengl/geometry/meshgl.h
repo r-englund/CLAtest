@@ -33,11 +33,11 @@
 #ifndef IVW_MESHGL_H
 #define IVW_MESHGL_H
 
+#include <inviwo/core/datastructures/geometry/mesh.h>
 #include <modules/opengl/geometry/geometrygl.h>
 
 namespace inviwo {
 
-class Mesh;
 class BufferGL;
 class BufferObjectArray;
 
@@ -56,14 +56,13 @@ public:
 
     const BufferGL* getBufferGL(size_t idx=0) const;
 
+    virtual Mesh* getOwner();
+    virtual const Mesh* getOwner() const;
+
 protected:
     virtual void update(bool editable);
 
-    virtual void setPointerToOwner(DataGroup*);
-
 private:
-    Mesh* owner_;
-
     std::vector<const BufferGL*> attributesGL_;
     BufferObjectArray* attributesArray_;
 

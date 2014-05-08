@@ -75,7 +75,6 @@ public:
 protected:
     //Update representations_ with DataRepresentation from each Data and DataGroup object
     virtual void update(bool) = 0;
-    virtual void setPointerToOwner(DataGroup*) = 0;
 
     void setAsValid();
 
