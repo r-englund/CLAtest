@@ -39,14 +39,12 @@ namespace inviwo {
 uvec3 ImageInport::colorCode = uvec3(90,127,183);
 
 // Image Inport
-ImageInport::ImageInport(std::string identifier,
-                         bool outportDeterminesSize,
+ImageInport::ImageInport(std::string identifier, bool outportDeterminesSize,
                          PropertyOwner::InvalidationLevel invalidationLevel)
     : DataInport<Image>(identifier, invalidationLevel)
-    , dimensions_(uvec2(256,256))
+    , dimensions_(uvec2(256, 256))
     , outportDeterminesSize_(outportDeterminesSize)
-    , resizeScale_(vec2(1.f,1.f)) {
-}
+    , resizeScale_(vec2(1.f, 1.f)) {}
 
 ImageInport::~ImageInport() {}
 
@@ -145,7 +143,7 @@ void ImageInport::setOutportDeterminesSize(bool outportDeterminesSize) {
 }
 
 std::string ImageInport::getContentInfo() const {
-    if(hasData())
+    if (hasData())
         return getData()->getDataInfo();
     else
         return getClassName() + " has no data.";
@@ -156,24 +154,20 @@ ImageOutport::ImageOutport(std::string identifier,
                            PropertyOwner::InvalidationLevel invalidationLevel,
                            bool handleResizeEvents)
     : DataOutport<Image>(identifier, invalidationLevel)
-    , dimensions_(uvec2(256,256))
+    , dimensions_(uvec2(256, 256))
     , handleResizeEvents_(handleResizeEvents)
     , mapDataInvalid_(true) {
-
     data_ = new Image(dimensions_);
     dataChanged();
 }
 
-ImageOutport::ImageOutport(std::string identifier,
-                           ImageType type, 
-                           const DataFormatBase* format,
+ImageOutport::ImageOutport(std::string identifier, ImageType type, const DataFormatBase* format,
                            PropertyOwner::InvalidationLevel invalidationLevel,
                            bool handleResizeEvents)
     : DataOutport<Image>(identifier, invalidationLevel)
-    , dimensions_(uvec2(256,256))
+    , dimensions_(uvec2(256, 256))
     , handleResizeEvents_(handleResizeEvents)
     , mapDataInvalid_(true) {
-
     data_ = new Image(dimensions_, type, format);
     dataChanged();
 }
@@ -219,7 +213,7 @@ void ImageOutport::propagateResizeEventToPredecessor(ResizeEvent* resizeEvent) {
     bool propagationEnded = true;
     uvec2 size = resizeEvent->size();
     uvec2 prevSize = resizeEvent->previousSize();
-    for (size_t i=0; i<inPorts.size(); i++) {
+    for (size_t i = 0; i < inPorts.size(); i++) {
         if (equalColorCode(inPorts[i])) {
             propagationEnded = false;
             ImageInport* imageInport = static_cast<ImageInport*>(inPorts[i]);
@@ -229,9 +223,9 @@ void ImageOutport::propagateResizeEventToPredecessor(ResizeEvent* resizeEvent) {
         }
     }
 
-    if(propagationEnded){
+    if (propagationEnded) {
         processor->invalidate(PropertyOwner::INVALID_OUTPUT);
-        //invalidate(PropertyOwner::INVALID_OUTPUT);
+        // invalidate(PropertyOwner::INVALID_OUTPUT);
     }
 }
 
@@ -266,7 +260,7 @@ void ImageOutport::changeDataDimensions(ResizeEvent* resizeEvent) {
     directSuccessors = getDirectSuccessors();
     std::vector<uvec2> registeredDimensions;
 
-    for (size_t i=0; i<directSuccessors.size(); i++) {
+    for (size_t i = 0; i < directSuccessors.size(); i++) {
         CanvasProcessor* canvasProcessor = dynamic_cast<CanvasProcessor*>(directSuccessors[i]);
 
         if (canvasProcessor && canvasProcessor->getCanvas()) {
@@ -367,8 +361,8 @@ uvec2 ImageOutport::getDimension() const {
 
 Image* ImageOutport::getResizedImageData(uvec2 requiredDimensions) {
     if (mapDataInvalid_) {
-        //Resize all map data once
-        for (ImagePortMap::iterator it=imageDataMap_.begin(); it!=imageDataMap_.end(); ++it) {
+        // Resize all map data once
+        for (ImagePortMap::iterator it = imageDataMap_.begin(); it != imageDataMap_.end(); ++it) {
             if (it->second != data_) {
                 uvec2 mapDataDimensions = it->second->getDimension();
                 data_->resizeRepresentations(it->second, mapDataDimensions);
@@ -378,13 +372,13 @@ Image* ImageOutport::getResizedImageData(uvec2 requiredDimensions) {
         mapDataInvalid_ = false;
     }
 
-    //TODO: Map traverse is expensive. Optimize
-    for (ImagePortMap::iterator it=imageDataMap_.begin(); it!=imageDataMap_.end(); ++it) {
-        if (it->second->getDimension() == requiredDimensions)
-            return it->second;
+    // TODO: Map traverse is expensive. Optimize
+    for (ImagePortMap::iterator it = imageDataMap_.begin(); it != imageDataMap_.end(); ++it) {
+        if (it->second->getDimension() == requiredDimensions) return it->second;
     }
 
-    //Image* resultImage = new Image(requiredDimensions, data_->getImageType(), data_->getDataFormat());
+    // Image* resultImage = new Image(requiredDimensions, data_->getImageType(),
+    // data_->getDataFormat());
     Image* resultImage = dynamic_cast<Image*>(data_->clone());
     resultImage->resize(requiredDimensions);
     std::string dimensionString = glm::to_string(requiredDimensions);
@@ -450,11 +444,12 @@ void ImageOutport::setDimension(const uvec2& newDimension) {
     DataOutport<Image>::getData()->resize(newDimension);
 }
 
-ResizeEvent* ImageOutport::scaleResizeEvent(ImageInport* imageInport, ResizeEvent* sizeEvent){
+ResizeEvent* ImageOutport::scaleResizeEvent(ImageInport* imageInport, ResizeEvent* sizeEvent) {
     vec2 scale = imageInport->getResizeScale();
     sizeEvent->setPreviousSize(imageInport->getDimension());
-    sizeEvent->setSize(uvec2(static_cast<unsigned int>(static_cast<float>(sizeEvent->size().x*scale.x)),
-        static_cast<unsigned int>(static_cast<float>(sizeEvent->size().y*scale.y))));
+    sizeEvent->setSize(
+        uvec2(static_cast<unsigned int>(static_cast<float>(sizeEvent->size().x * scale.x)),
+              static_cast<unsigned int>(static_cast<float>(sizeEvent->size().y * scale.y))));
     return sizeEvent;
 }
 
