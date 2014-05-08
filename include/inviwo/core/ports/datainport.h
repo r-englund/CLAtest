@@ -119,7 +119,7 @@ template <typename T>
 std::string DataInport<T>::getContentInfo() const {
     
     if (hasData()) {
-        const DataBase* data = dynamic_cast<const DataBase*>(getData());
+        const BaseData* data = dynamic_cast<const BaseData*>(getData());
         if (data) {
             return data->getDataInfo();
         } else {

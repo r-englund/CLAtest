@@ -55,7 +55,7 @@ namespace inviwo {
  *      and we need to call update before we return it from getRepresentation.
  */
 
-class IVW_CORE_API DataGroup : public DataBase {
+class IVW_CORE_API DataGroup : public BaseData {
 
 public:
     DataGroup();

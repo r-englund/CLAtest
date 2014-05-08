@@ -34,41 +34,41 @@
 
 namespace inviwo {
 
-DataBase::DataBase() : MetaDataOwner() {
+BaseData::BaseData() : MetaDataOwner() {
 }
 
-DataBase::DataBase(const DataBase& rhs) : MetaDataOwner(rhs)  {
+BaseData::BaseData(const BaseData& rhs) : MetaDataOwner(rhs)  {
 }
 
-DataBase& DataBase::operator=(const DataBase& that) {
+BaseData& BaseData::operator=(const BaseData& that) {
     if (this != &that) {
         MetaDataOwner::operator=(that);
     }
 
     return *this;
 }
-DataBase::~DataBase() {}
+BaseData::~BaseData() {}
 
-std::string DataBase::getDataInfo() const{
+std::string BaseData::getDataInfo() const{
     return "";
 }
 
 Data::Data()
-    : DataBase()
+    : BaseData()
     , validRepresentations_(0)
     , lastValidRepresentation_(NULL)
     , dataFormatBase_(DataFormatBase::get()) {
 }
 
 Data::Data(const DataFormatBase* format)
-    : DataBase()
+    : BaseData()
     , validRepresentations_(0)
     , lastValidRepresentation_(NULL)
     , dataFormatBase_(format) {
 }
 
 Data::Data(const Data& rhs)
-    : DataBase(rhs)
+    : BaseData(rhs)
     , validRepresentations_(0)
     , lastValidRepresentation_(NULL)
     , dataFormatBase_(rhs.dataFormatBase_) {
@@ -77,7 +77,7 @@ Data::Data(const Data& rhs)
 
 Data& Data::operator=(const Data& that) {
     if (this != &that) {
-        DataBase::operator=(that);
+        BaseData::operator=(that);
         that.copyRepresentationsTo(this);
         dataFormatBase_ = that.dataFormatBase_;
     }

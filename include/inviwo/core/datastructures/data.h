@@ -42,13 +42,13 @@
 
 namespace inviwo {
 
-class IVW_CORE_API DataBase :  public MetaDataOwner {
+class IVW_CORE_API BaseData :  public MetaDataOwner {
 public:
-    DataBase();
-    DataBase(const DataBase& rhs);
-    DataBase& operator=(const DataBase& rhs);
-    virtual DataBase* clone() const = 0;
-    virtual ~DataBase();
+    BaseData();
+    BaseData(const BaseData& rhs);
+    BaseData& operator=(const BaseData& rhs);
+    virtual BaseData* clone() const = 0;
+    virtual ~BaseData();
     virtual std::string getDataInfo() const;
 };
 
@@ -70,7 +70,7 @@ public:
  *  3 is needed for the factory pattern, 3 should be implemented using 1.
  *
  */
-class IVW_CORE_API Data : public DataBase {
+class IVW_CORE_API Data : public BaseData {
 
 public:
     Data();

@@ -35,18 +35,18 @@
 namespace inviwo {
 
 DataGroup::DataGroup()
-    : DataBase()
+    : BaseData()
     , editableUpdate_(false) {
 }
 
 DataGroup::DataGroup(const DataGroup& rhs)
-    : DataBase()
+    : BaseData()
     , editableUpdate_(false) {
 }
 
 DataGroup& DataGroup::operator=(const DataGroup& that) {
     if (this != &that) {
-        DataBase::operator=(that);
+        BaseData::operator=(that);
         deinitialize();
     }
 

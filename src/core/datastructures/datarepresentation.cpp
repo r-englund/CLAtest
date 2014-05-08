@@ -73,15 +73,15 @@ void DataRepresentation::setDataFormat(const DataFormatBase* format) {
     dataFormatBase_ = format;
 }
 
-void DataRepresentation::setPointerToOwner(DataBase* owner) {
+void DataRepresentation::setPointerToOwner(BaseData* owner) {
     owner_ = owner;
 }
 
-DataBase* DataRepresentation::getOwner() {
+BaseData* DataRepresentation::getOwner() {
     return owner_;
 }
 
-const DataBase* DataRepresentation::getOwner() const {
+const BaseData* DataRepresentation::getOwner() const {
     return owner_;
 }
 
