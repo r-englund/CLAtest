@@ -36,15 +36,17 @@
 namespace inviwo {
 
 DataRepresentation::DataRepresentation()
-    : dataFormatBase_(DataUINT8::get()) {}
+    : dataFormatBase_(DataUINT8::get()),owner_(NULL) {}
 DataRepresentation::DataRepresentation(const DataFormatBase* format)
-    : dataFormatBase_(format) {}
+    : dataFormatBase_(format),owner_(NULL) {}
 DataRepresentation::DataRepresentation(const DataRepresentation& rhs)
-    : dataFormatBase_(rhs.dataFormatBase_) {}
+    : dataFormatBase_(rhs.dataFormatBase_),owner_(rhs.owner_) {}
 
 DataRepresentation& DataRepresentation::operator=(const DataRepresentation& that) {
-    if (this != &that)
+    if (this != &that) {
         dataFormatBase_ = that.dataFormatBase_;
+        owner_ = that.owner_;
+    }
 
     return *this;
 }
@@ -71,7 +73,17 @@ void DataRepresentation::setDataFormat(const DataFormatBase* format) {
     dataFormatBase_ = format;
 }
 
+void DataRepresentation::setPointerToOwner(DataBase* owner) {
+    owner_ = owner;
+}
 
+DataBase* DataRepresentation::getOwner() {
+    return owner_;
+}
+
+const DataBase* DataRepresentation::getOwner() const {
+    return owner_;
+}
 
 
 

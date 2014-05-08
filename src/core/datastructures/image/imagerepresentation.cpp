@@ -35,15 +35,14 @@
 namespace inviwo {
 
 ImageRepresentation::ImageRepresentation()
-    : DataGroupRepresentation(), owner_(0) {
+    : DataGroupRepresentation() {
 }
 
 ImageRepresentation::ImageRepresentation(const ImageRepresentation& rhs)
-    : DataGroupRepresentation(rhs), owner_(rhs.owner_) {
+    : DataGroupRepresentation(rhs) {
 }
 ImageRepresentation& ImageRepresentation::operator=(const ImageRepresentation& that) {
     if (this != &that) {
-        owner_ = that.owner_;
         DataGroupRepresentation::operator=(that);
     }
 
@@ -59,17 +58,15 @@ std::string ImageRepresentation::getClassName() const {
 }
 
 uvec2 ImageRepresentation::getDimension() const {
-    return owner_->getDimension();
+    return getOwner()->getDimension();
+}
+
+Image* ImageRepresentation::getOwner() {
+    return dynamic_cast<Image *>(DataRepresentation::getOwner());
 }
 
 const Image* ImageRepresentation::getOwner() const {
-    return owner_;
+    return dynamic_cast<const Image *>(DataRepresentation::getOwner());
 }
-
-void ImageRepresentation::setPointerToOwner(DataGroup* owner) {
-    owner_ = dynamic_cast<Image*>(owner);
-}
-
-
 
 } // namespace

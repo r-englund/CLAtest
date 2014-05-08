@@ -38,7 +38,6 @@ VolumeRepresentation::VolumeRepresentation(uvec3 dimension)
     : DataRepresentation()
       , dimensions_(dimension) 
       , borders_(VolumeBorders())
-      , owner_(0)
 
 {}
 
@@ -46,14 +45,12 @@ VolumeRepresentation::VolumeRepresentation(uvec3 dimension, const DataFormatBase
     : DataRepresentation(format)
     , dimensions_(dimension) 
     , borders_(VolumeBorders())
-    , owner_(0)
 {}
 
 VolumeRepresentation::VolumeRepresentation(uvec3 dimension, const DataFormatBase* format, VolumeBorders border)
     : DataRepresentation(format)
     , dimensions_(dimension) 
     , borders_(VolumeBorders())
-    , owner_(0)
 
 {}
 
@@ -61,7 +58,6 @@ VolumeRepresentation::VolumeRepresentation(const VolumeRepresentation& rhs)
     : DataRepresentation()
     , dimensions_(rhs.dimensions_)
     , borders_(rhs.borders_)
-    , owner_(rhs.owner_)
 {
 }
 
@@ -69,7 +65,6 @@ VolumeRepresentation& VolumeRepresentation::operator=(const VolumeRepresentation
     if (this != &that) {
         dimensions_ = that.dimensions_;
         borders_ = that.borders_;
-        owner_ = that.owner_;
         DataRepresentation::operator=(that);
     }
 
@@ -80,12 +75,12 @@ VolumeRepresentation* VolumeRepresentation::clone() const {
 }
 VolumeRepresentation::~VolumeRepresentation() {}
 
-const Volume* VolumeRepresentation::getOwner() const {
-    return owner_;
+Volume* VolumeRepresentation::getOwner() {
+    return dynamic_cast<Volume *>(DataRepresentation::getOwner());
 }
 
-void VolumeRepresentation::setPointerToOwner(Data* owner) {
-    owner_ = dynamic_cast<Volume*>(owner);
+const Volume* VolumeRepresentation::getOwner() const {
+    return dynamic_cast<const Volume *>(DataRepresentation::getOwner());
 }
 
 } // namespace
