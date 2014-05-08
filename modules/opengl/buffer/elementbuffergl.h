@@ -64,21 +64,6 @@ public:
 
 };
 
-
-class IVW_MODULE_OPENGL_API BufferRAM2ElementGLConverter : public RepresentationConverterType<ElementBufferGL> {
-
-public:
-    BufferRAM2ElementGLConverter();
-    virtual ~BufferRAM2ElementGLConverter();
-
-    inline bool canConvertFrom(const DataRepresentation* source) const {
-        return dynamic_cast<const BufferRAM*>(source) != NULL;
-    }
-    DataRepresentation* createFrom(const DataRepresentation* source);
-    void update(const DataRepresentation* source, DataRepresentation* destination);
-};
-
-
 } // namespace
 
 #endif // IVW_ELEMENT_BUFFER_GL_H

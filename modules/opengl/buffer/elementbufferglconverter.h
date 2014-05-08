@@ -53,6 +53,20 @@ public:
     void update(const DataRepresentation* source, DataRepresentation* destination);
 };
 
+class IVW_MODULE_OPENGL_API ElementBufferGL2RAMConverter : public RepresentationConverterType<BufferRAM> {
+
+public:
+    ElementBufferGL2RAMConverter();
+    virtual ~ElementBufferGL2RAMConverter();
+
+    inline bool canConvertFrom(const DataRepresentation* source) const {
+        return dynamic_cast<const ElementBufferGL*>(source) != NULL;
+    }
+
+    DataRepresentation* createFrom(const DataRepresentation* source);
+    void update(const DataRepresentation* source, DataRepresentation* destination);
+};
+
 } // namespace
 
 #endif // IVW_ELEMENT_BUFFERGL_CONVERTER_H
