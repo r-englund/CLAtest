@@ -45,24 +45,6 @@ ElementBufferGL* ElementBufferGL::clone() const {
     return new ElementBufferGL(*this);
 }
 
-BufferRAM2ElementGLConverter::BufferRAM2ElementGLConverter()
-    : RepresentationConverterType<ElementBufferGL>()
-{}
-
-BufferRAM2ElementGLConverter::~BufferRAM2ElementGLConverter() {}
-
-DataRepresentation* BufferRAM2ElementGLConverter::createFrom(const DataRepresentation* source) {
-    const BufferRAM* bufferRAM = static_cast<const BufferRAM*>(source);
-    ElementBufferGL* bufferGL = new ElementBufferGL(bufferRAM->getSize(), bufferRAM->getDataFormat(), bufferRAM->getBufferType(),
-            bufferRAM->getBufferUsage());
-    bufferGL->initialize(bufferRAM->getData(), bufferRAM->getSize()*bufferRAM->getSizeOfElement());
-    return bufferGL;
-}
-void BufferRAM2ElementGLConverter::update(const DataRepresentation* source, DataRepresentation* destination) {
-    const BufferRAM* src = static_cast<const BufferRAM*>(source);
-    ElementBufferGL* dst = static_cast<ElementBufferGL*>(destination);
-    dst->upload(src->getData(), src->getSize()*src->getSizeOfElement());
-}
 
 } // namespace
 

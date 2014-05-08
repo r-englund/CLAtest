@@ -34,9 +34,7 @@
 
 namespace inviwo {
 
-ElementBufferRAM2GLConverter::ElementBufferRAM2GLConverter()
-    : RepresentationConverterType<ElementBufferGL>() {
-}
+ElementBufferRAM2GLConverter::ElementBufferRAM2GLConverter(): RepresentationConverterType<ElementBufferGL>() {}
 
 ElementBufferRAM2GLConverter::~ElementBufferRAM2GLConverter() {}
 
@@ -55,6 +53,36 @@ void ElementBufferRAM2GLConverter::update(const DataRepresentation* source,
     const BufferRAM* src = static_cast<const BufferRAM*>(source);
     ElementBufferGL* dst = static_cast<ElementBufferGL*>(destination);
     dst->upload(src->getData(), src->getSize()*src->getSizeOfElement());
+}
+
+
+ElementBufferGL2RAMConverter::ElementBufferGL2RAMConverter(): RepresentationConverterType<BufferRAM>() {}
+
+ElementBufferGL2RAMConverter::~ElementBufferGL2RAMConverter() {}
+
+DataRepresentation* ElementBufferGL2RAMConverter::createFrom(const DataRepresentation* source) {
+    const ElementBufferGL* src = static_cast<const ElementBufferGL*>(source);
+    BufferRAM* dst = createBufferRAM(src->getSize(), src->getDataFormat(), src->getBufferType(), src->getBufferUsage());
+
+    if (dst) {
+        src->download(dst->getData());
+        return dst;
+    } else {
+        LogError("Cannot convert format from GL to RAM:" << src->getDataFormat()->getString());
+    }
+
+    return NULL;
+}
+
+void ElementBufferGL2RAMConverter::update(const DataRepresentation* source, DataRepresentation* destination) {
+    const ElementBufferGL* src = static_cast<const ElementBufferGL*>(source);
+    BufferRAM* dst = static_cast<BufferRAM*>(destination);
+
+    if (src->getSize() != dst->getSize()) {
+        dst->setSize(src->getSize());
+    }
+
+    src->download(dst->getData());
 }
 
 } // namespace
