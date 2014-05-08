@@ -141,7 +141,7 @@ bool DataOutport<T>::isDataOwner() const {
 template <typename T>
 std::string DataOutport<T>::getContentInfo() const {
     if (hasData()) {
-        const DataBase* data = dynamic_cast<const DataBase*>(data_);
+        const BaseData* data = dynamic_cast<const BaseData*>(data_);
         if (data) {
             return data->getDataInfo();
         } else {

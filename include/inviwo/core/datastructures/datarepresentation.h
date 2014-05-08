@@ -40,7 +40,7 @@ namespace inviwo {
 
 class DataFormatBase;
 class DataOperation;
-class DataBase;
+class BaseData;
 
 class IVW_CORE_API DataRepresentation {
 
@@ -58,15 +58,15 @@ public:
     DataFormatEnums::Id getDataFormatId() const;
     virtual void performOperation(DataOperation*) const = 0;
 
-    void setPointerToOwner(DataBase*);
-    virtual DataBase* getOwner();
-    virtual const DataBase* getOwner() const;
+    void setPointerToOwner(BaseData*);
+    virtual BaseData* getOwner();
+    virtual const BaseData* getOwner() const;
 
 protected:
     void setDataFormat(const DataFormatBase* format);
 
     const DataFormatBase* dataFormatBase_;
-    DataBase *owner_;
+    BaseData *owner_;
 };
 
 } // namespace

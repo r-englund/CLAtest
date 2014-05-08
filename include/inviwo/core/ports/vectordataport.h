@@ -47,10 +47,10 @@ public:
 };
 
 template <typename T>
-class VectorData : public DataBase {
+class VectorData : public BaseData {
 public:
     VectorData() {}
-    VectorData(const VectorData& rhs) : DataBase(rhs),vector(rhs.vector) {}
+    VectorData(const VectorData& rhs) : BaseData(rhs),vector(rhs.vector) {}
     VectorData& operator=(const VectorData& rhs) { 
         if (this != &rhs) {
             this->vector = rhs.vector;
