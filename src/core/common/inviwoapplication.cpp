@@ -137,6 +137,8 @@ void InviwoApplication::initialize(registerModuleFuncPtr regModuleFunc) {
 }
 
 void InviwoApplication::deinitialize() {
+    // Clear the network
+    getProcessorNetwork()->clear();
     // Deinitialize Resource manager before modules
     // to prevent them from using module specific 
     // (OpenGL/OpenCL) features after their module 

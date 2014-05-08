@@ -42,6 +42,11 @@ Inport::Inport(std::string identifier)
 
 Inport::~Inport() {}
 
+void Inport::invalidate(PropertyOwner::InvalidationLevel invalidationLevel) {
+    onInvalidCallback_.invokeAll();
+    Port::invalidate(invalidationLevel);
+}
+
 std::vector<Processor*> Inport::getPredecessors() {
     std::vector<Processor*> predecessorsProcessors;
     getPredecessorsUsingPortType<Inport>(predecessorsProcessors);
