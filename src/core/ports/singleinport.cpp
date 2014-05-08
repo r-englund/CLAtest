@@ -70,7 +70,7 @@ bool SingleInport::isConnectedTo(Outport* outport) const {
 
 void SingleInport::invalidate(PropertyOwner::InvalidationLevel invalidationLevel) {
     invalidationLevel_ = std::max(invalidationLevel_, invalidationLevel);
-    Port::invalidate(invalidationLevel);
+    Inport::invalidate(invalidationLevel);
 }
 
 } // namespace

@@ -71,7 +71,7 @@ TransferFunctionEditorView::TransferFunctionEditorView(TransferFunctionProperty*
     this->setViewport(new QGLWidget(format));
 */
     if (volumeInport_) {
-        volumeInport_->onChange(this, &TransferFunctionEditorView::onTransferFunctionChange);
+        volumeInport_->onInvalid(this, &TransferFunctionEditorView::onVolumeInportInvalid);
     }
 }
 
@@ -113,8 +113,9 @@ void TransferFunctionEditorView::drawForeground(QPainter* painter, const QRectF&
 void TransferFunctionEditorView::onTransferFunctionChange() {
     volumeInport_ = tfProperty_->getVolumeInport();
 
-    if (volumeInport_)
-        volumeInport_->onChange(this, &TransferFunctionEditorView::onVolumeInportChange);
+    if (volumeInport_){
+        volumeInport_->onInvalid(this, &TransferFunctionEditorView::onVolumeInportInvalid);
+    }
     
     this->viewport()->update();
 }
@@ -124,8 +125,7 @@ void TransferFunctionEditorView::onControlPointChanged(const TransferFunctionDat
     onTransferFunctionChange();
 }
 
-
-void TransferFunctionEditorView::onVolumeInportChange() {
+void TransferFunctionEditorView::onVolumeInportInvalid() {
     if(workerThread_)
         workerThread_->quit();
     invalidatedHistogram_ = true;

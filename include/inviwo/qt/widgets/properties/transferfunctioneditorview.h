@@ -59,8 +59,9 @@ public:
         this->viewport()->update();
     }
     
-    virtual void onTransferFunctionChange();
-    virtual void onControlPointChanged(const TransferFunctionDataPoint* p);
+    void onVolumeInportInvalid();
+    void onTransferFunctionChange();
+    void onControlPointChanged(const TransferFunctionDataPoint* p);
     void setShowHistogram(bool);
 
 signals:
