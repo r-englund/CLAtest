@@ -72,16 +72,17 @@ bool ImageCL::copyAndResizeRepresentation(DataRepresentation* targetRep) const {
 void ImageCL::update(bool editable) {
     //TODO: Convert more then just first color layer
     layerCL_ = NULL;
+    Image *owner = this->getOwner();
 
     if (editable) {
-        layerCL_ = owner_->getColorLayer()->getEditableRepresentation<LayerCL>();
+        layerCL_ = owner->getColorLayer()->getEditableRepresentation<LayerCL>();
     } else {
-        layerCL_ = const_cast<LayerCL*>(owner_->getColorLayer()->getRepresentation<LayerCL>());
+        layerCL_ = const_cast<LayerCL*>(owner->getColorLayer()->getRepresentation<LayerCL>());
     }
 
     if(layerCL_->getDataFormat() != getOwner()->getDataFormat()){
-        owner_->getColorLayer()->setDataFormat(layerCL_->getDataFormat());
-        owner_->getColorLayer()->setDimension(layerCL_->getDimension());
+        owner->getColorLayer()->setDataFormat(layerCL_->getDataFormat());
+        owner->getColorLayer()->setDimension(layerCL_->getDimension());
     }
 }
 

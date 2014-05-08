@@ -75,12 +75,13 @@ bool ImageCLGL::copyAndResizeRepresentation(DataRepresentation* targetRep) const
 void ImageCLGL::update(bool editable) {
     //TODO: Convert more then just first color layer
     layerCLGL_ = NULL;
+    Image *owner = this->getOwner();
 
     if (editable) {
-        layerCLGL_ = owner_->getColorLayer()->getEditableRepresentation<LayerCLGL>();
+        layerCLGL_ = owner->getColorLayer()->getEditableRepresentation<LayerCLGL>();
     }
     else {
-        layerCLGL_ = const_cast<LayerCLGL*>(owner_->getColorLayer()->getRepresentation<LayerCLGL>());
+        layerCLGL_ = const_cast<LayerCLGL*>(owner->getColorLayer()->getRepresentation<LayerCLGL>());
     }
 }
 
