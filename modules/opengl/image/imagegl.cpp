@@ -39,10 +39,10 @@ namespace inviwo {
 
 ImageGL::ImageGL()
     : ImageRepresentation()
+    , rectArray_(NULL)
     , frameBufferObject_(NULL)
     , shader_(NULL)
-    , initialized_(false)
-    , rectArray_(NULL) {
+    , initialized_(false) {
     initialize();
 }
 
@@ -50,26 +50,20 @@ ImageGL::ImageGL(const ImageGL& rhs)
     : ImageRepresentation(rhs)
     , frameBufferObject_(NULL)
     , shader_(NULL)
-    , initialized_(false)
-    , rectArray_(NULL) {
+    , initialized_(false) {
     initialize();
 }
 
-ImageGL::~ImageGL() {
-    deinitialize();
-}
+ImageGL::~ImageGL() { deinitialize(); }
 
 void ImageGL::initialize() {
-    if (initialized_)
-        return;
+    if (initialized_) return;
 
-    if (shader_)
-        delete shader_;
+    if (shader_) delete shader_;
 
     shader_ = new Shader("standard.vert", "img_copy.frag");
 
-    if (frameBufferObject_)
-        delete frameBufferObject_;
+    if (frameBufferObject_) delete frameBufferObject_;
 
     frameBufferObject_ = new FrameBufferObject();
     initialized_ = true;
@@ -85,9 +79,7 @@ void ImageGL::deinitialize() {
     rectArray_ = NULL;
 }
 
-ImageGL* ImageGL::clone() const {
-    return new ImageGL(*this);
-}
+ImageGL* ImageGL::clone() const { return new ImageGL(*this); }
 
 void ImageGL::reAttachAllLayers(bool clearLayers) {
     frameBufferObject_->activate();
@@ -96,8 +88,8 @@ void ImageGL::reAttachAllLayers(bool clearLayers) {
     pickingAttachmentID_ = 0;
     GLenum id = 0;
 
-    //GLuint clearColor[4] = {0, 0, 0, 0};
-    for (size_t i=0; i<colorLayersGL_.size(); ++i) {
+    // GLuint clearColor[4] = {0, 0, 0, 0};
+    for (size_t i = 0; i < colorLayersGL_.size(); ++i) {
         colorLayersGL_[i]->getTexture()->bind();
         id = frameBufferObject_->attachColorTexture(colorLayersGL_[i]->getTexture());
         /*if(clearLayers){
@@ -106,10 +98,11 @@ void ImageGL::reAttachAllLayers(bool clearLayers) {
         }*/
     }
 
-    //Layer* depthLayer = this->getOwner()->getDepthLayer();
+    // Layer* depthLayer = this->getOwner()->getDepthLayer();
     if (depthLayerGL_) {
         depthLayerGL_->getTexture()->bind();
-        frameBufferObject_->attachTexture(depthLayerGL_->getTexture(), static_cast<GLenum>(GL_DEPTH_ATTACHMENT));
+        frameBufferObject_->attachTexture(depthLayerGL_->getTexture(),
+                                          static_cast<GLenum>(GL_DEPTH_ATTACHMENT));
         /*if(clearLayers){
             id = GL_DEPTH_ATTACHMENT;
             glDrawBuffer(id);
@@ -118,10 +111,11 @@ void ImageGL::reAttachAllLayers(bool clearLayers) {
         }*/
     }
 
-    //Layer* pickingLayer = this->getOwner()->getPickingLayer();
+    // Layer* pickingLayer = this->getOwner()->getPickingLayer();
     if (pickingLayerGL_) {
         pickingLayerGL_->getTexture()->bind();
-        id = pickingAttachmentID_ = frameBufferObject_->attachColorTexture(pickingLayerGL_->getTexture(), 0, true);
+        id = pickingAttachmentID_ =
+            frameBufferObject_->attachColorTexture(pickingLayerGL_->getTexture(), 0, true);
         /*if(clearLayers){
             glDrawBuffer(id);
             //glClearBufferuiv(GL_COLOR, 0, clearColor);
@@ -133,16 +127,14 @@ void ImageGL::reAttachAllLayers(bool clearLayers) {
 }
 
 void ImageGL::activateBuffer() {
-    //invalidatePBOs();
+    // invalidatePBOs();
     frameBufferObject_->activate();
     frameBufferObject_->defineDrawBuffers();
     uvec2 dim = getDimension();
     glViewport(0, 0, dim.x, dim.y);
 }
 
-void ImageGL::deactivateBuffer() {
-    frameBufferObject_->deactivate();
-}
+void ImageGL::deactivateBuffer() { frameBufferObject_->deactivate(); }
 
 bool ImageGL::copyAndResizeRepresentation(DataRepresentation* targetRep) const {
     const ImageGL* source = this;
@@ -151,7 +143,7 @@ bool ImageGL::copyAndResizeRepresentation(DataRepresentation* targetRep) const {
     source->getColorLayerGL()->bindTexture(colorUnit.getEnum());
     source->getDepthLayerGL()->bindTexture(depthUnit.getEnum());
     source->getPickingLayerGL()->bindTexture(pickingUnit.getEnum());
-    //Render to FBO, with correct scaling
+    // Render to FBO, with correct scaling
     target->activateBuffer();
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     float ratioSource = (float)source->getDimension().x / (float)source->getDimension().y;
@@ -159,9 +151,9 @@ bool ImageGL::copyAndResizeRepresentation(DataRepresentation* targetRep) const {
     glm::mat4 scale;
 
     if (ratioTarget < ratioSource)
-        scale = glm::scale(glm::vec3(1.0f, ratioTarget/ratioSource, 1.0f));
+        scale = glm::scale(glm::vec3(1.0f, ratioTarget / ratioSource, 1.0f));
     else
-        scale = glm::scale(glm::vec3(ratioSource/ratioTarget, 1.0f, 1.0f));
+        scale = glm::scale(glm::vec3(ratioSource / ratioTarget, 1.0f, 1.0f));
 
     shader_->activate();
     shader_->setUniform("color_", colorUnit.getUnitNumber());
@@ -181,7 +173,7 @@ bool ImageGL::copyAndResizeRepresentation(DataRepresentation* targetRep) const {
 
 bool ImageGL::updateFrom(const ImageGL* source) {
     ImageGL* target = this;
-    //Primarily Copy by FBO blitting, all from source FBO to target FBO
+    // Primarily Copy by FBO blitting, all from source FBO to target FBO
     const FrameBufferObject* srcFBO = source->getFBO();
     FrameBufferObject* tgtFBO = target->getFBO();
     const Texture2D* sTex = source->getColorLayerGL()->getTexture();
@@ -192,27 +184,23 @@ bool ImageGL::updateFrom(const ImageGL* source) {
     tgtFBO->setDraw_Blit();
     GLbitfield mask = GL_COLOR_BUFFER_BIT;
 
-    if (srcFBO->hasDepthAttachment() && tgtFBO->hasDepthAttachment())
-        mask |= GL_DEPTH_BUFFER_BIT;
+    if (srcFBO->hasDepthAttachment() && tgtFBO->hasDepthAttachment()) mask |= GL_DEPTH_BUFFER_BIT;
 
     if (srcFBO->hasStencilAttachment() && tgtFBO->hasStencilAttachment())
         mask |= GL_STENCIL_BUFFER_BIT;
 
-    glBlitFramebufferEXT(0, 0, sTex->getWidth(), sTex->getHeight(),
-                         0, 0, tTex->getWidth(), tTex->getHeight(),
-                         mask, GL_NEAREST);
+    glBlitFramebufferEXT(0, 0, sTex->getWidth(), sTex->getHeight(), 0, 0, tTex->getWidth(),
+                         tTex->getHeight(), mask, GL_NEAREST);
     bool pickingCopied = false;
 
     for (int i = 1; i < srcFBO->getMaxColorAttachments(); i++) {
         if (srcIDs[i] != GL_NONE && srcIDs[i] == targetIDs[i]) {
             glReadBuffer(srcIDs[i]);
             glDrawBuffer(targetIDs[i]);
-            glBlitFramebufferEXT(0, 0, sTex->getWidth(), sTex->getHeight(),
-                                 0, 0, tTex->getWidth(), tTex->getHeight(),
-                                 GL_COLOR_BUFFER_BIT, GL_NEAREST);
+            glBlitFramebufferEXT(0, 0, sTex->getWidth(), sTex->getHeight(), 0, 0, tTex->getWidth(),
+                                 tTex->getHeight(), GL_COLOR_BUFFER_BIT, GL_NEAREST);
 
-            if (srcIDs[i] == pickingAttachmentID_)
-                pickingCopied = true;
+            if (srcIDs[i] == pickingAttachmentID_) pickingCopied = true;
         }
     }
 
@@ -223,39 +211,33 @@ bool ImageGL::updateFrom(const ImageGL* source) {
     FrameBufferObject::deactivate();
     LGL_ERROR;
 
-    //Secondary copy using PBO
+    // Secondary copy using PBO
 
-    //Depth texture
+    // Depth texture
     if ((mask & GL_DEPTH_BUFFER_BIT) == 0) {
         sTex = source->getDepthLayerGL()->getTexture();
         tTex = target->getDepthLayerGL()->getTexture();
 
-        if (sTex && tTex)
-            tTex->loadFromPBO(sTex);
+        if (sTex && tTex) tTex->loadFromPBO(sTex);
     }
 
     LGL_ERROR;
 
-    //Picking texture
+    // Picking texture
     if (!pickingCopied && pickingAttachmentID_ != 0) {
         sTex = source->getPickingLayerGL()->getTexture();
         tTex = target->getPickingLayerGL()->getTexture();
 
-        if (sTex && tTex)
-            tTex->loadFromPBO(sTex);
+        if (sTex && tTex) tTex->loadFromPBO(sTex);
     }
 
     LGL_ERROR;
     return true;
 }
 
-FrameBufferObject* ImageGL::getFBO() {
-    return frameBufferObject_;
-}
+FrameBufferObject* ImageGL::getFBO() { return frameBufferObject_; }
 
-const FrameBufferObject* ImageGL::getFBO() const {
-    return frameBufferObject_;
-}
+const FrameBufferObject* ImageGL::getFBO() const { return frameBufferObject_; }
 
 LayerGL* ImageGL::getLayerGL(LayerType type, size_t idx) {
     switch (type) {
@@ -287,51 +269,36 @@ const LayerGL* ImageGL::getLayerGL(LayerType type, size_t idx) const {
     return NULL;
 }
 
-LayerGL* ImageGL::getColorLayerGL(size_t idx) {
-    return colorLayersGL_.at(idx);
-}
+LayerGL* ImageGL::getColorLayerGL(size_t idx) { return colorLayersGL_.at(idx); }
 
-LayerGL* ImageGL::getDepthLayerGL() {
-    return depthLayerGL_;
-}
+LayerGL* ImageGL::getDepthLayerGL() { return depthLayerGL_; }
 
-LayerGL* ImageGL::getPickingLayerGL() {
-    return pickingLayerGL_;
-}
+LayerGL* ImageGL::getPickingLayerGL() { return pickingLayerGL_; }
 
-const LayerGL* ImageGL::getColorLayerGL(size_t idx) const {
-    return colorLayersGL_.at(idx);
-}
+const LayerGL* ImageGL::getColorLayerGL(size_t idx) const { return colorLayersGL_.at(idx); }
 
-const LayerGL* ImageGL::getDepthLayerGL() const {
-    return depthLayerGL_;
-}
+const LayerGL* ImageGL::getDepthLayerGL() const { return depthLayerGL_; }
 
-const LayerGL* ImageGL::getPickingLayerGL() const {
-    return pickingLayerGL_;
-}
+const LayerGL* ImageGL::getPickingLayerGL() const { return pickingLayerGL_; }
 
 void ImageGL::updateExistingLayers() const {
-    const Image *owner = this->getOwner();
+    const Image* owner = this->getOwner();
 
-    for (size_t i=0; i<owner->getNumberOfColorLayers(); ++i) {
+    for (size_t i = 0; i < owner->getNumberOfColorLayers(); ++i) {
         owner->getColorLayer(i)->getRepresentation<LayerGL>();
     }
 
     const Layer* depthLayer = owner->getDepthLayer();
 
-    if (depthLayer)
-        depthLayer->getRepresentation<LayerGL>();
+    if (depthLayer) depthLayer->getRepresentation<LayerGL>();
 
     const Layer* pickingLayer = owner->getPickingLayer();
 
-    if (pickingLayer)
-        pickingLayer->getRepresentation<LayerGL>();
+    if (pickingLayer) pickingLayer->getRepresentation<LayerGL>();
 }
 
-
 void ImageGL::update(bool editable) {
-    Image *owner = this->getOwner();
+    Image* owner = this->getOwner();
 
     bool reAttachTargets = (!isValid() || colorLayersGL_.empty());
     colorLayersGL_.clear();
@@ -339,7 +306,7 @@ void ImageGL::update(bool editable) {
     pickingLayerGL_ = NULL;
 
     if (editable) {
-        for (size_t i=0; i<owner->getNumberOfColorLayers(); ++i) {
+        for (size_t i = 0; i < owner->getNumberOfColorLayers(); ++i) {
             colorLayersGL_.push_back(owner->getColorLayer(i)->getEditableRepresentation<LayerGL>());
             owner->getColorLayer(i)->setDataFormat(getColorLayerGL(i)->getDataFormat());
             owner->getColorLayer(i)->setDimension(getColorLayerGL(i)->getDimension());
@@ -347,20 +314,19 @@ void ImageGL::update(bool editable) {
 
         Layer* depthLayer = owner->getDepthLayer();
 
-        if (depthLayer)
-            depthLayerGL_ = depthLayer->getEditableRepresentation<LayerGL>();
+        if (depthLayer) depthLayerGL_ = depthLayer->getEditableRepresentation<LayerGL>();
 
         Layer* pickingLayer = owner->getPickingLayer();
 
-        if (pickingLayer){
+        if (pickingLayer) {
             pickingLayer->setDataFormat(getColorLayerGL()->getDataFormat());
             pickingLayer->setDimension(getColorLayerGL()->getDimension());
             pickingLayerGL_ = pickingLayer->getEditableRepresentation<LayerGL>();
         }
-    }
-    else {
-        for (size_t i=0; i<owner->getNumberOfColorLayers(); ++i) {
-            colorLayersGL_.push_back(const_cast<LayerGL*>(owner->getColorLayer(i)->getRepresentation<LayerGL>()));
+    } else {
+        for (size_t i = 0; i < owner->getNumberOfColorLayers(); ++i) {
+            colorLayersGL_.push_back(
+                const_cast<LayerGL*>(owner->getColorLayer(i)->getRepresentation<LayerGL>()));
             owner->getColorLayer(i)->setDataFormat(getColorLayerGL(i)->getDataFormat());
             owner->getColorLayer(i)->setDimension(getColorLayerGL(i)->getDimension());
         }
@@ -372,20 +338,19 @@ void ImageGL::update(bool editable) {
 
         Layer* pickingLayer = owner->getPickingLayer();
 
-        if (pickingLayer){
+        if (pickingLayer) {
             pickingLayer->setDataFormat(getColorLayerGL()->getDataFormat());
             pickingLayer->setDimension(getColorLayerGL()->getDimension());
             pickingLayerGL_ = const_cast<LayerGL*>(pickingLayer->getRepresentation<LayerGL>());
         }
     }
 
-    //Attach all targets
-    if (reAttachTargets)
-        reAttachAllLayers(true);
+    // Attach all targets
+    if (reAttachTargets) reAttachAllLayers(true);
 }
 
-void ImageGL::renderImagePlaneRect() const{
-    if(!rectArray_){
+void ImageGL::renderImagePlaneRect() const {
+    if (!rectArray_) {
         rectArray_ = new BufferObjectArray();
         CanvasGL::attachImagePlanRect(rectArray_);
     }
@@ -396,8 +361,6 @@ void ImageGL::renderImagePlaneRect() const{
     glDepthFunc(GL_LESS);
 }
 
-GLenum ImageGL::getPickingAttachmentID() const {
-    return pickingAttachmentID_;
-}
+GLenum ImageGL::getPickingAttachmentID() const { return pickingAttachmentID_; }
 
-} // namespace
+}  // namespace

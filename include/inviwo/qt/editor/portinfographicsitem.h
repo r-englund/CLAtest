@@ -55,7 +55,6 @@ protected:
     void updateViews();
 
 private:
-    Processor* processor_;
     LabelGraphicsItem* nameLabel_;
     LabelGraphicsItem* classLabel_;
 };

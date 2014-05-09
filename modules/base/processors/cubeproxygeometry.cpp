@@ -56,7 +56,7 @@ CubeProxyGeometry::CubeProxyGeometry()
     addProperty(clipZ_);
     dims_ = uvec3(1,1,1);
 
-    inport_.onChange(this,&CubeProxyGeometry::onVolumeChange);
+    inport_.onChange(this, &CubeProxyGeometry::onVolumeChange);
 }
 
 CubeProxyGeometry::~CubeProxyGeometry() {}
@@ -105,11 +105,9 @@ void CubeProxyGeometry::process() {
     }
 
     // Create parallelepiped and set it to the outport
-    Geometry* geom =
-        SimpleMeshCreator::parallelepiped(pos, p1, p2, p3,
-                                          tex, t1, t2, t3,
-                                          col, c1, c2, c3);
-    // This would be easier, use unit box to make geom instead...
+    Geometry* geom = SimpleMeshCreator::parallelepiped(pos, p1, p2, p3,
+                                                       tex, t1, t2, t3,
+                                                       col, c1, c2, c3);
     geom->setBasisAndOffset(inport_.getData()->getBasisAndOffset());
     geom->setWorldTransform(inport_.getData()->getWorldTransform());
     outport_.setData(geom);

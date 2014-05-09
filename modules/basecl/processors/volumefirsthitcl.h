@@ -39,7 +39,8 @@
 #include <inviwo/core/ports/volumeport.h>
 #include <inviwo/core/processors/processor.h>
 #include <inviwo/core/properties/transferfunctionproperty.h>
-
+#include <inviwo/core/properties/property.h>
+#include <inviwo/core/properties/ordinalproperty.h>
 #include <modules/opencl/inviwoopencl.h>
 #include <modules/opencl/kernelowner.h>
 
@@ -58,8 +59,10 @@ public:
 protected:
     virtual void process();
 
-    void firstHit(const cl::Image& volumeCL, const cl::Image& entryPoints, const cl::Image& exitPoints, const cl::Image& transferFunctionCL,
-                  const cl::Image& output, float stepSize, svec2 outportDim, svec2 localWorkGroupSize, cl::Event* profilingEvent);
+    void firstHit(const cl::Image& volumeCL, const cl::Image& entryPoints,
+                  const cl::Image& exitPoints, const cl::Image& transferFunctionCL,
+                  const cl::Image& output, float stepSize, svec2 outportDim,
+                  svec2 localWorkGroupSize, cl::Event* profilingEvent);
 
 private:
     VolumeInport volumePort_;
@@ -75,6 +78,6 @@ private:
     cl::Kernel* kernel_;
 };
 
-} // namespace
+}  // namespace
 
-#endif // IVW_VOLUME_FIRST_HIT_CL_H
+#endif  // IVW_VOLUME_FIRST_HIT_CL_H
