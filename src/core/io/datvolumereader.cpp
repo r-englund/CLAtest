@@ -36,6 +36,7 @@
 #include <inviwo/core/datastructures/volume/volumetypeclassification.h>
 #include <inviwo/core/util/urlparser.h>
 #include <inviwo/core/util/formatconversion.h>
+#include <inviwo/core/util/stringconversion.h>
 
 namespace inviwo {
 
@@ -43,7 +44,7 @@ DatVolumeReader::DatVolumeReader()
     : DataReaderType<Volume>()
     , rawFile_("")
     , littleEndian_(true)
-    , dimension_(uvec3(0,0,0))
+    , dimension_(uvec3(0, 0, 0))
     , format_(NULL) {
     addExtension(FileExtension("dat", "Inviwo dat file format"));
 }
@@ -67,11 +68,9 @@ DatVolumeReader& DatVolumeReader::operator=(const DatVolumeReader& that) {
     return *this;
 }
 
-DatVolumeReader* DatVolumeReader::clone() const {
-    return new DatVolumeReader(*this);
-}
+DatVolumeReader* DatVolumeReader::clone() const { return new DatVolumeReader(*this); }
 
-Volume* DatVolumeReader::readMetaData(std::string filePath)  {
+Volume* DatVolumeReader::readMetaData(std::string filePath) {
     if (!URLParser::fileExists(filePath)) {
         std::string newPath = URLParser::addBasePath(filePath);
 
@@ -84,7 +83,7 @@ Volume* DatVolumeReader::readMetaData(std::string filePath)  {
 
     std::string fileDirectory = URLParser::getFileDirectory(filePath);
     std::string fileExtension = URLParser::getFileExtension(filePath);
-    //Read the dat file content
+    // Read the dat file content
     std::istream* f = new std::ifstream(filePath.c_str());
     std::string textLine;
     std::string formatFlag = "";
@@ -103,22 +102,21 @@ Volume* DatVolumeReader::readMetaData(std::string filePath)  {
         key = "";
         ss >> key;
 
-        if (key == "" || key[0] == '#' || key[0] == '/')
-            continue;
+        if (key == "" || key[0] == '#' || key[0] == '/') continue;
 
         transform(key.begin(), key.end(), key.begin(), (int (*)(int))tolower);
-        key.erase(key.end()-1);
+        key.erase(key.end() - 1);
 
         if (key == "objectfilename" || key == "rawfile") {
-            ss >> rawFile_;
+            rawFile_ = textLine.substr(key.length()+1);
+            rawFile_ = trim(rawFile_);
             rawFile_ = fileDirectory + rawFile_;
         } else if (key == "byteorder") {
             std::string type;
             ss >> type;
-            transform(type.begin(), type.end(), type.begin(), (int(*)(int))tolower);
+            transform(type.begin(), type.end(), type.begin(), (int (*)(int))tolower);
 
-            if (type == "bigendian")
-                littleEndian_ = false;
+            if (type == "bigendian") littleEndian_ = false;
         } else if (key == "resolution" || key == "dimension") {
             ss >> dimension_.x;
             ss >> dimension_.y;
@@ -166,10 +164,9 @@ Volume* DatVolumeReader::readMetaData(std::string filePath)  {
         } else if (key == "format") {
             ss >> formatFlag;
             format_ = DataFormatBase::get(formatFlag);
-        } else if(key == "timesteps"){
-          ss >> timeSteps_;
-          }
-        else{
+        } else if (key == "timesteps") {
+            ss >> timeSteps_;
+        } else {
             volume->setMetaData<StringMetaData>(key, ss.str());
         }
     };
@@ -177,11 +174,13 @@ Volume* DatVolumeReader::readMetaData(std::string filePath)  {
     delete f;
 
     if (dimension_ == uvec3(0))
-        throw DataReaderException("Error: Unable to find \"Resolution\" tag in .dat file: " + filePath);
+        throw DataReaderException("Error: Unable to find \"Resolution\" tag in .dat file: " +
+                                  filePath);
     else if (format_ == NULL)
         throw DataReaderException("Error: Unable to find \"Format\" tag in .dat file: " + filePath);
     else if (rawFile_ == "")
-        throw DataReaderException("Error: Unable to find \"ObjectFilename\" tag in .dat file: " + filePath);
+        throw DataReaderException("Error: Unable to find \"ObjectFilename\" tag in .dat file: " +
+                                  filePath);
 
     if (spacing != vec3(0.0f)) {
         basis[0][0] = dimension_.x * spacing.x;
@@ -189,23 +188,23 @@ Volume* DatVolumeReader::readMetaData(std::string filePath)  {
         basis[2][2] = dimension_.z * spacing.z;
     }
 
-    if (a!= vec3(0.0f) && b != vec3(0.0f) && c != vec3(0.0f)) {
-        basis[0][0]=a.x;
-        basis[1][0]=a.y;
-        basis[2][0]=a.z;
-        basis[0][1]=b.x;
-        basis[1][1]=b.y;
-        basis[2][1]=b.z;
-        basis[0][2]=c.x;
-        basis[1][2]=c.y;
-        basis[2][2]=c.z;
+    if (a != vec3(0.0f) && b != vec3(0.0f) && c != vec3(0.0f)) {
+        basis[0][0] = a.x;
+        basis[1][0] = a.y;
+        basis[2][0] = a.z;
+        basis[0][1] = b.x;
+        basis[1][1] = b.y;
+        basis[2][1] = b.z;
+        basis[0][2] = c.x;
+        basis[1][2] = c.y;
+        basis[2][2] = c.z;
     }
 
     // If not specified, center the data around origo.
     if (offset == vec3(0.0f)) {
-        offset[0] = -basis[0][0]/2.0f;
-        offset[1] = -basis[1][1]/2.0f;
-        offset[2] = -basis[2][2]/2.0f;
+        offset[0] = -basis[0][0] / 2.0f;
+        offset[1] = -basis[1][1] / 2.0f;
+        offset[2] = -basis[2][2] / 2.0f;
     }
 
     volume->setBasis(basis);
@@ -213,12 +212,13 @@ Volume* DatVolumeReader::readMetaData(std::string filePath)  {
     volume->setWorldTransform(wtm);
     volume->setDimension(dimension_);
     volume->setDataFormat(format_);
-    volume->setMetaData<IntMetaData>("timesteps",timeSteps_);
+    volume->setMetaData<IntMetaData>("timesteps", timeSteps_);
 
     VolumeDisk* vd = new VolumeDisk(filePath, dimension_, format_);
     vd->setDataReader(this);
     volume->addRepresentation(vd);
-    std::string size = formatBytesToString(dimension_.x*dimension_.y*dimension_.z*(format_->getBytesStored()) * timeSteps_);
+    std::string size = formatBytesToString(dimension_.x * dimension_.y * dimension_.z *
+                                           (format_->getBytesStored()) * timeSteps_);
     LogInfo("Loaded volume: " << filePath << " size: " << size);
     return volume;
 }
@@ -227,10 +227,11 @@ void DatVolumeReader::readDataInto(void* destination) const {
     std::fstream fin(rawFile_.c_str(), std::ios::in | std::ios::binary);
 
     if (fin.good()) {
-        std::size_t size = dimension_.x*dimension_.y*dimension_.z*(format_->getBytesStored()) * timeSteps_;
+        std::size_t size =
+            dimension_.x * dimension_.y * dimension_.z * (format_->getBytesStored()) * timeSteps_;
         fin.read(static_cast<char*>(destination), size);
 
-        if (!littleEndian_ && format_->getBytesStored()>1) {
+        if (!littleEndian_ && format_->getBytesStored() > 1) {
             std::size_t bytes = format_->getBytesStored();
             char* temp = new char[bytes];
 
@@ -251,17 +252,17 @@ void DatVolumeReader::readDataInto(void* destination) const {
 }
 
 void* DatVolumeReader::readData() const {
-    std::size_t size = dimension_.x*dimension_.y*dimension_.z*(format_->getBytesStored()) * timeSteps_;
+    std::size_t size =
+        dimension_.x * dimension_.y * dimension_.z * (format_->getBytesStored()) * timeSteps_;
     char* data = new char[size];
 
     if (data)
         readDataInto(data);
     else
-        throw DataReaderException("Error: Could not allocate memory for loading raw file: " + rawFile_);
+        throw DataReaderException("Error: Could not allocate memory for loading raw file: " +
+                                  rawFile_);
 
     return data;
 }
 
-
-
-} // namespace
+}  // namespace
