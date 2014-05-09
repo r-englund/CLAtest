@@ -33,6 +33,7 @@
 #include "entryexitpoints.h"
 #include <inviwo/core/interaction/trackball.h>
 #include <inviwo/core/rendering/geometryrendererfactory.h>
+#include <modules/opengl/clockgl.h>
 
 namespace inviwo {
 
@@ -105,6 +106,7 @@ void EntryExitPoints::process() {
         // No renderer found
         return;
     }
+    IVW_BEGIN_OPENGL_PROFILING
 
     glEnable(GL_CULL_FACE);
     glEnable(GL_DEPTH_TEST);
@@ -169,6 +171,8 @@ void EntryExitPoints::process() {
 
     glDepthFunc(GL_LESS);
     glDisable(GL_CULL_FACE);
+
+    IVW_END_OPENGL_PROFILING
 }
 
 void EntryExitPoints::handleInteractionEventsChanged() {
