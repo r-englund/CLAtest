@@ -97,12 +97,16 @@ public:
         return pos.x + (pos.y*dim.x) + (pos.z*dim.x *dim.y);
     }
 
+    bool shouldStopHistogramCalculation() const { return stopHistogramCalculation_; }
+    void stopHistogramCalculation() const { stopHistogramCalculation_ = true; }
+
 protected:
     void calculateHistogram(int delta, std::size_t maxNumberOfBins) const;
 
     void* data_;
     mutable NormalizedHistogram* histogram_;
     mutable bool calculatingHistogram_;
+    mutable bool stopHistogramCalculation_;
 };
 
 

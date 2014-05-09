@@ -76,8 +76,12 @@ TransferFunctionEditorView::TransferFunctionEditorView(TransferFunctionProperty*
 
 TransferFunctionEditorView::~TransferFunctionEditorView() {
     if (workerThread_) {
-        workerThread_->quit();
-        delete workerThread_;
+        const VolumeRAM* volumeRAM = volumeInport_->getData()->getRepresentation<VolumeRAM>();
+        volumeRAM->stopHistogramCalculation();
+        workerThread_ = NULL;
+    }
+    if (volumeInport_) {
+        volumeInport_->onInvalid(this, &TransferFunctionEditorView::onVolumeInportInvalid, false);
     }
 }
 
@@ -117,9 +121,8 @@ void TransferFunctionEditorView::drawForeground(QPainter* painter, const QRectF&
 }
 
 void TransferFunctionEditorView::onTransferFunctionChange() {
-    volumeInport_ = tfProperty_->getVolumeInport();
-
-    if (volumeInport_) {
+    if (volumeInport_ != tfProperty_->getVolumeInport()) {
+        volumeInport_ = tfProperty_->getVolumeInport();
         volumeInport_->onInvalid(this, &TransferFunctionEditorView::onVolumeInportInvalid);
     }
 
@@ -132,8 +135,8 @@ void TransferFunctionEditorView::onControlPointChanged(const TransferFunctionDat
 
 void TransferFunctionEditorView::onVolumeInportInvalid() {
     if (workerThread_) {
-        workerThread_->quit();
-        delete workerThread_;
+        const VolumeRAM* volumeRAM = volumeInport_->getData()->getRepresentation<VolumeRAM>();
+        volumeRAM->stopHistogramCalculation();
         workerThread_ = NULL;
     }
     invalidatedHistogram_ = true;

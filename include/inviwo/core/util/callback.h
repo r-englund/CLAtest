@@ -73,10 +73,6 @@ class CallBackList {
 public:
     CallBackList() {}
     virtual ~CallBackList() {
-        clear();
-    }
-
-    void clear() {
         std::map<void*,BaseCallBack*>::iterator it;
 
         for (it=callBackList_.begin(); it!=callBackList_.end(); ++it)
@@ -101,6 +97,16 @@ public:
             it->second = new MemberFunctionCallBack<T>(o, m);
         } else
             callBackList_[o] = new MemberFunctionCallBack<T>(o, m);
+    }
+
+    template <typename T>
+    void removeMemberFunction(T* o, void (T::*m)()) {
+        std::map<void*,BaseCallBack*>::iterator it = callBackList_.find(o);
+
+        if (it != callBackList_.end()) {
+            delete it->second;
+            callBackList_.erase(it);
+        }
     }
 
 private:

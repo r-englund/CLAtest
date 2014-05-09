@@ -87,11 +87,9 @@ void ProcessorNetwork::removeProcessor(Processor* processor) {
     std::vector<PortConnection*> portConnections = portConnections_;
 
     for (size_t i=0; i<portConnections.size(); i++)
-        if (portConnections[i]->involvesProcessor(processor)){
-            portConnections[i]->getInport()->onInvalidClear();
+        if (portConnections[i]->involvesProcessor(processor))
             removeConnection(portConnections[i]->getOutport(),
                              portConnections[i]->getInport());
-        }
 
     // remove all links for this processor
     std::vector<ProcessorLink*> processorLinks = processorLinks_;
@@ -226,8 +224,19 @@ std::vector<ProcessorLink*> ProcessorNetwork::getLinks() const {
 void ProcessorNetwork::clear() {
     std::vector<Processor*> processors = processors_;
 
+    lock();
+
+    //Invalidate inports to alert processors that they should stop their calculations.
+    for (size_t p=0; p<processors.size(); p++){
+        std::vector<Inport*> inports = processors[p]->getInports();
+        for (size_t i=0; i<inports.size(); i++)
+            inports[i]->invalidate(PropertyOwner::INVALID_OUTPUT);
+    }
+
     for (size_t i=0; i<processors.size(); i++)
         removeAndDeleteProcessor(processors[i]);
+
+    unlock();
 }
 
 void ProcessorNetwork::modified() {
