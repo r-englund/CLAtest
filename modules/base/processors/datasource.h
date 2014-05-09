@@ -37,16 +37,12 @@ protected:
 
 template <typename DataType, typename PortType>
 DataSource<DataType, PortType>::DataSource()
-    : Processor()
-    , port_("data")
-    , file_("filename", "File")
-    , isDeserializing_(false) {
+    : Processor(), port_("data"), file_("filename", "File"), isDeserializing_(false) {
     addPort(port_);
     file_.onChange(this, &DataSource::load);
     std::vector<FileExtension> ext = DataReaderFactory::getRef().getExtensionsForType<DataType>();
 
-    for (std::vector<FileExtension>::const_iterator it = ext.begin();
-         it != ext.end(); ++it) {
+    for (std::vector<FileExtension>::const_iterator it = ext.begin(); it != ext.end(); ++it) {
         std::stringstream ss;
         ss << it->description_ << " (*." << it->extension_ << ")";
         file_.addNameFilter(ss.str());
@@ -56,8 +52,7 @@ DataSource<DataType, PortType>::DataSource()
 }
 
 template <typename DataType, typename PortType>
-DataSource<DataType, PortType>::~DataSource() {
-}
+DataSource<DataType, PortType>::~DataSource() {}
 
 template <typename DataType, typename PortType>
 void DataSource<DataType, PortType>::invalidateOutput() {
@@ -71,29 +66,35 @@ bool DataSource<DataType, PortType>::isReady() const {
 
 template <typename DataType, typename PortType>
 void DataSource<DataType, PortType>::load() {
-    if (isDeserializing_) {
+    if (isDeserializing_ || file_.get() == "") {
         return;
     }
-    TemplateResource<DataType>* resource = ResourceManager::getPtr()->getResourceAs<TemplateResource<DataType> >(file_.get());
+    TemplateResource<DataType>* resource =
+        ResourceManager::getPtr()->getResourceAs<TemplateResource<DataType> >(file_.get());
 
     if (resource) {
         port_.setData(resource->getData(), false);
         dataLoaded(resource->getData());
     } else {
         std::string fileExtension = URLParser::getFileExtension(file_.get());
-        DataReaderType<DataType>* reader = DataReaderFactory::getRef().getReaderForTypeAndExtension<DataType>(fileExtension);
+        DataReaderType<DataType>* reader =
+            DataReaderFactory::getRef().getReaderForTypeAndExtension<DataType>(fileExtension);
 
         if (reader) {
             try {
                 DataType* data = reader->readMetaData(file_.get());
-                ResourceManager::getPtr()->addResource(new TemplateResource<DataType>(file_.get(), data));
+                ResourceManager::getPtr()->addResource(
+                    new TemplateResource<DataType>(file_.get(), data));
                 port_.setData(data, false);
                 dataLoaded(data);
-            } catch (DataReaderException const& e) {
-                LogError(e.getMessage());
+            }
+            catch (DataReaderException const& e) {
+                LogError("Could not load data: " << file_.get() << ", " << e.getMessage());
+                file_.set("");
             }
         } else {
-            LogError("Could not load data: " << file_.get());
+            LogError("Could not find a reader file: " << file_.get());
+            file_.set("");
         }
     }
 }
@@ -110,8 +111,6 @@ void inviwo::DataSource<DataType, PortType>::deserialize(IvwDeserializer& d) {
     load();
 }
 
+}  // namespace
 
-} // namespace
-
-#endif // IVW_DATASOURCE_H
-
+#endif  // IVW_DATASOURCE_H
