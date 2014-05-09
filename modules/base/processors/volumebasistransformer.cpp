@@ -93,7 +93,7 @@ void VolumeBasisTransformer::process() {
         // and update if the inport changes the representations
         Volume* out;
 
-        if (outport_.hasData() && inport_.getInvalidationLevel() < INVALID_OUTPUT) {
+        if (outport_.hasData() && inport_.isChanged()) {
             out = outport_.getData();
         } else  {
             out = in->clone();

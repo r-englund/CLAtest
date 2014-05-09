@@ -184,13 +184,13 @@ void LightVolumeGL::propagation3DTextureParameterFunction(Texture*) {
 void LightVolumeGL::process() {
     bool lightColorChanged = false;
 
-    if (lightSource_.getInvalidationLevel() >= INVALID_OUTPUT) {
+    if (lightSource_.isChanged()) {
         lightColorChanged = lightSourceChanged();
     }
 
     bool reattach = false;
 
-    if (internalVolumesInvalid_ || lightColorChanged || inport_.getInvalidationLevel() >= INVALID_OUTPUT) {
+    if (internalVolumesInvalid_ || lightColorChanged || inport_.isChanged()) {
         reattach = volumeChanged(lightColorChanged);
     }
 

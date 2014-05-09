@@ -85,15 +85,18 @@ void Inport::getPredecessorsUsingPortType(std::vector<Processor*>& predecessorsP
     }
 }
 
-void Inport::setChanged() { 
-    changed_ = true; 
+void Inport::setChanged(bool changed) { 
+    changed_ = changed; 
 }
 
 void Inport::callOnChangeIfChanged() {
-    if (changed_){
+    if (isChanged()){
         onChangeCallback_.invokeAll();
-        changed_ = false;
     }
+}
+
+bool Inport::isChanged(){
+    return changed_;
 }
 
 } // namespace

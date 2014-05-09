@@ -319,6 +319,9 @@ void Processor::deserialize(IvwDeserializer& d) {
 void Processor::setValid() {
     PropertyOwner::setValid();
 
+    for (std::vector<Inport*>::iterator it = inports_.begin(); it != inports_.end(); ++it)
+        (*it)->setChanged(false);
+
     for (std::vector<Outport*>::iterator it = outports_.begin(); it != outports_.end(); ++it)
         (*it)->setInvalidationLevel(VALID);
 }

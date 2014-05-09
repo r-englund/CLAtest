@@ -90,6 +90,25 @@ void MultiInport::setInvalidationLevel(PropertyOwner::InvalidationLevel invalida
     endIt = vectorInports_->end();
     for (; it != endIt; ++it)
         (*it)->setInvalidationLevel(invalidationLevel);
+
+    setChanged();
+}
+
+bool MultiInport::isChanged(){
+    InportSet::const_iterator it = inports_->begin();
+    InportSet::const_iterator endIt = inports_->end();
+
+    for (; it != endIt; ++it)
+        if((*it)->isChanged())
+            return true;
+
+    it = vectorInports_->begin();
+    endIt = vectorInports_->end();
+    for (; it != endIt; ++it)
+        if((*it)->isChanged())
+            return true;
+
+    return false;
 }
 
 bool MultiInport::isConnectedTo(Outport* outport) const {
