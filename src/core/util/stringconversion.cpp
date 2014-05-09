@@ -45,15 +45,15 @@ std::vector<std::string> splitString(const std::string& str, char delimeter) {
     std::stringstream stream(str);
     std::string part;
 
-    while (std::getline(stream, part, delimeter))
-        strings.push_back(part);
+    while (std::getline(stream, part, delimeter)) strings.push_back(part);
 
     return strings;
 }
 
-std::vector<std::string> splitStringWithMultipleDelimiters(const std::string& str, std::vector<char> delimiters) {
+std::vector<std::string> splitStringWithMultipleDelimiters(const std::string& str,
+                                                           std::vector<char> delimiters) {
     if (!delimiters.size()) {
-        //adding default delimiters
+        // adding default delimiters
         delimiters.push_back('_');
         delimiters.push_back('+');
         delimiters.push_back('-');
@@ -62,9 +62,9 @@ std::vector<std::string> splitStringWithMultipleDelimiters(const std::string& st
     }
 
     std::string tempString = str;
-    char lastDelimiter = delimiters[delimiters.size()-1];
+    char lastDelimiter = delimiters[delimiters.size() - 1];
 
-    for (size_t i=0; i<delimiters.size()-1; i++)
+    for (size_t i = 0; i < delimiters.size() - 1; i++)
         replaceInString(tempString, toString(delimiters[i]), toString(lastDelimiter));
 
     return splitString(tempString, lastDelimiter);
@@ -85,18 +85,17 @@ void replaceInString(std::string& str, const std::string& oldStr, const std::str
 }
 
 std::string parseTypeIdName(std::string str) {
-    
+
 #if defined(__clang__) || defined(__GNUC__)
     struct handle {
         char* p;
-        handle(char* ptr) : p(ptr) { }
+        handle(char* ptr) : p(ptr) {}
         ~handle() { std::free(p); }
     };
     const char* cstr = str.c_str();
     int status = -4;
     handle result(abi::__cxa_demangle(cstr, NULL, NULL, &status));
-    if (status==0)
-        str = result.p;
+    if (status == 0) str = result.p;
 #else
     replaceInString(str, "class", "");
     replaceInString(str, "const", "");
@@ -109,12 +108,12 @@ std::string parseTypeIdName(std::string str) {
 }
 
 std::string toUpper(std::string str) {
-    std::transform(str.begin(), str.end(),str.begin(), ::toupper);
+    std::transform(str.begin(), str.end(), str.begin(), ::toupper);
     return str;
 }
 
 std::string toLower(std::string str) {
-    std::transform(str.begin(), str.end(),str.begin(), ::tolower);
+    std::transform(str.begin(), str.end(), str.begin(), ::tolower);
     return str;
 }
 
@@ -123,8 +122,7 @@ unsigned int countLines(std::string str) {
     size_t position = 0;
 
     while (position < str.length()) {
-        if (str.substr(position,1) == "\n")
-            lineCount++;
+        if (str.substr(position, 1) == "\n") lineCount++;
 
         position++;
     }
@@ -139,10 +137,27 @@ static const std::string possibleValues =
 std::string randomString(unsigned int length) {
     std::string s;
 
-    while (s.size()<length)
-        s += possibleValues[rand()%possibleValues.size()];
+    while (s.size() < length) s += possibleValues[rand() % possibleValues.size()];
 
     return s;
 }
 
-} // namespace
+// trim from start
+std::string ltrim(std::string s) {
+    s.erase(s.begin(),
+            std::find_if(s.begin(), s.end(), std::not1(std::ptr_fun<int, int>(std::isspace))));
+    return s;
+}
+
+// trim from end
+std::string rtrim(std::string s) {
+    s.erase(
+        std::find_if(s.rbegin(), s.rend(), std::not1(std::ptr_fun<int, int>(std::isspace))).base(),
+        s.end());
+    return s;
+}
+
+// trim from both ends
+std::string trim(std::string s) { return ltrim(rtrim(s)); }
+
+}  // namespace

@@ -44,13 +44,16 @@ namespace inviwo {
  *
  *  The following tags are supported:
  *   - Rawfile :: The name of the raw data file, should be in the same directory (Mandatory).
- *   - ByteOrder :: the byte order in the raw data file. (Optional, LittleEndian|BigEndian,  defualt: LittleEndian).
+ *   - ByteOrder :: the byte order in the raw data file. (Optional, LittleEndian|BigEndian,
+ *     defualt: LittleEndian).
  *   - Resolution | Dimension ::The size of the data grid: nx,ny,nz (Mandatory).
  *   - Format :: The type of values in the raw file. (Mandatory)
  *   - Spacing | SliceThickness :: The size of the voxels in the data. (Optional)
- *   - BasisVector(1|2|3) :: Defines a coordinate system for the data. (Optional, overides spacing, default: 2*IdentityMatrix);
+ *   - BasisVector(1|2|3) :: Defines a coordinate system for the data. (Optional, overides spacing,
+ *     default: 2*IdentityMatrix);
  *   - Offset :: Offsets the basisvecors in space. (Optional, defaults to center the data on origo)
- *   - WorldVector(1|2|3|4) :: Defines a world transformation matrix that is applied last to orient the data in world space. (Optional, default: IdentityMatrix)
+ *   - WorldVector(1|2|3|4) :: Defines a world transformation matrix that is applied last to orient
+ *     the data in world space. (Optional, default: IdentityMatrix)
  *
  *  The tag names are case insensitive and should always be followed by a ":"
  */
@@ -74,6 +77,6 @@ private:
     const DataFormatBase* format_;
 };
 
-} // namespace
+}  // namespace
 
-#endif // IVW_DATVOLUMEREADER_H
+#endif  // IVW_DATVOLUMEREADER_H
