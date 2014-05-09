@@ -77,10 +77,10 @@ public:
         onChangeCallback_.addMemberFunction(o,m);
     }
     void callOnChangeIfChanged();
+    virtual bool isChanged();
+    void setChanged(bool changed = true);
 
 protected:
-    void setChanged();
-
     template <typename T>
     void getPredecessorsUsingPortType(std::vector<Processor*>&);
 
