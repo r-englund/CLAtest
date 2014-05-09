@@ -98,7 +98,7 @@ void MultiDataInport<T, U>::connectTo(Outport* outport) {
               || dynamic_cast<VectorDataOutport<T*>*>(outport) != NULL
               , "Trying to connect incompatible ports.")
     // U is a Port class
-    Inport* inport;
+    Inport* inport = NULL;
     if (dynamic_cast<DataOutport<T>*>(outport)) {
         inport = new DataInport<T>(getIdentifier());
         inports_->insert(inport);

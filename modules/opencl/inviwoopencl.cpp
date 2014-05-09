@@ -60,8 +60,6 @@ OpenCL::OpenCL() {
 }
 
 void OpenCL::initialize(bool glSharing) {
-    cl_int error = CL_SUCCESS;
-
     try {
         std::vector<cl::Platform> platforms;
         cl::Platform::get(&platforms);

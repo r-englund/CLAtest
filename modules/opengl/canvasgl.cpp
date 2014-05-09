@@ -45,13 +45,12 @@ const MeshGL* CanvasGL::screenAlignedRectGL_ = NULL;
 
 CanvasGL::CanvasGL(uvec2 dimensions)
     : Canvas(dimensions)
+    , rectArray_(NULL)
     , imageGL_(NULL)
+    , layerType_(COLOR_LAYER)
     , shader_(NULL)
     , noiseShader_(NULL)
-    , layerType_(COLOR_LAYER)
-    , singleChannel_(false)
-    , rectArray_(NULL) {
-}
+    , singleChannel_(false) {}
 
 CanvasGL::~CanvasGL() {}
 
@@ -71,10 +70,9 @@ void CanvasGL::initialize() {
 void CanvasGL::initializeGLEW() {
     if (!glewInitialized_) {
         std::string preferProfile = OpenGLCapabilities::getPreferredProfile();
-        if(preferProfile == "core")
-            glewExperimental = GL_TRUE;
+        if (preferProfile == "core") glewExperimental = GL_TRUE;
         GLenum glewError = glewInit();
-        if (GLEW_OK != glewError){
+        if (GLEW_OK != glewError) {
             LogError(glewGetErrorString(glewError));
         }
         LGL_ERROR_SUPPRESS;
@@ -111,22 +109,20 @@ void CanvasGL::render(const Image* image, LayerType layerType) {
         renderLayer();
     } else {
         pickingContainer_->setPickingSource(NULL);
-        imageGL_  = NULL;
+        imageGL_ = NULL;
         renderNoise();
     }
 }
 
 void CanvasGL::resize(uvec2 size) {
-    if (imageGL_)
-        imageGL_->updateExistingLayers();
+    if (imageGL_) imageGL_->updateExistingLayers();
 
     activate();
     glViewport(0, 0, size[0], size[1]);
     Canvas::resize(size);
 }
 
-void CanvasGL::glSwapBuffers() {
-}
+void CanvasGL::glSwapBuffers() {}
 
 void CanvasGL::update() {
     if (imageGL_) {
@@ -136,11 +132,13 @@ void CanvasGL::update() {
     }
 }
 
-void CanvasGL::attachImagePlanRect(BufferObjectArray* arrayObject){
-    if(arrayObject){
+void CanvasGL::attachImagePlanRect(BufferObjectArray* arrayObject) {
+    if (arrayObject) {
         arrayObject->bind();
-        arrayObject->attachBufferObjectToGenericLocation(screenAlignedRectGL_->getBufferGL(0)->getBufferObject());
-        arrayObject->attachBufferObjectToGenericLocation(screenAlignedRectGL_->getBufferGL(1)->getBufferObject());
+        arrayObject->attachBufferObjectToGenericLocation(
+            screenAlignedRectGL_->getBufferGL(0)->getBufferObject());
+        arrayObject->attachBufferObjectToGenericLocation(
+            screenAlignedRectGL_->getBufferGL(1)->getBufferObject());
         arrayObject->unbind();
     }
 }
@@ -166,42 +164,42 @@ void CanvasGL::renderNoise() {
 void CanvasGL::renderTexture(GLint unitNumber) {
     activate();
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
-    glEnable(GL_BLEND); 
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA); 
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     shader_->activate();
     shader_->setUniform("tex_", unitNumber);
     drawRect();
     shader_->deactivate();
-    glDisable(GL_BLEND); 
+    glDisable(GL_BLEND);
     glSwapBuffers();
     getNetworkEvaluator()->activateDefaultRenderContext();
 }
 
-void CanvasGL::drawRect(){
-    if(!rectArray_){
+void CanvasGL::drawRect() {
+    if (!rectArray_) {
         rectArray_ = new BufferObjectArray();
         rectArray_->bind();
-        rectArray_->attachBufferObjectToGenericLocation(screenAlignedRectGL_->getBufferGL(0)->getBufferObject());
-        rectArray_->attachBufferObjectToGenericLocation(screenAlignedRectGL_->getBufferGL(1)->getBufferObject());
-    }
-    else{
+        rectArray_->attachBufferObjectToGenericLocation(
+            screenAlignedRectGL_->getBufferGL(0)->getBufferObject());
+        rectArray_->attachBufferObjectToGenericLocation(
+            screenAlignedRectGL_->getBufferGL(1)->getBufferObject());
+    } else {
         rectArray_->bind();
     }
     glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
     rectArray_->unbind();
 }
 
-void CanvasGL::checkChannels(int channels){
-    if(!singleChannel_ && channels==1){
+void CanvasGL::checkChannels(int channels) {
+    if (!singleChannel_ && channels == 1) {
         shader_->getFragmentShaderObject()->addShaderDefine("SINGLE_CHANNEL");
         shader_->getFragmentShaderObject()->build();
         shader_->link();
-    }
-    else if(singleChannel_ && channels==4){
+    } else if (singleChannel_ && channels == 4) {
         shader_->getFragmentShaderObject()->removeShaderDefine("SINGLE_CHANNEL");
         shader_->getFragmentShaderObject()->build();
         shader_->link();
     }
 }
 
-} // namespace
+}  // namespace

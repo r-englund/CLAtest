@@ -52,7 +52,7 @@ int pointSizeToPixelSizePI(const int pointSize) {
 }
 
 PortInfoGraphicsItem::PortInfoGraphicsItem()
-    : ProcessorObserver(), LabelGraphicsItemObserver(), processor_(NULL) {
+    : ProcessorObserver(), LabelGraphicsItemObserver() {
     setZValue(PROCESSORGRAPHICSITEM_DEPTH);
     setFlags(ItemIsMovable | ItemIsSelectable | ItemIsFocusable | ItemSendsGeometryChanges);
     setRect(-width/2, -height/2, width, height);

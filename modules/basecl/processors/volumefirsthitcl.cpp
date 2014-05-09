@@ -45,7 +45,8 @@ ProcessorCategory(VolumeFirstHitCL, "Volume Rendering");
 ProcessorCodeState(VolumeFirstHitCL, CODE_STATE_EXPERIMENTAL);
 
 VolumeFirstHitCL::VolumeFirstHitCL()
-    : Processor(), ProcessorKernelOwner(this)
+    : Processor()
+    , ProcessorKernelOwner(this)
     , volumePort_("volume")
     , entryPort_("entry-points")
     , exitPort_("exit-points")
@@ -54,8 +55,7 @@ VolumeFirstHitCL::VolumeFirstHitCL()
     , transferFunction_("transferFunction", "Transfer function", TransferFunction())
     , workGroupSize_("wgsize", "Work group size", ivec2(8, 8), ivec2(0), ivec2(256))
     , useGLSharing_("glsharing", "Use OpenGL sharing", true)
-    , kernel_(NULL)
-{
+    , kernel_(NULL) {
     addPort(volumePort_, "VolumePortGroup");
     addPort(entryPort_, "ImagePortGroup1");
     addPort(exitPort_, "ImagePortGroup1");
@@ -70,26 +70,28 @@ VolumeFirstHitCL::~VolumeFirstHitCL() {}
 
 void VolumeFirstHitCL::initialize() {
     Processor::initialize();
-    kernel_ = addKernel(InviwoApplication::getPtr()->getPath(InviwoApplication::PATH_MODULES)
-        + "basecl/cl/volumefirsthit.cl", "volumeFirstHit");
+    kernel_ = addKernel(InviwoApplication::getPtr()->getPath(InviwoApplication::PATH_MODULES) +
+                            "basecl/cl/volumefirsthit.cl",
+                        "volumeFirstHit");
 }
 
-void VolumeFirstHitCL::deinitialize() {
-    Processor::deinitialize();
-}
+void VolumeFirstHitCL::deinitialize() { Processor::deinitialize(); }
 
 void VolumeFirstHitCL::process() {
     if (kernel_ == NULL) {
         return;
     }
 
-    uvec2 outportDim = outport_.getDimension();
-    mat4 volumeTextureToWorld = volumePort_.getData()->getCoordinateTransformer().getTextureToWorldMatrix();
+    mat4 volumeTextureToWorld =
+        volumePort_.getData()->getCoordinateTransformer().getTextureToWorldMatrix();
     uvec3 volumeDim = volumePort_.getData()->getDimension();
-    float stepSize = 1.f/(samplingRate_.get()*static_cast<float>(std::max(volumeDim.x, std::max(volumeDim.y, volumeDim.z))));
+    float stepSize =
+        1.f / (samplingRate_.get() *
+               static_cast<float>(std::max(volumeDim.x, std::max(volumeDim.y, volumeDim.z))));
     svec2 localWorkGroupSize(workGroupSize_.get());
-    svec2 globalWorkGroupSize(getGlobalWorkGroupSize(entryPort_.getDimension().x, localWorkGroupSize.x),
-                              getGlobalWorkGroupSize(entryPort_.getDimension().y, localWorkGroupSize.y));
+    svec2 globalWorkGroupSize(
+        getGlobalWorkGroupSize(entryPort_.getDimension().x, localWorkGroupSize.x),
+        getGlobalWorkGroupSize(entryPort_.getDimension().y, localWorkGroupSize.y));
     IVW_BEGIN_OPENCL_PROFILING
 
     if (useGLSharing_.get()) {
@@ -110,7 +112,8 @@ void VolumeFirstHitCL::process() {
         const cl::Image& exitCL = exit->getLayerCL()->get();
         const cl::Image& outImageCL = output->getLayerCL()->get();
         const cl::Image& tf = tfCL->get();
-        firstHit(volumeCL, entryCL, exitCL, tf, outImageCL, stepSize, globalWorkGroupSize, localWorkGroupSize, profilingEvent);
+        firstHit(volumeCL, entryCL, exitCL, tf, outImageCL, stepSize, globalWorkGroupSize,
+                 localWorkGroupSize, profilingEvent);
         entry->getLayerCL()->releaseGLObject();
         exit->getLayerCL()->releaseGLObject();
         output->getLayerCL()->releaseGLObject();
@@ -127,17 +130,18 @@ void VolumeFirstHitCL::process() {
         const cl::Image& exitCL = exit->getLayerCL()->get();
         const cl::Image& outImageCL = output->getLayerCL()->get();
         const cl::Image& tf = tfCL->get();
-        firstHit(volumeCL, entryCL, exitCL, tf, outImageCL, stepSize, globalWorkGroupSize, localWorkGroupSize, profilingEvent);
+        firstHit(volumeCL, entryCL, exitCL, tf, outImageCL, stepSize, globalWorkGroupSize,
+                 localWorkGroupSize, profilingEvent);
     }
 
     IVW_END_OPENCL_PROFILING
 }
 
-void VolumeFirstHitCL::firstHit(const cl::Image& volumeCL, const cl::Image& entryPoints, const cl::Image& exitPoints,
-                                const cl::Image& transferFunctionCL, const cl::Image& output, float stepSize, svec2 globalWorkGroupSize, svec2 localWorkGroupSize,
-                                cl::Event* profilingEvent) {
-    try
-    {
+void VolumeFirstHitCL::firstHit(const cl::Image& volumeCL, const cl::Image& entryPoints,
+                                const cl::Image& exitPoints, const cl::Image& transferFunctionCL,
+                                const cl::Image& output, float stepSize, svec2 globalWorkGroupSize,
+                                svec2 localWorkGroupSize, cl::Event* profilingEvent) {
+    try {
         cl_uint arg = 0;
         kernel_->setArg(arg++, volumeCL);
         kernel_->setArg(arg++, entryPoints);
@@ -145,12 +149,12 @@ void VolumeFirstHitCL::firstHit(const cl::Image& volumeCL, const cl::Image& entr
         kernel_->setArg(arg++, transferFunctionCL);
         kernel_->setArg(arg++, stepSize);
         kernel_->setArg(arg++, output);
-        OpenCL::getPtr()->getQueue().enqueueNDRangeKernel(*kernel_, cl::NullRange, globalWorkGroupSize, localWorkGroupSize, NULL, profilingEvent);
-    } catch (cl::Error& err) {
+        OpenCL::getPtr()->getQueue().enqueueNDRangeKernel(
+            *kernel_, cl::NullRange, globalWorkGroupSize, localWorkGroupSize, NULL, profilingEvent);
+    }
+    catch (cl::Error& err) {
         LogError(getCLErrorString(err));
     }
 }
 
-} // namespace
-
-
+}  // namespace
