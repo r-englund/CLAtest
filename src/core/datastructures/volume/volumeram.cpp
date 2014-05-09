@@ -36,11 +36,11 @@
 namespace inviwo {
 
 VolumeRAM::VolumeRAM(uvec3 dimensions, VolumeRepresentation::VolumeBorders border, const DataFormatBase* format)
-    : VolumeRepresentation(dimensions, format, border), data_(NULL), histogram_(NULL), calculatingHistogram_(false)
+    : VolumeRepresentation(dimensions, format, border), data_(NULL), histogram_(NULL), calculatingHistogram_(false), stopHistogramCalculation_(false)
 {}
 
 VolumeRAM::VolumeRAM(const VolumeRAM& rhs)
-    : VolumeRepresentation(rhs), data_(NULL), histogram_(NULL), calculatingHistogram_(false) {
+    : VolumeRepresentation(rhs), data_(NULL), histogram_(NULL), calculatingHistogram_(false), stopHistogramCalculation_(false) {
     if (rhs.histogram_) {
         histogram_ = new NormalizedHistogram(rhs.histogram_);
     }
@@ -50,6 +50,7 @@ VolumeRAM& VolumeRAM::operator=(const VolumeRAM& that) {
         VolumeRepresentation::operator=(that);
         data_ = NULL;
         calculatingHistogram_ = false;
+        stopHistogramCalculation_ = false;
 
         if (that.histogram_)
             histogram_ = new NormalizedHistogram(that.histogram_);
@@ -101,6 +102,7 @@ const NormalizedHistogram* VolumeRAM::getNormalizedHistogram(int delta, std::siz
 
 void VolumeRAM::calculateHistogram(int delta, std::size_t maxNumberOfBins) const {
     calculatingHistogram_ = true;
+    stopHistogramCalculation_ = false;
     // TODO: using delta should be changeable from outside when requesting
     //       the histogram through getNormalizedHistogram()
     if (delta < 0) {

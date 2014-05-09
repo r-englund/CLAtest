@@ -85,8 +85,4 @@ void SingleInport::invalidate(PropertyOwner::InvalidationLevel invalidationLevel
     Inport::invalidate(invalidationLevel);
 }
 
-void SingleInport::onInvalidClear(){
-    onInvalidCallback_.clear();
-}
-
 } // namespace

@@ -67,11 +67,12 @@ public:
     virtual void invalidate(PropertyOwner::InvalidationLevel invalidationLevel);
 
     template <typename T>
-    void onInvalid(T* o, void (T::*m)()) {
-        onInvalidCallback_.addMemberFunction(o,m);
+    void onInvalid(T* o, void (T::*m)(), bool add = true) {
+        if(add)
+            onInvalidCallback_.addMemberFunction(o,m);
+        else
+            onInvalidCallback_.removeMemberFunction(o,m);
     }
-
-    void onInvalidClear();
 
 protected:
     Outport* connectedOutport_;

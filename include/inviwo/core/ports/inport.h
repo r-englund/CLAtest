@@ -78,8 +78,6 @@ public:
     }
     void callOnChangeIfChanged();
 
-    virtual void onInvalidClear(){}
-
 protected:
     void setChanged();
 

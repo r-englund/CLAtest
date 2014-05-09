@@ -146,6 +146,9 @@ void VolumeRAMNormalizedHistogram::evaluate() {
     for (size_t z=0; z<dim.z; z+=delta_) {
         for (size_t y=0; y<dim.y; y+=delta_) {
             for (size_t x=0; x<dim.x; x+=delta_) {
+                if(volume->shouldStopHistogramCalculation())
+                    break;
+
                 intensity = dataFormat->valueToNormalizedFloat(&src[x+(y*dim.x)+(z*dimXY)]);
                 if (customDataRange) {
                     // TODO: this is so ugly...
@@ -163,6 +166,12 @@ void VolumeRAMNormalizedHistogram::evaluate() {
                 histData->at(idx)++;
             }
         }
+    }
+
+    if(volume->shouldStopHistogramCalculation()){
+        delete hist;
+        setOutput(NULL);
+        return;
     }
 
     //Perform normalization

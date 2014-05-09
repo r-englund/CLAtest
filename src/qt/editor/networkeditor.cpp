@@ -1460,9 +1460,17 @@ void NetworkEditor::placeProcessorOnProcessor(ProcessorGraphicsItem* processorIt
 ///////////////////////////////
 void NetworkEditor::clearNetwork() {
     processorNetwork_->lock();
+
+    //Invalidate inports to alert processors that they should stop their calculations.
+    std::vector<Processor*> processors = processorNetwork_->getProcessors();
+    for (size_t p=0; p<processors.size(); p++){
+        std::vector<Inport*> inports = processors[p]->getInports();
+        for (size_t i=0; i<inports.size(); i++)
+            inports[i]->invalidate(PropertyOwner::INVALID_OUTPUT);
+    }
+
     ResourceManager::getPtr()->clearAllResources();
     removePortInspector(inspection_.processorIdentifier_, inspection_.portIdentifier_);
-    std::vector<Processor*> processors = processorNetwork_->getProcessors();
 
     for (size_t i=0; i<processors.size(); i++)
         removeProcessor(processors[i]);
