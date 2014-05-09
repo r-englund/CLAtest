@@ -50,6 +50,7 @@ class IVW_QTWIDGETS_API TransferFunctionEditorView : public QGraphicsView, publi
 
 public:
     TransferFunctionEditorView(TransferFunctionProperty* tfProperty);
+    ~TransferFunctionEditorView();
 
     void setMask(float maskMin, float maskMax) {
         if (maskMax<maskMin) {

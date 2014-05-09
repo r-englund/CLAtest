@@ -59,8 +59,6 @@ public:
 
     bool isConnectedTo(Outport* outport) const;
 
-    virtual bool isReady() const { return isConnected(); }
-
     virtual PropertyOwner::InvalidationLevel getInvalidationLevel() const;
     virtual void setInvalidationLevel(PropertyOwner::InvalidationLevel invalidationLevel);
 

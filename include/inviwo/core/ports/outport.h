@@ -62,6 +62,8 @@ public:
 
     virtual bool isReady() const { return isConnected(); }
 
+    bool isValid() { return (getInvalidationLevel() == PropertyOwner::VALID); }
+
     std::vector<Inport*> getConnectedInports() const { return connectedInports_; }
 
     virtual void invalidate(PropertyOwner::InvalidationLevel invalidationLevel);

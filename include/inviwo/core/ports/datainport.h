@@ -59,7 +59,7 @@ public:
     bool hasData() const;
     virtual std::string getContentInfo() const;
 
-    virtual bool isReady() const { return isConnected() && hasData(); }
+    virtual bool isReady() const { return SingleInport::isReady() && hasData(); }
 };
 
 

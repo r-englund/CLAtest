@@ -75,6 +75,13 @@ TransferFunctionEditorView::TransferFunctionEditorView(TransferFunctionProperty*
     }
 }
 
+TransferFunctionEditorView::~TransferFunctionEditorView(){
+    if(workerThread_){
+        workerThread_->quit();
+        delete workerThread_;
+    }
+}
+
 void TransferFunctionEditorView::resizeEvent(QResizeEvent* event) {
     updateZoom();
     invalidatedHistogram_ = true;
@@ -126,8 +133,11 @@ void TransferFunctionEditorView::onControlPointChanged(const TransferFunctionDat
 }
 
 void TransferFunctionEditorView::onVolumeInportInvalid() {
-    if(workerThread_)
+    if(workerThread_){
         workerThread_->quit();
+        delete workerThread_;
+        workerThread_ = NULL;
+    }
     invalidatedHistogram_ = true;
     this->resetCachedContent();
 }

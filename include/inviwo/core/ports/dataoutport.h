@@ -64,8 +64,6 @@ public:
     bool isDataOwner() const;
     virtual std::string getContentInfo() const;
 
-    virtual bool isReady() const { return isConnected(); }
-
     virtual void dataChanged() {}
 
 protected:

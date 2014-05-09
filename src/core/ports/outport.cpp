@@ -51,14 +51,13 @@ bool Outport::isConnectedTo(Inport* port) const {
 }
 
 void Outport::invalidate(PropertyOwner::InvalidationLevel invalidationLevel) {
+    invalidationLevel_ = invalidationLevel;
     for (size_t i=0; i<connectedInports_.size(); i++)
         connectedInports_[i]->invalidate(invalidationLevel);
 }
 
-void Outport::setInvalidationLevel(PropertyOwner::InvalidationLevel invalidationLevel)
-{
+void Outport::setInvalidationLevel(PropertyOwner::InvalidationLevel invalidationLevel){
     invalidationLevel_ = invalidationLevel;
-
     for (size_t i=0; i<connectedInports_.size(); i++)
         connectedInports_[i]->setInvalidationLevel(invalidationLevel);
 }

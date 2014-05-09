@@ -31,19 +31,26 @@
  *********************************************************************************/
 
 #include <inviwo/core/ports/inport.h>
-
+#include <inviwo/core/ports/outport.h>
 #include <inviwo/core/processors/processor.h>
 
 namespace inviwo {
 
 Inport::Inport(std::string identifier)
-    : Port(identifier)
+    : Port(identifier), changed_(false)
 {}
 
 Inport::~Inport() {}
 
+bool Inport::isConnected() const { 
+    return false; 
+}
+
+bool Inport::isReady() const { 
+    return isConnected() && getConnectedOutport()->isValid(); 
+}
+
 void Inport::invalidate(PropertyOwner::InvalidationLevel invalidationLevel) {
-    onInvalidCallback_.invokeAll();
     Port::invalidate(invalidationLevel);
 }
 
@@ -78,9 +85,15 @@ void Inport::getPredecessorsUsingPortType(std::vector<Processor*>& predecessorsP
     }
 }
 
-void Inport::callOnChangeIfInvalid() {
-    if (getInvalidationLevel() >= PropertyOwner::INVALID_OUTPUT)
+void Inport::setChanged() { 
+    changed_ = true; 
+}
+
+void Inport::callOnChangeIfChanged() {
+    if (changed_){
         onChangeCallback_.invokeAll();
+        changed_ = false;
+    }
 }
 
 } // namespace

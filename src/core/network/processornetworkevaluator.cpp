@@ -409,17 +409,17 @@ void ProcessorNetworkEvaluator::evaluate() {
                 const std::vector<Inport*>& inports = (*it)->getInports();
 
                 for (inport_it = inports.begin(); inport_it != inports.end(); ++inport_it)
-                    (*inport_it)->callOnChangeIfInvalid();
+                    (*inport_it)->callOnChangeIfChanged();
 
                 // do the actual processing
                 (*it)->process();
-            }
-        }
-    }
 
-    for (it = processorsSorted_.begin(); it != processorsSorted_.end(); ++it) {
-        // validate processor
-        (*it)->setValid();
+                // set processor as valid
+                (*it)->setValid();
+            }
+            else if(dynamic_cast<CanvasProcessor*>((*it)))
+                (*it)->process();
+        }
     }
 
     // unlock processor network to allow next evaluation

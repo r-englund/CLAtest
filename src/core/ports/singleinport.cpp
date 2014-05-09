@@ -54,9 +54,10 @@ void SingleInport::connectTo(Outport* outport) {
 
 void SingleInport::disconnectFrom(Outport* outport) {
     if (outport == connectedOutport_) {
+        onInvalidCallback_.invokeAll();
         connectedOutport_ = NULL;
         outport->disconnectFrom(this);
-        invalidate(invalidationLevel_);
+        invalidate(PropertyOwner::INVALID_OUTPUT);
     }
 }
 
@@ -68,9 +69,24 @@ bool SingleInport::isConnectedTo(Outport* outport) const {
     return connectedOutport_==outport;
 }
 
+PropertyOwner::InvalidationLevel SingleInport::getInvalidationLevel() const{
+    return invalidationLevel_;
+}
+
+void SingleInport::setInvalidationLevel(PropertyOwner::InvalidationLevel invalidationLevel){
+    invalidationLevel_ = invalidationLevel;
+    setChanged();
+}
+
 void SingleInport::invalidate(PropertyOwner::InvalidationLevel invalidationLevel) {
+    if(getInvalidationLevel() == PropertyOwner::VALID && invalidationLevel >= PropertyOwner::INVALID_OUTPUT)
+        onInvalidCallback_.invokeAll();
     invalidationLevel_ = std::max(invalidationLevel_, invalidationLevel);
     Inport::invalidate(invalidationLevel);
+}
+
+void SingleInport::onInvalidClear(){
+    onInvalidCallback_.clear();
 }
 
 } // namespace
