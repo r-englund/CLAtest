@@ -417,8 +417,9 @@ void ProcessorNetworkEvaluator::evaluate() {
                 // set processor as valid
                 (*it)->setValid();
             }
-            else if(dynamic_cast<CanvasProcessor*>((*it)))
-                (*it)->process();
+            else{
+                (*it)->doIfNotReady();
+            }
         }
     }
 

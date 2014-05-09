@@ -112,6 +112,8 @@ public:
 
     virtual void process();
 
+    virtual void doIfNotReady() {}
+
     //Triggers invalidation.
     //Perform only full reimplementation of this function, meaning never call Proccessor::invalidate()
     //in your reimplemented invalidation function.
