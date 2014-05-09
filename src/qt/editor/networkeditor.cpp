@@ -70,6 +70,7 @@ NetworkEditor::NetworkEditor() :
     , processorNetwork_(NULL)
     , oldConnectionTarget_(NULL)
     , oldProcessorTarget_(NULL)
+    , portInfoGraphicsItem_(NULL)
     , connectionCurve_(NULL)
     , linkCurve_(NULL)
     , startProcessor_(NULL)
@@ -88,6 +89,9 @@ NetworkEditor::NetworkEditor() :
     processorNetworkEvaluator_ = new ProcessorNetworkEvaluator(processorNetwork_);
     processorNetwork_->addObserver(this);
     hoverTimer_.setSingleShot(true);
+    portInfoGraphicsItem_ = new PortInfoGraphicsItem();
+    portInfoGraphicsItem_->hide();
+    addItem(portInfoGraphicsItem_);
     connect(&hoverTimer_, SIGNAL(timeout()), this, SLOT(managePortInspection()));
 }
 
@@ -106,6 +110,7 @@ NetworkEditor::~NetworkEditor() {
 
     delete processorNetwork_;
     delete processorNetworkEvaluator_;
+    delete portInfoGraphicsItem_;
     ivwAssert(processorGraphicsItems_.size()==0,
               "ProcessorGraphicsItems not properly removed");
     ivwAssert(connectionGraphicsItems_.size() == 0,
@@ -499,8 +504,12 @@ void NetworkEditor::managePortInspection() {
     }
 
     if (!port) { // return to start
-        if(inspection_.isInspectorActive())
+        if(inspection_.isInspectorActive()) {
             removePortInspector(inspection_.processorIdentifier_, inspection_.portIdentifier_);
+        }
+        if (inspection_.isInformationActive()) {
+            removePortInformation();
+        }
         hoverTimer_.stop();
         inspection_.resetPort();
         inspection_.setState(Inspection::Start);
@@ -527,11 +536,14 @@ void NetworkEditor::managePortInspection() {
                 }
                 if (inspection_.isInformationActive()) {
                     inspection_.setState(Inspection::Inspect);
+                    QPoint portInfoPos = QPoint(inspection_.pos_.x + 5, inspection_.pos_.y - 5);
+                    if(inspection_.isInspectorActive()){
+                        portInfoPos.setY(inspection_.size() + portInfoPos.y());
+                    }
                     addPortInformation(inspection_.processorIdentifier_,
                                        inspection_.portIdentifier_,
                                        inspection_.portInformation_,
-                                       QPoint(inspection_.gpos_.x + 5,
-                                              inspection_.gpos_.y + 5));
+                                       portInfoPos);
                 }
             }
         } else { // Left port before time out, reset.
@@ -545,6 +557,9 @@ void NetworkEditor::managePortInspection() {
         } else {
             if (inspection_.isInspectorActive()) {
                 removePortInspector(inspection_.processorIdentifier_, inspection_.portIdentifier_);
+            }
+            if (inspection_.isInformationActive()) {
+                removePortInformation();
             }
             inspection_.setState(Inspection::Start);
             inspection_.resetPort();
@@ -698,10 +713,13 @@ void NetworkEditor::removePortInspector(std::string processorIdentifier, std::st
 void NetworkEditor::addPortInformation(std::string processorIdentifier, std::string portIdentifier, std::string portInformation, QPointF pos) {
     if(!portInformation.empty())
         LogInfo("\nPort: " << portIdentifier << "\n" << portInformation);
+
+    portInfoGraphicsItem_->setPos(pos);
+    //portInfoGraphicsItem_->show();    
 }
 
-void NetworkEditor::removePortInformation(std::string, std::string) {
-    
+void NetworkEditor::removePortInformation() {
+    portInfoGraphicsItem_->hide();
 }
 
 

@@ -33,26 +33,21 @@
 #ifndef IVW_PORTINFOGRAPHICSITEM_H
 #define IVW_PORTINFOGRAPHICSITEM_H
 
-#include <inviwo/qt/widgets/labelgraphicsitem.h>
 #include <inviwo/qt/editor/inviwoqteditordefine.h>
+#include <inviwo/qt/widgets/labelgraphicsitem.h>
 #include <QGraphicsRectItem>
 
 namespace inviwo {
 
-class IVW_QTEDITOR_API PortInfoGraphicsItem : public QGraphicsRectItem, public ProcessorObserver, public LabelGraphicsItemObserver, public ProgressBarObserver {
+class IVW_QTEDITOR_API PortInfoGraphicsItem : public QGraphicsRectItem {
 
 public:
     PortInfoGraphicsItem();
     ~PortInfoGraphicsItem();
 
-    //override for qgraphicsitem_cast (refer qt documentation)
-    enum { Type = UserType + ProcessorGraphicsType };
-    int type() const  {return Type; }
-
 
 protected:
     void paint(QPainter* p, const QStyleOptionGraphicsItem* options, QWidget* widget);
-    void updateViews();
 
 private:
     LabelGraphicsItem* nameLabel_;

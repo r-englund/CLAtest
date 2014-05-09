@@ -57,6 +57,7 @@ public:
 
 protected:
     virtual void process();
+    virtual void doIfNotReady();
 
 };
 
