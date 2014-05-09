@@ -52,8 +52,8 @@ public:
     virtual void initialize() {}
     virtual void deinitialize() {}
 
-    virtual bool isConnected() const { return false; }
-    virtual bool isReady() const { return isConnected(); }
+    virtual bool isConnected() const;
+    virtual bool isReady() const;
 
     virtual void invalidate(PropertyOwner::InvalidationLevel invalidationLevel);
     virtual void setInvalidationLevel(PropertyOwner::InvalidationLevel invalidationLevel) {};
@@ -76,19 +76,18 @@ public:
     void onChange(T* o, void (T::*m)()) {
         onChangeCallback_.addMemberFunction(o,m);
     }
-    void callOnChangeIfInvalid();
+    void callOnChangeIfChanged();
 
-    template <typename T>
-    void onInvalid(T* o, void (T::*m)()) {
-        onInvalidCallback_.addMemberFunction(o,m);
-    }
+    virtual void onInvalidClear(){}
 
 protected:
+    void setChanged();
+
     template <typename T>
     void getPredecessorsUsingPortType(std::vector<Processor*>&);
 
     CallBackList onChangeCallback_;
-    CallBackList onInvalidCallback_;
+    bool changed_;
 
 };
 

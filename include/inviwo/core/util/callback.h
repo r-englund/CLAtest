@@ -73,6 +73,10 @@ class CallBackList {
 public:
     CallBackList() {}
     virtual ~CallBackList() {
+        clear();
+    }
+
+    void clear() {
         std::map<void*,BaseCallBack*>::iterator it;
 
         for (it=callBackList_.begin(); it!=callBackList_.end(); ++it)
@@ -80,6 +84,7 @@ public:
 
         callBackList_.clear();
     }
+
     void invokeAll() const {
         std::map<void*,BaseCallBack*>::const_iterator it;
 

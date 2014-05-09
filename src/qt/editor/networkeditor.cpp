@@ -137,6 +137,7 @@ void NetworkEditor::removeProcessor(Processor* processor) {
     processorNetworkEvaluator_->activateDefaultRenderContext();
     // remove the processor from the network
     processorNetwork_->removeAndDeleteProcessor(processor);
+    // set network to modified
     setModified(true);
 }
 
@@ -682,8 +683,8 @@ void NetworkEditor::removePortInspector(std::string processorIdentifier, std::st
     if (portInspector && portInspector->isActive()) {
         processorNetwork_->lock();
         CanvasProcessor* canvasProcessor = portInspector->getCanvasProcessor();
-        // Remove processors from the network
         removeProcessorRepresentations(canvasProcessor);
+        // Remove processors from the network
         std::vector<Processor*> processors = portInspector->getProcessors();
 
         for (size_t i=0; i<processors.size(); i++)

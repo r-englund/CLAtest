@@ -65,7 +65,7 @@ public:
     std::vector<Property*> getProperties() { return properties_; }
     template<class T> std::vector<T*> getPropertiesByType() const;
 
-    bool isValid() { return (invalidationLevel_ == PropertyOwner::VALID); }
+    bool isValid() { return (getInvalidationLevel() == PropertyOwner::VALID); }
     virtual void setValid();
     InvalidationLevel getInvalidationLevel() { return invalidationLevel_; }
     virtual void invalidate(PropertyOwner::InvalidationLevel invalidationLevel, Property* modifiedProperty=0);

@@ -52,14 +52,8 @@ public:
                  PropertyOwner::InvalidationLevel invalidationLevel=PropertyOwner::INVALID_OUTPUT);
     virtual ~SingleInport();
 
-    //FIXME: Temporary fix. Remove this to make SingleInport abstract class
-    virtual void initialize() {}
-    virtual void deinitialize() {}
-    virtual PropertyOwner::InvalidationLevel getInvalidationLevel() const { return invalidationLevel_; }
-
-    virtual void setInvalidationLevel(PropertyOwner::InvalidationLevel invalidationLevel) {
-        invalidationLevel_ = invalidationLevel;
-    }
+    virtual PropertyOwner::InvalidationLevel getInvalidationLevel() const;
+    virtual void setInvalidationLevel(PropertyOwner::InvalidationLevel invalidationLevel);
 
     virtual void connectTo(Outport* outport);
     virtual void disconnectFrom(Outport* outport);
@@ -67,15 +61,23 @@ public:
     virtual bool isConnected() const;
     bool isConnectedTo(Outport* outport) const;
 
-    virtual bool isReady() const { return isConnected(); }
-
     Outport* getConnectedOutport() const { return connectedOutport_; }
     std::vector<Outport*> getConnectedOutports() const { return std::vector<Outport*>(1, connectedOutport_); }
 
     virtual void invalidate(PropertyOwner::InvalidationLevel invalidationLevel);
+
+    template <typename T>
+    void onInvalid(T* o, void (T::*m)()) {
+        onInvalidCallback_.addMemberFunction(o,m);
+    }
+
+    void onInvalidClear();
+
 protected:
     Outport* connectedOutport_;
     PropertyOwner::InvalidationLevel invalidationLevel_;
+
+    CallBackList onInvalidCallback_;
 };
 
 
