@@ -62,11 +62,11 @@ uvec2 ImageRepresentation::getDimension() const {
 }
 
 Image* ImageRepresentation::getOwner() {
-    return dynamic_cast<Image *>(DataRepresentation::getOwner());
+    return reinterpret_cast<Image*>(DataRepresentation::getOwner());
 }
 
 const Image* ImageRepresentation::getOwner() const {
-    return dynamic_cast<const Image *>(DataRepresentation::getOwner());
+    return reinterpret_cast<const Image*>(DataRepresentation::getOwner());
 }
 
 } // namespace

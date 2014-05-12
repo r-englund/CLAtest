@@ -72,11 +72,11 @@ void MeshRAM::update(bool editable) {
 }
 
 Mesh* MeshRAM::getOwner() {
-    return dynamic_cast<Mesh *>(DataRepresentation::getOwner());
+    return reinterpret_cast<Mesh*>(DataRepresentation::getOwner());
 }
 
 const Mesh* MeshRAM::getOwner() const {
-    return dynamic_cast<const Mesh *>(DataRepresentation::getOwner());
+    return reinterpret_cast<const Mesh*>(DataRepresentation::getOwner());
 }
 
 } // namespace

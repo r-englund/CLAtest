@@ -59,8 +59,8 @@ public:
     virtual void performOperation(DataOperation*) const = 0;
 
     void setPointerToOwner(BaseData*);
-    BaseData* getOwner();
-    const BaseData* getOwner() const;
+    virtual BaseData* getOwner();
+    virtual const BaseData* getOwner() const;
 
 protected:
     void setDataFormat(const DataFormatBase* format);
