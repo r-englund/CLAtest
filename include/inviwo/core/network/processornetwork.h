@@ -267,7 +267,7 @@ private:
 
     bool deserializing_;
     bool invalidating_;
-    Processor* invalidationInitiator_;
+    std::vector<Processor*> processorsInvalidating_;
     LinkEvaluator* linkEvaluator_;
 
     bool evaluationQueued_;

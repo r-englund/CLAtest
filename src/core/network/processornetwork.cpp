@@ -31,7 +31,8 @@
  *********************************************************************************/
 
 #include <inviwo/core/network/processornetwork.h>
-
+#include <inviwo/core/util/vectoroperations.h>
+#include <algorithm>
 
 namespace inviwo {
 
@@ -58,7 +59,6 @@ ProcessorNetwork::ProcessorNetwork()
     , locked_(0)
     , deserializing_(false)
     , invalidating_(false)
-    , invalidationInitiator_(NULL)
     , linkEvaluator_(NULL)
     , evaluationQueued_(false)
     , linking_(false)
@@ -258,8 +258,14 @@ bool ProcessorNetwork::isInvalidating() const {
 }
 
 void ProcessorNetwork::onProcessorInvalidationBegin(Processor* p) {
+    std::vector<Processor*>::iterator it = std::find_if(processorsInvalidating_.begin(), processorsInvalidating_.end(), ComparePointers<Processor>(p));
+
+    if(it != processorsInvalidating_.end())
+        return;
+
+    processorsInvalidating_.push_back(p);
+
     if (!isInvalidating()) {
-        invalidationInitiator_ = p;
         invalidating_ = true;
 
         if (linking_ && !linkInvalidationInitiator_)
@@ -268,14 +274,23 @@ void ProcessorNetwork::onProcessorInvalidationBegin(Processor* p) {
 }
 
 void ProcessorNetwork::onProcessorInvalidationEnd(Processor* p) {
-    if (invalidationInitiator_ == p) {
+    std::vector<Processor*>::iterator it = std::find_if(processorsInvalidating_.begin(), processorsInvalidating_.end(), ComparePointers<Processor>(p));
+
+    if(it != processorsInvalidating_.end())
+        processorsInvalidating_.erase(it);
+
+    if (processorsInvalidating_.empty()) {
         invalidating_ = false;
-        invalidationInitiator_ = NULL;
+
+        if(evaluationQueued_){
+            notifyProcessorNetworkEvaluateRequestObservers();
+            evaluationQueued_ = false;
+        }
     }
 }
 
 void ProcessorNetwork::onProcessorRequestEvaluate(Processor*) {
-    if (linking_)
+    if (linking_ || isInvalidating())
         evaluationQueued_ = true;
     else {
         notifyProcessorNetworkEvaluateRequestObservers();
@@ -285,7 +300,7 @@ void ProcessorNetwork::onProcessorRequestEvaluate(Processor*) {
 
 
 Processor* ProcessorNetwork::getInvalidationInitiator() { 
-    return invalidationInitiator_; 
+    return processorsInvalidating_[0]; 
 }
 
 //linking helpers
@@ -335,7 +350,7 @@ void ProcessorNetwork::evaluatePropertyLinks(Property* modifiedProperty) {
     if (linking_) {
         linking_ = false;
 
-        if (evaluationQueued_ && linkInvalidationInitiator_!=invalidationInitiator_)
+        if (evaluationQueued_ && linkInvalidationInitiator_!=getInvalidationInitiator())
             onProcessorRequestEvaluate(linkInvalidationInitiator_);
 
         linkInvalidationInitiator_ = NULL;
