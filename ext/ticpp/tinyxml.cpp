@@ -1669,39 +1669,41 @@ TiXmlAttribute*	TiXmlAttributeSet::Find( const char* name )
 */
 
 #ifdef TIXML_USE_STL
-std::istream& operator>> (std::istream & in, TiXmlNode & base)
-{
-	TIXML_STRING tag;
-	tag.reserve( 8 * 1000 );
-	base.StreamIn( &in, &tag );
-
-	base.Parse( tag.c_str(), 0, TIXML_DEFAULT_ENCODING );
-	return in;
-}
-#endif
-
-
-#ifdef TIXML_USE_STL
-std::ostream& operator<< (std::ostream & out, const TiXmlNode & base)
-{
-	TiXmlPrinter printer;
-	printer.SetStreamPrinting();
-	base.Accept( &printer );
-	out << printer.Str();
-
-	return out;
-}
-
-
-std::string& operator<< (std::string& out, const TiXmlNode& base )
-{
-	TiXmlPrinter printer;
-	printer.SetStreamPrinting();
-	base.Accept( &printer );
-	out.append( printer.Str() );
-
-	return out;
-}
+// Note: Moved implementation to header file to avoid linker errors 
+// when using ticpp
+//std::istream& operator>> (std::istream & in, TiXmlNode & base)
+//{
+//	TIXML_STRING tag;
+//	tag.reserve( 8 * 1000 );
+//	base.StreamIn( &in, &tag );
+//
+//	base.Parse( tag.c_str(), 0, TIXML_DEFAULT_ENCODING );
+//	return in;
+//}
+//#endif
+//
+//
+//#ifdef TIXML_USE_STL
+//std::ostream& operator<< (std::ostream & out, const TiXmlNode & base)
+//{
+//	TiXmlPrinter printer;
+//	printer.SetStreamPrinting();
+//	base.Accept( &printer );
+//	out << printer.Str();
+//
+//	return out;
+//}
+//
+//
+//std::string& operator<< (std::string& out, const TiXmlNode& base )
+//{
+//	TiXmlPrinter printer;
+//	printer.SetStreamPrinting();
+//	base.Accept( &printer );
+//	out.append( printer.Str() );
+//
+//	return out;
+//}
 #endif
 
 
