@@ -38,8 +38,7 @@ build_module_dependency(GLUT IVW_TINY_GLUT_APPLICATION)
 option(IVW_UNIT_TEST_APPLICATION "Build Inviwo Unit tests Application" OFF)
 
 #--------------------------------------------------------------------
-# Add subdirectories
-
+# Add externals
 add_subdirectory(ext/ticpp)
 add_subdirectory(ext/tinythread) 
 if(IVW_SIGAR)
@@ -49,7 +48,22 @@ add_subdirectory(ext/freeimage)
 if(WIN32)
 add_subdirectory(ext/stackwalker)
 endif()
+
+#--------------------------------------------------------------------
+# Add Core
 add_subdirectory(src/core)
+
+#--------------------------------------------------------------------
+# Add Qt
 add_subdirectory(src/qt)
-add_subdirectory(modules)
+
+#--------------------------------------------------------------------
+# Add modules
+begin_add_modules()
+add_internal_modules()
+add_external_modules()
+end_add_modules()
+
+#--------------------------------------------------------------------
+# Add applications
 add_subdirectory(apps)

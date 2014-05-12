@@ -428,6 +428,10 @@ add_library(inviwo-core ${SOURCE_FILES} ${HEADER_FILES} ${TEST_FILES})
 ivw_include_directories(${IVW_INCLUDE_DIR})
 ivw_include_directories(${IVW_EXTENSIONS_DIR})
 ivw_include_directories(${IVW_ROOT_DIR})
+ivw_include_directories(${IVW_MODULE_DIR})
+if (NOT "${IVW_EXTERNAL_MODULES}" STREQUAL "")
+ivw_include_directories(${IVW_EXTERNAL_MODULES})
+endif()
 
 # Add core dependencies to this list
 ivw_add_dependencies(

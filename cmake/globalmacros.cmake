@@ -283,7 +283,7 @@ macro(generate_module_registration_file module_classes modules_class_paths)
         #Apperance: #include "modules/base/basemodule.h" 
         #Apperance: (*app).registerModule(new BaseModule());
         list(APPEND headers "#ifdef REG_INVIWO${u_current_name}MODULE")
-        list(APPEND headers "#include <modules/${current_path}.h>")
+        list(APPEND headers "#include <${current_path}.h>")
         list(APPEND headers "#endif")
         list(APPEND functions "#ifdef REG_INVIWO${u_current_name}MODULE:")
         list(APPEND functions "(*app).registerModule(new ${current_name}Module());:")
@@ -298,30 +298,86 @@ macro(generate_module_registration_file module_classes modules_class_paths)
 endmacro()
 
 #--------------------------------------------------------------------
-# Add subdirectories of modules based on generated options
-macro(add_modules)
+# Begin add modules
+macro(begin_add_modules)
     set(IVW_MODULE_CLASSES "")
     set(IVW_MODULE_CLASS_PATHS "")
     set(IVW_MODULE_CLASS "")
     set(IVW_MODULE_CLASS_PATH "")
-    foreach(module ${ARGN})
-        ivw_dir_to_mod_prefix(mod_name ${module})
-        if(${mod_name})
-            add_subdirectory(${module})
-            list(APPEND IVW_MODULE_CLASSES ${IVW_MODULE_CLASS})
-            list(APPEND IVW_MODULE_CLASS_PATHS ${IVW_MODULE_CLASS_PATH})
-        endif()
-    endforeach()
+endmacro()
+
+#--------------------------------------------------------------------
+# End add modules
+macro(end_add_modules)
 	list(REMOVE_DUPLICATES IVW_MODULE_CLASSES)
 	list(REMOVE_DUPLICATES IVW_MODULE_CLASS_PATHS)
-    #Generate moduule registration file
+    #Generate module registration file
     generate_module_registration_file("${IVW_MODULE_CLASSES}" "${IVW_MODULE_CLASS_PATHS}")
     create_module_package_list(${IVW_MODULE_CLASSES})
 endmacro()
 
 #--------------------------------------------------------------------
+# Add subdirectories of modules based on generated options
+macro(add_modules module_root_path)
+    foreach(module ${ARGN})
+        ivw_dir_to_mod_prefix(mod_name ${module})
+        if(${mod_name})
+            add_subdirectory(${module_root_path}/${module} ${IVW_BINARY_DIR}/modules/${module})
+            list(APPEND IVW_MODULE_CLASSES ${IVW_MODULE_CLASS})
+            list(APPEND IVW_MODULE_CLASS_PATHS ${IVW_MODULE_CLASS_PATH})
+        endif()
+    endforeach()
+endmacro()
+
+#--------------------------------------------------------------------
+# Add all external modules specified in cmake string IVW_EXTERNAL_MODULES
+macro(add_internal_modules)
+    #Generate module options
+    generate_unset_mod_options_and_depend_sort(${IVW_MODULE_DIR} IVW_SORTED_MODULES)
+
+    #Resolve dependencies for selected modules
+    resolve_module_dependencies(${IVW_MODULE_DIR} ${IVW_SORTED_MODULES})
+
+    if(IVW_MODULE_HUMANCOMPUTATIONENGINE OR IVW_MODULE_OPENGLQT)
+        # Find the QtWidgets library
+        if(DESIRED_QT_VERSION MATCHES 5)
+            find_package(Qt5Widgets QUIET REQUIRED)     
+        else()
+            find_package(Qt QUIET REQUIRED)
+        endif()
+    endif()
+
+    if(IVW_MODULE_OPENGLQT)
+        set(QT_USE_QTOPENGL TRUE)    
+    endif()
+
+    if(IVW_MODULE_HUMANCOMPUTATIONENGINE)
+        set(QT_USE_QTNETWORK TRUE)
+        set(QT_USE_QTSCRIPT TRUE)
+    endif()	
+
+    #Add modules based on user config file and dependcy resolve
+    add_modules(${IVW_MODULE_DIR} ${IVW_SORTED_MODULES})
+endmacro()
+
+#--------------------------------------------------------------------
+# Add all external modules specified in cmake string IVW_EXTERNAL_MODULES
+macro(add_external_modules)
+    foreach(module_root_path ${IVW_EXTERNAL_MODULES})
+        #Generate module options
+        generate_unset_mod_options_and_depend_sort(${module_root_path} IVW_EXTERNAL_SORTED_MODULES)
+
+        #Resolve dependencies for selected modules
+        resolve_module_dependencies(${module_root_path} ${IVW_EXTERNAL_SORTED_MODULES})
+
+        #Add modules based on user config file and dependcy resolve
+        add_modules(${module_root_path} ${IVW_EXTERNAL_SORTED_MODULES})
+    endforeach()
+endmacro()
+
+#--------------------------------------------------------------------
 # Turn On Dependent Module Options
-macro(resolve_module_dependencies)   
+macro(resolve_module_dependencies module_root_path)   
     #Reverse list (as it is depend sorted) and go over dependencies one more time
     #If build is ON, then switch dependencies ON
     set(dir_list ${ARGN})
@@ -329,8 +385,8 @@ macro(resolve_module_dependencies)
     foreach(dir ${dir_list})
         ivw_dir_to_mod_prefix(mod_name ${dir})
         if(${mod_name})
-            if(EXISTS "${IVW_MODULE_DIR}/${dir}/depends.cmake")
-                include(${IVW_MODULE_DIR}/${dir}/depends.cmake)
+            if(EXISTS "${module_root_path}/${dir}/depends.cmake")
+                include(${module_root_path}/${dir}/depends.cmake)
                 ivw_mod_name_to_dir(depend_folders ${dependencies})
                 foreach(depend_folder ${depend_folders})
                     ivw_dir_to_mod_prefix(depend_mod_name ${depend_folder})
@@ -383,14 +439,14 @@ endmacro()
 #--------------------------------------------------------------------
 # Generate module options (which was not specifed before) and,
 # Sort directories based on dependencies inside directories
-macro(generate_unset_mod_options_and_depend_sort retval)
-    file(GLOB sub-dir RELATIVE ${IVW_MODULE_DIR} ${IVW_MODULE_DIR}/*)
+macro(generate_unset_mod_options_and_depend_sort module_root_path retval)
+    file(GLOB sub-dir RELATIVE ${module_root_path} ${module_root_path}/*)
     list(REMOVE_ITEM sub-dir .svn)
 	set(sorted_dirs ${sub-dir})
     foreach(dir ${sub-dir})
-        if(IS_DIRECTORY ${IVW_MODULE_DIR}/${dir})
-            if(EXISTS "${IVW_MODULE_DIR}/${dir}/depends.cmake")
-                include(${IVW_MODULE_DIR}/${dir}/depends.cmake)
+        if(IS_DIRECTORY ${module_root_path}/${dir})
+            if(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/${dir}/depends.cmake")
+                include(${module_root_path}/${dir}/depends.cmake)
                 #file(READ ${curdir}/${dir}/${file_name} contents)
                 #string(REGEX REPLACE ";" "\\\\;" contents "${contents}")
                 #string(REGEX REPLACE "\n" ";" contents "${contents}")
@@ -548,9 +604,9 @@ macro(ivw_create_module)
   
   #--------------------------------------------------------------------
   # Add module class files
-  set(MOD_CLASS_FILES ${IVW_MODULE_DIR}/${_projectName}/${_projectName}module.h)
-  list(APPEND MOD_CLASS_FILES ${IVW_MODULE_DIR}/${_projectName}/${_projectName}module.cpp)
-  list(APPEND MOD_CLASS_FILES ${IVW_MODULE_DIR}/${_projectName}/${_projectName}moduledefine.h)
+  set(MOD_CLASS_FILES ${CMAKE_CURRENT_SOURCE_DIR}/${_projectName}module.h)
+  list(APPEND MOD_CLASS_FILES ${CMAKE_CURRENT_SOURCE_DIR}/${_projectName}module.cpp)
+  list(APPEND MOD_CLASS_FILES ${CMAKE_CURRENT_SOURCE_DIR}/${_projectName}moduledefine.h)
     
   #--------------------------------------------------------------------
   # Create library
