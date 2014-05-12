@@ -171,20 +171,20 @@ void MultiInport::disconnectFrom(Outport* outport) {
     for (it = inports_->begin(); it != inports_->end(); ++it) {
         // Find connected port
         if ((*it)->isConnectedTo(outport)) {
-            (*it)->disconnectFrom(outport);
-            delete *it;
+            Inport* inport = *it;
             inports_->erase(it);
-            invalidate(PropertyOwner::INVALID_OUTPUT);
+            inport->disconnectFrom(outport);
+            delete inport;
             break;
         }
     }
     for (it = vectorInports_->begin(); it != vectorInports_->end(); ++it) {
         // Find connected port
         if ((*it)->isConnectedTo(outport)) {
-            (*it)->disconnectFrom(outport);
-            delete *it;
+            Inport* inport = *it;
             vectorInports_->erase(it);
-            invalidate(PropertyOwner::INVALID_OUTPUT);
+            inport->disconnectFrom(outport);
+            delete inport;
             break;
         }
     }
