@@ -38,6 +38,15 @@
 
 namespace inviwo {
 
+template <typename T>
+class ComparePointers {
+public:
+    explicit ComparePointers(const T* p) : p(p) {}
+    bool operator() (const T* rhs) const { return p == rhs; }
+private:
+    const T* p;
+};
+
 template<class T, class U>
 T* getTypeFromVector(std::vector<U> vec) {
     if (vec.size() > 0) {

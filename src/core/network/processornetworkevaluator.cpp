@@ -368,11 +368,6 @@ void ProcessorNetworkEvaluator::requestEvaluate() {
     //wait for invalidation to finish before evaluating
     if (processorNetwork_->isInvalidating()) {
         evaulationQueued_ = true;
-        Processor* p = processorNetwork_->getInvalidationInitiator();
-
-        if (p)
-            p->addObserver(this);
-
         return;
     }
 
