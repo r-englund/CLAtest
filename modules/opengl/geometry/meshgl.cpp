@@ -100,11 +100,11 @@ void MeshGL::update(bool editable) {
 }
 
 Mesh* MeshGL::getOwner() {
-    return dynamic_cast<Mesh *>(DataRepresentation::getOwner());
+    return reinterpret_cast<Mesh*>(DataRepresentation::getOwner());
 }
 
 const Mesh* MeshGL::getOwner() const {
-    return dynamic_cast<const Mesh *>(DataRepresentation::getOwner());
+    return reinterpret_cast<const Mesh*>(DataRepresentation::getOwner());
 }
 
 

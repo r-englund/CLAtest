@@ -94,7 +94,7 @@ void VolumeRAMNormalizedHistogram::evaluate() {
     float datatypeMax = static_cast<float>(volume->getDataFormat()->getMax());
     float datatypeMin = static_cast<float>(volume->getDataFormat()->getMin());
     if (volume->getOwner()) {
-        const Volume *vol = volume->getOwner();
+        const Volume *vol = reinterpret_cast<const Volume*>(volume->getOwner());
         if (vol->hasMetaData<Vec2MetaData>("DataRange")) {
 
             dataRange = vol->getMetaData<Vec2MetaData>("DataRange", dataRange);

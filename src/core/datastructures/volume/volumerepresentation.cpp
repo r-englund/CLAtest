@@ -31,6 +31,7 @@
  *********************************************************************************/
 
 #include <inviwo/core/datastructures/volume/volumerepresentation.h>
+#include <inviwo/core/datastructures/datarepresentation.h>
 
 namespace inviwo {
 
@@ -74,13 +75,5 @@ VolumeRepresentation* VolumeRepresentation::clone() const {
     return new VolumeRepresentation(*this);
 }
 VolumeRepresentation::~VolumeRepresentation() {}
-
-Volume* VolumeRepresentation::getOwner() {
-    return dynamic_cast<Volume *>(DataRepresentation::getOwner());
-}
-
-const Volume* VolumeRepresentation::getOwner() const {
-    return dynamic_cast<const Volume *>(DataRepresentation::getOwner());
-}
 
 } // namespace
