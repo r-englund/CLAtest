@@ -96,7 +96,7 @@ void Inport::callOnChangeIfChanged() {
 }
 
 bool Inport::isChanged(){
-    return changed_;
+    return changed_ || getInvalidationLevel() >= PropertyOwner::INVALID_OUTPUT;
 }
 
 } // namespace
