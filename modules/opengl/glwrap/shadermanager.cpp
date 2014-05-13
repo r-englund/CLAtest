@@ -34,8 +34,10 @@
 #include <inviwo/core/common/inviwoapplication.h>
 #include <inviwo/core/util/vectoroperations.h>
 #include <inviwo/core/util/settings/systemsettings.h>
+#include <inviwo/core/util/filesystem.h>
 #include <modules/opengl/openglmodule.h>
 #include <modules/opengl/processorgl.h>
+#include <pathsexternalmodules.h>
 
 namespace inviwo {
 
@@ -135,6 +137,26 @@ void ShaderManager::bindCommonAttributes(unsigned int programID) {
             glBindFragDataLocation(programID, glCaps->getMaxColorAttachments()-1, "PickingData");
         }
     }
+}
+
+std::vector<std::string> ShaderManager::getShaderSearchPaths() { 
+    return shaderSearchPaths_; 
+}
+
+void ShaderManager::addShaderSearchPath(std::string shaderSearchPath) {
+    if(filesystem::directoryExists(shaderSearchPath))
+        shaderSearchPaths_.push_back(shaderSearchPath);
+}
+
+void ShaderManager::addShaderSearchPath(InviwoApplication::PathType pathType, std::string relativeShaderSearchPath) {
+    addShaderSearchPath(InviwoApplication::getPtr()->getPath(pathType) + relativeShaderSearchPath);
+#ifdef IVW_EXTERNAL_MODULES_PATH_COUNT
+    if(pathType == InviwoApplication::PATH_MODULES){
+        for(int i=0; i < IVW_EXTERNAL_MODULES_PATH_COUNT; ++i){
+            addShaderSearchPath(externalModulePaths_[i] + "/" + relativeShaderSearchPath);
+        }
+    }
+#endif
 }
 
 OpenGLCapabilities* ShaderManager::getOpenGLCapabilitiesObject(){

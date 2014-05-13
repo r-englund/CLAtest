@@ -269,6 +269,34 @@ macro(create_module_package_list)
 endmacro()
 
 #--------------------------------------------------------------------
+# Generate header for external modules
+macro(generate_external_module_header)
+    set(IVW_EXTERNAL_MODULES_PATH_COUNT "")
+    set(IVW_EXTERNAL_MODULES_PATHS_ARRAY "")
+    if(DEFINED IVW_EXTERNAL_MODULES)
+        list(LENGTH IVW_EXTERNAL_MODULES modlen)
+        if(NOT ${modlen} EQUAL 0)
+            set(IVW_EXTERNAL_MODULES_PATH_COUNT "#define IVW_EXTERNAL_MODULES_PATH_COUNT ${modlen}")
+            set(paths "const std::string externalModulePaths_[] = {:")
+            set(first "0")
+            foreach(dir ${IVW_EXTERNAL_MODULES})
+                if(IS_DIRECTORY ${dir})
+                    if(NOT ${first} EQUAL "0")
+                        list(APPEND paths ", :")
+                    endif()
+                    set(first "1")
+                    list(APPEND paths "\"${dir}\":")
+                endif()
+            endforeach()
+            list(APPEND paths "}; //Paths")
+            set(paths ${paths})
+            join(":;" "" IVW_EXTERNAL_MODULES_PATHS_ARRAY ${paths})
+         endif()
+    endif()
+    configure_file(${IVW_CMAKE_SOURCE_MODULE_DIR}/mod_external_template.h ${CMAKE_BINARY_DIR}/modules/_generated/pathsexternalmodules.h @ONLY IMMEDIATE)
+endmacro()
+
+#--------------------------------------------------------------------
 # Generate a module registration header file (with configure file etc)
 macro(generate_module_registration_file module_classes modules_class_paths)
     set(module_classes ${module_classes})
@@ -405,12 +433,14 @@ macro(add_external_modules)
     foreach(module_root_path ${IVW_EXTERNAL_MODULES})
         #Generate module options
         generate_unset_mod_options_and_depend_sort(${module_root_path} IVW_EXTERNAL_SORTED_MODULES)
+        
+        if(DEFINED IVW_EXTERNAL_SORTED_MODULES)
+            #Resolve dependencies for selected modules
+            resolve_module_dependencies(${module_root_path} ${IVW_EXTERNAL_SORTED_MODULES})
 
-        #Resolve dependencies for selected modules
-        resolve_module_dependencies(${module_root_path} ${IVW_EXTERNAL_SORTED_MODULES})
-
-        #Add modules based on user config file and dependcy resolve
-        add_modules(${module_root_path} ${IVW_EXTERNAL_SORTED_MODULES})
+            #Add modules based on user config file and dependcy resolve
+            add_modules(${module_root_path} ${IVW_EXTERNAL_SORTED_MODULES})
+        endif()
     endforeach()
 endmacro()
 

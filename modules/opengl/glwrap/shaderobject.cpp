@@ -185,6 +185,7 @@ bool ShaderObject::loadSource(std::string fileName) {
     source_ = "";
 
     if (fileName.length() > 0) {
+        absoluteFileName_ = fileName;
         if (URLParser::fileExists(fileName)) {
             // Absolute path was given
             absoluteFileName_ = fileName;

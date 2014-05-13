@@ -103,6 +103,8 @@ set(IVW_EXECUTABLE_DIR ${EXECUTABLE_OUTPUT_PATH})
 set(IVW_CMAKE_SOURCE_MODULE_DIR ${CMAKE_CURRENT_LIST_DIR})
 set(IVW_CMAKE_BINARY_MODULE_DIR ${CMAKE_BINARY_DIR}/cmake)
 
+#Generate headers
+generate_external_module_header()
 configure_file(${IVW_CMAKE_SOURCE_MODULE_DIR}/inviwocommondefines_template.h ${IVW_INCLUDE_DIR}/inviwo/core/common/inviwocommondefines.h @ONLY IMMEDIATE)
 
 # Set ignored libs

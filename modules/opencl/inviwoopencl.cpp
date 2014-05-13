@@ -37,6 +37,8 @@
 #include <modules/opencl/syncclgl.h>
 #include <inviwo/core/io/textfilereader.h>
 #include <inviwo/core/util/logcentral.h>
+#include <inviwo/core/util/filesystem.h>
+#include <pathsexternalmodules.h>
 #include <iostream>
 #include <sstream>
 #include <stdio.h>
@@ -245,18 +247,27 @@ cl::Program OpenCL::buildProgram(const std::string& fileName, const std::string&
     return program;
 }
 
-cl::Program OpenCL::buildProgram(const std::string& fileName, const std::string& defines /*= ""*/)
-{
+cl::Program OpenCL::buildProgram(const std::string& fileName, const std::string& defines /*= ""*/){
     return OpenCL::buildProgram(fileName, defines, OpenCL::getPtr()->getQueue());
 }
 
-void OpenCL::addCommonIncludeDirectory(const std::string& directoryPath)
-{
-    includeDirectories_.push_back(directoryPath);
+void OpenCL::addCommonIncludeDirectory(const std::string& directoryPath){
+    if(filesystem::directoryExists(directoryPath))
+        includeDirectories_.push_back(directoryPath);
 }
 
-void OpenCL::removeCommonIncludeDirectory(const std::string& directoryPath)
-{
+void OpenCL::addCommonIncludeDirectory(InviwoApplication::PathType pathType, const std::string& relativePath) {
+    addCommonIncludeDirectory(InviwoApplication::getPtr()->getPath(pathType) + relativePath);
+#ifdef IVW_EXTERNAL_MODULES_PATH_COUNT
+    if(pathType == InviwoApplication::PATH_MODULES){
+        for(int i=0; i < IVW_EXTERNAL_MODULES_PATH_COUNT; ++i){
+            addCommonIncludeDirectory(externalModulePaths_[i] + "/" + relativePath);
+        }
+    }
+#endif
+}
+
+void OpenCL::removeCommonIncludeDirectory(const std::string& directoryPath){
     std::vector<std::string>::iterator it = std::find(includeDirectories_.begin(), includeDirectories_.end(), directoryPath);
 
     if (it != includeDirectories_.end()) {
@@ -264,8 +275,7 @@ void OpenCL::removeCommonIncludeDirectory(const std::string& directoryPath)
     }
 }
 
-std::string OpenCL::getIncludeDefine() const
-{
+std::string OpenCL::getIncludeDefine() const{
     std::string result;
 
     for (std::vector<std::string>::const_iterator it = includeDirectories_.begin(); it != includeDirectories_.end(); ++it) {

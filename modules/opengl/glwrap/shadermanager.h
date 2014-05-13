@@ -35,6 +35,7 @@
 
 #include <modules/opengl/openglmoduledefine.h>
 #include <inviwo/core/common/inviwo.h>
+#include <inviwo/core/common/inviwoapplication.h>
 #include <modules/opengl/inviwoopengl.h>
 #include <modules/opengl/openglcapabilities.h>
 #include <modules/opengl/glwrap/shader.h>
@@ -59,10 +60,10 @@ public:
 
     void bindCommonAttributes(unsigned int);
 
-    std::vector<std::string> getShaderSearchPaths() { return shaderSearchPaths_; }
-    void addShaderSearchPath(std::string shaderSearchPath) {
-        shaderSearchPaths_.push_back(shaderSearchPath);
-    }
+    std::vector<std::string> getShaderSearchPaths();
+
+    void addShaderSearchPath(std::string);
+    void addShaderSearchPath(InviwoApplication::PathType, std::string);
 
     void rebuildAllShaders();
 
