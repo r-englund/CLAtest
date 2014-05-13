@@ -40,6 +40,7 @@ MetaData& MetaData::operator=(const MetaData& that) {
     return *this;
 }
 MetaData::~MetaData() {}
+
 std::string MetaData::getClassName() const {
     return "MetaData";
 }
@@ -56,6 +57,10 @@ void MetaData::deserialize(IvwDeserializer& d) {
     IVW_UNUSED_PARAM(d);
 }
 
+bool MetaData::equal(const MetaData& rhs) const {
+    return false;
+}
+
 #define MetaDataMacro(n, t, d, v) \
     n##MetaData::n##MetaData() : MetaDataPrimitiveType<t>(d) {}; \
     n##MetaData::n##MetaData(t value) : MetaDataPrimitiveType<t>(value) {}; \
@@ -64,5 +69,12 @@ void MetaData::deserialize(IvwDeserializer& d) {
      
 #include <inviwo/core/metadata/metadatadefinefunc.h>
 
+bool operator==(const MetaData& lhs, const MetaData& rhs) {
+    return lhs.equal(rhs);
+}
+
+bool operator!=(const MetaData& lhs, const MetaData& rhs) {
+    return !operator==(lhs, rhs);
+}
 
 } // namespace

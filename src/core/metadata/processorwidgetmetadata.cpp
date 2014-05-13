@@ -106,6 +106,17 @@ void ProcessorWidgetMetaData::deserialize(IvwDeserializer& d) {
     visiblityMetaData_.set(visibility);
 }
 
+bool ProcessorWidgetMetaData::equal(const MetaData& rhs) const {
+    const ProcessorWidgetMetaData* tmp = dynamic_cast<const ProcessorWidgetMetaData*>(&rhs);
+    if (tmp) {
+        return tmp->positionMetaData_ == positionMetaData_
+            && tmp->visiblityMetaData_ == visiblityMetaData_
+            && tmp->dimensionMetaData_ == dimensionMetaData_;
+    } else {
+        return false;
+    }
+}
+
 
 
 

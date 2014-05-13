@@ -49,7 +49,12 @@ public:
     virtual MetaData* clone() const;
     virtual void serialize(IvwSerializer& s) const;
     virtual void deserialize(IvwDeserializer& d);
+    virtual bool equal(const MetaData& rhs) const;
+    friend bool IVW_CORE_API operator==(const MetaData& lhs, const MetaData& rhs);
 };
+
+bool IVW_CORE_API operator==(const MetaData& lhs, const MetaData& rhs);
+bool IVW_CORE_API operator!=(const MetaData& lhs, const MetaData& rhs);
 
 /*---------------------------------------------------------------------*/
 
@@ -66,9 +71,27 @@ public:
     virtual void deserialize(IvwDeserializer& d);
     virtual void set(T value);
     virtual T get() const;
+    virtual bool equal(const MetaData& rhs) const;
+    template <typename V>
+    friend bool operator==(const MetaDataPrimitiveType<V>& lhs, const MetaDataPrimitiveType<V>& rhs);
 protected:
     T value_;
 };
+
+template <typename T>
+bool inviwo::MetaDataPrimitiveType<T>::equal(const MetaData& rhs) const {
+    const MetaDataPrimitiveType<T>* tmp = dynamic_cast<const MetaDataPrimitiveType<T>*>(&rhs);
+    if (tmp) {
+        return tmp->value_ == value_;
+    } else {
+        return false;
+    }
+}
+
+template <typename T>
+bool operator==(const MetaDataPrimitiveType<T>& lhs, const MetaDataPrimitiveType<T>& rhs) {
+    return lhs.value_ == rhs.value_;
+}
 
 template <typename T>
 MetaDataPrimitiveType<T>::MetaDataPrimitiveType(T value) : MetaData(), value_(value) {}
@@ -78,7 +101,8 @@ MetaDataPrimitiveType<T>::MetaDataPrimitiveType(const MetaDataPrimitiveType<T>& 
     : MetaData(rhs), value_(rhs.value_) {}
 
 template <typename T>
-MetaDataPrimitiveType<T>& MetaDataPrimitiveType<T>::operator=(const MetaDataPrimitiveType<T>& that) {
+MetaDataPrimitiveType<T>& MetaDataPrimitiveType<T>::operator=(
+    const MetaDataPrimitiveType<T>& that) {
     if (this != &that) {
         value_ = that.value_;
         MetaData::operator=(that);

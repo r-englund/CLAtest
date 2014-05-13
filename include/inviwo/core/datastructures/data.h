@@ -80,13 +80,16 @@ public:
     virtual Data* clone() const = 0;
     virtual ~Data();
 
-    //Representations
-    template<typename T>
+    // Representations
+    template <typename T>
     const T* getRepresentation() const;
-    template<typename T>
+
+    template <typename T>
     T* getEditableRepresentation();
-    template<typename T>
+
+    template <typename T>
     bool hasRepresentation() const;
+
     bool hasRepresentations() const;
     void addRepresentation(DataRepresentation* representation);
 

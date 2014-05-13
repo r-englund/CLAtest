@@ -54,6 +54,7 @@ public:
 
     virtual void serialize(IvwSerializer& s) const;
     virtual void deserialize(IvwDeserializer& d);
+    virtual bool equal(const MetaData& rhs) const;
 
     void setPosition(ivec2 pos);
     ivec2 getPosition();

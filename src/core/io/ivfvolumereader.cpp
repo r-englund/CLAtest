@@ -50,7 +50,7 @@ IvfVolumeReader::IvfVolumeReader()
 IvfVolumeReader::IvfVolumeReader(const IvfVolumeReader& rhs)
     : DataReaderType<Volume>(rhs)
     , rawFile_(rhs.rawFile_)
-    , littleEndian_(true)
+    , littleEndian_(rhs.littleEndian_)
     , dimension_(rhs.dimension_)
     , format_(rhs.format_) {
 }
@@ -135,16 +135,16 @@ void IvfVolumeReader::readDataInto(void* destination) const {
 }
 
 void* IvfVolumeReader::readData() const {
-    std::size_t size = dimension_.x*dimension_.y*dimension_.z*(format_->getBytesStored());
+    std::size_t size = dimension_.x * dimension_.y * dimension_.z * (format_->getBytesStored());
     char* data = new char[size];
 
-    if (data)
+    if (data) {
         readDataInto(data);
-    else
-        throw DataReaderException("Error: Could not allocate memory for loading raw file: " + rawFile_);
-
+    } else {
+        throw DataReaderException("Error: Could not allocate memory for loading raw file: " +
+                                  rawFile_);
+    }
     return data;
 }
-
 
 } // namespace

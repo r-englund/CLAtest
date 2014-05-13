@@ -109,6 +109,17 @@ void ProcessorMetaData::deserialize(IvwDeserializer& d) {
     selectionMetaData_.set(selection);
 }
 
+bool ProcessorMetaData::equal(const MetaData& rhs) const {
+    const ProcessorMetaData* tmp = dynamic_cast<const ProcessorMetaData*>(&rhs);
+    if (tmp) {
+        return operator==<ivec2>(tmp->positionMetaData_, positionMetaData_)
+            && operator==<bool>(tmp->visiblityMetaData_, visiblityMetaData_)
+            && operator==<bool>(tmp->selectionMetaData_, selectionMetaData_);
+    } else {
+        return false;
+    }
+}
+
 
 
 } // namespace
