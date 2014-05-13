@@ -42,11 +42,49 @@ class IvwSerializable;
 
 class IVW_CORE_API IvwSerializer : public IvwSerializeBase {
 public:
+    /** 
+     * Constructor without file name, which means that paths cannot be specified relative to file directory.
+     *
+     * @note writeFile needs a file name to be set before being called.
+     * @param bool allowReference disables or enables reference management schemes.
+     * @throws SerializationException
+     */
+    IvwSerializer(bool allowReference=true);
+    /** 
+     * Copies parameters from other serializer.
+     *
+     * @param IvwSerializeBase & s object of similar type.
+     * @param bool allowReference disables or enables reference management schemes.
+     * @throws SerializationException
+     */
     IvwSerializer(IvwSerializer& s, bool allowReference=true);
+    /**
+     * \brief Initializes serializer with a file name that will be used to set relative paths.
+     * The specified file name will not be used to write any content until writeFile() is called.
+     * 
+     * @param std::string fileName full path to xml file.
+     * @param bool allowReference disables or enables reference management schemes.
+     * @throws SerializationException
+     */
     IvwSerializer(std::string fileName, bool allowReference=true);
+
     virtual ~IvwSerializer();
 
+    /** 
+     * \brief Writes serialized data to the file specified by the currently set file name.
+     *
+     * @note File name needs to be set before calling this method.
+     * @throws SerializationException
+     */
     virtual void writeFile();
+    /** 
+     * \brief Writes serialized data to stream.
+     * 
+     * @param std::ostream & stream Stream to be written to.
+     * @throws SerializationException
+     */
+    virtual void writeFile(std::ostream& stream);
+
 
     // std containers
     template <typename T>
@@ -107,6 +145,11 @@ private:
     template<class T>
     void serializeVector(const std::string& key, const T& vector, const bool& isColor=false);
 
+    /** 
+     * \brief Creates xml documents and initializes factories. Does not open files or streams.
+     *
+     * @throws SerializationException
+     */
     void initialize();
 
 };

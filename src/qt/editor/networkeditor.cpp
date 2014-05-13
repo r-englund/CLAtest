@@ -1499,16 +1499,54 @@ void NetworkEditor::clearNetwork() {
 
 bool NetworkEditor::saveNetwork(std::string fileName) {
     removePortInspector(inspection_.processorIdentifier_, inspection_.portIdentifier_);
-    IvwSerializer xmlSerializer(fileName);
-    processorNetwork_->serialize(xmlSerializer);
-    processorNetwork_->setModified(false);
-    xmlSerializer.writeFile();
-    filename_ = fileName;
-    setModified(false);
+    try {
+        IvwSerializer xmlSerializer(fileName);
+        processorNetwork_->serialize(xmlSerializer);
+        processorNetwork_->setModified(false);
+        xmlSerializer.writeFile();
+        filename_ = fileName;
+        setModified(false);
+    } catch (SerializationException& exception) {
+        LogInfo("Unable to save network " + fileName + " due to " + exception.getMessage());
+        return false;
+    }
+    return true;
+}
+
+bool NetworkEditor::saveNetwork(std::ostream stream) {
+    removePortInspector(inspection_.processorIdentifier_, inspection_.portIdentifier_);
+    try {
+        IvwSerializer xmlSerializer(filename_);
+        processorNetwork_->serialize(xmlSerializer);
+        processorNetwork_->setModified(false);
+        xmlSerializer.writeFile(stream);
+        setModified(false);
+    } catch (SerializationException& exception) {
+        LogInfo("Unable to save network " + filename_ + " due to " + exception.getMessage());
+        return false;
+    }
     return true;
 }
 
 bool NetworkEditor::loadNetwork(std::string fileName) {
+    std::ifstream fileStream(fileName.c_str());
+    if (!fileStream) {
+        LogError("Could not open workspace file: " << fileName);
+        fileStream.close();
+        return false;
+    }
+    filename_ = fileName;
+    bool loaded = loadNetwork(fileStream);
+    fileStream.close();
+    if (loaded) {
+        for (ObserverSet::reverse_iterator it = observers_->rbegin(); it != observers_->rend(); ++it)
+            static_cast<NetworkEditorObserver*>(*it)->onNetworkEditorFileChanged(fileName);
+    }
+
+    return loaded;
+}
+
+bool NetworkEditor::loadNetwork(std::istream& stream) {
     workerThreadQuit();
     // first we clean the current network
     clearNetwork();
@@ -1517,17 +1555,17 @@ bool NetworkEditor::loadNetwork(std::string fileName) {
 
     // then we deserialize processor network
     try {
-        IvwDeserializer xmlDeserializer(fileName);
+        IvwDeserializer xmlDeserializer(stream);
         processorNetwork_->deserialize(xmlDeserializer);
     }
     catch (const AbortException& exception) {
-        LogInfo("Unable to load network " + fileName + " due to " + exception.getMessage());
+        LogInfo("Unable to load network " + filename_ + " due to " + exception.getMessage());
         clearNetwork();
         processorNetwork_->unlock();
         return false;
     }
     catch (const IgnoreException& exception) {
-        LogInfo("Incomplete network loading " + fileName + " due to " + exception.getMessage());
+        LogInfo("Incomplete network loading " + filename_ + " due to " + exception.getMessage());
     }
 
     // add processors
@@ -1537,7 +1575,7 @@ bool NetworkEditor::loadNetwork(std::string fileName) {
         processors[i]->invalidate(PropertyOwner::INVALID_RESOURCES);
         ProcessorMetaData* meta = dynamic_cast<ProcessorMetaData*>(processors[i]->getMetaData("ProcessorMetaData"));
         addProcessorRepresentations(processors[i], QPointF(meta->getPosition().x, meta->getPosition().y), meta->isVisible(), meta->isSelected(),
-                                    false, false);
+            false, false);
     }
 
     // add connections
@@ -1588,10 +1626,6 @@ bool NetworkEditor::loadNetwork(std::string fileName) {
     processorNetwork_->removeObserver(this);
     workerThread_->start();
 
-    for (ObserverSet::reverse_iterator it = observers_->rbegin(); it != observers_->rend(); ++it)
-        static_cast<NetworkEditorObserver*>(*it)->onNetworkEditorFileChanged(fileName);
-
-    filename_ = fileName;
     setModified(false);
     return true;
 }

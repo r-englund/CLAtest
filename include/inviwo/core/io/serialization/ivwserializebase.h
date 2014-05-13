@@ -79,6 +79,7 @@ typedef glm::mat3 mat3;
 typedef glm::mat4 mat4;
 typedef glm::quat quat;
 
+
 namespace inviwo {
 
 typedef ticpp::Document TxDocument;
@@ -102,6 +103,17 @@ public:
      * and de-serializer. Some of them are reference data manager,
      * (ticpp::Node) node switch and factory registration.
      *
+     * @param bool allowReference disables or enables reference management schemes.
+     */
+    IvwSerializeBase(bool allowReference=true);
+
+    /**
+     * \brief Base class for IvwSerializer and IvwDeserializer.
+     *
+     * This class consists of features that are common to both serializer
+     * and de-serializer. Some of them are reference data manager,
+     * (ticpp::Node) node switch and factory registration.
+     *
      * @param IvwSerializeBase & s object of similar type.
      * @param bool allowReference disables or enables reference management schemes.
      */
@@ -118,6 +130,17 @@ public:
      */
     IvwSerializeBase(std::string fileName, bool allowReference=true);
     /**
+     * \brief Base class for IvwSerializer and IvwDeserializer.
+     *
+     * This class consists of features that are common to both serializer
+     * and de-serializer. Some of them are reference data manager,
+     * (ticpp::Node) node switch and factory registration.
+     *
+     * @param std::istream& stream containing all xml data (for reading).
+     * @param bool allowReference disables or enables reference management schemes.
+     */
+    IvwSerializeBase(std::istream& stream, bool allowReference=true);
+    /**
      * \brief Destructor
      */
     virtual ~IvwSerializeBase();
@@ -125,6 +148,7 @@ public:
      * \brief gets the xml file name.
      */
     virtual std::string getFileName();
+
     /**
      * \brief Checks whether the given type is a primitive type.
      *
@@ -171,10 +195,7 @@ public:
     template <typename T>
     T* getNonRegisteredType();
 
-    /**
-     * \brief To set file name with full path which will be later serialized or deserialzied
-     */
-    virtual void setFileName(const std::string fileName);
+
 
     class IVW_CORE_API NodeSwitch {
     public:

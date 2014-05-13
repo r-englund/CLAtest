@@ -38,6 +38,11 @@
 
 namespace inviwo {
 
+IvwSerializer::IvwSerializer(bool allowReference)
+    : IvwSerializeBase(allowReference) {
+    initialize();
+}
+
 IvwSerializer::IvwSerializer(IvwSerializer& s, bool allowReference)
     : IvwSerializeBase(s.getFileName(), allowReference) {
     initialize();
@@ -47,6 +52,8 @@ IvwSerializer::IvwSerializer(std::string fileName, bool allowReference)
     : IvwSerializeBase(fileName, allowReference) {
     initialize();
 }
+
+
 
 IvwSerializer::~IvwSerializer() {
     delete rootElement_;
@@ -122,7 +129,16 @@ void IvwSerializer::serialize(const std::string& key, const unsigned long long& 
 void IvwSerializer::writeFile() {
     try {
         refDataContainer_.setReferenceAttributes();
-        doc_.SaveFile();
+        doc_.SaveFile(getFileName());
+    } catch (TxException& e) {
+        throw SerializationException(e.what());
+    }
+}
+
+void IvwSerializer::writeFile(std::ostream& stream) {
+    try {
+        refDataContainer_.setReferenceAttributes();
+        stream << doc_;
     } catch (TxException& e) {
         throw SerializationException(e.what());
     }

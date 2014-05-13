@@ -142,6 +142,11 @@ TxElement* IvwSerializeBase::ReferenceDataContainer::nodeCopy(const void* data) 
     return nodeCopy;
 }
 
+IvwSerializeBase::IvwSerializeBase(bool allowReference/*=true*/)
+    : allowRef_(allowReference) {
+    registerFactories();
+}
+
 IvwSerializeBase::IvwSerializeBase(IvwSerializeBase& s, bool allowReference)
     : fileName_(s.fileName_)
     , doc_(s.fileName_)
@@ -156,6 +161,13 @@ IvwSerializeBase::IvwSerializeBase(std::string fileName, bool allowReference)
     registerFactories();
 }
 
+IvwSerializeBase::IvwSerializeBase(std::istream& stream, bool allowReference)
+    : fileName_("")
+    , allowRef_(allowReference) {
+    stream >> doc_;
+    registerFactories();
+}
+
 IvwSerializeBase::~IvwSerializeBase() {
 }
 
@@ -167,10 +179,6 @@ void IvwSerializeBase::registerFactories(void) {
 
 std::string IvwSerializeBase::getFileName() {
     return fileName_;
-}
-
-void IvwSerializeBase::setFileName(const std::string fileName) {
-    fileName_ = fileName;
 }
 
 bool IvwSerializeBase::isPrimitivePointerType(const std::type_info& type) const {
