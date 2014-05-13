@@ -101,7 +101,18 @@ public:
 
     void clearNetwork();
     bool saveNetwork(std::string fileName);
+    
+    /** 
+     * Save network to stream. 
+     * Uses current file name for relative paths.
+     * 
+     * @param std::ostream stream Stream to save data
+     * @return bool true if successful, false otherwise.
+     */
+    bool saveNetwork(std::ostream stream);
     bool loadNetwork(std::string fileName);
+    bool loadNetwork(std::istream& stream);
+
     std::string getCurrentFilename()const {return filename_;}
 
     void addPropertyWidgets(Processor* processor);

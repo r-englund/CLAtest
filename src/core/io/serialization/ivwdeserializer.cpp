@@ -44,7 +44,7 @@ IvwDeserializer::IvwDeserializer(IvwDeserializer& s, bool allowReference)
     registerFactories();
 
     try {
-        readFile();
+        readXMLData();
     } catch (TxException& e) {
         throw SerializationException(e.what());
     }
@@ -55,11 +55,23 @@ IvwDeserializer::IvwDeserializer(std::string fileName, bool allowReference)
     registerFactories();
 
     try {
-        readFile();
+        readXMLData();
     } catch (TxException& e) {
         throw SerializationException(e.what());
     }
 }
+
+IvwDeserializer::IvwDeserializer(std::istream& stream, bool allowReference)
+    : IvwSerializeBase(stream, allowReference) {
+    registerFactories();
+
+    try {
+        readXMLData();
+    } catch (TxException& e) {
+        throw SerializationException(e.what());
+    }
+}
+
 
 IvwDeserializer::~IvwDeserializer() {
 }
@@ -151,9 +163,13 @@ void IvwDeserializer::deserialize(const std::string& key, unsigned long long& da
     deserializePrimitives<unsigned long long>(key, data);
 }
 
-void IvwDeserializer::readFile() {
+void IvwDeserializer::readXMLData() {
     try {
-        doc_.LoadFile();
+        // No file name means that we have read from a stream
+        // and it is not necessary to load the file
+        if (!fileName_.empty()) {
+            doc_.LoadFile();
+        }
         rootElement_ = doc_.FirstChildElement();
     } catch (TxException&) {
         std::stringstream ss;

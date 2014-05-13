@@ -58,10 +58,15 @@ public:
      * @param bool allowReference flag to manage references to avoid multiple object creation.
      */
     IvwDeserializer(std::string fileName, bool allowReference=true);
+    /**
+     * \brief Deserializer constructor
+     *
+     * @param std::iostream& stream Stream with content that is to be deserialized.
+     * @param bool allowReference flag to manage references to avoid multiple object creation.
+     */
+    IvwDeserializer(std::istream& stream, bool allowReference=true);
 
     virtual ~IvwDeserializer();
-
-    virtual void readFile();
 
     // std containers
     /**
@@ -197,6 +202,10 @@ public:
 
 protected:
     friend class NodeSwitch;
+    /** 
+     * \brief Read xml data and set the root element.
+     */
+    virtual void readXMLData();
 private:
 
     /**
