@@ -48,6 +48,7 @@ ImageGL::ImageGL()
 
 ImageGL::ImageGL(const ImageGL& rhs)
     : ImageRepresentation(rhs)
+    , rectArray_(NULL)
     , frameBufferObject_(NULL)
     , shader_(NULL)
     , initialized_(false) {

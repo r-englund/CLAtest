@@ -66,10 +66,6 @@ ivw_register_use_of_modules(${package_list})
 # Need to add dependent directories before creating application
 ivw_add_dependency_directories(${package_list})
 
-#--------------------------------------------------------------------
-# Include generation directory to register modules etc
-include_directories(${CMAKE_BINARY_DIR}/modules/_generated)
-
 if(IVW_MODULE_UNITTESTS)
 	option(IVW_RUN_UNITTEST_ON_STARTUP "Run all registered unittest when Inviwo starts" OFF)
 	if(IVW_RUN_UNITTEST_ON_STARTUP)

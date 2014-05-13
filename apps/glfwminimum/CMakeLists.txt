@@ -38,10 +38,6 @@ ivw_register_use_of_modules(${package_list})
 ivw_add_dependency_directories(${package_list})
 
 #--------------------------------------------------------------------
-# Include generation directory to register modules etc
-include_directories(${CMAKE_BINARY_DIR}/modules/_generated)
-
-#--------------------------------------------------------------------
 # Create application
 add_executable(glfwminimum MACOSX_BUNDLE WIN32 ${SOURCE_FILES})
 
