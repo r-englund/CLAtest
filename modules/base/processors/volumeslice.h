@@ -78,7 +78,7 @@ private:
     VolumeInport inport_;
     ImageOutport outport_;
 
-    OptionPropertyInt coordinatePlane_;
+    OptionPropertyInt sliceAlongAxis_;
     IntProperty sliceNumber_;
 };
 

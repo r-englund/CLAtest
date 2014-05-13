@@ -80,13 +80,13 @@ protected:
 
     void planeSettingsChanged();
     void tfMappingEnabledChanged();
-    void volumeDimensionChanged();
+    void updateMaxSliceNumber();
 
 private:
     VolumeInport inport_;
     ImageOutport outport_;
 
-    OptionPropertyInt coordinatePlane_;  // CoordinatePlane enum (Cannot serialize/deserialize enums so we use an int and cast it)
+    OptionPropertyInt sliceAlongAxis_;  // CoordinatePlane enum (Cannot serialize/deserialize enums so we use an int and cast it)
     BoolProperty flipHorizontal_;
     BoolProperty flipVertical_;
     IntProperty sliceNumber_;

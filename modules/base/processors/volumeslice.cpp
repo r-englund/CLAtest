@@ -36,23 +36,22 @@ namespace inviwo {
 
 ProcessorClassName(VolumeSlice, "VolumeSlice");
 ProcessorCategory(VolumeSlice, "Volume Operation");
-ProcessorCodeState(VolumeSlice, CODE_STATE_EXPERIMENTAL);
+ProcessorCodeState(VolumeSlice, CODE_STATE_BROKEN);
 
 VolumeSlice::VolumeSlice()
     : Processor(),
       inport_("volume.inport"),
       outport_("image.outport", COLOR_ONLY),
-      coordinatePlane_("coordinatePlane", "Coordinate Plane"),
+      sliceAlongAxis_("sliceAxis", "Slice along axis"),
       sliceNumber_("sliceNumber", "Slice Number", 4, 1, 8)
 {
     addPort(inport_);
     addPort(outport_);
-    coordinatePlane_.addOption("xy", "XY Plane", XY);
-    coordinatePlane_.addOption("xz", "XZ Plane", XZ);
-    coordinatePlane_.addOption("yz", "YZ Plane", YZ);
-    coordinatePlane_.addOption("zy", "ZY Plane", ZY);
-    coordinatePlane_.setSelectedIndex(0);
-    addProperty(coordinatePlane_);
+    sliceAlongAxis_.addOption("x", "X axis", X);
+    sliceAlongAxis_.addOption("y", "Y axis", Y);
+    sliceAlongAxis_.addOption("z", "Z axis", Z);
+    sliceAlongAxis_.setSelectedIndex(0);
+    addProperty(sliceAlongAxis_);
     addProperty(sliceNumber_);
     addInteractionHandler(new VolumeSliceInteractationHandler(this));
 }
@@ -83,33 +82,30 @@ void VolumeSlice::shiftSlice(int shift){
 void VolumeSlice::process() {
     uvec3 dims = inport_.getData()->getDimension();
 
-    switch (coordinatePlane_.get())
+    switch (sliceAlongAxis_.get())
     {
-        case XY:
-            if(dims.z!=sliceNumber_.getMaxValue()){
-                sliceNumber_.setMaxValue(static_cast<int>(dims.z));
-                sliceNumber_.set(static_cast<int>(dims.z)/2);
-            }
-            break;
-
-        case XZ:
-            if(dims.y!=sliceNumber_.getMaxValue()){
-                sliceNumber_.setMaxValue(static_cast<int>(dims.y));
-                sliceNumber_.set(static_cast<int>(dims.y)/2);
-            }
-            break;
-
-        case YZ:
-        case ZY:
+        case X:
             if(dims.x!=sliceNumber_.getMaxValue()){
                 sliceNumber_.setMaxValue(static_cast<int>(dims.x));
                 sliceNumber_.set(static_cast<int>(dims.x)/2);
             }
             break;
+        case Y:
+            if(dims.y!=sliceNumber_.getMaxValue()){
+                sliceNumber_.setMaxValue(static_cast<int>(dims.y));
+                sliceNumber_.set(static_cast<int>(dims.y)/2);
+            }
+            break;
+        case Z:
+            if(dims.z!=sliceNumber_.getMaxValue()){
+                sliceNumber_.setMaxValue(static_cast<int>(dims.z));
+                sliceNumber_.set(static_cast<int>(dims.z)/2);
+            }
+            break;
     }
 
     const VolumeRAM* vol = inport_.getData()->getRepresentation<VolumeRAM>();
-    LayerRAM* sliceImage = VolumeRAMSlice::apply(vol, static_cast<CoordinatePlane>(coordinatePlane_.get()), static_cast<unsigned int>(sliceNumber_.get()-1));
+    LayerRAM* sliceImage = VolumeRAMSlice::apply(vol, static_cast<CartesianCoordinateAxis>(sliceAlongAxis_.get()), static_cast<unsigned int>(sliceNumber_.get()-1));
 
     Image* outImage = new Image(sliceImage->getDimension(), COLOR_ONLY, sliceImage->getDataFormat());
     outImage->getColorLayer()->addRepresentation(sliceImage);

@@ -42,6 +42,12 @@ enum CoordinatePlane {
     ZY
 };
 
+enum CartesianCoordinateAxis {
+    X, // Right 
+    Y, // Up
+    Z  // Into screen
+};
+
 enum RenderType {
     NOT_SPECIFIED,
     POINTS,
