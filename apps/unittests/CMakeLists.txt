@@ -12,10 +12,17 @@ set(SOURCE_FILES
 )
 ivw_group("Source Files" ${SOURCE_FILES})
 
+if(NOT IVW_MODULE_GLFW)
+    set(IVW_MODULE_GLFW ON CACHE BOOL "" FORCE)
+    ivw_message("IVW_MODULE_GLFW was set to build, due to dependency towards IVW_UNIT_TEST_APPLICATION")
+endif()
+
+
 if(NOT IVW_MODULE_UNITTESTS)
     set(IVW_MODULE_UNITTESTS ON CACHE BOOL "" FORCE)
     ivw_message("IVW_MODULE_UNITTESTS was set to build, due to dependency towards IVW_UNIT_TEST_APPLICATION")
 endif()
+
 #--------------------------------------------------------------------
 # Define defintions
 ivw_define_standard_definitions(unittests)
