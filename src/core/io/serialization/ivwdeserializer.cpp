@@ -64,12 +64,9 @@ IvwDeserializer::IvwDeserializer(std::string fileName, bool allowReference)
 IvwDeserializer::IvwDeserializer(std::istream& stream, const std::string& path, bool allowReference)
     : IvwSerializeBase(stream, path, allowReference) {
     registerFactories();
+    // Base streamed in the xml data. Get the first node.
+    rootElement_ = doc_.FirstChildElement();
 
-    try {
-        readXMLData();
-    } catch (TxException& e) {
-        throw SerializationException(e.what());
-    }
 }
 
 
@@ -165,11 +162,7 @@ void IvwDeserializer::deserialize(const std::string& key, unsigned long long& da
 
 void IvwDeserializer::readXMLData() {
     try {
-        // No file name means that we have read from a stream
-        // and it is not necessary to load the file
-        if (!fileName_.empty()) {
-            doc_.LoadFile();
-        }
+        doc_.LoadFile();
         rootElement_ = doc_.FirstChildElement();
     } catch (TxException&) {
         std::stringstream ss;
