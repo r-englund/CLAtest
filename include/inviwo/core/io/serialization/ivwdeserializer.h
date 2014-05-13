@@ -59,12 +59,13 @@ public:
      */
     IvwDeserializer(std::string fileName, bool allowReference=true);
     /**
-     * \brief Deserializer constructor
+     * \brief Deserializes content from the stream using path to calculate relative paths to data.
      *
      * @param std::iostream& stream Stream with content that is to be deserialized.
+     * @param std::string path A path that will be used to decode the location of data during deserialization.
      * @param bool allowReference flag to manage references to avoid multiple object creation.
      */
-    IvwDeserializer(std::istream& stream, bool allowReference=true);
+    IvwDeserializer(std::istream& stream, const std::string& path, bool allowReference=true);
 
     virtual ~IvwDeserializer();
 

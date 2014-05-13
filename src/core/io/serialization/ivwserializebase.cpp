@@ -161,8 +161,8 @@ IvwSerializeBase::IvwSerializeBase(std::string fileName, bool allowReference)
     registerFactories();
 }
 
-IvwSerializeBase::IvwSerializeBase(std::istream& stream, bool allowReference)
-    : fileName_("")
+IvwSerializeBase::IvwSerializeBase(std::istream& stream, const std::string& path, bool allowReference)
+    : fileName_(path)
     , allowRef_(allowReference) {
     stream >> doc_;
     registerFactories();

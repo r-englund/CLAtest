@@ -111,7 +111,12 @@ public:
      */
     bool saveNetwork(std::ostream stream);
     bool loadNetwork(std::string fileName);
-    bool loadNetwork(std::istream& stream);
+    /**
+     * Load network from a stream. The path will be used to calculate relative directories of data (nothing will be stored in the path). 
+     * @param std::iostream& stream Stream with content that is to be deserialized.
+     * @param std::string path A path that will be used to calculate location of data during deserialization.
+     */
+    bool loadNetwork(std::istream& stream, const std::string& path);
 
     std::string getCurrentFilename()const {return filename_;}
 

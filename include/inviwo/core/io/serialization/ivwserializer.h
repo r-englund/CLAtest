@@ -43,14 +43,6 @@ class IvwSerializable;
 class IVW_CORE_API IvwSerializer : public IvwSerializeBase {
 public:
     /** 
-     * Constructor without file name, which means that paths cannot be specified relative to file directory.
-     *
-     * @note writeFile needs a file name to be set before being called.
-     * @param bool allowReference disables or enables reference management schemes.
-     * @throws SerializationException
-     */
-    IvwSerializer(bool allowReference=true);
-    /** 
      * Copies parameters from other serializer.
      *
      * @param IvwSerializeBase & s object of similar type.
@@ -59,7 +51,7 @@ public:
      */
     IvwSerializer(IvwSerializer& s, bool allowReference=true);
     /**
-     * \brief Initializes serializer with a file name that will be used to set relative paths.
+     * \brief Initializes serializer with a file name that will be used to set relative paths to data.
      * The specified file name will not be used to write any content until writeFile() is called.
      * 
      * @param std::string fileName full path to xml file.
