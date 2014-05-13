@@ -1535,8 +1535,7 @@ bool NetworkEditor::loadNetwork(std::string fileName) {
         fileStream.close();
         return false;
     }
-    filename_ = fileName;
-    bool loaded = loadNetwork(fileStream);
+    bool loaded = loadNetwork(fileStream, fileName);
     fileStream.close();
     if (loaded) {
         for (ObserverSet::reverse_iterator it = observers_->rbegin(); it != observers_->rend(); ++it)
@@ -1546,7 +1545,7 @@ bool NetworkEditor::loadNetwork(std::string fileName) {
     return loaded;
 }
 
-bool NetworkEditor::loadNetwork(std::istream& stream) {
+bool NetworkEditor::loadNetwork(std::istream& stream, const std::string& path) {
     workerThreadQuit();
     // first we clean the current network
     clearNetwork();
@@ -1555,17 +1554,17 @@ bool NetworkEditor::loadNetwork(std::istream& stream) {
 
     // then we deserialize processor network
     try {
-        IvwDeserializer xmlDeserializer(stream);
+        IvwDeserializer xmlDeserializer(stream, path);
         processorNetwork_->deserialize(xmlDeserializer);
     }
     catch (const AbortException& exception) {
-        LogInfo("Unable to load network " + filename_ + " due to " + exception.getMessage());
+        LogInfo("Unable to load network " + path + " due to " + exception.getMessage());
         clearNetwork();
         processorNetwork_->unlock();
         return false;
     }
     catch (const IgnoreException& exception) {
-        LogInfo("Incomplete network loading " + filename_ + " due to " + exception.getMessage());
+        LogInfo("Incomplete network loading " + path + " due to " + exception.getMessage());
     }
 
     // add processors
@@ -1627,6 +1626,7 @@ bool NetworkEditor::loadNetwork(std::istream& stream) {
     workerThread_->start();
 
     setModified(false);
+    filename_ = path;
     return true;
 }
 

@@ -61,8 +61,8 @@ IvwDeserializer::IvwDeserializer(std::string fileName, bool allowReference)
     }
 }
 
-IvwDeserializer::IvwDeserializer(std::istream& stream, bool allowReference)
-    : IvwSerializeBase(stream, allowReference) {
+IvwDeserializer::IvwDeserializer(std::istream& stream, const std::string& path, bool allowReference)
+    : IvwSerializeBase(stream, path, allowReference) {
     registerFactories();
 
     try {

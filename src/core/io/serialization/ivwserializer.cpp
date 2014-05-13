@@ -38,11 +38,6 @@
 
 namespace inviwo {
 
-IvwSerializer::IvwSerializer(bool allowReference)
-    : IvwSerializeBase(allowReference) {
-    initialize();
-}
-
 IvwSerializer::IvwSerializer(IvwSerializer& s, bool allowReference)
     : IvwSerializeBase(s.getFileName(), allowReference) {
     initialize();

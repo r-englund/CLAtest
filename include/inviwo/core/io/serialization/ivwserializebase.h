@@ -137,9 +137,10 @@ public:
      * (ticpp::Node) node switch and factory registration.
      *
      * @param std::istream& stream containing all xml data (for reading).
+     * @param std::string path A path that will be used to decode the location of data during deserialization. 
      * @param bool allowReference disables or enables reference management schemes.
      */
-    IvwSerializeBase(std::istream& stream, bool allowReference=true);
+    IvwSerializeBase(std::istream& stream, const std::string& path, bool allowReference=true);
     /**
      * \brief Destructor
      */
