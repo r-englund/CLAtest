@@ -49,8 +49,10 @@ CanvasGLFW::CanvasGLFW(std::string windowTitle, uvec2 dimensions)
 {}
 
 CanvasGLFW::~CanvasGLFW() {
+    deinitialize();
     glfwDestroyWindow(glWindow_);
     glWindow_ = NULL;
+    
 }
 
 void CanvasGLFW::initialize() {
