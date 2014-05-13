@@ -30,13 +30,11 @@ foreach(module ${package_list})
     if(u_module MATCHES "QT+")
         list(REMOVE_ITEM package_list ${module})
     endif()
-    if(u_module MATCHES "GL+")
-        list(REMOVE_ITEM package_list ${module})
-    endif()
     if(u_module MATCHES "VRN+")
         list(REMOVE_ITEM package_list ${module})
     endif()
 endforeach()
+list(REMOVE_ITEM package_list InviwoGLUTModule)
 
 #--------------------------------------------------------------------
 # Register the use of modules
