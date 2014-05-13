@@ -43,7 +43,7 @@ VolumeSliceGL::VolumeSliceGL()
     : ProcessorGL(),
       inport_("volume.inport"),
       outport_("image.outport", COLOR_ONLY),
-      coordinatePlane_("coordinatePlane", "Coordinate Plane"),
+      sliceAlongAxis_("sliceAxis", "Slice along axis"),
       flipHorizontal_("flipHorizontal", "Flip Horizontal View", false),
       flipVertical_("flipVertical", "Flip Vertical View", false),
       sliceNumber_("sliceNumber", "Slice Number", 4, 1, 8),
@@ -53,14 +53,15 @@ VolumeSliceGL::VolumeSliceGL()
       
     addPort(inport_);
     addPort(outport_);
-    coordinatePlane_.addOption("xy", "XY Plane", XY);
-    coordinatePlane_.addOption("xz", "XZ Plane", XZ);
-    coordinatePlane_.addOption("yz", "YZ Plane", YZ);
-    coordinatePlane_.addOption("yz", "ZY Plane", ZY);
-    coordinatePlane_.set(XY);
-    coordinatePlane_.setCurrentStateAsDefault();
-    coordinatePlane_.onChange(this, &VolumeSliceGL::planeSettingsChanged);
-    addProperty(coordinatePlane_);
+
+    inport_.onChange(this, &VolumeSliceGL::updateMaxSliceNumber);
+    sliceAlongAxis_.addOption("x", "X axis", X);
+    sliceAlongAxis_.addOption("y", "Y axis", Y);
+    sliceAlongAxis_.addOption("z", "Z axis", Z);
+    sliceAlongAxis_.set(X);
+    sliceAlongAxis_.setCurrentStateAsDefault();
+    sliceAlongAxis_.onChange(this, &VolumeSliceGL::planeSettingsChanged);
+    addProperty(sliceAlongAxis_);
     flipHorizontal_.onChange(this, &VolumeSliceGL::planeSettingsChanged);
     addProperty(flipHorizontal_);
     flipVertical_.onChange(this, &VolumeSliceGL::planeSettingsChanged);
@@ -92,7 +93,7 @@ void VolumeSliceGL::initialize() {
     shader_ = new Shader("img_texturequad.vert", "volumeslice.frag", true);
     planeSettingsChanged();
     tfMappingEnabledChanged();
-    volumeDimensionChanged();
+    updateMaxSliceNumber();
 }
 
 void VolumeSliceGL::deinitialize() {
@@ -103,7 +104,7 @@ void VolumeSliceGL::deinitialize() {
 void VolumeSliceGL::process() {
     if (volumeDimensions_ != inport_.getData()->getDimension()) {
         volumeDimensions_ = inport_.getData()->getDimension();
-        volumeDimensionChanged();
+        updateMaxSliceNumber();
     }
 
     TextureUnit transFuncUnit;
@@ -145,22 +146,16 @@ void VolumeSliceGL::planeSettingsChanged() {
     // x is the horizontal direction and y is the vertical direction of the output image
 
     if (shader_) {
-        switch (coordinatePlane_.get())
+        switch (sliceAlongAxis_.get())
         {
-            case XY:
-                shader_->getFragmentShaderObject()->addShaderDefine("coordPlanePermute(x,y,z)", fH + "x," + fV + "y,z");
+            case X:
+                shader_->getFragmentShaderObject()->addShaderDefine("coordPlanePermute(x,y,z)", "z," + fV + "y,"  + fH +"x");
                 break;
-
-            case XZ:
+            case Y:
                 shader_->getFragmentShaderObject()->addShaderDefine("coordPlanePermute(x,y,z)", fH + "x,z," + fV + "y");
                 break;
-
-            case YZ:
-                shader_->getFragmentShaderObject()->addShaderDefine("coordPlanePermute(x,y,z)", "z," + fH +"x," + fV + "y");
-                break;
-
-            case ZY:
-                shader_->getFragmentShaderObject()->addShaderDefine("coordPlanePermute(x,y,z)", "z," + fV + "y,"  + fH +"x");
+            case Z:
+                shader_->getFragmentShaderObject()->addShaderDefine("coordPlanePermute(x,y,z)", fH + "x," + fV + "y,z");
                 break;
         }
 
@@ -169,6 +164,7 @@ void VolumeSliceGL::planeSettingsChanged() {
         shader_->getFragmentShaderObject()->build();
         shader_->link();
     }
+    updateMaxSliceNumber();
 }
 
 void VolumeSliceGL::tfMappingEnabledChanged() {
@@ -187,34 +183,31 @@ void VolumeSliceGL::tfMappingEnabledChanged() {
     }
 }
 
-void VolumeSliceGL::volumeDimensionChanged() {
+void VolumeSliceGL::updateMaxSliceNumber() {
     if (!inport_.hasData()) {
         return;
     }
     uvec3 dims = inport_.getData()->getDimension();
-    switch (coordinatePlane_.get())
+    switch (sliceAlongAxis_.get())
     {
-    case XY:
-        if(dims.z!=sliceNumber_.getMaxValue()){
-            sliceNumber_.setMaxValue(static_cast<int>(dims.z));
-            sliceNumber_.set(static_cast<int>(dims.z)/2);
-        }
-        break;
-
-    case XZ:
-        if(dims.y!=sliceNumber_.getMaxValue()){
-            sliceNumber_.setMaxValue(static_cast<int>(dims.y));
-            sliceNumber_.set(static_cast<int>(dims.y)/2);
-        }
-        break;
-
-    case YZ:
-    case ZY:
-        if(dims.x!=sliceNumber_.getMaxValue()){
-            sliceNumber_.setMaxValue(static_cast<int>(dims.x));
-            sliceNumber_.set(static_cast<int>(dims.x)/2);
-        }
-        break;
+        case X:
+            if(dims.x!=sliceNumber_.getMaxValue()){
+                sliceNumber_.setMaxValue(static_cast<int>(dims.x));
+                sliceNumber_.set(static_cast<int>(dims.x)/2);
+            }
+            break;
+        case Y:
+            if(dims.y!=sliceNumber_.getMaxValue()){
+                sliceNumber_.setMaxValue(static_cast<int>(dims.y));
+                sliceNumber_.set(static_cast<int>(dims.y)/2);
+            }
+            break;
+        case Z:
+            if(dims.z!=sliceNumber_.getMaxValue()){
+                sliceNumber_.setMaxValue(static_cast<int>(dims.z));
+                sliceNumber_.set(static_cast<int>(dims.z)/2);
+            }
+            break;
     }
 }
 

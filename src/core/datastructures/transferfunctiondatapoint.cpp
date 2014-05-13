@@ -44,10 +44,12 @@ TransferFunctionDataPoint::~TransferFunctionDataPoint() {}
 
 void TransferFunctionDataPoint::setPos(const vec2& pos) {
     pos_ = pos;
+    rgba_.a = pos.y;
     notifyTransferFunctionPointObservers();
 }
 
 void TransferFunctionDataPoint::setRGBA(const vec4& rgba) {
+    pos_.y = rgba.a;
     rgba_ = rgba;
     notifyTransferFunctionPointObservers();
 }
