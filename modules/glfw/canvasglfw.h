@@ -44,15 +44,15 @@ namespace inviwo {
 class IVW_MODULE_GLFW_API CanvasGLFW : public CanvasGL {
 public:
     CanvasGLFW(std::string title, uvec2 dimensions);
-    ~CanvasGLFW();
+    virtual ~CanvasGLFW();
 
-    void initialize();
+    virtual void initialize();
     void initializeGL();
-    void initializeSquare();
-    void deinitialize();
-    void activate();
+    virtual void initializeSquare();
+    virtual void deinitialize();
+    virtual void activate();
 
-    void glSwapBuffers();
+    virtual void glSwapBuffers();
 
     void setWindowTitle(std::string);
     void setWindowSize(uvec2);
