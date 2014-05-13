@@ -60,6 +60,7 @@ void TransferFunctionDataPoint::setRGB(const vec3& rgb) {
 }
 
 void TransferFunctionDataPoint::setA(float alpha) {
+    pos_.y = alpha;
     rgba_.a = alpha;
     notifyTransferFunctionPointObservers();
 }
