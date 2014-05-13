@@ -34,13 +34,15 @@
 
 namespace inviwo {
 
-
 PropertyEditorWidgetDockStatus::PropertyEditorWidgetDockStatus() : dockStatus_("Floating") {}
-PropertyEditorWidgetDockStatus::PropertyEditorWidgetDockStatus(std::string dockStatus) : dockStatus_(dockStatus) {}
-PropertyEditorWidgetDockStatus::PropertyEditorWidgetDockStatus(const PropertyEditorWidgetDockStatus& rhs) : dockStatus_(rhs.dockStatus_) {};
-PropertyEditorWidgetDockStatus& PropertyEditorWidgetDockStatus::operator=(const PropertyEditorWidgetDockStatus& that) {
-    if (this != &that)
-        dockStatus_ = that.dockStatus_;
+PropertyEditorWidgetDockStatus::PropertyEditorWidgetDockStatus(std::string dockStatus)
+    : dockStatus_(dockStatus) {}
+PropertyEditorWidgetDockStatus::PropertyEditorWidgetDockStatus(
+    const PropertyEditorWidgetDockStatus& rhs)
+    : dockStatus_(rhs.dockStatus_) {};
+PropertyEditorWidgetDockStatus& PropertyEditorWidgetDockStatus::operator=(
+    const PropertyEditorWidgetDockStatus& that) {
+    if (this != &that) dockStatus_ = that.dockStatus_;
 
     return *this;
 }
@@ -64,17 +66,16 @@ PropertyEditorWidgetMetaData::PropertyEditorWidgetMetaData()
     : positionMetaData_(ivec2(0))
     , dimensionMetaData_(ivec2(256))
     , visiblityMetaData_(false)
-    , dockStatusMetaData_(PropertyEditorWidgetDockStatus::Floating.getString()) {
-}
+    , dockStatusMetaData_(PropertyEditorWidgetDockStatus::Floating.getString()) {}
 
 PropertyEditorWidgetMetaData::PropertyEditorWidgetMetaData(const PropertyEditorWidgetMetaData& rhs)
     : positionMetaData_(rhs.positionMetaData_)
     , dimensionMetaData_(rhs.dimensionMetaData_)
     , visiblityMetaData_(rhs.visiblityMetaData_)
-    , dockStatusMetaData_(PropertyEditorWidgetDockStatus::Floating.getString()) {
-}
+    , dockStatusMetaData_(PropertyEditorWidgetDockStatus::Floating.getString()) {}
 
-PropertyEditorWidgetMetaData& PropertyEditorWidgetMetaData::operator=(const PropertyEditorWidgetMetaData& that) {
+PropertyEditorWidgetMetaData& PropertyEditorWidgetMetaData::operator=(
+    const PropertyEditorWidgetMetaData& that) {
     if (this != &that) {
         positionMetaData_ = that.positionMetaData_;
         dimensionMetaData_ = that.dimensionMetaData_;
@@ -151,8 +152,17 @@ void PropertyEditorWidgetMetaData::deserialize(IvwDeserializer& d) {
     dockStatusMetaData_.set(dockStatus);
 }
 
-
-
-
+bool PropertyEditorWidgetMetaData::equal(const MetaData& rhs) const {
+    const PropertyEditorWidgetMetaData* tmp =
+        dynamic_cast<const PropertyEditorWidgetMetaData*>(&rhs);
+    if (tmp) {
+        return tmp->positionMetaData_ == positionMetaData_ &&
+               tmp->visiblityMetaData_ == visiblityMetaData_ &&
+               tmp->visiblityMetaData_ == visiblityMetaData_ &&
+               tmp->dockStatusMetaData_ == dockStatusMetaData_;
+    } else {
+        return false;
+    }
+}
 
 } // namespace

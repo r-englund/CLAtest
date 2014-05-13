@@ -80,7 +80,7 @@ void MetaDataMap::rename(std::string newKey, std::string oldKey) {
     }
 }
 
-std::vector<std::string> MetaDataMap::getKeys() {
+std::vector<std::string> MetaDataMap::getKeys() const {
     std::vector<std::string> keys;
 
     for (cIterator cIt = metaData_.begin(); cIt!=metaData_.end(); ++cIt)
@@ -122,6 +122,28 @@ void MetaDataMap::serialize(IvwSerializer& s) const {
 
 void MetaDataMap::deserialize(IvwDeserializer& d) {
     d.deserialize("MetaDataMap", metaData_, "MetaDataItem");
+}
+
+bool operator==(const MetaDataMap& lhs, const MetaDataMap& rhs) {
+    typedef std::map<std::string, MetaData*>::const_iterator cIterator;
+
+    if (lhs.metaData_.size() != rhs.metaData_.size()) {
+        return false;
+    }
+    for (cIterator cIt = lhs.metaData_.begin(); cIt != lhs.metaData_.end(); ++cIt) {
+        cIterator elem = rhs.metaData_.find(cIt->first);
+        if (elem == rhs.metaData_.end()) {
+            return false;
+        }
+        if (*(elem->second) != *(cIt->second)) {
+            return false;
+        }
+    }
+    return true;
+}
+
+bool operator!=(const MetaDataMap& lhs, const MetaDataMap& rhs) {
+    return !operator==(lhs, rhs);
 }
 
 } // namespace

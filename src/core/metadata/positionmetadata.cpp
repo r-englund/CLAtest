@@ -87,5 +87,4 @@ void PositionMetaData::deserialize(IvwDeserializer& d) {
     d.deserialize("position", value_);
 }
 
-
 } // namespace

@@ -45,6 +45,7 @@ DatVolumeReader::DatVolumeReader()
     , rawFile_("")
     , littleEndian_(true)
     , dimension_(uvec3(0, 0, 0))
+    , timeSteps_(1)
     , format_(NULL) {
     addExtension(FileExtension("dat", "Inviwo dat file format"));
 }
@@ -52,8 +53,9 @@ DatVolumeReader::DatVolumeReader()
 DatVolumeReader::DatVolumeReader(const DatVolumeReader& rhs)
     : DataReaderType<Volume>(rhs)
     , rawFile_(rhs.rawFile_)
-    , littleEndian_(true)
+    , littleEndian_(rhs.littleEndian_)
     , dimension_(rhs.dimension_)
+    , timeSteps_(rhs.timeSteps_)
     , format_(rhs.format_) {};
 
 DatVolumeReader& DatVolumeReader::operator=(const DatVolumeReader& that) {
@@ -61,6 +63,7 @@ DatVolumeReader& DatVolumeReader::operator=(const DatVolumeReader& that) {
         rawFile_ = that.rawFile_;
         littleEndian_ = that.littleEndian_;
         dimension_ = that.dimension_;
+        timeSteps_ = that.timeSteps_;
         format_ = that.format_;
         DataReaderType<Volume>::operator=(that);
     }
@@ -116,7 +119,11 @@ Volume* DatVolumeReader::readMetaData(std::string filePath) {
             ss >> type;
             transform(type.begin(), type.end(), type.begin(), (int (*)(int))tolower);
 
-            if (type == "bigendian") littleEndian_ = false;
+            if (type == "bigendian") {
+                littleEndian_ = false;
+            } else {
+                littleEndian_ = true;
+            }
         } else if (key == "resolution" || key == "dimension") {
             ss >> dimension_.x;
             ss >> dimension_.y;
@@ -256,11 +263,12 @@ void* DatVolumeReader::readData() const {
         dimension_.x * dimension_.y * dimension_.z * (format_->getBytesStored()) * timeSteps_;
     char* data = new char[size];
 
-    if (data)
+    if (data) {
         readDataInto(data);
-    else
+    } else {
         throw DataReaderException("Error: Could not allocate memory for loading raw file: " +
                                   rawFile_);
+    }
 
     return data;
 }
