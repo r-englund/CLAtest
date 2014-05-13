@@ -131,7 +131,6 @@ TEST(SerialitionTest,IvwSerializableClassTest) {
     serializer.serialize("serializedValue",inValue);
     serializer.writeFile();
     IvwDeserializer deserializer(filename);
-    deserializer.readFile();
     deserializer.deserialize("serializedValue",outValue);
     EXPECT_EQ(inValue.value_,12);
     EXPECT_NE(outValue.value_,0);
@@ -146,7 +145,6 @@ TEST(SerialitionTest, IvwSerializableClassAsPointerTest) {
     serializer.serialize("serializedValue", inValue);
     serializer.writeFile();
     IvwDeserializer deserializer(filename);
-    deserializer.readFile();
     deserializer.deserialize("serializedValue", outValue);
     EXPECT_EQ(inValue->value_, 12);
     EXPECT_NE(outValue->value_, 0);
@@ -165,7 +163,6 @@ TEST(SerialitionTest, floatVectorTest) {
     serializer.serialize("serializedVector", inVector, "value");
     serializer.writeFile();
     IvwDeserializer deserializer(filename);
-    deserializer.readFile();
     deserializer.deserialize("serializedVector", outVector, "value");
     ASSERT_EQ(inVector.size(),outVector.size());
 
@@ -187,7 +184,6 @@ TEST(SerialitionTest,vectorOfNonPointersTest) {
     serializer.serialize("serializedVector",inVector,"value");
     serializer.writeFile();
     IvwDeserializer deserializer(filename);
-    deserializer.readFile();
     deserializer.deserialize("serializedVector",outVector,"value");
     ASSERT_EQ(inVector.size(),outVector.size());
 
@@ -206,7 +202,6 @@ TEST(SerialitionTest,vectorOfPointersTest) {
     serializer.serialize("serializedVector",inVector,"value");
     serializer.writeFile();
     IvwDeserializer deserializer(filename);
-    deserializer.readFile();
     deserializer.deserialize("serializedVector",outVector,"value");
     ASSERT_EQ(inVector.size(),outVector.size());
 
