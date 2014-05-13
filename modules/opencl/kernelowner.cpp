@@ -32,19 +32,36 @@
 
 #include <modules/opencl/kernelowner.h>
 #include <modules/opencl/kernelmanager.h>
+#include <inviwo/core/util/urlparser.h>
+
 namespace inviwo {
 
 cl::Kernel* KernelOwner::addKernel(const std::string& filePath,
                             const std::string& kernelName,
                             const std::string& defines /*= ""*/ ) {
-    
-    cl::Program* program = KernelManager::getRef().buildProgram(filePath, defines);
+    if (filePath.length() > 0) {
+        std::string absoluteFileName = filePath;
+        if (!URLParser::fileExists(absoluteFileName)) {
+            // Search in include directories added by modules
+            const std::vector<std::string> openclSearchPaths = OpenCL::getRef().getCommonIncludeDirectories();
 
-    cl::Kernel* kernel = KernelManager::getRef().getKernel(program, kernelName, this);
-    if (kernel) {
-        kernels_.insert(kernel);
-    }
-    return kernel;
+            for (size_t i=0; i<openclSearchPaths.size(); i++) {
+                if (URLParser::fileExists(openclSearchPaths[i]+"/"+filePath)) {
+                    absoluteFileName = openclSearchPaths[i]+"/"+filePath;
+                    break;
+                }
+            }
+        }
+
+        cl::Program* program = KernelManager::getRef().buildProgram(absoluteFileName, defines);
+
+        cl::Kernel* kernel = KernelManager::getRef().getKernel(program, kernelName, this);
+        if (kernel) {
+            kernels_.insert(kernel);
+        }
+        return kernel;
+
+    } else return NULL;
 }
 
 KernelOwner::~KernelOwner() {

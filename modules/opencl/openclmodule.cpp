@@ -111,7 +111,7 @@ OpenCLModule::OpenCLModule() : InviwoModule(), btnOpenCLInfo_("printOpenCLInfo",
 void OpenCLModule::initialize() {
     OpenCL::init();
 
-    OpenCL::getPtr()->addCommonIncludeDirectory(InviwoApplication::getPtr()->getPath(InviwoApplication::PATH_MODULES)+"opencl/cl");
+    OpenCL::getPtr()->addCommonIncludeDirectory(InviwoApplication::PATH_MODULES, "opencl/cl");
     
     KernelManager::init();
     InviwoModule::initialize();
