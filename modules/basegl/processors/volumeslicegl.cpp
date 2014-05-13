@@ -68,6 +68,11 @@ VolumeSliceGL::VolumeSliceGL()
     addProperty(sliceNumber_);
     tfMappingEnabled_.onChange(this, &VolumeSliceGL::tfMappingEnabledChanged);
     addProperty(tfMappingEnabled_);
+    // Make sure that opacity does not affect the mapped color.
+    if (transferFunction_.get().getNumDataPoints() > 0) {
+        transferFunction_.get().getPoint(0)->setA(1.f);
+    }
+    transferFunction_.setCurrentStateAsDefault();
     addProperty(transferFunction_);
     volumeDimensions_ = uvec3(8);
     addInteractionHandler(new VolumeSliceGLInteractationHandler(this));
