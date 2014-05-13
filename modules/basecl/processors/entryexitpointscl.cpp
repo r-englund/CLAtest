@@ -70,7 +70,7 @@ EntryExitPointsCL::~EntryExitPointsCL() {}
 
 void EntryExitPointsCL::initialize() {
     Processor::initialize();
-    entryExitKernel_ = addKernel(InviwoApplication::getPtr()->getPath(InviwoApplication::PATH_MODULES)+"basecl/cl/entryexitpoints.cl", "entryexitpoints");
+    entryExitKernel_ = addKernel("entryexitpoints.cl", "entryexitpoints");
     if (!InviwoApplication::getPtr()->getSettingsByType<OpenCLSettings>()->isSharingEnabled()) {
         useGLSharing_.setReadOnly(true);
         useGLSharing_.set(false);

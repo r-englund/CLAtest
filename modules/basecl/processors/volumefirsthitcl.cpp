@@ -70,8 +70,7 @@ VolumeFirstHitCL::~VolumeFirstHitCL() {}
 
 void VolumeFirstHitCL::initialize() {
     Processor::initialize();
-    kernel_ = addKernel(InviwoApplication::getPtr()->getPath(InviwoApplication::PATH_MODULES) +
-                            "basecl/cl/volumefirsthit.cl",
+    kernel_ = addKernel("volumefirsthit.cl",
                         "volumeFirstHit");
 }
 

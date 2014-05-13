@@ -62,8 +62,7 @@ GrayscaleCL::~GrayscaleCL() {}
 
 void GrayscaleCL::initialize() {
     Processor::initialize();
-    kernel_ = addKernel(InviwoApplication::getPtr()->getPath(InviwoApplication::PATH_MODULES)
-        +"opencl/cl/grayscale.cl", "grayscaleKernel");
+    kernel_ = addKernel("grayscale.cl", "grayscaleKernel");
     if (!InviwoApplication::getPtr()->getSettingsByType<OpenCLSettings>()->isSharingEnabled()) {
         useGLSharing_.setReadOnly(true);
         useGLSharing_.set(false);

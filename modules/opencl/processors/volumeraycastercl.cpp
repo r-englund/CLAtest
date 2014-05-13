@@ -71,8 +71,7 @@ VolumeRaycasterCL::~VolumeRaycasterCL() {}
 
 void VolumeRaycasterCL::initialize() {
     Processor::initialize();
-    kernel_ = addKernel(InviwoApplication::getPtr()->getPath(InviwoApplication::PATH_MODULES)
-                 + "opencl/cl/volumeraycaster.cl", "raycaster");
+    kernel_ = addKernel("volumeraycaster.cl", "raycaster");
 }
 
 void VolumeRaycasterCL::deinitialize() {
