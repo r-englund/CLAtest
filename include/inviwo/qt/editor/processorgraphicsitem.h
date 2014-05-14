@@ -43,6 +43,7 @@
 namespace inviwo {
 
 //TODO: Move this to common header later on (eg., BaseGraphicsItem.h )
+static const qreal DRAGING_ITEM_DEPTH = 4.0f;
 static const qreal PROCESSORGRAPHICSITEM_DEPTH = 2.0f;
 static const qreal CONNECTIONGRAPHICSITEM_DEPTH = 1.0f;
 static const qreal LINKGRAPHICSITEM_DEPTH = 1.0f;

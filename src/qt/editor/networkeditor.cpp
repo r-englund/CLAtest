@@ -1003,6 +1003,7 @@ void NetworkEditor::mousePressEvent(QGraphicsSceneMouseEvent* e) {
                     QRectF portRect = startProcessor_->calculatePortRect(dynamic_cast<Outport*>(startPort_));
                     portRect = startProcessor_->mapToScene(portRect).boundingRect();
                     connectionCurve_ = new CurveGraphicsItem(portRect.center(), e->scenePos(), startPort_->getColorCode());
+                    connectionCurve_->setZValue(DRAGING_ITEM_DEPTH);
                     addItem(connectionCurve_);
                     connectionCurve_->show();
                     e->accept();
@@ -1030,6 +1031,7 @@ void NetworkEditor::mousePressEvent(QGraphicsSceneMouseEvent* e) {
                             startProcessor_ = getProcessorGraphicsItemAt(startPoint);
                             // generate new curve
                             connectionCurve_ = new CurveGraphicsItem(startPoint, e->scenePos(), startPort_->getColorCode());
+                            connectionCurve_->setZValue(DRAGING_ITEM_DEPTH);
                             addItem(connectionCurve_);
                             connectionCurve_->show();
                             e->accept();
@@ -1047,6 +1049,7 @@ void NetworkEditor::mousePressEvent(QGraphicsSceneMouseEvent* e) {
                     processorRect = startProcessor_->mapToScene(processorRect).boundingRect();
                     linkCurve_ = new LinkGraphicsItem(processorRect.center(), e->scenePos());
                     addItem(linkCurve_);
+                    linkCurve_->setZValue(DRAGING_ITEM_DEPTH);
                     linkCurve_->show();
                     e->accept();
                     return;
