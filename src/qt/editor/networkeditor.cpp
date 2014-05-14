@@ -83,7 +83,7 @@ NetworkEditor::NetworkEditor() :
     , renamingProcessor_(false)
     , modified_(false) {
     
-    setSceneRect(-1000,-1000,1000,1000);
+    //setSceneRect(-1000,-1000,1000,1000);
     processorNetwork_ = new ProcessorNetwork();
     InviwoApplication::getRef().setProcessorNetwork(processorNetwork_);
     processorNetworkEvaluator_ = new ProcessorNetworkEvaluator(processorNetwork_);
