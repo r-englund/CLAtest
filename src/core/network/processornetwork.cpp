@@ -299,8 +299,11 @@ void ProcessorNetwork::onProcessorRequestEvaluate(Processor*) {
 }
 
 
-Processor* ProcessorNetwork::getInvalidationInitiator() { 
-    return processorsInvalidating_[0]; 
+Processor* ProcessorNetwork::getInvalidationInitiator() {
+    if(processorsInvalidating_.empty())
+        return NULL;
+    else
+        return processorsInvalidating_[0]; 
 }
 
 //linking helpers
