@@ -56,7 +56,7 @@ DataSource<DataType, PortType>::~DataSource() {}
 
 template <typename DataType, typename PortType>
 void DataSource<DataType, PortType>::invalidateOutput() {
-    port_.invalidate(PropertyOwner::INVALID_OUTPUT);
+    invalidate(PropertyOwner::INVALID_OUTPUT);
 }
 
 template <typename DataType, typename PortType>
