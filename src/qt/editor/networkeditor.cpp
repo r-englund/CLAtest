@@ -83,15 +83,15 @@ NetworkEditor::NetworkEditor() :
     , renamingProcessor_(false)
     , modified_(false) {
     
-    //setSceneRect(-1000,-1000,1000,1000);
+    setSceneRect(-1000,-1000,1000,1000);
     processorNetwork_ = new ProcessorNetwork();
     InviwoApplication::getRef().setProcessorNetwork(processorNetwork_);
     processorNetworkEvaluator_ = new ProcessorNetworkEvaluator(processorNetwork_);
     processorNetwork_->addObserver(this);
     hoverTimer_.setSingleShot(true);
     portInfoGraphicsItem_ = new PortInfoGraphicsItem();
-    portInfoGraphicsItem_->hide();
-    addItem(portInfoGraphicsItem_);
+    //portInfoGraphicsItem_->hide();
+    //addItem(portInfoGraphicsItem_);
     connect(&hoverTimer_, SIGNAL(timeout()), this, SLOT(managePortInspection()));
 }
 
@@ -714,12 +714,12 @@ void NetworkEditor::addPortInformation(std::string processorIdentifier, std::str
     if(!portInformation.empty())
         LogInfo("\nPort: " << portIdentifier << "\n" << portInformation);
 
-    portInfoGraphicsItem_->setPos(pos);
+    //portInfoGraphicsItem_->setPos(pos);
     //portInfoGraphicsItem_->show();    
 }
 
 void NetworkEditor::removePortInformation() {
-    portInfoGraphicsItem_->hide();
+    //portInfoGraphicsItem_->hide();
 }
 
 
@@ -1657,6 +1657,17 @@ void NetworkEditor::drawBackground(QPainter* painter, const QRectF& rect) {
 
     painter->drawLines(linesX.data(), linesX.size());
     painter->drawLines(linesY.data(), linesY.size());
+
+    // For testing purpuses only. Draw bounding rects around all graphics items 
+    QList<QGraphicsItem*> items = QGraphicsScene::items(Qt::DescendingOrder);
+    painter->setPen(Qt::magenta);
+    for (QList<QGraphicsItem*>::iterator it = items.begin(); it != items.end(); ++it) {
+        QRectF br = (*it)->sceneBoundingRect();
+        painter->drawRect(br);
+    }
+    painter->setPen(Qt::red);
+    painter->drawRect(QGraphicsScene::itemsBoundingRect());
+    
 }
 
 
