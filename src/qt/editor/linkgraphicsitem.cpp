@@ -82,9 +82,9 @@ QPainterPath LinkGraphicsItem::shape() const {
 QRectF LinkGraphicsItem::boundingRect() const {
     QPointF topLeft = QPointF(std::min(startPoint_.x(), endPoint_.x()),
                               std::min(startPoint_.y(), endPoint_.y()));
-    return QRectF(topLeft.x()-30.0, topLeft.y()-30.0,
+    return QRectF(topLeft.x()-30.0, topLeft.y()-10.0,
                   abs(startPoint_.x()-endPoint_.x())+60.0,
-                  abs(startPoint_.y()-endPoint_.y())+60.0);
+                  abs(startPoint_.y()-endPoint_.y())+20.0);
 }
 
 
@@ -125,9 +125,9 @@ QRectF LinkConnectionGraphicsItem::boundingRect() const {
     QPointF topLeft = QPointF(std::min(start.x(), stop.x()), std::min(start.y(), stop.y()));
     QPointF bottomRight = QPointF(std::max(start.x(), stop.x()), std::max(start.y(), stop.y()));
     return QRectF(topLeft.x() - 30,
-                  topLeft.y() - 30,
+                  topLeft.y() - 10,
                   bottomRight.x() - topLeft.x() + 70,
-                  bottomRight.y() - topLeft.y() + 70);
+                  bottomRight.y() - topLeft.y() + 20);
 }
 
 QPainterPath LinkConnectionGraphicsItem::obtainCurvePath() const {

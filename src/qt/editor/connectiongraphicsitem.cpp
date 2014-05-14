@@ -114,9 +114,9 @@ void CurveGraphicsItem::resetBorderColors() {
 QRectF CurveGraphicsItem::boundingRect() const {
     QPointF topLeft = QPointF(std::min(startPoint_.x(), endPoint_.x()),
                               std::min(startPoint_.y(), endPoint_.y()));
-    return QRectF(topLeft.x()-30.0, topLeft.y()-30.0,
-                  abs(startPoint_.x()-endPoint_.x())+60.0,
-                  abs(startPoint_.y()-endPoint_.y())+60.0);
+    return QRectF(topLeft.x()-10.0, topLeft.y()-10.0,
+                  abs(startPoint_.x()-endPoint_.x())+20.0,
+                  abs(startPoint_.y()-endPoint_.y())+20.0);
 }
 
 
