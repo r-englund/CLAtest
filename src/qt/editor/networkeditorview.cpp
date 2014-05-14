@@ -99,8 +99,6 @@ void NetworkEditorView::setZoom(const float& zoom, const QPointF& pos) {
         zoom_ = zoom;
     }
 
-    //LogInfo("pos " << pos.x() << " " << pos.y());
-
     QTransform matrix;
     matrix.scale(zoom_, zoom_);
     QPointF pos2 = QGraphicsView::mapToScene(pos.toPoint());
@@ -120,8 +118,6 @@ void NetworkEditorView::mouseDoubleClickEvent(QMouseEvent* e) {
 
 void NetworkEditorView::resizeEvent(QResizeEvent* e) {
     QGraphicsView::resizeEvent(e);
-    fitNetwork();
-    e->accept();
 }
 
 void NetworkEditorView::fitNetwork() {
