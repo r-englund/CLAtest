@@ -126,6 +126,8 @@ void CubeProxyGeometry::onVolumeChange() {
 
     dims_ = inport_.getData()->getDimension();
     
+    invalidationDisabled();
+
     clipX_.setRangeMax(dims_.x);
     clipY_.setRangeMax(dims_.y);
     clipZ_.setRangeMax(dims_.z);
@@ -133,6 +135,8 @@ void CubeProxyGeometry::onVolumeChange() {
     clipX_.set(x * static_cast<float>(dims_.x));
     clipY_.set(y * static_cast<float>(dims_.y));
     clipZ_.set(z * static_cast<float>(dims_.z));
+
+    invalidationEnabled();
 }
 
 } // namespace

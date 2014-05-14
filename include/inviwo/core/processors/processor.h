@@ -144,6 +144,9 @@ public:
     virtual void deserialize(IvwDeserializer& d);
 
 protected:
+    void invalidationEnabled();
+    void invalidationDisabled();
+
     void addPort(Inport* port, std::string portDependencySet="default");
     void addPort(Inport& port, std::string portDependencySet="default");
 
@@ -170,6 +173,8 @@ private:
     static std::set<std::string> usedIdentifiers_;
 
     bool initialized_;
+
+    bool invalidationEnabled_;
 };
 
 } // namespace
