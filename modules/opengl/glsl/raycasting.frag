@@ -54,18 +54,19 @@ uniform VOLUME_PARAMETERS volumeParameters_;
 
 vec4 rayTraversal(vec3 entryPoint, vec3 exitPoint, vec2 texCoords) {
     vec4 result = vec4(0.0);
-    float t = 0.0;
     vec3 rayDirection = exitPoint - entryPoint;
-    float tIncr = 1.0/(samplingRate_*length(rayDirection*volumeParameters_.dimensions_));
     float tEnd = length(rayDirection);
+    float tIncr = min(tEnd, 1.0/(samplingRate_*length(rayDirection*volumeParameters_.dimensions_)));
+    float t = 0.5f*tIncr; 
     rayDirection = normalize(rayDirection);
     float tDepth = -1.0;
-
+    vec4 color; vec4 voxel;
+    vec3 samplePos; vec3 gradient;
     while (t < tEnd) {
-        vec3 samplePos = entryPoint + t * rayDirection;
-        vec4 voxel = getVoxel(volume_, volumeParameters_, samplePos);
-        vec3 gradient = RC_CALC_GRADIENTS(voxel, samplePos, volume_, volumeParameters_, t, rayDirection, entryTex_, entryParameters_);
-        vec4 color = RC_APPLY_CLASSIFICATION(transferFunc_, voxel);
+        samplePos = entryPoint + t * rayDirection;
+        voxel = getVoxel(volume_, volumeParameters_, samplePos);
+        gradient = RC_CALC_GRADIENTS(voxel, samplePos, volume_, volumeParameters_, t, rayDirection, entryTex_, entryParameters_);
+        color = RC_APPLY_CLASSIFICATION(transferFunc_, voxel);
         color.rgb = RC_APPLY_SHADING(color.rgb, color.rgb, vec3(1.0), samplePos, gradient, lightPosition_, vec3(0.0));
         result = RC_APPLY_COMPOSITING(result, color, samplePos, voxel, gradient, t, tDepth, tIncr);
 
@@ -73,6 +74,9 @@ vec4 rayTraversal(vec3 entryPoint, vec3 exitPoint, vec2 texCoords) {
         if (result.a > ERT_THRESHOLD) t = tEnd;
         else t += tIncr;
     }
+    // Remove the last part of the integration that was too much.
+    tIncr = tEnd-(t-0.5f*tIncr);
+    result = RC_APPLY_COMPOSITING(result, color, samplePos, voxel, gradient, t, tDepth, tIncr);
 
     if (tDepth != -1.0)
         tDepth = calculateDepthValue(tDepth, texture(entryDepthTex_, texCoords).z, texture(exitDepthTex_, texCoords).z);
