@@ -141,7 +141,7 @@ void NetworkEditorView::wheelEvent(QWheelEvent* e) {
     QPoint numDegrees = e->angleDelta() / 8 / 15;
 #else
     QPoint numPixels;
-    QPoint numDegrees = e->delta() / 8 / 15;
+    QPoint numDegrees = QPoint(0, e->delta() / 8 / 15);
 #endif
     if (e->modifiers() == Qt::ControlModifier) {
         if (!numPixels.isNull()) {
