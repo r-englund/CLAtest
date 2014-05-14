@@ -1,165 +1,160 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" ?>
 <InviwoTreeData version="1.0">
- <!-- Don't edit the following code -->
- <Processors>
-  <Processor id="ref0" identifier="VolumeSource" type="VolumeSource">
-   <MetaDataList>
-    <MetaData type="ProcessorMetaData">
-     <position x="-625" y="-675"/>
-     <visibility content="1"/>
-     <selection content="0"/>
-    </MetaData>
-   </MetaDataList>
-   <Properties>
-    <Property displayName="Data range" identifier="dataRange" key="dataRange" type="FloatMinMaxProperty">
-     <MetaDataList/>
-     <value x="0" y="255"/>
-     <range x="0" y="255"/>
-     <increment content="0.0099999998"/>
-    </Property>
-    <Property displayName="Volume file" identifier="filename" key="filename" type="FileProperty">
-     <MetaDataList/>
-     <url content="../../volumes/hydrogenatom.dat"/>
-     <nameFilter>
-      <filter content="All Files (*.*)"/>
-      <filter content="Inviwo dat file format (*.dat)"/>
-      <filter content="Inviwo ivf file format (*.ivf)"/>
-      <filter content="Raw binary file (*.raw)"/>
-     </nameFilter>
-     <acceptMode content="0"/>
-     <fileMode content="0"/>
-    </Property>
-    <Property displayName="Value range" identifier="valueRange" key="valueRange" type="FloatMinMaxProperty">
-     <MetaDataList/>
-     <value x="0" y="255"/>
-     <range x="0" y="255"/>
-     <increment content="0.0099999998"/>
-    </Property>
-    <Property displayName="Value unit" identifier="valueUnit" key="valueUnit" type="StringProperty">
-     <MetaDataList/>
-     <value content=""/>
-    </Property>
-   </Properties>
-  </Processor>
-  <Processor id="ref2" identifier="VolumeSliceGL" type="VolumeSliceGL">
-   <MetaDataList>
-    <MetaData type="ProcessorMetaData">
-     <position x="-625" y="-525"/>
-     <visibility content="1"/>
-     <selection content="1"/>
-    </MetaData>
-   </MetaDataList>
-   <Properties>
-    <Property displayName="Coordinate Plane" identifier="coordinatePlane" key="coordinatePlane" type="OptionPropertyInt">
-     <MetaDataList/>
-     <value content="0"/>
-    </Property>
-    <Property displayName="Slice Number" identifier="sliceNumber" key="sliceNumber" type="IntProperty">
-     <MetaDataList/>
-     <value content="64"/>
-     <minvalue content="1"/>
-     <maxvalue content="128"/>
-     <increment content="1"/>
-    </Property>
-    <Property displayName="Enable Transfer Function" identifier="tfMappingEnabled" key="tfMappingEnabled" type="BoolProperty">
-     <MetaDataList/>
-     <value content="1"/>
-    </Property>
-    <Property displayName="Transfer function" identifier="transferFunction" key="transferFunction" type="TransferFunctionProperty">
-     <MetaDataList>
-      <MetaData type="PropertyEditorWidgetMetaData">
-       <position x="0" y="0"/>
-       <dimension x="256" y="256"/>
-       <visibility content="0"/>
-       <dockstatus content="DockedRight"/>
-      </MetaData>
-     </MetaDataList>
-     <zoomH_ x="0" y="1"/>
-     <zoomV_ x="0" y="1"/>
-     <showHistogram_ content="1"/>
-     <transferFunction>
-      <maskMin content="0"/>
-      <maskMax content="1"/>
-      <dataPoints>
-       <point>
-        <pos x="0.0039215689" y="0"/>
-        <rgba w="0" x="0.40784314" y="0.40784314" z="0.40784314"/>
-       </point>
-       <point>
-        <pos x="0.023529412" y="0.74000001"/>
-        <rgba w="0.74000001" x="0.0077821012" y="0.99215686" z="0.089814603"/>
-       </point>
-       <point>
-        <pos x="0.078431375" y="0.050000001"/>
-        <rgba w="0.050000001" x="0.61960787" y="0.61960787" z="0.61960787"/>
-       </point>
-       <point>
-        <pos x="0.17254902" y="0.88"/>
-        <rgba w="0.88" x="0.96078432" y="0.094193943" z="0.094193943"/>
-       </point>
-      </dataPoints>
-      <interpolationType_ content="0"/>
-     </transferFunction>
-    </Property>
-   </Properties>
-  </Processor>
-  <Processor id="ref1" identifier="CanvasGL" type="CanvasGL">
-   <MetaDataList>
-    <MetaData type="ProcessorMetaData">
-     <position x="-625" y="-400"/>
-     <visibility content="1"/>
-     <selection content="0"/>
-    </MetaData>
-    <MetaData type="ProcessorWidgetMetaData">
-     <position x="1573" y="536"/>
-     <dimension x="256" y="256"/>
-     <visibility content="1"/>
-    </MetaData>
-   </MetaDataList>
-   <Properties>
-    <Property displayName="Dimensions" identifier="dimensions" key="dimensions" type="IntVec2Property">
-     <MetaDataList/>
-     <value x="256" y="256"/>
-     <minvalue x="128" y="128"/>
-     <maxvalue x="4096" y="4096"/>
-     <increment x="1" y="1"/>
-    </Property>
-    <Property displayName="Output Directory" identifier="layerDir" key="layerDir" type="DirectoryProperty">
-     <MetaDataList/>
-     <directory content="../../images"/>
-     <files>
-      <file content="placeholder.png"/>
-      <file content="swirl.tga"/>
-      <file content="swirl1.tga"/>
-     </files>
-    </Property>
-    <Property displayName="Save Image Layer" identifier="saveLayer" key="saveLayer" type="ButtonProperty">
-     <MetaDataList/>
-    </Property>
-    <Property displayName="Visible Layer" identifier="visibleLayer" key="visibleLayer" type="OptionPropertyInt">
-     <MetaDataList/>
-     <value content="0"/>
-    </Property>
-   </Properties>
-  </Processor>
- </Processors>
- <Connections>
-  <Connection>
-   <OutPort identifier="image.outport">
-    <Processor identifier="VolumeSliceGL" reference="ref2" type="VolumeSliceGL"/>
-   </OutPort>
-   <InPort identifier="inport">
-    <Processor identifier="CanvasGL" reference="ref1" type="CanvasGL"/>
-   </InPort>
-  </Connection>
-  <Connection>
-   <OutPort identifier="data">
-    <Processor identifier="VolumeSource" reference="ref0" type="VolumeSource"/>
-   </OutPort>
-   <InPort identifier="volume.inport">
-    <Processor identifier="VolumeSliceGL" reference="ref2" type="VolumeSliceGL"/>
-   </InPort>
-  </Connection>
- </Connections>
- <ProcessorLinks/>
+    <!-- Don't edit the following code -->
+    <Processors>
+        <Processor type="VolumeSource" identifier="VolumeSource" id="ref0">
+            <MetaDataList>
+                <MetaData type="ProcessorMetaData">
+                    <position x="-625" y="-675" />
+                    <visibility content="1" />
+                    <selection content="0" />
+                </MetaData>
+            </MetaDataList>
+            <Properties>
+                <Property type="FloatVec3Property" identifier="angles" displayName="Angles" key="angles" />
+                <Property type="FloatMinMaxProperty" identifier="dataRange" displayName="Data range" key="dataRange" />
+                <Property type="StringProperty" identifier="dimensions" displayName="Dimensions" key="dimensions">
+                    <value content="uvec3(128, 128, 128)" />
+                </Property>
+                <Property type="FileProperty" identifier="filename" displayName="Volume file" key="filename">
+                    <url content="../../volumes/hydrogenatom.dat" />
+                    <nameFilter>
+                        <filter content="All Files (*.*)" />
+                        <filter content="Inviwo dat file format (*.dat)" />
+                        <filter content="Inviwo ivf file format (*.ivf)" />
+                        <filter content="Raw binary file (*.raw)" />
+                    </nameFilter>
+                    <acceptMode content="0" />
+                    <fileMode content="0" />
+                </Property>
+                <Property type="StringProperty" identifier="format" displayName="Format" key="format">
+                    <value content="UINT8" />
+                </Property>
+                <Property type="FloatVec3Property" identifier="length" displayName="Lengths" key="length" />
+                <Property type="FloatVec3Property" identifier="offset" displayName="Offset" key="offset" />
+                <Property type="BoolProperty" identifier="override" displayName="Override" key="override" />
+                <Property type="FloatMinMaxProperty" identifier="valueRange" displayName="Value range" key="valueRange" />
+                <Property type="StringProperty" identifier="valueUnit" displayName="Value unit" key="valueUnit">
+                    <value content="" />
+                </Property>
+            </Properties>
+        </Processor>
+        <Processor type="VolumeSliceGL" identifier="VolumeSliceGL" id="ref1">
+            <MetaDataList>
+                <MetaData type="ProcessorMetaData">
+                    <position x="-625" y="-525" />
+                    <visibility content="1" />
+                    <selection content="0" />
+                </MetaData>
+            </MetaDataList>
+            <InteractonHandlers>
+                <InteractionHandler type="undefined" />
+            </InteractonHandlers>
+            <Properties>
+                <Property type="BoolProperty" identifier="flipHorizontal" displayName="Flip Horizontal View" key="flipHorizontal" />
+                <Property type="BoolProperty" identifier="flipVertical" displayName="Flip Vertical View" key="flipVertical" />
+                <Property type="BaseOptionProperty" identifier="sliceAxis" displayName="Slice along axis" key="sliceAxis">
+                    <selectedIdentifier content="y" />
+                </Property>
+                <Property type="IntProperty" identifier="sliceNumber" displayName="Slice Number" key="sliceNumber">
+                    <maxvalue content="128" />
+                    <value content="64" />
+                </Property>
+                <Property type="BoolProperty" identifier="tfMappingEnabled" displayName="Enable Transfer Function" key="tfMappingEnabled" />
+                <Property type="TransferFunctionProperty" identifier="transferFunction" displayName="Transfer function" key="transferFunction">
+                    <MetaDataList>
+                        <MetaData type="PropertyEditorWidgetMetaData">
+                            <position x="0" y="0" />
+                            <dimension x="256" y="256" />
+                            <visibility content="0" />
+                            <dockstatus content="DockedRight" />
+                        </MetaData>
+                    </MetaDataList>
+                    <transferFunction>
+                        <maskMin content="0" />
+                        <maskMax content="1" />
+                        <dataPoints>
+                            <point>
+                                <pos x="0.0039215689" y="0" />
+                                <rgba x="0.40784314" y="0.40784314" z="0.40784314" w="0" />
+                            </point>
+                            <point>
+                                <pos x="0.023529412" y="0.74000001" />
+                                <rgba x="0.0077821012" y="0.99215686" z="0.089814603" w="0.74000001" />
+                            </point>
+                            <point>
+                                <pos x="0.078431375" y="0.050000001" />
+                                <rgba x="0.61960787" y="0.61960787" z="0.61960787" w="0.050000001" />
+                            </point>
+                            <point>
+                                <pos x="0.17254902" y="0.88" />
+                                <rgba x="0.96078432" y="0.094193943" z="0.094193943" w="0.88" />
+                            </point>
+                        </dataPoints>
+                        <interpolationType_ content="0" />
+                    </transferFunction>
+                </Property>
+            </Properties>
+        </Processor>
+        <Processor type="CanvasGL" identifier="CanvasGL" id="ref2">
+            <MetaDataList>
+                <MetaData type="ProcessorMetaData">
+                    <position x="-625" y="-400" />
+                    <visibility content="1" />
+                    <selection content="1" />
+                </MetaData>
+                <MetaData type="ProcessorWidgetMetaData">
+                    <position x="2827" y="501" />
+                    <dimension x="256" y="256" />
+                    <visibility content="1" />
+                </MetaData>
+            </MetaDataList>
+            <Properties>
+                <Property type="IntVec2Property" identifier="dimensions" displayName="Dimensions" key="dimensions" />
+                <Property type="DirectoryProperty" identifier="layerDir" displayName="Output Directory" key="layerDir">
+                    <directory content="../../images" />
+                </Property>
+                <Property type="ButtonProperty" identifier="saveLayer" displayName="Save Image Layer" key="saveLayer" />
+                <Property type="BaseOptionProperty" identifier="visibleLayer" displayName="Visible Layer" key="visibleLayer">
+                    <options>
+                        <option>
+                            <id content="color" />
+                            <name content="Color layer" />
+                            <value content="0" />
+                        </option>
+                        <option>
+                            <id content="depth" />
+                            <name content="Depth layer" />
+                            <value content="1" />
+                        </option>
+                        <option>
+                            <id content="picking" />
+                            <name content="Picking layer" />
+                            <value content="2" />
+                        </option>
+                    </options>
+                    <selectedIdentifier content="color" />
+                </Property>
+            </Properties>
+        </Processor>
+    </Processors>
+    <Connections>
+        <Connection>
+            <OutPort identifier="image.outport">
+                <Processor type="VolumeSliceGL" identifier="VolumeSliceGL" reference="ref1" />
+            </OutPort>
+            <InPort identifier="inport">
+                <Processor type="CanvasGL" identifier="CanvasGL" reference="ref2" />
+            </InPort>
+        </Connection>
+        <Connection>
+            <OutPort identifier="data">
+                <Processor type="VolumeSource" identifier="VolumeSource" reference="ref0" />
+            </OutPort>
+            <InPort identifier="volume.inport">
+                <Processor type="VolumeSliceGL" identifier="VolumeSliceGL" reference="ref1" />
+            </InPort>
+        </Connection>
+    </Connections>
+    <ProcessorLinks />
 </InviwoTreeData>
