@@ -56,9 +56,9 @@ CurveGraphicsItem::CurveGraphicsItem(QPointF startPoint, QPointF endPoint, uvec3
 CurveGraphicsItem::~CurveGraphicsItem() {}
 
 QPainterPath CurveGraphicsItem::obtainCurvePath() const {
-    float delta = endPoint_.y()-startPoint_.y();
-    QPointF ctrlPoint1 = QPointF(startPoint_.x(), endPoint_.y()-delta/4.0);
-    QPointF ctrlPoint2 = QPointF(endPoint_.x(), startPoint_.y()+delta/4.0);
+    float delta = endPoint_.y() - startPoint_.y();
+    QPointF ctrlPoint1 = QPointF(startPoint_.x(), endPoint_.y() - delta / 4.0);
+    QPointF ctrlPoint2 = QPointF(endPoint_.x(), startPoint_.y() + delta / 4.0);
     QPainterPath bezierCurve;
     bezierCurve.moveTo(startPoint_);
     bezierCurve.cubicTo(ctrlPoint1, ctrlPoint2, endPoint_);
@@ -66,16 +66,17 @@ QPainterPath CurveGraphicsItem::obtainCurvePath() const {
 }
 
 QPainterPath CurveGraphicsItem::obtainCurvePath(QPointF startPoint, QPointF endPoint) {
-    float delta = endPoint.y()-startPoint.y();
-    QPointF ctrlPoint1 = QPointF(startPoint.x(), endPoint.y()-delta/4.0);
-    QPointF ctrlPoint2 = QPointF(endPoint.x(), startPoint.y()+delta/4.0);
+    float delta = endPoint.y() - startPoint.y();
+    QPointF ctrlPoint1 = QPointF(startPoint.x(), endPoint.y() - delta / 4.0);
+    QPointF ctrlPoint2 = QPointF(endPoint.x(), startPoint.y() + delta / 4.0);
     QPainterPath bezierCurve;
     bezierCurve.moveTo(startPoint);
     bezierCurve.cubicTo(ctrlPoint1, ctrlPoint2, endPoint);
     return bezierCurve;
 }
 
-void CurveGraphicsItem::paint(QPainter* p, const QStyleOptionGraphicsItem* options, QWidget* widget) {
+void CurveGraphicsItem::paint(QPainter* p, const QStyleOptionGraphicsItem* options,
+                              QWidget* widget) {
     IVW_UNUSED_PARAM(options);
     IVW_UNUSED_PARAM(widget);
 
@@ -89,11 +90,11 @@ void CurveGraphicsItem::paint(QPainter* p, const QStyleOptionGraphicsItem* optio
         p->setPen(QPen(color_, 2.0, Qt::SolidLine, Qt::RoundCap));
         p->drawPath(obtainCurvePath());
     } else if (midPoint_ != startPoint_) {
-        p->setPen(QPen(hoverInputColor_, 4.0, Qt::SolidLine, Qt::RoundCap)); //< Shadow
-        p->drawPath(obtainCurvePath(startPoint_,midPoint_));
+        p->setPen(QPen(hoverInputColor_, 4.0, Qt::SolidLine, Qt::RoundCap));  //< Shadow
+        p->drawPath(obtainCurvePath(startPoint_, midPoint_));
         p->setPen(QPen(color_, 2.0, Qt::SolidLine, Qt::RoundCap));
-        p->drawPath(obtainCurvePath(startPoint_,midPoint_));
-        p->setPen(QPen(hoverOutputColor_, 4.0, Qt::SolidLine, Qt::RoundCap)); //< Shadow
+        p->drawPath(obtainCurvePath(startPoint_, midPoint_));
+        p->setPen(QPen(hoverOutputColor_, 4.0, Qt::SolidLine, Qt::RoundCap));  //< Shadow
         p->drawPath(obtainCurvePath(midPoint_, endPoint_));
         p->setPen(QPen(color_, 2.0, Qt::SolidLine, Qt::RoundCap));
         p->drawPath(obtainCurvePath(midPoint_, endPoint_));
@@ -112,27 +113,29 @@ void CurveGraphicsItem::resetBorderColors() {
 }
 
 QRectF CurveGraphicsItem::boundingRect() const {
-    QPointF topLeft = QPointF(std::min(startPoint_.x(), endPoint_.x()),
-                              std::min(startPoint_.y(), endPoint_.y()));
-    return QRectF(topLeft.x()-10.0, topLeft.y()-10.0,
-                  abs(startPoint_.x()-endPoint_.x())+20.0,
-                  abs(startPoint_.y()-endPoint_.y())+20.0);
+    QPointF topLeft =
+        QPointF(std::min(startPoint_.x(), endPoint_.x()), std::min(startPoint_.y(), endPoint_.y()));
+    return QRectF(topLeft.x() - 10.0, topLeft.y() - 10.0,
+                  abs(startPoint_.x() - endPoint_.x()) + 20.0,
+                  abs(startPoint_.y() - endPoint_.y()) + 20.0);
 }
 
-
-
-ConnectionGraphicsItem::ConnectionGraphicsItem(ProcessorGraphicsItem* outProcessor, Outport* outport,
-        ProcessorGraphicsItem* inProcessor, Inport* inport)
-    : CurveGraphicsItem(outProcessor->mapToScene(outProcessor->calculatePortRect(outport)).boundingRect().center(),
-                        inProcessor->mapToScene(inProcessor->calculatePortRect(inport)).boundingRect().center(),
-                        inport->getColorCode()),
-    outProcessor_(outProcessor),
-    inProcessor_(inProcessor),
-    outport_(outport),
-    inport_(inport) {
+ConnectionGraphicsItem::ConnectionGraphicsItem(ProcessorGraphicsItem* outProcessor,
+                                               Outport* outport, ProcessorGraphicsItem* inProcessor,
+                                               Inport* inport)
+    : CurveGraphicsItem(
+          outProcessor->mapToScene(outProcessor->calculatePortRect(outport))
+              .boundingRect()
+              .center(),
+          inProcessor->mapToScene(inProcessor->calculatePortRect(inport)).boundingRect().center(),
+          inport->getColorCode())
+    , outProcessor_(outProcessor)
+    , inProcessor_(inProcessor)
+    , outport_(outport)
+    , inport_(inport) {
     setFlags(ItemIsSelectable | ItemIsFocusable);
 }
 
 ConnectionGraphicsItem::~ConnectionGraphicsItem() {}
 
-} // namespace
+}  // namespace

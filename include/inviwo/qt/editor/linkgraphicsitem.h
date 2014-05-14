@@ -46,7 +46,7 @@ namespace inviwo {
 class IVW_QTEDITOR_API LinkGraphicsItem : public QGraphicsItem {
 
 public:
-    LinkGraphicsItem(QPointF startPoint, QPointF endPoint, ivec3 color=ivec3(38,38,38));
+    LinkGraphicsItem(QPointF startPoint, QPointF endPoint, ivec3 color = ivec3(255, 255, 255));
     ~LinkGraphicsItem();
 
     virtual QPainterPath shape() const;

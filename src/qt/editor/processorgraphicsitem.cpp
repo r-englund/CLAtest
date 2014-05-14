@@ -356,6 +356,10 @@ void ProcessorGraphicsItem::paint(QPainter* p, const QStyleOptionGraphicsItem* o
         portGrad.setColorAt(1.0f, QColor(portColor.r, portColor.g, portColor.b));
         p->setBrush(portGrad);
         p->drawRect(portRect);
+
+        if (inports[i]->isConnected()) {
+            p->drawRect(portRect.adjusted(3,0,-3,-3));
+        }
     }
 
     // paint outports
@@ -370,6 +374,10 @@ void ProcessorGraphicsItem::paint(QPainter* p, const QStyleOptionGraphicsItem* o
         portGrad.setColorAt(1.0f, QColor(portColor.r, portColor.g, portColor.b));
         p->setBrush(portGrad);
         p->drawRect(portRect);
+
+        if (outports[i]->isConnected()) {
+            p->drawRect(portRect.adjusted(3, 3, -3, 0));
+        }
     }
 
     paintStatusIndicator(p, QPointF(64.0f, -15.0f),
