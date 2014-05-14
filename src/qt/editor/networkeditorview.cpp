@@ -90,17 +90,23 @@ void NetworkEditorView::hideNetwork(bool hide) {
     }
 }
 
-void NetworkEditorView::setZoom(const float& zoom) {
-    if (zoom < 0.2)
-        zoom_ = 0.2;
-    else if (zoom > 5.0)
-        zoom_ = 5.0;
-    else
+void NetworkEditorView::setZoom(const float& zoom, const QPointF& pos) {
+    if (zoom < 0.2) {
+        zoom_ = 0.2f;
+    } else if (zoom > 5.0f) {
+        zoom_ = 5.0f;
+    } else {
         zoom_ = zoom;
+    }
+
+    //LogInfo("pos " << pos.x() << " " << pos.y());
 
     QTransform matrix;
     matrix.scale(zoom_, zoom_);
-    setTransform(matrix);
+    QPointF pos2 = QGraphicsView::mapToScene(pos.toPoint());
+    QGraphicsView::translate(pos2.x(), pos2.y());
+    QGraphicsView::setTransform(matrix);
+    QGraphicsView::translate(-pos2.x(), -pos2.y());
 }
 
 void NetworkEditorView::mouseDoubleClickEvent(QMouseEvent* e) {
@@ -130,16 +136,18 @@ void NetworkEditorView::fitNetwork() {
 }
 
 void NetworkEditorView::wheelEvent(QWheelEvent* e) {
+#if (QT_VERSION >= QT_VERSION_CHECK(5, 0, 0))
     QPoint numPixels = e->pixelDelta();
-    QPoint numDegrees = e->angleDelta() / 8;
-
+    QPoint numDegrees = e->angleDelta() / 8 / 15;
+#else
+    QPoint numPixels;
+    QPoint numDegrees = e->delta() / 8 / 15;
+#endif
     if (e->modifiers() == Qt::ControlModifier) {
-
         if (!numPixels.isNull()) {
-            setZoom(zoom_ + static_cast<float>(numPixels.y()) / 50.0);
+            setZoom(zoom_ + static_cast<float>(numPixels.y()) / 50.0, e->pos());
         } else if (!numDegrees.isNull()) {
-            // This needs tuning for windows...
-            setZoom(zoom_ + static_cast<float>(numPixels.y()) / 50.0);
+            setZoom(zoom_ + static_cast<float>(numDegrees.y()) / 10.0, e->pos());
         }
     } else {
         QGraphicsView::wheelEvent(e);
