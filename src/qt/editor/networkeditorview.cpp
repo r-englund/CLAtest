@@ -38,52 +38,51 @@
 #include <inviwo/core/util/settings/linksettings.h>
 #include <inviwo/core/util/settings/systemsettings.h>
 #include <inviwo/qt/editor/networkeditorview.h>
+#include <inviwo/core/network/processornetwork.h>
 
 namespace inviwo {
 
-NetworkEditorView::NetworkEditorView(QWidget* parent) : QGraphicsView(parent),
-    zoomLevel_(1)
-{
+NetworkEditorView::NetworkEditorView(QWidget* parent)
+    : QGraphicsView(parent)
+    , NetworkEditorObserver()
+    , zoom_(1.0f) {
     setNetworkEditor(NetworkEditor::getPtr());
     setRenderHint(QPainter::Antialiasing, true);
     setMouseTracking(true);
     setDragMode(QGraphicsView::RubberBandDrag);
-    setViewportUpdateMode(QGraphicsView::FullViewportUpdate);
+    setViewportUpdateMode(QGraphicsView::SmartViewportUpdate);
 }
 
-NetworkEditorView::~NetworkEditorView() {
-    QGraphicsView::setScene(0);
-}
-
+NetworkEditorView::~NetworkEditorView() { QGraphicsView::setScene(NULL); }
 
 void NetworkEditorView::setNetworkEditor(NetworkEditor* networkEditor) {
     networkEditor_ = networkEditor;
-    Property* displayLinkProperty = InviwoApplication::getPtr()->getSettingsByType<LinkSettings>()->getPropertyByIdentifier("displayLinks");
+    Property* displayLinkProperty =
+        InviwoApplication::getPtr()->getSettingsByType<LinkSettings>()->getPropertyByIdentifier(
+            "displayLinks");
 
     if (displayLinkProperty) {
         displayLinkProperty->onChange(networkEditor_, &NetworkEditor::updateLinkGraphicsItems);
         networkEditor_->updateLinkGraphicsItems();
-    }
-    else
+    } else
         LogWarn("Display Links property not found in settings");
+
+    NetworkEditorObserver::addObservation(networkEditor_);	
 
     QGraphicsView::setScene(networkEditor);
 }
 
-NetworkEditor* NetworkEditorView::getNetworkEditor() const {
-    return networkEditor_;
-}
+NetworkEditor* NetworkEditorView::getNetworkEditor() const { return networkEditor_; }
 
-void NetworkEditorView::hideNetwork(bool hide){
-    if(hide){
-        if(scene()){
+void NetworkEditorView::hideNetwork(bool hide) {
+    if (hide) {
+        if (scene()) {
             scrollPos_.x = horizontalScrollBar()->value();
             scrollPos_.y = verticalScrollBar()->value();
             QGraphicsView::setScene(NULL);
         }
-    }
-    else{
-        if(scene() != networkEditor_){
+    } else {
+        if (scene() != networkEditor_) {
             QGraphicsView::setScene(networkEditor_);
             horizontalScrollBar()->setValue(scrollPos_.x);
             verticalScrollBar()->setValue(scrollPos_.y);
@@ -91,85 +90,66 @@ void NetworkEditorView::hideNetwork(bool hide){
     }
 }
 
-void NetworkEditorView::setZoomLevel(int zoomLevel) {
-    if (zoomLevel < -10) zoomLevel = -10;
-    else if (zoomLevel > 10) zoomLevel = 10;
+void NetworkEditorView::setZoom(const float& zoom) {
+    if (zoom < 0.2)
+        zoom_ = 0.2;
+    else if (zoom > 5.0)
+        zoom_ = 5.0;
+    else
+        zoom_ = zoom;
 
-    zoomLevel_ = zoomLevel;
-    zoomValue_ = calculateScaleFor(zoomLevel);
-    QMatrix matrix;
-    matrix.scale(zoomValue_, zoomValue_);
-    setMatrix(matrix);
+    QTransform matrix;
+    matrix.scale(zoom_, zoom_);
+    setTransform(matrix);
 }
 
 void NetworkEditorView::mouseDoubleClickEvent(QMouseEvent* e) {
     QGraphicsView::mouseDoubleClickEvent(e);
 
     if (!e->isAccepted()) {
-        fitInView(networkEditor_->itemsBoundingRect(), Qt::KeepAspectRatio);
-        float scale = matrix().m11();
-        zoomLevel_ = calculateZoomLevelFor(scale);
+        fitNetwork();
         e->accept();
     }
 }
 
 void NetworkEditorView::resizeEvent(QResizeEvent* e) {
     QGraphicsView::resizeEvent(e);
-    setZoomLevel(zoomLevel_);
+    fitNetwork();
     e->accept();
+}
+
+void NetworkEditorView::fitNetwork() {
+    const ProcessorNetwork* network = networkEditor_->getProcessorNetwork();
+    if (network) {
+        if (network->getProcessors().size() > 0) {
+            QRectF br = networkEditor_->itemsBoundingRect().adjusted(-50, -50, 50, 50);
+            fitInView(br, Qt::KeepAspectRatio);
+            zoom_ = transform().m11();
+        }
+    }
 }
 
 void NetworkEditorView::wheelEvent(QWheelEvent* e) {
-    int newZoomLevel = zoomLevel_;
+    QPoint numPixels = e->pixelDelta();
+    QPoint numDegrees = e->angleDelta() / 8;
 
-    if (e->delta() > 0) newZoomLevel++;
-    else newZoomLevel--;
+    if (e->modifiers() == Qt::ControlModifier) {
 
-    setZoomLevel(newZoomLevel);
+        if (!numPixels.isNull()) {
+            setZoom(zoom_ + static_cast<float>(numPixels.y()) / 50.0);
+        } else if (!numDegrees.isNull()) {
+            // This needs tuning for windows...
+            setZoom(zoom_ + static_cast<float>(numPixels.y()) / 50.0);
+        }
+    } else {
+        QGraphicsView::wheelEvent(e);
+    }
     e->accept();
 }
 
-float NetworkEditorView::calculateScaleFor(int zoomLevel) const {
-    float editorWidth = networkEditor_->width();
-    float editorHeight = networkEditor_->height();
-    float canvasSize = editorWidth > editorHeight ? editorWidth : editorHeight;
-    float viewSize = editorWidth > editorHeight ?
-                     float(viewport()->width()) :
-                     float(viewport()->height());
-    // at zoom level -10 canvasSize must become viewSize
-    float zoomOutFactor = (viewSize*0.95f / canvasSize);
-    // at zoom level +10 canvasSize must be 3 times its size
-    float zoomInFactor = 3.0f / 10.0f;
-    // calculate the zoom
-    float zoom = 1.0f;
-
-    if (zoomLevel < 0)
-        zoom = 1.0f + float(zoomLevel) * (1.0f - zoomOutFactor) / 10.0f;
-    else
-        zoom = 1.0f + zoomInFactor * float(zoomLevel);
-
-    return zoom;
+void NetworkEditorView::onNetworkEditorFileChanged(const std::string& newFilename) {
+    fitNetwork();
 }
+void NetworkEditorView::onModifiedStatusChanged(const bool& newStatus) {}
 
-int NetworkEditorView::calculateZoomLevelFor(float scale) const {
-    float editorWidth = networkEditor_->width();
-    float editorHeight = networkEditor_->height();
-    float canvasSize = editorWidth > editorHeight ? editorWidth : editorHeight;
-    float viewSize = editorWidth > editorHeight ?
-                     float(viewport()->width()) :
-                     float(viewport()->height());
-    // at zoom level -10 canvasSize must become viewSize
-    float zoomOutFactor = (viewSize*0.95f / canvasSize);
-    // at zoom level +10 canvasSize must be 3 times its size
-    float zoomInFactor = 3.0f / 10.0f;
-    float zoomLevel = 1.0f;
-
-    if (scale < 1)
-        zoomLevel = (scale - 1.0f) * 10.0f / (1.0f - zoomOutFactor);
-    else
-        zoomLevel = (scale - 1.0f) / zoomInFactor;
-
-    return int(zoomLevel);
-}
-
-} // namespace
+}  // namespace

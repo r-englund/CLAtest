@@ -34,16 +34,17 @@
 #define IVW_NETWORKEDITORVIEW_H
 
 #include <inviwo/qt/editor/inviwoqteditordefine.h>
+#include <inviwo/qt/editor/networkeditor.h>
+
 #include <QGraphicsView>
 
-#include "networkeditor.h"
 
 namespace inviwo {
 
-class IVW_QTEDITOR_API NetworkEditorView : public QGraphicsView {
+class IVW_QTEDITOR_API NetworkEditorView : public QGraphicsView, public NetworkEditorObserver {
 
 public:
-    NetworkEditorView(QWidget* parent=NULL);
+    NetworkEditorView(QWidget* parent = NULL);
     ~NetworkEditorView();
 
     void setNetworkEditor(NetworkEditor* networkEditor);
@@ -57,17 +58,19 @@ protected:
     void wheelEvent(QWheelEvent* e);
 
 private:
+    virtual void onNetworkEditorFileChanged(const std::string& newFilename);
+    virtual void onModifiedStatusChanged(const bool &newStatus);
+
+
     NetworkEditor* networkEditor_;
     ivec2 scrollPos_;
 
-    int zoomLevel_;
-    float zoomValue_;
+    float zoom_;
+    void setZoom(const float& zoom);
+    void fitNetwork();
 
-    void setZoomLevel(int zoomLevel);
-    float calculateScaleFor(int zoomLevel) const;
-    int calculateZoomLevelFor(float scale) const;
 };
 
-} // namespace
+}  // namespace
 
-#endif // IVW_NETWORKEDITORVIEW_H
+#endif  // IVW_NETWORKEDITORVIEW_H
