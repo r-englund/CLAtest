@@ -49,9 +49,6 @@ public:
     virtual void initialize();
     virtual void deinitialize();
     virtual MeshRAM* clone() const;
-    
-    virtual Mesh* getOwner();
-    virtual const Mesh* getOwner() const;
 
 protected:
     virtual void update(bool editable);

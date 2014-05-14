@@ -60,23 +60,16 @@ MeshRAM* MeshRAM::clone() const {
 void MeshRAM::update(bool editable) {
     attributesRAM_.clear();
 
-    Mesh *owner = this->getOwner();
+    Mesh* owner = static_cast<Mesh*>(this->getOwner());
     if (editable) {
-        for (std::vector<Buffer*>::const_iterator it = owner->getBuffers().begin(); it != owner->getBuffers().end(); ++it)
+        for (std::vector<Buffer*>::const_iterator it = owner->getBuffers().begin();
+             it != owner->getBuffers().end(); ++it)
             attributesRAM_.push_back((*it)->getEditableRepresentation<BufferRAM>());
-    }
-    else {
-        for (std::vector<Buffer*>::const_iterator it = owner->getBuffers().begin(); it != owner->getBuffers().end(); ++it)
+    } else {
+        for (std::vector<Buffer*>::const_iterator it = owner->getBuffers().begin();
+             it != owner->getBuffers().end(); ++it)
             attributesRAM_.push_back(const_cast<BufferRAM*>((*it)->getRepresentation<BufferRAM>()));
     }
-}
-
-Mesh* MeshRAM::getOwner() {
-    return reinterpret_cast<Mesh*>(DataRepresentation::getOwner());
-}
-
-const Mesh* MeshRAM::getOwner() const {
-    return reinterpret_cast<const Mesh*>(DataRepresentation::getOwner());
 }
 
 } // namespace
