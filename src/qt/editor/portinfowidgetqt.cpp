@@ -37,23 +37,20 @@
 #include <QVector2D>
 
 #include <inviwo/qt/editor/networkeditor.h>
-#include <inviwo/qt/editor/portinfographicsitem.h>
+#include <inviwo/qt/editor/portinfowidgetqt.h>
 #include <inviwo/qt/widgets/labelgraphicsitem.h>
 
 namespace inviwo {
 
-PortInfoGraphicsItem::PortInfoGraphicsItem()
-    : QGraphicsRectItem(0, -30, 100, 30) {
-    setZValue(3.0f);
+PortInfoWidgetQt::PortInfoWidgetQt(QWidget* parent)
+    : QWidget(parent) {
+    setFocusPolicy(Qt::NoFocus);
+    setAttribute(Qt::WA_OpaquePaintEvent);
+    setMinimumSize(32, 32);
+    setMaximumSize(32, 32);
+    setWindowFlags(Qt::ToolTip);
 }
 
-PortInfoGraphicsItem::~PortInfoGraphicsItem() {}
-
-void PortInfoGraphicsItem::paint(QPainter* p, const QStyleOptionGraphicsItem* options, QWidget* widget) {
-    QPointF pos = QPointF(rect().x(), rect().y());
-    p->setPen(QPen(Qt::black, 1));
-    p->setBrush(QBrush(Qt::yellow));
-    p->drawRect(rect());
-}
+PortInfoWidgetQt::~PortInfoWidgetQt() {}
 
 } // namespace

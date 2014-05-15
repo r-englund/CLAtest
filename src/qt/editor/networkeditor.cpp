@@ -70,7 +70,7 @@ NetworkEditor::NetworkEditor() :
     , processorNetwork_(NULL)
     , oldConnectionTarget_(NULL)
     , oldProcessorTarget_(NULL)
-    , portInfoGraphicsItem_(NULL)
+    , portInfoWidget_(NULL)
     , connectionCurve_(NULL)
     , linkCurve_(NULL)
     , startProcessor_(NULL)
@@ -89,9 +89,9 @@ NetworkEditor::NetworkEditor() :
     processorNetworkEvaluator_ = new ProcessorNetworkEvaluator(processorNetwork_);
     processorNetwork_->addObserver(this);
     hoverTimer_.setSingleShot(true);
-    portInfoGraphicsItem_ = new PortInfoGraphicsItem();
-    //portInfoGraphicsItem_->hide();
-    //addItem(portInfoGraphicsItem_);
+    portInfoWidget_ = new PortInfoWidgetQt();
+    //portInfoWidget_->hide();
+    //addItem(portInfoWidget_);
     connect(&hoverTimer_, SIGNAL(timeout()), this, SLOT(managePortInspection()));
 }
 
@@ -110,7 +110,7 @@ NetworkEditor::~NetworkEditor() {
 
     delete processorNetwork_;
     delete processorNetworkEvaluator_;
-    delete portInfoGraphicsItem_;
+    delete portInfoWidget_;
     ivwAssert(processorGraphicsItems_.size()==0,
               "ProcessorGraphicsItems not properly removed");
     ivwAssert(connectionGraphicsItems_.size() == 0,
@@ -528,7 +528,7 @@ void NetworkEditor::managePortInspection() {
                 }
                 if (inspection_.isInformationActive()) {
                     inspection_.setState(Inspection::Inspect);
-                    QPoint portInfoPos = QPoint(inspection_.pos_.x + 5, inspection_.pos_.y - 5);
+                    QPoint portInfoPos = QPoint(inspection_.gpos_.x + 5, inspection_.gpos_.y - 5);
                     if(inspection_.isInspectorActive()){
                         portInfoPos.setY(inspection_.size() + portInfoPos.y());
                     }
@@ -702,16 +702,16 @@ void NetworkEditor::removePortInspector(std::string processorIdentifier, std::st
     }
 }
 
-void NetworkEditor::addPortInformation(std::string processorIdentifier, std::string portIdentifier, std::string portInformation, QPointF pos) {
+void NetworkEditor::addPortInformation(std::string processorIdentifier, std::string portIdentifier, std::string portInformation, QPoint pos) {
     if(!portInformation.empty())
         LogInfo("\nPort: " << portIdentifier << "\n" << portInformation);
 
-    //portInfoGraphicsItem_->setPos(pos);
-    //portInfoGraphicsItem_->show();    
+    //portInfoWidget_->move(pos);
+    //portInfoWidget_->show();    
 }
 
 void NetworkEditor::removePortInformation() {
-    //portInfoGraphicsItem_->hide();
+    //portInfoWidget_->hide();
 }
 
 
