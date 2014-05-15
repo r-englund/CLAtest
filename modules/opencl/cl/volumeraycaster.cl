@@ -35,7 +35,7 @@
 __constant float REF_SAMPLING_INTERVAL = 150.f;
 #define ERT_THRESHOLD 1.0
 
-__kernel void raycaster(read_only image3d_t volume
+__kernel void raycaster(read_only image3d_t volume, float volumeDataScaling
                         , read_only image2d_t entryPoints
                         , read_only image2d_t exitPoints
                         , read_only image2d_t transferFunction 
@@ -61,7 +61,7 @@ __kernel void raycaster(read_only image3d_t volume
         float4 emissionAbsorption;
         while(t < tEnd) {
             float3 pos = entry.xyz+t*direction;
-            float volumeSample = read_imagef(volume, smpNormClampEdgeLinear, as_float4(pos)).x; 
+            float volumeSample = getVoxelS(volume, as_float4(pos), volumeDataScaling); 
             // xyz == emission, w = absorption
             emissionAbsorption = read_imagef(transferFunction, smpNormClampEdgeLinear, (float2)(volumeSample, 0.5f));
             // Taylor expansion approximation

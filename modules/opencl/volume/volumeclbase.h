@@ -51,6 +51,13 @@ public:
     virtual cl::Image& getEditable() { return *clImage_; }
     virtual const cl::Image& get() const { return *const_cast<const cl::Image*>(clImage_); }
 
+    /** 
+     * \brief Calculates scaling for 12-bit data dependent on internal OpenCL format.
+     * Scaling will be applied using: dataValue * scaling
+     * @return float Scaling value.
+     */
+    virtual float getVolumeDataScaling(const Volume* volume) const = 0;
+
 protected:
     cl::Image* clImage_;
 };

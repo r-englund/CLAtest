@@ -115,6 +115,7 @@ void VolumeRaycasterCL::process() {
     {
         cl_uint arg = 0;
         kernel_->setArg(arg++, *volumeCL);
+        kernel_->setArg(arg++, volumeCL->getVolumeDataScaling(volume));
         kernel_->setArg(arg++, *entryCLGL->getLayerCL());
         kernel_->setArg(arg++, *exitCLGL->getLayerCL());
         kernel_->setArg(arg++, *transferFunctionCL);

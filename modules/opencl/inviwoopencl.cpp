@@ -240,7 +240,7 @@ cl::Program OpenCL::buildProgram(const std::string& fileName, const std::string&
         if (buildLog.size() > 1)
             LogInfoCustom("OpenCL", fileName << " build info:" << std::endl << buildLog);
     } catch (cl::Error& e) {
-        OpenCL::printBuildError(std::vector<cl::Device>(1, device), program);
+        OpenCL::printBuildError(std::vector<cl::Device>(1, device), program, fileName);
         throw e;
     }
 
