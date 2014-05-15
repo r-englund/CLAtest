@@ -173,6 +173,7 @@ void TransferFunction::clearPoints() {
 }
 
 void TransferFunction::onTransferFunctionPointChange(const TransferFunctionDataPoint* p){
+    std::sort(dataPoints_.begin(), dataPoints_.end(), TFPointComparer);
     invalidate();
     notifyControlPointChanged(p);
 }
