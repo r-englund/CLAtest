@@ -34,24 +34,15 @@
 #define IVW_PORTINFOGRAPHICSITEM_H
 
 #include <inviwo/qt/editor/inviwoqteditordefine.h>
-#include <inviwo/qt/widgets/labelgraphicsitem.h>
-#include <QGraphicsRectItem>
+#include <QWidget>
 
 namespace inviwo {
 
-class IVW_QTEDITOR_API PortInfoGraphicsItem : public QGraphicsRectItem {
+class IVW_QTEDITOR_API PortInfoWidgetQt : public QWidget {
 
 public:
-    PortInfoGraphicsItem();
-    ~PortInfoGraphicsItem();
-
-
-protected:
-    void paint(QPainter* p, const QStyleOptionGraphicsItem* options, QWidget* widget);
-
-private:
-    LabelGraphicsItem* nameLabel_;
-    LabelGraphicsItem* classLabel_;
+    PortInfoWidgetQt(QWidget* parent = NULL);
+    ~PortInfoWidgetQt();
 };
 
 } // namespace

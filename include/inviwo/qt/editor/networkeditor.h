@@ -45,7 +45,7 @@
 #include <inviwo/core/ports/outport.h>
 #include <inviwo/core/util/singleton.h>
 #include <inviwo/core/util/observer.h>
-#include <inviwo/qt/editor/portinfographicsitem.h>
+#include <inviwo/qt/editor/portinfowidgetqt.h>
 #include <inviwo/qt/editor/processorgraphicsitem.h>
 #include <inviwo/qt/editor/connectiongraphicsitem.h>
 #include <inviwo/qt/editor/linkgraphicsitem.h>
@@ -188,7 +188,7 @@ private:
 
     ConnectionGraphicsItem* oldConnectionTarget_;
     ProcessorGraphicsItem* oldProcessorTarget_;
-    PortInfoGraphicsItem* portInfoGraphicsItem_;
+    PortInfoWidgetQt* portInfoWidget_;
     CurveGraphicsItem* connectionCurve_;
     LinkGraphicsItem* linkCurve_;
 
@@ -236,7 +236,7 @@ private:
     void addPortInspector(std::string processorIdentifier, std::string portIdentifier, QPointF pos);
     void removePortInspector(std::string processorIdentifier, std::string portIdentifier);
 
-    void addPortInformation(std::string processorIdentifier, std::string portIdentifier, std::string portInformation, QPointF pos);
+    void addPortInformation(std::string processorIdentifier, std::string portIdentifier, std::string portInformation, QPoint pos);
     void removePortInformation();
 
     void addExternalNetwork(std::string fileName, std::string processorPrefix, ivec2 pos, unsigned int networkEditorFlags=NetworkEditor::None,
