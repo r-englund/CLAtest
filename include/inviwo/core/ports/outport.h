@@ -48,6 +48,7 @@ class IVW_CORE_API Outport : public Port {
 
     friend class SingleInport;
     friend class MultiInport;
+    friend class ImageInport;
 public:
     Outport(std::string identifier,
             PropertyOwner::InvalidationLevel invalidationLevel=PropertyOwner::INVALID_OUTPUT);

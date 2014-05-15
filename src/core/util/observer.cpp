@@ -107,7 +107,6 @@ ObservableInterface& ObservableInterface::operator=(const ObservableInterface& o
     return *this;
 }
 
-
 ObservableInterface::~ObservableInterface() {
     removeObservers();
     delete observers_;

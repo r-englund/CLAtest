@@ -128,10 +128,11 @@ PortConnection* ProcessorNetwork::addConnection(Outport* sourcePort, Inport* des
     PortConnection* connection = getConnection(sourcePort, destPort);
 
     if (!connection && sourcePort && destPort && destPort->canConnectTo(sourcePort)) {
-        modified();
-        destPort->connectTo(sourcePort);
         connection = new PortConnection(sourcePort, destPort);
         portConnections_.push_back(connection);
+        modified();
+        destPort->connectTo(sourcePort);
+        
     }
 
     return connection;

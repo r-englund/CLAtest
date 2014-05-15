@@ -33,6 +33,8 @@
 #include <modules/opencl/image/layerclgl.h>
 #include <modules/opencl/openclsharing.h>
 #include <inviwo/core/util/assertion.h>
+#include <modules/opencl/image/layerclresizer.h>
+#include <modules/opencl/syncclgl.h>
 
 namespace inviwo {
 
@@ -46,8 +48,8 @@ LayerCLGL::LayerCLGL(uvec2 dimensions, LayerType type, const DataFormatBase* for
 }
 
 LayerCLGL::LayerCLGL(const LayerCLGL& rhs)
-    : LayerRepresentation(rhs), texture_(rhs.texture_) {
-    initialize(rhs.texture_);
+    : LayerRepresentation(rhs), texture_(rhs.texture_->clone()) {
+    initialize(texture_);
 }
 
 LayerCLGL::~LayerCLGL() {
@@ -114,7 +116,16 @@ bool LayerCLGL::copyAndResizeLayer(DataRepresentation* targetRep) const {
     // TODO: Implement copying in addition to the resizing
     LayerCLGL* target = dynamic_cast<LayerCLGL*>(targetRep);
     const LayerCLGL* source = this;
-    target->resize(source->getDimension());
+    try {
+        SyncCLGL glSync;
+        glSync.addToAquireGLObjectList(target);
+        glSync.addToAquireGLObjectList(source);
+        glSync.aquireAllObjects();
+        LayerCLResizer::resize(source->get(), target->get(), target->getDimension());
+    } catch (cl::Error err) {
+        LogError(getCLErrorString(err));
+        return false;
+    }
     return true;
 }
 
@@ -136,7 +147,12 @@ void LayerCLGL::notifyAfterTextureInitialization() {
 
     if (it != OpenCLImageSharing::clImageSharingMap_.end()) {
         if (it->second->getRefCount() == 0) {
-            it->second->sharedMemory_ = new cl::Image2DGL(OpenCL::getPtr()->getContext(), CL_MEM_READ_WRITE, GL_TEXTURE_2D, 0, texture_->getID());
+            try {
+                it->second->sharedMemory_ = new cl::Image2DGL(OpenCL::getPtr()->getContext(), CL_MEM_READ_WRITE, GL_TEXTURE_2D, 0, texture_->getID());
+            } catch (cl::Error& err) {
+                LogOpenCLError(err.err());
+            }
+
         }
 
         clImage_ = it->second->sharedMemory_;
