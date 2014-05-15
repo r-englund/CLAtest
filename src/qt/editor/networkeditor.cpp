@@ -528,9 +528,9 @@ void NetworkEditor::managePortInspection() {
                 }
                 if (inspection_.isInformationActive()) {
                     inspection_.setState(Inspection::Inspect);
-                    QPoint portInfoPos = QPoint(inspection_.gpos_.x + 5, inspection_.gpos_.y - 5);
+                    QPoint portInfoPos = QPoint(inspection_.gpos_.x + 5, inspection_.gpos_.y + 5);
                     if(inspection_.isInspectorActive()){
-                        portInfoPos.setY(inspection_.size() + portInfoPos.y());
+                        portInfoPos.setY(inspection_.size() + portInfoPos.y() + 10);
                     }
                     addPortInformation(inspection_.processorIdentifier_,
                                        inspection_.portIdentifier_,
@@ -703,15 +703,15 @@ void NetworkEditor::removePortInspector(std::string processorIdentifier, std::st
 }
 
 void NetworkEditor::addPortInformation(std::string processorIdentifier, std::string portIdentifier, std::string portInformation, QPoint pos) {
-    if(!portInformation.empty())
-        LogInfo("\nPort: " << portIdentifier << "\n" << portInformation);
-
-    //portInfoWidget_->move(pos);
-    //portInfoWidget_->show();    
+    if(!portInformation.empty()){
+        portInfoWidget_->updatePortInfo(portIdentifier, portInformation);
+        portInfoWidget_->move(pos);
+        portInfoWidget_->show();  
+    }  
 }
 
 void NetworkEditor::removePortInformation() {
-    //portInfoWidget_->hide();
+    portInfoWidget_->hide();
 }
 
 

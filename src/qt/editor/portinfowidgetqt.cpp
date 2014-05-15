@@ -30,15 +30,11 @@
  *
  *********************************************************************************/
 
-#include <QApplication>
-#include <QGraphicsDropShadowEffect>
-#include <QPainter>
-#include <QStyleOptionGraphicsItem>
-#include <QVector2D>
-
 #include <inviwo/qt/editor/networkeditor.h>
 #include <inviwo/qt/editor/portinfowidgetqt.h>
 #include <inviwo/qt/widgets/labelgraphicsitem.h>
+#include <QVBoxLayout>
+#include <QFontMetrics>
 
 namespace inviwo {
 
@@ -46,11 +42,29 @@ PortInfoWidgetQt::PortInfoWidgetQt(QWidget* parent)
     : QWidget(parent) {
     setFocusPolicy(Qt::NoFocus);
     setAttribute(Qt::WA_OpaquePaintEvent);
-    setMinimumSize(32, 32);
-    setMaximumSize(32, 32);
     setWindowFlags(Qt::ToolTip);
+
+    infoTextWidget_ = new QTextEdit(this);
+    infoTextWidget_->setReadOnly(true);
+
+    QVBoxLayout* layout = new QVBoxLayout();
+    layout->addWidget(infoTextWidget_);
+    layout->setContentsMargins(0,0,0,0);
+    setLayout(layout);
 }
 
 PortInfoWidgetQt::~PortInfoWidgetQt() {}
+
+void PortInfoWidgetQt::updatePortInfo(std::string portIdentifier, std::string portInformation){
+    std::string infoText = portIdentifier + "\n" + portInformation;
+    QString infoTextQt = QString(infoText.c_str());
+    infoTextWidget_->setText(infoTextQt);
+
+    QFontMetrics m(infoTextWidget_->font());
+    QSize infoSize = m.size(0, infoTextQt);
+    setMinimumSize(infoSize.width()+25, infoSize.height()+10);
+    setMaximumSize(infoSize.width()+25, infoSize.height()+10);
+}
+
 
 } // namespace
