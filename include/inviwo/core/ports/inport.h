@@ -78,7 +78,7 @@ public:
     }
     void callOnChangeIfChanged();
     virtual bool isChanged();
-    void setChanged(bool changed = true);
+    virtual void setChanged(bool changed = true);
 
 protected:
     template <typename T>

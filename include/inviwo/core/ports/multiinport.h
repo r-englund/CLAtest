@@ -61,6 +61,7 @@ public:
 
     virtual PropertyOwner::InvalidationLevel getInvalidationLevel() const;
     virtual void setInvalidationLevel(PropertyOwner::InvalidationLevel invalidationLevel);
+    virtual void setChanged(bool changed = true);
     virtual bool isChanged();
 
     virtual Outport* getConnectedOutport() const;

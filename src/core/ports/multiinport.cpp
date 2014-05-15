@@ -94,7 +94,16 @@ void MultiInport::setInvalidationLevel(PropertyOwner::InvalidationLevel invalida
     setChanged();
 }
 
-bool MultiInport::isChanged(){
+
+void MultiInport::setChanged(bool changed /*= true*/) {
+    InportSet::const_iterator it = inports_->begin();
+    InportSet::const_iterator endIt = inports_->end();
+
+    for (; it != endIt; ++it)
+        (*it)->setChanged(changed);
+}
+
+bool MultiInport::isChanged() {
     InportSet::const_iterator it = inports_->begin();
     InportSet::const_iterator endIt = inports_->end();
 
