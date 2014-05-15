@@ -41,6 +41,22 @@ Observer::Observer() {
     observables_ = new ObservableSet();
 }
 
+Observer::Observer(const Observer& other) {
+    observables_ = new ObservableSet();
+    *this = other;
+}
+
+
+Observer& Observer::operator=(const Observer& other) {
+    if (this != &other) {
+        removeObservations();
+        for (ObservableSet::iterator it = other.observables_->begin(), itEnd = other.observables_->end(); it!=itEnd; ++it) {
+            addObservation(*it);
+        }
+    }
+    return *this;
+}
+
 Observer::~Observer() {
     removeObservations();
     delete observables_;
@@ -75,6 +91,22 @@ void Observer::addObservation(ObservableInterface* observed) {
 ObservableInterface::ObservableInterface() {
     observers_ = new ObserverSet();
 }
+
+ObservableInterface::ObservableInterface(const ObservableInterface& other) {
+    observers_ = new ObserverSet();
+    *this = other;
+}
+
+ObservableInterface& ObservableInterface::operator=(const ObservableInterface& other) {
+    if (this != &other) {
+        removeObservers();
+        for (ObserverSet::iterator it = other.observers_->begin(), itEnd = other.observers_->end(); it!=itEnd; ++it) {
+            addObserver(*it);
+        }
+    }
+    return *this;
+}
+
 
 ObservableInterface::~ObservableInterface() {
     removeObservers();

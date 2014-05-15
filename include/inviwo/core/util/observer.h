@@ -53,6 +53,14 @@ public:
      * Allocates Observable set.
      */
     Observer();
+    /**
+     * Copy constructor. Copies observervables from other  
+     */
+    Observer(const Observer& other);
+    /**
+     * Copies observervables from other and returns this.
+     */
+    Observer& operator=(const Observer& other);
 
     /**
      * Removes the observer from all observable objects. Makes sure that it cannot be called when destroyed.
@@ -102,6 +110,14 @@ public:
      * Allocates Observer set.
      */
     ObservableInterface();
+    /**
+     * Copy constructor. Copies observers from other  
+     */
+    ObservableInterface(const ObservableInterface& other);
+    /**
+     * Copies observers from other and returns this.
+     */
+    ObservableInterface& operator=(const ObservableInterface& other);
     /*
      * Removes all observers.
      */
