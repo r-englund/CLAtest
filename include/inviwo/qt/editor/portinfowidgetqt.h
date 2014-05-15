@@ -35,6 +35,7 @@
 
 #include <inviwo/qt/editor/inviwoqteditordefine.h>
 #include <QWidget>
+#include <QTextEdit>
 
 namespace inviwo {
 
@@ -43,6 +44,11 @@ class IVW_QTEDITOR_API PortInfoWidgetQt : public QWidget {
 public:
     PortInfoWidgetQt(QWidget* parent = NULL);
     ~PortInfoWidgetQt();
+
+    void updatePortInfo(std::string portIdentifier, std::string portInformation);
+
+protected:
+    QTextEdit* infoTextWidget_;
 };
 
 } // namespace
