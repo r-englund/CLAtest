@@ -41,7 +41,7 @@ VolumeCL::VolumeCL(const DataFormatBase* format, const void* data)
 }
 
 VolumeCL::VolumeCL(uvec3 dimensions, const DataFormatBase* format, const void* data)
-    : VolumeRepresentation(dimensions, format), imageFormat_(dataFormatToCLImageFormat(format->getId()))
+    : VolumeRepresentation(dimensions, format), imageFormat_(dataFormatToCLImageFormat(format->getId())) 
 {
     initialize(data);
 }
@@ -73,6 +73,38 @@ VolumeCL* VolumeCL::clone() const {
 
 void VolumeCL::deinitialize() {
     delete clImage_;
+}
+
+float VolumeCL::getVolumeDataScaling(const Volume* volume) const {
+    // Note: The basically the same code is used in VolumeCLGL and VolumeGL as well. 
+    // Changes here should also be done there.
+    // Compute data scaling based on volume data range
+    float scalingFactor = 1.f;
+    // Scaling for 12-bit data
+    if (getDataFormat()->getBitsStored() == 12) {
+        scalingFactor = (static_cast<float>(DataUINT16::max())/static_cast<float>(DataUINT12::max()));
+    }
+    if (volume->hasMetaData<Vec2MetaData>("DataRange")) {
+        glm::vec2 dataRange;
+        dataRange = volume->getMetaData<Vec2MetaData>("DataRange", dataRange);
+
+        float datatypeMax = static_cast<float>(getDataFormat()->getMax());
+        float datatypeMin = static_cast<float>(getDataFormat()->getMin());
+
+        if ((std::abs(datatypeMin - dataRange.x) < glm::epsilon<float>())
+            && (std::abs(datatypeMax - dataRange.y) < glm::epsilon<float>())) {
+                // no change, use original GL scaling factor if volume data range is equal to type data range
+                return scalingFactor;
+        } else {
+            // TODO: consider lower bounds of data range as well (offset in shader before scaling)
+            scalingFactor = datatypeMax / dataRange.y;
+            return scalingFactor;
+        }
+    }
+    else {
+        // fall-back: no data range given for the volume
+        return scalingFactor;
+    }
 }
 
 void VolumeCL::upload(const void* data) {

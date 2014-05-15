@@ -103,10 +103,13 @@ const Texture3D* VolumeGL::getTexture() const {
 }
 
 void VolumeGL::setVolumeUniforms(const Volume* volume, Shader* shader, const std::string& samplerID) const {
+
     vec3 dimF = vec3(dimensions_);
     shader->setUniform(samplerID + ".dimensions_", dimF);
     shader->setUniform(samplerID + ".dimensionsRCP_", vec3(1.f)/dimF);
     shader->setUniform(samplerID + ".volumeToWorldTransform_", volume->getWorldTransform());
+    // Note: The basically the same code is used in VolumeCLGL and VolumeCL as well. 
+    // Changes here should also be done there.
     // adjust data scaling to volume data range
     if (volume->hasMetaData<Vec2MetaData>("DataRange")) {
         glm::vec2 dataRange;
