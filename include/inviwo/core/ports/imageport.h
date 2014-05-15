@@ -48,8 +48,16 @@ public:
                 PropertyOwner::InvalidationLevel invalidationLevel = PropertyOwner::INVALID_OUTPUT);
     virtual ~ImageInport();
 
-    void initialize();
-    void deinitialize();
+    /** 
+     * Connects this inport to the outport. Propagates 
+     * the inport size to the outport if the processor is 
+     * an end processor (Canvas) or any of the 
+     * dependent outports of this inport are connected. 
+     * 
+     * @note Does not check if the outport is an ImageOutport
+     * @param Outport * outport ImageOutport to connect
+     */
+    virtual void connectTo(Outport* outport);
 
     void changeDataDimensions(ResizeEvent* resizeEvent);
     uvec2 getDimension() const;
@@ -89,8 +97,6 @@ public:
                  bool handleResizeEvents = true);
     virtual ~ImageOutport();
 
-    void initialize();
-    void deinitialize();
     virtual void invalidate(PropertyOwner::InvalidationLevel invalidationLevel);
 
     Image* getData();
@@ -135,6 +141,11 @@ public:
 protected:
     Image* getResizedImageData(uvec2 dimensions);
     void setLargestImageData(ResizeEvent* resizeEvent);
+    /** 
+     * \brief Propagates resize event to this processor's inports within the same dependency set (group)
+     * 
+     * @param ResizeEvent * resizeEvent Event to be propagated
+     */
     void propagateResizeEventToPredecessor(ResizeEvent* resizeEvent);
     ResizeEvent* scaleResizeEvent(ImageInport*, ResizeEvent*);
     void updateInputSources();

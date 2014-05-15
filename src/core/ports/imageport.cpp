@@ -48,9 +48,30 @@ ImageInport::ImageInport(std::string identifier, bool outportDeterminesSize,
 
 ImageInport::~ImageInport() {}
 
-void ImageInport::initialize() {}
+void ImageInport::connectTo(Outport* outport) {
+    connectedOutport_ = outport;
+    outport->connectTo(this);
 
-void ImageInport::deinitialize() {}
+    if (getProcessor()->isEndProcessor()) {
+        // Resize outport if no outports exist (Canvas)
+        ResizeEvent resizeEvent(getDimension());
+        ImageOutport* connectedImageOutport = dynamic_cast<ImageOutport*>(outport);
+        connectedImageOutport->changeDataDimensions(&resizeEvent);
+    } else {
+        // Resize outport if any outport within the same port dependency set is connected
+        std::vector<Port*> portSet = getProcessor()->getPortsByDependencySet(getProcessor()->getPortDependencySet(this));
+        for (size_t j = 0; j < portSet.size(); j++) {
+            ImageOutport* imageOutport = dynamic_cast<ImageOutport*>(portSet[j]);
+            if (imageOutport && imageOutport->isConnected()) {
+                ResizeEvent resizeEvent(getDimension());
+                ImageOutport* connectedImageOutport = dynamic_cast<ImageOutport*>(outport);
+                connectedImageOutport->changeDataDimensions(&resizeEvent);
+            }
+        }
+    }
+
+    invalidate(PropertyOwner::INVALID_OUTPUT);
+}
 
 void ImageInport::changeDataDimensions(ResizeEvent* resizeEvent) {
     uvec2 dimensions = resizeEvent->size();
@@ -140,7 +161,8 @@ std::string ImageInport::getContentInfo() const {
         return getClassName() + " has no data.";
 }
 
-// Image Outport
+////////////////////////////// ImageOutport ////////////////////////////////////////////
+
 ImageOutport::ImageOutport(std::string identifier,
                            PropertyOwner::InvalidationLevel invalidationLevel,
                            bool handleResizeEvents)
@@ -188,32 +210,41 @@ ImageOutport::~ImageOutport() {
     data_ = NULL;  // As data_ is referenced in imageDataMap_.
 }
 
-void ImageOutport::initialize() {}
-
-void ImageOutport::deinitialize() {}
-
 void ImageOutport::propagateResizeEventToPredecessor(ResizeEvent* resizeEvent) {
     if (!isHandlingResizeEvents()) {
         return;
     }
-    Processor* processor = getProcessor();
-    std::vector<Inport*> inPorts = processor->getInports();
-
+    // Only propagate resize event to inports within the same port dependency group
+    std::vector<Port*> portSet = getProcessor()->getPortsByDependencySet(getProcessor()->getPortDependencySet(this));
     bool propagationEnded = true;
     uvec2 size = resizeEvent->size();
     uvec2 prevSize = resizeEvent->previousSize();
-    for (size_t i = 0; i < inPorts.size(); i++) {
-        if (equalColorCode(inPorts[i])) {
+    for (size_t j = 0; j < portSet.size(); j++) {
+        ImageInport* imageInport = dynamic_cast<ImageInport*>(portSet[j]);
+        if (imageInport) {
             propagationEnded = false;
-            ImageInport* imageInport = static_cast<ImageInport*>(inPorts[i]);
             imageInport->changeDataDimensions(scaleResizeEvent(imageInport, resizeEvent));
             resizeEvent->setSize(size);
             resizeEvent->setPreviousSize(prevSize);
         }
     }
+    //std::vector<Inport*> inPorts = getProcessor()->getInports();
+
+    //bool propagationEnded = true;
+    //uvec2 size = resizeEvent->size();
+    //uvec2 prevSize = resizeEvent->previousSize();
+    //for (size_t i = 0; i < inPorts.size(); i++) {
+    //    if (equalColorCode(inPorts[i])) {
+    //        propagationEnded = false;
+    //        ImageInport* imageInport = static_cast<ImageInport*>(inPorts[i]);
+    //        imageInport->changeDataDimensions(scaleResizeEvent(imageInport, resizeEvent));
+    //        resizeEvent->setSize(size);
+    //        resizeEvent->setPreviousSize(prevSize);
+    //    }
+    //}
 
     if (propagationEnded) {
-        processor->invalidate(PropertyOwner::INVALID_OUTPUT);
+        getProcessor()->invalidate(PropertyOwner::INVALID_OUTPUT);
         // invalidate(PropertyOwner::INVALID_OUTPUT);
     }
 }
@@ -309,6 +340,7 @@ void ImageOutport::changeDataDimensions(ResizeEvent* resizeEvent) {
 
         // Resize the result image
         resultImage->resize(requiredDimensions);
+        
         // Make new entry
         imageDataMap_.insert(std::make_pair(reqDimensionString, resultImage));
     }
@@ -330,7 +362,7 @@ void ImageOutport::changeDataDimensions(ResizeEvent* resizeEvent) {
             delete invalidImage;
         }
     }
-
+    //uvec2 largestDim = glm::max(getDimension(), requiredDimensions);
     uvec2 largestDim = getDimension();
     // Set largest data
     setLargestImageData(resizeEvent);
@@ -338,6 +370,14 @@ void ImageOutport::changeDataDimensions(ResizeEvent* resizeEvent) {
     // Stop resize propagation if outport change hasn't change.
     // Invalid to output new size
     if (largestDim != getDimension()) {
+        // Make sure that all ImageOutports in the same group (dependency set) that has the same size.
+        std::vector<Port*> portSet = getProcessor()->getPortsByDependencySet(getProcessor()->getPortDependencySet(this));
+        for (size_t j = 0; j < portSet.size(); j++) {
+            ImageOutport* imageOutport = dynamic_cast<ImageOutport*>(portSet[j]);
+            if (imageOutport && imageOutport != this) {
+                imageOutport->setDimension(resizeEvent->size());
+            }
+        }
         // Propagate the resize event
         propagateResizeEventToPredecessor(resizeEvent);
     } else if (invalidPort)

@@ -91,7 +91,7 @@ void NetworkEditorView::hideNetwork(bool hide) {
 }
 
 void NetworkEditorView::setZoom(const float& zoom, const QPointF& pos) {
-    if (zoom < 0.2) {
+    if (zoom < 0.2f) {
         zoom_ = 0.2f;
     } else if (zoom > 5.0f) {
         zoom_ = 5.0f;
