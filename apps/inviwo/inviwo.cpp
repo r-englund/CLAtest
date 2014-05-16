@@ -89,7 +89,7 @@ int main(int argc, char** argv) {
     if (mainWin.processCommandLineArgs())
         return inviwoApp.exec();
     else{
-        inviwoApp.deinitialize();
+        inviwoApp.closeInviwoApplication();
         return  0;
     }
 }

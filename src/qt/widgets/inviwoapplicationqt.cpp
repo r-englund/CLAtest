@@ -59,7 +59,8 @@ InviwoApplicationQt::InviwoApplicationQt(std::string displayName,
     connect(fileWatcher_, SIGNAL(fileChanged(QString)), this, SLOT(fileChanged(QString)));
 }
 
-InviwoApplicationQt::~InviwoApplicationQt() {}
+InviwoApplicationQt::~InviwoApplicationQt() {
+}
 
 void InviwoApplicationQt::setMainWindow(QMainWindow* mainWindow) {
     mainWindow_ = mainWindow;
