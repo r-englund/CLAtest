@@ -52,34 +52,34 @@
 
 using namespace inviwo;
 
+InviwoApplication* inviwoApp_;
+
+static void glutClose(){
+    inviwoApp_->deinitialize();
+}
+
 int main(int argc, char** argv) {
-    inviwo::ConsoleLogger consoleLogger;
-    inviwo::LogCentral::instance()->registerLogger(&consoleLogger);
+    ConsoleLogger consoleLogger;
+    LogCentral::instance()->registerLogger(&consoleLogger);
     InviwoApplication inviwoApp(argc, argv, "Inviwo "+IVW_VERSION + " - GLUTApp", inviwo::filesystem::findBasePath());
+    inviwoApp_ = &inviwoApp;
 
     glutInit(&argc, argv);
     CanvasGLUT* canvas = new CanvasGLUT(inviwoApp.getDisplayName(), uvec2(128,128));
     canvas->initializeGL();
+    glutCloseFunc(glutClose);
 
     inviwoApp.initialize(&inviwo::registerAllModules);
 
-    // Create process network
-    ProcessorNetwork processorNetwork;
-    inviwoApp.setProcessorNetwork(&processorNetwork);
-
-    // Create process network evaluator
-    ProcessorNetworkEvaluator processorNetworkEvaluator(&processorNetwork);
-
-    processorNetworkEvaluator.setDefaultRenderContext(canvas);
-    canvas->setNetworkEvaluator(&processorNetworkEvaluator);
+    inviwoApp.getProcessorNetworkEvaluator()->setDefaultRenderContext(canvas);
     canvas->initializeSquare();
     canvas->initialize();
     canvas->activate();
 
     // Load simple scene
-    processorNetworkEvaluator.disableEvaluation();
-    processorNetwork.lock();
-    const CommandLineParser* cmdparser = (inviwo::InviwoApplication::getRef()).getCommandLineParser();
+    inviwoApp.getProcessorNetworkEvaluator()->disableEvaluation();
+    inviwoApp.getProcessorNetwork()->lock();
+    const CommandLineParser* cmdparser = inviwoApp.getCommandLineParser();
     std::string workspace;
 
     if (cmdparser->getLoadWorkspaceFromArg())
@@ -88,8 +88,8 @@ int main(int argc, char** argv) {
         workspace = inviwoApp.getPath(InviwoApplication::PATH_WORKSPACES, "tests/simpleslicergl.inv");
 
     IvwDeserializer xmlDeserializer(workspace);
-    processorNetwork.deserialize(xmlDeserializer);
-    std::vector<Processor*> processors = processorNetwork.getProcessors();
+    inviwoApp.getProcessorNetwork()->deserialize(xmlDeserializer);
+    std::vector<Processor*> processors = inviwoApp.getProcessorNetwork()->getProcessors();
     int i=0;
 
     for (std::vector<Processor*>::iterator it = processors.begin(); it!=processors.end(); it++) {
@@ -98,15 +98,14 @@ int main(int argc, char** argv) {
 
         if (canvasProcessor) {
             if (i==0) {
-                processorNetworkEvaluator.registerCanvas(canvas, canvasProcessor->getIdentifier());
+                inviwoApp.getProcessorNetworkEvaluator()->registerCanvas(canvas, canvasProcessor->getIdentifier());
                 canvas->setWindowTitle(inviwoApp.getDisplayName() + " : " + canvasProcessor->getIdentifier());
                 canvas->setWindowSize(uvec2(canvasProcessor->getCanvasSize()));
             }
             else {
                 CanvasGLUT* newC = new CanvasGLUT(canvasProcessor->getIdentifier(), uvec2(canvasProcessor->getCanvasSize()));
-                processorNetworkEvaluator.registerCanvas(newC, canvasProcessor->getIdentifier());
+                inviwoApp.getProcessorNetworkEvaluator()->registerCanvas(newC, canvasProcessor->getIdentifier());
                 newC->initializeGL();
-                newC->setNetworkEvaluator(&processorNetworkEvaluator);
                 newC->initialize();
             }
 
@@ -114,17 +113,17 @@ int main(int argc, char** argv) {
         }
     }
 
-    processorNetwork.setModified(true);
-    processorNetwork.unlock();
-    processorNetworkEvaluator.enableEvaluation();
+    inviwoApp.getProcessorNetwork()->setModified(true);
+    inviwoApp.getProcessorNetwork()->unlock();
+    inviwoApp.getProcessorNetworkEvaluator()->enableEvaluation();
 
     if (cmdparser->getCaptureAfterStartup()) {
         std::string path = cmdparser->getOutputPath();
 
         if (path.empty())
-            path = InviwoApplication::getPtr()->getPath(InviwoApplication::PATH_IMAGES);
+            path = inviwoApp.getPath(InviwoApplication::PATH_IMAGES);
 
-        processorNetworkEvaluator.saveSnapshotAllCanvases(path, cmdparser->getSnapshotName());
+        inviwoApp.getProcessorNetworkEvaluator()->saveSnapshotAllCanvases(path, cmdparser->getSnapshotName());
     }
 
     if (cmdparser->getQuitApplicationAfterStartup())

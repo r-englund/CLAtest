@@ -83,6 +83,8 @@ public:
 
     void viewModeChangedInSettings();
 
+    NetworkEditor* getNetworkEditor() { return networkEditor_; }
+
 public slots:
     void newWorkspace();
     void openWorkspace();
@@ -115,6 +117,7 @@ private:
 
     void updateWindowTitle();
 
+    NetworkEditor* networkEditor_;
     NetworkEditorView* networkEditorView_;
     BaseOptionProperty* viewModeProperty_;
 

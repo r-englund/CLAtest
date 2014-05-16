@@ -44,7 +44,6 @@ GLFWModule::GLFWModule() : InviwoModule() {
     ProcessorNetwork* network = InviwoApplication::getPtr()->getProcessorNetwork();
     if (network) {
         ProcessorNetworkEvaluator* evaluator = ProcessorNetworkEvaluator::getProcessorNetworkEvaluatorForProcessorNetwork(network);
-        GLFWSharedCanvas_->setNetworkEvaluator(evaluator);
         evaluator->setDefaultRenderContext(GLFWSharedCanvas_);
     }
 }

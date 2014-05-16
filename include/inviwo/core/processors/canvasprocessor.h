@@ -40,9 +40,10 @@
 #include <inviwo/core/properties/baseoptionproperty.h>
 #include <inviwo/core/properties/directoryproperty.h>
 #include <inviwo/core/properties/buttonproperty.h>
-#include <inviwo/core/util/canvas.h>
 
 namespace inviwo {
+
+class Canvas;
 
 class IVW_CORE_API CanvasProcessor : public Processor {
 public:
@@ -54,8 +55,8 @@ public:
 
     virtual void process();
 
-    void setCanvas(Canvas* canvas) { canvas_ = canvas; }
-    Canvas* getCanvas() const { return canvas_; }
+    void setCanvas(Canvas* canvas);
+    Canvas* getCanvas() const;
     void setCanvasSize(ivec2);
     ivec2 getCanvasSize() const;
 

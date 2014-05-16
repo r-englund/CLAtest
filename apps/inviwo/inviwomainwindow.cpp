@@ -62,6 +62,7 @@ InviwoMainWindow::InviwoMainWindow()
     , viewModeProperty_(NULL)
 {
     NetworkEditor::init();
+    networkEditor_ = &NetworkEditor::getRef();
     // initialize console widget first to receive log messages
     consoleWidget_ = new ConsoleWidget(this);
     currentWorkspaceFileName_ = "";
@@ -73,8 +74,8 @@ InviwoMainWindow::~InviwoMainWindow() {
 }
 
 void InviwoMainWindow::initialize() {
-    networkEditorView_ = new NetworkEditorView(this);
-    NetworkEditorObserver::addObservation(networkEditorView_->getNetworkEditor());
+    networkEditorView_ = new NetworkEditorView(networkEditor_, this);
+    NetworkEditorObserver::addObservation(getNetworkEditor());
     setCentralWidget(networkEditorView_);
     resourceManagerWidget_ = new ResourceManagerWidget(this);
     addDockWidget(Qt::LeftDockWidgetArea, resourceManagerWidget_);
@@ -142,7 +143,7 @@ void InviwoMainWindow::deinitialize() {
 }
 
 void InviwoMainWindow::initializeWorkspace() {
-    ProcessorNetwork* processorNetwork = const_cast<ProcessorNetwork*>(networkEditorView_->getNetworkEditor()->getProcessorNetwork());
+    ProcessorNetwork* processorNetwork = inviwo::InviwoApplicationQt::getPtr()->getProcessorNetwork();
     ProcessorNetworkObserver::addObservation(processorNetwork);
     processorNetwork->addObserver(this);
 }
@@ -152,7 +153,7 @@ void InviwoMainWindow::onProcessorNetworkChange() {
 }
 
 bool InviwoMainWindow::processCommandLineArgs() {
-    const CommandLineParser* cmdparser = (inviwo::InviwoApplicationQt::getRef()).getCommandLineParser();
+    const CommandLineParser* cmdparser = inviwo::InviwoApplicationQt::getPtr()->getCommandLineParser();
 #ifdef IVW_PYTHON_QT
 
     if (cmdparser->getRunPythonScriptAfterStartup()) {
@@ -164,7 +165,7 @@ bool InviwoMainWindow::processCommandLineArgs() {
 #endif
 
     if (cmdparser->getCaptureAfterStartup()) {
-        ProcessorNetworkEvaluator* networkEvaluator = networkEditorView_->getNetworkEditor()->getProcessorNetworkEvaluator();
+        ProcessorNetworkEvaluator* networkEvaluator = inviwo::InviwoApplicationQt::getPtr()->getProcessorNetworkEvaluator();
         networkEvaluator->requestEvaluate();
         std::string path = cmdparser->getOutputPath();
 
@@ -316,7 +317,7 @@ void InviwoMainWindow::updateWindowTitle() {
     QString windowTitle = QString("Inviwo - Interactive Visualization Workshop - ");
     windowTitle.append(currentWorkspaceFileName_);
 
-    if (networkEditorView_->getNetworkEditor()->isModified())
+    if (getNetworkEditor()->isModified())
         windowTitle.append("*");
 
     setWindowTitle(windowTitle);
@@ -369,9 +370,9 @@ void InviwoMainWindow::newWorkspace() {
         if(!askToSaveWorkspaceChanges())
             return;
 
-    networkEditorView_->getNetworkEditor()->clearNetwork();
+    getNetworkEditor()->clearNetwork();
     setCurrentWorkspace(rootDir_ + "workspaces/untitled.inv");
-    networkEditorView_->getNetworkEditor()->setModified(false);
+    getNetworkEditor()->setModified(false);
     updateWindowTitle();
 }
 
@@ -383,7 +384,7 @@ void InviwoMainWindow::openWorkspace(QString workspaceFileName) {
         return;
     }
 
-    networkEditorView_->getNetworkEditor()->loadNetwork(workspaceFileName.toLocal8Bit().constData());
+    getNetworkEditor()->loadNetwork(workspaceFileName.toLocal8Bit().constData());
     onNetworkEditorFileChanged(workspaceFileName.toLocal8Bit().constData());
 }
 
@@ -456,7 +457,7 @@ void InviwoMainWindow::saveWorkspace() {
 
     if (currentWorkspaceFileName_.contains("untitled.inv")) saveWorkspaceAs();
     else {
-        networkEditorView_->getNetworkEditor()->saveNetwork(currentWorkspaceFileName_.toLocal8Bit().constData());
+        getNetworkEditor()->saveNetwork(currentWorkspaceFileName_.toLocal8Bit().constData());
         updateWindowTitle();
     }
 
@@ -498,7 +499,7 @@ void InviwoMainWindow::saveWorkspaceAs() {
 
         if (!path.endsWith(".inv")) path.append(".inv");
 
-        networkEditorView_->getNetworkEditor()->saveNetwork(path.toLocal8Bit().constData());
+        getNetworkEditor()->saveNetwork(path.toLocal8Bit().constData());
         setCurrentWorkspace(path);
         addToRecentWorkspaces(path);
     }
@@ -532,7 +533,7 @@ void InviwoMainWindow::saveWorkspaceAsCopy() {
 
         if (!path.endsWith(".inv")) path.append(".inv");
 
-        networkEditorView_->getNetworkEditor()->saveNetwork(path.toLocal8Bit().constData());
+        getNetworkEditor()->saveNetwork(path.toLocal8Bit().constData());
         addToRecentWorkspaces(path);
     }
 }
@@ -540,9 +541,9 @@ void InviwoMainWindow::saveWorkspaceAsCopy() {
 
 void InviwoMainWindow::disableEvaluation(bool disable) {
     if (disable)
-        networkEditorView_->getNetworkEditor()->getProcessorNetworkEvaluator()->disableEvaluation();
+        inviwo::InviwoApplicationQt::getPtr()->getProcessorNetworkEvaluator()->disableEvaluation();
     else
-        networkEditorView_->getNetworkEditor()->getProcessorNetworkEvaluator()->enableEvaluation();
+        inviwo::InviwoApplicationQt::getPtr()->getProcessorNetworkEvaluator()->enableEvaluation();
 }
 
 void InviwoMainWindow::showAboutBox() {
@@ -610,7 +611,7 @@ void InviwoMainWindow::closeEvent(QCloseEvent* event) {
         return;
     }
 
-    networkEditorView_->getNetworkEditor()->clearNetwork();
+    getNetworkEditor()->clearNetwork();
     // save window state
     QSettings settings("Inviwo", "Inviwo");
     settings.beginGroup("mainwindow");
@@ -630,7 +631,7 @@ void InviwoMainWindow::closeEvent(QCloseEvent* event) {
 bool InviwoMainWindow::askToSaveWorkspaceChanges() {
     bool continueOperation = true;
 
-    if (networkEditorView_->getNetworkEditor()->isModified()) {
+    if (getNetworkEditor()->isModified()) {
         QMessageBox msgBox;
         msgBox.setText("Workspace Modified");
         msgBox.setInformativeText("Do you want to save your changes?");

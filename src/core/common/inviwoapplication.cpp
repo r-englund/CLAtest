@@ -53,6 +53,8 @@ InviwoApplication::InviwoApplication()
     : displayName_("Inviwo")
     , basePath_("")
     , commandLineParser_(NULL){
+    processorNetwork_ = new ProcessorNetwork();
+    processorNetworkEvaluator_ = new ProcessorNetworkEvaluator(processorNetwork_);
     init(this);
 }
 
@@ -61,6 +63,8 @@ InviwoApplication::InviwoApplication(std::string displayName,
     : displayName_(displayName)
     , basePath_(basePath)
     , commandLineParser_(NULL) {
+    processorNetwork_ = new ProcessorNetwork();
+    processorNetworkEvaluator_ = new ProcessorNetworkEvaluator(processorNetwork_);
     init(this);
 }
 
@@ -72,6 +76,8 @@ InviwoApplication::InviwoApplication(int argc, char** argv,
     commandLineParser_ = new CommandLineParser(argc, argv);
     commandLineParser_->initialize();
     commandLineParser_->parse();
+    processorNetwork_ = new ProcessorNetwork();
+    processorNetworkEvaluator_ = new ProcessorNetworkEvaluator(processorNetwork_);
     init(this);
 }
 
@@ -85,6 +91,10 @@ InviwoApplication::~InviwoApplication() {
     }
 
     modules_.clear();
+
+    delete processorNetwork_;
+    delete processorNetworkEvaluator_;
+
     delete commandLineParser_;
     SingeltonBase::deleteAllSingeltons();
     DataFormatBase::cleanDataFormatBases();

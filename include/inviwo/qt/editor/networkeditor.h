@@ -124,9 +124,6 @@ public:
     void removeAndDeletePropertyWidgets(Processor* processor);
     void removePropertyWidgets(Processor* processor);
 
-    const ProcessorNetwork* getProcessorNetwork() const { return processorNetwork_; }
-    ProcessorNetworkEvaluator* getProcessorNetworkEvaluator() const { return processorNetworkEvaluator_; }
-
     std::vector<std::string> getSnapshotsOfExternalNetwork(std::string fileName);
 
     void updateLinkGraphicsItems();
@@ -183,9 +180,6 @@ private:
     std::vector<ConnectionGraphicsItem*> connectionGraphicsItems_;
     std::vector<LinkConnectionGraphicsItem*> linkGraphicsItems_;
 
-    ProcessorNetwork* processorNetwork_;
-    ProcessorNetworkEvaluator* processorNetworkEvaluator_;
-
     ConnectionGraphicsItem* oldConnectionTarget_;
     ProcessorGraphicsItem* oldProcessorTarget_;
     PortInfoWidgetQt* portInfoWidget_;
@@ -233,7 +227,7 @@ private:
     ConnectionGraphicsItem* getConnectionGraphicsItemAt(const QPointF pos) const;
     LinkConnectionGraphicsItem* getLinkGraphicsItemAt(const QPointF pos) const;
 
-    void addPortInspector(std::string processorIdentifier, std::string portIdentifier, QPointF pos);
+    bool addPortInspector(std::string processorIdentifier, std::string portIdentifier, QPointF pos);
     void removePortInspector(std::string processorIdentifier, std::string portIdentifier);
 
     void addPortInformation(std::string processorIdentifier, std::string portIdentifier, std::string portInformation, QPoint pos);

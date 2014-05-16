@@ -49,10 +49,7 @@ CanvasGLFW::CanvasGLFW(std::string windowTitle, uvec2 dimensions)
 {}
 
 CanvasGLFW::~CanvasGLFW() {
-    deinitialize();
-    glfwDestroyWindow(glWindow_);
     glWindow_ = NULL;
-    
 }
 
 void CanvasGLFW::initialize() {
@@ -125,7 +122,8 @@ void CanvasGLFW::setWindowSize(uvec2 size) {
 
 void CanvasGLFW::closeWindow(GLFWwindow* window) {
     glfwWindowCount_--;
-    glfwDestroyWindow(window);
+    if(sharedContext_ != window)
+        glfwDestroyWindow(window);
 }
 
 int CanvasGLFW::getWindowCount(){

@@ -61,8 +61,12 @@ ProcessorNetworkEvaluator::~ProcessorNetworkEvaluator() {
         processorNetworkEvaluators_.erase(it);
 }
 
+void ProcessorNetworkEvaluator::setDefaultRenderContext(Canvas* canvas) { 
+    defaultContext_ = canvas;
+    defaultContext_->setNetworkEvaluator(this);
+}
 
-void ProcessorNetworkEvaluator::activateDefaultRenderContext() {
+void ProcessorNetworkEvaluator::activateDefaultRenderContext() const {
     if (defaultContext_)
         defaultContext_->activate();
 }

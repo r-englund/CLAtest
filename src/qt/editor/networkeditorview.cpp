@@ -42,11 +42,12 @@
 
 namespace inviwo {
 
-NetworkEditorView::NetworkEditorView(QWidget* parent)
+NetworkEditorView::NetworkEditorView(NetworkEditor* networkEditor, QWidget* parent)
     : QGraphicsView(parent)
     , NetworkEditorObserver()
-    , zoom_(1.0f) {
-    setNetworkEditor(NetworkEditor::getPtr());
+    , zoom_(1.0f)
+    , networkEditor_(networkEditor) {
+    initialize();
     setRenderHint(QPainter::Antialiasing, true);
     setMouseTracking(true);
     setDragMode(QGraphicsView::RubberBandDrag);
@@ -55,8 +56,7 @@ NetworkEditorView::NetworkEditorView(QWidget* parent)
 
 NetworkEditorView::~NetworkEditorView() { QGraphicsView::setScene(NULL); }
 
-void NetworkEditorView::setNetworkEditor(NetworkEditor* networkEditor) {
-    networkEditor_ = networkEditor;
+void NetworkEditorView::initialize() {
     Property* displayLinkProperty =
         InviwoApplication::getPtr()->getSettingsByType<LinkSettings>()->getPropertyByIdentifier(
             "displayLinks");
@@ -69,10 +69,8 @@ void NetworkEditorView::setNetworkEditor(NetworkEditor* networkEditor) {
 
     NetworkEditorObserver::addObservation(networkEditor_);	
 
-    QGraphicsView::setScene(networkEditor);
+    QGraphicsView::setScene(networkEditor_);
 }
-
-NetworkEditor* NetworkEditorView::getNetworkEditor() const { return networkEditor_; }
 
 void NetworkEditorView::hideNetwork(bool hide) {
     if (hide) {
@@ -121,7 +119,7 @@ void NetworkEditorView::resizeEvent(QResizeEvent* e) {
 }
 
 void NetworkEditorView::fitNetwork() {
-    const ProcessorNetwork* network = networkEditor_->getProcessorNetwork();
+    const ProcessorNetwork* network = InviwoApplication::getPtr()->getProcessorNetwork();
     if (network) {
         if (network->getProcessors().size() > 0) {
             QRectF br = networkEditor_->itemsBoundingRect().adjusted(-50, -50, 50, 50);
