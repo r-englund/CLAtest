@@ -70,28 +70,16 @@ int main(int argc , char** argv) {
             return 0;
         }
 
-
-
-        ProcessorNetwork processorNetwork;
-
-        // Create process network evaluator and associate the canvas
-        ProcessorNetworkEvaluator processorNetworkEvaluator(&processorNetwork);
-
-        //Set processor network to application
-        app.setProcessorNetwork(&processorNetwork);
-
         //Initialize all modules
         app.initialize(&inviwo::registerAllModules);
 
         //Continue initialization of default context
-        CanvasGLFW* sharedCanvas = static_cast<CanvasGLFW*>(processorNetworkEvaluator.getDefaultRenderContext());
+        CanvasGLFW* sharedCanvas = static_cast<CanvasGLFW*>(app.getProcessorNetworkEvaluator()->getDefaultRenderContext());
         sharedCanvas->initializeSquare();
         sharedCanvas->initialize();
-        sharedCanvas->activate();
-        
+        sharedCanvas->activate();      
         
         ret = inviwo::UnitTestsModule::runAllTests();
-
 
         glfwWaitEvents();
     }
