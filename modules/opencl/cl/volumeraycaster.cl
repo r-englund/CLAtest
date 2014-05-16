@@ -73,10 +73,12 @@ __kernel void raycaster(read_only image3d_t volume, float volumeDataScaling
             else t += tIncr;   
         }
         // Remove the last part of the integration that was too much.
-        float dt = tEnd-(t-0.5f*tIncr);
-        float opacity = 1.f - native_powr(1.f - emissionAbsorption.w, dt * REF_SAMPLING_INTERVAL);
-		result.xyz = result.xyz + (1.f - result.w) * opacity * emissionAbsorption.xyz;
-        result.w = result.w + (1.f - result.w) * opacity;	
+        if (result.w < 1.f) {
+            float dt = tEnd-(t-0.5f*tIncr);
+            float opacity = 1.f - native_powr(1.f - emissionAbsorption.w, dt * REF_SAMPLING_INTERVAL);
+		    result.xyz = result.xyz + (1.f - result.w) * opacity * emissionAbsorption.xyz;
+            result.w = result.w + (1.f - result.w) * opacity;	
+        }
     }
          
     write_imagef(output, globalId,  result);     
