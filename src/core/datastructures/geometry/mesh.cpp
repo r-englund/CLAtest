@@ -37,8 +37,14 @@ namespace inviwo {
 Mesh::Mesh() : Geometry(), attributesInfo_(AttributesInfo()) {}
 
 Mesh::Mesh(const Mesh& rhs) : Geometry(rhs), attributesInfo_(rhs.attributesInfo_) {
-    for (std::vector<Buffer*>::const_iterator it = rhs.attributes_.begin() ; it != rhs.attributes_.end(); ++it)
-        addAttribute(static_cast<Buffer*>((*it)->clone()));
+    std::vector<bool>::const_iterator itOwnership = rhs.attributesOwnership_.begin();
+    for (std::vector<Buffer*>::const_iterator it = rhs.attributes_.begin(), itEnd = rhs.attributes_.end(); it != itEnd; ++it, ++itOwnership) {
+        if (*itOwnership) {
+            addAttribute(static_cast<Buffer*>((*it)->clone()));
+        } else {
+            addAttribute(*it, false);
+        }
+    }
 
     for (std::vector<std::pair<AttributesInfo, IndexBuffer*> >::const_iterator it = rhs.indexAttributes_.begin() ;
          it != rhs.indexAttributes_.end(); ++it)
@@ -83,15 +89,30 @@ Mesh* Mesh::clone() const {
 void Mesh::initialize() {}
 
 void Mesh::deinitialize() {
-    for (std::vector<Buffer*>::iterator it = attributes_.begin() ; it != attributes_.end(); ++it)
-        delete(*it);
+    std::vector<bool>::const_iterator itOwnership = attributesOwnership_.begin();
+    for (std::vector<Buffer*>::iterator it = attributes_.begin(), itEnd = attributes_.end(); it != itEnd; ++it, ++itOwnership) {
+        if (*itOwnership)
+            delete(*it);
+    }
 
-    for (std::vector<std::pair<AttributesInfo, IndexBuffer*> >::iterator it = indexAttributes_.begin() ; it != indexAttributes_.end(); ++it)
+    for (std::vector<std::pair<AttributesInfo, IndexBuffer*> >::iterator it = indexAttributes_.begin(), itEnd = indexAttributes_.end(); it != itEnd; ++it)
         delete it->second;
 }
 
-void Mesh::addAttribute(Buffer* att) {
+void Mesh::addAttribute(Buffer* att, bool takeOwnership /*= true*/) {
     attributes_.push_back(att);
+    attributesOwnership_.push_back(takeOwnership);
+}
+
+
+void Mesh::setAttribute(size_t idx, Buffer* att, bool takeOwnership /*= true*/) {
+    if (idx >= 0 && idx < attributes_.size()) {
+        if (attributesOwnership_[idx]) {
+            delete attributes_[idx];
+        }
+        attributes_[idx] = att;
+        attributesOwnership_[idx] = takeOwnership;
+    }
 }
 
 void Mesh::addIndicies(AttributesInfo info, IndexBuffer* ind) {
