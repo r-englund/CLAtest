@@ -158,7 +158,7 @@ void CanvasGL::renderNoise() {
     drawRect();
     noiseShader_->deactivate();
     glSwapBuffers();
-    getNetworkEvaluator()->activateDefaultRenderContext();
+    activateDefaultRenderContext();
 }
 
 void CanvasGL::renderTexture(GLint unitNumber) {
@@ -172,7 +172,7 @@ void CanvasGL::renderTexture(GLint unitNumber) {
     shader_->deactivate();
     glDisable(GL_BLEND);
     glSwapBuffers();
-    getNetworkEvaluator()->activateDefaultRenderContext();
+    activateDefaultRenderContext();
 }
 
 void CanvasGL::drawRect() {

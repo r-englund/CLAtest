@@ -33,6 +33,7 @@
 #include <inviwo/core/common/inviwoapplication.h>
 #include <inviwo/core/io/imageio.h>
 #include <inviwo/core/processors/canvasprocessor.h>
+#include <inviwo/core/util/canvas.h>
 #include <inviwo/core/util/datetime.h>
 #include <inviwo/core/util/stringconversion.h>
 
@@ -73,10 +74,20 @@ void CanvasProcessor::deinitialize() {
     if (processorWidget_)
         processorWidget_->hide();
 
-    delete canvas_;
-    canvas_ = NULL;
+    if(canvas_ && (!canvas_->getProcessorNetworkEvaluator() || canvas_ != canvas_->getProcessorNetworkEvaluator()->getDefaultRenderContext())){
+        delete canvas_;
+        canvas_ = NULL;
+    }
 
     Processor::deinitialize();
+}
+
+void CanvasProcessor::setCanvas(Canvas* canvas) { 
+    canvas_ = canvas; 
+}
+
+Canvas* CanvasProcessor::getCanvas() const { 
+    return canvas_; 
 }
 
 void CanvasProcessor::resizeCanvas() {
@@ -133,7 +144,7 @@ void CanvasProcessor::performEvaluationAtNextShow() {
 }
 
 void CanvasProcessor::performEvaluateRequest() {
-    if (canvas_ && canvas_->getNetworkEvaluator()) {
+    if (canvas_ && canvas_->getProcessorNetworkEvaluator()) {
         if (processorWidget_) {
             if (processorWidget_->getVisibilityMetaData())
                 notifyObserversRequestEvaluate(this);

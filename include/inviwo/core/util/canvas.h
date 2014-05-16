@@ -47,6 +47,10 @@
 namespace inviwo {
 
 class IVW_CORE_API Canvas {
+
+    friend class CanvasProcessor;
+    friend class ProcessorNetworkEvaluator;
+
 public:
     Canvas(uvec2 dimensions);
     virtual ~Canvas();
@@ -59,10 +63,12 @@ public:
     virtual uvec2 getDimension();
     virtual void update();
 
-    void setNetworkEvaluator(ProcessorNetworkEvaluator* networkEvaluator);
-    ProcessorNetworkEvaluator* getNetworkEvaluator() const;
-
 protected:
+    void setNetworkEvaluator(ProcessorNetworkEvaluator* networkEvaluator);
+    ProcessorNetworkEvaluator* getProcessorNetworkEvaluator();
+
+    void activateDefaultRenderContext();
+
     void interactionEvent(InteractionEvent* e);
 
     void mousePressEvent(MouseEvent* e);

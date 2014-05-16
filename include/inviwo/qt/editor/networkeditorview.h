@@ -35,7 +35,6 @@
 
 #include <inviwo/qt/editor/inviwoqteditordefine.h>
 #include <inviwo/qt/editor/networkeditor.h>
-
 #include <QGraphicsView>
 
 
@@ -44,11 +43,8 @@ namespace inviwo {
 class IVW_QTEDITOR_API NetworkEditorView : public QGraphicsView, public NetworkEditorObserver {
 
 public:
-    NetworkEditorView(QWidget* parent = NULL);
+    NetworkEditorView(NetworkEditor* networkEditor, QWidget* parent = NULL);
     ~NetworkEditorView();
-
-    void setNetworkEditor(NetworkEditor* networkEditor);
-    NetworkEditor* getNetworkEditor() const;
 
     void hideNetwork(bool);
 
@@ -56,6 +52,8 @@ public:
     virtual void onModifiedStatusChanged(const bool &newStatus);
 
 protected:
+    void initialize();
+
     void mouseDoubleClickEvent(QMouseEvent* e);
     void resizeEvent(QResizeEvent* re);
     void wheelEvent(QWheelEvent* e);

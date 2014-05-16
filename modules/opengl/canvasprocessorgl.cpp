@@ -64,9 +64,6 @@ void CanvasProcessorGL::doIfNotReady() {
 void CanvasProcessorGL::invalidate(PropertyOwner::InvalidationLevel invalidationLevel,
                                    Property* modifiedProperty) {
     CanvasProcessor::invalidate(invalidationLevel, modifiedProperty);
-
-    if (getCanvas() && !inport_.isConnected())
-        process();
 }
 
 } // namespace

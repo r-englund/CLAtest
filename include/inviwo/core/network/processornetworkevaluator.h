@@ -58,8 +58,8 @@ public:
     std::vector<Canvas*> getRegisteredCanvases() { return registeredCanvases_; }
 
     Canvas* getDefaultRenderContext() { return defaultContext_; }
-    void setDefaultRenderContext(Canvas* canvas) { defaultContext_ = canvas; }
-    void activateDefaultRenderContext();
+    void setDefaultRenderContext(Canvas*);
+    void activateDefaultRenderContext() const;
     
     void initializeNetwork();
 

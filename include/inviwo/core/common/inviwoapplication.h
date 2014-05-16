@@ -39,6 +39,7 @@
 #include <inviwo/core/common/inviwomodule.h>
 #include <inviwo/core/common/moduleaction.h>
 #include <inviwo/core/network/processornetwork.h>
+#include <inviwo/core/network/processornetworkevaluator.h>
 #include <inviwo/core/util/commandlineparser.h>
 #include <inviwo/core/util/fileobserver.h>
 #include <inviwo/core/util/filesystem.h>
@@ -96,8 +97,8 @@ public:
     void registerModule(InviwoModule* module) { modules_.push_back(module); }
     const std::vector<InviwoModule*> getModules() const { return modules_; }
 
-    void setProcessorNetwork(ProcessorNetwork* processorNetwork) { processorNetwork_ = processorNetwork; }
     ProcessorNetwork* getProcessorNetwork() { return processorNetwork_; }
+    ProcessorNetworkEvaluator* getProcessorNetworkEvaluator() { return processorNetworkEvaluator_; }
 
     template<class T> T* getSettingsByType();
 
@@ -143,6 +144,8 @@ private:
     std::vector<InviwoModule*> modules_;
 
     ProcessorNetwork* processorNetwork_;
+
+    ProcessorNetworkEvaluator* processorNetworkEvaluator_;
 
     CommandLineParser* commandLineParser_;
 

@@ -53,8 +53,8 @@
 using namespace inviwo;
 
 int main(int argc, char** argv) {
-    inviwo::ConsoleLogger consoleLogger;
-    inviwo::LogCentral::instance()->registerLogger(&consoleLogger);
+    ConsoleLogger consoleLogger;
+    LogCentral::instance()->registerLogger(&consoleLogger);
 
     InviwoApplication inviwoApp(argc, argv, "Inviwo "+IVW_VERSION + " - GLFWApp", inviwo::filesystem::findBasePath());
 
@@ -63,28 +63,19 @@ int main(int argc, char** argv) {
         return 0;
     }
 
-    // Create process network
-    ProcessorNetwork processorNetwork;
-
-    // Create process network evaluator and associate the canvas
-    ProcessorNetworkEvaluator processorNetworkEvaluator(&processorNetwork);
-
-    //Set processor network to application
-    inviwoApp.setProcessorNetwork(&processorNetwork);
-
     //Initialize all modules
     inviwoApp.initialize(&inviwo::registerAllModules);
 
     //Continue initialization of default context
-    CanvasGLFW* sharedCanvas = static_cast<CanvasGLFW*>(processorNetworkEvaluator.getDefaultRenderContext());
+    CanvasGLFW* sharedCanvas = static_cast<CanvasGLFW*>(inviwoApp.getProcessorNetworkEvaluator()->getDefaultRenderContext());
     sharedCanvas->initializeSquare();
     sharedCanvas->initialize();
     sharedCanvas->activate();
 
     // Load simple scene
-    processorNetworkEvaluator.disableEvaluation();
-    processorNetwork.lock();
-    const CommandLineParser* cmdparser = (inviwo::InviwoApplication::getRef()).getCommandLineParser();
+    inviwoApp.getProcessorNetworkEvaluator()->disableEvaluation();
+    inviwoApp.getProcessorNetwork()->lock();
+    const CommandLineParser* cmdparser = inviwoApp.getCommandLineParser();
     std::string workspace;
 
     if (cmdparser->getLoadWorkspaceFromArg())
@@ -93,8 +84,8 @@ int main(int argc, char** argv) {
         workspace = inviwoApp.getPath(InviwoApplication::PATH_WORKSPACES, "tests/simpleslicergl.inv");
 
     IvwDeserializer xmlDeserializer(workspace);
-    processorNetwork.deserialize(xmlDeserializer);
-    std::vector<Processor*> processors = processorNetwork.getProcessors();
+    inviwoApp.getProcessorNetwork()->deserialize(xmlDeserializer);
+    std::vector<Processor*> processors = inviwoApp.getProcessorNetwork()->getProcessors();
     int i=0;
 
     for (std::vector<Processor*>::iterator it = processors.begin(); it!=processors.end(); ++it) {
@@ -109,10 +100,9 @@ int main(int argc, char** argv) {
             else {
                 currentC = new CanvasGLFW(canvasProcessor->getIdentifier(), uvec2(canvasProcessor->getCanvasSize()));
                 currentC->initializeGL();
-                currentC->setNetworkEvaluator(&processorNetworkEvaluator);
                 currentC->initialize();
             }
-            processorNetworkEvaluator.registerCanvas(currentC, canvasProcessor->getIdentifier());
+            inviwoApp.getProcessorNetworkEvaluator()->registerCanvas(currentC, canvasProcessor->getIdentifier());
             currentC->setWindowTitle(inviwoApp.getDisplayName() + " : " + canvasProcessor->getIdentifier());
             currentC->setWindowSize(uvec2(canvasProcessor->getCanvasSize()));
 
@@ -120,17 +110,17 @@ int main(int argc, char** argv) {
         }
     }
 
-    processorNetwork.setModified(true);
-    processorNetwork.unlock();
-    processorNetworkEvaluator.enableEvaluation();
+    inviwoApp.getProcessorNetwork()->setModified(true);
+    inviwoApp.getProcessorNetwork()->unlock();
+    inviwoApp.getProcessorNetworkEvaluator()->enableEvaluation();
 
     if (cmdparser->getCaptureAfterStartup()) {
         std::string path = cmdparser->getOutputPath();
 
         if (path.empty())
-            path = InviwoApplication::getPtr()->getPath(InviwoApplication::PATH_IMAGES);
+            path = inviwoApp.getPath(InviwoApplication::PATH_IMAGES);
 
-        processorNetworkEvaluator.saveSnapshotAllCanvases(path, cmdparser->getSnapshotName());
+        inviwoApp.getProcessorNetworkEvaluator()->saveSnapshotAllCanvases(path, cmdparser->getSnapshotName());
     }
 
     if (cmdparser->getQuitApplicationAfterStartup()){
@@ -142,6 +132,8 @@ int main(int argc, char** argv) {
     {
         glfwWaitEvents();
     }
+
+    inviwoApp.deinitialize();
 
     glfwTerminate();
 

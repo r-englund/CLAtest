@@ -89,11 +89,11 @@ void Canvas::resize(uvec2 size) {
     uvec2 previousDimensions = dimensions_;
     dimensions_ = size;
 
-    if (processorNetworkEvaluator_) {
-        processorNetworkEvaluator_->activateDefaultRenderContext();
+    if (getProcessorNetworkEvaluator()) {
+        getProcessorNetworkEvaluator()->activateDefaultRenderContext();
         ResizeEvent* resizeEvent = new ResizeEvent(dimensions_);
         resizeEvent->setPreviousSize(previousDimensions);
-        processorNetworkEvaluator_->propagateResizeEvent(this, resizeEvent);
+        getProcessorNetworkEvaluator()->propagateResizeEvent(this, resizeEvent);
         delete resizeEvent;
     }
 }
@@ -108,12 +108,16 @@ void Canvas::setNetworkEvaluator(ProcessorNetworkEvaluator* networkEvaluator) {
     processorNetworkEvaluator_ = networkEvaluator;
 }
 
-ProcessorNetworkEvaluator* Canvas::getNetworkEvaluator() const {
+ProcessorNetworkEvaluator* Canvas::getProcessorNetworkEvaluator() {
     return processorNetworkEvaluator_;
 }
 
+void Canvas::activateDefaultRenderContext(){
+    getProcessorNetworkEvaluator()->activateDefaultRenderContext();
+}
+
 void Canvas::interactionEvent(InteractionEvent* e) {
-    processorNetworkEvaluator_->propagateInteractionEvent(this, e);
+    getProcessorNetworkEvaluator()->propagateInteractionEvent(this, e);
 }
 
 void Canvas::mousePressEvent(MouseEvent* e) {
