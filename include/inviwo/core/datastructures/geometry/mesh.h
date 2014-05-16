@@ -64,10 +64,20 @@ public:
     virtual Mesh* clone() const;
     /**
      * Add a buffer with rendering data, such as positions/colors/normals. 
-     * The Mesh will take ownership of the added buffer.
-     * @param att Data to be rendered, will be owned by mesh.
+     *
+     * @param att Data to be rendered.
+     * @param takeOwnership True if the buffer should be deleted by the mesh.
      */
-    void addAttribute(Buffer* att);
+    void addAttribute(Buffer* att, bool takeOwnership = true);
+
+    /** 
+     * Replaces buffer at index with new buffer and deletes old one if it has ownership of it.
+     * Does nothing if index out of range.
+     * @param size_t idx Index of buffer to replace
+     * @param Buffer * att New buffer
+     * @param bool takeOwnership True if new buffer should be owned.
+     */
+    void setAttribute(size_t idx, Buffer* att, bool takeOwnership = true);
 
     /**
      * Add index buffer. The indices will be used as look up 
@@ -95,6 +105,7 @@ public:
 
 protected:
     std::vector<Buffer*> attributes_;
+    std::vector<bool> attributesOwnership_; // Indicates if the Mesh owns the corresponding Buffer in attributes_
     AttributesInfo attributesInfo_;
     std::vector<std::pair<AttributesInfo, IndexBuffer*> > indexAttributes_;
 
