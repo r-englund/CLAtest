@@ -21,6 +21,7 @@ set(HEADER_FILES
     ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/data.h
     ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/datagroup.h
     ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/datagrouprepresentation.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/datamapper.h
     ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/dataoperation.h
     ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/datarepresentation.h
     ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/datatypeclassification.h
@@ -234,6 +235,7 @@ set(SOURCE_FILES
     datastructures/data.cpp
     datastructures/datagroup.cpp
     datastructures/datagrouprepresentation.cpp
+    datastructures/datamapper.cpp
     datastructures/dataoperation.cpp
     datastructures/dataoperation.cpp
     datastructures/datarepresentation.cpp

@@ -66,8 +66,8 @@ protected:
     virtual void process();
 
 private:
-    FloatMinMaxProperty dataRange_;
-    FloatMinMaxProperty valueRange_;
+    DoubleMinMaxProperty dataRange_;
+    DoubleMinMaxProperty valueRange_;
     StringProperty valueUnit_;
 
     BoolProperty overRideDefaults_;

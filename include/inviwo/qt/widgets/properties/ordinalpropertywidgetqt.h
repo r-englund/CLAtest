@@ -96,13 +96,10 @@ template <typename BT, typename T>
 class TemplateOrdinalPropertyWidgetQt : public BaseOrdinalPropertyWidgetQt {
 public:
     TemplateOrdinalPropertyWidgetQt(OrdinalProperty<T>* property)
-        : BaseOrdinalPropertyWidgetQt(property)
-        , ordinalproperty_(property) {
+        : BaseOrdinalPropertyWidgetQt(property), ordinalproperty_(property) {}
 
-    }
-    
-    virtual ~TemplateOrdinalPropertyWidgetQt(){};
-    
+    virtual ~TemplateOrdinalPropertyWidgetQt() {};
+
     virtual void updateFromProperty() = 0;
 
 protected:
@@ -115,12 +112,13 @@ protected:
         widget->setLayout(vLayout);
         vLayout->setContentsMargins(0, 0, 0, 0);
         vLayout->setSpacing(0);
-        
+
         SliderVector sliders;
         QWidget* controlWidget;
         for (size_t i = 0; i < ordinalproperty_->getDim().x; i++) {
-             for (size_t j = 0; j < ordinalproperty_->getDim().y; j++) {
-                if (ordinalproperty_->getDim().y > 1) {
+            for (size_t j = 0; j < ordinalproperty_->getDim().y; j++) {
+                if (ordinalproperty_->getDim().y > 1 ||
+                    ordinalproperty_->getSemantics() == PropertySemantics("Text")) {
                     controlWidget = new OrdinalEditorWidget<BT>();
                 } else {
                     controlWidget = new SliderWidgetQt<BT>();
@@ -128,19 +126,16 @@ protected:
                 sliders.push_back(controlWidget);
                 vLayout->addWidget(controlWidget, static_cast<int>(i), static_cast<int>(j));
             }
-        } 
+        }
         return sliders;
     }
 
-    virtual std::string getPropertyText() const {
-        return glm::to_string(ordinalproperty_->get());
-    }
+    virtual std::string getPropertyText() const { return glm::to_string(ordinalproperty_->get()); }
 
     virtual std::string getPropertyToolTip() const {
-        return "Min: " + glm::to_string(ordinalproperty_->getMinValue()) +
-             "  Max: " + glm::to_string(ordinalproperty_->getMaxValue());
+        return "Min: " + glm::to_string(ordinalproperty_->getMinValue()) + "  Max: " +
+               glm::to_string(ordinalproperty_->getMaxValue());
     }
-
 
     virtual void setPropertyValue(int sliderId) = 0;
     virtual void setAsMin() = 0;
