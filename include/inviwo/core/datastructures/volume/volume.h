@@ -36,6 +36,7 @@
 #include <inviwo/core/common/inviwocoredefine.h>
 #include <inviwo/core/datastructures/data.h>
 #include <inviwo/core/datastructures/spatialdata.h>
+#include <inviwo/core/datastructures/datamapper.h>
 
 namespace inviwo {
 
@@ -65,6 +66,8 @@ public:
 
     mat4 getWorldTransform() const;
     void setWorldTransform(const mat4& mat);
+
+    DataMapper dataMap_;
 
 protected:
     virtual DataRepresentation* createDefaultRepresentation();

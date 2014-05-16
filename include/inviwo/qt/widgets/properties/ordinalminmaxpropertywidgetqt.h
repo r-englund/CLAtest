@@ -143,7 +143,6 @@ protected:
     virtual std::string getToolTipText();
     
     MinMaxProperty<T>* minMaxProperty_;
-    
 };
 
 typedef OrdinalMinMaxPropertyWidgetQt<double> DoubleMinMaxPropertyWidgetQt;
@@ -279,7 +278,6 @@ void OrdinalMinMaxPropertyWidgetQt<T>::updateFromSpinBoxMin(double minVal) {
         minMaxProperty_->set(range);
         minMaxProperty_->clearInitiatingWidget();
     }
-
 }
 template<typename T>
 void OrdinalMinMaxPropertyWidgetQt<T>::updateFromSpinBoxMax(double maxVal) {
@@ -310,17 +308,18 @@ void OrdinalMinMaxPropertyWidgetQt<T>::updateFromSpinBoxMax(double maxVal) {
     }
 }
 
-template<typename T>
+template <typename T>
 std::string OrdinalMinMaxPropertyWidgetQt<T>::getToolTipText() {
     std::stringstream ss;
 
     ss << PropertyWidgetQt::getToolTipText() << std::endl;
-    ss << "Value: [" << minMaxProperty_->get().x << ", " << minMaxProperty_->get().y << "]" << std::endl
-       << "Range: [" << minMaxProperty_->getRangeMin() << ", " << minMaxProperty_->getRangeMax() << "]" << std::endl
-       << "Inc: " << minMaxProperty_->getIncrement() << " Sep: " << minMaxProperty_->getMinSeparation();
+    ss << "Value: [" << minMaxProperty_->get().x << ", " << minMaxProperty_->get().y << "]"
+       << std::endl << "Range: [" << minMaxProperty_->getRangeMin() << ", "
+       << minMaxProperty_->getRangeMax() << "]" << std::endl
+       << "Inc: " << minMaxProperty_->getIncrement()
+       << " Sep: " << minMaxProperty_->getMinSeparation();
 
     return ss.str();
-
 }
 
 

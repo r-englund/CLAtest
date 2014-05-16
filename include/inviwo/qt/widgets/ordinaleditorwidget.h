@@ -78,10 +78,12 @@ public:
 protected:  
     // Defines the transform
     virtual T editorToRepr(QString val) {
-        return static_cast<T>(val.toDouble());
+        QLocale locale = BaseOrdinalEditorWidget::editor_->locale();
+        return static_cast<T>(locale.toDouble(val));
     }
     virtual QString reprToEditor(T val) {
-        return QString::number(val);
+        QLocale locale = BaseOrdinalEditorWidget::editor_->locale();
+        return locale.toString(val);
     }
 };
 
@@ -97,10 +99,12 @@ public:
 protected:
     // Defines the transform
     virtual int editorToRepr(QString val) {
-        return val.toInt();
+        QLocale locale = BaseOrdinalEditorWidget::editor_->locale();
+        return locale.toInt(val);
     }
     virtual QString reprToEditor(int val) {
-        return QString::number(val);
+        QLocale locale = BaseOrdinalEditorWidget::editor_->locale();
+        return locale.toString(val);
     }
 };
 

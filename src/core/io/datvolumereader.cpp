@@ -96,30 +96,31 @@ Volume* DatVolumeReader::readMetaData(std::string filePath) {
     glm::vec3 spacing(0.0f);
     glm::mat4 wtm(1.0f);
     glm::vec3 a(0.0f), b(0.0f), c(0.0f);
+    std::vector<std::string> parts;
     std::string key;
+    std::string value;
+    dvec2 datarange(0);
+    dvec2 valuerange(0);
+    std::string unit("");
     timeSteps_ = 1;
 
     while (!f->eof()) {
         getline(*f, textLine);
-        std::stringstream ss(textLine);
-        key = "";
-        ss >> key;
-
-        if (key == "" || key[0] == '#' || key[0] == '/') continue;
-
-        transform(key.begin(), key.end(), key.begin(), (int (*)(int))tolower);
-        key.erase(key.end() - 1);
+        
+        textLine = trim(textLine);
+        if (textLine == "" || textLine[0] == '#' || textLine[0] == '/') continue;
+        
+        parts = splitString(textLine, ':');
+        if (parts.size()!=2) continue;
+        
+        key = toLower(trim(parts[0]));
+        value = trim(parts[1]);
+        std::stringstream ss(value);
 
         if (key == "objectfilename" || key == "rawfile") {
-            rawFile_ = textLine.substr(key.length()+1);
-            rawFile_ = trim(rawFile_);
-            rawFile_ = fileDirectory + rawFile_;
+            rawFile_ = fileDirectory + value;
         } else if (key == "byteorder") {
-            std::string type;
-            ss >> type;
-            transform(type.begin(), type.end(), type.begin(), (int (*)(int))tolower);
-
-            if (type == "bigendian") {
+            if (toLower(value) == "bigendian") {
                 littleEndian_ = false;
             } else {
                 littleEndian_ = true;
@@ -171,10 +172,18 @@ Volume* DatVolumeReader::readMetaData(std::string filePath) {
         } else if (key == "format") {
             ss >> formatFlag;
             format_ = DataFormatBase::get(formatFlag);
+        } else if (key == "datarange") {
+            ss >> datarange.x;
+            ss >> datarange.y;
+        } else if (key == "valuerange") {
+            ss >> valuerange.x;
+            ss >> valuerange.y;
+        } else if (key == "unit") {
+            unit = value;
         } else if (key == "timesteps") {
             ss >> timeSteps_;
         } else {
-            volume->setMetaData<StringMetaData>(key, ss.str());
+            volume->setMetaData<StringMetaData>(key, value);
         }
     };
 
@@ -218,6 +227,20 @@ Volume* DatVolumeReader::readMetaData(std::string filePath) {
     volume->setOffset(offset);
     volume->setWorldTransform(wtm);
     volume->setDimension(dimension_);
+
+    volume->dataMap_.initWithFormat(format_);
+    if (datarange != dvec2(0)){
+        volume->dataMap_.dataRange = datarange;
+    }
+    if (valuerange != dvec2(0)) {
+        volume->dataMap_.valueRange = valuerange;
+    } else {
+        volume->dataMap_.valueRange = volume->dataMap_.dataRange;
+    }
+    if (unit != ""){
+        volume->dataMap_.unit = unit;
+    }
+
     volume->setDataFormat(format_);
     volume->setMetaData<IntMetaData>("timesteps", timeSteps_);
 

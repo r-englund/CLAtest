@@ -48,24 +48,25 @@ ProcessorCodeState(VolumeSource, CODE_STATE_EXPERIMENTAL);
 
 VolumeSource::VolumeSource()
     : DataSource<Volume, VolumeOutport>()
-    , dataRange_("dataRange", "Data range", 0.f, 255.0f, 0.f, 255.0f)
-    , valueRange_("valueRange", "Value range", 0.f, 255.0f, 0.f, 255.0f)
-    , valueUnit_("valueUnit", "Value unit", "")
+    , dataRange_("dataRange", "Data range", 0., 255.0, -DataFLOAT64::max(), DataFLOAT64::max(), 0.0,
+                 0.0, PropertyOwner::INVALID_OUTPUT, PropertySemantics("Text"))
+    , valueRange_("valueRange", "Value range", 0., 255.0, -DataFLOAT64::max(), DataFLOAT64::max(),
+                  0.0, 0.0, PropertyOwner::INVALID_OUTPUT, PropertySemantics("Text"))
+    , valueUnit_("valueUnit", "Value unit", "arb. unit.")
     , overRideDefaults_("override", "Override", false)
     , lengths_("length", "Lengths", vec3(1.0f), vec3(0.0f), vec3(10.0f))
     , angles_("angles", "Angles", vec3(90.0f), vec3(0.0f), vec3(180.0f), vec3(1.0f))
     , offset_("offset", "Offset", vec3(0.0f), vec3(-10.0f), vec3(10.0f))
     , dimensions_("dimensions", "Dimensions")
-    , format_("format", "Format","") 
-    , loadingInProgress_(false)
-{
+    , format_("format", "Format", "")
+    , loadingInProgress_(false) {
 
     DataSource<Volume, VolumeOutport>::file_.setDisplayName("Volume file");
-    
+
     dataRange_.onChange(this, &VolumeSource::metaPropertyChanged);
-    //valueRange_.onChange(this, &VolumeSource::metaPropertyChanged);
-    //valueUnit_.onChange(this, &VolumeSource::metaPropertyChanged);
-    
+    // valueRange_.onChange(this, &VolumeSource::metaPropertyChanged);
+    // valueUnit_.onChange(this, &VolumeSource::metaPropertyChanged);
+
     overRideDefaults_.setGroupDisplayName("Basis", "Basis and offset");
     overRideDefaults_.setGroupID("Basis");
     lengths_.setGroupID("Basis");
@@ -111,11 +112,11 @@ void VolumeSource::onOverrideChange() {
     if (this->isDeserializing_) {
         return;
     }
-    
-    if(!overRideDefaults_.get()) {
+
+    if (!overRideDefaults_.get()) {
         vec3 tmpLength = lengths_.get();
         vec3 tmpAngle = angles_.get();
-        vec3 tmpOffset = offset_.get();       
+        vec3 tmpOffset = offset_.get();
         lengths_.set(orgLengths_);
         angles_.set(orgAngles_);
         offset_.set(orgOffet_);
@@ -145,16 +146,16 @@ void VolumeSource::onOverrideChange() {
 void VolumeSource::dataLoaded(Volume* volume) {
     loadingInProgress_ = true;
     InviwoApplication::getPtr()->getProcessorNetwork()->lock();
-    // We should use double here... but at the moment there is no double min max widget...
-    float max = static_cast<float>(volume->getDataFormat()->getMax());
-    float min = static_cast<float>(volume->getDataFormat()->getMin());
+
+    double min = volume->dataMap_.dataRange.x;
+    double max = volume->dataMap_.dataRange.y;
 
     // store saved metadata as temporaries, which has already been restored due to deserialization
-    vec2 dataRangeSaved(dataRange_.get());
-    vec2 valueRangeSaved(valueRange_.get());
+    dvec2 dataRangeSaved(dataRange_.get());
+    dvec2 valueRangeSaved(valueRange_.get());
     std::string valueUnitSaved(valueUnit_.get());
 
-    // Default values
+    // Ranges
     dataRange_.setRangeMin(min);
     dataRange_.setRangeMax(max);
     valueRange_.setRangeMin(min);
@@ -171,12 +172,9 @@ void VolumeSource::dataLoaded(Volume* volume) {
     valueUnit_.setCurrentStateAsDefault();
 
     // restore properties from metadata
-    if (dataRangeSaved != dataRange_.get())
-        dataRange_.set(dataRangeSaved);
-    if (valueRangeSaved != valueRange_.get())
-        valueRange_.set(valueRangeSaved);
-    if (valueUnitSaved != valueUnit_.get())
-        valueUnit_.set(valueUnitSaved);
+    if (dataRangeSaved != dataRange_.get()) dataRange_.set(dataRangeSaved);
+    if (valueRangeSaved != valueRange_.get()) valueRange_.set(valueRangeSaved);
+    if (valueUnitSaved != valueUnit_.get()) valueUnit_.set(valueUnitSaved);
 
     // set metadata properties
     volume->setMetaData<Vec2MetaData>("DataRange", dataRange_.get());
@@ -199,8 +197,8 @@ void VolumeSource::dataLoaded(Volume* volume) {
     float gamma = glm::degrees(glm::angle(a, b));
 
     lengths_.setMaxValue(vec3(2.0f * (glm::length(a) + glm::length(b) + glm::length(c))));
-    offset_.setMaxValue(vec3(5.0*glm::length(offset)));
-    offset_.setMinValue(vec3(-5.0*glm::length(offset)));
+    offset_.setMaxValue(vec3(5.0 * glm::length(offset)));
+    offset_.setMinValue(vec3(-5.0 * glm::length(offset)));
 
     lengths_.set(vec3(glm::length(a), glm::length(b), glm::length(c)));
     angles_.set(vec3(alpha, beta, gamma));
@@ -214,7 +212,7 @@ void VolumeSource::dataLoaded(Volume* volume) {
     orgAngles_ = angles_.get();
     orgOffet_ = offset_.get();
 
-    if(overRideDefaults_.get()){
+    if (overRideDefaults_.get()) {
         lengths_.set(tmpLength);
         angles_.set(tmpAngle);
         offset_.set(tmpOffset);
@@ -229,8 +227,7 @@ void VolumeSource::dataLoaded(Volume* volume) {
 }
 
 void VolumeSource::metaPropertyChanged() {
-    if (loadingInProgress_)
-        return;
+    if (loadingInProgress_) return;
 
     Volume* volume = DataSource<Volume, VolumeOutport>::port_.getData();
 
@@ -243,7 +240,6 @@ void VolumeSource::metaPropertyChanged() {
     invalidateOutput();
 }
 
-
 void VolumeSource::process() {
     Volume* out;
 
@@ -251,7 +247,7 @@ void VolumeSource::process() {
         return;
     }
 
-    if(port_.hasData()) {
+    if (port_.hasData()) {
         out = port_.getData();
 
         float a = lengths_.get()[0];
@@ -261,14 +257,13 @@ void VolumeSource::process() {
         float alpha = glm::radians(angles_.get()[0]);
         float beta = glm::radians(angles_.get()[1]);
         float gamma = glm::radians(angles_.get()[2]);
-        float v = std::sqrt(1 - std::cos(alpha)*std::cos(alpha) - std::cos(beta)*std::cos(beta) - std::cos(gamma)*std::cos(gamma)
-                            - 2 * std::cos(alpha)*std::cos(beta)*std::cos(gamma));
+        float v = std::sqrt(1 - std::cos(alpha) * std::cos(alpha) -
+                            std::cos(beta) * std::cos(beta) - std::cos(gamma) * std::cos(gamma) -
+                            2 * std::cos(alpha) * std::cos(beta) * std::cos(gamma));
         mat4 newBasisAndOffset(
-            a, b*std::cos(gamma), c*std::cos(beta), offset[0],
-            0.0f, b*std::sin(gamma), c*(std::cos(alpha) - std::cos(beta)*std::cos(gamma)) / std::sin(gamma), offset[1],
-            0.0f, 0.0f, c*v / std::sin(gamma), offset[2],
-            0.0f, 0.0f, 0.0f, 1.0f
-            );
+            a, b * std::cos(gamma), c * std::cos(beta), offset[0], 0.0f, b * std::sin(gamma),
+            c * (std::cos(alpha) - std::cos(beta) * std::cos(gamma)) / std::sin(gamma), offset[1],
+            0.0f, 0.0f, c * v / std::sin(gamma), offset[2], 0.0f, 0.0f, 0.0f, 1.0f);
         out->setBasisAndOffset(glm::transpose(newBasisAndOffset));
 
         out->setMetaData<Vec2MetaData>("DataRange", dataRange_.get());
@@ -289,7 +284,4 @@ void VolumeSource::deserialize(IvwDeserializer& d) {
     onOverrideChange();
 }
 
-
-
-
-} // namespace
+}  // namespace
