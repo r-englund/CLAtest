@@ -39,7 +39,7 @@
 
 namespace inviwo {
 
-class IVW_MODULE_OPENGL_API GLFormats {
+class GLFormats {
 
 public:
     struct GLFormat {

@@ -88,6 +88,8 @@ int main(int argc, char** argv) {
     // process last arguments
     if (mainWin.processCommandLineArgs())
         return inviwoApp.exec();
-    else
+    else{
+        inviwoApp.deinitialize();
         return  0;
+    }
 }
