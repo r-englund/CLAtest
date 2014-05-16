@@ -92,19 +92,7 @@ NetworkEditor::NetworkEditor() :
 #define DELETE_VECTOR_ENTRIES(vec) while(!vec.empty()){delete vec.back();vec.pop_back();}
 
 NetworkEditor::~NetworkEditor() {
-    workerThreadQuit();
-    InviwoApplication::getPtr()->getProcessorNetwork()->lock();
-    removePortInspector(inspection_.processorIdentifier_, inspection_.portIdentifier_);
-
     delete portInfoWidget_;
-    ivwAssert(processorGraphicsItems_.size()==0,
-              "ProcessorGraphicsItems not properly removed");
-    ivwAssert(connectionGraphicsItems_.size() == 0,
-              "ConnectionGraphicsItems not properly removed");
-    ivwAssert(linkGraphicsItems_.size() == 0,
-              "LinkGraphicsItems not properly removed");
-
-   InviwoApplication::getPtr()->getProcessorNetwork()->unlock();
 }
 
 /////////////////////////////////////////////
