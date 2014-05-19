@@ -623,6 +623,17 @@ macro(ivw_add_definition_to_list def)
 endmacro()
 
 #--------------------------------------------------------------------
+# Add folder to module pack
+macro(ivw_add_to_module_pack folder)
+if(IVW_PACKAGE_PROJECT)
+    get_filename_component(FOLDER_NAME ${CMAKE_CURRENT_SOURCE_DIR} NAME)
+    install(DIRECTORY ${folder}
+             DESTINATION modules/${FOLDER_NAME}
+             COMPONENT modules)
+endif()
+endmacro()
+
+#--------------------------------------------------------------------
 # Creates project module from name 
 macro(ivw_create_module)
   ivw_dir_to_mod_prefix(${mod_name} ${_projectName})
@@ -708,6 +719,19 @@ endmacro()
 #--------------------------------------------------------------------
 # Make package (with configure file etc)
 macro(ivw_make_package package_name project_name)
+if(IVW_PACKAGE_PROJECT AND BUILD_SHARED_LIBS)  
+   #--------------------------------------------------------------------
+   # Add to package
+   install(TARGETS ${project_name}
+            RUNTIME
+            DESTINATION bin
+            COMPONENT applications)
+   #install(TARGETS ${project_name}
+   #         ARCHIVE
+   #        DESTINATION lib
+   #         COMPONENT libraries)
+endif()
+
   #--------------------------------------------------------------------
   # Append headers etc of project to include list
   #set(REST ${ARGN})
@@ -915,6 +939,24 @@ macro(ivw_add_dependencies)
       #--------------------------------------------------------------------
       # Link library
        target_link_libraries(${_projectName} ${${u_package}_LIBRARIES})
+      
+      #--------------------------------------------------------------------
+      # Add library to pack
+      # if(IVW_PACKAGE_PROJECT)  
+          # if(BUILD_SHARED_LIBS)
+                # if(WIN32 AND CMAKE_BUILD_TYPE MATCHES DEBUG)
+                    # set(BINARY_FILE ${${u_package}_LIBRARY_DIR}/${${u_package}_PROJECT}${CMAKE_DEBUG_POSTFIX}.${CMAKE_SHARED_LIBRARY_PREFIX})
+                # else()
+                    # set(BINARY_FILE ${${u_package}_LIBRARY_DIR}/${${u_package}_PROJECT}.${CMAKE_SHARED_LIBRARY_PREFIX})
+                # endif()
+               # #--------------------------------------------------------------------
+               # # Add to package
+               # install(FILES ${BINARY_FILE}
+                         # RUNTIME
+                         # DESTINATION bin
+                         # COMPONENT applications)
+           # endif()
+       # endif()
 
       #--------------------------------------------------------------------
       # Link flags

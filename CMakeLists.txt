@@ -67,3 +67,27 @@ end_add_modules()
 #--------------------------------------------------------------------
 # Add applications
 add_subdirectory(apps)
+
+#--------------------------------------------------------------------
+# Package creation
+if(IVW_PACKAGE_PROJECT)
+set(CPACK_PACKAGE_NAME "Inviwo")
+set(CPACK_PACKAGE_VENDOR "Inviwo Organization")
+set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "Interactive Visualization Workshop")
+set(CPACK_PACKAGE_VERSION_MAJOR "${IVW_MAJOR_VERSION}")
+set(CPACK_PACKAGE_VERSION_MINOR "${IVW_MINOR_VERSION}")
+if(WIN32)
+set(CPACK_GENERATOR "ZIP")
+else()
+set(CPACK_GENERATOR "TGZ")
+endif()
+set(CPACK_PACKAGE_FILE_NAME "${CPACK_PACKAGE_NAME}_v${IVW_VERSION}")
+install(DIRECTORY ${IVW_ROOT_DIR}/data/images DESTINATION data COMPONENT data)
+install(DIRECTORY ${IVW_ROOT_DIR}/data/scripts DESTINATION data COMPONENT data)
+install(DIRECTORY ${IVW_ROOT_DIR}/data/settings DESTINATION data COMPONENT data)
+install(FILES ${IVW_ROOT_DIR}/data/volumes/boron.dat DESTINATION data/volumes COMPONENT data)
+install(FILES ${IVW_ROOT_DIR}/data/volumes/boron.raw DESTINATION data/volumes COMPONENT data)
+install(FILES ${IVW_ROOT_DIR}/data/workspaces/boron.inv DESTINATION data/workspaces COMPONENT data)
+set(CPACK_COMPONENTS_ALL applications data modules)
+include(CPack)
+endif()

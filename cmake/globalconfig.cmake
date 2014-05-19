@@ -30,10 +30,12 @@
  #
  #################################################################################
  
- set(IVW_VERSION 0.6b)
+set(IVW_VERSION 0.6b)
+set(IVW_MAJOR_VERSION 0)
+set(IVW_MINOR_VERSION 6)
  
 set_property(GLOBAL PROPERTY USE_FOLDERS On)
-set_property(GLOBAL PROPERTY PREDEFINED_TARGETS_FOLDER ext)
+set_property(GLOBAL PROPERTY PREDEFINED_TARGETS_FOLDER cmake)
 
 #--------------------------------------------------------------------
 # Only output error messages
@@ -133,6 +135,10 @@ endif(CMAKE_COMPILER_2005)
 if(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
   add_definitions(-DDARWIN)
 endif(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
+
+#--------------------------------------------------------------------
+# Package creation
+option(IVW_PACKAGE_PROJECT "Create Inviwo Package Project" OFF)
 
 # Build shared libs or static libs
 option(IVW_PROFILING "Enable profiling" OFF)

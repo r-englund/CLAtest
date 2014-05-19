@@ -122,4 +122,6 @@ ivw_add_unittest(${TEST_FILES})
 # Create module
 ivw_create_module(${SOURCE_FILES} ${HEADER_FILES} ${SHADER_FILES} ${TEST_FILES})
 
-
+#--------------------------------------------------------------------
+# Add kernel directory to pack
+ivw_add_to_module_pack(${IVW_MODULE_DIR}/opencl/cl)
