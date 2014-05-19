@@ -13,7 +13,7 @@
 namespace inviwo {
 
 template <typename DataType, typename PortType>
-class IVW_MODULE_BASE_API DataSource : public Processor {
+class DataSource : public Processor {
 public:
     DataSource();
     virtual ~DataSource();
