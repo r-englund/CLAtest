@@ -34,6 +34,13 @@
 #include <inviwo/core/common/inviwoapplication.h>
 #include <sys/stat.h>
 
+
+#ifdef _WIN32 
+#include <direct.h>
+#elif defined(__unix__) 
+#include <sys/types.h>
+#endif
+
 namespace inviwo {
 
 std::string URLParser::addBasePath(const std::string url) {
@@ -161,6 +168,38 @@ bool URLParser::sameDrive(const std::string& absPath1, const std::string absPath
 #else
     return true;
 #endif
+}
+
+std::string URLParser::getUserPath(){
+    std::stringstream ss;
+#ifdef _WIN32 
+    ss << std::getenv("HOMEDRIVE") << std::getenv("HOMEPATH");
+#elif defined(__unix__) 
+    ss << std::getenv("HOME");
+#endif
+    ss << "/";
+    return ss.str();
+}
+
+void URLParser::createDirectoryRecursivly(std::string path){
+    replaceInString(path,"\\","/");
+    std::vector<std::string> v = splitString(path,'/');
+
+    std::string pathPart;
+#ifdef _WIN32
+    pathPart += v.front();
+    v.erase(v.begin());
+#endif
+
+    while(!v.empty()){
+        pathPart += "/" + v.front();
+        v.erase(v.begin());
+#ifdef _WIN32 
+        mkdir(pathPart.c_str());
+#elif defined(__unix__) 
+        mkdir(pathPart.c_str(),0755);
+#endif
+    }
 }
 
 }
