@@ -62,6 +62,8 @@ public:
     // overloaded method called when INVALID_RESOURCE property is set
     virtual void initializeResources();
 
+    
+
     // convenience functions for texture/volume binding
     void bindTransferFunction(const TransferFunction& tf, GLenum tfTexUnit);
     void bindVolume(const VolumeInport& inport, GLenum volTexUnit);
@@ -69,6 +71,13 @@ public:
     void setGlobalShaderParameters(Shader* shader);
 
 protected:
+
+    /** 
+     * Returns the compositing mode, which will replace
+     * RC_APPLY_COMPOSITING(result, color, samplePos, voxel, gradient, t, tDepth, tIncr)
+     * in the shader.
+     */
+    virtual std::string getCompositingDefine();
     Shader* shader_;
     std::string shaderFileName_;
 

@@ -213,24 +213,8 @@ void VolumeRaycasterGL::initializeResources() {
     shader_->getFragmentShaderObject()->addShaderDefine(shadingKey, shadingValue);
     // compositing defines
     std::string compositingKey = "RC_APPLY_COMPOSITING(result, color, samplePos, voxel, gradient, t, tDepth, tIncr)";
-    std::string compositingValue = "";
+    std::string compositingValue = getCompositingDefine();
 
-    if (compositingMode_.isSelectedIdentifier("dvr"))
-        compositingValue = "compositeDVR(result, color, t, tDepth, tIncr);";
-    else if (compositingMode_.isSelectedIdentifier("mip"))
-        compositingValue = "compositeMIP(result, color, t, tDepth);";
-    else if (compositingMode_.isSelectedIdentifier("fhp"))
-        compositingValue = "compositeFHP(result, color, samplePos, t, tDepth);";
-    else if (compositingMode_.isSelectedIdentifier("fhn"))
-        compositingValue = "compositeFHN(result, color, gradient, t, tDepth);";
-    else if (compositingMode_.isSelectedIdentifier("fhnvs"))
-        compositingValue = "compositeFHN_VS(result, color, gradient, t, viewMatrix_, tDepth);";
-    else if (compositingMode_.isSelectedIdentifier("fhd"))
-        compositingValue = "compositeFHD(result, color, gradient, t, tDepth);";
-    else if (compositingMode_.isSelectedIdentifier("iso"))
-        compositingValue = "compositeISO(result, color, voxel.r, t, tDepth, tIncr, isoValue_);";
-    else if (compositingMode_.isSelectedIdentifier("ison"))
-        compositingValue = "compositeISON(result, color, voxel.r, gradient, t, tDepth, isoValue_);";
 
     shader_->getFragmentShaderObject()->addShaderDefine(compositingKey, compositingValue);
     shader_->build();
@@ -271,6 +255,29 @@ void VolumeRaycasterGL::setGlobalShaderParameters(Shader* shader) {
     // depth computation uniforms
     shader->setUniform("zNear_", camera_.getNearPlaneDist());
     shader->setUniform("zFar_", camera_.getFarPlaneDist());
+}
+
+std::string VolumeRaycasterGL::getCompositingDefine()
+{
+    std::string compositingValue;
+    if (compositingMode_.isSelectedIdentifier("dvr"))
+        compositingValue = "compositeDVR(result, color, t, tDepth, tIncr);";
+    else if (compositingMode_.isSelectedIdentifier("mip"))
+        compositingValue = "compositeMIP(result, color, t, tDepth);";
+    else if (compositingMode_.isSelectedIdentifier("fhp"))
+        compositingValue = "compositeFHP(result, color, samplePos, t, tDepth);";
+    else if (compositingMode_.isSelectedIdentifier("fhn"))
+        compositingValue = "compositeFHN(result, color, gradient, t, tDepth);";
+    else if (compositingMode_.isSelectedIdentifier("fhnvs"))
+        compositingValue = "compositeFHN_VS(result, color, gradient, t, viewMatrix_, tDepth);";
+    else if (compositingMode_.isSelectedIdentifier("fhd"))
+        compositingValue = "compositeFHD(result, color, gradient, t, tDepth);";
+    else if (compositingMode_.isSelectedIdentifier("iso"))
+        compositingValue = "compositeISO(result, color, voxel.r, t, tDepth, tIncr, isoValue_);";
+    else if (compositingMode_.isSelectedIdentifier("ison"))
+        compositingValue = "compositeISON(result, color, voxel.r, gradient, t, tDepth, isoValue_);";	
+
+    return compositingValue;
 }
 
 } // namespace
