@@ -81,7 +81,7 @@ public:
     QRectF boundingRect() const;
 
     virtual QPainterPath obtainCurvePath() const;
-    QPainterPath obtainCurvePath(QPointF startPoint, QPointF endPoint);
+    QPainterPath obtainCurvePath(QPointF startPoint, QPointF endPoint) const;
 
 protected:
 

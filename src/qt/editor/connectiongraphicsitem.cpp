@@ -56,19 +56,22 @@ CurveGraphicsItem::CurveGraphicsItem(QPointF startPoint, QPointF endPoint, uvec3
 CurveGraphicsItem::~CurveGraphicsItem() {}
 
 QPainterPath CurveGraphicsItem::obtainCurvePath() const {
-    float delta = endPoint_.y() - startPoint_.y();
-    QPointF ctrlPoint1 = QPointF(startPoint_.x(), endPoint_.y() - delta / 4.0);
-    QPointF ctrlPoint2 = QPointF(endPoint_.x(), startPoint_.y() + delta / 4.0);
-    QPainterPath bezierCurve;
-    bezierCurve.moveTo(startPoint_);
-    bezierCurve.cubicTo(ctrlPoint1, ctrlPoint2, endPoint_);
-    return bezierCurve;
+    return obtainCurvePath(startPoint_,endPoint_);
 }
 
-QPainterPath CurveGraphicsItem::obtainCurvePath(QPointF startPoint, QPointF endPoint) {
-    float delta = endPoint.y() - startPoint.y();
-    QPointF ctrlPoint1 = QPointF(startPoint.x(), endPoint.y() - delta / 4.0);
-    QPointF ctrlPoint2 = QPointF(endPoint.x(), startPoint.y() + delta / 4.0);
+QPainterPath CurveGraphicsItem::obtainCurvePath(QPointF startPoint, QPointF endPoint) const {
+    float delta =  std::abs(endPoint.y()-startPoint.y());
+    
+    QPointF o = (endPoint-startPoint);
+    o -= QPointF(0,9); //take into acount port size
+    int min = std::sqrtf(QPointF::dotProduct(o,o));
+    static const int max = 50;
+    if(delta < min) delta = min;
+    if(delta > max) delta = max;
+    
+    QPointF off(0,delta);
+    QPointF ctrlPoint1 = startPoint_ + off;
+    QPointF ctrlPoint2 = endPoint_ - off;
     QPainterPath bezierCurve;
     bezierCurve.moveTo(startPoint);
     bezierCurve.cubicTo(ctrlPoint1, ctrlPoint2, endPoint);
@@ -113,11 +116,8 @@ void CurveGraphicsItem::resetBorderColors() {
 }
 
 QRectF CurveGraphicsItem::boundingRect() const {
-    QPointF topLeft =
-        QPointF(std::min(startPoint_.x(), endPoint_.x()), std::min(startPoint_.y(), endPoint_.y()));
-    return QRectF(topLeft.x() - 10.0, topLeft.y() - 10.0,
-                  abs(startPoint_.x() - endPoint_.x()) + 20.0,
-                  abs(startPoint_.y() - endPoint_.y()) + 20.0);
+    QRectF p = obtainCurvePath().boundingRect();
+    return QRectF(p.topLeft() - QPointF(5,5) , p.size() + QSizeF(10,10));
 }
 
 ConnectionGraphicsItem::ConnectionGraphicsItem(ProcessorGraphicsItem* outProcessor,
