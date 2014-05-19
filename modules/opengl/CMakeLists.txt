@@ -142,6 +142,10 @@ ivw_group("Shader Files" ${SHADER_FILES})
 ivw_create_module(${SOURCE_FILES} ${HEADER_FILES} ${SHADER_FILES})
 
 #--------------------------------------------------------------------
+# Add shader directory to pack
+ivw_add_to_module_pack(${IVW_MODULE_DIR}/opengl/glsl)
+
+#--------------------------------------------------------------------
 # Build GLEW if it couldn't be found
 if(BUILD_GLEW)
 	add_subdirectory(ext/glew)

@@ -83,6 +83,14 @@ ENDIF(WIN32)
 add_executable(inviwo MACOSX_BUNDLE WIN32 ${SOURCE_FILES} ${HEADER_FILES} ${MOC_FILES} ${QRC_FILE} ${RES_FILES})
 
 #--------------------------------------------------------------------
+# Add application to pack
+if(IVW_PACKAGE_PROJECT)
+install(TARGETS inviwo
+   RUNTIME
+   DESTINATION bin)
+endif()
+
+#--------------------------------------------------------------------
 # Add dependencies
 ivw_add_dependencies(${package_list})
 
