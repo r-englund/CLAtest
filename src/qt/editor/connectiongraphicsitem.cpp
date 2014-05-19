@@ -64,7 +64,7 @@ QPainterPath CurveGraphicsItem::obtainCurvePath(QPointF startPoint, QPointF endP
     
     QPointF o = (endPoint-startPoint);
     o -= QPointF(0,9); //take into acount port size
-    int min = std::sqrtf(QPointF::dotProduct(o,o));
+    int min = std::sqrt(QPointF::dotProduct(o,o));
     static const int max = 50;
     if(delta < min) delta = min;
     if(delta > max) delta = max;
