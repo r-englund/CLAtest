@@ -53,8 +53,21 @@ macro(ivw_project project_name)
   set(_allDefinitions "")
   set(_allLinkFlags "")
   set(_allPchDirs "")
+  set(_cpackName modules)
+  string(TOUPPER ${project_name} u_project_name)
+  if(u_project_name MATCHES "QT+")
+    set(_cpackName qt_modules)
+  endif()
 endmacro()
 
+#--------------------------------------------------------------------
+# Creates project with initial variables
+macro(ivw_set_cpack_name cpack_name)
+  set(_cpackName ${cpack_name})
+endmacro()
+
+#--------------------------------------------------------------------
+# Add unittests
 macro(ivw_add_unittest)
 	if(IVW_UNIT_TEST_APPLICATION)
     foreach(item ${ARGN})
@@ -62,7 +75,6 @@ macro(ivw_add_unittest)
     endforeach()
 	endif()
 endmacro()
-
 
 #--------------------------------------------------------------------
 # Convert module name to directory name
@@ -629,7 +641,7 @@ if(IVW_PACKAGE_PROJECT)
     get_filename_component(FOLDER_NAME ${CMAKE_CURRENT_SOURCE_DIR} NAME)
     install(DIRECTORY ${folder}
              DESTINATION modules/${FOLDER_NAME}
-             COMPONENT modules)
+             COMPONENT ${_cpackName})
 endif()
 endmacro()
 
@@ -725,11 +737,7 @@ if(IVW_PACKAGE_PROJECT AND BUILD_SHARED_LIBS)
    install(TARGETS ${project_name}
             RUNTIME
             DESTINATION bin
-            COMPONENT applications)
-   #install(TARGETS ${project_name}
-   #         ARCHIVE
-   #        DESTINATION lib
-   #         COMPONENT libraries)
+            COMPONENT ${_cpackName})
 endif()
 
   #--------------------------------------------------------------------
@@ -953,8 +961,7 @@ macro(ivw_add_dependencies)
                # # Add to package
                # install(FILES ${BINARY_FILE}
                          # RUNTIME
-                         # DESTINATION bin
-                         # COMPONENT applications)
+                         # DESTINATION bin)
            # endif()
        # endif()
 

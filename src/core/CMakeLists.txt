@@ -464,4 +464,5 @@ ivw_compile_optimize()
 
 #--------------------------------------------------------------------
 # Make package (for other projects to find)
+ivw_set_cpack_name(core)
 ivw_make_package(InviwoCore inviwo-core)

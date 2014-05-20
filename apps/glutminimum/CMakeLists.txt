@@ -46,7 +46,8 @@ add_executable(glutminimum MACOSX_BUNDLE WIN32 ${SOURCE_FILES})
 if(IVW_PACKAGE_PROJECT)
 install(TARGETS glutminimum
    RUNTIME
-   DESTINATION bin)
+   DESTINATION bin
+   COMPONENT glut_app)
 endif()
 
 #--------------------------------------------------------------------
