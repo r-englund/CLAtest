@@ -135,7 +135,7 @@ InviwoCore::InviwoCore() : InviwoModule() {
                                             "imageportinspector.inv")));
     registerPortInspector(new PortInspector("VolumeOutport",
                                             InviwoApplication::getPtr()->getPath(InviwoApplication::PATH_PORTINSPECTORS,
-                                            "portinsctors/volumeportinspector.inv")));
+                                            "volumeportinspector.inv")));
     registerPortInspector(new PortInspector("GeometryOutport",
                                             InviwoApplication::getPtr()->getPath(InviwoApplication::PATH_PORTINSPECTORS,
                                             "geometryportinspector.inv")));
