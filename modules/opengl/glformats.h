@@ -43,6 +43,23 @@ class GLFormats {
 
 public:
     struct GLFormat {
+        GLFormat()
+            : format(0)
+            , internalFormat(0)
+            , type(0)
+            , channels(0)
+            , typeSize(0)
+            , scaling(0.f)
+            , valid(false) {}
+        GLFormat(GLint f, GLint i, GLenum t, GLuint c, GLuint s, GLfloat sc = 0.f)
+            : format(f)
+            , internalFormat(i)
+            , type(t)
+            , channels(c)
+            , typeSize(s)
+            , scaling(sc)
+            , valid(true) {}
+        
         GLint format;
         GLint internalFormat;
         GLenum type;
@@ -50,8 +67,6 @@ public:
         GLuint typeSize;
         GLfloat scaling;
         bool valid;
-        GLFormat() : format(0), internalFormat(0), type(0), channels(0), typeSize(0), scaling(0.f), valid(false) {}
-        GLFormat(GLint f, GLint i, GLenum t, GLuint c, GLuint s, GLfloat sc = 0.f) : format(f), internalFormat(i), type(t), channels(c), typeSize(s), scaling(sc), valid(true) {}
     };
 
     GLFormats() {

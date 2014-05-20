@@ -144,7 +144,7 @@ public:
     virtual Variant getVariant();
     virtual void setVariant(const Variant&);
     virtual int getVariantType();
-    virtual void set(const Property* src) { IVW_UNUSED_PARAM(src); }
+    virtual void set(const Property* src);
 
     virtual void serialize(IvwSerializer& s) const;
     virtual void deserialize(IvwDeserializer& d);

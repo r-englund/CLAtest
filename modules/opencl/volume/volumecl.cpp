@@ -31,37 +31,39 @@
  *********************************************************************************/
 
 #include <modules/opencl/volume/volumecl.h>
+#include <inviwo/core/datastructures/volume/volume.h>
 
 namespace inviwo {
 
 VolumeCL::VolumeCL(const DataFormatBase* format, const void* data)
-    : VolumeRepresentation(uvec3(128,128,128), format), imageFormat_(dataFormatToCLImageFormat(format->getId()))
-{
+    : VolumeRepresentation(uvec3(128, 128, 128), format)
+    , imageFormat_(dataFormatToCLImageFormat(format->getId())) {
     initialize(data);
 }
 
 VolumeCL::VolumeCL(uvec3 dimensions, const DataFormatBase* format, const void* data)
-    : VolumeRepresentation(dimensions, format), imageFormat_(dataFormatToCLImageFormat(format->getId())) 
-{
+    : VolumeRepresentation(dimensions, format)
+    , imageFormat_(dataFormatToCLImageFormat(format->getId())) {
     initialize(data);
 }
 
 VolumeCL::VolumeCL(const VolumeCL& rhs)
-    : VolumeRepresentation(rhs), imageFormat_(rhs.imageFormat_)
-{
+    : VolumeRepresentation(rhs), imageFormat_(rhs.imageFormat_) {
     initialize(NULL);
-    OpenCL::getPtr()->getQueue().enqueueCopyImage(rhs.get(), *clImage_ , glm::svec3(0), glm::svec3(0), glm::svec3(dimensions_));
+    OpenCL::getPtr()->getQueue().enqueueCopyImage(rhs.get(), *clImage_, glm::svec3(0),
+                                                  glm::svec3(0), glm::svec3(dimensions_));
 }
 
-VolumeCL::~VolumeCL() {
-    deinitialize();
-}
+VolumeCL::~VolumeCL() { deinitialize(); }
 
 void VolumeCL::initialize(const void* voxels) {
-    clImage_ = new cl::Image3D(OpenCL::getPtr()->getContext(), CL_MEM_READ_WRITE, getFormat(), dimensions_.x, dimensions_.y, dimensions_.z);
+    clImage_ = new cl::Image3D(OpenCL::getPtr()->getContext(), CL_MEM_READ_WRITE, getFormat(),
+                               dimensions_.x, dimensions_.y, dimensions_.z);
 
     if (voxels != NULL) {
-        OpenCL::getPtr()->getQueue().enqueueWriteImage(*clImage_, true, glm::svec3(0), glm::svec3(dimensions_), 0, 0, const_cast<void*>(voxels));
+        OpenCL::getPtr()->getQueue().enqueueWriteImage(*clImage_, true, glm::svec3(0),
+                                                       glm::svec3(dimensions_), 0, 0,
+                                                       const_cast<void*>(voxels));
     }
 
     VolumeCL::initialize();
@@ -76,43 +78,38 @@ void VolumeCL::deinitialize() {
 }
 
 float VolumeCL::getVolumeDataScaling(const Volume* volume) const {
-    // Note: The basically the same code is used in VolumeCLGL and VolumeGL as well. 
+    // Note: The basically the same code is used in VolumeCLGL and VolumeGL as well.
     // Changes here should also be done there.
     // Compute data scaling based on volume data range
-    float scalingFactor = 1.f;
+    double scalingFactor = 1.f;
     // Scaling for 12-bit data
-    if (getDataFormat()->getBitsStored() == 12) {
-        scalingFactor = (static_cast<float>(DataUINT16::max())/static_cast<float>(DataUINT12::max()));
+    if (volume->getDataFormat()->getBitsStored() == 12) {
+        scalingFactor =
+            (DataUINT16::max() / DataUINT12::max());
     }
-    if (volume->hasMetaData<Vec2MetaData>("DataRange")) {
-        glm::vec2 dataRange;
-        dataRange = volume->getMetaData<Vec2MetaData>("DataRange", dataRange);
-
-        float datatypeMax = static_cast<float>(getDataFormat()->getMax());
-        float datatypeMin = static_cast<float>(getDataFormat()->getMin());
-
-        if ((std::abs(datatypeMin - dataRange.x) < glm::epsilon<float>())
-            && (std::abs(datatypeMax - dataRange.y) < glm::epsilon<float>())) {
-                // no change, use original GL scaling factor if volume data range is equal to type data range
-                return scalingFactor;
-        } else {
-            // TODO: consider lower bounds of data range as well (offset in shader before scaling)
-            scalingFactor = datatypeMax / dataRange.y;
-            return scalingFactor;
-        }
-    }
-    else {
-        // fall-back: no data range given for the volume
-        return scalingFactor;
+    
+    glm::dvec2 dataRange = volume->dataMap_.dataRange;
+    DataMapper defaultRange(volume->getDataFormat());
+    
+    if (dataRange == defaultRange.dataRange) {
+        // no change, use original GL scaling factor if volume data range is equal to type data
+        // range
+        return static_cast<float>(scalingFactor);
+    } else {
+        // TODO: consider lower bounds of data range as well (offset in shader before scaling)
+        scalingFactor = defaultRange.dataRange.y / dataRange.y;
+        return static_cast<float>(scalingFactor);
     }
 }
 
 void VolumeCL::upload(const void* data) {
-    OpenCL::getPtr()->getQueue().enqueueWriteImage(*clImage_, true, glm::svec3(0), glm::svec3(dimensions_), 0, 0, const_cast<void*>(data));
+    OpenCL::getPtr()->getQueue().enqueueWriteImage(
+        *clImage_, true, glm::svec3(0), glm::svec3(dimensions_), 0, 0, const_cast<void*>(data));
 }
 
 void VolumeCL::download(void* data) const {
-    OpenCL::getPtr()->getQueue().enqueueReadImage(*clImage_, true, glm::svec3(0), glm::svec3(dimensions_), 0, 0, data);
+    OpenCL::getPtr()->getQueue().enqueueReadImage(*clImage_, true, glm::svec3(0),
+                                                  glm::svec3(dimensions_), 0, 0, data);
 }
 
 } // namespace

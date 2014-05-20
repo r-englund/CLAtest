@@ -83,23 +83,22 @@ DEFAULTVALUES(dmat4, uvec2(4, 4), "DoubleMat4", dmat4(0.), dmat4(0.), dmat4(1.),
 
 #undef DEFAULTVALUES
 
-template<typename T>
+template <typename T>
 class OrdinalProperty : public TemplateProperty<T> {
 public:
-    OrdinalProperty(std::string identifier,
-                    std::string displayName,
-                    T value = Defaultvalues<T>::getVal(),
-                    T minValue = Defaultvalues<T>::getMin(),
-                    T maxValue = Defaultvalues<T>::getMax(),
-                    T increment = Defaultvalues<T>::getInc(),
-                    PropertyOwner::InvalidationLevel invalidationLevel = PropertyOwner::INVALID_OUTPUT,
-                    PropertySemantics semantics = PropertySemantics::Default);
+    OrdinalProperty(
+        std::string identifier, std::string displayName, T value = Defaultvalues<T>::getVal(),
+        T minValue = Defaultvalues<T>::getMin(), T maxValue = Defaultvalues<T>::getMax(),
+        T increment = Defaultvalues<T>::getInc(),
+        PropertyOwner::InvalidationLevel invalidationLevel = PropertyOwner::INVALID_OUTPUT,
+        PropertySemantics semantics = PropertySemantics::Default);
 
     T getMinValue() const;
     T getMaxValue() const;
     T getIncrement() const;
 
-    virtual void set(const T& value); // Need to implement this to avoid compiler confusion with set(const Property*)
+    virtual void set(const T& value);  // Need to implement this to avoid compiler confusion with
+                                       // set(const Property*)
     virtual void set(const Property* src);
     void setMinValue(const T& value);
     void setMaxValue(const T& value);
@@ -116,9 +115,9 @@ public:
 
     virtual void serialize(IvwSerializer& s) const;
     virtual void deserialize(IvwDeserializer& d);
-    
-    static uvec2 getDim() {return Defaultvalues<T>::getDim(); }
-   
+
+    static uvec2 getDim() { return Defaultvalues<T>::getDim(); }
+
 private:
     T minValue_;
     T maxValue_;
@@ -189,17 +188,19 @@ void OrdinalProperty<T>::set(const T& value) {
 
 template <typename T>
 void OrdinalProperty<T>::set(const Property* srcProperty) {
-    const OrdinalProperty<T>* templatedSrcProp = dynamic_cast<const OrdinalProperty<T>*>(srcProperty);
-
+    const OrdinalProperty<T>* templatedSrcProp =
+        dynamic_cast<const OrdinalProperty<T>*>(srcProperty);
     if (templatedSrcProp) {
-        minValue_ = templatedSrcProp->getMinValue();
-        maxValue_ = templatedSrcProp->getMaxValue();
-        increment_ = templatedSrcProp->getIncrement();
-        this->value_ = templatedSrcProp->get();
+        this->minValue_ = templatedSrcProp->minValue_;
+        this->maxValue_ = templatedSrcProp->maxValue_;
+        this->increment_ = templatedSrcProp->increment_;
+        this->defaultMinValue_ = templatedSrcProp->defaultMinValue_;
+        this->defaultMaxValue_ = templatedSrcProp->defaultMaxValue_;
+        this->defaultIncrement_ = templatedSrcProp->defaultIncrement_;
     } else
         this->setVariant(const_cast<Property*>(srcProperty)->getVariant());
 
-    TemplateProperty<T>::propertyModified();
+    TemplateProperty<T>::set(srcProperty);
 }
 
 template <typename T>

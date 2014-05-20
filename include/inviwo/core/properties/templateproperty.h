@@ -100,14 +100,16 @@ void TemplateProperty<T>::set(const T& value) {
 
 template <typename T>
 void TemplateProperty<T>::set(const Property* srcProperty) {
-    const TemplateProperty<T>* templatedSrcProp = dynamic_cast<const TemplateProperty<T>*>(srcProperty);
-
-    if (templatedSrcProp)
-        this->value_ = templatedSrcProp->get();
-    else
+    const TemplateProperty<T>* templatedSrcProp =
+        dynamic_cast<const TemplateProperty<T>*>(srcProperty);
+    if (templatedSrcProp) {
+        this->value_ = templatedSrcProp->value_;
+        this->defaultValue_ = templatedSrcProp->defaultValue_;
+    } else {
         this->setVariant(const_cast<Property*>(srcProperty)->getVariant());
+    }
 
-    propertyModified();
+    Property::set(srcProperty);
 }
 
 template <typename T>

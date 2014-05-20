@@ -13,7 +13,7 @@ public:
 
     dvec2 dataRange;
     dvec2 valueRange;
-    std::string unit;
+    std::string valueUnit;
 
     void initWithFormat(const DataFormatBase* format);
 

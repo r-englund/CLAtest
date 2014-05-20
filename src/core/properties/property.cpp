@@ -303,5 +303,10 @@ void Property::resetToDefaultState() {
     propertyModified();
 }
 
+void Property::set(const Property* src) {
+    readOnly_ = src->readOnly_;
+    defaultReadOnly_ = src->defaultReadOnly_;
+    propertyModified();
+}
 
 } // namespace
