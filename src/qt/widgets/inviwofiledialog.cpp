@@ -1,9 +1,6 @@
 #include <inviwo/qt/widgets/inviwofiledialog.h>
 
 
-#include <QUrl>
-#include <QDir>
-
 #if (QT_VERSION >= QT_VERSION_CHECK(5, 0, 0))
 #include <QStandardPaths>
 #else
@@ -52,8 +49,6 @@ namespace inviwo{
     }
         
     int InviwoFileDialog::exec(){
-
-        
         setNameFilters(extension_);
         setSidebarUrls(sidebarURLs_);
         return QFileDialog::exec();
