@@ -116,7 +116,7 @@ ProcessorWidget* Processor::getProcessorWidget() const {
 }
 
 bool Processor::hasProcessorWidget() const {
-    return (processorWidget_ != 0);
+    return (processorWidget_ != NULL);
 }
 
 Port* Processor::getPort(std::string identifier) const {

@@ -26,7 +26,7 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
- * Main file authors: Timo Ropinski, Erik Sundén
+ * Main file authors: Peter Steneteg
  *
  *********************************************************************************/
 
@@ -61,28 +61,60 @@ public:
 
 protected:
     virtual void dataLoaded(Volume* data);
-    virtual void metaPropertyChanged();
-
     virtual void process();
 
 private:
+
+    void saveState();
+    void restoreState();
+
+    struct VolumeSourceState {
+    public:
+        VolumeSourceState();
+        DoubleMinMaxProperty dataRange;
+        DoubleMinMaxProperty valueRange;
+        StringProperty valueUnit;
+        BoolProperty overRideDefaults;
+        FloatVec3Property lengths;
+        FloatVec3Property angles;
+        FloatVec3Property offset;
+
+        static void assignStateIfChanged(const DoubleMinMaxProperty& in, 
+                                         const DoubleMinMaxProperty& ref,
+                                         DoubleMinMaxProperty& out);
+
+        static void assignStateIfChanged(const StringProperty& in,
+                                         const StringProperty& ref,
+                                         StringProperty& out);
+
+        static void assignStateIfChanged(const BoolProperty& in,
+                                         const BoolProperty& ref,
+                                         BoolProperty& out);
+
+        static void assignStateIfChanged(const FloatVec3Property& in,
+                                         const FloatVec3Property& ref,
+                                         FloatVec3Property& out);
+    };
+    
     DoubleMinMaxProperty dataRange_;
     DoubleMinMaxProperty valueRange_;
     StringProperty valueUnit_;
-
     BoolProperty overRideDefaults_;
-
     FloatVec3Property lengths_;
     FloatVec3Property angles_;
     FloatVec3Property offset_;
 
-    vec3 orgLengths_;
-    vec3 orgAngles_;
-    vec3 orgOffet_;
+    vec3 overrideLengths_;
+    vec3 overrideAngles_;
+    vec3 overrideOffset_;
+    
+    // Readonly only use to show information
     StringProperty dimensions_;
     StringProperty format_;
 
-    bool loadingInProgress_;
+    VolumeSourceState oldState;
+
+    bool isDeserializing_;
 };
 
 } // namespace

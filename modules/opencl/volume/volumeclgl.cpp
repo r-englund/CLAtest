@@ -33,6 +33,7 @@
 #include <modules/opencl/volume/volumeclgl.h>
 #include <modules/opencl/openclsharing.h>
 #include <inviwo/core/util/assertion.h>
+#include <inviwo/core/datastructures/volume/volume.h>
 
 namespace inviwo {
 
@@ -102,30 +103,21 @@ void VolumeCLGL::deinitialize() {
 
 
 float VolumeCLGL::getVolumeDataScaling(const Volume* volume) const {
-    // Note: The basically the same code is used in VolumeGL and VolumeCL as well. 
+    // Note: The basically the same code is used in VolumeGL and VolumeCL as well.
     // Changes here should also be done there.
     // OpenGL uses reverse scaling (1 - scaling). We should changed the OpenGL way...
     // Compute data scaling based on volume data range
-    if (volume->hasMetaData<Vec2MetaData>("DataRange")) {
-        glm::vec2 dataRange;
-        dataRange = volume->getMetaData<Vec2MetaData>("DataRange", dataRange);
+    dvec2 dataRange = volume->dataMap_.dataRange;
+    DataMapper defaultRange(volume->getDataFormat());
 
-        float datatypeMax = static_cast<float>(getDataFormat()->getMax());
-        float datatypeMin = static_cast<float>(getDataFormat()->getMin());
-
-        if ((std::abs(datatypeMin - dataRange.x) < glm::epsilon<float>())
-            && (std::abs(datatypeMax - dataRange.y) < glm::epsilon<float>())) {
-            // no change, use original GL scaling factor if volume data range is equal to type data range
-            return 1.f-getGLFormats()->getGLFormat(getDataFormatId()).scaling;
-        } else {
-            // TODO: consider lower bounds of data range as well (offset in shader before scaling)
-            float scalingFactor = datatypeMax / dataRange.y;
-            return scalingFactor;
-        }
-    }
-    else {
-        // fall-back: no data range given for the volume
-        return 1.f-getGLFormats()->getGLFormat(getDataFormatId()).scaling;
+    if (dataRange == defaultRange.dataRange) {
+        // no change, use original GL scaling factor if volume data range is equal to type data
+        // range
+        return 1.f - getGLFormats()->getGLFormat(getDataFormatId()).scaling;
+    } else {
+        // TODO: consider lower bounds of data range as well (offset in shader before scaling)
+        double scalingFactor = defaultRange.dataRange.y / dataRange.y;
+        return static_cast<float>(scalingFactor);
     }
 }
 

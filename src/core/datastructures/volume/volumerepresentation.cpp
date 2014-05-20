@@ -56,7 +56,7 @@ VolumeRepresentation::VolumeRepresentation(uvec3 dimension, const DataFormatBase
 {}
 
 VolumeRepresentation::VolumeRepresentation(const VolumeRepresentation& rhs)
-    : DataRepresentation()
+    : DataRepresentation(rhs)
     , dimensions_(rhs.dimensions_)
     , borders_(rhs.borders_)
 {

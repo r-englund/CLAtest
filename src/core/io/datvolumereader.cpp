@@ -238,7 +238,7 @@ Volume* DatVolumeReader::readMetaData(std::string filePath) {
         volume->dataMap_.valueRange = volume->dataMap_.dataRange;
     }
     if (unit != ""){
-        volume->dataMap_.unit = unit;
+        volume->dataMap_.valueUnit = unit;
     }
 
     volume->setDataFormat(format_);

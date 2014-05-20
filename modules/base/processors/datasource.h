@@ -64,6 +64,10 @@ bool DataSource<DataType, PortType>::isReady() const {
     return URLParser::fileExists(file_.get());
 }
 
+
+/**
+ * load is called when the filename changes, and after the deserialisation
+ */
 template <typename DataType, typename PortType>
 void DataSource<DataType, PortType>::load() {
     if (isDeserializing_ || file_.get() == "") {
@@ -103,6 +107,9 @@ template <typename DataType, typename PortType>
 void inviwo::DataSource<DataType, PortType>::serialize(IvwSerializer& s) const {
     Processor::serialize(s);
 }
+/**
+ * Deserialize everything first then load the data
+ */
 template <typename DataType, typename PortType>
 void inviwo::DataSource<DataType, PortType>::deserialize(IvwDeserializer& d) {
     isDeserializing_ = true;

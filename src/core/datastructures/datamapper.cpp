@@ -24,7 +24,7 @@ void DataMapper::initWithFormat(const DataFormatBase* format){
     }
     
     valueRange = dataRange;
-    unit = "arb. unit.";
+    valueUnit = "arb. unit.";
 }
 
 } // namespace

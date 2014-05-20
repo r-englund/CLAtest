@@ -102,38 +102,30 @@ const Texture3D* VolumeGL::getTexture() const {
     return volumeTexture_;
 }
 
-void VolumeGL::setVolumeUniforms(const Volume* volume, Shader* shader, const std::string& samplerID) const {
+void VolumeGL::setVolumeUniforms(const Volume* volume, Shader* shader,
+                                 const std::string& samplerID) const {
 
     vec3 dimF = vec3(dimensions_);
     shader->setUniform(samplerID + ".dimensions_", dimF);
-    shader->setUniform(samplerID + ".dimensionsRCP_", vec3(1.f)/dimF);
+    shader->setUniform(samplerID + ".dimensionsRCP_", vec3(1.f) / dimF);
     shader->setUniform(samplerID + ".volumeToWorldTransform_", volume->getWorldTransform());
-    // Note: The basically the same code is used in VolumeCLGL and VolumeCL as well. 
+    // Note: The basically the same code is used in VolumeCLGL and VolumeCL as well.
     // Changes here should also be done there.
     // adjust data scaling to volume data range
-    if (volume->hasMetaData<Vec2MetaData>("DataRange")) {
-        glm::vec2 dataRange;
-        dataRange = volume->getMetaData<Vec2MetaData>("DataRange", dataRange);
 
-        float datatypeMax = static_cast<float>(getDataFormat()->getMax());
-        float datatypeMin = static_cast<float>(getDataFormat()->getMin());
+    dvec2 dataRange = volume->dataMap_.dataRange;
+    DataMapper defaultRange(volume->getDataFormat());
 
-        if ((std::abs(datatypeMin - dataRange.x) < glm::epsilon<float>())
-            && (std::abs(datatypeMax - dataRange.y) < glm::epsilon<float>())) 
-        {
-            // no change, use original GL scaling factor if volume data range is equal to type data range
-            shader->setUniform(samplerID + ".formatScaling_", getGLFormats()->getGLFormat(getDataFormatId()).scaling);
-        }
-        else {
-            // TODO: consider lower bounds of data range as well (offset in shader before scaling)
-            float scalingFactor = datatypeMax / dataRange.y;
-            // offset scaling because of reversed scaling in the shader, i.e. (1 - formatScaling_)
-            shader->setUniform(samplerID + ".formatScaling_", 1.0f - scalingFactor);
-        }
-    }
-    else {
-        // fall-back: no data range given for the volume
-        shader->setUniform(samplerID + ".formatScaling_", getGLFormats()->getGLFormat(getDataFormatId()).scaling);
+    if (dataRange == defaultRange.dataRange) {
+        // no change, use original GL scaling factor if volume data range is equal to type data
+        // range
+        shader->setUniform(samplerID + ".formatScaling_",
+                           getGLFormats()->getGLFormat(getDataFormatId()).scaling);
+    } else {
+        // TODO: consider lower bounds of data range as well (offset in shader before scaling)
+        double scalingFactor = defaultRange.dataRange.y / dataRange.y;
+        // offset scaling because of reversed scaling in the shader, i.e. (1 - formatScaling_)
+        shader->setUniform(samplerID + ".formatScaling_", static_cast<float>(1.0 - scalingFactor));
     }
 }
 
