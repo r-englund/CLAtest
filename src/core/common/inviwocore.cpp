@@ -131,14 +131,14 @@ InviwoCore::InviwoCore() : InviwoModule() {
     registerPort(VolumeOutport);
     // Register PortInspectors
     registerPortInspector(new PortInspector("ImageOutport",
-                                            InviwoApplication::getPtr()->getPath(InviwoApplication::PATH_WORKSPACES)
-                                            + "portinspectors/imageportinspector.inv"));
+                                            InviwoApplication::getPtr()->getPath(InviwoApplication::PATH_PORTINSPECTORS,
+                                            "imageportinspector.inv")));
     registerPortInspector(new PortInspector("VolumeOutport",
-                                            InviwoApplication::getPtr()->getPath(InviwoApplication::PATH_WORKSPACES)
-                                            + "portinspectors/volumeportinspector.inv"));
+                                            InviwoApplication::getPtr()->getPath(InviwoApplication::PATH_PORTINSPECTORS,
+                                            "portinsctors/volumeportinspector.inv")));
     registerPortInspector(new PortInspector("GeometryOutport",
-                                            InviwoApplication::getPtr()->getPath(InviwoApplication::PATH_WORKSPACES)
-                                            + "portinspectors/geometryportinspector.inv"));
+                                            InviwoApplication::getPtr()->getPath(InviwoApplication::PATH_PORTINSPECTORS,
+                                            "geometryportinspector.inv")));
     registerProperty(CameraProperty);
     registerProperty(TransferFunctionProperty);
     registerProperty(BoolProperty);
