@@ -197,7 +197,7 @@ std::string InviwoApplication::getPath(PathType pathType, const std::string& suf
             break;
 
         case inviwo::InviwoApplication::PATH_SETTINGS:
-            result = URLParser::getUserPath() + "inviwo/settings/";
+            result = URLParser::getUserSettingsPath() + "inviwo/";
             break;
 
         case  inviwo::InviwoApplication::PATH_USER_INVIWO:
