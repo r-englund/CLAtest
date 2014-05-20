@@ -37,6 +37,7 @@
 
 #ifdef _WIN32 
 #include <direct.h>
+#include <Shlobj.h>
 #elif defined(__unix__) 
 #include <sys/types.h>
 #endif
@@ -170,20 +171,53 @@ bool URLParser::sameDrive(const std::string& absPath1, const std::string absPath
 #endif
 }
 
+#ifdef _WIN32
+    static std::string helperSHGetKnownFolderPath(const KNOWNFOLDERID &id){
+        PWSTR path;
+        HRESULT hr = SHGetKnownFolderPath(id,0,NULL,&path);
+        std::string s = "";
+        if(SUCCEEDED(hr)){
+            char ch[1024];
+            static const char DefChar = ' ';
+            WideCharToMultiByte(CP_ACP,0,path,-1, ch,1024,&DefChar, NULL);
+            s =  std::string(ch);
+        }else{
+            LogErrorCustom("URLParser::getUserSettingsPath","SHGetKnownFolderPath failed to get settings folder");
+        }
+
+        CoTaskMemFree(path);
+        return s;
+    }
+#endif 
+
+
 std::string URLParser::getUserPath(){
     std::stringstream ss;
 #ifdef _WIN32 
-    ss << std::getenv("HOMEDRIVE") << std::getenv("HOMEPATH");
+    ss << helperSHGetKnownFolderPath(FOLDERID_Documents);
 #elif defined(__unix__) 
     ss << std::getenv("HOME");
 #else
     //TODO fix for mac
     LogWarnCustom("","Get User Path is not implemented for current system");
 #endif
-    
     ss << "/";
     return ss.str();
 }
+
+
+
+std::string URLParser::getUserSettingsPath(){
+#ifdef _WIN32 
+    std::stringstream ss;
+    ss << helperSHGetKnownFolderPath(FOLDERID_RoamingAppData);
+    ss << "/";
+    return ss.str();
+#else
+    return getUserPath();
+#endif
+}
+
 
 void URLParser::createDirectoryRecursivly(std::string path){
     replaceInString(path,"\\","/");
