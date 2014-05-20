@@ -48,7 +48,7 @@ ImageExport::ImageExport()
     : Processor()
     , imagePort_("image")
     , imageFile_("imageFileName", "Image file name",
-                  InviwoApplication::getPtr()->getPath(InviwoApplication::PATH_DATA)+"images/newimage.png")
+                  InviwoApplication::getPtr()->getPath(InviwoApplication::PATH_USER_IMAGES,"newimage.png"))
     , exportImageButton_("snapshot", "Export Image", PropertyOwner::VALID)
     , overwrite_("overwrite", "Overwrite", false)
     , exportQueued_(false){
