@@ -70,10 +70,20 @@ public:
         PATH_VOLUMES,   // data/volumes/
         PATH_MODULES,   // modules/
         PATH_WORKSPACES,// data/workspaces/
+        PATH_SCRIPTS,// data/workspaces/
+        PATH_PORTINSPECTORS,// data/workspaces/portinspectors/
         PATH_IMAGES,     // data/images/
         PATH_RESOURCES,  // resources/
-        PATH_SETTINGS,  // settings/
-        PATH_TRANSFERFUNCTIONS  // data/transferfunctions/
+        PATH_TRANSFERFUNCTIONS,  // data/transferfunctions/
+
+        PATH_USER_INVIWO, // %user_path%/inviwo
+        PATH_SETTINGS,  // %user_path%/inviwo/settings/
+        PATH_USER_SCRIPTS,   // %user_path%/inviwo/scripts/
+        PATH_USER_VOLUMES,   // %user_path%/inviwo/volumes/
+        PATH_USER_WORKSPACES,// %user_path%/inviwo/workspaces/
+        PATH_USER_IMAGES,     // %user_path%/inviwo/images/
+        PATH_USER_DATABASES,     // %user_path%/inviwo/databases/
+        PATH_USER_TRANSFERFUNCTIONS  // %user_path%/inviwo/transferfunctions/
     };
 
     virtual void closeInviwoApplication() {LogWarn("this application have not implemented close inviwo function");}
@@ -92,10 +102,10 @@ public:
      * @param suffix Path extension
      * @return basePath +  pathType + suffix
      */
-    std::string getPath(PathType pathType, const std::string& suffix = "");
+    std::string getPath(PathType pathType, const std::string& suffix = "" ,const bool &createFolder = true);
 
     void registerModule(InviwoModule* module) { modules_.push_back(module); }
-    const std::vector<InviwoModule*> getModules() const { return modules_; }
+    const std::vector<InviwoModule*> &getModules() const { return modules_; }
 
     ProcessorNetwork* getProcessorNetwork() { return processorNetwork_; }
     ProcessorNetworkEvaluator* getProcessorNetworkEvaluator() { return processorNetworkEvaluator_; }
@@ -125,7 +135,7 @@ public:
      * @see Timer
      * @return new Timer
      */
-    virtual Timer* createTimer() const { LogWarn("This application has not implemented any timer"); return NULL; }
+    virtual Timer* createTimer() const;
 
     virtual void addCallbackAction(ModuleCallbackAction* callbackAction);
 
