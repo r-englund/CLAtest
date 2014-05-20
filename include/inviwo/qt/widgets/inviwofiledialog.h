@@ -2,9 +2,10 @@
 #define IVW_INVIWOFILEDIALOG_H
 
 #include <inviwo/qt/widgets/inviwoqtwidgetsdefine.h>
-
-#include <QFileDialog>
 #include <string>
+#include <QFileDialog>
+#include <QUrl>
+#include <QDir>
 
 namespace inviwo {
 
