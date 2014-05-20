@@ -311,6 +311,7 @@ Processor* ProcessorNetwork::getInvalidationInitiator() {
 
 void ProcessorNetwork::onAboutPropertyChange(Property* modifiedProperty) {
     performLinkingOnPropertyChange(modifiedProperty);
+    notifyProcessorNetworkObservers();
 }
 
 void ProcessorNetwork::performLinkingOnPropertyChange(Property* modifiedProperty) {
