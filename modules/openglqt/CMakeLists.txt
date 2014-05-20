@@ -44,3 +44,19 @@ ivw_add_definition(QT_OPENGL_LIB)
 
 # Create module
 ivw_create_module(${SOURCE_FILES} ${MOC_FILES} ${HEADER_FILES})
+
+# Add Qt OpenGL to package
+if(IVW_PACKAGE_PROJECT AND BUILD_SHARED_LIBS)
+    if(WIN32)
+        if(DESIRED_QT_VERSION MATCHES 5)
+            if(Qt5OpenGL_FOUND)
+                set(QT_BINARY_DIR "${Qt5OpenGL_DIR}/../../../bin")
+                install(FILES ${QT_BINARY_DIR}/Qt5OpenGL${CMAKE_DEBUG_POSTFIX}.dll DESTINATION bin COMPONENT qt_modules CONFIGURATIONS Debug)
+                install(FILES ${QT_BINARY_DIR}/Qt5OpenGL.dll DESTINATION bin COMPONENT qt_modules CONFIGURATIONS Release)
+            endif()
+         else()
+                install(FILES ${QT_BINARY_DIR}/QtOpenGL4${CMAKE_DEBUG_POSTFIX}.dll DESTINATION bin COMPONENT qt_modules CONFIGURATIONS Debug)
+                install(FILES ${QT_BINARY_DIR}/QtOpenGL4.dll DESTINATION bin COMPONENT qt_modules CONFIGURATIONS Release)
+        endif()
+    endif()
+endif()

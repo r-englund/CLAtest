@@ -245,6 +245,7 @@ ivw_vs_folder(freeimage ext)
 
 #--------------------------------------------------------------------
 # Make package (for other projects to find)
+ivw_set_cpack_name(core)
 ivw_make_package(FreeImage freeimage)
 
 if(CMAKE_SYSTEM_NAME MATCHES "(Darwin|FreeBSD)")

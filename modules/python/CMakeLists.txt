@@ -58,3 +58,14 @@ add_definitions(-DIVW_PYTHON)
 
 # Create module
 ivw_create_module(${SOURCE_FILES} ${HEADER_FILES} ${TEST_FILES})
+
+#--------------------------------------------------------------------
+# Add Python to package
+if(IVW_PACKAGE_PROJECT AND BUILD_SHARED_LIBS)
+   get_filename_component(FILENAME "${PYTHON_LIBRARIES}" NAME_WE)
+   if(WIN32)
+        find_file(PYTHON_DLL ${FILENAME}.dll)
+        mark_as_advanced(PYTHON_DLL)
+        install(FILES ${PYTHON_DLL} DESTINATION bin COMPONENT modules)
+   endif()
+endif()

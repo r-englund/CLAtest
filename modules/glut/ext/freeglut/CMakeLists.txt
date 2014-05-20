@@ -188,3 +188,12 @@ CONFIGURE_FILE(${CMAKE_CURRENT_SOURCE_DIR}/freeglut.pc.in ${CMAKE_BINARY_DIR}/fr
 #INSTALL(FILES ${CMAKE_BINARY_DIR}/freeglut.pc DESTINATION share/pkgconfig/ RENAME ${PC_FILENAME})
 # TODO: change the library and .pc name when building for GLES,
 # e.g. -lglut-GLES2
+
+#--------------------------------------------------------------------
+# Add to package
+if(IVW_PACKAGE_PROJECT AND BUILD_SHARED_LIBS)  
+   install(TARGETS freeglut
+            RUNTIME
+            DESTINATION bin
+            COMPONENT glut_module)
+endif()

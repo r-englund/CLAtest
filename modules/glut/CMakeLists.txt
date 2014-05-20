@@ -35,4 +35,5 @@ endif()
 
 #--------------------------------------------------------------------
 # Create module
+ivw_set_cpack_name(glut_modules)
 ivw_create_module(${SOURCE_FILES} ${HEADER_FILES})

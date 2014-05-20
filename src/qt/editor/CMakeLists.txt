@@ -70,4 +70,5 @@ ivw_compile_optimize_inviwo_core()
 
 #--------------------------------------------------------------------
 # Make package (for other projects to find)
+ivw_set_cpack_name(qt_editor)
 ivw_make_package(InviwoQtEditor inviwo-qteditor)

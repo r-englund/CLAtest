@@ -55,3 +55,12 @@ ivw_vs_folder(GLEW ext)
 target_link_libraries(GLEW
     ${OPENGL_LIBRARIES}
 )
+
+#--------------------------------------------------------------------
+# Add to package
+if(IVW_PACKAGE_PROJECT AND BUILD_SHARED_LIBS)  
+   install(TARGETS GLEW
+            RUNTIME
+            DESTINATION bin
+            COMPONENT modules)
+endif()

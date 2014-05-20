@@ -82,6 +82,15 @@ if (BUILD_SHARED_LIBS)
     target_link_libraries(glfw LINK_INTERFACE_LIBRARIES)
 endif()
 
+#--------------------------------------------------------------------
+# Add to package
+if(IVW_PACKAGE_PROJECT AND BUILD_SHARED_LIBS)  
+   install(TARGETS glfw
+            RUNTIME
+            DESTINATION bin
+            COMPONENT glfw_module)
+endif()
+
 if (GLFW_INSTALL)
     install(TARGETS glfw EXPORT glfwTargets DESTINATION lib${LIB_SUFFIX})
 endif()

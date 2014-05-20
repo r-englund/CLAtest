@@ -40,4 +40,5 @@ ivw_vs_folder(stackwalker ext)
 
 #--------------------------------------------------------------------
 # Make package (for other projects to find)
+ivw_set_cpack_name(core)
 ivw_make_package(stackwalker stackwalker)

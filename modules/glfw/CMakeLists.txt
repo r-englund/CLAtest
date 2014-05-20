@@ -24,4 +24,5 @@ ivw_group("Source Files" ${SOURCE_FILES})
 
 #--------------------------------------------------------------------
 # Create module
+ivw_set_cpack_name(glfw_modules)
 ivw_create_module(${SOURCE_FILES} ${HEADER_FILES})

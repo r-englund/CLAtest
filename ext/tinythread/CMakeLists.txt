@@ -37,4 +37,5 @@ ivw_vs_folder(tinythread ext)
 
 #--------------------------------------------------------------------
 # Make package (for other projects to find)
+ivw_set_cpack_name(core)
 ivw_make_package(TinyThread tinythread)

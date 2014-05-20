@@ -46,7 +46,8 @@ add_executable(glfwminimum MACOSX_BUNDLE WIN32 ${SOURCE_FILES})
 if(IVW_PACKAGE_PROJECT)
 install(TARGETS glfwminimum
    RUNTIME
-   DESTINATION bin)
+   DESTINATION bin
+   COMPONENT glfw_app)
 endif()
 
 #--------------------------------------------------------------------
