@@ -44,6 +44,7 @@
 #include <QList>
 #include <QSettings>
 #include <QUrl>
+#include <inviwo/qt/widgets/inviwofiledialog.h>
 
 namespace inviwo {
 
@@ -80,26 +81,17 @@ void DirectoryPropertyWidgetQt::generateWidget() {
 }
 
 void DirectoryPropertyWidgetQt::setPropertyValue() {
-    QString dataDir;
-
-    if (property_->get().empty())
-        dataDir = QString::fromStdString(InviwoApplication::getPtr()->getPath(InviwoApplication::PATH_DATA));
-    else
-        dataDir = QString::fromStdString(property_->get());
-
-    QList<QUrl> sidebarURLs;
-    sidebarURLs << QUrl::fromLocalFile(QDir(dataDir).absolutePath());
-    //TODO: create InviwoFileDialog to avoid frequent version checks
-#if (QT_VERSION >= QT_VERSION_CHECK(5, 0, 0))
-    sidebarURLs << QUrl::fromLocalFile(QStandardPaths::writableLocation(QStandardPaths::DesktopLocation));
-    sidebarURLs << QUrl::fromLocalFile(QStandardPaths::writableLocation(QStandardPaths::HomeLocation));
-#else
-    sidebarURLs << QUrl::fromLocalFile(QDesktopServices::storageLocation(QDesktopServices::DesktopLocation));
-    sidebarURLs << QUrl::fromLocalFile(QDesktopServices::storageLocation(QDesktopServices::HomeLocation));
-#endif
-    QFileDialog importFileDialog(this, tr("Open Directory ..."), QDir(dataDir).absolutePath());
+    InviwoFileDialog importFileDialog(this, "Open Directory ...");
     importFileDialog.setFileMode(QFileDialog::Directory);
-    importFileDialog.setSidebarUrls(sidebarURLs);
+
+    if (!property_->get().empty())
+        importFileDialog.addSidebarPath(property_->get());
+    importFileDialog.addSidebarPath(InviwoApplication::PATH_USER_INVIWO);
+    importFileDialog.addSidebarPath(InviwoApplication::PATH_USER_IMAGES);
+    importFileDialog.addSidebarPath(InviwoApplication::PATH_IMAGES);
+    importFileDialog.addSidebarPath(InviwoApplication::PATH_USER_VOLUMES);
+    importFileDialog.addSidebarPath(InviwoApplication::PATH_VOLUMES);
+
     QString existingDir = importFileDialog.getExistingDirectory();
     std::string dir = existingDir.toLocal8Bit().constData();
 

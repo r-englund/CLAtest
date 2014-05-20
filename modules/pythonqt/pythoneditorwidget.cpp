@@ -50,6 +50,7 @@
 #include <inviwo/core/util/clock.h>
 #include "inviwo/qt/widgets/properties/syntaxhighlighter.h"
 
+#include <inviwo/qt/widgets/inviwofiledialog.h>
 
 namespace inviwo {
 
@@ -79,6 +80,7 @@ PythonEditorWidget::PythonEditorWidget(QWidget* parent)
     addObservation(processorNetwork);
     processorNetwork->addObserver(this);
     InviwoApplication::getRef().registerFileObserver(this);
+    unsavedChanges_ = false;
 }
 
 void PythonEditorWidget::onProcessorNetworkChange() {
@@ -257,14 +259,17 @@ void PythonEditorWidget::saveAs() {
     if (script_.getSource() == defaultSource)
         return; //nothig to be saved
 
-    QStringList extensions;
-    extensions << "Python Script (*.py)";
-    QFileDialog saveFileDialog(this, tr("Save Python Script ..."));
+    InviwoFileDialog saveFileDialog(this, "Save Python Script ...");
+   
     saveFileDialog.setDirectory(QDir((InviwoApplication::getPtr()->getPath(InviwoApplication::PATH_DATA) + "scripts").c_str()));
     saveFileDialog.setFileMode(QFileDialog::AnyFile);
     saveFileDialog.setAcceptMode(QFileDialog::AcceptSave);
     saveFileDialog.setConfirmOverwrite(true);
-    saveFileDialog.setNameFilters(extensions);
+
+    saveFileDialog.addSidebarPath(InviwoApplication::PATH_USER_SCRIPTS);
+    saveFileDialog.addSidebarPath(InviwoApplication::PATH_SCRIPTS);
+
+    saveFileDialog.addExtension("py","Python Script");
 
     if (saveFileDialog.exec()) {
         stopFileObservation(scriptFileName_);
@@ -288,12 +293,14 @@ void PythonEditorWidget::open() {
             return;
     }
 
-    QStringList extensions;
-    extensions << "Python Script (*.py)";
-    QFileDialog openFileDialog(this, tr("Open Python Script ..."));
-    openFileDialog.setDirectory(QDir((InviwoApplication::getPtr()->getPath(InviwoApplication::PATH_DATA) + "scripts").c_str()));
+    InviwoFileDialog openFileDialog(this, "Open Python Script ...");
+    openFileDialog.setDirectory(QDir(InviwoApplication::getPtr()->getPath(InviwoApplication::PATH_USER_SCRIPTS).c_str()));
     openFileDialog.setFileMode(QFileDialog::AnyFile);
-    openFileDialog.setNameFilters(extensions);
+
+    openFileDialog.addSidebarPath(InviwoApplication::PATH_USER_SCRIPTS);
+    openFileDialog.addSidebarPath(InviwoApplication::PATH_SCRIPTS);
+
+    openFileDialog.addExtension("py","Python Script");
 
     if (openFileDialog.exec()) {
         stopFileObservation(scriptFileName_);
@@ -347,7 +354,6 @@ void PythonEditorWidget::clearOutput() {
 }
 
 void PythonEditorWidget::onTextChange() {
-    unsavedChanges_ = true;
     std::string source = pythonCode_->toPlainText().toLocal8Bit().constData();
     int size = static_cast<int>(source.length());
 
@@ -367,6 +373,7 @@ void PythonEditorWidget::onTextChange() {
     pythonCode_->setTextCursor(cursor);
 
     script_.setSource(source);
+    unsavedChanges_ = true;
 }
 
 void PythonEditorWidget::startRecordingScript() {

@@ -36,6 +36,8 @@
 #include <inviwo/qt/widgets/inviwoapplicationqt.h>
 #include <inviwo/core/util/commandlineparser.h>
 
+#include <inviwo/qt/widgets/inviwofiledialog.h>
+
 #if (QT_VERSION >= QT_VERSION_CHECK(5, 0, 0))
 #include <QStandardPaths>
 #else
@@ -170,7 +172,7 @@ bool InviwoMainWindow::processCommandLineArgs() {
         std::string path = cmdparser->getOutputPath();
 
         if (path.empty())
-            path = InviwoApplication::getPtr()->getPath(InviwoApplication::PATH_IMAGES);
+            path = InviwoApplication::getPtr()->getPath(InviwoApplication::PATH_IMAGES); //TODO consider using user images (not chaningen since i dont know how/if the regresion tests are using this)
 
         networkEvaluator->saveSnapshotAllCanvases(path, cmdparser->getSnapshotName());
     }
@@ -179,7 +181,7 @@ bool InviwoMainWindow::processCommandLineArgs() {
         std::string path = cmdparser->getOutputPath();
 
         if (path.empty())
-            path = InviwoApplication::getPtr()->getPath(InviwoApplication::PATH_IMAGES);
+            path = InviwoApplication::getPtr()->getPath(InviwoApplication::PATH_IMAGES); //TODO consider using user images (not chaningen since i dont know how/if the regresion tests are using this)
 
         repaint();
         int curScreen = QApplication::desktop()->screenNumber(this);
@@ -417,14 +419,15 @@ void InviwoMainWindow::openWorkspace() {
         QList<QUrl> sidebarURLs;
         sidebarURLs << QUrl::fromLocalFile(QDir(workspaceFileDir_).absolutePath());
         //TODO: create InviwoFileDialog to avoid frequent version checks
-#if (QT_VERSION >= QT_VERSION_CHECK(5, 0, 0))
-        sidebarURLs << QUrl::fromLocalFile(QStandardPaths::writableLocation(QStandardPaths::DesktopLocation));
-        sidebarURLs << QUrl::fromLocalFile(QStandardPaths::writableLocation(QStandardPaths::HomeLocation));
-#else
-        sidebarURLs << QUrl::fromLocalFile(QDesktopServices::storageLocation(QDesktopServices::DesktopLocation));
-        sidebarURLs << QUrl::fromLocalFile(QDesktopServices::storageLocation(QDesktopServices::HomeLocation));
-#endif
-        QFileDialog openFileDialog(this, tr("Open Workspace ..."), QDir(workspaceFileDir_).absolutePath());
+
+        InviwoFileDialog openFileDialog(this, "Open Workspace ...", workspaceFileDir_);
+
+        openFileDialog.addSidebarPath(InviwoApplication::PATH_USER_WORKSPACES);
+        openFileDialog.addSidebarPath(InviwoApplication::PATH_WORKSPACES);
+        openFileDialog.addSidebarPath(workspaceFileDir_);
+
+        openFileDialog.addExtension("inv","Inviwo File");
+
         openFileDialog.setFileMode(QFileDialog::AnyFile);
         openFileDialog.setNameFilters(extension);
         openFileDialog.setSidebarUrls(sidebarURLs);
@@ -474,25 +477,16 @@ void InviwoMainWindow::saveWorkspace() {
 }
 
 void InviwoMainWindow::saveWorkspaceAs() {
-    // dialog window settings
-    QStringList extension;
-    extension << "Inviwo File (*.inv)";
-    QList<QUrl> sidebarURLs;
-    sidebarURLs << QUrl::fromLocalFile(QDir(workspaceFileDir_).absolutePath());
-    //TODO: create InviwoFileDialog to avoid frequent version checks
-#if (QT_VERSION >= QT_VERSION_CHECK(5, 0, 0))
-    sidebarURLs << QUrl::fromLocalFile(QStandardPaths::writableLocation(QStandardPaths::DesktopLocation));
-    sidebarURLs << QUrl::fromLocalFile(QStandardPaths::writableLocation(QStandardPaths::HomeLocation));
-#else
-    sidebarURLs << QUrl::fromLocalFile(QDesktopServices::storageLocation(QDesktopServices::DesktopLocation));
-    sidebarURLs << QUrl::fromLocalFile(QDesktopServices::storageLocation(QDesktopServices::HomeLocation));
-#endif
-    QFileDialog saveFileDialog(this, tr("Save Workspace ..."), QDir(workspaceFileDir_).absolutePath());
+    InviwoFileDialog saveFileDialog(this, "Save Workspace ...", workspaceFileDir_.toLocal8Bit().constData());
     saveFileDialog.setFileMode(QFileDialog::AnyFile);
     saveFileDialog.setAcceptMode(QFileDialog::AcceptSave);
     saveFileDialog.setConfirmOverwrite(true);
-    saveFileDialog.setNameFilters(extension);
-    saveFileDialog.setSidebarUrls(sidebarURLs);
+
+    saveFileDialog.addSidebarPath(InviwoApplication::PATH_USER_WORKSPACES);
+    saveFileDialog.addSidebarPath(InviwoApplication::PATH_WORKSPACES);
+    saveFileDialog.addSidebarPath(workspaceFileDir_);
+
+    saveFileDialog.addExtension("inv","Inviwo File");
 
     if (saveFileDialog.exec()) {
         QString path = saveFileDialog.selectedFiles().at(0);
@@ -505,28 +499,18 @@ void InviwoMainWindow::saveWorkspaceAs() {
     }
 }
 
-
-
 void InviwoMainWindow::saveWorkspaceAsCopy() {
-    // dialog window settings
-    QStringList extension;
-    extension << "Inviwo File (*.inv)";
-    QList<QUrl> sidebarURLs;
-    sidebarURLs << QUrl::fromLocalFile(QDir(workspaceFileDir_).absolutePath());
-    //TODO: create InviwoFileDialog to avoid frequent version checks
-#if (QT_VERSION >= QT_VERSION_CHECK(5, 0, 0))
-    sidebarURLs << QUrl::fromLocalFile(QStandardPaths::writableLocation(QStandardPaths::DesktopLocation));
-    sidebarURLs << QUrl::fromLocalFile(QStandardPaths::writableLocation(QStandardPaths::HomeLocation));
-#else
-    sidebarURLs << QUrl::fromLocalFile(QDesktopServices::storageLocation(QDesktopServices::DesktopLocation));
-    sidebarURLs << QUrl::fromLocalFile(QDesktopServices::storageLocation(QDesktopServices::HomeLocation));
-#endif
-    QFileDialog saveFileDialog(this, tr("Save Workspace as Copy ..."), QDir(workspaceFileDir_).absolutePath());
+    InviwoFileDialog saveFileDialog(this, "Save Workspace ...", workspaceFileDir_.toLocal8Bit().constData());
     saveFileDialog.setFileMode(QFileDialog::AnyFile);
     saveFileDialog.setAcceptMode(QFileDialog::AcceptSave);
     saveFileDialog.setConfirmOverwrite(true);
-    saveFileDialog.setNameFilters(extension);
-    saveFileDialog.setSidebarUrls(sidebarURLs);
+
+    saveFileDialog.addSidebarPath(InviwoApplication::PATH_USER_WORKSPACES);
+    saveFileDialog.addSidebarPath(InviwoApplication::PATH_WORKSPACES);
+    saveFileDialog.addSidebarPath(workspaceFileDir_);
+
+    saveFileDialog.addExtension("inv","Inviwo File");
+
 
     if (saveFileDialog.exec()) {
         QString path = saveFileDialog.selectedFiles().at(0);
