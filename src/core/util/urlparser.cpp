@@ -176,7 +176,11 @@ std::string URLParser::getUserPath(){
     ss << std::getenv("HOMEDRIVE") << std::getenv("HOMEPATH");
 #elif defined(__unix__) 
     ss << std::getenv("HOME");
+#else
+    //TODO fix for mac
+    LogWarnCustom("","Get User Path is not implemented for current system");
 #endif
+    
     ss << "/";
     return ss.str();
 }
@@ -198,6 +202,9 @@ void URLParser::createDirectoryRecursivly(std::string path){
         mkdir(pathPart.c_str());
 #elif defined(__unix__) 
         mkdir(pathPart.c_str(),0755);
+#else
+        //TODO fix for mac
+        LogWarnCustom("","createDirectoryRecursivly is not implemented for current system");
 #endif
     }
 }

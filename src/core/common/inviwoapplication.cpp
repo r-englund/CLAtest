@@ -160,7 +160,7 @@ void InviwoApplication::deinitialize() {
     initialized_ = false;
 }
 
-std::string InviwoApplication::getPath(PathType pathType, const std::string& suffix) {
+std::string InviwoApplication::getPath(PathType pathType, const std::string& suffix ,const bool &createFolder) {
     std::string result = getBasePath();
 
     switch (pathType) {
@@ -180,26 +180,58 @@ std::string InviwoApplication::getPath(PathType pathType, const std::string& suf
             result += "data/workspaces/";
             break;
 
+        case inviwo::InviwoApplication::PATH_SCRIPTS:
+            result += "data/scripts/";
+            break;
+
         case inviwo::InviwoApplication::PATH_IMAGES:
             result += "data/images/";
             break;
 
         case inviwo::InviwoApplication::PATH_RESOURCES:
-            result += "resources";
-            break;
-
-        case inviwo::InviwoApplication::PATH_SETTINGS:
-            result += "data/settings/";
+            result += "resources/";
             break;
 
         case inviwo::InviwoApplication::PATH_TRANSFERFUNCTIONS:
             result += "data/transferfunctions/";
             break;
 
+        case inviwo::InviwoApplication::PATH_SETTINGS:
+            result = URLParser::getUserPath() + "inviwo/settings/";
+            break;
+
+        case  inviwo::InviwoApplication::PATH_USER_INVIWO:
+            result = URLParser::getUserPath() + "inviwo/";
+            break;
+
+        case  inviwo::InviwoApplication::PATH_USER_SCRIPTS:
+            result = URLParser::getUserPath() + "inviwo/scripts/";
+            break;
+
+        case  inviwo::InviwoApplication::PATH_USER_VOLUMES:
+            result = URLParser::getUserPath() + "inviwo/volumes/";
+            break;
+
+        case  inviwo::InviwoApplication::PATH_USER_WORKSPACES:
+            result = URLParser::getUserPath() + "inviwo/workspaces/";
+            break;
+
+        case  inviwo::InviwoApplication::PATH_USER_IMAGES:
+            result = URLParser::getUserPath() + "inviwo/images/";
+            break;
+
+        case  inviwo::InviwoApplication::PATH_USER_TRANSFERFUNCTIONS:
+            result = URLParser::getUserPath() + "inviwo/transferfunctions/";
+            break;
+
+
         default:
             break;
     }
 
+    if(createFolder){
+        URLParser::createDirectoryRecursivly(result);
+    }
     result += suffix;
     return result;
 }
@@ -218,6 +250,15 @@ void InviwoApplication::printApplicationInfo() {
 
     if (config != "")
         LogInfoCustom("InviwoInfo", "Config: " << config);
+}
+
+Timer* InviwoApplication::createTimer() const {
+#ifdef WIN32
+    return new WindowsTimer();
+#else
+    LogWarn("This application has not implemented any timer"); 
+    return NULL;
+#endif
 }
 
 void InviwoApplication::addCallbackAction(ModuleCallbackAction* callbackAction) {
