@@ -179,13 +179,13 @@ void VolumeSliceGL::planeSettingsChanged() {
         vec3 sliceAxis;
         switch (sliceAlongAxis_.get())
         {
-        case X:
+        case CoordinateEnums::X:
             sliceAxis = vec3(1.f, 0.f, 0.f);
             break;
-        case Y:
+        case CoordinateEnums::Y:
             sliceAxis = vec3(0.f, 1.f, 0.f);
             break;
-        case Z:
+        case CoordinateEnums::Z:
             sliceAxis = vec3(0.f, 0.f, 1.f);
             break;
         }
