@@ -46,16 +46,16 @@ public:
     MeshRenderer();
     MeshRenderer(const Mesh* mesh);
     MeshRenderer(const Mesh* mesh, Mesh::AttributesInfo);
-    MeshRenderer(const Mesh* mesh, RenderType rt, ConnectivityType ct);
+    MeshRenderer(const Mesh* mesh, GeometryEnums::RenderType rt, GeometryEnums::ConnectivityType ct);
     virtual ~MeshRenderer();
 
     virtual void render();
-    virtual void render(RenderType rt);
+    virtual void render(GeometryEnums::RenderType rt);
 
     const MeshGL* getMeshGL() const;
 
     GLenum getDefaultDrawMode();
-    GLenum getDrawMode(RenderType, ConnectivityType);
+    GLenum getDrawMode(GeometryEnums::RenderType, GeometryEnums::ConnectivityType);
 
     virtual const Geometry* getGeometry() const { return meshToRender_; }
 
@@ -69,18 +69,18 @@ protected:
 
     virtual void initialize(Mesh::AttributesInfo = Mesh::AttributesInfo());
     void initializeIndexBuffer(const Buffer* indexBuffer, Mesh::AttributesInfo ai);
-    void renderArray(RenderType) const;
-    void renderElements(RenderType) const;
-    void emptyFunc(RenderType rt) const {};
+    void renderArray(GeometryEnums::RenderType) const;
+    void renderElements(GeometryEnums::RenderType) const;
+    void emptyFunc(GeometryEnums::RenderType rt) const {};
 
-    typedef void (MeshRenderer::*DrawFunc)(RenderType) const;
+    typedef void (MeshRenderer::*DrawFunc)(GeometryEnums::RenderType) const;
     struct DrawMethod {
         DrawFunc drawFunc;
         GLenum drawMode;
         std::vector<const Buffer*> elementBufferList;
     };
 
-    DrawMethod drawMethods_[NUMBER_OF_RENDER_TYPES];
+    DrawMethod drawMethods_[GeometryEnums::NUMBER_OF_RENDER_TYPES];
     const Mesh* meshToRender_;
 };
 

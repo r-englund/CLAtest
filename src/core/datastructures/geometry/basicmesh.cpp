@@ -36,7 +36,7 @@ void BasicMesh::addVertex(vec3 pos, vec3 normal, vec3 texCoord, vec4 color){
     colors_->getEditableRepresentation<ColorBufferRAM>()->add(color);
 }
 
-IndexBufferRAM* BasicMesh::addIndexBuffer(RenderType rt, ConnectivityType ct) {
+IndexBufferRAM* BasicMesh::addIndexBuffer(GeometryEnums::RenderType rt, GeometryEnums::ConnectivityType ct) {
     IndexBuffer* indices_ = new IndexBuffer();
     addIndicies(Mesh::AttributesInfo(rt,ct), indices_);
     return indices_->getEditableRepresentation<IndexBufferRAM>();
@@ -124,7 +124,7 @@ BasicMesh* BasicMesh::disk(const vec3& center,
 
     BasicMesh* mesh = new BasicMesh();
     mesh->setBasisAndOffset(mat4(1.f));
-    IndexBufferRAM* inds = mesh->addIndexBuffer(TRIANGLES, NONE);
+    IndexBufferRAM* inds = mesh->addIndexBuffer(GeometryEnums::TRIANGLES, GeometryEnums::NONE);
     vec3 orth = orthvec(normal);
     
     mesh->addVertex(center, normal, vec3(0.5f,0.5f,0.0f), color);
@@ -157,7 +157,7 @@ BasicMesh* BasicMesh::cone(const vec3& start,
 
     BasicMesh* mesh = new BasicMesh();
     mesh->setBasisAndOffset(mat4(1.f));
-    IndexBufferRAM* inds = mesh->addIndexBuffer(TRIANGLES, NONE);
+    IndexBufferRAM* inds = mesh->addIndexBuffer(GeometryEnums::TRIANGLES, GeometryEnums::NONE);
     vec3 normal = glm::normalize(stop-start);
     vec3 orth = orthvec(normal);
     float angle = 2.0f*M_PI / segments;
@@ -196,7 +196,7 @@ BasicMesh* BasicMesh::cylinder(const vec3& start,
     BasicMesh* mesh = new BasicMesh();
     mesh->setBasisAndOffset(mat4(1.f));
       
-    IndexBufferRAM* inds = mesh->addIndexBuffer(TRIANGLES, NONE);
+    IndexBufferRAM* inds = mesh->addIndexBuffer(GeometryEnums::TRIANGLES, GeometryEnums::NONE);
     vec3 normal = glm::normalize(stop-start);
     vec3 orth = orthvec(normal);
     vec3 o;                                   
@@ -362,7 +362,7 @@ BasicMesh* BasicMesh::colorsphere(const vec3& center,
         for (quad.y = -1.0f; quad.y <= 1.0f; quad.y += 2.0f) {
             for (quad.z = -1.0f; quad.z <= 1.0f; quad.z += 2.0f) {
                 BasicMesh* temp = new BasicMesh();
-                IndexBufferRAM* inds = temp->addIndexBuffer(TRIANGLES, NONE);
+                IndexBufferRAM* inds = temp->addIndexBuffer(GeometryEnums::TRIANGLES, GeometryEnums::NONE);
 
                 vec3 normal;
                 vec3 vertex;
@@ -453,7 +453,7 @@ BasicMesh* BasicMesh::boundingbox(const mat4& basisandoffset, const vec4& color)
     mesh->addVertex(vec3(1.0, 0.0, 1.0), vec3(1.0, 1.0, 1.0), vec3(1.0, 0.0, 1.0), color);
     mesh->addVertex(vec3(1.0, 1.0, 1.0), vec3(1.0, 1.0, 1.0), vec3(1.0, 1.0, 1.0), color);
 
-    IndexBufferRAM* inds = mesh->addIndexBuffer(LINES, NONE);
+    IndexBufferRAM* inds = mesh->addIndexBuffer(GeometryEnums::LINES, GeometryEnums::NONE);
 
     inds->add(0);
     inds->add(1);

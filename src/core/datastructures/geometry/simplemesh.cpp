@@ -35,7 +35,7 @@
 
 namespace inviwo {
 
-SimpleMesh::SimpleMesh(RenderType rt, ConnectivityType ct)
+SimpleMesh::SimpleMesh(GeometryEnums::RenderType rt, GeometryEnums::ConnectivityType ct)
     : Mesh(rt, ct) {
 }
 
@@ -66,7 +66,7 @@ void SimpleMesh::addIndex(unsigned int idx) {
     indices_->getEditableRepresentation<IndexBufferRAM>()->add(idx);
 }
 
-void SimpleMesh::setIndicesInfo(RenderType rt, ConnectivityType ct) {
+void SimpleMesh::setIndicesInfo(GeometryEnums::RenderType rt, GeometryEnums::ConnectivityType ct) {
     indexAttributes_[0].first = Mesh::AttributesInfo(rt, ct);
 }
 

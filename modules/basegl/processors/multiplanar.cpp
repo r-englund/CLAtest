@@ -66,7 +66,7 @@ Geometry* MultiPlanar::createSliceXYGeometry() {
     vertexCoord.x = posLl.x;
     rectangle->addVertex(vertexCoord, vec3(0.0, 1.0, 0.0), vec4(vertexCoord, 1.0));
 
-    rectangle->setIndicesInfo(TRIANGLES, STRIP);
+    rectangle->setIndicesInfo(GeometryEnums::TRIANGLES, GeometryEnums::STRIP);
     rectangle->addIndex(1);
     rectangle->addIndex(0);
     rectangle->addIndex(2);
@@ -92,7 +92,7 @@ Geometry* MultiPlanar::createSliceXZGeometry() {
     vertexCoord.x = posLl.x;
     rectangle->addVertex(vertexCoord, vec3(0.0, 1.0, 0.0), vec4(vertexCoord, 1.0));
 
-    rectangle->setIndicesInfo(TRIANGLES, STRIP);
+    rectangle->setIndicesInfo(GeometryEnums::TRIANGLES, GeometryEnums::STRIP);
     rectangle->addIndex(1);
     rectangle->addIndex(0);
     rectangle->addIndex(2);
@@ -118,7 +118,7 @@ Geometry* MultiPlanar::createSliceYZGeometry() {
     vertexCoord.y = posLl.y;
     rectangle->addVertex(vertexCoord, vec3(0.0, 1.0, 0.0), vec4(vertexCoord, 1.0));
 
-    rectangle->setIndicesInfo(TRIANGLES, STRIP);
+    rectangle->setIndicesInfo(GeometryEnums::TRIANGLES, GeometryEnums::STRIP);
     rectangle->addIndex(1);
     rectangle->addIndex(0);
     rectangle->addIndex(2);

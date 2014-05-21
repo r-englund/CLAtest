@@ -53,7 +53,7 @@ DrawLinesProcessor::~DrawLinesProcessor() {
 
 void DrawLinesProcessor::initialize() {
     CompositeProcessorGL::initialize();
-    lines_ = new Mesh(LINES, STRIP);
+    lines_ = new Mesh(GeometryEnums::LINES, GeometryEnums::STRIP);
     lines_->initialize();
     lines_->addAttribute(new Position2dBuffer());
     addPoint(vec2(0.25f));
