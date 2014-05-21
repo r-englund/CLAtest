@@ -147,6 +147,8 @@ option(IVW_ENABLE_MSVC_MEMLEAK_TEST "Run memoryleak test within Visual Studio" O
 mark_as_advanced(BUILD_SHARED_LIBS)
 mark_as_advanced(FORCE GLM_DIR)
 
+mark_as_advanced(FORCE CMAKE_CONFIGURATION_TYPES)
+
 if(SHARED_LIBS)
     set(BUILD_SHARED_LIBS ON CACHE BOOL "Build shared libs, else static libs" FORCE)
     if(WIN32)
