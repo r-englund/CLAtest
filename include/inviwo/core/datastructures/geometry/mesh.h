@@ -46,15 +46,15 @@ class IVW_CORE_API Mesh : public Geometry {
 
 public:
     struct AttributesInfo {
-        RenderType rt;
-        ConnectivityType ct;
-        AttributesInfo() : rt(POINTS), ct(NONE) {}
-        AttributesInfo(RenderType r, ConnectivityType c) : rt(r), ct(c) {}
+        GeometryEnums::RenderType rt;
+        GeometryEnums::ConnectivityType ct;
+        AttributesInfo() : rt(GeometryEnums::POINTS), ct(GeometryEnums::NONE) {}
+        AttributesInfo(GeometryEnums::RenderType r, GeometryEnums::ConnectivityType c) : rt(r), ct(c) {}
     };
 
     Mesh();
     Mesh(const Mesh& rhs);
-    Mesh(RenderType rt, ConnectivityType ct);
+    Mesh(GeometryEnums::RenderType rt, GeometryEnums::ConnectivityType ct);
     virtual ~Mesh();
     virtual std::string getDataInfo() const;
 

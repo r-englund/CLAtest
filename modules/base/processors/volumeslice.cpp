@@ -47,9 +47,9 @@ VolumeSlice::VolumeSlice()
 {
     addPort(inport_);
     addPort(outport_);
-    sliceAlongAxis_.addOption("x", "X axis", X);
-    sliceAlongAxis_.addOption("y", "Y axis", Y);
-    sliceAlongAxis_.addOption("z", "Z axis", Z);
+    sliceAlongAxis_.addOption("x", "X axis", CoordinateEnums::X);
+    sliceAlongAxis_.addOption("y", "Y axis", CoordinateEnums::Y);
+    sliceAlongAxis_.addOption("z", "Z axis", CoordinateEnums::Z);
     sliceAlongAxis_.setSelectedIndex(0);
     addProperty(sliceAlongAxis_);
     addProperty(sliceNumber_);
@@ -84,19 +84,19 @@ void VolumeSlice::process() {
 
     switch (sliceAlongAxis_.get())
     {
-        case X:
+        case CoordinateEnums::X:
             if(dims.x!=sliceNumber_.getMaxValue()){
                 sliceNumber_.setMaxValue(static_cast<int>(dims.x));
                 sliceNumber_.set(static_cast<int>(dims.x)/2);
             }
             break;
-        case Y:
+        case CoordinateEnums::Y:
             if(dims.y!=sliceNumber_.getMaxValue()){
                 sliceNumber_.setMaxValue(static_cast<int>(dims.y));
                 sliceNumber_.set(static_cast<int>(dims.y)/2);
             }
             break;
-        case Z:
+        case CoordinateEnums::Z:
             if(dims.z!=sliceNumber_.getMaxValue()){
                 sliceNumber_.setMaxValue(static_cast<int>(dims.z));
                 sliceNumber_.set(static_cast<int>(dims.z)/2);
@@ -105,7 +105,7 @@ void VolumeSlice::process() {
     }
 
     const VolumeRAM* vol = inport_.getData()->getRepresentation<VolumeRAM>();
-    LayerRAM* sliceImage = VolumeRAMSlice::apply(vol, static_cast<CartesianCoordinateAxis>(sliceAlongAxis_.get()), static_cast<unsigned int>(sliceNumber_.get()-1));
+    LayerRAM* sliceImage = VolumeRAMSlice::apply(vol, static_cast<CoordinateEnums::CartesianCoordinateAxis>(sliceAlongAxis_.get()), static_cast<unsigned int>(sliceNumber_.get()-1));
 
     Image* outImage = new Image(sliceImage->getDimension(), COLOR_ONLY, sliceImage->getDataFormat());
     outImage->getColorLayer()->addRepresentation(sliceImage);

@@ -35,6 +35,8 @@
 
 namespace inviwo {
 
+namespace CoordinateEnums {
+
 enum CoordinatePlane {
     XY,
     XZ,
@@ -47,6 +49,10 @@ enum CartesianCoordinateAxis {
     Y, // Up
     Z  // Into screen
 };
+
+}
+
+namespace GeometryEnums {
 
 enum RenderType {
     NOT_SPECIFIED,
@@ -65,6 +71,8 @@ enum ConnectivityType {
     STRIP_ADJACENCY,
     NUMBER_OF_CONNECTIVITY_TYPES
 };
+
+}
 
 } // namespace
 

@@ -60,7 +60,7 @@ Canvas::Canvas(uvec2 dimensions)
         texCoordsBufferRAM->add(vec2(1.0f, 0.0f));
         texCoordsBufferRAM->add(vec2(0.0f, 1.0f));
         texCoordsBufferRAM->add(vec2(1.0f, 1.0f));
-        Mesh* screenAlignedRectMesh = new Mesh(TRIANGLES, STRIP);
+        Mesh* screenAlignedRectMesh = new Mesh(GeometryEnums::TRIANGLES, GeometryEnums::STRIP);
         screenAlignedRectMesh->addAttribute(verticesBuffer);
         screenAlignedRectMesh->addAttribute(texCoordsBuffer);
         screenAlignedRect_ = screenAlignedRectMesh;

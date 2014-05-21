@@ -51,7 +51,7 @@ Mesh::Mesh(const Mesh& rhs) : Geometry(rhs), attributesInfo_(rhs.attributesInfo_
         addIndicies(it->first, static_cast<IndexBuffer*>(it->second->clone()));
 }
 
-Mesh::Mesh(RenderType rt, ConnectivityType ct)
+Mesh::Mesh(GeometryEnums::RenderType rt, GeometryEnums::ConnectivityType ct)
     : Geometry(), attributesInfo_(AttributesInfo(rt, ct))
 {}
 
@@ -65,13 +65,13 @@ std::string Mesh::getDataInfo() const{
 
     stream << "Data: ";
     switch(getAttributesInfo().rt){
-        case POINTS:
+        case GeometryEnums::POINTS:
             stream << "Points";
             break;
-        case LINES:
+        case GeometryEnums::LINES:
             stream << "Lines";
             break;
-        case TRIANGLES:
+        case GeometryEnums::TRIANGLES:
             stream << "Triangles";
             break;
         default:

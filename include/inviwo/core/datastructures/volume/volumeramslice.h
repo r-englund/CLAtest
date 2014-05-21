@@ -42,21 +42,21 @@ namespace inviwo {
 
 class IVW_CORE_API VolumeRAMSlice : public VolumeOperation {
 public:
-    VolumeRAMSlice(const VolumeRepresentation* in, CartesianCoordinateAxis sliceAlongAxis, unsigned int sliceNum)
+    VolumeRAMSlice(const VolumeRepresentation* in, CoordinateEnums::CartesianCoordinateAxis sliceAlongAxis, unsigned int sliceNum)
         : VolumeOperation(in), sliceAlongAxis_(sliceAlongAxis), sliceNum_(sliceNum) {}
     virtual ~VolumeRAMSlice() {}
 
     template<typename T, size_t B>
     void evaluate();
 
-    static inline LayerRAM* apply(const VolumeRepresentation* in, CartesianCoordinateAxis sliceAlongAxis, unsigned int sliceNum) {
+    static inline LayerRAM* apply(const VolumeRepresentation* in, CoordinateEnums::CartesianCoordinateAxis sliceAlongAxis, unsigned int sliceNum) {
         VolumeRAMSlice sliceOP = VolumeRAMSlice(in, sliceAlongAxis, sliceNum);
         in->performOperation(&sliceOP);
         return sliceOP.getOutput<LayerRAM>();
     }
 
 private:
-    CartesianCoordinateAxis sliceAlongAxis_;
+    CoordinateEnums::CartesianCoordinateAxis sliceAlongAxis_;
     unsigned int sliceNum_;
 };
 
@@ -76,7 +76,7 @@ void VolumeRAMSlice::evaluate() {
     }
 
     uvec3 dataDims = volume->getDimension();
-    if (sliceAlongAxis_ == X){ // Along z axis (ZY Plane)
+    if (sliceAlongAxis_ == CoordinateEnums::X){ // Along z axis (ZY Plane)
         if (sliceNum_ >= dataDims.x){
             setOutput(NULL);
             return;
@@ -103,7 +103,7 @@ void VolumeRAMSlice::evaluate() {
             }
         }
         setOutput(sliceImage);
-    } else if(sliceAlongAxis_ == Y){ // Along y axis (XZ plane)
+    } else if(sliceAlongAxis_ == CoordinateEnums::Y){ // Along y axis (XZ plane)
         if (sliceNum_ >= dataDims.y){
             setOutput(NULL);
             return;
@@ -130,7 +130,7 @@ void VolumeRAMSlice::evaluate() {
             memcpy(dst + offsetImage, src + offsetVolume, dataSize);
         }
         setOutput(sliceImage);
-    } else if(sliceAlongAxis_ == Z){ // Along z axis (XY Plane)
+    } else if(sliceAlongAxis_ == CoordinateEnums::Z){ // Along z axis (XY Plane)
         if (sliceNum_ >= dataDims.z){
             setOutput(NULL);
             return;

@@ -57,7 +57,7 @@ SimpleMesh* SimpleMeshCreator::rectangularPrism(vec3 posLlf, vec3 posUrb, vec3 t
                         colorLlf.z, colorUrb.w));
     recPrism->addVertex(posUrb, texCoordUrb, colorUrb);
     //14 indices (Triangle Strip)
-    recPrism->setIndicesInfo(TRIANGLES, STRIP);
+    recPrism->setIndicesInfo(GeometryEnums::TRIANGLES, GeometryEnums::STRIP);
     recPrism->addIndex(3);
     recPrism->addIndex(4);
     recPrism->addIndex(2);
@@ -92,7 +92,7 @@ SimpleMesh* SimpleMeshCreator::parallelepiped(glm::vec3 pos, glm::vec3 p1, glm::
     ppd->addVertex(pos + p1 + p2     , tex + t1 + t2     , col + c1 + c2);      // (1,1,0)
     ppd->addVertex(pos + p1 + p2 + p3, tex + t1 + t2 + t3, col + c1 + c2 + c3); // (1,1,1)
     //14 indices (Triangle Strip)
-    ppd->setIndicesInfo(TRIANGLES, STRIP);
+    ppd->setIndicesInfo(GeometryEnums::TRIANGLES, GeometryEnums::STRIP);
     ppd->addIndex(3);
     ppd->addIndex(4);
     ppd->addIndex(2);
@@ -129,7 +129,7 @@ SimpleMesh* SimpleMeshCreator::rectangle(vec3 posLl, vec3 posUr) {
                    vec4(colorLl.x, colorUr.y, colorUr.z, colorLl.w));
     rec->addVertex(posUr, texCoordUr, colorUr);
     // 4 indices (?)
-    rec->setIndicesInfo(TRIANGLES, STRIP);
+    rec->setIndicesInfo(GeometryEnums::TRIANGLES, GeometryEnums::STRIP);
     rec->addIndex(1);
     rec->addIndex(3);
     rec->addIndex(0);
@@ -178,7 +178,7 @@ SimpleMesh* SimpleMeshCreator::sphere(float radius, unsigned int numLoops, unsig
 
     //Create Indices
     // compute indices
-    spheremesh->setIndicesInfo(TRIANGLES, NONE);
+    spheremesh->setIndicesInfo(GeometryEnums::TRIANGLES, GeometryEnums::NONE);
     for (unsigned int y=0; y<numLoops; ++y) {
 
         IndexBuffer *indexBuf = new IndexBuffer();
@@ -193,7 +193,7 @@ SimpleMesh* SimpleMeshCreator::sphere(float radius, unsigned int numLoops, unsig
             indices->set(count++, offset + x + pointsPerLine);
         }
 
-        spheremesh->addIndicies(Mesh::AttributesInfo(TRIANGLES, STRIP), indexBuf);
+        spheremesh->addIndicies(Mesh::AttributesInfo(GeometryEnums::TRIANGLES, GeometryEnums::STRIP), indexBuf);
     }
     
     return spheremesh;
@@ -240,7 +240,7 @@ SimpleMesh* SimpleMeshCreator::sphere(float radius, unsigned int numLoops, unsig
 
     //Create Indices
     // compute indices
-    spheremesh->setIndicesInfo(TRIANGLES, NONE);
+    spheremesh->setIndicesInfo(GeometryEnums::TRIANGLES, GeometryEnums::NONE);
     for (unsigned int y = 0; y < numLoops; ++y) {
 
         IndexBuffer *indexBuf = new IndexBuffer();
@@ -255,7 +255,7 @@ SimpleMesh* SimpleMeshCreator::sphere(float radius, unsigned int numLoops, unsig
             indices->set(count++, offset + x + pointsPerLine);
         }
 
-        spheremesh->addIndicies(Mesh::AttributesInfo(TRIANGLES, STRIP), indexBuf);
+        spheremesh->addIndicies(Mesh::AttributesInfo(GeometryEnums::TRIANGLES, GeometryEnums::STRIP), indexBuf);
     }
 
     return spheremesh;
@@ -295,7 +295,7 @@ SimpleMesh* SimpleMeshCreator::plane(glm::vec3 pos, glm::vec2 extent,
     plane->addAttribute(normalBuffer);
 
     // compute indices
-    plane->setIndicesInfo(TRIANGLES, NONE);
+    plane->setIndicesInfo(GeometryEnums::TRIANGLES, GeometryEnums::NONE);
     for (unsigned int y=0; y<meshResY; ++y) {
 
         IndexBuffer *indexBuf = new IndexBuffer();
@@ -310,7 +310,7 @@ SimpleMesh* SimpleMeshCreator::plane(glm::vec3 pos, glm::vec2 extent,
             indices->set(count++, offset + x + pointsPerLine);
         }
 
-        plane->addIndicies(Mesh::AttributesInfo(TRIANGLES, STRIP), indexBuf);
+        plane->addIndicies(Mesh::AttributesInfo(GeometryEnums::TRIANGLES, GeometryEnums::STRIP), indexBuf);
     }
 
     return plane;

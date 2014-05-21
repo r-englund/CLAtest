@@ -52,7 +52,7 @@ MeshRenderer::MeshRenderer(const Mesh* mesh, Mesh::AttributesInfo ai)
     initialize(ai);
 }
 
-MeshRenderer::MeshRenderer(const Mesh* mesh, RenderType rt, ConnectivityType ct)
+MeshRenderer::MeshRenderer(const Mesh* mesh, GeometryEnums::RenderType rt, GeometryEnums::ConnectivityType ct)
     : meshToRender_(mesh) {
         
     initialize(Mesh::AttributesInfo(rt, ct));
@@ -64,14 +64,14 @@ MeshRenderer::~MeshRenderer() {
 void MeshRenderer::render() {
     const MeshGL* meshGL = getMeshGL();
     meshGL->enable();
-    // try to render all rendertypes except the default one
-    for(int i=1; i<NUMBER_OF_RENDER_TYPES; i++) {
-        (this->*drawMethods_[i].drawFunc)(static_cast<RenderType>(i));
+    // try to render all GeometryEnums::RenderTypes except the default one
+    for(int i=1; i<GeometryEnums::NUMBER_OF_RENDER_TYPES; i++) {
+        (this->*drawMethods_[i].drawFunc)(static_cast<GeometryEnums::RenderType>(i));
     }
     meshGL->disable(); 
 }
 
-void MeshRenderer::render(RenderType rt) {
+void MeshRenderer::render(GeometryEnums::RenderType rt) {
     const MeshGL* meshGL = getMeshGL();
     meshGL->enable();
     (this->*drawMethods_[rt].drawFunc)(rt);
@@ -86,47 +86,47 @@ GLenum MeshRenderer::getDefaultDrawMode() {
     return drawMethods_[0].drawMode;
 }
 
-GLenum MeshRenderer::getDrawMode(RenderType rt, ConnectivityType ct) {
+GLenum MeshRenderer::getDrawMode(GeometryEnums::RenderType rt, GeometryEnums::ConnectivityType ct) {
     switch (rt)
     {
-        case TRIANGLES:
+        case GeometryEnums::TRIANGLES:
             switch (ct)
             {
-                case NONE:
+                case GeometryEnums::NONE:
                     return GL_TRIANGLES;
 
-                case STRIP:
+                case GeometryEnums::STRIP:
                     return GL_TRIANGLE_STRIP;
 
-                case FAN:
+                case GeometryEnums::FAN:
                     return GL_TRIANGLE_FAN;
 
-                case ADJACENCY:
+                case GeometryEnums::ADJACENCY:
                     return GL_TRIANGLES_ADJACENCY;
 
-                case STRIP_ADJACENCY:
+                case GeometryEnums::STRIP_ADJACENCY:
                     return GL_TRIANGLE_STRIP_ADJACENCY;
 
                 default:
                     return GL_POINTS;
             }
 
-        case LINES:
+        case GeometryEnums::LINES:
             switch (ct)
             {
-                case NONE:
+                case GeometryEnums::NONE:
                     return GL_LINES;
 
-                case STRIP:
+                case GeometryEnums::STRIP:
                     return GL_LINE_STRIP;
 
-                case LOOP:
+                case GeometryEnums::LOOP:
                     return GL_LINE_LOOP;
 
-                case ADJACENCY:
+                case GeometryEnums::ADJACENCY:
                     return GL_LINES_ADJACENCY;
 
-                case STRIP_ADJACENCY:
+                case GeometryEnums::STRIP_ADJACENCY:
                     return GL_LINE_STRIP_ADJACENCY;
 
                 default:
@@ -138,13 +138,13 @@ GLenum MeshRenderer::getDrawMode(RenderType rt, ConnectivityType ct) {
     }
 }
 
-void MeshRenderer::renderArray(RenderType rt) const {
+void MeshRenderer::renderArray(GeometryEnums::RenderType rt) const {
     glDrawArrays(drawMethods_[rt].drawMode,
                  0,
                  static_cast<GLsizei>(meshToRender_->getAttributes(0)->getSize()));
 }
 
-void MeshRenderer::renderElements(RenderType rt) const {
+void MeshRenderer::renderElements(GeometryEnums::RenderType rt) const {
     
     std::vector<const Buffer*>::const_iterator it = drawMethods_[rt].elementBufferList.begin();
     while (it != drawMethods_[rt].elementBufferList.end()) {
@@ -164,14 +164,14 @@ void MeshRenderer::initialize(Mesh::AttributesInfo ai)
     drawMethods_[0].drawMode = getDrawMode(ai.rt, ai.ct);
     drawMethods_[0].elementBufferList.clear();
 
-    for (int i=1; i<NUMBER_OF_RENDER_TYPES; i++) {
+    for (int i=1; i<GeometryEnums::NUMBER_OF_RENDER_TYPES; i++) {
         drawMethods_[i].drawFunc = drawMethods_[0].drawFunc;
         drawMethods_[i].drawMode = drawMethods_[0].drawMode;
         drawMethods_[i].elementBufferList.clear();
     }
 
     drawMethods_[ai.rt].drawFunc = &MeshRenderer::renderArray;
-    drawMethods_[NOT_SPECIFIED].drawFunc = &MeshRenderer::renderArray;
+    drawMethods_[GeometryEnums::NOT_SPECIFIED].drawFunc = &MeshRenderer::renderArray;
     //drawMethods_[POINTS].drawFunc = &MeshRenderer::renderArray;
     //drawMethods_[POINTS].drawMode = GL_POINTS;
 
@@ -194,10 +194,10 @@ void MeshRenderer::initializeIndexBuffer(const Buffer* indexBuffer, Mesh::Attrib
     drawMethods_[ai.rt].elementBufferList.push_back(indexBuffer);
 
     // Specify first element buffer as default rendering method
-    if(drawMethods_[NOT_SPECIFIED].elementBufferList.size() == 0) {
-        drawMethods_[NOT_SPECIFIED].drawFunc = drawMethods_[ai.rt].drawFunc;
-        drawMethods_[NOT_SPECIFIED].drawMode = drawMethods_[ai.rt].drawMode;
-        drawMethods_[NOT_SPECIFIED].elementBufferList.push_back(drawMethods_[ai.rt].elementBufferList.at(0));
+    if(drawMethods_[GeometryEnums::NOT_SPECIFIED].elementBufferList.size() == 0) {
+        drawMethods_[GeometryEnums::NOT_SPECIFIED].drawFunc = drawMethods_[ai.rt].drawFunc;
+        drawMethods_[GeometryEnums::NOT_SPECIFIED].drawMode = drawMethods_[ai.rt].drawMode;
+        drawMethods_[GeometryEnums::NOT_SPECIFIED].elementBufferList.push_back(drawMethods_[ai.rt].elementBufferList.at(0));
     }
 }
 

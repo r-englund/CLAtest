@@ -55,10 +55,10 @@ VolumeSliceGL::VolumeSliceGL()
     addPort(outport_);
 
     inport_.onChange(this, &VolumeSliceGL::updateMaxSliceNumber);
-    sliceAlongAxis_.addOption("x", "X axis", X);
-    sliceAlongAxis_.addOption("y", "Y axis", Y);
-    sliceAlongAxis_.addOption("z", "Z axis", Z);
-    sliceAlongAxis_.set(X);
+    sliceAlongAxis_.addOption("x", "X axis", CoordinateEnums::X);
+    sliceAlongAxis_.addOption("y", "Y axis", CoordinateEnums::Y);
+    sliceAlongAxis_.addOption("z", "Z axis", CoordinateEnums::Z);
+    sliceAlongAxis_.set(CoordinateEnums::X);
     sliceAlongAxis_.setCurrentStateAsDefault();
     sliceAlongAxis_.onChange(this, &VolumeSliceGL::planeSettingsChanged);
     addProperty(sliceAlongAxis_);
@@ -148,13 +148,13 @@ void VolumeSliceGL::planeSettingsChanged() {
     if (shader_) {
         switch (sliceAlongAxis_.get())
         {
-            case X:
+            case CoordinateEnums::X:
                 shader_->getFragmentShaderObject()->addShaderDefine("coordPlanePermute(x,y,z)", "z," + fV + "y,"  + fH +"x");
                 break;
-            case Y:
+            case CoordinateEnums::Y:
                 shader_->getFragmentShaderObject()->addShaderDefine("coordPlanePermute(x,y,z)", fH + "x,z," + fV + "y");
                 break;
-            case Z:
+            case CoordinateEnums::Z:
                 shader_->getFragmentShaderObject()->addShaderDefine("coordPlanePermute(x,y,z)", fH + "x," + fV + "y,z");
                 break;
         }
@@ -190,19 +190,19 @@ void VolumeSliceGL::updateMaxSliceNumber() {
     uvec3 dims = inport_.getData()->getDimension();
     switch (sliceAlongAxis_.get())
     {
-        case X:
+        case CoordinateEnums::X:
             if(dims.x!=sliceNumber_.getMaxValue()){
                 sliceNumber_.setMaxValue(static_cast<int>(dims.x));
                 sliceNumber_.set(static_cast<int>(dims.x)/2);
             }
             break;
-        case Y:
+        case CoordinateEnums::Y:
             if(dims.y!=sliceNumber_.getMaxValue()){
                 sliceNumber_.setMaxValue(static_cast<int>(dims.y));
                 sliceNumber_.set(static_cast<int>(dims.y)/2);
             }
             break;
-        case Z:
+        case CoordinateEnums::Z:
             if(dims.z!=sliceNumber_.getMaxValue()){
                 sliceNumber_.setMaxValue(static_cast<int>(dims.z));
                 sliceNumber_.set(static_cast<int>(dims.z)/2);
