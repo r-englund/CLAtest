@@ -40,16 +40,26 @@ uniform VOLUME_PARAMETERS volumeParameters_;
 uniform vec2 dimension_;
 uniform float sliceNum_;
 
+
+uniform mat4 sliceAxisRotationMatrix_; // Rotates around slice axis (offset to center point)
+uniform vec3 rotationOffset_;          // Translates coordinate back from rotation offset
+
 in vec3 texCoord_;
 
 void main() {
 #ifdef COORD_PLANE_PERMUTE
     vec4 voxel = getVoxel(volume_, volumeParameters_, vec3(coordPlanePermute(texCoord_.x, texCoord_.y, sliceNum_)));
+    vec3 p = vec3(coordPlanePermute(texCoord_.x, texCoord_.y, sliceNum_));
 #else
     vec4 voxel = getVoxel(volume_, volumeParameters_, vec3(texCoord_.x, texCoord_.y, sliceNum_));
+    vec3 p = vec3(texCoord_.x, texCoord_.y, sliceNum_);
 #endif
+    // Rotate around center and translate back to origin
+    vec3 pRotated = (sliceAxisRotationMatrix_*vec4(p, 1.0)).xyz + rotationOffset_;
+    voxel = getVoxel(volume_, volumeParameters_, pRotated);
 #ifdef TF_MAPPING_ENABLED
     voxel = applyTF(transferFunc_, voxel);
 #endif
     FragData0 = voxel;
+
 }

@@ -40,16 +40,17 @@ ProcessorCategory(VolumeSliceGL, "Volume Operation");
 ProcessorCodeState(VolumeSliceGL, CODE_STATE_STABLE);
 
 VolumeSliceGL::VolumeSliceGL()
-    : ProcessorGL(),
-      inport_("volume.inport"),
-      outport_("image.outport", COLOR_ONLY),
-      sliceAlongAxis_("sliceAxis", "Slice along axis"),
-      flipHorizontal_("flipHorizontal", "Flip Horizontal View", false),
-      flipVertical_("flipVertical", "Flip Vertical View", false),
-      sliceNumber_("sliceNumber", "Slice Number", 4, 1, 8),
-      tfMappingEnabled_("tfMappingEnabled", "Enable Transfer Function", true),
-      transferFunction_("transferFunction", "Transfer function", TransferFunction(), &inport_),
-      shader_(NULL) {
+    : ProcessorGL()
+    , inport_("volume.inport")
+    , outport_("image.outport", COLOR_ONLY)
+    , sliceAlongAxis_("sliceAxis", "Slice along axis")
+    , rotationAroundAxis_("rotation", "Rotation around axis (degrees)")
+    , flipHorizontal_("flipHorizontal", "Flip Horizontal View", false)
+    , flipVertical_("flipVertical", "Flip Vertical View", false)
+    , sliceNumber_("sliceNumber", "Slice Number", 4, 1, 8)
+    , tfMappingEnabled_("tfMappingEnabled", "Enable Transfer Function", true)
+    , transferFunction_("transferFunction", "Transfer function", TransferFunction(), &inport_)
+    , shader_(NULL) {
       
     addPort(inport_);
     addPort(outport_);
@@ -62,6 +63,16 @@ VolumeSliceGL::VolumeSliceGL()
     sliceAlongAxis_.setCurrentStateAsDefault();
     sliceAlongAxis_.onChange(this, &VolumeSliceGL::planeSettingsChanged);
     addProperty(sliceAlongAxis_);
+
+    rotationAroundAxis_.addOption("0", "0", 0.f);
+    rotationAroundAxis_.addOption("90", "90", glm::radians(90.f));
+    rotationAroundAxis_.addOption("180", "180", glm::radians(180.f));
+    rotationAroundAxis_.addOption("270", "270", glm::radians(270.f));
+    rotationAroundAxis_.set(0.f);
+    rotationAroundAxis_.setCurrentStateAsDefault();
+    rotationAroundAxis_.onChange(this, &VolumeSliceGL::planeSettingsChanged);
+    addProperty(rotationAroundAxis_);
+    
     flipHorizontal_.onChange(this, &VolumeSliceGL::planeSettingsChanged);
     addProperty(flipHorizontal_);
     flipVertical_.onChange(this, &VolumeSliceGL::planeSettingsChanged);
@@ -137,7 +148,7 @@ void VolumeSliceGL::shiftSlice(int shift){
         sliceNumber_.set(newSlice);
 }
 
-void VolumeSliceGL::planeSettingsChanged() {
+void VolumeSliceGL::planeSettingsChanged() {  
     std::string fH = (flipHorizontal_.get() ? "1.0-" : "");
     std::string fV = (flipVertical_.get() ? "" : "1.0-");
     // map (x, y, z) to volume texture space coordinates
@@ -163,7 +174,31 @@ void VolumeSliceGL::planeSettingsChanged() {
 
         shader_->getFragmentShaderObject()->build();
         shader_->link();
+        // Rotation
+        float rotationAngle = rotationAroundAxis_.get();
+        vec3 sliceAxis;
+        switch (sliceAlongAxis_.get())
+        {
+        case X:
+            sliceAxis = vec3(1.f, 0.f, 0.f);
+            break;
+        case Y:
+            sliceAxis = vec3(0.f, 1.f, 0.f);
+            break;
+        case Z:
+            sliceAxis = vec3(0.f, 0.f, 1.f);
+            break;
+        }
+        // Offset during rotation to rotate around the center point 
+        vec3 rotationOffset = vec3(-0.5f)+0.5f*sliceAxis;
+        mat4 rotationMat = glm::translate(glm::rotate(rotationAngle, sliceAxis), rotationOffset);
+        shader_->activate();
+        shader_->setUniform("sliceAxisRotationMatrix_", rotationMat);
+        // Translate back after rotation
+        shader_->setUniform("rotationOffset_", -rotationOffset);
+        shader_->deactivate();
     }
+
     updateMaxSliceNumber();
 }
 
@@ -177,9 +212,7 @@ void VolumeSliceGL::tfMappingEnabledChanged() {
             shader_->getFragmentShaderObject()->removeShaderDefine("TF_MAPPING_ENABLED");
             transferFunction_.setVisible(false);
         }
-
-        shader_->getFragmentShaderObject()->build();
-        shader_->link();
+        planeSettingsChanged();
     }
 }
 
