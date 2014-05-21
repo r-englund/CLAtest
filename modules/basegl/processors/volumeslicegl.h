@@ -86,7 +86,10 @@ private:
     VolumeInport inport_;
     ImageOutport outport_;
 
-    OptionPropertyInt sliceAlongAxis_;  // CoordinateEnums::CoordinatePlane enum (Cannot serialize/deserialize enums so we use an int and cast it)
+<<<<<<< .mine    OptionPropertyInt sliceAlongAxis_;  // Axis enum (Cannot serialize/deserialize enums so we use an int and cast it)
+=======    OptionPropertyInt sliceAlongAxis_;  // CoordinateEnums::CoordinatePlane enum (Cannot serialize/deserialize enums so we use an int and cast it)
+>>>>>>> .theirs    OptionPropertyFloat rotationAroundAxis_;  // Clockwise rotation around slice axis
+    
     BoolProperty flipHorizontal_;
     BoolProperty flipVertical_;
     IntProperty sliceNumber_;
