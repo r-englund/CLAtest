@@ -1,3 +1,5 @@
+add_subdirectory(ext/gtest-1.7.0)
+
 #--------------------------------------------------------------------
 # InviwoUnitTests Module
 ivw_module(UnitTests)
