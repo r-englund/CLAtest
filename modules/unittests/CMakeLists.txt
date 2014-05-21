@@ -4,12 +4,6 @@ ivw_module(UnitTests)
 
 add_definitions(-DGTEST_HAS_TR1_TUPLE=0)
 
-
-add_subdirectory(ext/gtest-1.7.0)
-ivw_vs_folder(gtest ext)
-ivw_make_package(gtest gtest)
-
-
 if(BUILD_SHARED_LIBS)
 	add_definitions(-DGTEST_LINKED_AS_SHARED_LIBRARY=1)
 endif()
