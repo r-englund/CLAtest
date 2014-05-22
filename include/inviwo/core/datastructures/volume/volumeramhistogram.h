@@ -60,7 +60,7 @@ public:
         VolumeRAMNormalizedHistogram subsetOP =
             VolumeRAMNormalizedHistogram(in, oldHist, sampleRate, maxNumberOfBins);
         in->performOperation(&subsetOP);
-        return subsetOP.getOutput<std::vector<NormalizedHistogram*>>();
+        return subsetOP.getOutput<std::vector<NormalizedHistogram*> >();
     }
 
     static size_t VolumeRAMNormalizedHistogram::calculateBins(const VolumeRAM* volumeRAM,
