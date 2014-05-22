@@ -63,8 +63,7 @@ public:
         return subsetOP.getOutput<std::vector<NormalizedHistogram*> >();
     }
 
-    static size_t VolumeRAMNormalizedHistogram::calculateBins(const VolumeRAM* volumeRAM,
-                                                       size_t maxNumberOfBins) {
+    static size_t calculateBins(const VolumeRAM* volumeRAM, size_t maxNumberOfBins) {
         const Volume* volume = reinterpret_cast<const Volume*>(volumeRAM->getOwner());
         dvec2 dataRange = volume->dataMap_.dataRange;
 
@@ -96,7 +95,7 @@ private:
 };
 
 template <typename T, size_t B, int N>
-class HistogramCaluculator {
+class HistogramCalculator {
 public:
     static void calculate(std::vector<NormalizedHistogram*>* histograms, const VolumeRAM* volumeRAM,
                           int sampleRate, size_t numberOfBinsInHistogram) {
@@ -165,19 +164,19 @@ public:
 };
 
 template <typename T, size_t B, int N>
-class HistogramCaluculator<glm::detail::tvec2<T, glm::defaultp>, B, N> {
+class HistogramCalculator<glm::detail::tvec2<T, glm::defaultp>, B, N> {
 public:
     static void calculate(std::vector<NormalizedHistogram*>* histograms, const VolumeRAM* volumeRAM,
                           int sampleRate, size_t numberOfBinsInHistogram) {};
 };
 template <typename T, size_t B, int N>
-class HistogramCaluculator<glm::detail::tvec3<T, glm::defaultp>, B, N> {
+class HistogramCalculator<glm::detail::tvec3<T, glm::defaultp>, B, N> {
 public:
     static void calculate(std::vector<NormalizedHistogram*>* histograms, const VolumeRAM* volumeRAM,
                           int sampleRate, size_t numberOfBinsInHistogram) {};
 };
 template <typename T, size_t B, int N>
-class HistogramCaluculator<glm::detail::tvec4<T, glm::defaultp>, B, N> {
+class HistogramCalculator<glm::detail::tvec4<T, glm::defaultp>, B, N> {
 public:
     static void calculate(std::vector<NormalizedHistogram*>* histograms, const VolumeRAM* volumeRAM,
                           int sampleRate, size_t numberOfBinsInHistogram) {};
@@ -208,7 +207,7 @@ void VolumeRAMNormalizedHistogram::evaluate() {
 
     switch (volumeRAM->getDataFormat()->getComponents()) {
         case 1:
-            HistogramCaluculator<T, B, 1>::calculate(histograms_, volumeRAM, sampleRate_,
+            HistogramCalculator<T, B, 1>::calculate(histograms_, volumeRAM, sampleRate_,
                                                      numberOfBinsInHistogram);
             break;
         case 2:
