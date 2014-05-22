@@ -33,18 +33,18 @@
 #include <inviwo/qt/widgets/properties/transferfunctioneditorcontrolpoint.h>
 #include <inviwo/core/datastructures/transferfunctiondatapoint.h>
 #include <inviwo/qt/widgets/properties/transferfunctioneditor.h>
-
+#include <inviwo/qt/widgets/properties/transferfunctioneditorview.h>
 #include <QTextStream>
 
 namespace inviwo {
 
-TransferFunctionEditorControlPoint::TransferFunctionEditorControlPoint(TransferFunctionDataPoint* datapoint)
-    : isEditingPoint_(false)
-    , dataPoint_(datapoint) {
-        
+TransferFunctionEditorControlPoint::TransferFunctionEditorControlPoint(
+    TransferFunctionDataPoint* datapoint, const DataMapper& dataMap)
+    : isEditingPoint_(false), dataPoint_(datapoint), dataMap_(dataMap) {
     size_ = 14.0f;
     showLabel_ = false;
-    setFlags(ItemIgnoresTransformations | ItemIsFocusable | ItemIsMovable | ItemIsSelectable | ItemSendsGeometryChanges);
+    setFlags(ItemIgnoresTransformations | ItemIsFocusable | ItemIsMovable | ItemIsSelectable |
+             ItemSendsGeometryChanges);
     setZValue(1);
     setAcceptHoverEvents(true);
     datapoint->addObserver(this);
@@ -52,7 +52,9 @@ TransferFunctionEditorControlPoint::TransferFunctionEditorControlPoint(TransferF
 
 TransferFunctionEditorControlPoint::~TransferFunctionEditorControlPoint() {}
 
-void TransferFunctionEditorControlPoint::paint(QPainter* painter, const QStyleOptionGraphicsItem* options, QWidget* widget) {
+void TransferFunctionEditorControlPoint::paint(QPainter* painter,
+                                               const QStyleOptionGraphicsItem* options,
+                                               QWidget* widget) {
     IVW_UNUSED_PARAM(options);
     IVW_UNUSED_PARAM(widget);
     painter->setRenderHint(QPainter::Antialiasing, true);
@@ -61,46 +63,66 @@ void TransferFunctionEditorControlPoint::paint(QPainter* painter, const QStyleOp
     pen.setCosmetic(true);
     pen.setCapStyle(Qt::RoundCap);
     pen.setStyle(Qt::SolidLine);
-    isSelected() ? pen.setColor(QColor(213,79,79)) : pen.setColor(QColor(66,66,66));
-    QBrush brush = QBrush(QColor::fromRgbF(dataPoint_->getRGBA().r, dataPoint_->getRGBA().g, dataPoint_->getRGBA().b));
+    isSelected() ? pen.setColor(QColor(213, 79, 79)) : pen.setColor(QColor(66, 66, 66));
+    QBrush brush = QBrush(QColor::fromRgbF(dataPoint_->getRGBA().r, dataPoint_->getRGBA().g,
+                                           dataPoint_->getRGBA().b));
     painter->setPen(pen);
     painter->setBrush(brush);
-    painter->drawEllipse(-size_/2.0, -size_/2.0, size_, size_);
+    painter->drawEllipse(-size_ / 2.0, -size_ / 2.0, size_, size_);
 
     if (showLabel_) {
         QString label;
         QTextStream labelStream(&label);
-        labelStream.setRealNumberPrecision(2);
-        labelStream << "a(" << dataPoint_->getPos().x << ")=";
+        labelStream.setRealNumberPrecision(3);
+        labelStream << "a("
+                    << dataMap_.dataRange.x +
+                           dataPoint_->getPos().x * (dataMap_.dataRange.y - dataMap_.dataRange.x)
+                    << ")=";
         labelStream << dataPoint_->getRGBA().a;
-        QPointF labelPos = boundingRect().center()+QPointF(size_/2.0, -size_/2.0);
-        pen.setColor(QColor(66,66,66));
+
+        Qt::AlignmentFlag align;
+        if (dataPoint_->getPos().x > 0.5f) {
+            align = Qt::AlignRight;
+        } else {
+            align = Qt::AlignLeft;
+        }
+        QRectF rect = calculateLabelRect();
+
+        pen.setColor(QColor(46, 46, 46));
         painter->setPen(pen);
         QFont font;
-        font.setPixelSize(16);
+        font.setPixelSize(14);
         painter->setFont(font);
-        painter->drawText(labelPos, label);
+        painter->drawText(rect, align, label);
     }
 }
 
 QRectF TransferFunctionEditorControlPoint::boundingRect() const {
-    float bBoxSize = size_ + 10.0f;
-    return QRectF(-bBoxSize/2.0, -bBoxSize/2.0f, bBoxSize, bBoxSize);
+    float bBoxSize = size_ + 30.0f;
+    if (showLabel_) {
+        QRectF rect = calculateLabelRect();
+        return rect.united(QRectF(-bBoxSize / 2.0, -bBoxSize / 2.0f, bBoxSize, bBoxSize));
+    } else {
+        return QRectF(-bBoxSize / 2.0, -bBoxSize / 2.0f, bBoxSize, bBoxSize);
+    }
 }
 
 void TransferFunctionEditorControlPoint::hoverEnterEvent(QGraphicsSceneHoverEvent* event) {
+    prepareGeometryChange();
     size_ += 5.0f;
     showLabel_ = true;
     update();
 }
 
 void TransferFunctionEditorControlPoint::hoverLeaveEvent(QGraphicsSceneHoverEvent* event) {
+    prepareGeometryChange();
     size_ -= 5.0f;
     showLabel_ = false;
     update();
 }
 
-QVariant TransferFunctionEditorControlPoint::itemChange(GraphicsItemChange change, const QVariant& value) {
+QVariant TransferFunctionEditorControlPoint::itemChange(GraphicsItemChange change,
+                                                        const QVariant& value) {
     if (change == QGraphicsItem::ItemPositionChange && scene()) {
         // constrain positions to valid view positions
         QPointF newPos = value.toPointF();
@@ -115,8 +137,9 @@ QVariant TransferFunctionEditorControlPoint::itemChange(GraphicsItemChange chang
         QPointF controlPointPos = pos();
         if (!isEditingPoint_) {
             isEditingPoint_ = true;
-            dataPoint_->setPosA(vec2(controlPointPos.x()/rect.width(), controlPointPos.y()/rect.height()),
-                controlPointPos.y()/rect.height());
+            dataPoint_->setPosA(
+                vec2(controlPointPos.x() / rect.width(), controlPointPos.y() / rect.height()),
+                controlPointPos.y() / rect.height());
             isEditingPoint_ = false;
         }
 
@@ -127,13 +150,42 @@ QVariant TransferFunctionEditorControlPoint::itemChange(GraphicsItemChange chang
     return QGraphicsItem::itemChange(change, value);
 }
 
-void TransferFunctionEditorControlPoint::onTransferFunctionPointChange(const TransferFunctionDataPoint* p) {
+void TransferFunctionEditorControlPoint::onTransferFunctionPointChange(
+    const TransferFunctionDataPoint* p) {
     if (!isEditingPoint_) {
-        isEditingPoint_ = true; 
+        isEditingPoint_ = true;
         QRectF rect = scene()->sceneRect();
-        setPos(p->getPos().x*rect.width(), p->getPos().y*rect.height());
+        setPos(p->getPos().x * rect.width(), p->getPos().y * rect.height());
         isEditingPoint_ = false;
     }
 }
 
-} // namespace
+QRectF TransferFunctionEditorControlPoint::calculateLabelRect() const {
+    QRectF rect;
+    if (dataPoint_->getPos().x > 0.5f) {
+        rect.setX(-0.5 * size_ - textWidth_);
+    } else {
+        rect.setX(0.5 * size_);
+    }
+    if (dataPoint_->getPos().y > 0.5f) {
+        rect.setY(0.5 * size_);
+    } else {
+        rect.setY(-0.5 * size_ - textHeight_);
+    }
+    rect.setHeight(textHeight_);
+    rect.setWidth(textWidth_);
+    return rect;
+}
+
+void TransferFunctionEditorControlPoint::setDataMap(const DataMapper& dataMap) {
+    dataMap_ = dataMap;
+}
+
+inviwo::DataMapper TransferFunctionEditorControlPoint::getDataMap() const {
+    return dataMap_;
+}
+
+const double TransferFunctionEditorControlPoint::textHeight_ = 20;
+const double TransferFunctionEditorControlPoint::textWidth_ = 180;
+
+}  // namespace

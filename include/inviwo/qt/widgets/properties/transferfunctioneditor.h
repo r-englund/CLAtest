@@ -46,6 +46,7 @@
 #include <inviwo/core/network/processornetworkevaluator.h>
 #include <inviwo/core/processors/processorfactory.h>
 #include <inviwo/core/util/factory.h>
+#include <inviwo/core/properties/transferfunctionproperty.h>
 
 #include <inviwo/qt/widgets/inviwoqtwidgetsdefine.h>
 #include <inviwo/qt/widgets/properties/transferfunctioneditorcontrolpoint.h>
@@ -91,6 +92,9 @@ public :
 
     QGraphicsView* getView() { return view_; }
     void redrawConnections();
+
+    void setDataMap(const DataMapper& dataMap);
+    DataMapper getDataMap() const;
 
     void recalculateControlPoints();
 
@@ -141,6 +145,7 @@ private :
     std::vector<TransferFunctionEditorControlPoint*> controlPoints_; ///< Control points in the transfer function graph
 
     bool mouseDrag_;
+    DataMapper dataMap_;
 };
 
 } // namespace

@@ -58,38 +58,14 @@ public:
 
     virtual std::string getClassName()  const { return "TransferFunctionProperty"; }
 
+    const vec2 getMask() const;
+    void setMask(float maskMin, float maskMax);
 
-    const vec2 getMask() const {
-        return vec2(this->value_.getMaskMin(), this->value_.getMaskMax());
-    }
-    void setMask(float maskMin, float maskMax) {
-        if (maskMax < maskMin) {
-            maskMax=maskMin;
-        }
-        this->value_.setMaskMin(maskMin);
-        this->value_.setMaskMax(maskMax);
-    }
+    const vec2& getZoomH() const;
+    void setZoomH(float zoomHMin, float zoomHMax);
 
-
-    const vec2& getZoomH() const {
-        return zoomH_;
-    }
-    void setZoomH(float zoomHMin, float zoomHMax) {
-        if (zoomHMax < zoomHMin) {
-            zoomHMax=zoomHMin;
-        }
-        zoomH_ = vec2(zoomHMin, zoomHMax);
-    }
-
-    const vec2& getZoomV() const {
-        return zoomV_;
-    }
-    void setZoomV(float zoomVMin, float zoomVMax) {
-        if (zoomVMax<zoomVMin) {
-            zoomVMax=zoomVMin;
-        }
-        zoomV_ = vec2(zoomVMin, zoomVMax);
-    }
+    const vec2& getZoomV() const;
+    void setZoomV(float zoomVMin, float zoomVMax);
 
     void setShowHistogram(bool);
     bool getShowHistogram();

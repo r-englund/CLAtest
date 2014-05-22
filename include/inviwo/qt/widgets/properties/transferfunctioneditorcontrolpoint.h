@@ -41,6 +41,7 @@
 
 #include <inviwo/qt/widgets/inviwoqtwidgetsdefine.h>
 #include <inviwo/core/datastructures/transferfunctiondatapoint.h>
+#include <inviwo/core/datastructures/datamapper.h>
 #include <QGraphicsLineItem>
 #include <QGraphicsScene>
 #include <QGraphicsSceneEvent>
@@ -58,7 +59,7 @@ public:
     /** \TransferFunctionEditorControlPoint constructor
     *      Creates a TransferFunctionEditorControlPoint
     */
-    TransferFunctionEditorControlPoint(TransferFunctionDataPoint* dataPoint);
+    TransferFunctionEditorControlPoint(TransferFunctionDataPoint* dataPoint, const DataMapper& dataMap);
 
     /** \TransferFunctionEditorControlPoint destructor
     */
@@ -66,6 +67,9 @@ public:
 
     void setDataPoint(TransferFunctionDataPoint* dataPoint) { dataPoint_ = dataPoint; }
     TransferFunctionDataPoint* getPoint() const { return dataPoint_; }
+
+    void setDataMap(const DataMapper& dataMap);
+    DataMapper getDataMap() const;
 
     void hoverEnterEvent(QGraphicsSceneHoverEvent* event);
     void hoverLeaveEvent(QGraphicsSceneHoverEvent* event);
@@ -88,11 +92,16 @@ protected:
 
 
 private:
+    QRectF calculateLabelRect() const;
+
+
+    static const double textWidth_;
+    static const double textHeight_;
     float size_; ///< size for drawing the points
     bool showLabel_;
     bool isEditingPoint_;
     TransferFunctionDataPoint* dataPoint_; ///<The TransferFunctionDataPoint the control point gets all its data from
-
+    DataMapper dataMap_;
 };
 
 }// namespace

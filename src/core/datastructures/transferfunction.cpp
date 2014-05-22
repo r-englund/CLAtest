@@ -124,33 +124,21 @@ void TransferFunction::addPoint(const vec2& pos, const vec4& color) {
 }
 
 void TransferFunction::addPoint(TransferFunctionDataPoint* dataPoint) {
-    
-    float pointPosition = dataPoint->getPos().x;
-    float iterPosition;
-
     dataPoint->addObserver(this);
-
-    if (dataPoints_.size() == 0 || pointPosition > dataPoints_.back()->getPos().x) {
-        dataPoints_.push_back(dataPoint);
-    } else {
-        for (TFPoints::iterator iter = dataPoints_.begin(); iter != dataPoints_.end(); iter++) {
-            iterPosition = (*iter)->getPos().x;
-            
-            if (iterPosition > pointPosition) {
-                dataPoints_.insert(iter, dataPoint);
-                break;
-            }
-        }
-    }
+    TFPoints::iterator pos =
+        std::lower_bound(dataPoints_.begin(), dataPoints_.end(), dataPoint, TFPointComparer);
+    dataPoints_.insert(pos, dataPoint);
 
     invalidate();
     notifyControlPointAdded(dataPoint);
 }
 
 void TransferFunction::removePoint(TransferFunctionDataPoint* dataPoint) {
-    TFPoints::iterator it = std::find(dataPoints_.begin(), dataPoints_.end(), dataPoint);
+    std::pair<TFPoints::iterator, TFPoints::iterator> range = 
+        std::equal_range(dataPoints_.begin(), dataPoints_.end(), dataPoint, TFPointComparer);
+    TFPoints::iterator it = std::find(range.first, range.second, dataPoint);
 
-    if (it != dataPoints_.end()) {
+    if (it != range.second) {
         dataPoints_.erase(it);
         invalidate();
         notifyControlPointRemoved(dataPoint);

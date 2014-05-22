@@ -6,6 +6,10 @@ DataMapper::DataMapper(const DataFormatBase* format){
     initWithFormat(format);
 }
 
+DataMapper::DataMapper() {
+    initWithFormat(DataUINT8::get());
+}
+
 void DataMapper::initWithFormat(const DataFormatBase* format){
     dataRange.y = format->getMax();
     switch (format->getNumericType()) {

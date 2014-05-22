@@ -50,8 +50,8 @@ public:
 
     NormalizedHistogram& operator=(const NormalizedHistogram&);
 
-    std::vector<float>* getData();
-    const std::vector<float>* getData() const;
+    std::vector<double>* getData();
+    const std::vector<double>* getData() const;
 
     bool exists() const;
 
@@ -61,12 +61,29 @@ public:
     void resize(size_t);
 
     void performNormalization();
-    float getMaximumBinValue() const;
+    void calculatePercentiles();
+    void calculateHistStats();
+    double getMaximumBinValue() const;
+
+    struct Stats {
+    public:
+        double min;
+        double max;
+        double mean;
+        double standardDeviation;
+        std::vector<double> percentiles;
+    };
+    Stats stats_;
+    Stats histStats_;
+    dvec2 dataRange_;
 
 protected:
-    std::vector<float>* data_;
-    float maximumBinValue_; //The maximum count (used for normalization)
+    std::vector<double>* data_;
+    double maximumBinCount_; //The maximum count (used for normalization)
     bool valid_;
+
+
+
 };
 
 } // namespace

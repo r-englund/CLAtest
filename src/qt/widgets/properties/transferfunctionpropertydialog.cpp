@@ -39,21 +39,21 @@
 
 namespace inviwo {
 
-TransferFunctionPropertyDialog::TransferFunctionPropertyDialog(TransferFunctionProperty* tfProperty, QWidget* parent)
-    : PropertyEditorWidgetQt("Transfer Function", parent), TransferFunctionObserver()
+TransferFunctionPropertyDialog::TransferFunctionPropertyDialog(TransferFunctionProperty* tfProperty,
+                                                               QWidget* parent)
+    : PropertyEditorWidgetQt("Transfer Function", parent)
+    , TransferFunctionObserver()
     , sliderRange_(1000)
     , tfProperty_(tfProperty)
-    , tfPixmap_(0)
-{
+    , tfPixmap_(0) {
 
     setAllowedAreas(Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea);
     generateWidget();
     tfProperty_->get().addObserver(this);
 
-    if (!tfProperty_->getVolumeInport())
-        chkShowHistogram_->setVisible(false);
+    if (!tfProperty_->getVolumeInport()) chkShowHistogram_->setVisible(false);
 
-    gradient_ = new QLinearGradient(0,0,100,20);
+    gradient_ = new QLinearGradient(0, 0, 100, 20);
     updateTFPreview();
     updateFromProperty();
 }
@@ -69,8 +69,6 @@ TransferFunctionPropertyDialog::~TransferFunctionPropertyDialog() {
 
 void TransferFunctionPropertyDialog::generateWidget() {
     vec2 minEditorDims = vec2(255.0f, 100.0f);
-    arrayWidth_ = 256; //TODO: set based on data size bit depth
-    arrayHeight_ = 256;
 
     tfEditorView_ = new TransferFunctionEditorView(tfProperty_);
     tfProperty_->get().addObserver(tfEditorView_);
@@ -80,6 +78,7 @@ void TransferFunctionPropertyDialog::generateWidget() {
     tfEditorView_->setMinimumSize(minEditorDims.x, minEditorDims.y);
     tfEditorView_->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     tfEditorView_->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    
     tfEditor_ = new TransferFunctionEditor(&tfProperty_->get(), tfEditorView_);
     connect(tfEditor_, SIGNAL(doubleClick()), this, SLOT(showColorDialog()));
     connect(tfEditor_, SIGNAL(selectionChanged()), this, SLOT(updateColorWheel()));
@@ -235,24 +234,26 @@ void TransferFunctionPropertyDialog::updateTFPreview() {
 }
 
 void TransferFunctionPropertyDialog::updateFromProperty() {
-    std::string processorName = (dynamic_cast<Processor*>(tfProperty_->getOwner()))->getIdentifier();
+    std::string processorName =
+        (dynamic_cast<Processor*>(tfProperty_->getOwner()))->getIdentifier();
     QString windowTitle = QString::fromStdString(tfProperty_->getDisplayName() + " (") +
-        QString::fromStdString(processorName) + QString::fromStdString(")");
+                          QString::fromStdString(processorName) + QString::fromStdString(")");
     setWindowTitle(windowTitle);
 
     TransferFunction& transFunc = tfProperty_->get();
     QVector<QGradientStop> gradientStops;
 
-    for (size_t i=0; i<transFunc.getNumDataPoints(); i++) {
+    for (size_t i = 0; i < transFunc.getNumDataPoints(); i++) {
         TransferFunctionDataPoint* curPoint = transFunc.getPoint(static_cast<int>(i));
         vec4 curColor = curPoint->getRGBA();
-        
+
         // increase alpha to allow better visibility by 1 - (a - 1)^4
-        float factor = (1.0f-curColor.a)*(1.0f-curColor.a);
-        curColor.a = 1.0f - factor*factor;
-        
-        gradientStops.append(QGradientStop(curPoint->getPos().x,
-                                           QColor::fromRgbF(curColor.r, curColor.g, curColor.b, curColor.a)));
+        float factor = (1.0f - curColor.a) * (1.0f - curColor.a);
+        curColor.a = 1.0f - factor * factor;
+
+        gradientStops.append(
+            QGradientStop(curPoint->getPos().x,
+                          QColor::fromRgbF(curColor.r, curColor.g, curColor.b, curColor.a)));
     }
 
     gradient_->setStops(gradientStops);

@@ -35,14 +35,26 @@
 
 namespace inviwo {
 
-VolumeRAM::VolumeRAM(uvec3 dimensions, VolumeRepresentation::VolumeBorders border, const DataFormatBase* format)
-    : VolumeRepresentation(dimensions, format, border), data_(NULL), histogram_(NULL), calculatingHistogram_(false), stopHistogramCalculation_(false)
-{}
+VolumeRAM::VolumeRAM(uvec3 dimensions, VolumeRepresentation::VolumeBorders border,
+                     const DataFormatBase* format)
+    : VolumeRepresentation(dimensions, format, border)
+    , data_(NULL)
+    , histograms_(NULL)
+    , calculatingHistogram_(false)
+    , stopHistogramCalculation_(false) {}
 
 VolumeRAM::VolumeRAM(const VolumeRAM& rhs)
-    : VolumeRepresentation(rhs), data_(NULL), histogram_(NULL), calculatingHistogram_(false), stopHistogramCalculation_(false) {
-    if (rhs.histogram_) {
-        histogram_ = new NormalizedHistogram(rhs.histogram_);
+    : VolumeRepresentation(rhs)
+    , data_(NULL)
+    , histograms_(NULL)
+    , calculatingHistogram_(false)
+    , stopHistogramCalculation_(false) {
+    if (rhs.histograms_) {
+        histograms_ = new std::vector<NormalizedHistogram*>();
+        for (std::vector<NormalizedHistogram*>::iterator it = rhs.histograms_->begin();
+             it != rhs.histograms_->end(); ++it) {
+            histograms_->push_back(new NormalizedHistogram(*it));
+        }
     }
 }
 VolumeRAM& VolumeRAM::operator=(const VolumeRAM& that) {
@@ -52,17 +64,30 @@ VolumeRAM& VolumeRAM::operator=(const VolumeRAM& that) {
         calculatingHistogram_ = false;
         stopHistogramCalculation_ = false;
 
-        if (that.histogram_)
-            histogram_ = new NormalizedHistogram(that.histogram_);
-        else
-            histogram_ = NULL;
+        if (histograms_) {
+            for (std::vector<NormalizedHistogram*>::iterator it = that.histograms_->begin();
+                 it != that.histograms_->end(); ++it) {
+                delete *it;
+            }
+            histograms_->clear();
+        }
+
+        if (that.histograms_) {
+            if (!histograms_) {
+                histograms_ = new std::vector<NormalizedHistogram*>();
+            }
+            for (std::vector<NormalizedHistogram*>::iterator it = that.histograms_->begin();
+                 it != that.histograms_->end(); ++it) {
+                histograms_->push_back(new NormalizedHistogram(*it));
+            }
+        } else {
+            histograms_ = NULL;
+        }
     }
 
     return *this;
 }
-VolumeRAM::~VolumeRAM() {
-    deinitialize();
-}
+VolumeRAM::~VolumeRAM() { deinitialize(); }
 
 void VolumeRAM::initialize() {}
 
@@ -70,46 +95,55 @@ void VolumeRAM::deinitialize() {
     // Make sure that data is deinitialized in
     // child class (should not delete void pointer
     // since destructor will not be called for object.
-    delete histogram_;
-    histogram_ = NULL;
+    if (histograms_) {
+        for (std::vector<NormalizedHistogram*>::iterator it = histograms_->begin();
+             it != histograms_->end(); ++it) {
+            delete *it;
+        }
+        histograms_->clear();
+        delete histograms_;
+        histograms_ = NULL;
+    }
 }
 
-void* VolumeRAM::getData() {
-    return data_;
+void* VolumeRAM::getData() { return data_; }
+
+const void* VolumeRAM::getData() const { return const_cast<void*>(data_); }
+
+bool VolumeRAM::hasNormalizedHistogram() const { return (histograms_ != NULL && !histograms_->empty()); }
+
+NormalizedHistogram* VolumeRAM::getNormalizedHistogram(int sampleRate,
+                                                       std::size_t maxNumberOfBins,
+                                                       int component) {
+    if (!calculatingHistogram_ && data_ && (!histograms_ || !histograms_->at(component)->isValid()))
+        calculateHistogram(sampleRate, maxNumberOfBins);
+
+    return histograms_->at(component);
 }
 
-const void* VolumeRAM::getData() const {
-    return const_cast<void*>(data_);
+const NormalizedHistogram* VolumeRAM::getNormalizedHistogram(int sampleRate,
+                                                             std::size_t maxNumberOfBins,
+                                                             int component) const {
+    if (!calculatingHistogram_ && data_ && (!histograms_ || !histograms_->at(component)->isValid()))
+        calculateHistogram(sampleRate, maxNumberOfBins);
+
+    if (histograms_ && histograms_->size() > component) {
+        return histograms_->at(component);
+    } else {
+        return NULL;
+    }
 }
 
-bool VolumeRAM::hasNormalizedHistogram() const {
-    return (histogram_ != NULL);
-}
-
-NormalizedHistogram* VolumeRAM::getNormalizedHistogram(int delta, std::size_t maxNumberOfBins) {
-    if (!calculatingHistogram_ && data_ && (!histogram_ || !histogram_->isValid()))
-        calculateHistogram(delta, maxNumberOfBins);
-
-    return histogram_;
-}
-
-const NormalizedHistogram* VolumeRAM::getNormalizedHistogram(int delta, std::size_t maxNumberOfBins) const {
-    if (!calculatingHistogram_ && data_ && (!histogram_ || !histogram_->isValid()))
-        calculateHistogram(delta, maxNumberOfBins);
-
-    return histogram_;
-}
-
-void VolumeRAM::calculateHistogram(int delta, std::size_t maxNumberOfBins) const {
+void VolumeRAM::calculateHistogram(int sampleRate, std::size_t maxNumberOfBins) const {
     calculatingHistogram_ = true;
     stopHistogramCalculation_ = false;
-    // TODO: using delta should be changeable from outside when requesting
-    //       the histogram through getNormalizedHistogram()
-    if (delta < 0) {
+
+    if (sampleRate < 0) {
         int maxDim = std::max(dimensions_.x, std::max(dimensions_.y, dimensions_.z));
-        delta = std::max(1, int(float(maxDim)/64.0f));
+        sampleRate = std::max(1, int(float(maxDim) / 64.0f));
     }
-    histogram_ = VolumeRAMNormalizedHistogram::apply(this, histogram_, delta, maxNumberOfBins);
+
+    histograms_ = VolumeRAMNormalizedHistogram::apply(this, histograms_, sampleRate, maxNumberOfBins);
     calculatingHistogram_ = false;
 }
 
@@ -117,12 +151,14 @@ VolumeRAM* createVolumeRAM(const uvec3& dimension, const DataFormatBase* format)
     // TODO: Add more formats
     VolumeRAM* result = 0;
 
-    switch (format->getId())
-    {
+    switch (format->getId()) {
         case DataFormatEnums::NOT_SPECIALIZED:
             LogErrorCustom("createVolumeRAM", "Invalid format");
             break;
-#define DataFormatIdMacro(i) case DataFormatEnums::i: return new VolumeRAMCustomPrecision<Data##i::type, Data##i::bits>(dimension); break;
+#define DataFormatIdMacro(i)                                                          \
+    case DataFormatEnums::i:                                                          \
+        return new VolumeRAMCustomPrecision<Data##i::type, Data##i::bits>(dimension); \
+        break;
 #include <inviwo/core/util/formatsdefinefunc.h>
 
         default:
@@ -133,5 +169,4 @@ VolumeRAM* createVolumeRAM(const uvec3& dimension, const DataFormatBase* format)
     return result;
 }
 
-} // namespace
-
+}  // namespace

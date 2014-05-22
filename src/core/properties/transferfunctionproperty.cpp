@@ -104,5 +104,39 @@ void TransferFunctionProperty::deserialize(IvwDeserializer& d) {
     propertyModified();
 }
 
+void TransferFunctionProperty::setMask(float maskMin, float maskMax) {
+    if (maskMax < maskMin) {
+        maskMax = maskMin;
+    }
+    this->value_.setMaskMin(maskMin);
+    this->value_.setMaskMax(maskMax);
+}
+
+const vec2 TransferFunctionProperty::getMask() const {
+    return vec2(this->value_.getMaskMin(), this->value_.getMaskMax());
+}
+
+const vec2& TransferFunctionProperty::getZoomH() const {
+    return zoomH_;
+}
+
+void TransferFunctionProperty::setZoomH(float zoomHMin, float zoomHMax) {
+    if (zoomHMax < zoomHMin) {
+        zoomHMax = zoomHMin;
+    }
+    zoomH_ = vec2(zoomHMin, zoomHMax);
+}
+
+const vec2& TransferFunctionProperty::getZoomV() const {
+    return zoomV_;
+}
+
+void TransferFunctionProperty::setZoomV(float zoomVMin, float zoomVMax) {
+    if (zoomVMax < zoomVMin) {
+        zoomVMax = zoomVMin;
+    }
+    zoomV_ = vec2(zoomVMin, zoomVMax);
+}
+
 
 } // namespace

@@ -37,6 +37,7 @@
 #include <inviwo/core/io/datareaderfactory.h>
 #include <inviwo/core/io/rawvolumereader.h>
 #include <inviwo/core/network/processornetwork.h>
+#include <inviwo/core/datastructures/volume/volumeram.h>
 #include <glm/gtx/vector_angle.hpp>
 #include <math.h>
 
@@ -204,7 +205,7 @@ void VolumeSource::restoreState() {
     // This is more tricky than it seems since, we have saved all the properties, but since we only 
     // de serialize when something changed, we will not have written data in all the saved 
     // properties hence some might still only hold the default state since construction, so we have
-    // to check if the state has chaneged before we restore it.
+    // to check if the state has changed before we restore it.
 
     DoubleMinMaxProperty defaultDataRange("dataRange", "Data range", 0., 255.0, -DataFLOAT64::max(),
                                           DataFLOAT64::max(), 0.0, 0.0,
@@ -274,6 +275,14 @@ void VolumeSource::process() {
             0.0f, 0.0f, c * v / std::sin(gamma), offset[2], 0.0f, 0.0f, 0.0f, 1.0f);
         
         out->setBasisAndOffset(glm::transpose(newBasisAndOffset));
+        
+        if (out->dataMap_.dataRange != dataRange_.get() && out->hasRepresentation<VolumeRAM>()) {
+            VolumeRAM* volumeRAM = out->getEditableRepresentation<VolumeRAM>();
+            if (volumeRAM->hasNormalizedHistogram()) {
+                volumeRAM->getNormalizedHistogram()->setValid(false);
+            }
+        }
+        
         out->dataMap_.dataRange = dataRange_.get();
         out->dataMap_.valueRange = valueRange_.get();
         out->dataMap_.valueUnit = valueUnit_.get();

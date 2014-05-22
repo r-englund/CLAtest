@@ -8,6 +8,7 @@ namespace inviwo {
 
 class IVW_CORE_API DataMapper {
 public:
+    DataMapper();
     DataMapper(const DataFormatBase* format);
     virtual ~DataMapper() {}
 

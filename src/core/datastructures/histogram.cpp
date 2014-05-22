@@ -32,34 +32,37 @@
 
 #include <inviwo/core/datastructures/histogram.h>
 #include <algorithm>
+#include <numeric>
 #include <functional>
 
 namespace inviwo {
 
 NormalizedHistogram::NormalizedHistogram(size_t numberOfBins)
-    : maximumBinValue_(1.f)
+    : maximumBinCount_(1.f)
     , valid_(false) {
-    data_ = new std::vector<float>(numberOfBins, 0.f);
+    data_ = new std::vector<double>(numberOfBins, 0.f);
 }
 
 NormalizedHistogram::NormalizedHistogram(const NormalizedHistogram* rhs) {
     if (rhs) {
-        maximumBinValue_ = rhs->getMaximumBinValue();
+        maximumBinCount_ = rhs->getMaximumBinValue();
+        stats_ = rhs->stats_;
         valid_ = rhs->isValid();
-        data_ = new std::vector<float>(rhs->getData()->size(), 0.f);
+        data_ = new std::vector<double>(rhs->getData()->size(), 0.f);
         std::copy(rhs->getData()->begin(), rhs->getData()->end(), data_->begin());
     }
     else {
-        data_ = new std::vector<float>(256, 0.f);
-        maximumBinValue_ = 1.f;
+        data_ = new std::vector<double>(256, 0.f);
+        maximumBinCount_ = 1.f;
         valid_ = false;
     }
 }
 
 NormalizedHistogram::NormalizedHistogram(const NormalizedHistogram &rhs) {
-    maximumBinValue_ = rhs.getMaximumBinValue();
+    maximumBinCount_ = rhs.getMaximumBinValue();
+    stats_ = rhs.stats_;
     valid_ = rhs.isValid();
-    data_ = new std::vector<float>(rhs.getData()->size(), 0.f);
+    data_ = new std::vector<double>(rhs.getData()->size(), 0.f);
     std::copy(rhs.getData()->begin(), rhs.getData()->end(), data_->begin());
 }
 
@@ -70,10 +73,11 @@ NormalizedHistogram::~NormalizedHistogram() {
 
 NormalizedHistogram& NormalizedHistogram::operator=(const NormalizedHistogram &rhs) {
     if (this != &rhs) {
-        maximumBinValue_ = rhs.getMaximumBinValue();
+        maximumBinCount_ = rhs.getMaximumBinValue();
+        stats_ = rhs.stats_;
         valid_ = rhs.isValid();
         if (!data_) {
-            data_ = new std::vector<float>(rhs.getData()->size(), 0.f);
+            data_ = new std::vector<double>(rhs.getData()->size(), 0.f);
         }
         else {
             data_->resize(rhs.getData()->size());
@@ -84,11 +88,11 @@ NormalizedHistogram& NormalizedHistogram::operator=(const NormalizedHistogram &r
 }
 
 
-std::vector<float>* NormalizedHistogram::getData() {
+std::vector<double>* NormalizedHistogram::getData() {
     return data_;
 }
 
-const std::vector<float>* NormalizedHistogram::getData() const {
+const std::vector<double>* NormalizedHistogram::getData() const {
     return data_;
 }
 
@@ -113,15 +117,58 @@ void NormalizedHistogram::resize(size_t numberOfBins) {
 }
 
 void NormalizedHistogram::performNormalization() {
-    //Find bin with largest count
-    maximumBinValue_ = *std::max_element(data_->begin(), data_->end());
+    // Find bin with largest count
+    maximumBinCount_ = *std::max_element(data_->begin(), data_->end());
 
-    //Normalize all bins with the largest count
-    std::transform(data_->begin(), data_->end(), data_->begin(), std::bind2nd(std::multiplies<float>(), 1.0f / maximumBinValue_));
+    // Normalize all bins with the largest count
+    std::transform(data_->begin(), data_->end(), data_->begin(),
+                   std::bind2nd(std::multiplies<double>(), 1.0 / maximumBinCount_));
 }
 
-float NormalizedHistogram::getMaximumBinValue() const {
-    return maximumBinValue_;
+double NormalizedHistogram::getMaximumBinValue() const {
+    return maximumBinCount_;
+}
+
+void NormalizedHistogram::calculatePercentiles() {
+    double sum = std::accumulate(data_->begin(), data_->end(), 0.0);
+    stats_.percentiles.resize(101);
+    double accumulation = 0;
+    double i = 0;
+    for (std::vector<double>::iterator it = data_->begin(); it != data_->end(); ++it) {
+        accumulation += *it;
+        while (accumulation / sum > i / 100.0) {
+            stats_.percentiles[static_cast<size_t>(i)] =
+                static_cast<double>(std::distance(data_->begin(), it)) /
+                    static_cast<double>(data_->size()) * (dataRange_.y - dataRange_.x) +
+                dataRange_.x;
+            i++;
+        }
+    }
+}
+
+double sumSquare(double a, double b) {
+    return a + b*b;
+}
+
+void NormalizedHistogram::calculateHistStats() {
+    std::vector<double> temp = std::vector<double>(data_->size(), 0.0);
+    std::copy(data_->begin(), data_->end(), temp.begin());
+    std::sort(temp.begin(), temp.end());
+    double sum = std::accumulate(data_->begin(), data_->end(), 0.0);
+    double sum2 = std::accumulate(data_->begin(), data_->end(), 0.0, sumSquare);
+
+    histStats_.min = *temp.begin();
+    histStats_.max = *(temp.end() - 1);
+    histStats_.mean = sum / static_cast<double>(data_->size());
+    histStats_.standardDeviation =
+        std::sqrt((data_->size() * sum2 - sum * sum) / (data_->size() * (data_->size() - 1)));
+
+    histStats_.percentiles.resize(101);
+    for (size_t i = 0; i < histStats_.percentiles.size(); ++i) {
+        histStats_.percentiles[i] = temp.at(static_cast<size_t>(
+            static_cast<double>(i) / static_cast<double>(histStats_.percentiles.size()) *
+            static_cast<double>(data_->size())));
+    }
 }
 
 } // namespace
