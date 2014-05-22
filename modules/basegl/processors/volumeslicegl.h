@@ -88,6 +88,8 @@ private:
 
     OptionPropertyInt sliceAlongAxis_;  // Axis enum (Cannot serialize/deserialize enums so we use an int and cast it)
     OptionPropertyFloat rotationAroundAxis_;  // Clockwise rotation around slice axis
+    // TODO: Change to FloatProperty when slider uses increment value in GUI
+    //FloatProperty rotationAroundAxis_;  // Clockwise rotation around slice axis 
     
     BoolProperty flipHorizontal_;
     BoolProperty flipVertical_;

@@ -45,6 +45,7 @@ VolumeSliceGL::VolumeSliceGL()
     , outport_("image.outport", COLOR_ONLY)
     , sliceAlongAxis_("sliceAxis", "Slice along axis")
     , rotationAroundAxis_("rotation", "Rotation around axis (degrees)")
+    //, rotationAroundAxis_("rotation", "Rotation around axis (degrees)", 0.f, 0.f, 270.f, 90.f) // Increment does not work for slider. Use OptionFloat in the mean time
     , flipHorizontal_("flipHorizontal", "Flip Horizontal View", false)
     , flipVertical_("flipVertical", "Flip Vertical View", false)
     , sliceNumber_("sliceNumber", "Slice Number", 4, 1, 8)
@@ -176,6 +177,10 @@ void VolumeSliceGL::planeSettingsChanged() {
         shader_->link();
         // Rotation
         float rotationAngle = rotationAroundAxis_.get();
+        // Maintain clockwise rotation even if horizontal axis is flipped.
+        if (flipHorizontal_.get()) {
+            rotationAngle = -rotationAngle;
+        }
         vec3 sliceAxis;
         switch (sliceAlongAxis_.get())
         {
