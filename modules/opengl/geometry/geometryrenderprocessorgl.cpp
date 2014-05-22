@@ -204,7 +204,7 @@ void GeometryRenderProcessorGL::process() {
         glPointSize((GLfloat)renderPointSize_.get());
 
     for (std::vector<GeometryRenderer*>::const_iterator it = renderers_.begin(), endIt = renderers_.end(); it != endIt; ++it) {
-        shader_->setUniform("viewToVoxel_", (*it)->getGeometry()->getCoordinateTransformer().getWorldToModelMatrix());
+        shader_->setUniform("viewToTexture_", (*it)->getGeometry()->getCoordinateTransformer().getWorldToModelMatrix());
         mat4 modelViewMatrix = camera_.viewMatrix()*(*it)->getGeometry()->getWorldTransform()*(*it)->getGeometry()->getBasisAndOffset();
         shader_->setUniform("modelViewMatrix_", modelViewMatrix);
         (*it)->render();
