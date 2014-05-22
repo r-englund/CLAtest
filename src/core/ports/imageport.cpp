@@ -114,8 +114,8 @@ void ImageInport::changeDataDimensions(ResizeEvent* resizeEvent) {
 }
 
 void ImageInport::propagateResizeToPredecessor(ResizeEvent* resizeEvent) {
-    if (equalColorCode(getConnectedOutport())) {
-        ImageOutport* imageOutport = static_cast<ImageOutport*>(getConnectedOutport());
+    ImageOutport* imageOutport = dynamic_cast<ImageOutport*>(getConnectedOutport());
+    if (imageOutport) {
         imageOutport->changeDataDimensions(resizeEvent);
     }
 }
