@@ -45,7 +45,7 @@ SystemSettings::SystemSettings(std::string id) :
     , txtEditorProperty_("txtEditor", "Use system text editor", true)
     , shaderReloadingProperty_("shaderReloading", "Automatically reload shaders", true)
     , enablePortInformationProperty_("enablePortInformation", "Enable port information", true)
-    , enablePortInspectorsProperty_("enablePortInspectors", "Enable port inspectors", true)
+    , enablePortInspectorsProperty_("enablePortInspectors", "Enable port inspectors", false)
     , portInspectorSize_("portInspectorSize", "Port inspector size", 128, 1, 1024)
     , enableSoundProperty_("enableSound", "Enable sound", true)
     , useRAMPercentProperty_("useRAMPercent", "Max memory usage (%)", 50, 1, 100)
