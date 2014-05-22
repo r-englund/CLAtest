@@ -44,22 +44,15 @@
 #include <QThread>
 
 namespace inviwo {
-class IVW_QTWIDGETS_API TransferFunctionEditorView : public QGraphicsView, public TransferFunctionObserver {
-
+class IVW_QTWIDGETS_API TransferFunctionEditorView : public QGraphicsView,
+                                                     public TransferFunctionObserver {
     Q_OBJECT
 
 public:
     TransferFunctionEditorView(TransferFunctionProperty* tfProperty);
     ~TransferFunctionEditorView();
 
-    void setMask(float maskMin, float maskMax) {
-        if (maskMax<maskMin) {
-            maskMax=maskMin;
-        }
-        maskHorizontal_ = vec2(maskMin, maskMax);
-        this->viewport()->update();
-    }
-    
+    void setMask(float maskMin, float maskMax);
     void onVolumeInportInvalid();
     void onTransferFunctionChange();
     void onControlPointChanged(const TransferFunctionDataPoint* p);
@@ -70,10 +63,8 @@ signals:
 
 public slots:
     void histogramThreadFinished();
-    //void zoomHorizontally(int zoomHMin, int zoomHMax);
-    //void zoomVertically(int zoomVMin, int zoomVMax);
-
     void updateZoom();
+
 protected:
     const NormalizedHistogram* getNormalizedHistogram();
 
@@ -84,6 +75,7 @@ protected:
 
     void updateHistogram();
     void onVolumeInportChange();
+
 private:
     TransferFunctionProperty* tfProperty_;
     VolumeInport* volumeInport_;
@@ -94,7 +86,7 @@ private:
 
     bool histogramTheadWorking_;
     QThread* workerThread_;
-    
+
     bool invalidatedHistogram_;
     vec2 maskHorizontal_;
 };
@@ -102,8 +94,11 @@ private:
 class IVW_QTWIDGETS_API HistogramWorkerQt : public QObject {
     Q_OBJECT
 public:
-    HistogramWorkerQt(const VolumeRAM* volumeRAM, std::size_t numBins=2048u) : volumeRAM_(volumeRAM), numBins_(numBins) {}
-    ~HistogramWorkerQt() { volumeRAM_ = NULL; };
+    HistogramWorkerQt(const VolumeRAM* volumeRAM, std::size_t numBins = 2048u)
+        : volumeRAM_(volumeRAM), numBins_(numBins) {}
+    ~HistogramWorkerQt() {
+        volumeRAM_ = NULL;
+    };
 
 public slots:
     void process();
@@ -116,6 +111,6 @@ private:
     const std::size_t numBins_;
 };
 
-} // namespace
+}  // namespace
 
 #endif // IVW_TRANSFERFUNCTIONEDITORVIEW_H

@@ -42,11 +42,11 @@ namespace inviwo {
 class IVW_CORE_API VolumeRAMNormalizedHistogram : public VolumeOperation {
 public:
     VolumeRAMNormalizedHistogram(const VolumeRepresentation* in,
-                                 NormalizedHistogram* oldHist = NULL, int delta = 1,
-                                 size_t maxNumberOfBins = 2048)
+                                 std::vector<NormalizedHistogram*>* oldHist = NULL,
+                                 int sampleRate = 1, size_t maxNumberOfBins = 2048)
         : VolumeOperation(in)
-        , delta_(delta)
-        , histogramContainer_(oldHist)
+        , sampleRate_(sampleRate)
+        , histograms_(oldHist)
         , maxNumberOfBins_(maxNumberOfBins) {}
 
     virtual ~VolumeRAMNormalizedHistogram() {}
@@ -54,19 +54,133 @@ public:
     template <typename T, size_t B>
     void evaluate();
 
-    static inline NormalizedHistogram* apply(const VolumeRepresentation* in,
-                                             NormalizedHistogram* oldHist = NULL, int delta = 1,
-                                             size_t maxNumberOfBins = 2048) {
+    static inline std::vector<NormalizedHistogram*>* apply(
+        const VolumeRepresentation* in, std::vector<NormalizedHistogram*>* oldHist = NULL,
+        int sampleRate = 1, size_t maxNumberOfBins = 2048) {
         VolumeRAMNormalizedHistogram subsetOP =
-            VolumeRAMNormalizedHistogram(in, oldHist, delta, maxNumberOfBins);
+            VolumeRAMNormalizedHistogram(in, oldHist, sampleRate, maxNumberOfBins);
         in->performOperation(&subsetOP);
-        return subsetOP.getOutput<NormalizedHistogram>();
+        return subsetOP.getOutput<std::vector<NormalizedHistogram*>>();
+    }
+
+    static size_t VolumeRAMNormalizedHistogram::calculateBins(const VolumeRAM* volumeRAM,
+                                                       size_t maxNumberOfBins) {
+        const Volume* volume = reinterpret_cast<const Volume*>(volumeRAM->getOwner());
+        dvec2 dataRange = volume->dataMap_.dataRange;
+
+        double delta = (dataRange.y - dataRange.x) / static_cast<double>(maxNumberOfBins);
+
+        switch (volumeRAM->getDataFormat()->getNumericType()) {
+        case DataFormatEnums::NOT_SPECIALIZED_TYPE:
+            break;
+        case DataFormatEnums::FLOAT_TYPE:
+            break;
+        case DataFormatEnums::UNSIGNED_INTEGER_TYPE:
+            if (delta < 1.0) {
+                delta = 1.0;
+            }
+            break;
+        case DataFormatEnums::SIGNED_INTEGER_TYPE:
+            if (delta < 1.0) {
+                delta = 1.0;
+            }
+            break;
+        }
+        return static_cast<size_t>(std::ceil(dataRange.y - dataRange.x) / delta);
     }
 
 private:
-    int delta_;
-    NormalizedHistogram* histogramContainer_;
+    int sampleRate_;
+    std::vector<NormalizedHistogram*>* histograms_;  // One histogram per channel in the data
     size_t maxNumberOfBins_;
+};
+
+template <typename T, size_t B, int N>
+class HistogramCaluculator {
+public:
+    static void calculate(std::vector<NormalizedHistogram*>* histograms, const VolumeRAM* volumeRAM,
+                          int sampleRate, size_t numberOfBinsInHistogram) {
+        // Calculate histogram data
+
+        if (histograms->empty()) {
+            histograms->push_back(new NormalizedHistogram(numberOfBinsInHistogram));
+        } else {
+            histograms->at(0)->resize(numberOfBinsInHistogram);
+        }
+
+        NormalizedHistogram* histogram = histograms->at(0);
+
+        std::vector<double>* histData = histogram->getData();
+        T* src = const_cast<T*>(reinterpret_cast<const T*>(volumeRAM->getData()));
+        const uvec3& dim = volumeRAM->getDimension();
+
+        const Volume* volume = reinterpret_cast<const Volume*>(volumeRAM->getOwner());
+        dvec2 dataRange = volume->dataMap_.dataRange;
+
+        size_t size = dim.x * dim.y * dim.z;
+
+        double min = std::numeric_limits<double>::max();
+        double max = std::numeric_limits<double>::min();
+        double sum = 0;
+        double sum2 = 0;
+        double count = 0;
+        uvec3 pos(0);
+
+        for (pos.z = 0; pos.z < dim.z; pos.z += sampleRate) {
+            for (pos.y = 0; pos.y < dim.y; pos.y += sampleRate) {
+                for (pos.x = 0; pos.x < dim.x; pos.x += sampleRate) {
+                    if (volumeRAM->shouldStopHistogramCalculation()) break;
+                    double val = static_cast<double>(src[VolumeRAM::posToIndex(pos, dim)]);
+                    min = std::min(min, val);
+                    max = std::max(max, val);
+                    sum += val;
+                    sum2 += val * val;
+                    count++;
+
+                    size_t ind =
+                        static_cast<size_t>((val - dataRange.x) / (dataRange.y - dataRange.x) *
+                                            (numberOfBinsInHistogram - 1));
+
+                    if (ind >= 0 && ind < numberOfBinsInHistogram) {
+                        histData->at(ind)++;
+                    } else {
+                        //Think here
+                    }
+                }
+            }
+        }
+
+        histogram->dataRange_ = dataRange;
+        histogram->stats_.min = min;
+        histogram->stats_.max = max;
+        histogram->stats_.mean = sum / count;
+        histogram->stats_.standardDeviation =
+            std::sqrt((count * sum2 - sum * sum) / (count * (count - 1)));
+
+        histogram->calculatePercentiles();
+        histogram->performNormalization();
+        histogram->calculateHistStats();
+        histogram->setValid(true);
+    };
+};
+
+template <typename T, size_t B, int N>
+class HistogramCaluculator<glm::detail::tvec2<T, glm::defaultp>, B, N> {
+public:
+    static void calculate(std::vector<NormalizedHistogram*>* histograms, const VolumeRAM* volumeRAM,
+                          int sampleRate, size_t numberOfBinsInHistogram) {};
+};
+template <typename T, size_t B, int N>
+class HistogramCaluculator<glm::detail::tvec3<T, glm::defaultp>, B, N> {
+public:
+    static void calculate(std::vector<NormalizedHistogram*>* histograms, const VolumeRAM* volumeRAM,
+                          int sampleRate, size_t numberOfBinsInHistogram) {};
+};
+template <typename T, size_t B, int N>
+class HistogramCaluculator<glm::detail::tvec4<T, glm::defaultp>, B, N> {
+public:
+    static void calculate(std::vector<NormalizedHistogram*>* histograms, const VolumeRAM* volumeRAM,
+                          int sampleRate, size_t numberOfBinsInHistogram) {};
 };
 
 template <typename T>
@@ -77,117 +191,47 @@ class VolumeRAMCustomPrecision;
 
 template <typename T, size_t B>
 void VolumeRAMNormalizedHistogram::evaluate() {
-    const VolumeRAMPrecision<T>* volume =
+    const VolumeRAMPrecision<T>* volumeRAM =
         dynamic_cast<const VolumeRAMPrecision<T>*>(getInputVolume());
 
-    if (!volume) {
+    if (!volumeRAM || !volumeRAM->getOwner()) {
         setOutput(NULL);
         return;
     }
 
-    const DataFormat<T, B>* dataFormat =
-        dynamic_cast<const DataFormat<T, B>*>(volume->getDataFormat());
-
-    if (!dataFormat) {
-        setOutput(NULL);
-        return;
-    }
-
-    // check whether the histogram should cover only a specified range or the entire data type range
-    glm::vec2 dataRange;
-    bool customDataRange = false;
-
-    float datatypeMax = static_cast<float>(volume->getDataFormat()->getMax());
-    float datatypeMin = static_cast<float>(volume->getDataFormat()->getMin());
-    if (volume->getOwner()) {
-        const Volume* vol = reinterpret_cast<const Volume*>(volume->getOwner());
-        if (vol->hasMetaData<Vec2MetaData>("DataRange")) {
-
-            dataRange = vol->getMetaData<Vec2MetaData>("DataRange", dataRange);
-            customDataRange = ((std::abs(datatypeMin - dataRange.x) > glm::epsilon<float>()) ||
-                               (std::abs(datatypeMax - dataRange.y) > glm::epsilon<float>()));
-            // if (customDataRange) {
-            //    std::stringstream str;
-            //    str << "custom histogram resolution: " << glm::to_string(dataRange);
-            //    LogInfo(str.str());
-            //}
-        }
-    }
-
-    // This does not work.
-    //    double numberOfBinsInData = 0.0;
-    //    if (customDataRange) {
-    //        // TODO: is there a better way for non-float types?
-    //        numberOfBinsInData = dataRange.y - dataRange.x;
-    //    }
-    //    else {
-    //        // no data range given for the volume
-    //
-    //        //Calculate number of bins in data
-    //        numberOfBinsInData = std::pow(2.0, static_cast<double>(dataFormat->getBitsStored()));
-    //    }
-    //
-    //    size_t numberOfBinsInHistogram;
-    //    if (numberOfBinsInData > static_cast<double>(maxNumberOfBins_)) {
-    //        numberOfBinsInHistogram = maxNumberOfBins_;
-    //    } else {
-    //        numberOfBinsInHistogram = static_cast<size_t>(numberOfBinsInData);
-    //    }
-
-    size_t numberOfBinsInHistogram = maxNumberOfBins_;
+    size_t numberOfBinsInHistogram = calculateBins(volumeRAM, maxNumberOfBins_);
 
     // Create Normalized Histogram
-    NormalizedHistogram* hist = histogramContainer_;
+    if (!histograms_) {
+        histograms_ = new std::vector<NormalizedHistogram*>();
+    }
 
-    if (!hist)
-        hist = new NormalizedHistogram(numberOfBinsInHistogram);
-    else
-        hist->resize(numberOfBinsInHistogram);
+    switch (volumeRAM->getDataFormat()->getComponents()) {
+        case 1:
+            HistogramCaluculator<T, B, 1>::calculate(histograms_, volumeRAM, sampleRate_,
+                                                     numberOfBinsInHistogram);
+            break;
+        case 2:
+            break;
+        case 3:
+            break; 
+        case 4: 
+            break; 
+        default:
+            break;
+    }
 
-    // Calculate histogram data
-    std::vector<float>* histData = hist->getData();
-    T* src = const_cast<T*>(reinterpret_cast<const T*>(volume->getData()));
-    const uvec3& dim = volume->getDimension();
-    unsigned int dimXY = dim.x * dim.y;
-    size_t idx;
-    float intensity;
-
-    for (size_t z = 0; z < dim.z; z += delta_) {
-        for (size_t y = 0; y < dim.y; y += delta_) {
-            for (size_t x = 0; x < dim.x; x += delta_) {
-                if (volume->shouldStopHistogramCalculation()) break;
-
-                intensity = dataFormat->valueToNormalizedFloat(&src[x + (y * dim.x) + (z * dimXY)]);
-                if (customDataRange) {
-                    // TODO: this is so ugly...
-                    if (dataFormat->getNumericType() != DataFormatEnums::FLOAT_TYPE) {
-                        // renormalize intensity [0,1] to data type range unless it is a float type
-                        intensity = intensity * (datatypeMax - datatypeMin) - datatypeMin;
-                    }
-                    // do custom renormalization
-                    intensity = (intensity + dataRange.x) / (dataRange.y - dataRange.x);
-                }
-                // Temporary fix for intensity values outside of 0,1. needed for for float types
-                // where
-                // the values are not normalized.
-                intensity = std::min(std::max(0.0f, intensity), 1.0f);
-                idx = static_cast<size_t>(intensity * (numberOfBinsInHistogram - 1));
-                histData->at(idx)++;
-            }
+    if (volumeRAM->shouldStopHistogramCalculation()) {
+        for (std::vector<NormalizedHistogram*>::iterator it = histograms_->begin();
+             it != histograms_->end(); ++it) {
+            delete *it;
         }
+        histograms_->clear();
+        delete histograms_;
+        histograms_ = NULL;
     }
 
-    if (volume->shouldStopHistogramCalculation()) {
-        delete hist;
-        setOutput(NULL);
-        return;
-    }
-
-    // Perform normalization
-    hist->performNormalization();
-    // Set as valid
-    hist->setValid(true);
-    setOutput(hist);
+    setOutput(histograms_);
 }
 
 }  // namespace

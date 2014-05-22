@@ -50,7 +50,7 @@ TransferFunctionEditorView::TransferFunctionEditorView(TransferFunctionProperty*
 
     setMouseTracking(true);
     setRenderHint(QPainter::Antialiasing, true);
-    setViewportUpdateMode(QGraphicsView::FullViewportUpdate);
+    setViewportUpdateMode(QGraphicsView::SmartViewportUpdate);
 
     this->setCacheMode(QGraphicsView::CacheBackground);
 
@@ -69,8 +69,12 @@ TransferFunctionEditorView::TransferFunctionEditorView(TransferFunctionProperty*
         format.setStereo(false);
         this->setViewport(new QGLWidget(format));
     */
+
     if (volumeInport_) {
         volumeInport_->onInvalid(this, &TransferFunctionEditorView::onVolumeInportInvalid);
+    }
+    if (volumeInport_) {
+        volumeInport_->onChange(this, &TransferFunctionEditorView::onVolumeInportChange);
     }
 }
 
@@ -164,16 +168,19 @@ void TransferFunctionEditorView::updateHistogram() {
     if (normHistogram) {
         QRectF sRect = sceneRect();
 
-        const std::vector<float>* normHistogramData = normHistogram->getData();
+        const std::vector<double>* normHistogramData = normHistogram->getData();
         histogramBars_.reserve(normHistogramData->size());
 
-        barWidth_ = sRect.width() / normHistogramData->size();
+        double histSize = static_cast<double>(normHistogramData->size());
+        barWidth_ = sRect.width() / histSize;
 
-        for (size_t i = 0; i < normHistogramData->size(); i++) {
+        double scale = normHistogram->histStats_.percentiles[99];
+        scale += normHistogram->histStats_.standardDeviation;
+
+        for (double i = 0; i < histSize; i++) {
             histogramBars_.push_back(
-                QLineF(((float)i / (float)normHistogramData->size()) * sRect.width(), 0.0,
-                       ((float)i / (float)normHistogramData->size()) * sRect.width(),
-                       normHistogramData->at(i) * sRect.height()));
+                QLineF(i / histSize * sRect.width(), 0.0, i / histSize * sRect.width(),
+                       normHistogramData->at(static_cast<size_t>(i)) / scale * sRect.height()));
         }
     }
 
@@ -209,7 +216,6 @@ const NormalizedHistogram* TransferFunctionEditorView::getNormalizedHistogram() 
 
 void TransferFunctionEditorView::drawBackground(QPainter* painter, const QRectF& rect) {
     painter->fillRect(rect, QColor(89, 89, 89));
-    // painter->drawRect(rect); // border around the TF
 
     // overlay grid
     int gridSpacing = 25;
@@ -234,7 +240,6 @@ void TransferFunctionEditorView::drawBackground(QPainter* painter, const QRectF&
         if (histogramBars_.size() > 0) {
             QPen pen;
             pen.setColor(QColor(68, 102, 170, 150));
-            // pen.setCosmetic(true);
             pen.setWidthF(barWidth_);
             painter->setPen(pen);
             painter->drawLines(&histogramBars_[0], static_cast<int>(histogramBars_.size()));
@@ -249,6 +254,39 @@ void TransferFunctionEditorView::updateZoom() {
         (tfProperty_->getZoomH().y - tfProperty_->getZoomH().x) * scene()->sceneRect().width(),
         (tfProperty_->getZoomV().y - tfProperty_->getZoomV().x) * scene()->sceneRect().height(),
         Qt::IgnoreAspectRatio);
+}
+
+void TransferFunctionEditorView::setMask(float maskMin, float maskMax) {
+    if (maskMax < maskMin) {
+        maskMax = maskMin;
+    }
+    maskHorizontal_ = vec2(maskMin, maskMax);
+    this->viewport()->update();
+}
+
+void TransferFunctionEditorView::onVolumeInportChange() {
+    if (volumeInport_ && volumeInport_->hasData()) {
+        TransferFunctionEditor* editor = dynamic_cast<TransferFunctionEditor*>(this->scene());
+        editor->setDataMap(volumeInport_->getData()->dataMap_);
+        if (editor) {
+            QList<QGraphicsItem *> items = editor->items();
+            for (QList<QGraphicsItem*>::iterator it = items.begin(); it != items.end(); it++) {
+                TransferFunctionEditorControlPoint* cp = dynamic_cast<TransferFunctionEditorControlPoint*>(*it);
+                if (cp) {
+                    cp->setDataMap(volumeInport_->getData()->dataMap_);
+                }
+            }
+        }
+    }
+
+    if (showHistogram_ && volumeInport_ && volumeInport_->hasData()) {
+        const NormalizedHistogram* histogram = getNormalizedHistogram();
+        if (histogram && histogram->dataRange_ != volumeInport_->getData()->dataMap_.dataRange) {
+            invalidatedHistogram_ = true;
+            updateHistogram();
+            this->viewport()->update();
+        }
+    }
 }
 
 void HistogramWorkerQt::process() {

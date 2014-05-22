@@ -37,15 +37,19 @@ namespace inviwo {
 class ControlPointEquals {
 public:
     ControlPointEquals(const TransferFunctionDataPoint* p) : p_(p) {}
-    bool operator()(TransferFunctionEditorControlPoint* editorPoint) 
-    { return editorPoint->getPoint()==p_; }
-    bool operator<(TransferFunctionEditorControlPoint* editorPoint) 
-    { return editorPoint->getPoint()->getPos().x < p_->getPos().x; }
+    bool operator()(TransferFunctionEditorControlPoint* editorPoint) {
+        return editorPoint->getPoint() == p_;
+    }
+    bool operator<(TransferFunctionEditorControlPoint* editorPoint) {
+        return editorPoint->getPoint()->getPos().x < p_->getPos().x;
+    }
+
 private:
     const TransferFunctionDataPoint* p_;
 };
 
-TransferFunctionEditor::TransferFunctionEditor(TransferFunction* transferFunction, QGraphicsView* view)
+TransferFunctionEditor::TransferFunctionEditor(TransferFunction* transferFunction,
+                                               QGraphicsView* view)
     : QGraphicsScene()
     , zoomRangeXMin_(0.0)
     , zoomRangeXMax_(1.0)
@@ -56,7 +60,7 @@ TransferFunctionEditor::TransferFunctionEditor(TransferFunction* transferFunctio
     setSceneRect(0.0, 0.0, 512.0, 512.0);
     // initialize graphicsitem for path through control points
     graphicsPathItem_ = new QGraphicsPathItem();
-    QPen pathPen(QColor(66,66,66));
+    QPen pathPen(QColor(66, 66, 66));
     pathPen.setWidth(3.0);
     pathPen.setCosmetic(true);
     graphicsPathItem_->setPen(pathPen);
@@ -67,20 +71,20 @@ TransferFunctionEditor::TransferFunctionEditor(TransferFunction* transferFunctio
 }
 
 TransferFunctionEditor::~TransferFunctionEditor() {
-    for (size_t i=0; i<controlPoints_.size(); i++)
-        delete controlPoints_[i];
+    for (size_t i = 0; i < controlPoints_.size(); i++) delete controlPoints_[i];
 
     controlPoints_.clear();
 }
 
 void TransferFunctionEditor::resetTransferFunction() {
     transferFunction_->clearPoints();
-    addControlPoint(QPointF(0.0*(width()-1), 0.0*(height()-1)), vec4(0.0f));
-    addControlPoint(QPointF(1.0*(width()-1), 1.0*(height()-1)), vec4(1.0f));
+    addControlPoint(QPointF(0.0 * (width() - 1), 0.0 * (height() - 1)), vec4(0.0f));
+    addControlPoint(QPointF(1.0 * (width() - 1), 1.0 * (height() - 1)), vec4(1.0f));
 }
 
 void TransferFunctionEditor::mousePressEvent(QGraphicsSceneMouseEvent* e) {
-    TransferFunctionEditorControlPoint* controlPointGraphicsItem = getControlPointGraphicsItemAt(e->scenePos());
+    TransferFunctionEditorControlPoint* controlPointGraphicsItem =
+        getControlPointGraphicsItemAt(e->scenePos());
 
     switch (e->button()) {
         case Qt::LeftButton:
@@ -123,10 +127,10 @@ void TransferFunctionEditor::mouseDoubleClickEvent(QGraphicsSceneMouseEvent* e) 
 
 void TransferFunctionEditor::keyPressEvent(QKeyEvent* e) {
     // mark all keys
-    if (e->key() == 'A' && e->modifiers()==Qt::ControlModifier) {
+    if (e->key() == 'A' && e->modifiers() == Qt::ControlModifier) {
         QList<QGraphicsItem*> itemList = items();
 
-        for (int i=0; i<itemList.size(); i++) {
+        for (int i = 0; i < itemList.size(); i++) {
             itemList[i]->setSelected(true);
         }
     }
@@ -136,7 +140,7 @@ void TransferFunctionEditor::keyPressEvent(QKeyEvent* e) {
         for (size_t i = 0; i < controlPoints_.size(); i++) {
             if (controlPoints_[i]->isSelected()) {
                 removeControlPoint(controlPoints_[i]);
-                break; // FIXME can't remove more then one point without crashing.../Peter 140331
+                break;  // FIXME can't remove more then one point without crashing.../Peter 140331
             }
         }
     }
@@ -153,8 +157,7 @@ void TransferFunctionEditor::addControlPoint(QPointF pos) {
     } else if (pos.y() > height()) {
         pos.setY(height());
     }
-    transferFunction_->addPoint(vec2(pos.x()/width(), pos.y()/height()));
-
+    transferFunction_->addPoint(vec2(pos.x() / width(), pos.y() / height()));
 }
 
 void TransferFunctionEditor::addControlPoint(QPointF pos, vec4 color) {
@@ -169,11 +172,12 @@ void TransferFunctionEditor::addControlPoint(QPointF pos, vec4 color) {
     } else if (pos.y() > height()) {
         pos.setY(height());
     }
-    transferFunction_->addPoint(vec2(pos.x()/width(), pos.y()/height()), color);
+    transferFunction_->addPoint(vec2(pos.x() / width(), pos.y() / height()), color);
 }
 
 void TransferFunctionEditor::addControlPoint(QPointF pos, TransferFunctionDataPoint* dataPoint) {
-    TransferFunctionEditorControlPoint* pointGraphicsItem = new TransferFunctionEditorControlPoint(dataPoint);
+    TransferFunctionEditorControlPoint* pointGraphicsItem =
+        new TransferFunctionEditorControlPoint(dataPoint, dataMap_);
     pointGraphicsItem->setPos(pos);
     controlPoints_.push_back(pointGraphicsItem);
     addItem(pointGraphicsItem);
@@ -182,13 +186,14 @@ void TransferFunctionEditor::addControlPoint(QPointF pos, TransferFunctionDataPo
 
 void TransferFunctionEditor::removeControlPoint(TransferFunctionEditorControlPoint* controlPoint) {
     if (transferFunction_->getNumDataPoints() > 1)
-        transferFunction_->removePoint(const_cast<TransferFunctionDataPoint*>(controlPoint->getPoint()));
+        transferFunction_->removePoint(
+            const_cast<TransferFunctionDataPoint*>(controlPoint->getPoint()));
 }
 
 void TransferFunctionEditor::recalculateControlPoints() {
     if (!mouseDrag_) {
         if (controlPoints_.size() != transferFunction_->getNumDataPoints()) {
-            for (size_t i=0; i<controlPoints_.size(); i++) {
+            for (size_t i = 0; i < controlPoints_.size(); i++) {
                 removeItem(controlPoints_[i]);
                 delete controlPoints_[i];
             }
@@ -196,21 +201,21 @@ void TransferFunctionEditor::recalculateControlPoints() {
             controlPoints_.clear();
 
             // initialize editor with current tf
-            for (size_t i=0; i<transferFunction_->getNumDataPoints(); i++) {
-                TransferFunctionDataPoint* dataPoint = transferFunction_->getPoint(static_cast<int>(i));
+            for (size_t i = 0; i < transferFunction_->getNumDataPoints(); i++) {
+                TransferFunctionDataPoint* dataPoint =
+                    transferFunction_->getPoint(static_cast<int>(i));
                 vec2 pos = dataPoint->getPos();
                 pos.x *= width();
                 pos.y *= height();
-                TransferFunctionEditorControlPoint* pointGraphicsItem = new TransferFunctionEditorControlPoint(dataPoint);
-                pointGraphicsItem->setPos(QPointF(pos.x,pos.y));
+                TransferFunctionEditorControlPoint* pointGraphicsItem =
+                    new TransferFunctionEditorControlPoint(dataPoint, dataMap_);
+                pointGraphicsItem->setPos(QPointF(pos.x, pos.y));
                 controlPoints_.push_back(pointGraphicsItem);
                 addItem(pointGraphicsItem);
-                //addControlPoint(QPointF(pos.x,pos.y), dataPoint);
             }
         }
     }
 
-    
     redrawConnections();
     update(sceneRect());
 }
@@ -225,74 +230,79 @@ void TransferFunctionEditor::redrawConnections() {
     std::sort(controlPoints_.begin(), controlPoints_.end(), controlPointComparison);
     QPainterPath path;
 
-    if (controlPoints_.size() == 1){
+    if (controlPoints_.size() == 1) {
         path.moveTo(QPointF(0.0, controlPoints_[0]->pos().y()));
         path.lineTo(QPointF(width(), controlPoints_[0]->pos().y()));
     } else if (controlPoints_.size() > 1) {
         switch (transferFunction_->getInterpolationType()) {
-        case TransferFunction::InterpolationCubic: {
-            // draw cubic path
-            QPointF p0(QPointF(0.0, controlPoints_[0]->pos().y()));
-            QPointF p1(QPointF(controlPoints_[0]->pos().x(), controlPoints_[0]->pos().y()));
-            path.moveTo(p0);
-            qreal deltaX = p1.x()-p0.x();
-            path.cubicTo(QPointF(p0.x()+deltaX/2, p0.y()), QPointF(p0.x()+deltaX/2, p0.y()), p1);
+            case TransferFunction::InterpolationCubic: {
+                // draw cubic path
+                QPointF p0(QPointF(0.0, controlPoints_[0]->pos().y()));
+                QPointF p1(QPointF(controlPoints_[0]->pos().x(), controlPoints_[0]->pos().y()));
+                path.moveTo(p0);
+                qreal deltaX = p1.x() - p0.x();
+                path.cubicTo(QPointF(p0.x() + deltaX / 2, p0.y()),
+                             QPointF(p0.x() + deltaX / 2, p0.y()), p1);
 
-            for (size_t i=0; i<controlPoints_.size()-1; i++) {
-                p0 = controlPoints_[i]->pos();
-                p1 = controlPoints_[i+1]->pos();
-                deltaX = p1.x()-p0.x();
-                path.cubicTo(QPointF(p0.x()+deltaX/2, p0.y()), QPointF(p0.x()+deltaX/2, p0.y()), p1);
+                for (size_t i = 0; i < controlPoints_.size() - 1; i++) {
+                    p0 = controlPoints_[i]->pos();
+                    p1 = controlPoints_[i + 1]->pos();
+                    deltaX = p1.x() - p0.x();
+                    path.cubicTo(QPointF(p0.x() + deltaX / 2, p0.y()),
+                                 QPointF(p0.x() + deltaX / 2, p0.y()), p1);
+                }
+
+                // add last path segment
+                p0 = QPointF(controlPoints_[controlPoints_.size() - 1]->pos().x(),
+                             controlPoints_[controlPoints_.size() - 1]->pos().y());
+                p1 = QPointF(width(), p0.y());
+                deltaX = p1.x() - p0.x();
+                path.moveTo(p0);
+                path.cubicTo(QPointF(p0.x() + deltaX / 2, p0.y()),
+                             QPointF(p0.x() + deltaX / 2, p0.y()), p1);
+                break;
             }
 
-            // add last path segment
-            p0 = QPointF(controlPoints_[controlPoints_.size()-1]->pos().x(),
-                         controlPoints_[controlPoints_.size()-1]->pos().y());
-            p1 = QPointF(width(), p0.y());
-            deltaX = p1.x()-p0.x();
-            path.moveTo(p0);
-            path.cubicTo(QPointF(p0.x()+deltaX/2, p0.y()), QPointF(p0.x()+deltaX/2, p0.y()), p1);
-            break;
-            }
-        
-        default: {
-            // draw linear path
-            path.moveTo(QPointF(0.0, controlPoints_[0]->pos().y()));
+            default: {
+                // draw linear path
+                path.moveTo(QPointF(0.0, controlPoints_[0]->pos().y()));
 
-            for (size_t i=0; i<controlPoints_.size(); i++) {
-                path.lineTo(QPointF(controlPoints_[i]->pos().x(), controlPoints_[i]->pos().y()));
-            }
+                for (size_t i = 0; i < controlPoints_.size(); i++) {
+                    path.lineTo(
+                        QPointF(controlPoints_[i]->pos().x(), controlPoints_[i]->pos().y()));
+                }
 
-            // add last path segment
-            path.lineTo(QPointF(width(), controlPoints_[controlPoints_.size()-1]->pos().y()));
-            break;
+                // add last path segment
+                path.lineTo(QPointF(width(), controlPoints_[controlPoints_.size() - 1]->pos().y()));
+                break;
             }
         }
     }
     graphicsPathItem_->setPath(path);
 }
 
-
-TransferFunctionEditorControlPoint* TransferFunctionEditor::getControlPointGraphicsItemAt(const QPointF pos) const {
+TransferFunctionEditorControlPoint* TransferFunctionEditor::getControlPointGraphicsItemAt(
+    const QPointF pos) const {
     QList<QGraphicsItem*> graphicsItems = items(pos);
 
-    for (int i=0; i<graphicsItems.size(); i++) {
-        TransferFunctionEditorControlPoint* controlPointGraphicsItem = qgraphicsitem_cast<TransferFunctionEditorControlPoint*>(graphicsItems[i]);
+    for (int i = 0; i < graphicsItems.size(); i++) {
+        TransferFunctionEditorControlPoint* controlPointGraphicsItem =
+            qgraphicsitem_cast<TransferFunctionEditorControlPoint*>(graphicsItems[i]);
 
-        if (controlPointGraphicsItem)
-            return controlPointGraphicsItem;
+        if (controlPointGraphicsItem) return controlPointGraphicsItem;
     }
 
     return 0;
 }
 
 void TransferFunctionEditor::onControlPointAdded(TransferFunctionDataPoint* p) {
-    addControlPoint(QPointF(p->getPos().x*width(), p->getPos().y*height()), p);
+    addControlPoint(QPointF(p->getPos().x * width(), p->getPos().y * height()), p);
 }
 
 void TransferFunctionEditor::onControlPointRemoved(TransferFunctionDataPoint* p) {
-    std::vector<TransferFunctionEditorControlPoint*>::iterator it = std::find_if(controlPoints_.begin(), controlPoints_.end(), ControlPointEquals(p));
-    if (it!= controlPoints_.end()) {
+    std::vector<TransferFunctionEditorControlPoint*>::iterator it =
+        std::find_if(controlPoints_.begin(), controlPoints_.end(), ControlPointEquals(p));
+    if (it != controlPoints_.end()) {
         removeItem((*it));
         delete *it;
         controlPoints_.erase(it);
@@ -303,13 +313,14 @@ void TransferFunctionEditor::onControlPointRemoved(TransferFunctionDataPoint* p)
 void TransferFunctionEditor::onControlPointChanged(const TransferFunctionDataPoint* p) {
     redrawConnections();
     update();
-    //std::vector<TransferFunctionEditorControlPoint*>::iterator it = std::find_if(controlPoints_.begin(), controlPoints_.end(), ControlPointEquals(p));
-    //if (it!= controlPoints_.end()) {
-    //    (*it)->update();
-    //    redrawConnections();
-    //    update();
-    //}
+}
 
+void TransferFunctionEditor::setDataMap(const DataMapper& dataMap) {
+   dataMap_ = dataMap;
+}
+
+inviwo::DataMapper TransferFunctionEditor::getDataMap() const {
+    return dataMap_;
 }
 
 }

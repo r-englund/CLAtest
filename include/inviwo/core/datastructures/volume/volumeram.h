@@ -72,8 +72,8 @@ public:
     }
 
     bool hasNormalizedHistogram() const;
-    NormalizedHistogram* getNormalizedHistogram(int delta=-1, std::size_t maxNumberOfBins=2048u);
-    const NormalizedHistogram* getNormalizedHistogram(int delta=-1, std::size_t maxNumberOfBins=2048u) const;
+    NormalizedHistogram* getNormalizedHistogram(int delta=-1, std::size_t maxNumberOfBins=2048u, int component = 0);
+    const NormalizedHistogram* getNormalizedHistogram(int delta = -1, std::size_t maxNumberOfBins = 2048u, int component = 0) const;
 
     virtual void setValueFromSingleFloat(const uvec3& pos, float val) = 0;
     virtual void setValueFromVec2Float(const uvec3& pos, vec2 val) = 0;
@@ -85,16 +85,16 @@ public:
     virtual vec3 getValueAsVec3Float(const uvec3& pos) const = 0;
     virtual vec4 getValueAsVec4Float(const uvec3& pos) const = 0;
 
-    template< typename T >
+    template <typename T>
     static inline T posToIndex(const glm::detail::tvec3<T, glm::defaultp>& pos,
                                const glm::detail::tvec3<T, glm::defaultp>& dim) {
-        return pos.x+(pos.y*dim.x)+(pos.z*dim.x *dim.y);
+        return pos.x + (pos.y * dim.x) + (pos.z * dim.x * dim.y);
     }
-    template< typename T>
+    template <typename T>
     static inline T periodicPosToIndex(const glm::detail::tvec3<T, glm::defaultp>& posIn,
                                        const glm::detail::tvec3<T, glm::defaultp>& dim) {
         glm::detail::tvec3<T, glm::defaultp> pos = glm::mod(posIn, dim);
-        return pos.x + (pos.y*dim.x) + (pos.z*dim.x *dim.y);
+        return pos.x + (pos.y * dim.x) + (pos.z * dim.x * dim.y);
     }
 
     bool shouldStopHistogramCalculation() const { return stopHistogramCalculation_; }
@@ -104,7 +104,7 @@ protected:
     void calculateHistogram(int delta, std::size_t maxNumberOfBins) const;
 
     void* data_;
-    mutable NormalizedHistogram* histogram_;
+    mutable std::vector<NormalizedHistogram*>* histograms_;
     mutable bool calculatingHistogram_;
     mutable bool stopHistogramCalculation_;
 };

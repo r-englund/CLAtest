@@ -50,8 +50,8 @@ template <typename T>
 class VectorData : public BaseData {
 public:
     VectorData() {}
-    VectorData(const VectorData& rhs) : BaseData(rhs),vector(rhs.vector) {}
-    VectorData& operator=(const VectorData& rhs) { 
+    VectorData(const VectorData& rhs) : BaseData(rhs), vector(rhs.vector) {}
+    VectorData& operator=(const VectorData& rhs) {
         if (this != &rhs) {
             this->vector = rhs.vector;
         }
@@ -65,18 +65,17 @@ public:
     std::string getDataInfo() const {
         std::ostringstream stream;
         stream << "Type:   vector\n"
-            << "Format: " << typeid(T).name() << "\n"
-            << "Length: " << vector.size() << "\n";
+               << "Format: " << typeid(T).name() << "\n"
+               << "Length: " << vector.size() << "\n";
         return stream.str();
     }
 };
 
 template <typename Type>
 class VectorDataInport : public DataInport<VectorData<Type> > {
-
 public:
-    VectorDataInport(std::string identifier,
-        PropertyOwner::InvalidationLevel invalidationLevel=PropertyOwner::INVALID_OUTPUT)
+    VectorDataInport(std::string identifier, PropertyOwner::InvalidationLevel invalidationLevel =
+                                                 PropertyOwner::INVALID_OUTPUT)
         : DataInport<VectorData<Type> >(identifier, invalidationLevel) {}
     virtual ~VectorDataInport() {}
 
@@ -89,12 +88,11 @@ public:
 
 template <typename Type>
 class VectorDataOutport : public DataOutport<VectorData<Type> > {
-
 public:
-    VectorDataOutport(std::string identifier, PropertyOwner::InvalidationLevel invalidationLevel=PropertyOwner::INVALID_OUTPUT)
-        : DataOutport<VectorData<Type> >(identifier, invalidationLevel) 
-    {
-            this->setData(new VectorData<Type>, true);
+    VectorDataOutport(std::string identifier, PropertyOwner::InvalidationLevel invalidationLevel =
+                                                  PropertyOwner::INVALID_OUTPUT)
+        : DataOutport<VectorData<Type> >(identifier, invalidationLevel) {
+        this->setData(new VectorData<Type>, true);
     }
     virtual ~VectorDataOutport() {}
 

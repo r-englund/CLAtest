@@ -5,16 +5,16 @@
  *
  * Copyright (c) 2013-2014 Inviwo Foundation
  * All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met: 
- * 
+ * modification, are permitted provided that the following conditions are met:
+ *
  * 1. Redistributions of source code must retain the above copyright notice, this
- * list of conditions and the following disclaimer. 
+ * list of conditions and the following disclaimer.
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  * this list of conditions and the following disclaimer in the documentation
- * and/or other materials provided with the distribution. 
- * 
+ * and/or other materials provided with the distribution.
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
  * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
@@ -25,7 +25,7 @@
  * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- * 
+ *
  * Main file authors: Viktor Axelsson, Timo Ropinski
  *
  *********************************************************************************/
@@ -62,8 +62,8 @@ namespace inviwo {
 
 class TransferFunctionPropertyWidgetQt;
 
-class IVW_QTWIDGETS_API TransferFunctionPropertyDialog : public PropertyEditorWidgetQt, public TransferFunctionObserver {
-
+class IVW_QTWIDGETS_API TransferFunctionPropertyDialog : public PropertyEditorWidgetQt,
+                                                         public TransferFunctionObserver {
     Q_OBJECT
 
 public:
@@ -79,13 +79,11 @@ public:
 
     QLinearGradient* getTFGradient() { return gradient_; }
 
-    TransferFunctionEditorView* getEditorView() { return tfEditorView_; } 
+    TransferFunctionEditorView* getEditorView() { return tfEditorView_; }
 
     virtual void onControlPointAdded(TransferFunctionDataPoint* p);
     virtual void onControlPointRemoved(TransferFunctionDataPoint* p);
     virtual void onControlPointChanged(const TransferFunctionDataPoint* p);
-
-
 
 public slots:
     void setPointColor(QColor color);
@@ -108,22 +106,20 @@ protected:
     virtual void closeEvent(QCloseEvent*);
     virtual void showEvent(QShowEvent*);
     virtual void moveEvent(QMoveEvent*);
+
 private:
     const int sliderRange_;
 
-    int arrayWidth_;
-    int arrayHeight_;
-
-    TransferFunctionProperty* tfProperty_;     ///< Pointer to property, for get and invalidation in the widget
-    TransferFunctionEditor* tfEditor_;         ///< TransferFunctionEditor inherited from QGraphicsScene
-    TransferFunctionEditorView* tfEditorView_; ///< View that contains the editor
+    TransferFunctionProperty* tfProperty_;  ///< Pointer to property, for get and invalidation in the widget
+    TransferFunctionEditor* tfEditor_;  ///< TransferFunctionEditor inherited from QGraphicsScene
+    TransferFunctionEditorView* tfEditorView_;  ///< View that contains the editor
     QPushButton* btnClearTF_;
     QPushButton* btnImportTF_;
     QPushButton* btnExportTF_;
     QComboBox* cmbInterpolation_;
     QCheckBox* chkShowHistogram_;
 
-    QLabel* tfPreview_; ///< View that contains the scene for the painted transfer function
+    QLabel* tfPreview_;  ///< View that contains the scene for the painted transfer function
     QPixmap* tfPixmap_;
 
     QLinearGradient* gradient_;
@@ -140,6 +136,6 @@ private:
     void updateTFPreview();
 };
 
-} // namespace
+}  // namespace
 
-#endif // IVW_TRANSFERFUNCTIONPROPERTYDIALOG_H
+#endif  // IVW_TRANSFERFUNCTIONPROPERTYDIALOG_H
