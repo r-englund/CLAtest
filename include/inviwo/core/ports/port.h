@@ -86,10 +86,6 @@ public:
      * Derived should declare its own and return DerivedClass::colorCode in getColorCode
      */
     static uvec3 colorCode;
-    /**
-     * Return true if the port which the pointer points to has the same color as this port.
-     */
-    bool equalColorCode(Port*) const;
 
     Processor* getProcessor() const;
     std::string getIdentifier() const;
