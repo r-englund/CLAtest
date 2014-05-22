@@ -282,6 +282,8 @@ void CollapsibleGroupBoxWidgetQt::onViewModeChange() {
 }
 
 void CollapsibleGroupBoxWidgetQt::resetPropertyToDefaultState() {
+    InviwoApplication::getPtr()->getProcessorNetwork()->lock();
+
     for (size_t i = 0; i < properties_.size(); i++) {
         properties_[i]->resetToDefaultState();
     }
@@ -303,6 +305,7 @@ void CollapsibleGroupBoxWidgetQt::resetPropertyToDefaultState() {
         }
     }
 
+    InviwoApplication::getPtr()->getProcessorNetwork()->unlock();
 }
 
 } // namespace
