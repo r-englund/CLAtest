@@ -75,6 +75,7 @@ public:
 
     void onProcessorInvalidationEnd(Processor*);
     void onProcessorNetworkEvaluateRequest();
+    void onProcessorNetworkUnlocked();
 
     static ProcessorNetworkEvaluator* getProcessorNetworkEvaluatorForProcessorNetwork(ProcessorNetwork* network);
 

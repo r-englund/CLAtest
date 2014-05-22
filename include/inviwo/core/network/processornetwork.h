@@ -236,7 +236,7 @@ public:
     Processor* getInvalidationInitiator();
 
     inline void lock() { locked_++; }
-    inline void unlock() { (locked_>0)?locked_--:locked_=0; }
+    inline void unlock() { (locked_>0) ? locked_-- : locked_=0;notifyProcessorNetworkUnlockedObservers(); }
     inline bool islocked() const { return (locked_!=0); }
 
     virtual void serialize(IvwSerializer& s) const;

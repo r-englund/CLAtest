@@ -48,6 +48,7 @@ public:
     */
     virtual void onProcessorNetworkChange() {};
     virtual void onProcessorNetworkEvaluateRequest() {};
+    virtual void onProcessorNetworkUnlocked() {};
 };
 
 class IVW_CORE_API ProcessorNetworkObservable: public Observable<ProcessorNetworkObserver> {
@@ -56,6 +57,7 @@ public:
 
     void notifyProcessorNetworkObservers() const;
     void notifyProcessorNetworkEvaluateRequestObservers() const;
+    void notifyProcessorNetworkUnlockedObservers() const;
 };
 
 } // namespace

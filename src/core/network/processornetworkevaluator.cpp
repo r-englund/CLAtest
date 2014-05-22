@@ -304,11 +304,6 @@ void ProcessorNetworkEvaluator::propagateResizeEvent(Canvas* canvas, ResizeEvent
     // enable network evaluation again
     processorNetwork_->unlock();
 
-    // TODO: remove this invalidate
-    // instead dimension property of event initiator (CanvasProcessor) should be invalid
-    if (!processorNetwork_->islocked())
-        eventInitiator_->invalidate(PropertyOwner::INVALID_OUTPUT);
-
     eventInitiator_ = 0;
 }
 
@@ -331,6 +326,13 @@ void ProcessorNetworkEvaluator::onProcessorInvalidationEnd(Processor* p) {
 
 void ProcessorNetworkEvaluator::onProcessorNetworkEvaluateRequest() {
     requestEvaluate();
+}
+
+void ProcessorNetworkEvaluator::onProcessorNetworkUnlocked() {
+    if (evaulationQueued_) {
+        evaulationQueued_ = false;
+        requestEvaluate();
+    }
 }
 
 void ProcessorNetworkEvaluator::disableEvaluation() {
@@ -361,13 +363,10 @@ void ProcessorNetworkEvaluator::requestEvaluate() {
         return;
 
     //evaluation disabled
-    if (evaluationDisabled_) {
+    if (processorNetwork_->islocked() || evaluationDisabled_) {
         evaulationQueued_ = true;
         return;
     }
-
-    if (processorNetwork_->islocked())
-        return;
 
     //wait for invalidation to finish before evaluating
     if (processorNetwork_->isInvalidating()) {
