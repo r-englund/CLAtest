@@ -1167,8 +1167,12 @@ void NetworkEditor::mouseReleaseEvent(QGraphicsSceneMouseEvent* e) {
 
 void NetworkEditor::mouseDoubleClickEvent(QGraphicsSceneMouseEvent* e) {
     LinkConnectionGraphicsItem* linkGraphicsItem = getLinkGraphicsItemAt(e->scenePos());
+    ProcessorGraphicsItem* processorGraphicsItem = getProcessorGraphicsItemAt(e->scenePos());
 
-    if (linkGraphicsItem) {
+    if(processorGraphicsItem){
+        e->accept();
+    }
+    else if (linkGraphicsItem) {
         // link edit mode
         showLinkDialog(linkGraphicsItem);
         e->accept();
