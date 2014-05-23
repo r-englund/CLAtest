@@ -63,11 +63,14 @@ public:
         return subsetOP.getOutput<std::vector<NormalizedHistogram*> >();
     }
 
+    /**
+     * Values put into bins [x, x+delta)
+     */
     static size_t calculateBins(const VolumeRAM* volumeRAM, size_t maxNumberOfBins) {
         const Volume* volume = reinterpret_cast<const Volume*>(volumeRAM->getOwner());
         dvec2 dataRange = volume->dataMap_.dataRange;
 
-        double delta = (dataRange.y - dataRange.x) / static_cast<double>(maxNumberOfBins);
+        double delta = (dataRange.y - dataRange.x) / static_cast<double>(maxNumberOfBins-1);
 
         switch (volumeRAM->getDataFormat()->getNumericType()) {
         case DataFormatEnums::NOT_SPECIALIZED_TYPE:
@@ -85,7 +88,7 @@ public:
             }
             break;
         }
-        return static_cast<size_t>(std::ceil(dataRange.y - dataRange.x) / delta);
+        return static_cast<size_t>(std::ceil((dataRange.y - dataRange.x) / delta) + 1);
     }
 
 private:
@@ -116,14 +119,14 @@ public:
         const Volume* volume = reinterpret_cast<const Volume*>(volumeRAM->getOwner());
         dvec2 dataRange = volume->dataMap_.dataRange;
 
-        size_t size = dim.x * dim.y * dim.z;
-
         double min = std::numeric_limits<double>::max();
         double max = std::numeric_limits<double>::min();
         double sum = 0;
         double sum2 = 0;
         double count = 0;
         uvec3 pos(0);
+
+        size_t outsideOfDataRange = 0;
 
         for (pos.z = 0; pos.z < dim.z; pos.z += sampleRate) {
             for (pos.y = 0; pos.y < dim.y; pos.y += sampleRate) {
@@ -136,14 +139,14 @@ public:
                     sum2 += val * val;
                     count++;
 
-                    size_t ind =
-                        static_cast<size_t>((val - dataRange.x) / (dataRange.y - dataRange.x) *
+                    int ind =
+                        static_cast<int>((val - dataRange.x) / (dataRange.y - dataRange.x) *
                                             (numberOfBinsInHistogram - 1));
 
                     if (ind >= 0 && ind < numberOfBinsInHistogram) {
                         histData->at(ind)++;
                     } else {
-                        //Think here
+                        outsideOfDataRange++;
                     }
                 }
             }

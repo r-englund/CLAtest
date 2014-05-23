@@ -133,14 +133,12 @@ void NormalizedHistogram::calculatePercentiles() {
     double sum = std::accumulate(data_->begin(), data_->end(), 0.0);
     stats_.percentiles.resize(101);
     double accumulation = 0;
-    double i = 0;
-    for (std::vector<double>::iterator it = data_->begin(); it != data_->end(); ++it) {
-        accumulation += *it;
-        while (accumulation / sum > i / 100.0) {
-            stats_.percentiles[static_cast<size_t>(i)] =
-                static_cast<double>(std::distance(data_->begin(), it)) /
-                    static_cast<double>(data_->size()) * (dataRange_.y - dataRange_.x) +
-                dataRange_.x;
+    size_t i = 0;
+    for (size_t j = 0; j < data_->size(); ++j){
+        accumulation += data_->at(j);
+        while (accumulation / sum >= static_cast<double>(i) / 100.0) {
+            stats_.percentiles[i] = static_cast<double>(j) / static_cast<double>(data_->size() - 1)
+                    * (dataRange_.y - dataRange_.x) + dataRange_.x;
             i++;
         }
     }
@@ -163,11 +161,11 @@ void NormalizedHistogram::calculateHistStats() {
     histStats_.standardDeviation =
         std::sqrt((data_->size() * sum2 - sum * sum) / (data_->size() * (data_->size() - 1)));
 
-    histStats_.percentiles.resize(101);
-    for (size_t i = 0; i < histStats_.percentiles.size(); ++i) {
+    histStats_.percentiles.resize(101, 0.0);
+    for (size_t i = 1; i < histStats_.percentiles.size(); ++i) {
         histStats_.percentiles[i] = temp.at(static_cast<size_t>(
-            static_cast<double>(i) / static_cast<double>(histStats_.percentiles.size()) *
-            static_cast<double>(data_->size())));
+            std::ceil(static_cast<double>(i) / static_cast<double>(histStats_.percentiles.size()-1) *
+            static_cast<double>(data_->size()))) - 1);
     }
 }
 

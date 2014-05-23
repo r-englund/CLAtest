@@ -38,14 +38,11 @@
 namespace inviwo {
 
 VolumeGL::VolumeGL(uvec3 dimensions, const DataFormatBase* format, Texture3D* tex)
-    : VolumeRepresentation(dimensions, format)
-    , volumeTexture_(tex)
-{
+    : VolumeRepresentation(dimensions, format), volumeTexture_(tex) {
     initialize();
 }
 
-VolumeGL::VolumeGL(const VolumeGL& rhs)
-    : VolumeRepresentation(rhs) {
+VolumeGL::VolumeGL(const VolumeGL& rhs) : VolumeRepresentation(rhs) {
     volumeTexture_ = rhs.volumeTexture_->clone();
 }
 
@@ -58,13 +55,9 @@ VolumeGL& VolumeGL::operator=(const VolumeGL& rhs) {
     return *this;
 }
 
-VolumeGL::~VolumeGL() {
-    deinitialize();
-}
+VolumeGL::~VolumeGL() { deinitialize(); }
 
-VolumeGL* VolumeGL::clone() const {
-    return new VolumeGL(*this);
-}
+VolumeGL* VolumeGL::clone() const { return new VolumeGL(*this); }
 
 void VolumeGL::initialize() {
     if (!volumeTexture_) {
@@ -85,22 +78,16 @@ void VolumeGL::bindTexture(GLenum texUnit) const {
     volumeTexture_->bind();
 }
 
-void VolumeGL::unbindTexture() const {
-    volumeTexture_->unbind();
-}
+void VolumeGL::unbindTexture() const { volumeTexture_->unbind(); }
 
 void VolumeGL::setDimension(uvec3 dimensions) {
     dimensions_ = dimensions;
     volumeTexture_->uploadAndResize(NULL, dimensions_);
 }
 
-Texture3D* VolumeGL::getTexture() {
-    return volumeTexture_;
-}
+Texture3D* VolumeGL::getTexture() { return volumeTexture_; }
 
-const Texture3D* VolumeGL::getTexture() const {
-    return volumeTexture_;
-}
+const Texture3D* VolumeGL::getTexture() const { return volumeTexture_; }
 
 void VolumeGL::setVolumeUniforms(const Volume* volume, Shader* shader,
                                  const std::string& samplerID) const {
@@ -116,17 +103,32 @@ void VolumeGL::setVolumeUniforms(const Volume* volume, Shader* shader,
     dvec2 dataRange = volume->dataMap_.dataRange;
     DataMapper defaultRange(volume->getDataFormat());
 
-    if (dataRange == defaultRange.dataRange) {
-        // no change, use original GL scaling factor if volume data range is equal to type data
-        // range
-        shader->setUniform(samplerID + ".formatScaling_",
-                           getGLFormats()->getGLFormat(getDataFormatId()).scaling);
-    } else {
-        // TODO: consider lower bounds of data range as well (offset in shader before scaling)
-        double scalingFactor = defaultRange.dataRange.y / dataRange.y;
-        // offset scaling because of reversed scaling in the shader, i.e. (1 - formatScaling_)
-        shader->setUniform(samplerID + ".formatScaling_", static_cast<float>(1.0 - scalingFactor));
+    double typescale = 1.0 - getGLFormats()->getGLFormat(getDataFormatId()).scaling;
+
+    double scalingFactor = 0.0;
+    double offset = 0.0;
+    switch (volume->getDataFormat()->getNumericType()) {
+        case DataFormatEnums::FLOAT_TYPE:
+            scalingFactor = 1.0 / (dataRange.y - dataRange.x);
+            offset = dataRange.x;
+            break;
+        case DataFormatEnums::SIGNED_INTEGER_TYPE:
+            scalingFactor = (defaultRange.dataRange.y - defaultRange.dataRange.x) /
+                                      (dataRange.y - dataRange.x) * typescale;
+            offset = 0.0; // WHat should this be!?!
+            break;
+        case DataFormatEnums::UNSIGNED_INTEGER_TYPE:
+            scalingFactor = (defaultRange.dataRange.y - defaultRange.dataRange.x) /
+                                      (dataRange.y - dataRange.x) * typescale;
+            offset = dataRange.x;
+            break;
+        default:
+            scalingFactor = 0.0;
     }
+
+    // offset scaling because of reversed scaling in the shader, i.e. (1 - formatScaling_)
+    shader->setUniform(samplerID + ".formatScaling_", static_cast<float>(1.0 - scalingFactor));
+    shader->setUniform(samplerID + ".formatOffset_", static_cast<float>(offset));
 }
 
-} // namespace
+}  // namespace

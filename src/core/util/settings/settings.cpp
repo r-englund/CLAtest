@@ -95,9 +95,13 @@ void Settings::saveToDisk(){
     ss << identifier_ << ".ivs";
     std::string filename = ss.str();
     replaceInString(filename," ","_");
-    IvwSerializer s(InviwoApplication::getPtr()->getPath(InviwoApplication::PATH_SETTINGS,filename));
-    serialize(s);
-    s.writeFile();
+    try{
+        IvwSerializer s(InviwoApplication::getPtr()->getPath(InviwoApplication::PATH_SETTINGS,filename));
+        serialize(s);
+        s.writeFile();
+    } catch(std::exception e){
+        LogWarn("Could not write settings");
+    }
 }
 
 } // namespace

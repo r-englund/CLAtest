@@ -37,18 +37,22 @@ struct VOLUME_PARAMETERS {
     vec3 dimensionsRCP_;
     mat4 volumeToWorldTransform_;
     float formatScaling_; //Reversed, meaning scaling = (1-bitScaling_), as 0 is default for single uniforms.
+    float formatOffset_;
 };
 
 // TODO: consider data offset for proper format scaling
 
 vec4 getVoxel(VOLUME_TYPE volume, VOLUME_PARAMETERS volumeParams, vec3 samplePos) {
-    return texture(volume, samplePos)*(1.0-volumeParams.formatScaling_);
+    return (texture(volume, samplePos) + volumeParams.formatOffset_)
+               * (1.0-volumeParams.formatScaling_);
 }
 
 vec4 getVoxel(VOLUME_TYPE volume, VOLUME_PARAMETERS volumeParams, ivec3 samplePos) {
 #ifdef GLSL_VERSION_140
-    return texelFetch(volume, samplePos, 0)*(1.0-volumeParams.formatScaling_);
+    return (texelFetch(volume, samplePos, 0) + volumeParams.formatOffset_)
+               * (1.0-volumeParams.formatScaling_);
 #else
-    return texture(volume, samplePos)*(1.0-volumeParams.formatScaling_);
+    return (texture(volume, samplePos) + volumeParams.formatOffset_)
+               * (1.0-volumeParams.formatScaling_);
 #endif
 }
