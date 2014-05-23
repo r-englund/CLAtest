@@ -147,8 +147,9 @@ void TransferFunctionEditorView::onVolumeInportInvalid() {
     this->resetCachedContent();
 }
 
-void TransferFunctionEditorView::setShowHistogram(bool show) {
-    showHistogram_ = show;
+void TransferFunctionEditorView::setShowHistogram(int type) {
+    showHistogram_ = type;
+    invalidatedHistogram_ = true;
     this->resetCachedContent();
 }
 
@@ -174,14 +175,41 @@ void TransferFunctionEditorView::updateHistogram() {
         double histSize = static_cast<double>(normHistogramData->size());
         barWidth_ = sRect.width() / histSize;
 
-        double scale = normHistogram->histStats_.percentiles[99];
-        //scale += normHistogram->histStats_.standardDeviation;
-
+        double scale = 1.0;
+        switch (showHistogram_) {
+            case 0:  // Don't show
+                return;
+            case 1:  // show all
+                scale = 1.0;
+                break;
+            case 2:  // show 99%
+                scale = normHistogram->histStats_.percentiles[99];
+                break;
+            case 3:  // show 95%
+                scale = normHistogram->histStats_.percentiles[95];
+                break;
+            case 4:  // show 90%
+                scale = normHistogram->histStats_.percentiles[90];
+                break;
+            case 5:  // show log%
+                scale = 1.0;
+                break;
+        }
+        double height;
+        double maxCount = normHistogram->getMaximumBinValue();
         for (double i = 0; i < histSize; i++) {
-            double height = normHistogramData->at(static_cast<size_t>(i)) / scale * sRect.height();
-            height = std::min(height,sRect.height());
+            if (showHistogram_ == 5) {
+                height =
+                    std::log10(1.0 + maxCount * normHistogramData->at(static_cast<size_t>(i))) /
+                    std::log10(maxCount);
+
+            } else {
+                height = normHistogramData->at(static_cast<size_t>(i)) / scale;
+                height = std::min(height, 1.0);
+            }
             histogramBars_.push_back(
-                QLineF(i / histSize * sRect.width(), 0.0, i / histSize * sRect.width(),height));
+                QLineF(i / histSize * sRect.width(), 0.0, i / histSize * sRect.width(),
+                       height * sRect.height()));
         }
     }
 
@@ -236,7 +264,7 @@ void TransferFunctionEditorView::drawBackground(QPainter* painter, const QRectF&
     painter->drawLines(lines.data(), lines.size());
 
     // histogram
-    if (showHistogram_) {
+    if (showHistogram_ > 0) {
         updateHistogram();
         if (histogramBars_.size() > 0) {
             QPen pen;

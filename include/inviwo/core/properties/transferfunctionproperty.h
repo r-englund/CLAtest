@@ -67,8 +67,8 @@ public:
     const vec2& getZoomV() const;
     void setZoomV(float zoomVMin, float zoomVMax);
 
-    void setShowHistogram(bool);
-    bool getShowHistogram();
+    void setShowHistogram(int type);
+    int getShowHistogram();
     VolumeInport* getVolumeInport();
 
     virtual void setCurrentStateAsDefault();
@@ -82,8 +82,8 @@ private:
     vec2 defaultZoomH_;
     vec2 zoomV_;
     vec2 defaultZoomV_;
-    bool showHistogram_;
-    bool defaultShowHistogram_;
+    int showHistogram_;
+    int defaultShowHistogram_;
 
     VolumeInport* volumeInport_;
 };

@@ -56,7 +56,7 @@ public:
     void onVolumeInportInvalid();
     void onTransferFunctionChange();
     void onControlPointChanged(const TransferFunctionDataPoint* p);
-    void setShowHistogram(bool);
+    void setShowHistogram(int);
 
 signals:
     void resized();
@@ -79,7 +79,7 @@ protected:
 private:
     TransferFunctionProperty* tfProperty_;
     VolumeInport* volumeInport_;
-    bool showHistogram_;
+    int showHistogram_;
 
     double barWidth_;
     std::vector<QLineF> histogramBars_;

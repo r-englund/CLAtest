@@ -134,9 +134,15 @@ void TransferFunctionPropertyDialog::generateWidget() {
     connect(cmbInterpolation_, SIGNAL(currentIndexChanged(int)),
             this, SLOT(switchInterpolationType(int)));
     
-    chkShowHistogram_ = new QCheckBox("Show Histogram");
-    chkShowHistogram_->setChecked(tfProperty_->getShowHistogram());
-    connect(chkShowHistogram_, SIGNAL(toggled(bool)), this, SLOT(showHistogram(bool)));
+    chkShowHistogram_ = new QComboBox();
+    chkShowHistogram_->addItem("No Histogram");
+    chkShowHistogram_->addItem("Show Histogram");
+    chkShowHistogram_->addItem("Histogram 99%");
+    chkShowHistogram_->addItem("Histogram 95%");
+    chkShowHistogram_->addItem("Histogram 90%");
+    chkShowHistogram_->addItem("Histogram Log");
+    chkShowHistogram_->setCurrentIndex(tfProperty_->getShowHistogram());
+    connect(chkShowHistogram_, SIGNAL(currentIndexChanged(int)), this, SLOT(showHistogram(int)));
     
     colorDialog_ = new QColorDialog();
     colorDialog_->setWindowFlags(Qt::WindowStaysOnTopHint);
@@ -385,9 +391,9 @@ void TransferFunctionPropertyDialog::exportTransferFunction() {
     }
 }
 
-void TransferFunctionPropertyDialog::showHistogram(bool show) {
-    tfProperty_->setShowHistogram(show);
-    tfEditorView_->setShowHistogram(show);
+void TransferFunctionPropertyDialog::showHistogram(int type) {
+    tfProperty_->setShowHistogram(type);
+    tfEditorView_->setShowHistogram(type);
 }
 
 void TransferFunctionPropertyDialog::resizeEvent(QResizeEvent* event) {
