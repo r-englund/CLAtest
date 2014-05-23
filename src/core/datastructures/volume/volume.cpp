@@ -32,6 +32,7 @@
 
 #include <inviwo/core/datastructures/volume/volume.h>
 #include <inviwo/core/datastructures/volume/volumedisk.h>
+#include <inviwo/core/datastructures/volume/volumeram.h>
 
 namespace inviwo {
 
@@ -72,6 +73,22 @@ std::string Volume::getDataInfo() const {
     stream << "DataRange:  " << dataMap_.dataRange.x << ", " << dataMap_.dataRange.y << std::endl;
     stream << "ValueRange: " << dataMap_.valueRange.x << ", " << dataMap_.valueRange.y << std::endl;
 
+    if(hasRepresentation<VolumeRAM>()){
+        const VolumeRAM* volumeRAM = getRepresentation<VolumeRAM>();
+        if(volumeRAM->hasNormalizedHistogram()){
+            const NormalizedHistogram* histogram = volumeRAM->getNormalizedHistogram();
+            
+            stream << "Min: " << histogram->stats_.min
+                   << " Mean: " << histogram->stats_.mean
+                   << " Max: " << histogram->stats_.max
+                   << " Std: " << histogram->stats_.standardDeviation << std::endl;
+            stream << "Precentiles (1: " << histogram->stats_.percentiles[1]
+                   << ", 25: " << histogram->stats_.percentiles[25]
+                   << ", 50: " << histogram->stats_.percentiles[50]
+                   << ", 75: " << histogram->stats_.percentiles[75]
+                   << ", 99: " << histogram->stats_.percentiles[99] << ")";
+        }
+    }
     return stream.str();
 }
 

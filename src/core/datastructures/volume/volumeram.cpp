@@ -110,7 +110,9 @@ void* VolumeRAM::getData() { return data_; }
 
 const void* VolumeRAM::getData() const { return const_cast<void*>(data_); }
 
-bool VolumeRAM::hasNormalizedHistogram() const { return (histograms_ != NULL && !histograms_->empty()); }
+bool VolumeRAM::hasNormalizedHistogram() const {
+    return (histograms_ != NULL && !histograms_->empty() && histograms_->at(0)->isValid());
+}
 
 NormalizedHistogram* VolumeRAM::getNormalizedHistogram(int sampleRate,
                                                        std::size_t maxNumberOfBins,

@@ -175,12 +175,13 @@ void TransferFunctionEditorView::updateHistogram() {
         barWidth_ = sRect.width() / histSize;
 
         double scale = normHistogram->histStats_.percentiles[99];
-        scale += normHistogram->histStats_.standardDeviation;
+        //scale += normHistogram->histStats_.standardDeviation;
 
         for (double i = 0; i < histSize; i++) {
+            double height = normHistogramData->at(static_cast<size_t>(i)) / scale * sRect.height();
+            height = std::min(height,sRect.height());
             histogramBars_.push_back(
-                QLineF(i / histSize * sRect.width(), 0.0, i / histSize * sRect.width(),
-                       normHistogramData->at(static_cast<size_t>(i)) / scale * sRect.height()));
+                QLineF(i / histSize * sRect.width(), 0.0, i / histSize * sRect.width(),height));
         }
     }
 
