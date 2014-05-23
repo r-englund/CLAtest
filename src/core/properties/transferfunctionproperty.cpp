@@ -54,11 +54,11 @@ TransferFunctionProperty::~TransferFunctionProperty() {
     volumeInport_ = NULL;
 }
 
-void TransferFunctionProperty::setShowHistogram(bool show) {
-    showHistogram_ = show;
+void TransferFunctionProperty::setShowHistogram(int type) {
+    showHistogram_ = type;
 }
 
-bool TransferFunctionProperty::getShowHistogram() {
+int TransferFunctionProperty::getShowHistogram() {
     return showHistogram_;
 }
 
