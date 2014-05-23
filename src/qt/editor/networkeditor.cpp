@@ -1081,7 +1081,7 @@ void NetworkEditor::mouseMoveEvent(QGraphicsSceneMouseEvent* e) {
     } else if (linkCurve_) {
         // Link drag mode
         QPointF center = startProcessor_->getShortestBoundaryPointTo(e->scenePos());
-        linkCurve_->setStartPoint(center) ;
+        linkCurve_->setStartPoint(center);
         linkCurve_->setEndPoint(e->scenePos());
         linkCurve_->update();
         e->accept();
@@ -1616,8 +1616,12 @@ bool NetworkEditor::loadNetwork(std::istream& stream, const std::string& path) {
 ////////////////////////
 QPointF NetworkEditor::snapToGrid(QPointF pos) {
     QPointF result;
-    result.setX((int(pos.x()/GRID_SPACING-0.5))*GRID_SPACING);
-    result.setY((int(pos.y()/GRID_SPACING-0.5))*GRID_SPACING);
+
+    float ox = pos.x() > 0 ? 0.5 : -0.5;
+    float oy = pos.y() > 0 ? 0.5 : -0.5;
+
+    result.setX((int(pos.x()/GRID_SPACING+ox))*GRID_SPACING);
+    result.setY((int(pos.y()/GRID_SPACING+oy))*GRID_SPACING);
     return result;
 }
 
