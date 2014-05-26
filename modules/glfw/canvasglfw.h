@@ -33,10 +33,10 @@
 #ifndef IVW_CANVASGLFW_H
 #define IVW_CANVASGLFW_H
 
-#include "modules/glfw/glfwmoduledefine.h"
+#include <modules/glfw/glfwmoduledefine.h>
 #include <stdlib.h>
-#include "modules/opengl/inviwoopengl.h"
-#include "modules/opengl/canvasgl.h"
+#include <modules/opengl/inviwoopengl.h>
+#include <modules/opengl/canvasgl.h>
 #include <GLFW/glfw3.h>
 
 namespace inviwo {

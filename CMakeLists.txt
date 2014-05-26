@@ -35,6 +35,10 @@ build_module_dependency(GLFW IVW_TINY_GLFW_APPLICATION)
 option(IVW_TINY_GLUT_APPLICATION "Build Inviwo Tiny GLUT Application" OFF)
 build_module_dependency(GLUT IVW_TINY_GLUT_APPLICATION)
 
+option(IVW_TINY_SDL_APPLICATION "Build Inviwo Tiny SDL Application" OFF)
+build_module_dependency(GLUT IVW_TINY_SDL_APPLICATION)
+mark_as_advanced(FORCE  IVW_TINY_SDL_APPLICATION)
+
 option(IVW_UNIT_TEST_APPLICATION "Build Inviwo Unit tests Application" OFF)
 
 #--------------------------------------------------------------------

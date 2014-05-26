@@ -53,10 +53,10 @@ ivw_define_standard_definitions(inviwo)
 ivw_retrieve_all_modules(package_list)
 list(APPEND package_list InviwoQtEditor)
 list(APPEND package_list InviwoCore)
-# Remove GLUT stuff from list
+# Remove other GL stuff from list
 list(REMOVE_ITEM package_list InviwoGLUTModule)
-# Remove GLFW stuff from list
 list(REMOVE_ITEM package_list InviwoGLFWModule)
+list(REMOVE_ITEM package_list InviwoSDLModule)
 
 #--------------------------------------------------------------------
 # Register the use of modules

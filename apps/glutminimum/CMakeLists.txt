@@ -26,8 +26,9 @@ foreach(module ${package_list})
         list(REMOVE_ITEM package_list ${module})
     endif()
 endforeach()
-# Remove GLFW stuff from list
+# Remove other GL stuff from list
 list(REMOVE_ITEM package_list InviwoGLFWModule)
+list(REMOVE_ITEM package_list InviwoSDLModule)
 
 #--------------------------------------------------------------------
 # Register the use of modules
