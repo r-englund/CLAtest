@@ -105,12 +105,13 @@ void VolumeGL::setVolumeUniforms(const Volume* volume, Shader* shader,
 
     double typescale = 1.0 - getGLFormats()->getGLFormat(getDataFormatId()).scaling;
 
-    double scalingFactor = 0.0;
+    double scalingFactor = 1.0;
     double offset = 0.0;
     switch (volume->getDataFormat()->getNumericType()) {
         case DataFormatEnums::FLOAT_TYPE:
-            scalingFactor = 1.0 / (dataRange.y - dataRange.x);
-            offset = dataRange.x;
+            //Float data is not normalized....
+            //scalingFactor = 1.0 / (dataRange.y - dataRange.x);
+            //offset = dataRange.x;
             break;
         case DataFormatEnums::SIGNED_INTEGER_TYPE:
             scalingFactor = (defaultRange.dataRange.y - defaultRange.dataRange.x) /
