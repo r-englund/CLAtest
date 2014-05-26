@@ -41,7 +41,9 @@
 #include <inviwo/core/properties/transferfunctionproperty.h>
 
 #include <modules/opencl/inviwoopencl.h>
+#include <modules/opencl/image/layerclbase.h>
 #include <modules/opencl/kernelowner.h>
+#include <modules/opencl/volume/volumeclbase.h>
 
 namespace inviwo {
 
@@ -55,8 +57,11 @@ public:
     void initialize();
     void deinitialize();
 
+    virtual bool isReady() const;
 protected:
     virtual void process();
+
+    void volumeRaycast(const VolumeCLBase* volumeCL, float volumeDataScaling, const LayerCLBase* entryCLGL, const LayerCLBase* exitCLGL, const LayerCLBase* transferFunctionCL, LayerCLBase* outImageCL, svec2 globalWorkGroupSize, svec2 localWorkGroupSize, cl::Event* profilingEvent);
 
 private:
     VolumeInport volumePort_;
@@ -64,10 +69,11 @@ private:
     ImageInport exitPort_;
     ImageOutport outport_;
 
-    FloatVec3Property lightSourcePos_;
     FloatProperty samplingRate_;
     TransferFunctionProperty transferFunction_;
     IntVec2Property workGroupSize_;
+
+    BoolProperty useGLSharing_;
 
     cl::Kernel* kernel_;
 };

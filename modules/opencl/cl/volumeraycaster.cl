@@ -40,7 +40,6 @@ __kernel void raycaster(read_only image3d_t volume, float volumeDataScaling
                         , read_only image2d_t exitPoints
                         , read_only image2d_t transferFunction 
                         , float stepSize
-                        , uint3 volumeDimension
                         , write_only image2d_t output) 
 {
     int2 globalId = (int2)(get_global_id(0), get_global_id(1));      
@@ -55,7 +54,7 @@ __kernel void raycaster(read_only image3d_t volume, float volumeDataScaling
     float4 result = (float4)(0.f); 
     if(tEnd > 0.f) {     
         direction = fast_normalize(direction);
-        float tIncr = min(tEnd, 1.f/(stepSize*length(direction*convert_float3(volumeDimension)))); 
+        float tIncr = min(tEnd, 1.f/(stepSize*length(direction*convert_float3(get_image_dim(volume).xyz)))); 
         // Start integrating at the center of the bins
         float t = 0.5f*tIncr; 
         float4 emissionAbsorption;
