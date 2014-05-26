@@ -98,7 +98,7 @@ std::vector<EventProperty*> EventPropertyManager::getEventPropertiesFromMap() {
 
 void EventPropertyManager::setActiveProcessor(std::string processorIdentifier) {
     activeProcessor_ = processorIdentifier;
-    notifyEventPropertyManagerObservers();
+    //notifyEventPropertyManagerObservers();
 }
 
 bool EventPropertyManager::isEmpty() {
