@@ -32,12 +32,14 @@
 
 #include "volumeraycastercl.h"
 #include <modules/opencl/inviwoopencl.h>
-#include <modules/opencl/syncclgl.h>
+#include <modules/opencl/kernelmanager.h>
 #include <modules/opencl/image/imagecl.h>
 #include <modules/opencl/image/imageclgl.h>
+#include <modules/opencl/settings/openclsettings.h> // To check if the we can use sharing
+#include <modules/opencl/syncclgl.h>
 #include <modules/opencl/volume/volumecl.h>
 #include <modules/opencl/volume/volumeclgl.h>
-#include <modules/opencl/kernelmanager.h>
+
 
 namespace inviwo {
 
@@ -51,10 +53,10 @@ VolumeRaycasterCL::VolumeRaycasterCL()
     , entryPort_("entry-points")
     , exitPort_("exit-points")
     , outport_("outport")
-    , lightSourcePos_("lightSourcePos", "Light source position", vec3(1.0f), vec3(-1.0f), vec3(1.0f))
     , samplingRate_("samplingRate", "Sampling rate", 1.0f, 1.0f, 15.0f)
     , transferFunction_("transferFunction", "Transfer function", TransferFunction())
     , workGroupSize_("wgsize", "Work group size", ivec2(8, 8), ivec2(0), ivec2(256))
+    , useGLSharing_("glsharing", "Use OpenGL sharing", true)
     , kernel_(NULL)
 {
     addPort(volumePort_, "VolumePortGroup");
@@ -62,87 +64,100 @@ VolumeRaycasterCL::VolumeRaycasterCL()
     addPort(exitPort_, "ImagePortGroup1");
     addPort(outport_, "ImagePortGroup1");
     addProperty(samplingRate_);
-    addProperty(lightSourcePos_);
     addProperty(transferFunction_);
     addProperty(workGroupSize_);
+    addProperty(useGLSharing_);
 }
 
 VolumeRaycasterCL::~VolumeRaycasterCL() {}
 
 void VolumeRaycasterCL::initialize() {
     Processor::initialize();
+    // Will compile kernel and make sure that it it
+    // recompiled whenever the file changes
+    // If the kernel fails to compile it will be set to NULL
     kernel_ = addKernel("volumeraycaster.cl", "raycaster");
+
+    if (!InviwoApplication::getPtr()->getSettingsByType<OpenCLSettings>()->isSharingEnabled()) {
+        useGLSharing_.setReadOnly(true);
+        useGLSharing_.set(false);
+    }
 }
 
 void VolumeRaycasterCL::deinitialize() {
     Processor::deinitialize();
 }
 
-void VolumeRaycasterCL::process() {
-    if (kernel_ == NULL) {
-        return;
-    }
+bool VolumeRaycasterCL::isReady() const {
+    return Processor::isReady() && kernel_ != NULL;
+}
 
-    //const ImageCLGL* entryCLGL = entryPort_.getData()->getRepresentation<ImageCLGL>();
-    const ImageCL* entryCLGL = entryPort_.getData()->getRepresentation<ImageCL>();
-    // Will synchronize with OpenGL upon creation and destruction
-    //SyncCLGL glSync;
-    //entryCLGL->getLayerCL()->aquireGLObject(glSync.getGLSyncEvent());
-    //const ImageCLGL* exitCLGL = exitPort_.getData()->getRepresentation<ImageCLGL>();
-    const ImageCL* exitCLGL = exitPort_.getData()->getRepresentation<ImageCL>();
-    //exitCLGL->getLayerCL()->aquireGLObject();
+void VolumeRaycasterCL::process() {
+
     Image* outImage = outport_.getData();
-    ImageCL* outImageCL = outImage->getEditableRepresentation<ImageCL>();
-    //ImageCLGL* outImageCL = outImage->getEditableRepresentation<ImageCLGL>();
     uvec2 outportDim = outImage->getDimension();
-    //outImageCL->getLayerCL()->aquireGLObject();
     const Volume* volume = volumePort_.getData();
-    //const VolumeCLGL* volumeCL = volume->getRepresentation<VolumeCLGL>();
-    //volumeCL->aquireGLObject();
-    const VolumeCL* volumeCL = volume->getRepresentation<VolumeCL>();
-    uvec3 volumeDim = volumeCL->getDimension();
-    const LayerCL* transferFunctionCL = transferFunction_.get().getData()->getRepresentation<LayerCL>();
+    uvec3 volumeDim = volume->getDimension();
+    
     svec2 localWorkGroupSize(workGroupSize_.get());
     svec2 globalWorkGroupSize(getGlobalWorkGroupSize(outportDim.x, localWorkGroupSize.x), getGlobalWorkGroupSize(outportDim.y,
-                              localWorkGroupSize.y));
-#if IVW_PROFILING
-    cl::Event* profilingEvent = new cl::Event();
-#else
-    cl::Event* profilingEvent = NULL;
-#endif
-
-    try
-    {
-        cl_uint arg = 0;
-        kernel_->setArg(arg++, *volumeCL);
-        kernel_->setArg(arg++, volumeCL->getVolumeDataScaling(volume));
-        kernel_->setArg(arg++, *entryCLGL->getLayerCL());
-        kernel_->setArg(arg++, *exitCLGL->getLayerCL());
-        kernel_->setArg(arg++, *transferFunctionCL);
-        kernel_->setArg(arg++, samplingRate_.get());
-        kernel_->setArg(arg++, volumeDim);
-        kernel_->setArg(arg++, *outImageCL->getLayerCL());
-        //
-        OpenCL::getPtr()->getQueue().enqueueNDRangeKernel(*kernel_, cl::NullRange, globalWorkGroupSize, localWorkGroupSize, NULL, profilingEvent);
-    } catch (cl::Error& err) {
-        LogError(getCLErrorString(err));
-    }
-
-    //volumeCL->releaseGLObject();
-    //outImageCL->getLayerCL()->releaseGLObject();
-    //exitCLGL->getLayerCL()->releaseGLObject();
-    //entryCLGL->getLayerCL()->releaseGLObject(NULL, glSync.getLastReleaseGLEvent());
-#if IVW_PROFILING
+        localWorkGroupSize.y));
 
     try {
-        profilingEvent->wait();
-        LogInfo("Exec time: " << profilingEvent->getElapsedTime() << " ms");
+        // This macro will create an event called profilingEvent if IVW_PROFILING is enabled,
+        // otherwise the profilingEvent will be declared as a null pointer
+        IVW_BEGIN_OPENCL_PROFILING
+
+        if (useGLSharing_.get()) {
+            // SyncCLGL will synchronize with OpenGL upon creation and destruction
+            SyncCLGL glSync;
+            const ImageCLGL* entryCL = entryPort_.getData()->getRepresentation<ImageCLGL>();
+            const ImageCLGL* exitCL = exitPort_.getData()->getRepresentation<ImageCLGL>();
+            ImageCLGL* outImageCL = outImage->getEditableRepresentation<ImageCLGL>();
+            const VolumeCLGL* volumeCL = volume->getRepresentation<VolumeCLGL>();
+            const LayerCLGL* transferFunctionCL = transferFunction_.get().getData()->getRepresentation<LayerCLGL>();
+            // Shared objects must be acquired before use.
+            glSync.addToAquireGLObjectList(entryCL);
+            glSync.addToAquireGLObjectList(exitCL);
+            glSync.addToAquireGLObjectList(outImageCL);
+            glSync.addToAquireGLObjectList(volumeCL);
+            glSync.addToAquireGLObjectList(transferFunctionCL);
+            // Acquire all of the objects at once
+            glSync.aquireAllObjects();
+            float volumeDataScaling = volumeCL->getVolumeDataScaling(volume);
+            volumeRaycast(volumeCL, volumeDataScaling, entryCL->getLayerCL(), exitCL->getLayerCL(), transferFunctionCL, outImageCL->getLayerCL(), globalWorkGroupSize, localWorkGroupSize, profilingEvent);
+        } else {
+            const ImageCL* entryCL = entryPort_.getData()->getRepresentation<ImageCL>();
+            const ImageCL* exitCL = exitPort_.getData()->getRepresentation<ImageCL>();
+            ImageCL* outImageCL = outImage->getEditableRepresentation<ImageCL>();
+            const VolumeCL* volumeCL = volume->getRepresentation<VolumeCL>();
+            const LayerCL* transferFunctionCL = transferFunction_.get().getData()->getRepresentation<LayerCL>();
+            float volumeDataScaling = volumeCL->getVolumeDataScaling(volume);
+            volumeRaycast(volumeCL, volumeDataScaling, entryCL->getLayerCL(), exitCL->getLayerCL(), transferFunctionCL, outImageCL->getLayerCL(), globalWorkGroupSize, localWorkGroupSize, profilingEvent);
+        }
+
+        // This macro will destroy the profiling event and print the timing in the console if IVW_PROFILING is enabled
+        IVW_END_OPENCL_PROFILING
     } catch (cl::Error& err) {
         LogError(getCLErrorString(err));
     }
+}
 
-    delete profilingEvent;
-#endif
+void VolumeRaycasterCL::volumeRaycast(const VolumeCLBase* volumeCL, float volumeDataScaling, const LayerCLBase* entryCLGL, const LayerCLBase* exitCLGL, const LayerCLBase* transferFunctionCL, LayerCLBase* outImageCL, svec2 globalWorkGroupSize, svec2 localWorkGroupSize, cl::Event* profilingEvent)
+{
+    // Note that the overloaded setArg methods requires 
+    // the reference to an object (not the pointer), 
+    // which is why we need to dereference the pointers
+    cl_uint arg = 0;
+    kernel_->setArg(arg++, *volumeCL);
+    kernel_->setArg(arg++, volumeDataScaling); // Scaling for 12-bit data
+    kernel_->setArg(arg++, *entryCLGL);
+    kernel_->setArg(arg++, *exitCLGL);
+    kernel_->setArg(arg++, *transferFunctionCL);
+    kernel_->setArg(arg++, samplingRate_.get());
+    kernel_->setArg(arg++, *outImageCL);
+    //
+    OpenCL::getPtr()->getQueue().enqueueNDRangeKernel(*kernel_, cl::NullRange, globalWorkGroupSize, localWorkGroupSize, NULL, profilingEvent);
 }
 
 } // namespace
