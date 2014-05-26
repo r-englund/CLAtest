@@ -115,41 +115,48 @@ void PortInspector::initialize() {
 
     //Observe the filename;
     startFileObservation(inspectorNetworkFileName_);
-    // Deserialize the network
-    IvwDeserializer xmlDeserializer(inspectorNetworkFileName_);
-    inspectorNetwork_ = new ProcessorNetwork();
-    inspectorNetwork_->deserialize(xmlDeserializer);
-    processors_ = inspectorNetwork_->getProcessors();
+    try {
+        // Deserialize the network
+        IvwDeserializer xmlDeserializer(inspectorNetworkFileName_);
+        inspectorNetwork_ = new ProcessorNetwork();
+        inspectorNetwork_->deserialize(xmlDeserializer);
+        processors_ = inspectorNetwork_->getProcessors();
 
-    for (size_t i = 0; i < processors_.size(); i++) {
-        Processor* processor = processors_[i];
-        // Set Identifiers
-        std::string newIdentifier = getPortClassName()+"_Port_Inspector_"+processor->getIdentifier();
-        processor->setIdentifier(newIdentifier);
-        processor->initialize();
-        // Find the and save inports.
-        std::vector<Inport*> inports = processor->getInports();
+        for (size_t i = 0; i < processors_.size(); i++) {
+            Processor* processor = processors_[i];
+            // Set Identifiers
+            std::string newIdentifier = getPortClassName()+"_Port_Inspector_"+processor->getIdentifier();
+            processor->setIdentifier(newIdentifier);
+            processor->initialize();
+            // Find the and save inports.
+            std::vector<Inport*> inports = processor->getInports();
 
-        for (size_t i = 0; i < inports.size(); i++) {
-            if (!inports[i]->isConnected())
-                inPorts_.push_back(inports[i]);
+            for (size_t i = 0; i < inports.size(); i++) {
+                if (!inports[i]->isConnected())
+                    inPorts_.push_back(inports[i]);
+            }
+
+            // Find and save the canvasProcessor
+            CanvasProcessor* canvasProcessor = dynamic_cast<CanvasProcessor*>(processor);
+
+            if (canvasProcessor)
+                canvasProcessor_ = canvasProcessor;
         }
 
-        // Find and save the canvasProcessor
-        CanvasProcessor* canvasProcessor = dynamic_cast<CanvasProcessor*>(processor);
+        // Store the connections and and disconnect them.
+        connections_ = inspectorNetwork_->getConnections();
 
-        if (canvasProcessor)
-            canvasProcessor_ = canvasProcessor;
+        for (size_t i=0; i<connections_.size(); i++)
+            connections_[i]->getInport()->disconnectFrom(connections_[i]->getOutport());
+
+        // store the processor links.
+        processorLinks_ = inspectorNetwork_->getLinks();
+    } catch (AbortException& e) {
+        // Error deserializing file
+        needsUpdate_ = true;
+        LogError(e.what());
     }
 
-    // Store the connections and and disconnect them.
-    connections_ = inspectorNetwork_->getConnections();
-
-    for (size_t i=0; i<connections_.size(); i++)
-        connections_[i]->getInport()->disconnectFrom(connections_[i]->getOutport());
-
-    // store the processor links.
-    processorLinks_ = inspectorNetwork_->getLinks();
 }
 
 
