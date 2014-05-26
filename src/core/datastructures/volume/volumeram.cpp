@@ -129,7 +129,7 @@ const NormalizedHistogram* VolumeRAM::getNormalizedHistogram(int sampleRate,
     if (!calculatingHistogram_ && data_ && (!histograms_ || histograms_->empty() || !histograms_->at(component)->isValid()))
         calculateHistogram(sampleRate, maxNumberOfBins);
 
-    if (histograms_ && histograms_->size() > component) {
+    if (histograms_ && static_cast<int>(histograms_->size()) > component) {
         return histograms_->at(component);
     } else {
         return NULL;

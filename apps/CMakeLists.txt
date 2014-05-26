@@ -6,6 +6,10 @@ if(IVW_TINY_GLUT_APPLICATION)
     add_subdirectory(glutminimum)
 endif()
 
+if(IVW_TINY_SDL_APPLICATION)
+    add_subdirectory(sdlminimum)
+endif()
+
 if(IVW_UNIT_TEST_APPLICATION)
     add_subdirectory(unittests)
 endif()

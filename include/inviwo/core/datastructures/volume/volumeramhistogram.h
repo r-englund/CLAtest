@@ -143,7 +143,7 @@ public:
                         static_cast<int>((val - dataRange.x) / (dataRange.y - dataRange.x) *
                                             (numberOfBinsInHistogram - 1));
 
-                    if (ind >= 0 && ind < numberOfBinsInHistogram) {
+                    if (ind >= 0 && ind < static_cast<int>(numberOfBinsInHistogram)) {
                         histData->at(ind)++;
                     } else {
                         outsideOfDataRange++;
