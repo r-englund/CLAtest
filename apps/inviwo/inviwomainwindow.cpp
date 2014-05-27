@@ -248,7 +248,7 @@ void InviwoMainWindow::addMenuActions() {
     recentFileSeparator_ = fileMenuItem_->addSeparator();
     exitAction_ = new QAction(QIcon(":/icons/button_cancel.png"), tr("&Exit"), this);
     exitAction_->setShortcut(QKeySequence::Close);
-    connect(exitAction_, SIGNAL(triggered()), this, SLOT(exitInviwo()));
+    connect(exitAction_, SIGNAL(triggered()), this, SLOT(close()));
     fileMenuItem_->addAction(exitAction_);
     // dock widget visibility menu entries
     viewMenuItem_->addAction(mappingwidget_->toggleViewAction());

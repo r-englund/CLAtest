@@ -71,9 +71,6 @@ public:
     void setDataMap(const DataMapper& dataMap);
     DataMapper getDataMap() const;
 
-    void hoverEnterEvent(QGraphicsSceneHoverEvent* event);
-    void hoverLeaveEvent(QGraphicsSceneHoverEvent* event);
-
     //override for qgraphicsitem_cast (refer qt documentation)
     enum { Type = UserType + 255 };
     int type() const  {return Type; }
@@ -90,10 +87,12 @@ protected:
     QRectF boundingRect() const;
     QVariant itemChange(GraphicsItemChange change, const QVariant& value);
 
+    QPainterPath shape() const;
+    void hoverEnterEvent(QGraphicsSceneHoverEvent* event);
+    void hoverLeaveEvent(QGraphicsSceneHoverEvent* event);
 
 private:
     QRectF calculateLabelRect() const;
-
 
     static const double textWidth_;
     static const double textHeight_;
