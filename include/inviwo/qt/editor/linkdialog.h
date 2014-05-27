@@ -218,7 +218,7 @@ private:
 
 class IVW_QTEDITOR_API LinkDialogGraphicsScene : public QGraphicsScene {
 public:
-    LinkDialogGraphicsScene(QWidget* parent=0);
+    LinkDialogGraphicsScene(QWidget* parent);
     ~LinkDialogGraphicsScene() {}
 
     template <typename T>
@@ -287,7 +287,7 @@ private:
 
 class IVW_QTEDITOR_API LinkDialogGraphicsView : public QGraphicsView {
 public:
-    LinkDialogGraphicsView(QWidget* parent=0);
+    LinkDialogGraphicsView(QWidget* parent);
     ~LinkDialogGraphicsView();
     void setDialogScene(LinkDialogGraphicsScene* scene);
 protected:
@@ -301,7 +301,8 @@ private:
 class IVW_QTEDITOR_API CheckableQComboBox : public QComboBox {
     Q_OBJECT
 public:
-    CheckableQComboBox(std::string widgetName, std::vector<std::string> options);
+    CheckableQComboBox(QWidget *parent , std::string widgetName, std::vector<std::string> options);
+    virtual ~CheckableQComboBox();
     bool isItemChecked(int i);
     std::vector<std::string> getCheckedItems();
 public slots:
