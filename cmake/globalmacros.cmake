@@ -409,6 +409,24 @@ macro(add_modules module_root_path)
 endmacro()
 
 #--------------------------------------------------------------------
+# Add all minimal applications in folder
+macro(add_minimal_applications)
+    file(GLOB sub-dir RELATIVE ${CMAKE_CURRENT_SOURCE_DIR}/minimals ${CMAKE_CURRENT_SOURCE_DIR}/minimals/*)
+    list(REMOVE_ITEM sub-dir .svn)
+	set(sorted_dirs ${sub-dir})
+    foreach(dir ${sub-dir})
+        if(IS_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/minimals/${dir})
+            string(TOUPPER ${dir} u_dir)
+            option(IVW_TINY_${u_dir}_APPLICATION "Build Inviwo Tiny ${u_dir} Application" OFF)
+            build_module_dependency(${u_dir} IVW_TINY_${u_dir}_APPLICATION)
+            if(IVW_TINY_${u_dir}_APPLICATION)
+                add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/minimals/${dir})
+            endif()
+        endif()
+    endforeach()
+endmacro()
+
+#--------------------------------------------------------------------
 # Add all external modules specified in cmake string IVW_EXTERNAL_MODULES
 macro(add_internal_modules)
     #Generate module options

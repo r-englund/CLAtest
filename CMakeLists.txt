@@ -29,16 +29,6 @@ option(IVW_QT_APPLICATION "Build Inviwo Qt Application" ON)
 option(IVW_QT_EDITOR "Build Inviwo Qt Editor" ON)
 option(IVW_QT_WIDGETS "Build Inviwo Qt Widgets" ON)
 
-option(IVW_TINY_GLFW_APPLICATION "Build Inviwo Tiny GLFW Application" OFF)
-build_module_dependency(GLFW IVW_TINY_GLFW_APPLICATION)
-
-option(IVW_TINY_GLUT_APPLICATION "Build Inviwo Tiny GLUT Application" OFF)
-build_module_dependency(GLUT IVW_TINY_GLUT_APPLICATION)
-
-option(IVW_TINY_SDL_APPLICATION "Build Inviwo Tiny SDL Application" OFF)
-build_module_dependency(GLUT IVW_TINY_SDL_APPLICATION)
-mark_as_advanced(FORCE  IVW_TINY_SDL_APPLICATION)
-
 option(IVW_UNIT_TEST_APPLICATION "Build Inviwo Unit tests Application" OFF)
 
 #--------------------------------------------------------------------

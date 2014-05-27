@@ -43,6 +43,10 @@ ivw_add_dependency_directories(${package_list})
 add_executable(glfwminimum MACOSX_BUNDLE WIN32 ${SOURCE_FILES})
 
 #--------------------------------------------------------------------
+# Move to folder
+ivw_vs_folder(glfwminimum minimals)
+
+#--------------------------------------------------------------------
 # Add application to pack
 if(IVW_PACKAGE_PROJECT)
 install(TARGETS glfwminimum

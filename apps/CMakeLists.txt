@@ -1,14 +1,4 @@
-if(IVW_TINY_GLFW_APPLICATION)
-    add_subdirectory(glfwminimum)
-endif()
-
-if(IVW_TINY_GLUT_APPLICATION)
-    add_subdirectory(glutminimum)
-endif()
-
-if(IVW_TINY_SDL_APPLICATION)
-    add_subdirectory(sdlminimum)
-endif()
+add_minimal_applications()
 
 if(IVW_UNIT_TEST_APPLICATION)
     add_subdirectory(unittests)
