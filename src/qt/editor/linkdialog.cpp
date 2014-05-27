@@ -1107,7 +1107,7 @@ void LinkDialog::initDialog() {
     std::vector<std::string> options;
     options.push_back(SimpleCondition::conditionName());
     options.push_back(PartiallyMatchingIdCondition::conditionName());
-    autoLinkOptions_ = new CheckableQComboBox("AutoLink Filter", options);
+    autoLinkOptions_ = new CheckableQComboBox(this,"AutoLink Filter", options);
     autoLinkPushButtonLayout->addWidget(autoLinkOptions_, 20);
     //delete button
     deleteAllLinkPushButton_ = new QPushButton("Delete All", this);
@@ -1169,7 +1169,7 @@ void LinkDialog::clickedDeleteAllLinksPushButton() {
 }
 
 
-CheckableQComboBox::CheckableQComboBox(std::string widgetName, std::vector<std::string> options) : QComboBox(),widgetName_(widgetName) {
+CheckableQComboBox::CheckableQComboBox(QWidget *parent , std::string widgetName, std::vector<std::string> options) : QComboBox(parent),widgetName_(widgetName) {
     setEditable(true);
     lineEdit()->setReadOnly(true);
     stdandardModel_ = new QStandardItemModel(static_cast<int>(options.size()),1);
@@ -1188,6 +1188,9 @@ CheckableQComboBox::CheckableQComboBox(std::string widgetName, std::vector<std::
             const QModelIndex&)));
 }
 
+CheckableQComboBox::~CheckableQComboBox(){
+    delete stdandardModel_;
+}
 
 bool CheckableQComboBox::isItemChecked(int i) {
     if (i>(int)standardItems_.size())
