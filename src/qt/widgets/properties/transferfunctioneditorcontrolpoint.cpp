@@ -98,13 +98,20 @@ void TransferFunctionEditorControlPoint::paint(QPainter* painter,
 }
 
 QRectF TransferFunctionEditorControlPoint::boundingRect() const {
-    float bBoxSize = size_ + 30.0f;
+    float bBoxSize = size_ + 5.0f;
     if (showLabel_) {
         QRectF rect = calculateLabelRect();
         return rect.united(QRectF(-bBoxSize / 2.0, -bBoxSize / 2.0f, bBoxSize, bBoxSize));
     } else {
         return QRectF(-bBoxSize / 2.0, -bBoxSize / 2.0f, bBoxSize, bBoxSize);
     }
+}
+
+QPainterPath TransferFunctionEditorControlPoint::shape() const {
+    float bBoxSize = size_ + 0.0f;
+    QPainterPath path;
+    path.addEllipse(QRectF(-bBoxSize / 2.0, -bBoxSize / 2.0f, bBoxSize, bBoxSize));
+    return path;
 }
 
 void TransferFunctionEditorControlPoint::hoverEnterEvent(QGraphicsSceneHoverEvent* event) {
@@ -120,6 +127,7 @@ void TransferFunctionEditorControlPoint::hoverLeaveEvent(QGraphicsSceneHoverEven
     showLabel_ = false;
     update();
 }
+
 
 QVariant TransferFunctionEditorControlPoint::itemChange(GraphicsItemChange change,
                                                         const QVariant& value) {
@@ -189,3 +197,6 @@ const double TransferFunctionEditorControlPoint::textHeight_ = 20;
 const double TransferFunctionEditorControlPoint::textWidth_ = 180;
 
 }  // namespace
+
+
+
