@@ -1,0 +1,9 @@
+Rawfile: testdata.defaultRange.UINT16.raw
+Resolution: 100 100 100
+Format: UINT16
+BasisVector1: 1.0 0.0 0.0
+BasisVector2: 0.0 1.0 0.0
+BasisVector3: 0.0 0.0 1.0
+DataRange: 0 65535
+ValueRange: 0 1
+ValueUnit: arb. unit
