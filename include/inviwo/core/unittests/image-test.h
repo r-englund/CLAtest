@@ -126,4 +126,38 @@ TEST(ImageTests,ImageLoadRange) {
 
 
 
+
+TEST(ImageTests,ImageResize) {
+    Image img;
+    img.getColorLayer()->addRepresentation(new LayerDisk(IMG_RGB));
+    const LayerRAM* layer = img.getColorLayer()->getRepresentation<LayerRAM>();
+    ASSERT_TRUE(layer!=0);
+    uvec2 dim = layer->getDimension();
+    EXPECT_EQ(dim.x,2);
+    EXPECT_EQ(dim.y,2);
+
+
+    img.resize(uvec2(10,10));
+
+
+    const LayerRAM* layer2 = img.getColorLayer()->getRepresentation<LayerRAM>();
+
+    dim = layer->getDimension();
+
+    EXPECT_EQ(dim.x,10);
+    EXPECT_EQ(dim.y,10);
+    
+    dim = layer2->getDimension();
+
+    EXPECT_EQ(dim.x,10);
+    EXPECT_EQ(dim.y,10);
+
+    EXPECT_TRUE(layer == layer2);
+
+
+}
+
+
+
+
 #endif

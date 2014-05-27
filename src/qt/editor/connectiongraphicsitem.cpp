@@ -60,21 +60,30 @@ QPainterPath CurveGraphicsItem::obtainCurvePath() const {
 }
 
 QPainterPath CurveGraphicsItem::obtainCurvePath(QPointF startPoint, QPointF endPoint) const {
-    float delta =  std::abs(endPoint.y()-startPoint.y());
+    const int startOff = 6;
+
+    QPointF curvStart = startPoint + QPointF(0,startOff);
+    QPointF curvEnd   = endPoint   - QPointF(0,startOff);
+
+    //*
+    float delta =  std::abs(curvEnd.y() - curvStart.y());
     
-    QPointF o = (endPoint-startPoint);
-    o -= QPointF(0,9); //take into acount port size
-    int min = std::sqrt(o.x() * o.x() + o.y() * o.y());
-    static const int max = 50;
+    QPointF o = curvEnd-curvStart;
+    int min = 37 - startOff*2;
+    min = std::min(min,static_cast<int>(std::sqrt(o.x() * o.x() + o.y() * o.y())));
+    static const int max = 40;
     if(delta < min) delta = min;
     if(delta > max) delta = max;
-    
+
     QPointF off(0,delta);
-    QPointF ctrlPoint1 = startPoint_ + off;
-    QPointF ctrlPoint2 = endPoint_ - off;
+    QPointF ctrlPoint1 = curvStart + off;
+    QPointF ctrlPoint2 = curvEnd - off;//*/
+
     QPainterPath bezierCurve;
     bezierCurve.moveTo(startPoint);
-    bezierCurve.cubicTo(ctrlPoint1, ctrlPoint2, endPoint);
+    bezierCurve.lineTo(curvStart);
+    bezierCurve.cubicTo(ctrlPoint1, ctrlPoint2, curvEnd);
+    bezierCurve.lineTo(endPoint_);
     return bezierCurve;
 }
 
