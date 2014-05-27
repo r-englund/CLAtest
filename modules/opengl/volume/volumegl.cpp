@@ -91,7 +91,6 @@ const Texture3D* VolumeGL::getTexture() const { return volumeTexture_; }
 
 void VolumeGL::setVolumeUniforms(const Volume* volume, Shader* shader,
                                  const std::string& samplerID) const {
-
     vec3 dimF = vec3(dimensions_);
     shader->setUniform(samplerID + ".dimensions_", dimF);
     shader->setUniform(samplerID + ".dimensionsRCP_", vec3(1.f) / dimF);
@@ -109,22 +108,30 @@ void VolumeGL::setVolumeUniforms(const Volume* volume, Shader* shader,
     double offset = 0.0;
     switch (volume->getDataFormat()->getNumericType()) {
         case DataFormatEnums::FLOAT_TYPE:
-            //Float data is not normalized....
+            // Temporarily removed for Erik.. /Peter
             //scalingFactor = 1.0 / (dataRange.y - dataRange.x);
-            //offset = dataRange.x;
+            //offset = -dataRange.x;
             break;
         case DataFormatEnums::SIGNED_INTEGER_TYPE:
-            scalingFactor = (defaultRange.dataRange.y - defaultRange.dataRange.x) /
-                                      (dataRange.y - dataRange.x) * typescale;
-            offset = 0.0; // WHat should this be!?!
+            // In this case scale [min max] -> [0, 1], gl will scale to [-1, 1]
+            scalingFactor = 0.5 * (defaultRange.dataRange.y - defaultRange.dataRange.x) /
+                            (dataRange.y - dataRange.x) * typescale;
+            offset = 1.0 -
+                     2 * (dataRange.x - defaultRange.dataRange.x) /
+                         (defaultRange.dataRange.y - defaultRange.dataRange.x);
             break;
         case DataFormatEnums::UNSIGNED_INTEGER_TYPE:
             scalingFactor = (defaultRange.dataRange.y - defaultRange.dataRange.x) /
-                                      (dataRange.y - dataRange.x) * typescale;
-            offset = dataRange.x;
+                            (dataRange.y - dataRange.x) * typescale;
+
+            // Normalized integer type, [0, max] gl maps to [0, 1]
+            // Map interval [min, max] -> [0, 1]
+            offset = -(dataRange.x - defaultRange.dataRange.x) /
+                     (defaultRange.dataRange.y - defaultRange.dataRange.x);
             break;
         default:
             scalingFactor = 0.0;
+            offset = 0.0;
     }
 
     // offset scaling because of reversed scaling in the shader, i.e. (1 - formatScaling_)

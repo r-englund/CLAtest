@@ -2,7 +2,7 @@
 <InviwoTreeData version="1.0">
     <!-- Don't edit the following code -->
     <Processors>
-        <Processor type="SimpleRaycaster" identifier="SimpleRaycaster" id="ref1">
+        <Processor type="SimpleRaycaster" identifier="SimpleRaycaster" id="ref5">
             <MetaDataList>
                 <MetaData type="ProcessorMetaData">
                     <position x="-625" y="-450" />
@@ -12,7 +12,7 @@
             </MetaDataList>
             <Properties>
                 <Property type="BoolProperty" identifier="applyLightAttenuation" displayName="Light attenuation" key="applyLightAttenuation" />
-                <Property type="CameraProperty" identifier="camera" displayName="Camera" key="camera" id="ref2">
+                <Property type="CameraProperty" identifier="camera" displayName="Camera" key="camera" id="ref6">
                     <lookFrom type="FloatVec3Property" identifier="lookFrom" displayName="Look from">
                         <minvalue x="-5" y="-5" z="-5" />
                         <maxvalue x="5" y="5" z="5" />
@@ -117,7 +117,7 @@
                 <Property type="BoolProperty" identifier="clippingEnabled" displayName="Enable Clipping" key="clippingEnabled" />
             </Properties>
         </Processor>
-        <Processor type="EntryExitPoints" identifier="EntryExitPoints" id="ref5">
+        <Processor type="EntryExitPoints" identifier="EntryExitPoints" id="ref0">
             <MetaDataList>
                 <MetaData type="ProcessorMetaData">
                     <position x="-600" y="-550" />
@@ -249,7 +249,7 @@
                 </InteractionHandler>
             </InteractonHandlers>
             <Properties>
-                <Property type="CameraProperty" identifier="camera" displayName="Camera" key="camera" id="ref6">
+                <Property type="CameraProperty" identifier="camera" displayName="Camera" key="camera" id="ref1">
                     <lookFrom type="FloatVec3Property" identifier="lookFrom" displayName="Look from">
                         <minvalue x="-5" y="-5" z="-5" />
                         <maxvalue x="5" y="5" z="5" />
@@ -281,7 +281,7 @@
                 <Property type="BoolProperty" identifier="handleEvents" displayName="Handle interaction events" key="handleEvents" />
             </Properties>
         </Processor>
-        <Processor type="CanvasGL" identifier="CanvasGL" id="ref0">
+        <Processor type="CanvasGL" identifier="CanvasGL" id="ref4">
             <MetaDataList>
                 <MetaData type="ProcessorMetaData">
                     <position x="-625" y="-350" />
@@ -289,7 +289,7 @@
                     <selection content="0" />
                 </MetaData>
                 <MetaData type="ProcessorWidgetMetaData">
-                    <position x="199" y="316" />
+                    <position x="80" y="282" />
                     <dimension x="552" y="542" />
                     <visibility content="1" />
                 </MetaData>
@@ -324,12 +324,12 @@
                 </Property>
             </Properties>
         </Processor>
-        <Processor type="VolumeSource" identifier="VolumeSource" id="ref4">
+        <Processor type="VolumeSource" identifier="VolumeSource" id="ref2">
             <MetaDataList>
                 <MetaData type="ProcessorMetaData">
                     <position x="-625" y="-700" />
                     <visibility content="1" />
-                    <selection content="1" />
+                    <selection content="0" />
                 </MetaData>
             </MetaDataList>
             <Properties>
@@ -337,7 +337,7 @@
                 <Property type="DoubleMinMaxProperty" identifier="dataRange" displayName="Data range" key="dataRange" />
                 <Property type="StringProperty" identifier="dimensions" displayName="Dimensions" key="dimensions" />
                 <Property type="FileProperty" identifier="filename" displayName="Volume file" key="filename">
-                    <url content="../../volumes/testdata/testdata.defaultRange.UINT8.dat" />
+                    <url content="datasets/testdata.zeroToMax.UINT8.dat" />
                     <nameFilter>
                         <filter content="All Files (*.*)" />
                         <filter content="Inviwo dat file format (*.dat)" />
@@ -362,36 +362,36 @@
                 <Processor type="CubeProxyGeometry" identifier="CubeProxyGeometry" reference="ref3" />
             </OutPort>
             <InPort identifier="geometry">
-                <Processor type="EntryExitPoints" identifier="EntryExitPoints" reference="ref5" />
+                <Processor type="EntryExitPoints" identifier="EntryExitPoints" reference="ref0" />
             </InPort>
         </Connection>
         <Connection>
             <OutPort identifier="entry-points">
-                <Processor type="EntryExitPoints" identifier="EntryExitPoints" reference="ref5" />
+                <Processor type="EntryExitPoints" identifier="EntryExitPoints" reference="ref0" />
             </OutPort>
             <InPort identifier="entry-points">
-                <Processor type="SimpleRaycaster" identifier="SimpleRaycaster" reference="ref1" />
+                <Processor type="SimpleRaycaster" identifier="SimpleRaycaster" reference="ref5" />
             </InPort>
         </Connection>
         <Connection>
             <OutPort identifier="exit-points">
-                <Processor type="EntryExitPoints" identifier="EntryExitPoints" reference="ref5" />
+                <Processor type="EntryExitPoints" identifier="EntryExitPoints" reference="ref0" />
             </OutPort>
             <InPort identifier="exit-points">
-                <Processor type="SimpleRaycaster" identifier="SimpleRaycaster" reference="ref1" />
+                <Processor type="SimpleRaycaster" identifier="SimpleRaycaster" reference="ref5" />
             </InPort>
         </Connection>
         <Connection>
             <OutPort identifier="outport">
-                <Processor type="SimpleRaycaster" identifier="SimpleRaycaster" reference="ref1" />
+                <Processor type="SimpleRaycaster" identifier="SimpleRaycaster" reference="ref5" />
             </OutPort>
             <InPort identifier="inport">
-                <Processor type="CanvasGL" identifier="CanvasGL" reference="ref0" />
+                <Processor type="CanvasGL" identifier="CanvasGL" reference="ref4" />
             </InPort>
         </Connection>
         <Connection>
             <OutPort identifier="data">
-                <Processor type="VolumeSource" identifier="VolumeSource" reference="ref4" />
+                <Processor type="VolumeSource" identifier="VolumeSource" reference="ref2" />
             </OutPort>
             <InPort identifier="volume.inport">
                 <Processor type="CubeProxyGeometry" identifier="CubeProxyGeometry" reference="ref3" />
@@ -399,10 +399,10 @@
         </Connection>
         <Connection>
             <OutPort identifier="data">
-                <Processor type="VolumeSource" identifier="VolumeSource" reference="ref4" />
+                <Processor type="VolumeSource" identifier="VolumeSource" reference="ref2" />
             </OutPort>
             <InPort identifier="volume">
-                <Processor type="SimpleRaycaster" identifier="SimpleRaycaster" reference="ref1" />
+                <Processor type="SimpleRaycaster" identifier="SimpleRaycaster" reference="ref5" />
             </InPort>
         </Connection>
     </Connections>
@@ -411,14 +411,14 @@
             <PropertyLinks>
                 <PropertyLink>
                     <Properties>
-                        <Property type="CameraProperty" identifier="camera" displayName="Camera" key="camera" reference="ref2" />
                         <Property type="CameraProperty" identifier="camera" displayName="Camera" key="camera" reference="ref6" />
+                        <Property type="CameraProperty" identifier="camera" displayName="Camera" key="camera" reference="ref1" />
                     </Properties>
                 </PropertyLink>
                 <PropertyLink>
                     <Properties>
+                        <Property type="CameraProperty" identifier="camera" displayName="Camera" key="camera" reference="ref1" />
                         <Property type="CameraProperty" identifier="camera" displayName="Camera" key="camera" reference="ref6" />
-                        <Property type="CameraProperty" identifier="camera" displayName="Camera" key="camera" reference="ref2" />
                     </Properties>
                 </PropertyLink>
             </PropertyLinks>
