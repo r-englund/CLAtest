@@ -35,16 +35,6 @@
 
 #include <inviwo/core/util/stacktrace.h>
 
-
-void print(const std::vector<std::string>& strings) {
-    for (size_t i = 0; i<strings.size(); ++i) {
-        std::cout << strings[i] << std::endl;
-    }
-
-    std::cout << std::endl;
-    std::cout << std::endl;
-}
-
 class D {
 public:
     void E(std::vector<std::string>& stacktrace) {
@@ -68,17 +58,16 @@ void A(std::vector<std::string>& stacktrace) {
 void Ap1(std::vector<std::string>& stacktrace) {
     A(stacktrace);
 }
-
-TEST(StackTraceTests,StackTraceTest) {
-    std::vector<std::string> stacktrace1;
-    std::vector<std::string> stacktrace2;
-    A(stacktrace1);
-    Ap1(stacktrace2);
-    EXPECT_NE(0,stacktrace1.size());
-    EXPECT_NE(0,stacktrace2.size());
-    EXPECT_EQ(1,stacktrace2.size() - stacktrace1.size());
-    print(stacktrace1);
-}
+//
+//TEST(StackTraceTests,StackTraceTest) {
+//    std::vector<std::string> stacktrace1;
+//    std::vector<std::string> stacktrace2;
+//    A(stacktrace1);
+//    Ap1(stacktrace2);
+//    EXPECT_NE(0,stacktrace1.size());
+//    EXPECT_NE(0,stacktrace2.size());
+//    EXPECT_EQ(1,stacktrace2.size() - stacktrace1.size());
+//}
 
 
 

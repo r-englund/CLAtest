@@ -224,6 +224,10 @@ std::string InviwoApplication::getPath(PathType pathType, const std::string& suf
             result = URLParser::getUserPath() + "inviwo/images/";
             break;
 
+        case  inviwo::InviwoApplication::PATH_USER_DATABASES:
+            result = URLParser::getUserPath() + "inviwo/databases/";
+            break;
+
         case  inviwo::InviwoApplication::PATH_USER_TRANSFERFUNCTIONS:
             result = URLParser::getUserPath() + "inviwo/transferfunctions/";
             break;

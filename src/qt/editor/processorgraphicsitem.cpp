@@ -115,8 +115,13 @@ void ProcessorGraphicsItem::setProcessor(Processor* processor) {
 void ProcessorGraphicsItem::editProcessorName() {
     setFocus();
     nameLabel_->setFlags(QGraphicsItem::ItemIsSelectable | QGraphicsItem::ItemIsFocusable);
+    
+    QTextCursor cur = nameLabel_->textCursor();
+    cur.select(QTextCursor::Document);
+    nameLabel_->setTextCursor(cur);
     nameLabel_->setTextInteractionFlags(Qt::TextEditorInteraction);
     nameLabel_->setFocus();
+    nameLabel_->setSelected(true);
 }
 
 QPointF ProcessorGraphicsItem::getShortestBoundaryPointTo(

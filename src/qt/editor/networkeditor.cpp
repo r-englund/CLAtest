@@ -1113,10 +1113,16 @@ void NetworkEditor::mouseReleaseEvent(QGraphicsSceneMouseEvent* e) {
                 if (inport && inport->canConnectTo(startPort_)) {
                     // MultiDataInports can have several connections
                     SingleInport* singleInport = dynamic_cast<SingleInport*>(inport);
+                    MultiInport* multiInport = dynamic_cast<MultiInport*>(inport);
 
-                    if (inport->isConnected() && singleInport != NULL)
-                        removeConnection(singleInport->getConnectedOutport(), inport);
+                    if (inport->isConnected()){
+                        if(singleInport){
+                            removeConnection(singleInport->getConnectedOutport(), inport);
+                        }else if(multiInport && multiInport->isConnectedTo(dynamic_cast<Outport*>(startPort_))){
 
+                        }
+                    }
+                    
                     addConnection(dynamic_cast<Outport*>(startPort_), inport);
                 }
             }
@@ -1170,6 +1176,8 @@ void NetworkEditor::mouseDoubleClickEvent(QGraphicsSceneMouseEvent* e) {
     ProcessorGraphicsItem* processorGraphicsItem = getProcessorGraphicsItemAt(e->scenePos());
 
     if(processorGraphicsItem){
+        renamingProcessor_ = true;
+        processorGraphicsItem->editProcessorName();
         e->accept();
     }
     else if (linkGraphicsItem) {
