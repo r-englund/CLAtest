@@ -34,10 +34,10 @@
 #define IVW_VOLUMEREPRESENTATION_H
 
 #include <inviwo/core/common/inviwocoredefine.h>
+#include <inviwo/core/datastructures/datarepresentation.h>
 
 namespace inviwo {
 
-class DataRepresentation;
 class Volume;
 
 class IVW_CORE_API VolumeRepresentation : public DataRepresentation {
