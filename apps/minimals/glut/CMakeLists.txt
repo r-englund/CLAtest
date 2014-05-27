@@ -43,6 +43,10 @@ ivw_add_dependency_directories(${package_list})
 add_executable(glutminimum MACOSX_BUNDLE WIN32 ${SOURCE_FILES})
 
 #--------------------------------------------------------------------
+# Move to folder
+ivw_vs_folder(glutminimum minimals)
+
+#--------------------------------------------------------------------
 # Add application to pack
 if(IVW_PACKAGE_PROJECT)
 install(TARGETS glutminimum
