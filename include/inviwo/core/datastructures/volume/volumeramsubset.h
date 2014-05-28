@@ -34,13 +34,14 @@
 #define IVW_VOLUMERAMSUBSET_H
 
 #include <inviwo/core/datastructures/volume/volumeram.h>
+#include <inviwo/core/datastructures/volume/volumeborder.h>
 #include <inviwo/core/datastructures/volume/volumeoperation.h>
 
 namespace inviwo {
 
 class IVW_CORE_API VolumeRAMSubSet : public VolumeOperation {
 public:
-    VolumeRAMSubSet(const VolumeRepresentation* in, uvec3 dim, uvec3 offset, VolumeRepresentation::VolumeBorders border,
+    VolumeRAMSubSet(const VolumeRepresentation* in, uvec3 dim, uvec3 offset, const VolumeBorders& border,
                     bool clampBorderOutsideVolume)
         : VolumeOperation(in), newDim_(dim), newOffset_(offset), newBorder_(border), clampBorderOutsideVolume_(clampBorderOutsideVolume) {}
     virtual ~VolumeRAMSubSet() {}
@@ -49,7 +50,7 @@ public:
     void evaluate();
 
     static inline VolumeRAM* apply(const VolumeRepresentation* in, uvec3 dim, uvec3 offset,
-                                   VolumeRepresentation::VolumeBorders border = VolumeRepresentation::VolumeBorders(), bool clampBorderOutsideVolume = true) {
+                                   const VolumeBorders& border = VolumeBorders(), bool clampBorderOutsideVolume = true) {
         VolumeRAMSubSet subsetOP = VolumeRAMSubSet(in, dim, offset, border, clampBorderOutsideVolume);
         in->performOperation(&subsetOP);
         return subsetOP.getOutput<VolumeRAM>();
@@ -58,7 +59,7 @@ public:
 private:
     uvec3 newDim_;
     uvec3 newOffset_;
-    VolumeRepresentation::VolumeBorders newBorder_;
+    VolumeBorders newBorder_;
     bool clampBorderOutsideVolume_;
 };
 
@@ -88,8 +89,8 @@ void VolumeRAMSubSet::evaluate() {
     uvec3 copyDataDims = static_cast<uvec3>(glm::max(static_cast<ivec3>(newDim_) - glm::max(static_cast<ivec3>
                                             (newOffset_+newDim_)-static_cast<ivec3>(dataDims), ivec3(0,0,0)), ivec3(0,0,0)));
     ivec3 newOffset_Dims = static_cast<ivec3>(glm::min(newOffset_, dataDims)-newBorder_.llf);
-    VolumeRepresentation::VolumeBorders trueBorder = VolumeRepresentation::VolumeBorders();
-    VolumeRepresentation::VolumeBorders correctBorder = newBorder_;
+    VolumeBorders trueBorder = VolumeBorders();
+    VolumeBorders correctBorder = newBorder_;
 
     if (clampBorderOutsideVolume_) {
         correctBorder.llf += static_cast<uvec3>(-glm::min(newOffset_Dims, ivec3(0,0,0)));
@@ -114,9 +115,9 @@ void VolumeRAMSubSet::evaluate() {
     VolumeRAMPrecision<T>* newVolume;
 
     if (volume->getDataFormat()->getBitsAllocated() != B)
-        newVolume = new VolumeRAMCustomPrecision<T, B>(newDim_, correctBorder);
+        newVolume = new VolumeRAMCustomPrecision<T, B>(newDim_+correctBorder.llf+correctBorder.urb);
     else
-        newVolume = new VolumeRAMPrecision<T>(newDim_, correctBorder);
+        newVolume = new VolumeRAMPrecision<T>(newDim_+correctBorder.llf+correctBorder.urb);
 
     //newVolume->clear();
     const T* src = reinterpret_cast<const T*>(volume->getData());

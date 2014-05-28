@@ -5,16 +5,16 @@
  *
  * Copyright (c) 2012-2014 Inviwo Foundation
  * All rights reserved.
- *
+ * 
  * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met:
- *
+ * modification, are permitted provided that the following conditions are met: 
+ * 
  * 1. Redistributions of source code must retain the above copyright notice, this
- * list of conditions and the following disclaimer.
+ * list of conditions and the following disclaimer. 
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  * this list of conditions and the following disclaimer in the documentation
- * and/or other materials provided with the distribution.
- *
+ * and/or other materials provided with the distribution. 
+ * 
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
  * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
@@ -25,44 +25,35 @@
  * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- *
- * Main file authors: Peter Steneteg, Erik Sundén
+ * 
+ * Main file authors: Erik Sundén
  *
  *********************************************************************************/
 
-#include <inviwo/core/datastructures/volume/volumerepresentation.h>
-#include <inviwo/core/datastructures/datarepresentation.h>
+#ifndef IVW_VOLUMEBORDER_H
+#define IVW_VOLUMEBORDER_H
+
+#include <inviwo/core/common/inviwocoredefine.h>
+#include <inviwo/core/common/inviwo.h>
 
 namespace inviwo {
 
-VolumeRepresentation::VolumeRepresentation(uvec3 dimension)
-    : DataRepresentation()
-      , dimensions_(dimension) 
+class IVW_CORE_API VolumeBorders {
 
-{}
+public:
+    VolumeBorders() : llf(uvec3(0,0,0)), urb(uvec3(0,0,0)), numVoxels(0), hasBorder(false) {}
+    VolumeBorders(size_t front, size_t back, size_t left, size_t right, size_t lower, size_t upper) : llf(uvec3(front, left, lower)),
+        urb(uvec3(back, right, upper)) {}
+    VolumeBorders(const uvec3& llfBorder, const uvec3& urbBorder) : llf(llfBorder), urb(urbBorder) {}
+    bool operator== (const VolumeBorders& vb) const { return (llf == vb.llf && urb == vb.urb);}
+    bool operator!= (const VolumeBorders& vb) const { return (llf != vb.llf || urb != vb.urb);}
 
-VolumeRepresentation::VolumeRepresentation(uvec3 dimension, const DataFormatBase* format)
-    : DataRepresentation(format)
-    , dimensions_(dimension) 
-{}
-
-VolumeRepresentation::VolumeRepresentation(const VolumeRepresentation& rhs)
-    : DataRepresentation(rhs)
-    , dimensions_(rhs.dimensions_)
-{
-}
-
-VolumeRepresentation& VolumeRepresentation::operator=(const VolumeRepresentation& that) {
-    if (this != &that) {
-        dimensions_ = that.dimensions_;
-        DataRepresentation::operator=(that);
-    }
-
-    return *this;
-}
-VolumeRepresentation* VolumeRepresentation::clone() const {
-    return new VolumeRepresentation(*this);
-}
-VolumeRepresentation::~VolumeRepresentation() {}
+    uvec3 llf;
+    uvec3 urb;
+    size_t numVoxels;
+    bool hasBorder;
+};
 
 } // namespace
+
+#endif // IVW_VOLUMEBORDER_H

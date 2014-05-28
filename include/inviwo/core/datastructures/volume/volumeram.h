@@ -43,8 +43,7 @@ namespace inviwo {
 class IVW_CORE_API VolumeRAM : public VolumeRepresentation {
 
 public:
-    VolumeRAM(uvec3 dimension = uvec3(128,128,128), VolumeRepresentation::VolumeBorders border = VolumeRepresentation::VolumeBorders(),
-              const DataFormatBase* format = DataFormatBase::get());
+    VolumeRAM(uvec3 dimension = uvec3(128,128,128), const DataFormatBase* format = DataFormatBase::get());
     VolumeRAM(const VolumeRAM& rhs);
     VolumeRAM& operator=(const VolumeRAM& that);
     virtual VolumeRAM* clone() const = 0;
