@@ -54,8 +54,7 @@ BufferCL::~BufferCL() {
 
 
 
-void BufferCL::upload(const void* data, size_t size)
-{
+void BufferCL::upload(const void* data, size_t size) {
     // Resize buffer if necessary
     if (size > getSize()*getSizeOfElement()) {
         deinitialize();
@@ -66,9 +65,13 @@ void BufferCL::upload(const void* data, size_t size)
     }
 }
 
-void BufferCL::download(void* data) const
-{
-    OpenCL::getPtr()->getQueue().enqueueReadBuffer(*clBuffer_, true, 0, getSize()*getSizeOfElement(), data);
+void BufferCL::download(void* data) const {
+    try {
+        OpenCL::getPtr()->getQueue().enqueueReadBuffer(*clBuffer_, true, 0, getSize()*getSizeOfElement(), data);
+    } catch (cl::Error &err) {
+        LogError(getCLErrorString(err));
+    }
+
 }
 
 BufferCL* BufferCL::clone() const {
@@ -108,8 +111,7 @@ cl_int Kernel::setArg(cl_uint index, const inviwo::BufferCL& value)
 }
 
 template <>
-cl_int Kernel::setArg(cl_uint index, const inviwo::Buffer& value)
-{
+cl_int Kernel::setArg(cl_uint index, const inviwo::Buffer& value) {
     return setArg(index, value.getRepresentation<inviwo::BufferCL>()->getBuffer());
 }
 
