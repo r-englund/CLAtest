@@ -1,0 +1,9 @@
+Rawfile: testdata.negMinToNegMax.FLOAT32.raw
+Resolution: 100 100 100
+Format: FLOAT32
+BasisVector1: 1.0 0.0 0.0
+BasisVector2: 0.0 1.0 0.0
+BasisVector3: 0.0 0.0 1.0
+DataRange: -9765.03 -5882.44
+ValueRange: 0 1
+ValueUnit: arb. unit
