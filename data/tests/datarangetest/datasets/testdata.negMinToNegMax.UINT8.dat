@@ -1,0 +1,9 @@
+Rawfile: testdata.negMinToNegMax.UINT8.raw
+Resolution: 100 100 100
+Format: UINT8
+BasisVector1: 1.0 0.0 0.0
+BasisVector2: 0.0 1.0 0.0
+BasisVector3: 0.0 0.0 1.0
+DataRange: 93 186
+ValueRange: 0 1
+ValueUnit: arb. unit
