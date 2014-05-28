@@ -48,6 +48,7 @@
 #include <modules/base/processors/volumeexport.h>
 #include <modules/base/processors/volumebasistransformer.h>
 #include <modules/base/processors/volumeslice.h>
+#include <modules/base/processors/volumesubsample.h>
 #include <modules/base/processors/volumesubset.h>
 
 namespace inviwo {
@@ -71,6 +72,7 @@ BaseModule::BaseModule() : InviwoModule() {
     registerProcessor(VolumeExport);
     registerProcessor(VolumeBasisTransformer);
     registerProcessor(VolumeSlice);
+    registerProcessor(VolumeSubsample);
     registerProcessor(VolumeSubset);
 }
 
