@@ -159,7 +159,7 @@ size_t VolumeRAM::getNumberOfBytes() const{
     return getDataFormat()->getBytesAllocated()*dimensions_.x*dimensions_.y*dimensions_.z;
 }
 
-VolumeRAM* createVolumeRAM(const uvec3& dimension, const DataFormatBase* format) {
+VolumeRAM* createVolumeRAM(const uvec3& dimension, const DataFormatBase* format, void* dataPtr) {
     // TODO: Add more formats
     VolumeRAM* result = 0;
 
@@ -169,7 +169,7 @@ VolumeRAM* createVolumeRAM(const uvec3& dimension, const DataFormatBase* format)
             break;
 #define DataFormatIdMacro(i)                                                          \
     case DataFormatEnums::i:                                                          \
-        return new VolumeRAMCustomPrecision<Data##i::type, Data##i::bits>(dimension); \
+        return new VolumeRAMCustomPrecision<Data##i::type, Data##i::bits>(static_cast<Data##i::type*>(dataPtr), dimension); \
         break;
 #include <inviwo/core/util/formatsdefinefunc.h>
 
