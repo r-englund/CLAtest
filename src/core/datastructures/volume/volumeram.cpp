@@ -35,9 +35,8 @@
 
 namespace inviwo {
 
-VolumeRAM::VolumeRAM(uvec3 dimensions, VolumeRepresentation::VolumeBorders border,
-                     const DataFormatBase* format)
-    : VolumeRepresentation(dimensions, format, border)
+VolumeRAM::VolumeRAM(uvec3 dimensions, const DataFormatBase* format)
+    : VolumeRepresentation(dimensions, format)
     , data_(NULL)
     , histograms_(NULL)
     , calculatingHistogram_(false)

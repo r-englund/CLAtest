@@ -63,6 +63,7 @@ set(HEADER_FILES
     ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/transferfunction.h
     ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/transferfunctiondatapoint.h
     ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/volume/volume.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/volume/volumeborder.h
     ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/volume/volumedisk.h
     ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/volume/volumeoperation.h
     ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/volume/volumeram.h
