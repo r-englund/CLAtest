@@ -56,7 +56,7 @@ vec4 rayTraversal(vec3 entryPoint, vec3 exitPoint, vec2 texCoords) {
     vec4 result = vec4(0.0);
     vec3 rayDirection = exitPoint - entryPoint;
     float tEnd = length(rayDirection);
-    float tIncr = tEnd / (samplingRate_*length(rayDirection*volumeParameters_.dimensions_));
+    float tIncr = min(tEnd, tEnd / (samplingRate_*length(rayDirection*volumeParameters_.dimensions_)));
     float t = 0.5f*tIncr; 
     rayDirection = normalize(rayDirection);
     float tDepth = -1.0;
