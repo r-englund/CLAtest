@@ -38,6 +38,7 @@ namespace inviwo {
 VolumeRAM::VolumeRAM(uvec3 dimensions, const DataFormatBase* format)
     : VolumeRepresentation(dimensions, format)
     , data_(NULL)
+    , ownsDataPtr_(true)
     , histograms_(NULL)
     , calculatingHistogram_(false)
     , stopHistogramCalculation_(false) {}
@@ -45,6 +46,7 @@ VolumeRAM::VolumeRAM(uvec3 dimensions, const DataFormatBase* format)
 VolumeRAM::VolumeRAM(const VolumeRAM& rhs)
     : VolumeRepresentation(rhs)
     , data_(NULL)
+    , ownsDataPtr_(rhs.ownsDataPtr_)
     , histograms_(NULL)
     , calculatingHistogram_(false)
     , stopHistogramCalculation_(false) {
@@ -60,6 +62,7 @@ VolumeRAM& VolumeRAM::operator=(const VolumeRAM& that) {
     if (this != &that) {
         VolumeRepresentation::operator=(that);
         data_ = NULL;
+        ownsDataPtr_ = that.ownsDataPtr_;
         calculatingHistogram_ = false;
         stopHistogramCalculation_ = false;
 
@@ -146,6 +149,14 @@ void VolumeRAM::calculateHistogram(int sampleRate, std::size_t maxNumberOfBins) 
 
     histograms_ = VolumeRAMNormalizedHistogram::apply(this, histograms_, sampleRate, maxNumberOfBins);
     calculatingHistogram_ = false;
+}
+
+void VolumeRAM::setValuesFromVolume(const VolumeRAM* src, const uvec3& dstOffset){
+    setValuesFromVolume(src, dstOffset, src->getDimension(), uvec3(0));
+}
+
+size_t VolumeRAM::getNumberOfBytes() const{
+    return getDataFormat()->getBytesAllocated()*dimensions_.x*dimensions_.y*dimensions_.z;
 }
 
 VolumeRAM* createVolumeRAM(const uvec3& dimension, const DataFormatBase* format) {

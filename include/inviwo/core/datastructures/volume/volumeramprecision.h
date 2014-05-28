@@ -80,6 +80,8 @@ public:
     void setValueFromVec3Float(const uvec3& pos, vec3 val);
     void setValueFromVec4Float(const uvec3& pos, vec4 val);
 
+    void setValuesFromVolume(const VolumeRAM* src, const uvec3& dstOffset, const uvec3& subSize, const uvec3& subOffset);
+
     float getValueAsSingleFloat(const uvec3& pos) const;
     vec2 getValueAsVec2Float(const uvec3& pos) const;
     vec3 getValueAsVec3Float(const uvec3& pos) const;
@@ -131,7 +133,7 @@ void VolumeRAMPrecision<T>::initialize(void* data) {
 
 template<typename T>
 void inviwo::VolumeRAMPrecision<T>::deinitialize() {
-    if (data_) {
+    if (data_ && ownsDataPtr_) {
         delete[] static_cast<T*>(data_);
         data_ = NULL;
     }
@@ -191,6 +193,28 @@ template<typename T>
 void VolumeRAMPrecision<T>::setValueFromVec4Float(const uvec3& pos, vec4 val) {
     T* data = static_cast<T*>(data_);
     getDataFormat()->vec4ToValue(val, &(data[posToIndex(pos, dimensions_)]));
+}
+
+template<typename T>
+void VolumeRAMPrecision<T>::setValuesFromVolume(const VolumeRAM* src, const uvec3& dstOffset, const uvec3& subSize, const uvec3& subOffset) {
+    const T* srcData = reinterpret_cast<const T*>(src->getData());
+    T* dstData = static_cast<T*>(data_);
+
+    uvec3 dataDims = getDimension();
+    size_t initialStartPos = (dstOffset.z * (dataDims.x*dataDims.y))+(dstOffset.y * dataDims.x) + dstOffset.x;
+
+    uvec3 srcDims = src->getDimension();
+    size_t dataSize = subSize.x*getDataFormat()->getBytesAllocated();
+
+    size_t volumePos;
+    size_t subVolumePos;
+    for (size_t i=0; i < subSize.z; i++) {
+        for (size_t j=0; j < subSize.y; j++) {
+            volumePos =  (j*dataDims.x) + (i*dataDims.x*dataDims.y);
+            subVolumePos = ((j+subOffset.y)*srcDims.x) + ((i+subOffset.z)*srcDims.x*srcDims.y) + subOffset.x;
+            memcpy((dstData + volumePos + initialStartPos), (srcData + subVolumePos), dataSize);
+        }
+    }
 }
 
 template<typename T>
