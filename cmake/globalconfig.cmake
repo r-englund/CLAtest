@@ -182,9 +182,17 @@ IF(WIN32)
 ENDIF()
 
 #--------------------------------------------------------------------
+# Check if OpenMP is available and set it to use
+find_package(OpenMP QUIET)
+if(OPENMP_FOUND)
+    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${OpenMP_C_FLAGS}")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${OpenMP_CXX_FLAGS}")
+    set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} ${OpenMP_EXE_LINKER_FLAGS}")
+endif()
+
+#--------------------------------------------------------------------
 # Set preprocessor definition to indicate whether 
 # to use the debug postfix
-
 # Add debug postfix if WIN32
 IF(WIN32)
     IF(MSVC)

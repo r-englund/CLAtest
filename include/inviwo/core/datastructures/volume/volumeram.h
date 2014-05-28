@@ -70,8 +70,12 @@ public:
         data_ = data;
     }
 
+    void removeDataOwnership() {
+        ownsDataPtr_ = false;
+    }
+
     bool hasNormalizedHistogram() const;
-    NormalizedHistogram* getNormalizedHistogram(int delta=-1, std::size_t maxNumberOfBins=2048u, int component = 0);
+    NormalizedHistogram* getNormalizedHistogram(int delta=-1, std::size_t maxNumberOfBins = 2048u, int component = 0);
     const NormalizedHistogram* getNormalizedHistogram(int delta = -1, std::size_t maxNumberOfBins = 2048u, int component = 0) const;
 
     virtual void setValueFromSingleFloat(const uvec3& pos, float val) = 0;
@@ -79,10 +83,15 @@ public:
     virtual void setValueFromVec3Float(const uvec3& pos, vec3 val) = 0;
     virtual void setValueFromVec4Float(const uvec3& pos, vec4 val) = 0;
 
+    virtual void setValuesFromVolume(const VolumeRAM* src, const uvec3& dstOffset, const uvec3& subSize, const uvec3& subOffset) = 0;
+    void setValuesFromVolume(const VolumeRAM* src, const uvec3& dstOffset = uvec3(0));
+
     virtual float getValueAsSingleFloat(const uvec3& pos) const = 0;
     virtual vec2 getValueAsVec2Float(const uvec3& pos) const = 0;
     virtual vec3 getValueAsVec3Float(const uvec3& pos) const = 0;
     virtual vec4 getValueAsVec4Float(const uvec3& pos) const = 0;
+
+    size_t getNumberOfBytes() const;
 
     template <typename T>
     static inline T posToIndex(const glm::detail::tvec3<T, glm::defaultp>& pos,
@@ -103,6 +112,8 @@ protected:
     void calculateHistogram(int delta, std::size_t maxNumberOfBins) const;
 
     void* data_;
+    bool ownsDataPtr_;
+
     mutable std::vector<NormalizedHistogram*>* histograms_;
     mutable bool calculatingHistogram_;
     mutable bool stopHistogramCalculation_;
