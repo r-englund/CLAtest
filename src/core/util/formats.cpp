@@ -85,6 +85,22 @@ void DataFormatBase::cleanDataFormatBases() {
     }
 }
 
+float DataFormatBase::valueToFloat(void*) const {
+    return 0.f;
+}
+
+vec2 DataFormatBase::valueToVec2Float(void*) const {
+    return vec2(0.f);
+}
+
+vec3 DataFormatBase::valueToVec3Float(void*) const {
+    return vec3(0.f);
+}
+
+vec4 DataFormatBase::valueToVec4Float(void*) const {
+    return vec4(0.f);
+}
+
 float DataFormatBase::valueToNormalizedFloat(void*) const {
     return 0.f;
 }

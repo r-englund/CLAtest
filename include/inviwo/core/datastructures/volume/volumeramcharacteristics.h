@@ -43,7 +43,7 @@ public:
     struct Characteristics {
         Characteristics() : isUniform(false), mean(0.f) {}
         bool isUniform;
-        float mean;
+        vec4 mean;
     };
 
     VolumeRAMCharacteristics(const VolumeRepresentation* in)
@@ -78,27 +78,22 @@ void VolumeRAMCharacteristics::evaluate() {
         return;
     }
 
-    glm::i64 numVoxels = static_cast<glm::i64>(volume->getDimension().x*volume->getDimension().y*volume->getDimension().z);
-
     const T* src = reinterpret_cast<const T*>(volume->getData());
 
-    T firstVal = src[0];
-    T sum = firstVal;
+    glm::i64 numVoxels = static_cast<glm::i64>(volume->getDimension().x*volume->getDimension().y*volume->getDimension().z);
+    float weight = static_cast<float>(1/numVoxels);
+    const DataFormatBase* format = volume->getDataFormat();
 
     stats_.isUniform = true;
-    bool isUniform = true;
-    glm::i64 i;
+    T firstVal = src[0];
+    stats_.mean = format->valueToVec4Float(&firstVal)*weight;
 
     #pragma omp for
-    for (i=1; i < numVoxels; ++i) {
-        isUniform = (isUniform ? firstVal != src[i] : isUniform);
-        sum += src[i];
+    for (glm::i64 i=1; i < numVoxels; ++i) {
+        T val = src[i];
+        stats_.isUniform = (stats_.isUniform ? firstVal != val : stats_.isUniform);
+        stats_.mean += format->valueToVec4Float(&val)*weight;
     }
-
-    sum /= numVoxels;
-
-    stats_.isUniform = isUniform;
-    stats_.mean = volume->getDataFormat()->valueToNormalizedFloat(&sum);
 }
 
 } // namespace

@@ -39,6 +39,9 @@
 namespace inviwo {
 
 class IVW_CORE_API VolumeRAMSubSample : public VolumeOperation {
+
+//friend class VolumeHalfSampleCalculator;
+
 public:
     enum FACTOR{
         HALF=2
@@ -56,6 +59,10 @@ public:
         return subsampleOP.getOutput<VolumeRAM>();
     }
 
+protected:
+    template<typename T, typename D>
+    void halfsample();
+
 private:
     FACTOR factor_;
 };
@@ -65,6 +72,38 @@ class VolumeRAMPrecision;
 
 template<typename T, size_t B>
 class VolumeRAMCustomPrecision;
+
+/*template<typename T>
+class VolumeHalfSampleCalculator {
+public:
+    static void calculate(VolumeRAMSubSample* op, T* dst, const T* src, uvec3 dstDims, uvec3 srcDims){
+        op->halfsample<T, DataFLOAT64::type>(dst, src, dstDims, srcDims);
+    };
+};
+
+template<typename T>
+class VolumeHalfSampleCalculator<glm::detail::tvec2<T, glm::defaultp> > {
+public:
+    static void calculate(VolumeRAMSubSample* op, T* dst, const T* src, uvec3 dstDims, uvec3 srcDims){
+        op->halfsample<T, DataVec2FLOAT64::type>(dst, src, dstDims, srcDims);
+    };
+};
+
+template<typename T>
+class VolumeHalfSampleCalculator<glm::detail::tvec3<T, glm::defaultp> > {
+public:
+    static void calculate(VolumeRAMSubSample* op, T* dst, const T* src, uvec3 dstDims, uvec3 srcDims){
+        op->halfsample<T, DataVec3FLOAT64::type>(dst, src, dstDims, srcDims);
+    };
+};
+
+template<typename T>
+class VolumeHalfSampleCalculator<glm::detail::tvec4<T, glm::defaultp> > {
+public:
+    static void calculate(VolumeRAMSubSample* op, T* dst, const T* src, uvec3 dstDims, uvec3 srcDims){
+        op->halfsample<T, DataVec4FLOAT64::type>(dst, src, dstDims, srcDims);
+    };
+};*/
 
 template<typename T, size_t B>
 void VolumeRAMSubSample::evaluate() {
@@ -90,26 +129,31 @@ void VolumeRAMSubSample::evaluate() {
     //get data pointers
     const T* src = reinterpret_cast<const T*>(volume->getData());
     T* dst = reinterpret_cast<T*>(newVolume->getData());
+    const DataFormatBase* format = volume->getDataFormat();
 
     //Half sampling
     if(factor_ == HALF){
-        int x,y,z;
+        //VolumeHalfSampleCalculator<T>::calculate(this, dst, src, dataDims, newDims);
+        #define sumCurVal(v) curVal = v; val += format->valueToVec4Float(&curVal)*0.125f;
         #pragma omp parallel for
-        for (z=0; z < static_cast<int>(newDims.z); ++z) {
-            for (y=0; y < static_cast<int>(newDims.y); ++y) {
-                for (x=0; x < static_cast<int>(newDims.x); ++x) {
+        for (int z=0; z < static_cast<int>(newDims.z); ++z) {
+            for (int y=0; y < static_cast<int>(newDims.y); ++y) {
+                for (int x=0; x < static_cast<int>(newDims.x); ++x) {
                     size_t px = static_cast<size_t>(x*2);
                     size_t py = static_cast<size_t>(y*2);
                     size_t pz = static_cast<size_t>(z*2);
-                    T val = src[(pz*sXY) + (py*sX) + px];
-                    val += src[(pz*sXY) + (py*sX) + (px+1)];
-                    val += src[(pz*sXY) + ((py+1)*sX) + px];
-                    val += src[(pz*sXY) + ((py+1)*sX) + (px+1)];
-                    val += src[((pz+1)*sXY) + (py*sX) + px];
-                    val += src[((pz+1)*sXY) + (py*sX) + (px+1)];
-                    val += src[((pz+1)*sXY) + ((py+1)*sX) + px];
-                    val += src[((pz+1)*sXY) + ((py+1)*sX) + (px+1)];
-                    dst[(z*dXY) + (y*dX) + x] = val*T(0.125);
+                    vec4 val = vec4(0.f);
+                    T curVal;
+                    sumCurVal(src[(pz*sXY) + (py*sX) + px]) 
+                    sumCurVal(src[(pz*sXY) + (py*sX) + (px+1)])
+                    sumCurVal(src[(pz*sXY) + ((py+1)*sX) + px])
+                    sumCurVal(src[(pz*sXY) + ((py+1)*sX) + (px+1)])
+                    sumCurVal(src[((pz+1)*sXY) + (py*sX) + px])
+                    sumCurVal(src[((pz+1)*sXY) + (py*sX) + (px+1)])
+                    sumCurVal(src[((pz+1)*sXY) + ((py+1)*sX) + px])
+                    sumCurVal(src[((pz+1)*sXY) + ((py+1)*sX) + (px+1)])
+                    format->vec4ToValue(val, &curVal);
+                    dst[(z*dXY) + (y*dX) + x] = curVal;
                 }
             }
         }
@@ -117,6 +161,36 @@ void VolumeRAMSubSample::evaluate() {
 
     setOutput(newVolume);
 }
+
+template<typename T, typename D>
+void halfsample(T* dst, const T* src, uvec3 dstDims, uvec3 srcDims){
+    size_t sXY = static_cast<size_t>(srcDims.x*srcDims.y);
+    size_t sX = static_cast<size_t>(srcDims.x);
+    size_t dXY = static_cast<size_t>(dstDims.x*dstDims.y);
+    size_t dX = static_cast<size_t>(dstDims.x);
+
+    int x,y,z;
+    #pragma omp parallel for
+    for (z=0; z < static_cast<int>(dstDims.z); ++z) {
+        for (y=0; y < static_cast<int>(dstDims.y); ++y) {
+            for (x=0; x < static_cast<int>(dstDims.x); ++x) {
+                size_t px = static_cast<size_t>(x*2);
+                size_t py = static_cast<size_t>(y*2);
+                size_t pz = static_cast<size_t>(z*2);
+                D val = D(src[(pz*sXY) + (py*sX) + px])*0.125;
+                val += D(src[(pz*sXY) + (py*sX) + (px+1)])*0.125;
+                val += D(src[(pz*sXY) + ((py+1)*sX) + px])*0.125;
+                val += D(src[(pz*sXY) + ((py+1)*sX) + (px+1)])*0.125;
+                val += D(src[((pz+1)*sXY) + (py*sX) + px])*0.125;
+                val += D(src[((pz+1)*sXY) + (py*sX) + (px+1)])*0.125;
+                val += D(src[((pz+1)*sXY) + ((py+1)*sX) + px])*0.125;
+                val += D(src[((pz+1)*sXY) + ((py+1)*sX) + (px+1)])*0.125;
+                dst[(z*dXY) + (y*dX) + x] = T(val);
+            }
+        }
+    }
+}
+
 
 } // namespace
 
