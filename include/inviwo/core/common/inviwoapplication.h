@@ -95,7 +95,7 @@ public:
      * @param suffix Path extension
      * @return basePath +  pathType + suffix
      */
-    std::string getPath(PathType pathType, const std::string& suffix = "" ,const bool &createFolder = true);
+    std::string getPath(PathType pathType, const std::string& suffix = "" ,const bool &createFolder = false);
 
     void registerModule(InviwoModule* module) { modules_.push_back(module); }
     const std::vector<InviwoModule*> &getModules() const { return modules_; }
