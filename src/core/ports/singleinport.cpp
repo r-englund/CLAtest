@@ -49,6 +49,7 @@ SingleInport::~SingleInport() {}
 void SingleInport::connectTo(Outport* outport) {
     connectedOutport_ = outport;
     outport->connectTo(this);
+    changed_ = true;
     invalidate(PropertyOwner::INVALID_OUTPUT);
 }
 
@@ -57,6 +58,7 @@ void SingleInport::disconnectFrom(Outport* outport) {
         onInvalidCallback_.invokeAll();
         connectedOutport_ = NULL;
         outport->disconnectFrom(this);
+        changed_ = true;
         invalidate(PropertyOwner::INVALID_OUTPUT);
     }
 }
