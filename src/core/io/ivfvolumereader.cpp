@@ -111,11 +111,11 @@ void IvfVolumeReader::readDataInto(void* destination) const {
     std::fstream fin(rawFile_.c_str(), std::ios::in | std::ios::binary);
 
     if (fin.good()) {
-        std::size_t size = dimension_.x*dimension_.y*dimension_.z*(format_->getBytesStored());
+        std::size_t size = dimension_.x*dimension_.y*dimension_.z*(format_->getBytesAllocated());
         fin.read((char*)destination, size);
 
-        if (!littleEndian_ && format_->getBytesStored() > 1) {
-            std::size_t bytes = format_->getBytesStored();
+        if (!littleEndian_ && format_->getBytesAllocated() > 1) {
+            std::size_t bytes = format_->getBytesAllocated();
             char* temp = new char[bytes];
 
             for (std::size_t i = 0; i < size; i += bytes) {
@@ -135,7 +135,7 @@ void IvfVolumeReader::readDataInto(void* destination) const {
 }
 
 void* IvfVolumeReader::readData() const {
-    std::size_t size = dimension_.x * dimension_.y * dimension_.z * (format_->getBytesStored());
+    std::size_t size = dimension_.x * dimension_.y * dimension_.z * (format_->getBytesAllocated());
     char* data = new char[size];
 
     if (data) {
