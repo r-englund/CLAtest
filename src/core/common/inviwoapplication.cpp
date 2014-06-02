@@ -162,7 +162,7 @@ void InviwoApplication::deinitialize() {
 
 std::string InviwoApplication::getPath(PathType pathType, const std::string& suffix ,const bool &createFolder) {
     std::string result = getBasePath();
-
+    
     switch (pathType) {
         case inviwo::InviwoApplication::PATH_DATA:
             result += "data/";
@@ -192,6 +192,10 @@ std::string InviwoApplication::getPath(PathType pathType, const std::string& suf
             result += "data/images/";
             break;
 
+        case inviwo::InviwoApplication::PATH_DATABASES:
+            result += "data/databases/";
+            break;
+
         case inviwo::InviwoApplication::PATH_RESOURCES:
             result += "resources/";
             break;
@@ -201,35 +205,7 @@ std::string InviwoApplication::getPath(PathType pathType, const std::string& suf
             break;
 
         case inviwo::InviwoApplication::PATH_SETTINGS:
-            result = URLParser::getUserSettingsPath() + "inviwo/";
-            break;
-
-        case  inviwo::InviwoApplication::PATH_USER_INVIWO:
-            result = URLParser::getUserPath() + "inviwo/";
-            break;
-
-        case  inviwo::InviwoApplication::PATH_USER_SCRIPTS:
-            result = URLParser::getUserPath() + "inviwo/scripts/";
-            break;
-
-        case  inviwo::InviwoApplication::PATH_USER_VOLUMES:
-            result = URLParser::getUserPath() + "inviwo/volumes/";
-            break;
-
-        case  inviwo::InviwoApplication::PATH_USER_WORKSPACES:
-            result = URLParser::getUserPath() + "inviwo/workspaces/";
-            break;
-
-        case  inviwo::InviwoApplication::PATH_USER_IMAGES:
-            result = URLParser::getUserPath() + "inviwo/images/";
-            break;
-
-        case  inviwo::InviwoApplication::PATH_USER_DATABASES:
-            result = URLParser::getUserPath() + "inviwo/databases/";
-            break;
-
-        case  inviwo::InviwoApplication::PATH_USER_TRANSFERFUNCTIONS:
-            result = URLParser::getUserPath() + "inviwo/transferfunctions/";
+            result = URLParser::getInviwoUserSettingsPath();
             break;
 
 

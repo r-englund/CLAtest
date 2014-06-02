@@ -413,25 +413,16 @@ void InviwoMainWindow::openLastWorkspace() {
 
 void InviwoMainWindow::openWorkspace() {
     if (askToSaveWorkspaceChanges()) {
-        // dialog window settings
-        QStringList extension;
-        extension << "Inviwo File (*.inv)";
-        QList<QUrl> sidebarURLs;
-        sidebarURLs << QUrl::fromLocalFile(QDir(workspaceFileDir_).absolutePath());
-        //TODO: create InviwoFileDialog to avoid frequent version checks
+        InviwoFileDialog openFileDialog(this, "Open Workspace ...", "workspace");
 
-        InviwoFileDialog openFileDialog(this, "Open Workspace ...", workspaceFileDir_);
-
-        openFileDialog.addSidebarPath(InviwoApplication::PATH_USER_WORKSPACES);
+        openFileDialog.addSidebarPath(InviwoApplication::PATH_WORKSPACES);
         openFileDialog.addSidebarPath(InviwoApplication::PATH_WORKSPACES);
         openFileDialog.addSidebarPath(workspaceFileDir_);
 
         openFileDialog.addExtension("inv","Inviwo File");
 
         openFileDialog.setFileMode(QFileDialog::AnyFile);
-        openFileDialog.setNameFilters(extension);
-        openFileDialog.setSidebarUrls(sidebarURLs);
-
+        
         if (openFileDialog.exec()) {
             QString path = openFileDialog.selectedFiles().at(0);
             openWorkspace(path);
@@ -477,12 +468,12 @@ void InviwoMainWindow::saveWorkspace() {
 }
 
 void InviwoMainWindow::saveWorkspaceAs() {
-    InviwoFileDialog saveFileDialog(this, "Save Workspace ...", workspaceFileDir_.toLocal8Bit().constData());
+    InviwoFileDialog saveFileDialog(this, "Save Workspace ...", "workspace");
     saveFileDialog.setFileMode(QFileDialog::AnyFile);
     saveFileDialog.setAcceptMode(QFileDialog::AcceptSave);
     saveFileDialog.setConfirmOverwrite(true);
 
-    saveFileDialog.addSidebarPath(InviwoApplication::PATH_USER_WORKSPACES);
+    saveFileDialog.addSidebarPath(InviwoApplication::PATH_WORKSPACES);
     saveFileDialog.addSidebarPath(InviwoApplication::PATH_WORKSPACES);
     saveFileDialog.addSidebarPath(workspaceFileDir_);
 
@@ -500,12 +491,12 @@ void InviwoMainWindow::saveWorkspaceAs() {
 }
 
 void InviwoMainWindow::saveWorkspaceAsCopy() {
-    InviwoFileDialog saveFileDialog(this, "Save Workspace ...", workspaceFileDir_.toLocal8Bit().constData());
+    InviwoFileDialog saveFileDialog(this, "Save Workspace ...", "workspace");
     saveFileDialog.setFileMode(QFileDialog::AnyFile);
     saveFileDialog.setAcceptMode(QFileDialog::AcceptSave);
     saveFileDialog.setConfirmOverwrite(true);
 
-    saveFileDialog.addSidebarPath(InviwoApplication::PATH_USER_WORKSPACES);
+    saveFileDialog.addSidebarPath(InviwoApplication::PATH_WORKSPACES);
     saveFileDialog.addSidebarPath(InviwoApplication::PATH_WORKSPACES);
     saveFileDialog.addSidebarPath(workspaceFileDir_);
 

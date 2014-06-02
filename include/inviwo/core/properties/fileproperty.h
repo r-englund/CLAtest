@@ -45,31 +45,31 @@ namespace inviwo {
  */
 
 class IVW_CORE_API FileProperty : public TemplateProperty<std::string> {
-
 public:
-
     enum AcceptMode { AcceptOpen, AcceptSave };
     enum FileMode { AnyFile, ExistingFile, Directory, ExistingFiles, DirectoryOnly };
 
     /**
      * \brief Constructor for the FileProperty
      *
-     * The PropertySemantics can be set to TextEditor. Then a TextEditorWidget will be used instead of a FilePropertyWidget
+     * The PropertySemantics can be set to TextEditor. Then a TextEditorWidget will be used instead
+     *of a FilePropertyWidget
      *
      * @param std::string identifier identifier for the property
      * @param std::string displayName displayName for the property
      * @param std::string value the path to the file
      * @param PropertySemantics semantics Can be set to Editor
      */
-    FileProperty(std::string identifier, std::string displayName, std::string value="",
-                 PropertyOwner::InvalidationLevel invalidationLevel=PropertyOwner::INVALID_OUTPUT,
+    FileProperty(std::string identifier, std::string displayName, std::string value = "",
+                 std::string contentType = "default",
+                 PropertyOwner::InvalidationLevel invalidationLevel = PropertyOwner::INVALID_OUTPUT,
                  PropertySemantics semantics = PropertySemantics::Default);
     virtual Variant getVariant();
     virtual void setVariant(const Variant&);
     virtual int getVariantType();
     virtual void serialize(IvwSerializer& s) const;
     virtual void deserialize(IvwDeserializer& d);
-    virtual std::string getClassName()  const { return "FileProperty"; }
+    virtual std::string getClassName() const { return "FileProperty"; }
 
     virtual void addNameFilter(std::string);
     virtual void clearNameFilters();
@@ -81,12 +81,16 @@ public:
     virtual void setFileMode(FileMode mode);
     FileMode getFileMode() const;
 
+    void setContentType(const std::string& contentType);
+    std::string getContentType() const;
+
 private:
     std::vector<std::string> nameFilters_;
     AcceptMode acceptMode_;
     FileMode fileMode_;
+    std::string contentType_;
 };
 
-} // namespace
+}  // namespace
 
-#endif // IVW_FILEPROPERTY_H
+#endif  // IVW_FILEPROPERTY_H

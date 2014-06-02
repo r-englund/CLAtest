@@ -73,17 +73,11 @@ public:
         PATH_SCRIPTS,// data/workspaces/
         PATH_PORTINSPECTORS,// data/workspaces/portinspectors/
         PATH_IMAGES,     // data/images/
+        PATH_DATABASES,     // data/images/
         PATH_RESOURCES,  // resources/
         PATH_TRANSFERFUNCTIONS,  // data/transferfunctions/
 
-        PATH_USER_INVIWO, // %user_path%/inviwo
-        PATH_SETTINGS,  // %user_path%/inviwo/settings/
-        PATH_USER_SCRIPTS,   // %user_path%/inviwo/scripts/
-        PATH_USER_VOLUMES,   // %user_path%/inviwo/volumes/
-        PATH_USER_WORKSPACES,// %user_path%/inviwo/workspaces/
-        PATH_USER_IMAGES,     // %user_path%/inviwo/images/
-        PATH_USER_DATABASES,     // %user_path%/inviwo/databases/
-        PATH_USER_TRANSFERFUNCTIONS  // %user_path%/inviwo/transferfunctions/
+        PATH_SETTINGS  // 
     };
 
     virtual void closeInviwoApplication() {LogWarn("this application have not implemented close inviwo function");}

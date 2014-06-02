@@ -37,7 +37,6 @@
 #include <inviwo/core/properties/templateproperty.h>
 #include <inviwo/core/properties/ordinalproperty.h>
 
-
 namespace inviwo {
 /** class DirectoryProperty
  *  A class for file representations.
@@ -48,11 +47,15 @@ namespace inviwo {
 
 class IVW_CORE_API DirectoryProperty : public TemplateProperty<std::string> {
 public:
-    DirectoryProperty(std::string identifier, std::string displayName, std::string value = "",
-                      PropertyOwner::InvalidationLevel invalidationLevel=PropertyOwner::INVALID_OUTPUT,
-                      PropertySemantics semantics = PropertySemantics::Default);
+    DirectoryProperty(
+        std::string identifier, 
+        std::string displayName, 
+        std::string value = "",
+        std::string contentType = "default",
+        PropertyOwner::InvalidationLevel invalidationLevel = PropertyOwner::INVALID_OUTPUT,
+        PropertySemantics semantics = PropertySemantics::Default);
     virtual std::vector<std::string> getDirectoryTree() const;
-    virtual std::vector<std::string> getFiles(std::string filters="*.*") const;
+    virtual std::vector<std::string> getFiles(std::string filters = "*.*") const;
     virtual void setDirectoryTree(std::vector<std::string> dirTree);
     void updateDirectoryTree();
     virtual Variant getVariant();
@@ -60,21 +63,26 @@ public:
     virtual int getVariantType();
     virtual void serialize(IvwSerializer& s) const;
     virtual void deserialize(IvwDeserializer& d);
-    virtual std::string getClassName()  const { return "DirectoryProperty"; }
+    virtual std::string getClassName() const { return "DirectoryProperty"; }
     virtual void registerFileIndexingHandle(IntProperty* indexHandle) {
-        //TODO: use composite property if possible.
+        // TODO: use composite property if possible.
         fileIndexingHandle_ = indexHandle;
     }
     virtual IntProperty* getFileIndexingHandle() {
-        //TODO: use composite property if possible.
+        // TODO: use composite property if possible.
         return fileIndexingHandle_;
     }
+
+    void setContentType(const std::string& contentType);
+    std::string getContentType() const;
+
 protected:
-    //TODO: currently tree contains file names only.
+    // TODO: currently tree contains file names only.
     std::vector<std::string> directoryTree_;
     IntProperty* fileIndexingHandle_;
+    std::string contentType_;
 };
 
-} // namespace
+}  // namespace
 
-#endif // IVW_DIRECTORY_PROPERTY_H
+#endif  // IVW_DIRECTORY_PROPERTY_H

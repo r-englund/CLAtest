@@ -53,8 +53,7 @@ public:
     static bool isAbsolutePath(const std::string& path);
     static bool sameDrive(const std::string& absPath1, const std::string absPath2);
 
-    static std::string getUserPath();
-    static std::string getUserSettingsPath();
+    static std::string getInviwoUserSettingsPath();
     static void createDirectoryRecursivly(std::string path);
 };
 

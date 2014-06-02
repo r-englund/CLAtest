@@ -47,8 +47,8 @@ ImageSourceSeries::ImageSourceSeries()
     : Processor()
     , outport_("image.outport")
     , findFilesButton_("findFiles", "Find Files")
-    , imageFileDirectory_("imageFileDirectory", "Image file directory",
-                          InviwoApplication::getPtr()->getPath(InviwoApplication::PATH_USER_IMAGES,"images"))
+    , imageFileDirectory_("imageFileDirectory", "Image file directory", "image" ,
+                          InviwoApplication::getPtr()->getPath(InviwoApplication::PATH_IMAGES,"images"))
     , currentImageIndex_("currentImageIndex", "Image index", 1, 1, 1, 1) {
     addPort(outport_);
     addProperty(imageFileDirectory_);

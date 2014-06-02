@@ -37,33 +37,30 @@
 
 namespace inviwo {
 
-DirectoryProperty::DirectoryProperty(std::string identifier, std::string displayName,std::string value,
+DirectoryProperty::DirectoryProperty(std::string identifier, std::string displayName,
+                                     std::string value, std::string contentType,
                                      PropertyOwner::InvalidationLevel invalidationLevel,
                                      PropertySemantics semantics)
-    : TemplateProperty<std::string>(identifier, displayName,value, invalidationLevel, semantics),
-      fileIndexingHandle_(0)
-{
-}
+    : TemplateProperty<std::string>(identifier, displayName, value, invalidationLevel, semantics)
+    , fileIndexingHandle_(0)
+    , contentType_(contentType)
+{}
 
-std::vector<std::string> DirectoryProperty::getDirectoryTree()  const {
-    return directoryTree_;
-}
+std::vector<std::string> DirectoryProperty::getDirectoryTree() const { return directoryTree_; }
 
-void DirectoryProperty::updateDirectoryTree() {
-    updateWidgets();
-}
+void DirectoryProperty::updateDirectoryTree() { updateWidgets(); }
 
-std::vector<std::string> DirectoryProperty::getFiles(std::string filters)  const {
+std::vector<std::string> DirectoryProperty::getFiles(std::string filters) const {
     std::vector<std::string> validFilesWithExtension;
     std::string filterName = URLParser::getFileNameWithoutExtension(filters);
     std::string filterExt = URLParser::getFileExtension(filters);
     bool arbitaryName = (filterName == "*");
     bool arbitaryExt = (filterExt == "*");
 
-    //Matching with star as part of name or ext is not implemented at the moment.
-    //Only: *.*, *.ext, name.*, name.ext
-    for (size_t i=0; i<directoryTree_.size(); i++) {
-        std::string file = get()+"/";
+    // Matching with star as part of name or ext is not implemented at the moment.
+    // Only: *.*, *.ext, name.*, name.ext
+    for (size_t i = 0; i < directoryTree_.size(); i++) {
+        std::string file = get() + "/";
         file = URLParser::getFileDirectory(file) + directoryTree_[i];
 
         if (arbitaryName && arbitaryExt) {
@@ -89,46 +86,49 @@ std::vector<std::string> DirectoryProperty::getFiles(std::string filters)  const
     return validFilesWithExtension;
 }
 
-void DirectoryProperty::setDirectoryTree(std::vector<std::string> dirTree)  {
+void DirectoryProperty::setDirectoryTree(std::vector<std::string> dirTree) {
     directoryTree_ = dirTree;
 }
 
-int DirectoryProperty::getVariantType() {
-    return Variant::VariantTypeString;
-}
+int DirectoryProperty::getVariantType() { return Variant::VariantTypeString; }
 
-Variant DirectoryProperty::getVariant() {
-    return Variant(get());
-}
+Variant DirectoryProperty::getVariant() { return Variant(get()); }
 
-void  DirectoryProperty::setVariant(const Variant& val) {
-    if (val.canConvert(getVariantType()))
-        set(val.getString());
+void DirectoryProperty::setVariant(const Variant& val) {
+    if (val.canConvert(getVariantType())) set(val.getString());
 }
 
 void DirectoryProperty::serialize(IvwSerializer& s) const {
-    Property::serialize(s) ;
+    Property::serialize(s);
     std::string basePath = s.getFileName();
     std::string absoluteFilePath = get();
 
     if (basePath.empty())
-        basePath = InviwoApplication::getPtr()->getPath(InviwoApplication::PATH_USER_INVIWO); //why workspaces
+        basePath = InviwoApplication::getPtr()->getPath(
+            InviwoApplication::PATH_DATA);  // why workspaces
 
     std::string relativePath = URLParser::getRelativePath(basePath, absoluteFilePath);
     s.serialize("directory", relativePath);
 }
 
 void DirectoryProperty::deserialize(IvwDeserializer& d) {
-    Property::deserialize(d) ;
+    Property::deserialize(d);
     std::string relativePath;
     d.deserialize("directory", relativePath);
     std::string basePath = d.getFileName();
 
     if (basePath.empty())
-        basePath = InviwoApplication::getPtr()->getPath(InviwoApplication::PATH_USER_INVIWO); //why workspaces
+        basePath = InviwoApplication::getPtr()->getPath(
+            InviwoApplication::PATH_DATA);  // why workspaces
 
     basePath = URLParser::getFileDirectory(basePath);
-    set(basePath+relativePath);
+    set(basePath + relativePath);
 }
 
-} // namespace
+void DirectoryProperty::setContentType(const std::string& contentType) {
+    contentType_ = contentType;
+}
+
+std::string DirectoryProperty::getContentType() const { return contentType_; }
+
+}  // namespace

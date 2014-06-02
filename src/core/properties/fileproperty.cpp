@@ -37,34 +37,32 @@
 namespace inviwo {
 
 FileProperty::FileProperty(std::string identifier, std::string displayName, std::string value,
-                           PropertyOwner::InvalidationLevel invalidationLevel, PropertySemantics semantics)
-    : TemplateProperty<std::string>(identifier, displayName,value, invalidationLevel, semantics)
+                           std::string contentType,
+                           PropertyOwner::InvalidationLevel invalidationLevel,
+                           PropertySemantics semantics)
+    : TemplateProperty<std::string>(identifier, displayName, value, invalidationLevel, semantics)
     , acceptMode_(AcceptOpen)
-    , fileMode_(AnyFile) {
+    , fileMode_(AnyFile)
+    , contentType_(contentType) {
     addNameFilter("All Files (*.*)");
 }
 
-int FileProperty::getVariantType() {
-    return Variant::VariantTypeString;
-}
+int FileProperty::getVariantType() { return Variant::VariantTypeString; }
 
-Variant FileProperty::getVariant() {
-    return Variant(get());
-}
+Variant FileProperty::getVariant() { return Variant(get()); }
 
-void  FileProperty::setVariant(const Variant& val) {
-    if (val.canConvert(getVariantType()))
-        set(val.getString());
+void FileProperty::setVariant(const Variant& val) {
+    if (val.canConvert(getVariantType())) set(val.getString());
 }
 
 void FileProperty::serialize(IvwSerializer& s) const {
     Property::serialize(s);
-    
+
     std::string basePath = s.getFileName();
     std::string absoluteFilePath = get();
 
     if (basePath.empty())
-        basePath = InviwoApplication::getPtr()->getPath(InviwoApplication::PATH_USER_INVIWO); 
+        basePath = InviwoApplication::getPtr()->getPath(InviwoApplication::PATH_DATA);
 
     std::string serializePath;
 
@@ -82,17 +80,17 @@ void FileProperty::serialize(IvwSerializer& s) const {
 void FileProperty::deserialize(IvwDeserializer& d) {
     Property::deserialize(d);
     std::string serializePath;
-    
+
     d.deserialize("url", serializePath);
 
     if (!URLParser::isAbsolutePath(serializePath)) {
         std::string basePath = d.getFileName();
 
         if (basePath.empty())
-            basePath = InviwoApplication::getPtr()->getPath(InviwoApplication::PATH_USER_INVIWO); 
+            basePath = InviwoApplication::getPtr()->getPath(InviwoApplication::PATH_DATA);
 
         basePath = URLParser::getFileDirectory(basePath);
-        set(basePath+serializePath);
+        set(basePath + serializePath);
     } else {
         set(serializePath);
     }
@@ -106,35 +104,28 @@ void FileProperty::deserialize(IvwDeserializer& d) {
         int fileMode = (int)fileMode_;
         d.deserialize("fileMode", fileMode);
         fileMode_ = (FileMode)fileMode;
-    } catch (SerializationException& e) {
+    }
+    catch (SerializationException& e) {
         LogInfo("Problem deserializing fileproperty: " << e.getMessage());
     }
 }
 
-void FileProperty::addNameFilter(std::string filter) {
-    nameFilters_.push_back(filter);
-}
+void FileProperty::addNameFilter(std::string filter) { nameFilters_.push_back(filter); }
 
-void FileProperty::clearNameFilters() {
-    nameFilters_.clear();
-}
+void FileProperty::clearNameFilters() { nameFilters_.clear(); }
 
-std::vector<std::string> FileProperty::getNameFilters() {
-    return nameFilters_;
-}
+std::vector<std::string> FileProperty::getNameFilters() { return nameFilters_; }
 
-void FileProperty::setAcceptMode(AcceptMode mode) {
-    acceptMode_ = mode;
-}
+void FileProperty::setAcceptMode(AcceptMode mode) { acceptMode_ = mode; }
 FileProperty::AcceptMode FileProperty::getAcceptMode() const {
     return acceptMode_;
 };
 
-void FileProperty::setFileMode(FileMode mode) {
-    fileMode_ = mode;
-}
-FileProperty::FileMode FileProperty::getFileMode() const {
-    return fileMode_;
-}
+void FileProperty::setFileMode(FileMode mode) { fileMode_ = mode; }
+FileProperty::FileMode FileProperty::getFileMode() const { return fileMode_; }
 
-} // namespace
+void FileProperty::setContentType(const std::string& contentType) { contentType_ = contentType; }
+
+std::string FileProperty::getContentType() const { return contentType_; }
+
+}  // namespace

@@ -191,31 +191,20 @@ bool URLParser::sameDrive(const std::string& absPath1, const std::string absPath
 #endif 
 
 
-std::string URLParser::getUserPath(){
+
+
+std::string URLParser::getInviwoUserSettingsPath(){
     std::stringstream ss;
 #ifdef _WIN32 
-    ss << helperSHGetKnownFolderPath(FOLDERID_Documents);
+    ss << helperSHGetKnownFolderPath(FOLDERID_RoamingAppData);
+    ss << "/Inviwo/";
 #elif defined(__unix__) 
     ss << std::getenv("HOME");
+    ss << "/.inviwo/"
 #else
-    //TODO fix for mac
-    LogWarnCustom("","Get User Path is not implemented for current system");
+    LogWarnCustom("","Get User Setting Path is not implemented for current system");
 #endif
-    ss << "/";
     return ss.str();
-}
-
-
-
-std::string URLParser::getUserSettingsPath(){
-#ifdef _WIN32 
-    std::stringstream ss;
-    ss << helperSHGetKnownFolderPath(FOLDERID_RoamingAppData);
-    ss << "/";
-    return ss.str();
-#else
-    return getUserPath();
-#endif
 }
 
 
