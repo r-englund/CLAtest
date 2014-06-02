@@ -72,6 +72,7 @@ SimpleMesh* SimpleMeshCreator::rectangularPrism(vec3 posLlf, vec3 posUrb, vec3 t
     recPrism->addIndex(0);
     recPrism->addIndex(3);
     recPrism->addIndex(4);
+
     return recPrism;
 }
 
@@ -81,32 +82,42 @@ SimpleMesh* SimpleMeshCreator::parallelepiped(glm::vec3 pos, glm::vec3 p1, glm::
     SimpleMesh* ppd = new SimpleMesh();
     ppd->initialize();
     // Set identity matrix
-    ppd->setBasisAndOffset(mat4(1.f));
-    //8 corners
+    ppd->setBasisAndOffset(mat4(1.f)); 
+
+    //      2-----3         
+    //     /|    /|          y
+    //    6-+---7 |          |
+    //    | 0---+-1          o--x
+    //    |/    |/          /
+    //    4-----5          z
+    //
+    // See: http://www.cs.umd.edu/gvil/papers/av_ts.pdf
+    // Triangle Strip: 0 1 4 5 7 1 3 0 2 4 6 7 2 3
+    // 8 corners
     ppd->addVertex(pos               , tex               , col);                // (0,0,0)
+    ppd->addVertex(pos + p1          , tex + t1          , col + c1);           // (1,0,0)
     ppd->addVertex(pos      + p2     , tex      + t2     , col      + c2);      // (0,1,0)
-    ppd->addVertex(pos      + p2 + p3, tex      + t2 + t3, col      + c2 + c3); // (0,1,1)
+    ppd->addVertex(pos + p1 + p2     , tex + t1 + t2     , col + c1 + c2);      // (1,1,0)
     ppd->addVertex(pos           + p3, tex           + t3, col           + c3); // (0,0,1)
     ppd->addVertex(pos + p1      + p3, tex + t1      + t3, col + c1      + c3); // (1,0,1)
-    ppd->addVertex(pos + p1          , tex + t1          , col + c1);           // (1,0,0)
-    ppd->addVertex(pos + p1 + p2     , tex + t1 + t2     , col + c1 + c2);      // (1,1,0)
+    ppd->addVertex(pos      + p2 + p3, tex      + t2 + t3, col      + c2 + c3); // (0,1,1)
     ppd->addVertex(pos + p1 + p2 + p3, tex + t1 + t2 + t3, col + c1 + c2 + c3); // (1,1,1)
-    //14 indices (Triangle Strip)
+    // 14 indices (Triangle Strip)
     ppd->setIndicesInfo(GeometryEnums::TRIANGLES, GeometryEnums::STRIP);
-    ppd->addIndex(3);
-    ppd->addIndex(4);
-    ppd->addIndex(2);
-    ppd->addIndex(7);
-    ppd->addIndex(6);
+    ppd->addIndex(0);
+    ppd->addIndex(1);
     ppd->addIndex(4);
     ppd->addIndex(5);
-    ppd->addIndex(0);
-    ppd->addIndex(6);
+    ppd->addIndex(7);
     ppd->addIndex(1);
-    ppd->addIndex(2);
-    ppd->addIndex(0);
     ppd->addIndex(3);
+    ppd->addIndex(0);
+    ppd->addIndex(2);
     ppd->addIndex(4);
+    ppd->addIndex(6);
+    ppd->addIndex(7);
+    ppd->addIndex(2);
+    ppd->addIndex(3);
     return ppd;
 }
 
@@ -126,7 +137,7 @@ SimpleMesh* SimpleMeshCreator::rectangle(vec3 posLl, vec3 posUr) {
                    vec4(colorLl.x, colorUr.y, colorLl.z, colorLl.w));
     rec->addVertex(vec3(posUr.x, posLl.y, posUr.z),
                    vec3(texCoordLl.x, texCoordUr.y, texCoordUr.z),
-                   vec4(colorLl.x, colorUr.y, colorUr.z, colorLl.w));
+                   vec4(colorLl.x, colorUr.y,  colorUr.z, colorLl.w));
     rec->addVertex(posUr, texCoordUr, colorUr);
     // 4 indices (?)
     rec->setIndicesInfo(GeometryEnums::TRIANGLES, GeometryEnums::STRIP);
