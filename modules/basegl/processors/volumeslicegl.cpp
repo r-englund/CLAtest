@@ -151,7 +151,7 @@ void VolumeSliceGL::shiftSlice(int shift){
 
 void VolumeSliceGL::planeSettingsChanged() {  
     std::string fH = (flipHorizontal_.get() ? "1.0-" : "");
-    std::string fV = (flipVertical_.get() ? "" : "1.0-");
+    std::string fV = (flipVertical_.get() ? "1.0-" : "");
     // map (x, y, z) to volume texture space coordinates
     // Input:
     // z is the direction in which we slice
