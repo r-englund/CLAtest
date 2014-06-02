@@ -200,7 +200,7 @@ std::string URLParser::getInviwoUserSettingsPath(){
     ss << "/Inviwo/";
 #elif defined(__unix__) 
     ss << std::getenv("HOME");
-    ss << "/.inviwo/"
+    ss << "/.inviwo/";
 #else
     LogWarnCustom("","Get User Setting Path is not implemented for current system");
 #endif
