@@ -248,7 +248,7 @@ Volume* DatVolumeReader::readMetaData(std::string filePath) {
     vd->setDataReader(this);
     volume->addRepresentation(vd);
     std::string size = formatBytesToString(dimension_.x * dimension_.y * dimension_.z *
-                                           (format_->getBytesStored()) * timeSteps_);
+                                           (format_->getBytesAllocated()) * timeSteps_);
     LogInfo("Loaded volume: " << filePath << " size: " << size);
     return volume;
 }
@@ -258,11 +258,11 @@ void DatVolumeReader::readDataInto(void* destination) const {
 
     if (fin.good()) {
         std::size_t size =
-            dimension_.x * dimension_.y * dimension_.z * (format_->getBytesStored()) * timeSteps_;
+            dimension_.x * dimension_.y * dimension_.z * (format_->getBytesAllocated()) * timeSteps_;
         fin.read(static_cast<char*>(destination), size);
 
-        if (!littleEndian_ && format_->getBytesStored() > 1) {
-            std::size_t bytes = format_->getBytesStored();
+        if (!littleEndian_ && format_->getBytesAllocated() > 1) {
+            std::size_t bytes = format_->getBytesAllocated();
             char* temp = new char[bytes];
 
             for (std::size_t i = 0; i < size; i += bytes) {
@@ -283,7 +283,7 @@ void DatVolumeReader::readDataInto(void* destination) const {
 
 void* DatVolumeReader::readData() const {
     std::size_t size =
-        dimension_.x * dimension_.y * dimension_.z * (format_->getBytesStored()) * timeSteps_;
+        dimension_.x * dimension_.y * dimension_.z * (format_->getBytesAllocated()) * timeSteps_;
     char* data = new char[size];
 
     if (data) {
