@@ -1,9 +1,0 @@
-Rawfile: testdata.posMinToMax.INT32.raw
-Resolution: 100 100 100
-Format: INT32
-BasisVector1: 1.0 0.0 0.0
-BasisVector2: 0.0 1.0 0.0
-BasisVector3: 0.0 0.0 1.0
-DataRange: 1375143796 1521510916
-ValueRange: 0 1
-ValueUnit: arb. unit
