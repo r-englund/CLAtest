@@ -1,9 +1,0 @@
-Rawfile: testdata.negMinToMax.UINT32.raw
-Resolution: 100 100 100
-Format: UINT32
-BasisVector1: 1.0 0.0 0.0
-BasisVector2: 0.0 1.0 0.0
-BasisVector3: 0.0 0.0 1.0
-DataRange: 3368296324 4082875550
-ValueRange: 0 1
-ValueUnit: arb. unit
