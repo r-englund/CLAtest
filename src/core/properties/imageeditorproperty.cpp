@@ -59,7 +59,7 @@ void ImageLabel::deserialize(IvwDeserializer& d) {
 ImageEditorProperty::ImageEditorProperty(std::string identifier, std::string displayName,std::string value,
         PropertyOwner::InvalidationLevel invalidationLevel,
         PropertySemantics semantics)
-    : FileProperty(identifier, displayName, value, invalidationLevel, semantics)
+    : FileProperty(identifier, displayName, value , "image" , invalidationLevel, semantics)
 {}
 
 void ImageEditorProperty::setDimension(ivec2 imgSize) {

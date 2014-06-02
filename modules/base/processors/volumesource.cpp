@@ -62,6 +62,7 @@ VolumeSource::VolumeSource()
     , format_("format", "Format", "")
     , isDeserializing_(false) {
 
+    DataSource<Volume, VolumeOutport>::file_.setContentType("volume");
     DataSource<Volume, VolumeOutport>::file_.setDisplayName("Volume file");
 
     overRideDefaults_.setGroupDisplayName("Basis", "Basis and offset");

@@ -259,14 +259,14 @@ void PythonEditorWidget::saveAs() {
     if (script_.getSource() == defaultSource)
         return; //nothig to be saved
 
-    InviwoFileDialog saveFileDialog(this, "Save Python Script ...");
+    InviwoFileDialog saveFileDialog(this, "Save Python Script ..." , "script");
    
     saveFileDialog.setDirectory(QDir((InviwoApplication::getPtr()->getPath(InviwoApplication::PATH_DATA) + "scripts").c_str()));
     saveFileDialog.setFileMode(QFileDialog::AnyFile);
     saveFileDialog.setAcceptMode(QFileDialog::AcceptSave);
     saveFileDialog.setConfirmOverwrite(true);
 
-    saveFileDialog.addSidebarPath(InviwoApplication::PATH_USER_SCRIPTS);
+    saveFileDialog.addSidebarPath(InviwoApplication::PATH_SCRIPTS);
     saveFileDialog.addSidebarPath(InviwoApplication::PATH_SCRIPTS);
 
     saveFileDialog.addExtension("py","Python Script");
@@ -293,11 +293,11 @@ void PythonEditorWidget::open() {
             return;
     }
 
-    InviwoFileDialog openFileDialog(this, "Open Python Script ...");
-    openFileDialog.setDirectory(QDir(InviwoApplication::getPtr()->getPath(InviwoApplication::PATH_USER_SCRIPTS).c_str()));
+    InviwoFileDialog openFileDialog(this, "Open Python Script ..." , "script");
+    openFileDialog.setDirectory(QDir(InviwoApplication::getPtr()->getPath(InviwoApplication::PATH_SCRIPTS).c_str()));
     openFileDialog.setFileMode(QFileDialog::AnyFile);
 
-    openFileDialog.addSidebarPath(InviwoApplication::PATH_USER_SCRIPTS);
+    openFileDialog.addSidebarPath(InviwoApplication::PATH_SCRIPTS);
     openFileDialog.addSidebarPath(InviwoApplication::PATH_SCRIPTS);
 
     openFileDialog.addExtension("py","Python Script");

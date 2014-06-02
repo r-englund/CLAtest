@@ -49,18 +49,16 @@
 namespace inviwo {
 
 DirectoryPropertyWidgetQt::DirectoryPropertyWidgetQt(DirectoryProperty* property)
-    : PropertyWidgetQt(property)
-    , property_(property) {
-
+    : PropertyWidgetQt(property), property_(property) {
     generateWidget();
     updateFromProperty();
 }
 
 void DirectoryPropertyWidgetQt::generateWidget() {
     QHBoxLayout* hLayout = new QHBoxLayout();
-    
-    directoryLabel_ = new EditableLabelQt(this,property_->getDisplayName());
-    
+
+    directoryLabel_ = new EditableLabelQt(this, property_->getDisplayName());
+
     lineEdit_ = new QLineEdit(this);
     lineEdit_->setReadOnly(true);
 
@@ -72,30 +70,21 @@ void DirectoryPropertyWidgetQt::generateWidget() {
     hLayout->addWidget(openButton_);
     hLayout->setContentsMargins(0, 0, 0, 0);
     hLayout->setSpacing(0);
-    hLayout->setStretch(1,1);
+    hLayout->setStretch(1, 1);
 
     setLayout(hLayout);
 
-    connect(directoryLabel_, SIGNAL(textChanged()),this, SLOT(setPropertyDisplayName()));
+    connect(directoryLabel_, SIGNAL(textChanged()), this, SLOT(setPropertyDisplayName()));
     connect(openButton_, SIGNAL(pressed()), this, SLOT(setPropertyValue()));
 }
 
 void DirectoryPropertyWidgetQt::setPropertyValue() {
-    InviwoFileDialog importFileDialog(this, "Open Directory ...");
-    importFileDialog.setFileMode(QFileDialog::Directory);
-
-    if (!property_->get().empty())
-        importFileDialog.addSidebarPath(property_->get());
-    importFileDialog.addSidebarPath(InviwoApplication::PATH_USER_INVIWO);
-    importFileDialog.addSidebarPath(InviwoApplication::PATH_USER_IMAGES);
-    importFileDialog.addSidebarPath(InviwoApplication::PATH_IMAGES);
-    importFileDialog.addSidebarPath(InviwoApplication::PATH_USER_VOLUMES);
-    importFileDialog.addSidebarPath(InviwoApplication::PATH_VOLUMES);
-
-    QString existingDir = importFileDialog.getExistingDirectory();
+    QString existingDir = QFileDialog::getExistingDirectory(
+        this, "Open Directory", InviwoFileDialog::getPreviousPath(QString(property_->getContentType().c_str())));
     std::string dir = existingDir.toLocal8Bit().constData();
 
     if (!dir.empty()) {
+        InviwoFileDialog::setPreviousPath(QString(property_->getContentType().c_str()), existingDir);
         setPropertyTreeInfo(dir);
         property_->set(dir);
         emit modified();
@@ -116,8 +105,8 @@ void DirectoryPropertyWidgetQt::setPropertyTreeInfo(std::string path) {
     files = currentDir.entryList(QStringList(filter), QDir::Files | QDir::NoSymLinks);
     std::vector<std::string> directoryTreeInfo;
 
-    //TODO: set property tree info
-    for (int i=0; i<files.size(); i++) {
+    // TODO: set property tree info
+    for (int i = 0; i < files.size(); i++) {
         std::string fileName = files[i].toLocal8Bit().constData();
         directoryTreeInfo.push_back(fileName);
     }
@@ -129,5 +118,4 @@ void DirectoryPropertyWidgetQt::setPropertyDisplayName() {
     property_->setDisplayName(directoryLabel_->getText());
 }
 
-
-} // namespace
+}  // namespace

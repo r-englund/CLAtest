@@ -44,21 +44,20 @@
 #include <QList>
 #include <QSettings>
 #include <QUrl>
+#include "inviwo/qt/widgets/inviwofiledialog.h"
 
 namespace inviwo {
 
 FilePropertyWidgetQt::FilePropertyWidgetQt(FileProperty* property)
-    : PropertyWidgetQt(property)
-    , property_(property) {
-
+    : PropertyWidgetQt(property), property_(property) {
     generateWidget();
     updateFromProperty();
 }
 
 void FilePropertyWidgetQt::generateWidget() {
     QHBoxLayout* hLayout = new QHBoxLayout();
-    
-    label_ = new EditableLabelQt(this,property_->getDisplayName());
+
+    label_ = new EditableLabelQt(this, property_->getDisplayName());
 
     lineEdit_ = new QLineEdit(this);
     lineEdit_->setReadOnly(true);
@@ -71,11 +70,11 @@ void FilePropertyWidgetQt::generateWidget() {
     hLayout->addWidget(openButton_);
     hLayout->setContentsMargins(0, 0, 0, 0);
     hLayout->setSpacing(0);
-    hLayout->setStretch(1,1);
+    hLayout->setStretch(1, 1);
 
     setLayout(hLayout);
 
-    connect(label_, SIGNAL(textChanged()),this, SLOT(setPropertyDisplayName()));
+    connect(label_, SIGNAL(textChanged()), this, SLOT(setPropertyDisplayName()));
     connect(openButton_, SIGNAL(pressed()), this, SLOT(setPropertyValue()));
 }
 
@@ -83,39 +82,46 @@ void FilePropertyWidgetQt::setPropertyValue() {
     // dialog window settings
     // Setup sidebar
     QList<QUrl> sidebarURLs;
-    QString dataDir_ = QString::fromStdString(InviwoApplication::getPtr()->getPath(InviwoApplication::PATH_USER_INVIWO));
+    QString dataDir_ = QString::fromStdString(
+        InviwoApplication::getPtr()->getPath(InviwoApplication::PATH_DATA));
     sidebarURLs << QUrl::fromLocalFile(QDir(dataDir_).absolutePath());
 #if (QT_VERSION >= QT_VERSION_CHECK(5, 0, 0))
-    sidebarURLs << QUrl::fromLocalFile(QStandardPaths::writableLocation(QStandardPaths::DesktopLocation));
-    sidebarURLs << QUrl::fromLocalFile(QStandardPaths::writableLocation(QStandardPaths::HomeLocation));
+    sidebarURLs << QUrl::fromLocalFile(
+        QStandardPaths::writableLocation(QStandardPaths::DesktopLocation));
+    sidebarURLs << QUrl::fromLocalFile(
+        QStandardPaths::writableLocation(QStandardPaths::HomeLocation));
 #else
-    sidebarURLs << QUrl::fromLocalFile(QDesktopServices::storageLocation(QDesktopServices::DesktopLocation));
-    sidebarURLs << QUrl::fromLocalFile(QDesktopServices::storageLocation(QDesktopServices::HomeLocation));
+    sidebarURLs << QUrl::fromLocalFile(
+        QDesktopServices::storageLocation(QDesktopServices::DesktopLocation));
+    sidebarURLs << QUrl::fromLocalFile(
+        QDesktopServices::storageLocation(QDesktopServices::HomeLocation));
 #endif
     // Setup default path
     QString path;
 
-    if (property_->get()!= "")
-        path=QDir(QString::fromStdString(property_->get())).absolutePath();
+    if (property_->get() != "")
+        path = QDir(QString::fromStdString(property_->get())).absolutePath();
     else
-        path=QDir(dataDir_).absolutePath();
+        path = QDir(dataDir_).absolutePath();
 
     // Setup Extensions
     std::vector<std::string> filters = property_->getNameFilters();
     QStringList extension;
 
-    for (std::vector<std::string>::const_iterator it = filters.begin();
-         it!=filters.end(); ++it)
+    for (std::vector<std::string>::const_iterator it = filters.begin(); it != filters.end(); ++it)
         extension.push_back(QString::fromStdString(*it));
 
-    QFileDialog importFileDialog(this, QString::fromStdString(property_->getDisplayName()), path);
+    InviwoFileDialog importFileDialog(this, property_->getDisplayName(),
+                                      property_->getContentType());
+    // QFileDialog importFileDialog(this, QString::fromStdString(property_->getDisplayName()),
+    // path);
 
     switch (property_->getAcceptMode()) {
-        case FileProperty::AcceptSave :
+        case FileProperty::AcceptSave:
             importFileDialog.setAcceptMode(QFileDialog::AcceptSave);
             break;
 
-        case FileProperty::AcceptOpen :
+        case FileProperty::AcceptOpen:
             importFileDialog.setAcceptMode(QFileDialog::AcceptOpen);
             break;
 
@@ -168,5 +174,4 @@ void FilePropertyWidgetQt::setPropertyDisplayName() {
     property_->setDisplayName(label_->getText());
 }
 
-
-} // namespace
+}  // namespace
