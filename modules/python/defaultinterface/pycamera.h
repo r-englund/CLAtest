@@ -36,7 +36,7 @@
 
 #include <modules/python/pythonmoduledefine.h>
 
-#include "../pythoninterface/pymethod.h"
+#include <modules/python/pythoninterface/pymethod.h>
 
 namespace inviwo {
 PyObject* py_setCameraFocus(PyObject* /*self*/, PyObject* /*args*/);

@@ -33,9 +33,8 @@
 #include "pycanvas.h"
 
 #include <inviwo/core/common/inviwoapplication.h>
-//#include <inviwo/qt/widgets/processors/processorwidgetqt.h>
 #include <modules/opengl/canvasprocessorgl.h>
-#include "../pythoninterface/pyvalueparser.h"
+#include <modules/python/pythoninterface/pyvalueparser.h>
 
 
 namespace inviwo {
