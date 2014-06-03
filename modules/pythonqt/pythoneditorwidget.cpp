@@ -54,33 +54,41 @@
 
 namespace inviwo {
 
-const static std::string defaultSource = "# Inviwo Python script \nimport inviwo \nimport inviwoqt \n\ninviwo.info() \ninviwoqt.info() \n";
+const static std::string defaultSource =
+    "# Inviwo Python script \nimport inviwo \nimport inviwoqt \n\ninviwo.info() \ninviwoqt.info() "
+    "\n";
 PythonEditorWidget* PythonEditorWidget::instance_ = 0;
 PythonEditorWidget* PythonEditorWidget::getPtr() {
-    ivwAssert(instance_!=0,"Singleton not yet created");
+    ivwAssert(instance_ != 0, "Singleton not yet created");
     return instance_;
 }
 
 PythonEditorWidget::PythonEditorWidget(QWidget* parent)
     : InviwoDockWidget(tr("Python Editor"), parent)
     , ProcessorNetworkObserver()
-    , infoTextColor_(153,153,153)
-    , errorTextColor_(255,107,107)
+    , settings_("Inviwo", "Inviwo")
+    , infoTextColor_(153, 153, 153)
+    , errorTextColor_(255, 107, 107)
     , script_()
     , unsavedChanges_(false) {
-    ivwAssert(instance_==0,"This is a Singelton, constructor may only be called once")
-    instance_ = this;
+    ivwAssert(instance_ == 0, "This is a Singelton, constructor may only be called once")
+        instance_ = this;
     setObjectName("PythonEditor");
+    settings_.beginGroup("PythonEditor");
+    QString lastFile = settings_.value("lastScript", "").toString();
+    settings_.endGroup();
     setAllowedAreas(Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea);
     setFloating(true);
     buildWidget();
-    resize(500,700);
+    resize(500, 700);
     setVisible(false);
     ProcessorNetwork* processorNetwork = InviwoApplication::getPtr()->getProcessorNetwork();
     addObservation(processorNetwork);
     processorNetwork->addObserver(this);
     InviwoApplication::getRef().registerFileObserver(this);
     unsavedChanges_ = false;
+
+    if (lastFile.size() != 0) loadFile(lastFile.toLocal8Bit().constData(), false);
 }
 
 void PythonEditorWidget::onProcessorNetworkChange() {
@@ -88,8 +96,8 @@ void PythonEditorWidget::onProcessorNetworkChange() {
         script_.getScriptRecorder()->recordNetworkChanges();
         std::string currentScriptInEditor = pythonCode_->toPlainText().toLocal8Bit().constData();
 
-        if (script_.getSource()!=currentScriptInEditor) {
-            //set new script source from recorder
+        if (script_.getSource() != currentScriptInEditor) {
+            // set new script source from recorder
             clearOutput();
             pythonCode_->setPlainText(script_.getSource().c_str());
             pythonCode_->setPlainText(script_.getSource().c_str());
@@ -149,10 +157,11 @@ void PythonEditorWidget::buildWidget() {
     horizontalLayout->addWidget(line3);
     horizontalLayout->addWidget(startRecordScriptButton_);
     horizontalLayout->addWidget(endRecordScriptButton_);
-    QSpacerItem* horizontalSpacer = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
+    QSpacerItem* horizontalSpacer =
+        new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
     horizontalLayout->addItem(horizontalSpacer);
-    //Done creating buttons
-    QSplitter* splitter = new  QSplitter(content);
+    // Done creating buttons
+    QSplitter* splitter = new QSplitter(content);
     splitter->setOrientation(Qt::Vertical);
     pythonCode_ = new QPlainTextEdit(content);
     pythonCode_->setObjectName("pythonEditor");
@@ -161,7 +170,8 @@ void PythonEditorWidget::buildWidget() {
     pythonOutput_->setObjectName("pythonConsole");
     pythonOutput_->setReadOnly(true);
     pythonOutput_->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
-    syntaxHighligther_ = SyntaxHighligther::createSyntaxHighligther<Python>(pythonCode_->document());
+    syntaxHighligther_ =
+        SyntaxHighligther::createSyntaxHighligther<Python>(pythonCode_->document());
     verticalLayout->addLayout(horizontalLayout);
     splitter->addWidget(pythonCode_);
     splitter->addWidget(pythonOutput_);
@@ -169,21 +179,20 @@ void PythonEditorWidget::buildWidget() {
     splitter->setStretchFactor(1, 0);
     verticalLayout->addWidget(splitter);
     setWidget(content);
-    connect(pythonCode_,SIGNAL(textChanged()),this,SLOT(onTextChange()));
-    connect(runButton,SIGNAL(clicked()),this,SLOT(run()));
-    connect(newButton,SIGNAL(clicked()),this,SLOT(setDefaultText()));
-    connect(openButton,SIGNAL(clicked()),this,SLOT(open()));
-    connect(saveButton,SIGNAL(clicked()),this,SLOT(save()));
-    connect(saveAsButton,SIGNAL(clicked()),this,SLOT(saveAs()));
-    connect(clearOutputButton,SIGNAL(clicked()),this,SLOT(clearOutput()));
-    connect(startRecordScriptButton_,SIGNAL(clicked()),this,SLOT(startRecordingScript()));
-    connect(endRecordScriptButton_,SIGNAL(clicked()),this,SLOT(endRecordingScript()));
+    connect(pythonCode_, SIGNAL(textChanged()), this, SLOT(onTextChange()));
+    connect(runButton, SIGNAL(clicked()), this, SLOT(run()));
+    connect(newButton, SIGNAL(clicked()), this, SLOT(setDefaultText()));
+    connect(openButton, SIGNAL(clicked()), this, SLOT(open()));
+    connect(saveButton, SIGNAL(clicked()), this, SLOT(save()));
+    connect(saveAsButton, SIGNAL(clicked()), this, SLOT(saveAs()));
+    connect(clearOutputButton, SIGNAL(clicked()), this, SLOT(clearOutput()));
+    connect(startRecordScriptButton_, SIGNAL(clicked()), this, SLOT(startRecordingScript()));
+    connect(endRecordScriptButton_, SIGNAL(clicked()), this, SLOT(endRecordingScript()));
 }
-
 
 PythonEditorWidget::~PythonEditorWidget() {}
 
-void PythonEditorWidget::appendToOutput(const std::string& msg,bool error) {
+void PythonEditorWidget::appendToOutput(const std::string& msg, bool error) {
     pythonOutput_->setTextColor(error ? errorTextColor_ : infoTextColor_);
     pythonOutput_->append(msg.c_str());
 }
@@ -191,39 +200,42 @@ void PythonEditorWidget::appendToOutput(const std::string& msg,bool error) {
 void PythonEditorWidget::fileChanged(std::string fileName) {
     std::string msg = "The file " + URLParser::getFileNameWithExtension(scriptFileName_) +
                       " has been modified outside of Inwivo, do you want to reload its contents";
-    int ret = QMessageBox::question(this,"Python Editor",msg.c_str(),"Yes","No");
+    int ret = QMessageBox::question(this, "Python Editor", msg.c_str(), "Yes", "No");
 
-    if (ret == 0) { //yes
+    if (ret == 0) {  // yes
         readFile();
     } else {
-        unsavedChanges_ = true; //set code change to true so that we can quick save without making more changes
+        unsavedChanges_ = true;
+        // set code change to true so that we can quick save without making more changes
     }
 }
 
-void PythonEditorWidget::loadFile(std::string fileName,bool askForSave) {
+void PythonEditorWidget::loadFile(std::string fileName, bool askForSave) {
     if (askForSave && unsavedChanges_) {
-        int ret = QMessageBox::information(this,"Python Editor","Do you want to save unsaved changes?","Save","Discard","Cancel");
+        int ret =
+            QMessageBox::information(this, "Python Editor", "Do you want to save unsaved changes?",
+                                     "Save", "Discard", "Cancel");
 
-        if (ret == 0)
-            save();
+        if (ret == 0) save();
 
-        if (ret == 2) //Cancel
+        if (ret == 2)  // Cancel
             return;
     }
-
     scriptFileName_ = fileName;
+    settings_.beginGroup("PythonEditor");
+    settings_.setValue("lastScript", scriptFileName_.c_str());
+    settings_.endGroup();
     readFile();
 }
 
-void PythonEditorWidget::onPyhonExecutionOutput(std::string msg,OutputType outputType) {
-    appendToOutput(msg,outputType!=PythonExecutionOutputObeserver::standard);
+void PythonEditorWidget::onPyhonExecutionOutput(std::string msg, OutputType outputType) {
+    appendToOutput(msg, outputType != PythonExecutionOutputObeserver::standard);
 }
 
 void PythonEditorWidget::save() {
-    if (script_.getSource() == defaultSource)
-        return; //nothig to be saved
+    if (script_.getSource() == defaultSource) return;  // nothig to be saved
 
-    if (scriptFileName_.size()==0) {
+    if (scriptFileName_.size() == 0) {
         saveAs();
     } else if (unsavedChanges_) {
         stopFileObservation(scriptFileName_);
@@ -231,23 +243,25 @@ void PythonEditorWidget::save() {
         file << pythonCode_->toPlainText().toLocal8Bit().constData();
         file.close();
         startFileObservation(scriptFileName_);
-        LogInfo("Python Script saved("<<scriptFileName_<<")");
+        LogInfo("Python Script saved(" << scriptFileName_ << ")");
+        settings_.beginGroup("PythonEditor");
+        settings_.setValue("lastScript", scriptFileName_.c_str());
+        settings_.endGroup();
         unsavedChanges_ = false;
     }
 }
 
 void PythonEditorWidget::readFile() {
     std::ifstream file(scriptFileName_.c_str());
-    std::string text((std::istreambuf_iterator<char>(file)),
-                     std::istreambuf_iterator<char>());
+    std::string text((std::istreambuf_iterator<char>(file)), std::istreambuf_iterator<char>());
     file.close();
-    replaceInString(text,"\t","    ");
+    replaceInString(text, "\t", "    ");
     pythonCode_->setPlainText(text.c_str());
     script_.setSource(text);
     unsavedChanges_ = false;
 }
 
-bool PythonEditorWidget::hasFocus()const {
+bool PythonEditorWidget::hasFocus() const {
     if (InviwoDockWidget::hasFocus()) return true;
 
     if (pythonCode_->hasFocus()) return true;
@@ -256,12 +270,12 @@ bool PythonEditorWidget::hasFocus()const {
 }
 
 void PythonEditorWidget::saveAs() {
-    if (script_.getSource() == defaultSource)
-        return; //nothig to be saved
+    if (script_.getSource() == defaultSource) return;  // nothig to be saved
 
-    InviwoFileDialog saveFileDialog(this, "Save Python Script ..." , "script");
-   
-    saveFileDialog.setDirectory(QDir((InviwoApplication::getPtr()->getPath(InviwoApplication::PATH_DATA) + "scripts").c_str()));
+    InviwoFileDialog saveFileDialog(this, "Save Python Script ...", "script");
+
+    saveFileDialog.setDirectory(QDir(
+        (InviwoApplication::getPtr()->getPath(InviwoApplication::PATH_DATA) + "scripts").c_str()));
     saveFileDialog.setFileMode(QFileDialog::AnyFile);
     saveFileDialog.setAcceptMode(QFileDialog::AcceptSave);
     saveFileDialog.setConfirmOverwrite(true);
@@ -269,7 +283,7 @@ void PythonEditorWidget::saveAs() {
     saveFileDialog.addSidebarPath(InviwoApplication::PATH_SCRIPTS);
     saveFileDialog.addSidebarPath(InviwoApplication::PATH_SCRIPTS);
 
-    saveFileDialog.addExtension("py","Python Script");
+    saveFileDialog.addExtension("py", "Python Script");
 
     if (saveFileDialog.exec()) {
         stopFileObservation(scriptFileName_);
@@ -284,34 +298,39 @@ void PythonEditorWidget::saveAs() {
 
 void PythonEditorWidget::open() {
     if (unsavedChanges_) {
-        int ret = QMessageBox::information(this,"Python Editor","Do you want to save unsaved changes?","Save","Discard","Cancel");
+        int ret =
+            QMessageBox::information(this, "Python Editor", "Do you want to save unsaved changes?",
+                                     "Save", "Discard", "Cancel");
 
-        if (ret == 0)
-            save();
+        if (ret == 0) save();
 
-        if (ret == 2) //Cancel
+        if (ret == 2)  // Cancel
             return;
     }
 
-    InviwoFileDialog openFileDialog(this, "Open Python Script ..." , "script");
-    openFileDialog.setDirectory(QDir(InviwoApplication::getPtr()->getPath(InviwoApplication::PATH_SCRIPTS).c_str()));
+    InviwoFileDialog openFileDialog(this, "Open Python Script ...", "script");
+    openFileDialog.setDirectory(
+        QDir(InviwoApplication::getPtr()->getPath(InviwoApplication::PATH_SCRIPTS).c_str()));
     openFileDialog.setFileMode(QFileDialog::AnyFile);
 
     openFileDialog.addSidebarPath(InviwoApplication::PATH_SCRIPTS);
     openFileDialog.addSidebarPath(InviwoApplication::PATH_SCRIPTS);
 
-    openFileDialog.addExtension("py","Python Script");
+    openFileDialog.addExtension("py", "Python Script");
 
     if (openFileDialog.exec()) {
         stopFileObservation(scriptFileName_);
         scriptFileName_ = openFileDialog.selectedFiles().at(0).toLocal8Bit().constData();
+        settings_.beginGroup("PythonEditor");
+        settings_.setValue("lastScript", scriptFileName_.c_str());
+        settings_.endGroup();
         startFileObservation(scriptFileName_);
         readFile();
     }
 }
 
 void PythonEditorWidget::run() {
-    if (unsavedChanges_ && scriptFileName_.size()!=0) //save if needed
+    if (unsavedChanges_ && scriptFileName_.size() != 0)  // save if needed
         save();
 
     clearOutput();
@@ -328,17 +347,19 @@ void PythonEditorWidget::run() {
 }
 
 void PythonEditorWidget::show() {
-    //setFloating(true);
+    // setFloating(true);
     setVisible(true);
 }
 
 void PythonEditorWidget::setDefaultText() {
     if (unsavedChanges_) {
-        int ret = QMessageBox::information(this,"Python Editor","Do you want to save unsaved changes?","Save","Discard Changes","Cancel");
+        int ret =
+            QMessageBox::information(this, "Python Editor", "Do you want to save unsaved changes?",
+                                     "Save", "Discard Changes", "Cancel");
 
         if (ret == 0)
             save();
-        else if (ret == 2) //cancel
+        else if (ret == 2)  // cancel
             return;
     }
 
@@ -346,21 +367,22 @@ void PythonEditorWidget::setDefaultText() {
     script_.setSource(defaultSource);
     stopFileObservation(scriptFileName_);
     scriptFileName_ = "";
+    settings_.beginGroup("PythonEditor");
+    settings_.setValue("lastScript", scriptFileName_.c_str());
+    settings_.endGroup();
     unsavedChanges_ = false;
 }
 
-void PythonEditorWidget::clearOutput() {
-    pythonOutput_->setText("");
-}
+void PythonEditorWidget::clearOutput() { pythonOutput_->setText(""); }
 
 void PythonEditorWidget::onTextChange() {
     std::string source = pythonCode_->toPlainText().toLocal8Bit().constData();
     int size = static_cast<int>(source.length());
 
-    replaceInString(source,"\t","    ");
+    replaceInString(source, "\t", "    ");
 
     int prevPos = pythonCode_->textCursor().position();
-    if(size + 3 == source.size()){ // a tab was added
+    if (size + 3 == source.size()) {  // a tab was added
         prevPos += 3;
     }
 
@@ -388,6 +410,4 @@ void PythonEditorWidget::endRecordingScript() {
     endRecordScriptButton_->setDisabled(true);
 }
 
-
-
-} // namespace
+}  // namespace
