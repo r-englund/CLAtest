@@ -190,7 +190,7 @@ bool ImageGL::updateFrom(const ImageGL* source) {
     if (srcFBO->hasStencilAttachment() && tgtFBO->hasStencilAttachment())
         mask |= GL_STENCIL_BUFFER_BIT;
 
-    glBlitFramebufferEXT(0, 0, sTex->getWidth(), sTex->getHeight(), 0, 0, tTex->getWidth(),
+    glBlitFramebuffer(0, 0, sTex->getWidth(), sTex->getHeight(), 0, 0, tTex->getWidth(),
                          tTex->getHeight(), mask, GL_NEAREST);
     bool pickingCopied = false;
 
@@ -198,15 +198,15 @@ bool ImageGL::updateFrom(const ImageGL* source) {
         if (srcIDs[i] != GL_NONE && srcIDs[i] == targetIDs[i]) {
             glReadBuffer(srcIDs[i]);
             glDrawBuffer(targetIDs[i]);
-            glBlitFramebufferEXT(0, 0, sTex->getWidth(), sTex->getHeight(), 0, 0, tTex->getWidth(),
+            glBlitFramebuffer(0, 0, sTex->getWidth(), sTex->getHeight(), 0, 0, tTex->getWidth(),
                                  tTex->getHeight(), GL_COLOR_BUFFER_BIT, GL_NEAREST);
 
             if (srcIDs[i] == pickingAttachmentID_) pickingCopied = true;
         }
     }
 
-    glReadBuffer(GL_COLOR_ATTACHMENT0_EXT);
-    glDrawBuffer(GL_COLOR_ATTACHMENT0_EXT);
+    glReadBuffer(GL_COLOR_ATTACHMENT0);
+    glDrawBuffer(GL_COLOR_ATTACHMENT0);
     srcFBO->setRead_Blit(false);
     tgtFBO->setDraw_Blit(false);
     FrameBufferObject::deactivate();

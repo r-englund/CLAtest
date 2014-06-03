@@ -40,7 +40,12 @@
 #include <inviwo/core/common/inviwo.h>
 
 #define QT_NO_OPENGL_ES_2
+#ifdef __APPLE__
+#define __gl_h_
+#define GL_DO_NOT_WARN_IF_MULTI_GL_VERSION_HEADERS_INCLUDED
+#else
 #define GLEXT_64_TYPES_DEFINED
+#endif
 #include <QGLWidget>
 #include <QInputEvent>
 #include <QMouseEvent>

@@ -45,8 +45,8 @@ namespace inviwo {
 NetworkEditorView::NetworkEditorView(NetworkEditor* networkEditor, QWidget* parent)
     : QGraphicsView(parent)
     , NetworkEditorObserver()
-    , zoom_(1.0f)
-    , networkEditor_(networkEditor) {
+    , networkEditor_(networkEditor)
+    , zoom_(1.0f) {
     initialize();
     setRenderHint(QPainter::Antialiasing, true);
     setMouseTracking(true);

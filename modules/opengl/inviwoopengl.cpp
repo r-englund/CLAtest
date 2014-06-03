@@ -37,10 +37,22 @@ void LogGLError(const char* fileName, const char* functionName, int lineNumber) 
     GLenum err = glGetError();
 
     if (err != GL_NO_ERROR) {
-        const GLubyte* errorString = gluErrorString(err);
         std::ostringstream errorMessage;
         errorMessage << "OpenGL Error (" << fileName << ", " << functionName << ", Ln " << lineNumber << "): ";
+#ifdef __APPLE__
+        std::string errorString = "";
+        switch(err) {
+            case GL_INVALID_OPERATION:      errorString="INVALID_OPERATION";      break;
+            case GL_INVALID_ENUM:           errorString="INVALID_ENUM";           break;
+            case GL_INVALID_VALUE:          errorString="INVALID_VALUE";          break;
+            case GL_OUT_OF_MEMORY:          errorString="OUT_OF_MEMORY";          break;
+            case GL_INVALID_FRAMEBUFFER_OPERATION:  errorString="INVALID_FRAMEBUFFER_OPERATION";  break;
+        }
+        errorMessage << (errorString.empty() ? errorString.c_str() : "undefined");
+#else
+        const GLubyte* errorString = gluErrorString(err);
         errorMessage << (errorString ? (const char*)errorString : "undefined");
+#endif
         inviwo::LogCentral::instance()->log("OpenGL", inviwo::Error, __FILE__, __FUNCTION__, __LINE__, (errorMessage.str()));
     }
 }
