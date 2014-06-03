@@ -156,8 +156,8 @@ void CameraProperty::updateProjectionMatrix() {
 }
 
 void CameraProperty::updateViewMatrix() {
-    lookRight_ = glm::cross(lookUp_.get(), glm::normalize(lookTo_.get()-lookFrom_.get()));
-    viewMatrix_ = glm::lookAt(lookFrom_.get(), lookTo_.get(), glm::normalize(lookUp_.get()));
+    lookRight_ = glm::normalize(glm::cross(lookTo_.get()-lookFrom_.get(), lookUp_.get()));
+    viewMatrix_ = glm::lookAt(lookFrom_.get(), lookTo_.get(), lookUp_.get());
     inverseViewMatrix_ = glm::inverse(viewMatrix_);
     invalidate();
 }
