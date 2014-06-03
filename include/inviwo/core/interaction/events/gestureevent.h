@@ -3,7 +3,7 @@
  * Inviwo - Interactive Visualization Workshop
  * Version 0.6b
  *
- * Copyright (c) 2013-2014 Inviwo Foundation
+ * Copyright (c) 2014 Inviwo Foundation
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -26,75 +26,56 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
- * Main file authors: Sathish Kottravel, Erik Sundén
+ * Main file authors: Erik Sundén
  *
  *********************************************************************************/
 
-#ifndef IVW_CANVASQT_H
-#define IVW_CANVASQT_H
+#ifndef IVW_GESTUREEVENT_H
+#define IVW_GESTUREEVENT_H
 
-#include <modules/openglqt/openglqtmoduledefine.h>
-#include <modules/opengl/canvasgl.h>
-#include <inviwo/qt/widgets/eventconverterqt.h>
-#include <inviwo/core/network/processornetworkevaluator.h>
+#include <inviwo/core/common/inviwocoredefine.h>
 #include <inviwo/core/common/inviwo.h>
-
-#define QT_NO_OPENGL_ES_2
-#define GLEXT_64_TYPES_DEFINED
-#include <QGLWidget>
-#include <QInputEvent>
-#include <QMouseEvent>
-#include <QKeyEvent>
-#include <QEvent>
-
-#ifndef QT_NO_GESTURES
-#include <QGestureEvent>
-#include <QPanGesture>
-#include <QPinchGesture>
-#endif
+#include <inviwo/core/interaction/events/interactionevent.h>
 
 namespace inviwo {
 
-class IVW_MODULE_OPENGLQT_API CanvasQt : public QGLWidget, public CanvasGL {
-    Q_OBJECT
+class IVW_CORE_API GestureEvent : public InteractionEvent {
 public:
-    CanvasQt(QWidget* parent = NULL, uvec2 dim = uvec2(256,256));
-    ~CanvasQt();
+    enum GestureType {
+        PAN   =      0,
+        PINCH,
+        SWIPE,
+        COUNT
+    };
 
-    static void defineDefaultContextFormat();
+    enum GestureState {
+        GESTURE_STATE_NONE    =      0,
+        GESTURE_STATE_STARTED,
+        GESTURE_STATE_UPDATED,
+        GESTURE_STATE_ENDED,
+        GESTURE_STATE_CANCELED
+    };
 
-    void initialize();
-    void initializeSquare();
-    void deinitialize();
-    void activate();
-    void glSwapBuffers();
-    void update();
-    void repaint();
+    GestureEvent(vec2 deltaPos, double deltaDistance, GestureEvent::GestureType type, GestureEvent::GestureState state);
+    ~GestureEvent();
 
-protected:
-    void initializeGL();
-    void paintGL();
+    inline vec2 deltaPos() const { return deltaPos_; }
+    inline double deltaDistance() const { return deltaDistance_; }
+    inline GestureEvent::GestureType type() const { return type_; }
+    inline GestureEvent::GestureState state() const { return state_; }
 
-    bool event(QEvent *e);
-    void mousePressEvent(QMouseEvent* e);
-    void mouseReleaseEvent(QMouseEvent* e);
-    void mouseMoveEvent(QMouseEvent* e);
-    void wheelEvent (QWheelEvent* e);
-    void keyPressEvent(QKeyEvent* e);
-    void keyReleaseEvent(QKeyEvent* e);
+    virtual std::string getClassName() const { return "GestureEvent"; }
+
+    virtual void serialize(IvwSerializer& s) const;
+    virtual void deserialize(IvwDeserializer& d);
 
 private:
-#ifndef QT_NO_GESTURES
-    bool gestureEvent(QGestureEvent *e);
-    void panTriggered(QPanGesture*);
-    void pinchTriggered(QPinchGesture*);
-#endif
-
-    static QGLWidget* sharedWidget_; //For rendering-context sharing
-    static QGLFormat sharedFormat_;
-    bool swapBuffersAllowed_;
+    vec2 deltaPos_;
+    double deltaDistance_;
+    GestureEvent::GestureType type_;
+    GestureEvent::GestureState state_;
 };
 
 } // namespace
 
-#endif // IVW_CANVASQT_H
+#endif // IVW_GESTUREEVENT_H

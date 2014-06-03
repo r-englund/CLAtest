@@ -85,9 +85,9 @@ void Canvas::render(const Image* im, LayerType layerType/* = COLOR_LAYER*/) {}
 
 void Canvas::activate() {}
 
-void Canvas::resize(uvec2 size) {
+void Canvas::resize(uvec2 canvasSize, uvec2 imageSize) {
     uvec2 previousDimensions = dimensions_;
-    dimensions_ = size;
+    dimensions_ = imageSize;
 
     if (getProcessorNetworkEvaluator()) {
         getProcessorNetworkEvaluator()->activateDefaultRenderContext();
@@ -152,6 +152,10 @@ void Canvas::keyPressEvent(KeyboardEvent* e) {
 }
 
 void Canvas::keyReleaseEvent(KeyboardEvent* e) {
+    interactionEvent(e);
+}
+
+void Canvas::gestureEvent(GestureEvent* e) {
     interactionEvent(e);
 }
 

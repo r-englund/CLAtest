@@ -64,6 +64,11 @@ CanvasQt::CanvasQt(QWidget* parent, uvec2 dim)
     setAutoBufferSwap(false);
     setFocusPolicy(Qt::TabFocus);
     setAttribute(Qt::WA_OpaquePaintEvent);
+
+#ifndef QT_NO_GESTURES
+    grabGesture(Qt::PanGesture);
+    grabGesture(Qt::PinchGesture);
+#endif
 }
 
 void CanvasQt::defineDefaultContextFormat(){
@@ -119,6 +124,14 @@ void CanvasQt::repaint() {
 void CanvasQt::paintGL() {
     swapBuffersAllowed_ = true;
     CanvasGL::update();
+}
+
+bool CanvasQt::event(QEvent *e) {
+#ifndef QT_NO_GESTURES
+    if (e->type() == QEvent::Gesture)
+        return gestureEvent(static_cast<QGestureEvent*>(e));
+#endif
+    return QGLWidget::event(e);
 }
 
 void CanvasQt::mousePressEvent(QMouseEvent* e) {
@@ -180,6 +193,14 @@ void CanvasQt::wheelEvent(QWheelEvent* e){
 }
 
 void CanvasQt::keyPressEvent(QKeyEvent* e) {
+    if(parentWidget() && e->key() == Qt::Key_F && e->modifiers() == Qt::ShiftModifier){
+        if(parentWidget()->isFullScreen()) {
+            parentWidget()->showNormal();
+        } else {
+            parentWidget()->showFullScreen();
+        }
+    }
+
     if (!processorNetworkEvaluator_) return;
 
     KeyboardEvent* keyEvent = new KeyboardEvent(
@@ -202,5 +223,43 @@ void CanvasQt::keyReleaseEvent(QKeyEvent* e) {
     Canvas::keyReleaseEvent(keyEvent);
     delete keyEvent;
 }
+
+#ifndef QT_NO_GESTURES
+
+bool CanvasQt::gestureEvent(QGestureEvent* e) {
+    if (QGesture* pan = e->gesture(Qt::PanGesture))
+        panTriggered(static_cast<QPanGesture *>(pan));
+    if (QGesture* pinch = e->gesture(Qt::PinchGesture))
+        pinchTriggered(static_cast<QPinchGesture *>(pinch));
+    e->accept();
+    return true;
+}
+
+void CanvasQt::panTriggered(QPanGesture* gesture) {
+#ifndef QT_NO_CURSOR
+    switch (gesture->state()) {
+         case Qt::GestureStarted:
+         case Qt::GestureUpdated:
+             setCursor(Qt::SizeAllCursor);
+             break;
+         default:
+             setCursor(Qt::ArrowCursor);
+    }
+#endif
+
+    GestureEvent* gestureEvent = new GestureEvent(vec2(gesture->delta().x(), gesture->delta().y()), 0.0,
+        GestureEvent::PAN, EventConverterQt::getGestureState(gesture));
+    Canvas::gestureEvent(gestureEvent);
+    delete gestureEvent;
+}
+
+void CanvasQt::pinchTriggered(QPinchGesture* gesture) {
+    GestureEvent* gestureEvent = new GestureEvent(vec2(gesture->centerPoint().x(), gesture->centerPoint().y()), gesture->scaleFactor(),
+        GestureEvent::PINCH, EventConverterQt::getGestureState(gesture));
+    Canvas::gestureEvent(gestureEvent);
+    delete gestureEvent;
+}
+
+#endif
 
 } // namespace

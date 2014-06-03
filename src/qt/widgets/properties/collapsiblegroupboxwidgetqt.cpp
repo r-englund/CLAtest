@@ -134,6 +134,8 @@ void CollapsibleGroupBoxWidgetQt::addProperty(Property* prop) {
             static_cast<PropertyWidgetQt*>(PropertyWidgetFactory::getPtr()->create(prop));
 
     if (propertyWidget) {
+        if(prop->getVisibilityMode() == INVISIBLE)
+            propertyWidget->setVisible(false);
         addWidget(propertyWidget);
         prop->registerWidget(propertyWidget);
         connect(propertyWidget, SIGNAL(modified()), this, SLOT(propertyModified()));
