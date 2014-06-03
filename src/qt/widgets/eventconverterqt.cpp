@@ -68,6 +68,21 @@ MouseEvent::MouseButton inviwo::EventConverterQt::getMouseWheelButton(QWheelEven
     return MouseEvent::MOUSE_BUTTON_NONE;
 }
 
+#ifndef QT_NO_GESTURES
+GestureEvent::GestureState inviwo::EventConverterQt::getGestureState(QGesture* gesture){
+    if (gesture->state() == Qt::GestureStarted)
+        return GestureEvent::GESTURE_STATE_STARTED;
+    else if (gesture->state() == Qt::GestureUpdated)
+        return GestureEvent::GESTURE_STATE_UPDATED;
+    else if (gesture->state() == Qt::GestureFinished)
+        return GestureEvent::GESTURE_STATE_ENDED;
+    else if (gesture->state() == Qt::GestureCanceled)
+        return GestureEvent::GESTURE_STATE_CANCELED;
+
+    return GestureEvent::GESTURE_STATE_NONE;
+}
+#endif
+
 InteractionEvent::Modifier inviwo::EventConverterQt::getModifier(QInputEvent* e) {
     if (e->modifiers() == Qt::ShiftModifier)
         return InteractionEvent::MODIFIER_SHIFT;

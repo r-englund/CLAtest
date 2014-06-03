@@ -43,6 +43,10 @@ CanvasProcessor::CanvasProcessor()
     : Processor()
     , inport_("inport")
     , dimensions_("dimensions", "Dimensions", ivec2(256,256), ivec2(128,128), ivec2(4096,4096))
+    , enableCustomInputDimensions_("enableCustomInputDimensions", "Enable Custom Input Dimensions", false)
+    , customInputDimensions_("customInputDimensions", "Input Image Dimensions", ivec2(256,256), ivec2(128,128), ivec2(4096,4096))
+    , keepAspectRatio_("keepAspectRatio", "Keep Aspect Ratio", true)
+    , aspectRatioScaling_("aspectRatioScaling", "Aspect Ratio Scaling", 1.f, 0.25f, 4.f)
     , visibleLayer_("visibleLayer", "Visible Layer")
     , saveLayerDirectory_("layerDir", "Output Directory", "" , "image")
     , saveLayerButton_("saveLayer", "Save Image Layer", PropertyOwner::VALID)
@@ -51,8 +55,26 @@ CanvasProcessor::CanvasProcessor()
     , queuedRequest_(false)
 {
     addPort(inport_);
-    dimensions_.onChange(this, &CanvasProcessor::resizeCanvas);
+    dimensions_.onChange(this, &CanvasProcessor::sizeSchemeChanged);
     addProperty(dimensions_);
+    enableCustomInputDimensions_.onChange(this, &CanvasProcessor::sizeSchemeChanged);
+    addProperty(enableCustomInputDimensions_);
+    customInputDimensions_.onChange(this, &CanvasProcessor::sizeSchemeChanged);
+    customInputDimensions_.setVisible(false);
+    addProperty(customInputDimensions_);
+    keepAspectRatio_.onChange(this, &CanvasProcessor::sizeSchemeChanged);
+    keepAspectRatio_.setVisible(false);
+    addProperty(keepAspectRatio_);
+    aspectRatioScaling_.onChange(this, &CanvasProcessor::sizeSchemeChanged);
+    aspectRatioScaling_.setVisible(false);
+    addProperty(aspectRatioScaling_);
+    dimensions_.setGroupID("inputSize");
+    enableCustomInputDimensions_.setGroupID("inputSize");
+    keepAspectRatio_.setGroupID("inputSize");
+    aspectRatioScaling_.setGroupID("inputSize");
+    customInputDimensions_.setGroupID("inputSize");
+    Property::setGroupDisplayName("inputSize", "Input Dimension Parameters");
+
     visibleLayer_.addOption("color", "Color layer", COLOR_LAYER);
     visibleLayer_.addOption("depth", "Depth layer", DEPTH_LAYER);
     visibleLayer_.addOption("picking", "Picking layer", PICKING_LAYER);
@@ -92,17 +114,53 @@ Canvas* CanvasProcessor::getCanvas() const {
 
 void CanvasProcessor::resizeCanvas() {
     if (!disableResize_) {
-        if (processorWidget_)
-            processorWidget_->setDimension(dimensions_.get());
+        if (processorWidget_){
+            uvec2 size = dimensions_.get();
+            processorWidget_->setDimension(size);
+        }
     }
+}
+
+void CanvasProcessor::sizeSchemeChanged() {
+    keepAspectRatio_.setVisible(enableCustomInputDimensions_.get());
+    aspectRatioScaling_.setVisible(enableCustomInputDimensions_.get() && keepAspectRatio_.get());
+    customInputDimensions_.setVisible(enableCustomInputDimensions_.get());
+    customInputDimensions_.setReadOnly(keepAspectRatio_.get());
+
+    if(enableCustomInputDimensions_.get()){
+        if(keepAspectRatio_.get()){
+            ivec2 size = dimensions_.get();
+
+            int maxDim, minDim;
+
+            if(size.x >= size.y){
+                maxDim = 0;
+                minDim = 1;
+            }
+            else{
+                maxDim = 1;
+                minDim = 0;
+            }
+
+            float ratio = static_cast<float>(size[minDim])/static_cast<float>(size[maxDim]);
+            size[maxDim] = static_cast<int>(static_cast<float>(size[maxDim])*aspectRatioScaling_.get());
+            size[minDim] = static_cast<int>(static_cast<float>(size[maxDim])*ratio);
+
+            customInputDimensions_.set(size);
+        }
+
+        if(canvas_)
+            canvas_->resize(uvec2(dimensions_.get()), uvec2(customInputDimensions_.get()));
+    }
+    else if(canvas_)
+        canvas_->resize(uvec2(dimensions_.get()), uvec2(dimensions_.get()));
 }
 
 void CanvasProcessor::setCanvasSize(ivec2 dim) {
     disableResize_ = true;
     dimensions_.set(dim);
 
-    if (canvas_)
-        canvas_->resize(uvec2(dimensions_.get()));
+    sizeSchemeChanged();
 
     disableResize_ = false;
 }

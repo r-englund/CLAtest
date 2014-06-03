@@ -36,6 +36,7 @@
 #include <inviwo/core/common/inviwocoredefine.h>
 #include <inviwo/core/common/inviwo.h>
 #include <inviwo/core/ports/imageport.h>
+#include <inviwo/core/properties/boolproperty.h>
 #include <inviwo/core/properties/ordinalproperty.h>
 #include <inviwo/core/properties/baseoptionproperty.h>
 #include <inviwo/core/properties/directoryproperty.h>
@@ -75,6 +76,10 @@ protected:
     ImageInport inport_;
 
     IntVec2Property dimensions_;
+    BoolProperty enableCustomInputDimensions_;
+    IntVec2Property customInputDimensions_;
+    BoolProperty keepAspectRatio_;
+    FloatProperty aspectRatioScaling_; //customInputDimensions_ * aspectRatioScaling_ = dimensions_, but with aspect ratio preservation
     OptionPropertyInt visibleLayer_; // LayerType enum (Cannot serialize/deserialize enums so we use an int and cast it)
     DirectoryProperty saveLayerDirectory_;
     ButtonProperty saveLayerButton_;
@@ -85,6 +90,7 @@ private:
     bool queuedRequest_;
 
     void resizeCanvas();
+    void sizeSchemeChanged();
 };
 
 } // namespace

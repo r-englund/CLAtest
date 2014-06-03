@@ -41,6 +41,7 @@
 #include <inviwo/core/network/processornetworkevaluator.h>
 #include <inviwo/core/interaction/pickingcontainer.h>
 #include <inviwo/core/interaction/events/eventhandler.h>
+#include <inviwo/core/interaction/events/gestureevent.h>
 #include <inviwo/core/interaction/events/keyboardevent.h>
 #include <inviwo/core/interaction/events/mouseevent.h>
 
@@ -59,7 +60,7 @@ public:
     virtual void deinitialize();
     virtual void activate();
     virtual void render(const Image*, LayerType layerType = COLOR_LAYER);
-    virtual void resize(uvec2 dimensions);
+    virtual void resize(uvec2 canvasSize, uvec2 imageSize);
     virtual uvec2 getDimension();
     virtual void update();
 
@@ -78,6 +79,8 @@ protected:
 
     void keyPressEvent(KeyboardEvent* e);
     void keyReleaseEvent(KeyboardEvent* e);
+
+    void gestureEvent(GestureEvent* e);
 
     uvec2 mousePosToPixelCoordinates(ivec2 mpos);
 

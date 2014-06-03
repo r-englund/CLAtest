@@ -3,18 +3,18 @@
  * Inviwo - Interactive Visualization Workshop
  * Version 0.6b
  *
- * Copyright (c) 2013-2014 Inviwo Foundation
+ * Copyright (c) 2014 Inviwo Foundation
  * All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met: 
- * 
+ * modification, are permitted provided that the following conditions are met:
+ *
  * 1. Redistributions of source code must retain the above copyright notice, this
- * list of conditions and the following disclaimer. 
+ * list of conditions and the following disclaimer.
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  * this list of conditions and the following disclaimer in the documentation
- * and/or other materials provided with the distribution. 
- * 
+ * and/or other materials provided with the distribution.
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
  * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
@@ -25,38 +25,31 @@
  * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- * 
- * Main file author: Hans-Christian Helltegen
+ *
+ * Main file author: Erik Sundén
  *
  *********************************************************************************/
 
-#ifndef IVW_EVENTCONVERTERQT_H
-#define IVW_EVENTCONVERTERQT_H
-
-#include <inviwo/qt/widgets/inviwoqtwidgetsdefine.h>
-#include <QMouseEvent>
-#include <QWheelEvent>
-#include <QInputEvent>
-#ifndef QT_NO_GESTURES
-#include <QGesture>
-#endif
-#include <inviwo/core/interaction/events/mouseevent.h>
 #include <inviwo/core/interaction/events/gestureevent.h>
 
 namespace inviwo {
 
-class IVW_QTWIDGETS_API EventConverterQt {
-public:
-    EventConverterQt();
-    ~EventConverterQt();
+GestureEvent::GestureEvent(vec2 deltaPos, double deltaDistance, GestureEvent::GestureType type, GestureEvent::GestureState state)
+    : InteractionEvent(),
+      deltaPos_(deltaPos),
+      deltaDistance_(deltaDistance),
+      type_(type),
+      state_(state) {
+}
 
-    static MouseEvent::MouseButton getMouseButton(QMouseEvent* e);
-    static MouseEvent::MouseButton getMouseWheelButton(QWheelEvent* e);
-    static InteractionEvent::Modifier getModifier(QInputEvent* e);
-#ifndef QT_NO_GESTURES
-    static GestureEvent::GestureState getGestureState(QGesture* e);
-#endif
-    static char getKeyButton(QKeyEvent* e);
-};
+GestureEvent::~GestureEvent() {}
+
+void GestureEvent::serialize(IvwSerializer& s) const {
+    InteractionEvent::serialize(s);
+}
+
+void GestureEvent::deserialize(IvwDeserializer& d) {
+    InteractionEvent::deserialize(d);
+}
+
 } // namespace
-#endif // IVW_EVENTCONVERTERQT_H
