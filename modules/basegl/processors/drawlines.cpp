@@ -30,45 +30,56 @@
  *
  *********************************************************************************/
 
-#ifndef IVW_DRAWLINESPROCESSOR_H
-#define IVW_DRAWLINESPROCESSOR_H
-
-#include <modules/basegl/baseglmoduledefine.h>
-#include <inviwo/core/common/inviwo.h>
-#include <modules/opengl/inviwoopengl.h>
-#include <inviwo/core/ports/imageport.h>
-#include <modules/opengl/image/compositeprocessorgl.h>
-#include <inviwo/core/datastructures/geometry/mesh.h>
-#include <modules/opengl/rendering/meshrenderer.h>
+#include "drawlines.h"
+#include <inviwo/core/datastructures/buffer/bufferramprecision.h>
 
 namespace inviwo {
 
-class IVW_MODULE_BASEGL_API DrawLinesProcessor : public CompositeProcessorGL {
-public:
-    DrawLinesProcessor();
-    ~DrawLinesProcessor();
+ProcessorClassName(DrawLines, "DrawLines");
+ProcessorCategory(DrawLines, "Line Rendering");
+ProcessorCodeState(DrawLines, CODE_STATE_EXPERIMENTAL);
 
-    InviwoProcessorInfo();
+DrawLines::DrawLines()
+    : CompositeProcessorGL(),
+      inport_("inport"),
+      outport_("outport", &inport_, COLOR_ONLY)
+{
+    addPort(inport_);
+    addPort(outport_);
+}
 
-    void initialize();
-    void deinitialize();
+DrawLines::~DrawLines() {
+}
 
-    bool isReady() const { return true; }
+void DrawLines::initialize() {
+    CompositeProcessorGL::initialize();
+    lines_ = new Mesh(GeometryEnums::LINES, GeometryEnums::STRIP);
+    lines_->initialize();
+    lines_->addAttribute(new Position2dBuffer());
+    addPoint(vec2(0.25f));
+    addPoint(vec2(0.75f));
+    lineRenderer_ = new MeshRenderer(lines_);
+}
 
-protected:
-    void addPoint(vec2);
-    void clearPoints();
+void DrawLines::deinitialize() {
+    CompositeProcessorGL::deinitialize();
+    delete lineRenderer_;
+    delete lines_;
+}
 
-    virtual void process();
+void DrawLines::process() {
+    activateAndClearTarget(outport_);
+    lineRenderer_->render();
+    deactivateCurrentTarget();
+    compositePortsToOutport(outport_, inport_);
+}
 
-private:
-    ImageInport inport_;
-    ImageOutport outport_;
+void DrawLines::addPoint(vec2 p) {
+    lines_->getAttributes(0)->getEditableRepresentation<Position2dBufferRAM>()->add(p);
+}
 
-    Mesh* lines_;
-    MeshRenderer* lineRenderer_;
-};
+void DrawLines::clearPoints() {
+    lines_->getAttributes(0)->getEditableRepresentation<Position2dBufferRAM>()->clear();
+}
 
 } // namespace
-
-#endif // IVW_DRAWLINESPROCESSOR_H

@@ -3,7 +3,7 @@
  * Inviwo - Interactive Visualization Workshop
  * Version 0.6b
  *
- * Copyright (c) 2013-2014 Inviwo Foundation
+ * Copyright (c) 2014 Inviwo Foundation
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -30,56 +30,54 @@
  *
  *********************************************************************************/
 
-#include "drawlinesprocessor.h"
-#include <inviwo/core/datastructures/buffer/bufferramprecision.h>
+#ifndef IVW_DRAWFREEHAND_H
+#define IVW_DRAWFREEHAND_H
+
+#include <modules/basegl/baseglmoduledefine.h>
+#include <modules/opengl/processorgl.h>
+#include <inviwo/core/ports/imageport.h>
+#include <modules/opengl/glwrap/shader.h>
 
 namespace inviwo {
 
-ProcessorClassName(DrawLinesProcessor, "DrawLines");
-ProcessorCategory(DrawLinesProcessor, "Line Rendering");
-ProcessorCodeState(DrawLinesProcessor, CODE_STATE_EXPERIMENTAL);
+class IVW_MODULE_BASEGL_API DrawFreeHand : public ProcessorGL {
+public:
+    DrawFreeHand();
+    ~DrawFreeHand();
 
-DrawLinesProcessor::DrawLinesProcessor()
-    : CompositeProcessorGL(),
-      inport_("inport"),
-      outport_("outport", &inport_, COLOR_ONLY)
-{
-    addPort(inport_);
-    addPort(outport_);
+    InviwoProcessorInfo();
+
+    void initialize();
+    void deinitialize();
+
+    void drawPoint(vec2);
+
+protected:
+    void process();
+
+    class DrawFreeHandInteractationHandler : public InteractionHandler {
+    public:
+        DrawFreeHandInteractationHandler(DrawFreeHand* vs);
+        ~DrawFreeHandInteractationHandler(){};
+
+        void invokeEvent(Event* event);
+    private:
+        MouseEvent drawPosEvent;
+
+        KeyboardEvent drawEnableEvent_;
+
+        DrawFreeHand* drawer_;
+
+        bool drawModeEnabled_;
+    };
+
+private:
+    ImageInport inport_;
+    ImageOutport outport_;
+
+    Shader* shader_;
+};
+
 }
 
-DrawLinesProcessor::~DrawLinesProcessor() {
-}
-
-void DrawLinesProcessor::initialize() {
-    CompositeProcessorGL::initialize();
-    lines_ = new Mesh(GeometryEnums::LINES, GeometryEnums::STRIP);
-    lines_->initialize();
-    lines_->addAttribute(new Position2dBuffer());
-    addPoint(vec2(0.25f));
-    addPoint(vec2(0.75f));
-    lineRenderer_ = new MeshRenderer(lines_);
-}
-
-void DrawLinesProcessor::deinitialize() {
-    CompositeProcessorGL::deinitialize();
-    delete lineRenderer_;
-    delete lines_;
-}
-
-void DrawLinesProcessor::process() {
-    activateAndClearTarget(outport_);
-    lineRenderer_->render();
-    deactivateCurrentTarget();
-    compositePortsToOutport(outport_, inport_);
-}
-
-void DrawLinesProcessor::addPoint(vec2 p) {
-    lines_->getAttributes(0)->getEditableRepresentation<Position2dBufferRAM>()->add(p);
-}
-
-void DrawLinesProcessor::clearPoints() {
-    lines_->getAttributes(0)->getEditableRepresentation<Position2dBufferRAM>()->clear();
-}
-
-} // namespace
+#endif //IVW_DRAWFREEHAND_H
