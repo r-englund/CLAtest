@@ -71,6 +71,8 @@ public:
     float getFovy() const { return fovy_.get(); }
     void setFovy(float fovy);
 
+    float getAspectRatio() const { return aspectRatio_.get(); }
+
     void setLook(vec3 lookFrom, vec3 lookTo, vec3 lookUp);
 
     float getNearPlaneDist() const;
