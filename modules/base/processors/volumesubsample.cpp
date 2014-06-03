@@ -73,10 +73,15 @@ void VolumeSubsample::process() {
     if (enabled_.get() && subSampleFactor_.get() > 0) {
         const VolumeRAM* vol = inport_.getData()->getRepresentation<VolumeRAM>();
 
-        Volume* volume;
+        Volume* volume = NULL;
         
         if(subSampleFactor_.get() == 2)
             volume = new Volume(VolumeRAMSubSample::apply(vol, VolumeRAMSubSample::HALF));
+        
+        if(!volume) {
+            outport_.setConstData(inport_.getData());
+            return;
+        }
 
         uvec3 dim = volume->getDimension();
         uvec3 offset = uvec3(0);

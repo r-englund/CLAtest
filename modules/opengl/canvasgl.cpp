@@ -69,12 +69,14 @@ void CanvasGL::initialize() {
 
 void CanvasGL::initializeGLEW() {
     if (!glewInitialized_) {
+#ifndef __APPLE__
         std::string preferProfile = OpenGLCapabilities::getPreferredProfile();
         if (preferProfile == "core") glewExperimental = GL_TRUE;
         GLenum glewError = glewInit();
         if (GLEW_OK != glewError) {
             LogError(glewGetErrorString(glewError));
         }
+#endif
         LGL_ERROR_SUPPRESS;
         glewInitialized_ = true;
     }

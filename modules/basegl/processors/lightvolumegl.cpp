@@ -235,7 +235,7 @@ void LightVolumeGL::process() {
         }
 
         for (unsigned int z=0; z<volumeDimOut_.z; ++z) {
-            glFramebufferTexture3DEXT(GL_FRAMEBUFFER_EXT, GL_COLOR_ATTACHMENT0_EXT, GL_TEXTURE_3D, propParams_[i].vol->getTexture()->getID(), 0, z);
+            glFramebufferTexture3D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_3D, propParams_[i].vol->getTexture()->getID(), 0, z);
             propagationShader_->setUniform("sliceNum_", static_cast<GLint>(z));
             singleDrawImagePlaneRect();
             glFlush();

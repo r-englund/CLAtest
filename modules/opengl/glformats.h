@@ -94,8 +94,8 @@ public:
         glFormatArray_[DataFormatEnums::Vec2UINT16] = GLFormat(GL_RG, GL_RG16, GL_UNSIGNED_SHORT, 2, 2);
         glFormatArray_[DataFormatEnums::Vec2UINT32] = GLFormat(GL_RG_INTEGER, GL_RG32UI, GL_UNSIGNED_INT, 2, 4);
         //3 channels
-        glFormatArray_[DataFormatEnums::Vec3FLOAT16] = GLFormat(GL_RGB, GL_RGB16F_ARB, GL_HALF_FLOAT, 3, 2);
-        glFormatArray_[DataFormatEnums::Vec3FLOAT32] = GLFormat(GL_RGB, GL_RGB32F_ARB, GL_FLOAT, 3, 4);
+        glFormatArray_[DataFormatEnums::Vec3FLOAT16] = GLFormat(GL_RGB, GL_RGB16F, GL_HALF_FLOAT, 3, 2);
+        glFormatArray_[DataFormatEnums::Vec3FLOAT32] = GLFormat(GL_RGB, GL_RGB32F, GL_FLOAT, 3, 4);
         glFormatArray_[DataFormatEnums::Vec3INT8] =  GLFormat(GL_RGB, GL_RGB8, GL_BYTE, 3, 1);
         glFormatArray_[DataFormatEnums::Vec3INT12] = GLFormat(GL_RGB, GL_RGB12, GL_SHORT, 3, 2);
         glFormatArray_[DataFormatEnums::Vec3INT16] = GLFormat(GL_RGB, GL_RGB16, GL_SHORT, 3, 2);
@@ -105,8 +105,8 @@ public:
         glFormatArray_[DataFormatEnums::Vec3UINT16] = GLFormat(GL_RGB, GL_RGB16, GL_UNSIGNED_SHORT, 3, 2);
         glFormatArray_[DataFormatEnums::Vec3UINT32] = GLFormat(GL_RGB_INTEGER, GL_RGB32UI, GL_UNSIGNED_INT, 3, 4);
         //4 channels
-        glFormatArray_[DataFormatEnums::Vec4FLOAT16] = GLFormat(GL_RGBA, GL_RGBA16F_ARB, GL_HALF_FLOAT, 4, 2);
-        glFormatArray_[DataFormatEnums::Vec4FLOAT32] = GLFormat(GL_RGBA, GL_RGBA32F_ARB, GL_FLOAT, 4, 4);
+        glFormatArray_[DataFormatEnums::Vec4FLOAT16] = GLFormat(GL_RGBA, GL_RGBA16F, GL_HALF_FLOAT, 4, 2);
+        glFormatArray_[DataFormatEnums::Vec4FLOAT32] = GLFormat(GL_RGBA, GL_RGBA32F, GL_FLOAT, 4, 4);
         glFormatArray_[DataFormatEnums::Vec4INT8] =  GLFormat(GL_RGBA, GL_RGBA8, GL_BYTE, 4, 1);
         glFormatArray_[DataFormatEnums::Vec4INT12] = GLFormat(GL_RGBA, GL_RGBA12, GL_SHORT, 4, 2);
         glFormatArray_[DataFormatEnums::Vec4INT16] = GLFormat(GL_RGBA, GL_RGBA16, GL_SHORT, 4, 2);

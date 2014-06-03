@@ -58,10 +58,6 @@ public:
 
     virtual ElementBufferGL* clone() const;
 
-    void initialize(const void* data, GLsizeiptr sizeInBytes) {
-        BufferGL::initialize(data, sizeInBytes);
-    }
-
 };
 
 } // namespace

@@ -106,7 +106,7 @@ void Mesh::addAttribute(Buffer* att, bool takeOwnership /*= true*/) {
 
 
 void Mesh::setAttribute(size_t idx, Buffer* att, bool takeOwnership /*= true*/) {
-    if (idx >= 0 && idx < attributes_.size()) {
+    if (idx < attributes_.size()) {
         if (attributesOwnership_[idx]) {
             delete attributes_[idx];
         }
