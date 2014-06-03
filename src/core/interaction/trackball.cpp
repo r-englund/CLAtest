@@ -154,55 +154,6 @@ vec3 Trackball::mapToCamera(vec3 pos) {
 
 void Trackball::invokeEvent(Event* event) {
     MouseEvent* mouseEvent = dynamic_cast<MouseEvent*>(event);
-    KeyboardEvent* keyEvent = dynamic_cast<KeyboardEvent*>(event);
-
-    if (keyEvent) {
-        int button = keyEvent->button();
-        KeyboardEvent::KeyState state = keyEvent->state();
-        InteractionEvent::Modifier modifier = keyEvent->modifier();
-
-        if (button == stepRotateUpEvent_.button()
-            && modifier == stepRotateUpEvent_.modifier()
-            && state == KeyboardEvent::KEY_STATE_PRESS)
-            stepRotateCamera(UP);
-        else if (button == stepRotateLeftEvent_.button()
-                 && modifier == stepRotateLeftEvent_.modifier()
-                 && state == KeyboardEvent::KEY_STATE_PRESS)
-            stepRotateCamera(LEFT);
-        else if (button == stepRotateDownEvent_.button()
-                 && modifier == stepRotateDownEvent_.modifier()
-                 && state == KeyboardEvent::KEY_STATE_PRESS)
-            stepRotateCamera(DOWN);
-        else if (button == stepRotateRightEvent_.button()
-                 && modifier == stepRotateRightEvent_.modifier()
-                 && state == KeyboardEvent::KEY_STATE_PRESS)
-            stepRotateCamera(RIGHT);
-        else if (button == stepZoomInEvent_.button()
-                 && modifier == stepZoomInEvent_.modifier()
-                 && state == KeyboardEvent::KEY_STATE_PRESS)
-            stepZoomCamera(UP);
-        else if (button == stepZoomOutEvent_.button()
-                 && modifier == stepZoomOutEvent_.modifier()
-                 && state == KeyboardEvent::KEY_STATE_PRESS)
-            stepZoomCamera(DOWN);
-        else if (button == stepPanUpEvent_.button()
-                 && modifier == stepPanUpEvent_.modifier()
-                 && state == KeyboardEvent::KEY_STATE_PRESS)
-            stepPanCamera(UP);
-        else if (button == stepPanLeftEvent_.button()
-                 && modifier == stepPanLeftEvent_.modifier()
-                 && state == KeyboardEvent::KEY_STATE_PRESS)
-            stepPanCamera(LEFT);
-        else if (button == stepPanDownEvent_.button()
-                 && modifier == stepPanDownEvent_.modifier()
-                 && state == KeyboardEvent::KEY_STATE_PRESS)
-            stepPanCamera(DOWN);
-        else if (button == stepPanRightEvent_.button()
-                 && modifier == stepPanRightEvent_.modifier()
-                 && state == KeyboardEvent::KEY_STATE_PRESS)
-            stepPanCamera(RIGHT);
-    }
-
     if (mouseEvent) {
         int button = mouseEvent->button();
         MouseEvent::MouseState state = mouseEvent->state();
@@ -225,6 +176,64 @@ void Trackball::invokeEvent(Event* event) {
             panCamera(mouseEvent);
         } else if (state == MouseEvent::MOUSE_STATE_RELEASE)
             isMouseBeingPressedAndHold_ = false;
+
+        return;
+    }
+
+    GestureEvent* gestureEvent = dynamic_cast<GestureEvent*>(event);
+    if (gestureEvent) {
+        if(gestureEvent->type() == GestureEvent::PINCH){
+            vec3 direction = camera_->getLookFrom() - camera_->getLookTo();
+            camera_->setLookFrom(camera_->getLookFrom()-direction*static_cast<float>(gestureEvent->deltaDistance()));
+        }
+    }
+
+    KeyboardEvent* keyEvent = dynamic_cast<KeyboardEvent*>(event);
+    if (keyEvent) {
+        int button = keyEvent->button();
+        KeyboardEvent::KeyState state = keyEvent->state();
+        InteractionEvent::Modifier modifier = keyEvent->modifier();
+
+        if (button == stepRotateUpEvent_.button()
+            && modifier == stepRotateUpEvent_.modifier()
+            && state == KeyboardEvent::KEY_STATE_PRESS)
+            stepRotateCamera(UP);
+        else if (button == stepRotateLeftEvent_.button()
+            && modifier == stepRotateLeftEvent_.modifier()
+            && state == KeyboardEvent::KEY_STATE_PRESS)
+            stepRotateCamera(LEFT);
+        else if (button == stepRotateDownEvent_.button()
+            && modifier == stepRotateDownEvent_.modifier()
+            && state == KeyboardEvent::KEY_STATE_PRESS)
+            stepRotateCamera(DOWN);
+        else if (button == stepRotateRightEvent_.button()
+            && modifier == stepRotateRightEvent_.modifier()
+            && state == KeyboardEvent::KEY_STATE_PRESS)
+            stepRotateCamera(RIGHT);
+        else if (button == stepZoomInEvent_.button()
+            && modifier == stepZoomInEvent_.modifier()
+            && state == KeyboardEvent::KEY_STATE_PRESS)
+            stepZoomCamera(UP);
+        else if (button == stepZoomOutEvent_.button()
+            && modifier == stepZoomOutEvent_.modifier()
+            && state == KeyboardEvent::KEY_STATE_PRESS)
+            stepZoomCamera(DOWN);
+        else if (button == stepPanUpEvent_.button()
+            && modifier == stepPanUpEvent_.modifier()
+            && state == KeyboardEvent::KEY_STATE_PRESS)
+            stepPanCamera(UP);
+        else if (button == stepPanLeftEvent_.button()
+            && modifier == stepPanLeftEvent_.modifier()
+            && state == KeyboardEvent::KEY_STATE_PRESS)
+            stepPanCamera(LEFT);
+        else if (button == stepPanDownEvent_.button()
+            && modifier == stepPanDownEvent_.modifier()
+            && state == KeyboardEvent::KEY_STATE_PRESS)
+            stepPanCamera(DOWN);
+        else if (button == stepPanRightEvent_.button()
+            && modifier == stepPanRightEvent_.modifier()
+            && state == KeyboardEvent::KEY_STATE_PRESS)
+            stepPanCamera(RIGHT);
 
         return;
     }

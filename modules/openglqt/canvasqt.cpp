@@ -254,7 +254,7 @@ void CanvasQt::panTriggered(QPanGesture* gesture) {
 }
 
 void CanvasQt::pinchTriggered(QPinchGesture* gesture) {
-    GestureEvent* gestureEvent = new GestureEvent(vec2(gesture->centerPoint().x(), gesture->centerPoint().y()), gesture->scaleFactor(),
+    GestureEvent* gestureEvent = new GestureEvent(vec2(gesture->centerPoint().x(), gesture->centerPoint().y()), (gesture->scaleFactor()-gesture->lastScaleFactor())*gesture->totalScaleFactor()/256,
         GestureEvent::PINCH, EventConverterQt::getGestureState(gesture));
     Canvas::gestureEvent(gestureEvent);
     delete gestureEvent;
