@@ -36,6 +36,7 @@
 #include <inviwo/core/common/inviwocoredefine.h>
 #include <inviwo/core/interaction/interactionhandler.h>
 #include <inviwo/core/interaction/events/event.h>
+#include <inviwo/core/interaction/events/gestureevent.h>
 #include <inviwo/core/interaction/events/mouseevent.h>
 #include <inviwo/core/interaction/events/keyboardevent.h>
 #include <inviwo/core/interaction/events/eventlistener.h>
