@@ -36,19 +36,16 @@
 #include <modules/pythonqt/pythonqtmoduledefine.h>
 #include <inviwo/core/common/inviwo.h>
 #include <inviwo/qt/widgets/inviwodockwidget.h>
-#include "../python/pyinviwoobserver.h"
+#include <modules/python/pyinviwoobserver.h>
 
 class QTabWidget;
 
 namespace inviwo {
 
-class IVW_MODULE_PYTHONQT_API PythonInfoWidget : public InviwoDockWidget
-    , public PyInviwoObserver {
-    //    Q_OBJECT
+class IVW_MODULE_PYTHONQT_API PythonInfoWidget : public InviwoDockWidget, public PyInviwoObserver {
 public:
     PythonInfoWidget(QWidget* parent);
     virtual ~PythonInfoWidget();
-
 
     virtual void onModuleRegistered(PyModule* module);
 
@@ -57,7 +54,6 @@ private:
     QTabWidget* tabWidget_;
 };
 
-} // namespace
+}  // namespace
 
-#endif // IVW_PYTHONINFOWIDGET_H
-
+#endif  // IVW_PYTHONINFOWIDGET_H

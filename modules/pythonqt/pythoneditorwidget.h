@@ -43,33 +43,36 @@
 #include <QTextEdit>
 #include <QColor>
 #include <QToolButton>
+#include <QSettings>
 
 class QPlainTextEdit;
 
 namespace inviwo {
 class SyntaxHighligther;
-class IVW_MODULE_PYTHONQT_API PythonEditorWidget : public InviwoDockWidget
-    , public FileObserver
-    , public PythonExecutionOutputObeserver
-    , public ProcessorNetworkObserver {
+class IVW_MODULE_PYTHONQT_API PythonEditorWidget : public InviwoDockWidget,
+                                                   public FileObserver,
+                                                   public PythonExecutionOutputObeserver,
+                                                   public ProcessorNetworkObserver {
     Q_OBJECT
 
 public:
     PythonEditorWidget(QWidget* parent);
     virtual ~PythonEditorWidget();
 
-    void appendToOutput(const std::string& msg,bool error = false);
+    void appendToOutput(const std::string& msg, bool error = false);
     virtual void fileChanged(std::string fileName);
-    void loadFile(std::string fileName,bool askForSave = true);
+    void loadFile(std::string fileName, bool askForSave = true);
 
-    virtual void onPyhonExecutionOutput(std::string msg,OutputType outputType);
+    virtual void onPyhonExecutionOutput(std::string msg, OutputType outputType);
 
     virtual void onProcessorNetworkChange();
-    bool hasFocus()const;
+    bool hasFocus() const;
     static PythonEditorWidget* getPtr();
+
 private:
     void buildWidget();
 
+    QSettings settings_;
     QPlainTextEdit* pythonCode_;
     QTextEdit* pythonOutput_;
 
@@ -81,7 +84,6 @@ private:
 
     bool unsavedChanges_;
     void readFile();
-
 
     QToolButton* startRecordScriptButton_;
     QToolButton* endRecordScriptButton_;
@@ -103,6 +105,6 @@ public slots:
     void onTextChange();
 };
 
-}//namespace
+}  // namespace
 
-#endif //IVW_PYTHONEDITORYWIDGET_H
+#endif  // IVW_PYTHONEDITORYWIDGET_H
