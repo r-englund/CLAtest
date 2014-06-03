@@ -68,13 +68,14 @@ public:
 
 protected:
     T* data_;
+    T* ownedData_;
     bool ownsData_;
 };
 
 template <typename T>
 DataOutport<T>::DataOutport(std::string identifier, PropertyOwner::InvalidationLevel invalidationLevel)
     : Outport(identifier, invalidationLevel),
-    data_(NULL), ownsData_(false)
+    data_(NULL), ownedData_(NULL), ownsData_(false)
 {
 }
 
@@ -82,6 +83,8 @@ template <typename T>
 DataOutport<T>::~DataOutport() {
     if (ownsData_ && data_)
         delete data_;
+    else if(ownedData_)
+        delete ownedData_;
 }
 
 template <typename T>
@@ -92,6 +95,12 @@ void DataOutport<T>::deinitialize() {}
 
 template <typename T>
 T* DataOutport<T>::getData() {
+    //Asking for writable data, outport becomes data owner again
+    if(!ownsData_ && ownedData_){
+        data_ = ownedData_;
+        ownsData_ = true;
+    }
+
     return data_;
 }
 
@@ -116,8 +125,8 @@ void DataOutport<T>::setData(T* data, bool ownsData) {
 template <typename T>
 void DataOutport<T>::setConstData(const T* data) {
     if (ownsData_ && data_) {
-        //Delete old data
-        delete data_;
+        //Save allocated data
+        ownedData_ = data_;
     }
 
     ownsData_ = false;

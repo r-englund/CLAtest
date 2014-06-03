@@ -6,7 +6,8 @@ ivw_module(BaseGL)
 # Add header files
 set(HEADER_FILES
     ${IVW_MODULE_DIR}/basegl/processors/background.h
-    ${IVW_MODULE_DIR}/basegl/processors/drawlinesprocessor.h
+    ${IVW_MODULE_DIR}/basegl/processors/drawlines.h
+    ${IVW_MODULE_DIR}/basegl/processors/drawfreehand.h
     ${IVW_MODULE_DIR}/basegl/processors/entryexitpoints.h
     ${IVW_MODULE_DIR}/basegl/processors/findedges.h
     ${IVW_MODULE_DIR}/basegl/processors/firstivwprocessor.h
@@ -28,7 +29,8 @@ ivw_group("Header Files" ${HEADER_FILES})
 # Add source files
 set(SOURCE_FILES
     ${IVW_MODULE_DIR}/basegl/processors/background.cpp
-    ${IVW_MODULE_DIR}/basegl/processors/drawlinesprocessor.cpp
+    ${IVW_MODULE_DIR}/basegl/processors/drawlines.cpp
+    ${IVW_MODULE_DIR}/basegl/processors/drawfreehand.cpp
     ${IVW_MODULE_DIR}/basegl/processors/entryexitpoints.cpp
     ${IVW_MODULE_DIR}/basegl/processors/findedges.cpp
     ${IVW_MODULE_DIR}/basegl/processors/firstivwprocessor.cpp

@@ -306,6 +306,7 @@ void inviwo::BaseTemplateOptionProperty<T>::removeOption(size_t index) {
     if (!setSelectedIdentifier(id)) {
         selectedIndex_ = 0;
     }
+    propertyModified();
 }
 
 template<typename T>

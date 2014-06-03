@@ -33,7 +33,8 @@
 #include <modules/basegl/baseglmodule.h>
 
 #include <modules/basegl/processors/background.h>
-#include <modules/basegl/processors/drawlinesprocessor.h>
+#include <modules/basegl/processors/drawlines.h>
+#include <modules/basegl/processors/drawfreehand.h>
 #include <modules/basegl/processors/entryexitpoints.h>
 #include <modules/basegl/processors/findedges.h>
 #include <modules/basegl/processors/firstivwprocessor.h>
@@ -54,7 +55,8 @@ namespace inviwo {
 BaseGLModule::BaseGLModule() : InviwoModule() {
     setIdentifier("BaseGL");
     registerProcessor(Background);
-    registerProcessor(DrawLinesProcessor);
+    registerProcessor(DrawLines);
+    registerProcessor(DrawFreeHand);
     registerProcessor(EntryExitPoints);
     registerProcessor(FindEdges);
     registerProcessor(FirstIvwProcessor);
