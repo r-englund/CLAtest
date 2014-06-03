@@ -48,7 +48,14 @@ public:
     vec3 getPoint() const;
     vec3 getNormal() const;
 
-    vec3 getIntersection(const vec3&, const vec3&) const;
+    /** 
+     * \brief Get intersection point with plane between p1 and p2
+     * 
+     * @param const vec3 & p1 Start point
+     * @param const vec3 & p2 End point
+     * @return vec3 Intersected point
+     */
+    vec3 getIntersection(const vec3& p1, const vec3& p2) const;
 
     vec3 projectPoint(const vec3&) const;
 
@@ -64,6 +71,19 @@ private:
     vec3 normal_;
 
 };
+
+/** 
+ * Computes ray-plane intersection point and 
+ * returns true if the ray hit the plane.
+ * 
+ * @param const vec3 & origin Ray origin
+ * @param const vec3 & dir Ray direction
+ * @param const vec3 & pointInPlane Point on the plane
+ * @param const vec3 & planeNormal Normalized plane normal
+ * @param float & tHit Distance to hit point along ray direction if hit, otherwise undefined
+ * @return bool True if ray hit the plane, false otherwise
+ */
+IVW_CORE_API bool rayPlaneIntersection(const vec3& origin, const vec3& dir, const vec3& pointInPlane, const vec3& planeNormal, float& tHit);
 
 } // namespace
 
