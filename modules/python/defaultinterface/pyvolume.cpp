@@ -32,7 +32,7 @@
 
 #include "pyvolume.h"
 
-#include "../pythoninterface/pyvalueparser.h"
+#include <modules/python/pythoninterface/pyvalueparser.h>
 
 #include <inviwo/core/common/inviwoapplication.h>
 #include <inviwo/core/processors/processor.h>

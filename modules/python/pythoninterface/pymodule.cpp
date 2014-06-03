@@ -30,11 +30,11 @@
  *
  *********************************************************************************/
 
-#include "pymodule.h"
+#include <modules/python/pythoninterface/pymodule.h>
 
-#include "../pyinviwo.h"
+#include <modules/python/pyinviwo.h>
 #include <inviwo/core/util/logcentral.h>
-#include "pyvalueparser.h"
+#include <modules/python/pythoninterface/pyvalueparser.h>
 
 namespace inviwo {
 

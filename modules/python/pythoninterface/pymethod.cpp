@@ -30,7 +30,7 @@
  *
  *********************************************************************************/
 
-#include "../pythoninterface/pymethod.h"
+#include <modules/python/pythoninterface/pymethod.h>
 
 #include "pymodule.h"
 

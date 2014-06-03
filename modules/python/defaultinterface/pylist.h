@@ -37,7 +37,7 @@
 
 #include <modules/python/pythonmoduledefine.h>
 
-#include "../pythoninterface/pymethod.h"
+#include <modules/python/pythoninterface/pymethod.h>
 
 namespace inviwo {
 PyObject* py_listProperties(PyObject* /*self*/, PyObject* /*args*/);

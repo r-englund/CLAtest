@@ -47,7 +47,7 @@
 
 #include <inviwo/core/properties/stringproperty.h>
 #include <inviwo/core/properties/transferfunctionproperty.h>
-#include "../pythoninterface/pyvalueparser.h"
+#include <modules/python/pythoninterface/pyvalueparser.h>
 
 namespace inviwo {
 

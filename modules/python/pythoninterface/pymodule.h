@@ -35,7 +35,7 @@
 
 #include <modules/python/pythonmoduledefine.h>
 
-#include "../pythoninterface/pymethod.h"
+#include <modules/python/pythoninterface/pymethod.h>
 
 #include <vector>
 #include <string>
