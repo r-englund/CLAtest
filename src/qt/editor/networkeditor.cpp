@@ -1029,7 +1029,7 @@ void NetworkEditor::mousePressEvent(QGraphicsSceneMouseEvent* e) {
                 }
                 else
                     updateAllProcessorGraphicsItemMetaData();
-            } else if (e->modifiers() == Qt::AltModifier || e->modifiers() == Qt::ShiftModifier) {
+            } else if (e->modifiers() == Qt::ShiftModifier) {
                 if (isLinkDisplayEnabled()) {
                     // alt modifier pressed: edit link
                     QRectF processorRect(0,0,0,0);
