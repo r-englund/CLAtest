@@ -41,48 +41,6 @@
 
 namespace inviwo {
 
-template<typename T>
-struct Defaultvalues {};
-
-#define DEFAULTVALUES(type, dim, name, val, min, max, inc) \
-template<> \
-struct Defaultvalues<type> { \
-public: \
-    static type getVal() { return val; } \
-    static type getMin() { return min; } \
-    static type getMax() { return max; } \
-    static type getInc() { return inc; } \
-    static uvec2 getDim() { return dim; } \
-    static std::string getName() { return name; } \
-};
-
-DEFAULTVALUES(float, uvec2(1,1), "Float", 0.0f, 0.0f, 1.0f, 0.01f)
-DEFAULTVALUES(double, uvec2(1,1), "Double", 0.0, 0.0, 1.0, 0.01)
-DEFAULTVALUES(int, uvec2(1,1), "Int", 0, -100, 100, 1)
-DEFAULTVALUES(glm::i64, uvec2(1,1), "Int64", 0, 0, 1024, 1)
-
-DEFAULTVALUES(vec2, uvec2(2,1), "FloatVec2", vec2(0.f), vec2(0.f), vec2(1.f), vec2(0.01f))
-DEFAULTVALUES(vec3, uvec2(3,1), "FloatVec3", vec3(0.f), vec3(0.f), vec3(1.f), vec3(0.01f))
-DEFAULTVALUES(vec4, uvec2(4,1), "FloatVec4", vec4(0.f), vec4(0.f), vec4(1.f), vec4(0.01f))
-
-DEFAULTVALUES(dvec2, uvec2(2,1), "DoubleVec2", dvec2(0.), dvec2(0.), dvec2(1.), dvec2(0.01))
-DEFAULTVALUES(dvec3, uvec2(3,1), "DoubleVec3", dvec3(0.), dvec3(0.), dvec3(1.), dvec3(0.01))
-DEFAULTVALUES(dvec4, uvec2(4,1), "DoubleVec4", dvec4(0.), dvec4(0.), dvec4(1.), dvec4(0.01))
-
-DEFAULTVALUES(ivec2, uvec2(2,1), "IntVec2", ivec2(0), ivec2(0), ivec2(10), ivec2(1))
-DEFAULTVALUES(ivec3, uvec2(3,1), "IntVec3", ivec3(0), ivec3(0), ivec3(10), ivec3(1))
-DEFAULTVALUES(ivec4, uvec2(4,1), "IntVec4", ivec4(0), ivec4(0), ivec4(10), ivec4(1))
-
-DEFAULTVALUES(mat2, uvec2(2,2), "FloatMat2", mat2(0.f), mat2(0.f), mat2(1.f), mat2(0.01f))
-DEFAULTVALUES(mat3, uvec2(3,3), "FloatMat3", mat3(0.f), mat3(0.f), mat3(1.f), mat3(0.01f))
-DEFAULTVALUES(mat4, uvec2(4,4), "FloatMat4", mat4(0.f), mat4(0.f), mat4(1.f), mat4(0.01f))
-
-DEFAULTVALUES(dmat2, uvec2(2, 2), "DoubleMat2", dmat2(0.), dmat2(0.), dmat2(1.), dmat2(0.01))
-DEFAULTVALUES(dmat3, uvec2(3, 3), "DoubleMat3", dmat3(0.), dmat3(0.), dmat3(1.), dmat3(0.01))
-DEFAULTVALUES(dmat4, uvec2(4, 4), "DoubleMat4", dmat4(0.), dmat4(0.), dmat4(1.), dmat4(0.01))
-
-#undef DEFAULTVALUES
-
 template <typename T>
 class OrdinalProperty : public TemplateProperty<T> {
 public:
