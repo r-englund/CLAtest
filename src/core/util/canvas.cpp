@@ -89,6 +89,7 @@ void Canvas::activate() {}
 void Canvas::resize(uvec2 canvasSize, uvec2 imageSize) {
     uvec2 previousImageDimensions = imageDimensions_;
     imageDimensions_ = imageSize;
+    screenDimensions_ = canvasSize;
 
     if (getProcessorNetworkEvaluator()) {
         getProcessorNetworkEvaluator()->activateDefaultRenderContext();
