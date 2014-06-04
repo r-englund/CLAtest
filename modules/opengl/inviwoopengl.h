@@ -39,6 +39,10 @@
 #include <windows.h>
 #endif
 
+#ifdef __APPLE__
+#define GLEW_NO_GLU
+#endif
+
 #include <modules/opengl/ext/glew/include/GL/glew.h> //TODO: Why is <GL/glew.h> not working
 
 #ifdef WIN32
