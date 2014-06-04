@@ -42,7 +42,8 @@ Geometry* Canvas::screenAlignedRect_ = NULL;
 
 Canvas::Canvas(uvec2 dimensions)
     : shared_(true)
-    , dimensions_(dimensions)
+    , screenDimensions_(dimensions)
+    , imageDimensions_(dimensions)
     , processorNetworkEvaluator_(0) {
     pickingContainer_ = new PickingContainer();
 
@@ -86,20 +87,24 @@ void Canvas::render(const Image* im, LayerType layerType/* = COLOR_LAYER*/) {}
 void Canvas::activate() {}
 
 void Canvas::resize(uvec2 canvasSize, uvec2 imageSize) {
-    uvec2 previousDimensions = dimensions_;
-    dimensions_ = imageSize;
+    uvec2 previousImageDimensions = imageDimensions_;
+    imageDimensions_ = imageSize;
 
     if (getProcessorNetworkEvaluator()) {
         getProcessorNetworkEvaluator()->activateDefaultRenderContext();
-        ResizeEvent* resizeEvent = new ResizeEvent(dimensions_);
-        resizeEvent->setPreviousSize(previousDimensions);
+        ResizeEvent* resizeEvent = new ResizeEvent(imageDimensions_);
+        resizeEvent->setPreviousSize(previousImageDimensions);
         getProcessorNetworkEvaluator()->propagateResizeEvent(this, resizeEvent);
         delete resizeEvent;
     }
 }
 
-uvec2 Canvas::getDimension() {
-    return dimensions_;
+uvec2 Canvas::getImageDimension() {
+    return imageDimensions_;
+}
+
+uvec2 Canvas::getScreenDimension() {
+    return screenDimensions_;
 }
 
 void Canvas::update() {}
@@ -161,8 +166,8 @@ void Canvas::gestureEvent(GestureEvent* e) {
 
 uvec2 Canvas::mousePosToPixelCoordinates(ivec2 mpos) {
     uvec2 pos(std::max(mpos.x, 0), std::max(mpos.y, 0));
-    pos = glm::min(pos, dimensions_);
-    pos.y = dimensions_.y - pos.y;
+    pos = glm::min(pos, getScreenDimension());
+    pos.y = getScreenDimension().y - pos.y;
     return pos;
 }
 
