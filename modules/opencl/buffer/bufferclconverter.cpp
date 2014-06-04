@@ -49,6 +49,11 @@ DataRepresentation* BufferRAM2CLConverter::createFrom(const DataRepresentation* 
 void BufferRAM2CLConverter::update(const DataRepresentation* source, DataRepresentation* destination) {
     const BufferRAM* src = static_cast<const BufferRAM*>(source);
     BufferCL* dst = static_cast<BufferCL*>(destination);
+
+    if (src->getSize() != dst->getSize()) {
+        dst->setSize(src->getSize());
+    }
+
     dst->upload(src->getData(), src->getSize()*src->getSizeOfElement());
 }
 
@@ -70,7 +75,11 @@ DataRepresentation* BufferCL2RAMConverter::createFrom(const DataRepresentation* 
 void BufferCL2RAMConverter::update(const DataRepresentation* source, DataRepresentation* destination) {
     const BufferCL* src = static_cast<const BufferCL*>(source);
     BufferRAM* dst = static_cast<BufferRAM*>(destination);
-    // TODO: Take care of different sizes
+    
+    if (src->getSize() != dst->getSize()) {
+        dst->setSize(src->getSize());
+    }
+
     src->download(dst->getData());
 }
 

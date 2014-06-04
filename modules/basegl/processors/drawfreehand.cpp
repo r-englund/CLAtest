@@ -31,6 +31,7 @@
  *********************************************************************************/
 
 #include "drawfreehand.h"
+#include <inviwo/core/datastructures/buffer/bufferramprecision.h>
 
 namespace inviwo {
 
@@ -39,11 +40,10 @@ ProcessorCategory(DrawFreeHand, "Image Operation");
 ProcessorCodeState(DrawFreeHand, CODE_STATE_EXPERIMENTAL);
 
 DrawFreeHand::DrawFreeHand()
-    : ProcessorGL()
+    : CompositeProcessorGL()
     , inport_("image.inport")
-    , outport_("image.outport", &inport_, COLOR_ONLY)
-    , shader_(NULL) {
-      
+    , outport_("image.outport", &inport_, COLOR_ONLY) 
+{
     addPort(inport_);
     addPort(outport_);
 
@@ -60,26 +60,34 @@ DrawFreeHand::~DrawFreeHand() {
 }
 
 void DrawFreeHand::initialize() {
-    ProcessorGL::initialize();
-    shader_ = new Shader("img_texturequad.vert", "img_texturequad.frag", true);
+    CompositeProcessorGL::initialize();
+    points_ = new Mesh(GeometryEnums::POINTS, GeometryEnums::NONE);
+    points_->initialize();
+    points_->addAttribute(new Position2dBuffer());
+    pointRenderer_ = new MeshRenderer(points_);
 }
 
 void DrawFreeHand::deinitialize() {
-    delete shader_;
-    ProcessorGL::deinitialize();
+    CompositeProcessorGL::deinitialize();
+    delete pointRenderer_;
+    delete points_;
 }
 
 void DrawFreeHand::process() {
     activateAndClearTarget(outport_);
-    shader_->activate();
-    setGlobalShaderParameters(shader_);
-    renderImagePlaneRect();
-    shader_->deactivate();
+    glPointSize(8.f);
+    pointRenderer_->render();
+    glPointSize(1.f);
     deactivateCurrentTarget();
+    compositePortsToOutport(outport_, inport_);
 }
 
-void DrawFreeHand::drawPoint(vec2){
+void DrawFreeHand::addPoint(vec2 p) {
+    points_->getAttributes(0)->getEditableRepresentation<Position2dBufferRAM>()->add(p);
+}
 
+void DrawFreeHand::clearPoints() {
+    points_->getAttributes(0)->getEditableRepresentation<Position2dBufferRAM>()->clear();
 }
 
 DrawFreeHand::DrawFreeHandInteractationHandler::DrawFreeHandInteractationHandler(DrawFreeHand* dfh) 
@@ -112,7 +120,8 @@ void DrawFreeHand::DrawFreeHandInteractationHandler::invokeEvent(Event* event){
     if (drawModeEnabled_ && mouseEvent) {
         if (mouseEvent->modifier() == drawPosEvent.modifier()
             && mouseEvent->button() == drawPosEvent.button()) {
-                drawer_->drawPoint(mouseEvent->posNormalized());
+                drawer_->addPoint(mouseEvent->posNormalized());
+                drawer_->invalidate(PropertyOwner::INVALID_OUTPUT);
         }
         return;
     }
