@@ -170,7 +170,7 @@ ImageOutport::ImageOutport(std::string identifier,
     , dimensions_(uvec2(256, 256))
     , mapDataInvalid_(true)
     , handleResizeEvents_(handleResizeEvents) {
-    data_ = new Image(dimensions_);
+    setData(new Image(dimensions_));
     dataChanged();
 }
 
@@ -181,7 +181,7 @@ ImageOutport::ImageOutport(std::string identifier, ImageType type, const DataFor
     , dimensions_(uvec2(256, 256))
     , mapDataInvalid_(true)
     , handleResizeEvents_(handleResizeEvents){
-    data_ = new Image(dimensions_, type, format);
+    setData(new Image(dimensions_, type, format));
     dataChanged();
 }
 
@@ -194,7 +194,7 @@ ImageOutport::ImageOutport(std::string identifier, ImageInport* src, ImageType t
     , mapDataInvalid_(true)
     , handleResizeEvents_(handleResizeEvents) {
 
-    data_ = new Image(dimensions_, type);
+    setData(new Image(dimensions_, type));
     dataChanged();
     inputSources_[COLOR_LAYER] = src;
     inputSources_[DEPTH_LAYER] = src;
@@ -255,8 +255,9 @@ void ImageOutport::invalidate(PropertyOwner::InvalidationLevel invalidationLevel
 }
 
 Image* ImageOutport::getData() {
+    Image* out = DataOutport<Image>::getData();
     updateInputSources();
-    return DataOutport<Image>::getData();
+    return out;
 }
 
 void ImageOutport::dataChanged() {
