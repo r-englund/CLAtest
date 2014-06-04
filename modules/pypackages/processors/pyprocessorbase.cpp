@@ -40,14 +40,13 @@ namespace inviwo {
 
 PyProcessorBase::PyProcessorBase()
     : Processor()
-	 , pythonScriptFile_("pythonScript", "Edit Script", \
-		InviwoApplication::getPtr()->getPath(InviwoApplication::PATH_MODULES)+"pypackages/scripts/pyavailablepackagesinfo.py", \
-		PropertyOwner::INVALID_OUTPUT, PropertySemantics("TextEditor"))	
+    , pythonScriptFile_("pythonScript", "Edit Script", 
+                        InviwoApplication::getPtr()->getPath(InviwoApplication::PATH_MODULES) +
+                            "pypackages/scripts/pyavailablepackagesinfo.py", "script",
+                        PropertyOwner::INVALID_OUTPUT, PropertySemantics("TextEditor"))
     , runScript_("runScript", "Run Script")
-	, script_()
-
-{
-	addProperty(pythonScriptFile_);
+    , script_() {
+    addProperty(pythonScriptFile_);
     pythonScriptFile_.onChange(this, &PyProcessorBase::loadPythonScriptFile);
     addProperty(runScript_);
     runScript_.onChange(this, &PyProcessorBase::onRunScriptButtonClicked);

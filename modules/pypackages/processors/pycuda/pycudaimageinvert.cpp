@@ -44,23 +44,23 @@ ProcessorCodeState(PyCUDAImageInverter, CODE_STATE_EXPERIMENTAL);
 PyCUDAImageInverter::PyCUDAImageInverter()
     : PyProcessorBase()
     , inport_("inport")
-	, outport_("outport")
-	, cudaKernelFile_("cudaKernel", "Edit Kernel", \
-	    InviwoApplication::getPtr()->getPath(InviwoApplication::PATH_MODULES)+"pypackages/scripts/pycuda/pycudaimageinvert.cu", \
-		PropertyOwner::INVALID_OUTPUT, PropertySemantics("TextEditor"))	
-	, invertOptions_("invertOption", "Image Invert Options", PropertyOwner::INVALID_OUTPUT)
-{
+    , outport_("outport")
+    , cudaKernelFile_("cudaKernel", "Edit Kernel",
+                      InviwoApplication::getPtr()->getPath(InviwoApplication::PATH_MODULES) +
+                          "pypackages/scripts/pycuda/pycudaimageinvert.cu",
+                      "default", PropertyOwner::INVALID_OUTPUT, PropertySemantics("TextEditor"))
+    , invertOptions_("invertOption", "Image Invert Options", PropertyOwner::INVALID_OUTPUT) {
     addPort(inport_);
-	addPort(outport_);
-	addProperty(cudaKernelFile_);
+    addPort(outport_);
+    addProperty(cudaKernelFile_);
 
     invertOptions_.addOption("nopython", "No Python");
     invertOptions_.addOption("numpy", "NumPy");
     invertOptions_.addOption("pycuda", "PyCUDA");
-	addProperty(invertOptions_);
+    addProperty(invertOptions_);
 
-	pythonScriptFile_.set(InviwoApplication::getPtr()->getPath(InviwoApplication::PATH_MODULES)+\
-						  "pypackages/scripts/pycuda/pycudaimageinvert.py");
+    pythonScriptFile_.set(InviwoApplication::getPtr()->getPath(InviwoApplication::PATH_MODULES) +
+                          "pypackages/scripts/pycuda/pycudaimageinvert.py");
 
     cudaKernelFile_.onChange(this, &PyCUDAImageInverter::loadCUDAKernelFile);
 }
