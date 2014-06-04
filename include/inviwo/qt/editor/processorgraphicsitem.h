@@ -73,6 +73,7 @@ public:
     QRectF calculateInportRect(size_t curPort) const;
     QRectF calculateOutportRect(size_t curPort) const;
     Port* getSelectedPort(const QPointF pos) const;
+    bool hitLinkDock(const QPointF pos) const;
     void updateMetaData();
     QPointF getShortestBoundaryPointTo(ProcessorGraphicsItem* processorGraphicsItem);
     QPointF getShortestBoundaryPointTo(QPointF inPos);

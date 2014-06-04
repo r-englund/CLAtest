@@ -213,6 +213,22 @@ Port* ProcessorGraphicsItem::getSelectedPort(const QPointF pos) const {
     return 0;
 }
 
+
+bool ProcessorGraphicsItem::hitLinkDock(const QPointF pos) const {
+    QPointF itemPos = mapFromScene(pos);
+
+    float diam = 5.0;
+    QPointF linkpos1 = (rect().bottomRight() + rect().topRight()) / 2.0;
+    QRectF linkrect1 = QRectF(linkpos1 + QPointF(-diam, diam), linkpos1 + QPointF(diam, -diam));
+
+    QPointF linkpos2 = (rect().bottomLeft() + rect().topLeft()) / 2.0;
+    QRectF linkrect2 = QRectF(linkpos2 + QPointF(-diam, diam), linkpos2 + QPointF(diam, -diam));
+
+
+    return linkrect1.contains(itemPos) || linkrect2.contains(itemPos); 
+}
+
+
 void ProcessorGraphicsItem::paintStatusIndicator(QPainter* p, QPointF pos, bool isOn,
                                                  QColor baseColor) {
     qreal ledRadius = 5.0;
@@ -396,6 +412,28 @@ void ProcessorGraphicsItem::paint(QPainter* p, const QStyleOptionGraphicsItem* o
     if ((progressBarOwner != NULL) && progressBarOwner->getProgressBar().isVisible()) {
         paintProgressBar(p, progressBarOwner->getProgressBar().getProgress());
     }
+
+
+    // Paint link item
+    float diam = 4.0;
+    p->setBrush(Qt::NoBrush);
+    //p->setPen(QPen(QColor(164, 164, 164), 1.3, Qt::DotLine, Qt::RoundCap));
+    p->setPen(QPen(QColor(164, 164, 164), 1.3, Qt::SolidLine, Qt::RoundCap));
+
+    QPointF pos = (rect().bottomRight()+rect().topRight())/2.0;
+    QPainterPath linkpath1;
+    linkpath1.moveTo(pos);
+    linkpath1.arcTo(QRectF(pos + QPointF(-diam, diam), pos + QPointF(diam, -diam)), 90, 180);
+    linkpath1.closeSubpath();
+    p->drawPath(linkpath1);
+
+    pos = (rect().bottomLeft() + rect().topLeft()) / 2.0;
+    QPainterPath linkpath2;
+    linkpath2.moveTo(pos);
+    linkpath2.arcTo(QRectF(pos + QPointF(-diam, diam), pos + QPointF(diam, -diam)), -90, 180);
+    linkpath2.closeSubpath();
+    p->drawPath(linkpath2);
+
     p->restore();
 }
 
