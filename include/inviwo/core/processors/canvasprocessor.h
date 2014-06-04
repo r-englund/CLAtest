@@ -91,6 +91,7 @@ private:
 
     void resizeCanvas();
     void sizeSchemeChanged();
+    void ratioChanged();
 };
 
 } // namespace
