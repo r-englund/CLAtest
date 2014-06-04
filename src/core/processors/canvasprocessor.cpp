@@ -55,7 +55,7 @@ CanvasProcessor::CanvasProcessor()
     , queuedRequest_(false)
 {
     addPort(inport_);
-    dimensions_.onChange(this, &CanvasProcessor::sizeSchemeChanged);
+    dimensions_.onChange(this, &CanvasProcessor::resizeCanvas);
     addProperty(dimensions_);
     enableCustomInputDimensions_.onChange(this, &CanvasProcessor::sizeSchemeChanged);
     addProperty(enableCustomInputDimensions_);
