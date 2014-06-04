@@ -89,11 +89,21 @@
 
 #if defined(OPENEXR_DLL)
     #if defined(HALF_EXPORTS)
-	#define HALF_EXPORT __declspec(dllexport)
-    #define HALF_EXPORT_CONST const __declspec(dllexport)
+    #ifdef _WIN32
+        #define HALF_EXPORT __declspec(dllexport)
+        #define HALF_EXPORT_CONST const __declspec(dllexport)
+    #else //UNIX (GCC)
+        #define HALF_EXPORT __attribute__ ((visibility ("default")))
+        #define HALF_EXPORT_CONST  const __attribute__ ((visibility ("default")))
+    #endif
     #else
-    #define HALF_EXPORT __declspec(dllimport)
-    #define HALF_EXPORT_CONST const __declspec(dllimport)
+    #ifdef _WIN32
+        #define HALF_EXPORT __declspec(dllimport)
+        #define HALF_EXPORT_CONST const __declspec(dllimport)
+    #else //UNIX (GCC)
+        #define HALF_EXPORT 
+        #define HALF_EXPORT_CONST const 
+    #endif
     #endif
 #else
     #define HALF_EXPORT
