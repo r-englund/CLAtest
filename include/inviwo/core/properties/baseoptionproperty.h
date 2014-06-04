@@ -245,12 +245,17 @@ private:
 
 template<typename T>
 class TemplateOptionProperty : public BaseTemplateOptionProperty<T> {
+
 public:
     TemplateOptionProperty(std::string identifier,
                            std::string displayName,
                            PropertyOwner::InvalidationLevel invalidationLevel = PropertyOwner::INVALID_OUTPUT,
                            PropertySemantics semantics = PropertySemantics::Default)
         : BaseTemplateOptionProperty<T>(identifier, displayName, invalidationLevel, semantics) {
+    }
+
+    virtual std::string getClassName() const {
+        return "OptionProperty" + Defaultvalues<T>::getName();
     }
 };
 
@@ -269,6 +274,9 @@ public:
     }
     virtual void addOption(std::string identifier, std::string displayName) {
         BaseTemplateOptionProperty<std::string>::addOption(identifier, displayName, identifier);
+    }
+    virtual std::string getClassName() const {
+        return "OptionPropertyString";
     }
 };
 
