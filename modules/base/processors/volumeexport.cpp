@@ -79,7 +79,6 @@ void VolumeExport::deinitialize() {
 }
 
 void VolumeExport::exportVolume() {
-    //TODO: if volume has changed setData
     const Volume* volume = volumePort_.getData();
 
     if (volume && !volumeFile_.get().empty()) {
