@@ -42,11 +42,11 @@ namespace inviwo {
 CanvasProcessor::CanvasProcessor()
     : Processor()
     , inport_("inport")
-    , dimensions_("dimensions", "Dimensions", ivec2(256,256), ivec2(128,128), ivec2(4096,4096))
-    , enableCustomInputDimensions_("enableCustomInputDimensions", "Enable Custom Input Dimensions", false)
-    , customInputDimensions_("customInputDimensions", "Input Image Dimensions", ivec2(256,256), ivec2(128,128), ivec2(4096,4096))
-    , keepAspectRatio_("keepAspectRatio", "Keep Aspect Ratio", true)
-    , aspectRatioScaling_("aspectRatioScaling", "Aspect Ratio Scaling", 1.f, 0.25f, 4.f)
+    , dimensions_("dimensions", "Dimensions", ivec2(256,256), ivec2(128,128), ivec2(4096,4096), ivec2(1,1), PropertyOwner::VALID)
+    , enableCustomInputDimensions_("enableCustomInputDimensions", "Enable Custom Input Dimensions", false, PropertyOwner::VALID)
+    , customInputDimensions_("customInputDimensions", "Input Image Dimensions", ivec2(256,256), ivec2(128,128), ivec2(4096,4096), ivec2(1,1), PropertyOwner::VALID)
+    , keepAspectRatio_("keepAspectRatio", "Keep Aspect Ratio", true, PropertyOwner::VALID)
+    , aspectRatioScaling_("aspectRatioScaling", "Aspect Ratio Scaling", 1.f, 0.25f, 4.f, 0.01f, PropertyOwner::VALID)
     , visibleLayer_("visibleLayer", "Visible Layer")
     , saveLayerDirectory_("layerDir", "Output Directory", "" , "image")
     , saveLayerButton_("saveLayer", "Save Image Layer", PropertyOwner::VALID)
@@ -62,10 +62,10 @@ CanvasProcessor::CanvasProcessor()
     customInputDimensions_.onChange(this, &CanvasProcessor::sizeSchemeChanged);
     customInputDimensions_.setVisible(false);
     addProperty(customInputDimensions_);
-    keepAspectRatio_.onChange(this, &CanvasProcessor::sizeSchemeChanged);
+    keepAspectRatio_.onChange(this, &CanvasProcessor::ratioChanged);
     keepAspectRatio_.setVisible(false);
     addProperty(keepAspectRatio_);
-    aspectRatioScaling_.onChange(this, &CanvasProcessor::sizeSchemeChanged);
+    aspectRatioScaling_.onChange(this, &CanvasProcessor::ratioChanged);
     aspectRatioScaling_.setVisible(false);
     addProperty(aspectRatioScaling_);
     dimensions_.setGroupID("inputSize");
@@ -122,10 +122,25 @@ void CanvasProcessor::resizeCanvas() {
 }
 
 void CanvasProcessor::sizeSchemeChanged() {
-    keepAspectRatio_.setVisible(enableCustomInputDimensions_.get());
-    aspectRatioScaling_.setVisible(enableCustomInputDimensions_.get() && keepAspectRatio_.get());
     customInputDimensions_.setVisible(enableCustomInputDimensions_.get());
     customInputDimensions_.setReadOnly(keepAspectRatio_.get());
+    keepAspectRatio_.setVisible(enableCustomInputDimensions_.get());
+    aspectRatioScaling_.setVisible(enableCustomInputDimensions_.get() && keepAspectRatio_.get());
+
+    if(canvas_){
+        if(enableCustomInputDimensions_.get()){
+            canvas_->resize(uvec2(dimensions_.get()), uvec2(customInputDimensions_.get()));
+        }
+        else{
+            canvas_->resize(uvec2(dimensions_.get()), uvec2(dimensions_.get()));
+        }
+    }
+}
+
+void CanvasProcessor::ratioChanged(){
+    customInputDimensions_.setReadOnly(keepAspectRatio_.get());
+    keepAspectRatio_.setVisible(enableCustomInputDimensions_.get());
+    aspectRatioScaling_.setVisible(enableCustomInputDimensions_.get() && keepAspectRatio_.get());
 
     if(enableCustomInputDimensions_.get()){
         if(keepAspectRatio_.get()){
@@ -148,12 +163,10 @@ void CanvasProcessor::sizeSchemeChanged() {
 
             customInputDimensions_.set(size);
         }
-
-        if(canvas_)
+        else if(canvas_){
             canvas_->resize(uvec2(dimensions_.get()), uvec2(customInputDimensions_.get()));
+        }
     }
-    else if(canvas_)
-        canvas_->resize(uvec2(dimensions_.get()), uvec2(dimensions_.get()));
 }
 
 void CanvasProcessor::setCanvasSize(ivec2 dim) {
