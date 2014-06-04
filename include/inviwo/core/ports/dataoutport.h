@@ -83,7 +83,7 @@ template <typename T>
 DataOutport<T>::~DataOutport() {
     if (ownsData_ && data_)
         delete data_;
-    else if(ownedData_)
+    else if(!ownsData_ && ownedData_)
         delete ownedData_;
 }
 
@@ -99,6 +99,7 @@ T* DataOutport<T>::getData() {
     if(!ownsData_ && ownedData_){
         data_ = ownedData_;
         ownsData_ = true;
+        dataChanged();
     }
 
     return data_;
