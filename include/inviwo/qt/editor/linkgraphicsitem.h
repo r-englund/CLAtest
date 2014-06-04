@@ -42,20 +42,38 @@
 
 namespace inviwo {
 
-
 class IVW_QTEDITOR_API LinkGraphicsItem : public QGraphicsItem {
-
 public:
-    LinkGraphicsItem(QPointF startPoint, QPointF endPoint, ivec3 color = ivec3(255, 255, 255));
+    LinkGraphicsItem(QPointF startPoint, QPointF endPoint, ivec3 color = ivec3(255, 255, 255),
+                     QPointF startDir = QPointF(1.0f,0.0), QPointF endDir = QPointF(0.0f, 0.0f));
     ~LinkGraphicsItem();
 
     virtual QPainterPath shape() const;
 
-    void setStartPoint(QPointF startPoint) { prepareGeometryChange(); startPoint_ = startPoint; }
+    void setStartPoint(QPointF startPoint) {
+        prepareGeometryChange();
+        startPoint_ = startPoint;
+    }
     QPointF getStartPoint() const { return startPoint_; }
 
-    void setEndPoint(QPointF endPoint) { prepareGeometryChange(); endPoint_ = endPoint; }
+    void setEndPoint(QPointF endPoint) {
+        prepareGeometryChange();
+        endPoint_ = endPoint;
+    }
     QPointF getEndPoint() const { return endPoint_; }
+    
+    void setStartDir(QPointF dir) {
+        startDir_ = dir;
+    }
+    QPointF getStartDir() const {
+        return startDir_;
+    }
+    void setEndDir(QPointF dir) {
+        endDir_ = dir;
+    }
+    QPointF getEndDir() const {
+        return endDir_;
+    }
 
     /**
      * Overloaded paint method from QGraphicsItem. Here the actual representation is drawn.
@@ -63,18 +81,19 @@ public:
     void paint(QPainter* p, const QStyleOptionGraphicsItem* options, QWidget* widget);
     virtual QRectF boundingRect() const;
 
-    //override for qgraphicsitem_cast (refer qt documentation)
+    // override for qgraphicsitem_cast (refer qt documentation)
     enum { Type = UserType + LinkGraphicsType };
-    int type() const  {return Type; }
+    int type() const { return Type; }
 
 private:
     QPointF startPoint_;
     QPointF endPoint_;
     QColor color_;
+    QPointF startDir_;
+    QPointF endDir_;
 
     virtual QPainterPath obtainCurvePath() const;
 };
-
 
 class IVW_QTEDITOR_API LinkConnectionGraphicsItem : public LinkGraphicsItem {
 

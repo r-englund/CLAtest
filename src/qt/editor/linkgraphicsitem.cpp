@@ -38,9 +38,13 @@
 
 namespace inviwo {
 
-LinkGraphicsItem::LinkGraphicsItem(QPointF startPoint, QPointF endPoint, ivec3 color)
-    : startPoint_(startPoint), endPoint_(endPoint), color_(color.r, color.g, color.b) {
-
+LinkGraphicsItem::LinkGraphicsItem(QPointF startPoint, QPointF endPoint, ivec3 color,
+                                   QPointF startDir, QPointF endDir)
+    : startPoint_(startPoint)
+    , endPoint_(endPoint)
+    , color_(color.r, color.g, color.b)
+    , startDir_(startDir)
+    , endDir_(endDir) {
     setZValue(LINKGRAPHICSITEM_DEPTH);
     QGraphicsDropShadowEffect* processorShadowEffect = new QGraphicsDropShadowEffect();
     processorShadowEffect->setOffset(3.0);
@@ -51,12 +55,13 @@ LinkGraphicsItem::LinkGraphicsItem(QPointF startPoint, QPointF endPoint, ivec3 c
 LinkGraphicsItem::~LinkGraphicsItem() {}
 
 QPainterPath LinkGraphicsItem::obtainCurvePath() const {
-    float delta = endPoint_.y() - startPoint_.y();
-    QPointF ctrlPoint1 = QPointF((startPoint_.x() + endPoint_.x()) / 2.0, startPoint_.y());
-    QPointF ctrlPoint2 = QPointF(endPoint_.x(), startPoint_.y() + delta / 2.0);
     QPainterPath bezierCurve;
+    float dist =
+        1.0f +
+        std::min(50.0f, 2.0f * static_cast<float>(QVector2D(startPoint_ - endPoint_).length()));
+
     bezierCurve.moveTo(startPoint_);
-    bezierCurve.cubicTo(ctrlPoint1, ctrlPoint2, endPoint_);
+    bezierCurve.cubicTo(startPoint_ + dist * startDir_, endPoint_ + dist * endDir_, endPoint_);
     return bezierCurve;
 }
 
@@ -82,8 +87,8 @@ QPainterPath LinkGraphicsItem::shape() const {
 QRectF LinkGraphicsItem::boundingRect() const {
     QPointF topLeft =
         QPointF(std::min(startPoint_.x(), endPoint_.x()), std::min(startPoint_.y(), endPoint_.y()));
-    return QRectF(topLeft.x() - 30.0, topLeft.y() - 10.0,
-                  abs(startPoint_.x() - endPoint_.x()) + 60.0,
+    return QRectF(topLeft.x() - 40.0, topLeft.y() - 10.0,
+                  abs(startPoint_.x() - endPoint_.x()) + 80.0,
                   abs(startPoint_.y() - endPoint_.y()) + 20.0);
 }
 

@@ -537,9 +537,8 @@ void LinkDialogPropertyGraphicsItem::setProperty(Property* prop) {
     setGraphicsItemData(prop);
 
     if (prop) {
-        //TODO: Is class name required?
-        //std::string className = prop->getClassName();
-        std::string className("");
+        std::string className = prop->getClassName();
+        className = removeSubString(className, "Property");
         QString label = QString::fromStdString(prop->getDisplayName());
         classLabel_->setText(label);
         typeLabel_->setText(QString::fromStdString(className));

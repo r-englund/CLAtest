@@ -428,11 +428,10 @@ void NetworkEditor::showLinkDialog(LinkConnectionGraphicsItem* linkConnectionGra
     linkDialog.exec();
     ProcessorLink* processorLink = InviwoApplication::getPtr()->getProcessorNetwork()->getLink(srcProcessor, destProcessor);
 
-    if (!processorLink->getPropertyLinks().size())
+    if (processorLink->getPropertyLinks().size() == 0)
         removeLink(srcProcessor, destProcessor);
     else {
         std::string toolTip = processorLink->getLinkInfo();
-
         if (!toolTip.empty()) linkConnectionGraphicsItem->setToolTip(QString(toolTip.c_str()));
     }
 }
@@ -923,7 +922,7 @@ LinkConnectionGraphicsItem* NetworkEditor::getLinkGraphicsItem(Processor* proces
             return linkGraphicsItems_[i];
     }
 
-    return 0;
+    return NULL;
 }
 
 ProcessorGraphicsItem* NetworkEditor::getProcessorGraphicsItemAt(const QPointF pos) const {
@@ -982,7 +981,30 @@ void NetworkEditor::mousePressEvent(QGraphicsSceneMouseEvent* e) {
         startProcessor_ = getProcessorGraphicsItemAt(e->scenePos());
 
         if (startProcessor_) {
-            if (e->modifiers()==Qt::NoModifier) {
+            if (e->modifiers() == Qt::ShiftModifier || startProcessor_->hitLinkDock(e->scenePos())) {
+                if (isLinkDisplayEnabled()) {
+                    // shift modifier pressed: edit link
+                    QPointF startPoint = startProcessor_->getShortestBoundaryPointTo(e->scenePos());
+                    QPointF dir(0.0f,0.0f);
+                    if (startPoint.x() > startProcessor_->pos().x()) {
+                        dir.setX(1.0f);
+                    } else {
+                        dir.setX(-1.0f);
+                    }
+
+                    linkCurve_ = new LinkGraphicsItem(startPoint, e->scenePos(), ivec3(255,255,255),dir);
+                    addItem(linkCurve_);
+                    linkCurve_->setZValue(DRAGING_ITEM_DEPTH);
+                    linkCurve_->show();
+                    e->accept();
+                    return;
+                } else {
+                    LogWarn("Enable Display links in Settings to create links")
+                }
+
+                e->accept();
+
+            } else if (e->modifiers()==Qt::NoModifier) {
                 startPort_ = startProcessor_->getSelectedPort(e->scenePos());
 
                 if (startPort_ && dynamic_cast<Outport*>(startPort_)) {
@@ -1026,27 +1048,10 @@ void NetworkEditor::mousePressEvent(QGraphicsSceneMouseEvent* e) {
 
                         return;
                     }
-                }
-                else
+                } else {
                     updateAllProcessorGraphicsItemMetaData();
-            } else if (e->modifiers() == Qt::ShiftModifier) {
-                if (isLinkDisplayEnabled()) {
-                    // alt modifier pressed: edit link
-                    QRectF processorRect(0,0,0,0);
-                    processorRect = startProcessor_->mapToScene(processorRect).boundingRect();
-                    linkCurve_ = new LinkGraphicsItem(processorRect.center(), e->scenePos());
-                    addItem(linkCurve_);
-                    linkCurve_->setZValue(DRAGING_ITEM_DEPTH);
-                    linkCurve_->show();
-                    e->accept();
-                    return;
                 }
-                else {
-                    LogWarn("Enable Display links in Settings to create links")
-                }
-
-                e->accept();
-            }
+            } 
         }
     }
 
@@ -1080,9 +1085,32 @@ void NetworkEditor::mouseMoveEvent(QGraphicsSceneMouseEvent* e) {
         e->accept();
     } else if (linkCurve_) {
         // Link drag mode
-        QPointF center = startProcessor_->getShortestBoundaryPointTo(e->scenePos());
-        linkCurve_->setStartPoint(center);
-        linkCurve_->setEndPoint(e->scenePos());
+        QPointF startPoint = startProcessor_->getShortestBoundaryPointTo(e->scenePos());
+        linkCurve_->setStartPoint(startPoint);
+        QPointF dir(0.0f,0.0f);
+        if (startPoint.x() > startProcessor_->pos().x()) {
+            dir.setX(1.0f);
+        } else {
+            dir.setX(-1.0f);
+        }
+        linkCurve_->setStartDir(dir);
+
+        ProcessorGraphicsItem* hoverProcessor = getProcessorGraphicsItemAt(e->scenePos());
+        if (hoverProcessor) {
+            QPointF endPoint = hoverProcessor->getShortestBoundaryPointTo(e->scenePos());
+            linkCurve_->setEndPoint(endPoint);
+            QPointF dir(0.0f, 0.0f);
+            if (endPoint.x() > hoverProcessor->pos().x()) {
+                dir.setX(1.0f);
+            } else {
+                dir.setX(-1.0f);
+            }
+            linkCurve_->setEndDir(dir);
+        } else {
+            linkCurve_->setEndPoint(e->scenePos());
+            linkCurve_->setEndDir(QPointF(0.0f,0.0f));
+        }
+
         linkCurve_->update();
         e->accept();
     } else if (inspection_.isActive() && e->button() == Qt::NoButton){
@@ -1094,7 +1122,6 @@ void NetworkEditor::mouseMoveEvent(QGraphicsSceneMouseEvent* e) {
 
     QGraphicsScene::mouseMoveEvent(e);
 }
-
 
 void NetworkEditor::mouseReleaseEvent(QGraphicsSceneMouseEvent* e) {
     if (connectionCurve_) {
@@ -1115,14 +1142,14 @@ void NetworkEditor::mouseReleaseEvent(QGraphicsSceneMouseEvent* e) {
                     SingleInport* singleInport = dynamic_cast<SingleInport*>(inport);
                     MultiInport* multiInport = dynamic_cast<MultiInport*>(inport);
 
-                    if (inport->isConnected()){
-                        if(singleInport){
+                    if (inport->isConnected()) {
+                        if (singleInport) {
                             removeConnection(singleInport->getConnectedOutport(), inport);
-                        }else if(multiInport && multiInport->isConnectedTo(dynamic_cast<Outport*>(startPort_))){
-
+                        } else if (multiInport &&
+                                   multiInport->isConnectedTo(dynamic_cast<Outport*>(startPort_))) {
                         }
                     }
-                    
+
                     addConnection(dynamic_cast<Outport*>(startPort_), inport);
                 }
             }
@@ -1138,9 +1165,10 @@ void NetworkEditor::mouseReleaseEvent(QGraphicsSceneMouseEvent* e) {
         linkCurve_ = 0;
         endProcessor_ = getProcessorGraphicsItemAt(e->scenePos());
 
-        if (startProcessor_!=endProcessor_ && endProcessor_) {
+        if (startProcessor_ != endProcessor_ && endProcessor_) {
             addLink(startProcessor_->getProcessor(), endProcessor_->getProcessor());
-            LinkConnectionGraphicsItem* linkGraphicsItem = getLinkGraphicsItem(startProcessor_->getProcessor(), endProcessor_->getProcessor());
+            LinkConnectionGraphicsItem* linkGraphicsItem =
+                getLinkGraphicsItem(startProcessor_->getProcessor(), endProcessor_->getProcessor());
             showLinkDialog(linkGraphicsItem);
         }
 
@@ -1151,8 +1179,9 @@ void NetworkEditor::mouseReleaseEvent(QGraphicsSceneMouseEvent* e) {
         // move processor
         QList<QGraphicsItem*> selectedGraphicsItems = selectedItems();
 
-        for (int i=0; i<selectedGraphicsItems.size(); i++) {
-            ProcessorGraphicsItem* processorGraphicsItem = dynamic_cast<ProcessorGraphicsItem*>(selectedGraphicsItems[i]);
+        for (int i = 0; i < selectedGraphicsItems.size(); i++) {
+            ProcessorGraphicsItem* processorGraphicsItem =
+                dynamic_cast<ProcessorGraphicsItem*>(selectedGraphicsItems[i]);
 
             if (processorGraphicsItem) {
                 if (gridSnapping_)

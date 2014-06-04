@@ -160,4 +160,13 @@ std::string rtrim(std::string s) {
 // trim from both ends
 std::string trim(std::string s) { return ltrim(rtrim(s)); }
 
+IVW_CORE_API std::string removeSubString(const std::string& str, const std::string& strToRemove) {
+    std::string newString(str);
+    size_t pos;
+    while ((pos = newString.find(strToRemove)) != std::string::npos) {
+        newString.erase(pos, strToRemove.length());
+    }
+    return newString;
+}
+
 }  // namespace

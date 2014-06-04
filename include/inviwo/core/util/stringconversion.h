@@ -64,6 +64,9 @@ IVW_CORE_API std::vector<std::string> splitString(const std::string& str, char d
 IVW_CORE_API std::vector<std::string> splitStringWithMultipleDelimiters(
     const std::string& str, std::vector<char> delimiters = std::vector<char>());
 
+IVW_CORE_API std::string removeSubString(const std::string& str, const std::string& strToRemove);
+
+
 IVW_CORE_API std::string removeFromString(std::string str, char char_to_remove = ' ');
 IVW_CORE_API void replaceInString(std::string& str, const std::string& oldStr,
                                   const std::string& newStr);
