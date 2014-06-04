@@ -57,6 +57,8 @@ vec4 rayTraversal(vec3 entryPoint, vec3 exitPoint, vec2 texCoords) {
     vec3 rayDirection = exitPoint - entryPoint;
     float tEnd = length(rayDirection);
     float tIncr = min(tEnd, tEnd / (samplingRate_*length(rayDirection*volumeParameters_.dimensions_)));
+    float samples = ceil(tEnd/tIncr);
+    tIncr = tEnd/samples;
     float t = 0.5f*tIncr; 
     rayDirection = normalize(rayDirection);
     float tDepth = -1.0;
@@ -74,9 +76,6 @@ vec4 rayTraversal(vec3 entryPoint, vec3 exitPoint, vec2 texCoords) {
         if (result.a > ERT_THRESHOLD) t = tEnd;
         else t += tIncr;
     }
-    // Remove the last part of the integration that was too much.
-    tIncr = tEnd-(t-0.5f*tIncr);
-    result = RC_APPLY_COMPOSITING(result, color, samplePos, voxel, gradient, t, tDepth, tIncr);
 
     if (tDepth != -1.0)
         tDepth = calculateDepthValue(tDepth, texture(entryDepthTex_, texCoords).z, texture(exitDepthTex_, texCoords).z);
