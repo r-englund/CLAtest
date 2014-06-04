@@ -119,9 +119,17 @@ endif()
 file(GLOB_RECURSE IMATH_HEADER_FILES ${CMAKE_CURRENT_SOURCE_DIR}/openexr/imath/*.h)
 file(GLOB_RECURSE IMATH_SOURCE_FILES ${CMAKE_CURRENT_SOURCE_DIR}/openexr/imath/*.cpp)
 
-set(OPENEXR_HEADER_FILES ${HALF_HEADER_FILES} ${IEX_HEADER_FILES} ${ILLMIMF_HEADER_FILES} ${ILMTHREAD_HEADER_FILES} ${CMAKE_CURRENT_SOURCE_DIR}/openexr/IlmBaseConfig.h
-    ${CMAKE_CURRENT_SOURCE_DIR}/openexr/OpenEXRConfig.h)
-set(OPENEXR_SOURCE_FILES ${HALF_SOURCE_FILES} ${IEX_SOURCE_FILES} ${ILLMIMF_SOURCE_FILES} ${ILMTHREAD_SOURCE_FILES} ${CMAKE_CURRENT_SOURCE_DIR}/openexr/asd.cpp)
+set(OPENEXR_HEADER_FILES ${HALF_HEADER_FILES} 
+                         ${IEX_HEADER_FILES} 
+						 ${ILLMIMF_HEADER_FILES} 
+						 ${ILMTHREAD_HEADER_FILES} 
+						 ${CMAKE_CURRENT_SOURCE_DIR}/openexr/IlmBaseConfig.h
+						 ${CMAKE_CURRENT_SOURCE_DIR}/openexr/OpenEXRConfig.h)
+set(OPENEXR_SOURCE_FILES ${HALF_SOURCE_FILES} 
+                         ${IEX_SOURCE_FILES} 
+						 ${ILLMIMF_SOURCE_FILES} 
+						 ${ILMTHREAD_SOURCE_FILES} 
+						 ${CMAKE_CURRENT_SOURCE_DIR}/openexr/asd.cpp)
 
 #--------------------------------------------------------------------
 # Add ZLib files
@@ -153,7 +161,13 @@ LIST(APPEND HEADER_FILES 	${DeprecationManager_HEADER_FILES}
 							${General_HEADER_FILES}	)
 
 
-ivw_group("Header Files" ${HEADER_FILES} ${LIBJPEG_HEADER_FILES} ${LIBOPENJPEG_HEADER_FILES} ${LIBPNG_HEADER_FILES} ${LIBRAWLITE_HEADER_FILES} ${LIBTIFF4_HEADER_FILES} ${OPENEXR_HEADER_FILES} ${ZLIB_HEADER_FILES})
+ivw_group("Header Files" ${HEADER_FILES} ${LIBJPEG_HEADER_FILES} 
+						 ${LIBOPENJPEG_HEADER_FILES} 
+						 ${LIBPNG_HEADER_FILES} 
+						 ${LIBRAWLITE_HEADER_FILES} 
+						 ${LIBTIFF4_HEADER_FILES} 
+						 ${OPENEXR_HEADER_FILES} 
+						 ${ZLIB_HEADER_FILES} )
 
 #--------------------------------------------------------------------
 # Add source files
@@ -171,7 +185,14 @@ LIST(APPEND SOURCE_FILES
 					${Metadata_SOURCE_FILES}
 		)
 
-ivw_group("Source Files" ${SOURCE_FILES} ${LIBJPEG_SOURCE_FILES} ${LIBOPENJPEG_SOURCE_FILES} ${LIBPNG_SOURCE_FILES} ${LIBRAWLITE_SOURCE_FILES} ${LIBTIFF4_SOURCE_FILES} ${OPENEXR_SOURCE_FILES} ${ZLIB_SOURCE_FILES})
+ivw_group("Source Files" ${SOURCE_FILES}
+					     ${LIBJPEG_SOURCE_FILES} 
+						 ${LIBOPENJPEG_SOURCE_FILES} 
+						 ${LIBPNG_SOURCE_FILES} 
+						 ${LIBRAWLITE_SOURCE_FILES}
+						 ${LIBTIFF4_SOURCE_FILES} 
+						 ${OPENEXR_SOURCE_FILES} 
+						 ${ZLIB_SOURCE_FILES})
 
 #--------------------------------------------------------------------
 # Add all folders as includes
@@ -192,11 +213,35 @@ else()
     add_definitions(-DJPEG_DLL)
     add_definitions(-DLIBRAW_BUILDLIB)
     add_definitions(-DOPJ_EXPORTS)
+
+	#OpenEXR
+	ivw_add_definition(OPENEXR_DLL)
+	add_definitions(-DHALF_EXPORTS)
+    add_definitions(-DIEX_EXPORTS)
+	add_definitions(-DILMIMF_EXPORTS)
+	add_definitions(-DILMTHREAD_EXPORTS)
+	add_definitions(-DIMATH_EXPORTS)
 endif()
 
 #--------------------------------------------------------------------
 # Create library
-add_library(freeimage ${SOURCE_FILES} ${LIBJPEG_SOURCE_FILES} ${LIBOPENJPEG_SOURCE_FILES} ${LIBPNG_SOURCE_FILES} ${LIBRAWLITE_SOURCE_FILES} ${LIBTIFF4_SOURCE_FILES} ${OPENEXR_SOURCE_FILES} ${ZLIB_SOURCE_FILES} ${HEADER_FILES} ${LIBJPEG_HEADER_FILES} ${LIBOPENJPEG_HEADER_FILES} ${LIBPNG_HEADER_FILES} ${LIBRAWLITE_HEADER_FILES} ${LIBTIFF4_HEADER_FILES} ${OPENEXR_HEADER_FILES} ${ZLIB_HEADER_FILES})
+add_library(freeimage ${SOURCE_FILES} 
+					  ${LIBJPEG_SOURCE_FILES} 
+					  ${LIBOPENJPEG_SOURCE_FILES}
+					  ${LIBPNG_SOURCE_FILES} 
+					  ${LIBRAWLITE_SOURCE_FILES}
+					  ${LIBTIFF4_SOURCE_FILES} 
+					  ${OPENEXR_SOURCE_FILES} 
+					  ${ZLIB_SOURCE_FILES} 
+					  
+					  ${HEADER_FILES} 
+					  ${LIBJPEG_HEADER_FILES} 
+					  ${LIBOPENJPEG_HEADER_FILES}
+					  ${LIBPNG_HEADER_FILES}
+					  ${LIBRAWLITE_HEADER_FILES}
+					  ${LIBTIFF4_HEADER_FILES} 
+					  ${OPENEXR_HEADER_FILES} 
+					  ${ZLIB_HEADER_FILES})
 
 #--------------------------------------------------------------------
 # Add dependencies
