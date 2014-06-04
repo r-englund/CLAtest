@@ -73,28 +73,28 @@ void DatVolumeWriter::writeData(const Volume* data, const std::string filePath) 
     glm::mat3 basis = glm::transpose(data->getBasis());
     glm::vec3 offset = data->getOffset();
     glm::mat4 wtm = glm::transpose(data->getWorldTransform());
-    writeKeyToString(ss, "ObjectFileName",  fileName + ".raw");
+    writeKeyToString(ss, "RawFile",  fileName + ".raw");
     writeKeyToString(ss, "Resolution", vr->getDimension());
     writeKeyToString(ss, "Format",  vr->getDataFormatString());
-    writeKeyToString(ss, "Offset", offset);
     writeKeyToString(ss, "BasisVector1", basis[0]);
     writeKeyToString(ss, "BasisVector2", basis[1]);
     writeKeyToString(ss, "BasisVector3", basis[2]);
+    writeKeyToString(ss, "Offset", offset);
     writeKeyToString(ss, "WorldVector1", wtm[0]);
     writeKeyToString(ss, "WorldVector2", wtm[1]);
     writeKeyToString(ss, "WorldVector3", wtm[2]);
     writeKeyToString(ss, "WorldVector4", wtm[3]);
+    writeKeyToString(ss, "DataRange", data->dataMap_.dataRange);
+    writeKeyToString(ss, "ValueRange", data->dataMap_.valueRange);
+    writeKeyToString(ss, "Unit", data->dataMap_.valueUnit);
+
     std::vector<std::string> keys = data->getMetaDataMap()->getKeys();
 
-    for (std::vector<std::string>::iterator it = keys.begin();
-         it != keys.end(); ++it) {
-        if (*it != "dimension" && *it != "basisAndOffset" && *it !="worldTransform") {
-            MetaData* m = data->getMetaDataMap()->get(*it);
-            StringMetaData* sm = dynamic_cast<StringMetaData*>(m);
+    for (std::vector<std::string>::iterator it = keys.begin(); it != keys.end(); ++it) {
+        MetaData* m = data->getMetaDataMap()->get(*it);
+        StringMetaData* sm = dynamic_cast<StringMetaData*>(m);
 
-            if (sm)
-                writeKeyToString(ss, *it, sm->get());
-        }
+        if (sm) writeKeyToString(ss, *it, sm->get());
     }
 
     std::ofstream f(filePath.c_str());
@@ -110,7 +110,7 @@ void DatVolumeWriter::writeData(const Volume* data, const std::string filePath) 
     if (fout.good()) {
         fout.write((char*)vr->getData(),
                    vr->getDimension().x*vr->getDimension().x*vr->getDimension().x
-                   * vr->getDataFormat()->getBytesStored());
+                   * vr->getDataFormat()->getBytesAllocated());
     } else
         throw DataWriterException("Error: Could not write to raw file: " + rawPath);
 

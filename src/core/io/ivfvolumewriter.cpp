@@ -66,11 +66,15 @@ void IvfVolumeWriter::writeData(const Volume* volume, const std::string filePath
     std::string fileName = URLParser::getFileNameWithoutExtension(filePath);
     const VolumeRAM* vr = volume->getRepresentation<VolumeRAM>();
     IvwSerializer s(filePath);
-    s.serialize("ObjectFileName", fileName + ".raw");
+    s.serialize("RawFile", fileName + ".raw");
     s.serialize("Format", vr->getDataFormatString());
     s.serialize("BasisAndOffset", volume->getBasisAndOffset());
     s.serialize("WorldTransform", volume->getWorldTransform());
     s.serialize("Dimension", volume->getDimension());
+    s.serialize("DataRange", volume->dataMap_.dataRange);
+    s.serialize("ValueRange", volume->dataMap_.valueRange);
+    s.serialize("Unit", volume->dataMap_.valueUnit);
+
     volume->getMetaDataMap()->serialize(s);
     s.writeFile();
     std::fstream fout(rawPath.c_str(), std::ios::out | std::ios::binary);
