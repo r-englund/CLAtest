@@ -39,19 +39,13 @@
 #include <windows.h>
 #endif
 
-#ifdef __APPLE__
-#include <OpenGL/gl3.h>
-#include <OpenGL/gl3ext.h>
-#else
 #include <modules/opengl/ext/glew/include/GL/glew.h> //TODO: Why is <GL/glew.h> not working
+
 #ifdef WIN32
 #include <modules/opengl/ext/glew/include/GL/wglew.h>
 #else
 //#include <modules/opengl/ext/glew/include/GL/glxew.h>
 #endif
-#include <GL/gl.h>
-#include <GL/glu.h>
-#endif // __APPLE__
 
 #include <iostream>
 #include <sstream>

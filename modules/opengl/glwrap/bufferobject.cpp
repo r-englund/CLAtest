@@ -142,7 +142,7 @@ void BufferObject::download(void* data) const {
     {
         memcpy(data, gldata, sizeInBytes_);
         // Unmap buffer after using it
-        glUnmapBuffer(target_);
+        glUnmapBufferARB(target_);
     } else {
         LogError("Unable to map data");
     }

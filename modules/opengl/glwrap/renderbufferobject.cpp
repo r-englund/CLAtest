@@ -35,19 +35,19 @@
 namespace inviwo {
 
 RenderBufferObject::RenderBufferObject() {
-    glGenRenderbuffers(1, &id_);
+    glGenRenderbuffersEXT(1, &id_);
 }
 
 RenderBufferObject::~RenderBufferObject() {
-    glDeleteRenderbuffers(1, &id_);
+    glDeleteRenderbuffersEXT(1, &id_);
 }
 
 void RenderBufferObject::activate() {
-    glBindRenderbuffer(GL_RENDERBUFFER, id_);
+    glBindRenderbufferEXT(GL_RENDERBUFFER_EXT, id_);
 }
 
 void RenderBufferObject::deactivate() {
-    glBindRenderbuffer(GL_RENDERBUFFER, 0);
+    glBindRenderbufferEXT(GL_RENDERBUFFER_EXT, 0);
 }
 
 unsigned int RenderBufferObject::getID() const {

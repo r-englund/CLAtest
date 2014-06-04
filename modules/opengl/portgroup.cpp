@@ -94,7 +94,7 @@ void PortGroup::reattachTargets() {
 
         if (i==0)
             // depth values only valid for the first render target
-            frameBufferObject_->attachTexture(images[i]->getDepthLayerGL()->getTexture(), static_cast<GLenum>(GL_DEPTH_ATTACHMENT));
+            frameBufferObject_->attachTexture(images[i]->getDepthLayerGL()->getTexture(), static_cast<GLenum>(GL_DEPTH_ATTACHMENT_EXT));
     }
 
     LGL_ERROR;
