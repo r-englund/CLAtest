@@ -38,6 +38,10 @@
 #include <vector>
 #include <string>
 
+#ifdef IVW_SIGAR
+struct sigar_t;
+#endif
+
 namespace inviwo {
 
 class IVW_CORE_API SystemCapabilities : public Capabilities  {
@@ -81,7 +85,7 @@ public:
     uvec3 calculateOptimalBrickSize(uvec3 dimensions, size_t formatSizeInBytes, glm::u8 percentageOfAvailableMemory = 100);
 
     glm::u64 getAvailableMemory();
-
+    glm::u64 getCurrentResidentMemoryUsage();
 protected:
     void retrieveStaticInfo();
     void retrieveDynamicInfo();
@@ -103,7 +107,11 @@ private:
     bool successCPUInfo_;
     bool successMemoryInfo_;
     bool successDiskInfo_;
-    //bool successProcessMemoryInfo_;
+    bool successProcessMemoryInfo_;
+
+#ifdef IVW_SIGAR
+    sigar_t *sigar_;
+#endif
 };
 
 } // namespace
