@@ -62,31 +62,28 @@ static PyObject* py_stdout(PyObject* /*self*/, PyObject* args) {
 
     if (!PyArg_ParseTuple(args, "s#i", &msg, &len, &isStderr)) {
         LogWarnCustom("inviwo.Python.py_print", "failed to parse log message");
-    }
-    else {
-        if (len!=0) {
-            if (!(len==1 && (msg[0] == '\n' || msg[0] == '\r' || msg[0] == '\0')))
-                PythonExecutionOutputObeserver::pyhonExecutionOutputEvent(msg,PythonExecutionOutputObeserver::standard);
+    } else {
+        if (len != 0) {
+            if (!(len == 1 && (msg[0] == '\n' || msg[0] == '\r' || msg[0] == '\0')))
+                PythonExecutionOutputObeserver::pyhonExecutionOutputEvent(
+                    msg, PythonExecutionOutputObeserver::standard);
         }
     }
 
     Py_RETURN_NONE;
 }
 
-
-
-
 namespace inviwo {
 class PyStdOutCatcher : public PyMethod {
 public:
-    virtual std::string getName()const {return "ivwPrint";}
-    virtual std::string getDesc()const {return " Only for internal use. Redirect std output to python editor widget.";}
-    virtual PyCFunction getFunc() {return py_stdout;}
+    virtual std::string getName() const { return "ivwPrint"; }
+    virtual std::string getDesc() const {
+        return " Only for internal use. Redirect std output to python editor widget.";
+    }
+    virtual PyCFunction getFunc() { return py_stdout; }
 };
 
-
-PyInviwo::PyInviwo():
-    isInit_(false) {
+PyInviwo::PyInviwo() : isInit_(false) {
     init(this);
     init_();
 }
@@ -98,8 +95,7 @@ PyInviwo::~PyInviwo() {
 }
 
 void PyInviwo::init_() {
-    if (isInit_)
-        return;
+    if (isInit_) return;
 
     isInit_ = true;
     LogInfo("Python version: " + toString(Py_GetVersion()));
@@ -119,9 +115,10 @@ void PyInviwo::init_() {
     addModulePath(InviwoApplication::getPtr()->getBasePath() + "modules/python/scripts");
     initDefaultInterfaces();
     PythonScript outputCatcher = PythonScript();
-    std::string directorFileName = InviwoApplication::getPtr()->getBasePath() +"modules/python/scripts/outputredirector.py";
+    std::string directorFileName =
+        InviwoApplication::getPtr()->getBasePath() + "modules/python/scripts/outputredirector.py";
     std::ifstream file(directorFileName.c_str());
-    std::string text((std::istreambuf_iterator<char>(file)),std::istreambuf_iterator<char>());
+    std::string text((std::istreambuf_iterator<char>(file)), std::istreambuf_iterator<char>());
     file.close();
     outputCatcher.setSource(text);
 
@@ -160,6 +157,8 @@ void PyInviwo::initDefaultInterfaces() {
     inviwoPyModule->addMethod(new PyGetTransferFunctionPath());
     inviwoPyModule->addMethod(new PySetVoxelMethod());
     inviwoPyModule->addMethod(new PyGetVolumeDimension());
+    inviwoPyModule->addMethod(new PyGetMemoryUsage());
+    inviwoPyModule->addMethod(new PyClearResourceManage());
     inviwoPyModule->addMethod(new PyEnableEvaluation());
     inviwoPyModule->addMethod(new PyDisableEvaluation());
     inviwoPyModule->addMethod(new PySaveTransferFunction());
@@ -183,27 +182,25 @@ void PyInviwo::addModulePath(const std::string& path) {
     runString.append(std::string("sys.path.append('") + pathConv + std::string("')"));
     int ret = PyRun_SimpleString(runString.c_str());
 
-    if (ret != 0)
-        LogWarn("Failed to add '" + pathConv + "' to Python module search path");
+    if (ret != 0) LogWarn("Failed to add '" + pathConv + "' to Python module search path");
 }
 
-std::vector<PyModule*> PyInviwo::getAllPythonModules() {
-    return registeredModules_;
-}
+std::vector<PyModule*> PyInviwo::getAllPythonModules() { return registeredModules_; }
 
 PyObject* PyInviwo::registerPyModule(PyModule* pyModule) {
     init_();
 
     if (Py_IsInitialized()) {
-        PyObject* obj = Py_InitModule(pyModule->getModuleName(),NULL);
+        PyObject* obj = Py_InitModule(pyModule->getModuleName(), NULL);
 
         if (!obj) {
-            LogWarn("Failed to init python module '" << pyModule->getModuleName() <<"' ");
+            LogWarn("Failed to init python module '" << pyModule->getModuleName() << "' ");
         }
 
         registeredModules_.push_back(pyModule);
 
-        for (ObserverSet::reverse_iterator it = observers_->rbegin(); it != observers_->rend(); ++it) {
+        for (ObserverSet::reverse_iterator it = observers_->rbegin(); it != observers_->rend();
+             ++it) {
             static_cast<PyInviwoObserver*>(*it)->onModuleRegistered(pyModule);
         }
 
@@ -214,5 +211,4 @@ PyObject* PyInviwo::registerPyModule(PyModule* pyModule) {
     }
 }
 
-
-}//namespace
+}  // namespace
