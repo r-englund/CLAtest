@@ -41,6 +41,9 @@
 #include <limits>
 #include <string>
 
+#include <freeimage/openexr/half/half.h>
+#include <freeimage/openexr/half/halfLimits.h>
+
 /*! \brief Defines general useful formats and new data types
  * Non-virtual, meaning no dynamic_cast as string comparison is as fast/faster
  */
@@ -440,7 +443,7 @@ public:
 /*---------------Single Value Formats------------------*/
 
 // Floats
-typedef DataFormat<glm::f32, 16>  DataFLOAT16;
+typedef GenericDataFormat(half)     DataFLOAT16;
 typedef GenericDataFormat(glm::f32) DataFLOAT32;
 typedef GenericDataFormat(glm::f64) DataFLOAT64;
 
@@ -461,7 +464,8 @@ typedef GenericDataFormat(glm::u64)  DataUINT64;
 /*---------------Vec2 Formats--------------------*/
 
 // Floats
-typedef DataFormat<glm::f32vec2, 32>  DataVec2FLOAT16;
+typedef glm::detail::tvec2<half, glm::defaultp> f16vec2;
+typedef GenericDataFormat(f16vec2) DataVec2FLOAT16;
 typedef GenericDataFormat(glm::f32vec2) DataVec2FLOAT32;
 typedef GenericDataFormat(glm::f64vec2) DataVec2FLOAT64;
 
@@ -482,7 +486,8 @@ typedef GenericDataFormat(glm::u64vec2) DataVec2UINT64;
 /*---------------Vec3 Formats--------------------*/
 
 // Floats
-typedef DataFormat<glm::f32vec3, 48>  DataVec3FLOAT16;
+typedef glm::detail::tvec3<half, glm::defaultp> f16vec3;
+typedef GenericDataFormat(f16vec3) DataVec3FLOAT16;
 typedef GenericDataFormat(glm::f32vec3) DataVec3FLOAT32;
 typedef GenericDataFormat(glm::f64vec3) DataVec3FLOAT64;
 
@@ -503,7 +508,8 @@ typedef GenericDataFormat(glm::u64vec3) DataVec3UINT64;
 /*---------------Vec4 Value Formats------------------*/
 
 // Floats
-typedef DataFormat<glm::f32vec4, 64>  DataVec4FLOAT16;
+typedef glm::detail::tvec4<half, glm::defaultp> f16vec4;
+typedef GenericDataFormat(f16vec4) DataVec4FLOAT16;
 typedef GenericDataFormat(glm::f32vec4) DataVec4FLOAT32;
 typedef GenericDataFormat(glm::f64vec4) DataVec4FLOAT64;
 
@@ -567,8 +573,8 @@ template<> inline size_t DataINT12::bitsAllocated() { return DataINT16::bitsAllo
 template<> inline size_t DataUINT12::bitsAllocated() { return DataUINT16::bitsAllocated(); }
 
 // Min/Max Specializations
-template<> inline DataFLOAT16::type DataFLOAT16::max() { return DataFLOAT16::type(65504.f); }
-template<> inline DataFLOAT16::type DataFLOAT16::min() { return DataFLOAT16::type(1.f/16384.f); }
+//template<> inline DataFLOAT16::type DataFLOAT16::max() { return DataFLOAT16::type(65504.f); }
+//template<> inline DataFLOAT16::type DataFLOAT16::min() { return DataFLOAT16::type(1.f/16384.f); }
 
 template<> inline DataINT12::type DataINT12::max() { return static_cast<DataINT12::type>(2047); }
 template<> inline DataINT12::type DataINT12::min() { return static_cast<DataINT12::type>(-2047); }
@@ -1063,6 +1069,49 @@ DataNormalizedUnsignedVec4(DataVec4UINT32, DataUINT32)
 DataNormalizedUnsignedVec4(DataVec4UINT64, DataUINT64)
 
 
+template<typename T>
+struct Defaultvalues {};
+
+#define DEFAULTVALUES(type, dim, name, val, min, max, inc) \
+    template<> \
+struct Defaultvalues<type> { \
+public: \
+    static type getVal() { return val; } \
+    static type getMin() { return min; } \
+    static type getMax() { return max; } \
+    static type getInc() { return inc; } \
+    static uvec2 getDim() { return dim; } \
+    static std::string getName() { return name; } \
+};
+
+DEFAULTVALUES(float, uvec2(1, 1), "Float", 0.0f, 0.0f, 1.0f, 0.01f)
+DEFAULTVALUES(double, uvec2(1, 1), "Double", 0.0, 0.0, 1.0, 0.01)
+DEFAULTVALUES(int, uvec2(1, 1), "Int", 0, -100, 100, 1)
+DEFAULTVALUES(glm::i64, uvec2(1, 1), "Int64", 0, 0, 1024, 1)
+
+DEFAULTVALUES(vec2, uvec2(2, 1), "FloatVec2", vec2(0.f), vec2(0.f), vec2(1.f), vec2(0.01f))
+DEFAULTVALUES(vec3, uvec2(3, 1), "FloatVec3", vec3(0.f), vec3(0.f), vec3(1.f), vec3(0.01f))
+DEFAULTVALUES(vec4, uvec2(4, 1), "FloatVec4", vec4(0.f), vec4(0.f), vec4(1.f), vec4(0.01f))
+
+DEFAULTVALUES(dvec2, uvec2(2, 1), "DoubleVec2", dvec2(0.), dvec2(0.), dvec2(1.), dvec2(0.01))
+DEFAULTVALUES(dvec3, uvec2(3, 1), "DoubleVec3", dvec3(0.), dvec3(0.), dvec3(1.), dvec3(0.01))
+DEFAULTVALUES(dvec4, uvec2(4, 1), "DoubleVec4", dvec4(0.), dvec4(0.), dvec4(1.), dvec4(0.01))
+
+DEFAULTVALUES(ivec2, uvec2(2, 1), "IntVec2", ivec2(0), ivec2(0), ivec2(10), ivec2(1))
+DEFAULTVALUES(ivec3, uvec2(3, 1), "IntVec3", ivec3(0), ivec3(0), ivec3(10), ivec3(1))
+DEFAULTVALUES(ivec4, uvec2(4, 1), "IntVec4", ivec4(0), ivec4(0), ivec4(10), ivec4(1))
+
+DEFAULTVALUES(mat2, uvec2(2, 2), "FloatMat2", mat2(0.f), mat2(0.f), mat2(1.f), mat2(0.01f))
+DEFAULTVALUES(mat3, uvec2(3, 3), "FloatMat3", mat3(0.f), mat3(0.f), mat3(1.f), mat3(0.01f))
+DEFAULTVALUES(mat4, uvec2(4, 4), "FloatMat4", mat4(0.f), mat4(0.f), mat4(1.f), mat4(0.01f))
+
+DEFAULTVALUES(dmat2, uvec2(2, 2), "DoubleMat2", dmat2(0.), dmat2(0.), dmat2(1.), dmat2(0.01))
+DEFAULTVALUES(dmat3, uvec2(3, 3), "DoubleMat3", dmat3(0.), dmat3(0.), dmat3(1.), dmat3(0.01))
+DEFAULTVALUES(dmat4, uvec2(4, 4), "DoubleMat4", dmat4(0.), dmat4(0.), dmat4(1.), dmat4(0.01))
+
+DEFAULTVALUES(std::string, uvec2(1, 1), "String", "", "", "", "")
+
+#undef DEFAULTVALUES
 
 
 #define CallFunctionWithTemplateArgsForType(fun, id) \

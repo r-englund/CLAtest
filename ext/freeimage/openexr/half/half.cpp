@@ -58,6 +58,12 @@ HALF_EXPORT_CONST half::uif half::_toFloat[1 << 16] =
 HALF_EXPORT_CONST unsigned short half::_eLut[1 << 9] =
 #include "eLut.h"
 
+//const half::uif half::_toFloat[1 << 16] =
+//#include "toFloat.h"
+//const unsigned short half::_eLut[1 << 9] =
+//#include "eLut.h"
+
+
 
 //-----------------------------------------------
 // Overflow handler for float-to-half conversion;

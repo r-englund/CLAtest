@@ -92,7 +92,7 @@
 	#define HALF_EXPORT __declspec(dllexport)
     #define HALF_EXPORT_CONST const __declspec(dllexport)
     #else
-	#define HALF_EXPORT __declspec(dllexport)
+    #define HALF_EXPORT __declspec(dllimport)
     #define HALF_EXPORT_CONST const __declspec(dllimport)
     #endif
 #else
@@ -100,7 +100,7 @@
     #define HALF_EXPORT_CONST const
 #endif
 
-class half
+class HALF_EXPORT half
 {
   public:
 
@@ -223,13 +223,18 @@ class half
 
   private:
 
-    static short	convert (int i);
-    static float	overflow ();
+    static short	convert(int i);
+    static float	overflow();
+    //static HALF_EXPORT short	convert(int i);
+    //static HALF_EXPORT float	overflow();
 
     unsigned short	_h;
 
-    static HALF_EXPORT_CONST uif		_toFloat[1 << 16];
-    static HALF_EXPORT_CONST unsigned short _eLut[1 << 9];
+    //static HALF_EXPORT_CONST uif		_toFloat[1 << 16];
+    //static HALF_EXPORT_CONST unsigned short _eLut[1 << 9];
+    static const uif		_toFloat[1 << 16];
+    static const unsigned short _eLut[1 << 9];
+
 };
 
 //-----------
