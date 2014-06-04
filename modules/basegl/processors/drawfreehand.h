@@ -34,13 +34,14 @@
 #define IVW_DRAWFREEHAND_H
 
 #include <modules/basegl/baseglmoduledefine.h>
-#include <modules/opengl/processorgl.h>
 #include <inviwo/core/ports/imageport.h>
-#include <modules/opengl/glwrap/shader.h>
+#include <modules/opengl/image/compositeprocessorgl.h>
+#include <inviwo/core/datastructures/geometry/mesh.h>
+#include <modules/opengl/rendering/meshrenderer.h>
 
 namespace inviwo {
 
-class IVW_MODULE_BASEGL_API DrawFreeHand : public ProcessorGL {
+class IVW_MODULE_BASEGL_API DrawFreeHand : public CompositeProcessorGL {
 public:
     DrawFreeHand();
     ~DrawFreeHand();
@@ -50,7 +51,8 @@ public:
     void initialize();
     void deinitialize();
 
-    void drawPoint(vec2);
+    void addPoint(vec2);
+    void clearPoints();
 
 protected:
     void process();
@@ -75,7 +77,8 @@ private:
     ImageInport inport_;
     ImageOutport outport_;
 
-    Shader* shader_;
+    Mesh* points_;
+    MeshRenderer* pointRenderer_;
 };
 
 }
