@@ -164,22 +164,22 @@ void Texture::bindFromPBO() const {
         downloadToPBO();
     }
 
-    glBindBuffer(GL_PIXEL_UNPACK_BUFFER, pboBack_);
+    glBindBuffer(GL_PIXEL_UNPACK_BUFFER_ARB, pboBack_);
     LGL_ERROR;
 }
 
 void Texture::bindToPBO() const {
-    glBindBuffer(GL_PIXEL_PACK_BUFFER, pboBack_);
+    glBindBuffer(GL_PIXEL_PACK_BUFFER_ARB, pboBack_);
     LGL_ERROR;
 }
 
 void Texture::unbindFromPBO() const {
-    glBindBuffer(GL_PIXEL_UNPACK_BUFFER, 0);
+    glBindBuffer(GL_PIXEL_UNPACK_BUFFER_ARB, 0);
     LGL_ERROR;
 }
 
 void Texture::unbindToPBO() const {
-    glBindBuffer(GL_PIXEL_PACK_BUFFER, 0);
+    glBindBuffer(GL_PIXEL_PACK_BUFFER_ARB, 0);
     LGL_ERROR;
 }
 
@@ -187,11 +187,11 @@ void Texture::download(void* data) const {
     if (dataInReadBackPBO_) {
         // Copy from PBO
         bindToPBO();
-        void* mem = glMapBuffer(GL_PIXEL_PACK_BUFFER, GL_READ_ONLY);
+        void* mem = glMapBuffer(GL_PIXEL_PACK_BUFFER_ARB, GL_READ_ONLY);
         assert(mem);
         memcpy(data, mem, getNumberOfValues()*getSizeInBytes());
         //Release PBO data
-        glUnmapBuffer(GL_PIXEL_PACK_BUFFER);
+        glUnmapBuffer(GL_PIXEL_PACK_BUFFER_ARB);
         unbindToPBO();
         dataInReadBackPBO_ = false;
     }
@@ -231,9 +231,9 @@ void Texture::invalidatePBO() {
 
 void Texture::setupAsyncReadBackPBO() {
     bind();
-    glBindBuffer(GL_PIXEL_PACK_BUFFER, pboBack_);
-    glBufferData(GL_PIXEL_PACK_BUFFER, getNumberOfValues()*getSizeInBytes(), NULL, GL_STREAM_READ);
-    glBindBuffer(GL_PIXEL_PACK_BUFFER, 0);
+    glBindBuffer(GL_PIXEL_PACK_BUFFER_ARB, pboBack_);
+    glBufferDataARB(GL_PIXEL_PACK_BUFFER_ARB, getNumberOfValues()*getSizeInBytes(), NULL, GL_STREAM_READ_ARB);
+    glBindBufferARB(GL_PIXEL_PACK_BUFFER_ARB, 0);
     unbind();
     dataInReadBackPBO_ = false;
     LGL_ERROR;

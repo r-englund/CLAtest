@@ -41,11 +41,9 @@
 
 #define QT_NO_OPENGL_ES_2
 #ifdef __APPLE__
-#define __gl_h_
 #define GL_DO_NOT_WARN_IF_MULTI_GL_VERSION_HEADERS_INCLUDED
-#else
-#define GLEXT_64_TYPES_DEFINED
 #endif
+#define GLEXT_64_TYPES_DEFINED
 #include <QGLWidget>
 #include <QInputEvent>
 #include <QMouseEvent>

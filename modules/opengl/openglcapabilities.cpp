@@ -203,19 +203,11 @@ uvec3 OpenGLCapabilities::calculateOptimalBrickSize(uvec3 dimensions, size_t for
 }
 
 bool OpenGLCapabilities::isExtensionSupported(const char* name) {
-#ifdef __APPLE__
-    return false;
-#else
     return (glewIsExtensionSupported(name) != '0');
-#endif
 }
 
 bool OpenGLCapabilities::isSupported(const char* name) {
-#ifdef __APPLE__
-    return false;
-#else
     return (glewIsSupported(name) != '0');
-#endif
 }
 
 bool OpenGLCapabilities::isTexturesSupported() {
@@ -426,7 +418,7 @@ void OpenGLCapabilities::retrieveStaticInfo() {
         if (isShadersSupported())
             glslStrByte = glGetString(GL_SHADING_LANGUAGE_VERSION);
         else if (isShadersSupportedARB())
-            glslStrByte = glGetString(GL_SHADING_LANGUAGE_VERSION);
+            glslStrByte = glGetString(GL_SHADING_LANGUAGE_VERSION_ARB);
 
         glslVersionStr_ = std::string((glslStrByte!=NULL ? reinterpret_cast<const char*>(glslStrByte) : "000"));
         int glslVersion = parseAndRetrieveVersion(glslVersionStr_);
@@ -488,7 +480,6 @@ void OpenGLCapabilities::retrieveStaticInfo() {
 
     maxProgramLoopCount_ = -1;
 
-#ifndef __APPLE__
     if (GLEW_NV_fragment_program2) {
         GLint i = -1;
         glGetProgramivARB(GL_FRAGMENT_PROGRAM_ARB, GL_MAX_PROGRAM_LOOP_COUNT_NV, &i);
@@ -498,7 +489,6 @@ void OpenGLCapabilities::retrieveStaticInfo() {
             maxProgramLoopCount_ = std::min<int>(static_cast<int>(i), 200000);
         }
     }
-#endif
 
     //Texturing
 #ifdef GL_VERSION_1_1
@@ -539,10 +529,10 @@ void OpenGLCapabilities::retrieveStaticInfo() {
     numTexUnits_ = -1;
 
     if (isShadersSupported())
-        glGetIntegerv(GL_MAX_TEXTURE_IMAGE_UNITS, (GLint*)&numTexUnits_);
+        glGetIntegerv(GL_MAX_TEXTURE_IMAGE_UNITS_ARB, (GLint*)&numTexUnits_);
 
     if (getNumTexUnits() < 0)
-        glGetIntegerv(GL_MAX_TEXTURE_IMAGE_UNITS, (GLint*)&numTexUnits_);
+        glGetIntegerv(GL_MAX_TEXTURE_UNITS, (GLint*)&numTexUnits_);
 
     if(numTexUnits_<0)
         numTexUnits_ = 0;
