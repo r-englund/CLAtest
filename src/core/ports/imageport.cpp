@@ -287,7 +287,7 @@ void ImageOutport::changeDataDimensions(ResizeEvent* resizeEvent) {
         CanvasProcessor* canvasProcessor = dynamic_cast<CanvasProcessor*>(directSuccessors[i]);
 
         if (canvasProcessor && canvasProcessor->getCanvas()) {
-            uvec2 dimensions = canvasProcessor->getCanvas()->getDimension();
+            uvec2 dimensions = canvasProcessor->getCanvas()->getImageDimension();
             registeredDimensions.push_back(dimensions);
         }
     }

@@ -61,7 +61,8 @@ public:
     virtual void activate();
     virtual void render(const Image*, LayerType layerType = COLOR_LAYER);
     virtual void resize(uvec2 canvasSize, uvec2 imageSize);
-    virtual uvec2 getDimension();
+    uvec2 getImageDimension();
+    uvec2 getScreenDimension();
     virtual void update();
 
 protected:
@@ -87,7 +88,8 @@ protected:
     static Geometry* screenAlignedRect_;
 
     bool shared_;
-    uvec2 dimensions_;
+    uvec2 screenDimensions_;
+    uvec2 imageDimensions_;
 
     PickingContainer* pickingContainer_;
 

@@ -139,7 +139,7 @@ void CanvasQt::mousePressEvent(QMouseEvent* e) {
 
     MouseEvent* mouseEvent = new MouseEvent(ivec2(e->pos().x(), e->pos().y()),
                                             EventConverterQt::getMouseButton(e), MouseEvent::MOUSE_STATE_PRESS,
-                                            EventConverterQt::getModifier(e), dimensions_);
+                                            EventConverterQt::getModifier(e), getScreenDimension());
     e->accept();
     Canvas::mousePressEvent(mouseEvent);
     delete mouseEvent;
@@ -150,7 +150,7 @@ void CanvasQt::mouseReleaseEvent(QMouseEvent* e) {
 
     MouseEvent* mouseEvent = new MouseEvent(ivec2(e->pos().x(), e->pos().y()),
                                             EventConverterQt::getMouseButton(e),MouseEvent::MOUSE_STATE_RELEASE,
-                                            EventConverterQt::getModifier(e), dimensions_);
+                                            EventConverterQt::getModifier(e), getScreenDimension());
     e->accept();
     Canvas::mouseReleaseEvent(mouseEvent);
     delete mouseEvent;
@@ -164,7 +164,7 @@ void CanvasQt::mouseMoveEvent(QMouseEvent* e) {
     if (e->buttons() == Qt::LeftButton || e->buttons() == Qt::RightButton || e->buttons() == Qt::MiddleButton) {
         mouseEvent = new MouseEvent(ivec2(e->pos().x(), e->pos().y()),
                                     EventConverterQt::getMouseButton(e), MouseEvent::MOUSE_STATE_PRESS,
-                                    EventConverterQt::getModifier(e), dimensions_);
+                                    EventConverterQt::getModifier(e), getScreenDimension());
         e->accept();
         Canvas::mouseMoveEvent(mouseEvent);
         delete mouseEvent;
@@ -186,7 +186,7 @@ void CanvasQt::wheelEvent(QWheelEvent* e){
 
     MouseEvent* mouseEvent = new MouseEvent(ivec2(e->pos().x(), e->pos().y()), numSteps,
         EventConverterQt::getMouseWheelButton(e), MouseEvent::MOUSE_STATE_WHEEL, orientation,
-        EventConverterQt::getModifier(e), dimensions_);
+        EventConverterQt::getModifier(e), getScreenDimension());
     e->accept();
     Canvas::mouseWheelEvent(mouseEvent);
     delete mouseEvent;
