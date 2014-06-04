@@ -86,7 +86,7 @@ Volume* IvfVolumeReader::readMetaData(std::string filePath)  {
     std::string fileExtension = URLParser::getFileExtension(filePath);
     Volume* volume = new UniformRectiLinearVolume();
     IvwDeserializer d(filePath);
-    d.deserialize("ObjectFileName", rawFile_);
+    d.deserialize("RawFile", rawFile_);
     rawFile_ = fileDirectory + rawFile_;
     std::string formatFlag("");
     d.deserialize("Format", formatFlag);
@@ -99,6 +99,11 @@ Volume* IvfVolumeReader::readMetaData(std::string filePath)  {
     volume->setWorldTransform(worldTransform);
     d.deserialize("Dimension", dimension_);
     volume->setDimension(dimension_);
+
+    d.deserialize("DataRange", volume->dataMap_.dataRange);
+    d.deserialize("ValueRange", volume->dataMap_.valueRange);
+    d.deserialize("Unit", volume->dataMap_.valueUnit);
+
     volume->getMetaDataMap()->deserialize(d);
     littleEndian_ = volume->getMetaData<BoolMetaData>("LittleEndian", littleEndian_);
     VolumeDisk* vd = new VolumeDisk(filePath, dimension_, format_);
