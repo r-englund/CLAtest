@@ -98,7 +98,11 @@ void CanvasProcessorWidgetQt::deinitialize() {
 
 void CanvasProcessorWidgetQt::resizeEvent(QResizeEvent* event) {
     ProcessorWidgetQt::resizeEvent(event);
+#if (QT_VERSION >= QT_VERSION_CHECK(5, 1, 0))
+    canvasProcessor_->setCanvasSize(ivec2(event->size().width()*canvas_->devicePixelRatio(), event->size().height()*canvas_->devicePixelRatio()));
+#else
     canvasProcessor_->setCanvasSize(ivec2(event->size().width(), event->size().height()));
+#endif
 }
 
 void CanvasProcessorWidgetQt::show() {

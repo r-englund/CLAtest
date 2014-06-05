@@ -59,11 +59,11 @@ QOpenGLContext* CanvasQt::sharedGLContext_ = NULL;
 CanvasQt::CanvasQt(uvec2 dim)
     : QWindow()
     , CanvasGL(dim)
-    , updatePending_(false)
     , thisGLContext_(NULL)
     , swapBuffersAllowed_(false)
 {
     setSurfaceType(QWindow::OpenGLSurface);
+    setFormat(sharedFormat_);
     create();
 
     thisGLContext_ = new QOpenGLContext(this);
@@ -204,7 +204,6 @@ bool CanvasQt::event(QEvent *e) {
 #endif
 #ifdef USE_QWINDOW
     case QEvent::UpdateRequest:
-        updatePending_ = false;
         paintGL();
         return true;
 #endif
@@ -272,13 +271,18 @@ void CanvasQt::wheelEvent(QWheelEvent* e){
 }
 
 void CanvasQt::keyPressEvent(QKeyEvent* e) {
-    /*if(parentWidget() && e->key() == Qt::Key_F && e->modifiers() == Qt::ShiftModifier){
-        if(parentWidget()->isFullScreen()) {
-            parentWidget()->showNormal();
+#ifdef USE_QWINDOW
+    QWindow* parent = this->parent();
+#else
+    QWidget* parent = this->parentWidget();
+#endif
+    if(parent && e->key() == Qt::Key_F && e->modifiers() == Qt::ShiftModifier){
+        if(parent->windowState() == Qt::WindowFullScreen) {
+            parent->showNormal();
         } else {
-            parentWidget()->showFullScreen();
+            parent->showFullScreen();
         }
-    }*/
+    }
 
     if (!processorNetworkEvaluator_) return;
 
