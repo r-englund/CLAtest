@@ -34,14 +34,14 @@
 #define IVW_CANVASGL_H
 
 #include <modules/opengl/openglmoduledefine.h>
-#include <modules/opengl/inviwoopengl.h>
 #include <inviwo/core/util/canvas.h>
-#include <modules/opengl/glwrap/shader.h>
-#include <modules/opengl/image/imagegl.h>
-#include <modules/opengl/geometry/meshgl.h>
-#include <modules/opengl/glwrap/bufferobjectarray.h>
 
 namespace inviwo {
+
+class Shader;
+class ImageGL;
+class MeshGL;
+class BufferObjectArray;
 
 class IVW_MODULE_OPENGL_API CanvasGL : public Canvas {
 public:
@@ -59,13 +59,8 @@ public:
 
     static void attachImagePlanRect(BufferObjectArray*);
 
-    static inline void singleDrawImagePlaneRect() {
-        glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
-    }
-
-    static inline void multiDrawImagePlaneRect(int instances) {
-        glDrawArraysInstanced(GL_TRIANGLE_STRIP, 0, 4, instances);
-    }
+    static void singleDrawImagePlaneRect();
+    static void multiDrawImagePlaneRect(int instances);
 
     static inline void renderImagePlaneRect() {
         enableDrawImagePlaneRect();
@@ -85,18 +80,13 @@ protected:
 
     void renderLayer();
     void renderNoise();
-    void renderTexture(GLint);
+    void renderTexture(int);
 
     void drawRect();
     void checkChannels(int);
 
-    static inline void enableDrawImagePlaneRect() {
-        screenAlignedRectGL_->enable();
-    }
-
-    static inline void disableDrawImagePlaneRect() {
-        screenAlignedRectGL_->disable();
-    }
+    static void enableDrawImagePlaneRect();
+    static void disableDrawImagePlaneRect();
 
 private:
     static bool glewInitialized_;

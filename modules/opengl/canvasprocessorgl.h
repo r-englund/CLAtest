@@ -39,8 +39,6 @@
 #include <inviwo/core/util/canvas.h>
 #include <inviwo/core/processors/canvasprocessor.h>
 
-#include "processorgl.h"
-
 namespace inviwo {
 
 class IVW_MODULE_OPENGL_API CanvasProcessorGL : public CanvasProcessor {

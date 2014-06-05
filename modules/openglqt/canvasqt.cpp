@@ -32,52 +32,104 @@
 
 #include <modules/openglqt/canvasqt.h>
 #include <modules/opengl/openglcapabilities.h>
+#ifdef USE_QWINDOW
+#include <QtGui/QOpenGLContext>
+#endif
 
 namespace inviwo {
 
-inline QGLFormat GetQGLFormat() {
-  QGLFormat sharedFormat = QGLFormat(QGL::Rgba | QGL::DoubleBuffer | QGL::AlphaChannel | QGL::DepthBuffer | QGL::StencilBuffer);
-  sharedFormat.setProfile(QGLFormat::CoreProfile);
+inline QGLContextFormat GetQGLFormat() {
+  QGLContextFormat sharedFormat = QGLContextFormat(
+#ifndef USE_QWINDOW
+      QGL::Rgba | QGL::DoubleBuffer | QGL::AlphaChannel | QGL::DepthBuffer | QGL::StencilBuffer
+#endif
+      );
+  sharedFormat.setProfile(QGLContextFormat::CoreProfile);
 #if (QT_VERSION >= QT_VERSION_CHECK(5, 0, 0))
   sharedFormat.setVersion(10, 0);
 #endif
   return sharedFormat;
-}   
+}
 
-QGLWidget* CanvasQt::sharedWidget_ = NULL;
-QGLFormat CanvasQt::sharedFormat_ = GetQGLFormat();
+QGLContextFormat CanvasQt::sharedFormat_ = GetQGLFormat();
 
-CanvasQt::CanvasQt(QWidget* parent, uvec2 dim)
-    : QGLWidget(sharedFormat_, parent, sharedWidget_),
-      CanvasGL(dim),
-      swapBuffersAllowed_(false)
+#ifdef USE_QWINDOW
+QOpenGLContext* CanvasQt::sharedGLContext_ = NULL;
+
+CanvasQt::CanvasQt(uvec2 dim)
+    : QWindow()
+    , CanvasGL(dim)
+    , updatePending_(false)
+    , thisGLContext_(NULL)
+    , swapBuffersAllowed_(false)
+{
+    setSurfaceType(QWindow::OpenGLSurface);
+    create();
+
+    thisGLContext_ = new QOpenGLContext(this);
+    thisGLContext_->setFormat(sharedFormat_);
+
+    //This is our default rendering context
+    //Initialized once. So "THE" first object of this class will not have any shared context (or widget)
+    //But Following objects, will share the context of initial object
+    bool contextCreated;
+    if (!sharedGLContext_) {
+        contextCreated = thisGLContext_->create();
+        sharedFormat_ = thisGLContext_->format();
+        sharedGLContext_ = thisGLContext_;
+        activate();
+        initializeGL();
+    }
+    else{
+        thisGLContext_->setShareContext(sharedGLContext_);
+        contextCreated = thisGLContext_->create();
+    }
+
+    if (!contextCreated) {
+        std::cout << "OpenGL context was not created successfully!" << std::endl;
+        int major = sharedFormat_.majorVersion();
+        int minor = sharedFormat_.minorVersion();
+        std::cout << "GL Version: " << major << "." << minor << std::endl;
+        std::cout << "GL Profile: " << (sharedFormat_.profile() == QSurfaceFormat::CoreProfile ? "Core" : "CompatibilityProfile") << std::endl;
+        const GLubyte* vendor = glGetString(GL_VENDOR);
+        std::string vendorStr = std::string((vendor!=NULL ? reinterpret_cast<const char*>(vendor) : "INVALID"));
+        std::cout << "GL Vendor: " << vendorStr << std::endl;
+    }
+}
+#else
+
+QGLWidget* CanvasQt::sharedGLContext_ = NULL;
+
+CanvasQt::CanvasQt(uvec2 dim)
+    : QGLWidget(sharedFormat_, NULL, sharedGLContext_)
+      , CanvasGL(dim)
+      , swapBuffersAllowed_(false)
 {
     //This is our default rendering context
     //Initialized once. So "THE" first object of this class will not have any shared context (or widget)
     //But Following objects, will share the context of initial object
-    if (!sharedWidget_) {
+    if (!sharedGLContext_) {
         sharedFormat_ = this->format();
-        sharedWidget_ = this;
+        sharedGLContext_ = this;
         QGLWidget::glInit();
     }
 
     setAutoBufferSwap(false);
-    setFocusPolicy(Qt::TabFocus);
-    setAttribute(Qt::WA_OpaquePaintEvent);
 
 #ifndef QT_NO_GESTURES
     grabGesture(Qt::PanGesture);
     grabGesture(Qt::PinchGesture);
 #endif
 }
+#endif
 
 void CanvasQt::defineDefaultContextFormat(){
-    if(!sharedWidget_){
+    if(!sharedGLContext_){
         std::string preferProfile = OpenGLCapabilities::getPreferredProfile();
         if(preferProfile == "core")
-            sharedFormat_.setProfile(QGLFormat::CoreProfile);
+            sharedFormat_.setProfile(QGLContextFormat::CoreProfile);
         else if(preferProfile == "compatibility")
-            sharedFormat_.setProfile(QGLFormat::CompatibilityProfile);
+            sharedFormat_.setProfile(QGLContextFormat::CompatibilityProfile);
     }
 }
 
@@ -89,6 +141,7 @@ void CanvasQt::initialize() {
 }
 
 void CanvasQt::initializeSquare() {
+    activate();
     CanvasGL::initializeSquare();
 }
 
@@ -97,19 +150,29 @@ void CanvasQt::deinitialize() {
 }
 
 void CanvasQt::activate() {
+#ifdef USE_QWINDOW
+    thisGLContext_->makeCurrent(this);
+#else
     makeCurrent();
+#endif
 }
 
 void CanvasQt::initializeGL() {
     initializeGLEW();
+#ifndef USE_QWINDOW
     QGLWidget::initializeGL();
     activate();
+#endif
 }
 
 void CanvasQt::glSwapBuffers() {
     if (swapBuffersAllowed_) {
         activate();
+#ifdef USE_QWINDOW
+        thisGLContext_->swapBuffers(this);
+#else
         QGLWidget::swapBuffers();
+#endif
     }
 }
 
@@ -118,20 +181,36 @@ void CanvasQt::update() {
 }
 
 void CanvasQt::repaint() {
+#ifndef USE_QWINDOW
     QGLWidget::updateGL();
+#endif
 }
 
 void CanvasQt::paintGL() {
+#ifdef USE_QWINDOW
+    if (!isExposed())
+        return;
+#endif
+
     swapBuffersAllowed_ = true;
     CanvasGL::update();
 }
 
 bool CanvasQt::event(QEvent *e) {
+    switch (e->type()) {
 #ifndef QT_NO_GESTURES
-    if (e->type() == QEvent::Gesture)
+    case QEvent::Gesture:
         return gestureEvent(static_cast<QGestureEvent*>(e));
 #endif
-    return QGLWidget::event(e);
+#ifdef USE_QWINDOW
+    case QEvent::UpdateRequest:
+        updatePending_ = false;
+        paintGL();
+        return true;
+#endif
+    default:
+        return QGLWindow::event(e);
+    }
 }
 
 void CanvasQt::mousePressEvent(QMouseEvent* e) {
@@ -193,13 +272,13 @@ void CanvasQt::wheelEvent(QWheelEvent* e){
 }
 
 void CanvasQt::keyPressEvent(QKeyEvent* e) {
-    if(parentWidget() && e->key() == Qt::Key_F && e->modifiers() == Qt::ShiftModifier){
+    /*if(parentWidget() && e->key() == Qt::Key_F && e->modifiers() == Qt::ShiftModifier){
         if(parentWidget()->isFullScreen()) {
             parentWidget()->showNormal();
         } else {
             parentWidget()->showFullScreen();
         }
-    }
+    }*/
 
     if (!processorNetworkEvaluator_) return;
 
@@ -223,6 +302,15 @@ void CanvasQt::keyReleaseEvent(QKeyEvent* e) {
     Canvas::keyReleaseEvent(keyEvent);
     delete keyEvent;
 }
+
+#ifdef USE_QWINDOW
+void CanvasQt::exposeEvent(QExposeEvent *e){
+    Q_UNUSED(e);
+
+    if (isExposed())
+        paintGL();
+}
+#endif
 
 #ifndef QT_NO_GESTURES
 

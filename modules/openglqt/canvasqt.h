@@ -26,7 +26,7 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
- * Main file authors: Sathish Kottravel, Erik Sundén
+ * Main file authors: Erik Sundén, Sathish Kottravel
  *
  *********************************************************************************/
 
@@ -40,11 +40,10 @@
 #include <inviwo/core/common/inviwo.h>
 
 #define QT_NO_OPENGL_ES_2
-#ifdef __APPLE__
+/*#ifdef __APPLE__
 #define GL_DO_NOT_WARN_IF_MULTI_GL_VERSION_HEADERS_INCLUDED
-#endif
+#endif*/
 #define GLEXT_64_TYPES_DEFINED
-#include <QGLWidget>
 #include <QInputEvent>
 #include <QMouseEvent>
 #include <QKeyEvent>
@@ -56,12 +55,27 @@
 #include <QPinchGesture>
 #endif
 
+#if (QT_VERSION >= QT_VERSION_CHECK(5, 1, 0))
+#define USE_QWINDOW
+#endif
+
+#ifdef USE_QWINDOW
+#include <QtGui/QWindow>
+class QOpenGLContext;
+#define QGLWindow QWindow
+#define QGLContextFormat QSurfaceFormat
+#else
+#include <QGLWidget>
+#define QGLWindow QGLWidget
+#define QGLContextFormat QGLFormat
+#endif
+
 namespace inviwo {
 
-class IVW_MODULE_OPENGLQT_API CanvasQt : public QGLWidget, public CanvasGL {
+class IVW_MODULE_OPENGLQT_API CanvasQt : public QGLWindow, public CanvasGL {
     Q_OBJECT
 public:
-    CanvasQt(QWidget* parent = NULL, uvec2 dim = uvec2(256,256));
+    CanvasQt(uvec2 dim = uvec2(256,256));
     ~CanvasQt();
 
     static void defineDefaultContextFormat();
@@ -86,16 +100,27 @@ protected:
     void keyPressEvent(QKeyEvent* e);
     void keyReleaseEvent(QKeyEvent* e);
 
+#ifdef USE_QWINDOW
+    void exposeEvent(QExposeEvent *event);
+
 private:
+    bool updatePending_;
+
+    QOpenGLContext* thisGLContext_;
+
+    static QOpenGLContext* sharedGLContext_; //For rendering-context sharing
+#else
+private:
+    static QGLWidget* sharedGLContext_; //For rendering-context sharing
+#endif
+    static QGLContextFormat sharedFormat_;
+    bool swapBuffersAllowed_;
+
 #ifndef QT_NO_GESTURES
     bool gestureEvent(QGestureEvent *e);
     void panTriggered(QPanGesture*);
     void pinchTriggered(QPinchGesture*);
 #endif
-
-    static QGLWidget* sharedWidget_; //For rendering-context sharing
-    static QGLFormat sharedFormat_;
-    bool swapBuffersAllowed_;
 };
 
 } // namespace

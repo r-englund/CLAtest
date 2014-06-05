@@ -31,6 +31,7 @@
  *********************************************************************************/
 
 #include "openglqtcapabilities.h"
+#include <modules/opengl/inviwoopengl.h>
 #include <inviwo/core/util/formatconversion.h>
 #include <inviwo/core/util/logcentral.h>
 #include <inviwo/core/util/stringconversion.h>

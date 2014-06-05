@@ -32,9 +32,13 @@
 
 #include "canvasgl.h"
 #include <inviwo/core/datastructures/geometry/mesh.h>
+#include <modules/opengl/inviwoopengl.h>
+#include <modules/opengl/glwrap/shader.h>
+#include <modules/opengl/image/imagegl.h>
+#include <modules/opengl/geometry/meshgl.h>
+#include <modules/opengl/glwrap/bufferobjectarray.h>
 #include <modules/opengl/buffer/buffergl.h>
 #include <modules/opengl/glwrap/textureunit.h>
-#include <modules/opengl/image/imagegl.h>
 #include <modules/opengl/rendering/meshrenderer.h>
 #include <modules/opengl/openglcapabilities.h>
 
@@ -147,6 +151,14 @@ void CanvasGL::attachImagePlanRect(BufferObjectArray* arrayObject) {
     }
 }
 
+void CanvasGL::singleDrawImagePlaneRect() {
+    glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+}
+
+void CanvasGL::multiDrawImagePlaneRect(int instances) {
+    glDrawArraysInstanced(GL_TRIANGLE_STRIP, 0, 4, instances);
+}
+
 void CanvasGL::renderLayer() {
     const LayerGL* layerGL = imageGL_->getLayerGL(layerType_);
     TextureUnit textureUnit;
@@ -165,7 +177,7 @@ void CanvasGL::renderNoise() {
     activateDefaultRenderContext();
 }
 
-void CanvasGL::renderTexture(GLint unitNumber) {
+void CanvasGL::renderTexture(int unitNumber) {
     activate();
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
     glEnable(GL_BLEND);
@@ -204,6 +216,14 @@ void CanvasGL::checkChannels(int channels) {
         shader_->getFragmentShaderObject()->build();
         shader_->link();
     }
+}
+
+void CanvasGL::enableDrawImagePlaneRect() {
+    screenAlignedRectGL_->enable();
+}
+
+void CanvasGL::disableDrawImagePlaneRect() {
+    screenAlignedRectGL_->disable();
 }
 
 }  // namespace
