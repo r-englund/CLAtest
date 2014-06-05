@@ -132,6 +132,7 @@ void CanvasGL::resize(uvec2 canvasSize, uvec2 imageSize) {
     activate();
     glViewport(0, 0, canvasSize[0], canvasSize[1]);
     Canvas::resize(canvasSize, imageSize);
+    activateDefaultRenderContext();
 }
 
 void CanvasGL::glSwapBuffers() {}
@@ -173,6 +174,7 @@ void CanvasGL::renderLayer() {
 
 void CanvasGL::renderNoise() {
     activate();
+    glViewport(0, 0, getScreenDimension().x, getScreenDimension().y);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
     noiseShader_->activate();
     drawRect();
@@ -183,6 +185,7 @@ void CanvasGL::renderNoise() {
 
 void CanvasGL::renderTexture(int unitNumber) {
     activate();
+    glViewport(0, 0, getScreenDimension().x, getScreenDimension().y);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
