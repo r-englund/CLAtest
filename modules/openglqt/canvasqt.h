@@ -55,7 +55,7 @@
 #include <QPinchGesture>
 #endif
 
-#if (QT_VERSION >= QT_VERSION_CHECK(5, 1, 0))
+#if defined(__APPLE__) && (QT_VERSION >= QT_VERSION_CHECK(5, 1, 0))
 #define USE_QWINDOW
 #endif
 

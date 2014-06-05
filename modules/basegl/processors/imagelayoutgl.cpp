@@ -65,7 +65,7 @@ ImageLayoutGL::~ImageLayoutGL() {
 
 void ImageLayoutGL::initialize() {
     ProcessorGL::initialize();
-    shader_ = new Shader("img_texturequad.vert", "img_copy.frag");
+    shader_ = new Shader("img_texturequad.vert", "img_texturequad.frag");
 }
 
 void ImageLayoutGL::deinitialize() {
@@ -76,38 +76,46 @@ void ImageLayoutGL::deinitialize() {
 
 void ImageLayoutGL::process() {
     std::vector<const Image*> images = multiinport_.getData();
+
+    std::vector<uvec4> viewCoords;
+    uvec2 dim = outport_.getData()->getDimension();
+    viewCoords.push_back(uvec4(0, 0, dim.x/2, dim.y/2));
+    viewCoords.push_back(uvec4(dim.x/2, 0, dim.x/2, dim.y/2));
+    viewCoords.push_back(uvec4(0, dim.y/2, dim.x/2, dim.y/2));
+    viewCoords.push_back(uvec4(dim.x/2, dim.y/2, dim.x/2, dim.y/2));
+
     const ImageGL* inImageGL = images[0]->getRepresentation<ImageGL>();
 
     TextureUnit colorUnit, depthUnit, pickingUnit;
 
-    activateTarget(outport_);
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    //glEnable(GL_BLEND); 
-    //glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    activateAndClearTarget(outport_);
 
     shader_->activate();
+    setGlobalShaderParameters(shader_);
+
     shader_->setUniform("color_", colorUnit.getUnitNumber());
     shader_->setUniform("depth_", depthUnit.getUnitNumber());
     shader_->setUniform("picking_", pickingUnit.getUnitNumber());
 
-    //glDepthMask(GL_TRUE);
+    size_t minNum = std::min(images.size(), viewCoords.size());
+    for(size_t i=0; i<minNum; ++i){
+        //const ImageGL* inImageGL = images[i]->getRepresentation<ImageGL>();
+        inImageGL->getColorLayerGL()->bindTexture(colorUnit.getEnum());
+        inImageGL->getDepthLayerGL()->bindTexture(depthUnit.getEnum());
+        inImageGL->getPickingLayerGL()->bindTexture(pickingUnit.getEnum());
 
-    inImageGL->getColorLayerGL()->bindTexture(colorUnit.getEnum());
-    inImageGL->getDepthLayerGL()->bindTexture(depthUnit.getEnum());
-    inImageGL->getPickingLayerGL()->bindTexture(pickingUnit.getEnum());
+        glViewport(static_cast<int>(viewCoords[i].x), static_cast<int>(viewCoords[i].y), viewCoords[i].z, viewCoords[i].w);
+        renderImagePlaneRect();
+        glFlush();
 
-    renderImagePlaneRect();
+        inImageGL->getColorLayerGL()->unbindTexture();
+        inImageGL->getDepthLayerGL()->unbindTexture();
+        inImageGL->getPickingLayerGL()->unbindTexture();
+    }
 
-    inImageGL->getColorLayerGL()->unbindTexture();
-    inImageGL->getDepthLayerGL()->unbindTexture();
-    inImageGL->getPickingLayerGL()->unbindTexture();
-    
+    glViewport(0, 0, dim.x, dim.y);
     shader_->deactivate();
     deactivateCurrentTarget();
-
-    //glViewport(0, 0, outport_.getDimension().x,  outport_.getDimension().y);
-
-    //glDisable(GL_BLEND); 
 }
 
 } // namespace
