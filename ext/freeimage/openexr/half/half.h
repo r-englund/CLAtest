@@ -120,7 +120,7 @@ class HALF_EXPORT half
     // Constructors
     //-------------
     
-    #if __APPLE__ || __unix
+    #if __APPLE__
     half() = default;			// no initialization
     #else
     half();
@@ -146,7 +146,7 @@ class HALF_EXPORT half
     // Assignment
     //-----------
 
-    #if __APPLE__ || __unix
+    #if __APPLE__
     half &		operator = (const half&  h) = default;
     #else
     half &		operator = (half h);
@@ -444,9 +444,7 @@ HALF_EXPORT void			printBits   (char  c[35], float f);
 // Simple constructors
 //--------------------
 
-#if __APPLE__ || __unix
-
-#else
+#ifndef __APPLE__
 inline
 half::half ()
 {
@@ -601,9 +599,7 @@ half::operator - () const
     return h;
 }
 
-#if __APPLE__ || __unix
-
-#else
+#ifndef __APPLE__
 inline half &
 half::operator = (half h)
 {
