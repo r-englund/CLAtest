@@ -59,12 +59,7 @@ CanvasGL::CanvasGL(uvec2 dimensions)
 CanvasGL::~CanvasGL() {}
 
 void CanvasGL::initialize() {
-    glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
-    glClearDepth(1.0f);
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    glEnable(GL_DEPTH_TEST);
-    glDepthFunc(GL_LEQUAL);
-    LGL_ERROR;
+    defaultGLState();
     shader_ = new Shader("img_texturequad.vert", "img_texturequad.frag");
     LGL_ERROR;
     noiseShader_ = new Shader("img_texturequad.vert", "img_noise.frag");
@@ -100,6 +95,15 @@ void CanvasGL::deinitialize() {
     noiseShader_ = NULL;
     delete rectArray_;
     rectArray_ = NULL;
+}
+
+void CanvasGL::defaultGLState(){
+    glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+    glClearDepth(1.0f);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    glEnable(GL_DEPTH_TEST);
+    glDepthFunc(GL_LEQUAL);
+    LGL_ERROR;
 }
 
 void CanvasGL::activate() {}

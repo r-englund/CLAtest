@@ -127,16 +127,6 @@ Geometry* MultiPlanar::createSliceYZGeometry() {
 }
 
 void MultiPlanar::process() {
-
-    /*
-    glMatrixMode(GL_PROJECTION);
-    glPushMatrix();
-    glLoadMatrixf(glm::value_ptr(camera_.projectionMatrix()));
-    glMatrixMode(GL_MODELVIEW);
-    glPushMatrix();
-    glLoadMatrixf(glm::value_ptr(camera_.viewMatrix()));
-    */
-    glEnable(GL_DEPTH_TEST);
     glDepthFunc(GL_LESS);
 
     activateAndClearTarget(outport_);
@@ -172,13 +162,6 @@ void MultiPlanar::process() {
     }
     shader_->deactivate();
     deactivateCurrentTarget();
-
-    /*
-    glMatrixMode(GL_PROJECTION);
-    glPopMatrix();
-    glMatrixMode(GL_MODELVIEW);
-    glPopMatrix();
-    */
 }
 
 } // namespace
