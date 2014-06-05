@@ -35,6 +35,10 @@
 #include <inviwo/core/processors/canvasprocessor.h>
 #include <QGridLayout>
 
+#if defined(__APPLE__) && (QT_VERSION >= QT_VERSION_CHECK(5, 1, 0))
+#define USE_QWINDOW
+#endif
+
 namespace inviwo {
 
 CanvasProcessorWidgetQt::CanvasProcessorWidgetQt()
@@ -62,13 +66,12 @@ void CanvasProcessorWidgetQt::initialize() {
     canvas_->initialize();
     QGridLayout* gridLayout = new QGridLayout;
     gridLayout->setContentsMargins(0, 0, 0, 0);
-#if (QT_VERSION >= QT_VERSION_CHECK(5, 1, 0))
+#if USE_QWINDOW
     QWidget* container = QWidget::createWindowContainer(canvas_);
 #else
     canvas_->setMouseTracking(true);
     QWidget* container = static_cast<QWidget*>(canvas_);
 #endif
-    container->setFocusPolicy(Qt::TabFocus);
     container->setAttribute(Qt::WA_OpaquePaintEvent);
     gridLayout->addWidget(container, 0, 0);
     setLayout(gridLayout);
@@ -98,11 +101,7 @@ void CanvasProcessorWidgetQt::deinitialize() {
 
 void CanvasProcessorWidgetQt::resizeEvent(QResizeEvent* event) {
     ProcessorWidgetQt::resizeEvent(event);
-#if (QT_VERSION >= QT_VERSION_CHECK(5, 1, 0))
-    canvasProcessor_->setCanvasSize(ivec2(event->size().width()*canvas_->devicePixelRatio(), event->size().height()*canvas_->devicePixelRatio()));
-#else
     canvasProcessor_->setCanvasSize(ivec2(event->size().width(), event->size().height()));
-#endif
 }
 
 void CanvasProcessorWidgetQt::show() {
