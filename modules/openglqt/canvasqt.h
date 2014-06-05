@@ -104,8 +104,6 @@ protected:
     void exposeEvent(QExposeEvent *event);
 
 private:
-    bool updatePending_;
-
     QOpenGLContext* thisGLContext_;
 
     static QOpenGLContext* sharedGLContext_; //For rendering-context sharing
