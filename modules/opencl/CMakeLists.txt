@@ -29,6 +29,7 @@ set(HEADER_FILES
     ${IVW_MODULE_DIR}/opencl/volume/volumeclgl.h
     ${IVW_MODULE_DIR}/opencl/volume/volumeclglconverter.h
     ${IVW_MODULE_DIR}/opencl/cl.hpp
+	${IVW_MODULE_DIR}/opencl/clockcl.h
     ${IVW_MODULE_DIR}/opencl/glmcl.h
 	${IVW_MODULE_DIR}/opencl/inviwoopencl.h
 	${IVW_MODULE_DIR}/opencl/kernelmanager.h
@@ -67,6 +68,7 @@ set(SOURCE_FILES
 	${IVW_MODULE_DIR}/opencl/volume/volumeclglconverter.cpp
 	${IVW_MODULE_DIR}/opencl/volume/volumeclgl.cpp
     ${IVW_MODULE_DIR}/opencl/cl.cpp
+	${IVW_MODULE_DIR}/opencl/clockcl.cpp
     ${IVW_MODULE_DIR}/opencl/glmcl.cpp
     ${IVW_MODULE_DIR}/opencl/inviwoopencl.cpp
 	${IVW_MODULE_DIR}/opencl/kernelmanager.cpp

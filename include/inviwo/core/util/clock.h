@@ -34,7 +34,9 @@
 #define IVW_CLOCK_H
 
 #include <inviwo/core/common/inviwocoredefine.h>
+#include <string>
 #include <time.h>
+
 
 namespace inviwo {
 
@@ -79,21 +81,44 @@ protected:
     clock_t startTime_;
     clock_t stopTime_;
 #endif
+};
+
+/** \class ScopedClockCPU
+ *
+ * Scoped timer for CPU that prints elapsed time in destructor. 
+ * Usage is simplified by the macros (does nothing unless IVW_PROFILING is defined)
+ * IVW_CPU_PROFILING("My message")
+ *
+ */
+class IVW_CORE_API ScopedClockCPU {
+public:
+    ScopedClockCPU(const std::string& logSource, const std::string& message, float logIfAtLeastMilliSec = 0.0f): logSource_(logSource), logMessage_(message), logIfAtLeastMilliSec_(logIfAtLeastMilliSec) { clock_.start(); }
+    virtual ~ScopedClockCPU();   
+
+private:
+    // Default constructor not allowed
+    //ScopedClockCPU() {};
+    Clock clock_;
+    std::string logSource_; 
+    std::string logMessage_;
+    float logIfAtLeastMilliSec_;
+};
 
 #if IVW_PROFILING 
-#define IVW_BEGIN_CPU_PROFILING { Clock clock; clock.start();
-#else 
-#define IVW_BEGIN_CPU_PROFILING  
-#endif 
-#if IVW_PROFILING 
-#define IVW_END_CPU_PROFILING \
-    clock.stop(); \
-    LogInfo("Exec time: " << clock.getElapsedMiliseconds() << " ms"); }
-#else 
-#define IVW_END_CPU_PROFILING
+#define IVW_CPU_PROFILING(message) \
+    std::ostringstream __stream##__LINE__; __stream##__LINE__ << message; \
+    ScopedClockCPU __clock##__LINE__(parseTypeIdName(std::string(typeid(this).name())), __stream##__LINE__.str());
+#else
+#define IVW_CPU_PROFILING(message) 
 #endif
 
-};
+#if IVW_PROFILING 
+#define IVW_CPU_PROFILING_IF(time, message) \
+    std::ostringstream __stream##__LINE__; __stream##__LINE__ << message; \
+    ScopedClockCPU __clock##__LINE__(parseTypeIdName(std::string(typeid(this).name())), __stream##__LINE__.str(), time);
+#else
+#define IVW_CPU_PROFILING_IF(time, message) 
+#endif
 
 }; // namespace inviwo
 

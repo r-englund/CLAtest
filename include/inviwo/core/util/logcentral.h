@@ -42,9 +42,6 @@
 #include <typeinfo>
 #include <inviwo/core/util/stringconversion.h>
 
-#ifdef IVW_PROFILING
-#include <inviwo/core/util/clock.h>
-#endif
 namespace inviwo {
 
 IVW_CORE_API enum LogLevel {
@@ -130,59 +127,6 @@ private:
     std::vector<Logger*>* loggers_;
     bool logStacktrace_;
 };
-
-
-
-
-#ifdef IVW_PROFILING
-
-
-class ScopeTimer{
-public:
-    ScopeTimer(std::string logSource, unsigned int logLevel, const char* fileName, const char* functionName, int lineNumber, std::string logMsg,float atLeastSec = 0.0f)
-        : logSource_(logSource)
-        , logLevel_(logLevel)
-        , fileName_(fileName)
-        , functionName_(functionName)
-        , lineNumber_(lineNumber)
-        , logMsg_(logMsg)
-        , atLeastSec_(atLeastSec)
-    {
-        c.start();
-    }
-    virtual ~ScopeTimer(){
-        c.stop();
-        std::stringstream ss;
-        float sec = c.getElapsedSeconds();
-        if(sec < atLeastSec_)
-            return;
-        ss << logMsg_ << ": " << sec << " sec";
-        LogCentral::instance()->log(logSource_,logLevel_,fileName_,functionName_,lineNumber_,ss.str());
-    }
-private:
-    Clock c;
-    std::string logSource_;
-    unsigned int logLevel_;
-    const char* fileName_;
-    const char* functionName_;
-    int lineNumber_;
-    std::string logMsg_;
-    float atLeastSec_;
-};
-
-#define LogProfile(var,message) \
-    std::ostringstream __##var##stream__; __##var##stream__ << message; \
-    ScopeTimer __##var##logtimer__ = ScopeTimer(parseTypeIdName(std::string(typeid(this).name())), inviwo::Info, __FILE__, __FUNCTION__, __LINE__, __##var##stream__.str(),0.0f);
-
-
-#define LogProfileIf(var,time,message) \
-    std::ostringstream __##var##stream__; __##var##stream__ << message; \
-    ScopeTimer __##var##logtimer__ = ScopeTimer(parseTypeIdName(std::string(typeid(this).name())), inviwo::Info, __FILE__, __FUNCTION__, __LINE__, __##var##stream__.str(),time);
-
-#else
-#define  LogProfile(var,message) //do noting
-#define  LogProfileIf(var,time,message) //do noting
-#endif
 
 } // namespace
 

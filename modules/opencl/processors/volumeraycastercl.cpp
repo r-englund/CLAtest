@@ -106,7 +106,7 @@ void VolumeRaycasterCL::process() {
     try {
         // This macro will create an event called profilingEvent if IVW_PROFILING is enabled,
         // otherwise the profilingEvent will be declared as a null pointer
-        IVW_BEGIN_OPENCL_PROFILING
+        IVW_OPENCL_PROFILING(profilingEvent, "")
 
         if (useGLSharing_.get()) {
             // SyncCLGL will synchronize with OpenGL upon creation and destruction
@@ -137,7 +137,7 @@ void VolumeRaycasterCL::process() {
         }
 
         // This macro will destroy the profiling event and print the timing in the console if IVW_PROFILING is enabled
-        IVW_END_OPENCL_PROFILING
+        
     } catch (cl::Error& err) {
         LogError(getCLErrorString(err));
     }
