@@ -30,8 +30,10 @@
  *
  *********************************************************************************/
 
-#include <QGridLayout>
 #include <modules/openglqt/processors/canvasprocessorwidgetqt.h>
+#include <modules/openglqt/canvasqt.h>
+#include <inviwo/core/processors/canvasprocessor.h>
+#include <QGridLayout>
 
 namespace inviwo {
 
@@ -56,14 +58,19 @@ void CanvasProcessorWidgetQt::initialize() {
     canvasProcessor_ = dynamic_cast<CanvasProcessor*>(processor_);
     ProcessorWidgetQt::initialize();
     ivec2 dim = getDimensionMetaData();
-    //FIXME: Consider creating widget outside this class. Weird qt problem.
-    //Because NULL does not make any difference here. CanvasQt has this object as parent.
-    canvas_ = new CanvasQt(NULL, uvec2(dim.x, dim.y));
+    canvas_ = new CanvasQt(uvec2(dim.x, dim.y));
     canvas_->initialize();
-    canvas_->setMouseTracking(true);
     QGridLayout* gridLayout = new QGridLayout;
     gridLayout->setContentsMargins(0, 0, 0, 0);
-    gridLayout->addWidget(static_cast<QWidget*>(canvas_), 0, 0);
+#if (QT_VERSION >= QT_VERSION_CHECK(5, 1, 0))
+    QWidget* container = QWidget::createWindowContainer(canvas_);
+#else
+    canvas_->setMouseTracking(true);
+    QWidget* container = static_cast<QWidget*>(canvas_);
+#endif
+    container->setFocusPolicy(Qt::TabFocus);
+    container->setAttribute(Qt::WA_OpaquePaintEvent);
+    gridLayout->addWidget(container, 0, 0);
     setLayout(gridLayout);
     setWindowFlags(Qt::Window
 #ifndef WIN32
