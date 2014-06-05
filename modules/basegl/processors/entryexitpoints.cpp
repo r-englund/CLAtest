@@ -106,7 +106,7 @@ void EntryExitPoints::process() {
         // No renderer found
         return;
     }
-    IVW_BEGIN_OPENGL_PROFILING
+    IVW_OPENGL_PROFILING("")
 
     glEnable(GL_CULL_FACE);
     glDepthFunc(GL_ALWAYS);
@@ -171,7 +171,6 @@ void EntryExitPoints::process() {
     glDepthFunc(GL_LESS);
     glDisable(GL_CULL_FACE);
 
-    IVW_END_OPENGL_PROFILING
 }
 
 void EntryExitPoints::handleInteractionEventsChanged() {

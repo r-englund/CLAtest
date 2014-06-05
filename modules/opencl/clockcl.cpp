@@ -26,62 +26,28 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
- * Main file authors: Daniel Jönsson, Rickard Englund
+ * Main file author: Daniel Jönsson
  *
  *********************************************************************************/
 
-#include <inviwo/core/util/clock.h>
+#include <modules/opencl/clockcl.h>
+#include <modules/opencl/inviwoopencl.h>
 #include <inviwo/core/util/logcentral.h>
-
-static const double CLOCKS_PER_MS = CLOCKS_PER_SEC / 1000.0;
-static const double INV_CLOCKS_PER_MS = 1.0 / CLOCKS_PER_MS;
 
 
 namespace inviwo {
 
-Clock::Clock() {
-#ifdef WIN32
-    QueryPerformanceFrequency(&ticksPerSecond_);
-#endif
-}
-
-void Clock::start() {
-#ifdef WIN32
-    QueryPerformanceCounter(&startTime_);
-#else
-    startTime_ = clock();
-#endif
-}
-
-void Clock::stop() {
-#ifdef WIN32
-    QueryPerformanceCounter(&stopTime_);
-#else
-    stopTime_ = clock();
-#endif
-}
-
-float Clock::getElapsedMiliseconds() const {
-    return 1000.f*getElapsedSeconds();
-}
-
-float Clock::getElapsedSeconds() const {
-#ifdef WIN32
-    return static_cast<float>(stopTime_.QuadPart-startTime_.QuadPart) / ticksPerSecond_.QuadPart;
-#else
-    return static_cast<float>(stopTime_ - startTime_)/static_cast<float>(CLOCKS_PER_SEC);
-#endif
-}
-
-
-
-ScopedClockCPU::~ScopedClockCPU() {
-    clock_.stop();
-    if (clock_.getElapsedMiliseconds() > logIfAtLeastMilliSec_) {
+ScopedClockCL::~ScopedClockCL() {
+    try { 
+        profilingEvent_->wait(); 
         std::stringstream message;
-        message << logMessage_ << ": " << clock_.getElapsedMiliseconds() << " ms";
+        message << logMessage_ << ": " << profilingEvent_->getElapsedTime() << " ms";
         LogCentral::instance()->log(logSource_, inviwo::Info, __FILE__, __FUNCTION__, __LINE__, message.str());
-    }
-}
+        //LogInfo("Exec time: " << profilingEvent->getElapsedTime() << " ms"); 
+    } catch (cl::Error& err) { 
+        LogError(getCLErrorString(err)); 
+    } 
+    delete profilingEvent_; 
+}  
 
-}//namespace
+} // namespace

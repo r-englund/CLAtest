@@ -35,6 +35,7 @@
 
 #include <modules/opengl/openglmoduledefine.h>
 #include <modules/opengl/inviwoopengl.h>
+#include <inviwo/core/util/logcentral.h>
 #ifndef GL_VERSION_3_3
 #include <inviwo/core/util/clock.h>
 #endif
@@ -46,9 +47,7 @@ namespace inviwo {
  * Uses OpenGL queries if OpenGL 3.3 or higher is supported, 
  * otherwise uses CPU which calls glFinish before stopping time.
  * Usage is simplified by the macros (does nothing unless IVW_PROFILING is defined)
- * IVW_BEGIN_OPENGL_PROFILING
- * and 
- * IVW_END_OPENGL_PROFILING
+ * IVW_OPENGL_PROFILING("My message")
  */
 class IVW_MODULE_OPENGL_API ClockGL {
 public:
@@ -79,17 +78,37 @@ private:
     
 };
 
+/** \class ScopedClockGL
+ *
+ * Scoped timer for OpenGL that prints elapsed time in destructor. 
+ * Usage is simplified by the macros (does nothing unless IVW_PROFILING is defined)
+ * IVW_OPENGL_PROFILING("My message")
+ *
+ */
+class ScopedClockGL {
+public:
+    ScopedClockGL(const std::string& logSource, const std::string& message): logSource_(logSource), logMessage_(message) { clock_.start(); }
+    virtual ~ScopedClockGL() {
+        clock_.stop();
+        std::stringstream message;
+        message << logMessage_ << ": " << clock_.getElapsedTime() << " ms";
+        LogCentral::instance()->log(logSource_, inviwo::Info, __FILE__, __FUNCTION__, __LINE__, message.str());
+    }   
+
+private:
+    // Default constructor not allowed
+    ScopedClockGL() {};
+    ClockGL clock_;
+    std::string logSource_; 
+    std::string logMessage_;
+};
+
 #if IVW_PROFILING 
-#define IVW_BEGIN_OPENGL_PROFILING { ClockGL clockGL; clockGL.start();
-#else 
-#define IVW_BEGIN_OPENGL_PROFILING  
-#endif 
-#if IVW_PROFILING 
-#define IVW_END_OPENGL_PROFILING \
-    clockGL.stop(); \
-    LogInfo("Exec time: " << clockGL.getElapsedTime() << " ms"); }
-#else 
-#define IVW_END_OPENGL_PROFILING
+#define IVW_OPENGL_PROFILING(message) \
+    std::ostringstream __stream##__LINE__; __stream##__LINE__ << message; \
+    ScopedClockGL __clock##__LINE__(parseTypeIdName(std::string(typeid(this).name())), __stream##__LINE__.str());
+#else
+#define IVW_OPENGL_PROFILING(message) 
 #endif
 
 } // namespace

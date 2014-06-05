@@ -40,8 +40,10 @@
 #include <inviwo/core/util/singleton.h>
 #include <inviwo/core/common/inviwoapplication.h>
 #include <modules/opencl/cl.hpp>
+#include <modules/opencl/clockcl.h>
 #include <modules/opencl/glmcl.h>
 #include <modules/opencl/openclmoduledefine.h>
+
 #if defined(CL_VERSION_1_2)
 //using Image2DGL cl::Image2D;
 //using Image3DGL cl::Image3D;
@@ -67,27 +69,45 @@ namespace inviwo {
 // used when executing the kernel. If IVW_PROFILING is defined it will 
 // call LogInfo with the execution time.
 // Example:
-// IVW_BEGIN_OPENCL_PROFILING
+// IVW_OPENCL_PROFILING(profilingEvent, "")
 // OpenCL::getPtr()->getQueue().enqueueNDRangeKernel(*ernel_, cl::NullRange, globalWorkGroupSize, localWorkGroupSize, NULL, profilingEvent);
-// IVW_END_OPENCL_PROFILING
+// 
 
-#if IVW_PROFILING 
-    #define IVW_BEGIN_OPENCL_PROFILING cl::Event* profilingEvent = new cl::Event(); 
-#else 
-    #define IVW_BEGIN_OPENCL_PROFILING cl::Event* profilingEvent = NULL; 
-#endif 
-#if IVW_PROFILING 
-    #define IVW_END_OPENCL_PROFILING \
-    try { \
-        profilingEvent->wait(); \
-        LogInfo("Exec time: " << profilingEvent->getElapsedTime() << " ms"); \
-    } catch (cl::Error& err) { \
-        LogError(getCLErrorString(err)); \
-    } \
-    delete profilingEvent; 
-#else 
-    #define IVW_END_OPENCL_PROFILING
-#endif
+//#if IVW_PROFILING 
+//    #define IVW_OPENCL_PROFILING(profilingEvent, "") cl::Event* profilingEvent = new cl::Event(); 
+//#else 
+//    #define IVW_OPENCL_PROFILING(profilingEvent, "") cl::Event* profilingEvent = NULL; 
+//#endif 
+//#if IVW_PROFILING 
+//    #define  \
+//    try { \
+//        profilingEvent->wait(); \
+//        LogInfo("Exec time: " << profilingEvent->getElapsedTime() << " ms"); \
+//    } catch (cl::Error& err) { \
+//        LogError(getCLErrorString(err)); \
+//    } \
+//    delete profilingEvent; 
+//#else 
+//    #define 
+//#endif
+//
+//#if IVW_PROFILING 
+//#define IVW_OPENCL_PROFILING(profilingEvent, "")N(name) cl::Event* name = new cl::Event(); 
+//#else 
+//#define IVW_OPENCL_PROFILING(profilingEvent, "")N(name) cl::Event* name = NULL; 
+//#endif 
+//#if IVW_PROFILING 
+//#define N(name) \
+//    try { \
+//    name->wait(); \
+//    LogInfo(#name " exec time: " << name->getElapsedTime() << " ms"); \
+//} catch (cl::Error& err) { \
+//    LogError(getCLErrorString(err)); \
+//} \
+//    delete name; 
+//#else 
+//#define N(name)
+//#endif
 
 /** \class OpenCL
  *
