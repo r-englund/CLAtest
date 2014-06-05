@@ -50,7 +50,10 @@ public:
 
     virtual void initialize();
     virtual void deinitialize();
+
     virtual void activate();
+    void defaultGLState();
+
     virtual void render(const Image* im, LayerType layerType = COLOR_LAYER);
     virtual void resize(uvec2 size);
     virtual void resize(uvec2 canvasSize, uvec2 imageSize);

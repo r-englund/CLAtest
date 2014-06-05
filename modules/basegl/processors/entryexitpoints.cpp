@@ -109,7 +109,6 @@ void EntryExitPoints::process() {
     IVW_BEGIN_OPENGL_PROFILING
 
     glEnable(GL_CULL_FACE);
-    glEnable(GL_DEPTH_TEST);
     glDepthFunc(GL_ALWAYS);
     // generate exit points
     activateAndClearTarget(exitPort_);
