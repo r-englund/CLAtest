@@ -103,9 +103,9 @@
 		#endif // __GNUC__
 		#define DLL_CALLCONV
 		#if defined(GCC_HASCLASSVISIBILITY)
-			#define HALF_EXPORTS __attribute__ ((visibility("default")))
+			#define HALF_EXPORT __attribute__ ((visibility("default")))
 		#else
-			#define HALF_EXPORTS
+			#define HALF_EXPORT
 		#endif		
 	#endif // WIN32 / !WIN32
 #else
