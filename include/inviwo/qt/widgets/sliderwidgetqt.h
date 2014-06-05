@@ -69,6 +69,8 @@ private:
 template <typename T>
 class OrdinalBaseWidget {
 public:
+	virtual ~OrdinalBaseWidget() {}
+
     virtual T getValue() = 0;
     virtual void setValue(T value) = 0;
     virtual void initValue(T value) = 0;
@@ -81,7 +83,11 @@ public:
 template <typename T>
 class TemplateSliderWidget : public BaseSliderWidgetQt, public OrdinalBaseWidget<T> {
 public:
-    TemplateSliderWidget() : BaseSliderWidgetQt() {}
+    TemplateSliderWidget() : BaseSliderWidgetQt()
+		, value_(0)
+    	, minValue_(0)
+		, maxValue_(0)
+		, increment_(0) {}
     virtual ~TemplateSliderWidget() {}
 
     virtual T getValue();

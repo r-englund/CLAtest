@@ -39,7 +39,13 @@ private:
 template <typename T>
 class TemplateOrdinalEditorWidget : public BaseOrdinalEditorWidget, public OrdinalBaseWidget<T> {
 public:
-    TemplateOrdinalEditorWidget() : BaseOrdinalEditorWidget() {}
+    TemplateOrdinalEditorWidget() : BaseOrdinalEditorWidget()
+        , value_(0)
+        , minValue_(0)
+        , maxValue_(0)
+        , increment_(0)
+    {
+    }
     virtual ~TemplateOrdinalEditorWidget() {}
 
     virtual T getValue();
