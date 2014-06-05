@@ -149,7 +149,7 @@ class HALF_EXPORT half
     #if __APPLE__ || __unix
     half &		operator = (const half&  h) = default;
     #else
-    half &		operator = (half h)
+    half &		operator = (half h);
     #endif
     half &		operator = (float f);
 
