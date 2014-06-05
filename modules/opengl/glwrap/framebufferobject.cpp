@@ -26,7 +26,7 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
- * Main file author: Erik Sundén
+ * Main file author: Erik Sundï¿½n
  *
  *********************************************************************************/
 
@@ -53,7 +53,7 @@ FrameBufferObject::FrameBufferObject() {
 
 FrameBufferObject::~FrameBufferObject() {
     glDeleteFramebuffersEXT(1, &id_);
-    delete drawBuffers_;
+    delete [] drawBuffers_;
 }
 
 void FrameBufferObject::activate() {
