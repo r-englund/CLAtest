@@ -87,27 +87,29 @@
 
 #include <iostream>
 
-#if defined(OPENEXR_DLL)
-    #if defined(HALF_EXPORTS)
-    #ifdef _WIN32
-        #define HALF_EXPORT __declspec(dllexport)
-        #define HALF_EXPORT_CONST const __declspec(dllexport)
-    #else //UNIX (GCC)
-        #define HALF_EXPORT __attribute__ ((visibility ("default")))
-        #define HALF_EXPORT_CONST  const __attribute__ ((visibility ("default")))
-    #endif
-    #else
-    #ifdef _WIN32
-        #define HALF_EXPORT __declspec(dllimport)
-        #define HALF_EXPORT_CONST const __declspec(dllimport)
-    #else //UNIX (GCC)
-        #define HALF_EXPORT 
-        #define HALF_EXPORT_CONST const 
-    #endif
-    #endif
+#ifndef FREEIMAGE_LIB
+#if defined(_WIN32) || defined(__WIN32__)
+		#ifdef HALF_EXPORTS
+			#define HALF_EXPORT __declspec(dllexport)
+		#else
+			#define HALF_EXPORT __declspec(dllimport)
+		#endif // HALF_EXPORTS
+	#else 
+		// try the gcc visibility support (see http://gcc.gnu.org/wiki/Visibility)
+		#if defined(__GNUC__) && ((__GNUC__ >= 4) || (__GNUC__ == 3 && __GNUC_MINOR__ >= 4))
+			#ifndef GCC_HASCLASSVISIBILITY
+				#define GCC_HASCLASSVISIBILITY
+			#endif
+		#endif // __GNUC__
+		#define DLL_CALLCONV
+		#if defined(GCC_HASCLASSVISIBILITY)
+			#define HALF_EXPORTS __attribute__ ((visibility("default")))
+		#else
+			#define HALF_EXPORTS
+		#endif		
+	#endif // WIN32 / !WIN32
 #else
     #define HALF_EXPORT
-    #define HALF_EXPORT_CONST const
 #endif
 
 class HALF_EXPORT half
@@ -233,18 +235,13 @@ class HALF_EXPORT half
 
   private:
 
-    static short	convert(int i);
-    static float	overflow();
-    //static HALF_EXPORT short	convert(int i);
-    //static HALF_EXPORT float	overflow();
+    static short	convert (int i);
+    static float	overflow ();
 
     unsigned short	_h;
 
-    //static HALF_EXPORT_CONST uif		_toFloat[1 << 16];
-    //static HALF_EXPORT_CONST unsigned short _eLut[1 << 9];
     static const uif		_toFloat[1 << 16];
     static const unsigned short _eLut[1 << 9];
-
 };
 
 //-----------
