@@ -3,7 +3,11 @@
 
 namespace inviwo {
 
-BaseSliderWidgetQt::BaseSliderWidgetQt() {
+BaseSliderWidgetQt::BaseSliderWidgetQt() : spinBox_(NULL)
+, slider_(NULL)
+, spinnerValue_(0.0)
+, sliderValue_(0)
+{
     generateWidget();
 }
 
