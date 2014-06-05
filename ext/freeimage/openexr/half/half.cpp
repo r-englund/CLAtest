@@ -53,16 +53,10 @@ using namespace std;
 // Lookup tables for half-to-float and float-to-half conversion
 //-------------------------------------------------------------
 
-HALF_EXPORT_CONST half::uif half::_toFloat[1 << 16] =
+const half::uif half::_toFloat[1 << 16] =
 #include "toFloat.h"
-HALF_EXPORT_CONST unsigned short half::_eLut[1 << 9] =
+const unsigned short half::_eLut[1 << 9] =
 #include "eLut.h"
-
-//const half::uif half::_toFloat[1 << 16] =
-//#include "toFloat.h"
-//const unsigned short half::_eLut[1 << 9] =
-//#include "eLut.h"
-
 
 
 //-----------------------------------------------

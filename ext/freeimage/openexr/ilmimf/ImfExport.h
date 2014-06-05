@@ -34,23 +34,13 @@
 
 #if defined(OPENEXR_DLL)
 #if defined(ILMIMF_EXPORTS)
-#ifdef _WIN32
 #define IMF_EXPORT __declspec(dllexport)
-#define IMF_EXPORT_CONST const __declspec(dllexport)
-#else //UNIX (GCC)
-#define IMF_EXPORT __attribute__ ((visibility ("default")))
-#define IMF_EXPORT_CONST  const __attribute__ ((visibility ("default")))
-#endif
+#define IMF_EXPORT_CONST extern __declspec(dllexport)
 #else
-#ifdef _WIN32
 #define IMF_EXPORT __declspec(dllimport)
-#define IMF_EXPORT_CONST const __declspec(dllimport)
-#else //UNIX (GCC)
-#define IMF_EXPORT 
-#define IMF_EXPORT_CONST const 
-#endif
+#define IMF_EXPORT_CONST extern __declspec(dllimport)
 #endif
 #else
 #define IMF_EXPORT
-#define IMF_EXPORT_CONST const
+#define IMF_EXPORT_CONST extern const
 #endif
