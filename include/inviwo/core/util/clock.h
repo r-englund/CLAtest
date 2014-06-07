@@ -104,18 +104,22 @@ private:
     float logIfAtLeastMilliSec_;
 };
 
+#define ADDLINE_PART1(x, y) x ## y
+#define ADDLINE_PART2(x, y) ADDLINE_PART1(x, y)
+#define ADDLINE(x) ADDLINE_PART2(x , __LINE__)
+
 #if IVW_PROFILING 
 #define IVW_CPU_PROFILING(message) \
-    std::ostringstream __stream##__LINE__; __stream##__LINE__ << message; \
-    ScopedClockCPU __clock##__LINE__(parseTypeIdName(std::string(typeid(this).name())), __stream##__LINE__.str());
+    std::ostringstream ADDLINE(__stream); ADDLINE(__stream) << message; \
+    ScopedClockCPU ADDLINE(__clock)(parseTypeIdName(std::string(typeid(this).name())), ADDLINE(__stream).str());
 #else
 #define IVW_CPU_PROFILING(message) 
 #endif
 
 #if IVW_PROFILING 
 #define IVW_CPU_PROFILING_IF(time, message) \
-    std::ostringstream __stream##__LINE__; __stream##__LINE__ << message; \
-    ScopedClockCPU __clock##__LINE__(parseTypeIdName(std::string(typeid(this).name())), __stream##__LINE__.str(), time);
+    std::ostringstream ADDLINE(__stream); ADDLINE(__stream) << message; \
+    ScopedClockCPU ADDLINE(__clock)(parseTypeIdName(std::string(typeid(this).name())), ADDLINE(__stream).str(), time);
 #else
 #define IVW_CPU_PROFILING_IF(time, message) 
 #endif
