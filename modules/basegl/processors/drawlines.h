@@ -38,9 +38,12 @@
 #include <modules/opengl/image/compositeprocessorgl.h>
 #include <inviwo/core/datastructures/geometry/mesh.h>
 #include <modules/opengl/rendering/meshrenderer.h>
+#include <inviwo/core/properties/ordinalproperty.h>
+#include <inviwo/core/properties/buttonproperty.h>
 
 namespace inviwo {
 
+//Hold Ctrl+D and click Left Mouse Button to Add Point
 class IVW_MODULE_BASEGL_API DrawLines : public CompositeProcessorGL {
 public:
     DrawLines();
@@ -55,16 +58,38 @@ public:
 
 protected:
     void addPoint(vec2);
-    void clearPoints();
+    void clearLines();
 
-    virtual void process();
+    void process();
+
+    class DrawLinesInteractationHandler : public InteractionHandler {
+    public:
+        DrawLinesInteractationHandler(DrawLines* vs);
+        ~DrawLinesInteractationHandler(){};
+
+        void invokeEvent(Event* event);
+    private:
+        MouseEvent drawPosEvent;
+
+        KeyboardEvent drawEnableEvent_;
+
+        DrawLines* drawer_;
+
+        bool drawModeEnabled_;
+    };
 
 private:
     ImageInport inport_;
     ImageOutport outport_;
 
+    IntProperty lineSize_;
+    FloatVec4Property lineColor_;
+    ButtonProperty clearButton_;
+
     Mesh* lines_;
     MeshRenderer* lineRenderer_;
+
+    Shader* lineShader_;
 };
 
 } // namespace
