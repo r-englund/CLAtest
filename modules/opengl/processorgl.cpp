@@ -98,12 +98,20 @@ void ProcessorGL::bindPickingTexture(const ImageOutport& outport, GLenum texUnit
     bindTextures(outport.getConstData(), false, false, true, 0, 0, texUnit);
 }
 
+void ProcessorGL::bindTextures(const Image* image, GLenum colorTexUnit, GLenum depthTexUnit) {
+    bindTextures(image, true, true, false, colorTexUnit, depthTexUnit, 0);
+}
+
 void ProcessorGL::bindTextures(const ImageInport& inport, GLenum colorTexUnit, GLenum depthTexUnit) {
     bindTextures(inport.getData(), true, true, false, colorTexUnit, depthTexUnit, 0);
 }
 
 void ProcessorGL::bindTextures(const ImageOutport& outport, GLenum colorTexUnit, GLenum depthTexUnit) {
     bindTextures(outport.getConstData(), true, true, false, colorTexUnit, depthTexUnit, 0);
+}
+
+void ProcessorGL::bindTextures(const Image* image, GLenum colorTexUnit, GLenum depthTexUnit, GLenum pickingTexUnit) {
+    bindTextures(image, true, true, true, colorTexUnit, depthTexUnit, pickingTexUnit);
 }
 
 void ProcessorGL::bindTextures(const ImageInport& inport, GLenum colorTexUnit, GLenum depthTexUnit, GLenum pickingTexUnit) {
@@ -158,6 +166,10 @@ void ProcessorGL::unbindPickingTexture(const ImageInport& inport) {
 
 void ProcessorGL::unbindPickingTexture(const ImageOutport& outport) {
     unbindTextures(outport.getConstData(), false, false, true);
+}
+
+void ProcessorGL::unbindTextures(const Image* image) {
+    unbindTextures(image, true, true, true);
 }
 
 void ProcessorGL::unbindTextures(const ImageInport& inport) {

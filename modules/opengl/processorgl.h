@@ -75,10 +75,15 @@ public:
     static void unbindPickingTexture(const ImageInport& inport);
     static void unbindPickingTexture(const ImageOutport& outport);
 
+    static void bindTextures(const Image* image, GLenum colorTexUnit, GLenum depthTexUnit);
     static void bindTextures(const ImageInport& inport, GLenum colorTexUnit, GLenum depthTexUnit);
     static void bindTextures(const ImageOutport& outport, GLenum colorTexUnit, GLenum depthTexUnit);
+
+    static void bindTextures(const Image* image, GLenum colorTexUnit, GLenum depthTexUnit, GLenum pickingTexUnit);
     static void bindTextures(const ImageInport& inport, GLenum colorTexUnit, GLenum depthTexUnit, GLenum pickingTexUnit);
     static void bindTextures(const ImageOutport& outport, GLenum colorTexUnit, GLenum depthTexUnit, GLenum pickingTexUnit);
+
+    static void unbindTextures(const Image* image);
     static void unbindTextures(const ImageInport& inport);
     static void unbindTextures(const ImageOutport& outport);
 
