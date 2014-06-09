@@ -84,37 +84,43 @@ void ImageLayoutGL::process() {
     viewCoords.push_back(uvec4(0, dim.y/2, dim.x/2, dim.y/2));
     viewCoords.push_back(uvec4(dim.x/2, dim.y/2, dim.x/2, dim.y/2));
 
-    const ImageGL* inImageGL = images[0]->getRepresentation<ImageGL>();
-
-    TextureUnit colorUnit, depthUnit, pickingUnit;
+    //const ImageGL* inImageGL = images[0]->getRepresentation<ImageGL>();
 
     activateAndClearTarget(outport_);
-
-    shader_->activate();
-    setGlobalShaderParameters(shader_);
-
-    shader_->setUniform("color_", colorUnit.getUnitNumber());
-    shader_->setUniform("depth_", depthUnit.getUnitNumber());
-    shader_->setUniform("picking_", pickingUnit.getUnitNumber());
+    
+    TextureUnit colorUnit, depthUnit, pickingUnit;
+    /*colorUnit.getEnum();
+    depthUnit.getEnum();
+    pickingUnit.getEnum();*/
 
     size_t minNum = std::min(images.size(), viewCoords.size());
-    for(size_t i=0; i<minNum; ++i){
-        //const ImageGL* inImageGL = images[i]->getRepresentation<ImageGL>();
-        inImageGL->getColorLayerGL()->bindTexture(colorUnit.getEnum());
+    //for(size_t i=0; i<minNum; ++i){
+        bindTextures(images[0], colorUnit.getEnum(), depthUnit.getEnum(), pickingUnit.getEnum());
+        TextureUnit::setZeroUnit();
+
+        /*inImageGL->getColorLayerGL()->bindTexture(colorUnit.getEnum());
         inImageGL->getDepthLayerGL()->bindTexture(depthUnit.getEnum());
-        inImageGL->getPickingLayerGL()->bindTexture(pickingUnit.getEnum());
+        inImageGL->getPickingLayerGL()->bindTexture(pickingUnit.getEnum());*/
 
-        glViewport(static_cast<int>(viewCoords[i].x), static_cast<int>(viewCoords[i].y), viewCoords[i].z, viewCoords[i].w);
+        shader_->activate();
+        setGlobalShaderParameters(shader_);
+        shader_->setUniform("color_", colorUnit.getUnitNumber());
+        shader_->setUniform("depth_", depthUnit.getUnitNumber());
+        shader_->setUniform("picking_", pickingUnit.getUnitNumber());
+
+        //glViewport(static_cast<int>(viewCoords[i].x), static_cast<int>(viewCoords[i].y), viewCoords[i].z, viewCoords[i].w);
         renderImagePlaneRect();
-        glFlush();
+        //glFlush();
 
-        inImageGL->getColorLayerGL()->unbindTexture();
+        shader_->deactivate();
+
+        /*inImageGL->getColorLayerGL()->unbindTexture();
         inImageGL->getDepthLayerGL()->unbindTexture();
-        inImageGL->getPickingLayerGL()->unbindTexture();
-    }
+        inImageGL->getPickingLayerGL()->unbindTexture();*/
+    //}
 
-    glViewport(0, 0, dim.x, dim.y);
-    shader_->deactivate();
+    //glViewport(0, 0, dim.x, dim.y);
+    //shader_->deactivate();
     deactivateCurrentTarget();
 }
 
