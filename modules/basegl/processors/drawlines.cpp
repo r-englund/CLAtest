@@ -36,40 +36,62 @@
 namespace inviwo {
 
 ProcessorClassName(DrawLines, "DrawLines");
-ProcessorCategory(DrawLines, "Line Rendering");
+ProcessorCategory(DrawLines, "Drawing");
 ProcessorCodeState(DrawLines, CODE_STATE_EXPERIMENTAL);
 
 DrawLines::DrawLines()
-    : CompositeProcessorGL(),
-      inport_("inport"),
-      outport_("outport", &inport_, COLOR_ONLY)
+    : CompositeProcessorGL()
+     , inport_("inport")
+     , outport_("outport", &inport_, COLOR_ONLY)
+     , lineSize_("lineSize", "Line Size", 5, 1, 10)
+     , lineColor_("lineColor", "Line Color", vec4(1.f))
+     , clearButton_("clearButton", "Clear Lines")
 {
     addPort(inport_);
     addPort(outport_);
+
+    addProperty(lineSize_);
+    lineColor_.setSemantics(PropertySemantics::Color);
+    addProperty(lineColor_);
+    clearButton_.onChange(this, &DrawLines::clearLines);
+    addProperty(clearButton_);
+
+    addInteractionHandler(new DrawLinesInteractationHandler(this));
 }
 
 DrawLines::~DrawLines() {
+    const std::vector<InteractionHandler*>& interactionHandlers = getInteractionHandlers();
+    for(size_t i=0; i<interactionHandlers.size(); ++i) {
+        InteractionHandler* handler = interactionHandlers[i];
+        removeInteractionHandler(handler);
+        delete handler;
+    }
 }
 
 void DrawLines::initialize() {
     CompositeProcessorGL::initialize();
+    lineShader_ = new Shader("img_color.frag");
     lines_ = new Mesh(GeometryEnums::LINES, GeometryEnums::STRIP);
     lines_->initialize();
     lines_->addAttribute(new Position2dBuffer());
-    addPoint(vec2(0.25f));
-    addPoint(vec2(0.75f));
     lineRenderer_ = new MeshRenderer(lines_);
 }
 
 void DrawLines::deinitialize() {
     CompositeProcessorGL::deinitialize();
+    delete lineShader_;
+    lineShader_ = NULL;
     delete lineRenderer_;
     delete lines_;
 }
 
 void DrawLines::process() {
     activateAndClearTarget(outport_);
+    glLineWidth(static_cast<float>(lineSize_.get()));
+    lineShader_->activate();
+    lineShader_->setUniform("color_", lineColor_.get());
     lineRenderer_->render();
+    glPointSize(1.f);
     deactivateCurrentTarget();
     compositePortsToOutport(outport_, inport_);
 }
@@ -78,8 +100,49 @@ void DrawLines::addPoint(vec2 p) {
     lines_->getAttributes(0)->getEditableRepresentation<Position2dBufferRAM>()->add(p);
 }
 
-void DrawLines::clearPoints() {
+void DrawLines::clearLines() {
     lines_->getAttributes(0)->getEditableRepresentation<Position2dBufferRAM>()->clear();
+}
+
+DrawLines::DrawLinesInteractationHandler::DrawLinesInteractationHandler(DrawLines* dfh) 
+    : InteractionHandler()
+    , drawPosEvent(MouseEvent::MOUSE_BUTTON_LEFT, InteractionEvent::MODIFIER_CTRL)
+    , drawEnableEvent_('D', InteractionEvent::MODIFIER_CTRL)
+    , drawer_(dfh)
+    , drawModeEnabled_(false) {
+}
+
+void DrawLines::DrawLinesInteractationHandler::invokeEvent(Event* event){
+    KeyboardEvent* keyEvent = dynamic_cast<KeyboardEvent*>(event);
+    if (keyEvent) {
+        int button = keyEvent->button();
+        KeyboardEvent::KeyState state = keyEvent->state();
+        InteractionEvent::Modifier modifier = keyEvent->modifier();
+
+        if (button == drawEnableEvent_.button() && modifier == drawEnableEvent_.modifier()){
+            if(state == KeyboardEvent::KEY_STATE_PRESS){
+                drawModeEnabled_ = true;
+            }
+            else if(state == KeyboardEvent::KEY_STATE_RELEASE){
+                drawModeEnabled_ = false;
+            }
+        }
+        return;
+    }
+
+    MouseEvent* mouseEvent = dynamic_cast<MouseEvent*>(event);
+    if (drawModeEnabled_ && mouseEvent && mouseEvent->state() == MouseEvent::MOUSE_STATE_PRESS) {
+        if (mouseEvent->modifier() == drawPosEvent.modifier()
+            && mouseEvent->button() == drawPosEvent.button()) {
+                vec2 line = mouseEvent->posNormalized();
+                line *= 2.f;
+                line -= 1.f;
+                line.y = -line.y;
+                drawer_->addPoint(line);
+                drawer_->invalidate(PropertyOwner::INVALID_OUTPUT);
+        }
+        return;
+    }
 }
 
 } // namespace

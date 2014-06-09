@@ -38,9 +38,12 @@
 #include <modules/opengl/image/compositeprocessorgl.h>
 #include <inviwo/core/datastructures/geometry/mesh.h>
 #include <modules/opengl/rendering/meshrenderer.h>
+#include <inviwo/core/properties/ordinalproperty.h>
+#include <inviwo/core/properties/buttonproperty.h>
 
 namespace inviwo {
 
+//Hold Ctrl+D and click/move Left Mouse Button to Draw
 class IVW_MODULE_BASEGL_API DrawFreeHand : public CompositeProcessorGL {
 public:
     DrawFreeHand();
@@ -77,8 +80,14 @@ private:
     ImageInport inport_;
     ImageOutport outport_;
 
+    IntProperty pointSize_;
+    FloatVec4Property pointColor_;
+    ButtonProperty clearButton_;
+
     Mesh* points_;
     MeshRenderer* pointRenderer_;
+
+    Shader* pointShader_;
 };
 
 }

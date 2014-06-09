@@ -36,16 +36,25 @@
 namespace inviwo {
 
 ProcessorClassName(DrawFreeHand, "DrawFreeHand");
-ProcessorCategory(DrawFreeHand, "Image Operation");
+ProcessorCategory(DrawFreeHand, "Drawing");
 ProcessorCodeState(DrawFreeHand, CODE_STATE_EXPERIMENTAL);
 
 DrawFreeHand::DrawFreeHand()
     : CompositeProcessorGL()
     , inport_("image.inport")
     , outport_("image.outport", &inport_, COLOR_ONLY) 
+    , pointSize_("pointSize", "Point Size", 5, 1, 10)
+    , pointColor_("pointColor", "Point Color", vec4(1.f))
+    , clearButton_("clearButton", "Clear Drawing")
 {
     addPort(inport_);
     addPort(outport_);
+
+    addProperty(pointSize_);
+    pointColor_.setSemantics(PropertySemantics::Color);
+    addProperty(pointColor_);
+    clearButton_.onChange(this, &DrawFreeHand::clearPoints);
+    addProperty(clearButton_);
 
     addInteractionHandler(new DrawFreeHandInteractationHandler(this));
 }
@@ -61,6 +70,7 @@ DrawFreeHand::~DrawFreeHand() {
 
 void DrawFreeHand::initialize() {
     CompositeProcessorGL::initialize();
+    pointShader_ = new Shader("img_color.frag");
     points_ = new Mesh(GeometryEnums::POINTS, GeometryEnums::NONE);
     points_->initialize();
     points_->addAttribute(new Position2dBuffer());
@@ -69,14 +79,19 @@ void DrawFreeHand::initialize() {
 
 void DrawFreeHand::deinitialize() {
     CompositeProcessorGL::deinitialize();
+    delete pointShader_;
+    pointShader_ = NULL;
     delete pointRenderer_;
     delete points_;
 }
 
 void DrawFreeHand::process() {
     activateAndClearTarget(outport_);
-    glPointSize(8.f);
+    glPointSize(static_cast<float>(pointSize_.get()));
+    pointShader_->activate();
+    pointShader_->setUniform("color_", pointColor_.get());
     pointRenderer_->render();
+    pointShader_->deactivate();
     glPointSize(1.f);
     deactivateCurrentTarget();
     compositePortsToOutport(outport_, inport_);
@@ -120,7 +135,11 @@ void DrawFreeHand::DrawFreeHandInteractationHandler::invokeEvent(Event* event){
     if (drawModeEnabled_ && mouseEvent) {
         if (mouseEvent->modifier() == drawPosEvent.modifier()
             && mouseEvent->button() == drawPosEvent.button()) {
-                drawer_->addPoint(mouseEvent->posNormalized());
+                vec2 point = mouseEvent->posNormalized();
+                point *= 2.f;
+                point -= 1.f;
+                point.y = -point.y;
+                drawer_->addPoint(point);
                 drawer_->invalidate(PropertyOwner::INVALID_OUTPUT);
         }
         return;
