@@ -408,6 +408,17 @@ PyObject* PyValueParser::getProperty(Property* p) {
     CAST_DO_STUFF(OptionPropertyFloat, p);
     CAST_DO_STUFF(OptionPropertyString, p);
     CAST_DO_STUFF(OptionPropertyDouble, p);
+
+    CameraProperty* casted = dynamic_cast<CameraProperty*>(p);
+    if (casted) {              
+        vec3 from = casted->getLookFrom();
+        vec3 to = casted->getLookTo();
+        vec3 up = casted->getLookUp();
+
+        return Py_BuildValue("(fff)(fff)(fff)",from.x,from.y,from.z,to.x,to.y,to.z,up.x,up.y,up.z);
+    }   
+    std::string msg = std::string("Could create a python value of property  ") + p->getIdentifier() + " which is of type " + p->getClassName();
+    PyErr_SetString(PyExc_TypeError, msg.c_str());
     return 0;
 }
 
