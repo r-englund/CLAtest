@@ -115,6 +115,7 @@ CanvasQt::CanvasQt(uvec2 dim)
     }
 
     setAutoBufferSwap(false);
+    setFocusPolicy(Qt::TabFocus);
 
 #ifndef QT_NO_GESTURES
     grabGesture(Qt::PanGesture);
@@ -198,6 +199,24 @@ void CanvasQt::paintGL() {
 
 bool CanvasQt::event(QEvent *e) {
     switch (e->type()) {
+    case QEvent::KeyPress:
+        keyPressEvent(static_cast<QKeyEvent*>(e));
+        return true;
+    case QEvent::KeyRelease:
+        keyReleaseEvent(static_cast<QKeyEvent*>(e));
+        return true;
+    case QEvent::MouseButtonPress:
+        mousePressEvent(static_cast<QMouseEvent*>(e));
+        return true;
+    case QEvent::MouseButtonRelease:
+        mouseReleaseEvent(static_cast<QMouseEvent*>(e));
+        return true;
+    case QEvent::MouseMove:
+        mouseMoveEvent(static_cast<QMouseEvent*>(e));
+        return true;
+    case QEvent::Wheel:
+        wheelEvent(static_cast<QWheelEvent*>(e));
+        return true;
 #ifndef QT_NO_GESTURES
     case QEvent::Gesture:
         return gestureEvent(static_cast<QGestureEvent*>(e));
