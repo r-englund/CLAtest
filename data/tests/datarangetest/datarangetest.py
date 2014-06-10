@@ -6,7 +6,7 @@ import os
 path = inviwo.getDataPath()+os.sep+"tests"+os.sep+"datarangetest"
 
 for f in os.listdir(path+os.sep+"datasets"):
-    if ".dat" in f:
+    if (".dat" in f) and (not "64" in f):
         print(f)
         inviwo.setPropertyValue("VolumeSource", 
                                               "filename",
