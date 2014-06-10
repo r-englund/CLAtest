@@ -145,6 +145,8 @@ void MultiPlanar::process() {
         Geometry* sliceXYGeom = createSliceXYGeometry();
         GeometryRenderer* sliceXYRenderer = GeometryRendererFactory::getPtr()->create(sliceXYGeom);
         sliceXYRenderer->render();
+        delete sliceXYGeom;
+        delete sliceXYRenderer;
     }
     if (showSliceXZ_.get()) {
         bindColorTexture(sliceXZPort_, sliceUnit.getEnum());
@@ -152,6 +154,8 @@ void MultiPlanar::process() {
         Geometry* sliceXZGeom = createSliceXZGeometry();
         GeometryRenderer* sliceXZRenderer = GeometryRendererFactory::getPtr()->create(sliceXZGeom);
         sliceXZRenderer->render();
+        delete sliceXZGeom;
+        delete sliceXZRenderer;
     }
     if (showSliceYZ_.get()) {
         bindColorTexture(sliceYZPort_, sliceUnit.getEnum());
@@ -159,6 +163,8 @@ void MultiPlanar::process() {
         Geometry* sliceYZGeom = createSliceYZGeometry();
         GeometryRenderer* sliceYZRenderer = GeometryRendererFactory::getPtr()->create(sliceYZGeom);
         sliceYZRenderer->render();
+        delete sliceYZGeom;
+        delete sliceYZRenderer;
     }
     shader_->deactivate();
     deactivateCurrentTarget();
