@@ -197,7 +197,7 @@ void ProcessorNetworkEvaluator::determineProcessingOrder() {
 void ProcessorNetworkEvaluator::propagateInteractionEvent(Processor* processor, InteractionEvent* event) {
     if (!hasBeenVisited(processor)) {
         processorsVisited_.push_back(processor);
-        std::set<Processor*> directPredecessors = getDirectPredecessors(processor);
+        std::set<Processor*> directPredecessors = getDirectPredecessors(processor, event);
 
         for (std::set<Processor*>::iterator it = directPredecessors.begin(), itEnd=directPredecessors.end(); it!=itEnd; ++it) {
             if ((*it)->hasInteractionHandler())

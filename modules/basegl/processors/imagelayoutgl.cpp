@@ -49,23 +49,33 @@ ImageLayoutGL::ImageLayoutGL()
     , shader_(NULL) {
       
     addPort(multiinport_);
+    multiinport_.onChange(this, &ImageLayoutGL::multiInportChanged);
     addPort(outport_);
     layout_.addOption("single", "Single Only", 1);
     layout_.addOption("horizontalSplit", "Horizontal Split", 2);
     layout_.addOption("verticalSplit", "Vertical Split", 3);
     layout_.addOption("crossSplit", "Cross Split", 4);
+    layout_.setSelectedIdentifier("crossSplit");
     layout_.setCurrentStateAsDefault();
+    layout_.setReadOnly(true);
     addProperty(layout_);
+    horizontalSplitter_.setVisible(false);
     addProperty(horizontalSplitter_);
+    verticalSplitter_.setVisible(false);
     addProperty(verticalSplitter_);
+
+    layoutHandler_ = new ImageLayoutGLInteractationHandler();
+    addInteractionHandler(layoutHandler_);
 }
 
 ImageLayoutGL::~ImageLayoutGL() {
+    removeInteractionHandler(layoutHandler_);
+    delete layoutHandler_;
 }
 
 void ImageLayoutGL::initialize() {
     ProcessorGL::initialize();
-    shader_ = new Shader("img_texturequad.vert", "img_texturequad.frag");
+    shader_ = new Shader("img_texturequad.vert", "img_copy.frag");
 }
 
 void ImageLayoutGL::deinitialize() {
@@ -74,54 +84,86 @@ void ImageLayoutGL::deinitialize() {
     Processor::deinitialize();
 }
 
+const std::vector<Inport*>& ImageLayoutGL::getInports(Event* e) const {
+    InteractionEvent* ie = dynamic_cast<InteractionEvent*>(e);
+    //Last clicked mouse position determines which inport is active
+    //This is recorded with the interactionhandler before-hand
+    if(ie && !viewCoords_.empty()){
+        currentInteractionInport_.clear();
+        if(multiinport_.isConnected()){
+            std::vector<Inport*> inports = multiinport_.getInports();
+            size_t minNum = std::min(inports.size(), viewCoords_.size());
+            ivec2 activePos = layoutHandler_->getActivePosition();
+            uvec2 dim = outport_.getConstData()->getDimension();
+            activePos.y = static_cast<int>(dim.y) - activePos.y;
+            for(size_t i=0; i<minNum; ++i){
+                if(static_cast<int>(viewCoords_[i].x) <= activePos.x && (static_cast<int>(viewCoords_[i].x)+static_cast<int>(viewCoords_[i].z)) >= activePos.x)
+                    if(static_cast<int>(viewCoords_[i].y) <= activePos.y && (static_cast<int>(viewCoords_[i].y)+static_cast<int>(viewCoords_[i].w)) >= activePos.y)
+                        currentInteractionInport_.push_back(inports[i]);
+
+            }
+        }
+        return currentInteractionInport_;
+    }
+    return Processor::getInports();
+}
+
+void ImageLayoutGL::multiInportChanged(){
+    if(multiinport_.isConnected()){
+        std::vector<Inport*> inports = multiinport_.getInports();
+        size_t minNum = std::min(inports.size(), viewCoords_.size());
+        for(size_t i=0; i<minNum; ++i){
+            ImageInport* imageInport = dynamic_cast<ImageInport*>(inports[i]);
+            if(imageInport){
+                imageInport->setResizeScale(vec2(0.25f, 0.25f));
+            }
+        }
+    }
+}
+
 void ImageLayoutGL::process() {
     std::vector<const Image*> images = multiinport_.getData();
 
-    std::vector<uvec4> viewCoords;
     uvec2 dim = outport_.getData()->getDimension();
-    viewCoords.push_back(uvec4(0, 0, dim.x/2, dim.y/2));
-    viewCoords.push_back(uvec4(dim.x/2, 0, dim.x/2, dim.y/2));
-    viewCoords.push_back(uvec4(0, dim.y/2, dim.x/2, dim.y/2));
-    viewCoords.push_back(uvec4(dim.x/2, dim.y/2, dim.x/2, dim.y/2));
+    viewCoords_.clear();
+    viewCoords_.push_back(uvec4(0, dim.y/2, dim.x/2, dim.y/2));
+    viewCoords_.push_back(uvec4(dim.x/2, dim.y/2, dim.x/2, dim.y/2));
+    viewCoords_.push_back(uvec4(0, 0, dim.x/2, dim.y/2));
+    viewCoords_.push_back(uvec4(dim.x/2, 0, dim.x/2, dim.y/2));
 
-    //const ImageGL* inImageGL = images[0]->getRepresentation<ImageGL>();
+    TextureUnit colorUnit, depthUnit, pickingUnit;
 
     activateAndClearTarget(outport_);
-    
-    TextureUnit colorUnit, depthUnit, pickingUnit;
-    /*colorUnit.getEnum();
-    depthUnit.getEnum();
-    pickingUnit.getEnum();*/
 
-    size_t minNum = std::min(images.size(), viewCoords.size());
-    //for(size_t i=0; i<minNum; ++i){
-        bindTextures(images[0], colorUnit.getEnum(), depthUnit.getEnum(), pickingUnit.getEnum());
-        TextureUnit::setZeroUnit();
+    shader_->activate();
+    setGlobalShaderParameters(shader_);
+    shader_->setUniform("color_", colorUnit.getUnitNumber());
+    shader_->setUniform("depth_", depthUnit.getUnitNumber());
+    shader_->setUniform("picking_", pickingUnit.getUnitNumber());
 
-        /*inImageGL->getColorLayerGL()->bindTexture(colorUnit.getEnum());
-        inImageGL->getDepthLayerGL()->bindTexture(depthUnit.getEnum());
-        inImageGL->getPickingLayerGL()->bindTexture(pickingUnit.getEnum());*/
-
-        shader_->activate();
-        setGlobalShaderParameters(shader_);
-        shader_->setUniform("color_", colorUnit.getUnitNumber());
-        shader_->setUniform("depth_", depthUnit.getUnitNumber());
-        shader_->setUniform("picking_", pickingUnit.getUnitNumber());
-
-        //glViewport(static_cast<int>(viewCoords[i].x), static_cast<int>(viewCoords[i].y), viewCoords[i].z, viewCoords[i].w);
+    size_t minNum = std::min(images.size(), viewCoords_.size());
+    for(size_t i=0; i<minNum; ++i){
+        bindTextures(images[i], colorUnit.getEnum(), depthUnit.getEnum(), pickingUnit.getEnum());
+        glViewport(static_cast<int>(viewCoords_[i].x), static_cast<int>(viewCoords_[i].y), viewCoords_[i].z, viewCoords_[i].w);
         renderImagePlaneRect();
-        //glFlush();
+    }
 
-        shader_->deactivate();
-
-        /*inImageGL->getColorLayerGL()->unbindTexture();
-        inImageGL->getDepthLayerGL()->unbindTexture();
-        inImageGL->getPickingLayerGL()->unbindTexture();*/
-    //}
-
-    //glViewport(0, 0, dim.x, dim.y);
-    //shader_->deactivate();
+    glViewport(0, 0, dim.x, dim.y);
+    shader_->deactivate();
     deactivateCurrentTarget();
+}
+
+ImageLayoutGL::ImageLayoutGLInteractationHandler::ImageLayoutGLInteractationHandler() 
+    : InteractionHandler()
+    , activePositionChangeEvent_(MouseEvent::MOUSE_BUTTON_LEFT, InteractionEvent::MODIFIER_NONE)
+    , activePosition_(ivec2(0)) {
+}
+
+void ImageLayoutGL::ImageLayoutGLInteractationHandler::invokeEvent(Event* event){
+    MouseEvent* mouseEvent = dynamic_cast<MouseEvent*>(event);
+    if (mouseEvent && mouseEvent->button() == activePositionChangeEvent_.button()) {
+        activePosition_ = mouseEvent->pos();
+    }
 }
 
 } // namespace
