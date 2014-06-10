@@ -50,6 +50,15 @@ PropertySettingsWidgetQt::PropertySettingsWidgetQt(Property* property, QWidget* 
 PropertySettingsWidgetQt::~PropertySettingsWidgetQt() {
 }
 
+void PropertySettingsWidgetQt::keyPressEvent(QKeyEvent * event) {
+    if (event->key() == Qt::Key_Escape) {
+        cancel();
+    } else if (event->key() == Qt::Key_Return || event->key() == Qt::Key_Enter) {
+        apply();
+    }
+    QWidget::keyPressEvent(event);
+}
+
 
 
 }//namespace

@@ -41,6 +41,7 @@
 #include <QValidator>
 #include <QGridLayout>
 #include <QPushButton>
+#include <QKeyEvent>
 #include <QString>
 #include <inviwo/qt/widgets/inviwoqtwidgetsdefine.h>
 // Core
@@ -82,6 +83,8 @@ protected:
     QPushButton btnSave_;
     QPushButton btnCancel_;
     std::vector<SinglePropertySetting*> settings_;
+
+    void keyPressEvent(QKeyEvent * event);
 
 public slots:
     virtual void apply() = 0;
@@ -125,7 +128,7 @@ public:
         desc[2] = "z";
         desc[3] = "w";
 
-        size_t count = 0;
+        int count = 0;
         for (size_t i = 0; i < components.x; i++) {
             for (size_t j = 0; j < components.y; j++) {
                 std::stringstream ss;
