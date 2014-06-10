@@ -139,7 +139,23 @@ bool MultiInport::isConnectedTo(Outport* outport) const {
 }
 
 
+std::vector<Inport*> MultiInport::getInports() const {
+    InportVec::const_iterator it = inports_->begin();
+    InportVec::const_iterator endIt = inports_->end();
+    std::vector<Inport*> inports;
 
+    for (; it != endIt; ++it) {
+        inports.push_back(*it);
+    }
+
+    it = vectorInports_->begin();
+    endIt = vectorInports_->end();
+    for (; it != endIt; ++it) {
+        inports.push_back(*it);
+    }
+
+    return inports;
+}
 
 std::vector<Outport*> MultiInport::getConnectedOutports() const {
     InportVec::const_iterator it = inports_->begin();
