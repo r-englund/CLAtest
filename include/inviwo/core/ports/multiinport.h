@@ -49,7 +49,7 @@ namespace inviwo {
  */
 class IVW_CORE_API MultiInport : public Inport {
 public:
-    typedef std::set< Inport* > InportSet;
+    typedef std::vector< Inport* > InportVec;
     MultiInport(std::string identifier);
     virtual ~MultiInport();
 
@@ -84,8 +84,8 @@ protected:
      */
     void setProcessorHelper(Port* port, Processor* processor);
 
-    InportSet* inports_;
-    InportSet* vectorInports_;
+    InportVec* inports_;
+    InportVec* vectorInports_;
 };
 
 } // namespace

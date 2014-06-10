@@ -36,8 +36,8 @@ namespace inviwo {
 
 MultiInport::MultiInport(std::string identifier)
     : Inport(identifier)
-    , inports_(new InportSet())
-    , vectorInports_(new InportSet()) {
+    , inports_(new InportVec())
+    , vectorInports_(new InportVec()) {
 }
 
 void MultiInport::setProcessorHelper(Port* port, Processor* processor) {
@@ -45,8 +45,8 @@ void MultiInport::setProcessorHelper(Port* port, Processor* processor) {
 }
 
 MultiInport::~MultiInport() {
-    InportSet::iterator it = inports_->begin();
-    InportSet::iterator endIt = inports_->end();
+    InportVec::iterator it = inports_->begin();
+    InportVec::iterator endIt = inports_->end();
 
     for (; it != endIt; ++it)
         delete *it;
@@ -65,8 +65,8 @@ MultiInport::~MultiInport() {
 }
 
 PropertyOwner::InvalidationLevel MultiInport::getInvalidationLevel() const {
-    InportSet::const_iterator it = inports_->begin();
-    InportSet::const_iterator endIt = inports_->end();
+    InportVec::const_iterator it = inports_->begin();
+    InportVec::const_iterator endIt = inports_->end();
     PropertyOwner::InvalidationLevel maxInvalidationLevel(PropertyOwner::VALID);
 
     for (; it != endIt; ++it)
@@ -81,8 +81,8 @@ PropertyOwner::InvalidationLevel MultiInport::getInvalidationLevel() const {
 }
 
 void MultiInport::setInvalidationLevel(PropertyOwner::InvalidationLevel invalidationLevel) {
-    InportSet::iterator it = inports_->begin();
-    InportSet::iterator endIt = inports_->end();
+    InportVec::iterator it = inports_->begin();
+    InportVec::iterator endIt = inports_->end();
     for (; it != endIt; ++it)
         (*it)->setInvalidationLevel(invalidationLevel);
 
@@ -96,16 +96,16 @@ void MultiInport::setInvalidationLevel(PropertyOwner::InvalidationLevel invalida
 
 
 void MultiInport::setChanged(bool changed /*= true*/) {
-    InportSet::const_iterator it = inports_->begin();
-    InportSet::const_iterator endIt = inports_->end();
+    InportVec::const_iterator it = inports_->begin();
+    InportVec::const_iterator endIt = inports_->end();
 
     for (; it != endIt; ++it)
         (*it)->setChanged(changed);
 }
 
 bool MultiInport::isChanged() {
-    InportSet::const_iterator it = inports_->begin();
-    InportSet::const_iterator endIt = inports_->end();
+    InportVec::const_iterator it = inports_->begin();
+    InportVec::const_iterator endIt = inports_->end();
 
     for (; it != endIt; ++it)
         if((*it)->isChanged())
@@ -121,8 +121,8 @@ bool MultiInport::isChanged() {
 }
 
 bool MultiInport::isConnectedTo(Outport* outport) const {
-    InportSet::const_iterator it = inports_->begin();
-    InportSet::const_iterator endIt = inports_->end();
+    InportVec::const_iterator it = inports_->begin();
+    InportVec::const_iterator endIt = inports_->end();
 
     for (; it != endIt; ++it) {
         if ((*it)->isConnectedTo(outport))
@@ -142,8 +142,8 @@ bool MultiInport::isConnectedTo(Outport* outport) const {
 
 
 std::vector<Outport*> MultiInport::getConnectedOutports() const {
-    InportSet::const_iterator it = inports_->begin();
-    InportSet::const_iterator endIt = inports_->end();
+    InportVec::const_iterator it = inports_->begin();
+    InportVec::const_iterator endIt = inports_->end();
     std::vector<Outport*> connectedOutports;
 
     for (; it != endIt; ++it) {
@@ -175,7 +175,7 @@ size_t MultiInport::getNumConnectedOutports() const {
 }
 
 void MultiInport::disconnectFrom(Outport* outport) {
-    InportSet::iterator it;
+    InportVec::iterator it;
 
     for (it = inports_->begin(); it != inports_->end(); ++it) {
         // Find connected port
@@ -212,8 +212,8 @@ Outport* MultiInport::getConnectedOutport() const {
 }
 
 void MultiInport::invalidate(PropertyOwner::InvalidationLevel invalidationLevel) {
-    InportSet::iterator it = inports_->begin();
-    InportSet::iterator endIt = inports_->end();
+    InportVec::iterator it = inports_->begin();
+    InportVec::iterator endIt = inports_->end();
 
     for (; it != endIt; ++it)
         (*it)->invalidate(invalidationLevel);

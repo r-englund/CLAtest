@@ -59,7 +59,7 @@ template < typename T, typename U = DataInport<T> >
 class MultiDataInport : public MultiInport {
 
 public:
-    typedef std::set< U* > DataInportSet;
+    typedef std::set< U* > DataInportVec;
 
     MultiDataInport(std::string identifier);
     virtual ~MultiDataInport();
@@ -103,10 +103,10 @@ void MultiDataInport<T, U>::connectTo(Outport* outport) {
     Inport* inport = NULL;
     if (dynamic_cast<DataOutport<T>*>(outport)) {
         inport = new DataInport<T>(getIdentifier());
-        inports_->insert(inport);
+        inports_->push_back(inport);
     } else if (dynamic_cast<VectorDataOutport<T*>*>(outport)) {
         inport = new VectorDataInport<T*>(getIdentifier());
-        vectorInports_->insert(inport);
+        vectorInports_->push_back(inport);
     }
     setProcessorHelper(inport, getProcessor());
     inport->connectTo(outport);
@@ -115,8 +115,8 @@ void MultiDataInport<T, U>::connectTo(Outport* outport) {
 template < typename T, typename U /*= DataInport<T> */>
 std::vector<const T*> inviwo::MultiDataInport<T, U>::getData() const {
     std::vector<const T*> data;
-    InportSet::const_iterator it = inports_->begin();
-    InportSet::const_iterator endIt = inports_->end();
+    InportVec::const_iterator it = inports_->begin();
+    InportVec::const_iterator endIt = inports_->end();
 
     for (; it != endIt; ++it) {
         data.push_back(static_cast<DataInport<T>*>(*it)->getData());
@@ -136,8 +136,8 @@ std::vector<const T*> inviwo::MultiDataInport<T, U>::getData() const {
 template < typename T, typename U /*= DataInport<T> */>
 bool inviwo::MultiDataInport<T, U>::hasData() const {
     if (isConnected()) {
-        InportSet::const_iterator it = inports_->begin();
-        InportSet::const_iterator endIt = inports_->end();
+        InportVec::const_iterator it = inports_->begin();
+        InportVec::const_iterator endIt = inports_->end();
 
         for (; it != endIt; ++it) {
             if (!static_cast<DataInport<T>*>(*it)->hasData())
