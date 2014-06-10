@@ -32,7 +32,6 @@
 
 #include <inviwo/core/ports/imageport.h>
 #include <inviwo/core/processors/processor.h>
-#include <inviwo/core/processors/canvasprocessor.h>
 
 namespace inviwo {
 
@@ -227,25 +226,25 @@ void ImageOutport::propagateResizeEventToPredecessor(ResizeEvent* resizeEvent) {
             resizeEvent->setSize(size);
             resizeEvent->setPreviousSize(prevSize);
         }
+        else{
+            MultiDataInport<Image, ImageInport>* multiImageInport = dynamic_cast<MultiDataInport<Image, ImageInport>*>(portSet[j]);
+            if(multiImageInport){
+                propagationEnded = false;
+                std::vector<Inport*> inports = multiImageInport->getInports();
+                for(size_t i=0; i<inports.size(); ++i){
+                    ImageInport* imageInport = dynamic_cast<ImageInport*>(inports[i]);
+                    if(imageInport){
+                        imageInport->changeDataDimensions(scaleResizeEvent(imageInport, resizeEvent));
+                        resizeEvent->setSize(size);
+                        resizeEvent->setPreviousSize(prevSize);
+                    }
+                }
+            }
+        }
     }
-    //std::vector<Inport*> inPorts = getProcessor()->getInports();
-
-    //bool propagationEnded = true;
-    //uvec2 size = resizeEvent->size();
-    //uvec2 prevSize = resizeEvent->previousSize();
-    //for (size_t i = 0; i < inPorts.size(); i++) {
-    //    if (equalColorCode(inPorts[i])) {
-    //        propagationEnded = false;
-    //        ImageInport* imageInport = static_cast<ImageInport*>(inPorts[i]);
-    //        imageInport->changeDataDimensions(scaleResizeEvent(imageInport, resizeEvent));
-    //        resizeEvent->setSize(size);
-    //        resizeEvent->setPreviousSize(prevSize);
-    //    }
-    //}
 
     if (propagationEnded) {
         getProcessor()->invalidate(PropertyOwner::INVALID_OUTPUT);
-        // invalidate(PropertyOwner::INVALID_OUTPUT);
     }
 }
 
@@ -279,17 +278,14 @@ void ImageOutport::changeDataDimensions(ResizeEvent* resizeEvent) {
     uvec2 previousDimensions = resizeEvent->previousSize();
     std::string prevDimensionString = glm::to_string(previousDimensions);
     std::string reqDimensionString = glm::to_string(requiredDimensions);
-    std::vector<Processor*> directSuccessors;
-    directSuccessors = getDirectSuccessors();
+
+    std::vector<Inport*> inports = getConnectedInports();
     std::vector<uvec2> registeredDimensions;
 
-    for (size_t i = 0; i < directSuccessors.size(); i++) {
-        CanvasProcessor* canvasProcessor = dynamic_cast<CanvasProcessor*>(directSuccessors[i]);
-
-        if (canvasProcessor && canvasProcessor->getCanvas()) {
-            uvec2 dimensions = canvasProcessor->getCanvas()->getImageDimension();
-            registeredDimensions.push_back(dimensions);
-        }
+    for (size_t i = 0; i < inports.size(); i++) {
+        ImageInport* imageInport = dynamic_cast<ImageInport*>(inports[i]);
+        if(imageInport)
+            registeredDimensions.push_back(imageInport->getDimension());
     }
 
     if (registeredDimensions.empty()) return;
@@ -381,8 +377,9 @@ void ImageOutport::changeDataDimensions(ResizeEvent* resizeEvent) {
         }
         // Propagate the resize event
         propagateResizeEventToPredecessor(resizeEvent);
-    } else if (invalidPort)
-        invalidate(PropertyOwner::INVALID_OUTPUT);
+    }else if(resultImage && resultImage != data_) {
+        data_->resizeRepresentations(resultImage, resultImage->getDimension());
+    } 
 }
 
 uvec2 ImageOutport::getDimension() const { return dimensions_; }
