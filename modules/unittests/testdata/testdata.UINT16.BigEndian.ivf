@@ -1,7 +1,7 @@
 <?xml version="1.0" ?>
 <InviwoTreeData version="1.0">
     <!-- Don't edit the following code -->
-    <ObjectFileName content="testdata.UINT16.BigEndian.raw" />
+    <RawFile content="testdata.UINT16.BigEndian.raw" />
     <Format content="UINT16" />
     <BasisAndOffset>
         <row0 x="2" y="0" z="0" w="0" />
