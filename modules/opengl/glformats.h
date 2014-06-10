@@ -65,12 +65,12 @@ public:
         GLenum type;
         GLuint channels;
         GLuint typeSize;
-        GLfloat scaling;
+        GLdouble scaling;
         bool valid;
     };
 
     GLFormats() {
-        REVERSE16TO12BIT = 1.f-(static_cast<float>(DataUINT16::max())/static_cast<float>(DataUINT12::max()));
+        REVERSE16TO12BIT = 1.0 - (DataUINT16::max()/DataUINT12::max());
         //1 channel
         glFormatArray_[DataFormatEnums::FLOAT16]     = GLFormat(GL_RED, GL_R16F, GL_HALF_FLOAT, 1, 2);
         glFormatArray_[DataFormatEnums::FLOAT32]     = GLFormat(GL_RED, GL_R32F, GL_FLOAT, 1, 4);
