@@ -82,7 +82,6 @@ NetworkEditor::NetworkEditor() :
     , renamingProcessor_(false)
     , modified_(false) {
     
-    //setSceneRect(-1000,-1000,1000,1000);
     InviwoApplication::getPtr()->getProcessorNetwork()->addObserver(this);
     hoverTimer_.setSingleShot(true);
     portInfoWidget_ = new PortInfoWidgetQt();
@@ -981,7 +980,7 @@ void NetworkEditor::mousePressEvent(QGraphicsSceneMouseEvent* e) {
         startProcessor_ = getProcessorGraphicsItemAt(e->scenePos());
 
         if (startProcessor_) {
-            if (e->modifiers() == Qt::ShiftModifier || startProcessor_->hitLinkDock(e->scenePos())) {
+            if (startProcessor_->hitLinkDock(e->scenePos())) {
                 if (isLinkDisplayEnabled()) {
                     // shift modifier pressed: edit link
                     QPointF startPoint = startProcessor_->getShortestBoundaryPointTo(e->scenePos());

@@ -103,6 +103,7 @@ void VolumeGL::setVolumeUniforms(const Volume* volume, Shader* shader,
     DataMapper defaultRange(volume->getDataFormat());
 
     double typescale = 1.0 - getGLFormats()->getGLFormat(getDataFormatId()).scaling;
+    defaultRange.dataRange *= typescale;
 
     double scalingFactor = 1.0;
     double signedScalingFactor = 1.0;
@@ -111,70 +112,35 @@ void VolumeGL::setVolumeUniforms(const Volume* volume, Shader* shader,
 
     double invRange = 1.0 / (dataRange.y - dataRange.x);
     double defaultToDataRange = (defaultRange.dataRange.y - defaultRange.dataRange.x) * invRange;
-    double defaultToDataOffset = (dataRange.x - typescale*defaultRange.dataRange.x) /
-        (typescale*defaultRange.dataRange.y - typescale*defaultRange.dataRange.x);
+    double defaultToDataOffset = (dataRange.x - defaultRange.dataRange.x) /
+                                 (defaultRange.dataRange.y - defaultRange.dataRange.x);
 
-    switch (volume->getDataFormat()->getNumericType()) {
-        case DataFormatEnums::FLOAT_TYPE:
+    switch (getGLFormats()->getGLFormat(getDataFormatId()).normalization) {
+        case GLFormats::NONE:
             scalingFactor = invRange;
             offset = -dataRange.x;
-            break;
-        case DataFormatEnums::SIGNED_INTEGER_TYPE:
-            if (volume->getDataFormat()->getId() == DataFormatEnums::INT32 ||
-                volume->getDataFormat()->getId() == DataFormatEnums::Vec2INT32 ||
-                volume->getDataFormat()->getId() == DataFormatEnums::Vec3INT32 ||
-                volume->getDataFormat()->getId() == DataFormatEnums::Vec4INT32) {
-                // 32 bit ints are not normalized at all by opengl...
-                scalingFactor = 2.0 * invRange;
-                offset = 1.0 - dataRange.x;
-
-                signedScalingFactor = invRange;
-                signedOffset = -dataRange.x;
-            } else if (volume->getDataFormat()->getId() == DataFormatEnums::Vec3INT12 ||
-                       volume->getDataFormat()->getId() == DataFormatEnums::Vec4INT12) {
-                // These two are not SNORM...
-                scalingFactor = defaultToDataRange;
-                offset = defaultToDataOffset;
-
-                signedScalingFactor = scalingFactor;
-                signedOffset = offset;
-
-            } else {
-                // In this case scale [min max] -> [0, 1], gl will scale to [-1, 1]
-                scalingFactor = 0.5 * defaultToDataRange;
-                offset = 1.0 - 2 * defaultToDataOffset;
-
-                signedScalingFactor = defaultToDataRange;
-                signedOffset = -defaultToDataOffset;
-            }
-            break;
-        case DataFormatEnums::UNSIGNED_INTEGER_TYPE:
-            if (volume->getDataFormat()->getId() == DataFormatEnums::UINT32 ||
-                volume->getDataFormat()->getId() == DataFormatEnums::Vec2UINT32 ||
-                volume->getDataFormat()->getId() == DataFormatEnums::Vec3UINT32 ||
-                volume->getDataFormat()->getId() == DataFormatEnums::Vec4UINT32) {
-                // 32 bit uints are not normalized at all by opengl...
-                scalingFactor = invRange;
-                offset = -dataRange.x;
-            } else {
-                scalingFactor = defaultToDataRange;
-                offset = -defaultToDataOffset;
-            }
             signedScalingFactor = scalingFactor;
             signedOffset = offset;
             break;
-        default:
-            scalingFactor = 0.0;
-            offset = 0.0;
+        case GLFormats::NORMALIZED:
+            scalingFactor = defaultToDataRange;
+            offset = -defaultToDataOffset;
+            signedScalingFactor = scalingFactor;
+            signedOffset = offset;
+            break;
+        case GLFormats::SIGN_NORMALIZED:
+            scalingFactor = 0.5 * defaultToDataRange;
+            offset = 1.0 - 2 * defaultToDataOffset;
+            signedScalingFactor = defaultToDataRange;
+            signedOffset = -defaultToDataOffset;
+            break;
     }
-
     // offset scaling because of reversed scaling in the shader, i.e. (1 - formatScaling_)
-    shader->setUniform(samplerID + ".formatScaling_",
-                       static_cast<float>(1.0 - scalingFactor * typescale));
+    shader->setUniform(samplerID + ".formatScaling_", static_cast<float>(1.0 - scalingFactor));
     shader->setUniform(samplerID + ".formatOffset_", static_cast<float>(offset));
 
     shader->setUniform(samplerID + ".signedFormatScaling_",
-                       static_cast<float>(1.0 - signedScalingFactor * typescale));
+                       static_cast<float>(1.0 - signedScalingFactor));
     shader->setUniform(samplerID + ".signedFormatOffset_", static_cast<float>(signedOffset));
 }
 
