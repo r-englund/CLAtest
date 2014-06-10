@@ -43,7 +43,7 @@ struct VOLUME_PARAMETERS {
 };
 
 //
-// Fetch texture data using texture cooridnates [0,1]
+// Fetch texture data using texture coordinates [0,1]
 //
 
 // Return a the raw texture
