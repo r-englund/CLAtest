@@ -593,7 +593,7 @@ template<> inline size_t DataUINT12::bitsAllocated() { return DataUINT16::bitsAl
 //template<> inline DataFLOAT16::type DataFLOAT16::min() { return DataFLOAT16::type(1.f/16384.f); }
 
 template<> inline DataINT12::type DataINT12::max() { return static_cast<DataINT12::type>(2047); }
-template<> inline DataINT12::type DataINT12::min() { return static_cast<DataINT12::type>(-2047); }
+template<> inline DataINT12::type DataINT12::min() { return static_cast<DataINT12::type>(-2048); }
 
 template<> inline DataUINT12::type DataUINT12::max() { return static_cast<DataUINT12::type>(4095); }
 template<> inline DataUINT12::type DataUINT12::min() { return static_cast<DataUINT12::type>(0); }
