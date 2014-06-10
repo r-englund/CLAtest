@@ -35,6 +35,7 @@
 
 #include <modules/opencl/openclmoduledefine.h>
 #include <modules/opencl/cl.hpp>
+#include <inviwo/core/util/clock.h>
 
 namespace inviwo {
 
@@ -63,9 +64,9 @@ private:
 
 #if IVW_PROFILING 
 #define IVW_OPENCL_PROFILING(var,message) \
-    std::ostringstream __##var##stream##__LINE__; __##var##stream##__LINE__ << message; \
+    std::ostringstream ADDLINE(__stream); ADDLINE(__stream) << message; \
     cl::Event* var = new cl::Event(); \
-    ScopedClockCL __##var##__LINE__(var, parseTypeIdName(std::string(typeid(this).name())), __##var##stream##__LINE__.str());
+    ScopedClockCL ADDLINE(__clock)(var, parseTypeIdName(std::string(typeid(this).name())), ADDLINE(__stream).str());
 #else
 #define IVW_OPENCL_PROFILING(var,message) cl::Event* var = NULL;
 #endif
