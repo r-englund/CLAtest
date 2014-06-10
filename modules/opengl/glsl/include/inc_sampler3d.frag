@@ -38,15 +38,35 @@ struct VOLUME_PARAMETERS {
     mat4 volumeToWorldTransform_;
     float formatScaling_; //Reversed, meaning scaling = (1-bitScaling_), as 0 is default for single uniforms.
     float formatOffset_;
+    float signedFormatScaling_; //Reversed, meaning scaling = (1-bitScaling_), as 0 is default for single uniforms.
+    float signedFormatOffset_;
 };
 
-// TODO: consider data offset for proper format scaling
+//
+// Fetch texture data using texture cooridnates [0,1]
+//
 
+// Return a the raw texture
 vec4 getVoxel(VOLUME_TYPE volume, VOLUME_PARAMETERS volumeParams, vec3 samplePos) {
+    return (texture(volume, samplePos));
+}
+// Return a value mapped from data range [min,max] to [0,1]
+vec4 getNormalizedVoxel(VOLUME_TYPE volume, VOLUME_PARAMETERS volumeParams, vec3 samplePos) {
     return (texture(volume, samplePos) + volumeParams.formatOffset_)
-               * (1.0-volumeParams.formatScaling_);
+        * (1.0 - volumeParams.formatScaling_);
+}
+// Return a value mapped from data range [min,max] to [-1,1]
+vec4 getSignNormalizedVoxel(VOLUME_TYPE volume, VOLUME_PARAMETERS volumeParams, vec3 samplePos) {
+    return (texture(volume, samplePos) + volumeParams.signedFormatOffset_)
+        * (1.0 - volumeParams.signedFormatScaling_);
 }
 
+
+//
+// Fetch texture data using texture indices [0,N]
+//
+
+// Return a the raw texture
 vec4 getVoxel(VOLUME_TYPE volume, VOLUME_PARAMETERS volumeParams, ivec3 samplePos) {
 #ifdef GLSL_VERSION_140
     return (texelFetch(volume, samplePos, 0) + volumeParams.formatOffset_)
@@ -54,5 +74,25 @@ vec4 getVoxel(VOLUME_TYPE volume, VOLUME_PARAMETERS volumeParams, ivec3 samplePo
 #else
     return (texture(volume, samplePos) + volumeParams.formatOffset_)
                * (1.0-volumeParams.formatScaling_);
+#endif
+}
+// Return a value mapped from data range [min,max] to [0,1]
+vec4 getNormalizedVoxel(VOLUME_TYPE volume, VOLUME_PARAMETERS volumeParams, ivec3 samplePos) {
+#ifdef GLSL_VERSION_140
+    return (texelFetch(volume, samplePos, 0) + volumeParams.formatOffset_)
+        * (1.0 - volumeParams.formatScaling_);
+#else
+    return (texture(volume, samplePos) + volumeParams.formatOffset_)
+        * (1.0 - volumeParams.formatScaling_);
+#endif
+}
+// Return a value mapped from data range [min,max] to [-1,1]
+vec4 getSignNormalizedVoxel(VOLUME_TYPE volume, VOLUME_PARAMETERS volumeParams, ivec3 samplePos) {
+#ifdef GLSL_VERSION_140
+    return (texelFetch(volume, samplePos, 0) + volumeParams.signedFormatOffset_)
+        * (1.0 - volumeParams.signedFormatScaling_);
+#else
+    return (texture(volume, samplePos) + volumeParams.signedFormatOffset_)
+        * (1.0 - volumeParams.signedFormatScaling_);
 #endif
 }

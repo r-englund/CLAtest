@@ -48,15 +48,15 @@ in vec3 texCoord_;
 
 void main() {
 #ifdef COORD_PLANE_PERMUTE
-    vec4 voxel = getVoxel(volume_, volumeParameters_, vec3(coordPlanePermute(texCoord_.x, texCoord_.y, sliceNum_)));
+    vec4 voxel = getNormalizedVoxel(volume_, volumeParameters_, vec3(coordPlanePermute(texCoord_.x, texCoord_.y, sliceNum_)));
     vec3 p = vec3(coordPlanePermute(texCoord_.x, texCoord_.y, sliceNum_));
 #else
-    vec4 voxel = getVoxel(volume_, volumeParameters_, vec3(texCoord_.x, texCoord_.y, sliceNum_));
+    vec4 voxel = getNormalizedVoxel(volume_, volumeParameters_, vec3(texCoord_.x, texCoord_.y, sliceNum_));
     vec3 p = vec3(texCoord_.x, texCoord_.y, sliceNum_);
 #endif
     // Rotate around center and translate back to origin
     vec3 pRotated = (sliceAxisRotationMatrix_*vec4(p, 1.0)).xyz + rotationOffset_;
-    voxel = getVoxel(volume_, volumeParameters_, pRotated);
+    voxel = getNormalizedVoxel(volume_, volumeParameters_, pRotated);
 #ifdef TF_MAPPING_ENABLED
     voxel = applyTF(transferFunc_, voxel);
 #endif

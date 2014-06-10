@@ -53,7 +53,7 @@ in vec4 permutedTexCoord_;
 //Perform light propagation
 vec4 propagateLight(in vec3 coord, in vec3 coordPerm) {
     //Retrieve voxel color
-    vec4 voxel = getVoxel(volume_, volumeParameters_, coordPerm);
+    vec4 voxel = getNormalizedVoxel(volume_, volumeParameters_, coordPerm);
     vec4 color = applyTF(transferFunc_, voxel);
     //Calculate previous permuted coordinate
 #ifdef POINT_LIGHT
@@ -66,7 +66,7 @@ vec4 propagateLight(in vec3 coord, in vec3 coordPerm) {
                                       coord.z - lightVolumeParameters_.dimensionsRCP_.z);
 #endif
     //Retrieve previous light value
-    vec4 lightVoxel = getVoxel(lightVolume_, lightVolumeParameters_, previousPermutedCoord);
+    vec4 lightVoxel = getNormalizedVoxel(lightVolume_, lightVolumeParameters_, previousPermutedCoord);
     //Return newly calculated propagate light value
 #ifdef SUPPORT_LIGHT_COLOR
     vec4 newCol = vec4((1.0 - color.a)*lightVoxel.a);
