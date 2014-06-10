@@ -55,8 +55,28 @@ public:
     void initialize();
     void deinitialize();
 
+    const std::vector<Inport*>& getInports(Event*) const;
+
+    void multiInportChanged();
+
 protected:
     void process();
+
+    class ImageLayoutGLInteractationHandler : public InteractionHandler {
+
+    public:
+        ImageLayoutGLInteractationHandler();
+        ~ImageLayoutGLInteractationHandler(){};
+
+        void invokeEvent(Event* event);
+
+        ivec2 getActivePosition() { return activePosition_; }
+
+    private:
+        MouseEvent activePositionChangeEvent_;
+
+        ivec2 activePosition_;
+    };
 
 private:
     MultiDataInport<Image, ImageInport> multiinport_;
@@ -67,6 +87,12 @@ private:
     FloatProperty verticalSplitter_;
 
     Shader* shader_;
+
+    ImageLayoutGLInteractationHandler* layoutHandler_;
+
+    std::vector<uvec4> viewCoords_;
+
+    mutable std::vector<Inport*> currentInteractionInport_;
 };
 
 } // namespace
