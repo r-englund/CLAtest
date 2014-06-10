@@ -59,7 +59,7 @@ template < typename T, typename U = DataInport<T> >
 class MultiDataInport : public MultiInport {
 
 public:
-    typedef std::set< U* > DataInportVec;
+    typedef std::vector< U* > DataInportVec;
 
     MultiDataInport(std::string identifier);
     virtual ~MultiDataInport();
@@ -102,7 +102,7 @@ void MultiDataInport<T, U>::connectTo(Outport* outport) {
     // U is a Port class
     Inport* inport = NULL;
     if (dynamic_cast<DataOutport<T>*>(outport)) {
-        inport = new DataInport<T>(getIdentifier());
+        inport = new U(getIdentifier());
         inports_->push_back(inport);
     } else if (dynamic_cast<VectorDataOutport<T*>*>(outport)) {
         inport = new VectorDataInport<T*>(getIdentifier());
@@ -119,7 +119,7 @@ std::vector<const T*> inviwo::MultiDataInport<T, U>::getData() const {
     InportVec::const_iterator endIt = inports_->end();
 
     for (; it != endIt; ++it) {
-        data.push_back(static_cast<DataInport<T>*>(*it)->getData());
+        data.push_back(static_cast<U*>(*it)->getData());
     }
     
     it = vectorInports_->begin();
@@ -140,7 +140,7 @@ bool inviwo::MultiDataInport<T, U>::hasData() const {
         InportVec::const_iterator endIt = inports_->end();
 
         for (; it != endIt; ++it) {
-            if (!static_cast<DataInport<T>*>(*it)->hasData())
+            if (!static_cast<U*>(*it)->hasData())
                 return false;
         }
 

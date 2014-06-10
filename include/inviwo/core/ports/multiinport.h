@@ -64,6 +64,8 @@ public:
     virtual void setChanged(bool changed = true);
     virtual bool isChanged();
 
+    std::vector<Inport*> getInports() const;
+
     virtual Outport* getConnectedOutport() const;
     std::vector<Outport*> getConnectedOutports() const;
     size_t getNumConnectedOutports() const;
