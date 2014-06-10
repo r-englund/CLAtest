@@ -106,7 +106,7 @@ private:
 #if IVW_PROFILING 
 #define IVW_OPENGL_PROFILING(message) \
     std::ostringstream ADDLINE(__stream); ADDLINE(__stream) << message; \
-    ScopedClockGL (__clock)(parseTypeIdName(std::string(typeid(this).name())), ADDLINE(__stream).str());
+    ScopedClockGL ADDLINE(__clock)(parseTypeIdName(std::string(typeid(this).name())), ADDLINE(__stream).str());
 #else
 #define IVW_OPENGL_PROFILING(message) 
 #endif
