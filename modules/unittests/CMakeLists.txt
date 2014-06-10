@@ -43,7 +43,7 @@ ivw_register_use_of_modules(${package_list})
 #--------------------------------------------------------------------
 # Need to add dependent directories before creating application
 ivw_add_dependency_directories(${package_list})
-
+ivw_register_use_of_modules(${package_list})
 
 
 configure_file(${CMAKE_BINARY_DIR}/modules/_generated/unittests_temp.h ${CMAKE_BINARY_DIR}/modules/_generated/unittests.h)
