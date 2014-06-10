@@ -35,7 +35,7 @@
 
 #include <inviwo/core/datastructures/image/image.h>
 #include <inviwo/core/datastructures/image/layerdisk.h>
-#include "../datastructures/image/layerramprecision.h"
+#include <inviwo/core/datastructures/image/layerramprecision.h>
 
 
 #define IMG_RGB InviwoApplication::getPtr()->getPath(InviwoApplication::PATH_MODULES,"unittests/testdata/images/2x2.bmp")

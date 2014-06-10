@@ -45,7 +45,6 @@ DatVolumeReader::DatVolumeReader()
     , rawFile_("")
     , littleEndian_(true)
     , dimension_(uvec3(0, 0, 0))
-    , timeSteps_(1)
     , format_(NULL) {
     addExtension(FileExtension("dat", "Inviwo dat file format"));
 }
@@ -55,7 +54,6 @@ DatVolumeReader::DatVolumeReader(const DatVolumeReader& rhs)
     , rawFile_(rhs.rawFile_)
     , littleEndian_(rhs.littleEndian_)
     , dimension_(rhs.dimension_)
-    , timeSteps_(rhs.timeSteps_)
     , format_(rhs.format_) {};
 
 DatVolumeReader& DatVolumeReader::operator=(const DatVolumeReader& that) {
@@ -63,7 +61,6 @@ DatVolumeReader& DatVolumeReader::operator=(const DatVolumeReader& that) {
         rawFile_ = that.rawFile_;
         littleEndian_ = that.littleEndian_;
         dimension_ = that.dimension_;
-        timeSteps_ = that.timeSteps_;
         format_ = that.format_;
         DataReaderType<Volume>::operator=(that);
     }
@@ -102,17 +99,16 @@ Volume* DatVolumeReader::readMetaData(std::string filePath) {
     dvec2 datarange(0);
     dvec2 valuerange(0);
     std::string unit("");
-    timeSteps_ = 1;
 
     while (!f->eof()) {
         getline(*f, textLine);
-        
+
         textLine = trim(textLine);
         if (textLine == "" || textLine[0] == '#' || textLine[0] == '/') continue;
-        
+
         parts = splitString(textLine, ':');
-        if (parts.size()!=2) continue;
-        
+        if (parts.size() != 2) continue;
+
         key = toLower(trim(parts[0]));
         value = trim(parts[1]);
         std::stringstream ss(value);
@@ -180,8 +176,6 @@ Volume* DatVolumeReader::readMetaData(std::string filePath) {
             ss >> valuerange.y;
         } else if (key == "unit") {
             unit = value;
-        } else if (key == "timesteps") {
-            ss >> timeSteps_;
         } else {
             volume->setMetaData<StringMetaData>(key, value);
         }
@@ -229,7 +223,7 @@ Volume* DatVolumeReader::readMetaData(std::string filePath) {
     volume->setDimension(dimension_);
 
     volume->dataMap_.initWithFormat(format_);
-    if (datarange != dvec2(0)){
+    if (datarange != dvec2(0)) {
         volume->dataMap_.dataRange = datarange;
     }
     if (valuerange != dvec2(0)) {
@@ -237,18 +231,17 @@ Volume* DatVolumeReader::readMetaData(std::string filePath) {
     } else {
         volume->dataMap_.valueRange = volume->dataMap_.dataRange;
     }
-    if (unit != ""){
+    if (unit != "") {
         volume->dataMap_.valueUnit = unit;
     }
 
     volume->setDataFormat(format_);
-    volume->setMetaData<IntMetaData>("timesteps", timeSteps_);
 
     VolumeDisk* vd = new VolumeDisk(filePath, dimension_, format_);
     vd->setDataReader(this);
     volume->addRepresentation(vd);
     std::string size = formatBytesToString(dimension_.x * dimension_.y * dimension_.z *
-                                           (format_->getBytesAllocated()) * timeSteps_);
+                                           (format_->getBytesAllocated()));
     LogInfo("Loaded volume: " << filePath << " size: " << size);
     return volume;
 }
@@ -258,7 +251,7 @@ void DatVolumeReader::readDataInto(void* destination) const {
 
     if (fin.good()) {
         std::size_t size =
-            dimension_.x * dimension_.y * dimension_.z * (format_->getBytesAllocated()) * timeSteps_;
+            dimension_.x * dimension_.y * dimension_.z * (format_->getBytesAllocated());
         fin.read(static_cast<char*>(destination), size);
 
         if (!littleEndian_ && format_->getBytesAllocated() > 1) {
@@ -282,8 +275,7 @@ void DatVolumeReader::readDataInto(void* destination) const {
 }
 
 void* DatVolumeReader::readData() const {
-    std::size_t size =
-        dimension_.x * dimension_.y * dimension_.z * (format_->getBytesAllocated()) * timeSteps_;
+    std::size_t size = dimension_.x * dimension_.y * dimension_.z * (format_->getBytesAllocated());
     char* data = new char[size];
 
     if (data) {

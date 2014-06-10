@@ -44,8 +44,7 @@ ProgressBar::~ProgressBar() {}
 
 void ProgressBar::updateProgress(float progress) {
     if (visible_) {
-        ivwAssert(progress>=progress_, "Progress should always increase");
-        ivwAssert(progress>=0.0f&&progress<=1.0, "Progress out of bounds.");
+        //ivwAssert(progress>=0.0f&&progress<=1.0, "Progress out of bounds.");
         progress_ = progress;
         notifyProgressChanged();
     }

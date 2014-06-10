@@ -44,7 +44,7 @@
 #include <QList>
 #include <QSettings>
 #include <QUrl>
-#include "inviwo/qt/widgets/inviwofiledialog.h"
+#include <inviwo/qt/widgets/inviwofiledialog.h>
 
 namespace inviwo {
 
