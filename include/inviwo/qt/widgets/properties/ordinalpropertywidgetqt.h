@@ -5,16 +5,16 @@
  *
  * Copyright (c) 2012-2014 Inviwo Foundation
  * All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met: 
- * 
+ * modification, are permitted provided that the following conditions are met:
+ *
  * 1. Redistributions of source code must retain the above copyright notice, this
- * list of conditions and the following disclaimer. 
+ * list of conditions and the following disclaimer.
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  * this list of conditions and the following disclaimer in the documentation
- * and/or other materials provided with the distribution. 
- * 
+ * and/or other materials provided with the distribution.
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
  * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
@@ -25,7 +25,7 @@
  * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- * 
+ *
  * Main file authors: Timo Ropinski, Alexander Johansson
  *
  *********************************************************************************/
@@ -52,7 +52,6 @@ class Property;
  *  The Widget should work for FloatProperty and FloatVec(2|3|4)Property
  */
 class IVW_QTWIDGETS_API BaseOrdinalPropertyWidgetQt : public PropertyWidgetQt {
-
     Q_OBJECT
 
 public:
@@ -66,30 +65,29 @@ public slots:
     virtual void setPropertyValue(int sliderId) = 0;
     virtual void setAsMin() = 0;
     virtual void setAsMax() = 0;
+    virtual void showSettings() = 0;
 
     void setPropertyDisplayName();
     void showContextMenuSlider(int sliderId);
-    void showSettings();
 
 protected:
     virtual SliderVector makeSliders(QWidget* widget) = 0;
     void generateWidget();
     SliderVector sliderWidgets_;
     int sliderId_;
+    PropertySettingsWidgetQt* settingsWidget_;
 
 private:
     EditableLabelQt* label_;
     QMenu* contextMenu_;
-    PropertySettingsWidgetQt* settingsWidget_;
 
-    QSignalMapper *signalMapperSetPropertyValue_;
-    QSignalMapper *signalMapperContextMenu_;
+    QSignalMapper* signalMapperSetPropertyValue_;
+    QSignalMapper* signalMapperContextMenu_;
 
     QAction* settingsAction_;
     QAction* minAction_;
     QAction* maxAction_;
     void generatesSettingsWidget();
-
 };
 
 template <typename BT, typename T>
@@ -137,6 +135,15 @@ protected:
                glm::to_string(ordinalproperty_->getMaxValue());
     }
 
+    virtual void showSettings() {
+        if (!this->settingsWidget_) {
+            this->settingsWidget_ =
+                new TemplatePropertySettingsWidgetQt<BT, T>(ordinalproperty_, this);
+        }
+        this->settingsWidget_->reload();
+        this->settingsWidget_->show();
+    }
+
     virtual void setPropertyValue(int sliderId) = 0;
     virtual void setAsMin() = 0;
     virtual void setAsMax() = 0;
@@ -144,99 +151,11 @@ protected:
     OrdinalProperty<T>* ordinalproperty_;
 };
 
-template <typename BT, typename T>
-class glmwrapper {};
-
-template <typename T>
-class glmwrapper<T, glm::detail::tmat4x4<T, glm::defaultp> > {
-public:
-    static T getval(glm::detail::tmat4x4<T, glm::defaultp> mat, size_t const ind) {
-        return mat[static_cast<int>(ind)/4][static_cast<int>(ind) % 4];
-    }
-    static glm::detail::tmat4x4<T, glm::defaultp> setval(glm::detail::tmat4x4<T, glm::defaultp> mat,
-                                                          size_t const ind, T val) {
-        mat[static_cast<int>(ind) / 4][static_cast<int>(ind) % 4] = val;
-        return mat;
-    }
-};
-template <typename T>
-class glmwrapper<T, glm::detail::tmat3x3<T, glm::defaultp> > {
-public:
-    static T getval(glm::detail::tmat3x3<T, glm::defaultp> mat, size_t const ind) {
-        return mat[static_cast<int>(ind) / 3][static_cast<int>(ind) % 3];
-    }
-    static glm::detail::tmat3x3<T, glm::defaultp> setval(glm::detail::tmat3x3<T, glm::defaultp> mat,
-                                                          size_t const ind, T val) {
-        mat[static_cast<int>(ind) / 3][static_cast<int>(ind) % 3] = val;
-        return mat;
-    }
-};
-template <typename T>
-class glmwrapper<T, glm::detail::tmat2x2<T, glm::defaultp> > {
-public:
-    static T getval(glm::detail::tmat2x2<T, glm::defaultp> mat, size_t const ind) {
-        return mat[static_cast<int>(ind) / 2][static_cast<int>(ind) % 2];
-    }
-    static glm::detail::tmat2x2<T, glm::defaultp> setval(glm::detail::tmat2x2<T, glm::defaultp> mat,
-                                                          size_t const ind, T val) {
-        mat[static_cast<int>(ind) / 2][static_cast<int>(ind) % 2] = val;
-        return mat;
-    }
-};
-
-template <typename T>
-class glmwrapper<T, glm::detail::tvec4<T, glm::defaultp> > {
-public:
-    static T getval(glm::detail::tvec4<T, glm::defaultp> vec, size_t const ind) {
-        return vec[static_cast<int>(ind)];
-    }
-    static glm::detail::tvec4<T, glm::defaultp> setval(glm::detail::tvec4<T, glm::defaultp> vec,
-                                                       size_t const ind, T val) {
-        vec[static_cast<int>(ind)] = val;
-        return vec;
-    }
-};
-template <typename T>
-class glmwrapper<T, glm::detail::tvec3<T, glm::defaultp> > {
-public:
-    static T getval(glm::detail::tvec3<T, glm::defaultp> vec, size_t const ind) {
-        return vec[static_cast<int>(ind)];
-    }
-    static glm::detail::tvec3<T, glm::defaultp> setval(glm::detail::tvec3<T, glm::defaultp> vec,
-                                                       size_t const ind, T val) {
-        vec[static_cast<int>(ind)] = val;
-        return vec;
-    }
-};
-template <typename T>
-class glmwrapper<T, glm::detail::tvec2<T, glm::defaultp> > {
-public:
-    static T getval(glm::detail::tvec2<T, glm::defaultp> vec, size_t const ind) {
-        return vec[static_cast<int>(ind)];
-    }
-    static glm::detail::tvec2<T, glm::defaultp> setval(glm::detail::tvec2<T, glm::defaultp> vec,
-                                                       size_t const ind, T val) {
-        vec[static_cast<int>(ind)] = val;
-        return vec;
-    }
-};
-template <typename T>
-class glmwrapper<T, T> {
-public:
-    static T getval(T val, size_t const ind) {
-        return val;
-    }
-    static T setval(T org, size_t const ind, T val) {
-        return val;
-    }
-};
-
 template <typename T>
 class PropertyTransformer {
 public:
-    PropertyTransformer(OrdinalProperty<T>* prop) : property_(prop) {
-    }
-    virtual ~PropertyTransformer(){};
+    PropertyTransformer(OrdinalProperty<T>* prop) : property_(prop) {}
+    virtual ~PropertyTransformer() {};
     virtual T value(T val) = 0;
     virtual T min(T val) = 0;
     virtual T max(T val) = 0;
@@ -246,6 +165,7 @@ public:
     virtual T invMin(T val) = 0;
     virtual T invMax(T val) = 0;
     virtual T invInc(T val) = 0;
+
 protected:
     OrdinalProperty<T>* property_;
 };
@@ -253,15 +173,13 @@ protected:
 template <typename T>
 class IdentityPropertyTransformer : public PropertyTransformer<T> {
 public:
-    IdentityPropertyTransformer(OrdinalProperty<T>* prop)
-        : PropertyTransformer<T>(prop) {
-    }
-    virtual ~IdentityPropertyTransformer(){};
+    IdentityPropertyTransformer(OrdinalProperty<T>* prop) : PropertyTransformer<T>(prop) {}
+    virtual ~IdentityPropertyTransformer() {};
     virtual T value(T val) { return val; }
     virtual T min(T val) { return val; }
     virtual T max(T val) { return val; }
     virtual T inc(T val) { return val; }
-    
+
     virtual T invValue(T val) { return val; }
     virtual T invMin(T val) { return val; }
     virtual T invMax(T val) { return val; }
@@ -271,36 +189,38 @@ public:
 template <typename T>
 class SphericalPropertyTransformer : public IdentityPropertyTransformer<T> {
 public:
-    SphericalPropertyTransformer(OrdinalProperty<T>* prop)
-        : IdentityPropertyTransformer<T>(prop) {
-    }
-    virtual ~SphericalPropertyTransformer(){};
+    SphericalPropertyTransformer(OrdinalProperty<T>* prop) : IdentityPropertyTransformer<T>(prop) {}
+    virtual ~SphericalPropertyTransformer() {};
 };
 
 template <typename T>
-class SphericalPropertyTransformer<glm::detail::tvec3<T, glm::defaultp> > 
+class SphericalPropertyTransformer<glm::detail::tvec3<T, glm::defaultp> >
     : public PropertyTransformer<glm::detail::tvec3<T, glm::defaultp> > {
 public:
     typedef glm::detail::tvec3<T, glm::defaultp> V;
 
-    SphericalPropertyTransformer(OrdinalProperty<V>* prop)
-        : PropertyTransformer<V>(prop) {
-    }
-    virtual ~SphericalPropertyTransformer(){};
-    
+    SphericalPropertyTransformer(OrdinalProperty<V>* prop) : PropertyTransformer<V>(prop) {}
+    virtual ~SphericalPropertyTransformer() {};
+
     virtual V value(V val) {
-        return V(std::sqrt(static_cast<double>(val[0] * val[0] + val[1] * val[1] + val[2] * val[2])),
-                 arctan(val[2], std::sqrt(static_cast<double>(val[0] * val[0] + val[1] * val[1]))),
-                 arctan(val[0], val[1]));
+        return V(
+            std::sqrt(static_cast<double>(val[0] * val[0] + val[1] * val[1] + val[2] * val[2])),
+            arctan(val[2], std::sqrt(static_cast<double>(val[0] * val[0] + val[1] * val[1]))),
+            arctan(val[0], val[1]));
     }
     virtual V min(V val) { return V(0, 0, -M_PI); }
-    virtual V max(V val) { return V(3*std::sqrt(static_cast<double>(val[0] * val[0] + val[1] * val[1] + val[2] * val[2])), M_PI, M_PI); }
+    virtual V max(V val) {
+        return V(
+            3 * std::sqrt(static_cast<double>(val[0] * val[0] + val[1] * val[1] + val[2] * val[2])),
+            M_PI, M_PI);
+    }
     virtual V inc(V val) { return V(0.01, 0.01, 0.01); }
-            
-    virtual V invValue(V val) { 
-        return V(val[0] * std::sin(static_cast<double>(val[1])) * std::cos(static_cast<double>(val[2])),
-                 val[0] * std::sin(static_cast<double>(val[1])) * std::sin(static_cast<double>(val[2])),
-                 val[0] * std::cos(static_cast<double>(val[1])));
+
+    virtual V invValue(V val) {
+        return V(
+            val[0] * std::sin(static_cast<double>(val[1])) * std::cos(static_cast<double>(val[2])),
+            val[0] * std::sin(static_cast<double>(val[1])) * std::sin(static_cast<double>(val[2])),
+            val[0] * std::cos(static_cast<double>(val[1])));
     }
     virtual V invMin(V val) { return this->property_->getMinValue(); }
     virtual V invMax(V val) { return this->property_->getMaxValue(); }
@@ -323,9 +243,8 @@ private:
 template <typename BT, typename T>
 class OrdinalPropertyWidgetQt : public TemplateOrdinalPropertyWidgetQt<BT, T> {
 public:
-    OrdinalPropertyWidgetQt(OrdinalProperty<T>* property) 
+    OrdinalPropertyWidgetQt(OrdinalProperty<T>* property)
         : TemplateOrdinalPropertyWidgetQt<BT, T>(property) {
-        
         if (property->getSemantics() == PropertySemantics("Spherical")) {
             transformer_ = new SphericalPropertyTransformer<T>(property);
         } else {
@@ -334,9 +253,7 @@ public:
         BaseOrdinalPropertyWidgetQt::generateWidget();
         updateFromProperty();
     }
-    virtual ~OrdinalPropertyWidgetQt() {
-        delete transformer_;
-    }
+    virtual ~OrdinalPropertyWidgetQt() { delete transformer_; }
     void updateFromProperty();
 
     virtual std::string getToolTipText();
@@ -361,18 +278,17 @@ std::string OrdinalPropertyWidgetQt<BT, T>::getToolTipText() {
     T inc = transformer_->inc(this->ordinalproperty_->getIncrement());
     T val = transformer_->value(this->ordinalproperty_->get());
 
-    size_t size = this->ordinalproperty_->getDim().x*this->ordinalproperty_->getDim().y;
+    size_t size = this->ordinalproperty_->getDim().x * this->ordinalproperty_->getDim().y;
     for (size_t i = 0; i < size; i++) {
-        ss << i << ": " << glmwrapper<BT, T>::getval(val, i)
-           << " [" << glmwrapper<BT, T>::getval(min, i) 
-           << ", " << glmwrapper<BT, T>::getval(max, i) << "]" 
+        ss << i << ": " << glmwrapper<BT, T>::getval(val, i) << " ["
+           << glmwrapper<BT, T>::getval(min, i) << ", " << glmwrapper<BT, T>::getval(max, i) << "]"
            << " inc: " << glmwrapper<BT, T>::getval(inc, i);
         if (i < size - 1) {
             ss << std::endl;
         }
     }
 
-    return ss.str(); 
+    return ss.str();
 }
 
 template <typename BT, typename T>
@@ -384,11 +300,13 @@ void OrdinalPropertyWidgetQt<BT, T>::updateFromProperty() {
     T inc = transformer_->inc(this->ordinalproperty_->getIncrement());
     T val = transformer_->value(this->ordinalproperty_->get());
 
-    for (size_t i = 0; i < this->ordinalproperty_->getDim().x*this->ordinalproperty_->getDim().y; i++) {
-        OrdinalBaseWidget<BT>* widget = dynamic_cast<OrdinalBaseWidget<BT>*>(this->sliderWidgets_[i]);
-        widget->setRange(glmwrapper<BT,T>::getval(min, i), glmwrapper<BT,T>::getval(max,i));
-        widget->setIncrement(glmwrapper<BT,T>::getval(inc, i));
-        widget->initValue(glmwrapper<BT,T>::getval(val, i));
+    for (size_t i = 0; i < this->ordinalproperty_->getDim().x * this->ordinalproperty_->getDim().y;
+         i++) {
+        OrdinalBaseWidget<BT>* widget =
+            dynamic_cast<OrdinalBaseWidget<BT>*>(this->sliderWidgets_[i]);
+        widget->setRange(glmwrapper<BT, T>::getval(min, i), glmwrapper<BT, T>::getval(max, i));
+        widget->setIncrement(glmwrapper<BT, T>::getval(inc, i));
+        widget->initValue(glmwrapper<BT, T>::getval(val, i));
     }
 }
 
@@ -396,7 +314,9 @@ template <typename BT, typename T>
 void OrdinalPropertyWidgetQt<BT, T>::setPropertyValue(int sliderId) {
     T propValue = transformer_->value(this->ordinalproperty_->get());
 
-    propValue = glmwrapper<BT, T>::setval(propValue, sliderId, dynamic_cast<OrdinalBaseWidget<BT>*>(this->sliderWidgets_[sliderId])->getValue());
+    propValue = glmwrapper<BT, T>::setval(
+        propValue, sliderId,
+        dynamic_cast<OrdinalBaseWidget<BT>*>(this->sliderWidgets_[sliderId])->getValue());
 
     this->ordinalproperty_->setInitiatingWidget(this);
     this->ordinalproperty_->set(transformer_->invValue(propValue));
@@ -405,20 +325,22 @@ void OrdinalPropertyWidgetQt<BT, T>::setPropertyValue(int sliderId) {
 
 template <typename BT, typename T>
 void OrdinalPropertyWidgetQt<BT, T>::setAsMin() {
-    OrdinalBaseWidget<BT>* slider = dynamic_cast<OrdinalBaseWidget<BT>*>(this->sliderWidgets_[this->sliderId_]);
-    T propValue = transformer_->min(this->ordinalproperty_->getMinValue());  
+    OrdinalBaseWidget<BT>* slider =
+        dynamic_cast<OrdinalBaseWidget<BT>*>(this->sliderWidgets_[this->sliderId_]);
+    T propValue = transformer_->min(this->ordinalproperty_->getMinValue());
     propValue = glmwrapper<BT, T>::setval(propValue, this->sliderId_, slider->getValue());
 
     this->ordinalproperty_->setInitiatingWidget(this);
     this->ordinalproperty_->setMinValue(transformer_->invMin(propValue));
     this->ordinalproperty_->clearInitiatingWidget();
 
-    slider->setMinValue(glmwrapper<BT,T>::getval(propValue, this->sliderId_));
+    slider->setMinValue(glmwrapper<BT, T>::getval(propValue, this->sliderId_));
 }
 
 template <typename BT, typename T>
 void OrdinalPropertyWidgetQt<BT, T>::setAsMax() {
-    OrdinalBaseWidget<BT>* slider = dynamic_cast<OrdinalBaseWidget<BT>*>(this->sliderWidgets_[this->sliderId_]);
+    OrdinalBaseWidget<BT>* slider =
+        dynamic_cast<OrdinalBaseWidget<BT>*>(this->sliderWidgets_[this->sliderId_]);
     T propValue = transformer_->max(this->ordinalproperty_->getMaxValue());
     propValue = glmwrapper<BT, T>::setval(propValue, this->sliderId_, slider->getValue());
 
@@ -426,9 +348,8 @@ void OrdinalPropertyWidgetQt<BT, T>::setAsMax() {
     this->ordinalproperty_->setMaxValue(transformer_->invMax(propValue));
     this->ordinalproperty_->clearInitiatingWidget();
 
-    slider->setMaxValue(glmwrapper<BT,T>::getval(propValue, this->sliderId_));
+    slider->setMaxValue(glmwrapper<BT, T>::getval(propValue, this->sliderId_));
 }
-
 
 typedef OrdinalPropertyWidgetQt<float, float> FloatPropertyWidgetQt;
 typedef OrdinalPropertyWidgetQt<float, vec2> FloatVec2PropertyWidgetQt;
@@ -454,6 +375,6 @@ typedef OrdinalPropertyWidgetQt<double, dmat3> DoubleMat3PropertyWidgetQt;
 typedef OrdinalPropertyWidgetQt<double, dmat4> DoubleMat4PropertyWidgetQt;
 
 typedef OrdinalPropertyWidgetQt<glm::i64, glm::i64> Int64PropertyWidgetQt;
-} // namespace
+}  // namespace
 
-#endif // IVW_ORDINALPROPERTYWIDGETQT_H
+#endif  // IVW_ORDINALPROPERTYWIDGETQT_H

@@ -35,6 +35,7 @@
 
 #include <modules/basegl/baseglmoduledefine.h>
 #include <inviwo/core/common/inviwo.h>
+#include <inviwo/core/properties/baseoptionproperty.h>
 #include <inviwo/core/properties/transferfunctionproperty.h>
 #include <inviwo/core/ports/imageport.h>
 #include <inviwo/core/ports/volumeport.h>
@@ -53,12 +54,15 @@ protected:
     virtual void process();
 
 private:
+    void onVolumeChange();
+
     VolumeInport volumePort_;
     ImageInport entryPort_;
     ImageInport exitPort_;
     ImageOutport outport_;
 
     TransferFunctionProperty transferFunction_;
+    OptionPropertyInt channel_;
 };
 
 } // namespace
