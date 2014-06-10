@@ -122,8 +122,8 @@ void InviwoMainWindow::initialize() {
     }
 
     recentFileList_ = settings.value("recentFileList").toStringList();
-    lastExitWithoutErrors_ = settings.value("lastExitWithoutErrors", true).toBool();
-    settings.setValue("lastExitWithoutErrors", false);
+    workspaceOnLastSucessfullExit_ = settings.value("workspaceOnLastSucessfullExit", "").toString();
+    settings.setValue("workspaceOnLastSucessfullExit","" );
     settings.endGroup();
     rootDir_ = QString::fromStdString(InviwoApplication::getPtr()->getPath(InviwoApplication::PATH_DATA));
     workspaceFileDir_ = rootDir_ + "workspaces/";
@@ -172,7 +172,7 @@ bool InviwoMainWindow::processCommandLineArgs() {
         std::string path = cmdparser->getOutputPath();
 
         if (path.empty())
-            path = InviwoApplication::getPtr()->getPath(InviwoApplication::PATH_IMAGES); //TODO consider using user images (not chaningen since i dont know how/if the regresion tests are using this)
+            path = InviwoApplication::getPtr()->getPath(InviwoApplication::PATH_IMAGES); 
 
         networkEvaluator->saveSnapshotAllCanvases(path, cmdparser->getSnapshotName());
     }
@@ -181,7 +181,7 @@ bool InviwoMainWindow::processCommandLineArgs() {
         std::string path = cmdparser->getOutputPath();
 
         if (path.empty())
-            path = InviwoApplication::getPtr()->getPath(InviwoApplication::PATH_IMAGES); //TODO consider using user images (not chaningen since i dont know how/if the regresion tests are using this)
+            path = InviwoApplication::getPtr()->getPath(InviwoApplication::PATH_IMAGES); 
 
         repaint();
         int curScreen = QApplication::desktop()->screenNumber(this);
@@ -405,8 +405,8 @@ void InviwoMainWindow::openLastWorkspace() {
 
     if (cmdparser->getLoadWorkspaceFromArg())
         openWorkspace(static_cast<const QString>(cmdparser->getWorkspacePath().c_str()));
-    else if (!recentFileList_.isEmpty() && lastExitWithoutErrors_)
-        openWorkspace(recentFileList_[0]);
+    else if (!workspaceOnLastSucessfullExit_.isEmpty())
+        openWorkspace(workspaceOnLastSucessfullExit_);
     else
         newWorkspace();
 }
@@ -596,7 +596,10 @@ void InviwoMainWindow::closeEvent(QCloseEvent* event) {
     settings.setValue("pos", pos());
     settings.setValue("size", size());
     settings.setValue("recentFileList", recentFileList_);
-    settings.setValue("lastExitWithoutErrors", true);
+    if(!currentWorkspaceFileName_.contains("untitled.inv"))
+        settings.setValue("workspaceOnLastSucessfullExit",currentWorkspaceFileName_ );
+    else
+        settings.setValue("workspaceOnLastSucessfullExit","" );
     settings.endGroup();
     settingsWidget_->saveSettings();
     propertyListWidget_->saveState();

@@ -158,13 +158,13 @@ private:
     QToolBar* viewModeToolBar_;
 
     // settings
-    bool lastExitWithoutErrors_;
     bool maximized_;
 
     // paths
     QString rootDir_;
     QString workspaceFileDir_;
     QString currentWorkspaceFileName_;
+    QString workspaceOnLastSucessfullExit_;
     QStringList recentFileList_;
 };
 
