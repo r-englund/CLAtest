@@ -68,7 +68,7 @@ vec4 rayTraversal(vec3 entryPoint, vec3 exitPoint, vec2 texCoords) {
     vec3 samplePos; vec3 gradient;
     while (t < tEnd) {
         samplePos = entryPoint + t * rayDirection;
-        voxel = getVoxel(volume_, volumeParameters_, samplePos);
+        voxel = getNormalizedVoxel(volume_, volumeParameters_, samplePos);
         gradient = RC_CALC_GRADIENTS_FOR_CHANNEL(voxel, samplePos, volume_, volumeParameters_, t, rayDirection, entryTex_, entryParameters_, channel_);
         color = RC_APPLY_CLASSIFICATION_FOR_CHANNEL(transferFunc_, voxel, channel_);
         color.rgb = RC_APPLY_SHADING(color.rgb, color.rgb, vec3(1.0), samplePos, gradient, lightPosition_, vec3(0.0));
