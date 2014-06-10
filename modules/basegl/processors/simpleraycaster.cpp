@@ -42,20 +42,42 @@ ProcessorCategory(SimpleRaycaster, "Volume Rendering");
 ProcessorCodeState(SimpleRaycaster, CODE_STATE_STABLE);
 
 SimpleRaycaster::SimpleRaycaster()
-    : VolumeRaycasterGL("raycasting.frag"),
-      volumePort_("volume"),
-      entryPort_("entry-points"),
-      exitPort_("exit-points"),
-      outport_("outport", &entryPort_, COLOR_DEPTH),
-      transferFunction_("transferFunction", "Transfer function", TransferFunction(), &volumePort_)
-{
+    : VolumeRaycasterGL("raycasting.frag")
+    , volumePort_("volume")
+    , entryPort_("entry-points")
+    , exitPort_("exit-points")
+    , outport_("outport", &entryPort_, COLOR_DEPTH)
+    , transferFunction_("transferFunction", "Transfer function", TransferFunction(), &volumePort_)
+    , channel_("channel", "Render Channel") {
+    
     addPort(volumePort_, "VolumePortGroup");
     addPort(entryPort_, "ImagePortGroup1");
     addPort(exitPort_, "ImagePortGroup1");
     addPort(outport_, "ImagePortGroup1");
+    
+    channel_.addOption("Channel 1", "Channel 1", 0);
+    channel_.setCurrentStateAsDefault();
+    
+    volumePort_.onChange(this, &SimpleRaycaster::onVolumeChange);
+    
     addProperty(transferFunction_);
     addProperty(isoValue_);
+    addProperty(channel_);
     addShadingProperties();
+}
+
+void SimpleRaycaster::onVolumeChange(){
+    if (volumePort_.hasData()){
+        int channels = volumePort_.getData()->getDataFormat()->getComponents();
+        
+        channel_.clearOptions();
+        for (int i = 0; i < channels; i++) {
+            std::stringstream ss;
+            ss << "Channel " << i;
+            channel_.addOption(ss.str() , ss.str(), i);
+        }
+        channel_.setCurrentStateAsDefault();
+    }
 }
 
 void SimpleRaycaster::process() {
@@ -80,6 +102,7 @@ void SimpleRaycaster::process() {
     setVolumeParameters(volumePort_, shader_, "volumeParameters_");
     shader_->setUniform("samplingRate_", samplingRate_.get());
     shader_->setUniform("isoValue_", isoValue_.get());
+    shader_->setUniform("channel_", channel_.getSelectedValue());
     renderImagePlaneRect();
     shader_->deactivate();
     deactivateCurrentTarget();

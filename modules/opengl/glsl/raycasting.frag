@@ -49,6 +49,8 @@ uniform TEXTURE_PARAMETERS exitParameters_;
 uniform VOLUME_TYPE volume_;
 uniform VOLUME_PARAMETERS volumeParameters_;
 
+uniform int channel_;
+
 // set threshold for early ray termination
 #define ERT_THRESHOLD 0.95
 
@@ -67,8 +69,8 @@ vec4 rayTraversal(vec3 entryPoint, vec3 exitPoint, vec2 texCoords) {
     while (t < tEnd) {
         samplePos = entryPoint + t * rayDirection;
         voxel = getVoxel(volume_, volumeParameters_, samplePos);
-        gradient = RC_CALC_GRADIENTS(voxel, samplePos, volume_, volumeParameters_, t, rayDirection, entryTex_, entryParameters_);
-        color = RC_APPLY_CLASSIFICATION(transferFunc_, voxel);
+        gradient = RC_CALC_GRADIENTS_FOR_CHANNEL(voxel, samplePos, volume_, volumeParameters_, t, rayDirection, entryTex_, entryParameters_, channel_);
+        color = RC_APPLY_CLASSIFICATION_FOR_CHANNEL(transferFunc_, voxel, channel_);
         color.rgb = RC_APPLY_SHADING(color.rgb, color.rgb, vec3(1.0), samplePos, gradient, lightPosition_, vec3(0.0));
         result = RC_APPLY_COMPOSITING(result, color, samplePos, voxel, gradient, t, tDepth, tIncr);
 

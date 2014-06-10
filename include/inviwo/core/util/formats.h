@@ -1130,6 +1130,95 @@ DEFAULTVALUES(std::string, uvec2(1, 1), "String", "", "", "", "")
 #undef DEFAULTVALUES
 
 
+// BT is the vector base type, ie float, int,.. T is the GLM vector or float, int..
+template <typename BT, typename T>
+class glmwrapper {};
+
+template <typename T>
+class glmwrapper<T, glm::detail::tmat4x4<T, glm::defaultp> > {
+public:
+    static T getval(glm::detail::tmat4x4<T, glm::defaultp> mat, size_t const ind) {
+        return mat[static_cast<int>(ind)/4][static_cast<int>(ind) % 4];
+    }
+    static glm::detail::tmat4x4<T, glm::defaultp> setval(glm::detail::tmat4x4<T, glm::defaultp> mat,
+                                                          size_t const ind, T val) {
+        mat[static_cast<int>(ind) / 4][static_cast<int>(ind) % 4] = val;
+        return mat;
+    }
+};
+template <typename T>
+class glmwrapper<T, glm::detail::tmat3x3<T, glm::defaultp> > {
+public:
+    static T getval(glm::detail::tmat3x3<T, glm::defaultp> mat, size_t const ind) {
+        return mat[static_cast<int>(ind) / 3][static_cast<int>(ind) % 3];
+    }
+    static glm::detail::tmat3x3<T, glm::defaultp> setval(glm::detail::tmat3x3<T, glm::defaultp> mat,
+                                                          size_t const ind, T val) {
+        mat[static_cast<int>(ind) / 3][static_cast<int>(ind) % 3] = val;
+        return mat;
+    }
+};
+template <typename T>
+class glmwrapper<T, glm::detail::tmat2x2<T, glm::defaultp> > {
+public:
+    static T getval(glm::detail::tmat2x2<T, glm::defaultp> mat, size_t const ind) {
+        return mat[static_cast<int>(ind) / 2][static_cast<int>(ind) % 2];
+    }
+    static glm::detail::tmat2x2<T, glm::defaultp> setval(glm::detail::tmat2x2<T, glm::defaultp> mat,
+                                                          size_t const ind, T val) {
+        mat[static_cast<int>(ind) / 2][static_cast<int>(ind) % 2] = val;
+        return mat;
+    }
+};
+
+template <typename T>
+class glmwrapper<T, glm::detail::tvec4<T, glm::defaultp> > {
+public:
+    static T getval(glm::detail::tvec4<T, glm::defaultp> vec, size_t const ind) {
+        return vec[static_cast<int>(ind)];
+    }
+    static glm::detail::tvec4<T, glm::defaultp> setval(glm::detail::tvec4<T, glm::defaultp> vec,
+                                                       size_t const ind, T val) {
+        vec[static_cast<int>(ind)] = val;
+        return vec;
+    }
+};
+template <typename T>
+class glmwrapper<T, glm::detail::tvec3<T, glm::defaultp> > {
+public:
+    static T getval(glm::detail::tvec3<T, glm::defaultp> vec, size_t const ind) {
+        return vec[static_cast<int>(ind)];
+    }
+    static glm::detail::tvec3<T, glm::defaultp> setval(glm::detail::tvec3<T, glm::defaultp> vec,
+                                                       size_t const ind, T val) {
+        vec[static_cast<int>(ind)] = val;
+        return vec;
+    }
+};
+template <typename T>
+class glmwrapper<T, glm::detail::tvec2<T, glm::defaultp> > {
+public:
+    static T getval(glm::detail::tvec2<T, glm::defaultp> vec, size_t const ind) {
+        return vec[static_cast<int>(ind)];
+    }
+    static glm::detail::tvec2<T, glm::defaultp> setval(glm::detail::tvec2<T, glm::defaultp> vec,
+                                                       size_t const ind, T val) {
+        vec[static_cast<int>(ind)] = val;
+        return vec;
+    }
+};
+template <typename T>
+class glmwrapper<T, T> {
+public:
+    static T getval(T val, size_t const ind) {
+        return val;
+    }
+    static T setval(T org, size_t const ind, T val) {
+        return val;
+    }
+};
+
+
 #define CallFunctionWithTemplateArgsForType(fun, id) \
     switch (id) {\
     case DataFormatEnums::FLOAT16: fun<DataFLOAT16::type, DataFLOAT16::bits>(); break; \

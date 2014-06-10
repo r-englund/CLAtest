@@ -166,13 +166,6 @@ void BaseOrdinalPropertyWidgetQt::showContextMenuSlider(int sliderId) {
 
 }
 
-void BaseOrdinalPropertyWidgetQt::showSettings(){
-    if (!settingsWidget_){
-        settingsWidget_ = new PropertySettingsWidgetQt(property_, this);
-    }
-    settingsWidget_->reload();
-    settingsWidget_->show();
-}
 
 
 

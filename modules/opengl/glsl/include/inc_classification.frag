@@ -35,3 +35,7 @@ uniform sampler2D transferFunc_;
 vec4 applyTF(sampler2D transferFunction, vec4 voxel) {
     return texture(transferFunction, vec2(voxel.r, 0.5));
 }
+
+vec4 applyTF(sampler2D transferFunction, vec4 voxel, int channel) {
+    return texture(transferFunction, vec2(voxel[channel], 0.5));
+}
