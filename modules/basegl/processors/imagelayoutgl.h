@@ -45,6 +45,7 @@
 
 namespace inviwo {
 
+//Right mouse click activates the area for mouse/key interactions.
 class IVW_MODULE_BASEGL_API ImageLayoutGL : public ProcessorGL {
 public:
     ImageLayoutGL();
@@ -74,6 +75,8 @@ protected:
 
     private:
         MouseEvent activePositionChangeEvent_;
+
+        int lastMouseButton_;
 
         ivec2 activePosition_;
     };
