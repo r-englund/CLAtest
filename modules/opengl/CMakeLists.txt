@@ -94,31 +94,20 @@ ivw_group("Source Files" ${SOURCE_FILES})
 #--------------------------------------------------------------------
 # Add shaders
 set(SHADER_FILES
-    ${IVW_MODULE_DIR}/opengl/glsl/background.frag
-    ${IVW_MODULE_DIR}/opengl/glsl/capnearclipping.frag
     ${IVW_MODULE_DIR}/opengl/glsl/composite.frag
-    ${IVW_MODULE_DIR}/opengl/glsl/fontrendering_freetype.frag
-    ${IVW_MODULE_DIR}/opengl/glsl/fontrendering_freetype.vert
-    ${IVW_MODULE_DIR}/opengl/glsl/fontrendering_passthrough.frag
     ${IVW_MODULE_DIR}/opengl/glsl/geometryrendering.frag
     ${IVW_MODULE_DIR}/opengl/glsl/geometryrendering.vert
-    ${IVW_MODULE_DIR}/opengl/glsl/img_classify.frag
     ${IVW_MODULE_DIR}/opengl/glsl/img_color.frag
     ${IVW_MODULE_DIR}/opengl/glsl/img_copy.frag
-    ${IVW_MODULE_DIR}/opengl/glsl/img_findedges.frag
-    ${IVW_MODULE_DIR}/opengl/glsl/img_graysc.frag
     ${IVW_MODULE_DIR}/opengl/glsl/img_identity.vert
-    ${IVW_MODULE_DIR}/opengl/glsl/img_mix.frag
     ${IVW_MODULE_DIR}/opengl/glsl/img_noise.frag
     ${IVW_MODULE_DIR}/opengl/glsl/img_texturequad.frag
     ${IVW_MODULE_DIR}/opengl/glsl/img_texturequad.vert
     ${IVW_MODULE_DIR}/opengl/glsl/minimal.vert
-    ${IVW_MODULE_DIR}/opengl/glsl/multiplanar.frag
     ${IVW_MODULE_DIR}/opengl/glsl/picking.frag
     ${IVW_MODULE_DIR}/opengl/glsl/raycasting.frag
     ${IVW_MODULE_DIR}/opengl/glsl/standard.frag
     ${IVW_MODULE_DIR}/opengl/glsl/standard.vert
-    ${IVW_MODULE_DIR}/opengl/glsl/volumeslice.frag
     ${IVW_MODULE_DIR}/opengl/glsl/include/inc_classification.frag
     ${IVW_MODULE_DIR}/opengl/glsl/include/inc_compositing.frag
     ${IVW_MODULE_DIR}/opengl/glsl/include/inc_depth.frag
@@ -127,13 +116,6 @@ set(SHADER_FILES
     ${IVW_MODULE_DIR}/opengl/glsl/include/inc_sampler2d.frag
     ${IVW_MODULE_DIR}/opengl/glsl/include/inc_sampler3d.frag
     ${IVW_MODULE_DIR}/opengl/glsl/include/inc_shading.frag
-    ${IVW_MODULE_DIR}/opengl/glsl/lighting/lightingraycasting.frag
-	${IVW_MODULE_DIR}/opengl/glsl/lighting/lightpropagation.frag
-    ${IVW_MODULE_DIR}/opengl/glsl/lighting/lightpropagation.geom
-    ${IVW_MODULE_DIR}/opengl/glsl/lighting/lightpropagation.vert
-    ${IVW_MODULE_DIR}/opengl/glsl/lighting/lightvolumeblend.frag
-    ${IVW_MODULE_DIR}/opengl/glsl/lighting/lightvolumeblend.geom
-    ${IVW_MODULE_DIR}/opengl/glsl/lighting/lightvolumeblend.vert
 )
 ivw_group("Shader Files" ${SHADER_FILES})
 

@@ -36,3 +36,7 @@ ivw_add_definition(__CL_ENABLE_EXCEPTIONS)
 #--------------------------------------------------------------------
 # Create module
 ivw_create_module(${SOURCE_FILES} ${HEADER_FILES} ${SHADER_FILES})
+
+#--------------------------------------------------------------------
+# Add kernel directory to pack
+ivw_add_to_module_pack(${IVW_MODULE_DIR}/basecl/cl)

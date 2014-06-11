@@ -31,7 +31,7 @@
  *********************************************************************************/
 
 #include <modules/basegl/baseglmodule.h>
-
+#include <modules/opengl/glwrap/shadermanager.h>
 #include <modules/basegl/processors/background.h>
 #include <modules/basegl/processors/drawlines.h>
 #include <modules/basegl/processors/drawfreehand.h>
@@ -54,6 +54,8 @@ namespace inviwo {
 
 BaseGLModule::BaseGLModule() : InviwoModule() {
     setIdentifier("BaseGL");
+    ShaderManager::getPtr()->addShaderSearchPath(InviwoApplication::PATH_MODULES, "basegl/glsl");
+    
     registerProcessor(Background);
     registerProcessor(DrawLines);
     registerProcessor(DrawFreeHand);

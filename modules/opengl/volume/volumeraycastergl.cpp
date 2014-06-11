@@ -37,7 +37,7 @@ namespace inviwo {
 VolumeRaycasterGL::VolumeRaycasterGL()
     : ProcessorGL()
     , shader_(0)
-    , shaderFileName_("rc_simple.frag")
+    , shaderFileName_("raycasting.frag")
     , samplingRate_("samplingRate", "Sampling rate", 2.0f, 1.0f, 10.0f)
     , isoValue_("isoValue", "Iso value", 0.5f, 0.0f, 1.0f)
     , classificationMode_("classificationMode", "Classification", PropertyOwner::INVALID_RESOURCES)
