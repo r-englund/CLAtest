@@ -32,7 +32,7 @@
 
 #include <modules/openglqt/canvasqt.h>
 #include <modules/opengl/openglcapabilities.h>
-//#ifdef USE_QWINDOW
+#ifdef USE_QWINDOW
 #include <QtGui/QOpenGLContext>
 #endif
 
