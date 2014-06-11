@@ -32,7 +32,7 @@
 
 #include <modules/openglqt/canvasqt.h>
 #include <modules/opengl/openglcapabilities.h>
-#ifdef USE_QWINDOW
+//#ifdef USE_QWINDOW
 #include <QtGui/QOpenGLContext>
 #endif
 
@@ -98,7 +98,7 @@ CanvasQt::CanvasQt(QWindow* parent, uvec2 dim)
 }
 #else
 
-/*QGLWidget* CanvasQt::sharedGLContext_ = NULL;
+QGLWidget* CanvasQt::sharedGLContext_ = NULL;
 
 CanvasQt::CanvasQt(QWidget* parent, uvec2 dim)
     : QGLWidget(sharedFormat_, parent, sharedGLContext_)
@@ -121,7 +121,7 @@ CanvasQt::CanvasQt(QWidget* parent, uvec2 dim)
     grabGesture(Qt::PanGesture);
     grabGesture(Qt::PinchGesture);
 #endif
-}*/
+}
 #endif
 
 void CanvasQt::defineDefaultContextFormat(){
