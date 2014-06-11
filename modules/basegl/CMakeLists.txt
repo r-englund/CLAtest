@@ -49,5 +49,30 @@ set(SOURCE_FILES
 ivw_group("Source Files" ${SOURCE_FILES})
 
 #--------------------------------------------------------------------
+# Add shaders
+set(SHADER_FILES
+    ${IVW_MODULE_DIR}/basegl/glsl/background.frag
+    ${IVW_MODULE_DIR}/basegl/glsl/capnearclipping.frag
+    ${IVW_MODULE_DIR}/basegl/glsl/img_classify.frag
+    ${IVW_MODULE_DIR}/basegl/glsl/img_findedges.frag
+    ${IVW_MODULE_DIR}/basegl/glsl/img_graysc.frag
+    ${IVW_MODULE_DIR}/basegl/glsl/img_mix.frag
+    ${IVW_MODULE_DIR}/basegl/glsl/multiplanar.frag
+    ${IVW_MODULE_DIR}/basegl/glsl/volumeslice.frag
+    ${IVW_MODULE_DIR}/basegl/glsl/lighting/lightingraycasting.frag
+	${IVW_MODULE_DIR}/basegl/glsl/lighting/lightpropagation.frag
+    ${IVW_MODULE_DIR}/basegl/glsl/lighting/lightpropagation.geom
+    ${IVW_MODULE_DIR}/basegl/glsl/lighting/lightpropagation.vert
+    ${IVW_MODULE_DIR}/basegl/glsl/lighting/lightvolumeblend.frag
+    ${IVW_MODULE_DIR}/basegl/glsl/lighting/lightvolumeblend.geom
+    ${IVW_MODULE_DIR}/basegl/glsl/lighting/lightvolumeblend.vert
+)
+ivw_group("Shader Files" ${SHADER_FILES})
+
+#--------------------------------------------------------------------
 # Create module
 ivw_create_module(${SOURCE_FILES} ${HEADER_FILES})
+
+#--------------------------------------------------------------------
+# Add shader directory to pack
+ivw_add_to_module_pack(${IVW_MODULE_DIR}/basegl/glsl)

@@ -31,13 +31,15 @@
  *********************************************************************************/
 
 #include <modules/fontrendering/fontrenderingmodule.h>
-
+#include <modules/opengl/glwrap/shadermanager.h>
 #include <modules/fontrendering/processors/imageoverlay.h>
 
 namespace inviwo {
 
 FontrenderingModule::FontrenderingModule() : InviwoModule() {
     setIdentifier("Fontrendering");
+    ShaderManager::getPtr()->addShaderSearchPath(InviwoApplication::PATH_MODULES, "fontrendering/glsl");
+    
     registerProcessor(ImageOverlay);
 }
 
