@@ -92,6 +92,10 @@ PARSEVEC2(vec2, float, parseVec2, "ff");
 PARSEVEC3(vec3, float, parseVec3, "fff");
 PARSEVEC4(vec4, float, parseVec4, "ffff");
 
+PARSEVEC2(dvec2, float, parseDVec2, "dd");
+PARSEVEC3(dvec3, float, parseDVec3, "ddd");
+PARSEVEC4(dvec4, float, parseDVec4, "dddd");
+
 bool parseBool(PyObject* args) {
     return PyObject_IsTrue(args) != 0;
 };
@@ -169,6 +173,18 @@ vec3 PyValueParser::parse(PyObject* args) {
 template <>
 vec4 PyValueParser::parse(PyObject* args) {
     return parseVec4(args);
+}
+template <>
+dvec2 PyValueParser::parse(PyObject* args) {
+    return parseDVec2(args);
+}
+template <>
+dvec3 PyValueParser::parse(PyObject* args) {
+    return parseDVec3(args);
+}
+template <>
+dvec4 PyValueParser::parse(PyObject* args) {
+    return parseDVec4(args);
 }
 template <>
 ivec2 PyValueParser::parse(PyObject* args) {
@@ -316,6 +332,8 @@ void PyValueParser::setProperty(Property* p, PyObject* args) {
         static_cast<BoolProperty*>(p)->set(parse<bool>(args));
     else if (className == "FloatProperty")
         static_cast<FloatProperty*>(p)->set(parse<float>(args));
+    else if (className == "DoubleProperty")
+        static_cast<DoubleProperty*>(p)->set(parse<float>(args));
     else if (className == "IntProperty")
         static_cast<IntProperty*>(p)->set(parse<int>(args));
     else if (className == "StringProperty")
@@ -342,6 +360,20 @@ void PyValueParser::setProperty(Property* p, PyObject* args) {
         static_cast<FloatVec4Property*>(p)->set(parse<vec4>(args));
     else if (className == "FloatMinMaxProperty")
         static_cast<FloatMinMaxProperty*>(p)->set(parse<vec2>(args));
+    else if (className == "DoubleVec2Property")
+        static_cast<DoubleVec2Property*>(p)->set(parse<dvec2>(args));
+    else if (className == "DoubleVec3Property")
+        static_cast<DoubleVec3Property*>(p)->set(parse<dvec3>(args));
+    else if (className == "DoubleVec4Property")
+        static_cast<DoubleVec4Property*>(p)->set(parse<dvec4>(args));
+    else if (className == "DoubleMat2Property")
+        static_cast<DoubleVec2Property*>(p)->set(parse<dvec2>(args));
+    else if (className == "DoubleMat3Property")
+        static_cast<DoubleVec3Property*>(p)->set(parse<dvec3>(args));
+    else if (className == "DoubleMat4Property")
+        static_cast<DoubleVec4Property*>(p)->set(parse<dvec4>(args));
+    else if (className == "DoubleMinMaxProperty")
+        static_cast<DoubleMinMaxProperty*>(p)->set(parse<dvec2>(args));
     else if (className == "OptionPropertyInt")
         static_cast<OptionPropertyInt*>(p)->set(parse<int>(args));
     else if (className == "OptionPropertyFloat")
