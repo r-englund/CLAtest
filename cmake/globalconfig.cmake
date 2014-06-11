@@ -181,8 +181,42 @@ IF(WIN32)
 	ENDIF(MSVC)
 ENDIF()
 
+
 #--------------------------------------------------------------------
-# Check if OpenMP is available and set it to use
+# MSVC Variable checks and include redist in packs
+if(WIN32)
+    if(MSVC)
+        if(CMAKE_SIZEOF_VOID_P EQUAL 8)
+            if(MSVC_VERSION GREATER 1599)
+              # VS 10 and later:
+              set(CMAKE_MSVC_ARCH x64)
+            else()
+              # VS 9 and earlier:
+              set(CMAKE_MSVC_ARCH amd64)
+            endif()
+        else()
+            set(CMAKE_MSVC_ARCH x86)
+        endif()
+        if(MSVC90)
+            set(MSVC_ACRO "9")
+        elseif(MSVC10)
+            set(MSVC_ACRO "10")
+        elseif(MSVC11)
+            set(MSVC_ACRO "11")
+        elseif(MSVC12)
+            set(MSVC_ACRO "12")
+        endif()
+        if(DEFINED MSVC_ACRO)
+            install(FILES "C:/Program Files (x86)/Microsoft Visual Studio ${MSVC_ACRO}.0/VC/redist/Debug_NonRedist/${CMAKE_MSVC_ARCH}/Microsoft.VC${MSVC_ACRO}0.DebugCRT/msvcp${MSVC_ACRO}0d.dll" DESTINATION bin COMPONENT core CONFIGURATIONS Debug)
+            install(FILES "C:/Program Files (x86)/Microsoft Visual Studio ${MSVC_ACRO}.0/VC/redist/Debug_NonRedist/${CMAKE_MSVC_ARCH}/Microsoft.VC${MSVC_ACRO}0.DebugCRT/msvcr${MSVC_ACRO}0d.dll" DESTINATION bin COMPONENT core CONFIGURATIONS Debug)
+            install(FILES "C:/Program Files (x86)/Microsoft Visual Studio ${MSVC_ACRO}.0/VC/redist/${CMAKE_MSVC_ARCH}/Microsoft.VC${MSVC_ACRO}0.CRT/msvcp${MSVC_ACRO}0.dll" DESTINATION bin COMPONENT core CONFIGURATIONS Release)
+            install(FILES "C:/Program Files (x86)/Microsoft Visual Studio ${MSVC_ACRO}.0/VC/redist/${CMAKE_MSVC_ARCH}/Microsoft.VC${MSVC_ACRO}0.CRT/msvcr${MSVC_ACRO}0.dll" DESTINATION bin COMPONENT core CONFIGURATIONS Release)
+        endif()
+    endif()
+endif()
+
+#--------------------------------------------------------------------
+# Check if OpenMP is available and set it to use, and include the dll in packs
 find_package(OpenMP QUIET)
 if(OPENMP_FOUND)
     option(OPENMP_ON "Use OpenMP" ON)
@@ -190,6 +224,14 @@ if(OPENMP_FOUND)
         set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${OpenMP_C_FLAGS}")
         set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${OpenMP_CXX_FLAGS}")
         set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} ${OpenMP_EXE_LINKER_FLAGS}")
+        if(WIN32)
+            if(MSVC)
+                if(DEFINED MSVC_ACRO)
+                    install(FILES "C:/Program Files (x86)/Microsoft Visual Studio ${MSVC_ACRO}.0/VC/redist/Debug_NonRedist/${CMAKE_MSVC_ARCH}/Microsoft.VC${MSVC_ACRO}0.DebugOpenMP/vcomp${MSVC_ACRO}0d.dll" DESTINATION bin COMPONENT core CONFIGURATIONS Debug)
+                    install(FILES "C:/Program Files (x86)/Microsoft Visual Studio ${MSVC_ACRO}.0/VC/redist/${CMAKE_MSVC_ARCH}/Microsoft.VC${MSVC_ACRO}0.OPENMP/vcomp${MSVC_ACRO}0.dll" DESTINATION bin COMPONENT core CONFIGURATIONS Release)
+                endif()
+            endif()
+        endif()
     endif()
 endif()
 

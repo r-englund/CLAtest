@@ -155,14 +155,19 @@ void ImageLayoutGL::process() {
 
 ImageLayoutGL::ImageLayoutGLInteractationHandler::ImageLayoutGLInteractationHandler() 
     : InteractionHandler()
-    , activePositionChangeEvent_(MouseEvent::MOUSE_BUTTON_LEFT, InteractionEvent::MODIFIER_NONE)
+    , activePositionChangeEvent_(ivec2(0), MouseEvent::MOUSE_BUTTON_RIGHT, MouseEvent::MOUSE_STATE_RELEASE, InteractionEvent::MODIFIER_NONE, uvec2(512))
     , activePosition_(ivec2(0)) {
 }
 
 void ImageLayoutGL::ImageLayoutGLInteractationHandler::invokeEvent(Event* event){
     MouseEvent* mouseEvent = dynamic_cast<MouseEvent*>(event);
-    if (mouseEvent && mouseEvent->button() == activePositionChangeEvent_.button()) {
-        activePosition_ = mouseEvent->pos();
+    if(mouseEvent){
+        if(mouseEvent->button() != MouseEvent::MOUSE_BUTTON_NONE){
+            lastMouseButton_ = mouseEvent->button();
+        }
+        if(lastMouseButton_ == activePositionChangeEvent_.button() && mouseEvent->state() == activePositionChangeEvent_.state()) {
+            activePosition_ = mouseEvent->pos();
+        }
     }
 }
 
