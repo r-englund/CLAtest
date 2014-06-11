@@ -40,6 +40,7 @@
 
 #if (QT_VERSION >= QT_VERSION_CHECK(5, 0, 0))
 #include <QStandardPaths>
+#include <QScreen>
 #else
 #include <QDesktopServices>
 #endif
@@ -185,7 +186,11 @@ bool InviwoMainWindow::processCommandLineArgs() {
 
         repaint();
         int curScreen = QApplication::desktop()->screenNumber(this);
+        #if (QT_VERSION >= QT_VERSION_CHECK(5, 0, 0))
+        QPixmap screenGrab = QGuiApplication::primaryScreen()->grabWindow(QApplication::desktop()->screen(curScreen)->winId());
+        #else
         QPixmap screenGrab = QPixmap::grabWindow(QApplication::desktop()->screen(curScreen)->winId());
+        #endif
         //QPixmap screenGrab = QPixmap::grabWindow(winId());
         std::string fileName = cmdparser->getScreenGrabName();
         screenGrab.save(QString::fromStdString(path + "/" + fileName), "png");
