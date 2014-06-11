@@ -67,13 +67,14 @@ private:
     FT_Library fontlib_;
     FT_Face fontface_;
     StringProperty textStringProperty_;
-    FloatVec4Property floatColor_;
-    OptionPropertyInt optionPropertyIntFontSize_;
-    FloatVec2Property floatVec2FontPos_;
 
     unsigned int font_size_;
     float xpos_;
     float ypos_;
+    
+    FloatVec4Property floatColor_;
+    OptionPropertyInt optionPropertyIntFontSize_;
+    FloatVec2Property floatVec2FontPos_;
 
     Shader* shader_;
     Shader* shader_passthrough_;

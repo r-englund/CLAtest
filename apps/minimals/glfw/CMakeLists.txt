@@ -50,8 +50,10 @@ ivw_vs_folder(glfwminimum minimals)
 # Add application to pack
 if(IVW_PACKAGE_PROJECT)
 install(TARGETS glfwminimum
-   RUNTIME
-   DESTINATION bin
+   RUNTIME DESTINATION bin
+   BUNDLE DESTINATION bin
+   ARCHIVE DESTINATION lib
+   LIBRARY DESTINATION lib
    COMPONENT glfw_app)
 endif()
 

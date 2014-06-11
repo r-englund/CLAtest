@@ -169,7 +169,6 @@ void ImageOverlay::render_text(const char* text, float x, float y, float sx, flo
 void ImageOverlay::process() {
     const Image* inputImage = inport0_.getData();
     Image* outImage = outport_.getData();
-    const ImageGL* inImageGL = inputImage->getRepresentation<ImageGL>();
     ImageGL* outImageGL = outImage->getEditableRepresentation<ImageGL>();
     activateTarget(outport_);
     TextureUnit texUnit0;

@@ -61,12 +61,15 @@
 
 #ifdef USE_QWINDOW
 #include <QtGui/QWindow>
+#include <QtGui/QSurfaceFormat>
 class QOpenGLContext;
 #define QGLWindow QWindow
+#define QGLParent QWindow
 #define QGLContextFormat QSurfaceFormat
 #else
 #include <QGLWidget>
 #define QGLWindow QGLWidget
+#define QGLParent QWidget
 #define QGLContextFormat QGLFormat
 #endif
 
@@ -75,7 +78,7 @@ namespace inviwo {
 class IVW_MODULE_OPENGLQT_API CanvasQt : public QGLWindow, public CanvasGL {
     Q_OBJECT
 public:
-    CanvasQt(uvec2 dim = uvec2(256,256));
+    explicit CanvasQt(QGLParent* parent = NULL, uvec2 dim = uvec2(256,256));
     ~CanvasQt();
 
     static void defineDefaultContextFormat();

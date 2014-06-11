@@ -62,11 +62,11 @@ void CanvasProcessorWidgetQt::initialize() {
     canvasProcessor_ = dynamic_cast<CanvasProcessor*>(processor_);
     ProcessorWidgetQt::initialize();
     ivec2 dim = getDimensionMetaData();
-    canvas_ = new CanvasQt(uvec2(dim.x, dim.y));
+    canvas_ = new CanvasQt(NULL, uvec2(dim.x, dim.y));
     canvas_->initialize();
     QGridLayout* gridLayout = new QGridLayout;
     gridLayout->setContentsMargins(0, 0, 0, 0);
-#if USE_QWINDOW
+#ifdef USE_QWINDOW
     QWidget* container = QWidget::createWindowContainer(canvas_);
 #else
     canvas_->setMouseTracking(true);

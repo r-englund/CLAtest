@@ -56,8 +56,8 @@ QGLContextFormat CanvasQt::sharedFormat_ = GetQGLFormat();
 #ifdef USE_QWINDOW
 QOpenGLContext* CanvasQt::sharedGLContext_ = NULL;
 
-CanvasQt::CanvasQt(uvec2 dim)
-    : QWindow()
+CanvasQt::CanvasQt(QWindow* parent, uvec2 dim)
+    : QWindow(parent)
     , CanvasGL(dim)
     , thisGLContext_(NULL)
     , swapBuffersAllowed_(false)
@@ -98,10 +98,10 @@ CanvasQt::CanvasQt(uvec2 dim)
 }
 #else
 
-QGLWidget* CanvasQt::sharedGLContext_ = NULL;
+/*QGLWidget* CanvasQt::sharedGLContext_ = NULL;
 
-CanvasQt::CanvasQt(uvec2 dim)
-    : QGLWidget(sharedFormat_, NULL, sharedGLContext_)
+CanvasQt::CanvasQt(QWidget* parent, uvec2 dim)
+    : QGLWidget(sharedFormat_, parent, sharedGLContext_)
       , CanvasGL(dim)
       , swapBuffersAllowed_(false)
 {
@@ -121,7 +121,7 @@ CanvasQt::CanvasQt(uvec2 dim)
     grabGesture(Qt::PanGesture);
     grabGesture(Qt::PinchGesture);
 #endif
-}
+}*/
 #endif
 
 void CanvasQt::defineDefaultContextFormat(){

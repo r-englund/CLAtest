@@ -753,8 +753,10 @@ if(IVW_PACKAGE_PROJECT AND BUILD_SHARED_LIBS)
    #--------------------------------------------------------------------
    # Add to package
    install(TARGETS ${project_name}
-            RUNTIME
-            DESTINATION bin
+            RUNTIME DESTINATION bin
+            BUNDLE DESTINATION bin
+	    ARCHIVE DESTINATION lib
+            LIBRARY DESTINATION lib
             COMPONENT ${_cpackName})
 endif()
 

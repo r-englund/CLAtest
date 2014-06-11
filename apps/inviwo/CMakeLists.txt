@@ -86,8 +86,10 @@ add_executable(inviwo MACOSX_BUNDLE WIN32 ${SOURCE_FILES} ${HEADER_FILES} ${MOC_
 # Add application to pack
 if(IVW_PACKAGE_PROJECT)
 install(TARGETS inviwo
-   RUNTIME
-   DESTINATION bin
+   RUNTIME DESTINATION bin
+   BUNDLE DESTINATION bin
+   ARCHIVE DESTINATION lib
+   LIBRARY DESTINATION lib
    COMPONENT qt_app)
 endif()
 
