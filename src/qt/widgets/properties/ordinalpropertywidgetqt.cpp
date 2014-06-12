@@ -36,8 +36,8 @@ namespace inviwo {
 
 BaseOrdinalPropertyWidgetQt::BaseOrdinalPropertyWidgetQt(Property* property)
     : PropertyWidgetQt(property)
-    , contextMenu_(NULL)
-    , settingsWidget_(NULL) {
+    , settingsWidget_(NULL)
+    , contextMenu_(NULL) {
 }
 
 BaseOrdinalPropertyWidgetQt::~BaseOrdinalPropertyWidgetQt() {

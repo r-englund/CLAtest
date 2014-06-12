@@ -190,12 +190,12 @@ void Shader::detachAllShaderObject() {
     }
 }
 
-#define IVW_ELSE_WARN                                                                              \
-    else LogWarn(                                                                                  \
-        "Unable to set uniform " + name + " in shader " + getVertexShaderObject()->getFileName() + \
-        "/" +                                                                                      \
-        ((getGeometryShaderObject()) ? getGeometryShaderObject()->getFileName() + "/" : "") +      \
-        getFragmentShaderObject()->getFileName());
+//#define IVW_ELSE_WARN                                                                              \
+//    else LogWarn(                                                                                  \
+//        "Unable to set uniform " + name + " in shader " + getVertexShaderObject()->getFileName() + \
+//        "/" +                                                                                      \
+//        ((getGeometryShaderObject()) ? getGeometryShaderObject()->getFileName() + "/" : "") +      \
+//        getFragmentShaderObject()->getFileName());
 #define IVW_ELSE_WARN
 
 void Shader::setUniform(const std::string &name, const GLint &value) const {

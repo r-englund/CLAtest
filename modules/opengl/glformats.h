@@ -56,8 +56,8 @@ public:
             , type(0)
             , channels(0)
             , typeSize(0)
-            , scaling(0.f)
             , normalization(NONE)
+            , scaling(0.f)
             , valid(false) {}
         GLFormat(GLint f, GLint i, GLenum t, GLuint c, GLuint s, Normalization n, GLfloat sc = 0.f)
             : format(f)
