@@ -135,30 +135,24 @@ PyObject* py_getTransferFunctionPath(PyObject* /*self*/, PyObject* /*args*/) {
         InviwoApplication::getPtr()->getPath(InviwoApplication::PATH_TRANSFERFUNCTIONS));
 }
 
-PyObject* py_quitInviwo(PyObject* /*self*/, PyObject* /*args*/) {
-    InviwoApplication::getPtr()->closeInviwoApplication();
-    Py_RETURN_NONE;
-}
-
 PyObject* py_getMemoryUsage(PyObject* /*self*/, PyObject* /*args*/) {
-    InviwoApplication *a = InviwoApplication::getPtr();
-    if(!a){
+    InviwoApplication* a = InviwoApplication::getPtr();
+    if (!a) {
         std::string msg =
             std::string("getMemoryUsage() failed . Inviwo Application modulde not found");
         PyErr_SetString(PyExc_TypeError, msg.c_str());
         return 0;
     }
-    InviwoModule *m = InviwoApplication::getPtr()->getModuleByType<InviwoCore>();
-    if(!m){
-        std::string msg =
-            std::string("getMemoryUsage() failed . Inviwo Core modulde not found");
+    InviwoModule* m = InviwoApplication::getPtr()->getModuleByType<InviwoCore>();
+    if (!m) {
+        std::string msg = std::string("getMemoryUsage() failed . Inviwo Core modulde not found");
         PyErr_SetString(PyExc_TypeError, msg.c_str());
         return 0;
     }
-    
-    for(size_t i = 0;m->getCapabilities().size();i++){
-        SystemCapabilities *sc = dynamic_cast<SystemCapabilities*>(m->getCapabilities()[i]);
-        if(sc){
+
+    for (size_t i = 0; m->getCapabilities().size(); i++) {
+        SystemCapabilities* sc = dynamic_cast<SystemCapabilities*>(m->getCapabilities()[i]);
+        if (sc) {
             return PyValueParser::toPyObject(sc->getCurrentResidentMemoryUsage());
         }
     }
@@ -249,4 +243,3 @@ PySnapshotCanvasMethod::PySnapshotCanvasMethod() : canvasID_("canvasID"), filena
     addParam(&filename_);
 }
 }
-

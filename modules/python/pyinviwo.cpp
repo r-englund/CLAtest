@@ -148,7 +148,6 @@ void PyInviwo::initDefaultInterfaces() {
     inviwoPyModule->addMethod(new PySnapshotMethod());
     inviwoPyModule->addMethod(new PySnapshotCanvasMethod());
     inviwoPyModule->addMethod(new PyGetBasePathMethod());
-    inviwoPyModule->addMethod(new PyQuitInviwoMethod());
     inviwoPyModule->addMethod(new PyGetWorkspaceSavePathMethod());
     inviwoPyModule->addMethod(new PyGetVolumePathMethod());
     inviwoPyModule->addMethod(new PyGetDataPathMethod());
