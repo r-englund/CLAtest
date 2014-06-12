@@ -226,6 +226,8 @@ void Property::serialize(IvwSerializer& s) const {
     s.serialize("type", getClassName(), true);
     s.serialize("identifier", identifier_, true);
     s.serialize("displayName", displayName_, true);
+    s.serialize("semantics", semantics_);
+    s.serialize("visibilityMode", visibilityMode_);
     if (readOnly_ != defaultReadOnly_) {
         s.serialize("readonly", readOnly_);
     }
@@ -239,6 +241,8 @@ void Property::deserialize(IvwDeserializer& d) {
     d.deserialize("type", className, true);
     d.deserialize("identifier", identifier_, true);
     d.deserialize("displayName", displayName_, true);
+    d.deserialize("semantics", semantics_);
+    d.deserialize("visibilityMode", visibilityMode_);
     d.deserialize("readonly", readOnly_);
     d.deserialize("MetaDataList", metaData_, "MetaData");
 }
