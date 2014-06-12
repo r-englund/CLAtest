@@ -42,6 +42,6 @@ void main() {
     color_ = in_Color;
     texCoord_ = in_TexCoord;
     worldPosition_ = modelViewMatrix_ * in_Vertex;
-    normal_ = in_Normal;
+    normal_ = (modelViewMatrix_ * vec4(in_Normal,0)).xyz;
     gl_Position = projectionMatrix_ * worldPosition_;
 }
