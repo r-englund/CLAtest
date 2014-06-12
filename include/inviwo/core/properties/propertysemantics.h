@@ -40,7 +40,7 @@
 
 namespace inviwo {
 
-class IVW_CORE_API PropertySemantics {
+class IVW_CORE_API PropertySemantics : public IvwSerializable {
 
 public:
     PropertySemantics();
@@ -48,6 +48,9 @@ public:
     PropertySemantics(const PropertySemantics& rhs);
     PropertySemantics& operator=(const PropertySemantics& that);
     virtual ~PropertySemantics() {}
+
+    virtual void serialize(IvwSerializer& s) const;
+    virtual void deserialize(IvwDeserializer& d);
 
     const std::string& getString() const;
 

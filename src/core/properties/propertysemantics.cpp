@@ -34,21 +34,28 @@
 
 namespace inviwo {
 
-PropertySemantics::PropertySemantics() : semantic_("Default") {}
-PropertySemantics::PropertySemantics(std::string semantic) : semantic_(semantic) {}
-PropertySemantics::PropertySemantics(const PropertySemantics& rhs) : semantic_(rhs.semantic_) {};
+PropertySemantics::PropertySemantics() : IvwSerializable(), semantic_("Default") {}
+PropertySemantics::PropertySemantics(std::string semantic)
+    : IvwSerializable(), semantic_(semantic) {}
+PropertySemantics::PropertySemantics(const PropertySemantics& rhs)
+    : IvwSerializable(), semantic_(rhs.semantic_) {};
 PropertySemantics& PropertySemantics::operator=(const PropertySemantics& that) {
-    if (this != &that)
-        semantic_ = that.semantic_;
+    if (this != &that) semantic_ = that.semantic_;
 
     return *this;
 }
 
-const std::string& PropertySemantics::getString() const {
-    return semantic_;
+const std::string& PropertySemantics::getString() const { return semantic_; }
+
+void PropertySemantics::serialize(IvwSerializer& s) const {
+    s.serialize("semantics", semantic_, true);
 }
 
-std::ostream& operator << (std::ostream& os, const inviwo::PropertySemantics& obj) {
+void PropertySemantics::deserialize(IvwDeserializer& d) {
+    d.deserialize("semantics", semantic_, true);
+}
+
+std::ostream& operator<<(std::ostream& os, const inviwo::PropertySemantics& obj) {
     os << obj.semantic_;
     return os;
 }
