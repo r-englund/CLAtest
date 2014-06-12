@@ -60,8 +60,9 @@ target_link_libraries(GLEW
 # Add to package
 if(IVW_PACKAGE_PROJECT AND BUILD_SHARED_LIBS)  
    install(TARGETS GLEW
-               RUNTIME DESTINATION bin
-               ARCHIVE DESTINATION lib
-               LIBRARY DESTINATION lib
-            COMPONENT modules)
+           RUNTIME DESTINATION bin
+           BUNDLE DESTINATION bin
+           ARCHIVE DESTINATION lib
+           LIBRARY DESTINATION lib
+           COMPONENT modules)
 endif()

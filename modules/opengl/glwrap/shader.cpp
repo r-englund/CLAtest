@@ -196,7 +196,6 @@ void Shader::detachAllShaderObject() {
 //        "/" +                                                                                      \
 //        ((getGeometryShaderObject()) ? getGeometryShaderObject()->getFileName() + "/" : "") +      \
 //        getFragmentShaderObject()->getFileName());
-#define IVW_ELSE_WARN
 
 void Shader::setUniform(const std::string &name, const GLint &value) const {
     GLint uniformLocation = glGetUniformLocation(id_, name.c_str());

@@ -1,3 +1,4 @@
+cmake_policy(SET CMP0022 OLD) 
 
 include_directories(${GLFW_SOURCE_DIR}/src
                     ${GLFW_BINARY_DIR}/src
@@ -86,8 +87,10 @@ endif()
 # Add to package
 if(IVW_PACKAGE_PROJECT AND BUILD_SHARED_LIBS)  
    install(TARGETS glfw
-            RUNTIME
-            DESTINATION bin
+            RUNTIME DESTINATION bin
+	    BUNDLE DESTINATION bin
+	    ARCHIVE DESTINATION lib
+            LIBRARY DESTINATION lib
             COMPONENT glfw_module)
 endif()
 
