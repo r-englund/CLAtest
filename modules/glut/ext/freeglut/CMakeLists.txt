@@ -193,7 +193,9 @@ CONFIGURE_FILE(${CMAKE_CURRENT_SOURCE_DIR}/freeglut.pc.in ${CMAKE_BINARY_DIR}/fr
 # Add to package
 if(IVW_PACKAGE_PROJECT AND BUILD_SHARED_LIBS)  
    install(TARGETS freeglut
-            RUNTIME
-            DESTINATION bin
+            RUNTIME DESTINATION bin
+	    BUNDLE DESTINATION bin
+	    ARCHIVE DESTINATION lib
+            LIBRARY DESTINATION lib
             COMPONENT glut_module)
 endif()
