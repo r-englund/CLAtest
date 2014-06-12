@@ -242,9 +242,12 @@ void Property::deserialize(IvwDeserializer& d) {
     d.deserialize("identifier", identifier_, true);
     d.deserialize("displayName", displayName_, true);
     d.deserialize("semantics", semantics_);
-    d.deserialize("visibilityMode", visibilityMode_);
+    int mode = visibilityMode_;
+    d.deserialize("visibilityMode", mode);
+    visibilityMode_ = static_cast<PropertyVisibilityMode>(mode);
     d.deserialize("readonly", readOnly_);
     d.deserialize("MetaDataList", metaData_, "MetaData");
+    updateVisibility();
 }
 
 bool Property::operator==(const Property& prop) {
