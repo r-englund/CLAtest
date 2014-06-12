@@ -21,9 +21,6 @@ public:
                            PropertySemantics semantics = PropertySemantics::Default);
     virtual ~SimpleLightingProperty(){}
 
-    virtual void invalidate(PropertyOwner::InvalidationLevel invalidationLevel,
-                            Property* modifiedProperty = 0);
-
     OptionPropertyString shadingMode_;
     FloatVec3Property lightPosition_;
     FloatVec3Property lightColorAmbient_;

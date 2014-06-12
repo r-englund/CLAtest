@@ -100,9 +100,6 @@ protected:
      * @return Index of refraction ((n1-n2)/(n1+n2))^2
      */
     float getIndexOfRefractionTerm(float n1, float n2) const;
-
-private:
-    void propertyChanged();
 };
 
 } // namespace

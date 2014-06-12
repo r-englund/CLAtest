@@ -91,6 +91,10 @@ public:
 
     void invokeEvent(Event* event);
 
+
+    virtual void invalidate(PropertyOwner::InvalidationLevel invalidationLevel,
+                            Property* modifiedProperty = 0);
+
     STARTCLANGIGNORE("-Woverloaded-virtual")
     void invalidate();
     ENDCLANGIGNORE

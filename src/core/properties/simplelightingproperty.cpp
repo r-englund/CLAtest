@@ -38,14 +38,6 @@ SimpleLightingProperty::SimpleLightingProperty(std::string identifier, std::stri
     addProperty(lightSpecularExponent_);
     addProperty(applyLightAttenuation_);
     addProperty(lightAttenuation_);
-
-}
-
-void SimpleLightingProperty::invalidate(PropertyOwner::InvalidationLevel invalidationLevel,
-                                        Property* modifiedProperty) {
-    CompositeProperty::invalidate(invalidationLevel, modifiedProperty);
-    Property::setInvalidationLevel(invalidationLevel);
-    Property::propertyModified();
 }
 
 }  // namespace

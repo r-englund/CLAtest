@@ -45,11 +45,4 @@ SimpleRaycastingProperty::SimpleRaycastingProperty(
 
 }
 
-void SimpleRaycastingProperty::invalidate(PropertyOwner::InvalidationLevel invalidationLevel,
-                                          Property* modifiedProperty) {
-    CompositeProperty::invalidate(invalidationLevel, modifiedProperty);
-    Property::setInvalidationLevel(invalidationLevel);
-    Property::propertyModified();
-}
-
 }  // namespace

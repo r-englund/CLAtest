@@ -63,6 +63,12 @@ public:
     virtual void setPropertyModified(bool modified);
     virtual bool isPropertyModified() const;
 
+    virtual void invalidate(PropertyOwner::InvalidationLevel invalidationLevel,
+                            Property* modifiedProperty = 0);
+
+    virtual void setCurrentStateAsDefault();
+    virtual void resetToDefaultState();
+
 private:
     std::vector<Property*> subProperties_;
 
