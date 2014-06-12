@@ -52,7 +52,8 @@ Shader::Shader(std::string vertexFilename, std::string fragmentFilename, bool li
     linkAndRegister(linkShader);
 }
 
-Shader::Shader(std::string vertexFilename, std::string geometryFilename, std::string fragmentFilename, bool linkShader) {
+Shader::Shader(std::string vertexFilename, std::string geometryFilename,
+               std::string fragmentFilename, bool linkShader) {
     initialize();
     createAndAddShader(GL_VERTEX_SHADER, vertexFilename, linkShader);
     createAndAddShader(GL_GEOMETRY_SHADER, geometryFilename, linkShader);
@@ -61,8 +62,7 @@ Shader::Shader(std::string vertexFilename, std::string geometryFilename, std::st
     linkAndRegister(linkShader);
 }
 
-
-Shader::Shader(const char* fragmentFilename, bool linkShader) {
+Shader::Shader(const char *fragmentFilename, bool linkShader) {
     initialize();
     createAndAddShader(GL_VERTEX_SHADER, "img_identity.vert", linkShader);
     createAndAddShader(GL_FRAGMENT_SHADER, fragmentFilename, linkShader);
@@ -70,8 +70,7 @@ Shader::Shader(const char* fragmentFilename, bool linkShader) {
     linkAndRegister(linkShader);
 }
 
-
-Shader::Shader(const char* vertexFilename,const char* fragmentFilename, bool linkShader) {
+Shader::Shader(const char *vertexFilename, const char *fragmentFilename, bool linkShader) {
     initialize();
     createAndAddShader(GL_VERTEX_SHADER, vertexFilename, linkShader);
     createAndAddShader(GL_FRAGMENT_SHADER, fragmentFilename, linkShader);
@@ -79,8 +78,8 @@ Shader::Shader(const char* vertexFilename,const char* fragmentFilename, bool lin
     linkAndRegister(linkShader);
 }
 
-
-Shader::Shader(const char* vertexFilename,const char* geometryFilename,const char* fragmentFilename, bool linkShader) {
+Shader::Shader(const char *vertexFilename, const char *geometryFilename,
+               const char *fragmentFilename, bool linkShader) {
     initialize();
     createAndAddShader(GL_VERTEX_SHADER, vertexFilename, linkShader);
     createAndAddShader(GL_GEOMETRY_SHADER, geometryFilename, linkShader);
@@ -89,20 +88,17 @@ Shader::Shader(const char* vertexFilename,const char* geometryFilename,const cha
     linkAndRegister(linkShader);
 }
 
-
-Shader::Shader(std::vector<ShaderObject*>& shaderObjects, bool linkShader) {
+Shader::Shader(std::vector<ShaderObject *> &shaderObjects, bool linkShader) {
     initialize();
 
-    for (size_t i=0; i < shaderObjects.size(); ++i)
+    for (size_t i = 0; i < shaderObjects.size(); ++i)
         (*shaderObjects_)[shaderObjects[i]->getShaderType()] = shaderObjects[i];
 
     attachAllShaderObjects();
     linkAndRegister(linkShader);
 }
 
-Shader::~Shader() {
-    deinitialize();
-}
+Shader::~Shader() { deinitialize(); }
 
 void Shader::initialize() {
     id_ = glCreateProgram();
@@ -122,7 +118,8 @@ void Shader::linkAndRegister(bool linkShader) {
 void Shader::deinitialize() {
     ShaderManager::getRef().unregisterShader(this);
 
-    for (ShaderObjectMap::iterator it = shaderObjects_->begin(); it != shaderObjects_->end(); it++) {
+    for (ShaderObjectMap::iterator it = shaderObjects_->begin(); it != shaderObjects_->end();
+         it++) {
         detachShaderObject(it->second);
         delete it->second;
     }
@@ -142,7 +139,8 @@ void Shader::link() {
 }
 
 void Shader::build() {
-    for (ShaderObjectMap::iterator it = shaderObjects_->begin(); it != shaderObjects_->end(); it++) {
+    for (ShaderObjectMap::iterator it = shaderObjects_->begin(); it != shaderObjects_->end();
+         it++) {
         it->second->build();
     }
 
@@ -150,7 +148,8 @@ void Shader::build() {
 }
 
 void Shader::rebuild() {
-    for (ShaderObjectMap::iterator it = shaderObjects_->begin(); it != shaderObjects_->end(); it++) {
+    for (ShaderObjectMap::iterator it = shaderObjects_->begin(); it != shaderObjects_->end();
+         it++) {
         it->second->rebuild();
     }
 
@@ -167,107 +166,141 @@ void Shader::deactivate() {
     LGL_ERROR;
 }
 
-void Shader::attachShaderObject(ShaderObject* shaderObject) {
+void Shader::attachShaderObject(ShaderObject *shaderObject) {
     glAttachShader(id_, shaderObject->getID());
     LGL_ERROR;
 }
 
-void Shader::detachShaderObject(ShaderObject* shaderObject) {
+void Shader::detachShaderObject(ShaderObject *shaderObject) {
     glDetachShader(id_, shaderObject->getID());
     LGL_ERROR;
 }
 
 void Shader::attachAllShaderObjects() {
-    for (ShaderObjectMap::iterator it = shaderObjects_->begin(); it != shaderObjects_->end(); it++) {
+    for (ShaderObjectMap::iterator it = shaderObjects_->begin(); it != shaderObjects_->end();
+         it++) {
         attachShaderObject(it->second);
     }
 }
 
 void Shader::detachAllShaderObject() {
-    for (ShaderObjectMap::iterator it = shaderObjects_->begin(); it != shaderObjects_->end(); it++) {
+    for (ShaderObjectMap::iterator it = shaderObjects_->begin(); it != shaderObjects_->end();
+         it++) {
         detachShaderObject(it->second);
     }
 }
 
-
-//#define IVW_ELSE_WARN else LogWarn("Unable to set uniform " + name + " in shader " + getVertexShaderObject()->getFileName() + "/"+((getGeometryShaderObject())?getGeometryShaderObject()->getFileName():"")+"/" + getFragmentShaderObject()->getFileName());
+#define IVW_ELSE_WARN                                                                              \
+    else LogWarn(                                                                                  \
+        "Unable to set uniform " + name + " in shader " + getVertexShaderObject()->getFileName() + \
+        "/" +                                                                                      \
+        ((getGeometryShaderObject()) ? getGeometryShaderObject()->getFileName() + "/" : "") +      \
+        getFragmentShaderObject()->getFileName());
 #define IVW_ELSE_WARN
 
-void Shader::setUniform(const std::string &name,const GLint &value) const {
+void Shader::setUniform(const std::string &name, const GLint &value) const {
     GLint uniformLocation = glGetUniformLocation(id_, name.c_str());
 
     if (uniformLocation != -1) glUniform1i(uniformLocation, value);
     IVW_ELSE_WARN
 }
 
-void Shader::setUniform(const std::string &name,const GLfloat &value) const {
+void Shader::setUniform(const std::string &name, const GLfloat &value) const {
     GLint uniformLocation = glGetUniformLocation(id_, name.c_str());
 
     if (uniformLocation != -1) glUniform1f(uniformLocation, value);
     IVW_ELSE_WARN
 }
 
-void Shader::setUniform(const std::string &name,const vec2 &value) const {
+void Shader::setUniform(const std::string &name, const vec2 &value) const {
     GLint uniformLocation = glGetUniformLocation(id_, name.c_str());
 
     if (uniformLocation != -1) glUniform2fv(uniformLocation, 1, glm::value_ptr(value));
     IVW_ELSE_WARN
 }
 
-void Shader::setUniform(const std::string &name,const vec3 &value) const {
+void Shader::setUniform(const std::string &name, const vec3 &value) const {
     GLint uniformLocation = glGetUniformLocation(id_, name.c_str());
 
     if (uniformLocation != -1) glUniform3fv(uniformLocation, 1, glm::value_ptr(value));
     IVW_ELSE_WARN
 }
 
-void Shader::setUniform(const std::string &name,const vec4 &value) const {
+void Shader::setUniform(const std::string &name, const vec4 &value) const {
     GLint uniformLocation = glGetUniformLocation(id_, name.c_str());
 
     if (uniformLocation != -1) glUniform4fv(uniformLocation, 1, glm::value_ptr(value));
     IVW_ELSE_WARN
 }
 
-void Shader::setUniform(const std::string &name,const ivec2 &value) const {
+void Shader::setUniform(const std::string &name, const ivec2 &value) const {
     GLint uniformLocation = glGetUniformLocation(id_, name.c_str());
 
     if (uniformLocation != -1) glUniform2iv(uniformLocation, 1, glm::value_ptr(value));
     IVW_ELSE_WARN
 }
 
-void Shader::setUniform(const std::string &name,const ivec3 &value) const {
+void Shader::setUniform(const std::string &name, const ivec3 &value) const {
     GLint uniformLocation = glGetUniformLocation(id_, name.c_str());
 
     if (uniformLocation != -1) glUniform3iv(uniformLocation, 1, glm::value_ptr(value));
     IVW_ELSE_WARN
 }
 
-void Shader::setUniform(const std::string &name,const ivec4 &value) const {
+void Shader::setUniform(const std::string &name, const ivec4 &value) const {
     GLint uniformLocation = glGetUniformLocation(id_, name.c_str());
 
     if (uniformLocation != -1) glUniform4iv(uniformLocation, 1, glm::value_ptr(value));
     IVW_ELSE_WARN
 }
 
-void Shader::setUniform(const std::string &name, const GLint* value, int count) const {
+void Shader::setUniform(const std::string &name, const GLint *value, int count) const {
     GLint uniformLocation = glGetUniformLocation(id_, name.c_str());
 
     if (uniformLocation != -1) glUniform1iv(uniformLocation, count, value);
     IVW_ELSE_WARN
 }
 
-void Shader::setUniform(const std::string &name, const GLfloat* value, int count) const {
+void Shader::setUniform(const std::string &name, const GLfloat *value, int count) const {
     GLint uniformLocation = glGetUniformLocation(id_, name.c_str());
 
     if (uniformLocation != -1) glUniform1fv(uniformLocation, count, value);
     IVW_ELSE_WARN
 }
 
-void Shader::setUniform(const std::string &name,const mat4 &value) const {
+void Shader::setUniform(const std::string &name, const mat4 &value) const {
     GLint uniformLocation = glGetUniformLocation(id_, name.c_str());
 
-    if (uniformLocation != -1) glUniformMatrix4fv(uniformLocation, 1, GL_FALSE, glm::value_ptr(value));
+    if (uniformLocation != -1)
+        glUniformMatrix4fv(uniformLocation, 1, GL_FALSE, glm::value_ptr(value));
     IVW_ELSE_WARN
+}
+
+ShaderObject* Shader::getFragmentShaderObject() const {
+    ShaderObjectMap::iterator it = shaderObjects_->find(GL_FRAGMENT_SHADER);
+    if (it != shaderObjects_->end()) {
+        return it->second;
+    } else {
+        return NULL;
+    }
+}
+
+ShaderObject* Shader::getGeometryShaderObject() const {
+    ShaderObjectMap::iterator it = shaderObjects_->find(GL_GEOMETRY_SHADER);
+    if (it != shaderObjects_->end()) {
+        return it->second;
+    } else {
+        return NULL;
+    }
+}
+
+ShaderObject* Shader::getVertexShaderObject() const {
+    ShaderObjectMap::iterator it = shaderObjects_->find(GL_VERTEX_SHADER);
+    if (it != shaderObjects_->end()) {
+        return it->second;
+    } else {
+        return NULL;
+    }
 }
 
 } // namespace

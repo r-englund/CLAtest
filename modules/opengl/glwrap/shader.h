@@ -65,9 +65,9 @@ public:
     unsigned int getID() const { return id_; }
     const ShaderObjectMap* getShaderObjects() { return shaderObjects_; }
 
-    ShaderObject* getVertexShaderObject() { return (*shaderObjects_)[GL_VERTEX_SHADER]; }
-    ShaderObject* getGeometryShaderObject() { return (*shaderObjects_)[GL_GEOMETRY_SHADER]; }
-    ShaderObject* getFragmentShaderObject() { return (*shaderObjects_)[GL_FRAGMENT_SHADER]; }
+    ShaderObject* getVertexShaderObject() const;
+    ShaderObject* getGeometryShaderObject() const;
+    ShaderObject* getFragmentShaderObject() const;
 
     void activate();
     void deactivate();

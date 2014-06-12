@@ -5,23 +5,17 @@ ivw_module(OpenGL)
 #--------------------------------------------------------------------
 # Add header files
 set(HEADER_FILES
-    ${IVW_MODULE_DIR}/opengl/canvasgl.h
-    ${IVW_MODULE_DIR}/opengl/canvasprocessorgl.h
-    ${IVW_MODULE_DIR}/opengl/clockgl.h
-    ${IVW_MODULE_DIR}/opengl/glformats.h
-    ${IVW_MODULE_DIR}/opengl/inviwoopengl.h
-    ${IVW_MODULE_DIR}/opengl/openglcapabilities.h
-    ${IVW_MODULE_DIR}/opengl/openglmodule.h
-    ${IVW_MODULE_DIR}/opengl/portgroup.h
-    ${IVW_MODULE_DIR}/opengl/processorgl.h
-    ${IVW_MODULE_DIR}/opengl/textureobserver.h
+    ${IVW_MODULE_DIR}/opengl/buffer/buffergl.h
     ${IVW_MODULE_DIR}/opengl/buffer/bufferglconverter.h
     ${IVW_MODULE_DIR}/opengl/buffer/elementbuffergl.h
     ${IVW_MODULE_DIR}/opengl/buffer/elementbufferglconverter.h
-    ${IVW_MODULE_DIR}/opengl/buffer/buffergl.h
+    ${IVW_MODULE_DIR}/opengl/canvasgl.h
+    ${IVW_MODULE_DIR}/opengl/canvasprocessorgl.h
+    ${IVW_MODULE_DIR}/opengl/clockgl.h
     ${IVW_MODULE_DIR}/opengl/geometry/geometrygl.h
     ${IVW_MODULE_DIR}/opengl/geometry/geometryrenderprocessorgl.h
     ${IVW_MODULE_DIR}/opengl/geometry/meshgl.h
+    ${IVW_MODULE_DIR}/opengl/glformats.h
     ${IVW_MODULE_DIR}/opengl/glwrap/bufferobject.h
     ${IVW_MODULE_DIR}/opengl/glwrap/bufferobjectarray.h
     ${IVW_MODULE_DIR}/opengl/glwrap/elementbufferobject.h
@@ -31,17 +25,24 @@ set(HEADER_FILES
     ${IVW_MODULE_DIR}/opengl/glwrap/shadermanager.h
     ${IVW_MODULE_DIR}/opengl/glwrap/shaderobject.h
     ${IVW_MODULE_DIR}/opengl/glwrap/texture.h
-    ${IVW_MODULE_DIR}/opengl/glwrap/texturecallback.h
     ${IVW_MODULE_DIR}/opengl/glwrap/texture2d.h
     ${IVW_MODULE_DIR}/opengl/glwrap/texture2darray.h
     ${IVW_MODULE_DIR}/opengl/glwrap/texture3d.h
+    ${IVW_MODULE_DIR}/opengl/glwrap/texturecallback.h
     ${IVW_MODULE_DIR}/opengl/glwrap/textureunit.h
+    ${IVW_MODULE_DIR}/opengl/image/compositeprocessorgl.h
     ${IVW_MODULE_DIR}/opengl/image/imagegl.h
+    ${IVW_MODULE_DIR}/opengl/image/imageprocessorgl.h
     ${IVW_MODULE_DIR}/opengl/image/layergl.h
     ${IVW_MODULE_DIR}/opengl/image/layerglconverter.h
-    ${IVW_MODULE_DIR}/opengl/image/imageprocessorgl.h
-    ${IVW_MODULE_DIR}/opengl/image/compositeprocessorgl.h
+    ${IVW_MODULE_DIR}/opengl/inviwoopengl.h
+    ${IVW_MODULE_DIR}/opengl/openglcapabilities.h
+    ${IVW_MODULE_DIR}/opengl/openglmodule.h
+    ${IVW_MODULE_DIR}/opengl/portgroup.h
+    ${IVW_MODULE_DIR}/opengl/processorgl.h
     ${IVW_MODULE_DIR}/opengl/rendering/meshrenderer.h
+    ${IVW_MODULE_DIR}/opengl/shaderutils.h
+    ${IVW_MODULE_DIR}/opengl/textureobserver.h
     ${IVW_MODULE_DIR}/opengl/volume/volumegl.h
     ${IVW_MODULE_DIR}/opengl/volume/volumeglconverter.h
     ${IVW_MODULE_DIR}/opengl/volume/volumeraycastergl.h
@@ -51,18 +52,13 @@ ivw_group("Header Files" ${HEADER_FILES})
 #--------------------------------------------------------------------
 # Add source files
 set(SOURCE_FILES
-    ${IVW_MODULE_DIR}/opengl/clockgl.cpp
-    ${IVW_MODULE_DIR}/opengl/canvasgl.cpp
-    ${IVW_MODULE_DIR}/opengl/canvasprocessorgl.cpp
-    ${IVW_MODULE_DIR}/opengl/inviwoopengl.cpp
-    ${IVW_MODULE_DIR}/opengl/openglcapabilities.cpp
-    ${IVW_MODULE_DIR}/opengl/openglmodule.cpp
-    ${IVW_MODULE_DIR}/opengl/portgroup.cpp
-    ${IVW_MODULE_DIR}/opengl/processorgl.cpp
+    ${IVW_MODULE_DIR}/opengl/buffer/buffergl.cpp
     ${IVW_MODULE_DIR}/opengl/buffer/bufferglconverter.cpp
     ${IVW_MODULE_DIR}/opengl/buffer/elementbuffergl.cpp
     ${IVW_MODULE_DIR}/opengl/buffer/elementbufferglconverter.cpp
-    ${IVW_MODULE_DIR}/opengl/buffer/buffergl.cpp
+    ${IVW_MODULE_DIR}/opengl/canvasgl.cpp
+    ${IVW_MODULE_DIR}/opengl/canvasprocessorgl.cpp
+    ${IVW_MODULE_DIR}/opengl/clockgl.cpp
     ${IVW_MODULE_DIR}/opengl/geometry/geometrygl.cpp
     ${IVW_MODULE_DIR}/opengl/geometry/geometryrenderprocessorgl.cpp
     ${IVW_MODULE_DIR}/opengl/geometry/meshgl.cpp
@@ -79,12 +75,18 @@ set(SOURCE_FILES
     ${IVW_MODULE_DIR}/opengl/glwrap/texture2darray.cpp
     ${IVW_MODULE_DIR}/opengl/glwrap/texture3d.cpp
     ${IVW_MODULE_DIR}/opengl/glwrap/textureunit.cpp
+    ${IVW_MODULE_DIR}/opengl/image/compositeprocessorgl.cpp
     ${IVW_MODULE_DIR}/opengl/image/imagegl.cpp
+    ${IVW_MODULE_DIR}/opengl/image/imageprocessorgl.cpp
     ${IVW_MODULE_DIR}/opengl/image/layergl.cpp
     ${IVW_MODULE_DIR}/opengl/image/layerglconverter.cpp
-    ${IVW_MODULE_DIR}/opengl/image/imageprocessorgl.cpp
-    ${IVW_MODULE_DIR}/opengl/image/compositeprocessorgl.cpp
+    ${IVW_MODULE_DIR}/opengl/inviwoopengl.cpp
+    ${IVW_MODULE_DIR}/opengl/openglcapabilities.cpp
+    ${IVW_MODULE_DIR}/opengl/openglmodule.cpp
+    ${IVW_MODULE_DIR}/opengl/portgroup.cpp
+    ${IVW_MODULE_DIR}/opengl/processorgl.cpp
     ${IVW_MODULE_DIR}/opengl/rendering/meshrenderer.cpp
+    ${IVW_MODULE_DIR}/opengl/shaderutils.cpp
     ${IVW_MODULE_DIR}/opengl/volume/volumegl.cpp
     ${IVW_MODULE_DIR}/opengl/volume/volumeglconverter.cpp
     ${IVW_MODULE_DIR}/opengl/volume/volumeraycastergl.cpp
