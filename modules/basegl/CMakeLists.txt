@@ -17,6 +17,7 @@ set(HEADER_FILES
     ${IVW_MODULE_DIR}/basegl/processors/imagemixer.h
     ${IVW_MODULE_DIR}/basegl/processors/lightingraycaster.h
     ${IVW_MODULE_DIR}/basegl/processors/lightvolumegl.h
+	${IVW_MODULE_DIR}/basegl/processors/multichannelraycaster.h
     ${IVW_MODULE_DIR}/basegl/processors/multiplanar.h
     ${IVW_MODULE_DIR}/basegl/processors/positionwidgetprocessor.h
     ${IVW_MODULE_DIR}/basegl/processors/redgreenprocessor.h
@@ -40,6 +41,7 @@ set(SOURCE_FILES
     ${IVW_MODULE_DIR}/basegl/processors/imagemixer.cpp
     ${IVW_MODULE_DIR}/basegl/processors/lightingraycaster.cpp
     ${IVW_MODULE_DIR}/basegl/processors/lightvolumegl.cpp
+	${IVW_MODULE_DIR}/basegl/processors/multichannelraycaster.cpp
     ${IVW_MODULE_DIR}/basegl/processors/multiplanar.cpp
     ${IVW_MODULE_DIR}/basegl/processors/positionwidgetprocessor.cpp
     ${IVW_MODULE_DIR}/basegl/processors/redgreenprocessor.cpp
@@ -57,6 +59,7 @@ set(SHADER_FILES
     ${IVW_MODULE_DIR}/basegl/glsl/img_findedges.frag
     ${IVW_MODULE_DIR}/basegl/glsl/img_graysc.frag
     ${IVW_MODULE_DIR}/basegl/glsl/img_mix.frag
+	${IVW_MODULE_DIR}/basegl/glsl/multichannlraycaster.frag
     ${IVW_MODULE_DIR}/basegl/glsl/multiplanar.frag
     ${IVW_MODULE_DIR}/basegl/glsl/volumeslice.frag
     ${IVW_MODULE_DIR}/basegl/glsl/lighting/lightingraycasting.frag
@@ -71,7 +74,7 @@ ivw_group("Shader Files" ${SHADER_FILES})
 
 #--------------------------------------------------------------------
 # Create module
-ivw_create_module(${SOURCE_FILES} ${HEADER_FILES})
+ivw_create_module(${SOURCE_FILES} ${HEADER_FILES} ${SHADER_FILES})
 
 #--------------------------------------------------------------------
 # Add shader directory to pack
