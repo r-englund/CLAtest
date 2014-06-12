@@ -16,9 +16,6 @@ public:
                              PropertySemantics semantics = PropertySemantics::Default);
     virtual ~SimpleRaycastingProperty(){}
 
-    virtual void invalidate(PropertyOwner::InvalidationLevel invalidationLevel,
-                            Property* modifiedProperty = 0);
-
     OptionPropertyString classificationMode_;
     OptionPropertyString compositingMode_;
     OptionPropertyString gradientComputationMode_;
