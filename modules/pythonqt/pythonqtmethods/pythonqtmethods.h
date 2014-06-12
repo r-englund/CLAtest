@@ -36,18 +36,26 @@
 #include <modules/pythonqt/pythonqtmoduledefine.h>
 #include <modules/python/pythoninterface/pymethod.h>
 
-
 namespace inviwo {
 
 PyObject* py_loadWorkspace(PyObject* /*self*/, PyObject* /*args*/);
+PyObject* py_quitInviwo(PyObject* /*self*/, PyObject* /*args*/);
 
-
-class IVW_MODULE_PYTHONQT_API PyLoadNetwork : public PyMethod {
+class IVW_MODULE_PYTHONQT_API PyLoadNetworkMethod : public PyMethod {
 public:
-    std::string getName()const {return "loadWorkspace";}
-    std::string getDesc()const {return "Load a new workspace into the network.";}
-    virtual PyCFunction getFunc() {return py_loadWorkspace;}
+    std::string getName() const { return "loadWorkspace"; }
+    std::string getDesc() const { return "Load a new workspace into the network."; }
+    virtual PyCFunction getFunc() { return py_loadWorkspace; }
 };
+
+
+class IVW_MODULE_PYTHONQT_API PyQuitInviwoMethod : public PyMethod {
+public:
+    virtual std::string getName() const { return "quit"; }
+    virtual std::string getDesc() const { return "Method to quit Inviwo."; }
+    virtual PyCFunction getFunc() { return py_quitInviwo; }
+};
+
 
 }
 

@@ -49,8 +49,6 @@ PyObject* py_getImagePath(PyObject* /*self*/, PyObject* /*args*/);
 PyObject* py_getModulePath(PyObject* /*self*/, PyObject* /*args*/);
 PyObject* py_getTransferFunctionPath(PyObject* /*self*/, PyObject* /*args*/);
 
-PyObject* py_quitInviwo(PyObject* /*self*/, PyObject* /*args*/);
-
 PyObject* py_getMemoryUsage(PyObject* /*self*/, PyObject* /*args*/);
 PyObject* py_clearResourceManager(PyObject* /*self*/, PyObject* /*args*/);
 
@@ -137,13 +135,6 @@ public:
         return "Returns the path to Inviwo transfer function folder.";
     }
     virtual PyCFunction getFunc() { return py_getTransferFunctionPath; }
-};
-
-class IVW_MODULE_PYTHON_API PyQuitInviwoMethod : public PyMethod {
-public:
-    virtual std::string getName() const { return "quit"; }
-    virtual std::string getDesc() const { return "Method to quit Inviwo."; }
-    virtual PyCFunction getFunc() { return py_quitInviwo; }
 };
 
 class IVW_MODULE_PYTHON_API PyGetMemoryUsage : public PyMethod {

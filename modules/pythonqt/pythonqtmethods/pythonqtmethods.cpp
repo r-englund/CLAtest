@@ -35,6 +35,7 @@
 #include <inviwo/core/common/inviwoapplication.h>
 #include <inviwo/core/util/urlparser.h>
 #include <inviwo/qt/editor/networkeditor.h>
+#include <inviwo/qt/widgets/inviwoapplicationqt.h>
 
 namespace inviwo {
 
@@ -66,6 +67,13 @@ PyObject* py_loadWorkspace(PyObject* /*self*/, PyObject* args) {
     }
 
     NetworkEditor::getPtr()->loadNetwork(filename);
+    Py_RETURN_NONE;
+}
+
+
+PyObject* py_quitInviwo(PyObject* /*self*/, PyObject* /*args*/) {
+    NetworkEditor::getPtr()->setModified(false);
+    static_cast<InviwoApplicationQt*>(InviwoApplication::getPtr())->getMainWindow()->close();
     Py_RETURN_NONE;
 }
 
