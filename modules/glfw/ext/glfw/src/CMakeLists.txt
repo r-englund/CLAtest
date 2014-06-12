@@ -1,4 +1,4 @@
-if(NOT CMAKE_VERSION LESS ”2.8.12”)
+if(POLICY CMP0022)
 cmake_policy(SET CMP0022 OLD)
 endif()
 
