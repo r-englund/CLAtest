@@ -113,8 +113,8 @@ protected:
 
         SliderVector sliders;
         QWidget* controlWidget;
-        for (size_t i = 0; i < ordinalproperty_->getDim().x; i++) {
-            for (size_t j = 0; j < ordinalproperty_->getDim().y; j++) {
+        for (size_t j = 0; j < ordinalproperty_->getDim().y; j++) {
+            for (size_t i = 0; i < ordinalproperty_->getDim().x; i++) {
                 if (ordinalproperty_->getDim().y > 1 ||
                     ordinalproperty_->getSemantics() == PropertySemantics("Text")) {
                     controlWidget = new OrdinalEditorWidget<BT>();

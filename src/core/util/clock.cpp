@@ -33,8 +33,8 @@
 #include <inviwo/core/util/clock.h>
 #include <inviwo/core/util/logcentral.h>
 
-static const double CLOCKS_PER_MS = CLOCKS_PER_SEC / 1000.0;
-static const double INV_CLOCKS_PER_MS = 1.0 / CLOCKS_PER_MS;
+//static const double CLOCKS_PER_MS = CLOCKS_PER_SEC / 1000.0;
+//static const double INV_CLOCKS_PER_MS = 1.0 / CLOCKS_PER_MS; Not used? /Peter
 
 
 namespace inviwo {
