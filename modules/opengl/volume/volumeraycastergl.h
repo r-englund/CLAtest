@@ -62,8 +62,6 @@ public:
     // overloaded method called when INVALID_RESOURCE property is set
     virtual void initializeResources();
 
-    
-
     // convenience functions for texture/volume binding
     void bindTransferFunction(const TransferFunction& tf, GLenum tfTexUnit);
     void bindVolume(const VolumeInport& inport, GLenum volTexUnit);

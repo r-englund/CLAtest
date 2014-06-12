@@ -62,7 +62,6 @@ vec3 shadeDiffuse(vec3 colorDiff, vec3 position, vec3 gradient, vec3 lightPos) {
                                    normalize(lightInVoxelSpace - position));
 }
 
-
 vec3 shadeSpecular(vec3 colorSpec, vec3 position, vec3 gradient, vec3 lightPos, vec3 cameraPos) {
     vec3 lightInVoxelSpace = (viewToTexture_ * vec4(vec3(-lightPos),1.0)).xyz;
     vec3 cameraInVoxelSpace = (viewToTexture_ * vec4(cameraPos,1.0)).xyz;

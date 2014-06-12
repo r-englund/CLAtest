@@ -64,11 +64,13 @@ void ShaderManager::unregisterShader(Shader* shader) {
     const Shader::ShaderObjectMap* shaderObjects = shader->getShaderObjects();
 
     for (Shader::ShaderObjectMap::const_iterator it = shaderObjects->begin(); it != shaderObjects->end(); it++) {
-        stopFileObservation(it->second->getAbsoluteFileName());
-        std::vector<std::string> shaderIncludes = it->second->getIncludeFileNames();
+        if (it->second != NULL) {
+            stopFileObservation(it->second->getAbsoluteFileName());
+            std::vector<std::string> shaderIncludes = it->second->getIncludeFileNames();
 
-        for (size_t i=0; i<shaderIncludes.size(); i++)
-            stopFileObservation(shaderIncludes[i]);
+            for (size_t i = 0; i < shaderIncludes.size(); i++)
+                stopFileObservation(shaderIncludes[i]);
+        }
     }
 }
 
