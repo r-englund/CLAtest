@@ -1,4 +1,6 @@
-cmake_policy(SET CMP0022 OLD) 
+if(CMAKE_VERSION VERSION_GREATER "2.8.11")
+cmake_policy(SET CMP0022 OLD)
+endif()
 
 include_directories(${GLFW_SOURCE_DIR}/src
                     ${GLFW_BINARY_DIR}/src
