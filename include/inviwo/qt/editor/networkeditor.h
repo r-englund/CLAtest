@@ -159,7 +159,6 @@ protected:
     void placeProcessorOnConnection(ProcessorGraphicsItem* processorItem, ConnectionGraphicsItem* connectionItem);
     void placeProcessorOnProcessor(ProcessorGraphicsItem* processorItem, ProcessorGraphicsItem* oldProcessorItem);
 
-    bool isLinkDisplayEnabled();
     void autoLinkOnAddedProcessor(Processor*);
 
     void workerThreadQuit();

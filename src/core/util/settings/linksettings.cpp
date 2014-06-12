@@ -38,9 +38,8 @@
 
 namespace inviwo {
 
-LinkSettings::LinkSettings(std::string id) :
-    Settings(id)
-    , displayLinksproerty_("displayLinks", "Display links", true) {}
+LinkSettings::LinkSettings(std::string id) 
+    : Settings(id) {}
 
 LinkSettings::~LinkSettings() {
     for (size_t i=0; i<linkProperties_.size(); i++) {
@@ -52,7 +51,6 @@ LinkSettings::~LinkSettings() {
 }
 
 void LinkSettings::initialize() {
-    addProperty(&displayLinksproerty_);
     std::vector<std::string> properties = PropertyFactory::getPtr()->getRegistedPropertyClassNames();
     std::sort(properties.begin(), properties.end());
 

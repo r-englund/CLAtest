@@ -436,19 +436,14 @@ void NetworkEditor::showLinkDialog(LinkConnectionGraphicsItem* linkConnectionGra
 }
 
 void NetworkEditor::updateLinkGraphicsItems() {
-    if (isLinkDisplayEnabled()) {
-        for (size_t i = 0; i < linkGraphicsItems_.size(); i++) {
-            linkGraphicsItems_[i]->setVisible(true);
-            ProcessorGraphicsItem* processorGraphicsItem1 =
-                linkGraphicsItems_[i]->getSrcProcessorGraphicsItem();
-            ProcessorGraphicsItem* processorGraphicsItem2 =
-                linkGraphicsItems_[i]->getDestProcessorGraphicsItem();
-            linkGraphicsItems_[i]->setVisible(processorGraphicsItem1->isVisible() &&
-                                              processorGraphicsItem2->isVisible());
-        }
-    } else {
-        for (size_t i = 0; i < linkGraphicsItems_.size(); i++)
-            linkGraphicsItems_[i]->setVisible(false);
+    for (size_t i = 0; i < linkGraphicsItems_.size(); i++) {
+        linkGraphicsItems_[i]->setVisible(true);
+        ProcessorGraphicsItem* processorGraphicsItem1 =
+            linkGraphicsItems_[i]->getSrcProcessorGraphicsItem();
+        ProcessorGraphicsItem* processorGraphicsItem2 =
+            linkGraphicsItems_[i]->getDestProcessorGraphicsItem();
+        linkGraphicsItems_[i]->setVisible(processorGraphicsItem1->isVisible() &&
+                                          processorGraphicsItem2->isVisible());
     }
 }
 
@@ -981,27 +976,20 @@ void NetworkEditor::mousePressEvent(QGraphicsSceneMouseEvent* e) {
 
         if (startProcessor_) {
             if (startProcessor_->hitLinkDock(e->scenePos())) {
-                if (isLinkDisplayEnabled()) {
-                    // shift modifier pressed: edit link
-                    QPointF startPoint = startProcessor_->getShortestBoundaryPointTo(e->scenePos());
-                    QPointF dir(0.0f,0.0f);
-                    if (startPoint.x() > startProcessor_->pos().x()) {
-                        dir.setX(1.0f);
-                    } else {
-                        dir.setX(-1.0f);
-                    }
-
-                    linkCurve_ = new LinkGraphicsItem(startPoint, e->scenePos(), ivec3(255,255,255),dir);
-                    addItem(linkCurve_);
-                    linkCurve_->setZValue(DRAGING_ITEM_DEPTH);
-                    linkCurve_->show();
-                    e->accept();
-                    return;
+                QPointF startPoint = startProcessor_->getShortestBoundaryPointTo(e->scenePos());
+                QPointF dir(0.0f,0.0f);
+                if (startPoint.x() > startProcessor_->pos().x()) {
+                    dir.setX(1.0f);
                 } else {
-                    LogWarn("Enable Display links in Settings to create links")
+                    dir.setX(-1.0f);
                 }
 
+                linkCurve_ = new LinkGraphicsItem(startPoint, e->scenePos(), ivec3(255,255,255),dir);
+                addItem(linkCurve_);
+                linkCurve_->setZValue(DRAGING_ITEM_DEPTH);
+                linkCurve_->show();
                 e->accept();
+                return;
 
             } else if (e->modifiers()==Qt::NoModifier) {
                 startPort_ = startProcessor_->getSelectedPort(e->scenePos());
@@ -1302,22 +1290,20 @@ void NetworkEditor::contextMenuEvent(QGraphicsSceneContextMenuEvent* e) {
         if (result == action)
             removeConnection(connectionGraphicsItem);
     } else if (linkGraphicsItem) {
-        if (isLinkDisplayEnabled()) {
-            QMenu menu;
-            QAction* linkAction = menu.addAction(tr("Link properties"));
-            QAction* deleteAction = menu.addAction("Delete");
-            QAction* result = menu.exec(QCursor::pos());
+        QMenu menu;
+        QAction* linkAction = menu.addAction(tr("Link properties"));
+        QAction* deleteAction = menu.addAction("Delete");
+        QAction* result = menu.exec(QCursor::pos());
 
-            if (result == deleteAction)
-                removeLink(linkGraphicsItem);
-            else if (result == linkAction) {
-                Processor* inProcessor = linkGraphicsItem->getDestProcessorGraphicsItem()->getProcessor();
-                Processor* outProcessor = linkGraphicsItem->getSrcProcessorGraphicsItem()->getProcessor();
-                ProcessorLink* processorLink = InviwoApplication::getPtr()->getProcessorNetwork()->getLink(inProcessor, outProcessor);
+        if (result == deleteAction)
+            removeLink(linkGraphicsItem);
+        else if (result == linkAction) {
+            Processor* inProcessor = linkGraphicsItem->getDestProcessorGraphicsItem()->getProcessor();
+            Processor* outProcessor = linkGraphicsItem->getSrcProcessorGraphicsItem()->getProcessor();
+            ProcessorLink* processorLink = InviwoApplication::getPtr()->getProcessorNetwork()->getLink(inProcessor, outProcessor);
 
-                if (processorLink)
-                    processorLink->autoLinkPropertiesByType();
-            }
+            if (processorLink)
+                processorLink->autoLinkPropertiesByType();
         }
     } else
         QGraphicsScene::contextMenuEvent(e);
@@ -1693,14 +1679,6 @@ void NetworkEditor::drawBackground(QPainter* painter, const QRectF& rect) {
     //painter->setPen(Qt::red);
     //painter->drawRect(QGraphicsScene::itemsBoundingRect());
     
-}
-
-
-bool NetworkEditor::isLinkDisplayEnabled() {
-    Property* prop = InviwoApplication::getPtr()->getSettingsByType<LinkSettings>()->getPropertyByIdentifier("displayLinks");
-    ivwAssert(prop!=0, "Display Links property not found in settings");
-    BoolProperty* displayLinkProperty = dynamic_cast<BoolProperty*>(prop);
-    return displayLinkProperty->get();
 }
 
 void ProcessorWorkerQt::process() {

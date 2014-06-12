@@ -57,18 +57,7 @@ NetworkEditorView::NetworkEditorView(NetworkEditor* networkEditor, QWidget* pare
 NetworkEditorView::~NetworkEditorView() { QGraphicsView::setScene(NULL); }
 
 void NetworkEditorView::initialize() {
-    Property* displayLinkProperty =
-        InviwoApplication::getPtr()->getSettingsByType<LinkSettings>()->getPropertyByIdentifier(
-            "displayLinks");
-
-    if (displayLinkProperty) {
-        displayLinkProperty->onChange(networkEditor_, &NetworkEditor::updateLinkGraphicsItems);
-        networkEditor_->updateLinkGraphicsItems();
-    } else
-        LogWarn("Display Links property not found in settings");
-
     NetworkEditorObserver::addObservation(networkEditor_);	
-
     QGraphicsView::setScene(networkEditor_);
 }
 

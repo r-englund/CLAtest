@@ -48,7 +48,6 @@ public:
     virtual bool isLinkable(Property* property);
 
 private:
-    BoolProperty displayLinksproerty_;
     std::vector<BoolProperty*> linkProperties_;
 };
 
