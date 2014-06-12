@@ -3,7 +3,7 @@
  * Inviwo - Interactive Visualization Workshop
  * Version 0.6b
  *
- * Copyright (c) 2013 Inviwo Foundation
+ * Copyright (c) 2012-2014 Inviwo Foundation
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -26,55 +26,34 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
- * Main file author: Peter Steneteg
+ * Main file authors: Peter Steneteg
  *
  *********************************************************************************/
 
-#include <modules/<lname>/<lname>module.h>
+#ifndef IVW_<uname>_H
+#define IVW_<uname>_H
+
+#include <define>
+#include <inviwo/core/common/inviwo.h>
+#include <inviwo/core/processors/processor.h>
 
 namespace inviwo {
 
-<name>Module::<name>Module() : InviwoModule() {
-    setIdentifier("<name>");
+class <api> <name> : public Processor { 
+public:
+    <name>();
+    virtual ~<name>(){}
 	
-	// Add a directory to the search path of the Shadermanager
-	//ShaderManager::getPtr()->addShaderSearchPath(InviwoApplication::PATH_MODULES, "<lname>/glsl");
-	
-	// Register objects that can be shared with the rest of inviwo here:
-	
-	// Processors
-	// registerProcessor(<name>);
-	
-	// Properties
-	// registerProperty(<name>Property);
-	
-	// Readers and writes
-	// registerDataReader(new <name>Reader());
-	// registerDataWriter(new <name>Writer());
-	
-	// Data converters
-	// registerRepresentationConverter(new <name>Disk2RAMConverter());
+	InviwoProcessorInfo();
+	 
+protected:
+    virtual void process();
 
-	// Ports
-	// registerPort(<name>Outport);
-	// registerPort(<name>Inport);
+private:
 
-	// PropertyWidgets
-	// registerPropertyWidget(<name>PropertyWidgetQt, <name>Property, "Default");
-	
-	// Dialogs
-	// registerDialog("<lname>", <name>DialogQt);
-	
-	// Other varius things
-	// registerCapabilities(Capabilities* info);
-    // registerData(Data* data);
-    // registerDataRepresentation(DataRepresentation* dataRepresentation);
-	// registerSettings(new SystemSettings());
-	// registerMetaData(MetaData* meta);   
-    // registerPortInspector(PortInspector* portInspector);
-    // registerProcessorWidget(std::string processorClassName, ProcessorWidget* processorWidget);
-    // registerRenderer(GeometryRenderer* renderer);
-    // registerResource(Resource* resource);	
-}
+};
 
 } // namespace
+
+#endif // IVW_<uname>_H
+
