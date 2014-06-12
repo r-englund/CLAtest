@@ -69,7 +69,7 @@ endmacro()
 #--------------------------------------------------------------------
 # Add unittests
 macro(ivw_add_unittest)
-	if(IVW_UNIT_TEST_APPLICATION)
+	if(IVW_MODULE_UNITTESTS)
     foreach(item ${ARGN})
         file(APPEND ${CMAKE_BINARY_DIR}/modules/_generated/unittests_temp.h "#include \"${item}\" \n")
     endforeach()
