@@ -1,6 +1,7 @@
 from __future__ import print_function
 
 import os
+import sys
 import argparse
 import re
 import subprocess
@@ -23,9 +24,50 @@ parser.add_argument("--no-header", action="store_false", default=True, dest="hea
 parser.add_argument("--no-source", action="store_false", default=True, dest="source", help="Don't write source file")
 parser.add_argument("--frag", action="store_true", dest="frag", help="Add fragment shader")
 parser.add_argument("--vert", action="store_true", dest="vert", help="Add vertex shader")
+parser.add_argument("--processor", action="store_true", dest="processor", default=False, help="Make a skeleton inviwo processor")
 
 
 args = parser.parse_args()
+
+def find_inv_path():
+	path = os.path.abspath(sys.argv[0])
+	print(path)
+	folders=[]
+	while 1:
+		path, folder = os.path.split(path)
+		if folder != "":
+			folders.append(folder)
+		else:
+			if path != "":
+				folders.append(path)
+			break
+
+	folders.reverse()
+	
+	basepath = ""
+	for i in range(len(folders), 0 ,-1):
+		if (os.path.exists(os.sep.join(folders[:i] + ['modules', 'base'])) 
+		and os.path.exists(os.sep.join(folders[:i] + ['include', 'inviwo']))
+		and os.path.exists(os.sep.join(folders[:i] + ['tools', 'templates']))):
+			basepath = os.sep.join(folders[:i])
+			break
+
+	return basepath
+
+
+def makeTemplate(ivwpath, file, name, define, api, incfile):
+	lines = []
+	with open(os.sep.join([ivwpath, 'tools', 'templates', file]),'r') as f:
+		for line in f:
+			line = line.replace("<name>", name)
+			line = line.replace("<lname>", name.lower())
+			line = line.replace("<uname>", name.upper())
+			line = line.replace("<api>", api)
+			line = line.replace("<define>", define)
+			line = line.replace("<incfile>", incfile)
+			lines.append(line)
+		return "".join(lines)
+
 
 def makeHeader(name, define, api):
 	str = ""
@@ -124,6 +166,8 @@ def addFileToSvn(file):
 
 	
 print("Adding files to inwivo")
+
+ivwpath = find_inv_path()
 	
 for name in args.names:
 	(path, file)  = os.path.split(name)
@@ -230,12 +274,18 @@ for name in args.names:
 		if args.header:
 			with open(hfilename, "w") as f:
 				print("... Writing h-file: " + hfilename)
-				f.write(makeHeader(file, moddef, api))
+				if args.processor:
+					f.write(makeTemplate(ivwpath, "processor.h", file, moddef, api, incfile))
+				else:
+					f.write(makeTemplate(ivwpath, "file.h", file, moddef, api, incfile))
 
 		if args.source:
 			with open(cfilename, "w") as f:
 				print("... Writing c-file: " + cfilename)
-				f.write(makeSource(incfile))
+				if args.processor:
+					f.write(makeTemplate(ivwpath, "processor.cpp", file, moddef, api, incfile))
+				else:
+					f.write(makeTemplate(ivwpath, "file.cpp", file, moddef, api, incfile))
 
 		if args.frag:
 			with open(fragfilename, "w") as f:
