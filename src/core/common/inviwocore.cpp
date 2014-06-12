@@ -80,7 +80,9 @@
 #include <inviwo/core/properties/ordinalproperty.h>
 #include <inviwo/core/properties/stringproperty.h>
 #include <inviwo/core/properties/transferfunctionproperty.h>
-
+#include <inviwo/core/properties/advancedmaterialproperty.h>
+#include <inviwo/core/properties/simplelightingproperty.h>
+#include <inviwo/core/properties/simpleraycastingproperty.h>
 
 namespace inviwo {
 
@@ -139,39 +141,43 @@ InviwoCore::InviwoCore() : InviwoModule() {
     registerPortInspector(new PortInspector("GeometryOutport",
                                             InviwoApplication::getPtr()->getPath(InviwoApplication::PATH_PORTINSPECTORS,
                                             "geometryportinspector.inv")));
-    registerProperty(CameraProperty);
-    registerProperty(TransferFunctionProperty);
+    
+    //registerProperty(EventProperty); TODO fix "default" contructor with 2 args...
+    registerProperty(AdvancedMaterialProperty);
     registerProperty(BoolProperty);
     registerProperty(ButtonProperty);
+    registerProperty(CameraProperty);
     registerProperty(DirectoryProperty);
-    //registerProperty(EventProperty); TODO fix "default" contructor with 2 args...
-    registerProperty(FileProperty);
-    registerProperty(ImageEditorProperty);
-    registerProperty(FloatMat2Property);
-    registerProperty(FloatMat3Property);
-    registerProperty(FloatMat4Property);
     registerProperty(DoubleMat2Property);
     registerProperty(DoubleMat3Property);
     registerProperty(DoubleMat4Property);
-    registerProperty(OptionPropertyInt);
-    registerProperty(OptionPropertyFloat);
-    registerProperty(OptionPropertyDouble);
-    registerProperty(OptionPropertyString);
-    registerProperty(FloatProperty);
-    registerProperty(IntProperty);
     registerProperty(DoubleProperty);
-    registerProperty(StringProperty);
-    registerProperty(FloatMinMaxProperty);
-    registerProperty(FloatVec2Property);
-    registerProperty(FloatVec3Property);
-    registerProperty(FloatVec4Property);
     registerProperty(DoubleVec2Property);
     registerProperty(DoubleVec3Property);
     registerProperty(DoubleVec4Property);
+    registerProperty(FileProperty);
+    registerProperty(FloatMat2Property);
+    registerProperty(FloatMat3Property);
+    registerProperty(FloatMat4Property);
+    registerProperty(FloatMinMaxProperty);
+    registerProperty(FloatProperty);
+    registerProperty(FloatVec2Property);
+    registerProperty(FloatVec3Property);
+    registerProperty(FloatVec4Property);
+    registerProperty(ImageEditorProperty);
     registerProperty(IntMinMaxProperty);
+    registerProperty(IntProperty);
     registerProperty(IntVec2Property);
     registerProperty(IntVec3Property);
     registerProperty(IntVec4Property);
+    registerProperty(OptionPropertyDouble);
+    registerProperty(OptionPropertyFloat);
+    registerProperty(OptionPropertyInt);
+    registerProperty(OptionPropertyString);
+    registerProperty(SimpleLightingProperty);
+    registerProperty(SimpleRaycastingProperty);
+    registerProperty(StringProperty);
+    registerProperty(TransferFunctionProperty);
 }
 
 } // namespace

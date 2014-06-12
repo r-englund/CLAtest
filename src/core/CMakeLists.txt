@@ -73,8 +73,8 @@ set(HEADER_FILES
     ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/volume/volumeramoperationexecuter.h
     ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/volume/volumeramprecision.h
     ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/volume/volumeramslice.h
-    ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/volume/volumeramsubset.h
     ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/volume/volumeramsubsample.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/volume/volumeramsubset.h
     ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/volume/volumerepresentation.h
     ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/volume/volumetypeclassification.h
     ${IVW_INCLUDE_DIR}/inviwo/core/interaction/action.h
@@ -178,6 +178,8 @@ set(HEADER_FILES
     ${IVW_INCLUDE_DIR}/inviwo/core/properties/propertywidget.h
     ${IVW_INCLUDE_DIR}/inviwo/core/properties/propertywidgetfactory.h
     ${IVW_INCLUDE_DIR}/inviwo/core/properties/propertywidgetfactoryobject.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/properties/simplelightingproperty.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/properties/simpleraycastingproperty.h
     ${IVW_INCLUDE_DIR}/inviwo/core/properties/stringproperty.h
     ${IVW_INCLUDE_DIR}/inviwo/core/properties/templateproperty.h
     ${IVW_INCLUDE_DIR}/inviwo/core/properties/transferfunctionproperty.h
@@ -361,6 +363,8 @@ set(SOURCE_FILES
     properties/propertywidget.cpp
     properties/propertywidgetfactory.cpp
     properties/propertywidgetfactoryobject.cpp
+    properties/simplelightingproperty.cpp
+    properties/simpleraycastingproperty.cpp
     properties/stringproperty.cpp
     properties/transferfunctionproperty.cpp
     rendering/geometryrendererfactory.cpp
