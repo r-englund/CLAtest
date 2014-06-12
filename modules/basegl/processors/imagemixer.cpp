@@ -76,9 +76,7 @@ void ImageMixer::process() {
     ivwAssert(inport1_.getData()!=0, "Inport1 empty.");
     uvec2 csize = outport_.getData()->getDimension();
     bindColorTexture(inport0_, GL_TEXTURE1);
-    TextureUnit::setZeroUnit();
     bindColorTexture(inport1_, GL_TEXTURE2);
-    TextureUnit::setZeroUnit();
     activateAndClearTarget(outport_);
     shader_->activate();
     shader_->setUniform("inport0_", 1);

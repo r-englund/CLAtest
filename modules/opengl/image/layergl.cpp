@@ -87,6 +87,7 @@ void LayerGL::deinitialize() {
 void LayerGL::bindTexture(GLenum texUnit) const {
     glActiveTexture(texUnit);
     texture_->bind();
+    glActiveTexture(GL_TEXTURE0);
 }
 
 void LayerGL::unbindTexture() const {

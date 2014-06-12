@@ -76,6 +76,7 @@ void VolumeGL::deinitialize() {
 void VolumeGL::bindTexture(GLenum texUnit) const {
     glActiveTexture(texUnit);
     volumeTexture_->bind();
+    glActiveTexture(GL_TEXTURE0);
 }
 
 void VolumeGL::unbindTexture() const { volumeTexture_->unbind(); }
