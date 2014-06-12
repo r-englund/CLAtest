@@ -2,7 +2,7 @@
 <InviwoTreeData version="1.0">
     <!-- Don't edit the following code -->
     <Processors>
-        <Processor type="VolumeSource" identifier="VolumeSource" id="ref1">
+        <Processor type="VolumeSource" identifier="VolumeSource" id="ref0">
             <MetaDataList>
                 <MetaData type="ProcessorMetaData">
                     <position x="-625" y="-675" />
@@ -11,21 +11,12 @@
                 </MetaData>
             </MetaDataList>
             <Properties>
-                <Property type="FloatVec3Property" identifier="angles" displayName="Angles" key="angles">
-                    <semantics semantics="Default" />
-                    <visibilityMode content="1" />
-                </Property>
-                <Property type="DoubleMinMaxProperty" identifier="dataRange" displayName="Data range" key="dataRange">
-                    <semantics semantics="Text" />
-                    <visibilityMode content="1" />
-                </Property>
+                <Property type="FloatVec3Property" identifier="angles" displayName="Angles" key="angles" />
+                <Property type="FloatMinMaxProperty" identifier="dataRange" displayName="Data range" key="dataRange" />
                 <Property type="StringProperty" identifier="dimensions" displayName="Dimensions" key="dimensions">
-                    <semantics semantics="Default" />
-                    <visibilityMode content="1" />
+                    <value content="uvec3(128, 128, 128)" />
                 </Property>
                 <Property type="FileProperty" identifier="filename" displayName="Volume file" key="filename">
-                    <semantics semantics="Default" />
-                    <visibilityMode content="1" />
                     <url content="../../volumes/hydrogenatom.dat" />
                     <nameFilter>
                         <filter content="All Files (*.*)" />
@@ -37,74 +28,40 @@
                     <fileMode content="0" />
                 </Property>
                 <Property type="StringProperty" identifier="format" displayName="Format" key="format">
-                    <semantics semantics="Default" />
-                    <visibilityMode content="1" />
+                    <value content="UINT8" />
                 </Property>
-                <Property type="FloatVec3Property" identifier="length" displayName="Lengths" key="length">
-                    <semantics semantics="Default" />
-                    <visibilityMode content="1" />
-                </Property>
-                <Property type="FloatVec3Property" identifier="offset" displayName="Offset" key="offset">
-                    <semantics semantics="Default" />
-                    <visibilityMode content="1" />
-                </Property>
-                <Property type="BoolProperty" identifier="override" displayName="Override" key="override">
-                    <semantics semantics="Default" />
-                    <visibilityMode content="1" />
-                </Property>
-                <Property type="DoubleMinMaxProperty" identifier="valueRange" displayName="Value range" key="valueRange">
-                    <semantics semantics="Text" />
-                    <visibilityMode content="1" />
-                </Property>
+                <Property type="FloatVec3Property" identifier="length" displayName="Lengths" key="length" />
+                <Property type="FloatVec3Property" identifier="offset" displayName="Offset" key="offset" />
+                <Property type="BoolProperty" identifier="override" displayName="Override" key="override" />
+                <Property type="FloatMinMaxProperty" identifier="valueRange" displayName="Value range" key="valueRange" />
                 <Property type="StringProperty" identifier="valueUnit" displayName="Value unit" key="valueUnit">
-                    <semantics semantics="Default" />
-                    <visibilityMode content="1" />
                     <value content="" />
                 </Property>
             </Properties>
         </Processor>
-        <Processor type="VolumeSliceGL" identifier="VolumeSliceGL" id="ref2">
+        <Processor type="VolumeSliceGL" identifier="VolumeSliceGL" id="ref1">
             <MetaDataList>
                 <MetaData type="ProcessorMetaData">
                     <position x="-625" y="-525" />
                     <visibility content="1" />
-                    <selection content="1" />
+                    <selection content="0" />
                 </MetaData>
             </MetaDataList>
             <InteractonHandlers>
                 <InteractionHandler type="undefined" />
             </InteractonHandlers>
             <Properties>
-                <Property type="BoolProperty" identifier="flipHorizontal" displayName="Flip Horizontal View" key="flipHorizontal">
-                    <semantics semantics="Default" />
-                    <visibilityMode content="1" />
-                </Property>
-                <Property type="BoolProperty" identifier="flipVertical" displayName="Flip Vertical View" key="flipVertical">
-                    <semantics semantics="Default" />
-                    <visibilityMode content="1" />
-                </Property>
-                <Property type="OptionPropertyFloat" identifier="rotation" displayName="Rotation around axis (degrees)" key="rotation">
-                    <semantics semantics="Default" />
-                    <visibilityMode content="1" />
-                </Property>
-                <Property type="OptionPropertyInt" identifier="sliceAxis" displayName="Slice along axis" key="sliceAxis">
-                    <semantics semantics="Default" />
-                    <visibilityMode content="1" />
+                <Property type="BoolProperty" identifier="flipHorizontal" displayName="Flip Horizontal View" key="flipHorizontal" />
+                <Property type="BoolProperty" identifier="flipVertical" displayName="Flip Vertical View" key="flipVertical" />
+                <Property type="BaseOptionProperty" identifier="sliceAxis" displayName="Slice along axis" key="sliceAxis">
                     <selectedIdentifier content="y" />
                 </Property>
                 <Property type="IntProperty" identifier="sliceNumber" displayName="Slice Number" key="sliceNumber">
                     <maxvalue content="128" />
-                    <semantics semantics="Default" />
-                    <visibilityMode content="1" />
-                    <value content="55" />
+                    <value content="64" />
                 </Property>
-                <Property type="BoolProperty" identifier="tfMappingEnabled" displayName="Enable Transfer Function" key="tfMappingEnabled">
-                    <semantics semantics="Default" />
-                    <visibilityMode content="1" />
-                </Property>
+                <Property type="BoolProperty" identifier="tfMappingEnabled" displayName="Enable Transfer Function" key="tfMappingEnabled" />
                 <Property type="TransferFunctionProperty" identifier="transferFunction" displayName="Transfer function" key="transferFunction">
-                    <semantics semantics="Default" />
-                    <visibilityMode content="1" />
                     <MetaDataList>
                         <MetaData type="PropertyEditorWidgetMetaData">
                             <position x="0" y="0" />
@@ -139,53 +96,26 @@
                 </Property>
             </Properties>
         </Processor>
-        <Processor type="CanvasGL" identifier="CanvasGL" id="ref0">
+        <Processor type="CanvasGL" identifier="CanvasGL" id="ref2">
             <MetaDataList>
                 <MetaData type="ProcessorMetaData">
                     <position x="-625" y="-400" />
                     <visibility content="1" />
-                    <selection content="0" />
+                    <selection content="1" />
                 </MetaData>
                 <MetaData type="ProcessorWidgetMetaData">
-                    <position x="548" y="327" />
+                    <position x="2827" y="501" />
                     <dimension x="256" y="256" />
                     <visibility content="1" />
                 </MetaData>
             </MetaDataList>
             <Properties>
-                <Property type="FloatProperty" identifier="aspectRatioScaling" displayName="Aspect Ratio Scaling" key="aspectRatioScaling">
-                    <semantics semantics="Default" />
-                    <visibilityMode content="2" />
-                </Property>
-                <Property type="IntVec2Property" identifier="customInputDimensions" displayName="Input Image Dimensions" key="customInputDimensions">
-                    <semantics semantics="Default" />
-                    <visibilityMode content="2" />
-                    <readonly content="1" />
-                </Property>
-                <Property type="IntVec2Property" identifier="dimensions" displayName="Dimensions" key="dimensions">
-                    <semantics semantics="Default" />
-                    <visibilityMode content="1" />
-                </Property>
-                <Property type="BoolProperty" identifier="enableCustomInputDimensions" displayName="Enable Custom Input Dimensions" key="enableCustomInputDimensions">
-                    <semantics semantics="Default" />
-                    <visibilityMode content="1" />
-                </Property>
-                <Property type="BoolProperty" identifier="keepAspectRatio" displayName="Keep Aspect Ratio" key="keepAspectRatio">
-                    <semantics semantics="Default" />
-                    <visibilityMode content="2" />
-                </Property>
+                <Property type="IntVec2Property" identifier="dimensions" displayName="Dimensions" key="dimensions" />
                 <Property type="DirectoryProperty" identifier="layerDir" displayName="Output Directory" key="layerDir">
-                    <semantics semantics="Default" />
-                    <visibilityMode content="1" />
                     <directory content="../../images" />
                 </Property>
-                <Property type="ButtonProperty" identifier="saveLayer" displayName="Save Image Layer" key="saveLayer">
-                    <semantics semantics="Default" />
-                    <visibilityMode content="1" />
-                </Property>
-                <Property type="OptionPropertyInt" identifier="visibleLayer" displayName="Visible Layer" key="visibleLayer">
-                    <semantics semantics="Default" />
-                    <visibilityMode content="1" />
+                <Property type="ButtonProperty" identifier="saveLayer" displayName="Save Image Layer" key="saveLayer" />
+                <Property type="BaseOptionProperty" identifier="visibleLayer" displayName="Visible Layer" key="visibleLayer">
                     <options>
                         <option>
                             <id content="color" />
@@ -211,18 +141,18 @@
     <Connections>
         <Connection>
             <OutPort identifier="image.outport">
-                <Processor type="VolumeSliceGL" identifier="VolumeSliceGL" reference="ref2" />
+                <Processor type="VolumeSliceGL" identifier="VolumeSliceGL" reference="ref1" />
             </OutPort>
             <InPort identifier="inport">
-                <Processor type="CanvasGL" identifier="CanvasGL" reference="ref0" />
+                <Processor type="CanvasGL" identifier="CanvasGL" reference="ref2" />
             </InPort>
         </Connection>
         <Connection>
             <OutPort identifier="data">
-                <Processor type="VolumeSource" identifier="VolumeSource" reference="ref1" />
+                <Processor type="VolumeSource" identifier="VolumeSource" reference="ref0" />
             </OutPort>
             <InPort identifier="volume.inport">
-                <Processor type="VolumeSliceGL" identifier="VolumeSliceGL" reference="ref2" />
+                <Processor type="VolumeSliceGL" identifier="VolumeSliceGL" reference="ref1" />
             </InPort>
         </Connection>
     </Connections>
