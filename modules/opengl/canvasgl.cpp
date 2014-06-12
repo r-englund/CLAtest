@@ -129,10 +129,7 @@ void CanvasGL::resize(uvec2 size) {
 void CanvasGL::resize(uvec2 canvasSize, uvec2 imageSize) {
     if (imageGL_) imageGL_->updateExistingLayers();
 
-    activate();
-    glViewport(0, 0, canvasSize[0], canvasSize[1]);
     Canvas::resize(canvasSize, imageSize);
-    activateDefaultRenderContext();
 }
 
 void CanvasGL::glSwapBuffers() {}

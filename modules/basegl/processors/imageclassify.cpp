@@ -68,7 +68,6 @@ void ImageClassify::process() {
     const Layer* tfLayer = transferFunction_.get().getData();
     const LayerGL* transferFunctionGL = tfLayer->getRepresentation<LayerGL>();
     transferFunctionGL->bindTexture(transFuncUnit.getEnum());
-    TextureUnit::setZeroUnit();
     TextureUnit inUnit;
     bindColorTexture(inport_, inUnit.getEnum());
     activateTarget(outport_);

@@ -162,12 +162,11 @@ bool ImageGL::copyAndResizeRepresentation(DataRepresentation* targetRep) const {
     shader_->setUniform("picking_", pickingUnit.getUnitNumber());
     shader_->setUniform("modelViewProjectionMatrix_", scale);
     glDepthMask(GL_TRUE);
+    LGL_ERROR;
     target->renderImagePlaneRect();
+    LGL_ERROR;
     shader_->deactivate();
     target->deactivateBuffer();
-    source->getColorLayerGL()->unbindTexture();
-    source->getDepthLayerGL()->unbindTexture();
-    source->getPickingLayerGL()->unbindTexture();
     LGL_ERROR;
     return true;
 }
@@ -302,6 +301,7 @@ void ImageGL::update(bool editable) {
     Image* owner = this->getOwner();
 
     bool reAttachTargets = (!isValid() || colorLayersGL_.empty());
+
     colorLayersGL_.clear();
     depthLayerGL_ = NULL;
     pickingLayerGL_ = NULL;
@@ -351,15 +351,17 @@ void ImageGL::update(bool editable) {
 }
 
 void ImageGL::renderImagePlaneRect() const {
-    if (!rectArray_) {
-        rectArray_ = new BufferObjectArray();
-        CanvasGL::attachImagePlanRect(rectArray_);
-    }
+    delete rectArray_;
+    rectArray_ = new BufferObjectArray();
+    CanvasGL::attachImagePlanRect(rectArray_);
+    LGL_ERROR;
     glDepthFunc(GL_ALWAYS);
     rectArray_->bind();
+    LGL_ERROR;
     CanvasGL::singleDrawImagePlaneRect();
     rectArray_->unbind();
     glDepthFunc(GL_LESS);
+    LGL_ERROR;
 }
 
 GLenum ImageGL::getPickingAttachmentID() const { return pickingAttachmentID_; }

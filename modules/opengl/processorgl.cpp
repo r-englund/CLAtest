@@ -236,10 +236,9 @@ void ProcessorGL::setGlobalShaderParameters(Shader* shader, const std::vector<Ou
     shader->setUniform("screenDimRCP_", vec2(1.0f,1.0f)/screenDimensions);
 }
 void ProcessorGL::enableDrawImagePlaneRect() {
-    if(!rectArray_){
-        rectArray_ = new BufferObjectArray();
-        CanvasGL::attachImagePlanRect(rectArray_);
-    }
+    delete rectArray_;
+    rectArray_ = new BufferObjectArray();
+    CanvasGL::attachImagePlanRect(rectArray_);
     glDepthFunc(GL_ALWAYS);
     rectArray_->bind();
 }
