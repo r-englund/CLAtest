@@ -73,6 +73,7 @@ class QOpenGLContext;
 #define QGLContextFormat QGLFormat
 #endif
 
+
 namespace inviwo {
 
 class IVW_MODULE_OPENGLQT_API CanvasQt : public QGLWindow, public CanvasGL {
