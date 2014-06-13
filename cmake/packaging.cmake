@@ -32,7 +32,7 @@
  
 if(IVW_PACKAGE_PROJECT)
 set(CPACK_PACKAGE_NAME "Inviwo")
-set(CPACK_PACKAGE_VENDOR "Inviwo Organization")
+set(CPACK_PACKAGE_VENDOR "Inviwo Foundation")
 set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "Interactive Visualization Workshop")
 set(CPACK_PACKAGE_VERSION_MAJOR "${IVW_MAJOR_VERSION}")
 set(CPACK_PACKAGE_VERSION_MINOR "${IVW_MINOR_VERSION}")
@@ -53,7 +53,6 @@ else()
 set(CPACK_PACKAGE_ICON "${IVW_ROOT_DIR}/resources/icons/inviwo_light.png")
 set(CPACK_PACKAGE_FILE_NAME "${CPACK_PACKAGE_NAME}_v${IVW_VERSION}")
 set(CPACK_PACKAGE_INSTALL_DIRECTORY "Inviwo/${IVW_VERSION}")
-set(CPACK_NSIS_DISPLAY_NAME "${CPACK_PACKAGE_NAME} ${IVW_VERSION}")
 endif()
 
 set(IVW_PACKAGES "core")
@@ -158,14 +157,35 @@ set(CPACK_COMPONENTS_ALL ${IVW_PACKAGES})
 set(CPACK_PACKAGE_EXECUTABLES ${IVW_EXECUTABLES})
 
 option(IVW_PACKAGE_INSTALLER "Use NSIS to create installer" OFF)
-set(CPACK_NSIS_HELP_LINK "http:\\\\\\\\www.inviwo.org")
-set(CPACK_NSIS_URL_INFO_ABOUT "http:\\\\\\\\www.inviwo.org")
-set(CPACK_NSIS_CONTACT "info@inviwo.org")
-set(CPACK_NSIS_EXECUTABLES_DIRECTORY ".")
 
 if(WIN32)
 if(IVW_PACKAGE_INSTALLER)
 set(CPACK_GENERATOR "ZIP;NSIS")
+
+# Create the desktop link
+set(CPACK_NSIS_EXTRA_INSTALL_COMMANDS "CreateShortCut '$DESKTOP\\\\${CPACK_PACKAGE_FILE_NAME}.lnk' '$INSTDIR\\\\bin\\\\inviwo.exe' ")
+
+# Delete the desktop link
+set(CPACK_NSIS_EXTRA_UNINSTALL_COMMANDS "Delete '$DESKTOP\\\\${CPACK_PACKAGE_FILE_NAME}.lnk' ")
+
+# The icon to start the application.
+set(CPACK_NSIS_MUI_ICON "${IVW_ROOT_DIR}\\\\resources\\\\icons\\\\inviwo_light.ico")
+
+# Add a link to the application website in the startup menu.
+set(CPACK_NSIS_MENU_LINKS "http://www.inviwo.org" "Inviwo Homepage")    
+
+# Set the icon for the application in the Add/Remove programs section.
+set(CPACK_NSIS_INSTALLED_ICON_NAME bin\\\\inviwo.exe)
+
+# The mail address for the maintainer of the application in the Add/Remove programs section
+set(CPACK_NSIS_CONTACT info at inviwo.org)
+
+# The url of the application in the Add/Remove programs section
+set(CPACK_NSIS_URL_INFO_ABOUT "http:\\\\\\\\www.inviwo.org")
+
+# Help URL
+set(CPACK_NSIS_HELP_LINK "http:\\\\\\\\www.inviwo.org")
+
 else()
 set(CPACK_GENERATOR "ZIP")
 endif()
