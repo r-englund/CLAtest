@@ -95,17 +95,17 @@ public:
     virtual void invalidate(PropertyOwner::InvalidationLevel invalidationLevel,
                             Property* modifiedProperty = 0);
 
-    STARTCLANGIGNORE("-Woverloaded-virtual")
+    // Local camera invalidation
+    // Use lock and unlock to set several camera properties without casing evaluation,
+    // then call invalidate().
     void invalidate();
-    ENDCLANGIGNORE
-
     void lockInvalidation() { lockInvalidation_ = true; }
     void unlockInvalidation() { lockInvalidation_ = false; }
     bool isInvalidationLocked() { return lockInvalidation_; }
 
     virtual void serialize(IvwSerializer& s) const;
     virtual void deserialize(IvwDeserializer& d);
-    virtual std::string getClassName()  const { return "CameraProperty"; }
+    virtual std::string getClassName() const { return "CameraProperty"; }
 
     void setInport(Inport* inport);
     void fitWithBasis(const mat3& basis);

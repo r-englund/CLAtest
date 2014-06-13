@@ -62,7 +62,7 @@ public:
 
     virtual void showWidget();
     virtual void hideWidget();
-    void updateContextMenu();
+    virtual void updateContextMenu();
     QMenu* getContextMenu();
     
 public slots:
@@ -96,10 +96,10 @@ protected:
     QAction* developerViewModeAction_;
     QAction* applicationViewModeAction_;
     QActionGroup* viewModeActionGroup_;
-
+    QMenu* viewModeItem_;
+    
 private:
     QMenu* contextMenu_;
-    QMenu* viewModeItem_;
     QMap<QString,QMenu*> moduleSubMenus_;
 };
 

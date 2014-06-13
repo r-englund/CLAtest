@@ -272,25 +272,19 @@ void Property::setVisibility(PropertyVisibilityMode visibilityMode) {
 void Property::updateVisibility() {
     InviwoApplication* inviwoApp = InviwoApplication::getPtr();
     Settings* mainSettings = inviwoApp->getSettingsByType<SystemSettings>();
-    PropertyVisibilityMode appMode =  static_cast<PropertyVisibilityMode>(dynamic_cast<OptionPropertyInt*>
-                                      (mainSettings->getPropertyByIdentifier("viewMode"))->get());
+    PropertyVisibilityMode appMode = static_cast<PropertyVisibilityMode>(
+        dynamic_cast<OptionPropertyInt*>(mainSettings->getPropertyByIdentifier("viewMode"))->get());
 
     if (visibilityMode_ == INVISIBLE) {
-        for (size_t i=0; i<propertyWidgets_.size(); i++)
-            propertyWidgets_[i]->hideWidget();
+        for (size_t i = 0; i < propertyWidgets_.size(); i++) propertyWidgets_[i]->hideWidget();
     }
 
     if (visibilityMode_ == APPLICATION) {
-        for (size_t i=0; i<propertyWidgets_.size(); i++)
-            propertyWidgets_[i]->showWidget();
-    }
-    else if (visibilityMode_ == DEVELOPMENT && appMode == DEVELOPMENT) {
-        for (size_t i=0; i<propertyWidgets_.size(); i++)
-            propertyWidgets_[i]->showWidget();
-    }
-    else if (visibilityMode_ == DEVELOPMENT && appMode == APPLICATION) {
-        for (size_t i=0; i<propertyWidgets_.size(); i++)
-            propertyWidgets_[i]->hideWidget();
+        for (size_t i = 0; i < propertyWidgets_.size(); i++) propertyWidgets_[i]->showWidget();
+    } else if (visibilityMode_ == DEVELOPMENT && appMode == DEVELOPMENT) {
+        for (size_t i = 0; i < propertyWidgets_.size(); i++) propertyWidgets_[i]->showWidget();
+    } else if (visibilityMode_ == DEVELOPMENT && appMode == APPLICATION) {
+        for (size_t i = 0; i < propertyWidgets_.size(); i++) propertyWidgets_[i]->hideWidget();
     }
 }
 

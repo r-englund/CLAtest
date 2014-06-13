@@ -49,8 +49,8 @@ PropertyWidgetQt::PropertyWidgetQt()
     : PropertyWidget()
     , developerViewModeAction_(NULL)
     , applicationViewModeAction_(NULL)
-    , contextMenu_(NULL)
-    , viewModeItem_(NULL) {
+    , viewModeItem_(NULL)
+    , contextMenu_(NULL) {
  
     this->setContextMenuPolicy(Qt::CustomContextMenu);
     connect(this,
@@ -61,8 +61,8 @@ PropertyWidgetQt::PropertyWidgetQt()
 
 PropertyWidgetQt::PropertyWidgetQt(Property* property)
     : PropertyWidget(property)
-    , contextMenu_(NULL)
-    , viewModeItem_(NULL) {
+    , viewModeItem_(NULL)
+    , contextMenu_(NULL){
         
     this->setContextMenuPolicy(Qt::CustomContextMenu);
     connect(this,

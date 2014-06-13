@@ -54,7 +54,7 @@ void PropertyOwner::addProperty(Property& property) {
     addProperty(&property);
 }
 
-Property* PropertyOwner::getPropertyByIdentifier(std::string identifier) {
+Property* PropertyOwner::getPropertyByIdentifier(std::string identifier) const {
     for (size_t i=0; i<properties_.size(); i++)
         if ((properties_[i]->getIdentifier()).compare(identifier) == 0)
             return properties_[i];

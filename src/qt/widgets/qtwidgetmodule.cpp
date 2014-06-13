@@ -46,7 +46,6 @@
 
 #include <inviwo/qt/widgets/properties/boolpropertywidgetqt.h>
 #include <inviwo/qt/widgets/properties/buttonpropertywidgetqt.h>
-#include <inviwo/qt/widgets/properties/camerapropertywidgetqt.h>
 #include <inviwo/qt/widgets/properties/collapsiblegroupboxwidgetqt.h>
 #include <inviwo/qt/widgets/properties/colorpropertywidgetqt.h>
 #include <inviwo/qt/widgets/properties/compositepropertywidgetqt.h>
@@ -72,7 +71,7 @@ QtWidgetModule::QtWidgetModule() : InviwoModule() {
     setIdentifier("QtWidget");
     registerPropertyWidget(BoolPropertyWidgetQt, BoolProperty, "Default");
     registerPropertyWidget(ButtonPropertyWidgetQt, ButtonProperty, "Default");
-    registerPropertyWidget(CameraPropertyWidgetQt, CameraProperty, "Default");
+    registerPropertyWidget(CompositePropertyWidgetQt, CameraProperty, "Default");
     registerPropertyWidget(ColorPropertyWidgetQt, IntVec3Property, "Color");
     registerPropertyWidget(ColorPropertyWidgetQt, IntVec4Property, "Color");
     registerPropertyWidget(ColorPropertyWidgetQt, FloatVec3Property, "Color");

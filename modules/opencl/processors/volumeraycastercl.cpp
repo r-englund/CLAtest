@@ -97,7 +97,7 @@ void VolumeRaycasterCL::process() {
     Image* outImage = outport_.getData();
     uvec2 outportDim = outImage->getDimension();
     const Volume* volume = volumePort_.getData();
-    uvec3 volumeDim = volume->getDimension();
+    //uvec3 volumeDim = volume->getDimension(); //Not used
     
     svec2 localWorkGroupSize(workGroupSize_.get());
     svec2 globalWorkGroupSize(getGlobalWorkGroupSize(outportDim.x, localWorkGroupSize.x), getGlobalWorkGroupSize(outportDim.y,
