@@ -80,7 +80,7 @@ void DataInport<T>::deinitialize() {}
 
 template <typename T>
 bool DataInport<T>::canConnectTo(Port* port) const {
-    if (port->getProcessor() != getProcessor() && dynamic_cast<DataOutport<T>*>(port))
+    if ( dynamic_cast<DataOutport<T>*>(port) &&  port->getProcessor() != getProcessor())
         return true;
     else
         return false;
