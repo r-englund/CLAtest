@@ -74,9 +74,20 @@ if(IVW_MODULE_UNITTESTS)
 endif()
 
 set(RES_FILES "")
-IF(WIN32)
+if(WIN32)
     set(RES_FILES "${IVW_RESOURCES_DIR}/inviwo.rc")
-ENDIF(WIN32)
+endif()
+
+if(APPLE)
+  set(MACOSX_BUNDLE_BUNDLE_NAME Inviwo)
+  set(MACOSX_BUNDLE_GUI_IDENTIFIER "Inviwo")
+  set(MACOSX_BUNDLE_ICON_FILE ${IVW_ROOT_DIR}/resources/icons/inviwo_light.icns)
+  set(MACOSX_BUNDLE_INFO_STRING ""${IVW_VERSION}", Copyright (c) 2012-2014 Inviwo Foundation")
+  set(MACOSX_BUNDLE_SHORT_VERSION_STRING "${IVW_VERSION}")
+  set(MACOSX_BUNDLE_LONG_VERSION_STRING "${IVW_VERSION}.")
+  set(MACOSX_BUNDLE_BUNDLE_VERSION "${IVW_VERSION}")
+  set(MACOSX_BUNDLE_COPYRIGHT "(C) 2012-2014 Inviwo Foundation")
+endif()
 
 #--------------------------------------------------------------------
 # Create application
