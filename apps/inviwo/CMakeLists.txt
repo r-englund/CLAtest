@@ -78,11 +78,11 @@ if(WIN32)
     set(RES_FILES "${IVW_RESOURCES_DIR}/inviwo.rc")
 endif()
 
-if(APPLE)
+if(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
   set(MACOSX_BUNDLE_BUNDLE_NAME Inviwo)
   set(MACOSX_BUNDLE_GUI_IDENTIFIER "Inviwo")
   set(MACOSX_BUNDLE_ICON_FILE ${IVW_ROOT_DIR}/resources/icons/inviwo_light.icns)
-  set(MACOSX_BUNDLE_INFO_STRING ""${IVW_VERSION}", Copyright (c) 2012-2014 Inviwo Foundation")
+  set(MACOSX_BUNDLE_INFO_STRING "Inviwo ${IVW_VERSION}, Copyright (c) 2012-2014 Inviwo Foundation")
   set(MACOSX_BUNDLE_SHORT_VERSION_STRING "${IVW_VERSION}")
   set(MACOSX_BUNDLE_LONG_VERSION_STRING "${IVW_VERSION}.")
   set(MACOSX_BUNDLE_BUNDLE_VERSION "${IVW_VERSION}")
@@ -96,12 +96,18 @@ add_executable(inviwo MACOSX_BUNDLE WIN32 ${SOURCE_FILES} ${HEADER_FILES} ${MOC_
 #--------------------------------------------------------------------
 # Add application to pack
 if(IVW_PACKAGE_PROJECT)
-install(TARGETS inviwo
-   RUNTIME DESTINATION bin
-   BUNDLE DESTINATION bin
-   ARCHIVE DESTINATION lib
-   LIBRARY DESTINATION lib
-   COMPONENT qt_app)
+if(WIN32)
+   install(TARGETS inviwo
+            RUNTIME DESTINATION bin
+            COMPONENT qt_app)
+else()
+    install(TARGETS inviwo
+            RUNTIME DESTINATION bin
+            BUNDLE DESTINATION bin
+	        ARCHIVE DESTINATION lib
+            LIBRARY DESTINATION lib
+            COMPONENT qt_app)
+endif()
 endif()
 
 #--------------------------------------------------------------------
