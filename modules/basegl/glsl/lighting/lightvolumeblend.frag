@@ -46,8 +46,8 @@ in vec4 permutedPosInvSec_;
 
 void main() {
     //Lookup light values
-    vec4 lightValue = getVoxel(lightVolume_, lightVolumeParameters_, permutedPosInv_.xyz);
-    vec4 lightValueSec = getVoxel(lightVolumeSec_, lightVolumeParameters_, permutedPosInvSec_.xyz);
+    vec4 lightValue = getNormalizedVoxel(lightVolume_, lightVolumeParameters_, permutedPosInv_.xyz);
+    vec4 lightValueSec = getNormalizedVoxel(lightVolumeSec_, lightVolumeParameters_, permutedPosInvSec_.xyz);
     //Output blend between light volumes
     FragData0 = (lightValue * blendingFactor_) + (lightValueSec * (1.0 - blendingFactor_));
 }

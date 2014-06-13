@@ -71,7 +71,7 @@ vec4 rayTraversal(vec3 entryPoint, vec3 exitPoint, vec2 texCoords) {
         vec4 color = RC_APPLY_CLASSIFICATION(transferFunc_, voxel);
         color.rgb = RC_APPLY_SHADING(color.rgb, color.rgb, vec3(1.0), samplePos, gradient, lightPosition_, cameraPosition_);
         //Light Volume Compositing
-        vec4 lightVoxel = getNormalizedVoxel(lightVolume_, lightVolumeParameters_, samplePos);
+        vec4 lightVoxel = getVoxel(lightVolume_, lightVolumeParameters_, samplePos);
 #ifdef LIGHT_COLOR_ENABLED
         //color.rgb *= lightVoxel.rgb;
         color.rgb = (color.rgb * 0.6) + (lightVoxel.rgb * color.rgb * 0.8) + (0.8 * color.rgb * pow(lightVoxel.rgb, vec3(5.0)));
