@@ -60,6 +60,10 @@ QPainterPath CurveGraphicsItem::obtainCurvePath() const {
 }
 
 QPainterPath CurveGraphicsItem::obtainCurvePath(QPointF startPoint, QPointF endPoint) const {
+    if(midPoint_ != startPoint && endPoint != midPoint_){
+        return obtainCurvePath(startPoint,midPoint_) +obtainCurvePath(midPoint_,endPoint);
+    }
+    
     const int startOff = 6;
 
     QPointF curvStart = startPoint + QPointF(0,startOff);
@@ -83,7 +87,7 @@ QPainterPath CurveGraphicsItem::obtainCurvePath(QPointF startPoint, QPointF endP
     bezierCurve.moveTo(startPoint);
     bezierCurve.lineTo(curvStart);
     bezierCurve.cubicTo(ctrlPoint1, ctrlPoint2, curvEnd);
-    bezierCurve.lineTo(endPoint_);
+    bezierCurve.lineTo(endPoint);
     return bezierCurve;
 }
 
