@@ -123,7 +123,7 @@ void EntryExitPoints::process() {
     ImageGL* tmpEntryPointsGL;
 
     if (capNearClipping_.get()) {
-        if (true || tmpEntryPoints_ == NULL ||
+        if (tmpEntryPoints_ == NULL ||
             tmpEntryPoints_->getDimension() != entryPort_.getDimension() ||
             tmpEntryPoints_->getImageType() != entryPort_.getData()->getImageType() ||
             tmpEntryPoints_->getDataFormat() != entryPort_.getData()->getDataFormat()) {
