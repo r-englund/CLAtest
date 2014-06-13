@@ -42,37 +42,43 @@ CompositeProperty::CompositeProperty(std::string identifier, std::string display
 
 CompositeProperty::~CompositeProperty() {}
 
-void CompositeProperty::addProperty(Property* property) { subProperties_.push_back(property); }
-
-void CompositeProperty::addProperty(Property& property) { addProperty(&property); }
 
 void CompositeProperty::setOwner(PropertyOwner* owner) {
     Property::setOwner(owner);
-    for (size_t i = 0; i < subProperties_.size(); i++) subProperties_[i]->setOwner(this);
+    for (size_t i = 0; i < properties_.size(); i++) properties_[i]->setOwner(this);
 }
 
 void CompositeProperty::updateVisibility() {
-    for (size_t i = 0; i < subProperties_.size(); i++) subProperties_[i]->updateVisibility();
+    for (size_t i = 0; i < properties_.size(); i++) {
+        properties_[i]->updateVisibility();
+    }
+    Property::updateVisibility();
+    
 }
 
 void CompositeProperty::setVisible(bool val) {
-    for (size_t i = 0; i < subProperties_.size(); i++) subProperties_[i]->setVisible(val);
+    bool visible = false;
+    for (size_t i = 0; i < properties_.size(); i++) {
+        properties_[i]->setVisible(val);
+        visible = visible || val;
+    }
+    Property::setVisible(visible);
 }
 
 void CompositeProperty::setReadOnly(const bool& value) {
-    for (size_t i = 0; i < subProperties_.size(); i++) subProperties_[i]->setReadOnly(value);
+    for (size_t i = 0; i < properties_.size(); i++) properties_[i]->setReadOnly(value);
 }
 
 void CompositeProperty::setPropertyModified(bool modified) {
-    for (size_t i = 0; i < subProperties_.size(); i++)
-        subProperties_[i]->setPropertyModified(modified);
+    for (size_t i = 0; i < properties_.size(); i++)
+        properties_[i]->setPropertyModified(modified);
 
     Property::setPropertyModified(modified);
 }
 
 bool CompositeProperty::isPropertyModified() const {
-    for (size_t i = 0; i < subProperties_.size(); i++)
-        if (subProperties_[i]->isPropertyModified()) return true;
+    for (size_t i = 0; i < properties_.size(); i++)
+        if (properties_[i]->isPropertyModified()) return true;
 
     return false;
 }
@@ -81,15 +87,15 @@ void CompositeProperty::set(const Property* srcProperty) {
     const CompositeProperty* compositeSrcProp = dynamic_cast<const CompositeProperty*>(srcProperty);
 
     if (compositeSrcProp) {
-        std::vector<Property*> subProperties = compositeSrcProp->getSubProperties();
+        std::vector<Property*> subProperties = compositeSrcProp->getProperties();
 
-        if (subProperties.size() != this->subProperties_.size()) {
+        if (subProperties.size() != this->properties_.size()) {
             LogWarn("CompositeProperty mismatch. Unable to link");
             return;
         }
 
         for (size_t i = 0; i < subProperties.size(); i++)
-            this->subProperties_[i]->set(subProperties[i]);
+            this->properties_[i]->set(subProperties[i]);
     } else {
         this->setVariant(const_cast<Property*>(srcProperty)->getVariant());
     }
@@ -106,14 +112,14 @@ void CompositeProperty::invalidate(PropertyOwner::InvalidationLevel invalidation
 
 void CompositeProperty::setCurrentStateAsDefault() {
     Property::setCurrentStateAsDefault();
-    for (size_t i = 0; i < subProperties_.size(); i++) {
-        subProperties_[i]->setCurrentStateAsDefault();
+    for (size_t i = 0; i < properties_.size(); i++) {
+        properties_[i]->setCurrentStateAsDefault();
     }
 }
 
 void CompositeProperty::resetToDefaultState() {
-    for (size_t i = 0; i < subProperties_.size(); i++) {
-        subProperties_[i]->resetToDefaultState();
+    for (size_t i = 0; i < properties_.size(); i++) {
+        properties_[i]->resetToDefaultState();
     }
     Property::resetToDefaultState();
 }

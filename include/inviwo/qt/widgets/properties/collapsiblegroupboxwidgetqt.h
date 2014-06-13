@@ -65,7 +65,6 @@ public:
 
     void setVisibilityMode(PropertyVisibilityMode visibilityMode) {visibilityMode_ = visibilityMode;};
     PropertyVisibilityMode getVisibilityMode() {return visibilityMode_;};
-    void onViewModeChange();
 
     void updateFromProperty();
     void addProperty(Property* tmpProperty);
@@ -77,9 +76,10 @@ public:
     void addWidget(QWidget* widget);
     void removeWidget(QWidget* widget);
     
-
     virtual void serialize(IvwSerializer& s) const;
     virtual void deserialize(IvwDeserializer& d);
+
+    virtual void updateContextMenu();
 
 signals:
     void visibilityModified();
@@ -94,7 +94,7 @@ private:
     bool collapsed_;
     EditableLabelQt* label_;
     void generateWidget();
-    void updateContextMenu();
+
     PropertyVisibilityMode visibilityMode_;
     void updateWidgets();
 

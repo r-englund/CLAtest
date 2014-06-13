@@ -32,7 +32,6 @@
 
 #include <inviwo/qt/widgets/properties/collapsiblegroupboxwidgetqt.h>
 #include <inviwo/qt/widgets/properties/compositepropertywidgetqt.h>
-#include <inviwo/qt/widgets/properties/camerapropertywidgetqt.h>
 #include <inviwo/core/common/inviwoapplication.h>
 #include <inviwo/core/util/settings/systemsettings.h>
 #include <inviwo/core/properties/propertywidgetfactory.h>
@@ -237,6 +236,22 @@ void CollapsibleGroupBoxWidgetQt::setApplicationViewMode(bool value) {
     emit visibilityModified();
 }
 
+void CollapsibleGroupBoxWidgetQt::updateContextMenu() {
+    PropertyWidgetQt::updateContextMenu();
+    if(viewModeItem_) {
+        PropertyVisibilityMode mode = DEVELOPMENT;
+        for (size_t i=0; i<properties_.size(); i++) {
+            if (properties_[i]->getVisibilityMode() == APPLICATION) {
+                mode = APPLICATION;
+            }
+        }
+        if (mode == DEVELOPMENT) {
+            developerViewModeAction_->setChecked(true);
+        } else {
+            applicationViewModeAction_->setChecked(true);
+        }
+    }
+}
 
 void CollapsibleGroupBoxWidgetQt::updateWidgets() {
     for (size_t i=0; i<propertyWidgets_.size(); i++)
@@ -279,10 +294,6 @@ void CollapsibleGroupBoxWidgetQt::removeWidget(QWidget* widget) {
     }
 }
 
-void CollapsibleGroupBoxWidgetQt::onViewModeChange() {
-    // TODO figure out what to do here.... // Peter 20140225
-}
-
 void CollapsibleGroupBoxWidgetQt::resetPropertyToDefaultState() {
     InviwoApplication::getPtr()->getProcessorNetwork()->lock();
 
@@ -299,11 +310,6 @@ void CollapsibleGroupBoxWidgetQt::resetPropertyToDefaultState() {
         CompositePropertyWidgetQt* compWidget = dynamic_cast<CompositePropertyWidgetQt*>(propertyWidgets_[i]);
         if (compWidget) {
             compWidget->resetPropertyToDefaultState();
-        }
-
-        CameraPropertyWidgetQt* camWidget = dynamic_cast<CameraPropertyWidgetQt*>(propertyWidgets_[i]);
-        if(camWidget) {
-            camWidget->resetPropertyToDefaultState();
         }
     }
 

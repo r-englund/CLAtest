@@ -61,8 +61,8 @@ public:
     virtual void addProperty(Property* property);
     virtual void addProperty(Property& property);
 
-    Property* getPropertyByIdentifier(std::string identifier);
-    std::vector<Property*> getProperties() { return properties_; }
+    Property* getPropertyByIdentifier(std::string identifier) const;
+    std::vector<Property*> getProperties() const { return properties_; }
     template<class T> std::vector<T*> getPropertiesByType() const;
 
     bool isValid() { return (getInvalidationLevel() == PropertyOwner::VALID); }

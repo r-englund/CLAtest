@@ -36,45 +36,40 @@
 
 namespace inviwo {
 
-CompositePropertyWidgetQt::CompositePropertyWidgetQt(CompositeProperty* property) : PropertyWidgetQt(property), property_(property) {
+CompositePropertyWidgetQt::CompositePropertyWidgetQt(CompositeProperty* property)
+    : PropertyWidgetQt(property), property_(property) {
     generateWidget();
     updateFromProperty();
 }
 
-
-
 void CompositePropertyWidgetQt::generateWidget() {
     QVBoxLayout* vLayout = new QVBoxLayout();
-    collapsiveGroupBoxWidget_ = new CollapsibleGroupBoxWidgetQt(property_->getIdentifier(),property_->getDisplayName());
-    std::vector<Property*> subProperties = property_->getSubProperties();
+    collapsiveGroupBoxWidget_ =
+        new CollapsibleGroupBoxWidgetQt(property_->getIdentifier(), property_->getDisplayName());
+    std::vector<Property*> subProperties = property_->getProperties();
 
-    for (size_t i=0; i<subProperties.size(); i++) {
+    for (size_t i = 0; i < subProperties.size(); i++) {
         Property* curProperty = subProperties[i];
         collapsiveGroupBoxWidget_->addProperty(curProperty);
     }
     vLayout->addWidget(collapsiveGroupBoxWidget_);
-    vLayout->setContentsMargins(0,0,0,0);
+    vLayout->setContentsMargins(0, 0, 0, 0);
     vLayout->setSpacing(0);
     setLayout(vLayout);
-    connect(collapsiveGroupBoxWidget_,SIGNAL(visibilityModified()),SLOT(setDisplayModeFromGroupBox()));
+    connect(collapsiveGroupBoxWidget_, SIGNAL(visibilityModified()),
+            SLOT(setDisplayModeFromGroupBox()));
 }
 
 void CompositePropertyWidgetQt::updateFromProperty() {
-    for (size_t i=0; i<subPropertyWidgets_.size(); i++)
+    for (size_t i = 0; i < subPropertyWidgets_.size(); i++)
         subPropertyWidgets_[i]->updateFromProperty();
 }
 
-void CompositePropertyWidgetQt::propertyModified() {
-    emit modified();
-}
+void CompositePropertyWidgetQt::propertyModified() { emit modified(); }
 
-void CompositePropertyWidgetQt::showWidget() {
-    this->show();
-}
+void CompositePropertyWidgetQt::showWidget() { this->show(); }
 
-void CompositePropertyWidgetQt::hideWidget() {
-    this->hide();
-}
+void CompositePropertyWidgetQt::hideWidget() { this->hide(); }
 
 void CompositePropertyWidgetQt::setDisplayModeFromGroupBox() {
     property_->setVisibility(collapsiveGroupBoxWidget_->getVisibilityMode());
