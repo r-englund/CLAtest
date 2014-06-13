@@ -292,7 +292,8 @@ BaseTemplateOptionProperty<T>::BaseTemplateOptionProperty(std::string identifier
                                                   PropertyOwner::InvalidationLevel invalidationLevel,
                                                   PropertySemantics semantics)
     : BaseOptionProperty(identifier, displayName, invalidationLevel, semantics)
-    , selectedIndex_(0) {
+    , selectedIndex_(0)
+    , defaultSelectedIndex_(0) {
 }
 
 template<typename T>
@@ -476,6 +477,13 @@ template<typename T>
 void inviwo::BaseTemplateOptionProperty<T>::resetToDefaultState() {
     options_ = defaultOptions_;
     selectedIndex_ = defaultSelectedIndex_;
+    
+    if(defaultOptions_.empty()){
+        LogWarn("Resetting to an empty option list. \
+                 Probably the default values have never been set, \
+                 Remember to call setCurrentStateAsDefault() after adding all the options.")
+    }
+    
     Property::resetToDefaultState();
 }
 
