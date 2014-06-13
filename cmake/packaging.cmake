@@ -163,10 +163,10 @@ if(IVW_PACKAGE_INSTALLER)
 set(CPACK_GENERATOR "ZIP;NSIS")
 
 # Create the desktop link
-set(CPACK_NSIS_EXTRA_INSTALL_COMMANDS "CreateShortCut '$DESKTOP\\\\${CPACK_PACKAGE_FILE_NAME}.lnk' '$INSTDIR\\\\bin\\\\inviwo.exe' ")
+set(CPACK_NSIS_EXTRA_INSTALL_COMMANDS "CreateShortCut '$DESKTOP\\\\${CPACK_NSIS_DISPLAY_NAME}.lnk' '$INSTDIR\\\\bin\\\\inviwo.exe' ")
 
 # Delete the desktop link
-set(CPACK_NSIS_EXTRA_UNINSTALL_COMMANDS "Delete '$DESKTOP\\\\${CPACK_PACKAGE_FILE_NAME}.lnk' ")
+set(CPACK_NSIS_EXTRA_UNINSTALL_COMMANDS "Delete '$DESKTOP\\\\${CPACK_NSIS_DISPLAY_NAME}.lnk' ")
 
 # The icon to start the application.
 set(CPACK_NSIS_MUI_ICON "${IVW_ROOT_DIR}\\\\resources\\\\icons\\\\inviwo_light.ico")
