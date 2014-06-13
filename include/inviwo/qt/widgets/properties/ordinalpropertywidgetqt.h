@@ -101,6 +101,7 @@ public:
     virtual void updateFromProperty() = 0;
 
 protected:
+
     virtual SliderVector makeSliders(QWidget* widget) {
         QSizePolicy sliderPol = widget->sizePolicy();
         sliderPol.setHorizontalStretch(3);
@@ -122,7 +123,27 @@ protected:
                     controlWidget = new SliderWidgetQt<BT>();
                 }
                 sliders.push_back(controlWidget);
-                vLayout->addWidget(controlWidget, static_cast<int>(i), static_cast<int>(j));
+                
+                // Optionally add element descriptions
+                QWidget* widget;
+                if(ordinalproperty_->getSemantics() == PropertySemantics("Spherical")) {
+                    
+                    std::vector<QString> chars;
+                    chars.push_back(QString("r"));
+                    chars.push_back(QString("θ"));
+                    chars.push_back(QString("φ"));
+                    
+                    widget = new QWidget(this);
+                    QHBoxLayout* hLayout = new QHBoxLayout();
+                    hLayout->setContentsMargins(0, 0, 0, 0);
+                    hLayout->setSpacing(7);
+                    widget->setLayout(hLayout);
+                    hLayout->addWidget(new QLabel(chars[i], this));
+                    hLayout->addWidget(controlWidget);
+                }else{
+                    widget = controlWidget;
+                }
+                vLayout->addWidget(widget, static_cast<int>(i), static_cast<int>(j));
             }
         }
         return sliders;
