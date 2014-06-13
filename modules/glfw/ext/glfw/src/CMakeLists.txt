@@ -88,12 +88,18 @@ endif()
 #--------------------------------------------------------------------
 # Add to package
 if(IVW_PACKAGE_PROJECT AND BUILD_SHARED_LIBS)  
+if(WIN32)
    install(TARGETS glfw
             RUNTIME DESTINATION bin
-	    BUNDLE DESTINATION bin
-	    ARCHIVE DESTINATION lib
+            COMPONENT glfw_module)
+else()
+    install(TARGETS glfw
+            RUNTIME DESTINATION bin
+            BUNDLE DESTINATION bin
+	        ARCHIVE DESTINATION lib
             LIBRARY DESTINATION lib
             COMPONENT glfw_module)
+endif()
 endif()
 
 if (GLFW_INSTALL)

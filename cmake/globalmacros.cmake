@@ -752,12 +752,18 @@ macro(ivw_make_package package_name project_name)
 if(IVW_PACKAGE_PROJECT AND BUILD_SHARED_LIBS)  
    #--------------------------------------------------------------------
    # Add to package
+if(WIN32)
    install(TARGETS ${project_name}
             RUNTIME DESTINATION bin
+            COMPONENT ${_cpackName})
+else()
+    install(TARGETS ${project_name}
+            RUNTIME DESTINATION bin
             BUNDLE DESTINATION bin
-	    ARCHIVE DESTINATION lib
+	        ARCHIVE DESTINATION lib
             LIBRARY DESTINATION lib
             COMPONENT ${_cpackName})
+endif()
 endif()
 
   #--------------------------------------------------------------------

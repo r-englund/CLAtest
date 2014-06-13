@@ -49,12 +49,18 @@ ivw_vs_folder(glutminimum minimals)
 #--------------------------------------------------------------------
 # Add application to pack
 if(IVW_PACKAGE_PROJECT)
-install(TARGETS glutminimum
-   RUNTIME DESTINATION bin
-   BUNDLE DESTINATION bin
-   ARCHIVE DESTINATION lib
-   LIBRARY DESTINATION lib
-   COMPONENT glut_app)
+if(WIN32)
+   install(TARGETS glutminimum
+            RUNTIME DESTINATION bin
+            COMPONENT glut_app)
+else()
+    install(TARGETS glutminimum
+            RUNTIME DESTINATION bin
+            BUNDLE DESTINATION bin
+	        ARCHIVE DESTINATION lib
+            LIBRARY DESTINATION lib
+            COMPONENT glut_app)
+endif()
 endif()
 
 #--------------------------------------------------------------------
