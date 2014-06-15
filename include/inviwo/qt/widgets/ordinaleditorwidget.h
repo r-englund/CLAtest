@@ -85,7 +85,7 @@ protected:
     // Defines the transform
     virtual T editorToRepr(QString val) {
         QLocale locale = BaseOrdinalEditorWidget::editor_->locale();
-        return static_cast<T>(locale.toDouble(val));
+        return static_cast<T>(locale.toDouble(val.remove(QChar(' '))));
     }
     virtual QString reprToEditor(T val) {
         QLocale locale = BaseOrdinalEditorWidget::editor_->locale();
@@ -106,7 +106,7 @@ protected:
     // Defines the transform
     virtual int editorToRepr(QString val) {
         QLocale locale = BaseOrdinalEditorWidget::editor_->locale();
-        return locale.toInt(val);
+        return locale.toInt(val.remove(QChar(' ')));
     }
     virtual QString reprToEditor(int val) {
         QLocale locale = BaseOrdinalEditorWidget::editor_->locale();
