@@ -92,9 +92,9 @@ PARSEVEC2(vec2, float, parseVec2, "ff");
 PARSEVEC3(vec3, float, parseVec3, "fff");
 PARSEVEC4(vec4, float, parseVec4, "ffff");
 
-PARSEVEC2(dvec2, float, parseDVec2, "dd");
-PARSEVEC3(dvec3, float, parseDVec3, "ddd");
-PARSEVEC4(dvec4, float, parseDVec4, "dddd");
+PARSEVEC2(dvec2, double, parseDVec2, "dd");
+PARSEVEC3(dvec3, double, parseDVec3, "ddd");
+PARSEVEC4(dvec4, double, parseDVec4, "dddd");
 
 bool parseBool(PyObject* args) {
     return PyObject_IsTrue(args) != 0;
@@ -282,6 +282,18 @@ PyObject* PyValueParser::toPyObject(vec4 v) {
     return Py_BuildValue("ffff", v.x, v.y, v.z, v.w);
 }
 template <>
+PyObject* PyValueParser::toPyObject(dvec2 v) {
+    return Py_BuildValue("dd", v.x, v.y);
+}
+template <>
+PyObject* PyValueParser::toPyObject(dvec3 v) {
+    return Py_BuildValue("ddd", v.x, v.y, v.z);
+}
+template <>
+PyObject* PyValueParser::toPyObject(dvec4 v) {
+    return Py_BuildValue("dddd", v.x, v.y, v.z, v.w);
+}
+template <>
 PyObject* PyValueParser::toPyObject(ivec2 v) {
     return Py_BuildValue("ii", v.x, v.y);
 }
@@ -431,11 +443,15 @@ PyObject* PyValueParser::getProperty(Property* p) {
     CAST_DO_STUFF(FloatVec2Property, p);
     CAST_DO_STUFF(FloatVec3Property, p);
     CAST_DO_STUFF(FloatVec4Property, p);
+    CAST_DO_STUFF(DoubleVec2Property, p);
+    CAST_DO_STUFF(DoubleVec3Property, p);
+    CAST_DO_STUFF(DoubleVec4Property, p);
     CAST_DO_STUFF(FloatMat2Property, p);
     CAST_DO_STUFF(FloatMat3Property, p);
     CAST_DO_STUFF(FloatMat4Property, p);
     CAST_DO_STUFF(FloatMinMaxProperty, p);
     CAST_DO_STUFF(IntMinMaxProperty, p);
+    CAST_DO_STUFF(DoubleMinMaxProperty, p);
     CAST_DO_STUFF(OptionPropertyInt, p);
     CAST_DO_STUFF(OptionPropertyFloat, p);
     CAST_DO_STUFF(OptionPropertyString, p);
@@ -518,6 +534,19 @@ bool IVW_MODULE_PYTHON_API PyValueParser::is<vec3>(PyObject* arg) {
 template <>
 bool IVW_MODULE_PYTHON_API PyValueParser::is<vec4>(PyObject* arg) {
     return testTuple<float, 4>(arg);
+}
+
+template <>
+bool IVW_MODULE_PYTHON_API PyValueParser::is<dvec2>(PyObject* arg) {
+    return testTuple<double, 2>(arg);
+}
+template <>
+bool IVW_MODULE_PYTHON_API PyValueParser::is<dvec3>(PyObject* arg) {
+    return testTuple<double, 3>(arg);
+}
+template <>
+bool IVW_MODULE_PYTHON_API PyValueParser::is<dvec4>(PyObject* arg) {
+    return testTuple<double, 4>(arg);
 }
 
 template <>
