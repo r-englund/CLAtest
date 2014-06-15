@@ -47,6 +47,7 @@
 // Core
 #include <inviwo/core/properties/ordinalproperty.h>
 
+
 namespace inviwo {
 
 struct SinglePropertySetting {
@@ -67,6 +68,23 @@ struct SinglePropertySetting {
     QLineEdit* val_;
     QLineEdit* max_;
     QLineEdit* inc_;
+    
+    double getMinAsDouble() const  {
+        QLocale locale = min_->locale();
+        return locale.toDouble(min_->text().remove(QChar(' ')));
+    }
+    double getValAsDouble() const  {
+        QLocale locale = val_->locale();
+        return locale.toDouble(val_->text().remove(QChar(' ')));
+    }
+    double getMaxAsDouble() const  {
+        QLocale locale = max_->locale();
+        return locale.toDouble(max_->text().remove(QChar(' ')));
+    }
+    double getIncAsDouble() const  {
+        QLocale locale = inc_->locale();
+        return locale.toDouble(inc_->text().remove(QChar(' ')));
+    }
 };
 
 class IVW_QTWIDGETS_API PropertySettingsWidgetQt : public QWidget {
@@ -174,18 +192,16 @@ public:
         T maxOrg = property_->getMaxValue();
         T incOrg = property_->getIncrement();
 
-        QLocale locale = settings_[0]->min_->locale();
-
         for (size_t i = 0; i < components.x; i++) {
             for (size_t j = 0; j < components.y; j++) {
                 min = glmwrapper<BT, T>::setval(
-                    min, count, static_cast<BT>(locale.toDouble(settings_[count]->min_->text())));
+                    min, count, static_cast<BT>(settings_[count]->getMinAsDouble()));
                 val = glmwrapper<BT, T>::setval(
-                    val, count, static_cast<BT>(locale.toDouble(settings_[count]->val_->text())));
+                    val, count, static_cast<BT>(settings_[count]->getValAsDouble()));
                 max = glmwrapper<BT, T>::setval(
-                    max, count, static_cast<BT>(locale.toDouble(settings_[count]->max_->text())));
+                    max, count, static_cast<BT>(settings_[count]->getMaxAsDouble()));
                 inc = glmwrapper<BT, T>::setval(
-                    inc, count, static_cast<BT>(locale.toDouble(settings_[count]->inc_->text())));
+                    inc, count, static_cast<BT>(settings_[count]->getIncAsDouble()));
                 count++;
             }
         }
@@ -197,6 +213,7 @@ public:
 
         InviwoApplication::getPtr()->getProcessorNetwork()->unlock();
     }
+
     virtual void reload() {
         uvec2 components = OrdinalProperty<T>::getDim();
         size_t count = 0;
