@@ -747,7 +747,7 @@ void LinkDialogGraphicsScene::addPropertyLink(LinkDialogPropertyGraphicsItem* st
     Processor* endProcessor = dynamic_cast<Processor*>(eProp->getOwner());
     ProcessorLink* processorLink = processorNetwork_->getLink(startProcessor, endProcessor);
 
-    if (!processorLink->isLinked(sProp, eProp) && !processorLink->isLinked(eProp, sProp)) {
+    if (processorLink && !processorLink->isLinked(sProp, eProp) && !processorLink->isLinked(eProp, sProp)) {
         processorLink->addPropertyLinks(sProp, eProp);
         PropertyLink* propertyLink = processorLink->getPropertyLink(sProp, eProp);
 
@@ -934,7 +934,7 @@ void LinkDialogGraphicsScene::keyPressEvent(QKeyEvent* e) {
 void LinkDialogGraphicsScene::contextMenuEvent(QGraphicsSceneContextMenuEvent* e) {
     DialogConnectionGraphicsItem* linkGraphicsItem = getSceneGraphicsItemAt<DialogConnectionGraphicsItem>(e->scenePos()) ;
 
-    if (linkGraphicsItem) {
+    if (linkGraphicsItem && linkGraphicsItem->getPropertyLink()) {
         QMenu menu;
         QAction* deleteAction = menu.addAction("Delete");
         QAction* biDirectionAction = menu.addAction("BiDirectional");
