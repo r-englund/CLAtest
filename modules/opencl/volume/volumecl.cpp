@@ -77,31 +77,6 @@ void VolumeCL::deinitialize() {
     delete clImage_;
 }
 
-float VolumeCL::getVolumeDataScaling(const Volume* volume) const {
-    // Note: The basically the same code is used in VolumeCLGL and VolumeGL as well.
-    // Changes here should also be done there.
-    // Compute data scaling based on volume data range
-    double scalingFactor = 1.f;
-    // Scaling for 12-bit data
-    if (volume->getDataFormat()->getBitsStored() == 12) {
-        scalingFactor =
-            (DataUINT16::max() / DataUINT12::max());
-    }
-    
-    glm::dvec2 dataRange = volume->dataMap_.dataRange;
-    DataMapper defaultRange(volume->getDataFormat());
-    
-    if (dataRange == defaultRange.dataRange) {
-        // no change, use original GL scaling factor if volume data range is equal to type data
-        // range
-        return static_cast<float>(scalingFactor);
-    } else {
-        // TODO: consider lower bounds of data range as well (offset in shader before scaling)
-        scalingFactor = defaultRange.dataRange.y / dataRange.y;
-        return static_cast<float>(scalingFactor);
-    }
-}
-
 void VolumeCL::upload(const void* data) {
     OpenCL::getPtr()->getQueue().enqueueWriteImage(
         *clImage_, true, glm::svec3(0), glm::svec3(dimensions_), 0, 0, const_cast<void*>(data));

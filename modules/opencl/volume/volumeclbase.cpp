@@ -44,6 +44,51 @@ VolumeCLBase::VolumeCLBase(const VolumeCLBase& rhs) {
 
 VolumeCLBase::~VolumeCLBase() { }
 
+vec2 VolumeCLBase::getVolumeDataOffsetAndScaling(const Volume* volume) const
+{
+    // Note: The basically the same code is used in VolumeCLGL and VolumeGL as well.
+    // Changes here should also be done there.
+    // Compute data scaling based on volume data range
+
+    dvec2 dataRange = volume->dataMap_.dataRange;
+    DataMapper defaultRange(volume->getDataFormat());
+    double typescale = getCLFormats()->getCLFormat(volume->getDataFormat()->getId()).scaling;
+    defaultRange.dataRange *= typescale;
+    defaultRange.dataRange *= typescale;
+
+    double scalingFactor = 1.0;
+    double signedScalingFactor = 1.0;
+    double offset = 0.0;
+    double signedOffset = 0.0;
+
+    double invRange = 1.0 / (dataRange.y - dataRange.x);
+    double defaultToDataRange = (defaultRange.dataRange.y - defaultRange.dataRange.x) * invRange;
+    double defaultToDataOffset = (dataRange.x - defaultRange.dataRange.x) /
+        (defaultRange.dataRange.y - defaultRange.dataRange.x);
+
+    switch (getCLFormats()->getCLFormat(volume->getDataFormat()->getId()).normalization) {
+    case CLFormats::NONE:
+        scalingFactor = invRange;
+        offset = -dataRange.x;
+        signedScalingFactor = scalingFactor;
+        signedOffset = offset;
+        break;
+    case CLFormats::NORMALIZED:
+        scalingFactor = defaultToDataRange;
+        offset = -defaultToDataOffset;
+        signedScalingFactor = scalingFactor;
+        signedOffset = offset;
+        break;
+    case CLFormats::SIGN_NORMALIZED:
+        scalingFactor = 0.5 * defaultToDataRange;
+        offset = 1.0 - 2 * defaultToDataOffset;
+        signedScalingFactor = defaultToDataRange;
+        signedOffset = -defaultToDataOffset;
+        break;
+    }
+    return vec2(offset, scalingFactor);
+}
+
 } // namespace
 
 namespace cl {

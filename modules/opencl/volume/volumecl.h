@@ -54,8 +54,6 @@ public:
 
     void initialize(const void* voxels);
 
-    float getVolumeDataScaling(const Volume* volume) const;
-
     virtual void setDimension(uvec3 dimensions) { dimensions_ = dimensions; deinitialize(); initialize(); }
 
     void upload(const void* data);

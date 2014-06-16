@@ -101,27 +101,6 @@ void VolumeCLGL::deinitialize() {
     }
 }
 
-
-float VolumeCLGL::getVolumeDataScaling(const Volume* volume) const {
-    // Note: The basically the same code is used in VolumeGL and VolumeCL as well.
-    // Changes here should also be done there.
-    // OpenGL uses reverse scaling (1 - scaling). We should changed the OpenGL way...
-    // Compute data scaling based on volume data range
-    dvec2 dataRange = volume->dataMap_.dataRange;
-    DataMapper defaultRange(volume->getDataFormat());
-
-    if (dataRange == defaultRange.dataRange) {
-        // no change, use original GL scaling factor if volume data range is equal to type data
-        // range
-        return 1.f - getGLFormats()->getGLFormat(getDataFormatId()).scaling;
-    } else {
-        // TODO: consider lower bounds of data range as well (offset in shader before scaling)
-        double scalingFactor = defaultRange.dataRange.y / dataRange.y;
-        return static_cast<float>(scalingFactor);
-    }
-}
-
-
 void VolumeCLGL::notifyBeforeTextureInitialization() {
     CLTextureSharingMap::iterator it = OpenCLImageSharing::clImageSharingMap_.find(texture_);
 

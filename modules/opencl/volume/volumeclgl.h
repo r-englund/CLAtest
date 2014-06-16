@@ -59,14 +59,6 @@ public:
     void initialize(Texture3D* texture);
     virtual void setDimension(uvec3 dimensions);
 
-    /** 
-     * \brief Overrides default behavior and uses OpenGL based scaling instead.
-     * 
-     * @param const Volume * volume 
-     * @return float 
-     */
-    virtual float getVolumeDataScaling(const Volume* volume) const;
-
     virtual cl::Image3D& getEditable() { return *static_cast<cl::Image3D*>(clImage_); }
     virtual const cl::Image3D& get() const { return *const_cast<const cl::Image3D*>(static_cast<const cl::Image3D*>(clImage_)); }
     const Texture3D* getTexture() const { return texture_; }

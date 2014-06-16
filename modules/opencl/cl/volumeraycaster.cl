@@ -35,7 +35,7 @@
 __constant float REF_SAMPLING_INTERVAL = 150.f;
 #define ERT_THRESHOLD 1.0
 
-__kernel void raycaster(read_only image3d_t volume, float volumeDataScaling
+__kernel void raycaster(read_only image3d_t volume, float2 volumeDataOffsetScaling
                         , read_only image2d_t entryPoints
                         , read_only image2d_t exitPoints
                         , read_only image2d_t transferFunction 
@@ -51,16 +51,19 @@ __kernel void raycaster(read_only image3d_t volume, float volumeDataScaling
     float4 exit = read_imagef(exitPoints, smpUNormNoClampNearest, globalId);
     float3 direction = exit.xyz - entry.xyz;   
     float tEnd = fast_length(direction);
+
     float4 result = (float4)(0.f); 
     if(tEnd > 0.f) {     
         direction = fast_normalize(direction);
         float tIncr = min(tEnd, tEnd/(samplingRate*length(direction*convert_float3(get_image_dim(volume).xyz)))); 
+        float samples = ceil(tEnd/tIncr);
+        tIncr = tEnd/samples;
         // Start integrating at the center of the bins
         float t = 0.5f*tIncr; 
         float4 emissionAbsorption;
         while(t < tEnd) {
             float3 pos = entry.xyz+t*direction;
-            float volumeSample = getVoxelS(volume, as_float4(pos), volumeDataScaling); 
+            float volumeSample = getVoxelS(volume, as_float4(pos), volumeDataOffsetScaling); 
             // xyz == emission, w = absorption
             emissionAbsorption = read_imagef(transferFunction, smpNormClampEdgeLinear, (float2)(volumeSample, 0.5f));
             // Taylor expansion approximation
@@ -71,13 +74,7 @@ __kernel void raycaster(read_only image3d_t volume, float volumeDataScaling
             if (result.w > ERT_THRESHOLD) t = tEnd;   
             else t += tIncr;   
         }
-        // Remove the last part of the integration that was too much.
-        if (result.w < 1.f) {
-            float dt = tEnd-(t-0.5f*tIncr);
-            float opacity = 1.f - native_powr(1.f - emissionAbsorption.w, dt * REF_SAMPLING_INTERVAL);
-		    result.xyz = result.xyz + (1.f - result.w) * opacity * emissionAbsorption.xyz;
-            result.w = result.w + (1.f - result.w) * opacity;	
-        }
+
     }
          
     write_imagef(output, globalId,  result);     

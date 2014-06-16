@@ -42,8 +42,8 @@ float AshikimBRDF(const float3 wo, const float3 wi, const float3 N, const float 
     float cosThetaWo = absCosTheta(wo);
     float cosThetaWi = absCosTheta(wi);
 
-    //if ( cosThetaWo*cosThetaWi < 1e-4f ) 
-    //    return (float)(0.f);
+    if ( cosThetaWo*cosThetaWi < 1e-4f ) 
+        return (float)(0.f);
 
     if ( cosThetaWo == 0.f || cosThetaWi == 0.f ) 
         return 0.f;
