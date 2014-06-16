@@ -61,6 +61,9 @@ CanvasQt::CanvasQt(QWindow* parent, uvec2 dim)
     , CanvasGL(dim)
     , thisGLContext_(NULL)
     , swapBuffersAllowed_(false)
+#ifndef QT_NO_GESTURES
+    , gestureMode_(false)
+#endif
 {
     setSurfaceType(QWindow::OpenGLSurface);
     setFormat(sharedFormat_);
@@ -104,6 +107,9 @@ CanvasQt::CanvasQt(QWidget* parent, uvec2 dim)
     : QGLWidget(sharedFormat_, parent, sharedGLContext_)
       , CanvasGL(dim)
       , swapBuffersAllowed_(false)
+#ifndef QT_NO_GESTURES
+      , gestureMode_(false)
+#endif
 {
     //This is our default rendering context
     //Initialized once. So "THE" first object of this class will not have any shared context (or widget)
@@ -234,6 +240,11 @@ bool CanvasQt::event(QEvent *e) {
 void CanvasQt::mousePressEvent(QMouseEvent* e) {
     if (!processorNetworkEvaluator_) return;
 
+#ifndef QT_NO_GESTURES
+    if(gestureMode_)
+        return;
+#endif
+
     MouseEvent* mouseEvent = new MouseEvent(ivec2(e->pos().x(), e->pos().y()),
                                             EventConverterQt::getMouseButton(e), MouseEvent::MOUSE_STATE_PRESS,
                                             EventConverterQt::getModifier(e), getScreenDimension());
@@ -245,6 +256,11 @@ void CanvasQt::mousePressEvent(QMouseEvent* e) {
 void CanvasQt::mouseReleaseEvent(QMouseEvent* e) {
     if (!processorNetworkEvaluator_) return;
 
+#ifndef QT_NO_GESTURES
+    if(gestureMode_)
+        gestureMode_ = false;
+#endif
+
     MouseEvent* mouseEvent = new MouseEvent(ivec2(e->pos().x(), e->pos().y()),
                                             EventConverterQt::getMouseButton(e),MouseEvent::MOUSE_STATE_RELEASE,
                                             EventConverterQt::getModifier(e), getScreenDimension());
@@ -255,6 +271,11 @@ void CanvasQt::mouseReleaseEvent(QMouseEvent* e) {
 
 void CanvasQt::mouseMoveEvent(QMouseEvent* e) {
     if (!processorNetworkEvaluator_) return;
+
+#ifndef QT_NO_GESTURES
+    if(gestureMode_)
+        return;
+#endif
 
     MouseEvent* mouseEvent = NULL;
 
@@ -338,9 +359,10 @@ void CanvasQt::exposeEvent(QExposeEvent *e){
 #ifndef QT_NO_GESTURES
 
 bool CanvasQt::gestureEvent(QGestureEvent* e) {
+    gestureMode_ = true;
     if (QGesture* pan = e->gesture(Qt::PanGesture))
         panTriggered(static_cast<QPanGesture *>(pan));
-    if (QGesture* pinch = e->gesture(Qt::PinchGesture))
+    else if (QGesture* pinch = e->gesture(Qt::PinchGesture))
         pinchTriggered(static_cast<QPinchGesture *>(pinch));
     e->accept();
     return true;
@@ -357,15 +379,15 @@ void CanvasQt::panTriggered(QPanGesture* gesture) {
              setCursor(Qt::ArrowCursor);
     }
 #endif
-
-    GestureEvent* gestureEvent = new GestureEvent(vec2(gesture->delta().x(), gesture->delta().y()), 0.0,
+    GestureEvent* gestureEvent = new GestureEvent(
+        vec2(4*(gesture->lastOffset().x()-gesture->offset().x())/getScreenDimension().x, 4*(gesture->offset().y()-gesture->lastOffset().y())/getScreenDimension().y), 0.0,
         GestureEvent::PAN, EventConverterQt::getGestureState(gesture));
     Canvas::gestureEvent(gestureEvent);
     delete gestureEvent;
 }
 
 void CanvasQt::pinchTriggered(QPinchGesture* gesture) {
-    GestureEvent* gestureEvent = new GestureEvent(vec2(gesture->centerPoint().x(), gesture->centerPoint().y()), (gesture->scaleFactor()-gesture->lastScaleFactor())*gesture->totalScaleFactor()/256,
+    GestureEvent* gestureEvent = new GestureEvent(vec2(gesture->centerPoint().x(), gesture->centerPoint().y()), 1.0-gesture->scaleFactor(),
         GestureEvent::PINCH, EventConverterQt::getGestureState(gesture));
     Canvas::gestureEvent(gestureEvent);
     delete gestureEvent;

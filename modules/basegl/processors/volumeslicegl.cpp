@@ -45,7 +45,6 @@ VolumeSliceGL::VolumeSliceGL()
     , outport_("image.outport", COLOR_ONLY)
     , sliceAlongAxis_("sliceAxis", "Slice along axis")
     , rotationAroundAxis_("rotation", "Rotation around axis (degrees)")
-    //, rotationAroundAxis_("rotation", "Rotation around axis (degrees)", 0.f, 0.f, 270.f, 90.f) // Increment does not work for slider. Use OptionFloat in the mean time
     , flipHorizontal_("flipHorizontal", "Flip Horizontal View", false)
     , flipVertical_("flipVertical", "Flip Vertical View", false)
     , sliceNumber_("sliceNumber", "Slice Number", 4, 1, 8)
@@ -258,6 +257,17 @@ VolumeSliceGL::VolumeSliceGLInteractationHandler::VolumeSliceGLInteractationHand
 }
 
 void VolumeSliceGL::VolumeSliceGLInteractationHandler::invokeEvent(Event* event){
+    GestureEvent* gestureEvent = dynamic_cast<GestureEvent*>(event);
+    if (gestureEvent) {
+        if(gestureEvent->type() == GestureEvent::PAN){
+            if (gestureEvent->deltaPos().y < 0)
+                slicer_->shiftSlice(1);
+            else if (gestureEvent->deltaPos().y > 0)
+                slicer_->shiftSlice(-1);
+        }
+        return;
+    }
+
     KeyboardEvent* keyEvent = dynamic_cast<KeyboardEvent*>(event);
     if (keyEvent) {
         int button = keyEvent->button();
