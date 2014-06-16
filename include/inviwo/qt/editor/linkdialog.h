@@ -93,6 +93,8 @@ public:
 
     QRectF boundingRect() const;
 
+    PropertyLink* getPropertyLink() const { return propertyLink_; }
+
     LinkDialogPropertyGraphicsItem* getStartProperty() const { return startPropertyGraphicsItem_; }
 
     LinkDialogPropertyGraphicsItem* getEndProperty() const { return endPropertyGraphicsItem_; }
