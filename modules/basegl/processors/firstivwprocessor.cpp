@@ -76,6 +76,7 @@ void FirstIvwProcessor::deinitialize() {
 }
 
 void FirstIvwProcessor::process() {
+    glDisable(GL_DEPTH_TEST);
     activateAndClearTarget(outport_);
     shader_->activate();
 
@@ -93,6 +94,7 @@ void FirstIvwProcessor::process() {
 
     shader_->deactivate();
     deactivateCurrentTarget();
+    glEnable(GL_DEPTH_TEST);
 }
 
 } // namespace

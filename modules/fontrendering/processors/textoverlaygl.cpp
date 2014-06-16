@@ -30,19 +30,19 @@
  *
  *********************************************************************************/
 
-#include "imageoverlay.h"
+#include "textoverlaygl.h"
 #include <inviwo/core/common/inviwoapplication.h>
 
 namespace inviwo {
 
-ProcessorClassName(ImageOverlay, "ImageOverlay");
-ProcessorCategory(ImageOverlay, "Image Operation");
-ProcessorCodeState(ImageOverlay, CODE_STATE_EXPERIMENTAL);
+ProcessorClassName(TextOverlayGL, "TextOverlayGL");
+ProcessorCategory(TextOverlayGL, "Drawing");
+ProcessorCodeState(TextOverlayGL, CODE_STATE_EXPERIMENTAL);
 
-ImageOverlay::ImageOverlay()
+TextOverlayGL::TextOverlayGL()
     : ProcessorGL(),
-      inport0_("inport0"),
-      outport_("outport", &inport0_, COLOR_ONLY),
+      inport_("inport"),
+      outport_("outport"),
       textStringProperty_("Text","Text","Lorem ipsum etc.",PropertyOwner::INVALID_OUTPUT,PropertySemantics::TextEditor),
       font_size_(20),
       xpos_(0),
@@ -51,7 +51,7 @@ ImageOverlay::ImageOverlay()
       optionPropertyIntFontSize_("Font size","Font size"),
       floatVec2FontPos_("Position","Position",vec2(0.0f))
 {
-    addPort(inport0_);
+    addPort(inport_);
     addPort(outport_);
     addProperty(textStringProperty_);
     addProperty(floatColor_);
@@ -71,12 +71,12 @@ ImageOverlay::ImageOverlay()
     optionPropertyIntFontSize_.setCurrentStateAsDefault();
 }
 
-ImageOverlay::~ImageOverlay() {}
+TextOverlayGL::~TextOverlayGL() {}
 
-void ImageOverlay::initialize() {
+void TextOverlayGL::initialize() {
     ProcessorGL::initialize();
-    shader_ = new Shader("fontrendering_freetype.vert", "fontrendering_freetype.frag",true);
-    shader_passthrough_ = new Shader("fontrendering_passthrough.frag",true);
+    copyShader_ = new Shader("img_copy.frag",true);
+    textShader_ = new Shader("fontrendering_freetype.vert", "fontrendering_freetype.frag",true);
     int error = 0;
 
     if (FT_Init_FreeType(&fontlib_))
@@ -93,15 +93,15 @@ void ImageOverlay::initialize() {
     glGenTextures(1, &texCharacter_);
     glGenBuffers(1, &vboCharacter_);
 }
-void ImageOverlay::deinitialize() {
-    delete shader_passthrough_;
-    delete shader_;
+void TextOverlayGL::deinitialize() {
+    delete copyShader_;
+    delete textShader_;
     glDeleteTextures(1, &texCharacter_);
     glDeleteBuffers(1, &vboCharacter_);
     ProcessorGL::deinitialize();
 }
 
-void ImageOverlay::render_text(const char* text, float x, float y, float sx, float sy, unsigned int unitNumber) {
+void TextOverlayGL::render_text(const char* text, float x, float y, float sx, float sy, unsigned int unitNumber) {
     const char* p;
     FT_Set_Pixel_Sizes(fontface_, 0, optionPropertyIntFontSize_.get());
 
@@ -157,8 +157,8 @@ void ImageOverlay::render_text(const char* text, float x, float y, float sx, flo
             {x2,     -y2 - h, 0, 1},
             {x2 + w, -y2 - h, 1, 1},
         };
-        shader_->setUniform("tex", (GLint)unitNumber);
-        shader_->setUniform("color", floatColor_.get());
+        textShader_->setUniform("tex", (GLint)unitNumber);
+        textShader_->setUniform("color", floatColor_.get());
         glBufferData(GL_ARRAY_BUFFER, sizeof(box), box, GL_STREAM_DRAW);
         glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
         x += (fontface_->glyph->advance.x >> 6) * sx;
@@ -166,21 +166,22 @@ void ImageOverlay::render_text(const char* text, float x, float y, float sx, flo
     }
 }
 
-void ImageOverlay::process() {
-    const Image* inputImage = inport0_.getData();
-    Image* outImage = outport_.getData();
-    ImageGL* outImageGL = outImage->getEditableRepresentation<ImageGL>();
-    activateTarget(outport_);
-    TextureUnit texUnit0;
-    bindColorTexture(inport0_, texUnit0.getEnum());
-    shader_passthrough_->activate();
-    shader_passthrough_->setUniform("inport0_", texUnit0.getUnitNumber());
-    shader_passthrough_->setUniform("dimension_", vec2(1.f / outImageGL->getDimension().x, 1.f / outImageGL->getDimension().y));
+void TextOverlayGL::process() {
+    activateAndClearTarget(outport_);
+    TextureUnit colorUnit, depthUnit, pickingUnit;
+    bindTextures(inport_, colorUnit.getEnum(), depthUnit.getEnum(), pickingUnit.getEnum());
+    //TextureUnit::setZeroUnit();
+    copyShader_->activate();
+    setGlobalShaderParameters(copyShader_);
+    copyShader_->setUniform("color_", colorUnit.getUnitNumber());
+    copyShader_->setUniform("depth_", depthUnit.getUnitNumber());
+    copyShader_->setUniform("picking_", pickingUnit.getUnitNumber());
     renderImagePlaneRect();
-    shader_passthrough_->deactivate();
+    copyShader_->deactivate();
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-    glActiveTexture(texUnit0.getEnum());
+    TextureUnit texUnit;
+    texUnit.activate();
     glBindTexture(GL_TEXTURE_2D, texCharacter_);
     glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_WRAP_S,GL_CLAMP_TO_EDGE);
     glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_WRAP_T,GL_CLAMP_TO_EDGE);
@@ -191,23 +192,23 @@ void ImageOverlay::process() {
     glEnableVertexAttribArray(attribute_location);
     glBindBuffer(GL_ARRAY_BUFFER, vboCharacter_);
     glVertexAttribPointer(attribute_location, 4, GL_FLOAT, GL_FALSE, 0, 0);
-    float sx = 2.f / outImageGL->getDimension().x;
-    float sy = 2.f / outImageGL->getDimension().y;
+    float sx = 2.f / outport_.getData()->getDimension().x;
+    float sy = 2.f / outport_.getData()->getDimension().y;
     font_size_ = optionPropertyIntFontSize_.getSelectedValue();
-    xpos_ = floatVec2FontPos_.get().x * outImageGL->getDimension().x;
-    ypos_ = floatVec2FontPos_.get().y * outImageGL->getDimension().y + float(font_size_);
-    shader_->activate();
+    xpos_ = floatVec2FontPos_.get().x * outport_.getData()->getDimension().x;
+    ypos_ = floatVec2FontPos_.get().y * outport_.getData()->getDimension().y + float(font_size_);
+    textShader_->activate();
     render_text(
         textStringProperty_.get().c_str(),
         -1 + xpos_ * sx,
         1 - (ypos_) * sy,
         sx,
         sy,
-        texUnit0.getUnitNumber());
-    shader_->deactivate();
-    deactivateCurrentTarget();
+        texUnit.getUnitNumber());
+    textShader_->deactivate();
     glDisableVertexAttribArray(attribute_location);
     glDisable(GL_BLEND);
+    deactivateCurrentTarget();
 }
 
 } // namespace

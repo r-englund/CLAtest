@@ -1,0 +1,176 @@
+<?xml version="1.0" ?>
+<InviwoTreeData version="1.0">
+    <!-- Don't edit the following code -->
+    <Processors>
+        <Processor type="FirstIVWProcessor" identifier="FirstIVWProcessor" id="ref0">
+            <MetaDataList>
+                <MetaData type="ProcessorMetaData">
+                    <position x="-650" y="-700" />
+                    <visibility content="1" />
+                    <selection content="0" />
+                </MetaData>
+            </MetaDataList>
+            <Properties>
+                <Property type="FloatVec3Property" identifier="color" displayName="Color" key="color">
+                    <semantics semantics="Default" />
+                    <visibilityMode content="1" />
+                    <value x="1" y="0.60000002" z="1" />
+                </Property>
+            </Properties>
+        </Processor>
+        <Processor type="CanvasGL" identifier="CanvasGL" id="ref3">
+            <MetaDataList>
+                <MetaData type="ProcessorMetaData">
+                    <position x="-675" y="-425" />
+                    <visibility content="1" />
+                    <selection content="0" />
+                </MetaData>
+                <MetaData type="ProcessorWidgetMetaData">
+                    <position x="1011" y="473" />
+                    <dimension x="256" y="256" />
+                    <visibility content="1" />
+                </MetaData>
+            </MetaDataList>
+            <Properties>
+                <Property type="FloatProperty" identifier="aspectRatioScaling" displayName="Aspect Ratio Scaling" key="aspectRatioScaling">
+                    <semantics semantics="Default" />
+                    <visibilityMode content="2" />
+                </Property>
+                <Property type="IntVec2Property" identifier="customInputDimensions" displayName="Input Image Dimensions" key="customInputDimensions">
+                    <semantics semantics="Default" />
+                    <visibilityMode content="2" />
+                    <readonly content="1" />
+                </Property>
+                <Property type="IntVec2Property" identifier="dimensions" displayName="Dimensions" key="dimensions">
+                    <semantics semantics="Default" />
+                    <visibilityMode content="1" />
+                </Property>
+                <Property type="BoolProperty" identifier="enableCustomInputDimensions" displayName="Enable Custom Input Dimensions" key="enableCustomInputDimensions">
+                    <semantics semantics="Default" />
+                    <visibilityMode content="1" />
+                </Property>
+                <Property type="BoolProperty" identifier="keepAspectRatio" displayName="Keep Aspect Ratio" key="keepAspectRatio">
+                    <semantics semantics="Default" />
+                    <visibilityMode content="2" />
+                </Property>
+                <Property type="DirectoryProperty" identifier="layerDir" displayName="Output Directory" key="layerDir">
+                    <semantics semantics="Default" />
+                    <visibilityMode content="1" />
+                    <directory content="../../../../../../" />
+                </Property>
+                <Property type="ButtonProperty" identifier="saveLayer" displayName="Save Image Layer" key="saveLayer">
+                    <semantics semantics="Default" />
+                    <visibilityMode content="1" />
+                </Property>
+                <Property type="OptionPropertyInt" identifier="visibleLayer" displayName="Visible Layer" key="visibleLayer">
+                    <semantics semantics="Default" />
+                    <visibilityMode content="1" />
+                    <options>
+                        <option>
+                            <id content="color" />
+                            <name content="Color layer" />
+                            <value content="0" />
+                        </option>
+                        <option>
+                            <id content="depth" />
+                            <name content="Depth layer" />
+                            <value content="1" />
+                        </option>
+                        <option>
+                            <id content="picking" />
+                            <name content="Picking layer" />
+                            <value content="2" />
+                        </option>
+                    </options>
+                </Property>
+            </Properties>
+        </Processor>
+        <Processor type="TextOverlayGL" identifier="TextOverlayGL" id="ref1">
+            <MetaDataList>
+                <MetaData type="ProcessorMetaData">
+                    <position x="-625" y="-600" />
+                    <visibility content="1" />
+                    <selection content="0" />
+                </MetaData>
+            </MetaDataList>
+            <Properties>
+                <Property type="FloatVec4Property" identifier="FloatColor" displayName="FloatColor" key="FloatColor">
+                    <semantics semantics="Color" />
+                    <visibilityMode content="1" />
+                    <value x="1" y="0" z="0" w="1" />
+                </Property>
+                <Property type="OptionPropertyInt" identifier="Font size" displayName="Font size" key="Font size">
+                    <semantics semantics="Default" />
+                    <visibilityMode content="1" />
+                </Property>
+                <Property type="FloatVec2Property" identifier="Position" displayName="Position" key="Position">
+                    <semantics semantics="Default" />
+                    <visibilityMode content="1" />
+                    <value x="0.2087" y="0.70869994" />
+                </Property>
+                <Property type="StringProperty" identifier="Text" displayName="Text" key="Text">
+                    <semantics semantics="TextEditor" />
+                    <visibilityMode content="1" />
+                    <value content="GREEN AREA" />
+                </Property>
+            </Properties>
+        </Processor>
+        <Processor type="TextOverlayGL" identifier="TextOverlayGL1" id="ref2">
+            <MetaDataList>
+                <MetaData type="ProcessorMetaData">
+                    <position x="-625" y="-500" />
+                    <visibility content="1" />
+                    <selection content="0" />
+                </MetaData>
+            </MetaDataList>
+            <Properties>
+                <Property type="FloatVec4Property" identifier="FloatColor" displayName="FloatColor" key="FloatColor">
+                    <semantics semantics="Color" />
+                    <visibilityMode content="1" />
+                    <value x="0.15294118" y="0.090196081" z="0.83529413" w="1" />
+                </Property>
+                <Property type="OptionPropertyInt" identifier="Font size" displayName="Font size" key="Font size">
+                    <semantics semantics="Default" />
+                    <visibilityMode content="1" />
+                </Property>
+                <Property type="FloatVec2Property" identifier="Position" displayName="Position" key="Position">
+                    <semantics semantics="Default" />
+                    <visibilityMode content="1" />
+                    <value x="0.2087" y="0" />
+                </Property>
+                <Property type="StringProperty" identifier="Text" displayName="Text" key="Text">
+                    <semantics semantics="TextEditor" />
+                    <visibilityMode content="1" />
+                    <value content="PINK     AREA" />
+                </Property>
+            </Properties>
+        </Processor>
+    </Processors>
+    <Connections>
+        <Connection>
+            <OutPort identifier="outport">
+                <Processor type="TextOverlayGL" identifier="TextOverlayGL1" reference="ref2" />
+            </OutPort>
+            <InPort identifier="inport">
+                <Processor type="CanvasGL" identifier="CanvasGL" reference="ref3" />
+            </InPort>
+        </Connection>
+        <Connection>
+            <OutPort identifier="outport">
+                <Processor type="TextOverlayGL" identifier="TextOverlayGL" reference="ref1" />
+            </OutPort>
+            <InPort identifier="inport">
+                <Processor type="TextOverlayGL" identifier="TextOverlayGL1" reference="ref2" />
+            </InPort>
+        </Connection>
+        <Connection>
+            <OutPort identifier="outport">
+                <Processor type="FirstIVWProcessor" identifier="FirstIVWProcessor" reference="ref0" />
+            </OutPort>
+            <InPort identifier="inport">
+                <Processor type="TextOverlayGL" identifier="TextOverlayGL" reference="ref1" />
+            </InPort>
+        </Connection>
+    </Connections>
+    <ProcessorLinks />
+</InviwoTreeData>
