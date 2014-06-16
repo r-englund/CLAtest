@@ -15,7 +15,7 @@ ivw_module(Fontrendering)
 set(HEADER_FILES
 	${IVW_MODULE_DIR}/fontrendering/fontrenderingmodule.h
 	${IVW_MODULE_DIR}/fontrendering/fontrenderingmoduledefine.h
-	${IVW_MODULE_DIR}/fontrendering/processors/imageoverlay.h
+	${IVW_MODULE_DIR}/fontrendering/processors/textoverlaygl.h
 )
 ivw_group("Header Files" ${HEADER_FILES})
 
@@ -23,7 +23,7 @@ ivw_group("Header Files" ${HEADER_FILES})
 # Add source files
 set(SOURCE_FILES
 	${IVW_MODULE_DIR}/fontrendering/fontrenderingmodule.cpp
-	${IVW_MODULE_DIR}/fontrendering/processors/imageoverlay.cpp
+	${IVW_MODULE_DIR}/fontrendering/processors/textoverlaygl.cpp
 )
 ivw_group("Source Files" ${SOURCE_FILES})
 
@@ -32,13 +32,12 @@ ivw_group("Source Files" ${SOURCE_FILES})
 set(SHADER_FILES
     ${IVW_MODULE_DIR}/fontrendering/glsl/fontrendering_freetype.frag
     ${IVW_MODULE_DIR}/fontrendering/glsl/fontrendering_freetype.vert
-    ${IVW_MODULE_DIR}/fontrendering/glsl/fontrendering_passthrough.frag
 )
 ivw_group("Shader Files" ${SHADER_FILES})
 
 #--------------------------------------------------------------------
 # Create module
-ivw_create_module(${SOURCE_FILES} ${HEADER_FILES})
+ivw_create_module(${SOURCE_FILES} ${HEADER_FILES} ${SHADER_FILES})
 
 #--------------------------------------------------------------------
 # Add shader directory to pack

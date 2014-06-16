@@ -32,7 +32,7 @@
 
 #include <modules/fontrendering/fontrenderingmodule.h>
 #include <modules/opengl/glwrap/shadermanager.h>
-#include <modules/fontrendering/processors/imageoverlay.h>
+#include <modules/fontrendering/processors/textoverlaygl.h>
 
 namespace inviwo {
 
@@ -40,7 +40,7 @@ FontrenderingModule::FontrenderingModule() : InviwoModule() {
     setIdentifier("Fontrendering");
     ShaderManager::getPtr()->addShaderSearchPath(InviwoApplication::PATH_MODULES, "fontrendering/glsl");
     
-    registerProcessor(ImageOverlay);
+    registerProcessor(TextOverlayGL);
 }
 
 } // namespace

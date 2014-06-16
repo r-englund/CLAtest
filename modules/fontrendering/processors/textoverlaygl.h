@@ -30,12 +30,59 @@
  *
  *********************************************************************************/
 
-uniform sampler2D inport0_;
-uniform vec2 dimension_;
+#ifndef IVW_TEXTOVERLAYGL_H
+#define IVW_TEXTOVERLAYGL_H
 
-void main() {
-    vec2 texCoords = gl_FragCoord.xy * dimension_;
-    vec3 color0 = texture(inport0_, texCoords).rgb;
-    FragData0 = vec4(color0.rgb,1);
-    gl_FragDepth = 1.0;
-}
+#include <modules/fontrendering/fontrenderingmoduledefine.h>
+#include <inviwo/core/common/inviwo.h>
+#include <inviwo/core/ports/imageport.h>
+#include <modules/opengl/inviwoopengl.h>
+#include <modules/opengl/processorgl.h>
+#include <inviwo/core/properties/baseoptionproperty.h>
+#include <inviwo/core/properties/stringproperty.h>
+#include <inviwo/core/properties/ordinalproperty.h>
+#include <ft2build.h>
+#include FT_FREETYPE_H
+
+namespace inviwo {
+
+class IVW_MODULE_FONTRENDERING_API TextOverlayGL : public ProcessorGL {
+public:
+    TextOverlayGL();
+    ~TextOverlayGL();
+
+    InviwoProcessorInfo();
+
+    void initialize();
+    void deinitialize();
+
+    void render_text(const char* text, float x, float y, float sx, float sy, unsigned int unitNumber);
+
+protected:
+    virtual void process();
+
+private:
+    ImageInport inport_;
+    ImageOutport outport_;
+    FT_Library fontlib_;
+    FT_Face fontface_;
+    StringProperty textStringProperty_;
+
+    unsigned int font_size_;
+    float xpos_;
+    float ypos_;
+    
+    FloatVec4Property floatColor_;
+    OptionPropertyInt optionPropertyIntFontSize_;
+    FloatVec2Property floatVec2FontPos_;
+
+    Shader* copyShader_;
+    Shader* textShader_;
+
+    GLuint vboCharacter_;
+    GLuint texCharacter_;
+};
+
+} // namespace
+
+#endif // IVW_TEXTOVERLAYGL_H
