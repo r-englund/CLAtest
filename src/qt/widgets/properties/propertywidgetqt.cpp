@@ -91,7 +91,7 @@ void PropertyWidgetQt::hideWidget() {
 
 void PropertyWidgetQt::onViewModeChange() {
     if(viewModeItem_){
-        PropertyVisibilityMode appVisibilityMode  = getApplicationViewMode();
+        PropertyVisibilityMode appVisibilityMode = getApplicationViewMode();
        
         if (appVisibilityMode == DEVELOPMENT) {
             if(developerViewModeAction_)
@@ -311,13 +311,17 @@ void PropertyWidgetQt::updateModuleMenuActions() {
     }
 }
 
+PropertyVisibilityMode PropertyWidgetQt::getVisibilityMode() const {
+    return property_->getVisibilityMode();
+};
+
 void PropertyWidgetQt::setDeveloperViewMode(bool value) {
-    property_->setVisibility(DEVELOPMENT);
+    property_->setVisibilityMode(DEVELOPMENT);
     updateContextMenu();
 }
 
 void PropertyWidgetQt::setApplicationViewMode(bool value) {
-    property_->setVisibility(APPLICATION);
+    property_->setVisibilityMode(APPLICATION);
     updateContextMenu();
 }
 
@@ -325,7 +329,7 @@ PropertyVisibilityMode PropertyWidgetQt::getApplicationViewMode() {
     Settings* mainSettings = InviwoApplication::getPtr()->getSettingsByType<SystemSettings>();
     PropertyVisibilityMode appMode =
         static_cast<PropertyVisibilityMode>(dynamic_cast<OptionPropertyInt*>
-                                      (mainSettings->getPropertyByIdentifier("viewMode"))->get());
+                                      (mainSettings->getPropertyByIdentifier("visibilityMode"))->get());
     return appMode;
 }
 

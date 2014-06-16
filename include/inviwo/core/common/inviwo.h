@@ -52,10 +52,10 @@
 #endif
 
 #ifdef __clang__
-#define STR(X) #X
+#define STARTCLANGIGNORESTR(X) #X
 #define STARTCLANGIGNORE(X) \
     _Pragma("clang diagnostic push") \
-    _Pragma(STR(clang diagnostic ignored X))
+    _Pragma(STARTCLANGIGNORESTR(clang diagnostic ignored X))
 #define ENDCLANGIGNORE \
     _Pragma("clang diagnostic pop")
 #else

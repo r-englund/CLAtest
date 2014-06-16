@@ -65,6 +65,9 @@ public:
 
     virtual void setCurrentStateAsDefault();
     virtual void resetToDefaultState();
+    
+    virtual PropertyVisibilityMode getVisibilityMode() const;
+    virtual void setVisibilityMode(PropertyVisibilityMode visibilityMode);
 };
 
 } // namespace

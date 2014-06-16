@@ -81,7 +81,7 @@ public:
     virtual void onNetworkEditorFileChanged(const std::string& filename);
     virtual void onModifiedStatusChanged(const bool &newStatus);
 
-    void viewModeChangedInSettings();
+    void visibilityModeChangedInSettings();
 
     NetworkEditor* getNetworkEditor() { return networkEditor_; }
 
@@ -100,8 +100,7 @@ public slots:
     void exitInviwo();
     void disableEvaluation(bool);
     void showAboutBox();
-    void setDeveloperViewMode(bool value);
-    void setApplicationViewMode(bool value);
+    void setVisibilityMode(bool value); // True = Application, False = Developer
 
 private:
     void addMenus();
@@ -119,7 +118,7 @@ private:
 
     NetworkEditor* networkEditor_;
     NetworkEditorView* networkEditorView_;
-    BaseOptionProperty* viewModeProperty_;
+    BaseOptionProperty* visibilityModeProperty_;
 
     // mainwindow toolbar
     QToolBar* basicToolbar_;
@@ -148,8 +147,7 @@ private:
     QAction* exitAction_;
     QAction* recentFileSeparator_;
     QAction* workspaceActionRecent_[maxNumRecentFiles_];
-    QAction* viewModeActionDeveloper_;
-    QAction* viewModeActionApplication_;
+    QAction* visibilityModeAction_;
     QAction* aboutBoxAction_;
     QToolButton* enableDisableEvaluationButton_;
 

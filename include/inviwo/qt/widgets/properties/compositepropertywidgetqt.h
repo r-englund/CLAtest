@@ -60,6 +60,7 @@ public slots:
 protected slots:
     void propertyModified();
     void setDisplayModeFromGroupBox();
+    void labelDidChange(QString text);
     
 
 private:

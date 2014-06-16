@@ -41,7 +41,7 @@ namespace inviwo {
 SystemSettings::SystemSettings(std::string id) :
     Settings(id)
     , allocTest_(0)
-    , viewModeProperty_("viewMode","View mode")
+    , visibilityModeProperty_("visibilityMode","Visibility mode")
     , txtEditorProperty_("txtEditor", "Use system text editor", true)
     , shaderReloadingProperty_("shaderReloading", "Automatically reload shaders", true)
     , enablePortInformationProperty_("enablePortInformation", "Enable port information", true)
@@ -51,19 +51,16 @@ SystemSettings::SystemSettings(std::string id) :
     , useRAMPercentProperty_("useRAMPercent", "Max memory usage (%)", 50, 1, 100)
     , logStackTraceProperty_("logStackTraceProperty","Error stack trace log", false)
     , btnAllocTestProperty_("allocTest", "Perform Allocation Test")
-    , btnSysInfoProperty_("printSysInfo", "Print System Info")
-{
-}
+    , btnSysInfoProperty_("printSysInfo", "Print System Info") {}
 
-SystemSettings::~SystemSettings() {
-}
+SystemSettings::~SystemSettings() {}
 
 void SystemSettings::initialize() {
-    viewModeProperty_.addOption("developerMode","Developer Mode",0);
-    viewModeProperty_.addOption("applicationMode","Application Mode",1);
-    viewModeProperty_.setCurrentStateAsDefault();
-    addProperty(&viewModeProperty_);
-    viewModeProperty_.setVisibility(INVISIBLE);
+    visibilityModeProperty_.addOption("applicationMode","Application Mode", 0);
+    visibilityModeProperty_.addOption("developerMode","Developer Mode", 1);
+    visibilityModeProperty_.setCurrentStateAsDefault();
+    addProperty(&visibilityModeProperty_);
+    visibilityModeProperty_.setVisibilityMode(INVISIBLE);
     addProperty(&txtEditorProperty_);
     addProperty(&shaderReloadingProperty_);
     addProperty(&enablePortInformationProperty_);
@@ -93,25 +90,25 @@ void SystemSettings::logStacktraceCallback() {
 
 void SystemSettings::allocationTest() {
     InviwoCore* module = InviwoApplication::getPtr()->getModuleByType<InviwoCore>();
-    ivwAssert(module!=0, "Core module is not yet registered")
-    SystemCapabilities* sysInfo = getTypeFromVector<SystemCapabilities>(module->getCapabilities());
+    ivwAssert(module != 0, "Core module is not yet registered") SystemCapabilities* sysInfo =
+        getTypeFromVector<SystemCapabilities>(module->getCapabilities());
 
     if (sysInfo) {
-        IntProperty* useRAMPercent = dynamic_cast<IntProperty*>(getPropertyByIdentifier("useRAMPercent"));
-        glm::u64 memBytesAlloc = sysInfo->getAvailableMemory(); //In Bytes
+        IntProperty* useRAMPercent =
+            dynamic_cast<IntProperty*>(getPropertyByIdentifier("useRAMPercent"));
+        glm::u64 memBytesAlloc = sysInfo->getAvailableMemory();  // In Bytes
         LogInfo("Maximum Available Memory is " << formatBytesToString(memBytesAlloc));
-        memBytesAlloc /= 100; //1% of total available memory
-        memBytesAlloc *= useRAMPercent->get(); //?% of total available memory
+        memBytesAlloc /= 100;  // 1% of total available memory
+        memBytesAlloc *= useRAMPercent->get();  //?% of total available memory
 
-        try
-        {
-            allocTest_ = new glm::u32[static_cast<glm::u32>(memBytesAlloc/4)];
-            LogInfo("Allocated " << formatBytesToString(memBytesAlloc) << ", which is " << useRAMPercent->get() << "% of available memory");
+        try {
+            allocTest_ = new glm::u32[static_cast<glm::u32>(memBytesAlloc / 4)];
+            LogInfo("Allocated " << formatBytesToString(memBytesAlloc) << ", which is "
+                                 << useRAMPercent->get() << "% of available memory");
             delete allocTest_;
-        }
-        catch (std::bad_alloc&)
-        {
-            LogError("Failed allocation of " << formatBytesToString(memBytesAlloc) << ", which is " << useRAMPercent->get() << "% of available memory");
+        } catch (std::bad_alloc&) {
+            LogError("Failed allocation of " << formatBytesToString(memBytesAlloc) << ", which is "
+                                             << useRAMPercent->get() << "% of available memory");
         }
     }
 }

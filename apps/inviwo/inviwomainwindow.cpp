@@ -62,8 +62,8 @@ InviwoMainWindow::InviwoMainWindow()
     : QMainWindow()
     , PropertyListWidgetObserver()
     , ProcessorNetworkObserver() 
-    , viewModeProperty_(NULL)
-{
+    , visibilityModeProperty_(NULL) {
+    
     NetworkEditor::init();
     networkEditor_ = &NetworkEditor::getRef();
     // initialize console widget first to receive log messages
@@ -265,31 +265,28 @@ void InviwoMainWindow::addMenuActions() {
     consoleWidget_->toggleViewAction()->setText(tr("&Output Console"));
     viewMenuItem_->addAction(consoleWidget_->toggleViewAction());
     viewMenuItem_->addAction(resourceManagerWidget_->toggleViewAction());
-    // application/developer mode menu entries
-    viewModeActionDeveloper_ = new QAction(tr("&Developer View"),this);
-    viewModeActionDeveloper_->setCheckable(true);
-    viewModeActionDeveloper_->setIcon(QIcon(":/icons/view-developer.png"));
-    viewModeItem_->addAction(viewModeActionDeveloper_);
-    viewModeActionApplication_ = new QAction(tr("&Application View"),this);
-    viewModeActionApplication_->setCheckable(true);
-    viewModeActionApplication_->setIcon(QIcon(":/icons/view-application.png"));
-    viewModeItem_->addAction(viewModeActionApplication_);
-    QActionGroup* viewModeActionGroup = new QActionGroup(this);
-    viewModeActionGroup->addAction(viewModeActionDeveloper_);
-    viewModeActionGroup->addAction(viewModeActionApplication_);
 
-    Property* vmp = InviwoApplication::getPtr()->getSettingsByType<SystemSettings>()->getPropertyByIdentifier("viewMode");
+    // application/developer mode menu entries
+    visibilityModeAction_ = new QAction(tr("&Application / Developer Mode"),this);
+    visibilityModeAction_->setCheckable(true);
+    visibilityModeAction_->setChecked(false);
+    
+    QIcon visibilityModeIcon;
+    visibilityModeIcon.addFile(":/icons/view-developer.png", QSize(), QIcon::Active, QIcon::Off);
+    visibilityModeIcon.addFile(":/icons/view-application.png", QSize(), QIcon::Active, QIcon::On);
+    visibilityModeAction_->setIcon(visibilityModeIcon);
+    viewMenuItem_->addAction(visibilityModeAction_);
+
+    Property* vmp = InviwoApplication::getPtr()->getSettingsByType<SystemSettings>()->getPropertyByIdentifier("visibilityMode");
     if(vmp){
-        viewModeProperty_ = dynamic_cast<BaseOptionProperty*>(vmp);
-        vmp->onChange(this, &InviwoMainWindow::viewModeChangedInSettings);
+        visibilityModeProperty_ = dynamic_cast<BaseOptionProperty*>(vmp);
+        vmp->onChange(this, &InviwoMainWindow::visibilityModeChangedInSettings);
     }
 
-    connect(viewModeActionDeveloper_, SIGNAL(triggered(bool)), this, SLOT(setDeveloperViewMode(bool)));
-    connect(viewModeActionApplication_, SIGNAL(triggered(bool)), this, SLOT(setApplicationViewMode(bool)));
-    connect(viewModeActionDeveloper_, SIGNAL(triggered(bool)), propertyListWidget_, SLOT(setDeveloperViewMode(bool)));
-    connect(viewModeActionApplication_, SIGNAL(triggered(bool)), propertyListWidget_, SLOT(setApplicationViewMode(bool)));
+    connect(visibilityModeAction_, SIGNAL(triggered(bool)), this, SLOT(setVisibilityMode(bool)));
+    connect(visibilityModeAction_, SIGNAL(triggered(bool)), propertyListWidget_, SLOT(setVisibilityMode(bool)));
 
-    viewModeChangedInSettings();
+    visibilityModeChangedInSettings();
 
     enableDisableEvaluationButton_ = new QToolButton(this);
     enableDisableEvaluationButton_->setToolTip(tr("Enable/Disable Evaluation"));
@@ -299,7 +296,11 @@ void InviwoMainWindow::addMenuActions() {
     enableDisableIcon.addFile(":/icons/button_ok.png", QSize(), QIcon::Active, QIcon::Off);
     enableDisableIcon.addFile(":/icons/button_cancel.png", QSize(), QIcon::Active, QIcon::On);
     enableDisableEvaluationButton_->setIcon(enableDisableIcon);
-    connect(enableDisableEvaluationButton_, SIGNAL(toggled(bool)), this, SLOT(disableEvaluation(bool)));
+    connect(enableDisableEvaluationButton_,
+            SIGNAL(toggled(bool)),
+            this,
+            SLOT(disableEvaluation(bool)));
+    
     aboutBoxAction_ = new QAction(QIcon(":/icons/about.png"), tr("&About"), this);
     connect(aboutBoxAction_, SIGNAL(triggered()), this, SLOT(showAboutBox()));
     helpMenuItem_->addAction(aboutBoxAction_);
@@ -315,8 +316,7 @@ void InviwoMainWindow::addToolBars() {
    // workspaceToolBar_->addAction(workspaceActionSaveAsCopy_);
     viewModeToolBar_ = addToolBar("View");
     viewModeToolBar_->setObjectName("viewModeToolBar");
-    viewModeToolBar_->addAction(viewModeActionDeveloper_);
-    viewModeToolBar_->addAction(viewModeActionApplication_);
+    viewModeToolBar_->addAction(visibilityModeAction_);
     viewModeToolBar_->addWidget(enableDisableEvaluationButton_);
 }
 
@@ -326,6 +326,13 @@ void InviwoMainWindow::updateWindowTitle() {
 
     if (getNetworkEditor()->isModified())
         windowTitle.append("*");
+
+
+    if(visibilityModeAction_->isChecked()){
+        windowTitle.append(" (Application mode)");
+    }else{
+        windowTitle.append(" (Developer mode)");
+    }
 
     setWindowTitle(windowTitle);
 }
@@ -543,41 +550,38 @@ void InviwoMainWindow::showAboutBox() {
     QMessageBox::about(this, QString::fromStdString("Inviwo V"+IVW_VERSION), QString::fromStdString(aboutText));
 }
 
-void InviwoMainWindow::viewModeChangedInSettings(){
-    if(viewModeProperty_){
-        size_t selectedIdx = viewModeProperty_->getSelectedIndex();
-        if (selectedIdx == 0) {
-            if(!viewModeActionDeveloper_->isChecked()){ 
-                viewModeActionDeveloper_->setChecked(true);
+void InviwoMainWindow::visibilityModeChangedInSettings(){
+    if(visibilityModeProperty_){
+        size_t selectedIdx = visibilityModeProperty_->getSelectedIndex();
+        if (selectedIdx == DEVELOPMENT) {
+            if(visibilityModeAction_->isChecked()){
+                visibilityModeAction_->setChecked(false);
             }
-            propertyListWidget_->setDeveloperViewMode(true);
-            setDeveloperViewMode(true);
-        } else if (selectedIdx == 1) {
-            if(!viewModeActionApplication_->isChecked()){
-                viewModeActionApplication_->setChecked(true);
+            propertyListWidget_->setVisibilityMode(false);
+            setVisibilityMode(false);
+        } else if (selectedIdx == APPLICATION) {
+            if(!visibilityModeAction_->isChecked()){
+                visibilityModeAction_->setChecked(true);
             }
-            propertyListWidget_->setApplicationViewMode(true);
-            setApplicationViewMode(true);
+            propertyListWidget_->setVisibilityMode(true);
+            setVisibilityMode(true);
         }
+        updateWindowTitle();
     }
 }
 
-void InviwoMainWindow::setDeveloperViewMode(bool value) {
-    size_t selectedIdx = viewModeProperty_->getSelectedIndex();
-    if(selectedIdx != 0)
-        viewModeProperty_->setSelectedIndex(0);
-
-    if (value)
-        networkEditorView_->hideNetwork(false);
-}
-
-void InviwoMainWindow::setApplicationViewMode(bool value) {
-    size_t selectedIdx = viewModeProperty_->getSelectedIndex();
-    if(selectedIdx != 1)
-        viewModeProperty_->setSelectedIndex(1);
-
-    if (value)
-        networkEditorView_->hideNetwork(true);
+// False == Development, True = Application
+void InviwoMainWindow::setVisibilityMode(bool applicationView) {
+    size_t selectedIdx = visibilityModeProperty_->getSelectedIndex();
+    if(applicationView) {
+        if(selectedIdx != APPLICATION)
+            visibilityModeProperty_->setSelectedIndex(APPLICATION);
+    }else{
+        if(selectedIdx != DEVELOPMENT)
+            visibilityModeProperty_->setSelectedIndex(DEVELOPMENT);
+    }
+    networkEditorView_->hideNetwork(applicationView);
+    updateWindowTitle();
 }
 
 void InviwoMainWindow::exitInviwo() {

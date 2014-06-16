@@ -40,12 +40,12 @@
 #include <QSignalMapper>
 #include <QSettings>
 
-
 namespace inviwo {
 
 PropertyListWidget* PropertyListWidget::propertyListWidget_ = 0;
 
-PropertyListWidget::PropertyListWidget(QWidget* parent) : InviwoDockWidget(tr("Properties"), parent), PropertyListWidgetObservable() {
+PropertyListWidget::PropertyListWidget(QWidget* parent)
+    : InviwoDockWidget(tr("Properties"), parent), PropertyListWidgetObservable() {
     setObjectName("ProcessorListWidget");
     setAllowedAreas(Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea);
     propertyListWidget_ = this;
@@ -55,81 +55,100 @@ PropertyListWidget::PropertyListWidget(QWidget* parent) : InviwoDockWidget(tr("P
     scrollArea_->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     scrollArea_->setFrameShape(QFrame::NoFrame);
     scrollArea_->setContentsMargins(0, 0, 0, 0);
+
     listWidget_ = new QWidget();
-    listWidgetLayout_ = new QVBoxLayout(listWidget_);
-    listWidgetLayout_->setAlignment(Qt::AlignTop);
-    listWidgetLayout_->setContentsMargins(7, 7, 7, 7);
-    listWidgetLayout_->setSpacing(7);
+    listLayout_ = new QVBoxLayout(listWidget_);
+    listLayout_->setAlignment(Qt::AlignTop);
+    listLayout_->setContentsMargins(7, 7, 7, 7);
+    listLayout_->setSpacing(7);
+
     scrollArea_->setWidget(listWidget_);
     setWidget(scrollArea_);
     QSettings settings("Inviwo", "Inviwo");
     settings.beginGroup("PropertyListwidget");
-    developerViewMode_ = settings.value("developerViewMode",true).toBool();
-    applicationViewMode_ = settings.value("applicationViewMode",false).toBool();
+    developerViewMode_ = settings.value("developerViewMode", true).toBool();
+    applicationViewMode_ = settings.value("applicationViewMode", false).toBool();
     settings.endGroup();
 }
 
 PropertyListWidget::~PropertyListWidget() {}
 
 void PropertyListWidget::addProcessorProperties(Processor* processor) {
-    QWidget* processorPropertyWidget = getProcessorPropertiesItem(processor);
+    CollapsibleGroupBoxWidgetQt* processorPropertyWidget = getProcessorPropertiesItem(processor);
 
     if (processorPropertyWidget) {
-        listWidgetLayout_->addWidget(processorPropertyWidget);
+        listLayout_->addWidget(processorPropertyWidget);
         processorPropertyWidget->setVisible(true);
-        static_cast<CollapsibleGroupBoxWidgetQt*>(processorPropertyWidget)->show();
+        processorPropertyWidget->show();
+        devWidgets_.push_back(processorPropertyWidget);
     }
+    // Put this tab in front
     QWidget::raise();
 }
 
 void PropertyListWidget::removeProcessorProperties(Processor* processor) {
-    std::map<std::string, CollapsibleGroupBoxWidgetQt*>::iterator it = propertyWidgetMap_.find(processor->getIdentifier());
+    WidgetMap::iterator it = widgetMap_.find(processor->getIdentifier());
 
-    if (it != propertyWidgetMap_.end()) {
+    if (it != widgetMap_.end()) {
         it->second->setVisible(false);
-        listWidgetLayout_->removeWidget(it->second);
+        listLayout_->removeWidget(it->second);
+
+        std::vector<CollapsibleGroupBoxWidgetQt*>::iterator elm =
+            std::find(devWidgets_.begin(), devWidgets_.end(), it->second);
+        if (elm != devWidgets_.end()) {
+            devWidgets_.erase(elm);
+        }
     }
 }
 
 void PropertyListWidget::removeAndDeleteProcessorProperties(Processor* processor) {
-    std::map<std::string, CollapsibleGroupBoxWidgetQt*>::iterator it = propertyWidgetMap_.find(processor->getIdentifier());
+    WidgetMap::iterator it = widgetMap_.find(processor->getIdentifier());
 
-    if (it != propertyWidgetMap_.end()) {
+    if (it != widgetMap_.end()) {
         it->second->setVisible(false);
-        listWidgetLayout_->removeWidget(it->second);
+        listLayout_->removeWidget(it->second);
+
+        std::vector<CollapsibleGroupBoxWidgetQt*>::iterator elm =
+            std::find(devWidgets_.begin(), devWidgets_.end(), it->second);
+        if (elm != devWidgets_.end()) {
+            devWidgets_.erase(elm);
+        }
+
         CollapsibleGroupBoxWidgetQt* collapsiveGropWidget = it->second;
         std::vector<PropertyWidgetQt*> propertyWidgets = collapsiveGropWidget->getPropertyWidgets();
         std::vector<Property*> properties = processor->getProperties();
 
-        for (size_t i=0; i<propertyWidgets.size(); i++) {
-            for (size_t j=0; j<properties.size(); j++)
+        for (size_t i = 0; i < propertyWidgets.size(); i++) {
+            for (size_t j = 0; j < properties.size(); j++)
                 properties[j]->deregisterWidget(propertyWidgets[i]);
         }
 
-        for (size_t i=0; i<propertyWidgets.size(); i++) {
+        for (size_t i = 0; i < propertyWidgets.size(); i++) {
             collapsiveGropWidget->removeWidget(propertyWidgets[i]);
             propertyWidgets[i]->hide();
-            //TODO: Do not use deleteLater(). Widgets need to be deleted instantly or use deinitialize()
-            //Reason: These are cached widgets which has children widgets.
-            //deleteLater() keeps the children active for a while that causes invalidation of properties.
-            //Hence deleteLater() cannot be used
+            // TODO: Do not use deleteLater(). Widgets need to be deleted instantly or use
+            // deinitialize()
+            // Reason: These are cached widgets which has children widgets.
+            // deleteLater() keeps the children active for a while that causes invalidation of
+            // properties.
+            // Hence deleteLater() cannot be used
             delete propertyWidgets[i];
         }
 
         delete it->second;
-        propertyWidgetMap_.erase(it);
+        widgetMap_.erase(it);
     }
 }
 
 void PropertyListWidget::changeName(std::string oldName, std::string newName) {
     // check if processor widget exists
-    std::map<std::string, CollapsibleGroupBoxWidgetQt*>::iterator it = propertyWidgetMap_.find(oldName);
+    WidgetMap::iterator it = widgetMap_.find(oldName);
 
-    if (it != propertyWidgetMap_.end()) {
+    if (it != widgetMap_.end()) {
         CollapsibleGroupBoxWidgetQt* processorPropertyWidget = it->second;
         processorPropertyWidget->setIdentifier(newName);
-        propertyWidgetMap_.erase(it);
-        propertyWidgetMap_[newName] = processorPropertyWidget;
+        widgetMap_.erase(it);
+        widgetMap_[newName] = processorPropertyWidget;
     }
 }
 
@@ -137,12 +156,12 @@ void PropertyListWidget::cacheProcessorPropertiesItem(Processor* processor) {
     getProcessorPropertiesItem(processor);
 }
 
-QWidget* PropertyListWidget::getProcessorPropertiesItem(Processor* processor) {
+CollapsibleGroupBoxWidgetQt* PropertyListWidget::getProcessorPropertiesItem(Processor* processor) {
     // check if processor widget has been already generated
-    std::map<std::string, CollapsibleGroupBoxWidgetQt*>::iterator it = propertyWidgetMap_.find(processor->getIdentifier());
-    QWidget* processorPropertyWidget = 0;
+    WidgetMap::iterator it = widgetMap_.find(processor->getIdentifier());
+    CollapsibleGroupBoxWidgetQt* processorPropertyWidget = 0;
 
-    if (it != propertyWidgetMap_.end()) {
+    if (it != widgetMap_.end()) {
         // property widget has already been created and stored in the map
         processorPropertyWidget = it->second;
     } else
@@ -151,75 +170,79 @@ QWidget* PropertyListWidget::getProcessorPropertiesItem(Processor* processor) {
     return processorPropertyWidget;
 }
 
-QWidget* PropertyListWidget::createNewProcessorPropertiesItem(Processor* processor) {
+CollapsibleGroupBoxWidgetQt* PropertyListWidget::createNewProcessorPropertiesItem(
+    Processor* processor) {
     // create property widget and store it in the map
-    CollapsibleGroupBoxWidgetQt* processorPropertyWidget
-        = new CollapsibleGroupBoxWidgetQt(processor->getIdentifier(),
-                                          processor->getIdentifier());
+    CollapsibleGroupBoxWidgetQt* processorPropertyWidget =
+        new CollapsibleGroupBoxWidgetQt(processor->getIdentifier(), processor->getIdentifier());
     processorPropertyWidget->setParent(this);
-    
-    typedef std::map<std::string, CollapsibleGroupBoxWidgetQt*> GroupMap;
-    std::vector<Property*> props = processor->getProperties();
-    GroupMap groups;
 
-    for (size_t i=0; i<props.size(); i++) {
+    std::vector<Property*> props = processor->getProperties();
+    WidgetMap groups;
+
+    for (size_t i = 0; i < props.size(); i++) {
         if (props[i]->getGroupID() != "") {
-            GroupMap::iterator it = groups.find(props[i]->getGroupID());
-            if(it == groups.end()){
-                CollapsibleGroupBoxWidgetQt* group =
-                    new CollapsibleGroupBoxWidgetQt(props[i]->getGroupDisplayName(),
-                                                    props[i]->getGroupDisplayName());
+            WidgetMap::iterator it = groups.find(props[i]->getGroupID());
+            if (it == groups.end()) {
+                CollapsibleGroupBoxWidgetQt* group = new CollapsibleGroupBoxWidgetQt(
+                    props[i]->getGroupDisplayName(), props[i]->getGroupDisplayName());
                 processorPropertyWidget->addWidget(group);
                 groups.insert(std::make_pair(props[i]->getGroupID(), group));
                 group->addProperty(props[i]);
-            }else{
+            } else {
                 it->second->addProperty(props[i]);
             }
-        }else{
+        } else {
             processorPropertyWidget->addProperty(props[i]);
         }
     }
-    
-    propertyWidgetMap_.insert(std::make_pair(processor->getIdentifier(), processorPropertyWidget));
+
+    widgetMap_.insert(std::make_pair(processor->getIdentifier(), processorPropertyWidget));
     return processorPropertyWidget;
 }
 
-void PropertyListWidget::propertyModified() {
-    notifyPropertyListWidgetObservers();
+void PropertyListWidget::propertyModified() { notifyPropertyListWidgetObservers(); }
+
+PropertyListWidget* PropertyListWidget::instance() { return propertyListWidget_; }
+
+void PropertyListWidget::setVisibilityMode(bool applicationView) {
+    if (applicationView) {
+        setVisibilityMode(APPLICATION);
+    } else {
+        setVisibilityMode(DEVELOPMENT);
+    }
 }
 
-PropertyListWidget* PropertyListWidget::instance() {
-    return propertyListWidget_;
-}
+void PropertyListWidget::setVisibilityMode(PropertyVisibilityMode appVisibilityMode) {
+    applicationViewMode_ = (appVisibilityMode == APPLICATION);
+    developerViewMode_ = (appVisibilityMode == DEVELOPMENT);
 
-void PropertyListWidget::setDeveloperViewMode(bool value) {
-    if (value)
-        setViewMode(DEVELOPMENT);
-}
+    for (WidgetMap::const_iterator it = widgetMap_.begin(); it != widgetMap_.end(); it++) {
+        CollapsibleGroupBoxWidgetQt* widget = it->second;
 
-void PropertyListWidget::setApplicationViewMode(bool value) {
-    if (value)
-        setViewMode(APPLICATION);
-}
+        widget->updateVisibility();
 
-void PropertyListWidget::setViewMode(PropertyVisibilityMode viewMode) {
-    applicationViewMode_ = (viewMode == APPLICATION);
-    developerViewMode_ = (viewMode == DEVELOPMENT);
+        if (appVisibilityMode == DEVELOPMENT) {
+            listLayout_->removeWidget(widget);
+            widget->setVisible(false);
 
-    for(std::map<std::string, CollapsibleGroupBoxWidgetQt*>::const_iterator it = propertyWidgetMap_.begin(); it != propertyWidgetMap_.end(); it++){
-       it->second->updateVisibility();
-       if(viewMode == APPLICATION && it->second->getVisibilityMode() >= viewMode && !it->second->isVisible()){
-           if(!it->second->isCollapsed()){
-               it->second->toggleFold();
-           }
-           listWidgetLayout_->addWidget(it->second);
-           it->second->setVisible(true);
-           it->second->show();
-       }
-       else if(viewMode == DEVELOPMENT && it->second->getVisibilityMode() >= viewMode && it->second->isCollapsed()){
-           it->second->setVisible(false);
-           listWidgetLayout_->removeWidget(it->second);
-       }
+        } else if (appVisibilityMode == APPLICATION) {
+            listLayout_->addWidget(widget);
+            if (widget->getVisibilityMode() <= APPLICATION) {
+                widget->setVisible(true);
+            } else {
+                widget->setVisible(false);
+            }
+        }
+    }
+
+    if (appVisibilityMode == DEVELOPMENT) {
+        for (std::vector<CollapsibleGroupBoxWidgetQt*>::iterator it = devWidgets_.begin();
+             it != devWidgets_.end(); ++it) {
+            CollapsibleGroupBoxWidgetQt* widget = *it;
+            listLayout_->addWidget(widget);
+            widget->setVisible(true);
+        }
     }
 }
 
@@ -227,16 +250,15 @@ void PropertyListWidget::saveState() {
     QSettings settings("Inviwo", "Inviwo");
     settings.beginGroup("PropertyListwidget");
     settings.setValue("developerViewMode", developerViewMode_);
-    settings.setValue("applicationViewMode",applicationViewMode_);
+    settings.setValue("applicationViewMode", applicationViewMode_);
     settings.endGroup();
 }
 
-PropertyVisibilityMode PropertyListWidget::getViewMode() {
+PropertyVisibilityMode PropertyListWidget::getVisibilityMode() {
     if (developerViewMode_)
         return DEVELOPMENT;
     else
         return APPLICATION;
 }
 
-
-} // namespace
+}  // namespace

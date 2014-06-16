@@ -156,8 +156,8 @@ public:
         onChangeCallback_.addMemberFunction(o,m);
     }
 
-    void setVisibility(PropertyVisibilityMode visibilityMode);
-    PropertyVisibilityMode getVisibilityMode() {return visibilityMode_;};
+    virtual void setVisibilityMode(PropertyVisibilityMode visibilityMode);
+    virtual PropertyVisibilityMode getVisibilityMode() const {return visibilityMode_;};
 
     virtual void setVisible(bool val);
     virtual void updateVisibility();

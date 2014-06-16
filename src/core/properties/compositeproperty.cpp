@@ -48,6 +48,20 @@ void CompositeProperty::setOwner(PropertyOwner* owner) {
     for (size_t i = 0; i < properties_.size(); i++) properties_[i]->setOwner(this);
 }
 
+PropertyVisibilityMode CompositeProperty::getVisibilityMode() const {
+    PropertyVisibilityMode mode = INVISIBLE;
+    for (size_t i = 0; i < properties_.size(); i++) {
+        mode = std::min(mode, properties_[i]->getVisibilityMode());
+    }
+    return mode;
+}
+void CompositeProperty::setVisibilityMode(PropertyVisibilityMode visibilityMode) {
+    for (size_t i = 0; i < properties_.size(); i++) {
+        properties_[i]->setVisibilityMode(visibilityMode);
+    }
+    Property::setVisibilityMode(visibilityMode);
+}
+
 void CompositeProperty::updateVisibility() {
     for (size_t i = 0; i < properties_.size(); i++) {
         properties_[i]->updateVisibility();

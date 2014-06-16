@@ -35,6 +35,7 @@
 
 #include <inviwo/core/common/inviwocoredefine.h>
 #include <inviwo/core/metadata/propertyeditorwidgetmetadata.h>
+#include <inviwo/core/properties/propertyvisibility.h>
 
 namespace inviwo {
 
@@ -59,6 +60,8 @@ public:
 
     virtual Property* getProperty();
     virtual void setProperty(Property* property);
+    virtual PropertyVisibilityMode getVisibilityMode() const = 0;
+    
 protected:
     virtual void initializeEditorWidgetsMetaData()=0;
     Property* property_; //< Non owning reference to a property.

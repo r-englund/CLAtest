@@ -5,16 +5,16 @@
  *
  * Copyright (c) 2012-2014 Inviwo Foundation
  * All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met: 
- * 
+ * modification, are permitted provided that the following conditions are met:
+ *
  * 1. Redistributions of source code must retain the above copyright notice, this
- * list of conditions and the following disclaimer. 
+ * list of conditions and the following disclaimer.
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  * this list of conditions and the following disclaimer in the documentation
- * and/or other materials provided with the distribution. 
- * 
+ * and/or other materials provided with the distribution.
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
  * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
@@ -25,7 +25,7 @@
  * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- * 
+ *
  * Main file authors: Timo Ropinski, Alexander Johansson, Erik Sundén
  *
  *********************************************************************************/
@@ -44,9 +44,9 @@ namespace inviwo {
 
 class CollapsibleGroupBoxWidgetQt;
 
-class IVW_QTWIDGETS_API PropertyListWidgetObserver: public Observer {
+class IVW_QTWIDGETS_API PropertyListWidgetObserver : public Observer {
 public:
-    PropertyListWidgetObserver(): Observer() {};
+    PropertyListWidgetObserver() : Observer() {};
 
     /**
     * This method will be called when observed object changes.
@@ -55,20 +55,23 @@ public:
     virtual void onPropertyListWidgetChange() {};
 };
 
-class IVW_QTWIDGETS_API PropertyListWidgetObservable: public Observable<PropertyListWidgetObserver> {
+class IVW_QTWIDGETS_API PropertyListWidgetObservable
+    : public Observable<PropertyListWidgetObserver> {
 public:
-    PropertyListWidgetObservable(): Observable<PropertyListWidgetObserver>() {};
+    PropertyListWidgetObservable() : Observable<PropertyListWidgetObserver>() {};
 
     void notifyPropertyListWidgetObservers() const {
         // Notify observers
-        for (ObserverSet::reverse_iterator it = observers_->rbegin(); it != observers_->rend(); ++it) {
+        for (ObserverSet::reverse_iterator it = observers_->rbegin(); it != observers_->rend();
+             ++it) {
             // static_cast can be used since only template class objects can be added
             static_cast<PropertyListWidgetObserver*>(*it)->onPropertyListWidgetChange();
         }
     }
 };
 
-class IVW_QTWIDGETS_API PropertyListWidget : public InviwoDockWidget, public PropertyListWidgetObservable {
+class IVW_QTWIDGETS_API PropertyListWidget : public InviwoDockWidget,
+                                             public PropertyListWidgetObservable {
     Q_OBJECT
 
 public:
@@ -85,35 +88,37 @@ public:
 
     void saveState();
 
-    PropertyVisibilityMode getViewMode();
+    PropertyVisibilityMode getVisibilityMode();
 
     void cacheProcessorPropertiesItem(Processor* processor);
 
+    typedef std::map<std::string, CollapsibleGroupBoxWidgetQt*> WidgetMap;
+
 public slots:
-    void setDeveloperViewMode(bool value);
-    void setApplicationViewMode(bool value);
+    void setVisibilityMode(bool value);  // True = Application, False = Developer
 
 protected slots:
     void propertyModified();
 
 private:
-    QWidget* getProcessorPropertiesItem(Processor* processor);
+    CollapsibleGroupBoxWidgetQt* getProcessorPropertiesItem(Processor* processor);
 
-    void setViewMode(PropertyVisibilityMode viewMode);
-    QWidget* createNewProcessorPropertiesItem(Processor* processor);
+    void setVisibilityMode(PropertyVisibilityMode viewMode);
+    CollapsibleGroupBoxWidgetQt* createNewProcessorPropertiesItem(Processor* processor);
 
     bool developerViewMode_;
     bool applicationViewMode_;
 
-    QVBoxLayout* listWidgetLayout_;
+    QVBoxLayout* listLayout_;
+    std::vector<CollapsibleGroupBoxWidgetQt*> devWidgets_;
     QWidget* listWidget_;
     QScrollArea* scrollArea_;
 
 protected:
     static PropertyListWidget* propertyListWidget_;
-    mutable std::map<std::string, CollapsibleGroupBoxWidgetQt*> propertyWidgetMap_;
+    mutable WidgetMap widgetMap_;
 };
 
-} // namespace
+}  // namespace
 
-#endif // IVW_PROPERTYLISTWIDGET_H
+#endif  // IVW_PROPERTYLISTWIDGET_H

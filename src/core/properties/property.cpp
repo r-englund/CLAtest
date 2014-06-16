@@ -264,7 +264,7 @@ std::string Property::getGroupDisplayName() const {
     return groupDisplayNames_[groupID_];
 }
 
-void Property::setVisibility(PropertyVisibilityMode visibilityMode) {
+void Property::setVisibilityMode(PropertyVisibilityMode visibilityMode) {
     this->visibilityMode_ = visibilityMode;
     updateVisibility();
 }
@@ -273,26 +273,28 @@ void Property::updateVisibility() {
     InviwoApplication* inviwoApp = InviwoApplication::getPtr();
     Settings* mainSettings = inviwoApp->getSettingsByType<SystemSettings>();
     PropertyVisibilityMode appMode = static_cast<PropertyVisibilityMode>(
-        dynamic_cast<OptionPropertyInt*>(mainSettings->getPropertyByIdentifier("viewMode"))->get());
+        dynamic_cast<OptionPropertyInt*>(mainSettings->getPropertyByIdentifier("visibilityMode"))->get());
 
-    if (visibilityMode_ == INVISIBLE) {
+    PropertyVisibilityMode mode = getVisibilityMode();
+
+    if (mode == INVISIBLE) {
         for (size_t i = 0; i < propertyWidgets_.size(); i++) propertyWidgets_[i]->hideWidget();
     }
 
-    if (visibilityMode_ == APPLICATION) {
+    if (mode == APPLICATION) {
         for (size_t i = 0; i < propertyWidgets_.size(); i++) propertyWidgets_[i]->showWidget();
-    } else if (visibilityMode_ == DEVELOPMENT && appMode == DEVELOPMENT) {
+    } else if (mode == DEVELOPMENT && appMode == DEVELOPMENT) {
         for (size_t i = 0; i < propertyWidgets_.size(); i++) propertyWidgets_[i]->showWidget();
-    } else if (visibilityMode_ == DEVELOPMENT && appMode == APPLICATION) {
+    } else if (mode == DEVELOPMENT && appMode == APPLICATION) {
         for (size_t i = 0; i < propertyWidgets_.size(); i++) propertyWidgets_[i]->hideWidget();
     }
 }
 
 void Property::setVisible(bool val) {
     if (val)
-        setVisibility(APPLICATION);
+        setVisibilityMode(APPLICATION);
     else
-        setVisibility(INVISIBLE);
+        setVisibilityMode(INVISIBLE);
 }
 
 void Property::setCurrentStateAsDefault() {
