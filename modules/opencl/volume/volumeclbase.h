@@ -54,9 +54,9 @@ public:
     /** 
      * \brief Calculates scaling for 12-bit data dependent on internal OpenCL format.
      * Scaling will be applied using: dataValue * scaling
-     * @return float Scaling value.
+     * @return vec2 Offset in first component and scaling in second.
      */
-    virtual float getVolumeDataScaling(const Volume* volume) const = 0;
+    virtual vec2 getVolumeDataOffsetAndScaling(const Volume* volume) const;
 
 protected:
     cl::Image* clImage_;

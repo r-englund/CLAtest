@@ -124,16 +124,16 @@ void VolumeRaycasterCL::process() {
             glSync.addToAquireGLObjectList(transferFunctionCL);
             // Acquire all of the objects at once
             glSync.aquireAllObjects();
-            float volumeDataScaling = volumeCL->getVolumeDataScaling(volume);
-            volumeRaycast(volumeCL, volumeDataScaling, entryCL->getLayerCL(), exitCL->getLayerCL(), transferFunctionCL, outImageCL->getLayerCL(), globalWorkGroupSize, localWorkGroupSize, profilingEvent);
+            vec2 volumeDataOffsetScaling = volumeCL->getVolumeDataOffsetAndScaling(volume);
+            volumeRaycast(volumeCL, volumeDataOffsetScaling, entryCL->getLayerCL(), exitCL->getLayerCL(), transferFunctionCL, outImageCL->getLayerCL(), globalWorkGroupSize, localWorkGroupSize, profilingEvent);
         } else {
             const ImageCL* entryCL = entryPort_.getData()->getRepresentation<ImageCL>();
             const ImageCL* exitCL = exitPort_.getData()->getRepresentation<ImageCL>();
             ImageCL* outImageCL = outImage->getEditableRepresentation<ImageCL>();
             const VolumeCL* volumeCL = volume->getRepresentation<VolumeCL>();
             const LayerCL* transferFunctionCL = transferFunction_.get().getData()->getRepresentation<LayerCL>();
-            float volumeDataScaling = volumeCL->getVolumeDataScaling(volume);
-            volumeRaycast(volumeCL, volumeDataScaling, entryCL->getLayerCL(), exitCL->getLayerCL(), transferFunctionCL, outImageCL->getLayerCL(), globalWorkGroupSize, localWorkGroupSize, profilingEvent);
+            vec2 volumeDataOffsetScaling = volumeCL->getVolumeDataOffsetAndScaling(volume);
+            volumeRaycast(volumeCL, volumeDataOffsetScaling, entryCL->getLayerCL(), exitCL->getLayerCL(), transferFunctionCL, outImageCL->getLayerCL(), globalWorkGroupSize, localWorkGroupSize, profilingEvent);
         }
 
         // This macro will destroy the profiling event and print the timing in the console if IVW_PROFILING is enabled
@@ -143,14 +143,14 @@ void VolumeRaycasterCL::process() {
     }
 }
 
-void VolumeRaycasterCL::volumeRaycast(const VolumeCLBase* volumeCL, float volumeDataScaling, const LayerCLBase* entryCLGL, const LayerCLBase* exitCLGL, const LayerCLBase* transferFunctionCL, LayerCLBase* outImageCL, svec2 globalWorkGroupSize, svec2 localWorkGroupSize, cl::Event* profilingEvent)
+void VolumeRaycasterCL::volumeRaycast(const VolumeCLBase* volumeCL, const vec2& volumeDataOffsetScaling, const LayerCLBase* entryCLGL, const LayerCLBase* exitCLGL, const LayerCLBase* transferFunctionCL, LayerCLBase* outImageCL, svec2 globalWorkGroupSize, svec2 localWorkGroupSize, cl::Event* profilingEvent)
 {
     // Note that the overloaded setArg methods requires 
     // the reference to an object (not the pointer), 
     // which is why we need to dereference the pointers
     cl_uint arg = 0;
     kernel_->setArg(arg++, *volumeCL);
-    kernel_->setArg(arg++, volumeDataScaling); // Scaling for 12-bit data
+    kernel_->setArg(arg++, volumeDataOffsetScaling); // Scaling for 12-bit data
     kernel_->setArg(arg++, *entryCLGL);
     kernel_->setArg(arg++, *exitCLGL);
     kernel_->setArg(arg++, *transferFunctionCL);
