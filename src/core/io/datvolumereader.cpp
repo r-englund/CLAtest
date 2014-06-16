@@ -90,6 +90,7 @@ Volume* DatVolumeReader::readMetaData(std::string filePath) {
     Volume* volume = new UniformRectiLinearVolume();
     glm::mat3 basis(2.0f);
     glm::vec3 offset(0.0f);
+    bool hasOffset = false;
     glm::vec3 spacing(0.0f);
     glm::mat4 wtm(1.0f);
     glm::vec3 a(0.0f), b(0.0f), c(0.0f);
@@ -142,6 +143,7 @@ Volume* DatVolumeReader::readMetaData(std::string filePath) {
             ss >> c.y;
             ss >> c.z;
         } else if (key == "offset") {
+            hasOffset = true;
             ss >> offset.x;
             ss >> offset.y;
             ss >> offset.z;
@@ -211,7 +213,7 @@ Volume* DatVolumeReader::readMetaData(std::string filePath) {
     }
 
     // If not specified, center the data around origo.
-    if (offset == vec3(0.0f)) {
+    if (!hasOffset) {
         offset[0] = -basis[0][0] / 2.0f;
         offset[1] = -basis[1][1] / 2.0f;
         offset[2] = -basis[2][2] / 2.0f;
