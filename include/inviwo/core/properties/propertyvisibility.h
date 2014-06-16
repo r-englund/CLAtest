@@ -35,10 +35,11 @@
 
 namespace inviwo {
 
-typedef enum PropertyVisibilityMode { DEVELOPMENT =0,
-                                      APPLICATION =1,
-                                      INVISIBLE =2
-                                    } PropertyVisibilityMode;
+typedef enum PropertyVisibilityMode {
+    APPLICATION = 0, // Default, always show property
+    DEVELOPMENT = 1, // Only show in developer mode
+    INVISIBLE = 2    // Never show.
+} PropertyVisibilityMode;
 
 } //namespace
 

@@ -45,8 +45,15 @@ static const char* getDisplayName(CGDirectDisplayID displayID)
     CFStringRef value;
     CFIndex size;
 
+    #ifdef __clang__
+    #pragma clang diagnostic push
+    #pragma clang diagnostic ignored "-Wdeprecated-declarations"
+    #endif
     info = IODisplayCreateInfoDictionary(CGDisplayIOServicePort(displayID),
                                          kIODisplayOnlyPreferredName);
+    #ifdef __clang__
+    #pragma clang diagnostic pop
+    #endif
     names = CFDictionaryGetValue(info, CFSTR(kDisplayProductName));
 
     if (!names || !CFDictionaryGetValueIfPresent(names, CFSTR("en_US"),

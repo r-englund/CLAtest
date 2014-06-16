@@ -1586,7 +1586,12 @@ bool NetworkEditor::loadNetwork(std::istream& stream, const std::string& path) {
         addProcessorRepresentations(processors[i], QPointF(meta->getPosition().x, meta->getPosition().y), meta->isVisible(), meta->isSelected(),
             false, false);
     }
-
+    Property* vmp = InviwoApplication::getPtr()->getSettingsByType<SystemSettings>()->getPropertyByIdentifier("visibilityMode");
+    if(vmp){
+        BaseOptionProperty* visibilityModeProperty = dynamic_cast<BaseOptionProperty*>(vmp);
+        PropertyListWidget::instance()->setVisibilityMode(visibilityModeProperty->getSelectedIndex());
+    }
+    
     // add connections
     std::vector<PortConnection*> connections = InviwoApplication::getPtr()->getProcessorNetwork()->getConnections();
 

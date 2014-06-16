@@ -126,7 +126,11 @@ void EntryExitPoints::process() {
         if (tmpEntryPoints_ == NULL ||
             tmpEntryPoints_->getDimension() != entryPort_.getDimension() ||
             tmpEntryPoints_->getImageType() != entryPort_.getData()->getImageType() ||
-            tmpEntryPoints_->getDataFormat() != entryPort_.getData()->getDataFormat()) {
+            tmpEntryPoints_->getDataFormat() != entryPort_.getData()->getDataFormat()
+            #ifdef __clang__
+            ,true
+            #endif
+            ) {
             delete tmpEntryPoints_;
             tmpEntryPoints_ = new Image(entryPort_.getDimension(), entryPort_.getData()->getImageType(), entryPort_.getData()->getDataFormat());
         }

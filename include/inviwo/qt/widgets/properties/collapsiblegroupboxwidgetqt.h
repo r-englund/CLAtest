@@ -62,54 +62,53 @@ public:
 
     virtual std::string getDisplayName() const;
     virtual void setDisplayName(const std::string& displayName);
-
-    void setVisibilityMode(PropertyVisibilityMode visibilityMode) {visibilityMode_ = visibilityMode;};
-    PropertyVisibilityMode getVisibilityMode() {return visibilityMode_;};
+   
+    virtual PropertyVisibilityMode getVisibilityMode() const;
 
     void updateFromProperty();
     void addProperty(Property* tmpProperty);
-    QVBoxLayout* vLayout_;
     void generateEventPropertyWidgets(EventPropertyManager* eventPropertyManager);
+    
     std::vector<Property*> getProperties();
+    
     bool isCollapsed() { return collapsed_; };
-    std::vector<PropertyWidgetQt*> getPropertyWidgets() {return propertyWidgets_; };
+    
     void addWidget(QWidget* widget);
     void removeWidget(QWidget* widget);
+    std::vector<PropertyWidgetQt*> getPropertyWidgets() {return propertyWidgets_; };
+    
     
     virtual void serialize(IvwSerializer& s) const;
     virtual void deserialize(IvwDeserializer& d);
 
-    virtual void updateContextMenu();
-
 signals:
     void visibilityModified();
+    void labelChanged(QString text);
 
 private:
-    QToolButton* btnCollapse_;
-    std::string identifier_;
-    std::string displayName_;
-    QGroupBox* groupBox_;
-    std::vector<Property*> properties_;
-    std::vector<PropertyWidgetQt*> propertyWidgets_;
-    bool collapsed_;
-    EditableLabelQt* label_;
     void generateWidget();
-
-    PropertyVisibilityMode visibilityMode_;
     void updateWidgets();
 
-    QMenu* contextMenu_;
-    QActionGroup* viewModeActionGroup_;
-    QMenu* viewModeItem_;
-    QAction* resetAction_;
+    std::string identifier_;
+    std::string displayName_;
+    bool collapsed_;
 
+    std::vector<Property*> properties_;
+    std::vector<PropertyWidgetQt*> propertyWidgets_;
+
+    QToolButton* btnCollapse_;
+    QGroupBox* groupBox_;
+    EditableLabelQt* label_;
+    QVBoxLayout* vLayout_;    
+    
 public slots:
     void toggleFold();
     void updateVisibility();
     void setDeveloperViewMode(bool value);
     void setApplicationViewMode(bool value);
+    void labelDidChange();
     virtual void resetPropertyToDefaultState();
-
+    
 protected slots:
     void setGroupDisplayName();
     void propertyModified();

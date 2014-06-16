@@ -56,7 +56,7 @@ protected:
     glm::u32* allocTest_;
 
 private:
-    OptionPropertyInt viewModeProperty_;
+    OptionPropertyInt visibilityModeProperty_;
     BoolProperty txtEditorProperty_;
     BoolProperty shaderReloadingProperty_;
     BoolProperty enablePortInformationProperty_;

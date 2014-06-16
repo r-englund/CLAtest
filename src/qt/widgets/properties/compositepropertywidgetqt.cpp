@@ -58,6 +58,8 @@ void CompositePropertyWidgetQt::generateWidget() {
     setLayout(vLayout);
     connect(collapsiveGroupBoxWidget_, SIGNAL(visibilityModified()),
             SLOT(setDisplayModeFromGroupBox()));
+    connect(collapsiveGroupBoxWidget_, SIGNAL(labelChanged(QString)),
+            SLOT(labelDidChange(QString)));
 }
 
 void CompositePropertyWidgetQt::updateFromProperty() {
@@ -72,7 +74,10 @@ void CompositePropertyWidgetQt::showWidget() { this->show(); }
 void CompositePropertyWidgetQt::hideWidget() { this->hide(); }
 
 void CompositePropertyWidgetQt::setDisplayModeFromGroupBox() {
-    property_->setVisibility(collapsiveGroupBoxWidget_->getVisibilityMode());
+    property_->setVisibilityMode(collapsiveGroupBoxWidget_->getVisibilityMode());
+}
+void CompositePropertyWidgetQt::labelDidChange(QString text){
+    property_->setDisplayName(text.toStdString());
 }
 
 void CompositePropertyWidgetQt::resetPropertyToDefaultState() {
