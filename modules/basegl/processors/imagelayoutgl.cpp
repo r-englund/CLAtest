@@ -55,9 +55,10 @@ ImageLayoutGL::ImageLayoutGL()
     layout_.addOption("horizontalSplit", "Horizontal Split", 2);
     layout_.addOption("verticalSplit", "Vertical Split", 3);
     layout_.addOption("crossSplit", "Cross Split", 4);
+    layout_.addOption("threeRightOneLeftSplit", "Three Left, One Right", 5);
+    layout_.addOption("threeLeftOneRightSplit", "Three Right, One Left", 6);
     layout_.setSelectedIdentifier("crossSplit");
     layout_.setCurrentStateAsDefault();
-    layout_.setReadOnly(true);
     addProperty(layout_);
     horizontalSplitter_.setVisible(false);
     addProperty(horizontalSplitter_);
@@ -126,10 +127,39 @@ void ImageLayoutGL::process() {
 
     uvec2 dim = outport_.getData()->getDimension();
     viewCoords_.clear();
-    viewCoords_.push_back(uvec4(0, dim.y/2, dim.x/2, dim.y/2));
-    viewCoords_.push_back(uvec4(dim.x/2, dim.y/2, dim.x/2, dim.y/2));
-    viewCoords_.push_back(uvec4(0, 0, dim.x/2, dim.y/2));
-    viewCoords_.push_back(uvec4(dim.x/2, 0, dim.x/2, dim.y/2));
+
+    unsigned int smallWindowDim = dim.y/3;
+    switch (layout_.getSelectedValue())
+    {
+    case 2: //Horizontal Split
+        viewCoords_.push_back(uvec4(0, dim.y/2, dim.x, dim.y/2));
+        viewCoords_.push_back(uvec4(0, 0, dim.x, dim.y/2));
+        break;
+    case 3: //Vertical Split
+        viewCoords_.push_back(uvec4(0, 0, dim.x/2, dim.y));
+        viewCoords_.push_back(uvec4(dim.x/2, 0, dim.x/2, dim.y));
+        break;
+    case 4: //Cross Split
+        viewCoords_.push_back(uvec4(0, dim.y/2, dim.x/2, dim.y/2));
+        viewCoords_.push_back(uvec4(dim.x/2, dim.y/2, dim.x/2, dim.y/2));
+        viewCoords_.push_back(uvec4(0, 0, dim.x/2, dim.y/2));
+        viewCoords_.push_back(uvec4(dim.x/2, 0, dim.x/2, dim.y/2));
+        break;
+    case 5: //Three Left, One Right
+        viewCoords_.push_back(uvec4(0, 2*smallWindowDim, smallWindowDim, smallWindowDim));
+        viewCoords_.push_back(uvec4(0, smallWindowDim, smallWindowDim, smallWindowDim));
+        viewCoords_.push_back(uvec4(0, 0, smallWindowDim, smallWindowDim));
+        viewCoords_.push_back(uvec4(smallWindowDim, 0, dim.x-smallWindowDim, dim.y));
+        break;
+    case 6: //Three Right, One Left
+        viewCoords_.push_back(uvec4(dim.x-smallWindowDim, 2*smallWindowDim, smallWindowDim, smallWindowDim));
+        viewCoords_.push_back(uvec4(dim.x-smallWindowDim, smallWindowDim, smallWindowDim, smallWindowDim));
+        viewCoords_.push_back(uvec4(dim.x-smallWindowDim, 0, smallWindowDim, smallWindowDim));
+        viewCoords_.push_back(uvec4(0, 0, dim.x-smallWindowDim, dim.y));
+        break;
+    default:
+        viewCoords_.push_back(uvec4(0, 0, dim.x, dim.y));
+    }
 
     TextureUnit colorUnit, depthUnit, pickingUnit;
 
