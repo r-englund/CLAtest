@@ -55,6 +55,7 @@ int main(int argc, char** argv) {
     inviwo::LogCentral::instance()->registerLogger(&fileLogger);
     inviwo::InviwoApplicationQt inviwoApp("Inviwo "+IVW_VERSION, basePath, argc, argv);
     inviwoApp.setWindowIcon(QIcon(":/icons/inviwo_light.png"));
+    inviwoApp.setAttribute(Qt::AA_NativeWindows);
     inviwo::InviwoMainWindow mainWin;
     // setup core application
     inviwoApp.setMainWindow(&mainWin);

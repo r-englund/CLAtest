@@ -153,6 +153,26 @@ vec3 Trackball::mapToCamera(vec3 pos) {
 
 
 void Trackball::invokeEvent(Event* event) {
+    GestureEvent* gestureEvent = dynamic_cast<GestureEvent*>(event);
+    if (gestureEvent) {
+        if(gestureEvent->type() == GestureEvent::PINCH){
+            vec3 direction = camera_->getLookFrom() - camera_->getLookTo();
+            camera_->setLookFrom(camera_->getLookFrom()-direction*static_cast<float>(gestureEvent->deltaDistance()));
+        }
+        else if(gestureEvent->type() == GestureEvent::PAN){
+            vec3 offsetVector = vec3(gestureEvent->deltaPos(), 0.f);
+            vec3 mappedOffsetVector = mapToCamera(offsetVector);
+
+            camera_->lockInvalidation();
+            camera_->setLookTo(camera_->getLookTo()     + mappedOffsetVector);
+            camera_->setLookFrom(camera_->getLookFrom() + mappedOffsetVector);
+            camera_->unlockInvalidation();
+            camera_->invalidate();
+        }
+
+        return;
+    }
+
     MouseEvent* mouseEvent = dynamic_cast<MouseEvent*>(event);
     if (mouseEvent) {
         int button = mouseEvent->button();
@@ -178,14 +198,6 @@ void Trackball::invokeEvent(Event* event) {
             isMouseBeingPressedAndHold_ = false;
 
         return;
-    }
-
-    GestureEvent* gestureEvent = dynamic_cast<GestureEvent*>(event);
-    if (gestureEvent) {
-        if(gestureEvent->type() == GestureEvent::PINCH){
-            vec3 direction = camera_->getLookFrom() - camera_->getLookTo();
-            camera_->setLookFrom(camera_->getLookFrom()-direction*static_cast<float>(gestureEvent->deltaDistance()));
-        }
     }
 
     KeyboardEvent* keyEvent = dynamic_cast<KeyboardEvent*>(event);

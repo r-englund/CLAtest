@@ -122,6 +122,7 @@ private:
     bool gestureEvent(QGestureEvent *e);
     void panTriggered(QPanGesture*);
     void pinchTriggered(QPinchGesture*);
+    bool gestureMode_;
 #endif
 };
 
