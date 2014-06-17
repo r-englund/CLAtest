@@ -131,7 +131,7 @@ void DrawLines::DrawLinesInteractationHandler::invokeEvent(Event* event){
     }
 
     MouseEvent* mouseEvent = dynamic_cast<MouseEvent*>(event);
-    if (drawModeEnabled_ && mouseEvent && mouseEvent->state() == MouseEvent::MOUSE_STATE_PRESS) {
+    if (drawModeEnabled_ && mouseEvent && (mouseEvent->state() == MouseEvent::MOUSE_STATE_PRESS || mouseEvent->state() == MouseEvent::MOUSE_STATE_MOVE)) {
         if (mouseEvent->modifier() == drawPosEvent.modifier()
             && mouseEvent->button() == drawPosEvent.button()) {
                 vec2 line = mouseEvent->posNormalized();

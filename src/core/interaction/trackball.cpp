@@ -181,17 +181,17 @@ void Trackball::invokeEvent(Event* event) {
 
         if (button == rotateEvent_.button()
             && modifier == rotateEvent_.modifier()
-            && state == MouseEvent::MOUSE_STATE_PRESS) {
+            && (state == MouseEvent::MOUSE_STATE_PRESS || state == MouseEvent::MOUSE_STATE_MOVE)) {
             //perform rotation
             rotateCamera(mouseEvent);
         } else if (button == zoomEvent_.button()
                    && modifier == zoomEvent_.modifier()
-                   && state == MouseEvent::MOUSE_STATE_PRESS) {
+                   && (state == MouseEvent::MOUSE_STATE_PRESS || state == MouseEvent::MOUSE_STATE_MOVE)) {
             //perform zoom
             zoomCamera(mouseEvent);
         } else if (button == panEvent_.button()
                    && modifier == panEvent_.modifier()
-                   && state == MouseEvent::MOUSE_STATE_PRESS) {
+                   && (state == MouseEvent::MOUSE_STATE_PRESS || state == MouseEvent::MOUSE_STATE_MOVE)) {
             //perform pan
             panCamera(mouseEvent);
         } else if (state == MouseEvent::MOUSE_STATE_RELEASE)

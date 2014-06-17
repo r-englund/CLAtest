@@ -286,7 +286,7 @@ void CanvasQt::mouseMoveEvent(QMouseEvent* e) {
 
     if (e->buttons() == Qt::LeftButton || e->buttons() == Qt::RightButton || e->buttons() == Qt::MiddleButton) {
         mouseEvent = new MouseEvent(ivec2(e->pos().x(), e->pos().y()),
-                                    EventConverterQt::getMouseButton(e), MouseEvent::MOUSE_STATE_PRESS,
+                                    EventConverterQt::getMouseButton(e), MouseEvent::MOUSE_STATE_MOVE,
                                     EventConverterQt::getModifier(e), getScreenDimension());
         e->accept();
         Canvas::mouseMoveEvent(mouseEvent);
@@ -364,29 +364,59 @@ void CanvasQt::exposeEvent(QExposeEvent *e){
 #ifndef QT_NO_GESTURES
 
 void CanvasQt::touchEvent(QTouchEvent* touch) {
+    if (!processorNetworkEvaluator_) return;
+
     QTouchEvent::TouchPoint firstPoint = touch->touchPoints()[0];
 
     ivec2 pos = ivec2(static_cast<int>(glm::floor(firstPoint.pos().x())), static_cast<int>(glm::floor(firstPoint.pos().y())));
-    TouchEvent::TouchState state;
+    TouchEvent::TouchState touchState;
 
     switch (firstPoint.state())
     {
     case Qt::TouchPointPressed:
-        state = TouchEvent::TOUCH_STATE_STARTED;
+        touchState = TouchEvent::TOUCH_STATE_STARTED;
     	break;
     case Qt::TouchPointMoved:
-        state = TouchEvent::TOUCH_STATE_UPDATED;
+        touchState = TouchEvent::TOUCH_STATE_UPDATED;
         break;
     case Qt::TouchPointReleased:
-        state = TouchEvent::TOUCH_STATE_ENDED;
+        touchState = TouchEvent::TOUCH_STATE_ENDED;
         break;
     default:
-        state = TouchEvent::TOUCH_STATE_NONE;
+        touchState = TouchEvent::TOUCH_STATE_NONE;
     }
 
-    TouchEvent* touchEvent = new TouchEvent(pos, state);
+    TouchEvent* touchEvent = new TouchEvent(pos, touchState);
+    touch->accept();
     Canvas::touchEvent(touchEvent);
     delete touchEvent;
+
+#if (QT_VERSION >= QT_VERSION_CHECK(5, 0, 0))
+    if(touch->touchPoints().size() == 1){
+        MouseEvent* mouseEvent = NULL;
+        switch (touchState)
+        {
+        case TouchEvent::TOUCH_STATE_STARTED:
+            mouseEvent = new MouseEvent(pos, MouseEvent::MOUSE_BUTTON_LEFT, MouseEvent::MOUSE_STATE_PRESS, 
+                EventConverterQt::getModifier(touch), getScreenDimension());
+            Canvas::mousePressEvent(mouseEvent);
+            break;
+        case TouchEvent::TOUCH_STATE_UPDATED:
+            mouseEvent = new MouseEvent(pos, MouseEvent::MOUSE_BUTTON_LEFT, MouseEvent::MOUSE_STATE_MOVE, 
+                EventConverterQt::getModifier(touch), getScreenDimension());
+            Canvas::mouseMoveEvent(mouseEvent);
+            break;
+        case TouchEvent::TOUCH_STATE_ENDED:
+            mouseEvent = new MouseEvent(pos, MouseEvent::MOUSE_BUTTON_LEFT, MouseEvent::MOUSE_STATE_RELEASE, 
+                EventConverterQt::getModifier(touch), getScreenDimension());
+            Canvas::mouseReleaseEvent(mouseEvent);
+            break;
+        default:
+            break;
+        }
+        delete mouseEvent;
+    }
+#endif
 }
 
 bool CanvasQt::gestureEvent(QGestureEvent* ge) {
@@ -400,6 +430,8 @@ bool CanvasQt::gestureEvent(QGestureEvent* ge) {
 }
 
 void CanvasQt::panTriggered(QPanGesture* gesture) {
+    if (!processorNetworkEvaluator_) return;
+
 #ifndef QT_NO_CURSOR
     switch (gesture->state()) {
          case Qt::GestureStarted:
@@ -418,6 +450,8 @@ void CanvasQt::panTriggered(QPanGesture* gesture) {
 }
 
 void CanvasQt::pinchTriggered(QPinchGesture* gesture) {
+    if (!processorNetworkEvaluator_) return;
+
     GestureEvent* gestureEvent = new GestureEvent(vec2(gesture->centerPoint().x(), gesture->centerPoint().y()), 1.0-gesture->scaleFactor(),
         GestureEvent::PINCH, EventConverterQt::getGestureState(gesture));
     Canvas::gestureEvent(gestureEvent);
