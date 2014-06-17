@@ -329,7 +329,7 @@ void ProcessorNetworkEvaluator::onProcessorNetworkEvaluateRequest() {
 }
 
 void ProcessorNetworkEvaluator::onProcessorNetworkUnlocked() {
-    if (evaulationQueued_) {
+    if (evaulationQueued_ || processorNetwork_->isModified()) {
         evaulationQueued_ = false;
         requestEvaluate();
     }

@@ -84,7 +84,7 @@ void MultichannelRaycaster::onVolumeChange() {
         initializeResources();
         int channels = volumePort_.getData()->getDataFormat()->getComponents();
 
-        for (int i = 0; i < transferFunctions_.size(); i++) {
+        for (int i = 0; i < static_cast<int>(transferFunctions_.size()); i++) {
             transferFunctions_[i]->setVisible(i < channels ? true : false);
         }
     }
