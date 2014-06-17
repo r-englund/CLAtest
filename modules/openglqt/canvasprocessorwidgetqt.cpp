@@ -30,7 +30,7 @@
  *
  *********************************************************************************/
 
-#include <modules/openglqt/processors/canvasprocessorwidgetqt.h>
+#include <modules/openglqt/canvasprocessorwidgetqt.h>
 #include <modules/openglqt/canvasqt.h>
 #include <inviwo/core/processors/canvasprocessor.h>
 #include <QGridLayout>
