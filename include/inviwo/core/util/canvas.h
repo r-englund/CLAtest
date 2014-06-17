@@ -44,6 +44,7 @@
 #include <inviwo/core/interaction/events/gestureevent.h>
 #include <inviwo/core/interaction/events/keyboardevent.h>
 #include <inviwo/core/interaction/events/mouseevent.h>
+#include <inviwo/core/interaction/events/touchevent.h>
 
 namespace inviwo {
 
@@ -82,6 +83,7 @@ protected:
     void keyReleaseEvent(KeyboardEvent* e);
 
     void gestureEvent(GestureEvent* e);
+    void touchEvent(TouchEvent* e);
 
     uvec2 mousePosToPixelCoordinates(ivec2 mpos);
 

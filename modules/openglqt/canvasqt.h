@@ -119,7 +119,8 @@ private:
     bool swapBuffersAllowed_;
 
 #ifndef QT_NO_GESTURES
-    bool gestureEvent(QGestureEvent *e);
+    void touchEvent(QTouchEvent*);
+    bool gestureEvent(QGestureEvent*);
     void panTriggered(QPanGesture*);
     void pinchTriggered(QPinchGesture*);
     bool gestureMode_;

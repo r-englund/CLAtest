@@ -165,6 +165,10 @@ void Canvas::gestureEvent(GestureEvent* e) {
     interactionEvent(e);
 }
 
+void Canvas::touchEvent(TouchEvent* e){
+    interactionEvent(e);
+}
+
 uvec2 Canvas::mousePosToPixelCoordinates(ivec2 mpos) {
     uvec2 pos(std::max(mpos.x, 0), std::max(mpos.y, 0));
     pos = glm::min(pos, getScreenDimension());

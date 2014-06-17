@@ -185,19 +185,34 @@ void ImageLayoutGL::process() {
 
 ImageLayoutGL::ImageLayoutGLInteractationHandler::ImageLayoutGLInteractationHandler() 
     : InteractionHandler()
-    , activePositionChangeEvent_(ivec2(0), MouseEvent::MOUSE_BUTTON_RIGHT, MouseEvent::MOUSE_STATE_RELEASE, InteractionEvent::MODIFIER_NONE, uvec2(512))
-    , activePosition_(ivec2(0)) {
+    , activePositionChangeEvent_(ivec2(0), MouseEvent::MOUSE_BUTTON_LEFT, MouseEvent::MOUSE_STATE_PRESS, InteractionEvent::MODIFIER_NONE, uvec2(512))
+    , activePosition_(ivec2(0))
+    , viewportActive_(false) {
 }
 
 void ImageLayoutGL::ImageLayoutGLInteractationHandler::invokeEvent(Event* event){
     MouseEvent* mouseEvent = dynamic_cast<MouseEvent*>(event);
     if(mouseEvent){
-        if(mouseEvent->button() != MouseEvent::MOUSE_BUTTON_NONE){
-            lastMouseButton_ = mouseEvent->button();
-        }
-        if(lastMouseButton_ == activePositionChangeEvent_.button() && mouseEvent->state() == activePositionChangeEvent_.state()) {
+        if(!viewportActive_ && mouseEvent->state() == activePositionChangeEvent_.state()) {
+            viewportActive_ = true;
             activePosition_ = mouseEvent->pos();
         }
+        else if(viewportActive_ && mouseEvent->state() == MouseEvent::MOUSE_STATE_RELEASE){
+            viewportActive_ = false;
+        }
+        return;
+    }
+
+    TouchEvent* touchEvent = dynamic_cast<TouchEvent*>(event);
+    if(touchEvent){
+        if(!viewportActive_ && touchEvent->state() == TouchEvent::TOUCH_STATE_STARTED) {
+            viewportActive_ = true;
+            activePosition_ = touchEvent->pos();
+        }
+        else if(viewportActive_ && touchEvent->state() == TouchEvent::TOUCH_STATE_ENDED){
+            viewportActive_ = false;
+        }
+        return;
     }
 }
 

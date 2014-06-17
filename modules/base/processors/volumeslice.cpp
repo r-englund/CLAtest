@@ -36,7 +36,7 @@ namespace inviwo {
 
 ProcessorClassName(VolumeSlice, "VolumeSlice");
 ProcessorCategory(VolumeSlice, "Volume Operation");
-ProcessorCodeState(VolumeSlice, CODE_STATE_BROKEN);
+ProcessorCodeState(VolumeSlice, CODE_STATE_STABLE);
 
 VolumeSlice::VolumeSlice()
     : Processor(),

@@ -26,77 +26,44 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
- * Main file author: Erik Sundén
+ * Main file authors: Erik Sundén
  *
  *********************************************************************************/
 
-#ifndef IVW_IMAGELAYOUTGL_H
-#define IVW_IMAGELAYOUTGL_H
+#ifndef IVW_TOUCHEVENT_H
+#define IVW_TOUCHEVENT_H
 
-#include <modules/basegl/baseglmoduledefine.h>
+#include <inviwo/core/common/inviwocoredefine.h>
 #include <inviwo/core/common/inviwo.h>
-#include <inviwo/core/properties/baseoptionproperty.h>
-#include <inviwo/core/properties/ordinalproperty.h>
-#include <inviwo/core/ports/imageport.h>
-#include <inviwo/core/ports/multidatainport.h>
-#include <modules/opengl/inviwoopengl.h>
-#include <modules/opengl/processorgl.h>
-#include <modules/opengl/glwrap/shader.h>
+#include <inviwo/core/interaction/events/interactionevent.h>
 
 namespace inviwo {
 
-//Right mouse click activates the area for mouse/key interactions.
-class IVW_MODULE_BASEGL_API ImageLayoutGL : public ProcessorGL {
+class IVW_CORE_API TouchEvent : public InteractionEvent {
 public:
-    ImageLayoutGL();
-    ~ImageLayoutGL();
-
-    InviwoProcessorInfo();
-
-    void initialize();
-    void deinitialize();
-
-    const std::vector<Inport*>& getInports(Event*) const;
-
-    void multiInportChanged();
-
-protected:
-    void process();
-
-    class ImageLayoutGLInteractationHandler : public InteractionHandler {
-
-    public:
-        ImageLayoutGLInteractationHandler();
-        ~ImageLayoutGLInteractationHandler(){};
-
-        void invokeEvent(Event* event);
-
-        ivec2 getActivePosition() { return activePosition_; }
-
-    private:
-        MouseEvent activePositionChangeEvent_;
-
-        bool viewportActive_;
-        ivec2 activePosition_;
+    enum TouchState {
+        TOUCH_STATE_NONE    =      0,
+        TOUCH_STATE_STARTED,
+        TOUCH_STATE_UPDATED,
+        TOUCH_STATE_ENDED
     };
 
+    TouchEvent(ivec2 pos, TouchEvent::TouchState state);
+    ~TouchEvent();
+
+    inline ivec2 pos() const { return position_; }
+    inline TouchEvent::TouchState state() const { return state_; }
+
+    virtual std::string getClassName() const { return "TouchEvent"; }
+
+    virtual void serialize(IvwSerializer& s) const;
+    virtual void deserialize(IvwDeserializer& d);
+
 private:
-    MultiDataInport<Image, ImageInport> multiinport_;
-    ImageOutport outport_;
-
-    OptionPropertyInt layout_;
-    FloatProperty horizontalSplitter_;
-    FloatProperty verticalSplitter_;
-
-    Shader* shader_;
-
-    ImageLayoutGLInteractationHandler* layoutHandler_;
-
-    std::vector<uvec4> viewCoords_;
-
-    mutable std::vector<Inport*> currentInteractionInport_;
+    ivec2 position_;
+    TouchEvent::TouchState state_;
 };
 
 } // namespace
 
-#endif // IVW_IMAGELAYOUTGL_H
+#endif // IVW_TOUCHEVENT_H
