@@ -34,7 +34,7 @@
 #include <modules/openglqt/openglqtcapabilities.h>
 #include <inviwo/core/common/inviwoapplication.h>
 #include <modules/opengl/canvasprocessorgl.h>
-#include <modules/openglqt/processors/canvasprocessorwidgetqt.h>
+#include <modules/openglqt/canvasprocessorwidgetqt.h>
 
 namespace inviwo {
 

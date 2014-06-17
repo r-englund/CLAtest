@@ -45,6 +45,12 @@ public:
     GLFWModule();
     virtual ~GLFWModule();
 
+protected:
+    template <typename T>
+    void registerProcessorWidgetAndAssociate(ProcessorWidget* processorWidget) {
+        registerProcessorWidget(T::CLASS_NAME, processorWidget);
+    }
+
 private:
     CanvasGLFW* GLFWSharedCanvas_;
 

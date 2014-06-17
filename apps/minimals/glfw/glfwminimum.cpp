@@ -57,22 +57,15 @@ int main(int argc, char** argv) {
 
     InviwoApplication inviwoApp(argc, argv, "Inviwo "+IVW_VERSION + " - GLFWApp", inviwo::filesystem::findBasePath());
 
-    if(!glfwInit()){
-        LogErrorCustom("GLFWMinimum", "GLFW could not be initialized.");
-        return 0;
-    }
-
     //Initialize all modules
     inviwoApp.initialize(&inviwo::registerAllModules);
 
     //Continue initialization of default context
     CanvasGLFW* sharedCanvas = static_cast<CanvasGLFW*>(inviwoApp.getProcessorNetworkEvaluator()->getDefaultRenderContext());
-    sharedCanvas->initializeSquare();
     sharedCanvas->initialize();
     sharedCanvas->activate();
 
     // Load simple scene
-    inviwoApp.getProcessorNetworkEvaluator()->disableEvaluation();
     inviwoApp.getProcessorNetwork()->lock();
     const CommandLineParser* cmdparser = inviwoApp.getCommandLineParser();
     std::string workspace;
@@ -92,26 +85,17 @@ int main(int argc, char** argv) {
         CanvasProcessor* canvasProcessor = dynamic_cast<CanvasProcessor*>((*it));
 
         if (canvasProcessor) {
-            CanvasGLFW* currentC;
-            if (i==0) {
-                currentC = sharedCanvas;
-            }
-            else {
-                currentC = new CanvasGLFW(canvasProcessor->getIdentifier(), uvec2(canvasProcessor->getCanvasSize()));
-                currentC->initializeGL();
-                currentC->initialize();
-            }
+            CanvasGLFW* currentC = new CanvasGLFW(canvasProcessor->getIdentifier(), uvec2(canvasProcessor->getCanvasSize()));
+            currentC->initializeGL();
+            currentC->initialize();
             inviwoApp.getProcessorNetworkEvaluator()->registerCanvas(currentC, canvasProcessor->getIdentifier());
             currentC->setWindowTitle(inviwoApp.getDisplayName() + " : " + canvasProcessor->getIdentifier());
-            currentC->setWindowSize(uvec2(canvasProcessor->getCanvasSize()));
-
             i++;
         }
     }
 
     inviwoApp.getProcessorNetwork()->setModified(true);
     inviwoApp.getProcessorNetwork()->unlock();
-    inviwoApp.getProcessorNetworkEvaluator()->enableEvaluation();
 
     if (cmdparser->getCaptureAfterStartup()) {
         std::string path = cmdparser->getOutputPath();
@@ -127,14 +111,12 @@ int main(int argc, char** argv) {
         return 0;
     }
 
-    while (CanvasGLFW::getWindowCount()>0)
+    while (CanvasGLFW::getWindowCount()>1)
     {
         glfwWaitEvents();
     }
 
     inviwoApp.deinitialize();
-
-    glfwTerminate();
 
     return 0;
 }

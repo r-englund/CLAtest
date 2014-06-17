@@ -13,7 +13,7 @@ ivw_module(OpenGLQt)
 # Add MOC files
 set(MOC_FILES
     ${IVW_MODULE_DIR}/openglqt/canvasqt.h
-    ${IVW_MODULE_DIR}/openglqt/processors/canvasprocessorwidgetqt.h
+    ${IVW_MODULE_DIR}/openglqt/canvasprocessorwidgetqt.h
 )
 
 #--------------------------------------------------------------------
@@ -35,7 +35,7 @@ set(SOURCE_FILES
     ${IVW_MODULE_DIR}/openglqt/canvasqt.cpp
     ${IVW_MODULE_DIR}/openglqt/openglqtcapabilities.cpp
     ${IVW_MODULE_DIR}/openglqt/openglqtmodule.cpp
-    ${IVW_MODULE_DIR}/openglqt/processors/canvasprocessorwidgetqt.cpp
+    ${IVW_MODULE_DIR}/openglqt/canvasprocessorwidgetqt.cpp
 )
 ivw_group("Source Files" ${SOURCE_FILES})
 

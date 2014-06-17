@@ -111,13 +111,21 @@ void CanvasGLFW::glSwapBuffers() {
     glfwSwapBuffers(glWindow_);
 }
 
+void CanvasGLFW::show(){
+    glfwShowWindow(glWindow_);
+}
+
+void CanvasGLFW::hide(){
+    glfwHideWindow(glWindow_);
+}
+
+void CanvasGLFW::resize(uvec2 size) {
+    glfwSetWindowSize(glWindow_, static_cast<int>(size.x), static_cast<int>(size.y));
+}
+
 void CanvasGLFW::setWindowTitle(std::string windowTitle) {
     windowTitle_ = windowTitle;
     glfwSetWindowTitle(glWindow_, windowTitle_.c_str());
-}
-
-void CanvasGLFW::setWindowSize(uvec2 size) {
-    glfwSetWindowSize(glWindow_, static_cast<int>(size.x), static_cast<int>(size.y));
 }
 
 void CanvasGLFW::closeWindow(GLFWwindow* window) {

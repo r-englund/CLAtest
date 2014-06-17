@@ -26,44 +26,38 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
- * Main file authors: Erik SundÃ©n
+ * Main file author: Erik Sundén
  *
  *********************************************************************************/
 
-#include <modules/glfw/glfwmodule.h>
-#include <inviwo/core/common/inviwoapplication.h>
-#include <modules/opengl/canvasprocessorgl.h>
-#include <modules/glfw/canvasprocessorwidgetglfw.h>
+#ifndef IVW_CANVASPROCESSORWIDGETGLFW_H
+#define IVW_CANVASPROCESSORWIDGETGLFW_H
+
+#include <modules/glfw/glfwmoduledefine.h>
+#include <inviwo/core/processors/processorwidget.h>
 
 namespace inviwo {
 
-GLFWModule::GLFWModule() : InviwoModule() {
-    setIdentifier("GLFW");
+class CanvasGLFW;
+class CanvasProcessor;
 
-    if(!glfwInit()){
-        LogError("GLFW could not be initialized.");
-    }
+class IVW_MODULE_GLFW_API CanvasProcessorWidgetGLFW : public ProcessorWidget {
+public:
+    CanvasProcessorWidgetGLFW();
+    virtual ~CanvasProcessorWidgetGLFW();
 
-    glfwWindowHint(GLFW_VISIBLE, GL_FALSE);
-    GLFWSharedCanvas_ = new CanvasGLFW(InviwoApplication::getPtr()->getDisplayName());
-    GLFWSharedCanvas_->initializeGL();
+    virtual void initialize();
+    virtual void deinitialize();
+    virtual ProcessorWidget* create() const;
+    virtual void show();
+    virtual void hide();
+    virtual void setDimension(ivec2);
 
-    ProcessorNetwork* network = InviwoApplication::getPtr()->getProcessorNetwork();
-    if (network) {
-        ProcessorNetworkEvaluator* evaluator = ProcessorNetworkEvaluator::getProcessorNetworkEvaluatorForProcessorNetwork(network);
-        GLFWSharedCanvas_->initializeSquare();
-        GLFWSharedCanvas_->defaultGLState();
-        evaluator->setDefaultRenderContext(GLFWSharedCanvas_);
-    }
-    glfwWindowHint(GLFW_VISIBLE, GL_TRUE);
-
-    registerProcessorWidgetAndAssociate<CanvasProcessorGL>(new CanvasProcessorWidgetGLFW());
-}
-
-GLFWModule::~GLFWModule() {
-    delete GLFWSharedCanvas_;
-    glfwTerminate();
-}
-
+private:
+    CanvasGLFW* canvas_;
+    CanvasProcessor* canvasProcessor_;
+};
 
 } // namespace
+
+#endif // IVW_CANVASPROCESSORWIDGETGLFW_H

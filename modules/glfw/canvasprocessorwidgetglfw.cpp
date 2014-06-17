@@ -3,7 +3,7 @@
  * Inviwo - Interactive Visualization Workshop
  * Version 0.6b
  *
- * Copyright (c) 2013-2014 Inviwo Foundation
+ * Copyright (c) 2014 Inviwo Foundation
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -26,43 +26,64 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
- * Main file author: Sathish Kottravel
+ * Main file author: Erik Sundén
  *
  *********************************************************************************/
 
-#ifndef IVW_CANVASPROCESSORWIDGET_H
-#define IVW_CANVASPROCESSORWIDGET_H
-
-#include <modules/openglqt/openglqtmoduledefine.h>
-#include <inviwo/qt/widgets/processors/processorwidgetqt.h>
+#include <modules/glfw/canvasprocessorwidgetglfw.h>
+#include <modules/glfw/canvasglfw.h>
+#include <inviwo/core/processors/canvasprocessor.h>
 
 namespace inviwo {
 
-class CanvasQt;
-class CanvasProcessor;
+CanvasProcessorWidgetGLFW::CanvasProcessorWidgetGLFW()
+    : ProcessorWidget(),
+      canvas_(0)
+{
+}
 
-class IVW_MODULE_OPENGLQT_API CanvasProcessorWidgetQt : public ProcessorWidgetQt {
-    Q_OBJECT
-public:
-    CanvasProcessorWidgetQt();
-    virtual ~CanvasProcessorWidgetQt();
+CanvasProcessorWidgetGLFW::~CanvasProcessorWidgetGLFW() {}
 
-    virtual void initialize();
-    virtual void deinitialize();
-    virtual ProcessorWidget* create() const;
-    virtual void show();
-    virtual void hide();
+ProcessorWidget* CanvasProcessorWidgetGLFW::create() const {
+    return new CanvasProcessorWidgetGLFW();
+}
 
-protected:
-    void resizeEvent(QResizeEvent*);
-    void showEvent(QShowEvent*);
-    void closeEvent(QCloseEvent*);
+void CanvasProcessorWidgetGLFW::initialize() {
+    canvasProcessor_ = dynamic_cast<CanvasProcessor*>(processor_);
+    ProcessorWidget::initialize();
+    ivec2 dim = getDimensionMetaData();
+    uvec2 dimU = uvec2(dim.x, dim.y);
+    canvas_ = new CanvasGLFW(processor_->getIdentifier(), dimU);
+    canvas_->initializeGL();
+    canvas_->initialize();
+    canvasProcessor_->setCanvas(static_cast<Canvas*>(canvas_));
+    canvas_->resize(dimU);
+}
 
-private:
-    CanvasQt* canvas_;
-    CanvasProcessor* canvasProcessor_;
-};
+void CanvasProcessorWidgetGLFW::deinitialize() {
+    if (canvas_) {
+        this->hide();
+        canvas_->deinitialize();
+        canvas_ = NULL;
+    }
+
+    ProcessorWidget::deinitialize();
+}
+
+void CanvasProcessorWidgetGLFW::show() {
+    canvas_->show();
+    canvasProcessor_->triggerQueuedEvaluation();
+    ProcessorWidget::show();
+}
+
+void CanvasProcessorWidgetGLFW::hide() {
+    canvas_->hide();
+    ProcessorWidget::hide();
+}
+
+void CanvasProcessorWidgetGLFW::setDimension(ivec2 dim) {
+    ProcessorWidget::setDimension(dim);
+    canvas_->resize(uvec2(dim.x, dim.y));
+}
 
 } // namespace
-
-#endif // IVW_CANVASPROCESSORWIDGET_H
