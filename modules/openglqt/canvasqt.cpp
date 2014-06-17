@@ -224,6 +224,11 @@ bool CanvasQt::event(QEvent *e) {
         wheelEvent(static_cast<QWheelEvent*>(e));
         return true;
 #ifndef QT_NO_GESTURES
+    case QEvent::TouchBegin:
+    case QEvent::TouchEnd:
+    case QEvent::TouchUpdate:
+        touchEvent(static_cast<QTouchEvent*>(e));
+        return true;
     case QEvent::Gesture:
         return gestureEvent(static_cast<QGestureEvent*>(e));
 #endif
@@ -358,13 +363,39 @@ void CanvasQt::exposeEvent(QExposeEvent *e){
 
 #ifndef QT_NO_GESTURES
 
-bool CanvasQt::gestureEvent(QGestureEvent* e) {
+void CanvasQt::touchEvent(QTouchEvent* touch) {
+    QTouchEvent::TouchPoint firstPoint = touch->touchPoints()[0];
+
+    ivec2 pos = ivec2(static_cast<int>(glm::floor(firstPoint.pos().x())), static_cast<int>(glm::floor(firstPoint.pos().y())));
+    TouchEvent::TouchState state;
+
+    switch (firstPoint.state())
+    {
+    case Qt::TouchPointPressed:
+        state = TouchEvent::TOUCH_STATE_STARTED;
+    	break;
+    case Qt::TouchPointMoved:
+        state = TouchEvent::TOUCH_STATE_UPDATED;
+        break;
+    case Qt::TouchPointReleased:
+        state = TouchEvent::TOUCH_STATE_ENDED;
+        break;
+    default:
+        state = TouchEvent::TOUCH_STATE_NONE;
+    }
+
+    TouchEvent* touchEvent = new TouchEvent(pos, state);
+    Canvas::touchEvent(touchEvent);
+    delete touchEvent;
+}
+
+bool CanvasQt::gestureEvent(QGestureEvent* ge) {
     gestureMode_ = true;
-    if (QGesture* pan = e->gesture(Qt::PanGesture))
+    if (QGesture* pan = ge->gesture(Qt::PanGesture))
         panTriggered(static_cast<QPanGesture *>(pan));
-    else if (QGesture* pinch = e->gesture(Qt::PinchGesture))
+    else if (QGesture* pinch = ge->gesture(Qt::PinchGesture))
         pinchTriggered(static_cast<QPinchGesture *>(pinch));
-    e->accept();
+    ge->accept();
     return true;
 }
 
