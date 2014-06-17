@@ -322,14 +322,18 @@ void NetworkEditor::removeAndDeletePropertyWidgets(Processor* processor) {
 
 // remove processor widget unnecessary as processor widget is removed when processor is destroyed
 void NetworkEditor::addProcessorWidget(Processor* processor, bool visible) {
-    ProcessorWidgetQt* processorWidgetQt =
-        dynamic_cast<ProcessorWidgetQt*>(ProcessorWidgetFactory::getRef().create(processor));
+    ProcessorWidget* processorWidget = dynamic_cast<ProcessorWidget*>(ProcessorWidgetFactory::getRef().create(processor));
 
-    if (processorWidgetQt) {
-        processorWidgetQt->setProcessor(processor);
-        InviwoApplicationQt* app = dynamic_cast<InviwoApplicationQt*>(InviwoApplication::getPtr());
-        processorWidgetQt->setParent(app->getMainWindow(), Qt::Window | Qt::WindowStaysOnTopHint);
-        processor->setProcessorWidget(processorWidgetQt);
+    if (processorWidget) {
+        processorWidget->setProcessor(processor);
+
+        ProcessorWidgetQt* processorWidgetQt = dynamic_cast<ProcessorWidgetQt*>(processorWidget);
+        if(processorWidgetQt){
+            InviwoApplicationQt* app = dynamic_cast<InviwoApplicationQt*>(InviwoApplication::getPtr());
+            processorWidgetQt->setParent(app->getMainWindow(), Qt::Window | Qt::WindowStaysOnTopHint);
+        }
+
+        processor->setProcessorWidget(processorWidget);
         processor->getProcessorWidget()->initialize();
         // TODO: Serialize if visible and check this on network load
         processor->getProcessorWidget()->setVisible(visible);

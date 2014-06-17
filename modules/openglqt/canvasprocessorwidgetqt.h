@@ -3,7 +3,7 @@
  * Inviwo - Interactive Visualization Workshop
  * Version 0.6b
  *
- * Copyright (c) 2014 Inviwo Foundation
+ * Copyright (c) 2013-2014 Inviwo Foundation
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -26,44 +26,43 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
- * Main file authors: Erik Sundén
+ * Main file author: Sathish Kottravel
  *
  *********************************************************************************/
 
-#include <modules/glfw/glfwmodule.h>
-#include <inviwo/core/common/inviwoapplication.h>
-#include <modules/opengl/canvasprocessorgl.h>
-#include <modules/glfw/canvasprocessorwidgetglfw.h>
+#ifndef IVW_CANVASPROCESSORWIDGETQT_H
+#define IVW_CANVASPROCESSORWIDGETQT_H
+
+#include <modules/openglqt/openglqtmoduledefine.h>
+#include <inviwo/qt/widgets/processors/processorwidgetqt.h>
 
 namespace inviwo {
 
-GLFWModule::GLFWModule() : InviwoModule() {
-    setIdentifier("GLFW");
+class CanvasQt;
+class CanvasProcessor;
 
-    if(!glfwInit()){
-        LogError("GLFW could not be initialized.");
-    }
+class IVW_MODULE_OPENGLQT_API CanvasProcessorWidgetQt : public ProcessorWidgetQt {
+    Q_OBJECT
+public:
+    CanvasProcessorWidgetQt();
+    virtual ~CanvasProcessorWidgetQt();
 
-    glfwWindowHint(GLFW_VISIBLE, GL_FALSE);
-    GLFWSharedCanvas_ = new CanvasGLFW(InviwoApplication::getPtr()->getDisplayName());
-    GLFWSharedCanvas_->initializeGL();
+    virtual void initialize();
+    virtual void deinitialize();
+    virtual ProcessorWidget* create() const;
+    virtual void show();
+    virtual void hide();
 
-    ProcessorNetwork* network = InviwoApplication::getPtr()->getProcessorNetwork();
-    if (network) {
-        ProcessorNetworkEvaluator* evaluator = ProcessorNetworkEvaluator::getProcessorNetworkEvaluatorForProcessorNetwork(network);
-        GLFWSharedCanvas_->initializeSquare();
-        GLFWSharedCanvas_->defaultGLState();
-        evaluator->setDefaultRenderContext(GLFWSharedCanvas_);
-    }
-    glfwWindowHint(GLFW_VISIBLE, GL_TRUE);
+protected:
+    void resizeEvent(QResizeEvent*);
+    void showEvent(QShowEvent*);
+    void closeEvent(QCloseEvent*);
 
-    registerProcessorWidgetAndAssociate<CanvasProcessorGL>(new CanvasProcessorWidgetGLFW());
-}
-
-GLFWModule::~GLFWModule() {
-    delete GLFWSharedCanvas_;
-    glfwTerminate();
-}
-
+private:
+    CanvasQt* canvas_;
+    CanvasProcessor* canvasProcessor_;
+};
 
 } // namespace
+
+#endif // IVW_CANVASPROCESSORWIDGETQT_H

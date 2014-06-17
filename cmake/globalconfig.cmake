@@ -131,10 +131,14 @@ if(CMAKE_COMPILER_2005)
   add_definitions(-D_CRT_SECURE_NO_DEPRECATE -D_CRT_NONSTDC_NO_DEPRECATE)
 endif(CMAKE_COMPILER_2005)
 
-# Check if MAC
+# Mac specific
 if(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
   add_definitions(-DDARWIN)
-endif(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
+  option(IVW_USE_GLFW_NOT_OPENGLQT "Use GLFW for context creation instead of OpenGLQt module" ON)
+else()
+  option(IVW_USE_GLFW_NOT_OPENGLQT "Use GLFW for context creation instead of OpenGLQt module" OFF)
+endif()
+mark_as_advanced(FORCE IVW_USE_GLFW_NOT_OPENGLQT)
 
 #--------------------------------------------------------------------
 # Package creation
