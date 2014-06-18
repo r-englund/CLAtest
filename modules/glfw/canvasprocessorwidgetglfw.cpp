@@ -57,7 +57,7 @@ void CanvasProcessorWidgetGLFW::initialize() {
     canvas_->initializeGL();
     canvas_->initialize();
     canvasProcessor_->setCanvas(static_cast<Canvas*>(canvas_));
-    canvas_->resize(dimU);
+    canvas_->setWindowSize(dimU);
 }
 
 void CanvasProcessorWidgetGLFW::deinitialize() {
@@ -83,7 +83,7 @@ void CanvasProcessorWidgetGLFW::hide() {
 
 void CanvasProcessorWidgetGLFW::setDimension(ivec2 dim) {
     ProcessorWidget::setDimension(dim);
-    canvas_->resize(uvec2(dim.x, dim.y));
+    canvas_->setWindowSize(uvec2(dim.x, dim.y));
 }
 
 } // namespace

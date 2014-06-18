@@ -186,8 +186,8 @@ void ImageLayoutGL::process() {
 ImageLayoutGL::ImageLayoutGLInteractationHandler::ImageLayoutGLInteractationHandler() 
     : InteractionHandler()
     , activePositionChangeEvent_(ivec2(0), MouseEvent::MOUSE_BUTTON_LEFT, MouseEvent::MOUSE_STATE_PRESS, InteractionEvent::MODIFIER_NONE, uvec2(512))
-    , activePosition_(ivec2(0))
-    , viewportActive_(false) {
+    , viewportActive_(false)
+    , activePosition_(ivec2(0)) {
 }
 
 void ImageLayoutGL::ImageLayoutGLInteractationHandler::invokeEvent(Event* event){

@@ -58,8 +58,7 @@ public:
     void show();
     void hide();
     
-    void resize(uvec2);
-
+    void setWindowSize(uvec2);
     void setWindowTitle(std::string);
 
 
