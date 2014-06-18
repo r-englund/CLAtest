@@ -184,10 +184,9 @@ int _glfwCreateContext(_GLFWwindow* window,
 
     if (fbconfig->samples != GLFW_DONT_CARE)
     {
-        if (fbconfig->samples == 0)
+        if (fbconfig->samples == 0){
             ADD_ATTR2(NSOpenGLPFASampleBuffers, 0);
-        else
-        {
+        } else {
             ADD_ATTR2(NSOpenGLPFASampleBuffers, 1);
             ADD_ATTR2(NSOpenGLPFASamples, fbconfig->samples);
         }
