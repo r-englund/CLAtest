@@ -51,9 +51,9 @@ GLFWModule::GLFWModule() : InviwoModule() {
     ProcessorNetwork* network = InviwoApplication::getPtr()->getProcessorNetwork();
     if (network) {
         ProcessorNetworkEvaluator* evaluator = ProcessorNetworkEvaluator::getProcessorNetworkEvaluatorForProcessorNetwork(network);
+        evaluator->setDefaultRenderContext(GLFWSharedCanvas_);
         GLFWSharedCanvas_->initializeSquare();
         GLFWSharedCanvas_->defaultGLState();
-        evaluator->setDefaultRenderContext(GLFWSharedCanvas_);
     }
     glfwWindowHint(GLFW_VISIBLE, GL_TRUE);
 

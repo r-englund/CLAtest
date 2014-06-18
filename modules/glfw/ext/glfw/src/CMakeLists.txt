@@ -1,3 +1,6 @@
+if(POLICY CMP0022)
+cmake_policy(SET CMP0022 OLD)
+endif()
 
 include_directories(${GLFW_SOURCE_DIR}/src
                     ${GLFW_BINARY_DIR}/src
