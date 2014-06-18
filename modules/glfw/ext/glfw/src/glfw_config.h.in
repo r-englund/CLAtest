@@ -40,6 +40,8 @@
 #cmakedefine _GLFW_WIN32
 // Define this to 1 if building GLFW for Cocoa
 #cmakedefine _GLFW_COCOA
+// Define this to 1 if building GLFW for Wayland
+#cmakedefine _GLFW_WAYLAND
 
 // Define this to 1 if building GLFW for EGL
 #cmakedefine _GLFW_EGL
@@ -73,6 +75,8 @@
 #cmakedefine _GLFW_USE_CHDIR
 // Define this to 1 if glfwCreateWindow should populate the menu bar
 #cmakedefine _GLFW_USE_MENUBAR
+// Define this to 1 if windows should use full resolution on Retina displays
+#cmakedefine _GLFW_USE_RETINA
 
 // Define this to 1 if using OpenGL as the client library
 #cmakedefine _GLFW_USE_OPENGL

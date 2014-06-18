@@ -32,9 +32,16 @@ add_executable(joysticks joysticks.c)
 add_executable(modes modes.c ${GETOPT})
 add_executable(peter peter.c)
 add_executable(reopen reopen.c)
+add_executable(cursor cursor.c)
+
+add_executable(cursoranim WIN32 MACOSX_BUNDLE cursoranim.c)
+set_target_properties(cursoranim PROPERTIES MACOSX_BUNDLE_BUNDLE_NAME "Cursor animation")
 
 add_executable(accuracy WIN32 MACOSX_BUNDLE accuracy.c)
 set_target_properties(accuracy PROPERTIES MACOSX_BUNDLE_BUNDLE_NAME "Accuracy")
+
+add_executable(empty WIN32 MACOSX_BUNDLE empty.c ${TINYCTHREAD})
+set_target_properties(empty PROPERTIES MACOSX_BUNDLE_BUNDLE_NAME "Empty Event")
 
 add_executable(sharing WIN32 MACOSX_BUNDLE sharing.c)
 set_target_properties(sharing PROPERTIES MACOSX_BUNDLE_BUNDLE_NAME "Sharing")
@@ -51,11 +58,12 @@ set_target_properties(title PROPERTIES MACOSX_BUNDLE_BUNDLE_NAME "Title")
 add_executable(windows WIN32 MACOSX_BUNDLE windows.c)
 set_target_properties(windows PROPERTIES MACOSX_BUNDLE_BUNDLE_NAME "Windows")
 
+target_link_libraries(empty ${CMAKE_THREAD_LIBS_INIT} ${RT_LIBRARY})
 target_link_libraries(threads ${CMAKE_THREAD_LIBS_INIT} ${RT_LIBRARY})
 
-set(WINDOWS_BINARIES accuracy sharing tearing threads title windows)
+set(WINDOWS_BINARIES accuracy empty sharing tearing threads title windows cursoranim)
 set(CONSOLE_BINARIES clipboard defaults events fsaa gamma glfwinfo
-                     iconify joysticks modes peter reopen)
+                     iconify joysticks modes peter reopen cursor)
 
 if (MSVC)
     # Tell MSVC to use main instead of WinMain for Windows subsystem executables

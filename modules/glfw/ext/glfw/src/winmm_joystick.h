@@ -1,8 +1,7 @@
 //========================================================================
-// GLFW 3.0 EGL - www.glfw.org
+// GLFW 3.1 WinMM - www.glfw.org
 //------------------------------------------------------------------------
-// Copyright (c) 2002-2006 Marcus Geelnard
-// Copyright (c) 2006-2010 Camilla Berglund <elmindreda@elmindreda.org>
+// Copyright (c) 2006-2014 Camilla Berglund <elmindreda@elmindreda.org>
 //
 // This software is provided 'as-is', without any express or implied
 // warranty. In no event will the authors be held liable for any damages
@@ -25,24 +24,11 @@
 //
 //========================================================================
 
-#ifndef _egl_platform_h_
-#define _egl_platform_h_
+#ifndef _winmm_joystick_h_
+#define _winmm_joystick_h_
 
-#include <EGL/egl.h>
-
-// This path may need to be changed if you build GLFW using your own setup
-// We ship and use our own copy of eglext.h since GLFW uses fairly new
-// extensions and not all operating systems come with an up-to-date version
-#include "../deps/EGL/eglext.h"
-
-// Do we have support for dlopen/dlsym?
-#if defined(_GLFW_HAS_DLOPEN)
- #include <dlfcn.h>
-#endif
-
-#define _GLFW_PLATFORM_FBCONFIG             EGLConfig       egl
-#define _GLFW_PLATFORM_CONTEXT_STATE        _GLFWcontextEGL egl
-#define _GLFW_PLATFORM_LIBRARY_OPENGL_STATE _GLFWlibraryEGL egl
+#define _GLFW_PLATFORM_LIBRARY_JOYSTICK_STATE \
+    _GLFWjoystickWinMM winmm_js[GLFW_JOYSTICK_LAST + 1]
 
 
 //========================================================================
@@ -50,31 +36,21 @@
 //========================================================================
 
 //------------------------------------------------------------------------
-// Platform-specific OpenGL context structure
+// Platform-specific joystick structure
 //------------------------------------------------------------------------
-typedef struct _GLFWcontextEGL
+typedef struct _GLFWjoystickWinMM
 {
-   EGLConfig      config;
-   EGLContext     context;
-   EGLSurface     surface;
-
-#if defined(_GLFW_X11)
-   XVisualInfo*   visual;
-#endif
-} _GLFWcontextEGL;
+    float           axes[6];
+    unsigned char   buttons[36]; // 32 buttons plus one hat
+    char*           name;
+} _GLFWjoystickWinMM;
 
 
-//------------------------------------------------------------------------
-// Platform-specific library global data for EGL
-//------------------------------------------------------------------------
-typedef struct _GLFWlibraryEGL
-{
-    EGLDisplay      display;
-    EGLint          versionMajor, versionMinor;
+//========================================================================
+// Prototypes for platform specific internal functions
+//========================================================================
 
-    GLboolean       KHR_create_context;
+void _glfwInitJoysticks(void);
+void _glfwTerminateJoysticks(void);
 
-} _GLFWlibraryEGL;
-
-
-#endif // _egl_platform_h_
+#endif // _winmm_joystick_h_

@@ -1,6 +1,3 @@
-if(POLICY CMP0022)
-cmake_policy(SET CMP0022 OLD)
-endif()
 
 include_directories(${GLFW_SOURCE_DIR}/src
                     ${GLFW_BINARY_DIR}/src
@@ -15,33 +12,42 @@ set(common_SOURCES clipboard.c context.c gamma.c init.c input.c joystick.c
                    monitor.c time.c window.c)
 
 if (_GLFW_COCOA)
-    set(glfw_HEADERS ${common_HEADERS} cocoa_platform.h)
+    set(glfw_HEADERS ${common_HEADERS} cocoa_platform.h iokit_joystick.h
+                     posix_tls.h)
     set(glfw_SOURCES ${common_SOURCES} cocoa_clipboard.m cocoa_gamma.c
-                     cocoa_init.m cocoa_joystick.m cocoa_monitor.m cocoa_time.c
-                     cocoa_window.m)
+                     cocoa_init.m cocoa_monitor.m cocoa_window.m
+                     iokit_joystick.m mach_time.c posix_tls.c)
 elseif (_GLFW_WIN32)
-    set(glfw_HEADERS ${common_HEADERS} win32_platform.h)
+    set(glfw_HEADERS ${common_HEADERS} win32_platform.h win32_tls.h
+                     winmm_joystick.h)
     set(glfw_SOURCES ${common_SOURCES} win32_clipboard.c win32_gamma.c
-                     win32_init.c win32_joystick.c win32_monitor.c win32_time.c
-                     win32_window.c)
+                     win32_init.c win32_monitor.c win32_time.c win32_tls.c
+                     win32_window.c winmm_joystick.c)
 elseif (_GLFW_X11)
-    set(glfw_HEADERS ${common_HEADERS} x11_platform.h)
+    set(glfw_HEADERS ${common_HEADERS} x11_platform.h linux_joystick.h
+                     posix_time.h posix_tls.h)
     set(glfw_SOURCES ${common_SOURCES} x11_clipboard.c x11_gamma.c x11_init.c
-                     x11_joystick.c x11_monitor.c x11_time.c x11_window.c
-                     x11_unicode.c)
+                     x11_monitor.c x11_window.c x11_unicode.c linux_joystick.c
+                     posix_time.c posix_tls.c)
+elseif (_GLFW_WAYLAND)
+    set(glfw_HEADERS ${common_HEADERS} wl_platform.h linux_joystick.h
+                     posix_time.h posix_tls.h)
+    set(glfw_SOURCES ${common_SOURCES} wl_clipboard.c wl_gamma.c wl_init.c
+                     wl_monitor.c wl_window.c linux_joystick.c posix_time.c
+                     posix_tls.c)
 endif()
 
 if (_GLFW_EGL)
-    list(APPEND glfw_HEADERS ${common_HEADERS} egl_platform.h)
+    list(APPEND glfw_HEADERS ${common_HEADERS} egl_context.h)
     list(APPEND glfw_SOURCES ${common_SOURCES} egl_context.c)
 elseif (_GLFW_NSGL)
-    list(APPEND glfw_HEADERS ${common_HEADERS} nsgl_platform.h)
+    list(APPEND glfw_HEADERS ${common_HEADERS} nsgl_context.h)
     list(APPEND glfw_SOURCES ${common_SOURCES} nsgl_context.m)
 elseif (_GLFW_WGL)
-    list(APPEND glfw_HEADERS ${common_HEADERS} wgl_platform.h)
+    list(APPEND glfw_HEADERS ${common_HEADERS} wgl_context.h)
     list(APPEND glfw_SOURCES ${common_SOURCES} wgl_context.c)
 elseif (_GLFW_X11)
-    list(APPEND glfw_HEADERS ${common_HEADERS} glx_platform.h)
+    list(APPEND glfw_HEADERS ${common_HEADERS} glx_context.h)
     list(APPEND glfw_SOURCES ${common_SOURCES} glx_context.c)
 endif()
 
