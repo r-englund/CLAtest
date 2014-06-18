@@ -1,5 +1,5 @@
 //========================================================================
-// GLFW 3.0 WGL - www.glfw.org
+// GLFW 3.1 WGL - www.glfw.org
 //------------------------------------------------------------------------
 // Copyright (c) 2002-2006 Marcus Geelnard
 // Copyright (c) 2006-2010 Camilla Berglund <elmindreda@elmindreda.org>
@@ -181,8 +181,7 @@ static GLboolean choosePixelFormat(_GLFWwindow* window,
         {
             // Get pixel format attributes through WGL_ARB_pixel_format
             if (!getPixelFormatAttrib(window, n, WGL_SUPPORT_OPENGL_ARB) ||
-                !getPixelFormatAttrib(window, n, WGL_DRAW_TO_WINDOW_ARB) ||
-                !getPixelFormatAttrib(window, n, WGL_DOUBLE_BUFFER_ARB))
+                !getPixelFormatAttrib(window, n, WGL_DRAW_TO_WINDOW_ARB))
             {
                 continue;
             }
@@ -213,13 +212,20 @@ static GLboolean choosePixelFormat(_GLFWwindow* window,
             u->accumAlphaBits = getPixelFormatAttrib(window, n, WGL_ACCUM_ALPHA_BITS_ARB);
 
             u->auxBuffers = getPixelFormatAttrib(window, n, WGL_AUX_BUFFERS_ARB);
-            u->stereo = getPixelFormatAttrib(window, n, WGL_STEREO_ARB);
+
+            if (getPixelFormatAttrib(window, n, WGL_STEREO_ARB))
+                u->stereo = GL_TRUE;
+            if (getPixelFormatAttrib(window, n, WGL_DOUBLE_BUFFER_ARB))
+                u->doublebuffer = GL_TRUE;
 
             if (window->wgl.ARB_multisample)
                 u->samples = getPixelFormatAttrib(window, n, WGL_SAMPLES_ARB);
 
             if (window->wgl.ARB_framebuffer_sRGB)
-                u->sRGB = getPixelFormatAttrib(window, n, WGL_FRAMEBUFFER_SRGB_CAPABLE_ARB);
+            {
+                if (getPixelFormatAttrib(window, n, WGL_FRAMEBUFFER_SRGB_CAPABLE_ARB))
+                    u->sRGB = GL_TRUE;
+            }
         }
         else
         {
@@ -236,8 +242,7 @@ static GLboolean choosePixelFormat(_GLFWwindow* window,
             }
 
             if (!(pfd.dwFlags & PFD_DRAW_TO_WINDOW) ||
-                !(pfd.dwFlags & PFD_SUPPORT_OPENGL) ||
-                !(pfd.dwFlags & PFD_DOUBLEBUFFER))
+                !(pfd.dwFlags & PFD_SUPPORT_OPENGL))
             {
                 continue;
             }
@@ -265,7 +270,11 @@ static GLboolean choosePixelFormat(_GLFWwindow* window,
             u->accumAlphaBits = pfd.cAccumAlphaBits;
 
             u->auxBuffers = pfd.cAuxBuffers;
-            u->stereo = (pfd.dwFlags & PFD_STEREO) ? GL_TRUE : GL_FALSE;
+
+            if (pfd.dwFlags & PFD_STEREO)
+                u->stereo = GL_TRUE;
+            if (pfd.dwFlags & PFD_DOUBLEBUFFER)
+                u->doublebuffer = GL_TRUE;
         }
 
         u->wgl = n;
@@ -306,22 +315,15 @@ static GLboolean choosePixelFormat(_GLFWwindow* window,
 //
 int _glfwInitContextAPI(void)
 {
-    _glfw.wgl.opengl32.instance = LoadLibrary(L"opengl32.dll");
+    if (!_glfwInitTLS())
+        return GL_FALSE;
+
+    _glfw.wgl.opengl32.instance = LoadLibraryW(L"opengl32.dll");
     if (!_glfw.wgl.opengl32.instance)
     {
         _glfwInputError(GLFW_PLATFORM_ERROR, "Failed to load opengl32.dll");
         return GL_FALSE;
     }
-
-    _glfw.wgl.current = TlsAlloc();
-    if (_glfw.wgl.current == TLS_OUT_OF_INDEXES)
-    {
-        _glfwInputError(GLFW_PLATFORM_ERROR,
-                        "WGL: Failed to allocate TLS index");
-        return GL_FALSE;
-    }
-
-    _glfw.wgl.hasTLS = GL_TRUE;
 
     return GL_TRUE;
 }
@@ -330,11 +332,10 @@ int _glfwInitContextAPI(void)
 //
 void _glfwTerminateContextAPI(void)
 {
-    if (_glfw.wgl.hasTLS)
-        TlsFree(_glfw.wgl.current);
-
     if (_glfw.wgl.opengl32.instance)
         FreeLibrary(_glfw.wgl.opengl32.instance);
+
+    _glfwTerminateTLS();
 }
 
 #define setWGLattrib(attribName, attribValue) \
@@ -347,7 +348,7 @@ void _glfwTerminateContextAPI(void)
 // Prepare for creation of the OpenGL context
 //
 int _glfwCreateContext(_GLFWwindow* window,
-                       const _GLFWwndconfig* wndconfig,
+                       const _GLFWctxconfig* ctxconfig,
                        const _GLFWfbconfig* fbconfig)
 {
     int attribs[40];
@@ -355,8 +356,8 @@ int _glfwCreateContext(_GLFWwindow* window,
     PIXELFORMATDESCRIPTOR pfd;
     HGLRC share = NULL;
 
-    if (wndconfig->share)
-        share = wndconfig->share->wgl.context;
+    if (ctxconfig->share)
+        share = ctxconfig->share->wgl.context;
 
     window->wgl.dc = GetDC(window->win32.handle);
     if (!window->wgl.dc)
@@ -388,42 +389,42 @@ int _glfwCreateContext(_GLFWwindow* window,
     {
         int index = 0, mask = 0, flags = 0, strategy = 0;
 
-        if (wndconfig->clientAPI == GLFW_OPENGL_API)
+        if (ctxconfig->api == GLFW_OPENGL_API)
         {
-            if (wndconfig->glForward)
+            if (ctxconfig->forward)
                 flags |= WGL_CONTEXT_FORWARD_COMPATIBLE_BIT_ARB;
 
-            if (wndconfig->glDebug)
+            if (ctxconfig->debug)
                 flags |= WGL_CONTEXT_DEBUG_BIT_ARB;
 
-            if (wndconfig->glProfile)
+            if (ctxconfig->profile)
             {
-                if (wndconfig->glProfile == GLFW_OPENGL_CORE_PROFILE)
+                if (ctxconfig->profile == GLFW_OPENGL_CORE_PROFILE)
                     mask |= WGL_CONTEXT_CORE_PROFILE_BIT_ARB;
-                else if (wndconfig->glProfile == GLFW_OPENGL_COMPAT_PROFILE)
+                else if (ctxconfig->profile == GLFW_OPENGL_COMPAT_PROFILE)
                     mask |= WGL_CONTEXT_COMPATIBILITY_PROFILE_BIT_ARB;
             }
         }
         else
             mask |= WGL_CONTEXT_ES2_PROFILE_BIT_EXT;
 
-        if (wndconfig->glRobustness)
+        if (ctxconfig->robustness)
         {
             if (window->wgl.ARB_create_context_robustness)
             {
-                if (wndconfig->glRobustness == GLFW_NO_RESET_NOTIFICATION)
+                if (ctxconfig->robustness == GLFW_NO_RESET_NOTIFICATION)
                     strategy = WGL_NO_RESET_NOTIFICATION_ARB;
-                else if (wndconfig->glRobustness == GLFW_LOSE_CONTEXT_ON_RESET)
+                else if (ctxconfig->robustness == GLFW_LOSE_CONTEXT_ON_RESET)
                     strategy = WGL_LOSE_CONTEXT_ON_RESET_ARB;
 
                 flags |= WGL_CONTEXT_ROBUST_ACCESS_BIT_ARB;
             }
         }
 
-        if (wndconfig->glMajor != 1 || wndconfig->glMinor != 0)
+        if (ctxconfig->major != 1 || ctxconfig->minor != 0)
         {
-            setWGLattrib(WGL_CONTEXT_MAJOR_VERSION_ARB, wndconfig->glMajor);
-            setWGLattrib(WGL_CONTEXT_MINOR_VERSION_ARB, wndconfig->glMinor);
+            setWGLattrib(WGL_CONTEXT_MAJOR_VERSION_ARB, ctxconfig->major);
+            setWGLattrib(WGL_CONTEXT_MINOR_VERSION_ARB, ctxconfig->minor);
         }
 
         if (flags)
@@ -497,14 +498,14 @@ void _glfwDestroyContext(_GLFWwindow* window)
 // Analyzes the specified context for possible recreation
 //
 int _glfwAnalyzeContext(const _GLFWwindow* window,
-                        const _GLFWwndconfig* wndconfig,
+                        const _GLFWctxconfig* ctxconfig,
                         const _GLFWfbconfig* fbconfig)
 {
     GLboolean required = GL_FALSE;
 
-    if (wndconfig->clientAPI == GLFW_OPENGL_API)
+    if (ctxconfig->api == GLFW_OPENGL_API)
     {
-        if (wndconfig->glForward)
+        if (ctxconfig->forward)
         {
             if (!window->wgl.ARB_create_context)
             {
@@ -518,7 +519,7 @@ int _glfwAnalyzeContext(const _GLFWwindow* window,
             required = GL_TRUE;
         }
 
-        if (wndconfig->glProfile)
+        if (ctxconfig->profile)
         {
             if (!window->wgl.ARB_create_context_profile)
             {
@@ -546,13 +547,13 @@ int _glfwAnalyzeContext(const _GLFWwindow* window,
         required = GL_TRUE;
     }
 
-    if (wndconfig->glMajor != 1 || wndconfig->glMinor != 0)
+    if (ctxconfig->major != 1 || ctxconfig->minor != 0)
     {
         if (window->wgl.ARB_create_context)
             required = GL_TRUE;
     }
 
-    if (wndconfig->glDebug)
+    if (ctxconfig->debug)
     {
         if (window->wgl.ARB_create_context)
             required = GL_TRUE;
@@ -588,12 +589,7 @@ void _glfwPlatformMakeContextCurrent(_GLFWwindow* window)
     else
         wglMakeCurrent(NULL, NULL);
 
-    TlsSetValue(_glfw.wgl.current, window);
-}
-
-_GLFWwindow* _glfwPlatformGetCurrentContext(void)
-{
-    return TlsGetValue(_glfw.wgl.current);
+    _glfwSetCurrentContext(window);
 }
 
 void _glfwPlatformSwapBuffers(_GLFWwindow* window)

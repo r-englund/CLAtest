@@ -1,5 +1,5 @@
 //========================================================================
-// GLFW 3.0 Win32 - www.glfw.org
+// GLFW 3.1 Win32 - www.glfw.org
 //------------------------------------------------------------------------
 // Copyright (c) 2002-2006 Marcus Geelnard
 // Copyright (c) 2006-2010 Camilla Berglund <elmindreda@elmindreda.org>
@@ -66,6 +66,11 @@
 #include <mmsystem.h>
 #include <dbt.h>
 
+#if defined(_MSC_VER)
+ #include <malloc.h>
+ #define strdup _strdup
+#endif
+
 
 //========================================================================
 // Hack: Define things that some windows.h variants don't
@@ -77,6 +82,27 @@
 #ifndef WM_DWMCOMPOSITIONCHANGED
  #define WM_DWMCOMPOSITIONCHANGED 0x031E
 #endif
+#ifndef WM_COPYGLOBALDATA
+ #define WM_COPYGLOBALDATA 0x0049
+#endif
+#ifndef WM_UNICHAR
+ #define WM_UNICHAR 0x0109
+#endif
+#ifndef UNICODE_NOCHAR
+ #define UNICODE_NOCHAR 0xFFFF
+#endif
+
+#if WINVER < 0x0601
+typedef struct tagCHANGEFILTERSTRUCT
+{
+    DWORD cbSize;
+    DWORD ExtStatus;
+
+} CHANGEFILTERSTRUCT, *PCHANGEFILTERSTRUCT;
+#ifndef MSGFLT_ALLOW
+ #define MSGFLT_ALLOW 1
+#endif
+#endif /*Windows 7*/
 
 
 //========================================================================
@@ -107,7 +133,9 @@ typedef DWORD (WINAPI * TIMEGETTIME_T) (void);
 
 // user32.dll function pointer typedefs
 typedef BOOL (WINAPI * SETPROCESSDPIAWARE_T)(void);
+typedef BOOL (WINAPI * CHANGEWINDOWMESSAGEFILTEREX_T)(HWND,UINT,DWORD,PCHANGEFILTERSTRUCT);
 #define _glfw_SetProcessDPIAware _glfw.win32.user32.SetProcessDPIAware
+#define _glfw_ChangeWindowMessageFilterEx _glfw.win32.user32.ChangeWindowMessageFilterEx
 
 // dwmapi.dll function pointer typedefs
 typedef HRESULT (WINAPI * DWMISCOMPOSITIONENABLED_T)(BOOL*);
@@ -123,19 +151,25 @@ typedef HRESULT (WINAPI * DWMISCOMPOSITIONENABLED_T)(BOOL*);
 #define _GLFW_RECREATION_IMPOSSIBLE 2
 
 
+#include "win32_tls.h"
+
 #if defined(_GLFW_WGL)
- #include "wgl_platform.h"
+ #include "wgl_context.h"
 #elif defined(_GLFW_EGL)
  #define _GLFW_EGL_NATIVE_WINDOW  window->win32.handle
  #define _GLFW_EGL_NATIVE_DISPLAY EGL_DEFAULT_DISPLAY
- #include "egl_platform.h"
+ #include "egl_context.h"
 #else
  #error "No supported context creation API selected"
 #endif
 
+#include "winmm_joystick.h"
+
 #define _GLFW_PLATFORM_WINDOW_STATE         _GLFWwindowWin32  win32
 #define _GLFW_PLATFORM_LIBRARY_WINDOW_STATE _GLFWlibraryWin32 win32
+#define _GLFW_PLATFORM_LIBRARY_TIME_STATE   _GLFWtimeWin32    win32_time
 #define _GLFW_PLATFORM_MONITOR_STATE        _GLFWmonitorWin32 win32
+#define _GLFW_PLATFORM_CURSOR_STATE         _GLFWcursorWin32  win32
 
 
 //========================================================================
@@ -154,10 +188,9 @@ typedef struct _GLFWwindowWin32
     DWORD               dwExStyle; // --"--
 
     // Various platform specific internal variables
-    GLboolean           cursorCentered;
     GLboolean           cursorInside;
     GLboolean           cursorHidden;
-    int                 oldCursorX, oldCursorY;
+    int                 cursorPosX, cursorPosY;
 } _GLFWwindowWin32;
 
 
@@ -169,13 +202,10 @@ typedef struct _GLFWlibraryWin32
     ATOM                classAtom;
     DWORD               foregroundLockTimeout;
     char*               clipboardString;
+    char*               keyName;
 
-    // Timer data
-    struct {
-        GLboolean       hasPC;
-        double          resolution;
-        unsigned __int64 base;
-    } timer;
+    short int           nativeKeys[512];
+    short int           publicKeys[512];
 
 #ifndef _GLFW_NO_DLOAD_WINMM
     // winmm.dll
@@ -192,6 +222,7 @@ typedef struct _GLFWlibraryWin32
     struct {
         HINSTANCE       instance;
         SETPROCESSDPIAWARE_T SetProcessDPIAware;
+        CHANGEWINDOWMESSAGEFILTEREX_T ChangeWindowMessageFilterEx;
     } user32;
 
     // dwmapi.dll
@@ -200,11 +231,6 @@ typedef struct _GLFWlibraryWin32
         DWMISCOMPOSITIONENABLED_T DwmIsCompositionEnabled;
     } dwmapi;
 
-    struct {
-        float           axes[6];
-        unsigned char   buttons[36]; // 32 buttons plus one hat
-        char*           name;
-    } joystick[GLFW_JOYSTICK_LAST + 1];
 
 } _GLFWlibraryWin32;
 
@@ -216,8 +242,30 @@ typedef struct _GLFWmonitorWin32
 {
     // This size matches the static size of DISPLAY_DEVICE.DeviceName
     WCHAR               name[32];
+    GLboolean           modeChanged;
 
 } _GLFWmonitorWin32;
+
+
+//------------------------------------------------------------------------
+// Platform-specific cursor structure
+//------------------------------------------------------------------------
+typedef struct _GLFWcursorWin32
+{
+    HCURSOR handle;
+} _GLFWcursorWin32;
+
+
+//------------------------------------------------------------------------
+// Platform-specific time structure
+//------------------------------------------------------------------------
+typedef struct _GLFWtimeWin32
+{
+    GLboolean           hasPC;
+    double              resolution;
+    unsigned __int64    base;
+
+} _GLFWtimeWin32;
 
 
 //========================================================================
@@ -233,21 +281,6 @@ char* _glfwCreateUTF8FromWideString(const WCHAR* source);
 
 // Time
 void _glfwInitTimer(void);
-
-// Joystick input
-void _glfwInitJoysticks(void);
-void _glfwTerminateJoysticks(void);
-
-// OpenGL support
-int _glfwInitContextAPI(void);
-void _glfwTerminateContextAPI(void);
-int _glfwCreateContext(_GLFWwindow* window,
-                       const _GLFWwndconfig* wndconfig,
-                       const _GLFWfbconfig* fbconfig);
-void _glfwDestroyContext(_GLFWwindow* window);
-int _glfwAnalyzeContext(const _GLFWwindow* window,
-                        const _GLFWwndconfig* wndconfig,
-                        const _GLFWfbconfig* fbconfig);
 
 // Fullscreen support
 GLboolean _glfwSetVideoMode(_GLFWmonitor* monitor, const GLFWvidmode* desired);
