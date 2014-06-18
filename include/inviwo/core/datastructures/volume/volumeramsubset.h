@@ -123,13 +123,12 @@ void VolumeRAMSubSet::evaluate() {
     const T* src = reinterpret_cast<const T*>(volume->getData());
     T* dst = reinterpret_cast<T*>(newVolume->getData());
     // memcpy each row for every slice to form sub volume
-    size_t volumePos;
-    size_t subVolumePos;
 
-    for (size_t i=0; i < copyDimsWithoutBorder.z; i++) {
-        for (size_t j=0; j < copyDimsWithoutBorder.y; j++) {
-            volumePos = (j*dataDims.x) + (i*dataDims.x*dataDims.y);
-            subVolumePos = ((j+trueBorder.llf.y)*dimsWithBorder.x) + ((i+trueBorder.llf.z)*dimsWithBorder.x*dimsWithBorder.y) + trueBorder.llf.x;
+    for (int i=0; i < static_cast<int>(copyDimsWithoutBorder.z); i++) {
+        #pragma omp parallel for
+        for (int j=0; j < static_cast<int>(copyDimsWithoutBorder.y); j++) {
+            size_t volumePos = (j*dataDims.x) + (i*dataDims.x*dataDims.y);
+            size_t subVolumePos = ((j+trueBorder.llf.y)*dimsWithBorder.x) + ((i+trueBorder.llf.z)*dimsWithBorder.x*dimsWithBorder.y) + trueBorder.llf.x;
             memcpy(dst + subVolumePos, (src + volumePos + initialStartPos), dataSize);
         }
     }

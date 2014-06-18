@@ -56,7 +56,7 @@ void CanvasProcessorWidgetGLFW::initialize() {
     canvas_ = new CanvasGLFW(processor_->getIdentifier(), dimU);
     glfwWindowHint(GLFW_FLOATING, GL_TRUE);
     canvas_->initializeGL();
-    glfwWindowHint(GLFW_FLOATING, GL_TRUE);
+    glfwWindowHint(GLFW_FLOATING, GL_FALSE);
     canvas_->initialize();
     canvasProcessor_->setCanvas(static_cast<Canvas*>(canvas_));
     canvas_->setWindowSize(dimU);
