@@ -73,7 +73,7 @@ int main(int argc, char** argv) {
     if (cmdparser->getLoadWorkspaceFromArg())
         workspace = cmdparser->getWorkspacePath();
     else
-        workspace = inviwoApp.getPath(InviwoApplication::PATH_WORKSPACES, "tests/simpleslicergl.inv");
+        workspace = inviwoApp.getPath(InviwoApplication::PATH_WORKSPACES, "tests/simpleentryexit.inv");
 
     IvwDeserializer xmlDeserializer(workspace);
     inviwoApp.getProcessorNetwork()->deserialize(xmlDeserializer);
@@ -85,11 +85,19 @@ int main(int argc, char** argv) {
         CanvasProcessor* canvasProcessor = dynamic_cast<CanvasProcessor*>((*it));
 
         if (canvasProcessor) {
-            CanvasGLFW* currentC = new CanvasGLFW(canvasProcessor->getIdentifier(), uvec2(canvasProcessor->getCanvasSize()));
-            currentC->initializeGL();
-            currentC->initialize();
+            CanvasGLFW* currentC;
+            if (i==0) {
+                currentC = sharedCanvas;
+                currentC->show();
+            }
+            else {
+                currentC = new CanvasGLFW(canvasProcessor->getIdentifier(), uvec2(canvasProcessor->getCanvasSize()));
+                currentC->initializeGL();
+                currentC->initialize();
+            }
             inviwoApp.getProcessorNetworkEvaluator()->registerCanvas(currentC, canvasProcessor->getIdentifier());
             currentC->setWindowTitle(inviwoApp.getDisplayName() + " : " + canvasProcessor->getIdentifier());
+            currentC->setWindowSize(uvec2(canvasProcessor->getCanvasSize()));
             i++;
         }
     }
@@ -111,7 +119,7 @@ int main(int argc, char** argv) {
         return 0;
     }
 
-    while (CanvasGLFW::getWindowCount()>1)
+    while (CanvasGLFW::getWindowCount()>0)
     {
         glfwWaitEvents();
     }
