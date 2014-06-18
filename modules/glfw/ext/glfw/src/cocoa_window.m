@@ -624,7 +624,7 @@ static int translateKey(unsigned int key)
 
     if (modifierFlags == window->ns.modifierFlags)
     {
-        if (window->key[key] == GLFW_PRESS)
+        if (window->keys[key] == GLFW_PRESS)
             action = GLFW_RELEASE;
         else
             action = GLFW_PRESS;
@@ -973,7 +973,7 @@ static GLboolean createWindow(_GLFWwindow* window,
 #endif /*MAC_OS_X_VERSION_MAX_ALLOWED*/
 
     if (wndconfig->floating)
-        [window.ns.object setLevel:NSFloatingWindowLevel];
+        [window->ns.object setLevel:NSFloatingWindowLevel];
 
     [window->ns.object setTitle:[NSString stringWithUTF8String:wndconfig->title]];
     [window->ns.object setContentView:window->ns.view];
