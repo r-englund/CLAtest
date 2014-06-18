@@ -63,6 +63,9 @@ CanvasQt::CanvasQt(QWindow* parent, uvec2 dim)
     , swapBuffersAllowed_(false)
 #ifndef QT_NO_GESTURES
     , gestureMode_(false)
+#if (QT_VERSION >= QT_VERSION_CHECK(5, 0, 0))
+    , lastNumFingers_(0)
+#endif
 #endif
 {
     setSurfaceType(QWindow::OpenGLSurface);
@@ -109,6 +112,9 @@ CanvasQt::CanvasQt(QWidget* parent, uvec2 dim)
       , swapBuffersAllowed_(false)
 #ifndef QT_NO_GESTURES
       , gestureMode_(false)
+#if (QT_VERSION >= QT_VERSION_CHECK(5, 0, 0))
+      , lastNumFingers_(0)
+#endif
 #endif
 {
     //This is our default rendering context
@@ -246,8 +252,7 @@ void CanvasQt::mousePressEvent(QMouseEvent* e) {
     if (!processorNetworkEvaluator_) return;
 
 #ifndef QT_NO_GESTURES
-    if(gestureMode_)
-        return;
+    if (gestureMode_) return;
 #endif
 
     MouseEvent* mouseEvent = new MouseEvent(ivec2(e->pos().x(), e->pos().y()),
@@ -262,8 +267,7 @@ void CanvasQt::mouseReleaseEvent(QMouseEvent* e) {
     if (!processorNetworkEvaluator_) return;
 
 #ifndef QT_NO_GESTURES
-    if(gestureMode_)
-        gestureMode_ = false;
+    if (gestureMode_) return;
 #endif
 
     MouseEvent* mouseEvent = new MouseEvent(ivec2(e->pos().x(), e->pos().y()),
@@ -278,8 +282,7 @@ void CanvasQt::mouseMoveEvent(QMouseEvent* e) {
     if (!processorNetworkEvaluator_) return;
 
 #ifndef QT_NO_GESTURES
-    if(gestureMode_)
-        return;
+    if (gestureMode_) return;
 #endif
 
     MouseEvent* mouseEvent = NULL;
@@ -392,7 +395,7 @@ void CanvasQt::touchEvent(QTouchEvent* touch) {
     delete touchEvent;
 
 #if (QT_VERSION >= QT_VERSION_CHECK(5, 0, 0))
-    if(touch->touchPoints().size() == 1){
+    if(touch->touchPoints().size() == 1 && lastNumFingers_ < 2){
         MouseEvent* mouseEvent = NULL;
         switch (touchState)
         {
@@ -416,6 +419,8 @@ void CanvasQt::touchEvent(QTouchEvent* touch) {
         }
         delete mouseEvent;
     }
+
+    lastNumFingers_ = static_cast<int>(touch->touchPoints().size());
 #endif
 }
 

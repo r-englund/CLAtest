@@ -124,6 +124,9 @@ private:
     void panTriggered(QPanGesture*);
     void pinchTriggered(QPinchGesture*);
     bool gestureMode_;
+#if (QT_VERSION >= QT_VERSION_CHECK(5, 0, 0))
+    int lastNumFingers_;
+#endif
 #endif
 };
 

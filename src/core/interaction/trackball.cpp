@@ -157,7 +157,7 @@ void Trackball::invokeEvent(Event* event) {
     if (gestureEvent) {
         if(gestureEvent->type() == GestureEvent::PINCH){
             vec3 direction = camera_->getLookFrom() - camera_->getLookTo();
-            camera_->setLookFrom(camera_->getLookFrom()-direction*static_cast<float>(gestureEvent->deltaDistance()));
+            camera_->setLookFrom(camera_->getLookFrom()+direction*static_cast<float>(gestureEvent->deltaDistance()));
         }
         else if(gestureEvent->type() == GestureEvent::PAN){
             vec3 offsetVector = vec3(gestureEvent->deltaPos(), 0.f);
