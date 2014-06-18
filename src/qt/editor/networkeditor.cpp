@@ -1265,10 +1265,10 @@ void NetworkEditor::contextMenuEvent(QGraphicsSceneContextMenuEvent* e) {
         if (processorGraphicsItem->getProcessor()->hasProcessorWidget()) {
             showAction = menu.addAction(tr("Show processor widget"));
             showAction->setCheckable(true);
-            ProcessorWidgetQt* processorWidget = dynamic_cast<ProcessorWidgetQt*>(processorGraphicsItem->getProcessor()->getProcessorWidget());
+            ProcessorWidget* processorWidget = processorGraphicsItem->getProcessor()->getProcessorWidget();
 
-            if (processorWidget && processorWidget->isHidden()) showAction->setChecked(false);
-            else showAction->setChecked(true);
+            if (processorWidget && processorWidget->isVisible()) showAction->setChecked(true);
+            else showAction->setChecked(false);
         }
 
         QAction* result = menu.exec(QCursor::pos());

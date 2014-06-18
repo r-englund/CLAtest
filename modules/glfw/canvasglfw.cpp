@@ -113,13 +113,14 @@ void CanvasGLFW::glSwapBuffers() {
 
 void CanvasGLFW::show(){
     glfwShowWindow(glWindow_);
+    update();
 }
 
 void CanvasGLFW::hide(){
     glfwHideWindow(glWindow_);
 }
 
-void CanvasGLFW::resize(uvec2 size) {
+void CanvasGLFW::setWindowSize(uvec2 size) {
     glfwSetWindowSize(glWindow_, static_cast<int>(size.x), static_cast<int>(size.y));
 }
 

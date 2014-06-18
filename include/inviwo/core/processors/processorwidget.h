@@ -50,6 +50,7 @@ public:
     virtual void initialize() = 0;
     virtual void deinitialize() = 0;
     virtual void setVisible(bool visible);
+    virtual bool isVisible();
     virtual void show();
     virtual void hide();
     virtual void setDimension(ivec2);

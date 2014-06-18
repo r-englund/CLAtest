@@ -53,6 +53,10 @@ void ProcessorWidget::setVisible(bool visible) {
     metaData_->setVisibile(visible);
 }
 
+bool ProcessorWidget::isVisible(){
+    return metaData_->isVisible();
+}
+
 void ProcessorWidget::show() {
     metaData_->setVisibile(true);
 }
