@@ -644,10 +644,10 @@ template<> inline std::string DataUINT64::str() { return "UINT64"; }
     template<> inline void F::vec4ToValue(vec4 val, void* loc) const { *static_cast<F::type*>(loc) = static_cast<F::type>(val.x); }
 
 #define DataToFloat(F) \
-    template<> inline float F::valueToFloat(void* val) const { return *static_cast<float*>(val); } \
-    template<> inline vec2 F::valueToVec2Float(void* val) const { return singleToVec2<float>(*static_cast<float*>(val)); } \
-    template<> inline vec3 F::valueToVec3Float(void* val) const { return singleToVec3<float>(*static_cast<float*>(val)); } \
-    template<> inline vec4 F::valueToVec4Float(void* val) const { return singleToVec4<float>(*static_cast<float*>(val)); }
+    template<> inline float F::valueToFloat(void* val) const { return static_cast<float>(*static_cast<F::type*>(val)); } \
+    template<> inline vec2 F::valueToVec2Float(void* val) const { return singleToVec2<float>(static_cast<float>(*static_cast<F::type*>(val))); } \
+    template<> inline vec3 F::valueToVec3Float(void* val) const { return singleToVec3<float>(static_cast<float>(*static_cast<F::type*>(val))); } \
+    template<> inline vec4 F::valueToVec4Float(void* val) const { return singleToVec4<float>(static_cast<float>(*static_cast<F::type*>(val))); }
 
 #define DataUnchanged(F) \
     template<> inline DataFormatEnums::NumericType F::numericType() { return DataFormatEnums::FLOAT_TYPE; } \

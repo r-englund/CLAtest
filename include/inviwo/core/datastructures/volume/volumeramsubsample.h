@@ -131,13 +131,18 @@ void VolumeRAMSubSample::evaluate() {
     T* dst = reinterpret_cast<T*>(newVolume->getData());
     const DataFormatBase* format = volume->getDataFormat();
 
+    //TODO: Remove this test
+    T middleVal = src[(64*sXY) + (64*sX) + 64];
+    vec4 middleValVec4 = format->valueToVec4Float(&middleVal);
+    LogInfo(middleValVec4.x);
+
     //Half sampling
     if(factor_ == HALF){
         //VolumeHalfSampleCalculator<T>::calculate(this, dst, src, dataDims, newDims);
         #define sumCurVal(v) curVal = v; val += format->valueToVec4Float(&curVal)*0.125f;
-        #pragma omp parallel for
         for (int z=0; z < static_cast<int>(newDims.z); ++z) {
             for (int y=0; y < static_cast<int>(newDims.y); ++y) {
+                #pragma omp parallel for
                 for (int x=0; x < static_cast<int>(newDims.x); ++x) {
                     size_t px = static_cast<size_t>(x*2);
                     size_t py = static_cast<size_t>(y*2);
