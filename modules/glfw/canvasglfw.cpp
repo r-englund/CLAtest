@@ -38,15 +38,25 @@ namespace inviwo {
 
 GLFWwindow* CanvasGLFW::sharedContext_ = NULL;
 int CanvasGLFW::glfwWindowCount_ = 0;
+bool CanvasGLFW::alwaysOnTop_ = true;
 
 CanvasGLFW::CanvasGLFW(std::string windowTitle, uvec2 dimensions)
     : CanvasGL(dimensions)
     , windowTitle_(windowTitle)
     , glWindow_(NULL)
+    , ownerWidget_(NULL)
     , mouseButton_(MouseEvent::MOUSE_BUTTON_NONE)
     , mouseState_(MouseEvent::MOUSE_STATE_NONE)
     , mouseModifiers_(InteractionEvent::MODIFIER_NONE)
-{}
+{
+    if(alwaysOnTop_){
+        glfwWindowHint(GLFW_FLOATING, GL_TRUE);
+    }
+    else{
+        glfwWindowHint(GLFW_FLOATING, GL_FALSE);
+    }
+    glfwWindowHint(GLFW_VISIBLE, GL_FALSE);
+}
 
 CanvasGLFW::~CanvasGLFW() {
     glWindow_ = NULL;
@@ -143,8 +153,27 @@ void CanvasGLFW::reshape(GLFWwindow* window, int width, int height) {
     getCanvasGLFW(window)->resize(uvec2(width, height));
 }
 
+void CanvasGLFW::setAlwaysOnTopByDefault(bool alwaysOnTop){
+    alwaysOnTop_ = alwaysOnTop;
+}
+
 CanvasGLFW* CanvasGLFW::getCanvasGLFW(GLFWwindow* window){
     return static_cast<CanvasGLFW*>(glfwGetWindowUserPointer(window));
+}
+
+CanvasGLFW* CanvasGLFW::getSharedContext(){
+    if(sharedContext_)
+        return getCanvasGLFW(sharedContext_);
+    else
+        return NULL;
+}
+
+ProcessorWidget* CanvasGLFW::getProcessorWidgetOwner(){
+    return ownerWidget_;
+}
+
+void CanvasGLFW::setProcessorWidgetOwner(ProcessorWidget* processorWidget){
+    ownerWidget_ = processorWidget;
 }
 
 void CanvasGLFW::keyboard(GLFWwindow* window, int key, int scancode, int action, int mods){

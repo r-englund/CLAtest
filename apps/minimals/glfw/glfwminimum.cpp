@@ -57,6 +57,8 @@ int main(int argc, char** argv) {
 
     InviwoApplication inviwoApp(argc, argv, "Inviwo "+IVW_VERSION + " - GLFWApp", inviwo::filesystem::findBasePath());
 
+    CanvasGLFW::setAlwaysOnTopByDefault(false);
+
     //Initialize all modules
     inviwoApp.initialize(&inviwo::registerAllModules);
 
@@ -88,7 +90,6 @@ int main(int argc, char** argv) {
             CanvasGLFW* currentC;
             if (i==0) {
                 currentC = sharedCanvas;
-                currentC->show();
             }
             else {
                 currentC = new CanvasGLFW(canvasProcessor->getIdentifier(), uvec2(canvasProcessor->getCanvasSize()));
@@ -98,6 +99,7 @@ int main(int argc, char** argv) {
             inviwoApp.getProcessorNetworkEvaluator()->registerCanvas(currentC, canvasProcessor->getIdentifier());
             currentC->setWindowTitle(inviwoApp.getDisplayName() + " : " + canvasProcessor->getIdentifier());
             currentC->setWindowSize(uvec2(canvasProcessor->getCanvasSize()));
+            currentC->show();
             i++;
         }
     }

@@ -44,7 +44,6 @@ GLFWModule::GLFWModule() : InviwoModule() {
         LogError("GLFW could not be initialized.");
     }
 
-    glfwWindowHint(GLFW_VISIBLE, GL_FALSE);
     GLFWSharedCanvas_ = new CanvasGLFW(InviwoApplication::getPtr()->getDisplayName());
     GLFWSharedCanvas_->initializeGL();
 
@@ -55,7 +54,6 @@ GLFWModule::GLFWModule() : InviwoModule() {
         GLFWSharedCanvas_->initializeSquare();
         GLFWSharedCanvas_->defaultGLState();
     }
-    glfwWindowHint(GLFW_VISIBLE, GL_TRUE);
 
     registerProcessorWidgetAndAssociate<CanvasProcessorGL>(new CanvasProcessorWidgetGLFW());
 }

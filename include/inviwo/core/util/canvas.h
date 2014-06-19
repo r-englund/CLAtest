@@ -62,9 +62,13 @@ public:
     virtual void activate();
     virtual void render(const Image*, LayerType layerType = COLOR_LAYER);
     virtual void resize(uvec2 canvasSize, uvec2 imageSize);
+
     uvec2 getImageDimension();
     uvec2 getScreenDimension();
+
     virtual void update();
+
+    bool isInitialized();
 
 protected:
     void setNetworkEvaluator(ProcessorNetworkEvaluator* networkEvaluator);
@@ -89,6 +93,7 @@ protected:
 
     static Geometry* screenAlignedRect_;
 
+    bool initialized_;
     bool shared_;
     uvec2 screenDimensions_;
     uvec2 imageDimensions_;

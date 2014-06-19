@@ -56,6 +56,8 @@ public:
 private:
     CanvasGLFW* canvas_;
     CanvasProcessor* canvasProcessor_;
+
+    bool hasSharedCanvas_;
 };
 
 } // namespace
