@@ -174,6 +174,9 @@ ProcessorWidget* CanvasGLFW::getProcessorWidgetOwner(){
 
 void CanvasGLFW::setProcessorWidgetOwner(ProcessorWidget* processorWidget){
     ownerWidget_ = processorWidget;
+
+    if(!ownerWidget_)
+        imageGL_ = NULL;
 }
 
 void CanvasGLFW::keyboard(GLFWwindow* window, int key, int scancode, int action, int mods){
