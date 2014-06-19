@@ -41,7 +41,8 @@ EventHandler* eventHandler_();
 Geometry* Canvas::screenAlignedRect_ = NULL;
 
 Canvas::Canvas(uvec2 dimensions)
-    : shared_(true)
+    : initialized_(false)
+    , shared_(true)
     , screenDimensions_(dimensions)
     , imageDimensions_(dimensions)
     , processorNetworkEvaluator_(0) {
@@ -78,6 +79,8 @@ Canvas::~Canvas() {
 void Canvas::initialize() {
     if (!pickingContainer_)
         pickingContainer_ = new PickingContainer();
+
+    initialized_ = true;
 }
 
 void Canvas::deinitialize() {}
@@ -109,6 +112,10 @@ uvec2 Canvas::getScreenDimension() {
 }
 
 void Canvas::update() {}
+
+bool Canvas::isInitialized(){
+    return initialized_;
+}
 
 void Canvas::setNetworkEvaluator(ProcessorNetworkEvaluator* networkEvaluator) {
     processorNetworkEvaluator_ = networkEvaluator;

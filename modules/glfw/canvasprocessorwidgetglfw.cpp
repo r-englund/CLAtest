@@ -37,8 +37,9 @@
 namespace inviwo {
 
 CanvasProcessorWidgetGLFW::CanvasProcessorWidgetGLFW()
-    : ProcessorWidget(),
-      canvas_(0)
+    : ProcessorWidget()
+      , canvas_(0)
+      , hasSharedCanvas_(false)
 {
 }
 
@@ -53,11 +54,22 @@ void CanvasProcessorWidgetGLFW::initialize() {
     ProcessorWidget::initialize();
     ivec2 dim = getDimensionMetaData();
     uvec2 dimU = uvec2(dim.x, dim.y);
-    canvas_ = new CanvasGLFW(processor_->getIdentifier(), dimU);
-    glfwWindowHint(GLFW_FLOATING, GL_TRUE);
-    canvas_->initializeGL();
-    glfwWindowHint(GLFW_FLOATING, GL_FALSE);
-    canvas_->initialize();
+
+    CanvasGLFW::setAlwaysOnTopByDefault(true);
+    CanvasGLFW* sharedCanvas = CanvasGLFW::getSharedContext();
+    if(!sharedCanvas->getProcessorWidgetOwner()){
+        canvas_ = sharedCanvas;
+        hasSharedCanvas_ = true;
+    }
+    else{
+        canvas_ = new CanvasGLFW(processor_->getIdentifier(), dimU);
+        canvas_->initializeGL();
+    }
+
+    if(!canvas_->isInitialized())
+        canvas_->initialize();
+
+    canvas_->setProcessorWidgetOwner(this);
     canvasProcessor_->setCanvas(static_cast<Canvas*>(canvas_));
     canvas_->setWindowSize(dimU);
 }
@@ -65,7 +77,10 @@ void CanvasProcessorWidgetGLFW::initialize() {
 void CanvasProcessorWidgetGLFW::deinitialize() {
     if (canvas_) {
         this->hide();
-        canvas_->deinitialize();
+        if(hasSharedCanvas_)
+            canvas_->setProcessorWidgetOwner(NULL);
+        else
+            delete canvas_;
         canvas_ = NULL;
     }
 

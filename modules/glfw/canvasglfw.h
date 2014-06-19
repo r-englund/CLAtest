@@ -37,12 +37,15 @@
 #include <stdlib.h>
 #include <modules/opengl/inviwoopengl.h>
 #include <modules/opengl/canvasgl.h>
+#include <inviwo/core/processors/processorwidget.h>
 #define GLFW_INCLUDE_NONE
 #include <GLFW/glfw3.h>
 
 namespace inviwo {
 
 class IVW_MODULE_GLFW_API CanvasGLFW : public CanvasGL {
+    friend class CanvasProcessorWidgetGLFW;
+
 public:
     CanvasGLFW(std::string title = "", uvec2 dimensions = uvec2(128));
     virtual ~CanvasGLFW();
@@ -61,7 +64,6 @@ public:
     void setWindowSize(uvec2);
     void setWindowTitle(std::string);
 
-
     static void closeWindow(GLFWwindow*);
     static int getWindowCount();
 
@@ -76,12 +78,19 @@ public:
     static MouseEvent::MouseState mapMouseState(const int mouseStateGLFW);
     static InteractionEvent::Modifier mapModifiers(const int modifiersGLFW);
 
+    static void setAlwaysOnTopByDefault(bool);
+
 protected:
     static CanvasGLFW* getCanvasGLFW(GLFWwindow*);
+    static CanvasGLFW* getSharedContext();
+
+    ProcessorWidget* getProcessorWidgetOwner();
+    void setProcessorWidgetOwner(ProcessorWidget*);
 
 private:
     std::string windowTitle_;
     GLFWwindow* glWindow_;
+    ProcessorWidget* ownerWidget_;
 
     MouseEvent::MouseButton mouseButton_;
     MouseEvent::MouseState mouseState_;
@@ -89,6 +98,7 @@ private:
 
     static GLFWwindow* sharedContext_;
     static int glfwWindowCount_;
+    static bool alwaysOnTop_;
 };
 
 } // namespace
