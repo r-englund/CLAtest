@@ -91,12 +91,13 @@ protected:
     static void enableDrawImagePlaneRect();
     static void disableDrawImagePlaneRect();
 
+    const ImageGL* imageGL_;
+
 private:
     static bool glewInitialized_;
     static const MeshGL* screenAlignedRectGL_;
 
     BufferObjectArray* rectArray_;
-    const ImageGL* imageGL_;
     LayerType layerType_;
     Shader* shader_;
     Shader* noiseShader_;

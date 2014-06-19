@@ -59,6 +59,7 @@ void CanvasProcessorWidgetGLFW::initialize() {
     CanvasGLFW* sharedCanvas = CanvasGLFW::getSharedContext();
     if(!sharedCanvas->getProcessorWidgetOwner()){
         canvas_ = sharedCanvas;
+        canvas_->setWindowTitle(processor_->getIdentifier());
         hasSharedCanvas_ = true;
     }
     else{

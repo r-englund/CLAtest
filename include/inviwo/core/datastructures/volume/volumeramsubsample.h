@@ -131,11 +131,6 @@ void VolumeRAMSubSample::evaluate() {
     T* dst = reinterpret_cast<T*>(newVolume->getData());
     const DataFormatBase* format = volume->getDataFormat();
 
-    //TODO: Remove this test
-    T middleVal = src[(64*sXY) + (64*sX) + 64];
-    vec4 middleValVec4 = format->valueToVec4Float(&middleVal);
-    LogInfo(middleValVec4.x);
-
     //Half sampling
     if(factor_ == HALF){
         //VolumeHalfSampleCalculator<T>::calculate(this, dst, src, dataDims, newDims);

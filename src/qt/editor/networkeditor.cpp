@@ -341,8 +341,7 @@ void NetworkEditor::addProcessorWidget(Processor* processor, bool visible) {
 }
 
 void NetworkEditor::removeProcessorWidget(Processor* processor) {
-    ProcessorWidgetQt* processorWidget =
-        dynamic_cast<ProcessorWidgetQt*>(processor->getProcessorWidget());
+    ProcessorWidget* processorWidget = processor->getProcessorWidget();
 
     if (processorWidget) {
         processorWidget->deinitialize();
