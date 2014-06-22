@@ -1,3 +1,14 @@
+Requires following python packages:
+matplotlib
+python-dateutil
+pyparsing
+numpy
+pillow
+six
+
+Packages can be found here:
+http://www.lfd.uci.edu/~gohlke/pythonlibs/
+
 First run verifiablevolumerendering.py within inviwo with an appropriate workspace. Then run convergence.py with generated images as input.
 
 For example:
