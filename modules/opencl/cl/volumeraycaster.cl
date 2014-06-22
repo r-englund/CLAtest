@@ -54,8 +54,8 @@ __kernel void raycaster(read_only image3d_t volume, float2 volumeDataOffsetScali
 
     float4 result = (float4)(0.f); 
     if(tEnd > 0.f) {     
-        direction = fast_normalize(direction);
         float tIncr = min(tEnd, tEnd/(samplingRate*length(direction*convert_float3(get_image_dim(volume).xyz)))); 
+        direction = fast_normalize(direction);
         float samples = ceil(tEnd/tIncr);
         tIncr = tEnd/samples;
         // Start integrating at the center of the bins
