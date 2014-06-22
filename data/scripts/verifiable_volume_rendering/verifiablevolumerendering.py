@@ -26,7 +26,7 @@
 # * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 # * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 # *
-# * Main file author: Daniel J?nsson
+# * Main file author: Daniel Jönsson
 # *
 # *********************************************************************************/
 
@@ -40,6 +40,7 @@ import inviwoqt
 # --- configuration ---
 windowRes = (512, 512)
 
+#processor  = "VolumeRaycasterCL"
 processor  = "SimpleRaycaster"
 canvas     = "CanvasGL"
 path = inviwo.getBasePath() + "/data/images/"
@@ -50,9 +51,9 @@ dataPath = 'D:/Users/Daniel\Documents/My Box Files/Verifiable volume rendering/g
 # --- configuration ---
 
 InviwoVersion = "0.6b"
-def vvrRaySample(InviwoVersion = '0.6b',  windowRes = (512,512), dataPath = 'F:\src\data\grid_convergence', dataSet = 'grid_01.nhdr', maxDataDim = 2.0, samplesPerRay = 4.0, sampleIncement = 1.0, numSamples = 1):
+def vvrRaySample(InviwoVersion = '0.6b',  windowRes = (512,512), dataPath = 'F:\src\data\grid_convergence', dataSet = 'grid_01.nhdr', maxDataDim = 2.0, samplesPerRay = 2048.0, sampleIncement = 1.0, numSamples = 1):
     inviwo.setPropertyValue("VolumeSource", "filename", dataPath + dataSet)
-    inviwo.setPropertyValue("VolumeSource", "dataRange", (0, 2))
+    inviwo.setPropertyValue("VolumeSource", "dataRange", (0, 1))
     # start loop 
     samplesTaken = 0
     while (samplesTaken < numSamples):
@@ -60,7 +61,7 @@ def vvrRaySample(InviwoVersion = '0.6b',  windowRes = (512,512), dataPath = 'F:\
             # update 
             inviwo.setPropertyValue(processor, "samplingRate", sampleRate)
 
-            inviwo.snapshotCanvas(0, "%sversion(%s)_windowRes(%d,%d)_dvrType(%s)_dataset(%s)_samplesPerRay(%f).tif" % (path, InviwoVersion, windowRes[0], windowRes[1], dvrType, dataSet, samplesPerRay))
+            inviwo.snapshotCanvas(0, "%sversion(%s)_windowRes(%d,%d)_dvrType(%s)_dataset(%s)_samplesPerRay(%f).png" % (path, InviwoVersion, windowRes[0], windowRes[1], dvrType, dataSet, samplesPerRay))
 
             samplesPerRay *= sampleIncement
             samplesTaken += 1
@@ -72,10 +73,10 @@ inviwo.setPropertyValue(canvas, "dimensions", windowRes)
 test = "grid_convergence"
 #test = "ray_convergence"
 if test == "grid_convergence":
-    samplesPerRay = 100
+    samplesPerRay = 2048
     numSamples = 1.0
-    dataSets = ['grid-01.dat', 'grid-02.dat', 'grid-03.dat', 'grid-04.dat', 'grid-05.dat', 'grid-06.dat', 'grid-07.dat', 'grid-08.dat', 'grid-09.dat', 'grid-10.dat']
-    maxDataDim = (2.0, 3.0, 5.0, 9.0, 17.0, 33.0, 65.0, 129.0, 257.0, 513.0)
+    dataSets = ['grid-01.dat', 'grid-02.dat', 'grid-03.dat', 'grid-04.dat', 'grid-05.dat', 'grid-06.dat', 'grid-07.dat', 'grid-08.dat', 'grid-09.dat']
+    maxDataDim = (2.0, 3.0, 5.0, 9.0, 17.0, 33.0, 65.0, 129.0, 257.0)
     #dataSets = ['grid-01.dat']
     #maxDataDim = [2.0]
     sampleIncrementPerRay = 1.0
