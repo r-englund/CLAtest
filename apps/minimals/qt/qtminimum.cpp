@@ -104,9 +104,10 @@ int main(int argc, char** argv) {
             canvasWidget->initialize();
             inviwoApp.getProcessorNetworkEvaluator()->registerCanvas(canvasProcessor->getCanvas(), canvasProcessor->getIdentifier());
             canvasProcessor->setProcessorWidget(canvasWidget);
-            mainWin.setCentralWidget(canvasWidget);
+            if(i==0)
+                mainWin.setCentralWidget(canvasWidget);
             canvasWidget->show();
-            break;
+            dynamic_cast<CanvasGL*>(canvasProcessor->getCanvas())->resize(uvec2(canvasProcessor->getCanvasSize().x, canvasProcessor->getCanvasSize().y));
         }
     }
 
