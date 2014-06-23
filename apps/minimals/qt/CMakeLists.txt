@@ -1,23 +1,22 @@
 #--------------------------------------------------------------------
-# Inviwo GLFW Application
-ivw_project(inviwo_glfwminimum)
+# Inviwo Qt Application
+ivw_project(inviwo_qtminimum)
 
 #--------------------------------------------------------------------
 # Add source files
 set(SOURCE_FILES
-    glfwminimum.cpp
+    qtminimum.cpp
 )
 ivw_group("Source Files" ${SOURCE_FILES})
         
 #--------------------------------------------------------------------
 # Define defintions
-ivw_define_standard_definitions(inviwo_glfwminimum)
+ivw_define_standard_definitions(inviwo_qtminimum)
 
 #--------------------------------------------------------------------
 # Define libraries that should be linked
 ivw_retrieve_all_modules(package_list)
 list(APPEND package_list InviwoCore)
-
 #--------------------------------------------------------------------
 # Remove Qt stuff from list
 foreach(module ${package_list})
@@ -26,7 +25,12 @@ foreach(module ${package_list})
         list(REMOVE_ITEM package_list ${module})
     endif()
 endforeach()
-# Remove other GL stuff from list
+#--------------------------------------------------------------------
+# Add Inviwo OpenGL Qt
+list(APPEND package_list InviwoOpenGLQtModule)
+#--------------------------------------------------------------------
+# Only include one OpenGL context creation module
+list(REMOVE_ITEM package_list InviwoGLFWModule)
 list(REMOVE_ITEM package_list InviwoGLUTModule)
 list(REMOVE_ITEM package_list InviwoSDLModule)
 
@@ -40,26 +44,26 @@ ivw_add_dependency_directories(${package_list})
 
 #--------------------------------------------------------------------
 # Create application
-add_executable(inviwo_glfwminimum MACOSX_BUNDLE WIN32 ${SOURCE_FILES})
+add_executable(inviwo_qtminimum MACOSX_BUNDLE WIN32 ${SOURCE_FILES})
 
 #--------------------------------------------------------------------
 # Move to folder
-ivw_vs_folder(inviwo_glfwminimum minimals)
+ivw_vs_folder(inviwo_qtminimum minimals)
 
 #--------------------------------------------------------------------
 # Add application to pack
 if(IVW_PACKAGE_PROJECT)
 if(WIN32)
-   install(TARGETS inviwo_glfwminimum
+   install(TARGETS inviwo_qtminimum
             RUNTIME DESTINATION bin
-            COMPONENT glfw_app)
+            COMPONENT qt_app)
 else()
-    install(TARGETS inviwo_glfwminimum
+    install(TARGETS inviwo_qtminimum
             RUNTIME DESTINATION bin
             BUNDLE DESTINATION bin
 	        ARCHIVE DESTINATION lib
             LIBRARY DESTINATION lib
-            COMPONENT glfw_app)
+            COMPONENT qt_app)
 endif()
 endif()
 
@@ -73,4 +77,4 @@ ivw_compile_optimize_inviwo_core()
 
 #--------------------------------------------------------------------
 # Set VS Executable properties
-#ivw_vs_executable_setup(glfwminimum)
+#ivw_vs_executable_setup(qtminimum)
