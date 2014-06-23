@@ -90,22 +90,24 @@ void ProcessorWidgetQt::initialize() {
                                 wholeScreenGeometry.width()+20, wholeScreenGeometry.height()+20);
     QPoint bottomRight = QPoint(pos.x+this->width(), pos.y+this->height());
     InviwoApplicationQt* app = dynamic_cast<InviwoApplicationQt*>(InviwoApplication::getPtr());
-    QPoint appPos = app->getMainWindow()->pos();
+    if(app){
+        QPoint appPos = app->getMainWindow()->pos();
 
 
-    if (!wholeScreenGeometry.contains(QPoint(pos.x, pos.y)) || !wholeScreenGeometry.contains(bottomRight)) { //if the widget is outside visible screen
-        pos = ivec2(appPos.x(), appPos.y());
-        pos += offsetWidget();
-        QWidget::move(pos.x, pos.y);
-    }
-    else {
-        if (!(pos.x == 0 && pos.y == 0))
-            //TODO: Detect if processor position is set. Need to figure out better way.
-            QWidget::move(pos.x, pos.y);
-        else {
+        if (!wholeScreenGeometry.contains(QPoint(pos.x, pos.y)) || !wholeScreenGeometry.contains(bottomRight)) { //if the widget is outside visible screen
             pos = ivec2(appPos.x(), appPos.y());
             pos += offsetWidget();
             QWidget::move(pos.x, pos.y);
+        }
+        else {
+            if (!(pos.x == 0 && pos.y == 0))
+                //TODO: Detect if processor position is set. Need to figure out better way.
+                QWidget::move(pos.x, pos.y);
+            else {
+                pos = ivec2(appPos.x(), appPos.y());
+                pos += offsetWidget();
+                QWidget::move(pos.x, pos.y);
+            }
         }
     }
 }

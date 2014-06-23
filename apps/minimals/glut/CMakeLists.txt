@@ -1,6 +1,6 @@
 #--------------------------------------------------------------------
 # Inviwo GLUT Application
-ivw_project(glutminimum)
+ivw_project(inviwo_glutminimum)
 
 #--------------------------------------------------------------------
 # Add source files
@@ -11,7 +11,7 @@ ivw_group("Source Files" ${SOURCE_FILES})
         
 #--------------------------------------------------------------------
 # Define defintions
-ivw_define_standard_definitions(glutminimum)
+ivw_define_standard_definitions(inviwo_glutminimum)
 
 #--------------------------------------------------------------------
 # Define libraries that should be linked
@@ -40,21 +40,21 @@ ivw_add_dependency_directories(${package_list})
 
 #--------------------------------------------------------------------
 # Create application
-add_executable(glutminimum MACOSX_BUNDLE WIN32 ${SOURCE_FILES})
+add_executable(inviwo_glutminimum MACOSX_BUNDLE WIN32 ${SOURCE_FILES})
 
 #--------------------------------------------------------------------
 # Move to folder
-ivw_vs_folder(glutminimum minimals)
+ivw_vs_folder(inviwo_glutminimum minimals)
 
 #--------------------------------------------------------------------
 # Add application to pack
 if(IVW_PACKAGE_PROJECT)
 if(WIN32)
-   install(TARGETS glutminimum
+   install(TARGETS inviwo_glutminimum
             RUNTIME DESTINATION bin
             COMPONENT glut_app)
 else()
-    install(TARGETS glutminimum
+    install(TARGETS inviwo_glutminimum
             RUNTIME DESTINATION bin
             BUNDLE DESTINATION bin
 	        ARCHIVE DESTINATION lib
