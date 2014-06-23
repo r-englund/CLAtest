@@ -74,6 +74,19 @@ void MultichannelRaycaster::initializeResources() {
         std::stringstream ss;
         ss << channels;
         shader_->getFragmentShaderObject()->addShaderDefine("NUMBER_OF_CHANNELS", ss.str());
+
+        std::stringstream ss2;
+        for (int i = 0; i < channels; ++i) {
+            ss2 << "gradient = RC_CALC_GRADIENTS_FOR_CHANNEL(voxel, samplePos, volume_,"
+             << " volumeParameters_, t, rayDirection, entryTex_, entryParameters_," << i << ");"
+             << "color = RC_APPLY_CLASSIFICATION_FOR_CHANNEL(transferFuncs_[" << i
+             << "], voxel, " << i << ")"
+             << "color.rgb = RC_APPLY_SHADING(color.rgb, color.rgb, vec3(1.0), samplePos,"
+             << " gradient, lightPosition_, vec3(0.0));"
+             << "result = RC_APPLY_COMPOSITING(result, color, samplePos, voxel, gradient,"
+             << " t, tDepth, tIncr);";
+        }
+        shader_->getFragmentShaderObject()->addShaderDefine("SAMPLE_CHANNELS", ss2.str());
     }
 
     shader_->build();
@@ -128,6 +141,8 @@ void MultichannelRaycaster::process() {
     volumeGL->setVolumeUniforms(volume, shader_, "volumeParameters_");
     shader_->setUniform("viewToTexture_",
                         volume->getCoordinateTransformer().getWorldToTextureMatrix());
+
+    shader_->setUniform("channel_", 1);
 
     setShaderUniforms(shader_, raycasting_);
     setShaderUniforms(shader_, camera_);
