@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+# coding=utf-8
 #/*********************************************************************************
 # *
 # * Inviwo - Interactive Visualization Workshop
@@ -34,25 +36,26 @@
 # generate plots for convergence test of volume renderer
 # based on article Verifying Volume Rendering Using Discretization Error Analysis
 # http://scivis.itn.liu.se/publications/2014/EJRSCNKYS14/
-#!/usr/bin/env python
+
 from optparse import OptionParser
 import sys
 import math
 import struct
 import random
 import os
-from PIL import Image
-from PIL import ImageChops
-from PIL import ImageOps
-from PIL import ImageStat
-from PIL import ImageEnhance
+#from PIL import Image
+#from PIL import ImageChops
+#from PIL import ImageOps
+#from PIL import ImageStat
+#from PIL import ImageEnhance
 
 from pylab import *
 import matplotlib as mpl 
 from matplotlib.font_manager import fontManager, FontProperties
 import pylab
 from pylab import arange,pi,sin,cos,sqrt
-
+import numpy, scipy 
+from scipy import ndimage
 from itertools import product
 
 def main():
@@ -78,7 +81,7 @@ def main():
     showfig    = options.show
     refinement_factor = 2.0
 
-    print "\tStarting execution"
+    print "Starting execution"
     filenames = args[1:]
 
 
@@ -86,48 +89,54 @@ def main():
     for filename in filenames:
         try:
             image = plt.imread(filename)
+            #image = Image.open(filename)
             images.append(image)
         except IOError:
             print "\t\tFile", filename, "could not be loaded."
 
     if len(images) < 3:
-        print "\t\tCould not load enough images (", len(images),\
+        print "\tCould not load enough images (", len(images),\
             "images were loaded ). Aborting..."
         return
     else:
-        print "\t\t*",len(images), "images were loaded"  
+        print "\t",len(images), "images were loaded"  
 
     maxSize = -1
     for im in images: 
-        print im.size
         maxSize = max(im.size, maxSize)
-    print maxSize
+    # Divide by four since we have four channels
+    # print maxSize/4
     if maxSize != images[0].size:
-        new_images = []
-        print "Upsampling...", maxSize
+        new_images = [] 
+        newSize = (int(sqrt(maxSize/4)), int(sqrt(maxSize/4)))
+        print "\tUpsampling to size", int(sqrt(maxSize/4)),"^2"
         for im in images:
-            print int(sqrt(len(im)))
-            new_images.append(im.resize(maxSize))
-            
+            # Calculate ratio, assumes square images
+            ratio = int(sqrt(maxSize/4))/int(sqrt(im.size/4))
+            # Resample using nearest neighbour
+            new_images.append(ndimage.zoom(im, (ratio, ratio, 1), order=0))
+            #misc.imsave('resampledImage%d.tif' % ratio, immm)
         images = new_images
 
     imagesError = []
     for i in xrange(len(images)-1):
         imagesError.append(fabs(images[i]-images[i+1]))
+        #imagesError.append(ImageChops.difference(images[i], images[i+1]))
     y = []
     for i in xrange(len(imagesError)):
         E_curr = imagesError[i].max()
+        #E_curr = max(imagesError[i].getextrema())
+        #print E_curr
         y.append(math.fabs(E_curr))
 
-    print "\tDone!"
-
+    print "Errors:", y 
 
     # Plotting
     if plotResult == True:
         try:
-            markers =     ['-k', '--k', '-.ob', ':sc', '-.^g', '-vm', '--Dr', '--Dy']
-            markersface = [ 'w', 'w',    'b',   'c',    'g',   'w',    'w',   'y']
-            markersedge = [ 'w', 'w'    'b',   'c',    'g',   'm',    'r',   'y']
+            markers =     ['-k', '-.ob', ':sc', '-.^g', '-vm', '--Dr', '--Dy']
+            markersface = [ 'w', 'b',    'c',    'g',   'w',    'w',   'y']
+            markersedge = [ 'w', 'b',    'c',    'g',   'm',    'r',   'y']
 
             scale = refinement_factor
 
@@ -137,7 +146,7 @@ def main():
                 d /= scale
                 x.append(d)
 
-            print "\t* Error:", y 
+            
             
             # Linear regression of points in 
             # logarithmic scale using x and y vector.
@@ -157,10 +166,17 @@ def main():
                 y_zero_order.append(y[0])
                 vx /= scale
                 vy /= scale
-            # Zero order convergence
-            methods = [['0 order slope', y_zero_order, x_first_order]]
-            # First order convergence
-            methods += [['1st order slope', y_first_order, x_first_order]]
+            
+            if output == "stepsize_convergence" or output == "pixel_convergence":
+                # First order convergence
+                methods = [['Expected, 1st order slope', y_first_order, x_first_order]]
+            elif output == "dataset_convergence":
+                # Zero order convergence
+                methods = [['Expected, 0 order slope', y_zero_order, x_first_order]]
+            else:
+                methods = [['1st order slope', y_first_order, x_first_order]]
+                methods += [['0 order slope', y_zero_order, x_first_order]]
+                
             # Numerical method
             methods += [['Numerical method ($k = %2.2f$)' % m, y, x]]
 
@@ -169,7 +185,7 @@ def main():
             fig = gcf()
             fig.set_facecolor('white')
 
-            print "\tCreating plots..."
+            #print "\tCreating plots..."
 
             legends = []
             k = 0
@@ -190,7 +206,6 @@ def main():
                           'grid.color' : (0.5, 0.5, 0.5, 1.0)
                       }
             pylab.rcParams.update(params)
-            #pylab.xlim(4.5 * 10**(-3), 1.0)
 
             # Plotting settings
             grid(True)
