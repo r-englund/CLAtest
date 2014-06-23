@@ -58,6 +58,7 @@ SystemSettings::~SystemSettings() {}
 void SystemSettings::initialize() {
     visibilityModeProperty_.addOption("applicationMode","Application Mode", 0);
     visibilityModeProperty_.addOption("developerMode","Developer Mode", 1);
+    visibilityModeProperty_.setSelectedIndex(1);
     visibilityModeProperty_.setCurrentStateAsDefault();
     addProperty(&visibilityModeProperty_);
     visibilityModeProperty_.setVisibilityMode(INVISIBLE);

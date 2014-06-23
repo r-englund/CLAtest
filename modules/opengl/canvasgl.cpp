@@ -49,8 +49,8 @@ const MeshGL* CanvasGL::screenAlignedRectGL_ = NULL;
 
 CanvasGL::CanvasGL(uvec2 dimensions)
     : Canvas(dimensions)
-    , rectArray_(NULL)
     , imageGL_(NULL)
+    , rectArray_(NULL)
     , layerType_(COLOR_LAYER)
     , shader_(NULL)
     , noiseShader_(NULL)
