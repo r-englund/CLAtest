@@ -299,13 +299,13 @@ if (_GLFW_X11)
     endif()
 
     # Check for Xcursor
-    if (NOT X11_Xcursor_FOUND)
-        message(FATAL_ERROR "The Xcursor libraries and headers were not found")
-    endif()
+    # if (NOT X11_Xcursor_FOUND)
+        # message(FATAL_ERROR "The Xcursor libraries and headers were not found")
+    # endif()
 
-    list(APPEND glfw_INCLUDE_DIR ${X11_Xcursor_INCLUDE_PATH})
-    list(APPEND glfw_LIBRARIES ${X11_Xcursor_LIB})
-    set(GLFW_PKG_DEPS "${GLFW_PKG_DEPS} xcursor")
+    # list(APPEND glfw_INCLUDE_DIR ${X11_Xcursor_INCLUDE_PATH})
+    # list(APPEND glfw_LIBRARIES ${X11_Xcursor_LIB})
+    # set(GLFW_PKG_DEPS "${GLFW_PKG_DEPS} xcursor")
 
 endif()
 
