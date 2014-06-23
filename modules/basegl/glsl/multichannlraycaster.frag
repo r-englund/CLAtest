@@ -75,16 +75,10 @@ vec4 rayTraversal(vec3 entryPoint, vec3 exitPoint, vec2 texCoords) {
     while (t < tEnd) {
         samplePos = entryPoint + t * rayDirection;
         voxel = getNormalizedVoxel(volume_, volumeParameters_, samplePos);
-        for (int channel = 0; channel < NUMBER_OF_CHANNELS; ++channel) {
-            gradient =
-                RC_CALC_GRADIENTS_FOR_CHANNEL(voxel, samplePos, volume_, volumeParameters_, t,
-                                              rayDirection, entryTex_, entryParameters_, channel);
-            color = RC_APPLY_CLASSIFICATION_FOR_CHANNEL(transferFuncs_[channel], voxel, channel);
-            color.rgb = RC_APPLY_SHADING(color.rgb, color.rgb, vec3(1.0), samplePos, gradient,
-                                         lightPosition_, vec3(0.0));
-            result =
-                RC_APPLY_COMPOSITING(result, color, samplePos, voxel, gradient, t, tDepth, tIncr);
-        }
+        
+        // macro defined in MultichannelRaycaster::initializeResources()
+        SAMPLE_CHANNELS
+        
         // early ray termination
         if (result.a > ERT_THRESHOLD)
             t = tEnd;
