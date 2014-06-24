@@ -52,7 +52,7 @@ uniform VOLUME_PARAMETERS volumeParameters_;
 uniform int channel_;
 
 // set threshold for early ray termination
-#define ERT_THRESHOLD 0.95
+#define ERT_THRESHOLD 0.99
 
 vec4 rayTraversal(vec3 entryPoint, vec3 exitPoint, vec2 texCoords) {
     vec4 result = vec4(0.0);
