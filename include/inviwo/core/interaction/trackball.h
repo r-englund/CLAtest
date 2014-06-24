@@ -135,8 +135,8 @@ private:
     EventProperty stepPanDownProperty_;
     EventProperty stepPanRightProperty_;
 
-    vec3 mapNormalizedMousePosToTrackball(vec2 mousePos);
-    vec3 mapToCamera(vec3 pos);
+    vec3 mapNormalizedMousePosToTrackball(vec2 mousePos, float dist = 1.f);
+    vec3 mapToCamera(vec3 pos, float dist = 1.f);
     void rotateCamera(MouseEvent* mouseEvent);
     void zoomCamera(MouseEvent* mouseEvent);
     void panCamera(MouseEvent* mouseEvent);

@@ -448,7 +448,7 @@ void CanvasQt::panTriggered(QPanGesture* gesture) {
     }
 #endif
     GestureEvent* gestureEvent = new GestureEvent(
-        vec2(4*(gesture->lastOffset().x()-gesture->offset().x())/getScreenDimension().x, 4*(gesture->offset().y()-gesture->lastOffset().y())/getScreenDimension().y), 0.0,
+        vec2(2*(gesture->lastOffset().x()-gesture->offset().x())/getScreenDimension().x, 2*(gesture->offset().y()-gesture->lastOffset().y())/getScreenDimension().y), 0.0,
         GestureEvent::PAN, EventConverterQt::getGestureState(gesture));
     Canvas::gestureEvent(gestureEvent);
     delete gestureEvent;
