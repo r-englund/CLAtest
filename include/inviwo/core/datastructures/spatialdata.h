@@ -101,7 +101,10 @@ public:
     virtual ~CoordinateTransformer() {};
     /**
      * Returns the matrix transformation mapping from texture coordinates
-     * to voxel index coordinates, i.e. from [0,1] to [0, number of voxels-1)
+     * to voxel index coordinates, i.e. from [0,1] to [-0.5, number of voxels-0.5]
+     * @note Data is centered on the voxel, see OpenGL specifications, figure 8.3 
+     * http://www.opengl.org/registry/doc/glspec43.core.20120806.pdf 
+     * or for instance http://bpeers.com/articles/glpixel/
      */
     virtual const Matrix<N+1, float> getTextureToIndexMatrix() const = 0;
 
@@ -119,19 +122,19 @@ public:
 
     /**
      * Returns the matrix transformation mapping from voxel index coordinates
-     * to texture coordinates, i.e. from [0, number of voxels-1) to [0,1]
+     * to texture coordinates, i.e. from [0, number of voxels-1] to [0.5/(number of voxels),1-0.5/(number of voxels)]
      */
     virtual const Matrix<N+1, float> getIndexToTextureMatrix() const = 0;
 
     /**
      * Returns the matrix transformation mapping from voxel index coordinates
-     * to data model coordinates, i.e. from [0, number of voxels-1) to (data min, data max)
+     * to data model coordinates, i.e. from [0, number of voxels-1] to (data min, data max)
      */
     virtual const Matrix<N+1, float> getIndexToModelMatrix() const = 0;
 
     /**
      * Returns the matrix transformation mapping from voxel index coordinates
-     * to opengl world coordinates, i.e. from [0, number of voxels-1) to (-inf, inf)
+     * to opengl world coordinates, i.e. from [0, number of voxels-1] to (-inf, inf)
      */
     virtual const Matrix<N+1, float> getIndexToWorldMatrix() const = 0;
 
@@ -215,7 +218,12 @@ public:
         Matrix<N+1,float> mat(0.0f);
 
         for (int i=0; i<N; i++)
-            mat[i][i]=(float)dim[i];
+            mat[i][i]=static_cast<float>(dim[i]);
+
+        // Offset to coordinates to center them in the middle of the texel/voxel.
+        for (int i=0; i<N; i++) {
+            mat[N][i] = -0.5f;
+        }
 
         mat[N][N]=1.0f;
         return mat;
@@ -545,7 +553,7 @@ void StructuredGridEntity<N>::setDimension(const Vector<N, unsigned int>& dimens
 
 template<unsigned int N>
 const Matrix<N+1, float> SpatialCoordinateTransformer<N>::getTextureToIndexMatrix() const {
-	return getDimensionMatrix();
+    return getDimensionMatrix();
 }
 template<unsigned int N>
 const Matrix<N+1, float> SpatialCoordinateTransformer<N>::getTextureToModelMatrix() const {
@@ -557,15 +565,15 @@ const Matrix<N+1, float> SpatialCoordinateTransformer<N>::getTextureToWorldMatri
 }
 template<unsigned int N>
 const Matrix<N+1, float> SpatialCoordinateTransformer<N>::getIndexToTextureMatrix() const {
-	return glm::inverse(getDimensionMatrix().getGLM());
+	return glm::inverse(getTextureToIndexMatrix().getGLM());
 }
 template<unsigned int N>
 const Matrix<N+1, float> SpatialCoordinateTransformer<N>::getIndexToModelMatrix() const {
-	return getBasisMatrix()*glm::inverse(getDimensionMatrix().getGLM());
+	return getBasisMatrix()*glm::inverse(getTextureToIndexMatrix().getGLM());
 }
 template<unsigned int N>
 const Matrix<N+1, float> SpatialCoordinateTransformer<N>::getIndexToWorldMatrix() const {
-	return getWorldMatrix()*getBasisMatrix()*glm::inverse(getDimensionMatrix().getGLM());
+	return getWorldMatrix()*getBasisMatrix()*glm::inverse(getTextureToIndexMatrix().getGLM());
 }
 template<unsigned int N>
 const Matrix<N+1, float> SpatialCoordinateTransformer<N>::getModelToTextureMatrix() const {
@@ -573,7 +581,7 @@ const Matrix<N+1, float> SpatialCoordinateTransformer<N>::getModelToTextureMatri
 }
 template<unsigned int N>
 const Matrix<N+1, float> SpatialCoordinateTransformer<N>::getModelToIndexMatrix() const {
-	return getDimensionMatrix()*glm::inverse(getBasisMatrix().getGLM());
+	return getTextureToIndexMatrix()*glm::inverse(getBasisMatrix().getGLM());
 }
 template<unsigned int N>
 const Matrix<N+1, float> SpatialCoordinateTransformer<N>::getModelToWorldMatrix() const {
@@ -585,7 +593,7 @@ const Matrix<N+1, float> SpatialCoordinateTransformer<N>::getWorldToTextureMatri
 }
 template<unsigned int N>
 const Matrix<N+1, float> SpatialCoordinateTransformer<N>::getWorldToIndexMatrix() const {
-	return getDimensionMatrix()*glm::inverse(getWorldMatrix()*getBasisMatrix());
+	return getTextureToIndexMatrix()*glm::inverse(getWorldMatrix()*getBasisMatrix());
 }
 template<unsigned int N>
 const Matrix<N+1, float> SpatialCoordinateTransformer<N>::getWorldToModelMatrix() const {
