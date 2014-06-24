@@ -66,7 +66,7 @@ if test == "dataset_convergence":
     dataSets = ['grid-01.dat', 'grid-02.dat', 'grid-03.dat', 'grid-04.dat', 'grid-05.dat', 'grid-06.dat', 'grid-07.dat', 'grid-08.dat', 'grid-09.dat']
     maxDataDim = (2.0, 3.0, 5.0, 9.0, 17.0, 33.0, 65.0, 129.0, 257.0)
 elif test == "stepsize_convergence":
-    startSamplesPerRay = 1
+    startSamplesPerRay = 0.5
     endSamplesPerRay = 512
 else:
     startWindowRes = 32
