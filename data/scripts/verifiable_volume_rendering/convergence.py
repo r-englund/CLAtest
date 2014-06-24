@@ -178,7 +178,7 @@ def main():
                 methods += [['0 order slope', y_zero_order, x_first_order]]
                 
             # Numerical method
-            methods += [['Numerical method ($k = %2.2f$)' % m, y, x]]
+            methods += [[output + ' ($k = %2.2f$)' % m, y, x]]
 
 
             # Plotting
