@@ -118,10 +118,10 @@ Trackball::Trackball(CameraProperty* camera)
 
 Trackball::~Trackball() {}
 
-vec3 Trackball::mapNormalizedMousePosToTrackball(vec2 mousePos) {
+vec3 Trackball::mapNormalizedMousePosToTrackball(vec2 mousePos, float dist) {
     // set x and y to lie in interval [-r, r]
     float r = RADIUS;
-    vec3 result = vec3(mousePos.x-RADIUS, -1.0f*(mousePos.y-RADIUS), 0.0f);
+    vec3 result = vec3(mousePos.x-RADIUS, -1.0f*(mousePos.y-RADIUS), 0.0f)*dist;
 
     // Mapping according to Holroyds trackball
     //Piece-wise sphere + hyperbolic sheet
@@ -137,17 +137,18 @@ vec3 Trackball::mapNormalizedMousePosToTrackball(vec2 mousePos) {
     return glm::normalize(result);
 }
 
-vec3 Trackball::mapToCamera(vec3 pos) {
+vec3 Trackball::mapToCamera(vec3 pos, float dist) {
     //return (camera_->viewMatrix() * vec4(pos,0)).xyz;
     //TODO: Use proper co-ordinate transformation matrices
     //Get x,y,z axis vectors of current camera view
     vec3 currentViewYaxis = glm::normalize(camera_->getLookUp());
     vec3 currentViewZaxis = glm::normalize(camera_->getLookFrom()-camera_->getLookTo());
     vec3 currentViewXaxis = glm::normalize(glm::cross(currentViewYaxis, currentViewZaxis));
+
     //mapping to camera co-ordinate
-    currentViewXaxis*=pos.x;
-    currentViewYaxis*=pos.y;
-    currentViewZaxis*=pos.z;
+    currentViewXaxis*=pos.x*dist;
+    currentViewYaxis*=pos.y*dist;
+    currentViewZaxis*=pos.z*dist;
     return (currentViewXaxis + currentViewYaxis + currentViewZaxis);
 }
 
@@ -161,7 +162,13 @@ void Trackball::invokeEvent(Event* event) {
         }
         else if(gestureEvent->type() == GestureEvent::PAN){
             vec3 offsetVector = vec3(gestureEvent->deltaPos(), 0.f);
-            vec3 mappedOffsetVector = mapToCamera(offsetVector);
+
+            //The resulting rotation needs to be mapped to the camera distance,
+            //as if the trackball is located at a certain distance from the camera.
+            //TODO: Verify this
+            float zDist = (glm::length(camera_->getLookFrom()-camera_->getLookTo())-1.f)/M_PI;
+
+            vec3 mappedOffsetVector = mapToCamera(offsetVector, zDist);
 
             camera_->lockInvalidation();
             camera_->setLookTo(camera_->getLookTo()     + mappedOffsetVector);
@@ -255,7 +262,13 @@ void Trackball::rotateCamera(MouseEvent* mouseEvent) {
     ivwAssert(mouseEvent!=0, "Invalid mouse event.");
     // ROTATION
     vec2 curMousePos = mouseEvent->posNormalized();
-    vec3 curTrackballPos = mapNormalizedMousePosToTrackball(curMousePos);
+
+    //The resulting rotation needs to be mapped to the camera distance,
+    //as if the trackball is located at a certain distance from the camera.
+    //TODO: Verify this
+    float zDist = (glm::length(camera_->getLookFrom()-camera_->getLookTo())-1.f)/M_PI;
+
+    vec3 curTrackballPos = mapNormalizedMousePosToTrackball(curMousePos, zDist);
     float lookLength;
 
     // disable movements on first press
@@ -352,7 +365,13 @@ void Trackball::panCamera(MouseEvent* mouseEvent) {
     vec3 trackBallOffsetVector = lastTrackballPos_ - curTrackballPos;
     //compute next camera position
     trackBallOffsetVector.z = 0.0f;
-    vec3 mappedTrackBallOffsetVector = mapToCamera(trackBallOffsetVector);
+
+    //The resulting rotation needs to be mapped to the camera distance,
+    //as if the trackball is located at a certain distance from the camera.
+    //TODO: Verify this
+    float zDist = (glm::length(camera_->getLookFrom()-camera_->getLookTo())-1.f)/M_PI;
+
+    vec3 mappedTrackBallOffsetVector = mapToCamera(trackBallOffsetVector, zDist);
 
     if (curMousePos != lastMousePos_) {
         camera_->lockInvalidation();
