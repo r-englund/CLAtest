@@ -103,5 +103,9 @@ void PropertyOwner::deserialize(IvwDeserializer& d) {
 
     d.deserialize("Properties", propertyMap, "Property", "identifier") ;
 }
+void PropertyOwner::setPropertiesCurrentStateAsDefault(){
+    for (std::vector<Property*>::iterator it = properties_.begin(); it != properties_.end(); ++it)
+        (*it)->setCurrentStateAsDefault();
+}
 
 } // namespace
