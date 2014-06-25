@@ -261,22 +261,28 @@ void VolumeRaycasterGL::initializeResources() {
 
 void VolumeRaycasterGL::bindTransferFunction(const TransferFunction& tf, GLenum tfTexUnit) {
     const Layer* tfLayer = tf.getData();
-    const LayerGL* transferFunctionGL = tfLayer->getRepresentation<LayerGL>();
-    transferFunctionGL->bindTexture(tfTexUnit);
+    if(tfLayer){
+        const LayerGL* transferFunctionGL = tfLayer->getRepresentation<LayerGL>();
+        transferFunctionGL->bindTexture(tfTexUnit);
+    }
 }
 
 void VolumeRaycasterGL::bindVolume(const VolumeInport& inport, GLenum volTexUnit) {
     const Volume* volume = inport.getData();
-    const VolumeGL* volumeGL = volume->getRepresentation<VolumeGL>();
-    volumeGL->bindTexture(volTexUnit);
+    if(volume){
+        const VolumeGL* volumeGL = volume->getRepresentation<VolumeGL>();
+        volumeGL->bindTexture(volTexUnit);
+    }
 }
 
-void VolumeRaycasterGL::setVolumeParameters(const VolumeInport& inport, Shader* shader,
-                                            const std::string samplerID) {
-    const VolumeGL* volumeGL = inport.getData()->getRepresentation<VolumeGL>();
-    volumeGL->setVolumeUniforms(inport.getData(), shader, samplerID);
-    mat4 viewToTexture = inport.getData()->getCoordinateTransformer().getWorldToTextureMatrix();
-    shader->setUniform("viewToTexture_", viewToTexture);
+void VolumeRaycasterGL::setVolumeParameters(const VolumeInport& inport, Shader* shader, const std::string samplerID) {
+    const Volume* volume = inport.getData();
+    if(volume){
+        const VolumeGL* volumeGL = volume->getRepresentation<VolumeGL>();
+        volumeGL->setVolumeUniforms(volume, shader, samplerID);
+        mat4 viewToTexture = volume->getCoordinateTransformer().getWorldToTextureMatrix();
+        shader->setUniform("viewToTexture_", viewToTexture);
+    }
 }
 
 void VolumeRaycasterGL::setGlobalShaderParameters(Shader* shader) {

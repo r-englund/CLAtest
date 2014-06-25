@@ -156,11 +156,11 @@ vec3 Trackball::mapToCamera(vec3 pos, float dist) {
 void Trackball::invokeEvent(Event* event) {
     GestureEvent* gestureEvent = dynamic_cast<GestureEvent*>(event);
     if (gestureEvent) {
-        if(gestureEvent->type() == GestureEvent::PINCH){
+        if(gestureEvent->type() == GestureEvent::PINCH && gestureEvent->numFingers() == 2){
             vec3 direction = camera_->getLookFrom() - camera_->getLookTo();
             camera_->setLookFrom(camera_->getLookFrom()+direction*static_cast<float>(gestureEvent->deltaDistance()));
         }
-        else if(gestureEvent->type() == GestureEvent::PAN){
+        else if(gestureEvent->type() == GestureEvent::PAN && gestureEvent->numFingers() == 2){
             vec3 offsetVector = vec3(gestureEvent->deltaPos(), 0.f);
 
             //The resulting rotation needs to be mapped to the camera distance,
@@ -176,6 +176,7 @@ void Trackball::invokeEvent(Event* event) {
             camera_->unlockInvalidation();
             camera_->invalidate();
         }
+        isMouseBeingPressedAndHold_ = false;
 
         return;
     }

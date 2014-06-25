@@ -56,13 +56,15 @@ public:
         GESTURE_STATE_CANCELED
     };
 
-    GestureEvent(vec2 deltaPos, double deltaDistance, GestureEvent::GestureType type, GestureEvent::GestureState state);
+    GestureEvent(vec2 deltaPos, double deltaDistance, GestureEvent::GestureType type, GestureEvent::GestureState state, int numFingers, vec2 screenPosNorm);
     ~GestureEvent();
 
     inline vec2 deltaPos() const { return deltaPos_; }
     inline double deltaDistance() const { return deltaDistance_; }
     inline GestureEvent::GestureType type() const { return type_; }
     inline GestureEvent::GestureState state() const { return state_; }
+    inline int numFingers() { return numFingers_; }
+    inline vec2 screenPosNormalized() { return screenPosNorm_; }
 
     virtual std::string getClassName() const { return "GestureEvent"; }
 
@@ -74,6 +76,8 @@ private:
     double deltaDistance_;
     GestureEvent::GestureType type_;
     GestureEvent::GestureState state_;
+    int numFingers_;
+    vec2 screenPosNorm_;
 };
 
 } // namespace

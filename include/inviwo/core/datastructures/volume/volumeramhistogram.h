@@ -104,7 +104,7 @@ void calculateVecHist(std::vector<NormalizedHistogram*>* histograms, const Volum
     std::vector<std::vector<double>*> histData;
 
     for (int channel = 0; channel < N; ++channel) {
-        if (histograms->size() < channel + 1) {
+        if (static_cast<int>(histograms->size()) < channel + 1) {
             histograms->push_back(new NormalizedHistogram(numberOfBinsInHistogram));
         } else {
             histograms->at(channel)->resize(numberOfBinsInHistogram);
