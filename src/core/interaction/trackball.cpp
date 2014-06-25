@@ -166,9 +166,10 @@ void Trackball::invokeEvent(Event* event) {
             //The resulting rotation needs to be mapped to the camera distance,
             //as if the trackball is located at a certain distance from the camera.
             //TODO: Verify this
-            float zDist = (glm::length(camera_->getLookFrom()-camera_->getLookTo())-1.f)/M_PI;
+            //float zDist = (glm::length(camera_->getLookFrom()-camera_->getLookTo())-1.f)/M_PI;
+            //vec3 mappedOffsetVector = mapToCamera(offsetVector, zDist);
 
-            vec3 mappedOffsetVector = mapToCamera(offsetVector, zDist);
+            vec3 mappedOffsetVector = mapToCamera(offsetVector);
 
             camera_->lockInvalidation();
             camera_->setLookTo(camera_->getLookTo()     + mappedOffsetVector);
@@ -267,9 +268,11 @@ void Trackball::rotateCamera(MouseEvent* mouseEvent) {
     //The resulting rotation needs to be mapped to the camera distance,
     //as if the trackball is located at a certain distance from the camera.
     //TODO: Verify this
-    float zDist = (glm::length(camera_->getLookFrom()-camera_->getLookTo())-1.f)/M_PI;
+    //float zDist = (glm::length(camera_->getLookFrom()-camera_->getLookTo())-1.f)/M_PI;
+    //vec3 curTrackballPos = mapNormalizedMousePosToTrackball(curMousePos, zDist);
 
-    vec3 curTrackballPos = mapNormalizedMousePosToTrackball(curMousePos, zDist);
+    vec3 curTrackballPos = mapNormalizedMousePosToTrackball(curMousePos);
+
     float lookLength;
 
     // disable movements on first press
@@ -370,9 +373,10 @@ void Trackball::panCamera(MouseEvent* mouseEvent) {
     //The resulting rotation needs to be mapped to the camera distance,
     //as if the trackball is located at a certain distance from the camera.
     //TODO: Verify this
-    float zDist = (glm::length(camera_->getLookFrom()-camera_->getLookTo())-1.f)/M_PI;
+    //float zDist = (glm::length(camera_->getLookFrom()-camera_->getLookTo())-1.f)/M_PI;
+    //vec3 mappedTrackBallOffsetVector = mapToCamera(trackBallOffsetVector, zDist);
 
-    vec3 mappedTrackBallOffsetVector = mapToCamera(trackBallOffsetVector, zDist);
+    vec3 mappedTrackBallOffsetVector = mapToCamera(trackBallOffsetVector);
 
     if (curMousePos != lastMousePos_) {
         camera_->lockInvalidation();
