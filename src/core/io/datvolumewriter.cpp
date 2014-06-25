@@ -108,9 +108,7 @@ void DatVolumeWriter::writeData(const Volume* data, const std::string filePath) 
     std::fstream fout(rawPath.c_str(), std::ios::out | std::ios::binary);
 
     if (fout.good()) {
-        fout.write((char*)vr->getData(),
-                   vr->getDimension().x*vr->getDimension().x*vr->getDimension().x
-                   * vr->getDataFormat()->getBytesAllocated());
+        fout.write((char*)vr->getData(), vr->getNumberOfBytes());
     } else
         throw DataWriterException("Error: Could not write to raw file: " + rawPath);
 
