@@ -58,6 +58,7 @@ inline QGLContextFormat GetQGLFormat() {
 }
 
 QGLContextFormat CanvasQt::sharedFormat_ = GetQGLFormat();
+CanvasQt* CanvasQt::sharedCanvas_ = NULL;
 
 #ifdef USE_QWINDOW
 QOpenGLContext* CanvasQt::sharedGLContext_ = NULL;
@@ -88,6 +89,7 @@ CanvasQt::CanvasQt(QWindow* parent, uvec2 dim)
         contextCreated = thisGLContext_->create();
         sharedFormat_ = thisGLContext_->format();
         sharedGLContext_ = thisGLContext_;
+        sharedCanvas_ = this;
         activate();
         initializeGL();
     }
@@ -127,6 +129,7 @@ CanvasQt::CanvasQt(QWidget* parent, uvec2 dim)
     if (!sharedGLContext_) {
         sharedFormat_ = this->format();
         sharedGLContext_ = this;
+        sharedCanvas_ = this;
         QGLWidget::glInit();
     }
 
@@ -360,6 +363,10 @@ void CanvasQt::keyReleaseEvent(QKeyEvent* e) {
     e->accept();
     Canvas::keyReleaseEvent(keyEvent);
     delete keyEvent;
+}
+
+CanvasQt* CanvasQt::getSharedCanvas() { 
+    return sharedCanvas_; 
 }
 
 #ifdef USE_QWINDOW

@@ -44,7 +44,6 @@ CanvasGLFW::CanvasGLFW(std::string windowTitle, uvec2 dimensions)
     : CanvasGL(dimensions)
     , windowTitle_(windowTitle)
     , glWindow_(NULL)
-    , ownerWidget_(NULL)
     , mouseButton_(MouseEvent::MOUSE_BUTTON_NONE)
     , mouseState_(MouseEvent::MOUSE_STATE_NONE)
     , mouseModifiers_(InteractionEvent::MODIFIER_NONE)
@@ -166,17 +165,6 @@ CanvasGLFW* CanvasGLFW::getSharedContext(){
         return getCanvasGLFW(sharedContext_);
     else
         return NULL;
-}
-
-ProcessorWidget* CanvasGLFW::getProcessorWidgetOwner(){
-    return ownerWidget_;
-}
-
-void CanvasGLFW::setProcessorWidgetOwner(ProcessorWidget* processorWidget){
-    ownerWidget_ = processorWidget;
-
-    if(!ownerWidget_)
-        imageGL_ = NULL;
 }
 
 void CanvasGLFW::keyboard(GLFWwindow* window, int key, int scancode, int action, int mods){

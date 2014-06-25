@@ -35,6 +35,7 @@
 
 #include <modules/opengl/openglmoduledefine.h>
 #include <inviwo/core/util/canvas.h>
+#include <inviwo/core/processors/processorwidget.h>
 
 namespace inviwo {
 
@@ -91,9 +92,14 @@ protected:
     static void enableDrawImagePlaneRect();
     static void disableDrawImagePlaneRect();
 
+    ProcessorWidget* getProcessorWidgetOwner();
+    void setProcessorWidgetOwner(ProcessorWidget*);
+
     const ImageGL* imageGL_;
 
 private:
+    ProcessorWidget* ownerWidget_;
+
     static bool glewInitialized_;
     static const MeshGL* screenAlignedRectGL_;
 

@@ -50,6 +50,7 @@ const MeshGL* CanvasGL::screenAlignedRectGL_ = NULL;
 CanvasGL::CanvasGL(uvec2 dimensions)
     : Canvas(dimensions)
     , imageGL_(NULL)
+    , ownerWidget_(NULL)
     , rectArray_(NULL)
     , layerType_(COLOR_LAYER)
     , shader_(NULL)
@@ -228,6 +229,17 @@ void CanvasGL::enableDrawImagePlaneRect() {
 
 void CanvasGL::disableDrawImagePlaneRect() {
     screenAlignedRectGL_->disable();
+}
+
+ProcessorWidget* CanvasGL::getProcessorWidgetOwner(){
+    return ownerWidget_;
+}
+
+void CanvasGL::setProcessorWidgetOwner(ProcessorWidget* processorWidget){
+    ownerWidget_ = processorWidget;
+
+    if(!ownerWidget_)
+        imageGL_ = NULL;
 }
 
 }  // namespace

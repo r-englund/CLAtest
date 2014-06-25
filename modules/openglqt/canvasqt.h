@@ -40,9 +40,6 @@
 #include <inviwo/core/common/inviwo.h>
 
 #define QT_NO_OPENGL_ES_2
-/*#ifdef __APPLE__
-#define GL_DO_NOT_WARN_IF_MULTI_GL_VERSION_HEADERS_INCLUDED
-#endif*/
 #define GLEXT_64_TYPES_DEFINED
 #include <QInputEvent>
 #include <QMouseEvent>
@@ -53,10 +50,6 @@
 #include <QGestureEvent>
 #include <QPanGesture>
 #include <QPinchGesture>
-#endif
-
-#if defined(__APPLE__) && (QT_VERSION >= QT_VERSION_CHECK(5, 1, 0))
-//#define USE_QWINDOW
 #endif
 
 #ifdef USE_QWINDOW
@@ -78,6 +71,9 @@ namespace inviwo {
 
 class IVW_MODULE_OPENGLQT_API CanvasQt : public QGLWindow, public CanvasGL {
     Q_OBJECT
+
+    friend class CanvasProcessorWidgetQt;
+
 public:
     explicit CanvasQt(QGLParent* parent = NULL, uvec2 dim = uvec2(256,256));
     ~CanvasQt();
@@ -104,6 +100,8 @@ protected:
     void keyPressEvent(QKeyEvent* e);
     void keyReleaseEvent(QKeyEvent* e);
 
+    static CanvasQt* getSharedCanvas();
+
 #ifdef USE_QWINDOW
     void exposeEvent(QExposeEvent *event);
 
@@ -114,7 +112,9 @@ private:
 #else
 private:
     static QGLWidget* sharedGLContext_; //For rendering-context sharing
+
 #endif
+    static CanvasQt* sharedCanvas_;
     static QGLContextFormat sharedFormat_;
     bool swapBuffersAllowed_;
 
