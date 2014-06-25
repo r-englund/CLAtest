@@ -39,6 +39,7 @@
 #include <inviwo/core/ports/dataoutport.h>
 #include <inviwo/core/properties/ordinalproperty.h>
 #include <inviwo/core/properties/boolproperty.h>
+#include <inviwo/core/properties/cameraproperty.h>
 #include <inviwo/core/processors/processor.h>
 
 namespace inviwo {
@@ -52,6 +53,17 @@ public:
 
 protected:
     virtual void process();
+
+    class PointLightInteractationHandler : public InteractionHandler {
+    public:
+        PointLightInteractationHandler(FloatVec3Property*, CameraProperty*);
+        ~PointLightInteractationHandler(){};
+
+        void invokeEvent(Event* event);
+    private:
+        FloatVec3Property* pointLight_;
+        CameraProperty* camera_;
+    };
 
     /**
      * Update light source parameters. Transformation will be given in texture space.
@@ -71,6 +83,8 @@ private:
     FloatVec3Property lightPosition_;
 
     BoolProperty lightEnabled_;
+
+    CameraProperty camera_;
 
     PointLight* lightSource_;
 };

@@ -34,12 +34,14 @@
 
 namespace inviwo {
 
-GestureEvent::GestureEvent(vec2 deltaPos, double deltaDistance, GestureEvent::GestureType type, GestureEvent::GestureState state)
-    : InteractionEvent(),
-      deltaPos_(deltaPos),
-      deltaDistance_(deltaDistance),
-      type_(type),
-      state_(state) {
+GestureEvent::GestureEvent(vec2 deltaPos, double deltaDistance, GestureEvent::GestureType type, GestureEvent::GestureState state, int numFingers, vec2 screenPosNorm)
+    : InteractionEvent()
+      , deltaPos_(deltaPos)
+      , deltaDistance_(deltaDistance)
+      , type_(type)
+      , state_(state)
+      , numFingers_(numFingers)
+      , screenPosNorm_(screenPosNorm) {
 }
 
 GestureEvent::~GestureEvent() {}

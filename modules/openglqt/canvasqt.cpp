@@ -36,6 +36,12 @@
 #include <QtGui/QOpenGLContext>
 #endif
 
+#if (QT_VERSION >= QT_VERSION_CHECK(5, 0, 0))
+#define USING_QT5
+#else
+#define USING_QT4
+#endif
+
 namespace inviwo {
 
 inline QGLContextFormat GetQGLFormat() {
@@ -45,7 +51,7 @@ inline QGLContextFormat GetQGLFormat() {
 #endif
       );
   sharedFormat.setProfile(QGLContextFormat::CoreProfile);
-#if (QT_VERSION >= QT_VERSION_CHECK(5, 0, 0))
+#ifdef USING_QT5
   sharedFormat.setVersion(10, 0);
 #endif
   return sharedFormat;
@@ -63,9 +69,8 @@ CanvasQt::CanvasQt(QWindow* parent, uvec2 dim)
     , swapBuffersAllowed_(false)
 #ifndef QT_NO_GESTURES
     , gestureMode_(false)
-#if (QT_VERSION >= QT_VERSION_CHECK(5, 0, 0))
     , lastNumFingers_(0)
-#endif
+    , screenPositionNormalized_(vec2(0.f))
 #endif
 {
     setSurfaceType(QWindow::OpenGLSurface);
@@ -112,9 +117,8 @@ CanvasQt::CanvasQt(QWidget* parent, uvec2 dim)
       , swapBuffersAllowed_(false)
 #ifndef QT_NO_GESTURES
       , gestureMode_(false)
-#if (QT_VERSION >= QT_VERSION_CHECK(5, 0, 0))
       , lastNumFingers_(0)
-#endif
+      , screenPositionNormalized_(vec2(0.f))
 #endif
 {
     //This is our default rendering context
@@ -251,7 +255,7 @@ bool CanvasQt::event(QEvent *e) {
 void CanvasQt::mousePressEvent(QMouseEvent* e) {
     if (!processorNetworkEvaluator_) return;
 
-#ifndef QT_NO_GESTURES
+#if !defined(QT_NO_GESTURES) && defined(USING_QT4)
     if (gestureMode_) return;
 #endif
 
@@ -266,8 +270,11 @@ void CanvasQt::mousePressEvent(QMouseEvent* e) {
 void CanvasQt::mouseReleaseEvent(QMouseEvent* e) {
     if (!processorNetworkEvaluator_) return;
 
-#ifndef QT_NO_GESTURES
-    if (gestureMode_) return;
+#if !defined(QT_NO_GESTURES) && defined(USING_QT4)
+    if (gestureMode_){ 
+        gestureMode_ = false;
+        return;
+    }
 #endif
 
     MouseEvent* mouseEvent = new MouseEvent(ivec2(e->pos().x(), e->pos().y()),
@@ -281,7 +288,7 @@ void CanvasQt::mouseReleaseEvent(QMouseEvent* e) {
 void CanvasQt::mouseMoveEvent(QMouseEvent* e) {
     if (!processorNetworkEvaluator_) return;
 
-#ifndef QT_NO_GESTURES
+#if !defined(QT_NO_GESTURES) && defined(USING_QT4)
     if (gestureMode_) return;
 #endif
 
@@ -370,7 +377,6 @@ void CanvasQt::touchEvent(QTouchEvent* touch) {
     if (!processorNetworkEvaluator_) return;
 
     QTouchEvent::TouchPoint firstPoint = touch->touchPoints()[0];
-
     ivec2 pos = ivec2(static_cast<int>(glm::floor(firstPoint.pos().x())), static_cast<int>(glm::floor(firstPoint.pos().y())));
     TouchEvent::TouchState touchState;
 
@@ -394,7 +400,7 @@ void CanvasQt::touchEvent(QTouchEvent* touch) {
     Canvas::touchEvent(touchEvent);
     delete touchEvent;
 
-#if (QT_VERSION >= QT_VERSION_CHECK(5, 0, 0))
+#ifdef USING_QT5
     if(touch->touchPoints().size() == 1 && lastNumFingers_ < 2){
         MouseEvent* mouseEvent = NULL;
         switch (touchState)
@@ -419,9 +425,22 @@ void CanvasQt::touchEvent(QTouchEvent* touch) {
         }
         delete mouseEvent;
     }
+#endif
 
     lastNumFingers_ = static_cast<int>(touch->touchPoints().size());
-#endif
+
+    if(lastNumFingers_ > 1){
+        vec2 fpos = vec2(0.f);
+        for(int i=0; i<touch->touchPoints().size(); i++)
+            fpos += vec2(touch->touchPoints().at(i).pos().x(), glm::floor(touch->touchPoints().at(i).pos().y()));
+
+        fpos /= static_cast<float>(touch->touchPoints().size());
+
+        screenPositionNormalized_ = vec2(glm::floor(fpos.x)/getScreenDimension().x, glm::floor(fpos.y)/getScreenDimension().y);
+    }
+    else{
+        screenPositionNormalized_ = vec2(static_cast<float>(pos.x)/getScreenDimension().x, static_cast<float>(pos.y)/getScreenDimension().y);
+    }
 }
 
 bool CanvasQt::gestureEvent(QGestureEvent* ge) {
@@ -449,7 +468,7 @@ void CanvasQt::panTriggered(QPanGesture* gesture) {
 #endif
     GestureEvent* gestureEvent = new GestureEvent(
         vec2(2*(gesture->lastOffset().x()-gesture->offset().x())/getScreenDimension().x, 2*(gesture->offset().y()-gesture->lastOffset().y())/getScreenDimension().y), 0.0,
-        GestureEvent::PAN, EventConverterQt::getGestureState(gesture));
+        GestureEvent::PAN, EventConverterQt::getGestureState(gesture), lastNumFingers_, screenPositionNormalized_);
     Canvas::gestureEvent(gestureEvent);
     delete gestureEvent;
 }
@@ -458,7 +477,7 @@ void CanvasQt::pinchTriggered(QPinchGesture* gesture) {
     if (!processorNetworkEvaluator_) return;
 
     GestureEvent* gestureEvent = new GestureEvent(vec2(gesture->centerPoint().x(), gesture->centerPoint().y()), 1.0-gesture->scaleFactor(),
-        GestureEvent::PINCH, EventConverterQt::getGestureState(gesture));
+        GestureEvent::PINCH, EventConverterQt::getGestureState(gesture), lastNumFingers_, screenPositionNormalized_);
     Canvas::gestureEvent(gestureEvent);
     delete gestureEvent;
 }
