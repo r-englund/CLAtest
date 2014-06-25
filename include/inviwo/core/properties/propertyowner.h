@@ -73,6 +73,8 @@ public:
     virtual void serialize(IvwSerializer& s) const;
     virtual void deserialize(IvwDeserializer& d);
 
+    void setPropertiesCurrentStateAsDefault();
+
 protected:
     std::vector<Property*> properties_;
 
