@@ -37,7 +37,6 @@
 #include <stdlib.h>
 #include <modules/opengl/inviwoopengl.h>
 #include <modules/opengl/canvasgl.h>
-#include <inviwo/core/processors/processorwidget.h>
 #define GLFW_INCLUDE_NONE
 #include <GLFW/glfw3.h>
 
@@ -84,13 +83,9 @@ protected:
     static CanvasGLFW* getCanvasGLFW(GLFWwindow*);
     static CanvasGLFW* getSharedContext();
 
-    ProcessorWidget* getProcessorWidgetOwner();
-    void setProcessorWidgetOwner(ProcessorWidget*);
-
 private:
     std::string windowTitle_;
     GLFWwindow* glWindow_;
-    ProcessorWidget* ownerWidget_;
 
     MouseEvent::MouseButton mouseButton_;
     MouseEvent::MouseState mouseState_;

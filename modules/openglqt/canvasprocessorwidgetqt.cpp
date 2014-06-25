@@ -42,8 +42,9 @@
 namespace inviwo {
 
 CanvasProcessorWidgetQt::CanvasProcessorWidgetQt()
-    : ProcessorWidgetQt(),
-      canvas_(0)
+    : ProcessorWidgetQt()
+      , canvas_(0)
+      , hasSharedCanvas_(false)
 {
     setMinimumSize(32, 32);
     setFocusPolicy(Qt::NoFocus);
@@ -62,8 +63,20 @@ void CanvasProcessorWidgetQt::initialize() {
     canvasProcessor_ = dynamic_cast<CanvasProcessor*>(processor_);
     ProcessorWidgetQt::initialize();
     ivec2 dim = getDimensionMetaData();
-    canvas_ = new CanvasQt(NULL, uvec2(dim.x, dim.y));
-    canvas_->initialize();
+
+    CanvasQt* sharedCanvas = CanvasQt::getSharedCanvas();
+    if(!sharedCanvas->getProcessorWidgetOwner()){
+        canvas_ = sharedCanvas;
+        hasSharedCanvas_ = true;
+    }
+    else{
+        canvas_ = new CanvasQt(NULL, uvec2(dim.x, dim.y));
+    }
+
+    if(!canvas_->isInitialized())
+        canvas_->initialize();
+
+    canvas_->setProcessorWidgetOwner(this);
     QGridLayout* gridLayout = new QGridLayout;
     gridLayout->setContentsMargins(0, 0, 0, 0);
 #ifdef USE_QWINDOW
@@ -87,7 +100,13 @@ void CanvasProcessorWidgetQt::initialize() {
 void CanvasProcessorWidgetQt::deinitialize() {
     if (canvas_) {
         this->hide();
-        canvas_->deinitialize();
+        if(hasSharedCanvas_){
+            canvas_->setProcessorWidgetOwner(NULL);
+            layout()->removeWidget(canvas_);
+            canvas_->setParent(NULL);
+        }
+        else
+            canvas_->deinitialize();
         //FIXME: CanvasQt is child of this object.
         //Hence don't delete CanvasQt here or use deleteLater. Let the destructor destroy CanvasQt widget
         //canvas_->deleteLater();
