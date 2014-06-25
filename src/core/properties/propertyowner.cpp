@@ -103,7 +103,7 @@ void PropertyOwner::deserialize(IvwDeserializer& d) {
 
     d.deserialize("Properties", propertyMap, "Property", "identifier") ;
 }
-void PropertyOwner::setPropertiesCurrentStateAsDefault(){
+void PropertyOwner::setAllPropertiesCurrentStateAsDefault(){
     for (std::vector<Property*>::iterator it = properties_.begin(); it != properties_.end(); ++it)
         (*it)->setCurrentStateAsDefault();
 }
