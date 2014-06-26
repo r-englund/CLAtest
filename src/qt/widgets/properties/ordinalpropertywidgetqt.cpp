@@ -47,17 +47,17 @@ void BaseOrdinalPropertyWidgetQt::generateWidget() {
     signalMapperSetPropertyValue_ = new QSignalMapper(this);
     signalMapperContextMenu_ = new QSignalMapper(this);
     
-    QHBoxLayout* hLayout = new QHBoxLayout();
-    
+    QHBoxLayout* hLayout = new QHBoxLayout(); 
     hLayout->setContentsMargins(0,0,0,0);
     hLayout->setSpacing(7);
+    setLayout(hLayout);
 
     label_ = new EditableLabelQt(this, property_->getDisplayName());
     hLayout->addWidget(label_);
     connect(label_, SIGNAL(textChanged()),this, SLOT(setPropertyDisplayName()));
-
-       
+ 
     QWidget* sliderWidget = new QWidget();
+
     sliderWidgets_ = makeSliders(sliderWidget);
 
     for(size_t i = 0; i < sliderWidgets_.size(); i++) {
@@ -78,6 +78,11 @@ void BaseOrdinalPropertyWidgetQt::generateWidget() {
 
     hLayout->addWidget(sliderWidget);
 
+    sliderWidget->setMinimumHeight(sliderWidget->sizeHint().height());
+    QSizePolicy sp = sliderWidget->sizePolicy();
+    sp.setVerticalPolicy(QSizePolicy::Fixed);
+    sliderWidget->setSizePolicy(sp);
+
     connect(signalMapperContextMenu_,
             SIGNAL(mapped(int)),
             this,
@@ -89,7 +94,11 @@ void BaseOrdinalPropertyWidgetQt::generateWidget() {
             SLOT(setPropertyValue(int)));
 
     this->setEnabled(!property_->getReadOnly());
-    setLayout(hLayout);
+
+    setFixedHeight(sizeHint().height());
+    sp = sizePolicy();
+    sp.setVerticalPolicy(QSizePolicy::Fixed);
+    setSizePolicy(sp);
 }
 
 
@@ -164,6 +173,7 @@ void BaseOrdinalPropertyWidgetQt::showContextMenuSlider(int sliderId) {
     }
     contextMenu_->exec(QCursor::pos());
 
+    LogInfo("Size: " << sliderWidgets_.size() << " mh " << minimumHeight() << " hh " << sizeHint().height());
 }
 
 

@@ -49,9 +49,7 @@
 #include <inviwo/core/properties/property.h>
 
 namespace inviwo {
-
 class IVW_QTWIDGETS_API CollapsibleGroupBoxWidgetQt : public PropertyWidgetQt {
-
     Q_OBJECT
 
 public:
@@ -73,10 +71,15 @@ public:
     
     bool isCollapsed() { return collapsed_; };
     
+    virtual void showWidget();
+    virtual void hideWidget();
+
     void addWidget(QWidget* widget);
     void removeWidget(QWidget* widget);
     std::vector<PropertyWidgetQt*> getPropertyWidgets() {return propertyWidgets_; };
     
+    virtual QSize sizeHint();
+    virtual QSize minimumSizeHint() const;
     
     virtual void serialize(IvwSerializer& s) const;
     virtual void deserialize(IvwDeserializer& d);
@@ -85,7 +88,20 @@ signals:
     void visibilityModified();
     void labelChanged(QString text);
 
-private:
+public slots:
+    void toggleFold();
+    void updateVisibility();
+    void setDeveloperViewMode(bool value);
+    void setApplicationViewMode(bool value);
+    void labelDidChange();
+    virtual void resetPropertyToDefaultState();
+
+
+protected slots:
+    void setGroupDisplayName();
+    void propertyModified();
+
+protected:
     void generateWidget();
     void updateWidgets();
 
@@ -96,23 +112,15 @@ private:
     std::vector<Property*> properties_;
     std::vector<PropertyWidgetQt*> propertyWidgets_;
 
-    QToolButton* btnCollapse_;
-    QGroupBox* groupBox_;
-    EditableLabelQt* label_;
-    QVBoxLayout* vLayout_;    
-    
-public slots:
-    void toggleFold();
-    void updateVisibility();
-    void setDeveloperViewMode(bool value);
-    void setApplicationViewMode(bool value);
-    void labelDidChange();
-    virtual void resetPropertyToDefaultState();
-    
-protected slots:
-    void setGroupDisplayName();
-    void propertyModified();
+private:
 
+    EditableLabelQt* label_;
+    QToolButton* btnCollapse_;
+
+    QWidget* propertyWidgetGroup_;
+    QVBoxLayout* propertyWidgetGroupLayout_;
+    //QFrame* frame_;
+    
 };
 
 } // namespace

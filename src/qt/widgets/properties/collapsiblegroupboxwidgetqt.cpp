@@ -48,66 +48,88 @@ CollapsibleGroupBoxWidgetQt::CollapsibleGroupBoxWidgetQt(std::string identifier,
 }
 
 void CollapsibleGroupBoxWidgetQt::generateWidget() {
-    vLayout_ = new QVBoxLayout();
-    vLayout_->setAlignment(Qt::AlignRight);
-    vLayout_->setAlignment(Qt::AlignTop);
-    vLayout_->setContentsMargins(7, 7, 7, 7);
-    vLayout_->setSpacing(7);
+    propertyWidgetGroupLayout_ = new QVBoxLayout();
+    propertyWidgetGroupLayout_->setAlignment(Qt::AlignTop);
+    propertyWidgetGroupLayout_->setContentsMargins(
+        PropertyWidgetQt::SPACING, PropertyWidgetQt::SPACING, PropertyWidgetQt::SPACING,
+        PropertyWidgetQt::SPACING);
+    propertyWidgetGroupLayout_->setSpacing(PropertyWidgetQt::SPACING);
 
-    groupBox_ = new QGroupBox(this);
-    groupBox_->setFlat(true);
-    groupBox_->setLayout(vLayout_);
-
-    QHBoxLayout* heading = new QHBoxLayout();
-    heading->setSpacing(7);
+    propertyWidgetGroup_ = new QWidget(this);
+    propertyWidgetGroup_->setLayout(propertyWidgetGroupLayout_);
 
     btnCollapse_ = new QToolButton(this);
     btnCollapse_->setIcon(QIcon(":/stylesheets/images/arrow_darker_down.png"));
     connect(btnCollapse_, SIGNAL(clicked()), this, SLOT(toggleFold()));
 
-    heading->addWidget(btnCollapse_);
     label_ = new EditableLabelQt(this, displayName_, false);
     connect(label_, SIGNAL(textChanged()), this, SLOT(labelDidChange()));
-    heading->addWidget(label_);
-    heading->addStretch(10);
+
     QToolButton* resetButton = new QToolButton(this);
     resetButton->setIcon(QIcon(":/icons/edit-undo-icon.png"));
     resetButton->setIconSize(QSize(20, 20));
-
     connect(resetButton, SIGNAL(clicked()), this, SLOT(resetPropertyToDefaultState()));
-    resetButton->setToolTip(tr("&Reset the group of properties to its default state"));
+    resetButton->setToolTip(tr("Reset the group of properties to its default state"));
 
+    QHBoxLayout* heading = new QHBoxLayout();
+    heading->setSpacing(PropertyWidgetQt::SPACING);
+    heading->addWidget(btnCollapse_);
+    heading->addWidget(label_);
+    heading->addStretch(10);
     heading->addWidget(resetButton);
 
-    QGridLayout* gridLayout = new QGridLayout();
-    gridLayout->setContentsMargins(0, 0, 0, 0);
-    gridLayout->setSpacing(0);
-    gridLayout->addLayout(heading, 1, 0, Qt::AlignLeft);
-    gridLayout->addWidget(groupBox_, 2, 0);
+    QVBoxLayout* layout = new QVBoxLayout();
+    setSpacingAndMargins(layout);
+    layout->setContentsMargins(0, 0, 0, 0);
+    layout->setSpacing(0);
+    layout->addLayout(heading);
+    layout->addWidget(propertyWidgetGroup_);
 
-    QFrame* frame = new QFrame(this);
-    frame->setFrameStyle(QFrame::StyledPanel | QFrame::Sunken);
-    frame->setLineWidth(2);
-    frame->setLayout(gridLayout);
+    setContentsMargins(1, 1, 1, 1);
+    setObjectName("CollapsibleGroupBoxWidgetQt");
+    setStyleSheet("#CollapsibleGroupBoxWidgetQt { border: 1px solid rgb(51, 51, 51); }");
 
-    QHBoxLayout* hLayout = new QHBoxLayout();
-    hLayout->addWidget(frame);
-    hLayout->setContentsMargins(0, 0, 0, 0);
-    hLayout->setSpacing(0);
+    setLayout(layout);
+}
 
-    setLayout(hLayout);
+QSize CollapsibleGroupBoxWidgetQt::sizeHint() {
+    QSize size = layout()->sizeHint();
+    size.setWidth(std::max(PropertyWidgetQt::MINIMUM_WIDTH, size.width()));
+    return size;
+}
+
+QSize CollapsibleGroupBoxWidgetQt::minimumSizeHint() const {
+    QSize size = layout()->sizeHint();
+    QSize minSize = layout()->minimumSize();
+    size.setWidth(std::max(PropertyWidgetQt::MINIMUM_WIDTH, minSize.width()));
+    return size;
 }
 
 void CollapsibleGroupBoxWidgetQt::updateFromProperty() {}
 
+void CollapsibleGroupBoxWidgetQt::showWidget() {
+    for (size_t i = 0; i < propertyWidgets_.size(); i++) {
+        propertyWidgets_[i]->showWidget();
+    }
+    PropertyWidgetQt::showWidget();
+}
+
+void CollapsibleGroupBoxWidgetQt::hideWidget() {
+    PropertyWidgetQt::hideWidget();
+    for (size_t i = 0; i < propertyWidgets_.size(); i++) {
+        propertyWidgets_[i]->hideWidget();
+    }
+}
+
 void CollapsibleGroupBoxWidgetQt::toggleFold() {
     if (collapsed_) {
-        groupBox_->show();
+        propertyWidgetGroup_->show();
         btnCollapse_->setIcon(QIcon(":/stylesheets/images/arrow_darker_down.png"));
     } else {
-        groupBox_->hide();
+        propertyWidgetGroup_->hide();
         btnCollapse_->setIcon(QIcon(":/stylesheets/images/arrow_darker_right.png"));
     }
+    updateGeometry();
     collapsed_ = !collapsed_;
 }
 
@@ -118,10 +140,18 @@ void CollapsibleGroupBoxWidgetQt::addProperty(Property* prop) {
         static_cast<PropertyWidgetQt*>(PropertyWidgetFactory::getPtr()->create(prop));
 
     if (propertyWidget) {
-        if (prop->getVisibilityMode() == INVISIBLE) propertyWidget->setVisible(false);
         addWidget(propertyWidget);
         prop->registerWidget(propertyWidget);
         connect(propertyWidget, SIGNAL(modified()), this, SLOT(propertyModified()));
+        propertyWidget->hideWidget();
+        /*
+        if (prop->getVisibilityMode() == INVISIBLE) {
+            propertyWidget->hideWidget();
+        } else {
+            propertyWidget->showWidget();
+        }
+        */
+
     } else {
         LogWarn("Could not find a widget for property: " << prop->getClassName());
     }
@@ -254,7 +284,7 @@ void CollapsibleGroupBoxWidgetQt::deserialize(IvwDeserializer& d) {
 }
 
 void CollapsibleGroupBoxWidgetQt::addWidget(QWidget* widget) {
-    vLayout_->addWidget(widget);
+    propertyWidgetGroupLayout_->addWidget(widget);
     PropertyWidgetQt* propertyWidget = static_cast<PropertyWidgetQt*>(widget);
 
     if (propertyWidget) {
@@ -265,7 +295,7 @@ void CollapsibleGroupBoxWidgetQt::addWidget(QWidget* widget) {
 }
 
 void CollapsibleGroupBoxWidgetQt::removeWidget(QWidget* widget) {
-    vLayout_->removeWidget(widget);
+    propertyWidgetGroupLayout_->removeWidget(widget);
     PropertyWidgetQt* propertyWidget = static_cast<PropertyWidgetQt*>(widget);
 
     if (propertyWidget) {
@@ -281,30 +311,19 @@ void CollapsibleGroupBoxWidgetQt::removeWidget(QWidget* widget) {
 void CollapsibleGroupBoxWidgetQt::resetPropertyToDefaultState() {
     InviwoApplication::getPtr()->getProcessorNetwork()->lock();
 
-    for (size_t i = 0; i < properties_.size(); i++) {
-        properties_[i]->resetToDefaultState();
-    }
-
     for (size_t i = 0; i < propertyWidgets_.size(); i++) {
-        CollapsibleGroupBoxWidgetQt* widget =
-            dynamic_cast<CollapsibleGroupBoxWidgetQt*>(propertyWidgets_[i]);
-        if (widget) {
-            widget->resetPropertyToDefaultState();
-        }
-
-        CompositePropertyWidgetQt* compWidget =
-            dynamic_cast<CompositePropertyWidgetQt*>(propertyWidgets_[i]);
-        if (compWidget) {
-            compWidget->resetPropertyToDefaultState();
-        }
+        propertyWidgets_[i]->resetPropertyToDefaultState();
     }
 
     InviwoApplication::getPtr()->getProcessorNetwork()->unlock();
 }
 
 void CollapsibleGroupBoxWidgetQt::labelDidChange() {
+    setDisplayName(label_->getText());
     emit labelChanged(QString::fromStdString(label_->getText()));
 }
+
+
 
 
 }  // namespace

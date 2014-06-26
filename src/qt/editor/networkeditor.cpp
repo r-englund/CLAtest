@@ -225,7 +225,8 @@ void NetworkEditor::addProcessorRepresentations(Processor* processor,
     // generate GUI representations (graphics item, property widget, processor widget)
     addProcessorGraphicsItem(processor, pos, showProcessor, selectProcessor);
 
-    if (showPropertyWidgets)
+    // If the processor is selected the widgets will be added anyway
+    if (showPropertyWidgets && !selectProcessor)
         addPropertyWidgets(processor);
 
     addProcessorWidget(processor, false); //showProcessorWidget);
@@ -753,10 +754,10 @@ void NetworkEditor::cacheProcessorProperty(Processor* p) {
     std::vector<Processor*> processors = InviwoApplication::getPtr()->getProcessorNetwork()->getProcessors();
     bool preModifiedStatus = modified_;
     if (std::find(processors.begin(), processors.end(), p) != processors.end()) {
-        PropertyListWidget* propertyListWidget_ = PropertyListWidget::instance();
-        InviwoApplication::getPtr()->getProcessorNetwork()->lock();
-        propertyListWidget_->cacheProcessorPropertiesItem(p);
-        InviwoApplication::getPtr()->getProcessorNetwork()->unlock();
+        PropertyListWidget* propertyListWidget = PropertyListWidget::instance();
+        //InviwoApplication::getPtr()->getProcessorNetwork()->lock();
+        propertyListWidget->cacheProcessorPropertiesItem(p);
+        //InviwoApplication::getPtr()->getProcessorNetwork()->unlock();
     }
     setModified(preModifiedStatus);
 }
@@ -1399,21 +1400,18 @@ void NetworkEditor::dropEvent(QGraphicsSceneDragDropEvent* e) {
             // create processor, add it to processor network, and generate it's widgets
             Processor* processor = static_cast<Processor*>(ProcessorFactory::getRef().create(className.toLocal8Bit().constData()));
 
+            clearSelection();
+
             if(oldProcessorTarget_)
                 addProcessor(processor, oldProcessorTarget_->scenePos());
             else
                 addProcessor(processor, e->scenePos());
-
-            ProcessorGraphicsItem* processorGraphicsItem = getProcessorGraphicsItem(processor->getIdentifier());
-            clearSelection();
-
-            if (processorGraphicsItem)
-                processorGraphicsItem->setSelected(true);
-
+            
             e->setAccepted(true);
             e->acceptProposedAction();
 
             // check for collisions
+            ProcessorGraphicsItem* processorGraphicsItem = getProcessorGraphicsItem(processor->getIdentifier());
             if (oldConnectionTarget_)
                 placeProcessorOnConnection(processorGraphicsItem, oldConnectionTarget_);
             else if (oldProcessorTarget_)
@@ -1588,30 +1586,38 @@ bool NetworkEditor::loadNetwork(std::istream& stream, const std::string& path) {
     }
 
     // add processors
-    std::vector<Processor*> processors = InviwoApplication::getPtr()->getProcessorNetwork()->getProcessors();
+    std::vector<Processor*> processors =
+        InviwoApplication::getPtr()->getProcessorNetwork()->getProcessors();
 
-    for (size_t i=0; i<processors.size(); i++) {
+    for (size_t i = 0; i < processors.size(); i++) {
         processors[i]->invalidate(PropertyOwner::INVALID_RESOURCES);
-        ProcessorMetaData* meta = dynamic_cast<ProcessorMetaData*>(processors[i]->getMetaData("ProcessorMetaData"));
-        addProcessorRepresentations(processors[i], QPointF(meta->getPosition().x, meta->getPosition().y), meta->isVisible(), meta->isSelected(),
-            false, false);
+        ProcessorMetaData* meta =
+            dynamic_cast<ProcessorMetaData*>(processors[i]->getMetaData("ProcessorMetaData"));
+        addProcessorRepresentations(processors[i],
+                                    QPointF(meta->getPosition().x, meta->getPosition().y),
+                                    meta->isVisible(), meta->isSelected(), false, false);
     }
-    Property* vmp = InviwoApplication::getPtr()->getSettingsByType<SystemSettings>()->getPropertyByIdentifier("visibilityMode");
-    if(vmp){
+    Property* vmp =
+        InviwoApplication::getPtr()->getSettingsByType<SystemSettings>()->getPropertyByIdentifier(
+            "visibilityMode");
+    if (vmp) {
         BaseOptionProperty* visibilityModeProperty = dynamic_cast<BaseOptionProperty*>(vmp);
-        PropertyListWidget::instance()->setVisibilityMode(visibilityModeProperty->getSelectedIndex());
+        PropertyListWidget::instance()->setVisibilityMode(
+            visibilityModeProperty->getSelectedIndex());
     }
-    
-    // add connections
-    std::vector<PortConnection*> connections = InviwoApplication::getPtr()->getProcessorNetwork()->getConnections();
 
-    for (size_t i=0; i<connections.size(); i++)
+    // add connections
+    std::vector<PortConnection*> connections =
+        InviwoApplication::getPtr()->getProcessorNetwork()->getConnections();
+
+    for (size_t i = 0; i < connections.size(); i++)
         addConnectionGraphicsItem(connections[i]->getOutport(), connections[i]->getInport());
 
     // add link graphics items
-    std::vector<ProcessorLink*> links = InviwoApplication::getPtr()->getProcessorNetwork()->getLinks();
+    std::vector<ProcessorLink*> links =
+        InviwoApplication::getPtr()->getProcessorNetwork()->getLinks();
 
-    for (size_t i=0; i<links.size(); i++)
+    for (size_t i = 0; i < links.size(); i++)
         addLinkGraphicsItem(links[i]->getDestinationProcessor(), links[i]->getSourceProcessor());
 
     // flag the network's modified flag
@@ -1619,9 +1625,10 @@ bool NetworkEditor::loadNetwork(std::istream& stream, const std::string& path) {
     // show all processor widgets that where hidden on network load
     bool evaluate = false;
 
-    for (size_t i=0; i<processors.size(); i++) {
+    for (size_t i = 0; i < processors.size(); i++) {
         if (processors[i]->hasProcessorWidget()) {
-            ProcessorMetaData* meta = dynamic_cast<ProcessorMetaData*>(processors[i]->getMetaData("ProcessorMetaData"));
+            ProcessorMetaData* meta =
+                dynamic_cast<ProcessorMetaData*>(processors[i]->getMetaData("ProcessorMetaData"));
 
             if (meta->isVisible()) {
                 processors[i]->getProcessorWidget()->show();
@@ -1633,12 +1640,14 @@ bool NetworkEditor::loadNetwork(std::istream& stream, const std::string& path) {
     // unlock it and initiate evaluation
     InviwoApplication::getPtr()->getProcessorNetwork()->unlock();
 
-    // create all property (should be all non-visible) widgets in a thread (as it can take a long time to create them)
+    // create all property (should be all non-visible) widgets in a thread (as it can take a long
+    // time to create them)
     workerThread_ = new QThread();
     ProcessorWorkerQt* worker = new ProcessorWorkerQt(processors);
     worker->moveToThread(workerThread_);
     connect(workerThread_, SIGNAL(started()), worker, SLOT(process()));
-    connect(worker, SIGNAL(nextProcessor(Processor*)), this, SLOT(cacheProcessorProperty(Processor*)));
+    connect(worker, SIGNAL(nextProcessor(Processor*)), this,
+            SLOT(cacheProcessorProperty(Processor*)));
     connect(worker, SIGNAL(finished()), workerThread_, SLOT(quit()));
     connect(worker, SIGNAL(finished()), worker, SLOT(deleteLater()));
     connect(workerThread_, SIGNAL(finished()), workerThread_, SLOT(deleteLater()));
@@ -1646,6 +1655,7 @@ bool NetworkEditor::loadNetwork(std::istream& stream, const std::string& path) {
 
     InviwoApplication::getPtr()->getProcessorNetwork()->removeObserver(this);
     workerThread_->start();
+
 
     setModified(false);
     filename_ = path;

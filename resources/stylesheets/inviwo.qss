@@ -477,16 +477,6 @@ QWidget#CollapsibleGroupBoxWidgetQt QToolButton::hover {
 	background-color: gray;
 }
 
-
-QWidget#CollapsibleGroupBoxWidgetQt QGroupBox {
-	border: 0px; 
-}
-
-
-QWidget#CollapsibleGroupBoxWidgetQt QFrame {
-	border: 1px solid #333333; 
-}
-
 QWidget#CollapsibleGroupBoxWidgetQt QLabel {
 	border: 0px;; 
 }
