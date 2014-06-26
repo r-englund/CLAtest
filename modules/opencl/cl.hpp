@@ -2046,12 +2046,10 @@ public:
         cl_device_id* ids = (cl_device_id*) alloca(n * sizeof(cl_device_id));
         err = ::clGetDeviceIDs(object_, type, n, ids, NULL);
         if (err != CL_SUCCESS) {
-            free(ids);
             return detail::errHandler(err, __GET_DEVICE_IDS_ERR);
         }
 
         devices->assign(&ids[0], &ids[n]);
-        free(ids);
 
         return CL_SUCCESS;
     }
