@@ -30,6 +30,8 @@ set(HEADER_FILES
     ${IVW_MODULE_DIR}/opengl/glwrap/texture3d.h
     ${IVW_MODULE_DIR}/opengl/glwrap/texturecallback.h
     ${IVW_MODULE_DIR}/opengl/glwrap/textureunit.h
+    ${IVW_MODULE_DIR}/opengl/heightfield/heightfieldmapper.h
+    ${IVW_MODULE_DIR}/opengl/heightfield/heightfieldprocessor.h
     ${IVW_MODULE_DIR}/opengl/image/compositeprocessorgl.h
     ${IVW_MODULE_DIR}/opengl/image/imagegl.h
     ${IVW_MODULE_DIR}/opengl/image/imageprocessorgl.h
@@ -43,6 +45,7 @@ set(HEADER_FILES
     ${IVW_MODULE_DIR}/opengl/rendering/meshrenderer.h
     ${IVW_MODULE_DIR}/opengl/shaderutils.h
     ${IVW_MODULE_DIR}/opengl/textureobserver.h
+    ${IVW_MODULE_DIR}/opengl/volume/distancetransformram.h
     ${IVW_MODULE_DIR}/opengl/volume/volumegl.h
     ${IVW_MODULE_DIR}/opengl/volume/volumeglconverter.h
     ${IVW_MODULE_DIR}/opengl/volume/volumeraycastergl.h
@@ -75,6 +78,8 @@ set(SOURCE_FILES
     ${IVW_MODULE_DIR}/opengl/glwrap/texture2darray.cpp
     ${IVW_MODULE_DIR}/opengl/glwrap/texture3d.cpp
     ${IVW_MODULE_DIR}/opengl/glwrap/textureunit.cpp
+    ${IVW_MODULE_DIR}/opengl/heightfield/heightfieldmapper.cpp
+    ${IVW_MODULE_DIR}/opengl/heightfield/heightfieldprocessor.cpp
     ${IVW_MODULE_DIR}/opengl/image/compositeprocessorgl.cpp
     ${IVW_MODULE_DIR}/opengl/image/imagegl.cpp
     ${IVW_MODULE_DIR}/opengl/image/imageprocessorgl.cpp
@@ -87,6 +92,7 @@ set(SOURCE_FILES
     ${IVW_MODULE_DIR}/opengl/processorgl.cpp
     ${IVW_MODULE_DIR}/opengl/rendering/meshrenderer.cpp
     ${IVW_MODULE_DIR}/opengl/shaderutils.cpp
+    ${IVW_MODULE_DIR}/opengl/volume/distancetransformram.cpp
     ${IVW_MODULE_DIR}/opengl/volume/volumegl.cpp
     ${IVW_MODULE_DIR}/opengl/volume/volumeglconverter.cpp
     ${IVW_MODULE_DIR}/opengl/volume/volumeraycastergl.cpp
@@ -99,6 +105,8 @@ set(SHADER_FILES
     ${IVW_MODULE_DIR}/opengl/glsl/composite.frag
     ${IVW_MODULE_DIR}/opengl/glsl/geometryrendering.frag
     ${IVW_MODULE_DIR}/opengl/glsl/geometryrendering.vert
+    ${IVW_MODULE_DIR}/opengl/glsl/heightfield.vert
+    ${IVW_MODULE_DIR}/opengl/glsl/heightfield.frag
     ${IVW_MODULE_DIR}/opengl/glsl/img_color.frag
     ${IVW_MODULE_DIR}/opengl/glsl/img_copy.frag
     ${IVW_MODULE_DIR}/opengl/glsl/img_identity.vert

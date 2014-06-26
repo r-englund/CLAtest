@@ -39,11 +39,14 @@
 #include <modules/opengl/buffer/elementbufferglconverter.h>
 #include <modules/opengl/canvasprocessorgl.h>
 #include <modules/opengl/geometry/geometryrenderprocessorgl.h>
+#include <modules/opengl/heightfield/heightfieldmapper.h>
+#include <modules/opengl/heightfield/heightfieldprocessor.h>
 #include <modules/opengl/glwrap/shadermanager.h>
 #include <modules/opengl/image/layerglconverter.h>
 #include <modules/opengl/openglmodule.h>
 #include <modules/opengl/openglcapabilities.h>
 #include <modules/opengl/rendering/meshrenderer.h>
+#include <modules/opengl/volume/distancetransformram.h>
 #include <modules/opengl/volume/volumeglconverter.h>
 
 namespace inviwo {
@@ -80,7 +83,10 @@ OpenGLModule::OpenGLModule() :
     registerRepresentationConverter(new ElementBufferGL2RAMConverter());
 
     registerProcessor(CanvasProcessorGL);
+    registerProcessor(DistanceTransformRAM);
     registerProcessor(GeometryRenderProcessorGL);
+    registerProcessor(HeightFieldMapper);
+    registerProcessor(HeightFieldProcessor);
     registerCapabilities(new OpenGLCapabilities());
     contextMode_ = OpenGLCapabilities::getPreferredProfile();
 }
