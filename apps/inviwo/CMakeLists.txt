@@ -59,8 +59,12 @@ list(REMOVE_ITEM package_list InviwoOpenGLQtModule)
 else()
 list(REMOVE_ITEM package_list InviwoGLFWModule)
 endif()
+
+#--------------------------------------------------------------------
+# Remove modules not used by this app
 list(REMOVE_ITEM package_list InviwoGLUTModule)
 list(REMOVE_ITEM package_list InviwoSDLModule)
+list(REMOVE_ITEM package_list InviwoUnitTestsModule)
 
 #--------------------------------------------------------------------
 # Register the use of modules
