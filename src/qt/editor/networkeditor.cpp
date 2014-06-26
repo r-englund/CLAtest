@@ -426,8 +426,15 @@ void NetworkEditor::showLinkDialog(LinkConnectionGraphicsItem* linkConnectionGra
         linkConnectionGraphicsItem->getSrcProcessorGraphicsItem()->getProcessor();
     Processor* destProcessor =
         linkConnectionGraphicsItem->getDestProcessorGraphicsItem()->getProcessor();
-    LinkDialog linkDialog(srcProcessor, destProcessor, InviwoApplication::getPtr()->getProcessorNetwork(), 0);
-    linkDialog.exec();
+
+    InviwoApplicationQt* app = dynamic_cast<InviwoApplicationQt*>(InviwoApplication::getPtr());
+    LinkDialog *linkDialog = new LinkDialog(srcProcessor, destProcessor, InviwoApplication::getPtr()->getProcessorNetwork(), app->getMainWindow());
+    
+    if (!linkDialog->exec()) {
+        delete linkDialog;
+        //LogWarn("Destroying LinkDialog")
+    }
+
     ProcessorLink* processorLink = InviwoApplication::getPtr()->getProcessorNetwork()->getLink(srcProcessor, destProcessor);
 
     if (processorLink->getPropertyLinks().size() == 0)
