@@ -47,6 +47,7 @@
 #include <modules/opengl/inviwoopengl.h>
 #include <modules/opengl/processorgl.h>
 #include <inviwo/core/processors/progressbarowner.h>
+#include <inviwo/core/datastructures/volume/volumeram.h>
 
 #include <omp.h>
 
