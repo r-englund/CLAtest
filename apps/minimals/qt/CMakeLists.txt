@@ -17,6 +17,7 @@ ivw_define_standard_definitions(inviwo_qtminimum)
 # Define libraries that should be linked
 ivw_retrieve_all_modules(package_list)
 list(APPEND package_list InviwoCore)
+
 #--------------------------------------------------------------------
 # Remove Qt stuff from list
 foreach(module ${package_list})
@@ -25,16 +26,19 @@ foreach(module ${package_list})
         list(REMOVE_ITEM package_list ${module})
     endif()
 endforeach()
+
 #--------------------------------------------------------------------
 # Add Inviwo OpenGL Qt
 list(APPEND package_list InviwoOpenGLQtModule)
+
 #--------------------------------------------------------------------
 # Only include one OpenGL context creation module
 list(REMOVE_ITEM package_list InviwoGLFWModule)
 list(REMOVE_ITEM package_list InviwoGLUTModule)
 list(REMOVE_ITEM package_list InviwoSDLModule)
+
 #--------------------------------------------------------------------
-# Remove python for testing
+# Remove python as it's not used by this app
 list(REMOVE_ITEM package_list InviwoPythonModule)
 
 #--------------------------------------------------------------------
