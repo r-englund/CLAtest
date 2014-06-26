@@ -63,11 +63,10 @@ void CompositeProperty::setVisibilityMode(PropertyVisibilityMode visibilityMode)
 }
 
 void CompositeProperty::updateVisibility() {
+    Property::updateVisibility();
     for (size_t i = 0; i < properties_.size(); i++) {
         properties_[i]->updateVisibility();
-    }
-    Property::updateVisibility();
-    
+    }     
 }
 
 void CompositeProperty::setVisible(bool val) {

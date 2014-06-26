@@ -74,7 +74,8 @@ public:
     InviwoProcessorInfo();
 
     /**
-     * Sets the identifier of the Processor. If there already exist a processor with that identifier it will append a number, starting at 2 to ensure uniqueness of identifiers.
+     * Sets the identifier of the Processor. If there already exist a processor with that identifier
+     * it will append a number, starting at 2 to ensure uniqueness of identifiers.
      * @param the new identifier
      * @return The identifier that was set including eventual appended number
      */
@@ -114,13 +115,15 @@ public:
 
     virtual void doIfNotReady() {}
 
-    //Triggers invalidation.
-    //Perform only full reimplementation of this function, meaning never call Proccessor::invalidate()
-    //in your reimplemented invalidation function.
-    virtual void invalidate(PropertyOwner::InvalidationLevel invalidationLevel, Property* modifiedProperty=0);
+    // Triggers invalidation.
+    // Perform only full reimplementation of this function, meaning never call
+    // Proccessor::invalidate()
+    // in your reimplemented invalidation function.
+    virtual void invalidate(PropertyOwner::InvalidationLevel invalidationLevel,
+                            Property* modifiedProperty = 0);
 
     virtual void setValid();
-    virtual void initializeResources() {} // reload shaders etc. here
+    virtual void initializeResources() {}  // reload shaders etc. here
 
     /**
      * Adds the interaction handler such that it receives events propagated

@@ -49,13 +49,8 @@ public:
     virtual void initialize();
     virtual void deinitialize();
 
+    PropertyVisibilityMode getApplicationViewMode() const;
 
-protected:
-    void logStacktraceCallback();
-    void allocationTest();
-    glm::u32* allocTest_;
-
-private:
     OptionPropertyInt visibilityModeProperty_;
     BoolProperty txtEditorProperty_;
     BoolProperty shaderReloadingProperty_;
@@ -65,9 +60,13 @@ private:
     BoolProperty enableSoundProperty_;
     IntProperty  useRAMPercentProperty_;
     BoolProperty  logStackTraceProperty_;
-
     ButtonProperty btnAllocTestProperty_;
     ButtonProperty btnSysInfoProperty_;
+
+protected:
+    void logStacktraceCallback();
+    void allocationTest();
+    glm::u32* allocTest_;
 };
 
 } // namespace

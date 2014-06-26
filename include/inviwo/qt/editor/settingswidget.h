@@ -55,8 +55,6 @@ public:
 protected:
     QVBoxLayout* vLayout_;
     QTabWidget* tabWidget_;
-
-    std::vector<PropertyWidgetQt*> propertyWidgets_;
 };
 
 } // namespace
