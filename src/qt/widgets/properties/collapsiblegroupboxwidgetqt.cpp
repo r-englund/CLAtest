@@ -129,7 +129,6 @@ void CollapsibleGroupBoxWidgetQt::toggleFold() {
         propertyWidgetGroup_->hide();
         btnCollapse_->setIcon(QIcon(":/stylesheets/images/arrow_darker_right.png"));
     }
-    updateGeometry();
     collapsed_ = !collapsed_;
 }
 
@@ -144,14 +143,6 @@ void CollapsibleGroupBoxWidgetQt::addProperty(Property* prop) {
         prop->registerWidget(propertyWidget);
         connect(propertyWidget, SIGNAL(modified()), this, SLOT(propertyModified()));
         propertyWidget->hideWidget();
-        /*
-        if (prop->getVisibilityMode() == INVISIBLE) {
-            propertyWidget->hideWidget();
-        } else {
-            propertyWidget->showWidget();
-        }
-        */
-
     } else {
         LogWarn("Could not find a widget for property: " << prop->getClassName());
     }

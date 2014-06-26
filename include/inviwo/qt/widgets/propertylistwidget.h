@@ -70,6 +70,18 @@ public:
     }
 };
 
+
+class IVW_QTWIDGETS_API PropertyListFrame : public QWidget {
+public:
+    PropertyListFrame(QWidget* parent);
+
+    virtual QSize sizeHint() const;
+    virtual QSize minimumSizeHint() const;
+    void paintEvent(QPaintEvent*);
+};
+
+
+
 class IVW_QTWIDGETS_API PropertyListWidget : public InviwoDockWidget,
                                              public PropertyListWidgetObservable {
     Q_OBJECT

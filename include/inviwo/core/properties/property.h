@@ -182,7 +182,7 @@ private:
 
     std::string groupID_;
     std::string groupDisplayName_;
-    static std::map<std::string,std::string> groupDisplayNames_;
+    static std::map<std::string, std::string> groupDisplayNames_;
 
     PropertyWidget* initiatingWidget_;
 

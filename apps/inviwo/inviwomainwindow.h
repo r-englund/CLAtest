@@ -118,7 +118,7 @@ private:
 
     NetworkEditor* networkEditor_;
     NetworkEditorView* networkEditorView_;
-    BaseOptionProperty* visibilityModeProperty_;
+    OptionPropertyInt* visibilityModeProperty_;
 
     // mainwindow toolbar
     QToolBar* basicToolbar_;

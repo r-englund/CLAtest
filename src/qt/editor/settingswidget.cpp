@@ -32,6 +32,7 @@
 
 #include <inviwo/qt/editor/settingswidget.h>
 #include <inviwo/qt/widgets/properties/propertywidgetqt.h>
+#include <inviwo/qt/widgets/propertylistwidget.h>
 #include <inviwo/qt/widgets/properties/collapsiblegroupboxwidgetqt.h>
 #include <inviwo/core/properties/propertywidgetfactory.h>
 #include <inviwo/core/common/inviwoapplication.h>
@@ -55,71 +56,67 @@ void SettingsWidget::generateWidget() {
     setWidget(tabWidget_);
 }
 
-SettingsWidget::~SettingsWidget() {
-    while (propertyWidgets_.empty()) {
-        delete propertyWidgets_.back();
-        propertyWidgets_.pop_back();
-    }
-}
+SettingsWidget::~SettingsWidget() {}
 
 void SettingsWidget::updateSettingsWidget() {
     std::vector<Settings*> settings = InviwoApplication::getPtr()->getModuleSettings();
 
-    for (size_t i=0; i<settings.size(); i++) {
-        //Holder widget
-        QVBoxLayout* vLayout =  new QVBoxLayout();
-        vLayout->setSpacing(7);
-        vLayout->setContentsMargins(7,7,7,7);
-        vLayout->setAlignment(Qt::AlignTop);
-        QWidget* tabHolder = new QWidget();
-        tabHolder->setLayout(vLayout);
-        //Scroll widget
+    for (size_t i = 0; i < settings.size(); i++) {
+        // Scroll widget
         QScrollArea* scrollAreaTab = new QScrollArea(tabWidget_);
         scrollAreaTab->setWidgetResizable(true);
-        scrollAreaTab->setMinimumWidth(300);
+        scrollAreaTab->setMinimumWidth(320);
         scrollAreaTab->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
         scrollAreaTab->setFrameShape(QFrame::NoFrame);
-        scrollAreaTab->setWidget(tabHolder);
-        std::map<std::string, std::vector<Property*> > groups;
-        std::vector<Property*> properties = settings[i]->getProperties();
 
-        for (size_t j=0; j<properties.size(); j++) {
-            Property* curProperty = properties[j];
-            QString name = QString::fromStdString(curProperty->getIdentifier());
-            if (curProperty->getGroupID() != "")
-                groups[curProperty->getGroupID()].push_back(curProperty);
-            else {
-                PropertyWidgetQt* propertyWidget =
-                    static_cast<PropertyWidgetQt*>(PropertyWidgetFactory::getRef().create(curProperty));
-                curProperty->registerWidget(propertyWidget);
-                propertyWidgets_.push_back(propertyWidget);
-                vLayout->addWidget(propertyWidget);
+        // Holder widget
+        QWidget* listWidget = new PropertyListFrame(tabWidget_);
+        QVBoxLayout* listLayout = new QVBoxLayout();
+        listLayout->setSpacing(7);
+        listLayout->setContentsMargins(7, 7, 7, 7);
+        listLayout->setAlignment(Qt::AlignTop);
+        listLayout->setSizeConstraint(QLayout::SetMinAndMaxSize);
+        listWidget->setLayout(listLayout);
+        scrollAreaTab->setWidget(listWidget);
+
+        std::vector<Property*> props = settings[i]->getProperties();
+        PropertyListWidget::WidgetMap groups;
+
+        for (size_t j = 0; j < props.size(); j++) {
+            if (props[j]->getGroupID() != "") {
+                PropertyListWidget::WidgetMap::iterator it = groups.find(props[j]->getGroupID());
+                if (it == groups.end()) {
+                    CollapsibleGroupBoxWidgetQt* group = new CollapsibleGroupBoxWidgetQt(
+                        props[j]->getGroupDisplayName(), props[j]->getGroupDisplayName());
+                    listLayout->addWidget(group);
+                    groups.insert(std::make_pair(props[i]->getGroupID(), group));
+                    group->addProperty(props[j]);
+                    group->showWidget();
+                } else {
+                    it->second->addProperty(props[j]);
+                    it->second->showWidget();
+                }
+            } else {
+                PropertyWidgetQt* propertyWidget = static_cast<PropertyWidgetQt*>(
+                    PropertyWidgetFactory::getPtr()->create(props[j]));
+
+                if (propertyWidget) {
+                    listLayout->addWidget(propertyWidget);
+                    props[j]->registerWidget(propertyWidget);
+                    propertyWidget->showWidget();
+                } else {
+                    LogWarn("Could not find a widget for property: " << props[j]->getClassName());
+                }
             }
-        }
-
-        std::map<std::string, std::vector<Property*> >::iterator  groupIt;
-
-        for (groupIt = groups.begin(); groupIt!=groups.end(); groupIt++) {
-            Property* curProperty = groupIt->second[0];
-            CollapsibleGroupBoxWidgetQt* group = new CollapsibleGroupBoxWidgetQt(curProperty->getGroupID(), curProperty->getGroupDisplayName());
-            group->setIdentifier(curProperty->getGroupDisplayName());
-
-            for (size_t j=0; j<groupIt->second.size(); j++) {
-                Property* curProperty = groupIt->second[j];
-                group->addProperty(curProperty);
-            }
-
-            vLayout->addWidget(group);
         }
 
         tabWidget_->addTab(scrollAreaTab, tr(settings[i]->getIdentifier().c_str()));
-        vLayout->addStretch(0);
     }
 }
 
 void SettingsWidget::saveSettings() {
     const std::vector<Settings*> settings = InviwoApplication::getRef().getModuleSettings();
-    for (size_t i=0; i<settings.size(); i++) {
+    for (size_t i = 0; i < settings.size(); i++) {
         settings[i]->saveToDisk();
     }
 }

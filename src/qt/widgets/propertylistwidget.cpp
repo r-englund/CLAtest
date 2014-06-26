@@ -45,33 +45,33 @@
 
 namespace inviwo {
 
-class PropertyListFrame : public QWidget {
-public:
-    PropertyListFrame(QWidget* parent) : QWidget(parent) {
-        QSizePolicy sp(QSizePolicy::Fixed, QSizePolicy::MinimumExpanding);
-        sp.setVerticalStretch(0);
-        sp.setHorizontalStretch(1);
-        QWidget::setSizePolicy(sp);
-        //setStyleSheet("border: 1px solid red;");
-    }
 
-    virtual QSize sizeHint() const {
-        QSize size = layout()->minimumSize();       
-        size.setHeight(parentWidget()->width());
-        return size;
-    }
-    virtual QSize minimumSizeHint() const {
-        QSize size = layout()->minimumSize();
-        size.setWidth(parentWidget()->width());
-        return size;
-    }
-    void paintEvent(QPaintEvent*) {
-        QStyleOption opt;
-        opt.init(this);
-        QPainter p(this);
-        style()->drawPrimitive(QStyle::PE_Widget, &opt, &p, this);
-    }    
-};
+PropertyListFrame::PropertyListFrame(QWidget* parent) : QWidget(parent) {
+    QSizePolicy sp(QSizePolicy::Fixed, QSizePolicy::MinimumExpanding);
+    sp.setVerticalStretch(0);
+    sp.setHorizontalStretch(1);
+    QWidget::setSizePolicy(sp);
+    //setStyleSheet("border: 1px solid red;");
+}
+
+QSize PropertyListFrame::sizeHint() const {
+    QSize size = layout()->minimumSize();
+    size.setHeight(parentWidget()->width());
+    return size;
+}
+
+QSize PropertyListFrame::minimumSizeHint() const {
+    QSize size = layout()->minimumSize();
+    size.setWidth(parentWidget()->width());
+    return size;
+}
+
+void PropertyListFrame::paintEvent(QPaintEvent*) {
+    QStyleOption opt;
+    opt.init(this);
+    QPainter p(this);
+    style()->drawPrimitive(QStyle::PE_Widget, &opt, &p, this);
+}
 
 PropertyListWidget* PropertyListWidget::propertyListWidget_ = 0;
 

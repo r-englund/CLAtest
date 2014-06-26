@@ -30,14 +30,13 @@
  *
  *********************************************************************************/
 
+#include <inviwo/core/common/inviwoapplication.h>
 #include <inviwo/core/util/settings/systemsettings.h>
-
 #include <inviwo/core/util/systemcapabilities.h>
 #include <inviwo/core/util/formatconversion.h>
 
-#include <inviwo/core/common/inviwoapplication.h>
-
 namespace inviwo {
+
 SystemSettings::SystemSettings(std::string id) :
     Settings(id)
     , allocTest_(0)
@@ -112,6 +111,10 @@ void SystemSettings::allocationTest() {
                                              << useRAMPercent->get() << "% of available memory");
         }
     }
+}
+
+PropertyVisibilityMode SystemSettings::getApplicationViewMode() const {
+    return static_cast<PropertyVisibilityMode>(visibilityModeProperty_.get());
 }
 
 } // namespace
