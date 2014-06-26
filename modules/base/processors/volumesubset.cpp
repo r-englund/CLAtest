@@ -91,6 +91,7 @@ void VolumeSubset::process() {
             Volume* volume = new Volume(VolumeRAMSubSet::apply(vol, dim, offset));
             // pass meta data on
             volume->copyMetaDataFrom(*inport_.getData());
+            volume->dataMap_ = inport_.getData()->dataMap_;
 
             if (adjustBasisAndOffset_.get()) {
                 vec3 volOffset = inport_.getData()->getOffset() + vec3(offset) / vec3(dims_);

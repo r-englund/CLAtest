@@ -59,10 +59,25 @@ protected:
     virtual void process();
 
 private:
+    enum MeshType {
+        SPHERE,
+        COLOR_SPHERE,
+        CUBE,
+        LINE_CUBE,
+        PLANE,
+        DISK,
+        CONE,
+        CYLINDER,
+        ARROW,
+        COORD_AXES
+    };
+
     GeometryOutport outport_;
     FloatProperty meshScale_; // Scale size of mesh
+    IntProperty meshResX_; // horizontal mesh resolution
+    IntProperty meshResY_; // vertical mesh resolution
 
-    OptionPropertyString meshType_;
+    OptionPropertyInt meshType_;
 };
 
 } // namespace

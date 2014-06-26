@@ -44,22 +44,30 @@ MeshCreator::MeshCreator()
     : Processor(),
       outport_("outport"),
       meshScale_("scale", "Size scaling", 1.f, 0.01f, 10.f),
+      meshResX_("resX", "Mesh res. (horiz.)", 16, 1, 1024),
+      meshResY_("resY", "Mesh res. (vert.)", 16, 1, 1024),
       meshType_("meshType", "Mesh Type") {
 
     addPort(outport_);
-    meshType_.addOption("cube", "Cube");
-    meshType_.addOption("sphere", "Sphere");
-    meshType_.addOption("coord", "Coordinate Indicator");
-    meshType_.addOption("disk", "Disk");
-    meshType_.addOption("cone", "Cone");
-    meshType_.addOption("cylinder", "Cyinder");
-    meshType_.addOption("arrow", "Arrow");
-    meshType_.addOption("colorsphere", "Color Sphere");
-    meshType_.addOption("linecube", "Line cube");
-    meshType_.set("sphere");
+    
+    meshType_.addOption("sphere", "Sphere", SPHERE);
+    meshType_.addOption("colorsphere", "Color Sphere", COLOR_SPHERE);
+    meshType_.addOption("cube", "Cube", CUBE);
+    meshType_.addOption("linecube", "Line cube", LINE_CUBE);
+    meshType_.addOption("plane", "Plane", PLANE);
+    meshType_.addOption("disk", "Disk", DISK);
+    meshType_.addOption("cone", "Cone", CONE);
+    meshType_.addOption("cylinder", "Cylinder", CYLINDER);
+    meshType_.addOption("arrow", "Arrow", ARROW);
+    meshType_.addOption("coordaxes", "Coordinate Indicator", COORD_AXES);
+    
+    meshType_.set(SPHERE);
     meshType_.setCurrentStateAsDefault();
+
     addProperty(meshType_);
     addProperty(meshScale_);
+    addProperty(meshResX_);
+    addProperty(meshResY_);
 }
 
 MeshCreator::~MeshCreator() {}
@@ -74,54 +82,54 @@ void MeshCreator::deinitialize() {
 
 Mesh* MeshCreator::createMesh() {
     switch (meshType_.getSelectedIndex()) {
-    case 0: { // Cube
-        vec3 posLLF = vec3(0.0f);
-        vec3 posURB = vec3(1.0f)*meshScale_.get();
-        return SimpleMeshCreator::rectangularPrism(posLLF, posURB, posLLF, posURB, vec4(posLLF, 1.f), vec4(posURB, 1.f));
-        break;
-    }
-    case 1: // Sphere
-        return SimpleMeshCreator::sphere(0.5f*meshScale_.get(), 8, 16);
-        break;
-    case 2: // Coord indicator
-        return BasicMesh::coordindicator(vec3(0.0f, 0.0f, 0.0f), meshScale_.get());
-        break;
-    case 3: // Disk
-        return BasicMesh::disk(vec3(0.0f, 0.0f, 0.0f), 
-                               vec3(0.0f, 0.0f, 1.0f), 
-                               vec4(1.0f,0.0f,0.0f,1.0f),
-                               meshScale_.get());
-        break;
-    case 4: // Cone
-        return BasicMesh::cone(vec3(0.0f, 0.0f, -meshScale_.get()), 
-                               vec3(0.0f, 0.0f, meshScale_.get()), 
-                               vec4(1.0f, 0.0f, 0.0f, 1.0f), 
-                               meshScale_.get());
-        break;
-    case 5: // Cylinder
-        return BasicMesh::cylinder(vec3(0.0f, 0.0f, -3*meshScale_.get()),
-                                   vec3(0.0f, 0.0f, 3*meshScale_.get()),
-                                   vec4(1.0f, 0.0f, 0.0f, 1.0f), meshScale_.get());
-        break;
-    case 6: // Arrow
-        return BasicMesh::arrow(vec3(0.0f, 0.0f, -3 * meshScale_.get()),
-                                vec3(0.0f, 0.0f, 3 * meshScale_.get()),
-                                vec4(1.0f, 0.0f, 0.0f, 1.0f),
-                                meshScale_.get(),
-                                0.15f,
-                                meshScale_.get()*2
-                                );
-        break;
-    case 7: // Color sphere
+    case SPHERE:
+        return SimpleMeshCreator::sphere(0.5f*meshScale_.get(), meshResY_.get(), meshResX_.get());
+    case COLOR_SPHERE:
+        // TODO: use given mesh resolution!
         return BasicMesh::colorsphere(vec3(0.0f, 0.0f, 0.0f), meshScale_.get());
-        break;
-    case 8: // Line cube
+    case CUBE: 
+        { 
+            vec3 posLLF = vec3(0.0f);
+            vec3 posURB = vec3(1.0f)*meshScale_.get();
+            return SimpleMeshCreator::rectangularPrism(posLLF, posURB, posLLF, posURB, vec4(posLLF, 1.f), vec4(posURB, 1.f));
+        }
+    case LINE_CUBE:
         return BasicMesh::boundingbox(mat4(1.0), vec4(1.0f, 0.0f, 0.0f, 1.0f));
-        break;
-
+    case PLANE:
+        {
+            glm::vec3 pos(0.0f);
+            glm::vec2 extent(1.0f, 1.0f);
+            return SimpleMeshCreator::plane(pos, extent * meshScale_.get(), meshResX_.get(), meshResY_.get());
+        }
+    case DISK:
+        return BasicMesh::disk(vec3(0.0f, 0.0f, 0.0f), 
+            vec3(0.0f, 0.0f, 1.0f), 
+            vec4(1.0f,0.0f,0.0f,1.0f),
+            meshScale_.get(),
+            meshResX_.get());
+    case CONE:
+        return BasicMesh::cone(vec3(0.0f, 0.0f, -meshScale_.get()), 
+            vec3(0.0f, 0.0f, meshScale_.get()), 
+            vec4(1.0f, 0.0f, 0.0f, 1.0f), 
+            meshScale_.get(),
+            meshResX_.get());
+    case CYLINDER:
+        return BasicMesh::cylinder(vec3(0.0f, 0.0f, -3*meshScale_.get()),
+            vec3(0.0f, 0.0f, 3*meshScale_.get()),
+            vec4(1.0f, 0.0f, 0.0f, 1.0f), meshScale_.get(),
+            meshResX_.get());
+    case ARROW:
+        return BasicMesh::arrow(vec3(0.0f, 0.0f, -3 * meshScale_.get()),
+            vec3(0.0f, 0.0f, 3 * meshScale_.get()),
+            vec4(1.0f, 0.0f, 0.0f, 1.0f),
+            meshScale_.get(),
+            0.15f,
+            meshScale_.get()*2,
+            meshResX_.get());
+    case COORD_AXES:
+        return BasicMesh::coordindicator(vec3(0.0f, 0.0f, 0.0f), meshScale_.get());
     default:
-        return SimpleMeshCreator::sphere(0.5f*meshScale_.get(), 8, 16);
-        break;
+        return SimpleMeshCreator::sphere(0.1f, meshResY_.get(), meshResX_.get());
     }
 }
 
