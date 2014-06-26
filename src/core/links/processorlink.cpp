@@ -295,6 +295,21 @@ void ProcessorLink::setSourceModified() {
     }
 }
 
+void ProcessorLink::setDestinationModified() {
+    std::vector<Property*> destinationProperties = getDestinationProperties();
+
+    for (size_t i=0; i<destinationProperties.size(); i++) {
+        if (destinationProperties[i]->getOwner() == destinationProcessor_)
+            destinationProperties[i]->propertyModified();
+    }
+}
+
+void ProcessorLink::setModifiedByProcessor(Processor *processor) {
+    if (processor == sourceProcessor_ ) setSourceModified();
+    else if (processor == destinationProcessor_ ) setDestinationModified();
+    return;
+}
+
 std::string ProcessorLink::getLinkInfo() {
     std::string info("");
 

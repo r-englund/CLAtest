@@ -1156,7 +1156,7 @@ void LinkDialog::clickedOkayButton() {
         ProcessorLink* link = linkDialogScene_->getNetwork()->getLink(src_, dest_);
 
         if (link)
-            link->setSourceModified();
+            link->setModifiedByProcessor(src_);
     }
 
     //accept();   
