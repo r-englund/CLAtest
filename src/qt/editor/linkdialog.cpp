@@ -1063,14 +1063,16 @@ LinkDialogGraphicsView::~LinkDialogGraphicsView() {}
 
 /*---------------------------------------------------------------------------------------*/
 
-LinkDialog::LinkDialog(std::vector<ProcessorLink*> processorLinks, ProcessorNetwork* network, QWidget* parent) : QDialog(parent) {
+LinkDialog::LinkDialog(std::vector<ProcessorLink*> processorLinks, ProcessorNetwork* network, QWidget* parent) : InviwoDockWidget("Edit Processor Link Dialog", parent) {
     IVW_UNUSED_PARAM(processorLinks);
     IVW_UNUSED_PARAM(parent);
     IVW_UNUSED_PARAM(network);
     //Handle multiple processor links here
 }
 
-LinkDialog::LinkDialog(Processor* src, Processor* dest, ProcessorNetwork* network, QWidget* parent) :QDialog(parent) {
+LinkDialog::~LinkDialog() {}
+
+LinkDialog::LinkDialog(Processor* src, Processor* dest, ProcessorNetwork* network, QWidget* parent) :InviwoDockWidget("Edit Processor Link Dialog", parent) {    
     std::vector<Processor*> srcList, dstList;
     srcList.push_back(src);
     dstList.push_back(dest);
@@ -1082,10 +1084,33 @@ LinkDialog::LinkDialog(Processor* src, Processor* dest, ProcessorNetwork* networ
 }
 
 void LinkDialog::initDialog() {
-    setWindowTitle("Edit Processor Link Dialog");
+    setFloating(true);
+    setWindowModality (Qt::ApplicationModal);   
+    /*
+    //Custom title bar for consistency with other docked widgets
+    QString style("padding-top: 5px; \
+                   padding-left: 5px; \
+                   border-radius: 3px; \
+                   background: qlineargradient(x1:0, y1:0, x2:0, y2:1,stop:0 #888888, stop:0.4 #555555, stop:0.5 #000000, stop:1 #111111);"
+                   );
+    
+     QFrame* titleBar = new QFrame();
+     QVBoxLayout* lableLayout = new QVBoxLayout(titleBar);
+     QLabel *titleText = new QLabel("Edit Processor Link Dialog");
+     titleText->setStyleSheet(style);
+     lableLayout->addWidget(titleText);
+     setTitleBarWidget(titleBar);
+     //titleBarWidget()->setStyleSheet(style);
+     setWindowFlags(Qt::Window | Qt::FramelessWindowHint);*/
+    
+    setObjectName("LinkDialogWidget");
+    //setAllowedAreas(Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea);
+    setAllowedAreas(Qt::NoDockWidgetArea);
+    QFrame* frame = new QFrame();
+
     QSize rSize(linkDialogWidth, linkDialogHeight);
     setFixedSize(rSize);
-    QVBoxLayout* mainLayout = new QVBoxLayout(this);
+    QVBoxLayout* mainLayout = new QVBoxLayout(frame);
     linkDialogView_ = new LinkDialogGraphicsView(this);
     linkDialogScene_ = new LinkDialogGraphicsScene(this);
     linkDialogView_->setDialogScene(linkDialogScene_);
@@ -1096,7 +1121,7 @@ void LinkDialog::initDialog() {
     QHBoxLayout* commonButtonLayout = new QHBoxLayout;
     //auto link button
     QHBoxLayout* autoLinkPushButtonLayout = new QHBoxLayout;
-    autoLinkPushButtonLayout->setAlignment(Qt::AlignLeft);                  
+    autoLinkPushButtonLayout->setAlignment(Qt::AlignLeft);
     //qt documentation
     //auto link button
     autoLinkPushButton_ = new QPushButton("AutoLink", this);
@@ -1123,6 +1148,7 @@ void LinkDialog::initDialog() {
     okayCancelButtonLayout->addWidget(okayCancelbuttonBox_);
     commonButtonLayout->addLayout(okayCancelButtonLayout);
     mainLayout->addLayout(commonButtonLayout);
+    setWidget(frame);
 }
 
 void LinkDialog::clickedOkayButton() {
@@ -1133,12 +1159,20 @@ void LinkDialog::clickedOkayButton() {
             link->setSourceModified();
     }
 
-    accept();
+    //accept();   
+    hide();
+    eventLoop_.quit();
 }
 
 void LinkDialog::clickedCancelButton() {
     linkDialogScene_->removeCurrentPropertyLinks();
-    accept();
+    //accept();
+    hide();
+    eventLoop_.quit();
+}
+
+void LinkDialog::closeEvent ( QCloseEvent * event ) {
+   eventLoop_.quit();
 }
 
 void LinkDialog::clickedAutoLinkPushButton() {
@@ -1165,6 +1199,12 @@ void LinkDialog::clickedAutoLinkPushButton() {
 
 void LinkDialog::clickedDeleteAllLinksPushButton() {
     linkDialogScene_->removeAllPropertyLinks();
+}
+
+int LinkDialog::exec() {
+    show();
+    //connect(this, SIGNAL(destroy()), &eventLoop_, SLOT(quit()));
+    return eventLoop_.exec();
 }
 
 

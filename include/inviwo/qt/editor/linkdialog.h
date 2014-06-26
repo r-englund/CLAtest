@@ -45,12 +45,14 @@
 #include <QPushButton>
 #include <QComboBox>
 #include <QStandardItemModel>
+#include <QEventLoop>
 
 #include <inviwo/core/links/processorlink.h>
 #include <inviwo/core/links/linkconditions.h>
 #include <inviwo/core/network/processornetwork.h>
 #include <inviwo/qt/widgets/labelgraphicsitem.h>
 #include <inviwo/qt/editor/connectiongraphicsitem.h>
+#include <inviwo/qt/widgets/inviwodockwidget.h>
 
 static const qreal LINKDIALOG_PROCESSOR_GRAPHICSITEM_DEPTH = 1.0f;
 static const qreal LINKDIALOG_PROPERTY_GRAPHICSITEM_DEPTH = 2.0f;
@@ -316,11 +318,14 @@ private:
 };
 
 
-class IVW_QTEDITOR_API LinkDialog : public QDialog {
+class IVW_QTEDITOR_API LinkDialog : public InviwoDockWidget {
     Q_OBJECT
 public:
     LinkDialog(std::vector<ProcessorLink*> processorLinks, ProcessorNetwork* network, QWidget* parent);
     LinkDialog(Processor* src, Processor* dest, ProcessorNetwork* network, QWidget* parent);
+    virtual void closeEvent ( QCloseEvent * event );
+    int exec();
+    ~LinkDialog();
 
 private slots:
     void clickedOkayButton();
@@ -339,6 +344,7 @@ private:
     QPushButton* deleteAllLinkPushButton_;
     Processor* src_;
     Processor* dest_;
+    QEventLoop eventLoop_;
 };
 
 /*---------------------------------------------------------------------------------------*/
