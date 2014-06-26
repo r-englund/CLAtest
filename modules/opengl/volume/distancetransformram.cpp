@@ -31,7 +31,6 @@
  *********************************************************************************/
 
 #include "distancetransformram.h"
-#include <inviwo/core/datastructures/volume/volumeram.h>
 //#include <inviwo/core/datastructures/geometry/simplemeshcreator.h>
 
 namespace inviwo {
