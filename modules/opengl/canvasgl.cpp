@@ -57,7 +57,9 @@ CanvasGL::CanvasGL(uvec2 dimensions)
     , noiseShader_(NULL)
     , singleChannel_(false) {}
 
-CanvasGL::~CanvasGL() {}
+CanvasGL::~CanvasGL() {
+    deinitialize();
+}
 
 void CanvasGL::initialize() {
     defaultGLState();
