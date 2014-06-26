@@ -45,14 +45,22 @@
 
 namespace inviwo {
 
+int PropertyWidgetQt::MINIMUM_WIDTH = 250;
+int PropertyWidgetQt::SPACING = 7;
+int PropertyWidgetQt::MARGIN = 0;
+
+
 PropertyWidgetQt::PropertyWidgetQt()
-    : PropertyWidget()
+    : QWidget()
+    , PropertyWidget()
     , developerViewModeAction_(NULL)
     , applicationViewModeAction_(NULL)
+    , viewModeActionGroup_(NULL)
     , viewModeItem_(NULL)
-    , contextMenu_(NULL) {
- 
-    this->setContextMenuPolicy(Qt::CustomContextMenu);
+    , contextMenu_(NULL)
+    , cached_(true) {
+
+    setContextMenuPolicy(Qt::CustomContextMenu);
     connect(this,
             SIGNAL(customContextMenuRequested(const QPoint&)),
             this,
@@ -60,11 +68,16 @@ PropertyWidgetQt::PropertyWidgetQt()
 }
 
 PropertyWidgetQt::PropertyWidgetQt(Property* property)
-    : PropertyWidget(property)
+    : QWidget()
+    , PropertyWidget(property)
+    , developerViewModeAction_(NULL)
+    , applicationViewModeAction_(NULL)
+    , viewModeActionGroup_(NULL)
     , viewModeItem_(NULL)
-    , contextMenu_(NULL){
-        
-    this->setContextMenuPolicy(Qt::CustomContextMenu);
+    , contextMenu_(NULL)
+    , cached_(true) {
+    
+    setContextMenuPolicy(Qt::CustomContextMenu);
     connect(this,
             SIGNAL(customContextMenuRequested(const QPoint&)),
             this,
@@ -75,19 +88,31 @@ PropertyWidgetQt::~PropertyWidgetQt() {
 }
 
 
+void PropertyWidgetQt::setVisible(bool visible) {
+    if (cached_) return;
+
+    if (visible) {
+        QWidget::setVisible(true);
+    } else {
+        QWidget::setVisible(false);
+    }
+}
+
+
 void PropertyWidgetQt::showWidget() {
-    if(isHidden()){
+    cached_ = false;
+    if (isHidden() && getVisibilityMode() != INVISIBLE) {
         this->show();
-        emit visibilityChange();
+        updateGeometry();
     }
 }
 
 void PropertyWidgetQt::hideWidget() {
     if(isVisible()){
         this->hide();
-        emit visibilityChange();
     }
 }
+
 
 void PropertyWidgetQt::onViewModeChange() {
     if(viewModeItem_){
@@ -395,7 +420,22 @@ void PropertyWidgetQt::resetPropertyToDefaultState() {
     property_->resetToDefaultState();
 }
 
+void PropertyWidgetQt::setSpacingAndMargins(QLayout* layout) {
+    layout->setContentsMargins(MARGIN,MARGIN,MARGIN,MARGIN);
+    layout->setSpacing(SPACING);
+}
 
+QSize PropertyWidgetQt::sizeHint() const {
+    QSize size = layout()->sizeHint();
+    return size;
+}
+
+QSize PropertyWidgetQt::minimumSizeHint() const {
+    QSize size = layout()->sizeHint();
+    QSize minSize = layout()->minimumSize();
+    size.setWidth(minSize.width());
+    return size;
+}
 
 //////////////////////////////////////////////////////////////////////////
 

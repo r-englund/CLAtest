@@ -11,9 +11,7 @@ BaseOrdinalMinMaxPropertyWidgetQt::~BaseOrdinalMinMaxPropertyWidgetQt(){
 
 void BaseOrdinalMinMaxPropertyWidgetQt::generateWidget() {
     QHBoxLayout* hLayout = new QHBoxLayout();
-    hLayout->setContentsMargins(0, 0, 0, 0);
-    hLayout->setSpacing(7);
-
+    setSpacingAndMargins(hLayout);
     label_ = new EditableLabelQt(this, property_->getDisplayName());
     hLayout->addWidget(label_);
     

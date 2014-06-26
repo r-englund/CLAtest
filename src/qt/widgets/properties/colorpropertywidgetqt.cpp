@@ -57,7 +57,7 @@ void ColorPropertyWidgetQt::generateWidget() {
     colorDialog_ = new QColorDialog(this);
     btnColor_ = new QPushButton(this);
     btnColor_->setFixedWidth(100);
-    btnColor_->setFixedHeight(30);
+    btnColor_->setFixedHeight(20);
 
     btnColor_->setEnabled(!property_->getReadOnly());
 
@@ -69,6 +69,10 @@ void ColorPropertyWidgetQt::generateWidget() {
 
     hLayout->addWidget(btnColor_);
     setLayout(hLayout);
+
+    QSizePolicy sp = sizePolicy();
+    sp.setVerticalPolicy(QSizePolicy::Fixed);
+    setSizePolicy(sp);
 }
 
 void ColorPropertyWidgetQt::updateFromProperty() {

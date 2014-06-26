@@ -96,6 +96,7 @@ public:
 
 public slots:
     void setVisibilityMode(bool value);  // True = Application, False = Developer
+    void setVisibilityMode(PropertyVisibilityMode viewMode);
 
 protected slots:
     void propertyModified();
@@ -103,7 +104,7 @@ protected slots:
 private:
     CollapsibleGroupBoxWidgetQt* getProcessorPropertiesItem(Processor* processor);
 
-    void setVisibilityMode(PropertyVisibilityMode viewMode);
+
     CollapsibleGroupBoxWidgetQt* createNewProcessorPropertiesItem(Processor* processor);
 
     bool developerViewMode_;

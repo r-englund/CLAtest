@@ -3,11 +3,8 @@
 
 namespace inviwo {
 
-BaseSliderWidgetQt::BaseSliderWidgetQt() : spinBox_(NULL)
-, slider_(NULL)
-, spinnerValue_(0.0)
-, sliderValue_(0)
-{
+BaseSliderWidgetQt::BaseSliderWidgetQt()
+    : QWidget(), spinBox_(NULL), slider_(NULL), spinnerValue_(0.0), sliderValue_(0) {
     generateWidget();
 }
 
@@ -29,6 +26,10 @@ void BaseSliderWidgetQt::generateWidget() {
     setLayout(hLayout);
     connect(slider_, SIGNAL(valueChanged(int)), this, SLOT(updateFromSlider()));
     connect(spinBox_, SIGNAL(valueChanged(double)), this, SLOT(updateFromSpinBox()));
+
+    QSizePolicy sp = sizePolicy();
+    sp.setVerticalPolicy(QSizePolicy::Fixed);
+    setSizePolicy(sp);
 }
 
 void BaseSliderWidgetQt::applyInit() {

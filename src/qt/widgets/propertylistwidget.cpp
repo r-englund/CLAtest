@@ -39,8 +39,39 @@
 #include <QVBoxLayout>
 #include <QSignalMapper>
 #include <QSettings>
+#include <QStyle>
+#include <QStyleOption>
+#include <QPainter>
 
 namespace inviwo {
+
+class PropertyListFrame : public QWidget {
+public:
+    PropertyListFrame(QWidget* parent) : QWidget(parent) {
+        QSizePolicy sp(QSizePolicy::Fixed, QSizePolicy::MinimumExpanding);
+        sp.setVerticalStretch(0);
+        sp.setHorizontalStretch(1);
+        QWidget::setSizePolicy(sp);
+        //setStyleSheet("border: 1px solid red;");
+    }
+
+    virtual QSize sizeHint() const {
+        QSize size = layout()->minimumSize();       
+        size.setHeight(parentWidget()->width());
+        return size;
+    }
+    virtual QSize minimumSizeHint() const {
+        QSize size = layout()->minimumSize();
+        size.setWidth(parentWidget()->width());
+        return size;
+    }
+    void paintEvent(QPaintEvent*) {
+        QStyleOption opt;
+        opt.init(this);
+        QPainter p(this);
+        style()->drawPrimitive(QStyle::PE_Widget, &opt, &p, this);
+    }    
+};
 
 PropertyListWidget* PropertyListWidget::propertyListWidget_ = 0;
 
@@ -51,19 +82,23 @@ PropertyListWidget::PropertyListWidget(QWidget* parent)
     propertyListWidget_ = this;
     scrollArea_ = new QScrollArea(propertyListWidget_);
     scrollArea_->setWidgetResizable(true);
-    scrollArea_->setMinimumWidth(300);
+    scrollArea_->setMinimumWidth(320);
     scrollArea_->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    scrollArea_->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
     scrollArea_->setFrameShape(QFrame::NoFrame);
     scrollArea_->setContentsMargins(0, 0, 0, 0);
 
-    listWidget_ = new QWidget();
-    listLayout_ = new QVBoxLayout(listWidget_);
+    listWidget_ = new PropertyListFrame(this);
+    listLayout_ = new QVBoxLayout();
+    listWidget_->setLayout(listLayout_);
     listLayout_->setAlignment(Qt::AlignTop);
     listLayout_->setContentsMargins(7, 7, 7, 7);
     listLayout_->setSpacing(7);
+    listLayout_->setSizeConstraint(QLayout::SetMinAndMaxSize);
 
     scrollArea_->setWidget(listWidget_);
     setWidget(scrollArea_);
+
     QSettings settings("Inviwo", "Inviwo");
     settings.beginGroup("PropertyListwidget");
     developerViewMode_ = settings.value("developerViewMode", true).toBool();
@@ -77,10 +112,13 @@ void PropertyListWidget::addProcessorProperties(Processor* processor) {
     CollapsibleGroupBoxWidgetQt* processorPropertyWidget = getProcessorPropertiesItem(processor);
 
     if (processorPropertyWidget) {
-        listLayout_->addWidget(processorPropertyWidget);
-        processorPropertyWidget->setVisible(true);
-        processorPropertyWidget->show();
-        devWidgets_.push_back(processorPropertyWidget);
+        std::vector<CollapsibleGroupBoxWidgetQt*>::iterator elm =
+            std::find(devWidgets_.begin(), devWidgets_.end(), processorPropertyWidget);
+        if (elm == devWidgets_.end()) {
+            devWidgets_.push_back(processorPropertyWidget);
+        }
+
+        processorPropertyWidget->showWidget();
     }
     // Put this tab in front
     QWidget::raise();
@@ -90,14 +128,13 @@ void PropertyListWidget::removeProcessorProperties(Processor* processor) {
     WidgetMap::iterator it = widgetMap_.find(processor->getIdentifier());
 
     if (it != widgetMap_.end()) {
-        it->second->setVisible(false);
-        listLayout_->removeWidget(it->second);
-
         std::vector<CollapsibleGroupBoxWidgetQt*>::iterator elm =
             std::find(devWidgets_.begin(), devWidgets_.end(), it->second);
         if (elm != devWidgets_.end()) {
             devWidgets_.erase(elm);
         }
+       
+        it->second->hideWidget();
     }
 }
 
@@ -105,14 +142,23 @@ void PropertyListWidget::removeAndDeleteProcessorProperties(Processor* processor
     WidgetMap::iterator it = widgetMap_.find(processor->getIdentifier());
 
     if (it != widgetMap_.end()) {
-        it->second->setVisible(false);
-        listLayout_->removeWidget(it->second);
 
         std::vector<CollapsibleGroupBoxWidgetQt*>::iterator elm =
             std::find(devWidgets_.begin(), devWidgets_.end(), it->second);
         if (elm != devWidgets_.end()) {
             devWidgets_.erase(elm);
         }
+
+        setUpdatesEnabled(false);
+        it->second->hideWidget();
+        int height = 0;
+        for (std::vector<CollapsibleGroupBoxWidgetQt*>::iterator elm = devWidgets_.begin();
+             elm != devWidgets_.end(); ++elm) {
+            height += (*elm)->sizeHint().height();
+        }
+
+        listLayout_->removeWidget(it->second);
+        setUpdatesEnabled(true);
 
         CollapsibleGroupBoxWidgetQt* collapsiveGropWidget = it->second;
         std::vector<PropertyWidgetQt*> propertyWidgets = collapsiveGropWidget->getPropertyWidgets();
@@ -175,7 +221,6 @@ CollapsibleGroupBoxWidgetQt* PropertyListWidget::createNewProcessorPropertiesIte
     // create property widget and store it in the map
     CollapsibleGroupBoxWidgetQt* processorPropertyWidget =
         new CollapsibleGroupBoxWidgetQt(processor->getIdentifier(), processor->getIdentifier());
-    processorPropertyWidget->setParent(this);
 
     std::vector<Property*> props = processor->getProperties();
     WidgetMap groups;
@@ -196,6 +241,9 @@ CollapsibleGroupBoxWidgetQt* PropertyListWidget::createNewProcessorPropertiesIte
             processorPropertyWidget->addProperty(props[i]);
         }
     }
+
+    listLayout_->insertWidget(0, processorPropertyWidget, 0, Qt::AlignTop);
+    processorPropertyWidget->hideWidget();
 
     widgetMap_.insert(std::make_pair(processor->getIdentifier(), processorPropertyWidget));
     return processorPropertyWidget;
@@ -223,15 +271,13 @@ void PropertyListWidget::setVisibilityMode(PropertyVisibilityMode appVisibilityM
         widget->updateVisibility();
 
         if (appVisibilityMode == DEVELOPMENT) {
-            listLayout_->removeWidget(widget);
-            widget->setVisible(false);
+            widget->hideWidget();
 
         } else if (appVisibilityMode == APPLICATION) {
-            listLayout_->addWidget(widget);
             if (widget->getVisibilityMode() <= APPLICATION) {
-                widget->setVisible(true);
+                widget->showWidget();
             } else {
-                widget->setVisible(false);
+                widget->hideWidget();
             }
         }
     }
@@ -240,8 +286,7 @@ void PropertyListWidget::setVisibilityMode(PropertyVisibilityMode appVisibilityM
         for (std::vector<CollapsibleGroupBoxWidgetQt*>::iterator it = devWidgets_.begin();
              it != devWidgets_.end(); ++it) {
             CollapsibleGroupBoxWidgetQt* widget = *it;
-            listLayout_->addWidget(widget);
-            widget->setVisible(true);
+            widget->showWidget();
         }
     }
 }

@@ -48,7 +48,6 @@ namespace inviwo {
 class Property;
 
 class IVW_QTWIDGETS_API PropertyWidgetQt : public QWidget, public PropertyWidget {
-
     Q_OBJECT
 
 public:
@@ -60,13 +59,24 @@ public:
     // Application viewModeNotification
     virtual void onViewModeChange();
 
-    virtual void showWidget();
-    virtual void hideWidget();
     virtual void updateContextMenu();
     
     virtual PropertyVisibilityMode getVisibilityMode() const;
-    
+
+    virtual QSize sizeHint() const;
+    virtual QSize minimumSizeHint() const;
+
+    virtual void setVisible(bool visible);
+
+    virtual void showWidget();
+    virtual void hideWidget();
+
     QMenu* getContextMenu();
+
+    static int MINIMUM_WIDTH;
+    static int SPACING;
+    static int MARGIN;
+    static void setSpacingAndMargins(QLayout* layout);
     
 public slots:
     void visibilityModified(int mode);
@@ -77,14 +87,12 @@ public slots:
     void moduleAction();
 signals:
     void modified();
-    void visibilityChange();
 
 protected:
     void setProperty(Property* property);
     PropertyVisibilityMode getApplicationViewMode();
-    
-    // Context menu
 
+    // Context menu
     void generateContextMenu();
     void generateModuleMenuActions();
     void updateModuleMenuActions();
@@ -104,6 +112,8 @@ protected:
 private:
     QMenu* contextMenu_;
     QMap<QString,QMenu*> moduleSubMenus_;
+
+    bool cached_;
 };
 
 //PropertyEditorWidget owned by PropertyWidget

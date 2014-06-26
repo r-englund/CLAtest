@@ -44,32 +44,20 @@
 
 namespace inviwo {
 
-class IVW_QTWIDGETS_API CompositePropertyWidgetQt : public PropertyWidgetQt {
-
+class IVW_QTWIDGETS_API CompositePropertyWidgetQt : public CollapsibleGroupBoxWidgetQt {
     Q_OBJECT
 
 public:
     CompositePropertyWidgetQt(CompositeProperty* property);
-    void updateFromProperty();
-    void showWidget();
-    void hideWidget();
-
-public slots:
-    virtual void resetPropertyToDefaultState();
+    virtual void updateFromProperty();
 
 protected slots:
     void propertyModified();
     void setDisplayModeFromGroupBox();
     void labelDidChange(QString text);
-    
 
 private:
     CompositeProperty* property_;
-    CollapsibleGroupBoxWidgetQt* collapsiveGroupBoxWidget_;
-
-    void generateWidget();
-
-    std::vector<PropertyWidgetQt*> subPropertyWidgets_;
 };
 
 } // namespace

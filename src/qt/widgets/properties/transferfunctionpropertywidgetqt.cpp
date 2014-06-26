@@ -57,24 +57,29 @@ void TransferFunctionPropertyWidgetQt::generateWidget() {
     // TODO: Make sure that this work without notify. Can we do this in another way? It seems very weird...
     transferFunctionDialog_->getEditorView()->onTransferFunctionChange();
     QHBoxLayout* hLayout = new QHBoxLayout();
-    btnOpenTF_ = new QPushButton();
-    btnOpenTF_->setFixedSize(200, 40);
+    hLayout->setContentsMargins(0, 0, 0, 0);
+    hLayout->setSpacing(7);
 
-    if (property_->getReadOnly()) {
-        hLayout->addWidget(new QLabel(QString::fromStdString(property_->getDisplayName())));
-        btnOpenTF_->setDisabled(true);
-    } else {
-        label_ = new EditableLabelQt(this,property_->getDisplayName());
-        hLayout->addWidget(label_);
-        connect(btnOpenTF_, SIGNAL(clicked()), this, SLOT(openTransferFunctionDialog()));
-        connect(label_, SIGNAL(textChanged()), this, SLOT(setPropertyDisplayName()));
-    }
+    btnOpenTF_ = new QPushButton();
+    btnOpenTF_->setFixedSize(200, 20);
+
+    label_ = new EditableLabelQt(this, property_->getDisplayName());
+    hLayout->addWidget(label_);
+    connect(label_, SIGNAL(textChanged()), this, SLOT(setPropertyDisplayName()));
+
+    connect(btnOpenTF_, SIGNAL(clicked()), this, SLOT(openTransferFunctionDialog()));
+
+    btnOpenTF_->setEnabled(!property_->getReadOnly());
 
     hLayout->addWidget(btnOpenTF_);
     setLayout(hLayout);
     updateFromProperty();
     //initializes position, visibility,size of the widget from meta data
     initializeEditorWidgetsMetaData();
+
+    QSizePolicy sp = sizePolicy();
+    sp.setVerticalPolicy(QSizePolicy::Fixed);
+    setSizePolicy(sp);
 }
 
 void TransferFunctionPropertyWidgetQt::updateFromProperty() {

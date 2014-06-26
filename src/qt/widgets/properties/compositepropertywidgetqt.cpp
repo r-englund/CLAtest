@@ -37,52 +37,36 @@
 namespace inviwo {
 
 CompositePropertyWidgetQt::CompositePropertyWidgetQt(CompositeProperty* property)
-    : PropertyWidgetQt(property), property_(property) {
-    generateWidget();
-    updateFromProperty();
-}
-
-void CompositePropertyWidgetQt::generateWidget() {
-    QVBoxLayout* vLayout = new QVBoxLayout();
-    collapsiveGroupBoxWidget_ =
-        new CollapsibleGroupBoxWidgetQt(property_->getIdentifier(), property_->getDisplayName());
+    : CollapsibleGroupBoxWidgetQt(property->getIdentifier(), property->getDisplayName())
+    , property_(property) {
+    
     std::vector<Property*> subProperties = property_->getProperties();
-
     for (size_t i = 0; i < subProperties.size(); i++) {
-        Property* curProperty = subProperties[i];
-        collapsiveGroupBoxWidget_->addProperty(curProperty);
+        addProperty(subProperties[i]);
     }
-    vLayout->addWidget(collapsiveGroupBoxWidget_);
-    vLayout->setContentsMargins(0, 0, 0, 0);
-    vLayout->setSpacing(0);
-    setLayout(vLayout);
-    connect(collapsiveGroupBoxWidget_, SIGNAL(visibilityModified()),
+
+    connect(this, SIGNAL(visibilityModified()),
             SLOT(setDisplayModeFromGroupBox()));
-    connect(collapsiveGroupBoxWidget_, SIGNAL(labelChanged(QString)),
+    connect(this, SIGNAL(labelChanged(QString)),
             SLOT(labelDidChange(QString)));
-}
+
+    updateFromProperty();
+}                           
 
 void CompositePropertyWidgetQt::updateFromProperty() {
-    for (size_t i = 0; i < subPropertyWidgets_.size(); i++)
-        subPropertyWidgets_[i]->updateFromProperty();
+    for (size_t i = 0; i < propertyWidgets_.size(); i++)
+        propertyWidgets_[i]->updateFromProperty();
 }
 
 void CompositePropertyWidgetQt::propertyModified() { emit modified(); }
 
-void CompositePropertyWidgetQt::showWidget() { this->show(); }
-
-void CompositePropertyWidgetQt::hideWidget() { this->hide(); }
-
 void CompositePropertyWidgetQt::setDisplayModeFromGroupBox() {
-    property_->setVisibilityMode(collapsiveGroupBoxWidget_->getVisibilityMode());
+    property_->setVisibilityMode(getVisibilityMode());
 }
 void CompositePropertyWidgetQt::labelDidChange(QString text){
     property_->setDisplayName(text.toStdString());
 }
 
-void CompositePropertyWidgetQt::resetPropertyToDefaultState() {
-    collapsiveGroupBoxWidget_->resetPropertyToDefaultState();
-}
 
 
 
