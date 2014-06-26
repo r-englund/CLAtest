@@ -39,7 +39,6 @@ namespace inviwo {
 
 SystemSettings::SystemSettings(std::string id) :
     Settings(id)
-    , allocTest_(0)
     , visibilityModeProperty_("visibilityMode","Visibility mode")
     , txtEditorProperty_("txtEditor", "Use system text editor", true)
     , shaderReloadingProperty_("shaderReloading", "Automatically reload shaders", true)
@@ -50,7 +49,8 @@ SystemSettings::SystemSettings(std::string id) :
     , useRAMPercentProperty_("useRAMPercent", "Max memory usage (%)", 50, 1, 100)
     , logStackTraceProperty_("logStackTraceProperty","Error stack trace log", false)
     , btnAllocTestProperty_("allocTest", "Perform Allocation Test")
-    , btnSysInfoProperty_("printSysInfo", "Print System Info") {}
+    , btnSysInfoProperty_("printSysInfo", "Print System Info")
+    , allocTest_(0) {}
 
 SystemSettings::~SystemSettings() {}
 

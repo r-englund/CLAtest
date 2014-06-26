@@ -272,14 +272,8 @@ void PropertyListWidget::setVisibilityMode(PropertyVisibilityMode appVisibilityM
 
         if (appVisibilityMode == DEVELOPMENT) {
             widget->hideWidget();
-
-        } else if (appVisibilityMode == APPLICATION) {
-            if (widget->getVisibilityMode() <= APPLICATION) {
-                widget->showWidget();
-            } else {
-                widget->hideWidget();
-            }
         }
+
     }
 
     if (appVisibilityMode == DEVELOPMENT) {

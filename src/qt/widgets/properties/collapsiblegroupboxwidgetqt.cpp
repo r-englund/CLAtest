@@ -92,7 +92,7 @@ void CollapsibleGroupBoxWidgetQt::generateWidget() {
     setLayout(layout);
 }
 
-QSize CollapsibleGroupBoxWidgetQt::sizeHint() {
+QSize CollapsibleGroupBoxWidgetQt::sizeHint() const {
     QSize size = layout()->sizeHint();
     size.setWidth(std::max(PropertyWidgetQt::MINIMUM_WIDTH, size.width()));
     return size;
