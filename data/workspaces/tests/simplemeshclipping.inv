@@ -288,9 +288,9 @@
     </MetaData>
    </MetaDataList>
    <Properties>
-    <Property displayName="Mesh Type" identifier="meshType" key="meshType" type="OptionPropertyString">
+    <Property displayName="Mesh Type" identifier="meshType" key="meshType" type="OptionPropertyInt">
      <MetaDataList/>
-     <value content="cube"/>
+     <value content="2"/>
     </Property>
     <Property displayName="Size scaling" identifier="scale" key="scale" type="FloatProperty">
      <MetaDataList/>
