@@ -78,7 +78,7 @@ public:
     void removeWidget(QWidget* widget);
     std::vector<PropertyWidgetQt*> getPropertyWidgets() {return propertyWidgets_; };
     
-    virtual QSize sizeHint();
+    virtual QSize sizeHint() const;
     virtual QSize minimumSizeHint() const;
     
     virtual void serialize(IvwSerializer& s) const;
