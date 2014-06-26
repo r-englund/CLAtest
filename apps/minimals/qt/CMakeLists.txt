@@ -33,6 +33,9 @@ list(APPEND package_list InviwoOpenGLQtModule)
 list(REMOVE_ITEM package_list InviwoGLFWModule)
 list(REMOVE_ITEM package_list InviwoGLUTModule)
 list(REMOVE_ITEM package_list InviwoSDLModule)
+#--------------------------------------------------------------------
+# Remove python for testing
+list(REMOVE_ITEM package_list InviwoPythonModule)
 
 #--------------------------------------------------------------------
 # Register the use of modules
