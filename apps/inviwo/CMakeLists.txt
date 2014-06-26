@@ -64,7 +64,15 @@ endif()
 # Remove modules not used by this app
 list(REMOVE_ITEM package_list InviwoGLUTModule)
 list(REMOVE_ITEM package_list InviwoSDLModule)
-list(REMOVE_ITEM package_list InviwoUnitTestsModule)
+
+if(IVW_MODULE_UNITTESTS)
+	option(IVW_RUN_UNITTEST_ON_STARTUP "Run all registered unittest when Inviwo starts" OFF)
+	if(IVW_RUN_UNITTEST_ON_STARTUP)
+		add_definitions(-DIVW_RUN_UNITTEST_ON_STARTUP)
+    else()
+        list(REMOVE_ITEM package_list InviwoUnitTestsModule)
+	endif()
+endif()
 
 #--------------------------------------------------------------------
 # Register the use of modules
@@ -73,13 +81,6 @@ ivw_register_use_of_modules(${package_list})
 #--------------------------------------------------------------------
 # Need to add dependent directories before creating application
 ivw_add_dependency_directories(${package_list})
-
-if(IVW_MODULE_UNITTESTS)
-	option(IVW_RUN_UNITTEST_ON_STARTUP "Run all registered unittest when Inviwo starts" OFF)
-	if(IVW_RUN_UNITTEST_ON_STARTUP)
-		add_definitions(-DIVW_RUN_UNITTEST_ON_STARTUP)
-	endif()
-endif()
 
 set(RES_FILES "")
 if(WIN32)
