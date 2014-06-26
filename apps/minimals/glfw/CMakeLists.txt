@@ -31,6 +31,10 @@ list(REMOVE_ITEM package_list InviwoGLUTModule)
 list(REMOVE_ITEM package_list InviwoSDLModule)
 
 #--------------------------------------------------------------------
+# Remove python as it's not used by this app
+list(REMOVE_ITEM package_list InviwoPythonModule)
+
+#--------------------------------------------------------------------
 # Register the use of modules
 ivw_register_use_of_modules(${package_list})
 
