@@ -70,19 +70,16 @@ public:
     }
 };
 
-
 class IVW_QTWIDGETS_API PropertyListFrame : public QWidget {
 public:
     PropertyListFrame(QWidget* parent);
-
     virtual QSize sizeHint() const;
     virtual QSize minimumSizeHint() const;
     void paintEvent(QPaintEvent*);
 };
 
 
-
-class IVW_QTWIDGETS_API PropertyListWidget : public InviwoDockWidget,
+    class IVW_QTWIDGETS_API PropertyListWidget : public InviwoDockWidget,
                                              public PropertyListWidgetObservable {
     Q_OBJECT
 
@@ -105,6 +102,7 @@ public:
     void cacheProcessorPropertiesItem(Processor* processor);
 
     typedef std::map<std::string, CollapsibleGroupBoxWidgetQt*> WidgetMap;
+    typedef std::vector<CollapsibleGroupBoxWidgetQt*> WidgetVector;
 
 public slots:
     void setVisibilityMode(bool value);  // True = Application, False = Developer
@@ -123,7 +121,7 @@ private:
     bool applicationViewMode_;
 
     QVBoxLayout* listLayout_;
-    std::vector<CollapsibleGroupBoxWidgetQt*> devWidgets_;
+    WidgetVector devWidgets_;
     QWidget* listWidget_;
     QScrollArea* scrollArea_;
 
