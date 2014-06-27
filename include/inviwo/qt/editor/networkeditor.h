@@ -38,6 +38,7 @@
 #include <QTimer>
 #include <QThread>
 
+
 #include <inviwo/core/network/processornetworkevaluator.h>
 #include <inviwo/core/processors/processorfactory.h>
 #include <inviwo/core/ports/inport.h>
@@ -137,7 +138,6 @@ public:
 
 public slots:
     void managePortInspection();
-    void workerThreadReset();
     void cacheProcessorProperty(Processor*);
 
 protected:
@@ -160,8 +160,6 @@ protected:
     void placeProcessorOnProcessor(ProcessorGraphicsItem* processorItem, ProcessorGraphicsItem* oldProcessorItem);
 
     void autoLinkOnAddedProcessor(Processor*);
-
-    void workerThreadQuit();
     
     bool isPortInformationActive();
 
@@ -243,24 +241,6 @@ private:
     std::string filename_;
     bool renamingProcessor_;
     bool modified_;
-};
-
-class IVW_QTEDITOR_API ProcessorWorkerQt : public QObject {
-    Q_OBJECT
-public:
-    ProcessorWorkerQt(std::vector<Processor*> processors) : processors_(processors) {}
-    ~ProcessorWorkerQt() {};
-
-public slots:
-    void process();
-
-signals:
-    void nextProcessor(Processor*);
-    void finished();
-    void error(QString err);
-
-private:
-    std::vector<Processor*> processors_;
 };
 
 } // namespace

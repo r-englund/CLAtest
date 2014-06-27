@@ -77,7 +77,6 @@ NetworkEditor::NetworkEditor() :
     , portInformationActive_(NULL)
     , inspection_()
     , gridSnapping_(true)
-    , workerThread_(NULL)
     , filename_("")
     , renamingProcessor_(false)
     , modified_(false) {
@@ -310,14 +309,21 @@ void NetworkEditor::removeProcessorGraphicsItem(Processor* processor) {
 }
 
 void NetworkEditor::addPropertyWidgets(Processor* processor) {
-    PropertyListWidget::instance()->addProcessorProperties(processor);
+    QCoreApplication::postEvent(
+        PropertyListWidget::instance(),
+        new PropertyListEvent(PropertyListEvent::ADD, processor->getIdentifier()),
+        Qt::LowEventPriority);
 }
 
 void NetworkEditor::removePropertyWidgets(Processor* processor) {
-    PropertyListWidget::instance()->removeProcessorProperties(processor);
+    QCoreApplication::postEvent(
+        PropertyListWidget::instance(),
+        new PropertyListEvent(PropertyListEvent::REMOVE, processor->getIdentifier()),
+        Qt::LowEventPriority);
 }
 
 void NetworkEditor::removeAndDeletePropertyWidgets(Processor* processor) {
+    // Will not use events here since we might delete the processor
     PropertyListWidget::instance()->removeAndDeleteProcessorProperties(processor);
 }
 
@@ -710,23 +716,6 @@ void NetworkEditor::removePortInformation() {
     portInfoWidget_->hide();
 }
 
-void NetworkEditor::workerThreadReset() {
-    workerThread_ = NULL;
-    InviwoApplication::getPtr()->getProcessorNetwork()->addObserver(this);
-    Property* viewModeProperty =
-        InviwoApplication::getPtr()->getSettingsByType<SystemSettings>()->getPropertyByIdentifier(
-            "viewMode");
-    if (viewModeProperty) viewModeProperty->propertyModified();
-}
-
-void NetworkEditor::workerThreadQuit() {
-    if (workerThread_) {
-        workerThread_->quit();
-        workerThread_->wait();
-        workerThreadReset();
-    }
-}
-
 bool NetworkEditor::isModified()const{
     return modified_;
 }
@@ -975,7 +964,7 @@ LinkConnectionGraphicsItem* NetworkEditor::getLinkGraphicsItemAt(const QPointF p
 //   EVENT HANDLING METHODS   //
 ////////////////////////////////
 void NetworkEditor::mousePressEvent(QGraphicsSceneMouseEvent* e) {
-    if (inspection_.state() != Inspection::Start) { // return to start
+    if (inspection_.state() != Inspection::Start) {  // return to start
         removePortInspector(inspection_.processorIdentifier_, inspection_.portIdentifier_);
         hoverTimer_.stop();
         inspection_.resetPort();
@@ -988,28 +977,31 @@ void NetworkEditor::mousePressEvent(QGraphicsSceneMouseEvent* e) {
         if (startProcessor_) {
             if (startProcessor_->hitLinkDock(e->scenePos())) {
                 QPointF startPoint = startProcessor_->getShortestBoundaryPointTo(e->scenePos());
-                QPointF dir(0.0f,0.0f);
+                QPointF dir(0.0f, 0.0f);
                 if (startPoint.x() > startProcessor_->pos().x()) {
                     dir.setX(1.0f);
                 } else {
                     dir.setX(-1.0f);
                 }
 
-                linkCurve_ = new LinkGraphicsItem(startPoint, e->scenePos(), ivec3(255,255,255),dir);
+                linkCurve_ =
+                    new LinkGraphicsItem(startPoint, e->scenePos(), ivec3(255, 255, 255), dir);
                 addItem(linkCurve_);
                 linkCurve_->setZValue(DRAGING_ITEM_DEPTH);
                 linkCurve_->show();
                 e->accept();
                 return;
 
-            } else if (e->modifiers()==Qt::NoModifier) {
+            } else if (e->modifiers() == Qt::NoModifier) {
                 startPort_ = startProcessor_->getSelectedPort(e->scenePos());
 
                 if (startPort_ && dynamic_cast<Outport*>(startPort_)) {
                     // click on outport: start drawing a connection
-                    QRectF portRect = startProcessor_->calculatePortRect(dynamic_cast<Outport*>(startPort_));
+                    QRectF portRect =
+                        startProcessor_->calculatePortRect(dynamic_cast<Outport*>(startPort_));
                     portRect = startProcessor_->mapToScene(portRect).boundingRect();
-                    connectionCurve_ = new CurveGraphicsItem(portRect.center(), e->scenePos(), startPort_->getColorCode());
+                    connectionCurve_ = new CurveGraphicsItem(portRect.center(), e->scenePos(),
+                                                             startPort_->getColorCode());
                     connectionCurve_->setZValue(DRAGING_ITEM_DEPTH);
                     addItem(connectionCurve_);
                     connectionCurve_->show();
@@ -1021,9 +1013,10 @@ void NetworkEditor::mousePressEvent(QGraphicsSceneMouseEvent* e) {
                     //        disconnecting two ports through drag and drop
                     if (startPort_->isConnected()) {
                         // first remove existing connection, and remember start port
-                        std::vector<PortConnection*> portConnections = InviwoApplication::getPtr()->getProcessorNetwork()->getConnections();
+                        std::vector<PortConnection*> portConnections =
+                            InviwoApplication::getPtr()->getProcessorNetwork()->getConnections();
 
-                        for (size_t i=0; i<portConnections.size(); i++) {
+                        for (size_t i = 0; i < portConnections.size(); i++) {
                             Port* curInport = portConnections[i]->getInport();
 
                             if (curInport == startPort_)
@@ -1031,13 +1024,15 @@ void NetworkEditor::mousePressEvent(QGraphicsSceneMouseEvent* e) {
                         }
 
                         /// initialize parameters for new connection
-                        ConnectionGraphicsItem* connectionGraphicsItem = getConnectionGraphicsItemAt(e->scenePos());
+                        ConnectionGraphicsItem* connectionGraphicsItem =
+                            getConnectionGraphicsItemAt(e->scenePos());
                         if (connectionGraphicsItem) {
                             QPointF startPoint = connectionGraphicsItem->getStartPoint();
                             removeConnection(connectionGraphicsItem);
                             startProcessor_ = getProcessorGraphicsItemAt(startPoint);
                             // generate new curve
-                            connectionCurve_ = new CurveGraphicsItem(startPoint, e->scenePos(), startPort_->getColorCode());
+                            connectionCurve_ = new CurveGraphicsItem(startPoint, e->scenePos(),
+                                                                     startPort_->getColorCode());
                             connectionCurve_->setZValue(DRAGING_ITEM_DEPTH);
                             addItem(connectionCurve_);
                             connectionCurve_->show();
@@ -1049,7 +1044,7 @@ void NetworkEditor::mousePressEvent(QGraphicsSceneMouseEvent* e) {
                 } else {
                     updateAllProcessorGraphicsItemMetaData();
                 }
-            } 
+            }
         }
     }
 
@@ -1564,7 +1559,6 @@ bool NetworkEditor::loadNetwork(std::string fileName) {
 }
 
 bool NetworkEditor::loadNetwork(std::istream& stream, const std::string& path) {
-    workerThreadQuit();
     // first we clean the current network
     clearNetwork();
     // then we lock the network that no evaluations are triggered during the deserialization
@@ -1640,22 +1634,14 @@ bool NetworkEditor::loadNetwork(std::istream& stream, const std::string& path) {
     // unlock it and initiate evaluation
     InviwoApplication::getPtr()->getProcessorNetwork()->unlock();
 
-    // create all property (should be all non-visible) widgets in a thread (as it can take a long
-    // time to create them)
-    workerThread_ = new QThread();
-    ProcessorWorkerQt* worker = new ProcessorWorkerQt(processors);
-    worker->moveToThread(workerThread_);
-    connect(workerThread_, SIGNAL(started()), worker, SLOT(process()));
-    connect(worker, SIGNAL(nextProcessor(Processor*)), this,
-            SLOT(cacheProcessorProperty(Processor*)));
-    connect(worker, SIGNAL(finished()), workerThread_, SLOT(quit()));
-    connect(worker, SIGNAL(finished()), worker, SLOT(deleteLater()));
-    connect(workerThread_, SIGNAL(finished()), workerThread_, SLOT(deleteLater()));
-    connect(workerThread_, SIGNAL(finished()), this, SLOT(workerThreadReset()));
 
-    InviwoApplication::getPtr()->getProcessorNetwork()->removeObserver(this);
-    workerThread_->start();
-
+    // Queue event to cache all the widgets since the creation can be slow.
+    for (std::vector<Processor*>::iterator it = processors.begin(); it != processors.end(); ++it) {
+        QCoreApplication::postEvent(
+            PropertyListWidget::instance(),
+            new PropertyListEvent(PropertyListEvent::CACHE, (*it)->getIdentifier()),
+            Qt::LowEventPriority);
+    }
 
     setModified(false);
     filename_ = path;
@@ -1704,13 +1690,6 @@ void NetworkEditor::drawBackground(QPainter* painter, const QRectF& rect) {
     //painter->setPen(Qt::red);
     //painter->drawRect(QGraphicsScene::itemsBoundingRect());
     
-}
-
-void ProcessorWorkerQt::process() {
-    for (std::vector<Processor*>::iterator it = processors_.begin(); it != processors_.end(); ++it)
-        emit nextProcessor(*it);
-
-    emit finished();
 }
 
 } // namespace

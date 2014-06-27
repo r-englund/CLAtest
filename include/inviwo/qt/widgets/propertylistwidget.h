@@ -39,6 +39,7 @@
 #include <inviwo/qt/widgets/properties/propertywidgetqt.h>
 #include <QCheckBox>
 #include <QScrollArea>
+#include <QEvent>
 
 namespace inviwo {
 
@@ -78,8 +79,36 @@ public:
     void paintEvent(QPaintEvent*);
 };
 
+class IVW_QTWIDGETS_API PropertyListEvent : public QEvent {
+    Q_GADGET
+public:
 
-    class IVW_QTWIDGETS_API PropertyListWidget : public InviwoDockWidget,
+    enum Action {
+        ADD = 0,
+        REMOVE = 1,
+        CACHE = 2
+    };
+
+    PropertyListEvent(Action action, const std::string identifier)
+        : QEvent(PROPERY_LIST_EVENT)
+        , action_(action)
+        , identifier_(identifier) {}
+    
+    static QEvent::Type type() {
+        if (PROPERY_LIST_EVENT == QEvent::None) {
+            PROPERY_LIST_EVENT = static_cast<QEvent::Type>(QEvent::registerEventType());
+        }
+        return PROPERY_LIST_EVENT;
+    }
+    
+    Action action_;
+    const std::string identifier_;
+    
+private:
+    static QEvent::Type PROPERY_LIST_EVENT;
+};
+
+class IVW_QTWIDGETS_API PropertyListWidget : public InviwoDockWidget,
                                              public PropertyListWidgetObservable {
     Q_OBJECT
 
@@ -100,6 +129,8 @@ public:
     PropertyVisibilityMode getVisibilityMode();
 
     void cacheProcessorPropertiesItem(Processor* processor);
+    
+    virtual bool event(QEvent* e);
 
     typedef std::map<std::string, CollapsibleGroupBoxWidgetQt*> WidgetMap;
     typedef std::vector<CollapsibleGroupBoxWidgetQt*> WidgetVector;

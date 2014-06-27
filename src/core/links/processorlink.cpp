@@ -35,8 +35,8 @@
 namespace inviwo {
 
 ProcessorLink::ProcessorLink()
-    : sourceProcessor_(0),
-      destinationProcessor_(0) {}
+    : sourceProcessor_(NULL),
+      destinationProcessor_(NULL) {}
 
 ProcessorLink::ProcessorLink(Processor* outProecessor, Processor* inProecessor)
     : sourceProcessor_(inProecessor),
@@ -121,8 +121,9 @@ void ProcessorLink::evaluate(LinkEvaluator* leval) {
 bool ProcessorLink::isLinked(Property* startProperty, Property* endProperty) {
     bool isLinkFound = false;
 
-    for (size_t i=0; i<propertyLinks_.size(); i++) {
-        if ((propertyLinks_[i]->getSourceProperty() == startProperty && propertyLinks_[i]->getDestinationProperty() == endProperty)) {
+    for (size_t i = 0; i < propertyLinks_.size(); i++) {
+        if ((propertyLinks_[i]->getSourceProperty() == startProperty &&
+             propertyLinks_[i]->getDestinationProperty() == endProperty)) {
             isLinkFound = true;
             break;
         }
