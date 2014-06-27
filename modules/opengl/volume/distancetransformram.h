@@ -49,7 +49,9 @@
 #include <inviwo/core/processors/progressbarowner.h>
 #include <inviwo/core/datastructures/volume/volumeram.h>
 
+#ifndef __clang__
 #include <omp.h>
+#endif
 
 namespace inviwo {
 
