@@ -116,7 +116,7 @@ Processor* ProcessorNetwork::getProcessorByName(std::string identifier) const {
         if (processors_[i]->getIdentifier() == identifier)
             return processors_[i];
 
-    return 0;
+    return NULL;
 }
 
 std::vector<Processor*> ProcessorNetwork::getProcessors() const {

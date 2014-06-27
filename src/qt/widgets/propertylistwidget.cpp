@@ -292,4 +292,36 @@ PropertyVisibilityMode PropertyListWidget::getVisibilityMode() {
         return APPLICATION;
 }
 
+bool PropertyListWidget::event(QEvent* e) {
+    // The network editor will post these events.
+    if (e->type() == PropertyListEvent::type()) {
+        PropertyListEvent* ple = static_cast<PropertyListEvent*>(e);
+        ple->accept();
+
+        Processor* p = InviwoApplication::getPtr()->getProcessorNetwork()->getProcessorByName(
+            ple->identifier_);
+        if (p == NULL) {
+            return true;
+        }
+
+        switch (ple->action_) {
+            case PropertyListEvent::ADD:
+                addProcessorProperties(p);
+                break;
+            case PropertyListEvent::REMOVE:
+                removeProcessorProperties(p);
+                break;
+            case PropertyListEvent::CACHE:
+                cacheProcessorPropertiesItem(p);
+                break;
+        }
+
+        return true;
+    } else {
+        return QWidget::event(e);
+    }
+}
+
+QEvent::Type PropertyListEvent::PROPERY_LIST_EVENT = QEvent::None;
+
 }  // namespace
