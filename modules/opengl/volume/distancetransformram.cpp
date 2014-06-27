@@ -73,6 +73,7 @@ void DistanceTransformRAM::initialize() {
     ProcessorGL::initialize();
     dirty_ = true;
 
+    #ifndef __clang__
     if (numThreads_ == 0)
         numThreads_ = 2 * omp_get_max_threads();
     LogInfo("max available threads (OpenMP): " << omp_get_max_threads());
@@ -86,6 +87,7 @@ void DistanceTransformRAM::initialize() {
             LogInfo("Threads used: " << omp_get_num_threads());
         }
     }
+    #endif
 }
 
 void DistanceTransformRAM::deinitialize() {
