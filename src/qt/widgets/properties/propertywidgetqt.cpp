@@ -332,11 +332,8 @@ void PropertyWidgetQt::setApplicationViewMode(bool value) {
 }
 
 PropertyVisibilityMode PropertyWidgetQt::getApplicationViewMode() {
-    Settings* mainSettings = InviwoApplication::getPtr()->getSettingsByType<SystemSettings>();
-    PropertyVisibilityMode appMode = static_cast<PropertyVisibilityMode>(
-        dynamic_cast<OptionPropertyInt*>(mainSettings->getPropertyByIdentifier("visibilityMode"))
-            ->get());
-    return appMode;
+    return InviwoApplication::getPtr()->getSettingsByType<SystemSettings>()
+                                      ->getApplicationViewMode();
 }
 
 void PropertyWidgetQt::moduleAction() {

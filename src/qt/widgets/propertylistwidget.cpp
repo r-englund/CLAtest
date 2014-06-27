@@ -51,7 +51,6 @@ PropertyListFrame::PropertyListFrame(QWidget* parent) : QWidget(parent) {
     sp.setVerticalStretch(0);
     sp.setHorizontalStretch(1);
     QWidget::setSizePolicy(sp);
-    //setStyleSheet("border: 1px solid red;");
 }
 
 QSize PropertyListFrame::sizeHint() const {
@@ -109,16 +108,14 @@ PropertyListWidget::PropertyListWidget(QWidget* parent)
 PropertyListWidget::~PropertyListWidget() {}
 
 void PropertyListWidget::addProcessorProperties(Processor* processor) {
-    CollapsibleGroupBoxWidgetQt* processorPropertyWidget = getProcessorPropertiesItem(processor);
+    CollapsibleGroupBoxWidgetQt* widget = getProcessorPropertiesItem(processor);
 
-    if (processorPropertyWidget) {
-        std::vector<CollapsibleGroupBoxWidgetQt*>::iterator elm =
-            std::find(devWidgets_.begin(), devWidgets_.end(), processorPropertyWidget);
+    if (widget) {
+        WidgetVector::iterator elm = std::find(devWidgets_.begin(), devWidgets_.end(), widget);
         if (elm == devWidgets_.end()) {
-            devWidgets_.push_back(processorPropertyWidget);
+            devWidgets_.push_back(widget);
         }
-
-        processorPropertyWidget->showWidget();
+        widget->showWidget();
     }
     // Put this tab in front
     QWidget::raise();
@@ -128,8 +125,7 @@ void PropertyListWidget::removeProcessorProperties(Processor* processor) {
     WidgetMap::iterator it = widgetMap_.find(processor->getIdentifier());
 
     if (it != widgetMap_.end()) {
-        std::vector<CollapsibleGroupBoxWidgetQt*>::iterator elm =
-            std::find(devWidgets_.begin(), devWidgets_.end(), it->second);
+        WidgetVector::iterator elm = std::find(devWidgets_.begin(), devWidgets_.end(), it->second);
         if (elm != devWidgets_.end()) {
             devWidgets_.erase(elm);
         }
@@ -143,8 +139,7 @@ void PropertyListWidget::removeAndDeleteProcessorProperties(Processor* processor
 
     if (it != widgetMap_.end()) {
 
-        std::vector<CollapsibleGroupBoxWidgetQt*>::iterator elm =
-            std::find(devWidgets_.begin(), devWidgets_.end(), it->second);
+        WidgetVector::iterator elm = std::find(devWidgets_.begin(), devWidgets_.end(), it->second);
         if (elm != devWidgets_.end()) {
             devWidgets_.erase(elm);
         }
@@ -152,8 +147,7 @@ void PropertyListWidget::removeAndDeleteProcessorProperties(Processor* processor
         setUpdatesEnabled(false);
         it->second->hideWidget();
         int height = 0;
-        for (std::vector<CollapsibleGroupBoxWidgetQt*>::iterator elm = devWidgets_.begin();
-             elm != devWidgets_.end(); ++elm) {
+        for (WidgetVector::iterator elm = devWidgets_.begin(); elm != devWidgets_.end(); ++elm) {
             height += (*elm)->sizeHint().height();
         }
 
@@ -277,10 +271,8 @@ void PropertyListWidget::setVisibilityMode(PropertyVisibilityMode appVisibilityM
     }
 
     if (appVisibilityMode == DEVELOPMENT) {
-        for (std::vector<CollapsibleGroupBoxWidgetQt*>::iterator it = devWidgets_.begin();
-             it != devWidgets_.end(); ++it) {
-            CollapsibleGroupBoxWidgetQt* widget = *it;
-            widget->showWidget();
+        for (WidgetVector::iterator it = devWidgets_.begin(); it != devWidgets_.end(); ++it) {
+            (*it)->showWidget();
         }
     }
 }
