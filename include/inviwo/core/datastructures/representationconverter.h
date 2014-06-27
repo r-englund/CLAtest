@@ -55,6 +55,8 @@ public:
     virtual bool canConvertFrom(const DataRepresentation* source) const = 0;
     virtual bool canConvertTo(const DataRepresentation* destination) const = 0;
 
+    virtual bool isConverterReverse(RepresentationConverter*) { return false; }
+
     virtual DataRepresentation* createFrom(const DataRepresentation* source) = 0;
     virtual void update(const DataRepresentation* source, DataRepresentation* destination) = 0;
 };

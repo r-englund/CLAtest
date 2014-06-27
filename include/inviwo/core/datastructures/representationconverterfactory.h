@@ -49,6 +49,7 @@ public:
 
     void registerObject(RepresentationConverter* representationConverter);
 
+    //Get best converter that can convert from the source to T
     template <typename T>
     RepresentationConverter* getRepresentationConverter(DataRepresentation* source) {
         // TODO: optimize performance, e.g., by using a hash table
@@ -64,6 +65,7 @@ public:
         return NULL;
     }
 
+    //Get best converter package that can convert from the source to T
     template <typename T>
     RepresentationConverterPackage<T>* getRepresentationConverterPackage(DataRepresentation* source) {
         // TODO: optimize performance, e.g., by using a hash table
@@ -84,6 +86,31 @@ public:
         }
 
         return currentConverterPackage;
+    }
+
+    //Get all converters that can convert from the source
+    std::vector<RepresentationConverter*> getRepresentationConvertersFrom(DataRepresentation* source) {
+        std::vector<RepresentationConverter*> srcConverters;
+        for (size_t i=0; i<representationConverters_.size(); i++) {
+            if (representationConverters_[i]->canConvertFrom(source)){
+                srcConverters.push_back(representationConverters_[i]);
+            }
+        }
+
+        return srcConverters;
+    }
+
+    //Get best converter that can convert to T
+    template <typename T>
+    std::vector<RepresentationConverter*> getRepresentationConvertersTo() {
+        std::vector<RepresentationConverter*> tConverters;
+        for (size_t i=0; i<representationConverters_.size(); i++) {
+            if (dynamic_cast<RepresentationConverterType<T>*>(representationConverters_[i])){
+                tConverters.push_back(representationConverters_[i]);
+            }
+        }
+
+        return tConverters;
     }
 
 private:
