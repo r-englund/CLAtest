@@ -124,14 +124,10 @@ void EntryExitPoints::process() {
 
     if (capNearClipping_.get()) {
         if (
-            #ifdef __clang__
-            true
-            #else
             tmpEntryPoints_ == NULL ||
             tmpEntryPoints_->getDimension() != entryPort_.getDimension() ||
             tmpEntryPoints_->getImageType() != entryPort_.getData()->getImageType() ||
             tmpEntryPoints_->getDataFormat() != entryPort_.getData()->getDataFormat()
-            #endif
             ) {
             delete tmpEntryPoints_;
             tmpEntryPoints_ = new Image(entryPort_.getDimension(), entryPort_.getData()->getImageType(), entryPort_.getData()->getDataFormat());
