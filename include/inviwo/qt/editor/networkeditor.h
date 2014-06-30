@@ -146,9 +146,6 @@ protected:
     void mouseReleaseEvent(QGraphicsSceneMouseEvent* e);
     void mouseDoubleClickEvent(QGraphicsSceneMouseEvent* e);
 
-    //called by mouse event callbacks to update the meta data states of processor graphics items
-    void updateAllProcessorGraphicsItemMetaData();
-
     void keyPressEvent(QKeyEvent* keyEvent);
     void contextMenuEvent(QGraphicsSceneContextMenuEvent* e);
 

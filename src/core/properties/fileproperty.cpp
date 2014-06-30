@@ -83,7 +83,7 @@ void FileProperty::deserialize(IvwDeserializer& d) {
 
     d.deserialize("url", serializePath);
 
-    if (!URLParser::isAbsolutePath(serializePath)) {
+    if (!URLParser::isAbsolutePath(serializePath) && !serializePath.empty()) {
         std::string basePath = d.getFileName();
 
         if (basePath.empty())

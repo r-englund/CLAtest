@@ -61,7 +61,11 @@ int pointSizeToPixelSize(const int pointSize) {
 }
 
 ProcessorGraphicsItem::ProcessorGraphicsItem()
-    : ProcessorObserver(), LabelGraphicsItemObserver(), processor_(NULL) {
+    : ProcessorObserver()
+    , LabelGraphicsItemObserver()
+    , processor_(NULL)
+    , processorMeta_(NULL) {
+
     setZValue(PROCESSORGRAPHICSITEM_DEPTH);
     setFlags(ItemIsMovable | ItemIsSelectable | ItemIsFocusable | ItemSendsGeometryChanges);
     setRect(-width / 2, -height / 2, width, height);
@@ -106,6 +110,10 @@ void ProcessorGraphicsItem::setProcessor(Processor* processor) {
         if (progressBarOwner) {
             progressBarOwner->getProgressBar().addObserver(this);
         }
+        
+        processorMeta_ =
+            dynamic_cast<ProcessorMetaData*>(processor->getMetaData("ProcessorMetaData"));
+        
     } else {
         nameLabel_->setText("");
         classLabel_->setText("");
@@ -510,7 +518,8 @@ QVariant ProcessorGraphicsItem::itemChange(GraphicsItemChange change, const QVar
             }
         }
 
-        updateMetaData();
+        if(processorMeta_) processorMeta_->setPosition(ivec2(x(), y()));
+        
     } else if (change == QGraphicsItem::ItemSelectedHasChanged) {
         if (isSelected()){
             setZValue(SELECTED_PROCESSORGRAPHICSITEM_DEPTH);
@@ -519,17 +528,13 @@ QVariant ProcessorGraphicsItem::itemChange(GraphicsItemChange change, const QVar
             setZValue(PROCESSORGRAPHICSITEM_DEPTH);
             NetworkEditor::getPtr()->removePropertyWidgets(getProcessor());
         }
+        if(processorMeta_) processorMeta_->setSelected(isSelected());
+        
+    } else if (change == QGraphicsItem::ItemVisibleHasChanged) {
+        if(processorMeta_) processorMeta_->setVisibile(isVisible());
     }
+    
     return QGraphicsItem::itemChange(change, value);
-}
-
-void ProcessorGraphicsItem::updateMetaData() {
-    // TODO: this is not pretty way to access processor metadata, find another way
-    ProcessorMetaData* processorMeta =
-        dynamic_cast<ProcessorMetaData*>(processor_->getMetaData("ProcessorMetaData"));
-    processorMeta->setVisibile(isVisible());
-    processorMeta->setPosition(ivec2(x(), y()));
-    processorMeta->setSelected(isSelected());
 }
 
 void ProcessorGraphicsItem::onLabelGraphicsItemChange() {
