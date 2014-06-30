@@ -74,7 +74,7 @@ public:
     QRectF calculateOutportRect(size_t curPort) const;
     Port* getSelectedPort(const QPointF pos) const;
     bool hitLinkDock(const QPointF pos) const;
-    void updateMetaData();
+
     QPointF getShortestBoundaryPointTo(ProcessorGraphicsItem* processorGraphicsItem);
     QPointF getShortestBoundaryPointTo(QPointF inPos);
 
@@ -100,8 +100,8 @@ private:
     Processor* processor_;
     LabelGraphicsItem* nameLabel_;
     LabelGraphicsItem* classLabel_;
-
     QTime progressBarTimer_;
+    ProcessorMetaData* processorMeta_;
 };
 
 }  // namespace

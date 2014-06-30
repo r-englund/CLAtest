@@ -266,9 +266,8 @@ void NetworkEditor::addProcessorGraphicsItem(Processor* processor, QPointF pos, 
 
     // TODO: if (!sceneRect().contains(pos)) CLAMP_TO_SCENE_RECT;
     if (gridSnapping_) pos = snapToGrid(pos);
-
     processorGraphicsItem->setPos(pos);
-    processorGraphicsItem->updateMetaData();
+    
     addItem(processorGraphicsItem);
     processorGraphicsItems_.push_back(processorGraphicsItem);
 }
@@ -1041,8 +1040,6 @@ void NetworkEditor::mousePressEvent(QGraphicsSceneMouseEvent* e) {
 
                         return;
                     }
-                } else {
-                    updateAllProcessorGraphicsItemMetaData();
                 }
             }
         }
@@ -1121,7 +1118,7 @@ void NetworkEditor::mouseReleaseEvent(QGraphicsSceneMouseEvent* e) {
         // connection drag mode
         removeItem(connectionCurve_);
         delete connectionCurve_;
-        connectionCurve_ = 0;
+        connectionCurve_ = NULL;
         endProcessor_ = getProcessorGraphicsItemAt(e->scenePos());
 
         if (endProcessor_) {
@@ -1148,8 +1145,8 @@ void NetworkEditor::mouseReleaseEvent(QGraphicsSceneMouseEvent* e) {
             }
         }
 
-        startProcessor_ = 0;
-        endProcessor_ = 0;
+        startProcessor_ = NULL;
+        endProcessor_ = NULL;
         e->accept();
     } else if (linkCurve_) {
         // link drag mode
@@ -1165,8 +1162,8 @@ void NetworkEditor::mouseReleaseEvent(QGraphicsSceneMouseEvent* e) {
             showLinkDialog(linkGraphicsItem);
         }
 
-        startProcessor_ = 0;
-        endProcessor_ = 0;
+        startProcessor_ = NULL;
+        endProcessor_ = NULL;
         e->accept();
     } else if (startProcessor_) {
         // move processor
@@ -1179,17 +1176,9 @@ void NetworkEditor::mouseReleaseEvent(QGraphicsSceneMouseEvent* e) {
             if (processorGraphicsItem) {
                 if (gridSnapping_)
                     processorGraphicsItem->setPos(snapToGrid(processorGraphicsItem->pos()));
-
-                processorGraphicsItem->updateMetaData();
             }
         }
-
-        updateAllProcessorGraphicsItemMetaData();
-        QGraphicsScene::mouseReleaseEvent(e);
-    } else {
-        updateAllProcessorGraphicsItemMetaData();
     }
-
     QGraphicsScene::mouseReleaseEvent(e);
 }
 
@@ -1313,17 +1302,6 @@ void NetworkEditor::contextMenuEvent(QGraphicsSceneContextMenuEvent* e) {
         }
     } else
         QGraphicsScene::contextMenuEvent(e);
-}
-
-void NetworkEditor::updateAllProcessorGraphicsItemMetaData() {
-    QList<QGraphicsItem*> selectedGraphicsItems = items();
-
-    for (int i=0; i<selectedGraphicsItems.size(); i++) {
-        ProcessorGraphicsItem* processorGraphicsItem = dynamic_cast<ProcessorGraphicsItem*>(selectedGraphicsItems[i]);
-
-        if (processorGraphicsItem)
-            processorGraphicsItem->updateMetaData();
-    }
 }
 
 

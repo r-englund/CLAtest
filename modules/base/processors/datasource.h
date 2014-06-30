@@ -97,7 +97,7 @@ void DataSource<DataType, PortType>::load() {
                 file_.set("");
             }
         } else {
-            LogError("Could not find a reader file: " << file_.get());
+            LogError("Could not find a data reader for file: " << file_.get());
             file_.set("");
         }
     }
