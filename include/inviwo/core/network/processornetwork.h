@@ -184,7 +184,7 @@ public:
     * @return The newly crated link.
     * @see removeConnection()
     */
-    ProcessorLink* addLink(Processor* sourceProcessor, Processor* destProcessor);
+    ProcessorLink* addLink(PropertyOwner* sourceProcessor, PropertyOwner* destProcessor);
 
     /**
     * Removes and deletes a PortConnection from the ProcessorNetwork. This involves resolving the connection
@@ -195,7 +195,7 @@ public:
     * @param[in] destProcessor The destination processor.
     * @see addConnection()
     */
-    void removeLink(Processor* sourceProcessor, Processor* destProcessor);
+    void removeLink(PropertyOwner* sourceProcessor, PropertyOwner* destProcessor);
 
     /**
     * Checks weather the two processors have a link
@@ -205,7 +205,7 @@ public:
     * @return Weather the two processors have a link.
     * @see addConnection()
     */
-    bool isLinked(Processor* src, Processor* dst);
+    bool isLinked(PropertyOwner* src, PropertyOwner* dst);
 
     /**
     * Get a link between two processors
@@ -215,7 +215,7 @@ public:
     * @return The link between the processors or NULL if there is none.
     * @see addConnection()
     */
-    ProcessorLink* getLink(Processor* sourceProcessor, Processor* destProcessor) const;
+    ProcessorLink* getLink(PropertyOwner* sourceProcessor, PropertyOwner* destProcessor) const;
 
     /**
     * Returns a vector of all Links.

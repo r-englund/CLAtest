@@ -252,6 +252,9 @@ public:
     void addPropertyLink(Property* srcProperty, Property* dstProperty, bool bidirectional);
     int currentLinkItemsCount();
 
+    PropertyOwner* src_;
+    PropertyOwner* dest_;
+
 protected:
     void mousePressEvent(QGraphicsSceneMouseEvent* e);
     void mouseMoveEvent(QGraphicsSceneMouseEvent* e);
@@ -284,7 +287,6 @@ private:
 
     void addConnectionToCurrentList(DialogConnectionGraphicsItem*);
     void removeConnectionFromCurrentList(DialogConnectionGraphicsItem*);
-
 };
 
 /*---------------------------------------------------------------------------------------*/
@@ -342,8 +344,8 @@ private:
     QPushButton* autoLinkPushButton_;
     CheckableQComboBox* autoLinkOptions_;
     QPushButton* deleteAllLinkPushButton_;
-    Processor* src_;
-    Processor* dest_;
+    PropertyOwner* src_;
+    PropertyOwner* dest_;
     QEventLoop eventLoop_;
 };
 
