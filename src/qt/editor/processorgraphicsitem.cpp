@@ -201,26 +201,33 @@ QRectF ProcessorGraphicsItem::calculateOutportRect(size_t curPort) const {
 }
 
 Port* ProcessorGraphicsItem::getSelectedPort(const QPointF pos) const {
-    QPointF itemPos = mapFromScene(pos);
-    std::vector<Inport*> inports = processor_->getInports();
-
-    for (size_t i = 0; i < inports.size(); i++) {
-        QRectF portRect = calculateInportRect(i);
-
-        if (portRect.contains(itemPos)) return inports[i];
+    Port* port = getSelectedInport(pos);
+    if (port) {
+        return port;
+    }else{
+        return getSelectedOutport(pos);
     }
-
-    std::vector<Outport*> outports = processor_->getOutports();
-
-    for (size_t i = 0; i < outports.size(); i++) {
-        QRectF portRect = calculateOutportRect(i);
-
-        if (portRect.contains(itemPos)) return outports[i];
-    }
-
-    return 0;
 }
 
+Inport* ProcessorGraphicsItem::getSelectedInport(const QPointF pos) const {
+    QPointF itemPos = mapFromScene(pos);
+    std::vector<Inport*> inports = processor_->getInports();
+    for (size_t i = 0; i < inports.size(); i++) {
+        QRectF portRect = calculateInportRect(i);
+        if (portRect.contains(itemPos)) return inports[i];
+    }
+    return NULL;
+}
+
+Outport* ProcessorGraphicsItem::getSelectedOutport(const QPointF pos) const {
+    QPointF itemPos = mapFromScene(pos);
+    std::vector<Outport*> outports = processor_->getOutports();
+    for (size_t i = 0; i < outports.size(); i++) {
+        QRectF portRect = calculateOutportRect(i);
+        if (portRect.contains(itemPos)) return outports[i];
+    }
+    return NULL;
+}
 
 bool ProcessorGraphicsItem::hitLinkDock(const QPointF pos) const {
     QPointF itemPos = mapFromScene(pos);
@@ -472,6 +479,13 @@ void ProcessorGraphicsItem::setIdentifier(QString text) {
     if (processorWidgetQt) processorWidgetQt->setWindowTitle(updatedNewName.c_str());
 
     PropertyListWidget::instance()->changeName(oldName, updatedNewName);
+}
+
+void ProcessorGraphicsItem::snapToGrid() {
+    QPointF newpos = NetworkEditor::snapToGrid(pos());
+    if (newpos != pos()){
+        setPos(newpos);
+    }
 }
 
 QVariant ProcessorGraphicsItem::itemChange(GraphicsItemChange change, const QVariant& value) {
