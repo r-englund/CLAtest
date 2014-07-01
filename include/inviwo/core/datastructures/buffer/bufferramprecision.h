@@ -249,6 +249,7 @@ void BufferRAMPrecision<T>::clear() {
 
 #define DataFormatIdMacro(i) typedef BufferRAMCustomPrecision<Data##i::type, Data##i::bits> BufferRAM_##i;
 #include <inviwo/core/util/formatsdefinefunc.h>
+#undef DataFormatIdMacro
 
 typedef BufferRAM_Vec4FLOAT32 ColorBufferRAM;
 typedef BufferRAM_FLOAT32 CurvatureBufferRAM;
