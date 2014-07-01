@@ -400,33 +400,15 @@ std::vector<ProcessorLink*> ProcessorNetwork::getSortedProcessorLinksFromPropert
                               unsortedProcessorLinks[i])==sortedProcessorLinks.end()) {
 
                     std::vector<PropertyLink*> propertyLinks = unsortedProcessorLinks[i]->getPropertyLinks();
-                                        
-                    //TODO: Remove Unoptimized
-                    /*
-                    for (size_t j=0; j<propertyLinks.size(); j++) {                        
-                        //if (propertyLinks[j]->getSourceProperty()->getOwner() == dstProc ||
-                        //    propertyLinks[j]->getSourceProperty()->getOwner() == srcProc) {
-
-                        //TODO: Slow but working
-                        if (sortedProcessorLinks[k]->involvesProperty(propertyLinks[j]->getSourceProperty())) {
-                            nextInvalidLink = unsortedProcessorLinks[i];
-                            unsortedProcessorLinks.erase(unsortedProcessorLinks.begin()+i);
-                            break;
-                        }
-                    }
-                    */
 
                     //Optimized
                     for (size_t j=0; j<propertyLinks.size(); j++) {
                         if (propertyLinks[j]->getSourceOwner() == srcProc || propertyLinks[j]->getDestinationOwner() == dstProc ||
                             propertyLinks[j]->getSourceOwner() == dstProc || propertyLinks[j]->getDestinationOwner() == srcProc) 
                         {
-
-                            //if (sortedProcessorLinks[k]->involvesProperty(propertyLinks[j]->getSourceProperty())) {
-                                nextInvalidLink = unsortedProcessorLinks[i];
-                                unsortedProcessorLinks.erase(unsortedProcessorLinks.begin()+i);
-                                break;
-                            //}
+                            nextInvalidLink = unsortedProcessorLinks[i];
+                            unsortedProcessorLinks.erase(unsortedProcessorLinks.begin()+i);
+                            break;
                         }
                     }
                     
