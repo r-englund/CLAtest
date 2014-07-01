@@ -491,7 +491,7 @@ void NetworkEditor::managePortInspection() {
         port = connection->getOutport();
     }
 
-    if (!port) { // return to start
+    if (!port && inspection_.state() != Inspection::Start) { // return to start
         if(inspection_.isInspectorActive()) {
             removePortInspector(inspection_.processorIdentifier_, inspection_.portIdentifier_);
         }
@@ -503,17 +503,16 @@ void NetworkEditor::managePortInspection() {
         inspection_.setState(Inspection::Start);
     }
 
-    if (inspection_.state() == Inspection::Start) {
-        if (port) {
-            inspection_.setState(Inspection::Wait);
-            inspection_.setPort(port);
-            hoverTimer_.start(500);
-        }
+    if (port && inspection_.state() == Inspection::Start) {
+        inspection_.setState(Inspection::Wait);
+        inspection_.setPort(port);
+        hoverTimer_.start(500);
+    
     } else if (inspection_.state() == Inspection::Wait) {
         if (inspection_.samePort(port)) {
-            if (hoverTimer_.isActive()) {
-                //Keep waiting
-            } else { 
+            if (!hoverTimer_.isActive()) {
+                // Delay done, show information.
+                
                 bool portInspectorAdded = false;
                 if (inspection_.isInspectorActive()) {
                     // add port inspector
@@ -889,28 +888,32 @@ std::vector<std::string> NetworkEditor::getSnapshotsOfExternalNetwork(std::strin
 //   OBTAIN GRAPHICS ITEMS FROM NETWORK   //
 ////////////////////////////////////////////
 ProcessorGraphicsItem* NetworkEditor::getProcessorGraphicsItem(std::string identifier) const {
-    for (size_t i=0; i<processorGraphicsItems_.size(); i++)
+    for (size_t i = 0; i < processorGraphicsItems_.size(); i++)
         if (processorGraphicsItems_[i]->getIdentifier() == identifier)
             return processorGraphicsItems_[i];
 
-    return 0;
+    return NULL;
 }
 
-ConnectionGraphicsItem* NetworkEditor::getConnectionGraphicsItem(Outport* outport, Inport* inport) const {
-    for (size_t i=0; i<connectionGraphicsItems_.size(); i++)
+ConnectionGraphicsItem* NetworkEditor::getConnectionGraphicsItem(Outport* outport,
+                                                                 Inport* inport) const {
+    for (size_t i = 0; i < connectionGraphicsItems_.size(); i++)
         if (connectionGraphicsItems_[i]->getOutport() == outport &&
             connectionGraphicsItems_[i]->getInport() == inport)
             return connectionGraphicsItems_[i];
 
-    return 0;
+    return NULL;
 }
 
-LinkConnectionGraphicsItem* NetworkEditor::getLinkGraphicsItem(Processor* processor1, Processor* processor2) const {
-    for (size_t i=0; i<linkGraphicsItems_.size(); i++) {
-        Processor* outProcessor = linkGraphicsItems_[i]->getSrcProcessorGraphicsItem()->getProcessor();
-        Processor* inProcessor = linkGraphicsItems_[i]->getDestProcessorGraphicsItem()->getProcessor();
+LinkConnectionGraphicsItem* NetworkEditor::getLinkGraphicsItem(Processor* processor1,
+                                                               Processor* processor2) const {
+    for (size_t i = 0; i < linkGraphicsItems_.size(); i++) {
+        Processor* outProcessor =
+            linkGraphicsItems_[i]->getSrcProcessorGraphicsItem()->getProcessor();
+        Processor* inProcessor =
+            linkGraphicsItems_[i]->getDestProcessorGraphicsItem()->getProcessor();
 
-        if ((outProcessor == processor1 && inProcessor == processor2)  ||
+        if ((outProcessor == processor1 && inProcessor == processor2) ||
             (outProcessor == processor2 && inProcessor == processor1))
             return linkGraphicsItems_[i];
     }
@@ -921,40 +924,40 @@ LinkConnectionGraphicsItem* NetworkEditor::getLinkGraphicsItem(Processor* proces
 ProcessorGraphicsItem* NetworkEditor::getProcessorGraphicsItemAt(const QPointF pos) const {
     QList<QGraphicsItem*> graphicsItems = items(pos);
 
-    for (int i=0; i<graphicsItems.size(); i++) {
-        ProcessorGraphicsItem* processorGraphicsItem = qgraphicsitem_cast<ProcessorGraphicsItem*>(graphicsItems[i]);
+    for (int i = 0; i < graphicsItems.size(); i++) {
+        ProcessorGraphicsItem* processorGraphicsItem =
+            qgraphicsitem_cast<ProcessorGraphicsItem*>(graphicsItems[i]);
 
-        if (processorGraphicsItem)
-            return processorGraphicsItem;
+        if (processorGraphicsItem) return processorGraphicsItem;
     }
 
-    return 0;
+    return NULL;
 }
 
 ConnectionGraphicsItem* NetworkEditor::getConnectionGraphicsItemAt(const QPointF pos) const {
     QList<QGraphicsItem*> graphicsItems = items(pos);
 
-    for (int i=0; i<graphicsItems.size(); i++) {
-        ConnectionGraphicsItem* connectionGraphicsItem = qgraphicsitem_cast<ConnectionGraphicsItem*>(graphicsItems[i]);
+    for (int i = 0; i < graphicsItems.size(); i++) {
+        ConnectionGraphicsItem* connectionGraphicsItem =
+            qgraphicsitem_cast<ConnectionGraphicsItem*>(graphicsItems[i]);
 
-        if (connectionGraphicsItem)
-            return connectionGraphicsItem;
+        if (connectionGraphicsItem) return connectionGraphicsItem;
     }
 
-    return 0;
+    return NULL;
 }
 
 LinkConnectionGraphicsItem* NetworkEditor::getLinkGraphicsItemAt(const QPointF pos) const {
     QList<QGraphicsItem*> graphicsItems = items(pos);
 
-    for (int i=0; i<graphicsItems.size(); i++) {
-        LinkConnectionGraphicsItem* linkGraphicsItem = qgraphicsitem_cast<LinkConnectionGraphicsItem*>(graphicsItems[i]);
+    for (int i = 0; i < graphicsItems.size(); i++) {
+        LinkConnectionGraphicsItem* linkGraphicsItem =
+            qgraphicsitem_cast<LinkConnectionGraphicsItem*>(graphicsItems[i]);
 
-        if (linkGraphicsItem)
-            return linkGraphicsItem;
+        if (linkGraphicsItem) return linkGraphicsItem;
     }
 
-    return 0;
+    return NULL;
 }
 
 
@@ -1190,13 +1193,12 @@ void NetworkEditor::mouseDoubleClickEvent(QGraphicsSceneMouseEvent* e) {
         renamingProcessor_ = true;
         processorGraphicsItem->editProcessorName();
         e->accept();
-    }
-    else if (linkGraphicsItem) {
-        // link edit mode
+    } else if (linkGraphicsItem) {
         showLinkDialog(linkGraphicsItem);
         e->accept();
-    } else
+    } else {
         QGraphicsScene::mouseDoubleClickEvent(e);
+    }
 }
 
 void NetworkEditor::keyPressEvent(QKeyEvent* e) {
