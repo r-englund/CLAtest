@@ -73,6 +73,10 @@ public:
     QRectF calculateInportRect(size_t curPort) const;
     QRectF calculateOutportRect(size_t curPort) const;
     Port* getSelectedPort(const QPointF pos) const;
+    
+    Inport* getSelectedInport(const QPointF pos) const;
+    Outport* getSelectedOutport(const QPointF pos) const;
+    
     bool hitLinkDock(const QPointF pos) const;
 
     QPointF getShortestBoundaryPointTo(ProcessorGraphicsItem* processorGraphicsItem);
@@ -80,6 +84,8 @@ public:
 
     void onLabelGraphicsItemChange();
     bool isEditingProcessorName();
+    
+    void snapToGrid();
 
     // override for qgraphicsitem_cast (refer qt documentation)
     enum { Type = UserType + ProcessorGraphicsType };

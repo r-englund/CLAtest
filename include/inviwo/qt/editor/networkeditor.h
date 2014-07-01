@@ -135,6 +135,8 @@ public:
     void setModified(const bool modified = true);
 
     virtual void onProcessorNetworkChange() {setModified();};
+    
+    static QPointF snapToGrid(QPointF pos);
 
 public slots:
     void managePortInspection();
@@ -183,8 +185,8 @@ private:
     // these members are used to save the start state for click-move events
     ProcessorGraphicsItem* startProcessor_;
     ProcessorGraphicsItem* endProcessor_;
-    Port* startPort_;
-    Port* endPort_;
+    Outport* startPort_;
+    Inport* endPort_;
 
     BoolProperty* portInformationActive_;
     Inspection inspection_;
@@ -232,7 +234,6 @@ private:
     void removeExternalNetwork(std::string identifierPrefix);
     std::vector<std::string> saveSnapshotsInExternalNetwork(std::string externalNetworkFile, std::string identifierPrefix);
 
-    QPointF snapToGrid(QPointF pos);
     void drawBackground(QPainter* painter, const QRectF& rect);
 
     std::string filename_;

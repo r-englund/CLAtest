@@ -995,12 +995,11 @@ void NetworkEditor::mousePressEvent(QGraphicsSceneMouseEvent* e) {
                 return;
 
             } else if (e->modifiers() == Qt::NoModifier) {
-                startPort_ = startProcessor_->getSelectedPort(e->scenePos());
+                startPort_ = startProcessor_->getSelectedOutport(e->scenePos());
 
-                if (startPort_ && dynamic_cast<Outport*>(startPort_)) {
+                if (startPort_) {
                     // click on outport: start drawing a connection
-                    QRectF portRect =
-                        startProcessor_->calculatePortRect(dynamic_cast<Outport*>(startPort_));
+                    QRectF portRect = startProcessor_->calculatePortRect(startPort_);
                     portRect = startProcessor_->mapToScene(portRect).boundingRect();
                     connectionCurve_ = new CurveGraphicsItem(portRect.center(), e->scenePos(),
                                                              startPort_->getColorCode());
@@ -1009,25 +1008,30 @@ void NetworkEditor::mousePressEvent(QGraphicsSceneMouseEvent* e) {
                     connectionCurve_->show();
                     e->accept();
                     return;
-                } else if (startPort_ && dynamic_cast<Inport*>(startPort_)) {
-                    // click on inport: disconnect if connected
-                    // FIXME: delete operation in release event handling results in a crash when
-                    //        disconnecting two ports through drag and drop
-                    if (startPort_->isConnected()) {
+                }
+                
+                endPort_ = startProcessor_->getSelectedInport(e->scenePos());
+                
+                if (endPort_) {
+                    if (endPort_->isConnected()) {
+                        
                         // first remove existing connection, and remember start port
                         std::vector<PortConnection*> portConnections =
                             InviwoApplication::getPtr()->getProcessorNetwork()->getConnections();
 
                         for (size_t i = 0; i < portConnections.size(); i++) {
-                            Port* curInport = portConnections[i]->getInport();
+                            Inport* curInport = portConnections[i]->getInport();
 
-                            if (curInport == startPort_)
+                            if (curInport == endPort_) {
                                 startPort_ = portConnections[i]->getOutport();
+                                break;
+                            }
                         }
 
                         /// initialize parameters for new connection
                         ConnectionGraphicsItem* connectionGraphicsItem =
                             getConnectionGraphicsItemAt(e->scenePos());
+                        
                         if (connectionGraphicsItem) {
                             QPointF startPoint = connectionGraphicsItem->getStartPoint();
                             removeConnection(connectionGraphicsItem);
@@ -1058,20 +1062,20 @@ void NetworkEditor::mouseMoveEvent(QGraphicsSceneMouseEvent* e) {
         endProcessor_ = getProcessorGraphicsItemAt(e->scenePos());
 
         if (endProcessor_) {
-            Port* port = endProcessor_->getSelectedPort(e->scenePos());
-
-            if (port && port!=startPort_) {
-                Inport* inport = dynamic_cast<Inport*>(port);
-
-                if (inport && inport->canConnectTo(startPort_)
-                    && !inport->isConnectedTo(dynamic_cast<Outport*>(startPort_)))
+            Inport* inport = endProcessor_->getSelectedInport(e->scenePos());
+            
+            if (inport) {
+                if (!inport->isConnectedTo(startPort_) && inport->canConnectTo(startPort_)) {
                     connectionCurve_->setBorderColor(Qt::green);
-                else
+                } else {
                     connectionCurve_->setBorderColor(Qt::red);
-            } else
+                }
+            } else {
                 connectionCurve_->resetBorderColors();
-        } else
+            }
+        } else {
             connectionCurve_->resetBorderColors();
+        }
 
         endProcessor_ = NULL;
         connectionCurve_->update();
@@ -1080,7 +1084,7 @@ void NetworkEditor::mouseMoveEvent(QGraphicsSceneMouseEvent* e) {
         // Link drag mode
         QPointF startPoint = startProcessor_->getShortestBoundaryPointTo(e->scenePos());
         linkCurve_->setStartPoint(startPoint);
-        QPointF dir(0.0f,0.0f);
+        QPointF dir(0.0f, 0.0f);
         if (startPoint.x() > startProcessor_->pos().x()) {
             dir.setX(1.0f);
         } else {
@@ -1101,14 +1105,14 @@ void NetworkEditor::mouseMoveEvent(QGraphicsSceneMouseEvent* e) {
             linkCurve_->setEndDir(dir);
         } else {
             linkCurve_->setEndPoint(e->scenePos());
-            linkCurve_->setEndDir(QPointF(0.0f,0.0f));
+            linkCurve_->setEndDir(QPointF(0.0f, 0.0f));
         }
 
         linkCurve_->update();
         e->accept();
-    } else if (inspection_.isActive() && e->button() == Qt::NoButton){
+    } else if (inspection_.isActive() && e->button() == Qt::NoButton) {
         // Port inspector hover effect
-        inspection_.pos_ = ivec2(e->scenePos().x(),e->scenePos().y());
+        inspection_.pos_ = ivec2(e->scenePos().x(), e->scenePos().y());
         inspection_.gpos_ = ivec2(e->screenPos().x(), e->screenPos().y());
         managePortInspection();
     }
@@ -1125,26 +1129,18 @@ void NetworkEditor::mouseReleaseEvent(QGraphicsSceneMouseEvent* e) {
         endProcessor_ = getProcessorGraphicsItemAt(e->scenePos());
 
         if (endProcessor_) {
-            endPort_ = endProcessor_->getSelectedPort(e->scenePos());
+            endPort_ = endProcessor_->getSelectedInport(e->scenePos());
 
-            if (endPort_) {
-                Inport* inport = dynamic_cast<Inport*>(endPort_);
-
-                if (inport && inport->canConnectTo(startPort_)) {
-                    // MultiDataInports can have several connections
-                    SingleInport* singleInport = dynamic_cast<SingleInport*>(inport);
-                    MultiInport* multiInport = dynamic_cast<MultiInport*>(inport);
-
-                    if (inport->isConnected()) {
-                        if (singleInport) {
-                            removeConnection(singleInport->getConnectedOutport(), inport);
-                        } else if (multiInport &&
-                                   multiInport->isConnectedTo(dynamic_cast<Outport*>(startPort_))) {
-                        }
+            if (endPort_ && endPort_->canConnectTo(startPort_)) {
+                // replace single connection.
+                if (endPort_->isConnected()) {
+                    SingleInport* singleInport = dynamic_cast<SingleInport*>(endPort_);
+                    if (singleInport) {
+                        removeConnection(singleInport->getConnectedOutport(), endPort_);
                     }
-
-                    addConnection(dynamic_cast<Outport*>(startPort_), inport);
                 }
+
+                addConnection(startPort_, endPort_);
             }
         }
 
@@ -1172,13 +1168,13 @@ void NetworkEditor::mouseReleaseEvent(QGraphicsSceneMouseEvent* e) {
         // move processor
         QList<QGraphicsItem*> selectedGraphicsItems = selectedItems();
 
+        ProcessorGraphicsItem* processorGraphicsItem = NULL;
         for (int i = 0; i < selectedGraphicsItems.size(); i++) {
-            ProcessorGraphicsItem* processorGraphicsItem =
-                dynamic_cast<ProcessorGraphicsItem*>(selectedGraphicsItems[i]);
+             processorGraphicsItem =
+                qgraphicsitem_cast<ProcessorGraphicsItem*>(selectedGraphicsItems[i]);
 
-            if (processorGraphicsItem) {
-                if (gridSnapping_)
-                    processorGraphicsItem->setPos(snapToGrid(processorGraphicsItem->pos()));
+            if (gridSnapping_ && processorGraphicsItem) {
+                processorGraphicsItem->snapToGrid();
             }
         }
     }
@@ -1208,28 +1204,29 @@ void NetworkEditor::keyPressEvent(QKeyEvent* e) {
             // check if selected is connection and delete it
             QList<QGraphicsItem*> selectedGraphicsItems = selectedItems();
 
-            for (int i=0; i<selectedGraphicsItems.size(); i++) {
-                ConnectionGraphicsItem* connectionGraphicsItem = dynamic_cast<ConnectionGraphicsItem*>(selectedGraphicsItems[i]);
+            for (int i = 0; i < selectedGraphicsItems.size(); i++) {
+                ConnectionGraphicsItem* connectionGraphicsItem =
+                    qgraphicsitem_cast<ConnectionGraphicsItem*>(selectedGraphicsItems[i]);
 
-                if (connectionGraphicsItem)
-                    removeConnection(connectionGraphicsItem);
+                if (connectionGraphicsItem) removeConnection(connectionGraphicsItem);
             }
 
             // check if selected is link and delete it
             selectedGraphicsItems = selectedItems();
 
-            for (int i=0; i<selectedGraphicsItems.size(); i++) {
-                LinkConnectionGraphicsItem* linkGraphicsItem = dynamic_cast<LinkConnectionGraphicsItem*>(selectedGraphicsItems[i]);
+            for (int i = 0; i < selectedGraphicsItems.size(); i++) {
+                LinkConnectionGraphicsItem* linkGraphicsItem =
+                    qgraphicsitem_cast<LinkConnectionGraphicsItem*>(selectedGraphicsItems[i]);
 
-                if (linkGraphicsItem)
-                    removeLink(linkGraphicsItem);
+                if (linkGraphicsItem) removeLink(linkGraphicsItem);
             }
 
             // check if selected is processor and delete it
             selectedGraphicsItems = selectedItems();
 
-            for (int i=0; i<selectedGraphicsItems.size(); i++) {
-                ProcessorGraphicsItem* processorGraphicsItem = dynamic_cast<ProcessorGraphicsItem*>(selectedGraphicsItems[i]);
+            for (int i = 0; i < selectedGraphicsItems.size(); i++) {
+                ProcessorGraphicsItem* processorGraphicsItem =
+                    qgraphicsitem_cast<ProcessorGraphicsItem*>(selectedGraphicsItems[i]);
 
                 if (processorGraphicsItem && !processorGraphicsItem->isEditingProcessorName()) {
                     Processor* processor = processorGraphicsItem->getProcessor();
