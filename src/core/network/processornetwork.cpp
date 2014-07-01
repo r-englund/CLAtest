@@ -95,7 +95,7 @@ void ProcessorNetwork::removeProcessor(Processor* processor) {
     std::vector<ProcessorLink*> processorLinks = processorLinks_;
 
     for (size_t i=0; i<processorLinks.size(); i++)
-        if (processorLinks[i]->involvesProcessor(processor))
+        if (processorLinks[i]->involvesPropertyOwner(processor))
             removeLink(processorLinks[i]->getDestinationProcessor(),
                        processorLinks[i]->getSourceProcessor());
 
@@ -173,7 +173,7 @@ std::vector<PortConnection*> ProcessorNetwork::getConnections() const {
 }
 
 
-ProcessorLink* ProcessorNetwork::addLink(Processor* sourceProcessor, Processor* destProcessor) {
+ProcessorLink* ProcessorNetwork::addLink(PropertyOwner* sourceProcessor, PropertyOwner* destProcessor) {
     ProcessorLink* link = getLink(sourceProcessor, destProcessor);
 
     if (!link) {
@@ -185,7 +185,7 @@ ProcessorLink* ProcessorNetwork::addLink(Processor* sourceProcessor, Processor* 
     return link;
 }
 
-void ProcessorNetwork::removeLink(Processor* sourceProcessor, Processor* destProcessor) {
+void ProcessorNetwork::removeLink(PropertyOwner* sourceProcessor, PropertyOwner* destProcessor) {
     for (size_t i = 0; i < processorLinks_.size(); i++) {
         if ((processorLinks_[i]->getSourceProcessor() == sourceProcessor &&
              processorLinks_[i]->getDestinationProcessor() == destProcessor) ||
@@ -199,14 +199,14 @@ void ProcessorNetwork::removeLink(Processor* sourceProcessor, Processor* destPro
     }
 }
 
-bool ProcessorNetwork::isLinked(Processor* src, Processor* dst) {
+bool ProcessorNetwork::isLinked(PropertyOwner* src, PropertyOwner* dst) {
     if (getLink(src, dst))
         return true;
 
     return false;
 }
 
-ProcessorLink* ProcessorNetwork::getLink(Processor* processor1, Processor* processor2) const {
+ProcessorLink* ProcessorNetwork::getLink(PropertyOwner* processor1, PropertyOwner* processor2) const {
     for (size_t i = 0; i < processorLinks_.size(); i++) {
         if ((processorLinks_[i]->getSourceProcessor() == processor1 &&
              processorLinks_[i]->getDestinationProcessor() == processor2) ||
@@ -327,7 +327,7 @@ void ProcessorNetwork::evaluatePropertyLinks(Property* modifiedProperty) {
     linking_ = true;
     //perform linking
     std::vector<ProcessorLink*> sortedModifiableLinks = getSortedProcessorLinksFromProperty(modifiedProperty);
-    //This saves expensive branched search. But can be still optimized.
+    //This saves expensive branched search. But can be still optimized by caching.
     std::vector<Property*> destinationProperties;
 
     for (size_t i=0; i<sortedModifiableLinks.size(); i++) {
@@ -389,8 +389,8 @@ std::vector<ProcessorLink*> ProcessorNetwork::getSortedProcessorLinksFromPropert
 
         //Seed from sorted links
         for (size_t k=0; k<sortedProcessorLinks.size(); k++) {
-            Processor* srcProc = sortedProcessorLinks[k]->getSourceProcessor();
-            Processor* dstProc = sortedProcessorLinks[k]->getDestinationProcessor();
+            PropertyOwner* srcProc = sortedProcessorLinks[k]->getSourceProcessor();
+            PropertyOwner* dstProc = sortedProcessorLinks[k]->getDestinationProcessor();
 
             //Find link connected to the seeds
             for (size_t i=0; i<unsortedProcessorLinks.size(); i++) {
@@ -398,16 +398,38 @@ std::vector<ProcessorLink*> ProcessorNetwork::getSortedProcessorLinksFromPropert
 
                 if (std::find(sortedProcessorLinks.begin(), sortedProcessorLinks.end(),
                               unsortedProcessorLinks[i])==sortedProcessorLinks.end()) {
-                    std::vector<PropertyLink*> propertyLinks = unsortedProcessorLinks[i]->getPropertyLinks();
 
-                    for (size_t j=0; j<propertyLinks.size(); j++) {
-                        if (propertyLinks[j]->getSourceProperty()->getOwner() == dstProc ||
-                            propertyLinks[j]->getSourceProperty()->getOwner() == srcProc) {
+                    std::vector<PropertyLink*> propertyLinks = unsortedProcessorLinks[i]->getPropertyLinks();
+                                        
+                    //TODO: Remove Unoptimized
+                    /*
+                    for (size_t j=0; j<propertyLinks.size(); j++) {                        
+                        //if (propertyLinks[j]->getSourceProperty()->getOwner() == dstProc ||
+                        //    propertyLinks[j]->getSourceProperty()->getOwner() == srcProc) {
+
+                        //TODO: Slow but working
+                        if (sortedProcessorLinks[k]->involvesProperty(propertyLinks[j]->getSourceProperty())) {
                             nextInvalidLink = unsortedProcessorLinks[i];
                             unsortedProcessorLinks.erase(unsortedProcessorLinks.begin()+i);
                             break;
                         }
                     }
+                    */
+
+                    //Optimized
+                    for (size_t j=0; j<propertyLinks.size(); j++) {
+                        if (propertyLinks[j]->getSourceOwner() == srcProc || propertyLinks[j]->getDestinationOwner() == dstProc ||
+                            propertyLinks[j]->getSourceOwner() == dstProc || propertyLinks[j]->getDestinationOwner() == srcProc) 
+                        {
+
+                            //if (sortedProcessorLinks[k]->involvesProperty(propertyLinks[j]->getSourceProperty())) {
+                                nextInvalidLink = unsortedProcessorLinks[i];
+                                unsortedProcessorLinks.erase(unsortedProcessorLinks.begin()+i);
+                                break;
+                            //}
+                        }
+                    }
+                    
                 }
 
                 if (nextInvalidLink)
@@ -500,8 +522,8 @@ void ProcessorNetwork::deserialize(IvwDeserializer& d) throw (Exception) {
 
         for (size_t i=0; i<processorLinks.size(); i++) {
             if (processorLinks[i]) {
-                Processor* inProcessor = processorLinks[i]->getSourceProcessor();
-                Processor* outProcessor = processorLinks[i]->getDestinationProcessor();
+                PropertyOwner* inProcessor = processorLinks[i]->getSourceProcessor();
+                PropertyOwner* outProcessor = processorLinks[i]->getDestinationProcessor();
 
                 if (inProcessor && outProcessor) {
                     std::vector<PropertyLink*> propertyLinks = processorLinks[i]->getPropertyLinks();

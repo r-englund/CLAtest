@@ -97,8 +97,8 @@ public:
     void addConnection(Outport* outport, Inport* inport);
     void removeConnection(Outport* outport, Inport* inport);
 
-    void addLink(Processor* processor1, Processor* processor2);
-    void removeLink(Processor* processor1, Processor* processor2);
+    void addLink(PropertyOwner* processor1, PropertyOwner* processor2);
+    void removeLink(PropertyOwner* processor1, PropertyOwner* processor2);
 
     void clearNetwork();
     bool saveNetwork(std::string fileName);

@@ -46,24 +46,24 @@ class IVW_CORE_API ProcessorLink : public IvwSerializable {
 public:
 
     ProcessorLink();
-    ProcessorLink(Processor* outProcessor, Processor* inProcessor);
+    ProcessorLink(PropertyOwner* outProcessor, PropertyOwner* inProcessor);
     virtual ~ProcessorLink();
 
-    Processor* getSourceProcessor() const { return sourceProcessor_; }
-    Processor* getDestinationProcessor() const { return destinationProcessor_; }
+    PropertyOwner* getSourceProcessor() const { return sourceProcessor_; }
+    PropertyOwner* getDestinationProcessor() const { return destinationProcessor_; }
 
 
     void autoLinkPropertiesByType();
     void evaluate(LinkEvaluator* leval);
     bool isLinked(Property* startProperty, Property* endProperty);
-    bool involvesProcessor(Processor* processor);
+    bool involvesPropertyOwner(PropertyOwner* processor);
     bool isPropertySource(Property* property) ;
     bool isPropertyDestination(Property* property) ;
     bool involvesProperty(Property* property) ;
     bool isValid();
-    std::vector<Property*> getSourceProperties();
-    std::vector<Property*> getDestinationProperties();
-    void addPropertyLinks(Property* startProperty, Property* endProperty);
+    //std::vector<Property*> getSourceProperties();
+    //std::vector<Property*> getDestinationProperties();
+    void addPropertyLinks(Property* startProperty, Property* endProperty, PropertyOwner* startProcessor, PropertyOwner* endProcessor);
     void removePropertyLinks(Property* startProperty, Property* endProperty);
     void removePropertyLink(PropertyLink* plink);
     void removeBidirectionalPair(Property* startProperty, Property* endProperty);
@@ -73,15 +73,15 @@ public:
     PropertyLink* getBidirectionalPair(Property* startProperty, Property* endProperty);
     void setSourceModified();
     void setDestinationModified();
-    void setModifiedByProcessor(Processor* processor);
+    void setModifiedByPropertyOwner(PropertyOwner* processor);
     std::string getLinkInfo();
 
     virtual void serialize(IvwSerializer& s) const;
     virtual void deserialize(IvwDeserializer& d);
 
 private:
-    Processor* sourceProcessor_;
-    Processor* destinationProcessor_;
+    PropertyOwner* sourceProcessor_;
+    PropertyOwner* destinationProcessor_;
     std::vector<PropertyLink*> propertyLinks_;
 };
 

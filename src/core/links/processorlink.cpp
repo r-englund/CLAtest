@@ -38,7 +38,7 @@ ProcessorLink::ProcessorLink()
     : sourceProcessor_(NULL),
       destinationProcessor_(NULL) {}
 
-ProcessorLink::ProcessorLink(Processor* outProecessor, Processor* inProecessor)
+ProcessorLink::ProcessorLink(PropertyOwner* inProecessor, PropertyOwner* outProecessor)
     : sourceProcessor_(inProecessor),
       destinationProcessor_(outProecessor) {}
 
@@ -52,8 +52,8 @@ ProcessorLink::~ProcessorLink() {
 void ProcessorLink::autoLinkPropertiesByType() {
     //This is just for testing. Best to use if processors are of same type
     //This links all the properties of source processor to destination processor
-    Processor* outProcessor = destinationProcessor_;
-    Processor* inProcessor = sourceProcessor_;
+    PropertyOwner* outProcessor = destinationProcessor_;
+    PropertyOwner* inProcessor = sourceProcessor_;
     std::vector<Property*> srcProperties = outProcessor->getProperties();
     Property* dstProperty=0;
     LinkEvaluator leval;
@@ -66,8 +66,8 @@ void ProcessorLink::autoLinkPropertiesByType() {
 }
 
 bool ProcessorLink::isValid() {
-    Processor* outProcessor = destinationProcessor_;
-    Processor* inProcessor = sourceProcessor_;
+    PropertyOwner* outProcessor = destinationProcessor_;
+    PropertyOwner* inProcessor = sourceProcessor_;
     bool outProcessorInValid = false;
     bool inProcessorInValid = false;
     std::vector<Property*> outProperties = outProcessor->getProperties();
@@ -132,73 +132,97 @@ bool ProcessorLink::isLinked(Property* startProperty, Property* endProperty) {
     return isLinkFound;
 }
 
-std::vector<Property*> ProcessorLink::getSourceProperties() {
-    std::vector<Property*> sourceProperties;
-
-    for (size_t i=0; i<propertyLinks_.size(); i++)
-        sourceProperties.push_back(propertyLinks_[i]->getSourceProperty());
-
-    return sourceProperties;
-}
-
-std::vector<Property*> ProcessorLink::getDestinationProperties() {
-    std::vector<Property*> destProperties;
-
-    for (size_t i=0; i<propertyLinks_.size(); i++)
-        destProperties.push_back(propertyLinks_[i]->getDestinationProperty());
-
-    return destProperties;
-}
+//std::vector<Property*> ProcessorLink::getSourceProperties() {
+//    std::vector<Property*> sourceProperties;
+//
+//    for (size_t i=0; i<propertyLinks_.size(); i++)
+//        sourceProperties.push_back(propertyLinks_[i]->getSourceProperty());
+//
+//    return sourceProperties;
+//}
+//
+//std::vector<Property*> ProcessorLink::getDestinationProperties() {
+//    std::vector<Property*> destProperties;
+//
+//    for (size_t i=0; i<propertyLinks_.size(); i++)
+//        destProperties.push_back(propertyLinks_[i]->getDestinationProperty());
+//
+//    return destProperties;
+//}
 
 bool ProcessorLink::isPropertySource(Property* property)  {
-    std::vector<Property*> srcProperties = getSourceProperties();
-
-    if (std::find(srcProperties.begin(), srcProperties.end(), property)!=srcProperties.end())
-        return true;
+    //TODO: Expensive-Remove after testing. 
+    //std::vector<Property*> srcProperties = getSourceProperties();
+    //if (std::find(srcProperties.begin(), srcProperties.end(), property)!=srcProperties.end())
+    //    return true;
+    for (size_t i=0; i<propertyLinks_.size(); i++) {
+        if (propertyLinks_[i]->getSourceProperty()==property)
+            return true;
+    }
 
     return false;
 }
 
 bool ProcessorLink::isPropertyDestination(Property* property)  {
-    std::vector<Property*> destProperties = getDestinationProperties();
-
-    if (std::find(destProperties.begin(), destProperties.end(), property)!=destProperties.end())
-        return true;
-
+    //TODO: Expensive-Remove after testing. 
+    //std::vector<Property*> destProperties = getDestinationProperties();
+    //if (std::find(destProperties.begin(), destProperties.end(), property)!=destProperties.end())
+    //    return true;
+    for (size_t i=0; i<propertyLinks_.size(); i++) {
+        if (propertyLinks_[i]->getDestinationProperty()==property)
+            return true;
+    }
     return false;
 }
 
-bool ProcessorLink::involvesProcessor(Processor* processor) {
+bool ProcessorLink::involvesPropertyOwner(PropertyOwner* processor) {
     return (sourceProcessor_==processor || destinationProcessor_==processor);
 }
 
 bool ProcessorLink::involvesProperty(Property* property)  {
-    if (isPropertySource(property) || isPropertyDestination(property))
-        return true;
+    //TODO: Expensive-Remove after testing. 
+    //if (isPropertySource(property) || isPropertyDestination(property))
+    //    return true;
+
+    for (size_t i=0; i<propertyLinks_.size(); i++) {
+        if (propertyLinks_[i]->getSourceProperty()==property || propertyLinks_[i]->getDestinationProperty()==property)
+            return true;
+    }
 
     return false;
 }
 
-void ProcessorLink::addPropertyLinks(Property* startProperty, Property* endProperty) {
+void ProcessorLink::addPropertyLinks(Property* startProperty, Property* endProperty, PropertyOwner* startPropertyOnwer, PropertyOwner* endPropertyOwner) {
     //do assertion
-    Processor* outProcessor = destinationProcessor_;
-    Processor* inProcessor = sourceProcessor_;
+    PropertyOwner* outProcessor = destinationProcessor_;
+    PropertyOwner* inProcessor = sourceProcessor_;
+
+    if (startPropertyOnwer && endPropertyOwner) {
+        if ( (sourceProcessor_ == startPropertyOnwer && destinationProcessor_== endPropertyOwner) || 
+             (sourceProcessor_ == endPropertyOwner && destinationProcessor_== startPropertyOnwer)
+            ) {
+                outProcessor = endPropertyOwner;
+                inProcessor = startPropertyOnwer;
+        }
+        else {
+            LogWarn("Invalid property owners added");
+            return;
+        }
+    }
 
     if (isLinked(startProperty, endProperty)) return;
 
-    PropertyLink* newLink = 0;
-
-    if ((startProperty->getOwner() == outProcessor && endProperty->getOwner() == inProcessor) ||
-        (startProperty->getOwner() == inProcessor && endProperty->getOwner() == outProcessor))
-        newLink = new PropertyLink(startProperty, endProperty);
-
-    if (newLink)
+    //Do not detect any owners
+    //if ((startProperty->getOwner() == outProcessor && endProperty->getOwner() == inProcessor) ||
+    //    (startProperty->getOwner() == inProcessor && endProperty->getOwner() == outProcessor)) {
+        PropertyLink* newLink = new PropertyLink(startProperty, endProperty, inProcessor, outProcessor);
         propertyLinks_.push_back(newLink);
+    //}
 }
 
 void ProcessorLink::removeBidirectionalPair(Property* startProperty, Property* endProperty) {
-    Processor* outProcessor = destinationProcessor_;
-    Processor* inProcessor = sourceProcessor_;
+    PropertyOwner* outProcessor = destinationProcessor_;
+    PropertyOwner* inProcessor = sourceProcessor_;
 
     //if (!isLinked(startProperty, endProperty)) return;
 
@@ -222,8 +246,8 @@ void ProcessorLink::removeBidirectionalPair(Property* startProperty, Property* e
 
 void ProcessorLink::removePropertyLinks(Property* startProperty, Property* endProperty) {
     //do assertion
-    Processor* outProcessor = destinationProcessor_;
-    Processor* inProcessor = sourceProcessor_;
+    PropertyOwner* outProcessor = destinationProcessor_;
+    PropertyOwner* inProcessor = sourceProcessor_;
 
     //if (!isLinked(startProperty, endProperty)) return;
 
@@ -257,8 +281,8 @@ void ProcessorLink::removePropertyLink(PropertyLink* plink) {
 }
 
 PropertyLink* ProcessorLink::getPropertyLink(Property* startProperty, Property* endProperty) {
-    Processor* outProcessor = destinationProcessor_;
-    Processor* inProcessor = sourceProcessor_;
+    PropertyOwner* outProcessor = destinationProcessor_;
+    PropertyOwner* inProcessor = sourceProcessor_;
     //if (!isLinked(startProperty, endProperty)) return;
     PropertyLink* plink=0;
 
@@ -288,24 +312,40 @@ PropertyLink* ProcessorLink::getBidirectionalPair(PropertyLink* propertyLink) {
 }
 
 void ProcessorLink::setSourceModified() {
+    /*
     std::vector<Property*> sourceProperties = getSourceProperties();
 
     for (size_t i=0; i<sourceProperties.size(); i++) {
         if (sourceProperties[i]->getOwner() == sourceProcessor_)
             sourceProperties[i]->propertyModified();
     }
+    */
+
+    for (size_t i=0; i<propertyLinks_.size(); i++) {
+        if (propertyLinks_[i]->getSourceOwner() == sourceProcessor_) {
+            propertyLinks_[i]->getSourceProperty()->propertyModified();
+        }
+    }
 }
 
 void ProcessorLink::setDestinationModified() {
+    /*
     std::vector<Property*> destinationProperties = getDestinationProperties();
 
     for (size_t i=0; i<destinationProperties.size(); i++) {
         if (destinationProperties[i]->getOwner() == destinationProcessor_)
             destinationProperties[i]->propertyModified();
     }
+    */
+
+    for (size_t i=0; i<propertyLinks_.size(); i++) {
+        if (propertyLinks_[i]->getDestinationOwner() == destinationProcessor_) {
+            propertyLinks_[i]->getDestinationProperty()->propertyModified();
+        }
+    }
 }
 
-void ProcessorLink::setModifiedByProcessor(Processor *processor) {
+void ProcessorLink::setModifiedByPropertyOwner(PropertyOwner *processor) {
     if (processor == sourceProcessor_ ) setSourceModified();
     else if (processor == destinationProcessor_ ) setDestinationModified();
     return;
@@ -318,6 +358,12 @@ std::string ProcessorLink::getLinkInfo() {
 
     Processor* outProcessor = dynamic_cast<Processor*>(propertyLinks_[0]->getSourceProperty()->getOwner());
     Processor* inProcessor = dynamic_cast<Processor*>(propertyLinks_[0]->getDestinationProperty()->getOwner());
+
+    if (!outProcessor || !inProcessor) {
+        LogWarn("Invalid processor links");
+        return info;
+    }
+
     std::string outId = outProcessor->getIdentifier();
     std::string inId = inProcessor->getIdentifier();
     std::vector<PropertyLink*> processedLinks;
@@ -344,6 +390,8 @@ std::string ProcessorLink::getLinkInfo() {
 }
 
 void ProcessorLink::serialize(IvwSerializer& s) const {
+    s.serialize("SourceProcessor", sourceProcessor_);
+    s.serialize("DestinationProcessor", destinationProcessor_);
     s.serialize("PropertyLinks", propertyLinks_, "PropertyLink");
 }
 
@@ -353,19 +401,24 @@ void ProcessorLink::deserialize(IvwDeserializer& d) {
         propertyLinks_.pop_back();
     }
 
+    d.deserialize("SourceProcessor", sourceProcessor_);
+    d.deserialize("DestinationProcessor", destinationProcessor_);
+
     propertyLinks_.clear();
     d.deserialize("PropertyLinks", propertyLinks_, "PropertyLink");
 
-    if (propertyLinks_[0]) {
-        Property* srcProp = propertyLinks_[0]->getSourceProperty();
+    if (!sourceProcessor_) {
+        if (propertyLinks_[0]) {
+            Property* srcProp = propertyLinks_[0]->getSourceProperty();
+            if (srcProp) sourceProcessor_ = srcProp->getOwner();
+        }
+    }
 
-        if (srcProp)
-            destinationProcessor_ = dynamic_cast<Processor*>(srcProp->getOwner());
-
-        Property* destProp = propertyLinks_[0]->getDestinationProperty();
-
-        if (destProp)
-            sourceProcessor_ = dynamic_cast<Processor*>(destProp->getOwner());
+    if (!destinationProcessor_) {
+        if (propertyLinks_[0]) {
+            Property* destProp = propertyLinks_[0]->getDestinationProperty();
+            if (destProp) destinationProcessor_ = destProp->getOwner();
+        }
     }
 
     if (!destinationProcessor_ || !sourceProcessor_) {
@@ -377,6 +430,12 @@ void ProcessorLink::deserialize(IvwDeserializer& d) {
             it = propertyLinks_.erase(it);
         }
     }
+
+    for (size_t i=0; i<propertyLinks_.size(); i++) {
+        if (!propertyLinks_[i]->getSourceOwner()) propertyLinks_[i]->setSourcePropertyOwner(sourceProcessor_);
+        if (!propertyLinks_[i]->getDestinationOwner()) propertyLinks_[i]->setDestinationPropertyOwner(destinationProcessor_);
+    }
+
 }
 
 } // namespace
