@@ -107,7 +107,6 @@ public:
 private:
     QToolButton* btnEdit_;
     FilePropertyWidgetQt* fileWidget_;
-    Property* property_;
     QFile* file_;
     ModifiedWidget* textEditorWidget_;
     HtmlEditorWidgetQt* htmlEditorWidget_;

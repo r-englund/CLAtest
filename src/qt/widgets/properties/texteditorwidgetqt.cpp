@@ -109,7 +109,7 @@ void ModifiedWidget::setParent(TextEditorWidgetQt* tmp) {
 }
 
 
-TextEditorWidgetQt::TextEditorWidgetQt(Property* property) : property_(property) {
+TextEditorWidgetQt::TextEditorWidgetQt(Property* property) : PropertyWidgetQt(property) {
     generateWidget();
     updateFromProperty();
 }

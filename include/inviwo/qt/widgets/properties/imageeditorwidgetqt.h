@@ -216,7 +216,6 @@ public:
 private:
     QToolButton* btnEdit_;
     FilePropertyWidgetQt* fileWidget_;
-    Property* property_;
     ImageLabelWidget* imageLabelWidget_;
     std::string tmpPropertyValue_;
     QCheckBox* checkBox_;
