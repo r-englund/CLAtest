@@ -226,7 +226,9 @@ void Property::serialize(IvwSerializer& s) const {
     s.serialize("type", getClassName(), true);
     s.serialize("identifier", identifier_, true);
     s.serialize("displayName", displayName_, true);
-    s.serialize("semantics", semantics_);
+    if (semantics_ != PropertySemantics::Default) {
+        s.serialize("semantics", semantics_);
+    }
     s.serialize("visibilityMode", visibilityMode_);
     if (readOnly_ != defaultReadOnly_) {
         s.serialize("readonly", readOnly_);
@@ -286,6 +288,7 @@ void Property::updateVisibility() {
     } else if (mode == DEVELOPMENT && appMode == APPLICATION) {
         for (size_t i = 0; i < propertyWidgets_.size(); i++) propertyWidgets_[i]->hideWidget();
     }
+
 }
 
 void Property::setVisible(bool val) {
