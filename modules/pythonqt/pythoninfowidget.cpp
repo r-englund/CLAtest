@@ -49,12 +49,16 @@ PythonInfoWidget::PythonInfoWidget(QWidget* parent)
     setFloating(true);
     setVisible(false);
     buildWidget();
-    resize(500,700);
 }
 
 PythonInfoWidget::~PythonInfoWidget() {
 }
 
+void PythonInfoWidget::show(){
+    resize(500,900);
+    InviwoDockWidget::show();
+    resize(500,900);
+}
 
 void PythonInfoWidget::buildWidget() {
     QWidget* content = new QWidget(this);
@@ -92,8 +96,9 @@ void PythonInfoWidget::onModuleRegistered(PyModule* module) {
     layout->addWidget(descLabel,0,2);
     layout->addWidget(new QLabel("<hr />"),1,0,1,3);
 
+    int row = 0;
     for (int i = 0; i<static_cast<int>(methods.size()); ++i) {
-        int row = i*2 + 2;
+        row = i*2 + 2;
         QLabel* functionNameLabel = new QLabel(methods[i]->getName().c_str());
         functionNameLabel->setTextInteractionFlags(Qt::TextSelectableByMouse);
         layout->addWidget(functionNameLabel,row,0);
@@ -105,6 +110,9 @@ void PythonInfoWidget::onModuleRegistered(PyModule* module) {
         layout->addWidget(desc,row,2);
         layout->addWidget(new QLabel("<hr />"),row+1,0,1,3);
     }
+
+    if(row)
+        layout->addItem(new QSpacerItem(10,10,QSizePolicy::Minimum,QSizePolicy::Expanding),row+2,0);
 
     content->setLayout(layout);
     tab->setWidget(content);
