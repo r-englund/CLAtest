@@ -1574,14 +1574,9 @@ bool NetworkEditor::loadNetwork(std::istream& stream, const std::string& path) {
                                     QPointF(meta->getPosition().x, meta->getPosition().y),
                                     meta->isVisible(), meta->isSelected(), false, false);
     }
-    Property* vmp =
-        InviwoApplication::getPtr()->getSettingsByType<SystemSettings>()->getPropertyByIdentifier(
-            "visibilityMode");
-    if (vmp) {
-        BaseOptionProperty* visibilityModeProperty = dynamic_cast<BaseOptionProperty*>(vmp);
-        PropertyListWidget::instance()->setVisibilityMode(
-            visibilityModeProperty->getSelectedIndex());
-    }
+    PropertyListWidget::instance()->setVisibilityMode(InviwoApplication::getPtr()
+                                                          ->getSettingsByType<SystemSettings>()
+                                                          ->visibilityModeProperty_.get());
 
     // add connections
     std::vector<PortConnection*> connections =

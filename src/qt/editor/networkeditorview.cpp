@@ -112,6 +112,19 @@ void NetworkEditorView::fitNetwork() {
     if (network) {
         if (network->getProcessors().size() > 0) {
             QRectF br = networkEditor_->itemsBoundingRect().adjusted(-50, -50, 50, 50);
+            QSizeF viewsize = size();
+            QSizeF brsize = br.size();
+
+            if (brsize.width() < viewsize.width()) {
+                br.setLeft(br.left() - 0.5*(viewsize.width() - brsize.width()));
+                br.setRight(br.right() + 0.5*(viewsize.width() - brsize.width()));
+            }
+            if (brsize.height() < viewsize.height()) {
+                br.setTop(br.top() - 0.5*(viewsize.height() - brsize.height()));
+                br.setBottom(br.bottom() + 0.5*(viewsize.height() - brsize.height()));
+            }
+
+            setSceneRect(br);
             fitInView(br, Qt::KeepAspectRatio);
             zoom_ = transform().m11();
         }

@@ -68,6 +68,9 @@ public:
     
     virtual PropertyVisibilityMode getVisibilityMode() const;
     virtual void setVisibilityMode(PropertyVisibilityMode visibilityMode);
+
+    // Override from the property owner
+    virtual Processor* getProcessor() { return getOwner()->getProcessor(); }
 };
 
 } // namespace

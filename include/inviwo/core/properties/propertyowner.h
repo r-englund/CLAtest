@@ -39,6 +39,7 @@
 namespace inviwo {
 
 class Property;
+class Processor;
 
 class IVW_CORE_API PropertyOwner : public IvwSerializable {
 
@@ -47,7 +48,7 @@ public:
     virtual ~PropertyOwner();
 
     // invalidation level must be sorted based on their complexity,
-    // whereby higher numbers (later entry in the list) invole more
+    // whereby higher numbers (later entry in the list) involve more
     // expensive update operations
     enum InvalidationLevel {
         VALID,
@@ -61,14 +62,19 @@ public:
     virtual void addProperty(Property* property);
     virtual void addProperty(Property& property);
 
-    Property* getPropertyByIdentifier(std::string identifier) const;
     std::vector<Property*> getProperties() const { return properties_; }
+    Property* getPropertyByIdentifier(std::string identifier) const;    
     template<class T> std::vector<T*> getPropertiesByType() const;
 
-    bool isValid() { return (getInvalidationLevel() == PropertyOwner::VALID); }
+    bool isValid() { return (invalidationLevel_ == PropertyOwner::VALID); }
     virtual void setValid();
     InvalidationLevel getInvalidationLevel() { return invalidationLevel_; }
     virtual void invalidate(PropertyOwner::InvalidationLevel invalidationLevel, Property* modifiedProperty=0);
+
+    // Should return the processor that the owner belongs or is.
+    // This should be overridden by all subclasses.
+    // It is used by the linking.
+    virtual Processor* getProcessor() { return NULL; }
 
     virtual void serialize(IvwSerializer& s) const;
     virtual void deserialize(IvwDeserializer& d);
