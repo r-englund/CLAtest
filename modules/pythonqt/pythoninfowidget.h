@@ -49,6 +49,9 @@ public:
 
     virtual void onModuleRegistered(PyModule* module);
 
+    public slots:
+    virtual void show();
+
 private:
     void buildWidget();
     QTabWidget* tabWidget_;
