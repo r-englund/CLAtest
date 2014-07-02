@@ -522,7 +522,7 @@ void ImageLabelWidget::onCurrentItemPositionChange(vec2 centerPos) {
 
 /////////////////////////////////////////////////
 // Image Editor widget
-ImageEditorWidgetQt::ImageEditorWidgetQt(Property* property) : property_(property), imageLabelWidget_(0) {
+ImageEditorWidgetQt::ImageEditorWidgetQt(Property* property) : PropertyWidgetQt(property), imageLabelWidget_(0) {
     generateWidget();
     updateFromProperty();
 }
