@@ -87,8 +87,6 @@ NetworkEditor::NetworkEditor() :
     connect(&hoverTimer_, SIGNAL(timeout()), this, SLOT(managePortInspection()));
 }
 
-#define DELETE_VECTOR_ENTRIES(vec) while(!vec.empty()){delete vec.back();vec.pop_back();}
-
 NetworkEditor::~NetworkEditor() {
     delete portInfoWidget_;
 }
@@ -99,7 +97,6 @@ NetworkEditor::~NetworkEditor() {
 void NetworkEditor::addProcessor(Processor* processor, QPointF pos, bool showProcessor, bool selectProcessor, bool showPropertyWidgets,
                                  bool showProcessorWidget) {
     // add the processor to the network
-    processor->setIdentifier((processor->getClassName()));
     processor->initialize();
     InviwoApplication::getPtr()->getProcessorNetwork()->addProcessor(processor);
     // add processor representations

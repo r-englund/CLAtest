@@ -309,7 +309,6 @@ void Property::resetToDefaultState() {
 
 void Property::set(const Property* src) {
     readOnly_ = src->readOnly_;
-    defaultReadOnly_ = src->defaultReadOnly_;
     propertyModified();
 }
 

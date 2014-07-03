@@ -48,7 +48,6 @@ Processor::Processor()
     , identifier_("")
     , initialized_(false)
     , invalidationEnabled_(true) {
-    setIdentifier("undefined");
 }
 
 Processor::~Processor() {
@@ -103,7 +102,8 @@ std::string Processor::setIdentifier(const std::string& identifier) {
     return identifier_;
 }
 
-std::string Processor::getIdentifier() const {
+std::string Processor::getIdentifier() {
+    if (identifier_.empty()) setIdentifier(getClassName());
     return identifier_;
 }
 
