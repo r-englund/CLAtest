@@ -1,0 +1,453 @@
+<?xml version="1.0" ?>
+<InviwoTreeData version="1.0">
+    <!-- Don't edit the following code -->
+    <Processors>
+        <Processor type="VolumeSource" identifier="VolumeSource" id="ref0">
+            <MetaDataList>
+                <MetaData type="ProcessorMetaData">
+                    <position x="-625" y="-700" />
+                    <visibility content="1" />
+                    <selection content="0" />
+                </MetaData>
+            </MetaDataList>
+            <Properties>
+                <Property type="FloatVec3Property" identifier="angles" displayName="Angles" key="angles">
+                    <usageMode content="0" />
+                    <visible content="1" />
+                </Property>
+                <Property type="DoubleMinMaxProperty" identifier="dataRange" displayName="Data range" key="dataRange">
+                    <semantics semantics="Text" />
+                    <usageMode content="0" />
+                    <visible content="1" />
+                </Property>
+                <Property type="StringProperty" identifier="dimensions" displayName="Dimensions" key="dimensions">
+                    <usageMode content="0" />
+                    <visible content="1" />
+                </Property>
+                <Property type="FileProperty" identifier="filename" displayName="Volume file" key="filename">
+                    <usageMode content="0" />
+                    <visible content="1" />
+                    <url content="../../volumes/boron.dat" />
+                    <nameFilter>
+                        <filter content="All Files (*.*)" />
+                        <filter content="Inviwo dat file format (*.dat)" />
+                        <filter content="Inviwo ivf file format (*.ivf)" />
+                        <filter content="Raw binary file (*.raw)" />
+                    </nameFilter>
+                    <acceptMode content="0" />
+                    <fileMode content="0" />
+                </Property>
+                <Property type="StringProperty" identifier="format" displayName="Format" key="format">
+                    <usageMode content="0" />
+                    <visible content="1" />
+                </Property>
+                <Property type="FloatVec3Property" identifier="length" displayName="Lengths" key="length">
+                    <usageMode content="0" />
+                    <visible content="1" />
+                </Property>
+                <Property type="FloatVec3Property" identifier="offset" displayName="Offset" key="offset">
+                    <usageMode content="0" />
+                    <visible content="1" />
+                </Property>
+                <Property type="BoolProperty" identifier="override" displayName="Override" key="override">
+                    <usageMode content="0" />
+                    <visible content="1" />
+                </Property>
+                <Property type="DoubleMinMaxProperty" identifier="valueRange" displayName="Value range" key="valueRange">
+                    <semantics semantics="Text" />
+                    <usageMode content="0" />
+                    <visible content="1" />
+                </Property>
+                <Property type="StringProperty" identifier="valueUnit" displayName="Value unit" key="valueUnit">
+                    <usageMode content="0" />
+                    <visible content="1" />
+                </Property>
+            </Properties>
+        </Processor>
+        <Processor type="DepthOfField" identifier="DepthOfField" id="ref2">
+            <MetaDataList>
+                <MetaData type="ProcessorMetaData">
+                    <position x="-625" y="-625" />
+                    <visibility content="1" />
+                    <selection content="1" />
+                </MetaData>
+            </MetaDataList>
+            <InteractonHandlers>
+                <InteractionHandler type="Trackball">
+                    <Properties>
+                        <Property type="EventProperty" identifier="stepPanDown" displayName="Step pan down" key="stepPanDown">
+                            <usageMode content="0" />
+                            <visible content="1" />
+                            <Event type="KeyboardEvent">
+                                <modifier content="Shift" />
+                                <button content="s" />
+                            </Event>
+                            <Action type="TrackballAction">
+                                <action content="Step pan down" />
+                            </Action>
+                        </Property>
+                        <Property type="EventProperty" identifier="stepPanLeft" displayName="Step pan left" key="stepPanLeft">
+                            <usageMode content="0" />
+                            <visible content="1" />
+                            <Event type="KeyboardEvent">
+                                <modifier content="Shift" />
+                                <button content="a" />
+                            </Event>
+                            <Action type="TrackballAction">
+                                <action content="Step pan left" />
+                            </Action>
+                        </Property>
+                        <Property type="EventProperty" identifier="stepPanRight" displayName="Step pan right" key="stepPanRight">
+                            <usageMode content="0" />
+                            <visible content="1" />
+                            <Event type="KeyboardEvent">
+                                <modifier content="Shift" />
+                                <button content="d" />
+                            </Event>
+                            <Action type="TrackballAction">
+                                <action content="Step pan right" />
+                            </Action>
+                        </Property>
+                        <Property type="EventProperty" identifier="stepPanUp" displayName="Step pan up" key="stepPanUp">
+                            <usageMode content="0" />
+                            <visible content="1" />
+                            <Event type="KeyboardEvent">
+                                <modifier content="Shift" />
+                                <button content="w" />
+                            </Event>
+                            <Action type="TrackballAction">
+                                <action content="Step pan up" />
+                            </Action>
+                        </Property>
+                        <Property type="EventProperty" identifier="stepRotateDown" displayName="Step rotate down" key="stepRotateDown">
+                            <usageMode content="0" />
+                            <visible content="1" />
+                            <Event type="KeyboardEvent">
+                                <modifier content="" />
+                                <button content="s" />
+                            </Event>
+                            <Action type="TrackballAction">
+                                <action content="Step rotate down" />
+                            </Action>
+                        </Property>
+                        <Property type="EventProperty" identifier="stepRotateLeft" displayName="Step rotate left" key="stepRotateLeft">
+                            <usageMode content="0" />
+                            <visible content="1" />
+                            <Event type="KeyboardEvent">
+                                <modifier content="" />
+                                <button content="a" />
+                            </Event>
+                            <Action type="TrackballAction">
+                                <action content="Step rotate left" />
+                            </Action>
+                        </Property>
+                        <Property type="EventProperty" identifier="stepRotateRight" displayName="Step rotate right" key="stepRotateRight">
+                            <usageMode content="0" />
+                            <visible content="1" />
+                            <Event type="KeyboardEvent">
+                                <modifier content="" />
+                                <button content="d" />
+                            </Event>
+                            <Action type="TrackballAction">
+                                <action content="Step rotate right" />
+                            </Action>
+                        </Property>
+                        <Property type="EventProperty" identifier="stepRotateUp" displayName="Step rotate up" key="stepRotateUp">
+                            <usageMode content="0" />
+                            <visible content="1" />
+                            <Event type="KeyboardEvent">
+                                <modifier content="" />
+                                <button content="w" />
+                            </Event>
+                            <Action type="TrackballAction">
+                                <action content="Step rotate up" />
+                            </Action>
+                        </Property>
+                        <Property type="EventProperty" identifier="stepZoomIn" displayName="Step zoom in" key="stepZoomIn">
+                            <usageMode content="0" />
+                            <visible content="1" />
+                            <Event type="KeyboardEvent">
+                                <modifier content="" />
+                                <button content="r" />
+                            </Event>
+                            <Action type="TrackballAction">
+                                <action content="Step zoom in" />
+                            </Action>
+                        </Property>
+                        <Property type="EventProperty" identifier="stepZoomOut" displayName="Step zoom out" key="stepZoomOut">
+                            <usageMode content="0" />
+                            <visible content="1" />
+                            <Event type="KeyboardEvent">
+                                <modifier content="" />
+                                <button content="f" />
+                            </Event>
+                            <Action type="TrackballAction">
+                                <action content="Step zoom out" />
+                            </Action>
+                        </Property>
+                        <Property type="EventProperty" identifier="trackballPan" displayName="Pan" key="trackballPan">
+                            <usageMode content="0" />
+                            <visible content="1" />
+                            <Event type="MouseEvent">
+                                <modifier content="" />
+                                <button content="Middle mouse button" />
+                            </Event>
+                            <Action type="TrackballAction">
+                                <action content="Trackball pan" />
+                            </Action>
+                        </Property>
+                        <Property type="EventProperty" identifier="trackballRotate" displayName="Rotate" key="trackballRotate">
+                            <usageMode content="0" />
+                            <visible content="1" />
+                            <Event type="MouseEvent">
+                                <modifier content="" />
+                                <button content="Left mouse button" />
+                            </Event>
+                            <Action type="TrackballAction">
+                                <action content="Trackball rotate" />
+                            </Action>
+                        </Property>
+                        <Property type="EventProperty" identifier="trackballZoom" displayName="Zoom" key="trackballZoom">
+                            <usageMode content="0" />
+                            <visible content="1" />
+                            <Event type="MouseEvent">
+                                <modifier content="" />
+                                <button content="Right mouse button" />
+                            </Event>
+                            <Action type="TrackballAction">
+                                <action content="Trackball zoom" />
+                            </Action>
+                        </Property>
+                    </Properties>
+                </InteractionHandler>
+            </InteractonHandlers>
+            <Properties>
+                <Property type="CameraProperty" identifier="cameraProperty" displayName="Camera" key="cameraProperty">
+                    <usageMode content="0" />
+                    <visible content="1" />
+                    <lookFrom type="FloatVec3Property" identifier="lookFrom" displayName="Look from">
+                        <semantics semantics="Spherical" />
+                        <usageMode content="0" />
+                        <visible content="1" />
+                        <value x="-7.0679507" y="-11.928325" z="11.857626" />
+                    </lookFrom>
+                    <lookTo type="FloatVec3Property" identifier="lookTo" displayName="Look to">
+                        <usageMode content="0" />
+                        <visible content="1" />
+                    </lookTo>
+                    <lookUp type="FloatVec3Property" identifier="lookUp" displayName="Look up">
+                        <usageMode content="0" />
+                        <visible content="1" />
+                        <value x="-0.93101954" y="0.20177174" z="-0.28721276" />
+                    </lookUp>
+                    <fovy type="FloatProperty" identifier="fov" displayName="FOV">
+                        <usageMode content="0" />
+                        <visible content="1" />
+                        <value content="30" />
+                    </fovy>
+                    <aspectRatio type="FloatProperty" identifier="aspectRatio" displayName="Aspect Ratio">
+                        <minvalue content="0" />
+                        <maxvalue content="1" />
+                        <increment content="0.1" />
+                        <usageMode content="0" />
+                        <visible content="1" />
+                        <value content="1.1924051" />
+                    </aspectRatio>
+                    <nearPlane type="FloatProperty" identifier="near" displayName="Near Plane">
+                        <usageMode content="0" />
+                        <visible content="1" />
+                    </nearPlane>
+                    <farPlane type="FloatProperty" identifier="far" displayName="Far Plane">
+                        <usageMode content="0" />
+                        <visible content="1" />
+                        <value content="146.65421" />
+                    </farPlane>
+                </Property>
+                <Property type="IntMinMaxProperty" identifier="clipX" displayName="Clip X Slices" key="clipX">
+                    <usageMode content="0" />
+                    <visible content="1" />
+                    <value x="0" y="150" />
+                    <range x="0" y="150" />
+                </Property>
+                <Property type="IntMinMaxProperty" identifier="clipY" displayName="Clip Y Slices" key="clipY">
+                    <usageMode content="0" />
+                    <visible content="1" />
+                    <value x="0" y="150" />
+                    <range x="0" y="150" />
+                </Property>
+                <Property type="IntMinMaxProperty" identifier="clipZ" displayName="Clip Z Slices" key="clipZ">
+                    <usageMode content="0" />
+                    <visible content="1" />
+                    <value x="0" y="150" />
+                    <range x="0" y="150" />
+                </Property>
+                <Property type="BoolProperty" identifier="clippingEnabled" displayName="Enable Clipping" key="clippingEnabled">
+                    <usageMode content="0" />
+                    <visible content="1" />
+                </Property>
+                <Property type="FloatProperty" identifier="focalLength" displayName="Distance" key="focalLength">
+                    <usageMode content="0" />
+                    <visible content="1" />
+                    <value content="0.25170001" />
+                </Property>
+                <Property type="FloatProperty" identifier="focalRange" displayName="Range" key="focalRange">
+                    <usageMode content="0" />
+                    <visible content="1" />
+                    <value content="101.412" />
+                </Property>
+                <Property type="IntProperty" identifier="kernelSize" displayName="Kernel Size" key="kernelSize">
+                    <usageMode content="0" />
+                    <visible content="1" />
+                    <value content="5" />
+                </Property>
+                <Property type="IntProperty" identifier="numberOfSlices" displayName="Number of Slices" key="numberOfSlices">
+                    <usageMode content="0" />
+                    <visible content="1" />
+                    <value content="864" />
+                </Property>
+                <Property type="TransferFunctionProperty" identifier="transferFunction" displayName="Transfer function" key="transferFunction">
+                    <usageMode content="0" />
+                    <visible content="1" />
+                    <MetaDataList>
+                        <MetaData type="PropertyEditorWidgetMetaData">
+                            <position x="2158" y="604" />
+                            <dimension x="534" y="392" />
+                            <visibility content="1" />
+                            <dockstatus content="Floating" />
+                        </MetaData>
+                    </MetaDataList>
+                    <transferFunction>
+                        <maskMin content="0" />
+                        <maskMax content="1" />
+                        <dataPoints>
+                            <point>
+                                <pos x="0" y="0" />
+                                <rgba x="0" y="0" z="0" w="0" />
+                            </point>
+                            <point>
+                                <pos x="0.28" y="0" />
+                                <rgba x="0.028595407" y="0.23137255" z="0.0018158236" w="0" />
+                            </point>
+                            <point>
+                                <pos x="0.30000001" y="0.04149599" />
+                                <rgba x="0.1226215" y="0.99215686" z="0.0077821012" w="0.2" />
+                            </point>
+                            <point>
+                                <pos x="0.31999999" y="0" />
+                                <rgba x="0.033447776" y="0.27058825" z="0.002121004" w="0" />
+                            </point>
+                            <point>
+                                <pos x="0.38999999" y="0" />
+                                <rgba x="0.56470591" y="0" z="0" w="0" />
+                            </point>
+                            <point>
+                                <pos x="0.41999999" y="0.040000003" />
+                                <rgba x="0.99215686" y="0.0077821012" z="0.024185549" w="0.2" />
+                            </point>
+                            <point>
+                                <pos x="0.44" y="0" />
+                                <rgba x="0.33725491" y="0" z="0.0039215689" w="0" />
+                            </point>
+                            <point>
+                                <pos x="0.63" y="0" />
+                                <rgba x="0" y="0.27843139" z="0.49411765" w="0" />
+                            </point>
+                            <point>
+                                <pos x="0.66000003" y="0.073119581" />
+                                <rgba x="0" y="0.56078434" z="0.99215686" w="0.30000001" />
+                            </point>
+                        </dataPoints>
+                        <interpolationType_ content="0" />
+                    </transferFunction>
+                </Property>
+            </Properties>
+        </Processor>
+        <Processor type="CanvasGL" identifier="DepthOfField2" id="ref1">
+            <MetaDataList>
+                <MetaData type="ProcessorMetaData">
+                    <position x="-625" y="-525" />
+                    <visibility content="1" />
+                    <selection content="0" />
+                </MetaData>
+                <MetaData type="ProcessorWidgetMetaData">
+                    <position x="488" y="606" />
+                    <dimension x="471" y="395" />
+                    <visibility content="1" />
+                </MetaData>
+            </MetaDataList>
+            <Properties>
+                <Property type="FloatProperty" identifier="aspectRatioScaling" displayName="Aspect Ratio Scaling" key="aspectRatioScaling">
+                    <usageMode content="0" />
+                    <visible content="0" />
+                </Property>
+                <Property type="IntVec2Property" identifier="customInputDimensions" displayName="Input Image Dimensions" key="customInputDimensions">
+                    <usageMode content="0" />
+                    <visible content="0" />
+                    <readonly content="1" />
+                </Property>
+                <Property type="IntVec2Property" identifier="dimensions" displayName="Dimensions" key="dimensions">
+                    <usageMode content="0" />
+                    <visible content="1" />
+                    <value x="471" y="395" />
+                </Property>
+                <Property type="BoolProperty" identifier="enableCustomInputDimensions" displayName="Enable Custom Input Dimensions" key="enableCustomInputDimensions">
+                    <usageMode content="0" />
+                    <visible content="1" />
+                </Property>
+                <Property type="BoolProperty" identifier="keepAspectRatio" displayName="Keep Aspect Ratio" key="keepAspectRatio">
+                    <usageMode content="0" />
+                    <visible content="0" />
+                </Property>
+                <Property type="DirectoryProperty" identifier="layerDir" displayName="Output Directory" key="layerDir">
+                    <usageMode content="0" />
+                    <visible content="1" />
+                    <directory content="../../../../../../" />
+                </Property>
+                <Property type="ButtonProperty" identifier="saveLayer" displayName="Save Image Layer" key="saveLayer">
+                    <usageMode content="0" />
+                    <visible content="1" />
+                </Property>
+                <Property type="OptionPropertyInt" identifier="visibleLayer" displayName="Visible Layer" key="visibleLayer">
+                    <usageMode content="0" />
+                    <visible content="1" />
+                    <options>
+                        <option>
+                            <id content="color" />
+                            <name content="Color layer" />
+                            <value content="0" />
+                        </option>
+                        <option>
+                            <id content="depth" />
+                            <name content="Depth layer" />
+                            <value content="1" />
+                        </option>
+                        <option>
+                            <id content="picking" />
+                            <name content="Picking layer" />
+                            <value content="2" />
+                        </option>
+                    </options>
+                </Property>
+            </Properties>
+        </Processor>
+    </Processors>
+    <Connections>
+        <Connection>
+            <OutPort identifier="data">
+                <Processor type="VolumeSource" identifier="VolumeSource" reference="ref0" />
+            </OutPort>
+            <InPort identifier="volumePort">
+                <Processor type="DepthOfField" identifier="DepthOfField" reference="ref2" />
+            </InPort>
+        </Connection>
+        <Connection>
+            <OutPort identifier="outport">
+                <Processor type="DepthOfField" identifier="DepthOfField" reference="ref2" />
+            </OutPort>
+            <InPort identifier="inport">
+                <Processor type="CanvasGL" identifier="DepthOfField2" reference="ref1" />
+            </InPort>
+        </Connection>
+    </Connections>
+    <ProcessorLinks />
+</InviwoTreeData>
