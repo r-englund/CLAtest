@@ -1614,12 +1614,12 @@ bool NetworkEditor::loadNetwork(std::istream& stream, const std::string& path) {
 
 
     // Queue event to cache all the widgets since the creation can be slow.
-    //for (std::vector<Processor*>::iterator it = processors.begin(); it != processors.end(); ++it) {
-    //    QCoreApplication::postEvent(
-    //        PropertyListWidget::instance(),
-    //        new PropertyListEvent(PropertyListEvent::CACHE, (*it)->getIdentifier()),
-    //        Qt::LowEventPriority);
-    //}
+    for (std::vector<Processor*>::iterator it = processors.begin(); it != processors.end(); ++it) {
+        QCoreApplication::postEvent(
+            PropertyListWidget::instance(),
+            new PropertyListEvent(PropertyListEvent::CACHE, (*it)->getIdentifier()),
+            Qt::LowEventPriority);
+    }
 
     setModified(false);
     filename_ = path;
