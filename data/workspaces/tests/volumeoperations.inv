@@ -1,0 +1,1310 @@
+<?xml version="1.0" ?>
+<InviwoTreeData version="1.0">
+    <!-- Don't edit the following code -->
+    <Processors>
+        <Processor type="VolumeSource" identifier="VolumeSource" id="ref11">
+            <MetaDataList>
+                <MetaData type="ProcessorMetaData">
+                    <position x="-750" y="-850" />
+                    <visibility content="1" />
+                    <selection content="0" />
+                </MetaData>
+            </MetaDataList>
+            <Properties>
+                <Property type="FloatVec3Property" identifier="angles" displayName="Angles" key="angles">
+                    <visibilityMode content="0" />
+                </Property>
+                <Property type="DoubleMinMaxProperty" identifier="dataRange" displayName="Data range" key="dataRange">
+                    <semantics semantics="Text" />
+                    <visibilityMode content="0" />
+                </Property>
+                <Property type="StringProperty" identifier="dimensions" displayName="Dimensions" key="dimensions">
+                    <visibilityMode content="0" />
+                </Property>
+                <Property type="FileProperty" identifier="filename" displayName="Volume file" key="filename">
+                    <visibilityMode content="0" />
+                    <url content="../../volumes/boron.dat" />
+                    <nameFilter>
+                        <filter content="All Files (*.*)" />
+                        <filter content="Inviwo dat file format (*.dat)" />
+                        <filter content="Inviwo ivf file format (*.ivf)" />
+                        <filter content="Raw binary file (*.raw)" />
+                    </nameFilter>
+                    <acceptMode content="0" />
+                    <fileMode content="0" />
+                </Property>
+                <Property type="StringProperty" identifier="format" displayName="Format" key="format">
+                    <visibilityMode content="0" />
+                </Property>
+                <Property type="FloatVec3Property" identifier="length" displayName="Lengths" key="length">
+                    <visibilityMode content="0" />
+                </Property>
+                <Property type="FloatVec3Property" identifier="offset" displayName="Offset" key="offset">
+                    <visibilityMode content="0" />
+                </Property>
+                <Property type="BoolProperty" identifier="override" displayName="Override" key="override">
+                    <visibilityMode content="0" />
+                </Property>
+                <Property type="DoubleMinMaxProperty" identifier="valueRange" displayName="Value range" key="valueRange">
+                    <semantics semantics="Text" />
+                    <visibilityMode content="0" />
+                </Property>
+                <Property type="StringProperty" identifier="valueUnit" displayName="Value unit" key="valueUnit">
+                    <visibilityMode content="0" />
+                </Property>
+            </Properties>
+        </Processor>
+        <Processor type="VolumeBlur" identifier="VolumeBlur" id="ref0">
+            <MetaDataList>
+                <MetaData type="ProcessorMetaData">
+                    <position x="-525" y="-775" />
+                    <visibility content="1" />
+                    <selection content="0" />
+                </MetaData>
+            </MetaDataList>
+            <Properties>
+                <Property type="OptionPropertyInt" identifier="blurPlatform" displayName="Platform" key="blurPlatform">
+                    <visibilityMode content="0" />
+                    <options>
+                        <option>
+                            <id content="ram" />
+                            <name content="RAM" />
+                            <value content="0" />
+                        </option>
+                        <option>
+                            <id content="gl" />
+                            <name content="OpenGL" />
+                            <value content="1" />
+                        </option>
+                    </options>
+                    <selectedIdentifier content="gl" />
+                </Property>
+                <Property type="IntProperty" identifier="kernelSize" displayName="Kernel size" key="kernelSize">
+                    <visibilityMode content="0" />
+                </Property>
+            </Properties>
+        </Processor>
+        <Processor type="VolumeSliceGL" identifier="VolumeSliceGL" id="ref26">
+            <MetaDataList>
+                <MetaData type="ProcessorMetaData">
+                    <position x="-525" y="-525" />
+                    <visibility content="1" />
+                    <selection content="0" />
+                </MetaData>
+            </MetaDataList>
+            <InteractonHandlers>
+                <InteractionHandler type="undefined" />
+            </InteractonHandlers>
+            <Properties>
+                <Property type="BoolProperty" identifier="flipHorizontal" displayName="Flip Horizontal View" key="flipHorizontal" id="ref29">
+                    <visibilityMode content="0" />
+                </Property>
+                <Property type="BoolProperty" identifier="flipVertical" displayName="Flip Vertical View" key="flipVertical" id="ref30">
+                    <visibilityMode content="0" />
+                </Property>
+                <Property type="OptionPropertyFloat" identifier="rotation" displayName="Rotation around axis (degrees)" key="rotation" id="ref28">
+                    <visibilityMode content="0" />
+                </Property>
+                <Property type="OptionPropertyInt" identifier="sliceAxis" displayName="Slice along axis" key="sliceAxis" id="ref27">
+                    <visibilityMode content="0" />
+                </Property>
+                <Property type="IntProperty" identifier="sliceNumber" displayName="Slice Number" key="sliceNumber" id="ref31">
+                    <maxvalue content="150" />
+                    <visibilityMode content="0" />
+                    <value content="98" />
+                </Property>
+                <Property type="BoolProperty" identifier="tfMappingEnabled" displayName="Enable Transfer Function" key="tfMappingEnabled" id="ref32">
+                    <visibilityMode content="0" />
+                </Property>
+                <Property type="TransferFunctionProperty" identifier="transferFunction" displayName="Transfer function" key="transferFunction" id="ref33">
+                    <visibilityMode content="0" />
+                    <MetaDataList>
+                        <MetaData type="PropertyEditorWidgetMetaData">
+                            <position x="2026" y="588" />
+                            <dimension x="534" y="554" />
+                            <visibility content="0" />
+                            <dockstatus content="DockedRight" />
+                        </MetaData>
+                    </MetaDataList>
+                    <transferFunction>
+                        <maskMin content="0" />
+                        <maskMax content="1" />
+                        <dataPoints>
+                            <point>
+                                <pos x="0" y="0" />
+                                <rgba x="0" y="0" z="0" w="0" />
+                            </point>
+                            <point>
+                                <pos x="0.28" y="0" />
+                                <rgba x="0.028595407" y="0.23137255" z="0.0018158236" w="0" />
+                            </point>
+                            <point>
+                                <pos x="0.30000001" y="0.04149599" />
+                                <rgba x="0.1226215" y="0.99215686" z="0.0077821012" w="0.2" />
+                            </point>
+                            <point>
+                                <pos x="0.31999999" y="0" />
+                                <rgba x="0.033447776" y="0.27058825" z="0.002121004" w="0" />
+                            </point>
+                            <point>
+                                <pos x="0.38999999" y="0" />
+                                <rgba x="0.56470591" y="0" z="0" w="0" />
+                            </point>
+                            <point>
+                                <pos x="0.41999999" y="0.040000003" />
+                                <rgba x="0.99215686" y="0.0077821012" z="0.024185549" w="0.2" />
+                            </point>
+                            <point>
+                                <pos x="0.44" y="0" />
+                                <rgba x="0.33725491" y="0" z="0.0039215689" w="0" />
+                            </point>
+                            <point>
+                                <pos x="0.63" y="0" />
+                                <rgba x="0" y="0.27843139" z="0.49411765" w="0" />
+                            </point>
+                            <point>
+                                <pos x="0.66000003" y="0.073119581" />
+                                <rgba x="0" y="0.56078434" z="0.99215686" w="0.30000001" />
+                            </point>
+                        </dataPoints>
+                        <interpolationType_ content="0" />
+                    </transferFunction>
+                </Property>
+            </Properties>
+        </Processor>
+        <Processor type="CanvasGL" identifier="Blurred" id="ref34">
+            <MetaDataList>
+                <MetaData type="ProcessorMetaData">
+                    <position x="-525" y="-450" />
+                    <visibility content="1" />
+                    <selection content="0" />
+                </MetaData>
+                <MetaData type="ProcessorWidgetMetaData">
+                    <position x="1468" y="806" />
+                    <dimension x="308" y="313" />
+                    <visibility content="1" />
+                </MetaData>
+            </MetaDataList>
+            <Properties>
+                <Property type="FloatProperty" identifier="aspectRatioScaling" displayName="Aspect Ratio Scaling" key="aspectRatioScaling">
+                    <visibilityMode content="2" />
+                </Property>
+                <Property type="IntVec2Property" identifier="customInputDimensions" displayName="Input Image Dimensions" key="customInputDimensions">
+                    <visibilityMode content="2" />
+                    <readonly content="1" />
+                </Property>
+                <Property type="IntVec2Property" identifier="dimensions" displayName="Dimensions" key="dimensions" id="ref35">
+                    <visibilityMode content="0" />
+                    <value x="308" y="313" />
+                </Property>
+                <Property type="BoolProperty" identifier="enableCustomInputDimensions" displayName="Enable Custom Input Dimensions" key="enableCustomInputDimensions">
+                    <visibilityMode content="0" />
+                </Property>
+                <Property type="BoolProperty" identifier="keepAspectRatio" displayName="Keep Aspect Ratio" key="keepAspectRatio">
+                    <visibilityMode content="2" />
+                </Property>
+                <Property type="DirectoryProperty" identifier="layerDir" displayName="Output Directory" key="layerDir">
+                    <visibilityMode content="0" />
+                    <directory content="../../../../../" />
+                </Property>
+                <Property type="ButtonProperty" identifier="saveLayer" displayName="Save Image Layer" key="saveLayer">
+                    <visibilityMode content="0" />
+                </Property>
+                <Property type="OptionPropertyInt" identifier="visibleLayer" displayName="Visible Layer" key="visibleLayer">
+                    <visibilityMode content="0" />
+                    <options>
+                        <option>
+                            <id content="color" />
+                            <name content="Color layer" />
+                            <value content="0" />
+                        </option>
+                        <option>
+                            <id content="depth" />
+                            <name content="Depth layer" />
+                            <value content="1" />
+                        </option>
+                        <option>
+                            <id content="picking" />
+                            <name content="Picking layer" />
+                            <value content="2" />
+                        </option>
+                    </options>
+                </Property>
+            </Properties>
+        </Processor>
+        <Processor type="VolumeSliceGL" identifier="VolumeSliceGL2" id="ref3">
+            <MetaDataList>
+                <MetaData type="ProcessorMetaData">
+                    <position x="-750" y="-525" />
+                    <visibility content="1" />
+                    <selection content="0" />
+                </MetaData>
+            </MetaDataList>
+            <InteractonHandlers>
+                <InteractionHandler type="undefined" />
+            </InteractonHandlers>
+            <Properties>
+                <Property type="BoolProperty" identifier="flipHorizontal" displayName="Flip Horizontal View" key="flipHorizontal" id="ref6">
+                    <visibilityMode content="0" />
+                </Property>
+                <Property type="BoolProperty" identifier="flipVertical" displayName="Flip Vertical View" key="flipVertical" id="ref7">
+                    <visibilityMode content="0" />
+                </Property>
+                <Property type="OptionPropertyFloat" identifier="rotation" displayName="Rotation around axis (degrees)" key="rotation" id="ref5">
+                    <visibilityMode content="0" />
+                </Property>
+                <Property type="OptionPropertyInt" identifier="sliceAxis" displayName="Slice along axis" key="sliceAxis" id="ref4">
+                    <visibilityMode content="0" />
+                </Property>
+                <Property type="IntProperty" identifier="sliceNumber" displayName="Slice Number" key="sliceNumber" id="ref8">
+                    <maxvalue content="150" />
+                    <visibilityMode content="0" />
+                    <value content="98" />
+                </Property>
+                <Property type="BoolProperty" identifier="tfMappingEnabled" displayName="Enable Transfer Function" key="tfMappingEnabled" id="ref9">
+                    <visibilityMode content="0" />
+                </Property>
+                <Property type="TransferFunctionProperty" identifier="transferFunction" displayName="Transfer function" key="transferFunction" id="ref10">
+                    <visibilityMode content="0" />
+                    <MetaDataList>
+                        <MetaData type="PropertyEditorWidgetMetaData">
+                            <position x="0" y="0" />
+                            <dimension x="256" y="256" />
+                            <visibility content="0" />
+                            <dockstatus content="DockedRight" />
+                        </MetaData>
+                    </MetaDataList>
+                    <transferFunction>
+                        <maskMin content="0" />
+                        <maskMax content="1" />
+                        <dataPoints>
+                            <point>
+                                <pos x="0" y="0" />
+                                <rgba x="0" y="0" z="0" w="0" />
+                            </point>
+                            <point>
+                                <pos x="0.28" y="0" />
+                                <rgba x="0.028595407" y="0.23137255" z="0.0018158236" w="0" />
+                            </point>
+                            <point>
+                                <pos x="0.30000001" y="0.04149599" />
+                                <rgba x="0.1226215" y="0.99215686" z="0.0077821012" w="0.2" />
+                            </point>
+                            <point>
+                                <pos x="0.31999999" y="0" />
+                                <rgba x="0.033447776" y="0.27058825" z="0.002121004" w="0" />
+                            </point>
+                            <point>
+                                <pos x="0.38999999" y="0" />
+                                <rgba x="0.56470591" y="0" z="0" w="0" />
+                            </point>
+                            <point>
+                                <pos x="0.41999999" y="0.040000003" />
+                                <rgba x="0.99215686" y="0.0077821012" z="0.024185549" w="0.2" />
+                            </point>
+                            <point>
+                                <pos x="0.44" y="0" />
+                                <rgba x="0.33725491" y="0" z="0.0039215689" w="0" />
+                            </point>
+                            <point>
+                                <pos x="0.63" y="0" />
+                                <rgba x="0" y="0.27843139" z="0.49411765" w="0" />
+                            </point>
+                            <point>
+                                <pos x="0.66000003" y="0.073119581" />
+                                <rgba x="0" y="0.56078434" z="0.99215686" w="0.30000001" />
+                            </point>
+                        </dataPoints>
+                        <interpolationType_ content="0" />
+                    </transferFunction>
+                </Property>
+            </Properties>
+        </Processor>
+        <Processor type="CanvasGL" identifier="CanvasGL" id="ref1">
+            <MetaDataList>
+                <MetaData type="ProcessorMetaData">
+                    <position x="-750" y="-450" />
+                    <visibility content="1" />
+                    <selection content="0" />
+                </MetaData>
+                <MetaData type="ProcessorWidgetMetaData">
+                    <position x="1961" y="767" />
+                    <dimension x="308" y="313" />
+                    <visibility content="1" />
+                </MetaData>
+            </MetaDataList>
+            <Properties>
+                <Property type="FloatProperty" identifier="aspectRatioScaling" displayName="Aspect Ratio Scaling" key="aspectRatioScaling">
+                    <visibilityMode content="2" />
+                </Property>
+                <Property type="IntVec2Property" identifier="customInputDimensions" displayName="Input Image Dimensions" key="customInputDimensions">
+                    <visibilityMode content="2" />
+                    <readonly content="1" />
+                </Property>
+                <Property type="IntVec2Property" identifier="dimensions" displayName="Dimensions" key="dimensions" id="ref2">
+                    <visibilityMode content="0" />
+                    <value x="308" y="313" />
+                </Property>
+                <Property type="BoolProperty" identifier="enableCustomInputDimensions" displayName="Enable Custom Input Dimensions" key="enableCustomInputDimensions">
+                    <visibilityMode content="0" />
+                </Property>
+                <Property type="BoolProperty" identifier="keepAspectRatio" displayName="Keep Aspect Ratio" key="keepAspectRatio">
+                    <visibilityMode content="2" />
+                </Property>
+                <Property type="DirectoryProperty" identifier="layerDir" displayName="Output Directory" key="layerDir">
+                    <visibilityMode content="0" />
+                    <directory content="../../../../../" />
+                </Property>
+                <Property type="ButtonProperty" identifier="saveLayer" displayName="Save Image Layer" key="saveLayer">
+                    <visibilityMode content="0" />
+                </Property>
+                <Property type="OptionPropertyInt" identifier="visibleLayer" displayName="Visible Layer" key="visibleLayer">
+                    <visibilityMode content="0" />
+                    <options>
+                        <option>
+                            <id content="color" />
+                            <name content="Color layer" />
+                            <value content="0" />
+                        </option>
+                        <option>
+                            <id content="depth" />
+                            <name content="Depth layer" />
+                            <value content="1" />
+                        </option>
+                        <option>
+                            <id content="picking" />
+                            <name content="Picking layer" />
+                            <value content="2" />
+                        </option>
+                    </options>
+                </Property>
+            </Properties>
+        </Processor>
+        <Processor type="VolumeDiff" identifier="VolumeDiff" id="ref25">
+            <MetaDataList>
+                <MetaData type="ProcessorMetaData">
+                    <position x="-350" y="-600" />
+                    <visibility content="1" />
+                    <selection content="1" />
+                </MetaData>
+            </MetaDataList>
+            <Properties />
+        </Processor>
+        <Processor type="VolumeSliceGL" identifier="VolumeSliceGL3" id="ref36">
+            <MetaDataList>
+                <MetaData type="ProcessorMetaData">
+                    <position x="-350" y="-525" />
+                    <visibility content="1" />
+                    <selection content="0" />
+                </MetaData>
+            </MetaDataList>
+            <InteractonHandlers>
+                <InteractionHandler type="undefined" />
+            </InteractonHandlers>
+            <Properties>
+                <Property type="BoolProperty" identifier="flipHorizontal" displayName="Flip Horizontal View" key="flipHorizontal" id="ref39">
+                    <visibilityMode content="0" />
+                </Property>
+                <Property type="BoolProperty" identifier="flipVertical" displayName="Flip Vertical View" key="flipVertical" id="ref40">
+                    <visibilityMode content="0" />
+                </Property>
+                <Property type="OptionPropertyFloat" identifier="rotation" displayName="Rotation around axis (degrees)" key="rotation" id="ref38">
+                    <visibilityMode content="0" />
+                </Property>
+                <Property type="OptionPropertyInt" identifier="sliceAxis" displayName="Slice along axis" key="sliceAxis" id="ref37">
+                    <visibilityMode content="0" />
+                </Property>
+                <Property type="IntProperty" identifier="sliceNumber" displayName="Slice Number" key="sliceNumber" id="ref41">
+                    <maxvalue content="150" />
+                    <visibilityMode content="0" />
+                    <value content="98" />
+                </Property>
+                <Property type="BoolProperty" identifier="tfMappingEnabled" displayName="Enable Transfer Function" key="tfMappingEnabled" id="ref42">
+                    <visibilityMode content="0" />
+                </Property>
+                <Property type="TransferFunctionProperty" identifier="transferFunction" displayName="Transfer function" key="transferFunction">
+                    <visibilityMode content="0" />
+                    <MetaDataList>
+                        <MetaData type="PropertyEditorWidgetMetaData">
+                            <position x="960" y="618" />
+                            <dimension x="534" y="368" />
+                            <visibility content="0" />
+                            <dockstatus content="DockedRight" />
+                        </MetaData>
+                    </MetaDataList>
+                    <transferFunction>
+                        <maskMin content="0" />
+                        <maskMax content="1" />
+                        <dataPoints>
+                            <point>
+                                <pos x="0" y="1" />
+                                <rgba x="0" y="0" z="0" w="1" />
+                            </point>
+                            <point>
+                                <pos x="1" y="1" />
+                                <rgba x="1" y="1" z="1" w="1" />
+                            </point>
+                        </dataPoints>
+                        <interpolationType_ content="0" />
+                    </transferFunction>
+                </Property>
+            </Properties>
+        </Processor>
+        <Processor type="CanvasGL" identifier="CanvasGL2" id="ref14">
+            <MetaDataList>
+                <MetaData type="ProcessorMetaData">
+                    <position x="-350" y="-450" />
+                    <visibility content="1" />
+                    <selection content="0" />
+                </MetaData>
+                <MetaData type="ProcessorWidgetMetaData">
+                    <position x="1985" y="400" />
+                    <dimension x="308" y="313" />
+                    <visibility content="1" />
+                </MetaData>
+            </MetaDataList>
+            <Properties>
+                <Property type="FloatProperty" identifier="aspectRatioScaling" displayName="Aspect Ratio Scaling" key="aspectRatioScaling">
+                    <visibilityMode content="2" />
+                </Property>
+                <Property type="IntVec2Property" identifier="customInputDimensions" displayName="Input Image Dimensions" key="customInputDimensions">
+                    <visibilityMode content="2" />
+                    <readonly content="1" />
+                </Property>
+                <Property type="IntVec2Property" identifier="dimensions" displayName="Dimensions" key="dimensions" id="ref15">
+                    <visibilityMode content="0" />
+                    <value x="308" y="313" />
+                </Property>
+                <Property type="BoolProperty" identifier="enableCustomInputDimensions" displayName="Enable Custom Input Dimensions" key="enableCustomInputDimensions">
+                    <visibilityMode content="0" />
+                </Property>
+                <Property type="BoolProperty" identifier="keepAspectRatio" displayName="Keep Aspect Ratio" key="keepAspectRatio">
+                    <visibilityMode content="2" />
+                </Property>
+                <Property type="DirectoryProperty" identifier="layerDir" displayName="Output Directory" key="layerDir">
+                    <visibilityMode content="0" />
+                    <directory content="../../../../../" />
+                </Property>
+                <Property type="ButtonProperty" identifier="saveLayer" displayName="Save Image Layer" key="saveLayer">
+                    <visibilityMode content="0" />
+                </Property>
+                <Property type="OptionPropertyInt" identifier="visibleLayer" displayName="Visible Layer" key="visibleLayer">
+                    <visibilityMode content="0" />
+                    <options>
+                        <option>
+                            <id content="color" />
+                            <name content="Color layer" />
+                            <value content="0" />
+                        </option>
+                        <option>
+                            <id content="depth" />
+                            <name content="Depth layer" />
+                            <value content="1" />
+                        </option>
+                        <option>
+                            <id content="picking" />
+                            <name content="Picking layer" />
+                            <value content="2" />
+                        </option>
+                    </options>
+                </Property>
+            </Properties>
+        </Processor>
+        <Processor type="VolumeMapping" identifier="VolumeMapping" id="ref12">
+            <MetaDataList>
+                <MetaData type="ProcessorMetaData">
+                    <position x="-925" y="-775" />
+                    <visibility content="1" />
+                    <selection content="0" />
+                </MetaData>
+            </MetaDataList>
+            <Properties>
+                <Property type="TransferFunctionProperty" identifier="transferFunction" displayName="Transfer function" key="transferFunction" id="ref13">
+                    <visibilityMode content="0" />
+                    <MetaDataList>
+                        <MetaData type="PropertyEditorWidgetMetaData">
+                            <position x="0" y="0" />
+                            <dimension x="256" y="256" />
+                            <visibility content="0" />
+                            <dockstatus content="DockedRight" />
+                        </MetaData>
+                    </MetaDataList>
+                    <transferFunction>
+                        <maskMin content="0" />
+                        <maskMax content="1" />
+                        <dataPoints>
+                            <point>
+                                <pos x="0" y="0" />
+                                <rgba x="0" y="0" z="0" w="0" />
+                            </point>
+                            <point>
+                                <pos x="0.28" y="0" />
+                                <rgba x="0.028595407" y="0.23137255" z="0.0018158236" w="0" />
+                            </point>
+                            <point>
+                                <pos x="0.30000001" y="0.04149599" />
+                                <rgba x="0.1226215" y="0.99215686" z="0.0077821012" w="0.2" />
+                            </point>
+                            <point>
+                                <pos x="0.31999999" y="0" />
+                                <rgba x="0.033447776" y="0.27058825" z="0.002121004" w="0" />
+                            </point>
+                            <point>
+                                <pos x="0.38999999" y="0" />
+                                <rgba x="0.56470591" y="0" z="0" w="0" />
+                            </point>
+                            <point>
+                                <pos x="0.41999999" y="0.040000003" />
+                                <rgba x="0.99215686" y="0.0077821012" z="0.024185549" w="0.2" />
+                            </point>
+                            <point>
+                                <pos x="0.44" y="0" />
+                                <rgba x="0.33725491" y="0" z="0.0039215689" w="0" />
+                            </point>
+                            <point>
+                                <pos x="0.63" y="0" />
+                                <rgba x="0" y="0.27843139" z="0.49411765" w="0" />
+                            </point>
+                            <point>
+                                <pos x="0.66000003" y="0.073119581" />
+                                <rgba x="0" y="0.56078434" z="0.99215686" w="0.30000001" />
+                            </point>
+                        </dataPoints>
+                        <interpolationType_ content="0" />
+                    </transferFunction>
+                </Property>
+            </Properties>
+        </Processor>
+        <Processor type="VolumeSliceGL" identifier="VolumeSliceGL4" id="ref18">
+            <MetaDataList>
+                <MetaData type="ProcessorMetaData">
+                    <position x="-925" y="-525" />
+                    <visibility content="1" />
+                    <selection content="0" />
+                </MetaData>
+            </MetaDataList>
+            <InteractonHandlers>
+                <InteractionHandler type="undefined" />
+            </InteractonHandlers>
+            <Properties>
+                <Property type="BoolProperty" identifier="flipHorizontal" displayName="Flip Horizontal View" key="flipHorizontal" id="ref21">
+                    <visibilityMode content="0" />
+                </Property>
+                <Property type="BoolProperty" identifier="flipVertical" displayName="Flip Vertical View" key="flipVertical" id="ref22">
+                    <visibilityMode content="0" />
+                </Property>
+                <Property type="OptionPropertyFloat" identifier="rotation" displayName="Rotation around axis (degrees)" key="rotation" id="ref20">
+                    <visibilityMode content="0" />
+                </Property>
+                <Property type="OptionPropertyInt" identifier="sliceAxis" displayName="Slice along axis" key="sliceAxis" id="ref19">
+                    <visibilityMode content="0" />
+                </Property>
+                <Property type="IntProperty" identifier="sliceNumber" displayName="Slice Number" key="sliceNumber" id="ref23">
+                    <maxvalue content="150" />
+                    <visibilityMode content="0" />
+                    <value content="98" />
+                </Property>
+                <Property type="BoolProperty" identifier="tfMappingEnabled" displayName="Enable Transfer Function" key="tfMappingEnabled" id="ref24">
+                    <visibilityMode content="0" />
+                </Property>
+                <Property type="TransferFunctionProperty" identifier="transferFunction" displayName="Transfer function" key="transferFunction">
+                    <visibilityMode content="0" />
+                    <MetaDataList>
+                        <MetaData type="PropertyEditorWidgetMetaData">
+                            <position x="2362" y="652" />
+                            <dimension x="534" y="368" />
+                            <visibility content="1" />
+                            <dockstatus content="Floating" />
+                        </MetaData>
+                    </MetaDataList>
+                    <showHistogram_ content="2" />
+                    <transferFunction>
+                        <maskMin content="0" />
+                        <maskMax content="1" />
+                        <dataPoints>
+                            <point>
+                                <pos x="0" y="0" />
+                                <rgba x="0" y="0" z="0" w="0" />
+                            </point>
+                            <point>
+                                <pos x="0.0087068258" y="0.45833334" />
+                                <rgba x="0.039215688" y="0.99215686" z="0.0039215689" w="0.45833334" />
+                            </point>
+                            <point>
+                                <pos x="0.073911652" y="0.82575756" />
+                                <rgba x="0.96862745" y="0.023529412" z="0.050980393" w="0.82575756" />
+                            </point>
+                            <point>
+                                <pos x="0.16867469" y="0.8598485" />
+                                <rgba x="0.99215686" y="0.58199435" z="0.0077821012" w="0.8598485" />
+                            </point>
+                        </dataPoints>
+                        <interpolationType_ content="0" />
+                    </transferFunction>
+                </Property>
+            </Properties>
+        </Processor>
+        <Processor type="CanvasGL" identifier="image.outport" id="ref16">
+            <MetaDataList>
+                <MetaData type="ProcessorMetaData">
+                    <position x="-925" y="-450" />
+                    <visibility content="1" />
+                    <selection content="0" />
+                </MetaData>
+                <MetaData type="ProcessorWidgetMetaData">
+                    <position x="1461" y="386" />
+                    <dimension x="308" y="313" />
+                    <visibility content="1" />
+                </MetaData>
+            </MetaDataList>
+            <Properties>
+                <Property type="FloatProperty" identifier="aspectRatioScaling" displayName="Aspect Ratio Scaling" key="aspectRatioScaling">
+                    <visibilityMode content="2" />
+                </Property>
+                <Property type="IntVec2Property" identifier="customInputDimensions" displayName="Input Image Dimensions" key="customInputDimensions">
+                    <visibilityMode content="2" />
+                    <readonly content="1" />
+                </Property>
+                <Property type="IntVec2Property" identifier="dimensions" displayName="Dimensions" key="dimensions" id="ref17">
+                    <visibilityMode content="0" />
+                    <value x="308" y="313" />
+                </Property>
+                <Property type="BoolProperty" identifier="enableCustomInputDimensions" displayName="Enable Custom Input Dimensions" key="enableCustomInputDimensions">
+                    <visibilityMode content="0" />
+                </Property>
+                <Property type="BoolProperty" identifier="keepAspectRatio" displayName="Keep Aspect Ratio" key="keepAspectRatio">
+                    <visibilityMode content="2" />
+                </Property>
+                <Property type="DirectoryProperty" identifier="layerDir" displayName="Output Directory" key="layerDir">
+                    <visibilityMode content="0" />
+                    <directory content="../../../../../" />
+                </Property>
+                <Property type="ButtonProperty" identifier="saveLayer" displayName="Save Image Layer" key="saveLayer">
+                    <visibilityMode content="0" />
+                </Property>
+                <Property type="OptionPropertyInt" identifier="visibleLayer" displayName="Visible Layer" key="visibleLayer">
+                    <visibilityMode content="0" />
+                    <options>
+                        <option>
+                            <id content="color" />
+                            <name content="Color layer" />
+                            <value content="0" />
+                        </option>
+                        <option>
+                            <id content="depth" />
+                            <name content="Depth layer" />
+                            <value content="1" />
+                        </option>
+                        <option>
+                            <id content="picking" />
+                            <name content="Picking layer" />
+                            <value content="2" />
+                        </option>
+                    </options>
+                </Property>
+            </Properties>
+        </Processor>
+    </Processors>
+    <Connections>
+        <Connection>
+            <OutPort identifier="data">
+                <Processor type="VolumeSource" identifier="VolumeSource" reference="ref11" />
+            </OutPort>
+            <InPort identifier="volume_blur.fraginport">
+                <Processor type="VolumeBlur" identifier="VolumeBlur" reference="ref0" />
+            </InPort>
+        </Connection>
+        <Connection>
+            <OutPort identifier="image.outport">
+                <Processor type="VolumeSliceGL" identifier="VolumeSliceGL" reference="ref26" />
+            </OutPort>
+            <InPort identifier="inport">
+                <Processor type="CanvasGL" identifier="Blurred" reference="ref34" />
+            </InPort>
+        </Connection>
+        <Connection>
+            <OutPort identifier="volume_blur.fragoutport">
+                <Processor type="VolumeBlur" identifier="VolumeBlur" reference="ref0" />
+            </OutPort>
+            <InPort identifier="volume.inport">
+                <Processor type="VolumeSliceGL" identifier="VolumeSliceGL" reference="ref26" />
+            </InPort>
+        </Connection>
+        <Connection>
+            <OutPort identifier="data">
+                <Processor type="VolumeSource" identifier="VolumeSource" reference="ref11" />
+            </OutPort>
+            <InPort identifier="volume.inport">
+                <Processor type="VolumeSliceGL" identifier="VolumeSliceGL2" reference="ref3" />
+            </InPort>
+        </Connection>
+        <Connection>
+            <OutPort identifier="image.outport">
+                <Processor type="VolumeSliceGL" identifier="VolumeSliceGL2" reference="ref3" />
+            </OutPort>
+            <InPort identifier="inport">
+                <Processor type="CanvasGL" identifier="CanvasGL" reference="ref1" />
+            </InPort>
+        </Connection>
+        <Connection>
+            <OutPort identifier="data">
+                <Processor type="VolumeSource" identifier="VolumeSource" reference="ref11" />
+            </OutPort>
+            <InPort identifier="volume_difference.fraginport">
+                <Processor type="VolumeDiff" identifier="VolumeDiff" reference="ref25" />
+            </InPort>
+        </Connection>
+        <Connection>
+            <OutPort identifier="volume_blur.fragoutport">
+                <Processor type="VolumeBlur" identifier="VolumeBlur" reference="ref0" />
+            </OutPort>
+            <InPort identifier="vol2">
+                <Processor type="VolumeDiff" identifier="VolumeDiff" reference="ref25" />
+            </InPort>
+        </Connection>
+        <Connection>
+            <OutPort identifier="volume_difference.fragoutport">
+                <Processor type="VolumeDiff" identifier="VolumeDiff" reference="ref25" />
+            </OutPort>
+            <InPort identifier="volume.inport">
+                <Processor type="VolumeSliceGL" identifier="VolumeSliceGL3" reference="ref36" />
+            </InPort>
+        </Connection>
+        <Connection>
+            <OutPort identifier="image.outport">
+                <Processor type="VolumeSliceGL" identifier="VolumeSliceGL3" reference="ref36" />
+            </OutPort>
+            <InPort identifier="inport">
+                <Processor type="CanvasGL" identifier="CanvasGL2" reference="ref14" />
+            </InPort>
+        </Connection>
+        <Connection>
+            <OutPort identifier="data">
+                <Processor type="VolumeSource" identifier="VolumeSource" reference="ref11" />
+            </OutPort>
+            <InPort identifier="volume_mapping.fraginport">
+                <Processor type="VolumeMapping" identifier="VolumeMapping" reference="ref12" />
+            </InPort>
+        </Connection>
+        <Connection>
+            <OutPort identifier="volume_mapping.fragoutport">
+                <Processor type="VolumeMapping" identifier="VolumeMapping" reference="ref12" />
+            </OutPort>
+            <InPort identifier="volume.inport">
+                <Processor type="VolumeSliceGL" identifier="VolumeSliceGL4" reference="ref18" />
+            </InPort>
+        </Connection>
+        <Connection>
+            <OutPort identifier="image.outport">
+                <Processor type="VolumeSliceGL" identifier="VolumeSliceGL4" reference="ref18" />
+            </OutPort>
+            <InPort identifier="inport">
+                <Processor type="CanvasGL" identifier="image.outport" reference="ref16" />
+            </InPort>
+        </Connection>
+    </Connections>
+    <ProcessorLinks>
+        <ProcessorLink>
+            <Processor type="CanvasGL" identifier="CanvasGL" reference="ref1" />
+            <Processor type="CanvasGL" identifier="Blurred" reference="ref34" />
+            <PropertyLinks>
+                <PropertyLink>
+                    <Properties>
+                        <Property type="IntVec2Property" identifier="dimensions" displayName="Dimensions" key="dimensions" reference="ref2" />
+                        <Property type="IntVec2Property" identifier="dimensions" displayName="Dimensions" key="dimensions" reference="ref35" />
+                    </Properties>
+                    <PropertyOwners>
+                        <Processor type="CanvasGL" identifier="CanvasGL" reference="ref1" />
+                        <Processor type="CanvasGL" identifier="Blurred" reference="ref34" />
+                    </PropertyOwners>
+                </PropertyLink>
+                <PropertyLink>
+                    <Properties>
+                        <Property type="IntVec2Property" identifier="dimensions" displayName="Dimensions" key="dimensions" reference="ref35" />
+                        <Property type="IntVec2Property" identifier="dimensions" displayName="Dimensions" key="dimensions" reference="ref2" />
+                    </Properties>
+                    <PropertyOwners>
+                        <Processor type="CanvasGL" identifier="Blurred" reference="ref34" />
+                        <Processor type="CanvasGL" identifier="CanvasGL" reference="ref1" />
+                    </PropertyOwners>
+                </PropertyLink>
+            </PropertyLinks>
+        </ProcessorLink>
+        <ProcessorLink>
+            <Processor type="VolumeSliceGL" identifier="VolumeSliceGL" reference="ref26" />
+            <Processor type="VolumeSliceGL" identifier="VolumeSliceGL2" reference="ref3" />
+            <PropertyLinks>
+                <PropertyLink>
+                    <Properties>
+                        <Property type="OptionPropertyInt" identifier="sliceAxis" displayName="Slice along axis" key="sliceAxis" reference="ref27" />
+                        <Property type="OptionPropertyInt" identifier="sliceAxis" displayName="Slice along axis" key="sliceAxis" reference="ref4" />
+                    </Properties>
+                    <PropertyOwners>
+                        <Processor type="VolumeSliceGL" identifier="VolumeSliceGL" reference="ref26" />
+                        <Processor type="VolumeSliceGL" identifier="VolumeSliceGL2" reference="ref3" />
+                    </PropertyOwners>
+                </PropertyLink>
+                <PropertyLink>
+                    <Properties>
+                        <Property type="OptionPropertyInt" identifier="sliceAxis" displayName="Slice along axis" key="sliceAxis" reference="ref4" />
+                        <Property type="OptionPropertyInt" identifier="sliceAxis" displayName="Slice along axis" key="sliceAxis" reference="ref27" />
+                    </Properties>
+                    <PropertyOwners>
+                        <Processor type="VolumeSliceGL" identifier="VolumeSliceGL2" reference="ref3" />
+                        <Processor type="VolumeSliceGL" identifier="VolumeSliceGL" reference="ref26" />
+                    </PropertyOwners>
+                </PropertyLink>
+                <PropertyLink>
+                    <Properties>
+                        <Property type="OptionPropertyFloat" identifier="rotation" displayName="Rotation around axis (degrees)" key="rotation" reference="ref28" />
+                        <Property type="OptionPropertyFloat" identifier="rotation" displayName="Rotation around axis (degrees)" key="rotation" reference="ref5" />
+                    </Properties>
+                    <PropertyOwners>
+                        <Processor type="VolumeSliceGL" identifier="VolumeSliceGL" reference="ref26" />
+                        <Processor type="VolumeSliceGL" identifier="VolumeSliceGL2" reference="ref3" />
+                    </PropertyOwners>
+                </PropertyLink>
+                <PropertyLink>
+                    <Properties>
+                        <Property type="OptionPropertyFloat" identifier="rotation" displayName="Rotation around axis (degrees)" key="rotation" reference="ref5" />
+                        <Property type="OptionPropertyFloat" identifier="rotation" displayName="Rotation around axis (degrees)" key="rotation" reference="ref28" />
+                    </Properties>
+                    <PropertyOwners>
+                        <Processor type="VolumeSliceGL" identifier="VolumeSliceGL2" reference="ref3" />
+                        <Processor type="VolumeSliceGL" identifier="VolumeSliceGL" reference="ref26" />
+                    </PropertyOwners>
+                </PropertyLink>
+                <PropertyLink>
+                    <Properties>
+                        <Property type="BoolProperty" identifier="flipHorizontal" displayName="Flip Horizontal View" key="flipHorizontal" reference="ref29" />
+                        <Property type="BoolProperty" identifier="flipHorizontal" displayName="Flip Horizontal View" key="flipHorizontal" reference="ref6" />
+                    </Properties>
+                    <PropertyOwners>
+                        <Processor type="VolumeSliceGL" identifier="VolumeSliceGL" reference="ref26" />
+                        <Processor type="VolumeSliceGL" identifier="VolumeSliceGL2" reference="ref3" />
+                    </PropertyOwners>
+                </PropertyLink>
+                <PropertyLink>
+                    <Properties>
+                        <Property type="BoolProperty" identifier="flipHorizontal" displayName="Flip Horizontal View" key="flipHorizontal" reference="ref6" />
+                        <Property type="BoolProperty" identifier="flipHorizontal" displayName="Flip Horizontal View" key="flipHorizontal" reference="ref29" />
+                    </Properties>
+                    <PropertyOwners>
+                        <Processor type="VolumeSliceGL" identifier="VolumeSliceGL2" reference="ref3" />
+                        <Processor type="VolumeSliceGL" identifier="VolumeSliceGL" reference="ref26" />
+                    </PropertyOwners>
+                </PropertyLink>
+                <PropertyLink>
+                    <Properties>
+                        <Property type="BoolProperty" identifier="flipVertical" displayName="Flip Vertical View" key="flipVertical" reference="ref30" />
+                        <Property type="BoolProperty" identifier="flipVertical" displayName="Flip Vertical View" key="flipVertical" reference="ref7" />
+                    </Properties>
+                    <PropertyOwners>
+                        <Processor type="VolumeSliceGL" identifier="VolumeSliceGL" reference="ref26" />
+                        <Processor type="VolumeSliceGL" identifier="VolumeSliceGL2" reference="ref3" />
+                    </PropertyOwners>
+                </PropertyLink>
+                <PropertyLink>
+                    <Properties>
+                        <Property type="BoolProperty" identifier="flipVertical" displayName="Flip Vertical View" key="flipVertical" reference="ref7" />
+                        <Property type="BoolProperty" identifier="flipVertical" displayName="Flip Vertical View" key="flipVertical" reference="ref30" />
+                    </Properties>
+                    <PropertyOwners>
+                        <Processor type="VolumeSliceGL" identifier="VolumeSliceGL2" reference="ref3" />
+                        <Processor type="VolumeSliceGL" identifier="VolumeSliceGL" reference="ref26" />
+                    </PropertyOwners>
+                </PropertyLink>
+                <PropertyLink>
+                    <Properties>
+                        <Property type="IntProperty" identifier="sliceNumber" displayName="Slice Number" key="sliceNumber" reference="ref31" />
+                        <Property type="IntProperty" identifier="sliceNumber" displayName="Slice Number" key="sliceNumber" reference="ref8" />
+                    </Properties>
+                    <PropertyOwners>
+                        <Processor type="VolumeSliceGL" identifier="VolumeSliceGL" reference="ref26" />
+                        <Processor type="VolumeSliceGL" identifier="VolumeSliceGL2" reference="ref3" />
+                    </PropertyOwners>
+                </PropertyLink>
+                <PropertyLink>
+                    <Properties>
+                        <Property type="IntProperty" identifier="sliceNumber" displayName="Slice Number" key="sliceNumber" reference="ref8" />
+                        <Property type="IntProperty" identifier="sliceNumber" displayName="Slice Number" key="sliceNumber" reference="ref31" />
+                    </Properties>
+                    <PropertyOwners>
+                        <Processor type="VolumeSliceGL" identifier="VolumeSliceGL2" reference="ref3" />
+                        <Processor type="VolumeSliceGL" identifier="VolumeSliceGL" reference="ref26" />
+                    </PropertyOwners>
+                </PropertyLink>
+                <PropertyLink>
+                    <Properties>
+                        <Property type="BoolProperty" identifier="tfMappingEnabled" displayName="Enable Transfer Function" key="tfMappingEnabled" reference="ref32" />
+                        <Property type="BoolProperty" identifier="tfMappingEnabled" displayName="Enable Transfer Function" key="tfMappingEnabled" reference="ref9" />
+                    </Properties>
+                    <PropertyOwners>
+                        <Processor type="VolumeSliceGL" identifier="VolumeSliceGL" reference="ref26" />
+                        <Processor type="VolumeSliceGL" identifier="VolumeSliceGL2" reference="ref3" />
+                    </PropertyOwners>
+                </PropertyLink>
+                <PropertyLink>
+                    <Properties>
+                        <Property type="BoolProperty" identifier="tfMappingEnabled" displayName="Enable Transfer Function" key="tfMappingEnabled" reference="ref9" />
+                        <Property type="BoolProperty" identifier="tfMappingEnabled" displayName="Enable Transfer Function" key="tfMappingEnabled" reference="ref32" />
+                    </Properties>
+                    <PropertyOwners>
+                        <Processor type="VolumeSliceGL" identifier="VolumeSliceGL2" reference="ref3" />
+                        <Processor type="VolumeSliceGL" identifier="VolumeSliceGL" reference="ref26" />
+                    </PropertyOwners>
+                </PropertyLink>
+                <PropertyLink>
+                    <Properties>
+                        <Property type="TransferFunctionProperty" identifier="transferFunction" displayName="Transfer function" key="transferFunction" reference="ref33" />
+                        <Property type="TransferFunctionProperty" identifier="transferFunction" displayName="Transfer function" key="transferFunction" reference="ref10" />
+                    </Properties>
+                    <PropertyOwners>
+                        <Processor type="VolumeSliceGL" identifier="VolumeSliceGL" reference="ref26" />
+                        <Processor type="VolumeSliceGL" identifier="VolumeSliceGL2" reference="ref3" />
+                    </PropertyOwners>
+                </PropertyLink>
+                <PropertyLink>
+                    <Properties>
+                        <Property type="TransferFunctionProperty" identifier="transferFunction" displayName="Transfer function" key="transferFunction" reference="ref10" />
+                        <Property type="TransferFunctionProperty" identifier="transferFunction" displayName="Transfer function" key="transferFunction" reference="ref33" />
+                    </Properties>
+                    <PropertyOwners>
+                        <Processor type="VolumeSliceGL" identifier="VolumeSliceGL2" reference="ref3" />
+                        <Processor type="VolumeSliceGL" identifier="VolumeSliceGL" reference="ref26" />
+                    </PropertyOwners>
+                </PropertyLink>
+            </PropertyLinks>
+        </ProcessorLink>
+        <ProcessorLink>
+            <Processor type="VolumeSliceGL" identifier="VolumeSliceGL" reference="ref26" />
+            <Processor type="VolumeSliceGL" identifier="VolumeSliceGL3" reference="ref36" />
+            <PropertyLinks>
+                <PropertyLink>
+                    <Properties>
+                        <Property type="OptionPropertyInt" identifier="sliceAxis" displayName="Slice along axis" key="sliceAxis" reference="ref27" />
+                        <Property type="OptionPropertyInt" identifier="sliceAxis" displayName="Slice along axis" key="sliceAxis" reference="ref37" />
+                    </Properties>
+                    <PropertyOwners>
+                        <Processor type="VolumeSliceGL" identifier="VolumeSliceGL" reference="ref26" />
+                        <Processor type="VolumeSliceGL" identifier="VolumeSliceGL3" reference="ref36" />
+                    </PropertyOwners>
+                </PropertyLink>
+                <PropertyLink>
+                    <Properties>
+                        <Property type="OptionPropertyInt" identifier="sliceAxis" displayName="Slice along axis" key="sliceAxis" reference="ref37" />
+                        <Property type="OptionPropertyInt" identifier="sliceAxis" displayName="Slice along axis" key="sliceAxis" reference="ref27" />
+                    </Properties>
+                    <PropertyOwners>
+                        <Processor type="VolumeSliceGL" identifier="VolumeSliceGL3" reference="ref36" />
+                        <Processor type="VolumeSliceGL" identifier="VolumeSliceGL" reference="ref26" />
+                    </PropertyOwners>
+                </PropertyLink>
+                <PropertyLink>
+                    <Properties>
+                        <Property type="OptionPropertyFloat" identifier="rotation" displayName="Rotation around axis (degrees)" key="rotation" reference="ref28" />
+                        <Property type="OptionPropertyFloat" identifier="rotation" displayName="Rotation around axis (degrees)" key="rotation" reference="ref38" />
+                    </Properties>
+                    <PropertyOwners>
+                        <Processor type="VolumeSliceGL" identifier="VolumeSliceGL" reference="ref26" />
+                        <Processor type="VolumeSliceGL" identifier="VolumeSliceGL3" reference="ref36" />
+                    </PropertyOwners>
+                </PropertyLink>
+                <PropertyLink>
+                    <Properties>
+                        <Property type="OptionPropertyFloat" identifier="rotation" displayName="Rotation around axis (degrees)" key="rotation" reference="ref38" />
+                        <Property type="OptionPropertyFloat" identifier="rotation" displayName="Rotation around axis (degrees)" key="rotation" reference="ref28" />
+                    </Properties>
+                    <PropertyOwners>
+                        <Processor type="VolumeSliceGL" identifier="VolumeSliceGL3" reference="ref36" />
+                        <Processor type="VolumeSliceGL" identifier="VolumeSliceGL" reference="ref26" />
+                    </PropertyOwners>
+                </PropertyLink>
+                <PropertyLink>
+                    <Properties>
+                        <Property type="BoolProperty" identifier="flipHorizontal" displayName="Flip Horizontal View" key="flipHorizontal" reference="ref29" />
+                        <Property type="BoolProperty" identifier="flipHorizontal" displayName="Flip Horizontal View" key="flipHorizontal" reference="ref39" />
+                    </Properties>
+                    <PropertyOwners>
+                        <Processor type="VolumeSliceGL" identifier="VolumeSliceGL" reference="ref26" />
+                        <Processor type="VolumeSliceGL" identifier="VolumeSliceGL3" reference="ref36" />
+                    </PropertyOwners>
+                </PropertyLink>
+                <PropertyLink>
+                    <Properties>
+                        <Property type="BoolProperty" identifier="flipHorizontal" displayName="Flip Horizontal View" key="flipHorizontal" reference="ref39" />
+                        <Property type="BoolProperty" identifier="flipHorizontal" displayName="Flip Horizontal View" key="flipHorizontal" reference="ref29" />
+                    </Properties>
+                    <PropertyOwners>
+                        <Processor type="VolumeSliceGL" identifier="VolumeSliceGL3" reference="ref36" />
+                        <Processor type="VolumeSliceGL" identifier="VolumeSliceGL" reference="ref26" />
+                    </PropertyOwners>
+                </PropertyLink>
+                <PropertyLink>
+                    <Properties>
+                        <Property type="BoolProperty" identifier="flipVertical" displayName="Flip Vertical View" key="flipVertical" reference="ref30" />
+                        <Property type="BoolProperty" identifier="flipVertical" displayName="Flip Vertical View" key="flipVertical" reference="ref40" />
+                    </Properties>
+                    <PropertyOwners>
+                        <Processor type="VolumeSliceGL" identifier="VolumeSliceGL" reference="ref26" />
+                        <Processor type="VolumeSliceGL" identifier="VolumeSliceGL3" reference="ref36" />
+                    </PropertyOwners>
+                </PropertyLink>
+                <PropertyLink>
+                    <Properties>
+                        <Property type="BoolProperty" identifier="flipVertical" displayName="Flip Vertical View" key="flipVertical" reference="ref40" />
+                        <Property type="BoolProperty" identifier="flipVertical" displayName="Flip Vertical View" key="flipVertical" reference="ref30" />
+                    </Properties>
+                    <PropertyOwners>
+                        <Processor type="VolumeSliceGL" identifier="VolumeSliceGL3" reference="ref36" />
+                        <Processor type="VolumeSliceGL" identifier="VolumeSliceGL" reference="ref26" />
+                    </PropertyOwners>
+                </PropertyLink>
+                <PropertyLink>
+                    <Properties>
+                        <Property type="IntProperty" identifier="sliceNumber" displayName="Slice Number" key="sliceNumber" reference="ref31" />
+                        <Property type="IntProperty" identifier="sliceNumber" displayName="Slice Number" key="sliceNumber" reference="ref41" />
+                    </Properties>
+                    <PropertyOwners>
+                        <Processor type="VolumeSliceGL" identifier="VolumeSliceGL" reference="ref26" />
+                        <Processor type="VolumeSliceGL" identifier="VolumeSliceGL3" reference="ref36" />
+                    </PropertyOwners>
+                </PropertyLink>
+                <PropertyLink>
+                    <Properties>
+                        <Property type="IntProperty" identifier="sliceNumber" displayName="Slice Number" key="sliceNumber" reference="ref41" />
+                        <Property type="IntProperty" identifier="sliceNumber" displayName="Slice Number" key="sliceNumber" reference="ref31" />
+                    </Properties>
+                    <PropertyOwners>
+                        <Processor type="VolumeSliceGL" identifier="VolumeSliceGL3" reference="ref36" />
+                        <Processor type="VolumeSliceGL" identifier="VolumeSliceGL" reference="ref26" />
+                    </PropertyOwners>
+                </PropertyLink>
+                <PropertyLink>
+                    <Properties>
+                        <Property type="BoolProperty" identifier="tfMappingEnabled" displayName="Enable Transfer Function" key="tfMappingEnabled" reference="ref32" />
+                        <Property type="BoolProperty" identifier="tfMappingEnabled" displayName="Enable Transfer Function" key="tfMappingEnabled" reference="ref42" />
+                    </Properties>
+                    <PropertyOwners>
+                        <Processor type="VolumeSliceGL" identifier="VolumeSliceGL" reference="ref26" />
+                        <Processor type="VolumeSliceGL" identifier="VolumeSliceGL3" reference="ref36" />
+                    </PropertyOwners>
+                </PropertyLink>
+                <PropertyLink>
+                    <Properties>
+                        <Property type="BoolProperty" identifier="tfMappingEnabled" displayName="Enable Transfer Function" key="tfMappingEnabled" reference="ref42" />
+                        <Property type="BoolProperty" identifier="tfMappingEnabled" displayName="Enable Transfer Function" key="tfMappingEnabled" reference="ref32" />
+                    </Properties>
+                    <PropertyOwners>
+                        <Processor type="VolumeSliceGL" identifier="VolumeSliceGL3" reference="ref36" />
+                        <Processor type="VolumeSliceGL" identifier="VolumeSliceGL" reference="ref26" />
+                    </PropertyOwners>
+                </PropertyLink>
+            </PropertyLinks>
+        </ProcessorLink>
+        <ProcessorLink>
+            <Processor type="VolumeSliceGL" identifier="VolumeSliceGL2" reference="ref3" />
+            <Processor type="VolumeMapping" identifier="VolumeMapping" reference="ref12" />
+            <PropertyLinks>
+                <PropertyLink>
+                    <Properties>
+                        <Property type="TransferFunctionProperty" identifier="transferFunction" displayName="Transfer function" key="transferFunction" reference="ref10" />
+                        <Property type="TransferFunctionProperty" identifier="transferFunction" displayName="Transfer function" key="transferFunction" reference="ref13" />
+                    </Properties>
+                    <PropertyOwners>
+                        <Processor type="VolumeSliceGL" identifier="VolumeSliceGL2" reference="ref3" />
+                        <Processor type="VolumeMapping" identifier="VolumeMapping" reference="ref12" />
+                    </PropertyOwners>
+                </PropertyLink>
+                <PropertyLink>
+                    <Properties>
+                        <Property type="TransferFunctionProperty" identifier="transferFunction" displayName="Transfer function" key="transferFunction" reference="ref13" />
+                        <Property type="TransferFunctionProperty" identifier="transferFunction" displayName="Transfer function" key="transferFunction" reference="ref10" />
+                    </Properties>
+                    <PropertyOwners>
+                        <Processor type="VolumeMapping" identifier="VolumeMapping" reference="ref12" />
+                        <Processor type="VolumeSliceGL" identifier="VolumeSliceGL2" reference="ref3" />
+                    </PropertyOwners>
+                </PropertyLink>
+            </PropertyLinks>
+        </ProcessorLink>
+        <ProcessorLink>
+            <Processor type="VolumeSliceGL" identifier="VolumeSliceGL2" reference="ref3" />
+            <Processor type="VolumeSliceGL" identifier="VolumeSliceGL4" reference="ref18" />
+            <PropertyLinks>
+                <PropertyLink>
+                    <Properties>
+                        <Property type="OptionPropertyInt" identifier="sliceAxis" displayName="Slice along axis" key="sliceAxis" reference="ref4" />
+                        <Property type="OptionPropertyInt" identifier="sliceAxis" displayName="Slice along axis" key="sliceAxis" reference="ref19" />
+                    </Properties>
+                    <PropertyOwners>
+                        <Processor type="VolumeSliceGL" identifier="VolumeSliceGL2" reference="ref3" />
+                        <Processor type="VolumeSliceGL" identifier="VolumeSliceGL4" reference="ref18" />
+                    </PropertyOwners>
+                </PropertyLink>
+                <PropertyLink>
+                    <Properties>
+                        <Property type="OptionPropertyInt" identifier="sliceAxis" displayName="Slice along axis" key="sliceAxis" reference="ref19" />
+                        <Property type="OptionPropertyInt" identifier="sliceAxis" displayName="Slice along axis" key="sliceAxis" reference="ref4" />
+                    </Properties>
+                    <PropertyOwners>
+                        <Processor type="VolumeSliceGL" identifier="VolumeSliceGL4" reference="ref18" />
+                        <Processor type="VolumeSliceGL" identifier="VolumeSliceGL2" reference="ref3" />
+                    </PropertyOwners>
+                </PropertyLink>
+                <PropertyLink>
+                    <Properties>
+                        <Property type="OptionPropertyFloat" identifier="rotation" displayName="Rotation around axis (degrees)" key="rotation" reference="ref5" />
+                        <Property type="OptionPropertyFloat" identifier="rotation" displayName="Rotation around axis (degrees)" key="rotation" reference="ref20" />
+                    </Properties>
+                    <PropertyOwners>
+                        <Processor type="VolumeSliceGL" identifier="VolumeSliceGL2" reference="ref3" />
+                        <Processor type="VolumeSliceGL" identifier="VolumeSliceGL4" reference="ref18" />
+                    </PropertyOwners>
+                </PropertyLink>
+                <PropertyLink>
+                    <Properties>
+                        <Property type="OptionPropertyFloat" identifier="rotation" displayName="Rotation around axis (degrees)" key="rotation" reference="ref20" />
+                        <Property type="OptionPropertyFloat" identifier="rotation" displayName="Rotation around axis (degrees)" key="rotation" reference="ref5" />
+                    </Properties>
+                    <PropertyOwners>
+                        <Processor type="VolumeSliceGL" identifier="VolumeSliceGL4" reference="ref18" />
+                        <Processor type="VolumeSliceGL" identifier="VolumeSliceGL2" reference="ref3" />
+                    </PropertyOwners>
+                </PropertyLink>
+                <PropertyLink>
+                    <Properties>
+                        <Property type="BoolProperty" identifier="flipHorizontal" displayName="Flip Horizontal View" key="flipHorizontal" reference="ref6" />
+                        <Property type="BoolProperty" identifier="flipHorizontal" displayName="Flip Horizontal View" key="flipHorizontal" reference="ref21" />
+                    </Properties>
+                    <PropertyOwners>
+                        <Processor type="VolumeSliceGL" identifier="VolumeSliceGL2" reference="ref3" />
+                        <Processor type="VolumeSliceGL" identifier="VolumeSliceGL4" reference="ref18" />
+                    </PropertyOwners>
+                </PropertyLink>
+                <PropertyLink>
+                    <Properties>
+                        <Property type="BoolProperty" identifier="flipHorizontal" displayName="Flip Horizontal View" key="flipHorizontal" reference="ref21" />
+                        <Property type="BoolProperty" identifier="flipHorizontal" displayName="Flip Horizontal View" key="flipHorizontal" reference="ref6" />
+                    </Properties>
+                    <PropertyOwners>
+                        <Processor type="VolumeSliceGL" identifier="VolumeSliceGL4" reference="ref18" />
+                        <Processor type="VolumeSliceGL" identifier="VolumeSliceGL2" reference="ref3" />
+                    </PropertyOwners>
+                </PropertyLink>
+                <PropertyLink>
+                    <Properties>
+                        <Property type="BoolProperty" identifier="flipVertical" displayName="Flip Vertical View" key="flipVertical" reference="ref7" />
+                        <Property type="BoolProperty" identifier="flipVertical" displayName="Flip Vertical View" key="flipVertical" reference="ref22" />
+                    </Properties>
+                    <PropertyOwners>
+                        <Processor type="VolumeSliceGL" identifier="VolumeSliceGL2" reference="ref3" />
+                        <Processor type="VolumeSliceGL" identifier="VolumeSliceGL4" reference="ref18" />
+                    </PropertyOwners>
+                </PropertyLink>
+                <PropertyLink>
+                    <Properties>
+                        <Property type="BoolProperty" identifier="flipVertical" displayName="Flip Vertical View" key="flipVertical" reference="ref22" />
+                        <Property type="BoolProperty" identifier="flipVertical" displayName="Flip Vertical View" key="flipVertical" reference="ref7" />
+                    </Properties>
+                    <PropertyOwners>
+                        <Processor type="VolumeSliceGL" identifier="VolumeSliceGL4" reference="ref18" />
+                        <Processor type="VolumeSliceGL" identifier="VolumeSliceGL2" reference="ref3" />
+                    </PropertyOwners>
+                </PropertyLink>
+                <PropertyLink>
+                    <Properties>
+                        <Property type="IntProperty" identifier="sliceNumber" displayName="Slice Number" key="sliceNumber" reference="ref8" />
+                        <Property type="IntProperty" identifier="sliceNumber" displayName="Slice Number" key="sliceNumber" reference="ref23" />
+                    </Properties>
+                    <PropertyOwners>
+                        <Processor type="VolumeSliceGL" identifier="VolumeSliceGL2" reference="ref3" />
+                        <Processor type="VolumeSliceGL" identifier="VolumeSliceGL4" reference="ref18" />
+                    </PropertyOwners>
+                </PropertyLink>
+                <PropertyLink>
+                    <Properties>
+                        <Property type="IntProperty" identifier="sliceNumber" displayName="Slice Number" key="sliceNumber" reference="ref23" />
+                        <Property type="IntProperty" identifier="sliceNumber" displayName="Slice Number" key="sliceNumber" reference="ref8" />
+                    </Properties>
+                    <PropertyOwners>
+                        <Processor type="VolumeSliceGL" identifier="VolumeSliceGL4" reference="ref18" />
+                        <Processor type="VolumeSliceGL" identifier="VolumeSliceGL2" reference="ref3" />
+                    </PropertyOwners>
+                </PropertyLink>
+                <PropertyLink>
+                    <Properties>
+                        <Property type="BoolProperty" identifier="tfMappingEnabled" displayName="Enable Transfer Function" key="tfMappingEnabled" reference="ref9" />
+                        <Property type="BoolProperty" identifier="tfMappingEnabled" displayName="Enable Transfer Function" key="tfMappingEnabled" reference="ref24" />
+                    </Properties>
+                    <PropertyOwners>
+                        <Processor type="VolumeSliceGL" identifier="VolumeSliceGL2" reference="ref3" />
+                        <Processor type="VolumeSliceGL" identifier="VolumeSliceGL4" reference="ref18" />
+                    </PropertyOwners>
+                </PropertyLink>
+                <PropertyLink>
+                    <Properties>
+                        <Property type="BoolProperty" identifier="tfMappingEnabled" displayName="Enable Transfer Function" key="tfMappingEnabled" reference="ref24" />
+                        <Property type="BoolProperty" identifier="tfMappingEnabled" displayName="Enable Transfer Function" key="tfMappingEnabled" reference="ref9" />
+                    </Properties>
+                    <PropertyOwners>
+                        <Processor type="VolumeSliceGL" identifier="VolumeSliceGL4" reference="ref18" />
+                        <Processor type="VolumeSliceGL" identifier="VolumeSliceGL2" reference="ref3" />
+                    </PropertyOwners>
+                </PropertyLink>
+            </PropertyLinks>
+        </ProcessorLink>
+        <ProcessorLink>
+            <Processor type="CanvasGL" identifier="Blurred" reference="ref34" />
+            <Processor type="CanvasGL" identifier="CanvasGL2" reference="ref14" />
+            <PropertyLinks>
+                <PropertyLink>
+                    <Properties>
+                        <Property type="IntVec2Property" identifier="dimensions" displayName="Dimensions" key="dimensions" reference="ref35" />
+                        <Property type="IntVec2Property" identifier="dimensions" displayName="Dimensions" key="dimensions" reference="ref15" />
+                    </Properties>
+                    <PropertyOwners>
+                        <Processor type="CanvasGL" identifier="Blurred" reference="ref34" />
+                        <Processor type="CanvasGL" identifier="CanvasGL2" reference="ref14" />
+                    </PropertyOwners>
+                </PropertyLink>
+                <PropertyLink>
+                    <Properties>
+                        <Property type="IntVec2Property" identifier="dimensions" displayName="Dimensions" key="dimensions" reference="ref15" />
+                        <Property type="IntVec2Property" identifier="dimensions" displayName="Dimensions" key="dimensions" reference="ref35" />
+                    </Properties>
+                    <PropertyOwners>
+                        <Processor type="CanvasGL" identifier="CanvasGL2" reference="ref14" />
+                        <Processor type="CanvasGL" identifier="Blurred" reference="ref34" />
+                    </PropertyOwners>
+                </PropertyLink>
+            </PropertyLinks>
+        </ProcessorLink>
+        <ProcessorLink>
+            <Processor type="CanvasGL" identifier="CanvasGL" reference="ref1" />
+            <Processor type="CanvasGL" identifier="image.outport" reference="ref16" />
+            <PropertyLinks>
+                <PropertyLink>
+                    <Properties>
+                        <Property type="IntVec2Property" identifier="dimensions" displayName="Dimensions" key="dimensions" reference="ref2" />
+                        <Property type="IntVec2Property" identifier="dimensions" displayName="Dimensions" key="dimensions" reference="ref17" />
+                    </Properties>
+                    <PropertyOwners>
+                        <Processor type="CanvasGL" identifier="CanvasGL" reference="ref1" />
+                        <Processor type="CanvasGL" identifier="image.outport" reference="ref16" />
+                    </PropertyOwners>
+                </PropertyLink>
+                <PropertyLink>
+                    <Properties>
+                        <Property type="IntVec2Property" identifier="dimensions" displayName="Dimensions" key="dimensions" reference="ref17" />
+                        <Property type="IntVec2Property" identifier="dimensions" displayName="Dimensions" key="dimensions" reference="ref2" />
+                    </Properties>
+                    <PropertyOwners>
+                        <Processor type="CanvasGL" identifier="image.outport" reference="ref16" />
+                        <Processor type="CanvasGL" identifier="CanvasGL" reference="ref1" />
+                    </PropertyOwners>
+                </PropertyLink>
+            </PropertyLinks>
+        </ProcessorLink>
+    </ProcessorLinks>
+</InviwoTreeData>
