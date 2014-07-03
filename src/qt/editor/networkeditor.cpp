@@ -79,12 +79,16 @@ NetworkEditor::NetworkEditor() :
     , gridSnapping_(true)
     , filename_("")
     , renamingProcessor_(false)
-    , modified_(false) {
+    , modified_(false)
+    , cacheProcessorPropertyDoneEventId_(-1)
+    , markModifedFlaseEventId_(-1){
     
     InviwoApplication::getPtr()->getProcessorNetwork()->addObserver(this);
     hoverTimer_.setSingleShot(true);
     portInfoWidget_ = new PortInfoWidgetQt();
     connect(&hoverTimer_, SIGNAL(timeout()), this, SLOT(managePortInspection()));
+    cacheProcessorPropertyDoneEventId_ = QEvent::registerEventType();
+    markModifedFlaseEventId_ = QEvent::registerEventType();
 }
 
 NetworkEditor::~NetworkEditor() {
@@ -1621,9 +1625,29 @@ bool NetworkEditor::loadNetwork(std::istream& stream, const std::string& path) {
             Qt::LowEventPriority);
     }
 
+    QCoreApplication::postEvent(
+            this,
+            new QEvent(QEvent::Type(cacheProcessorPropertyDoneEventId_)),
+            Qt::LowEventPriority
+        );
+
     setModified(false);
     filename_ = path;
     return true;
+}
+
+bool NetworkEditor::event(QEvent* e) {
+    if (e->type() == cacheProcessorPropertyDoneEventId_) {
+        QCoreApplication::postEvent(this, new QEvent(QEvent::Type(markModifedFlaseEventId_)),
+            Qt::LowEventPriority);
+        e->accept();
+        return true;
+    } else if (e->type() == markModifedFlaseEventId_) {
+        e->accept();
+        setModified(false);
+        return true;
+    }
+    return QGraphicsScene::event(e);
 }
 
 ////////////////////////

@@ -138,6 +138,7 @@ public:
     
     static QPointF snapToGrid(QPointF pos);
 
+    virtual bool event(QEvent* e);
 public slots:
     void managePortInspection();
     void cacheProcessorProperty(Processor*);
@@ -239,6 +240,8 @@ private:
     std::string filename_;
     bool renamingProcessor_;
     bool modified_;
+    int cacheProcessorPropertyDoneEventId_;
+    int markModifedFlaseEventId_;
 };
 
 } // namespace

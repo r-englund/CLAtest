@@ -203,7 +203,10 @@ bool InviwoMainWindow::processCommandLineArgs() {
         screenGrab.save(QString::fromStdString(path + "/" + fileName), "png");
     }
 
-    if (cmdparser->getQuitApplicationAfterStartup()) return false;
+    if (cmdparser->getQuitApplicationAfterStartup()) {
+        getNetworkEditor()->setModified(false);
+        return false;
+    }
 
     return true;
 }
