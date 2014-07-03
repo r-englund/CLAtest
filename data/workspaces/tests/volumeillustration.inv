@@ -319,8 +319,8 @@
                     <selection content="0" />
                 </MetaData>
                 <MetaData type="ProcessorWidgetMetaData">
-                    <position x="3032" y="604" />
-                    <dimension x="471" y="395" />
+                    <position x="3040" y="634" />
+                    <dimension x="300" y="300" />
                     <visibility content="1" />
                 </MetaData>
             </MetaDataList>
@@ -337,7 +337,7 @@
                 <Property type="IntVec2Property" identifier="dimensions" displayName="Dimensions" key="dimensions" id="ref5">
                     <usageMode content="0" />
                     <visible content="1" />
-                    <value x="471" y="395" />
+                    <value x="300" y="300" />
                 </Property>
                 <Property type="BoolProperty" identifier="enableCustomInputDimensions" displayName="Enable Custom Input Dimensions" key="enableCustomInputDimensions">
                     <usageMode content="0" />
@@ -714,8 +714,8 @@
                     <selection content="0" />
                 </MetaData>
                 <MetaData type="ProcessorWidgetMetaData">
-                    <position x="119" y="450" />
-                    <dimension x="471" y="395" />
+                    <position x="262" y="554" />
+                    <dimension x="300" y="300" />
                     <visibility content="1" />
                 </MetaData>
             </MetaDataList>
@@ -732,7 +732,7 @@
                 <Property type="IntVec2Property" identifier="dimensions" displayName="Dimensions" key="dimensions" id="ref10">
                     <usageMode content="0" />
                     <visible content="1" />
-                    <value x="471" y="395" />
+                    <value x="300" y="300" />
                 </Property>
                 <Property type="BoolProperty" identifier="enableCustomInputDimensions" displayName="Enable Custom Input Dimensions" key="enableCustomInputDimensions">
                     <usageMode content="0" />
@@ -779,7 +779,7 @@
                 <MetaData type="ProcessorMetaData">
                     <position x="-650" y="-425" />
                     <visibility content="1" />
-                    <selection content="0" />
+                    <selection content="1" />
                 </MetaData>
             </MetaDataList>
             <Properties>
@@ -937,8 +937,8 @@
                     <selection content="0" />
                 </MetaData>
                 <MetaData type="ProcessorWidgetMetaData">
-                    <position x="2064" y="783" />
-                    <dimension x="471" y="395" />
+                    <position x="2072" y="813" />
+                    <dimension x="300" y="300" />
                     <visibility content="1" />
                 </MetaData>
             </MetaDataList>
@@ -955,7 +955,7 @@
                 <Property type="IntVec2Property" identifier="dimensions" displayName="Dimensions" key="dimensions" id="ref13">
                     <usageMode content="0" />
                     <visible content="1" />
-                    <value x="471" y="395" />
+                    <value x="300" y="300" />
                 </Property>
                 <Property type="BoolProperty" identifier="enableCustomInputDimensions" displayName="Enable Custom Input Dimensions" key="enableCustomInputDimensions">
                     <usageMode content="0" />
@@ -997,12 +997,12 @@
                 </Property>
             </Properties>
         </Processor>
-        <Processor type="Background" identifier="Background" id="ref15">
+        <Processor type="Background" identifier="Background" id="ref14">
             <MetaDataList>
                 <MetaData type="ProcessorMetaData">
                     <position x="-825" y="-350" />
                     <visibility content="1" />
-                    <selection content="1" />
+                    <selection content="0" />
                 </MetaData>
             </MetaDataList>
             <Properties>
@@ -1023,7 +1023,7 @@
                 </Property>
             </Properties>
         </Processor>
-        <Processor type="Background" identifier="Background3" id="ref16">
+        <Processor type="Background" identifier="Background3" id="ref15">
             <MetaDataList>
                 <MetaData type="ProcessorMetaData">
                     <position x="-475" y="-350" />
@@ -1049,7 +1049,7 @@
                 </Property>
             </Properties>
         </Processor>
-        <Processor type="Background" identifier="Background2" id="ref14">
+        <Processor type="Background" identifier="Background2" id="ref16">
             <MetaDataList>
                 <MetaData type="ProcessorMetaData">
                     <position x="-650" y="-350" />
@@ -1170,15 +1170,7 @@
                 <Processor type="VolumeIllustration" identifier="VolumeIllustration2" reference="ref8" />
             </OutPort>
             <InPort identifier="inport">
-                <Processor type="Background" identifier="Background" reference="ref15" />
-            </InPort>
-        </Connection>
-        <Connection>
-            <OutPort identifier="outport">
-                <Processor type="Background" identifier="Background" reference="ref15" />
-            </OutPort>
-            <InPort identifier="inport">
-                <Processor type="CanvasGL" identifier="Boundary" reference="ref9" />
+                <Processor type="Background" identifier="Background" reference="ref14" />
             </InPort>
         </Connection>
         <Connection>
@@ -1186,12 +1178,12 @@
                 <Processor type="VolumeIllustration" identifier="VolumeIllustration" reference="ref6" />
             </OutPort>
             <InPort identifier="inport">
-                <Processor type="Background" identifier="Background3" reference="ref16" />
+                <Processor type="Background" identifier="Background3" reference="ref15" />
             </InPort>
         </Connection>
         <Connection>
             <OutPort identifier="outport">
-                <Processor type="Background" identifier="Background3" reference="ref16" />
+                <Processor type="Background" identifier="Background3" reference="ref15" />
             </OutPort>
             <InPort identifier="inport">
                 <Processor type="CanvasGL" identifier="SilhouettesEnhancement" reference="ref4" />
@@ -1202,15 +1194,23 @@
                 <Processor type="VolumeIllustration" identifier="VolumeIllustration3" reference="ref11" />
             </OutPort>
             <InPort identifier="inport">
-                <Processor type="Background" identifier="Background2" reference="ref14" />
+                <Processor type="Background" identifier="Background2" reference="ref16" />
             </InPort>
         </Connection>
         <Connection>
             <OutPort identifier="outport">
-                <Processor type="Background" identifier="Background2" reference="ref14" />
+                <Processor type="Background" identifier="Background2" reference="ref16" />
             </OutPort>
             <InPort identifier="inport">
                 <Processor type="CanvasGL" identifier="Combined" reference="ref12" />
+            </InPort>
+        </Connection>
+        <Connection>
+            <OutPort identifier="outport">
+                <Processor type="Background" identifier="Background" reference="ref14" />
+            </OutPort>
+            <InPort identifier="inport">
+                <Processor type="CanvasGL" identifier="Boundary" reference="ref9" />
             </InPort>
         </Connection>
     </Connections>
