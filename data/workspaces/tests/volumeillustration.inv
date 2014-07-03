@@ -254,7 +254,7 @@
                 <MetaData type="ProcessorMetaData">
                     <position x="-625" y="-700" />
                     <visibility content="1" />
-                    <selection content="1" />
+                    <selection content="0" />
                 </MetaData>
             </MetaDataList>
             <Properties>
@@ -314,7 +314,7 @@
         <Processor type="CanvasGL" identifier="SilhouettesEnhancement" id="ref4">
             <MetaDataList>
                 <MetaData type="ProcessorMetaData">
-                    <position x="-475" y="-350" />
+                    <position x="-475" y="-275" />
                     <visibility content="1" />
                     <selection content="0" />
                 </MetaData>
@@ -709,7 +709,7 @@
         <Processor type="CanvasGL" identifier="Boundary" id="ref9">
             <MetaDataList>
                 <MetaData type="ProcessorMetaData">
-                    <position x="-825" y="-350" />
+                    <position x="-825" y="-275" />
                     <visibility content="1" />
                     <selection content="0" />
                 </MetaData>
@@ -932,7 +932,7 @@
         <Processor type="CanvasGL" identifier="Combined" id="ref12">
             <MetaDataList>
                 <MetaData type="ProcessorMetaData">
-                    <position x="-650" y="-350" />
+                    <position x="-650" y="-275" />
                     <visibility content="1" />
                     <selection content="0" />
                 </MetaData>
@@ -997,6 +997,84 @@
                 </Property>
             </Properties>
         </Processor>
+        <Processor type="Background" identifier="Background" id="ref15">
+            <MetaDataList>
+                <MetaData type="ProcessorMetaData">
+                    <position x="-825" y="-350" />
+                    <visibility content="1" />
+                    <selection content="1" />
+                </MetaData>
+            </MetaDataList>
+            <Properties>
+                <Property type="OptionPropertyInt" identifier="backgroundStyle" displayName="Style" key="backgroundStyle">
+                    <usageMode content="0" />
+                    <visible content="1" />
+                </Property>
+                <Property type="FloatVec4Property" identifier="color1" displayName="Color 1" key="color1">
+                    <semantics semantics="Color" />
+                    <usageMode content="0" />
+                    <visible content="1" />
+                    <value x="0" y="0" z="0" w="1" />
+                </Property>
+                <Property type="FloatVec4Property" identifier="color2" displayName="Color 2" key="color2">
+                    <semantics semantics="Color" />
+                    <usageMode content="0" />
+                    <visible content="1" />
+                </Property>
+            </Properties>
+        </Processor>
+        <Processor type="Background" identifier="Background3" id="ref16">
+            <MetaDataList>
+                <MetaData type="ProcessorMetaData">
+                    <position x="-475" y="-350" />
+                    <visibility content="1" />
+                    <selection content="0" />
+                </MetaData>
+            </MetaDataList>
+            <Properties>
+                <Property type="OptionPropertyInt" identifier="backgroundStyle" displayName="Style" key="backgroundStyle">
+                    <usageMode content="0" />
+                    <visible content="1" />
+                </Property>
+                <Property type="FloatVec4Property" identifier="color1" displayName="Color 1" key="color1">
+                    <semantics semantics="Color" />
+                    <usageMode content="0" />
+                    <visible content="1" />
+                    <value x="0" y="0" z="0" w="1" />
+                </Property>
+                <Property type="FloatVec4Property" identifier="color2" displayName="Color 2" key="color2">
+                    <semantics semantics="Color" />
+                    <usageMode content="0" />
+                    <visible content="1" />
+                </Property>
+            </Properties>
+        </Processor>
+        <Processor type="Background" identifier="Background2" id="ref14">
+            <MetaDataList>
+                <MetaData type="ProcessorMetaData">
+                    <position x="-650" y="-350" />
+                    <visibility content="1" />
+                    <selection content="0" />
+                </MetaData>
+            </MetaDataList>
+            <Properties>
+                <Property type="OptionPropertyInt" identifier="backgroundStyle" displayName="Style" key="backgroundStyle">
+                    <usageMode content="0" />
+                    <visible content="1" />
+                </Property>
+                <Property type="FloatVec4Property" identifier="color1" displayName="Color 1" key="color1">
+                    <semantics semantics="Color" />
+                    <usageMode content="0" />
+                    <visible content="1" />
+                    <value x="0" y="0" z="0" w="1" />
+                </Property>
+                <Property type="FloatVec4Property" identifier="color2" displayName="Color 2" key="color2">
+                    <semantics semantics="Color" />
+                    <usageMode content="0" />
+                    <visible content="1" />
+                </Property>
+            </Properties>
+        </Processor>
     </Processors>
     <Connections>
         <Connection>
@@ -1024,14 +1102,6 @@
             </InPort>
         </Connection>
         <Connection>
-            <OutPort identifier="outport">
-                <Processor type="VolumeIllustration" identifier="VolumeIllustration" reference="ref6" />
-            </OutPort>
-            <InPort identifier="inport">
-                <Processor type="CanvasGL" identifier="SilhouettesEnhancement" reference="ref4" />
-            </InPort>
-        </Connection>
-        <Connection>
             <OutPort identifier="entry-points">
                 <Processor type="EntryExitPoints" identifier="EntryExitPoints" reference="ref0" />
             </OutPort>
@@ -1072,40 +1142,72 @@
             </InPort>
         </Connection>
         <Connection>
+            <OutPort identifier="data">
+                <Processor type="VolumeSource" identifier="VolumeSource" reference="ref3" />
+            </OutPort>
+            <InPort identifier="volume">
+                <Processor type="VolumeIllustration" identifier="VolumeIllustration3" reference="ref11" />
+            </InPort>
+        </Connection>
+        <Connection>
+            <OutPort identifier="entry-points">
+                <Processor type="EntryExitPoints" identifier="EntryExitPoints" reference="ref0" />
+            </OutPort>
+            <InPort identifier="entry-points">
+                <Processor type="VolumeIllustration" identifier="VolumeIllustration3" reference="ref11" />
+            </InPort>
+        </Connection>
+        <Connection>
+            <OutPort identifier="exit-points">
+                <Processor type="EntryExitPoints" identifier="EntryExitPoints" reference="ref0" />
+            </OutPort>
+            <InPort identifier="exit-points">
+                <Processor type="VolumeIllustration" identifier="VolumeIllustration3" reference="ref11" />
+            </InPort>
+        </Connection>
+        <Connection>
             <OutPort identifier="outport">
                 <Processor type="VolumeIllustration" identifier="VolumeIllustration2" reference="ref8" />
+            </OutPort>
+            <InPort identifier="inport">
+                <Processor type="Background" identifier="Background" reference="ref15" />
+            </InPort>
+        </Connection>
+        <Connection>
+            <OutPort identifier="outport">
+                <Processor type="Background" identifier="Background" reference="ref15" />
             </OutPort>
             <InPort identifier="inport">
                 <Processor type="CanvasGL" identifier="Boundary" reference="ref9" />
             </InPort>
         </Connection>
         <Connection>
-            <OutPort identifier="data">
-                <Processor type="VolumeSource" identifier="VolumeSource" reference="ref3" />
+            <OutPort identifier="outport">
+                <Processor type="VolumeIllustration" identifier="VolumeIllustration" reference="ref6" />
             </OutPort>
-            <InPort identifier="volume">
-                <Processor type="VolumeIllustration" identifier="VolumeIllustration3" reference="ref11" />
+            <InPort identifier="inport">
+                <Processor type="Background" identifier="Background3" reference="ref16" />
             </InPort>
         </Connection>
         <Connection>
-            <OutPort identifier="entry-points">
-                <Processor type="EntryExitPoints" identifier="EntryExitPoints" reference="ref0" />
+            <OutPort identifier="outport">
+                <Processor type="Background" identifier="Background3" reference="ref16" />
             </OutPort>
-            <InPort identifier="entry-points">
-                <Processor type="VolumeIllustration" identifier="VolumeIllustration3" reference="ref11" />
-            </InPort>
-        </Connection>
-        <Connection>
-            <OutPort identifier="exit-points">
-                <Processor type="EntryExitPoints" identifier="EntryExitPoints" reference="ref0" />
-            </OutPort>
-            <InPort identifier="exit-points">
-                <Processor type="VolumeIllustration" identifier="VolumeIllustration3" reference="ref11" />
+            <InPort identifier="inport">
+                <Processor type="CanvasGL" identifier="SilhouettesEnhancement" reference="ref4" />
             </InPort>
         </Connection>
         <Connection>
             <OutPort identifier="outport">
                 <Processor type="VolumeIllustration" identifier="VolumeIllustration3" reference="ref11" />
+            </OutPort>
+            <InPort identifier="inport">
+                <Processor type="Background" identifier="Background2" reference="ref14" />
+            </InPort>
+        </Connection>
+        <Connection>
+            <OutPort identifier="outport">
+                <Processor type="Background" identifier="Background2" reference="ref14" />
             </OutPort>
             <InPort identifier="inport">
                 <Processor type="CanvasGL" identifier="Combined" reference="ref12" />
