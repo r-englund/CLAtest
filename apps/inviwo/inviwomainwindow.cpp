@@ -289,7 +289,7 @@ void InviwoMainWindow::addMenuActions() {
     viewMenuItem_->addAction(visibilityModeAction_);
 
     visibilityModeProperty_ =
-        &InviwoApplication::getPtr()->getSettingsByType<SystemSettings>()->visibilityModeProperty_;
+        &InviwoApplication::getPtr()->getSettingsByType<SystemSettings>()->applicationUsageModeProperty_;
     visibilityModeProperty_->onChange(this, &InviwoMainWindow::visibilityModeChangedInSettings);
 
     connect(visibilityModeAction_, SIGNAL(triggered(bool)), this, SLOT(setVisibilityMode(bool)));
@@ -567,13 +567,13 @@ void InviwoMainWindow::visibilityModeChangedInSettings(){
             if(visibilityModeAction_->isChecked()){
                 visibilityModeAction_->setChecked(false);
             }
-            propertyListWidget_->setVisibilityMode(false);
+            propertyListWidget_->setUsageMode(false);
             setVisibilityMode(false);
         } else if (selectedIdx == APPLICATION) {
             if(!visibilityModeAction_->isChecked()){
                 visibilityModeAction_->setChecked(true);
             }
-            propertyListWidget_->setVisibilityMode(true);
+            propertyListWidget_->setUsageMode(true);
             setVisibilityMode(true);
         }
         updateWindowTitle();
@@ -621,7 +621,6 @@ void InviwoMainWindow::closeEvent(QCloseEvent* event) {
         settings.setValue("workspaceOnLastSucessfullExit","" );
     settings.endGroup();
     settingsWidget_->saveSettings();
-    propertyListWidget_->saveState();
     QMainWindow::closeEvent(event);
 }
 

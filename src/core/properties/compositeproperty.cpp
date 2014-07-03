@@ -48,18 +48,18 @@ void CompositeProperty::setOwner(PropertyOwner* owner) {
     for (size_t i = 0; i < properties_.size(); i++) properties_[i]->setOwner(this);
 }
 
-PropertyVisibilityMode CompositeProperty::getVisibilityMode() const {
-    PropertyVisibilityMode mode = INVISIBLE;
+UsageMode CompositeProperty::getUsageMode() const {
+    UsageMode mode = DEVELOPMENT;
     for (size_t i = 0; i < properties_.size(); i++) {
-        mode = std::min(mode, properties_[i]->getVisibilityMode());
+        mode = std::min(mode, properties_[i]->getUsageMode());
     }
     return mode;
 }
-void CompositeProperty::setVisibilityMode(PropertyVisibilityMode visibilityMode) {
+void CompositeProperty::setUsageMode(UsageMode usageMode) {
     for (size_t i = 0; i < properties_.size(); i++) {
-        properties_[i]->setVisibilityMode(visibilityMode);
+        properties_[i]->setUsageMode(usageMode);
     }
-    Property::setVisibilityMode(visibilityMode);
+    Property::setUsageMode(usageMode);
 }
 
 void CompositeProperty::updateVisibility() {
@@ -69,13 +69,27 @@ void CompositeProperty::updateVisibility() {
     }     
 }
 
-void CompositeProperty::setVisible(bool val) {
+bool CompositeProperty::getVisible() {
     bool visible = false;
     for (size_t i = 0; i < properties_.size(); i++) {
-        properties_[i]->setVisible(val);
-        visible = visible || val;
+        visible = visible || properties_[i]->getVisible();
     }
-    Property::setVisible(visible);
+    return visible;
+}
+
+void CompositeProperty::setVisible(bool val) {
+    for (size_t i = 0; i < properties_.size(); i++) {
+        properties_[i]->setVisible(val);
+    }
+    Property::setVisible(val);
+}
+
+bool CompositeProperty::getReadOnly() const {
+    bool readOnly = true;
+    for (size_t i = 0; i < properties_.size(); i++) {
+        readOnly = readOnly && properties_[i]->getReadOnly();
+    }
+    return readOnly;
 }
 
 void CompositeProperty::setReadOnly(const bool& value) {
@@ -136,5 +150,8 @@ void CompositeProperty::resetToDefaultState() {
     }
     Property::resetToDefaultState();
 }
+
+
+
 
 } // namespace

@@ -49,9 +49,9 @@ public:
     virtual void initialize();
     virtual void deinitialize();
 
-    PropertyVisibilityMode getApplicationViewMode() const;
+    UsageMode getApplicationUsageMode() const;
 
-    OptionPropertyInt visibilityModeProperty_;
+    OptionPropertyInt applicationUsageModeProperty_;
     BoolProperty txtEditorProperty_;
     BoolProperty shaderReloadingProperty_;
     BoolProperty enablePortInformationProperty_;

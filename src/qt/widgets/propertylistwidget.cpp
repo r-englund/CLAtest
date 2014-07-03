@@ -98,11 +98,8 @@ PropertyListWidget::PropertyListWidget(QWidget* parent)
     scrollArea_->setWidget(listWidget_);
     setWidget(scrollArea_);
 
-    QSettings settings("Inviwo", "Inviwo");
-    settings.beginGroup("PropertyListwidget");
-    developerViewMode_ = settings.value("developerViewMode", true).toBool();
-    applicationViewMode_ = settings.value("applicationViewMode", false).toBool();
-    settings.endGroup();
+    usageMode_ = InviwoApplication::getPtr()->getSettingsByType<SystemSettings>()
+                                            ->getApplicationUsageMode();
 }
 
 PropertyListWidget::~PropertyListWidget() {}
@@ -144,7 +141,6 @@ void PropertyListWidget::removeAndDeleteProcessorProperties(Processor* processor
             devWidgets_.erase(elm);
         }
 
-        setUpdatesEnabled(false);
         it->second->hideWidget();
         int height = 0;
         for (WidgetVector::iterator elm = devWidgets_.begin(); elm != devWidgets_.end(); ++elm) {
@@ -152,7 +148,7 @@ void PropertyListWidget::removeAndDeleteProcessorProperties(Processor* processor
         }
 
         listLayout_->removeWidget(it->second);
-        setUpdatesEnabled(true);
+
 
         CollapsibleGroupBoxWidgetQt* collapsiveGropWidget = it->second;
         std::vector<PropertyWidgetQt*> propertyWidgets = collapsiveGropWidget->getPropertyWidgets();
@@ -166,12 +162,6 @@ void PropertyListWidget::removeAndDeleteProcessorProperties(Processor* processor
         for (size_t i = 0; i < propertyWidgets.size(); i++) {
             collapsiveGropWidget->removeWidget(propertyWidgets[i]);
             propertyWidgets[i]->hide();
-            // TODO: Do not use deleteLater(). Widgets need to be deleted instantly or use
-            // deinitialize()
-            // Reason: These are cached widgets which has children widgets.
-            // deleteLater() keeps the children active for a while that causes invalidation of
-            // properties.
-            // Hence deleteLater() cannot be used
             delete propertyWidgets[i];
         }
 
@@ -204,8 +194,9 @@ CollapsibleGroupBoxWidgetQt* PropertyListWidget::getProcessorPropertiesItem(Proc
     if (it != widgetMap_.end()) {
         // property widget has already been created and stored in the map
         processorPropertyWidget = it->second;
-    } else
+    } else {
         processorPropertyWidget = createNewProcessorPropertiesItem(processor);
+    }
 
     return processorPropertyWidget;
 }
@@ -237,6 +228,7 @@ CollapsibleGroupBoxWidgetQt* PropertyListWidget::createNewProcessorPropertiesIte
     }
 
     listLayout_->insertWidget(0, processorPropertyWidget, 0, Qt::AlignTop);
+    processorPropertyWidget->updateVisibility();
     processorPropertyWidget->hideWidget();
 
     widgetMap_.insert(std::make_pair(processor->getIdentifier(), processorPropertyWidget));
@@ -247,49 +239,37 @@ void PropertyListWidget::propertyModified() { notifyPropertyListWidgetObservers(
 
 PropertyListWidget* PropertyListWidget::instance() { return propertyListWidget_; }
 
-void PropertyListWidget::setVisibilityMode(bool applicationView) {
-    if (applicationView) {
-        setVisibilityMode(APPLICATION);
+void PropertyListWidget::setUsageMode(bool applicationMode) {
+    if (applicationMode) {
+        setUsageMode(APPLICATION);
     } else {
-        setVisibilityMode(DEVELOPMENT);
+        setUsageMode(DEVELOPMENT);
     }
 }
 
-void PropertyListWidget::setVisibilityMode(PropertyVisibilityMode appVisibilityMode) {
-    applicationViewMode_ = (appVisibilityMode == APPLICATION);
-    developerViewMode_ = (appVisibilityMode == DEVELOPMENT);
+void PropertyListWidget::setUsageMode(UsageMode usageMode) {
+    usageMode_ = usageMode;
 
     for (WidgetMap::const_iterator it = widgetMap_.begin(); it != widgetMap_.end(); it++) {
         CollapsibleGroupBoxWidgetQt* widget = it->second;
 
         widget->updateVisibility();
 
-        if (appVisibilityMode == DEVELOPMENT) {
+        if (usageMode_ == DEVELOPMENT) {
             widget->hideWidget();
         }
 
     }
 
-    if (appVisibilityMode == DEVELOPMENT) {
+    if (usageMode_ == DEVELOPMENT) {
         for (WidgetVector::iterator it = devWidgets_.begin(); it != devWidgets_.end(); ++it) {
             (*it)->showWidget();
         }
     }
 }
 
-void PropertyListWidget::saveState() {
-    QSettings settings("Inviwo", "Inviwo");
-    settings.beginGroup("PropertyListwidget");
-    settings.setValue("developerViewMode", developerViewMode_);
-    settings.setValue("applicationViewMode", applicationViewMode_);
-    settings.endGroup();
-}
-
-PropertyVisibilityMode PropertyListWidget::getVisibilityMode() {
-    if (developerViewMode_)
-        return DEVELOPMENT;
-    else
-        return APPLICATION;
+UsageMode PropertyListWidget::getUsageMode() {
+    return usageMode_;
 }
 
 bool PropertyListWidget::event(QEvent* e) {
@@ -298,8 +278,8 @@ bool PropertyListWidget::event(QEvent* e) {
         PropertyListEvent* ple = static_cast<PropertyListEvent*>(e);
         ple->accept();
 
-        Processor* p = InviwoApplication::getPtr()->getProcessorNetwork()->getProcessorByName(
-            ple->identifier_);
+        Processor* p = InviwoApplication::getPtr()->getProcessorNetwork()
+                                                  ->getProcessorByName(ple->identifier_);
         if (p == NULL) {
             return true;
         }

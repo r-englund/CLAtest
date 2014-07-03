@@ -51,8 +51,8 @@ public:
 
     virtual void setOwner(PropertyOwner* owner);
     virtual std::string getClassName()  const { return "CompositeProperty"; }
-    virtual void updateVisibility();
-    virtual void setVisible(bool val);
+
+    virtual bool getReadOnly() const; // returns true if all sub properties are read only
     virtual void setReadOnly(const bool& value);
 
     //override original function in property
@@ -66,8 +66,12 @@ public:
     virtual void setCurrentStateAsDefault();
     virtual void resetToDefaultState();
     
-    virtual PropertyVisibilityMode getVisibilityMode() const;
-    virtual void setVisibilityMode(PropertyVisibilityMode visibilityMode);
+    virtual UsageMode getUsageMode() const; // returns the lowest mode of all sub properties
+    virtual void setUsageMode(UsageMode visibilityMode);
+    virtual bool getVisible(); // returns true if any sub property is visible 
+    virtual void setVisible(bool val);
+
+    virtual void updateVisibility();
 
     // Override from the property owner
     virtual Processor* getProcessor() { return getOwner()->getProcessor(); }

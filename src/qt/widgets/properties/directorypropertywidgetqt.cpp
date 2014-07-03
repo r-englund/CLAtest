@@ -87,7 +87,6 @@ void DirectoryPropertyWidgetQt::setPropertyValue() {
         InviwoFileDialog::setPreviousPath(QString(property_->getContentType().c_str()), existingDir);
         setPropertyTreeInfo(dir);
         property_->set(dir);
-        emit modified();
     }
 }
 

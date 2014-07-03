@@ -108,6 +108,7 @@ private:
     static QEvent::Type PROPERY_LIST_EVENT;
 };
 
+
 class IVW_QTWIDGETS_API PropertyListWidget : public InviwoDockWidget,
                                              public PropertyListWidgetObservable {
     Q_OBJECT
@@ -124,9 +125,7 @@ public:
 
     void changeName(std::string oldName, std::string newName);
 
-    void saveState();
-
-    PropertyVisibilityMode getVisibilityMode();
+    UsageMode getUsageMode();
 
     void cacheProcessorPropertiesItem(Processor* processor);
     
@@ -136,29 +135,31 @@ public:
     typedef std::vector<CollapsibleGroupBoxWidgetQt*> WidgetVector;
 
 public slots:
-    void setVisibilityMode(bool value);  // True = Application, False = Developer
-    void setVisibilityMode(PropertyVisibilityMode viewMode);
+    void setUsageMode(bool value);  // True = Application, False = Developer
+    void setUsageMode(UsageMode viewMode);
 
 protected slots:
     void propertyModified();
 
+protected:
+    static PropertyListWidget* propertyListWidget_;
+    mutable WidgetMap widgetMap_;
+
 private:
     CollapsibleGroupBoxWidgetQt* getProcessorPropertiesItem(Processor* processor);
-
-
     CollapsibleGroupBoxWidgetQt* createNewProcessorPropertiesItem(Processor* processor);
 
-    bool developerViewMode_;
-    bool applicationViewMode_;
+    //bool developerViewMode_;
+    //bool applicationViewMode_;
+
+    UsageMode usageMode_;
 
     QVBoxLayout* listLayout_;
     WidgetVector devWidgets_;
     QWidget* listWidget_;
     QScrollArea* scrollArea_;
 
-protected:
-    static PropertyListWidget* propertyListWidget_;
-    mutable WidgetMap widgetMap_;
+
 };
 
 }  // namespace
