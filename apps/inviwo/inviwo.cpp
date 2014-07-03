@@ -52,7 +52,9 @@ int main(int argc, char** argv) {
 #endif
     std::string basePath = inviwo::filesystem::findBasePath();
     inviwo::FileLogger fileLogger(basePath);
+    inviwo::ConsoleLogger consoleLogger;
     inviwo::LogCentral::instance()->registerLogger(&fileLogger);
+    inviwo::LogCentral::instance()->registerLogger(&consoleLogger);
     inviwo::InviwoApplicationQt inviwoApp("Inviwo "+IVW_VERSION, basePath, argc, argv);
     inviwoApp.setWindowIcon(QIcon(":/icons/inviwo_light.png"));
     inviwoApp.setAttribute(Qt::AA_NativeWindows);
