@@ -197,23 +197,23 @@
                     <usageMode content="0" />
                     <visible content="1" />
                     <lookFrom type="FloatVec3Property" identifier="lookFrom" displayName="Look from">
-                        <minvalue x="-29.7407" y="-29.7407" z="-29.7407" />
-                        <maxvalue x="29.7407" y="29.7407" z="29.7407" />
+                        <minvalue x="-29.740702" y="-29.740702" z="-29.740702" />
+                        <maxvalue x="29.740702" y="29.740702" z="29.740702" />
                         <semantics semantics="Spherical" />
                         <usageMode content="0" />
                         <visible content="1" />
-                        <value x="8.4002428" y="-5.9600968" z="7.3231897" />
+                        <value x="8.2986298" y="-6.3187547" z="7.1359696" />
                     </lookFrom>
                     <lookTo type="FloatVec3Property" identifier="lookTo" displayName="Look to">
-                        <minvalue x="-29.7407" y="-29.7407" z="-29.7407" />
-                        <maxvalue x="29.7407" y="29.7407" z="29.7407" />
+                        <minvalue x="-29.740702" y="-29.740702" z="-29.740702" />
+                        <maxvalue x="29.740702" y="29.740702" z="29.740702" />
                         <usageMode content="0" />
                         <visible content="1" />
                     </lookTo>
                     <lookUp type="FloatVec3Property" identifier="lookUp" displayName="Look up">
                         <usageMode content="0" />
                         <visible content="1" />
-                        <value x="-0.30532032" y="-0.89604759" z="-0.30639687" />
+                        <value x="-0.3271161" y="-0.88147628" z="-0.32556936" />
                     </lookUp>
                     <fovy type="FloatProperty" identifier="fov" displayName="FOV">
                         <usageMode content="0" />
@@ -233,10 +233,10 @@
                         <visible content="1" />
                     </nearPlane>
                     <farPlane type="FloatProperty" identifier="far" displayName="Far Plane">
-                        <maxvalue content="2974.0701" />
+                        <maxvalue content="2974.0703" />
                         <usageMode content="0" />
                         <visible content="1" />
-                        <value content="436.15988" />
+                        <value content="436.15994" />
                     </farPlane>
                 </Property>
                 <Property type="BoolProperty" identifier="capNearClipping" displayName="Cap near plane clipping" key="capNearClipping">
@@ -254,7 +254,7 @@
                 <MetaData type="ProcessorMetaData">
                     <position x="-625" y="-700" />
                     <visibility content="1" />
-                    <selection content="0" />
+                    <selection content="1" />
                 </MetaData>
             </MetaDataList>
             <Properties>
@@ -319,7 +319,7 @@
                     <selection content="0" />
                 </MetaData>
                 <MetaData type="ProcessorWidgetMetaData">
-                    <position x="2042" y="248" />
+                    <position x="3032" y="604" />
                     <dimension x="471" y="395" />
                     <visibility content="1" />
                 </MetaData>
@@ -403,7 +403,7 @@
                         <semantics semantics="Spherical" />
                         <usageMode content="0" />
                         <visible content="1" />
-                        <value x="8.4002428" y="-5.9600968" z="7.3231897" />
+                        <value x="8.2986288" y="-6.3187542" z="7.1359692" />
                     </lookFrom>
                     <lookTo type="FloatVec3Property" identifier="lookTo" displayName="Look to">
                         <minvalue x="-29.7407" y="-29.7407" z="-29.7407" />
@@ -414,7 +414,7 @@
                     <lookUp type="FloatVec3Property" identifier="lookUp" displayName="Look up">
                         <usageMode content="0" />
                         <visible content="1" />
-                        <value x="-0.30532032" y="-0.89604759" z="-0.30639687" />
+                        <value x="-0.3271161" y="-0.88147628" z="-0.32556936" />
                     </lookUp>
                     <fovy type="FloatProperty" identifier="fov" displayName="FOV">
                         <usageMode content="0" />
@@ -714,7 +714,7 @@
                     <selection content="0" />
                 </MetaData>
                 <MetaData type="ProcessorWidgetMetaData">
-                    <position x="95" y="360" />
+                    <position x="119" y="450" />
                     <dimension x="471" y="395" />
                     <visibility content="1" />
                 </MetaData>
@@ -882,6 +882,7 @@
                 <Property type="FloatProperty" identifier="samplingRate" displayName="Sampling rate" key="samplingRate">
                     <usageMode content="0" />
                     <visible content="1" />
+                    <value content="2.3347001" />
                 </Property>
                 <Property type="FloatProperty" identifier="sc" displayName="sc" key="sc">
                     <usageMode content="0" />
@@ -933,10 +934,10 @@
                 <MetaData type="ProcessorMetaData">
                     <position x="-650" y="-350" />
                     <visibility content="1" />
-                    <selection content="1" />
+                    <selection content="0" />
                 </MetaData>
                 <MetaData type="ProcessorWidgetMetaData">
-                    <position x="2040" y="693" />
+                    <position x="2064" y="783" />
                     <dimension x="471" y="395" />
                     <visibility content="1" />
                 </MetaData>
