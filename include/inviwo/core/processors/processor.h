@@ -80,7 +80,7 @@ public:
      * @return The identifier that was set including eventual appended number
      */
     std::string setIdentifier(const std::string& identifier);
-    std::string getIdentifier() const;
+    std::string getIdentifier();
 
     void setProcessorWidget(ProcessorWidget* processorWidget);
     ProcessorWidget* getProcessorWidget() const;
