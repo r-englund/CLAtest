@@ -38,8 +38,7 @@ OrdinalPropertyAnimator::OrdinalPropertyAnimator()
     addProperty(delay_);
     addProperty(pbc_);
 
-    std::vector<BaseProp*>::const_iterator itBegin = properties_.begin(); // FIXME: std::distance requires a const iterator for properties_.begin()...
-    // FIXME: gcc on Jenkins seems to have no support for .cbegin() and .cend() in std::vector
+    std::vector<BaseProp*>::const_iterator itBegin = properties_.begin(); 
     for (std::vector<BaseProp*>::const_iterator it = itBegin; it != properties_.end(); ++it) {
         type_.addOption((*it)->classname_, (*it)->displayName_, std::distance(itBegin, it));
         Property* prop = (*it)->getProp();

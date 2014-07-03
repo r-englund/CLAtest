@@ -55,21 +55,16 @@ public:
     PropertyWidgetQt(Property* property);
     virtual ~PropertyWidgetQt();
     PropertyWidgetQt* create();
-
-    // Application viewModeNotification
-    virtual void onViewModeChange();
-
-    virtual void updateContextMenu();
     
-    virtual PropertyVisibilityMode getVisibilityMode() const;
-
-    virtual QSize sizeHint() const;
-    virtual QSize minimumSizeHint() const;
-
+    virtual UsageMode getUsageMode() const;
+    virtual bool getVisible() const;
     virtual void setVisible(bool visible);
 
     virtual void showWidget();
     virtual void hideWidget();
+
+    virtual QSize sizeHint() const;
+    virtual QSize minimumSizeHint() const;
 
     QMenu* getContextMenu();
 
@@ -79,18 +74,18 @@ public:
     static void setSpacingAndMargins(QLayout* layout);
     
 public slots:
-    void visibilityModified(int mode);
+    virtual void updateContextMenu();
     virtual void resetPropertyToDefaultState();
     virtual void showContextMenu(const QPoint& pos);
-    void setDeveloperViewMode(bool value);
-    void setApplicationViewMode(bool value);
+    virtual void setDeveloperUsageMode(bool value);
+    virtual void setApplicationUsageMode(bool value);
     void moduleAction();
 signals:
-    void modified();
+    void usageModeChanged();
 
 protected:
     void setProperty(Property* property);
-    PropertyVisibilityMode getApplicationViewMode();
+    UsageMode getApplicationUsageMode();
 
     // Context menu
     void generateContextMenu();
@@ -104,10 +99,10 @@ protected:
     void paintEvent(QPaintEvent *pe);
     
     // Actions
-    QAction* developerViewModeAction_;
-    QAction* applicationViewModeAction_;
-    QActionGroup* viewModeActionGroup_;
-    QMenu* viewModeItem_;
+    QAction* developerUsageModeAction_;
+    QAction* applicationUsageModeAction_;
+    QActionGroup* usageModeActionGroup_;
+    QMenu* usageModeItem_;
     
 private:
     QMenu* contextMenu_;

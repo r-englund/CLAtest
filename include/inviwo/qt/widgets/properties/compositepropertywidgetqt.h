@@ -52,9 +52,9 @@ public:
     virtual void updateFromProperty();
 
 protected slots:
-    void propertyModified();
-    void setDisplayModeFromGroupBox();
-    void labelDidChange(QString text);
+    virtual void setDeveloperUsageMode(bool value);
+    virtual void setApplicationUsageMode(bool value);
+    virtual void labelDidChange();
 
 private:
     CompositeProperty* property_;

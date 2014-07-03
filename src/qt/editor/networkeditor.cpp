@@ -1575,9 +1575,9 @@ bool NetworkEditor::loadNetwork(std::istream& stream, const std::string& path) {
                                     QPointF(meta->getPosition().x, meta->getPosition().y),
                                     meta->isVisible(), meta->isSelected(), false, false);
     }
-    PropertyListWidget::instance()->setVisibilityMode(InviwoApplication::getPtr()
+    PropertyListWidget::instance()->setUsageMode(InviwoApplication::getPtr()
                                                           ->getSettingsByType<SystemSettings>()
-                                                          ->visibilityModeProperty_.get());
+                                                          ->applicationUsageModeProperty_.get());
 
     // add connections
     std::vector<PortConnection*> connections =

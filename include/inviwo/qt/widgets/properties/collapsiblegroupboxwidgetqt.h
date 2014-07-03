@@ -61,7 +61,8 @@ public:
     virtual std::string getDisplayName() const;
     virtual void setDisplayName(const std::string& displayName);
    
-    virtual PropertyVisibilityMode getVisibilityMode() const;
+    virtual UsageMode getUsageMode() const;
+    bool getVisible() const;
 
     void updateFromProperty();
     void addProperty(Property* tmpProperty);
@@ -69,7 +70,7 @@ public:
     
     std::vector<Property*> getProperties();
     
-    bool isCollapsed() { return collapsed_; };
+    bool isCollapsed();
     
     virtual void showWidget();
     virtual void hideWidget();
@@ -84,22 +85,16 @@ public:
     virtual void serialize(IvwSerializer& s) const;
     virtual void deserialize(IvwDeserializer& d);
 
-signals:
-    void visibilityModified();
-    void labelChanged(QString text);
-
 public slots:
-    void toggleFold();
+    void toggleCollapsed();
     void updateVisibility();
-    void setDeveloperViewMode(bool value);
-    void setApplicationViewMode(bool value);
-    void labelDidChange();
+    virtual void setDeveloperUsageMode(bool value);
+    virtual void setApplicationUsageMode(bool value);
+    virtual void labelDidChange();
     virtual void resetPropertyToDefaultState();
-
 
 protected slots:
     void setGroupDisplayName();
-    void propertyModified();
 
 protected:
     void generateWidget();

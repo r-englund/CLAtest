@@ -93,7 +93,7 @@ public:
     virtual void setSemantics(const PropertySemantics& semantics);
 
     virtual void setReadOnly(const bool& value);
-    virtual bool getReadOnly()const;
+    virtual bool getReadOnly() const;
 
     PropertyOwner::InvalidationLevel getInvalidationLevel() const;
     void setInvalidationLevel(PropertyOwner::InvalidationLevel invalidationLevel) ;
@@ -156,11 +156,12 @@ public:
         onChangeCallback_.addMemberFunction(o,m);
     }
 
-    virtual void setVisibilityMode(PropertyVisibilityMode visibilityMode);
-    virtual PropertyVisibilityMode getVisibilityMode() const {return visibilityMode_;};
-
+    virtual UsageMode getUsageMode() const { return usageMode_; };
+    virtual void setUsageMode(UsageMode visibilityMode);
+    virtual bool getVisible();
     virtual void setVisible(bool val);
-    virtual void updateVisibility();
+
+    virtual void updateVisibility();  // TODO protected?
 
 protected:
     CallBackList onChangeCallback_;
@@ -172,7 +173,8 @@ private:
     bool defaultReadOnly_;
 
     PropertySemantics semantics_;
-    PropertyVisibilityMode visibilityMode_;
+    UsageMode usageMode_;
+    bool visible_;
 
     bool propertyModified_;
     PropertyOwner::InvalidationLevel invalidationLevel_;

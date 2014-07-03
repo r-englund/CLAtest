@@ -163,7 +163,6 @@ void FilePropertyWidgetQt::setPropertyValue() {
     }
 
     updateFromProperty();
-    emit modified();
 }
 
 void FilePropertyWidgetQt::updateFromProperty() {

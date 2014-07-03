@@ -45,11 +45,6 @@ CompositePropertyWidgetQt::CompositePropertyWidgetQt(CompositeProperty* property
         addProperty(subProperties[i]);
     }
 
-    connect(this, SIGNAL(visibilityModified()),
-            SLOT(setDisplayModeFromGroupBox()));
-    connect(this, SIGNAL(labelChanged(QString)),
-            SLOT(labelDidChange(QString)));
-
     updateFromProperty();
 }                           
 
@@ -58,13 +53,19 @@ void CompositePropertyWidgetQt::updateFromProperty() {
         propertyWidgets_[i]->updateFromProperty();
 }
 
-void CompositePropertyWidgetQt::propertyModified() { emit modified(); }
-
-void CompositePropertyWidgetQt::setDisplayModeFromGroupBox() {
-    property_->setVisibilityMode(getVisibilityMode());
+void CompositePropertyWidgetQt::labelDidChange() {
+    CollapsibleGroupBoxWidgetQt::labelDidChange();
+    property_->setDisplayName(getDisplayName());
 }
-void CompositePropertyWidgetQt::labelDidChange(QString text){
-    property_->setDisplayName(text.toStdString());
+
+void CompositePropertyWidgetQt::setDeveloperUsageMode(bool value) {
+    CollapsibleGroupBoxWidgetQt::setDeveloperUsageMode(value);
+    property_->setUsageMode(DEVELOPMENT);
+}
+
+void CompositePropertyWidgetQt::setApplicationUsageMode(bool value) {
+    CollapsibleGroupBoxWidgetQt::setApplicationUsageMode(value);
+    property_->setUsageMode(APPLICATION);
 }
 
 

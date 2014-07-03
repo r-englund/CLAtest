@@ -49,7 +49,8 @@ Property::Property(std::string identifier,
     , readOnly_(false)
     , defaultReadOnly_(false)
     , semantics_(semantics)
-    , visibilityMode_(APPLICATION)
+    , usageMode_(APPLICATION)
+    , visible_(true)
     , propertyModified_(false)
     , invalidationLevel_(invalidationLevel)
     , owner_(NULL)
@@ -65,7 +66,8 @@ Property::Property()
     , readOnly_(false)
     , defaultReadOnly_(false)
     , semantics_(PropertySemantics::Default)
-    , visibilityMode_(APPLICATION)
+    , usageMode_(APPLICATION)
+    , visible_(true)
     , propertyModified_(false)
     , invalidationLevel_(PropertyOwner::INVALID_OUTPUT)
     , owner_(NULL)
@@ -137,9 +139,6 @@ void Property::setOwner(PropertyOwner* owner) {
 
 void Property::registerWidget(PropertyWidget* propertyWidget) {
     propertyWidgets_.push_back(propertyWidget);
-
-    if (this->visibilityMode_ == INVISIBLE)
-        updateVisibility();
 }
 
 void Property::deregisterWidget(PropertyWidget* propertyWidget) {
@@ -229,7 +228,8 @@ void Property::serialize(IvwSerializer& s) const {
     if (semantics_ != PropertySemantics::Default) {
         s.serialize("semantics", semantics_);
     }
-    s.serialize("visibilityMode", visibilityMode_);
+    s.serialize("usageMode", usageMode_);
+    s.serialize("visible", visible_);
     if (readOnly_ != defaultReadOnly_) {
         s.serialize("readonly", readOnly_);
     }
@@ -244,9 +244,10 @@ void Property::deserialize(IvwDeserializer& d) {
     d.deserialize("identifier", identifier_, true);
     d.deserialize("displayName", displayName_, true);
     d.deserialize("semantics", semantics_);
-    int mode = visibilityMode_;
-    d.deserialize("visibilityMode", mode);
-    visibilityMode_ = static_cast<PropertyVisibilityMode>(mode);
+    int mode = usageMode_;
+    d.deserialize("usageMode", mode);
+    usageMode_ = static_cast<UsageMode>(mode);
+    d.deserialize("visible", visible_);
     d.deserialize("readonly", readOnly_);
     d.deserialize("MetaDataList", metaData_, "MetaData");
     updateVisibility();
@@ -266,18 +267,18 @@ std::string Property::getGroupDisplayName() const {
     return groupDisplayNames_[groupID_];
 }
 
-void Property::setVisibilityMode(PropertyVisibilityMode visibilityMode) {
-    this->visibilityMode_ = visibilityMode;
+void Property::setUsageMode(UsageMode visibilityMode) {
+    this->usageMode_ = visibilityMode;
     updateVisibility();
 }
 
 void Property::updateVisibility() {
-    PropertyVisibilityMode appMode =
-        InviwoApplication::getPtr()->getSettingsByType<SystemSettings>()->getApplicationViewMode();
+    UsageMode appMode =
+        InviwoApplication::getPtr()->getSettingsByType<SystemSettings>()->getApplicationUsageMode();
 
-    PropertyVisibilityMode mode = getVisibilityMode();
+    UsageMode mode = getUsageMode();
 
-    if (mode == INVISIBLE) {
+    if (getVisible() == false) {
         for (size_t i = 0; i < propertyWidgets_.size(); i++) propertyWidgets_[i]->hideWidget();
     }
 
@@ -292,11 +293,13 @@ void Property::updateVisibility() {
 }
 
 void Property::setVisible(bool val) {
-    if (val)
-        setVisibilityMode(APPLICATION);
-    else
-        setVisibilityMode(INVISIBLE);
+    visible_ = val;
+    updateVisibility();
 }
+bool Property::getVisible() {
+    return visible_;
+}
+
 
 void Property::setCurrentStateAsDefault() {
     defaultReadOnly_ = readOnly_;

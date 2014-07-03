@@ -52,10 +52,10 @@ int PropertyWidgetQt::MARGIN = 0;
 PropertyWidgetQt::PropertyWidgetQt()
     : QWidget()
     , PropertyWidget()
-    , developerViewModeAction_(NULL)
-    , applicationViewModeAction_(NULL)
-    , viewModeActionGroup_(NULL)
-    , viewModeItem_(NULL)
+    , developerUsageModeAction_(NULL)
+    , applicationUsageModeAction_(NULL)
+    , usageModeActionGroup_(NULL)
+    , usageModeItem_(NULL)
     , contextMenu_(NULL)
     , cached_(true) {
     setContextMenuPolicy(Qt::CustomContextMenu);
@@ -66,10 +66,10 @@ PropertyWidgetQt::PropertyWidgetQt()
 PropertyWidgetQt::PropertyWidgetQt(Property* property)
     : QWidget()
     , PropertyWidget(property)
-    , developerViewModeAction_(NULL)
-    , applicationViewModeAction_(NULL)
-    , viewModeActionGroup_(NULL)
-    , viewModeItem_(NULL)
+    , developerUsageModeAction_(NULL)
+    , applicationUsageModeAction_(NULL)
+    , usageModeActionGroup_(NULL)
+    , usageModeItem_(NULL)
     , contextMenu_(NULL)
     , cached_(true) {
     setContextMenuPolicy(Qt::CustomContextMenu);
@@ -91,7 +91,7 @@ void PropertyWidgetQt::setVisible(bool visible) {
 
 void PropertyWidgetQt::showWidget() {
     cached_ = false;
-    if (isHidden() && getVisibilityMode() != INVISIBLE) {
+    if (isHidden() && getVisible()) {
         updateContextMenu();
         this->show();
     }
@@ -100,20 +100,6 @@ void PropertyWidgetQt::showWidget() {
 void PropertyWidgetQt::hideWidget() {
     if (isVisible()) {
         this->hide();
-    }
-}
-
-void PropertyWidgetQt::onViewModeChange() {
-    if (viewModeItem_) {
-        PropertyVisibilityMode appVisibilityMode = getApplicationViewMode();
-
-        if (appVisibilityMode == DEVELOPMENT) {
-            if (developerViewModeAction_) developerViewModeAction_->setEnabled(true);
-            if (applicationViewModeAction_) applicationViewModeAction_->setEnabled(true);
-        } else {
-            if (developerViewModeAction_) developerViewModeAction_->setEnabled(false);
-            if (applicationViewModeAction_) applicationViewModeAction_->setEnabled(false);
-        }
     }
 }
 
@@ -194,36 +180,36 @@ void PropertyWidgetQt::paintEvent(QPaintEvent* pe) {
     style()->drawPrimitive(QStyle::PE_Widget, &o, &p, this);
 };
 
-void PropertyWidgetQt::visibilityModified(int mode) {}
+//void PropertyWidgetQt::visibilityModified(int mode) {}
 
 void PropertyWidgetQt::generateContextMenu() {
     if (!contextMenu_) {
         contextMenu_ = new QMenu(this);
 
         // View mode actions (Developer / Application)
-        viewModeItem_ = new QMenu(tr("&View mode"), contextMenu_);
-        developerViewModeAction_ = new QAction(tr("&Developer"), this);
-        developerViewModeAction_->setCheckable(true);
-        viewModeItem_->addAction(developerViewModeAction_);
+        usageModeItem_ = new QMenu(tr("&Usage mode"), contextMenu_);
+        developerUsageModeAction_ = new QAction(tr("&Developer"), this);
+        developerUsageModeAction_->setCheckable(true);
+        usageModeItem_->addAction(developerUsageModeAction_);
 
-        applicationViewModeAction_ = new QAction(tr("&Application"), this);
-        applicationViewModeAction_->setCheckable(true);
-        viewModeItem_->addAction(applicationViewModeAction_);
+        applicationUsageModeAction_ = new QAction(tr("&Application"), this);
+        applicationUsageModeAction_->setCheckable(true);
+        usageModeItem_->addAction(applicationUsageModeAction_);
 
-        viewModeActionGroup_ = new QActionGroup(this);
-        viewModeActionGroup_->addAction(developerViewModeAction_);
-        viewModeActionGroup_->addAction(applicationViewModeAction_);
-        contextMenu_->addMenu(viewModeItem_);
+        usageModeActionGroup_ = new QActionGroup(this);
+        usageModeActionGroup_->addAction(developerUsageModeAction_);
+        usageModeActionGroup_->addAction(applicationUsageModeAction_);
+        contextMenu_->addMenu(usageModeItem_);
 
         QAction* resetAction = new QAction(tr("&Reset to default"), this);
         resetAction->setToolTip(tr("&Reset the property back to it's initial state"));
         contextMenu_->addAction(resetAction);
 
-        connect(developerViewModeAction_, SIGNAL(triggered(bool)), this,
-                SLOT(setDeveloperViewMode(bool)));
+        connect(developerUsageModeAction_, SIGNAL(triggered(bool)), this,
+                SLOT(setDeveloperUsageMode(bool)));
 
-        connect(applicationViewModeAction_, SIGNAL(triggered(bool)), this,
-                SLOT(setApplicationViewMode(bool)));
+        connect(applicationUsageModeAction_, SIGNAL(triggered(bool)), this,
+                SLOT(setApplicationUsageMode(bool)));
 
         connect(resetAction, SIGNAL(triggered()), this, SLOT(resetPropertyToDefaultState()));
 
@@ -317,23 +303,29 @@ void PropertyWidgetQt::updateModuleMenuActions() {
     }
 }
 
-PropertyVisibilityMode PropertyWidgetQt::getVisibilityMode() const {
-    return property_->getVisibilityMode();
+UsageMode PropertyWidgetQt::getUsageMode() const {
+    return property_->getUsageMode();
 };
 
-void PropertyWidgetQt::setDeveloperViewMode(bool value) {
-    property_->setVisibilityMode(DEVELOPMENT);
-    updateContextMenu();
+bool PropertyWidgetQt::getVisible() const {
+    return property_->getVisible();
 }
 
-void PropertyWidgetQt::setApplicationViewMode(bool value) {
-    property_->setVisibilityMode(APPLICATION);
+void PropertyWidgetQt::setDeveloperUsageMode(bool value) {
+    property_->setUsageMode(DEVELOPMENT);
     updateContextMenu();
+    emit usageModeChanged();
 }
 
-PropertyVisibilityMode PropertyWidgetQt::getApplicationViewMode() {
+void PropertyWidgetQt::setApplicationUsageMode(bool value) {
+    property_->setUsageMode(APPLICATION);
+    updateContextMenu();
+    emit usageModeChanged();
+}
+
+UsageMode PropertyWidgetQt::getApplicationUsageMode() {
     return InviwoApplication::getPtr()->getSettingsByType<SystemSettings>()
-                                      ->getApplicationViewMode();
+                                      ->getApplicationUsageMode();
 }
 
 void PropertyWidgetQt::moduleAction() {
@@ -355,21 +347,21 @@ void PropertyWidgetQt::moduleAction() {
 }
 
 void PropertyWidgetQt::updateContextMenu() {
-    if (viewModeItem_) {
+    if (usageModeItem_) {
         // Update the current selection.
-        if (getVisibilityMode() == DEVELOPMENT)
-            developerViewModeAction_->setChecked(true);
-        else if (getVisibilityMode() == APPLICATION)
-            applicationViewModeAction_->setChecked(true);
+        if (getUsageMode() == DEVELOPMENT)
+            developerUsageModeAction_->setChecked(true);
+        else if (getUsageMode() == APPLICATION)
+            applicationUsageModeAction_->setChecked(true);
 
         // Disable the view mode buttons in Application mode
-        PropertyVisibilityMode appVisibilityMode = getApplicationViewMode();
+        UsageMode appVisibilityMode = getApplicationUsageMode();
         if (appVisibilityMode == DEVELOPMENT) {
-            developerViewModeAction_->setEnabled(true);
-            applicationViewModeAction_->setEnabled(true);
+            developerUsageModeAction_->setEnabled(true);
+            applicationUsageModeAction_->setEnabled(true);
         } else {
-            developerViewModeAction_->setEnabled(false);
-            applicationViewModeAction_->setEnabled(false);
+            developerUsageModeAction_->setEnabled(false);
+            applicationUsageModeAction_->setEnabled(false);
         }
         updateModuleMenuActions();
     }

@@ -39,7 +39,7 @@ namespace inviwo {
 
 SystemSettings::SystemSettings(std::string id) :
     Settings(id)
-    , visibilityModeProperty_("visibilityMode","Visibility mode")
+    , applicationUsageModeProperty_("applicationUsageMode", "Application usage mode")
     , txtEditorProperty_("txtEditor", "Use system text editor", true)
     , shaderReloadingProperty_("shaderReloading", "Automatically reload shaders", true)
     , enablePortInformationProperty_("enablePortInformation", "Enable port information", true)
@@ -55,12 +55,11 @@ SystemSettings::SystemSettings(std::string id) :
 SystemSettings::~SystemSettings() {}
 
 void SystemSettings::initialize() {
-    visibilityModeProperty_.addOption("applicationMode","Application Mode", 0);
-    visibilityModeProperty_.addOption("developerMode","Developer Mode", 1);
-    visibilityModeProperty_.setSelectedIndex(1);
-    visibilityModeProperty_.setCurrentStateAsDefault();
-    addProperty(&visibilityModeProperty_);
-    visibilityModeProperty_.setVisibilityMode(INVISIBLE);
+    applicationUsageModeProperty_.addOption("applicationMode","Application Mode", 0);
+    applicationUsageModeProperty_.addOption("developerMode","Developer Mode", 1);
+    applicationUsageModeProperty_.setSelectedIndex(1);
+    applicationUsageModeProperty_.setCurrentStateAsDefault();
+    addProperty(&applicationUsageModeProperty_);
     addProperty(&txtEditorProperty_);
     addProperty(&shaderReloadingProperty_);
     addProperty(&enablePortInformationProperty_);
@@ -113,8 +112,8 @@ void SystemSettings::allocationTest() {
     }
 }
 
-PropertyVisibilityMode SystemSettings::getApplicationViewMode() const {
-    return static_cast<PropertyVisibilityMode>(visibilityModeProperty_.get());
+UsageMode SystemSettings::getApplicationUsageMode() const {
+    return static_cast<UsageMode>(applicationUsageModeProperty_.get());
 }
 
 } // namespace

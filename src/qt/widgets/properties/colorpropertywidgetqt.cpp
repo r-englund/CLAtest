@@ -145,7 +145,6 @@ void ColorPropertyWidgetQt::setPropertyValue() {
                                             stop: 0.1 "+currentColor_->name()+", \
                                             stop:0.9 "+currentColor_->name()+", \
                                             stop:1 "+bottomColor.name()+"); }");
-    emit modified();
 }
 
 void ColorPropertyWidgetQt::openColorDialog() {

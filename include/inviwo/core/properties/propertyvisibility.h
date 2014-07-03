@@ -35,28 +35,10 @@
 
 namespace inviwo {
 
-// TODO, change to two enums:
-// UsageMode ( Application / Development ) 
-// and 
-// VisibilityMode ( Visible / Invisible )
-
-/*
 enum UsageMode {
     APPLICATION = 0, // Default, always show property
-    DEVELOPMENT = 1 // Only show in developer mode
-};
-
-enum VisibilityMode {
-    VISIBLE = 0,
-    INVISIBLE = 1
-};
-*/
-
-typedef enum PropertyVisibilityMode {
-    APPLICATION = 0, // Default, always show property
     DEVELOPMENT = 1, // Only show in developer mode
-    INVISIBLE = 2    // Never show.
-} PropertyVisibilityMode;
+};
 
 } //namespace
 

@@ -86,7 +86,6 @@ void LightPropertyWidgetQt::generateWidget() {
 
 void LightPropertyWidgetQt::onPositionLightWidgetChanged() {
     property_->set(lightWidget_->getPosition());
-    emit modified();
 }
 
 void LightPropertyWidgetQt::onRadiusSpinBoxChanged(double radius) {

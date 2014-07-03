@@ -63,7 +63,6 @@ void BoolPropertyWidgetQt::generateWidget() {
 
 void BoolPropertyWidgetQt::setPropertyValue() {
     property_->set(checkBox_->isChecked());
-    emit modified();
 }
 
 void BoolPropertyWidgetQt::updateFromProperty() {
