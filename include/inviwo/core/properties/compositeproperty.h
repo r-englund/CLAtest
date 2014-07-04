@@ -75,6 +75,9 @@ public:
 
     // Override from the property owner
     virtual Processor* getProcessor() { return getOwner()->getProcessor(); }
+
+    virtual void serialize(IvwSerializer& s) const;
+    virtual void deserialize(IvwDeserializer& d);
 };
 
 } // namespace

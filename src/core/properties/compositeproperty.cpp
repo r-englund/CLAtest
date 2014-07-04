@@ -155,6 +155,17 @@ void CompositeProperty::resetToDefaultState() {
     Property::resetToDefaultState();
 }
 
+void CompositeProperty::serialize(IvwSerializer& s) const{
+    Property::serialize(s);
+    PropertyOwner::serialize(s);
+}
+
+void CompositeProperty::deserialize(IvwDeserializer& d){
+    Property::deserialize(d);
+    PropertyOwner::deserialize(d);
+
+}
+
 
 
 

@@ -202,7 +202,7 @@
                         <semantics semantics="Spherical" />
                         <usageMode content="0" />
                         <visible content="1" />
-                        <value x="5.7543664" y="-12.063689" z="-4.7407527" />
+                        <value x="13.919119" y="-2.2949691" z="-2.8610377" />
                     </lookFrom>
                     <lookTo type="FloatVec3Property" identifier="lookTo" displayName="Look to">
                         <minvalue x="-28.420002" y="-28.420002" z="-28.420002" />
@@ -213,7 +213,7 @@
                     <lookUp type="FloatVec3Property" identifier="lookUp" displayName="Look up">
                         <usageMode content="0" />
                         <visible content="1" />
-                        <value x="-0.18320593" y="0.23608384" z="-0.94905275" />
+                        <value x="0.1171473" y="0.91410279" z="-0.37508929" />
                     </lookUp>
                     <fovy type="FloatProperty" identifier="fov" displayName="FOV">
                         <usageMode content="0" />
@@ -257,7 +257,7 @@
                     <selection content="0" />
                 </MetaData>
                 <MetaData type="ProcessorWidgetMetaData">
-                    <position x="332" y="330" />
+                    <position x="380" y="510" />
                     <dimension x="415" y="427" />
                     <visibility content="1" />
                 </MetaData>
@@ -397,7 +397,7 @@
                         <semantics semantics="Spherical" />
                         <usageMode content="0" />
                         <visible content="1" />
-                        <value x="5.7543664" y="-12.063689" z="-4.7407527" />
+                        <value x="13.919119" y="-2.2949691" z="-2.8610377" />
                     </lookFrom>
                     <lookTo type="FloatVec3Property" identifier="lookTo" displayName="Look to">
                         <minvalue x="-28.420002" y="-28.420002" z="-28.420002" />
@@ -408,7 +408,7 @@
                     <lookUp type="FloatVec3Property" identifier="lookUp" displayName="Look up">
                         <usageMode content="0" />
                         <visible content="1" />
-                        <value x="-0.18320593" y="0.23608384" z="-0.94905275" />
+                        <value x="0.1171473" y="0.91410279" z="-0.37508929" />
                     </lookUp>
                     <fovy type="FloatProperty" identifier="fov" displayName="FOV">
                         <usageMode content="0" />
@@ -437,15 +437,92 @@
                 <Property type="OptionPropertyInt" identifier="channel" displayName="Render Channel" key="channel">
                     <usageMode content="0" />
                     <visible content="1" />
+                    <options>
+                        <option>
+                            <id content="Channel 0" />
+                            <name content="Channel 0" />
+                            <value content="0" />
+                        </option>
+                        <option>
+                            <id content="Channel 1" />
+                            <name content="Channel 1" />
+                            <value content="1" />
+                        </option>
+                    </options>
                     <selectedIdentifier content="Channel 1" />
                 </Property>
                 <Property type="CompositeProperty" identifier="lighting" displayName="Lighting" key="lighting">
                     <usageMode content="0" />
                     <visible content="1" />
+                    <Properties>
+                        <Property type="BoolProperty" identifier="applyLightAttenuation" displayName="Light attenuation" key="applyLightAttenuation">
+                            <usageMode content="0" />
+                            <visible content="1" />
+                        </Property>
+                        <Property type="FloatVec3Property" identifier="lightAttenuation" displayName="Light attenuation values" key="lightAttenuation">
+                            <usageMode content="0" />
+                            <visible content="1" />
+                        </Property>
+                        <Property type="FloatVec3Property" identifier="lightColorAmbient" displayName="Ambient color" key="lightColorAmbient">
+                            <semantics semantics="Color" />
+                            <usageMode content="0" />
+                            <visible content="1" />
+                            <value x="0.13725491" y="0.13725491" z="0.13725491" />
+                        </Property>
+                        <Property type="FloatVec3Property" identifier="lightColorDiffuse" displayName="Diffuse color" key="lightColorDiffuse">
+                            <semantics semantics="Color" />
+                            <usageMode content="0" />
+                            <visible content="1" />
+                            <value x="1" y="1" z="1" />
+                        </Property>
+                        <Property type="FloatVec3Property" identifier="lightColorSpecular" displayName="Specular color" key="lightColorSpecular">
+                            <semantics semantics="Color" />
+                            <usageMode content="0" />
+                            <visible content="1" />
+                            <value x="0.90980393" y="0.38431373" z="0.38431373" />
+                        </Property>
+                        <Property type="FloatVec3Property" identifier="lightPosition" displayName="Position" key="lightPosition">
+                            <semantics semantics="Spherical" />
+                            <usageMode content="0" />
+                            <visible content="1" />
+                            <value x="-0.34479445" y="-15.24062" z="-13.688696" />
+                        </Property>
+                        <Property type="IntProperty" identifier="materialShininess" displayName="Material shininess" key="materialShininess">
+                            <usageMode content="0" />
+                            <visible content="1" />
+                            <value content="180" />
+                        </Property>
+                        <Property type="OptionPropertyString" identifier="shadingMode" displayName="Shading" key="shadingMode">
+                            <usageMode content="0" />
+                            <visible content="1" />
+                        </Property>
+                    </Properties>
                 </Property>
                 <Property type="CompositeProperty" identifier="raycasting" displayName="Raycasting" key="raycasting">
                     <usageMode content="0" />
                     <visible content="1" />
+                    <Properties>
+                        <Property type="OptionPropertyString" identifier="classificationMode" displayName="Classification" key="classificationMode">
+                            <usageMode content="0" />
+                            <visible content="1" />
+                        </Property>
+                        <Property type="OptionPropertyString" identifier="compositingMode" displayName="Compositing" key="compositingMode">
+                            <usageMode content="0" />
+                            <visible content="0" />
+                        </Property>
+                        <Property type="OptionPropertyString" identifier="gradientComputationMode" displayName="Gradient computation" key="gradientComputationMode">
+                            <usageMode content="0" />
+                            <visible content="1" />
+                        </Property>
+                        <Property type="FloatProperty" identifier="isoValue" displayName="Iso value" key="isoValue">
+                            <usageMode content="0" />
+                            <visible content="1" />
+                        </Property>
+                        <Property type="FloatProperty" identifier="samplingRate" displayName="Sampling rate" key="samplingRate">
+                            <usageMode content="0" />
+                            <visible content="1" />
+                        </Property>
+                    </Properties>
                 </Property>
             </Properties>
         </Processor>

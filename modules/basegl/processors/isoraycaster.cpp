@@ -64,9 +64,6 @@ ISORaycaster::ISORaycaster()
     addPort(exitPort_, "ImagePortGroup1");
     addPort(outport_, "ImagePortGroup1");
     
-    channel_.addOption("Channel 1", "Channel 1", 0);
-    channel_.setCurrentStateAsDefault();
-    
     volumePort_.onChange(this, &ISORaycaster::onVolumeChange);
 
     addProperty(channel_);
@@ -126,20 +123,21 @@ void ISORaycaster::initializeResources(){
 }
     
 void ISORaycaster::onVolumeChange(){
-    if (volumePort_.hasData()){
+    if(volumePort_.hasData()){
         int channels = volumePort_.getData()->getDataFormat()->getComponents();
-        
-        channel_.clearOptions();
-        for (int i = 0; i < channels; i++) {
-            std::stringstream ss;
-            ss << "Channel " << i;
-            channel_.addOption(ss.str() , ss.str(), i);
+        while(channels < channel_.size()){
+            channel_.removeOption(channel_.size()-1);
         }
-        channel_.setCurrentStateAsDefault();
     }
 }
 
 void ISORaycaster::process() {
+    int channels = volumePort_.getData()->getDataFormat()->getComponents();
+    for(int i = channel_.size();i<channels;i++){
+        std::stringstream ss;
+        ss << "Channel " << i;
+        channel_.addOption(ss.str() , ss.str(), i);
+    }
     LGL_ERROR;
     TextureUnit entryColorUnit, entryDepthUnit, exitColorUnit, exitDepthUnit;
     bindTextures(entryPort_, entryColorUnit.getEnum(), entryDepthUnit.getEnum());

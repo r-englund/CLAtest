@@ -116,6 +116,7 @@ set(SHADER_FILES
     ${IVW_MODULE_DIR}/opengl/glsl/minimal.vert
     ${IVW_MODULE_DIR}/opengl/glsl/picking.frag
     ${IVW_MODULE_DIR}/opengl/glsl/raycasting.frag
+    ${IVW_MODULE_DIR}/opengl/glsl/isoraycasting.frag
     ${IVW_MODULE_DIR}/opengl/glsl/standard.frag
     ${IVW_MODULE_DIR}/opengl/glsl/standard.vert
     ${IVW_MODULE_DIR}/opengl/glsl/include/inc_classification.frag
