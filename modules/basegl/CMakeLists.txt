@@ -22,6 +22,7 @@ set(HEADER_FILES
     ${IVW_MODULE_DIR}/basegl/processors/positionwidgetprocessor.h
     ${IVW_MODULE_DIR}/basegl/processors/redgreenprocessor.h
     ${IVW_MODULE_DIR}/basegl/processors/simpleraycaster.h
+    ${IVW_MODULE_DIR}/basegl/processors/isoraycaster.h
     ${IVW_MODULE_DIR}/basegl/processors/volumeslicegl.h
 )
 ivw_group("Header Files" ${HEADER_FILES})
@@ -46,6 +47,7 @@ set(SOURCE_FILES
     ${IVW_MODULE_DIR}/basegl/processors/positionwidgetprocessor.cpp
     ${IVW_MODULE_DIR}/basegl/processors/redgreenprocessor.cpp
     ${IVW_MODULE_DIR}/basegl/processors/simpleraycaster.cpp
+    ${IVW_MODULE_DIR}/basegl/processors/isoraycaster.cpp
     ${IVW_MODULE_DIR}/basegl/processors/volumeslicegl.cpp
 )
 ivw_group("Source Files" ${SOURCE_FILES})
