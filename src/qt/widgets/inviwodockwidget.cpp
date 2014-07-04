@@ -43,4 +43,10 @@ InviwoDockWidget::InviwoDockWidget(QString title, QWidget* parent)
 
 InviwoDockWidget::~InviwoDockWidget() {}
 
+void InviwoDockWidget::show(){
+    raise();
+    QDockWidget::show();
+}
+
+
 } // namespace
