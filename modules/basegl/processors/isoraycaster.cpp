@@ -46,33 +46,28 @@ ProcessorCodeState(ISORaycaster, CODE_STATE_STABLE);
 
 ISORaycaster::ISORaycaster()
     : ProcessorGL()
+    , shader_(0)
     , volumePort_("volume")
     , entryPort_("entry-points")
     , exitPort_("exit-points")
     , outport_("outport", &entryPort_, COLOR_DEPTH)
-    , channel_("channel", "Render Channel") 
-    
-    , shader_ (0)
-
-    , raycasting_("raycasting","Raycasting")
-    , lighting_ ("lighting","Lighting")
-
-    , camera_("camera", "Camera", vec3(0.0f, 0.0f, 3.5f), vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 1.0f, 0.0f))
-
-{
-    
+    , channel_("channel", "Render Channel")
+    , raycasting_("raycasting", "Raycasting")
+    , lighting_("lighting", "Lighting")
+    , camera_("camera", "Camera", vec3(0.0f, 0.0f, 3.5f), vec3(0.0f, 0.0f, 0.0f),
+              vec3(0.0f, 1.0f, 0.0f)) {
+              
     addPort(volumePort_, "VolumePortGroup");
     addPort(entryPort_, "ImagePortGroup1");
     addPort(exitPort_, "ImagePortGroup1");
     addPort(outport_, "ImagePortGroup1");
-    
+
     volumePort_.onChange(this, &ISORaycaster::onVolumeChange);
 
     addProperty(channel_);
     addProperty(raycasting_);
     addProperty(camera_);
     addProperty(lighting_);
-    
 
     raycasting_.compositingMode_.setVisible(false);
     setAllPropertiesCurrentStateAsDefault();
