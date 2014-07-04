@@ -63,7 +63,7 @@ void ProcessorTree::mouseMoveEvent(QMouseEvent* e) {
         QTreeWidgetItem* selectedProcessor = itemAt(dragStartPosition_);
 
         if (selectedProcessor && selectedProcessor->parent())
-            new ProcessorDragObject(this, selectedProcessor->text(0));
+            new ProcessorDragObject(this, selectedProcessor->data(0,Qt::UserRole+1).toString());
     }
 }
 
@@ -143,7 +143,7 @@ QTreeWidgetItem* ProcessorTreeWidget::addProcessorItemTo(QTreeWidgetItem* item,
     newItem->setText(0, QString::fromStdString(processor->getDisplayName()));
     newItem->setText(1, QString::fromStdString(processor->getTags().getString() + " "));
     newItem->setTextAlignment(1, Qt::AlignRight);
-    
+    newItem->setData(0, Qt::UserRole + 1, QString::fromStdString(processor->getClassIdentifier()));
     item->addChild(newItem);
     
     if (processor->getTags().tags_.size() == 0) {
