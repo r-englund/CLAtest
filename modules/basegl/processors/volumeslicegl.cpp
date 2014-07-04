@@ -35,7 +35,9 @@
 
 namespace inviwo {
 
-ProcessorClassName(VolumeSliceGL, "VolumeSliceGL");
+ProcessorClassIdentifier(VolumeSliceGL,  "VolumeSliceGL");
+ProcessorDisplayName(VolumeSliceGL,  "Volume Slice");
+ProcessorTags(VolumeSliceGL, Tags::GL);
 ProcessorCategory(VolumeSliceGL, "Volume Operation");
 ProcessorCodeState(VolumeSliceGL, CODE_STATE_STABLE);
 

@@ -35,7 +35,9 @@
 
 namespace inviwo {
 
-ProcessorClassName(FindEdges, "FindEdges");
+ProcessorClassIdentifier(FindEdges,  "FindEdges");
+ProcessorDisplayName(FindEdges,  "Find Edges");
+ProcessorTags(FindEdges, Tags::GL);
 ProcessorCategory(FindEdges, "Image Operation");
 ProcessorCodeState(FindEdges, CODE_STATE_EXPERIMENTAL);
 

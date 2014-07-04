@@ -89,7 +89,7 @@ PyObject* py_listProcesoors(PyObject* /*self*/, PyObject* /*args*/) {
 
         for (std::vector<Processor*>::const_iterator processor = processors.begin(); processor!=processors.end(); ++processor) {
             std::string name = (*processor)->getIdentifier();
-            std::string type  = (*processor)->getClassName();
+            std::string type = (*processor)->getClassIdentifier();
             PyRun_SimpleString(("print \""+ name + " : "+ type + "\"").c_str());
         }
     }

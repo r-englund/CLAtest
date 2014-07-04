@@ -38,7 +38,9 @@ namespace inviwo {
 
 std::set<std::string> Processor::usedIdentifiers_;
 
-ProcessorClassName(Processor, "Processor");
+ProcessorClassIdentifier(Processor,  "Processor");
+ProcessorDisplayName(Processor,  "Processor");
+ProcessorTags(Processor, Tags::None);
 ProcessorCategory(Processor, "undefined");
 ProcessorCodeState(Processor, CODE_STATE_EXPERIMENTAL);
 
@@ -103,7 +105,7 @@ std::string Processor::setIdentifier(const std::string& identifier) {
 }
 
 std::string Processor::getIdentifier() {
-    if (identifier_.empty()) setIdentifier(getClassName());
+    if (identifier_.empty()) setIdentifier(getClassIdentifier());
     return identifier_;
 }
 
@@ -297,7 +299,7 @@ MetaData* Processor::getMetaData(std::string className) {
 }
 
 void Processor::serialize(IvwSerializer& s) const {
-    s.serialize("type", getClassName(), true);
+    s.serialize("type", getClassIdentifier(), true);
     s.serialize("identifier", identifier_, true);
     s.serialize("MetaDataList", metaData_, "MetaData") ;
 

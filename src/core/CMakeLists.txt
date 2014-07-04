@@ -153,6 +153,7 @@ set(HEADER_FILES
     ${IVW_INCLUDE_DIR}/inviwo/core/processors/processorfactoryobject.h
     ${IVW_INCLUDE_DIR}/inviwo/core/processors/processorobserver.h
     ${IVW_INCLUDE_DIR}/inviwo/core/processors/processorstate.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/processors/processortags.h
     ${IVW_INCLUDE_DIR}/inviwo/core/processors/processorwidget.h
     ${IVW_INCLUDE_DIR}/inviwo/core/processors/processorwidgetfactory.h
     ${IVW_INCLUDE_DIR}/inviwo/core/processors/progressbar.h
@@ -345,6 +346,7 @@ set(SOURCE_FILES
     processors/canvasprocessor.cpp
     processors/processor.cpp
     processors/processorfactory.cpp
+    processors/processortags.cpp
     processors/processorwidget.cpp
     processors/processorwidgetfactory.cpp
     processors/progressbar.cpp

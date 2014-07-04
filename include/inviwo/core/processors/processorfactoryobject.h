@@ -35,38 +35,46 @@
 
 #include <inviwo/core/common/inviwocoredefine.h>
 #include <inviwo/core/processors/processorstate.h>
+#include <inviwo/core/processors/processortags.h>
 #include <string>
 
 namespace inviwo {
 
 class Processor;
 
-class IVW_CORE_API ProcessorFactoryObject  {
-
+class IVW_CORE_API ProcessorFactoryObject {
 public:
-    ProcessorFactoryObject(std::string className, std::string category, CodeState codeState)
-        : className_(className), category_(category), codeState_(codeState) {
-    }
+    ProcessorFactoryObject(std::string classIdentifier, std::string displayName, Tags tags,
+                           std::string category, CodeState codeState)
+        : classIdentifier_(classIdentifier)
+        , displayName_(displayName)
+        , tags_(tags)
+        , category_(category)
+        , codeState_(codeState) {}
     virtual ~ProcessorFactoryObject() {}
 
     virtual Processor* create() = 0;
 
-    std::string getClassName() const { return className_; }
+    std::string getClassIdentifier() const { return classIdentifier_; }
+    std::string getDisplayName() const { return displayName_; }
+    Tags getTags() const { return tags_; }
     std::string getCategory() const { return category_; }
     CodeState getCodeState() const { return codeState_; }
 
 private:
-    std::string className_;
-    std::string category_;
-    CodeState codeState_;
+    const std::string classIdentifier_;
+    const std::string displayName_;
+    const Tags tags_;
+    const std::string category_;
+    const CodeState codeState_;
 };
 
-template<typename T>
-class ProcessorFactoryObjectTemplate : public ProcessorFactoryObject  {
-
+template <typename T>
+class ProcessorFactoryObjectTemplate : public ProcessorFactoryObject {
 public:
-    ProcessorFactoryObjectTemplate(std::string className, std::string category, CodeState codeState)
-        : ProcessorFactoryObject(className, category, codeState) {}
+    ProcessorFactoryObjectTemplate()
+        : ProcessorFactoryObject(T::CLASS_IDENTIFIER, T::DISPLAY_NAME, T::TAGS, T::CATEGORY,
+                                 T::CODE_STATE) {}
     virtual ~ProcessorFactoryObjectTemplate() {}
 
     virtual Processor* create() { return static_cast<Processor*>(new T()); }

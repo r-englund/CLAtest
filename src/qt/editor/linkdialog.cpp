@@ -288,7 +288,7 @@ void LinkDialogProcessorGraphicsItem::setProcessor(Processor* processor) {
 
     if (processor) {
         nameLabel_->setText(QString::fromStdString(processor->getIdentifier()));
-        classLabel_->setText(QString::fromStdString(processor->getClassName()));
+        classLabel_->setText(QString::fromStdString(processor->getClassIdentifier()));
         propertyGraphicsItems_.clear();
         std::vector<Property*> properties = processor->getProperties();
 

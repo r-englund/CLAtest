@@ -34,7 +34,9 @@
 
 namespace inviwo {
 
-ProcessorClassName(VolumeBasisTransformer, "VolumeBasisTransformer");
+ProcessorClassIdentifier(VolumeBasisTransformer,  "VolumeBasisTransformer");
+ProcessorDisplayName(VolumeBasisTransformer,  "Volume Basis Transformer");
+ProcessorTags(VolumeBasisTransformer, Tags::None);
 ProcessorCategory(VolumeBasisTransformer, "Volume Operation");
 ProcessorCodeState(VolumeBasisTransformer, CODE_STATE_EXPERIMENTAL);
 

@@ -42,14 +42,14 @@ ProcessorFactory::ProcessorFactory() {}
 ProcessorFactory::~ProcessorFactory() {}
 
 void ProcessorFactory::registerObject(ProcessorFactoryObject* processor) {
-    if (processorClassMap_.find(processor->getClassName()) == processorClassMap_.end())
-        processorClassMap_.insert(std::make_pair(processor->getClassName(), processor));
+    if (processorClassMap_.find(processor->getClassIdentifier()) == processorClassMap_.end())
+        processorClassMap_.insert(std::make_pair(processor->getClassIdentifier(), processor));
     else
-        LogWarn("Processor with class name: " << processor->getClassName() << " is already registerd");
+        LogWarn("Processor with class name: " << processor->getClassIdentifier() << " is already registerd");
 }
 
-IvwSerializable* ProcessorFactory::create(std::string className) const {
-    std::map<std::string, ProcessorFactoryObject*>::iterator it = processorClassMap_.find(className);
+IvwSerializable* ProcessorFactory::create(std::string classIdentifier) const {
+    std::map<std::string, ProcessorFactoryObject*>::iterator it = processorClassMap_.find(classIdentifier);
 
     if (it != processorClassMap_.end())
         return it->second->create();
@@ -57,8 +57,8 @@ IvwSerializable* ProcessorFactory::create(std::string className) const {
         return 0;
 }
 
-bool ProcessorFactory::isValidType(std::string className) const {
-    std::map<std::string, ProcessorFactoryObject*>::iterator it = processorClassMap_.find(className);
+bool ProcessorFactory::isValidType(std::string classIdentifier) const {
+    std::map<std::string, ProcessorFactoryObject*>::iterator it = processorClassMap_.find(classIdentifier);
 
     if (it != processorClassMap_.end())
         return true;

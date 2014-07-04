@@ -40,6 +40,7 @@
 #include <inviwo/core/ports/inport.h>
 #include <inviwo/core/ports/outport.h>
 #include <inviwo/core/processors/processorstate.h>
+#include <inviwo/core/processors/processortags.h>
 #include <inviwo/core/processors/processorwidget.h>
 #include <inviwo/core/properties/propertyowner.h>
 #include <inviwo/core/metadata/metadata.h>
@@ -48,22 +49,24 @@
 
 namespace inviwo {
 
-#define InviwoProcessorInfo() \
-    virtual std::string getClassName() const { return CLASS_NAME; } \
-    virtual std::string getCategory() const { return CATEGORY; } \
-    virtual CodeState getCodeState() const { return CODE_STATE; } \
-    static const std::string CLASS_NAME; \
-    static const std::string CATEGORY; \
-    static const CodeState CODE_STATE;
+#define InviwoProcessorInfo()                                                   \
+    virtual std::string getClassIdentifier() const { return CLASS_IDENTIFIER; } \
+    virtual std::string getDisplayName() const { return DISPLAY_NAME; }         \
+    virtual std::string getCategory() const { return CATEGORY; }                \
+    virtual CodeState getCodeState() const { return CODE_STATE; }               \
+    virtual Tags getTags() const { return TAGS; }                               \
+    static const std::string CLASS_IDENTIFIER;                                  \
+    static const std::string CATEGORY;                                          \
+    static const std::string DISPLAY_NAME;                                      \
+    static const CodeState CODE_STATE;                                          \
+    static const Tags TAGS;
 
-#define ProcessorClassName(T, className) \
-    const std::string T::CLASS_NAME = className;
-
-#define ProcessorCategory(T, category) \
-    const std::string T::CATEGORY = category;
-
-#define ProcessorCodeState(T, codeState) \
-    const CodeState T::CODE_STATE = codeState;
+#define ProcessorClassIdentifier(T, classIdentifier) \
+    const std::string T::CLASS_IDENTIFIER = classIdentifier;
+#define ProcessorDisplayName(T, displayName) const std::string T::DISPLAY_NAME = displayName;
+#define ProcessorTags(T, tags) const Tags T::TAGS = tags;
+#define ProcessorCategory(T, category) const std::string T::CATEGORY = category;
+#define ProcessorCodeState(T, codeState) const CodeState T::CODE_STATE = codeState;
 
 class IVW_CORE_API Processor : public PropertyOwner, public ProcessorObservable {
 

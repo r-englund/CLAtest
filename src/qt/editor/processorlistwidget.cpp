@@ -37,81 +37,16 @@
 #include <QVBoxLayout>
 #include <QWidget>
 #include <QMimeData>
+#include <QHeaderView>
 
 #include <inviwo/core/common/inviwoapplication.h>
 
 #include <inviwo/qt/editor/processorlistwidget.h>
 
 #include <inviwo/core/processors/processorstate.h>
+#include <inviwo/core/processors/processortags.h>
 
 namespace inviwo {
-
-void ProcessorList::mousePressEvent(QMouseEvent* e) {
-    if (e->buttons() & Qt::LeftButton)
-        dragStartPosition_ = e->pos();
-
-    QListWidget::mousePressEvent(e);
-}
-
-void ProcessorList::mouseMoveEvent(QMouseEvent* e) {
-    if (e->buttons() & Qt::LeftButton) {
-        if ((e->pos() - dragStartPosition_).manhattanLength() < QApplication::startDragDistance())
-            return;
-
-        QListWidgetItem* selectedProcessor = itemAt(dragStartPosition_);
-
-        if (selectedProcessor)
-            new ProcessorDragObject(this, selectedProcessor->text());
-    }
-}
-
-ProcessorListWidget::ProcessorListWidget(QWidget* parent) : InviwoDockWidget(tr("Processors"), parent) {
-    setObjectName("ProcessorListWidget");
-    setAllowedAreas(Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea);
-    QFrame* frame = new QFrame();
-    QVBoxLayout* vLayout = new QVBoxLayout(frame);
-    QLineEdit* lineEdit = new QLineEdit(frame);
-    lineEdit->setPlaceholderText("Filter processor list...");
-    connect(lineEdit, SIGNAL(textChanged(const QString&)), this, SLOT(addProcessorsToList(const QString&)));
-    vLayout->addWidget(lineEdit);
-    processorList_ = new ProcessorList(this);
-    addProcessorsToList();
-    vLayout->addWidget(processorList_);
-    frame->setLayout(vLayout);
-    setWidget(frame);
-}
-
-ProcessorListWidget::~ProcessorListWidget() {}
-
-bool ProcessorListWidget::processorFits(ProcessorFactoryObject* processor, const QString& filter) {
-    return (QString::fromStdString(processor->getClassName()).contains(filter, Qt::CaseInsensitive));
-}
-
-void ProcessorListWidget::addProcessorsToList(const QString& text) {
-    processorList_->clear();
-    // add processors from all modules to the list
-    InviwoApplication* inviwoApp = InviwoApplication::getPtr();
-
-    for (size_t curModuleId=0; curModuleId<inviwoApp->getModules().size(); curModuleId++) {
-        std::vector<ProcessorFactoryObject*> curProcessorList = inviwoApp->getModules()[curModuleId]->getProcessors();
-
-        for (size_t curProcessorId=0; curProcessorId<curProcessorList.size(); curProcessorId++) {
-            if (text.isEmpty() || processorFits(curProcessorList[curProcessorId], text)) {
-                QString iconName = ":/icons/processor_experimental.png";
-
-                if (curProcessorList[curProcessorId]->getCodeState() == CODE_STATE_BROKEN)
-                    iconName = ":/icons/processor_broken.png";
-                else if (curProcessorList[curProcessorId]->getCodeState() == CODE_STATE_STABLE)
-                    iconName = ":/icons/processor_stable.png";
-
-                processorList_->addItem(new QListWidgetItem(QIcon(iconName),
-                                        QString::fromStdString(curProcessorList[curProcessorId]->getClassName())));
-            }
-        }
-    }
-
-    processorList_->sortItems(Qt::AscendingOrder);
-}
 
 void ProcessorTree::mousePressEvent(QMouseEvent* e) {
     if (e->buttons() & Qt::LeftButton)
@@ -158,6 +93,12 @@ ProcessorTreeWidget::ProcessorTreeWidget(QWidget* parent) : InviwoDockWidget(tr(
     iconBroken_ = QIcon(":/icons/processor_broken.png");
     processorTree_ = new ProcessorTree(this);
     processorTree_->setHeaderHidden(true);
+    processorTree_->setColumnCount(2);
+    processorTree_->header()->setStretchLastSection(false);
+    processorTree_->header()->setSectionResizeMode(0, QHeaderView::Stretch);
+    processorTree_->header()->setSectionResizeMode(1, QHeaderView::Fixed);
+    processorTree_->header()->setDefaultSectionSize(60);
+    
     addProcessorsToTree();
     vLayout->addWidget(processorTree_);
     frame->setLayout(vLayout);
@@ -167,10 +108,12 @@ ProcessorTreeWidget::ProcessorTreeWidget(QWidget* parent) : InviwoDockWidget(tr(
 ProcessorTreeWidget::~ProcessorTreeWidget() {}
 
 bool ProcessorTreeWidget::processorFits(ProcessorFactoryObject* processor, const QString& filter) {
-    return (QString::fromStdString(processor->getClassName()).contains(filter, Qt::CaseInsensitive));
+    return (QString::fromStdString(processor->getDisplayName()).contains(filter, Qt::CaseInsensitive) ||
+            QString::fromStdString(processor->getClassIdentifier()).contains(filter, Qt::CaseInsensitive) ||
+            QString::fromStdString(processor->getTags().getString()).contains(filter, Qt::CaseInsensitive));
 }
 
-QIcon* ProcessorTreeWidget::getCodeStateIcon(CodeState state) {
+const QIcon* ProcessorTreeWidget::getCodeStateIcon(CodeState state) const {
     switch (state) {
         case CODE_STATE_STABLE:
             return &iconStable_;
@@ -184,125 +127,117 @@ QIcon* ProcessorTreeWidget::getCodeStateIcon(CodeState state) {
     }
 }
 
+QTreeWidgetItem* ProcessorTreeWidget::addToplevelItemTo(QString title) {
+    QTreeWidgetItem* newItem = new QTreeWidgetItem(QStringList(title));
+    
+    processorTree_->addTopLevelItem(newItem);
+    processorTree_->setFirstItemColumnSpanned(newItem, true);
+    
+    return newItem;
+}
+    
+QTreeWidgetItem* ProcessorTreeWidget::addProcessorItemTo(QTreeWidgetItem* item,
+                                                         ProcessorFactoryObject* processor) {
+    QTreeWidgetItem* newItem = new QTreeWidgetItem();
+    newItem->setIcon(0, *getCodeStateIcon(processor->getCodeState()));
+    newItem->setText(0, QString::fromStdString(processor->getDisplayName()));
+    newItem->setText(1, QString::fromStdString(processor->getTags().getString() + " "));
+    newItem->setTextAlignment(1, Qt::AlignRight);
+    
+    item->addChild(newItem);
+    
+    if (processor->getTags().tags_.size() == 0) {
+        processorTree_->setFirstItemColumnSpanned(newItem, true);
+    }
+    
+    return newItem;
+}
+    
+
 void ProcessorTreeWidget::addProcessorsToTree() {
     processorTree_->clear();
     // add processors from all modules to the list
     InviwoApplication* inviwoApp = InviwoApplication::getPtr();
 
-    if (listView_->currentIndex() == 0) { // By Alphabet
-        for (size_t curModuleId=0; curModuleId<inviwoApp->getModules().size(); curModuleId++) {
-            std::vector<ProcessorFactoryObject*> curProcessorList = inviwoApp->getModules()[curModuleId]->getProcessors();
-
-            for (size_t curProcessorId=0; curProcessorId<curProcessorList.size(); curProcessorId++) {
-                if (lineEdit_->text().isEmpty() || processorFits(curProcessorList[curProcessorId], lineEdit_->text())) {
-                    QString categoryName = QString::fromStdString(curProcessorList[curProcessorId]->getClassName().substr(0, 1));
-                    QList<QTreeWidgetItem*> items = processorTree_->findItems(categoryName, Qt::MatchFixedString, 0);
-
-                    if (items.empty()) {
-                        items.push_back(new QTreeWidgetItem(QStringList(categoryName)));
-                        processorTree_->addTopLevelItem(items[0]);
-                    }
-
-                    QTreeWidgetItem* newItem = new QTreeWidgetItem(QStringList(QString::fromStdString(curProcessorList[curProcessorId]->getClassName())));
-                    newItem->setIcon(0, *getCodeStateIcon(curProcessorList[curProcessorId]->getCodeState()));
-                    items[0]->addChild(newItem);
+    if (listView_->currentIndex() == 2){
+        addToplevelItemTo("Stable Processors");
+        addToplevelItemTo("Experimental Processors");
+        addToplevelItemTo("Broken Processors");
+    }
+    
+    
+    for (size_t curModuleId=0; curModuleId<inviwoApp->getModules().size(); curModuleId++) {
+        std::vector<ProcessorFactoryObject*> curProcessorList =
+        inviwoApp->getModules()[curModuleId]->getProcessors();
+        
+        QList<QTreeWidgetItem*> items;
+        for (size_t curProcessorId=0; curProcessorId<curProcessorList.size(); curProcessorId++) {
+            if (lineEdit_->text().isEmpty() ||
+                processorFits(curProcessorList[curProcessorId], lineEdit_->text())) {
+                
+                std::string categoryName;
+                
+                switch (listView_->currentIndex()) {
+                    case 0: // By Alphabet
+                        categoryName = curProcessorList[curProcessorId]->getDisplayName().substr(0, 1);
+                        break;
+                    case 1: // By Category
+                        categoryName = curProcessorList[curProcessorId]->getCategory();
+                        break;
+                    case 2: // By Code State
+                        switch (curProcessorList[curProcessorId]->getCodeState()) {
+                            case CODE_STATE_STABLE:
+                                categoryName = "Stable Processors";
+                                break;
+                            case CODE_STATE_BROKEN:
+                                categoryName = "Broken Processors";
+                                break;
+                            case CODE_STATE_EXPERIMENTAL:
+                                categoryName = "Experimental Processors";
+                                break;
+                            default:
+                                categoryName = "Unknown";
+                                
+                        }
+                        break;
+                    case 3: //By Module
+                        categoryName = inviwoApp->getModules()[curModuleId]->getIdentifier();
+                        break;
+                    default:
+                        categoryName = "Unkonwn";
                 }
+                
+                QString category = QString::fromStdString(categoryName);
+                items = processorTree_->findItems(category, Qt::MatchFixedString, 0);
+                
+                if (items.empty()) items.push_back(addToplevelItemTo(category));
+                addProcessorItemTo(items[0], curProcessorList[curProcessorId]);
             }
         }
-
-        processorTree_->sortItems(0, Qt::AscendingOrder);
     }
-    else if (listView_->currentIndex() == 1) { // By Category
-        for (size_t curModuleId=0; curModuleId<inviwoApp->getModules().size(); curModuleId++) {
-            std::vector<ProcessorFactoryObject*> curProcessorList = inviwoApp->getModules()[curModuleId]->getProcessors();
-
-            for (size_t curProcessorId=0; curProcessorId<curProcessorList.size(); curProcessorId++) {
-                if (lineEdit_->text().isEmpty() || processorFits(curProcessorList[curProcessorId], lineEdit_->text())) {
-                    QString categoryName = QString::fromStdString(curProcessorList[curProcessorId]->getCategory());
-                    QList<QTreeWidgetItem*> items = processorTree_->findItems(categoryName, Qt::MatchFixedString, 0);
-
-                    if (items.empty()) {
-                        items.push_back(new QTreeWidgetItem(QStringList(categoryName)));
-                        processorTree_->addTopLevelItem(items[0]);
-                    }
-
-                    QTreeWidgetItem* newItem = new QTreeWidgetItem(QStringList(QString::fromStdString(curProcessorList[curProcessorId]->getClassName())));
-                    newItem->setIcon(0, *getCodeStateIcon(curProcessorList[curProcessorId]->getCodeState()));
-                    items[0]->addChild(newItem);
+    
+    // Apply sorting
+    switch (listView_->currentIndex()) {
+        case 2: {// By Code State
+            int i = 0;
+            while (i < processorTree_->topLevelItemCount()) {
+                QTreeWidgetItem* item = processorTree_->topLevelItem(i);
+                if(item->childCount()==0){
+                    delete processorTree_->takeTopLevelItem(i);
+                } else {
+                    item->sortChildren(0, Qt::AscendingOrder);
+                    i++;
                 }
             }
+            break;
         }
-
-        processorTree_->sortItems(0, Qt::AscendingOrder);
+        default:
+            processorTree_->sortItems(0, Qt::AscendingOrder);
+            break;
     }
-    else if (listView_->currentIndex() == 2) { //By Code State
-        QTreeWidgetItem* stableItems = new QTreeWidgetItem(QStringList(QString("Stable Processors")));
-        QTreeWidgetItem* experimentalItems = new QTreeWidgetItem(QStringList(QString("Experimental Processors")));
-        QTreeWidgetItem* brokenItems = new QTreeWidgetItem(QStringList(QString("Broken Processors")));
-
-        for (size_t curModuleId=0; curModuleId<inviwoApp->getModules().size(); curModuleId++) {
-            std::vector<ProcessorFactoryObject*> curProcessorList = inviwoApp->getModules()[curModuleId]->getProcessors();
-
-            for (size_t curProcessorId=0; curProcessorId<curProcessorList.size(); curProcessorId++) {
-                if (lineEdit_->text().isEmpty() || processorFits(curProcessorList[curProcessorId], lineEdit_->text())) {
-                    QTreeWidgetItem* newItem = new QTreeWidgetItem(QStringList(QString::fromStdString(curProcessorList[curProcessorId]->getClassName())));
-
-                    switch (curProcessorList[curProcessorId]->getCodeState()) {
-                        case CODE_STATE_STABLE:
-                            newItem->setIcon(0, iconStable_);
-                            stableItems->addChild(newItem);
-                            break;
-
-                        case CODE_STATE_BROKEN:
-                            newItem->setIcon(0, iconBroken_);
-                            brokenItems->addChild(newItem);
-                            break;
-
-                        default:
-                            newItem->setIcon(0, iconExperimental_);
-                            experimentalItems->addChild(newItem);
-                    }
-                }
-            }
-        }
-
-        if (stableItems->childCount() > 0) {
-            processorTree_->addTopLevelItem(stableItems);
-            stableItems->sortChildren(0, Qt::AscendingOrder);
-        }
-
-        if (experimentalItems->childCount() > 0) {
-            processorTree_->addTopLevelItem(experimentalItems);
-            experimentalItems->sortChildren(0, Qt::AscendingOrder);
-        }
-
-        if (brokenItems->childCount() > 0) {
-            processorTree_->addTopLevelItem(brokenItems);
-            brokenItems->sortChildren(0, Qt::AscendingOrder);
-        }
-    }
-    else if (listView_->currentIndex() == 3) { //By Module
-        for (size_t curModuleId=0; curModuleId<inviwoApp->getModules().size(); curModuleId++) {
-            QTreeWidgetItem* moduleItem = new QTreeWidgetItem(QStringList(QString::fromStdString(
-                        inviwoApp->getModules()[curModuleId]->getIdentifier())));
-            std::vector<ProcessorFactoryObject*> curProcessorList = inviwoApp->getModules()[curModuleId]->getProcessors();
-
-            for (size_t curProcessorId=0; curProcessorId<curProcessorList.size(); curProcessorId++) {
-                if (lineEdit_->text().isEmpty() || processorFits(curProcessorList[curProcessorId], lineEdit_->text())) {
-                    QTreeWidgetItem* newItem = new QTreeWidgetItem(QStringList(QString::fromStdString(curProcessorList[curProcessorId]->getClassName())));
-                    newItem->setIcon(0, *getCodeStateIcon(curProcessorList[curProcessorId]->getCodeState()));
-                    moduleItem->addChild(newItem);
-                }
-            }
-
-            if (moduleItem->childCount() > 0)
-                processorTree_->addTopLevelItem(moduleItem);
-        }
-
-        processorTree_->sortItems(0, Qt::AscendingOrder);
-    }
-
+    
     processorTree_->expandAll();
+    processorTree_->resizeColumnToContents(1);
 }
 
 static QString mimeType = "inviwo/ProcessorDragObject";

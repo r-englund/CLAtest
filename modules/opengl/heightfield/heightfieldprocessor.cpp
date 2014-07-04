@@ -37,7 +37,9 @@
 
 namespace inviwo {
 
-ProcessorClassName(HeightFieldProcessor, "HeightFieldRenderGL"); 
+ProcessorClassIdentifier(HeightFieldProcessor,  "HeightFieldRenderGL");
+ProcessorDisplayName(HeightFieldProcessor,  "Height Field Render");
+ProcessorTags(HeightFieldProcessor, Tags::GL); 
 ProcessorCategory(HeightFieldProcessor, "Heightfield");
 ProcessorCodeState(HeightFieldProcessor, CODE_STATE_EXPERIMENTAL); 
 

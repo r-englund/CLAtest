@@ -6,7 +6,9 @@
 
 namespace inviwo {
 
-ProcessorClassName(MultichannelRaycaster, "MultichannelRaycaster");
+ProcessorClassIdentifier(MultichannelRaycaster,  "MultichannelRaycaster");
+ProcessorDisplayName(MultichannelRaycaster,  "Multichannel Raycaster");
+ProcessorTags(MultichannelRaycaster, Tags::GL);
 ProcessorCategory(MultichannelRaycaster, "Volume Rendering");
 ProcessorCodeState(MultichannelRaycaster, CODE_STATE_EXPERIMENTAL);
 

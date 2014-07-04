@@ -35,7 +35,9 @@
 
 namespace inviwo {
 
-ProcessorClassName(ImageMixer, "ImageMixer");
+ProcessorClassIdentifier(ImageMixer,  "ImageMixer");
+ProcessorDisplayName(ImageMixer,  "Image Mixer");
+ProcessorTags(ImageMixer, Tags::GL);
 ProcessorCategory(ImageMixer, "Image Operation");
 ProcessorCodeState(ImageMixer, CODE_STATE_EXPERIMENTAL);
 

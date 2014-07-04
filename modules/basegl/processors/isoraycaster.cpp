@@ -38,7 +38,9 @@
 
 namespace inviwo {
 
-ProcessorClassName(ISORaycaster, "ISORaycaster");
+ProcessorClassIdentifier(ISORaycaster, "ISORaycaster");
+ProcessorDisplayName(ISORaycaster, "ISO Raycaster");
+ProcessorTags(ISORaycaster, Tags::GL);
 ProcessorCategory(ISORaycaster, "Volume Rendering");
 ProcessorCodeState(ISORaycaster, CODE_STATE_STABLE);
 

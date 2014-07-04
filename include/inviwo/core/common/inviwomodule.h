@@ -149,7 +149,7 @@ private:
 };
 
 
-#define registerProcessor(T) { registerProcessorObject(new ProcessorFactoryObjectTemplate<T>(T::CLASS_NAME, T::CATEGORY, T::CODE_STATE)); }
+#define registerProcessor(T) { registerProcessorObject(new ProcessorFactoryObjectTemplate<T>()); }
 #define registerProperty(T) { registerPropertyObject(new PropertyFactoryObjectTemplate<T>(#T)); }
 #define registerPropertyWidget(T, P, semantics) { registerPropertyWidgetObject(new PropertyWidgetFactoryObjectTemplate<T,P>(#P, PropertySemantics(semantics))); }
 #define registerPort(T) { registerPortObject(new PortFactoryObjectTemplate<T>(#T)); }
