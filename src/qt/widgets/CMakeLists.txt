@@ -5,6 +5,7 @@ ivw_project(inviwo-qtwidgets)
 #--------------------------------------------------------------------
 # Add MOC files
 set(MOC_FILES
+    ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/angleradiuswidget.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/colorwheel.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/customdoublespinboxqt.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/editablelabelqt.h
@@ -20,6 +21,7 @@ set(MOC_FILES
     ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/spinboxrangesliderwidgetqt.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/timerqt.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/processors/processorwidgetqt.h
+    ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/properties/anglepropertywidgetqt.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/properties/boolpropertywidgetqt.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/properties/buttonpropertywidgetqt.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/properties/collapsiblegroupboxwidgetqt.h
@@ -69,6 +71,7 @@ source_group("MOC Files" FILES ${MOC_FILES})
 #--------------------------------------------------------------------
 # Add source files
 set(SOURCE_FILES
+    angleradiuswidget.cpp
     colorwheel.cpp
     customdoublespinboxqt.cpp
     editablelabelqt.cpp
@@ -82,6 +85,7 @@ set(SOURCE_FILES
     mappingpopup.cpp
     ordinaleditorwidget.cpp
     processors/processorwidgetqt.cpp
+    properties/anglepropertywidgetqt.cpp
     properties/boolpropertywidgetqt.cpp
     properties/buttonpropertywidgetqt.cpp  
     properties/collapsiblegroupboxwidgetqt.cpp
