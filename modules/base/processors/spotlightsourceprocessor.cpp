@@ -34,7 +34,9 @@
 
 namespace inviwo {
 
-ProcessorClassName(SpotLightSourceProcessor, "Spot light source");
+ProcessorClassIdentifier(SpotLightSourceProcessor,  "Spot light source");
+ProcessorDisplayName(SpotLightSourceProcessor,  "Spot light source");
+ProcessorTags(SpotLightSourceProcessor, Tags::None);
 ProcessorCategory(SpotLightSourceProcessor, "Light source");
 ProcessorCodeState(SpotLightSourceProcessor, CODE_STATE_EXPERIMENTAL);
 

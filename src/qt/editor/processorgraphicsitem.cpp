@@ -102,7 +102,7 @@ void ProcessorGraphicsItem::setProcessor(Processor* processor) {
 
     if (processor) {
         nameLabel_->setText(QString::fromStdString(processor_->getIdentifier()));
-        classLabel_->setText(QString::fromStdString(processor_->getClassName()));
+        classLabel_->setText(QString::fromStdString(processor_->getDisplayName()));
         ProcessorObserver::addObservation(processor_);
         processor_->addObserver(this);
 

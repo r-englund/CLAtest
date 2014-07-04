@@ -31,6 +31,7 @@
  *********************************************************************************/
 
 #include <modules/pypackages/pyscriptrunner.h>
+#include <inviwo/core/util/clock.h>
 
 namespace inviwo {
 

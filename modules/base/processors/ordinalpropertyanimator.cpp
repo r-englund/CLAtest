@@ -2,7 +2,9 @@
 
 namespace inviwo {
 
-ProcessorClassName(OrdinalPropertyAnimator, "Ordinal Property Animator");
+ProcessorClassIdentifier(OrdinalPropertyAnimator,  "Ordinal Property Animator");
+ProcessorDisplayName(OrdinalPropertyAnimator,  "Property Animator");
+ProcessorTags(OrdinalPropertyAnimator, Tags::None);
 ProcessorCategory(OrdinalPropertyAnimator, "Various");
 ProcessorCodeState(OrdinalPropertyAnimator, CODE_STATE_EXPERIMENTAL);
 

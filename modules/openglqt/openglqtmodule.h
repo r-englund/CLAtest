@@ -48,7 +48,7 @@ public:
 protected:
     template <typename T>
     void registerProcessorWidgetAndAssociate(ProcessorWidget* processorWidget) {
-        registerProcessorWidget(T::CLASS_NAME, processorWidget);
+        registerProcessorWidget(T::CLASS_IDENTIFIER, processorWidget);
     }
 
 private:

@@ -76,7 +76,7 @@ PyObject* py_resizecanvas(PyObject* /*self*/, PyObject* args) {
 
         if (!canvas) {
             std::string msg = std::string("resizeCanvas(canvas,width,height) processor with name: ") + id + " is not a canvas processor, it is a" +
-                              processor->getClassName();
+                processor->getClassIdentifier();
             PyErr_SetString(PyExc_TypeError, msg.c_str());
             return 0;
         }

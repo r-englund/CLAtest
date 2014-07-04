@@ -34,7 +34,10 @@
 
 namespace inviwo {
 
-ProcessorClassName(<name>, "<name>");
+// The Class Identifier has to be globally unique. Use a reverse DNS naming scheme
+ProcessorClassIdentifier(<name>,  "org.inviwo.<name>")
+ProcessorDisplayName(<name>,  "<name>")
+ProcessorTags(<name>, Tags::None);
 ProcessorCategory(<name>, "Undefined");
 ProcessorCodeState(<name>, CODE_STATE_EXPERIMENTAL);
 

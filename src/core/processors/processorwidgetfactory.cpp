@@ -58,7 +58,7 @@ ProcessorWidget* ProcessorWidgetFactory::create(std::string processorClassName) 
 }
 
 ProcessorWidget* ProcessorWidgetFactory::create(Processor* processor) const {
-    return ProcessorWidgetFactory::create(processor->getClassName());
+    return ProcessorWidgetFactory::create(processor->getClassIdentifier());
 }
 
 bool ProcessorWidgetFactory::isValidType(std::string processorClassName) const {

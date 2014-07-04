@@ -34,7 +34,9 @@
 
 namespace inviwo {
 
-ProcessorClassName(RedGreenProcessor, "RedGreenProcessor");
+ProcessorClassIdentifier(RedGreenProcessor,  "RedGreenProcessor");
+ProcessorDisplayName(RedGreenProcessor,  "Red Green Processor");
+ProcessorTags(RedGreenProcessor, Tags::GL);
 ProcessorCategory(RedGreenProcessor, "Various");
 ProcessorCodeState(RedGreenProcessor, CODE_STATE_STABLE);
 

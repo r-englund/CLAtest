@@ -41,7 +41,9 @@
 
 namespace inviwo {
 
-ProcessorClassName(GrayscaleCL, "GrayscaleCL");
+ProcessorClassIdentifier(GrayscaleCL,  "GrayscaleCL");
+ProcessorDisplayName(GrayscaleCL,  "Grayscale");
+ProcessorTags(GrayscaleCL, Tags::CL);
 ProcessorCategory(GrayscaleCL, "Image Operation");
 ProcessorCodeState(GrayscaleCL, CODE_STATE_EXPERIMENTAL);
 

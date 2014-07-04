@@ -35,7 +35,9 @@
 
 namespace inviwo {
 
-ProcessorClassName(DistanceTransformRAM, "DistanceTransformRAM"); 
+ProcessorClassIdentifier(DistanceTransformRAM,  "DistanceTransformRAM");
+ProcessorDisplayName(DistanceTransformRAM,  "Distance Transform");
+ProcessorTags(DistanceTransformRAM, Tags::CPU); 
 ProcessorCategory(DistanceTransformRAM, "Volume Operation");
 ProcessorCodeState(DistanceTransformRAM, CODE_STATE_EXPERIMENTAL); 
 

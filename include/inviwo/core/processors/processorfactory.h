@@ -48,8 +48,8 @@ public:
     virtual ~ProcessorFactory();
 
     void registerObject(ProcessorFactoryObject* processor);
-    virtual IvwSerializable* create(std::string className) const;
-    virtual bool isValidType(std::string className) const;
+    virtual IvwSerializable* create(std::string classIdentifier) const;
+    virtual bool isValidType(std::string classIdentifier) const;
 
     typedef std::map<std::string, ProcessorFactoryObject*> ProcessorClassMap;
 private:

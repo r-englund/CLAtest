@@ -35,7 +35,9 @@
 
 namespace inviwo {
 
-ProcessorClassName(ImageLayoutGL, "ImageLayoutGL");
+ProcessorClassIdentifier(ImageLayoutGL,  "ImageLayoutGL");
+ProcessorDisplayName(ImageLayoutGL,  "Image Layout");
+ProcessorTags(ImageLayoutGL, Tags::GL);
 ProcessorCategory(ImageLayoutGL, "Image Operation");
 ProcessorCodeState(ImageLayoutGL, CODE_STATE_EXPERIMENTAL);
 

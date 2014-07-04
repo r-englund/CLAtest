@@ -35,7 +35,9 @@
 
 namespace inviwo {
 
-ProcessorClassName(Background, "Background");
+ProcessorClassIdentifier(Background,  "Background");
+ProcessorDisplayName(Background,  "Background");
+ProcessorTags(Background, Tags::GL);
 ProcessorCategory(Background, "Image Operation");
 ProcessorCodeState(Background, CODE_STATE_EXPERIMENTAL);
 
