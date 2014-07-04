@@ -49,6 +49,7 @@
 #include <modules/basegl/processors/positionwidgetprocessor.h>
 #include <modules/basegl/processors/redgreenprocessor.h>
 #include <modules/basegl/processors/simpleraycaster.h>
+#include <modules/basegl/processors/isoraycaster.h>
 #include <modules/basegl/processors/volumeslicegl.h>
 
 namespace inviwo {
@@ -74,6 +75,7 @@ BaseGLModule::BaseGLModule() : InviwoModule() {
     registerProcessor(PositionWidgetProcessor);
     registerProcessor(RedGreenProcessor);
     registerProcessor(SimpleRaycaster);
+    registerProcessor(ISORaycaster);
     registerProcessor(VolumeSliceGL);
 }
 
