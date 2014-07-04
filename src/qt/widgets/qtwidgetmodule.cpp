@@ -44,6 +44,7 @@
 #include <inviwo/core/properties/stringproperty.h>
 #include <inviwo/core/properties/transferfunctionproperty.h>
 
+#include <inviwo/qt/widgets/properties/anglepropertywidgetqt.h>
 #include <inviwo/qt/widgets/properties/boolpropertywidgetqt.h>
 #include <inviwo/qt/widgets/properties/buttonpropertywidgetqt.h>
 #include <inviwo/qt/widgets/properties/collapsiblegroupboxwidgetqt.h>
@@ -87,6 +88,7 @@ QtWidgetModule::QtWidgetModule() : InviwoModule() {
     registerPropertyWidget(FloatMinMaxPropertyWidgetQt, FloatMinMaxProperty, "Default");
     registerPropertyWidget(FloatMinMaxTextPropertyWidgetQt, FloatMinMaxProperty, "Text");
     registerPropertyWidget(FloatPropertyWidgetQt, FloatProperty, "Default");
+    registerPropertyWidget(FloatAnglePropertyWidgetQt, FloatProperty, "Angle");
     registerPropertyWidget(FloatPropertyWidgetQt, FloatProperty, "Text");
     registerPropertyWidget(FloatVec2PropertyWidgetQt, FloatVec2Property, "Default");
     registerPropertyWidget(FloatVec2PropertyWidgetQt, FloatVec2Property, "Text");
@@ -102,6 +104,7 @@ QtWidgetModule::QtWidgetModule() : InviwoModule() {
     registerPropertyWidget(DoubleMinMaxPropertyWidgetQt, DoubleMinMaxProperty, "Default");
     registerPropertyWidget(DoubleMinMaxTextPropertyWidgetQt, DoubleMinMaxProperty, "Text");
     registerPropertyWidget(DoublePropertyWidgetQt, DoubleProperty, "Default");
+    registerPropertyWidget(DoubleAnglePropertyWidgetQt, DoubleProperty, "Angle");
     registerPropertyWidget(DoublePropertyWidgetQt, DoubleProperty, "Text");
     registerPropertyWidget(DoubleVec2PropertyWidgetQt, DoubleVec2Property, "Default");
     registerPropertyWidget(DoubleVec2PropertyWidgetQt, DoubleVec2Property, "Text");

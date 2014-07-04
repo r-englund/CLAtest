@@ -111,6 +111,8 @@ bool CompositeProperty::isPropertyModified() const {
 }
 
 void CompositeProperty::set(const Property* srcProperty) {
+    InviwoApplication::getPtr()->getProcessorNetwork()->lock();
+
     const CompositeProperty* compositeSrcProp = dynamic_cast<const CompositeProperty*>(srcProperty);
 
     if (compositeSrcProp) {
@@ -120,14 +122,16 @@ void CompositeProperty::set(const Property* srcProperty) {
             LogWarn("CompositeProperty mismatch. Unable to link");
             return;
         }
-
         for (size_t i = 0; i < subProperties.size(); i++)
             this->properties_[i]->set(subProperties[i]);
+
     } else {
         this->setVariant(const_cast<Property*>(srcProperty)->getVariant());
     }
 
     propertyModified();
+
+    InviwoApplication::getPtr()->getProcessorNetwork()->unlock();
 }
 
 void CompositeProperty::invalidate(PropertyOwner::InvalidationLevel invalidationLevel,
