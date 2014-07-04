@@ -121,6 +121,8 @@ GeometryRenderProcessorGL::GeometryRenderProcessorGL()
     lightSpecularExponent_.setGroupID("lighting");
     applyLightAttenuation_.setGroupID("lighting");
     lightAttenuation_.setGroupID("lighting");
+
+    setAllPropertiesCurrentStateAsDefault();
 }
 
 GeometryRenderProcessorGL::~GeometryRenderProcessorGL() {
