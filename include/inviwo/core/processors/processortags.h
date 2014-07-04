@@ -72,7 +72,8 @@ inline bool operator>=(const Tag& lhs, const Tag& rhs) { return !operator< (lhs,
 class IVW_CORE_API Tags { 
 public:
     Tags();
-    Tags(std::string tags);
+    Tags(const std::string tags);
+    Tags(const char* tags);
     Tags(const Tags& rhs);
     Tags& operator=(const Tags& that);
     Tags& operator=(const std::string& that);

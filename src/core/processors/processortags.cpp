@@ -62,7 +62,15 @@ std::ostream& operator<<(std::ostream& os, const Tag& obj) {
 
 Tags::Tags() {}
 
-Tags::Tags(std::string tags) {
+Tags::Tags(const std::string tags) {
+    std::vector<std::string> strings = splitString(tags, ',');
+    for (std::vector<std::string>::iterator it = strings.begin(); it != strings.end(); ++it) {
+        tags_.push_back(Tag(trim(*it)));
+    }
+}
+
+Tags::Tags(const char* chartags) {
+    const std::string tags(chartags);
     std::vector<std::string> strings = splitString(tags, ',');
     for (std::vector<std::string>::iterator it = strings.begin(); it != strings.end(); ++it) {
         tags_.push_back(Tag(trim(*it)));
