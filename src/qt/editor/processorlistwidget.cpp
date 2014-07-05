@@ -38,12 +38,9 @@
 #include <QWidget>
 #include <QMimeData>
 #include <QHeaderView>
-#include <QScrollbar>
 
 #include <inviwo/core/common/inviwoapplication.h>
-
 #include <inviwo/qt/editor/processorlistwidget.h>
-
 #include <inviwo/core/processors/processorstate.h>
 #include <inviwo/core/processors/processortags.h>
 
