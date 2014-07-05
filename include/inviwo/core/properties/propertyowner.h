@@ -42,7 +42,6 @@ class Property;
 class Processor;
 
 class IVW_CORE_API PropertyOwner : public IvwSerializable {
-
 public:
     PropertyOwner();
     virtual ~PropertyOwner();
@@ -54,22 +53,23 @@ public:
         VALID,
         INVALID_OUTPUT,
         INVALID_RESOURCES,
-
-        INVALID_PROGRAM=INVALID_RESOURCES, // deprecated
-        INVALID_RENDERING=INVALID_OUTPUT // deprecated
+        INVALID_PROGRAM = INVALID_RESOURCES,  // deprecated
+        INVALID_RENDERING = INVALID_OUTPUT    // deprecated
     };
 
     virtual void addProperty(Property* property);
     virtual void addProperty(Property& property);
 
     std::vector<Property*> getProperties() const { return properties_; }
-    Property* getPropertyByIdentifier(std::string identifier) const;    
-    template<class T> std::vector<T*> getPropertiesByType() const;
+    Property* getPropertyByIdentifier(std::string identifier) const;
+    template <class T>
+    std::vector<T*> getPropertiesByType() const;
 
     bool isValid() { return (invalidationLevel_ == PropertyOwner::VALID); }
     virtual void setValid();
     InvalidationLevel getInvalidationLevel() { return invalidationLevel_; }
-    virtual void invalidate(PropertyOwner::InvalidationLevel invalidationLevel, Property* modifiedProperty=0);
+    virtual void invalidate(PropertyOwner::InvalidationLevel invalidationLevel,
+                            Property* modifiedProperty = 0);
 
     // Should return the processor that the owner belongs or is.
     // This should be overridden by all subclasses.

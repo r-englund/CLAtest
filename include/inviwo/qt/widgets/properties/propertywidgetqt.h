@@ -79,9 +79,12 @@ public slots:
     virtual void showContextMenu(const QPoint& pos);
     virtual void setDeveloperUsageMode(bool value);
     virtual void setApplicationUsageMode(bool value);
+    virtual void changeSemantics(QAction* action);
+    
     void moduleAction();
 signals:
     void usageModeChanged();
+    void updateSemantics(PropertyWidgetQt*);
 
 protected:
     void setProperty(Property* property);
@@ -99,10 +102,14 @@ protected:
     void paintEvent(QPaintEvent *pe);
     
     // Actions
+    QMenu* usageModeItem_;
+    QActionGroup* usageModeActionGroup_;
     QAction* developerUsageModeAction_;
     QAction* applicationUsageModeAction_;
-    QActionGroup* usageModeActionGroup_;
-    QMenu* usageModeItem_;
+
+    QMenu* semanicsMenuItem_;
+    QActionGroup* semanticsActionGroup_;
+    
     
 private:
     QMenu* contextMenu_;

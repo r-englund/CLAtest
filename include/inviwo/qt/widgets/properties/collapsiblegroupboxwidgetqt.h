@@ -92,6 +92,7 @@ public slots:
     virtual void setApplicationUsageMode(bool value);
     virtual void labelDidChange();
     virtual void resetPropertyToDefaultState();
+    void updatePropertyWidgetSemantics(PropertyWidgetQt*);
 
 protected slots:
     void setGroupDisplayName();

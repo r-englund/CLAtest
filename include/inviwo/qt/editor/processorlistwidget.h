@@ -52,6 +52,8 @@ class IVW_QTEDITOR_API ProcessorTree : public QTreeWidget {
 public:
     ProcessorTree(QWidget* parent) : QTreeWidget(parent) {};
     ~ProcessorTree() {};
+    
+    static const int IDENTIFIER_ROLE;
 
 protected:
     void mousePressEvent(QMouseEvent* e);
@@ -70,6 +72,7 @@ public:
 protected:
     bool processorFits(ProcessorFactoryObject* processor, const QString& filter);
     const QIcon* getCodeStateIcon(CodeState) const;
+    std::string getCodeStateString(CodeState) const;
 
 private slots:
     void addProcessorsToTree();
@@ -77,7 +80,9 @@ private slots:
 private:
     
     QTreeWidgetItem* addToplevelItemTo(QString title);
-    QTreeWidgetItem* addProcessorItemTo(QTreeWidgetItem* item, ProcessorFactoryObject* processor);
+    QTreeWidgetItem* addProcessorItemTo(QTreeWidgetItem* item,
+                                        ProcessorFactoryObject* processor,
+                                        std::string moduleId);
     ProcessorTree* processorTree_;
     QComboBox* listView_;
     QLineEdit* lineEdit_;

@@ -142,6 +142,9 @@ void CollapsibleGroupBoxWidgetQt::addProperty(Property* prop) {
         addWidget(propertyWidget);
         prop->registerWidget(propertyWidget);
         connect(propertyWidget, SIGNAL(usageModeChanged()), this, SLOT(updateContextMenu()));
+        connect(propertyWidget, SIGNAL(updateSemantics(PropertyWidgetQt*)),
+                this, SLOT(updatePropertyWidgetSemantics(PropertyWidgetQt*)));
+        
         propertyWidget->hideWidget();
     } else {
         LogWarn("Could not find a widget for property: " << prop->getClassName());
@@ -275,11 +278,9 @@ void CollapsibleGroupBoxWidgetQt::deserialize(IvwDeserializer& d) {
 void CollapsibleGroupBoxWidgetQt::addWidget(QWidget* widget) {
     propertyWidgetGroupLayout_->addWidget(widget);
     PropertyWidgetQt* propertyWidget = static_cast<PropertyWidgetQt*>(widget);
-
-    if (propertyWidget) {
-        if (std::find(propertyWidgets_.begin(), propertyWidgets_.end(), propertyWidget) ==
-            propertyWidgets_.end())
-            propertyWidgets_.push_back(propertyWidget);
+    if (std::find(propertyWidgets_.begin(), propertyWidgets_.end(), propertyWidget) ==
+        propertyWidgets_.end()) {
+        propertyWidgets_.push_back(propertyWidget);
     }
 }
 
@@ -287,13 +288,11 @@ void CollapsibleGroupBoxWidgetQt::removeWidget(QWidget* widget) {
     propertyWidgetGroupLayout_->removeWidget(widget);
     PropertyWidgetQt* propertyWidget = static_cast<PropertyWidgetQt*>(widget);
 
-    if (propertyWidget) {
-        if (std::find(propertyWidgets_.begin(), propertyWidgets_.end(), propertyWidget) !=
-            propertyWidgets_.end()) {
-            std::vector<PropertyWidgetQt*>::iterator it =
-                std::find(propertyWidgets_.begin(), propertyWidgets_.end(), propertyWidget);
-            propertyWidgets_.erase(it);
-        }
+    std::vector<PropertyWidgetQt*>::iterator it =
+        std::find(propertyWidgets_.begin(), propertyWidgets_.end(), propertyWidget);
+    
+    if (it != propertyWidgets_.end()) {
+        propertyWidgets_.erase(it);
     }
 }
 
@@ -315,6 +314,54 @@ bool CollapsibleGroupBoxWidgetQt::isCollapsed() {
     return collapsed_;
 }
 
+    
+void CollapsibleGroupBoxWidgetQt::updatePropertyWidgetSemantics(PropertyWidgetQt* widget) {
+    Property* prop = widget->getProperty();
+    
+    bool visible = widget->isVisible();
+    
+    std::vector<Property*>::iterator pit =
+        std::find(properties_.begin(), properties_.end(), prop);
+    
+    std::vector<PropertyWidgetQt*>::iterator wit =
+        std::find(propertyWidgets_.begin(), propertyWidgets_.end(), widget);
+    
+    if (pit != properties_.end() && wit != propertyWidgets_.end()) {
+        LogInfo("Found widget!");
+
+        int layoutPosition = propertyWidgetGroupLayout_->indexOf(widget);
+        
+        PropertyWidgetQt* propertyWidget =
+            static_cast<PropertyWidgetQt*>(PropertyWidgetFactory::getPtr()->create(prop));
+        
+        if (propertyWidget) {
+            
+            prop->deregisterWidget(widget);
+            widget->hideWidget();
+            removeWidget(widget);
+            
+            propertyWidgetGroupLayout_->insertWidget(layoutPosition, propertyWidget);
+            propertyWidgets_.insert(wit, propertyWidget);
+            prop->registerWidget(propertyWidget);
+            
+            connect(propertyWidget, SIGNAL(usageModeChanged()), this, SLOT(updateContextMenu()));
+            connect(propertyWidget, SIGNAL(updateSemantics(PropertyWidgetQt*)),
+                    this, SLOT(updatePropertyWidgetSemantics(PropertyWidgetQt*)));
+            
+            if (visible) {
+                propertyWidget->showWidget();
+            }else{
+                propertyWidget->hideWidget();
+            }
+            
+            
+        } else {
+            LogWarn("Could not change semantic for property: " << prop->getClassName());
+        }
+        
+        
+    }
+}
 
 
 
