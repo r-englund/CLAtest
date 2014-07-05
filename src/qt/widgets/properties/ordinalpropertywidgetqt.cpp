@@ -172,8 +172,6 @@ void BaseOrdinalPropertyWidgetQt::showContextMenuSlider(int sliderId) {
         maxAction_->setEnabled(true);
     }
     contextMenu_->exec(QCursor::pos());
-
-    LogInfo("Size: " << sliderWidgets_.size() << " mh " << minimumHeight() << " hh " << sizeHint().height());
 }
 
 

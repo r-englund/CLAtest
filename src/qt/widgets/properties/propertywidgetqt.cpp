@@ -34,6 +34,7 @@
 #include <inviwo/core/common/inviwoapplication.h>
 #include <inviwo/core/util/settings/systemsettings.h>
 #include <inviwo/core/properties/property.h>
+#include <inviwo/core/properties/propertywidgetfactory.h>
 #include <inviwo/qt/widgets/inviwoapplicationqt.h>
 #include <inviwo/core/common/moduleaction.h>
 #include <QDesktopWidget>
@@ -52,10 +53,12 @@ int PropertyWidgetQt::MARGIN = 0;
 PropertyWidgetQt::PropertyWidgetQt()
     : QWidget()
     , PropertyWidget()
+    , usageModeItem_(NULL)
+    , usageModeActionGroup_(NULL)
     , developerUsageModeAction_(NULL)
     , applicationUsageModeAction_(NULL)
-    , usageModeActionGroup_(NULL)
-    , usageModeItem_(NULL)
+    , semanicsMenuItem_(NULL)
+    , semanticsActionGroup_(NULL)
     , contextMenu_(NULL)
     , cached_(true) {
     setContextMenuPolicy(Qt::CustomContextMenu);
@@ -66,10 +69,12 @@ PropertyWidgetQt::PropertyWidgetQt()
 PropertyWidgetQt::PropertyWidgetQt(Property* property)
     : QWidget()
     , PropertyWidget(property)
+    , usageModeItem_(NULL)
+    , usageModeActionGroup_(NULL)
     , developerUsageModeAction_(NULL)
     , applicationUsageModeAction_(NULL)
-    , usageModeActionGroup_(NULL)
-    , usageModeItem_(NULL)
+    , semanicsMenuItem_(NULL)
+    , semanticsActionGroup_(NULL)
     , contextMenu_(NULL)
     , cached_(true) {
     setContextMenuPolicy(Qt::CustomContextMenu);
@@ -201,6 +206,35 @@ void PropertyWidgetQt::generateContextMenu() {
         usageModeActionGroup_->addAction(applicationUsageModeAction_);
         contextMenu_->addMenu(usageModeItem_);
 
+        if (property_) {
+            semanicsMenuItem_ = new QMenu(tr("&Semantics"), contextMenu_);
+            semanticsActionGroup_ = new QActionGroup(this);
+            
+            std::vector<PropertySemantics> semantics =
+                PropertyWidgetFactory::getPtr()->getSupportedSemanicsForProperty(property_);
+        
+            
+            for (std::vector<PropertySemantics>::iterator it = semantics.begin();
+                 it!=semantics.end(); ++it) {
+            
+                QAction* semanticAction = new QAction(QString::fromStdString(it->getString()),semanticsActionGroup_);
+                semanticAction->setCheckable(true);
+                semanicsMenuItem_->addAction(semanticAction);
+                if (*it == property_->getSemantics()) {
+                    semanticAction->setChecked(true);
+                } else {
+                    semanticAction->setChecked(false);
+                }
+                semanticAction->setData(QString::fromStdString(it->getString()));
+            }
+            
+            connect(semanticsActionGroup_, SIGNAL(triggered(QAction*)),
+                    this, SLOT(changeSemantics(QAction*)));
+        
+            
+            contextMenu_->addMenu(semanicsMenuItem_);
+        }
+        
         QAction* resetAction = new QAction(tr("&Reset to default"), this);
         resetAction->setToolTip(tr("&Reset the property back to it's initial state"));
         contextMenu_->addAction(resetAction);
@@ -227,6 +261,15 @@ void PropertyWidgetQt::generateContextMenu() {
     }
 }
 
+void PropertyWidgetQt::changeSemantics(QAction* action) {
+    PropertySemantics semantics(action->data().toString().toStdString());
+    LogInfo("Change semanics to: " << semantics.getString());
+    if (property_) {
+        property_->setSemantics(semantics);
+        emit updateSemantics(this);
+    }
+}
+    
 void PropertyWidgetQt::showContextMenu(const QPoint& pos) {
     if (!contextMenu_) {
         generateContextMenu();
