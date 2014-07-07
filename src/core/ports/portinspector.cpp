@@ -80,9 +80,9 @@ std::vector<PortConnection*>  PortInspector::getConnections() {
     initialize();
     return connections_;
 }
-std::vector<ProcessorLink*> PortInspector::getProcessorLinks() {
+std::vector<PropertyLink*> PortInspector::getPropertyLinks() {
     initialize();
-    return processorLinks_;
+    return propertyLinks_;
 }
 std::vector<Processor*> PortInspector::getProcessors() {
     initialize();
@@ -101,7 +101,7 @@ void PortInspector::initialize() {
             processors_.clear();
             inPorts_.clear();
             connections_.clear();
-            processorLinks_.clear();
+            propertyLinks_.clear();
             canvasProcessor_ = NULL;
         }
 
@@ -150,7 +150,7 @@ void PortInspector::initialize() {
             connections_[i]->getInport()->disconnectFrom(connections_[i]->getOutport());
 
         // store the processor links.
-        processorLinks_ = inspectorNetwork_->getLinks();
+        propertyLinks_ = inspectorNetwork_->getLinks();
     } catch (AbortException& e) {
         // Error deserializing file
         needsUpdate_ = true;

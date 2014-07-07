@@ -40,6 +40,7 @@
 #include <inviwo/core/network/portconnection.h>
 #include <inviwo/core/network/processornetworkobserver.h>
 #include <inviwo/core/links/processorlink.h>
+#include <inviwo/core/links/propertylink.h>
 #include <inviwo/core/links/linkevaluator.h>
 #include <inviwo/core/util/observer.h>
 #include <inviwo/core/util/exception.h>
@@ -174,55 +175,25 @@ public:
     */
     std::vector<PortConnection*> getConnections() const;
 
-
-    /**
-    * Adds a ProcessorLink to the ProcessorNetwork. This involves creating the link
-    * between the two specified processors, as well as adding this connection to the ProcessorNetwork.
-    *
-    * @param[in] sourceProcessor The source processor.
-    * @param[in] destProcessor The destination processor.
-    * @return The newly crated link.
-    * @see removeConnection()
-    */
+    ///////////////////////////////////////////////////////////////////////
+    //TODO: ProcessorLinks are Deprecated. To be removed
     ProcessorLink* addLink(PropertyOwner* sourceProcessor, PropertyOwner* destProcessor);
-
-    /**
-    * Removes and deletes a PortConnection from the ProcessorNetwork. This involves resolving the connection
-    * between the two specified Ports, as well as removing this connection from the
-    * ProcessorNetwork.
-    *
-    * @param[in] sourceProcessor The source processor.
-    * @param[in] destProcessor The destination processor.
-    * @see addConnection()
-    */
     void removeLink(PropertyOwner* sourceProcessor, PropertyOwner* destProcessor);
-
-    /**
-    * Checks weather the two processors have a link
-    *
-    * @param[in] sourceProcessor The source processor.
-    * @param[in] destProcessor The destination processor.
-    * @return Weather the two processors have a link.
-    * @see addConnection()
-    */
     bool isLinked(PropertyOwner* src, PropertyOwner* dst);
-
-    /**
-    * Get a link between two processors
-    *
-    * @param[in] sourceProcessor The source processor.
-    * @param[in] destProcessor The destination processor.
-    * @return The link between the processors or NULL if there is none.
-    * @see addConnection()
-    */
-    ProcessorLink* getLink(PropertyOwner* sourceProcessor, PropertyOwner* destProcessor) const;
-
-    /**
-    * Returns a vector of all Links.
-    *
-    * @return A vector of Links
-    */
-    std::vector<ProcessorLink*> getLinks() const;
+    ProcessorLink* getProcessorLink(PropertyOwner* sourceProcessor, PropertyOwner* destProcessor) const;
+    std::vector<ProcessorLink*> getProcessorLinks() const;
+    ///////////////////////////////////////////////////////////////////////
+    
+    PropertyLink* addLink(Property* sourceProperty, Property* destinationProperty);
+    void removeLink(Property* sourceProperty, Property* destinationProperty);
+    bool isLinked(Property* sourceProperty, Property* destinationProperty);
+    PropertyLink* getLink(Property* sourceProperty, Property* destinationProperty) const;
+    std::vector<PropertyLink*> getLinks() const;
+    void removeBidirectionalPair(Property* sourceProperty, Property* endProperty);
+    PropertyLink* getBidirectionalPair(Property* startProperty, Property* endProperty);
+    void setLinkModifiedByOwner(PropertyOwner* processor);
+    std::vector<PropertyLink*> getLinksBetweenProcessors(PropertyOwner* sourceProcessor, PropertyOwner* destinationProcessor);
+    std::vector<Property*> getLinkedProperties(Property* property);
 
     void modified();
     void setModified(bool modified);
@@ -253,17 +224,27 @@ public:
 
 
 private:
-    //Property Linking support
+    //Property Linking support    
     std::vector<ProcessorLink*> getSortedProcessorLinksFromProperty(Property* modifiedProperty);
     void performLinkingOnPropertyChange(Property* modifiedProperty);
     void evaluatePropertyLinks(Property*);
+    void evaluatePropertyLinks1(Property*);
+
+    void addToPropertyLinkCache(PropertyLink* propertyLink);
+    void removeFromPropertyLinkCache(PropertyLink* propertyLink);
+    void updatePropertyLinkCache();    
+    std::map<Property*, std::vector<Property*> > propertyLinkCache_;
 
     bool modified_;
     unsigned int locked_;
 
     std::vector<Processor*> processors_;
     std::vector<PortConnection*> portConnections_;
+    ///////////////////////////////////////////////////////////////////////
+    //TODO: ProcessorLinks are Deprecated. To be removed
     std::vector<ProcessorLink*> processorLinks_;
+    ///////////////////////////////////////////////////////////////////////
+    std::vector<PropertyLink*> propertyLinks_;
 
     bool deserializing_;
     bool invalidating_;

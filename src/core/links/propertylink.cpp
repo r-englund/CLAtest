@@ -36,18 +36,13 @@ namespace inviwo {
 
 PropertyLink::PropertyLink()
     : srcProperty_(0),
-      dstProperty_(0),
-      srcPropertyOwner_(0),
-      dstPropertyOwner_(0){
+      dstProperty_(0) {
 }
 
 PropertyLink::~PropertyLink() {}
 
-PropertyLink::PropertyLink(Property* srcProperty, Property* destProperty, PropertyOwner* srcOwner, PropertyOwner* dstOwner)
-    : srcProperty_(srcProperty), dstProperty_(destProperty),
-      srcPropertyOwner_(srcOwner), dstPropertyOwner_(dstOwner) {
-      if (!srcOwner) srcPropertyOwner_ = srcProperty_->getOwner();
-      if (!dstOwner) dstPropertyOwner_ = dstProperty_->getOwner();
+PropertyLink::PropertyLink(Property* srcProperty, Property* destProperty)
+    : srcProperty_(srcProperty), dstProperty_(destProperty) {
 }
 
 void PropertyLink::switchDirection() {
@@ -61,11 +56,6 @@ void PropertyLink::serialize(IvwSerializer& s) const {
     linkedProperties.push_back(srcProperty_);
     linkedProperties.push_back(dstProperty_);
     s.serialize("Properties", linkedProperties, "Property");
-
-    std::vector<PropertyOwner*> propertyOwners;
-    propertyOwners.push_back(srcPropertyOwner_);
-    propertyOwners.push_back(dstPropertyOwner_);
-    s.serialize("PropertyOwners", propertyOwners, "PropertyOwner");
 }
 
 void PropertyLink::deserialize(IvwDeserializer& d) {
@@ -73,21 +63,6 @@ void PropertyLink::deserialize(IvwDeserializer& d) {
     d.deserialize("Properties",linkedProperties, "Property");
     srcProperty_ = linkedProperties[0];
     dstProperty_ = linkedProperties[1];
-
-    std::vector<PropertyOwner*> propertyOwners;
-    srcPropertyOwner_ = 0;
-    dstPropertyOwner_ = 0;
-    d.deserialize("PropertyOwners",propertyOwners, "PropertyOwner");
-
-    if (propertyOwners.size()<2) {
-        srcPropertyOwner_ = srcProperty_->getOwner();
-        dstPropertyOwner_ = dstProperty_->getOwner();
-    }
-    else {
-        srcPropertyOwner_ = propertyOwners[0];
-        dstPropertyOwner_ = propertyOwners[1];
-    }
-
 }
 
 } // namespace

@@ -146,7 +146,7 @@ void NetworkEditor::removeConnection(Outport* outport, Inport* inport) {
 
 
 void NetworkEditor::addLink(PropertyOwner* processor1, PropertyOwner* processor2) {
-    if (!InviwoApplication::getPtr()->getProcessorNetwork()->getLink(processor1, processor2)) {
+    if (!InviwoApplication::getPtr()->getProcessorNetwork()->getProcessorLink(processor1, processor2)) {
         InviwoApplication::getPtr()->getProcessorNetwork()->addLink(processor1, processor2);
         Processor* src = dynamic_cast<Processor*>(processor1);
         Processor* dst = dynamic_cast<Processor*>(processor2);
@@ -158,7 +158,7 @@ void NetworkEditor::addLink(PropertyOwner* processor1, PropertyOwner* processor2
 void NetworkEditor::removeLink(PropertyOwner* processor1, PropertyOwner* processor2) {
     Processor* src = dynamic_cast<Processor*>(processor1);
     Processor* dst = dynamic_cast<Processor*>(processor2);
-    removeLinkGraphicsItem(getLinkGraphicsItem(src, dst));
+    removeLinkGraphicsItem(getLinkGraphicsItem(src, dst));    
     InviwoApplication::getPtr()->getProcessorNetwork()->removeLink(processor1, processor2);
     setModified(true);
 }
@@ -167,7 +167,7 @@ void NetworkEditor::autoLinkOnAddedProcessor(Processor* addedProcessor) {
     std::vector<Processor*> existingProcessors = InviwoApplication::getPtr()->getProcessorNetwork()->getProcessors();
     std::vector<Property*> dstProperties = addedProcessor->getProperties();
     LinkSettings* linkSettings = InviwoApplication::getPtr()->getSettingsByType<LinkSettings>();
-    std::vector<ProcessorLink*> newLinks;
+    std::vector<Processor*> invalidProcessors;
 
     for (size_t i=0; i<dstProperties.size(); i++) {
         Property* dstProperty = dstProperties[i];
@@ -175,42 +175,34 @@ void NetworkEditor::autoLinkOnAddedProcessor(Processor* addedProcessor) {
         for (size_t j=0; j<existingProcessors.size(); j++) {
             if (existingProcessors[j]!=addedProcessor) {
                 std::vector<Property*> srcProperties = existingProcessors[j]->getProperties();
-                Property* srcProperty = 0;
+                bool linkCreated = false;
 
                 for (size_t k=0; k<srcProperties.size(); k++) {
                     if (AutoLinker::canLink(srcProperties[k], dstProperty, DefaultLinkingCondition) &&
                         linkSettings->isLinkable(srcProperties[k]) &&
                         linkSettings->isLinkable(dstProperty))
                     {
-                        srcProperty = srcProperties[k];
-                        break;
+                        Property* srcProperty = srcProperties[k];
+                        InviwoApplication::getPtr()->getProcessorNetwork()->addLink(srcProperty, dstProperty);
+                        InviwoApplication::getPtr()->getProcessorNetwork()->addLink(dstProperty, srcProperty);
                     }
                 }
 
-                if (srcProperty) {
-                    PropertyOwner* srcProcessor = existingProcessors[j];
-                    PropertyOwner* dstProcessor = addedProcessor;
-                    ProcessorLink* processorLink = InviwoApplication::getPtr()->getProcessorNetwork()->getLink(srcProcessor, dstProcessor);
-
-                    if (!processorLink) {
-                        addLink(srcProcessor, dstProcessor);
-                        processorLink = InviwoApplication::getPtr()->getProcessorNetwork()->getLink(srcProcessor, dstProcessor);
-                        newLinks.push_back(processorLink);
+                if (linkCreated) {
+                    if (std::find(invalidProcessors.begin(), invalidProcessors.end(),
+                        existingProcessors[j]) == invalidProcessors.end()) {
+                            invalidProcessors.push_back(existingProcessors[j]);
                     }
-
-                    processorLink->addPropertyLinks(srcProperty, dstProperty, srcProcessor, dstProcessor);
-                    processorLink->addPropertyLinks(dstProperty, srcProperty, dstProcessor, srcProcessor);
                 }
             }
         }
     }
-    if (newLinks.size() > 0) {
+    if (invalidProcessors.size()) {
         InviwoApplication::getPtr()->getProcessorNetwork()->lock();
-        for (size_t i = 1; i < newLinks.size(); i++) {
-            newLinks[i]->setSourceModified();
-        }
+        for (size_t i = 0; i < invalidProcessors.size(); i++)
+            InviwoApplication::getPtr()->getProcessorNetwork()->setLinkModifiedByOwner(invalidProcessors[i]);
         InviwoApplication::getPtr()->getProcessorNetwork()->unlock();
-        newLinks[0]->setSourceModified();
+        InviwoApplication::getPtr()->getProcessorNetwork()->setLinkModifiedByOwner(invalidProcessors[0]);
     }
 }
 
@@ -406,7 +398,7 @@ void NetworkEditor::removeLink(LinkConnectionGraphicsItem* linkGraphicsItem) {
 }
 
 void NetworkEditor::addLinkGraphicsItem(Processor* processor1, Processor* processor2) {
-    std::string linkInfo = InviwoApplication::getPtr()->getProcessorNetwork()->getLink(processor1, processor2)->getLinkInfo();
+    std::string linkInfo = InviwoApplication::getPtr()->getProcessorNetwork()->getProcessorLink(processor1, processor2)->getLinkInfo();
     ProcessorGraphicsItem* processorGraphicsItem1 =
         getProcessorGraphicsItem(processor1->getIdentifier());
     ProcessorGraphicsItem* processorGraphicsItem2 =
@@ -439,14 +431,14 @@ void NetworkEditor::showLinkDialog(LinkConnectionGraphicsItem* linkConnectionGra
         linkConnectionGraphicsItem->getDestProcessorGraphicsItem()->getProcessor();
 
     InviwoApplicationQt* app = dynamic_cast<InviwoApplicationQt*>(InviwoApplication::getPtr());
-    LinkDialog *linkDialog = new LinkDialog(srcProcessor, destProcessor, InviwoApplication::getPtr()->getProcessorNetwork(), app->getMainWindow());
+    LinkDialog *linkDialog = new LinkDialog(srcProcessor, destProcessor, app->getMainWindow());
     
     if (!linkDialog->exec()) {
         delete linkDialog;
         //LogWarn("Destroying LinkDialog")
     }
 
-    ProcessorLink* processorLink = InviwoApplication::getPtr()->getProcessorNetwork()->getLink(srcProcessor, destProcessor);
+    ProcessorLink* processorLink = InviwoApplication::getPtr()->getProcessorNetwork()->getProcessorLink(srcProcessor, destProcessor);
 
     if (processorLink->getPropertyLinks().size() == 0)
         removeLink(srcProcessor, destProcessor);
@@ -595,26 +587,18 @@ bool NetworkEditor::addPortInspector(std::string processorIdentifier, std::strin
             InviwoApplication::getPtr()->getProcessorNetwork()->addConnection(outport, inports[i]);
 
         // Add links to the network
-        std::vector<ProcessorLink*> links = portInspector->getProcessorLinks();
+        std::vector<PropertyLink*> links = portInspector->getPropertyLinks();
 
         for (size_t i=0; i<links.size(); i++) {
-            ProcessorLink* link = InviwoApplication::getPtr()->getProcessorNetwork()->addLink(links[i]->getSourceProcessor(),
-                                  links[i]->getDestinationProcessor());
-            std::vector<PropertyLink*> propertyLinks = links[i]->getPropertyLinks();
-
-            for (size_t j=0; j<propertyLinks.size(); j++) {
-                link->addPropertyLinks(propertyLinks[j]->getSourceProperty(),
-                                       propertyLinks[j]->getDestinationProperty(),
-                                       propertyLinks[j]->getSourceOwner(),
-                                       propertyLinks[j]->getDestinationOwner());
-            }
+            PropertyLink* link = InviwoApplication::getPtr()->getProcessorNetwork()->addLink(links[i]->getSourceProperty(),
+                                  links[i]->getDestinationProperty());            
         }
 
         //Do some autolinking, without adding gui stuff.
         std::vector<Processor*> existingProcessors = InviwoApplication::getPtr()->getProcessorNetwork()->getProcessors();
         LinkSettings* linkSettings = InviwoApplication::getPtr()->getSettingsByType<LinkSettings>();
         ProcessorLink* processorLink = NULL;
-        std::vector<ProcessorLink*> newLinks;
+        std::vector<Processor*> invalidProcessors;
 
         for (size_t h = 0; h < processors.size(); h++) {
             Processor* addedProcessor = processors[h];
@@ -626,24 +610,21 @@ bool NetworkEditor::addPortInspector(std::string processorIdentifier, std::strin
                 for (size_t j = 0; j < existingProcessors.size(); j++) {
                     if (existingProcessors[j] != addedProcessor) {
                         std::vector<Property*> srcProperties = existingProcessors[j]->getProperties();
-                        Property* srcProperty = 0;
-
+                        bool linkCreated = false;
                         for (size_t k = 0; k < srcProperties.size(); k++) {
                             if (AutoLinker::canLink(srcProperties[k], dstProperty, DefaultLinkingCondition) &&
                                 linkSettings->isLinkable(srcProperties[k]) &&
                                 linkSettings->isLinkable(dstProperty)) {
-                                srcProperty = srcProperties[k];
-                                break;
+                                Property* srcProperty = srcProperties[k];
+                                InviwoApplication::getPtr()->getProcessorNetwork()->addLink(srcProperty, dstProperty);
+                                InviwoApplication::getPtr()->getProcessorNetwork()->addLink(dstProperty, srcProperty);
+                                linkCreated = true;
                             }
                         }
-
-                        if (srcProperty) {
-                            processorLink = InviwoApplication::getPtr()->getProcessorNetwork()->addLink(existingProcessors[j], addedProcessor);
-                            processorLink->addPropertyLinks(srcProperty, dstProperty, existingProcessors[j], addedProcessor);
-                            processorLink->addPropertyLinks(dstProperty, srcProperty, addedProcessor, existingProcessors[j]);
-
-                            if (std::find(newLinks.begin(), newLinks.end(), processorLink) == newLinks.end()) {
-                                newLinks.push_back(processorLink);
+                        if (linkCreated) {
+                            if (std::find(invalidProcessors.begin(), invalidProcessors.end(),
+                                          existingProcessors[j]) == invalidProcessors.end()) {
+                                invalidProcessors.push_back(existingProcessors[j]);
                             }
                         }
                     }
@@ -669,10 +650,13 @@ bool NetworkEditor::addPortInspector(std::string processorIdentifier, std::strin
                 connections[i]->getInport());
         }
 
+        for (size_t i = 0; i < invalidProcessors.size(); i++)
+            InviwoApplication::getPtr()->getProcessorNetwork()->setLinkModifiedByOwner(invalidProcessors[i]);
+
         InviwoApplication::getPtr()->getProcessorNetwork()->unlock();
 
-        for (size_t i = 0; i < newLinks.size(); i++)
-            newLinks[i]->setSourceModified();
+        if (invalidProcessors.size())
+            InviwoApplication::getPtr()->getProcessorNetwork()->setLinkModifiedByOwner(invalidProcessors[0]);
 
         return true;
     }
@@ -803,18 +787,15 @@ void NetworkEditor::addExternalNetwork(std::string fileName, std::string identif
         addConnection(outport, inport);
     }
 
-    std::vector<ProcessorLink*> links = processorNetwork->getLinks();
+    std::vector<ProcessorLink*> links = processorNetwork->getProcessorLinks();
 
     for (size_t i=0; i<links.size(); i++) {
         addLink(links[i]->getSourceProcessor(), links[i]->getDestinationProcessor());
-        ProcessorLink* link = InviwoApplication::getPtr()->getProcessorNetwork()->getLink(links[i]->getSourceProcessor(), links[i]->getDestinationProcessor());
+        ProcessorLink* link = InviwoApplication::getPtr()->getProcessorNetwork()->getProcessorLink(links[i]->getSourceProcessor(), links[i]->getDestinationProcessor());
         std::vector<PropertyLink*> propertyLinks = links[i]->getPropertyLinks();
 
-        for (size_t j=0; j<propertyLinks.size(); j++) {
-            Property* srcProp = propertyLinks[j]->getSourceProperty();
-            Property* dstProp = propertyLinks[j]->getDestinationProperty();
-            link->addPropertyLinks(srcProp, dstProp, propertyLinks[j]->getSourceOwner(),  propertyLinks[j]->getDestinationOwner());
-        }
+        for (size_t j=0; j<propertyLinks.size(); j++)
+            link->addPropertyLinks(propertyLinks[j]);
     }
 
     processors = processorNetwork->getProcessors();
@@ -1292,20 +1273,22 @@ void NetworkEditor::contextMenuEvent(QGraphicsSceneContextMenuEvent* e) {
             removeConnection(connectionGraphicsItem);
     } else if (linkGraphicsItem) {
         QMenu menu;
-        QAction* linkAction = menu.addAction(tr("Link properties"));
+        //QAction* linkAction = menu.addAction(tr("Link properties"));
         QAction* deleteAction = menu.addAction("Delete");
         QAction* result = menu.exec(QCursor::pos());
 
         if (result == deleteAction)
             removeLink(linkGraphicsItem);
-        else if (result == linkAction) {
+       /*
+       else if (result == linkAction) {
             Processor* inProcessor = linkGraphicsItem->getDestProcessorGraphicsItem()->getProcessor();
             Processor* outProcessor = linkGraphicsItem->getSrcProcessorGraphicsItem()->getProcessor();
-            ProcessorLink* processorLink = InviwoApplication::getPtr()->getProcessorNetwork()->getLink(inProcessor, outProcessor);
+            ProcessorLink* processorLink = InviwoApplication::getPtr()->getProcessorNetwork()->getProcessorLink(inProcessor, outProcessor);
 
             if (processorLink)
                 processorLink->autoLinkPropertiesByType();
         }
+        */
     } else
         QGraphicsScene::contextMenuEvent(e);
 }
@@ -1588,7 +1571,7 @@ bool NetworkEditor::loadNetwork(std::istream& stream, const std::string& path) {
 
     // add link graphics items
     std::vector<ProcessorLink*> links =
-        InviwoApplication::getPtr()->getProcessorNetwork()->getLinks();
+        InviwoApplication::getPtr()->getProcessorNetwork()->getProcessorLinks();
 
     for (size_t i = 0; i < links.size(); i++) {
         Processor* src = dynamic_cast<Processor*>(links[i]->getSourceProcessor());
