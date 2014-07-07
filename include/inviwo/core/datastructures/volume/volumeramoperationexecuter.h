@@ -39,6 +39,7 @@
 #include <inviwo/core/datastructures/volume/volumeramslice.h>
 #include <inviwo/core/datastructures/volume/volumeramsubset.h>
 #include <inviwo/core/datastructures/volume/volumeramsubsample.h>
+#include <inviwo/core/datastructures/geometry/marchingtetrahedron.h>
 
 namespace inviwo {
 
@@ -77,6 +78,14 @@ void executeOperationOnVolumeRAMPrecision(DataOperation* dop) {
 
     if (volSubSampleDop) {
         volSubSampleDop->evaluate<T, B>();
+        return;
+    }
+
+
+    MarchingTetrahedron* volMarchingTetrahedron = dynamic_cast<MarchingTetrahedron*>(dop);
+
+    if (volMarchingTetrahedron) {
+        volMarchingTetrahedron->evaluate<T, B>();
         return;
     }
 };

@@ -28,6 +28,7 @@ set(HEADER_FILES
     ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/diskrepresentation.h
     ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/geometry/basicmesh.h
     ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/geometry/edge.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/geometry/marchingtetrahedron.h
     ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/geometry/geometry.h
     ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/geometry/geometrydisk.h
     ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/geometry/geometrydisk2ramconverter.h
@@ -249,6 +250,7 @@ set(SOURCE_FILES
     datastructures/datarepresentation.cpp
     datastructures/diskrepresentation.cpp
     datastructures/geometry/basicmesh.cpp
+    datastructures/geometry/marchingtetrahedron.cpp
     datastructures/geometry/geometry.cpp
     datastructures/geometry/geometrydisk.cpp
     datastructures/geometry/geometrydisk2ramconverter.cpp
