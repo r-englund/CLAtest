@@ -112,6 +112,7 @@ void PropertyListWidget::addProcessorProperties(Processor* processor) {
         if (elm == devWidgets_.end()) {
             devWidgets_.push_back(widget);
         }
+        
         widget->showWidget();
     }
     // Put this tab in front
@@ -205,7 +206,7 @@ CollapsibleGroupBoxWidgetQt* PropertyListWidget::createNewProcessorPropertiesIte
     Processor* processor) {
     // create property widget and store it in the map
     CollapsibleGroupBoxWidgetQt* processorPropertyWidget =
-        new CollapsibleGroupBoxWidgetQt(processor->getIdentifier(), processor->getIdentifier());
+        new CollapsibleGroupBoxWidgetQt(processor->getIdentifier(), processor->getDisplayName());
 
     std::vector<Property*> props = processor->getProperties();
     WidgetMap groups;
@@ -232,6 +233,11 @@ CollapsibleGroupBoxWidgetQt* PropertyListWidget::createNewProcessorPropertiesIte
     processorPropertyWidget->hideWidget();
 
     widgetMap_.insert(std::make_pair(processor->getIdentifier(), processorPropertyWidget));
+
+    // Add the widget as a property owner oberver
+    processor->PropertyOwnerObservable::addObserver(
+        static_cast<PropertyOwnerObserver*>(processorPropertyWidget));
+
     return processorPropertyWidget;
 }
 

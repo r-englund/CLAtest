@@ -173,8 +173,8 @@ set(HEADER_FILES
     ${IVW_INCLUDE_DIR}/inviwo/core/properties/property.h
     ${IVW_INCLUDE_DIR}/inviwo/core/properties/propertyfactory.h
     ${IVW_INCLUDE_DIR}/inviwo/core/properties/propertyfactoryobject.h
-    ${IVW_INCLUDE_DIR}/inviwo/core/properties/propertyobserver.h
     ${IVW_INCLUDE_DIR}/inviwo/core/properties/propertyowner.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/properties/propertyownerobserver.h
     ${IVW_INCLUDE_DIR}/inviwo/core/properties/propertysemantics.h
     ${IVW_INCLUDE_DIR}/inviwo/core/properties/propertyvisibility.h
     ${IVW_INCLUDE_DIR}/inviwo/core/properties/propertywidget.h
@@ -361,8 +361,8 @@ set(SOURCE_FILES
     properties/property.cpp
     properties/propertyfactory.cpp
     properties/propertyfactoryobject.cpp
-    properties/propertyobserver.cpp
     properties/propertyowner.cpp
+    properties/propertyownerobserver.cpp
     properties/propertysemantics.cpp
     properties/propertywidget.cpp
     properties/propertywidgetfactory.cpp

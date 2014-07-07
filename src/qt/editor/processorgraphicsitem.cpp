@@ -103,8 +103,7 @@ void ProcessorGraphicsItem::setProcessor(Processor* processor) {
     if (processor) {
         nameLabel_->setText(QString::fromStdString(processor_->getIdentifier()));
         classLabel_->setText(QString::fromStdString(processor_->getDisplayName()));
-        ProcessorObserver::addObservation(processor_);
-        processor_->addObserver(this);
+        processor_->ProcessorObservable::addObserver(this);
 
         ProgressBarOwner* progressBarOwner = dynamic_cast<ProgressBarOwner*>(processor_);
         if (progressBarOwner) {

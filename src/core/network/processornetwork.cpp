@@ -76,7 +76,7 @@ void ProcessorNetwork::addProcessor(Processor* processor) {
     ivwAssert(std::find(processors_.begin(), processors_.end(), processor)==processors_.end(),
               "Processor instance already contained in processor network.");
     processors_.push_back(processor);
-    processor->addObserver(this);
+    processor->ProcessorObservable::addObserver(this);
     modified();
 }
 
@@ -111,7 +111,7 @@ void ProcessorNetwork::removeProcessor(Processor* processor) {
 
     // remove processor itself
     processors_.erase(std::remove(processors_.begin(), processors_.end(), processor), processors_.end());
-    processor->removeObserver(this);
+    processor->ProcessorObservable::removeObserver(this);
     modified();
 }
 
@@ -658,7 +658,7 @@ void ProcessorNetwork::deserialize(IvwDeserializer& d) throw (Exception) {
 
         while (it != processors_.end()) {
             if (*it) {
-                (*it)->addObserver(this);
+                (*it)->ProcessorObservable::addObserver(this);
                 ++it;
             } else {
                 it = processors_.erase(it);

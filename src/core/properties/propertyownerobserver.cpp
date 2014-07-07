@@ -26,20 +26,38 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
- * Main file authors: Daniel Jönsson
+ * Main file authors: Peter Steneteg
  *
  *********************************************************************************/
 
-#include <inviwo/core/properties/propertyobserver.h>
+#include <inviwo/core/properties/propertyownerobserver.h>
 
 namespace inviwo {
 
-void PropertyObservable::notifyPropertyObservers() const {
-    // Notify observers
+void PropertyOwnerObservable::notifyObserversWillAddProperty(Property* property, int index) const {
     for (ObserverSet::reverse_iterator it = observers_->rbegin(); it != observers_->rend(); ++it) {
-        // static_cast can be used since only template class objects can be added
-        static_cast<PropertyObserver*>(*it)->onPropertyChange();
+        static_cast<PropertyOwnerObserver*>(*it)->onWillAddProperty(property, index);
     }
 }
 
+void PropertyOwnerObservable::notifyObserversDidAddProperty(Property* property, int index) const {
+    for (ObserverSet::reverse_iterator it = observers_->rbegin(); it != observers_->rend(); ++it) {
+        static_cast<PropertyOwnerObserver*>(*it)->onDidAddProperty(property, index);
+    }
+}
+
+void PropertyOwnerObservable::notifyObserversWillRemoveProperty(Property* property, int index) const {
+    for (ObserverSet::reverse_iterator it = observers_->rbegin(); it != observers_->rend(); ++it) {
+        static_cast<PropertyOwnerObserver*>(*it)->onWillRemoveProperty(property, index);
+    }
+}
+
+void PropertyOwnerObservable::notifyObserversDidRemoveProperty(Property* property, int index) const {
+    for (ObserverSet::reverse_iterator it = observers_->rbegin(); it != observers_->rend(); ++it) {
+        static_cast<PropertyOwnerObserver*>(*it)->onDidRemoveProperty(property, index);
+    }
+}
+
+
 } // namespace
+

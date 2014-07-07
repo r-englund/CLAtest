@@ -316,7 +316,7 @@ bool ProcessorNetworkEvaluator::hasBeenVisited(Property* property) {
 
 void ProcessorNetworkEvaluator::onProcessorInvalidationEnd(Processor* p) {
     processorNetwork_->onProcessorInvalidationEnd(p);
-    p->removeObserver(this);
+    p->ProcessorObservable::removeObserver(this);
 
     if (evaulationQueued_) {
         evaulationQueued_ = false;
