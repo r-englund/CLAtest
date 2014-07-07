@@ -41,7 +41,12 @@ namespace inviwo {
 
 CollapsibleGroupBoxWidgetQt::CollapsibleGroupBoxWidgetQt(std::string identifier,
                                                          std::string displayName)
-    : PropertyWidgetQt(), identifier_(identifier), displayName_(displayName), collapsed_(false) {
+    : PropertyWidgetQt()
+    , PropertyOwnerObserver()
+    , identifier_(identifier)
+    , displayName_(displayName)
+    , collapsed_(false) {
+    
     setObjectName("CollapsibleGroupBoxWidgetQt");
     generateWidget();
     updateFromProperty();
@@ -363,6 +368,38 @@ void CollapsibleGroupBoxWidgetQt::updatePropertyWidgetSemantics(PropertyWidgetQt
         
         
     }
+}
+
+void CollapsibleGroupBoxWidgetQt::onDidAddProperty(Property* prop, int index) {
+    properties_.insert(properties_.begin()+index, prop);
+
+    PropertyWidgetQt* propertyWidget =
+        static_cast<PropertyWidgetQt*>(PropertyWidgetFactory::getPtr()->create(prop));
+
+    if (propertyWidget) {
+        propertyWidgetGroupLayout_->insertWidget(index, propertyWidget);
+        propertyWidgets_.insert(propertyWidgets_.begin()+index, propertyWidget);
+        prop->registerWidget(propertyWidget);
+        connect(propertyWidget, SIGNAL(usageModeChanged()), this, SLOT(updateContextMenu()));
+        connect(propertyWidget, SIGNAL(updateSemantics(PropertyWidgetQt*)),
+                this, SLOT(updatePropertyWidgetSemantics(PropertyWidgetQt*)));
+        
+        propertyWidget->showWidget();
+        
+        updateVisibility();
+    } else {
+        LogWarn("Could not find a widget for property: " << prop->getClassName());
+    }
+
+}
+void CollapsibleGroupBoxWidgetQt::onWillRemoveProperty(Property* prop, int index) {
+    PropertyWidgetQt* propertyWidget = propertyWidgets_[index];
+    propertyWidget->hideWidget();
+    propertyWidgetGroupLayout_->removeWidget(propertyWidget);
+    propertyWidgets_.erase(propertyWidgets_.begin()+index);
+    properties_.erase(properties_.begin()+index);
+    
+    updateVisibility();
 }
 
 

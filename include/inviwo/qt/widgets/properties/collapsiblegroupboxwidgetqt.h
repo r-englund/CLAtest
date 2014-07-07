@@ -47,43 +47,49 @@
 #include <inviwo/qt/widgets/properties/eventpropertywidgetqt.h>
 
 #include <inviwo/core/properties/property.h>
+#include <inviwo/core/properties/propertyownerobserver.h>
 
 namespace inviwo {
-class IVW_QTWIDGETS_API CollapsibleGroupBoxWidgetQt : public PropertyWidgetQt {
+class IVW_QTWIDGETS_API CollapsibleGroupBoxWidgetQt : public PropertyWidgetQt,
+                                                      public PropertyOwnerObserver {
     Q_OBJECT
 
 public:
-    CollapsibleGroupBoxWidgetQt(std::string identifier, std::string displayName= "");
+    CollapsibleGroupBoxWidgetQt(std::string identifier, std::string displayName = "");
 
     virtual std::string getIdentifier() const;
     virtual void setIdentifier(const std::string& identifier);
 
     virtual std::string getDisplayName() const;
     virtual void setDisplayName(const std::string& displayName);
-   
+
     virtual UsageMode getUsageMode() const;
     bool getVisible() const;
 
     void updateFromProperty();
     void addProperty(Property* tmpProperty);
     void generateEventPropertyWidgets(EventPropertyManager* eventPropertyManager);
-    
+
     std::vector<Property*> getProperties();
-    
+
     bool isCollapsed();
-    
+
     virtual void showWidget();
     virtual void hideWidget();
 
     void addWidget(QWidget* widget);
     void removeWidget(QWidget* widget);
-    std::vector<PropertyWidgetQt*> getPropertyWidgets() {return propertyWidgets_; };
-    
+    std::vector<PropertyWidgetQt*> getPropertyWidgets() { return propertyWidgets_; };
+
     virtual QSize sizeHint() const;
     virtual QSize minimumSizeHint() const;
-    
+
     virtual void serialize(IvwSerializer& s) const;
     virtual void deserialize(IvwDeserializer& d);
+    
+    // Overridden from PropertyOwnerObserver to add and remove properties dynamically
+    virtual void onDidAddProperty(Property* property, int index);
+    virtual void onWillRemoveProperty(Property* property, int index);
 
 public slots:
     void toggleCollapsed();
@@ -109,14 +115,12 @@ protected:
     std::vector<PropertyWidgetQt*> propertyWidgets_;
 
 private:
-
     EditableLabelQt* label_;
     QToolButton* btnCollapse_;
 
     QWidget* propertyWidgetGroup_;
     QVBoxLayout* propertyWidgetGroupLayout_;
-    //QFrame* frame_;
-    
+    // QFrame* frame_;
 };
 
 } // namespace

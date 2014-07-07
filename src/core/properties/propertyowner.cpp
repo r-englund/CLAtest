@@ -37,7 +37,8 @@
 namespace inviwo {
 
 PropertyOwner::PropertyOwner()
-    : invalidationLevel_(PropertyOwner::VALID) {
+    : PropertyOwnerObservable()
+    , invalidationLevel_(PropertyOwner::VALID) {
 }
 
 PropertyOwner::~PropertyOwner() {
@@ -46,12 +47,46 @@ PropertyOwner::~PropertyOwner() {
 
 void PropertyOwner::addProperty(Property* property) {
     ivwAssert(getPropertyByIdentifier(property->getIdentifier())==0, "Property already exist");
+    notifyObserversWillAddProperty(property, properties_.size());
     properties_.push_back(property);
     property->setOwner(this);
+    notifyObserversDidAddProperty(property, properties_.size()-1);
 }
 
 void PropertyOwner::addProperty(Property& property) {
     addProperty(&property);
+}
+
+Property* PropertyOwner::removeProperty(const std::string& identifier) {
+    Property* prop = NULL;
+    
+    std::vector<Property*>::iterator it =
+        std::find_if(properties_.begin(), properties_.end(), property_has_identifier(identifier));
+    if (it != properties_.end()) {
+        prop = *it;
+        notifyObserversWillRemoveProperty(prop, std::distance(properties_.begin(), it));
+        properties_.erase(it);
+        notifyObserversDidRemoveProperty(prop, std::distance(properties_.begin(), it));
+    }
+    return prop;
+}
+
+Property* PropertyOwner::removeProperty(Property* property) {
+    Property* prop = NULL;
+    
+    std::vector<Property*>::iterator it =
+        std::find(properties_.begin(), properties_.end(), property);
+    if (it != properties_.end()) {
+        prop = *it;
+        notifyObserversWillRemoveProperty(prop, std::distance(properties_.begin(), it));
+        properties_.erase(it);
+        notifyObserversDidRemoveProperty(prop, std::distance(properties_.begin(), it));
+    }
+    return prop;
+}
+
+Property* PropertyOwner::removeProperty(Property& property) {
+    return removeProperty(&property);
 }
 
 Property* PropertyOwner::getPropertyByIdentifier(std::string identifier) const {
@@ -107,5 +142,10 @@ void PropertyOwner::setAllPropertiesCurrentStateAsDefault(){
     for (std::vector<Property*>::iterator it = properties_.begin(); it != properties_.end(); ++it)
         (*it)->setCurrentStateAsDefault();
 }
+
+bool PropertyOwner::property_has_identifier::operator () (const Property* p) {
+    return p->getIdentifier() == id_;
+}
+
 
 } // namespace

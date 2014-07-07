@@ -35,13 +35,14 @@
 
 #include <inviwo/core/common/inviwocoredefine.h>
 #include <inviwo/core/common/inviwo.h>
+#include <inviwo/core/properties/propertyownerobserver.h>
 
 namespace inviwo {
 
 class Property;
 class Processor;
 
-class IVW_CORE_API PropertyOwner : public IvwSerializable {
+class IVW_CORE_API PropertyOwner : public PropertyOwnerObservable, public IvwSerializable {
 public:
     PropertyOwner();
     virtual ~PropertyOwner();
@@ -59,6 +60,12 @@ public:
 
     virtual void addProperty(Property* property);
     virtual void addProperty(Property& property);
+    
+    
+    virtual Property* removeProperty(const std::string& identifier);
+    virtual Property* removeProperty(Property* property);
+    virtual Property* removeProperty(Property& property);
+
 
     std::vector<Property*> getProperties() const { return properties_; }
     Property* getPropertyByIdentifier(std::string identifier) const;
@@ -86,6 +93,14 @@ protected:
 
 private:
     InvalidationLevel invalidationLevel_;
+    
+    struct property_has_identifier {
+        property_has_identifier(std::string const& n) : id_(n) { }
+        bool operator () (const Property* p);
+    private:
+        std::string id_;
+    };
+    
 };
 
 template<class T>

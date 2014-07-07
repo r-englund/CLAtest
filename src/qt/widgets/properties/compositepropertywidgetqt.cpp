@@ -45,6 +45,7 @@ CompositePropertyWidgetQt::CompositePropertyWidgetQt(CompositeProperty* property
         addProperty(subProperties[i]);
     }
 
+    property->addObserver(this);
     updateFromProperty();
 }                           
 
