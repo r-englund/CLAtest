@@ -44,12 +44,10 @@
 namespace inviwo {
 
 class IVW_QTWIDGETS_API InviwoApplicationQt : public QApplication, public InviwoApplication {
-
     Q_OBJECT
 
 public:
-    InviwoApplicationQt(std::string displayName_, std::string basePath_,
-                        int& argc, char** argv);
+    InviwoApplicationQt(std::string displayName_, std::string basePath_, int& argc, char** argv);
 
     virtual ~InviwoApplicationQt();
 
@@ -75,11 +73,14 @@ protected:
     void wait(int);
 
 private:
+    static void logQtMessages(QtMsgType type, const QMessageLogContext& context,
+                              const QString& msg);
+
     QMainWindow* mainWindow_;
     std::vector<FileObserver*> fileObservers_;
     QFileSystemWatcher* fileWatcher_;
 };
 
-} // namespace
+}  // namespace
 
 #endif // IVW_INVIWOAPPLICATIONQT_H

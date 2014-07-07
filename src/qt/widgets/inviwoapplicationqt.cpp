@@ -57,6 +57,11 @@ InviwoApplicationQt::InviwoApplicationQt(std::string displayName,
     QCoreApplication::setApplicationName(displayName.c_str());
     fileWatcher_ = new QFileSystemWatcher(this);
     connect(fileWatcher_, SIGNAL(fileChanged(QString)), this, SLOT(fileChanged(QString)));
+    
+    // Make qt write errors in the console;
+    #if (QT_VERSION >= QT_VERSION_CHECK(5, 0, 0))
+    qInstallMessageHandler(&InviwoApplicationQt::logQtMessages);
+    #endif
 }
 
 InviwoApplicationQt::~InviwoApplicationQt() {
@@ -148,5 +153,43 @@ void InviwoApplicationQt::wait(int ms) {
     nanosleep(&ts, NULL);
 #endif
 }
+
+
+void InviwoApplicationQt::logQtMessages(QtMsgType type, const QMessageLogContext &context,
+                                        const QString &msg) {
+
+    QByteArray localMsg = msg.toLocal8Bit();
+    switch (type) {
+        case QtDebugMsg:
+            inviwo::LogCentral::instance()->log("Qt Debug", Info, context.file, context.function,
+                                                context.line, msg.toStdString());
+
+            fprintf(stderr, "Debug: %s (%s:%u, %s)\n", localMsg.constData(), context.file,
+                    context.line, context.function);
+            break;
+        case QtWarningMsg:
+            inviwo::LogCentral::instance()->log("Qt Warning", Info, context.file, context.function,
+                                                context.line, msg.toStdString());
+
+            fprintf(stderr, "Warning: %s (%s:%u, %s)\n", localMsg.constData(), context.file,
+                    context.line, context.function);
+            break;
+        case QtCriticalMsg:
+            inviwo::LogCentral::instance()->log("Qt Critical", Info, context.file, context.function,
+                                                context.line, msg.toStdString());
+         
+            fprintf(stderr, "Critical: %s (%s:%u, %s)\n", localMsg.constData(), context.file,
+                    context.line, context.function);
+            break;
+        case QtFatalMsg:
+            inviwo::LogCentral::instance()->log("Qt Fatal", Info, context.file, context.function,
+                                                context.line, msg.toStdString());
+            
+            fprintf(stderr, "Fatal: %s (%s:%u, %s)\n", localMsg.constData(), context.file,
+                    context.line, context.function);
+            abort();
+    }
+}
+
 
 } // namespace
