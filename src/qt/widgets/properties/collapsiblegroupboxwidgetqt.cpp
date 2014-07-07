@@ -327,7 +327,6 @@ void CollapsibleGroupBoxWidgetQt::updatePropertyWidgetSemantics(PropertyWidgetQt
         std::find(propertyWidgets_.begin(), propertyWidgets_.end(), widget);
     
     if (pit != properties_.end() && wit != propertyWidgets_.end()) {
-        LogInfo("Found widget!");
 
         int layoutPosition = propertyWidgetGroupLayout_->indexOf(widget);
         
@@ -338,10 +337,13 @@ void CollapsibleGroupBoxWidgetQt::updatePropertyWidgetSemantics(PropertyWidgetQt
             
             prop->deregisterWidget(widget);
             widget->hideWidget();
-            removeWidget(widget);
             
+            propertyWidgetGroupLayout_->removeWidget(widget);
             propertyWidgetGroupLayout_->insertWidget(layoutPosition, propertyWidget);
-            propertyWidgets_.insert(wit, propertyWidget);
+            
+            // Replace the item in propertyWidgets_;
+            *wit = propertyWidget;
+            
             prop->registerWidget(propertyWidget);
             
             connect(propertyWidget, SIGNAL(usageModeChanged()), this, SLOT(updateContextMenu()));
