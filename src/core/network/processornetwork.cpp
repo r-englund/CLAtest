@@ -299,7 +299,7 @@ PropertyLink* ProcessorNetwork::getBidirectionalPair(Property* startProperty, Pr
 }
 
 void ProcessorNetwork::setLinkModifiedByOwner(PropertyOwner *processor) {
-    //TODO: Use cached info
+    //TODO: Use cached map info instead of searching through vector
     for (size_t i=0; i<propertyLinks_.size(); i++) {
         if (propertyLinks_[i]->getSourceProperty()->getOwner()->getProcessor() == processor)
             propertyLinks_[i]->getSourceProperty()->propertyModified();
@@ -309,7 +309,7 @@ void ProcessorNetwork::setLinkModifiedByOwner(PropertyOwner *processor) {
 }
 
 std::vector<PropertyLink*> ProcessorNetwork::getLinksBetweenProcessors(PropertyOwner* sourceProcessor, PropertyOwner* destinationProcessor) {
-    //TODO: Use cached info
+    //TODO: Use cached map info instead of searching through vector
     std::vector<PropertyLink*> links;
     for (size_t i=0; i<propertyLinks_.size(); i++) {
         if ( (propertyLinks_[i]->getSourceProperty()->getOwner()->getProcessor() == sourceProcessor && 
@@ -726,7 +726,7 @@ void ProcessorNetwork::deserialize(IvwDeserializer& d) throw (Exception) {
                         Property* dstProperty = propertyLinks[j]->getDestinationProperty();
 
                         if (!srcProperty || !dstProperty) {
-                            //processorLinks[i]->removePropertyLink(propertyLinks[j]);
+                            processorLinks[i]->removePropertyLinks(srcProperty, dstProperty);
                             LogWarn("Unable to establish property link.");
                         }
                     }
@@ -747,25 +747,30 @@ void ProcessorNetwork::deserialize(IvwDeserializer& d) throw (Exception) {
 
         std::vector<PropertyLink*> propertyLinks;
         d.deserialize("PropertyLinks", propertyLinks, "PropertyLink");
-        for (size_t j=0; j<propertyLinks.size(); j++)
-            propertyLinks_.push_back(propertyLinks[j]);
+        for (size_t j=0; j<propertyLinks.size(); j++) {
+            if (propertyLinks[j]->getSourceProperty() && propertyLinks[j]->getDestinationProperty()) {
+                propertyLinks_.push_back(propertyLinks[j]);
+            }
+            else
+                LogWarn("Unable to establish property link.");
+        }
 
         updatePropertyLinkCache();
 
         ///////////////////////////////////////////////////////////////////////
         //TODO: ProcessorLinks are Deprecated. To be removed
-        for (size_t i=0; i<propertyLinks.size(); i++) {
+        for (size_t i=0; i<propertyLinks_.size(); i++) {
             
-            PropertyOwner* srcProcessor = propertyLinks[i]->getSourceProperty()->getOwner()->getProcessor();
-            PropertyOwner* dstProcessor = propertyLinks[i]->getDestinationProperty()->getOwner()->getProcessor();
+            PropertyOwner* srcProcessor = propertyLinks_[i]->getSourceProperty()->getOwner()->getProcessor();
+            PropertyOwner* dstProcessor = propertyLinks_[i]->getDestinationProperty()->getOwner()->getProcessor();
 
             ProcessorLink* processorLink = getProcessorLink(srcProcessor, dstProcessor);
-            std::vector<PropertyLink*> propertyLinks = getLinksBetweenProcessors(srcProcessor, dstProcessor);
+            std::vector<PropertyLink*> plinks = getLinksBetweenProcessors(srcProcessor, dstProcessor);
 
-            if (propertyLinks.size()) {
+            if (plinks.size()) {
                 if (!processorLink) processorLink = addLink(srcProcessor, dstProcessor);
-                for (size_t j=0; j<propertyLinks.size(); j++) {
-                    processorLink->addPropertyLinks(propertyLinks[j]);
+                for (size_t j=0; j<plinks.size(); j++) {
+                    processorLink->addPropertyLinks(plinks[j]);
                 }
             }
         }
