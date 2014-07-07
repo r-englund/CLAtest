@@ -263,7 +263,6 @@ void PropertyWidgetQt::generateContextMenu() {
 
 void PropertyWidgetQt::changeSemantics(QAction* action) {
     PropertySemantics semantics(action->data().toString().toStdString());
-    LogInfo("Change semanics to: " << semantics.getString());
     if (property_) {
         property_->setSemantics(semantics);
         emit updateSemantics(this);
