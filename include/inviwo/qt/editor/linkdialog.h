@@ -88,7 +88,7 @@ class IVW_QTEDITOR_API DialogConnectionGraphicsItem : public DialogCurveGraphics
 public:
 
     DialogConnectionGraphicsItem(LinkDialogPropertyGraphicsItem* startProperty, LinkDialogPropertyGraphicsItem* endProperty,
-                                 PropertyLink* propertyLink, ProcessorLink* processorLink);
+                                 PropertyLink* propertyLink);
     ~DialogConnectionGraphicsItem();
 
     virtual void paint(QPainter* p, const QStyleOptionGraphicsItem* options, QWidget* widget);
@@ -122,7 +122,6 @@ private:
     size_t startArrowHeadIndex_;
     size_t endArrowHeadIndex_;
     PropertyLink* propertyLink_;
-    ProcessorLink* processorLink_;
 };
 
 
@@ -323,8 +322,8 @@ private:
 class IVW_QTEDITOR_API LinkDialog : public InviwoDockWidget {
     Q_OBJECT
 public:
-    LinkDialog(std::vector<ProcessorLink*> processorLinks, ProcessorNetwork* network, QWidget* parent);
-    LinkDialog(Processor* src, Processor* dest, ProcessorNetwork* network, QWidget* parent);
+    LinkDialog(QWidget* parent);
+    LinkDialog(Processor* src, Processor* dest, QWidget* parent);
     virtual void closeEvent ( QCloseEvent * event );
     int exec();
     ~LinkDialog();

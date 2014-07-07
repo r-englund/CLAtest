@@ -96,15 +96,13 @@ void DialogCurveGraphicsItem::paint(QPainter* p, const QStyleOptionGraphicsItem*
 
 DialogConnectionGraphicsItem::DialogConnectionGraphicsItem(LinkDialogPropertyGraphicsItem* startProperty,
         LinkDialogPropertyGraphicsItem* endProperty,
-        PropertyLink* propertyLink,
-        ProcessorLink* processorLink) :
+        PropertyLink* propertyLink) :
     DialogCurveGraphicsItem(startProperty->getShortestBoundaryPointTo(endProperty),
                             endProperty->getShortestBoundaryPointTo(startProperty),
                             uvec3(38,38,38)),
     startPropertyGraphicsItem_(startProperty),
     endPropertyGraphicsItem_(endProperty),
-    propertyLink_(propertyLink),
-    processorLink_(processorLink)
+    propertyLink_(propertyLink)
 {
     setFlags(ItemIsSelectable | ItemIsFocusable);
     initialize();
@@ -124,7 +122,6 @@ void DialogConnectionGraphicsItem::deinitialize() {
     startPropertyGraphicsItem_->removeConnectionGraphicsItem(this);
     endPropertyGraphicsItem_->removeConnectionGraphicsItem(this);
     propertyLink_ = 0;
-    processorLink_ = 0;
 }
 
 void DialogConnectionGraphicsItem::updateStartEndPoint() {
@@ -161,9 +158,11 @@ void DialogConnectionGraphicsItem::paint(QPainter* p, const QStyleOptionGraphics
 }
 
 bool DialogConnectionGraphicsItem::isBidirectional() {
-    if (!processorLink_ || !propertyLink_) return false;
-
-    return processorLink_->getBidirectionalPair(propertyLink_->getSourceProperty(), propertyLink_->getDestinationProperty())!=0;
+    //if (!processorLink_ || !propertyLink_) return false;
+    //return processorLink_->getBidirectionalPair(propertyLink_->getSourceProperty(), propertyLink_->getDestinationProperty())!=0;
+    return InviwoApplication::getPtr()->getProcessorNetwork()\
+                                      ->getBidirectionalPair(propertyLink_->getSourceProperty(), \
+                                                             propertyLink_->getDestinationProperty())!=0;
 }
 
 void DialogConnectionGraphicsItem::switchDirection() {
@@ -178,8 +177,7 @@ void DialogConnectionGraphicsItem::switchDirection() {
 }
 
 void DialogConnectionGraphicsItem::updateConnectionDrawing() {
-    if (!processorLink_ || !propertyLink_) return;
-
+    if (!propertyLink_) return;
     startPropertyGraphicsItem_->prepareGeometryChange();
     endPropertyGraphicsItem_->prepareGeometryChange();
     update();
@@ -745,6 +743,11 @@ void LinkDialogGraphicsScene::addPropertyLink(LinkDialogPropertyGraphicsItem* st
     //LogInfo("Adding Property Link.");
     Property* sProp = startProperty->getGraphicsItemData();
     Property* eProp = endProperty->getGraphicsItemData();
+
+    ///////////////////////////////////////////////////////////////////////
+    //TODO: ProcessorLinks are Deprecated. To be removed
+
+    /*
     PropertyOwner* startProcessor = src_;
     PropertyOwner* endProcessor = dest_;
     ProcessorLink* processorLink = processorNetwork_->getLink(startProcessor, endProcessor);
@@ -755,8 +758,13 @@ void LinkDialogGraphicsScene::addPropertyLink(LinkDialogPropertyGraphicsItem* st
 
         if (propertyLink) initializePorpertyLinkRepresentation(startProperty, endProperty, propertyLink);
     }
-}
+    */
 
+    if (!processorNetwork_->getLink(sProp, eProp) && !processorNetwork_->getLink(eProp, sProp)) {
+        PropertyLink* propertyLink = processorNetwork_->addLink(sProp, eProp);
+        if (propertyLink) initializePorpertyLinkRepresentation(startProperty, endProperty, propertyLink);
+    }
+}
 
 void LinkDialogGraphicsScene::removeCurrentPropertyLinks() {
     DialogConnectionGraphicsItem* propertyLink=0;
@@ -779,7 +787,12 @@ void LinkDialogGraphicsScene::removeAllPropertyLinks() {
 void LinkDialogGraphicsScene::removePropertyLink(DialogConnectionGraphicsItem* propertyLink) {
     //LogInfo("Removing Property Link.");
     LinkDialogPropertyGraphicsItem* startProperty = propertyLink->getStartProperty();
-    LinkDialogPropertyGraphicsItem* endProperty = propertyLink->getEndProperty();    
+    LinkDialogPropertyGraphicsItem* endProperty = propertyLink->getEndProperty();
+
+    ///////////////////////////////////////////////////////////////////////
+    //TODO: ProcessorLinks are Deprecated. To be removed
+
+    /*
     PropertyOwner* startProcessor = src_;
     PropertyOwner* endProcessor = dest_;
     ProcessorLink* processorLink = processorNetwork_->getLink(startProcessor, endProcessor);
@@ -793,6 +806,28 @@ void LinkDialogGraphicsScene::removePropertyLink(DialogConnectionGraphicsItem* p
         cleanupAfterRemoveLink(propertyLink);
         delete propertyLink;
         processorLink->removePropertyLinks(startProperty->getGraphicsItemData(), endProperty->getGraphicsItemData());
+        startProperty->prepareGeometryChange();
+        endProperty->prepareGeometryChange();
+    }
+    */
+
+    ProcessorLink* processorLink = processorNetwork_->getProcessorLink(src_, dest_);
+    if (processorLink) {
+        processorLink->removePropertyLinks(startProperty->getGraphicsItemData(), endProperty->getGraphicsItemData());
+        processorLink->removePropertyLinks(endProperty->getGraphicsItemData(), startProperty->getGraphicsItemData());
+    }
+
+    PropertyLink* link = processorNetwork_->getLink(startProperty->getGraphicsItemData(), endProperty->getGraphicsItemData());
+    if (link) {
+        propertyLink->hide();
+        connectionGraphicsItems_.erase(std::remove(connectionGraphicsItems_.begin(), connectionGraphicsItems_.end(), propertyLink),
+            connectionGraphicsItems_.end());
+        removeItem(propertyLink);
+        propertyLink->deinitialize();
+        cleanupAfterRemoveLink(propertyLink);
+        delete propertyLink;
+        processorNetwork_->removeLink(startProperty->getGraphicsItemData(), endProperty->getGraphicsItemData());
+        processorNetwork_->removeLink(endProperty->getGraphicsItemData(), startProperty->getGraphicsItemData());
         startProperty->prepareGeometryChange();
         endProperty->prepareGeometryChange();
     }
@@ -842,16 +877,28 @@ void LinkDialogGraphicsScene::cleanupAfterRemoveLink(DialogConnectionGraphicsIte
 bool LinkDialogGraphicsScene::isPropertyLinkBidirectional(DialogConnectionGraphicsItem* propertyLink) {
     LinkDialogPropertyGraphicsItem* startProperty = propertyLink->getStartProperty();
     LinkDialogPropertyGraphicsItem* endProperty = propertyLink->getEndProperty();
+
+    ///////////////////////////////////////////////////////////////////////
+    //TODO: ProcessorLinks are Deprecated. To be removed
+
+    /*
     PropertyOwner* startProcessor = src_;
     PropertyOwner* endProcessor = dest_;
     ProcessorLink* processorLink = processorNetwork_->getLink(startProcessor, endProcessor);
     PropertyLink* propLink = processorLink->getPropertyLink(startProperty->getGraphicsItemData(), endProperty->getGraphicsItemData());
     return processorLink->getBidirectionalPair(propLink)!=0;
+    */
+    return processorNetwork_->getBidirectionalPair(startProperty->getGraphicsItemData(), endProperty->getGraphicsItemData())!=0;
 }
 
 void LinkDialogGraphicsScene::makePropertyLinkBidirectional(DialogConnectionGraphicsItem* propertyLink, bool isBidirectional) {
     LinkDialogPropertyGraphicsItem* startProperty = propertyLink->getStartProperty();
     LinkDialogPropertyGraphicsItem* endProperty = propertyLink->getEndProperty();
+
+    ///////////////////////////////////////////////////////////////////////
+    //TODO: ProcessorLinks are Deprecated. To be removed
+
+    /*
     PropertyOwner* startProcessor = src_;
     PropertyOwner* endProcessor = dest_;
     ProcessorLink* processorLink = processorNetwork_->getLink(startProcessor, endProcessor);
@@ -865,6 +912,15 @@ void LinkDialogGraphicsScene::makePropertyLinkBidirectional(DialogConnectionGrap
         if (processorLink->getBidirectionalPair(propLink))
             processorLink->removeBidirectionalPair(startProperty->getGraphicsItemData(), endProperty->getGraphicsItemData());
     }
+    */
+
+    PropertyLink* propLink = processorNetwork_->getLink(endProperty->getGraphicsItemData(), startProperty->getGraphicsItemData());
+    if (isBidirectional) {
+        if (!propLink) processorNetwork_->addLink(endProperty->getGraphicsItemData(), startProperty->getGraphicsItemData());
+    }
+    else {
+        if (propLink) processorNetwork_->removeLink(endProperty->getGraphicsItemData(), startProperty->getGraphicsItemData());
+        }
 
     propertyLink->updateConnectionDrawing();
 }
@@ -904,10 +960,24 @@ DialogConnectionGraphicsItem* LinkDialogGraphicsScene::getConnectionGraphicsItem
 void LinkDialogGraphicsScene::initializePorpertyLinkRepresentation(LinkDialogPropertyGraphicsItem* outProperty,
         LinkDialogPropertyGraphicsItem* inProperty,
         PropertyLink* propertyLink) {
+
+    ///////////////////////////////////////////////////////////////////////
+    //TODO: ProcessorLinks are Deprecated. To be removed
+
+    /*
     PropertyOwner* startProcessor = src_;
     PropertyOwner* endProcessor = dest_;
     ProcessorLink* processorLink = processorNetwork_->getLink(startProcessor, endProcessor);
     DialogConnectionGraphicsItem* cItem = new DialogConnectionGraphicsItem(outProperty, inProperty, propertyLink, processorLink);
+    addItem(cItem);
+    cItem->show();
+    connectionGraphicsItems_.push_back(cItem);
+
+    for (size_t i=0; i<connectionGraphicsItems_.size(); i++)
+        connectionGraphicsItems_[i]->updateConnectionDrawing();
+    */
+
+    DialogConnectionGraphicsItem* cItem = new DialogConnectionGraphicsItem(outProperty, inProperty, propertyLink);
     addItem(cItem);
     cItem->show();
     connectionGraphicsItems_.push_back(cItem);
@@ -984,6 +1054,10 @@ void LinkDialogGraphicsScene::initScene(std::vector<Processor*> srcProcessorList
         yPosition+=yIncrement;
     }
 
+    ///////////////////////////////////////////////////////////////////////
+    //TODO: ProcessorLinks are Deprecated. To be removed
+
+    /*
     std::vector<ProcessorLink*> processorLinks = processorNetwork_->getLinks();
 
     for (size_t i=0; i<processorLinks.size(); i++) {
@@ -1008,6 +1082,24 @@ void LinkDialogGraphicsScene::initScene(std::vector<Processor*> srcProcessorList
                 addPropertyLink(propertyLinks[j]);
                 pair = processorLinks[i]->getBidirectionalPair(propertyLinks[j]);
 
+                if (pair) pairList.push_back(pair);
+            }
+        }
+    }
+    */
+
+    for (size_t i=0; i<srcProcessorList.size(); i++) {
+        PropertyOwner* srcProcessor = srcProcessorList[i];
+        PropertyOwner* dstProcessor = dstProcessorList[i];
+        std::vector<PropertyLink*> propertyLinks = processorNetwork_->getLinksBetweenProcessors(srcProcessor, dstProcessor);
+
+        std::vector<PropertyLink*> pairList;
+        PropertyLink* pair=0;
+
+        for (size_t j=0; j<propertyLinks.size(); j++) {
+            if (std::find(pairList.begin(), pairList.end(), propertyLinks[j])==pairList.end()) {
+                addPropertyLink(propertyLinks[j]);
+                pair =  processorNetwork_->getBidirectionalPair(propertyLinks[j]->getSourceProperty(), propertyLinks[j]->getDestinationProperty());
                 if (pair) pairList.push_back(pair);
             }
         }
@@ -1065,24 +1157,22 @@ LinkDialogGraphicsView::~LinkDialogGraphicsView() {}
 
 /*---------------------------------------------------------------------------------------*/
 
-LinkDialog::LinkDialog(std::vector<ProcessorLink*> processorLinks, ProcessorNetwork* network, QWidget* parent) : InviwoDockWidget("Edit Processor Link Dialog", parent) {
-    IVW_UNUSED_PARAM(processorLinks);
+LinkDialog::LinkDialog(QWidget* parent) : InviwoDockWidget("Edit Processor Link Dialog", parent) {
     IVW_UNUSED_PARAM(parent);
-    IVW_UNUSED_PARAM(network);
     //Handle multiple processor links here
 }
 
 LinkDialog::~LinkDialog() {}
 
-LinkDialog::LinkDialog(Processor* src, Processor* dest, ProcessorNetwork* network, QWidget* parent) :InviwoDockWidget("Edit Processor Link Dialog", parent) {    
+LinkDialog::LinkDialog(Processor* src, Processor* dest, QWidget* parent) :InviwoDockWidget("Edit Processor Link Dialog", parent) {    
     std::vector<Processor*> srcList, dstList;
     srcList.push_back(src);
     dstList.push_back(dest);
     src_ = src;
     dest_ = dest;
     initDialog();
-    linkDialogScene_->setNetwork(network); //Network is required to add property links created in dialog (or remove )
-    linkDialogScene_->initScene(srcList, dstList);   
+    linkDialogScene_->setNetwork(InviwoApplication::getPtr()->getProcessorNetwork()); //Network is required to add property links created in dialog (or remove )
+    linkDialogScene_->initScene(srcList, dstList);
 }
 
 void LinkDialog::initDialog() {
@@ -1156,14 +1246,33 @@ void LinkDialog::initDialog() {
 }
 
 void LinkDialog::clickedOkayButton() {
+
+    ///////////////////////////////////////////////////////////////////////
+    //TODO: ProcessorLinks are Deprecated. To be removed
+
+    /*
     if (linkDialogScene_->currentLinkItemsCount()) {
         ProcessorLink* link = linkDialogScene_->getNetwork()->getLink(src_, dest_);
 
         if (link)
             link->setModifiedByPropertyOwner(src_);
     }
+    */
 
-    //accept();   
+    if (linkDialogScene_->currentLinkItemsCount()) {
+        InviwoApplication::getPtr()->getProcessorNetwork()->setLinkModifiedByOwner(src_);
+    }
+
+    ProcessorLink* processorLink = InviwoApplication::getPtr()->getProcessorNetwork()->getProcessorLink(src_, dest_);
+    std::vector<PropertyLink*> propertyLinks = InviwoApplication::getPtr()->getProcessorNetwork()->getLinksBetweenProcessors(src_, dest_);
+    if (propertyLinks.size()) {
+        if (!processorLink) processorLink = InviwoApplication::getPtr()->getProcessorNetwork()->addLink(src_, dest_);
+        for (size_t j=0; j<propertyLinks.size(); j++) {
+            processorLink->addPropertyLinks(propertyLinks[j]);
+        }
+    }
+
+    //accept();
     hide();
     eventLoop_.quit();
 }

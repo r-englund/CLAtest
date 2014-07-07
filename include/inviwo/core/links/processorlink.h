@@ -62,18 +62,16 @@ public:
     bool involvesProperty(Property* property) ;
     bool isValid();
     //std::vector<Property*> getSourceProperties();
-    //std::vector<Property*> getDestinationProperties();
-    void addPropertyLinks(Property* startProperty, Property* endProperty, PropertyOwner* startProcessor, PropertyOwner* endProcessor);
+    //std::vector<Property*> getDestinationProperties();    
+    void addPropertyLinks(PropertyLink* propertyLink);    
     void removePropertyLinks(Property* startProperty, Property* endProperty);
-    void removePropertyLink(PropertyLink* plink);
-    void removeBidirectionalPair(Property* startProperty, Property* endProperty);
     std::vector<PropertyLink*> getPropertyLinks() {return propertyLinks_;}
     PropertyLink* getPropertyLink(Property* startProperty, Property* endProperty);
     PropertyLink* getBidirectionalPair(PropertyLink* propertyLink);
     PropertyLink* getBidirectionalPair(Property* startProperty, Property* endProperty);
     void setSourceModified();
     void setDestinationModified();
-    void setModifiedByPropertyOwner(PropertyOwner* processor);
+    void setModifiedByPropertyOwner(PropertyOwner* processor); 
     std::string getLinkInfo();
 
     virtual void serialize(IvwSerializer& s) const;
