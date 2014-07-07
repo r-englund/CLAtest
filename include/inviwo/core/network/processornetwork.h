@@ -184,15 +184,97 @@ public:
     std::vector<ProcessorLink*> getProcessorLinks() const;
     ///////////////////////////////////////////////////////////////////////
     
+    /** 
+     * Create and add Property Link to the network
+     *
+     * Adds a link between two properties, that are owned by processor network.
+     * 
+     * @param[in] sourceProperty Property at which link starts
+     * @param[in] destinationProperty Property at which link ends
+     * @return PropertyLink* Newly added link
+     */
     PropertyLink* addLink(Property* sourceProperty, Property* destinationProperty);
+    /** 
+     * Remove and delete Property Link from the network
+     *
+     * Removes a link between two properties, that are owned by processor network.
+     * 
+     * @param[in] sourceProperty Property at which link starts
+     * @param[in] destinationProperty Property at which link ends
+     * @return void 
+     */
     void removeLink(Property* sourceProperty, Property* destinationProperty);
+    /** 
+     * Check whether Property Link exists
+     *
+     * Checks if there is a link between two properties, that are owned by processor network.
+     * 
+     * @param[in] sourceProperty Property at which link starts
+     * @param[in] destinationProperty Property at which link ends
+     * @return bool true if link exists otherwise returns false
+     */
     bool isLinked(Property* sourceProperty, Property* destinationProperty);
+    /** 
+     * Find Property Link
+     *
+     * Search and return link between two properties, that are owned by processor network.
+     * 
+     * @param[in] sourceProperty Property at which link starts
+     * @param[in] destinationProperty Property at which link ends
+     * @return PropertyLink* returns pointer to link if it exists otherwise returns NULL
+     */
     PropertyLink* getLink(Property* sourceProperty, Property* destinationProperty) const;
+    /** 
+     * Return all Property Links
+     * 
+     * @return std::vector<PropertyLink*> List of all property links owned by processor network
+     */
     std::vector<PropertyLink*> getLinks() const;
-    void removeBidirectionalPair(Property* sourceProperty, Property* endProperty);
-    PropertyLink* getBidirectionalPair(Property* startProperty, Property* endProperty);
+    /** 
+     * Remove bidirectional Property Link
+     *
+     * Searches for bidirectional link between start and end properties
+     * In other words property that goes from end to start and removes it
+     * 
+     * @param[in] sourceProperty Property at which link starts
+     * @param[in] destinationProperty Property at which link ends
+     * @return void
+     */
+    void removeBidirectionalPair(Property* sourceProperty, Property* destinationProperty);
+    /** 
+     * Get bidirectional Property Link
+     *
+     * Searches for bidirectional link between start and end properties
+     * In other words property that goes from end to start
+     * 
+     * @param[in] sourceProperty Property at which link starts
+     * @param[in] destinationProperty Property at which link ends
+     * @return void
+     */
+    PropertyLink* getBidirectionalPair(Property* sourceProperty, Property* destinationProperty);
+    /** 
+     * Modify or invalidate property of links
+     *
+     * Modify or invalidate property of a link where the property belongs to a given property owner
+     * 
+     * @param[in] processor given property owner
+     * @return void
+     */
     void setLinkModifiedByOwner(PropertyOwner* processor);
+    /** 
+     * Get all property links between two processors, though direction is not accounted
+     * 
+     * @param[in] sourceProcessor start processor
+     * @param[in] destinationProcessor end processor
+     * @return std::vector<PropertyLink*> List of all property links between sourceProcessor and destinationProcessor
+     */
     std::vector<PropertyLink*> getLinksBetweenProcessors(PropertyOwner* sourceProcessor, PropertyOwner* destinationProcessor);
+    /** 
+     * Properties that are linked to the given property where the given property is a source property
+     *
+     * @param property given property
+     * @return std::vector<Property*> List of all properties that are affected by given property
+     */
     std::vector<Property*> getLinkedProperties(Property* property);
 
     void modified();
@@ -216,7 +298,7 @@ public:
     bool isDeserializing()const;
 
     /**
-    * Clears the network objects processors, port connections, processor links etc.,
+    * Clears the network objects processors, port connections, property links etc.,
     * This function clears only the core objects and mainly used to abort any
     * further operation.
     */
@@ -224,26 +306,25 @@ public:
 
 
 private:
-    //Property Linking support    
-    std::vector<ProcessorLink*> getSortedProcessorLinksFromProperty(Property* modifiedProperty);
+    //Property Linking support
     void performLinkingOnPropertyChange(Property* modifiedProperty);
     void evaluatePropertyLinks(Property*);
-    void evaluatePropertyLinks1(Property*);
-
     void addToPropertyLinkCache(PropertyLink* propertyLink);
     void removeFromPropertyLinkCache(PropertyLink* propertyLink);
     void updatePropertyLinkCache();    
-    std::map<Property*, std::vector<Property*> > propertyLinkCache_;
 
-    bool modified_;
-    unsigned int locked_;
-
-    std::vector<Processor*> processors_;
-    std::vector<PortConnection*> portConnections_;
     ///////////////////////////////////////////////////////////////////////
     //TODO: ProcessorLinks are Deprecated. To be removed
+    std::vector<ProcessorLink*> getSortedProcessorLinksFromProperty(Property*);
+    void evaluatePropertyLinks1(Property*);
     std::vector<ProcessorLink*> processorLinks_;
     ///////////////////////////////////////////////////////////////////////
+
+    std::map<Property*, std::vector<Property*> > propertyLinkCache_;
+    bool modified_;
+    unsigned int locked_;
+    std::vector<Processor*> processors_;
+    std::vector<PortConnection*> portConnections_;
     std::vector<PropertyLink*> propertyLinks_;
 
     bool deserializing_;
