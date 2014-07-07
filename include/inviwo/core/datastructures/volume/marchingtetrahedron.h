@@ -43,17 +43,18 @@
 #include <inviwo/core/datastructures/volume/volumeramprecision.h>
 
 namespace inviwo {
-    
+
 class IVW_CORE_API MarchingTetrahedron : public VolumeOperation {
 public:
-    MarchingTetrahedron(const VolumeRepresentation *in, const double &iso,const vec4 &color);
+    MarchingTetrahedron(const VolumeRepresentation *in, const double &iso, const vec4 &color)
+        : VolumeOperation(in), iso_(iso), color_(color) {}
     virtual ~MarchingTetrahedron() {}
-
 
     template <typename T, size_t B>
     void evaluate();
 
-    static inline Geometry *apply(const VolumeRepresentation *in,const double &iso,const vec4 &color) {
+    static inline Geometry *apply(const VolumeRepresentation *in, const double &iso,
+                                  const vec4 &color) {
         MarchingTetrahedron marchingOP = MarchingTetrahedron(in, iso, color);
         in->performOperation(&marchingOP);
         return marchingOP.getOutput<Geometry>();
@@ -68,11 +69,134 @@ private:
 
     void evaluateTetra(IndexBufferRAM *indexBuffer, const glm::vec3 &p0, const double &v0,
                        const glm::vec3 &p1, const double &v1, const glm::vec3 &p2, const double &v2,
-                       const glm::vec3 &p3, const double &v3);
+                       const glm::vec3 &p3, const double &v3) {
+        int index = 0;
+        if (v0 > 0) index += 1;
+        if (v1 > 0) index += 2;
+        if (v2 > 0) index += 4;
+        if (v3 > 0) index += 8;
+        glm::vec3 a, b, c, d;
+        if (index == 0 || index == 15) return;
+        if (index == 1 || index == 14) {
+            a = interpolate(p0, v0, p2, v2);
+            b = interpolate(p0, v0, p1, v1);
+            c = interpolate(p0, v0, p3, v3);
+            if (index == 1) {
+                addTriangle(indexBuffer, a, b, c);
+            } else {
+                addTriangle(indexBuffer, a, c, b);
+            }
+        } else if (index == 2 || index == 13) {
+            a = interpolate(p1, v1, p0, v0);
+            b = interpolate(p1, v1, p2, v2);
+            c = interpolate(p1, v1, p3, v3);
+            if (index == 2) {
+                addTriangle(indexBuffer, a, b, c);
+            } else {
+                addTriangle(indexBuffer, a, c, b);
+            }
 
-    unsigned addVertex(const vec3 pos);
+        } else if (index == 4 || index == 11) {
+            a = interpolate(p2, v2, p0, v0);
+            b = interpolate(p2, v2, p1, v1);
+            c = interpolate(p2, v2, p3, v3);
+            if (index == 4) {
+                addTriangle(indexBuffer, a, c, b);
+            } else {
+                addTriangle(indexBuffer, a, b, c);
+            }
+        } else if (index == 7 || index == 8) {
+            a = interpolate(p3, v3, p0, v0);
+            b = interpolate(p3, v3, p2, v2);
+            c = interpolate(p3, v3, p1, v1);
+            if (index == 7) {
+                addTriangle(indexBuffer, a, b, c);
+            } else {
+                addTriangle(indexBuffer, a, c, b);
+            }
+        } else if (index == 3 || index == 12) {
+            a = interpolate(p0, v0, p2, v2);
+            b = interpolate(p1, v1, p3, v3);
+            c = interpolate(p0, v0, p3, v3);
+            d = interpolate(p1, v1, p2, v2);
+
+            if (index == 3) {
+                addTriangle(indexBuffer, a, b, c);
+                addTriangle(indexBuffer, a, d, b);
+            } else {
+                addTriangle(indexBuffer, a, c, b);
+                addTriangle(indexBuffer, a, b, d);
+            }
+
+        } else if (index == 5 || index == 10) {
+            a = interpolate(p2, v2, p3, v3);
+            b = interpolate(p0, v0, p1, v1);
+            c = interpolate(p0, v0, p3, v3);
+            d = interpolate(p1, v1, p2, v2);
+
+            if (index == 5) {
+                addTriangle(indexBuffer, a, b, c);
+                addTriangle(indexBuffer, a, d, b);
+            } else {
+                addTriangle(indexBuffer, a, c, b);
+                addTriangle(indexBuffer, a, b, d);
+            }
+
+        } else if (index == 6 || index == 9) {
+            a = interpolate(p1, v1, p3, v3);
+            b = interpolate(p0, v0, p2, v2);
+            c = interpolate(p0, v0, p1, v1);
+            d = interpolate(p2, v2, p3, v3);
+
+            if (index == 6) {
+                addTriangle(indexBuffer, a, c, b);
+                addTriangle(indexBuffer, a, b, d);
+            } else {
+                addTriangle(indexBuffer, a, b, c);
+                addTriangle(indexBuffer, a, d, b);
+            }
+        }
+    }
+
+    unsigned addVertex(const vec3 pos) {
+        K3DTree<unsigned>::Node *nearest = vertexTree_.findNearest(vec3(pos));
+        vec3 p;
+        if (nearest) {
+            p.x = nearest->getPosition()[0];
+            p.y = nearest->getPosition()[1];
+            p.z = nearest->getPosition()[2];
+        }
+        if (!nearest || (glm::distance(p, pos) > glm::epsilon<double>() * 5)) {
+            nearest = vertexTree_.insert(vec3(pos), static_cast<unsigned>(positions_.size()));
+            positions_.push_back(pos);
+            normals_.push_back(vec3(0, 0, 0));
+        }
+        return nearest->get();
+    }
+
     void addTriangle(IndexBufferRAM *indexBuffer, const glm::vec3 &a, const glm::vec3 &b,
-                     const glm::vec3 &c);
+                     const glm::vec3 &c) {
+        unsigned i0 = addVertex(a);
+        unsigned i1 = addVertex(b);
+        unsigned i2 = addVertex(c);
+
+        if (i0 == i1 || i0 == i2 || i1 == i2) {
+            // triangle is so small so that the vertices are merged.
+            return;
+        }
+
+        indexBuffer->add(i0);
+        indexBuffer->add(i1);
+        indexBuffer->add(i2);
+
+        vec3 e0 = b - a;
+        vec3 e1 = c - a;
+        vec3 n = glm::normalize(glm::cross(e0, e1));
+
+        normals_[i0] += n;
+        normals_[i1] += n;
+        normals_[i2] += n;
+    }
 
     template <typename T>
     double getValue(const T *src, uvec3 pos, uvec3 dim);
@@ -94,17 +218,23 @@ private:
     static double toSingle(const T &v) {
         return v;
     }
+
+    static glm::vec3 interpolate(const glm::vec3 &p0, const double &v0, const glm::vec3 &p1,
+                                 const double &v1) {
+        float t = 0;
+        if (v0 != v1) t = v0 / (v0 - v1);
+        return t * p1 + (1 - t) * p0;
+    }
 };
 
 template <typename T>
 double MarchingTetrahedron::getValue(const T *src, uvec3 pos, uvec3 dim) {
     double v = toSingle(src[VolumeRAM::posToIndex(pos, dim)]);
-    return - (v - iso_);
+    return -(v - iso_);
 }
 
 template <typename T, size_t B>
 void MarchingTetrahedron::evaluate() {
-
     const VolumeRAMPrecision<T> *volume =
         dynamic_cast<const VolumeRAMPrecision<T> *>(getInputVolume());
 
@@ -112,7 +242,7 @@ void MarchingTetrahedron::evaluate() {
         setOutput(NULL);
         return;
     }
-    
+
     vertexTree_.clear();
     positions_.clear();
     normals_.clear();
