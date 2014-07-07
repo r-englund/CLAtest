@@ -2,7 +2,7 @@
 <InviwoTreeData version="1.0">
     <!-- Don't edit the following code -->
     <Processors>
-        <Processor type="VolumeSource" identifier="VolumeSource" id="ref1">
+        <Processor type="VolumeSource" identifier="VolumeSource" id="ref3">
             <MetaDataList>
                 <MetaData type="ProcessorMetaData">
                     <position x="-675" y="-1000" />
@@ -64,12 +64,12 @@
                 </Property>
             </Properties>
         </Processor>
-        <Processor type="Surface Extraction" identifier="Surface Extraction" id="ref0">
+        <Processor type="Surface Extraction" identifier="Surface Extraction" id="ref1">
             <MetaDataList>
                 <MetaData type="ProcessorMetaData">
                     <position x="-675" y="-850" />
                     <visibility content="1" />
-                    <selection content="0" />
+                    <selection content="1" />
                 </MetaData>
             </MetaDataList>
             <Properties>
@@ -83,7 +83,7 @@
                     <maxvalue content="255" />
                     <usageMode content="0" />
                     <visible content="1" />
-                    <value content="0.12" />
+                    <value content="30.6" />
                 </Property>
                 <Property type="OptionPropertyInt" identifier="method" displayName="Method" key="method">
                     <usageMode content="0" />
@@ -91,7 +91,7 @@
                 </Property>
             </Properties>
         </Processor>
-        <Processor type="GeometryRenderGL" identifier="GeometryRenderGL" id="ref2">
+        <Processor type="GeometryRenderGL" identifier="GeometryRenderGL" id="ref4">
             <MetaDataList>
                 <MetaData type="ProcessorMetaData">
                     <position x="-675" y="-775" />
@@ -298,28 +298,6 @@
                 <Property type="OptionPropertyInt" identifier="cullFace" displayName="Cull Face" key="cullFace">
                     <usageMode content="0" />
                     <visible content="1" />
-                    <options>
-                        <option>
-                            <id content="culldisable" />
-                            <name content="Disable" />
-                            <value content="0" />
-                        </option>
-                        <option>
-                            <id content="cullfront" />
-                            <name content="Front" />
-                            <value content="1028" />
-                        </option>
-                        <option>
-                            <id content="cullback" />
-                            <name content="Back" />
-                            <value content="1029" />
-                        </option>
-                        <option>
-                            <id content="cullfrontback" />
-                            <name content="Front &amp; Back" />
-                            <value content="1032" />
-                        </option>
-                    </options>
                 </Property>
                 <Property type="FloatVec3Property" identifier="lightAttenuation" displayName="Light attenuation values" key="lightAttenuation">
                     <usageMode content="0" />
@@ -356,24 +334,6 @@
                 <Property type="OptionPropertyInt" identifier="polygonMode" displayName="Polygon Mode" key="polygonMode">
                     <usageMode content="0" />
                     <visible content="1" />
-                    <options>
-                        <option>
-                            <id content="polypoint" />
-                            <name content="Points" />
-                            <value content="6912" />
-                        </option>
-                        <option>
-                            <id content="polyline" />
-                            <name content="Lines" />
-                            <value content="6913" />
-                        </option>
-                        <option>
-                            <id content="polyfill" />
-                            <name content="Fill" />
-                            <value content="6914" />
-                        </option>
-                    </options>
-                    <selectedIdentifier content="polyfill" />
                 </Property>
                 <Property type="FloatProperty" identifier="renderPointSize" displayName="Point Size" key="renderPointSize">
                     <usageMode content="0" />
@@ -390,7 +350,7 @@
                 </Property>
             </Properties>
         </Processor>
-        <Processor type="CanvasGL" identifier="image.outport" id="ref3">
+        <Processor type="CanvasGL" identifier="image.outport" id="ref0">
             <MetaDataList>
                 <MetaData type="ProcessorMetaData">
                     <position x="-675" y="-700" />
@@ -398,7 +358,7 @@
                     <selection content="0" />
                 </MetaData>
                 <MetaData type="ProcessorWidgetMetaData">
-                    <position x="804" y="775" />
+                    <position x="812" y="805" />
                     <dimension x="608" y="299" />
                     <visibility content="1" />
                 </MetaData>
@@ -458,12 +418,12 @@
                 </Property>
             </Properties>
         </Processor>
-        <Processor type="VolumeSubsample" identifier="VolumeSubsample" id="ref4">
+        <Processor type="VolumeSubsample" identifier="VolumeSubsample" id="ref2">
             <MetaDataList>
                 <MetaData type="ProcessorMetaData">
                     <position x="-675" y="-925" />
                     <visibility content="1" />
-                    <selection content="1" />
+                    <selection content="0" />
                 </MetaData>
             </MetaDataList>
             <Properties>
@@ -485,36 +445,36 @@
     <Connections>
         <Connection>
             <OutPort identifier="mesh">
-                <Processor type="Surface Extraction" identifier="Surface Extraction" reference="ref0" />
+                <Processor type="Surface Extraction" identifier="Surface Extraction" reference="ref1" />
             </OutPort>
             <InPort identifier="geometry.inport">
-                <Processor type="GeometryRenderGL" identifier="GeometryRenderGL" reference="ref2" />
+                <Processor type="GeometryRenderGL" identifier="GeometryRenderGL" reference="ref4" />
             </InPort>
         </Connection>
         <Connection>
             <OutPort identifier="image.outport">
-                <Processor type="GeometryRenderGL" identifier="GeometryRenderGL" reference="ref2" />
+                <Processor type="GeometryRenderGL" identifier="GeometryRenderGL" reference="ref4" />
             </OutPort>
             <InPort identifier="inport">
-                <Processor type="CanvasGL" identifier="image.outport" reference="ref3" />
+                <Processor type="CanvasGL" identifier="image.outport" reference="ref0" />
             </InPort>
         </Connection>
         <Connection>
             <OutPort identifier="data">
-                <Processor type="VolumeSource" identifier="VolumeSource" reference="ref1" />
+                <Processor type="VolumeSource" identifier="VolumeSource" reference="ref3" />
             </OutPort>
             <InPort identifier="volume.inport">
-                <Processor type="VolumeSubsample" identifier="VolumeSubsample" reference="ref4" />
+                <Processor type="VolumeSubsample" identifier="VolumeSubsample" reference="ref2" />
             </InPort>
         </Connection>
         <Connection>
             <OutPort identifier="volume.outport">
-                <Processor type="VolumeSubsample" identifier="VolumeSubsample" reference="ref4" />
+                <Processor type="VolumeSubsample" identifier="VolumeSubsample" reference="ref2" />
             </OutPort>
             <InPort identifier="volume">
-                <Processor type="Surface Extraction" identifier="Surface Extraction" reference="ref0" />
+                <Processor type="Surface Extraction" identifier="Surface Extraction" reference="ref1" />
             </InPort>
         </Connection>
     </Connections>
-    <ProcessorLinks />
+    <PropertyLinks />
 </InviwoTreeData>
