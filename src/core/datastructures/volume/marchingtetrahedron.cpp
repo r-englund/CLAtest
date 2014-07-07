@@ -30,7 +30,7 @@
  *
  *********************************************************************************/
 
-#include <inviwo/core/datastructures/geometry/marchingtetrahedron.h>
+#include <inviwo/core/datastructures/volume/marchingtetrahedron.h>
 
 namespace inviwo {
 
