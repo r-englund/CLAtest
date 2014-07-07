@@ -36,11 +36,11 @@
 #include <inviwo/core/common/inviwocoredefine.h>
 #include <inviwo/core/common/inviwo.h>
 
-#include <inviwo/core/datastructures/image/layerramprecision.h>
 #include <inviwo/core/datastructures/volume/volumeram.h>
 #include <inviwo/core/datastructures/volume/volumeoperation.h>
 #include <modules/experimental/datastructures/kdtree.h>
 #include <inviwo/core/datastructures/geometry/basicmesh.h>
+#include <inviwo/core/datastructures/volume/volumeramprecision.h>
 
 namespace inviwo {
     
@@ -104,9 +104,6 @@ double MarchingTetrahedron::getValue(const T *src, uvec3 pos, uvec3 dim) {
 
 template <typename T, size_t B>
 void MarchingTetrahedron::evaluate() {
-    vertexTree_.clear();
-    positions_.clear();
-    normals_.clear();
 
     const VolumeRAMPrecision<T> *volume =
         dynamic_cast<const VolumeRAMPrecision<T> *>(getInputVolume());
@@ -115,6 +112,10 @@ void MarchingTetrahedron::evaluate() {
         setOutput(NULL);
         return;
     }
+    
+    vertexTree_.clear();
+    positions_.clear();
+    normals_.clear();
 
     BasicMesh *mesh = new BasicMesh();
     IndexBufferRAM *indexBuffer =
