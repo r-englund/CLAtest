@@ -577,32 +577,18 @@
             </InPort>
         </Connection>
     </Connections>
-    <ProcessorLinks>
-        <ProcessorLink>
-            <Processor type="EntryExitPoints" identifier="EntryExitPoints" reference="ref0" />
-            <Processor type="ISORaycaster" identifier="ISORaycaster" reference="ref5" />
-            <PropertyLinks>
-                <PropertyLink>
-                    <Properties>
-                        <Property type="CameraProperty" identifier="camera" displayName="Camera" key="camera" reference="ref1" />
-                        <Property type="CameraProperty" identifier="camera" displayName="Camera" key="camera" reference="ref6" />
-                    </Properties>
-                    <PropertyOwners>
-                        <Processor type="EntryExitPoints" identifier="EntryExitPoints" reference="ref0" />
-                        <Processor type="ISORaycaster" identifier="ISORaycaster" reference="ref5" />
-                    </PropertyOwners>
-                </PropertyLink>
-                <PropertyLink>
-                    <Properties>
-                        <Property type="CameraProperty" identifier="camera" displayName="Camera" key="camera" reference="ref6" />
-                        <Property type="CameraProperty" identifier="camera" displayName="Camera" key="camera" reference="ref1" />
-                    </Properties>
-                    <PropertyOwners>
-                        <Processor type="ISORaycaster" identifier="ISORaycaster" reference="ref5" />
-                        <Processor type="EntryExitPoints" identifier="EntryExitPoints" reference="ref0" />
-                    </PropertyOwners>
-                </PropertyLink>
-            </PropertyLinks>
-        </ProcessorLink>
-    </ProcessorLinks>
+    <PropertyLinks>
+        <PropertyLink>
+            <Properties>
+                <Property type="CameraProperty" identifier="camera" displayName="Camera" key="camera" reference="ref1" />
+                <Property type="CameraProperty" identifier="camera" displayName="Camera" key="camera" reference="ref6" />
+            </Properties>
+        </PropertyLink>
+        <PropertyLink>
+            <Properties>
+                <Property type="CameraProperty" identifier="camera" displayName="Camera" key="camera" reference="ref6" />
+                <Property type="CameraProperty" identifier="camera" displayName="Camera" key="camera" reference="ref1" />
+            </Properties>
+        </PropertyLink>
+    </PropertyLinks>
 </InviwoTreeData>

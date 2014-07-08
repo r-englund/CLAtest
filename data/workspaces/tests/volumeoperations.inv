@@ -803,508 +803,466 @@
             </InPort>
         </Connection>
     </Connections>
-    <ProcessorLinks>
-        <ProcessorLink>
-            <Processor type="CanvasGL" identifier="CanvasGL" reference="ref1" />
-            <Processor type="CanvasGL" identifier="Blurred" reference="ref34" />
-            <PropertyLinks>
-                <PropertyLink>
-                    <Properties>
-                        <Property type="IntVec2Property" identifier="dimensions" displayName="Dimensions" key="dimensions" reference="ref2" />
-                        <Property type="IntVec2Property" identifier="dimensions" displayName="Dimensions" key="dimensions" reference="ref35" />
-                    </Properties>
-                    <PropertyOwners>
-                        <Processor type="CanvasGL" identifier="CanvasGL" reference="ref1" />
-                        <Processor type="CanvasGL" identifier="Blurred" reference="ref34" />
-                    </PropertyOwners>
-                </PropertyLink>
-                <PropertyLink>
-                    <Properties>
-                        <Property type="IntVec2Property" identifier="dimensions" displayName="Dimensions" key="dimensions" reference="ref35" />
-                        <Property type="IntVec2Property" identifier="dimensions" displayName="Dimensions" key="dimensions" reference="ref2" />
-                    </Properties>
-                    <PropertyOwners>
-                        <Processor type="CanvasGL" identifier="Blurred" reference="ref34" />
-                        <Processor type="CanvasGL" identifier="CanvasGL" reference="ref1" />
-                    </PropertyOwners>
-                </PropertyLink>
-            </PropertyLinks>
-        </ProcessorLink>
-        <ProcessorLink>
-            <Processor type="VolumeSliceGL" identifier="VolumeSliceGL" reference="ref26" />
-            <Processor type="VolumeSliceGL" identifier="VolumeSliceGL2" reference="ref3" />
-            <PropertyLinks>
-                <PropertyLink>
-                    <Properties>
-                        <Property type="OptionPropertyInt" identifier="sliceAxis" displayName="Slice along axis" key="sliceAxis" reference="ref27" />
-                        <Property type="OptionPropertyInt" identifier="sliceAxis" displayName="Slice along axis" key="sliceAxis" reference="ref4" />
-                    </Properties>
-                    <PropertyOwners>
-                        <Processor type="VolumeSliceGL" identifier="VolumeSliceGL" reference="ref26" />
-                        <Processor type="VolumeSliceGL" identifier="VolumeSliceGL2" reference="ref3" />
-                    </PropertyOwners>
-                </PropertyLink>
-                <PropertyLink>
-                    <Properties>
-                        <Property type="OptionPropertyInt" identifier="sliceAxis" displayName="Slice along axis" key="sliceAxis" reference="ref4" />
-                        <Property type="OptionPropertyInt" identifier="sliceAxis" displayName="Slice along axis" key="sliceAxis" reference="ref27" />
-                    </Properties>
-                    <PropertyOwners>
-                        <Processor type="VolumeSliceGL" identifier="VolumeSliceGL2" reference="ref3" />
-                        <Processor type="VolumeSliceGL" identifier="VolumeSliceGL" reference="ref26" />
-                    </PropertyOwners>
-                </PropertyLink>
-                <PropertyLink>
-                    <Properties>
-                        <Property type="OptionPropertyFloat" identifier="rotation" displayName="Rotation around axis (degrees)" key="rotation" reference="ref28" />
-                        <Property type="OptionPropertyFloat" identifier="rotation" displayName="Rotation around axis (degrees)" key="rotation" reference="ref5" />
-                    </Properties>
-                    <PropertyOwners>
-                        <Processor type="VolumeSliceGL" identifier="VolumeSliceGL" reference="ref26" />
-                        <Processor type="VolumeSliceGL" identifier="VolumeSliceGL2" reference="ref3" />
-                    </PropertyOwners>
-                </PropertyLink>
-                <PropertyLink>
-                    <Properties>
-                        <Property type="OptionPropertyFloat" identifier="rotation" displayName="Rotation around axis (degrees)" key="rotation" reference="ref5" />
-                        <Property type="OptionPropertyFloat" identifier="rotation" displayName="Rotation around axis (degrees)" key="rotation" reference="ref28" />
-                    </Properties>
-                    <PropertyOwners>
-                        <Processor type="VolumeSliceGL" identifier="VolumeSliceGL2" reference="ref3" />
-                        <Processor type="VolumeSliceGL" identifier="VolumeSliceGL" reference="ref26" />
-                    </PropertyOwners>
-                </PropertyLink>
-                <PropertyLink>
-                    <Properties>
-                        <Property type="BoolProperty" identifier="flipHorizontal" displayName="Flip Horizontal View" key="flipHorizontal" reference="ref29" />
-                        <Property type="BoolProperty" identifier="flipHorizontal" displayName="Flip Horizontal View" key="flipHorizontal" reference="ref6" />
-                    </Properties>
-                    <PropertyOwners>
-                        <Processor type="VolumeSliceGL" identifier="VolumeSliceGL" reference="ref26" />
-                        <Processor type="VolumeSliceGL" identifier="VolumeSliceGL2" reference="ref3" />
-                    </PropertyOwners>
-                </PropertyLink>
-                <PropertyLink>
-                    <Properties>
-                        <Property type="BoolProperty" identifier="flipHorizontal" displayName="Flip Horizontal View" key="flipHorizontal" reference="ref6" />
-                        <Property type="BoolProperty" identifier="flipHorizontal" displayName="Flip Horizontal View" key="flipHorizontal" reference="ref29" />
-                    </Properties>
-                    <PropertyOwners>
-                        <Processor type="VolumeSliceGL" identifier="VolumeSliceGL2" reference="ref3" />
-                        <Processor type="VolumeSliceGL" identifier="VolumeSliceGL" reference="ref26" />
-                    </PropertyOwners>
-                </PropertyLink>
-                <PropertyLink>
-                    <Properties>
-                        <Property type="BoolProperty" identifier="flipVertical" displayName="Flip Vertical View" key="flipVertical" reference="ref30" />
-                        <Property type="BoolProperty" identifier="flipVertical" displayName="Flip Vertical View" key="flipVertical" reference="ref7" />
-                    </Properties>
-                    <PropertyOwners>
-                        <Processor type="VolumeSliceGL" identifier="VolumeSliceGL" reference="ref26" />
-                        <Processor type="VolumeSliceGL" identifier="VolumeSliceGL2" reference="ref3" />
-                    </PropertyOwners>
-                </PropertyLink>
-                <PropertyLink>
-                    <Properties>
-                        <Property type="BoolProperty" identifier="flipVertical" displayName="Flip Vertical View" key="flipVertical" reference="ref7" />
-                        <Property type="BoolProperty" identifier="flipVertical" displayName="Flip Vertical View" key="flipVertical" reference="ref30" />
-                    </Properties>
-                    <PropertyOwners>
-                        <Processor type="VolumeSliceGL" identifier="VolumeSliceGL2" reference="ref3" />
-                        <Processor type="VolumeSliceGL" identifier="VolumeSliceGL" reference="ref26" />
-                    </PropertyOwners>
-                </PropertyLink>
-                <PropertyLink>
-                    <Properties>
-                        <Property type="IntProperty" identifier="sliceNumber" displayName="Slice Number" key="sliceNumber" reference="ref31" />
-                        <Property type="IntProperty" identifier="sliceNumber" displayName="Slice Number" key="sliceNumber" reference="ref8" />
-                    </Properties>
-                    <PropertyOwners>
-                        <Processor type="VolumeSliceGL" identifier="VolumeSliceGL" reference="ref26" />
-                        <Processor type="VolumeSliceGL" identifier="VolumeSliceGL2" reference="ref3" />
-                    </PropertyOwners>
-                </PropertyLink>
-                <PropertyLink>
-                    <Properties>
-                        <Property type="IntProperty" identifier="sliceNumber" displayName="Slice Number" key="sliceNumber" reference="ref8" />
-                        <Property type="IntProperty" identifier="sliceNumber" displayName="Slice Number" key="sliceNumber" reference="ref31" />
-                    </Properties>
-                    <PropertyOwners>
-                        <Processor type="VolumeSliceGL" identifier="VolumeSliceGL2" reference="ref3" />
-                        <Processor type="VolumeSliceGL" identifier="VolumeSliceGL" reference="ref26" />
-                    </PropertyOwners>
-                </PropertyLink>
-                <PropertyLink>
-                    <Properties>
-                        <Property type="BoolProperty" identifier="tfMappingEnabled" displayName="Enable Transfer Function" key="tfMappingEnabled" reference="ref32" />
-                        <Property type="BoolProperty" identifier="tfMappingEnabled" displayName="Enable Transfer Function" key="tfMappingEnabled" reference="ref9" />
-                    </Properties>
-                    <PropertyOwners>
-                        <Processor type="VolumeSliceGL" identifier="VolumeSliceGL" reference="ref26" />
-                        <Processor type="VolumeSliceGL" identifier="VolumeSliceGL2" reference="ref3" />
-                    </PropertyOwners>
-                </PropertyLink>
-                <PropertyLink>
-                    <Properties>
-                        <Property type="BoolProperty" identifier="tfMappingEnabled" displayName="Enable Transfer Function" key="tfMappingEnabled" reference="ref9" />
-                        <Property type="BoolProperty" identifier="tfMappingEnabled" displayName="Enable Transfer Function" key="tfMappingEnabled" reference="ref32" />
-                    </Properties>
-                    <PropertyOwners>
-                        <Processor type="VolumeSliceGL" identifier="VolumeSliceGL2" reference="ref3" />
-                        <Processor type="VolumeSliceGL" identifier="VolumeSliceGL" reference="ref26" />
-                    </PropertyOwners>
-                </PropertyLink>
-                <PropertyLink>
-                    <Properties>
-                        <Property type="TransferFunctionProperty" identifier="transferFunction" displayName="Transfer function" key="transferFunction" reference="ref33" />
-                        <Property type="TransferFunctionProperty" identifier="transferFunction" displayName="Transfer function" key="transferFunction" reference="ref10" />
-                    </Properties>
-                    <PropertyOwners>
-                        <Processor type="VolumeSliceGL" identifier="VolumeSliceGL" reference="ref26" />
-                        <Processor type="VolumeSliceGL" identifier="VolumeSliceGL2" reference="ref3" />
-                    </PropertyOwners>
-                </PropertyLink>
-                <PropertyLink>
-                    <Properties>
-                        <Property type="TransferFunctionProperty" identifier="transferFunction" displayName="Transfer function" key="transferFunction" reference="ref10" />
-                        <Property type="TransferFunctionProperty" identifier="transferFunction" displayName="Transfer function" key="transferFunction" reference="ref33" />
-                    </Properties>
-                    <PropertyOwners>
-                        <Processor type="VolumeSliceGL" identifier="VolumeSliceGL2" reference="ref3" />
-                        <Processor type="VolumeSliceGL" identifier="VolumeSliceGL" reference="ref26" />
-                    </PropertyOwners>
-                </PropertyLink>
-            </PropertyLinks>
-        </ProcessorLink>
-        <ProcessorLink>
-            <Processor type="VolumeSliceGL" identifier="VolumeSliceGL" reference="ref26" />
-            <Processor type="VolumeSliceGL" identifier="VolumeSliceGL3" reference="ref36" />
-            <PropertyLinks>
-                <PropertyLink>
-                    <Properties>
-                        <Property type="OptionPropertyInt" identifier="sliceAxis" displayName="Slice along axis" key="sliceAxis" reference="ref27" />
-                        <Property type="OptionPropertyInt" identifier="sliceAxis" displayName="Slice along axis" key="sliceAxis" reference="ref37" />
-                    </Properties>
-                    <PropertyOwners>
-                        <Processor type="VolumeSliceGL" identifier="VolumeSliceGL" reference="ref26" />
-                        <Processor type="VolumeSliceGL" identifier="VolumeSliceGL3" reference="ref36" />
-                    </PropertyOwners>
-                </PropertyLink>
-                <PropertyLink>
-                    <Properties>
-                        <Property type="OptionPropertyInt" identifier="sliceAxis" displayName="Slice along axis" key="sliceAxis" reference="ref37" />
-                        <Property type="OptionPropertyInt" identifier="sliceAxis" displayName="Slice along axis" key="sliceAxis" reference="ref27" />
-                    </Properties>
-                    <PropertyOwners>
-                        <Processor type="VolumeSliceGL" identifier="VolumeSliceGL3" reference="ref36" />
-                        <Processor type="VolumeSliceGL" identifier="VolumeSliceGL" reference="ref26" />
-                    </PropertyOwners>
-                </PropertyLink>
-                <PropertyLink>
-                    <Properties>
-                        <Property type="OptionPropertyFloat" identifier="rotation" displayName="Rotation around axis (degrees)" key="rotation" reference="ref28" />
-                        <Property type="OptionPropertyFloat" identifier="rotation" displayName="Rotation around axis (degrees)" key="rotation" reference="ref38" />
-                    </Properties>
-                    <PropertyOwners>
-                        <Processor type="VolumeSliceGL" identifier="VolumeSliceGL" reference="ref26" />
-                        <Processor type="VolumeSliceGL" identifier="VolumeSliceGL3" reference="ref36" />
-                    </PropertyOwners>
-                </PropertyLink>
-                <PropertyLink>
-                    <Properties>
-                        <Property type="OptionPropertyFloat" identifier="rotation" displayName="Rotation around axis (degrees)" key="rotation" reference="ref38" />
-                        <Property type="OptionPropertyFloat" identifier="rotation" displayName="Rotation around axis (degrees)" key="rotation" reference="ref28" />
-                    </Properties>
-                    <PropertyOwners>
-                        <Processor type="VolumeSliceGL" identifier="VolumeSliceGL3" reference="ref36" />
-                        <Processor type="VolumeSliceGL" identifier="VolumeSliceGL" reference="ref26" />
-                    </PropertyOwners>
-                </PropertyLink>
-                <PropertyLink>
-                    <Properties>
-                        <Property type="BoolProperty" identifier="flipHorizontal" displayName="Flip Horizontal View" key="flipHorizontal" reference="ref29" />
-                        <Property type="BoolProperty" identifier="flipHorizontal" displayName="Flip Horizontal View" key="flipHorizontal" reference="ref39" />
-                    </Properties>
-                    <PropertyOwners>
-                        <Processor type="VolumeSliceGL" identifier="VolumeSliceGL" reference="ref26" />
-                        <Processor type="VolumeSliceGL" identifier="VolumeSliceGL3" reference="ref36" />
-                    </PropertyOwners>
-                </PropertyLink>
-                <PropertyLink>
-                    <Properties>
-                        <Property type="BoolProperty" identifier="flipHorizontal" displayName="Flip Horizontal View" key="flipHorizontal" reference="ref39" />
-                        <Property type="BoolProperty" identifier="flipHorizontal" displayName="Flip Horizontal View" key="flipHorizontal" reference="ref29" />
-                    </Properties>
-                    <PropertyOwners>
-                        <Processor type="VolumeSliceGL" identifier="VolumeSliceGL3" reference="ref36" />
-                        <Processor type="VolumeSliceGL" identifier="VolumeSliceGL" reference="ref26" />
-                    </PropertyOwners>
-                </PropertyLink>
-                <PropertyLink>
-                    <Properties>
-                        <Property type="BoolProperty" identifier="flipVertical" displayName="Flip Vertical View" key="flipVertical" reference="ref30" />
-                        <Property type="BoolProperty" identifier="flipVertical" displayName="Flip Vertical View" key="flipVertical" reference="ref40" />
-                    </Properties>
-                    <PropertyOwners>
-                        <Processor type="VolumeSliceGL" identifier="VolumeSliceGL" reference="ref26" />
-                        <Processor type="VolumeSliceGL" identifier="VolumeSliceGL3" reference="ref36" />
-                    </PropertyOwners>
-                </PropertyLink>
-                <PropertyLink>
-                    <Properties>
-                        <Property type="BoolProperty" identifier="flipVertical" displayName="Flip Vertical View" key="flipVertical" reference="ref40" />
-                        <Property type="BoolProperty" identifier="flipVertical" displayName="Flip Vertical View" key="flipVertical" reference="ref30" />
-                    </Properties>
-                    <PropertyOwners>
-                        <Processor type="VolumeSliceGL" identifier="VolumeSliceGL3" reference="ref36" />
-                        <Processor type="VolumeSliceGL" identifier="VolumeSliceGL" reference="ref26" />
-                    </PropertyOwners>
-                </PropertyLink>
-                <PropertyLink>
-                    <Properties>
-                        <Property type="IntProperty" identifier="sliceNumber" displayName="Slice Number" key="sliceNumber" reference="ref31" />
-                        <Property type="IntProperty" identifier="sliceNumber" displayName="Slice Number" key="sliceNumber" reference="ref41" />
-                    </Properties>
-                    <PropertyOwners>
-                        <Processor type="VolumeSliceGL" identifier="VolumeSliceGL" reference="ref26" />
-                        <Processor type="VolumeSliceGL" identifier="VolumeSliceGL3" reference="ref36" />
-                    </PropertyOwners>
-                </PropertyLink>
-                <PropertyLink>
-                    <Properties>
-                        <Property type="IntProperty" identifier="sliceNumber" displayName="Slice Number" key="sliceNumber" reference="ref41" />
-                        <Property type="IntProperty" identifier="sliceNumber" displayName="Slice Number" key="sliceNumber" reference="ref31" />
-                    </Properties>
-                    <PropertyOwners>
-                        <Processor type="VolumeSliceGL" identifier="VolumeSliceGL3" reference="ref36" />
-                        <Processor type="VolumeSliceGL" identifier="VolumeSliceGL" reference="ref26" />
-                    </PropertyOwners>
-                </PropertyLink>
-                <PropertyLink>
-                    <Properties>
-                        <Property type="BoolProperty" identifier="tfMappingEnabled" displayName="Enable Transfer Function" key="tfMappingEnabled" reference="ref32" />
-                        <Property type="BoolProperty" identifier="tfMappingEnabled" displayName="Enable Transfer Function" key="tfMappingEnabled" reference="ref42" />
-                    </Properties>
-                    <PropertyOwners>
-                        <Processor type="VolumeSliceGL" identifier="VolumeSliceGL" reference="ref26" />
-                        <Processor type="VolumeSliceGL" identifier="VolumeSliceGL3" reference="ref36" />
-                    </PropertyOwners>
-                </PropertyLink>
-                <PropertyLink>
-                    <Properties>
-                        <Property type="BoolProperty" identifier="tfMappingEnabled" displayName="Enable Transfer Function" key="tfMappingEnabled" reference="ref42" />
-                        <Property type="BoolProperty" identifier="tfMappingEnabled" displayName="Enable Transfer Function" key="tfMappingEnabled" reference="ref32" />
-                    </Properties>
-                    <PropertyOwners>
-                        <Processor type="VolumeSliceGL" identifier="VolumeSliceGL3" reference="ref36" />
-                        <Processor type="VolumeSliceGL" identifier="VolumeSliceGL" reference="ref26" />
-                    </PropertyOwners>
-                </PropertyLink>
-            </PropertyLinks>
-        </ProcessorLink>
-        <ProcessorLink>
-            <Processor type="VolumeSliceGL" identifier="VolumeSliceGL2" reference="ref3" />
-            <Processor type="VolumeMapping" identifier="VolumeMapping" reference="ref12" />
-            <PropertyLinks>
-                <PropertyLink>
-                    <Properties>
-                        <Property type="TransferFunctionProperty" identifier="transferFunction" displayName="Transfer function" key="transferFunction" reference="ref10" />
-                        <Property type="TransferFunctionProperty" identifier="transferFunction" displayName="Transfer function" key="transferFunction" reference="ref13" />
-                    </Properties>
-                    <PropertyOwners>
-                        <Processor type="VolumeSliceGL" identifier="VolumeSliceGL2" reference="ref3" />
-                        <Processor type="VolumeMapping" identifier="VolumeMapping" reference="ref12" />
-                    </PropertyOwners>
-                </PropertyLink>
-                <PropertyLink>
-                    <Properties>
-                        <Property type="TransferFunctionProperty" identifier="transferFunction" displayName="Transfer function" key="transferFunction" reference="ref13" />
-                        <Property type="TransferFunctionProperty" identifier="transferFunction" displayName="Transfer function" key="transferFunction" reference="ref10" />
-                    </Properties>
-                    <PropertyOwners>
-                        <Processor type="VolumeMapping" identifier="VolumeMapping" reference="ref12" />
-                        <Processor type="VolumeSliceGL" identifier="VolumeSliceGL2" reference="ref3" />
-                    </PropertyOwners>
-                </PropertyLink>
-            </PropertyLinks>
-        </ProcessorLink>
-        <ProcessorLink>
-            <Processor type="VolumeSliceGL" identifier="VolumeSliceGL2" reference="ref3" />
-            <Processor type="VolumeSliceGL" identifier="VolumeSliceGL4" reference="ref18" />
-            <PropertyLinks>
-                <PropertyLink>
-                    <Properties>
-                        <Property type="OptionPropertyInt" identifier="sliceAxis" displayName="Slice along axis" key="sliceAxis" reference="ref4" />
-                        <Property type="OptionPropertyInt" identifier="sliceAxis" displayName="Slice along axis" key="sliceAxis" reference="ref19" />
-                    </Properties>
-                    <PropertyOwners>
-                        <Processor type="VolumeSliceGL" identifier="VolumeSliceGL2" reference="ref3" />
-                        <Processor type="VolumeSliceGL" identifier="VolumeSliceGL4" reference="ref18" />
-                    </PropertyOwners>
-                </PropertyLink>
-                <PropertyLink>
-                    <Properties>
-                        <Property type="OptionPropertyInt" identifier="sliceAxis" displayName="Slice along axis" key="sliceAxis" reference="ref19" />
-                        <Property type="OptionPropertyInt" identifier="sliceAxis" displayName="Slice along axis" key="sliceAxis" reference="ref4" />
-                    </Properties>
-                    <PropertyOwners>
-                        <Processor type="VolumeSliceGL" identifier="VolumeSliceGL4" reference="ref18" />
-                        <Processor type="VolumeSliceGL" identifier="VolumeSliceGL2" reference="ref3" />
-                    </PropertyOwners>
-                </PropertyLink>
-                <PropertyLink>
-                    <Properties>
-                        <Property type="OptionPropertyFloat" identifier="rotation" displayName="Rotation around axis (degrees)" key="rotation" reference="ref5" />
-                        <Property type="OptionPropertyFloat" identifier="rotation" displayName="Rotation around axis (degrees)" key="rotation" reference="ref20" />
-                    </Properties>
-                    <PropertyOwners>
-                        <Processor type="VolumeSliceGL" identifier="VolumeSliceGL2" reference="ref3" />
-                        <Processor type="VolumeSliceGL" identifier="VolumeSliceGL4" reference="ref18" />
-                    </PropertyOwners>
-                </PropertyLink>
-                <PropertyLink>
-                    <Properties>
-                        <Property type="OptionPropertyFloat" identifier="rotation" displayName="Rotation around axis (degrees)" key="rotation" reference="ref20" />
-                        <Property type="OptionPropertyFloat" identifier="rotation" displayName="Rotation around axis (degrees)" key="rotation" reference="ref5" />
-                    </Properties>
-                    <PropertyOwners>
-                        <Processor type="VolumeSliceGL" identifier="VolumeSliceGL4" reference="ref18" />
-                        <Processor type="VolumeSliceGL" identifier="VolumeSliceGL2" reference="ref3" />
-                    </PropertyOwners>
-                </PropertyLink>
-                <PropertyLink>
-                    <Properties>
-                        <Property type="BoolProperty" identifier="flipHorizontal" displayName="Flip Horizontal View" key="flipHorizontal" reference="ref6" />
-                        <Property type="BoolProperty" identifier="flipHorizontal" displayName="Flip Horizontal View" key="flipHorizontal" reference="ref21" />
-                    </Properties>
-                    <PropertyOwners>
-                        <Processor type="VolumeSliceGL" identifier="VolumeSliceGL2" reference="ref3" />
-                        <Processor type="VolumeSliceGL" identifier="VolumeSliceGL4" reference="ref18" />
-                    </PropertyOwners>
-                </PropertyLink>
-                <PropertyLink>
-                    <Properties>
-                        <Property type="BoolProperty" identifier="flipHorizontal" displayName="Flip Horizontal View" key="flipHorizontal" reference="ref21" />
-                        <Property type="BoolProperty" identifier="flipHorizontal" displayName="Flip Horizontal View" key="flipHorizontal" reference="ref6" />
-                    </Properties>
-                    <PropertyOwners>
-                        <Processor type="VolumeSliceGL" identifier="VolumeSliceGL4" reference="ref18" />
-                        <Processor type="VolumeSliceGL" identifier="VolumeSliceGL2" reference="ref3" />
-                    </PropertyOwners>
-                </PropertyLink>
-                <PropertyLink>
-                    <Properties>
-                        <Property type="BoolProperty" identifier="flipVertical" displayName="Flip Vertical View" key="flipVertical" reference="ref7" />
-                        <Property type="BoolProperty" identifier="flipVertical" displayName="Flip Vertical View" key="flipVertical" reference="ref22" />
-                    </Properties>
-                    <PropertyOwners>
-                        <Processor type="VolumeSliceGL" identifier="VolumeSliceGL2" reference="ref3" />
-                        <Processor type="VolumeSliceGL" identifier="VolumeSliceGL4" reference="ref18" />
-                    </PropertyOwners>
-                </PropertyLink>
-                <PropertyLink>
-                    <Properties>
-                        <Property type="BoolProperty" identifier="flipVertical" displayName="Flip Vertical View" key="flipVertical" reference="ref22" />
-                        <Property type="BoolProperty" identifier="flipVertical" displayName="Flip Vertical View" key="flipVertical" reference="ref7" />
-                    </Properties>
-                    <PropertyOwners>
-                        <Processor type="VolumeSliceGL" identifier="VolumeSliceGL4" reference="ref18" />
-                        <Processor type="VolumeSliceGL" identifier="VolumeSliceGL2" reference="ref3" />
-                    </PropertyOwners>
-                </PropertyLink>
-                <PropertyLink>
-                    <Properties>
-                        <Property type="IntProperty" identifier="sliceNumber" displayName="Slice Number" key="sliceNumber" reference="ref8" />
-                        <Property type="IntProperty" identifier="sliceNumber" displayName="Slice Number" key="sliceNumber" reference="ref23" />
-                    </Properties>
-                    <PropertyOwners>
-                        <Processor type="VolumeSliceGL" identifier="VolumeSliceGL2" reference="ref3" />
-                        <Processor type="VolumeSliceGL" identifier="VolumeSliceGL4" reference="ref18" />
-                    </PropertyOwners>
-                </PropertyLink>
-                <PropertyLink>
-                    <Properties>
-                        <Property type="IntProperty" identifier="sliceNumber" displayName="Slice Number" key="sliceNumber" reference="ref23" />
-                        <Property type="IntProperty" identifier="sliceNumber" displayName="Slice Number" key="sliceNumber" reference="ref8" />
-                    </Properties>
-                    <PropertyOwners>
-                        <Processor type="VolumeSliceGL" identifier="VolumeSliceGL4" reference="ref18" />
-                        <Processor type="VolumeSliceGL" identifier="VolumeSliceGL2" reference="ref3" />
-                    </PropertyOwners>
-                </PropertyLink>
-                <PropertyLink>
-                    <Properties>
-                        <Property type="BoolProperty" identifier="tfMappingEnabled" displayName="Enable Transfer Function" key="tfMappingEnabled" reference="ref9" />
-                        <Property type="BoolProperty" identifier="tfMappingEnabled" displayName="Enable Transfer Function" key="tfMappingEnabled" reference="ref24" />
-                    </Properties>
-                    <PropertyOwners>
-                        <Processor type="VolumeSliceGL" identifier="VolumeSliceGL2" reference="ref3" />
-                        <Processor type="VolumeSliceGL" identifier="VolumeSliceGL4" reference="ref18" />
-                    </PropertyOwners>
-                </PropertyLink>
-                <PropertyLink>
-                    <Properties>
-                        <Property type="BoolProperty" identifier="tfMappingEnabled" displayName="Enable Transfer Function" key="tfMappingEnabled" reference="ref24" />
-                        <Property type="BoolProperty" identifier="tfMappingEnabled" displayName="Enable Transfer Function" key="tfMappingEnabled" reference="ref9" />
-                    </Properties>
-                    <PropertyOwners>
-                        <Processor type="VolumeSliceGL" identifier="VolumeSliceGL4" reference="ref18" />
-                        <Processor type="VolumeSliceGL" identifier="VolumeSliceGL2" reference="ref3" />
-                    </PropertyOwners>
-                </PropertyLink>
-            </PropertyLinks>
-        </ProcessorLink>
-        <ProcessorLink>
-            <Processor type="CanvasGL" identifier="Blurred" reference="ref34" />
-            <Processor type="CanvasGL" identifier="CanvasGL2" reference="ref14" />
-            <PropertyLinks>
-                <PropertyLink>
-                    <Properties>
-                        <Property type="IntVec2Property" identifier="dimensions" displayName="Dimensions" key="dimensions" reference="ref35" />
-                        <Property type="IntVec2Property" identifier="dimensions" displayName="Dimensions" key="dimensions" reference="ref15" />
-                    </Properties>
-                    <PropertyOwners>
-                        <Processor type="CanvasGL" identifier="Blurred" reference="ref34" />
-                        <Processor type="CanvasGL" identifier="CanvasGL2" reference="ref14" />
-                    </PropertyOwners>
-                </PropertyLink>
-                <PropertyLink>
-                    <Properties>
-                        <Property type="IntVec2Property" identifier="dimensions" displayName="Dimensions" key="dimensions" reference="ref15" />
-                        <Property type="IntVec2Property" identifier="dimensions" displayName="Dimensions" key="dimensions" reference="ref35" />
-                    </Properties>
-                    <PropertyOwners>
-                        <Processor type="CanvasGL" identifier="CanvasGL2" reference="ref14" />
-                        <Processor type="CanvasGL" identifier="Blurred" reference="ref34" />
-                    </PropertyOwners>
-                </PropertyLink>
-            </PropertyLinks>
-        </ProcessorLink>
-        <ProcessorLink>
-            <Processor type="CanvasGL" identifier="CanvasGL" reference="ref1" />
-            <Processor type="CanvasGL" identifier="image.outport" reference="ref16" />
-            <PropertyLinks>
-                <PropertyLink>
-                    <Properties>
-                        <Property type="IntVec2Property" identifier="dimensions" displayName="Dimensions" key="dimensions" reference="ref2" />
-                        <Property type="IntVec2Property" identifier="dimensions" displayName="Dimensions" key="dimensions" reference="ref17" />
-                    </Properties>
-                    <PropertyOwners>
-                        <Processor type="CanvasGL" identifier="CanvasGL" reference="ref1" />
-                        <Processor type="CanvasGL" identifier="image.outport" reference="ref16" />
-                    </PropertyOwners>
-                </PropertyLink>
-                <PropertyLink>
-                    <Properties>
-                        <Property type="IntVec2Property" identifier="dimensions" displayName="Dimensions" key="dimensions" reference="ref17" />
-                        <Property type="IntVec2Property" identifier="dimensions" displayName="Dimensions" key="dimensions" reference="ref2" />
-                    </Properties>
-                    <PropertyOwners>
-                        <Processor type="CanvasGL" identifier="image.outport" reference="ref16" />
-                        <Processor type="CanvasGL" identifier="CanvasGL" reference="ref1" />
-                    </PropertyOwners>
-                </PropertyLink>
-            </PropertyLinks>
-        </ProcessorLink>
-    </ProcessorLinks>
+    <PropertyLinks>
+        <PropertyLink>
+            <Properties>
+                <Property type="IntVec2Property" identifier="dimensions" displayName="Dimensions" key="dimensions" reference="ref2" />
+                <Property type="IntVec2Property" identifier="dimensions" displayName="Dimensions" key="dimensions" reference="ref35" />
+            </Properties>
+            <PropertyOwners>
+                <Processor type="CanvasGL" identifier="CanvasGL" reference="ref1" />
+                <Processor type="CanvasGL" identifier="Blurred" reference="ref34" />
+            </PropertyOwners>
+        </PropertyLink>
+        <PropertyLink>
+            <Properties>
+                <Property type="IntVec2Property" identifier="dimensions" displayName="Dimensions" key="dimensions" reference="ref35" />
+                <Property type="IntVec2Property" identifier="dimensions" displayName="Dimensions" key="dimensions" reference="ref2" />
+            </Properties>
+            <PropertyOwners>
+                <Processor type="CanvasGL" identifier="Blurred" reference="ref34" />
+                <Processor type="CanvasGL" identifier="CanvasGL" reference="ref1" />
+            </PropertyOwners>
+        </PropertyLink>
+        <PropertyLink>
+            <Properties>
+                <Property type="OptionPropertyInt" identifier="sliceAxis" displayName="Slice along axis" key="sliceAxis" reference="ref27" />
+                <Property type="OptionPropertyInt" identifier="sliceAxis" displayName="Slice along axis" key="sliceAxis" reference="ref4" />
+            </Properties>
+            <PropertyOwners>
+                <Processor type="VolumeSliceGL" identifier="VolumeSliceGL" reference="ref26" />
+                <Processor type="VolumeSliceGL" identifier="VolumeSliceGL2" reference="ref3" />
+            </PropertyOwners>
+        </PropertyLink>
+        <PropertyLink>
+            <Properties>
+                <Property type="OptionPropertyInt" identifier="sliceAxis" displayName="Slice along axis" key="sliceAxis" reference="ref4" />
+                <Property type="OptionPropertyInt" identifier="sliceAxis" displayName="Slice along axis" key="sliceAxis" reference="ref27" />
+            </Properties>
+            <PropertyOwners>
+                <Processor type="VolumeSliceGL" identifier="VolumeSliceGL2" reference="ref3" />
+                <Processor type="VolumeSliceGL" identifier="VolumeSliceGL" reference="ref26" />
+            </PropertyOwners>
+        </PropertyLink>
+        <PropertyLink>
+            <Properties>
+                <Property type="OptionPropertyFloat" identifier="rotation" displayName="Rotation around axis (degrees)" key="rotation" reference="ref28" />
+                <Property type="OptionPropertyFloat" identifier="rotation" displayName="Rotation around axis (degrees)" key="rotation" reference="ref5" />
+            </Properties>
+            <PropertyOwners>
+                <Processor type="VolumeSliceGL" identifier="VolumeSliceGL" reference="ref26" />
+                <Processor type="VolumeSliceGL" identifier="VolumeSliceGL2" reference="ref3" />
+            </PropertyOwners>
+        </PropertyLink>
+        <PropertyLink>
+            <Properties>
+                <Property type="OptionPropertyFloat" identifier="rotation" displayName="Rotation around axis (degrees)" key="rotation" reference="ref5" />
+                <Property type="OptionPropertyFloat" identifier="rotation" displayName="Rotation around axis (degrees)" key="rotation" reference="ref28" />
+            </Properties>
+            <PropertyOwners>
+                <Processor type="VolumeSliceGL" identifier="VolumeSliceGL2" reference="ref3" />
+                <Processor type="VolumeSliceGL" identifier="VolumeSliceGL" reference="ref26" />
+            </PropertyOwners>
+        </PropertyLink>
+        <PropertyLink>
+            <Properties>
+                <Property type="BoolProperty" identifier="flipHorizontal" displayName="Flip Horizontal View" key="flipHorizontal" reference="ref29" />
+                <Property type="BoolProperty" identifier="flipHorizontal" displayName="Flip Horizontal View" key="flipHorizontal" reference="ref6" />
+            </Properties>
+            <PropertyOwners>
+                <Processor type="VolumeSliceGL" identifier="VolumeSliceGL" reference="ref26" />
+                <Processor type="VolumeSliceGL" identifier="VolumeSliceGL2" reference="ref3" />
+            </PropertyOwners>
+        </PropertyLink>
+        <PropertyLink>
+            <Properties>
+                <Property type="BoolProperty" identifier="flipHorizontal" displayName="Flip Horizontal View" key="flipHorizontal" reference="ref6" />
+                <Property type="BoolProperty" identifier="flipHorizontal" displayName="Flip Horizontal View" key="flipHorizontal" reference="ref29" />
+            </Properties>
+            <PropertyOwners>
+                <Processor type="VolumeSliceGL" identifier="VolumeSliceGL2" reference="ref3" />
+                <Processor type="VolumeSliceGL" identifier="VolumeSliceGL" reference="ref26" />
+            </PropertyOwners>
+        </PropertyLink>
+        <PropertyLink>
+            <Properties>
+                <Property type="BoolProperty" identifier="flipVertical" displayName="Flip Vertical View" key="flipVertical" reference="ref30" />
+                <Property type="BoolProperty" identifier="flipVertical" displayName="Flip Vertical View" key="flipVertical" reference="ref7" />
+            </Properties>
+            <PropertyOwners>
+                <Processor type="VolumeSliceGL" identifier="VolumeSliceGL" reference="ref26" />
+                <Processor type="VolumeSliceGL" identifier="VolumeSliceGL2" reference="ref3" />
+            </PropertyOwners>
+        </PropertyLink>
+        <PropertyLink>
+            <Properties>
+                <Property type="BoolProperty" identifier="flipVertical" displayName="Flip Vertical View" key="flipVertical" reference="ref7" />
+                <Property type="BoolProperty" identifier="flipVertical" displayName="Flip Vertical View" key="flipVertical" reference="ref30" />
+            </Properties>
+            <PropertyOwners>
+                <Processor type="VolumeSliceGL" identifier="VolumeSliceGL2" reference="ref3" />
+                <Processor type="VolumeSliceGL" identifier="VolumeSliceGL" reference="ref26" />
+            </PropertyOwners>
+        </PropertyLink>
+        <PropertyLink>
+            <Properties>
+                <Property type="IntProperty" identifier="sliceNumber" displayName="Slice Number" key="sliceNumber" reference="ref31" />
+                <Property type="IntProperty" identifier="sliceNumber" displayName="Slice Number" key="sliceNumber" reference="ref8" />
+            </Properties>
+            <PropertyOwners>
+                <Processor type="VolumeSliceGL" identifier="VolumeSliceGL" reference="ref26" />
+                <Processor type="VolumeSliceGL" identifier="VolumeSliceGL2" reference="ref3" />
+            </PropertyOwners>
+        </PropertyLink>
+        <PropertyLink>
+            <Properties>
+                <Property type="IntProperty" identifier="sliceNumber" displayName="Slice Number" key="sliceNumber" reference="ref8" />
+                <Property type="IntProperty" identifier="sliceNumber" displayName="Slice Number" key="sliceNumber" reference="ref31" />
+            </Properties>
+            <PropertyOwners>
+                <Processor type="VolumeSliceGL" identifier="VolumeSliceGL2" reference="ref3" />
+                <Processor type="VolumeSliceGL" identifier="VolumeSliceGL" reference="ref26" />
+            </PropertyOwners>
+        </PropertyLink>
+        <PropertyLink>
+            <Properties>
+                <Property type="BoolProperty" identifier="tfMappingEnabled" displayName="Enable Transfer Function" key="tfMappingEnabled" reference="ref32" />
+                <Property type="BoolProperty" identifier="tfMappingEnabled" displayName="Enable Transfer Function" key="tfMappingEnabled" reference="ref9" />
+            </Properties>
+            <PropertyOwners>
+                <Processor type="VolumeSliceGL" identifier="VolumeSliceGL" reference="ref26" />
+                <Processor type="VolumeSliceGL" identifier="VolumeSliceGL2" reference="ref3" />
+            </PropertyOwners>
+        </PropertyLink>
+        <PropertyLink>
+            <Properties>
+                <Property type="BoolProperty" identifier="tfMappingEnabled" displayName="Enable Transfer Function" key="tfMappingEnabled" reference="ref9" />
+                <Property type="BoolProperty" identifier="tfMappingEnabled" displayName="Enable Transfer Function" key="tfMappingEnabled" reference="ref32" />
+            </Properties>
+            <PropertyOwners>
+                <Processor type="VolumeSliceGL" identifier="VolumeSliceGL2" reference="ref3" />
+                <Processor type="VolumeSliceGL" identifier="VolumeSliceGL" reference="ref26" />
+            </PropertyOwners>
+        </PropertyLink>
+        <PropertyLink>
+            <Properties>
+                <Property type="TransferFunctionProperty" identifier="transferFunction" displayName="Transfer function" key="transferFunction" reference="ref33" />
+                <Property type="TransferFunctionProperty" identifier="transferFunction" displayName="Transfer function" key="transferFunction" reference="ref10" />
+            </Properties>
+            <PropertyOwners>
+                <Processor type="VolumeSliceGL" identifier="VolumeSliceGL" reference="ref26" />
+                <Processor type="VolumeSliceGL" identifier="VolumeSliceGL2" reference="ref3" />
+            </PropertyOwners>
+        </PropertyLink>
+        <PropertyLink>
+            <Properties>
+                <Property type="TransferFunctionProperty" identifier="transferFunction" displayName="Transfer function" key="transferFunction" reference="ref10" />
+                <Property type="TransferFunctionProperty" identifier="transferFunction" displayName="Transfer function" key="transferFunction" reference="ref33" />
+            </Properties>
+            <PropertyOwners>
+                <Processor type="VolumeSliceGL" identifier="VolumeSliceGL2" reference="ref3" />
+                <Processor type="VolumeSliceGL" identifier="VolumeSliceGL" reference="ref26" />
+            </PropertyOwners>
+        </PropertyLink>
+        <PropertyLink>
+            <Properties>
+                <Property type="OptionPropertyInt" identifier="sliceAxis" displayName="Slice along axis" key="sliceAxis" reference="ref27" />
+                <Property type="OptionPropertyInt" identifier="sliceAxis" displayName="Slice along axis" key="sliceAxis" reference="ref37" />
+            </Properties>
+            <PropertyOwners>
+                <Processor type="VolumeSliceGL" identifier="VolumeSliceGL" reference="ref26" />
+                <Processor type="VolumeSliceGL" identifier="VolumeSliceGL3" reference="ref36" />
+            </PropertyOwners>
+        </PropertyLink>
+        <PropertyLink>
+            <Properties>
+                <Property type="OptionPropertyInt" identifier="sliceAxis" displayName="Slice along axis" key="sliceAxis" reference="ref37" />
+                <Property type="OptionPropertyInt" identifier="sliceAxis" displayName="Slice along axis" key="sliceAxis" reference="ref27" />
+            </Properties>
+            <PropertyOwners>
+                <Processor type="VolumeSliceGL" identifier="VolumeSliceGL3" reference="ref36" />
+                <Processor type="VolumeSliceGL" identifier="VolumeSliceGL" reference="ref26" />
+            </PropertyOwners>
+        </PropertyLink>
+        <PropertyLink>
+            <Properties>
+                <Property type="OptionPropertyFloat" identifier="rotation" displayName="Rotation around axis (degrees)" key="rotation" reference="ref28" />
+                <Property type="OptionPropertyFloat" identifier="rotation" displayName="Rotation around axis (degrees)" key="rotation" reference="ref38" />
+            </Properties>
+            <PropertyOwners>
+                <Processor type="VolumeSliceGL" identifier="VolumeSliceGL" reference="ref26" />
+                <Processor type="VolumeSliceGL" identifier="VolumeSliceGL3" reference="ref36" />
+            </PropertyOwners>
+        </PropertyLink>
+        <PropertyLink>
+            <Properties>
+                <Property type="OptionPropertyFloat" identifier="rotation" displayName="Rotation around axis (degrees)" key="rotation" reference="ref38" />
+                <Property type="OptionPropertyFloat" identifier="rotation" displayName="Rotation around axis (degrees)" key="rotation" reference="ref28" />
+            </Properties>
+            <PropertyOwners>
+                <Processor type="VolumeSliceGL" identifier="VolumeSliceGL3" reference="ref36" />
+                <Processor type="VolumeSliceGL" identifier="VolumeSliceGL" reference="ref26" />
+            </PropertyOwners>
+        </PropertyLink>
+        <PropertyLink>
+            <Properties>
+                <Property type="BoolProperty" identifier="flipHorizontal" displayName="Flip Horizontal View" key="flipHorizontal" reference="ref29" />
+                <Property type="BoolProperty" identifier="flipHorizontal" displayName="Flip Horizontal View" key="flipHorizontal" reference="ref39" />
+            </Properties>
+            <PropertyOwners>
+                <Processor type="VolumeSliceGL" identifier="VolumeSliceGL" reference="ref26" />
+                <Processor type="VolumeSliceGL" identifier="VolumeSliceGL3" reference="ref36" />
+            </PropertyOwners>
+        </PropertyLink>
+        <PropertyLink>
+            <Properties>
+                <Property type="BoolProperty" identifier="flipHorizontal" displayName="Flip Horizontal View" key="flipHorizontal" reference="ref39" />
+                <Property type="BoolProperty" identifier="flipHorizontal" displayName="Flip Horizontal View" key="flipHorizontal" reference="ref29" />
+            </Properties>
+            <PropertyOwners>
+                <Processor type="VolumeSliceGL" identifier="VolumeSliceGL3" reference="ref36" />
+                <Processor type="VolumeSliceGL" identifier="VolumeSliceGL" reference="ref26" />
+            </PropertyOwners>
+        </PropertyLink>
+        <PropertyLink>
+            <Properties>
+                <Property type="BoolProperty" identifier="flipVertical" displayName="Flip Vertical View" key="flipVertical" reference="ref30" />
+                <Property type="BoolProperty" identifier="flipVertical" displayName="Flip Vertical View" key="flipVertical" reference="ref40" />
+            </Properties>
+            <PropertyOwners>
+                <Processor type="VolumeSliceGL" identifier="VolumeSliceGL" reference="ref26" />
+                <Processor type="VolumeSliceGL" identifier="VolumeSliceGL3" reference="ref36" />
+            </PropertyOwners>
+        </PropertyLink>
+        <PropertyLink>
+            <Properties>
+                <Property type="BoolProperty" identifier="flipVertical" displayName="Flip Vertical View" key="flipVertical" reference="ref40" />
+                <Property type="BoolProperty" identifier="flipVertical" displayName="Flip Vertical View" key="flipVertical" reference="ref30" />
+            </Properties>
+            <PropertyOwners>
+                <Processor type="VolumeSliceGL" identifier="VolumeSliceGL3" reference="ref36" />
+                <Processor type="VolumeSliceGL" identifier="VolumeSliceGL" reference="ref26" />
+            </PropertyOwners>
+        </PropertyLink>
+        <PropertyLink>
+            <Properties>
+                <Property type="IntProperty" identifier="sliceNumber" displayName="Slice Number" key="sliceNumber" reference="ref31" />
+                <Property type="IntProperty" identifier="sliceNumber" displayName="Slice Number" key="sliceNumber" reference="ref41" />
+            </Properties>
+            <PropertyOwners>
+                <Processor type="VolumeSliceGL" identifier="VolumeSliceGL" reference="ref26" />
+                <Processor type="VolumeSliceGL" identifier="VolumeSliceGL3" reference="ref36" />
+            </PropertyOwners>
+        </PropertyLink>
+        <PropertyLink>
+            <Properties>
+                <Property type="IntProperty" identifier="sliceNumber" displayName="Slice Number" key="sliceNumber" reference="ref41" />
+                <Property type="IntProperty" identifier="sliceNumber" displayName="Slice Number" key="sliceNumber" reference="ref31" />
+            </Properties>
+            <PropertyOwners>
+                <Processor type="VolumeSliceGL" identifier="VolumeSliceGL3" reference="ref36" />
+                <Processor type="VolumeSliceGL" identifier="VolumeSliceGL" reference="ref26" />
+            </PropertyOwners>
+        </PropertyLink>
+        <PropertyLink>
+            <Properties>
+                <Property type="BoolProperty" identifier="tfMappingEnabled" displayName="Enable Transfer Function" key="tfMappingEnabled" reference="ref32" />
+                <Property type="BoolProperty" identifier="tfMappingEnabled" displayName="Enable Transfer Function" key="tfMappingEnabled" reference="ref42" />
+            </Properties>
+            <PropertyOwners>
+                <Processor type="VolumeSliceGL" identifier="VolumeSliceGL" reference="ref26" />
+                <Processor type="VolumeSliceGL" identifier="VolumeSliceGL3" reference="ref36" />
+            </PropertyOwners>
+        </PropertyLink>
+        <PropertyLink>
+            <Properties>
+                <Property type="BoolProperty" identifier="tfMappingEnabled" displayName="Enable Transfer Function" key="tfMappingEnabled" reference="ref42" />
+                <Property type="BoolProperty" identifier="tfMappingEnabled" displayName="Enable Transfer Function" key="tfMappingEnabled" reference="ref32" />
+            </Properties>
+            <PropertyOwners>
+                <Processor type="VolumeSliceGL" identifier="VolumeSliceGL3" reference="ref36" />
+                <Processor type="VolumeSliceGL" identifier="VolumeSliceGL" reference="ref26" />
+            </PropertyOwners>
+        </PropertyLink>
+        <PropertyLink>
+            <Properties>
+                <Property type="TransferFunctionProperty" identifier="transferFunction" displayName="Transfer function" key="transferFunction" reference="ref10" />
+                <Property type="TransferFunctionProperty" identifier="transferFunction" displayName="Transfer function" key="transferFunction" reference="ref13" />
+            </Properties>
+            <PropertyOwners>
+                <Processor type="VolumeSliceGL" identifier="VolumeSliceGL2" reference="ref3" />
+                <Processor type="VolumeMapping" identifier="VolumeMapping" reference="ref12" />
+            </PropertyOwners>
+        </PropertyLink>
+        <PropertyLink>
+            <Properties>
+                <Property type="TransferFunctionProperty" identifier="transferFunction" displayName="Transfer function" key="transferFunction" reference="ref13" />
+                <Property type="TransferFunctionProperty" identifier="transferFunction" displayName="Transfer function" key="transferFunction" reference="ref10" />
+            </Properties>
+            <PropertyOwners>
+                <Processor type="VolumeMapping" identifier="VolumeMapping" reference="ref12" />
+                <Processor type="VolumeSliceGL" identifier="VolumeSliceGL2" reference="ref3" />
+            </PropertyOwners>
+        </PropertyLink>
+        <PropertyLink>
+            <Properties>
+                <Property type="OptionPropertyInt" identifier="sliceAxis" displayName="Slice along axis" key="sliceAxis" reference="ref4" />
+                <Property type="OptionPropertyInt" identifier="sliceAxis" displayName="Slice along axis" key="sliceAxis" reference="ref19" />
+            </Properties>
+            <PropertyOwners>
+                <Processor type="VolumeSliceGL" identifier="VolumeSliceGL2" reference="ref3" />
+                <Processor type="VolumeSliceGL" identifier="VolumeSliceGL4" reference="ref18" />
+            </PropertyOwners>
+        </PropertyLink>
+        <PropertyLink>
+            <Properties>
+                <Property type="OptionPropertyInt" identifier="sliceAxis" displayName="Slice along axis" key="sliceAxis" reference="ref19" />
+                <Property type="OptionPropertyInt" identifier="sliceAxis" displayName="Slice along axis" key="sliceAxis" reference="ref4" />
+            </Properties>
+            <PropertyOwners>
+                <Processor type="VolumeSliceGL" identifier="VolumeSliceGL4" reference="ref18" />
+                <Processor type="VolumeSliceGL" identifier="VolumeSliceGL2" reference="ref3" />
+            </PropertyOwners>
+        </PropertyLink>
+        <PropertyLink>
+            <Properties>
+                <Property type="OptionPropertyFloat" identifier="rotation" displayName="Rotation around axis (degrees)" key="rotation" reference="ref5" />
+                <Property type="OptionPropertyFloat" identifier="rotation" displayName="Rotation around axis (degrees)" key="rotation" reference="ref20" />
+            </Properties>
+            <PropertyOwners>
+                <Processor type="VolumeSliceGL" identifier="VolumeSliceGL2" reference="ref3" />
+                <Processor type="VolumeSliceGL" identifier="VolumeSliceGL4" reference="ref18" />
+            </PropertyOwners>
+        </PropertyLink>
+        <PropertyLink>
+            <Properties>
+                <Property type="OptionPropertyFloat" identifier="rotation" displayName="Rotation around axis (degrees)" key="rotation" reference="ref20" />
+                <Property type="OptionPropertyFloat" identifier="rotation" displayName="Rotation around axis (degrees)" key="rotation" reference="ref5" />
+            </Properties>
+            <PropertyOwners>
+                <Processor type="VolumeSliceGL" identifier="VolumeSliceGL4" reference="ref18" />
+                <Processor type="VolumeSliceGL" identifier="VolumeSliceGL2" reference="ref3" />
+            </PropertyOwners>
+        </PropertyLink>
+        <PropertyLink>
+            <Properties>
+                <Property type="BoolProperty" identifier="flipHorizontal" displayName="Flip Horizontal View" key="flipHorizontal" reference="ref6" />
+                <Property type="BoolProperty" identifier="flipHorizontal" displayName="Flip Horizontal View" key="flipHorizontal" reference="ref21" />
+            </Properties>
+            <PropertyOwners>
+                <Processor type="VolumeSliceGL" identifier="VolumeSliceGL2" reference="ref3" />
+                <Processor type="VolumeSliceGL" identifier="VolumeSliceGL4" reference="ref18" />
+            </PropertyOwners>
+        </PropertyLink>
+        <PropertyLink>
+            <Properties>
+                <Property type="BoolProperty" identifier="flipHorizontal" displayName="Flip Horizontal View" key="flipHorizontal" reference="ref21" />
+                <Property type="BoolProperty" identifier="flipHorizontal" displayName="Flip Horizontal View" key="flipHorizontal" reference="ref6" />
+            </Properties>
+            <PropertyOwners>
+                <Processor type="VolumeSliceGL" identifier="VolumeSliceGL4" reference="ref18" />
+                <Processor type="VolumeSliceGL" identifier="VolumeSliceGL2" reference="ref3" />
+            </PropertyOwners>
+        </PropertyLink>
+        <PropertyLink>
+            <Properties>
+                <Property type="BoolProperty" identifier="flipVertical" displayName="Flip Vertical View" key="flipVertical" reference="ref7" />
+                <Property type="BoolProperty" identifier="flipVertical" displayName="Flip Vertical View" key="flipVertical" reference="ref22" />
+            </Properties>
+            <PropertyOwners>
+                <Processor type="VolumeSliceGL" identifier="VolumeSliceGL2" reference="ref3" />
+                <Processor type="VolumeSliceGL" identifier="VolumeSliceGL4" reference="ref18" />
+            </PropertyOwners>
+        </PropertyLink>
+        <PropertyLink>
+            <Properties>
+                <Property type="BoolProperty" identifier="flipVertical" displayName="Flip Vertical View" key="flipVertical" reference="ref22" />
+                <Property type="BoolProperty" identifier="flipVertical" displayName="Flip Vertical View" key="flipVertical" reference="ref7" />
+            </Properties>
+            <PropertyOwners>
+                <Processor type="VolumeSliceGL" identifier="VolumeSliceGL4" reference="ref18" />
+                <Processor type="VolumeSliceGL" identifier="VolumeSliceGL2" reference="ref3" />
+            </PropertyOwners>
+        </PropertyLink>
+        <PropertyLink>
+            <Properties>
+                <Property type="IntProperty" identifier="sliceNumber" displayName="Slice Number" key="sliceNumber" reference="ref8" />
+                <Property type="IntProperty" identifier="sliceNumber" displayName="Slice Number" key="sliceNumber" reference="ref23" />
+            </Properties>
+            <PropertyOwners>
+                <Processor type="VolumeSliceGL" identifier="VolumeSliceGL2" reference="ref3" />
+                <Processor type="VolumeSliceGL" identifier="VolumeSliceGL4" reference="ref18" />
+            </PropertyOwners>
+        </PropertyLink>
+        <PropertyLink>
+            <Properties>
+                <Property type="IntProperty" identifier="sliceNumber" displayName="Slice Number" key="sliceNumber" reference="ref23" />
+                <Property type="IntProperty" identifier="sliceNumber" displayName="Slice Number" key="sliceNumber" reference="ref8" />
+            </Properties>
+            <PropertyOwners>
+                <Processor type="VolumeSliceGL" identifier="VolumeSliceGL4" reference="ref18" />
+                <Processor type="VolumeSliceGL" identifier="VolumeSliceGL2" reference="ref3" />
+            </PropertyOwners>
+        </PropertyLink>
+        <PropertyLink>
+            <Properties>
+                <Property type="BoolProperty" identifier="tfMappingEnabled" displayName="Enable Transfer Function" key="tfMappingEnabled" reference="ref9" />
+                <Property type="BoolProperty" identifier="tfMappingEnabled" displayName="Enable Transfer Function" key="tfMappingEnabled" reference="ref24" />
+            </Properties>
+            <PropertyOwners>
+                <Processor type="VolumeSliceGL" identifier="VolumeSliceGL2" reference="ref3" />
+                <Processor type="VolumeSliceGL" identifier="VolumeSliceGL4" reference="ref18" />
+            </PropertyOwners>
+        </PropertyLink>
+        <PropertyLink>
+            <Properties>
+                <Property type="BoolProperty" identifier="tfMappingEnabled" displayName="Enable Transfer Function" key="tfMappingEnabled" reference="ref24" />
+                <Property type="BoolProperty" identifier="tfMappingEnabled" displayName="Enable Transfer Function" key="tfMappingEnabled" reference="ref9" />
+            </Properties>
+            <PropertyOwners>
+                <Processor type="VolumeSliceGL" identifier="VolumeSliceGL4" reference="ref18" />
+                <Processor type="VolumeSliceGL" identifier="VolumeSliceGL2" reference="ref3" />
+            </PropertyOwners>
+        </PropertyLink>
+        <PropertyLink>
+            <Properties>
+                <Property type="IntVec2Property" identifier="dimensions" displayName="Dimensions" key="dimensions" reference="ref35" />
+                <Property type="IntVec2Property" identifier="dimensions" displayName="Dimensions" key="dimensions" reference="ref15" />
+            </Properties>
+            <PropertyOwners>
+                <Processor type="CanvasGL" identifier="Blurred" reference="ref34" />
+                <Processor type="CanvasGL" identifier="CanvasGL2" reference="ref14" />
+            </PropertyOwners>
+        </PropertyLink>
+        <PropertyLink>
+            <Properties>
+                <Property type="IntVec2Property" identifier="dimensions" displayName="Dimensions" key="dimensions" reference="ref15" />
+                <Property type="IntVec2Property" identifier="dimensions" displayName="Dimensions" key="dimensions" reference="ref35" />
+            </Properties>
+            <PropertyOwners>
+                <Processor type="CanvasGL" identifier="CanvasGL2" reference="ref14" />
+                <Processor type="CanvasGL" identifier="Blurred" reference="ref34" />
+            </PropertyOwners>
+        </PropertyLink>
+        <PropertyLink>
+            <Properties>
+                <Property type="IntVec2Property" identifier="dimensions" displayName="Dimensions" key="dimensions" reference="ref2" />
+                <Property type="IntVec2Property" identifier="dimensions" displayName="Dimensions" key="dimensions" reference="ref17" />
+            </Properties>
+            <PropertyOwners>
+                <Processor type="CanvasGL" identifier="CanvasGL" reference="ref1" />
+                <Processor type="CanvasGL" identifier="image.outport" reference="ref16" />
+            </PropertyOwners>
+        </PropertyLink>
+        <PropertyLink>
+            <Properties>
+                <Property type="IntVec2Property" identifier="dimensions" displayName="Dimensions" key="dimensions" reference="ref17" />
+                <Property type="IntVec2Property" identifier="dimensions" displayName="Dimensions" key="dimensions" reference="ref2" />
+            </Properties>
+            <PropertyOwners>
+                <Processor type="CanvasGL" identifier="image.outport" reference="ref16" />
+                <Processor type="CanvasGL" identifier="CanvasGL" reference="ref1" />
+            </PropertyOwners>
+        </PropertyLink>
+    </PropertyLinks>
 </InviwoTreeData>

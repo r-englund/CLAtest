@@ -154,7 +154,7 @@ void InviwoApplicationQt::wait(int ms) {
 #endif
 }
 
-
+#if (QT_VERSION >= QT_VERSION_CHECK(5, 0, 0))
 void InviwoApplicationQt::logQtMessages(QtMsgType type, const QMessageLogContext &context,
                                         const QString &msg) {
 
@@ -190,6 +190,7 @@ void InviwoApplicationQt::logQtMessages(QtMsgType type, const QMessageLogContext
             abort();
     }
 }
+#endif
 
 
 } // namespace

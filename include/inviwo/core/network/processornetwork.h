@@ -309,9 +309,10 @@ private:
     //Property Linking support
     void performLinkingOnPropertyChange(Property* modifiedProperty);
     void evaluatePropertyLinks(Property*);
-    void addToPropertyLinkCache(PropertyLink* propertyLink);
-    void removeFromPropertyLinkCache(PropertyLink* propertyLink);
-    void updatePropertyLinkCache();    
+    void addToPrimaryCache(PropertyLink* propertyLink);
+    void removeFromPrimaryCache(PropertyLink* propertyLink);
+    void updatePropertyLinkCaches();
+    void clearSecondaryCache();
 
     ///////////////////////////////////////////////////////////////////////
     //TODO: ProcessorLinks are Deprecated. To be removed
@@ -320,7 +321,8 @@ private:
     std::vector<ProcessorLink*> processorLinks_;
     ///////////////////////////////////////////////////////////////////////
 
-    std::map<Property*, std::vector<Property*> > propertyLinkCache_;
+    std::map<Property*, std::vector<Property*> > propertyLinkPrimaryCache_;
+    std::map<Property*, std::vector<Property*> > propertyLinkSecondaryCache_;
     bool modified_;
     unsigned int locked_;
     std::vector<Processor*> processors_;

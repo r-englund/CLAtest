@@ -1100,216 +1100,186 @@
             </InPort>
         </Connection>
     </Connections>
-    <ProcessorLinks>
-        <ProcessorLink>
-            <Processor type="CubeProxyGeometry" identifier="CubeProxyGeometry" reference="ref2" />
-            <Processor type="SliceBasedVolumeRenderer" identifier="SliceBasedVolumeRenderer" reference="ref13" />
-            <PropertyLinks>
-                <PropertyLink>
-                    <Properties>
-                        <Property type="BoolProperty" identifier="clippingEnabled" displayName="Enable Clipping" key="clippingEnabled" reference="ref3" />
-                        <Property type="BoolProperty" identifier="clippingEnabled" displayName="Enable Clipping" key="clippingEnabled" reference="ref16" />
-                    </Properties>
-                    <PropertyOwners>
-                        <Processor type="CubeProxyGeometry" identifier="CubeProxyGeometry" reference="ref2" />
-                        <Processor type="SliceBasedVolumeRenderer" identifier="SliceBasedVolumeRenderer" reference="ref13" />
-                    </PropertyOwners>
-                </PropertyLink>
-                <PropertyLink>
-                    <Properties>
-                        <Property type="BoolProperty" identifier="clippingEnabled" displayName="Enable Clipping" key="clippingEnabled" reference="ref16" />
-                        <Property type="BoolProperty" identifier="clippingEnabled" displayName="Enable Clipping" key="clippingEnabled" reference="ref3" />
-                    </Properties>
-                    <PropertyOwners>
-                        <Processor type="SliceBasedVolumeRenderer" identifier="SliceBasedVolumeRenderer" reference="ref13" />
-                        <Processor type="CubeProxyGeometry" identifier="CubeProxyGeometry" reference="ref2" />
-                    </PropertyOwners>
-                </PropertyLink>
-                <PropertyLink>
-                    <Properties>
-                        <Property type="IntMinMaxProperty" identifier="clipX" displayName="Clip X Slices" key="clipX" reference="ref4" />
-                        <Property type="IntMinMaxProperty" identifier="clipX" displayName="Clip X Slices" key="clipX" reference="ref17" />
-                    </Properties>
-                    <PropertyOwners>
-                        <Processor type="CubeProxyGeometry" identifier="CubeProxyGeometry" reference="ref2" />
-                        <Processor type="SliceBasedVolumeRenderer" identifier="SliceBasedVolumeRenderer" reference="ref13" />
-                    </PropertyOwners>
-                </PropertyLink>
-                <PropertyLink>
-                    <Properties>
-                        <Property type="IntMinMaxProperty" identifier="clipX" displayName="Clip X Slices" key="clipX" reference="ref17" />
-                        <Property type="IntMinMaxProperty" identifier="clipX" displayName="Clip X Slices" key="clipX" reference="ref4" />
-                    </Properties>
-                    <PropertyOwners>
-                        <Processor type="SliceBasedVolumeRenderer" identifier="SliceBasedVolumeRenderer" reference="ref13" />
-                        <Processor type="CubeProxyGeometry" identifier="CubeProxyGeometry" reference="ref2" />
-                    </PropertyOwners>
-                </PropertyLink>
-                <PropertyLink>
-                    <Properties>
-                        <Property type="IntMinMaxProperty" identifier="clipY" displayName="Clip Y Slices" key="clipY" reference="ref5" />
-                        <Property type="IntMinMaxProperty" identifier="clipY" displayName="Clip Y Slices" key="clipY" reference="ref18" />
-                    </Properties>
-                    <PropertyOwners>
-                        <Processor type="CubeProxyGeometry" identifier="CubeProxyGeometry" reference="ref2" />
-                        <Processor type="SliceBasedVolumeRenderer" identifier="SliceBasedVolumeRenderer" reference="ref13" />
-                    </PropertyOwners>
-                </PropertyLink>
-                <PropertyLink>
-                    <Properties>
-                        <Property type="IntMinMaxProperty" identifier="clipY" displayName="Clip Y Slices" key="clipY" reference="ref18" />
-                        <Property type="IntMinMaxProperty" identifier="clipY" displayName="Clip Y Slices" key="clipY" reference="ref5" />
-                    </Properties>
-                    <PropertyOwners>
-                        <Processor type="SliceBasedVolumeRenderer" identifier="SliceBasedVolumeRenderer" reference="ref13" />
-                        <Processor type="CubeProxyGeometry" identifier="CubeProxyGeometry" reference="ref2" />
-                    </PropertyOwners>
-                </PropertyLink>
-                <PropertyLink>
-                    <Properties>
-                        <Property type="IntMinMaxProperty" identifier="clipZ" displayName="Clip Z Slices" key="clipZ" reference="ref6" />
-                        <Property type="IntMinMaxProperty" identifier="clipZ" displayName="Clip Z Slices" key="clipZ" reference="ref19" />
-                    </Properties>
-                    <PropertyOwners>
-                        <Processor type="CubeProxyGeometry" identifier="CubeProxyGeometry" reference="ref2" />
-                        <Processor type="SliceBasedVolumeRenderer" identifier="SliceBasedVolumeRenderer" reference="ref13" />
-                    </PropertyOwners>
-                </PropertyLink>
-                <PropertyLink>
-                    <Properties>
-                        <Property type="IntMinMaxProperty" identifier="clipZ" displayName="Clip Z Slices" key="clipZ" reference="ref19" />
-                        <Property type="IntMinMaxProperty" identifier="clipZ" displayName="Clip Z Slices" key="clipZ" reference="ref6" />
-                    </Properties>
-                    <PropertyOwners>
-                        <Processor type="SliceBasedVolumeRenderer" identifier="SliceBasedVolumeRenderer" reference="ref13" />
-                        <Processor type="CubeProxyGeometry" identifier="CubeProxyGeometry" reference="ref2" />
-                    </PropertyOwners>
-                </PropertyLink>
-            </PropertyLinks>
-        </ProcessorLink>
-        <ProcessorLink>
-            <Processor type="SliceBasedVolumeRenderer" identifier="SliceBasedVolumeRenderer" reference="ref13" />
-            <Processor type="SimpleRaycaster" identifier="SimpleRaycaster" reference="ref10" />
-            <PropertyLinks>
-                <PropertyLink>
-                    <Properties>
-                        <Property type="CameraProperty" identifier="cameraProperty" displayName="Camera" key="cameraProperty" reference="ref14" />
-                        <Property type="CameraProperty" identifier="camera" displayName="Camera" key="camera" reference="ref11" />
-                    </Properties>
-                    <PropertyOwners>
-                        <Processor type="SliceBasedVolumeRenderer" identifier="SliceBasedVolumeRenderer" reference="ref13" />
-                        <Processor type="SimpleRaycaster" identifier="SimpleRaycaster" reference="ref10" />
-                    </PropertyOwners>
-                </PropertyLink>
-                <PropertyLink>
-                    <Properties>
-                        <Property type="CameraProperty" identifier="camera" displayName="Camera" key="camera" reference="ref11" />
-                        <Property type="CameraProperty" identifier="cameraProperty" displayName="Camera" key="cameraProperty" reference="ref14" />
-                    </Properties>
-                    <PropertyOwners>
-                        <Processor type="SimpleRaycaster" identifier="SimpleRaycaster" reference="ref10" />
-                        <Processor type="SliceBasedVolumeRenderer" identifier="SliceBasedVolumeRenderer" reference="ref13" />
-                    </PropertyOwners>
-                </PropertyLink>
-                <PropertyLink>
-                    <Properties>
-                        <Property type="TransferFunctionProperty" identifier="transferFunction" displayName="Transfer function" key="transferFunction" reference="ref15" />
-                        <Property type="TransferFunctionProperty" identifier="transferFunction" displayName="Transfer function" key="transferFunction" reference="ref12" />
-                    </Properties>
-                    <PropertyOwners>
-                        <Processor type="SliceBasedVolumeRenderer" identifier="SliceBasedVolumeRenderer" reference="ref13" />
-                        <Processor type="SimpleRaycaster" identifier="SimpleRaycaster" reference="ref10" />
-                    </PropertyOwners>
-                </PropertyLink>
-                <PropertyLink>
-                    <Properties>
-                        <Property type="TransferFunctionProperty" identifier="transferFunction" displayName="Transfer function" key="transferFunction" reference="ref12" />
-                        <Property type="TransferFunctionProperty" identifier="transferFunction" displayName="Transfer function" key="transferFunction" reference="ref15" />
-                    </Properties>
-                    <PropertyOwners>
-                        <Processor type="SimpleRaycaster" identifier="SimpleRaycaster" reference="ref10" />
-                        <Processor type="SliceBasedVolumeRenderer" identifier="SliceBasedVolumeRenderer" reference="ref13" />
-                    </PropertyOwners>
-                </PropertyLink>
-            </PropertyLinks>
-        </ProcessorLink>
-        <ProcessorLink>
-            <Processor type="CanvasGL" identifier="Raycaster" reference="ref8" />
-            <Processor type="CanvasGL" identifier="Slicebased" reference="ref20" />
-            <PropertyLinks>
-                <PropertyLink>
-                    <Properties>
-                        <Property type="IntVec2Property" identifier="dimensions" displayName="Dimensions" key="dimensions" reference="ref9" />
-                        <Property type="IntVec2Property" identifier="dimensions" displayName="Dimensions" key="dimensions" reference="ref21" />
-                    </Properties>
-                    <PropertyOwners>
-                        <Processor type="CanvasGL" identifier="Raycaster" reference="ref8" />
-                        <Processor type="CanvasGL" identifier="Slicebased" reference="ref20" />
-                    </PropertyOwners>
-                </PropertyLink>
-                <PropertyLink>
-                    <Properties>
-                        <Property type="IntVec2Property" identifier="dimensions" displayName="Dimensions" key="dimensions" reference="ref21" />
-                        <Property type="IntVec2Property" identifier="dimensions" displayName="Dimensions" key="dimensions" reference="ref9" />
-                    </Properties>
-                    <PropertyOwners>
-                        <Processor type="CanvasGL" identifier="Slicebased" reference="ref20" />
-                        <Processor type="CanvasGL" identifier="Raycaster" reference="ref8" />
-                    </PropertyOwners>
-                </PropertyLink>
-            </PropertyLinks>
-        </ProcessorLink>
-        <ProcessorLink>
-            <Processor type="EntryExitPoints" identifier="EntryExitPoints" reference="ref0" />
-            <Processor type="SimpleRaycaster" identifier="SimpleRaycaster" reference="ref10" />
-            <PropertyLinks>
-                <PropertyLink>
-                    <Properties>
-                        <Property type="CameraProperty" identifier="camera" displayName="Camera" key="camera" reference="ref1" />
-                        <Property type="CameraProperty" identifier="camera" displayName="Camera" key="camera" reference="ref11" />
-                    </Properties>
-                    <PropertyOwners>
-                        <Processor type="EntryExitPoints" identifier="EntryExitPoints" reference="ref0" />
-                        <Processor type="SimpleRaycaster" identifier="SimpleRaycaster" reference="ref10" />
-                    </PropertyOwners>
-                </PropertyLink>
-                <PropertyLink>
-                    <Properties>
-                        <Property type="CameraProperty" identifier="camera" displayName="Camera" key="camera" reference="ref11" />
-                        <Property type="CameraProperty" identifier="camera" displayName="Camera" key="camera" reference="ref1" />
-                    </Properties>
-                    <PropertyOwners>
-                        <Processor type="SimpleRaycaster" identifier="SimpleRaycaster" reference="ref10" />
-                        <Processor type="EntryExitPoints" identifier="EntryExitPoints" reference="ref0" />
-                    </PropertyOwners>
-                </PropertyLink>
-            </PropertyLinks>
-        </ProcessorLink>
-        <ProcessorLink>
-            <Processor type="CanvasGL" identifier="Raycaster" reference="ref8" />
-            <Processor type="CanvasGL" identifier="Difference" reference="ref23" />
-            <PropertyLinks>
-                <PropertyLink>
-                    <Properties>
-                        <Property type="IntVec2Property" identifier="dimensions" displayName="Dimensions" key="dimensions" reference="ref9" />
-                        <Property type="IntVec2Property" identifier="dimensions" displayName="Dimensions" key="dimensions" reference="ref24" />
-                    </Properties>
-                    <PropertyOwners>
-                        <Processor type="CanvasGL" identifier="Raycaster" reference="ref8" />
-                        <Processor type="CanvasGL" identifier="Difference" reference="ref23" />
-                    </PropertyOwners>
-                </PropertyLink>
-                <PropertyLink>
-                    <Properties>
-                        <Property type="IntVec2Property" identifier="dimensions" displayName="Dimensions" key="dimensions" reference="ref24" />
-                        <Property type="IntVec2Property" identifier="dimensions" displayName="Dimensions" key="dimensions" reference="ref9" />
-                    </Properties>
-                    <PropertyOwners>
-                        <Processor type="CanvasGL" identifier="Difference" reference="ref23" />
-                        <Processor type="CanvasGL" identifier="Raycaster" reference="ref8" />
-                    </PropertyOwners>
-                </PropertyLink>
-            </PropertyLinks>
-        </ProcessorLink>
-    </ProcessorLinks>
+    <PropertyLinks>
+        <PropertyLink>
+            <Properties>
+                <Property type="BoolProperty" identifier="clippingEnabled" displayName="Enable Clipping" key="clippingEnabled" reference="ref3" />
+                <Property type="BoolProperty" identifier="clippingEnabled" displayName="Enable Clipping" key="clippingEnabled" reference="ref16" />
+            </Properties>
+            <PropertyOwners>
+                <Processor type="CubeProxyGeometry" identifier="CubeProxyGeometry" reference="ref2" />
+                <Processor type="SliceBasedVolumeRenderer" identifier="SliceBasedVolumeRenderer" reference="ref13" />
+            </PropertyOwners>
+        </PropertyLink>
+        <PropertyLink>
+            <Properties>
+                <Property type="BoolProperty" identifier="clippingEnabled" displayName="Enable Clipping" key="clippingEnabled" reference="ref16" />
+                <Property type="BoolProperty" identifier="clippingEnabled" displayName="Enable Clipping" key="clippingEnabled" reference="ref3" />
+            </Properties>
+            <PropertyOwners>
+                <Processor type="SliceBasedVolumeRenderer" identifier="SliceBasedVolumeRenderer" reference="ref13" />
+                <Processor type="CubeProxyGeometry" identifier="CubeProxyGeometry" reference="ref2" />
+            </PropertyOwners>
+        </PropertyLink>
+        <PropertyLink>
+            <Properties>
+                <Property type="IntMinMaxProperty" identifier="clipX" displayName="Clip X Slices" key="clipX" reference="ref4" />
+                <Property type="IntMinMaxProperty" identifier="clipX" displayName="Clip X Slices" key="clipX" reference="ref17" />
+            </Properties>
+            <PropertyOwners>
+                <Processor type="CubeProxyGeometry" identifier="CubeProxyGeometry" reference="ref2" />
+                <Processor type="SliceBasedVolumeRenderer" identifier="SliceBasedVolumeRenderer" reference="ref13" />
+            </PropertyOwners>
+        </PropertyLink>
+        <PropertyLink>
+            <Properties>
+                <Property type="IntMinMaxProperty" identifier="clipX" displayName="Clip X Slices" key="clipX" reference="ref17" />
+                <Property type="IntMinMaxProperty" identifier="clipX" displayName="Clip X Slices" key="clipX" reference="ref4" />
+            </Properties>
+            <PropertyOwners>
+                <Processor type="SliceBasedVolumeRenderer" identifier="SliceBasedVolumeRenderer" reference="ref13" />
+                <Processor type="CubeProxyGeometry" identifier="CubeProxyGeometry" reference="ref2" />
+            </PropertyOwners>
+        </PropertyLink>
+        <PropertyLink>
+            <Properties>
+                <Property type="IntMinMaxProperty" identifier="clipY" displayName="Clip Y Slices" key="clipY" reference="ref5" />
+                <Property type="IntMinMaxProperty" identifier="clipY" displayName="Clip Y Slices" key="clipY" reference="ref18" />
+            </Properties>
+            <PropertyOwners>
+                <Processor type="CubeProxyGeometry" identifier="CubeProxyGeometry" reference="ref2" />
+                <Processor type="SliceBasedVolumeRenderer" identifier="SliceBasedVolumeRenderer" reference="ref13" />
+            </PropertyOwners>
+        </PropertyLink>
+        <PropertyLink>
+            <Properties>
+                <Property type="IntMinMaxProperty" identifier="clipY" displayName="Clip Y Slices" key="clipY" reference="ref18" />
+                <Property type="IntMinMaxProperty" identifier="clipY" displayName="Clip Y Slices" key="clipY" reference="ref5" />
+            </Properties>
+            <PropertyOwners>
+                <Processor type="SliceBasedVolumeRenderer" identifier="SliceBasedVolumeRenderer" reference="ref13" />
+                <Processor type="CubeProxyGeometry" identifier="CubeProxyGeometry" reference="ref2" />
+            </PropertyOwners>
+        </PropertyLink>
+        <PropertyLink>
+            <Properties>
+                <Property type="IntMinMaxProperty" identifier="clipZ" displayName="Clip Z Slices" key="clipZ" reference="ref6" />
+                <Property type="IntMinMaxProperty" identifier="clipZ" displayName="Clip Z Slices" key="clipZ" reference="ref19" />
+            </Properties>
+            <PropertyOwners>
+                <Processor type="CubeProxyGeometry" identifier="CubeProxyGeometry" reference="ref2" />
+                <Processor type="SliceBasedVolumeRenderer" identifier="SliceBasedVolumeRenderer" reference="ref13" />
+            </PropertyOwners>
+        </PropertyLink>
+        <PropertyLink>
+            <Properties>
+                <Property type="IntMinMaxProperty" identifier="clipZ" displayName="Clip Z Slices" key="clipZ" reference="ref19" />
+                <Property type="IntMinMaxProperty" identifier="clipZ" displayName="Clip Z Slices" key="clipZ" reference="ref6" />
+            </Properties>
+            <PropertyOwners>
+                <Processor type="SliceBasedVolumeRenderer" identifier="SliceBasedVolumeRenderer" reference="ref13" />
+                <Processor type="CubeProxyGeometry" identifier="CubeProxyGeometry" reference="ref2" />
+            </PropertyOwners>
+        </PropertyLink>
+        <PropertyLink>
+            <Properties>
+                <Property type="CameraProperty" identifier="cameraProperty" displayName="Camera" key="cameraProperty" reference="ref14" />
+                <Property type="CameraProperty" identifier="camera" displayName="Camera" key="camera" reference="ref11" />
+            </Properties>
+            <PropertyOwners>
+                <Processor type="SliceBasedVolumeRenderer" identifier="SliceBasedVolumeRenderer" reference="ref13" />
+                <Processor type="SimpleRaycaster" identifier="SimpleRaycaster" reference="ref10" />
+            </PropertyOwners>
+        </PropertyLink>
+        <PropertyLink>
+            <Properties>
+                <Property type="CameraProperty" identifier="camera" displayName="Camera" key="camera" reference="ref11" />
+                <Property type="CameraProperty" identifier="cameraProperty" displayName="Camera" key="cameraProperty" reference="ref14" />
+            </Properties>
+            <PropertyOwners>
+                <Processor type="SimpleRaycaster" identifier="SimpleRaycaster" reference="ref10" />
+                <Processor type="SliceBasedVolumeRenderer" identifier="SliceBasedVolumeRenderer" reference="ref13" />
+            </PropertyOwners>
+        </PropertyLink>
+        <PropertyLink>
+            <Properties>
+                <Property type="TransferFunctionProperty" identifier="transferFunction" displayName="Transfer function" key="transferFunction" reference="ref15" />
+                <Property type="TransferFunctionProperty" identifier="transferFunction" displayName="Transfer function" key="transferFunction" reference="ref12" />
+            </Properties>
+            <PropertyOwners>
+                <Processor type="SliceBasedVolumeRenderer" identifier="SliceBasedVolumeRenderer" reference="ref13" />
+                <Processor type="SimpleRaycaster" identifier="SimpleRaycaster" reference="ref10" />
+            </PropertyOwners>
+        </PropertyLink>
+        <PropertyLink>
+            <Properties>
+                <Property type="TransferFunctionProperty" identifier="transferFunction" displayName="Transfer function" key="transferFunction" reference="ref12" />
+                <Property type="TransferFunctionProperty" identifier="transferFunction" displayName="Transfer function" key="transferFunction" reference="ref15" />
+            </Properties>
+            <PropertyOwners>
+                <Processor type="SimpleRaycaster" identifier="SimpleRaycaster" reference="ref10" />
+                <Processor type="SliceBasedVolumeRenderer" identifier="SliceBasedVolumeRenderer" reference="ref13" />
+            </PropertyOwners>
+        </PropertyLink>
+        <PropertyLink>
+            <Properties>
+                <Property type="IntVec2Property" identifier="dimensions" displayName="Dimensions" key="dimensions" reference="ref9" />
+                <Property type="IntVec2Property" identifier="dimensions" displayName="Dimensions" key="dimensions" reference="ref21" />
+            </Properties>
+            <PropertyOwners>
+                <Processor type="CanvasGL" identifier="Raycaster" reference="ref8" />
+                <Processor type="CanvasGL" identifier="Slicebased" reference="ref20" />
+            </PropertyOwners>
+        </PropertyLink>
+        <PropertyLink>
+            <Properties>
+                <Property type="IntVec2Property" identifier="dimensions" displayName="Dimensions" key="dimensions" reference="ref21" />
+                <Property type="IntVec2Property" identifier="dimensions" displayName="Dimensions" key="dimensions" reference="ref9" />
+            </Properties>
+            <PropertyOwners>
+                <Processor type="CanvasGL" identifier="Slicebased" reference="ref20" />
+                <Processor type="CanvasGL" identifier="Raycaster" reference="ref8" />
+            </PropertyOwners>
+        </PropertyLink>
+        <PropertyLink>
+            <Properties>
+                <Property type="CameraProperty" identifier="camera" displayName="Camera" key="camera" reference="ref1" />
+                <Property type="CameraProperty" identifier="camera" displayName="Camera" key="camera" reference="ref11" />
+            </Properties>
+            <PropertyOwners>
+                <Processor type="EntryExitPoints" identifier="EntryExitPoints" reference="ref0" />
+                <Processor type="SimpleRaycaster" identifier="SimpleRaycaster" reference="ref10" />
+            </PropertyOwners>
+        </PropertyLink>
+        <PropertyLink>
+            <Properties>
+                <Property type="CameraProperty" identifier="camera" displayName="Camera" key="camera" reference="ref11" />
+                <Property type="CameraProperty" identifier="camera" displayName="Camera" key="camera" reference="ref1" />
+            </Properties>
+            <PropertyOwners>
+                <Processor type="SimpleRaycaster" identifier="SimpleRaycaster" reference="ref10" />
+                <Processor type="EntryExitPoints" identifier="EntryExitPoints" reference="ref0" />
+            </PropertyOwners>
+        </PropertyLink>
+        <PropertyLink>
+            <Properties>
+                <Property type="IntVec2Property" identifier="dimensions" displayName="Dimensions" key="dimensions" reference="ref9" />
+                <Property type="IntVec2Property" identifier="dimensions" displayName="Dimensions" key="dimensions" reference="ref24" />
+            </Properties>
+            <PropertyOwners>
+                <Processor type="CanvasGL" identifier="Raycaster" reference="ref8" />
+                <Processor type="CanvasGL" identifier="Difference" reference="ref23" />
+            </PropertyOwners>
+        </PropertyLink>
+        <PropertyLink>
+            <Properties>
+                <Property type="IntVec2Property" identifier="dimensions" displayName="Dimensions" key="dimensions" reference="ref24" />
+                <Property type="IntVec2Property" identifier="dimensions" displayName="Dimensions" key="dimensions" reference="ref9" />
+            </Properties>
+            <PropertyOwners>
+                <Processor type="CanvasGL" identifier="Difference" reference="ref23" />
+                <Processor type="CanvasGL" identifier="Raycaster" reference="ref8" />
+            </PropertyOwners>
+        </PropertyLink>
+    </PropertyLinks>
 </InviwoTreeData>

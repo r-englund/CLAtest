@@ -328,5 +328,5 @@
             </InPort>
         </Connection>
     </Connections>
-    <ProcessorLinks />
+    <PropretyLinks/>
 </InviwoTreeData>

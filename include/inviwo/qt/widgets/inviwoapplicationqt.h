@@ -73,8 +73,10 @@ protected:
     void wait(int);
 
 private:
+    #if (QT_VERSION >= QT_VERSION_CHECK(5, 0, 0))
     static void logQtMessages(QtMsgType type, const QMessageLogContext& context,
                               const QString& msg);
+    #endif
 
     QMainWindow* mainWindow_;
     std::vector<FileObserver*> fileObservers_;
