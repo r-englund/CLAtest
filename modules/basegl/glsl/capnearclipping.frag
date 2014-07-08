@@ -45,8 +45,8 @@ uniform float nearDist_;
 in vec3 texCoord_;
 
 void main() {
-    float entryDepth = texture(entryDepthTex_, texCoord_.xy).z;
-    float exitDepth = texture(exitDepthTex_, texCoord_.xy).z;
+    float entryDepth = texture(entryDepthTex_, texCoord_.xy).r;
+    float exitDepth = texture(exitDepthTex_, texCoord_.xy).r;
     vec4 entryColor;
 
     if (entryDepth > exitDepth) {
