@@ -451,22 +451,18 @@
             </InPort>
         </Connection>
     </Connections>
-    <ProcessorLinks>
-        <ProcessorLink>
-            <PropertyLinks>
-                <PropertyLink>
-                    <Properties>
-                        <Property type="CameraProperty" identifier="camera" displayName="Camera" key="camera" reference="ref2" />
-                        <Property type="CameraProperty" identifier="camera" displayName="Camera" key="camera" reference="ref4" />
-                    </Properties>
-                </PropertyLink>
-                <PropertyLink>
-                    <Properties>
-                        <Property type="CameraProperty" identifier="camera" displayName="Camera" key="camera" reference="ref4" />
-                        <Property type="CameraProperty" identifier="camera" displayName="Camera" key="camera" reference="ref2" />
-                    </Properties>
-                </PropertyLink>
-            </PropertyLinks>
-        </ProcessorLink>
-    </ProcessorLinks>
+    <PropertyLinks>
+        <PropertyLink>
+            <Properties>
+                <Property type="CameraProperty" identifier="camera" displayName="Camera" key="camera" reference="ref2" />
+                <Property type="CameraProperty" identifier="camera" displayName="Camera" key="camera" reference="ref4" />
+            </Properties>
+        </PropertyLink>
+        <PropertyLink>
+            <Properties>
+                <Property type="CameraProperty" identifier="camera" displayName="Camera" key="camera" reference="ref4" />
+                <Property type="CameraProperty" identifier="camera" displayName="Camera" key="camera" reference="ref2" />
+            </Properties>
+        </PropertyLink>
+    </PropertyLinks>
 </InviwoTreeData>
