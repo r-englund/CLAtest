@@ -130,7 +130,7 @@ void ISORaycaster::onVolumeChange(){
 
 void ISORaycaster::process() {
     int channels = volumePort_.getData()->getDataFormat()->getComponents();
-    for(int i = channel_.size();i<channels;i++){
+    for(int i = static_cast<int>(channel_.size());i<channels;i++){
         std::stringstream ss;
         ss << "Channel " << i;
         channel_.addOption(ss.str() , ss.str(), i);
