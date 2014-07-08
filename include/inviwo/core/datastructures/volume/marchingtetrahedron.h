@@ -269,8 +269,6 @@ void MarchingTetrahedron::evaluate() {
     double v[8];
     glm::vec3 p[8];
 
-    bool single = volume->getDataFormat()->getComponents() == 1;
-
     const static unsigned int tetras[6][4] = {
         {0, 1, 3, 5}, {1, 2, 3, 5}, {2, 3, 5, 6}, {0, 3, 4, 5}, {7, 4, 3, 5}, {7, 6, 5, 3}};
 
