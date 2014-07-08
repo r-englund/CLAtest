@@ -44,7 +44,7 @@
 
 namespace inviwo {
 
-class IVW_CORE_API MarchingTetrahedron : public VolumeOperation {
+class MarchingTetrahedron : public VolumeOperation {
 public:
     MarchingTetrahedron(const VolumeRepresentation *in, const double &iso, const vec4 &color)
         : VolumeOperation(in), iso_(iso), color_(color) {}
