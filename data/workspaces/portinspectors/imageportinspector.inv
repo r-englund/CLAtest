@@ -20,5 +20,5 @@
         </Processor>
     </Processors>
     <Connections />
-    <ProcessorLinks />
+    <PropertyLinks />
 </InviwoTreeData>
