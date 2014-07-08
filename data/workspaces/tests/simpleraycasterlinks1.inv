@@ -2367,8 +2367,6 @@
    </InPort>
   </Connection>
  </Connections>
- <ProcessorLinks>
-  <ProcessorLink>
    <PropertyLinks>
     <PropertyLink>
      <Properties>
@@ -2382,10 +2380,6 @@
       <Property displayName="Camera" identifier="camera" key="camera" reference="ref18" type="CameraProperty"/>
      </Properties>
     </PropertyLink>
-   </PropertyLinks>
-  </ProcessorLink>
-  <ProcessorLink>
-   <PropertyLinks>
     <PropertyLink>
      <Properties>
       <Property displayName="Sampling rate" identifier="samplingRate" key="samplingRate" reference="ref82" type="FloatProperty"/>
@@ -2566,10 +2560,6 @@
       <Property displayName="Transfer function" identifier="transferFunction" key="transferFunction" reference="ref96" type="TransferFunctionProperty"/>
      </Properties>
     </PropertyLink>
-   </PropertyLinks>
-  </ProcessorLink>
-  <ProcessorLink>
-   <PropertyLinks>
     <PropertyLink>
      <Properties>
       <Property displayName="Sampling rate" identifier="samplingRate" key="samplingRate" reference="ref112" type="FloatProperty"/>
@@ -2750,10 +2740,6 @@
       <Property displayName="Transfer function" identifier="transferFunction" key="transferFunction" reference="ref126" type="TransferFunctionProperty"/>
      </Properties>
     </PropertyLink>
-   </PropertyLinks>
-  </ProcessorLink>
-  <ProcessorLink>
-   <PropertyLinks>
     <PropertyLink>
      <Properties>
       <Property displayName="Sampling rate" identifier="samplingRate" key="samplingRate" reference="ref127" type="FloatProperty"/>
@@ -2934,10 +2920,6 @@
       <Property displayName="Transfer function" identifier="transferFunction" key="transferFunction" reference="ref141" type="TransferFunctionProperty"/>
      </Properties>
     </PropertyLink>
-   </PropertyLinks>
-  </ProcessorLink>
-  <ProcessorLink>
-   <PropertyLinks>
     <PropertyLink>
      <Properties>
       <Property displayName="Sampling rate" identifier="samplingRate" key="samplingRate" reference="ref142" type="FloatProperty"/>
@@ -3118,10 +3100,6 @@
       <Property displayName="Transfer function" identifier="transferFunction" key="transferFunction" reference="ref156" type="TransferFunctionProperty"/>
      </Properties>
     </PropertyLink>
-   </PropertyLinks>
-  </ProcessorLink>
-  <ProcessorLink>
-   <PropertyLinks>
     <PropertyLink>
      <Properties>
       <Property displayName="Sampling rate" identifier="samplingRate" key="samplingRate" reference="ref52" type="FloatProperty"/>
@@ -3302,10 +3280,6 @@
       <Property displayName="Transfer function" identifier="transferFunction" key="transferFunction" reference="ref66" type="TransferFunctionProperty"/>
      </Properties>
     </PropertyLink>
-   </PropertyLinks>
-  </ProcessorLink>
-  <ProcessorLink>
-   <PropertyLinks>
     <PropertyLink>
      <Properties>
       <Property displayName="Sampling rate" identifier="samplingRate" key="samplingRate" reference="ref112" type="FloatProperty"/>
@@ -3486,10 +3460,6 @@
       <Property displayName="Transfer function" identifier="transferFunction" key="transferFunction" reference="ref126" type="TransferFunctionProperty"/>
      </Properties>
     </PropertyLink>
-   </PropertyLinks>
-  </ProcessorLink>
-  <ProcessorLink>
-   <PropertyLinks>
     <PropertyLink>
      <Properties>
       <Property displayName="Sampling rate" identifier="samplingRate" key="samplingRate" reference="ref127" type="FloatProperty"/>
@@ -3670,10 +3640,6 @@
       <Property displayName="Transfer function" identifier="transferFunction" key="transferFunction" reference="ref141" type="TransferFunctionProperty"/>
      </Properties>
     </PropertyLink>
-   </PropertyLinks>
-  </ProcessorLink>
-  <ProcessorLink>
-   <PropertyLinks>
     <PropertyLink>
      <Properties>
       <Property displayName="Sampling rate" identifier="samplingRate" key="samplingRate" reference="ref142" type="FloatProperty"/>
@@ -3854,10 +3820,6 @@
       <Property displayName="Transfer function" identifier="transferFunction" key="transferFunction" reference="ref156" type="TransferFunctionProperty"/>
      </Properties>
     </PropertyLink>
-   </PropertyLinks>
-  </ProcessorLink>
-  <ProcessorLink>
-   <PropertyLinks>
     <PropertyLink>
      <Properties>
       <Property displayName="Sampling rate" identifier="samplingRate" key="samplingRate" reference="ref37" type="FloatProperty"/>
@@ -4038,10 +4000,6 @@
       <Property displayName="Transfer function" identifier="transferFunction" key="transferFunction" reference="ref51" type="TransferFunctionProperty"/>
      </Properties>
     </PropertyLink>
-   </PropertyLinks>
-  </ProcessorLink>
-  <ProcessorLink>
-   <PropertyLinks>
     <PropertyLink>
      <Properties>
       <Property displayName="Sampling rate" identifier="samplingRate" key="samplingRate" reference="ref67" type="FloatProperty"/>
@@ -4222,10 +4180,6 @@
       <Property displayName="Transfer function" identifier="transferFunction" key="transferFunction" reference="ref81" type="TransferFunctionProperty"/>
      </Properties>
     </PropertyLink>
-   </PropertyLinks>
-  </ProcessorLink>
-  <ProcessorLink>
-   <PropertyLinks>
     <PropertyLink>
      <Properties>
       <Property displayName="Sampling rate" identifier="samplingRate" key="samplingRate" reference="ref97" type="FloatProperty"/>
@@ -4406,10 +4360,6 @@
       <Property displayName="Transfer function" identifier="transferFunction" key="transferFunction" reference="ref111" type="TransferFunctionProperty"/>
      </Properties>
     </PropertyLink>
-   </PropertyLinks>
-  </ProcessorLink>
-  <ProcessorLink>
-   <PropertyLinks>
     <PropertyLink>
      <Properties>
       <Property displayName="Sampling rate" identifier="samplingRate" key="samplingRate" reference="ref67" type="FloatProperty"/>
@@ -4590,10 +4540,6 @@
       <Property displayName="Transfer function" identifier="transferFunction" key="transferFunction" reference="ref81" type="TransferFunctionProperty"/>
      </Properties>
     </PropertyLink>
-   </PropertyLinks>
-  </ProcessorLink>
-  <ProcessorLink>
-   <PropertyLinks>
     <PropertyLink>
      <Properties>
       <Property displayName="Sampling rate" identifier="samplingRate" key="samplingRate" reference="ref52" type="FloatProperty"/>
@@ -4774,10 +4720,6 @@
       <Property displayName="Transfer function" identifier="transferFunction" key="transferFunction" reference="ref66" type="TransferFunctionProperty"/>
      </Properties>
     </PropertyLink>
-   </PropertyLinks>
-  </ProcessorLink>
-  <ProcessorLink>
-   <PropertyLinks>
     <PropertyLink>
      <Properties>
       <Property displayName="Sampling rate" identifier="samplingRate" key="samplingRate" reference="ref37" type="FloatProperty"/>
@@ -4958,10 +4900,6 @@
       <Property displayName="Transfer function" identifier="transferFunction" key="transferFunction" reference="ref51" type="TransferFunctionProperty"/>
      </Properties>
     </PropertyLink>
-   </PropertyLinks>
-  </ProcessorLink>
-  <ProcessorLink>
-   <PropertyLinks>
     <PropertyLink>
      <Properties>
       <Property displayName="Sampling rate" identifier="samplingRate" key="samplingRate" reference="ref22" type="FloatProperty"/>
@@ -5142,10 +5080,6 @@
       <Property displayName="Transfer function" identifier="transferFunction" key="transferFunction" reference="ref36" type="TransferFunctionProperty"/>
      </Properties>
     </PropertyLink>
-   </PropertyLinks>
-  </ProcessorLink>
-  <ProcessorLink>
-   <PropertyLinks>
     <PropertyLink>
      <Properties>
       <Property displayName="Sampling rate" identifier="samplingRate" key="samplingRate" reference="ref158" type="FloatProperty"/>
@@ -5326,10 +5260,6 @@
       <Property displayName="Transfer function" identifier="transferFunction" key="transferFunction" reference="ref172" type="TransferFunctionProperty"/>
      </Properties>
     </PropertyLink>
-   </PropertyLinks>
-  </ProcessorLink>
-  <ProcessorLink>
-   <PropertyLinks>
     <PropertyLink>
      <Properties>
       <Property displayName="Sampling rate" identifier="samplingRate" key="samplingRate" reference="ref158" type="FloatProperty"/>
@@ -5510,10 +5440,6 @@
       <Property displayName="Transfer function" identifier="transferFunction" key="transferFunction" reference="ref172" type="TransferFunctionProperty"/>
      </Properties>
     </PropertyLink>
-   </PropertyLinks>
-  </ProcessorLink>
-  <ProcessorLink>
-   <PropertyLinks>
     <PropertyLink>
      <Properties>
       <Property displayName="Sampling rate" identifier="samplingRate" key="samplingRate" reference="ref158" type="FloatProperty"/>
@@ -5694,10 +5620,6 @@
       <Property displayName="Transfer function" identifier="transferFunction" key="transferFunction" reference="ref172" type="TransferFunctionProperty"/>
      </Properties>
     </PropertyLink>
-   </PropertyLinks>
-  </ProcessorLink>
-  <ProcessorLink>
-   <PropertyLinks>
     <PropertyLink>
      <Properties>
       <Property displayName="Sampling rate" identifier="samplingRate" key="samplingRate" reference="ref158" type="FloatProperty"/>
@@ -5878,10 +5800,6 @@
       <Property displayName="Transfer function" identifier="transferFunction" key="transferFunction" reference="ref172" type="TransferFunctionProperty"/>
      </Properties>
     </PropertyLink>
-   </PropertyLinks>
-  </ProcessorLink>
-  <ProcessorLink>
-   <PropertyLinks>
     <PropertyLink>
      <Properties>
       <Property displayName="Camera" identifier="camera" key="camera" reference="ref171" type="CameraProperty"/>
@@ -5895,6 +5813,4 @@
      </Properties>
     </PropertyLink>
    </PropertyLinks>
-  </ProcessorLink>
- </ProcessorLinks>
 </InviwoTreeData>

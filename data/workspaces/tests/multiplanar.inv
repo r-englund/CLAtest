@@ -376,110 +376,90 @@
             </InPort>
         </Connection>
     </Connections>
-    <ProcessorLinks>
-        <ProcessorLink>
-            <PropertyLinks>
-                <PropertyLink>
-                    <Properties>
-                        <Property type="TransferFunctionProperty" identifier="transferFunction" displayName="Transfer function" key="transferFunction" reference="ref12" />
-                        <Property type="TransferFunctionProperty" identifier="transferFunction" displayName="Transfer function" key="transferFunction" reference="ref16" />
-                    </Properties>
-                </PropertyLink>
-                <PropertyLink>
-                    <Properties>
-                        <Property type="TransferFunctionProperty" identifier="transferFunction" displayName="Transfer function" key="transferFunction" reference="ref16" />
-                        <Property type="TransferFunctionProperty" identifier="transferFunction" displayName="Transfer function" key="transferFunction" reference="ref12" />
-                    </Properties>
-                </PropertyLink>
-                <PropertyLink>
-                    <Properties>
-                        <Property type="BoolProperty" identifier="tfMappingEnabled" displayName="Enable Transfer Function" key="tfMappingEnabled" reference="ref11" />
-                        <Property type="BoolProperty" identifier="tfMappingEnabled" displayName="Enable Transfer Function" key="tfMappingEnabled" reference="ref15" />
-                    </Properties>
-                </PropertyLink>
-                <PropertyLink>
-                    <Properties>
-                        <Property type="BoolProperty" identifier="tfMappingEnabled" displayName="Enable Transfer Function" key="tfMappingEnabled" reference="ref15" />
-                        <Property type="BoolProperty" identifier="tfMappingEnabled" displayName="Enable Transfer Function" key="tfMappingEnabled" reference="ref11" />
-                    </Properties>
-                </PropertyLink>
-            </PropertyLinks>
-        </ProcessorLink>
-        <ProcessorLink>
-            <PropertyLinks>
-                <PropertyLink>
-                    <Properties>
-                        <Property type="BoolProperty" identifier="tfMappingEnabled" displayName="Enable Transfer Function" key="tfMappingEnabled" reference="ref11" />
-                        <Property type="BoolProperty" identifier="tfMappingEnabled" displayName="Enable Transfer Function" key="tfMappingEnabled" reference="ref7" />
-                    </Properties>
-                </PropertyLink>
-                <PropertyLink>
-                    <Properties>
-                        <Property type="BoolProperty" identifier="tfMappingEnabled" displayName="Enable Transfer Function" key="tfMappingEnabled" reference="ref7" />
-                        <Property type="BoolProperty" identifier="tfMappingEnabled" displayName="Enable Transfer Function" key="tfMappingEnabled" reference="ref11" />
-                    </Properties>
-                </PropertyLink>
-                <PropertyLink>
-                    <Properties>
-                        <Property type="TransferFunctionProperty" identifier="transferFunction" displayName="Transfer function" key="transferFunction" reference="ref12" />
-                        <Property type="TransferFunctionProperty" identifier="transferFunction" displayName="Transfer function" key="transferFunction" reference="ref8" />
-                    </Properties>
-                </PropertyLink>
-                <PropertyLink>
-                    <Properties>
-                        <Property type="TransferFunctionProperty" identifier="transferFunction" displayName="Transfer function" key="transferFunction" reference="ref8" />
-                        <Property type="TransferFunctionProperty" identifier="transferFunction" displayName="Transfer function" key="transferFunction" reference="ref12" />
-                    </Properties>
-                </PropertyLink>
-            </PropertyLinks>
-        </ProcessorLink>
-        <ProcessorLink>
-            <PropertyLinks>
-                <PropertyLink>
-                    <Properties>
-                        <Property type="IntProperty" identifier="sliceXY" displayName="Slice XY" key="sliceXY" reference="ref2" />
-                        <Property type="IntProperty" identifier="sliceNumber" displayName="Slice Number" key="sliceNumber" reference="ref6" />
-                    </Properties>
-                </PropertyLink>
-                <PropertyLink>
-                    <Properties>
-                        <Property type="IntProperty" identifier="sliceNumber" displayName="Slice Number" key="sliceNumber" reference="ref6" />
-                        <Property type="IntProperty" identifier="sliceXY" displayName="Slice XY" key="sliceXY" reference="ref2" />
-                    </Properties>
-                </PropertyLink>
-            </PropertyLinks>
-        </ProcessorLink>
-        <ProcessorLink>
-            <PropertyLinks>
-                <PropertyLink>
-                    <Properties>
-                        <Property type="IntProperty" identifier="sliceXZ" displayName="Slice XZ" key="sliceXZ" reference="ref3" />
-                        <Property type="IntProperty" identifier="sliceNumber" displayName="Slice Number" key="sliceNumber" reference="ref10" />
-                    </Properties>
-                </PropertyLink>
-                <PropertyLink>
-                    <Properties>
-                        <Property type="IntProperty" identifier="sliceNumber" displayName="Slice Number" key="sliceNumber" reference="ref10" />
-                        <Property type="IntProperty" identifier="sliceXZ" displayName="Slice XZ" key="sliceXZ" reference="ref3" />
-                    </Properties>
-                </PropertyLink>
-            </PropertyLinks>
-        </ProcessorLink>
-        <ProcessorLink>
-            <PropertyLinks>
-                <PropertyLink>
-                    <Properties>
-                        <Property type="IntProperty" identifier="sliceYZ" displayName="Slice YZ" key="sliceYZ" reference="ref4" />
-                        <Property type="IntProperty" identifier="sliceNumber" displayName="Slice Number" key="sliceNumber" reference="ref14" />
-                    </Properties>
-                </PropertyLink>
-                <PropertyLink>
-                    <Properties>
-                        <Property type="IntProperty" identifier="sliceNumber" displayName="Slice Number" key="sliceNumber" reference="ref14" />
-                        <Property type="IntProperty" identifier="sliceYZ" displayName="Slice YZ" key="sliceYZ" reference="ref4" />
-                    </Properties>
-                </PropertyLink>
-            </PropertyLinks>
-        </ProcessorLink>
-    </ProcessorLinks>
+    <PropertyLinks>
+        <PropertyLink>
+            <Properties>
+                <Property type="TransferFunctionProperty" identifier="transferFunction" displayName="Transfer function" key="transferFunction" reference="ref12" />
+                <Property type="TransferFunctionProperty" identifier="transferFunction" displayName="Transfer function" key="transferFunction" reference="ref16" />
+            </Properties>
+        </PropertyLink>
+        <PropertyLink>
+            <Properties>
+                <Property type="TransferFunctionProperty" identifier="transferFunction" displayName="Transfer function" key="transferFunction" reference="ref16" />
+                <Property type="TransferFunctionProperty" identifier="transferFunction" displayName="Transfer function" key="transferFunction" reference="ref12" />
+            </Properties>
+        </PropertyLink>
+        <PropertyLink>
+            <Properties>
+                <Property type="BoolProperty" identifier="tfMappingEnabled" displayName="Enable Transfer Function" key="tfMappingEnabled" reference="ref11" />
+                <Property type="BoolProperty" identifier="tfMappingEnabled" displayName="Enable Transfer Function" key="tfMappingEnabled" reference="ref15" />
+            </Properties>
+        </PropertyLink>
+        <PropertyLink>
+            <Properties>
+                <Property type="BoolProperty" identifier="tfMappingEnabled" displayName="Enable Transfer Function" key="tfMappingEnabled" reference="ref15" />
+                <Property type="BoolProperty" identifier="tfMappingEnabled" displayName="Enable Transfer Function" key="tfMappingEnabled" reference="ref11" />
+            </Properties>
+        </PropertyLink>
+        <PropertyLink>
+            <Properties>
+                <Property type="BoolProperty" identifier="tfMappingEnabled" displayName="Enable Transfer Function" key="tfMappingEnabled" reference="ref11" />
+                <Property type="BoolProperty" identifier="tfMappingEnabled" displayName="Enable Transfer Function" key="tfMappingEnabled" reference="ref7" />
+            </Properties>
+        </PropertyLink>
+        <PropertyLink>
+            <Properties>
+                <Property type="BoolProperty" identifier="tfMappingEnabled" displayName="Enable Transfer Function" key="tfMappingEnabled" reference="ref7" />
+                <Property type="BoolProperty" identifier="tfMappingEnabled" displayName="Enable Transfer Function" key="tfMappingEnabled" reference="ref11" />
+            </Properties>
+        </PropertyLink>
+        <PropertyLink>
+            <Properties>
+                <Property type="TransferFunctionProperty" identifier="transferFunction" displayName="Transfer function" key="transferFunction" reference="ref12" />
+                <Property type="TransferFunctionProperty" identifier="transferFunction" displayName="Transfer function" key="transferFunction" reference="ref8" />
+            </Properties>
+        </PropertyLink>
+        <PropertyLink>
+            <Properties>
+                <Property type="TransferFunctionProperty" identifier="transferFunction" displayName="Transfer function" key="transferFunction" reference="ref8" />
+                <Property type="TransferFunctionProperty" identifier="transferFunction" displayName="Transfer function" key="transferFunction" reference="ref12" />
+            </Properties>
+        </PropertyLink>
+        <PropertyLink>
+            <Properties>
+                <Property type="IntProperty" identifier="sliceXY" displayName="Slice XY" key="sliceXY" reference="ref2" />
+                <Property type="IntProperty" identifier="sliceNumber" displayName="Slice Number" key="sliceNumber" reference="ref6" />
+            </Properties>
+        </PropertyLink>
+        <PropertyLink>
+            <Properties>
+                <Property type="IntProperty" identifier="sliceNumber" displayName="Slice Number" key="sliceNumber" reference="ref6" />
+                <Property type="IntProperty" identifier="sliceXY" displayName="Slice XY" key="sliceXY" reference="ref2" />
+            </Properties>
+        </PropertyLink>
+        <PropertyLink>
+            <Properties>
+                <Property type="IntProperty" identifier="sliceXZ" displayName="Slice XZ" key="sliceXZ" reference="ref3" />
+                <Property type="IntProperty" identifier="sliceNumber" displayName="Slice Number" key="sliceNumber" reference="ref10" />
+            </Properties>
+        </PropertyLink>
+        <PropertyLink>
+            <Properties>
+                <Property type="IntProperty" identifier="sliceNumber" displayName="Slice Number" key="sliceNumber" reference="ref10" />
+                <Property type="IntProperty" identifier="sliceXZ" displayName="Slice XZ" key="sliceXZ" reference="ref3" />
+            </Properties>
+        </PropertyLink>
+        <PropertyLink>
+            <Properties>
+                <Property type="IntProperty" identifier="sliceYZ" displayName="Slice YZ" key="sliceYZ" reference="ref4" />
+                <Property type="IntProperty" identifier="sliceNumber" displayName="Slice Number" key="sliceNumber" reference="ref14" />
+            </Properties>
+        </PropertyLink>
+        <PropertyLink>
+            <Properties>
+                <Property type="IntProperty" identifier="sliceNumber" displayName="Slice Number" key="sliceNumber" reference="ref14" />
+                <Property type="IntProperty" identifier="sliceYZ" displayName="Slice YZ" key="sliceYZ" reference="ref4" />
+            </Properties>
+        </PropertyLink>
+    </PropertyLinks>
 </InviwoTreeData>

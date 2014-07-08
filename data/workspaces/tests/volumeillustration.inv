@@ -1214,84 +1214,66 @@
             </InPort>
         </Connection>
     </Connections>
-    <ProcessorLinks>
-        <ProcessorLink>
-            <Processor type="CanvasGL" identifier="SilhouettesEnhancement" reference="ref4" />
-            <Processor type="CanvasGL" identifier="Boundary" reference="ref9" />
-            <PropertyLinks>
-                <PropertyLink>
-                    <Properties>
-                        <Property type="IntVec2Property" identifier="dimensions" displayName="Dimensions" key="dimensions" reference="ref5" />
-                        <Property type="IntVec2Property" identifier="dimensions" displayName="Dimensions" key="dimensions" reference="ref10" />
-                    </Properties>
-                    <PropertyOwners>
-                        <Processor type="CanvasGL" identifier="SilhouettesEnhancement" reference="ref4" />
-                        <Processor type="CanvasGL" identifier="Boundary" reference="ref9" />
-                    </PropertyOwners>
-                </PropertyLink>
-                <PropertyLink>
-                    <Properties>
-                        <Property type="IntVec2Property" identifier="dimensions" displayName="Dimensions" key="dimensions" reference="ref10" />
-                        <Property type="IntVec2Property" identifier="dimensions" displayName="Dimensions" key="dimensions" reference="ref5" />
-                    </Properties>
-                    <PropertyOwners>
-                        <Processor type="CanvasGL" identifier="Boundary" reference="ref9" />
-                        <Processor type="CanvasGL" identifier="SilhouettesEnhancement" reference="ref4" />
-                    </PropertyOwners>
-                </PropertyLink>
-            </PropertyLinks>
-        </ProcessorLink>
-        <ProcessorLink>
-            <Processor type="EntryExitPoints" identifier="EntryExitPoints" reference="ref0" />
-            <Processor type="VolumeIllustration" identifier="VolumeIllustration" reference="ref6" />
-            <PropertyLinks>
-                <PropertyLink>
-                    <Properties>
-                        <Property type="CameraProperty" identifier="camera" displayName="Camera" key="camera" reference="ref1" />
-                        <Property type="CameraProperty" identifier="camera" displayName="Camera" key="camera" reference="ref7" />
-                    </Properties>
-                    <PropertyOwners>
-                        <Processor type="EntryExitPoints" identifier="EntryExitPoints" reference="ref0" />
-                        <Processor type="VolumeIllustration" identifier="VolumeIllustration" reference="ref6" />
-                    </PropertyOwners>
-                </PropertyLink>
-                <PropertyLink>
-                    <Properties>
-                        <Property type="CameraProperty" identifier="camera" displayName="Camera" key="camera" reference="ref7" />
-                        <Property type="CameraProperty" identifier="camera" displayName="Camera" key="camera" reference="ref1" />
-                    </Properties>
-                    <PropertyOwners>
-                        <Processor type="VolumeIllustration" identifier="VolumeIllustration" reference="ref6" />
-                        <Processor type="EntryExitPoints" identifier="EntryExitPoints" reference="ref0" />
-                    </PropertyOwners>
-                </PropertyLink>
-            </PropertyLinks>
-        </ProcessorLink>
-        <ProcessorLink>
-            <Processor type="CanvasGL" identifier="Boundary" reference="ref9" />
-            <Processor type="CanvasGL" identifier="Combined" reference="ref12" />
-            <PropertyLinks>
-                <PropertyLink>
-                    <Properties>
-                        <Property type="IntVec2Property" identifier="dimensions" displayName="Dimensions" key="dimensions" reference="ref10" />
-                        <Property type="IntVec2Property" identifier="dimensions" displayName="Dimensions" key="dimensions" reference="ref13" />
-                    </Properties>
-                    <PropertyOwners>
-                        <Processor type="CanvasGL" identifier="Boundary" reference="ref9" />
-                        <Processor type="CanvasGL" identifier="Combined" reference="ref12" />
-                    </PropertyOwners>
-                </PropertyLink>
-                <PropertyLink>
-                    <Properties>
-                        <Property type="IntVec2Property" identifier="dimensions" displayName="Dimensions" key="dimensions" reference="ref13" />
-                        <Property type="IntVec2Property" identifier="dimensions" displayName="Dimensions" key="dimensions" reference="ref10" />
-                    </Properties>
-                    <PropertyOwners>
-                        <Processor type="CanvasGL" identifier="Combined" reference="ref12" />
-                        <Processor type="CanvasGL" identifier="Boundary" reference="ref9" />
-                    </PropertyOwners>
-                </PropertyLink>
-            </PropertyLinks>
-        </ProcessorLink>
-    </ProcessorLinks>
+    <PropertyLinks>
+        <PropertyLink>
+            <Properties>
+                <Property type="IntVec2Property" identifier="dimensions" displayName="Dimensions" key="dimensions" reference="ref5" />
+                <Property type="IntVec2Property" identifier="dimensions" displayName="Dimensions" key="dimensions" reference="ref10" />
+            </Properties>
+            <PropertyOwners>
+                <Processor type="CanvasGL" identifier="SilhouettesEnhancement" reference="ref4" />
+                <Processor type="CanvasGL" identifier="Boundary" reference="ref9" />
+            </PropertyOwners>
+        </PropertyLink>
+        <PropertyLink>
+            <Properties>
+                <Property type="IntVec2Property" identifier="dimensions" displayName="Dimensions" key="dimensions" reference="ref10" />
+                <Property type="IntVec2Property" identifier="dimensions" displayName="Dimensions" key="dimensions" reference="ref5" />
+            </Properties>
+            <PropertyOwners>
+                <Processor type="CanvasGL" identifier="Boundary" reference="ref9" />
+                <Processor type="CanvasGL" identifier="SilhouettesEnhancement" reference="ref4" />
+            </PropertyOwners>
+        </PropertyLink>
+        <PropertyLink>
+            <Properties>
+                <Property type="CameraProperty" identifier="camera" displayName="Camera" key="camera" reference="ref1" />
+                <Property type="CameraProperty" identifier="camera" displayName="Camera" key="camera" reference="ref7" />
+            </Properties>
+            <PropertyOwners>
+                <Processor type="EntryExitPoints" identifier="EntryExitPoints" reference="ref0" />
+                <Processor type="VolumeIllustration" identifier="VolumeIllustration" reference="ref6" />
+            </PropertyOwners>
+        </PropertyLink>
+        <PropertyLink>
+            <Properties>
+                <Property type="CameraProperty" identifier="camera" displayName="Camera" key="camera" reference="ref7" />
+                <Property type="CameraProperty" identifier="camera" displayName="Camera" key="camera" reference="ref1" />
+            </Properties>
+            <PropertyOwners>
+                <Processor type="VolumeIllustration" identifier="VolumeIllustration" reference="ref6" />
+                <Processor type="EntryExitPoints" identifier="EntryExitPoints" reference="ref0" />
+            </PropertyOwners>
+        </PropertyLink>
+        <PropertyLink>
+            <Properties>
+                <Property type="IntVec2Property" identifier="dimensions" displayName="Dimensions" key="dimensions" reference="ref10" />
+                <Property type="IntVec2Property" identifier="dimensions" displayName="Dimensions" key="dimensions" reference="ref13" />
+            </Properties>
+            <PropertyOwners>
+                <Processor type="CanvasGL" identifier="Boundary" reference="ref9" />
+                <Processor type="CanvasGL" identifier="Combined" reference="ref12" />
+            </PropertyOwners>
+        </PropertyLink>
+        <PropertyLink>
+            <Properties>
+                <Property type="IntVec2Property" identifier="dimensions" displayName="Dimensions" key="dimensions" reference="ref13" />
+                <Property type="IntVec2Property" identifier="dimensions" displayName="Dimensions" key="dimensions" reference="ref10" />
+            </Properties>
+            <PropertyOwners>
+                <Processor type="CanvasGL" identifier="Combined" reference="ref12" />
+                <Processor type="CanvasGL" identifier="Boundary" reference="ref9" />
+            </PropertyOwners>
+        </PropertyLink>
+    </PropertyLinks>
 </InviwoTreeData>

@@ -525,32 +525,24 @@
             </InPort>
         </Connection>
     </Connections>
-    <ProcessorLinks>
-        <ProcessorLink>
-            <PropertyLinks>
-                <PropertyLink>
-                    <Properties>
-                        <Property type="FloatVec3Property" identifier="boundingBox" displayName="Bounding Box" key="boundingBox" reference="ref10" />
-                        <Property type="FloatVec3Property" identifier="boundingBoxur" displayName="Bounding Box (UR)" key="boundingBoxur" reference="ref2" />
-                    </Properties>
-                </PropertyLink>
-                <PropertyLink>
-                    <Properties>
-                        <Property type="FloatVec3Property" identifier="boundingBoxur" displayName="Bounding Box (UR)" key="boundingBoxur" reference="ref2" />
-                        <Property type="FloatVec3Property" identifier="boundingBox" displayName="Bounding Box" key="boundingBox" reference="ref10" />
-                    </Properties>
-                </PropertyLink>
-            </PropertyLinks>
-        </ProcessorLink>
-        <ProcessorLink>
-            <PropertyLinks>
-                <PropertyLink>
-                    <Properties>
-                        <Property type="IntProperty" identifier="incrementint" displayName="Increment (Int)" key="incrementint" reference="ref6" />
-                        <Property type="IntProperty" identifier="timeStep" displayName="Time Step" key="timeStep" reference="ref9" />
-                    </Properties>
-                </PropertyLink>
-            </PropertyLinks>
-        </ProcessorLink>
-    </ProcessorLinks>
+    <PropertyLinks>
+        <PropertyLink>
+            <Properties>
+                <Property type="FloatVec3Property" identifier="boundingBox" displayName="Bounding Box" key="boundingBox" reference="ref10" />
+                <Property type="FloatVec3Property" identifier="boundingBoxur" displayName="Bounding Box (UR)" key="boundingBoxur" reference="ref2" />
+            </Properties>
+        </PropertyLink>
+        <PropertyLink>
+            <Properties>
+                <Property type="FloatVec3Property" identifier="boundingBoxur" displayName="Bounding Box (UR)" key="boundingBoxur" reference="ref2" />
+                <Property type="FloatVec3Property" identifier="boundingBox" displayName="Bounding Box" key="boundingBox" reference="ref10" />
+            </Properties>
+        </PropertyLink>
+        <PropertyLink>
+            <Properties>
+                <Property type="IntProperty" identifier="incrementint" displayName="Increment (Int)" key="incrementint" reference="ref6" />
+                <Property type="IntProperty" identifier="timeStep" displayName="Time Step" key="timeStep" reference="ref9" />
+            </Properties>
+        </PropertyLink>
+    </PropertyLinks>
 </InviwoTreeData>

@@ -587,22 +587,18 @@
    </InPort>
   </Connection>
  </Connections>
- <ProcessorLinks>
-  <ProcessorLink>
-   <PropertyLinks>
-    <PropertyLink>
+  <PropertyLinks>
+   <PropertyLink>
      <Properties>
       <Property displayName="Camera" identifier="camera" key="camera" reference="ref5" type="CameraProperty"/>
       <Property displayName="Camera" identifier="camera" key="camera" reference="ref2" type="CameraProperty"/>
      </Properties>
-    </PropertyLink>
+   </PropertyLink>
     <PropertyLink>
      <Properties>
       <Property displayName="Camera" identifier="camera" key="camera" reference="ref2" type="CameraProperty"/>
       <Property displayName="Camera" identifier="camera" key="camera" reference="ref5" type="CameraProperty"/>
      </Properties>
-    </PropertyLink>
-   </PropertyLinks>
-  </ProcessorLink>
- </ProcessorLinks>
+   </PropertyLink>
+  </PropertyLinks>
 </InviwoTreeData>
