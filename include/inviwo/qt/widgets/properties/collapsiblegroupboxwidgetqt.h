@@ -26,7 +26,7 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  * 
- * Main file author: Alexander Johansson
+ * Main file author: Peter Steneteg
  *
  *********************************************************************************/
 
@@ -88,8 +88,8 @@ public:
     virtual void deserialize(IvwDeserializer& d);
     
     // Overridden from PropertyOwnerObserver to add and remove properties dynamically
-    virtual void onDidAddProperty(Property* property, int index);
-    virtual void onWillRemoveProperty(Property* property, int index);
+    virtual void onDidAddProperty(Property* property, size_t index);
+    virtual void onWillRemoveProperty(Property* property, size_t index);
 
 public slots:
     void toggleCollapsed();

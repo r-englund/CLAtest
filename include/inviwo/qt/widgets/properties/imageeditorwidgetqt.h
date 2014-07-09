@@ -76,6 +76,7 @@
 #include <inviwo/qt/widgets/properties/propertywidgetqt.h>
 #include <inviwo/qt/widgets/properties/stringpropertywidgetqt.h>
 #include <inviwo/qt/widgets/labelgraphicsitem.h>
+#include <inviwo/qt/widgets/editablelabelqt.h>
 
 
 namespace inviwo {
@@ -219,12 +220,15 @@ private:
     ImageLabelWidget* imageLabelWidget_;
     std::string tmpPropertyValue_;
     QCheckBox* checkBox_;
+    EditableLabelQt* label_;
+
     void generateWidget();
 public slots:
     void loadImageLabel();
     void editImageLabel();
     void setPropertyValue();
     bool writeImageLabel();
+    void setPropertyDisplayName();
 };
 
 
