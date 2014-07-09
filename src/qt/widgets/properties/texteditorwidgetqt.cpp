@@ -121,25 +121,35 @@ TextEditorWidgetQt::~TextEditorWidgetQt() {
 
 void TextEditorWidgetQt::generateWidget() {
     QHBoxLayout* hLayout = new QHBoxLayout();
+    setSpacingAndMargins(hLayout);
+
+    label_ = new EditableLabelQt(this, property_->getDisplayName());
+    hLayout->addWidget(label_);
+
+    QHBoxLayout* hWidgetLayout = new QHBoxLayout();
+    hWidgetLayout->setContentsMargins(0, 0, 0, 0);
+    QWidget* widget = new QWidget();
+    widget->setLayout(hWidgetLayout);
+
     btnEdit_ = new QToolButton();
     btnEdit_->setIcon(QIcon(":/icons/edit.png"));
 
     if (dynamic_cast<FileProperty*>(property_)) {
         fileWidget_ = new FilePropertyWidgetQt(static_cast<FileProperty*>(property_));
-        connect(btnEdit_,SIGNAL(clicked()),this,SLOT(editFile()));
-        //fileWidget_->layout()->addWidget(btnEdit_);
-        hLayout->addWidget(fileWidget_);
+        connect(btnEdit_, SIGNAL(clicked()),this,SLOT(editFile()));
+        hWidgetLayout->addWidget(fileWidget_);
     }
     else if (dynamic_cast<StringProperty*>(property_)) {
         stringWidget_ = new StringPropertyWidgetQt(static_cast<StringProperty*>(property_));
-        connect(btnEdit_,SIGNAL(clicked()),this,SLOT(editString()));
-        //stringWidget_->layout()->addWidget(btnEdit_);
-        hLayout->addWidget(stringWidget_);
+        connect(btnEdit_, SIGNAL(clicked()),this,SLOT(editString()));
+        hWidgetLayout->addWidget(stringWidget_);
     }
 
-    hLayout->addWidget(btnEdit_);
+    hWidgetLayout->addWidget(btnEdit_);
+
+    hLayout->addWidget(widget);
     setLayout(hLayout);
-    hLayout->setContentsMargins(QMargins(0,0,0,0));
+
     textEditorWidget_= new ModifiedWidget();
     textEditorWidget_->setParent(this);
     if(property_->getSemantics().getString()=="ShaderEditor")
@@ -270,6 +280,10 @@ void TextEditorWidgetQt::updateFromProperty() {
 
 SyntaxHighligther* TextEditorWidgetQt::getSyntaxHighligther() {
     return textEditorWidget_->getSyntaxHighligther();
+}
+
+void TextEditorWidgetQt::setPropertyDisplayName() {
+    property_->setDisplayName(label_->getText());
 }
 
 

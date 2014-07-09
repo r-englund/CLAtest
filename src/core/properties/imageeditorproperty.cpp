@@ -60,6 +60,7 @@ ImageEditorProperty::ImageEditorProperty(std::string identifier, std::string dis
         PropertyOwner::InvalidationLevel invalidationLevel,
         PropertySemantics semantics)
     : FileProperty(identifier, displayName, value , "image" , invalidationLevel, semantics)
+    , labels_()
 {}
 
 void ImageEditorProperty::setDimension(ivec2 imgSize) {

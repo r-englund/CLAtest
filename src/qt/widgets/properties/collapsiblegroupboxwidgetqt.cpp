@@ -26,7 +26,7 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
- * Main file author: Alexander Johansson
+ * Main file author: Peter Steneteg
  *
  *********************************************************************************/
 
@@ -370,7 +370,7 @@ void CollapsibleGroupBoxWidgetQt::updatePropertyWidgetSemantics(PropertyWidgetQt
     }
 }
 
-void CollapsibleGroupBoxWidgetQt::onDidAddProperty(Property* prop, int index) {
+void CollapsibleGroupBoxWidgetQt::onDidAddProperty(Property* prop, size_t index) {
     properties_.insert(properties_.begin()+index, prop);
 
     PropertyWidgetQt* propertyWidget =
@@ -392,7 +392,8 @@ void CollapsibleGroupBoxWidgetQt::onDidAddProperty(Property* prop, int index) {
     }
 
 }
-void CollapsibleGroupBoxWidgetQt::onWillRemoveProperty(Property* prop, int index) {
+
+void CollapsibleGroupBoxWidgetQt::onWillRemoveProperty(Property* prop, size_t index) {
     PropertyWidgetQt* propertyWidget = propertyWidgets_[index];
     propertyWidget->hideWidget();
     propertyWidgetGroupLayout_->removeWidget(propertyWidget);

@@ -50,11 +50,11 @@ public:
     * This methods will be called when observed object changes.
     * Override it to add behavior.
     */
-    virtual void onWillAddProperty(Property* property, int index) {};
-    virtual void onDidAddProperty(Property* property, int index) {};
+    virtual void onWillAddProperty(Property* property, size_t index) {};
+    virtual void onDidAddProperty(Property* property, size_t index) {};
 
-    virtual void onWillRemoveProperty(Property* property, int index) {};
-    virtual void onDidRemoveProperty(Property* property, int index) {};
+    virtual void onWillRemoveProperty(Property* property, size_t index) {};
+    virtual void onDidRemoveProperty(Property* property, size_t index) {};
     
 };
 
@@ -62,11 +62,11 @@ class IVW_CORE_API PropertyOwnerObservable: public Observable<PropertyOwnerObser
 public:
     PropertyOwnerObservable(): Observable<PropertyOwnerObserver>() {};
 
-    void notifyObserversWillAddProperty(Property* property, int index) const;
-    void notifyObserversDidAddProperty(Property* property, int index) const;
+    void notifyObserversWillAddProperty(Property* property, size_t index) const;
+    void notifyObserversDidAddProperty(Property* property, size_t index) const;
     
-    void notifyObserversWillRemoveProperty(Property* property, int index) const;
-    void notifyObserversDidRemoveProperty(Property* property, int index) const;
+    void notifyObserversWillRemoveProperty(Property* property, size_t index) const;
+    void notifyObserversDidRemoveProperty(Property* property, size_t index) const;
 };
 
 

@@ -536,21 +536,33 @@ ImageEditorWidgetQt::~ImageEditorWidgetQt() {
 
 void ImageEditorWidgetQt::generateWidget() {
     QHBoxLayout* hLayout = new QHBoxLayout();
+    setSpacingAndMargins(hLayout);
+
+    label_ = new EditableLabelQt(this, property_->getDisplayName());
+    hLayout->addWidget(label_);
+
+    QHBoxLayout* hWidgetLayout = new QHBoxLayout();
+    hWidgetLayout->setContentsMargins(0, 0, 0, 0);
+    QWidget* widget = new QWidget();
+    widget->setLayout(hWidgetLayout);
+
     btnEdit_ = new QToolButton();
     btnEdit_->setIcon(QIcon(":/icons/edit.png"));
 
     if (dynamic_cast<FileProperty*>(property_)) {
         fileWidget_ = new FilePropertyWidgetQt(static_cast<FileProperty*>(property_));
         connect(btnEdit_,SIGNAL(clicked()),this,SLOT(editImageLabel()));
-        hLayout->addWidget(fileWidget_);
+        hWidgetLayout->addWidget(fileWidget_);
     }
+    hWidgetLayout->addWidget(btnEdit_);
 
-    hLayout->addWidget(btnEdit_);
+    hLayout->addWidget(widget);
     setLayout(hLayout);
-    hLayout->setContentsMargins(QMargins(0,0,0,0));
     imageLabelWidget_= new ImageLabelWidget();
     imageLabelWidget_->setParent(this);
     imageLabelWidget_->hide();
+
+    connect(label_, SIGNAL(textChanged()), this, SLOT(setPropertyDisplayName()));
 }
 
 void ImageEditorWidgetQt::setPropertyValue() {}
@@ -632,6 +644,10 @@ void ImageEditorWidgetQt::updateFromProperty() {
         fileWidget_->updateFromProperty();
         loadImageLabel();
     }
+}
+
+void ImageEditorWidgetQt::setPropertyDisplayName() {
+    property_->setDisplayName(label_->getText());
 }
 
 

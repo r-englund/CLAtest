@@ -44,8 +44,7 @@ BoolPropertyWidgetQt::BoolPropertyWidgetQt(BoolProperty* property)
 
 void BoolPropertyWidgetQt::generateWidget() {
     QHBoxLayout* hLayout = new QHBoxLayout();
-    hLayout->setContentsMargins(0, 0, 0, 0);
-    hLayout->setSpacing(7);
+    setSpacingAndMargins(hLayout);
     
     label_ = new EditableLabelQt(this, property_->getDisplayName());
     label_->setShortenText(false);

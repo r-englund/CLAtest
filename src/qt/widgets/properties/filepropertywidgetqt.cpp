@@ -56,21 +56,23 @@ FilePropertyWidgetQt::FilePropertyWidgetQt(FileProperty* property)
 
 void FilePropertyWidgetQt::generateWidget() {
     QHBoxLayout* hLayout = new QHBoxLayout();
+    setSpacingAndMargins(hLayout);
 
     label_ = new EditableLabelQt(this, property_->getDisplayName());
+    hLayout->addWidget(label_);
+
+    QHBoxLayout* hWidgetLayout = new QHBoxLayout();
+    hWidgetLayout->setContentsMargins(0,0,0,0);
+    QWidget* widget = new QWidget();
+    widget->setLayout(hWidgetLayout);
 
     lineEdit_ = new QLineEdit(this);
     lineEdit_->setReadOnly(true);
-
     openButton_ = new QToolButton(this);
     openButton_->setIcon(QIcon(":/icons/open.png"));
-
-    hLayout->addWidget(label_);
-    hLayout->addWidget(lineEdit_);
-    hLayout->addWidget(openButton_);
-    hLayout->setContentsMargins(0, 0, 0, 0);
-    hLayout->setSpacing(0);
-    hLayout->setStretch(1, 1);
+    hWidgetLayout->addWidget(lineEdit_);
+    hWidgetLayout->addWidget(openButton_);
+    hLayout->addWidget(widget);
 
     setLayout(hLayout);
 

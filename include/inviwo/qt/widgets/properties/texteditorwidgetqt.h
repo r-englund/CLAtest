@@ -42,6 +42,7 @@
 #include <inviwo/core/properties/buttonproperty.h>
 #include <inviwo/core/properties/property.h>
 #include "propertywidgetqt.h"
+#include <inviwo/qt/widgets/editablelabelqt.h>
 
 
 class QFile;
@@ -113,6 +114,7 @@ private:
     StringPropertyWidgetQt* stringWidget_;
     std::string tmpPropertyValue_;
     QCheckBox* checkBox_;
+    EditableLabelQt* label_;
 
     void generateWidget();
 
@@ -124,6 +126,7 @@ public slots:
     void setPropertyValue();
     bool writeToFile();
     bool writeToString();
+    void setPropertyDisplayName();
 
 };
 
