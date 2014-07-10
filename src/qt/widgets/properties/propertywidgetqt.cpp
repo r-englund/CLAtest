@@ -64,6 +64,7 @@ PropertyWidgetQt::PropertyWidgetQt()
     setContextMenuPolicy(Qt::CustomContextMenu);
     connect(this, SIGNAL(customContextMenuRequested(const QPoint&)), this,
             SLOT(showContextMenu(const QPoint&)));
+    //setStyleSheet("border: 1px solid rgb(255, 0, 0)");
 }
 
 PropertyWidgetQt::PropertyWidgetQt(Property* property)
@@ -80,6 +81,7 @@ PropertyWidgetQt::PropertyWidgetQt(Property* property)
     setContextMenuPolicy(Qt::CustomContextMenu);
     connect(this, SIGNAL(customContextMenuRequested(const QPoint&)), this,
             SLOT(showContextMenu(const QPoint&)));
+    //setStyleSheet("border: 1px solid rgb(255, 0, 0)");
 }
 
 PropertyWidgetQt::~PropertyWidgetQt() {}
@@ -231,8 +233,9 @@ void PropertyWidgetQt::generateContextMenu() {
             connect(semanticsActionGroup_, SIGNAL(triggered(QAction*)),
                     this, SLOT(changeSemantics(QAction*)));
         
-            
-            contextMenu_->addMenu(semanicsMenuItem_);
+            if (semantics.size() > 1) {
+                contextMenu_->addMenu(semanicsMenuItem_);
+            }
         }
         
         QAction* resetAction = new QAction(tr("&Reset to default"), this);

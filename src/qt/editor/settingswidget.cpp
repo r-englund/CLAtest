@@ -104,6 +104,8 @@ void SettingsWidget::updateSettingsWidget() {
                     listLayout->addWidget(propertyWidget);
                     props[j]->registerWidget(propertyWidget);
                     propertyWidget->showWidget();
+                    connect(propertyWidget, SIGNAL(updateSemantics(PropertyWidgetQt*)), this,
+                            SLOT(updatePropertyWidgetSemantics(PropertyWidgetQt*)));
                 } else {
                     LogWarn("Could not find a widget for property: " << props[j]->getClassName());
                 }
@@ -118,6 +120,36 @@ void SettingsWidget::saveSettings() {
     const std::vector<Settings*> settings = InviwoApplication::getRef().getModuleSettings();
     for (size_t i = 0; i < settings.size(); i++) {
         settings[i]->saveToDisk();
+    }
+}
+
+void SettingsWidget::updatePropertyWidgetSemantics(PropertyWidgetQt* widget) {
+    Property* prop = widget->getProperty();
+
+    bool visible = widget->isVisible();
+    QVBoxLayout* listLayout = static_cast<QVBoxLayout*>(widget->parentWidget()->layout());
+    int layoutPosition = listLayout->indexOf(widget);
+    PropertyWidgetQt* propertyWidget =
+        static_cast<PropertyWidgetQt*>(PropertyWidgetFactory::getPtr()->create(prop));
+
+    if (propertyWidget) {
+        prop->deregisterWidget(widget);
+        widget->hideWidget();
+        listLayout->removeWidget(widget);
+        listLayout->insertWidget(layoutPosition, propertyWidget);
+        prop->registerWidget(propertyWidget);
+
+        connect(propertyWidget, SIGNAL(updateSemantics(PropertyWidgetQt*)), this,
+                SLOT(updatePropertyWidgetSemantics(PropertyWidgetQt*)));
+
+        if (visible) {
+            propertyWidget->showWidget();
+        } else {
+            propertyWidget->hideWidget();
+        }
+
+    } else {
+        LogWarn("Could not change semantic for property: " << prop->getClassName());
     }
 }
 

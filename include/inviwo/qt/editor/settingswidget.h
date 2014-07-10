@@ -52,6 +52,9 @@ public:
     virtual void updateSettingsWidget();
     virtual void saveSettings();
 
+public slots:
+    void updatePropertyWidgetSemantics(PropertyWidgetQt*);
+
 protected:
     QVBoxLayout* vLayout_;
     QTabWidget* tabWidget_;
