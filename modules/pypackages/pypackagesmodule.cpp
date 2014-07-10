@@ -49,20 +49,21 @@ namespace inviwo {
 
 PyPackagesModule::PyPackagesModule() : InviwoModule() {
     setIdentifier("PyPackages");
-	initPyPackagesInterface();
+    initPyPackagesInterface();
     registerProcessor(NumpyBufferTest);
-	registerProcessor(PyCUDAImageInverter);
+    registerProcessor(PyCUDAImageInverter);
 }
 
 void PyPackagesModule::initPyPackagesInterface() {
-	PythonModule* baseModule = static_cast<PythonModule*>(InviwoApplication::getPtr()->getModuleByType<PythonModule>());
+    PythonModule* baseModule = static_cast<PythonModule*>(InviwoApplication::getPtr()->getModuleByType<PythonModule>());
 
-	PyInviwo* pyInviwo = baseModule->getPyInviwo();
+    PyInviwo* pyInviwo = baseModule->getPyInviwo();
 
-	PyModule* pyPackageMod = new PyModule("pypackagesutil");
-	pyInviwo->registerPyModule(pyPackageMod);
-	pyPackageMod->addMethod(new PyDeclareBufferData());
-	pyPackageMod->addMethod(new PyGetBufferData());
+    PyModule* pyPackageMod = new PyModule("pypackagesutil");
+    pyInviwo->registerPyModule(pyPackageMod);
+    pyPackageMod->addMethod(new PyDeclareBufferData());
+    pyPackageMod->addMethod(new PyGetBufferData());
+    pyPackageMod->addMethod(new PyGetLayerData());
 
     pyScriptRunner_ = new PyScriptRunner();
 
@@ -116,12 +117,14 @@ void PyPackagesModule::initPyPackagesInterface() {
 bool PyPackagesModule::isPackageAvailable(std::string packageName) {
     
     std::stringstream ss;
+    std::string packageAvailable = packageName + " is available";
+    std::string packageNotAvailable = packageName + " is not available";
     ss << "import imp "<< std::endl; 
     ss << "try: "<< std::endl; 
     ss << "    imp.find_module('" + packageName +"') "<< std::endl;
-    ss << "    print 'available'" << std::endl;
+    ss << "    print '" + packageAvailable << "'"<< std::endl;
     ss << "except ImportError:" << std::endl;
-    ss << "    print 'notavailable' " << std::endl; 
+    ss << "    print '" + packageNotAvailable << "'"<< std::endl;
 
     std::string queryPackage(ss.str());
     PyScriptRunner::getPtr()->run(queryPackage);
@@ -134,7 +137,7 @@ bool PyPackagesModule::isPackageAvailable(std::string packageName) {
     }
     else {
         std::string status = PyScriptRunner::getPtr()->getStandardOutput();
-        if (status=="available") {
+        if (status==packageAvailable) {
             LogInfo("Pacakage " + packageName + " is available");
             found = true;
         }
@@ -143,7 +146,7 @@ bool PyPackagesModule::isPackageAvailable(std::string packageName) {
             found = false;
         }
     }
-
+     PyScriptRunner::getPtr()->clear();
     return found;
 }
 

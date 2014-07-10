@@ -56,8 +56,8 @@ public:
 private:
     PyParamString pyprocessorId_;
     PyParamString bufferVariableName_;
-	PyParamString bufferVariableType_;
-	PyParamInt bufferSize_;
+    PyParamString bufferVariableType_;
+    PyParamInt bufferSize_;
 };
 
 class IVW_MODULE_PYPACKAGES_API PyGetBufferData : public PyMethod {
@@ -69,7 +69,7 @@ public:
     virtual PyCFunction getFunc() {return py_getBufferData;}
 private:
     PyParamString pyprocessorId_;
-    PyParamString bufferVariableName_;	
+    PyParamString bufferVariableName_;  
 };
 
 class IVW_MODULE_PYPACKAGES_API PyGetLayerData : public PyMethod {
@@ -81,7 +81,7 @@ public:
     virtual PyCFunction getFunc() {return py_getLayerData;}
 private:
     PyParamString pyprocessorId_;
-    PyParamString layerVariableName_;	
+    PyParamString layerVariableName_;   
 };
 
 } //namespace

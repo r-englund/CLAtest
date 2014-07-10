@@ -79,48 +79,54 @@ void PyCUDAImageInverter::deinitialize() {
     deAllocateBuffers();
 }
 
-void PyCUDAImageInverter::process() {	
+void PyCUDAImageInverter::process() {   
     Image* newData = inport_.getData()->clone();
     
-	if (invertOptions_.get()=="nopython") {
-		cpuInvert(newData);
-	    Processor::process();
-	}    	
-    else if (invertOptions_.get()=="pycuda") {        
-        bool pycudaAvailable = InviwoApplication::getPtr()->getModuleByType<PyPackagesModule>()->isPackageAvailable("pycuda");
+    if (invertOptions_.get()=="nopython") {
+        cpuInvert(newData);
+        Processor::process();
+    }       
+    else if (invertOptions_.get()=="pycuda") {
+        bool pycudaAvailable = true; 
+        //pycudaAvailable = InviwoApplication::getPtr()->getModuleByType<PyPackagesModule>()->isPackageAvailable("pycuda");
         //Check if pycuda package is available
         if (pycudaAvailable) {
+            PyProcessorBase::addExistingLayer("SourceImage", newData->getColorLayer());
             PyProcessorBase::process();
         }
         else {
             LogWarn("PyCUDA pacakage not available")
         }
     }
-    else if (invertOptions_.get()=="numpy") {       
+    else if (invertOptions_.get()=="numpy") {
         PyProcessorBase::process();
-    }    
+    }
 
     outport_.setData(newData);
 }
 
 void PyCUDAImageInverter::cpuInvert(Image* newImageData) {
-	ImageRAM*  outImage = newImageData->getEditableRepresentation<ImageRAM>();	
+    ImageRAM*  outImage = newImageData->getEditableRepresentation<ImageRAM>();  
     uvec2 dim(outImage->getDimension());
-	uvec2 pos;
-	vec4 intensity;
-	LayerRAM* colorLayerRAM = outImage->getColorLayerRAM();
-	for(pos.y = 0;pos.y < dim.y;pos.y++) {
-		for(pos.x = 0;pos.x < dim.x;pos.x++) {
-			//LogWarn(colorLayerRAM->getDataFormatString())
-			intensity = colorLayerRAM->getValueAsVec4Float(pos);
-			intensity = vec4(fabs(1.0f-intensity.x), fabs(1.0f-intensity.y), fabs(1.0f-intensity.z), intensity.w);
-			colorLayerRAM->setValueFromVec4Float(uvec2(pos), intensity*255.0f);
-		}
-	}
+    uvec2 pos;
+    vec4 intensity;
+    LayerRAM* colorLayerRAM = outImage->getColorLayerRAM();
+    for(pos.y = 0;pos.y < dim.y;pos.y++) {
+        for(pos.x = 0;pos.x < dim.x;pos.x++) {
+            //LogWarn(colorLayerRAM->getDataFormatString())
+            intensity = colorLayerRAM->getValueAsVec4Float(pos);
+            intensity = vec4(fabs(1.0f-intensity.x), fabs(1.0f-intensity.y), fabs(1.0f-intensity.z), intensity.w);
+            colorLayerRAM->setValueFromVec4Float(uvec2(pos), intensity*255.0f);
+        }
+    }
 }
 
 void PyCUDAImageInverter::allocateBuffers() {
+    //load kernel file into string buffer
     loadCUDAKernelFile();
+    //default image layer
+    //TODO: memory leak while replacing this layer
+    PyProcessorBase::allocateLayer("SourceImage", DataVec4UINT8::str(), ivec2(256) );
 }
 
 void PyCUDAImageInverter::deAllocateBuffers() {
@@ -128,30 +134,30 @@ void PyCUDAImageInverter::deAllocateBuffers() {
 }
 
 void PyCUDAImageInverter::loadCUDAKernelFile() {
-	std::string scriptFileName = cudaKernelFile_.get();
-	std::ifstream file(scriptFileName.c_str());
-	std::string text((std::istreambuf_iterator<char>(file)), std::istreambuf_iterator<char>());
-	size_t bufferSize = text.size();
+    std::string scriptFileName = cudaKernelFile_.get();
+    std::ifstream file(scriptFileName.c_str());
+    std::string text((std::istreambuf_iterator<char>(file)), std::istreambuf_iterator<char>());
+    size_t bufferSize = text.size();
 
     if (!bufferSize) {
         LogWarn("Invalid CUDA Kernel");
         return;
     }
 
-	//allocate buffer for cuda kernel code (char buffer)
-	PyProcessorBase::allocatePyBuffer("ImageInvert_KernelSrc", DataUINT8::str(), bufferSize);
-	void* kernelSrc = 0;
-	//fetch buffer data
-	if (PyProcessorBase::isValidPyBuffer("ImageInvert_KernelSrc")) {
-        kernelSrc = PyProcessorBase::getPyBufferData("ImageInvert_KernelSrc");
-		if (kernelSrc) {
-			char* csrc = static_cast<char*>(kernelSrc);
-			//copy to buffer data which is later accessed by python
-			std::strncpy(csrc, text.c_str(), bufferSize);
-		}
-		else
-			LogWarn("Invalid buffer data requested")
-	}
+    //allocate buffer for cuda kernel code (char buffer)
+    PyProcessorBase::allocatePyBuffer("CUDAKernelSrc", DataUINT8::str(), bufferSize);
+    void* kernelSrc = 0;
+    //fetch buffer data
+    if (PyProcessorBase::isValidPyBuffer("CUDAKernelSrc")) {
+        kernelSrc = PyProcessorBase::getPyBufferData("CUDAKernelSrc");
+        if (kernelSrc) {
+            char* csrc = static_cast<char*>(kernelSrc);
+            //copy to buffer data which is later accessed by python
+            std::strncpy(csrc, text.c_str(), bufferSize);
+        }
+        else
+            LogWarn("Invalid buffer data requested")
+    }
 }
 
 } // namespace

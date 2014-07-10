@@ -35,6 +35,7 @@
 #include <inviwo/core/datastructures/buffer/bufferram.h>
 #include <modules/pypackages/pyscriptrunner.h>
 #include <inviwo/core/datastructures/buffer/bufferramprecision.h>
+#include <inviwo/core/datastructures/image/layerramprecision.h>
 
 namespace inviwo {
 
@@ -64,12 +65,12 @@ void PyProcessorBase::deinitialize() {
 
 void PyProcessorBase::process() {
     Processor::process();
-	//derived class process function should not be called after this
-	runScript();
+    //derived class process function should not be called after this
+    runScript();
 }
 
 //General
-void PyProcessorBase::onRunScriptButtonClicked() {	
+void PyProcessorBase::onRunScriptButtonClicked() {  
     loadPythonScriptFile();
     //runScript();
 }
@@ -82,7 +83,7 @@ void PyProcessorBase::loadPythonScriptFile() {
     PyScriptRunner::getPtr()->setScript(text);
 }
 
-void PyProcessorBase::runScript() {	
+void PyProcessorBase::runScript() {
     PyScriptRunner::getPtr()->run();
     std::string retError = PyScriptRunner::getPtr()->getError();
     if (retError!="") {
@@ -90,7 +91,7 @@ void PyProcessorBase::runScript() {
         return;
     }
     std::string status = PyScriptRunner::getPtr()->getStandardOutput();
-    if (status!="") LogInfo(status);    
+    if (status!="") LogInfo(status);
 }
 
 Buffer* PyProcessorBase::convertLayerToBuffer(LayerRAM* layer) {
@@ -117,39 +118,29 @@ Buffer* PyProcessorBase::convertLayerToBuffer(LayerRAM* layer) {
 
 //Buffer management
 bool PyProcessorBase::allocatePyBuffer(std::string bufferName, std::string bufferType, size_t bufferSize) {
-	//allocate and cache buffer
-	if (pyBufferMap_.find(bufferName)==pyBufferMap_.end()) {
-		Buffer* buffer = 0;
-		//buffer = new Buffer(bufferSize, DataFLOAT32::get());
-		if (bufferType == DataFLOAT16::str()) 	    buffer = new Buffer_FLOAT16();		
-		else if (bufferType == DataFLOAT32::str())	buffer = new Buffer_FLOAT32();
-		else if (bufferType == DataFLOAT64::str())	buffer = new Buffer_FLOAT64();
-		else if (bufferType == DataINT8::str())   	buffer = new Buffer_INT8();
-		//else if (bufferType == DataINT12::str())    buffer = new Buffer_INT12();
-		else if (bufferType == DataINT16::str())	buffer = new Buffer_INT16();
-		else if (bufferType == DataINT32::str())    buffer = new Buffer_INT32();
-		else if (bufferType == DataINT64::str())    buffer = new Buffer_INT64();
-		else if (bufferType == DataUINT8::str())    buffer = new Buffer_UINT8();
-		//else if (bufferType == DataUINT12::str())   buffer = new Buffer_UINT12();
-		else if (bufferType == DataUINT16::str())   buffer = new Buffer_UINT16();
-		else if (bufferType == DataUINT32::str())   buffer = new Buffer_UINT32();
-		else if (bufferType == DataUINT64::str())   buffer = new Buffer_UINT64();
+    //allocate and cache buffer
+    if (pyBufferMap_.find(bufferName)==pyBufferMap_.end()) {
+        Buffer* buffer = 0;
 
-		if (!buffer) {
-			LogWarn("Invalid Buffer Type requested");
-			return false;
-		}
+        if (0) buffer = 0;
+#define DataFormatIdMacro(i) else if (bufferType == Data##i::str()) buffer = new Buffer_##i();
+#include <inviwo/core/util/formatsdefinefunc.h>
 
-		pyBufferMap_[bufferName] = buffer;
+        if (!buffer) {
+            LogWarn("Invalid Buffer Type requested");
+            return false;
+        }
+
+        pyBufferMap_[bufferName] = buffer;
         pyBufferOwnershipMap_[bufferName] = true;
-		buffer->setSize(bufferSize);
-		BufferRAM* bufferRAM = buffer->getEditableRepresentation<BufferRAM>();		
-		bufferRAM->initialize();
-		if (bufferRAM->getSize()==bufferSize)
-			return true;
-		return true;
-	}
-	return false;
+        buffer->setSize(bufferSize);
+        BufferRAM* bufferRAM = buffer->getEditableRepresentation<BufferRAM>();      
+        bufferRAM->initialize();
+        if (bufferRAM->getSize()==bufferSize)
+            return true;
+        return true;
+    }
+    return false;
 }
 
 void PyProcessorBase::addExistingPyBuffer(std::string bufferName, Buffer* buffer) {
@@ -167,9 +158,9 @@ Buffer* PyProcessorBase::getAllocatedPyBuffer(std::string bufferName) {
 }
 
 bool PyProcessorBase::isValidPyBuffer(std::string bufferName) {
-	if (pyBufferMap_.find(bufferName)!=pyBufferMap_.end())
-		return true;	
-	return false;
+    if (pyBufferMap_.find(bufferName)!=pyBufferMap_.end())
+        return true;    
+    return false;
 }
 
 std::string PyProcessorBase::getPyBufferType(std::string bufferName) {
@@ -216,14 +207,34 @@ void PyProcessorBase::freeAllBuffers() {
 
 //Layer management
 bool PyProcessorBase::allocateLayer(std::string layerName, std::string layerType, ivec2 layerDim) {
-    LogWarn("Not implemented")
+    //LogWarn("Not implemented")
+    //allocate and cache buffer
+    if (pyLayerMap_.find(layerName)==pyLayerMap_.end()) {
+        Layer* layer = 0;
+        if (0) layer = 0;
+#define DataFormatIdMacro(i) else if (layerType == Data##i::str()) layer = new Layer(layerDim, Data##i::get());
+#include <inviwo/core/util/formatsdefinefunc.h>
+
+        if (!layer) {
+            LogWarn("Invalid Buffer Type requested");
+            return false;
+        }
+
+        pyLayerMap_[layerName] = layer;
+        pyLayerOwnershipMap_[layerName] = true;
+        LayerRAM* layerRAM = layer->getEditableRepresentation<LayerRAM>();
+        layerRAM->initialize();
+        if (layerRAM->getDimension().x == layerDim.x && layerRAM->getDimension().y == layerDim.y)
+            return true;
+        return true;
+    }
     return false;
 }
 
 void PyProcessorBase::addExistingLayer(std::string layerName, Layer* layer) {
     if (pyBufferMap_.find(layerName)!=pyBufferMap_.end())
         LogWarn("Replacing layer with similar name")
-        pyLayerMap_[layerName] = layer;
+    pyLayerMap_[layerName] = layer;
     pyLayerOwnershipMap_[layerName] = false;
 }
 
@@ -236,14 +247,14 @@ Layer* PyProcessorBase::getAllocatedLayer(std::string layerName) {
 
 bool PyProcessorBase::isValidLayer(std::string layerName) {
     if (pyLayerMap_.find(layerName)!=pyLayerMap_.end())
-        return true;	
+        return true;    
     return false;
 }
 
 std::string PyProcessorBase::getLayerType(std::string layerName) {
     Layer* layer = getAllocatedLayer(layerName);
     if (layer)
-        return layer->getEditableRepresentation<LayerRAM>()->getDataFormat()->getString();    
+        return layer->getEditableRepresentation<LayerRAM>()->getDataFormat()->getString();
     return "";
 }
 
