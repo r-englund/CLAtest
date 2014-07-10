@@ -152,6 +152,11 @@ std::string EditableLabelQt::shortenText() {
 
 void EditableLabelQt::setShortenText(bool shorten) {
     shortenText_ = shorten;
+    if (shortenText_) {
+        label_->setText(QString::fromStdString(shortenText()));
+    } else {
+        label_->setText(QString::fromStdString(text_));
+    }
 }
 
 } //namespace
