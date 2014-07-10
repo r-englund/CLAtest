@@ -294,7 +294,7 @@ protected:
 template<typename T, size_t B>
 class IVW_CORE_API DataFormat : public DataFormatBase {
 public:
-    typedef typename T type;
+    typedef T type;
     static const size_t bits = B;
 
     DataFormat() : DataFormatBase(id(),
