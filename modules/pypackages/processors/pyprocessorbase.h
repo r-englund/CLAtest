@@ -59,8 +59,8 @@ public:
     void freeAll();
 
     //Buffer management
-	bool allocatePyBuffer(std::string bufferName, std::string bufferType, size_t bufferSize);    
-    void addExistingPyBuffer(std::string bufferName, Buffer*);	
+    bool allocatePyBuffer(std::string bufferName, std::string bufferType, size_t bufferSize);    
+    void addExistingPyBuffer(std::string bufferName, Buffer*);  
     Buffer* getAllocatedPyBuffer(std::string bufferName);
     bool isValidPyBuffer(std::string bufferName);
     std::string getPyBufferType(std::string bufferName);
@@ -79,13 +79,13 @@ public:
     void freeAllLayers();
     
 protected:
-	virtual void loadPythonScriptFile();
-	FileProperty pythonScriptFile_;
+    virtual void loadPythonScriptFile();
+    FileProperty pythonScriptFile_;
     ButtonProperty runScript_;
 private:
-	PythonScript script_;
+    PythonScript script_;
     //Buffers
-	std::map<std::string, Buffer*> pyBufferMap_;
+    std::map<std::string, Buffer*> pyBufferMap_;
     std::map<std::string, bool> pyBufferOwnershipMap_;
     //Layers
     std::map<std::string, Layer*> pyLayerMap_;

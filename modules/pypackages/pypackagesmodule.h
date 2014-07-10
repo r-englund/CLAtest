@@ -47,7 +47,7 @@ public:
     PyPackagesModule();
     bool isPackageAvailable(std::string packageName);
 private:
-	void initPyPackagesInterface();
+    void initPyPackagesInterface();
     PyScriptRunner* pyScriptRunner_;
 };
 

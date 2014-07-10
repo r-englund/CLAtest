@@ -53,24 +53,24 @@ public:
     PyCUDAImageInverter();
     ~PyCUDAImageInverter();
 
-	InviwoProcessorInfo();
+    InviwoProcessorInfo();
 
     virtual void initialize();
     virtual void deinitialize();
     virtual void process();  
-	void cpuInvert(Image* newImageData);
-	void uploadImages();
+    void cpuInvert(Image* newImageData);
+    void uploadImages();
 
-private:	
-	void loadCUDAKernelFile();
+private:    
+    void loadCUDAKernelFile();
     void allocateBuffers();
     void deAllocateBuffers();
 
 protected:
     ImageInport inport_;
-	ImageOutport outport_;
-    FileProperty cudaKernelFile_;	
-	OptionPropertyString invertOptions_;
+    ImageOutport outport_;
+    FileProperty cudaKernelFile_;   
+    OptionPropertyString invertOptions_;
 };
 
 

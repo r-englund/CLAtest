@@ -49,9 +49,25 @@
 
 namespace inviwo {
 
+//Single Component
 #define TOPYOBJ_1D_DECLARATION(i) template <> PyObject* PyPackageParser::toPyObject<Data##i>(void *, size_t);
 #define TOPYOBJ_2D_DECLARATION(i) template <> PyObject* PyPackageParser::toPyObject<Data##i>(void *, ivec2);
 #define TOPYOBJ_3D_DECLARATION(i) template <> PyObject* PyPackageParser::toPyObject<Data##i>(void *, ivec3);
+
+//Two Components
+#define TOPYOBJ_1D_2COMPONENTS_DECLARATION(i) template <> PyObject* PyPackageParser::toPyObject<DataVec2##i>(void *, size_t);
+#define TOPYOBJ_2D_2COMPONENTS_DECLARATION(i) template <> PyObject* PyPackageParser::toPyObject<DataVec2##i>(void *, ivec2);
+#define TOPYOBJ_3D_2COMPONENTS_DECLARATION(i) template <> PyObject* PyPackageParser::toPyObject<DataVec2##i>(void *, ivec3);
+
+//Three Components
+#define TOPYOBJ_1D_3COMPONENTS_DECLARATION(i) template <> PyObject* PyPackageParser::toPyObject<DataVec3##i>(void *, size_t);
+#define TOPYOBJ_2D_3COMPONENTS_DECLARATION(i) template <> PyObject* PyPackageParser::toPyObject<DataVec3##i>(void *, ivec2);
+#define TOPYOBJ_3D_3COMPONENTS_DECLARATION(i) template <> PyObject* PyPackageParser::toPyObject<DataVec3##i>(void *, ivec3);
+
+//Four Components
+#define TOPYOBJ_1D_4COMPONENTS_DECLARATION(i) template <> PyObject* PyPackageParser::toPyObject<DataVec4##i>(void *, size_t);
+#define TOPYOBJ_2D_4COMPONENTS_DECLARATION(i) template <> PyObject* PyPackageParser::toPyObject<DataVec4##i>(void *, ivec2);
+#define TOPYOBJ_3D_4COMPONENTS_DECLARATION(i) template <> PyObject* PyPackageParser::toPyObject<DataVec4##i>(void *, ivec3);
 
 class IVW_MODULE_PYPACKAGES_API PyPackageParser {
     PyPackageParser();
@@ -65,17 +81,52 @@ public:
 
 template <> void IVW_MODULE_PYPACKAGES_API *PyPackageParser::parse(PyObject* args);
 
+//Single component
 //1d
 #include <modules/pypackages/pypackagesformatsmacro.h>
-PYPACKAGES_FORMAT_MACRO_EXPANDER(TOPYOBJ_1D_DECLARATION)  
-
+PYPACKAGES_FORMAT_MACRO_EXPANDER(TOPYOBJ_1D_DECLARATION)
 //2d
 #include <modules/pypackages/pypackagesformatsmacro.h>
-PYPACKAGES_FORMAT_MACRO_EXPANDER(TOPYOBJ_2D_DECLARATION) 
-
+PYPACKAGES_FORMAT_MACRO_EXPANDER(TOPYOBJ_2D_DECLARATION)
 //3d
 #include <modules/pypackages/pypackagesformatsmacro.h>
-PYPACKAGES_FORMAT_MACRO_EXPANDER(TOPYOBJ_3D_DECLARATION) 
+PYPACKAGES_FORMAT_MACRO_EXPANDER(TOPYOBJ_3D_DECLARATION)
+
+
+//Two components
+//1d
+#include <modules/pypackages/pypackagesformatsmacro.h>
+PYPACKAGES_FORMAT_MACRO_EXPANDER(TOPYOBJ_1D_2COMPONENTS_DECLARATION)
+//2d
+#include <modules/pypackages/pypackagesformatsmacro.h>
+PYPACKAGES_FORMAT_MACRO_EXPANDER(TOPYOBJ_2D_2COMPONENTS_DECLARATION)
+//3d
+#include <modules/pypackages/pypackagesformatsmacro.h>
+PYPACKAGES_FORMAT_MACRO_EXPANDER(TOPYOBJ_3D_2COMPONENTS_DECLARATION)
+
+
+//Three Components
+//1d
+#include <modules/pypackages/pypackagesformatsmacro.h>
+PYPACKAGES_FORMAT_MACRO_EXPANDER(TOPYOBJ_1D_3COMPONENTS_DECLARATION)
+//2d
+#include <modules/pypackages/pypackagesformatsmacro.h>
+PYPACKAGES_FORMAT_MACRO_EXPANDER(TOPYOBJ_2D_3COMPONENTS_DECLARATION)
+//3d
+#include <modules/pypackages/pypackagesformatsmacro.h>
+PYPACKAGES_FORMAT_MACRO_EXPANDER(TOPYOBJ_3D_3COMPONENTS_DECLARATION)
+
+
+//Four Components
+//1d
+#include <modules/pypackages/pypackagesformatsmacro.h>
+PYPACKAGES_FORMAT_MACRO_EXPANDER(TOPYOBJ_1D_4COMPONENTS_DECLARATION)
+//2d
+#include <modules/pypackages/pypackagesformatsmacro.h>
+PYPACKAGES_FORMAT_MACRO_EXPANDER(TOPYOBJ_2D_4COMPONENTS_DECLARATION)
+//3d
+#include <modules/pypackages/pypackagesformatsmacro.h>
+PYPACKAGES_FORMAT_MACRO_EXPANDER(TOPYOBJ_3D_4COMPONENTS_DECLARATION)
 
 template <> bool IVW_MODULE_PYPACKAGES_API PyPackageParser::is<void*>(PyObject* arg);
 

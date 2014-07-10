@@ -57,33 +57,33 @@ PyObject* py_declareBufferData(PyObject* /*self*/, PyObject* args) {
 
     const char* pyProcessorId = 0;
     const char* varName = 0;
-	const char* varType = 0;
-	const int* varSize = 0;
+    const char* varType = 0;
+    const int* varSize = 0;
     
     if (!PyArg_ParseTuple(args, "ssss:declareBufferData", &pyProcessorId, &varName, &varType, &varSize))
         return 0;
 
     if (pyProcessorId && varName && varType && varSize) {
-		if (InviwoApplication::getPtr() && InviwoApplication::getPtr()->getProcessorNetwork()) {
-			std::vector<Processor*> processors  = InviwoApplication::getPtr()->getProcessorNetwork()->getProcessors();
+        if (InviwoApplication::getPtr() && InviwoApplication::getPtr()->getProcessorNetwork()) {
+            std::vector<Processor*> processors  = InviwoApplication::getPtr()->getProcessorNetwork()->getProcessors();
 
-			for (std::vector<Processor*>::const_iterator processorIt = processors.begin(); processorIt!=processors.end(); ++processorIt) {
-				if (pyProcessorId == (*processorIt)->getIdentifier()) {
-					//check type
-					PyProcessorBase* pyProcessor = dynamic_cast<PyProcessorBase*>(*processorIt);					
-					if (pyProcessor) {
-						std::string bufferName(varName);
-						std::string bufferType(varType);
-						size_t bufferSize = (size_t) *varSize;
-						if (pyProcessor->allocatePyBuffer(bufferName, bufferType, bufferSize))
-							std::cout << "Allocating Buffer data : " <<  bufferName \
-									  << " of type " << bufferType << " with size " << bufferSize << std::endl;
-						else
-							std::cout << "Buffer allocation failed" << std::endl;
-					}
-				}
-			}
-		}
+            for (std::vector<Processor*>::const_iterator processorIt = processors.begin(); processorIt!=processors.end(); ++processorIt) {
+                if (pyProcessorId == (*processorIt)->getIdentifier()) {
+                    //check type
+                    PyProcessorBase* pyProcessor = dynamic_cast<PyProcessorBase*>(*processorIt);                    
+                    if (pyProcessor) {
+                        std::string bufferName(varName);
+                        std::string bufferType(varType);
+                        size_t bufferSize = (size_t) *varSize;
+                        if (pyProcessor->allocatePyBuffer(bufferName, bufferType, bufferSize))
+                            std::cout << "Allocating Buffer data : " <<  bufferName \
+                                      << " of type " << bufferType << " with size " << bufferSize << std::endl;
+                        else
+                            std::cout << "Buffer allocation failed" << std::endl;
+                    }
+                }
+            }
+        }
     }
 
     Py_RETURN_NONE;
@@ -95,39 +95,39 @@ PyObject* py_getBufferData(PyObject* /*self*/, PyObject* args) {
     if (!p.testParams(args))
         return 0;
 
-	const char* pyProcessorId = 0;
+    const char* pyProcessorId = 0;
     const char* bufferDataName = 0;
 
     if (!PyArg_ParseTuple(args, "ss:getBufferData", &pyProcessorId, &bufferDataName))
         return 0;
 
     if (pyProcessorId && bufferDataName) {        
-		if (InviwoApplication::getPtr() && InviwoApplication::getPtr()->getProcessorNetwork()) {
-			std::vector<Processor*> processors  = InviwoApplication::getPtr()->getProcessorNetwork()->getProcessors();
+        if (InviwoApplication::getPtr() && InviwoApplication::getPtr()->getProcessorNetwork()) {
+            std::vector<Processor*> processors  = InviwoApplication::getPtr()->getProcessorNetwork()->getProcessors();
 
-			for (std::vector<Processor*>::const_iterator processorIt = processors.begin(); processorIt!=processors.end(); ++processorIt) {
-				if (pyProcessorId == (*processorIt)->getIdentifier()) {
-					//check type
-					PyProcessorBase* pyProcessor = dynamic_cast<PyProcessorBase*>(*processorIt);					
-					if (pyProcessor) {
-						std::string bufferName(bufferDataName);
+            for (std::vector<Processor*>::const_iterator processorIt = processors.begin(); processorIt!=processors.end(); ++processorIt) {
+                if (pyProcessorId == (*processorIt)->getIdentifier()) {
+                    //check type
+                    PyProcessorBase* pyProcessor = dynamic_cast<PyProcessorBase*>(*processorIt);                    
+                    if (pyProcessor) {
+                        std::string bufferName(bufferDataName);
                         Buffer* rawBuffer = 0;
-						void* bufferData = 0;
+                        void* bufferData = 0;
                         std::string bufferTypeStr("");
                         size_t bufferSize = 0;
-						if (pyProcessor->isValidPyBuffer(bufferName)) {
+                        if (pyProcessor->isValidPyBuffer(bufferName)) {
                             rawBuffer = pyProcessor->getAllocatedPyBuffer(bufferName);
                             bufferData = pyProcessor->getPyBufferData(bufferName);
                             bufferTypeStr = pyProcessor->getPyBufferType(bufferName);
                             bufferSize = rawBuffer->getSize();
-							std::cout << "Getting Buffer data : " <<  bufferName << " of type " << bufferTypeStr << " " \
-							          << "-" << " with size " << bufferSize << std::endl;
+                            std::cout << "Getting Buffer data : " <<  bufferName << " of type " << bufferTypeStr << " " \
+                                      << "-" << " with size " << bufferSize << std::endl;
                         }
-						else {
-							std::cout << "Buffer fetch failed" << std::endl;
+                        else {
+                            std::cout << "Buffer fetch failed" << std::endl;
                         }
 
-						if (!bufferData)  Py_RETURN_NONE;
+                        if (!bufferData)  Py_RETURN_NONE;
                         if (rawBuffer->getDataFormat()->getComponents()==1) {
 
                             #define RETURN_PYOBJECT(i) \
@@ -139,10 +139,12 @@ PyObject* py_getBufferData(PyObject* /*self*/, PyObject* args) {
                                 default: break;
                             }
                         }
-					}
-				}
-			}
-		}         
+                        else
+                            std::cout << "Invalid number of components" << std::endl;
+                    }
+                }
+            }
+        }         
     }
 
     Py_RETURN_NONE;
@@ -167,14 +169,14 @@ PyObject* py_getLayerData(PyObject* /*self*/, PyObject* args) {
             for (std::vector<Processor*>::const_iterator processorIt = processors.begin(); processorIt!=processors.end(); ++processorIt) {
                 if (pyProcessorId == (*processorIt)->getIdentifier()) {
                     //check type
-                    PyProcessorBase* pyProcessor = dynamic_cast<PyProcessorBase*>(*processorIt);					
+                    PyProcessorBase* pyProcessor = dynamic_cast<PyProcessorBase*>(*processorIt);
                     if (pyProcessor) {
                         std::string layerName(layerDataName);
                         Layer* rawLayer = 0;
                         void* layerData = 0;
                         std::string layerTypeStr("");
                         ivec2 layerDim;
-                        if (pyProcessor->isValidPyBuffer(layerName)) {
+                        if (pyProcessor->isValidLayer(layerName)) {
                             rawLayer = pyProcessor->getAllocatedLayer(layerName);
                             layerData = pyProcessor->getLayerData(layerName);
                             layerTypeStr = pyProcessor->getLayerType(layerName);
@@ -187,9 +189,39 @@ PyObject* py_getLayerData(PyObject* /*self*/, PyObject* args) {
                         }
 
                         if (!layerData)  Py_RETURN_NONE;
-                        if (rawLayer->getDataFormat()->getComponents()==2) {
+                        if (rawLayer->getDataFormat()->getComponents()==1) {
                             #define RETURN_PYOBJECT(i) \
                             case DataFormatEnums::##i: return PyPackageParser::toPyObject<Data##i>(layerData, layerDim);
+                            #include <modules/pypackages/pypackagesformatsmacro.h>
+
+                            switch (rawLayer->getDataFormat()->getId()) {
+                                PYPACKAGES_FORMAT_MACRO_EXPANDER(RETURN_PYOBJECT)
+                                default: break;
+                            }
+                        }
+                        else if (rawLayer->getDataFormat()->getComponents()==2) {
+                            #define RETURN_PYOBJECT(i) \
+                            case DataFormatEnums::Vec2##i: return PyPackageParser::toPyObject<DataVec2##i>(layerData, layerDim);
+                            #include <modules/pypackages/pypackagesformatsmacro.h>
+
+                            switch (rawLayer->getDataFormat()->getId()) {
+                                PYPACKAGES_FORMAT_MACRO_EXPANDER(RETURN_PYOBJECT)
+                                default: break;
+                            }
+                        }
+                        else if (rawLayer->getDataFormat()->getComponents()==3) {
+                            #define RETURN_PYOBJECT(i) \
+                            case DataFormatEnums::Vec3##i: return PyPackageParser::toPyObject<DataVec3##i>(layerData, layerDim);
+                            #include <modules/pypackages/pypackagesformatsmacro.h>
+
+                            switch (rawLayer->getDataFormat()->getId()) {
+                                PYPACKAGES_FORMAT_MACRO_EXPANDER(RETURN_PYOBJECT)
+                                default: break;
+                            }
+                        }
+                        else if (rawLayer->getDataFormat()->getComponents()==4) {
+                            #define RETURN_PYOBJECT(i) \
+                            case DataFormatEnums::Vec4##i: return PyPackageParser::toPyObject<DataVec4##i>(layerData, layerDim);
                             #include <modules/pypackages/pypackagesformatsmacro.h>
 
                             switch (rawLayer->getDataFormat()->getId()) {
@@ -209,13 +241,13 @@ PyObject* py_getLayerData(PyObject* /*self*/, PyObject* args) {
 PyDeclareBufferData::PyDeclareBufferData()
     : pyprocessorId_("pyprocessorid")
     , bufferVariableName_("buffervariablename")
-	, bufferVariableType_("buffervariabletype")
-	, bufferSize_("buffervariablesize",1)
+    , bufferVariableType_("buffervariabletype")
+    , bufferSize_("buffervariablesize",1)
 {
     addParam(&pyprocessorId_);
     addParam(&bufferVariableName_);
-	addParam(&bufferVariableType_);
-	addParam(&bufferSize_);
+    addParam(&bufferVariableType_);
+    addParam(&bufferSize_);
 }
 
 PyGetBufferData::PyGetBufferData()

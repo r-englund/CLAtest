@@ -37,6 +37,7 @@
 #define NO_IMPORT_ARRAY
 #include <arrayobject.h>
 
+//Single Components
 #define TOPYOBJ_1D_DEFINITION(i) \
     template <> PyObject* PyPackageParser::toPyObject<Data##i>(void *ptr, size_t dim) { \
     npy_intp ndims[1] = {dim}; \
@@ -55,27 +56,120 @@
     PyObject* data = PyArray_SimpleNewFromData(1, ndims, NPY_##i, ptr); \
     return data; }
 
+//Two Components
+#define TOPYOBJ_1D_2COMPONENTS_DEFINITION(i) \
+template <> PyObject* PyPackageParser::toPyObject<DataVec2##i>(void *ptr, size_t dim) { \
+    npy_intp ndims[1] = {dim}; \
+    PyObject* data = PyArray_SimpleNewFromData(2, ndims, NPY_##i, ptr); \
+    return data; }
+
+#define TOPYOBJ_2D_2COMPONENTS_DEFINITION(i) \
+    template <> PyObject* PyPackageParser::toPyObject<DataVec2##i>(void *ptr, ivec2 dim) { \
+    npy_intp ndims[2] = {dim.x, dim.y}; \
+    PyObject* data = PyArray_SimpleNewFromData(2, ndims, NPY_##i, ptr); \
+    return data; }
+
+#define TOPYOBJ_3D_2COMPONENTS_DEFINITION(i) \
+    template <> PyObject* PyPackageParser::toPyObject<DataVec2##i>(void *ptr, ivec3 dim) { \
+    npy_intp ndims[3] = {dim.x, dim.y, dim.z}; \
+    PyObject* data = PyArray_SimpleNewFromData(2, ndims, NPY_##i, ptr); \
+    return data; }
+
+//Three Components
+#define TOPYOBJ_1D_3COMPONENTS_DEFINITION(i) \
+    template <> PyObject* PyPackageParser::toPyObject<DataVec3##i>(void *ptr, size_t dim) { \
+    npy_intp ndims[1] = {dim}; \
+    PyObject* data = PyArray_SimpleNewFromData(3, ndims, NPY_##i, ptr); \
+    return data; }
+
+#define TOPYOBJ_2D_3COMPONENTS_DEFINITION(i) \
+    template <> PyObject* PyPackageParser::toPyObject<DataVec3##i>(void *ptr, ivec2 dim) { \
+    npy_intp ndims[2] = {dim.x, dim.y}; \
+    PyObject* data = PyArray_SimpleNewFromData(3, ndims, NPY_##i, ptr); \
+    return data; }
+
+#define TOPYOBJ_3D_3COMPONENTS_DEFINITION(i) \
+    template <> PyObject* PyPackageParser::toPyObject<DataVec3##i>(void *ptr, ivec3 dim) { \
+    npy_intp ndims[3] = {dim.x, dim.y, dim.z}; \
+    PyObject* data = PyArray_SimpleNewFromData(3, ndims, NPY_##i, ptr); \
+    return data; }
+
+
+//Four Components
+#define TOPYOBJ_1D_4COMPONENTS_DEFINITION(i) \
+    template <> PyObject* PyPackageParser::toPyObject<DataVec4##i>(void *ptr, size_t dim) { \
+    npy_intp ndims[1] = {dim}; \
+    PyObject* data = PyArray_SimpleNewFromData(1, ndims, NPY_##i, ptr); \
+    return data; }
+
+#define TOPYOBJ_2D_4COMPONENTS_DEFINITION(i) \
+    template <> PyObject* PyPackageParser::toPyObject<DataVec4##i>(void *ptr, ivec2 dim) { \
+    npy_intp ndims[2] = {dim.x, dim.y}; \
+    PyObject* data = PyArray_SimpleNewFromData(2, ndims, NPY_##i, ptr); \
+    return data; }
+
+#define TOPYOBJ_3D_4COMPONENTS_DEFINITION(i) \
+    template <> PyObject* PyPackageParser::toPyObject<DataVec4##i>(void *ptr, ivec3 dim) { \
+    npy_intp ndims[3] = {dim.x, dim.y, dim.z}; \
+    PyObject* data = PyArray_SimpleNewFromData(3, ndims, NPY_##i, ptr); \
+    return data; }
+
 namespace inviwo {
 
 void* parsePtr(PyObject* args) {
-	return PyCObject_AsVoidPtr(args); 
+    return PyCObject_AsVoidPtr(args); 
 }
 
 PyPackageParser::PyPackageParser() { }
 
 template <> void* PyPackageParser::parse(PyObject* args) {  return parsePtr(args);    }
 
+//Single component
 //1d
 #include <modules/pypackages/pypackagesformatsmacro.h>
 PYPACKAGES_FORMAT_MACRO_EXPANDER(TOPYOBJ_1D_DEFINITION)
-
 //2d
 #include <modules/pypackages/pypackagesformatsmacro.h>
 PYPACKAGES_FORMAT_MACRO_EXPANDER(TOPYOBJ_2D_DEFINITION)
-
 //3d
 #include <modules/pypackages/pypackagesformatsmacro.h>
 PYPACKAGES_FORMAT_MACRO_EXPANDER(TOPYOBJ_3D_DEFINITION)
+
+
+//Two components
+//1d
+#include <modules/pypackages/pypackagesformatsmacro.h>
+PYPACKAGES_FORMAT_MACRO_EXPANDER(TOPYOBJ_1D_2COMPONENTS_DEFINITION)
+//2d
+#include <modules/pypackages/pypackagesformatsmacro.h>
+PYPACKAGES_FORMAT_MACRO_EXPANDER(TOPYOBJ_2D_2COMPONENTS_DEFINITION)
+//3d
+#include <modules/pypackages/pypackagesformatsmacro.h>
+PYPACKAGES_FORMAT_MACRO_EXPANDER(TOPYOBJ_3D_2COMPONENTS_DEFINITION)
+
+
+//Three components
+//1d
+#include <modules/pypackages/pypackagesformatsmacro.h>
+PYPACKAGES_FORMAT_MACRO_EXPANDER(TOPYOBJ_1D_3COMPONENTS_DEFINITION)
+//2d
+#include <modules/pypackages/pypackagesformatsmacro.h>
+PYPACKAGES_FORMAT_MACRO_EXPANDER(TOPYOBJ_2D_3COMPONENTS_DEFINITION)
+//3d
+#include <modules/pypackages/pypackagesformatsmacro.h>
+PYPACKAGES_FORMAT_MACRO_EXPANDER(TOPYOBJ_3D_3COMPONENTS_DEFINITION)
+
+
+//Four components
+//1d
+#include <modules/pypackages/pypackagesformatsmacro.h>
+PYPACKAGES_FORMAT_MACRO_EXPANDER(TOPYOBJ_1D_4COMPONENTS_DEFINITION)
+//2d
+#include <modules/pypackages/pypackagesformatsmacro.h>
+PYPACKAGES_FORMAT_MACRO_EXPANDER(TOPYOBJ_2D_4COMPONENTS_DEFINITION)
+//3d
+#include <modules/pypackages/pypackagesformatsmacro.h>
+PYPACKAGES_FORMAT_MACRO_EXPANDER(TOPYOBJ_3D_4COMPONENTS_DEFINITION)
 
 
 template <> bool IVW_MODULE_PYPACKAGES_API PyPackageParser::is<void*>(PyObject* arg) {
