@@ -62,6 +62,7 @@ public:
 protected:
     virtual void process();
     void handleInteractionEventsChanged();
+    void onGeometryChange();
 private:
     GeometryInport geometryPort_;
     ImageOutport entryPort_;
