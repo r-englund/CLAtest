@@ -51,17 +51,7 @@ public:
     void evaluateFor(){
         T* t = dynamic_cast<T*>(this);
         if(!t) return; //todo maybe print error= 
-        switch (in_->getDataFormat()->getId()) {
-#define DataFormatIdMacro(i)                     \
-        case DataFormatEnums::i:                         \
-        t->evaluate<Data##i::type, Data##i::bits>(); \
-        break;
-
-#include <inviwo/core/util/formatsdefinefunc.h>
-
-        default:
-            break;
-        }
+        CallFunctionWithTemplateArgsForType(t->evaluate,in_->getDataFormat()->getId());
     }
 
 private:
