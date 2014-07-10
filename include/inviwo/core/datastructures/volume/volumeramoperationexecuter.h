@@ -39,7 +39,6 @@
 #include <inviwo/core/datastructures/volume/volumeramslice.h>
 #include <inviwo/core/datastructures/volume/volumeramsubset.h>
 #include <inviwo/core/datastructures/volume/volumeramsubsample.h>
-#include <inviwo/core/datastructures/volume/marchingtetrahedron.h>
 
 namespace inviwo {
 
