@@ -53,10 +53,10 @@ public:
     template <typename T, size_t B>
     void evaluate();
 
-    static inline Geometry *apply(const VolumeRepresentation *in, const double &iso,
+    static inline Geometry* apply(const VolumeRepresentation *in, const double &iso,
                                   const vec4 &color) {
         MarchingTetrahedron marchingOP = MarchingTetrahedron(in, iso, color);
-        in->performOperation(&marchingOP);
+        marchingOP.evaluateFor<MarchingTetrahedron>();
         return marchingOP.getOutput<Geometry>();
     }
 

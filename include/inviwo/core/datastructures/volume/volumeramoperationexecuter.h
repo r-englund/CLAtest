@@ -80,14 +80,6 @@ void executeOperationOnVolumeRAMPrecision(DataOperation* dop) {
         volSubSampleDop->evaluate<T, B>();
         return;
     }
-
-
-    MarchingTetrahedron* volMarchingTetrahedron = dynamic_cast<MarchingTetrahedron*>(dop);
-
-    if (volMarchingTetrahedron) {
-        volMarchingTetrahedron->evaluate<T, B>();
-        return;
-    }
 };
 
 } // namespace

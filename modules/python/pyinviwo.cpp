@@ -65,7 +65,7 @@ static PyObject* py_stdout(PyObject* /*self*/, PyObject* args) {
     } else {
         if (len != 0) {
             if (!(len == 1 && (msg[0] == '\n' || msg[0] == '\r' || msg[0] == '\0')))
-                PythonExecutionOutputObeserver::pyhonExecutionOutputEvent(
+                PythonExecutionOutputObeserver::pythonExecutionOutputEvent(
                     msg, PythonExecutionOutputObeserver::standard);
         }
     }
