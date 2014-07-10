@@ -5,16 +5,29 @@ import os
 import time
 
 ########## Enable this for comparing with reference image
-########## Requires urllib2, base64
+########## Requires urllib2, base64, getpass
 ########## Remember to set username and password
 
-'''
+
+def getUser():
+    user = raw_input("Enter user name: ")
+    return user.rstrip( '\n' )    
+    
+def getPassword():    
+    pwd = getpass.getpass()
+    return pwd.rstrip( '\n' )
+
+
 refFolder =   inviwo.getDataPath() + "tests/allworkspaceloadtest/referenceimages/";
 import sys
 import filecmp
+import getpass
+from sys import stderr
+usr = getUser()
+pwd = getPassword()
 sys.path.append(inviwo.getDataPath() + "tests/allworkspaceloadtest")
 import inviworeferencescrap as ivwRef
-ivwRef.setInviwoAuthentication('username','password')
+ivwRef.setInviwoAuthentication(usr,pwd)
 
 def downloadAndCompareReferenceImage(ws,i):
    ivwRef.downloadInviwoReferenceImage(ws,refFolder + ws + str(i+1)+ ".png",i+1)
@@ -22,7 +35,7 @@ def downloadAndCompareReferenceImage(ws,i):
    if comparisionStatus==False:
       print ws + ' canvassnapshot-' + str(i+1) + ' FAILED'
 
-'''
+
 
 ########## Enable this for comparing with reference image
 
@@ -37,7 +50,7 @@ def workspace(f,ws):
    for i in range(0,numCanvas):
       inviwo.snapshotCanvas(i,imgFolder + ws + str(i+1) + ".png") 
       ########## Enable this for comparing with reference image
-      #downloadAndCompareReferenceImage(ws,i)
+      downloadAndCompareReferenceImage(ws,i)
 
 print "Mem at start: " + str(inviwo.getMemoryUsage() / (1024.0*1024.0)) + " M"
 print workspaceFolder
