@@ -46,7 +46,7 @@ public:
     virtual void onPyhonExecutionOutput(std::string msg,OutputType outputType) = 0;
     PythonExecutionOutputObeserver();
 
-    static void pyhonExecutionOutputEvent(std::string msg,OutputType outputType);
+    static void pythonExecutionOutputEvent(std::string msg,OutputType outputType);
     static std::vector<PythonExecutionOutputObeserver*> observers_;
 };
 

@@ -42,7 +42,7 @@ PythonExecutionOutputObeserver::PythonExecutionOutputObeserver() {
     observers_.push_back(this);
 }
 
-void PythonExecutionOutputObeserver::pyhonExecutionOutputEvent(std::string msg,OutputType outputType) {
+void PythonExecutionOutputObeserver::pythonExecutionOutputEvent(std::string msg,OutputType outputType) {
     std::vector<PythonExecutionOutputObeserver*>::iterator it;
 
     for (it = observers_.begin(); it != observers_.end(); ++it) {

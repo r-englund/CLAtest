@@ -188,6 +188,7 @@ void CanvasProcessor::saveImageLayer() {
 }
 
 void CanvasProcessor::saveImageLayer(const char* snapshotPath) {
+    if(!inport_.hasData()) return;
     const Image* image = inport_.getData();
     const Layer* layer = image->getLayer(static_cast<LayerType>(visibleLayer_.get()));
     ImageIO::saveLayer(snapshotPath, layer);

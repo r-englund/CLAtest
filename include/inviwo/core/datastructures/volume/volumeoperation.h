@@ -46,6 +46,24 @@ public:
 
     const VolumeRepresentation* getInputVolume() { return in_; }
 
+
+    template<typename T>
+    void evaluateFor(){
+        T* t = dynamic_cast<T*>(this);
+        if(!t) return; //todo maybe print error= 
+        switch (in_->getDataFormat()->getId()) {
+#define DataFormatIdMacro(i)                     \
+        case DataFormatEnums::i:                         \
+        t->evaluate<Data##i::type, Data##i::bits>(); \
+        break;
+
+#include <inviwo/core/util/formatsdefinefunc.h>
+
+        default:
+            break;
+        }
+    }
+
 private:
     const VolumeRepresentation* in_;
 };
