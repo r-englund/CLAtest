@@ -66,6 +66,8 @@ EntryExitPoints::EntryExitPoints()
     trackball_ = new Trackball(&camera_);
     addInteractionHandler(trackball_);
     entryPort_.addResizeEventListener(&camera_);
+
+    geometryPort_.onChange(this,&EntryExitPoints::onGeometryChange);
 }
 
 EntryExitPoints::~EntryExitPoints() {
@@ -98,14 +100,10 @@ void EntryExitPoints::process() {
 
     // Check if no renderer exist or if geometry changed
     if (renderer_ == NULL) {
-        renderer_ = GeometryRendererFactory::getPtr()->create(geom);
-    } else if (renderer_->getGeometry() != geom) {
-        delete renderer_; // Nothing will happen if NULL
-        renderer_ = GeometryRendererFactory::getPtr()->create(geom);
+        onGeometryChange();
     }
 
     if (renderer_ == NULL) {
-        // No renderer found
         return;
     }
     IVW_OPENGL_PROFILING("")
@@ -183,6 +181,13 @@ void EntryExitPoints::handleInteractionEventsChanged() {
     } else {
         removeInteractionHandler(trackball_);
     }
+}
+
+void EntryExitPoints::onGeometryChange(){
+    delete renderer_; 
+    renderer_ = NULL;
+    if(geometryPort_.hasData())
+        renderer_ = GeometryRendererFactory::getPtr()->create(geometryPort_.getData());
 }
 
 } // namespace
