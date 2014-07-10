@@ -180,8 +180,8 @@ void GeometryRenderProcessorGL::process() {
         return;
     }
 
-    int prevPolygonMode[2];
-    glGetIntegerv(GL_POLYGON_MODE, prevPolygonMode);
+    GLint prevPolygonMode;
+    glGetIntegerv(GL_POLYGON_MODE, &prevPolygonMode);
     glPolygonMode(GL_FRONT_AND_BACK, polygonMode_.get());
     GLboolean depthTest = glIsEnabled(GL_DEPTH_TEST);
     if (!depthTest) {    
@@ -229,8 +229,7 @@ void GeometryRenderProcessorGL::process() {
     }
     // restore
     glPointSize(1.f);
-    glPolygonMode(GL_FRONT, prevPolygonMode[0]);
-    glPolygonMode(GL_BACK, prevPolygonMode[1]);
+    glPolygonMode(GL_FRONT_AND_BACK, prevPolygonMode);
 }
 
 void GeometryRenderProcessorGL::centerViewOnGeometry() {
