@@ -48,16 +48,24 @@ public:
     const VolumeRepresentation* getInputVolume() { return in_; }
 
 
+    template <typename T, size_t B>
+    void evaluate(){}
+
     template<typename VO>
     void evaluateFor(){
         VO* t = dynamic_cast<VO*>(this);
         if(!t) return; //todo maybe print error= 
-        //CallFunctionWithTemplateArgsForType(t->evaluate,getInputVolume()->getDataFormat()->getId());
+
+        DataFormatEnums::Id id_ = getInputVolume()->getDataFormat()->getId();
+        CallFunctionWithTemplateArgsForType(t->evaluate,id_);
     }
+
 
 private:
     const VolumeRepresentation* in_;
 };
+
+
 
 } // namespace
 
