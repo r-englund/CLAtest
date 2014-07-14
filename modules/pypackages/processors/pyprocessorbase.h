@@ -54,7 +54,8 @@ public:
 
     //General    
     void runScript();
-    void onRunScriptButtonClicked();
+    void reloadScript();
+    void onRunScriptButtonClicked(); 
     Buffer* convertLayerToBuffer(LayerRAM* layer);
     void freeAll();
 
@@ -82,6 +83,7 @@ protected:
     virtual void loadPythonScriptFile();
     FileProperty pythonScriptFile_;
     ButtonProperty runScript_;
+    bool requiresRun_;
 private:
     PythonScript script_;
     //Buffers

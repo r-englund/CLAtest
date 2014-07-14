@@ -46,7 +46,8 @@ PyProcessorBase::PyProcessorBase()
                             "pypackages/scripts/pyavailablepackagesinfo.py", "script",
                         PropertyOwner::INVALID_OUTPUT, PropertySemantics("TextEditor"))
     , runScript_("runScript", "Run Script")
-    , script_() {
+    , script_()
+    , requiresRun_(false) {
     addProperty(pythonScriptFile_);
     pythonScriptFile_.onChange(this, &PyProcessorBase::loadPythonScriptFile);
     addProperty(runScript_);
@@ -66,13 +67,20 @@ void PyProcessorBase::deinitialize() {
 void PyProcessorBase::process() {
     Processor::process();
     //derived class process function should not be called after this
-    runScript();
+    if (requiresRun_) {
+        runScript();
+        requiresRun_ = false;
+    }
 }
 
 //General
 void PyProcessorBase::onRunScriptButtonClicked() {  
+    reloadScript();
+}
+
+void PyProcessorBase::reloadScript() {
     loadPythonScriptFile();
-    //runScript();
+    requiresRun_ = true;
 }
 
 void PyProcessorBase::loadPythonScriptFile() {

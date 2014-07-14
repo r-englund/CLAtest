@@ -39,8 +39,8 @@ namespace inviwo {
 
 ProcessorClassIdentifier(PyCUDAImageInverter,  "PyCUDAImageInverter");
 ProcessorDisplayName(PyCUDAImageInverter,  "PyCUDA Image Inverter");
-ProcessorTags(PyCUDAImageInverter, "CUDA");
-ProcessorCategory(PyCUDAImageInverter, "PyCUDA");
+ProcessorTags(PyCUDAImageInverter, "Python/CUDA");
+ProcessorCategory(PyCUDAImageInverter, "Numpy");
 ProcessorCodeState(PyCUDAImageInverter, CODE_STATE_EXPERIMENTAL);
 
 PyCUDAImageInverter::PyCUDAImageInverter()
@@ -51,20 +51,16 @@ PyCUDAImageInverter::PyCUDAImageInverter()
                       InviwoApplication::getPtr()->getPath(InviwoApplication::PATH_MODULES) +
                           "pypackages/scripts/pycuda/pycudaimageinvert.cu",
                       "default", PropertyOwner::INVALID_OUTPUT, PropertySemantics("TextEditor"))
-    , invertOptions_("invertOption", "Image Invert Options", PropertyOwner::INVALID_OUTPUT) {
+    , cachedImageData_(0) {
     addPort(inport_);
     addPort(outport_);
     addProperty(cudaKernelFile_);
-
-    invertOptions_.addOption("nopython", "No Python");
-    invertOptions_.addOption("numpy", "NumPy");
-    invertOptions_.addOption("pycuda", "PyCUDA");
-    addProperty(invertOptions_);
 
     pythonScriptFile_.set(InviwoApplication::getPtr()->getPath(InviwoApplication::PATH_MODULES) +
                           "pypackages/scripts/pycuda/pycudaimageinvert.py");
 
     cudaKernelFile_.onChange(this, &PyCUDAImageInverter::loadCUDAKernelFile);
+    inport_.onChange(this, &PyCUDAImageInverter::onInportChange);
 }
 
 PyCUDAImageInverter::~PyCUDAImageInverter() {}
@@ -79,46 +75,30 @@ void PyCUDAImageInverter::deinitialize() {
     deAllocateBuffers();
 }
 
-void PyCUDAImageInverter::process() {   
-    Image* newData = inport_.getData()->clone();
-    
-    if (invertOptions_.get()=="nopython") {
-        cpuInvert(newData);
-        Processor::process();
-    }       
-    else if (invertOptions_.get()=="pycuda") {
-        bool pycudaAvailable = true; 
-        //pycudaAvailable = InviwoApplication::getPtr()->getModuleByType<PyPackagesModule>()->isPackageAvailable("pycuda");
-        //Check if pycuda package is available
-        if (pycudaAvailable) {
-            PyProcessorBase::addExistingLayer("SourceImage", newData->getColorLayer());
-            PyProcessorBase::process();
-        }
-        else {
-            LogWarn("PyCUDA pacakage not available")
-        }
-    }
-    else if (invertOptions_.get()=="numpy") {
-        PyProcessorBase::process();
+void PyCUDAImageInverter::onInportChange() {
+    if (!inport_.hasData()) { 
+        cachedImageData_ = 0; 
+        return; 
     }
 
-    outport_.setData(newData);
+    bool pycudaAvailable = InviwoApplication::getPtr()->getModuleByType<PyPackagesModule>()->isPackageAvailable("pycuda");
+    //Check if pycuda package is available
+    if (!pycudaAvailable)
+        LogWarn("PyCUDA pacakage not available")
+
+    cachedImageData_ = inport_.getData()->clone();
 }
 
-void PyCUDAImageInverter::cpuInvert(Image* newImageData) {
-    ImageRAM*  outImage = newImageData->getEditableRepresentation<ImageRAM>();  
-    uvec2 dim(outImage->getDimension());
-    uvec2 pos;
-    vec4 intensity;
-    LayerRAM* colorLayerRAM = outImage->getColorLayerRAM();
-    for(pos.y = 0;pos.y < dim.y;pos.y++) {
-        for(pos.x = 0;pos.x < dim.x;pos.x++) {
-            //LogWarn(colorLayerRAM->getDataFormatString())
-            intensity = colorLayerRAM->getValueAsVec4Float(pos);
-            intensity = vec4(fabs(1.0f-intensity.x), fabs(1.0f-intensity.y), fabs(1.0f-intensity.z), intensity.w);
-            colorLayerRAM->setValueFromVec4Float(uvec2(pos), intensity*255.0f);
-        }
+void PyCUDAImageInverter::process() {
+    if (!cachedImageData_) {
+        LogInfo("Cached data is not allocated. Inport has no data.")
+        outport_.setData(cachedImageData_, false);
+        return;
     }
+    loadCUDAKernelFile();
+    PyProcessorBase::addExistingLayer("SourceImage", cachedImageData_->getColorLayer());
+    PyProcessorBase::process();
+    outport_.setData(cachedImageData_, false);
 }
 
 void PyCUDAImageInverter::allocateBuffers() {
@@ -145,11 +125,18 @@ void PyCUDAImageInverter::loadCUDAKernelFile() {
     }
 
     //allocate buffer for cuda kernel code (char buffer)
-    PyProcessorBase::allocatePyBuffer("CUDAKernelSrc", DataUINT8::str(), bufferSize);
+    std::string buffName = "CUDAKernelSrc";
+    Buffer* buff =  PyProcessorBase::getAllocatedPyBuffer(buffName);
+    if (buff) {
+        if (buff->getSize()!=bufferSize) {
+             PyProcessorBase::deallocatePyBuffer(buffName);
+        }
+    }
+    PyProcessorBase::allocatePyBuffer(buffName, DataUINT8::str(), bufferSize);
     void* kernelSrc = 0;
     //fetch buffer data
-    if (PyProcessorBase::isValidPyBuffer("CUDAKernelSrc")) {
-        kernelSrc = PyProcessorBase::getPyBufferData("CUDAKernelSrc");
+    if (PyProcessorBase::isValidPyBuffer(buffName)) {
+        kernelSrc = PyProcessorBase::getPyBufferData(buffName);
         if (kernelSrc) {
             char* csrc = static_cast<char*>(kernelSrc);
             //copy to buffer data which is later accessed by python

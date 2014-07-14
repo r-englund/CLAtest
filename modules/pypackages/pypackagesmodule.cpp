@@ -38,6 +38,7 @@
 #include <modules/python/pyinviwo.h>
 #include <modules/pypackages/pypackagesinterface/pypackagesutil.h>
 #include <modules/pypackages/processors/pycuda/pycudaimageinvert.h>
+#include <modules/pypackages/processors/numpy/numpyimagecontour.h>
 #include <modules/pypackages/processors/numpy/numpybuffertest.h>
 
 #define NPY_NO_DEPRECATED_API NPY_1_7_API_VERSION
@@ -52,6 +53,7 @@ PyPackagesModule::PyPackagesModule() : InviwoModule() {
     initPyPackagesInterface();
     registerProcessor(NumpyBufferTest);
     registerProcessor(PyCUDAImageInverter);
+    registerProcessor(NumpyImageContour);
 }
 
 void PyPackagesModule::initPyPackagesInterface() {
@@ -77,7 +79,7 @@ void PyPackagesModule::initPyPackagesInterface() {
         ss << "    if \'site\' in packagePath or \'packages\' in packagePath: sitePackagePath=packagePath" << std::endl;
         ss << "print sitePackagePath" << std::endl;
 
-        std::string getSitePackagePathScript(ss.str());         
+        std::string getSitePackagePathScript(ss.str());
         //int ret = PyRun_SimpleString(runString.c_str());
         PyScriptRunner::getPtr()->run(getSitePackagePathScript);
         retError = PyScriptRunner::getPtr()->getError();
@@ -92,7 +94,7 @@ void PyPackagesModule::initPyPackagesInterface() {
         std::string pathConv = path;
         replaceInString(pathConv, "\\", "/");
         std::string setSystemPathScript = "import sys\n";
-        setSystemPathScript.append(std::string("sys.path.append('") + pathConv + std::string("')"));        
+        setSystemPathScript.append(std::string("sys.path.append('") + pathConv + std::string("')"));
         PyScriptRunner::getPtr()->run(setSystemPathScript);
         retError = PyScriptRunner::getPtr()->getError();
         if (retError!="") {

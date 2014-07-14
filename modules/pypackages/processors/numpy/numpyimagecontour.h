@@ -30,8 +30,8 @@
  *
  *********************************************************************************/
 
-#ifndef IVW_PYCUDAIMAGEINVERT_H
-#define IVW_PYCUDAIMAGEINVERT_H
+#ifndef IVW_NUMPYIMAGECONTOUR_H
+#define IVW_NUMPYIMAGECONTOUR_H
 
 #include <modules/pypackages/pypackagesmoduledefine.h>
 #include <inviwo/core/common/inviwomodule.h>
@@ -40,39 +40,35 @@
 
 #include <inviwo/core/common/inviwo.h>
 #include <inviwo/core/ports/imageport.h>
-#include <inviwo/core/properties/fileproperty.h>
-#include <inviwo/core/properties/boolproperty.h>
-#include <inviwo/core/properties/baseoptionproperty.h>
 #include <inviwo/core/processors/processor.h>
+#include <inviwo/core/properties/minmaxproperty.h>
+#include <inviwo/core/properties/boolproperty.h>
 #include <modules/python/pythonscript.h>
 
 namespace inviwo {
 
-class IVW_MODULE_PYPACKAGES_API PyCUDAImageInverter : public PyProcessorBase {
+class IVW_MODULE_PYPACKAGES_API NumpyImageContour : public PyProcessorBase {
 public:
-    PyCUDAImageInverter();
-    ~PyCUDAImageInverter();
+    NumpyImageContour();
+    ~NumpyImageContour();
 
     InviwoProcessorInfo();
 
     virtual void initialize();
     virtual void deinitialize();
     virtual void process();  
-    void onInportChange();
 
 private:    
-    void loadCUDAKernelFile();
     void allocateBuffers();
     void deAllocateBuffers();
 
 protected:
     ImageInport inport_;
     ImageOutport outport_;
-    FileProperty cudaKernelFile_;   
-    Image* cachedImageData_;
+    IntMinMaxProperty contourValues_;
+    BoolProperty instantUpdate_;
 };
-
 
 } // namespace
 
-#endif // IVW_PYCUDAIMAGEINVERT_H
+#endif // IVW_NUMPYIMAGECONTOUR_H
