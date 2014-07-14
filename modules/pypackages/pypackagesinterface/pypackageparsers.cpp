@@ -40,78 +40,78 @@
 //Single Components
 #define TOPYOBJ_1D_DEFINITION(i) \
     template <> PyObject* PyPackageParser::toPyObject<Data##i>(void *ptr, size_t dim) { \
-    npy_intp ndims[1] = {dim}; \
-    PyObject* data = PyArray_SimpleNewFromData(1, ndims, NPY_##i, ptr); \
+    npy_intp ndims[2] = {dim, 1}; \
+    PyObject* data = PyArray_SimpleNewFromData(2, ndims, NPY_##i, ptr); \
     return data; }
 
 #define TOPYOBJ_2D_DEFINITION(i) \
     template <> PyObject* PyPackageParser::toPyObject<Data##i>(void *ptr, ivec2 dim) { \
-    npy_intp ndims[2] = {dim.x, dim.y}; \
-    PyObject* data = PyArray_SimpleNewFromData(1, ndims, NPY_##i, ptr); \
+    npy_intp ndims[3] = {dim.x, dim.y, 1}; \
+    PyObject* data = PyArray_SimpleNewFromData(3, ndims, NPY_##i, ptr); \
     return data; }
 
 #define TOPYOBJ_3D_DEFINITION(i) \
     template <> PyObject* PyPackageParser::toPyObject<Data##i>(void *ptr, ivec3 dim) { \
-    npy_intp ndims[3] = {dim.x, dim.y, dim.z}; \
-    PyObject* data = PyArray_SimpleNewFromData(1, ndims, NPY_##i, ptr); \
+    npy_intp ndims[4] = {dim.x, dim.y, dim.z, 1}; \
+    PyObject* data = PyArray_SimpleNewFromData(4, ndims, NPY_##i, ptr); \
     return data; }
 
 //Two Components
 #define TOPYOBJ_1D_2COMPONENTS_DEFINITION(i) \
 template <> PyObject* PyPackageParser::toPyObject<DataVec2##i>(void *ptr, size_t dim) { \
-    npy_intp ndims[1] = {dim}; \
+    npy_intp ndims[2] = {dim, 2}; \
     PyObject* data = PyArray_SimpleNewFromData(2, ndims, NPY_##i, ptr); \
     return data; }
 
 #define TOPYOBJ_2D_2COMPONENTS_DEFINITION(i) \
     template <> PyObject* PyPackageParser::toPyObject<DataVec2##i>(void *ptr, ivec2 dim) { \
-    npy_intp ndims[2] = {dim.x, dim.y}; \
-    PyObject* data = PyArray_SimpleNewFromData(2, ndims, NPY_##i, ptr); \
+    npy_intp ndims[3] = {dim.x, dim.y, 2}; \
+    PyObject* data = PyArray_SimpleNewFromData(3, ndims, NPY_##i, ptr); \
     return data; }
 
 #define TOPYOBJ_3D_2COMPONENTS_DEFINITION(i) \
     template <> PyObject* PyPackageParser::toPyObject<DataVec2##i>(void *ptr, ivec3 dim) { \
-    npy_intp ndims[3] = {dim.x, dim.y, dim.z}; \
-    PyObject* data = PyArray_SimpleNewFromData(2, ndims, NPY_##i, ptr); \
+    npy_intp ndims[4] = {dim.x, dim.y, dim.z, 2}; \
+    PyObject* data = PyArray_SimpleNewFromData(4, ndims, NPY_##i, ptr); \
     return data; }
 
 //Three Components
 #define TOPYOBJ_1D_3COMPONENTS_DEFINITION(i) \
     template <> PyObject* PyPackageParser::toPyObject<DataVec3##i>(void *ptr, size_t dim) { \
-    npy_intp ndims[1] = {dim}; \
-    PyObject* data = PyArray_SimpleNewFromData(3, ndims, NPY_##i, ptr); \
+    npy_intp ndims[2] = {dim, 3}; \
+    PyObject* data = PyArray_SimpleNewFromData(2, ndims, NPY_##i, ptr); \
     return data; }
 
 #define TOPYOBJ_2D_3COMPONENTS_DEFINITION(i) \
     template <> PyObject* PyPackageParser::toPyObject<DataVec3##i>(void *ptr, ivec2 dim) { \
-    npy_intp ndims[2] = {dim.x, dim.y}; \
+    npy_intp ndims[3] = {dim.x, dim.y, 3}; \
     PyObject* data = PyArray_SimpleNewFromData(3, ndims, NPY_##i, ptr); \
     return data; }
 
 #define TOPYOBJ_3D_3COMPONENTS_DEFINITION(i) \
     template <> PyObject* PyPackageParser::toPyObject<DataVec3##i>(void *ptr, ivec3 dim) { \
-    npy_intp ndims[3] = {dim.x, dim.y, dim.z}; \
-    PyObject* data = PyArray_SimpleNewFromData(3, ndims, NPY_##i, ptr); \
+    npy_intp ndims[4] = {dim.x, dim.y, dim.z, 3}; \
+    PyObject* data = PyArray_SimpleNewFromData(4, ndims, NPY_##i, ptr); \
     return data; }
 
 
 //Four Components
 #define TOPYOBJ_1D_4COMPONENTS_DEFINITION(i) \
     template <> PyObject* PyPackageParser::toPyObject<DataVec4##i>(void *ptr, size_t dim) { \
-    npy_intp ndims[1] = {dim}; \
-    PyObject* data = PyArray_SimpleNewFromData(1, ndims, NPY_##i, ptr); \
+    npy_intp ndims[2] = {dim, 4}; \
+    PyObject* data = PyArray_SimpleNewFromData(2, ndims, NPY_##i, ptr); \
     return data; }
 
 #define TOPYOBJ_2D_4COMPONENTS_DEFINITION(i) \
     template <> PyObject* PyPackageParser::toPyObject<DataVec4##i>(void *ptr, ivec2 dim) { \
-    npy_intp ndims[2] = {dim.x, dim.y}; \
-    PyObject* data = PyArray_SimpleNewFromData(2, ndims, NPY_##i, ptr); \
+    npy_intp ndims[3] = {dim.x, dim.y, 4}; \
+    PyObject* data = PyArray_SimpleNewFromData(3, ndims, NPY_##i, ptr); \
     return data; }
 
 #define TOPYOBJ_3D_4COMPONENTS_DEFINITION(i) \
     template <> PyObject* PyPackageParser::toPyObject<DataVec4##i>(void *ptr, ivec3 dim) { \
-    npy_intp ndims[3] = {dim.x, dim.y, dim.z}; \
-    PyObject* data = PyArray_SimpleNewFromData(3, ndims, NPY_##i, ptr); \
+    npy_intp ndims[4] = {dim.x, dim.y, dim.z, 4}; \
+    PyObject* data = PyArray_SimpleNewFromData(4, ndims, NPY_##i, ptr); \
     return data; }
 
 namespace inviwo {
@@ -122,7 +122,7 @@ void* parsePtr(PyObject* args) {
 
 PyPackageParser::PyPackageParser() { }
 
-template <> void* PyPackageParser::parse(PyObject* args) {  return parsePtr(args);    }
+template <> void* PyPackageParser::parse(PyObject* args) {  return parsePtr(args);}
 
 //Single component
 //1d

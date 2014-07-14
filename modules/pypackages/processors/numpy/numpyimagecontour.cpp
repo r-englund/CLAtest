@@ -30,57 +30,60 @@
  *
  *********************************************************************************/
 
-#include <modules/pypackages/processors/numpy/numpybuffertest.h>
+#include <modules/pypackages/processors/numpy/numpyimagecontour.h>
 #include <inviwo/core/datastructures/image/imageram.h>
 #include <inviwo/core/datastructures/image/imageramprecision.h>
+#include <modules/pypackages/pypackagesmodule.h>
 
 namespace inviwo {
 
-ProcessorClassIdentifier(NumpyBufferTest,  "NumpyBufferTest");
-ProcessorDisplayName(NumpyBufferTest,  "Numpy Buffer Test");
-ProcessorTags(NumpyBufferTest, "Python/CPU");
-ProcessorCategory(NumpyBufferTest, "Numpy");
-ProcessorCodeState(NumpyBufferTest, CODE_STATE_EXPERIMENTAL);
+ProcessorClassIdentifier(NumpyImageContour,  "NumpyImageContour");
+ProcessorDisplayName(NumpyImageContour,  "Numpy Image Contour");
+ProcessorTags(NumpyImageContour, "Python/CPU");
+ProcessorCategory(NumpyImageContour, "Numpy");
+ProcessorCodeState(NumpyImageContour, CODE_STATE_EXPERIMENTAL);
 
-NumpyBufferTest::NumpyBufferTest()
-    : PyProcessorBase() {   
-     pythonScriptFile_.set(InviwoApplication::getPtr()->getPath(InviwoApplication::PATH_MODULES)+\
-            "pypackages/scripts/numpy/numpybuffertest.py");
+NumpyImageContour::NumpyImageContour()
+    : PyProcessorBase()
+    , inport_("inport")
+    , outport_("outport")
+    , contourValues_("contourvalues", "ContourValues", 64, 192, 0, 255, 1, 1)
+    , instantUpdate_("instantUpdate", "Update Instantly", false) {
+    addPort(inport_);
+    addPort(outport_);
+    addProperty(instantUpdate_);
+    addProperty(contourValues_);
+    pythonScriptFile_.set(InviwoApplication::getPtr()->getPath(InviwoApplication::PATH_MODULES) +
+                          "pypackages/scripts/numpy/numpyimagecontour.py");
 }
 
-NumpyBufferTest::~NumpyBufferTest() {}
+NumpyImageContour::~NumpyImageContour() {}
 
-void NumpyBufferTest::initialize() {
+void NumpyImageContour::initialize() {
     PyProcessorBase::initialize();
     allocateBuffers();
 }
 
-void NumpyBufferTest::deinitialize() {
-    deAllocateBuffers();
+void NumpyImageContour::deinitialize() {
     PyProcessorBase::deinitialize();
+    deAllocateBuffers();
 }
 
-void NumpyBufferTest::process() {
-    PyProcessorBase::process();	
+void NumpyImageContour::process() {
+    Image* imageData = inport_.getData()->clone();
+    PyProcessorBase::addExistingLayer("SourceImage", imageData->getColorLayer());
+    if (instantUpdate_.get())
+        reloadScript();    
+    PyProcessorBase::process();
+    outport_.setData(imageData);
 }
 
-void NumpyBufferTest::allocateBuffers() {
-    allocatePyBuffer("integerBuffer", DataINT32::str(), 10);
-    glm::int32* intBufferData = static_cast<glm::int32*>(getPyBufferData("integerBuffer"));
-    for (size_t i=0; i<10; i++) intBufferData[i] = 1;
-
-    allocatePyBuffer("unsignedIntegerBuffer", DataUINT32::str(), 10);
-    glm::uint32* uintBufferData = static_cast<glm::uint32*>(getPyBufferData("unsignedIntegerBuffer"));
-    for (size_t i=0; i<10; i++) uintBufferData[i] = 1;
-
-    allocatePyBuffer("floatBuffer", DataFLOAT32::str(), 10);
-    glm::float32* floatBufferData = static_cast<glm::float32*>(getPyBufferData("floatBuffer"));
-    for (size_t i=0; i<10; i++) floatBufferData[i] = 1.0f;
+void NumpyImageContour::allocateBuffers() {
+    PyProcessorBase::allocateLayer("SourceImage", DataVec4UINT8::str(), ivec2(256) );
 }
 
-void NumpyBufferTest::deAllocateBuffers() {
+void NumpyImageContour::deAllocateBuffers() {
     PyProcessorBase::freeAll();
 }
-
 
 } // namespace

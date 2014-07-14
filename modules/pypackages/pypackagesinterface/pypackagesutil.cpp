@@ -108,7 +108,7 @@ PyObject* py_getBufferData(PyObject* /*self*/, PyObject* args) {
             for (std::vector<Processor*>::const_iterator processorIt = processors.begin(); processorIt!=processors.end(); ++processorIt) {
                 if (pyProcessorId == (*processorIt)->getIdentifier()) {
                     //check type
-                    PyProcessorBase* pyProcessor = dynamic_cast<PyProcessorBase*>(*processorIt);                    
+                    PyProcessorBase* pyProcessor = dynamic_cast<PyProcessorBase*>(*processorIt);
                     if (pyProcessor) {
                         std::string bufferName(bufferDataName);
                         Buffer* rawBuffer = 0;

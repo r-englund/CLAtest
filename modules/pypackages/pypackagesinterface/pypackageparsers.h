@@ -35,6 +35,7 @@
 
 #include <modules/pypackages/pypackagesmoduledefine.h>
 #include <inviwo/core/common/inviwo.h>
+#include <modules/python/pythoninterface/pyvalueparser.h>
 
 
 #ifdef _DEBUG
