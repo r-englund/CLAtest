@@ -39,6 +39,7 @@
 #include <modules/pypackages/pypackagesinterface/pypackagesutil.h>
 #include <modules/pypackages/processors/pycuda/pycudaimageinvert.h>
 #include <modules/pypackages/processors/numpy/numpyimagecontour.h>
+#include <modules/pypackages/processors/numpy/numpyvolumehistogram.h>
 #include <modules/pypackages/processors/numpy/numpybuffertest.h>
 
 #define NPY_NO_DEPRECATED_API NPY_1_7_API_VERSION
@@ -54,6 +55,7 @@ PyPackagesModule::PyPackagesModule() : InviwoModule() {
     registerProcessor(NumpyBufferTest);
     registerProcessor(PyCUDAImageInverter);
     registerProcessor(NumpyImageContour);
+    registerProcessor(NumpyVolumeHistogram);
 }
 
 void PyPackagesModule::initPyPackagesInterface() {
@@ -66,6 +68,7 @@ void PyPackagesModule::initPyPackagesInterface() {
     pyPackageMod->addMethod(new PyDeclareBufferData());
     pyPackageMod->addMethod(new PyGetBufferData());
     pyPackageMod->addMethod(new PyGetLayerData());
+    pyPackageMod->addMethod(new PyGetVolumeData());
 
     pyScriptRunner_ = new PyScriptRunner();
 

@@ -58,17 +58,19 @@ void PyScriptRunner::setScript(std::string simpleScript) {
     script_.setSource(simpleScript);
 }
 
-void PyScriptRunner::run(std::string simpleScript) {
+void PyScriptRunner::run(std::string simpleScript, bool noLogging) {
     setScript(simpleScript);
-    run();
+    run(noLogging);
 }
 
-void PyScriptRunner::run() {
+void PyScriptRunner::run(bool noLogging) {
     clear();
     Clock c;
     c.start();
-    bool ok = script_.run();
+    bool ok = script_.run(!noLogging);
     c.stop();
+
+    if (noLogging) return;
 
     if (ok) {
         LogInfo("Python Script Executed succesfully");

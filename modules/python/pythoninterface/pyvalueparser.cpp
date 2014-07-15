@@ -352,6 +352,8 @@ void PyValueParser::setProperty(Property* p, PyObject* args) {
         static_cast<StringProperty*>(p)->set(parse<std::string>(args));
     else if (className == "FileProperty")
         static_cast<FileProperty*>(p)->set(parse<std::string>(args));
+    else if (className == "DirectoryProperty")
+        static_cast<DirectoryProperty*>(p)->set(parse<std::string>(args));
     else if (className == "IntVec2Property")
         static_cast<IntVec2Property*>(p)->set(parse<ivec2>(args));
     else if (className == "IntVec3Property")
@@ -437,6 +439,7 @@ PyObject* PyValueParser::getProperty(Property* p) {
     CAST_DO_STUFF(IntProperty, p);
     CAST_DO_STUFF(StringProperty, p);
     CAST_DO_STUFF(FileProperty, p);
+    CAST_DO_STUFF(DirectoryProperty, p);
     CAST_DO_STUFF(IntVec2Property, p);
     CAST_DO_STUFF(IntVec3Property, p);
     CAST_DO_STUFF(IntVec4Property, p);

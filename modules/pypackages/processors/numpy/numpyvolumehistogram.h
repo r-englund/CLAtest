@@ -3,7 +3,7 @@
  * Inviwo - Interactive Visualization Workshop
  * Version 0.6b
  *
- * Copyright (c) 2013-2014 Inviwo Foundation
+ * Copyright (c) 2013 Inviwo Foundation
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -30,33 +30,48 @@
  *
  *********************************************************************************/
 
-#ifndef IVW_PYTHONSCRIPTIRUNNER_H
-#define IVW_PYTHONSCRIPTIRUNNER_H
+#ifndef IVW_NUMPYVOLUMEHISTORGRAM_H
+#define IVW_NUMPYVOLUMEHISTORGRAM_H
 
 #include <modules/pypackages/pypackagesmoduledefine.h>
+#include <inviwo/core/common/inviwomodule.h>
+#include <modules/pypackages/pypackagesinterface/pypackagesutil.h>
+#include <modules/pypackages/processors/pyprocessorbase.h>
+
+#include <inviwo/core/common/inviwo.h>
+#include <inviwo/core/ports/volumeport.h>
+#include <inviwo/core/ports/imageport.h>
+#include <inviwo/core/processors/processor.h>
+#include <inviwo/core/properties/boolproperty.h>
+#include <inviwo/core/properties/buttonproperty.h>
+#include <inviwo/core/properties/directoryproperty.h>
 #include <modules/python/pythonscript.h>
-#include <modules/python/pythonexecutionoutputobeserver.h>
-#include <inviwo/core/util/singleton.h>
 
 namespace inviwo {
 
-class IVW_MODULE_PYPACKAGES_API PyScriptRunner : public Singleton<PyScriptRunner>, public PythonExecutionOutputObeserver { 
+class IVW_MODULE_PYPACKAGES_API NumpyVolumeHistogram : public PyProcessorBase {
 public:
-    PyScriptRunner();
-    virtual ~PyScriptRunner();
-    virtual void onPyhonExecutionOutput(std::string msg,OutputType outputType);
-    void setScript(std::string simplePythonScript);    
-    void run(bool noLogging=true);
-    void run(std::string simplePythonScript, bool noLogging=true);
-    std::string getStandardOutput();
-    std::string getError();
-    void clear();
-private:
-    PythonScript script_;
-    std::string error_;
-    std::string standard_;
+    NumpyVolumeHistogram();
+    ~NumpyVolumeHistogram();
+
+    InviwoProcessorInfo();
+
+    virtual void initialize();
+    virtual void deinitialize();
+    virtual void process();  
+    void savePDF();
+
+private:    
+    void allocateBuffers();
+    void deAllocateBuffers();
+
+protected:
+    VolumeInport inport_;
+    ImageOutport outport_;
+    DirectoryProperty savePDFDirectory_;
+    ButtonProperty savePDFButton_;
 };
 
-}//namespace
+} // namespace
 
-#endif //IVW_PYTHONSCRIPTIRUNNER_H
+#endif // IVW_NUMPYVOLUMEHISTORGRAM_H
