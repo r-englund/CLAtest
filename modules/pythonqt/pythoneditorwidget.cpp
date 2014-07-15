@@ -230,6 +230,7 @@ void PythonEditorWidget::loadFile(std::string fileName, bool askForSave) {
 
 void PythonEditorWidget::onPyhonExecutionOutput(std::string msg, OutputType outputType) {
     appendToOutput(msg, outputType != PythonExecutionOutputObeserver::standard);
+    LogInfo(msg);
 }
 
 void PythonEditorWidget::save() {

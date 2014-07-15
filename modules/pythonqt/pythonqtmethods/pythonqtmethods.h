@@ -38,8 +38,9 @@
 
 namespace inviwo {
 
-PyObject* py_loadWorkspace(PyObject* /*self*/, PyObject* /*args*/);
-PyObject* py_quitInviwo(PyObject* /*self*/, PyObject* /*args*/);
+    PyObject* py_loadWorkspace(PyObject* /*self*/, PyObject* /*args*/);
+    PyObject* py_quitInviwo(PyObject* /*self*/, PyObject* /*args*/);
+    PyObject* py_prompt(PyObject* /*self*/, PyObject* /*args*/);
 
 class IVW_MODULE_PYTHONQT_API PyLoadNetworkMethod : public PyMethod {
 public:
@@ -54,6 +55,29 @@ public:
     virtual std::string getName() const { return "quit"; }
     virtual std::string getDesc() const { return "Method to quit Inviwo."; }
     virtual PyCFunction getFunc() { return py_quitInviwo; }
+};
+
+
+class IVW_MODULE_PYTHONQT_API PyPromptMethod : public PyMethod {
+public:
+    PyPromptMethod()
+       : title_("title") 
+       , message_("message") 
+       , default_("default",true)
+    {
+        addParam(&title_);
+        addParam(&message_);
+        addParam(&default_);
+    }
+
+    virtual std::string getName() const { return "prompt"; }
+    virtual std::string getDesc() const { return "Prompts the user for input."; }
+    virtual PyCFunction getFunc() { return py_prompt; }
+
+protected:
+    PyParamString title_;
+    PyParamString message_;
+    PyParamString default_;
 };
 
 

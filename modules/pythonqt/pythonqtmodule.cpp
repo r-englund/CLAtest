@@ -53,6 +53,7 @@ void PythonQtModule::initPyQtModule() {
     inviwoPyQtModule_ = new PyModule("inviwoqt");
     inviwoPyQtModule_->addMethod(new PyLoadNetworkMethod());
     inviwoPyQtModule_->addMethod(new PyQuitInviwoMethod());
+    inviwoPyQtModule_->addMethod(new PyPromptMethod());
 }
 
 } // namespace
