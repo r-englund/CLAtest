@@ -89,7 +89,8 @@ OutputImage.shape = newShape #reshaped
 #fig.add_axes(ax)
 
 #plot histogram
-plt.hist(SourceVolume.flatten(), 256, range=(0,256), facecolor='green', alpha=0.75)
+#plt.hist(SourceVolume.flatten(), 256, range=(0,256), fc='k', ec='k')
+n, bins, patches = plt.hist(SourceVolume.flatten(), 256, range=(0,256), facecolor='green', alpha=0.75)
 plt.xlabel('Voxel Intensity')
 plt.ylabel('Voxel Count')
 plt.title('Volume Histogram')
