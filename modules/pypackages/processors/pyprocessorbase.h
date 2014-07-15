@@ -40,6 +40,7 @@
 #include <modules/python/pythonscript.h>
 #include <inviwo/core/datastructures/buffer/buffer.h>
 #include <inviwo/core/datastructures/image/layerram.h>
+#include <inviwo/core/datastructures/volume/volumeram.h>
 
 namespace inviwo {
 
@@ -67,17 +68,27 @@ public:
     std::string getPyBufferType(std::string bufferName);
     void* getPyBufferData(std::string bufferName);
     void deallocatePyBuffer(std::string bufferName);
-    void freeAllBuffers();    
+    void freeAllBuffers();
 
     //Layer management
     bool allocateLayer(std::string layerName, std::string layerType, ivec2 layerDim);
     void addExistingLayer(std::string layerName, Layer*);
     Layer* getAllocatedLayer(std::string layerName);
-    bool isValidLayer(std::string layerName);    
+    bool isValidLayer(std::string layerName);
     std::string getLayerType(std::string layerName);
     void* getLayerData(std::string layerName);
-    void deallocateLayer(std::string bufferName);
+    void deallocateLayer(std::string layerName);
     void freeAllLayers();
+
+    //Volume management
+    bool allocateVolume(std::string volumeName, std::string volumeType, uvec3 volumeDim);
+    void addExistingVolume(std::string volumeName, Volume*);
+    Volume* getAllocatedVolume(std::string volumeName);
+    bool isValidVolume(std::string volumeName);
+    std::string getVolumeType(std::string volumeName);
+    void* getVolumeData(std::string volumeName);
+    void deallocateVolume(std::string volumeName);
+    void freeAllVolumes();
     
 protected:
     virtual void loadPythonScriptFile();
@@ -92,6 +103,9 @@ private:
     //Layers
     std::map<std::string, Layer*> pyLayerMap_;
     std::map<std::string, bool> pyLayerOwnershipMap_;
+    //Volumes
+    std::map<std::string, Volume*> pyVolumeMap_;
+    std::map<std::string, bool> pyVolumeOwnershipMap_;
 };
 
 } // namespace

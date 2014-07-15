@@ -38,18 +38,17 @@ import matplotlib
 matplotlib.use('Agg') #option to plot images and graphs in non-GUI mode
 import matplotlib.pyplot as plt
 
-#input image layer (SourceImage) which needs to be processed
-SourceImage = pypackagesutil.getLayerData("NumpyImageContour", "SourceImage")
-#iso/contour values
-ContourValues = inviwo.getPropertyValue("NumpyImageContour","contourvalues")
+#input volume
+SourceVolume = pypackagesutil.getVolumeData("NumpyVolumeHistogram", "SourceVolume")
+#output volume
+OutputImage = pypackagesutil.getLayerData("NumpyVolumeHistogram", "OutputImage")
+#save pdf
+savePDF = pypackagesutil.getBufferData("NumpyVolumeHistogram","SavePDF") #TODO: Instead of buffers use regular bool
+#save pdf dir
+pdfDir = inviwo.getPropertyValue("NumpyVolumeHistogram","pdfDir")
 
 ###############################################################################
 # convenience functions
-
-# http://stackoverflow.com/questions/12201577/convert-rgb-image-to-grayscale-in-python
-# http://en.wikipedia.org/wiki/Grayscale#Converting_color_to_grayscale
-def rgb2gray(rgb):
-   return np.dot(rgb[...,:3], [0.299, 0.587, 0.144])
 
 #canvas out is retrieved as string and adapted
 def copyFigureCanvasToImageBuffer(fig, InputImage):
@@ -60,8 +59,11 @@ def copyFigureCanvasToImageBuffer(fig, InputImage):
    buf = np.flipud(buf)
    InputImage[:,:,0:3] = buf[:,:,:]
 
-def saveFigureCanvasToPDF(fig, PDFfileName):
+def saveFigureCanvasToPDF(fig, PDFDir):
    from matplotlib.backends.backend_pdf import PdfPages
+   import time
+   PDFfileName = PDFDir + '/numpyVolumeHistogram_' + time.strftime("%H-%M-%S") + time.strftime("-%d-%m-%Y") + ".pdf"
+   print PDFfileName
    pp = PdfPages(PDFfileName)
    pp.savefig(fig)
    pp.close()
@@ -69,30 +71,34 @@ def saveFigureCanvasToPDF(fig, PDFfileName):
 ###############################################################################
 
 #determine figure size using dpi
-screenDim = (float(SourceImage.shape[0]), float(SourceImage.shape[1]))
+screenDim = (float(OutputImage.shape[0]), float(OutputImage.shape[1]))
 screenDPI = float(plt.Figure()._get_dpi())
 fsize=(screenDim[0]/screenDPI, screenDim[1]/screenDPI)
 #set figure size
 fig = plt.figure(figsize=fsize, dpi=screenDPI, frameon=False, linewidth=1.0)
 
 #reshape input image for Numpy/C-Array consistency
-newShape = (SourceImage.shape[1], SourceImage.shape[0], SourceImage.shape[2])
-SourceImage.shape = newShape #reshaped 
+newShape = (OutputImage.shape[1], OutputImage.shape[0], OutputImage.shape[2])
+OutputImage.shape = newShape #reshaped 
 
 #plot setting
 #fit plotting to full window
-plt.axis('off')
-ax = plt.Axes(fig, [0., 0., 1., 1.])
-ax.set_axis_off()
-fig.add_axes(ax)
+#plt.axis('off')
+#ax = plt.Axes(fig, [0., 0., 1., 1.])
+#ax.set_axis_off()
+#fig.add_axes(ax)
 
-#plot input image
-imgplot = plt.imshow(SourceImage, cmap=plt.cm.gray, origin='lower', interpolation='none')
-#plot contour
-plt.contour(rgb2gray(SourceImage), ContourValues)
+#plot histogram
+plt.hist(SourceVolume.flatten(), 256, range=(0,256), fc='k', ec='k')
 plt.show()
 fig.canvas.draw()
 
-#copy result from matplot to SourceImage
-copyFigureCanvasToImageBuffer(fig, SourceImage)
+#save pdf
+if savePDF[0]==1:
+   saveFigureCanvasToPDF(fig, pdfDir)
+   savePDF[0] = 0
+
+#copy result from matplot to OutputImage
+copyFigureCanvasToImageBuffer(fig, OutputImage)
+OutputImage[:,:,3] = 255 #alpha
 plt.close()

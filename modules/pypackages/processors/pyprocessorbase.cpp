@@ -92,7 +92,7 @@ void PyProcessorBase::loadPythonScriptFile() {
 }
 
 void PyProcessorBase::runScript() {
-    PyScriptRunner::getPtr()->run();
+    PyScriptRunner::getPtr()->run(true);
     std::string retError = PyScriptRunner::getPtr()->getError();
     if (retError!="") {
         LogWarn(retError);
@@ -124,6 +124,7 @@ Buffer* PyProcessorBase::convertLayerToBuffer(LayerRAM* layer) {
      freeAllLayers();
  }
 
+///////////////////////////////////////////////////////////////////////////////
 //Buffer management
 bool PyProcessorBase::allocatePyBuffer(std::string bufferName, std::string bufferType, size_t bufferSize) {
     //allocate and cache buffer
@@ -142,7 +143,7 @@ bool PyProcessorBase::allocatePyBuffer(std::string bufferName, std::string buffe
         pyBufferMap_[bufferName] = buffer;
         pyBufferOwnershipMap_[bufferName] = true;
         buffer->setSize(bufferSize);
-        BufferRAM* bufferRAM = buffer->getEditableRepresentation<BufferRAM>();      
+        BufferRAM* bufferRAM = buffer->getEditableRepresentation<BufferRAM>();
         bufferRAM->initialize();
         if (bufferRAM->getSize()==bufferSize)
             return true;
@@ -212,7 +213,9 @@ void PyProcessorBase::freeAllBuffers() {
         deallocatePyBuffer(bufferNames[i]);
     pyBufferMap_.clear();
 }
+///////////////////////////////////////////////////////////////////////////////
 
+///////////////////////////////////////////////////////////////////////////////
 //Layer management
 bool PyProcessorBase::allocateLayer(std::string layerName, std::string layerType, ivec2 layerDim) {
     //LogWarn("Not implemented")
@@ -240,7 +243,7 @@ bool PyProcessorBase::allocateLayer(std::string layerName, std::string layerType
 }
 
 void PyProcessorBase::addExistingLayer(std::string layerName, Layer* layer) {
-    if (pyBufferMap_.find(layerName)!=pyBufferMap_.end())
+    if (pyLayerMap_.find(layerName)!=pyLayerMap_.end())
         LogWarn("Replacing layer with similar name")
     pyLayerMap_[layerName] = layer;
     pyLayerOwnershipMap_[layerName] = false;
@@ -298,8 +301,102 @@ void PyProcessorBase::freeAllLayers() {
         layerNames.push_back(it->first);
     for (size_t i=0; i<layerNames.size(); i++)
         deallocateLayer(layerNames[i]);
-    pyBufferMap_.clear();
+    pyLayerMap_.clear();
 }
+
+///////////////////////////////////////////////////////////////////////////////
+
+///////////////////////////////////////////////////////////////////////////////
+//Volume management
+bool PyProcessorBase::allocateVolume(std::string volumeName, std::string volumeType, uvec3 volumeDim) {
+    //LogWarn("Not implemented")
+    //allocate and cache buffer
+    if (pyVolumeMap_.find(volumeName)==pyVolumeMap_.end()) {
+        Volume* volume = 0;
+        if (0) volume = 0;
+#define DataFormatIdMacro(i) else if (volumeType == Data##i::str()) volume = new Volume(volumeDim, Data##i::get());
+#include <inviwo/core/util/formatsdefinefunc.h>
+
+        if (!volume) {
+            LogWarn("Invalid Volume Type requested");
+            return false;
+        }
+
+        pyVolumeMap_[volumeName] = volume;
+        pyVolumeOwnershipMap_[volumeName] = true;
+        VolumeRAM* volumeRAM = volume->getEditableRepresentation<VolumeRAM>();
+        volumeRAM->initialize();
+        if (volumeRAM->getDimension().x == volumeDim.x && volumeRAM->getDimension().y == volumeDim.y
+            && volumeRAM->getDimension().z == volumeDim.z)
+            return true;
+        return true;
+    }
+    return false;
+}
+
+void PyProcessorBase::addExistingVolume(std::string volumeName, Volume* volume) {
+    if (pyBufferMap_.find(volumeName)!=pyBufferMap_.end())
+        LogWarn("Replacing volume with similar name")
+        pyVolumeMap_[volumeName] = volume;
+    pyVolumeOwnershipMap_[volumeName] = false;
+}
+
+Volume* PyProcessorBase::getAllocatedVolume(std::string volumeName) {
+    Volume* volume = 0;
+    if (pyVolumeMap_.find(volumeName)!=pyVolumeMap_.end())
+        volume = pyVolumeMap_[volumeName];
+    return volume;
+}
+
+bool PyProcessorBase::isValidVolume(std::string volumeName) {
+    if (pyVolumeMap_.find(volumeName)!=pyVolumeMap_.end())
+        return true;
+    return false;
+}
+
+std::string PyProcessorBase::getVolumeType(std::string volumeName) {
+    Volume* volume = getAllocatedVolume(volumeName);
+    if (volume)
+        return volume->getEditableRepresentation<VolumeRAM>()->getDataFormat()->getString();
+    return "";
+}
+
+void* PyProcessorBase::getVolumeData(std::string volumeName) {
+    void* volumeData=0;
+    Volume* volume = 0;
+    if (pyVolumeMap_.find(volumeName)!=pyVolumeMap_.end()) {
+        volume = pyVolumeMap_[volumeName];
+        volumeData = volume->getEditableRepresentation<VolumeRAM>()->getData();
+    }
+    return volumeData;
+}
+
+void PyProcessorBase::deallocateVolume(std::string volumeName) {
+    std::map<std::string, Volume*>::iterator it = pyVolumeMap_.find(volumeName);
+    std::map<std::string, bool>::iterator itb = pyVolumeOwnershipMap_.find(volumeName);
+    if (it!=pyVolumeMap_.end()) {
+        Volume* volume = it->second;
+        if (pyVolumeOwnershipMap_[volumeName]) {
+            pyVolumeMap_.erase(it);
+            delete volume;
+            pyVolumeOwnershipMap_.erase(itb);
+        }
+        else
+            LogInfo("Processor does not own the volume. Cannot delete volume " + volumeName)
+    }
+}
+
+void PyProcessorBase::freeAllVolumes() {
+    std::map<std::string, Volume*>::iterator it;
+    std::vector<std::string> volumeNames;
+    for (it=pyVolumeMap_.begin(); it!=pyVolumeMap_.end(); ++it)
+        volumeNames.push_back(it->first);
+    for (size_t i=0; i<volumeNames.size(); i++)
+        deallocateVolume(volumeNames[i]);
+    pyVolumeMap_.clear();
+}
+
+///////////////////////////////////////////////////////////////////////////////
 
 
 } // namespace

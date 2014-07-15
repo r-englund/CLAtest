@@ -238,6 +238,95 @@ PyObject* py_getLayerData(PyObject* /*self*/, PyObject* args) {
     Py_RETURN_NONE;
 }
 
+PyObject* py_getVolumeData(PyObject* /*self*/, PyObject* args) {
+    static PyGetLayerData p;
+
+    if (!p.testParams(args))
+        return 0;
+
+    const char* pyProcessorId = 0;
+    const char* volumeDataName = 0;
+
+    if (!PyArg_ParseTuple(args, "ss:getVolumeData", &pyProcessorId, &volumeDataName))
+        return 0;
+
+    if (pyProcessorId && volumeDataName) {        
+        if (InviwoApplication::getPtr() && InviwoApplication::getPtr()->getProcessorNetwork()) {
+            std::vector<Processor*> processors  = InviwoApplication::getPtr()->getProcessorNetwork()->getProcessors();
+
+            for (std::vector<Processor*>::const_iterator processorIt = processors.begin(); processorIt!=processors.end(); ++processorIt) {
+                if (pyProcessorId == (*processorIt)->getIdentifier()) {
+                    //check type
+                    PyProcessorBase* pyProcessor = dynamic_cast<PyProcessorBase*>(*processorIt);
+                    if (pyProcessor) {
+                        std::string volumeName(volumeDataName);
+                        Volume* rawVolume = 0;
+                        void* volumeData = 0;
+                        std::string volumeTypeStr("");
+                        ivec3 volumeDim;
+                        if (pyProcessor->isValidVolume(volumeName)) {
+                            rawVolume = pyProcessor->getAllocatedVolume(volumeName);
+                            volumeData = pyProcessor->getVolumeData(volumeName);
+                            volumeTypeStr = pyProcessor->getVolumeType(volumeName);
+                            uvec3 d = rawVolume->getDimension();
+                            volumeDim = ivec3(d.x, d.y, d.z);
+                            std::cout << "Getting Volume data : " <<  volumeName << " of type " << volumeTypeStr << " " \
+                                << "-" << " with dim " << volumeDim.x << " " << volumeDim.y  << " " << volumeDim.z << std::endl;
+                        }
+                        else {
+                            std::cout << "Volume fetch failed" << std::endl;
+                        }
+
+                        if (!volumeData)  Py_RETURN_NONE;
+                        if (rawVolume->getDataFormat()->getComponents()==1) {
+                            #define RETURN_PYOBJECT(i) \
+                            case DataFormatEnums::##i: return PyPackageParser::toPyObject<Data##i>(volumeData, volumeDim);
+                            #include <modules/pypackages/pypackagesformatsmacro.h>
+
+                            switch (rawVolume->getDataFormat()->getId()) {
+                                PYPACKAGES_FORMAT_MACRO_EXPANDER(RETURN_PYOBJECT)
+                            default: break;
+                            }
+                        }
+                        else if (rawVolume->getDataFormat()->getComponents()==2) {
+                            #define RETURN_PYOBJECT(i) \
+                            case DataFormatEnums::Vec2##i: return PyPackageParser::toPyObject<DataVec2##i>(volumeData, volumeDim);
+                            #include <modules/pypackages/pypackagesformatsmacro.h>
+
+                            switch (rawVolume->getDataFormat()->getId()) {
+                                PYPACKAGES_FORMAT_MACRO_EXPANDER(RETURN_PYOBJECT)
+                            default: break;
+                            }
+                        }
+                        else if (rawVolume->getDataFormat()->getComponents()==3) {
+                            #define RETURN_PYOBJECT(i) \
+                            case DataFormatEnums::Vec3##i: return PyPackageParser::toPyObject<DataVec3##i>(volumeData, volumeDim);
+                            #include <modules/pypackages/pypackagesformatsmacro.h>
+
+                            switch (rawVolume->getDataFormat()->getId()) {
+                                PYPACKAGES_FORMAT_MACRO_EXPANDER(RETURN_PYOBJECT)
+                            default: break;
+                            }
+                        }
+                        else if (rawVolume->getDataFormat()->getComponents()==4) {
+                            #define RETURN_PYOBJECT(i) \
+                            case DataFormatEnums::Vec4##i: return PyPackageParser::toPyObject<DataVec4##i>(volumeData, volumeDim);
+                            #include <modules/pypackages/pypackagesformatsmacro.h>
+
+                            switch (rawVolume->getDataFormat()->getId()) {
+                                PYPACKAGES_FORMAT_MACRO_EXPANDER(RETURN_PYOBJECT)
+                            default: break;
+                            }
+                        }
+                    }
+                }
+            }
+        }         
+    }
+
+    Py_RETURN_NONE;
+}
+
 PyDeclareBufferData::PyDeclareBufferData()
     : pyprocessorId_("pyprocessorid")
     , bufferVariableName_("buffervariablename")
@@ -264,6 +353,14 @@ PyGetLayerData::PyGetLayerData()
 {
     addParam(&pyprocessorId_);
     addParam(&layerVariableName_);
+}
+
+PyGetVolumeData::PyGetVolumeData()
+    : pyprocessorId_("pyprocessorid")
+    , volumeVariableName_("volumevariablename")
+{
+    addParam(&pyprocessorId_);
+    addParam(&volumeVariableName_);
 }
 
 }

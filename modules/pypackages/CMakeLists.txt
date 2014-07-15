@@ -15,6 +15,7 @@ set(HEADER_FILES
     ${IVW_MODULE_DIR}/pypackages/processors/pycuda/pycudaimageinvert.h
 	${IVW_MODULE_DIR}/pypackages/processors/numpy/numpybuffertest.h
 	${IVW_MODULE_DIR}/pypackages/processors/numpy/numpyimagecontour.h
+	${IVW_MODULE_DIR}/pypackages/processors/numpy/numpyvolumehistogram.h
 )
 ivw_group("Header Files" ${HEADER_FILES})
 
@@ -29,6 +30,7 @@ set(SOURCE_FILES
     ${IVW_MODULE_DIR}/pypackages/processors/pycuda/pycudaimageinvert.cpp
 	${IVW_MODULE_DIR}/pypackages/processors/numpy/numpybuffertest.cpp
 	${IVW_MODULE_DIR}/pypackages/processors/numpy/numpyimagecontour.cpp
+	${IVW_MODULE_DIR}/pypackages/processors/numpy/numpyvolumehistogram.cpp
 )
 ivw_group("Source Files" ${SOURCE_FILES})
 

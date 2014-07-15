@@ -45,6 +45,7 @@ namespace inviwo {
 PyObject* py_declareBufferData(PyObject* /*self*/, PyObject* /*args*/);
 PyObject* py_getBufferData(PyObject* /*self*/, PyObject* /*args*/);
 PyObject* py_getLayerData(PyObject* /*self*/, PyObject* /*args*/);
+PyObject* py_getVolumeData(PyObject* /*self*/, PyObject* /*args*/);
 
 class IVW_MODULE_PYPACKAGES_API PyDeclareBufferData : public PyMethod {
 public:
@@ -82,6 +83,18 @@ public:
 private:
     PyParamString pyprocessorId_;
     PyParamString layerVariableName_;   
+};
+
+class IVW_MODULE_PYPACKAGES_API PyGetVolumeData : public PyMethod {
+public:
+    PyGetVolumeData();
+    virtual ~PyGetVolumeData() {}
+    virtual std::string getName()const {return "getVolumeData";}
+    virtual std::string getDesc()const {return "Get volume allocated by Inviwo.";}
+    virtual PyCFunction getFunc() {return py_getVolumeData;}
+private:
+    PyParamString pyprocessorId_;
+    PyParamString volumeVariableName_;   
 };
 
 } //namespace
