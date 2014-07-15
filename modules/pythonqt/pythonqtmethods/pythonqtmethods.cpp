@@ -37,6 +37,9 @@
 #include <inviwo/qt/editor/networkeditor.h>
 #include <inviwo/qt/widgets/inviwoapplicationqt.h>
 
+#include <QInputDialog>
+#include <QDir>
+
 namespace inviwo {
 
 PyObject* py_loadWorkspace(PyObject* /*self*/, PyObject* args) {
@@ -70,11 +73,35 @@ PyObject* py_loadWorkspace(PyObject* /*self*/, PyObject* args) {
     Py_RETURN_NONE;
 }
 
-
 PyObject* py_quitInviwo(PyObject* /*self*/, PyObject* /*args*/) {
     NetworkEditor::getPtr()->setModified(false);
     static_cast<InviwoApplicationQt*>(InviwoApplication::getPtr())->getMainWindow()->close();
     Py_RETURN_NONE;
 }
 
+PyObject* py_prompt(PyObject* /*self*/, PyObject* args) {
+    PyPromptMethod p;
+    if (!p.testParams(args)) {
+        return 0;
+    }
+    std::string title = std::string(PyValueParser::parse<std::string>(PyTuple_GetItem(args, 0)));
+    std::string message = std::string(PyValueParser::parse<std::string>(PyTuple_GetItem(args, 1)));
+    std::string defaultValue = "";
+
+    size_t size = static_cast<size_t>(PyTuple_Size(args));
+    if (size == 3) {
+        defaultValue = std::string(PyValueParser::parse<std::string>(PyTuple_GetItem(args, 2)));
+    }
+
+    bool ok;
+    QString text = QInputDialog::getText(0, title.c_str(), message.c_str(), QLineEdit::Normal,
+                                         defaultValue.c_str(), &ok);
+    if (ok && !text.isEmpty()) {
+        std::string t = text.toLocal8Bit().constData();
+        return PyValueParser::toPyObject(t);
+    } else if (ok) {
+        return PyValueParser::toPyObject(std::string(""));
+    }
+    Py_RETURN_NONE;
+}
 }
