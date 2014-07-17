@@ -44,8 +44,7 @@ namespace inviwo {
 class IVW_MODULE_PYPACKAGES_API PyPackagesModule : public InviwoModule {
 
 public:
-    PyPackagesModule();
-    bool isPackageAvailable(std::string packageName);
+    PyPackagesModule();    
 private:
     void initPyPackagesInterface();
     PyScriptRunner* pyScriptRunner_;

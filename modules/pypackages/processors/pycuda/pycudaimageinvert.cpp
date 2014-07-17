@@ -81,7 +81,7 @@ void PyCUDAImageInverter::onInportChange() {
         return; 
     }
 
-    bool pycudaAvailable = InviwoApplication::getPtr()->getModuleByType<PyPackagesModule>()->isPackageAvailable("pycuda");
+    bool pycudaAvailable = PyScriptRunner::getPtr()->isPackageAvailable("pycuda");
     //Check if pycuda package is available
     if (!pycudaAvailable)
         LogWarn("PyCUDA pacakage not available")

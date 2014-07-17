@@ -40,7 +40,7 @@ import matplotlib.pyplot as plt
 
 #input volume
 SourceVolume = pypackagesutil.getVolumeData("NumpyVolumeHistogram", "SourceVolume")
-#output volume
+#output histogram image
 OutputImage = pypackagesutil.getLayerData("NumpyVolumeHistogram", "OutputImage")
 #save pdf
 savePDF = pypackagesutil.getBufferData("NumpyVolumeHistogram","SavePDF") #TODO: Instead of buffers use regular bool
@@ -59,10 +59,10 @@ def copyFigureCanvasToImageBuffer(fig, InputImage):
    buf = np.flipud(buf)
    InputImage[:,:,0:3] = buf[:,:,:]
 
-def saveFigureCanvasToPDF(fig, PDFDir):
+def saveFigureCanvasToPDF(fig, PDFDir, PDFPrefix='pdfImage'):
    from matplotlib.backends.backend_pdf import PdfPages
    import time
-   PDFfileName = PDFDir + '/numpyVolumeHistogram_' + time.strftime("%H-%M-%S") + time.strftime("-%d-%m-%Y") + ".pdf"
+   PDFfileName = PDFDir + '/' + PDFPrefix + '_' + time.strftime("%H-%M-%S") + time.strftime("-%d-%m-%Y") + ".pdf"
    print PDFfileName
    pp = PdfPages(PDFfileName)
    pp.savefig(fig)
@@ -83,14 +83,13 @@ OutputImage.shape = newShape #reshaped
 
 #plot setting
 #fit plotting to full window
-#plt.axis('off')
-#ax = plt.Axes(fig, [0., 0., 1., 1.])
-#ax.set_axis_off()
-#fig.add_axes(ax)
+plt.axis('off')
+ax = plt.Axes(fig, [0., 0., 1., 1.])
+ax.set_axis_off()
+fig.add_axes(ax)
 
 #plot histogram
-#plt.hist(SourceVolume.flatten(), 256, range=(0,256), fc='k', ec='k')
-n, bins, patches = plt.hist(SourceVolume.flatten(), 256, range=(0,256), facecolor='green', alpha=0.75)
+plt.hist(SourceVolume.flatten(), 256, range=(0,256), facecolor='green', alpha=0.75)
 plt.xlabel('Voxel Intensity')
 plt.ylabel('Voxel Count')
 plt.title('Volume Histogram')
@@ -101,7 +100,7 @@ fig.canvas.draw()
 
 #save pdf
 if savePDF[0]==1:
-   saveFigureCanvasToPDF(fig, pdfDir)
+   saveFigureCanvasToPDF(fig, pdfDir, 'numpyVolumeHistogram')
    savePDF[0] = 0
 
 #copy result from matplot to OutputImage
