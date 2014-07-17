@@ -92,7 +92,7 @@ void PyProcessorBase::loadPythonScriptFile() {
 }
 
 void PyProcessorBase::runScript() {
-    PyScriptRunner::getPtr()->run(true);
+    PyScriptRunner::getPtr()->run(false);
     std::string retError = PyScriptRunner::getPtr()->getError();
     if (retError!="") {
         LogWarn(retError);

@@ -111,48 +111,13 @@ void PyPackagesModule::initPyPackagesInterface() {
         import_array();
 
         //Retrive available packages
-        isPackageAvailable("pycuda");
-        isPackageAvailable("numpy");
+        PyScriptRunner::getPtr()->isPackageAvailable("pycuda");
+        PyScriptRunner::getPtr()->isPackageAvailable("numpy");
+        PyScriptRunner::getPtr()->isPackageAvailable("matplotlib");
     }
     else {
         LogError("Python is not Initialized. Hence numpy not initialized.");
     }
-}
-
-bool PyPackagesModule::isPackageAvailable(std::string packageName) {
-    
-    std::stringstream ss;
-    std::string packageAvailable = packageName + " is available";
-    std::string packageNotAvailable = packageName + " is not available";
-    ss << "import imp "<< std::endl; 
-    ss << "try: "<< std::endl; 
-    ss << "    imp.find_module('" + packageName +"') "<< std::endl;
-    ss << "    print '" + packageAvailable << "'"<< std::endl;
-    ss << "except ImportError:" << std::endl;
-    ss << "    print '" + packageNotAvailable << "'"<< std::endl;
-
-    std::string queryPackage(ss.str());
-    PyScriptRunner::getPtr()->run(queryPackage);
-    std::string retError = PyScriptRunner::getPtr()->getError();
-    
-    bool found = false;
-    if (retError!="") {
-        LogWarn("Module query failed");
-        found = false;
-    }
-    else {
-        std::string status = PyScriptRunner::getPtr()->getStandardOutput();
-        if (status==packageAvailable) {
-            LogInfo("Pacakage " + packageName + " is available");
-            found = true;
-        }
-        else {
-            LogInfo("Pacakage " + packageName + " is not available");
-            found = false;
-        }
-    }
-     PyScriptRunner::getPtr()->clear();
-    return found;
 }
 
 } // namespace

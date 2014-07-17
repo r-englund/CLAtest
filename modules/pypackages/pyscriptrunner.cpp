@@ -67,10 +67,8 @@ void PyScriptRunner::run(bool noLogging) {
     clear();
     Clock c;
     c.start();
-    bool ok = script_.run(!noLogging);
+    bool ok = script_.run();
     c.stop();
-
-    if (noLogging) return;
 
     if (ok) {
         LogInfo("Python Script Executed succesfully");
@@ -84,6 +82,42 @@ std::string PyScriptRunner::getStandardOutput() { return standard_;}
 std::string PyScriptRunner::getError() { return error_;}
 
 void PyScriptRunner::clear() { error_=""; standard_="";}
+
+bool PyScriptRunner::isPackageAvailable(std::string packageName) {
+
+    std::stringstream ss;
+    std::string packageAvailable = packageName + " is available";
+    std::string packageNotAvailable = packageName + " is not available";
+    ss << "import imp "<< std::endl; 
+    ss << "try: "<< std::endl; 
+    ss << "    imp.find_module('" + packageName +"') "<< std::endl;
+    ss << "    print '" + packageAvailable << "'"<< std::endl;
+    ss << "except ImportError:" << std::endl;
+    ss << "    print '" + packageNotAvailable << "'"<< std::endl;
+
+    std::string queryPackage(ss.str());
+    this->run(queryPackage);
+    std::string retError = this->getError();
+
+    bool found = false;
+    if (retError!="") {
+        LogWarn("Module query failed");
+        found = false;
+    }
+    else {
+        std::string status =  this->getStandardOutput();
+        if (status==packageAvailable) {
+            LogInfo("Pacakage " + packageName + " is available");
+            found = true;
+        }
+        else {
+            LogInfo("Pacakage " + packageName + " is not available");
+            found = false;
+        }
+    }
+    this->clear();
+    return found;
+}
 
 
 } // namespace

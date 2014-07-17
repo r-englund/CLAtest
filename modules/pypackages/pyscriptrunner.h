@@ -51,6 +51,7 @@ public:
     std::string getStandardOutput();
     std::string getError();
     void clear();
+    bool isPackageAvailable(std::string packageName);
 private:
     PythonScript script_;
     std::string error_;
