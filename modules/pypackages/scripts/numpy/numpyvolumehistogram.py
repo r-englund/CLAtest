@@ -83,10 +83,10 @@ OutputImage.shape = newShape #reshaped
 
 #plot setting
 #fit plotting to full window
-plt.axis('off')
-ax = plt.Axes(fig, [0., 0., 1., 1.])
-ax.set_axis_off()
-fig.add_axes(ax)
+#plt.axis('off')
+#ax = plt.Axes(fig, [0., 0., 1., 1.])
+#ax.set_axis_off()
+#fig.add_axes(ax)
 
 #plot histogram
 plt.hist(SourceVolume.flatten(), 256, range=(0,256), facecolor='green', alpha=0.75)
