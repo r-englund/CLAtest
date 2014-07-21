@@ -319,7 +319,7 @@
                             <position x="506" y="684" />
                             <dimension x="731" y="392" />
                             <visibility content="0" />
-                            <dockstatus content="Floating" />
+                            <dockstatus content="DockedRight" />
                         </MetaData>
                     </MetaDataList>
                     <zoomH_ x="0" y="0.76200002" />
@@ -683,7 +683,7 @@
                     <selection content="0" />
                 </MetaData>
                 <MetaData type="ProcessorWidgetMetaData">
-                    <position x="2981" y="320" />
+                    <position x="1531" y="772" />
                     <dimension x="300" y="300" />
                     <visibility content="1" />
                 </MetaData>
@@ -769,7 +769,7 @@
                 </Property>
             </Properties>
         </Processor>
-        <Processor type="SimpleRaycaster" identifier="SimpleRaycaster" id="ref29">
+        <Processor type="SimpleRaycaster" identifier="SimpleRaycaster" id="ref28">
             <MetaDataList>
                 <MetaData type="ProcessorMetaData">
                     <position x="-600" y="-750" />
@@ -778,11 +778,11 @@
                 </MetaData>
             </MetaDataList>
             <Properties>
-                <Property type="BoolProperty" identifier="applyLightAttenuation" displayName="Light attenuation" key="applyLightAttenuation" id="ref41">
+                <Property type="BoolProperty" identifier="applyLightAttenuation" displayName="Light attenuation" key="applyLightAttenuation" id="ref40">
                     <usageMode content="0" />
                     <visible content="1" />
                 </Property>
-                <Property type="CameraProperty" identifier="camera" displayName="Camera" key="camera" id="ref43">
+                <Property type="CameraProperty" identifier="camera" displayName="Camera" key="camera" id="ref42">
                     <usageMode content="0" />
                     <visible content="1" />
                     <lookFrom type="FloatVec3Property" identifier="lookFrom" displayName="Look from">
@@ -821,63 +821,63 @@
                     <usageMode content="0" />
                     <visible content="1" />
                 </Property>
-                <Property type="OptionPropertyString" identifier="classificationMode" displayName="Classification" key="classificationMode" id="ref32">
+                <Property type="OptionPropertyString" identifier="classificationMode" displayName="Classification" key="classificationMode" id="ref31">
                     <usageMode content="0" />
                     <visible content="1" />
                 </Property>
-                <Property type="OptionPropertyString" identifier="compositingMode" displayName="Compositing" key="compositingMode" id="ref35">
+                <Property type="OptionPropertyString" identifier="compositingMode" displayName="Compositing" key="compositingMode" id="ref34">
                     <usageMode content="0" />
                     <visible content="1" />
                 </Property>
-                <Property type="OptionPropertyString" identifier="gradientComputationMode" displayName="Gradient computation" key="gradientComputationMode" id="ref33">
+                <Property type="OptionPropertyString" identifier="gradientComputationMode" displayName="Gradient computation" key="gradientComputationMode" id="ref32">
                     <usageMode content="0" />
                     <visible content="1" />
                     <selectedIdentifier content="central" />
                 </Property>
-                <Property type="FloatProperty" identifier="isoValue" displayName="Iso value" key="isoValue" id="ref31">
+                <Property type="FloatProperty" identifier="isoValue" displayName="Iso value" key="isoValue" id="ref30">
                     <usageMode content="0" />
                     <visible content="1" />
                 </Property>
-                <Property type="FloatVec3Property" identifier="lightAttenuation" displayName="Light attenuation values" key="lightAttenuation" id="ref42">
+                <Property type="FloatVec3Property" identifier="lightAttenuation" displayName="Light attenuation values" key="lightAttenuation" id="ref41">
                     <usageMode content="0" />
                     <visible content="1" />
                 </Property>
-                <Property type="FloatVec3Property" identifier="lightColorAmbient" displayName="Ambient color" key="lightColorAmbient" id="ref37">
+                <Property type="FloatVec3Property" identifier="lightColorAmbient" displayName="Ambient color" key="lightColorAmbient" id="ref36">
                     <semantics semantics="Color" />
                     <usageMode content="0" />
                     <visible content="1" />
                     <value x="0.49803922" y="0.49803922" z="0.49803922" />
                 </Property>
-                <Property type="FloatVec3Property" identifier="lightColorDiffuse" displayName="Diffuse color" key="lightColorDiffuse" id="ref38">
+                <Property type="FloatVec3Property" identifier="lightColorDiffuse" displayName="Diffuse color" key="lightColorDiffuse" id="ref37">
                     <semantics semantics="Color" />
                     <usageMode content="0" />
                     <visible content="1" />
                     <value x="0.49803922" y="0.49803922" z="0.49803922" />
                 </Property>
-                <Property type="FloatVec3Property" identifier="lightColorSpecular" displayName="Specular color" key="lightColorSpecular" id="ref39">
+                <Property type="FloatVec3Property" identifier="lightColorSpecular" displayName="Specular color" key="lightColorSpecular" id="ref38">
                     <semantics semantics="Color" />
                     <usageMode content="0" />
                     <visible content="1" />
                     <value x="0.49803922" y="0.49803922" z="0.49803922" />
                 </Property>
-                <Property type="FloatVec3Property" identifier="lightPosition" displayName="Position" key="lightPosition" id="ref36">
+                <Property type="FloatVec3Property" identifier="lightPosition" displayName="Position" key="lightPosition" id="ref35">
                     <semantics semantics="Spherical" />
                     <usageMode content="0" />
                     <visible content="1" />
                 </Property>
-                <Property type="IntProperty" identifier="materialShininess" displayName="Material shininess" key="materialShininess" id="ref40">
+                <Property type="IntProperty" identifier="materialShininess" displayName="Material shininess" key="materialShininess" id="ref39">
                     <usageMode content="0" />
                     <visible content="1" />
                 </Property>
-                <Property type="FloatProperty" identifier="samplingRate" displayName="Sampling rate" key="samplingRate" id="ref30">
+                <Property type="FloatProperty" identifier="samplingRate" displayName="Sampling rate" key="samplingRate" id="ref29">
                     <usageMode content="0" />
                     <visible content="1" />
                 </Property>
-                <Property type="OptionPropertyString" identifier="shadingMode" displayName="Shading" key="shadingMode" id="ref34">
+                <Property type="OptionPropertyString" identifier="shadingMode" displayName="Shading" key="shadingMode" id="ref33">
                     <usageMode content="0" />
                     <visible content="1" />
                 </Property>
-                <Property type="TransferFunctionProperty" identifier="transferFunction" displayName="Transfer function" key="transferFunction" id="ref44">
+                <Property type="TransferFunctionProperty" identifier="transferFunction" displayName="Transfer function" key="transferFunction" id="ref43">
                     <usageMode content="0" />
                     <visible content="1" />
                     <MetaDataList>
@@ -934,7 +934,7 @@
                 </Property>
             </Properties>
         </Processor>
-        <Processor type="Background" identifier="Background2" id="ref45">
+        <Processor type="Background" identifier="Background2" id="ref44">
             <MetaDataList>
                 <MetaData type="ProcessorMetaData">
                     <position x="-600" y="-675" />
@@ -943,24 +943,24 @@
                 </MetaData>
             </MetaDataList>
             <Properties>
-                <Property type="OptionPropertyInt" identifier="backgroundStyle" displayName="Style" key="backgroundStyle" id="ref46">
+                <Property type="OptionPropertyInt" identifier="backgroundStyle" displayName="Style" key="backgroundStyle" id="ref45">
                     <usageMode content="0" />
                     <visible content="1" />
                 </Property>
-                <Property type="FloatVec4Property" identifier="color1" displayName="Color 1" key="color1" id="ref47">
+                <Property type="FloatVec4Property" identifier="color1" displayName="Color 1" key="color1" id="ref46">
                     <semantics semantics="Color" />
                     <usageMode content="0" />
                     <visible content="1" />
                     <value x="0" y="0" z="0" w="1" />
                 </Property>
-                <Property type="FloatVec4Property" identifier="color2" displayName="Color 2" key="color2" id="ref48">
+                <Property type="FloatVec4Property" identifier="color2" displayName="Color 2" key="color2" id="ref47">
                     <semantics semantics="Color" />
                     <usageMode content="0" />
                     <visible content="1" />
                 </Property>
             </Properties>
         </Processor>
-        <Processor type="CanvasGL" identifier="outport2" id="ref28">
+        <Processor type="CanvasGL" identifier="outport2" id="ref48">
             <MetaDataList>
                 <MetaData type="ProcessorMetaData">
                     <position x="-600" y="-600" />
@@ -968,7 +968,7 @@
                     <selection content="1" />
                 </MetaData>
                 <MetaData type="ProcessorWidgetMetaData">
-                    <position x="2323" y="346" />
+                    <position x="1497" y="252" />
                     <dimension x="300" y="300" />
                     <visibility content="1" />
                 </MetaData>
@@ -1115,7 +1115,7 @@
                 <Processor type="VolumeSource" identifier="VolumeSource" reference="ref0" />
             </OutPort>
             <InPort identifier="volume">
-                <Processor type="SimpleRaycaster" identifier="SimpleRaycaster" reference="ref29" />
+                <Processor type="SimpleRaycaster" identifier="SimpleRaycaster" reference="ref28" />
             </InPort>
         </Connection>
         <Connection>
@@ -1123,7 +1123,7 @@
                 <Processor type="EntryExitPoints" identifier="EntryExitPoints" reference="ref21" />
             </OutPort>
             <InPort identifier="entry-points">
-                <Processor type="SimpleRaycaster" identifier="SimpleRaycaster" reference="ref29" />
+                <Processor type="SimpleRaycaster" identifier="SimpleRaycaster" reference="ref28" />
             </InPort>
         </Connection>
         <Connection>
@@ -1131,23 +1131,23 @@
                 <Processor type="EntryExitPoints" identifier="EntryExitPoints" reference="ref21" />
             </OutPort>
             <InPort identifier="exit-points">
-                <Processor type="SimpleRaycaster" identifier="SimpleRaycaster" reference="ref29" />
+                <Processor type="SimpleRaycaster" identifier="SimpleRaycaster" reference="ref28" />
             </InPort>
         </Connection>
         <Connection>
             <OutPort identifier="outport">
-                <Processor type="SimpleRaycaster" identifier="SimpleRaycaster" reference="ref29" />
+                <Processor type="SimpleRaycaster" identifier="SimpleRaycaster" reference="ref28" />
             </OutPort>
             <InPort identifier="inport">
-                <Processor type="Background" identifier="Background2" reference="ref45" />
+                <Processor type="Background" identifier="Background2" reference="ref44" />
             </InPort>
         </Connection>
         <Connection>
             <OutPort identifier="outport">
-                <Processor type="Background" identifier="Background2" reference="ref45" />
+                <Processor type="Background" identifier="Background2" reference="ref44" />
             </OutPort>
             <InPort identifier="inport">
-                <Processor type="CanvasGL" identifier="outport2" reference="ref28" />
+                <Processor type="CanvasGL" identifier="outport2" reference="ref48" />
             </InPort>
         </Connection>
     </Connections>
@@ -1155,402 +1155,242 @@
         <PropertyLink>
             <Properties>
                 <Property type="OptionPropertyInt" identifier="backgroundStyle" displayName="Style" key="backgroundStyle" reference="ref25" />
-                <Property type="OptionPropertyInt" identifier="backgroundStyle" displayName="Style" key="backgroundStyle" reference="ref46" />
+                <Property type="OptionPropertyInt" identifier="backgroundStyle" displayName="Style" key="backgroundStyle" reference="ref45" />
             </Properties>
-            <PropertyOwners>
-                <Processor type="Background" identifier="Background" reference="ref24" />
-                <Processor type="Background" identifier="Background2" reference="ref45" />
-            </PropertyOwners>
         </PropertyLink>
         <PropertyLink>
             <Properties>
-                <Property type="OptionPropertyInt" identifier="backgroundStyle" displayName="Style" key="backgroundStyle" reference="ref46" />
+                <Property type="OptionPropertyInt" identifier="backgroundStyle" displayName="Style" key="backgroundStyle" reference="ref45" />
                 <Property type="OptionPropertyInt" identifier="backgroundStyle" displayName="Style" key="backgroundStyle" reference="ref25" />
             </Properties>
-            <PropertyOwners>
-                <Processor type="Background" identifier="Background2" reference="ref45" />
-                <Processor type="Background" identifier="Background" reference="ref24" />
-            </PropertyOwners>
         </PropertyLink>
         <PropertyLink>
             <Properties>
                 <Property type="FloatVec4Property" identifier="color1" displayName="Color 1" key="color1" reference="ref26" />
-                <Property type="FloatVec4Property" identifier="color1" displayName="Color 1" key="color1" reference="ref47" />
+                <Property type="FloatVec4Property" identifier="color1" displayName="Color 1" key="color1" reference="ref46" />
             </Properties>
-            <PropertyOwners>
-                <Processor type="Background" identifier="Background" reference="ref24" />
-                <Processor type="Background" identifier="Background2" reference="ref45" />
-            </PropertyOwners>
         </PropertyLink>
         <PropertyLink>
             <Properties>
-                <Property type="FloatVec4Property" identifier="color1" displayName="Color 1" key="color1" reference="ref47" />
+                <Property type="FloatVec4Property" identifier="color1" displayName="Color 1" key="color1" reference="ref46" />
                 <Property type="FloatVec4Property" identifier="color1" displayName="Color 1" key="color1" reference="ref26" />
             </Properties>
-            <PropertyOwners>
-                <Processor type="Background" identifier="Background2" reference="ref45" />
-                <Processor type="Background" identifier="Background" reference="ref24" />
-            </PropertyOwners>
         </PropertyLink>
         <PropertyLink>
             <Properties>
                 <Property type="FloatVec4Property" identifier="color2" displayName="Color 2" key="color2" reference="ref27" />
-                <Property type="FloatVec4Property" identifier="color2" displayName="Color 2" key="color2" reference="ref48" />
+                <Property type="FloatVec4Property" identifier="color2" displayName="Color 2" key="color2" reference="ref47" />
             </Properties>
-            <PropertyOwners>
-                <Processor type="Background" identifier="Background" reference="ref24" />
-                <Processor type="Background" identifier="Background2" reference="ref45" />
-            </PropertyOwners>
         </PropertyLink>
         <PropertyLink>
             <Properties>
-                <Property type="FloatVec4Property" identifier="color2" displayName="Color 2" key="color2" reference="ref48" />
+                <Property type="FloatVec4Property" identifier="color2" displayName="Color 2" key="color2" reference="ref47" />
                 <Property type="FloatVec4Property" identifier="color2" displayName="Color 2" key="color2" reference="ref27" />
             </Properties>
-            <PropertyOwners>
-                <Processor type="Background" identifier="Background2" reference="ref45" />
-                <Processor type="Background" identifier="Background" reference="ref24" />
-            </PropertyOwners>
         </PropertyLink>
         <PropertyLink>
             <Properties>
                 <Property type="FloatProperty" identifier="samplingRate" displayName="Sampling rate" key="samplingRate" reference="ref5" />
-                <Property type="FloatProperty" identifier="samplingRate" displayName="Sampling rate" key="samplingRate" reference="ref30" />
+                <Property type="FloatProperty" identifier="samplingRate" displayName="Sampling rate" key="samplingRate" reference="ref29" />
             </Properties>
-            <PropertyOwners>
-                <Processor type="HaloVolumeRaycaster" identifier="HaloVolumeRaycaster" reference="ref4" />
-                <Processor type="SimpleRaycaster" identifier="SimpleRaycaster" reference="ref29" />
-            </PropertyOwners>
         </PropertyLink>
         <PropertyLink>
             <Properties>
-                <Property type="FloatProperty" identifier="samplingRate" displayName="Sampling rate" key="samplingRate" reference="ref30" />
+                <Property type="FloatProperty" identifier="samplingRate" displayName="Sampling rate" key="samplingRate" reference="ref29" />
                 <Property type="FloatProperty" identifier="samplingRate" displayName="Sampling rate" key="samplingRate" reference="ref5" />
             </Properties>
-            <PropertyOwners>
-                <Processor type="SimpleRaycaster" identifier="SimpleRaycaster" reference="ref29" />
-                <Processor type="HaloVolumeRaycaster" identifier="HaloVolumeRaycaster" reference="ref4" />
-            </PropertyOwners>
         </PropertyLink>
         <PropertyLink>
             <Properties>
                 <Property type="OptionPropertyString" identifier="classificationMode" displayName="Classification" key="classificationMode" reference="ref7" />
-                <Property type="OptionPropertyString" identifier="classificationMode" displayName="Classification" key="classificationMode" reference="ref32" />
+                <Property type="OptionPropertyString" identifier="classificationMode" displayName="Classification" key="classificationMode" reference="ref31" />
             </Properties>
-            <PropertyOwners>
-                <Processor type="HaloVolumeRaycaster" identifier="HaloVolumeRaycaster" reference="ref4" />
-                <Processor type="SimpleRaycaster" identifier="SimpleRaycaster" reference="ref29" />
-            </PropertyOwners>
         </PropertyLink>
         <PropertyLink>
             <Properties>
-                <Property type="OptionPropertyString" identifier="classificationMode" displayName="Classification" key="classificationMode" reference="ref32" />
+                <Property type="OptionPropertyString" identifier="classificationMode" displayName="Classification" key="classificationMode" reference="ref31" />
                 <Property type="OptionPropertyString" identifier="classificationMode" displayName="Classification" key="classificationMode" reference="ref7" />
             </Properties>
-            <PropertyOwners>
-                <Processor type="SimpleRaycaster" identifier="SimpleRaycaster" reference="ref29" />
-                <Processor type="HaloVolumeRaycaster" identifier="HaloVolumeRaycaster" reference="ref4" />
-            </PropertyOwners>
         </PropertyLink>
         <PropertyLink>
             <Properties>
                 <Property type="OptionPropertyString" identifier="gradientComputationMode" displayName="Gradient computation" key="gradientComputationMode" reference="ref8" />
-                <Property type="OptionPropertyString" identifier="gradientComputationMode" displayName="Gradient computation" key="gradientComputationMode" reference="ref33" />
+                <Property type="OptionPropertyString" identifier="gradientComputationMode" displayName="Gradient computation" key="gradientComputationMode" reference="ref32" />
             </Properties>
-            <PropertyOwners>
-                <Processor type="HaloVolumeRaycaster" identifier="HaloVolumeRaycaster" reference="ref4" />
-                <Processor type="SimpleRaycaster" identifier="SimpleRaycaster" reference="ref29" />
-            </PropertyOwners>
         </PropertyLink>
         <PropertyLink>
             <Properties>
-                <Property type="OptionPropertyString" identifier="gradientComputationMode" displayName="Gradient computation" key="gradientComputationMode" reference="ref33" />
+                <Property type="OptionPropertyString" identifier="gradientComputationMode" displayName="Gradient computation" key="gradientComputationMode" reference="ref32" />
                 <Property type="OptionPropertyString" identifier="gradientComputationMode" displayName="Gradient computation" key="gradientComputationMode" reference="ref8" />
             </Properties>
-            <PropertyOwners>
-                <Processor type="SimpleRaycaster" identifier="SimpleRaycaster" reference="ref29" />
-                <Processor type="HaloVolumeRaycaster" identifier="HaloVolumeRaycaster" reference="ref4" />
-            </PropertyOwners>
         </PropertyLink>
         <PropertyLink>
             <Properties>
                 <Property type="OptionPropertyString" identifier="compositingMode" displayName="Compositing" key="compositingMode" reference="ref10" />
-                <Property type="OptionPropertyString" identifier="compositingMode" displayName="Compositing" key="compositingMode" reference="ref35" />
+                <Property type="OptionPropertyString" identifier="compositingMode" displayName="Compositing" key="compositingMode" reference="ref34" />
             </Properties>
-            <PropertyOwners>
-                <Processor type="HaloVolumeRaycaster" identifier="HaloVolumeRaycaster" reference="ref4" />
-                <Processor type="SimpleRaycaster" identifier="SimpleRaycaster" reference="ref29" />
-            </PropertyOwners>
         </PropertyLink>
         <PropertyLink>
             <Properties>
-                <Property type="OptionPropertyString" identifier="compositingMode" displayName="Compositing" key="compositingMode" reference="ref35" />
+                <Property type="OptionPropertyString" identifier="compositingMode" displayName="Compositing" key="compositingMode" reference="ref34" />
                 <Property type="OptionPropertyString" identifier="compositingMode" displayName="Compositing" key="compositingMode" reference="ref10" />
             </Properties>
-            <PropertyOwners>
-                <Processor type="SimpleRaycaster" identifier="SimpleRaycaster" reference="ref29" />
-                <Processor type="HaloVolumeRaycaster" identifier="HaloVolumeRaycaster" reference="ref4" />
-            </PropertyOwners>
         </PropertyLink>
         <PropertyLink>
             <Properties>
                 <Property type="CameraProperty" identifier="camera" displayName="Camera" key="camera" reference="ref18" />
-                <Property type="CameraProperty" identifier="camera" displayName="Camera" key="camera" reference="ref43" />
+                <Property type="CameraProperty" identifier="camera" displayName="Camera" key="camera" reference="ref42" />
             </Properties>
-            <PropertyOwners>
-                <Processor type="HaloVolumeRaycaster" identifier="HaloVolumeRaycaster" reference="ref4" />
-                <Processor type="SimpleRaycaster" identifier="SimpleRaycaster" reference="ref29" />
-            </PropertyOwners>
         </PropertyLink>
         <PropertyLink>
             <Properties>
-                <Property type="CameraProperty" identifier="camera" displayName="Camera" key="camera" reference="ref43" />
+                <Property type="CameraProperty" identifier="camera" displayName="Camera" key="camera" reference="ref42" />
                 <Property type="CameraProperty" identifier="camera" displayName="Camera" key="camera" reference="ref18" />
             </Properties>
-            <PropertyOwners>
-                <Processor type="SimpleRaycaster" identifier="SimpleRaycaster" reference="ref29" />
-                <Processor type="HaloVolumeRaycaster" identifier="HaloVolumeRaycaster" reference="ref4" />
-            </PropertyOwners>
         </PropertyLink>
         <PropertyLink>
             <Properties>
                 <Property type="TransferFunctionProperty" identifier="transferFunction" displayName="Transfer function" key="transferFunction" reference="ref19" />
-                <Property type="TransferFunctionProperty" identifier="transferFunction" displayName="Transfer function" key="transferFunction" reference="ref44" />
+                <Property type="TransferFunctionProperty" identifier="transferFunction" displayName="Transfer function" key="transferFunction" reference="ref43" />
             </Properties>
-            <PropertyOwners>
-                <Processor type="HaloVolumeRaycaster" identifier="HaloVolumeRaycaster" reference="ref4" />
-                <Processor type="SimpleRaycaster" identifier="SimpleRaycaster" reference="ref29" />
-            </PropertyOwners>
         </PropertyLink>
         <PropertyLink>
             <Properties>
-                <Property type="TransferFunctionProperty" identifier="transferFunction" displayName="Transfer function" key="transferFunction" reference="ref44" />
+                <Property type="TransferFunctionProperty" identifier="transferFunction" displayName="Transfer function" key="transferFunction" reference="ref43" />
                 <Property type="TransferFunctionProperty" identifier="transferFunction" displayName="Transfer function" key="transferFunction" reference="ref19" />
             </Properties>
-            <PropertyOwners>
-                <Processor type="SimpleRaycaster" identifier="SimpleRaycaster" reference="ref29" />
-                <Processor type="HaloVolumeRaycaster" identifier="HaloVolumeRaycaster" reference="ref4" />
-            </PropertyOwners>
         </PropertyLink>
         <PropertyLink>
             <Properties>
                 <Property type="FloatProperty" identifier="isoValue" displayName="Iso value" key="isoValue" reference="ref6" />
-                <Property type="FloatProperty" identifier="isoValue" displayName="Iso value" key="isoValue" reference="ref31" />
+                <Property type="FloatProperty" identifier="isoValue" displayName="Iso value" key="isoValue" reference="ref30" />
             </Properties>
-            <PropertyOwners>
-                <Processor type="HaloVolumeRaycaster" identifier="HaloVolumeRaycaster" reference="ref4" />
-                <Processor type="SimpleRaycaster" identifier="SimpleRaycaster" reference="ref29" />
-            </PropertyOwners>
         </PropertyLink>
         <PropertyLink>
             <Properties>
-                <Property type="FloatProperty" identifier="isoValue" displayName="Iso value" key="isoValue" reference="ref31" />
+                <Property type="FloatProperty" identifier="isoValue" displayName="Iso value" key="isoValue" reference="ref30" />
                 <Property type="FloatProperty" identifier="isoValue" displayName="Iso value" key="isoValue" reference="ref6" />
             </Properties>
-            <PropertyOwners>
-                <Processor type="SimpleRaycaster" identifier="SimpleRaycaster" reference="ref29" />
-                <Processor type="HaloVolumeRaycaster" identifier="HaloVolumeRaycaster" reference="ref4" />
-            </PropertyOwners>
         </PropertyLink>
         <PropertyLink>
             <Properties>
                 <Property type="OptionPropertyString" identifier="shadingMode" displayName="Shading" key="shadingMode" reference="ref9" />
-                <Property type="OptionPropertyString" identifier="shadingMode" displayName="Shading" key="shadingMode" reference="ref34" />
+                <Property type="OptionPropertyString" identifier="shadingMode" displayName="Shading" key="shadingMode" reference="ref33" />
             </Properties>
-            <PropertyOwners>
-                <Processor type="HaloVolumeRaycaster" identifier="HaloVolumeRaycaster" reference="ref4" />
-                <Processor type="SimpleRaycaster" identifier="SimpleRaycaster" reference="ref29" />
-            </PropertyOwners>
         </PropertyLink>
         <PropertyLink>
             <Properties>
-                <Property type="OptionPropertyString" identifier="shadingMode" displayName="Shading" key="shadingMode" reference="ref34" />
+                <Property type="OptionPropertyString" identifier="shadingMode" displayName="Shading" key="shadingMode" reference="ref33" />
                 <Property type="OptionPropertyString" identifier="shadingMode" displayName="Shading" key="shadingMode" reference="ref9" />
             </Properties>
-            <PropertyOwners>
-                <Processor type="SimpleRaycaster" identifier="SimpleRaycaster" reference="ref29" />
-                <Processor type="HaloVolumeRaycaster" identifier="HaloVolumeRaycaster" reference="ref4" />
-            </PropertyOwners>
         </PropertyLink>
         <PropertyLink>
             <Properties>
                 <Property type="FloatVec3Property" identifier="lightPosition" displayName="Position" key="lightPosition" reference="ref11" />
-                <Property type="FloatVec3Property" identifier="lightPosition" displayName="Position" key="lightPosition" reference="ref36" />
+                <Property type="FloatVec3Property" identifier="lightPosition" displayName="Position" key="lightPosition" reference="ref35" />
             </Properties>
-            <PropertyOwners>
-                <Processor type="HaloVolumeRaycaster" identifier="HaloVolumeRaycaster" reference="ref4" />
-                <Processor type="SimpleRaycaster" identifier="SimpleRaycaster" reference="ref29" />
-            </PropertyOwners>
         </PropertyLink>
         <PropertyLink>
             <Properties>
-                <Property type="FloatVec3Property" identifier="lightPosition" displayName="Position" key="lightPosition" reference="ref36" />
+                <Property type="FloatVec3Property" identifier="lightPosition" displayName="Position" key="lightPosition" reference="ref35" />
                 <Property type="FloatVec3Property" identifier="lightPosition" displayName="Position" key="lightPosition" reference="ref11" />
             </Properties>
-            <PropertyOwners>
-                <Processor type="SimpleRaycaster" identifier="SimpleRaycaster" reference="ref29" />
-                <Processor type="HaloVolumeRaycaster" identifier="HaloVolumeRaycaster" reference="ref4" />
-            </PropertyOwners>
         </PropertyLink>
         <PropertyLink>
             <Properties>
                 <Property type="FloatVec3Property" identifier="lightColorAmbient" displayName="Ambient color" key="lightColorAmbient" reference="ref12" />
-                <Property type="FloatVec3Property" identifier="lightColorAmbient" displayName="Ambient color" key="lightColorAmbient" reference="ref37" />
+                <Property type="FloatVec3Property" identifier="lightColorAmbient" displayName="Ambient color" key="lightColorAmbient" reference="ref36" />
             </Properties>
-            <PropertyOwners>
-                <Processor type="HaloVolumeRaycaster" identifier="HaloVolumeRaycaster" reference="ref4" />
-                <Processor type="SimpleRaycaster" identifier="SimpleRaycaster" reference="ref29" />
-            </PropertyOwners>
         </PropertyLink>
         <PropertyLink>
             <Properties>
-                <Property type="FloatVec3Property" identifier="lightColorAmbient" displayName="Ambient color" key="lightColorAmbient" reference="ref37" />
+                <Property type="FloatVec3Property" identifier="lightColorAmbient" displayName="Ambient color" key="lightColorAmbient" reference="ref36" />
                 <Property type="FloatVec3Property" identifier="lightColorAmbient" displayName="Ambient color" key="lightColorAmbient" reference="ref12" />
             </Properties>
-            <PropertyOwners>
-                <Processor type="SimpleRaycaster" identifier="SimpleRaycaster" reference="ref29" />
-                <Processor type="HaloVolumeRaycaster" identifier="HaloVolumeRaycaster" reference="ref4" />
-            </PropertyOwners>
         </PropertyLink>
         <PropertyLink>
             <Properties>
                 <Property type="FloatVec3Property" identifier="lightColorDiffuse" displayName="Diffuse color" key="lightColorDiffuse" reference="ref13" />
-                <Property type="FloatVec3Property" identifier="lightColorDiffuse" displayName="Diffuse color" key="lightColorDiffuse" reference="ref38" />
+                <Property type="FloatVec3Property" identifier="lightColorDiffuse" displayName="Diffuse color" key="lightColorDiffuse" reference="ref37" />
             </Properties>
-            <PropertyOwners>
-                <Processor type="HaloVolumeRaycaster" identifier="HaloVolumeRaycaster" reference="ref4" />
-                <Processor type="SimpleRaycaster" identifier="SimpleRaycaster" reference="ref29" />
-            </PropertyOwners>
         </PropertyLink>
         <PropertyLink>
             <Properties>
-                <Property type="FloatVec3Property" identifier="lightColorDiffuse" displayName="Diffuse color" key="lightColorDiffuse" reference="ref38" />
+                <Property type="FloatVec3Property" identifier="lightColorDiffuse" displayName="Diffuse color" key="lightColorDiffuse" reference="ref37" />
                 <Property type="FloatVec3Property" identifier="lightColorDiffuse" displayName="Diffuse color" key="lightColorDiffuse" reference="ref13" />
             </Properties>
-            <PropertyOwners>
-                <Processor type="SimpleRaycaster" identifier="SimpleRaycaster" reference="ref29" />
-                <Processor type="HaloVolumeRaycaster" identifier="HaloVolumeRaycaster" reference="ref4" />
-            </PropertyOwners>
         </PropertyLink>
         <PropertyLink>
             <Properties>
                 <Property type="FloatVec3Property" identifier="lightColorSpecular" displayName="Specular color" key="lightColorSpecular" reference="ref14" />
-                <Property type="FloatVec3Property" identifier="lightColorSpecular" displayName="Specular color" key="lightColorSpecular" reference="ref39" />
+                <Property type="FloatVec3Property" identifier="lightColorSpecular" displayName="Specular color" key="lightColorSpecular" reference="ref38" />
             </Properties>
-            <PropertyOwners>
-                <Processor type="HaloVolumeRaycaster" identifier="HaloVolumeRaycaster" reference="ref4" />
-                <Processor type="SimpleRaycaster" identifier="SimpleRaycaster" reference="ref29" />
-            </PropertyOwners>
         </PropertyLink>
         <PropertyLink>
             <Properties>
-                <Property type="FloatVec3Property" identifier="lightColorSpecular" displayName="Specular color" key="lightColorSpecular" reference="ref39" />
+                <Property type="FloatVec3Property" identifier="lightColorSpecular" displayName="Specular color" key="lightColorSpecular" reference="ref38" />
                 <Property type="FloatVec3Property" identifier="lightColorSpecular" displayName="Specular color" key="lightColorSpecular" reference="ref14" />
             </Properties>
-            <PropertyOwners>
-                <Processor type="SimpleRaycaster" identifier="SimpleRaycaster" reference="ref29" />
-                <Processor type="HaloVolumeRaycaster" identifier="HaloVolumeRaycaster" reference="ref4" />
-            </PropertyOwners>
         </PropertyLink>
         <PropertyLink>
             <Properties>
                 <Property type="IntProperty" identifier="materialShininess" displayName="Material shininess" key="materialShininess" reference="ref15" />
-                <Property type="IntProperty" identifier="materialShininess" displayName="Material shininess" key="materialShininess" reference="ref40" />
+                <Property type="IntProperty" identifier="materialShininess" displayName="Material shininess" key="materialShininess" reference="ref39" />
             </Properties>
-            <PropertyOwners>
-                <Processor type="HaloVolumeRaycaster" identifier="HaloVolumeRaycaster" reference="ref4" />
-                <Processor type="SimpleRaycaster" identifier="SimpleRaycaster" reference="ref29" />
-            </PropertyOwners>
         </PropertyLink>
         <PropertyLink>
             <Properties>
-                <Property type="IntProperty" identifier="materialShininess" displayName="Material shininess" key="materialShininess" reference="ref40" />
+                <Property type="IntProperty" identifier="materialShininess" displayName="Material shininess" key="materialShininess" reference="ref39" />
                 <Property type="IntProperty" identifier="materialShininess" displayName="Material shininess" key="materialShininess" reference="ref15" />
             </Properties>
-            <PropertyOwners>
-                <Processor type="SimpleRaycaster" identifier="SimpleRaycaster" reference="ref29" />
-                <Processor type="HaloVolumeRaycaster" identifier="HaloVolumeRaycaster" reference="ref4" />
-            </PropertyOwners>
         </PropertyLink>
         <PropertyLink>
             <Properties>
                 <Property type="BoolProperty" identifier="applyLightAttenuation" displayName="Light attenuation" key="applyLightAttenuation" reference="ref16" />
-                <Property type="BoolProperty" identifier="applyLightAttenuation" displayName="Light attenuation" key="applyLightAttenuation" reference="ref41" />
+                <Property type="BoolProperty" identifier="applyLightAttenuation" displayName="Light attenuation" key="applyLightAttenuation" reference="ref40" />
             </Properties>
-            <PropertyOwners>
-                <Processor type="HaloVolumeRaycaster" identifier="HaloVolumeRaycaster" reference="ref4" />
-                <Processor type="SimpleRaycaster" identifier="SimpleRaycaster" reference="ref29" />
-            </PropertyOwners>
         </PropertyLink>
         <PropertyLink>
             <Properties>
-                <Property type="BoolProperty" identifier="applyLightAttenuation" displayName="Light attenuation" key="applyLightAttenuation" reference="ref41" />
+                <Property type="BoolProperty" identifier="applyLightAttenuation" displayName="Light attenuation" key="applyLightAttenuation" reference="ref40" />
                 <Property type="BoolProperty" identifier="applyLightAttenuation" displayName="Light attenuation" key="applyLightAttenuation" reference="ref16" />
             </Properties>
-            <PropertyOwners>
-                <Processor type="SimpleRaycaster" identifier="SimpleRaycaster" reference="ref29" />
-                <Processor type="HaloVolumeRaycaster" identifier="HaloVolumeRaycaster" reference="ref4" />
-            </PropertyOwners>
         </PropertyLink>
         <PropertyLink>
             <Properties>
                 <Property type="FloatVec3Property" identifier="lightAttenuation" displayName="Light attenuation values" key="lightAttenuation" reference="ref17" />
-                <Property type="FloatVec3Property" identifier="lightAttenuation" displayName="Light attenuation values" key="lightAttenuation" reference="ref42" />
+                <Property type="FloatVec3Property" identifier="lightAttenuation" displayName="Light attenuation values" key="lightAttenuation" reference="ref41" />
             </Properties>
-            <PropertyOwners>
-                <Processor type="HaloVolumeRaycaster" identifier="HaloVolumeRaycaster" reference="ref4" />
-                <Processor type="SimpleRaycaster" identifier="SimpleRaycaster" reference="ref29" />
-            </PropertyOwners>
         </PropertyLink>
         <PropertyLink>
             <Properties>
-                <Property type="FloatVec3Property" identifier="lightAttenuation" displayName="Light attenuation values" key="lightAttenuation" reference="ref42" />
+                <Property type="FloatVec3Property" identifier="lightAttenuation" displayName="Light attenuation values" key="lightAttenuation" reference="ref41" />
                 <Property type="FloatVec3Property" identifier="lightAttenuation" displayName="Light attenuation values" key="lightAttenuation" reference="ref17" />
             </Properties>
-            <PropertyOwners>
-                <Processor type="SimpleRaycaster" identifier="SimpleRaycaster" reference="ref29" />
-                <Processor type="HaloVolumeRaycaster" identifier="HaloVolumeRaycaster" reference="ref4" />
-            </PropertyOwners>
         </PropertyLink>
         <PropertyLink>
             <Properties>
                 <Property type="CameraProperty" identifier="camera" displayName="Camera" key="camera" reference="ref22" />
                 <Property type="CameraProperty" identifier="camera" displayName="Camera" key="camera" reference="ref2" />
             </Properties>
-            <PropertyOwners>
-                <Processor type="EntryExitPoints" identifier="EntryExitPoints" reference="ref21" />
-                <Processor type="HaloSeeds" identifier="HaloSeeds" reference="ref1" />
-            </PropertyOwners>
         </PropertyLink>
         <PropertyLink>
             <Properties>
                 <Property type="CameraProperty" identifier="camera" displayName="Camera" key="camera" reference="ref2" />
                 <Property type="CameraProperty" identifier="camera" displayName="Camera" key="camera" reference="ref22" />
             </Properties>
-            <PropertyOwners>
-                <Processor type="HaloSeeds" identifier="HaloSeeds" reference="ref1" />
-                <Processor type="EntryExitPoints" identifier="EntryExitPoints" reference="ref21" />
-            </PropertyOwners>
         </PropertyLink>
         <PropertyLink>
             <Properties>
                 <Property type="CameraProperty" identifier="camera" displayName="Camera" key="camera" reference="ref22" />
-                <Property type="CameraProperty" identifier="camera" displayName="Camera" key="camera" reference="ref43" />
+                <Property type="CameraProperty" identifier="camera" displayName="Camera" key="camera" reference="ref42" />
             </Properties>
-            <PropertyOwners>
-                <Processor type="EntryExitPoints" identifier="EntryExitPoints" reference="ref21" />
-                <Processor type="SimpleRaycaster" identifier="SimpleRaycaster" reference="ref29" />
-            </PropertyOwners>
         </PropertyLink>
         <PropertyLink>
             <Properties>
-                <Property type="CameraProperty" identifier="camera" displayName="Camera" key="camera" reference="ref43" />
+                <Property type="CameraProperty" identifier="camera" displayName="Camera" key="camera" reference="ref42" />
                 <Property type="CameraProperty" identifier="camera" displayName="Camera" key="camera" reference="ref22" />
             </Properties>
-            <PropertyOwners>
-                <Processor type="SimpleRaycaster" identifier="SimpleRaycaster" reference="ref29" />
-                <Processor type="EntryExitPoints" identifier="EntryExitPoints" reference="ref21" />
-            </PropertyOwners>
         </PropertyLink>
     </PropertyLinks>
 </InviwoTreeData>
