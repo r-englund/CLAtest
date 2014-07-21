@@ -71,10 +71,10 @@ private:
                        const glm::vec3 &p1, const double &v1, const glm::vec3 &p2, const double &v2,
                        const glm::vec3 &p3, const double &v3) {
         int index = 0;
-        if (v0 > 0) index += 1;
-        if (v1 > 0) index += 2;
-        if (v2 > 0) index += 4;
-        if (v3 > 0) index += 8;
+        if (v0 >= 0) index += 1;
+        if (v1 >= 0) index += 2;
+        if (v2 >= 0) index += 4;
+        if (v3 >= 0) index += 8;
         glm::vec3 a, b, c, d;
         if (index == 0 || index == 15) return;
         if (index == 1 || index == 14) {
@@ -302,9 +302,11 @@ void MarchingTetrahedron::evaluate() {
                     ok = false;
                     if (v[ii] != v[ii]) break;
                     if (v[ii] == std::numeric_limits<float>::infinity()) break;
+                    if (v[ii] == -std::numeric_limits<float>::infinity()) break;
                     if (v[ii] == std::numeric_limits<float>::max()) break;
                     if (v[ii] == std::numeric_limits<float>::min()) break;
                     if (v[ii] == std::numeric_limits<double>::infinity()) break;
+                    if (v[ii] == -std::numeric_limits<double>::infinity()) break;
                     if (v[ii] == std::numeric_limits<double>::max()) break;
                     if (v[ii] == std::numeric_limits<double>::min()) break;
                     ok = true;
