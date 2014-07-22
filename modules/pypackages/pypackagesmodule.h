@@ -44,9 +44,12 @@ namespace inviwo {
 class IVW_MODULE_PYPACKAGES_API PyPackagesModule : public InviwoModule {
 
 public:
-    PyPackagesModule();    
+    PyPackagesModule();
 private:
     void initPyPackagesInterface();
+    bool numpyRequirement();
+    bool matplotlibRequirement();
+    bool pycudaRequirement();
     PyScriptRunner* pyScriptRunner_;
 };
 

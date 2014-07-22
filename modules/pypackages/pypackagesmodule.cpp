@@ -51,11 +51,24 @@ namespace inviwo {
 
 PyPackagesModule::PyPackagesModule() : InviwoModule() {
     setIdentifier("PyPackages");
-    initPyPackagesInterface();
-    registerProcessor(NumpyBufferTest);
-    registerProcessor(PyCUDAImageInverter);
-    registerProcessor(NumpyImageContour);
-    registerProcessor(NumpyVolumeHistogram);
+    initPyPackagesInterface();    
+
+    bool numpyAvailable = numpyRequirement();
+    bool matplotAvailable = matplotlibRequirement();
+    bool pyCUDAAvailable = pycudaRequirement();
+
+    if (numpyAvailable) {
+        registerProcessor(NumpyBufferTest);
+    }
+
+    if (numpyAvailable && matplotAvailable) {
+        registerProcessor(NumpyImageContour);
+        registerProcessor(NumpyVolumeHistogram);
+    }
+
+    if (pyCUDAAvailable) {
+        registerProcessor(PyCUDAImageInverter);
+    }
 }
 
 void PyPackagesModule::initPyPackagesInterface() {
@@ -109,15 +122,28 @@ void PyPackagesModule::initPyPackagesInterface() {
 
         //Initialize numpy
         import_array();
-
-        //Retrive available packages
-        PyScriptRunner::getPtr()->isPackageAvailable("pycuda");
-        PyScriptRunner::getPtr()->isPackageAvailable("numpy");
-        PyScriptRunner::getPtr()->isPackageAvailable("matplotlib");
     }
     else {
         LogError("Python is not Initialized. Hence numpy not initialized.");
     }
+}
+
+bool PyPackagesModule::numpyRequirement() {
+    bool isNumpyAvailable = PyScriptRunner::getPtr()->isPackageAvailable("numpy");
+    if (!isNumpyAvailable) LogWarn("Numpy not available");
+    return isNumpyAvailable;
+}
+
+bool PyPackagesModule::matplotlibRequirement() {
+    bool isMatplotAvailable = PyScriptRunner::getPtr()->isPackageAvailable("matplotlib");
+    if (!isMatplotAvailable) LogWarn("Matplotlib not available");
+    return isMatplotAvailable;
+}
+
+bool PyPackagesModule::pycudaRequirement() {
+    bool isPycudaAvailable = PyScriptRunner::getPtr()->isPackageAvailable("pycuda");
+    if (!isPycudaAvailable) LogWarn("PyCUDA not available")
+    return isPycudaAvailable;
 }
 
 } // namespace
