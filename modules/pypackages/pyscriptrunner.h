@@ -44,18 +44,29 @@ class IVW_MODULE_PYPACKAGES_API PyScriptRunner : public Singleton<PyScriptRunner
 public:
     PyScriptRunner();
     virtual ~PyScriptRunner();
-    virtual void onPyhonExecutionOutput(std::string msg,OutputType outputType);
+
+    //Compile/Run Script
+    virtual void onPyhonExecutionOutput(std::string msg, OutputType outputType);
     void setScript(std::string simplePythonScript);    
     void run(bool noLogging=true);
     void run(std::string simplePythonScript, bool noLogging=true);
     std::string getStandardOutput();
     std::string getError();
     void clear();
-    bool isPackageAvailable(std::string packageName);
+
+    //Package management    
+    bool isPipInstalled();
+    bool isPackageAvailable(std::string packageName, bool forceAvailabilityCheck=false);
+    bool installPackage(std::string packageName);
+    bool uninstallPackage(std::string packageName);
+    bool upgradePackage(std::string packageName);
 private:
+    std::string parsePipUtil();
+    bool isModuleAvailable(std::string moduleName);
     PythonScript script_;
     std::string error_;
     std::string standard_;
+    std::vector<std::string> availablePacakges_;
 };
 
 }//namespace
