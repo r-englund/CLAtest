@@ -137,7 +137,7 @@ bool PyScriptRunner::isPackageAvailable(std::string packageName, bool forceAvail
     std::string packageNotFound = "failed";
     std::string pipFuncs = parsePipUtil();
     ss << pipFuncs << std::endl;
-    ss << "pipSearch('" << packageName << "')" << std::endl;
+    ss << "pipList('" << packageName << "')" << std::endl;
 
     std::string searchPackage(ss.str());
     this->run(searchPackage);
@@ -161,14 +161,15 @@ bool PyScriptRunner::isPackageAvailable(std::string packageName, bool forceAvail
     }
     this->clear();
 
+    /*
     if (!found) {
-        /*LogWarn("Unable to install " << packageName << std::endl
+        LogWarn("Unable to install " << packageName << std::endl
             << "Manually install from one of the following sites :" << std::endl
             << "https://pypi.python.org/pypi/pip" << std::endl
             << "http://www.lfd.uci.edu/~gohlke/pythonlibs/ (unofficial)" << std::endl
-            << ". Manual install recommended.");*/
+            << ". Manual install recommended.");
     }
-
+    */
     if (found && std::find(availablePacakges_.begin(), availablePacakges_.end(), packageName)==availablePacakges_.end()) {
         availablePacakges_.push_back(packageName);
     }
@@ -224,8 +225,7 @@ bool PyScriptRunner::installPackage(std::string packageName) {
         LogInfo("Unable to install " << packageName 
                 << "Manually install from one of the following sites :" << std::endl
                 << "https://pypi.python.org/pypi/pip" << std::endl
-                << "http://www.lfd.uci.edu/~gohlke/pythonlibs/ (unofficial)" << std::endl
-                << ". Manual install recommended.");
+                << "http://www.lfd.uci.edu/~gohlke/pythonlibs/ (unofficial)" << std::endl);
         return installed;
     }
     
@@ -234,17 +234,49 @@ bool PyScriptRunner::installPackage(std::string packageName) {
 
 bool PyScriptRunner::uninstallPackage(std::string packageName) {
     if (!isPackageAvailable(packageName)) {
-        LogWarn("Package is not installed");
+        LogWarn("Package is not found");
         return true;
     }
 
+    std::stringstream ss;
+    std::string packageUnInstalled = "success";
+    std::string packageNotUnInstalled = "failed";
+    std::string pipFuncs = parsePipUtil();
+    ss << pipFuncs << std::endl;
+    ss << "pipUnInstall('" << packageName << "')" << std::endl;
+
+    std::string installPackage(ss.str());
+    this->run(installPackage);
+    std::string retError = this->getError();
+
+    bool uninstall = false;
+    if (retError!="") {
+        LogWarn("Package uninstall failed");
+        uninstall = false;
+    }
+    else {
+        std::string status =  this->getStandardOutput();
+        if (status==packageUnInstalled) {
+            LogInfo("Pacakage " + packageName + " is uninstalled successfully");
+            uninstall = true;
+        }
+        else {
+            LogInfo("Pacakage " + packageName + " is not uninstalled");
+            uninstall = false;
+        }
+    }
+    this->clear();
+
+    if (!uninstall) return uninstall;
+
+    
     std::vector<std::string>::iterator it = std::find(availablePacakges_.begin()
                                                       , availablePacakges_.end(), packageName);
     if (it!=availablePacakges_.end()) {
         availablePacakges_.erase(it);
     }
-    LogWarn("Not implemented");
-    return false;
+    
+    return !isPackageAvailable(packageName, true);
 }
 
 bool PyScriptRunner::upgradePackage(std::string packageName) {
@@ -260,6 +292,19 @@ std::string PyScriptRunner::parsePipUtil() {
     std::string text((std::istreambuf_iterator<char>(file)), std::istreambuf_iterator<char>());
     file.close();
     return text;
+}
+
+void PyScriptRunner::addModulePackageRequirement(InviwoModule* module, std::string packageName) {
+    std::vector<std::string> packages = modulePacakgeRequirements_[module];
+    std::vector<std::string>::iterator it = std::find(packages.begin()
+                                                     , packages.end(), packageName);
+    if (it==packages.end()) {
+        modulePacakgeRequirements_[module].push_back(packageName);
+    }
+}
+
+std::map<InviwoModule*, std::vector<std::string> > PyScriptRunner::getModulePackageRequirement() const {
+    return modulePacakgeRequirements_;
 }
 
 } // namespace

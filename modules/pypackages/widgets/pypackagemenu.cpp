@@ -3,7 +3,7 @@
  * Inviwo - Interactive Visualization Workshop
  * Version 0.6b
  *
- * Copyright (c) 2013 Inviwo Foundation
+ * Copyright (c) 2013-2014 Inviwo Foundation
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -30,31 +30,41 @@
  *
  *********************************************************************************/
 
-#ifndef IVW_PYPACKAGESMODULE_H
-#define IVW_PYPACKAGESMODULE_H
+#include <modules/pypackages/widgets/pypackagemenu.h>
+#include <QMenu>
+#include <QMainWindow>
+#include <QMenuBar>
+#include <QAction>
+#include <inviwo/qt/widgets/inviwoapplicationqt.h>
 
-#include <modules/pypackages/pypackagesmoduledefine.h>
-#include <inviwo/core/common/inviwomodule.h>
-#include <modules/pypackages/pyscriptrunner.h>
+#include <modules/pypackages/widgets/pypackagemanagerwidget.h>
+
 
 namespace inviwo {
 
-class PyPackageMenu;
+PyPackageMenu::PyPackageMenu() {
+    QMainWindow* win = static_cast<InviwoApplicationQt*>(InviwoApplication::getPtr())->getMainWindow();
+    /*
+    QMenu* menu = 0;
 
-class IVW_MODULE_PYPACKAGES_API PyPackagesModule : public InviwoModule {
+    QList<QMenu*> lst;
+    lst = win->menuBar()->findChildren<QMenu*>();
+    foreach (QMenu* m, lst) {
+        if (m->title()=="Python") {
+            menu = m;
+            break;
+        }
+    }*/
 
-public:
-    PyPackagesModule();
-    ~PyPackagesModule();
-private:
-    void initPyPackagesInterface();
-    bool numpyRequirement();
-    bool matplotlibRequirement();
-    bool pycudaRequirement();
-    PyScriptRunner* pyScriptRunner_;
-    PyPackageMenu* pyPackageMenu_;
-};
+     QMenu* menu = win->menuBar()->addMenu("PyPackage");
+    if (menu) {
+        QAction* pythonPackageManagerOpen = menu->addAction(QIcon(":/icons/python.png"),"&Python Package Manager");
+        pyPackageManagerWidget_ = new PyPackageManagerWidget(win);
+        win->connect(pythonPackageManagerOpen,SIGNAL(triggered(bool)),pyPackageManagerWidget_,SLOT(show(void)));
+    }
+}
+
+PyPackageMenu::~PyPackageMenu() {
+}
 
 } // namespace
-
-#endif // IVW_PYPACKAGESMODULE_H

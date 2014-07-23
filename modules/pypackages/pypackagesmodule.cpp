@@ -41,6 +41,7 @@
 #include <modules/pypackages/processors/numpy/numpyimagecontour.h>
 #include <modules/pypackages/processors/numpy/numpyvolumehistogram.h>
 #include <modules/pypackages/processors/numpy/numpybuffertest.h>
+#include <modules/pypackages/widgets/pypackagemenu.h>
 
 #define NPY_NO_DEPRECATED_API NPY_1_7_API_VERSION
 #define PY_ARRAY_UNIQUE_SYMBOL PYPACKAGE_ARRAY_API
@@ -53,10 +54,17 @@ PyPackagesModule::PyPackagesModule() : InviwoModule() {
     setIdentifier("PyPackages");
     initPyPackagesInterface();    
 
+    //Specify required packages
+    PyScriptRunner::getPtr()->addModulePackageRequirement(this, "numpy");
+    PyScriptRunner::getPtr()->addModulePackageRequirement(this, "matplotlib");
+    PyScriptRunner::getPtr()->addModulePackageRequirement(this, "pycuda");
+
+    //check if package available
     bool numpyAvailable = numpyRequirement();
     bool matplotAvailable = matplotlibRequirement();
     bool pyCUDAAvailable = pycudaRequirement();
 
+    //register if required package is available
     if (numpyAvailable) {
         registerProcessor(NumpyBufferTest);
     }
@@ -69,6 +77,12 @@ PyPackagesModule::PyPackagesModule() : InviwoModule() {
     if (pyCUDAAvailable) {
         registerProcessor(PyCUDAImageInverter);
     }
+
+    pyPackageMenu_ = new PyPackageMenu();
+}
+
+PyPackagesModule::~PyPackagesModule() {
+    delete pyPackageMenu_;
 }
 
 void PyPackagesModule::initPyPackagesInterface() {

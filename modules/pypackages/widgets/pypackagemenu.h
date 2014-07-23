@@ -3,7 +3,7 @@
  * Inviwo - Interactive Visualization Workshop
  * Version 0.6b
  *
- * Copyright (c) 2013 Inviwo Foundation
+ * Copyright (c) 2013-2014 Inviwo Foundation
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -30,31 +30,24 @@
  *
  *********************************************************************************/
 
-#ifndef IVW_PYPACKAGESMODULE_H
-#define IVW_PYPACKAGESMODULE_H
+#ifndef IVW_PYPACKAGEMENU_H
+#define IVW_PYPACKAGEMENU_H
 
 #include <modules/pypackages/pypackagesmoduledefine.h>
-#include <inviwo/core/common/inviwomodule.h>
-#include <modules/pypackages/pyscriptrunner.h>
+#include <inviwo/core/common/inviwo.h>
+#include <modules/pypackages/widgets/pypackagemanagerwidget.h>
 
 namespace inviwo {
 
-class PyPackageMenu;
-
-class IVW_MODULE_PYPACKAGES_API PyPackagesModule : public InviwoModule {
-
+class IVW_MODULE_PYPACKAGES_API PyPackageMenu {
 public:
-    PyPackagesModule();
-    ~PyPackagesModule();
+    PyPackageMenu();
+    virtual ~PyPackageMenu();
+    PyPackageManagerWidget* getPackageManager() const { return pyPackageManagerWidget_;}
 private:
-    void initPyPackagesInterface();
-    bool numpyRequirement();
-    bool matplotlibRequirement();
-    bool pycudaRequirement();
-    PyScriptRunner* pyScriptRunner_;
-    PyPackageMenu* pyPackageMenu_;
+    PyPackageManagerWidget* pyPackageManagerWidget_;
 };
 
 } // namespace
 
-#endif // IVW_PYPACKAGESMODULE_H
+#endif // IVW_PYPACKAGEMENU_H

@@ -3,6 +3,12 @@
 ivw_module(PyPackages)
 
 #--------------------------------------------------------------------
+# Add MOC files
+set(MOC_FILES
+    ${IVW_MODULE_DIR}/pypackages/widgets/pypackagemanagerwidget.h
+)
+
+#--------------------------------------------------------------------
 # Add header files
 set(HEADER_FILES
     ${IVW_MODULE_DIR}/pypackages/pypackagesmodule.h
@@ -16,8 +22,15 @@ set(HEADER_FILES
 	${IVW_MODULE_DIR}/pypackages/processors/numpy/numpybuffertest.h
 	${IVW_MODULE_DIR}/pypackages/processors/numpy/numpyimagecontour.h
 	${IVW_MODULE_DIR}/pypackages/processors/numpy/numpyvolumehistogram.h
+	#widgets
+	${IVW_MODULE_DIR}/pypackages/widgets/pypackagemanagerwidget.h
+	${IVW_MODULE_DIR}/pypackages/widgets/pypackagemenu.h
+	${MOC_FILES}
 )
 ivw_group("Header Files" ${HEADER_FILES})
+
+ivw_qt_wrap_cpp(MOC_FILES ${MOC_FILES})
+source_group("MOC Files" FILES ${MOC_FILES})
 
 #--------------------------------------------------------------------
 # Add source files
@@ -31,9 +44,16 @@ set(SOURCE_FILES
 	${IVW_MODULE_DIR}/pypackages/processors/numpy/numpybuffertest.cpp
 	${IVW_MODULE_DIR}/pypackages/processors/numpy/numpyimagecontour.cpp
 	${IVW_MODULE_DIR}/pypackages/processors/numpy/numpyvolumehistogram.cpp
+	#widgets
+	${IVW_MODULE_DIR}/pypackages/widgets/pypackagemanagerwidget.cpp
+	${IVW_MODULE_DIR}/pypackages/widgets/pypackagemenu.cpp
 )
 ivw_group("Source Files" ${SOURCE_FILES})
 
+
+ivw_define_qt_definitions()
+ivw_add_definition(IVW_PYPACKAGES)
+
 #--------------------------------------------------------------------
 # Create module
-ivw_create_module(${SOURCE_FILES} ${HEADER_FILES})
+ivw_create_module(${SOURCE_FILES} ${MOC_FILES} ${HEADER_FILES})

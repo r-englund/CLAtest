@@ -11,7 +11,7 @@ class OutputRedirectStdout(object):
         
     def write(self, string):
         inviwo_internal.ivwPrint(string, 0)
-        self.old.write(string)
+        self.old.write(string+'\n')
 
     def start(self):
         sys.stdout = self
@@ -27,7 +27,7 @@ class OutputRedirectStderr(object):
         
     def write(self, string):
         inviwo_internal.ivwPrint(string, 1)
-        self.old.write(string)
+        self.old.write(string+'\n')
 
     def start(self):
         sys.stderr = self
