@@ -60,6 +60,8 @@ public:
     bool installPackage(std::string packageName);
     bool uninstallPackage(std::string packageName);
     bool upgradePackage(std::string packageName);
+    void addModulePackageRequirement(InviwoModule* module, std::string packageName);
+    std::map<InviwoModule*, std::vector<std::string> > getModulePackageRequirement() const;
 private:
     std::string parsePipUtil();
     bool isModuleAvailable(std::string moduleName);
@@ -67,6 +69,7 @@ private:
     std::string error_;
     std::string standard_;
     std::vector<std::string> availablePacakges_;
+    std::map<InviwoModule*, std::vector<std::string> > modulePacakgeRequirements_;
 };
 
 }//namespace

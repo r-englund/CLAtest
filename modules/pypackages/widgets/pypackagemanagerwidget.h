@@ -3,7 +3,7 @@
  * Inviwo - Interactive Visualization Workshop
  * Version 0.6b
  *
- * Copyright (c) 2013 Inviwo Foundation
+ * Copyright (c) 2013-2014 Inviwo Foundation
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -30,31 +30,40 @@
  *
  *********************************************************************************/
 
-#ifndef IVW_PYPACKAGESMODULE_H
-#define IVW_PYPACKAGESMODULE_H
+#ifndef IVW_PYPACKAGE_MANAGER_WIDGET_H
+#define IVW_PYPACKAGE_MANAGER_WIDGET_H
+
+#include <QWidget>
+#include <QVBoxLayout>
+#include <QTableWidget>
+#include <QApplication>
+#include <QLineEdit>
+#include <QPushButton>
 
 #include <modules/pypackages/pypackagesmoduledefine.h>
-#include <inviwo/core/common/inviwomodule.h>
-#include <modules/pypackages/pyscriptrunner.h>
+#include <inviwo/qt/widgets/inviwodockwidget.h>
 
 namespace inviwo {
 
-class PyPackageMenu;
-
-class IVW_MODULE_PYPACKAGES_API PyPackagesModule : public InviwoModule {
-
+class IVW_MODULE_PYPACKAGES_API PyPackageManagerWidget : public InviwoDockWidget, public Singleton<PyPackageManagerWidget> {
+    Q_OBJECT
 public:
-    PyPackagesModule();
-    ~PyPackagesModule();
+    PyPackageManagerWidget(QWidget* parent=0);
+    ~PyPackageManagerWidget();
+    void show();
+    void clear();
+    void addPackages();
+    void updatePackages();
+public slots: 
+    void mappedButtonClick(QString str);
+    void refresh();
 private:
-    void initPyPackagesInterface();
-    bool numpyRequirement();
-    bool matplotlibRequirement();
-    bool pycudaRequirement();
-    PyScriptRunner* pyScriptRunner_;
-    PyPackageMenu* pyPackageMenu_;
+    QLineEdit* lineEdit_;
+    QVBoxLayout* vLayout_;
+    QPushButton* refreshButton_;
+    QTableWidget* packageTableWidget_;
 };
 
 } // namespace
 
-#endif // IVW_PYPACKAGESMODULE_H
+#endif // IVW_PYPACKAGE_MANAGER_WIDGET_H
