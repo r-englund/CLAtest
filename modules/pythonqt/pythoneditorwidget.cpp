@@ -83,10 +83,12 @@ PythonEditorWidget::PythonEditorWidget(QWidget* parent)
     resize(500, 700);
     setVisible(false);
     ProcessorNetwork* processorNetwork = InviwoApplication::getPtr()->getProcessorNetwork();
-    addObservation(processorNetwork);
     processorNetwork->addObserver(this);
+    
     InviwoApplication::getRef().registerFileObserver(this);
     unsavedChanges_ = false;
+
+
 
     if (lastFile.size() != 0) loadFile(lastFile.toLocal8Bit().constData(), false);
 }
@@ -228,8 +230,8 @@ void PythonEditorWidget::loadFile(std::string fileName, bool askForSave) {
     readFile();
 }
 
-void PythonEditorWidget::onPyhonExecutionOutput(std::string msg, OutputType outputType) {
-    appendToOutput(msg, outputType != PythonExecutionOutputObeserver::standard);
+void PythonEditorWidget::onPyhonExecutionOutput(const std::string &msg,const  PythonExecutionOutputStream &outputType) {
+    appendToOutput(msg, outputType != sysstdout);
     LogInfo(msg);
 }
 
@@ -334,6 +336,8 @@ void PythonEditorWidget::run() {
     if (unsavedChanges_ && scriptFileName_.size() != 0)  // save if needed
         save();
 
+    PythonExecutionOutputObservable::getPtr()->addObserver(this);
+
     clearOutput();
     Clock c;
     c.start();
@@ -345,6 +349,7 @@ void PythonEditorWidget::run() {
     }
 
     LogInfo("Execution time: " << c.getElapsedMiliseconds() << " ms");
+    PythonExecutionOutputObservable::getPtr()->removeObserver(this);
 }
 
 void PythonEditorWidget::show() {

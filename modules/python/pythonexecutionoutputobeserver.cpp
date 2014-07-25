@@ -36,21 +36,13 @@
 
 namespace inviwo {
 
+void PythonExecutionOutputObservable::pythonExecutionOutputEvent(const std::string &msg,const  PythonExecutionOutputStream &outputType) {
+    ObserverSet::iterator it;
 
-
-PythonExecutionOutputObeserver::PythonExecutionOutputObeserver() {
-    observers_.push_back(this);
-}
-
-void PythonExecutionOutputObeserver::pythonExecutionOutputEvent(std::string msg,OutputType outputType) {
-    std::vector<PythonExecutionOutputObeserver*>::iterator it;
-
-    for (it = observers_.begin(); it != observers_.end(); ++it) {
-        (*it)->onPyhonExecutionOutput(msg,outputType);
+    for (it = observers_->begin(); it != observers_->end(); ++it) {
+        static_cast<PythonExecutionOutputObeserver*>(*it)->onPyhonExecutionOutput(msg,outputType);
     }
 }
-
-std::vector<PythonExecutionOutputObeserver*> PythonExecutionOutputObeserver::observers_;
 
 
 } // namespace

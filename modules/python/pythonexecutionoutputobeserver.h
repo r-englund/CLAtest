@@ -34,20 +34,28 @@
 #define IVW_PYTHONEXECUTIONOUTPUTOBESERVER_MODULE_H
 
 #include <modules/python/pythonmoduledefine.h>
+#include <inviwo/core/util/observer.h>
+#include <inviwo/core/util/singleton.h>
 
 namespace inviwo {
-class IVW_MODULE_PYTHON_API PythonExecutionOutputObeserver {
-public:
-    enum OutputType
+    enum IVW_MODULE_PYTHON_API PythonExecutionOutputStream
     {
-        standard,
-        error
+        sysstdout,
+        sysstderr
     };
-    virtual void onPyhonExecutionOutput(std::string msg,OutputType outputType) = 0;
-    PythonExecutionOutputObeserver();
 
-    static void pythonExecutionOutputEvent(std::string msg,OutputType outputType);
-    static std::vector<PythonExecutionOutputObeserver*> observers_;
+class IVW_MODULE_PYTHON_API PythonExecutionOutputObeserver : public Observer {
+public:
+    
+    virtual void onPyhonExecutionOutput(const std::string &msg,const PythonExecutionOutputStream &outputType) = 0;
+};
+
+class IVW_MODULE_PYTHON_API PythonExecutionOutputObservable 
+    : public Observable<PythonExecutionOutputObeserver>
+    , public Singleton<PythonExecutionOutputObservable>
+{
+public:
+    void pythonExecutionOutputEvent(const std::string &msg,const PythonExecutionOutputStream &outputType);
 };
 
 } // namespace

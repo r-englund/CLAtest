@@ -221,7 +221,7 @@ bool PythonScript::checkRuntimeError() {
     Py_XDECREF(pyError_value);
     Py_XDECREF(pyError_traceback);
     LogError(pyException);
-    PythonExecutionOutputObeserver::pythonExecutionOutputEvent(pyException,PythonExecutionOutputObeserver::error);
+    PythonExecutionOutputObservable::getPtr()->pythonExecutionOutputEvent(pyException,sysstderr);
     return false;
 }
 

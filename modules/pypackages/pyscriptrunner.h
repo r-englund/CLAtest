@@ -46,7 +46,7 @@ public:
     virtual ~PyScriptRunner();
 
     //Compile/Run Script
-    virtual void onPyhonExecutionOutput(std::string msg, OutputType outputType);
+    virtual void onPyhonExecutionOutput(const std::string &msg,const PythonExecutionOutputStream &outputType);
     void setScript(std::string simplePythonScript);    
     void run(bool noLogging=true);
     void run(std::string simplePythonScript, bool noLogging=true);
