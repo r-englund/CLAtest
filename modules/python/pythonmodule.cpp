@@ -32,16 +32,21 @@
 
 #include <modules/python/pythonmodule.h>
 #include "pyinviwo.h"
+#include <modules/python/pythonexecutionoutputobeserver.h>
 
 namespace inviwo {
 
 PythonModule::PythonModule() : InviwoModule() {
     setIdentifier("Python");
+
+    PythonExecutionOutputObservable::init();
+
     pyInviwo_ = new PyInviwo();
 }
 
 PythonModule::~PythonModule() {
     delete pyInviwo_;
+    PythonExecutionOutputObservable::deleteInstance();
 }
 
 } // namespace

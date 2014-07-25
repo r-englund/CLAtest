@@ -63,7 +63,7 @@ public:
     virtual void fileChanged(std::string fileName);
     void loadFile(std::string fileName, bool askForSave = true);
 
-    virtual void onPyhonExecutionOutput(std::string msg, OutputType outputType);
+    virtual void onPyhonExecutionOutput(const std::string &msg,const PythonExecutionOutputStream &outputType);
 
     virtual void onProcessorNetworkChange();
     bool hasFocus() const;
