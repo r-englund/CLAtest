@@ -3,7 +3,7 @@
  * Inviwo - Interactive Visualization Workshop
  * Version 0.6b
  *
- * Copyright (c) 2013-2014 Inviwo Foundation
+ * Copyright (c) 2014 Inviwo Foundation
  * All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without
@@ -30,38 +30,47 @@
  *
  *********************************************************************************/
 
-#include <inviwo/core/util/urlparser.h>
-
-#ifndef IVW_URLPARSERTEST_TEST_H
-#define IVW_URLPARSERTEST_TEST_H
+#include <gtest/gtest.h>
 
 
-TEST(URLParserTest,fileExistsTest) {
-#ifdef __FILE__
-    EXPECT_TRUE(URLParser::fileExists(__FILE__));
-#endif
-    EXPECT_TRUE(URLParser::fileExists(global_argv[0]));//Cant find current executable
+#include <inviwo/core/util/stacktrace.h>
+
+namespace inviwo{
+
+class D {
+public:
+    void E(std::vector<std::string>& stacktrace) {
+        stacktrace = getStackTrace();
+    }
+};
+
+void C(std::vector<std::string>& stacktrace) {
+    D d;
+    d.E(stacktrace);
+};
+
+void B(std::vector<std::string>& stacktrace) {
+    C(stacktrace);
 }
 
-TEST(URLParserTest,fileExtensionTest) {
-    EXPECT_STREQ("",URLParser::getFileExtension("").c_str());
-    EXPECT_STREQ("txt",URLParser::getFileExtension("test.txt").c_str());
-    EXPECT_STREQ("txt",URLParser::getFileExtension("test.dobule.txt").c_str());
-    EXPECT_STREQ("",URLParser::getFileExtension("noExtensions").c_str());
-    EXPECT_STREQ("",URLParser::getFileExtension("C:/a/directory/for/test/noExtensions").c_str());
-    EXPECT_STREQ("", URLParser::getFileExtension("C:/a/directory/for/test.test/noExtensions").c_str());
-#ifdef __FILE__
-    EXPECT_STREQ("h",URLParser::getFileExtension(__FILE__).c_str());
-#endif
+void A(std::vector<std::string>& stacktrace) {
+    B(stacktrace);
 }
 
-
-
-TEST(URLParserTest,FileDirectoryTest) {
-    EXPECT_STREQ("C:/a/directory/for/test/",URLParser::getFileDirectory("C:/a/directory/for/test/file.txt").c_str());
-    EXPECT_STREQ("C:\\a\\directory\\for\\test\\",URLParser::getFileDirectory("C:\\a\\directory\\for\\test\\file.txt").c_str());
-    EXPECT_STREQ("",URLParser::getFileDirectory("justafile.txt").c_str());
-    // EXPECT_STREQ("C:/a/directory/for/test/",URLParser::getFileDirectory("C:/a/directory/for/test//withdoubleslahs.txt").c_str());
+void Ap1(std::vector<std::string>& stacktrace) {
+    A(stacktrace);
 }
+//
+//TEST(StackTraceTests,StackTraceTest) {
+//    std::vector<std::string> stacktrace1;
+//    std::vector<std::string> stacktrace2;
+//    A(stacktrace1);
+//    Ap1(stacktrace2);
+//    EXPECT_NE(0,stacktrace1.size());
+//    EXPECT_NE(0,stacktrace2.size());
+//    EXPECT_EQ(1,stacktrace2.size() - stacktrace1.size());
+//}
 
-#endif
+
+
+}

@@ -30,12 +30,14 @@
  *
  *********************************************************************************/
 
-#ifndef IVW_IMAGE_TEST_H
-#define IVW_IMAGE_TEST_H
+#include <gtest/gtest.h>
+
 
 #include <inviwo/core/datastructures/image/image.h>
 #include <inviwo/core/datastructures/image/layerdisk.h>
 #include <inviwo/core/datastructures/image/layerramprecision.h>
+
+namespace inviwo{
 
 
 #define IMG_RGB InviwoApplication::getPtr()->getPath(InviwoApplication::PATH_MODULES,"unittests/testdata/images/2x2.bmp")
@@ -159,5 +161,4 @@ TEST(ImageTests,ImageResize) {
 
 
 
-
-#endif
+}

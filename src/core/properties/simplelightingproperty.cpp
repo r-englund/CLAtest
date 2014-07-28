@@ -9,12 +9,12 @@ SimpleLightingProperty::SimpleLightingProperty(std::string identifier, std::stri
     , shadingMode_("shadingMode", "Shading", PropertyOwner::INVALID_RESOURCES)
     , lightPosition_("lightPosition", "Position", vec3(0.0f, 0.7071f, 0.7071f), vec3(-10, -10, -10),
                      vec3(10, 10, 10))
-    , lightColorAmbient_("lightColorAmbient", "Ambient color", vec3(0.5f, 0.5f, 0.5f))
-    , lightColorDiffuse_("lightColorDiffuse", "Diffuse color", vec3(0.5f, 0.5f, 0.5f))
-    , lightColorSpecular_("lightColorSpecular", "Specular color", vec3(0.5f, 0.5f, 0.5f))
+    , lightColorAmbient_("lightColorAmbient", "Ambient color", vec3(0.1f, 0.1f, 0.1f))
+    , lightColorDiffuse_("lightColorDiffuse", "Diffuse color", vec3(0.75f, 0.75f, 0.75f))
+    , lightColorSpecular_("lightColorSpecular", "Specular color", vec3(0.75f, 0.75f, 0.75f))
     , lightSpecularExponent_("materialShininess", "Material shininess", 110, 0, 180)
     , applyLightAttenuation_("applyLightAttenuation", "Light attenuation", false)
-    , lightAttenuation_("lightAttenuation", "Light attenuation values", vec3(0.5f, 0.5f, 0.5f)) {
+    , lightAttenuation_("lightAttenuation", "Light attenuation values", vec3(1.0f, 0.0f, 0.0f)) {
 
     shadingMode_.addOption("none", "No Shading");
     shadingMode_.addOption("ambient", "Ambient");

@@ -96,7 +96,7 @@ InviwoApplication::~InviwoApplication() {
     delete processorNetworkEvaluator_;
 
     delete commandLineParser_;
-    SingeltonBase::deleteAllSingeltons();
+    SingletonBase::deleteAllSingeltons();
     DataFormatBase::cleanDataFormatBases();
 }
 

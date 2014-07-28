@@ -415,18 +415,17 @@ ivw_add_pch_path(${PCH_PATH_FILES})
 
 if(IVW_UNIT_TEST_APPLICATION)
 set(TEST_FILES
-	${IVW_INCLUDE_DIR}/inviwo/core/unittests/inviwoapplication-test.h
-	${IVW_INCLUDE_DIR}/inviwo/core/unittests/commandlineparser-test.h
-	${IVW_INCLUDE_DIR}/inviwo/core/unittests/urlparser-test.h
-	${IVW_INCLUDE_DIR}/inviwo/core/unittests/volume-test.h
-	${IVW_INCLUDE_DIR}/inviwo/core/unittests/image-test.h
-	${IVW_INCLUDE_DIR}/inviwo/core/unittests/stacktrace-test.h
-	${IVW_INCLUDE_DIR}/inviwo/core/unittests/metadata-test.h
-	${IVW_INCLUDE_DIR}/inviwo/core/unittests/serializer-test.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/unittests/inviwoapplication-test.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/unittests/commandlineparser-test.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/unittests/processorcreation-test.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/unittests/urlparser-test.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/unittests/volume-test.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/unittests/image-test.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/unittests/stacktrace-test.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/unittests/metadata-test.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/unittests/serializer-test.cpp
 )
 ivw_add_unittest(${TEST_FILES})
-source_group("Unittest Files" FILES ${TEST_FILES})
-
 endif()
 
 
@@ -444,7 +443,7 @@ add_definitions(-DCMAKE_GENERATOR="${CMAKE_GENERATOR}")
 
 #--------------------------------------------------------------------
 # Create library
-add_library(inviwo-core ${SOURCE_FILES} ${HEADER_FILES} ${TEST_FILES})
+add_library(inviwo-core ${SOURCE_FILES} ${HEADER_FILES})
 
 #--------------------------------------------------------------------
 # Add core folders to includes

@@ -47,9 +47,8 @@ set(SOURCE_FILES
 ivw_group("Source Files" ${SOURCE_FILES})
 
  set(TEST_FILES
-	${CMAKE_CURRENT_SOURCE_DIR}/tests/python-test.h
+	${CMAKE_CURRENT_SOURCE_DIR}/tests/python-test.cpp
 )
-ivw_group("Unittest Files" ${TEST_FILES})
 ivw_add_unittest(${TEST_FILES})
 
 #--------------------------------------------------------------------
@@ -57,7 +56,7 @@ ivw_add_unittest(${TEST_FILES})
 add_definitions(-DIVW_PYTHON)
 
 # Create module
-ivw_create_module(${SOURCE_FILES} ${HEADER_FILES} ${TEST_FILES})
+ivw_create_module(${SOURCE_FILES} ${HEADER_FILES})
 
 #--------------------------------------------------------------------
 # Add Python to package

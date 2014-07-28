@@ -67,6 +67,7 @@ HeightFieldProcessor::HeightFieldProcessor()
     terrainShadingMode_.addOption("shadingColorTex", "Color Texture", HF_SHADING_COLORTEX);
     terrainShadingMode_.addOption("shadingHeightField", "Heightfield Texture", HF_SHADING_HEIGHTFIELD);
     terrainShadingMode_.set(HF_SHADING_FLAT);
+    terrainShadingMode_.setCurrentStateAsDefault();
     addProperty(terrainShadingMode_);
 
     //lightingProperty_.onChange(this, &HeightFieldProcessor::lightingChanged);

@@ -46,16 +46,17 @@ ivw_add_dependency_directories(${package_list})
 ivw_register_use_of_modules(${package_list})
 
 
-configure_file(${CMAKE_BINARY_DIR}/modules/_generated/unittests_temp.h ${CMAKE_BINARY_DIR}/modules/_generated/unittests.h)
-file(REMOVE ${CMAKE_BINARY_DIR}/modules/_generated/unittests_temp.h)
+#configure_file(${CMAKE_BINARY_DIR}/modules/_generated/unittests_temp.h ${CMAKE_BINARY_DIR}/modules/_generated/unittests.h)
+
 
 #--------------------------------------------------------------------
 # Add header files
 
 set(HEADER_FILES
-	${IVW_MODULE_DIR}/unittests/unittestsmoduledefine.h
-	${IVW_MODULE_DIR}/unittests/unittestsmodule.h
-	${CMAKE_BINARY_DIR}/modules/_generated/unittests.h
+#    ${CMAKE_BINARY_DIR}/modules/_generated/unittests.h
+    ${IVW_MODULE_DIR}/unittests/logerrorcounter.h
+    ${IVW_MODULE_DIR}/unittests/unittestsmodule.h
+    ${IVW_MODULE_DIR}/unittests/unittestsmoduledefine.h
 )
 
 ivw_group("Header Files" ${HEADER_FILES})
@@ -64,10 +65,19 @@ ivw_group("Header Files" ${HEADER_FILES})
 # Add source files
 
 
+FILE(READ "${CMAKE_BINARY_DIR}/modules/_generated/unittests_temp.h" contents)
+  STRING(REGEX REPLACE ";" "\\\\;" contents "${contents}")
+  STRING(REGEX REPLACE "\n" ";" contents "${contents}")
+  STRING(REGEX REPLACE "\"" "" contents "${contents}")
 
 set(SOURCE_FILES
-	${IVW_MODULE_DIR}/unittests/unittestsmodule.cpp
+    ${contents}
+    ${IVW_MODULE_DIR}/unittests/logerrorcounter.cpp
+    ${IVW_MODULE_DIR}/unittests/unittestsmodule.cpp
 )
+
+file(REMOVE ${CMAKE_BINARY_DIR}/modules/_generated/unittests_temp.h)
+
 
 ivw_group("Source Files" ${SOURCE_FILES})
 

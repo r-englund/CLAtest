@@ -3,7 +3,7 @@
  * Inviwo - Interactive Visualization Workshop
  * Version 0.6b
  *
- * Copyright (c) 2013-2014 Inviwo Foundation
+ * Copyright (c) 2012-2014 Inviwo Foundation
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -26,22 +26,40 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
- * Main file author: Peter Steneteg
+ * Main file authors: Peter Steneteg
  *
  *********************************************************************************/
 
-#include <inviwo/core/util/fileextension.h>
+#ifndef IVW_LOGERRORCOUNTER_H
+#define IVW_LOGERRORCOUNTER_H
 
+#include <modules/unittests/unittestsmoduledefine.h>
+#include <inviwo/core/common/inviwo.h>
 #include <inviwo/core/util/singleton.h>
+#include <inviwo/core/util/logcentral.h>
 
 namespace inviwo {
 
-FileExtension::FileExtension()
-    : extension_("txt")
-    , description_("Textfile") {};
-FileExtension::FileExtension(std::string extension, std::string description)
-    : extension_(extension)
-    , description_(description) {};
+class IVW_MODULE_UNITTESTS_API LogErrorCounter : public Singleton<LogErrorCounter>,
+                                                 public Logger {
+public:
+    LogErrorCounter();
+    virtual ~LogErrorCounter();
 
-} // namespace
+    virtual void log(std::string logSource, unsigned int logLevel, const char* fileName,
+        const char* functionName, int lineNumber, std::string logMsg);
 
+    size_t getCount(const LogLevel &level)const;
+
+    size_t getInfoCount()const;
+    size_t getWarnCount()const;
+    size_t getErrorCount()const;
+
+
+private:
+    std::map<LogLevel,size_t> messageCount_;
+};
+
+}  // namespace
+
+#endif  // IVW_LOGERRORCOUNTER_H

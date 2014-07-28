@@ -87,6 +87,7 @@ public:
     virtual void deserialize(IvwDeserializer& d);
 
     void setAllPropertiesCurrentStateAsDefault();
+    void resetAllPoperties();
 
 protected:
     std::vector<Property*> properties_;

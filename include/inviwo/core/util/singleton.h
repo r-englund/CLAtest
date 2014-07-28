@@ -39,14 +39,14 @@
 
 namespace inviwo {
 
-class SingeltonBase;
-class IVW_CORE_API SingeltonBase {
+class SingletonBase;
+class IVW_CORE_API SingletonBase {
 protected:
-    static std::vector<SingeltonBase*> instances_;
+    static std::vector<SingletonBase*> instances_;
 
     void deleteAllSingeltons() {
         while (!instances_.empty()) {
-            SingeltonBase* instance = instances_[0];
+            SingletonBase* instance = instances_[0];
             instances_.erase(instances_.begin());
 
             if (instance != this)
@@ -54,11 +54,11 @@ protected:
         }
     }
 
-    SingeltonBase() {
+    SingletonBase() {
         instances_.push_back(this);
     }
 
-    virtual ~SingeltonBase() {
+    virtual ~SingletonBase() {
         for (size_t i = 0; i<instances_.size(); i++) {
             if (instances_[i] == this) {
                 instances_.erase(instances_.begin()+i);
@@ -71,7 +71,7 @@ protected:
 
 
 template <class T>
-class Singleton : public SingeltonBase {
+class Singleton : public SingletonBase {
 public:
 
     /**

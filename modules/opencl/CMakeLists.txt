@@ -115,14 +115,13 @@ ivw_add_definition(__CL_ENABLE_EXCEPTIONS)
 
 
 set(TEST_FILES
-	#${CMAKE_CURRENT_SOURCE_DIR}/test/opencl-test.h
+	#${CMAKE_CURRENT_SOURCE_DIR}/test/opencl-test.cpp
 )
-ivw_group("Unittest Files" ${TEST_FILES})
 ivw_add_unittest(${TEST_FILES})
 
 #--------------------------------------------------------------------
 # Create module
-ivw_create_module(${SOURCE_FILES} ${HEADER_FILES} ${SHADER_FILES} ${TEST_FILES})
+ivw_create_module(${SOURCE_FILES} ${HEADER_FILES} ${SHADER_FILES})
 
 #--------------------------------------------------------------------
 # Add kernel directory to pack

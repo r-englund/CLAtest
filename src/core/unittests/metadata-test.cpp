@@ -35,8 +35,10 @@
 #include <inviwo/core/io/serialization/ivwserializable.h>
 #include <string.h>
 
-#ifndef IVW_METADATA_TEST_H
-#define IVW_METADATA_TEST_H
+#include <gtest/gtest.h>
+
+
+namespace inviwo{
 
 
 template<typename T, typename M>
@@ -72,4 +74,4 @@ void testserialization(T def, T in) {
     }
 #include <inviwo/core/metadata/metadatadefinefunc.h>
 
-#endif
+}

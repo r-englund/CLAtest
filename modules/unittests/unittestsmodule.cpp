@@ -35,40 +35,57 @@
 #include <gtest/gtest.h>
 
 #include <inviwo/core/common/inviwoapplication.h>
+#include <modules/unittests/logerrorcounter.h>
 
 using namespace inviwo;
-
-int global_argc;
-char** global_argv;
-#include <unittests.h>
 
 namespace inviwo {
 UnitTestsModule::UnitTestsModule() : InviwoModule() {
     setIdentifier("UnitTests");
+    LogErrorCounter::init();
+    LogCentral::instance()->registerLogger(LogErrorCounter::getPtr());
 }
 
-UnitTestsModule::~UnitTestsModule() { }
+UnitTestsModule::~UnitTestsModule() {
+    LogCentral::instance()->unregisterLogger(LogErrorCounter::getPtr());
+    LogErrorCounter::deleteInstance();
+}
 
 void UnitTestsModule::initialize() {
-    InviwoModule::initialize(); //call superclass initialize
+    InviwoModule::initialize();  // call superclass initialize
 }
 void UnitTestsModule::deinitialize() {
-    InviwoModule::deinitialize(); //call superclass deinitialize
+    InviwoModule::deinitialize();  // call superclass deinitialize
 }
 
-
 int UnitTestsModule::runAllTests() {
-    global_argc = InviwoApplication::getPtr()->getCommandLineParser()->getARGC();
-    global_argv = InviwoApplication::getPtr()->getCommandLineParser()->getARGV();
+    size_t warnCount = LogErrorCounter::getPtr()->getWarnCount();
+    size_t errCount = LogErrorCounter::getPtr()->getErrorCount();
+
+    int global_argc = InviwoApplication::getPtr()->getCommandLineParser()->getARGC();
+    char **global_argv = InviwoApplication::getPtr()->getCommandLineParser()->getARGV();
     ::testing::InitGoogleTest(&global_argc, global_argv);
     int res = RUN_ALL_TESTS();
 
     if (res) {
-        LogErrorCustom("UnitTestsModule::runAllTests","Some unit tests did not pass, see console output for details");
+        LogErrorCustom("UnitTestsModule::runAllTests",
+                       "Some unit tests did not pass, see console output for details");
+    }
+
+    size_t warnCountAfter = LogErrorCounter::getPtr()->getWarnCount();
+    size_t errCountAfter = LogErrorCounter::getPtr()->getErrorCount();
+
+    if (warnCount != warnCountAfter) {
+        LogWarnCustom("UnitTestsModule::runAllTest", "The tnittest runs generated "
+                                                         << (warnCountAfter - warnCount)
+                                                         << " warnings");
+    }
+    if (errCount != errCount) {
+        LogWarnCustom("UnitTestsModule::runAllTest", "The tnittest runs generated "
+                                                         << (errCount - errCount) << " errors");
     }
 
     return res;
 }
 
-} // namespace
-
+}  // namespace

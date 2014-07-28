@@ -3,7 +3,7 @@
  * Inviwo - Interactive Visualization Workshop
  * Version 0.6b
  *
- * Copyright (c) 2013-2014 Inviwo Foundation
+ * Copyright (c) 2012-2014 Inviwo Foundation
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -26,46 +26,33 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
- * Main file author: Rickard Englund
+ * Main file authors: Peter Steneteg
  *
  *********************************************************************************/
 
-#ifndef IVW_PYTHON_TEST_H
-#define IVW_PYTHON_TEST_H
+#include "logerrorcounter.h"
 
-#include <modules/unittests/unittestsmoduledefine.h>
+namespace inviwo {
 
-#include <modules/python/pythonmodule.h>
-#include <modules/python/pythonscript.h>
+LogErrorCounter::LogErrorCounter() {}
 
-class IVW_MODULE_UNITTESTS_API PythonModuleTest : public ::testing::Test {
-protected:
-    PythonModuleTest():module_(0) {}
-    ~PythonModuleTest() {}
+LogErrorCounter::~LogErrorCounter() {}
 
-    virtual void SetUp() {
-        const std::vector<InviwoModule*> modules = InviwoApplication::getPtr()->getModules();
-
-        for (size_t i = 0; i<modules.size(); i++) {
-            const PythonModule* pyModule = dynamic_cast<const PythonModule*>(modules[i]);
-
-            if (pyModule) {
-                module_ = const_cast<PythonModule*>(pyModule);
-            }
-        }
-    }
-    virtual void TearDown() {}
-
-    PythonModule* module_;
-
-
-};
-
-TEST_F(PythonModuleTest, init) {
-    ASSERT_TRUE(module_!=0);
+void LogErrorCounter::log(std::string logSource, unsigned int logLevel, const char* fileName,
+                          const char* functionName, int lineNumber, std::string logMsg) {
+    messageCount_[static_cast<LogLevel>(logLevel)]++;
 }
 
+size_t LogErrorCounter::getCount(const LogLevel& level) const { 
+    std::map<LogLevel,size_t>::const_iterator it = messageCount_.find(level);
+    if(it == messageCount_.end()) return 0;
+    return it->second; 
+}
 
+size_t LogErrorCounter::getInfoCount() const { return getCount(Info); }
 
+size_t LogErrorCounter::getWarnCount() const { return getCount(Warn); }
 
-#endif
+size_t LogErrorCounter::getErrorCount() const { return getCount(Error); }
+
+}  // namespace
