@@ -69,6 +69,11 @@ ISORaycaster::ISORaycaster()
     addProperty(camera_);
     addProperty(lighting_);
 
+
+    std::stringstream ss;
+    ss << "Channel " << 0;
+    channel_.addOption(ss.str() , ss.str(), 0);
+
     raycasting_.compositingMode_.setVisible(false);
     setAllPropertiesCurrentStateAsDefault();
 }

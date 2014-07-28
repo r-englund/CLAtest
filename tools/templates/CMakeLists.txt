@@ -28,9 +28,8 @@ ivw_group("Source Files" ${SOURCE_FILES})
 #--------------------------------------------------------------------
 # Add Unittests
 #set(TEST_FILES
-#	${IVW_MODULE_DIR}/<lname>/tests/<lname>-test.h
+#	${IVW_MODULE_DIR}/<lname>/tests/<lname>-test.cpp
 #)
-#ivw_group("Unittest Files" ${TEST_FILES})
 #ivw_add_unittest(${TEST_FILES})
 
 #--------------------------------------------------------------------

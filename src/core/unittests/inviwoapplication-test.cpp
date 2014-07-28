@@ -30,9 +30,11 @@
  *
  *********************************************************************************/
 
-#ifndef IVW_INVIWOAPPLICATION_TEST_H
-#define IVW_INVIWOAPPLICATION_TEST_H
+#include <gtest/gtest.h>
 
+#include <inviwo/core/common/inviwoapplication.h>
+
+namespace inviwo{
 
 TEST(InviwoApplicationTest,initTest) {
     InviwoApplication* app = InviwoApplication::getPtr();
@@ -47,4 +49,4 @@ TEST(InviwoApplicationTest,displayNameTest) {
     EXPECT_TRUE(app->getDisplayName().find(IVW_VERSION)!=std::string::npos);
 }
 
-#endif
+}

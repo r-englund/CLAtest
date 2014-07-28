@@ -83,6 +83,8 @@ CanvasProcessor::CanvasProcessor()
     addProperty(saveLayerDirectory_);
     saveLayerButton_.onChange(this, &CanvasProcessor::saveImageLayer);
     addProperty(saveLayerButton_);
+
+    setAllPropertiesCurrentStateAsDefault();
 }
 
 

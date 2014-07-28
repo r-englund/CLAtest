@@ -53,6 +53,7 @@ VolumeSlice::VolumeSlice()
     sliceAlongAxis_.addOption("y", "Y axis", CoordinateEnums::Y);
     sliceAlongAxis_.addOption("z", "Z axis", CoordinateEnums::Z);
     sliceAlongAxis_.setSelectedIndex(0);
+    sliceAlongAxis_.setCurrentStateAsDefault();
     addProperty(sliceAlongAxis_);
     addProperty(sliceNumber_);
     addInteractionHandler(new VolumeSliceInteractationHandler(this));

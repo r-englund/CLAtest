@@ -26,22 +26,48 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
- * Main file author: Peter Steneteg
+ * Main file author: Rickard Englund
  *
  *********************************************************************************/
 
-#include <inviwo/core/util/fileextension.h>
+#include <gtest/gtest.h>
 
-#include <inviwo/core/util/singleton.h>
 
-namespace inviwo {
+#include <modules/unittests/unittestsmoduledefine.h>
 
-FileExtension::FileExtension()
-    : extension_("txt")
-    , description_("Textfile") {};
-FileExtension::FileExtension(std::string extension, std::string description)
-    : extension_(extension)
-    , description_(description) {};
+#include <modules/python/pythonmodule.h>
+#include <modules/python/pythonscript.h>
 
-} // namespace
+namespace inviwo{
 
+class IVW_MODULE_UNITTESTS_API PythonModuleTest : public ::testing::Test {
+protected:
+    PythonModuleTest():module_(0) {}
+    ~PythonModuleTest() {}
+
+    virtual void SetUp() {
+        const std::vector<InviwoModule*> modules = InviwoApplication::getPtr()->getModules();
+
+        for (size_t i = 0; i<modules.size(); i++) {
+            const PythonModule* pyModule = dynamic_cast<const PythonModule*>(modules[i]);
+
+            if (pyModule) {
+                module_ = const_cast<PythonModule*>(pyModule);
+            }
+        }
+    }
+    virtual void TearDown() {}
+
+    PythonModule* module_;
+
+
+};
+
+TEST_F(PythonModuleTest, init) {
+    ASSERT_TRUE(module_!=0);
+}
+
+
+
+
+}

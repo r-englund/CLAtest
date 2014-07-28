@@ -69,6 +69,7 @@ ImageLayoutGL::ImageLayoutGL()
 
     layoutHandler_ = new ImageLayoutGLInteractationHandler();
     addInteractionHandler(layoutHandler_);
+    setAllPropertiesCurrentStateAsDefault();
 }
 
 ImageLayoutGL::~ImageLayoutGL() {

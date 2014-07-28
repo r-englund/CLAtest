@@ -54,6 +54,16 @@ MultichannelRaycaster::MultichannelRaycaster()
     
 }
 
+
+MultichannelRaycaster::~MultichannelRaycaster()
+{
+    while (!transferFunctions_.empty())
+    {
+        delete transferFunctions_.back();
+        transferFunctions_.pop_back();
+    }
+}
+
 void MultichannelRaycaster::initialize() {
     ProcessorGL::initialize();
     shader_ = new Shader(shaderFileName_, false);
@@ -89,9 +99,9 @@ void MultichannelRaycaster::initializeResources() {
              << " t, tDepth, tIncr);";
         }
         shader_->getFragmentShaderObject()->addShaderDefine("SAMPLE_CHANNELS", ss2.str());
+        shader_->build();
     }
 
-    shader_->build();
 }
 
 void MultichannelRaycaster::onVolumeChange() {
@@ -158,5 +168,6 @@ void MultichannelRaycaster::process() {
     delete[] transFuncUnits;
     delete[] tfUnitNumbers;
 }
+
 
 }  // namespace

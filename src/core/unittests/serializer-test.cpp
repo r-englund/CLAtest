@@ -30,12 +30,14 @@
  *
  *********************************************************************************/
 
-#ifndef IVW_SERIALIZER_TEST_H
-#define IVW_SERIALIZER_TEST_H
+#include <gtest/gtest.h>
+
 
 #include <modules/unittests/unittestsmoduledefine.h>
 
 #include <inviwo/core/io/serialization/ivwserializable.h>
+
+namespace inviwo{
 
 #define SERIALITION_FILE_NAME InviwoApplication::getPtr()->getPath(InviwoApplication::PATH_MODULES,"unittests/tmpfiles/serilizationtests.xml")
 
@@ -370,4 +372,4 @@ TEST(SerialitionTest,mat4Tests) {
             EXPECT_EQ(inMat[i][j],outMat[i][j]);
 }
 
-#endif
+}

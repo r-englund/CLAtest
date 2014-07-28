@@ -73,6 +73,8 @@ ToneMappingCPUProcessor::ToneMappingCPUProcessor()
 
     addProperty(fattal02Saturation_);
     addProperty(fattal02Attenuation_);
+
+    setAllPropertiesCurrentStateAsDefault();
 }
 
 ToneMappingCPUProcessor::~ToneMappingCPUProcessor() {}

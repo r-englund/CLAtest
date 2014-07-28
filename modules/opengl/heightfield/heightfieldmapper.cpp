@@ -64,6 +64,8 @@ HeightFieldMapper::HeightFieldMapper()
     addProperty(heightRange_);
     addProperty(maxHeight_);
     addProperty(seaLevel_);
+
+    setAllPropertiesCurrentStateAsDefault();
 }
 
 HeightFieldMapper::~HeightFieldMapper() {}

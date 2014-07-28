@@ -143,6 +143,12 @@ void PropertyOwner::setAllPropertiesCurrentStateAsDefault(){
         (*it)->setCurrentStateAsDefault();
 }
 
+void PropertyOwner::resetAllPoperties(){
+    for (std::vector<Property*>::iterator it = properties_.begin(); it != properties_.end(); ++it)
+        (*it)->resetToDefaultState();
+}
+
+
 bool PropertyOwner::property_has_identifier::operator () (const Property* p) {
     return p->getIdentifier() == id_;
 }

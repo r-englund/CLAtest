@@ -31,10 +31,9 @@
  *********************************************************************************/
 
 #include <inviwo/core/util/commandlineparser.h>
-#ifndef IVW_COMMANDLINEPARSER_TEST_H
-#define IVW_COMMANDLINEPARSER_TEST_H
 
-
+#include <gtest/gtest.h>
+namespace inviwo{
 
 TEST(CommandLineParserTest,DefaultTest) {
     const int argc = 1;
@@ -96,6 +95,4 @@ TEST(CommandLineParserTest,CommandLineParserTest) {
 
 
 
-
-
-#endif
+}

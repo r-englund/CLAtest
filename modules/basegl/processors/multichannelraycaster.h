@@ -17,7 +17,7 @@ namespace inviwo {
 class IVW_MODULE_BASEGL_API MultichannelRaycaster  : public ProcessorGL { 
 public:
     MultichannelRaycaster();
-    virtual ~MultichannelRaycaster(){}
+    virtual ~MultichannelRaycaster();
 
     InviwoProcessorInfo();
 

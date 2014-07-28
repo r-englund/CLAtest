@@ -39,8 +39,10 @@
 #include <modules/opengl/volume/volumegl.h>
 #include <math.h>
 
-#ifndef IVW_VOLUME_TEST_H
-#define IVW_VOLUME_TEST_H
+#include <gtest/gtest.h>
+
+
+namespace inviwo{
 
 template<typename T>
 void testVolumeLoad(std::string filename) {
@@ -390,4 +392,4 @@ TEST(VolumeTest, IvfVolumeCloneTypeINT64BigEndian) {
     testVolumeClone<long long>("testdata.INT64.BigEndian.ivf");
 }
 
-#endif
+}
