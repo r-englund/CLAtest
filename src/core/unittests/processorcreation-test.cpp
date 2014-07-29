@@ -129,29 +129,28 @@ const std::vector<std::string> &getListOfProcessors(){
     return theVec;
 }
 
+//
+//TEST_P(ProcessorCreationTests,ProcesorCreate){
+//    initialize();
+//}
+//
+//TEST_P(ProcessorCreationTests,ProcesorCreateAndReset){ 
+//    initialize();
+//    resetAllPoperties();
+//}
+//
+//
+//TEST_P(ProcessorCreationTests,ProcesorCreateAndAddToNetwork){ 
+//    initialize();
+//    addProcessor();
+//}
 
-TEST_P(ProcessorCreationTests,ProcesorCreate){
-    initialize();
-}
-TEST_P(ProcessorCreationTests,ProcesorCreateAndReset){ //268
+// disabled the 3 test above since they are only needed when the following test fails 
+
+TEST_P(ProcessorCreationTests,ProcesorCreateAndResetAndAddToNetwork){
     initialize();
     resetAllPoperties();
-}
-
-
-TEST_P(ProcessorCreationTests,ProcesorCreateAndAddToNetwork){ //268
-    initialize();
     addProcessor();
-}
-
-TEST_P(ProcessorCreationTests,ProcesorCreateAndResetAndAddToNetwork){ //268
-    initialize();
-    resetAllPoperties();
-    addProcessor();
-}
-
-TEST(asdf,asdfasdf){
-    TransferFunctionProperty tf("asdf","asdfasdf");
 }
 
 INSTANTIATE_TEST_CASE_P(RegisteredProcessors,ProcessorCreationTests,::testing::ValuesIn(getListOfProcessors()));
