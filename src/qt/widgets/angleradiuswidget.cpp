@@ -83,7 +83,7 @@ void AngleRadiusWidget::paintEvent(QPaintEvent *) {
     painter.setPen(circleBoundsPen);
     // Display angle bounds by drawing a pie (pacman) if min/max is not 0/2pi 
     int innerBoundsCircleRadius = referenceRadius*(getMinRadius()/getMaxRadius());
-    if (getMinAngle() > 1.e-6 || getMaxAngle() < 2.*M_PI) {
+    if (getMinAngle() > 0. || getMaxAngle() < 2.*M_PI) {
         // drawPie wants 16*degrees
         int pieStart = 16*glm::degrees(getMinAngle());
         int pieEnd = 16*(glm::degrees(getMaxAngle())-glm::degrees(getMinAngle()));
