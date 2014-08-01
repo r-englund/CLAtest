@@ -39,7 +39,6 @@
 #include <inviwo/core/common/inviwomodule.h>
 #include <inviwo/core/common/moduleaction.h>
 #include <inviwo/core/network/processornetwork.h>
-#include <inviwo/core/network/processornetworkevaluator.h>
 #include <inviwo/core/util/commandlineparser.h>
 #include <inviwo/core/util/fileobserver.h>
 #include <inviwo/core/util/filesystem.h>
@@ -50,6 +49,8 @@
 
 
 namespace inviwo {
+
+class ProcessorNetworkEvaluator;
 
 class IVW_CORE_API InviwoApplication : public Singleton<InviwoApplication> {
 
