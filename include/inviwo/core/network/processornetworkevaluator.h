@@ -40,6 +40,8 @@
 #include <inviwo/core/network/processornetwork.h>
 #include <inviwo/core/links/processorlink.h>
 
+#include <map>
+
 namespace inviwo {
 
 class Canvas;
@@ -51,6 +53,9 @@ class IVW_CORE_API ProcessorNetworkEvaluator : public ProcessorNetworkObserver, 
 public:
     ProcessorNetworkEvaluator(ProcessorNetwork* processorNetwork);
     virtual ~ProcessorNetworkEvaluator();
+
+    // this function is to be called when the network topology was changed
+    void topologyUpdated();
 
     void registerCanvas(Canvas* canvas, std::string associatedProcessName);
     void deregisterCanvas(Canvas* canvas);
@@ -80,13 +85,22 @@ public:
     static ProcessorNetworkEvaluator* getProcessorNetworkEvaluatorForProcessorNetwork(ProcessorNetwork* network);
 
 private:
+    typedef std::set<Processor *> ProcessorList;
+
     void evaluate();
 
-    bool hasBeenVisited(Processor* processor);
-    bool hasBeenVisited(Property* property);
-    std::set<Processor*> getDirectPredecessors(Processor* processor, Event* event = NULL);
+    void setProcessorVisited(Processor* processor, bool visited=true);
+    bool hasBeenVisited(Processor* processor) const;
+    void setPropertyVisited(Property* property, bool visited=true);
+    bool hasBeenVisited(Property* property) const;
+    // retrieve predecessors from global processor state list (look-up)
+    const ProcessorList& getStoredPredecessors(Processor* processor) const;
+    // retrieve predecessors based on given event
+    ProcessorList getDirectPredecessors(Processor* processor, Event* event=NULL) const;
     void traversePredecessors(Processor* processor);
     void determineProcessingOrder();
+    void updateProcessorStates();
+    void resetProcessorVisitedStates();
 
     void propagateMouseEvent(Processor* processor, MouseEvent* mouseEvent);
     void propagateInteractionEvent(Processor* processor, InteractionEvent* event);
@@ -95,9 +109,43 @@ private:
 
     ProcessorNetwork* processorNetwork_;
 
-    std::vector<Processor*> processorsSorted_; // the sorted list of processors obtained through topological sorting
-    std::vector<Processor*> processorsVisited_; // a bool vector containing flags whether a processor has been visited during traversal
-    std::vector<Property*> propertiesVisited_;
+    std::vector<Processor *> processorsSorted_; // the sorted list of processors obtained through topological sorting
+    
+    struct ProcessorState {
+        ProcessorState() : visited(false) {}
+        ProcessorState(const ProcessorList &predecessors) : visited(false),pred(predecessors) {}
+        bool visited;
+        ProcessorList pred; // list of all predecessors
+        // additional information?
+    };
+
+    // map for managing processor states (predecessors, visited flags, etc.)
+    // TODO: replace std::map with std::unordered_map when using C++11!
+    //
+    // map contains a dummy element for NULL processor
+    typedef std::map<Processor *, ProcessorState> ProcMap;
+    typedef ProcMap::iterator ProcMapIt;
+    typedef ProcMap::const_iterator const_ProcMapIt;
+    typedef std::pair<Processor *, ProcessorState> ProcMapPair;
+
+    ProcMap processorStates_;
+
+    struct PropertyState {
+        bool visited;
+        // additional information?
+    };
+
+    // map for visited state of properties
+    // TODO: replace std::map with std::unordered_map when using C++11!
+    typedef std::map<Property *, PropertyState> PropertyMap;
+    typedef PropertyMap::iterator PropertyMapIt;
+    typedef PropertyMap::const_iterator const_PropertyMapIt;
+    typedef std::pair<Property *, PropertyState> PropertyMapPair;
+
+    PropertyMap propertiesVisited_;
+
+    //std::vector<Processor*> processorsVisited_; // a bool vector containing flags whether a processor has been visited during traversal
+    //std::vector<Property*> propertiesVisited_;
 
     std::vector<Canvas*> registeredCanvases_;
     Canvas* defaultContext_;
@@ -105,6 +153,8 @@ private:
 
     bool evaulationQueued_;
     bool evaluationDisabled_;
+
+    bool processorStatesDirty_; // flag for lazy topology evaluation
 
     static std::map<ProcessorNetwork*,ProcessorNetworkEvaluator*> processorNetworkEvaluators_;
 
