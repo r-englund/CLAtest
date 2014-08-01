@@ -32,6 +32,7 @@
 
 #include <modules/glfw/glfwmodule.h>
 #include <inviwo/core/common/inviwoapplication.h>
+#include <inviwo/core/network/processornetworkevaluator.h>
 #include <modules/opengl/canvasprocessorgl.h>
 #include <modules/glfw/canvasprocessorwidgetglfw.h>
 
