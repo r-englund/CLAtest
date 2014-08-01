@@ -36,6 +36,7 @@
 #include <inviwo/core/util/dialogfactory.h>
 #include <inviwo/core/io/datawriterfactory.h>
 #include <inviwo/core/metadata/metadatafactory.h>
+#include <inviwo/core/network/processornetworkevaluator.h>
 #include <inviwo/core/ports/portfactory.h>
 #include <inviwo/core/ports/portinspectorfactory.h>
 #include <inviwo/core/processors/processorfactory.h>
