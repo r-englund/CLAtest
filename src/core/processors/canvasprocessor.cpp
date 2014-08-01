@@ -36,6 +36,7 @@
 #include <inviwo/core/util/canvas.h>
 #include <inviwo/core/util/datetime.h>
 #include <inviwo/core/util/stringconversion.h>
+#include <inviwo/core/network/processornetworkevaluator.h>
 
 namespace inviwo {
 

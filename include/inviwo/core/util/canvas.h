@@ -38,7 +38,6 @@
 #include <inviwo/core/datastructures/image/image.h>
 #include <inviwo/core/datastructures/image/imagetypes.h>
 #include <inviwo/core/datastructures/geometry/geometry.h>
-#include <inviwo/core/network/processornetworkevaluator.h>
 #include <inviwo/core/interaction/pickingcontainer.h>
 #include <inviwo/core/interaction/events/eventhandler.h>
 #include <inviwo/core/interaction/events/gestureevent.h>
@@ -47,6 +46,8 @@
 #include <inviwo/core/interaction/events/touchevent.h>
 
 namespace inviwo {
+
+class ProcessorNetworkEvaluator;
 
 class IVW_CORE_API Canvas {
 
