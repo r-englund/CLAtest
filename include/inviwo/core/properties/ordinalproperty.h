@@ -178,7 +178,7 @@ T OrdinalProperty<T>::getIncrement() const {
 
 template <typename T>
 void OrdinalProperty<T>::setMinValue(const T& value) {
-    if (value_ == minValue_)
+    if (value == minValue_)
         return;
     minValue_ = value;
     Property::propertyModified();
