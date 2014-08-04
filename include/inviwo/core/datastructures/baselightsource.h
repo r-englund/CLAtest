@@ -35,6 +35,7 @@
 
 #include <inviwo/core/common/inviwocoredefine.h>
 #include <inviwo/core/common/inviwo.h>
+#include <inviwo/core/datastructures/spatialdata.h>
 
 namespace inviwo {
 
@@ -48,7 +49,7 @@ enum Enum {
 }
 // TODO: Change/add transformation and size information to meters instead of texture space.
 
-class IVW_CORE_API LightSource {
+class IVW_CORE_API LightSource: public SpatialEntity<3> {
 public:
     LightSource() {};
     virtual ~LightSource() {};
@@ -60,9 +61,6 @@ public:
      * @return Radiant flux in watt.
      */
     virtual vec3 getPower() const = 0;
-
-    const mat4& getObjectToTexture() const { return objectToTextureSpaceMatrix_; }
-    void setObjectToTexture(const mat4& m) { objectToTextureSpaceMatrix_ = m; }
 
     virtual LightSourceType::Enum getLightSourceType() const = 0;
 
@@ -106,7 +104,6 @@ public:
     virtual std::string getDataInfo() const { return "LightSource"; }
 
 protected:
-    mat4 objectToTextureSpaceMatrix_; // Transformation matrix from object to texture space coordinates
     float fieldOfView_; // Field of view in radians
     vec2 size_; // width, height in texture space
     bool enabled_;

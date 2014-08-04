@@ -43,6 +43,7 @@ class DirectionalLight: public LightSource {
 public:
     DirectionalLight(): LightSource() {}
     virtual ~DirectionalLight() {};
+    virtual DirectionalLight* clone() const { return new DirectionalLight(*this); }
 
     virtual float getArea() const { return size_.x*size_.y; }
     /**

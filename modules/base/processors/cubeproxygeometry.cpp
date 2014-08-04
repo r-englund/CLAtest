@@ -72,18 +72,20 @@ void CubeProxyGeometry::deinitialize() {
 }
 
 void CubeProxyGeometry::process() {
+    vec3 startDataTexCoord = vec3(0.0);
+    vec3 endDataTexCoord = vec3(1.f);
     glm::vec3 pos(0.0f);
     glm::vec3 p1(1.0f,0.0f,0.0f);
     glm::vec3 p2(0.0f,1.0f,0.0f);
     glm::vec3 p3(0.0f,0.0f,1.0f);
-    glm::vec3 tex(0.0f);
-    glm::vec3 t1(1.0f,0.0f,0.0f);
-    glm::vec3 t2(0.0f,1.0f,0.0f);
-    glm::vec3 t3(0.0f,0.0f,1.0f);
-    glm::vec4 col(0.0f,0.0f,0.0f,1.0f);
-    glm::vec4 c1(1.0f,0.0f,0.0f,0.0f);
-    glm::vec4 c2(0.0f,1.0f,0.0f,0.0f);
-    glm::vec4 c3(0.0f,0.0f,1.0f,0.0f);
+    glm::vec3 tex(startDataTexCoord);
+    glm::vec3 t1(endDataTexCoord.x,startDataTexCoord.y,startDataTexCoord.z);
+    glm::vec3 t2(startDataTexCoord.x,endDataTexCoord.y,startDataTexCoord.z);
+    glm::vec3 t3(startDataTexCoord.x,startDataTexCoord.y,endDataTexCoord.z);
+    glm::vec4 col(startDataTexCoord,1.0f);
+    glm::vec4 c1(t1,0.0f);
+    glm::vec4 c2(t2,0.0f);
+    glm::vec4 c3(t3,0.0f);
 
     if (clippingEnabled_.get()) {
         pos = pos + p1*static_cast<float>(clipX_.get().x)/static_cast<float>(dims_.x)
