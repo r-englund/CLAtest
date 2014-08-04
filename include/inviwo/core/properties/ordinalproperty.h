@@ -187,7 +187,7 @@ void OrdinalProperty<T>::setMinValue(const T& value) {
 
 template <typename T>
 void OrdinalProperty<T>::setMaxValue(const T& value) {
-    if (value_ == maxValue_)
+    if (value == maxValue_)
         return;
     maxValue_ = value;
     Property::propertyModified();
