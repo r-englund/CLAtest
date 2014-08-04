@@ -94,6 +94,8 @@ T& TemplateProperty<T>::get() {
 
 template <typename T>
 void TemplateProperty<T>::set(const T& value) {
+    if (value == value_)
+        return;
     value_ = value;
     propertyModified();
 }
