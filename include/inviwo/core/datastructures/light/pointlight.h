@@ -43,6 +43,7 @@ class PointLight: public LightSource {
 public:
     PointLight(): LightSource() {}
     virtual ~PointLight() {};
+    virtual PointLight* clone() const { return new PointLight(*this); }
 
     virtual float getArea() const { return size_.x*size_.y; }
     /**
@@ -60,14 +61,15 @@ public:
      *
      * @return World position of light source.
      */
-    const vec3& getPosition() const { return position_; }
+    const vec3& getPosition() const { return getCoordinateTransformer().getModelToWorldMatrix()[3].xyz();; }
 
     /**
      * Set world position of light source.
      *
      * @param position World position of light source.
      */
-    void setPosition(const vec3& position) { position_ = position; }
+    void setPosition(const vec3& position) { getWorldTransform()[3].xyz() = position; }
+
 
     /**
      * Set the intensity (color) from the light source given in watt per steradian (flux density per solid angle, W*s*r^-1).

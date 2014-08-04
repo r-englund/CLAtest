@@ -43,6 +43,7 @@ class DiffuseLight: public LightSource {
 public:
     DiffuseLight(): LightSource() {}
     virtual ~DiffuseLight() {};
+    virtual DiffuseLight* clone() const { return new DiffuseLight(*this); }
 
     virtual float getArea() const { return size_.x*size_.y; }
     /**

@@ -86,14 +86,16 @@ void PointLightSourceProcessor::process() {
 }
 
 void PointLightSourceProcessor::updatePointLightSource(PointLight* lightSource) {
-    vec3 lightPos = vec3(0.5f) - lightPosition_.get();
-    vec3 dir = glm::normalize(lightPos - camera_.getLookTo());
+    vec3 lightPos = lightPosition_.get();
+    vec3 dir = glm::normalize(camera_.getLookTo()-lightPos);
     mat4 transformationMatrix = getLightTransformationMatrix(lightPos, dir);
-    lightSource->setObjectToTexture(transformationMatrix);
+    // Offset by 0.5 to get to texture coordinates
+    lightSource->setBasisAndOffset(glm::translate(vec3(0.5f)));
+    lightSource->setWorldTransform(transformationMatrix);
+
     lightSource->setSize(lightSize_.get());
     vec3 diffuseLight = lightDiffuse_.get().xyz();
     lightSource->setIntensity(lightPowerProp_.get()*diffuseLight);
-    lightSource->setPosition(lightPosition_.get());
     lightSource->setEnabled(lightEnabled_.get());
 }
 
