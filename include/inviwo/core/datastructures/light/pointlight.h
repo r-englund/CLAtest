@@ -41,11 +41,11 @@ namespace inviwo {
 
 class PointLight: public LightSource {
 public:
-    PointLight(): LightSource() {}
+    PointLight(): LightSource() { setFieldOfView(static_cast<float>(2.*M_PI)); }
     virtual ~PointLight() {};
     virtual PointLight* clone() const { return new PointLight(*this); }
 
-    virtual float getArea() const { return size_.x*size_.y; }
+    virtual float getArea() const { return 4.f*M_PI*size_.x*size_.y; }
     /**
      * Get radiant flux (color) of light source.
      * @see setPower

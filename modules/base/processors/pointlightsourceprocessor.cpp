@@ -44,7 +44,7 @@ PointLightSourceProcessor::PointLightSourceProcessor()
     : Processor()
     , outport_("PointLightSource")
     , lightPowerProp_("lightPower", "Light power (%)", 50.f, 0.f, 100.f)
-    , lightSize_("lightSize", "Light size", vec2(1.5f, 1.5f), vec2(0.0f, 0.0f), vec2(3.0f, 3.0f))
+    , lightSize_("lightSize", "Light radius", 1.5f, 0.0f, 3.0f)
     , lightDiffuse_("lightDiffuse", "Color", vec4(1.0f))
     , lightPosition_("lightPosition", "Light Source Position", vec3(1.f, 0.65f, 0.65f), vec3(-1.f), vec3(1.f))
     , lightEnabled_("lightEnabled", "Enabled", true)
@@ -93,7 +93,7 @@ void PointLightSourceProcessor::updatePointLightSource(PointLight* lightSource) 
     lightSource->setBasisAndOffset(glm::translate(vec3(0.5f)));
     lightSource->setWorldTransform(transformationMatrix);
 
-    lightSource->setSize(lightSize_.get());
+    lightSource->setSize(vec2(lightSize_.get()));
     vec3 diffuseLight = lightDiffuse_.get().xyz();
     lightSource->setIntensity(lightPowerProp_.get()*diffuseLight);
     lightSource->setEnabled(lightEnabled_.get());

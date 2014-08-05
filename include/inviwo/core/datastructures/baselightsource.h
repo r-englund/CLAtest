@@ -51,7 +51,7 @@ enum Enum {
 
 class IVW_CORE_API LightSource: public SpatialEntity<3> {
 public:
-    LightSource() {};
+    LightSource(): fieldOfView_(static_cast<float>(0.5*M_PI)) {};
     virtual ~LightSource() {};
 
     virtual float getArea() const = 0;
@@ -74,7 +74,7 @@ public:
     void setFieldOfView(float FOVInRadians) { fieldOfView_ = FOVInRadians; }
 
     /**
-     * Get width and height in texture space.
+     * Get width and height in world space.
      *
      * @return
      */
@@ -105,7 +105,7 @@ public:
 
 protected:
     float fieldOfView_; // Field of view in radians
-    vec2 size_; // width, height in texture space
+    vec2 size_; // width, height in world space
     bool enabled_;
 };
 
