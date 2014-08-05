@@ -62,9 +62,9 @@ public:
     virtual ~LightPositionWidgetQt();
 
 
-    float getX() const { return radius_*sin(theta_)*cos(phi_); };
-    float getY() const { return radius_*sin(theta_)*sin(phi_); };
-    float getZ() const { return radius_*cos(theta_); };
+    float getX() const { return sin(theta_)*cos(phi_); };
+    float getY() const { return sin(theta_)*sin(phi_); };
+    float getZ() const { return cos(theta_); };
 
     void setRadius(float radius) { radius_ = radius; positionChanged(); }
     float getRadius() const { return radius_; }
