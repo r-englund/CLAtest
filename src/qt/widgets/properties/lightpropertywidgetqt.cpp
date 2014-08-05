@@ -60,6 +60,17 @@ void LightPropertyWidgetQt::generateWidget() {
     radiusSpinBox_ = new CustomDoubleSpinBoxQt(this);
     radiusSpinBox_->setSingleStep(0.1);
     radiusSpinBox_->setKeyboardTracking(false); // don't emit the valueChanged() signal while typing
+    // Assuming that minimum value is negative and maximum value is positive
+    if (glm::any(glm::greaterThan(property_->getMinValue(), vec3(0)))) {
+        LogWarn("Minimum value is assumed to be negative. Widget may produce values out of range.")
+    }
+    if (glm::any(glm::lessThan(property_->getMaxValue(), vec3(0)))) {
+        LogWarn("Maximum value is assumed to be positive. Widget may produce values out of range.")
+    }
+    // Choose the smallest value as maximum to ensure that values does not go out of range
+    vec3 maxVal = glm::min(glm::abs(property_->getMinValue()), glm::abs(property_->getMaxValue()));
+    radiusSpinBox_->setMinimum(0.f);
+    radiusSpinBox_->setMaximum(std::min(maxVal.z, std::min(maxVal.y, maxVal.x)));
     connect(label_, SIGNAL(textChanged()), this, SLOT(setPropertyDisplayName()));
     connect(lightWidget_,SIGNAL(positionChanged()), this, SLOT(onPositionLightWidgetChanged()));
     connect(radiusSpinBox_, SIGNAL(valueChanged(double)), this, SLOT(onRadiusSpinBoxChanged(double)));
@@ -85,7 +96,7 @@ void LightPropertyWidgetQt::generateWidget() {
 }
 
 void LightPropertyWidgetQt::onPositionLightWidgetChanged() {
-    property_->set(lightWidget_->getPosition());
+    property_->set(static_cast<float>(radiusSpinBox_->value())*lightWidget_->getPosition());
 }
 
 void LightPropertyWidgetQt::onRadiusSpinBoxChanged(double radius) {
