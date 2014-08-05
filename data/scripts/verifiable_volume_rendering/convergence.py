@@ -127,7 +127,7 @@ def main():
         E_curr = imagesError[i].max()
         #E_curr = max(imagesError[i].getextrema())
         #print E_curr
-        y.append(math.fabs(E_curr))
+        y.append(math.fabs(E_curr+0.000000000001))
 
     print "Errors:", y 
 

@@ -59,15 +59,15 @@ endSamplesPerRay = 1024
 #maxDataDim = [2.0]
 dataSets = ['grid-01.dat']
 maxDataDim = [2.0]
-test = "dataset_convergence"
-test = "stepsize_convergence"
-#test = "pixel_convergence"
+#test = "dataset_convergence"
+#test = "stepsize_convergence"
+test = "pixel_convergence"
 if test == "dataset_convergence":
     dataSets = ['grid-01.dat', 'grid-02.dat', 'grid-03.dat', 'grid-04.dat', 'grid-05.dat', 'grid-06.dat', 'grid-07.dat', 'grid-08.dat', 'grid-09.dat']
     maxDataDim = (2.0, 3.0, 5.0, 9.0, 17.0, 33.0, 65.0, 129.0, 257.0)
 elif test == "stepsize_convergence":
-    startSamplesPerRay = 0.5
-    endSamplesPerRay = 512
+    startSamplesPerRay = 1.0
+    endSamplesPerRay = 256
 else:
     startWindowRes = 32
     endWindowRes = 1024
@@ -87,6 +87,7 @@ for dataSet in dataSets:
         samples = startSamplesPerRay
         while (samples <= endSamplesPerRay):
             sampleRate = samples/dataDim
+            print sampleRate
             inviwo.setPropertyValue(processor, "samplingRate", sampleRate)
             inviwo.snapshotCanvas(0, "%siteration_%d.png" % (path + test + "/", iteration))
             samples *= 2
