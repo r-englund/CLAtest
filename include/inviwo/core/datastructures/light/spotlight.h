@@ -61,7 +61,7 @@ public:
      *
      * @return World position of light source.
      */
-    const vec3& getPosition() const { return getCoordinateTransformer().getModelToWorldMatrix()[3].xyz(); }
+    vec3 getPosition() const { return getCoordinateTransformer().getModelToWorldMatrix()[3].xyz(); }
 
     /**
      * Set world position of light source.

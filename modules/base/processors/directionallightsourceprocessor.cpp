@@ -46,7 +46,7 @@ DirectionalLightSourceProcessor::DirectionalLightSourceProcessor()
     , lightPowerProp_("lightPower", "Light power (%)", 50.f, 0.f, 100.f)
     , lightSize_("lightSize", "Light size", vec2(1.5f, 1.5f), vec2(0.0f, 0.0f), vec2(3.0f, 3.0f))
     , lightDiffuse_("lightDiffuse", "Color", vec4(1.0f))
-    , lightPosition_("lightPosition", "Light Source Position", vec3(0.79370052598409973737585281963615f), vec3(-1.f), vec3(1.f))
+    , lightPosition_("lightPosition", "Light Source Position", vec3(1.f), vec3(-1.f), vec3(1.f))
     , lightEnabled_("lightEnabled", "Enabled", true) {
     addPort(outport_);
     addProperty(lightPosition_);

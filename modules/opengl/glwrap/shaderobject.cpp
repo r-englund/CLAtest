@@ -99,10 +99,8 @@ void ShaderObject::preprocess() {
 
 std::string ShaderObject::embeddDefines(std::string source) {
     std::ostringstream result;
-
-    for (size_t i=0; i<shaderDefines_.size(); i++) {
-        std::pair<std::string, std::string> curDefine = shaderDefines_[i];
-        result << "#define " << curDefine.first << " " << curDefine.second << "\n";
+    for (ShaderDefineContainer::const_iterator it=shaderDefines_.begin(), itEnd = shaderDefines_.end(); it!=itEnd; ++it) {
+        result << "#define " << (*it).first << " " << (*it).second << "\n";
         lineNumberResolver_.push_back(std::pair<std::string, unsigned int>("Define", 0));
     }
 
@@ -310,16 +308,15 @@ bool ShaderObject::compile() {
 }
 
 void ShaderObject::addShaderDefine(std::string name, std::string value) {
-    removeShaderDefine(name);
-    shaderDefines_.push_back(std::pair<std::string,std::string>(name, value));
+    shaderDefines_[name] = value;
 }
 
 void ShaderObject::removeShaderDefine(std::string name) {
-    for (size_t i=0; i<shaderDefines_.size(); i++)
-        if (shaderDefines_[i].first == name) {
-            shaderDefines_.erase(shaderDefines_.begin()+i);
-            i = shaderDefines_.size();
-        }
+    shaderDefines_.erase(name);
+}
+
+bool ShaderObject::hasShaderDefine(const std::string& name) const {
+    return shaderDefines_.find(name) != shaderDefines_.end();
 }
 
 void ShaderObject::clearShaderDefines() {
@@ -336,5 +333,7 @@ void ShaderObject::addOutDeclaration(std::string name) {
     if (!outExists)
         outDeclarations_.push_back(name);
 }
+
+
 
 } // namespace
