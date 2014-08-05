@@ -62,6 +62,7 @@ public:
 
     void addShaderDefine(std::string name, std::string value="");
     void removeShaderDefine(std::string name);
+    bool hasShaderDefine(const std::string& name) const;
     void clearShaderDefines();
 
     void addOutDeclaration(std::string name);
@@ -88,7 +89,8 @@ private:
     std::string sourceProcessed_;
 
     std::vector<std::string> outDeclarations_;
-    std::vector<std::pair<std::string, std::string> > shaderDefines_;
+    typedef std::map<std::string, std::string> ShaderDefineContainer;
+    ShaderDefineContainer shaderDefines_;
 
     std::vector<std::pair<std::string, unsigned int> > lineNumberResolver_;
 };
