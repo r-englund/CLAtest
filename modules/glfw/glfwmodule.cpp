@@ -61,8 +61,11 @@ GLFWModule::GLFWModule() : InviwoModule() {
 
 GLFWModule::~GLFWModule() {
     delete GLFWSharedCanvas_;
-    glfwTerminate();
+    //glfwTerminate();
 }
 
+void GLFWModule::deinitialize() {
+    GLFWSharedCanvas_->deinitialize();
+}
 
 } // namespace

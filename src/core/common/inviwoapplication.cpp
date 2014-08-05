@@ -158,6 +158,19 @@ void InviwoApplication::deinitialize() {
     for (size_t i=0; i<modules_.size(); i++)
         modules_[i]->deinitialize();
 
+    DataReaderFactory::deleteInstance();
+    DataWriterFactory::deleteInstance();
+    DialogFactory::deleteInstance();
+    GeometryRendererFactory::deleteInstance();
+    MetaDataFactory::deleteInstance();
+    PortFactory::deleteInstance();
+    PortInspectorFactory::deleteInstance();
+    ProcessorFactory::deleteInstance();
+    ProcessorWidgetFactory::deleteInstance();
+    PropertyFactory::deleteInstance();
+    PropertyWidgetFactory::deleteInstance();
+    RepresentationConverterFactory::deleteInstance();
+
     initialized_ = false;
 }
 

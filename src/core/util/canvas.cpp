@@ -71,8 +71,10 @@ Canvas::Canvas(uvec2 dimensions)
 }
 
 Canvas::~Canvas() {
-    if (!shared_)
+    if (!shared_) {
         delete screenAlignedRect_;
+        screenAlignedRect_ = NULL;
+    }
 
     delete pickingContainer_;
 }

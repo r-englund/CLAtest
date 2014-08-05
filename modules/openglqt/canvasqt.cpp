@@ -291,7 +291,7 @@ void CanvasQt::mouseReleaseEvent(QMouseEvent* e) {
 void CanvasQt::mouseMoveEvent(QMouseEvent* e) {
     if (!processorNetworkEvaluator_) return;
 
-#if !defined(QT_NO_GESTURES) && defined(USING_QT4)
+#if !defined(QT_NO_GESTURES)
     if (gestureMode_) return;
 #endif
 
