@@ -94,6 +94,7 @@ OpenGLModule::OpenGLModule() :
 
 
 OpenGLModule::~OpenGLModule() {
+    ShaderManager::deleteInstance();
 }
 
 void OpenGLModule::updateProfile(){

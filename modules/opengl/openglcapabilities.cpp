@@ -236,7 +236,10 @@ bool OpenGLCapabilities::isShadersSupportedARB() {
 }
 
 OpenGLCapabilities::GLSLShaderVersion OpenGLCapabilities::getCurrentShaderVersion() {
-    return supportedShaderVersions_[currentGlobalGLSLVersionIdx_];
+    if(supportedShaderVersions_.size() > currentGlobalGLSLVersionIdx_)
+        return supportedShaderVersions_[currentGlobalGLSLVersionIdx_];
+    else 
+        return 0;
 }
 
 std::string OpenGLCapabilities::getCurrentGlobalGLSLHeader() {
@@ -641,11 +644,12 @@ int OpenGLCapabilities::parseAndRetrieveVersion(std::string versionStr) {
         std::vector<std::string> versionSplit = splitString(versionStr, ' ');
         std::vector<std::string> numberSplit = splitString(versionSplit[0], '.');
         int factor = 1;
-        if (numberSplit.size() > 1 && numberSplit[1].size() == 1) {
-            factor = 10;
+        if (numberSplit.size() > 1) {
+            if(numberSplit[1].size() == 1) {
+                factor = 10;
+            }
+            return stringTo<int>(numberSplit[0])*100 + stringTo<int>(numberSplit[1]) * factor;
         }
-
-        return stringTo<int>(numberSplit[0])*100 + stringTo<int>(numberSplit[1]) * factor;
     }
 
     return 0;
