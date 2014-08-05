@@ -39,5 +39,5 @@ in vec3 texCoord_;
 
 void main() {
     vec4 texel = textureLookup2Dnormalized(sliceTex_, sliceTexParameters_, texCoord_.xy);
-    FragData0 = vec4(texel.r+0.1, texel.g, texel.b, 1.0);
+    FragData0 = vec4(texel.r, texel.g, texel.b, 1.0);
 }
