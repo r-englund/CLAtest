@@ -321,14 +321,14 @@ public:
         CLFormat()
             : format(cl::ImageFormat(CL_R, CL_UNORM_INT8))
             , normalization(NONE)
-            , scaling(0.f)
+            , scaling(1.f)
             , valid(false) {}
-        CLFormat(const cl::ImageFormat& f, Normalization n, float sc = 0.f)
+        CLFormat(const cl::ImageFormat& f, Normalization n, float sc = 1.f)
             : format(f)
             , normalization(n)
             , scaling(sc)
             , valid(true) {}
-        CLFormat(const int channelOrder, const int channelType, Normalization n, float sc = 0.f)
+        CLFormat(const int channelOrder, const int channelType, Normalization n, float sc = 1.f)
             : format(cl::ImageFormat(channelOrder, channelType))
             , normalization(n)
             , scaling(sc)
