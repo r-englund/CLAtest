@@ -56,6 +56,7 @@ public:
 
     //Package management    
     bool isPipInstalled();
+    std::string getPackageVersionInfo(std::string packageName);
     bool isPackageAvailable(std::string packageName, bool forceAvailabilityCheck=false);
     bool installPackage(std::string packageName);
     bool uninstallPackage(std::string packageName);

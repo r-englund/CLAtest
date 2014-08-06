@@ -55,9 +55,19 @@ PyPackagesModule::PyPackagesModule() : InviwoModule() {
     initPyPackagesInterface();    
 
     //Specify required packages
+    //numpy
     PyScriptRunner::getPtr()->addModulePackageRequirement(this, "numpy");
+
+    //matplot & dependencies
     PyScriptRunner::getPtr()->addModulePackageRequirement(this, "matplotlib");
+    PyScriptRunner::getPtr()->addModulePackageRequirement(this, "python-dateutil");
+    PyScriptRunner::getPtr()->addModulePackageRequirement(this, "pytz");
+    PyScriptRunner::getPtr()->addModulePackageRequirement(this, "pyparsing");
+    PyScriptRunner::getPtr()->addModulePackageRequirement(this, "six");
+
+    //pycuda & dependencies
     PyScriptRunner::getPtr()->addModulePackageRequirement(this, "pycuda");
+    PyScriptRunner::getPtr()->addModulePackageRequirement(this, "pytools");
 
     //check if package available
     bool numpyAvailable = numpyRequirement();
@@ -119,6 +129,20 @@ void PyPackagesModule::initPyPackagesInterface() {
             LogInfo("Site package path is found at '" + path + "'");
             //path = std::string("C:\\Python27x64\\Lib\\site-packages");
         }
+
+        //ss.clear();
+        //ss << "import sys" << std::endl;
+        //ss << "prev_sys_path = list(sys.path)" << std::endl;
+        //ss << "print prev_sys_path" << std::endl;
+        //std::string getSysPath(ss.str());
+        ////int ret = PyRun_SimpleString(runString.c_str());
+        //PyScriptRunner::getPtr()->run(getSysPath);
+        //retError = PyScriptRunner::getPtr()->getError();
+        ////std::string path;
+        //if (retError=="") {
+        //    path = PyScriptRunner::getPtr()->getStandardOutput();
+        //    LogInfo("System paths are '" + path + "'");
+        //}
 
         //Append site-package path to system path
         std::string pathConv = path;
