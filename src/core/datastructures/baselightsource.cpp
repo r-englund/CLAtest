@@ -36,8 +36,7 @@
 
 namespace inviwo {
 
-PackedLightSource baseLightToPackedLight(const LightSource* lightsource, float radianceScale)
-{
+PackedLightSource baseLightToPackedLight(const LightSource* lightsource, float radianceScale) {
     PackedLightSource light;
     light.tm = lightsource->getCoordinateTransformer().getModelToWorldMatrix();
     light.radiance = vec4(radianceScale*lightsource->getPower(), 1.f);
@@ -48,8 +47,18 @@ PackedLightSource baseLightToPackedLight(const LightSource* lightsource, float r
     return light;
 }
 
-uvec2 getSamplesPerLight(uvec2 nSamples, int nLightSources)
-{
+PackedLightSource baseLightToPackedLight(const LightSource* lightsource, float radianceScale, const mat4& transformLightMat) {
+    PackedLightSource light;
+    light.tm = transformLightMat*lightsource->getCoordinateTransformer().getModelToWorldMatrix();
+    light.radiance = vec4(radianceScale*lightsource->getPower(), 1.f);
+    light.type = lightsource->getLightSourceType();
+    light.area = lightsource->getArea();
+    light.cosFOV = std::cos(glm::radians(lightsource->getFieldOfView()/2.f));
+    light.size = lightsource->getSize();
+    return light;
+}
+
+uvec2 getSamplesPerLight(uvec2 nSamples, int nLightSources) {
     uvec2 samplesPerLight;
     //samplesPerLight.y = nPhotons.y / nLightSources;
     //samplesPerLight.x = (int)sqrt((float)nPhotons.x*samplesPerLight.y);
@@ -64,6 +73,9 @@ mat4 getLightTransformationMatrix(vec3 pos, vec3 dir) {
     vec3 A = vec3(0,0,1);
     vec3 B = dir;//B(0,1,0);
     float angle = acos(glm::dot(A,B));
+    if (glm::all(glm::equal(A, B))) {
+        A = vec3(0,1,0);
+    }
     vec3 rotationAxis = glm::normalize(glm::cross(A, B));
 #ifndef GLM_FORCE_RADIANS
     angle = glm::degrees(angle);

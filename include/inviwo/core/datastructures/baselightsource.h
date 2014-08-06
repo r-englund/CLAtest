@@ -124,8 +124,11 @@ typedef struct {
     int padding[7]; // OpenCL requires sizes that are power of two (32, 64, 128 and so on)
 } PackedLightSource;
 
-// Transform a BaseLightSource to PhotonLightSourceCL
+// Transform a BaseLightSource to PackedLightSource
 IVW_CORE_API PackedLightSource baseLightToPackedLight(const LightSource* lightsource, float radianceScale);
+
+// Transform a BaseLightSource to PackedLightSource and apply the transformation matrix to the light source transformation matrix
+IVW_CORE_API PackedLightSource baseLightToPackedLight(const LightSource* lightsource, float radianceScale, const mat4& transformLightMat);
 
 // Calculate how many samples to take from each light source.
 // x component contains the amount of samples to take in x and y dimension

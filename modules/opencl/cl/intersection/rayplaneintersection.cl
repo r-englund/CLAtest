@@ -42,19 +42,20 @@ float scalarTripleProduct(float3 u, float3 v, float3 w) {
 bool rayPlaneIntersection(const float3 planePos, const float3 planeNormal, const float3 o, const float3 d, float * __restrict t0, float* __restrict t1) { 
     // http://en.wikipedia.org/wiki/Line-plane_intersection
     // http://www.scratchapixel.com/lessons/3d-basic-lessons/lesson-7-intersecting-simple-shapes/ray-plane-and-ray-disk-intersection/
-    float denom = dot(d, planeNormal);
+    float denom = dot(planeNormal, d);
     // If denominator == 0, then segment is parallel to plane
     // Otherwise, it points to or away from the plane
-    if( fabs(denom) > 1e-6 ){
+    if( fabs(denom) > 1e-6) {
         float numerator = dot((planePos - o), planeNormal);
 
-        *t1 =  numerator / denom;
-        return *t1 >= 0.f;  
-        
+        float tHit =  numerator / denom;
+        // Check if within ray bounds
+        if (tHit >= *t0 && tHit <= *t1) {
+            *t1 = tHit;
+            return true;
+        }
     } 
-    return false;
-
-  
+    return false;  
 }
 
 // Intersects a ray with a Quad.
