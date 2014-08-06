@@ -45,7 +45,7 @@ DirectionalLightSourceProcessor::DirectionalLightSourceProcessor()
     , outport_("DirectionalLightSource")
     , lightPowerProp_("lightPower", "Light power (%)", 50.f, 0.f, 100.f)
     , lightDiffuse_("lightDiffuse", "Color", vec4(1.0f))
-    , lightPosition_("lightPosition", "Light Source Position", vec3(1.f), vec3(-1.f), vec3(1.f))
+    , lightPosition_("lightPosition", "Light Source Position", vec3(100.f), vec3(-100.f), vec3(100.f))
     , lightEnabled_("lightEnabled", "Enabled", true) {
     addPort(outport_);
     addProperty(lightPosition_);
@@ -76,6 +76,8 @@ void DirectionalLightSourceProcessor::updateDirectionalLightSource(DirectionalLi
     vec3 lightPos = lightPosition_.get();
     vec3 dir = glm::normalize(vec3(0.f)-lightPos);
     mat4 transformationMatrix = getLightTransformationMatrix(lightPos, dir);
+
+    vec4 pp = transformationMatrix*vec4(0, 0, 1.f, 1.f);
     // Offset by 0.5 to get to texture coordinates
     lightSource->setBasisAndOffset(glm::translate(vec3(0.5f)));
     lightSource->setWorldTransform(transformationMatrix);

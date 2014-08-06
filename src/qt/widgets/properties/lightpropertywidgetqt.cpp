@@ -68,7 +68,7 @@ void LightPropertyWidgetQt::generateWidget() {
         LogWarn("Maximum value is assumed to be positive. Widget may produce values out of range.")
     }
     // Choose the smallest value as maximum to ensure that values does not go out of range
-    vec3 maxVal = glm::min(glm::abs(property_->getMinValue()), glm::abs(property_->getMaxValue()));
+    vec3 maxVal = glm::abs(property_->getMaxValue());
     radiusSpinBox_->setMinimum(0.f);
     radiusSpinBox_->setMaximum(std::min(maxVal.z, std::min(maxVal.y, maxVal.x)));
     connect(label_, SIGNAL(textChanged()), this, SLOT(setPropertyDisplayName()));

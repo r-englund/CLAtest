@@ -45,34 +45,28 @@
 
 
 // Assume that the fourth component in x is 1
-inline float3 transformPoint(const float16 m, const float3 x)
-{
+inline float3 transformPoint(const float16 m, const float3 x) {
      return (float3)(dot(m.s048, x)+m.sc, dot(m.s159, x)+m.sd, dot(m.s26a, x)+m.se);
 }
-inline float4 transformPoint4(const float16 m, const float4 x)
-{
+inline float4 transformPoint4(const float16 m, const float4 x) {
      return (float4)( dot(m.s048c, x), dot(m.s159d, x), dot(m.s26ae, x), dot(m.s37bf, x) );
 }
 // Transform and project
-inline float3 transformPointW(const float16 m, const float3 x)
-{
+inline float3 transformPointW(const float16 m, const float3 x) {
     return transformPoint(m, x)/(dot(m.s37b, x)+m.sf);
 }
 // Transform and project
-inline float4 transformPoint4W(const float16 m, const float4 x)
-{
+inline float4 transformPoint4W(const float16 m, const float4 x) {
     float4 point = transformPoint4(m, x);
     point /= point.w;
     return point;
 }
 // Transform a direction (does not apply translation)
-inline float3 transformVector(const float16 m, const float3 x)
-{
+inline float3 transformVector(const float16 m, const float3 x) {
     return (float3)(dot(m.s048, x), dot(m.s159, x), dot(m.s26a, x));
 }
 
-inline float3 translatePoint(const float16 m, const float3 x)
-{
+inline float3 translatePoint(const float16 m, const float3 x) {
      return x+m.scde;
 }
 
