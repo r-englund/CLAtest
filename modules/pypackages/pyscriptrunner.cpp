@@ -40,7 +40,7 @@ PyScriptRunner::PyScriptRunner() : script_() { init(this); }
 PyScriptRunner::~PyScriptRunner() {}
 
 void PyScriptRunner::onPyhonExecutionOutput(const std::string &msg,const PythonExecutionOutputStream &outputType) {
-    if (outputType==sysstderr) {
+    if (outputType==sysstdout) {
         if (standard_.empty())
             standard_ += msg;
         else
@@ -64,7 +64,7 @@ void PyScriptRunner::run(std::string simpleScript, bool noLogging) {
 }
 
 void PyScriptRunner::run(bool noLogging) {
-    PythonExecutionOutputObeserver::getPtr()->addObserver(this);
+    PythonExecutionOutputObservable::getPtr()->addObserver(this);
     clear();
     Clock c;
     c.start();
@@ -76,7 +76,7 @@ void PyScriptRunner::run(bool noLogging) {
     }
 
     LogInfo("Execution time: " << c.getElapsedMiliseconds() << " ms");
-    PythonExecutionOutputObeserver::getPtr()->removeObserver(this);
+    PythonExecutionOutputObservable::getPtr()->removeObserver(this);
 }
 
 std::string PyScriptRunner::getStandardOutput() { return standard_;}
