@@ -39,6 +39,7 @@
 #include <QApplication>
 #include <QLineEdit>
 #include <QPushButton>
+#include <QLabel>
 
 #include <modules/pypackages/pypackagesmoduledefine.h>
 #include <inviwo/qt/widgets/inviwodockwidget.h>
@@ -62,6 +63,7 @@ private:
     QVBoxLayout* vLayout_;
     QPushButton* refreshButton_;
     QTableWidget* packageTableWidget_;
+    QLabel* satusLabel_;
 };
 
 } // namespace

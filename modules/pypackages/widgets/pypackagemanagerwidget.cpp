@@ -68,8 +68,13 @@ PyPackageManagerWidget::PyPackageManagerWidget(QWidget* parent) : InviwoDockWidg
     //vLayout_->addWidget(lineEdit_);
     refreshButton_ = new QPushButton("Update Package Status");
     connect(refreshButton_, SIGNAL(clicked()), this, SLOT(refresh()));
+
+    satusLabel_ = new QLabel("Status: Ready");
+    satusLabel_->setAlignment(Qt::AlignLeft);
+
     vLayout_->addWidget(packageTableWidget_);
     vLayout_->addWidget(refreshButton_);
+    vLayout_->addWidget(satusLabel_);
 
     setWidget(frame);
     resize(500, 300);
@@ -107,66 +112,48 @@ void PyPackageManagerWidget::addPackages() {
     packageTableWidget_->setRowCount((int)packages.size());
     packageTableWidget_->setColumnCount(3);
 
-     QSignalMapper* signalMapper = new QSignalMapper(packageTableWidget_);
+    QSignalMapper* signalMapper = new QSignalMapper(packageTableWidget_);
 
     for (size_t i=0; i<packages.size(); i++) {
 
+        QTableWidgetItem* tableWidgetItem1 = new QTableWidgetItem();tableWidgetItem1->setFlags(Qt::ItemIsSelectable);
+        QTableWidgetItem* tableWidgetItem2 = new QTableWidgetItem();tableWidgetItem2->setFlags(Qt::ItemIsSelectable);
+        QTableWidgetItem* tableWidgetItem3 = new QTableWidgetItem();tableWidgetItem3->setFlags(Qt::ItemIsSelectable);
+
+        packageTableWidget_->setItem(i, 0, tableWidgetItem1);
+        packageTableWidget_->setItem(i, 1, tableWidgetItem2);
+        packageTableWidget_->setItem(i, 2, tableWidgetItem3);
+
+        std::string versionInfo = PyScriptRunner::getPtr()->getPackageVersionInfo(packages[i]);
+        QLabel* packageLabel = new QLabel(QString::fromStdString(packages[i] + " - " + versionInfo));
+        packageLabel->setAlignment(Qt::AlignRight);
+
+        QPushButton* install_Upgrade_Button = 0;
+        QPushButton* uinstallButton = new QPushButton("UnInstall");
+
         if (!PyScriptRunner::getPtr()->isPackageAvailable(packages[i])) {
-
-            QTableWidgetItem* tableWidgetItem1 = new QTableWidgetItem();tableWidgetItem1->setFlags(Qt::ItemIsSelectable);
-            QTableWidgetItem* tableWidgetItem2 = new QTableWidgetItem();tableWidgetItem2->setFlags(Qt::ItemIsSelectable);
-            QTableWidgetItem* tableWidgetItem3 = new QTableWidgetItem();tableWidgetItem3->setFlags(Qt::ItemIsSelectable);
-
-            packageTableWidget_->setItem(i, 0, tableWidgetItem1);
-            packageTableWidget_->setItem(i, 1, tableWidgetItem2);
-            packageTableWidget_->setItem(i, 2, tableWidgetItem3);
-
-            QLabel* label = new QLabel(QString::fromStdString(packages[i]));
-            label->setAlignment(Qt::AlignCenter);
-            QPushButton* installButton = new QPushButton("Install");
-            QPushButton* uinstallButton = new QPushButton("UnInstall");
-
-            packageTableWidget_->setCellWidget(i, 0, label);
-            packageTableWidget_->setCellWidget(i, 1, installButton);
-            packageTableWidget_->setCellWidget(i, 2, uinstallButton);
-            packageTableWidget_->resizeColumnsToContents();
-
-            connect(installButton, SIGNAL(clicked()), signalMapper, SLOT(map()));
+            install_Upgrade_Button = new QPushButton("Install");
+            connect(install_Upgrade_Button, SIGNAL(clicked()), signalMapper, SLOT(map()));
             std::string installMapString = std::string("Install")+std::string("#")+packages[i];
-            signalMapper->setMapping(installButton, QString::fromStdString(installMapString));
-
-            connect(uinstallButton, SIGNAL(clicked()), signalMapper, SLOT(map()));
-            std::string uninstallMapString = std::string("UnInstall")+std::string("#")+packages[i];
-            signalMapper->setMapping(uinstallButton, QString::fromStdString(uninstallMapString));
+            signalMapper->setMapping(install_Upgrade_Button, QString::fromStdString(installMapString));
+            uinstallButton->setEnabled(false);
         }
         else {
-            QTableWidgetItem* tableWidgetItem1 = new QTableWidgetItem();tableWidgetItem1->setFlags(Qt::ItemIsSelectable);
-            QTableWidgetItem* tableWidgetItem2 = new QTableWidgetItem();tableWidgetItem2->setFlags(Qt::ItemIsSelectable);
-            QTableWidgetItem* tableWidgetItem3 = new QTableWidgetItem();tableWidgetItem3->setFlags(Qt::ItemIsSelectable);
-
-            packageTableWidget_->setItem(i, 0, tableWidgetItem1);
-            packageTableWidget_->setItem(i, 1, tableWidgetItem2);
-            packageTableWidget_->setItem(i, 2, tableWidgetItem3);
-            
-            QLabel* label = new QLabel(QString::fromStdString(packages[i]));
-            label->setAlignment(Qt::AlignCenter);
-            QPushButton* upgradeButton = new QPushButton("Upgrade");
-            QPushButton* uinstallButton = new QPushButton("UnInstall");
-
-            packageTableWidget_->setCellWidget(i, 0, label);
-            packageTableWidget_->setCellWidget(i, 1, upgradeButton);
-            packageTableWidget_->setCellWidget(i, 2, uinstallButton);
-            packageTableWidget_->resizeColumnsToContents();
-
-            connect(upgradeButton, SIGNAL(clicked()), signalMapper, SLOT(map()));
+            install_Upgrade_Button = new QPushButton("Upgrade");
+            connect(install_Upgrade_Button, SIGNAL(clicked()), signalMapper, SLOT(map()));
             std::string upgradeMapString = std::string("Upgrade")+std::string("#")+packages[i];
-            signalMapper->setMapping(upgradeButton, QString::fromStdString(upgradeMapString));
+            signalMapper->setMapping(install_Upgrade_Button, QString::fromStdString(upgradeMapString));
+        }        
 
-            connect(uinstallButton, SIGNAL(clicked()), signalMapper, SLOT(map()));
-            std::string uninstallMapString = std::string("UnInstall")+std::string("#")+packages[i];
-            signalMapper->setMapping(uinstallButton, QString::fromStdString(uninstallMapString));
-        }
+        packageTableWidget_->setCellWidget(i, 0, packageLabel);
+        packageTableWidget_->setCellWidget(i, 1, install_Upgrade_Button);
+        packageTableWidget_->setCellWidget(i, 2, uinstallButton);
+        packageTableWidget_->resizeColumnsToContents();
 
+        connect(uinstallButton, SIGNAL(clicked()), signalMapper, SLOT(map()));
+        std::string uninstallMapString = std::string("UnInstall")+std::string("#")+packages[i];
+        signalMapper->setMapping(uinstallButton, QString::fromStdString(uninstallMapString));
+        
         //packageTableWidget_->resizeRowsToContents();
     }
 
@@ -191,15 +178,19 @@ void PyPackageManagerWidget::mappedButtonClick(QString str) {
     std::string packageName = decodedString[1];
 
     if (decodedString[0] == "Upgrade") {
-        LogWarn(" Requested upgrade of " << packageName)
+        LogWarn("Requested upgrade of " << packageName << " (Not implemented yet)")
     }
     else if (decodedString[0] == "UnInstall") {
+        satusLabel_->setText(QString("Status: Uninstalling...")); satusLabel_->repaint();
         LogWarn(" Requested uninstall of " << packageName)
-        PyScriptRunner::getPtr()->uninstallPackage(packageName);
+        PyScriptRunner::getPtr()->uninstallPackage(packageName); satusLabel_->repaint();
+        satusLabel_->setText(QString("Status: Ready"));
     }
     else if (decodedString[0] == "Install") {
+        satusLabel_->setText(QString("Status: Installing...")); satusLabel_->repaint();
         LogWarn(" Requested install of " << packageName)
         PyScriptRunner::getPtr()->installPackage(packageName);
+        satusLabel_->setText(QString("Status: Ready")); satusLabel_->repaint();
     }
 }
 

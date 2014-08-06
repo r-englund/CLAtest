@@ -93,16 +93,15 @@ bool PyScriptRunner::isPipInstalled() {
 
 bool PyScriptRunner::isModuleAvailable(std::string moduleName) {
     //module does not require pip
-    std::stringstream ss;
-    std::string moduleAvailable = moduleName + " is available";
-    std::string moduleNotAvailable = moduleName + " is not available";
-    ss << "import imp "<< std::endl; 
-    ss << "try: "<< std::endl; 
-    ss << "    imp.find_module('" + moduleName +"') "<< std::endl;
-    ss << "    print '" + moduleAvailable << "'"<< std::endl;
-    ss << "except ImportError:" << std::endl;
-    ss << "    print '" + moduleNotAvailable << "'"<< std::endl;
+    std::stringstream ss;   
 
+    std::string moduleAvailable = "success";
+    std::string moduleNotAvailable = "failed";
+    std::string pipFuncs = parsePipUtil();
+    ss << pipFuncs << std::endl;
+    ss << "isModuleAvailable('" << moduleName << "')" << std::endl;
+
+    
     std::string queryPackage(ss.str());
     this->run(queryPackage);
     std::string retError = this->getError();
@@ -128,6 +127,30 @@ bool PyScriptRunner::isModuleAvailable(std::string moduleName) {
 }
 
 //Package management
+
+std::string PyScriptRunner::getPackageVersionInfo(std::string packageName) {
+    if (!isPackageAvailable(packageName)) {
+        //return "0.0.0";
+    }
+
+    std::stringstream ss;
+    std::string pipFuncs = parsePipUtil();
+    ss << pipFuncs << std::endl;
+    ss << "pipPackageVersion('" << packageName << "')" << std::endl;
+
+    std::string searchPackage(ss.str());
+    this->run(searchPackage);
+    std::string retError = this->getError();
+
+    std::string version("0.0.0");
+
+    if (retError == "") {
+        version =  this->getStandardOutput();
+    }
+    this->clear();
+    return version;
+}
+
 bool PyScriptRunner::isPackageAvailable(std::string packageName, bool forceAvailabilityCheck) {
     if (!forceAvailabilityCheck) {
         if (std::find(availablePacakges_.begin(), availablePacakges_.end(), packageName)!=availablePacakges_.end()) 
@@ -199,7 +222,7 @@ bool PyScriptRunner::installPackage(std::string packageName) {
     std::string packageNotInstalled = "failed";
     std::string pipFuncs = parsePipUtil();
     ss << pipFuncs << std::endl;
-    ss << "pipInstall('" << packageName << "')" << std::endl;
+    ss << "installPyPackage('" << packageName << "')" << std::endl;
 
     std::string installPackage(ss.str());
     this->run(installPackage);
