@@ -94,7 +94,7 @@ void VolumeRaycasterGL::addBasicProperties() {
     gradientComputationMode_.addOption("backward", "Backward differences");
     gradientComputationMode_.addOption("central", "Central differences");
     gradientComputationMode_.addOption("central-higher", "Higher order central differences");
-    gradientComputationMode_.setSelectedIdentifier("forward");
+    gradientComputationMode_.setSelectedIdentifier("central");
     gradientComputationMode_.setCurrentStateAsDefault();
     addProperty(gradientComputationMode_);
     // light properties are only initialized here and need to be added by derived raycasters
