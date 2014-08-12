@@ -38,6 +38,7 @@
 #include "texture2d.h"
 #include "texture2darray.h"
 #include "texture3d.h"
+#include <vector>
 
 namespace inviwo {
 
@@ -47,41 +48,70 @@ public:
     FrameBufferObject();
     ~FrameBufferObject();
 
+    // activate this FBO and store the currently set FBO
     void activate();
     void defineDrawBuffers();
-    static void deactivate();
+    // unbind FBO and restore previous one
+    void deactivate();
+
+    // use this function to unbind the FBO, without restoring the previous
+    // after this call, no FBO is bound
+    static void deactivateFBO();
 
     //For attaching a 2D Texture
-    void attachTexture(Texture2D* texture, GLenum attachementID);
+    void attachTexture(Texture2D* texture, GLenum attachmentID);
     GLenum attachColorTexture(Texture2D* texture);
-    GLenum attachColorTexture(Texture2D* texture, int attachmentNumber, bool attachFromRear = false);
-
+    // if forcedLocation is > -1, this will enforce to position the color attachment 
+    // at the given location in the draw buffer list (as used for attrib location in shaders)
+    // side effects: affects subsequent buffer locations of already attached color buffers
+    GLenum attachColorTexture(Texture2D* texture, int attachmentNumber, bool attachFromRear = false, int forcedLocation=-1);
+    
     //For attaching a 2D Array Texture
-    void attachTexture(Texture2DArray* texture, GLenum attachementID);
+    void attachTexture(Texture2DArray* texture, GLenum attachmentID);
     GLenum attachColorTexture(Texture2DArray* texture);
-    GLenum attachColorTexture(Texture2DArray* texture, int attachmentNumber, bool attachFromRear = false);
-
+    // if forcedLocation is > -1, this will enforce to position the color attachment 
+    // at the given location in the draw buffer list (as used for attrib location in shaders)
+    // side effects: affects subsequent buffer locations of already attached color buffers
+    GLenum attachColorTexture(Texture2DArray* texture, int attachmentNumber, bool attachFromRear = false, int forcedLocation=-1);
+    
     //For attaching a layer of a 2D Array Texture
-    void attachTextureLayer(Texture2DArray* texture, GLenum attachementID, int layer);
+    void attachTextureLayer(Texture2DArray* texture, GLenum attachmentID, int layer);
     GLenum attachColorTextureLayer(Texture2DArray* texture, int layer);
-    GLenum attachColorTextureLayer(Texture2DArray* texture, int attachmentNumber, int layer, bool attachFromRear = false);
+    // if forcedLocation is > -1, this will enforce to position the color attachment 
+    // at the given location in the draw buffer list (as used for attrib location in shaders)
+    // side effects: affects subsequent buffer locations of already attached color buffers
+    GLenum attachColorTextureLayer(Texture2DArray* texture, int attachmentNumber, int layer, bool attachFromRear = false, int forcedLocation=-1);
 
     //For attaching a 3D Texture
-    void attachTexture(Texture3D* texture, GLenum attachementID);
+    void attachTexture(Texture3D* texture, GLenum attachmentID);
     GLenum attachColorTexture(Texture3D* texture);
-    GLenum attachColorTexture(Texture3D* texture, int attachmentNumber, bool attachFromRear = false);
+    // if forcedLocation is > -1, this will enforce to position the color attachment 
+    // at the given location in the draw buffer list (as used for attrib location in shaders)
+    // side effects: affects subsequent buffer locations of already attached color buffers
+    GLenum attachColorTexture(Texture3D* texture, int attachmentNumber, bool attachFromRear = false, int forcedLocation=-1);
 
     //For attaching a layer of a 3D Texture
-    void attachTextureLayer(Texture3D* texture, GLenum attachementID, int layer);
+    void attachTextureLayer(Texture3D* texture, GLenum attachmentID, int layer);
     GLenum attachColorTextureLayer(Texture3D* texture, int layer);
-    GLenum attachColorTextureLayer(Texture3D* texture, int attachmentNumber, int layer, bool attachFromRear = false);
+    // if forcedLocation is > -1, this will enforce to position the color attachment 
+    // at the given location in the draw buffer list (as used for attrib location in shaders)
+    // side effects: affects subsequent buffer locations of already attached color buffers
+    GLenum attachColorTextureLayer(Texture3D* texture, int attachmentNumber, int layer, bool attachFromRear = false, int forcedLocation=-1);
 
-    void detachTexture(GLenum attachementID);
+    void detachTexture(GLenum attachmentID);
     void detachAllTextures();
 
     unsigned int getID() const;
-    const GLenum* getDrawBuffers() const;
+    // returns a compactified list of all color attachments (as used in glDrawBuffers())
+    const std::vector<GLenum>& getDrawBuffers() const { return drawBuffers_; }
+    // returns a boolean field indicating whether attachment i has an attached texture
+    const std::vector<bool>& getDrawBuffersInUse() const { return buffersInUse_; }
+    const GLenum* getDrawBuffersDeprecated() const;
     int getMaxColorAttachments() const;
+
+    // returns the location of the given attachment withing the registered draw buffers
+    // (e.g. used for glBindAttribLocation() and glFragDataLocation())
+    int getAttachmentLocation(GLenum attachmentID) const;
 
     bool hasColorAttachment() const;
     bool hasDepthAttachment() const;
@@ -93,19 +123,33 @@ public:
     void setDraw_Blit(bool set=true);
 
 protected:
-    void performAttachTexture(GLenum attachementID);
+    void performAttachTexture(GLenum attachmentID);
     bool performAttachColorTexture(GLenum& outAttachNumber);
-    bool performAttachColorTexture(GLenum& outAttachNumber, int attachmentNumber, bool attachFromRear = false);
+    // if forcedLocation is > -1, this will enforce to position the color attachment 
+    // at the given location in the draw buffer list (as used for attrib location in shaders)
+    // side effects: affects subsequent buffer locations of already attached color buffers
+    // NOTE: if forcedLocation is larger than the number of attachments, it will not be considered
+    bool performAttachColorTexture(GLenum& outAttachNumber, int attachmentNumber, 
+        bool attachFromRear = false, int forcedLocation = -1);
+
+    std::string printBuffers() const;
+    static std::string getAttachmentStr(GLenum attachmentID);
 
 private:
     unsigned int id_;
     bool hasDepthAttachment_;
     bool hasStencilAttachment_;
 
-    GLenum* drawBuffers_;
-    int maxColorAttachements_;
+    //GLenum* drawBuffers_;
+    std::vector<GLenum> drawBuffers_;
+    std::vector<bool> buffersInUse_;
+    int maxColorattachments_;
 
     const static GLenum colorAttachmentEnums_[];
+
+    GLint prevFbo_;
+    GLint prevDrawFbo_;
+    mutable GLint prevReadFbo_;
 };
 
 } // namespace

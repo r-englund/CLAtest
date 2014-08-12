@@ -84,7 +84,6 @@ ImageGL* ImageGL::clone() const { return new ImageGL(*this); }
 
 void ImageGL::reAttachAllLayers(bool clearLayers) {
     frameBufferObject_->activate();
-    frameBufferObject_->defineDrawBuffers();
     frameBufferObject_->detachAllTextures();
     pickingAttachmentID_ = 0;
     GLenum id = 0;
@@ -116,12 +115,13 @@ void ImageGL::reAttachAllLayers(bool clearLayers) {
     if (pickingLayerGL_) {
         pickingLayerGL_->getTexture()->bind();
         id = pickingAttachmentID_ =
-            frameBufferObject_->attachColorTexture(pickingLayerGL_->getTexture(), 0, true);
+            frameBufferObject_->attachColorTexture(pickingLayerGL_->getTexture(), 0, true, 1);
         /*if(clearLayers){
             glDrawBuffer(id);
             //glClearBufferuiv(GL_COLOR, 0, clearColor);
         }*/
     }
+    glBindTexture(GL_TEXTURE_2D, 0);
 
     frameBufferObject_->checkStatus();
     frameBufferObject_->deactivate();
@@ -133,6 +133,7 @@ void ImageGL::activateBuffer() {
     frameBufferObject_->defineDrawBuffers();
     uvec2 dim = getDimension();
     glViewport(0, 0, dim.x, dim.y);
+    //frameBufferObject_->checkStatus();
 }
 
 void ImageGL::deactivateBuffer() { frameBufferObject_->deactivate(); }
@@ -163,6 +164,7 @@ bool ImageGL::copyAndResizeRepresentation(DataRepresentation* targetRep) const {
     shader_->setUniform("modelViewProjectionMatrix_", scale);
     glDepthMask(GL_TRUE);
     LGL_ERROR;
+    //target->frameBufferObject_->checkStatus();
     target->renderImagePlaneRect();
     LGL_ERROR;
     shader_->deactivate();
@@ -178,8 +180,9 @@ bool ImageGL::updateFrom(const ImageGL* source) {
     FrameBufferObject* tgtFBO = target->getFBO();
     const Texture2D* sTex = source->getColorLayerGL()->getTexture();
     Texture2D* tTex = target->getColorLayerGL()->getTexture();
-    const GLenum* srcIDs = srcFBO->getDrawBuffers();
-    const GLenum* targetIDs = tgtFBO->getDrawBuffers();
+
+    const std::vector<bool>& srcBuffers = srcFBO->getDrawBuffersInUse();
+    const std::vector<bool>& targetBuffers = tgtFBO->getDrawBuffersInUse();
     srcFBO->setRead_Blit();
     tgtFBO->setDraw_Blit();
     GLbitfield mask = GL_COLOR_BUFFER_BIT;
@@ -194,13 +197,13 @@ bool ImageGL::updateFrom(const ImageGL* source) {
     bool pickingCopied = false;
 
     for (int i = 1; i < srcFBO->getMaxColorAttachments(); i++) {
-        if (srcIDs[i] != GL_NONE && srcIDs[i] == targetIDs[i]) {
-            glReadBuffer(srcIDs[i]);
-            glDrawBuffer(targetIDs[i]);
+        if (srcBuffers[i] && targetBuffers[i]) {
+            glReadBuffer(GL_COLOR_ATTACHMENT0_EXT + i);
+            glDrawBuffer(GL_COLOR_ATTACHMENT0_EXT + i);
             glBlitFramebufferEXT(0, 0, sTex->getWidth(), sTex->getHeight(), 0, 0, tTex->getWidth(),
                                  tTex->getHeight(), GL_COLOR_BUFFER_BIT, GL_NEAREST);
 
-            if (srcIDs[i] == pickingAttachmentID_) pickingCopied = true;
+            if (GL_COLOR_ATTACHMENT0_EXT + i == pickingAttachmentID_) pickingCopied = true;
         }
     }
 
@@ -208,7 +211,6 @@ bool ImageGL::updateFrom(const ImageGL* source) {
     glDrawBuffer(GL_COLOR_ATTACHMENT0_EXT);
     srcFBO->setRead_Blit(false);
     tgtFBO->setDraw_Blit(false);
-    FrameBufferObject::deactivate();
     LGL_ERROR;
 
     // Secondary copy using PBO
@@ -351,8 +353,10 @@ void ImageGL::update(bool editable) {
 }
 
 void ImageGL::renderImagePlaneRect() const {
-    delete rectArray_;
-    rectArray_ = new BufferObjectArray();
+    //delete rectArray_;
+    if (!rectArray_) {
+        rectArray_ = new BufferObjectArray();
+    }
     CanvasGL::attachImagePlanRect(rectArray_);
     LGL_ERROR;
     glDepthFunc(GL_ALWAYS);

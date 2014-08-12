@@ -49,7 +49,7 @@ void ProcessorGL::activateTarget(ImageOutport& outport) {
 }
 
 void ProcessorGL::deactivateCurrentTarget() {
-    FrameBufferObject::deactivate();
+    FrameBufferObject::deactivateFBO();
 }
 
 void ProcessorGL::clearCurrentTarget() {
@@ -236,8 +236,10 @@ void ProcessorGL::setGlobalShaderParameters(Shader* shader, const std::vector<Ou
     shader->setUniform("screenDimRCP_", vec2(1.0f,1.0f)/screenDimensions);
 }
 void ProcessorGL::enableDrawImagePlaneRect() {
-    delete rectArray_;
-    rectArray_ = new BufferObjectArray();
+    //delete rectArray_;
+    if (!rectArray_) {
+        rectArray_ = new BufferObjectArray();
+    }
     CanvasGL::attachImagePlanRect(rectArray_);
     glDepthFunc(GL_ALWAYS);
     rectArray_->bind();
