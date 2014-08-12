@@ -57,6 +57,7 @@ public:
     std::string getGlobalGLSLHeader();
     std::string getGlobalGLSLVertexDefines();
     std::string getGlobalGLSLFragmentDefines();
+    int getGlobalGLSLVersion();
 
     void bindCommonAttributes(unsigned int);
 

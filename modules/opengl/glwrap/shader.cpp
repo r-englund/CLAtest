@@ -102,9 +102,6 @@ Shader::~Shader() { deinitialize(); }
 
 void Shader::initialize() {
     id_ = glCreateProgram();
-
-    ShaderManager::getRef().bindCommonAttributes(id_);
-
     LGL_ERROR;
     shaderObjects_ = new ShaderObjectMap();
 }
@@ -134,6 +131,8 @@ void Shader::createAndAddShader(GLenum shaderType, std::string fileName, bool li
 }
 
 void Shader::link() {
+    ShaderManager::getRef().bindCommonAttributes(id_);
+
     glLinkProgram(id_);
     LGL_ERROR;
 }

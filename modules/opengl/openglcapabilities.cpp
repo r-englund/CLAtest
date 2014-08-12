@@ -585,28 +585,17 @@ void OpenGLCapabilities::rebuildGLSLHeader() {
 void OpenGLCapabilities::rebuildGLSLVertexDefines() {
     currentGlobalGLSLVertexDefines_ = "";
 
-    if (supportedShaderVersions_[currentGlobalGLSLVersionIdx_].getVersion() >= 330) {
-        currentGlobalGLSLVertexDefines_ += "layout(location = 0) in vec4 in_Vertex;\n";
-        currentGlobalGLSLVertexDefines_ += "layout(location = 1) in vec3 in_Normal;\n";
-        currentGlobalGLSLVertexDefines_ += "layout(location = 2) in vec4 in_Color;\n";
-        currentGlobalGLSLVertexDefines_ += "layout(location = 3) in vec3 in_TexCoord;\n";
-    }
-    else {
-        currentGlobalGLSLVertexDefines_ += "in vec4 in_Vertex;\n";
-        currentGlobalGLSLVertexDefines_ += "in vec3 in_Normal;\n";
-        currentGlobalGLSLVertexDefines_ += "in vec4 in_Color;\n";
-        currentGlobalGLSLVertexDefines_ += "in vec3 in_TexCoord;\n";
-    }
+    // layout locations for GLSL >= 3.30 are handled now via glBindAttributeLocation
+    currentGlobalGLSLVertexDefines_ += "in vec4 in_Vertex;\n";
+    currentGlobalGLSLVertexDefines_ += "in vec3 in_Normal;\n";
+    currentGlobalGLSLVertexDefines_ += "in vec4 in_Color;\n";
+    currentGlobalGLSLVertexDefines_ += "in vec3 in_TexCoord;\n";
 }
 
 void OpenGLCapabilities::rebuildGLSLFragmentDefines() {
     currentGlobalGLSLFragmentDefines_ = "";
-
-    if (supportedShaderVersions_[currentGlobalGLSLVersionIdx_].getVersion() >= 330) {
-        currentGlobalGLSLFragmentDefines_ += "layout(location = 0) out vec4 FragData0;\n";
-        currentGlobalGLSLFragmentDefines_ += "layout(location = " + toString(getMaxColorAttachments()-1) + ") out vec4 PickingData;\n";
-    }
-    else if (supportedShaderVersions_[currentGlobalGLSLVersionIdx_].getVersion() >= 130) {
+    // layout locations for GLSL >= 3.30 are now handled via glFragDataLocation
+    if (supportedShaderVersions_[currentGlobalGLSLVersionIdx_].getVersion() >= 130) {
         currentGlobalGLSLFragmentDefines_ += "out vec4 FragData0;\n";
         currentGlobalGLSLFragmentDefines_ += "out vec4 PickingData;\n";
     } 

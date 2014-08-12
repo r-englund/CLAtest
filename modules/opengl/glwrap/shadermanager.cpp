@@ -126,18 +126,21 @@ std::string ShaderManager::getGlobalGLSLFragmentDefines() {
     return glCaps->getCurrentGlobalGLSLFragmentDefines();
 }
 
-void ShaderManager::bindCommonAttributes(unsigned int programID) {
+int ShaderManager::getGlobalGLSLVersion() {
     OpenGLCapabilities* glCaps = getOpenGLCapabilitiesObject();
-    if(glCaps->getCurrentShaderVersion().getVersion() < 330){
-        glBindAttribLocation(programID, 0, "in_Vertex");
-        glBindAttribLocation(programID, 1, "in_Normal");
-        glBindAttribLocation(programID, 2, "in_Color");
-        glBindAttribLocation(programID, 3, "in_TexCoord");
+    return glCaps->getCurrentShaderVersion().getVersion();
+}
 
-        if(glCaps->getCurrentShaderVersion().getVersion() >= 130){
-            glBindFragDataLocation(programID, 0, "FragData0");
-            glBindFragDataLocation(programID, glCaps->getMaxColorAttachments()-1, "PickingData");
-        }
+void ShaderManager::bindCommonAttributes(unsigned int programID) {
+    int glslVersion = this->getGlobalGLSLVersion();
+    glBindAttribLocation(programID, 0, "in_Vertex");
+    glBindAttribLocation(programID, 1, "in_Normal");
+    glBindAttribLocation(programID, 2, "in_Color");
+    glBindAttribLocation(programID, 3, "in_TexCoord");
+
+    if (glslVersion >= 130){
+        glBindFragDataLocation(programID, 0, "FragData0");
+        glBindFragDataLocation(programID, 1, "PickingData");
     }
 }
 
