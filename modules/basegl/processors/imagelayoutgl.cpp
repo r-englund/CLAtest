@@ -53,13 +53,13 @@ ImageLayoutGL::ImageLayoutGL()
     addPort(multiinport_);
     multiinport_.onChange(this, &ImageLayoutGL::multiInportChanged);
     addPort(outport_);
-    layout_.addOption("single", "Single Only", 1);
-    layout_.addOption("horizontalSplit", "Horizontal Split", 2);
-    layout_.addOption("verticalSplit", "Vertical Split", 3);
-    layout_.addOption("crossSplit", "Cross Split", 4);
-    layout_.addOption("threeRightOneLeftSplit", "Three Left, One Right", 5);
-    layout_.addOption("threeLeftOneRightSplit", "Three Right, One Left", 6);
-    layout_.setSelectedIdentifier("crossSplit");
+    layout_.addOption("single", "Single Only", ImageLayoutTypes::Single);
+    layout_.addOption("horizontalSplit", "Horizontal Split", ImageLayoutTypes::HorizontalSplit);
+    layout_.addOption("verticalSplit", "Vertical Split", ImageLayoutTypes::VerticalSplit);
+    layout_.addOption("crossSplit", "Cross Split", ImageLayoutTypes::CrossSplit);
+    layout_.addOption("threeRightOneLeftSplit", "Three Left, One Right", ImageLayoutTypes::ThreeLeftOneRight);
+    layout_.addOption("threeLeftOneRightSplit", "Three Right, One Left", ImageLayoutTypes::ThreeRightOneLeft);
+    layout_.setSelectedValue(ImageLayoutTypes::CrossSplit);
     layout_.setCurrentStateAsDefault();
     addProperty(layout_);
     horizontalSplitter_.setVisible(false);
@@ -126,6 +126,7 @@ void ImageLayoutGL::multiInportChanged(){
 }
 
 void ImageLayoutGL::process() {
+    TextureUnit::setZeroUnit();
     std::vector<const Image*> images = multiinport_.getData();
 
     uvec2 dim = outport_.getData()->getDimension();
@@ -134,32 +135,33 @@ void ImageLayoutGL::process() {
     unsigned int smallWindowDim = dim.y/3;
     switch (layout_.getSelectedValue())
     {
-    case 2: //Horizontal Split
+    case ImageLayoutTypes::HorizontalSplit:
         viewCoords_.push_back(uvec4(0, dim.y/2, dim.x, dim.y/2));
         viewCoords_.push_back(uvec4(0, 0, dim.x, dim.y/2));
         break;
-    case 3: //Vertical Split
+    case ImageLayoutTypes::VerticalSplit:
         viewCoords_.push_back(uvec4(0, 0, dim.x/2, dim.y));
         viewCoords_.push_back(uvec4(dim.x/2, 0, dim.x/2, dim.y));
         break;
-    case 4: //Cross Split
+    case ImageLayoutTypes::CrossSplit:
         viewCoords_.push_back(uvec4(0, dim.y/2, dim.x/2, dim.y/2));
         viewCoords_.push_back(uvec4(dim.x/2, dim.y/2, dim.x/2, dim.y/2));
         viewCoords_.push_back(uvec4(0, 0, dim.x/2, dim.y/2));
         viewCoords_.push_back(uvec4(dim.x/2, 0, dim.x/2, dim.y/2));
         break;
-    case 5: //Three Left, One Right
+    case ImageLayoutTypes::ThreeLeftOneRight: 
         viewCoords_.push_back(uvec4(0, 2*smallWindowDim, smallWindowDim, smallWindowDim));
         viewCoords_.push_back(uvec4(0, smallWindowDim, smallWindowDim, smallWindowDim));
         viewCoords_.push_back(uvec4(0, 0, smallWindowDim, smallWindowDim));
         viewCoords_.push_back(uvec4(smallWindowDim, 0, dim.x-smallWindowDim, dim.y));
         break;
-    case 6: //Three Right, One Left
+    case ImageLayoutTypes::ThreeRightOneLeft: 
         viewCoords_.push_back(uvec4(dim.x-smallWindowDim, 2*smallWindowDim, smallWindowDim, smallWindowDim));
         viewCoords_.push_back(uvec4(dim.x-smallWindowDim, smallWindowDim, smallWindowDim, smallWindowDim));
         viewCoords_.push_back(uvec4(dim.x-smallWindowDim, 0, smallWindowDim, smallWindowDim));
         viewCoords_.push_back(uvec4(0, 0, dim.x-smallWindowDim, dim.y));
         break;
+    case ImageLayoutTypes::Single:
     default:
         viewCoords_.push_back(uvec4(0, 0, dim.x, dim.y));
     }
@@ -184,6 +186,7 @@ void ImageLayoutGL::process() {
     glViewport(0, 0, dim.x, dim.y);
     shader_->deactivate();
     deactivateCurrentTarget();
+    TextureUnit::setZeroUnit();
 }
 
 ImageLayoutGL::ImageLayoutGLInteractationHandler::ImageLayoutGLInteractationHandler() 
