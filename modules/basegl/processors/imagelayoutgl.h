@@ -45,6 +45,17 @@
 
 namespace inviwo {
 
+namespace ImageLayoutTypes {
+    enum Layout {
+        Single,
+        HorizontalSplit,
+        VerticalSplit,
+        CrossSplit,
+        ThreeLeftOneRight,
+        ThreeRightOneLeft,
+    };
+}
+
 //Right mouse click activates the area for mouse/key interactions.
 class IVW_MODULE_BASEGL_API ImageLayoutGL : public ProcessorGL {
 public:
