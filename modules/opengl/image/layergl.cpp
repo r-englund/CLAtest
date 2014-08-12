@@ -85,13 +85,16 @@ void LayerGL::deinitialize() {
 }
 
 void LayerGL::bindTexture(GLenum texUnit) const {
+    texUnit_ = texUnit;
     glActiveTexture(texUnit);
     texture_->bind();
     glActiveTexture(GL_TEXTURE0);
 }
 
 void LayerGL::unbindTexture() const {
+    glActiveTexture(texUnit_);
     texture_->unbind();
+    glActiveTexture(GL_TEXTURE0);
 }
 
 bool LayerGL::copyAndResizeLayer(DataRepresentation* targetLayerGL) const {

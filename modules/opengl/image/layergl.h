@@ -70,6 +70,7 @@ protected:
 
 private:
     Texture2D* texture_;
+    mutable GLenum texUnit_;
 };
 
 } // namespace
