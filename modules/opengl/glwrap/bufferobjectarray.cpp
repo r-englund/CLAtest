@@ -35,11 +35,11 @@
 
 namespace inviwo {
 
-BufferObjectArray::BufferObjectArray(){
+BufferObjectArray::BufferObjectArray() : id_(0u) {
     initialize();
 }
 
-BufferObjectArray::BufferObjectArray(const BufferObjectArray& rhs) {
+BufferObjectArray::BufferObjectArray(const BufferObjectArray& rhs) : id_(0u) {
     initialize();
 
     bind();
