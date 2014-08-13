@@ -199,16 +199,13 @@ void CanvasGL::renderTexture(int unitNumber) {
 }
 
 void CanvasGL::drawRect() {
-    if (!rectArray_) {
-        rectArray_ = new BufferObjectArray();
-        rectArray_->bind();
-        rectArray_->attachBufferObjectToGenericLocation(
-            screenAlignedRectGL_->getBufferGL(0)->getBufferObject());
-        rectArray_->attachBufferObjectToGenericLocation(
-            screenAlignedRectGL_->getBufferGL(1)->getBufferObject());
-    } else {
-        rectArray_->bind();
-    }
+    delete rectArray_;
+    rectArray_ = new BufferObjectArray();
+    rectArray_->bind();
+    rectArray_->attachBufferObjectToGenericLocation(
+        screenAlignedRectGL_->getBufferGL(0)->getBufferObject());
+    rectArray_->attachBufferObjectToGenericLocation(
+        screenAlignedRectGL_->getBufferGL(1)->getBufferObject());
     glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
     rectArray_->unbind();
 }
