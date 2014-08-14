@@ -46,9 +46,15 @@ ImageLayoutGL::ImageLayoutGL()
     , multiinport_("multiinport")
     , outport_("outport")
     , layout_("layout", "Layout")
+    , resizeContent_("resizeContent", "Resize Content", false)
     , horizontalSplitter_("horizontalSplitter", "Horizontal Splitter", 0.5f, 0.f, 1.f)
     , verticalSplitter_("verticalSplitter", "Vertical Splitter", 0.5f, 0.f, 1.f)
-    , shader_(NULL) {
+    , shader_(NULL)
+    , layoutHandler_(NULL)
+    , currentLayout_(ImageLayoutTypes::CrossSplit)
+    , currentDim_(0u, 0u)
+    , resizeEnabled_(false)
+{
       
     addPort(multiinport_);
     multiinport_.onChange(this, &ImageLayoutGL::multiInportChanged);
@@ -62,6 +68,7 @@ ImageLayoutGL::ImageLayoutGL()
     layout_.setSelectedValue(ImageLayoutTypes::CrossSplit);
     layout_.setCurrentStateAsDefault();
     addProperty(layout_);
+    //addProperty(resizeContent_);
     horizontalSplitter_.setVisible(false);
     addProperty(horizontalSplitter_);
     verticalSplitter_.setVisible(false);
@@ -114,12 +121,14 @@ const std::vector<Inport*>& ImageLayoutGL::getInports(Event* e) const {
 
 void ImageLayoutGL::multiInportChanged(){
     if(multiinport_.isConnected()){
+        updateViewports(true);
         std::vector<Inport*> inports = multiinport_.getInports();
         size_t minNum = std::min(inports.size(), viewCoords_.size());
         for(size_t i=0; i<minNum; ++i){
             ImageInport* imageInport = dynamic_cast<ImageInport*>(inports[i]);
             if(imageInport){
-                imageInport->setResizeScale(vec2(0.25f, 0.25f));
+                // TODO: use scale depending on viewport and output dimension
+                imageInport->setResizeScale(vec2(0.25f, 0.25f)); 
             }
         }
     }
@@ -128,10 +137,43 @@ void ImageLayoutGL::multiInportChanged(){
 void ImageLayoutGL::process() {
     TextureUnit::setZeroUnit();
     std::vector<const Image*> images = multiinport_.getData();
-
     uvec2 dim = outport_.getData()->getDimension();
-    viewCoords_.clear();
 
+    updateViewports();
+    TextureUnit colorUnit, depthUnit, pickingUnit;
+
+    activateAndClearTarget(outport_);
+
+    shader_->activate();
+    setGlobalShaderParameters(shader_);
+    shader_->setUniform("color_", colorUnit.getUnitNumber());
+    shader_->setUniform("depth_", depthUnit.getUnitNumber());
+    shader_->setUniform("picking_", pickingUnit.getUnitNumber());
+
+    size_t minNum = std::min(images.size(), viewCoords_.size());
+    for(size_t i=0; i<minNum; ++i){
+        bindTextures(images[i], colorUnit.getEnum(), depthUnit.getEnum(), pickingUnit.getEnum());
+        glViewport(static_cast<int>(viewCoords_[i].x), static_cast<int>(viewCoords_[i].y), viewCoords_[i].z, viewCoords_[i].w);
+        renderImagePlaneRect();
+    }
+
+    glViewport(0, 0, dim.x, dim.y);
+    shader_->deactivate();
+    deactivateCurrentTarget();
+    TextureUnit::setZeroUnit();
+}
+
+void ImageLayoutGL::updateViewports(bool force) {
+    uvec2 dim(256u, 256u);
+    if (outport_.isConnected())
+        dim = outport_.getData()->getDimension();
+
+    if (!force && (currentDim_ == dim) 
+        && (currentLayout_ == layout_.get()) 
+        && (resizeEnabled_ == resizeContent_.get()))
+        return; // no changes
+
+    viewCoords_.clear();
     unsigned int smallWindowDim = dim.y/3;
     switch (layout_.getSelectedValue())
     {
@@ -166,27 +208,23 @@ void ImageLayoutGL::process() {
         viewCoords_.push_back(uvec4(0, 0, dim.x, dim.y));
     }
 
-    TextureUnit colorUnit, depthUnit, pickingUnit;
+    currentDim_ = dim;
+    currentLayout_ = static_cast<ImageLayoutTypes::Layout>(layout_.get());
+    resizeEnabled_ = resizeContent_.get();
 
-    activateAndClearTarget(outport_);
-
-    shader_->activate();
-    setGlobalShaderParameters(shader_);
-    shader_->setUniform("color_", colorUnit.getUnitNumber());
-    shader_->setUniform("depth_", depthUnit.getUnitNumber());
-    shader_->setUniform("picking_", pickingUnit.getUnitNumber());
-
-    size_t minNum = std::min(images.size(), viewCoords_.size());
-    for(size_t i=0; i<minNum; ++i){
-        bindTextures(images[i], colorUnit.getEnum(), depthUnit.getEnum(), pickingUnit.getEnum());
-        glViewport(static_cast<int>(viewCoords_[i].x), static_cast<int>(viewCoords_[i].y), viewCoords_[i].z, viewCoords_[i].w);
-        renderImagePlaneRect();
+    // propagate viewport size to connected inports
+    if (resizeEnabled_) {
+        std::vector<Inport*> inports = multiinport_.getInports();
+        size_t minNum = std::min(inports.size(), viewCoords_.size());
+        for (std::size_t i=0; i<minNum; ++i) {
+            ImageInport* imageInport = dynamic_cast<ImageInport*>(inports[i]);
+            if(imageInport){
+                uvec2 viewportDim(viewCoords_[i].z, viewCoords_[i].w);
+                ResizeEvent e(viewportDim);
+                imageInport->changeDataDimensions(&e);
+            }
+        }
     }
-
-    glViewport(0, 0, dim.x, dim.y);
-    shader_->deactivate();
-    deactivateCurrentTarget();
-    TextureUnit::setZeroUnit();
 }
 
 ImageLayoutGL::ImageLayoutGLInteractationHandler::ImageLayoutGLInteractationHandler() 
