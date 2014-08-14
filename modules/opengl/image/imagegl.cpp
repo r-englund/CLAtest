@@ -353,10 +353,8 @@ void ImageGL::update(bool editable) {
 }
 
 void ImageGL::renderImagePlaneRect() const {
-    //delete rectArray_;
-    if (!rectArray_) {
-        rectArray_ = new BufferObjectArray();
-    }
+    delete rectArray_;
+    rectArray_ = new BufferObjectArray();
     CanvasGL::attachImagePlanRect(rectArray_);
     LGL_ERROR;
     glDepthFunc(GL_ALWAYS);
