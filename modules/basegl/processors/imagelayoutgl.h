@@ -73,6 +73,7 @@ public:
 
 protected:
     void process();
+    void updateViewports(bool force=false);
 
     class ImageLayoutGLInteractationHandler : public InteractionHandler {
 
@@ -96,12 +97,17 @@ private:
     ImageOutport outport_;
 
     OptionPropertyInt layout_;
+    BoolProperty resizeContent_;
     FloatProperty horizontalSplitter_;
     FloatProperty verticalSplitter_;
 
     Shader* shader_;
 
     ImageLayoutGLInteractationHandler* layoutHandler_;
+
+    ImageLayoutTypes::Layout currentLayout_;
+    uvec2 currentDim_;
+    bool resizeEnabled_;
 
     std::vector<uvec4> viewCoords_;
 
