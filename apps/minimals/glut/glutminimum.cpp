@@ -60,7 +60,8 @@ static void glutClose(){
 
 int main(int argc, char** argv) {
     ConsoleLogger consoleLogger;
-    LogCentral::instance()->registerLogger(&consoleLogger);
+    LogCentral::init();
+    LogCentral::getPtr()->registerLogger(&consoleLogger);
     InviwoApplication inviwoApp(argc, argv, "Inviwo "+IVW_VERSION + " - GLUTApp", inviwo::filesystem::findBasePath());
     inviwoApp_ = &inviwoApp;
 

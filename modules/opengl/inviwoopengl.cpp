@@ -62,7 +62,7 @@ void LogGLError(const char* fileName, const char* functionName, int lineNumber) 
         const GLubyte* errorString = gluErrorString(err);
         errorMessage << (errorString ? (const char*)errorString : "undefined");
 #endif
-        inviwo::LogCentral::instance()->log("OpenGL", inviwo::Error, fileName, functionName,
+        inviwo::LogCentral::getPtr()->log("OpenGL", inviwo::Error, fileName, functionName,
                                             lineNumber, errorMessage.str());
     }
 }

@@ -85,7 +85,7 @@ PythonEditorWidget::PythonEditorWidget(QWidget* parent)
     ProcessorNetwork* processorNetwork = InviwoApplication::getPtr()->getProcessorNetwork();
     processorNetwork->addObserver(this);
     
-    InviwoApplication::getRef().registerFileObserver(this);
+    InviwoApplication::getPtr()->registerFileObserver(this);
     unsavedChanges_ = false;
 
 

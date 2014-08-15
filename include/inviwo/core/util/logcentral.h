@@ -36,11 +36,12 @@
 #pragma warning (disable : 4231)
 
 #include <inviwo/core/common/inviwocoredefine.h>
+#include <inviwo/core/util/singleton.h>
+#include <inviwo/core/util/stringconversion.h>
 #include <fstream>
 #include <iostream>
 #include <sstream>
 #include <typeinfo>
-#include <inviwo/core/util/stringconversion.h>
 
 namespace inviwo {
 
@@ -50,7 +51,7 @@ IVW_CORE_API enum LogLevel { Info, Warn, Error };
     {                                                                                          \
         std::ostringstream stream__;                                                           \
         stream__ << message;                                                                   \
-        inviwo::LogCentral::instance()->log(parseTypeIdName(std::string(typeid(this).name())), \
+        inviwo::LogCentral::getPtr()->log(parseTypeIdName(std::string(typeid(this).name())), \
                                             inviwo::Info, __FILE__, __FUNCTION__, __LINE__,    \
                                             stream__.str());                                   \
     }
@@ -58,7 +59,7 @@ IVW_CORE_API enum LogLevel { Info, Warn, Error };
     {                                                                                          \
         std::ostringstream stream__;                                                           \
         stream__ << message;                                                                   \
-        inviwo::LogCentral::instance()->log(parseTypeIdName(std::string(typeid(this).name())), \
+        inviwo::LogCentral::getPtr()->log(parseTypeIdName(std::string(typeid(this).name())), \
                                             inviwo::Warn, __FILE__, __FUNCTION__, __LINE__,    \
                                             stream__.str());                                   \
     }
@@ -66,7 +67,7 @@ IVW_CORE_API enum LogLevel { Info, Warn, Error };
     {                                                                                          \
         std::ostringstream stream__;                                                           \
         stream__ << message;                                                                   \
-        inviwo::LogCentral::instance()->log(parseTypeIdName(std::string(typeid(this).name())), \
+        inviwo::LogCentral::getPtr()->log(parseTypeIdName(std::string(typeid(this).name())), \
                                             inviwo::Error, __FILE__, __FUNCTION__, __LINE__,   \
                                             stream__.str());                                   \
     }
@@ -75,21 +76,21 @@ IVW_CORE_API enum LogLevel { Info, Warn, Error };
     {                                                                                     \
         std::ostringstream stream__;                                                      \
         stream__ << message;                                                              \
-        inviwo::LogCentral::instance()->log(source, inviwo::Info, __FILE__, __FUNCTION__, \
+        inviwo::LogCentral::getPtr()->log(source, inviwo::Info, __FILE__, __FUNCTION__, \
                                             __LINE__, stream__.str());                    \
     }
 #define LogWarnCustom(source, message)                                                    \
     {                                                                                     \
         std::ostringstream stream__;                                                      \
         stream__ << message;                                                              \
-        inviwo::LogCentral::instance()->log(source, inviwo::Warn, __FILE__, __FUNCTION__, \
+        inviwo::LogCentral::getPtr()->log(source, inviwo::Warn, __FILE__, __FUNCTION__, \
                                             __LINE__, stream__.str());                    \
     }
 #define LogErrorCustom(source, message)                                                    \
     {                                                                                      \
         std::ostringstream stream__;                                                       \
         stream__ << message;                                                               \
-        inviwo::LogCentral::instance()->log(source, inviwo::Error, __FILE__, __FUNCTION__, \
+        inviwo::LogCentral::getPtr()->log(source, inviwo::Error, __FILE__, __FUNCTION__, \
                                             __LINE__, stream__.str());                     \
     }
 
@@ -123,12 +124,10 @@ private:
     std::ofstream* fileStream_;
 };
 
-class IVW_CORE_API LogCentral {
+class IVW_CORE_API LogCentral : public Singleton<LogCentral> {
 public:
     LogCentral();
     virtual ~LogCentral();
-
-    static LogCentral* instance();
 
     void setLogLevel(unsigned int logLevel) { logLevel_ = logLevel; }
     unsigned int getLogLevel() { return logLevel_; }

@@ -109,11 +109,11 @@ void Shader::initialize() {
 void Shader::linkAndRegister(bool linkShader) {
     if (linkShader) link();
 
-    ShaderManager::getRef().registerShader(this);
+    ShaderManager::getPtr()->registerShader(this);
 }
 
 void Shader::deinitialize() {
-    ShaderManager::getRef().unregisterShader(this);
+    ShaderManager::getPtr()->unregisterShader(this);
 
     for (ShaderObjectMap::iterator it = shaderObjects_->begin(); it != shaderObjects_->end();
          it++) {
@@ -131,7 +131,7 @@ void Shader::createAndAddShader(GLenum shaderType, std::string fileName, bool li
 }
 
 void Shader::link() {
-    ShaderManager::getRef().bindCommonAttributes(id_);
+    ShaderManager::getPtr()->bindCommonAttributes(id_);
 
     glLinkProgram(id_);
     LGL_ERROR;

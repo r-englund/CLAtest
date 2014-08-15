@@ -86,8 +86,6 @@
 
 namespace inviwo {
 
-std::vector<SingletonBase*> SingletonBase::instances_;
-
 InviwoCore::InviwoCore() : InviwoModule() {
     setIdentifier("Core");
     // Register Converters

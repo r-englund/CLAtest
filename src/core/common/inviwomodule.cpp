@@ -147,7 +147,7 @@ std::string InviwoModule::getIdentifier() const {
 }
 
 std::string InviwoModule::getPath(const std::string& suffix) const {
-    return InviwoApplication::getRef().getPath(InviwoApplication::PATH_MODULES, suffix);
+    return InviwoApplication::getPtr()->getPath(InviwoApplication::PATH_MODULES, suffix);
 }
 
 void InviwoModule::initialize() {

@@ -117,7 +117,7 @@ void SettingsWidget::updateSettingsWidget() {
 }
 
 void SettingsWidget::saveSettings() {
-    const std::vector<Settings*> settings = InviwoApplication::getRef().getModuleSettings();
+    const std::vector<Settings*> settings = InviwoApplication::getPtr()->getModuleSettings();
     for (size_t i = 0; i < settings.size(); i++) {
         settings[i]->saveToDisk();
     }

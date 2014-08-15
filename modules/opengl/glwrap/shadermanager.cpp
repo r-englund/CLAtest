@@ -42,7 +42,7 @@
 namespace inviwo {
 
 ShaderManager::ShaderManager() : FileObserver() {
-    InviwoApplication::getRef().registerFileObserver(this);
+    InviwoApplication::getPtr()->registerFileObserver(this);
     openGLInfoRef_ = NULL;
 }
 
@@ -99,14 +99,14 @@ void ShaderManager::fileChanged(std::string shaderFilename) {
 
             if (successfulReload) {
                 LogInfo(shaderFilename + " successfuly reloaded");
-                InviwoApplication::getRef().playSound(InviwoApplication::IVW_OK);
+                InviwoApplication::getPtr()->playSound(InviwoApplication::IVW_OK);
                 //TODO: Don't invalidate all processors when shader change, invalidate only owners if shader has one.
-                std::vector<Processor*> processors = InviwoApplication::getRef().getProcessorNetwork()->getProcessors();
+                std::vector<Processor*> processors = InviwoApplication::getPtr()->getProcessorNetwork()->getProcessors();
 
                 for (size_t i=0; i<processors.size(); i++)
                     if (dynamic_cast<ProcessorGL*>(processors[i]))
                         processors[i]->invalidate(PropertyOwner::INVALID_RESOURCES);
-            } else InviwoApplication::getRef().playSound(InviwoApplication::IVW_ERROR);
+            } else InviwoApplication::getPtr()->playSound(InviwoApplication::IVW_ERROR);
         }
     }
 }
@@ -166,7 +166,7 @@ void ShaderManager::addShaderSearchPath(InviwoApplication::PathType pathType, st
 
 OpenGLCapabilities* ShaderManager::getOpenGLCapabilitiesObject(){
     if (!openGLInfoRef_) {
-        OpenGLModule* openGLModule = getTypeFromVector<OpenGLModule>(InviwoApplication::getRef().getModules());
+        OpenGLModule* openGLModule = getTypeFromVector<OpenGLModule>(InviwoApplication::getPtr()->getModules());
 
         if (openGLModule)
             openGLInfoRef_ = getTypeFromVector<OpenGLCapabilities>(openGLModule->getCapabilities());

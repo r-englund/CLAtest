@@ -39,36 +39,14 @@
 
 namespace inviwo {
 
-class SingletonBase;
 class IVW_CORE_API SingletonBase {
 protected:
-    static std::vector<SingletonBase*> instances_;
+    static std::vector<SingletonBase*>* instances_;
 
-    void deleteAllSingeltons() {
-        while (!instances_.empty()) {
-            SingletonBase* instance = instances_[0];
-            instances_.erase(instances_.begin());
-
-            if (instance != this)
-                delete instance;
-        }
-    }
-
-    SingletonBase() {
-        instances_.push_back(this);
-    }
-
-    virtual ~SingletonBase() {
-        for (size_t i = 0; i<instances_.size(); i++) {
-            if (instances_[i] == this) {
-                instances_.erase(instances_.begin()+i);
-                break;
-            }
-        }
-    }
+    SingletonBase();
+    virtual ~SingletonBase();
+    void deleteAllSingeltons();
 };
-
-
 
 template <class T>
 class Singleton : public SingletonBase {
@@ -88,12 +66,6 @@ public:
         ivwAssert(instance_==0, "Singleton already initialized.");
         ivwAssert(instance!=0, "Null pointer passed.");
         instance_ = instance;
-    };
-
-    static T& getRef() {
-        ivwAssert(instance_!=0, "Singleton not initialized. Ensure that init() "
-                  "is called in a thread-safe environment.");
-        return *instance_;
     };
 
     static T* getPtr() {

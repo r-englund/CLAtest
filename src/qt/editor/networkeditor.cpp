@@ -325,7 +325,7 @@ void NetworkEditor::removeAndDeletePropertyWidgets(Processor* processor) {
 
 // remove processor widget unnecessary as processor widget is removed when processor is destroyed
 void NetworkEditor::addProcessorWidget(Processor* processor, bool visible) {
-    ProcessorWidget* processorWidget = dynamic_cast<ProcessorWidget*>(ProcessorWidgetFactory::getRef().create(processor));
+    ProcessorWidget* processorWidget = dynamic_cast<ProcessorWidget*>(ProcessorWidgetFactory::getPtr()->create(processor));
 
     if (processorWidget) {
         processorWidget->setProcessor(processor);
@@ -1310,7 +1310,7 @@ void NetworkEditor::dragMoveEvent(QGraphicsSceneDragDropEvent* e) {
         if (connectionItem && !oldConnectionTarget_) { //< New connection found
             QString className;
             ProcessorDragObject::decode(e->mimeData(), className);
-            Processor* processor = static_cast<Processor*>(ProcessorFactory::getRef().create(className.toLocal8Bit().constData()));
+            Processor* processor = static_cast<Processor*>(ProcessorFactory::getPtr()->create(className.toLocal8Bit().constData()));
             QColor inputColor = Qt::red, outputColor = Qt::red;
 
             // try to find a match between connection outport and one of the new processors inports
@@ -1360,7 +1360,7 @@ void NetworkEditor::dropEvent(QGraphicsSceneDragDropEvent* e) {
 
         if (!className.isEmpty()) {
             // create processor, add it to processor network, and generate it's widgets
-            Processor* processor = static_cast<Processor*>(ProcessorFactory::getRef().create(className.toLocal8Bit().constData()));
+            Processor* processor = static_cast<Processor*>(ProcessorFactory::getPtr()->create(className.toLocal8Bit().constData()));
 
             clearSelection();
 

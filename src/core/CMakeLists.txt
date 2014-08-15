@@ -391,6 +391,7 @@ set(SOURCE_FILES
     util/settings/linksettings.cpp    
     util/settings/settings.cpp    
     util/settings/systemsettings.cpp    
+    util/singleton.cpp
     util/stacktrace.cpp
     util/stringconversion.cpp
     util/systemcapabilities.cpp

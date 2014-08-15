@@ -80,7 +80,7 @@ ScopedClockCPU::~ScopedClockCPU() {
     if (clock_.getElapsedMiliseconds() > logIfAtLeastMilliSec_) {
         std::stringstream message;
         message << logMessage_ << ": " << clock_.getElapsedMiliseconds() << " ms";
-        LogCentral::instance()->log(logSource_, inviwo::Info, __FILE__, __FUNCTION__, __LINE__, message.str());
+        LogCentral::getPtr()->log(logSource_, inviwo::Info, __FILE__, __FUNCTION__, __LINE__, message.str());
     }
 }
 

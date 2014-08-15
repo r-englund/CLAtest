@@ -94,11 +94,6 @@ LogCentral::~LogCentral() {
     delete loggers_;
 }
 
-LogCentral* LogCentral::instance() {
-    static LogCentral instance_;
-    return &instance_;
-}
-
 void LogCentral::registerLogger(Logger* logger) {
     loggers_->push_back(logger);
 }

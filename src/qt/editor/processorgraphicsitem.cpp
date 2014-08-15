@@ -490,7 +490,7 @@ void ProcessorGraphicsItem::snapToGrid() {
 QVariant ProcessorGraphicsItem::itemChange(GraphicsItemChange change, const QVariant& value) {
     if (change == QGraphicsItem::ItemPositionHasChanged) {
         std::vector<ConnectionGraphicsItem*> connectionGraphicsItems =
-            NetworkEditor::getRef().connectionGraphicsItems_;
+            NetworkEditor::getPtr()->connectionGraphicsItems_;
 
         for (size_t i = 0; i < connectionGraphicsItems.size(); i++) {
             if (connectionGraphicsItems[i]->getOutProcessor() == this) {
@@ -513,7 +513,7 @@ QVariant ProcessorGraphicsItem::itemChange(GraphicsItemChange change, const QVar
         }
 
         std::vector<LinkConnectionGraphicsItem*> linkGraphicsItems =
-            NetworkEditor::getRef().linkGraphicsItems_;
+            NetworkEditor::getPtr()->linkGraphicsItems_;
 
         for (size_t i = 0; i < linkGraphicsItems.size(); i++) {
             if (linkGraphicsItems[i]->getSrcProcessorGraphicsItem() == this ||
