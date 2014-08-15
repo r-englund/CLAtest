@@ -55,7 +55,7 @@ int main(int argc, char** argv) {
     inviwo::ConsoleLogger* logger = new inviwo::ConsoleLogger();
     {
         // scope for ivw app
-        inviwo::LogCentral::instance()->registerLogger(logger);
+        inviwo::LogCentral::getPtr()->registerLogger(logger);
 
         // Search for directory containing data folder to find application basepath.
         // Working directory will be used if data folder is not found in parent directories.
