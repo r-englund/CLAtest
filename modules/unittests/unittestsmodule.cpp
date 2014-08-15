@@ -43,11 +43,11 @@ namespace inviwo {
 UnitTestsModule::UnitTestsModule() : InviwoModule() {
     setIdentifier("UnitTests");
     LogErrorCounter::init();
-    LogCentral::instance()->registerLogger(LogErrorCounter::getPtr());
+    LogCentral::getPtr()->registerLogger(LogErrorCounter::getPtr());
 }
 
 UnitTestsModule::~UnitTestsModule() {
-    LogCentral::instance()->unregisterLogger(LogErrorCounter::getPtr());
+    LogCentral::getPtr()->unregisterLogger(LogErrorCounter::getPtr());
     LogErrorCounter::deleteInstance();
 }
 
