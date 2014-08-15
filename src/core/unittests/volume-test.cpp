@@ -50,7 +50,7 @@ void testVolumeLoad(std::string filename) {
                        + "unittests/testdata/" + filename;
     std::string fileExtension = URLParser::getFileExtension(file);
     DataReaderType<Volume>* reader =
-        DataReaderFactory::getRef().getReaderForTypeAndExtension<Volume>(fileExtension);
+        DataReaderFactory::getPtr()->getReaderForTypeAndExtension<Volume>(fileExtension);
     ASSERT_TRUE(reader != NULL);
     Volume* volume = reader->readMetaData(file);
     const VolumeRAMPrecision<T>* volumeRAM =
@@ -93,7 +93,7 @@ void testVolumeClone(std::string filename) {
         + "unittests/testdata/" + filename;
     std::string fileExtension = URLParser::getFileExtension(file);
     DataReaderType<Volume>* reader =
-        DataReaderFactory::getRef().getReaderForTypeAndExtension<Volume>(fileExtension);
+        DataReaderFactory::getPtr()->getReaderForTypeAndExtension<Volume>(fileExtension);
     ASSERT_TRUE(reader != NULL);
     Volume* volume = reader->readMetaData(file);
     Volume* volume1 = volume->clone();
