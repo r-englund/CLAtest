@@ -39,7 +39,7 @@
 namespace inviwo {
 
 KernelManager::KernelManager() {
-    InviwoApplication::getRef().registerFileObserver(this);
+    InviwoApplication::getPtr()->registerFileObserver(this);
 }
 
 KernelManager::~KernelManager() {
@@ -161,9 +161,9 @@ void KernelManager::fileChanged(std::string fileName) {
 
             }
 
-            InviwoApplication::getRef().playSound(InviwoApplication::IVW_OK);
+            InviwoApplication::getPtr()->playSound(InviwoApplication::IVW_OK);
 
-            std::vector<Processor*> processors = InviwoApplication::getRef().getProcessorNetwork()->getProcessors();
+            std::vector<Processor*> processors = InviwoApplication::getPtr()->getProcessorNetwork()->getProcessors();
 
             //for (size_t i=0; i<processors.size(); i++) {
             //    KernelOwner* processor = dynamic_cast<KernelOwner*>(processors[i]);
@@ -180,14 +180,14 @@ void KernelManager::fileChanged(std::string fileName) {
         } catch (cl::Error& err) {
             LogError(fileName << " Failed to create kernels, error:" << err.what() << "(" << err.err() << "), " << errorCodeToString(
                          err.err()) << std::endl);
-            InviwoApplication::getRef().playSound(InviwoApplication::IVW_ERROR);
+            InviwoApplication::getPtr()->playSound(InviwoApplication::IVW_ERROR);
         }
     }
 }
 
 void KernelManager::clear() {
     for (ProgramMap::iterator programIt = programs_.begin(); programIt != programs_.end(); ++programIt) {
-        InviwoApplication::getRef().stopFileObservation(programIt->first);
+        InviwoApplication::getPtr()->stopFileObservation(programIt->first);
     }
 
     for (KernelMap::iterator kernelIt = kernels_.begin(); kernelIt != kernels_.end(); ++kernelIt) {

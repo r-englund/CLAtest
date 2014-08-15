@@ -98,7 +98,7 @@ Volume* RawVolumeReader::readMetaData(std::string filePath) {
     rawFile_ = filePath;
 
     if (!parametersSet_) {
-        DataReaderDialog* readerDialog = dynamic_cast<DataReaderDialog*>(DialogFactory::getRef().getDialog("RawVolumeReader"));
+        DataReaderDialog* readerDialog = dynamic_cast<DataReaderDialog*>(DialogFactory::getPtr()->getDialog("RawVolumeReader"));
         ivwAssert(readerDialog!=0, "No data reader dialog found.");
         format_ = readerDialog->getFormat(rawFile_, &dimension_, &littleEndian_);
     }

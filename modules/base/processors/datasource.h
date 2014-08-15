@@ -40,7 +40,7 @@ DataSource<DataType, PortType>::DataSource()
     : Processor(), port_("data"), file_("filename", "File"), isDeserializing_(false) {
     addPort(port_);
     file_.onChange(this, &DataSource::load);
-    std::vector<FileExtension> ext = DataReaderFactory::getRef().getExtensionsForType<DataType>();
+    std::vector<FileExtension> ext = DataReaderFactory::getPtr()->getExtensionsForType<DataType>();
 
     for (std::vector<FileExtension>::const_iterator it = ext.begin(); it != ext.end(); ++it) {
         std::stringstream ss;
@@ -82,7 +82,7 @@ void DataSource<DataType, PortType>::load() {
     } else {
         std::string fileExtension = URLParser::getFileExtension(file_.get());
         DataReaderType<DataType>* reader =
-            DataReaderFactory::getRef().getReaderForTypeAndExtension<DataType>(fileExtension);
+            DataReaderFactory::getPtr()->getReaderForTypeAndExtension<DataType>(fileExtension);
 
         if (reader) {
             try {

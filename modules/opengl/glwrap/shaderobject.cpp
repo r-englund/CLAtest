@@ -105,12 +105,12 @@ std::string ShaderObject::embeddDefines(std::string source) {
     }
 
     std::string curLine;
-    std::string globalGLSLHeader = ShaderManager::getRef().getGlobalGLSLHeader();
+    std::string globalGLSLHeader = ShaderManager::getPtr()->getGlobalGLSLHeader();
 
     if (shaderType_ == GL_VERTEX_SHADER)
-        globalGLSLHeader += ShaderManager::getRef().getGlobalGLSLVertexDefines();
+        globalGLSLHeader += ShaderManager::getPtr()->getGlobalGLSLVertexDefines();
     else if (shaderType_ == GL_FRAGMENT_SHADER)
-        globalGLSLHeader += ShaderManager::getRef().getGlobalGLSLFragmentDefines();
+        globalGLSLHeader += ShaderManager::getPtr()->getGlobalGLSLFragmentDefines();
 
     std::istringstream globalGLSLHeaderStream(globalGLSLHeader);
 
@@ -147,7 +147,7 @@ std::string ShaderObject::embeddIncludes(std::string source, std::string fileNam
             std::string::size_type pathEnd = curLine.find("\"", pathBegin+1);
             std::string includeFileName(curLine, pathBegin+1, pathEnd-pathBegin-1);
             bool includeFileFound = false;
-            std::vector<std::string> shaderSearchPaths = ShaderManager::getRef().getShaderSearchPaths();
+            std::vector<std::string> shaderSearchPaths = ShaderManager::getPtr()->getShaderSearchPaths();
 
             for (size_t i=0; i<shaderSearchPaths.size(); i++) {
                 if (URLParser::fileExists(shaderSearchPaths[i]+"/"+includeFileName)) {
@@ -189,7 +189,7 @@ bool ShaderObject::loadSource(std::string fileName) {
             absoluteFileName_ = fileName;
         } else {
             // Search in include directories added by modules
-            std::vector<std::string> shaderSearchPaths = ShaderManager::getRef().getShaderSearchPaths();
+            std::vector<std::string> shaderSearchPaths = ShaderManager::getPtr()->getShaderSearchPaths();
 
             for (size_t i=0; i<shaderSearchPaths.size(); i++) {
                 if (URLParser::fileExists(shaderSearchPaths[i]+"/"+fileName)) {

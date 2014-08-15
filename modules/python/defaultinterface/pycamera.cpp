@@ -31,7 +31,7 @@
  *********************************************************************************/
 
 #include "pycamera.h"
-
+#include <math.h>
 #include <inviwo/core/common/inviwoapplication.h>
 #include <inviwo/core/processors/processor.h>
 #include <inviwo/core/properties/cameraproperty.h>
@@ -39,6 +39,19 @@
 
 
 namespace inviwo {
+
+template <typename T>
+T arctan(T x, T y) {
+    if (x == 0) {
+        return static_cast<T>(M_PI_2);
+    } else if (x < 0 && y > 0) {
+        return static_cast<T>(std::atan(static_cast<double>(y / x)) + M_PI);
+    } else if (x < 0 && y < 0) {
+        return static_cast<T>(std::atan(static_cast<double>(y / x)) - M_PI);
+    } else {
+        return static_cast<T>(std::atan(static_cast<double>(y / x)));
+    }
+};
 
 PyObject* py_setCameraFocus(PyObject* /*self*/, PyObject* args) {
     static PySetCameraFocusMethod p;
@@ -182,7 +195,18 @@ PyObject* py_setCameraPos(PyObject* /*self*/, PyObject* args) {
         }
 
         CameraProperty* cam = static_cast<CameraProperty*>(theProperty);
-        cam->setLookFrom(from);
+
+        /*vec3 polFrom = vec3(std::sqrt(static_cast<float>(from[0] * from[0] + from[1] * from[1] + from[2] * from[2])),
+            arctan<float>(from[2], std::sqrt(static_cast<float>(from[0] * from[0] + from[1] * from[1]))),
+            arctan<float>(from[0], from[1]));*/
+
+       vec3 polFrom = vec3(from[0] * std::sin(static_cast<double>(from[1])) * std::cos(static_cast<double>(from[2])),
+            from[0] * std::sin(static_cast<double>(from[1])) * std::sin(static_cast<double>(from[2])),
+            from[0] * std::cos(static_cast<double>(from[1])));
+
+       polFrom.y = cam->getLookFrom().y;
+
+        cam->setLookFrom(polFrom);
         Py_RETURN_NONE;
     } else {
         std::string msg = std::string("setCameraPosition() not a cmera property: ") + className;

@@ -54,7 +54,7 @@ ImageExport::ImageExport()
     , exportImageButton_("snapshot", "Export Image", PropertyOwner::VALID)
     , overwrite_("overwrite", "Overwrite", false)
     , exportQueued_(false){
-    std::vector<FileExtension> ext = DataWriterFactory::getRef().getExtensionsForType<Image>();
+    std::vector<FileExtension> ext = DataWriterFactory::getPtr()->getExtensionsForType<Image>();
 
     for (std::vector<FileExtension>::const_iterator it = ext.begin();
          it != ext.end(); ++it) {

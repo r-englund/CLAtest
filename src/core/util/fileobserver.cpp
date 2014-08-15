@@ -50,7 +50,7 @@ void FileObserver::startFileObservation(std::string fileName) {
     else {
         if (URLParser::fileExists(fileName)) {
             observedFiles_.push_back(std::pair<std::string,int>(fileName, 1));
-            InviwoApplication::getRef().startFileObservation(fileName);
+            InviwoApplication::getPtr()->startFileObservation(fileName);
         }
     }
 }
@@ -62,7 +62,7 @@ void FileObserver::stopFileObservation(std::string fileName) {
         else {
             observedFiles_.erase(std::remove(observedFiles_.begin(), observedFiles_.end(), std::pair<std::string,int>(fileName,
                                              getNumObservers(fileName))), observedFiles_.end());
-            InviwoApplication::getRef().stopFileObservation(fileName);
+            InviwoApplication::getPtr()->stopFileObservation(fileName);
         }
     }
 }

@@ -64,7 +64,8 @@ int main(int argc, char** argv) {
     app.setAttribute(Qt::AA_NativeWindows);
 
     //ConsoleLogger consoleLogger;
-    //LogCentral::instance()->registerLogger(&consoleLogger);
+    LogCentral::init();
+    //LogCentral::getPtr()->registerLogger(&consoleLogger);
 
     InviwoApplication inviwoApp(argc, argv, appName, inviwo::filesystem::findBasePath());
 

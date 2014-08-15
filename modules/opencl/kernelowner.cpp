@@ -43,7 +43,7 @@ cl::Kernel* KernelOwner::addKernel(const std::string& filePath,
         std::string absoluteFileName = filePath;
         if (!URLParser::fileExists(absoluteFileName)) {
             // Search in include directories added by modules
-            const std::vector<std::string> openclSearchPaths = OpenCL::getRef().getCommonIncludeDirectories();
+            const std::vector<std::string> openclSearchPaths = OpenCL::getPtr()->getCommonIncludeDirectories();
 
             for (size_t i=0; i<openclSearchPaths.size(); i++) {
                 if (URLParser::fileExists(openclSearchPaths[i]+"/"+filePath)) {
@@ -53,9 +53,9 @@ cl::Kernel* KernelOwner::addKernel(const std::string& filePath,
             }
         }
 
-        cl::Program* program = KernelManager::getRef().buildProgram(absoluteFileName, defines);
+        cl::Program* program = KernelManager::getPtr()->buildProgram(absoluteFileName, defines);
 
-        cl::Kernel* kernel = KernelManager::getRef().getKernel(program, kernelName, this);
+        cl::Kernel* kernel = KernelManager::getPtr()->getKernel(program, kernelName, this);
         if (kernel) {
             kernels_.insert(kernel);
         }
@@ -66,7 +66,7 @@ cl::Kernel* KernelOwner::addKernel(const std::string& filePath,
 
 KernelOwner::~KernelOwner() {
     // Make sure that we are not notifed after destruction
-    KernelManager::getRef().stopObservingKernels(this);
+    KernelManager::getPtr()->stopObservingKernels(this);
 }
 
 ProcessorKernelOwner::ProcessorKernelOwner(Processor* processor)

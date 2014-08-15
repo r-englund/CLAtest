@@ -3,7 +3,7 @@
  * Inviwo - Interactive Visualization Workshop
  * Version 0.6b
  *
- * Copyright (c) 2013-2014 Inviwo Foundation
+ * Copyright (c) 2014 Inviwo Foundation
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -26,55 +26,42 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
- * Main file author: Timo Ropinski
+ * Main file author: Erik Sundén
  *
  *********************************************************************************/
 
-#include "inviwosplashscreen.h"
-
-#include <QApplication>
-#include <QPainter>
-#include <QSplashScreen>
-#include <QTextStream>
-
-#include <inviwo/core/util/commandlineparser.h>
-#include <inviwo/qt/widgets/inviwoapplicationqt.h>
+#include <inviwo/core/util/singleton.h>
 
 namespace inviwo {
 
-InviwoSplashScreen::InviwoSplashScreen()
-    : QSplashScreen(dynamic_cast<InviwoApplicationQt*>(inviwo::InviwoApplicationQt::getPtr())->getMainWindow(),
-                    QPixmap(":/images/splashscreen.png"),
-                    Qt::WindowStaysOnTopHint)
-{
-    const CommandLineParser* cmdparser = inviwo::InviwoApplicationQt::getPtr()->getCommandLineParser();
-    showSplashScreen_ = cmdparser->getShowSplashScreen();
+std::vector<SingletonBase*>* SingletonBase::instances_ = NULL;
+   
+SingletonBase::SingletonBase() {
+    if(!instances_)
+        instances_ = new std::vector<SingletonBase*>();
+    instances_->push_back(this);
 }
 
-InviwoSplashScreen::~InviwoSplashScreen() {}
-
-void InviwoSplashScreen::show() {
-    if (showSplashScreen_)
-        QSplashScreen::show();
+SingletonBase::~SingletonBase() {
+    for (size_t i = 0; i<instances_->size(); i++) {
+        if (instances_->at(i) == this) {
+            instances_->erase(instances_->begin()+i);
+            break;
+        }
+    }
 }
 
-void InviwoSplashScreen::drawContents(QPainter* painter) {
-    QSplashScreen::drawContents(painter);
-    QString versionLabel;
-    QTextStream labelStream(&versionLabel);
-    labelStream << "Version " << QString::fromStdString(IVW_VERSION);
-    painter->drawText(13, 265, versionLabel);
-}
+void SingletonBase::deleteAllSingeltons() {
+    if(!instances_)
+        return;
+    while (!instances_->empty()) {
+        SingletonBase* instance = instances_->at(0);
+        instances_->erase(instances_->begin());
 
-void InviwoSplashScreen::showMessage(std::string message) {
-    // show message and add whitespace to match layout
-    if (showSplashScreen_)
-        QSplashScreen::showMessage(QString::fromStdString("   "+message), Qt::AlignLeft|Qt::AlignBottom, Qt::white);
-}
-
-void InviwoSplashScreen::finish(QWidget* mainWindow) {
-    if (showSplashScreen_)
-        QSplashScreen::finish(mainWindow);
+        if (instance != this)
+            delete instance;
+    }
+    delete instances_;
 }
 
 } // namespace

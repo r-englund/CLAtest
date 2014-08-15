@@ -65,7 +65,7 @@ InviwoMainWindow::InviwoMainWindow()
     , visibilityModeProperty_(NULL) {
     
     NetworkEditor::init();
-    networkEditor_ = &NetworkEditor::getRef();
+    networkEditor_ = NetworkEditor::getPtr();
     // initialize console widget first to receive log messages
     consoleWidget_ = new ConsoleWidget(this);
     currentWorkspaceFileName_ = "";
@@ -420,8 +420,7 @@ void InviwoMainWindow::onModifiedStatusChanged(const bool &newStatus){
 void InviwoMainWindow::openLastWorkspace() {
     // if a workspace is defined by an argument, that workspace is opened, otherwise, the last
     // opened workspace is used
-    const CommandLineParser* cmdparser =
-        (inviwo::InviwoApplicationQt::getRef()).getCommandLineParser();
+    const CommandLineParser* cmdparser = inviwo::InviwoApplicationQt::getPtr()->getCommandLineParser();
 
     if (cmdparser->getLoadWorkspaceFromArg())
         openWorkspace(static_cast<const QString>(cmdparser->getWorkspacePath().c_str()));

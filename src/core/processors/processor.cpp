@@ -291,7 +291,7 @@ MetaData* Processor::getMetaData(std::string className) {
     }
 
     if (!meta) {
-        meta = dynamic_cast<MetaData*>(MetaDataFactory::getRef().create(className));
+        meta = dynamic_cast<MetaData*>(MetaDataFactory::getPtr()->create(className));
         metaData_.push_back(meta);
     }
 

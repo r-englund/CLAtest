@@ -53,7 +53,7 @@ VolumeExport::VolumeExport()
                   InviwoApplication::getPtr()->getPath(InviwoApplication::PATH_VOLUMES,"newvolume.dat") , "volume")
     , exportVolumeButton_("snapshot", "Export Volume", PropertyOwner::VALID)
     , overwrite_("overwrite", "Overwrite", false) {
-    std::vector<FileExtension> ext = DataWriterFactory::getRef().getExtensionsForType<Volume>();
+    std::vector<FileExtension> ext = DataWriterFactory::getPtr()->getExtensionsForType<Volume>();
 
     for (std::vector<FileExtension>::const_iterator it = ext.begin();
          it != ext.end(); ++it) {
@@ -86,7 +86,7 @@ void VolumeExport::exportVolume() {
     if (volume && !volumeFile_.get().empty()) {
         std::string fileExtension = URLParser::getFileExtension(volumeFile_.get());
         DataWriterType<Volume>* writer =
-            DataWriterFactory::getRef().getWriterForTypeAndExtension<Volume>(fileExtension);
+            DataWriterFactory::getPtr()->getWriterForTypeAndExtension<Volume>(fileExtension);
 
         if (writer) {
             try {

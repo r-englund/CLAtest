@@ -84,7 +84,7 @@ void SystemSettings::initialize() {
 void SystemSettings::deinitialize()  {}
 
 void SystemSettings::logStacktraceCallback() {
-    LogCentral::instance()->setLogStacktrace(logStackTraceProperty_.get());
+    LogCentral::getPtr()->setLogStacktrace(logStackTraceProperty_.get());
 }
 
 void SystemSettings::allocationTest() {

@@ -42,7 +42,7 @@ ScopedClockCL::~ScopedClockCL() {
         profilingEvent_->wait(); 
         std::stringstream message;
         message << logMessage_ << ": " << profilingEvent_->getElapsedTime() << " ms";
-        LogCentral::instance()->log(logSource_, inviwo::Info, __FILE__, __FUNCTION__, __LINE__, message.str());
+        LogCentral::getPtr()->log(logSource_, inviwo::Info, __FILE__, __FUNCTION__, __LINE__, message.str());
         //LogInfo("Exec time: " << profilingEvent->getElapsedTime() << " ms"); 
     } catch (cl::Error& err) { 
         LogError(getCLErrorString(err)); 
