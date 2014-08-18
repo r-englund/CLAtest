@@ -43,10 +43,12 @@ SingletonBase::SingletonBase() {
 }
 
 SingletonBase::~SingletonBase() {
-    for (size_t i = 0; i<instances_->size(); i++) {
-        if (instances_->at(i) == this) {
-            instances_->erase(instances_->begin()+i);
-            break;
+    if (instances_) {
+        for (size_t i = 0; i < instances_->size(); i++) {
+            if (instances_->at(i) == this) {
+                instances_->erase(instances_->begin() + i);
+                break;
+            }
         }
     }
 }
@@ -62,6 +64,7 @@ void SingletonBase::deleteAllSingeltons() {
             delete instance;
     }
     delete instances_;
+    instances_ = NULL;
 }
 
 } // namespace

@@ -57,7 +57,7 @@ public:
         if(!t) return; //todo maybe print error= 
 
         DataFormatEnums::Id id_ = getInputVolume()->getDataFormat()->getId();
-        CallFunctionWithTemplateArgsForType(t->evaluate,id_);
+        CallFunctionWithTemplateArgsForType(t->template evaluate,id_);
     }
 
 
