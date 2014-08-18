@@ -60,7 +60,19 @@ OpenGLQtModule::OpenGLQtModule() : InviwoModule() {
 }
 
 OpenGLQtModule::~OpenGLQtModule() {
-    delete qtGLSharedCanvas_;
+    bool sharedDeleted = false;
+    ProcessorNetwork* network = InviwoApplication::getPtr()->getProcessorNetwork();
+    if (network) {
+        ProcessorNetworkEvaluator* evaluator = ProcessorNetworkEvaluator::getProcessorNetworkEvaluatorForProcessorNetwork(network);
+        if(evaluator){
+            if(!evaluator->getDefaultRenderContext()){
+                sharedDeleted = true;
+            }
+        }
+    }
+
+    if(!sharedDeleted)
+        delete qtGLSharedCanvas_;
 }
 
 } // namespace
