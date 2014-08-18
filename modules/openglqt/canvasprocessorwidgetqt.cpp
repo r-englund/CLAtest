@@ -44,6 +44,7 @@ namespace inviwo {
 CanvasProcessorWidgetQt::CanvasProcessorWidgetQt()
     : ProcessorWidgetQt()
       , canvas_(0)
+      , canvasProcessor_(0)
       , hasSharedCanvas_(false)
 {
     setMinimumSize(32, 32);
@@ -52,7 +53,12 @@ CanvasProcessorWidgetQt::CanvasProcessorWidgetQt()
     setWindowTitle(QString::fromStdString("untitled canvas"));
 }
 
-CanvasProcessorWidgetQt::~CanvasProcessorWidgetQt() {}
+CanvasProcessorWidgetQt::~CanvasProcessorWidgetQt() {
+    if(canvasProcessor_){
+        canvasProcessor_->setProcessorWidget(NULL);
+        canvasProcessor_->setCanvas(NULL);
+    }
+}
 
 ProcessorWidget* CanvasProcessorWidgetQt::create() const {
     return new CanvasProcessorWidgetQt();

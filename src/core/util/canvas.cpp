@@ -77,6 +77,12 @@ Canvas::~Canvas() {
     }
 
     delete pickingContainer_;
+
+    if(getProcessorNetworkEvaluator()){
+        if(this == getProcessorNetworkEvaluator()->getDefaultRenderContext()){
+            getProcessorNetworkEvaluator()->setDefaultRenderContext(NULL);
+        }
+    }
 }
 
 void Canvas::initialize() {

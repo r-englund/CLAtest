@@ -69,7 +69,8 @@ void ProcessorNetworkEvaluator::topologyUpdated() {
 
 void ProcessorNetworkEvaluator::setDefaultRenderContext(Canvas* canvas) { 
     defaultContext_ = canvas;
-    defaultContext_->setNetworkEvaluator(this);
+    if(defaultContext_)
+        defaultContext_->setNetworkEvaluator(this);
 }
 
 void ProcessorNetworkEvaluator::activateDefaultRenderContext() const {
