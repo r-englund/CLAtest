@@ -68,11 +68,14 @@ ImageLayoutGL::ImageLayoutGL()
     layout_.setSelectedValue(ImageLayoutTypes::CrossSplit);
     layout_.setCurrentStateAsDefault();
     addProperty(layout_);
-    //addProperty(resizeContent_);
+    addProperty(resizeContent_);
     horizontalSplitter_.setVisible(false);
     addProperty(horizontalSplitter_);
     verticalSplitter_.setVisible(false);
     addProperty(verticalSplitter_);
+
+    layout_.onChange(this, &ImageLayoutGL::onStatusChange);
+    resizeContent_.onChange(this, &ImageLayoutGL::onStatusChange);
 
     layoutHandler_ = new ImageLayoutGLInteractationHandler();
     addInteractionHandler(layoutHandler_);
@@ -139,7 +142,7 @@ void ImageLayoutGL::process() {
     std::vector<const Image*> images = multiinport_.getData();
     uvec2 dim = outport_.getData()->getDimension();
 
-    updateViewports();
+    //updateViewports();
     TextureUnit colorUnit, depthUnit, pickingUnit;
 
     activateAndClearTarget(outport_);
@@ -225,6 +228,10 @@ void ImageLayoutGL::updateViewports(bool force) {
             }
         }
     }
+}
+
+void ImageLayoutGL::onStatusChange() {
+    updateViewports();
 }
 
 ImageLayoutGL::ImageLayoutGLInteractationHandler::ImageLayoutGLInteractationHandler() 
