@@ -54,6 +54,9 @@ CanvasProcessorWidgetQt::CanvasProcessorWidgetQt()
 }
 
 CanvasProcessorWidgetQt::~CanvasProcessorWidgetQt() {
+    if(hasSharedCanvas_)
+        canvas_->setParent(NULL);
+
     if(canvasProcessor_){
         canvasProcessor_->setProcessorWidget(NULL);
         canvasProcessor_->setCanvas(NULL);
