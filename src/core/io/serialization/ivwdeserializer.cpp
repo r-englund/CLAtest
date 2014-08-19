@@ -45,7 +45,7 @@ IvwDeserializer::IvwDeserializer(IvwDeserializer& s, bool allowReference)
 
     try {
         readXMLData();
-    } catch (TxException& e) {
+    } catch (AbortException& e) {
         throw SerializationException(e.what());
     }
 }
@@ -56,7 +56,7 @@ IvwDeserializer::IvwDeserializer(std::string fileName, bool allowReference)
 
     try {
         readXMLData();
-    } catch (TxException& e) {
+    } catch (AbortException& e) {
         throw SerializationException(e.what());
     }
 }
