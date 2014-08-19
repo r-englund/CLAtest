@@ -37,23 +37,23 @@ QWidget {
     background-color: #4d4d4d;
 }
 QMainWindow::separator {
-	background: black;
-	width: 2px;
-	height: 2px;
+    background: black;
+    width: 2px;
+    height: 2px;
 }
 
 
 /* QToolBar styles */
 QToolBar {
-	spacing: 3px;
-	padding: 3px;
-	border: 1px black;
+    spacing: 3px;
+    padding: 3px;
+    border: 1px black;
     background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
                                 stop:0 #383838, stop: 0.1 #4d4d4d, 
                                 stop:0.9 #4d4d4d, stop:1 #383838);
 }
 QToolBar::handle {
-	background: qlineargradient(x1:0, y1:0, x2:1, y2:0,
+    background: qlineargradient(x1:0, y1:0, x2:1, y2:0,
                                 stop:0 #383838, stop: 0.1 #4d4d4d, 
                                 stop:0.9 #4d4d4d, stop:1 #b6b6b6);
 }
@@ -65,7 +65,7 @@ QToolButton {
 
 /*QToolTop */
 QToolTip {
-	font-family: "Courier";
+    font-family: "Courier";
     color: #999999;
     background-color: #4d4d4d;	
     border-radius: 3px;
@@ -81,8 +81,8 @@ QPushButton {
     border-radius: 3px;
     min-height: 20px;
     min-width: 80px;
-	padding-left: 15px;
-	padding-right: 15px;
+    padding-left: 15px;
+    padding-right: 15px;
     background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
                                 stop:0 #b6b6b6, stop:0.1 #4d4d4d, 
                                 stop:0.9 #4d4d4d, stop:1 #383838);
@@ -95,10 +95,17 @@ QPushButton:pressed {
 }
 QPushButton:focus{
     color: #bbbbbb;
-    border: 1px solid #660000;
+    border: 1px solid #ccc;
     background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
                                 stop:0 #b6b6b6, stop:0.1 #4d4d4d, 
                                 stop:0.9 #4d4d4d, stop:1 #383838);
+}
+QPushButton:disabled{
+    color: #666;
+    border-color: #444;
+    background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
+                                stop:0 #5a5a5a, stop:0.15 #555,
+                                stop:0.85 #555, stop:1 #4b4b4b);
 }
 
 
@@ -133,8 +140,8 @@ QTabBar::tab {
     color: #999999;
     border: 0px;
     border-radius: 3px;
-	padding-left: 10px;
-	padding-right: 10px;
+    padding-left: 10px;
+    padding-right: 10px;
     min-height: 20px;
     min-width: 80px;
     background-color: #4d4d4d;
@@ -261,6 +268,16 @@ QCheckBox::indicator:checked {
     border: 1px solid black;
     border-radius: 1px;
 }
+QCheckBox::disabled {
+   color: #666;
+    border-color: #444;
+}
+QCheckBox::indicator:disabled {
+    border-color: #444;
+    background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                                stop:0 #606060, stop:0.2 #505050,
+                                stop:0.8 #505050, stop:1 #606060);
+}
 
 
 /* QScrollBar styles */
@@ -298,6 +315,12 @@ QLineEdit {
     border: 1px solid black;
     border-radius: 1px;
 }
+QLineEdit:disabled {
+    color: #ccc;
+    border-color: #444;
+    background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
+                                stop:0 #282828, stop:0.2 #666, stop:1 #666);
+}
 
 
 /* QAbstractSpinBox styles */
@@ -313,7 +336,12 @@ QAbstractSpinBox::up-button {
 QAbstractSpinBox::down-button {
      image: url(:/stylesheets/images/arrow_down.png);
 }
-
+QAbstractSpinBox:disabled {
+    color: #ccc;
+    border-color: #444;
+    background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
+                                stop:0 #282828, stop:0.2 #666, stop:1 #666);
+}
 
 /* QSlider styles */
 QSlider::add-page:vertical, QSlider::sub-page:horizontal {
@@ -366,12 +394,20 @@ QSlider::groove:vertical, QSlider::groove:horizontal {
     border: 1px solid #bbb;
     background: white;
 }
-QSlider::sub-page:vertical:disabled, QSlider::sub-page:horizontal:disabled {
+ QSlider::sub-page:horizontal:disabled {
     background: #bbb;
     border-color: #999;
 }
-QSlider::add-page:vertical:disabled, QSlider::add-page:horizontal:disabled {
+QSlider::add-page:horizontal:disabled {
     background: #eee;
+    border-color: #999;
+}
+QSlider::sub-page:vertical:disabled{
+    background: #eee;
+    border-color: #999;
+}
+QSlider::add-page:vertical:disabled {
+    background: #bbb;
     border-color: #999;
 }
 QSlider::handle:vertical:disabled, QSlider::handle:horizontal:disabled {
@@ -485,11 +521,11 @@ QProgressBar::chunk {
 }
 
 QWidget#CollapsibleGroupBoxWidgetQt QToolButton::hover { 
-	background-color: gray;
+    background-color: gray;
 }
 
 QWidget#CollapsibleGroupBoxWidgetQt QLabel {
-	border: 0px;; 
+    border: 0px;; 
 }
 
 
