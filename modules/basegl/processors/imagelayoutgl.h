@@ -74,6 +74,7 @@ public:
 protected:
     void process();
     void updateViewports(bool force=false);
+    void onStatusChange();
 
     class ImageLayoutGLInteractationHandler : public InteractionHandler {
 
