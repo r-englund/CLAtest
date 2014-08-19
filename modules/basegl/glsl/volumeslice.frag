@@ -43,6 +43,7 @@ uniform float sliceNum_;
 
 uniform mat4 sliceAxisRotationMatrix_; // Rotates around slice axis (offset to center point)
 uniform vec3 rotationOffset_;          // Translates coordinate back from rotation offset
+uniform float alphaOffset_ = 0.0;
 
 in vec3 texCoord_;
 
@@ -59,6 +60,7 @@ void main() {
     voxel = getNormalizedVoxel(volume_, volumeParameters_, pRotated);
 #ifdef TF_MAPPING_ENABLED
     voxel = applyTF(transferFunc_, voxel);
+    voxel.a += alphaOffset_;
 #endif
     FragData0 = voxel;
 
