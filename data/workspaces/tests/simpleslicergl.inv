@@ -2,7 +2,7 @@
 <InviwoTreeData version="1.0">
     <!-- Don't edit the following code -->
     <Processors>
-        <Processor type="VolumeSource" identifier="VolumeSource" id="ref1">
+        <Processor type="VolumeSource" identifier="VolumeSource" id="ref0">
             <MetaDataList>
                 <MetaData type="ProcessorMetaData">
                     <position x="-625" y="-675" />
@@ -65,7 +65,7 @@
                 </Property>
             </Properties>
         </Processor>
-        <Processor type="VolumeSliceGL" identifier="VolumeSliceGL" id="ref0">
+        <Processor type="VolumeSliceGL" identifier="VolumeSliceGL" id="ref1">
             <MetaDataList>
                 <MetaData type="ProcessorMetaData">
                     <position x="-625" y="-525" />
@@ -80,7 +80,6 @@
                 <Property type="FloatProperty" identifier="alphaOffset" displayName="Alpha Offset" key="alphaOffset">
                     <usageMode content="0" />
                     <visible content="1" />
-                    <value content="0" />
                 </Property>
                 <Property type="BoolProperty" identifier="flipHorizontal" displayName="Flip Horizontal View" key="flipHorizontal">
                     <usageMode content="0" />
@@ -112,7 +111,7 @@
                 <Property type="OptionPropertyInt" identifier="sliceAxis" displayName="Slice along axis" key="sliceAxis">
                     <usageMode content="0" />
                     <visible content="1" />
-                    <selectedIdentifier content="y" />
+                    <selectedIdentifier content="z" />
                 </Property>
                 <Property type="IntProperty" identifier="sliceX" displayName="X Volume Position" key="sliceX">
                     <maxvalue content="128" />
@@ -125,13 +124,13 @@
                     <maxvalue content="128" />
                     <usageMode content="0" />
                     <visible content="1" />
+                    <readonly content="1" />
                     <value content="64" />
                 </Property>
                 <Property type="IntProperty" identifier="sliceZ" displayName="Z Volume Position" key="sliceZ">
                     <maxvalue content="128" />
                     <usageMode content="0" />
                     <visible content="1" />
-                    <readonly content="1" />
                     <value content="64" />
                 </Property>
                 <Property type="BoolProperty" identifier="tfMappingEnabled" displayName="Enable Transfer Function" key="tfMappingEnabled">
@@ -183,7 +182,7 @@
                     <selection content="0" />
                 </MetaData>
                 <MetaData type="ProcessorWidgetMetaData">
-                    <position x="2835" y="531" />
+                    <position x="2298" y="341" />
                     <dimension x="256" y="256" />
                     <visibility content="1" />
                 </MetaData>
@@ -229,7 +228,7 @@
     <Connections>
         <Connection>
             <OutPort identifier="image.outport">
-                <Processor type="VolumeSliceGL" identifier="VolumeSliceGL" reference="ref0" />
+                <Processor type="VolumeSliceGL" identifier="VolumeSliceGL" reference="ref1" />
             </OutPort>
             <InPort identifier="inport">
                 <Processor type="CanvasGL" identifier="CanvasGL" reference="ref2" />
@@ -237,10 +236,10 @@
         </Connection>
         <Connection>
             <OutPort identifier="data">
-                <Processor type="VolumeSource" identifier="VolumeSource" reference="ref1" />
+                <Processor type="VolumeSource" identifier="VolumeSource" reference="ref0" />
             </OutPort>
             <InPort identifier="volume.inport">
-                <Processor type="VolumeSliceGL" identifier="VolumeSliceGL" reference="ref0" />
+                <Processor type="VolumeSliceGL" identifier="VolumeSliceGL" reference="ref1" />
             </InPort>
         </Connection>
     </Connections>
