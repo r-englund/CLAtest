@@ -48,6 +48,8 @@
 
 namespace inviwo {
 
+class Mesh;
+
 class IVW_MODULE_BASEGL_API VolumeSliceGL : public ProcessorGL {
 public:
     VolumeSliceGL();
@@ -59,6 +61,10 @@ public:
     void deinitialize();
 
     void shiftSlice(int);
+    // updates the selected position, pos is given in normalized viewport coordinates, i.e. [0,1]
+    void setVolPosFromScreenPos(vec2 pos);
+
+    bool positionModeEnabled() const { return posPicking_.get(); }
 
 protected:
     void process();
@@ -71,6 +77,7 @@ protected:
         void invokeEvent(Event* event);
     private:
         MouseEvent wheelEvent_;
+        MouseEvent mousePressEvent_; // used for position selection
 
         KeyboardEvent upEvent_;
         KeyboardEvent downEvent_;
@@ -78,25 +85,64 @@ protected:
         VolumeSliceGL* slicer_;
     };
 
+    void sliceAxisChanged();
     void planeSettingsChanged();
     void tfMappingEnabledChanged();
     void updateMaxSliceNumber();
+    void posPickingChanged();
+
+    void renderPositionIndicator();
+    void updateIndicatorMesh();
+    void updateReadOnlyStates();
+
+    vec2 getScreenPosFromVolPos();
+
+    void invalidateMesh();
+    int getSliceNumber() const;
+    float getNormalizedSliceNumber() const;
+
+    // getAxisIndex() is used to decouple potential changes in CoordinateEnums from indexing
+    inline int getAxisIndex(int axis) const {
+        // axis should be of type CoordinateEnums::CartesianCoordinateAxis
+        switch (axis) {
+        case inviwo::CoordinateEnums::X:
+            return 0;
+        case inviwo::CoordinateEnums::Y:
+            return 1;
+        case inviwo::CoordinateEnums::Z:
+            return 2;
+        default:
+            return 0;
+        }
+    }
 
 private:
     VolumeInport inport_;
     ImageOutport outport_;
 
     OptionPropertyInt sliceAlongAxis_;  // Axis enum (Cannot serialize/deserialize enums so we use an int and cast it)
+    IntProperty sliceX_;
+    IntProperty sliceY_;
+    IntProperty sliceZ_;
+    IntProperty **slices_; // array to access the individual slices via index
     OptionPropertyFloat rotationAroundAxis_;  // Clockwise rotation around slice axis
-    
     BoolProperty flipHorizontal_;
     BoolProperty flipVertical_;
-    IntProperty sliceNumber_;
+
+    BoolProperty posPicking_;
+    BoolProperty showIndicator_;
+    FloatVec4Property indicatorColor_;
 
     BoolProperty tfMappingEnabled_;
     TransferFunctionProperty transferFunction_;
+    FloatProperty tfAlphaOffset_;
 
     Shader* shader_;
+    Shader *indicatorShader_;
+
+    Mesh *meshCrossHair_;
+    Mesh *meshBox_; // second mesh needed since Mesh does not support multiple connectivity types
+    bool meshDirty_;
 
     uvec3 volumeDimensions_;
 };
