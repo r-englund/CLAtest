@@ -2,7 +2,7 @@
 <InviwoTreeData version="1.0">
     <!-- Don't edit the following code -->
     <Processors>
-        <Processor type="VolumeSource" identifier="VolumeSource" id="ref15">
+        <Processor type="VolumeSource" identifier="VolumeSource" id="ref1">
             <MetaDataList>
                 <MetaData type="ProcessorMetaData">
                     <position x="-750" y="-850" />
@@ -64,7 +64,7 @@
                 </Property>
             </Properties>
         </Processor>
-        <Processor type="VolumeBlur" identifier="VolumeBlur" id="ref22">
+        <Processor type="VolumeBlur" identifier="VolumeBlur" id="ref0">
             <MetaDataList>
                 <MetaData type="ProcessorMetaData">
                     <position x="-525" y="-775" />
@@ -83,7 +83,7 @@
                 </Property>
             </Properties>
         </Processor>
-        <Processor type="VolumeSliceGL" identifier="VolumeSliceGL" id="ref8">
+        <Processor type="VolumeSliceGL" identifier="VolumeSliceGL" id="ref5">
             <MetaDataList>
                 <MetaData type="ProcessorMetaData">
                     <position x="-525" y="-525" />
@@ -95,67 +95,69 @@
                 <InteractionHandler type="undefined" />
             </InteractonHandlers>
             <Properties>
-                <Property type="FloatProperty" identifier="alphaOffset" displayName="Alpha Offset" key="alphaOffset">
+                <Property type="FloatProperty" identifier="alphaOffset" displayName="Alpha Offset" key="alphaOffset" id="ref18">
                     <usageMode content="0" />
                     <visible content="1" />
-                    <value content="0" />
+                    <value content="1" />
                 </Property>
                 <Property type="BoolProperty" identifier="flipHorizontal" displayName="Flip Horizontal View" key="flipHorizontal" id="ref11">
                     <usageMode content="0" />
                     <visible content="1" />
+                    <value content="1" />
                 </Property>
                 <Property type="BoolProperty" identifier="flipVertical" displayName="Flip Vertical View" key="flipVertical" id="ref12">
                     <usageMode content="0" />
                     <visible content="1" />
                 </Property>
-                <Property type="FloatVec4Property" identifier="indicatorColor" displayName="Indicator Color" key="indicatorColor">
+                <Property type="FloatVec4Property" identifier="indicatorColor" displayName="Indicator Color" key="indicatorColor" id="ref15">
                     <semantics semantics="Color" />
                     <usageMode content="0" />
                     <visible content="1" />
                     <value x="1" y="0.80000001" z="0.098039217" w="0.80000001" />
                 </Property>
-                <Property type="BoolProperty" identifier="posPicking" displayName="Enable Picking" key="posPicking">
+                <Property type="BoolProperty" identifier="posPicking" displayName="Enable Picking" key="posPicking" id="ref13">
                     <usageMode content="0" />
                     <visible content="1" />
                 </Property>
                 <Property type="OptionPropertyFloat" identifier="rotation" displayName="Rotation around axis (degrees)" key="rotation" id="ref10">
                     <usageMode content="0" />
                     <visible content="1" />
+                    <selectedIdentifier content="90" />
                 </Property>
-                <Property type="BoolProperty" identifier="showIndicator" displayName="Show Position Indicator" key="showIndicator">
+                <Property type="BoolProperty" identifier="showIndicator" displayName="Show Position Indicator" key="showIndicator" id="ref14">
                     <usageMode content="0" />
                     <visible content="1" />
                     <readonly content="1" />
                 </Property>
-                <Property type="OptionPropertyInt" identifier="sliceAxis" displayName="Slice along axis" key="sliceAxis" id="ref9">
+                <Property type="OptionPropertyInt" identifier="sliceAxis" displayName="Slice along axis" key="sliceAxis" id="ref6">
                     <usageMode content="0" />
                     <visible content="1" />
                 </Property>
-                <Property type="IntProperty" identifier="sliceX" displayName="X Volume Position" key="sliceX">
+                <Property type="IntProperty" identifier="sliceX" displayName="X Volume Position" key="sliceX" id="ref7">
                     <maxvalue content="150" />
                     <usageMode content="0" />
                     <visible content="1" />
-                    <value content="75" />
+                    <value content="98" />
                 </Property>
-                <Property type="IntProperty" identifier="sliceY" displayName="Y Volume Position" key="sliceY">
-                    <maxvalue content="150" />
-                    <usageMode content="0" />
-                    <visible content="1" />
-                    <readonly content="1" />
-                    <value content="75" />
-                </Property>
-                <Property type="IntProperty" identifier="sliceZ" displayName="Z Volume Position" key="sliceZ">
+                <Property type="IntProperty" identifier="sliceY" displayName="Y Volume Position" key="sliceY" id="ref8">
                     <maxvalue content="150" />
                     <usageMode content="0" />
                     <visible content="1" />
                     <readonly content="1" />
-                    <value content="75" />
+                    <value content="11" />
                 </Property>
-                <Property type="BoolProperty" identifier="tfMappingEnabled" displayName="Enable Transfer Function" key="tfMappingEnabled" id="ref13">
+                <Property type="IntProperty" identifier="sliceZ" displayName="Z Volume Position" key="sliceZ" id="ref9">
+                    <maxvalue content="150" />
+                    <usageMode content="0" />
+                    <visible content="1" />
+                    <readonly content="1" />
+                    <value content="10" />
+                </Property>
+                <Property type="BoolProperty" identifier="tfMappingEnabled" displayName="Enable Transfer Function" key="tfMappingEnabled" id="ref16">
                     <usageMode content="0" />
                     <visible content="1" />
                 </Property>
-                <Property type="TransferFunctionProperty" identifier="transferFunction" displayName="Transfer function" key="transferFunction" id="ref14">
+                <Property type="TransferFunctionProperty" identifier="transferFunction" displayName="Transfer function" key="transferFunction" id="ref17">
                     <usageMode content="0" />
                     <visible content="1" />
                     <MetaDataList>
@@ -212,7 +214,7 @@
                 </Property>
             </Properties>
         </Processor>
-        <Processor type="CanvasGL" identifier="Blurred" id="ref27">
+        <Processor type="CanvasGL" identifier="Blurred" id="ref2">
             <MetaDataList>
                 <MetaData type="ProcessorMetaData">
                     <position x="-525" y="-450" />
@@ -220,7 +222,7 @@
                     <selection content="0" />
                 </MetaData>
                 <MetaData type="ProcessorWidgetMetaData">
-                    <position x="1476" y="836" />
+                    <position x="1573" y="789" />
                     <dimension x="308" y="313" />
                     <visibility content="1" />
                 </MetaData>
@@ -235,7 +237,7 @@
                     <visible content="0" />
                     <readonly content="1" />
                 </Property>
-                <Property type="IntVec2Property" identifier="dimensions" displayName="Dimensions" key="dimensions" id="ref28">
+                <Property type="IntVec2Property" identifier="dimensions" displayName="Dimensions" key="dimensions" id="ref3">
                     <usageMode content="0" />
                     <visible content="1" />
                     <value x="308" y="313" />
@@ -263,79 +265,81 @@
                 </Property>
             </Properties>
         </Processor>
-        <Processor type="VolumeSliceGL" identifier="VolumeSliceGL2" id="ref0">
+        <Processor type="VolumeSliceGL" identifier="VolumeSliceGL2" id="ref19">
             <MetaDataList>
                 <MetaData type="ProcessorMetaData">
                     <position x="-750" y="-525" />
                     <visibility content="1" />
-                    <selection content="0" />
+                    <selection content="1" />
                 </MetaData>
             </MetaDataList>
             <InteractonHandlers>
                 <InteractionHandler type="undefined" />
             </InteractonHandlers>
             <Properties>
-                <Property type="FloatProperty" identifier="alphaOffset" displayName="Alpha Offset" key="alphaOffset">
+                <Property type="FloatProperty" identifier="alphaOffset" displayName="Alpha Offset" key="alphaOffset" id="ref32">
                     <usageMode content="0" />
                     <visible content="1" />
-                    <value content="0" />
+                    <value content="1" />
                 </Property>
-                <Property type="BoolProperty" identifier="flipHorizontal" displayName="Flip Horizontal View" key="flipHorizontal" id="ref3">
+                <Property type="BoolProperty" identifier="flipHorizontal" displayName="Flip Horizontal View" key="flipHorizontal" id="ref25">
+                    <usageMode content="0" />
+                    <visible content="1" />
+                    <value content="1" />
+                </Property>
+                <Property type="BoolProperty" identifier="flipVertical" displayName="Flip Vertical View" key="flipVertical" id="ref26">
                     <usageMode content="0" />
                     <visible content="1" />
                 </Property>
-                <Property type="BoolProperty" identifier="flipVertical" displayName="Flip Vertical View" key="flipVertical" id="ref4">
-                    <usageMode content="0" />
-                    <visible content="1" />
-                </Property>
-                <Property type="FloatVec4Property" identifier="indicatorColor" displayName="Indicator Color" key="indicatorColor">
+                <Property type="FloatVec4Property" identifier="indicatorColor" displayName="Indicator Color" key="indicatorColor" id="ref29">
                     <semantics semantics="Color" />
                     <usageMode content="0" />
                     <visible content="1" />
                     <value x="1" y="0.80000001" z="0.098039217" w="0.80000001" />
                 </Property>
-                <Property type="BoolProperty" identifier="posPicking" displayName="Enable Picking" key="posPicking">
+                <Property type="BoolProperty" identifier="posPicking" displayName="Enable Picking" key="posPicking" id="ref27">
                     <usageMode content="0" />
                     <visible content="1" />
                 </Property>
-                <Property type="OptionPropertyFloat" identifier="rotation" displayName="Rotation around axis (degrees)" key="rotation" id="ref2">
+                <Property type="OptionPropertyFloat" identifier="rotation" displayName="Rotation around axis (degrees)" key="rotation" id="ref24">
                     <usageMode content="0" />
                     <visible content="1" />
+                    <selectedIdentifier content="90" />
                 </Property>
-                <Property type="BoolProperty" identifier="showIndicator" displayName="Show Position Indicator" key="showIndicator">
-                    <usageMode content="0" />
-                    <visible content="1" />
-                    <readonly content="1" />
-                </Property>
-                <Property type="OptionPropertyInt" identifier="sliceAxis" displayName="Slice along axis" key="sliceAxis" id="ref1">
-                    <usageMode content="0" />
-                    <visible content="1" />
-                </Property>
-                <Property type="IntProperty" identifier="sliceX" displayName="X Volume Position" key="sliceX">
-                    <maxvalue content="150" />
-                    <usageMode content="0" />
-                    <visible content="1" />
-                    <value content="75" />
-                </Property>
-                <Property type="IntProperty" identifier="sliceY" displayName="Y Volume Position" key="sliceY">
-                    <maxvalue content="150" />
+                <Property type="BoolProperty" identifier="showIndicator" displayName="Show Position Indicator" key="showIndicator" id="ref28">
                     <usageMode content="0" />
                     <visible content="1" />
                     <readonly content="1" />
-                    <value content="75" />
                 </Property>
-                <Property type="IntProperty" identifier="sliceZ" displayName="Z Volume Position" key="sliceZ">
+                <Property type="OptionPropertyInt" identifier="sliceAxis" displayName="Slice along axis" key="sliceAxis" id="ref20">
+                    <usageMode content="0" />
+                    <visible content="1" />
+                </Property>
+                <Property type="IntProperty" identifier="sliceX" displayName="X Volume Position" key="sliceX" id="ref21">
+                    <maxvalue content="150" />
+                    <usageMode content="0" />
+                    <visible content="1" />
+                    <value content="98" />
+                </Property>
+                <Property type="IntProperty" identifier="sliceY" displayName="Y Volume Position" key="sliceY" id="ref22">
                     <maxvalue content="150" />
                     <usageMode content="0" />
                     <visible content="1" />
                     <readonly content="1" />
-                    <value content="75" />
+                    <value content="11" />
                 </Property>
-                <Property type="BoolProperty" identifier="tfMappingEnabled" displayName="Enable Transfer Function" key="tfMappingEnabled" id="ref5">
+                <Property type="IntProperty" identifier="sliceZ" displayName="Z Volume Position" key="sliceZ" id="ref23">
+                    <maxvalue content="150" />
+                    <usageMode content="0" />
+                    <visible content="1" />
+                    <readonly content="1" />
+                    <value content="10" />
+                </Property>
+                <Property type="BoolProperty" identifier="tfMappingEnabled" displayName="Enable Transfer Function" key="tfMappingEnabled" id="ref30">
                     <usageMode content="0" />
                     <visible content="1" />
                 </Property>
-                <Property type="TransferFunctionProperty" identifier="transferFunction" displayName="Transfer function" key="transferFunction" id="ref6">
+                <Property type="TransferFunctionProperty" identifier="transferFunction" displayName="Transfer function" key="transferFunction" id="ref31">
                     <usageMode content="0" />
                     <visible content="1" />
                     <MetaDataList>
@@ -392,7 +396,7 @@
                 </Property>
             </Properties>
         </Processor>
-        <Processor type="CanvasGL" identifier="CanvasGL" id="ref29">
+        <Processor type="CanvasGL" identifier="CanvasGL" id="ref33">
             <MetaDataList>
                 <MetaData type="ProcessorMetaData">
                     <position x="-750" y="-450" />
@@ -400,7 +404,7 @@
                     <selection content="0" />
                 </MetaData>
                 <MetaData type="ProcessorWidgetMetaData">
-                    <position x="1969" y="797" />
+                    <position x="1970" y="798" />
                     <dimension x="308" y="313" />
                     <visibility content="1" />
                 </MetaData>
@@ -415,7 +419,7 @@
                     <visible content="0" />
                     <readonly content="1" />
                 </Property>
-                <Property type="IntVec2Property" identifier="dimensions" displayName="Dimensions" key="dimensions" id="ref30">
+                <Property type="IntVec2Property" identifier="dimensions" displayName="Dimensions" key="dimensions" id="ref34">
                     <usageMode content="0" />
                     <visible content="1" />
                     <value x="308" y="313" />
@@ -443,7 +447,7 @@
                 </Property>
             </Properties>
         </Processor>
-        <Processor type="VolumeDiff" identifier="VolumeDiff" id="ref7">
+        <Processor type="VolumeDiff" identifier="VolumeDiff" id="ref4">
             <MetaDataList>
                 <MetaData type="ProcessorMetaData">
                     <position x="-350" y="-600" />
@@ -453,7 +457,7 @@
             </MetaDataList>
             <Properties />
         </Processor>
-        <Processor type="VolumeSliceGL" identifier="VolumeSliceGL3" id="ref33">
+        <Processor type="VolumeSliceGL" identifier="VolumeSliceGL3" id="ref37">
             <MetaDataList>
                 <MetaData type="ProcessorMetaData">
                     <position x="-350" y="-525" />
@@ -468,60 +472,62 @@
                 <Property type="FloatProperty" identifier="alphaOffset" displayName="Alpha Offset" key="alphaOffset">
                     <usageMode content="0" />
                     <visible content="1" />
-                    <value content="0" />
+                    <value content="0.77950001" />
                 </Property>
-                <Property type="BoolProperty" identifier="flipHorizontal" displayName="Flip Horizontal View" key="flipHorizontal" id="ref36">
+                <Property type="BoolProperty" identifier="flipHorizontal" displayName="Flip Horizontal View" key="flipHorizontal" id="ref43">
+                    <usageMode content="0" />
+                    <visible content="1" />
+                    <value content="1" />
+                </Property>
+                <Property type="BoolProperty" identifier="flipVertical" displayName="Flip Vertical View" key="flipVertical" id="ref44">
                     <usageMode content="0" />
                     <visible content="1" />
                 </Property>
-                <Property type="BoolProperty" identifier="flipVertical" displayName="Flip Vertical View" key="flipVertical" id="ref37">
-                    <usageMode content="0" />
-                    <visible content="1" />
-                </Property>
-                <Property type="FloatVec4Property" identifier="indicatorColor" displayName="Indicator Color" key="indicatorColor">
+                <Property type="FloatVec4Property" identifier="indicatorColor" displayName="Indicator Color" key="indicatorColor" id="ref47">
                     <semantics semantics="Color" />
                     <usageMode content="0" />
                     <visible content="1" />
                     <value x="1" y="0.80000001" z="0.098039217" w="0.80000001" />
                 </Property>
-                <Property type="BoolProperty" identifier="posPicking" displayName="Enable Picking" key="posPicking">
+                <Property type="BoolProperty" identifier="posPicking" displayName="Enable Picking" key="posPicking" id="ref45">
                     <usageMode content="0" />
                     <visible content="1" />
                 </Property>
-                <Property type="OptionPropertyFloat" identifier="rotation" displayName="Rotation around axis (degrees)" key="rotation" id="ref35">
+                <Property type="OptionPropertyFloat" identifier="rotation" displayName="Rotation around axis (degrees)" key="rotation" id="ref42">
                     <usageMode content="0" />
                     <visible content="1" />
+                    <selectedIdentifier content="90" />
                 </Property>
-                <Property type="BoolProperty" identifier="showIndicator" displayName="Show Position Indicator" key="showIndicator">
-                    <usageMode content="0" />
-                    <visible content="1" />
-                    <readonly content="1" />
-                </Property>
-                <Property type="OptionPropertyInt" identifier="sliceAxis" displayName="Slice along axis" key="sliceAxis" id="ref34">
-                    <usageMode content="0" />
-                    <visible content="1" />
-                </Property>
-                <Property type="IntProperty" identifier="sliceX" displayName="X Volume Position" key="sliceX">
-                    <maxvalue content="150" />
-                    <usageMode content="0" />
-                    <visible content="1" />
-                    <value content="75" />
-                </Property>
-                <Property type="IntProperty" identifier="sliceY" displayName="Y Volume Position" key="sliceY">
-                    <maxvalue content="150" />
+                <Property type="BoolProperty" identifier="showIndicator" displayName="Show Position Indicator" key="showIndicator" id="ref46">
                     <usageMode content="0" />
                     <visible content="1" />
                     <readonly content="1" />
-                    <value content="75" />
                 </Property>
-                <Property type="IntProperty" identifier="sliceZ" displayName="Z Volume Position" key="sliceZ">
+                <Property type="OptionPropertyInt" identifier="sliceAxis" displayName="Slice along axis" key="sliceAxis" id="ref38">
+                    <usageMode content="0" />
+                    <visible content="1" />
+                </Property>
+                <Property type="IntProperty" identifier="sliceX" displayName="X Volume Position" key="sliceX" id="ref39">
+                    <maxvalue content="150" />
+                    <usageMode content="0" />
+                    <visible content="1" />
+                    <value content="98" />
+                </Property>
+                <Property type="IntProperty" identifier="sliceY" displayName="Y Volume Position" key="sliceY" id="ref40">
                     <maxvalue content="150" />
                     <usageMode content="0" />
                     <visible content="1" />
                     <readonly content="1" />
-                    <value content="75" />
+                    <value content="11" />
                 </Property>
-                <Property type="BoolProperty" identifier="tfMappingEnabled" displayName="Enable Transfer Function" key="tfMappingEnabled" id="ref38">
+                <Property type="IntProperty" identifier="sliceZ" displayName="Z Volume Position" key="sliceZ" id="ref41">
+                    <maxvalue content="150" />
+                    <usageMode content="0" />
+                    <visible content="1" />
+                    <readonly content="1" />
+                    <value content="10" />
+                </Property>
+                <Property type="BoolProperty" identifier="tfMappingEnabled" displayName="Enable Transfer Function" key="tfMappingEnabled" id="ref48">
                     <usageMode content="0" />
                     <visible content="1" />
                 </Property>
@@ -554,7 +560,7 @@
                 </Property>
             </Properties>
         </Processor>
-        <Processor type="CanvasGL" identifier="CanvasGL2" id="ref25">
+        <Processor type="CanvasGL" identifier="CanvasGL2" id="ref49">
             <MetaDataList>
                 <MetaData type="ProcessorMetaData">
                     <position x="-350" y="-450" />
@@ -562,7 +568,7 @@
                     <selection content="0" />
                 </MetaData>
                 <MetaData type="ProcessorWidgetMetaData">
-                    <position x="1993" y="430" />
+                    <position x="1970" y="420" />
                     <dimension x="308" y="313" />
                     <visibility content="1" />
                 </MetaData>
@@ -577,7 +583,7 @@
                     <visible content="0" />
                     <readonly content="1" />
                 </Property>
-                <Property type="IntVec2Property" identifier="dimensions" displayName="Dimensions" key="dimensions" id="ref26">
+                <Property type="IntVec2Property" identifier="dimensions" displayName="Dimensions" key="dimensions" id="ref50">
                     <usageMode content="0" />
                     <visible content="1" />
                     <value x="308" y="313" />
@@ -605,7 +611,7 @@
                 </Property>
             </Properties>
         </Processor>
-        <Processor type="VolumeMapping" identifier="VolumeMapping" id="ref23">
+        <Processor type="VolumeMapping" identifier="VolumeMapping" id="ref35">
             <MetaDataList>
                 <MetaData type="ProcessorMetaData">
                     <position x="-925" y="-775" />
@@ -614,7 +620,7 @@
                 </MetaData>
             </MetaDataList>
             <Properties>
-                <Property type="TransferFunctionProperty" identifier="transferFunction" displayName="Transfer function" key="transferFunction" id="ref24">
+                <Property type="TransferFunctionProperty" identifier="transferFunction" displayName="Transfer function" key="transferFunction" id="ref36">
                     <usageMode content="0" />
                     <visible content="1" />
                     <MetaDataList>
@@ -671,7 +677,7 @@
                 </Property>
             </Properties>
         </Processor>
-        <Processor type="VolumeSliceGL" identifier="VolumeSliceGL4" id="ref16">
+        <Processor type="VolumeSliceGL" identifier="VolumeSliceGL4" id="ref51">
             <MetaDataList>
                 <MetaData type="ProcessorMetaData">
                     <position x="-925" y="-525" />
@@ -686,60 +692,62 @@
                 <Property type="FloatProperty" identifier="alphaOffset" displayName="Alpha Offset" key="alphaOffset">
                     <usageMode content="0" />
                     <visible content="1" />
-                    <value content="0" />
+                    <value content="0.77950001" />
                 </Property>
-                <Property type="BoolProperty" identifier="flipHorizontal" displayName="Flip Horizontal View" key="flipHorizontal" id="ref19">
+                <Property type="BoolProperty" identifier="flipHorizontal" displayName="Flip Horizontal View" key="flipHorizontal" id="ref57">
+                    <usageMode content="0" />
+                    <visible content="1" />
+                    <value content="1" />
+                </Property>
+                <Property type="BoolProperty" identifier="flipVertical" displayName="Flip Vertical View" key="flipVertical" id="ref58">
                     <usageMode content="0" />
                     <visible content="1" />
                 </Property>
-                <Property type="BoolProperty" identifier="flipVertical" displayName="Flip Vertical View" key="flipVertical" id="ref20">
-                    <usageMode content="0" />
-                    <visible content="1" />
-                </Property>
-                <Property type="FloatVec4Property" identifier="indicatorColor" displayName="Indicator Color" key="indicatorColor">
+                <Property type="FloatVec4Property" identifier="indicatorColor" displayName="Indicator Color" key="indicatorColor" id="ref61">
                     <semantics semantics="Color" />
                     <usageMode content="0" />
                     <visible content="1" />
                     <value x="1" y="0.80000001" z="0.098039217" w="0.80000001" />
                 </Property>
-                <Property type="BoolProperty" identifier="posPicking" displayName="Enable Picking" key="posPicking">
+                <Property type="BoolProperty" identifier="posPicking" displayName="Enable Picking" key="posPicking" id="ref59">
                     <usageMode content="0" />
                     <visible content="1" />
                 </Property>
-                <Property type="OptionPropertyFloat" identifier="rotation" displayName="Rotation around axis (degrees)" key="rotation" id="ref18">
+                <Property type="OptionPropertyFloat" identifier="rotation" displayName="Rotation around axis (degrees)" key="rotation" id="ref56">
                     <usageMode content="0" />
                     <visible content="1" />
+                    <selectedIdentifier content="90" />
                 </Property>
-                <Property type="BoolProperty" identifier="showIndicator" displayName="Show Position Indicator" key="showIndicator">
-                    <usageMode content="0" />
-                    <visible content="1" />
-                    <readonly content="1" />
-                </Property>
-                <Property type="OptionPropertyInt" identifier="sliceAxis" displayName="Slice along axis" key="sliceAxis" id="ref17">
-                    <usageMode content="0" />
-                    <visible content="1" />
-                </Property>
-                <Property type="IntProperty" identifier="sliceX" displayName="X Volume Position" key="sliceX">
-                    <maxvalue content="150" />
-                    <usageMode content="0" />
-                    <visible content="1" />
-                    <value content="75" />
-                </Property>
-                <Property type="IntProperty" identifier="sliceY" displayName="Y Volume Position" key="sliceY">
-                    <maxvalue content="150" />
+                <Property type="BoolProperty" identifier="showIndicator" displayName="Show Position Indicator" key="showIndicator" id="ref60">
                     <usageMode content="0" />
                     <visible content="1" />
                     <readonly content="1" />
-                    <value content="75" />
                 </Property>
-                <Property type="IntProperty" identifier="sliceZ" displayName="Z Volume Position" key="sliceZ">
+                <Property type="OptionPropertyInt" identifier="sliceAxis" displayName="Slice along axis" key="sliceAxis" id="ref52">
+                    <usageMode content="0" />
+                    <visible content="1" />
+                </Property>
+                <Property type="IntProperty" identifier="sliceX" displayName="X Volume Position" key="sliceX" id="ref53">
+                    <maxvalue content="150" />
+                    <usageMode content="0" />
+                    <visible content="1" />
+                    <value content="98" />
+                </Property>
+                <Property type="IntProperty" identifier="sliceY" displayName="Y Volume Position" key="sliceY" id="ref54">
                     <maxvalue content="150" />
                     <usageMode content="0" />
                     <visible content="1" />
                     <readonly content="1" />
-                    <value content="75" />
+                    <value content="11" />
                 </Property>
-                <Property type="BoolProperty" identifier="tfMappingEnabled" displayName="Enable Transfer Function" key="tfMappingEnabled" id="ref21">
+                <Property type="IntProperty" identifier="sliceZ" displayName="Z Volume Position" key="sliceZ" id="ref55">
+                    <maxvalue content="150" />
+                    <usageMode content="0" />
+                    <visible content="1" />
+                    <readonly content="1" />
+                    <value content="10" />
+                </Property>
+                <Property type="BoolProperty" identifier="tfMappingEnabled" displayName="Enable Transfer Function" key="tfMappingEnabled" id="ref62">
                     <usageMode content="0" />
                     <visible content="1" />
                 </Property>
@@ -748,7 +756,7 @@
                     <visible content="1" />
                     <MetaDataList>
                         <MetaData type="PropertyEditorWidgetMetaData">
-                            <position x="2337" y="755" />
+                            <position x="2866" y="685" />
                             <dimension x="534" y="368" />
                             <visibility content="1" />
                             <dockstatus content="Floating" />
@@ -775,13 +783,17 @@
                                 <pos x="0.16867469" y="0.8598485" />
                                 <rgba x="0.99215686" y="0.58199435" z="0.0077821012" w="0.8598485" />
                             </point>
+                            <point>
+                                <pos x="0.5582329" y="0.056818184" />
+                                <rgba x="0.49411765" y="0.29019609" z="0" w="0.056818184" />
+                            </point>
                         </dataPoints>
                         <interpolationType_ content="0" />
                     </transferFunction>
                 </Property>
             </Properties>
         </Processor>
-        <Processor type="CanvasGL" identifier="image.outport" id="ref31">
+        <Processor type="CanvasGL" identifier="image.outport" id="ref63">
             <MetaDataList>
                 <MetaData type="ProcessorMetaData">
                     <position x="-925" y="-450" />
@@ -789,7 +801,7 @@
                     <selection content="0" />
                 </MetaData>
                 <MetaData type="ProcessorWidgetMetaData">
-                    <position x="1469" y="416" />
+                    <position x="1562" y="429" />
                     <dimension x="308" y="313" />
                     <visibility content="1" />
                 </MetaData>
@@ -804,7 +816,7 @@
                     <visible content="0" />
                     <readonly content="1" />
                 </Property>
-                <Property type="IntVec2Property" identifier="dimensions" displayName="Dimensions" key="dimensions" id="ref32">
+                <Property type="IntVec2Property" identifier="dimensions" displayName="Dimensions" key="dimensions" id="ref64">
                     <usageMode content="0" />
                     <visible content="1" />
                     <value x="308" y="313" />
@@ -836,340 +848,568 @@
     <Connections>
         <Connection>
             <OutPort identifier="data">
-                <Processor type="VolumeSource" identifier="VolumeSource" reference="ref15" />
+                <Processor type="VolumeSource" identifier="VolumeSource" reference="ref1" />
             </OutPort>
             <InPort identifier="volume_blur.fraginport">
-                <Processor type="VolumeBlur" identifier="VolumeBlur" reference="ref22" />
+                <Processor type="VolumeBlur" identifier="VolumeBlur" reference="ref0" />
             </InPort>
         </Connection>
         <Connection>
             <OutPort identifier="image.outport">
-                <Processor type="VolumeSliceGL" identifier="VolumeSliceGL" reference="ref8" />
+                <Processor type="VolumeSliceGL" identifier="VolumeSliceGL" reference="ref5" />
             </OutPort>
             <InPort identifier="inport">
-                <Processor type="CanvasGL" identifier="Blurred" reference="ref27" />
+                <Processor type="CanvasGL" identifier="Blurred" reference="ref2" />
             </InPort>
         </Connection>
         <Connection>
             <OutPort identifier="volume_blur.fragoutport">
-                <Processor type="VolumeBlur" identifier="VolumeBlur" reference="ref22" />
+                <Processor type="VolumeBlur" identifier="VolumeBlur" reference="ref0" />
             </OutPort>
             <InPort identifier="volume.inport">
-                <Processor type="VolumeSliceGL" identifier="VolumeSliceGL" reference="ref8" />
+                <Processor type="VolumeSliceGL" identifier="VolumeSliceGL" reference="ref5" />
             </InPort>
         </Connection>
         <Connection>
             <OutPort identifier="data">
-                <Processor type="VolumeSource" identifier="VolumeSource" reference="ref15" />
+                <Processor type="VolumeSource" identifier="VolumeSource" reference="ref1" />
             </OutPort>
             <InPort identifier="volume.inport">
-                <Processor type="VolumeSliceGL" identifier="VolumeSliceGL2" reference="ref0" />
+                <Processor type="VolumeSliceGL" identifier="VolumeSliceGL2" reference="ref19" />
             </InPort>
         </Connection>
         <Connection>
             <OutPort identifier="image.outport">
-                <Processor type="VolumeSliceGL" identifier="VolumeSliceGL2" reference="ref0" />
+                <Processor type="VolumeSliceGL" identifier="VolumeSliceGL2" reference="ref19" />
             </OutPort>
             <InPort identifier="inport">
-                <Processor type="CanvasGL" identifier="CanvasGL" reference="ref29" />
+                <Processor type="CanvasGL" identifier="CanvasGL" reference="ref33" />
             </InPort>
         </Connection>
         <Connection>
             <OutPort identifier="data">
-                <Processor type="VolumeSource" identifier="VolumeSource" reference="ref15" />
+                <Processor type="VolumeSource" identifier="VolumeSource" reference="ref1" />
             </OutPort>
             <InPort identifier="volume_difference.fraginport">
-                <Processor type="VolumeDiff" identifier="VolumeDiff" reference="ref7" />
+                <Processor type="VolumeDiff" identifier="VolumeDiff" reference="ref4" />
             </InPort>
         </Connection>
         <Connection>
             <OutPort identifier="volume_blur.fragoutport">
-                <Processor type="VolumeBlur" identifier="VolumeBlur" reference="ref22" />
+                <Processor type="VolumeBlur" identifier="VolumeBlur" reference="ref0" />
             </OutPort>
             <InPort identifier="vol2">
-                <Processor type="VolumeDiff" identifier="VolumeDiff" reference="ref7" />
+                <Processor type="VolumeDiff" identifier="VolumeDiff" reference="ref4" />
             </InPort>
         </Connection>
         <Connection>
             <OutPort identifier="volume_difference.fragoutport">
-                <Processor type="VolumeDiff" identifier="VolumeDiff" reference="ref7" />
+                <Processor type="VolumeDiff" identifier="VolumeDiff" reference="ref4" />
             </OutPort>
             <InPort identifier="volume.inport">
-                <Processor type="VolumeSliceGL" identifier="VolumeSliceGL3" reference="ref33" />
+                <Processor type="VolumeSliceGL" identifier="VolumeSliceGL3" reference="ref37" />
             </InPort>
         </Connection>
         <Connection>
             <OutPort identifier="image.outport">
-                <Processor type="VolumeSliceGL" identifier="VolumeSliceGL3" reference="ref33" />
+                <Processor type="VolumeSliceGL" identifier="VolumeSliceGL3" reference="ref37" />
             </OutPort>
             <InPort identifier="inport">
-                <Processor type="CanvasGL" identifier="CanvasGL2" reference="ref25" />
+                <Processor type="CanvasGL" identifier="CanvasGL2" reference="ref49" />
             </InPort>
         </Connection>
         <Connection>
             <OutPort identifier="data">
-                <Processor type="VolumeSource" identifier="VolumeSource" reference="ref15" />
+                <Processor type="VolumeSource" identifier="VolumeSource" reference="ref1" />
             </OutPort>
             <InPort identifier="volume_mapping.fraginport">
-                <Processor type="VolumeMapping" identifier="VolumeMapping" reference="ref23" />
+                <Processor type="VolumeMapping" identifier="VolumeMapping" reference="ref35" />
             </InPort>
         </Connection>
         <Connection>
             <OutPort identifier="volume_mapping.fragoutport">
-                <Processor type="VolumeMapping" identifier="VolumeMapping" reference="ref23" />
+                <Processor type="VolumeMapping" identifier="VolumeMapping" reference="ref35" />
             </OutPort>
             <InPort identifier="volume.inport">
-                <Processor type="VolumeSliceGL" identifier="VolumeSliceGL4" reference="ref16" />
+                <Processor type="VolumeSliceGL" identifier="VolumeSliceGL4" reference="ref51" />
             </InPort>
         </Connection>
         <Connection>
             <OutPort identifier="image.outport">
-                <Processor type="VolumeSliceGL" identifier="VolumeSliceGL4" reference="ref16" />
+                <Processor type="VolumeSliceGL" identifier="VolumeSliceGL4" reference="ref51" />
             </OutPort>
             <InPort identifier="inport">
-                <Processor type="CanvasGL" identifier="image.outport" reference="ref31" />
+                <Processor type="CanvasGL" identifier="image.outport" reference="ref63" />
             </InPort>
         </Connection>
     </Connections>
     <PropertyLinks>
         <PropertyLink>
             <Properties>
-                <Property type="IntVec2Property" identifier="dimensions" displayName="Dimensions" key="dimensions" reference="ref30" />
-                <Property type="IntVec2Property" identifier="dimensions" displayName="Dimensions" key="dimensions" reference="ref28" />
+                <Property type="IntVec2Property" identifier="dimensions" displayName="Dimensions" key="dimensions" reference="ref34" />
+                <Property type="IntVec2Property" identifier="dimensions" displayName="Dimensions" key="dimensions" reference="ref3" />
             </Properties>
         </PropertyLink>
         <PropertyLink>
             <Properties>
-                <Property type="IntVec2Property" identifier="dimensions" displayName="Dimensions" key="dimensions" reference="ref28" />
-                <Property type="IntVec2Property" identifier="dimensions" displayName="Dimensions" key="dimensions" reference="ref30" />
+                <Property type="IntVec2Property" identifier="dimensions" displayName="Dimensions" key="dimensions" reference="ref3" />
+                <Property type="IntVec2Property" identifier="dimensions" displayName="Dimensions" key="dimensions" reference="ref34" />
             </Properties>
         </PropertyLink>
         <PropertyLink>
             <Properties>
-                <Property type="OptionPropertyInt" identifier="sliceAxis" displayName="Slice along axis" key="sliceAxis" reference="ref9" />
-                <Property type="OptionPropertyInt" identifier="sliceAxis" displayName="Slice along axis" key="sliceAxis" reference="ref1" />
+                <Property type="OptionPropertyInt" identifier="sliceAxis" displayName="Slice along axis" key="sliceAxis" reference="ref6" />
+                <Property type="OptionPropertyInt" identifier="sliceAxis" displayName="Slice along axis" key="sliceAxis" reference="ref20" />
             </Properties>
         </PropertyLink>
         <PropertyLink>
             <Properties>
-                <Property type="OptionPropertyInt" identifier="sliceAxis" displayName="Slice along axis" key="sliceAxis" reference="ref1" />
-                <Property type="OptionPropertyInt" identifier="sliceAxis" displayName="Slice along axis" key="sliceAxis" reference="ref9" />
-            </Properties>
-        </PropertyLink>
-        <PropertyLink>
-            <Properties>
-                <Property type="OptionPropertyFloat" identifier="rotation" displayName="Rotation around axis (degrees)" key="rotation" reference="ref10" />
-                <Property type="OptionPropertyFloat" identifier="rotation" displayName="Rotation around axis (degrees)" key="rotation" reference="ref2" />
-            </Properties>
-        </PropertyLink>
-        <PropertyLink>
-            <Properties>
-                <Property type="OptionPropertyFloat" identifier="rotation" displayName="Rotation around axis (degrees)" key="rotation" reference="ref2" />
-                <Property type="OptionPropertyFloat" identifier="rotation" displayName="Rotation around axis (degrees)" key="rotation" reference="ref10" />
-            </Properties>
-        </PropertyLink>
-        <PropertyLink>
-            <Properties>
-                <Property type="BoolProperty" identifier="flipHorizontal" displayName="Flip Horizontal View" key="flipHorizontal" reference="ref11" />
-                <Property type="BoolProperty" identifier="flipHorizontal" displayName="Flip Horizontal View" key="flipHorizontal" reference="ref3" />
-            </Properties>
-        </PropertyLink>
-        <PropertyLink>
-            <Properties>
-                <Property type="BoolProperty" identifier="flipHorizontal" displayName="Flip Horizontal View" key="flipHorizontal" reference="ref3" />
-                <Property type="BoolProperty" identifier="flipHorizontal" displayName="Flip Horizontal View" key="flipHorizontal" reference="ref11" />
-            </Properties>
-        </PropertyLink>
-        <PropertyLink>
-            <Properties>
-                <Property type="BoolProperty" identifier="flipVertical" displayName="Flip Vertical View" key="flipVertical" reference="ref12" />
-                <Property type="BoolProperty" identifier="flipVertical" displayName="Flip Vertical View" key="flipVertical" reference="ref4" />
-            </Properties>
-        </PropertyLink>
-        <PropertyLink>
-            <Properties>
-                <Property type="BoolProperty" identifier="flipVertical" displayName="Flip Vertical View" key="flipVertical" reference="ref4" />
-                <Property type="BoolProperty" identifier="flipVertical" displayName="Flip Vertical View" key="flipVertical" reference="ref12" />
-            </Properties>
-        </PropertyLink>
-        <PropertyLink>
-            <Properties>
-                <Property type="BoolProperty" identifier="tfMappingEnabled" displayName="Enable Transfer Function" key="tfMappingEnabled" reference="ref13" />
-                <Property type="BoolProperty" identifier="tfMappingEnabled" displayName="Enable Transfer Function" key="tfMappingEnabled" reference="ref5" />
-            </Properties>
-        </PropertyLink>
-        <PropertyLink>
-            <Properties>
-                <Property type="BoolProperty" identifier="tfMappingEnabled" displayName="Enable Transfer Function" key="tfMappingEnabled" reference="ref5" />
-                <Property type="BoolProperty" identifier="tfMappingEnabled" displayName="Enable Transfer Function" key="tfMappingEnabled" reference="ref13" />
-            </Properties>
-        </PropertyLink>
-        <PropertyLink>
-            <Properties>
-                <Property type="TransferFunctionProperty" identifier="transferFunction" displayName="Transfer function" key="transferFunction" reference="ref14" />
-                <Property type="TransferFunctionProperty" identifier="transferFunction" displayName="Transfer function" key="transferFunction" reference="ref6" />
-            </Properties>
-        </PropertyLink>
-        <PropertyLink>
-            <Properties>
-                <Property type="TransferFunctionProperty" identifier="transferFunction" displayName="Transfer function" key="transferFunction" reference="ref6" />
-                <Property type="TransferFunctionProperty" identifier="transferFunction" displayName="Transfer function" key="transferFunction" reference="ref14" />
-            </Properties>
-        </PropertyLink>
-        <PropertyLink>
-            <Properties>
-                <Property type="OptionPropertyInt" identifier="sliceAxis" displayName="Slice along axis" key="sliceAxis" reference="ref9" />
-                <Property type="OptionPropertyInt" identifier="sliceAxis" displayName="Slice along axis" key="sliceAxis" reference="ref34" />
-            </Properties>
-        </PropertyLink>
-        <PropertyLink>
-            <Properties>
-                <Property type="OptionPropertyInt" identifier="sliceAxis" displayName="Slice along axis" key="sliceAxis" reference="ref34" />
-                <Property type="OptionPropertyInt" identifier="sliceAxis" displayName="Slice along axis" key="sliceAxis" reference="ref9" />
+                <Property type="OptionPropertyInt" identifier="sliceAxis" displayName="Slice along axis" key="sliceAxis" reference="ref20" />
+                <Property type="OptionPropertyInt" identifier="sliceAxis" displayName="Slice along axis" key="sliceAxis" reference="ref6" />
             </Properties>
         </PropertyLink>
         <PropertyLink>
             <Properties>
                 <Property type="OptionPropertyFloat" identifier="rotation" displayName="Rotation around axis (degrees)" key="rotation" reference="ref10" />
-                <Property type="OptionPropertyFloat" identifier="rotation" displayName="Rotation around axis (degrees)" key="rotation" reference="ref35" />
+                <Property type="OptionPropertyFloat" identifier="rotation" displayName="Rotation around axis (degrees)" key="rotation" reference="ref24" />
             </Properties>
         </PropertyLink>
         <PropertyLink>
             <Properties>
-                <Property type="OptionPropertyFloat" identifier="rotation" displayName="Rotation around axis (degrees)" key="rotation" reference="ref35" />
+                <Property type="OptionPropertyFloat" identifier="rotation" displayName="Rotation around axis (degrees)" key="rotation" reference="ref24" />
                 <Property type="OptionPropertyFloat" identifier="rotation" displayName="Rotation around axis (degrees)" key="rotation" reference="ref10" />
             </Properties>
         </PropertyLink>
         <PropertyLink>
             <Properties>
                 <Property type="BoolProperty" identifier="flipHorizontal" displayName="Flip Horizontal View" key="flipHorizontal" reference="ref11" />
-                <Property type="BoolProperty" identifier="flipHorizontal" displayName="Flip Horizontal View" key="flipHorizontal" reference="ref36" />
+                <Property type="BoolProperty" identifier="flipHorizontal" displayName="Flip Horizontal View" key="flipHorizontal" reference="ref25" />
             </Properties>
         </PropertyLink>
         <PropertyLink>
             <Properties>
-                <Property type="BoolProperty" identifier="flipHorizontal" displayName="Flip Horizontal View" key="flipHorizontal" reference="ref36" />
+                <Property type="BoolProperty" identifier="flipHorizontal" displayName="Flip Horizontal View" key="flipHorizontal" reference="ref25" />
                 <Property type="BoolProperty" identifier="flipHorizontal" displayName="Flip Horizontal View" key="flipHorizontal" reference="ref11" />
             </Properties>
         </PropertyLink>
         <PropertyLink>
             <Properties>
                 <Property type="BoolProperty" identifier="flipVertical" displayName="Flip Vertical View" key="flipVertical" reference="ref12" />
-                <Property type="BoolProperty" identifier="flipVertical" displayName="Flip Vertical View" key="flipVertical" reference="ref37" />
+                <Property type="BoolProperty" identifier="flipVertical" displayName="Flip Vertical View" key="flipVertical" reference="ref26" />
             </Properties>
         </PropertyLink>
         <PropertyLink>
             <Properties>
-                <Property type="BoolProperty" identifier="flipVertical" displayName="Flip Vertical View" key="flipVertical" reference="ref37" />
+                <Property type="BoolProperty" identifier="flipVertical" displayName="Flip Vertical View" key="flipVertical" reference="ref26" />
                 <Property type="BoolProperty" identifier="flipVertical" displayName="Flip Vertical View" key="flipVertical" reference="ref12" />
             </Properties>
         </PropertyLink>
         <PropertyLink>
             <Properties>
-                <Property type="BoolProperty" identifier="tfMappingEnabled" displayName="Enable Transfer Function" key="tfMappingEnabled" reference="ref13" />
-                <Property type="BoolProperty" identifier="tfMappingEnabled" displayName="Enable Transfer Function" key="tfMappingEnabled" reference="ref38" />
+                <Property type="BoolProperty" identifier="tfMappingEnabled" displayName="Enable Transfer Function" key="tfMappingEnabled" reference="ref16" />
+                <Property type="BoolProperty" identifier="tfMappingEnabled" displayName="Enable Transfer Function" key="tfMappingEnabled" reference="ref30" />
             </Properties>
         </PropertyLink>
         <PropertyLink>
             <Properties>
-                <Property type="BoolProperty" identifier="tfMappingEnabled" displayName="Enable Transfer Function" key="tfMappingEnabled" reference="ref38" />
-                <Property type="BoolProperty" identifier="tfMappingEnabled" displayName="Enable Transfer Function" key="tfMappingEnabled" reference="ref13" />
+                <Property type="BoolProperty" identifier="tfMappingEnabled" displayName="Enable Transfer Function" key="tfMappingEnabled" reference="ref30" />
+                <Property type="BoolProperty" identifier="tfMappingEnabled" displayName="Enable Transfer Function" key="tfMappingEnabled" reference="ref16" />
             </Properties>
         </PropertyLink>
         <PropertyLink>
             <Properties>
-                <Property type="TransferFunctionProperty" identifier="transferFunction" displayName="Transfer function" key="transferFunction" reference="ref6" />
-                <Property type="TransferFunctionProperty" identifier="transferFunction" displayName="Transfer function" key="transferFunction" reference="ref24" />
+                <Property type="TransferFunctionProperty" identifier="transferFunction" displayName="Transfer function" key="transferFunction" reference="ref17" />
+                <Property type="TransferFunctionProperty" identifier="transferFunction" displayName="Transfer function" key="transferFunction" reference="ref31" />
             </Properties>
         </PropertyLink>
         <PropertyLink>
             <Properties>
-                <Property type="TransferFunctionProperty" identifier="transferFunction" displayName="Transfer function" key="transferFunction" reference="ref24" />
-                <Property type="TransferFunctionProperty" identifier="transferFunction" displayName="Transfer function" key="transferFunction" reference="ref6" />
+                <Property type="TransferFunctionProperty" identifier="transferFunction" displayName="Transfer function" key="transferFunction" reference="ref31" />
+                <Property type="TransferFunctionProperty" identifier="transferFunction" displayName="Transfer function" key="transferFunction" reference="ref17" />
             </Properties>
         </PropertyLink>
         <PropertyLink>
             <Properties>
-                <Property type="OptionPropertyInt" identifier="sliceAxis" displayName="Slice along axis" key="sliceAxis" reference="ref1" />
-                <Property type="OptionPropertyInt" identifier="sliceAxis" displayName="Slice along axis" key="sliceAxis" reference="ref17" />
+                <Property type="OptionPropertyInt" identifier="sliceAxis" displayName="Slice along axis" key="sliceAxis" reference="ref6" />
+                <Property type="OptionPropertyInt" identifier="sliceAxis" displayName="Slice along axis" key="sliceAxis" reference="ref38" />
             </Properties>
         </PropertyLink>
         <PropertyLink>
             <Properties>
-                <Property type="OptionPropertyInt" identifier="sliceAxis" displayName="Slice along axis" key="sliceAxis" reference="ref17" />
-                <Property type="OptionPropertyInt" identifier="sliceAxis" displayName="Slice along axis" key="sliceAxis" reference="ref1" />
+                <Property type="OptionPropertyInt" identifier="sliceAxis" displayName="Slice along axis" key="sliceAxis" reference="ref38" />
+                <Property type="OptionPropertyInt" identifier="sliceAxis" displayName="Slice along axis" key="sliceAxis" reference="ref6" />
             </Properties>
         </PropertyLink>
         <PropertyLink>
             <Properties>
-                <Property type="OptionPropertyFloat" identifier="rotation" displayName="Rotation around axis (degrees)" key="rotation" reference="ref2" />
-                <Property type="OptionPropertyFloat" identifier="rotation" displayName="Rotation around axis (degrees)" key="rotation" reference="ref18" />
+                <Property type="OptionPropertyFloat" identifier="rotation" displayName="Rotation around axis (degrees)" key="rotation" reference="ref10" />
+                <Property type="OptionPropertyFloat" identifier="rotation" displayName="Rotation around axis (degrees)" key="rotation" reference="ref42" />
             </Properties>
         </PropertyLink>
         <PropertyLink>
             <Properties>
-                <Property type="OptionPropertyFloat" identifier="rotation" displayName="Rotation around axis (degrees)" key="rotation" reference="ref18" />
-                <Property type="OptionPropertyFloat" identifier="rotation" displayName="Rotation around axis (degrees)" key="rotation" reference="ref2" />
+                <Property type="OptionPropertyFloat" identifier="rotation" displayName="Rotation around axis (degrees)" key="rotation" reference="ref42" />
+                <Property type="OptionPropertyFloat" identifier="rotation" displayName="Rotation around axis (degrees)" key="rotation" reference="ref10" />
             </Properties>
         </PropertyLink>
         <PropertyLink>
             <Properties>
-                <Property type="BoolProperty" identifier="flipHorizontal" displayName="Flip Horizontal View" key="flipHorizontal" reference="ref3" />
-                <Property type="BoolProperty" identifier="flipHorizontal" displayName="Flip Horizontal View" key="flipHorizontal" reference="ref19" />
+                <Property type="BoolProperty" identifier="flipHorizontal" displayName="Flip Horizontal View" key="flipHorizontal" reference="ref11" />
+                <Property type="BoolProperty" identifier="flipHorizontal" displayName="Flip Horizontal View" key="flipHorizontal" reference="ref43" />
             </Properties>
         </PropertyLink>
         <PropertyLink>
             <Properties>
-                <Property type="BoolProperty" identifier="flipHorizontal" displayName="Flip Horizontal View" key="flipHorizontal" reference="ref19" />
-                <Property type="BoolProperty" identifier="flipHorizontal" displayName="Flip Horizontal View" key="flipHorizontal" reference="ref3" />
+                <Property type="BoolProperty" identifier="flipHorizontal" displayName="Flip Horizontal View" key="flipHorizontal" reference="ref43" />
+                <Property type="BoolProperty" identifier="flipHorizontal" displayName="Flip Horizontal View" key="flipHorizontal" reference="ref11" />
             </Properties>
         </PropertyLink>
         <PropertyLink>
             <Properties>
-                <Property type="BoolProperty" identifier="flipVertical" displayName="Flip Vertical View" key="flipVertical" reference="ref4" />
-                <Property type="BoolProperty" identifier="flipVertical" displayName="Flip Vertical View" key="flipVertical" reference="ref20" />
+                <Property type="BoolProperty" identifier="flipVertical" displayName="Flip Vertical View" key="flipVertical" reference="ref12" />
+                <Property type="BoolProperty" identifier="flipVertical" displayName="Flip Vertical View" key="flipVertical" reference="ref44" />
             </Properties>
         </PropertyLink>
         <PropertyLink>
             <Properties>
-                <Property type="BoolProperty" identifier="flipVertical" displayName="Flip Vertical View" key="flipVertical" reference="ref20" />
-                <Property type="BoolProperty" identifier="flipVertical" displayName="Flip Vertical View" key="flipVertical" reference="ref4" />
+                <Property type="BoolProperty" identifier="flipVertical" displayName="Flip Vertical View" key="flipVertical" reference="ref44" />
+                <Property type="BoolProperty" identifier="flipVertical" displayName="Flip Vertical View" key="flipVertical" reference="ref12" />
             </Properties>
         </PropertyLink>
         <PropertyLink>
             <Properties>
-                <Property type="BoolProperty" identifier="tfMappingEnabled" displayName="Enable Transfer Function" key="tfMappingEnabled" reference="ref5" />
-                <Property type="BoolProperty" identifier="tfMappingEnabled" displayName="Enable Transfer Function" key="tfMappingEnabled" reference="ref21" />
+                <Property type="BoolProperty" identifier="tfMappingEnabled" displayName="Enable Transfer Function" key="tfMappingEnabled" reference="ref16" />
+                <Property type="BoolProperty" identifier="tfMappingEnabled" displayName="Enable Transfer Function" key="tfMappingEnabled" reference="ref48" />
             </Properties>
         </PropertyLink>
         <PropertyLink>
             <Properties>
-                <Property type="BoolProperty" identifier="tfMappingEnabled" displayName="Enable Transfer Function" key="tfMappingEnabled" reference="ref21" />
-                <Property type="BoolProperty" identifier="tfMappingEnabled" displayName="Enable Transfer Function" key="tfMappingEnabled" reference="ref5" />
+                <Property type="BoolProperty" identifier="tfMappingEnabled" displayName="Enable Transfer Function" key="tfMappingEnabled" reference="ref48" />
+                <Property type="BoolProperty" identifier="tfMappingEnabled" displayName="Enable Transfer Function" key="tfMappingEnabled" reference="ref16" />
             </Properties>
         </PropertyLink>
         <PropertyLink>
             <Properties>
-                <Property type="IntVec2Property" identifier="dimensions" displayName="Dimensions" key="dimensions" reference="ref28" />
-                <Property type="IntVec2Property" identifier="dimensions" displayName="Dimensions" key="dimensions" reference="ref26" />
+                <Property type="TransferFunctionProperty" identifier="transferFunction" displayName="Transfer function" key="transferFunction" reference="ref31" />
+                <Property type="TransferFunctionProperty" identifier="transferFunction" displayName="Transfer function" key="transferFunction" reference="ref36" />
             </Properties>
         </PropertyLink>
         <PropertyLink>
             <Properties>
-                <Property type="IntVec2Property" identifier="dimensions" displayName="Dimensions" key="dimensions" reference="ref26" />
-                <Property type="IntVec2Property" identifier="dimensions" displayName="Dimensions" key="dimensions" reference="ref28" />
+                <Property type="TransferFunctionProperty" identifier="transferFunction" displayName="Transfer function" key="transferFunction" reference="ref36" />
+                <Property type="TransferFunctionProperty" identifier="transferFunction" displayName="Transfer function" key="transferFunction" reference="ref31" />
             </Properties>
         </PropertyLink>
         <PropertyLink>
             <Properties>
-                <Property type="IntVec2Property" identifier="dimensions" displayName="Dimensions" key="dimensions" reference="ref30" />
-                <Property type="IntVec2Property" identifier="dimensions" displayName="Dimensions" key="dimensions" reference="ref32" />
+                <Property type="OptionPropertyInt" identifier="sliceAxis" displayName="Slice along axis" key="sliceAxis" reference="ref20" />
+                <Property type="OptionPropertyInt" identifier="sliceAxis" displayName="Slice along axis" key="sliceAxis" reference="ref52" />
             </Properties>
         </PropertyLink>
         <PropertyLink>
             <Properties>
-                <Property type="IntVec2Property" identifier="dimensions" displayName="Dimensions" key="dimensions" reference="ref32" />
-                <Property type="IntVec2Property" identifier="dimensions" displayName="Dimensions" key="dimensions" reference="ref30" />
+                <Property type="OptionPropertyInt" identifier="sliceAxis" displayName="Slice along axis" key="sliceAxis" reference="ref52" />
+                <Property type="OptionPropertyInt" identifier="sliceAxis" displayName="Slice along axis" key="sliceAxis" reference="ref20" />
+            </Properties>
+        </PropertyLink>
+        <PropertyLink>
+            <Properties>
+                <Property type="OptionPropertyFloat" identifier="rotation" displayName="Rotation around axis (degrees)" key="rotation" reference="ref24" />
+                <Property type="OptionPropertyFloat" identifier="rotation" displayName="Rotation around axis (degrees)" key="rotation" reference="ref56" />
+            </Properties>
+        </PropertyLink>
+        <PropertyLink>
+            <Properties>
+                <Property type="OptionPropertyFloat" identifier="rotation" displayName="Rotation around axis (degrees)" key="rotation" reference="ref56" />
+                <Property type="OptionPropertyFloat" identifier="rotation" displayName="Rotation around axis (degrees)" key="rotation" reference="ref24" />
+            </Properties>
+        </PropertyLink>
+        <PropertyLink>
+            <Properties>
+                <Property type="BoolProperty" identifier="flipHorizontal" displayName="Flip Horizontal View" key="flipHorizontal" reference="ref25" />
+                <Property type="BoolProperty" identifier="flipHorizontal" displayName="Flip Horizontal View" key="flipHorizontal" reference="ref57" />
+            </Properties>
+        </PropertyLink>
+        <PropertyLink>
+            <Properties>
+                <Property type="BoolProperty" identifier="flipHorizontal" displayName="Flip Horizontal View" key="flipHorizontal" reference="ref57" />
+                <Property type="BoolProperty" identifier="flipHorizontal" displayName="Flip Horizontal View" key="flipHorizontal" reference="ref25" />
+            </Properties>
+        </PropertyLink>
+        <PropertyLink>
+            <Properties>
+                <Property type="BoolProperty" identifier="flipVertical" displayName="Flip Vertical View" key="flipVertical" reference="ref26" />
+                <Property type="BoolProperty" identifier="flipVertical" displayName="Flip Vertical View" key="flipVertical" reference="ref58" />
+            </Properties>
+        </PropertyLink>
+        <PropertyLink>
+            <Properties>
+                <Property type="BoolProperty" identifier="flipVertical" displayName="Flip Vertical View" key="flipVertical" reference="ref58" />
+                <Property type="BoolProperty" identifier="flipVertical" displayName="Flip Vertical View" key="flipVertical" reference="ref26" />
+            </Properties>
+        </PropertyLink>
+        <PropertyLink>
+            <Properties>
+                <Property type="BoolProperty" identifier="tfMappingEnabled" displayName="Enable Transfer Function" key="tfMappingEnabled" reference="ref30" />
+                <Property type="BoolProperty" identifier="tfMappingEnabled" displayName="Enable Transfer Function" key="tfMappingEnabled" reference="ref62" />
+            </Properties>
+        </PropertyLink>
+        <PropertyLink>
+            <Properties>
+                <Property type="BoolProperty" identifier="tfMappingEnabled" displayName="Enable Transfer Function" key="tfMappingEnabled" reference="ref62" />
+                <Property type="BoolProperty" identifier="tfMappingEnabled" displayName="Enable Transfer Function" key="tfMappingEnabled" reference="ref30" />
+            </Properties>
+        </PropertyLink>
+        <PropertyLink>
+            <Properties>
+                <Property type="IntVec2Property" identifier="dimensions" displayName="Dimensions" key="dimensions" reference="ref3" />
+                <Property type="IntVec2Property" identifier="dimensions" displayName="Dimensions" key="dimensions" reference="ref50" />
+            </Properties>
+        </PropertyLink>
+        <PropertyLink>
+            <Properties>
+                <Property type="IntVec2Property" identifier="dimensions" displayName="Dimensions" key="dimensions" reference="ref50" />
+                <Property type="IntVec2Property" identifier="dimensions" displayName="Dimensions" key="dimensions" reference="ref3" />
+            </Properties>
+        </PropertyLink>
+        <PropertyLink>
+            <Properties>
+                <Property type="IntVec2Property" identifier="dimensions" displayName="Dimensions" key="dimensions" reference="ref34" />
+                <Property type="IntVec2Property" identifier="dimensions" displayName="Dimensions" key="dimensions" reference="ref64" />
+            </Properties>
+        </PropertyLink>
+        <PropertyLink>
+            <Properties>
+                <Property type="IntVec2Property" identifier="dimensions" displayName="Dimensions" key="dimensions" reference="ref64" />
+                <Property type="IntVec2Property" identifier="dimensions" displayName="Dimensions" key="dimensions" reference="ref34" />
+            </Properties>
+        </PropertyLink>
+        <PropertyLink>
+            <Properties>
+                <Property type="BoolProperty" identifier="posPicking" displayName="Enable Picking" key="posPicking" reference="ref27" />
+                <Property type="BoolProperty" identifier="posPicking" displayName="Enable Picking" key="posPicking" reference="ref59" />
+            </Properties>
+        </PropertyLink>
+        <PropertyLink>
+            <Properties>
+                <Property type="BoolProperty" identifier="posPicking" displayName="Enable Picking" key="posPicking" reference="ref59" />
+                <Property type="BoolProperty" identifier="posPicking" displayName="Enable Picking" key="posPicking" reference="ref27" />
+            </Properties>
+        </PropertyLink>
+        <PropertyLink>
+            <Properties>
+                <Property type="IntProperty" identifier="sliceX" displayName="X Volume Position" key="sliceX" reference="ref21" />
+                <Property type="IntProperty" identifier="sliceX" displayName="X Volume Position" key="sliceX" reference="ref53" />
+            </Properties>
+        </PropertyLink>
+        <PropertyLink>
+            <Properties>
+                <Property type="IntProperty" identifier="sliceX" displayName="X Volume Position" key="sliceX" reference="ref53" />
+                <Property type="IntProperty" identifier="sliceX" displayName="X Volume Position" key="sliceX" reference="ref21" />
+            </Properties>
+        </PropertyLink>
+        <PropertyLink>
+            <Properties>
+                <Property type="IntProperty" identifier="sliceY" displayName="Y Volume Position" key="sliceY" reference="ref22" />
+                <Property type="IntProperty" identifier="sliceY" displayName="Y Volume Position" key="sliceY" reference="ref54" />
+            </Properties>
+        </PropertyLink>
+        <PropertyLink>
+            <Properties>
+                <Property type="IntProperty" identifier="sliceY" displayName="Y Volume Position" key="sliceY" reference="ref54" />
+                <Property type="IntProperty" identifier="sliceY" displayName="Y Volume Position" key="sliceY" reference="ref22" />
+            </Properties>
+        </PropertyLink>
+        <PropertyLink>
+            <Properties>
+                <Property type="IntProperty" identifier="sliceZ" displayName="Z Volume Position" key="sliceZ" reference="ref23" />
+                <Property type="IntProperty" identifier="sliceZ" displayName="Z Volume Position" key="sliceZ" reference="ref55" />
+            </Properties>
+        </PropertyLink>
+        <PropertyLink>
+            <Properties>
+                <Property type="IntProperty" identifier="sliceZ" displayName="Z Volume Position" key="sliceZ" reference="ref55" />
+                <Property type="IntProperty" identifier="sliceZ" displayName="Z Volume Position" key="sliceZ" reference="ref23" />
+            </Properties>
+        </PropertyLink>
+        <PropertyLink>
+            <Properties>
+                <Property type="BoolProperty" identifier="showIndicator" displayName="Show Position Indicator" key="showIndicator" reference="ref28" />
+                <Property type="BoolProperty" identifier="showIndicator" displayName="Show Position Indicator" key="showIndicator" reference="ref60" />
+            </Properties>
+        </PropertyLink>
+        <PropertyLink>
+            <Properties>
+                <Property type="BoolProperty" identifier="showIndicator" displayName="Show Position Indicator" key="showIndicator" reference="ref60" />
+                <Property type="BoolProperty" identifier="showIndicator" displayName="Show Position Indicator" key="showIndicator" reference="ref28" />
+            </Properties>
+        </PropertyLink>
+        <PropertyLink>
+            <Properties>
+                <Property type="FloatVec4Property" identifier="indicatorColor" displayName="Indicator Color" key="indicatorColor" reference="ref29" />
+                <Property type="FloatVec4Property" identifier="indicatorColor" displayName="Indicator Color" key="indicatorColor" reference="ref61" />
+            </Properties>
+        </PropertyLink>
+        <PropertyLink>
+            <Properties>
+                <Property type="FloatVec4Property" identifier="indicatorColor" displayName="Indicator Color" key="indicatorColor" reference="ref61" />
+                <Property type="FloatVec4Property" identifier="indicatorColor" displayName="Indicator Color" key="indicatorColor" reference="ref29" />
+            </Properties>
+        </PropertyLink>
+        <PropertyLink>
+            <Properties>
+                <Property type="IntProperty" identifier="sliceX" displayName="X Volume Position" key="sliceX" reference="ref7" />
+                <Property type="IntProperty" identifier="sliceX" displayName="X Volume Position" key="sliceX" reference="ref21" />
+            </Properties>
+        </PropertyLink>
+        <PropertyLink>
+            <Properties>
+                <Property type="IntProperty" identifier="sliceX" displayName="X Volume Position" key="sliceX" reference="ref21" />
+                <Property type="IntProperty" identifier="sliceX" displayName="X Volume Position" key="sliceX" reference="ref7" />
+            </Properties>
+        </PropertyLink>
+        <PropertyLink>
+            <Properties>
+                <Property type="IntProperty" identifier="sliceY" displayName="Y Volume Position" key="sliceY" reference="ref8" />
+                <Property type="IntProperty" identifier="sliceY" displayName="Y Volume Position" key="sliceY" reference="ref22" />
+            </Properties>
+        </PropertyLink>
+        <PropertyLink>
+            <Properties>
+                <Property type="IntProperty" identifier="sliceY" displayName="Y Volume Position" key="sliceY" reference="ref22" />
+                <Property type="IntProperty" identifier="sliceY" displayName="Y Volume Position" key="sliceY" reference="ref8" />
+            </Properties>
+        </PropertyLink>
+        <PropertyLink>
+            <Properties>
+                <Property type="IntProperty" identifier="sliceZ" displayName="Z Volume Position" key="sliceZ" reference="ref9" />
+                <Property type="IntProperty" identifier="sliceZ" displayName="Z Volume Position" key="sliceZ" reference="ref23" />
+            </Properties>
+        </PropertyLink>
+        <PropertyLink>
+            <Properties>
+                <Property type="IntProperty" identifier="sliceZ" displayName="Z Volume Position" key="sliceZ" reference="ref23" />
+                <Property type="IntProperty" identifier="sliceZ" displayName="Z Volume Position" key="sliceZ" reference="ref9" />
+            </Properties>
+        </PropertyLink>
+        <PropertyLink>
+            <Properties>
+                <Property type="BoolProperty" identifier="posPicking" displayName="Enable Picking" key="posPicking" reference="ref13" />
+                <Property type="BoolProperty" identifier="posPicking" displayName="Enable Picking" key="posPicking" reference="ref27" />
+            </Properties>
+        </PropertyLink>
+        <PropertyLink>
+            <Properties>
+                <Property type="BoolProperty" identifier="posPicking" displayName="Enable Picking" key="posPicking" reference="ref27" />
+                <Property type="BoolProperty" identifier="posPicking" displayName="Enable Picking" key="posPicking" reference="ref13" />
+            </Properties>
+        </PropertyLink>
+        <PropertyLink>
+            <Properties>
+                <Property type="BoolProperty" identifier="showIndicator" displayName="Show Position Indicator" key="showIndicator" reference="ref14" />
+                <Property type="BoolProperty" identifier="showIndicator" displayName="Show Position Indicator" key="showIndicator" reference="ref28" />
+            </Properties>
+        </PropertyLink>
+        <PropertyLink>
+            <Properties>
+                <Property type="BoolProperty" identifier="showIndicator" displayName="Show Position Indicator" key="showIndicator" reference="ref28" />
+                <Property type="BoolProperty" identifier="showIndicator" displayName="Show Position Indicator" key="showIndicator" reference="ref14" />
+            </Properties>
+        </PropertyLink>
+        <PropertyLink>
+            <Properties>
+                <Property type="FloatVec4Property" identifier="indicatorColor" displayName="Indicator Color" key="indicatorColor" reference="ref15" />
+                <Property type="FloatVec4Property" identifier="indicatorColor" displayName="Indicator Color" key="indicatorColor" reference="ref29" />
+            </Properties>
+        </PropertyLink>
+        <PropertyLink>
+            <Properties>
+                <Property type="FloatVec4Property" identifier="indicatorColor" displayName="Indicator Color" key="indicatorColor" reference="ref29" />
+                <Property type="FloatVec4Property" identifier="indicatorColor" displayName="Indicator Color" key="indicatorColor" reference="ref15" />
+            </Properties>
+        </PropertyLink>
+        <PropertyLink>
+            <Properties>
+                <Property type="FloatProperty" identifier="alphaOffset" displayName="Alpha Offset" key="alphaOffset" reference="ref18" />
+                <Property type="FloatProperty" identifier="alphaOffset" displayName="Alpha Offset" key="alphaOffset" reference="ref32" />
+            </Properties>
+        </PropertyLink>
+        <PropertyLink>
+            <Properties>
+                <Property type="FloatProperty" identifier="alphaOffset" displayName="Alpha Offset" key="alphaOffset" reference="ref32" />
+                <Property type="FloatProperty" identifier="alphaOffset" displayName="Alpha Offset" key="alphaOffset" reference="ref18" />
+            </Properties>
+        </PropertyLink>
+        <PropertyLink>
+            <Properties>
+                <Property type="IntProperty" identifier="sliceX" displayName="X Volume Position" key="sliceX" reference="ref7" />
+                <Property type="IntProperty" identifier="sliceX" displayName="X Volume Position" key="sliceX" reference="ref39" />
+            </Properties>
+        </PropertyLink>
+        <PropertyLink>
+            <Properties>
+                <Property type="IntProperty" identifier="sliceX" displayName="X Volume Position" key="sliceX" reference="ref39" />
+                <Property type="IntProperty" identifier="sliceX" displayName="X Volume Position" key="sliceX" reference="ref7" />
+            </Properties>
+        </PropertyLink>
+        <PropertyLink>
+            <Properties>
+                <Property type="IntProperty" identifier="sliceY" displayName="Y Volume Position" key="sliceY" reference="ref8" />
+                <Property type="IntProperty" identifier="sliceY" displayName="Y Volume Position" key="sliceY" reference="ref40" />
+            </Properties>
+        </PropertyLink>
+        <PropertyLink>
+            <Properties>
+                <Property type="IntProperty" identifier="sliceY" displayName="Y Volume Position" key="sliceY" reference="ref40" />
+                <Property type="IntProperty" identifier="sliceY" displayName="Y Volume Position" key="sliceY" reference="ref8" />
+            </Properties>
+        </PropertyLink>
+        <PropertyLink>
+            <Properties>
+                <Property type="IntProperty" identifier="sliceZ" displayName="Z Volume Position" key="sliceZ" reference="ref9" />
+                <Property type="IntProperty" identifier="sliceZ" displayName="Z Volume Position" key="sliceZ" reference="ref41" />
+            </Properties>
+        </PropertyLink>
+        <PropertyLink>
+            <Properties>
+                <Property type="IntProperty" identifier="sliceZ" displayName="Z Volume Position" key="sliceZ" reference="ref41" />
+                <Property type="IntProperty" identifier="sliceZ" displayName="Z Volume Position" key="sliceZ" reference="ref9" />
+            </Properties>
+        </PropertyLink>
+        <PropertyLink>
+            <Properties>
+                <Property type="BoolProperty" identifier="posPicking" displayName="Enable Picking" key="posPicking" reference="ref13" />
+                <Property type="BoolProperty" identifier="posPicking" displayName="Enable Picking" key="posPicking" reference="ref45" />
+            </Properties>
+        </PropertyLink>
+        <PropertyLink>
+            <Properties>
+                <Property type="BoolProperty" identifier="posPicking" displayName="Enable Picking" key="posPicking" reference="ref45" />
+                <Property type="BoolProperty" identifier="posPicking" displayName="Enable Picking" key="posPicking" reference="ref13" />
+            </Properties>
+        </PropertyLink>
+        <PropertyLink>
+            <Properties>
+                <Property type="BoolProperty" identifier="showIndicator" displayName="Show Position Indicator" key="showIndicator" reference="ref14" />
+                <Property type="BoolProperty" identifier="showIndicator" displayName="Show Position Indicator" key="showIndicator" reference="ref46" />
+            </Properties>
+        </PropertyLink>
+        <PropertyLink>
+            <Properties>
+                <Property type="BoolProperty" identifier="showIndicator" displayName="Show Position Indicator" key="showIndicator" reference="ref46" />
+                <Property type="BoolProperty" identifier="showIndicator" displayName="Show Position Indicator" key="showIndicator" reference="ref14" />
+            </Properties>
+        </PropertyLink>
+        <PropertyLink>
+            <Properties>
+                <Property type="FloatVec4Property" identifier="indicatorColor" displayName="Indicator Color" key="indicatorColor" reference="ref15" />
+                <Property type="FloatVec4Property" identifier="indicatorColor" displayName="Indicator Color" key="indicatorColor" reference="ref47" />
+            </Properties>
+        </PropertyLink>
+        <PropertyLink>
+            <Properties>
+                <Property type="FloatVec4Property" identifier="indicatorColor" displayName="Indicator Color" key="indicatorColor" reference="ref47" />
+                <Property type="FloatVec4Property" identifier="indicatorColor" displayName="Indicator Color" key="indicatorColor" reference="ref15" />
             </Properties>
         </PropertyLink>
     </PropertyLinks>

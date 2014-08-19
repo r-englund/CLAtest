@@ -359,11 +359,6 @@ void VolumeSliceGL::setVolPosFromScreenPos(vec2 pos) {
 
     // Rotation    
     float rotationAngle = rotationAroundAxis_.get();
-    // Maintain clockwise rotation even if horizontal axis is flipped.
-    if (flipHorizontal_.get()) {
-        rotationAngle = -rotationAngle;
-    }
-
     mat2 m(cos(rotationAngle), -sin(rotationAngle), sin(rotationAngle), cos(rotationAngle));
 
     if (flipHorizontal_.get())
@@ -416,9 +411,6 @@ vec2 VolumeSliceGL::getScreenPosFromVolPos() {
     }
 
     float rotationAngle = -rotationAroundAxis_.get();
-    if (flipHorizontal_.get()) {
-        rotationAngle = -rotationAngle;
-    }
     mat2 m(cos(rotationAngle), -sin(rotationAngle), sin(rotationAngle), cos(rotationAngle));
     posF = m * (posF - 0.5f) + 0.5f;
     if (flipHorizontal_.get())
@@ -461,10 +453,6 @@ void VolumeSliceGL::planeSettingsChanged() {
         shader_->link();
         // Rotation
         float rotationAngle = rotationAroundAxis_.get();
-        // Maintain counter-clockwise rotation even if horizontal axis is flipped.
-        if (flipHorizontal_.get()) {
-            rotationAngle = -rotationAngle;
-        }
         vec3 sliceAxis;
         switch (sliceAlongAxis_.get())
         {
