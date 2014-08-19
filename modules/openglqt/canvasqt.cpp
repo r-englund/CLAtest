@@ -451,11 +451,32 @@ void CanvasQt::touchEvent(QTouchEvent* touch) {
 }
 
 bool CanvasQt::gestureEvent(QGestureEvent* ge) {
-    gestureMode_ = true;
-    if (QGesture* pan = ge->gesture(Qt::PanGesture))
-        panTriggered(static_cast<QPanGesture *>(pan));
-    else if (QGesture* pinch = ge->gesture(Qt::PinchGesture))
-        pinchTriggered(static_cast<QPinchGesture *>(pinch));
+    QGesture* gesture = NULL;
+    QPanGesture* panGesture = NULL;
+    QPinchGesture* pinchGesture = NULL;
+
+    if(gesture = ge->gesture(Qt::PanGesture)){
+        panGesture = static_cast<QPanGesture *>(gesture);
+    }
+    if (gesture = ge->gesture(Qt::PinchGesture)){
+        pinchGesture = static_cast<QPinchGesture *>(gesture);
+    }
+
+    if(panGesture && pinchGesture){
+        double absDeltaDist = glm::abs(static_cast<double>(pinchGesture->scaleFactor())-1.0);
+        //std::cout << absDeltaDist << std::endl;
+        if(absDeltaDist > 0.1)
+            pinchTriggered(pinchGesture);
+        else
+            panTriggered(panGesture);
+    }
+    else if(panGesture){
+        panTriggered(panGesture);
+    }
+    else if(pinchGesture){
+        pinchTriggered(pinchGesture);
+    }
+
     ge->accept();
     return true;
 }
@@ -473,6 +494,7 @@ void CanvasQt::panTriggered(QPanGesture* gesture) {
              setCursor(Qt::ArrowCursor);
     }
 #endif
+    //std::cout << "PAN" << std::endl;
     GestureEvent* gestureEvent = new GestureEvent(
         vec2(2*(gesture->lastOffset().x()-gesture->offset().x())/getScreenDimension().x, 2*(gesture->offset().y()-gesture->lastOffset().y())/getScreenDimension().y), 0.0,
         GestureEvent::PAN, EventConverterQt::getGestureState(gesture), lastNumFingers_, screenPositionNormalized_);
@@ -482,8 +504,8 @@ void CanvasQt::panTriggered(QPanGesture* gesture) {
 
 void CanvasQt::pinchTriggered(QPinchGesture* gesture) {
     if (!processorNetworkEvaluator_) return;
-
-    GestureEvent* gestureEvent = new GestureEvent(vec2(gesture->centerPoint().x(), gesture->centerPoint().y()), 1.0-gesture->scaleFactor(),
+    //std::cout << "PINCH" << std::endl;
+    GestureEvent* gestureEvent = new GestureEvent(vec2(gesture->centerPoint().x(), gesture->centerPoint().y()), static_cast<double>(gesture->scaleFactor())-1.0,
         GestureEvent::PINCH, EventConverterQt::getGestureState(gesture), lastNumFingers_, screenPositionNormalized_);
     Canvas::gestureEvent(gestureEvent);
     delete gestureEvent;
