@@ -157,8 +157,8 @@ void Trackball::invokeEvent(Event* event) {
     GestureEvent* gestureEvent = dynamic_cast<GestureEvent*>(event);
     if (gestureEvent) {
         if(gestureEvent->type() == GestureEvent::PINCH && gestureEvent->numFingers() == 2){
-            vec3 direction = camera_->getLookFrom() - camera_->getLookTo();
-            camera_->setLookFrom(camera_->getLookFrom()+direction*static_cast<float>(gestureEvent->deltaDistance()));
+            vec3 direction = glm::normalize(camera_->getLookFrom() - camera_->getLookTo());
+            camera_->setLookFrom(camera_->getLookFrom()-direction*(static_cast<float>(gestureEvent->deltaDistance())));
         }
         else if(gestureEvent->type() == GestureEvent::PAN && gestureEvent->numFingers() == 2){
             vec3 offsetVector = vec3(gestureEvent->deltaPos(), 0.f);
@@ -190,17 +190,17 @@ void Trackball::invokeEvent(Event* event) {
 
         if (button == rotateEvent_.button()
             && modifier == rotateEvent_.modifier()
-            && (state == MouseEvent::MOUSE_STATE_PRESS || state == MouseEvent::MOUSE_STATE_MOVE)) {
+            && (state == MouseEvent::MOUSE_STATE_MOVE)) {
             //perform rotation
             rotateCamera(mouseEvent);
         } else if (button == zoomEvent_.button()
                    && modifier == zoomEvent_.modifier()
-                   && (state == MouseEvent::MOUSE_STATE_PRESS || state == MouseEvent::MOUSE_STATE_MOVE)) {
+                   && (state == MouseEvent::MOUSE_STATE_MOVE)) {
             //perform zoom
             zoomCamera(mouseEvent);
         } else if (button == panEvent_.button()
                    && modifier == panEvent_.modifier()
-                   && (state == MouseEvent::MOUSE_STATE_PRESS || state == MouseEvent::MOUSE_STATE_MOVE)) {
+                   && (state == MouseEvent::MOUSE_STATE_MOVE)) {
             //perform pan
             panCamera(mouseEvent);
         } else if (state == MouseEvent::MOUSE_STATE_RELEASE)
