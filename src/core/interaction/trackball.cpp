@@ -163,17 +163,22 @@ void Trackball::invokeEvent(Event* event) {
             camera_->setLookFrom(camera_->getLookFrom()-normdirection*(static_cast<float>(vecLength*gestureEvent->deltaDistance())));
         }
         else if(gestureEvent->type() == GestureEvent::PAN && gestureEvent->numFingers() == 2){
-            vec3 offsetVector = vec3(gestureEvent->deltaPos(), 0.f);
-
-            //std::cout << gestureEvent->deltaPos().x << ":" << gestureEvent->deltaPos().y << std::endl;
-
             //The resulting rotation needs to be mapped to the camera distance,
             //as if the trackball is located at a certain distance from the camera.
             //TODO: Verify this
-            //float zDist = (glm::length(camera_->getLookFrom()-camera_->getLookTo())-1.f)/M_PI;
-            //vec3 mappedOffsetVector = mapToCamera(offsetVector, zDist);
+            float zDist = (glm::length(camera_->getLookFrom()-camera_->getLookTo())-1.f)/M_PI;
 
-            vec3 mappedOffsetVector = mapToCamera(offsetVector);
+            vec3 offsetVector = vec3(gestureEvent->deltaPos(), 0.f)*camera_->getAspectRatio();
+            //std::cout << gestureEvent->deltaPos().x << ":" << gestureEvent->deltaPos().y << std::endl;
+            if(camera_->getAspectRatio() >= 1.f)
+                offsetVector.y *= 1.f/camera_->getAspectRatio();
+            else
+                offsetVector.x *= 1.f/(camera_->getAspectRatio()+1.f);
+
+            vec3 mappedOffsetVector = mapToCamera(offsetVector, zDist);
+
+            //vec3 mappedOffsetVector = mapToCamera(offsetVector);
+            //std::cout << mappedOffsetVector.x << ":" << mappedOffsetVector.y << ":" << mappedOffsetVector.z << std::endl;
 
             camera_->lockInvalidation();
             camera_->setLookTo(camera_->getLookTo()     + mappedOffsetVector);
