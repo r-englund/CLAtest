@@ -465,7 +465,7 @@ bool CanvasQt::gestureEvent(QGestureEvent* ge) {
     if(panGesture && pinchGesture){
         double absDeltaDist = glm::abs(static_cast<double>(pinchGesture->scaleFactor())-1.0);
         //std::cout << absDeltaDist << std::endl;
-        if(absDeltaDist > 0.1)
+        if(absDeltaDist > 0.05)
             pinchTriggered(pinchGesture);
         else
             panTriggered(panGesture);
