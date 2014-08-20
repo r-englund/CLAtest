@@ -77,12 +77,19 @@ public:
     static void deleteInstance() {
         delete instance_;
         instance_ = 0;
-    }
+    };
 
     Singleton<T>() {};
-    virtual ~Singleton() {};
+
+    virtual ~Singleton() {
+        Singleton<T>::resetInstance();
+    };
 
 private:
+    static void resetInstance() {
+        instance_ = 0;
+    };
+
     // no implementation for copy functionalities by making the following two methods
     // unaccessible. Otherwise unwanted Singleton copies might appear.
     Singleton<T>(Singleton<T> const&);
