@@ -157,11 +157,15 @@ void Trackball::invokeEvent(Event* event) {
     GestureEvent* gestureEvent = dynamic_cast<GestureEvent*>(event);
     if (gestureEvent) {
         if(gestureEvent->type() == GestureEvent::PINCH && gestureEvent->numFingers() == 2){
-            vec3 direction = glm::normalize(camera_->getLookFrom() - camera_->getLookTo());
-            camera_->setLookFrom(camera_->getLookFrom()-direction*(static_cast<float>(gestureEvent->deltaDistance())));
+            vec3 direction = camera_->getLookFrom() - camera_->getLookTo();
+            float vecLength = glm::clamp(glm::length(direction), 0.5f, 4.f);
+            vec3 normdirection = glm::normalize(direction);
+            camera_->setLookFrom(camera_->getLookFrom()-normdirection*(static_cast<float>(vecLength*gestureEvent->deltaDistance())));
         }
         else if(gestureEvent->type() == GestureEvent::PAN && gestureEvent->numFingers() == 2){
             vec3 offsetVector = vec3(gestureEvent->deltaPos(), 0.f);
+
+            //std::cout << gestureEvent->deltaPos().x << ":" << gestureEvent->deltaPos().y << std::endl;
 
             //The resulting rotation needs to be mapped to the camera distance,
             //as if the trackball is located at a certain distance from the camera.
