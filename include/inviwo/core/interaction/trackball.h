@@ -143,6 +143,8 @@ private:
     void stepRotateCamera(Direction dir);
     void stepZoomCamera(Direction dir);
     void stepPanCamera(Direction dir);
+    vec3 tospherical(const vec3& v);
+    vec3 tocartesian(const vec3& v);
 };
 
 } // namespace

@@ -335,6 +335,10 @@ void ProcessorNetwork::addToPrimaryCache(PropertyLink* propertyLink) {
 
     propertyLinkPrimaryCache_[srcProperty] = propertiesLinkedToSource;
 
+    if (propertiesLinkedToSource.size()==0) {
+        propertyLinkPrimaryCache_.erase(srcProperty);
+    }
+
     clearSecondaryCache();
 }
 
@@ -352,6 +356,10 @@ void ProcessorNetwork::removeFromPrimaryCache(PropertyLink* propertyLink) {
     }
     propertyLinkPrimaryCache_[srcProperty] = propertiesLinkedToSource;
 
+    if (propertiesLinkedToSource.size()==0) {
+        propertyLinkPrimaryCache_.erase(srcProperty);
+    }
+
     clearSecondaryCache();
 }
 
@@ -361,6 +369,8 @@ void ProcessorNetwork::updatePropertyLinkCaches() {
     for (size_t i=0; i<propertyLinks_.size(); i++)
         addToPrimaryCache(propertyLinks_[i]);
 
+    /*
+    //Debug info
     std::string info("Property Link Cache Info: \n");
     for (std::map<Property*, std::vector<Property*> >::iterator it=propertyLinkPrimaryCache_.begin();
         it!=propertyLinkPrimaryCache_.end(); ++it) {
@@ -372,7 +382,8 @@ void ProcessorNetwork::updatePropertyLinkCaches() {
             }
             info += "\n";
     }
-    //LogWarn(info);
+    LogWarn(info);
+    */
 }
 
 void ProcessorNetwork::clearSecondaryCache() {

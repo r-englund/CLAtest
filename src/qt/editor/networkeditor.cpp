@@ -177,22 +177,30 @@ void NetworkEditor::autoLinkOnAddedProcessor(Processor* addedProcessor) {
                 std::vector<Property*> srcProperties = existingProcessors[j]->getProperties();
                 bool linkCreated = false;
 
+                std::vector<PropertyLink*> newLinks;
+
                 for (size_t k=0; k<srcProperties.size(); k++) {
                     if (AutoLinker::canLink(srcProperties[k], dstProperty, DefaultLinkingCondition) &&
                         linkSettings->isLinkable(srcProperties[k]) &&
                         linkSettings->isLinkable(dstProperty))
                     {
                         Property* srcProperty = srcProperties[k];
-                        InviwoApplication::getPtr()->getProcessorNetwork()->addLink(srcProperty, dstProperty);
-                        InviwoApplication::getPtr()->getProcessorNetwork()->addLink(dstProperty, srcProperty);
+                        newLinks.push_back(InviwoApplication::getPtr()->getProcessorNetwork()->addLink(srcProperty, dstProperty));
+                        newLinks.push_back(InviwoApplication::getPtr()->getProcessorNetwork()->addLink(dstProperty, srcProperty));
                     }
                 }
 
-                if (linkCreated) {
+                if (newLinks.size()) {
+
                     if (std::find(invalidProcessors.begin(), invalidProcessors.end(),
                         existingProcessors[j]) == invalidProcessors.end()) {
                             invalidProcessors.push_back(existingProcessors[j]);
                     }
+
+                    addLink(existingProcessors[j], addedProcessor);
+                    ProcessorLink* link = InviwoApplication::getPtr()->getProcessorNetwork()->addLink(existingProcessors[j], addedProcessor);
+                    for (size_t ii=0; ii<newLinks.size(); ii++)
+                        link->addPropertyLinks(newLinks[ii]);
                 }
             }
         }
