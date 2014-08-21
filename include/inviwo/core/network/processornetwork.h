@@ -296,6 +296,8 @@ public:
     virtual void deserialize(IvwDeserializer& d) throw (Exception);
 
     bool isDeserializing()const;
+    void updatePropertyLinkCaches();
+
 
     /**
     * Clears the network objects processors, port connections, property links etc.,
@@ -311,7 +313,6 @@ private:
     void evaluatePropertyLinks(Property*);
     void addToPrimaryCache(PropertyLink* propertyLink);
     void removeFromPrimaryCache(PropertyLink* propertyLink);
-    void updatePropertyLinkCaches();
     void clearSecondaryCache();
 
     ///////////////////////////////////////////////////////////////////////

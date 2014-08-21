@@ -53,6 +53,11 @@
 
 #include <inviwo/qt/editor/linkdialog.h>
 #include <inviwo/core/util/variant.h>
+#include <inviwo/core/properties/compositeproperty.h>
+
+#define IS_SUB_PROPERTY(prop) (prop->getOwner()->getProcessor() != prop->getOwner())
+#define IS_COMPOSITE_PROPERTY(prop) dynamic_cast<CompositeProperty*>(prop)
+#define EXPAND_SUB_PROPERTIES_BY_DEFAULT false
 
 namespace inviwo {
 
@@ -281,7 +286,7 @@ QVariant LinkDialogProcessorGraphicsItem::itemChange(GraphicsItemChange change, 
     return QGraphicsItem::itemChange(change, value);
 }
 
-void LinkDialogProcessorGraphicsItem::setProcessor(Processor* processor) {
+void LinkDialogProcessorGraphicsItem::setProcessor(Processor* processor, bool expandProperties) {
     setGraphicsItemData(processor);
 
     if (processor) {
@@ -290,8 +295,20 @@ void LinkDialogProcessorGraphicsItem::setProcessor(Processor* processor) {
         propertyGraphicsItems_.clear();
         std::vector<Property*> properties = processor->getProperties();
 
-        for (size_t i=0; i<properties.size(); i++)
-            propertyGraphicsItems_.push_back(new LinkDialogPropertyGraphicsItem(this, properties[i]));
+        for (size_t i=0; i<properties.size(); i++) {
+            CompositeProperty* compProp = IS_COMPOSITE_PROPERTY(properties[i]);
+            if (compProp && expandProperties) {
+                //LogWarn("Found composite sub properties")
+                std::vector<Property*> subProperties = compProp->getProperties();
+                for (size_t j=0; j<subProperties.size(); j++) {
+                    LinkDialogPropertyGraphicsItem* compItem = new LinkDialogPropertyGraphicsItem(this, subProperties[j]);                
+                    propertyGraphicsItems_.push_back(compItem);
+                }
+            }
+            else {
+                propertyGraphicsItems_.push_back(new LinkDialogPropertyGraphicsItem(this, properties[i]));
+            }
+        }
     } else {
         nameLabel_->setText("");
         classLabel_->setText("");
@@ -301,7 +318,10 @@ void LinkDialogProcessorGraphicsItem::setProcessor(Processor* processor) {
 /*---------------------------------------------------------------------------------------*/
 
 LinkDialogPropertyGraphicsItem::LinkDialogPropertyGraphicsItem(LinkDialogProcessorGraphicsItem* processor,
-        Property* prop) : GraphicsItemData<Property>() {
+        Property* prop) : GraphicsItemData<Property>()
+        , isCompositeSubProperty_(false)
+        , isTopItem_(true)
+        , isBottomItem_(true) {
     setZValue(LINKDIALOG_PROCESSOR_GRAPHICSITEM_DEPTH);
     //setFlags(ItemIsMovable | ItemIsSelectable | ItemIsFocusable | ItemSendsGeometryChanges);
     setRect(-propertyItemWidth/2, -propertyItemHeight/2, propertyItemWidth, propertyItemHeight);
@@ -324,11 +344,12 @@ LinkDialogPropertyGraphicsItem::LinkDialogPropertyGraphicsItem(LinkDialogProcess
     updatePositionBasedOnProcessor();
 }
 
-void LinkDialogPropertyGraphicsItem::updatePositionBasedOnProcessor() {
+void LinkDialogPropertyGraphicsItem::updatePositionBasedOnProcessor(bool isComposite) {
     if (!processorGraphicsItem_) return;
 
     Processor* processor = processorGraphicsItem_->getProcessor();
     int ind = 0;
+    int subPropInd = 0;
     Property* prop = getGraphicsItemData();
 
     if (prop) {
@@ -338,6 +359,41 @@ void LinkDialogPropertyGraphicsItem::updatePositionBasedOnProcessor() {
             if (prop == properties[i])
                 break;
 
+            bool found = false;
+            CompositeProperty* compPorp = IS_COMPOSITE_PROPERTY( properties[i]);
+            if (compPorp && isComposite) {
+                std::vector<Property*> subProperties = compPorp->getProperties();
+                
+                for (size_t j=0; j<subProperties.size(); j++) { 
+                    if (prop == subProperties[j]) {
+                        //LogWarn("Found property in composite property")
+                        isCompositeSubProperty_ = true;
+                        found = true;
+                        break;
+                    }
+                    ind++;
+                    subPropInd++;
+                }
+
+                if (subPropInd == 0 && found)  {
+                    isTopItem_ = true;  
+                    isBottomItem_ = false;
+                }
+                else if (subPropInd >= subProperties.size()-1  && found) {
+                    isBottomItem_ = true; 
+                    isTopItem_ = false;
+                }
+                else if (found) {
+                    isBottomItem_ = false; 
+                    isTopItem_ = false;
+                }
+
+                if (found) break;
+                continue;
+                //ind+=subPropInd;
+            }
+
+            if (found) break;
             ind++;
         }
     }
@@ -457,28 +513,72 @@ void LinkDialogPropertyGraphicsItem::paint(QPainter* p, const QStyleOptionGraphi
         grad.setColorAt(0.0f, QColor(110,77,77));
         grad.setColorAt(0.2f, QColor(110,77,77));
         grad.setColorAt(1.0f, QColor(50,0,0));
-    } else {
-        grad.setColorAt(0.0f, QColor(255,255,204));
-        grad.setColorAt(0.5f, QColor(255,255,204));
-        grad.setColorAt(1.0f, QColor(255,255,204));
+    } else {        
+        if (isCompositeSubProperty_) {
+            grad.setColorAt(0.0f, QColor(127,127,102));
+            grad.setColorAt(0.5f, QColor(127,127,102));
+            grad.setColorAt(1.0f, QColor(127,127,102));
+        } else {
+            grad.setColorAt(0.0f, QColor(255,255,204));
+            grad.setColorAt(0.5f, QColor(255,255,204));
+            grad.setColorAt(1.0f, QColor(255,255,204));
+        }
     }
 
     p->setBrush(grad);
-    QPainterPath roundRectPath;
+
+    QPen blackPen(QColor(0, 0, 0), 3);
+    QPen greyPen(QColor(96, 96, 96), 1);
     QRectF bRect = rect();
+    
+    QPainterPath roundRectPath;
     roundRectPath.moveTo(bRect.left(), bRect.top()+propertyRoundedCorners);
     roundRectPath.lineTo(bRect.left(), bRect.bottom()-propertyRoundedCorners);
     roundRectPath.arcTo(bRect.left(), bRect.bottom()-(2*propertyRoundedCorners), (2*propertyRoundedCorners), (2*propertyRoundedCorners), 180.0,
-                        90.0);
+    90.0);
     roundRectPath.lineTo(bRect.right()-propertyRoundedCorners, bRect.bottom());
     roundRectPath.arcTo(bRect.right()-(2*propertyRoundedCorners), bRect.bottom()-(2*propertyRoundedCorners), (2*propertyRoundedCorners),
-                        (2*propertyRoundedCorners), 270.0, 90.0);
+    (2*propertyRoundedCorners), 270.0, 90.0);
     roundRectPath.lineTo(bRect.right(), bRect.top()+propertyRoundedCorners);
     roundRectPath.arcTo(bRect.right()-(2*propertyRoundedCorners), bRect.top(), (2*propertyRoundedCorners), (2*propertyRoundedCorners), 0.0,
-                        90.0);
+    90.0);
     roundRectPath.lineTo(bRect.left()+propertyRoundedCorners, bRect.top());
     roundRectPath.arcTo(bRect.left(), bRect.top(), (2*propertyRoundedCorners), (2*propertyRoundedCorners), 90.0, 90.0);
     p->drawPath(roundRectPath);
+    
+    QPainterPath roundRectPath_Top;
+    QPainterPath roundRectPath_Left;
+    QPainterPath roundRectPath_Bottom;
+    QPainterPath roundRectPath_Right;   
+
+    //Left
+    p->setPen(blackPen);
+    roundRectPath_Left.moveTo(bRect.left(), bRect.top());
+    roundRectPath_Left.lineTo(bRect.left(), bRect.bottom());    
+    p->drawPath(roundRectPath_Left);
+
+    //Bottom
+    if (!isBottomItem_ && !isTopItem_) p->setPen(greyPen);
+    else if (isBottomItem_) p->setPen(blackPen);
+    else p->setPen(greyPen);
+    roundRectPath_Bottom.moveTo(bRect.left(), bRect.bottom());
+    roundRectPath_Bottom.lineTo(bRect.right(), bRect.bottom());
+    p->drawPath(roundRectPath_Bottom);
+
+    //Right
+    p->setPen(blackPen);
+    roundRectPath_Right.moveTo(bRect.right(), bRect.bottom());
+    roundRectPath_Right.lineTo(bRect.right(), bRect.top());
+    p->drawPath(roundRectPath_Right);
+
+    //Top
+    if (!isBottomItem_ && !isTopItem_) p->setPen(greyPen);
+    else if (isTopItem_)  p->setPen(blackPen);
+    else p->setPen(greyPen);
+    roundRectPath_Top.moveTo(bRect.left(), bRect.top());
+    roundRectPath_Top.lineTo(bRect.right(), bRect.top());
+    p->drawPath(roundRectPath_Top);
+    
     p->restore();
     p->save();
     QPoint arrowDim(arrowDimensionWidth, arrowDimensionHeight);
@@ -603,7 +703,8 @@ LinkDialogGraphicsScene::LinkDialogGraphicsScene(QWidget* parent):QGraphicsScene
     endProperty_(0),
     processorNetwork_(0),
     src_(0),
-    dest_(0)
+    dest_(0),
+    expandProperties_(false)
 {
 }
 
@@ -715,7 +816,7 @@ void LinkDialogGraphicsScene::mouseDoubleClickEvent(QGraphicsSceneMouseEvent* e)
 void LinkDialogGraphicsScene::addPropertyLink(Property* sProp, Property* eProp, bool bidirectional) {
     LinkDialogPropertyGraphicsItem* startProperty =  qgraphicsitem_cast<LinkDialogPropertyGraphicsItem*>(getPropertyGraphicsItemAt(sProp));
     LinkDialogPropertyGraphicsItem* endProperty =  qgraphicsitem_cast<LinkDialogPropertyGraphicsItem*>(getPropertyGraphicsItemAt(eProp));
-    addPropertyLink(startProperty, endProperty);
+    addPropertyLink(startProperty, endProperty, bidirectional);
     DialogConnectionGraphicsItem* propertyLinkItem = getConnectionGraphicsItem(startProperty, endProperty);
 
     if (bidirectional)
@@ -728,6 +829,12 @@ int LinkDialogGraphicsScene::currentLinkItemsCount() {
     return static_cast<int>(currentConnectionGraphicsItems_.size());
 }
 
+void LinkDialogGraphicsScene::setExpandProperties(bool expand) { 
+    if (expand!=expandProperties_) {
+        expandProperties_ = expand;
+    }
+}
+
 void LinkDialogGraphicsScene::addPropertyLink(PropertyLink* propertyLink) {
     //For adding representations for existing links in the network
     //LogInfo("Adding Property Link.");
@@ -735,10 +842,12 @@ void LinkDialogGraphicsScene::addPropertyLink(PropertyLink* propertyLink) {
                 propertyLink->getSourceProperty()));
     LinkDialogPropertyGraphicsItem* endProperty =  qgraphicsitem_cast<LinkDialogPropertyGraphicsItem*>(getPropertyGraphicsItemAt(
                 propertyLink->getDestinationProperty()));
-    initializePorpertyLinkRepresentation(startProperty, endProperty, propertyLink);
+
+    if (startProperty && endProperty)
+        initializePorpertyLinkRepresentation(startProperty, endProperty, propertyLink);
 }
 
-void LinkDialogGraphicsScene::addPropertyLink(LinkDialogPropertyGraphicsItem* startProperty, LinkDialogPropertyGraphicsItem* endProperty) {
+void LinkDialogGraphicsScene::addPropertyLink(LinkDialogPropertyGraphicsItem* startProperty, LinkDialogPropertyGraphicsItem* endProperty, bool bidirectional) {
     //For adding new links to network and creating representations
     //LogInfo("Adding Property Link.");
     Property* sProp = startProperty->getGraphicsItemData();
@@ -760,7 +869,7 @@ void LinkDialogGraphicsScene::addPropertyLink(LinkDialogPropertyGraphicsItem* st
     }
     */
 
-    if (!processorNetwork_->getLink(sProp, eProp) && !processorNetwork_->getLink(eProp, sProp)) {
+    if (!processorNetwork_->getLink(sProp, eProp)) {
         PropertyLink* propertyLink = processorNetwork_->addLink(sProp, eProp);
         if (propertyLink) initializePorpertyLinkRepresentation(startProperty, endProperty, propertyLink);
     }
@@ -1091,22 +1200,151 @@ void LinkDialogGraphicsScene::initScene(std::vector<Processor*> srcProcessorList
     for (size_t i=0; i<srcProcessorList.size(); i++) {
         PropertyOwner* srcProcessor = srcProcessorList[i];
         PropertyOwner* dstProcessor = dstProcessorList[i];
-        std::vector<PropertyLink*> propertyLinks = processorNetwork_->getLinksBetweenProcessors(srcProcessor, dstProcessor);
+        std::vector<PropertyLink*> networkLinks = processorNetwork_->getLinksBetweenProcessors(srcProcessor, dstProcessor);
 
         std::vector<PropertyLink*> pairList;
         PropertyLink* pair=0;
 
-        for (size_t j=0; j<propertyLinks.size(); j++) {
-            if (std::find(pairList.begin(), pairList.end(), propertyLinks[j])==pairList.end()) {
-                addPropertyLink(propertyLinks[j]);
-                pair =  processorNetwork_->getBidirectionalPair(propertyLinks[j]->getSourceProperty(), propertyLinks[j]->getDestinationProperty());
+        std::vector<PropertyLink*> propertyLinks; //uni directional links only
+
+        for (size_t j=0; j<networkLinks.size(); j++) {
+            if (std::find(pairList.begin(), pairList.end(), networkLinks[j])==pairList.end()) {
+                propertyLinks.push_back(networkLinks[j]);
+                pair =  processorNetwork_->getBidirectionalPair(networkLinks[j]->getSourceProperty(), networkLinks[j]->getDestinationProperty());
                 if (pair) pairList.push_back(pair);
             }
         }
+
+        pairList.clear();
+        for (size_t j=0; j<propertyLinks.size(); j++) {
+            if (std::find(pairList.begin(), pairList.end(), propertyLinks[j])==pairList.end()) 
+            {
+
+                CompositeProperty* compositeSrcProperty = IS_COMPOSITE_PROPERTY(propertyLinks[j]->getSourceProperty());
+                CompositeProperty* compositeDstProperty = IS_COMPOSITE_PROPERTY(propertyLinks[j]->getDestinationProperty());
+
+                if ( compositeSrcProperty && compositeDstProperty && expandProperties_) {
+                    //LogWarn("Removing Composite Property Link. Adding Sub-Property Links")
+                    bool bidirectional = false;
+                    pair =  processorNetwork_->getBidirectionalPair(propertyLinks[j]->getSourceProperty(), propertyLinks[j]->getDestinationProperty());
+                    if (pair) {
+                        bidirectional = true;
+                    }
+
+                    //remove composite property link and add sub property links
+                    //TODO: Recursive composite properties yet to be detected here
+
+                    std::vector<Property*> srcProperties = compositeSrcProperty->getProperties();
+                    std::vector<Property*> dstProperties = compositeDstProperty->getProperties();
+
+                    Property* s = propertyLinks[j]->getSourceProperty(); 
+                    Property* d = propertyLinks[j]->getDestinationProperty();
+                    processorNetwork_->removeLink(s, d);
+                    processorNetwork_->removeLink(d, s);
+
+                   //Two different sub-properties can be linked which is not allowed now.
+                   if (srcProperties.size() == dstProperties.size()) {
+                       for (size_t k=0; k<srcProperties.size(); k++)
+                            addPropertyLink(srcProperties[k], dstProperties[k], bidirectional);
+                   }
+                   else {
+                       //TODO: Perform auto link?
+                       LogWarn("Unable to link compsite sub-properties")
+                   }
+                }
+                else {
+                    bool isSubProperty = IS_SUB_PROPERTY(propertyLinks[j]->getSourceProperty());
+
+                    if (isSubProperty && !expandProperties_) {
+                        bool isBirectional = false;
+
+                        Property* compsrc = getParentCompositeProperty(propertyLinks[j]->getSourceProperty(), srcProcessorList[i]);
+                        Property* compdst = getParentCompositeProperty(propertyLinks[j]->getDestinationProperty(), dstProcessorList[i]);
+
+                        if (compsrc && compdst) {
+                            CompositeProperty* compositeSrcProperty = IS_COMPOSITE_PROPERTY(compsrc);
+                            CompositeProperty* compositeDstProperty = IS_COMPOSITE_PROPERTY(compdst);
+
+                            std::vector<Property*> srcProperties = compositeSrcProperty->getProperties();
+                            std::vector<Property*> dstProperties = compositeDstProperty->getProperties();
+
+                            if (srcProperties.size() == dstProperties.size()) {
+                                //LogWarn("Remove Sub-Property Links. Add Composite Property Link")
+                                for (size_t k=0; k<srcProperties.size(); k++) {
+
+                                    if (srcProperties[k] == propertyLinks[j]->getSourceProperty() &&
+                                        dstProperties[k] == propertyLinks[j]->getDestinationProperty()) {
+                                        pair =  processorNetwork_->getBidirectionalPair(srcProperties[k], dstProperties[k]);
+                                        if (pair) isBirectional = true;
+                                        processorNetwork_->removeLink(srcProperties[k], dstProperties[k]);
+                                        if (pair) processorNetwork_->removeLink(dstProperties[k], srcProperties[k]);
+                                    }
+                                }
+
+                                if (!processorNetwork_->getLink(compsrc, compdst)) {
+                                    addPropertyLink(compositeSrcProperty, compositeDstProperty, isBirectional);
+                                    pair =  processorNetwork_->getBidirectionalPair(compositeSrcProperty, compositeDstProperty);
+                                    if (pair) pairList.push_back(pair);
+                                }
+                            }
+                        }
+                    }
+                    else {
+                        //LogWarn("Just adding the sub-properties as it is")
+                        addPropertyLink(propertyLinks[j]);
+                        pair =  processorNetwork_->getBidirectionalPair(propertyLinks[j]->getSourceProperty(), propertyLinks[j]->getDestinationProperty());
+                        if (pair) pairList.push_back(pair);
+                        propertyLinks[j]->getSourceProperty()->setInvalidationLevel(PropertyOwner::INVALID_OUTPUT);
+                        propertyLinks[j]->getDestinationProperty()->setInvalidationLevel(PropertyOwner::INVALID_OUTPUT);
+                    }
+                }
+            }
+        }
     }
+
+    currentConnectionGraphicsItems_.clear();
 }
 
-void LinkDialogGraphicsScene::addProcessorsItemsToScene(Processor* prcoessor, int xPosition, int yPosition) {
+Property* LinkDialogGraphicsScene::getParentCompositeProperty(Property* subProperty, Processor* processor) {
+    //uses recursion
+    std::vector<Property*> properties = processor->getProperties();
+    std::vector<CompositeProperty*> compositeProperties;
+
+    for (size_t i=0; i<properties.size(); i++) {
+        if (properties[i] == subProperty) return NULL; //not a composite property
+        CompositeProperty* comp = IS_COMPOSITE_PROPERTY(properties[i]);
+        if (comp)
+            compositeProperties.push_back(comp);
+    }
+
+    while(compositeProperties.size()) {
+        std::vector<CompositeProperty*> newComposites;
+        for (size_t i=0; i<compositeProperties.size(); i++) {
+            CompositeProperty *comp = compositeProperties[i];
+            std::vector<Property*> p = comp->getProperties();
+            for (size_t j=0; j<p.size(); j++) {
+                if (p[j]==subProperty) return comp;
+
+                CompositeProperty* c = IS_COMPOSITE_PROPERTY(p[i]);
+                if (c) {
+                    newComposites.push_back(c);
+                }
+            }
+        }
+        compositeProperties = newComposites;
+    };
+
+    return NULL;
+}
+
+void LinkDialogGraphicsScene::clearSceneRepresentations() {
+    processorGraphicsItems_.clear();
+    connectionGraphicsItems_.clear();
+    currentConnectionGraphicsItems_.clear();
+    clear();
+}
+
+void LinkDialogGraphicsScene::addProcessorsItemsToScene(Processor* processor, int xPosition, int yPosition) {
     LinkDialogProcessorGraphicsItem* procGraphicsItem = new LinkDialogProcessorGraphicsItem();
     processorGraphicsItems_.push_back(procGraphicsItem);
     //procGraphicsItem->setPos(xPosition, yPosition);
@@ -1121,7 +1359,7 @@ void LinkDialogGraphicsScene::addProcessorsItemsToScene(Processor* prcoessor, in
     }
 
     procGraphicsItem->setPos(allViews[0]->mapToScene(xPosition, yPosition));
-    procGraphicsItem->setProcessor(prcoessor);
+    procGraphicsItem->setProcessor(processor, expandProperties_);
     addItem(procGraphicsItem);
     procGraphicsItem->show();
     std::vector<LinkDialogPropertyGraphicsItem*> propItems = procGraphicsItem->getPropertyItemList();
@@ -1129,7 +1367,30 @@ void LinkDialogGraphicsScene::addProcessorsItemsToScene(Processor* prcoessor, in
     for (size_t i=0; i<propItems.size(); i++) {
         addItem(propItems[i]);
         propItems[i]->show();
-        propItems[i]->updatePositionBasedOnProcessor();
+        propItems[i]->updatePositionBasedOnProcessor(expandProperties_);
+    }
+}
+
+void LinkDialogGraphicsScene::updatePropertyItemsOfAllProcessors() {
+    //make sure link items are handled before calling this function
+    LinkDialogProcessorGraphicsItem* procGraphicsItem;
+    foreach(procGraphicsItem, processorGraphicsItems_) {
+        Processor* processor = procGraphicsItem->getProcessor();
+        {
+            std::vector<LinkDialogPropertyGraphicsItem*> propItems = procGraphicsItem->getPropertyItemList();
+            for (size_t i=0; i<propItems.size(); i++) {
+                propItems[i]->hide();
+                removeItem(propItems[i]);
+            }
+
+            procGraphicsItem->setProcessor(processor, expandProperties_);
+            propItems = procGraphicsItem->getPropertyItemList();
+            for (size_t i=0; i<propItems.size(); i++) {
+                addItem(propItems[i]);
+                propItems[i]->show();
+                propItems[i]->updatePositionBasedOnProcessor(expandProperties_);
+            }
+        }
     }
 }
 
@@ -1172,6 +1433,7 @@ LinkDialog::LinkDialog(Processor* src, Processor* dest, QWidget* parent) :Inviwo
     dest_ = dest;
     initDialog();
     linkDialogScene_->setNetwork(InviwoApplication::getPtr()->getProcessorNetwork()); //Network is required to add property links created in dialog (or remove )
+    linkDialogScene_->setExpandProperties(EXPAND_SUB_PROPERTIES_BY_DEFAULT);
     linkDialogScene_->initScene(srcList, dstList);
 }
 
@@ -1231,7 +1493,13 @@ void LinkDialog::initDialog() {
     deleteAllLinkPushButton_ = new QPushButton("Delete All", this);
     connect(deleteAllLinkPushButton_, SIGNAL(clicked()), this, SLOT(clickedDeleteAllLinksPushButton()));
     autoLinkPushButtonLayout->addWidget(deleteAllLinkPushButton_, 10);
+    //expand composite
+    expandCompositeOption_ = new QCheckBox("Expand Properties", this);
+    expandCompositeOption_->setChecked(EXPAND_SUB_PROPERTIES_BY_DEFAULT);
+    autoLinkPushButtonLayout->addWidget(expandCompositeOption_, 10);
+    connect(expandCompositeOption_, SIGNAL(toggled(bool)), this, SLOT(expandCompositeProperties(bool)));
     commonButtonLayout->addLayout(autoLinkPushButtonLayout);
+
     //okay cancel button
     QHBoxLayout* okayCancelButtonLayout = new QHBoxLayout;
     okayCancelButtonLayout->setAlignment(Qt::AlignRight);
@@ -1263,23 +1531,31 @@ void LinkDialog::clickedOkayButton() {
         InviwoApplication::getPtr()->getProcessorNetwork()->setLinkModifiedByOwner(src_);
     }
 
+    updateProcessorLinks();
+
+    //accept();
+    InviwoApplication::getPtr()->getProcessorNetwork()->updatePropertyLinkCaches();
+    hide();
+    eventLoop_.quit();
+}
+
+void LinkDialog::updateProcessorLinks() {
     ProcessorLink* processorLink = InviwoApplication::getPtr()->getProcessorNetwork()->getProcessorLink(src_, dest_);
     std::vector<PropertyLink*> propertyLinks = InviwoApplication::getPtr()->getProcessorNetwork()->getLinksBetweenProcessors(src_, dest_);
-    if (propertyLinks.size()) {
+    //if (propertyLinks.size()) 
+    {
         if (!processorLink) processorLink = InviwoApplication::getPtr()->getProcessorNetwork()->addLink(src_, dest_);
+        processorLink->removeAllPropertyLinks();
         for (size_t j=0; j<propertyLinks.size(); j++) {
             processorLink->addPropertyLinks(propertyLinks[j]);
         }
     }
-
-    //accept();
-    hide();
-    eventLoop_.quit();
 }
 
 void LinkDialog::clickedCancelButton() {
     linkDialogScene_->removeCurrentPropertyLinks();
     //accept();
+    updateProcessorLinks();
     hide();
     eventLoop_.quit();
 }
@@ -1304,14 +1580,46 @@ void LinkDialog::clickedAutoLinkPushButton() {
 
     for (size_t i=0; i<srcProperties.size(); i++) {
         for (size_t j=0; j<dstProperties.size(); j++) {
-            if (AutoLinker::canLink(srcProperties[i], dstProperties[j], (LinkingConditions) selectedTypes))
-                linkDialogScene_->addPropertyLink(srcProperties[i], dstProperties[j], true);
+
+            if (expandCompositeOption_->isChecked()) {
+                if (AutoLinker::canLink(srcProperties[i], dstProperties[j], (LinkingConditions) selectedTypes)) {
+                    CompositeProperty* compSrc = IS_COMPOSITE_PROPERTY(srcProperties[i]);
+                    CompositeProperty* compDst = IS_COMPOSITE_PROPERTY(dstProperties[j]);
+                    if ( compSrc && compDst) {
+                        //If composite property then try to link sub-properties only
+                        std::vector<Property*> s = compSrc->getProperties();
+                        std::vector<Property*> d = compDst->getProperties();
+                        for (size_t ii=0; ii<s.size(); ii++) {
+                            for (size_t jj=0; jj<d.size(); jj++) {
+                                if (AutoLinker::canLink(s[ii], d[jj], (LinkingConditions) selectedTypes))
+                                    linkDialogScene_->addPropertyLink(s[ii], d[jj], true);
+                            }
+                        }
+                    }
+                }
+            } else {
+                if (AutoLinker::canLink(srcProperties[i], dstProperties[j], (LinkingConditions) selectedTypes))
+                    linkDialogScene_->addPropertyLink(srcProperties[i], dstProperties[j], true);
+            }
         }
     }
 }
 
 void LinkDialog::clickedDeleteAllLinksPushButton() {
     linkDialogScene_->removeAllPropertyLinks();
+}
+
+void LinkDialog::expandCompositeProperties(bool expand) {
+    linkDialogScene_->setExpandProperties(expand);
+    linkDialogScene_->clearSceneRepresentations();
+    QSize rSize(linkDialogWidth, linkDialogHeight);
+    linkDialogView_->setSceneRect(0,0,rSize.width(), rSize.height()*5);
+    linkDialogView_->fitInView(linkDialogView_->rect());
+    linkDialogView_->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
+    std::vector<Processor*> srcList, dstList;
+    srcList.push_back(src_);
+    dstList.push_back(dest_);
+    linkDialogScene_->initScene(srcList, dstList);
 }
 
 int LinkDialog::exec() {

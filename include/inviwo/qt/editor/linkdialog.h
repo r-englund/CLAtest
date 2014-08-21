@@ -46,6 +46,7 @@
 #include <QComboBox>
 #include <QStandardItemModel>
 #include <QEventLoop>
+#include <QCheckBox>
 
 #include <inviwo/core/links/processorlink.h>
 #include <inviwo/core/links/linkconditions.h>
@@ -145,7 +146,7 @@ public:
     LinkDialogProcessorGraphicsItem();
     ~LinkDialogProcessorGraphicsItem();
 
-    void setProcessor(Processor* processor);
+    void setProcessor(Processor* processor, bool expandProperties=false);
     Processor* getProcessor() {return getGraphicsItemData();}
 
     std::vector<LinkDialogPropertyGraphicsItem*> getPropertyItemList() {return propertyGraphicsItems_;}
@@ -185,7 +186,7 @@ public:
     QPointF getShortestBoundaryPointTo(LinkDialogPropertyGraphicsItem*);
     QPointF getShortestBoundaryPointTo(QPointF);
 
-    void updatePositionBasedOnProcessor();
+    void updatePositionBasedOnProcessor(bool isComposite=false);
 
     QPointF calculateArrowCenter(size_t curPort, bool computeRight) const;
     QRectF calculateArrowRect(size_t curPort, bool computeRight) const;
@@ -214,6 +215,9 @@ private:
     LinkDialogProcessorGraphicsItem* processorGraphicsItem_;
     //int arrowCount_;
     std::vector<DialogConnectionGraphicsItem*> connectionItems_;
+    bool isCompositeSubProperty_;
+    bool isTopItem_;
+    bool isBottomItem_;
 };
 
 /*---------------------------------------------------------------------------------------*/
@@ -246,10 +250,13 @@ public:
     ProcessorNetwork* getNetwork() {return processorNetwork_;}
 
     void initScene(std::vector<Processor*> srcProcessorList, std::vector<Processor*> dstProcessorList);
+    void clearSceneRepresentations();
     void removeCurrentPropertyLinks();
     void removeAllPropertyLinks();
     void addPropertyLink(Property* srcProperty, Property* dstProperty, bool bidirectional);
     int currentLinkItemsCount();
+    void setExpandProperties(bool expand);
+    void updatePropertyItemsOfAllProcessors();
 
     PropertyOwner* src_;
     PropertyOwner* dest_;
@@ -261,7 +268,7 @@ protected:
     void mouseDoubleClickEvent(QGraphicsSceneMouseEvent* e);
     void keyPressEvent(QKeyEvent* keyEvent);
     void contextMenuEvent(QGraphicsSceneContextMenuEvent* e);
-    void addPropertyLink(LinkDialogPropertyGraphicsItem* outProperty, LinkDialogPropertyGraphicsItem* inProperty);
+    void addPropertyLink(LinkDialogPropertyGraphicsItem* outProperty, LinkDialogPropertyGraphicsItem* inProperty, bool isBidirectional);
     void removePropertyLink(DialogConnectionGraphicsItem* propertyLink);
     void cleanupAfterRemoveLink(DialogConnectionGraphicsItem* propertyLink);
     void addPropertyLink(PropertyLink* propertyLink);
@@ -286,6 +293,8 @@ private:
 
     void addConnectionToCurrentList(DialogConnectionGraphicsItem*);
     void removeConnectionFromCurrentList(DialogConnectionGraphicsItem*);
+    Property* getParentCompositeProperty(Property* property, Processor* processor);
+    bool expandProperties_;
 };
 
 /*---------------------------------------------------------------------------------------*/
@@ -333,18 +342,21 @@ private slots:
     void clickedCancelButton();
     void clickedAutoLinkPushButton();
     void clickedDeleteAllLinksPushButton();
+    void expandCompositeProperties(bool);
 
 private:
     void initDialog();
+    void updateProcessorLinks();
 
     LinkDialogGraphicsView* linkDialogView_;
     LinkDialogGraphicsScene* linkDialogScene_;
     QDialogButtonBox* okayCancelbuttonBox_;
     QPushButton* autoLinkPushButton_;
     CheckableQComboBox* autoLinkOptions_;
+    QCheckBox* expandCompositeOption_;
     QPushButton* deleteAllLinkPushButton_;
-    PropertyOwner* src_;
-    PropertyOwner* dest_;
+    Processor* src_;
+    Processor* dest_;
     QEventLoop eventLoop_;
 };
 

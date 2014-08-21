@@ -175,6 +175,11 @@ void ProcessorLink::removePropertyLinks(Property* startProperty, Property* endPr
     }
     
 }
+
+void ProcessorLink::removeAllPropertyLinks() {
+    propertyLinks_.clear();
+}
+
 PropertyLink* ProcessorLink::getPropertyLink(Property* startProperty, Property* endProperty) {
     PropertyOwner* outProcessor = destinationProcessor_;
     PropertyOwner* inProcessor = sourceProcessor_;
@@ -242,12 +247,18 @@ std::string ProcessorLink::getLinkInfo() {
         return info;
     }
 
-    std::string outId = outProcessor->getIdentifier();
-    std::string inId = inProcessor->getIdentifier();
+    
     std::vector<PropertyLink*> processedLinks;
 
     for (size_t i=0; i<propertyLinks_.size(); i++) {
         if (std::find(processedLinks.begin(), processedLinks.end(), propertyLinks_[i])==processedLinks.end()) {
+
+            Processor* outProcessor = dynamic_cast<Processor*>(propertyLinks_[i]->getSourceProperty()->getOwner()->getProcessor());
+            Processor* inProcessor = dynamic_cast<Processor*>(propertyLinks_[i]->getDestinationProperty()->getOwner()->getProcessor());
+
+            std::string outId = outProcessor->getIdentifier();
+            std::string inId = inProcessor->getIdentifier();
+
             Property* srcProperty = propertyLinks_[i]->getSourceProperty();
             Property* dstProperty = propertyLinks_[i]->getDestinationProperty();
             /*
