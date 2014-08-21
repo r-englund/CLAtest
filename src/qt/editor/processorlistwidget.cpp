@@ -169,13 +169,22 @@ QTreeWidgetItem* ProcessorTreeWidget::addProcessorItemTo(QTreeWidgetItem* item,
     newItem->setData(0, ProcessorTree::IDENTIFIER_ROLE,
                      QString::fromStdString(processor->getClassIdentifier()));
 
-    newItem->setToolTip(
-        0, QString::fromStdString(
-            "Display Name: " + processor->getDisplayName() + "\n" +
-            "  Identifier: " + processor->getClassIdentifier() + "\n" +
-            "    Category: " + processor->getCategory() + "\n" +
-            "  Code State: " + getCodeStateString(processor->getCodeState()) +"\n" +
-            "      Module: " + moduleId));
+    QString str(QString("<html><head/><body>\
+        <b style='color:white;'>%1</b>\
+        <table border='0' cellspacing='0' cellpadding='0' style='border-color:white;'>\
+        <tr><td style='color:#bbb;padding-right:8px;'>Module:</td><td style='color:#d06060;'><nobr>%5</nobr></td>\
+        <tr><td style='color:#bbb;padding-right:8px;'>Identifier:</td><td><nobr>%2</nobr></td></tr>\
+        <tr><td style='color:#bbb;padding-right:8px;'>Category:</td><td><nobr>%3</nobr></td></tr>\
+        <tr><td style='color:#bbb;padding-right:8px;'>Code State:</td><td><nobr>%4</nobr></td></tr>\
+        </tr></table></body></html>")
+        .arg(processor->getDisplayName().c_str())
+        .arg(processor->getClassIdentifier().c_str())
+        .arg(processor->getCategory().c_str())
+        .arg(getCodeStateString(processor->getCodeState()).c_str())
+        .arg(moduleId.c_str())
+        );
+
+    newItem->setToolTip(0, str);
 
     QFont font = newItem->font(1);
     font.setWeight(QFont::Bold);
