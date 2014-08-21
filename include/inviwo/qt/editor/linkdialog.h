@@ -343,6 +343,7 @@ private slots:
     void clickedAutoLinkPushButton();
     void clickedDeleteAllLinksPushButton();
     void expandCompositeProperties(bool);
+    void setValidationLevelOfSubPropertiesOfCompositeProperties(Property* compositeProperty, PropertyOwner::InvalidationLevel invalidationLevel);
 
 private:
     void initDialog();

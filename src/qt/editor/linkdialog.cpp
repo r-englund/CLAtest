@@ -1294,8 +1294,6 @@ void LinkDialogGraphicsScene::initScene(std::vector<Processor*> srcProcessorList
                         addPropertyLink(propertyLinks[j]);
                         pair =  processorNetwork_->getBidirectionalPair(propertyLinks[j]->getSourceProperty(), propertyLinks[j]->getDestinationProperty());
                         if (pair) pairList.push_back(pair);
-                        propertyLinks[j]->getSourceProperty()->setInvalidationLevel(PropertyOwner::INVALID_OUTPUT);
-                        propertyLinks[j]->getDestinationProperty()->setInvalidationLevel(PropertyOwner::INVALID_OUTPUT);
                     }
                 }
             }
@@ -1533,6 +1531,23 @@ void LinkDialog::clickedOkayButton() {
 
     updateProcessorLinks();
 
+    std::vector<PropertyLink*> propertyLinks = InviwoApplication::getPtr()->getProcessorNetwork()->getLinksBetweenProcessors(src_, dest_);
+    for (size_t j=0; j<propertyLinks.size(); j++) {
+
+        if (expandCompositeOption_->isChecked()) {
+            //LogWarn("Invalidation of sub-properties set to invalid")
+            if (IS_SUB_PROPERTY(propertyLinks[j]->getSourceProperty()))
+                propertyLinks[j]->getSourceProperty()->setInvalidationLevel(PropertyOwner::INVALID_OUTPUT);
+            if (IS_SUB_PROPERTY(propertyLinks[j]->getDestinationProperty()))
+                propertyLinks[j]->getDestinationProperty()->setInvalidationLevel(PropertyOwner::INVALID_OUTPUT);
+        }
+        else {
+            //LogWarn("Invalidation of sub-properties set to valid")
+            setValidationLevelOfSubPropertiesOfCompositeProperties(propertyLinks[j]->getSourceProperty(), PropertyOwner::VALID);
+            setValidationLevelOfSubPropertiesOfCompositeProperties(propertyLinks[j]->getDestinationProperty(), PropertyOwner::VALID);
+        }
+    }
+
     //accept();
     InviwoApplication::getPtr()->getProcessorNetwork()->updatePropertyLinkCaches();
     hide();
@@ -1564,6 +1579,15 @@ void LinkDialog::closeEvent ( QCloseEvent * event ) {
    eventLoop_.quit();
 }
 
+void LinkDialog::setValidationLevelOfSubPropertiesOfCompositeProperties(Property* property, PropertyOwner::InvalidationLevel invalidationLevel) {
+    CompositeProperty* compositeProperty = IS_COMPOSITE_PROPERTY(property);
+    if (!compositeProperty) return;
+    std::vector<Property*> subProps = compositeProperty->getProperties();
+    for (size_t i=0; i<subProps.size(); i++) {
+        subProps[i]->setInvalidationLevel(invalidationLevel);
+    }
+}
+
 void LinkDialog::clickedAutoLinkPushButton() {
     std::vector<Property*> srcProperties = src_->getProperties();
     std::vector<Property*> dstProperties = dest_->getProperties();
@@ -1591,8 +1615,9 @@ void LinkDialog::clickedAutoLinkPushButton() {
                         std::vector<Property*> d = compDst->getProperties();
                         for (size_t ii=0; ii<s.size(); ii++) {
                             for (size_t jj=0; jj<d.size(); jj++) {
-                                if (AutoLinker::canLink(s[ii], d[jj], (LinkingConditions) selectedTypes))
+                                if (AutoLinker::canLink(s[ii], d[jj], (LinkingConditions) selectedTypes)) {
                                     linkDialogScene_->addPropertyLink(s[ii], d[jj], true);
+                                }
                             }
                         }
                     }
