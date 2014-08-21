@@ -179,6 +179,9 @@ void Property::propertyModified() {
     setPropertyModified(true);
     if (getOwner() && getInvalidationLevel() > PropertyOwner::VALID) {
         getOwner()->invalidate(getInvalidationLevel(), this);
+        if (getOwner()->getProcessor() && getOwner()!=getOwner()->getProcessor() ) {
+            getOwner()->getProcessor()->invalidate(getInvalidationLevel(), this);
+        }
     }
     updateWidgets();
 }
