@@ -406,7 +406,7 @@ void NetworkEditor::removeLink(LinkConnectionGraphicsItem* linkGraphicsItem) {
 }
 
 void NetworkEditor::addLinkGraphicsItem(Processor* processor1, Processor* processor2) {
-    std::string linkInfo = InviwoApplication::getPtr()->getProcessorNetwork()->getProcessorLink(processor1, processor2)->getLinkInfo();
+    std::string linkInfo = InviwoApplication::getPtr()->getProcessorNetwork()->getProcessorLink(processor1, processor2)->getLinkInfoHtml();
     ProcessorGraphicsItem* processorGraphicsItem1 =
         getProcessorGraphicsItem(processor1->getIdentifier());
     ProcessorGraphicsItem* processorGraphicsItem2 =
@@ -451,7 +451,7 @@ void NetworkEditor::showLinkDialog(LinkConnectionGraphicsItem* linkConnectionGra
     if (processorLink->getPropertyLinks().size() == 0)
         removeLink(srcProcessor, destProcessor);
     else {
-        std::string toolTip = processorLink->getLinkInfo();
+        std::string toolTip = processorLink->getLinkInfoHtml();
         if (!toolTip.empty()) linkConnectionGraphicsItem->setToolTip(QString(toolTip.c_str()));
     }
 }
@@ -646,7 +646,7 @@ bool NetworkEditor::addPortInspector(std::string processorIdentifier, std::strin
         ivwAssert(processorWidgetQt, "Processor widget not found in inspector network.");
         processorWidgetQt->setMinimumSize(inspection_.size(), inspection_.size());
         processorWidgetQt->setMaximumSize(inspection_.size(), inspection_.size());
-	    processorWidgetQt->setWindowFlags(Qt::CustomizeWindowHint | Qt::Tool);
+        processorWidgetQt->setWindowFlags(Qt::CustomizeWindowHint | Qt::Tool);
         processorWidgetQt->move(ivec2(pos.x(),pos.y()));
         processorWidgetQt->show();
 

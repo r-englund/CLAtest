@@ -180,7 +180,7 @@ void ProcessorLink::removeAllPropertyLinks() {
     propertyLinks_.clear();
 }
 
-PropertyLink* ProcessorLink::getPropertyLink(Property* startProperty, Property* endProperty) {
+PropertyLink* ProcessorLink::getPropertyLink(Property* startProperty, Property* endProperty) const {
     PropertyOwner* outProcessor = destinationProcessor_;
     PropertyOwner* inProcessor = sourceProcessor_;
     //if (!isLinked(startProperty, endProperty)) return;
@@ -199,7 +199,7 @@ PropertyLink* ProcessorLink::getPropertyLink(Property* startProperty, Property* 
     return plink;
 }
 
-PropertyLink* ProcessorLink::getBidirectionalPair(Property* startProperty, Property* endProperty) {
+PropertyLink* ProcessorLink::getBidirectionalPair(Property* startProperty, Property* endProperty) const {
     PropertyLink* link = getPropertyLink(startProperty, endProperty);
 
     if (!link) return 0;
@@ -207,7 +207,7 @@ PropertyLink* ProcessorLink::getBidirectionalPair(Property* startProperty, Prope
     return getBidirectionalPair(link);
 }
 
-PropertyLink* ProcessorLink::getBidirectionalPair(PropertyLink* propertyLink) {
+PropertyLink* ProcessorLink::getBidirectionalPair(PropertyLink* propertyLink) const {
     return getPropertyLink(propertyLink->getDestinationProperty(), propertyLink->getSourceProperty());
 }
 
@@ -234,7 +234,7 @@ void ProcessorLink::setModifiedByPropertyOwner(PropertyOwner *processor) {
 }
 
 
-std::string ProcessorLink::getLinkInfo() {
+std::string ProcessorLink::getLinkInfo() const {
     std::string info("");
 
     if (!propertyLinks_.size()) return info;
@@ -277,6 +277,91 @@ std::string ProcessorLink::getLinkInfo() {
     }
 
     return info;
+}
+
+std::string ProcessorLink::getLinkInfoHtml() const {
+    std::string info;
+
+    if (!propertyLinks_.size()) return info;
+
+    Processor* processorA = dynamic_cast<Processor*>(propertyLinks_[0]->getSourceProperty()->getOwner()->getProcessor());
+    Processor* processorB = dynamic_cast<Processor*>(propertyLinks_[0]->getDestinationProperty()->getOwner()->getProcessor());
+
+    if (!processorA || !processorB) {
+        LogWarn("Invalid processor links");
+        return info;
+    }
+
+    // collect all links based on their direction
+    std::vector<PropertyLink*> processedLinks;
+
+    std::vector<PropertyLink *> bidirectional;
+    std::vector<PropertyLink *> outgoing; // from processor A
+    std::vector<PropertyLink *> incoming; // toward processor A
+
+    std::vector<PropertyLink *>::const_iterator it = propertyLinks_.begin();
+    while (it != propertyLinks_.end()) {
+        // check is necessary to avoid duplicate table entries
+        if (std::find(processedLinks.begin(), processedLinks.end(), (*it))==processedLinks.end()) {
+
+            Processor* linkSrc = dynamic_cast<Processor*>((*it)->getSourceProperty()->getOwner()->getProcessor());
+            Processor* linkDest = dynamic_cast<Processor*>((*it)->getDestinationProperty()->getOwner()->getProcessor());
+
+            Property* srcProperty = (*it)->getSourceProperty();
+            Property* dstProperty = (*it)->getDestinationProperty();
+            
+            PropertyLink* reverseLink = getPropertyLink(dstProperty, srcProperty);
+            if (reverseLink) {
+                bidirectional.push_back(*it);
+                // avoid unnecessary duplicate of reverse link
+                processedLinks.push_back(reverseLink);
+            }
+            else if (linkSrc == processorA) {
+                // forward link
+                outgoing.push_back(*it);
+            }
+            else { // if (linkSrc == processorB)
+                incoming.push_back(*it);
+            }
+            processedLinks.push_back(*it);
+        }
+        ++it;
+    }
+
+    // TODO: sort links according to their display name?
+    
+    // set up a HTML table containing three columns: 
+    //    props of outProcesser, link indicator, props of inProcessor
+    info = "<html><head/><body style=''>\
+           <table border='0' cellspacing='2' cellpadding='0' style='border-color:white;white-space:pre;'>";
+    // put in the table header consisting of both processor names
+    info += "<tr style='color:#bbb;font-weight:bold;'><td>" + processorA->getIdentifier() 
+        + "</td><td></td><td>" + processorB->getIdentifier() + "</td></tr>";
+
+    // add outgoing links first
+    info.append(getLinkInfoTableRows(outgoing, ":/icons/linkarrow_right.png"));
+    // add bidirectional links
+    info.append(getLinkInfoTableRows(bidirectional, ":/icons/linkarrow_bidirectional.png"));
+    // add incoming links
+    info.append(getLinkInfoTableRows(incoming, ":/icons/linkarrow_left.png"));
+
+    info.append("</table></body></html>");
+
+    return info;
+}
+
+std::string ProcessorLink::getLinkInfoTableRows(const std::vector<PropertyLink *> &links, const std::string &imgName) {
+    std::string str;
+    std::vector<PropertyLink *>::const_iterator it = links.begin();
+    while (it != links.end()) {
+        Property* srcProperty = (*it)->getSourceProperty();
+        Property* dstProperty = (*it)->getDestinationProperty();
+        str += "<tr><td>" + srcProperty->getDisplayName() 
+            + "</td><td width='30px' align='center' valign='middle'><img src='" + imgName 
+            + "'></td><td>" + dstProperty->getDisplayName() + "</td></tr>";
+        ++it;
+    }
+    return str;
 }
 
 void ProcessorLink::serialize(IvwSerializer& s) const {

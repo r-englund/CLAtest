@@ -171,7 +171,7 @@ QTreeWidgetItem* ProcessorTreeWidget::addProcessorItemTo(QTreeWidgetItem* item,
 
     QString str(QString("<html><head/><body>\
         <b style='color:white;'>%1</b>\
-        <table border='0' cellspacing='0' cellpadding='0' style='border-color:white;'>\
+        <table border='0' cellspacing='0' cellpadding='0' style='border-color:white;white-space:pre;'>\
         <tr><td style='color:#bbb;padding-right:8px;'>Module:</td><td style='color:#d06060;'><nobr>%5</nobr></td>\
         <tr><td style='color:#bbb;padding-right:8px;'>Identifier:</td><td><nobr>%2</nobr></td></tr>\
         <tr><td style='color:#bbb;padding-right:8px;'>Category:</td><td><nobr>%3</nobr></td></tr>\

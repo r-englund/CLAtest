@@ -67,16 +67,20 @@ public:
     void removePropertyLinks(Property* startProperty, Property* endProperty);
     void removeAllPropertyLinks();
     std::vector<PropertyLink*> getPropertyLinks() {return propertyLinks_;}
-    PropertyLink* getPropertyLink(Property* startProperty, Property* endProperty);
-    PropertyLink* getBidirectionalPair(PropertyLink* propertyLink);
-    PropertyLink* getBidirectionalPair(Property* startProperty, Property* endProperty);
+    PropertyLink* getPropertyLink(Property* startProperty, Property* endProperty) const;
+    PropertyLink* getBidirectionalPair(PropertyLink* propertyLink) const;
+    PropertyLink* getBidirectionalPair(Property* startProperty, Property* endProperty) const;
     void setSourceModified();
     void setDestinationModified();
     void setModifiedByPropertyOwner(PropertyOwner* processor); 
-    std::string getLinkInfo();
+    std::string getLinkInfo() const;
+    std::string getLinkInfoHtml() const;
 
     virtual void serialize(IvwSerializer& s) const;
     virtual void deserialize(IvwDeserializer& d);
+
+protected:
+    static std::string getLinkInfoTableRows(const std::vector<PropertyLink *> &links, const std::string &imgName);
 
 private:
     PropertyOwner* sourceProcessor_;
