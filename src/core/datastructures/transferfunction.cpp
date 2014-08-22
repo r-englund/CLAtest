@@ -161,7 +161,7 @@ void TransferFunction::clearPoints() {
 }
 
 void TransferFunction::onTransferFunctionPointChange(const TransferFunctionDataPoint* p){
-    std::sort(dataPoints_.begin(), dataPoints_.end(), TFPointComparer);
+    std::stable_sort(dataPoints_.begin(), dataPoints_.end(), TFPointComparer);
     invalidate();
     notifyControlPointChanged(p);
 }
@@ -170,7 +170,7 @@ void TransferFunction::onTransferFunctionPointChange(const TransferFunctionDataP
 void TransferFunction::calcTransferValues() {
     vec4* dataArray = static_cast<vec4*>(data_->getEditableRepresentation<LayerRAM>()->getData());
     
-    std::sort(dataPoints_.begin(), dataPoints_.end(), TFPointComparer);
+    std::stable_sort(dataPoints_.begin(), dataPoints_.end(), TFPointComparer);
     // in case of 0 points
     if ((int)dataPoints_.size() == 0) {
         for (int i = 0; i <= (textureSize_ - 1); i++) {
