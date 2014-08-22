@@ -76,11 +76,11 @@ protected:
     void updateViewports(bool force=false);
     void onStatusChange();
 
-    class ImageLayoutGLInteractationHandler : public InteractionHandler {
+    class ImageLayoutGLInteractionHandler : public InteractionHandler {
 
     public:
-        ImageLayoutGLInteractationHandler();
-        ~ImageLayoutGLInteractationHandler(){};
+        ImageLayoutGLInteractionHandler();
+        ~ImageLayoutGLInteractionHandler(){};
 
         void invokeEvent(Event* event);
 
@@ -104,7 +104,7 @@ private:
 
     Shader* shader_;
 
-    ImageLayoutGLInteractationHandler* layoutHandler_;
+    ImageLayoutGLInteractionHandler* layoutHandler_;
 
     ImageLayoutTypes::Layout currentLayout_;
     uvec2 currentDim_;

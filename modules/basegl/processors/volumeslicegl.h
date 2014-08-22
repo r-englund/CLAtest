@@ -69,10 +69,10 @@ public:
 protected:
     void process();
 
-    class VolumeSliceGLInteractationHandler : public InteractionHandler {
+    class VolumeSliceGLInteractionHandler : public InteractionHandler {
     public:
-        VolumeSliceGLInteractationHandler(VolumeSliceGL* vs);
-        ~VolumeSliceGLInteractationHandler(){};
+        VolumeSliceGLInteractionHandler(VolumeSliceGL* vs);
+        ~VolumeSliceGLInteractionHandler(){};
 
         void invokeEvent(Event* event);
     private:

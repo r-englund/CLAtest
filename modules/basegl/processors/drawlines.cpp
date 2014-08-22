@@ -58,7 +58,7 @@ DrawLines::DrawLines()
     clearButton_.onChange(this, &DrawLines::clearLines);
     addProperty(clearButton_);
 
-    addInteractionHandler(new DrawLinesInteractationHandler(this));
+    addInteractionHandler(new DrawLinesInteractionHandler(this));
 }
 
 DrawLines::~DrawLines() {
@@ -106,7 +106,7 @@ void DrawLines::clearLines() {
     lines_->getAttributes(0)->getEditableRepresentation<Position2dBufferRAM>()->clear();
 }
 
-DrawLines::DrawLinesInteractationHandler::DrawLinesInteractationHandler(DrawLines* dfh) 
+DrawLines::DrawLinesInteractionHandler::DrawLinesInteractionHandler(DrawLines* dfh) 
     : InteractionHandler()
     , drawPosEvent(MouseEvent::MOUSE_BUTTON_LEFT, InteractionEvent::MODIFIER_CTRL)
     , drawEnableEvent_('D', InteractionEvent::MODIFIER_CTRL)
@@ -114,7 +114,7 @@ DrawLines::DrawLinesInteractationHandler::DrawLinesInteractationHandler(DrawLine
     , drawModeEnabled_(false) {
 }
 
-void DrawLines::DrawLinesInteractationHandler::invokeEvent(Event* event){
+void DrawLines::DrawLinesInteractionHandler::invokeEvent(Event* event){
     KeyboardEvent* keyEvent = dynamic_cast<KeyboardEvent*>(event);
     if (keyEvent) {
         int button = keyEvent->button();

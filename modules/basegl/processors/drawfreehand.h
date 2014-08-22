@@ -60,10 +60,10 @@ public:
 protected:
     void process();
 
-    class DrawFreeHandInteractationHandler : public InteractionHandler {
+    class DrawFreeHandInteractionHandler : public InteractionHandler {
     public:
-        DrawFreeHandInteractationHandler(DrawFreeHand* vs);
-        ~DrawFreeHandInteractationHandler(){};
+        DrawFreeHandInteractionHandler(DrawFreeHand* vs);
+        ~DrawFreeHandInteractionHandler(){};
 
         void invokeEvent(Event* event);
     private:

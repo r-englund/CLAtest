@@ -59,10 +59,10 @@ public:
 protected:
     virtual void process();
 
-    class VolumeSliceInteractationHandler : public InteractionHandler {
+    class VolumeSliceInteractionHandler : public InteractionHandler {
     public:
-        VolumeSliceInteractationHandler(VolumeSlice* vs);
-        ~VolumeSliceInteractationHandler(){};
+        VolumeSliceInteractionHandler(VolumeSlice* vs);
+        ~VolumeSliceInteractionHandler(){};
 
         void invokeEvent(Event* event);
     private:

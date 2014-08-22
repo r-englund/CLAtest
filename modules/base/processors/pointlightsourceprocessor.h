@@ -54,10 +54,10 @@ public:
 protected:
     virtual void process();
 
-    class PointLightInteractationHandler : public InteractionHandler {
+    class PointLightInteractionHandler : public InteractionHandler {
     public:
-        PointLightInteractationHandler(FloatVec3Property*, CameraProperty*);
-        ~PointLightInteractationHandler(){};
+        PointLightInteractionHandler(FloatVec3Property*, CameraProperty*);
+        ~PointLightInteractionHandler(){};
 
         void invokeEvent(Event* event);
     private:

@@ -58,7 +58,7 @@ DrawFreeHand::DrawFreeHand()
     clearButton_.onChange(this, &DrawFreeHand::clearPoints);
     addProperty(clearButton_);
 
-    addInteractionHandler(new DrawFreeHandInteractationHandler(this));
+    addInteractionHandler(new DrawFreeHandInteractionHandler(this));
 }
 
 DrawFreeHand::~DrawFreeHand() {
@@ -107,7 +107,7 @@ void DrawFreeHand::clearPoints() {
     points_->getAttributes(0)->getEditableRepresentation<Position2dBufferRAM>()->clear();
 }
 
-DrawFreeHand::DrawFreeHandInteractationHandler::DrawFreeHandInteractationHandler(DrawFreeHand* dfh) 
+DrawFreeHand::DrawFreeHandInteractionHandler::DrawFreeHandInteractionHandler(DrawFreeHand* dfh) 
     : InteractionHandler()
     , drawPosEvent(MouseEvent::MOUSE_BUTTON_LEFT, InteractionEvent::MODIFIER_CTRL)
     , drawEnableEvent_('D', InteractionEvent::MODIFIER_CTRL)
@@ -115,7 +115,7 @@ DrawFreeHand::DrawFreeHandInteractationHandler::DrawFreeHandInteractationHandler
     , drawModeEnabled_(false) {
 }
 
-void DrawFreeHand::DrawFreeHandInteractationHandler::invokeEvent(Event* event){
+void DrawFreeHand::DrawFreeHandInteractionHandler::invokeEvent(Event* event){
     KeyboardEvent* keyEvent = dynamic_cast<KeyboardEvent*>(event);
     if (keyEvent) {
         int button = keyEvent->button();

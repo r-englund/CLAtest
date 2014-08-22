@@ -77,7 +77,7 @@ ImageLayoutGL::ImageLayoutGL()
     layout_.onChange(this, &ImageLayoutGL::onStatusChange);
     resizeContent_.onChange(this, &ImageLayoutGL::onStatusChange);
 
-    layoutHandler_ = new ImageLayoutGLInteractationHandler();
+    layoutHandler_ = new ImageLayoutGLInteractionHandler();
     addInteractionHandler(layoutHandler_);
     setAllPropertiesCurrentStateAsDefault();
 }
@@ -234,14 +234,14 @@ void ImageLayoutGL::onStatusChange() {
     updateViewports();
 }
 
-ImageLayoutGL::ImageLayoutGLInteractationHandler::ImageLayoutGLInteractationHandler() 
+ImageLayoutGL::ImageLayoutGLInteractionHandler::ImageLayoutGLInteractionHandler() 
     : InteractionHandler()
     , activePositionChangeEvent_(ivec2(0), MouseEvent::MOUSE_BUTTON_LEFT, MouseEvent::MOUSE_STATE_PRESS, InteractionEvent::MODIFIER_NONE, uvec2(512))
     , viewportActive_(false)
     , activePosition_(ivec2(0)) {
 }
 
-void ImageLayoutGL::ImageLayoutGLInteractationHandler::invokeEvent(Event* event){
+void ImageLayoutGL::ImageLayoutGLInteractionHandler::invokeEvent(Event* event){
     MouseEvent* mouseEvent = dynamic_cast<MouseEvent*>(event);
     if(mouseEvent){
         if(!viewportActive_ && mouseEvent->state() == activePositionChangeEvent_.state()) {
