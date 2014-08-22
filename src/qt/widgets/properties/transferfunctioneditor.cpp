@@ -226,8 +226,8 @@ bool controlPointComparison(TransferFunctionEditorControlPoint* controlPoint0,
 }
 
 void TransferFunctionEditor::redrawConnections() {
-    // sort control point vector
-    std::sort(controlPoints_.begin(), controlPoints_.end(), controlPointComparison);
+    // sort control point vector, keep order of points with same x
+    std::stable_sort(controlPoints_.begin(), controlPoints_.end(), controlPointComparison);
     QPainterPath path;
 
     if (controlPoints_.size() == 1) {

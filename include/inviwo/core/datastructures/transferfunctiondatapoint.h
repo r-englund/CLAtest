@@ -82,6 +82,7 @@ public:
     void setA(float alpha);
     void setPosA(const vec2& pos, float alpha);
     
+    void setNotificationsEnabled(bool enabled) { notify_ = enabled; }
     void notifyTransferFunctionPointObservers() const;
     
     virtual void serialize(IvwSerializer& s) const;
@@ -93,6 +94,7 @@ public:
 private:
     vec2 pos_;
     vec4 rgba_;
+    bool notify_;
 };
 
 inline bool operator==(const TransferFunctionDataPoint& lhs,

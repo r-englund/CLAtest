@@ -37,7 +37,8 @@ namespace inviwo {
 
 TransferFunctionDataPoint::TransferFunctionDataPoint(const vec2& pos, const vec4& rgba)
     : pos_(pos)
-    , rgba_(rgba) {
+    , rgba_(rgba)
+    , notify_(true) {
 }
 
 TransferFunctionDataPoint::~TransferFunctionDataPoint() {}
@@ -74,10 +75,12 @@ void TransferFunctionDataPoint::setPosA(const vec2& pos, float alpha) {
 }
 
 void TransferFunctionDataPoint::notifyTransferFunctionPointObservers() const {
-    // Notify observers
-    for (ObserverSet::reverse_iterator it = observers_->rbegin(); it != observers_->rend(); ++it) {
-        // static_cast can be used since only template class objects can be added
-        static_cast<TransferFunctionPointObserver*>(*it)->onTransferFunctionPointChange(this);
+    if(notify_) {
+        // Notify observers
+        for (ObserverSet::reverse_iterator it = observers_->rbegin(); it != observers_->rend(); ++it) {
+            // static_cast can be used since only template class objects can be added
+            static_cast<TransferFunctionPointObserver*>(*it)->onTransferFunctionPointChange(this);
+        }
     }
 }
 
