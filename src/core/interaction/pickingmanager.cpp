@@ -55,6 +55,11 @@ bool PickingManager::unregisterPickingObject(const PickingObject* p) {
     return false;
 }
 
+bool PickingManager::pickingEnabled(){
+    BoolProperty* pickingEnabledProperty = dynamic_cast<BoolProperty*>(InviwoApplication::getPtr()->getSettingsByType<SystemSettings>()->getPropertyByIdentifier("enablePicking"));
+    return (pickingEnabledProperty && pickingEnabledProperty->get());
+}
+
 PickingObject* PickingManager::getPickingObjectFromColor(const DataVec3UINT8::type& c) {
     std::vector<PickingObject*>::iterator it = std::find_if(pickingObjects_.begin(), pickingObjects_.end(), FindPickingObject(c));
 

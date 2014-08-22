@@ -50,7 +50,7 @@ bool PickingContainer::isPickableSelected() { return selected_; }
 bool PickingContainer::performPick(const uvec2& coord) {
     prevCoord_ = coord;
 
-    if (src_) {
+    if (PickingManager::instance()->pickingEnabled() && src_) {
         const Layer* pickingLayer = src_->getPickingLayer();
 
         if (pickingLayer) {
