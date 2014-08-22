@@ -141,7 +141,7 @@ VolumeSliceGL::VolumeSliceGL()
     Property::setGroupDisplayName("tfGroup", "Transfer Function");
 
 
-    addInteractionHandler(new VolumeSliceGLInteractationHandler(this));
+    addInteractionHandler(new VolumeSliceGLInteractionHandler(this));
 
     updateReadOnlyStates();
 }
@@ -514,7 +514,7 @@ void VolumeSliceGL::updateMaxSliceNumber() {
     }
 }
 
-VolumeSliceGL::VolumeSliceGLInteractationHandler::VolumeSliceGLInteractationHandler(VolumeSliceGL* vs) 
+VolumeSliceGL::VolumeSliceGLInteractionHandler::VolumeSliceGLInteractionHandler(VolumeSliceGL* vs) 
     : InteractionHandler()
     , wheelEvent_(MouseEvent::MOUSE_BUTTON_NONE, InteractionEvent::MODIFIER_NONE)
     , mousePressEvent_(MouseEvent::MOUSE_BUTTON_LEFT, InteractionEvent::MODIFIER_NONE)
@@ -523,7 +523,7 @@ VolumeSliceGL::VolumeSliceGLInteractationHandler::VolumeSliceGLInteractationHand
     , slicer_(vs) {
 }
 
-void VolumeSliceGL::VolumeSliceGLInteractationHandler::invokeEvent(Event* event){
+void VolumeSliceGL::VolumeSliceGLInteractionHandler::invokeEvent(Event* event){
     GestureEvent* gestureEvent = dynamic_cast<GestureEvent*>(event);
     KeyboardEvent* keyEvent = dynamic_cast<KeyboardEvent*>(event);
     MouseEvent* mouseEvent = dynamic_cast<MouseEvent*>(event);

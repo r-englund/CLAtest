@@ -62,10 +62,10 @@ protected:
 
     void process();
 
-    class DrawLinesInteractationHandler : public InteractionHandler {
+    class DrawLinesInteractionHandler : public InteractionHandler {
     public:
-        DrawLinesInteractationHandler(DrawLines* vs);
-        ~DrawLinesInteractationHandler(){};
+        DrawLinesInteractionHandler(DrawLines* vs);
+        ~DrawLinesInteractionHandler(){};
 
         void invokeEvent(Event* event);
     private:

@@ -67,7 +67,7 @@ PointLightSourceProcessor::PointLightSourceProcessor()
     lightPosition_.setSemantics(PropertySemantics::LightPosition);
     lightDiffuse_.setSemantics(PropertySemantics::Color);
     lightSource_ = new PointLight();
-    addInteractionHandler(new PointLightInteractationHandler(&lightPosition_, &camera_));
+    addInteractionHandler(new PointLightInteractionHandler(&lightPosition_, &camera_));
 }
 
 PointLightSourceProcessor::~PointLightSourceProcessor() {
@@ -99,13 +99,13 @@ void PointLightSourceProcessor::updatePointLightSource(PointLight* lightSource) 
     lightSource->setEnabled(lightEnabled_.get());
 }
 
-PointLightSourceProcessor::PointLightInteractationHandler::PointLightInteractationHandler(FloatVec3Property* pl, CameraProperty* cam) 
+PointLightSourceProcessor::PointLightInteractionHandler::PointLightInteractionHandler(FloatVec3Property* pl, CameraProperty* cam) 
     : InteractionHandler()
     , pointLight_(pl)
     , camera_(cam) {
 }
 
-void PointLightSourceProcessor::PointLightInteractationHandler::invokeEvent(Event* event){
+void PointLightSourceProcessor::PointLightInteractionHandler::invokeEvent(Event* event){
     GestureEvent* gestureEvent = dynamic_cast<GestureEvent*>(event);
     if (gestureEvent) {
         if(gestureEvent->type() == GestureEvent::PAN && gestureEvent->numFingers() == 3){

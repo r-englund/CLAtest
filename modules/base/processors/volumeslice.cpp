@@ -56,7 +56,7 @@ VolumeSlice::VolumeSlice()
     sliceAlongAxis_.setCurrentStateAsDefault();
     addProperty(sliceAlongAxis_);
     addProperty(sliceNumber_);
-    addInteractionHandler(new VolumeSliceInteractationHandler(this));
+    addInteractionHandler(new VolumeSliceInteractionHandler(this));
 }
 
 VolumeSlice::~VolumeSlice() {
@@ -116,7 +116,7 @@ void VolumeSlice::process() {
     outport_.setData(outImage);
 }
 
-VolumeSlice::VolumeSliceInteractationHandler::VolumeSliceInteractationHandler(VolumeSlice* vs) 
+VolumeSlice::VolumeSliceInteractionHandler::VolumeSliceInteractionHandler(VolumeSlice* vs) 
 : InteractionHandler()
 , wheelEvent_(MouseEvent::MOUSE_BUTTON_NONE, InteractionEvent::MODIFIER_NONE)
 , upEvent_('W',InteractionEvent::MODIFIER_NONE, KeyboardEvent::KEY_STATE_PRESS)
@@ -124,7 +124,7 @@ VolumeSlice::VolumeSliceInteractationHandler::VolumeSliceInteractationHandler(Vo
 , slicer_(vs) {
 }
 
-void VolumeSlice::VolumeSliceInteractationHandler::invokeEvent(Event* event){
+void VolumeSlice::VolumeSliceInteractionHandler::invokeEvent(Event* event){
     KeyboardEvent* keyEvent = dynamic_cast<KeyboardEvent*>(event);
     if (keyEvent) {
         int button = keyEvent->button();
