@@ -45,6 +45,7 @@ SystemSettings::SystemSettings(std::string id) :
     , enablePortInformationProperty_("enablePortInformation", "Enable port information", true)
     , enablePortInspectorsProperty_("enablePortInspectors", "Enable port inspectors", false)
     , portInspectorSize_("portInspectorSize", "Port inspector size", 128, 1, 1024)
+    , enablePickingProperty_("enablePicking", "Enable picking", true)
     , enableSoundProperty_("enableSound", "Enable sound", true)
     , useRAMPercentProperty_("useRAMPercent", "Max memory usage (%)", 50, 1, 100)
     , logStackTraceProperty_("logStackTraceProperty","Error stack trace log", false)
@@ -65,6 +66,7 @@ void SystemSettings::initialize() {
     addProperty(&enablePortInformationProperty_);
     addProperty(&enablePortInspectorsProperty_);
     addProperty(&portInspectorSize_);
+    addProperty(&enablePickingProperty_);
     addProperty(&enableSoundProperty_);
     addProperty(&useRAMPercentProperty_);
     addProperty(logStackTraceProperty_);

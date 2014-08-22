@@ -63,6 +63,7 @@ VolumeSliceGL::VolumeSliceGL()
     , tfMappingEnabled_("tfMappingEnabled", "Enable Transfer Function", true)
     , transferFunction_("transferFunction", "Transfer function", TransferFunction(), &inport_)
     , tfAlphaOffset_("alphaOffset", "Alpha Offset", 0.0f, 0.0f, 1.0f, 0.01f)
+    , handleInteractionEvents_("handleEvents", "Handle interaction events", true)
     , shader_(NULL)
     , indicatorShader_(NULL)
     , meshCrossHair_(NULL)
@@ -140,7 +141,7 @@ VolumeSliceGL::VolumeSliceGL()
     tfAlphaOffset_.setGroupID("tfGroup");
     Property::setGroupDisplayName("tfGroup", "Transfer Function");
 
-
+    addProperty(handleInteractionEvents_);
     addInteractionHandler(new VolumeSliceGLInteractionHandler(this));
 
     updateReadOnlyStates();
@@ -524,6 +525,9 @@ VolumeSliceGL::VolumeSliceGLInteractionHandler::VolumeSliceGLInteractionHandler(
 }
 
 void VolumeSliceGL::VolumeSliceGLInteractionHandler::invokeEvent(Event* event){
+    if(!slicer_->handleInteractionEvents_.get())
+        return;
+
     GestureEvent* gestureEvent = dynamic_cast<GestureEvent*>(event);
     KeyboardEvent* keyEvent = dynamic_cast<KeyboardEvent*>(event);
     MouseEvent* mouseEvent = dynamic_cast<MouseEvent*>(event);

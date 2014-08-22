@@ -137,6 +137,8 @@ private:
     TransferFunctionProperty transferFunction_;
     FloatProperty tfAlphaOffset_;
 
+    BoolProperty handleInteractionEvents_;
+
     Shader* shader_;
     Shader *indicatorShader_;
 

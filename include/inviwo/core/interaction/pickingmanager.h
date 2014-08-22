@@ -84,6 +84,8 @@ public:
 
     bool unregisterPickingObject(const PickingObject*);
 
+    bool pickingEnabled();
+
 protected:
     PickingManager() {};
     PickingManager(PickingManager const&) {};
