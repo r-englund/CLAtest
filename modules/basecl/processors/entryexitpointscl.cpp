@@ -63,7 +63,7 @@ EntryExitPointsCL::EntryExitPointsCL()
     addProperty(useGLSharing_);
     addProperty(handleInteractionEvents_);
     handleInteractionEvents_.onChange(this, &EntryExitPointsCL::handleInteractionEventsChanged);
-    trackball_ = new Trackball(&camera_);
+    trackball_ = new CameraTrackball(&camera_);
     addInteractionHandler(trackball_);
     entryPort_.addResizeEventListener(&camera_);
 }

@@ -41,7 +41,7 @@
 #include <modules/opengl/image/compositeprocessorgl.h>
 #include <inviwo/core/interaction/pickingobject.h>
 #include <inviwo/core/properties/cameraproperty.h>
-#include <inviwo/core/interaction/trackball.h>
+#include <inviwo/core/interaction/cameratrackball.h>
 
 
 namespace inviwo {
@@ -62,7 +62,7 @@ public:
 
 protected:
     virtual void process();
-
+    void handleInteractionEventsChanged();
 private:
     GeometryInport geometryInport_;
     ImageInport imageInport_;
@@ -71,6 +71,8 @@ private:
     FloatVec3Property position_;
 
     CameraProperty camera_;
+    BoolProperty handleInteractionEvents_; ///< Enable or disable camera movements from canvas
+    CameraTrackball* trackball_;
 
     const PickingObject* widgetPickingObject_;
 

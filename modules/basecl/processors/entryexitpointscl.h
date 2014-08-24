@@ -35,7 +35,7 @@
 
 #include <modules/basecl/baseclmoduledefine.h>
 #include <inviwo/core/common/inviwo.h>
-#include <inviwo/core/interaction/trackball.h>
+#include <inviwo/core/interaction/cameratrackball.h>
 #include <inviwo/core/properties/cameraproperty.h>
 #include <inviwo/core/ports/geometryport.h>
 #include <inviwo/core/ports/imageport.h>
@@ -72,7 +72,7 @@ private:
     BoolProperty useGLSharing_;
     BoolProperty handleInteractionEvents_; ///< Enable or disable camera movements from canvas
 
-    Trackball* trackball_;
+    CameraTrackball* trackball_;
     cl::Kernel* entryExitKernel_;
 
 };

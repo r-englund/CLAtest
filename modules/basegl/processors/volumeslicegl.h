@@ -37,6 +37,8 @@
 #include <inviwo/core/common/inviwo.h>
 #include <modules/opengl/inviwoopengl.h>
 #include <modules/opengl/processorgl.h>
+#include <inviwo/core/interaction/events/keyboardevent.h>
+#include <inviwo/core/interaction/events/mouseevent.h>
 #include <inviwo/core/ports/volumeport.h>
 #include <inviwo/core/ports/imageport.h>
 #include <inviwo/core/properties/boolproperty.h>

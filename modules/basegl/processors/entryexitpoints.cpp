@@ -31,7 +31,7 @@
  *********************************************************************************/
 
 #include "entryexitpoints.h"
-#include <inviwo/core/interaction/trackball.h>
+#include <inviwo/core/interaction/cameratrackball.h>
 #include <inviwo/core/rendering/geometryrendererfactory.h>
 #include <modules/opengl/clockgl.h>
 
@@ -63,7 +63,7 @@ EntryExitPoints::EntryExitPoints()
     addProperty(capNearClipping_);
     addProperty(handleInteractionEvents_);
     handleInteractionEvents_.onChange(this, &EntryExitPoints::handleInteractionEventsChanged);
-    trackball_ = new Trackball(&camera_);
+    trackball_ = new CameraTrackball(&camera_);
     addInteractionHandler(trackball_);
     entryPort_.addResizeEventListener(&camera_);
 

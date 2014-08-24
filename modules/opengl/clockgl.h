@@ -36,9 +36,9 @@
 #include <modules/opengl/openglmoduledefine.h>
 #include <modules/opengl/inviwoopengl.h>
 #include <inviwo/core/util/logcentral.h>
-#ifndef GL_VERSION_3_3
 #include <inviwo/core/util/clock.h>
-#endif
+#include <inviwo/core/util/stringconversion.h>
+
 namespace inviwo {
 
 /** \class ClockGL

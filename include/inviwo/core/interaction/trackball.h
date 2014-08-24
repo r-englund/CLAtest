@@ -41,21 +41,84 @@
 #include <inviwo/core/interaction/events/keyboardevent.h>
 #include <inviwo/core/interaction/events/eventlistener.h>
 #include <inviwo/core/interaction/events/resizeevent.h>
-#include <inviwo/core/io/serialization/ivwserializable.h>
-#include <inviwo/core/properties/cameraproperty.h>
-#include <inviwo/core/properties/propertyowner.h>
-
-#include <inviwo/core/properties/eventproperty.h>
-#include <inviwo/core/interaction/events/event.h>
 #include <inviwo/core/interaction/trackballaction.h>
+#include <inviwo/core/io/serialization/ivwserializable.h>
+#include <inviwo/core/properties/propertyowner.h>
+#include <inviwo/core/properties/eventproperty.h>
+#include <inviwo/core/util/observer.h>
 
 namespace inviwo {
+class Trackball;
+/** \class TrackballObserver
+ *
+ * Trackball observer that gets notified when positions and directions change.
+ *
+ * @see TrackballObservable
+ */
+class IVW_CORE_API TrackballObserver: public Observer {
+public:
+    TrackballObserver(): Observer() {};
+    virtual void onAllTrackballChanged(const Trackball* trackball) {};
+    virtual void onLookFromChanged(const Trackball* trackball) {};
+    virtual void onLookToChanged(const Trackball* trackball) {};
+    virtual void onLookUpChanged(const Trackball* trackball) {};
+};
 
-class IVW_CORE_API Trackball : public InteractionHandler, public PropertyOwner {
+
+/** \class TrackballObservable
+ *
+ * Can call notifyObserversInvalidationBegin and notifyObserversInvalidationEnd
+ *
+ * @see TrackballObserver
+ */
+class IVW_CORE_API TrackballObservable: public Observable<TrackballObserver> {
+public:
+    TrackballObservable(): Observable<TrackballObserver>() {};
+
+    void notifyAllChanged(const Trackball* trackball) const {
+        // Notify observers
+        for (ObserverSet::iterator it = observers_->begin(), itEnd = observers_->end(); it != itEnd; ++it) {
+            // static_cast can be used since only template class objects can be added
+            static_cast<TrackballObserver*>(*it)->onAllTrackballChanged(trackball);
+        }
+    }
+    void notifyLookFromChanged(const Trackball* trackball) const {
+        // Notify observers
+        for (ObserverSet::iterator it = observers_->begin(), itEnd = observers_->end(); it != itEnd; ++it) {
+            // static_cast can be used since only template class objects can be added
+            static_cast<TrackballObserver*>(*it)->onLookFromChanged(trackball);
+        }
+    }
+    void notifyLookToChanged(const Trackball* trackball) const {
+        // Notify observers
+        for (ObserverSet::iterator it = observers_->begin(), itEnd = observers_->end(); it != itEnd; ++it) {
+            // static_cast can be used since only template class objects can be added
+            static_cast<TrackballObserver*>(*it)->onLookToChanged(trackball);
+        }
+    }
+    void notifyLookUpChanged(const Trackball* trackball) const {
+        // Notify observers
+        for (ObserverSet::iterator it = observers_->begin(), itEnd = observers_->end(); it != itEnd; ++it) {
+            // static_cast can be used since only template class objects can be added
+            static_cast<TrackballObserver*>(*it)->onLookUpChanged(trackball);
+        }
+    }
+};
+
+class IVW_CORE_API Trackball : public InteractionHandler, public PropertyOwner, public TrackballObservable {
 
 public:
-    Trackball(CameraProperty* camera);
-    ~Trackball();
+    /**
+     * Rotates and moves object around a sphere. 
+     * This object does not take ownership of pointers handed to it.
+     * Use TrackballObserver to receive notifications when the data has changed.
+     * @see TrackballCamera
+     * @param vec3 * lookFrom Look from position
+     * @param vec3 * lookTo Look to position
+     * @param vec3 * lookUp Normalized look up direction vector
+     */
+    Trackball(vec3* lookFrom, vec3* lookTo, vec3* lookUp);
+    virtual ~Trackball();
 
     virtual void invokeEvent(Event* event);
     void addProperty(Property& property);
@@ -65,6 +128,13 @@ public:
 
     void serialize(IvwSerializer& s) const;
     void deserialize(IvwDeserializer& d);
+
+    vec3* getLookTo() { return lookTo_; }
+    vec3* getLookFrom() { return lookFrom_; }
+    vec3* getLookUp() { return lookUp_; }
+    const vec3* getLookTo() const { return lookTo_; }
+    const vec3* getLookFrom() const { return lookFrom_; }
+    const vec3* getLookUp() const { return lookUp_; }
 
 private:
     enum Direction {
@@ -80,7 +150,10 @@ private:
     vec2 lastMousePos_;
     vec3 lastTrackballPos_;
 
-    CameraProperty* camera_;
+    vec3* lookFrom_;
+    vec3* lookTo_;
+    vec3* lookUp_;
+
 
 
 
@@ -136,15 +209,18 @@ private:
     EventProperty stepPanRightProperty_;
 
     vec3 mapNormalizedMousePosToTrackball(vec2 mousePos, float dist = 1.f);
-    vec3 mapToCamera(vec3 pos, float dist = 1.f);
-    void rotateCamera(MouseEvent* mouseEvent);
-    void zoomCamera(MouseEvent* mouseEvent);
-    void panCamera(MouseEvent* mouseEvent);
-    void stepRotateCamera(Direction dir);
-    void stepZoomCamera(Direction dir);
-    void stepPanCamera(Direction dir);
+    vec3 mapToTrackball(vec3 pos, float dist = 1.f);
+    void rotate(MouseEvent* mouseEvent);
+
+    void rotateFromPosToPos(vec3 currentCamPos, vec3 nextCamPos, float rotationAngle);
+
+    void zoom(MouseEvent* mouseEvent);
+    void pan(MouseEvent* mouseEvent);
+    void stepRotate(Direction dir);
+    void stepZoom(Direction dir);
+    void stepPan(Direction dir);
 };
 
-} // namespace
+}
 
 #endif // IVW_TRACKBALL_H

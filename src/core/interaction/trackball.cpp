@@ -34,18 +34,19 @@
 #include <glm/gtx/vector_angle.hpp>
 
 namespace inviwo {
-
 static const float RADIUS = 0.5f;
 static const float STEPSIZE = 0.05f;
 
-Trackball::Trackball(CameraProperty* camera)
+Trackball::Trackball(vec3* lookFrom, vec3* lookTo, vec3* lookUp)
     : InteractionHandler()
     , PropertyOwner()
+    , lookFrom_(lookFrom)
+    , lookTo_(lookTo)
+    , lookUp_(lookUp)
     , pixelWidth_(0.007f)
     , isMouseBeingPressedAndHold_(false)
     , lastMousePos_(ivec2(0))
     , lastTrackballPos_(vec3(0.5f))
-    , camera_(camera)
     , rotateEvent_(MouseEvent::MOUSE_BUTTON_LEFT, InteractionEvent::MODIFIER_NONE)
     , zoomEvent_(MouseEvent::MOUSE_BUTTON_RIGHT, InteractionEvent::MODIFIER_NONE)
     , panEvent_(MouseEvent::MOUSE_BUTTON_MIDDLE, InteractionEvent::MODIFIER_NONE)
@@ -137,12 +138,12 @@ vec3 Trackball::mapNormalizedMousePosToTrackball(vec2 mousePos, float dist) {
     return glm::normalize(result);
 }
 
-vec3 Trackball::mapToCamera(vec3 pos, float dist) {
+vec3 Trackball::mapToTrackball(vec3 pos, float dist) {
     //return (camera_->viewMatrix() * vec4(pos,0)).xyz;
     //TODO: Use proper co-ordinate transformation matrices
     //Get x,y,z axis vectors of current camera view
-    vec3 currentViewYaxis = glm::normalize(camera_->getLookUp());
-    vec3 currentViewZaxis = glm::normalize(camera_->getLookFrom()-camera_->getLookTo());
+    vec3 currentViewYaxis = glm::normalize(*lookUp_);
+    vec3 currentViewZaxis = glm::normalize(*lookFrom_-*lookTo_);
     vec3 currentViewXaxis = glm::normalize(glm::cross(currentViewYaxis, currentViewZaxis));
 
     //mapping to camera co-ordinate
@@ -157,34 +158,25 @@ void Trackball::invokeEvent(Event* event) {
     GestureEvent* gestureEvent = dynamic_cast<GestureEvent*>(event);
     if (gestureEvent) {
         if(gestureEvent->type() == GestureEvent::PINCH && gestureEvent->numFingers() == 2){
-            vec3 direction = camera_->getLookFrom() - camera_->getLookTo();
-            float vecLength = glm::clamp(glm::length(direction), 0.5f, 4.f);
-            vec3 normdirection = glm::normalize(direction);
-            camera_->setLookFrom(camera_->getLookFrom()-normdirection*(static_cast<float>(vecLength*gestureEvent->deltaDistance())));
+            vec3 direction = glm::normalize(*lookFrom_ - *lookTo_);
+            *lookFrom_ = *lookFrom_-direction*(static_cast<float>(gestureEvent->deltaDistance()));
+            notifyLookFromChanged(this);
         }
         else if(gestureEvent->type() == GestureEvent::PAN && gestureEvent->numFingers() == 2){
+            vec3 offsetVector = vec3(gestureEvent->deltaPos(), 0.f);
+
             //The resulting rotation needs to be mapped to the camera distance,
             //as if the trackball is located at a certain distance from the camera.
             //TODO: Verify this
-            float zDist = (glm::length(camera_->getLookFrom()-camera_->getLookTo())-1.f)/M_PI;
+            //float zDist = (glm::length(*lookFrom_-*lookTo_)-1.f)/M_PI;
+            //vec3 mappedOffsetVector = mapToCamera(offsetVector, zDist);
 
-            vec3 offsetVector = vec3(gestureEvent->deltaPos(), 0.f)*camera_->getAspectRatio();
-            //std::cout << gestureEvent->deltaPos().x << ":" << gestureEvent->deltaPos().y << std::endl;
-            if(camera_->getAspectRatio() >= 1.f)
-                offsetVector.y *= 1.f/camera_->getAspectRatio();
-            else
-                offsetVector.x *= 1.f/(camera_->getAspectRatio()+1.f);
+            vec3 mappedOffsetVector = mapToTrackball(offsetVector);
 
-            vec3 mappedOffsetVector = mapToCamera(offsetVector, zDist);
+            *lookTo_ += mappedOffsetVector;
+            *lookFrom_ += mappedOffsetVector;
+            notifyAllChanged(this);
 
-            //vec3 mappedOffsetVector = mapToCamera(offsetVector);
-            //std::cout << mappedOffsetVector.x << ":" << mappedOffsetVector.y << ":" << mappedOffsetVector.z << std::endl;
-
-            camera_->lockInvalidation();
-            camera_->setLookTo(camera_->getLookTo()     + mappedOffsetVector);
-            camera_->setLookFrom(camera_->getLookFrom() + mappedOffsetVector);
-            camera_->unlockInvalidation();
-            camera_->invalidate();
         }
         isMouseBeingPressedAndHold_ = false;
 
@@ -200,18 +192,18 @@ void Trackball::invokeEvent(Event* event) {
         if (button == rotateEvent_.button()
             && modifier == rotateEvent_.modifier()
             && (state == MouseEvent::MOUSE_STATE_MOVE)) {
-            //perform rotation
-            rotateCamera(mouseEvent);
+                //perform rotation
+                rotate(mouseEvent);
         } else if (button == zoomEvent_.button()
-                   && modifier == zoomEvent_.modifier()
-                   && (state == MouseEvent::MOUSE_STATE_MOVE)) {
-            //perform zoom
-            zoomCamera(mouseEvent);
+            && modifier == zoomEvent_.modifier()
+            && (state == MouseEvent::MOUSE_STATE_MOVE)) {
+                //perform zoom
+                zoom(mouseEvent);
         } else if (button == panEvent_.button()
-                   && modifier == panEvent_.modifier()
-                   && (state == MouseEvent::MOUSE_STATE_MOVE)) {
-            //perform pan
-            panCamera(mouseEvent);
+            && modifier == panEvent_.modifier()
+            && (state == MouseEvent::MOUSE_STATE_MOVE)) {
+                //perform pan
+                pan(mouseEvent);
         } else if (state == MouseEvent::MOUSE_STATE_RELEASE)
             isMouseBeingPressedAndHold_ = false;
 
@@ -227,49 +219,49 @@ void Trackball::invokeEvent(Event* event) {
         if (button == stepRotateUpEvent_.button()
             && modifier == stepRotateUpEvent_.modifier()
             && state == KeyboardEvent::KEY_STATE_PRESS)
-            stepRotateCamera(UP);
+            stepRotate(UP);
         else if (button == stepRotateLeftEvent_.button()
             && modifier == stepRotateLeftEvent_.modifier()
             && state == KeyboardEvent::KEY_STATE_PRESS)
-            stepRotateCamera(LEFT);
+            stepRotate(LEFT);
         else if (button == stepRotateDownEvent_.button()
             && modifier == stepRotateDownEvent_.modifier()
             && state == KeyboardEvent::KEY_STATE_PRESS)
-            stepRotateCamera(DOWN);
+            stepRotate(DOWN);
         else if (button == stepRotateRightEvent_.button()
             && modifier == stepRotateRightEvent_.modifier()
             && state == KeyboardEvent::KEY_STATE_PRESS)
-            stepRotateCamera(RIGHT);
+            stepRotate(RIGHT);
         else if (button == stepZoomInEvent_.button()
             && modifier == stepZoomInEvent_.modifier()
             && state == KeyboardEvent::KEY_STATE_PRESS)
-            stepZoomCamera(UP);
+            stepZoom(UP);
         else if (button == stepZoomOutEvent_.button()
             && modifier == stepZoomOutEvent_.modifier()
             && state == KeyboardEvent::KEY_STATE_PRESS)
-            stepZoomCamera(DOWN);
+            stepZoom(DOWN);
         else if (button == stepPanUpEvent_.button()
             && modifier == stepPanUpEvent_.modifier()
             && state == KeyboardEvent::KEY_STATE_PRESS)
-            stepPanCamera(UP);
+            stepPan(UP);
         else if (button == stepPanLeftEvent_.button()
             && modifier == stepPanLeftEvent_.modifier()
             && state == KeyboardEvent::KEY_STATE_PRESS)
-            stepPanCamera(LEFT);
+            stepPan(LEFT);
         else if (button == stepPanDownEvent_.button()
             && modifier == stepPanDownEvent_.modifier()
             && state == KeyboardEvent::KEY_STATE_PRESS)
-            stepPanCamera(DOWN);
+            stepPan(DOWN);
         else if (button == stepPanRightEvent_.button()
             && modifier == stepPanRightEvent_.modifier()
             && state == KeyboardEvent::KEY_STATE_PRESS)
-            stepPanCamera(RIGHT);
+            stepPan(RIGHT);
 
         return;
     }
 }
 
-void Trackball::rotateCamera(MouseEvent* mouseEvent) {
+void Trackball::rotate(MouseEvent* mouseEvent) {
     ivwAssert(mouseEvent!=0, "Invalid mouse event.");
     // ROTATION
     vec2 curMousePos = mouseEvent->posNormalized();
@@ -277,12 +269,10 @@ void Trackball::rotateCamera(MouseEvent* mouseEvent) {
     //The resulting rotation needs to be mapped to the camera distance,
     //as if the trackball is located at a certain distance from the camera.
     //TODO: Verify this
-    //float zDist = (glm::length(camera_->getLookFrom()-camera_->getLookTo())-1.f)/M_PI;
+    //float zDist = (glm::length(*lookFrom_-*lookTo_)-1.f)/M_PI;
     //vec3 curTrackballPos = mapNormalizedMousePosToTrackball(curMousePos, zDist);
 
     vec3 curTrackballPos = mapNormalizedMousePosToTrackball(curMousePos);
-
-    float lookLength;
 
     // disable movements on first press
     if (!isMouseBeingPressedAndHold_) {
@@ -297,33 +287,14 @@ void Trackball::rotateCamera(MouseEvent* mouseEvent) {
         //difference vector in trackball co-ordinates
         vec3 trackBallOffsetVector = lastTrackballPos_ - curTrackballPos;
         //compute next camera position
-        vec3 mappedTrackBallOffsetVector = mapToCamera(trackBallOffsetVector);
-        vec3 currentCamPos = camera_->getLookFrom();
+        vec3 mappedTrackBallOffsetVector = mapToTrackball(trackBallOffsetVector);
+        vec3 currentCamPos = *lookFrom_;
         vec3 nextCamPos = currentCamPos + mappedTrackBallOffsetVector;
 
         // obtain rotation axis
         if (glm::degrees(rotationAngle) > pixelWidth_) {
-            //rotation axis
-            vec3 rotationAxis = glm::cross(currentCamPos, nextCamPos);
-            // generate quaternion and rotate camera
-            rotationAxis = glm::normalize(rotationAxis);
-            quat quaternion = glm::angleAxis(rotationAngle, rotationAxis);
-            lookLength = glm::length(camera_->getLookFrom()-camera_->getLookTo());
-            vec3 offset = camera_->getLookTo();
-            vec3 rotation = glm::rotate(quaternion, offset);
-            camera_->lockInvalidation();
-            camera_->setLookTo(rotation);
-            camera_->setLookFrom(glm::rotate(quaternion, camera_->getLookFrom()));
-            camera_->setLookUp(glm::rotate(quaternion, camera_->getLookUp()));
+            rotateFromPosToPos(currentCamPos, nextCamPos, rotationAngle);
 
-            // Check the length of the length-vector, might change due to float precision
-            if (lookLength != glm::length(camera_->getLookFrom()-camera_->getLookTo())) {
-                float diff = lookLength/glm::length(camera_->getLookFrom()-camera_->getLookTo());
-                camera_->setLookTo(camera_->getLookTo()*diff);
-            }
-
-            camera_->unlockInvalidation();
-            camera_->invalidate();
             //update mouse positions
             lastMousePos_ = curMousePos;
             lastTrackballPos_ = curTrackballPos;
@@ -333,14 +304,14 @@ void Trackball::rotateCamera(MouseEvent* mouseEvent) {
     return;
 }
 
-void Trackball::zoomCamera(MouseEvent* mouseEvent) {
+void Trackball::zoom(MouseEvent* mouseEvent) {
     ivwAssert(mouseEvent!=0, "Invalid mouse event.");
     // ZOOM
     float diff;
     vec2 curMousePos = mouseEvent->posNormalized();
     vec3 curTrackballPos = mapNormalizedMousePosToTrackball(curMousePos);
     // compute direction vector
-    vec3 direction = camera_->getLookFrom() - camera_->getLookTo();
+    vec3 direction = *lookFrom_ - *lookTo_;
 
     // disable movements on first press
     if (!isMouseBeingPressedAndHold_) {
@@ -353,7 +324,8 @@ void Trackball::zoomCamera(MouseEvent* mouseEvent) {
         // use the difference in mouse y-position to determine amount of zoom
         diff = curTrackballPos.y - lastTrackballPos_.y;
         // zoom by moving the camera
-        camera_->setLookFrom(camera_->getLookFrom()-direction*diff);
+        *lookFrom_ -= direction*diff;
+        notifyLookFromChanged(this);
         lastMousePos_ = curMousePos;
         lastTrackballPos_ = curTrackballPos;
     }
@@ -361,7 +333,7 @@ void Trackball::zoomCamera(MouseEvent* mouseEvent) {
     return;
 }
 
-void Trackball::panCamera(MouseEvent* mouseEvent) {
+void Trackball::pan(MouseEvent* mouseEvent) {
     ivwAssert(mouseEvent!=0, "Invalid mouse event.");
     // PAN
     vec2 curMousePos = mouseEvent->posNormalized();
@@ -382,17 +354,15 @@ void Trackball::panCamera(MouseEvent* mouseEvent) {
     //The resulting rotation needs to be mapped to the camera distance,
     //as if the trackball is located at a certain distance from the camera.
     //TODO: Verify this
-    //float zDist = (glm::length(camera_->getLookFrom()-camera_->getLookTo())-1.f)/M_PI;
+    //float zDist = (glm::length(*lookFrom_-*lookTo_)-1.f)/M_PI;
     //vec3 mappedTrackBallOffsetVector = mapToCamera(trackBallOffsetVector, zDist);
 
-    vec3 mappedTrackBallOffsetVector = mapToCamera(trackBallOffsetVector);
+    vec3 mappedTrackBallOffsetVector = mapToTrackball(trackBallOffsetVector);
 
     if (curMousePos != lastMousePos_) {
-        camera_->lockInvalidation();
-        camera_->setLookTo(camera_->getLookTo()     + mappedTrackBallOffsetVector);
-        camera_->setLookFrom(camera_->getLookFrom() + mappedTrackBallOffsetVector);
-        camera_->unlockInvalidation();
-        camera_->invalidate();
+        *lookTo_ += mappedTrackBallOffsetVector;
+        *lookFrom_ += mappedTrackBallOffsetVector;
+        notifyAllChanged(this);
         lastMousePos_ = curMousePos;
         lastTrackballPos_ = curTrackballPos;
     }
@@ -400,28 +370,27 @@ void Trackball::panCamera(MouseEvent* mouseEvent) {
     return;
 }
 
-void Trackball::stepRotateCamera(Direction dir) {
+void Trackball::stepRotate(Direction dir) {
     // STEP ROTATION
     vec2 origin = vec2(0.5, 0.5);
     vec2 direction = origin;
-    float lookLength;
 
     switch (dir) {
-        case UP:
-            direction.y -= STEPSIZE;
-            break;
+    case UP:
+        direction.y -= STEPSIZE;
+        break;
 
-        case LEFT:
-            direction.x -= STEPSIZE;
-            break;
+    case LEFT:
+        direction.x -= STEPSIZE;
+        break;
 
-        case DOWN:
-            direction.y += STEPSIZE;
-            break;
+    case DOWN:
+        direction.y += STEPSIZE;
+        break;
 
-        case RIGHT:
-            direction.x += STEPSIZE;
-            break;
+    case RIGHT:
+        direction.x += STEPSIZE;
+        break;
     }
 
     vec3 trackballDirection = mapNormalizedMousePosToTrackball(direction);
@@ -431,74 +400,55 @@ void Trackball::stepRotateCamera(Direction dir) {
     //difference vector in trackball co-ordinates
     vec3 trackBallOffsetVector = trackballOrigin - trackballDirection;
     //compute next camera position
-    vec3 mappedTrackBallOffsetVector = mapToCamera(trackBallOffsetVector);
-    vec3 currentCamPos = camera_->getLookFrom();
+    vec3 mappedTrackBallOffsetVector = mapToTrackball(trackBallOffsetVector);
+    vec3 currentCamPos = *lookFrom_;
     vec3 nextCamPos = currentCamPos + mappedTrackBallOffsetVector;
 
     // obtain rotation axis
     if (glm::degrees(rotationAngle) > pixelWidth_) {
-        //rotation axis
-        vec3 rotationAxis = glm::cross(currentCamPos, nextCamPos);
-        // generate quaternion and rotate camera
-        rotationAxis = glm::normalize(rotationAxis);
-        quat quaternion = glm::angleAxis(rotationAngle, rotationAxis);
-        lookLength = glm::length(camera_->getLookFrom()-camera_->getLookTo());
-        vec3 offset = camera_->getLookTo();
-        vec3 rotation = glm::rotate(quaternion, offset);
-        camera_->lockInvalidation();
-        camera_->setLookTo(rotation);
-        camera_->setLookFrom(glm::rotate(quaternion, camera_->getLookFrom()));
-        camera_->setLookUp(glm::rotate(quaternion, camera_->getLookUp()));
-
-        // Check the length of the length-vector, might change due to float precision
-        if (lookLength != glm::length(camera_->getLookFrom()-camera_->getLookTo())) {
-            float diff = lookLength/glm::length(camera_->getLookFrom()-camera_->getLookTo());
-            camera_->setLookTo(camera_->getLookTo()*diff);
-        }
-
-        camera_->unlockInvalidation();
-        camera_->invalidate();
+        rotateFromPosToPos(currentCamPos, nextCamPos, rotationAngle);
     }
 
     return;
 }
 
-void Trackball::stepZoomCamera(Direction dir) {
+void Trackball::stepZoom(Direction dir) {
     // ZOOM
     // compute direction vector
     vec3 direction = vec3(0);
 
     if (dir == UP)
-        direction = camera_->getLookFrom() - camera_->getLookTo();
+        direction = *lookFrom_ - *lookTo_;
     else if (dir == DOWN)
-        direction = camera_->getLookTo() - camera_->getLookFrom();
+        direction = *lookTo_ - *lookFrom_;
 
     // zoom by moving the camera
-    camera_->setLookFrom(camera_->getLookFrom()-direction*STEPSIZE);
+    *lookFrom_ -= direction*STEPSIZE;
+    notifyLookFromChanged(this);
     return;
 }
 
-void Trackball::stepPanCamera(Direction dir) {
+void Trackball::stepPan(Direction dir) {
     // PAN
     vec2 origin = vec2(0.5, 0.5);
     vec2 direction = origin;
 
     switch (dir) {
-        case UP:
-            direction.y -= STEPSIZE;
-            break;
+    case UP:
+        direction.y -= STEPSIZE;
+        break;
 
-        case LEFT:
-            direction.x -= STEPSIZE;
-            break;
+    case LEFT:
+        direction.x -= STEPSIZE;
+        break;
 
-        case DOWN:
-            direction.y += STEPSIZE;
-            break;
+    case DOWN:
+        direction.y += STEPSIZE;
+        break;
 
-        case RIGHT:
-            direction.x += STEPSIZE;
-            break;
+    case RIGHT:
+        direction.x += STEPSIZE;
+        break;
     }
 
     //vec2 curMousePos = mouseEvent->posNormalized();
@@ -508,12 +458,11 @@ void Trackball::stepPanCamera(Direction dir) {
     vec3 trackBallOffsetVector = trackballOrigin - trackballDirection;
     //compute next camera position
     trackBallOffsetVector.z = 0.0f;
-    vec3 mappedTrackBallOffsetVector = mapToCamera(trackBallOffsetVector);
-    camera_->lockInvalidation();
-    camera_->setLookTo(camera_->getLookTo()     + mappedTrackBallOffsetVector);
-    camera_->setLookFrom(camera_->getLookFrom() + mappedTrackBallOffsetVector);
-    camera_->unlockInvalidation();
-    camera_->invalidate();
+    vec3 mappedTrackBallOffsetVector = mapToTrackball(trackBallOffsetVector);
+    *lookTo_  += mappedTrackBallOffsetVector;
+    *lookFrom_ += mappedTrackBallOffsetVector;
+    notifyAllChanged(this);
+
     return;
 }
 
@@ -537,6 +486,28 @@ void Trackball::serialize(IvwSerializer& s) const {
 void Trackball::deserialize(IvwDeserializer& d) {
     InteractionHandler::deserialize(d);
     PropertyOwner::deserialize(d);
+}
+
+void Trackball::rotateFromPosToPos(vec3 currentCamPos, vec3 nextCamPos, float rotationAngle) {
+    //rotation axis
+    vec3 rotationAxis = glm::cross(currentCamPos, nextCamPos);
+    // generate quaternion and rotate camera
+    rotationAxis = glm::normalize(rotationAxis);
+    quat quaternion = glm::angleAxis(rotationAngle, rotationAxis);
+    float lookLength = glm::length(*lookFrom_-*lookTo_);
+    vec3 offset = *lookTo_;
+    vec3 rotation = glm::rotate(quaternion, offset);
+    *lookTo_ = rotation;
+    *lookFrom_ = glm::rotate(quaternion, *lookFrom_);
+    *lookUp_ = glm::rotate(quaternion, *lookUp_);
+
+    // Check the length of the length-vector, might change due to float precision
+    if (lookLength != glm::length(*lookFrom_-*lookTo_)) {
+        float diff = lookLength/glm::length(*lookFrom_-*lookTo_);
+        *lookTo_ = (*lookTo_) * diff;
+    }
+
+    notifyAllChanged(this);
 }
 
 } // namespace

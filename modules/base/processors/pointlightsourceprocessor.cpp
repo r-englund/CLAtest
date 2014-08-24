@@ -32,6 +32,7 @@
 
 #include "pointlightsourceprocessor.h"
 
+
 namespace inviwo {
 
 ProcessorClassIdentifier(PointLightSourceProcessor,  "Point light source");
@@ -48,7 +49,10 @@ PointLightSourceProcessor::PointLightSourceProcessor()
     , lightDiffuse_("lightDiffuse", "Color", vec4(1.0f))
     , lightPosition_("lightPosition", "Light Source Position", vec3(1.f, 0.65f, 0.65f), vec3(-1.f), vec3(1.f))
     , lightEnabled_("lightEnabled", "Enabled", true)
-    , camera_("camera", "Camera", vec3(0.0f, 0.0f, -2.0f), vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 1.0f, 0.0f)){
+    , camera_("camera", "Camera", vec3(0.0f, 0.0f, -2.0f), vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 1.0f, 0.0f)) 
+    , handleInteractionEvents_("handleEvents", "Handle interaction events", false)
+    , lookTo_(0)
+    , lookUp_(0.f, 1.f, 0.f) {
     addPort(outport_);
     addProperty(lightPosition_);
     addProperty(lightDiffuse_);
@@ -67,7 +71,19 @@ PointLightSourceProcessor::PointLightSourceProcessor()
     lightPosition_.setSemantics(PropertySemantics::LightPosition);
     lightDiffuse_.setSemantics(PropertySemantics::Color);
     lightSource_ = new PointLight();
-    addInteractionHandler(new PointLightInteractionHandler(&lightPosition_, &camera_));
+    //addInteractionHandler(new PointLightInteractionHandler(&lightPosition_, &camera_));
+    // Pass references to positions that will be changed by the trackball
+    trackball_ = new Trackball(&lightPosition_.get(), &lookTo_, &lookUp_);
+    // Add as observer to notify property about changes.
+    static_cast<TrackballObservable*>(trackball_)->addObserver(this);
+    addInteractionHandler(trackball_);
+
+    addProperty(handleInteractionEvents_);
+    handleInteractionEvents_.onChange(this, &PointLightSourceProcessor::handleInteractionEventsChanged);
+
+    camera_.onChange(this, &PointLightSourceProcessor::onCameraChanged);
+
+
 }
 
 PointLightSourceProcessor::~PointLightSourceProcessor() {
@@ -97,6 +113,35 @@ void PointLightSourceProcessor::updatePointLightSource(PointLight* lightSource) 
     vec3 diffuseLight = lightDiffuse_.get().xyz();
     lightSource->setIntensity(lightPowerProp_.get()*diffuseLight);
     lightSource->setEnabled(lightEnabled_.get());
+}
+
+void PointLightSourceProcessor::onAllTrackballChanged( const Trackball* trackball ) {
+    lightPosition_.propertyModified();
+}
+
+void PointLightSourceProcessor::onLookFromChanged( const Trackball* trackball ) {
+    lightPosition_.propertyModified();
+}
+
+void PointLightSourceProcessor::onLookToChanged( const Trackball* trackball ) {
+
+}
+
+void PointLightSourceProcessor::onLookUpChanged( const Trackball* trackball ) {
+
+}
+
+void PointLightSourceProcessor::handleInteractionEventsChanged() {
+    if (handleInteractionEvents_.get()) {
+        addInteractionHandler(trackball_);
+    } else {
+        removeInteractionHandler(trackball_);
+    }
+}
+
+void PointLightSourceProcessor::onCameraChanged() {
+    // This makes sure that the interaction with the light source is consistent with the direction of the camera
+    *trackball_->getLookUp() = camera_.getLookUp();
 }
 
 PointLightSourceProcessor::PointLightInteractionHandler::PointLightInteractionHandler(FloatVec3Property* pl, CameraProperty* cam) 

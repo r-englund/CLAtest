@@ -31,7 +31,7 @@
  *********************************************************************************/
 
 #include "positionwidgetprocessor.h"
-#include <inviwo/core/interaction/trackball.h>
+
 #include <inviwo/core/interaction/pickingmanager.h>
 #include <inviwo/core/datastructures/geometry/simplemeshcreator.h>
 #include <modules/opengl/rendering/meshrenderer.h>
@@ -45,20 +45,25 @@ ProcessorCategory(PositionWidgetProcessor, "Geometry Rendering");
 ProcessorCodeState(PositionWidgetProcessor, CODE_STATE_EXPERIMENTAL);
 
 PositionWidgetProcessor::PositionWidgetProcessor()
-    : CompositeProcessorGL(),
-      geometryInport_("geometryInport"),
-      imageInport_("imageInport"),
-      outport_("outport", COLOR_DEPTH_PICKING),
-      position_("position", "Position", vec3(0.0f), vec3(-100.f), vec3(100.f)),
-      camera_("camera", "Camera", vec3(0.0f, 0.0f, -2.0f), vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 1.0f, 0.0f))
+    : CompositeProcessorGL()
+    , geometryInport_("geometryInport")
+    , imageInport_("imageInport")
+    , outport_("outport", COLOR_DEPTH_PICKING)
+    , position_("position", "Position", vec3(0.0f), vec3(-100.f), vec3(100.f))
+    , camera_("camera", "Camera", vec3(0.0f, 0.0f, -2.0f), vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 1.0f, 0.0f))
+    , handleInteractionEvents_("handleEvents", "Handle interaction events", true)
 {
     addPort(geometryInport_);
     addPort(imageInport_);
     addPort(outport_);
     addProperty(position_);
     position_.setVisible(false);
+
     addProperty(camera_);
-    addInteractionHandler(new Trackball(&camera_));
+    trackball_ = new CameraTrackball(&camera_);
+    addInteractionHandler(trackball_);
+    addProperty(handleInteractionEvents_);
+    handleInteractionEvents_.onChange(this, &PositionWidgetProcessor::handleInteractionEventsChanged);
 }
 
 PositionWidgetProcessor::~PositionWidgetProcessor() {
@@ -120,6 +125,14 @@ void PositionWidgetProcessor::process() {
     shader_->deactivate();
     deactivateCurrentTarget();
     compositePortsToOutport(outport_, imageInport_);
+}
+
+void PositionWidgetProcessor::handleInteractionEventsChanged() {
+    if (handleInteractionEvents_.get()) {
+        addInteractionHandler(trackball_);
+    } else {
+        removeInteractionHandler(trackball_);
+    }
 }
 
 } // namespace
