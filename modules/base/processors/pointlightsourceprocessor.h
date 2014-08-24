@@ -41,10 +41,11 @@
 #include <inviwo/core/properties/boolproperty.h>
 #include <inviwo/core/properties/cameraproperty.h>
 #include <inviwo/core/processors/processor.h>
+#include <inviwo/core/interaction/trackball.h>
 
 namespace inviwo {
 
-class IVW_MODULE_BASE_API PointLightSourceProcessor : public Processor {
+class IVW_MODULE_BASE_API PointLightSourceProcessor : public Processor, public TrackballObserver {
 public:
     PointLightSourceProcessor();
     virtual ~PointLightSourceProcessor();
@@ -53,6 +54,13 @@ public:
 
 protected:
     virtual void process();
+
+    void onCameraChanged();
+    void handleInteractionEventsChanged();
+    virtual void onAllTrackballChanged(const Trackball* trackball);
+    virtual void onLookFromChanged(const Trackball* trackball);
+    virtual void onLookToChanged(const Trackball* trackball);
+    virtual void onLookUpChanged(const Trackball* trackball);
 
     class PointLightInteractionHandler : public InteractionHandler {
     public:
@@ -85,7 +93,11 @@ private:
     BoolProperty lightEnabled_;
 
     CameraProperty camera_;
+    BoolProperty handleInteractionEvents_; ///< Enable or disable interactions from canvas
 
+    Trackball* trackball_;
+    vec3 lookUp_; ///< Necessary for trackball
+    vec3 lookTo_; ///< Necessary for trackball
     PointLight* lightSource_;
 };
 

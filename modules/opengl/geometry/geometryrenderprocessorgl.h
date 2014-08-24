@@ -34,7 +34,7 @@
 #define IVW_GEOMETRYRENDERPROCESSORGL_H
 
 #include <inviwo/core/common/inviwo.h>
-#include <inviwo/core/interaction/trackball.h>
+#include <inviwo/core/interaction/cameratrackball.h>
 #include <inviwo/core/ports/geometryport.h>
 #include <inviwo/core/ports/imageport.h>
 #include <inviwo/core/properties/boolproperty.h>
@@ -47,7 +47,7 @@
 #include <vector>
 
 namespace inviwo {
-class Trackball;
+class CameraTrackball;
 class IVW_MODULE_OPENGL_API GeometryRenderProcessorGL : public ProcessorGL {
 public:
     GeometryRenderProcessorGL();
@@ -74,7 +74,7 @@ protected:
     CameraProperty camera_;
     ButtonProperty centerViewOnGeometry_;
     ButtonProperty resetViewParams_;
-    Trackball* trackball_;
+    CameraTrackball* trackball_;
 
     std::vector<GeometryRenderer*> renderers_;
     

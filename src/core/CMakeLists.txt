@@ -79,6 +79,7 @@ set(HEADER_FILES
     ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/volume/volumerepresentation.h
     ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/volume/volumetypeclassification.h
     ${IVW_INCLUDE_DIR}/inviwo/core/interaction/action.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/interaction/cameratrackball.h
     ${IVW_INCLUDE_DIR}/inviwo/core/interaction/events/event.h
     ${IVW_INCLUDE_DIR}/inviwo/core/interaction/events/eventhandler.h
     ${IVW_INCLUDE_DIR}/inviwo/core/interaction/events/eventlistener.h
@@ -94,7 +95,6 @@ set(HEADER_FILES
     ${IVW_INCLUDE_DIR}/inviwo/core/interaction/pickingmanager.h
     ${IVW_INCLUDE_DIR}/inviwo/core/interaction/pickingobject.h
     ${IVW_INCLUDE_DIR}/inviwo/core/interaction/trackball.h
-	${IVW_INCLUDE_DIR}/inviwo/core/interaction/trackballlight.h
     ${IVW_INCLUDE_DIR}/inviwo/core/interaction/trackballaction.h
     ${IVW_INCLUDE_DIR}/inviwo/core/io/datareader.h
     ${IVW_INCLUDE_DIR}/inviwo/core/io/datareaderdialog.h
@@ -284,6 +284,7 @@ set(SOURCE_FILES
     datastructures/volume/volumerepresentation.cpp
     datastructures/volume/volumetypeclassification.cpp
     interaction/action.cpp
+    interaction/cameratrackball.cpp
     interaction/events/event.cpp
     interaction/events/eventhandler.cpp
     interaction/events/eventlistener.cpp
@@ -299,7 +300,6 @@ set(SOURCE_FILES
     interaction/pickingobject.cpp
     interaction/trackball.cpp
     interaction/trackballaction.cpp
-	interaction/trackballlight.cpp
     io/datareader.cpp
     io/datareaderdialog.cpp
     io/datareaderfactory.cpp

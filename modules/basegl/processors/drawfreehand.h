@@ -34,6 +34,8 @@
 #define IVW_DRAWFREEHAND_H
 
 #include <modules/basegl/baseglmoduledefine.h>
+#include <inviwo/core/interaction/events/keyboardevent.h>
+#include <inviwo/core/interaction/events/mouseevent.h>
 #include <inviwo/core/ports/imageport.h>
 #include <modules/opengl/image/compositeprocessorgl.h>
 #include <inviwo/core/datastructures/geometry/mesh.h>

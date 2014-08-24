@@ -68,7 +68,7 @@ GeometryRenderProcessorGL::GeometryRenderProcessorGL()
     addPort(inport_);
     addPort(outport_);
     addProperty(camera_);
-    trackball_ = new Trackball(&camera_);
+    trackball_ = new CameraTrackball(&camera_);
     addInteractionHandler(trackball_);
     centerViewOnGeometry_.onChange(this, &GeometryRenderProcessorGL::centerViewOnGeometry);
     addProperty(centerViewOnGeometry_);

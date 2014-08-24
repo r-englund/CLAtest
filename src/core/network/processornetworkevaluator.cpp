@@ -34,6 +34,7 @@
 #include <inviwo/core/processors/canvasprocessor.h>
 #include <inviwo/core/processors/progressbarowner.h>
 #include <inviwo/core/util/assertion.h>
+#include <inviwo/core/util/canvas.h>
 
 namespace inviwo {
 

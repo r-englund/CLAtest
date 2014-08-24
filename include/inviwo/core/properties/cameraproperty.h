@@ -60,11 +60,14 @@ public:
 
     void resetCamera();
 
-    vec3 getLookFrom() const { return lookFrom_.get(); }
+    vec3& getLookFrom() { return lookFrom_.get(); }
+    const vec3& getLookFrom() const { return lookFrom_.get(); }
     void setLookFrom(vec3 lookFrom);
-    vec3 getLookTo() const { return lookTo_.get(); }
+    vec3& getLookTo() { return lookTo_.get(); }
+    const vec3& getLookTo() const { return lookTo_.get(); }
     void setLookTo(vec3 lookTo);
-    vec3 getLookUp() const { return lookUp_.get(); }
+    vec3& getLookUp() { return lookUp_.get(); }
+    const vec3& getLookUp() const { return lookUp_.get(); }
     void setLookUp(vec3 lookUp);
     vec3 getLookRight() const { return lookRight_; }
 

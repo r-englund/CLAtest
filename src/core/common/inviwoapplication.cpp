@@ -33,7 +33,6 @@
 #include <inviwo/core/common/inviwoapplication.h>
 #include <inviwo/core/datastructures/representationconverterfactory.h>
 #include <inviwo/core/io/datareaderfactory.h>
-#include <inviwo/core/util/dialogfactory.h>
 #include <inviwo/core/io/datawriterfactory.h>
 #include <inviwo/core/metadata/metadatafactory.h>
 #include <inviwo/core/network/processornetworkevaluator.h>
@@ -46,6 +45,8 @@
 #include <inviwo/core/properties/propertywidgetfactory.h>
 #include <inviwo/core/rendering/geometryrendererfactory.h>
 #include <inviwo/core/resources/resourcemanager.h>
+#include <inviwo/core/util/dialogfactory.h>
+#include <inviwo/core/util/urlparser.h>
 
 namespace inviwo {
 

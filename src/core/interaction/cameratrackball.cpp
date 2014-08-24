@@ -26,59 +26,40 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
- * Main file authors: Erik Sundén, Timo Ropinski
+ * Main file authors: Hans-Christian Helltegen, Rickard Englund
  *
  *********************************************************************************/
 
-#ifndef IVW_ENTRYEXITPOINTS_H
-#define IVW_ENTRYEXITPOINTS_H
-
-#include <modules/basegl/baseglmoduledefine.h>
-#include <inviwo/core/common/inviwo.h>
-#include <inviwo/core/properties/boolproperty.h>
-#include <inviwo/core/properties/cameraproperty.h>
-#include <inviwo/core/ports/geometryport.h>
-#include <inviwo/core/ports/imageport.h>
-#include <inviwo/core/ports/volumeport.h>
-#include <inviwo/core/rendering/geometryrenderer.h>
-#include <modules/opengl/inviwoopengl.h>
-#include <modules/opengl/processorgl.h>
-#include <modules/opengl/glwrap/shader.h>
-#include <inviwo/core/common/inviwoapplication.h>
+#include <inviwo/core/interaction/cameratrackball.h>
 
 namespace inviwo {
-class CameraTrackball;
 
-class IVW_MODULE_BASEGL_API EntryExitPoints : public ProcessorGL {
-public:
-    EntryExitPoints();
-    ~EntryExitPoints();
+CameraTrackball::CameraTrackball( CameraProperty* cameraProp ) : Trackball(&cameraProp->getLookFrom(), &cameraProp->getLookTo(), &cameraProp->getLookUp()), cameraProp_(cameraProp) {
+    static_cast<TrackballObservable*>(this)->addObserver(this);
+}
 
-    InviwoProcessorInfo();
+CameraTrackball::~CameraTrackball() {
 
-    void initialize();
-    void deinitialize();
+}
 
-protected:
-    virtual void process();
-    void handleInteractionEventsChanged();
-    void onGeometryChange();
-private:
-    GeometryInport geometryPort_;
-    ImageOutport entryPort_;
-    ImageOutport exitPort_;
+void CameraTrackball::onAllTrackballChanged( const Trackball* trackball ) {
+    cameraProp_->updateViewMatrix();
+    cameraProp_->propertyModified();
+}
 
-    CameraProperty camera_;
-    BoolProperty capNearClipping_;
-    BoolProperty handleInteractionEvents_; ///< Enable or disable camera movements from canvas
+void CameraTrackball::onLookFromChanged( const Trackball* trackball ) {
+    cameraProp_->updateViewMatrix();
+    cameraProp_->propertyModified();
+}
 
-    CameraTrackball* trackball_;
-    Shader* genericShader_;
-    Shader* capNearClippingPrg_;
-    Image* tmpEntryPoints_;
-    GeometryRenderer* renderer_;
-};
+void CameraTrackball::onLookToChanged( const Trackball* trackball ) {
+    cameraProp_->updateViewMatrix();
+    cameraProp_->propertyModified();
+}
+
+void CameraTrackball::onLookUpChanged( const Trackball* trackball ) {
+    cameraProp_->updateViewMatrix();
+    cameraProp_->propertyModified();
+}
 
 } // namespace
-
-#endif // IVW_ENTRYEXITPOINTS_H
