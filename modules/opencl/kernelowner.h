@@ -30,8 +30,8 @@
  *
  *********************************************************************************/
 
-#ifndef IVW_PROCESSOR_CL_H
-#define IVW_PROCESSOR_CL_H
+#ifndef IVW_KERNEL_OWNER_H
+#define IVW_KERNEL_OWNER_H
 
 #include <modules/opencl/openclmoduledefine.h>
 #include <modules/opencl/inviwoopencl.h>
@@ -92,4 +92,4 @@ protected:
 
 } // namespace
 
-#endif // IVW_VOLUME_RAYCASTER_CL_H
+#endif // IVW_KERNEL_OWNER_H

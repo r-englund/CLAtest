@@ -96,7 +96,7 @@ cl::Kernel* KernelManager::getKernel(cl::Program* program, const std::string& ke
             return kernelIt->second;
         }
     }
-
+    LogError("Failed to find kernel:" << kernelName << std::endl);
     return NULL;
 }
 
