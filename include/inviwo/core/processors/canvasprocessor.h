@@ -49,7 +49,7 @@ class Canvas;
 class IVW_CORE_API CanvasProcessor : public Processor {
 public:
     CanvasProcessor();
-    ~CanvasProcessor();
+    virtual ~CanvasProcessor();
 
     virtual void initialize();
     virtual void deinitialize();

@@ -89,7 +89,11 @@ CanvasProcessor::CanvasProcessor()
 }
 
 
-CanvasProcessor::~CanvasProcessor() {}
+CanvasProcessor::~CanvasProcessor() {
+    if (processorWidget_) {
+        processorWidget_->setProcessor(NULL);
+    }
+}
 
 void CanvasProcessor::initialize() {
     Processor::initialize();

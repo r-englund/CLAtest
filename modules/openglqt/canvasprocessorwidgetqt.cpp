@@ -44,7 +44,6 @@ namespace inviwo {
 CanvasProcessorWidgetQt::CanvasProcessorWidgetQt()
     : ProcessorWidgetQt()
       , canvas_(0)
-      , canvasProcessor_(0)
       , hasSharedCanvas_(false)
 {
     setMinimumSize(32, 32);
@@ -57,9 +56,8 @@ CanvasProcessorWidgetQt::~CanvasProcessorWidgetQt() {
     if(hasSharedCanvas_ && canvas_)
         canvas_->setParent(NULL);
 
-    if(canvasProcessor_){
-        canvasProcessor_->setProcessorWidget(NULL);
-        canvasProcessor_->setCanvas(NULL);
+    if(processor_){
+        static_cast<CanvasProcessor*>(processor_)->setCanvas(NULL);
     }
 }
 
@@ -69,7 +67,7 @@ ProcessorWidget* CanvasProcessorWidgetQt::create() const {
 
 void CanvasProcessorWidgetQt::initialize() {
     setWindowTitle(QString::fromStdString(processor_->getIdentifier()));
-    canvasProcessor_ = dynamic_cast<CanvasProcessor*>(processor_);
+    CanvasProcessor* canvasProcessor_ = dynamic_cast<CanvasProcessor*>(processor_);
     ProcessorWidgetQt::initialize();
     ivec2 dim = getDimensionMetaData();
 
@@ -129,12 +127,12 @@ void CanvasProcessorWidgetQt::deinitialize() {
 
 void CanvasProcessorWidgetQt::resizeEvent(QResizeEvent* event) {
     ProcessorWidgetQt::resizeEvent(event);
-    canvasProcessor_->setCanvasSize(ivec2(event->size().width(), event->size().height()));
+    static_cast<CanvasProcessor*>(processor_)->setCanvasSize(ivec2(event->size().width(), event->size().height()));
 }
 
 void CanvasProcessorWidgetQt::show() {
     canvas_->show();
-    canvasProcessor_->triggerQueuedEvaluation();
+    static_cast<CanvasProcessor*>(processor_)->triggerQueuedEvaluation();
     ProcessorWidgetQt::show();
 }
 

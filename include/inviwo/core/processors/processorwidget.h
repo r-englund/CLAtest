@@ -45,6 +45,8 @@ class IVW_CORE_API ProcessorWidget {
 public:
     ProcessorWidget();
     virtual ~ProcessorWidget();
+    ProcessorWidget(const ProcessorWidget& rhs);
+    ProcessorWidget& operator=(const ProcessorWidget& that);
 
     virtual ProcessorWidget* create() const = 0;
     virtual void initialize() = 0;

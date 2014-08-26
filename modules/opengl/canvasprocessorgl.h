@@ -44,6 +44,7 @@ namespace inviwo {
 class IVW_MODULE_OPENGL_API CanvasProcessorGL : public CanvasProcessor {
 public:
     CanvasProcessorGL();
+    virtual ~CanvasProcessorGL() {};
 
     InviwoProcessorInfo();
 
