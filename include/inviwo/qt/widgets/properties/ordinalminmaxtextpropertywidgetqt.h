@@ -108,6 +108,9 @@ void OrdinalMinMaxTextPropertyWidgetQt<T>::updateFromProperty() {
 
     min_->blockSignals(false);
     max_->blockSignals(false);
+
+    min_->setDisabled(minMaxProperty_->getReadOnly());
+    max_->setDisabled(minMaxProperty_->getReadOnly());
 }
 
 

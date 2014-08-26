@@ -88,6 +88,8 @@ void OptionPropertyWidgetQt::updateFromProperty() {
     }
     comboBox_->setCurrentIndex(static_cast<int>(property_->getSelectedIndex()));
     comboBox_->blockSignals(false);
+
+    comboBox_->setDisabled(property_->getReadOnly());
 }
 
 void OptionPropertyWidgetQt::setPropertyDisplayName() {

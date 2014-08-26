@@ -110,7 +110,8 @@ QSize CollapsibleGroupBoxWidgetQt::minimumSizeHint() const {
     return size;
 }
 
-void CollapsibleGroupBoxWidgetQt::updateFromProperty() {}
+void CollapsibleGroupBoxWidgetQt::updateFromProperty() {
+}
 
 void CollapsibleGroupBoxWidgetQt::showWidget() {
     for (size_t i = 0; i < propertyWidgets_.size(); i++) {

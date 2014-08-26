@@ -52,6 +52,7 @@ CompositePropertyWidgetQt::CompositePropertyWidgetQt(CompositeProperty* property
 void CompositePropertyWidgetQt::updateFromProperty() {
     for (size_t i = 0; i < propertyWidgets_.size(); i++)
         propertyWidgets_[i]->updateFromProperty();
+    this->setDisabled(property_->getReadOnly());
 }
 
 void CompositePropertyWidgetQt::labelDidChange() {

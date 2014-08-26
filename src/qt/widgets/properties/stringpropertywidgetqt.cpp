@@ -68,6 +68,7 @@ void StringPropertyWidgetQt::setPropertyValue() {
 
 void StringPropertyWidgetQt::updateFromProperty() {
     lineEdit_->setText(QString::fromStdString(property_->get()));
+    lineEdit_->setDisabled(property_->getReadOnly());
 }
 
 void StringPropertyWidgetQt::setPropertyDisplayName() {

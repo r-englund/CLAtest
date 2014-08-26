@@ -169,6 +169,7 @@ void FilePropertyWidgetQt::setPropertyValue() {
 
 void FilePropertyWidgetQt::updateFromProperty() {
     lineEdit_->setText(QFileInfo(QString::fromStdString(property_->get())).fileName());
+    lineEdit_->setDisabled(property_->getReadOnly());
 }
 
 void FilePropertyWidgetQt::setPropertyDisplayName() {
