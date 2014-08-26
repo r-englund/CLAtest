@@ -44,22 +44,18 @@ CameraTrackball::~CameraTrackball() {
 
 void CameraTrackball::onAllTrackballChanged( const Trackball* trackball ) {
     cameraProp_->updateViewMatrix();
-    cameraProp_->propertyModified();
 }
 
 void CameraTrackball::onLookFromChanged( const Trackball* trackball ) {
     cameraProp_->updateViewMatrix();
-    cameraProp_->propertyModified();
 }
 
 void CameraTrackball::onLookToChanged( const Trackball* trackball ) {
     cameraProp_->updateViewMatrix();
-    cameraProp_->propertyModified();
 }
 
 void CameraTrackball::onLookUpChanged( const Trackball* trackball ) {
     cameraProp_->updateViewMatrix();
-    cameraProp_->propertyModified();
 }
 
 } // namespace
