@@ -151,6 +151,7 @@ void inviwo::MetaDataPrimitiveType<T>::deserialize(IvwDeserializer& d) {
     public:\
         n##MetaData();\
         n##MetaData(t value);\
+        virtual ~n##MetaData() {};\
         virtual std::string getClassName() const;\
         virtual n##MetaData* clone() const;\
     };
@@ -167,6 +168,8 @@ class VectorMetaData<4,T> : public MetaDataPrimitiveType<Vector<4,T> > {
 public:
     VectorMetaData<4,T>() : MetaDataPrimitiveType<Vector<4,T> >(Vector<4,T>(0)) {};
     VectorMetaData<4,T>(Vector<4,T> value): MetaDataPrimitiveType<Vector<4,T> >(value) {};
+    virtual ~VectorMetaData<4,T>() {};
+
     virtual std::string getClassName() const {
         std::ostringstream name;
         name << "VectorMetaData<4, " << typeid(T).name() << ">";
@@ -192,6 +195,7 @@ class VectorMetaData<3,T> : public MetaDataPrimitiveType<Vector<3,T> > {
 public:
     VectorMetaData<3,T>() : MetaDataPrimitiveType<Vector<3,T> >(Vector<3,T>(0)) {};
     VectorMetaData<3,T>(Vector<3,T> value): MetaDataPrimitiveType<Vector<3,T> >(value) {};
+    virtual ~VectorMetaData<3,T>() {};
     virtual std::string getClassName() const {
         std::ostringstream name;
         name << "VectorMetaData<3, " << typeid(T).name() << ">";
@@ -216,6 +220,7 @@ class VectorMetaData<2,T> : public MetaDataPrimitiveType<Vector<2,T> > {
 public:
     VectorMetaData<2,T>() : MetaDataPrimitiveType<Vector<2,T> >(Vector<2,T>(0)) {};
     VectorMetaData<2,T>(Vector<2,T> value): MetaDataPrimitiveType<Vector<2,T> >(value) {};
+    virtual ~VectorMetaData<2,T>() {};
     virtual std::string getClassName() const {
         std::ostringstream name;
         name << "VectorMetaData<2, " << typeid(T).name() << ">";
@@ -243,6 +248,7 @@ class IVW_CORE_API MatrixMetaData<4,T> : public MetaDataPrimitiveType<Matrix<4,T
 public:
     MatrixMetaData<4,T>() : MetaDataPrimitiveType<Matrix<4,T> >(Matrix<4,T>(0)) {};
     MatrixMetaData<4,T>(Matrix<4,T> value): MetaDataPrimitiveType<Matrix<4,T> >(value) {};
+    virtual ~MatrixMetaData<4,T>() {};
     virtual std::string getClassName() const {
         std::ostringstream name;
         name << "MatrixMetaData<4, " << typeid(T).name() << ">";
@@ -266,6 +272,7 @@ class MatrixMetaData<3,T> : public MetaDataPrimitiveType<Matrix<3,T> > {
 public:
     MatrixMetaData<3,T>() : MetaDataPrimitiveType<Matrix<3,T> >(Matrix<3,T>(0)) {};
     MatrixMetaData<3,T>(Matrix<3,T> value): MetaDataPrimitiveType<Matrix<3,T> >(value) {};
+    virtual ~MatrixMetaData<3,T>() {};
     virtual std::string getClassName() const {
         std::ostringstream name;
         name << "MatrixMetaData<3, " << typeid(T).name() << ">";
@@ -289,6 +296,7 @@ class MatrixMetaData<2,T> : public MetaDataPrimitiveType<Matrix<2,T> > {
 public:
     MatrixMetaData<2,T>() : MetaDataPrimitiveType<Matrix<2,T> >(Matrix<2,T>(0)) {};
     MatrixMetaData<2,T>(Matrix<2,T> value): MetaDataPrimitiveType<Matrix<2,T> >(value) {};
+    virtual ~MatrixMetaData<2,T>() {};
     virtual std::string getClassName() const {
         std::ostringstream name;
         name << "MatrixMetaData<2, " << typeid(T).name() << ">";

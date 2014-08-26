@@ -39,7 +39,23 @@ ProcessorWidget::ProcessorWidget()
     : metaData_(0)
     , processor_(0) {}
 
-ProcessorWidget::~ProcessorWidget() {}
+ProcessorWidget::ProcessorWidget(const ProcessorWidget& rhs) : metaData_(rhs.metaData_), processor_(rhs.processor_) {
+
+}
+ProcessorWidget& ProcessorWidget::operator=(const ProcessorWidget& that) {
+    if (this != &that) {
+        metaData_ = that.metaData_;
+        processor_ = that.processor_;
+    }
+    return *this;
+}
+
+ProcessorWidget::~ProcessorWidget() {
+    if(processor_) {
+        processor_->setProcessorWidget(NULL);
+    }
+}
+
 
 void ProcessorWidget::initialize() {
     metaData_ = dynamic_cast<ProcessorWidgetMetaData*>(processor_->getMetaData("ProcessorWidgetMetaData"));
@@ -84,5 +100,7 @@ ivec2 ProcessorWidget::getPositionMetaData() {
 ivec2 ProcessorWidget::getDimensionMetaData() {
     return metaData_->getDimension();
 }
+
+
 
 } // namespace

@@ -35,13 +35,15 @@
 namespace inviwo {
 
 ProcessorWidgetMetaData::ProcessorWidgetMetaData()
-    : positionMetaData_(ivec2(0))
+    : MetaData()
+    , positionMetaData_(ivec2(0))
     , dimensionMetaData_(ivec2(256))
     , visiblityMetaData_(false) {
 }
 
 ProcessorWidgetMetaData::ProcessorWidgetMetaData(const ProcessorWidgetMetaData& rhs)
-    : positionMetaData_(rhs.positionMetaData_)
+    : MetaData()
+    , positionMetaData_(rhs.positionMetaData_)
     , dimensionMetaData_(rhs.dimensionMetaData_)
     , visiblityMetaData_(rhs.visiblityMetaData_) {
 }

@@ -60,7 +60,6 @@ protected:
 
 private:
     CanvasQt* canvas_;
-    CanvasProcessor* canvasProcessor_;
 
     bool hasSharedCanvas_;
 };
