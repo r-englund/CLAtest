@@ -209,13 +209,13 @@ void CameraProperty::setInport(Inport* inport) {
 }
 
 void CameraProperty::fitWithBasis(const mat3& basis) {
-    lockInvalidation();
     float newSize = glm::length(basis * vec3(1, 1, 1));
     float oldSize = glm::length(oldBasis_ * vec3(1, 1, 1));
     float ratio = newSize / oldSize;
 
     if (ratio == 1) return;
 
+    lockInvalidation();
     float newFarPlane = farPlane_.get() * ratio;
     farPlane_.setMaxValue(farPlane_.getMaxValue() * ratio);
     farPlane_.set(newFarPlane);
