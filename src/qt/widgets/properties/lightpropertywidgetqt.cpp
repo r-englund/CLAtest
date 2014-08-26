@@ -114,6 +114,9 @@ void LightPropertyWidgetQt::updateFromProperty() {
 
     lightWidget_->blockSignals(false);
     radiusSpinBox_->blockSignals(false);
+
+    lightWidget_->setDisabled(property_->getReadOnly());
+    radiusSpinBox_->setDisabled(property_->getReadOnly());
 }
 
 void LightPropertyWidgetQt::setPropertyDisplayName() {

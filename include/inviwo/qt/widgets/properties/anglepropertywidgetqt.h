@@ -102,6 +102,7 @@ public:
         angleWidget_->setMinMaxAngle(static_cast<double>(getProperty()->getMinValue()), static_cast<double>(getProperty()->getMaxValue()));
         angleWidget_->blockSignals(false);
         angleWidget_->setAngle(static_cast<double>(getProperty()->get()));
+        angleWidget_->setDisabled(getProperty()->getReadOnly());
     }
     void onAngleChanged() {
         getProperty()->set(static_cast<T>(angleWidget_->getAngle()));

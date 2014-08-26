@@ -122,6 +122,8 @@ void TransferFunctionPropertyWidgetQt::updateFromProperty() {
 
     btnOpenTF_->setIcon(tfPixmap);
     btnOpenTF_->setIconSize(btnOpenTF_->size());
+
+    this->setDisabled(property_->getReadOnly());
 }
 
 void TransferFunctionPropertyWidgetQt::setPropertyValue() {}

@@ -94,6 +94,9 @@ void DirectoryPropertyWidgetQt::updateFromProperty() {
     QDir currentDir = QDir(QString::fromStdString(property_->get()));
     lineEdit_->setText(currentDir.dirName());
     setPropertyTreeInfo(property_->get());
+
+    lineEdit_->setDisabled(property_->getReadOnly());
+    openButton_->setDisabled(property_->getReadOnly());
 }
 
 void DirectoryPropertyWidgetQt::setPropertyTreeInfo(std::string path) {

@@ -314,7 +314,7 @@ std::string OrdinalPropertyWidgetQt<BT, T>::getToolTipText() {
 
 template <typename BT, typename T>
 void OrdinalPropertyWidgetQt<BT, T>::updateFromProperty() {
-    this->setEnabled(!this->ordinalproperty_->getReadOnly());
+    this->setDisabled(this->ordinalproperty_->getReadOnly());
 
     T min = transformer_->min(this->ordinalproperty_->getMinValue());
     T max = transformer_->max(this->ordinalproperty_->getMaxValue());

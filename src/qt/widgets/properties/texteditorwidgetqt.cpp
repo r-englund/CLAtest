@@ -276,6 +276,7 @@ void TextEditorWidgetQt::updateFromProperty() {
         stringWidget_->updateFromProperty();
     else if (fileProp)
         fileWidget_->updateFromProperty();
+    this->setDisabled(property_->getReadOnly());
 }
 
 SyntaxHighligther* TextEditorWidgetQt::getSyntaxHighligther() {

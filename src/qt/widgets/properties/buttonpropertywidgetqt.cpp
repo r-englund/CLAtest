@@ -50,7 +50,6 @@ void ButtonPropertyWidgetQt::generateWidget() {
     hLayout->setContentsMargins(0, 0, 0, 0);
     hLayout->setSpacing(0);
     button_ = new QPushButton();
-    button_->setEnabled(!property_->getReadOnly());
     button_->setText(QString::fromStdString(property_->getDisplayName()));
     connect(button_, SIGNAL(released()), this, SLOT(handleButton()));
     hLayout->addWidget(button_);
@@ -61,7 +60,9 @@ void ButtonPropertyWidgetQt::handleButton() {
     if (!property_->getReadOnly())
         property_->propertyModified();
 }
-void ButtonPropertyWidgetQt::updateFromProperty() {}
+void ButtonPropertyWidgetQt::updateFromProperty() {
+    button_->setDisabled(property_->getReadOnly());
+}
 
 QPushButton* ButtonPropertyWidgetQt::getButton() {
     return button_;
