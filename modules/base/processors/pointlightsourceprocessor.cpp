@@ -76,7 +76,6 @@ PointLightSourceProcessor::PointLightSourceProcessor()
     trackball_ = new Trackball(&lightPosition_.get(), &lookTo_, &lookUp_);
     // Add as observer to notify property about changes.
     static_cast<TrackballObservable*>(trackball_)->addObserver(this);
-    addInteractionHandler(trackball_);
 
     addProperty(handleInteractionEvents_);
     handleInteractionEvents_.onChange(this, &PointLightSourceProcessor::handleInteractionEventsChanged);
