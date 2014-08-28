@@ -35,14 +35,22 @@
 #include <QPainter>
 #include <QStyleOptionGraphicsItem>
 #include <QVector2D>
+#include <QTextCursor>
+#include <QGraphicsView>
+#include <QGraphicsSceneMouseEvent>
 
 #include <inviwo/core/ports/inport.h>
 #include <inviwo/core/ports/outport.h>
+#include <inviwo/core/processors/processor.h>
 #include <inviwo/core/processors/progressbarowner.h>
 #include <inviwo/core/metadata/processormetadata.h>
 
 #include <inviwo/qt/editor/networkeditor.h>
 #include <inviwo/qt/editor/connectiongraphicsitem.h>
+#include <inviwo/qt/editor/processorlinkgraphicsitem.h>
+#include <inviwo/qt/editor/processorportgraphicsitem.h>
+#include <inviwo/qt/editor/processorprogressgraphicsitem.h>
+#include <inviwo/qt/editor/processorstatusgraphicsitem.h>
 #include <inviwo/qt/editor/linkgraphicsitem.h>
 #include <inviwo/qt/editor/processorgraphicsitem.h>
 #include <inviwo/qt/widgets/propertylistwidget.h>
@@ -60,14 +68,18 @@ int pointSizeToPixelSize(const int pointSize) {
     return ((pointSize * 4) / 3);
 }
 
-ProcessorGraphicsItem::ProcessorGraphicsItem()
+ProcessorGraphicsItem::ProcessorGraphicsItem(Processor* processor)
     : ProcessorObserver()
     , LabelGraphicsItemObserver()
-    , processor_(NULL)
-    , processorMeta_(NULL) {
+    , processor_(processor)
+    , processorMeta_(NULL)
+    , progressItem_(NULL)
+    , statusItem_(NULL)
+    , linkItem_(NULL) {
 
     setZValue(PROCESSORGRAPHICSITEM_DEPTH);
     setFlags(ItemIsMovable | ItemIsSelectable | ItemIsFocusable | ItemSendsGeometryChanges);
+    setCacheMode(QGraphicsItem::DeviceCoordinateCache);
     setRect(-width / 2, -height / 2, width, height);
     QGraphicsDropShadowEffect* processorShadowEffect = new QGraphicsDropShadowEffect();
     processorShadowEffect->setOffset(3.0);
@@ -88,230 +100,81 @@ ProcessorGraphicsItem::ProcessorGraphicsItem()
     QFont classFont("Segoe", labelHeight, QFont::Normal, true);
     classFont.setPixelSize(pointSizeToPixelSize(labelHeight));
     classLabel_->setFont(classFont);
-    ProgressBarOwner* progressBarOwner = dynamic_cast<ProgressBarOwner*>(processor_);
-    if (progressBarOwner) {
-        progressBarOwner->getProgressBar().addObserver(this);
+
+    nameLabel_->setText(QString::fromStdString(processor_->getIdentifier()));
+    classLabel_->setText(QString::fromStdString(processor_->getDisplayName()));
+    processor_->ProcessorObservable::addObserver(this);
+
+    processorMeta_ = dynamic_cast<ProcessorMetaData*>(processor->getMetaData("ProcessorMetaData"));
+
+    linkItem_ = new ProcessorLinkGraphicsItem(this);
+
+    float xOffset = 8.0f + 4.5f;  // based on roundedCorners
+    float xSpacing = 12.5f;       // GRID_SIZE / 2.0
+    std::vector<Inport*> inports = processor_->getInports();
+
+    qreal x, y;
+    y = rect().top() + 4.5f;
+    for (size_t i = 0; i < inports.size(); i++) {
+        x = rect().left() + xOffset + i * xSpacing;
+        inportItems_[inports[i]] = new ProcessorInportGraphicsItem(this, QPointF(x, y), inports[i]);
     }
-    progressBarTimer_.start();
+
+    std::vector<Outport*> outports = processor_->getOutports();
+    y = rect().bottom() - 4.5f;
+    for (size_t i = 0; i < outports.size(); i++) {
+        x = rect().left() + xOffset + i * xSpacing;
+        outportItems_[outports[i]] =
+            new ProcessorOutportGraphicsItem(this, QPointF(x, y), outports[i]);
+    }
+
+    statusItem_ = new ProcessorStatusGraphicsItem(this, processor_);
+
+    ProgressBarOwner* progressBarOwner = dynamic_cast<ProgressBarOwner*>(processor_);
+    if ((progressBarOwner != NULL)) {
+        progressItem_ =
+            new ProcessorProgressGraphicsItem(this, &(progressBarOwner->getProgressBar()));
+    }
+
+
+    QString str(QString(
+        "<html><head/><body>\
+         <b style='color:white;'>%1</b>\
+         <table border='0' cellspacing='0' cellpadding='0' style='border-color:white;white-space:pre;'>\
+         <tr><td style='color:#bbb;padding-right:8px;'>Identifier:</td><td><nobr>%2</nobr></td></tr>\
+         <tr><td style='color:#bbb;padding-right:8px;'>Category:</td><td><nobr>%3</nobr></td></tr>\
+         <tr><td style='color:#bbb;padding-right:8px;'>Code State:</td><td><nobr>%4</nobr></td></tr>\
+         <tr><td style='color:#bbb;padding-right:8px;'>Tags:</td><td><nobr>%5</nobr></td></tr>\
+         </tr></table></body></html>")
+         .arg(processor->getDisplayName().c_str())
+         .arg(processor->getClassIdentifier().c_str())
+         .arg(processor->getCategory().c_str())
+         .arg(Processor::getCodeStateString(processor->getCodeState()).c_str())
+         .arg(processor->getTags().getString().c_str())
+         );
+
+    setToolTip(str);
+}
+
+ProcessorInportGraphicsItem* ProcessorGraphicsItem::getInportGraphicsItem(Inport* port) {
+    return inportItems_[port];
+}
+ProcessorOutportGraphicsItem* ProcessorGraphicsItem::getOutportGraphicsItem(Outport* port) {
+    return outportItems_[port];
 }
 
 ProcessorGraphicsItem::~ProcessorGraphicsItem() {}
 
-void ProcessorGraphicsItem::setProcessor(Processor* processor) {
-    processor_ = processor;
-
-    if (processor) {
-        nameLabel_->setText(QString::fromStdString(processor_->getIdentifier()));
-        classLabel_->setText(QString::fromStdString(processor_->getDisplayName()));
-        processor_->ProcessorObservable::addObserver(this);
-
-        ProgressBarOwner* progressBarOwner = dynamic_cast<ProgressBarOwner*>(processor_);
-        if (progressBarOwner) {
-            progressBarOwner->getProgressBar().addObserver(this);
-        }
-        
-        processorMeta_ =
-            dynamic_cast<ProcessorMetaData*>(processor->getMetaData("ProcessorMetaData"));
-        
-    } else {
-        nameLabel_->setText("");
-        classLabel_->setText("");
-    }
-}
-
 void ProcessorGraphicsItem::editProcessorName() {
     setFocus();
     nameLabel_->setFlags(QGraphicsItem::ItemIsSelectable | QGraphicsItem::ItemIsFocusable);
-    
+
     QTextCursor cur = nameLabel_->textCursor();
     cur.select(QTextCursor::Document);
     nameLabel_->setTextCursor(cur);
     nameLabel_->setTextInteractionFlags(Qt::TextEditorInteraction);
     nameLabel_->setFocus();
     nameLabel_->setSelected(true);
-}
-
-QPointF ProcessorGraphicsItem::getShortestBoundaryPointTo(
-    ProcessorGraphicsItem* processorGraphicsItem) {
-    return getShortestBoundaryPointTo(processorGraphicsItem->pos());
-}
-
-QPointF ProcessorGraphicsItem::getShortestBoundaryPointTo(QPointF inPos) {
-    QPointF c = pos();
-    QPointF bl = rect().bottomLeft();
-    QPointF br = rect().bottomRight();
-    QPointF propertyMappedDim;
-    std::vector<QPointF> centerPoints;
-    // center
-    centerPoints.push_back(c);
-    // right boundary center
-    propertyMappedDim = mapToParent(br) - mapToParent(bl);
-    centerPoints.push_back(c + (propertyMappedDim / 2.0));
-    // left boundary center
-    propertyMappedDim = mapToParent(bl) - mapToParent(br);
-    centerPoints.push_back(c + (propertyMappedDim / 2.0));
-    qreal minDist = std::numeric_limits<qreal>::max();
-    size_t minInd = 0;
-
-    for (size_t i = 1; i < centerPoints.size(); i++) {
-        if (QVector2D(centerPoints[i] - inPos).length() < minDist) {
-            minInd = i;
-            minDist = QVector2D(centerPoints[i] - inPos).length();
-        }
-    }
-
-    return centerPoints[minInd];
-}
-
-QRectF ProcessorGraphicsItem::calculatePortRect(Inport* port) const {
-    std::vector<Inport*> inports = processor_->getInports();
-
-    for (size_t i = 0; i < inports.size(); i++)
-        if (inports[i] == port) return calculateInportRect(i);
-
-    return QRectF();
-}
-
-QRectF ProcessorGraphicsItem::calculatePortRect(Outport* port) const {
-    std::vector<Outport*> outports = processor_->getOutports();
-
-    for (size_t i = 0; i < outports.size(); i++)
-        if (outports[i] == port) return calculateOutportRect(i);
-
-    return QRectF();
-}
-
-QRectF ProcessorGraphicsItem::calculateInportRect(size_t curPort) const {
-    QPointF portDims(9.0f, 9.0f);
-    float xOffset = 8.0f;    // based on roundedCorners
-    float xSpacing = 12.5f;  // GRID_SIZE / 2.0
-    qreal left = rect().left() + xOffset + curPort * xSpacing;
-    qreal top = rect().top();
-    return QRectF(left, top, portDims.x(), portDims.y());
-}
-
-QRectF ProcessorGraphicsItem::calculateOutportRect(size_t curPort) const {
-    QPointF portDims(9.0f, 9.0f);
-    float xOffset = 8.0f;    // based on roundedCorners
-    float xSpacing = 12.5f;  // GRID_SIZE / 2.0
-    qreal left = rect().left() + xOffset + curPort * xSpacing;
-    qreal top = rect().bottom() - portDims.y();
-    return QRectF(left, top, portDims.x(), portDims.y());
-}
-
-Port* ProcessorGraphicsItem::getSelectedPort(const QPointF pos) const {
-    Port* port = getSelectedInport(pos);
-    if (port) {
-        return port;
-    }else{
-        return getSelectedOutport(pos);
-    }
-}
-
-Inport* ProcessorGraphicsItem::getSelectedInport(const QPointF pos) const {
-    QPointF itemPos = mapFromScene(pos);
-    std::vector<Inport*> inports = processor_->getInports();
-    for (size_t i = 0; i < inports.size(); i++) {
-        QRectF portRect = calculateInportRect(i);
-        if (portRect.contains(itemPos)) return inports[i];
-    }
-    return NULL;
-}
-
-Outport* ProcessorGraphicsItem::getSelectedOutport(const QPointF pos) const {
-    QPointF itemPos = mapFromScene(pos);
-    std::vector<Outport*> outports = processor_->getOutports();
-    for (size_t i = 0; i < outports.size(); i++) {
-        QRectF portRect = calculateOutportRect(i);
-        if (portRect.contains(itemPos)) return outports[i];
-    }
-    return NULL;
-}
-
-bool ProcessorGraphicsItem::hitLinkDock(const QPointF pos) const {
-    QPointF itemPos = mapFromScene(pos);
-
-    float diam = 5.0;
-    QPointF linkpos1 = (rect().bottomRight() + rect().topRight()) / 2.0;
-    QRectF linkrect1 = QRectF(linkpos1 + QPointF(-diam, diam), linkpos1 + QPointF(diam, -diam));
-
-    QPointF linkpos2 = (rect().bottomLeft() + rect().topLeft()) / 2.0;
-    QRectF linkrect2 = QRectF(linkpos2 + QPointF(-diam, diam), linkpos2 + QPointF(diam, -diam));
-
-
-    return linkrect1.contains(itemPos) || linkrect2.contains(itemPos); 
-}
-
-
-void ProcessorGraphicsItem::paintStatusIndicator(QPainter* p, QPointF pos, bool isOn,
-                                                 QColor baseColor) {
-    qreal ledRadius = 5.0;
-    QColor ledColor;
-    QColor borderColor;
-
-    if (isOn) {
-        ledColor = baseColor;
-        borderColor = QColor(124, 124, 124);
-    } else {
-        ledColor = baseColor.dark(400);
-        borderColor = QColor(64, 64, 64);
-    }
-
-    // initialize painter
-    p->save();
-    p->setPen(QPen(borderColor, 3.0));
-    p->setBrush(QBrush(ledColor));
-    // draw base shape
-    p->drawEllipse(pos, ledRadius, ledRadius);
-    // draw light highlight
-    QPointF highLightPos = pos;
-    p->setPen(Qt::NoPen);
-
-    while (ledRadius > 0.0) {
-        ledColor = ledColor.light(120);
-        p->setBrush(QBrush(ledColor));
-        p->drawEllipse(highLightPos, ledRadius, ledRadius);
-        ledRadius -= 0.25;
-        p->drawEllipse(highLightPos, ledRadius, ledRadius);
-        ledRadius -= 0.25;
-        p->drawEllipse(highLightPos, ledRadius, ledRadius);
-        ledRadius -= 0.25;
-        highLightPos.setX(highLightPos.x() - 0.25);
-        highLightPos.setY(highLightPos.y() - 0.25);
-    }
-
-    // deinitialize painter
-    p->restore();
-}
-
-void ProcessorGraphicsItem::paintProgressBar(QPainter* p, float progress) {
-    QPointF position(-(width / 2.0f) + 7.0f, 9.0f);
-    QSize dimensions(width - 14.0f, 5.0f);
-    p->save();
-    QColor progressColor = Qt::lightGray;
-    QRectF progressBarRect(position, dimensions);
-    QLinearGradient progressGrad(progressBarRect.topLeft(), progressBarRect.topRight());
-    progressGrad.setColorAt(0.0f, progressColor);
-    float left = std::max(0.0f, progress - 0.001f);
-    float right = std::min(1.0f, progress + 0.001f);
-    progressGrad.setColorAt(left, progressColor);
-    progressGrad.setColorAt(right, Qt::black);
-    progressGrad.setColorAt(1.0f, Qt::black);
-    p->setPen(Qt::black);
-    p->setBrush(progressGrad);
-    p->drawRoundedRect(progressBarRect, 2.0, 2.0);
-    QColor shadeColor(128, 128, 128);
-    QLinearGradient shadingGrad(progressBarRect.topLeft(), progressBarRect.bottomLeft());
-    shadingGrad.setColorAt(0.0f, QColor(shadeColor.red() * 0.6, shadeColor.green() * 0.6,
-                                        shadeColor.blue() * 0.6, 120));
-    shadingGrad.setColorAt(0.3f,
-                           QColor(shadeColor.red(), shadeColor.green(), shadeColor.blue(), 120));
-    shadingGrad.setColorAt(1.0f,
-                           QColor(shadeColor.red(), shadeColor.green(), shadeColor.blue(), 120));
-    p->setPen(Qt::NoPen);
-    p->setBrush(shadingGrad);
-    p->drawRoundedRect(progressBarRect, 2.0, 2.0);
-    p->restore();
 }
 
 void ProcessorGraphicsItem::paint(QPainter* p, const QStyleOptionGraphicsItem* options,
@@ -339,20 +202,8 @@ void ProcessorGraphicsItem::paint(QPainter* p, const QStyleOptionGraphicsItem* o
     }
 
     QRectF bRect = rect();
-    QPainterPath roundRectPath;
-    roundRectPath.moveTo(bRect.left(), bRect.top() + roundedCorners);
-    roundRectPath.lineTo(bRect.left(), bRect.bottom() - roundedCorners);
-    roundRectPath.arcTo(bRect.left(), bRect.bottom() - (2 * roundedCorners), (2 * roundedCorners),
-                        (2 * roundedCorners), 180.0, 90.0);
-    roundRectPath.lineTo(bRect.right() - roundedCorners, bRect.bottom());
-    roundRectPath.arcTo(bRect.right() - (2 * roundedCorners), bRect.bottom() - (2 * roundedCorners),
-                        (2 * roundedCorners), (2 * roundedCorners), 270.0, 90.0);
-    roundRectPath.lineTo(bRect.right(), bRect.top() + roundedCorners);
-    roundRectPath.arcTo(bRect.right() - (2 * roundedCorners), bRect.top(), (2 * roundedCorners),
-                        (2 * roundedCorners), 0.0, 90.0);
-    roundRectPath.lineTo(bRect.left() + roundedCorners, bRect.top());
-    roundRectPath.arcTo(bRect.left(), bRect.top(), (2 * roundedCorners), (2 * roundedCorners), 90.0,
-                        90.0);
+    QPainterPath roundRectPath = makeRoundedBox(rect(), roundedCorners);
+
     p->setBrush(grad);
     p->drawPath(roundRectPath);
     QLinearGradient highlightGrad(rect().topLeft(), rect().bottomLeft());
@@ -378,75 +229,12 @@ void ProcessorGraphicsItem::paint(QPainter* p, const QStyleOptionGraphicsItem* o
     highlightPath.lineTo(bRect.left() + roundedCorners, bRect.top());
     highlightPath.arcTo(bRect.left(), bRect.top(), (2 * roundedCorners), (2 * roundedCorners), 90.0,
                         90.0);
+
     p->setBrush(highlightGrad);
     p->drawPath(highlightPath);
     p->setPen(QPen(QColor(164, 164, 164), 1.0));
     p->setBrush(Qt::NoBrush);
     p->drawPath(roundRectPath);
-    // paint inports
-    p->setPen(QPen(bottomColor, 1.0));
-    std::vector<Inport*> inports = processor_->getInports();
-
-    for (size_t i = 0; i < inports.size(); i++) {
-        QRectF portRect = calculateInportRect(i);
-        uvec3 portColor = inports[i]->getColorCode();
-        QLinearGradient portGrad(portRect.topLeft(), portRect.bottomLeft());
-        portGrad.setColorAt(0.0f, QColor(portColor.r * 0.6, portColor.g * 0.6, portColor.b * 0.6));
-        portGrad.setColorAt(0.3f, QColor(portColor.r, portColor.g, portColor.b));
-        portGrad.setColorAt(1.0f, QColor(portColor.r, portColor.g, portColor.b));
-        p->setBrush(portGrad);
-        p->drawRect(portRect);
-
-        if (inports[i]->isConnected()) {
-            p->drawRect(portRect.adjusted(3, 0, -3, -3));
-        }
-    }
-
-    // paint outports
-    std::vector<Outport*> outports = processor_->getOutports();
-
-    for (size_t i = 0; i < outports.size(); i++) {
-        QRectF portRect = calculateOutportRect(i);
-        uvec3 portColor = outports[i]->getColorCode();
-        QLinearGradient portGrad(portRect.topLeft(), portRect.bottomLeft());
-        portGrad.setColorAt(0.0f, QColor(portColor.r * 0.6, portColor.g * 0.6, portColor.b * 0.6));
-        portGrad.setColorAt(0.3f, QColor(portColor.r, portColor.g, portColor.b));
-        portGrad.setColorAt(1.0f, QColor(portColor.r, portColor.g, portColor.b));
-        p->setBrush(portGrad);
-        p->drawRect(portRect);
-
-        if (outports[i]->isConnected()) {
-            p->drawRect(portRect.adjusted(3, 3, -3, 0));
-        }
-    }
-
-    paintStatusIndicator(p, QPointF(64.0f, -15.0f), processor_->isReady(), QColor(0, 170, 0));
-    // TODO: Fix progressbar to true indicator or just make a processing wheel.
-    ProgressBarOwner* progressBarOwner = dynamic_cast<ProgressBarOwner*>(processor_);
-    if ((progressBarOwner != NULL) && progressBarOwner->getProgressBar().isVisible()) {
-        paintProgressBar(p, progressBarOwner->getProgressBar().getProgress());
-    }
-
-
-    // Paint link item
-    float diam = 4.0;
-    p->setBrush(Qt::NoBrush);
-    //p->setPen(QPen(QColor(164, 164, 164), 1.3, Qt::DotLine, Qt::RoundCap));
-    p->setPen(QPen(QColor(164, 164, 164), 1.3, Qt::SolidLine, Qt::RoundCap));
-
-    QPointF pos = (rect().bottomRight()+rect().topRight())/2.0;
-    QPainterPath linkpath1;
-    linkpath1.moveTo(pos);
-    linkpath1.arcTo(QRectF(pos + QPointF(-diam, diam), pos + QPointF(diam, -diam)), 90, 180);
-    linkpath1.closeSubpath();
-    p->drawPath(linkpath1);
-
-    pos = (rect().bottomLeft() + rect().topLeft()) / 2.0;
-    QPainterPath linkpath2;
-    linkpath2.moveTo(pos);
-    linkpath2.arcTo(QRectF(pos + QPointF(-diam, diam), pos + QPointF(diam, -diam)), -90, 180);
-    linkpath2.closeSubpath();
-    p->drawPath(linkpath2);
 
     p->restore();
 }
@@ -476,113 +264,65 @@ void ProcessorGraphicsItem::setIdentifier(QString text) {
         dynamic_cast<ProcessorWidgetQt*>(getProcessor()->getProcessorWidget());
 
     if (processorWidgetQt) processorWidgetQt->setWindowTitle(updatedNewName.c_str());
-
-    PropertyListWidget::instance()->changeName(oldName, updatedNewName);
 }
 
 void ProcessorGraphicsItem::snapToGrid() {
     QPointF newpos = NetworkEditor::snapToGrid(pos());
-    if (newpos != pos()){
+    if (newpos != pos()) {
         setPos(newpos);
     }
 }
 
 QVariant ProcessorGraphicsItem::itemChange(GraphicsItemChange change, const QVariant& value) {
-    if (change == QGraphicsItem::ItemPositionHasChanged) {
-        std::vector<ConnectionGraphicsItem*> connectionGraphicsItems =
-            NetworkEditor::getPtr()->connectionGraphicsItems_;
-
-        for (size_t i = 0; i < connectionGraphicsItems.size(); i++) {
-            if (connectionGraphicsItems[i]->getOutProcessor() == this) {
-                QPointF newAnchor =
-                    mapToScene(calculatePortRect(connectionGraphicsItems[i]->getOutport()))
-                        .boundingRect()
-                        .center();
-                connectionGraphicsItems[i]->setStartPoint(newAnchor);
-                connectionGraphicsItems[i]->update();
+    switch (change) {
+        case QGraphicsItem::ItemPositionHasChanged:
+            snapToGrid();
+            if (processorMeta_) processorMeta_->setPosition(ivec2(x(), y()));
+            break;
+        case QGraphicsItem::ItemSelectedHasChanged:
+            if (isSelected()) {
+                setZValue(SELECTED_PROCESSORGRAPHICSITEM_DEPTH);
+                NetworkEditor::getPtr()->addPropertyWidgets(getProcessor());
+            } else {
+                setZValue(PROCESSORGRAPHICSITEM_DEPTH);
+                NetworkEditor::getPtr()->removePropertyWidgets(getProcessor());
             }
-
-            if (connectionGraphicsItems[i]->getInProcessor() == this) {
-                QPointF newAnchor =
-                    mapToScene(calculatePortRect(connectionGraphicsItems[i]->getInport()))
-                        .boundingRect()
-                        .center();
-                connectionGraphicsItems[i]->setEndPoint(newAnchor);
-                connectionGraphicsItems[i]->update();
-            }
-        }
-
-        std::vector<LinkConnectionGraphicsItem*> linkGraphicsItems =
-            NetworkEditor::getPtr()->linkGraphicsItems_;
-
-        for (size_t i = 0; i < linkGraphicsItems.size(); i++) {
-            if (linkGraphicsItems[i]->getSrcProcessorGraphicsItem() == this ||
-                linkGraphicsItems[i]->getDestProcessorGraphicsItem() == this) {
-                QPointF startPoint =
-                    linkGraphicsItems[i]->getSrcProcessorGraphicsItem()->getShortestBoundaryPointTo(
-                        linkGraphicsItems[i]->getDestProcessorGraphicsItem());
-                QPointF endPoint = linkGraphicsItems[i]
-                                       ->getDestProcessorGraphicsItem()
-                                       ->getShortestBoundaryPointTo(
-                                           linkGraphicsItems[i]->getSrcProcessorGraphicsItem());
-                linkGraphicsItems[i]->setStartPoint(startPoint);
-                linkGraphicsItems[i]->setEndPoint(endPoint);
-                linkGraphicsItems[i]->update();
-            }
-        }
-
-        if(processorMeta_) processorMeta_->setPosition(ivec2(x(), y()));
-        
-    } else if (change == QGraphicsItem::ItemSelectedHasChanged) {
-        if (isSelected()){
-            setZValue(SELECTED_PROCESSORGRAPHICSITEM_DEPTH);
-            NetworkEditor::getPtr()->addPropertyWidgets(getProcessor());
-        } else {
-            setZValue(PROCESSORGRAPHICSITEM_DEPTH);
-            NetworkEditor::getPtr()->removePropertyWidgets(getProcessor());
-        }
-        if(processorMeta_) processorMeta_->setSelected(isSelected());
-        
-    } else if (change == QGraphicsItem::ItemVisibleHasChanged) {
-        if(processorMeta_) processorMeta_->setVisibile(isVisible());
+            if (processorMeta_) processorMeta_->setSelected(isSelected());
+            break;
+        case QGraphicsItem::ItemVisibleHasChanged:
+            if (processorMeta_) processorMeta_->setVisibile(isVisible());
+            break;
     }
-    
+
     return QGraphicsItem::itemChange(change, value);
 }
 
 void ProcessorGraphicsItem::onLabelGraphicsItemChange() {
     if (nameLabel_->isFocusOut()) {
-        NetworkEditor::getPtr()->renamingFinished();
         setIdentifier(nameLabel_->text());
         nameLabel_->setNoFocusOut();
     }
 }
 
-void ProcessorGraphicsItem::progressChanged() {
-    ProgressBarOwner* progressBarOwner = dynamic_cast<ProgressBarOwner*>(processor_);
-    if ((progressBarOwner != NULL) && progressBarOwner->getProgressBar().isVisible()) {
-        // mark item as dirty to force an redraw
-        this->update();
-        // let Qt take care of events like update for 25ms, but exclude user input (we do not want
-        // any interference)
-        qApp->processEvents(QEventLoop::ExcludeUserInputEvents, 25);
+std::string ProcessorGraphicsItem::getIdentifier() const { return processor_->getIdentifier(); }
+
+ProcessorLinkGraphicsItem* ProcessorGraphicsItem::getLinkGraphicsItem() const { return linkItem_; }
+
+void ProcessorGraphicsItem::onProcessorIdentifierChange(Processor* processor) {
+    std::string newIdentifier = processor->getIdentifier();
+    
+    if (newIdentifier != nameLabel_->text().toStdString()) {
+        nameLabel_->setText(QString::fromStdString(newIdentifier));
     }
+
+    ProcessorWidgetQt* processorWidgetQt =
+        dynamic_cast<ProcessorWidgetQt*>(getProcessor()->getProcessorWidget());
+
+    if (processorWidgetQt) processorWidgetQt->setWindowTitle(QString::fromStdString(newIdentifier));
 }
 
-void ProcessorGraphicsItem::progressBarVisibilityChanged() {
-    ProgressBarOwner* progressBarOwner = dynamic_cast<ProgressBarOwner*>(processor_);
-    if (progressBarOwner != NULL) {
-        // mark item as dirty to force an redraw
-        this->update();
-        // let Qt take care of events like update for 25ms, but exclude user input (we do not want
-        // any interference)
-        qApp->processEvents(QEventLoop::ExcludeUserInputEvents, 25);
-    }
-}
-
-void ProcessorGraphicsItem::updateViews() {
-    foreach(QGraphicsView * view, this->scene()->views()) { view->viewport()->update(); }
-    qApp->processEvents(QEventLoop::ExcludeUserInputEvents);
+ProcessorStatusGraphicsItem* ProcessorGraphicsItem::getStatusItem() const {
+    return statusItem_;
 }
 
 }  // namespace

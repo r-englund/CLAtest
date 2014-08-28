@@ -176,12 +176,14 @@ QTreeWidgetItem* ProcessorTreeWidget::addProcessorItemTo(QTreeWidgetItem* item,
         <tr><td style='color:#bbb;padding-right:8px;'>Identifier:</td><td><nobr>%2</nobr></td></tr>\
         <tr><td style='color:#bbb;padding-right:8px;'>Category:</td><td><nobr>%3</nobr></td></tr>\
         <tr><td style='color:#bbb;padding-right:8px;'>Code State:</td><td><nobr>%4</nobr></td></tr>\
+        <tr><td style='color:#bbb;padding-right:8px;'>Tags:</td><td><nobr>%6</nobr></td></tr>\
         </tr></table></body></html>")
         .arg(processor->getDisplayName().c_str())
         .arg(processor->getClassIdentifier().c_str())
         .arg(processor->getCategory().c_str())
         .arg(getCodeStateString(processor->getCodeState()).c_str())
         .arg(moduleId.c_str())
+        .arg(processor->getTags().getString().c_str())
         );
 
     newItem->setToolTip(0, str);

@@ -80,11 +80,11 @@ void SettingsWidget::updateSettingsWidget() {
         scrollAreaTab->setWidget(listWidget);
 
         std::vector<Property*> props = settings[i]->getProperties();
-        PropertyListWidget::WidgetMap groups;
+        std::map<std::string, CollapsibleGroupBoxWidgetQt*> groups;
 
         for (size_t j = 0; j < props.size(); j++) {
             if (props[j]->getGroupID() != "") {
-                PropertyListWidget::WidgetMap::iterator it = groups.find(props[j]->getGroupID());
+                std::map<std::string, CollapsibleGroupBoxWidgetQt*>::iterator it = groups.find(props[j]->getGroupID());
                 if (it == groups.end()) {
                     CollapsibleGroupBoxWidgetQt* group = new CollapsibleGroupBoxWidgetQt(
                         props[j]->getGroupDisplayName(), props[j]->getGroupDisplayName());

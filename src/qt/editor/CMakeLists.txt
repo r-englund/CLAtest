@@ -10,19 +10,25 @@ set(MOC_FILES
     ${IVW_INCLUDE_DIR}/inviwo/qt/editor/mappingwidget.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/editor/networkeditor.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/editor/processorlistwidget.h
-	${IVW_INCLUDE_DIR}/inviwo/qt/editor/resourcemanagerwidget.h
+    ${IVW_INCLUDE_DIR}/inviwo/qt/editor/resourcemanagerwidget.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/editor/settingswidget.h
 )
 
 #--------------------------------------------------------------------
 # Add header files
 set(HEADER_FILES
-    ${IVW_INCLUDE_DIR}/inviwo/qt/editor/inviwoqteditordefine.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/editor/connectiongraphicsitem.h
+    ${IVW_INCLUDE_DIR}/inviwo/qt/editor/editorgrapicsitem.h
+    ${IVW_INCLUDE_DIR}/inviwo/qt/editor/inviwoqteditordefine.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/editor/linkgraphicsitem.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/editor/networkeditorview.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/editor/portinfowidgetqt.h
+    ${IVW_INCLUDE_DIR}/inviwo/qt/editor/portinspectionmanager.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/editor/processorgraphicsitem.h
+    ${IVW_INCLUDE_DIR}/inviwo/qt/editor/processorlinkgraphicsitem.h
+    ${IVW_INCLUDE_DIR}/inviwo/qt/editor/processorportgraphicsitem.h
+    ${IVW_INCLUDE_DIR}/inviwo/qt/editor/processorprogressgraphicsitem.h
+    ${IVW_INCLUDE_DIR}/inviwo/qt/editor/processorstatusgraphicsitem.h
     ${MOC_FILES}
 )
 ivw_group("Header Files" ${HEADER_FILES})
@@ -35,17 +41,22 @@ source_group("MOC Files" FILES ${MOC_FILES})
 set(SOURCE_FILES
     connectiongraphicsitem.cpp
     consolewidget.cpp
+    portinspectionmanager.cpp
+    editorgrapicsitem.cpp
     linkdialog.cpp
     linkgraphicsitem.cpp
     mappingwidget.cpp
     networkeditor.cpp
     networkeditorview.cpp
     portinfowidgetqt.cpp
-    processorlistwidget.cpp
     processorgraphicsitem.cpp
-	resourcemanagerwidget.cpp
+    processorlinkgraphicsitem.cpp
+    processorlistwidget.cpp
+    processorportgraphicsitem.cpp
+    processorprogressgraphicsitem.cpp
+    processorstatusgraphicsitem.cpp
+    resourcemanagerwidget.cpp
     settingswidget.cpp
-    
 )
 ivw_group("Source Files" ${SOURCE_FILES})
 

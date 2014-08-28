@@ -120,7 +120,7 @@ void PropertyListWidget::addProcessorProperties(Processor* processor) {
 }
 
 void PropertyListWidget::removeProcessorProperties(Processor* processor) {
-    WidgetMap::iterator it = widgetMap_.find(processor->getIdentifier());
+    WidgetMap::iterator it = widgetMap_.find(processor);
 
     if (it != widgetMap_.end()) {
         WidgetVector::iterator elm = std::find(devWidgets_.begin(), devWidgets_.end(), it->second);
@@ -133,7 +133,7 @@ void PropertyListWidget::removeProcessorProperties(Processor* processor) {
 }
 
 void PropertyListWidget::removeAndDeleteProcessorProperties(Processor* processor) {
-    WidgetMap::iterator it = widgetMap_.find(processor->getIdentifier());
+    WidgetMap::iterator it = widgetMap_.find(processor);
 
     if (it != widgetMap_.end()) {
 
@@ -171,25 +171,13 @@ void PropertyListWidget::removeAndDeleteProcessorProperties(Processor* processor
     }
 }
 
-void PropertyListWidget::changeName(std::string oldName, std::string newName) {
-    // check if processor widget exists
-    WidgetMap::iterator it = widgetMap_.find(oldName);
-
-    if (it != widgetMap_.end()) {
-        CollapsibleGroupBoxWidgetQt* processorPropertyWidget = it->second;
-        processorPropertyWidget->setIdentifier(newName);
-        widgetMap_.erase(it);
-        widgetMap_[newName] = processorPropertyWidget;
-    }
-}
-
 void PropertyListWidget::cacheProcessorPropertiesItem(Processor* processor) {
     getProcessorPropertiesItem(processor);
 }
 
 CollapsibleGroupBoxWidgetQt* PropertyListWidget::getProcessorPropertiesItem(Processor* processor) {
     // check if processor widget has been already generated
-    WidgetMap::iterator it = widgetMap_.find(processor->getIdentifier());
+    WidgetMap::iterator it = widgetMap_.find(processor);
     CollapsibleGroupBoxWidgetQt* processorPropertyWidget = 0;
 
     if (it != widgetMap_.end()) {
@@ -206,19 +194,21 @@ CollapsibleGroupBoxWidgetQt* PropertyListWidget::createNewProcessorPropertiesIte
     Processor* processor) {
     // create property widget and store it in the map
     CollapsibleGroupBoxWidgetQt* processorPropertyWidget =
-        new CollapsibleGroupBoxWidgetQt(processor->getIdentifier(), processor->getDisplayName());
+        new CollapsibleGroupBoxWidgetQt(processor->getIdentifier(), processor->getIdentifier());
+
+    processor->ProcessorObservable::addObserver(this);
 
     std::vector<Property*> props = processor->getProperties();
-    WidgetMap groups;
+    std::map<std::string, CollapsibleGroupBoxWidgetQt*> groups;
 
     for (size_t i = 0; i < props.size(); i++) {
         if (props[i]->getGroupID() != "") {
-            WidgetMap::iterator it = groups.find(props[i]->getGroupID());
+            std::map<std::string, CollapsibleGroupBoxWidgetQt*>::iterator it = groups.find(props[i]->getGroupID());
             if (it == groups.end()) {
                 CollapsibleGroupBoxWidgetQt* group = new CollapsibleGroupBoxWidgetQt(
                     props[i]->getGroupDisplayName(), props[i]->getGroupDisplayName());
                 processorPropertyWidget->addWidget(group);
-                groups.insert(std::make_pair(props[i]->getGroupID(), group));
+                groups[props[i]->getGroupID()] = group;
                 group->addProperty(props[i]);
             } else {
                 it->second->addProperty(props[i]);
@@ -232,9 +222,9 @@ CollapsibleGroupBoxWidgetQt* PropertyListWidget::createNewProcessorPropertiesIte
     processorPropertyWidget->updateVisibility();
     processorPropertyWidget->hideWidget();
 
-    widgetMap_.insert(std::make_pair(processor->getIdentifier(), processorPropertyWidget));
+    widgetMap_[processor] = processorPropertyWidget;
 
-    // Add the widget as a property owner oberver
+    // Add the widget as a property owner observer
     processor->PropertyOwnerObservable::addObserver(
         static_cast<PropertyOwnerObserver*>(processorPropertyWidget));
 
@@ -305,6 +295,25 @@ bool PropertyListWidget::event(QEvent* e) {
         return true;
     } else {
         return QWidget::event(e);
+    }
+}
+
+void PropertyListWidget::onProcessorIdentifierChange(Processor* processor) {
+    WidgetMap::iterator it = widgetMap_.find(processor);
+    CollapsibleGroupBoxWidgetQt* processorPropertyWidget = 0;
+
+    if (it != widgetMap_.end()) {
+        processorPropertyWidget = it->second;
+        processorPropertyWidget->setIdentifier(processor->getIdentifier());
+    }
+}
+
+void PropertyListWidget::updateProcessorIdentifier(std::string oldName, std::string newName) {
+    for(WidgetMap::iterator it = widgetMap_.begin(); it!=widgetMap_.end(); ++it) {
+        std::string processorName = it->first->getIdentifier();
+        if (processorName == oldName) {
+            it->first->setIdentifier(newName);
+        }
     }
 }
 

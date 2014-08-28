@@ -35,6 +35,7 @@
 
 #include <inviwo/qt/widgets/inviwoqtwidgetsdefine.h>
 #include <inviwo/core/processors/processor.h>
+#include <inviwo/core/processors/processorobserver.h>
 #include <inviwo/qt/widgets/inviwodockwidget.h>
 #include <inviwo/qt/widgets/properties/propertywidgetqt.h>
 #include <QCheckBox>
@@ -110,7 +111,8 @@ private:
 
 
 class IVW_QTWIDGETS_API PropertyListWidget : public InviwoDockWidget,
-                                             public PropertyListWidgetObservable {
+                                             public PropertyListWidgetObservable,
+                                             public ProcessorObserver {
     Q_OBJECT
 
 public:
@@ -122,16 +124,19 @@ public:
     void addProcessorProperties(Processor* processor);
     void removeProcessorProperties(Processor* processor);
     void removeAndDeleteProcessorProperties(Processor* processor);
-
-    void changeName(std::string oldName, std::string newName);
-
+    
+    //override 
+    void onProcessorIdentifierChange(Processor*);
     UsageMode getUsageMode();
 
     void cacheProcessorPropertiesItem(Processor* processor);
     
+
+    void updateProcessorIdentifier(std::string oldName, std::string newName);
+
     virtual bool event(QEvent* e);
 
-    typedef std::map<std::string, CollapsibleGroupBoxWidgetQt*> WidgetMap;
+    typedef std::map<Processor*, CollapsibleGroupBoxWidgetQt*> WidgetMap;
     typedef std::vector<CollapsibleGroupBoxWidgetQt*> WidgetVector;
 
 public slots:
@@ -148,9 +153,6 @@ protected:
 private:
     CollapsibleGroupBoxWidgetQt* getProcessorPropertiesItem(Processor* processor);
     CollapsibleGroupBoxWidgetQt* createNewProcessorPropertiesItem(Processor* processor);
-
-    //bool developerViewMode_;
-    //bool applicationViewMode_;
 
     UsageMode usageMode_;
 

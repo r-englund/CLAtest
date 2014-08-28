@@ -5,16 +5,16 @@
  *
  * Copyright (c) 2012-2014 Inviwo Foundation
  * All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met: 
- * 
+ * modification, are permitted provided that the following conditions are met:
+ *
  * 1. Redistributions of source code must retain the above copyright notice, this
- * list of conditions and the following disclaimer. 
+ * list of conditions and the following disclaimer.
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  * this list of conditions and the following disclaimer in the documentation
- * and/or other materials provided with the distribution. 
- * 
+ * and/or other materials provided with the distribution.
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
  * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
@@ -25,7 +25,7 @@
  * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- * 
+ *
  * Main file author: Sathish Kottravel
  *
  *********************************************************************************/
@@ -34,85 +34,104 @@
 #define IVW_LINKGRAPHICSITEM_H
 
 #include <inviwo/qt/editor/inviwoqteditordefine.h>
+#include <inviwo/qt/editor/editorgrapicsitem.h>
 #include <QGraphicsLineItem>
 #include <QPainterPath>
-
-#include <inviwo/core/ports/port.h>
-#include <inviwo/qt/editor/processorgraphicsitem.h>
+#include <QEvent>
 
 namespace inviwo {
 
-class IVW_QTEDITOR_API LinkGraphicsItem : public QGraphicsItem {
+class Port;
+class ProcessorLinkGraphicsItem;
+class ProcessorGraphicsItem;
+class ProcessorLink;
+
+class IVW_QTEDITOR_API LinkGraphicsItem : public EditorGrapicsItem {
 public:
     LinkGraphicsItem(QPointF startPoint, QPointF endPoint, ivec3 color = ivec3(255, 255, 255),
-                     QPointF startDir = QPointF(1.0f,0.0), QPointF endDir = QPointF(0.0f, 0.0f));
+                     QPointF startDir = QPointF(1.0f, 0.0), QPointF endDir = QPointF(0.0f, 0.0f));
     ~LinkGraphicsItem();
 
-    virtual QPainterPath shape() const;
+    QPointF getStartPoint() const;
+    QPointF getEndPoint() const;
+    QPointF getStartDir() const;
+    QPointF getEndDir() const;
 
-    void setStartPoint(QPointF startPoint) {
-        prepareGeometryChange();
-        startPoint_ = startPoint;
-    }
-    QPointF getStartPoint() const { return startPoint_; }
+    void setStartPoint(QPointF startPoint);
+    void setEndPoint(QPointF endPoint);
+    void setStartDir(QPointF dir);
+    void setEndDir(QPointF dir);
 
-    void setEndPoint(QPointF endPoint) {
-        prepareGeometryChange();
-        endPoint_ = endPoint;
-    }
-    QPointF getEndPoint() const { return endPoint_; }
-    
-    void setStartDir(QPointF dir) {
-        startDir_ = dir;
-    }
-    QPointF getStartDir() const {
-        return startDir_;
-    }
-    void setEndDir(QPointF dir) {
-        endDir_ = dir;
-    }
-    QPointF getEndDir() const {
-        return endDir_;
-    }
+    virtual void updateShape();
 
     /**
      * Overloaded paint method from QGraphicsItem. Here the actual representation is drawn.
      */
     void paint(QPainter* p, const QStyleOptionGraphicsItem* options, QWidget* widget);
     virtual QRectF boundingRect() const;
+    virtual QPainterPath shape() const;
 
     // override for qgraphicsitem_cast (refer qt documentation)
     enum { Type = UserType + LinkGraphicsType };
     int type() const { return Type; }
 
-private:
+protected:
+    virtual QPainterPath obtainCurvePath() const;
+
     QPointF startPoint_;
     QPointF endPoint_;
     QColor color_;
     QPointF startDir_;
     QPointF endDir_;
 
-    virtual QPainterPath obtainCurvePath() const;
+    QPainterPath path_;
+    QRectF rect_;
 };
 
-class IVW_QTEDITOR_API LinkConnectionGraphicsItem : public LinkGraphicsItem {
-
+class IVW_QTEDITOR_API LinkConnectionDragGraphicsItem : public LinkGraphicsItem {
 public:
+    LinkConnectionDragGraphicsItem(ProcessorLinkGraphicsItem* outLink,
+                                   QPointF endPos);
+    ~LinkConnectionDragGraphicsItem();
 
-    LinkConnectionGraphicsItem(ProcessorGraphicsItem* outProcessor, ProcessorGraphicsItem* inProcessor);
+    void reactToProcessorHover(ProcessorGraphicsItem* processor);
+    virtual ProcessorLinkGraphicsItem* getSrcProcessorLinkGraphicsItem() const;
+    virtual ProcessorGraphicsItem* getSrcProcessorGraphicsItem() const;
+    virtual void updateShape();
+
+    enum { Type = UserType + LinkConnectionDragGraphicsType };
+    int type() const { return Type; }
+
+protected:
+    QPointF inLeft_;
+    QPointF inRight_;
+
+    virtual QPainterPath obtainCurvePath() const;
+    ProcessorLinkGraphicsItem* outLink_;  //< non-onwing reference
+};
+
+class IVW_QTEDITOR_API LinkConnectionGraphicsItem : public LinkConnectionDragGraphicsItem {
+public:
+    LinkConnectionGraphicsItem(ProcessorLinkGraphicsItem* outLink,
+                               ProcessorLinkGraphicsItem* inLink,
+                               ProcessorLink* link);
     ~LinkConnectionGraphicsItem();
 
-    ProcessorGraphicsItem* getSrcProcessorGraphicsItem() const { return outProcessor_; }
-    ProcessorGraphicsItem* getDestProcessorGraphicsItem() const { return inProcessor_; }
-    virtual QRectF boundingRect() const;
+    virtual ProcessorLink* getProcessorLink() const;
+    virtual ProcessorLinkGraphicsItem* getDestProcessorLinkGraphicsItem() const;
+    virtual ProcessorGraphicsItem* getDestProcessorGraphicsItem() const;
+    virtual void updateShape();
+    virtual void updateInfo();
 
-private:
+    enum { Type = UserType + LinkConnectionGraphicsType };
+    int type() const { return Type; }
+
+protected:
     virtual QPainterPath obtainCurvePath() const;
-
-    ProcessorGraphicsItem* outProcessor_; ///< Processor representation from which the connection starts
-    ProcessorGraphicsItem* inProcessor_; ///< Processor representation to which the connection goes to
+    ProcessorLinkGraphicsItem* inLink_;  //< non-onwing reference
+    ProcessorLink* link_;  //< non-onwing reference
 };
 
-} // namespace
+}  // namespace
 
-#endif // IVW_CONNECTIONGRAPHICSITEM_H
+#endif  // IVW_CONNECTIONGRAPHICSITEM_H

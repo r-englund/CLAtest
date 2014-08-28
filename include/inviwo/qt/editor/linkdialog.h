@@ -73,37 +73,28 @@ class IVW_QTEDITOR_API DialogCurveGraphicsItem : public CurveGraphicsItem {
 public:
     DialogCurveGraphicsItem(QPointF startPoint, QPointF endPoint, uvec3 color=uvec3(38,38,38));
     ~DialogCurveGraphicsItem();
-    virtual void paint(QPainter* p, const QStyleOptionGraphicsItem* options, QWidget* widget);
+
     //override for qgraphicsitem_cast (refer qt documentation)
     enum { Type = UserType + LinkDialogCurveGraphicsItemType };
     int type() const  {return Type; }
 protected:
-    virtual QPainterPath obtainCurvePath() const;
+    virtual QPainterPath obtainCurvePath(QPointF startPoint, QPointF endPoint) const;
 };
 
 class LinkDialogPropertyGraphicsItem;
 class LinkDialogProcessorGraphicsItem;
 
 class IVW_QTEDITOR_API DialogConnectionGraphicsItem : public DialogCurveGraphicsItem {
-
 public:
-
     DialogConnectionGraphicsItem(LinkDialogPropertyGraphicsItem* startProperty, LinkDialogPropertyGraphicsItem* endProperty,
                                  PropertyLink* propertyLink);
     ~DialogConnectionGraphicsItem();
 
-    virtual void paint(QPainter* p, const QStyleOptionGraphicsItem* options, QWidget* widget);
-
-    QRectF boundingRect() const;
-
     PropertyLink* getPropertyLink() const { return propertyLink_; }
-
     LinkDialogPropertyGraphicsItem* getStartProperty() const { return startPropertyGraphicsItem_; }
-
     LinkDialogPropertyGraphicsItem* getEndProperty() const { return endPropertyGraphicsItem_; }
 
     void switchDirection();
-
     bool isBidirectional();
     void initialize();
     void deinitialize();

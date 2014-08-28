@@ -69,6 +69,8 @@ public:
 
     void triggerQueuedEvaluation();
 
+    virtual bool isReady() const;
+
 protected:
     void performEvaluationAtNextShow();
     void performEvaluateRequest();

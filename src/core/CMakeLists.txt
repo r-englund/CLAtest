@@ -137,7 +137,6 @@ set(HEADER_FILES
     ${IVW_INCLUDE_DIR}/inviwo/core/ports/geometryport.h
     ${IVW_INCLUDE_DIR}/inviwo/core/ports/imageport.h
     ${IVW_INCLUDE_DIR}/inviwo/core/ports/inport.h
-    ${IVW_INCLUDE_DIR}/inviwo/core/ports/inspection.h
     ${IVW_INCLUDE_DIR}/inviwo/core/ports/multidatainport.h
     ${IVW_INCLUDE_DIR}/inviwo/core/ports/multiinport.h
     ${IVW_INCLUDE_DIR}/inviwo/core/ports/outport.h
@@ -336,7 +335,6 @@ set(SOURCE_FILES
     ports/geometryport.cpp
     ports/imageport.cpp
     ports/inport.cpp
-    ports/inspection.cpp
     ports/multiinport.cpp
     ports/outport.cpp
     ports/port.cpp
