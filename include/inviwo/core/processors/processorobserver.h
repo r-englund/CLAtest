@@ -57,6 +57,7 @@ public:
     virtual void onProcessorInvalidationBegin(Processor*) {};
     virtual void onProcessorInvalidationEnd(Processor*) {};
     virtual void onProcessorRequestEvaluate(Processor*) {};
+    virtual void onProcessorIdentifierChange(Processor*) {};
 };
 
 
@@ -108,6 +109,14 @@ public:
 
         for (ObserverSet::reverse_iterator it = localObservers.rbegin(); it != localObservers.rend(); ++it) {
             static_cast<ProcessorObserver*>(*it)->onProcessorRequestEvaluate(p);
+        }
+    }
+
+    void notifyObserversIdentifierChange(Processor* p) const {
+        ObserverSet localObservers = *observers_;
+
+        for (ObserverSet::reverse_iterator it = localObservers.rbegin(); it != localObservers.rend(); ++it) {
+            static_cast<ProcessorObserver*>(*it)->onProcessorIdentifierChange(p);
         }
     }
 };

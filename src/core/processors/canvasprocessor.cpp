@@ -235,4 +235,8 @@ void CanvasProcessor::performEvaluateRequest() {
     }
 }
 
+bool CanvasProcessor::isReady() const {
+    return Processor::isReady() && processorWidget_ && processorWidget_->isVisible();
+}
+
 } // namespace

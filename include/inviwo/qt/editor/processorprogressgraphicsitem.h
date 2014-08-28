@@ -3,7 +3,7 @@
  * Inviwo - Interactive Visualization Workshop
  * Version 0.6b
  *
- * Copyright (c) 2014 Inviwo Foundation
+ * Copyright (c) 2012-2014 Inviwo Foundation
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -26,58 +26,44 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
- * Main file author: Peter Steneteg
+ * Main file authors: Peter Steneteg
  *
  *********************************************************************************/
 
-#ifndef IVW_INSPECTION_H
-#define IVW_INSPECTION_H
+#ifndef IVW_PROCESSORPROGRESSGRAPHICSITEM_H
+#define IVW_PROCESSORPROGRESSGRAPHICSITEM_H
 
-#include <inviwo/core/common/inviwocoredefine.h>
-#include <inviwo/core/common/inviwo.h>
-#include <inviwo/core/ports/port.h>
-#include <inviwo/core/properties/boolproperty.h>
-#include <inviwo/core/properties/ordinalproperty.h>
+#include <inviwo/qt/editor/inviwoqteditordefine.h>
+#include <inviwo/qt/editor/editorgrapicsitem.h>
+#include <inviwo/core/processors/progressbar.h>
+#include <QEvent>
 
 namespace inviwo {
 
-class IVW_CORE_API Inspection {
 
+class IVW_QTEDITOR_API ProcessorProgressGraphicsItem : public EditorGrapicsItem,
+                                                       public ProgressBarObserver {
 public:
-    Inspection();
-    virtual ~Inspection();
+    ProcessorProgressGraphicsItem(QGraphicsRectItem* parent, ProgressBar* processor);
+    virtual ~ProcessorProgressGraphicsItem() {}
 
-    enum State {
-        Start = 0,
-        Wait = 1,
-        Inspect = 2
-    };
+    // override for qgraphicsitem_cast (refer qt documentation)
+    enum { Type = UserType + ProcessorProgressGraphicsType };
+    int type() const { return Type; }
 
-    bool isActive();
-    bool isInspectorActive();
-    bool isInformationActive();
-    int size();
-    inviwo::Inspection::State state() const;
-    void setState(inviwo::Inspection::State val);
-    void setPort(Port* port);
-    bool samePort(Port* port);
-    void resetPort();
+protected:
+    void paint(QPainter* p, const QStyleOptionGraphicsItem* options, QWidget* widget);
 
-    std::string processorIdentifier_;
-    std::string portIdentifier_;
-    std::string portInformation_;
-    ivec2 pos_;
-    ivec2 gpos_;
+    // ProgressBarObserver methods
+    virtual void progressChanged();
+    virtual void progressBarVisibilityChanged();
 
 private:
-    State state_;
-    BoolProperty* inspectorNetworkActive_;
-    BoolProperty* inspectorInformationActive_;
-    IntProperty* size_;
+    QSize size_;
+    float lineWidth_;
+    ProgressBar* progressBar_;
 };
 
+}  // namespace
 
-} // namespace
-
-#endif // IVW_INSPECTION_H
-
+#endif  // IVW_PROCESSORPROGRESSGRAPHICSITEM_H

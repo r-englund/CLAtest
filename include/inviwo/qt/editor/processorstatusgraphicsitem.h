@@ -26,77 +26,41 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
- * Main file authors: Timo Ropinski, Erik Sundén
+ * Main file authors: Peter Steneteg
  *
  *********************************************************************************/
 
-#ifndef IVW_PROCESSORGRAPHICSITEM_H
-#define IVW_PROCESSORGRAPHICSITEM_H
+#ifndef IVW_PROCESSORSTATUSGRAPHICSITEM_H
+#define IVW_PROCESSORSTATUSGRAPHICSITEM_H
 
 #include <inviwo/qt/editor/inviwoqteditordefine.h>
 #include <inviwo/qt/editor/editorgrapicsitem.h>
-#include <inviwo/qt/widgets/labelgraphicsitem.h>
-
 #include <QEvent>
+#include <QColor>
 
 namespace inviwo {
 
 class Processor;
-class ProcessorProgressGraphicsItem;
-class ProcessorStatusGraphicsItem;
-class ProcessorLinkGraphicsItem;
-class ProcessorInportGraphicsItem;
-class ProcessorOutportGraphicsItem;
-class ProcessorMetaData;
-class Port;
-class Inport;
-class Outport;
 
-class IVW_QTEDITOR_API ProcessorGraphicsItem : public EditorGrapicsItem,
-                                               public ProcessorObserver,
-                                               public LabelGraphicsItemObserver {
+class IVW_QTEDITOR_API ProcessorStatusGraphicsItem : public EditorGrapicsItem { 
 public:
-    ProcessorGraphicsItem(Processor* processor);
-    ~ProcessorGraphicsItem();
-
-    Processor* getProcessor() const { return processor_; }
-    std::string getIdentifier() const;
-
-    ProcessorInportGraphicsItem* getInportGraphicsItem(Inport* port);
-    ProcessorOutportGraphicsItem* getOutportGraphicsItem(Outport* port);
-    ProcessorLinkGraphicsItem* getLinkGraphicsItem() const;
-    ProcessorStatusGraphicsItem* getStatusItem() const;
-
-    void editProcessorName();
-    void onLabelGraphicsItemChange();
-    void onProcessorIdentifierChange(Processor*);
-    bool isEditingProcessorName();
-
-    void snapToGrid();
+    ProcessorStatusGraphicsItem(QGraphicsRectItem* parent, Processor* processor);
+    virtual ~ProcessorStatusGraphicsItem(){}
 
     // override for qgraphicsitem_cast (refer qt documentation)
-    enum { Type = UserType + ProcessorGraphicsType };
+    enum { Type = UserType + ProcessorStatusGraphicsType };
     int type() const { return Type; }
 
 protected:
-    void setIdentifier(QString text);
     void paint(QPainter* p, const QStyleOptionGraphicsItem* options, QWidget* widget);
-    virtual QVariant itemChange(GraphicsItemChange change, const QVariant& value);
 
 private:
     Processor* processor_;
-    LabelGraphicsItem* nameLabel_;
-    LabelGraphicsItem* classLabel_;
-    ProcessorMetaData* processorMeta_;
-
-    ProcessorProgressGraphicsItem* progressItem_;
-    ProcessorStatusGraphicsItem* statusItem_;
-    ProcessorLinkGraphicsItem* linkItem_;
-
-    std::map<Inport*, ProcessorInportGraphicsItem*> inportItems_;
-    std::map<Outport*, ProcessorOutportGraphicsItem*> outportItems_;
+    float size_;
+    float lineWidth_;
 };
 
-}  // namespace
+} // namespace
 
-#endif  // IVW_PROCESSORGRAPHICSITEM_H
+#endif // IVW_PROCESSORSTATUSGRAPHICSITEM_H
+

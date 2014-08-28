@@ -85,19 +85,17 @@ DialogCurveGraphicsItem::DialogCurveGraphicsItem(QPointF startPoint, QPointF end
 
 DialogCurveGraphicsItem::~DialogCurveGraphicsItem() { }
 
-QPainterPath DialogCurveGraphicsItem::obtainCurvePath() const {
-    float delta = endPoint_.x()-startPoint_.x();
-    QPointF ctrlPoint1 = QPointF(startPoint_.x()+delta/4.0, startPoint_.y());
-    QPointF ctrlPoint2 = QPointF(endPoint_.x()-delta/4.0, endPoint_.y());
+QPainterPath DialogCurveGraphicsItem::obtainCurvePath(QPointF startPoint, QPointF endPoint) const {
+    float delta = endPoint.x()-startPoint.x();
+    QPointF ctrlPoint1 = QPointF(startPoint.x()+delta/4.0, startPoint.y());
+    QPointF ctrlPoint2 = QPointF(endPoint.x()-delta/4.0, endPoint.y());
     QPainterPath bezierCurve;
-    bezierCurve.moveTo(startPoint_);
-    bezierCurve.cubicTo(ctrlPoint1, ctrlPoint2, endPoint_);
+    bezierCurve.moveTo(startPoint);
+    bezierCurve.cubicTo(ctrlPoint1, ctrlPoint2, endPoint);
     return bezierCurve;
 }
 
-void DialogCurveGraphicsItem::paint(QPainter* p, const QStyleOptionGraphicsItem* options, QWidget* widget) {
-    CurveGraphicsItem::paint(p, options, widget);
-}
+//////////////////////////////////////////////////////////////////////////
 
 DialogConnectionGraphicsItem::DialogConnectionGraphicsItem(LinkDialogPropertyGraphicsItem* startProperty,
         LinkDialogPropertyGraphicsItem* endProperty,
@@ -126,7 +124,7 @@ void DialogConnectionGraphicsItem::initialize() {
 void DialogConnectionGraphicsItem::deinitialize() {
     startPropertyGraphicsItem_->removeConnectionGraphicsItem(this);
     endPropertyGraphicsItem_->removeConnectionGraphicsItem(this);
-    propertyLink_ = 0;
+    propertyLink_ = NULL;
 }
 
 void DialogConnectionGraphicsItem::updateStartEndPoint() {
@@ -158,16 +156,9 @@ void DialogConnectionGraphicsItem::updateStartEndPoint() {
     setEndPoint(arrowCenter);
 }
 
-void DialogConnectionGraphicsItem::paint(QPainter* p, const QStyleOptionGraphicsItem* options, QWidget* widget) {
-    DialogCurveGraphicsItem::paint(p, options, widget);
-}
-
 bool DialogConnectionGraphicsItem::isBidirectional() {
-    //if (!processorLink_ || !propertyLink_) return false;
-    //return processorLink_->getBidirectionalPair(propertyLink_->getSourceProperty(), propertyLink_->getDestinationProperty())!=0;
-    return InviwoApplication::getPtr()->getProcessorNetwork()\
-                                      ->getBidirectionalPair(propertyLink_->getSourceProperty(), \
-                                                             propertyLink_->getDestinationProperty())!=0;
+    return InviwoApplication::getPtr()->getProcessorNetwork()->getBidirectionalPair(
+               propertyLink_->getSourceProperty(), propertyLink_->getDestinationProperty()) != 0;
 }
 
 void DialogConnectionGraphicsItem::switchDirection() {
@@ -185,18 +176,7 @@ void DialogConnectionGraphicsItem::updateConnectionDrawing() {
     if (!propertyLink_) return;
     startPropertyGraphicsItem_->prepareGeometryChange();
     endPropertyGraphicsItem_->prepareGeometryChange();
-    update();
     updateStartEndPoint();
-}
-
-QRectF DialogConnectionGraphicsItem::boundingRect() const {
-    QPointF startPoint = getStartPoint();
-    QPointF endPoint = getEndPoint();
-    QPointF topLeft = QPointF(std::min(startPoint.x(), endPoint.x()),
-                              std::min(startPoint.y(), endPoint.y()));
-    return QRectF(topLeft.x()-30.0, topLeft.y()-30.0,
-                  abs(startPoint.x()-endPoint.x())+60.0,
-                  abs(startPoint.y()-endPoint.y())+60);
 }
 
 void DialogConnectionGraphicsItem::mouseDoubleClickEvent(QGraphicsSceneMouseEvent* e) {
@@ -697,24 +677,28 @@ QPointF LinkDialogPropertyGraphicsItem::calculateArrowCenter(size_t curPort, boo
 
 /*---------------------------------------------------------------------------------------*/
 
-LinkDialogGraphicsScene::LinkDialogGraphicsScene(QWidget* parent):QGraphicsScene(parent),
-    linkCurve_(0),
-    startProperty_(0),
-    endProperty_(0),
-    processorNetwork_(0),
-    src_(0),
-    dest_(0),
-    expandProperties_(false)
-{
+LinkDialogGraphicsScene::LinkDialogGraphicsScene(QWidget* parent)
+    : QGraphicsScene(parent)
+    , linkCurve_(0)
+    , startProperty_(0)
+    , endProperty_(0)
+    , processorNetwork_(0)
+    , src_(0)
+    , dest_(0)
+    , expandProperties_(false) {
+
+    // The defalt bsp tends to crash...  
+    setItemIndexMethod(QGraphicsScene::NoIndex);
 }
 
 QGraphicsItem* LinkDialogGraphicsScene::getPropertyGraphicsItemAt(Property* property) {
-    LinkDialogPropertyGraphicsItem* graphicsItem=0;
+    LinkDialogPropertyGraphicsItem* graphicsItem = 0;
 
-    for (size_t i=0; i<processorGraphicsItems_.size(); i++) {
-        std::vector<LinkDialogPropertyGraphicsItem*> propertyItems = processorGraphicsItems_[i]->getPropertyItemList();
+    for (size_t i = 0; i < processorGraphicsItems_.size(); i++) {
+        std::vector<LinkDialogPropertyGraphicsItem*> propertyItems =
+            processorGraphicsItems_[i]->getPropertyItemList();
 
-        for (size_t j=0; j<propertyItems.size(); j++) {
+        for (size_t j = 0; j < propertyItems.size(); j++) {
             if (propertyItems[j]->getGraphicsItemData() == property) {
                 graphicsItem = propertyItems[j];
                 break;
@@ -726,7 +710,8 @@ QGraphicsItem* LinkDialogGraphicsScene::getPropertyGraphicsItemAt(Property* prop
 }
 
 void LinkDialogGraphicsScene::mousePressEvent(QGraphicsSceneMouseEvent* e) {
-    LinkDialogPropertyGraphicsItem* tempProperty = getSceneGraphicsItemAt<LinkDialogPropertyGraphicsItem>(e->scenePos());
+    LinkDialogPropertyGraphicsItem* tempProperty =
+        getSceneGraphicsItemAt<LinkDialogPropertyGraphicsItem>(e->scenePos());
 
     if (!startProperty_ && tempProperty) {
         startProperty_ = tempProperty;
@@ -744,8 +729,7 @@ void LinkDialogGraphicsScene::mousePressEvent(QGraphicsSceneMouseEvent* e) {
         addItem(linkCurve_);
         linkCurve_->show();
         e->accept();
-    }
-    else
+    } else
         QGraphicsScene::mousePressEvent(e);
 
     return;
@@ -756,8 +740,6 @@ void LinkDialogGraphicsScene::mouseMoveEvent(QGraphicsSceneMouseEvent* e) {
         QPointF center = startProperty_->getShortestBoundaryPointTo(e->scenePos());
         linkCurve_->setStartPoint(center) ;
         linkCurve_->setEndPoint(e->scenePos());
-        linkCurve_->update();
-        update();
         e->accept();
     } else
         QGraphicsScene::mouseMoveEvent(e);
@@ -765,10 +747,8 @@ void LinkDialogGraphicsScene::mouseMoveEvent(QGraphicsSceneMouseEvent* e) {
 
 void LinkDialogGraphicsScene::mouseReleaseEvent(QGraphicsSceneMouseEvent* e) {
     if (linkCurve_) {
-        linkCurve_->hide();
-        removeItem(linkCurve_);
         delete linkCurve_;
-        linkCurve_ = 0;
+        linkCurve_ = NULL;
         endProperty_ = getSceneGraphicsItemAt<LinkDialogPropertyGraphicsItem>(e->scenePos());
 
         if (endProperty_ && (endProperty_!=startProperty_)) {
@@ -778,21 +758,24 @@ void LinkDialogGraphicsScene::mouseReleaseEvent(QGraphicsSceneMouseEvent* e) {
                 addPropertyLink(sProp, eProp, true);
         }
 
-        startProperty_ = 0;
-        endProperty_ = 0;
+        startProperty_ = NULL;
+        endProperty_ = NULL;
         e->accept();
-    } else
+    } else {
         QGraphicsScene::mouseReleaseEvent(e);
+    }
 
-    startProperty_ = 0;
-    endProperty_ = 0;
+    startProperty_ = NULL;
+    endProperty_ = NULL;
 }
 
 void LinkDialogGraphicsScene::mouseDoubleClickEvent(QGraphicsSceneMouseEvent* e) {
-    LinkDialogPropertyGraphicsItem* propertyItem = getSceneGraphicsItemAt<LinkDialogPropertyGraphicsItem>(e->scenePos());
+    LinkDialogPropertyGraphicsItem* propertyItem =
+        getSceneGraphicsItemAt<LinkDialogPropertyGraphicsItem>(e->scenePos());
 
     if (propertyItem) {
-        DialogConnectionGraphicsItem* propertyLink = propertyItem->getArrowConnectionAt(e->scenePos());
+        DialogConnectionGraphicsItem* propertyLink =
+            propertyItem->getArrowConnectionAt(e->scenePos());
 
         if (propertyLink) {
             if (isPropertyLinkBidirectional(propertyLink)) {
@@ -800,27 +783,28 @@ void LinkDialogGraphicsScene::mouseDoubleClickEvent(QGraphicsSceneMouseEvent* e)
 
                 if (propertyLink->getStartProperty() == propertyItem)
                     switchPropertyLinkDirection(propertyLink);
-            }
-            else {
+            } else {
                 if (propertyLink->getStartProperty() == propertyItem)
                     makePropertyLinkBidirectional(propertyLink, true);
             }
         }
 
         e->accept();
-    }
-    else
+    } else
         QGraphicsScene::mouseDoubleClickEvent(e);
 }
 
-void LinkDialogGraphicsScene::addPropertyLink(Property* sProp, Property* eProp, bool bidirectional) {
-    LinkDialogPropertyGraphicsItem* startProperty =  qgraphicsitem_cast<LinkDialogPropertyGraphicsItem*>(getPropertyGraphicsItemAt(sProp));
-    LinkDialogPropertyGraphicsItem* endProperty =  qgraphicsitem_cast<LinkDialogPropertyGraphicsItem*>(getPropertyGraphicsItemAt(eProp));
+void LinkDialogGraphicsScene::addPropertyLink(Property* sProp, Property* eProp,
+                                              bool bidirectional) {
+    LinkDialogPropertyGraphicsItem* startProperty =
+        qgraphicsitem_cast<LinkDialogPropertyGraphicsItem*>(getPropertyGraphicsItemAt(sProp));
+    LinkDialogPropertyGraphicsItem* endProperty =
+        qgraphicsitem_cast<LinkDialogPropertyGraphicsItem*>(getPropertyGraphicsItemAt(eProp));
     addPropertyLink(startProperty, endProperty, bidirectional);
-    DialogConnectionGraphicsItem* propertyLinkItem = getConnectionGraphicsItem(startProperty, endProperty);
+    DialogConnectionGraphicsItem* propertyLinkItem =
+        getConnectionGraphicsItem(startProperty, endProperty);
 
-    if (bidirectional)
-        makePropertyLinkBidirectional(propertyLinkItem, true);
+    if (bidirectional) makePropertyLinkBidirectional(propertyLinkItem, true);
 
     addConnectionToCurrentList(propertyLinkItem);
 }

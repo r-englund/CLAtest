@@ -101,6 +101,8 @@ std::string Processor::setIdentifier(const std::string& identifier) {
 
     usedIdentifiers_.insert(newIdentifier);
     identifier_ = newIdentifier;
+
+    notifyObserversIdentifierChange(this);
     return identifier_;
 }
 
@@ -343,6 +345,19 @@ void Processor::invalidationDisabled(){
 
 void Processor::performEvaluateRequest() {
     notifyObserversRequestEvaluate(this);
+}
+
+const std::string Processor::getCodeStateString(CodeState state) {
+    switch (state) {
+        case CODE_STATE_STABLE:
+            return "Stable";
+        case CODE_STATE_BROKEN:
+            return "Broken";
+        case CODE_STATE_EXPERIMENTAL:
+            return "Experimental";
+        default:
+            return "Unknown";
+    }
 }
 
 } // namespace

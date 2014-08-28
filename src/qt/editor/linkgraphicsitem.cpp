@@ -32,9 +32,15 @@
 
 #include <QGraphicsDropShadowEffect>
 #include <QPainter>
+#include <QString>
 #include <QPainterPath>
 #include <QVector2D>
 #include <inviwo/qt/editor/linkgraphicsitem.h>
+#include <inviwo/qt/editor/portinspectionmanager.h>
+#include <inviwo/core/ports/port.h>
+#include <inviwo/qt/editor/processorlinkgraphicsitem.h>
+#include <inviwo/qt/editor/processorgraphicsitem.h>
+#include <inviwo/core/links/processorlink.h>
 
 namespace inviwo {
 
@@ -54,16 +60,7 @@ LinkGraphicsItem::LinkGraphicsItem(QPointF startPoint, QPointF endPoint, ivec3 c
 
 LinkGraphicsItem::~LinkGraphicsItem() {}
 
-QPainterPath LinkGraphicsItem::obtainCurvePath() const {
-    QPainterPath bezierCurve;
-    float dist =
-        1.0f +
-        std::min(50.0f, 2.0f * static_cast<float>(QVector2D(startPoint_ - endPoint_).length()));
 
-    bezierCurve.moveTo(startPoint_);
-    bezierCurve.cubicTo(startPoint_ + dist * startDir_, endPoint_ + dist * endDir_, endPoint_);
-    return bezierCurve;
-}
 
 void LinkGraphicsItem::paint(QPainter* p, const QStyleOptionGraphicsItem* options,
                              QWidget* widget) {
@@ -75,82 +72,104 @@ void LinkGraphicsItem::paint(QPainter* p, const QStyleOptionGraphicsItem* option
     else
         p->setPen(QPen(color_, 2.0, Qt::DotLine, Qt::RoundCap));
 
-    p->drawPath(obtainCurvePath());
+    p->drawPath(path_);
+}
+
+QPainterPath LinkGraphicsItem::obtainCurvePath() const {
+    QPainterPath bezierCurve;
+    float dist =
+        1.0f +
+        std::min(50.0f, 2.0f * static_cast<float>(QVector2D(startPoint_ - endPoint_).length()));
+
+    bezierCurve.moveTo(startPoint_);
+    bezierCurve.cubicTo(startPoint_ + dist * startDir_, endPoint_ + dist * endDir_, endPoint_);
+    return bezierCurve;
 }
 
 QPainterPath LinkGraphicsItem::shape() const {
     QPainterPathStroker pathStrocker;
     pathStrocker.setWidth(10.0);
-    return pathStrocker.createStroke(obtainCurvePath());
+    return pathStrocker.createStroke(path_);
 }
 
 QRectF LinkGraphicsItem::boundingRect() const {
+    return rect_;
+}
+
+void LinkGraphicsItem::setStartPoint(QPointF startPoint) {
+    updateShape();
+    startPoint_ = startPoint;
+}
+
+void LinkGraphicsItem::setEndPoint(QPointF endPoint) {
+    updateShape();
+    endPoint_ = endPoint;
+}
+
+QPointF LinkGraphicsItem::getStartPoint() const {
+    return startPoint_;
+}
+
+void LinkGraphicsItem::setStartDir(QPointF dir) {
+    updateShape();
+    startDir_ = dir;
+}
+
+QPointF LinkGraphicsItem::getStartDir() const {
+    return startDir_;
+}
+
+void LinkGraphicsItem::setEndDir(QPointF dir) {
+    updateShape();
+    endDir_ = dir;
+}
+
+QPointF LinkGraphicsItem::getEndDir() const {
+    return endDir_;
+}
+
+QPointF LinkGraphicsItem::getEndPoint() const {
+    return endPoint_;
+}
+
+void LinkGraphicsItem::updateShape() {
+    prepareGeometryChange();
+
     QPointF topLeft =
         QPointF(std::min(startPoint_.x(), endPoint_.x()), std::min(startPoint_.y(), endPoint_.y()));
-    return QRectF(topLeft.x() - 40.0, topLeft.y() - 10.0,
+    rect_ =  QRectF(topLeft.x() - 40.0, topLeft.y() - 10.0,
                   abs(startPoint_.x() - endPoint_.x()) + 80.0,
                   abs(startPoint_.y() - endPoint_.y()) + 20.0);
+
+    path_ = obtainCurvePath();
 }
 
-LinkConnectionGraphicsItem::LinkConnectionGraphicsItem(ProcessorGraphicsItem* outProcessor,
-                                                       ProcessorGraphicsItem* inProcessor)
-    : LinkGraphicsItem(outProcessor->getShortestBoundaryPointTo(inProcessor),
-                       inProcessor->getShortestBoundaryPointTo(outProcessor))
-    , outProcessor_(outProcessor)
-    , inProcessor_(inProcessor) {
-    setFlags(ItemIsSelectable | ItemIsFocusable);
+//////////////////////////////////////////////////////////////////////////
+
+LinkConnectionDragGraphicsItem::LinkConnectionDragGraphicsItem(ProcessorLinkGraphicsItem* outLink, QPointF endPos) 
+    : LinkGraphicsItem(QPointF(0,0), endPos)
+    , outLink_(outLink)
+    , inLeft_(endPoint_)
+    , inRight_(endPoint_) {
+
 }
 
-LinkConnectionGraphicsItem::~LinkConnectionGraphicsItem() {}
+LinkConnectionDragGraphicsItem::~LinkConnectionDragGraphicsItem() {}
 
-QRectF LinkConnectionGraphicsItem::boundingRect() const {
-    QPointF outc = outProcessor_->pos();
-    QPointF inc = inProcessor_->pos();
-    QPointF outRight =
-        outc +
-        mapToParent((outProcessor_->rect().bottomRight() + outProcessor_->rect().topRight()) / 2);
-    QPointF outLeft =
-        outc +
-        mapToParent((outProcessor_->rect().bottomLeft() + outProcessor_->rect().topLeft()) / 2);
-    QPointF inRight =
-        inc +
-        mapToParent((inProcessor_->rect().bottomRight() + inProcessor_->rect().topRight()) / 2);
-    QPointF inLeft =
-        inc + mapToParent((inProcessor_->rect().bottomLeft() + inProcessor_->rect().topLeft()) / 2);
-    QPointF start;
-    QPointF stop;
-
-    if (outRight.x() < inLeft.x()) {
-        start = outRight;
-        stop = inLeft;
-    } else if (outLeft.x() > inRight.x()) {
-        start = outLeft;
-        stop = inRight;
-    } else {
-        start = outRight;
-        stop = inRight;
-    }
-
-    QPointF topLeft = QPointF(std::min(start.x(), stop.x()), std::min(start.y(), stop.y()));
-    QPointF bottomRight = QPointF(std::max(start.x(), stop.x()), std::max(start.y(), stop.y()));
-    return QRectF(topLeft.x() - 30, topLeft.y() - 10, bottomRight.x() - topLeft.x() + 70,
-                  bottomRight.y() - topLeft.y() + 20);
+ProcessorLinkGraphicsItem* LinkConnectionDragGraphicsItem::getSrcProcessorLinkGraphicsItem() const {
+    return outLink_;
 }
 
-QPainterPath LinkConnectionGraphicsItem::obtainCurvePath() const {
-    QPointF outc = outProcessor_->pos();
-    QPointF inc = inProcessor_->pos();
-    QPointF outRight =
-        outc +
-        mapToParent((outProcessor_->rect().bottomRight() + outProcessor_->rect().topRight()) / 2);
-    QPointF outLeft =
-        outc +
-        mapToParent((outProcessor_->rect().bottomLeft() + outProcessor_->rect().topLeft()) / 2);
-    QPointF inRight =
-        inc +
-        mapToParent((inProcessor_->rect().bottomRight() + inProcessor_->rect().topRight()) / 2);
-    QPointF inLeft =
-        inc + mapToParent((inProcessor_->rect().bottomLeft() + inProcessor_->rect().topLeft()) / 2);
+ProcessorGraphicsItem* LinkConnectionDragGraphicsItem::getSrcProcessorGraphicsItem() const {
+    return outLink_->getProcessorGraphicsItem();
+}
+
+QPainterPath LinkConnectionDragGraphicsItem::obtainCurvePath() const {
+    QPointF inLeft = inLeft_;
+    QPointF inRight = inRight_;
+    QPointF outRight = outLink_->getRightPos();
+    QPointF outLeft = outLink_->getLeftPos();
+
     QPointF start;
     QPointF stop;
     QPointF ctrlPointStart;
@@ -158,18 +177,18 @@ QPainterPath LinkConnectionGraphicsItem::obtainCurvePath() const {
     QPointF qp = QPointF(1, 0);
     QPainterPath bezierCurve;
 
-    if (outRight.x() <= inLeft.x()) {
-        start = outRight;
+    if (outLeft.x() <= inLeft.x()) {
+        start = outLeft;
         stop = inLeft;
         ctrlPointStart = qp;
         ctrlPointStop = -qp;
-    } else if (outLeft.x() >= inRight.x()) {
-        start = outLeft;
+    } else if (outRight.x() >= inRight.x()) {
+        start = outRight;
         stop = inRight;
         ctrlPointStart = -qp;
         ctrlPointStop = qp;
     } else {
-        start = outRight;
+        start = outLeft;
         stop = inRight;
         ctrlPointStart = qp;
         ctrlPointStop = qp;
@@ -181,5 +200,153 @@ QPainterPath LinkConnectionGraphicsItem::obtainCurvePath() const {
     bezierCurve.cubicTo(start + dist * ctrlPointStart, stop + dist * ctrlPointStop, stop);
     return bezierCurve;
 }
+
+void LinkConnectionDragGraphicsItem::reactToProcessorHover(ProcessorGraphicsItem* processor) {
+    if(processor != NULL) {
+        inLeft_ = processor->getLinkGraphicsItem()->getRightPos();
+        inRight_ = processor->getLinkGraphicsItem()->getLeftPos();
+    } else {
+        inLeft_ = endPoint_;
+        inRight_ = endPoint_;
+    }
+}
+
+void LinkConnectionDragGraphicsItem::updateShape() {
+    QPointF inLeft = inLeft_;
+    QPointF inRight = inRight_;
+    QPointF outRight = outLink_->getRightPos();
+    QPointF outLeft = outLink_->getLeftPos();
+
+    QPointF start;
+    QPointF stop;
+
+    if (outLeft.x() < inLeft.x()) {
+        start = outLeft;
+        stop = inLeft;
+    } else if (outRight.x() > inRight.x()) {
+        start = outRight;
+        stop = inRight;
+    } else {
+        start = outLeft;
+        stop = inRight;
+    }
+
+    QPointF topLeft = QPointF(std::min(start.x(), stop.x()), std::min(start.y(), stop.y()));
+    QPointF bottomRight = QPointF(std::max(start.x(), stop.x()), std::max(start.y(), stop.y()));
+    rect_ =  QRectF(topLeft.x() - 30, topLeft.y() - 10, bottomRight.x() - topLeft.x() + 70,
+                  bottomRight.y() - topLeft.y() + 20);
+
+    path_ = obtainCurvePath();
+
+    prepareGeometryChange();
+}
+
+
+//////////////////////////////////////////////////////////////////////////
+
+LinkConnectionGraphicsItem::LinkConnectionGraphicsItem(ProcessorLinkGraphicsItem* outLink,
+                                                       ProcessorLinkGraphicsItem* inLink,
+                                                       ProcessorLink* link)
+    : LinkConnectionDragGraphicsItem(outLink, QPointF(0,0))
+    , inLink_(inLink)
+    , link_(link) {
+    setFlags(ItemIsSelectable | ItemIsFocusable);
+
+    outLink_->addLink(this);
+    inLink_->addLink(this);
+
+    setVisible(outLink_->isVisible() && inLink_->isVisible());
+
+    setToolTip(QString(link_->getLinkInfoHtml().c_str()));
+}
+
+LinkConnectionGraphicsItem::~LinkConnectionGraphicsItem() {
+    outLink_->removeLink(this);
+    inLink_->removeLink(this);
+}
+
+QPainterPath LinkConnectionGraphicsItem::obtainCurvePath() const {
+    QPointF inRight = inLink_->getRightPos();
+    QPointF inLeft = inLink_->getLeftPos();
+    QPointF outRight = outLink_->getRightPos();
+    QPointF outLeft = outLink_->getLeftPos();
+
+    QPointF start;
+    QPointF stop;
+    QPointF ctrlPointStart;
+    QPointF ctrlPointStop;
+    QPointF qp = QPointF(1, 0);
+    QPainterPath bezierCurve;
+
+    if (outLeft.x() <= inRight.x()) {
+        start = outLeft;
+        stop = inRight;
+        ctrlPointStart = qp;
+        ctrlPointStop = -qp;
+    } else if (outRight.x() >= inLeft.x()) {
+        start = outRight;
+        stop = inLeft;
+        ctrlPointStart = -qp;
+        ctrlPointStop = qp;
+    } else {
+        start = outLeft;
+        stop = inLeft;
+        ctrlPointStart = qp;
+        ctrlPointStop = qp;
+    }
+
+    float dist =
+        1.0f + std::min(50.0f, 2.0f * static_cast<float>(QVector2D(start - stop).length()));
+    bezierCurve.moveTo(start);
+    bezierCurve.cubicTo(start + dist * ctrlPointStart, stop + dist * ctrlPointStop, stop);
+    return bezierCurve;
+}
+
+ProcessorLinkGraphicsItem* LinkConnectionGraphicsItem::getDestProcessorLinkGraphicsItem() const {
+    return inLink_;
+}
+
+ProcessorGraphicsItem* LinkConnectionGraphicsItem::getDestProcessorGraphicsItem() const {
+    return inLink_->getProcessorGraphicsItem();
+}
+
+void LinkConnectionGraphicsItem::updateShape() {
+    QPointF inRight = inLink_->getRightPos();
+    QPointF inLeft = inLink_->getLeftPos();
+    QPointF outRight = outLink_->getRightPos();
+    QPointF outLeft = outLink_->getLeftPos();
+
+    QPointF start;
+    QPointF stop;
+
+    if (outLeft.x() < inRight.x()) {
+        start = outLeft;
+        stop = inRight;
+    } else if (outRight.x() > inLeft.x()) {
+        start = outRight;
+        stop = inLeft;
+    } else {
+        start = outLeft;
+        stop = inLeft;
+    }
+
+    QPointF topLeft = QPointF(std::min(start.x(), stop.x()), std::min(start.y(), stop.y()));
+    QPointF bottomRight = QPointF(std::max(start.x(), stop.x()), std::max(start.y(), stop.y()));
+    rect_ = QRectF(topLeft.x() - 30, topLeft.y() - 10, bottomRight.x() - topLeft.x() + 70,
+                  bottomRight.y() - topLeft.y() + 20);
+
+    path_ = obtainCurvePath();
+
+    prepareGeometryChange();
+}
+
+ProcessorLink* LinkConnectionGraphicsItem::getProcessorLink() const {
+    return link_;
+}
+
+void LinkConnectionGraphicsItem::updateInfo() {
+    setToolTip(QString(link_->getLinkInfoHtml().c_str()));
+}
+
 
 }  // namespace

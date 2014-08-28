@@ -153,6 +153,9 @@ public:
     virtual void serialize(IvwSerializer& s) const;
     virtual void deserialize(IvwDeserializer& d);
 
+
+    static const std::string getCodeStateString(CodeState state);
+
 protected:
     void invalidationEnabled();
     void invalidationDisabled();
@@ -169,21 +172,16 @@ protected:
 
 private:
     std::string identifier_;
-
     std::vector<Inport*> inports_;
     std::vector<Outport*> outports_;
-
     std::vector<InteractionHandler*> interactionHandlers_;
 
     //TODO: Use map
     std::vector<MetaData*> metaData_;
-
     Group<std::string, Port*> portDependencySets_;
-
     static std::set<std::string> usedIdentifiers_;
 
     bool initialized_;
-
     bool invalidationEnabled_;
 };
 
