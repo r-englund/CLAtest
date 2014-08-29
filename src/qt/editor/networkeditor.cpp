@@ -1184,12 +1184,16 @@ void NetworkEditor::placeProcessorOnConnection(ProcessorGraphicsItem* processorI
 void NetworkEditor::placeProcessorOnProcessor(ProcessorGraphicsItem* processorItem,
                                               ProcessorGraphicsItem* oldProcessorItem) {
 
-    const std::vector<Inport*>& inports = processorItem->getProcessor()->getInports();
-    const std::vector<Outport*>& outports = processorItem->getProcessor()->getOutports();
-    const std::vector<Inport*>& oldInports = oldProcessorItem->getProcessor()->getInports();
-    const std::vector<Outport*>& oldOutports = oldProcessorItem->getProcessor()->getOutports();
+    ProcessorNetwork* network = InviwoApplication::getPtr()->getProcessorNetwork();
+    Processor* newProcessor = processorItem->getProcessor();
+    Processor* oldProcessor = oldProcessorItem->getProcessor();
 
-    InviwoApplication::getPtr()->getProcessorNetwork()->lock();
+    const std::vector<Inport*>& inports = newProcessor->getInports();
+    const std::vector<Outport*>& outports = newProcessor->getOutports();
+    const std::vector<Inport*>& oldInports = oldProcessor->getInports();
+    const std::vector<Outport*>& oldOutports = oldProcessor->getOutports();
+
+    network->lock();
 
     std::vector<std::pair<Outport*, Inport*> > newConnections;
 
@@ -1218,7 +1222,57 @@ void NetworkEditor::placeProcessorOnProcessor(ProcessorGraphicsItem* processorIt
             }
         }
     }
-
+    
+    
+    // Copy over the value of old props to new ones if id and classname are equal.
+    std::vector<Property*> newProps = newProcessor->getProperties();
+    std::vector<Property*> oldProps = oldProcessor->getProperties();
+    
+    std::map<Property*, Property*> propertymap;
+    
+    for (std::vector<Property*>::iterator newit = newProps.begin(); newit != newProps.end(); ++newit) {
+        for (std::vector<Property*>::iterator oldit = oldProps.begin(); oldit != oldProps.end(); ++oldit) {
+            if ( (*newit)->getIdentifier() == (*oldit)->getIdentifier()
+                && (*newit)->getClassName() == (*oldit)->getClassName()) {
+                (*newit)->set(*oldit);
+                propertymap[(*oldit)] = (*newit);
+            }
+        }
+    }
+    
+    // Move propertylinks to the new processor
+    std::vector<PropertyLink*> links = network->getLinks();
+    std::map<Property*, Property*>::iterator match;
+    
+    for (std::vector<Property*>::iterator oldit = oldProps.begin(); oldit != oldProps.end(); ++oldit) {
+        for (std::vector<PropertyLink*>::iterator linkit = links.begin(); linkit != links.end(); ++linkit) {
+            if ( (*linkit)->getDestinationProperty() == (*oldit) ) {
+                match = propertymap.find(*oldit);
+                if( match != propertymap.end()) {
+                    // add link from
+                    Property* start = (*linkit)->getSourceProperty();
+                    // to
+                    Property* end = match->second;
+                    
+                    addLink(start->getOwner(), end->getOwner());
+                    network->addLink(start, end);
+                }
+            }
+            if ( (*linkit)->getSourceProperty() == (*oldit) ) {
+                match = propertymap.find(*oldit);
+                if( match != propertymap.end()) {
+                    // add link from
+                    Property* start = match->second;
+                     //to
+                    Property* end = (*linkit)->getDestinationProperty();
+                    
+                    addLink(start->getOwner(), end->getOwner());
+                    network->addLink(start, end);
+                }
+            }
+        }
+    }
+       
     // remove old processor
     removeProcessor(oldProcessorItem->getProcessor());
 
@@ -1226,7 +1280,7 @@ void NetworkEditor::placeProcessorOnProcessor(ProcessorGraphicsItem* processorIt
     for (size_t i = 0; i < newConnections.size(); ++i)
         addConnection(newConnections.at(i).first, newConnections.at(i).second);
 
-    InviwoApplication::getPtr()->getProcessorNetwork()->unlock();
+    network->unlock();
 }
 
 ///////////////////////////////
