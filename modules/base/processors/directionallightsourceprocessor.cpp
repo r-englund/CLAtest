@@ -77,7 +77,6 @@ void DirectionalLightSourceProcessor::updateDirectionalLightSource(DirectionalLi
     vec3 dir = glm::normalize(vec3(0.f)-lightPos);
     mat4 transformationMatrix = getLightTransformationMatrix(lightPos, dir);
 
-    vec4 pp = transformationMatrix*vec4(0, 0, 1.f, 1.f);
     // Offset by 0.5 to get to texture coordinates
     lightSource->setBasisAndOffset(glm::translate(vec3(0.5f)));
     lightSource->setWorldTransform(transformationMatrix);

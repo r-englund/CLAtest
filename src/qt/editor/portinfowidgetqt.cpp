@@ -46,7 +46,6 @@ PortInfoWidgetQt::PortInfoWidgetQt(QWidget* parent)
 
     infoTextWidget_ = new QTextEdit(this);
     infoTextWidget_->setReadOnly(true);
-
     QVBoxLayout* layout = new QVBoxLayout();
     layout->addWidget(infoTextWidget_);
     layout->setContentsMargins(0,0,0,0);

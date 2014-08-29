@@ -49,6 +49,7 @@ public:
     virtual ~PortInspectionManager();
 
     void startTimer();
+    void startTimer(QPoint pos);
     void showPortInfo();
     void hidePortInfo();
 
@@ -60,6 +61,7 @@ private:
     Timer* hoverTimer_;
     float hoverDelay_;
     PortInfoWidgetQt* portInfoWidget_;  //< Owning reference
+    QPoint pos_;
 };
 
 }  // namespace

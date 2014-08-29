@@ -305,7 +305,6 @@ std::string ProcessorLink::getLinkInfoHtml() const {
         if (std::find(processedLinks.begin(), processedLinks.end(), (*it))==processedLinks.end()) {
 
             Processor* linkSrc = dynamic_cast<Processor*>((*it)->getSourceProperty()->getOwner()->getProcessor());
-            Processor* linkDest = dynamic_cast<Processor*>((*it)->getDestinationProperty()->getOwner()->getProcessor());
 
             Property* srcProperty = (*it)->getSourceProperty();
             Property* dstProperty = (*it)->getDestinationProperty();

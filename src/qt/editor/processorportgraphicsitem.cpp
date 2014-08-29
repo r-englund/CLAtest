@@ -51,12 +51,13 @@ namespace inviwo {
 ProcessorPortGraphicsItem::ProcessorPortGraphicsItem(ProcessorGraphicsItem* parent,
                                                      const QPointF& pos, bool up, Port* port)
     : EditorGrapicsItem(parent)
-    , processor_(parent)
     , portInspector_(NULL)
+    , processor_(parent)
     , port_(port)
     , size_(9.0f)
     , lineWidth_(1.0f)
     , up_(up) {
+    
     setFlags(ItemSendsScenePositionChanges);
     setCacheMode(QGraphicsItem::DeviceCoordinateCache);
     setRect(-0.5f * size_ - lineWidth_, -0.5f * size_ - lineWidth_, size_ + 2.0 * lineWidth_,
@@ -65,6 +66,7 @@ ProcessorPortGraphicsItem::ProcessorPortGraphicsItem(ProcessorGraphicsItem* pare
     setAcceptHoverEvents(true);
     setZValue(PROCESSORGRAPHICSITEM_DEPTH+0.5);
     portInspector_ = new PortInspectionManager(this);
+    setToolTip(QString(""));
 }
 
 void ProcessorPortGraphicsItem::paint(QPainter* p, const QStyleOptionGraphicsItem* options,
@@ -111,7 +113,7 @@ QVariant ProcessorPortGraphicsItem::itemChange(GraphicsItemChange change, const 
     if (change == QGraphicsItem::ItemScenePositionHasChanged) {
         updateConnectionPositions();
     }
-    return QGraphicsItem::itemChange(change, value);
+    return EditorGrapicsItem::itemChange(change, value);
 }
 
 std::vector<ConnectionGraphicsItem*> ProcessorPortGraphicsItem::getConnections() {
@@ -132,10 +134,10 @@ Inport* ProcessorInportGraphicsItem::getPort() { return port_; }
 
 void ProcessorInportGraphicsItem::mousePressEvent(QGraphicsSceneMouseEvent* e) {
     portInspector_->hidePortInfo();
-    if (port_->isConnected()) {
+    if(e->buttons() == Qt::LeftButton && port_->isConnected()) {
         NetworkEditor::getPtr()->releaseConnection(this);
-        e->accept();
     }
+    e->accept();
 }
 
 void ProcessorInportGraphicsItem::hoverEnterEvent(QGraphicsSceneHoverEvent* e) {
@@ -167,7 +169,9 @@ Outport* ProcessorOutportGraphicsItem::getPort() { return port_; }
 
 void ProcessorOutportGraphicsItem::mousePressEvent(QGraphicsSceneMouseEvent* e) {
     portInspector_->hidePortInfo();
-    NetworkEditor::getPtr()->initiateConnection(this);
+    if(e->buttons() == Qt::LeftButton) {
+        NetworkEditor::getPtr()->initiateConnection(this);
+    }
     e->accept();
 }
 

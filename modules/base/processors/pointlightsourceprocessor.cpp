@@ -51,8 +51,8 @@ PointLightSourceProcessor::PointLightSourceProcessor()
     , lightEnabled_("lightEnabled", "Enabled", true)
     , camera_("camera", "Camera", vec3(0.0f, 0.0f, -2.0f), vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 1.0f, 0.0f), NULL, PropertyOwner::VALID) 
     , handleInteractionEvents_("handleEvents", "Handle interaction events", false)
-    , lookTo_(0)
-    , lookUp_(0.f, 1.f, 0.f) {
+    , lookUp_(0.f, 1.f, 0.f)
+    , lookTo_(0) {
     addPort(outport_);
     addProperty(lightPosition_);
     addProperty(lightDiffuse_);
