@@ -427,7 +427,7 @@ bool FrameBufferObject::performAttachColorTexture(GLenum& outAttachNumber, int a
     if (!buffersInUse_[attachmentNumber]) {
         // new attachment, not registered before
         buffersInUse_[attachmentNumber] = true;
-        if ((forcedLocation < 0) || (forcedLocation > drawBuffers_.size())) {
+        if ((forcedLocation < 0) || (forcedLocation > static_cast<int>(drawBuffers_.size()))) {
             // no or invalid forced location
             drawBuffers_.push_back(attachmentID);
         }
@@ -436,7 +436,7 @@ bool FrameBufferObject::performAttachColorTexture(GLenum& outAttachNumber, int a
             drawBuffers_.insert(drawBuffers_.begin() + forcedLocation, attachmentID);
         }
     }
-    else if ((forcedLocation > -1) && (forcedLocation < drawBuffers_.size())) {
+    else if ((forcedLocation > -1) && (forcedLocation < static_cast<int>(drawBuffers_.size()))) {
         // attachment is already registered, but buffer location is forced.
         // adjust position within drawBuffers_ only if required
         if (drawBuffers_[forcedLocation] != attachmentID) {
