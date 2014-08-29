@@ -40,7 +40,9 @@
 float fresnelSchlick(const float costheta, const float r0) {
     // Using native_powr is faster than pown
     //return r0 + (1.f - r0)*pown( (1.f - costheta), 5 ); 
-    return r0 + (1.f - r0)*native_powr(1.f - costheta, 5.f ); 
+    // Avoid undefined behaviour when 1-costheta is zero
+    float x = 1.f - costheta;
+    return x > 0 ? r0 + (1.f - r0)*native_powr(x, 5.f ) : 0.f;
 }
 
 float fresnelDielectricR(const float etai, const float etat, const float cosi, const float cost) {
