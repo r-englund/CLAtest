@@ -35,6 +35,7 @@
 
 #include <inviwo/qt/editor/inviwoqteditordefine.h>
 #include <QGraphicsScene>
+#include <QGraphicsItem>
 #include <QTimer>
 #include <QThread>
 #include <QPointF>
