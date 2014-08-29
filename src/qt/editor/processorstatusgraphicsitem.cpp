@@ -94,4 +94,12 @@ void ProcessorStatusGraphicsItem::paint(QPainter* p, const QStyleOptionGraphicsI
     p->restore();
 }
 
+void ProcessorStatusGraphicsItem::onProcessorWidgetShow(ProcessorWidget*) {
+    update();
+}
+void ProcessorStatusGraphicsItem::onProcessorWidgetHide(ProcessorWidget*) {
+    update();
+}
+
+
 }  // namespace

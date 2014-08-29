@@ -36,7 +36,8 @@
 namespace inviwo {
 
 ProcessorWidget::ProcessorWidget()
-    : metaData_(0)
+    : ProcessorWidgetObservable()
+    , metaData_(0)
     , processor_(0) {}
 
 ProcessorWidget::ProcessorWidget(const ProcessorWidget& rhs) : metaData_(rhs.metaData_), processor_(rhs.processor_) {
@@ -66,6 +67,11 @@ void ProcessorWidget::deinitialize() {
 }
 
 void ProcessorWidget::setVisible(bool visible) {
+    if(visible){
+        notifyObserversAboutShow(this);
+    }else{
+        notifyObserversAboutHide(this);
+    }
     metaData_->setVisibile(visible);
 }
 
@@ -75,10 +81,12 @@ bool ProcessorWidget::isVisible(){
 
 void ProcessorWidget::show() {
     metaData_->setVisibile(true);
+    notifyObserversAboutShow(this);
 }
 
 void ProcessorWidget::hide() {
     metaData_->setVisibile(false);
+    notifyObserversAboutShow(this);
 }
 
 void ProcessorWidget::setDimension(ivec2 dimension) {

@@ -30,41 +30,36 @@
  *
  *********************************************************************************/
 
-#ifndef IVW_PROCESSORSTATUSGRAPHICSITEM_H
-#define IVW_PROCESSORSTATUSGRAPHICSITEM_H
-
-#include <inviwo/qt/editor/inviwoqteditordefine.h>
-#include <inviwo/qt/editor/editorgrapicsitem.h>
 #include <inviwo/core/processors/processorwidgetobserver.h>
-#include <QEvent>
-#include <QColor>
+
+#include <inviwo/core/processors/processorwidget.h>
 
 namespace inviwo {
 
-class Processor;
+ProcessorWidgetObserver::ProcessorWidgetObserver() : Observer() {};
+ProcessorWidgetObserver::~ProcessorWidgetObserver() {};
 
-class IVW_QTEDITOR_API ProcessorStatusGraphicsItem : public EditorGrapicsItem, public ProcessorWidgetObserver {
-public:
-    ProcessorStatusGraphicsItem(QGraphicsRectItem* parent, Processor* processor);
-    virtual ~ProcessorStatusGraphicsItem(){}
+void ProcessorWidgetObserver::onProcessorWidgetShow(ProcessorWidget*) {};
+void ProcessorWidgetObserver::onProcessorWidgetHide(ProcessorWidget*) {};
 
-    // override for qgraphicsitem_cast (refer qt documentation)
-    enum { Type = UserType + ProcessorStatusGraphicsType };
-    int type() const { return Type; }
+ProcessorWidgetObservable::ProcessorWidgetObservable() : Observable<ProcessorWidgetObserver>() {}
+ProcessorWidgetObservable::~ProcessorWidgetObservable() {};
 
-    virtual void onProcessorWidgetShow(ProcessorWidget*);
-    virtual void onProcessorWidgetHide(ProcessorWidget*);
+void ProcessorWidgetObservable::notifyObserversAboutShow(ProcessorWidget* p) const {
+    ObserverSet localObservers = *observers_;
 
-protected:
-    void paint(QPainter* p, const QStyleOptionGraphicsItem* options, QWidget* widget);
+    for (ObserverSet::reverse_iterator it = localObservers.rbegin(); it != localObservers.rend();
+         ++it) {
+        static_cast<ProcessorWidgetObserver*>(*it)->onProcessorWidgetShow(p);
+    }
+}
+void ProcessorWidgetObservable::notifyObserversAboutHide(ProcessorWidget* p) const {
+    ObserverSet localObservers = *observers_;
 
-private:
-    Processor* processor_;
-    float size_;
-    float lineWidth_;
-};
+    for (ObserverSet::reverse_iterator it = localObservers.rbegin(); it != localObservers.rend();
+         ++it) {
+        static_cast<ProcessorWidgetObserver*>(*it)->onProcessorWidgetHide(p);
+    }
+}
 
-} // namespace
-
-#endif // IVW_PROCESSORSTATUSGRAPHICSITEM_H
-
+}  // namespace

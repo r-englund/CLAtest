@@ -30,41 +30,37 @@
  *
  *********************************************************************************/
 
-#ifndef IVW_PROCESSORSTATUSGRAPHICSITEM_H
-#define IVW_PROCESSORSTATUSGRAPHICSITEM_H
+#ifndef IVW_PROCESSORWIDGETOBSERVER_H
+#define IVW_PROCESSORWIDGETOBSERVER_H
 
-#include <inviwo/qt/editor/inviwoqteditordefine.h>
-#include <inviwo/qt/editor/editorgrapicsitem.h>
-#include <inviwo/core/processors/processorwidgetobserver.h>
-#include <QEvent>
-#include <QColor>
+#include <inviwo/core/common/inviwocoredefine.h>
+#include <inviwo/core/common/inviwo.h>
 
 namespace inviwo {
 
-class Processor;
+class ProcessorWidget;
 
-class IVW_QTEDITOR_API ProcessorStatusGraphicsItem : public EditorGrapicsItem, public ProcessorWidgetObserver {
+class IVW_CORE_API ProcessorWidgetObserver : public Observer {
 public:
-    ProcessorStatusGraphicsItem(QGraphicsRectItem* parent, Processor* processor);
-    virtual ~ProcessorStatusGraphicsItem(){}
-
-    // override for qgraphicsitem_cast (refer qt documentation)
-    enum { Type = UserType + ProcessorStatusGraphicsType };
-    int type() const { return Type; }
-
+    ProcessorWidgetObserver();
+    virtual ~ProcessorWidgetObserver();
+    
     virtual void onProcessorWidgetShow(ProcessorWidget*);
     virtual void onProcessorWidgetHide(ProcessorWidget*);
-
-protected:
-    void paint(QPainter* p, const QStyleOptionGraphicsItem* options, QWidget* widget);
-
-private:
-    Processor* processor_;
-    float size_;
-    float lineWidth_;
 };
+
+class IVW_CORE_API ProcessorWidgetObservable : public Observable<ProcessorWidgetObserver> {
+public:
+    ProcessorWidgetObservable();
+    virtual ~ProcessorWidgetObservable();
+    
+    void notifyObserversAboutShow(ProcessorWidget* p) const;
+    void notifyObserversAboutHide(ProcessorWidget* p) const;
+};
+
+
 
 } // namespace
 
-#endif // IVW_PROCESSORSTATUSGRAPHICSITEM_H
+#endif // IVW_PROCESSORWIDGETOBSERVER_H
 
