@@ -455,10 +455,10 @@ bool CanvasQt::gestureEvent(QGestureEvent* ge) {
     QPanGesture* panGesture = NULL;
     QPinchGesture* pinchGesture = NULL;
 
-    if(gesture = ge->gesture(Qt::PanGesture)){
+    if((gesture = ge->gesture(Qt::PanGesture))){
         panGesture = static_cast<QPanGesture *>(gesture);
     }
-    if (gesture = ge->gesture(Qt::PinchGesture)){
+    if ((gesture = ge->gesture(Qt::PinchGesture))){
         pinchGesture = static_cast<QPinchGesture *>(gesture);
     }
 

@@ -38,7 +38,6 @@
 #include <QMoveEvent>
 #include <inviwo/core/common/inviwo.h>
 #include <inviwo/qt/widgets/inviwoapplicationqt.h>
-#include <inviwo/qt/editor/networkeditor.h>
 
 namespace inviwo {
 

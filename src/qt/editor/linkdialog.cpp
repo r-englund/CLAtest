@@ -679,12 +679,12 @@ QPointF LinkDialogPropertyGraphicsItem::calculateArrowCenter(size_t curPort, boo
 
 LinkDialogGraphicsScene::LinkDialogGraphicsScene(QWidget* parent)
     : QGraphicsScene(parent)
+    , src_(0)
+    , dest_(0)
     , linkCurve_(0)
     , startProperty_(0)
     , endProperty_(0)
     , processorNetwork_(0)
-    , src_(0)
-    , dest_(0)
     , expandProperties_(false) {
 
     // The defalt bsp tends to crash...  

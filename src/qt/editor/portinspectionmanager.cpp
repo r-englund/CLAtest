@@ -51,10 +51,16 @@ PortInspectionManager::~PortInspectionManager() {
     }
 }
 
-void PortInspectionManager::startTimer() { hoverTimer_->start(hoverDelay_, true); }
+void PortInspectionManager::startTimer() {
+    startTimer(item_->mapPosToSceen(item_->rect().center()));
+}
+
+void PortInspectionManager::startTimer(QPoint pos) {
+    pos_ = pos;
+    hoverTimer_->start(hoverDelay_, true);
+}
 
 void PortInspectionManager::showPortInfo() {
-    QPoint pos = item_->mapPosToSceen(item_->rect().center());
     int offset = 0;
 
     Port* port = item_->getInfoPort();
@@ -64,7 +70,7 @@ void PortInspectionManager::showPortInfo() {
                 ->getSettingsByType<SystemSettings>()
                 ->enablePortInspectorsProperty_.get()) {
             bool added = NetworkEditor::getPtr()->addPortInspector(
-                port->getProcessor()->getIdentifier(), port->getIdentifier(), pos + QPoint(0, 0));
+                port->getProcessor()->getIdentifier(), port->getIdentifier(), pos_ + QPoint(5, 5));
 
             if (added) {
                 offset = InviwoApplication::getPtr()
@@ -81,11 +87,14 @@ void PortInspectionManager::showPortInfo() {
                 portInfoWidget_ = new PortInfoWidgetQt();
             }
             portInfoWidget_->updatePortInfo(port->getIdentifier(), port->getContentInfo());
-            portInfoWidget_->move(pos + QPoint(0, 0 + offset));
+            portInfoWidget_->move(pos_ + QPoint(5, 5 + offset));
             portInfoWidget_->show();
         }
     }
 }
+
+
+
 
 void PortInspectionManager::hidePortInfo() {
     hoverTimer_->stop();

@@ -31,6 +31,7 @@
  *********************************************************************************/
 
 #include <QGraphicsDropShadowEffect>
+#include <QGraphicsSceneHoverEvent>
 #include <QPainter>
 #include <QPainterPath>
 
@@ -222,6 +223,7 @@ ConnectionGraphicsItem::ConnectionGraphicsItem(ProcessorOutportGraphicsItem* out
     , connection_(connection)
     , portInspector_(NULL) {
     setFlags(ItemIsSelectable | ItemIsFocusable);
+    setAcceptHoverEvents(true);
     setZValue(CONNECTIONGRAPHICSITEM_DEPTH);
     outport_->addConnection(this);
     inport_->addConnection(this);
@@ -260,7 +262,7 @@ void ConnectionGraphicsItem::mousePressEvent(QGraphicsSceneMouseEvent* e) {
 }
 
 void ConnectionGraphicsItem::hoverEnterEvent(QGraphicsSceneHoverEvent* e) {
-    portInspector_->startTimer();
+    portInspector_->startTimer(mapPosToSceen(e->pos()));
 }
 
 void ConnectionGraphicsItem::hoverLeaveEvent(QGraphicsSceneHoverEvent* e) {

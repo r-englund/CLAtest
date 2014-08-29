@@ -148,9 +148,9 @@ void LinkGraphicsItem::updateShape() {
 
 LinkConnectionDragGraphicsItem::LinkConnectionDragGraphicsItem(ProcessorLinkGraphicsItem* outLink, QPointF endPos) 
     : LinkGraphicsItem(QPointF(0,0), endPos)
-    , outLink_(outLink)
     , inLeft_(endPoint_)
-    , inRight_(endPoint_) {
+    , inRight_(endPoint_)
+    , outLink_(outLink) {
 
 }
 
