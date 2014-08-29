@@ -267,6 +267,7 @@ ProcessorGraphicsItem* NetworkEditor::addProcessorRepresentations(Processor* pro
 
     if (processor->hasProcessorWidget()) {
         processor->getProcessorWidget()->setVisible(showProcessorWidget);
+        processor->getProcessorWidget()->addObserver(ret->getStatusItem());
     }
 
     return ret;
@@ -1021,7 +1022,6 @@ void NetworkEditor::contextMenuEvent(QGraphicsSceneContextMenuEvent* e) {
             } else {
                 processorGraphicsItem->getProcessor()->getProcessorWidget()->hide();
             }
-            updateLeds();
         }
 
     } else if (connectionGraphicsItem) {

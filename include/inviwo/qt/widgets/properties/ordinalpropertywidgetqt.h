@@ -42,6 +42,7 @@
 #include <inviwo/qt/widgets/properties/propertysettingswidgetqt.h>
 #include <inviwo/qt/widgets/properties/propertywidgetqt.h>
 #include <inviwo/core/properties/ordinalproperty.h>
+#include <inviwo/core/util/stringconversion.h>
 #include <math.h>
 
 namespace inviwo {
@@ -292,23 +293,39 @@ template <typename BT, typename T>
 std::string OrdinalPropertyWidgetQt<BT, T>::getToolTipText() {
     std::stringstream ss;
 
-    ss << TemplateOrdinalPropertyWidgetQt<BT, T>::getToolTipText() << std::endl;
-
+    ss << this->makeToolTipTop(this->ordinalproperty_->getDisplayName());
+    ss << this->makeToolTipTableTop();
+    ss << this->makeToolTipRow("Identifier", this->ordinalproperty_->getIdentifier());
+    ss << this->makeToolTipRow("Semantics", this->ordinalproperty_->getSemantics().getString());
+    ss << this->makeToolTipTableBottom();
+    
     T min = transformer_->min(this->ordinalproperty_->getMinValue());
     T max = transformer_->max(this->ordinalproperty_->getMaxValue());
     T inc = transformer_->inc(this->ordinalproperty_->getIncrement());
     T val = transformer_->value(this->ordinalproperty_->get());
 
+    ss << this->makeToolTipTableTop();
+    
+    std::vector<std::string> cols;
+    cols.push_back("Value ");
+    cols.push_back(" Min ");
+    cols.push_back(" Max ");
+    cols.push_back(" Inc ");
+    
+    ss << this->makeToolTipRow("#", cols);
+    
     size_t size = this->ordinalproperty_->getDim().x * this->ordinalproperty_->getDim().y;
     for (size_t i = 0; i < size; i++) {
-        ss << i << ": " << glmwrapper<BT, T>::getval(val, i) << " ["
-           << glmwrapper<BT, T>::getval(min, i) << ", " << glmwrapper<BT, T>::getval(max, i) << "]"
-           << " inc: " << glmwrapper<BT, T>::getval(inc, i);
-        if (i < size - 1) {
-            ss << std::endl;
-        }
+       
+        cols[0] = toString(glmwrapper<BT, T>::getval(val,i));
+        cols[1] = toString(glmwrapper<BT, T>::getval(min,i));
+        cols[2] = toString(glmwrapper<BT, T>::getval(max,i));
+        cols[3] = toString(glmwrapper<BT, T>::getval(inc,i));
+        
+        ss << this->makeToolTipRow(toString(i), cols);
     }
-
+    ss << this->makeToolTipTableBottom();
+    ss << this->makeToolTipBottom();
     return ss.str();
 }
 

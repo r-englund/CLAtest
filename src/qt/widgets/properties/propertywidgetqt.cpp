@@ -64,7 +64,7 @@ PropertyWidgetQt::PropertyWidgetQt()
     setContextMenuPolicy(Qt::CustomContextMenu);
     connect(this, SIGNAL(customContextMenuRequested(const QPoint&)), this,
             SLOT(showContextMenu(const QPoint&)));
-    //setStyleSheet("border: 1px solid rgb(255, 0, 0)");
+    //setStyleSheet("border: 1px solid rgb(255, 0, 0)"); //For debuging
 }
 
 PropertyWidgetQt::PropertyWidgetQt(Property* property)
@@ -81,7 +81,7 @@ PropertyWidgetQt::PropertyWidgetQt(Property* property)
     setContextMenuPolicy(Qt::CustomContextMenu);
     connect(this, SIGNAL(customContextMenuRequested(const QPoint&)), this,
             SLOT(showContextMenu(const QPoint&)));
-    //setStyleSheet("border: 1px solid rgb(255, 0, 0)");
+    //setStyleSheet("border: 1px solid rgb(255, 0, 0)"); //For debuging
 }
 
 PropertyWidgetQt::~PropertyWidgetQt() {}
@@ -421,9 +421,57 @@ bool PropertyWidgetQt::event(QEvent* event) {
     return QWidget::event(event);
 }
 
+std::string PropertyWidgetQt::makeToolTipTop(std::string item) const {
+    return "<html><head/><body>\
+            <b style='color:white;'>" + item + "</b>";
+}
+
+std::string PropertyWidgetQt::makeToolTipTableTop() const {
+    return "<table border='0' cellspacing='0' cellpadding='0'\
+            style='border-color:white;white-space:pre;'>";
+}
+
+std::string PropertyWidgetQt::makeToolTipRow(std::string item, std::string val) const {
+    std::stringstream ss;
+    ss << "<tr><td style='color:#bbb;padding-right:8px;'>" << item << "</td>";
+    ss << "<td><nobr>" + val + "</nobr></td>";
+    ss << "</tr>" << std::endl;
+    
+    return ss.str();
+}
+
+std::string PropertyWidgetQt::makeToolTipRow(std::string item, std::vector<std::string> vals) const {
+    std::stringstream ss;
+    ss << "<tr><td style='color:#bbb;padding-right:8px;'>" << item << "</td>";
+    
+    for(int i = 0; i < vals.size(); ++i){
+        ss << "<td align=center><nobr>" + vals[i] + "</nobr></td>";
+    }
+    ss << "</tr>" << std::endl;
+    
+    return ss.str();
+}
+
+std::string PropertyWidgetQt::makeToolTipTableBottom() const {
+    return "</table>";
+}
+
+std::string PropertyWidgetQt::makeToolTipBottom() const {
+    return "</body></html>";
+}
+
 std::string PropertyWidgetQt::getToolTipText() {
     if (property_) {
-        return "id: " + property_->getIdentifier();
+        std::stringstream ss;
+        
+        ss << makeToolTipTop(property_->getDisplayName());
+        ss << makeToolTipTableTop();
+        ss << makeToolTipRow("Identifier", property_->getIdentifier());
+        ss << makeToolTipRow("Semantics", property_->getSemantics().getString());
+        ss << makeToolTipTableBottom();
+        ss << makeToolTipBottom();
+   
+        return ss.str();
     } else {
         return "";
     }

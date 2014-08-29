@@ -98,7 +98,13 @@ protected:
 
     virtual bool event(QEvent *event); //< for custom tooltips.
     virtual std::string getToolTipText();
-
+    std::string makeToolTipTop(std::string item) const;
+    std::string makeToolTipTableTop() const;
+    std::string makeToolTipRow(std::string item, std::vector<std::string> vals) const;
+    std::string makeToolTipRow(std::string item, std::string val) const;
+    std::string makeToolTipTableBottom() const;
+    std::string makeToolTipBottom() const;
+    
     void paintEvent(QPaintEvent *pe);
     
     // Actions

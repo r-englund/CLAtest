@@ -36,11 +36,12 @@
 #include <inviwo/core/common/inviwocoredefine.h>
 #include <inviwo/core/common/inviwo.h>
 #include <inviwo/core/metadata/processorwidgetmetadata.h>
+#include <inviwo/core/processors/processorwidgetobserver.h>
 
 namespace inviwo {
 
 class Processor;
-class IVW_CORE_API ProcessorWidget {
+class IVW_CORE_API ProcessorWidget : public ProcessorWidgetObservable {
 
 public:
     ProcessorWidget();

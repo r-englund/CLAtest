@@ -6,6 +6,7 @@
 #include <inviwo/qt/widgets/editablelabelqt.h>
 #include <inviwo/qt/widgets/ordinaleditorwidget.h>
 #include <inviwo/core/properties/minmaxproperty.h>
+#include <inviwo/core/util/stringconversion.h>
 
 namespace inviwo {
 
@@ -162,13 +163,20 @@ template <typename T>
 std::string OrdinalMinMaxTextPropertyWidgetQt<T>::getToolTipText() {
     std::stringstream ss;
 
-    ss << PropertyWidgetQt::getToolTipText() << std::endl;
-    ss << "Value: [" << minMaxProperty_->get().x << ", " << minMaxProperty_->get().y << "]"
-       << std::endl << "Range: [" << minMaxProperty_->getRangeMin() << ", "
-       << minMaxProperty_->getRangeMax() << "]" << std::endl
-       << "Inc: " << minMaxProperty_->getIncrement()
-       << " Sep: " << minMaxProperty_->getMinSeparation();
+    ss << this->makeToolTipTop(this->minMaxProperty_->getDisplayName());
+    ss << this->makeToolTipTableTop();
+    ss << this->makeToolTipRow("Identifier", this->minMaxProperty_->getIdentifier());
+    ss << this->makeToolTipRow("Semantics", this->minMaxProperty_->getSemantics().getString());
 
+    ss << this->makeToolTipRow("Minimum", toString(minMaxProperty_->get().x));
+    ss << this->makeToolTipRow("Maximum", toString(minMaxProperty_->get().y));
+    ss << this->makeToolTipRow("Range min", toString(minMaxProperty_->getRangeMin()));
+    ss << this->makeToolTipRow("Range max", toString(minMaxProperty_->getRangeMax()));
+    ss << this->makeToolTipRow("Increment", toString(minMaxProperty_->getIncrement()));
+    ss << this->makeToolTipRow("Seperation", toString(minMaxProperty_->getMinSeparation()));
+
+    ss << this->makeToolTipTableBottom();
+    ss << this->makeToolTipBottom();
     return ss.str();
 }
 
