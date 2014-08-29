@@ -292,6 +292,8 @@ QVariant ProcessorGraphicsItem::itemChange(GraphicsItemChange change, const QVar
         case QGraphicsItem::ItemVisibleHasChanged:
             if (processorMeta_) processorMeta_->setVisibile(isVisible());
             break;
+        default:
+            break;
     }
 
     return QGraphicsItem::itemChange(change, value);

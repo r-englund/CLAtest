@@ -37,7 +37,7 @@
 #include <QGraphicsScene>
 #include <QTimer>
 #include <QThread>
-#include <QpointF>
+#include <QPointF>
 
 #include <inviwo/core/network/processornetworkevaluator.h>
 #include <inviwo/core/util/singleton.h>
