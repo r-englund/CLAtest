@@ -48,11 +48,9 @@ ConsoleWidget::ConsoleWidget(QWidget* parent) : InviwoDockWidget(tr("Console"), 
     setWidget(textField_);
     textField_->setContextMenuPolicy(Qt::CustomContextMenu);
     connect(textField_, SIGNAL(customContextMenuRequested(const QPoint&)), this, SLOT(showContextMenu(const QPoint&)));
-    LogCentral::getPtr()->registerLogger(this);
 }
 
 ConsoleWidget::~ConsoleWidget() {
-    LogCentral::getPtr()->unregisterLogger(this);
 }
 
 void ConsoleWidget::showContextMenu(const QPoint& pos) {

@@ -91,6 +91,9 @@ LogCentral::LogCentral() : logLevel_(Info) , logStacktrace_(true) {
     loggers_ = new std::vector<Logger*>();
 }
 LogCentral::~LogCentral() {
+    for (std::vector<Logger*>::iterator it = loggers_->begin(), itEnd = loggers_->end(); it != itEnd; ++it) {
+        delete (*it);
+    }
     delete loggers_;
 }
 
@@ -101,8 +104,10 @@ void LogCentral::registerLogger(Logger* logger) {
 void LogCentral::unregisterLogger(Logger* logger) {
     std::vector<Logger*>::iterator it = find(loggers_->begin(), loggers_->end(), logger);
 
-    if (it != loggers_->end())
+    if (it != loggers_->end()) {
+        delete (*it);
         loggers_->erase(it);
+    }
 }
 
 void LogCentral::log(std::string logSource, unsigned int logLevel, const char* fileName, const char* functionName, int lineNumber,

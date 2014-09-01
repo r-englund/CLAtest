@@ -51,9 +51,9 @@ int main(int argc, char** argv) {
     setenv("XLIB_SKIP_ARGB_VISUALS", "1", 1);
 #endif
     std::string basePath = inviwo::filesystem::findBasePath();
-    inviwo::FileLogger fileLogger(basePath);
+    //inviwo::FileLogger fileLogger(basePath);
     inviwo::LogCentral::init();
-    inviwo::LogCentral::getPtr()->registerLogger(&fileLogger);
+    inviwo::LogCentral::getPtr()->registerLogger(new inviwo::FileLogger(basePath));
     inviwo::InviwoApplicationQt inviwoApp("Inviwo "+IVW_VERSION, basePath, argc, argv);
     inviwoApp.setWindowIcon(QIcon(":/icons/inviwo_light.png"));
     inviwoApp.setAttribute(Qt::AA_NativeWindows);
