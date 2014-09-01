@@ -134,7 +134,7 @@ void VolumeRAMSubSample::evaluate() {
     //Half sampling
     if(factor_ == HALF){
         //VolumeHalfSampleCalculator<T>::calculate(this, dst, src, dataDims, newDims);
-        #define sumCurVal(v) curVal = v; val += format->valueToVec4Float(&curVal)*0.125f;
+        #define sumCurVal(v) curVal = v; val += format->valueToVec4Double(&curVal)*0.125;
         for (int z=0; z < static_cast<int>(newDims.z); ++z) {
             for (int y=0; y < static_cast<int>(newDims.y); ++y) {
                 #pragma omp parallel for
@@ -142,7 +142,7 @@ void VolumeRAMSubSample::evaluate() {
                     size_t px = static_cast<size_t>(x*2);
                     size_t py = static_cast<size_t>(y*2);
                     size_t pz = static_cast<size_t>(z*2);
-                    vec4 val = vec4(0.f);
+                    dvec4 val = dvec4(0.0);
                     T curVal;
                     sumCurVal(src[(pz*sXY) + (py*sX) + px]) 
                     sumCurVal(src[(pz*sXY) + (py*sX) + (px+1)])
@@ -152,7 +152,7 @@ void VolumeRAMSubSample::evaluate() {
                     sumCurVal(src[((pz+1)*sXY) + (py*sX) + (px+1)])
                     sumCurVal(src[((pz+1)*sXY) + ((py+1)*sX) + px])
                     sumCurVal(src[((pz+1)*sXY) + ((py+1)*sX) + (px+1)])
-                    format->vec4ToValue(val, &curVal);
+                    format->vec4DoubleToValue(val, &curVal);
                     dst[(z*dXY) + (y*dX) + x] = curVal;
                 }
             }

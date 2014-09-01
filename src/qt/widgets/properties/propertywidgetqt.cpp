@@ -445,7 +445,7 @@ std::string PropertyWidgetQt::makeToolTipRow(std::string item, std::vector<std::
     std::stringstream ss;
     ss << "<tr><td style='color:#bbb;padding-right:8px;'>" << item << "</td>";
     
-    for(int i = 0; i < vals.size(); ++i){
+    for(size_t i = 0; i < vals.size(); ++i){
         ss << "<td align=center><nobr>" + vals[i] + "</nobr></td>";
     }
     ss << "</tr>" << std::endl;

@@ -73,7 +73,7 @@ PyObject* py_setVoxel(PyObject* /*self*/, PyObject* args) {
     }
 
     VolumeRAM* vol = volumePort->getData()->getEditableRepresentation<VolumeRAM>();
-    vol->setValueFromSingleFloat(voxel,value*255);
+    vol->setValueFromSingleDouble(voxel,value*255);
     Py_RETURN_NONE;
 }
 

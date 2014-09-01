@@ -41,9 +41,9 @@ namespace inviwo {
 class IVW_CORE_API VolumeRAMCharacteristics : public VolumeOperation {
 public:
     struct Characteristics {
-        Characteristics() : isUniform(false), mean(0.f) {}
+        Characteristics() : isUniform(false), mean(0.0) {}
         bool isUniform;
-        vec4 mean;
+        dvec4 mean;
     };
 
     VolumeRAMCharacteristics(const VolumeRepresentation* in)
@@ -81,18 +81,18 @@ void VolumeRAMCharacteristics::evaluate() {
     const T* src = reinterpret_cast<const T*>(volume->getData());
 
     glm::i64 numVoxels = static_cast<glm::i64>(volume->getDimension().x*volume->getDimension().y*volume->getDimension().z);
-    float weight = static_cast<float>(1/numVoxels);
+    double weight = static_cast<double>(1/numVoxels);
     const DataFormatBase* format = volume->getDataFormat();
 
     stats_.isUniform = true;
     T firstVal = src[0];
-    stats_.mean = format->valueToVec4Float(&firstVal)*weight;
+    stats_.mean = format->valueToVec4Double(&firstVal)*weight;
 
     #pragma omp for
     for (glm::i64 i=1; i < numVoxels; ++i) {
         T val = src[i];
         stats_.isUniform = (stats_.isUniform ? firstVal != val : stats_.isUniform);
-        stats_.mean += format->valueToVec4Float(&val)*weight;
+        stats_.mean += format->valueToVec4Double(&val)*weight;
     }
 }
 

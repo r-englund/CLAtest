@@ -62,15 +62,15 @@ public:
     // Takes ownership of data pointer
     void setData(void* data);
 
-    virtual void setValueFromSingleFloat(const uvec2& pos, float val) = 0;
-    virtual void setValueFromVec2Float(const uvec2& pos, vec2 val) = 0;
-    virtual void setValueFromVec3Float(const uvec2& pos, vec3 val) = 0;
-    virtual void setValueFromVec4Float(const uvec2& pos, vec4 val) = 0;
+    virtual void setValueFromSingleDouble(const uvec2& pos, double val) = 0;
+    virtual void setValueFromVec2Double(const uvec2& pos, dvec2 val) = 0;
+    virtual void setValueFromVec3Double(const uvec2& pos, dvec3 val) = 0;
+    virtual void setValueFromVec4Double(const uvec2& pos, dvec4 val) = 0;
 
-    virtual float getValueAsSingleFloat(const uvec2& pos) const = 0;
-    virtual vec2 getValueAsVec2Float(const uvec2& pos) const = 0;
-    virtual vec3 getValueAsVec3Float(const uvec2& pos) const = 0;
-    virtual vec4 getValueAsVec4Float(const uvec2& pos) const = 0;
+    virtual double getValueAsSingleDouble(const uvec2& pos) const = 0;
+    virtual dvec2 getValueAsVec2Double(const uvec2& pos) const = 0;
+    virtual dvec3 getValueAsVec3Double(const uvec2& pos) const = 0;
+    virtual dvec4 getValueAsVec4Double(const uvec2& pos) const = 0;
 
     static inline unsigned int posToIndex(const uvec2& pos, const uvec2& dim) {
         return pos.x+(pos.y*dim.x);

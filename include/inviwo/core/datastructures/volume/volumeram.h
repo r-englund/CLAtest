@@ -78,18 +78,18 @@ public:
     NormalizedHistogram* getNormalizedHistogram(int delta=-1, std::size_t maxNumberOfBins = 2048u, int component = 0);
     const NormalizedHistogram* getNormalizedHistogram(int delta = -1, std::size_t maxNumberOfBins = 2048u, int component = 0) const;
 
-    virtual void setValueFromSingleFloat(const uvec3& pos, float val) = 0;
-    virtual void setValueFromVec2Float(const uvec3& pos, vec2 val) = 0;
-    virtual void setValueFromVec3Float(const uvec3& pos, vec3 val) = 0;
-    virtual void setValueFromVec4Float(const uvec3& pos, vec4 val) = 0;
+    virtual void setValueFromSingleDouble(const uvec3& pos, double val) = 0;
+    virtual void setValueFromVec2Double(const uvec3& pos, dvec2 val) = 0;
+    virtual void setValueFromVec3Double(const uvec3& pos, dvec3 val) = 0;
+    virtual void setValueFromVec4Double(const uvec3& pos, dvec4 val) = 0;
 
     virtual void setValuesFromVolume(const VolumeRAM* src, const uvec3& dstOffset, const uvec3& subSize, const uvec3& subOffset) = 0;
     void setValuesFromVolume(const VolumeRAM* src, const uvec3& dstOffset = uvec3(0));
 
-    virtual float getValueAsSingleFloat(const uvec3& pos) const = 0;
-    virtual vec2 getValueAsVec2Float(const uvec3& pos) const = 0;
-    virtual vec3 getValueAsVec3Float(const uvec3& pos) const = 0;
-    virtual vec4 getValueAsVec4Float(const uvec3& pos) const = 0;
+    virtual double getValueAsSingleDouble(const uvec3& pos) const = 0;
+    virtual dvec2 getValueAsVec2Double(const uvec3& pos) const = 0;
+    virtual dvec3 getValueAsVec3Double(const uvec3& pos) const = 0;
+    virtual dvec4 getValueAsVec4Double(const uvec3& pos) const = 0;
 
     size_t getNumberOfBytes() const;
 

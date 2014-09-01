@@ -127,8 +127,8 @@ void ISORaycaster::initializeResources(){
 void ISORaycaster::onVolumeChange(){
     if(volumePort_.hasData()){
         int channels = volumePort_.getData()->getDataFormat()->getComponents();
-        while(channels < channel_.size()){
-            channel_.removeOption(channel_.size()-1);
+        while(channels < static_cast<int>(channel_.size())){
+            channel_.removeOption(static_cast<int>(channel_.size())-1);
         }
     }
 }

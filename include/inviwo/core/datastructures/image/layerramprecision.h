@@ -76,15 +76,15 @@ public:
     virtual void deinitialize();
     virtual void resize(uvec2 dimensions);
 
-    void setValueFromSingleFloat(const uvec2& pos, float val);
-    void setValueFromVec2Float(const uvec2& pos, vec2 val);
-    void setValueFromVec3Float(const uvec2& pos, vec3 val);
-    void setValueFromVec4Float(const uvec2& pos, vec4 val);
+    void setValueFromSingleDouble(const uvec2& pos, double val);
+    void setValueFromVec2Double(const uvec2& pos, dvec2 val);
+    void setValueFromVec3Double(const uvec2& pos, dvec3 val);
+    void setValueFromVec4Double(const uvec2& pos, dvec4 val);
 
-    float getValueAsSingleFloat(const uvec2& pos) const;
-    vec2 getValueAsVec2Float(const uvec2& pos) const;
-    vec3 getValueAsVec3Float(const uvec2& pos) const;
-    vec4 getValueAsVec4Float(const uvec2& pos) const;
+    double getValueAsSingleDouble(const uvec2& pos) const;
+    dvec2 getValueAsVec2Double(const uvec2& pos) const;
+    dvec3 getValueAsVec3Double(const uvec2& pos) const;
+    dvec4 getValueAsVec4Double(const uvec2& pos) const;
 
 private:
     static const DataFormatBase* defaultformat() {
@@ -154,62 +154,62 @@ void LayerRAMPrecision<T>::resize(uvec2 dimensions) {
 }
 
 template<typename T>
-void LayerRAMPrecision<T>::setValueFromSingleFloat(const uvec2& pos, float val) {
+void LayerRAMPrecision<T>::setValueFromSingleDouble(const uvec2& pos, double val) {
     T* data = static_cast<T*>(data_);
-    getDataFormat()->floatToValue(val, &(data[posToIndex(pos, dimensions_)]));
+    getDataFormat()->doubleToValue(val, &(data[posToIndex(pos, dimensions_)]));
 }
 
 template<typename T>
-void LayerRAMPrecision<T>::setValueFromVec2Float(const uvec2& pos, vec2 val) {
+void LayerRAMPrecision<T>::setValueFromVec2Double(const uvec2& pos, dvec2 val) {
     T* data = static_cast<T*>(data_);
-    getDataFormat()->vec2ToValue(val, &(data[posToIndex(pos, dimensions_)]));
+    getDataFormat()->vec2DoubleToValue(val, &(data[posToIndex(pos, dimensions_)]));
 }
 
 template<typename T>
-void LayerRAMPrecision<T>::setValueFromVec3Float(const uvec2& pos, vec3 val) {
+void LayerRAMPrecision<T>::setValueFromVec3Double(const uvec2& pos, dvec3 val) {
     T* data = static_cast<T*>(data_);
-    getDataFormat()->vec3ToValue(val, &(data[posToIndex(pos, dimensions_)]));
+    getDataFormat()->vec3DoubleToValue(val, &(data[posToIndex(pos, dimensions_)]));
 }
 
 template<typename T>
-void LayerRAMPrecision<T>::setValueFromVec4Float(const uvec2& pos, vec4 val) {
+void LayerRAMPrecision<T>::setValueFromVec4Double(const uvec2& pos, dvec4 val) {
     T* data = static_cast<T*>(data_);
-    getDataFormat()->vec4ToValue(val, &(data[posToIndex(pos, dimensions_)]));
+    getDataFormat()->vec4DoubleToValue(val, &(data[posToIndex(pos, dimensions_)]));
 }
 
 template<typename T>
-float LayerRAMPrecision<T>::getValueAsSingleFloat(const uvec2& pos) const {
-    float result;
+double LayerRAMPrecision<T>::getValueAsSingleDouble(const uvec2& pos) const {
+    double result;
     T* data = static_cast<T*>(data_);
     T val = data[posToIndex(pos, dimensions_)];
-    result = getDataFormat()->valueToNormalizedFloat(&val);
+    result = getDataFormat()->valueToNormalizedDouble(&val);
     return result;
 }
 
 template<typename T>
-vec2 LayerRAMPrecision<T>::getValueAsVec2Float(const uvec2& pos) const {
-    vec2 result;
+dvec2 LayerRAMPrecision<T>::getValueAsVec2Double(const uvec2& pos) const {
+    dvec2 result;
     T* data = static_cast<T*>(data_);
     T val = data[posToIndex(pos, dimensions_)];
-    result = getDataFormat()->valueToNormalizedVec2Float(&val);
+    result = getDataFormat()->valueToNormalizedVec2Double(&val);
     return result;
 }
 
 template<typename T>
-vec3 LayerRAMPrecision<T>::getValueAsVec3Float(const uvec2& pos) const {
-    vec3 result;
+dvec3 LayerRAMPrecision<T>::getValueAsVec3Double(const uvec2& pos) const {
+    dvec3 result;
     T* data = static_cast<T*>(data_);
     T val = data[posToIndex(pos, dimensions_)];
-    result = getDataFormat()->valueToNormalizedVec3Float(&val);
+    result = getDataFormat()->valueToNormalizedVec3Double(&val);
     return result;
 }
 
 template<typename T>
-vec4 LayerRAMPrecision<T>::getValueAsVec4Float(const uvec2& pos) const {
-    vec4 result;
+dvec4 LayerRAMPrecision<T>::getValueAsVec4Double(const uvec2& pos) const {
+    dvec4 result;
     T* data = static_cast<T*>(data_);
     T val = data[posToIndex(pos, dimensions_)];
-    result = getDataFormat()->valueToNormalizedVec4Float(&val);
+    result = getDataFormat()->valueToNormalizedVec4Double(&val);
     return result;
 }
 

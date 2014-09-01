@@ -75,17 +75,17 @@ public:
 
     void setDimension(uvec3 dimensions);
 
-    void setValueFromSingleFloat(const uvec3& pos, float val);
-    void setValueFromVec2Float(const uvec3& pos, vec2 val);
-    void setValueFromVec3Float(const uvec3& pos, vec3 val);
-    void setValueFromVec4Float(const uvec3& pos, vec4 val);
+    void setValueFromSingleDouble(const uvec3& pos, double val);
+    void setValueFromVec2Double(const uvec3& pos, dvec2 val);
+    void setValueFromVec3Double(const uvec3& pos, dvec3 val);
+    void setValueFromVec4Double(const uvec3& pos, dvec4 val);
 
     void setValuesFromVolume(const VolumeRAM* src, const uvec3& dstOffset, const uvec3& subSize, const uvec3& subOffset);
 
-    float getValueAsSingleFloat(const uvec3& pos) const;
-    vec2 getValueAsVec2Float(const uvec3& pos) const;
-    vec3 getValueAsVec3Float(const uvec3& pos) const;
-    vec4 getValueAsVec4Float(const uvec3& pos) const;
+    double getValueAsSingleDouble(const uvec3& pos) const;
+    dvec2 getValueAsVec2Double(const uvec3& pos) const;
+    dvec3 getValueAsVec3Double(const uvec3& pos) const;
+    dvec4 getValueAsVec4Double(const uvec3& pos) const;
 
 private:
     static const DataFormatBase* defaultformat() {
@@ -172,27 +172,27 @@ void VolumeRAMPrecision<T>::setDimension(uvec3 dimensions) {
 }
 
 template<typename T>
-void VolumeRAMPrecision<T>::setValueFromSingleFloat(const uvec3& pos, float val) {
+void VolumeRAMPrecision<T>::setValueFromSingleDouble(const uvec3& pos, double val) {
     T* data = static_cast<T*>(data_);
-    getDataFormat()->floatToValue(val, &(data[posToIndex(pos, dimensions_)]));
+    getDataFormat()->doubleToValue(val, &(data[posToIndex(pos, dimensions_)]));
 }
 
 template<typename T>
-void VolumeRAMPrecision<T>::setValueFromVec2Float(const uvec3& pos, vec2 val) {
+void VolumeRAMPrecision<T>::setValueFromVec2Double(const uvec3& pos, dvec2 val) {
     T* data = static_cast<T*>(data_);
-    getDataFormat()->vec2ToValue(val, &(data[posToIndex(pos, dimensions_)]));
+    getDataFormat()->vec2DoubleToValue(val, &(data[posToIndex(pos, dimensions_)]));
 }
 
 template<typename T>
-void VolumeRAMPrecision<T>::setValueFromVec3Float(const uvec3& pos, vec3 val) {
+void VolumeRAMPrecision<T>::setValueFromVec3Double(const uvec3& pos, dvec3 val) {
     T* data = static_cast<T*>(data_);
-    getDataFormat()->vec3ToValue(val, &(data[posToIndex(pos, dimensions_)]));
+    getDataFormat()->vec3DoubleToValue(val, &(data[posToIndex(pos, dimensions_)]));
 }
 
 template<typename T>
-void VolumeRAMPrecision<T>::setValueFromVec4Float(const uvec3& pos, vec4 val) {
+void VolumeRAMPrecision<T>::setValueFromVec4Double(const uvec3& pos, dvec4 val) {
     T* data = static_cast<T*>(data_);
-    getDataFormat()->vec4ToValue(val, &(data[posToIndex(pos, dimensions_)]));
+    getDataFormat()->vec4DoubleToValue(val, &(data[posToIndex(pos, dimensions_)]));
 }
 
 template<typename T>
@@ -218,38 +218,38 @@ void VolumeRAMPrecision<T>::setValuesFromVolume(const VolumeRAM* src, const uvec
 }
 
 template<typename T>
-float VolumeRAMPrecision<T>::getValueAsSingleFloat(const uvec3& pos) const {
-    float result;
+double VolumeRAMPrecision<T>::getValueAsSingleDouble(const uvec3& pos) const {
+    double result;
     T* data = static_cast<T*>(data_);
     T val = data[posToIndex(pos, dimensions_)];
-    result = getDataFormat()->valueToNormalizedFloat(&val);
+    result = getDataFormat()->valueToNormalizedDouble(&val);
     return result;
 }
 
 template<typename T>
-vec2 VolumeRAMPrecision<T>::getValueAsVec2Float(const uvec3& pos) const {
-    vec2 result;
+dvec2 VolumeRAMPrecision<T>::getValueAsVec2Double(const uvec3& pos) const {
+    dvec2 result;
     T* data = static_cast<T*>(data_);
     T val = data[posToIndex(pos, dimensions_)];
-    result = getDataFormat()->valueToNormalizedVec2Float(&val);
+    result = getDataFormat()->valueToNormalizedVec2Double(&val);
     return result;
 }
 
 template<typename T>
-vec3 VolumeRAMPrecision<T>::getValueAsVec3Float(const uvec3& pos) const {
-    vec3 result;
+dvec3 VolumeRAMPrecision<T>::getValueAsVec3Double(const uvec3& pos) const {
+    dvec3 result;
     T* data = static_cast<T*>(data_);
     T val = data[posToIndex(pos, dimensions_)];
-    result = getDataFormat()->valueToNormalizedVec3Float(&val);
+    result = getDataFormat()->valueToNormalizedVec3Double(&val);
     return result;
 }
 
 template<typename T>
-vec4 VolumeRAMPrecision<T>::getValueAsVec4Float(const uvec3& pos) const {
-    vec4 result;
+dvec4 VolumeRAMPrecision<T>::getValueAsVec4Double(const uvec3& pos) const {
+    dvec4 result;
     T* data = static_cast<T*>(data_);
     T val = data[posToIndex(pos, dimensions_)];
-    result = getDataFormat()->valueToNormalizedVec4Float(&val);
+    result = getDataFormat()->valueToNormalizedVec4Double(&val);
     return result;
 }
 

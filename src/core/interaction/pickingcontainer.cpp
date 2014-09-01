@@ -55,10 +55,10 @@ bool PickingContainer::performPick(const uvec2& coord) {
 
         if (pickingLayer) {
             const LayerRAM* pickingLayerRAM = pickingLayer->getRepresentation<LayerRAM>();
-            vec4 value = pickingLayerRAM->getValueAsVec4Float(coord);
-            vec3 pickedColor = (value.a > 0.f ? value.rgb() : vec3(0.f));
+            dvec4 value = pickingLayerRAM->getValueAsVec4Double(coord);
+            dvec3 pickedColor = (value.a > 0.0 ? value.rgb() : dvec3(0.0));
             DataVec3UINT8::type pickedColorUINT8;
-            DataVec3UINT8::get()->vec3ToValue(pickedColor*255.f, &pickedColorUINT8);
+            DataVec3UINT8::get()->vec3DoubleToValue(pickedColor*255.0, &pickedColorUINT8);
             currentPickObj_ = PickingManager::instance()->getPickingObjectFromColor(pickedColorUINT8);
 
             if (currentPickObj_) {
@@ -70,7 +70,7 @@ bool PickingContainer::performPick(const uvec2& coord) {
 
                     if (pickingLayer) {
                         const LayerRAM* depthLayerRAM = depthLayer->getRepresentation<LayerRAM>();
-                        float depth = depthLayerRAM->getValueAsSingleFloat(coord);
+                        double depth = depthLayerRAM->getValueAsSingleDouble(coord);
                         currentPickObj_->setPickingDepth(depth);
                     }
                 }

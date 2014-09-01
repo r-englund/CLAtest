@@ -56,13 +56,13 @@ public:
 
     void setReadDepth(bool);
     bool readDepth();
-    const float& getPickingDepth() const;
+    const double& getPickingDepth() const;
 
     void picked() const;
 
     void setPickingMove(vec2);
     void setPickingPosition(vec2);
-    void setPickingDepth(float);
+    void setPickingDepth(double);
 
     PickingCallback* getCallbackContainer();
 
@@ -72,7 +72,7 @@ private:
     vec3 color_;
     vec2 pos_;
     bool readDepth_;
-    float depth_;
+    double depth_;
     vec2 move_;
     PickingCallback* onPickedCallback_;
 };

@@ -85,51 +85,51 @@ void DataFormatBase::cleanDataFormatBases() {
     }
 }
 
-float DataFormatBase::valueToFloat(void*) const {
-    return 0.f;
+double DataFormatBase::valueToDouble(void*) const {
+    return 0.0;
 }
 
-vec2 DataFormatBase::valueToVec2Float(void*) const {
-    return vec2(0.f);
+dvec2 DataFormatBase::valueToVec2Double(void*) const {
+    return dvec2(0.0);
 }
 
-vec3 DataFormatBase::valueToVec3Float(void*) const {
-    return vec3(0.f);
+dvec3 DataFormatBase::valueToVec3Double(void*) const {
+    return dvec3(0.0);
 }
 
-vec4 DataFormatBase::valueToVec4Float(void*) const {
-    return vec4(0.f);
+dvec4 DataFormatBase::valueToVec4Double(void*) const {
+    return dvec4(0.0);
 }
 
-float DataFormatBase::valueToNormalizedFloat(void*) const {
-    return 0.f;
+double DataFormatBase::valueToNormalizedDouble(void*) const {
+    return 0.0;
 }
 
-vec2 DataFormatBase::valueToNormalizedVec2Float(void*) const {
-    return vec2(0.f);
+dvec2 DataFormatBase::valueToNormalizedVec2Double(void*) const {
+    return dvec2(0.0);
 }
 
-vec3 DataFormatBase::valueToNormalizedVec3Float(void*) const {
-    return vec3(0.f);
+dvec3 DataFormatBase::valueToNormalizedVec3Double(void*) const {
+    return dvec3(0.0);
 }
 
-vec4 DataFormatBase::valueToNormalizedVec4Float(void*) const {
-    return vec4(0.f);
+dvec4 DataFormatBase::valueToNormalizedVec4Double(void*) const {
+    return dvec4(0.0);
 }
 
-void DataFormatBase::floatToValue(float val, void* loc) const {
+void DataFormatBase::doubleToValue(double val, void* loc) const {
     loc = &val;
 }
 
-void DataFormatBase::vec2ToValue(vec2 val, void* loc) const {
+void DataFormatBase::vec2DoubleToValue(dvec2 val, void* loc) const {
     loc = &val;
 }
 
-void DataFormatBase::vec3ToValue(vec3 val, void* loc) const {
+void DataFormatBase::vec3DoubleToValue(dvec3 val, void* loc) const {
     loc = &val;
 }
 
-void DataFormatBase::vec4ToValue(vec4 val, void* loc) const {
+void DataFormatBase::vec4DoubleToValue(dvec4 val, void* loc) const {
     loc = &val;
 }
 

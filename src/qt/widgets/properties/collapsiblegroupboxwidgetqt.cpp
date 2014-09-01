@@ -379,7 +379,7 @@ void CollapsibleGroupBoxWidgetQt::onDidAddProperty(Property* prop, size_t index)
         static_cast<PropertyWidgetQt*>(PropertyWidgetFactory::getPtr()->create(prop));
 
     if (propertyWidget) {
-        propertyWidgetGroupLayout_->insertWidget(index, propertyWidget);
+        propertyWidgetGroupLayout_->insertWidget(static_cast<int>(index), propertyWidget);
         propertyWidgets_.insert(propertyWidgets_.begin()+index, propertyWidget);
         prop->registerWidget(propertyWidget);
         connect(propertyWidget, SIGNAL(usageModeChanged()), this, SLOT(updateContextMenu()));

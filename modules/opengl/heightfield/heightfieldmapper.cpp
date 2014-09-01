@@ -161,21 +161,21 @@ void HeightFieldMapper::process() {
         case 2:
             for (unsigned int y=0; y<dim.y; ++y) {
                 for (unsigned int x=0; x<dim.x; ++x) {
-                    data[y * dim.x + x] = srcLayer->getValueAsVec2Float(glm::uvec2(x, y)).r;
+                    data[y * dim.x + x] = srcLayer->getValueAsVec2Double(glm::uvec2(x, y)).r;
                 }
             }
             break;
         case 3:
             for (unsigned int y=0; y<dim.y; ++y) {
                 for (unsigned int x=0; x<dim.x; ++x) {
-                    data[y * dim.x + x] = srcLayer->getValueAsVec3Float(glm::uvec2(x, y)).r;
+                    data[y * dim.x + x] = srcLayer->getValueAsVec3Double(glm::uvec2(x, y)).r;
                 }
             }
             break;
         case 4:
             for (unsigned int y=0; y<dim.y; ++y) {
                 for (unsigned int x=0; x<dim.x; ++x) {
-                    data[y * dim.x + x] = srcLayer->getValueAsVec4Float(glm::uvec2(x, y)).r;
+                    data[y * dim.x + x] = srcLayer->getValueAsVec4Double(glm::uvec2(x, y)).r;
                 }
             }
             break;
@@ -183,7 +183,7 @@ void HeightFieldMapper::process() {
         default:
             for (unsigned int y=0; y<dim.y; ++y) {
                 for (unsigned int x=0; x<dim.x; ++x) {
-                    data[y * dim.x + x] = srcLayer->getValueAsSingleFloat(glm::uvec2(x, y));
+                    data[y * dim.x + x] = srcLayer->getValueAsSingleDouble(glm::uvec2(x, y));
                 }
             }
             break;
