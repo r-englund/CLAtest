@@ -52,26 +52,26 @@ TEST(ImageTests,ImageLoadWhite) {
     uvec2 dim = layer->getDimension();
     EXPECT_EQ(dim.x,2);
     EXPECT_EQ(dim.y,2);
-    vec4 a = layer->getValueAsVec4Float(uvec2(0,0));
-    vec4 b = layer->getValueAsVec4Float(uvec2(0,1));
-    vec4 c = layer->getValueAsVec4Float(uvec2(1,0));
-    vec4 d = layer->getValueAsVec4Float(uvec2(1,1));
-    EXPECT_FLOAT_EQ(a.r, 1.0f);
-    EXPECT_FLOAT_EQ(a.g, 1.0f);
-    EXPECT_FLOAT_EQ(a.b, 1.0f);
-    EXPECT_FLOAT_EQ(a.a, 1.0f);
-    EXPECT_FLOAT_EQ(b.r, 1.0f);
-    EXPECT_FLOAT_EQ(b.g, 1.0f);
-    EXPECT_FLOAT_EQ(b.b, 1.0f);
-    EXPECT_FLOAT_EQ(b.a, 1.0f);
-    EXPECT_FLOAT_EQ(c.r, 1.0f);
-    EXPECT_FLOAT_EQ(c.g, 1.0f);
-    EXPECT_FLOAT_EQ(c.b, 1.0f);
-    EXPECT_FLOAT_EQ(c.a, 1.0f);
-    EXPECT_FLOAT_EQ(d.r, 1.0f);
-    EXPECT_FLOAT_EQ(d.g, 1.0f);
-    EXPECT_FLOAT_EQ(d.b, 1.0f);
-    EXPECT_FLOAT_EQ(d.a, 1.0f);
+    dvec4 a = layer->getValueAsVec4Double(uvec2(0,0));
+    dvec4 b = layer->getValueAsVec4Double(uvec2(0,1));
+    dvec4 c = layer->getValueAsVec4Double(uvec2(1,0));
+    dvec4 d = layer->getValueAsVec4Double(uvec2(1,1));
+    EXPECT_DOUBLE_EQ(a.r, 1.0);
+    EXPECT_DOUBLE_EQ(a.g, 1.0);
+    EXPECT_DOUBLE_EQ(a.b, 1.0);
+    EXPECT_DOUBLE_EQ(a.a, 1.0);
+    EXPECT_DOUBLE_EQ(b.r, 1.0);
+    EXPECT_DOUBLE_EQ(b.g, 1.0);
+    EXPECT_DOUBLE_EQ(b.b, 1.0);
+    EXPECT_DOUBLE_EQ(b.a, 1.0);
+    EXPECT_DOUBLE_EQ(c.r, 1.0);
+    EXPECT_DOUBLE_EQ(c.g, 1.0);
+    EXPECT_DOUBLE_EQ(c.b, 1.0);
+    EXPECT_DOUBLE_EQ(c.a, 1.0);
+    EXPECT_DOUBLE_EQ(d.r, 1.0);
+    EXPECT_DOUBLE_EQ(d.g, 1.0);
+    EXPECT_DOUBLE_EQ(d.b, 1.0);
+    EXPECT_DOUBLE_EQ(d.a, 1.0);
 }
 
 
@@ -83,26 +83,26 @@ TEST(ImageTests,ImageLoadRGB) {
     uvec2 dim = layer->getDimension();
     EXPECT_EQ(dim.x,2);
     EXPECT_EQ(dim.y,2);
-    vec4 a = layer->getValueAsVec4Float(uvec2(0,0));
-    vec4 b = layer->getValueAsVec4Float(uvec2(1,0));
-    vec4 c = layer->getValueAsVec4Float(uvec2(0,1));
-    vec4 d = layer->getValueAsVec4Float(uvec2(1,1));
-    EXPECT_FLOAT_EQ(a.r, 1.0f);
-    EXPECT_FLOAT_EQ(a.g, 0.0f);
-    EXPECT_FLOAT_EQ(a.b, 0.0f);
-    EXPECT_FLOAT_EQ(a.a, 1.0f);
-    EXPECT_FLOAT_EQ(b.r, 0.0f);
-    EXPECT_FLOAT_EQ(b.g, 1.0f);
-    EXPECT_FLOAT_EQ(b.b, 0.0f);
-    EXPECT_FLOAT_EQ(b.a, 1.0f);
-    EXPECT_FLOAT_EQ(c.r, 0.0f);
-    EXPECT_FLOAT_EQ(c.g, 0.0f);
-    EXPECT_FLOAT_EQ(c.b, 1.0f);
-    EXPECT_FLOAT_EQ(c.a, 1.0f);
-    EXPECT_FLOAT_EQ(d.r, 50/255.0f);
-    EXPECT_FLOAT_EQ(d.g, 100/255.0f);
-    EXPECT_FLOAT_EQ(d.b, 150/255.0f);
-    EXPECT_FLOAT_EQ(d.a, 1.0f);
+    dvec4 a = layer->getValueAsVec4Double(uvec2(0,0));
+    dvec4 b = layer->getValueAsVec4Double(uvec2(1,0));
+    dvec4 c = layer->getValueAsVec4Double(uvec2(0,1));
+    dvec4 d = layer->getValueAsVec4Double(uvec2(1,1));
+    EXPECT_DOUBLE_EQ(a.r, 1.0);
+    EXPECT_DOUBLE_EQ(a.g, 0.0);
+    EXPECT_DOUBLE_EQ(a.b, 0.0);
+    EXPECT_DOUBLE_EQ(a.a, 1.0);
+    EXPECT_DOUBLE_EQ(b.r, 0.0);
+    EXPECT_DOUBLE_EQ(b.g, 1.0);
+    EXPECT_DOUBLE_EQ(b.b, 0.0);
+    EXPECT_DOUBLE_EQ(b.a, 1.0);
+    EXPECT_DOUBLE_EQ(c.r, 0.0);
+    EXPECT_DOUBLE_EQ(c.g, 0.0);
+    EXPECT_DOUBLE_EQ(c.b, 1.0);
+    EXPECT_DOUBLE_EQ(c.a, 1.0);
+    EXPECT_DOUBLE_EQ(d.r, 50/255.0);
+    EXPECT_DOUBLE_EQ(d.g, 100/255.0);
+    EXPECT_DOUBLE_EQ(d.b, 150/255.0);
+    EXPECT_DOUBLE_EQ(d.a, 1.0);
 }
 
 
@@ -117,11 +117,11 @@ TEST(ImageTests,ImageLoadRange) {
     EXPECT_EQ(dim.y,1);
 
     for (int i = 0; i<255; i++) {
-        vec4 a = layer->getValueAsVec4Float(uvec2(i,0));
-        EXPECT_FLOAT_EQ(a.r, i/255.0f);
-        EXPECT_FLOAT_EQ(a.g, i/255.0f);
-        EXPECT_FLOAT_EQ(a.b, i/255.0f);
-        EXPECT_FLOAT_EQ(a.a, 1.0f);
+        dvec4 a = layer->getValueAsVec4Double(uvec2(i,0));
+        EXPECT_DOUBLE_EQ(a.r, i/255.0);
+        EXPECT_DOUBLE_EQ(a.g, i/255.0);
+        EXPECT_DOUBLE_EQ(a.b, i/255.0);
+        EXPECT_DOUBLE_EQ(a.a, 1.0);
     }
 }
 
