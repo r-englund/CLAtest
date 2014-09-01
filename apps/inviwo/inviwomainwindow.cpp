@@ -68,12 +68,16 @@ InviwoMainWindow::InviwoMainWindow()
     networkEditor_ = NetworkEditor::getPtr();
     // initialize console widget first to receive log messages
     consoleWidget_ = new ConsoleWidget(this);
+    // LogCentral takes ownership of logger
+    LogCentral::getPtr()->registerLogger(consoleWidget_);
     currentWorkspaceFileName_ = "";
 }
 
 InviwoMainWindow::~InviwoMainWindow() {
+
     deinitialize();
     NetworkEditor::deleteInstance();
+    LogCentral::getPtr()->unregisterLogger(consoleWidget_);
 }
 
 void InviwoMainWindow::initialize() {

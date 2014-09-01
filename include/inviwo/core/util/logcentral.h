@@ -132,7 +132,16 @@ public:
     void setLogLevel(unsigned int logLevel) { logLevel_ = logLevel; }
     unsigned int getLogLevel() { return logLevel_; }
 
+    /** 
+     * \brief Register logger for use. LogCentral takes ownership of registered loggers.
+     * 
+     * @param Logger * logger Logger to register.
+     */
     void registerLogger(Logger* logger);
+    /** 
+     * \brief Unregister and delete logger.
+     * @param Logger * logger Logger to unregister
+     */
     void unregisterLogger(Logger* logger);
     void log(std::string logSource, unsigned int logLevel, const char* fileName,
              const char* functionName, int lineNumber, std::string logMsg);

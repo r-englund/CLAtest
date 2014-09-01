@@ -63,9 +63,9 @@ int main(int argc, char** argv) {
     app.setApplicationName(QString::fromStdString(appName));
     app.setAttribute(Qt::AA_NativeWindows);
 
-    //ConsoleLogger consoleLogger;
+
     LogCentral::init();
-    //LogCentral::getPtr()->registerLogger(&consoleLogger);
+    //LogCentral::getPtr()->registerLogger(new ConsoleLogger());
 
     InviwoApplication inviwoApp(argc, argv, appName, inviwo::filesystem::findBasePath());
 
