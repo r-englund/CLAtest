@@ -81,9 +81,9 @@ PickingObject* PickingManager::generatePickingObject(size_t id) {
     }
 
     vec3 hsv = vec3(idF * M_PI - floor(idF * M_PI), 0.5f, 0.95f-valueDiff);
-    vec3 rgb = hsv2rgb(hsv);
+    dvec3 rgb = dvec3(hsv2rgb(hsv));
     DataVec3UINT8::type rgbUINT8;
-    DataVec3UINT8::get()->vec3ToValue(rgb*255.f, &rgbUINT8);
+    DataVec3UINT8::get()->vec3DoubleToValue(rgb*255.0, &rgbUINT8);
     return new PickingObject(id, rgbUINT8);
 }
 
@@ -101,9 +101,9 @@ void PickingManager::performUniqueColorGenerationTest(int iterations) {
         }
 
         vec3 hsv = vec3(idF * M_PI - floor(idF * M_PI), 0.5f, 0.95f-valueDiff);
-        vec3 rgb = hsv2rgb(hsv);
+        dvec3 rgb = dvec3(hsv2rgb(hsv));
         DataVec3UINT8::type rgbUINT8;
-        DataVec3UINT8::get()->vec3ToValue(rgb*255.f, &rgbUINT8);
+        DataVec3UINT8::get()->vec3DoubleToValue(rgb*255.0, &rgbUINT8);
 
         if (std::find(colorVec.begin(), colorVec.end(), rgbUINT8)!=colorVec.end()) {
             ivec3 ic = ivec3(rgbUINT8.x, rgbUINT8.y, rgbUINT8.z);

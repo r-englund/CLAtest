@@ -67,15 +67,15 @@ public:
 
     const std::vector<T>* getDataContainer() const { return data_; }
 
-    void setValueFromSingleFloat(size_t index, float val);
-    void setValueFromVec2Float(size_t index, vec2 val);
-    void setValueFromVec3Float(size_t index, vec3 val);
-    void setValueFromVec4Float(size_t index, vec4 val);
+    void setValueFromSingleDouble(size_t index, double val);
+    void setValueFromVec2Double(size_t index, dvec2 val);
+    void setValueFromVec3Double(size_t index, dvec3 val);
+    void setValueFromVec4Double(size_t index, dvec4 val);
 
-    float getValueAsSingleFloat(size_t index) const;
-    vec2 getValueAsVec2Float(size_t index) const;
-    vec3 getValueAsVec3Float(size_t index) const;
-    vec4 getValueAsVec4Float(size_t index) const;
+    double getValueAsSingleDouble(size_t index) const;
+    dvec2 getValueAsVec2Double(size_t index) const;
+    dvec3 getValueAsVec3Double(size_t index) const;
+    dvec4 getValueAsVec4Double(size_t index) const;
 
     void add(const T& item);
     void append(const std::vector<T>* data);
@@ -155,62 +155,62 @@ BufferRAMPrecision<T>* BufferRAMPrecision<T>::clone() const {
 }
 
 template<typename T>
-void BufferRAMPrecision<T>::setValueFromSingleFloat(size_t index, float val) {
+void BufferRAMPrecision<T>::setValueFromSingleDouble(size_t index, double val) {
     T* data = static_cast<T*>(&data_->front());
-    getDataFormat()->floatToValue(val, &(data[index]));
+    getDataFormat()->doubleToValue(val, &(data[index]));
 }
 
 template<typename T>
-void BufferRAMPrecision<T>::setValueFromVec2Float(size_t index, vec2 val) {
+void BufferRAMPrecision<T>::setValueFromVec2Double(size_t index, dvec2 val) {
     T* data = static_cast<T*>(&data_->front());
-    getDataFormat()->vec2ToValue(val, &(data[index]));
+    getDataFormat()->vec2DoubleToValue(val, &(data[index]));
 }
 
 template<typename T>
-void BufferRAMPrecision<T>::setValueFromVec3Float(size_t index, vec3 val) {
+void BufferRAMPrecision<T>::setValueFromVec3Double(size_t index, dvec3 val) {
     T* data = static_cast<T*>(&data_->front());
-    getDataFormat()->vec3ToValue(val, &(data[index]));
+    getDataFormat()->vec3DoubleToValue(val, &(data[index]));
 }
 
 template<typename T>
-void BufferRAMPrecision<T>::setValueFromVec4Float(size_t index, vec4 val) {
+void BufferRAMPrecision<T>::setValueFromVec4Double(size_t index, dvec4 val) {
     T* data = static_cast<T*>(&data_->front());
-    getDataFormat()->vec4ToValue(val, &(data[index]));
+    getDataFormat()->vec4DoubleToValue(val, &(data[index]));
 }
 
 template<typename T>
-float BufferRAMPrecision<T>::getValueAsSingleFloat(size_t index) const {
-    float result;
+double BufferRAMPrecision<T>::getValueAsSingleDouble(size_t index) const {
+    double result;
     T* data = static_cast<T*>(&data_->front());
     T val = data[index];
-    result = getDataFormat()->valueToNormalizedFloat(&val);
+    result = getDataFormat()->valueToNormalizedDouble(&val);
     return result;
 }
 
 template<typename T>
-vec2 BufferRAMPrecision<T>::getValueAsVec2Float(size_t index) const {
-    vec2 result;
+dvec2 BufferRAMPrecision<T>::getValueAsVec2Double(size_t index) const {
+    dvec2 result;
     T* data = static_cast<T*>(&data_->front());
     T val = data[index];
-    result = getDataFormat()->valueToNormalizedVec2Float(&val);
+    result = getDataFormat()->valueToNormalizedVec2Double(&val);
     return result;
 }
 
 template<typename T>
-vec3 BufferRAMPrecision<T>::getValueAsVec3Float(size_t index) const {
-    vec3 result;
+dvec3 BufferRAMPrecision<T>::getValueAsVec3Double(size_t index) const {
+    dvec3 result;
     T* data = static_cast<T*>(&data_->front());
     T val = data[index];
-    result = getDataFormat()->valueToNormalizedVec3Float(&val);
+    result = getDataFormat()->valueToNormalizedVec3Double(&val);
     return result;
 }
 
 template<typename T>
-vec4 BufferRAMPrecision<T>::getValueAsVec4Float(size_t index) const {
-    vec4 result;
+dvec4 BufferRAMPrecision<T>::getValueAsVec4Double(size_t index) const {
+    dvec4 result;
     T* data = static_cast<T*>(&data_->front());
     T val = data[index];
-    result = getDataFormat()->valueToNormalizedVec4Float(&val);
+    result = getDataFormat()->valueToNormalizedVec4Double(&val);
     return result;
 }
 

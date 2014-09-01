@@ -128,7 +128,7 @@ void DistanceTransformRAM::computeDistanceTransform() {
         for (int y=0; y<static_cast<int>(dataDim.y); ++y) {
             for (std::size_t x=0; x<dataDim.x; ++x) {
                 uvec3 pos(x, y, z);
-                if (srcVol->getValueAsSingleFloat(pos) > 0.5f) {
+                if (srcVol->getValueAsSingleDouble(pos) > 0.5) {
                     // set distance to zero
                     data[(z * dataDim.y + y) * dataDim.x + x] = lowVal;
                 }

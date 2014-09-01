@@ -359,7 +359,7 @@ void LinkDialogPropertyGraphicsItem::updatePositionBasedOnProcessor(bool isCompo
                     isTopItem_ = true;  
                     isBottomItem_ = false;
                 }
-                else if (subPropInd >= subProperties.size()-1  && found) {
+                else if (subPropInd >= static_cast<int>(subProperties.size())-1  && found) {
                     isBottomItem_ = true; 
                     isTopItem_ = false;
                 }

@@ -60,7 +60,7 @@ class EdgeDataFormat : public Edge<T> {
 
 public:
     EdgeDataFormat() : Edge<T>() {
-        DataFormat<T,B>::get()->floatToValue(0.f, &this->v1);
+        DataFormat<T,B>::get()->doubleToValue(0.0, &this->v1);
         this->v2 = this->v1;
     }
 

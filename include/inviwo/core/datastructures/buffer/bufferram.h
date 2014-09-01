@@ -58,15 +58,15 @@ public:
     virtual void* getData() = 0;
     virtual const void* getData() const = 0;
 
-    virtual void setValueFromSingleFloat(size_t index, float val) = 0;
-    virtual void setValueFromVec2Float(size_t index, vec2 val) = 0;
-    virtual void setValueFromVec3Float(size_t index, vec3 val) = 0;
-    virtual void setValueFromVec4Float(size_t index, vec4 val) = 0;
+    virtual void setValueFromSingleDouble(size_t index, double val) = 0;
+    virtual void setValueFromVec2Double(size_t index, dvec2 val) = 0;
+    virtual void setValueFromVec3Double(size_t index, dvec3 val) = 0;
+    virtual void setValueFromVec4Double(size_t index, dvec4 val) = 0;
 
-    virtual float getValueAsSingleFloat(size_t index) const = 0;
-    virtual vec2 getValueAsVec2Float(size_t index) const = 0;
-    virtual vec3 getValueAsVec3Float(size_t index) const = 0;
-    virtual vec4 getValueAsVec4Float(size_t index) const = 0;
+    virtual double getValueAsSingleDouble(size_t index) const = 0;
+    virtual dvec2 getValueAsVec2Double(size_t index) const = 0;
+    virtual dvec3 getValueAsVec3Double(size_t index) const = 0;
+    virtual dvec4 getValueAsVec4Double(size_t index) const = 0;
 };
 
 /**

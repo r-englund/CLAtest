@@ -356,7 +356,7 @@ FIBITMAP* ImageIO::createBitmapFromData(const T* data, FREE_IMAGE_TYPE type, uve
     //Scale normalized float value to from 0 - 1 to 0  - 255
     if (type == FIT_FLOAT) {
         T value;
-        format->floatToValue(255.f, &value);
+        format->doubleToValue(255.0, &value);
 
         for (unsigned int i = 0; i < dim.x * dim.y; i++)
             bits[i] = data[i]*value;
