@@ -50,15 +50,8 @@ public:
     virtual void initialize(){};
     virtual void deinitialize(){};
 
-    virtual void invalidate(PropertyOwner::InvalidationLevel invalidationLevel,
-                            Property* modifiedProperty=0);
-    virtual void invalidate();
     virtual bool isValid() { return PropertyOwner::isValid(); }
     virtual void setValid() { PropertyOwner::setValid(); }
-
-    virtual void serialize(IvwSerializer& s) const;
-    virtual void deserialize(IvwDeserializer& d);
-
 
     virtual void addProperty(Property* property);
     virtual void addProperty(Property& property);

@@ -42,6 +42,10 @@
 #include <sys/types.h>
 #endif
 
+#ifdef __APPLE__
+#include <CoreServices/CoreServices.h>
+#endif
+
 namespace inviwo {
 
 std::string URLParser::addBasePath(const std::string url) {
@@ -201,6 +205,22 @@ std::string URLParser::getInviwoUserSettingsPath(){
 #elif defined(__unix__) 
     ss << std::getenv("HOME");
     ss << "/.inviwo/";
+#elif defined(__APPLE__)
+    // Taken from:
+    // http://stackoverflow.com/questions/5123361/finding-library-application-support-from-c?rq=1
+    // A depricated solution, but a solution...
+    
+    FSRef ref;
+    OSType folderType = kApplicationSupportFolderType;
+    int MAX_PATH = 512;
+    char path[PATH_MAX];
+
+    STARTCLANGIGNORE("-Wdeprecated-declarations")
+    FSFindFolder( kUserDomain, folderType, kCreateFolder, &ref );
+    FSRefMakePath( &ref, (UInt8*)&path, MAX_PATH );
+    ENDCLANGIGNORE
+    
+    ss << path << "/org.inviwo.network-editor/";
 #else
     LogWarnCustom("","Get User Setting Path is not implemented for current system");
 #endif
@@ -225,8 +245,9 @@ void URLParser::createDirectoryRecursivly(std::string path){
         mkdir(pathPart.c_str());
 #elif defined(__unix__) 
         mkdir(pathPart.c_str(),0755);
+#elif defined(__APPLE__)
+        mkdir(pathPart.c_str(),0755);
 #else
-        //TODO fix for mac
         LogWarnCustom("","createDirectoryRecursivly is not implemented for current system");
 #endif
     }

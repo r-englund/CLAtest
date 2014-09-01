@@ -104,9 +104,14 @@ void PropertyOwner::setValid() {
     invalidationLevel_ = PropertyOwner::VALID;
 }
 
-void PropertyOwner::invalidate(PropertyOwner::InvalidationLevel invalidationLevel, Property* modifiedProperty) {
+void PropertyOwner::invalidate(PropertyOwner::InvalidationLevel invalidationLevel,
+                               Property* modifiedProperty) {
     IVW_UNUSED_PARAM(modifiedProperty);
     invalidationLevel_ = std::max(invalidationLevel_, invalidationLevel);
+    // Evaluate sub property links
+    if (getProcessor()) {
+        getProcessor()->notifyObserversAboutPropertyChange(modifiedProperty);
+    }
 }
 
 void PropertyOwner::serialize(IvwSerializer& s) const {
@@ -148,10 +153,17 @@ void PropertyOwner::resetAllPoperties(){
         (*it)->resetToDefaultState();
 }
 
-
 bool PropertyOwner::property_has_identifier::operator () (const Property* p) {
     return p->getIdentifier() == id_;
 }
 
+std::string PropertyOwner::invalidationLevelToString(InvalidationLevel level) {
+    switch (level) {
+        case VALID: return "Valid";
+        case INVALID_OUTPUT: return "Invalid output";
+        case INVALID_RESOURCES: return "Invalid resources";
+        default: return "Unknown";
+    }
+}
 
 } // namespace

@@ -37,35 +37,16 @@ namespace inviwo {
 
 Settings::Settings(std::string id) : identifier_(id), isDeserializing_(false) {}
 
-Settings::~Settings() {
-}
-
-void Settings::invalidate(PropertyOwner::InvalidationLevel invalidationLevel,
-                          Property* modifiedProperty) {
-    PropertyOwner::invalidate(invalidationLevel, modifiedProperty);
-}
-
-void Settings::invalidate() {
-    PropertyOwner::invalidate(PropertyOwner::INVALID_OUTPUT);
-}
-
-void Settings::serialize(IvwSerializer& s) const {
-    PropertyOwner::serialize(s);
-}
-
-void Settings::deserialize(IvwDeserializer& d) {
-    PropertyOwner::deserialize(d);
-}
-
+Settings::~Settings() {}
 
 void Settings::addProperty(Property* property){
     PropertyOwner::addProperty(property);
     property->onChange(this,&Settings::saveToDisk);
 }
+
 void Settings::addProperty(Property& property){
     PropertyOwner::addProperty(property);
     property.onChange(this,&Settings::saveToDisk);
-
 }
 
 std::string Settings::getIdentifier() {
@@ -87,19 +68,19 @@ void Settings::loadFromDisk(){
     isDeserializing_ = false;
 }
 
-void Settings::saveToDisk(){
-    if(isDeserializing_)
-        return;
+void Settings::saveToDisk() {
+    if (isDeserializing_) return;
 
     std::stringstream ss;
     ss << identifier_ << ".ivs";
     std::string filename = ss.str();
-    replaceInString(filename," ","_");
-    try{
-        IvwSerializer s(InviwoApplication::getPtr()->getPath(InviwoApplication::PATH_SETTINGS,filename,true));
+    replaceInString(filename, " ", "_");
+    try {
+        IvwSerializer s(
+            InviwoApplication::getPtr()->getPath(InviwoApplication::PATH_SETTINGS, filename, true));
         serialize(s);
         s.writeFile();
-    } catch(std::exception e){
+    } catch (std::exception e) {
         LogWarn("Could not write settings");
     }
 }

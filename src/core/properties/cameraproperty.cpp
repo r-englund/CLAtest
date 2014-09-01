@@ -161,7 +161,7 @@ void CameraProperty::invalidate() {
 
 void CameraProperty::invalidate(PropertyOwner::InvalidationLevel invalidationLevel,
                                 Property* modifiedProperty) {
-    PropertyOwner::invalidate(invalidationLevel, modifiedProperty);
+    CompositeProperty::invalidate(invalidationLevel, modifiedProperty);
 }
 
 void CameraProperty::invokeEvent(Event* event) {

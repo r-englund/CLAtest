@@ -297,6 +297,8 @@ std::string OrdinalPropertyWidgetQt<BT, T>::getToolTipText() {
     ss << this->makeToolTipTableTop();
     ss << this->makeToolTipRow("Identifier", this->ordinalproperty_->getIdentifier());
     ss << this->makeToolTipRow("Semantics", this->ordinalproperty_->getSemantics().getString());
+    ss << this->makeToolTipRow("Validation Level", PropertyOwner::invalidationLevelToString(
+                                             this->ordinalproperty_->getInvalidationLevel()));
     ss << this->makeToolTipTableBottom();
     
     T min = transformer_->min(this->ordinalproperty_->getMinValue());

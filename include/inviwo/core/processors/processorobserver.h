@@ -5,16 +5,16 @@
  *
  * Copyright (c) 2013-2014 Inviwo Foundation
  * All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met: 
- * 
+ * modification, are permitted provided that the following conditions are met:
+ *
  * 1. Redistributions of source code must retain the above copyright notice, this
- * list of conditions and the following disclaimer. 
+ * list of conditions and the following disclaimer.
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  * this list of conditions and the following disclaimer in the documentation
- * and/or other materials provided with the distribution. 
- * 
+ * and/or other materials provided with the distribution.
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
  * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
@@ -25,7 +25,7 @@
  * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- * 
+ *
  * Main file author: Erik Sundén
  *
  *********************************************************************************/
@@ -48,18 +48,22 @@ class Processor;
  *
  * @see ProcessorObservable
  */
-class IVW_CORE_API ProcessorObserver: public Observer {
+class IVW_CORE_API ProcessorObserver : public Observer {
 public:
-    ProcessorObserver(): Observer() {};
-    //TODO: Use seperate class for property observation if necessary
+    ProcessorObserver() : Observer() {};
+    // TODO: Use seperate class for property observation if necessary
     virtual void onAboutPropertyChange(Property*) {};
     virtual void onProcessorChanged(Processor*) {};
     virtual void onProcessorInvalidationBegin(Processor*) {};
     virtual void onProcessorInvalidationEnd(Processor*) {};
     virtual void onProcessorRequestEvaluate(Processor*) {};
     virtual void onProcessorIdentifierChange(Processor*) {};
-};
 
+#if IVW_PROFILING
+    virtual void onProcessorAboutToProcess(Processor*) {};
+    virtual void onProcessorFinishedProcess(Processor*) {};
+#endif
+};
 
 /** \class ProcessorObservable
  *
@@ -67,23 +71,25 @@ public:
  *
  * @see ProcessorObserver
  */
-class IVW_CORE_API ProcessorObservable: public Observable<ProcessorObserver> {
+class IVW_CORE_API ProcessorObservable : public Observable<ProcessorObserver> {
 public:
-    ProcessorObservable(): Observable<ProcessorObserver>() {};
+    ProcessorObservable() : Observable<ProcessorObserver>() {};
 
     void notifyObservers(Processor* p) const {
         ObserverSet localObservers = *observers_;
 
-        for (ObserverSet::reverse_iterator it = localObservers.rbegin(); it != localObservers.rend(); ++it) {
+        for (ObserverSet::reverse_iterator it = localObservers.rbegin();
+             it != localObservers.rend(); ++it) {
             static_cast<ProcessorObserver*>(*it)->onProcessorChanged(p);
         }
     }
 
-    //TODO: Use seperate class for property observation if necessary
+    // TODO: Use seperate class for property observation if necessary
     void notifyObserversAboutPropertyChange(Property* p) const {
         ObserverSet localObservers = *observers_;
 
-        for (ObserverSet::reverse_iterator it = localObservers.rbegin(); it != localObservers.rend(); ++it) {
+        for (ObserverSet::reverse_iterator it = localObservers.rbegin();
+             it != localObservers.rend(); ++it) {
             static_cast<ProcessorObserver*>(*it)->onAboutPropertyChange(p);
         }
     }
@@ -91,7 +97,8 @@ public:
     void notifyObserversInvalidationBegin(Processor* p) const {
         ObserverSet localObservers = *observers_;
 
-        for (ObserverSet::reverse_iterator it = localObservers.rbegin(); it != localObservers.rend(); ++it) {
+        for (ObserverSet::reverse_iterator it = localObservers.rbegin();
+             it != localObservers.rend(); ++it) {
             static_cast<ProcessorObserver*>(*it)->onProcessorInvalidationBegin(p);
         }
     }
@@ -99,7 +106,8 @@ public:
     void notifyObserversInvalidationEnd(Processor* p) const {
         ObserverSet localObservers = *observers_;
 
-        for (ObserverSet::reverse_iterator it = localObservers.rbegin(); it != localObservers.rend(); ++it) {
+        for (ObserverSet::reverse_iterator it = localObservers.rbegin();
+             it != localObservers.rend(); ++it) {
             static_cast<ProcessorObserver*>(*it)->onProcessorInvalidationEnd(p);
         }
     }
@@ -107,7 +115,8 @@ public:
     void notifyObserversRequestEvaluate(Processor* p) const {
         ObserverSet localObservers = *observers_;
 
-        for (ObserverSet::reverse_iterator it = localObservers.rbegin(); it != localObservers.rend(); ++it) {
+        for (ObserverSet::reverse_iterator it = localObservers.rbegin();
+             it != localObservers.rend(); ++it) {
             static_cast<ProcessorObserver*>(*it)->onProcessorRequestEvaluate(p);
         }
     }
@@ -115,12 +124,32 @@ public:
     void notifyObserversIdentifierChange(Processor* p) const {
         ObserverSet localObservers = *observers_;
 
-        for (ObserverSet::reverse_iterator it = localObservers.rbegin(); it != localObservers.rend(); ++it) {
+        for (ObserverSet::reverse_iterator it = localObservers.rbegin();
+             it != localObservers.rend(); ++it) {
             static_cast<ProcessorObserver*>(*it)->onProcessorIdentifierChange(p);
         }
     }
+
+#if IVW_PROFILING
+    void notifyObserversAboutToProcess(Processor* p) const {
+        ObserverSet localObservers = *observers_;
+
+        for (ObserverSet::reverse_iterator it = localObservers.rbegin();
+             it != localObservers.rend(); ++it) {
+            static_cast<ProcessorObserver*>(*it)->onProcessorAboutToProcess(p);
+        }
+    }
+    void notifyObserversFinishedProcess(Processor* p) const {
+        ObserverSet localObservers = *observers_;
+
+        for (ObserverSet::reverse_iterator it = localObservers.rbegin();
+             it != localObservers.rend(); ++it) {
+            static_cast<ProcessorObserver*>(*it)->onProcessorFinishedProcess(p);
+        }
+    }
+#endif
 };
 
-} // namespace
+}  // namespace
 
-#endif // IVW_PROCESSOROBSERVER_H
+#endif  // IVW_PROCESSOROBSERVER_H

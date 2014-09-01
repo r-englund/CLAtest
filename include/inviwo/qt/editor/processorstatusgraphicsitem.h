@@ -48,10 +48,13 @@ public:
     ProcessorStatusGraphicsItem(QGraphicsRectItem* parent, Processor* processor);
     virtual ~ProcessorStatusGraphicsItem(){}
 
+    void setRunning(bool);
+
     // override for qgraphicsitem_cast (refer qt documentation)
     enum { Type = UserType + ProcessorStatusGraphicsType };
     int type() const { return Type; }
 
+    // ProcessorWidgetObserver overrides
     virtual void onProcessorWidgetShow(ProcessorWidget*);
     virtual void onProcessorWidgetHide(ProcessorWidget*);
 
@@ -62,6 +65,8 @@ private:
     Processor* processor_;
     float size_;
     float lineWidth_;
+    
+    bool running_;
 };
 
 } // namespace

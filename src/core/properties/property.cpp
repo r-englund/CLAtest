@@ -178,10 +178,7 @@ void Property::propertyModified() {
     onChangeCallback_.invokeAll();
     setPropertyModified(true);
     if (getOwner() && getInvalidationLevel() > PropertyOwner::VALID) {
-        getOwner()->invalidate(getInvalidationLevel(), this);
-        if (getOwner()->getProcessor() && getOwner()!=getOwner()->getProcessor() ) {
-            getOwner()->getProcessor()->invalidate(getInvalidationLevel(), this);
-        }
+        getOwner()->invalidate(getInvalidationLevel(), this);        
     }
     updateWidgets();
 }
