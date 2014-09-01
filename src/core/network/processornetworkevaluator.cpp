@@ -496,7 +496,13 @@ void ProcessorNetworkEvaluator::evaluate() {
                 }
 
                 // do the actual processing
+                #if IVW_PROFILING 
+                (*it)->notifyObserversAboutToProcess(*it);
+                #endif
                 (*it)->process();
+                #if IVW_PROFILING 
+                (*it)->notifyObserversFinishedProcess(*it);
+                #endif
 
                 // set processor as valid
                 (*it)->setValid();

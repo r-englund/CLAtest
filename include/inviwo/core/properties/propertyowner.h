@@ -76,7 +76,7 @@ public:
     virtual void setValid();
     InvalidationLevel getInvalidationLevel() { return invalidationLevel_; }
     virtual void invalidate(PropertyOwner::InvalidationLevel invalidationLevel,
-                            Property* modifiedProperty = 0);
+                            Property* modifiedProperty = NULL);
 
     // Should return the processor that the owner belongs or is.
     // This should be overridden by all subclasses.
@@ -88,6 +88,8 @@ public:
 
     void setAllPropertiesCurrentStateAsDefault();
     void resetAllPoperties();
+    
+    static std::string invalidationLevelToString(InvalidationLevel level);
 
 protected:
     std::vector<Property*> properties_;

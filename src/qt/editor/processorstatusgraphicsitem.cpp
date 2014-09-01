@@ -40,7 +40,7 @@
 namespace inviwo {
 
 ProcessorStatusGraphicsItem::ProcessorStatusGraphicsItem(QGraphicsRectItem* parent, Processor* processor)
-    : EditorGrapicsItem(parent), processor_(processor), size_(10.0f), lineWidth_(3.0f) {
+    : EditorGrapicsItem(parent), processor_(processor), size_(10.0f), lineWidth_(3.0f), running_(false) {
 
 
     setRect(-0.5f * size_ - lineWidth_, -0.5f * size_ - lineWidth_, size_ + 2.0*lineWidth_,
@@ -48,6 +48,12 @@ ProcessorStatusGraphicsItem::ProcessorStatusGraphicsItem(QGraphicsRectItem* pare
 
     setCacheMode(QGraphicsItem::DeviceCoordinateCache);
     setPos(QPointF(64.0f, -15.0f));
+}
+
+
+void ProcessorStatusGraphicsItem::setRunning(bool val){
+    running_ = val;
+    update();
 }
 
 void ProcessorStatusGraphicsItem::paint(QPainter* p, const QStyleOptionGraphicsItem* options, QWidget* widget) {
@@ -60,6 +66,9 @@ void ProcessorStatusGraphicsItem::paint(QPainter* p, const QStyleOptionGraphicsI
 
     if (processor_->isReady()) {
         ledColor = baseColor;
+        borderColor = QColor(124, 124, 124);
+    } else if (running_) {
+        ledColor = Qt::yellow;
         borderColor = QColor(124, 124, 124);
     } else {
         ledColor = baseColor.dark(400);

@@ -69,7 +69,6 @@ public:
 
     void editProcessorName();
     void onLabelGraphicsItemChange();
-    void onProcessorIdentifierChange(Processor*);
     bool isEditingProcessorName();
 
     void snapToGrid();
@@ -77,6 +76,15 @@ public:
     // override for qgraphicsitem_cast (refer qt documentation)
     enum { Type = UserType + ProcessorGraphicsType };
     int type() const { return Type; }
+
+
+
+    // ProcessorObserver overrides
+    virtual void onProcessorIdentifierChange(Processor*);
+    #if IVW_PROFILING
+    virtual void onProcessorAboutToProcess(Processor*);
+    virtual void onProcessorFinishedProcess(Processor*);
+    #endif
 
 protected:
     void setIdentifier(QString text);
@@ -95,6 +103,16 @@ private:
 
     std::map<Inport*, ProcessorInportGraphicsItem*> inportItems_;
     std::map<Outport*, ProcessorOutportGraphicsItem*> outportItems_;
+    
+    
+    #if IVW_PROFILING 
+    size_t processCount_;
+    LabelGraphicsItem* countLabel_;
+    double maxEvalTime_;
+    double evalTime_;
+    double totEvalTime_;
+    Clock clock_;
+    #endif
 };
 
 }  // namespace

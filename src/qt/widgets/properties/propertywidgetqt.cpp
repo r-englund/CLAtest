@@ -35,6 +35,7 @@
 #include <inviwo/core/util/settings/systemsettings.h>
 #include <inviwo/core/properties/property.h>
 #include <inviwo/core/properties/propertywidgetfactory.h>
+#include <inviwo/core/properties/propertyowner.h>
 #include <inviwo/qt/widgets/inviwoapplicationqt.h>
 #include <inviwo/core/common/moduleaction.h>
 #include <QDesktopWidget>
@@ -463,14 +464,16 @@ std::string PropertyWidgetQt::makeToolTipBottom() const {
 std::string PropertyWidgetQt::getToolTipText() {
     if (property_) {
         std::stringstream ss;
-        
+
         ss << makeToolTipTop(property_->getDisplayName());
         ss << makeToolTipTableTop();
         ss << makeToolTipRow("Identifier", property_->getIdentifier());
         ss << makeToolTipRow("Semantics", property_->getSemantics().getString());
+        ss << makeToolTipRow("Validation Level", PropertyOwner::invalidationLevelToString(
+                                                     property_->getInvalidationLevel()));
         ss << makeToolTipTableBottom();
         ss << makeToolTipBottom();
-   
+
         return ss.str();
     } else {
         return "";
@@ -493,8 +496,6 @@ QSize PropertyWidgetQt::sizeHint() const {
 
 QSize PropertyWidgetQt::minimumSizeHint() const {
     QSize size = layout()->sizeHint();
-    QSize minSize = layout()->minimumSize();
-    size.setWidth(minSize.width());
     return size;
 }
 

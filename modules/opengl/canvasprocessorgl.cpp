@@ -32,6 +32,7 @@
 
 #include "canvasprocessorgl.h"
 #include "canvasgl.h"
+#include <inviwo/core/processors/processor.h>
 
 namespace inviwo {
 
@@ -42,8 +43,7 @@ ProcessorCategory(CanvasProcessorGL, "Data Output");
 ProcessorCodeState(CanvasProcessorGL, CODE_STATE_STABLE);
 
 CanvasProcessorGL::CanvasProcessorGL()
-    : CanvasProcessor()
-{}
+    : CanvasProcessor() {}
 
 void CanvasProcessorGL::initialize() {
     CanvasProcessor::initialize();
@@ -55,7 +55,8 @@ void CanvasProcessorGL::deinitialize() {
 
 void CanvasProcessorGL::process() {
     CanvasProcessor::process();
-    static_cast<CanvasGL*>(getCanvas())->render(inport_.getData(), static_cast<LayerType>(visibleLayer_.get()));
+    static_cast<CanvasGL*>(getCanvas())
+        ->render(inport_.getData(), static_cast<LayerType>(visibleLayer_.get()));
 }
 
 void CanvasProcessorGL::doIfNotReady() {

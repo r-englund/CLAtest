@@ -167,6 +167,8 @@ std::string OrdinalMinMaxTextPropertyWidgetQt<T>::getToolTipText() {
     ss << this->makeToolTipTableTop();
     ss << this->makeToolTipRow("Identifier", this->minMaxProperty_->getIdentifier());
     ss << this->makeToolTipRow("Semantics", this->minMaxProperty_->getSemantics().getString());
+    ss << makeToolTipRow("Validation Level", PropertyOwner::invalidationLevelToString(
+                                             this->minMaxProperty_->getInvalidationLevel()));
 
     ss << this->makeToolTipRow("Minimum", toString(minMaxProperty_->get().x));
     ss << this->makeToolTipRow("Maximum", toString(minMaxProperty_->get().y));

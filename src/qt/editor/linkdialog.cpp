@@ -1307,7 +1307,7 @@ Property* LinkDialogGraphicsScene::getParentCompositeProperty(Property* subPrope
             for (size_t j=0; j<p.size(); j++) {
                 if (p[j]==subProperty) return comp;
 
-                CompositeProperty* c = IS_COMPOSITE_PROPERTY(p[i]);
+                CompositeProperty* c = IS_COMPOSITE_PROPERTY(p[j]);
                 if (c) {
                     newComposites.push_back(c);
                 }

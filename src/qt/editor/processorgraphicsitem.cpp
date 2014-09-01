@@ -44,6 +44,8 @@
 #include <inviwo/core/processors/processor.h>
 #include <inviwo/core/processors/progressbarowner.h>
 #include <inviwo/core/metadata/processormetadata.h>
+#include <inviwo/core/util/stringconversion.h>
+#include <inviwo/core/util/clock.h>
 
 #include <inviwo/qt/editor/networkeditor.h>
 #include <inviwo/qt/editor/connectiongraphicsitem.h>
@@ -75,7 +77,15 @@ ProcessorGraphicsItem::ProcessorGraphicsItem(Processor* processor)
     , processorMeta_(NULL)
     , progressItem_(NULL)
     , statusItem_(NULL)
-    , linkItem_(NULL) {
+    , linkItem_(NULL)
+    #if IVW_PROFILING
+    , processCount_(0)
+    , countLabel_(NULL)
+    , maxEvalTime_(0.0)
+    , evalTime_(0.0)
+    , totEvalTime_(0.0)
+    #endif
+    {
 
     setZValue(PROCESSORGRAPHICSITEM_DEPTH);
     setFlags(ItemIsMovable | ItemIsSelectable | ItemIsFocusable | ItemSendsGeometryChanges);
@@ -136,7 +146,6 @@ ProcessorGraphicsItem::ProcessorGraphicsItem(Processor* processor)
             new ProcessorProgressGraphicsItem(this, &(progressBarOwner->getProgressBar()));
     }
 
-
     QString str(QString(
         "<html><head/><body>\
          <b style='color:white;'>%1</b>\
@@ -152,8 +161,16 @@ ProcessorGraphicsItem::ProcessorGraphicsItem(Processor* processor)
          .arg(Processor::getCodeStateString(processor->getCodeState()).c_str())
          .arg(processor->getTags().getString().c_str())
          );
-
+    
     setToolTip(str);
+        
+    #if IVW_PROFILING
+    countLabel_ = new LabelGraphicsItem(this);
+    countLabel_->setCrop(9,8);
+    countLabel_->setPos(width / 2 - 40, height / 2 - labelHeight*2.5);
+    countLabel_->setDefaultTextColor(Qt::lightGray);
+    countLabel_->setFont(classFont);
+    #endif
 }
 
 ProcessorInportGraphicsItem* ProcessorGraphicsItem::getInportGraphicsItem(Inport* port) {
@@ -322,6 +339,47 @@ void ProcessorGraphicsItem::onProcessorIdentifierChange(Processor* processor) {
 
     if (processorWidgetQt) processorWidgetQt->setWindowTitle(QString::fromStdString(newIdentifier));
 }
+
+#if IVW_PROFILING
+void ProcessorGraphicsItem::onProcessorAboutToProcess(Processor*) {
+    processCount_++;
+    countLabel_->setText(QString::fromStdString(toString(processCount_)));
+    statusItem_->setRunning(true);
+    clock_.start();
+}
+void ProcessorGraphicsItem::onProcessorFinishedProcess(Processor*) {
+    clock_.stop();
+    evalTime_ = clock_.getElapsedMiliseconds();
+    maxEvalTime_ = maxEvalTime_ < evalTime_ ? evalTime_ : maxEvalTime_;
+    totEvalTime_ += evalTime_;
+    statusItem_->setRunning(false);
+    
+    QString str(QString(
+        "<html><head/><body>\
+         <b style='color:white;'>%1</b>\
+         <table border='0' cellspacing='0' cellpadding='0' style='border-color:white;white-space:pre;'>\
+         <tr><td style='color:#bbb;padding-right:8px;'>Identifier:</td><td><nobr>%2</nobr></td></tr>\
+         <tr><td style='color:#bbb;padding-right:8px;'>Category:</td><td><nobr>%3</nobr></td></tr>\
+         <tr><td style='color:#bbb;padding-right:8px;'>Code State:</td><td><nobr>%4</nobr></td></tr>\
+         <tr><td style='color:#bbb;padding-right:8px;'>Tags:</td><td><nobr>%5</nobr></td></tr>\
+         <tr><td style='color:#bbb;padding-right:8px;'>Eval Count:</td><td><nobr>%6</nobr></td></tr>\
+         <tr><td style='color:#bbb;padding-right:8px;'>Eval Time:</td><td><nobr>%7</nobr></td></tr>\
+         <tr><td style='color:#bbb;padding-right:8px;'>Mean Time:</td><td><nobr>%8</nobr></td></tr>\
+         <tr><td style='color:#bbb;padding-right:8px;'>Max Time:</td><td><nobr>%9</nobr></td></tr>\
+         </tr></table></body></html>")
+         .arg(processor_->getDisplayName().c_str())
+         .arg(processor_->getClassIdentifier().c_str())
+         .arg(processor_->getCategory().c_str())
+         .arg(Processor::getCodeStateString(processor_->getCodeState()).c_str())
+         .arg(processor_->getTags().getString().c_str())
+         .arg(processCount_)
+         .arg(evalTime_)
+         .arg(totEvalTime_ / static_cast<double>(processCount_))
+         .arg(maxEvalTime_)
+         );
+    setToolTip(str);
+}
+#endif
 
 ProcessorStatusGraphicsItem* ProcessorGraphicsItem::getStatusItem() const {
     return statusItem_;

@@ -221,8 +221,8 @@ void Processor::invalidate(PropertyOwner::InvalidationLevel invalidationLevel, P
         return;
 
     notifyObserversInvalidationBegin(this);
-    PropertyOwner::invalidate(invalidationLevel);
-    notifyObserversAboutPropertyChange(modifiedProperty);
+    PropertyOwner::invalidate(invalidationLevel, modifiedProperty);
+    //notifyObserversAboutPropertyChange(modifiedProperty);
 
     if (PropertyOwner::isValid()) {
         notifyObserversInvalidationEnd(this);
