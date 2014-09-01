@@ -68,6 +68,8 @@ public:
     std::vector<Inport*> getConnectedInports() const { return connectedInports_; }
 
     virtual void invalidate(PropertyOwner::InvalidationLevel invalidationLevel);
+    void invalidateConnectedInports(PropertyOwner::InvalidationLevel invalidationLevel);
+
     virtual PropertyOwner::InvalidationLevel getInvalidationLevel() const { return invalidationLevel_; }
     virtual void setInvalidationLevel(PropertyOwner::InvalidationLevel invalidationLevel);
 
