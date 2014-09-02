@@ -59,6 +59,8 @@ public:
     virtual void onProcessorRequestEvaluate(Processor*) {};
     virtual void onProcessorIdentifierChange(Processor*) {};
 
+    virtual void onProcessorPortAdded(Processor*, Port*) {};
+
 #if IVW_PROFILING
     virtual void onProcessorAboutToProcess(Processor*) {};
     virtual void onProcessorFinishedProcess(Processor*) {};
@@ -127,6 +129,15 @@ public:
         for (ObserverSet::reverse_iterator it = localObservers.rbegin();
              it != localObservers.rend(); ++it) {
             static_cast<ProcessorObserver*>(*it)->onProcessorIdentifierChange(p);
+        }
+    }
+
+    void notifyObserversProcessorPortAdded(Processor* p,Port *port) const {
+        ObserverSet localObservers = *observers_;
+
+        for (ObserverSet::reverse_iterator it = localObservers.rbegin();
+            it != localObservers.rend(); ++it) {
+                static_cast<ProcessorObserver*>(*it)->onProcessorPortAdded(p,port);
         }
     }
 

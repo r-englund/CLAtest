@@ -58,7 +58,7 @@ ProcessorPortGraphicsItem::ProcessorPortGraphicsItem(ProcessorGraphicsItem* pare
     , lineWidth_(1.0f)
     , up_(up) {
     
-    setFlags(ItemSendsScenePositionChanges);
+
     setCacheMode(QGraphicsItem::DeviceCoordinateCache);
     setRect(-0.5f * size_ - lineWidth_, -0.5f * size_ - lineWidth_, size_ + 2.0 * lineWidth_,
             size_ + 2.0 * lineWidth_);
@@ -67,6 +67,7 @@ ProcessorPortGraphicsItem::ProcessorPortGraphicsItem(ProcessorGraphicsItem* pare
     setZValue(PROCESSORGRAPHICSITEM_DEPTH+0.5);
     portInspector_ = new PortInspectionManager(this);
     setToolTip(QString(""));
+    setFlags(ItemSendsScenePositionChanges);
 }
 
 void ProcessorPortGraphicsItem::paint(QPainter* p, const QStyleOptionGraphicsItem* options,

@@ -81,6 +81,7 @@ public:
 
     // ProcessorObserver overrides
     virtual void onProcessorIdentifierChange(Processor*);
+    virtual void onProcessorPortAdded(Processor*, Port*);
     #if IVW_PROFILING
     virtual void onProcessorAboutToProcess(Processor*);
     virtual void onProcessorFinishedProcess(Processor*);
@@ -90,6 +91,8 @@ protected:
     void setIdentifier(QString text);
     void paint(QPainter* p, const QStyleOptionGraphicsItem* options, QWidget* widget);
     virtual QVariant itemChange(GraphicsItemChange change, const QVariant& value);
+    void addInport(Inport *port);
+    void addOutport(Outport *port);
 
 private:
     Processor* processor_;
@@ -104,6 +107,8 @@ private:
     std::map<Inport*, ProcessorInportGraphicsItem*> inportItems_;
     std::map<Outport*, ProcessorOutportGraphicsItem*> outportItems_;
     
+    qreal inportX,inportY;
+    qreal outportX,outportY;
     
     #if IVW_PROFILING 
     size_t processCount_;
