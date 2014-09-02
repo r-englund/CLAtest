@@ -339,7 +339,11 @@ const DataFormatBase* DataFormatBase::getDataFormat(DataFormatEnums::NumericType
                     break;
             }
             break;
+        default:
+            break;
+
     }
+    return NULL;
 }
 
 } // namespace
