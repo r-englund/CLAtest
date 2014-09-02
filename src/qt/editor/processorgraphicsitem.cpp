@@ -119,24 +119,22 @@ ProcessorGraphicsItem::ProcessorGraphicsItem(Processor* processor)
 
     linkItem_ = new ProcessorLinkGraphicsItem(this);
 
-    float xOffset = 8.0f + 4.5f;  // based on roundedCorners
-    float xSpacing = 12.5f;       // GRID_SIZE / 2.0
+
     std::vector<Inport*> inports = processor_->getInports();
-
-    qreal x, y;
-    y = rect().top() + 4.5f;
-    for (size_t i = 0; i < inports.size(); i++) {
-        x = rect().left() + xOffset + i * xSpacing;
-        inportItems_[inports[i]] = new ProcessorInportGraphicsItem(this, QPointF(x, y), inports[i]);
-    }
-
     std::vector<Outport*> outports = processor_->getOutports();
-    y = rect().bottom() - 4.5f;
-    for (size_t i = 0; i < outports.size(); i++) {
-        x = rect().left() + xOffset + i * xSpacing;
-        outportItems_[outports[i]] =
-            new ProcessorOutportGraphicsItem(this, QPointF(x, y), outports[i]);
+
+    inportX = rect().left() + 12.5f;
+    inportY = rect().top() + 4.5f;
+    outportX = rect().left() + 12.5f;
+    outportY = rect().bottom() - 4.5f;
+
+    for (size_t i = 0; i < inports.size(); i++) {
+        addInport(inports[i]);
     }
+
+    for (size_t i = 0; i < outports.size(); i++) {
+        addOutport(outports[i]);
+	}
 
     statusItem_ = new ProcessorStatusGraphicsItem(this, processor_);
 
@@ -172,6 +170,19 @@ ProcessorGraphicsItem::ProcessorGraphicsItem(Processor* processor)
     countLabel_->setFont(classFont);
     #endif
 }
+
+
+void ProcessorGraphicsItem::addInport(Inport *port){
+    inportItems_[port] = new ProcessorInportGraphicsItem(this, QPointF(inportX,inportY), port);
+    inportX += (25 / 2.0);
+}
+
+void ProcessorGraphicsItem::addOutport(Outport *port){
+    outportItems_[port] =
+        new ProcessorOutportGraphicsItem(this, QPointF(outportX, outportY), port);
+    outportX += (25 / 2.0);
+}
+
 
 ProcessorInportGraphicsItem* ProcessorGraphicsItem::getInportGraphicsItem(Inport* port) {
     return inportItems_[port];
@@ -338,6 +349,13 @@ void ProcessorGraphicsItem::onProcessorIdentifierChange(Processor* processor) {
         dynamic_cast<ProcessorWidgetQt*>(getProcessor()->getProcessorWidget());
 
     if (processorWidgetQt) processorWidgetQt->setWindowTitle(QString::fromStdString(newIdentifier));
+}
+
+void ProcessorGraphicsItem::onProcessorPortAdded(Processor *, Port *port){
+    Inport *inport = dynamic_cast<Inport*>(port);
+    Outport *outport = dynamic_cast<Outport*>(port);
+    if(inport) addInport(inport);
+    else if(outport) addOutport(outport);
 }
 
 #if IVW_PROFILING

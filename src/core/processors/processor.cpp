@@ -66,6 +66,7 @@ void Processor::addPort(Inport* port, std::string portDependencySet) {
     port->setProcessor(this);
     inports_.push_back(port);
     portDependencySets_.insert(portDependencySet, port);
+    notifyObserversProcessorPortAdded(this,port);
 }
 
 void Processor::addPort(Inport& port, std::string portDependencySet) {
@@ -77,6 +78,7 @@ void Processor::addPort(Outport* port, std::string portDependencySet) {
     port->setProcessor(this);
     outports_.push_back(port);
     portDependencySets_.insert(portDependencySet, port);
+    notifyObserversProcessorPortAdded(this,port);
 }
 
 void Processor::addPort(Outport& port, std::string portDependencySet) {
