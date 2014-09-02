@@ -97,7 +97,7 @@ ProcessorGraphicsItem::ProcessorGraphicsItem(Processor* processor)
     setGraphicsEffect(processorShadowEffect);
     nameLabel_ = new LabelGraphicsItem(this);
     nameLabel_->setCrop(9, 8);
-    nameLabel_->setPos(-width / 2.0 + labelHeight, -height / 2.0 + labelHeight);
+    nameLabel_->setPos(-width / 2.0 + labelHeight, -height / 2.0 + 0.6 * labelHeight);
     nameLabel_->setDefaultTextColor(Qt::white);
     QFont nameFont("Segoe", labelHeight, QFont::Black, false);
     nameFont.setPixelSize(pointSizeToPixelSize(labelHeight));
@@ -105,7 +105,7 @@ ProcessorGraphicsItem::ProcessorGraphicsItem(Processor* processor)
     LabelGraphicsItemObserver::addObservation(nameLabel_);
     classLabel_ = new LabelGraphicsItem(this);
     classLabel_->setCrop(9, 8);
-    classLabel_->setPos(-width / 2.0 + labelHeight, -height / 2.0 + labelHeight * 2.5);
+    classLabel_->setPos(-width / 2.0 + labelHeight, -height / 2.0 + labelHeight * 2.0);
     classLabel_->setDefaultTextColor(Qt::lightGray);
     QFont classFont("Segoe", labelHeight, QFont::Normal, true);
     classFont.setPixelSize(pointSizeToPixelSize(labelHeight));
