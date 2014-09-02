@@ -382,7 +382,9 @@ std::vector<T> BaseTemplateOptionProperty<T>::getValues() const {
 // Setters
 template<typename T>
 bool BaseTemplateOptionProperty<T>::setSelectedIndex(size_t option) {
-    if(option < options_.size()) {
+    if(selectedIndex_ == option){
+        return true;
+    } else if(option < options_.size()) {
         selectedIndex_ = option;
         propertyModified();
         return true;
@@ -395,8 +397,11 @@ template<typename T>
 bool inviwo::BaseTemplateOptionProperty<T>::setSelectedIdentifier(std::string identifier) {
     typename std::vector<Option<T> >::iterator it = std::find_if(options_.begin(), options_.end(), MatchId<T>(identifier));
     if (it != options_.end()) {
-        selectedIndex_ = std::distance(options_.begin(), it);
-        propertyModified();
+        size_t dist = std::distance(options_.begin(), it);
+        if(selectedIndex_ != dist){
+            selectedIndex_ = dist;
+            propertyModified();
+        }
         return true;
     } else {
         return false;
@@ -407,8 +412,11 @@ template<typename T>
 bool inviwo::BaseTemplateOptionProperty<T>::setSelectedDisplayName(std::string name) {
     typename std::vector<Option<T> >::iterator it = std::find_if(options_.begin(), options_.end(), MatchName<T>(name));
     if(it != options_.end()) {
-        selectedIndex_ = std::distance(options_.begin(), it);
-        propertyModified();
+        size_t dist = std::distance(options_.begin(), it);
+        if (selectedIndex_ != dist) {
+            selectedIndex_ = dist;
+            propertyModified();
+        }
         return true;
     } else {
         return false;
@@ -419,8 +427,11 @@ template<typename T>
 bool inviwo::BaseTemplateOptionProperty<T>::setSelectedValue(T val) {
     typename std::vector<Option<T> >::iterator it = std::find_if(options_.begin(), options_.end(), MatchValue<T>(val));
     if(it != options_.end()) {
-        selectedIndex_ = std::distance(options_.begin(), it);
-        propertyModified();
+        size_t dist = std::distance(options_.begin(), it);
+        if (selectedIndex_ != dist) {
+            selectedIndex_ = dist;
+            propertyModified();
+        }
         return true;
     } else {
         return false;
