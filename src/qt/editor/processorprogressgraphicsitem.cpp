@@ -41,12 +41,14 @@ namespace inviwo {
 
 ProcessorProgressGraphicsItem::ProcessorProgressGraphicsItem(QGraphicsRectItem* parent,
                                                              ProgressBar* progressBar)
-    : EditorGrapicsItem(parent), size_(136, 5.0f), lineWidth_(2.0f), progressBar_(progressBar) {
-    setRect(-0.5f * size_.width() - lineWidth_, -0.5f * size_.height() - lineWidth_,
-            size_.width() + 2.0 * lineWidth_, size_.height() + 2.0 * lineWidth_);
+    : EditorGrapicsItem(parent), size_(126, 5.0f), lineWidth_(2.0f), progressBar_(progressBar) {
+    setRect(-0.5f * size_.width(), 
+            -0.5f * size_.height() + 3,
+            size_.width(), size_.height());
 
-    setPos(QPointF(-75.0f + 7.0f, 9.0f));
+    setPos(QPointF(0.0f, 9.0f));
     setCacheMode(QGraphicsItem::DeviceCoordinateCache);
+    setVisible(progressBar_->isVisible());
     progressBar_->addObserver(this);
 
 }
@@ -56,13 +58,11 @@ void ProcessorProgressGraphicsItem::paint(QPainter* p, const QStyleOptionGraphic
     
     float progress = progressBar_->getProgress();
 
-    QSize dimensions(136, 5.0f);
-
     p->save();
     p->setRenderHint(QPainter::Antialiasing, true);
 
     QColor progressColor = Qt::lightGray;
-    QRectF progressBarRect(QPointF(0.0f, 0.0f), dimensions);
+    QRectF progressBarRect = rect();
     QLinearGradient progressGrad(progressBarRect.topLeft(), progressBarRect.topRight());
     progressGrad.setColorAt(0.0f, progressColor);
     float left = std::max(0.0f, progress - 0.001f);
