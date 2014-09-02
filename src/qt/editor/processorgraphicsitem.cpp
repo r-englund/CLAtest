@@ -363,9 +363,9 @@ void ProcessorGraphicsItem::onProcessorFinishedProcess(Processor*) {
          <tr><td style='color:#bbb;padding-right:8px;'>Code State:</td><td><nobr>%4</nobr></td></tr>\
          <tr><td style='color:#bbb;padding-right:8px;'>Tags:</td><td><nobr>%5</nobr></td></tr>\
          <tr><td style='color:#bbb;padding-right:8px;'>Eval Count:</td><td><nobr>%6</nobr></td></tr>\
-         <tr><td style='color:#bbb;padding-right:8px;'>Eval Time:</td><td><nobr>%7</nobr></td></tr>\
-         <tr><td style='color:#bbb;padding-right:8px;'>Mean Time:</td><td><nobr>%8</nobr></td></tr>\
-         <tr><td style='color:#bbb;padding-right:8px;'>Max Time:</td><td><nobr>%9</nobr></td></tr>\
+         <tr><td style='color:#bbb;padding-right:8px;'>Eval Time:</td><td><nobr>%7 ms</nobr></td></tr>\
+         <tr><td style='color:#bbb;padding-right:8px;'>Mean Time:</td><td><nobr>%8 ms</nobr></td></tr>\
+         <tr><td style='color:#bbb;padding-right:8px;'>Max Time:</td><td><nobr>%9 ms</nobr></td></tr>\
          </tr></table></body></html>")
          .arg(processor_->getDisplayName().c_str())
          .arg(processor_->getClassIdentifier().c_str())

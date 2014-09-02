@@ -74,7 +74,14 @@ public:
     virtual void updateVisibility();
 
     // Override from the property owner
-    virtual Processor* getProcessor() { return getOwner()->getProcessor(); }
+    virtual Processor* getProcessor() {
+        PropertyOwner* owner = getOwner();
+        if(owner) {
+            return owner->getProcessor();
+        } else {
+            return NULL;
+        }
+    }
 
     virtual void serialize(IvwSerializer& s) const;
     virtual void deserialize(IvwDeserializer& d);
