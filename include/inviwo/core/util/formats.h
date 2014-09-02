@@ -245,7 +245,7 @@ public:
     static DataFormatEnums::NumericType numericType() { return DataFormatEnums::NOT_SPECIALIZED_TYPE; }
     static std::string str() { return "Error, type specialization not implemented"; }
     static DataFormatEnums::Id id() { return DataFormatEnums::NOT_SPECIALIZED; }
-    static const DataFormatBase* DataFormatBase::getDataFormat(DataFormatEnums::NumericType type, int components,
+    static const DataFormatBase* getDataFormat(DataFormatEnums::NumericType type, int components,
                                                                int precision);
 
     virtual double valueToDouble(void*) const;
