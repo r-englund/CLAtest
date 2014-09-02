@@ -121,7 +121,6 @@ bool Property::getReadOnly()const {
     return readOnly_;
 }
 
-
 PropertyOwner::InvalidationLevel Property::getInvalidationLevel() const {
     return invalidationLevel_;
 }
@@ -177,9 +176,22 @@ std::string Property::getGroupID()const {
 void Property::propertyModified() {
     onChangeCallback_.invokeAll();
     setPropertyModified(true);
-    if (getOwner() && getInvalidationLevel() > PropertyOwner::VALID) {
-        getOwner()->invalidate(getInvalidationLevel(), this);        
+
+    PropertyOwner* owner = getOwner();
+    if(owner) {
+
+        // Evaluate property links
+        Processor* processor = owner->getProcessor();
+        if (processor) {
+             processor->notifyObserversAboutPropertyChange(this);
+        }
+
+        // Invalidate Owner
+        if (getInvalidationLevel() > PropertyOwner::VALID) {
+            owner->invalidate(getInvalidationLevel(), this);        
+        }
     }
+
     updateWidgets();
 }
 

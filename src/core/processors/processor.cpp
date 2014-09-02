@@ -222,7 +222,7 @@ void Processor::invalidate(PropertyOwner::InvalidationLevel invalidationLevel, P
 
     notifyObserversInvalidationBegin(this);
     PropertyOwner::invalidate(invalidationLevel, modifiedProperty);
-    //notifyObserversAboutPropertyChange(modifiedProperty);
+
 
     if (PropertyOwner::isValid()) {
         notifyObserversInvalidationEnd(this);
@@ -239,6 +239,7 @@ void Processor::invalidate(PropertyOwner::InvalidationLevel invalidationLevel, P
         performEvaluateRequest();
     }
 }
+
 
 bool Processor::isEndProcessor() const {
     return outports_.empty();

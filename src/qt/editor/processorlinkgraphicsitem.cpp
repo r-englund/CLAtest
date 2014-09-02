@@ -89,8 +89,8 @@ void ProcessorLinkGraphicsItem::updateLinkPositions() {
 ProcessorLinkGraphicsItem::LinkItem::LinkItem(ProcessorLinkGraphicsItem* parent, QPointF pos,
                                               float angle)
     : EditorGrapicsItem(parent), parent_(parent), pos_(pos), angle_(angle), size_(4.0f), lineWidth_(1.3f) {
-    setRect(-0.5f * size_ - lineWidth_, -0.5f * size_ - lineWidth_, size_ + 2.0 * lineWidth_,
-            size_ + 2.0 * lineWidth_);
+    setRect(-0.5f * size_ - 2.0 * lineWidth_, -0.5f * size_ - 2.0 * lineWidth_, size_ + 4.0 * lineWidth_,
+            size_ + 4.0 * lineWidth_);
     setCacheMode(QGraphicsItem::DeviceCoordinateCache);
     setPos(pos);
 }
