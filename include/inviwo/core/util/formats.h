@@ -245,6 +245,8 @@ public:
     static DataFormatEnums::NumericType numericType() { return DataFormatEnums::NOT_SPECIALIZED_TYPE; }
     static std::string str() { return "Error, type specialization not implemented"; }
     static DataFormatEnums::Id id() { return DataFormatEnums::NOT_SPECIALIZED; }
+    static const DataFormatBase* DataFormatBase::getDataFormat(DataFormatEnums::NumericType type, int components,
+                                                               int precision);
 
     virtual double valueToDouble(void*) const;
     virtual dvec2 valueToVec2Double(void*) const;
@@ -272,6 +274,9 @@ public:
     const char* getString() const;
     DataFormatEnums::Id getId() const;
 
+
+    template <typename T>
+    void dispatchTemplateArguments(T* obj) const;
 
 protected:
     static DataFormatBase* instance_[DataFormatEnums::NUMBER_OF_FORMATS];
@@ -1256,6 +1261,20 @@ public:
         return val;
     }
 };
+
+template <typename T>
+void DataFormatBase::dispatchTemplateArguments(T* obj) const {
+    switch (formatId_) {
+#define DataFormatIdMacro(i)                                                                  \
+    case DataFormatEnums::i:                                                                  \
+        obj->template templateDispatch<Data##i::type, Data##i::primitive, Data##i::comp>(); \
+        break;
+#include <inviwo/core/util/formatsdefinefunc.h>
+#undef DataFormatIdMacro
+        default:
+            break;
+    }
+}
 
 
 #define CallFunctionWithTemplateArgsForType(fun, id) \

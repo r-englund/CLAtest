@@ -108,10 +108,6 @@ void PropertyOwner::invalidate(PropertyOwner::InvalidationLevel invalidationLeve
                                Property* modifiedProperty) {
     IVW_UNUSED_PARAM(modifiedProperty);
     invalidationLevel_ = std::max(invalidationLevel_, invalidationLevel);
-    // Evaluate sub property links
-    if (getProcessor()) {
-        getProcessor()->notifyObserversAboutPropertyChange(modifiedProperty);
-    }
 }
 
 void PropertyOwner::serialize(IvwSerializer& s) const {
