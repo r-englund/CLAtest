@@ -180,9 +180,13 @@ void MinMaxProperty<T>::setRangeMin(const T& value) {
 
 template <typename T>
 void MinMaxProperty<T>::setRangeMax(const T& value) {
+    if(range_.y == value)
+        return;
+
     if (TemplateProperty<glm::detail::tvec2<T, glm::defaultp> >::value_.y > value ||
-        TemplateProperty<glm::detail::tvec2<T, glm::defaultp> >::value_.y == range_.y)
+        TemplateProperty<glm::detail::tvec2<T, glm::defaultp> >::value_.y == range_.y) {
         TemplateProperty<glm::detail::tvec2<T, glm::defaultp> >::value_.y = value;
+    }
 
     range_.y = value;
     TemplateProperty<glm::detail::tvec2<T, glm::defaultp> >::propertyModified();
@@ -190,12 +194,16 @@ void MinMaxProperty<T>::setRangeMax(const T& value) {
 
 template <typename T>
 void MinMaxProperty<T>::setIncrement(const T& value) {
+    if(increment_ == value)
+        return;
     increment_ = value;
     TemplateProperty<glm::detail::tvec2<T, glm::defaultp> >::propertyModified();
 }
 
 template <typename T>
 void inviwo::MinMaxProperty<T>::setMinSeparation(const T& value) {
+    if (minSeparation_ == value)
+        return;
     minSeparation_ = value;
     validateValues();
 }
