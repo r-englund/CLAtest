@@ -118,7 +118,7 @@ void EditorGrapicsItem::showPortInfo(QGraphicsSceneHelpEvent* e, Port* port) con
 
     if (data) {
         QByteArray byteArray;
-        byteArray.setRawData(reinterpret_cast<const char*>(data->data()), static_cast<unsigned int>(data->size()));
+        byteArray.setRawData(reinterpret_cast<const char*>(&data->front()), static_cast<unsigned int>(data->size()));
 
         QString url(QString("<tr><td><img width='%1' height='%1' src=\"data:image/png;base64,%2\"/></td></tr>")
                     .arg(size)

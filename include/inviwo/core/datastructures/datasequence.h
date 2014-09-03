@@ -3,7 +3,7 @@
  * Inviwo - Interactive Visualization Workshop
  * Version 0.6b
  *
- * Copyright (c) 2013-2014 Inviwo Foundation
+ * Copyright (c) 2012-2014 Inviwo Foundation
  * All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without
@@ -30,45 +30,74 @@
  *
  *********************************************************************************/
 
-#include <inviwo/core/datastructures/volume/volumesequencedisk.h>
+#ifndef IVW_DATASEQUENCE_H
+#define IVW_DATASEQUENCE_H
+
+#include <inviwo/core/common/inviwocoredefine.h>
 
 namespace inviwo {
 
-VolumeSequenceDisk::VolumeSequenceDisk(uvec3 dimensions, const DataFormatBase* format)
-    : VolumeRepresentation(dimensions, format) {
-}
+template <typename T>
+class DataSequence : public T {
 
-VolumeSequenceDisk::VolumeSequenceDisk(std::string srcFile, uvec3 dimensions, const DataFormatBase* format)
-    : VolumeRepresentation(dimensions, format) {
-}
+public:
+    DataSequence();
+    DataSequence(const DataSequence& rhs);
+    DataSequence<T>& operator=(const DataSequence<T>& rhs);
 
-VolumeSequenceDisk::VolumeSequenceDisk(const VolumeSequenceDisk& rhs)
-    : VolumeRepresentation(rhs) {
-}
+    virtual ~DataSequence();
 
-VolumeSequenceDisk& VolumeSequenceDisk::operator=(const VolumeSequenceDisk& that) {
-    if (this != &that) {
-        VolumeRepresentation::operator=(that);
+    void add(T*);
+
+    void setCurrentIndex(int);
+    
+    T* getCurrent();
+
+protected:
+    std::vector<T*> sequenceContainer_;
+    int currentIdx_;
+
+};
+
+template <typename T>
+DataSequence<T>::DataSequence() : T(), currentIdx_(0) {}
+
+template <typename T>
+DataSequence<T>::DataSequence(const DataSequence<T>& rhs) : T(rhs), currentIdx_(rhs.currentIdx_) {}
+
+template <typename T>
+DataSequence<T>& DataSequence<T>::operator=(const DataSequence<T>& rhs){
+    if (this != &rhs) {
+        T::operator=(rhs);
+        currentIdx_(rhs.currentIndex_);
     }
-
     return *this;
 }
 
-VolumeSequenceDisk* VolumeSequenceDisk::clone() const {
-    return new VolumeSequenceDisk(*this);
+template <typename T>
+DataSequence<T>::~DataSequence() {}
+
+template <typename T>
+void DataSequence<T>::add(T* d) {
+    sequenceContainer_.push_back(d);
 }
 
-VolumeSequenceDisk::~VolumeSequenceDisk() {}
-
-void VolumeSequenceDisk::addVolume(VolumeDisk* vd){
-    volumes_.push_back(vd);
+template <typename T>
+void DataSequence<T>::setCurrentIndex(int idx) {
+    currentIdx_ = idx;
 }
 
-VolumeDisk* VolumeSequenceDisk::getVolume(int idx) const{
-    if(idx < static_cast<int>(volumes_.size()))
-        return volumes_[idx];
+template <typename T>
+T* DataSequence<T>::getCurrent() {
+    if(currentIdx_ < static_cast<int>(sequenceContainer_.size()))
+        return sequenceContainer_[currentIdx_];
+
+    if(!sequenceContainer_.empty())
+        sequenceContainer_[0];
 
     return NULL;
 }
 
 } // namespace
+
+#endif // IVW_DATASEQUENCE_H
