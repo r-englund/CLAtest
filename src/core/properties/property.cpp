@@ -272,6 +272,7 @@ bool Property::operator==(const Property& prop) {
 }
 
 void Property::setGroupDisplayName(const std::string& groupID, const std::string& groupDisplayName) {
+    LogWarnCustom("Property", "Deprication: Property::setGroupDisplayName is depricated used CompositeProperty instead (id: " << groupID << " name " << groupDisplayName << ")");
     Property::groupDisplayNames_.insert(std::pair<std::string,std::string>(groupID, groupDisplayName));
 }
 
