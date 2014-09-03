@@ -35,10 +35,12 @@
 namespace inviwo {
 
 VolumeSequence::VolumeSequence(uvec3 dimensions, const DataFormatBase* format)
-    : Volume(dimensions, format) {}
+    : Volume(dimensions, format)
+    , currentVolumeIdx_(0) {}
 
 VolumeSequence::VolumeSequence(const VolumeSequence& rhs)
-    : Volume(rhs) {}
+    : Volume(rhs)
+    , currentVolumeIdx_(rhs.currentVolumeIdx_) {}
 
 VolumeSequence& VolumeSequence::operator=(const VolumeSequence& that) {
     if (this != &that) {
@@ -53,6 +55,14 @@ VolumeSequence* VolumeSequence::clone() const {
 }
 
 VolumeSequence::~VolumeSequence() {}
+
+void VolumeSequence::setCurrentVolumeIndex(int idx){
+    currentVolumeIdx_ = idx;
+}
+
+int VolumeSequence::getCurrentVolumeIndex() const{
+    return currentVolumeIdx_;
+}
 
 DataRepresentation* VolumeSequence::createDefaultRepresentation() {
     return NULL;

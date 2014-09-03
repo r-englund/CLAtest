@@ -31,6 +31,7 @@
  *********************************************************************************/
 
 #include <inviwo/core/datastructures/volume/volumesequenceramconverter.h>
+#include <inviwo/core/datastructures/volume/volumesequence.h>
 
 namespace inviwo {
 
@@ -43,6 +44,15 @@ VolumeSequenceDisk2VolumeDiskConverter::VolumeSequenceDisk2VolumeDiskConverter()
 VolumeSequenceDisk2VolumeDiskConverter::~VolumeSequenceDisk2VolumeDiskConverter() {}
 
 DataRepresentation* VolumeSequenceDisk2VolumeDiskConverter::createFrom(const DataRepresentation* source) {
+    const VolumeSequenceDisk* volumeSeqDisk = static_cast<const VolumeSequenceDisk*>(source);
+
+    if (volumeSeqDisk) {
+        const VolumeSequence* volumeSeq = dynamic_cast<const VolumeSequence*>(volumeSeqDisk->getOwner());
+        if(volumeSeq){
+            return volumeSeqDisk->getVolume(volumeSeq->getCurrentVolumeIndex());
+        }
+    }
+
     return NULL;
 }
 void VolumeSequenceDisk2VolumeDiskConverter::update(const DataRepresentation* source, DataRepresentation* destination) {

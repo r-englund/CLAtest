@@ -47,8 +47,14 @@ public:
     virtual VolumeSequence* clone() const;
     virtual ~VolumeSequence();
 
+    void setCurrentVolumeIndex(int);
+    int getCurrentVolumeIndex() const;
+
 protected:
     virtual DataRepresentation* createDefaultRepresentation();
+
+private:
+    int currentVolumeIdx_;
 };
 
 } // namespace
