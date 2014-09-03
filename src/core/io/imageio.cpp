@@ -468,3 +468,40 @@ void ImageIO::initLoader() {
         FreeImage_Initialise(1);
     }
 }
+
+std::vector<unsigned char>* ImageIO::saveLayerToBuffer(const char* type, const Layer* inputLayer) {
+    initLoader();
+    FREE_IMAGE_FORMAT imageFormat = FreeImage_GetFIFFromFilename(type);
+
+    if (imageFormat != FIF_UNKNOWN && inputLayer != NULL) {
+        const LayerRAM* imageRam = inputLayer->getRepresentation<LayerRAM>();
+        assert(imageRam != NULL);
+        FIBITMAP* bitmap = createBitmapFromData(imageRam);
+        BOOL saved = 0;
+
+        FIMEMORY* mem = FreeImage_OpenMemory();
+
+        saved = FreeImage_SaveToMemory(imageFormat, bitmap, mem, 
+                    static_cast<int>(imageRam->getDataFormat()->getBitsAllocated()));
+        
+        DWORD size_in_bytes = 0;
+        BYTE *mem_buffer = NULL;
+        if (!FreeImage_AcquireMemory(mem, &mem_buffer, &size_in_bytes))
+
+        if (saved == 0) {
+            LogErrorCustom("ImageIO", "Image layer could not be saved");
+        }
+
+        std::vector<unsigned char>* data = new std::vector<BYTE>(&mem_buffer[0], 
+                                                                 &mem_buffer[size_in_bytes]);
+
+        FreeImage_Unload(bitmap);
+        FreeImage_CloseMemory(mem);
+
+        return data;
+    } else {
+        //Unknown file ending
+        LogErrorCustom("ImageIO", "Unknown file ending.");
+    }
+    return NULL;
+}

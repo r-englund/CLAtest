@@ -44,11 +44,14 @@ IndexBufferRAM* BasicMesh::addIndexBuffer(GeometryEnums::RenderType rt, Geometry
 
 std::string BasicMesh::getDataInfo() const {
     std::stringstream ss;
-    ss << "Vertices:  " << vertices_->getSize() << std::endl;
-    ss << "Normals:   " << normals_->getSize() << std::endl;
-    ss << "TexCoords: " << texCoords_->getSize() << std::endl;
-    ss << "Colors:    " << colors_->getSize() << std::endl;
-    ss << "Index buffers: " << getNumberOfIndicies() << std::endl;
+    ss  << "<table border='0' cellspacing='0' cellpadding='0' style='border-color:white;white-space:pre;'>\n"
+        << "<tr><td style='color:#bbb;padding-right:8px;'>Type</td><td><nobr>Basic mesh</nobr></td></tr>\n"
+        << "<tr><td style='color:#bbb;padding-right:8px;'>Vertiecs</td><td><nobr>" << vertices_->getSize() << "</nobr></td></tr>\n"
+        << "<tr><td style='color:#bbb;padding-right:8px;'>Normal</td><td><nobr>" << normals_->getSize() << "</nobr></td></tr>\n"
+        << "<tr><td style='color:#bbb;padding-right:8px;'>Texture Coords</td><td><nobr>" << texCoords_->getSize() << "</nobr></td></tr>\n"
+        << "<tr><td style='color:#bbb;padding-right:8px;'>Colors</td><td><nobr>" << colors_->getSize() << "</nobr></td></tr>\n"
+        << "<tr><td style='color:#bbb;padding-right:8px;'>Index buffers</td><td><nobr>" << getNumberOfIndicies() << "</nobr></td></tr>\n"
+        << "</tr></table>\n";
 
     return ss.str();
 }

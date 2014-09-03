@@ -153,19 +153,11 @@ public:
     // Override
     virtual QPointF getEndPoint() const;
 
-protected:
-    // events
-    virtual void mousePressEvent(QGraphicsSceneMouseEvent* e);
-    virtual void hoverEnterEvent(QGraphicsSceneHoverEvent* e);
-    virtual void hoverLeaveEvent(QGraphicsSceneHoverEvent* e);
-
-    // Override
-    virtual Port* getInfoPort() const;
+    virtual void showToolTip(QGraphicsSceneHelpEvent* e);
 
 private:
     ProcessorInportGraphicsItem* inport_;
     PortConnection* connection_;  //< Non-owning reference
-    PortInspectionManager* portInspector_;
 };
 
 }  // namespace

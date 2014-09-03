@@ -77,7 +77,7 @@ public:
     enum { Type = UserType + ProcessorGraphicsType };
     int type() const { return Type; }
 
-
+    virtual void showToolTip(QGraphicsSceneHelpEvent* event);
 
     // ProcessorObserver overrides
     virtual void onProcessorIdentifierChange(Processor*);

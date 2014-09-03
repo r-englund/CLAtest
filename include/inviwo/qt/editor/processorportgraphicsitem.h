@@ -36,18 +36,14 @@
 #include <inviwo/qt/editor/inviwoqteditordefine.h>
 #include <inviwo/qt/editor/editorgrapicsitem.h>
 
-
-
 #include <QEvent>
 #include <QPointF>
-
 
 namespace inviwo {
 
 class Port;
 class ConnectionGraphicsItem;
 class ProcessorGraphicsItem;
-class PortInspectionManager;
 
 class IVW_QTEDITOR_API ProcessorPortGraphicsItem : public EditorGrapicsItem {
 public:
@@ -59,7 +55,7 @@ public:
     void removeConnection(ConnectionGraphicsItem* connection);
     std::vector<ConnectionGraphicsItem*> getConnections();
     ProcessorGraphicsItem* getProcessor();
-    virtual Port* getInfoPort() const;
+    virtual void showToolTip(QGraphicsSceneHelpEvent* e);
 
 protected:
     void paint(QPainter* p, const QStyleOptionGraphicsItem* options, QWidget* widget);
@@ -68,7 +64,6 @@ protected:
 
     // Members
     std::vector<ConnectionGraphicsItem*> connections_;
-    PortInspectionManager* portInspector_;
 
 private:
     virtual void updateConnectionPositions() = 0;
@@ -89,15 +84,11 @@ public:
     enum { Type = UserType + ProcessorInportGraphicsType };
     int type() const { return Type; }
 
+    virtual void showToolTip(QGraphicsSceneHelpEvent* e);
+
 protected:   
-
-    //Override
-    virtual Port* getInfoPort() const;
-
     // events
     virtual void mousePressEvent(QGraphicsSceneMouseEvent* e);
-    virtual void hoverEnterEvent(QGraphicsSceneHoverEvent* e);
-    virtual void hoverLeaveEvent(QGraphicsSceneHoverEvent* e);
 
 private:
     virtual void updateConnectionPositions();
@@ -117,8 +108,6 @@ public:
 protected:
     // events
     virtual void mousePressEvent(QGraphicsSceneMouseEvent* e);
-    virtual void hoverEnterEvent(QGraphicsSceneHoverEvent* e);
-    virtual void hoverLeaveEvent(QGraphicsSceneHoverEvent* e);
 
 private:
     virtual void updateConnectionPositions();

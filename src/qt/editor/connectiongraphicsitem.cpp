@@ -41,7 +41,6 @@
 #include <inviwo/qt/editor/processorgraphicsitem.h>
 #include <inviwo/qt/editor/connectiongraphicsitem.h>
 #include <inviwo/qt/editor/processorportgraphicsitem.h>
-#include <inviwo/qt/editor/portinspectionmanager.h>
 
 namespace inviwo {
 
@@ -220,19 +219,14 @@ ConnectionGraphicsItem::ConnectionGraphicsItem(ProcessorOutportGraphicsItem* out
                                                PortConnection* connection)
     : ConnectionDragGraphicsItem(outport, QPointF(0.0f,0.0f), connection->getInport()->getColorCode())
     , inport_(inport)
-    , connection_(connection)
-    , portInspector_(NULL) {
+    , connection_(connection) {
     setFlags(ItemIsSelectable | ItemIsFocusable);
-    setAcceptHoverEvents(true);
     setZValue(CONNECTIONGRAPHICSITEM_DEPTH);
     outport_->addConnection(this);
     inport_->addConnection(this);
-
-    portInspector_ = new PortInspectionManager(this);
 }
 
 ConnectionGraphicsItem::~ConnectionGraphicsItem() {
-    delete portInspector_;
     outport_->removeConnection(this);
     inport_->removeConnection(this);
 }
@@ -257,20 +251,8 @@ QPointF ConnectionGraphicsItem::getEndPoint() const {
     return inport_->mapToScene(inport_->rect().center());
 }
 
-void ConnectionGraphicsItem::mousePressEvent(QGraphicsSceneMouseEvent* e) {
-    portInspector_->hidePortInfo();
-}
-
-void ConnectionGraphicsItem::hoverEnterEvent(QGraphicsSceneHoverEvent* e) {
-    portInspector_->startTimer(mapPosToSceen(e->pos()));
-}
-
-void ConnectionGraphicsItem::hoverLeaveEvent(QGraphicsSceneHoverEvent* e) {
-    portInspector_->hidePortInfo();
-}
-
-Port* ConnectionGraphicsItem::getInfoPort() const {
-    return connection_->getOutport();
+void ConnectionGraphicsItem::showToolTip(QGraphicsSceneHelpEvent* e) {
+    showPortInfo(e, getOutport());
 }
 
 }  // namespace

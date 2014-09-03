@@ -66,7 +66,7 @@ public:
 
     void saveImageLayer();
     void saveImageLayer(const char* filePath);
-
+    std::vector<unsigned char>* getImageLayerAsCodedBuffer(const std::string& type);
     void triggerQueuedEvaluation();
 
     virtual bool isReady() const;

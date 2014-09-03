@@ -201,6 +201,15 @@ void CanvasProcessor::saveImageLayer(const char* snapshotPath) {
     ImageIO::saveLayer(snapshotPath, layer);
 }
 
+
+std::vector<unsigned char>* CanvasProcessor::getImageLayerAsCodedBuffer(const std::string& type) {
+    if (!inport_.hasData()) return NULL;
+    const Image* image = inport_.getData();
+    const Layer* layer = image->getLayer(static_cast<LayerType>(visibleLayer_.get()));
+    return ImageIO::saveLayerToBuffer(type.c_str(), layer);
+}
+
+
 void CanvasProcessor::process() {
     Processor::process();
     canvas_->activate();

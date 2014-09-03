@@ -63,33 +63,46 @@ Volume* Volume::clone() const { return new Volume(*this); }
 Volume::~Volume() {}
 
 std::string Volume::getDataInfo() const {
-    std::ostringstream stream;
-    stream << "Type: Volume" << std::endl;
-    stream << "Format: " << getDataFormat()->getString() << std::endl;;
-    stream << "Dimension: (" << getDimension().x << ", "
-           << getDimension().y << ", "
-           << getDimension().z << ")" << std::endl;
-    
-    stream << "DataRange:  " << dataMap_.dataRange.x << ", " << dataMap_.dataRange.y << std::endl;
-    stream << "ValueRange: " << dataMap_.valueRange.x << ", " << dataMap_.valueRange.y << std::endl;
+    std::stringstream ss;
+    ss << "<table border='0' cellspacing='0' cellpadding='0' style='border-color:white;white-space:pre;'>\n"
+        << "<tr><td style='color:#bbb;padding-right:8px;'>Type</td><td><nobr>Volume</nobr></td></tr>\n"
+        << "<tr><td style='color:#bbb;padding-right:8px;'>Format</td><td><nobr>" << getDataFormat()->getString() << "</nobr></td></tr>\n"
+        
+        << "<tr><td style='color:#bbb;padding-right:8px;'>Dimension</td><td><nobr>" << "(" << getDimension().x << ", "
+        << getDimension().y << ", " << getDimension().z << ")" << "</nobr></td></tr>\n"
+        
+        << "<tr><td style='color:#bbb;padding-right:8px;'>DataRange</td><td><nobr>" 
+        << dataMap_.dataRange.x << ", " << dataMap_.dataRange.y << "</nobr></td></tr>\n"
+        
+        << "<tr><td style='color:#bbb;padding-right:8px;'>ValueRange</td><td><nobr>" 
+        << dataMap_.valueRange.x << ", " << dataMap_.valueRange.y << "</nobr></td></tr>\n";
+
 
     if(hasRepresentation<VolumeRAM>()){
         const VolumeRAM* volumeRAM = getRepresentation<VolumeRAM>();
         if(volumeRAM->hasNormalizedHistogram()){
             const NormalizedHistogram* histogram = volumeRAM->getNormalizedHistogram();
             
-            stream << "Min: " << histogram->stats_.min
-                   << " Mean: " << histogram->stats_.mean
-                   << " Max: " << histogram->stats_.max
-                   << " Std: " << histogram->stats_.standardDeviation << std::endl;
-            stream << "Precentiles (1: " << histogram->stats_.percentiles[1]
-                   << ", 25: " << histogram->stats_.percentiles[25]
-                   << ", 50: " << histogram->stats_.percentiles[50]
-                   << ", 75: " << histogram->stats_.percentiles[75]
-                   << ", 99: " << histogram->stats_.percentiles[99] << ")";
+             ss << "<tr><td style='color:#bbb;padding-right:8px;'>Stats</td><td><nobr>"
+                << "Min: " << histogram->stats_.min
+                << " Mean: " << histogram->stats_.mean
+                << " Max: " << histogram->stats_.max
+                << " Std: " << histogram->stats_.standardDeviation
+                << "</nobr></td></tr>\n";
+            
+            ss << "<tr><td style='color:#bbb;padding-right:8px;'>Precentiles</td><td><nobr>"
+               << "(1: " << histogram->stats_.percentiles[1]
+               << ", 25: " << histogram->stats_.percentiles[25]
+               << ", 50: " << histogram->stats_.percentiles[50]
+               << ", 75: " << histogram->stats_.percentiles[75]
+               << ", 99: " << histogram->stats_.percentiles[99] << ")"
+               << "</nobr></td></tr>\n";
         }
     }
-    return stream.str();
+    ss << "</table>\n";
+
+
+    return ss.str();
 }
 
 uvec3 Volume::getDimension() const { return StructuredGridEntity<3>::getDimension(); }

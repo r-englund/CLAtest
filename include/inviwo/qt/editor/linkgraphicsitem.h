@@ -121,10 +121,11 @@ public:
     virtual ProcessorLinkGraphicsItem* getDestProcessorLinkGraphicsItem() const;
     virtual ProcessorGraphicsItem* getDestProcessorGraphicsItem() const;
     virtual void updateShape();
-    virtual void updateInfo();
 
     enum { Type = UserType + LinkConnectionGraphicsType };
     int type() const { return Type; }
+
+    virtual void showToolTip(QGraphicsSceneHelpEvent* e);
 
 protected:
     virtual QPainterPath obtainCurvePath() const;
