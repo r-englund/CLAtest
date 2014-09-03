@@ -34,6 +34,7 @@
 #include <inviwo/core/common/inviwomodule.h>
 #include <inviwo/core/processors/processorfactory.h>
 #include <inviwo/core/io/serialization/ivwserializable.h>
+#include <inviwo/core/util/stringconversion.h>
 
 namespace inviwo {
 
@@ -46,6 +47,10 @@ void ProcessorFactory::registerObject(ProcessorFactoryObject* processor) {
         processorClassMap_.insert(std::make_pair(processor->getClassIdentifier(), processor));
     else
         LogWarn("Processor with class name: " << processor->getClassIdentifier() << " is already registerd");
+
+    if(splitString(processor->getClassIdentifier(), '.').size()<3){
+        LogWarn("All processor classIdentifiers should be named using reverse DNS (org.inviwo.processor) not like: " << processor->getClassIdentifier())
+    }
 }
 
 IvwSerializable* ProcessorFactory::create(std::string classIdentifier) const {
