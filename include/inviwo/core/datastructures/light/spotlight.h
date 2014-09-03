@@ -51,7 +51,7 @@ public:
      * @see setPower
      * @return Radiant flux in watt.
      */
-    virtual vec3 getPower() const { return getIntensity()*getArea(); }
+    virtual vec3 getPower() const { return getIntensity()*2.f*static_cast<float>(M_PI)*(1.f - 5.f*(glm::cos<float>(glm::radians(coneRadiusAngle_))+glm::cos<float>(glm::radians(coneFallOffAngle_)))); }
 
 
     LightSourceType::Enum getLightSourceType() const { return LightSourceType::LIGHT_CONE; }
@@ -113,20 +113,6 @@ public:
     void setConeFallOffAngle(const float& angle) { coneFallOffAngle_ = angle; }
 
     /**
-     * Set the intensity (color) from the light source given in watt per steradian (flux density per solid angle, W*s*r^-1).
-     *
-     * @param power
-     */
-    void setIntensity(const vec3& intensity) { intensity_ = intensity; }
-
-    /**
-     * Get the intensity (color) from the light source given in watt per steradian (flux density per solid angle, W*s*r^-1).
-     *
-     * @return Flux density per solid angle, W*s*r^-1
-     */
-    const vec3& getIntensity() const { return intensity_; }
-
-    /**
      * Get value for checking full visibility (inside cone angle) against the light source.
      *
      * @return Value for checking full visibility (inside cone angle against the light source.
@@ -145,7 +131,6 @@ protected:
     vec3 direction_;
     float coneRadiusAngle_;
     float coneFallOffAngle_;
-    vec3 intensity_; // Color of light source, flux density per solid angle (given in watt per steradian W*s*r^-1)
 
 };
 

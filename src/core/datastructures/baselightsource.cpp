@@ -39,7 +39,7 @@ namespace inviwo {
 PackedLightSource baseLightToPackedLight(const LightSource* lightsource, float radianceScale) {
     PackedLightSource light;
     light.tm = lightsource->getCoordinateTransformer().getModelToWorldMatrix();
-    light.radiance = vec4(radianceScale*lightsource->getPower(), 1.f);
+    light.radiance = vec4(radianceScale*lightsource->getIntensity(), 1.f);
     light.type = lightsource->getLightSourceType();
     light.area = lightsource->getArea();
     light.cosFOV = std::cos(glm::radians(lightsource->getFieldOfView()/2.f));
@@ -50,7 +50,7 @@ PackedLightSource baseLightToPackedLight(const LightSource* lightsource, float r
 PackedLightSource baseLightToPackedLight(const LightSource* lightsource, float radianceScale, const mat4& transformLightMat) {
     PackedLightSource light;
     light.tm = transformLightMat*lightsource->getCoordinateTransformer().getModelToWorldMatrix();
-    light.radiance = vec4(radianceScale*lightsource->getPower(), 1.f);
+    light.radiance = vec4(radianceScale*lightsource->getIntensity(), 1.f);
     light.type = lightsource->getLightSourceType();
     light.area = lightsource->getArea();
     light.cosFOV = std::cos(glm::radians(lightsource->getFieldOfView()/2.f));

@@ -62,6 +62,20 @@ public:
      */
     virtual vec3 getPower() const = 0;
 
+    /**
+     * Get the intensity (color) from the light source given in watt per steradian (flux density per solid angle, W*s*r^-1).
+     *
+     * @return Flux density per solid angle, W*s*r^-1
+     */
+    const vec3 getIntensity() const { return intensity_; }
+
+    /**
+     * Set the intensity (color) from the light source given in watt per steradian (flux density per solid angle, W*s*r^-1).
+     *
+     * @param intensity
+     */
+    void setIntensity(const vec3& intensity) { intensity_ = intensity; }
+
     virtual LightSourceType::Enum getLightSourceType() const = 0;
 
     /**
@@ -104,6 +118,7 @@ public:
     virtual std::string getDataInfo() const { return "LightSource"; }
 
 protected:
+    vec3 intensity_; // Color of light source, flux density per solid angle (given in watt per steradian W*s*r^-1)
     float fieldOfView_; // Field of view in radians
     vec2 size_; // width, height in world space
     bool enabled_;
