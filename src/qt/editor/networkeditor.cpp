@@ -59,6 +59,7 @@
 #include <inviwo/qt/editor/processorlinkgraphicsitem.h>
 #include <inviwo/qt/editor/processorlistwidget.h>
 #include <inviwo/qt/editor/processorportgraphicsitem.h>
+#include <inviwo/qt/editor/processorprogressgraphicsitem.h>
 #include <inviwo/qt/editor/processorstatusgraphicsitem.h>
 #include <inviwo/qt/widgets/inviwoapplicationqt.h>
 #include <inviwo/qt/widgets/processors/processorwidgetqt.h>
@@ -69,6 +70,7 @@
 #include <QGraphicsSceneMouseEvent>
 #include <QMenu>
 #include <QVarLengthArray>
+
 
 namespace inviwo {
 
@@ -471,9 +473,6 @@ void NetworkEditor::showLinkDialog(LinkConnectionGraphicsItem* linkConnectionGra
 
     if (processorLink->getPropertyLinks().size() == 0)
         removeLink(srcProcessor, destProcessor);
-    else {
-        linkConnectionGraphicsItem->updateInfo();
-    }
 }
 
 //////////////////////////////////////
@@ -579,10 +578,10 @@ bool NetworkEditor::addPortInspector(std::string processorIdentifier, std::strin
 
         processorWidgetQt->setMinimumSize(size, size);
         processorWidgetQt->setMaximumSize(size, size);
-        processorWidgetQt->setWindowFlags(Qt::CustomizeWindowHint | Qt::Tool);
+        processorWidgetQt->setWindowFlags(Qt::CustomizeWindowHint | Qt::Tool );
         processorWidgetQt->move(ivec2(pos.x(), pos.y()));
         processorWidgetQt->show();
-
+        
         // Add connections to the network
         std::vector<PortConnection*> connections = portInspector->getConnections();
 
@@ -607,6 +606,112 @@ bool NetworkEditor::addPortInspector(std::string processorIdentifier, std::strin
     return false;
 }
 
+std::vector<unsigned char>* NetworkEditor::renderPortInspectorImage(Port* port, std::string type) {
+    PortInspector* portInspector =
+        PortInspectorFactory::getPtr()->getPortInspectorForPortClass(port->getClassName());
+
+    ProcessorNetwork* network = InviwoApplication::getPtr()->getProcessorNetwork();
+    std::vector<unsigned char>* data = NULL;
+
+    if (portInspector && !portInspector->isActive()) {
+        portInspector->setActive(true);
+        network->lock();
+        // Add processors to the network
+        CanvasProcessor* canvasProcessor = portInspector->getCanvasProcessor();
+        std::vector<Processor*> processors = portInspector->getProcessors();
+
+        for (size_t i = 0; i < processors.size(); i++) {
+            network->addProcessor(processors[i]);
+        }
+
+        addProcessorRepresentations(canvasProcessor, QPoint(0, 0), false, false, false, false);
+
+        // Connect the port to inspect to the inports of the inspector network
+        Outport* outport = dynamic_cast<Outport*>(port);
+        std::vector<Inport*> inports = portInspector->getInports();
+
+        for (size_t i = 0; i < inports.size(); i++) network->addConnection(outport, inports[i]);
+
+        // Add links to the network
+        std::vector<PropertyLink*> links = portInspector->getPropertyLinks();
+
+        for (size_t i = 0; i < links.size(); i++) {
+            network->addLink(links[i]->getSourceProperty(), links[i]->getDestinationProperty());
+        }
+
+        // Do some autolinking, without adding gui stuff.
+        std::vector<Processor*> existingProcessors = network->getProcessors();
+        LinkSettings* linkSettings = InviwoApplication::getPtr()->getSettingsByType<LinkSettings>();
+
+        std::vector<Processor*> invalidProcessors;
+
+        for (size_t h = 0; h < processors.size(); h++) {
+            Processor* addedProcessor = processors[h];
+            std::vector<Property*> dstProperties = addedProcessor->getProperties();
+
+            for (size_t i = 0; i < dstProperties.size(); i++) {
+                Property* dstProperty = dstProperties[i];
+
+                for (size_t j = 0; j < existingProcessors.size(); j++) {
+                    if (existingProcessors[j] != addedProcessor) {
+                        std::vector<Property*> srcProperties =
+                            existingProcessors[j]->getProperties();
+                        bool linkCreated = false;
+                        for (size_t k = 0; k < srcProperties.size(); k++) {
+                            Property* srcProperty = srcProperties[k];
+                            if (AutoLinker::canLink(srcProperty, dstProperty,
+                                                    DefaultLinkingCondition) &&
+                                linkSettings->isLinkable(srcProperty) &&
+                                linkSettings->isLinkable(dstProperty)) {
+                                network->addLink(srcProperty, dstProperty);
+                                linkCreated = true;
+                            }
+                        }
+                        if (linkCreated) {
+                            if (std::find(invalidProcessors.begin(), invalidProcessors.end(),
+                                          existingProcessors[j]) == invalidProcessors.end()) {
+                                invalidProcessors.push_back(existingProcessors[j]);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        // Add connections to the network
+        std::vector<PortConnection*> connections = portInspector->getConnections();
+
+        for (size_t i = 0; i < connections.size(); i++) {
+            network->addConnection(connections[i]->getOutport(), connections[i]->getInport());
+        }
+
+        for (size_t i = 0; i < invalidProcessors.size(); i++)
+            network->setLinkModifiedByOwner(invalidProcessors[i]);
+
+
+        int size = InviwoApplication::getPtr()
+            ->getSettingsByType<SystemSettings>()
+            ->portInspectorSize_.get();
+        canvasProcessor->setCanvasSize(ivec2(size, size));
+
+        network->unlock();
+        if (invalidProcessors.size()) network->setLinkModifiedByOwner(invalidProcessors[0]);
+        
+        data = canvasProcessor->getImageLayerAsCodedBuffer(type);
+
+        // remove the network...
+        network->lock();
+        removeProcessorRepresentations(canvasProcessor);
+        // Remove processors from the network
+        for (size_t i = 0; i < processors.size(); i++) network->removeProcessor(processors[i]);
+        network->unlock();
+
+        portInspector->setActive(false);
+    }
+   
+    return data;
+}
+
 void NetworkEditor::removePortInspector() {
     std::string portIdentifier = portInspectorPortIdentifier_;
     std::string processorIdentifier = portInspectorProcessorIdentifier_;
@@ -629,7 +734,7 @@ void NetworkEditor::removePortInspector() {
 
                 for (size_t i = 0; i < processors.size(); i++)
                     InviwoApplication::getPtr()->getProcessorNetwork()->removeProcessor(
-                        processors[i]);
+                    processors[i]);
 
                 InviwoApplication::getPtr()->getProcessorNetwork()->unlock();
                 portInspector->setActive(false);
@@ -1532,6 +1637,43 @@ void NetworkEditor::updateLeds() {
          it != processorGraphicsItems_.end(); it++) {
         it->second->getStatusItem()->update();
     }
+}
+
+// Manage various tooltips.
+void NetworkEditor::helpEvent(QGraphicsSceneHelpEvent* e) {
+    QList<QGraphicsItem*> graphicsItems = items(e->scenePos());
+    removePortInspector();
+    for (int i = 0; i < graphicsItems.size(); ++i) {
+        QGraphicsItem* item = graphicsItems[i];
+        switch (item->type()) {
+            case ProcessorGraphicsItem::Type:
+                qgraphicsitem_cast<ProcessorGraphicsItem*>(item)->showToolTip(e);
+                return;
+            case ConnectionGraphicsItem::Type:
+                qgraphicsitem_cast<ConnectionGraphicsItem*>(item)->showToolTip(e);
+                return;
+            case LinkConnectionGraphicsItem::Type:
+                qgraphicsitem_cast<LinkConnectionGraphicsItem*>(item)->showToolTip(e);
+                return;
+
+            //case ProcessorLinkGraphicsItem::Type:
+            //    qgraphicsitem_cast<ProcessorLinkGraphicsItem*>(item)->showToolTip(e);
+            //    return;
+            case ProcessorInportGraphicsItem::Type:
+                qgraphicsitem_cast<ProcessorInportGraphicsItem*>(item)->showToolTip(e);
+                return;
+            case ProcessorOutportGraphicsItem::Type:
+                qgraphicsitem_cast<ProcessorOutportGraphicsItem*>(item)->showToolTip(e);
+                return;
+            //case ProcessorStatusGraphicsItem::Type:
+            //    qgraphicsitem_cast<ProcessorStatusGraphicsItem*>(item)->showToolTip(e);
+            //    return;
+            //case ProcessorProgressGraphicsItem::Type:
+            //    qgraphicsitem_cast<ProcessorProgressGraphicsItem*>(item)->showToolTip(e);
+            //    return;
+        };
+    }
+    QGraphicsScene::helpEvent(e);
 }
 
 }  // namespace

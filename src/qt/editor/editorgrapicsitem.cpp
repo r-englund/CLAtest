@@ -31,8 +31,11 @@
  *********************************************************************************/
 
 #include <inviwo/qt/editor/editorgrapicsitem.h>
+#include <inviwo/qt/editor/networkeditor.h>
 #include <QGraphicsScene>
 #include <QGraphicsView>
+#include <QToolTip>
+#include <QBuffer>
 #include <inviwo/core/ports/port.h>
 
 namespace inviwo {
@@ -60,10 +63,6 @@ QPoint EditorGrapicsItem::mapPosToSceen(QPointF inPos) const {
 
 }
 
-Port* EditorGrapicsItem::getInfoPort() const {
-    return NULL;
-}
-
 const QPainterPath EditorGrapicsItem::makeRoundedBox(QRectF rect, float radius) {
     QPainterPath roundRectPath;
     roundRectPath.moveTo(rect.left(), rect.top() + radius);
@@ -83,6 +82,61 @@ const QPainterPath EditorGrapicsItem::makeRoundedBox(QRectF rect, float radius) 
     return roundRectPath;
 }
 
+void EditorGrapicsItem::showToolTip(QGraphicsSceneHelpEvent* e) {
+    showToolTipHelper(e, QString("Test"));
+}
+
+void EditorGrapicsItem::showToolTipHelper(QGraphicsSceneHelpEvent* e, QString string) const {
+    QGraphicsView* v = scene()->views().first();
+    QRectF rect = this->mapRectToScene(this->rect());
+    QRect viewRect = v->mapFromScene(rect).boundingRect();
+    QToolTip::showText(e->screenPos(), string, v, viewRect);
+}
+
+void EditorGrapicsItem::showPortInfo(QGraphicsSceneHelpEvent* e, Port* port) const {
+    SystemSettings* settings = InviwoApplication::getPtr()->getSettingsByType<SystemSettings>();
+    bool portinfo = settings->enablePortInformationProperty_.get();
+    bool inspector = settings->enablePortInspectorsProperty_.get();
+
+    if(!inspector && !portinfo) return;
+
+    QPoint pos = e->screenPos();
+    std::vector<unsigned char>* data = NULL;
+    int size = settings->portInspectorSize_.get();
+
+    QString info("<html><head/><body style=''>");
+    info.append("<table>");
+
+    if (inspector) {
+        data = NetworkEditor::getPtr()->renderPortInspectorImage(port, "png");
+    }
+
+    if (portinfo) {
+        info.append(QString("<tr><td><b style='color:white;'>%1</b></td></tr>")
+                    .arg(port->getIdentifier().c_str()));
+    }
+
+    if (data) {
+        QByteArray byteArray;
+        byteArray.setRawData(reinterpret_cast<const char*>(data->data()), static_cast<unsigned int>(data->size()));
+
+        QString url(QString("<tr><td><img width='%1' height='%1' src=\"data:image/png;base64,%2\"/></td></tr>")
+                    .arg(size)
+                    .arg(QString(byteArray.toBase64())));
+
+        info.append(url);
+    }
+
+    if (portinfo) {
+        info.append("<tr><td>" + QString(port->getContentInfo().c_str()) + "</td></tr>");
+    }
+    info.append("</table>");
+    info.append("</body></html>");
+    e->setScreenPos(e->screenPos());
+    showToolTipHelper(e, info);
+    
+    delete data;
+}
 
 } // namespace
 

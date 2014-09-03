@@ -37,6 +37,7 @@
 
 #include <QGraphicsItem>
 #include <QGraphicsRectItem>
+#include <QGraphicsSceneHelpEvent>
 
 namespace inviwo {
 
@@ -70,10 +71,14 @@ public:
     EditorGrapicsItem(QGraphicsItem* parent);
     virtual ~EditorGrapicsItem();
     QPoint mapPosToSceen(QPointF pos) const;
-    virtual Port* getInfoPort() const;
-
 
     static const QPainterPath makeRoundedBox(QRectF rect, float radius );
+
+    virtual void showToolTip(QGraphicsSceneHelpEvent* event);
+    void showPortInfo(QGraphicsSceneHelpEvent* e, Port* port) const;
+
+protected:
+    void showToolTipHelper(QGraphicsSceneHelpEvent* event, QString string) const;
 };
 
 }  // namespace

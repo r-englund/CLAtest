@@ -73,6 +73,14 @@ public:
     static void saveLayer(const char* filename, const Layer* inputImage);
 
     /**
+    * Saves an layer of an image to a specified filename.
+    * @param filename the path including name to file that is to be stored.
+    * @param inputImage specifies the image that is to be saved.
+    **/
+    static std::vector<unsigned char>* saveLayerToBuffer(const char* type, const Layer* inputImage);
+
+
+    /**
      * \brief Rescales Layer of given image data
      *
      * @param Layer * inputImage image data that needs to be rescaled

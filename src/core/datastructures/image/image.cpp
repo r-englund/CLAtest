@@ -122,14 +122,17 @@ Image::~Image() {
 }
 
 std::string Image::getDataInfo() const{
-    std::ostringstream stream;
-    stream << "Type: image (Color: " << colorLayers_.size() 
-        << ", Depth: " << (getDepthLayer() ? "Yes" : "No") 
-        << ", Picking: " << (getPickingLayer() ? "Yes" : "No") << ")" << std::endl;
-    stream << "Format: " << getDataFormat()->getString() << std::endl;
-    stream << "Width: " << getDimension().x << std::endl;
-    stream << "Height: " << getDimension().y << std::endl;
-    return stream.str();
+    std::stringstream ss;
+    ss << "<table border='0' cellspacing='0' cellpadding='0' style='border-color:white;white-space:pre;'>\n"
+       << "<tr><td style='color:#bbb;padding-right:8px;'>Type</td><td><nobr>" << "image (Color: " << colorLayers_.size()
+       << ", Depth: " << (getDepthLayer() ? "Yes" : "No")
+       << ", Picking: " << (getPickingLayer() ? "Yes" : "No") << ")" << "</nobr></td></tr>\n"
+
+       << "<tr><td style='color:#bbb;padding-right:8px;'>Format</td><td><nobr>" << getDataFormat()->getString() << "</nobr></td></tr>\n"
+       << "<tr><td style='color:#bbb;padding-right:8px;'>Width</td><td><nobr>" << getDimension().x << "</nobr></td></tr>\n"
+       << "<tr><td style='color:#bbb;padding-right:8px;'>Height</td><td><nobr>" << getDimension().y << "</nobr></td></tr>\n"
+       << "</tr></table>\n";
+    return ss.str();
 }
 
 void Image::deinitialize() {

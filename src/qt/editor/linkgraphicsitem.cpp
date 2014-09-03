@@ -36,7 +36,6 @@
 #include <QPainterPath>
 #include <QVector2D>
 #include <inviwo/qt/editor/linkgraphicsitem.h>
-#include <inviwo/qt/editor/portinspectionmanager.h>
 #include <inviwo/core/ports/port.h>
 #include <inviwo/qt/editor/processorlinkgraphicsitem.h>
 #include <inviwo/qt/editor/processorgraphicsitem.h>
@@ -256,8 +255,6 @@ LinkConnectionGraphicsItem::LinkConnectionGraphicsItem(ProcessorLinkGraphicsItem
     inLink_->addLink(this);
 
     setVisible(outLink_->isVisible() && inLink_->isVisible());
-
-    setToolTip(QString(link_->getLinkInfoHtml().c_str()));
 }
 
 LinkConnectionGraphicsItem::~LinkConnectionGraphicsItem() {
@@ -344,8 +341,8 @@ ProcessorLink* LinkConnectionGraphicsItem::getProcessorLink() const {
     return link_;
 }
 
-void LinkConnectionGraphicsItem::updateInfo() {
-    setToolTip(QString(link_->getLinkInfoHtml().c_str()));
+void LinkConnectionGraphicsItem::showToolTip(QGraphicsSceneHelpEvent* e) {
+    showToolTipHelper(e, QString(link_->getLinkInfoHtml().c_str()));
 }
 
 

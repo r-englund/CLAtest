@@ -60,26 +60,29 @@ Mesh::~Mesh() {
 }
 
 std::string Mesh::getDataInfo() const{
-    std::ostringstream stream;
-    stream << "Type: mesh\n";
+    std::ostringstream ss;
 
-    stream << "Data: ";
+    ss << "<table border='0' cellspacing='0' cellpadding='0' style='border-color:white;white-space:pre;'>\n"
+        << "<tr><td style='color:#bbb;padding-right:8px;'>Type</td><td><nobr>Mesh</nobr></td></tr>\n"
+        << "<tr><td style='color:#bbb;padding-right:8px;'>Data</td><td><nobr>"; 
+
     switch(getAttributesInfo().rt){
         case GeometryEnums::POINTS:
-            stream << "Points";
+            ss << "Points";
             break;
         case GeometryEnums::LINES:
-            stream << "Lines";
+            ss << "Lines";
             break;
         case GeometryEnums::TRIANGLES:
-            stream << "Triangles";
+            ss << "Triangles";
             break;
         default:
-            stream << "Not specified"; 
+            ss << "Not specified"; 
     }
-    stream << "\n";
+    ss << "</nobr></td></tr>\n"
+       << "</tr></table>\n";
     
-    return stream.str();
+    return ss.str();
 }
 
 Mesh* Mesh::clone() const {

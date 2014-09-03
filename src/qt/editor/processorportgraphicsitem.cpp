@@ -40,7 +40,6 @@
 #include <inviwo/core/properties/boolproperty.h>
 #include <inviwo/core/properties/ordinalproperty.h>
 #include <inviwo/qt/editor/connectiongraphicsitem.h>
-#include <inviwo/qt/editor/portinspectionmanager.h>
 
 #include <QPen>
 #include <QPainter>
@@ -51,7 +50,6 @@ namespace inviwo {
 ProcessorPortGraphicsItem::ProcessorPortGraphicsItem(ProcessorGraphicsItem* parent,
                                                      const QPointF& pos, bool up, Port* port)
     : EditorGrapicsItem(parent)
-    , portInspector_(NULL)
     , processor_(parent)
     , port_(port)
     , size_(9.0f)
@@ -63,10 +61,6 @@ ProcessorPortGraphicsItem::ProcessorPortGraphicsItem(ProcessorGraphicsItem* pare
     setRect(-0.5f * size_ - lineWidth_, -0.5f * size_ - lineWidth_, size_ + 2.0 * lineWidth_,
             size_ + 2.0 * lineWidth_);
     setPos(pos);
-    setAcceptHoverEvents(true);
-    setZValue(PROCESSORGRAPHICSITEM_DEPTH+0.5);
-    portInspector_ = new PortInspectionManager(this);
-    setToolTip(QString(""));
     setFlags(ItemSendsScenePositionChanges);
 }
 
@@ -123,9 +117,11 @@ std::vector<ConnectionGraphicsItem*> ProcessorPortGraphicsItem::getConnections()
 
 ProcessorGraphicsItem* ProcessorPortGraphicsItem::getProcessor() { return processor_; }
 
-ProcessorPortGraphicsItem::~ProcessorPortGraphicsItem() { delete portInspector_; }
+ProcessorPortGraphicsItem::~ProcessorPortGraphicsItem() {}
 
-Port* ProcessorPortGraphicsItem::getInfoPort() const { return port_; }
+void ProcessorPortGraphicsItem::showToolTip(QGraphicsSceneHelpEvent* e) {
+    showPortInfo(e, port_);
+}
 
 ProcessorInportGraphicsItem::ProcessorInportGraphicsItem(ProcessorGraphicsItem* parent,
                                                          const QPointF& pos, Inport* port)
@@ -134,18 +130,10 @@ ProcessorInportGraphicsItem::ProcessorInportGraphicsItem(ProcessorGraphicsItem* 
 Inport* ProcessorInportGraphicsItem::getPort() { return port_; }
 
 void ProcessorInportGraphicsItem::mousePressEvent(QGraphicsSceneMouseEvent* e) {
-    portInspector_->hidePortInfo();
     if(e->buttons() == Qt::LeftButton && port_->isConnected()) {
         NetworkEditor::getPtr()->releaseConnection(this);
     }
     e->accept();
-}
-
-void ProcessorInportGraphicsItem::hoverEnterEvent(QGraphicsSceneHoverEvent* e) {
-    portInspector_->startTimer();
-}
-void ProcessorInportGraphicsItem::hoverLeaveEvent(QGraphicsSceneHoverEvent* e) {
-    portInspector_->hidePortInfo();
 }
 
 void ProcessorInportGraphicsItem::updateConnectionPositions() {
@@ -154,11 +142,11 @@ void ProcessorInportGraphicsItem::updateConnectionPositions() {
     }
 }
 
-Port* ProcessorInportGraphicsItem::getInfoPort() const {
+void ProcessorInportGraphicsItem::showToolTip(QGraphicsSceneHelpEvent* e) {
     if (port_->isConnected()) {
-        return port_->getConnectedOutport();
+        showPortInfo(e, port_->getConnectedOutport());
     } else {
-        return port_;
+        showPortInfo(e, port_);
     }
 }
 
@@ -169,18 +157,10 @@ ProcessorOutportGraphicsItem::ProcessorOutportGraphicsItem(ProcessorGraphicsItem
 Outport* ProcessorOutportGraphicsItem::getPort() { return port_; }
 
 void ProcessorOutportGraphicsItem::mousePressEvent(QGraphicsSceneMouseEvent* e) {
-    portInspector_->hidePortInfo();
     if(e->buttons() == Qt::LeftButton) {
         NetworkEditor::getPtr()->initiateConnection(this);
     }
     e->accept();
-}
-
-void ProcessorOutportGraphicsItem::hoverEnterEvent(QGraphicsSceneHoverEvent* e) {
-    portInspector_->startTimer();
-}
-void ProcessorOutportGraphicsItem::hoverLeaveEvent(QGraphicsSceneHoverEvent* e) {
-    portInspector_->hidePortInfo();
 }
 
 void ProcessorOutportGraphicsItem::updateConnectionPositions() {
@@ -188,5 +168,6 @@ void ProcessorOutportGraphicsItem::updateConnectionPositions() {
         connections_[i]->updateShape();
     }
 }
+
 
 }  // namespace

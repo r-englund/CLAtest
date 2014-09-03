@@ -22,8 +22,6 @@ set(HEADER_FILES
     ${IVW_INCLUDE_DIR}/inviwo/qt/editor/inviwoqteditordefine.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/editor/linkgraphicsitem.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/editor/networkeditorview.h
-    ${IVW_INCLUDE_DIR}/inviwo/qt/editor/portinfowidgetqt.h
-    ${IVW_INCLUDE_DIR}/inviwo/qt/editor/portinspectionmanager.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/editor/processorgraphicsitem.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/editor/processorlinkgraphicsitem.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/editor/processorportgraphicsitem.h
@@ -41,14 +39,12 @@ source_group("MOC Files" FILES ${MOC_FILES})
 set(SOURCE_FILES
     connectiongraphicsitem.cpp
     consolewidget.cpp
-    portinspectionmanager.cpp
     editorgrapicsitem.cpp
     linkdialog.cpp
     linkgraphicsitem.cpp
     mappingwidget.cpp
     networkeditor.cpp
     networkeditorview.cpp
-    portinfowidgetqt.cpp
     processorgraphicsitem.cpp
     processorlinkgraphicsitem.cpp
     processorlistwidget.cpp

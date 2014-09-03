@@ -64,9 +64,11 @@ public:
 
     std::string getDataInfo() const {
         std::ostringstream stream;
-        stream << "Type:   vector\n"
-               << "Format: " << typeid(T).name() << "\n"
-               << "Length: " << vector.size() << "\n";
+        stream << "<table border='0' cellspacing='0' cellpadding='0' style='border-color:white;white-space:pre;'>\n"
+               << "<tr><td style='color:#bbb;padding-right:8px;'>Type:</td><td><nobr>vector</nobr></td></tr>\n"
+               << "<tr><td style='color:#bbb;padding-right:8px;'>Format:</td><td><nobr>" << typeid(T).name() << "</nobr></td></tr>\n"
+               << "<tr><td style='color:#bbb;padding-right:8px;'>Length:</td><td><nobr>" << vector.size() << "</nobr></td></tr>\n"
+               << "</tr></table>\n";
         return stream.str();
     }
 };

@@ -39,6 +39,7 @@
 #include <QTimer>
 #include <QThread>
 #include <QPointF>
+#include <QGraphicsSceneHelpEvent>
 
 #include <inviwo/core/network/processornetworkevaluator.h>
 #include <inviwo/core/util/singleton.h>
@@ -141,10 +142,6 @@ public:
 
     static QPointF snapToGrid(QPointF pos);
 
-
-    // Override
-    virtual bool event(QEvent* e);
-
     // Called from ProcessorPortGraphicsItems mouse events.
     void initiateConnection(ProcessorOutportGraphicsItem* item);
     void releaseConnection(ProcessorInportGraphicsItem* item);
@@ -154,6 +151,9 @@ public:
 
     // Port inspectors
     bool addPortInspector(std::string processorIdentifier, std::string portIdentifier, QPointF pos);
+
+    std::vector<unsigned char>* renderPortInspectorImage(Port* port, std::string type);
+
     void removePortInspector();
 
     void updateLeds();
@@ -180,6 +180,11 @@ protected:
                                    ProcessorGraphicsItem* oldProcessorItem);
 
     void autoLinkOnAddedProcessor(Processor*);
+
+    // Override for tooltips
+    void helpEvent(QGraphicsSceneHelpEvent* helpEvent);
+    // Override for custom events
+    virtual bool event(QEvent* e);
 
 private:
     enum NetworkEditorFlags { None = 0, CanvasHidden = 1, UseOriginalCanvasSize = 1 << 2 };

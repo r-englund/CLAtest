@@ -143,24 +143,6 @@ ProcessorGraphicsItem::ProcessorGraphicsItem(Processor* processor)
         progressItem_ =
             new ProcessorProgressGraphicsItem(this, &(progressBarOwner->getProgressBar()));
     }
-
-    QString str(QString(
-        "<html><head/><body>\
-         <b style='color:white;'>%1</b>\
-         <table border='0' cellspacing='0' cellpadding='0' style='border-color:white;white-space:pre;'>\
-         <tr><td style='color:#bbb;padding-right:8px;'>Identifier:</td><td><nobr>%2</nobr></td></tr>\
-         <tr><td style='color:#bbb;padding-right:8px;'>Category:</td><td><nobr>%3</nobr></td></tr>\
-         <tr><td style='color:#bbb;padding-right:8px;'>Code State:</td><td><nobr>%4</nobr></td></tr>\
-         <tr><td style='color:#bbb;padding-right:8px;'>Tags:</td><td><nobr>%5</nobr></td></tr>\
-         </tr></table></body></html>")
-         .arg(processor->getDisplayName().c_str())
-         .arg(processor->getClassIdentifier().c_str())
-         .arg(processor->getCategory().c_str())
-         .arg(Processor::getCodeStateString(processor->getCodeState()).c_str())
-         .arg(processor->getTags().getString().c_str())
-         );
-    
-    setToolTip(str);
         
     #if IVW_PROFILING
     countLabel_ = new LabelGraphicsItem(this);
@@ -371,7 +353,15 @@ void ProcessorGraphicsItem::onProcessorFinishedProcess(Processor*) {
     maxEvalTime_ = maxEvalTime_ < evalTime_ ? evalTime_ : maxEvalTime_;
     totEvalTime_ += evalTime_;
     statusItem_->setRunning(false);
-    
+}
+#endif
+
+ProcessorStatusGraphicsItem* ProcessorGraphicsItem::getStatusItem() const {
+    return statusItem_;
+}
+
+void ProcessorGraphicsItem::showToolTip(QGraphicsSceneHelpEvent* e) {
+#if IVW_PROFILING
     QString str(QString(
         "<html><head/><body>\
          <b style='color:white;'>%1</b>\
@@ -394,13 +384,25 @@ void ProcessorGraphicsItem::onProcessorFinishedProcess(Processor*) {
          .arg(evalTime_)
          .arg(totEvalTime_ / static_cast<double>(processCount_))
          .arg(maxEvalTime_)
-         );
-    setToolTip(str);
-}
+         );    
+#else
+    QString str(QString(
+        "<html><head/><body>\
+         <b style='color:white;'>%1</b>\
+         <table border='0' cellspacing='0' cellpadding='0' style='border-color:white;white-space:pre;'>\
+         <tr><td style='color:#bbb;padding-right:8px;'>Identifier:</td><td><nobr>%2</nobr></td></tr>\
+         <tr><td style='color:#bbb;padding-right:8px;'>Category:</td><td><nobr>%3</nobr></td></tr>\
+         <tr><td style='color:#bbb;padding-right:8px;'>Code State:</td><td><nobr>%4</nobr></td></tr>\
+         <tr><td style='color:#bbb;padding-right:8px;'>Tags:</td><td><nobr>%5</nobr></td></tr>\
+         </tr></table></body></html>")
+         .arg(processor_->getDisplayName().c_str())
+         .arg(processor_->getClassIdentifier().c_str())
+         .arg(processor_->getCategory().c_str())
+         .arg(Processor::getCodeStateString(processor_->getCodeState()).c_str())
+         .arg(processor_->getTags().getString().c_str()));
 #endif
 
-ProcessorStatusGraphicsItem* ProcessorGraphicsItem::getStatusItem() const {
-    return statusItem_;
+    showToolTipHelper(e, str);
 }
 
 }  // namespace
