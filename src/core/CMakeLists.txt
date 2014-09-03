@@ -77,6 +77,10 @@ set(HEADER_FILES
     ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/volume/volumeramsubsample.h
     ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/volume/volumeramsubset.h
     ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/volume/volumerepresentation.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/volume/volumesequence.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/volume/volumesequencedisk.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/volume/volumesequenceram.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/volume/volumesequenceramconverter.h
     ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/volume/volumetypeclassification.h
     ${IVW_INCLUDE_DIR}/inviwo/core/interaction/action.h
     ${IVW_INCLUDE_DIR}/inviwo/core/interaction/cameratrackball.h
@@ -282,6 +286,10 @@ set(SOURCE_FILES
     datastructures/volume/volumeram.cpp
     datastructures/volume/volumeramconverter.cpp
     datastructures/volume/volumerepresentation.cpp
+    datastructures/volume/volumesequence.cpp
+    datastructures/volume/volumesequencedisk.cpp
+    datastructures/volume/volumesequenceram.cpp
+    datastructures/volume/volumesequenceramconverter.cpp
     datastructures/volume/volumetypeclassification.cpp
     interaction/action.cpp
     interaction/cameratrackball.cpp
