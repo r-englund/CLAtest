@@ -24,6 +24,7 @@ set(HEADER_FILES
     ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/datamapper.h
     ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/dataoperation.h
     ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/datarepresentation.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/datasequence.h
     ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/datatypeclassification.h
     ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/diskrepresentation.h
     ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/geometry/basicmesh.h

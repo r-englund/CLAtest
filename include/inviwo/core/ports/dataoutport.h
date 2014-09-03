@@ -35,6 +35,7 @@
 
 #include <inviwo/core/common/inviwo.h>
 #include <inviwo/core/common/inviwocoredefine.h>
+#include <inviwo/core/datastructures/datasequence.h>
 #include <inviwo/core/ports/outport.h>
 
 namespace inviwo {
@@ -70,12 +71,13 @@ protected:
     T* data_;
     T* ownedData_;
     bool ownsData_;
+    bool isSequence_;
 };
 
 template <typename T>
 DataOutport<T>::DataOutport(std::string identifier, PropertyOwner::InvalidationLevel invalidationLevel)
     : Outport(identifier, invalidationLevel),
-    data_(NULL), ownedData_(NULL), ownsData_(false)
+    data_(NULL), ownedData_(NULL), ownsData_(false), isSequence_(false)
 {
 }
 
@@ -102,11 +104,17 @@ T* DataOutport<T>::getData() {
         dataChanged();
     }
 
+    if(isSequence_)
+        return static_cast<DataSequence<T>*>(data_)->getCurrent();
+
     return data_;
 }
 
 template <typename T>
 const T* DataOutport<T>::getConstData() const {
+    if(isSequence_)
+        return const_cast<const T*>(static_cast<DataSequence<T>*>(data_)->getCurrent());
+
     return const_cast<const T*>(data_);
 }
 
@@ -117,9 +125,12 @@ void DataOutport<T>::setData(T* data, bool ownsData) {
         delete data_;
     }
 
+    isSequence_ = (dynamic_cast<DataSequence<T>*>(data) != NULL);
+
     ownsData_ = ownsData;
     //Add reference to new data
     data_ = data;
+
     dataChanged();
 }
 
@@ -131,8 +142,12 @@ void DataOutport<T>::setConstData(const T* data) {
     }
 
     ownsData_ = false;
+
+    isSequence_ = (dynamic_cast<const DataSequence<T>*>(data) != NULL);
+
     //Add reference to new data
     data_ = const_cast<T*>(data);
+
     dataChanged();
 }
 
