@@ -34,12 +34,12 @@
 #define IVW_VOLUMESEQUENCEDISK_H
 
 #include <inviwo/core/common/inviwocoredefine.h>
-#include <inviwo/core/datastructures/diskrepresentation.h>
 #include <inviwo/core/datastructures/volume/volumerepresentation.h>
+#include <inviwo/core/datastructures/volume/volumedisk.h>
 
 namespace inviwo {
 
-class IVW_CORE_API VolumeSequenceDisk : public VolumeRepresentation, public DiskRepresentation {
+class IVW_CORE_API VolumeSequenceDisk : public VolumeRepresentation {
 
 public:
     VolumeSequenceDisk(uvec3 dimensions = uvec3(128,128,128), const DataFormatBase* format = DataUINT8::get());
@@ -48,6 +48,13 @@ public:
     VolumeSequenceDisk& operator=(const VolumeSequenceDisk& that);
     virtual VolumeSequenceDisk* clone() const;
     virtual ~VolumeSequenceDisk();
+
+    void addVolume(VolumeDisk*);
+
+    VolumeDisk* getVolume(int) const;
+
+private:
+    std::vector<VolumeDisk*> volumes_;
 };
 
 } // namespace

@@ -35,22 +35,20 @@
 namespace inviwo {
 
 VolumeSequenceDisk::VolumeSequenceDisk(uvec3 dimensions, const DataFormatBase* format)
-    : VolumeRepresentation(dimensions, format), DiskRepresentation() {
+    : VolumeRepresentation(dimensions, format) {
 }
 
 VolumeSequenceDisk::VolumeSequenceDisk(std::string srcFile, uvec3 dimensions, const DataFormatBase* format)
-    : VolumeRepresentation(dimensions, format), DiskRepresentation(srcFile) {
+    : VolumeRepresentation(dimensions, format) {
 }
 
 VolumeSequenceDisk::VolumeSequenceDisk(const VolumeSequenceDisk& rhs)
-    : VolumeRepresentation(rhs)
-    , DiskRepresentation(rhs) {
+    : VolumeRepresentation(rhs) {
 }
 
 VolumeSequenceDisk& VolumeSequenceDisk::operator=(const VolumeSequenceDisk& that) {
     if (this != &that) {
         VolumeRepresentation::operator=(that);
-        DiskRepresentation::operator=(that);
     }
 
     return *this;
@@ -61,5 +59,16 @@ VolumeSequenceDisk* VolumeSequenceDisk::clone() const {
 }
 
 VolumeSequenceDisk::~VolumeSequenceDisk() {}
+
+void VolumeSequenceDisk::addVolume(VolumeDisk* vd){
+    volumes_.push_back(vd);
+}
+
+VolumeDisk* VolumeSequenceDisk::getVolume(int idx) const{
+    if(idx < volumes_.size())
+        return volumes_[idx];
+
+    return NULL;
+}
 
 } // namespace
