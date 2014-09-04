@@ -5,7 +5,7 @@
 
 namespace inviwo {
 
-ProcessorClassIdentifier(MultiPlanar,  "MultiPlanar");
+ProcessorClassIdentifier(MultiPlanar, "org.inviwo.MultiPlanar");
 ProcessorDisplayName(MultiPlanar,  "Multi Planar");
 ProcessorTags(MultiPlanar, Tags::GL);
 ProcessorCategory(MultiPlanar, "Volume Rendering");

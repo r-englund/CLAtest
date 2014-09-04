@@ -39,7 +39,7 @@
 
 namespace inviwo {
 
-ProcessorClassIdentifier(MeshClipping,  "MeshClipping");
+ProcessorClassIdentifier(MeshClipping, "org.inviwo.MeshClipping");
 ProcessorDisplayName(MeshClipping,  "Mesh Clipping");
 ProcessorTags(MeshClipping, Tags::None);
 ProcessorCategory(MeshClipping, "Geometry Creation");

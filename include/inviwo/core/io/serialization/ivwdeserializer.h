@@ -37,6 +37,7 @@
 
 #include <inviwo/core/io/serialization/ivwserializebase.h>
 #include <inviwo/core/util/exception.h>
+#include <inviwo/core/io/serialization/versionconverter.h>
 
 namespace inviwo {
 
@@ -200,6 +201,8 @@ public:
      */
     template <class T>
     void deserialize(const std::string& key, T*& data);
+
+    void convertVersion(VersionConverter* converter);
 
 protected:
     friend class NodeSwitch;
@@ -488,6 +491,8 @@ inline void IvwDeserializer::deserializeVector(const std::string& key, T& vector
             isColor ? IvwSerializeConstants::COLOR_A_ATTRIBUTE : IvwSerializeConstants::VECTOR_W_ATTRIBUTE, &vector[3]);
     }
 }
+
+
 
 } //namespace
 #endif

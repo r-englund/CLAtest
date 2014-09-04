@@ -39,7 +39,7 @@
 
 namespace inviwo {
 
-ProcessorClassIdentifier(ImageSourceSeries,  "ImageSourceSeries");
+ProcessorClassIdentifier(ImageSourceSeries, "org.inviwo.ImageSourceSeries");
 ProcessorDisplayName(ImageSourceSeries,  "Image Series Source");
 ProcessorTags(ImageSourceSeries, Tags::None);
 ProcessorCategory(ImageSourceSeries, "Data Input");

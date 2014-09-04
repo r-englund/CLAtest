@@ -40,7 +40,7 @@
 
 namespace inviwo {
 
-ProcessorClassIdentifier(VolumeFirstHitCL,  "VolumeFirstHitCL");
+ProcessorClassIdentifier(VolumeFirstHitCL, "org.inviwo.VolumeFirstHitCL");
 ProcessorDisplayName(VolumeFirstHitCL,  "Volume First Hit");
 ProcessorTags(VolumeFirstHitCL, Tags::CL);
 ProcessorCategory(VolumeFirstHitCL, "Volume Rendering");

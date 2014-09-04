@@ -40,7 +40,7 @@
 
 namespace inviwo {
 
-ProcessorClassIdentifier(VolumeExport,  "VolumeExport");
+ProcessorClassIdentifier(VolumeExport, "org.inviwo.VolumeExport");
 ProcessorDisplayName(VolumeExport,  "Volume Export");
 ProcessorTags(VolumeExport, Tags::None);
 ProcessorCategory(VolumeExport, "Data Output");

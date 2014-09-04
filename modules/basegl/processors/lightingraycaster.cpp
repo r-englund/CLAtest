@@ -37,7 +37,7 @@
 
 namespace inviwo {
 
-ProcessorClassIdentifier(LightingRaycaster,  "LightingRaycaster");
+ProcessorClassIdentifier(LightingRaycaster, "org.inviwo.LightingRaycaster");
 ProcessorDisplayName(LightingRaycaster,  "Lighting Raycaster");
 ProcessorTags(LightingRaycaster, Tags::GL);
 ProcessorCategory(LightingRaycaster, "Volume Rendering");

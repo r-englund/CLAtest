@@ -2,7 +2,7 @@
 
 namespace inviwo {
 
-ProcessorClassIdentifier(GeometrySource,  "GeometrySource");
+ProcessorClassIdentifier(GeometrySource, "org.inviwo.GeometrySource");
 ProcessorDisplayName(GeometrySource,  "Geometry Source");
 ProcessorTags(GeometrySource, Tags::None);
 ProcessorCategory(GeometrySource, "Data Input");

@@ -36,7 +36,7 @@
 
 namespace inviwo {
 
-ProcessorClassIdentifier(NumpyBufferTest,  "NumpyBufferTest");
+ProcessorClassIdentifier(NumpyBufferTest, "org.inviwo.NumpyBufferTest");
 ProcessorDisplayName(NumpyBufferTest,  "Numpy Buffer Test");
 ProcessorTags(NumpyBufferTest, "Python/CPU");
 ProcessorCategory(NumpyBufferTest, "Numpy");

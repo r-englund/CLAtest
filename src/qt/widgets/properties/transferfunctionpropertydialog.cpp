@@ -241,7 +241,7 @@ void TransferFunctionPropertyDialog::updateTFPreview() {
 
 void TransferFunctionPropertyDialog::updateFromProperty() {
     std::string processorName =
-        (dynamic_cast<Processor*>(tfProperty_->getOwner()))->getIdentifier();
+        (dynamic_cast<Processor*>(tfProperty_->getOwner()->getProcessor()))->getIdentifier();
     QString windowTitle = QString::fromStdString(tfProperty_->getDisplayName() + " (") +
                           QString::fromStdString(processorName) + QString::fromStdString(")");
     setWindowTitle(windowTitle);

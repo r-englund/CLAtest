@@ -36,7 +36,7 @@
 
 namespace inviwo {
 
-ProcessorClassIdentifier(VolumeSubsample,  "VolumeSubsample");
+ProcessorClassIdentifier(VolumeSubsample, "org.inviwo.VolumeSubsample");
 ProcessorDisplayName(VolumeSubsample,  "Volume Subsample");
 ProcessorTags(VolumeSubsample, Tags::None);
 ProcessorCategory(VolumeSubsample, "Volume Operation");

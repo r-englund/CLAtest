@@ -1,8 +1,9 @@
 <?xml version="1.0" ?>
 <InviwoTreeData version="1.0">
     <!-- Don't edit the following code -->
+    <ProcessorNetworkVersion content="1" />
     <Processors>
-        <Processor type="ImageSource" identifier="ImageSource" id="ref0">
+        <Processor type="org.inviwo.ImageSource" identifier="ImageSource" id="ref12">
             <MetaDataList>
                 <MetaData type="ProcessorMetaData">
                     <position x="-75" y="-300" />
@@ -12,7 +13,8 @@
             </MetaDataList>
             <Properties>
                 <Property type="FileProperty" identifier="imageFileName" displayName="Image file name" key="imageFileName">
-                    <visibilityMode content="0" />
+                    <usageMode content="0" />
+                    <visible content="1" />
                     <url content="../../images/swirl.tga" />
                     <nameFilter>
                         <filter content="All Files (*.*)" />
@@ -22,7 +24,7 @@
                 </Property>
             </Properties>
         </Processor>
-        <Processor type="CanvasGL" identifier="Orig1" id="ref9">
+        <Processor type="org.inviwo.CanvasGL" identifier="Orig1" id="ref10">
             <MetaDataList>
                 <MetaData type="ProcessorMetaData">
                     <position x="-75" y="-125" />
@@ -30,58 +32,55 @@
                     <selection content="0" />
                 </MetaData>
                 <MetaData type="ProcessorWidgetMetaData">
-                    <position x="358" y="152" />
+                    <position x="366" y="182" />
                     <dimension x="256" y="256" />
                     <visibility content="1" />
                 </MetaData>
             </MetaDataList>
             <Properties>
-                <Property type="FloatProperty" identifier="aspectRatioScaling" displayName="Aspect Ratio Scaling" key="aspectRatioScaling">
-                    <visibilityMode content="2" />
-                </Property>
-                <Property type="IntVec2Property" identifier="customInputDimensions" displayName="Input Image Dimensions" key="customInputDimensions">
-                    <visibilityMode content="2" />
-                    <readonly content="1" />
-                </Property>
-                <Property type="IntVec2Property" identifier="dimensions" displayName="Dimensions" key="dimensions">
-                    <visibilityMode content="0" />
-                </Property>
-                <Property type="BoolProperty" identifier="enableCustomInputDimensions" displayName="Enable Custom Input Dimensions" key="enableCustomInputDimensions">
-                    <visibilityMode content="0" />
-                </Property>
-                <Property type="BoolProperty" identifier="keepAspectRatio" displayName="Keep Aspect Ratio" key="keepAspectRatio">
-                    <visibilityMode content="2" />
+                <Property type="CompositeProperty" identifier="inputSize" displayName="Input Dimension Parameters" key="inputSize">
+                    <usageMode content="0" />
+                    <visible content="1" />
+                    <Properties>
+                        <Property type="FloatProperty" identifier="aspectRatioScaling" displayName="Aspect Ratio Scaling" key="aspectRatioScaling">
+                            <usageMode content="0" />
+                            <visible content="0" />
+                        </Property>
+                        <Property type="IntVec2Property" identifier="customInputDimensions" displayName="Input Image Dimensions" key="customInputDimensions">
+                            <usageMode content="0" />
+                            <visible content="0" />
+                            <readonly content="1" />
+                        </Property>
+                        <Property type="IntVec2Property" identifier="dimensions" displayName="Dimensions" key="dimensions">
+                            <usageMode content="0" />
+                            <visible content="1" />
+                        </Property>
+                        <Property type="BoolProperty" identifier="enableCustomInputDimensions" displayName="Enable Custom Input Dimensions" key="enableCustomInputDimensions">
+                            <usageMode content="0" />
+                            <visible content="1" />
+                        </Property>
+                        <Property type="BoolProperty" identifier="keepAspectRatio" displayName="Keep Aspect Ratio" key="keepAspectRatio">
+                            <usageMode content="0" />
+                            <visible content="0" />
+                        </Property>
+                    </Properties>
                 </Property>
                 <Property type="DirectoryProperty" identifier="layerDir" displayName="Output Directory" key="layerDir">
-                    <visibilityMode content="0" />
+                    <usageMode content="0" />
+                    <visible content="1" />
                     <directory content="../../../../../" />
                 </Property>
                 <Property type="ButtonProperty" identifier="saveLayer" displayName="Save Image Layer" key="saveLayer">
-                    <visibilityMode content="0" />
+                    <usageMode content="0" />
+                    <visible content="1" />
                 </Property>
                 <Property type="OptionPropertyInt" identifier="visibleLayer" displayName="Visible Layer" key="visibleLayer">
-                    <visibilityMode content="0" />
-                    <options>
-                        <option>
-                            <id content="color" />
-                            <name content="Color layer" />
-                            <value content="0" />
-                        </option>
-                        <option>
-                            <id content="depth" />
-                            <name content="Depth layer" />
-                            <value content="1" />
-                        </option>
-                        <option>
-                            <id content="picking" />
-                            <name content="Picking layer" />
-                            <value content="2" />
-                        </option>
-                    </options>
+                    <usageMode content="0" />
+                    <visible content="1" />
                 </Property>
             </Properties>
         </Processor>
-        <Processor type="ImageSource" identifier="ImageSource2" id="ref1">
+        <Processor type="org.inviwo.ImageSource" identifier="ImageSource2" id="ref11">
             <MetaDataList>
                 <MetaData type="ProcessorMetaData">
                     <position x="100" y="-300" />
@@ -91,7 +90,8 @@
             </MetaDataList>
             <Properties>
                 <Property type="FileProperty" identifier="imageFileName" displayName="Image file name" key="imageFileName">
-                    <visibilityMode content="0" />
+                    <usageMode content="0" />
+                    <visible content="1" />
                     <url content="../../images/swirl1.tga" />
                     <nameFilter>
                         <filter content="All Files (*.*)" />
@@ -101,7 +101,7 @@
                 </Property>
             </Properties>
         </Processor>
-        <Processor type="CanvasGL" identifier="Orig2" id="ref11">
+        <Processor type="org.inviwo.CanvasGL" identifier="Orig2" id="ref1">
             <MetaDataList>
                 <MetaData type="ProcessorMetaData">
                     <position x="100" y="-125" />
@@ -109,58 +109,55 @@
                     <selection content="0" />
                 </MetaData>
                 <MetaData type="ProcessorWidgetMetaData">
-                    <position x="394" y="506" />
+                    <position x="402" y="536" />
                     <dimension x="256" y="256" />
                     <visibility content="1" />
                 </MetaData>
             </MetaDataList>
             <Properties>
-                <Property type="FloatProperty" identifier="aspectRatioScaling" displayName="Aspect Ratio Scaling" key="aspectRatioScaling">
-                    <visibilityMode content="2" />
-                </Property>
-                <Property type="IntVec2Property" identifier="customInputDimensions" displayName="Input Image Dimensions" key="customInputDimensions">
-                    <visibilityMode content="2" />
-                    <readonly content="1" />
-                </Property>
-                <Property type="IntVec2Property" identifier="dimensions" displayName="Dimensions" key="dimensions">
-                    <visibilityMode content="0" />
-                </Property>
-                <Property type="BoolProperty" identifier="enableCustomInputDimensions" displayName="Enable Custom Input Dimensions" key="enableCustomInputDimensions">
-                    <visibilityMode content="0" />
-                </Property>
-                <Property type="BoolProperty" identifier="keepAspectRatio" displayName="Keep Aspect Ratio" key="keepAspectRatio">
-                    <visibilityMode content="2" />
+                <Property type="CompositeProperty" identifier="inputSize" displayName="Input Dimension Parameters" key="inputSize">
+                    <usageMode content="0" />
+                    <visible content="1" />
+                    <Properties>
+                        <Property type="FloatProperty" identifier="aspectRatioScaling" displayName="Aspect Ratio Scaling" key="aspectRatioScaling">
+                            <usageMode content="0" />
+                            <visible content="0" />
+                        </Property>
+                        <Property type="IntVec2Property" identifier="customInputDimensions" displayName="Input Image Dimensions" key="customInputDimensions">
+                            <usageMode content="0" />
+                            <visible content="0" />
+                            <readonly content="1" />
+                        </Property>
+                        <Property type="IntVec2Property" identifier="dimensions" displayName="Dimensions" key="dimensions">
+                            <usageMode content="0" />
+                            <visible content="1" />
+                        </Property>
+                        <Property type="BoolProperty" identifier="enableCustomInputDimensions" displayName="Enable Custom Input Dimensions" key="enableCustomInputDimensions">
+                            <usageMode content="0" />
+                            <visible content="1" />
+                        </Property>
+                        <Property type="BoolProperty" identifier="keepAspectRatio" displayName="Keep Aspect Ratio" key="keepAspectRatio">
+                            <usageMode content="0" />
+                            <visible content="0" />
+                        </Property>
+                    </Properties>
                 </Property>
                 <Property type="DirectoryProperty" identifier="layerDir" displayName="Output Directory" key="layerDir">
-                    <visibilityMode content="0" />
+                    <usageMode content="0" />
+                    <visible content="1" />
                     <directory content="../../../../../" />
                 </Property>
                 <Property type="ButtonProperty" identifier="saveLayer" displayName="Save Image Layer" key="saveLayer">
-                    <visibilityMode content="0" />
+                    <usageMode content="0" />
+                    <visible content="1" />
                 </Property>
                 <Property type="OptionPropertyInt" identifier="visibleLayer" displayName="Visible Layer" key="visibleLayer">
-                    <visibilityMode content="0" />
-                    <options>
-                        <option>
-                            <id content="color" />
-                            <name content="Color layer" />
-                            <value content="0" />
-                        </option>
-                        <option>
-                            <id content="depth" />
-                            <name content="Depth layer" />
-                            <value content="1" />
-                        </option>
-                        <option>
-                            <id content="picking" />
-                            <name content="Picking layer" />
-                            <value content="2" />
-                        </option>
-                    </options>
+                    <usageMode content="0" />
+                    <visible content="1" />
                 </Property>
             </Properties>
         </Processor>
-        <Processor type="MichelsonContrast" identifier="MichelsonContrast" id="ref4">
+        <Processor type="org.inviwo.MichelsonContrast" identifier="MichelsonContrast" id="ref4">
             <MetaDataList>
                 <MetaData type="ProcessorMetaData">
                     <position x="-75" y="-200" />
@@ -170,26 +167,31 @@
             </MetaDataList>
             <Properties>
                 <Property type="ButtonProperty" identifier="calculateNow" displayName="Calculate" key="calculateNow">
-                    <visibilityMode content="0" />
+                    <usageMode content="0" />
+                    <visible content="1" />
                 </Property>
                 <Property type="BoolProperty" identifier="continuesCalculation" displayName="Continues Calculation" key="continuesCalculation">
-                    <visibilityMode content="0" />
+                    <usageMode content="0" />
+                    <visible content="1" />
                     <value content="1" />
                 </Property>
                 <Property type="BoolProperty" identifier="enableIgnoreByColor" displayName="Enable Ignore By Color" key="enableIgnoreByColor">
-                    <visibilityMode content="0" />
+                    <usageMode content="0" />
+                    <visible content="1" />
                 </Property>
-                <Property type="FloatVec4Property" identifier="ignoreByColor_" displayName="Ignore By Color" key="ignoreByColor_">
+                <Property type="DoubleVec4Property" identifier="ignoreByColor_" displayName="Ignore By Color" key="ignoreByColor_">
                     <semantics semantics="Color" />
-                    <visibilityMode content="0" />
+                    <usageMode content="0" />
+                    <visible content="1" />
                 </Property>
-                <Property type="FloatProperty" identifier="michelsonContrast_" displayName="Michelson Contrast" key="michelsonContrast_">
-                    <visibilityMode content="0" />
-                    <value content="0.76397163" />
+                <Property type="DoubleProperty" identifier="michelsonContrast_" displayName="Michelson Contrast" key="michelsonContrast_">
+                    <usageMode content="0" />
+                    <visible content="1" />
+                    <value content="0.763971595146904710000" />
                 </Property>
             </Properties>
         </Processor>
-        <Processor type="ImageDifference" identifier="ImageDifference" id="ref10">
+        <Processor type="org.inviwo.ImageDifference" identifier="ImageDifference" id="ref7">
             <MetaDataList>
                 <MetaData type="ProcessorMetaData">
                     <position x="25" y="-25" />
@@ -199,7 +201,7 @@
             </MetaDataList>
             <Properties />
         </Processor>
-        <Processor type="CanvasGL" identifier="DIff" id="ref3">
+        <Processor type="org.inviwo.CanvasGL" identifier="DIff" id="ref5">
             <MetaDataList>
                 <MetaData type="ProcessorMetaData">
                     <position x="-25" y="100" />
@@ -207,58 +209,55 @@
                     <selection content="0" />
                 </MetaData>
                 <MetaData type="ProcessorWidgetMetaData">
-                    <position x="669" y="785" />
+                    <position x="677" y="815" />
                     <dimension x="256" y="256" />
                     <visibility content="1" />
                 </MetaData>
             </MetaDataList>
             <Properties>
-                <Property type="FloatProperty" identifier="aspectRatioScaling" displayName="Aspect Ratio Scaling" key="aspectRatioScaling">
-                    <visibilityMode content="2" />
-                </Property>
-                <Property type="IntVec2Property" identifier="customInputDimensions" displayName="Input Image Dimensions" key="customInputDimensions">
-                    <visibilityMode content="2" />
-                    <readonly content="1" />
-                </Property>
-                <Property type="IntVec2Property" identifier="dimensions" displayName="Dimensions" key="dimensions">
-                    <visibilityMode content="0" />
-                </Property>
-                <Property type="BoolProperty" identifier="enableCustomInputDimensions" displayName="Enable Custom Input Dimensions" key="enableCustomInputDimensions">
-                    <visibilityMode content="0" />
-                </Property>
-                <Property type="BoolProperty" identifier="keepAspectRatio" displayName="Keep Aspect Ratio" key="keepAspectRatio">
-                    <visibilityMode content="2" />
+                <Property type="CompositeProperty" identifier="inputSize" displayName="Input Dimension Parameters" key="inputSize">
+                    <usageMode content="0" />
+                    <visible content="1" />
+                    <Properties>
+                        <Property type="FloatProperty" identifier="aspectRatioScaling" displayName="Aspect Ratio Scaling" key="aspectRatioScaling">
+                            <usageMode content="0" />
+                            <visible content="0" />
+                        </Property>
+                        <Property type="IntVec2Property" identifier="customInputDimensions" displayName="Input Image Dimensions" key="customInputDimensions">
+                            <usageMode content="0" />
+                            <visible content="0" />
+                            <readonly content="1" />
+                        </Property>
+                        <Property type="IntVec2Property" identifier="dimensions" displayName="Dimensions" key="dimensions">
+                            <usageMode content="0" />
+                            <visible content="1" />
+                        </Property>
+                        <Property type="BoolProperty" identifier="enableCustomInputDimensions" displayName="Enable Custom Input Dimensions" key="enableCustomInputDimensions">
+                            <usageMode content="0" />
+                            <visible content="1" />
+                        </Property>
+                        <Property type="BoolProperty" identifier="keepAspectRatio" displayName="Keep Aspect Ratio" key="keepAspectRatio">
+                            <usageMode content="0" />
+                            <visible content="0" />
+                        </Property>
+                    </Properties>
                 </Property>
                 <Property type="DirectoryProperty" identifier="layerDir" displayName="Output Directory" key="layerDir">
-                    <visibilityMode content="0" />
+                    <usageMode content="0" />
+                    <visible content="1" />
                     <directory content="../../../../../" />
                 </Property>
                 <Property type="ButtonProperty" identifier="saveLayer" displayName="Save Image Layer" key="saveLayer">
-                    <visibilityMode content="0" />
+                    <usageMode content="0" />
+                    <visible content="1" />
                 </Property>
                 <Property type="OptionPropertyInt" identifier="visibleLayer" displayName="Visible Layer" key="visibleLayer">
-                    <visibilityMode content="0" />
-                    <options>
-                        <option>
-                            <id content="color" />
-                            <name content="Color layer" />
-                            <value content="0" />
-                        </option>
-                        <option>
-                            <id content="depth" />
-                            <name content="Depth layer" />
-                            <value content="1" />
-                        </option>
-                        <option>
-                            <id content="picking" />
-                            <name content="Picking layer" />
-                            <value content="2" />
-                        </option>
-                    </options>
+                    <usageMode content="0" />
+                    <visible content="1" />
                 </Property>
             </Properties>
         </Processor>
-        <Processor type="ImageGrayscale" identifier="ImageGrayscale" id="ref5">
+        <Processor type="org.inviwo.ImageGrayscale" identifier="ImageGrayscale" id="ref3">
             <MetaDataList>
                 <MetaData type="ProcessorMetaData">
                     <position x="250" y="50" />
@@ -268,7 +267,7 @@
             </MetaDataList>
             <Properties />
         </Processor>
-        <Processor type="CanvasGL" identifier="Greyscale" id="ref7">
+        <Processor type="org.inviwo.CanvasGL" identifier="Greyscale" id="ref8">
             <MetaDataList>
                 <MetaData type="ProcessorMetaData">
                     <position x="250" y="150" />
@@ -276,58 +275,55 @@
                     <selection content="0" />
                 </MetaData>
                 <MetaData type="ProcessorWidgetMetaData">
-                    <position x="249" y="726" />
+                    <position x="257" y="756" />
                     <dimension x="256" y="256" />
                     <visibility content="1" />
                 </MetaData>
             </MetaDataList>
             <Properties>
-                <Property type="FloatProperty" identifier="aspectRatioScaling" displayName="Aspect Ratio Scaling" key="aspectRatioScaling">
-                    <visibilityMode content="2" />
-                </Property>
-                <Property type="IntVec2Property" identifier="customInputDimensions" displayName="Input Image Dimensions" key="customInputDimensions">
-                    <visibilityMode content="2" />
-                    <readonly content="1" />
-                </Property>
-                <Property type="IntVec2Property" identifier="dimensions" displayName="Dimensions" key="dimensions">
-                    <visibilityMode content="0" />
-                </Property>
-                <Property type="BoolProperty" identifier="enableCustomInputDimensions" displayName="Enable Custom Input Dimensions" key="enableCustomInputDimensions">
-                    <visibilityMode content="0" />
-                </Property>
-                <Property type="BoolProperty" identifier="keepAspectRatio" displayName="Keep Aspect Ratio" key="keepAspectRatio">
-                    <visibilityMode content="2" />
+                <Property type="CompositeProperty" identifier="inputSize" displayName="Input Dimension Parameters" key="inputSize">
+                    <usageMode content="0" />
+                    <visible content="1" />
+                    <Properties>
+                        <Property type="FloatProperty" identifier="aspectRatioScaling" displayName="Aspect Ratio Scaling" key="aspectRatioScaling">
+                            <usageMode content="0" />
+                            <visible content="0" />
+                        </Property>
+                        <Property type="IntVec2Property" identifier="customInputDimensions" displayName="Input Image Dimensions" key="customInputDimensions">
+                            <usageMode content="0" />
+                            <visible content="0" />
+                            <readonly content="1" />
+                        </Property>
+                        <Property type="IntVec2Property" identifier="dimensions" displayName="Dimensions" key="dimensions">
+                            <usageMode content="0" />
+                            <visible content="1" />
+                        </Property>
+                        <Property type="BoolProperty" identifier="enableCustomInputDimensions" displayName="Enable Custom Input Dimensions" key="enableCustomInputDimensions">
+                            <usageMode content="0" />
+                            <visible content="1" />
+                        </Property>
+                        <Property type="BoolProperty" identifier="keepAspectRatio" displayName="Keep Aspect Ratio" key="keepAspectRatio">
+                            <usageMode content="0" />
+                            <visible content="0" />
+                        </Property>
+                    </Properties>
                 </Property>
                 <Property type="DirectoryProperty" identifier="layerDir" displayName="Output Directory" key="layerDir">
-                    <visibilityMode content="0" />
+                    <usageMode content="0" />
+                    <visible content="1" />
                     <directory content="../../../../../" />
                 </Property>
                 <Property type="ButtonProperty" identifier="saveLayer" displayName="Save Image Layer" key="saveLayer">
-                    <visibilityMode content="0" />
+                    <usageMode content="0" />
+                    <visible content="1" />
                 </Property>
                 <Property type="OptionPropertyInt" identifier="visibleLayer" displayName="Visible Layer" key="visibleLayer">
-                    <visibilityMode content="0" />
-                    <options>
-                        <option>
-                            <id content="color" />
-                            <name content="Color layer" />
-                            <value content="0" />
-                        </option>
-                        <option>
-                            <id content="depth" />
-                            <name content="Depth layer" />
-                            <value content="1" />
-                        </option>
-                        <option>
-                            <id content="picking" />
-                            <name content="Picking layer" />
-                            <value content="2" />
-                        </option>
-                    </options>
+                    <usageMode content="0" />
+                    <visible content="1" />
                 </Property>
             </Properties>
         </Processor>
-        <Processor type="ImageNormalization" identifier="ImageNormalization" id="ref8">
+        <Processor type="org.inviwo.ImageNormalization" identifier="ImageNormalization" id="ref0">
             <MetaDataList>
                 <MetaData type="ProcessorMetaData">
                     <position x="450" y="150" />
@@ -335,9 +331,14 @@
                     <selection content="0" />
                 </MetaData>
             </MetaDataList>
-            <Properties />
+            <Properties>
+                <Property type="BoolProperty" identifier="eachChannelsIndividually" displayName="Normalize each Channels Individually" key="eachChannelsIndividually">
+                    <usageMode content="0" />
+                    <visible content="1" />
+                </Property>
+            </Properties>
         </Processor>
-        <Processor type="CanvasGL" identifier="NormalizedEdges" id="ref6">
+        <Processor type="org.inviwo.CanvasGL" identifier="NormalizedEdges" id="ref9">
             <MetaDataList>
                 <MetaData type="ProcessorMetaData">
                     <position x="450" y="225" />
@@ -345,58 +346,55 @@
                     <selection content="0" />
                 </MetaData>
                 <MetaData type="ProcessorWidgetMetaData">
-                    <position x="2060" y="280" />
+                    <position x="458" y="253" />
                     <dimension x="256" y="256" />
                     <visibility content="1" />
                 </MetaData>
             </MetaDataList>
             <Properties>
-                <Property type="FloatProperty" identifier="aspectRatioScaling" displayName="Aspect Ratio Scaling" key="aspectRatioScaling">
-                    <visibilityMode content="2" />
-                </Property>
-                <Property type="IntVec2Property" identifier="customInputDimensions" displayName="Input Image Dimensions" key="customInputDimensions">
-                    <visibilityMode content="2" />
-                    <readonly content="1" />
-                </Property>
-                <Property type="IntVec2Property" identifier="dimensions" displayName="Dimensions" key="dimensions">
-                    <visibilityMode content="0" />
-                </Property>
-                <Property type="BoolProperty" identifier="enableCustomInputDimensions" displayName="Enable Custom Input Dimensions" key="enableCustomInputDimensions">
-                    <visibilityMode content="0" />
-                </Property>
-                <Property type="BoolProperty" identifier="keepAspectRatio" displayName="Keep Aspect Ratio" key="keepAspectRatio">
-                    <visibilityMode content="2" />
+                <Property type="CompositeProperty" identifier="inputSize" displayName="Input Dimension Parameters" key="inputSize">
+                    <usageMode content="0" />
+                    <visible content="1" />
+                    <Properties>
+                        <Property type="FloatProperty" identifier="aspectRatioScaling" displayName="Aspect Ratio Scaling" key="aspectRatioScaling">
+                            <usageMode content="0" />
+                            <visible content="0" />
+                        </Property>
+                        <Property type="IntVec2Property" identifier="customInputDimensions" displayName="Input Image Dimensions" key="customInputDimensions">
+                            <usageMode content="0" />
+                            <visible content="0" />
+                            <readonly content="1" />
+                        </Property>
+                        <Property type="IntVec2Property" identifier="dimensions" displayName="Dimensions" key="dimensions">
+                            <usageMode content="0" />
+                            <visible content="1" />
+                        </Property>
+                        <Property type="BoolProperty" identifier="enableCustomInputDimensions" displayName="Enable Custom Input Dimensions" key="enableCustomInputDimensions">
+                            <usageMode content="0" />
+                            <visible content="1" />
+                        </Property>
+                        <Property type="BoolProperty" identifier="keepAspectRatio" displayName="Keep Aspect Ratio" key="keepAspectRatio">
+                            <usageMode content="0" />
+                            <visible content="0" />
+                        </Property>
+                    </Properties>
                 </Property>
                 <Property type="DirectoryProperty" identifier="layerDir" displayName="Output Directory" key="layerDir">
-                    <visibilityMode content="0" />
+                    <usageMode content="0" />
+                    <visible content="1" />
                     <directory content="../../../../../" />
                 </Property>
                 <Property type="ButtonProperty" identifier="saveLayer" displayName="Save Image Layer" key="saveLayer">
-                    <visibilityMode content="0" />
+                    <usageMode content="0" />
+                    <visible content="1" />
                 </Property>
                 <Property type="OptionPropertyInt" identifier="visibleLayer" displayName="Visible Layer" key="visibleLayer">
-                    <visibilityMode content="0" />
-                    <options>
-                        <option>
-                            <id content="color" />
-                            <name content="Color layer" />
-                            <value content="0" />
-                        </option>
-                        <option>
-                            <id content="depth" />
-                            <name content="Depth layer" />
-                            <value content="1" />
-                        </option>
-                        <option>
-                            <id content="picking" />
-                            <name content="Picking layer" />
-                            <value content="2" />
-                        </option>
-                    </options>
+                    <usageMode content="0" />
+                    <visible content="1" />
                 </Property>
             </Properties>
         </Processor>
-        <Processor type="FindEdges" identifier="FindEdges" id="ref2">
+        <Processor type="org.inviwo.FindEdges" identifier="FindEdges" id="ref2">
             <MetaDataList>
                 <MetaData type="ProcessorMetaData">
                     <position x="350" y="-200" />
@@ -406,12 +404,13 @@
             </MetaDataList>
             <Properties>
                 <Property type="FloatProperty" identifier="alpha" displayName="Alpha" key="alpha">
-                    <visibilityMode content="0" />
+                    <usageMode content="0" />
+                    <visible content="1" />
                     <value content="1" />
                 </Property>
             </Properties>
         </Processor>
-        <Processor type="CanvasGL" identifier="Edges" id="ref12">
+        <Processor type="org.inviwo.CanvasGL" identifier="Edges" id="ref6">
             <MetaDataList>
                 <MetaData type="ProcessorMetaData">
                     <position x="425" y="-75" />
@@ -419,54 +418,51 @@
                     <selection content="0" />
                 </MetaData>
                 <MetaData type="ProcessorWidgetMetaData">
-                    <position x="1017" y="811" />
+                    <position x="1025" y="841" />
                     <dimension x="256" y="256" />
                     <visibility content="1" />
                 </MetaData>
             </MetaDataList>
             <Properties>
-                <Property type="FloatProperty" identifier="aspectRatioScaling" displayName="Aspect Ratio Scaling" key="aspectRatioScaling">
-                    <visibilityMode content="2" />
-                </Property>
-                <Property type="IntVec2Property" identifier="customInputDimensions" displayName="Input Image Dimensions" key="customInputDimensions">
-                    <visibilityMode content="2" />
-                    <readonly content="1" />
-                </Property>
-                <Property type="IntVec2Property" identifier="dimensions" displayName="Dimensions" key="dimensions">
-                    <visibilityMode content="0" />
-                </Property>
-                <Property type="BoolProperty" identifier="enableCustomInputDimensions" displayName="Enable Custom Input Dimensions" key="enableCustomInputDimensions">
-                    <visibilityMode content="0" />
-                </Property>
-                <Property type="BoolProperty" identifier="keepAspectRatio" displayName="Keep Aspect Ratio" key="keepAspectRatio">
-                    <visibilityMode content="2" />
+                <Property type="CompositeProperty" identifier="inputSize" displayName="Input Dimension Parameters" key="inputSize">
+                    <usageMode content="0" />
+                    <visible content="1" />
+                    <Properties>
+                        <Property type="FloatProperty" identifier="aspectRatioScaling" displayName="Aspect Ratio Scaling" key="aspectRatioScaling">
+                            <usageMode content="0" />
+                            <visible content="0" />
+                        </Property>
+                        <Property type="IntVec2Property" identifier="customInputDimensions" displayName="Input Image Dimensions" key="customInputDimensions">
+                            <usageMode content="0" />
+                            <visible content="0" />
+                            <readonly content="1" />
+                        </Property>
+                        <Property type="IntVec2Property" identifier="dimensions" displayName="Dimensions" key="dimensions">
+                            <usageMode content="0" />
+                            <visible content="1" />
+                        </Property>
+                        <Property type="BoolProperty" identifier="enableCustomInputDimensions" displayName="Enable Custom Input Dimensions" key="enableCustomInputDimensions">
+                            <usageMode content="0" />
+                            <visible content="1" />
+                        </Property>
+                        <Property type="BoolProperty" identifier="keepAspectRatio" displayName="Keep Aspect Ratio" key="keepAspectRatio">
+                            <usageMode content="0" />
+                            <visible content="0" />
+                        </Property>
+                    </Properties>
                 </Property>
                 <Property type="DirectoryProperty" identifier="layerDir" displayName="Output Directory" key="layerDir">
-                    <visibilityMode content="0" />
+                    <usageMode content="0" />
+                    <visible content="1" />
                     <directory content="../../../../../" />
                 </Property>
                 <Property type="ButtonProperty" identifier="saveLayer" displayName="Save Image Layer" key="saveLayer">
-                    <visibilityMode content="0" />
+                    <usageMode content="0" />
+                    <visible content="1" />
                 </Property>
                 <Property type="OptionPropertyInt" identifier="visibleLayer" displayName="Visible Layer" key="visibleLayer">
-                    <visibilityMode content="0" />
-                    <options>
-                        <option>
-                            <id content="color" />
-                            <name content="Color layer" />
-                            <value content="0" />
-                        </option>
-                        <option>
-                            <id content="depth" />
-                            <name content="Depth layer" />
-                            <value content="1" />
-                        </option>
-                        <option>
-                            <id content="picking" />
-                            <name content="Picking layer" />
-                            <value content="2" />
-                        </option>
-                    </options>
+                    <usageMode content="0" />
+                    <visible content="1" />
                 </Property>
             </Properties>
         </Processor>
@@ -474,100 +470,100 @@
     <Connections>
         <Connection>
             <OutPort identifier="image.outport">
-                <Processor type="ImageSource" identifier="ImageSource2" reference="ref1" />
+                <Processor type="org.inviwo.ImageSource" identifier="ImageSource2" reference="ref11" />
             </OutPort>
             <InPort identifier="inport">
-                <Processor type="CanvasGL" identifier="Orig2" reference="ref11" />
+                <Processor type="org.inviwo.CanvasGL" identifier="Orig2" reference="ref1" />
             </InPort>
         </Connection>
         <Connection>
             <OutPort identifier="image.outport">
-                <Processor type="ImageSource" identifier="ImageSource" reference="ref0" />
+                <Processor type="org.inviwo.ImageSource" identifier="ImageSource" reference="ref12" />
             </OutPort>
             <InPort identifier="inport">
-                <Processor type="MichelsonContrast" identifier="MichelsonContrast" reference="ref4" />
+                <Processor type="org.inviwo.MichelsonContrast" identifier="MichelsonContrast" reference="ref4" />
             </InPort>
         </Connection>
         <Connection>
             <OutPort identifier="outport">
-                <Processor type="MichelsonContrast" identifier="MichelsonContrast" reference="ref4" />
+                <Processor type="org.inviwo.MichelsonContrast" identifier="MichelsonContrast" reference="ref4" />
             </OutPort>
             <InPort identifier="inport">
-                <Processor type="CanvasGL" identifier="Orig1" reference="ref9" />
+                <Processor type="org.inviwo.CanvasGL" identifier="Orig1" reference="ref10" />
             </InPort>
         </Connection>
         <Connection>
             <OutPort identifier="image.outport">
-                <Processor type="ImageSource" identifier="ImageSource" reference="ref0" />
+                <Processor type="org.inviwo.ImageSource" identifier="ImageSource" reference="ref12" />
             </OutPort>
             <InPort identifier="inport0">
-                <Processor type="ImageDifference" identifier="ImageDifference" reference="ref10" />
+                <Processor type="org.inviwo.ImageDifference" identifier="ImageDifference" reference="ref7" />
             </InPort>
         </Connection>
         <Connection>
             <OutPort identifier="image.outport">
-                <Processor type="ImageSource" identifier="ImageSource2" reference="ref1" />
+                <Processor type="org.inviwo.ImageSource" identifier="ImageSource2" reference="ref11" />
             </OutPort>
             <InPort identifier="inport1">
-                <Processor type="ImageDifference" identifier="ImageDifference" reference="ref10" />
+                <Processor type="org.inviwo.ImageDifference" identifier="ImageDifference" reference="ref7" />
             </InPort>
         </Connection>
         <Connection>
             <OutPort identifier="outport">
-                <Processor type="ImageDifference" identifier="ImageDifference" reference="ref10" />
+                <Processor type="org.inviwo.ImageDifference" identifier="ImageDifference" reference="ref7" />
             </OutPort>
             <InPort identifier="inport">
-                <Processor type="CanvasGL" identifier="DIff" reference="ref3" />
+                <Processor type="org.inviwo.CanvasGL" identifier="DIff" reference="ref5" />
             </InPort>
         </Connection>
         <Connection>
             <OutPort identifier="outport">
-                <Processor type="ImageDifference" identifier="ImageDifference" reference="ref10" />
+                <Processor type="org.inviwo.ImageDifference" identifier="ImageDifference" reference="ref7" />
             </OutPort>
             <InPort identifier="inport">
-                <Processor type="ImageGrayscale" identifier="ImageGrayscale" reference="ref5" />
+                <Processor type="org.inviwo.ImageGrayscale" identifier="ImageGrayscale" reference="ref3" />
             </InPort>
         </Connection>
         <Connection>
             <OutPort identifier="outport">
-                <Processor type="ImageGrayscale" identifier="ImageGrayscale" reference="ref5" />
+                <Processor type="org.inviwo.ImageGrayscale" identifier="ImageGrayscale" reference="ref3" />
             </OutPort>
             <InPort identifier="inport">
-                <Processor type="CanvasGL" identifier="Greyscale" reference="ref7" />
+                <Processor type="org.inviwo.CanvasGL" identifier="Greyscale" reference="ref8" />
             </InPort>
         </Connection>
         <Connection>
             <OutPort identifier="outport">
-                <Processor type="ImageNormalization" identifier="ImageNormalization" reference="ref8" />
+                <Processor type="org.inviwo.ImageNormalization" identifier="ImageNormalization" reference="ref0" />
             </OutPort>
             <InPort identifier="inport">
-                <Processor type="CanvasGL" identifier="NormalizedEdges" reference="ref6" />
+                <Processor type="org.inviwo.CanvasGL" identifier="NormalizedEdges" reference="ref9" />
             </InPort>
         </Connection>
         <Connection>
             <OutPort identifier="image.outport">
-                <Processor type="ImageSource" identifier="ImageSource2" reference="ref1" />
+                <Processor type="org.inviwo.ImageSource" identifier="ImageSource2" reference="ref11" />
             </OutPort>
             <InPort identifier="inport">
-                <Processor type="FindEdges" identifier="FindEdges" reference="ref2" />
+                <Processor type="org.inviwo.FindEdges" identifier="FindEdges" reference="ref2" />
             </InPort>
         </Connection>
         <Connection>
             <OutPort identifier="outport">
-                <Processor type="FindEdges" identifier="FindEdges" reference="ref2" />
+                <Processor type="org.inviwo.FindEdges" identifier="FindEdges" reference="ref2" />
             </OutPort>
             <InPort identifier="inport">
-                <Processor type="CanvasGL" identifier="Edges" reference="ref12" />
+                <Processor type="org.inviwo.CanvasGL" identifier="Edges" reference="ref6" />
             </InPort>
         </Connection>
         <Connection>
             <OutPort identifier="outport">
-                <Processor type="FindEdges" identifier="FindEdges" reference="ref2" />
+                <Processor type="org.inviwo.FindEdges" identifier="FindEdges" reference="ref2" />
             </OutPort>
             <InPort identifier="inport">
-                <Processor type="ImageNormalization" identifier="ImageNormalization" reference="ref8" />
+                <Processor type="org.inviwo.ImageNormalization" identifier="ImageNormalization" reference="ref0" />
             </InPort>
         </Connection>
     </Connections>
-    <ProcessorLinks />
+    <PropertyLinks />
 </InviwoTreeData>

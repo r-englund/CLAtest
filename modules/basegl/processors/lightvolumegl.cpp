@@ -37,7 +37,7 @@
 
 namespace inviwo {
 
-ProcessorClassIdentifier(LightVolumeGL,  "LightVolumeGL");
+ProcessorClassIdentifier(LightVolumeGL, "org.inviwo.LightVolumeGL");
 ProcessorDisplayName(LightVolumeGL,  "Light Volume");
 ProcessorTags(LightVolumeGL, Tags::GL);
 ProcessorCategory(LightVolumeGL, "Illumination");

@@ -35,7 +35,7 @@
 
 namespace inviwo {
 
-ProcessorClassIdentifier(DrawLines,  "DrawLines");
+ProcessorClassIdentifier(DrawLines, "org.inviwo.DrawLines");
 ProcessorDisplayName(DrawLines,  "Draw Lines");
 ProcessorTags(DrawLines, Tags::GL);
 ProcessorCategory(DrawLines, "Drawing");

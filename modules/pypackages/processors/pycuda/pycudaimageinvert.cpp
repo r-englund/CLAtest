@@ -37,7 +37,7 @@
 
 namespace inviwo {
 
-ProcessorClassIdentifier(PyCUDAImageInverter,  "PyCUDAImageInverter");
+ProcessorClassIdentifier(PyCUDAImageInverter, "org.inviwo.PyCUDAImageInverter");
 ProcessorDisplayName(PyCUDAImageInverter,  "PyCUDA Image Inverter");
 ProcessorTags(PyCUDAImageInverter, "Python/CUDA");
 ProcessorCategory(PyCUDAImageInverter, "Numpy");

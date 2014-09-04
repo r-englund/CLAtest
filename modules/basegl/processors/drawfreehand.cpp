@@ -35,7 +35,7 @@
 
 namespace inviwo {
 
-ProcessorClassIdentifier(DrawFreeHand,  "DrawFreeHand");
+ProcessorClassIdentifier(DrawFreeHand, "org.inviwo.DrawFreeHand");
 ProcessorDisplayName(DrawFreeHand,  "Draw Freehand");
 ProcessorTags(DrawFreeHand, Tags::GL);
 ProcessorCategory(DrawFreeHand, "Drawing");

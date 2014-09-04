@@ -34,7 +34,7 @@
 
 namespace inviwo {
 
-ProcessorClassIdentifier(ImageGrayscale,  "ImageGrayscale");
+ProcessorClassIdentifier(ImageGrayscale, "org.inviwo.ImageGrayscale");
 ProcessorDisplayName(ImageGrayscale,  "Image Grayscale");
 ProcessorTags(ImageGrayscale, Tags::GL);
 ProcessorCategory(ImageGrayscale, "Image Operation");
