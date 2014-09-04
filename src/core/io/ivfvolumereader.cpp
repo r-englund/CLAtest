@@ -41,6 +41,7 @@ namespace inviwo {
 IvfVolumeReader::IvfVolumeReader()
     : DataReaderType<Volume>()
     , rawFile_("")
+    , filePos_(0)
     , littleEndian_(true)
     , dimension_(uvec3(0))
     , format_(NULL) {
@@ -50,6 +51,7 @@ IvfVolumeReader::IvfVolumeReader()
 IvfVolumeReader::IvfVolumeReader(const IvfVolumeReader& rhs)
     : DataReaderType<Volume>(rhs)
     , rawFile_(rhs.rawFile_)
+    , filePos_(0)
     , littleEndian_(rhs.littleEndian_)
     , dimension_(rhs.dimension_)
     , format_(rhs.format_) {
@@ -58,6 +60,7 @@ IvfVolumeReader::IvfVolumeReader(const IvfVolumeReader& rhs)
 IvfVolumeReader& IvfVolumeReader::operator=(const IvfVolumeReader& that) {
     if (this != &that) {
         rawFile_ = that.rawFile_;
+        filePos_ = that.filePos_;
         littleEndian_ = that.littleEndian_;
         dimension_ = that.dimension_;
         format_ = that.format_;
@@ -117,6 +120,7 @@ void IvfVolumeReader::readDataInto(void* destination) const {
 
     if (fin.good()) {
         std::size_t size = dimension_.x*dimension_.y*dimension_.z*(format_->getBytesAllocated());
+        fin.seekg(filePos_);
         fin.read((char*)destination, size);
 
         if (!littleEndian_ && format_->getBytesAllocated() > 1) {

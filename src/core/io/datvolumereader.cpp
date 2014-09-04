@@ -31,6 +31,7 @@
  *********************************************************************************/
 
 #include <inviwo/core/io/datvolumereader.h>
+#include <inviwo/core/datastructures/datasequence.h>
 #include <inviwo/core/datastructures/volume/volumedisk.h>
 #include <inviwo/core/datastructures/volume/volumeramprecision.h>
 #include <inviwo/core/datastructures/volume/volumetypeclassification.h>
@@ -43,6 +44,7 @@ namespace inviwo {
 DatVolumeReader::DatVolumeReader()
     : DataReaderType<Volume>()
     , rawFile_("")
+    , filePos_(0)
     , littleEndian_(true)
     , dimension_(uvec3(0, 0, 0))
     , format_(NULL) {
@@ -52,6 +54,7 @@ DatVolumeReader::DatVolumeReader()
 DatVolumeReader::DatVolumeReader(const DatVolumeReader& rhs)
     : DataReaderType<Volume>(rhs)
     , rawFile_(rhs.rawFile_)
+    , filePos_(rhs.filePos_)
     , littleEndian_(rhs.littleEndian_)
     , dimension_(rhs.dimension_)
     , format_(rhs.format_) {};
@@ -59,6 +62,7 @@ DatVolumeReader::DatVolumeReader(const DatVolumeReader& rhs)
 DatVolumeReader& DatVolumeReader::operator=(const DatVolumeReader& that) {
     if (this != &that) {
         rawFile_ = that.rawFile_;
+        filePos_ = that.filePos_;
         littleEndian_ = that.littleEndian_;
         dimension_ = that.dimension_;
         format_ = that.format_;
@@ -100,6 +104,7 @@ Volume* DatVolumeReader::readMetaData(std::string filePath) {
     dvec2 datarange(0);
     dvec2 valuerange(0);
     std::string unit("");
+    size_t sequences = 1;
 
     while (!f->eof()) {
         getline(*f, textLine);
@@ -122,6 +127,8 @@ Volume* DatVolumeReader::readMetaData(std::string filePath) {
             } else {
                 littleEndian_ = true;
             }
+        } else if (key == "sequences") {
+            ss >> sequences;
         } else if (key == "resolution" || key == "dimension") {
             ss >> dimension_.x;
             ss >> dimension_.y;
@@ -239,21 +246,49 @@ Volume* DatVolumeReader::readMetaData(std::string filePath) {
 
     volume->setDataFormat(format_);
 
-    VolumeDisk* vd = new VolumeDisk(filePath, dimension_, format_);
-    vd->setDataReader(this);
-    volume->addRepresentation(vd);
-    std::string size = formatBytesToString(dimension_.x * dimension_.y * dimension_.z *
-                                           (format_->getBytesAllocated()));
-    LogInfo("Loaded volume: " << filePath << " size: " << size);
-    return volume;
+    size_t bytes = dimension_.x * dimension_.y * dimension_.z * (format_->getBytesAllocated());
+
+    if(sequences > 1){
+        DataSequence<Volume>* volumeSequence = new DataSequence<Volume>(*volume);
+
+        VolumeDisk* vd = NULL;
+        Volume* oneSeq = NULL;
+
+        for(size_t t=0; t<sequences-1; ++t){
+            filePos_ = t*bytes;
+            vd = new VolumeDisk(filePath, dimension_, format_);
+            vd->setDataReader(new DatVolumeReader(*this));
+            oneSeq = new Volume(*volume);
+            oneSeq->addRepresentation(vd);
+            volumeSequence->add(oneSeq);
+        }
+
+        filePos_ = (sequences-1)*bytes;
+        vd = new VolumeDisk(filePath, dimension_, format_);
+        vd->setDataReader(this);
+        volume->addRepresentation(vd);
+        volumeSequence->add(volume);
+
+        std::string size = formatBytesToString(bytes * sequences);
+        LogInfo("Loaded volume sequence: " << filePath << " size: " << size);
+        return volumeSequence;
+    }
+    else{
+        VolumeDisk* vd = new VolumeDisk(filePath, dimension_, format_);
+        vd->setDataReader(this);
+        volume->addRepresentation(vd);
+        std::string size = formatBytesToString(bytes);
+        LogInfo("Loaded volume: " << filePath << " size: " << size);
+        return volume;
+    }
 }
 
 void DatVolumeReader::readDataInto(void* destination) const {
     std::fstream fin(rawFile_.c_str(), std::ios::in | std::ios::binary);
 
     if (fin.good()) {
-        std::size_t size =
-            dimension_.x * dimension_.y * dimension_.z * (format_->getBytesAllocated());
+        std::size_t size = dimension_.x * dimension_.y * dimension_.z * (format_->getBytesAllocated());
+        fin.seekg(filePos_);
         fin.read(static_cast<char*>(destination), size);
 
         if (!littleEndian_ && format_->getBytesAllocated() > 1) {

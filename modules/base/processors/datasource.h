@@ -64,7 +64,6 @@ bool DataSource<DataType, PortType>::isReady() const {
     return URLParser::fileExists(file_.get());
 }
 
-
 /**
  * load is called when the filename changes, and after the deserialisation
  */
