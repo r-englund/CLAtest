@@ -36,7 +36,7 @@
 
 namespace inviwo {
 
-ProcessorClassIdentifier(MeshCreator,  "MeshCreator");
+ProcessorClassIdentifier(MeshCreator, "org.inviwo.MeshCreator");
 ProcessorDisplayName(MeshCreator,  "Mesh Creator");
 ProcessorTags(MeshCreator, Tags::None);
 ProcessorCategory(MeshCreator, "Geometry Creation");

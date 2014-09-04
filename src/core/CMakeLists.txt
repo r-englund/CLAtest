@@ -114,6 +114,7 @@ set(HEADER_FILES
     ${IVW_INCLUDE_DIR}/inviwo/core/io/serialization/ivwserializebase.h    
     ${IVW_INCLUDE_DIR}/inviwo/core/io/serialization/ivwserializeconstants.h    
     ${IVW_INCLUDE_DIR}/inviwo/core/io/serialization/ivwserializer.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/io/serialization/versionconverter.h
     ${IVW_INCLUDE_DIR}/inviwo/core/io/textfilereader.h
     ${IVW_INCLUDE_DIR}/inviwo/core/links/linkconditions.h
     ${IVW_INCLUDE_DIR}/inviwo/core/links/linkevaluator.h            
@@ -316,6 +317,7 @@ set(SOURCE_FILES
     io/serialization/ivwserializebase.cpp
     io/serialization/ivwserializeconstants.cpp
     io/serialization/ivwserializer.cpp
+    io/serialization/versionconverter.cpp
     io/textfilereader.cpp   
     links/linkconditions.cpp    
     links/linkevaluator.cpp    

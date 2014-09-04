@@ -40,7 +40,7 @@
 
 namespace inviwo {
 
-ProcessorClassIdentifier(ImageExport,  "ImageExport");
+ProcessorClassIdentifier(ImageExport, "org.inviwo.ImageExport");
 ProcessorDisplayName(ImageExport,  "Image Export");
 ProcessorTags(ImageExport, Tags::None);
 ProcessorCategory(ImageExport, "Data Output");

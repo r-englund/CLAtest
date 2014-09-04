@@ -38,7 +38,7 @@
 
 namespace inviwo {
 
-ProcessorClassIdentifier(PositionWidgetProcessor,  "PositionWidget");
+ProcessorClassIdentifier(PositionWidgetProcessor, "org.inviwo.PositionWidget");
 ProcessorDisplayName(PositionWidgetProcessor,  "Position Widget");
 ProcessorTags(PositionWidgetProcessor, Tags::GL);
 ProcessorCategory(PositionWidgetProcessor, "Geometry Rendering");

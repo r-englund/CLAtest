@@ -43,7 +43,7 @@
 
 namespace inviwo {
 
-ProcessorClassIdentifier(VolumeSource,  "VolumeSource");
+ProcessorClassIdentifier(VolumeSource, "org.inviwo.VolumeSource");
 ProcessorDisplayName(VolumeSource,  "Volume Source");
 ProcessorTags(VolumeSource, Tags::None);
 ProcessorCategory(VolumeSource, "Data Input");

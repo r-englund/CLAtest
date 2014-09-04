@@ -37,7 +37,7 @@
 
 namespace inviwo {
 
-ProcessorClassIdentifier(NumpyVolumeHistogram,  "NumpyVolumeHistogram");
+ProcessorClassIdentifier(NumpyVolumeHistogram, "org.inviwo.NumpyVolumeHistogram");
 ProcessorDisplayName(NumpyVolumeHistogram,  "Numpy Volume Histogram");
 ProcessorTags(NumpyVolumeHistogram, "Python/CPU");
 ProcessorCategory(NumpyVolumeHistogram, "Numpy");

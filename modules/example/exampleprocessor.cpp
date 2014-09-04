@@ -35,7 +35,7 @@
 
 namespace inviwo {
 
-ProcessorClassIdentifier(ExampleProcessor,  "ExampleProcessor");
+ProcessorClassIdentifier(ExampleProcessor, "org.inviwo.ExampleProcessor");
 ProcessorDisplayName(ExampleProcessor,  "Example Processor");
 ProcessorTags(ExampleProcessor, Tags::None);
 ProcessorCategory(ExampleProcessor, "Geometry Creation");

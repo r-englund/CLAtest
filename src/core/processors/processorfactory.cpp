@@ -56,10 +56,16 @@ void ProcessorFactory::registerObject(ProcessorFactoryObject* processor) {
 IvwSerializable* ProcessorFactory::create(std::string classIdentifier) const {
     std::map<std::string, ProcessorFactoryObject*>::iterator it = processorClassMap_.find(classIdentifier);
 
+    if (it != processorClassMap_.end()) {
+        return it->second->create();
+    } 
+    // Temp fallback
+    std::vector<std::string> list = splitString(classIdentifier, '.');
+    it = processorClassMap_.find(list[list.size()-1]);
     if (it != processorClassMap_.end())
         return it->second->create();
-    else
-        return 0;
+
+    return NULL;
 }
 
 bool ProcessorFactory::isValidType(std::string classIdentifier) const {
@@ -67,8 +73,14 @@ bool ProcessorFactory::isValidType(std::string classIdentifier) const {
 
     if (it != processorClassMap_.end())
         return true;
-    else
-        return false;
+    
+    // Temp fallback
+    std::vector<std::string> list = splitString(classIdentifier, '.');
+    it = processorClassMap_.find(list[list.size() - 1]);
+    if (it != processorClassMap_.end())
+       return true;
+
+    return false;
 }
 
 } // namespace

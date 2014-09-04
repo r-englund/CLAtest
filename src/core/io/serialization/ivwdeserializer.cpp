@@ -171,4 +171,8 @@ void IvwDeserializer::readXMLData() {
     }
 }
 
+void IvwDeserializer::convertVersion(VersionConverter* converter) {
+    converter->convert(rootElement_);
+}
+
 } //namespace

@@ -1,8 +1,9 @@
 <?xml version="1.0" ?>
 <InviwoTreeData version="1.0">
     <!-- Don't edit the following code -->
+    <ProcessorNetworkVersion content="1" />
     <Processors>
-        <Processor type="VolumeSource" identifier="VolumeSource" id="ref0">
+        <Processor type="org.inviwo.VolumeSource" identifier="VolumeSource" id="ref43">
             <MetaDataList>
                 <MetaData type="ProcessorMetaData">
                     <position x="-775" y="-1125" />
@@ -11,18 +12,55 @@
                 </MetaData>
             </MetaDataList>
             <Properties>
-                <Property type="FloatVec3Property" identifier="angles" displayName="Angles" key="angles">
+                <Property type="CompositeProperty" identifier="Basis" displayName="Basis and offset" key="Basis">
                     <usageMode content="0" />
                     <visible content="1" />
+                    <Properties>
+                        <Property type="FloatVec3Property" identifier="angles" displayName="Angles" key="angles">
+                            <usageMode content="0" />
+                            <visible content="1" />
+                        </Property>
+                        <Property type="FloatVec3Property" identifier="length" displayName="Lengths" key="length">
+                            <usageMode content="0" />
+                            <visible content="1" />
+                        </Property>
+                        <Property type="FloatVec3Property" identifier="offset" displayName="Offset" key="offset">
+                            <usageMode content="0" />
+                            <visible content="1" />
+                        </Property>
+                        <Property type="BoolProperty" identifier="override" displayName="Override" key="override">
+                            <usageMode content="0" />
+                            <visible content="1" />
+                        </Property>
+                    </Properties>
                 </Property>
-                <Property type="DoubleMinMaxProperty" identifier="dataRange" displayName="Data range" key="dataRange">
-                    <semantics semantics="Text" />
+                <Property type="CompositeProperty" identifier="Information" displayName="Data information" key="Information">
                     <usageMode content="0" />
                     <visible content="1" />
-                </Property>
-                <Property type="StringProperty" identifier="dimensions" displayName="Dimensions" key="dimensions">
-                    <usageMode content="0" />
-                    <visible content="1" />
+                    <Properties>
+                        <Property type="DoubleMinMaxProperty" identifier="dataRange" displayName="Data range" key="dataRange">
+                            <semantics semantics="Text" />
+                            <usageMode content="0" />
+                            <visible content="1" />
+                        </Property>
+                        <Property type="StringProperty" identifier="dimensions" displayName="Dimensions" key="dimensions">
+                            <usageMode content="0" />
+                            <visible content="1" />
+                        </Property>
+                        <Property type="StringProperty" identifier="format" displayName="Format" key="format">
+                            <usageMode content="0" />
+                            <visible content="1" />
+                        </Property>
+                        <Property type="DoubleMinMaxProperty" identifier="valueRange" displayName="Value range" key="valueRange">
+                            <semantics semantics="Text" />
+                            <usageMode content="0" />
+                            <visible content="1" />
+                        </Property>
+                        <Property type="StringProperty" identifier="valueUnit" displayName="Value unit" key="valueUnit">
+                            <usageMode content="0" />
+                            <visible content="1" />
+                        </Property>
+                    </Properties>
                 </Property>
                 <Property type="FileProperty" identifier="filename" displayName="Volume file" key="filename">
                     <usageMode content="0" />
@@ -37,34 +75,21 @@
                     <acceptMode content="0" />
                     <fileMode content="0" />
                 </Property>
-                <Property type="StringProperty" identifier="format" displayName="Format" key="format">
+                <Property type="BoolProperty" identifier="playSequence" displayName="Play Sequence" key="playSequence">
                     <usageMode content="0" />
-                    <visible content="1" />
+                    <visible content="0" />
                 </Property>
-                <Property type="FloatVec3Property" identifier="length" displayName="Lengths" key="length">
+                <Property type="IntProperty" identifier="selectedSequenceIndex" displayName="Selected Sequence Index" key="selectedSequenceIndex">
                     <usageMode content="0" />
-                    <visible content="1" />
+                    <visible content="0" />
                 </Property>
-                <Property type="FloatVec3Property" identifier="offset" displayName="Offset" key="offset">
+                <Property type="IntProperty" identifier="volumesPerSecond" displayName="Volumes Per Second" key="volumesPerSecond">
                     <usageMode content="0" />
-                    <visible content="1" />
-                </Property>
-                <Property type="BoolProperty" identifier="override" displayName="Override" key="override">
-                    <usageMode content="0" />
-                    <visible content="1" />
-                </Property>
-                <Property type="DoubleMinMaxProperty" identifier="valueRange" displayName="Value range" key="valueRange">
-                    <semantics semantics="Text" />
-                    <usageMode content="0" />
-                    <visible content="1" />
-                </Property>
-                <Property type="StringProperty" identifier="valueUnit" displayName="Value unit" key="valueUnit">
-                    <usageMode content="0" />
-                    <visible content="1" />
+                    <visible content="0" />
                 </Property>
             </Properties>
         </Processor>
-        <Processor type="HaloSeeds" identifier="HaloSeeds" id="ref1">
+        <Processor type="org.inviwo.HaloSeeds" identifier="HaloSeeds" id="ref46">
             <MetaDataList>
                 <MetaData type="ProcessorMetaData">
                     <position x="-750" y="-1050" />
@@ -83,7 +108,7 @@
                     <visible content="1" />
                     <value content="1" />
                 </Property>
-                <Property type="CameraProperty" identifier="camera" displayName="Camera" key="camera" id="ref2">
+                <Property type="CameraProperty" identifier="camera" displayName="Camera" key="camera" id="ref47">
                     <usageMode content="0" />
                     <visible content="1" />
                     <lookFrom type="FloatVec3Property" identifier="lookFrom" displayName="Look from">
@@ -229,7 +254,7 @@
                 </Property>
             </Properties>
         </Processor>
-        <Processor type="HaloGeneration" identifier="HaloGeneration" id="ref3">
+        <Processor type="org.inviwo.HaloGeneration" identifier="HaloGeneration" id="ref0">
             <MetaDataList>
                 <MetaData type="ProcessorMetaData">
                     <position x="-750" y="-975" />
@@ -250,7 +275,7 @@
                 </Property>
             </Properties>
         </Processor>
-        <Processor type="HaloVolumeRaycaster" identifier="HaloVolumeRaycaster" id="ref4">
+        <Processor type="org.inviwo.HaloVolumeRaycaster" identifier="HaloVolumeRaycaster" id="ref27">
             <MetaDataList>
                 <MetaData type="ProcessorMetaData">
                     <position x="-775" y="-750" />
@@ -259,11 +284,11 @@
                 </MetaData>
             </MetaDataList>
             <Properties>
-                <Property type="BoolProperty" identifier="applyLightAttenuation" displayName="Light attenuation" key="applyLightAttenuation" id="ref16">
+                <Property type="BoolProperty" identifier="applyLightAttenuation" displayName="Light attenuation" key="applyLightAttenuation" id="ref39">
                     <usageMode content="0" />
                     <visible content="1" />
                 </Property>
-                <Property type="CameraProperty" identifier="camera" displayName="Camera" key="camera" id="ref18">
+                <Property type="CameraProperty" identifier="camera" displayName="Camera" key="camera" id="ref41">
                     <usageMode content="0" />
                     <visible content="1" />
                     <lookFrom type="FloatVec3Property" identifier="lookFrom" displayName="Look from">
@@ -298,18 +323,17 @@
                         <visible content="1" />
                     </farPlane>
                 </Property>
-                <Property type="OptionPropertyString" identifier="classificationMode" displayName="Classification" key="classificationMode" id="ref7">
+                <Property type="OptionPropertyString" identifier="classificationMode" displayName="Classification" key="classificationMode" id="ref30">
                     <usageMode content="0" />
                     <visible content="1" />
                 </Property>
-                <Property type="OptionPropertyString" identifier="compositingMode" displayName="Compositing" key="compositingMode" id="ref10">
+                <Property type="OptionPropertyString" identifier="compositingMode" displayName="Compositing" key="compositingMode" id="ref33">
                     <usageMode content="0" />
                     <visible content="1" />
                 </Property>
-                <Property type="OptionPropertyString" identifier="gradientComputationMode" displayName="Gradient computation" key="gradientComputationMode" id="ref8">
+                <Property type="OptionPropertyString" identifier="gradientComputationMode" displayName="Gradient computation" key="gradientComputationMode" id="ref31">
                     <usageMode content="0" />
                     <visible content="1" />
-                    <selectedIdentifier content="central" />
                 </Property>
                 <Property type="TransferFunctionProperty" identifier="haloTransferFunction" displayName="Halo Transfer function" key="haloTransferFunction">
                     <usageMode content="0" />
@@ -339,50 +363,50 @@
                         <interpolationType_ content="0" />
                     </transferFunction>
                 </Property>
-                <Property type="FloatProperty" identifier="isoValue" displayName="Iso value" key="isoValue" id="ref6">
+                <Property type="FloatProperty" identifier="isoValue" displayName="Iso value" key="isoValue" id="ref29">
                     <usageMode content="0" />
                     <visible content="1" />
                 </Property>
-                <Property type="FloatVec3Property" identifier="lightAttenuation" displayName="Light attenuation values" key="lightAttenuation" id="ref17">
+                <Property type="FloatVec3Property" identifier="lightAttenuation" displayName="Light attenuation values" key="lightAttenuation" id="ref40">
                     <usageMode content="0" />
                     <visible content="1" />
                 </Property>
-                <Property type="FloatVec3Property" identifier="lightColorAmbient" displayName="Ambient color" key="lightColorAmbient" id="ref12">
+                <Property type="FloatVec3Property" identifier="lightColorAmbient" displayName="Ambient color" key="lightColorAmbient" id="ref35">
                     <semantics semantics="Color" />
                     <usageMode content="0" />
                     <visible content="1" />
                     <value x="0.49803922" y="0.49803922" z="0.49803922" />
                 </Property>
-                <Property type="FloatVec3Property" identifier="lightColorDiffuse" displayName="Diffuse color" key="lightColorDiffuse" id="ref13">
+                <Property type="FloatVec3Property" identifier="lightColorDiffuse" displayName="Diffuse color" key="lightColorDiffuse" id="ref36">
                     <semantics semantics="Color" />
                     <usageMode content="0" />
                     <visible content="1" />
                     <value x="0.49803922" y="0.49803922" z="0.49803922" />
                 </Property>
-                <Property type="FloatVec3Property" identifier="lightColorSpecular" displayName="Specular color" key="lightColorSpecular" id="ref14">
+                <Property type="FloatVec3Property" identifier="lightColorSpecular" displayName="Specular color" key="lightColorSpecular" id="ref37">
                     <semantics semantics="Color" />
                     <usageMode content="0" />
                     <visible content="1" />
                     <value x="0.49803922" y="0.49803922" z="0.49803922" />
                 </Property>
-                <Property type="FloatVec3Property" identifier="lightPosition" displayName="Position" key="lightPosition" id="ref11">
+                <Property type="FloatVec3Property" identifier="lightPosition" displayName="Position" key="lightPosition" id="ref34">
                     <semantics semantics="Spherical" />
                     <usageMode content="0" />
                     <visible content="1" />
                 </Property>
-                <Property type="IntProperty" identifier="materialShininess" displayName="Material shininess" key="materialShininess" id="ref15">
+                <Property type="IntProperty" identifier="materialShininess" displayName="Material shininess" key="materialShininess" id="ref38">
                     <usageMode content="0" />
                     <visible content="1" />
                 </Property>
-                <Property type="FloatProperty" identifier="samplingRate" displayName="Sampling rate" key="samplingRate" id="ref5">
+                <Property type="FloatProperty" identifier="samplingRate" displayName="Sampling rate" key="samplingRate" id="ref28">
                     <usageMode content="0" />
                     <visible content="1" />
                 </Property>
-                <Property type="OptionPropertyString" identifier="shadingMode" displayName="Shading" key="shadingMode" id="ref9">
+                <Property type="OptionPropertyString" identifier="shadingMode" displayName="Shading" key="shadingMode" id="ref32">
                     <usageMode content="0" />
                     <visible content="1" />
                 </Property>
-                <Property type="TransferFunctionProperty" identifier="transferFunction" displayName="Transfer function" key="transferFunction" id="ref19">
+                <Property type="TransferFunctionProperty" identifier="transferFunction" displayName="Transfer function" key="transferFunction" id="ref42">
                     <usageMode content="0" />
                     <visible content="1" />
                     <MetaDataList>
@@ -439,7 +463,7 @@
                 </Property>
             </Properties>
         </Processor>
-        <Processor type="CubeProxyGeometry" identifier="CubeProxyGeometry" id="ref20">
+        <Processor type="org.inviwo.CubeProxyGeometry" identifier="CubeProxyGeometry" id="ref9">
             <MetaDataList>
                 <MetaData type="ProcessorMetaData">
                     <position x="-575" y="-1050" />
@@ -472,7 +496,7 @@
                 </Property>
             </Properties>
         </Processor>
-        <Processor type="EntryExitPoints" identifier="EntryExitPoints" id="ref21">
+        <Processor type="org.inviwo.EntryExitPoints" identifier="EntryExitPoints" id="ref44">
             <MetaDataList>
                 <MetaData type="ProcessorMetaData">
                     <position x="-575" y="-975" />
@@ -630,7 +654,7 @@
                 </InteractionHandler>
             </InteractonHandlers>
             <Properties>
-                <Property type="CameraProperty" identifier="camera" displayName="Camera" key="camera" id="ref22">
+                <Property type="CameraProperty" identifier="camera" displayName="Camera" key="camera" id="ref45">
                     <usageMode content="0" />
                     <visible content="1" />
                     <lookFrom type="FloatVec3Property" identifier="lookFrom" displayName="Look from">
@@ -675,7 +699,7 @@
                 </Property>
             </Properties>
         </Processor>
-        <Processor type="CanvasGL" identifier="outport" id="ref23">
+        <Processor type="org.inviwo.CanvasGL" identifier="outport" id="ref10">
             <MetaDataList>
                 <MetaData type="ProcessorMetaData">
                     <position x="-775" y="-600" />
@@ -683,33 +707,39 @@
                     <selection content="0" />
                 </MetaData>
                 <MetaData type="ProcessorWidgetMetaData">
-                    <position x="1531" y="772" />
+                    <position x="1539" y="802" />
                     <dimension x="300" y="300" />
                     <visibility content="1" />
                 </MetaData>
             </MetaDataList>
             <Properties>
-                <Property type="FloatProperty" identifier="aspectRatioScaling" displayName="Aspect Ratio Scaling" key="aspectRatioScaling">
-                    <usageMode content="0" />
-                    <visible content="0" />
-                </Property>
-                <Property type="IntVec2Property" identifier="customInputDimensions" displayName="Input Image Dimensions" key="customInputDimensions">
-                    <usageMode content="0" />
-                    <visible content="0" />
-                    <readonly content="1" />
-                </Property>
-                <Property type="IntVec2Property" identifier="dimensions" displayName="Dimensions" key="dimensions">
+                <Property type="CompositeProperty" identifier="inputSize" displayName="Input Dimension Parameters" key="inputSize">
                     <usageMode content="0" />
                     <visible content="1" />
-                    <value x="300" y="300" />
-                </Property>
-                <Property type="BoolProperty" identifier="enableCustomInputDimensions" displayName="Enable Custom Input Dimensions" key="enableCustomInputDimensions">
-                    <usageMode content="0" />
-                    <visible content="1" />
-                </Property>
-                <Property type="BoolProperty" identifier="keepAspectRatio" displayName="Keep Aspect Ratio" key="keepAspectRatio">
-                    <usageMode content="0" />
-                    <visible content="0" />
+                    <Properties>
+                        <Property type="FloatProperty" identifier="aspectRatioScaling" displayName="Aspect Ratio Scaling" key="aspectRatioScaling">
+                            <usageMode content="0" />
+                            <visible content="0" />
+                        </Property>
+                        <Property type="IntVec2Property" identifier="customInputDimensions" displayName="Input Image Dimensions" key="customInputDimensions">
+                            <usageMode content="0" />
+                            <visible content="0" />
+                            <readonly content="1" />
+                        </Property>
+                        <Property type="IntVec2Property" identifier="dimensions" displayName="Dimensions" key="dimensions">
+                            <usageMode content="0" />
+                            <visible content="1" />
+                            <value x="300" y="300" />
+                        </Property>
+                        <Property type="BoolProperty" identifier="enableCustomInputDimensions" displayName="Enable Custom Input Dimensions" key="enableCustomInputDimensions">
+                            <usageMode content="0" />
+                            <visible content="1" />
+                        </Property>
+                        <Property type="BoolProperty" identifier="keepAspectRatio" displayName="Keep Aspect Ratio" key="keepAspectRatio">
+                            <usageMode content="0" />
+                            <visible content="0" />
+                        </Property>
+                    </Properties>
                 </Property>
                 <Property type="DirectoryProperty" identifier="layerDir" displayName="Output Directory" key="layerDir">
                     <usageMode content="0" />
@@ -723,27 +753,10 @@
                 <Property type="OptionPropertyInt" identifier="visibleLayer" displayName="Visible Layer" key="visibleLayer">
                     <usageMode content="0" />
                     <visible content="1" />
-                    <options>
-                        <option>
-                            <id content="color" />
-                            <name content="Color layer" />
-                            <value content="0" />
-                        </option>
-                        <option>
-                            <id content="depth" />
-                            <name content="Depth layer" />
-                            <value content="1" />
-                        </option>
-                        <option>
-                            <id content="picking" />
-                            <name content="Picking layer" />
-                            <value content="2" />
-                        </option>
-                    </options>
                 </Property>
             </Properties>
         </Processor>
-        <Processor type="Background" identifier="Background" id="ref24">
+        <Processor type="org.inviwo.Background" identifier="Background" id="ref5">
             <MetaDataList>
                 <MetaData type="ProcessorMetaData">
                     <position x="-775" y="-675" />
@@ -752,24 +765,24 @@
                 </MetaData>
             </MetaDataList>
             <Properties>
-                <Property type="OptionPropertyInt" identifier="backgroundStyle" displayName="Style" key="backgroundStyle" id="ref25">
+                <Property type="OptionPropertyInt" identifier="backgroundStyle" displayName="Style" key="backgroundStyle" id="ref6">
                     <usageMode content="0" />
                     <visible content="1" />
                 </Property>
-                <Property type="FloatVec4Property" identifier="color1" displayName="Color 1" key="color1" id="ref26">
+                <Property type="FloatVec4Property" identifier="color1" displayName="Color 1" key="color1" id="ref7">
                     <semantics semantics="Color" />
                     <usageMode content="0" />
                     <visible content="1" />
                     <value x="0" y="0" z="0" w="1" />
                 </Property>
-                <Property type="FloatVec4Property" identifier="color2" displayName="Color 2" key="color2" id="ref27">
+                <Property type="FloatVec4Property" identifier="color2" displayName="Color 2" key="color2" id="ref8">
                     <semantics semantics="Color" />
                     <usageMode content="0" />
                     <visible content="1" />
                 </Property>
             </Properties>
         </Processor>
-        <Processor type="SimpleRaycaster" identifier="SimpleRaycaster" id="ref28">
+        <Processor type="org.inviwo.SimpleRaycaster" identifier="SimpleRaycaster" id="ref11">
             <MetaDataList>
                 <MetaData type="ProcessorMetaData">
                     <position x="-600" y="-750" />
@@ -778,11 +791,11 @@
                 </MetaData>
             </MetaDataList>
             <Properties>
-                <Property type="BoolProperty" identifier="applyLightAttenuation" displayName="Light attenuation" key="applyLightAttenuation" id="ref40">
+                <Property type="BoolProperty" identifier="applyLightAttenuation" displayName="Light attenuation" key="applyLightAttenuation" id="ref23">
                     <usageMode content="0" />
                     <visible content="1" />
                 </Property>
-                <Property type="CameraProperty" identifier="camera" displayName="Camera" key="camera" id="ref42">
+                <Property type="CameraProperty" identifier="camera" displayName="Camera" key="camera" id="ref25">
                     <usageMode content="0" />
                     <visible content="1" />
                     <lookFrom type="FloatVec3Property" identifier="lookFrom" displayName="Look from">
@@ -821,63 +834,62 @@
                     <usageMode content="0" />
                     <visible content="1" />
                 </Property>
-                <Property type="OptionPropertyString" identifier="classificationMode" displayName="Classification" key="classificationMode" id="ref31">
+                <Property type="OptionPropertyString" identifier="classificationMode" displayName="Classification" key="classificationMode" id="ref14">
                     <usageMode content="0" />
                     <visible content="1" />
                 </Property>
-                <Property type="OptionPropertyString" identifier="compositingMode" displayName="Compositing" key="compositingMode" id="ref34">
+                <Property type="OptionPropertyString" identifier="compositingMode" displayName="Compositing" key="compositingMode" id="ref17">
                     <usageMode content="0" />
                     <visible content="1" />
                 </Property>
-                <Property type="OptionPropertyString" identifier="gradientComputationMode" displayName="Gradient computation" key="gradientComputationMode" id="ref32">
-                    <usageMode content="0" />
-                    <visible content="1" />
-                    <selectedIdentifier content="central" />
-                </Property>
-                <Property type="FloatProperty" identifier="isoValue" displayName="Iso value" key="isoValue" id="ref30">
+                <Property type="OptionPropertyString" identifier="gradientComputationMode" displayName="Gradient computation" key="gradientComputationMode" id="ref15">
                     <usageMode content="0" />
                     <visible content="1" />
                 </Property>
-                <Property type="FloatVec3Property" identifier="lightAttenuation" displayName="Light attenuation values" key="lightAttenuation" id="ref41">
+                <Property type="FloatProperty" identifier="isoValue" displayName="Iso value" key="isoValue" id="ref13">
                     <usageMode content="0" />
                     <visible content="1" />
                 </Property>
-                <Property type="FloatVec3Property" identifier="lightColorAmbient" displayName="Ambient color" key="lightColorAmbient" id="ref36">
+                <Property type="FloatVec3Property" identifier="lightAttenuation" displayName="Light attenuation values" key="lightAttenuation" id="ref24">
+                    <usageMode content="0" />
+                    <visible content="1" />
+                </Property>
+                <Property type="FloatVec3Property" identifier="lightColorAmbient" displayName="Ambient color" key="lightColorAmbient" id="ref19">
                     <semantics semantics="Color" />
                     <usageMode content="0" />
                     <visible content="1" />
                     <value x="0.49803922" y="0.49803922" z="0.49803922" />
                 </Property>
-                <Property type="FloatVec3Property" identifier="lightColorDiffuse" displayName="Diffuse color" key="lightColorDiffuse" id="ref37">
+                <Property type="FloatVec3Property" identifier="lightColorDiffuse" displayName="Diffuse color" key="lightColorDiffuse" id="ref20">
                     <semantics semantics="Color" />
                     <usageMode content="0" />
                     <visible content="1" />
                     <value x="0.49803922" y="0.49803922" z="0.49803922" />
                 </Property>
-                <Property type="FloatVec3Property" identifier="lightColorSpecular" displayName="Specular color" key="lightColorSpecular" id="ref38">
+                <Property type="FloatVec3Property" identifier="lightColorSpecular" displayName="Specular color" key="lightColorSpecular" id="ref21">
                     <semantics semantics="Color" />
                     <usageMode content="0" />
                     <visible content="1" />
                     <value x="0.49803922" y="0.49803922" z="0.49803922" />
                 </Property>
-                <Property type="FloatVec3Property" identifier="lightPosition" displayName="Position" key="lightPosition" id="ref35">
+                <Property type="FloatVec3Property" identifier="lightPosition" displayName="Position" key="lightPosition" id="ref18">
                     <semantics semantics="Spherical" />
                     <usageMode content="0" />
                     <visible content="1" />
                 </Property>
-                <Property type="IntProperty" identifier="materialShininess" displayName="Material shininess" key="materialShininess" id="ref39">
+                <Property type="IntProperty" identifier="materialShininess" displayName="Material shininess" key="materialShininess" id="ref22">
                     <usageMode content="0" />
                     <visible content="1" />
                 </Property>
-                <Property type="FloatProperty" identifier="samplingRate" displayName="Sampling rate" key="samplingRate" id="ref29">
+                <Property type="FloatProperty" identifier="samplingRate" displayName="Sampling rate" key="samplingRate" id="ref12">
                     <usageMode content="0" />
                     <visible content="1" />
                 </Property>
-                <Property type="OptionPropertyString" identifier="shadingMode" displayName="Shading" key="shadingMode" id="ref33">
+                <Property type="OptionPropertyString" identifier="shadingMode" displayName="Shading" key="shadingMode" id="ref16">
                     <usageMode content="0" />
                     <visible content="1" />
                 </Property>
-                <Property type="TransferFunctionProperty" identifier="transferFunction" displayName="Transfer function" key="transferFunction" id="ref43">
+                <Property type="TransferFunctionProperty" identifier="transferFunction" displayName="Transfer function" key="transferFunction" id="ref26">
                     <usageMode content="0" />
                     <visible content="1" />
                     <MetaDataList>
@@ -934,7 +946,7 @@
                 </Property>
             </Properties>
         </Processor>
-        <Processor type="Background" identifier="Background2" id="ref44">
+        <Processor type="org.inviwo.Background" identifier="Background2" id="ref1">
             <MetaDataList>
                 <MetaData type="ProcessorMetaData">
                     <position x="-600" y="-675" />
@@ -943,24 +955,24 @@
                 </MetaData>
             </MetaDataList>
             <Properties>
-                <Property type="OptionPropertyInt" identifier="backgroundStyle" displayName="Style" key="backgroundStyle" id="ref45">
+                <Property type="OptionPropertyInt" identifier="backgroundStyle" displayName="Style" key="backgroundStyle" id="ref2">
                     <usageMode content="0" />
                     <visible content="1" />
                 </Property>
-                <Property type="FloatVec4Property" identifier="color1" displayName="Color 1" key="color1" id="ref46">
+                <Property type="FloatVec4Property" identifier="color1" displayName="Color 1" key="color1" id="ref3">
                     <semantics semantics="Color" />
                     <usageMode content="0" />
                     <visible content="1" />
                     <value x="0" y="0" z="0" w="1" />
                 </Property>
-                <Property type="FloatVec4Property" identifier="color2" displayName="Color 2" key="color2" id="ref47">
+                <Property type="FloatVec4Property" identifier="color2" displayName="Color 2" key="color2" id="ref4">
                     <semantics semantics="Color" />
                     <usageMode content="0" />
                     <visible content="1" />
                 </Property>
             </Properties>
         </Processor>
-        <Processor type="CanvasGL" identifier="outport2" id="ref48">
+        <Processor type="org.inviwo.CanvasGL" identifier="outport2" id="ref48">
             <MetaDataList>
                 <MetaData type="ProcessorMetaData">
                     <position x="-600" y="-600" />
@@ -968,33 +980,39 @@
                     <selection content="1" />
                 </MetaData>
                 <MetaData type="ProcessorWidgetMetaData">
-                    <position x="1497" y="252" />
+                    <position x="1505" y="282" />
                     <dimension x="300" y="300" />
                     <visibility content="1" />
                 </MetaData>
             </MetaDataList>
             <Properties>
-                <Property type="FloatProperty" identifier="aspectRatioScaling" displayName="Aspect Ratio Scaling" key="aspectRatioScaling">
-                    <usageMode content="0" />
-                    <visible content="0" />
-                </Property>
-                <Property type="IntVec2Property" identifier="customInputDimensions" displayName="Input Image Dimensions" key="customInputDimensions">
-                    <usageMode content="0" />
-                    <visible content="0" />
-                    <readonly content="1" />
-                </Property>
-                <Property type="IntVec2Property" identifier="dimensions" displayName="Dimensions" key="dimensions">
+                <Property type="CompositeProperty" identifier="inputSize" displayName="Input Dimension Parameters" key="inputSize">
                     <usageMode content="0" />
                     <visible content="1" />
-                    <value x="300" y="300" />
-                </Property>
-                <Property type="BoolProperty" identifier="enableCustomInputDimensions" displayName="Enable Custom Input Dimensions" key="enableCustomInputDimensions">
-                    <usageMode content="0" />
-                    <visible content="1" />
-                </Property>
-                <Property type="BoolProperty" identifier="keepAspectRatio" displayName="Keep Aspect Ratio" key="keepAspectRatio">
-                    <usageMode content="0" />
-                    <visible content="0" />
+                    <Properties>
+                        <Property type="FloatProperty" identifier="aspectRatioScaling" displayName="Aspect Ratio Scaling" key="aspectRatioScaling">
+                            <usageMode content="0" />
+                            <visible content="0" />
+                        </Property>
+                        <Property type="IntVec2Property" identifier="customInputDimensions" displayName="Input Image Dimensions" key="customInputDimensions">
+                            <usageMode content="0" />
+                            <visible content="0" />
+                            <readonly content="1" />
+                        </Property>
+                        <Property type="IntVec2Property" identifier="dimensions" displayName="Dimensions" key="dimensions">
+                            <usageMode content="0" />
+                            <visible content="1" />
+                            <value x="300" y="300" />
+                        </Property>
+                        <Property type="BoolProperty" identifier="enableCustomInputDimensions" displayName="Enable Custom Input Dimensions" key="enableCustomInputDimensions">
+                            <usageMode content="0" />
+                            <visible content="1" />
+                        </Property>
+                        <Property type="BoolProperty" identifier="keepAspectRatio" displayName="Keep Aspect Ratio" key="keepAspectRatio">
+                            <usageMode content="0" />
+                            <visible content="0" />
+                        </Property>
+                    </Properties>
                 </Property>
                 <Property type="DirectoryProperty" identifier="layerDir" displayName="Output Directory" key="layerDir">
                     <usageMode content="0" />
@@ -1008,23 +1026,6 @@
                 <Property type="OptionPropertyInt" identifier="visibleLayer" displayName="Visible Layer" key="visibleLayer">
                     <usageMode content="0" />
                     <visible content="1" />
-                    <options>
-                        <option>
-                            <id content="color" />
-                            <name content="Color layer" />
-                            <value content="0" />
-                        </option>
-                        <option>
-                            <id content="depth" />
-                            <name content="Depth layer" />
-                            <value content="1" />
-                        </option>
-                        <option>
-                            <id content="picking" />
-                            <name content="Picking layer" />
-                            <value content="2" />
-                        </option>
-                    </options>
                 </Property>
             </Properties>
         </Processor>
@@ -1032,364 +1033,364 @@
     <Connections>
         <Connection>
             <OutPort identifier="data">
-                <Processor type="VolumeSource" identifier="VolumeSource" reference="ref0" />
+                <Processor type="org.inviwo.VolumeSource" identifier="VolumeSource" reference="ref43" />
             </OutPort>
             <InPort identifier="haloseeds.fraginport">
-                <Processor type="HaloSeeds" identifier="HaloSeeds" reference="ref1" />
+                <Processor type="org.inviwo.HaloSeeds" identifier="HaloSeeds" reference="ref46" />
             </InPort>
         </Connection>
         <Connection>
             <OutPort identifier="haloseeds.fragoutport">
-                <Processor type="HaloSeeds" identifier="HaloSeeds" reference="ref1" />
+                <Processor type="org.inviwo.HaloSeeds" identifier="HaloSeeds" reference="ref46" />
             </OutPort>
             <InPort identifier="halogeneration.fraginport">
-                <Processor type="HaloGeneration" identifier="HaloGeneration" reference="ref3" />
+                <Processor type="org.inviwo.HaloGeneration" identifier="HaloGeneration" reference="ref0" />
             </InPort>
         </Connection>
         <Connection>
             <OutPort identifier="halogeneration.fragoutport">
-                <Processor type="HaloGeneration" identifier="HaloGeneration" reference="ref3" />
+                <Processor type="org.inviwo.HaloGeneration" identifier="HaloGeneration" reference="ref0" />
             </OutPort>
             <InPort identifier="haloVolume">
-                <Processor type="HaloVolumeRaycaster" identifier="HaloVolumeRaycaster" reference="ref4" />
+                <Processor type="org.inviwo.HaloVolumeRaycaster" identifier="HaloVolumeRaycaster" reference="ref27" />
             </InPort>
         </Connection>
         <Connection>
             <OutPort identifier="data">
-                <Processor type="VolumeSource" identifier="VolumeSource" reference="ref0" />
+                <Processor type="org.inviwo.VolumeSource" identifier="VolumeSource" reference="ref43" />
             </OutPort>
             <InPort identifier="volume">
-                <Processor type="HaloVolumeRaycaster" identifier="HaloVolumeRaycaster" reference="ref4" />
+                <Processor type="org.inviwo.HaloVolumeRaycaster" identifier="HaloVolumeRaycaster" reference="ref27" />
             </InPort>
         </Connection>
         <Connection>
             <OutPort identifier="geometry.outport">
-                <Processor type="CubeProxyGeometry" identifier="CubeProxyGeometry" reference="ref20" />
+                <Processor type="org.inviwo.CubeProxyGeometry" identifier="CubeProxyGeometry" reference="ref9" />
             </OutPort>
             <InPort identifier="geometry">
-                <Processor type="EntryExitPoints" identifier="EntryExitPoints" reference="ref21" />
+                <Processor type="org.inviwo.EntryExitPoints" identifier="EntryExitPoints" reference="ref44" />
             </InPort>
         </Connection>
         <Connection>
             <OutPort identifier="data">
-                <Processor type="VolumeSource" identifier="VolumeSource" reference="ref0" />
+                <Processor type="org.inviwo.VolumeSource" identifier="VolumeSource" reference="ref43" />
             </OutPort>
             <InPort identifier="volume.inport">
-                <Processor type="CubeProxyGeometry" identifier="CubeProxyGeometry" reference="ref20" />
+                <Processor type="org.inviwo.CubeProxyGeometry" identifier="CubeProxyGeometry" reference="ref9" />
             </InPort>
         </Connection>
         <Connection>
             <OutPort identifier="entry-points">
-                <Processor type="EntryExitPoints" identifier="EntryExitPoints" reference="ref21" />
+                <Processor type="org.inviwo.EntryExitPoints" identifier="EntryExitPoints" reference="ref44" />
             </OutPort>
             <InPort identifier="entry-points">
-                <Processor type="HaloVolumeRaycaster" identifier="HaloVolumeRaycaster" reference="ref4" />
+                <Processor type="org.inviwo.HaloVolumeRaycaster" identifier="HaloVolumeRaycaster" reference="ref27" />
             </InPort>
         </Connection>
         <Connection>
             <OutPort identifier="exit-points">
-                <Processor type="EntryExitPoints" identifier="EntryExitPoints" reference="ref21" />
+                <Processor type="org.inviwo.EntryExitPoints" identifier="EntryExitPoints" reference="ref44" />
             </OutPort>
             <InPort identifier="exit-points">
-                <Processor type="HaloVolumeRaycaster" identifier="HaloVolumeRaycaster" reference="ref4" />
+                <Processor type="org.inviwo.HaloVolumeRaycaster" identifier="HaloVolumeRaycaster" reference="ref27" />
             </InPort>
         </Connection>
         <Connection>
             <OutPort identifier="outport">
-                <Processor type="HaloVolumeRaycaster" identifier="HaloVolumeRaycaster" reference="ref4" />
+                <Processor type="org.inviwo.HaloVolumeRaycaster" identifier="HaloVolumeRaycaster" reference="ref27" />
             </OutPort>
             <InPort identifier="inport">
-                <Processor type="Background" identifier="Background" reference="ref24" />
+                <Processor type="org.inviwo.Background" identifier="Background" reference="ref5" />
             </InPort>
         </Connection>
         <Connection>
             <OutPort identifier="outport">
-                <Processor type="Background" identifier="Background" reference="ref24" />
+                <Processor type="org.inviwo.Background" identifier="Background" reference="ref5" />
             </OutPort>
             <InPort identifier="inport">
-                <Processor type="CanvasGL" identifier="outport" reference="ref23" />
+                <Processor type="org.inviwo.CanvasGL" identifier="outport" reference="ref10" />
             </InPort>
         </Connection>
         <Connection>
             <OutPort identifier="data">
-                <Processor type="VolumeSource" identifier="VolumeSource" reference="ref0" />
+                <Processor type="org.inviwo.VolumeSource" identifier="VolumeSource" reference="ref43" />
             </OutPort>
             <InPort identifier="volume">
-                <Processor type="SimpleRaycaster" identifier="SimpleRaycaster" reference="ref28" />
+                <Processor type="org.inviwo.SimpleRaycaster" identifier="SimpleRaycaster" reference="ref11" />
             </InPort>
         </Connection>
         <Connection>
             <OutPort identifier="entry-points">
-                <Processor type="EntryExitPoints" identifier="EntryExitPoints" reference="ref21" />
+                <Processor type="org.inviwo.EntryExitPoints" identifier="EntryExitPoints" reference="ref44" />
             </OutPort>
             <InPort identifier="entry-points">
-                <Processor type="SimpleRaycaster" identifier="SimpleRaycaster" reference="ref28" />
+                <Processor type="org.inviwo.SimpleRaycaster" identifier="SimpleRaycaster" reference="ref11" />
             </InPort>
         </Connection>
         <Connection>
             <OutPort identifier="exit-points">
-                <Processor type="EntryExitPoints" identifier="EntryExitPoints" reference="ref21" />
+                <Processor type="org.inviwo.EntryExitPoints" identifier="EntryExitPoints" reference="ref44" />
             </OutPort>
             <InPort identifier="exit-points">
-                <Processor type="SimpleRaycaster" identifier="SimpleRaycaster" reference="ref28" />
+                <Processor type="org.inviwo.SimpleRaycaster" identifier="SimpleRaycaster" reference="ref11" />
             </InPort>
         </Connection>
         <Connection>
             <OutPort identifier="outport">
-                <Processor type="SimpleRaycaster" identifier="SimpleRaycaster" reference="ref28" />
+                <Processor type="org.inviwo.SimpleRaycaster" identifier="SimpleRaycaster" reference="ref11" />
             </OutPort>
             <InPort identifier="inport">
-                <Processor type="Background" identifier="Background2" reference="ref44" />
+                <Processor type="org.inviwo.Background" identifier="Background2" reference="ref1" />
             </InPort>
         </Connection>
         <Connection>
             <OutPort identifier="outport">
-                <Processor type="Background" identifier="Background2" reference="ref44" />
+                <Processor type="org.inviwo.Background" identifier="Background2" reference="ref1" />
             </OutPort>
             <InPort identifier="inport">
-                <Processor type="CanvasGL" identifier="outport2" reference="ref48" />
+                <Processor type="org.inviwo.CanvasGL" identifier="outport2" reference="ref48" />
             </InPort>
         </Connection>
     </Connections>
     <PropertyLinks>
         <PropertyLink>
             <Properties>
-                <Property type="OptionPropertyInt" identifier="backgroundStyle" displayName="Style" key="backgroundStyle" reference="ref25" />
-                <Property type="OptionPropertyInt" identifier="backgroundStyle" displayName="Style" key="backgroundStyle" reference="ref45" />
+                <Property type="OptionPropertyInt" identifier="backgroundStyle" displayName="Style" key="backgroundStyle" reference="ref6" />
+                <Property type="OptionPropertyInt" identifier="backgroundStyle" displayName="Style" key="backgroundStyle" reference="ref2" />
             </Properties>
         </PropertyLink>
         <PropertyLink>
             <Properties>
-                <Property type="OptionPropertyInt" identifier="backgroundStyle" displayName="Style" key="backgroundStyle" reference="ref45" />
-                <Property type="OptionPropertyInt" identifier="backgroundStyle" displayName="Style" key="backgroundStyle" reference="ref25" />
+                <Property type="OptionPropertyInt" identifier="backgroundStyle" displayName="Style" key="backgroundStyle" reference="ref2" />
+                <Property type="OptionPropertyInt" identifier="backgroundStyle" displayName="Style" key="backgroundStyle" reference="ref6" />
             </Properties>
         </PropertyLink>
         <PropertyLink>
             <Properties>
-                <Property type="FloatVec4Property" identifier="color1" displayName="Color 1" key="color1" reference="ref26" />
-                <Property type="FloatVec4Property" identifier="color1" displayName="Color 1" key="color1" reference="ref46" />
+                <Property type="FloatVec4Property" identifier="color1" displayName="Color 1" key="color1" reference="ref7" />
+                <Property type="FloatVec4Property" identifier="color1" displayName="Color 1" key="color1" reference="ref3" />
             </Properties>
         </PropertyLink>
         <PropertyLink>
             <Properties>
-                <Property type="FloatVec4Property" identifier="color1" displayName="Color 1" key="color1" reference="ref46" />
-                <Property type="FloatVec4Property" identifier="color1" displayName="Color 1" key="color1" reference="ref26" />
+                <Property type="FloatVec4Property" identifier="color1" displayName="Color 1" key="color1" reference="ref3" />
+                <Property type="FloatVec4Property" identifier="color1" displayName="Color 1" key="color1" reference="ref7" />
             </Properties>
         </PropertyLink>
         <PropertyLink>
             <Properties>
-                <Property type="FloatVec4Property" identifier="color2" displayName="Color 2" key="color2" reference="ref27" />
-                <Property type="FloatVec4Property" identifier="color2" displayName="Color 2" key="color2" reference="ref47" />
+                <Property type="FloatVec4Property" identifier="color2" displayName="Color 2" key="color2" reference="ref8" />
+                <Property type="FloatVec4Property" identifier="color2" displayName="Color 2" key="color2" reference="ref4" />
             </Properties>
         </PropertyLink>
         <PropertyLink>
             <Properties>
-                <Property type="FloatVec4Property" identifier="color2" displayName="Color 2" key="color2" reference="ref47" />
-                <Property type="FloatVec4Property" identifier="color2" displayName="Color 2" key="color2" reference="ref27" />
+                <Property type="FloatVec4Property" identifier="color2" displayName="Color 2" key="color2" reference="ref4" />
+                <Property type="FloatVec4Property" identifier="color2" displayName="Color 2" key="color2" reference="ref8" />
             </Properties>
         </PropertyLink>
         <PropertyLink>
             <Properties>
-                <Property type="FloatProperty" identifier="samplingRate" displayName="Sampling rate" key="samplingRate" reference="ref5" />
-                <Property type="FloatProperty" identifier="samplingRate" displayName="Sampling rate" key="samplingRate" reference="ref29" />
+                <Property type="FloatProperty" identifier="samplingRate" displayName="Sampling rate" key="samplingRate" reference="ref28" />
+                <Property type="FloatProperty" identifier="samplingRate" displayName="Sampling rate" key="samplingRate" reference="ref12" />
             </Properties>
         </PropertyLink>
         <PropertyLink>
             <Properties>
-                <Property type="FloatProperty" identifier="samplingRate" displayName="Sampling rate" key="samplingRate" reference="ref29" />
-                <Property type="FloatProperty" identifier="samplingRate" displayName="Sampling rate" key="samplingRate" reference="ref5" />
+                <Property type="FloatProperty" identifier="samplingRate" displayName="Sampling rate" key="samplingRate" reference="ref12" />
+                <Property type="FloatProperty" identifier="samplingRate" displayName="Sampling rate" key="samplingRate" reference="ref28" />
             </Properties>
         </PropertyLink>
         <PropertyLink>
             <Properties>
-                <Property type="OptionPropertyString" identifier="classificationMode" displayName="Classification" key="classificationMode" reference="ref7" />
-                <Property type="OptionPropertyString" identifier="classificationMode" displayName="Classification" key="classificationMode" reference="ref31" />
+                <Property type="OptionPropertyString" identifier="classificationMode" displayName="Classification" key="classificationMode" reference="ref30" />
+                <Property type="OptionPropertyString" identifier="classificationMode" displayName="Classification" key="classificationMode" reference="ref14" />
             </Properties>
         </PropertyLink>
         <PropertyLink>
             <Properties>
-                <Property type="OptionPropertyString" identifier="classificationMode" displayName="Classification" key="classificationMode" reference="ref31" />
-                <Property type="OptionPropertyString" identifier="classificationMode" displayName="Classification" key="classificationMode" reference="ref7" />
+                <Property type="OptionPropertyString" identifier="classificationMode" displayName="Classification" key="classificationMode" reference="ref14" />
+                <Property type="OptionPropertyString" identifier="classificationMode" displayName="Classification" key="classificationMode" reference="ref30" />
             </Properties>
         </PropertyLink>
         <PropertyLink>
             <Properties>
-                <Property type="OptionPropertyString" identifier="gradientComputationMode" displayName="Gradient computation" key="gradientComputationMode" reference="ref8" />
-                <Property type="OptionPropertyString" identifier="gradientComputationMode" displayName="Gradient computation" key="gradientComputationMode" reference="ref32" />
+                <Property type="OptionPropertyString" identifier="gradientComputationMode" displayName="Gradient computation" key="gradientComputationMode" reference="ref31" />
+                <Property type="OptionPropertyString" identifier="gradientComputationMode" displayName="Gradient computation" key="gradientComputationMode" reference="ref15" />
             </Properties>
         </PropertyLink>
         <PropertyLink>
             <Properties>
-                <Property type="OptionPropertyString" identifier="gradientComputationMode" displayName="Gradient computation" key="gradientComputationMode" reference="ref32" />
-                <Property type="OptionPropertyString" identifier="gradientComputationMode" displayName="Gradient computation" key="gradientComputationMode" reference="ref8" />
+                <Property type="OptionPropertyString" identifier="gradientComputationMode" displayName="Gradient computation" key="gradientComputationMode" reference="ref15" />
+                <Property type="OptionPropertyString" identifier="gradientComputationMode" displayName="Gradient computation" key="gradientComputationMode" reference="ref31" />
             </Properties>
         </PropertyLink>
         <PropertyLink>
             <Properties>
-                <Property type="OptionPropertyString" identifier="compositingMode" displayName="Compositing" key="compositingMode" reference="ref10" />
-                <Property type="OptionPropertyString" identifier="compositingMode" displayName="Compositing" key="compositingMode" reference="ref34" />
+                <Property type="OptionPropertyString" identifier="compositingMode" displayName="Compositing" key="compositingMode" reference="ref33" />
+                <Property type="OptionPropertyString" identifier="compositingMode" displayName="Compositing" key="compositingMode" reference="ref17" />
             </Properties>
         </PropertyLink>
         <PropertyLink>
             <Properties>
-                <Property type="OptionPropertyString" identifier="compositingMode" displayName="Compositing" key="compositingMode" reference="ref34" />
-                <Property type="OptionPropertyString" identifier="compositingMode" displayName="Compositing" key="compositingMode" reference="ref10" />
+                <Property type="OptionPropertyString" identifier="compositingMode" displayName="Compositing" key="compositingMode" reference="ref17" />
+                <Property type="OptionPropertyString" identifier="compositingMode" displayName="Compositing" key="compositingMode" reference="ref33" />
             </Properties>
         </PropertyLink>
         <PropertyLink>
             <Properties>
-                <Property type="CameraProperty" identifier="camera" displayName="Camera" key="camera" reference="ref18" />
-                <Property type="CameraProperty" identifier="camera" displayName="Camera" key="camera" reference="ref42" />
+                <Property type="CameraProperty" identifier="camera" displayName="Camera" key="camera" reference="ref41" />
+                <Property type="CameraProperty" identifier="camera" displayName="Camera" key="camera" reference="ref25" />
             </Properties>
         </PropertyLink>
         <PropertyLink>
             <Properties>
-                <Property type="CameraProperty" identifier="camera" displayName="Camera" key="camera" reference="ref42" />
-                <Property type="CameraProperty" identifier="camera" displayName="Camera" key="camera" reference="ref18" />
+                <Property type="CameraProperty" identifier="camera" displayName="Camera" key="camera" reference="ref25" />
+                <Property type="CameraProperty" identifier="camera" displayName="Camera" key="camera" reference="ref41" />
             </Properties>
         </PropertyLink>
         <PropertyLink>
             <Properties>
-                <Property type="TransferFunctionProperty" identifier="transferFunction" displayName="Transfer function" key="transferFunction" reference="ref19" />
-                <Property type="TransferFunctionProperty" identifier="transferFunction" displayName="Transfer function" key="transferFunction" reference="ref43" />
+                <Property type="TransferFunctionProperty" identifier="transferFunction" displayName="Transfer function" key="transferFunction" reference="ref42" />
+                <Property type="TransferFunctionProperty" identifier="transferFunction" displayName="Transfer function" key="transferFunction" reference="ref26" />
             </Properties>
         </PropertyLink>
         <PropertyLink>
             <Properties>
-                <Property type="TransferFunctionProperty" identifier="transferFunction" displayName="Transfer function" key="transferFunction" reference="ref43" />
-                <Property type="TransferFunctionProperty" identifier="transferFunction" displayName="Transfer function" key="transferFunction" reference="ref19" />
+                <Property type="TransferFunctionProperty" identifier="transferFunction" displayName="Transfer function" key="transferFunction" reference="ref26" />
+                <Property type="TransferFunctionProperty" identifier="transferFunction" displayName="Transfer function" key="transferFunction" reference="ref42" />
             </Properties>
         </PropertyLink>
         <PropertyLink>
             <Properties>
-                <Property type="FloatProperty" identifier="isoValue" displayName="Iso value" key="isoValue" reference="ref6" />
-                <Property type="FloatProperty" identifier="isoValue" displayName="Iso value" key="isoValue" reference="ref30" />
+                <Property type="FloatProperty" identifier="isoValue" displayName="Iso value" key="isoValue" reference="ref29" />
+                <Property type="FloatProperty" identifier="isoValue" displayName="Iso value" key="isoValue" reference="ref13" />
             </Properties>
         </PropertyLink>
         <PropertyLink>
             <Properties>
-                <Property type="FloatProperty" identifier="isoValue" displayName="Iso value" key="isoValue" reference="ref30" />
-                <Property type="FloatProperty" identifier="isoValue" displayName="Iso value" key="isoValue" reference="ref6" />
+                <Property type="FloatProperty" identifier="isoValue" displayName="Iso value" key="isoValue" reference="ref13" />
+                <Property type="FloatProperty" identifier="isoValue" displayName="Iso value" key="isoValue" reference="ref29" />
             </Properties>
         </PropertyLink>
         <PropertyLink>
             <Properties>
-                <Property type="OptionPropertyString" identifier="shadingMode" displayName="Shading" key="shadingMode" reference="ref9" />
-                <Property type="OptionPropertyString" identifier="shadingMode" displayName="Shading" key="shadingMode" reference="ref33" />
+                <Property type="OptionPropertyString" identifier="shadingMode" displayName="Shading" key="shadingMode" reference="ref32" />
+                <Property type="OptionPropertyString" identifier="shadingMode" displayName="Shading" key="shadingMode" reference="ref16" />
             </Properties>
         </PropertyLink>
         <PropertyLink>
             <Properties>
-                <Property type="OptionPropertyString" identifier="shadingMode" displayName="Shading" key="shadingMode" reference="ref33" />
-                <Property type="OptionPropertyString" identifier="shadingMode" displayName="Shading" key="shadingMode" reference="ref9" />
+                <Property type="OptionPropertyString" identifier="shadingMode" displayName="Shading" key="shadingMode" reference="ref16" />
+                <Property type="OptionPropertyString" identifier="shadingMode" displayName="Shading" key="shadingMode" reference="ref32" />
             </Properties>
         </PropertyLink>
         <PropertyLink>
             <Properties>
-                <Property type="FloatVec3Property" identifier="lightPosition" displayName="Position" key="lightPosition" reference="ref11" />
-                <Property type="FloatVec3Property" identifier="lightPosition" displayName="Position" key="lightPosition" reference="ref35" />
+                <Property type="FloatVec3Property" identifier="lightPosition" displayName="Position" key="lightPosition" reference="ref34" />
+                <Property type="FloatVec3Property" identifier="lightPosition" displayName="Position" key="lightPosition" reference="ref18" />
             </Properties>
         </PropertyLink>
         <PropertyLink>
             <Properties>
-                <Property type="FloatVec3Property" identifier="lightPosition" displayName="Position" key="lightPosition" reference="ref35" />
-                <Property type="FloatVec3Property" identifier="lightPosition" displayName="Position" key="lightPosition" reference="ref11" />
+                <Property type="FloatVec3Property" identifier="lightPosition" displayName="Position" key="lightPosition" reference="ref18" />
+                <Property type="FloatVec3Property" identifier="lightPosition" displayName="Position" key="lightPosition" reference="ref34" />
             </Properties>
         </PropertyLink>
         <PropertyLink>
             <Properties>
-                <Property type="FloatVec3Property" identifier="lightColorAmbient" displayName="Ambient color" key="lightColorAmbient" reference="ref12" />
-                <Property type="FloatVec3Property" identifier="lightColorAmbient" displayName="Ambient color" key="lightColorAmbient" reference="ref36" />
+                <Property type="FloatVec3Property" identifier="lightColorAmbient" displayName="Ambient color" key="lightColorAmbient" reference="ref35" />
+                <Property type="FloatVec3Property" identifier="lightColorAmbient" displayName="Ambient color" key="lightColorAmbient" reference="ref19" />
             </Properties>
         </PropertyLink>
         <PropertyLink>
             <Properties>
-                <Property type="FloatVec3Property" identifier="lightColorAmbient" displayName="Ambient color" key="lightColorAmbient" reference="ref36" />
-                <Property type="FloatVec3Property" identifier="lightColorAmbient" displayName="Ambient color" key="lightColorAmbient" reference="ref12" />
+                <Property type="FloatVec3Property" identifier="lightColorAmbient" displayName="Ambient color" key="lightColorAmbient" reference="ref19" />
+                <Property type="FloatVec3Property" identifier="lightColorAmbient" displayName="Ambient color" key="lightColorAmbient" reference="ref35" />
             </Properties>
         </PropertyLink>
         <PropertyLink>
             <Properties>
-                <Property type="FloatVec3Property" identifier="lightColorDiffuse" displayName="Diffuse color" key="lightColorDiffuse" reference="ref13" />
-                <Property type="FloatVec3Property" identifier="lightColorDiffuse" displayName="Diffuse color" key="lightColorDiffuse" reference="ref37" />
+                <Property type="FloatVec3Property" identifier="lightColorDiffuse" displayName="Diffuse color" key="lightColorDiffuse" reference="ref36" />
+                <Property type="FloatVec3Property" identifier="lightColorDiffuse" displayName="Diffuse color" key="lightColorDiffuse" reference="ref20" />
             </Properties>
         </PropertyLink>
         <PropertyLink>
             <Properties>
-                <Property type="FloatVec3Property" identifier="lightColorDiffuse" displayName="Diffuse color" key="lightColorDiffuse" reference="ref37" />
-                <Property type="FloatVec3Property" identifier="lightColorDiffuse" displayName="Diffuse color" key="lightColorDiffuse" reference="ref13" />
+                <Property type="FloatVec3Property" identifier="lightColorDiffuse" displayName="Diffuse color" key="lightColorDiffuse" reference="ref20" />
+                <Property type="FloatVec3Property" identifier="lightColorDiffuse" displayName="Diffuse color" key="lightColorDiffuse" reference="ref36" />
             </Properties>
         </PropertyLink>
         <PropertyLink>
             <Properties>
-                <Property type="FloatVec3Property" identifier="lightColorSpecular" displayName="Specular color" key="lightColorSpecular" reference="ref14" />
-                <Property type="FloatVec3Property" identifier="lightColorSpecular" displayName="Specular color" key="lightColorSpecular" reference="ref38" />
+                <Property type="FloatVec3Property" identifier="lightColorSpecular" displayName="Specular color" key="lightColorSpecular" reference="ref37" />
+                <Property type="FloatVec3Property" identifier="lightColorSpecular" displayName="Specular color" key="lightColorSpecular" reference="ref21" />
             </Properties>
         </PropertyLink>
         <PropertyLink>
             <Properties>
-                <Property type="FloatVec3Property" identifier="lightColorSpecular" displayName="Specular color" key="lightColorSpecular" reference="ref38" />
-                <Property type="FloatVec3Property" identifier="lightColorSpecular" displayName="Specular color" key="lightColorSpecular" reference="ref14" />
+                <Property type="FloatVec3Property" identifier="lightColorSpecular" displayName="Specular color" key="lightColorSpecular" reference="ref21" />
+                <Property type="FloatVec3Property" identifier="lightColorSpecular" displayName="Specular color" key="lightColorSpecular" reference="ref37" />
             </Properties>
         </PropertyLink>
         <PropertyLink>
             <Properties>
-                <Property type="IntProperty" identifier="materialShininess" displayName="Material shininess" key="materialShininess" reference="ref15" />
-                <Property type="IntProperty" identifier="materialShininess" displayName="Material shininess" key="materialShininess" reference="ref39" />
+                <Property type="IntProperty" identifier="materialShininess" displayName="Material shininess" key="materialShininess" reference="ref38" />
+                <Property type="IntProperty" identifier="materialShininess" displayName="Material shininess" key="materialShininess" reference="ref22" />
             </Properties>
         </PropertyLink>
         <PropertyLink>
             <Properties>
-                <Property type="IntProperty" identifier="materialShininess" displayName="Material shininess" key="materialShininess" reference="ref39" />
-                <Property type="IntProperty" identifier="materialShininess" displayName="Material shininess" key="materialShininess" reference="ref15" />
+                <Property type="IntProperty" identifier="materialShininess" displayName="Material shininess" key="materialShininess" reference="ref22" />
+                <Property type="IntProperty" identifier="materialShininess" displayName="Material shininess" key="materialShininess" reference="ref38" />
             </Properties>
         </PropertyLink>
         <PropertyLink>
             <Properties>
-                <Property type="BoolProperty" identifier="applyLightAttenuation" displayName="Light attenuation" key="applyLightAttenuation" reference="ref16" />
-                <Property type="BoolProperty" identifier="applyLightAttenuation" displayName="Light attenuation" key="applyLightAttenuation" reference="ref40" />
+                <Property type="BoolProperty" identifier="applyLightAttenuation" displayName="Light attenuation" key="applyLightAttenuation" reference="ref39" />
+                <Property type="BoolProperty" identifier="applyLightAttenuation" displayName="Light attenuation" key="applyLightAttenuation" reference="ref23" />
             </Properties>
         </PropertyLink>
         <PropertyLink>
             <Properties>
-                <Property type="BoolProperty" identifier="applyLightAttenuation" displayName="Light attenuation" key="applyLightAttenuation" reference="ref40" />
-                <Property type="BoolProperty" identifier="applyLightAttenuation" displayName="Light attenuation" key="applyLightAttenuation" reference="ref16" />
+                <Property type="BoolProperty" identifier="applyLightAttenuation" displayName="Light attenuation" key="applyLightAttenuation" reference="ref23" />
+                <Property type="BoolProperty" identifier="applyLightAttenuation" displayName="Light attenuation" key="applyLightAttenuation" reference="ref39" />
             </Properties>
         </PropertyLink>
         <PropertyLink>
             <Properties>
-                <Property type="FloatVec3Property" identifier="lightAttenuation" displayName="Light attenuation values" key="lightAttenuation" reference="ref17" />
-                <Property type="FloatVec3Property" identifier="lightAttenuation" displayName="Light attenuation values" key="lightAttenuation" reference="ref41" />
+                <Property type="FloatVec3Property" identifier="lightAttenuation" displayName="Light attenuation values" key="lightAttenuation" reference="ref40" />
+                <Property type="FloatVec3Property" identifier="lightAttenuation" displayName="Light attenuation values" key="lightAttenuation" reference="ref24" />
             </Properties>
         </PropertyLink>
         <PropertyLink>
             <Properties>
-                <Property type="FloatVec3Property" identifier="lightAttenuation" displayName="Light attenuation values" key="lightAttenuation" reference="ref41" />
-                <Property type="FloatVec3Property" identifier="lightAttenuation" displayName="Light attenuation values" key="lightAttenuation" reference="ref17" />
+                <Property type="FloatVec3Property" identifier="lightAttenuation" displayName="Light attenuation values" key="lightAttenuation" reference="ref24" />
+                <Property type="FloatVec3Property" identifier="lightAttenuation" displayName="Light attenuation values" key="lightAttenuation" reference="ref40" />
             </Properties>
         </PropertyLink>
         <PropertyLink>
             <Properties>
-                <Property type="CameraProperty" identifier="camera" displayName="Camera" key="camera" reference="ref22" />
-                <Property type="CameraProperty" identifier="camera" displayName="Camera" key="camera" reference="ref2" />
+                <Property type="CameraProperty" identifier="camera" displayName="Camera" key="camera" reference="ref45" />
+                <Property type="CameraProperty" identifier="camera" displayName="Camera" key="camera" reference="ref47" />
             </Properties>
         </PropertyLink>
         <PropertyLink>
             <Properties>
-                <Property type="CameraProperty" identifier="camera" displayName="Camera" key="camera" reference="ref2" />
-                <Property type="CameraProperty" identifier="camera" displayName="Camera" key="camera" reference="ref22" />
+                <Property type="CameraProperty" identifier="camera" displayName="Camera" key="camera" reference="ref47" />
+                <Property type="CameraProperty" identifier="camera" displayName="Camera" key="camera" reference="ref45" />
             </Properties>
         </PropertyLink>
         <PropertyLink>
             <Properties>
-                <Property type="CameraProperty" identifier="camera" displayName="Camera" key="camera" reference="ref22" />
-                <Property type="CameraProperty" identifier="camera" displayName="Camera" key="camera" reference="ref42" />
+                <Property type="CameraProperty" identifier="camera" displayName="Camera" key="camera" reference="ref45" />
+                <Property type="CameraProperty" identifier="camera" displayName="Camera" key="camera" reference="ref25" />
             </Properties>
         </PropertyLink>
         <PropertyLink>
             <Properties>
-                <Property type="CameraProperty" identifier="camera" displayName="Camera" key="camera" reference="ref42" />
-                <Property type="CameraProperty" identifier="camera" displayName="Camera" key="camera" reference="ref22" />
+                <Property type="CameraProperty" identifier="camera" displayName="Camera" key="camera" reference="ref25" />
+                <Property type="CameraProperty" identifier="camera" displayName="Camera" key="camera" reference="ref45" />
             </Properties>
         </PropertyLink>
     </PropertyLinks>

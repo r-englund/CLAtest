@@ -315,6 +315,8 @@ private:
     void removeFromPrimaryCache(PropertyLink* propertyLink);
     void clearSecondaryCache();
 
+    static const int processorNetworkVersion_;
+
     ///////////////////////////////////////////////////////////////////////
     //TODO: ProcessorLinks are Deprecated. To be removed
     std::vector<ProcessorLink*> getSortedProcessorLinksFromProperty(Property*);
@@ -339,6 +341,21 @@ private:
 
     bool linking_;
     Processor* linkInvalidationInitiator_;
+
+
+    class NetworkConverter : public VersionConverter {
+    public:
+        typedef void (NetworkConverter::*updateType)(TxElement*);
+        NetworkConverter(int from);
+        virtual bool convert(TxElement* root);
+        int from_;
+
+    private:
+
+        void updateProcessorType(TxElement* node);
+        void traverseNodes(TxElement* node, updateType update);
+    };
+
 };
 
 template<class T>

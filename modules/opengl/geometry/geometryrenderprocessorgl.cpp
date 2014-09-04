@@ -40,7 +40,7 @@
 
 namespace inviwo {
 
-ProcessorClassIdentifier(GeometryRenderProcessorGL,  "GeometryRenderGL");
+ProcessorClassIdentifier(GeometryRenderProcessorGL, "org.inviwo.GeometryRenderGL");
 ProcessorDisplayName(GeometryRenderProcessorGL,  "Geometry Render");
 ProcessorTags(GeometryRenderProcessorGL, Tags::GL);
 ProcessorCategory(GeometryRenderProcessorGL, "Geometry Rendering");

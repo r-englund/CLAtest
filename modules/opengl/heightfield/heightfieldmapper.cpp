@@ -36,7 +36,7 @@
 
 namespace inviwo {
 
-ProcessorClassIdentifier(HeightFieldMapper,  "HeightFieldMapper");
+ProcessorClassIdentifier(HeightFieldMapper, "org.inviwo.HeightFieldMapper");
 ProcessorDisplayName(HeightFieldMapper,  "Height Field Mapper");
 ProcessorTags(HeightFieldMapper, Tags::GL); 
 ProcessorCategory(HeightFieldMapper, "Heightfield");

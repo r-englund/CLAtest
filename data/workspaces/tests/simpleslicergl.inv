@@ -1,8 +1,9 @@
 <?xml version="1.0" ?>
 <InviwoTreeData version="1.0">
     <!-- Don't edit the following code -->
+    <ProcessorNetworkVersion content="1" />
     <Processors>
-        <Processor type="VolumeSource" identifier="VolumeSource" id="ref0">
+        <Processor type="org.inviwo.VolumeSource" identifier="VolumeSource" id="ref1">
             <MetaDataList>
                 <MetaData type="ProcessorMetaData">
                     <position x="-625" y="-675" />
@@ -11,18 +12,55 @@
                 </MetaData>
             </MetaDataList>
             <Properties>
-                <Property type="FloatVec3Property" identifier="angles" displayName="Angles" key="angles">
+                <Property type="CompositeProperty" identifier="Basis" displayName="Basis and offset" key="Basis">
                     <usageMode content="0" />
                     <visible content="1" />
+                    <Properties>
+                        <Property type="FloatVec3Property" identifier="angles" displayName="Angles" key="angles">
+                            <usageMode content="0" />
+                            <visible content="1" />
+                        </Property>
+                        <Property type="FloatVec3Property" identifier="length" displayName="Lengths" key="length">
+                            <usageMode content="0" />
+                            <visible content="1" />
+                        </Property>
+                        <Property type="FloatVec3Property" identifier="offset" displayName="Offset" key="offset">
+                            <usageMode content="0" />
+                            <visible content="1" />
+                        </Property>
+                        <Property type="BoolProperty" identifier="override" displayName="Override" key="override">
+                            <usageMode content="0" />
+                            <visible content="1" />
+                        </Property>
+                    </Properties>
                 </Property>
-                <Property type="DoubleMinMaxProperty" identifier="dataRange" displayName="Data range" key="dataRange">
-                    <semantics semantics="Text" />
+                <Property type="CompositeProperty" identifier="Information" displayName="Data information" key="Information">
                     <usageMode content="0" />
                     <visible content="1" />
-                </Property>
-                <Property type="StringProperty" identifier="dimensions" displayName="Dimensions" key="dimensions">
-                    <usageMode content="0" />
-                    <visible content="1" />
+                    <Properties>
+                        <Property type="DoubleMinMaxProperty" identifier="dataRange" displayName="Data range" key="dataRange">
+                            <semantics semantics="Text" />
+                            <usageMode content="0" />
+                            <visible content="1" />
+                        </Property>
+                        <Property type="StringProperty" identifier="dimensions" displayName="Dimensions" key="dimensions">
+                            <usageMode content="0" />
+                            <visible content="1" />
+                        </Property>
+                        <Property type="StringProperty" identifier="format" displayName="Format" key="format">
+                            <usageMode content="0" />
+                            <visible content="1" />
+                        </Property>
+                        <Property type="DoubleMinMaxProperty" identifier="valueRange" displayName="Value range" key="valueRange">
+                            <semantics semantics="Text" />
+                            <usageMode content="0" />
+                            <visible content="1" />
+                        </Property>
+                        <Property type="StringProperty" identifier="valueUnit" displayName="Value unit" key="valueUnit">
+                            <usageMode content="0" />
+                            <visible content="1" />
+                        </Property>
+                    </Properties>
                 </Property>
                 <Property type="FileProperty" identifier="filename" displayName="Volume file" key="filename">
                     <usageMode content="0" />
@@ -37,35 +75,21 @@
                     <acceptMode content="0" />
                     <fileMode content="0" />
                 </Property>
-                <Property type="StringProperty" identifier="format" displayName="Format" key="format">
+                <Property type="BoolProperty" identifier="playSequence" displayName="Play Sequence" key="playSequence">
                     <usageMode content="0" />
-                    <visible content="1" />
+                    <visible content="0" />
                 </Property>
-                <Property type="FloatVec3Property" identifier="length" displayName="Lengths" key="length">
+                <Property type="IntProperty" identifier="selectedSequenceIndex" displayName="Selected Sequence Index" key="selectedSequenceIndex">
                     <usageMode content="0" />
-                    <visible content="1" />
+                    <visible content="0" />
                 </Property>
-                <Property type="FloatVec3Property" identifier="offset" displayName="Offset" key="offset">
+                <Property type="IntProperty" identifier="volumesPerSecond" displayName="Volumes Per Second" key="volumesPerSecond">
                     <usageMode content="0" />
-                    <visible content="1" />
-                </Property>
-                <Property type="BoolProperty" identifier="override" displayName="Override" key="override">
-                    <usageMode content="0" />
-                    <visible content="1" />
-                </Property>
-                <Property type="DoubleMinMaxProperty" identifier="valueRange" displayName="Value range" key="valueRange">
-                    <semantics semantics="Text" />
-                    <usageMode content="0" />
-                    <visible content="1" />
-                </Property>
-                <Property type="StringProperty" identifier="valueUnit" displayName="Value unit" key="valueUnit">
-                    <usageMode content="0" />
-                    <visible content="1" />
-                    <value content="" />
+                    <visible content="0" />
                 </Property>
             </Properties>
         </Processor>
-        <Processor type="VolumeSliceGL" identifier="VolumeSliceGL" id="ref1">
+        <Processor type="org.inviwo.VolumeSliceGL" identifier="VolumeSliceGL" id="ref0">
             <MetaDataList>
                 <MetaData type="ProcessorMetaData">
                     <position x="-625" y="-525" />
@@ -86,6 +110,10 @@
                     <visible content="1" />
                 </Property>
                 <Property type="BoolProperty" identifier="flipVertical" displayName="Flip Vertical View" key="flipVertical">
+                    <usageMode content="0" />
+                    <visible content="1" />
+                </Property>
+                <Property type="BoolProperty" identifier="handleEvents" displayName="Handle interaction events" key="handleEvents">
                     <usageMode content="0" />
                     <visible content="1" />
                 </Property>
@@ -174,7 +202,7 @@
                 </Property>
             </Properties>
         </Processor>
-        <Processor type="CanvasGL" identifier="CanvasGL" id="ref2">
+        <Processor type="org.inviwo.CanvasGL" identifier="CanvasGL" id="ref2">
             <MetaDataList>
                 <MetaData type="ProcessorMetaData">
                     <position x="-625" y="-400" />
@@ -182,32 +210,38 @@
                     <selection content="0" />
                 </MetaData>
                 <MetaData type="ProcessorWidgetMetaData">
-                    <position x="2298" y="341" />
+                    <position x="652" y="292" />
                     <dimension x="256" y="256" />
                     <visibility content="1" />
                 </MetaData>
             </MetaDataList>
             <Properties>
-                <Property type="FloatProperty" identifier="aspectRatioScaling" displayName="Aspect Ratio Scaling" key="aspectRatioScaling">
-                    <usageMode content="0" />
-                    <visible content="0" />
-                </Property>
-                <Property type="IntVec2Property" identifier="customInputDimensions" displayName="Input Image Dimensions" key="customInputDimensions">
-                    <usageMode content="0" />
-                    <visible content="0" />
-                    <readonly content="1" />
-                </Property>
-                <Property type="IntVec2Property" identifier="dimensions" displayName="Dimensions" key="dimensions">
+                <Property type="CompositeProperty" identifier="inputSize" displayName="Input Dimension Parameters" key="inputSize">
                     <usageMode content="0" />
                     <visible content="1" />
-                </Property>
-                <Property type="BoolProperty" identifier="enableCustomInputDimensions" displayName="Enable Custom Input Dimensions" key="enableCustomInputDimensions">
-                    <usageMode content="0" />
-                    <visible content="1" />
-                </Property>
-                <Property type="BoolProperty" identifier="keepAspectRatio" displayName="Keep Aspect Ratio" key="keepAspectRatio">
-                    <usageMode content="0" />
-                    <visible content="0" />
+                    <Properties>
+                        <Property type="FloatProperty" identifier="aspectRatioScaling" displayName="Aspect Ratio Scaling" key="aspectRatioScaling">
+                            <usageMode content="0" />
+                            <visible content="0" />
+                        </Property>
+                        <Property type="IntVec2Property" identifier="customInputDimensions" displayName="Input Image Dimensions" key="customInputDimensions">
+                            <usageMode content="0" />
+                            <visible content="0" />
+                            <readonly content="1" />
+                        </Property>
+                        <Property type="IntVec2Property" identifier="dimensions" displayName="Dimensions" key="dimensions">
+                            <usageMode content="0" />
+                            <visible content="1" />
+                        </Property>
+                        <Property type="BoolProperty" identifier="enableCustomInputDimensions" displayName="Enable Custom Input Dimensions" key="enableCustomInputDimensions">
+                            <usageMode content="0" />
+                            <visible content="1" />
+                        </Property>
+                        <Property type="BoolProperty" identifier="keepAspectRatio" displayName="Keep Aspect Ratio" key="keepAspectRatio">
+                            <usageMode content="0" />
+                            <visible content="0" />
+                        </Property>
+                    </Properties>
                 </Property>
                 <Property type="DirectoryProperty" identifier="layerDir" displayName="Output Directory" key="layerDir">
                     <usageMode content="0" />
@@ -228,18 +262,18 @@
     <Connections>
         <Connection>
             <OutPort identifier="image.outport">
-                <Processor type="VolumeSliceGL" identifier="VolumeSliceGL" reference="ref1" />
+                <Processor type="org.inviwo.VolumeSliceGL" identifier="VolumeSliceGL" reference="ref0" />
             </OutPort>
             <InPort identifier="inport">
-                <Processor type="CanvasGL" identifier="CanvasGL" reference="ref2" />
+                <Processor type="org.inviwo.CanvasGL" identifier="CanvasGL" reference="ref2" />
             </InPort>
         </Connection>
         <Connection>
             <OutPort identifier="data">
-                <Processor type="VolumeSource" identifier="VolumeSource" reference="ref0" />
+                <Processor type="org.inviwo.VolumeSource" identifier="VolumeSource" reference="ref1" />
             </OutPort>
             <InPort identifier="volume.inport">
-                <Processor type="VolumeSliceGL" identifier="VolumeSliceGL" reference="ref1" />
+                <Processor type="org.inviwo.VolumeSliceGL" identifier="VolumeSliceGL" reference="ref0" />
             </InPort>
         </Connection>
     </Connections>

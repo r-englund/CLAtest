@@ -35,7 +35,7 @@
 
 namespace inviwo {
 
-ProcessorClassIdentifier(ImageClassify,  "ImageClassify");
+ProcessorClassIdentifier(ImageClassify, "org.inviwo.ImageClassify");
 ProcessorDisplayName(ImageClassify,  "Image Classify");
 ProcessorTags(ImageClassify, Tags::GL);
 ProcessorCategory(ImageClassify, "Image Operation");

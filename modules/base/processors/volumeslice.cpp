@@ -34,7 +34,7 @@
 
 namespace inviwo {
 
-ProcessorClassIdentifier(VolumeSlice,  "VolumeSlice");
+ProcessorClassIdentifier(VolumeSlice, "org.inviwo.VolumeSlice");
 ProcessorDisplayName(VolumeSlice,  "Volume Slice");
 ProcessorTags(VolumeSlice, Tags::None);
 ProcessorCategory(VolumeSlice, "Volume Operation");

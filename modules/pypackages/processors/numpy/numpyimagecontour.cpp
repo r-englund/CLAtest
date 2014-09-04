@@ -37,7 +37,7 @@
 
 namespace inviwo {
 
-ProcessorClassIdentifier(NumpyImageContour,  "NumpyImageContour");
+ProcessorClassIdentifier(NumpyImageContour, "org.inviwo.NumpyImageContour");
 ProcessorDisplayName(NumpyImageContour,  "Numpy Image Contour");
 ProcessorTags(NumpyImageContour, "Python/CPU");
 ProcessorCategory(NumpyImageContour, "Numpy");

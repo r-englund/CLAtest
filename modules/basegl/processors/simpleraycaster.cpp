@@ -37,7 +37,7 @@
 
 namespace inviwo {
 
-ProcessorClassIdentifier(SimpleRaycaster,  "SimpleRaycaster");
+ProcessorClassIdentifier(SimpleRaycaster,  "org.inviwo.SimpleRaycaster");
 ProcessorDisplayName(SimpleRaycaster,  "Simple Raycaster");
 ProcessorTags(SimpleRaycaster, Tags::GL);
 ProcessorCategory(SimpleRaycaster, "Volume Rendering");

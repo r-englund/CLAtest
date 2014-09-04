@@ -1,8 +1,9 @@
 <?xml version="1.0" ?>
 <InviwoTreeData version="1.0">
     <!-- Don't edit the following code -->
+    <ProcessorNetworkVersion content="1" />
     <Processors>
-        <Processor type="GeometryRenderGL" identifier="GeometryRenderGL" id="ref0">
+        <Processor type="org.inviwo.GeometryRenderGL" identifier="GeometryRenderGL" id="ref0">
             <MetaDataList>
                 <MetaData type="ProcessorMetaData">
                     <position x="-525" y="-550" />
@@ -14,7 +15,8 @@
                 <InteractionHandler type="Trackball">
                     <Properties>
                         <Property type="EventProperty" identifier="stepPanDown" displayName="Step pan down" key="stepPanDown">
-                            <MetaDataList />
+                            <usageMode content="0" />
+                            <visible content="1" />
                             <Event type="KeyboardEvent">
                                 <modifier content="Shift" />
                                 <button content="S" />
@@ -24,7 +26,8 @@
                             </Action>
                         </Property>
                         <Property type="EventProperty" identifier="stepPanLeft" displayName="Step pan left" key="stepPanLeft">
-                            <MetaDataList />
+                            <usageMode content="0" />
+                            <visible content="1" />
                             <Event type="KeyboardEvent">
                                 <modifier content="Shift" />
                                 <button content="A" />
@@ -34,7 +37,8 @@
                             </Action>
                         </Property>
                         <Property type="EventProperty" identifier="stepPanRight" displayName="Step pan right" key="stepPanRight">
-                            <MetaDataList />
+                            <usageMode content="0" />
+                            <visible content="1" />
                             <Event type="KeyboardEvent">
                                 <modifier content="Shift" />
                                 <button content="D" />
@@ -44,7 +48,8 @@
                             </Action>
                         </Property>
                         <Property type="EventProperty" identifier="stepPanUp" displayName="Step pan up" key="stepPanUp">
-                            <MetaDataList />
+                            <usageMode content="0" />
+                            <visible content="1" />
                             <Event type="KeyboardEvent">
                                 <modifier content="Shift" />
                                 <button content="W" />
@@ -54,7 +59,8 @@
                             </Action>
                         </Property>
                         <Property type="EventProperty" identifier="stepRotateDown" displayName="Step rotate down" key="stepRotateDown">
-                            <MetaDataList />
+                            <usageMode content="0" />
+                            <visible content="1" />
                             <Event type="KeyboardEvent">
                                 <modifier content="" />
                                 <button content="S" />
@@ -64,7 +70,8 @@
                             </Action>
                         </Property>
                         <Property type="EventProperty" identifier="stepRotateLeft" displayName="Step rotate left" key="stepRotateLeft">
-                            <MetaDataList />
+                            <usageMode content="0" />
+                            <visible content="1" />
                             <Event type="KeyboardEvent">
                                 <modifier content="" />
                                 <button content="A" />
@@ -74,7 +81,8 @@
                             </Action>
                         </Property>
                         <Property type="EventProperty" identifier="stepRotateRight" displayName="Step rotate right" key="stepRotateRight">
-                            <MetaDataList />
+                            <usageMode content="0" />
+                            <visible content="1" />
                             <Event type="KeyboardEvent">
                                 <modifier content="" />
                                 <button content="D" />
@@ -84,7 +92,8 @@
                             </Action>
                         </Property>
                         <Property type="EventProperty" identifier="stepRotateUp" displayName="Step rotate up" key="stepRotateUp">
-                            <MetaDataList />
+                            <usageMode content="0" />
+                            <visible content="1" />
                             <Event type="KeyboardEvent">
                                 <modifier content="" />
                                 <button content="W" />
@@ -94,7 +103,8 @@
                             </Action>
                         </Property>
                         <Property type="EventProperty" identifier="stepZoomIn" displayName="Step zoom in" key="stepZoomIn">
-                            <MetaDataList />
+                            <usageMode content="0" />
+                            <visible content="1" />
                             <Event type="KeyboardEvent">
                                 <modifier content="" />
                                 <button content="R" />
@@ -104,7 +114,8 @@
                             </Action>
                         </Property>
                         <Property type="EventProperty" identifier="stepZoomOut" displayName="Step zoom out" key="stepZoomOut">
-                            <MetaDataList />
+                            <usageMode content="0" />
+                            <visible content="1" />
                             <Event type="KeyboardEvent">
                                 <modifier content="" />
                                 <button content="F" />
@@ -114,7 +125,8 @@
                             </Action>
                         </Property>
                         <Property type="EventProperty" identifier="trackballPan" displayName="Pan" key="trackballPan">
-                            <MetaDataList />
+                            <usageMode content="0" />
+                            <visible content="1" />
                             <Event type="MouseEvent">
                                 <modifier content="" />
                                 <button content="Middle mouse button" />
@@ -124,7 +136,8 @@
                             </Action>
                         </Property>
                         <Property type="EventProperty" identifier="trackballRotate" displayName="Rotate" key="trackballRotate">
-                            <MetaDataList />
+                            <usageMode content="0" />
+                            <visible content="1" />
                             <Event type="MouseEvent">
                                 <modifier content="" />
                                 <button content="Left mouse button" />
@@ -134,7 +147,8 @@
                             </Action>
                         </Property>
                         <Property type="EventProperty" identifier="trackballZoom" displayName="Zoom" key="trackballZoom">
-                            <MetaDataList />
+                            <usageMode content="0" />
+                            <visible content="1" />
                             <Event type="MouseEvent">
                                 <modifier content="" />
                                 <button content="Right mouse button" />
@@ -147,64 +161,103 @@
                 </InteractionHandler>
             </InteractonHandlers>
             <Properties>
+                <Property type="BoolProperty" identifier="applyLightAttenuation" displayName="Light attenuation" key="applyLightAttenuation">
+                    <usageMode content="0" />
+                    <visible content="1" />
+                </Property>
                 <Property type="CameraProperty" identifier="camera" displayName="Camera" key="camera">
-                    <MetaDataList />
+                    <usageMode content="0" />
+                    <visible content="1" />
                     <lookFrom type="FloatVec3Property" identifier="lookFrom" displayName="Look from">
-                        <MetaDataList />
+                        <semantics semantics="Spherical" />
+                        <usageMode content="0" />
+                        <visible content="1" />
                         <value x="-3.9580002" y="-3.7840004" z="-3.7840004" />
-                        <minvalue x="-10" y="-10" z="-10" />
-                        <maxvalue x="10" y="10" z="10" />
-                        <increment x="0.1" y="0.1" z="0.1" />
                     </lookFrom>
                     <lookTo type="FloatVec3Property" identifier="lookTo" displayName="Look to">
-                        <MetaDataList />
-                        <value x="0" y="0" z="0" />
-                        <minvalue x="-10" y="-10" z="-10" />
-                        <maxvalue x="10" y="10" z="10" />
-                        <increment x="0.1" y="0.1" z="0.1" />
+                        <usageMode content="0" />
+                        <visible content="1" />
                     </lookTo>
                     <lookUp type="FloatVec3Property" identifier="lookUp" displayName="Look up">
-                        <MetaDataList />
-                        <value x="0" y="1" z="0" />
-                        <minvalue x="-10" y="-10" z="-10" />
-                        <maxvalue x="10" y="10" z="10" />
-                        <increment x="0.1" y="0.1" z="0.1" />
+                        <usageMode content="0" />
+                        <visible content="1" />
                     </lookUp>
                     <fovy type="FloatProperty" identifier="fov" displayName="FOV">
-                        <MetaDataList />
-                        <value content="60" />
-                        <minvalue content="30" />
-                        <maxvalue content="360" />
-                        <increment content="0.1" />
+                        <usageMode content="0" />
+                        <visible content="1" />
                     </fovy>
                     <aspectRatio type="FloatProperty" identifier="aspectRatio" displayName="Aspect Ratio">
-                        <MetaDataList />
-                        <value content="1" />
                         <minvalue content="0" />
                         <maxvalue content="1" />
                         <increment content="0.1" />
+                        <usageMode content="0" />
+                        <visible content="1" />
                     </aspectRatio>
                     <nearPlane type="FloatProperty" identifier="near" displayName="Near Plane">
-                        <MetaDataList />
-                        <value content="0.1" />
-                        <minvalue content="0.001" />
-                        <maxvalue content="10" />
-                        <increment content="0.001" />
+                        <usageMode content="0" />
+                        <visible content="1" />
                     </nearPlane>
                     <farPlane type="FloatProperty" identifier="far" displayName="Far Plane">
-                        <MetaDataList />
-                        <value content="100" />
-                        <minvalue content="1" />
-                        <maxvalue content="1000" />
-                        <increment content="1" />
+                        <usageMode content="0" />
+                        <visible content="1" />
                     </farPlane>
                 </Property>
                 <Property type="ButtonProperty" identifier="centerView" displayName="Center view on geometry" key="centerView">
-                    <MetaDataList />
+                    <usageMode content="0" />
+                    <visible content="1" />
+                </Property>
+                <Property type="OptionPropertyInt" identifier="cullFace" displayName="Cull Face" key="cullFace">
+                    <usageMode content="0" />
+                    <visible content="1" />
+                </Property>
+                <Property type="FloatVec3Property" identifier="lightAttenuation" displayName="Light attenuation values" key="lightAttenuation">
+                    <usageMode content="0" />
+                    <visible content="1" />
+                </Property>
+                <Property type="FloatVec3Property" identifier="lightColorAmbient" displayName="Ambient color" key="lightColorAmbient">
+                    <semantics semantics="Color" />
+                    <usageMode content="0" />
+                    <visible content="1" />
+                </Property>
+                <Property type="FloatVec3Property" identifier="lightColorDiffuse" displayName="Diffuse color" key="lightColorDiffuse">
+                    <semantics semantics="Color" />
+                    <usageMode content="0" />
+                    <visible content="1" />
+                    <value x="0.49803922" y="0.49803922" z="0.49803922" />
+                </Property>
+                <Property type="FloatVec3Property" identifier="lightColorSpecular" displayName="Specular color" key="lightColorSpecular">
+                    <semantics semantics="Color" />
+                    <usageMode content="0" />
+                    <visible content="1" />
+                </Property>
+                <Property type="FloatVec3Property" identifier="lightPosition" displayName="Position" key="lightPosition">
+                    <semantics semantics="Spherical" />
+                    <usageMode content="0" />
+                    <visible content="1" />
+                </Property>
+                <Property type="IntProperty" identifier="materialShininess" displayName="Material shininess" key="materialShininess">
+                    <usageMode content="0" />
+                    <visible content="1" />
+                </Property>
+                <Property type="OptionPropertyInt" identifier="polygonMode" displayName="Polygon Mode" key="polygonMode">
+                    <usageMode content="0" />
+                    <visible content="1" />
+                </Property>
+                <Property type="FloatProperty" identifier="renderPointSize" displayName="Point Size" key="renderPointSize">
+                    <usageMode content="0" />
+                    <visible content="1" />
+                </Property>
+                <Property type="ButtonProperty" identifier="resetView" displayName="Reset Camera" key="resetView">
+                    <usageMode content="0" />
+                    <visible content="1" />
+                </Property>
+                <Property type="OptionPropertyString" identifier="shadingMode" displayName="Shading" key="shadingMode">
+                    <usageMode content="0" />
+                    <visible content="1" />
                 </Property>
             </Properties>
         </Processor>
-        <Processor type="CanvasGL" identifier="CanvasGL" id="ref1">
+        <Processor type="org.inviwo.CanvasGL" identifier="CanvasGL" id="ref1">
             <MetaDataList>
                 <MetaData type="ProcessorMetaData">
                     <position x="-525" y="-475" />
@@ -212,36 +265,52 @@
                     <selection content="0" />
                 </MetaData>
                 <MetaData type="ProcessorWidgetMetaData">
-                    <position x="16" y="60" />
+                    <position x="24" y="90" />
                     <dimension x="128" y="128" />
                     <visibility content="1" />
                 </MetaData>
             </MetaDataList>
             <Properties>
-                <Property type="IntVec2Property" identifier="dimensions" displayName="Dimensions" key="dimensions">
-                    <MetaDataList />
-                    <value x="128" y="128" />
-                    <minvalue x="128" y="128" />
-                    <maxvalue x="4096" y="4096" />
-                    <increment x="1" y="1" />
+                <Property type="CompositeProperty" identifier="inputSize" displayName="Input Dimension Parameters" key="inputSize">
+                    <usageMode content="0" />
+                    <visible content="1" />
+                    <Properties>
+                        <Property type="FloatProperty" identifier="aspectRatioScaling" displayName="Aspect Ratio Scaling" key="aspectRatioScaling">
+                            <usageMode content="0" />
+                            <visible content="0" />
+                        </Property>
+                        <Property type="IntVec2Property" identifier="customInputDimensions" displayName="Input Image Dimensions" key="customInputDimensions">
+                            <usageMode content="0" />
+                            <visible content="0" />
+                            <readonly content="1" />
+                        </Property>
+                        <Property type="IntVec2Property" identifier="dimensions" displayName="Dimensions" key="dimensions">
+                            <usageMode content="0" />
+                            <visible content="1" />
+                            <value x="128" y="128" />
+                        </Property>
+                        <Property type="BoolProperty" identifier="enableCustomInputDimensions" displayName="Enable Custom Input Dimensions" key="enableCustomInputDimensions">
+                            <usageMode content="0" />
+                            <visible content="1" />
+                        </Property>
+                        <Property type="BoolProperty" identifier="keepAspectRatio" displayName="Keep Aspect Ratio" key="keepAspectRatio">
+                            <usageMode content="0" />
+                            <visible content="0" />
+                        </Property>
+                    </Properties>
                 </Property>
                 <Property type="DirectoryProperty" identifier="layerDir" displayName="Output Directory" key="layerDir">
-                    <MetaDataList />
+                    <usageMode content="0" />
+                    <visible content="1" />
                     <directory content="../../images" />
-                    <files>
-                        <file content="canvasgl1-20131113_174055.png" />
-                        <file content="canvasgl1-20131113_174108.png" />
-                        <file content="placeholder.png" />
-                        <file content="swirl.tga" />
-                        <file content="swirl1.tga" />
-                    </files>
                 </Property>
                 <Property type="ButtonProperty" identifier="saveLayer" displayName="Save Image Layer" key="saveLayer">
-                    <MetaDataList />
+                    <usageMode content="0" />
+                    <visible content="1" />
                 </Property>
                 <Property type="OptionPropertyInt" identifier="visibleLayer" displayName="Visible Layer" key="visibleLayer">
-                    <MetaDataList />
-                    <value content="0" />
+                    <usageMode content="0" />
+                    <visible content="1" />
                 </Property>
             </Properties>
         </Processor>
@@ -249,10 +318,10 @@
     <Connections>
         <Connection>
             <OutPort identifier="image.outport">
-                <Processor type="GeometryRenderGL" identifier="GeometryRenderGL" reference="ref0" />
+                <Processor type="org.inviwo.GeometryRenderGL" identifier="GeometryRenderGL" reference="ref0" />
             </OutPort>
             <InPort identifier="inport">
-                <Processor type="CanvasGL" identifier="CanvasGL" reference="ref1" />
+                <Processor type="org.inviwo.CanvasGL" identifier="CanvasGL" reference="ref1" />
             </InPort>
         </Connection>
     </Connections>

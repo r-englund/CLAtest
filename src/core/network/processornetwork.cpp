@@ -667,6 +667,7 @@ std::vector<ProcessorLink*> ProcessorNetwork::getSortedProcessorLinksFromPropert
 }
 
 void ProcessorNetwork::serialize(IvwSerializer& s) const {
+    s.serialize("ProcessorNetworkVersion", processorNetworkVersion_);
     s.serialize("Processors", processors_, "Processor");
     s.serialize("Connections", portConnections_, "Connection");
     //TODO: ProcessorLinks are Deprecated. Remove
@@ -680,6 +681,15 @@ void ProcessorNetwork::deserialize(IvwDeserializer& d) throw (Exception) {
     KeepTrueWhileInScope keepTrueWillAlive(&deserializing_);
     std::vector<PortConnection*> portConnections;
     std::vector<ProcessorLink*> processorLinks;
+
+    int version = 0;
+    d.deserialize("ProcessorNetworkVersion", version);
+
+    if(version != processorNetworkVersion_){
+        LogWarn("Old network version, performing updates...")
+        NetworkConverter nv(version);
+        d.convertVersion(&nv); 
+    }
 
     //Processors
     try {
@@ -821,5 +831,48 @@ void ProcessorNetwork::deserialize(IvwDeserializer& d) throw (Exception) {
 bool ProcessorNetwork::isDeserializing()const {
     return deserializing_;
 }
+
+const int ProcessorNetwork::processorNetworkVersion_ = 1;
+
+
+ProcessorNetwork::NetworkConverter::NetworkConverter(int from)
+    : VersionConverter(), from_(from) {
+
+}
+bool ProcessorNetwork::NetworkConverter::convert(TxElement* root) {
+    switch (from_) {
+        case 0:
+            traverseNodes(root, &ProcessorNetwork::NetworkConverter::updateProcessorType);
+        default:
+            break;
+    }
+    
+    return true;
+}
+
+void ProcessorNetwork::NetworkConverter::traverseNodes(TxElement* node, updateType update) {
+    (this->*update)(node);
+    ticpp::Iterator<ticpp::Element> child;
+    for (child = child.begin(node); child != child.end(); child++) {
+        traverseNodes(child.Get(), update);
+    }
+}
+
+void ProcessorNetwork::NetworkConverter::updateProcessorType(TxElement* node) {
+    std::string key;
+    node->GetValue(&key);
+
+    if (key == "Processor") {
+        std::string type = node->GetAttributeOrDefault("type", "");
+
+        if (splitString(type, '.').size() < 3){
+            node->SetAttribute("type", "org.inviwo."+ type);   
+        }
+    }
+}
+
+
+
+
 
 } // namespace
