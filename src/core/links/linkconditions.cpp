@@ -35,7 +35,7 @@
 namespace inviwo {
 
 bool SimpleCondition::canLink(Property* src, Property* dst, bool compareVariantType) {
-    if (*src == *dst) return true;
+    if (src->getClassName() == dst->getClassName()) return true;
 
     if (compareVariantType == true)
         return Variant::canConvert(src->getVariantType(), dst->getVariantType());

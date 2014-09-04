@@ -34,7 +34,7 @@
 #define IVW_LINKSETTINGS_H
 
 #include <inviwo/core/util/settings/settings.h>
-#include <inviwo/core/properties/boolproperty.h>
+#include <inviwo/core/properties/compositeproperty.h>
 
 namespace inviwo {
 
@@ -48,7 +48,8 @@ public:
     virtual bool isLinkable(Property* property);
 
 private:
-    std::vector<BoolProperty*> linkProperties_;
+    CompositeProperty linkProperties_;
+
 };
 
 } // namespace

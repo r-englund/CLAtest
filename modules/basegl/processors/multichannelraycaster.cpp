@@ -20,18 +20,18 @@ MultichannelRaycaster::MultichannelRaycaster()
     , entryPort_("entry-points")
     , exitPort_("exit-points")
     , outport_("outport", &entryPort_, COLOR_DEPTH)
-    , transferFunctions_(NULL)
+    , transferFunctions_("transfer-functions", "Transfer functions")
     , raycasting_("raycaster", "Raycasting")
     , camera_("camera", "Camera")
     , lighting_("lighting", "Lighting") {
 
-    transferFunctions_.push_back(new TransferFunctionProperty(
+    transferFunctions_.addProperty(new TransferFunctionProperty(
         "transferFunction1", "Channel 1", TransferFunction(), &volumePort_));
-    transferFunctions_.push_back(new TransferFunctionProperty(
+    transferFunctions_.addProperty(new TransferFunctionProperty(
         "transferFunction2", "Channel 2", TransferFunction(), &volumePort_));
-    transferFunctions_.push_back(new TransferFunctionProperty(
+    transferFunctions_.addProperty(new TransferFunctionProperty(
         "transferFunction3", "Channel 3", TransferFunction(), &volumePort_));
-    transferFunctions_.push_back(new TransferFunctionProperty(
+    transferFunctions_.addProperty(new TransferFunctionProperty(
         "transferFunction4", "Channel 4", TransferFunction(), &volumePort_));
 
     addPort(volumePort_, "VolumePortGroup");
@@ -45,22 +45,15 @@ MultichannelRaycaster::MultichannelRaycaster()
     addProperty(camera_);
     addProperty(lighting_);
 
-    for (std::vector<TransferFunctionProperty*>::iterator tf = transferFunctions_.begin();
-         tf != transferFunctions_.end(); ++tf) {
-        addProperty(*tf);
-        (*tf)->setGroupID("multichannlraycaster-tfs");
-        Property::setGroupDisplayName("multichannlraycaster-tfs", "Transfer functions");
-    }
-    
+    addProperty(transferFunctions_);    
 }
 
 
-MultichannelRaycaster::~MultichannelRaycaster()
-{
-    while (!transferFunctions_.empty())
-    {
-        delete transferFunctions_.back();
-        transferFunctions_.pop_back();
+MultichannelRaycaster::~MultichannelRaycaster() {
+    std::vector<Property*> tfs = transferFunctions_.getProperties();
+    while (!tfs.empty()) {
+        delete tfs.back();
+        tfs.pop_back();
     }
 }
 
@@ -109,14 +102,16 @@ void MultichannelRaycaster::onVolumeChange() {
         initializeResources();
         int channels = volumePort_.getData()->getDataFormat()->getComponents();
 
-        for (int i = 0; i < static_cast<int>(transferFunctions_.size()); i++) {
-            transferFunctions_[i]->setVisible(i < channels ? true : false);
+        std::vector<Property*> tfs = transferFunctions_.getProperties();
+        for (int i = 0; i < static_cast<int>(tfs.size()); i++) {
+            tfs[i]->setVisible(i < channels ? true : false);
         }
     }
 }
 
 void MultichannelRaycaster::process() {   
     LGL_ERROR;
+    std::vector<Property*> tfs = transferFunctions_.getProperties();
     TextureUnit entryColorUnit, entryDepthUnit, exitColorUnit, exitDepthUnit;
     bindTextures(entryPort_, entryColorUnit.getEnum(), entryDepthUnit.getEnum());
     bindTextures(exitPort_, exitColorUnit.getEnum(), exitDepthUnit.getEnum());
@@ -132,7 +127,7 @@ void MultichannelRaycaster::process() {
     GLint* tfUnitNumbers = new GLint[channels];
 
     for (int channel = 0; channel < channels; channel++) {
-        const Layer* tfLayer = transferFunctions_[channel]->get().getData();
+        const Layer* tfLayer = static_cast<TransferFunctionProperty*>(tfs[channel])->get().getData();
         const LayerGL* transferFunctionGL = tfLayer->getRepresentation<LayerGL>();
         transferFunctionGL->bindTexture(transFuncUnits[channel].getEnum());
         tfUnitNumbers[channel] = transFuncUnits[channel].getUnitNumber();

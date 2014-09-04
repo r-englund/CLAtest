@@ -265,12 +265,6 @@ void Property::deserialize(IvwDeserializer& d) {
     updateVisibility();
 }
 
-bool Property::operator==(const Property& prop) {
-    // TODO: this is not an equal operator, change to isSameType or similar
-    if (this->getClassName()==prop.getClassName()) return true;
-    else return false;
-}
-
 void Property::setGroupDisplayName(const std::string& groupID, const std::string& groupDisplayName) {
     LogWarnCustom("Property", "Deprication: Property::setGroupDisplayName is depricated used CompositeProperty instead (id: " << groupID << " name " << groupDisplayName << ")");
     Property::groupDisplayNames_.insert(std::pair<std::string,std::string>(groupID, groupDisplayName));

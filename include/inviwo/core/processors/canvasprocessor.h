@@ -41,6 +41,7 @@
 #include <inviwo/core/properties/baseoptionproperty.h>
 #include <inviwo/core/properties/directoryproperty.h>
 #include <inviwo/core/properties/buttonproperty.h>
+#include <inviwo/core/properties/compositeproperty.h>
 
 namespace inviwo {
 
@@ -85,6 +86,7 @@ protected:
     OptionPropertyInt visibleLayer_; // LayerType enum (Cannot serialize/deserialize enums so we use an int and cast it)
     DirectoryProperty saveLayerDirectory_;
     ButtonProperty saveLayerButton_;
+    CompositeProperty inputSize_;
 
 private:
     Canvas* canvas_;
