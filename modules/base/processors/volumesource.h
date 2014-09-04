@@ -56,6 +56,8 @@ public:
     InviwoProcessorInfo();
 
     void onOverrideChange();
+    void onPlaySequenceToggled();
+    void onSequenceIndexChanged();
 
     virtual void serialize(IvwSerializer& s) const;
     virtual void deserialize(IvwDeserializer& d);
@@ -63,8 +65,8 @@ public:
 protected:
     virtual void dataLoaded(Volume* data);
     virtual void process();
-
-    void onTimerEvent();
+    
+    void onSequenceTimerEvent();
 
 private:
 
@@ -107,6 +109,8 @@ private:
     FloatVec3Property angles_;
     FloatVec3Property offset_;
 
+    BoolProperty playSequence_;
+    IntProperty selectedSequenceIndex_;
     IntProperty volumesPerSecond_;
 
     vec3 overrideLengths_;

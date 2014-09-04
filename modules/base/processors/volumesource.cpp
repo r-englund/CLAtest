@@ -60,6 +60,8 @@ VolumeSource::VolumeSource()
     , lengths_("length", "Lengths", vec3(1.0f), vec3(0.0f), vec3(10.0f))
     , angles_("angles", "Angles", vec3(90.0f), vec3(0.0f), vec3(180.0f), vec3(1.0f))
     , offset_("offset", "Offset", vec3(0.0f), vec3(-10.0f), vec3(10.0f))
+    , selectedSequenceIndex_("selectedSequenceIndex", "Selected Sequence Index", 1, 1, 1, 1, PropertyOwner::VALID)
+    , playSequence_("playSequence", "Play Sequence", false)
     , volumesPerSecond_("volumesPerSecond", "Volumes Per Second", 30, 1, 60, 1, PropertyOwner::VALID)
     , dimensions_("dimensions", "Dimensions")
     , format_("format", "Format", "")
@@ -108,11 +110,19 @@ VolumeSource::VolumeSource()
     addProperty(angles_);
     addProperty(offset_);
 
+    addProperty(playSequence_);
+    playSequence_.setVisible(false);
+    playSequence_.onChange(this, &VolumeSource::onPlaySequenceToggled);
+
+    addProperty(selectedSequenceIndex_);
+    selectedSequenceIndex_.setVisible(false);
+    selectedSequenceIndex_.onChange(this, &VolumeSource::onSequenceIndexChanged);
+
     addProperty(volumesPerSecond_);
     volumesPerSecond_.setVisible(false);
 
     sequenceTimer_ = InviwoApplication::getPtr()->createTimer();
-    sequenceTimer_->setElapsedTimeCallback(this, &VolumeSource::onTimerEvent);
+    sequenceTimer_->setElapsedTimeCallback(this, &VolumeSource::onSequenceTimerEvent);
 }
 
 VolumeSource::~VolumeSource() {
@@ -181,11 +191,18 @@ void VolumeSource::dataLoaded(Volume* volume) {
     DataSequence<Volume>* volumeSequence = dynamic_cast<DataSequence<Volume>*>(volume);
     if(volumeSequence){
         ss << " x " << volumeSequence->getNumSequences();
+        playSequence_.setVisible(true);
+        selectedSequenceIndex_.setVisible(true);
         volumesPerSecond_.setVisible(true);
-        sequenceTimer_->start(1000/volumesPerSecond_.get());
+        selectedSequenceIndex_.setMaxValue(static_cast<int>(volumeSequence->getNumSequences()));
+        selectedSequenceIndex_.set(1);
+        onPlaySequenceToggled();
     }
-    else
+    else{
+        playSequence_.setVisible(false);
+        selectedSequenceIndex_.setVisible(false);
         volumesPerSecond_.setVisible(false);
+    }
 
     dimensions_.set(ss.str());
     format_.set(volume->getDataFormat()->getString());
@@ -215,13 +232,34 @@ void VolumeSource::dataLoaded(Volume* volume) {
     invalidateOutput();
 }
 
-void VolumeSource::onTimerEvent() {
+void VolumeSource::onPlaySequenceToggled() {
+    if (port_.hasDataSequence()) {
+        if(playSequence_.get()){
+            sequenceTimer_->start(1000/volumesPerSecond_.get());
+            selectedSequenceIndex_.setReadOnly(true);
+            volumesPerSecond_.setReadOnly(false);
+        }
+        else{
+            sequenceTimer_->stop();
+            selectedSequenceIndex_.setReadOnly(false);
+            volumesPerSecond_.setReadOnly(true);
+        }
+    }
+}
+
+void VolumeSource::onSequenceIndexChanged() {
+    if (port_.hasDataSequence()) {
+        DataSequence<Volume>* volumeSequence = static_cast<DataSequence<Volume>*>(port_.getDataSequence());
+        volumeSequence->setCurrentIndex(selectedSequenceIndex_.get()-1);
+        invalidateOutput();
+    }
+}
+
+void VolumeSource::onSequenceTimerEvent() {
     if (port_.hasDataSequence()) {
         sequenceTimer_->stop();
-        DataSequence<Volume>* volumeSequence = static_cast<DataSequence<Volume>*>(port_.getDataSequence());
-        volumeSequence->setNextAsCurrent();
         sequenceTimer_->start(1000/volumesPerSecond_.get());
-        invalidateOutput();
+        selectedSequenceIndex_.set((selectedSequenceIndex_.get() < selectedSequenceIndex_.getMaxValue() ? selectedSequenceIndex_.get()+1 : 1));
     }
 }
 
