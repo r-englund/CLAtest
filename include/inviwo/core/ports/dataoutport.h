@@ -56,12 +56,17 @@ public:
     void deinitialize();
 
     virtual T* getData();
+    virtual T* getDataSequence();
+
     virtual const T* getConstData() const;
+    virtual const T* getConstDataSequence() const;
 
     void setData(T* data, bool ownsData = true);
     void setConstData(const T* data);
 
     bool hasData() const;
+    bool hasDataSequence() const;
+
     bool isDataOwner() const;
     virtual std::string getContentInfo() const;
 
@@ -111,11 +116,34 @@ T* DataOutport<T>::getData() {
 }
 
 template <typename T>
+T* DataOutport<T>::getDataSequence() {
+    //Asking for writable data, outport becomes data owner again
+    if(!ownsData_ && ownedData_){
+        data_ = ownedData_;
+        ownsData_ = true;
+        dataChanged();
+    }
+
+    if(isSequence_)
+        return data_;
+
+    return NULL;
+}
+
+template <typename T>
 const T* DataOutport<T>::getConstData() const {
     if(isSequence_)
         return const_cast<const T*>(static_cast<DataSequence<T>*>(data_)->getCurrent());
 
     return const_cast<const T*>(data_);
+}
+
+template <typename T>
+const T* DataOutport<T>::getConstDataSequence() const {
+    if(isSequence_)
+        return const_cast<const T*>(data_);
+
+    return NULL;
 }
 
 template <typename T>
@@ -154,6 +182,11 @@ void DataOutport<T>::setConstData(const T* data) {
 template <typename T>
 bool DataOutport<T>::hasData() const {
     return (data_ != NULL);
+}
+
+template <typename T>
+bool DataOutport<T>::hasDataSequence() const {
+    return (hasData() && isSequence_);
 }
 
 template <typename T>

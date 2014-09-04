@@ -42,16 +42,20 @@ class DataSequence : public T {
 
 public:
     DataSequence();
-    DataSequence(const DataSequence& rhs);
-    DataSequence<T>& operator=(const DataSequence<T>& rhs);
+    DataSequence(const T&);
+    DataSequence(const DataSequence&);
+    DataSequence<T>& operator=(const DataSequence<T>&);
 
     virtual ~DataSequence();
 
     void add(T*);
 
     void setCurrentIndex(int);
+    void setNextAsCurrent();
     
     T* getCurrent();
+
+    size_t getNumSequences() const;
 
 protected:
     std::vector<T*> sequenceContainer_;
@@ -61,6 +65,9 @@ protected:
 
 template <typename T>
 DataSequence<T>::DataSequence() : T(), currentIdx_(0) {}
+
+template <typename T>
+DataSequence<T>::DataSequence(const T& that) : T(that), currentIdx_(0) {}
 
 template <typename T>
 DataSequence<T>::DataSequence(const DataSequence<T>& rhs) : T(rhs), currentIdx_(rhs.currentIdx_) {}
@@ -88,6 +95,11 @@ void DataSequence<T>::setCurrentIndex(int idx) {
 }
 
 template <typename T>
+void DataSequence<T>::setNextAsCurrent() {
+    currentIdx_ = (currentIdx_ < static_cast<int>(sequenceContainer_.size())-1 ? currentIdx_+1 : 0);
+}
+
+template <typename T>
 T* DataSequence<T>::getCurrent() {
     if(currentIdx_ < static_cast<int>(sequenceContainer_.size()))
         return sequenceContainer_[currentIdx_];
@@ -96,6 +108,11 @@ T* DataSequence<T>::getCurrent() {
         sequenceContainer_[0];
 
     return NULL;
+}
+
+template <typename T>
+size_t DataSequence<T>::getNumSequences() const {
+    return sequenceContainer_.size();
 }
 
 } // namespace

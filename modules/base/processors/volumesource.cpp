@@ -60,9 +60,11 @@ VolumeSource::VolumeSource()
     , lengths_("length", "Lengths", vec3(1.0f), vec3(0.0f), vec3(10.0f))
     , angles_("angles", "Angles", vec3(90.0f), vec3(0.0f), vec3(180.0f), vec3(1.0f))
     , offset_("offset", "Offset", vec3(0.0f), vec3(-10.0f), vec3(10.0f))
+    , volumesPerSecond_("volumesPerSecond", "Volumes Per Second", 30, 1, 60, 1, PropertyOwner::VALID)
     , dimensions_("dimensions", "Dimensions")
     , format_("format", "Format", "")
-    , isDeserializing_(false) {
+    , isDeserializing_(false)
+    , sequenceTimer_(NULL) {
 
     DataSource<Volume, VolumeOutport>::file_.setContentType("volume");
     DataSource<Volume, VolumeOutport>::file_.setDisplayName("Volume file");
@@ -105,9 +107,18 @@ VolumeSource::VolumeSource()
     addProperty(lengths_);
     addProperty(angles_);
     addProperty(offset_);
+
+    addProperty(volumesPerSecond_);
+    volumesPerSecond_.setVisible(false);
+
+    sequenceTimer_ = InviwoApplication::getPtr()->createTimer();
+    sequenceTimer_->setElapsedTimeCallback(this, &VolumeSource::onTimerEvent);
 }
 
-VolumeSource::~VolumeSource() {}
+VolumeSource::~VolumeSource() {
+    delete sequenceTimer_;
+    sequenceTimer_ = 0;
+}
 
 void VolumeSource::onOverrideChange() {
     if (this->isDeserializing_) {
@@ -166,6 +177,16 @@ void VolumeSource::dataLoaded(Volume* volume) {
     ss << volume->getDimension().x << " x "
        << volume->getDimension().y << " x "
        << volume->getDimension().z;
+
+    DataSequence<Volume>* volumeSequence = dynamic_cast<DataSequence<Volume>*>(volume);
+    if(volumeSequence){
+        ss << " x " << volumeSequence->getNumSequences();
+        volumesPerSecond_.setVisible(true);
+        sequenceTimer_->start(1000/volumesPerSecond_.get());
+    }
+    else
+        volumesPerSecond_.setVisible(false);
+
     dimensions_.set(ss.str());
     format_.set(volume->getDataFormat()->getString());
 
@@ -192,6 +213,16 @@ void VolumeSource::dataLoaded(Volume* volume) {
 
     InviwoApplication::getPtr()->getProcessorNetwork()->unlock();
     invalidateOutput();
+}
+
+void VolumeSource::onTimerEvent() {
+    if (port_.hasDataSequence()) {
+        sequenceTimer_->stop();
+        DataSequence<Volume>* volumeSequence = static_cast<DataSequence<Volume>*>(port_.getDataSequence());
+        volumeSequence->setNextAsCurrent();
+        sequenceTimer_->start(1000/volumesPerSecond_.get());
+        invalidateOutput();
+    }
 }
 
 void VolumeSource::saveState(){

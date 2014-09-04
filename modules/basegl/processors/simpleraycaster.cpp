@@ -71,6 +71,9 @@ SimpleRaycaster::SimpleRaycaster()
 void SimpleRaycaster::onVolumeChange(){
     if (volumePort_.hasData()){
         int channels = volumePort_.getData()->getDataFormat()->getComponents();
+
+        if(channels == static_cast<int>(channel_.size()))
+            return;
         
         channel_.clearOptions();
         for (int i = 0; i < channels; i++) {

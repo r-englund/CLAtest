@@ -44,6 +44,7 @@
 #include <inviwo/core/properties/stringproperty.h>
 #include <inviwo/core/ports/volumeport.h>
 #include <inviwo/core/properties/ordinalproperty.h>
+#include <inviwo/core/util/timer.h>
 
 namespace inviwo {
 
@@ -62,6 +63,8 @@ public:
 protected:
     virtual void dataLoaded(Volume* data);
     virtual void process();
+
+    void onTimerEvent();
 
 private:
 
@@ -104,6 +107,8 @@ private:
     FloatVec3Property angles_;
     FloatVec3Property offset_;
 
+    IntProperty volumesPerSecond_;
+
     vec3 overrideLengths_;
     vec3 overrideAngles_;
     vec3 overrideOffset_;
@@ -115,6 +120,8 @@ private:
     VolumeSourceState oldState;
 
     bool isDeserializing_;
+
+    Timer* sequenceTimer_;
 };
 
 } // namespace

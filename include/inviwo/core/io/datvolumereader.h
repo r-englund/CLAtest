@@ -71,6 +71,7 @@ public:
 
 private:
     std::string rawFile_;
+    size_t filePos_;
     bool littleEndian_;
     glm::uvec3 dimension_;
     const DataFormatBase* format_;
