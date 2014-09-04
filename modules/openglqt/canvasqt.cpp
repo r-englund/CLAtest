@@ -410,7 +410,7 @@ void CanvasQt::touchEvent(QTouchEvent* touch) {
     delete touchEvent;
 
 #ifdef USING_QT5
-    /*if(touch->touchPoints().size() == 1 && lastNumFingers_ < 2){
+    if(touch->touchPoints().size() == 1 && lastNumFingers_ < 2){
         MouseEvent* mouseEvent = NULL;
         switch (touchState)
         {
@@ -433,7 +433,7 @@ void CanvasQt::touchEvent(QTouchEvent* touch) {
             break;
         }
         delete mouseEvent;
-    }*/
+    }
 #endif
 
     lastNumFingers_ = static_cast<int>(touch->touchPoints().size());
