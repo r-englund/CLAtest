@@ -51,30 +51,28 @@ CanvasProcessor::CanvasProcessor()
     , visibleLayer_("visibleLayer", "Visible Layer")
     , saveLayerDirectory_("layerDir", "Output Directory", "" , "image")
     , saveLayerButton_("saveLayer", "Save Image Layer", PropertyOwner::VALID)
+    , inputSize_("inputSize", "Input Dimension Parameters")
     , canvas_(NULL)
     , disableResize_(false)
-    , queuedRequest_(false)
-{
+    , queuedRequest_(false) {
+
     addPort(inport_);
+
+    addProperty(inputSize_);
+
     dimensions_.onChange(this, &CanvasProcessor::resizeCanvas);
-    addProperty(dimensions_);
+    inputSize_.addProperty(dimensions_);
     enableCustomInputDimensions_.onChange(this, &CanvasProcessor::sizeSchemeChanged);
-    addProperty(enableCustomInputDimensions_);
+    inputSize_.addProperty(enableCustomInputDimensions_);
     customInputDimensions_.onChange(this, &CanvasProcessor::sizeSchemeChanged);
     customInputDimensions_.setVisible(false);
-    addProperty(customInputDimensions_);
+    inputSize_.addProperty(customInputDimensions_);
     keepAspectRatio_.onChange(this, &CanvasProcessor::ratioChanged);
     keepAspectRatio_.setVisible(false);
-    addProperty(keepAspectRatio_);
+    inputSize_.addProperty(keepAspectRatio_);
     aspectRatioScaling_.onChange(this, &CanvasProcessor::ratioChanged);
     aspectRatioScaling_.setVisible(false);
-    addProperty(aspectRatioScaling_);
-    dimensions_.setGroupID("inputSize");
-    enableCustomInputDimensions_.setGroupID("inputSize");
-    keepAspectRatio_.setGroupID("inputSize");
-    aspectRatioScaling_.setGroupID("inputSize");
-    customInputDimensions_.setGroupID("inputSize");
-    Property::setGroupDisplayName("inputSize", "Input Dimension Parameters");
+    inputSize_.addProperty(aspectRatioScaling_);
 
     visibleLayer_.addOption("color", "Color layer", COLOR_LAYER);
     visibleLayer_.addOption("depth", "Depth layer", DEPTH_LAYER);

@@ -39,15 +39,16 @@
 namespace inviwo {
 
 LinkSettings::LinkSettings(std::string id) 
-    : Settings(id) {}
+    : Settings(id)
+    , linkProperties_("auto-link-properties", "Auto Link Properties") {
+
+    addProperty(linkProperties_);
+}
 
 LinkSettings::~LinkSettings() {
-    for (size_t i=0; i<linkProperties_.size(); i++) {
-        BoolProperty* property = linkProperties_[i];
-        delete property;
+    for (size_t i=0; i<linkProperties_.getProperties().size(); i++) {
+        delete linkProperties_.getProperties()[i];
     }
-
-    linkProperties_.clear();
 }
 
 void LinkSettings::initialize() {
@@ -56,10 +57,7 @@ void LinkSettings::initialize() {
 
     for (size_t i = 0; i<properties.size(); i++) {
         BoolProperty* linkPropery = new BoolProperty("link-" + properties[i], properties[i], false);
-        linkProperties_.push_back(linkPropery);
-        linkPropery->setGroupID("auto-link-properties");
-        linkPropery->setGroupDisplayName("auto-link-properties", "Auto Link Properties");
-        addProperty(linkPropery);
+        linkProperties_.addProperty(linkPropery);
     }
 }
 

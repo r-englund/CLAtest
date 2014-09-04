@@ -8,6 +8,7 @@
 #include <inviwo/core/properties/simplelightingproperty.h>
 #include <inviwo/core/properties/simpleraycastingproperty.h>
 #include <inviwo/core/properties/cameraproperty.h>
+#include <inviwo/core/properties/compositeproperty.h>
 #include <inviwo/core/ports/imageport.h>
 #include <inviwo/core/ports/volumeport.h>
 #include <modules/opengl/glwrap/shader.h>
@@ -39,7 +40,7 @@ private:
     ImageInport exitPort_;
     ImageOutport outport_;
 
-    std::vector<TransferFunctionProperty*> transferFunctions_;
+    CompositeProperty transferFunctions_;
 
     SimpleRaycastingProperty raycasting_;
     CameraProperty camera_;

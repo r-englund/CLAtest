@@ -37,10 +37,11 @@
 #include <inviwo/core/common/inviwo.h>
 #include <inviwo/core/properties/baseoptionproperty.h>
 #include <inviwo/core/properties/transferfunctionproperty.h>
+#include <inviwo/core/properties/cameraproperty.h>
 #include <inviwo/core/ports/imageport.h>
 #include <inviwo/core/ports/volumeport.h>
 #include <modules/opengl/inviwoopengl.h>
-#include <modules/opengl/volume/volumeraycastergl.h>
+#include <modules/opengl/processorgl.h>
 #include "inviwo/core/properties/simpleraycastingproperty.h"
 #include "inviwo/core/properties/simplelightingproperty.h"
 
