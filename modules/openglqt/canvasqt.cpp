@@ -225,13 +225,15 @@ bool CanvasQt::event(QEvent *e) {
         keyReleaseEvent(static_cast<QKeyEvent*>(e));
         return true;
     case QEvent::MouseButtonPress:
-        mousePressEvent(static_cast<QMouseEvent*>(e));
+        if(lastNumFingers_<2)
+            mousePressEvent(static_cast<QMouseEvent*>(e));
         return true;
     case QEvent::MouseButtonRelease:
         mouseReleaseEvent(static_cast<QMouseEvent*>(e));
         return true;
     case QEvent::MouseMove:
-        mouseMoveEvent(static_cast<QMouseEvent*>(e));
+        if(lastNumFingers_<2)
+            mouseMoveEvent(static_cast<QMouseEvent*>(e));
         return true;
     case QEvent::Wheel:
         wheelEvent(static_cast<QWheelEvent*>(e));
@@ -408,7 +410,7 @@ void CanvasQt::touchEvent(QTouchEvent* touch) {
     delete touchEvent;
 
 #ifdef USING_QT5
-    if(touch->touchPoints().size() == 1 && lastNumFingers_ < 2){
+    /*if(touch->touchPoints().size() == 1 && lastNumFingers_ < 2){
         MouseEvent* mouseEvent = NULL;
         switch (touchState)
         {
@@ -431,7 +433,7 @@ void CanvasQt::touchEvent(QTouchEvent* touch) {
             break;
         }
         delete mouseEvent;
-    }
+    }*/
 #endif
 
     lastNumFingers_ = static_cast<int>(touch->touchPoints().size());
@@ -495,7 +497,7 @@ void CanvasQt::panTriggered(QPanGesture* gesture) {
     }
 #endif
 
-    vec2 deltaPos = vec2(2.f*(gesture->lastOffset().x()-gesture->offset().x())/getScreenDimension().x, 2.f*(gesture->offset().y()-gesture->lastOffset().y())/getScreenDimension().y);
+    vec2 deltaPos = vec2((gesture->lastOffset().x()-gesture->offset().x())/getScreenDimension().x, (gesture->offset().y()-gesture->lastOffset().y())/getScreenDimension().y);
 
     if(deltaPos == vec2(0.f))
         return;
