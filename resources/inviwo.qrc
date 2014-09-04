@@ -33,6 +33,9 @@
     <file>icons/view_choose.png</file>
     <file>icons/view_statistics.png</file>
     <file>icons/wallet_open.png</file>
+    
+    <file>icons/warning.png</file>
+    <file>icons/error.png</file>
 
     <file>images/splashscreen.png</file>
 

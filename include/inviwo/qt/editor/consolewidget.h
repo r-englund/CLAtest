@@ -36,8 +36,10 @@
 #include <inviwo/qt/editor/inviwoqteditordefine.h>
 #include <inviwo/core/util/logcentral.h>
 #include <inviwo/qt/widgets/inviwodockwidget.h>
-#include <QTextEdit>
-#include <QKeyEvent>
+
+class QTextEdit;
+class QLabel;
+class QKeyEvent;
 
 namespace inviwo {
 
@@ -57,6 +59,14 @@ private:
     QColor infoTextColor_;
     QColor warnTextColor_;
     QColor errorTextColor_;
+
+
+    QLabel* errorsLabel_;
+    QLabel* warningsLabel_;
+    QLabel* infoLabel_;
+    unsigned int numErrors_;
+    unsigned int numWarnings_;
+    unsigned int numInfos_;
 
 public slots:
     void showContextMenu(const QPoint& pos);
