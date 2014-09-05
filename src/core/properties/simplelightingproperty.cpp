@@ -16,12 +16,12 @@ SimpleLightingProperty::SimpleLightingProperty(std::string identifier, std::stri
     , applyLightAttenuation_("applyLightAttenuation", "Light attenuation", false)
     , lightAttenuation_("lightAttenuation", "Light attenuation values", vec3(1.0f, 0.0f, 0.0f)) {
 
-    shadingMode_.addOption("none", "No Shading");
-    shadingMode_.addOption("ambient", "Ambient");
-    shadingMode_.addOption("diffuse", "Diffuse");
-    shadingMode_.addOption("specular", "Specular");
-    shadingMode_.addOption("phong", "Phong");
-    shadingMode_.setSelectedIdentifier("phong");
+    shadingMode_.addOption("none", "No Shading", ShadingMode::None);
+    shadingMode_.addOption("ambient", "Ambient", ShadingMode::Ambient);
+    shadingMode_.addOption("diffuse", "Diffuse", ShadingMode::Diffuse);
+    shadingMode_.addOption("specular", "Specular", ShadingMode::Specular);
+    shadingMode_.addOption("phong", "Phong", ShadingMode::Phong);
+    shadingMode_.setSelectedValue(ShadingMode::Phong);
     shadingMode_.setCurrentStateAsDefault();
 
     lightPosition_.setSemantics(PropertySemantics("Spherical"));
