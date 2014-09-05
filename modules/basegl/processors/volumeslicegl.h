@@ -126,7 +126,7 @@ private:
     IntProperty sliceX_;
     IntProperty sliceY_;
     IntProperty sliceZ_;
-    IntProperty **slices_; // array to access the individual slices via index
+    IntProperty *slices_[3]; // array to access the individual slices via index
     OptionPropertyFloat rotationAroundAxis_;  // Clockwise rotation around slice axis
     BoolProperty flipHorizontal_;
     BoolProperty flipVertical_;
