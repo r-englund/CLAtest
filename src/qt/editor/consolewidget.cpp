@@ -78,7 +78,7 @@ ConsoleWidget::ConsoleWidget(QWidget* parent) : InviwoDockWidget(tr("Console"), 
     statusBar->addWidget(new QLabel( "<img width='16' height='16' src=':/icons/warning.png'>", this));
     statusBar->addWidget(warningsLabel_);
     statusBar->addWidget(line2);
-    statusBar->addWidget(new QLabel( "<img width='16' height='16' src=':/icons/about.png'>", this));
+    statusBar->addWidget(new QLabel( "<img width='16' height='16' src=':/icons/info.png'>", this));
     statusBar->addWidget(infoLabel_);
     statusBar->addWidget(line3);
     
