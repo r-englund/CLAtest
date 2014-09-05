@@ -53,7 +53,7 @@ VolumeSliceGL::VolumeSliceGL()
     , sliceX_("sliceX", "X Volume Position", 128, 1, 256)
     , sliceY_("sliceY", "Y Volume Position", 128, 1, 256)
     , sliceZ_("sliceZ", "Z Volume Position", 128, 1, 256)
-    , slices_(NULL)
+ //   , slices_(NULL)
     , rotationAroundAxis_("rotation", "Rotation (ccw)")
     , flipHorizontal_("flipHorizontal", "Flip Horizontal View", false)
     , flipVertical_("flipVertical", "Flip Vertical View", false)
@@ -76,7 +76,7 @@ VolumeSliceGL::VolumeSliceGL()
     addPort(outport_);
 
     // helper construct to access axis slices via index
-    slices_ = new IntProperty*[3];
+    //slices_ = new IntProperty*[3];
     slices_[0] = &sliceX_;
     slices_[1] = &sliceY_;
     slices_[2] = &sliceZ_;
