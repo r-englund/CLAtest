@@ -41,6 +41,8 @@
 #include <inviwo/core/properties/buttonproperty.h>
 #include <inviwo/core/properties/cameraproperty.h>
 #include <inviwo/core/properties/ordinalproperty.h>
+#include <inviwo/core/properties/compositeproperty.h>
+#include <inviwo/core/properties/simplelightingproperty.h>
 #include <inviwo/core/rendering/geometryrenderer.h>
 #include <modules/opengl/openglmoduledefine.h>
 #include <modules/opengl/processorgl.h>
@@ -78,19 +80,13 @@ protected:
 
     std::vector<GeometryRenderer*> renderers_;
     
+    CompositeProperty geomProperties_;
     OptionPropertyInt cullFace_;
     OptionPropertyInt polygonMode_;
     FloatProperty renderPointSize_;
+    SimpleLightingProperty lightingProperty_;
 
     Shader* shader_;
-    OptionPropertyString shadingMode_;
-    FloatVec3Property lightPosition_;
-    FloatVec3Property lightColorAmbient_;
-    FloatVec3Property lightColorDiffuse_;
-    FloatVec3Property lightColorSpecular_;
-    IntProperty lightSpecularExponent_;
-    BoolProperty applyLightAttenuation_;
-    FloatVec3Property lightAttenuation_;
 };
 
 } // namespace
