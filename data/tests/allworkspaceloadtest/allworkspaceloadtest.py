@@ -10,11 +10,11 @@ import time
 
 
 def getUser():
-    user = raw_input("Enter user name: ")
+    user = inviwoqt.prompt('',"Enter user name: ")
     return user.rstrip( '\n' )    
     
 def getPassword():    
-    pwd = getpass.getpass()
+    pwd = inviwoqt.prompt('',"Enter password: ")
     return pwd.rstrip( '\n' )
 
 
