@@ -35,14 +35,25 @@
 #include <inviwo/qt/widgets/properties/transferfunctioneditor.h>
 #include <inviwo/qt/widgets/properties/transferfunctioneditorview.h>
 #include <QTextStream>
+#include <QGraphicsLineItem>
+#include <QGraphicsScene>
+#include <QGraphicsSceneEvent>
+#include <QGraphicsView>
+#include <QPainter>
 
 namespace inviwo {
 
 TransferFunctionEditorControlPoint::TransferFunctionEditorControlPoint(
     TransferFunctionDataPoint* datapoint, const DataMapper& dataMap)
-    : isEditingPoint_(false), dataPoint_(datapoint), dataMap_(dataMap) {
-    size_ = 14.0f;
-    showLabel_ = false;
+    : QGraphicsItem()
+    , left_(NULL)
+    , right_(NULL)
+    , isEditingPoint_(false)
+    , dataPoint_(datapoint)
+    , dataMap_(dataMap)
+    , size_(14.0f)
+    , showLabel_(false) {
+
     setFlags(ItemIgnoresTransformations | ItemIsFocusable | ItemIsMovable | ItemIsSelectable |
              ItemSendsGeometryChanges);
     setZValue(1);
@@ -191,6 +202,18 @@ void TransferFunctionEditorControlPoint::setDataMap(const DataMapper& dataMap) {
 
 inviwo::DataMapper TransferFunctionEditorControlPoint::getDataMap() const {
     return dataMap_;
+}
+
+void TransferFunctionEditorControlPoint::setDataPoint(TransferFunctionDataPoint* dataPoint) {
+    dataPoint_ = dataPoint;
+}
+
+TransferFunctionDataPoint* TransferFunctionEditorControlPoint::getPoint() const {
+    return dataPoint_;
+}
+
+bool TransferFunctionEditorControlPoint::operator==(const TransferFunctionDataPoint* point) const {
+    return dataPoint_ == point;
 }
 
 const double TransferFunctionEditorControlPoint::textHeight_ = 20;

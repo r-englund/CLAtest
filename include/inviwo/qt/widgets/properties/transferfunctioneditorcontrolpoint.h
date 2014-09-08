@@ -5,16 +5,16 @@
  *
  * Copyright (c) 2013-2014 Inviwo Foundation
  * All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met: 
- * 
+ * modification, are permitted provided that the following conditions are met:
+ *
  * 1. Redistributions of source code must retain the above copyright notice, this
- * list of conditions and the following disclaimer. 
+ * list of conditions and the following disclaimer.
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  * this list of conditions and the following disclaimer in the documentation
- * and/or other materials provided with the distribution. 
- * 
+ * and/or other materials provided with the distribution.
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
  * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
@@ -25,7 +25,7 @@
  * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- * 
+ *
  * Main file authors: Viktor Axelsson, Timo Ropinski
  *
  *********************************************************************************/
@@ -33,56 +33,55 @@
 /** \TransferFunctionEditorControlPoint class
  *         A point in the TransferFunctionEditor
  *
- *         Overloaded QGraphicsItem used in TransferFunctionEditor. Position of control points are used to
+ *         Overloaded QGraphicsItem used in TransferFunctionEditor. 
+ *         Position of control points are used to
  *         calulate the TransferFunction Image values, currently has one parameter
  */
+
 #ifndef IVW_TRANSFERFUNCTIONEDITORCONTROLPOINT_H
 #define IVW_TRANSFERFUNCTIONEDITORCONTROLPOINT_H
 
 #include <inviwo/qt/widgets/inviwoqtwidgetsdefine.h>
 #include <inviwo/core/datastructures/transferfunctiondatapoint.h>
 #include <inviwo/core/datastructures/datamapper.h>
-#include <QGraphicsLineItem>
-#include <QGraphicsScene>
-#include <QGraphicsSceneEvent>
-#include <QGraphicsView>
-#include <QPainter>
+#include <inviwo/qt/widgets/properties/propertywidgetqt.h>
+#include <QGraphicsItem>
+
+
 #include <QPainterPath>
+
+class QGraphicsSceneHoverEvent;
+class QPainter;
 
 namespace inviwo {
 
-class TransferFunctionDataPoint;
+class TransferFunctionControlPointConnection;
 
-class IVW_QTWIDGETS_API TransferFunctionEditorControlPoint : public QGraphicsItem, public TransferFunctionPointObserver {
-
+class IVW_QTWIDGETS_API TransferFunctionEditorControlPoint : public QGraphicsItem,
+                                                             public TransferFunctionPointObserver {
 public:
-    /** \TransferFunctionEditorControlPoint constructor
-    *      Creates a TransferFunctionEditorControlPoint
-    */
-    TransferFunctionEditorControlPoint(TransferFunctionDataPoint* dataPoint, const DataMapper& dataMap);
-
-    /** \TransferFunctionEditorControlPoint destructor
-    */
+    TransferFunctionEditorControlPoint(TransferFunctionDataPoint* dataPoint,
+                                       const DataMapper& dataMap);
     ~TransferFunctionEditorControlPoint();
 
-    void setDataPoint(TransferFunctionDataPoint* dataPoint) { dataPoint_ = dataPoint; }
-    TransferFunctionDataPoint* getPoint() const { return dataPoint_; }
+    void setDataPoint(TransferFunctionDataPoint* dataPoint);
+    TransferFunctionDataPoint* getPoint() const;
 
     void setDataMap(const DataMapper& dataMap);
     DataMapper getDataMap() const;
 
-    //override for qgraphicsitem_cast (refer qt documentation)
-    enum { Type = UserType + 255 };
-    int type() const  {return Type; }
+    // override for qgraphicsitem_cast (refer qt documentation)
+    enum { Type = UserType + TransferFunctionEditorControlPointType };
+    int type() const { return Type; }
 
     virtual void onTransferFunctionPointChange(const TransferFunctionDataPoint* p);
+    bool operator==(const TransferFunctionDataPoint* point) const;
 
-    bool operator==(const TransferFunctionDataPoint* point) const { return dataPoint_ == point; }
+    TransferFunctionControlPointConnection* left_;
+    TransferFunctionControlPointConnection* right_;
 
 protected:
-    /**Paint method
-    * Overloaded paint method from QGraphicsItem. Here the actual representation is drawn.
-    */
+    // Overload
     void paint(QPainter* p, const QStyleOptionGraphicsItem* options, QWidget* widget);
     QRectF boundingRect() const;
     QVariant itemChange(GraphicsItemChange change, const QVariant& value);
@@ -96,12 +95,13 @@ private:
 
     static const double textWidth_;
     static const double textHeight_;
-    float size_; ///< size for drawing the points
+    float size_;  ///< size for drawing the points
     bool showLabel_;
     bool isEditingPoint_;
-    TransferFunctionDataPoint* dataPoint_; ///<The TransferFunctionDataPoint the control point gets all its data from
+    TransferFunctionDataPoint*
+        dataPoint_;  ///<The TransferFunctionDataPoint the control point gets all its data from
     DataMapper dataMap_;
 };
 
-}// namespace
-#endif // IVW_TRANSFERFUNCTIONEDITORCONTROLPOINT_H
+}  // namespace
+#endif  // IVW_TRANSFERFUNCTIONEDITORCONTROLPOINT_H

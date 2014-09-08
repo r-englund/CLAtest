@@ -31,9 +31,17 @@
  *********************************************************************************/
 
 #include <inviwo/core/datastructures/histogram.h>
+#include <inviwo/core/properties/transferfunctionproperty.h>
 #include <inviwo/qt/widgets/properties/transferfunctioneditorview.h>
 #include <inviwo/qt/widgets/properties/transferfunctionpropertydialog.h>
+#include <inviwo/qt/widgets/properties/transferfunctioneditorcontrolpoint.h>
+#include <inviwo/qt/widgets/properties/transferfunctioneditor.h>
+#include <inviwo/core/datastructures/volume/volumeram.h>
 #include <QVarLengthArray>
+#include <QGraphicsItem>
+#include <QThread>
+#include <QtEvents>
+#include <QGraphicsScene>
 
 namespace inviwo {
 
@@ -72,8 +80,6 @@ TransferFunctionEditorView::TransferFunctionEditorView(TransferFunctionProperty*
 
     if (volumeInport_) {
         volumeInport_->onInvalid(this, &TransferFunctionEditorView::onVolumeInportInvalid);
-    }
-    if (volumeInport_) {
         volumeInport_->onChange(this, &TransferFunctionEditorView::onVolumeInportChange);
     }
 }
@@ -128,6 +134,7 @@ void TransferFunctionEditorView::onTransferFunctionChange() {
     if (volumeInport_ != tfProperty_->getVolumeInport()) {
         volumeInport_ = tfProperty_->getVolumeInport();
         volumeInport_->onInvalid(this, &TransferFunctionEditorView::onVolumeInportInvalid);
+        volumeInport_->onChange(this, &TransferFunctionEditorView::onVolumeInportChange);
     }
 
     this->viewport()->update();
@@ -235,12 +242,10 @@ const NormalizedHistogram* TransferFunctionEditorView::getNormalizedHistogram() 
                 connect(workerThread_, SIGNAL(finished()), this, SLOT(histogramThreadFinished()));
                 workerThread_->start();
             }
+        }
+    } 
 
-            return NULL;
-        } else
-            return NULL;
-    } else
-        return NULL;
+    return NULL;
 }
 
 void TransferFunctionEditorView::drawBackground(QPainter* painter, const QRectF& rect) {
@@ -298,9 +303,10 @@ void TransferFunctionEditorView::onVolumeInportChange() {
         TransferFunctionEditor* editor = dynamic_cast<TransferFunctionEditor*>(this->scene());
         editor->setDataMap(volumeInport_->getData()->dataMap_);
         if (editor) {
-            QList<QGraphicsItem *> items = editor->items();
+            QList<QGraphicsItem*> items = editor->items();
             for (QList<QGraphicsItem*>::iterator it = items.begin(); it != items.end(); it++) {
-                TransferFunctionEditorControlPoint* cp = dynamic_cast<TransferFunctionEditorControlPoint*>(*it);
+                TransferFunctionEditorControlPoint* cp =
+                    qgraphicsitem_cast<TransferFunctionEditorControlPoint*>(*it);
                 if (cp) {
                     cp->setDataMap(volumeInport_->getData()->dataMap_);
                 }
@@ -321,6 +327,14 @@ void TransferFunctionEditorView::onVolumeInportChange() {
 void HistogramWorkerQt::process() {
     volumeRAM_->getNormalizedHistogram(1, numBins_);
     emit finished();
+}
+
+HistogramWorkerQt::HistogramWorkerQt(const VolumeRAM* volumeRAM, std::size_t numBins /*= 2048u*/) : volumeRAM_(volumeRAM), numBins_(numBins) {
+
+}
+
+HistogramWorkerQt::~HistogramWorkerQt() {
+    volumeRAM_ = NULL;
 }
 
 }  // namespace inviwo

@@ -39,58 +39,39 @@
 #ifndef IVW_TRANSFERFUNCTIONEDITOR_H
 #define IVW_TRANSFERFUNCTIONEDITOR_H
 
-#include <inviwo/core/common/inviwocoredefine.h>
-#include <inviwo/core/datastructures/transferfunction.h>
-#include <inviwo/core/io/serialization/ivwserializer.h>
-#include <inviwo/core/io/serialization/ivwdeserializer.h>
-#include <inviwo/core/network/processornetworkevaluator.h>
-#include <inviwo/core/processors/processorfactory.h>
-#include <inviwo/core/util/factory.h>
-#include <inviwo/core/properties/transferfunctionproperty.h>
-
 #include <inviwo/qt/widgets/inviwoqtwidgetsdefine.h>
-#include <inviwo/qt/widgets/properties/transferfunctioneditorcontrolpoint.h>
+#include <inviwo/core/datastructures/datamapper.h>
 
-#include <inviwo/qt/widgets/propertylistwidget.h>
-
-#include <QBrush>
 #include <QGraphicsScene>
-#include <QGraphicsSceneMouseEvent>
-#include <QGraphicsView>
-#include <QKeyEvent>
-#include <QLineF>
-#include <QPainter>
-#include <QPen>
 #include <QPointF>
 #include <vector>
 
+class QGraphicsView;
+class QGraphicsPathItem;
+
 namespace inviwo {
 
-class TransferFunctionEditor : public QGraphicsScene {
+class TransferFunction;
+class TransferFunctionEditorControlPoint;
+class TransferFunctionDataPoint;
 
+class IVW_QTWIDGETS_API TransferFunctionEditor : public QGraphicsScene {
     Q_OBJECT
-
-public :
-    /** \TransferFunctionEditor constructor
-    *
-    *  Main constructor, creates control points
-    */
+public:
     TransferFunctionEditor(TransferFunction* transferFunction, QGraphicsView* view);
-    ~TransferFunctionEditor();
+    virtual ~TransferFunctionEditor();
 
-    float getZoomRangeXMin() const { return zoomRangeXMin_; }
-    void setZoomRangeXMin(float min) { zoomRangeXMin_ = min; }
+    float getZoomRangeXMin() const;
+    void setZoomRangeXMin(float min);
+    float getZoomRangeXMax() const;
+    void setZoomRangeXMax(float max);
+    float getZoomRangeYMin() const;
+    void setZoomRangeYMin(float min);
 
-    float getZoomRangeXMax() const { return zoomRangeXMax_; }
-    void setZoomRangeXMax(float max) { zoomRangeXMax_ = max; }
+    float getZoomRangeYMax() const;
+    void setZoomRangeYMax(float max);
 
-    float getZoomRangeYMin() const { return zoomRangeYMin_; }
-    void setZoomRangeYMin(float min) { zoomRangeYMin_ = min; }
-
-    float getZoomRangeYMax() const { return zoomRangeYMax_; }
-    void setZoomRangeYMax(float max) { zoomRangeYMax_ = max; }
-
-    QGraphicsView* getView() { return view_; }
+    QGraphicsView* getView();
     void redrawConnections();
 
     void setDataMap(const DataMapper& dataMap);

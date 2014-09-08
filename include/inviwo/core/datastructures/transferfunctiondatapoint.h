@@ -5,16 +5,16 @@
  *
  * Copyright (c) 2013-2014 Inviwo Foundation
  * All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met: 
- * 
+ * modification, are permitted provided that the following conditions are met:
+ *
  * 1. Redistributions of source code must retain the above copyright notice, this
- * list of conditions and the following disclaimer. 
+ * list of conditions and the following disclaimer.
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  * this list of conditions and the following disclaimer in the documentation
- * and/or other materials provided with the distribution. 
- * 
+ * and/or other materials provided with the distribution.
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
  * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
@@ -25,7 +25,7 @@
  * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- * 
+ *
  * Main file authors: Viktor Axelsson, Timo Ropinski
  *
  *********************************************************************************/
@@ -33,63 +33,56 @@
 #ifndef IVW_TRANSFERFUNCTIONDATAPOINT_H
 #define IVW_TRANSFERFUNCTIONDATAPOINT_H
 
-#include <stdlib.h>
 #include <inviwo/core/common/inviwocoredefine.h>
-#include <inviwo/core/datastructures/image/imagedisk.h>
-#include <inviwo/core/datastructures/image/imageram.h>
-#include <inviwo/core/ports/imageport.h>
+#include <inviwo/core/common/inviwo.h>
+#include <inviwo/core/util/observer.h>
 
 namespace inviwo {
 
 class TransferFunctionDataPoint;
 
-class IVW_CORE_API TransferFunctionPointObserver: public Observer {
+class IVW_CORE_API TransferFunctionPointObserver : public Observer {
 public:
-    TransferFunctionPointObserver(): Observer() {};
-
-    /**
-    * This method will be called when observed object changes.
-    * Override it to add behavior.
-    */
-    virtual void onTransferFunctionPointChange(const TransferFunctionDataPoint* p) {};
+    TransferFunctionPointObserver() : Observer(){};
+    virtual void onTransferFunctionPointChange(const TransferFunctionDataPoint* p){};
 };
 
-class IVW_CORE_API TransferFunctionPointObservable: public Observable<TransferFunctionPointObserver> {
+class IVW_CORE_API TransferFunctionPointObservable
+    : public Observable<TransferFunctionPointObserver> {
 public:
-    TransferFunctionPointObservable(): Observable<TransferFunctionPointObserver>() {};
-
+    TransferFunctionPointObservable() : Observable<TransferFunctionPointObserver>(){};
     void notifyTransferFunctionPointObservers() const;
 };
 
-
-class IVW_CORE_API TransferFunctionDataPoint : public TransferFunctionPointObservable, public IvwSerializable {
-
+class IVW_CORE_API TransferFunctionDataPoint : public TransferFunctionPointObservable,
+                                               public IvwSerializable {
 public:
     TransferFunctionDataPoint(const vec2& pos = vec2(0), const vec4& rgba = vec4(0));
+    TransferFunctionDataPoint(const TransferFunctionDataPoint& rhs);
     virtual ~TransferFunctionDataPoint();
+    TransferFunctionDataPoint& operator=(const TransferFunctionDataPoint& that);
 
-    inline const vec2& getPos() const {
-        return pos_;
-    };
-
-    inline const vec4& getRGBA() const {
-        return rgba_;
-    }
+    inline const vec2& getPos() const { return pos_; };
+    inline const vec4& getRGBA() const { return rgba_; }
 
     void setPos(const vec2& pos);
     void setRGBA(const vec4& rgba);
     void setRGB(const vec3& rgb);
     void setA(float alpha);
     void setPosA(const vec2& pos, float alpha);
-    
+
     void setNotificationsEnabled(bool enabled) { notify_ = enabled; }
     void notifyTransferFunctionPointObservers() const;
-    
+
     virtual void serialize(IvwSerializer& s) const;
     virtual void deserialize(IvwDeserializer& d);
 
     friend inline bool operator==(const TransferFunctionDataPoint& lhs,
                                   const TransferFunctionDataPoint& rhs);
+
+    // Compare points by their "x" value
+    friend inline bool operator<(const TransferFunctionDataPoint& lhs,
+                                 const TransferFunctionDataPoint& rhs);
 
 private:
     vec2 pos_;
@@ -97,18 +90,12 @@ private:
     bool notify_;
 };
 
-inline bool operator==(const TransferFunctionDataPoint& lhs,
-                       const TransferFunctionDataPoint& rhs){
-    return lhs.pos_ == rhs.pos_ && lhs.rgba_ == rhs.rgba_;
-    
-}
-inline bool operator!=(const TransferFunctionDataPoint& lhs,
-                       const TransferFunctionDataPoint& rhs) {
-                       return !operator==(lhs,rhs);
-}
+bool operator==(const TransferFunctionDataPoint& lhs, const TransferFunctionDataPoint& rhs);
+bool operator!=(const TransferFunctionDataPoint& lhs, const TransferFunctionDataPoint& rhs);
+bool operator<(const TransferFunctionDataPoint& lhs, const TransferFunctionDataPoint& rhs);
+bool operator>(const TransferFunctionDataPoint& lhs, const TransferFunctionDataPoint& rhs);
+bool operator<=(const TransferFunctionDataPoint& lhs, const TransferFunctionDataPoint& rhs);
+bool operator>=(const TransferFunctionDataPoint& lhs, const TransferFunctionDataPoint& rhs);
+}  // namespace
 
-
-
-} // namespace
-
-#endif // IVW_TRANSFERFUNCTIONDATAPOINT_H
+#endif  // IVW_TRANSFERFUNCTIONDATAPOINT_H

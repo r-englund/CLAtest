@@ -30,58 +30,40 @@
  *
  *********************************************************************************/
 
-#ifndef IVW_EDITORGRAPICSITEM_H
-#define IVW_EDITORGRAPICSITEM_H
+#ifndef IVW_TRANSFERFUNCTIONCONTROLPOINTCONNECTION_H
+#define IVW_TRANSFERFUNCTIONCONTROLPOINTCONNECTION_H
 
-#include <inviwo/qt/editor/inviwoqteditordefine.h>
-
-#include <QGraphicsItem>
-#include <QGraphicsRectItem>
-#include <QGraphicsSceneHelpEvent>
+#include <inviwo/qt/widgets/inviwoqtwidgetsdefine.h>
 #include <inviwo/qt/widgets/properties/propertywidgetqt.h>
+#include <QGraphicsItem>
+#include <QPainterPath>
 
 namespace inviwo {
+class TransferFunctionEditorControlPoint;
 
-IVW_QTEDITOR_API enum InviwoUserGraphicsItemType {
-    ProcessorGraphicsType = Number_of_InviwoWidgetGraphicsItemTypes,
-    CurveGraphicsType,
-    ConnectionDragGraphicsType,
-    ConnectionGraphicsType,
-    LinkGraphicsType,
-    LinkConnectionDragGraphicsType, 
-    LinkConnectionGraphicsType, 
-    ProcessorProgressGraphicsType,
-    ProcessorStatusGraphicsType,
-    ProcessorLinkGraphicsType,
-    ProcessorInportGraphicsType,
-    ProcessorOutportGraphicsType
-};
-
-// Z value for various graphics items.
-static const qreal DRAGING_ITEM_DEPTH = 4.0f;
-static const qreal PROCESSORGRAPHICSITEM_DEPTH = 2.0f;
-static const qreal SELECTED_PROCESSORGRAPHICSITEM_DEPTH = 3.0f;
-static const qreal CONNECTIONGRAPHICSITEM_DEPTH = 1.0f;
-static const qreal LINKGRAPHICSITEM_DEPTH = 1.0f;
-
-class Port;
-
-class IVW_QTEDITOR_API EditorGrapicsItem : public QGraphicsRectItem {
+class IVW_QTWIDGETS_API TransferFunctionControlPointConnection : public QGraphicsItem {
 public:
-    EditorGrapicsItem();
-    EditorGrapicsItem(QGraphicsItem* parent);
-    virtual ~EditorGrapicsItem();
-    QPoint mapPosToSceen(QPointF pos) const;
+    TransferFunctionControlPointConnection();
+    virtual ~TransferFunctionControlPointConnection();
 
-    static const QPainterPath makeRoundedBox(QRectF rect, float radius );
+    // override for qgraphicsitem_cast (refer qt documentation)
+    enum { Type = UserType + TransferFunctionControlPointConnectionType };
+    int type() const { return Type; }
 
-    virtual void showToolTip(QGraphicsSceneHelpEvent* event);
-    void showPortInfo(QGraphicsSceneHelpEvent* e, Port* port) const;
+    TransferFunctionEditorControlPoint* left_;   // Non-owning reference
+    TransferFunctionEditorControlPoint* right_;  // Non-owning reference
 
 protected:
-    void showToolTipHelper(QGraphicsSceneHelpEvent* event, QString string) const;
+    // Overload
+    void paint(QPainter* p, const QStyleOptionGraphicsItem* options, QWidget* widget);
+    QRectF boundingRect() const;
+    QPainterPath shape() const;
+
+private: 
+    QPainterPath path_;
 };
 
-}  // namespace
+} // namespace
 
-#endif  // IVW_EDITORGRAPICSITEM_H
+#endif // IVW_TRANSFERFUNCTIONCONTROLPOINTCONNECTION_H
+

@@ -45,6 +45,12 @@
 
 namespace inviwo {
 
+IVW_QTWIDGETS_API enum InviwoWidgetGraphicsItemType {
+    TransferFunctionEditorControlPointType = 1,
+    TransferFunctionControlPointConnectionType,
+    Number_of_InviwoWidgetGraphicsItemTypes
+};
+
 class Property;
 
 class IVW_QTWIDGETS_API PropertyWidgetQt : public QWidget, public PropertyWidget {

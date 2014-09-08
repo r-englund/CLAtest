@@ -33,21 +33,19 @@
 #ifndef IVW_TRANSFERFUNCTIONEDITORVIEW_H
 #define IVW_TRANSFERFUNCTIONEDITORVIEW_H
 
-#include <inviwo/core/properties/transferfunctionproperty.h>
 #include <inviwo/qt/widgets/inviwoqtwidgetsdefine.h>
-#include <inviwo/qt/widgets/properties/transferfunctioneditor.h>
-#include <inviwo/qt/widgets/inviwoqtwidgetsdefine.h>
-#include <inviwo/core/datastructures/volume/volumeram.h>
-#include <QtEvents>
-#include <QGraphicsScene>
+#include <inviwo/core/datastructures/transferfunction.h>
 #include <QGraphicsView>
-#include <QThread>
 
 namespace inviwo {
+
+class TransferFunctionProperty;
+class TransferFunctionDataPoint;
+class NormalizedHistogram;
+
 class IVW_QTWIDGETS_API TransferFunctionEditorView : public QGraphicsView,
                                                      public TransferFunctionObserver {
     Q_OBJECT
-
 public:
     TransferFunctionEditorView(TransferFunctionProperty* tfProperty);
     ~TransferFunctionEditorView();
@@ -69,10 +67,8 @@ protected:
     const NormalizedHistogram* getNormalizedHistogram();
 
     void resizeEvent(QResizeEvent* event);
-
     void drawForeground(QPainter* painter, const QRectF& rect);
     void drawBackground(QPainter* painter, const QRectF& rect);
-
     void updateHistogram();
     void onVolumeInportChange();
 
@@ -91,14 +87,12 @@ private:
     vec2 maskHorizontal_;
 };
 
+class VolumeRAM;
 class IVW_QTWIDGETS_API HistogramWorkerQt : public QObject {
     Q_OBJECT
 public:
-    HistogramWorkerQt(const VolumeRAM* volumeRAM, std::size_t numBins = 2048u)
-        : volumeRAM_(volumeRAM), numBins_(numBins) {}
-    ~HistogramWorkerQt() {
-        volumeRAM_ = NULL;
-    };
+    HistogramWorkerQt(const VolumeRAM* volumeRAM, std::size_t numBins = 2048u);
+    ~HistogramWorkerQt();;
 
 public slots:
     void process();
