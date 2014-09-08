@@ -65,6 +65,11 @@ public:
     bool hasShaderDefine(const std::string& name) const;
     void clearShaderDefines();
 
+    void addShaderExtension(std::string extName, bool enabled);
+    void removeShaderExtension(std::string extName);
+    bool hasShaderExtension(const std::string& extName) const;
+    void clearShaderExtensions();
+
     void addOutDeclaration(std::string name);
 
 private:
@@ -91,6 +96,9 @@ private:
     std::vector<std::string> outDeclarations_;
     typedef std::map<std::string, std::string> ShaderDefineContainer;
     ShaderDefineContainer shaderDefines_;
+
+    typedef std::map<std::string, bool> ShaderExtensionContainer; // extension name, enable flag
+    ShaderExtensionContainer shaderExtensions_;
 
     std::vector<std::pair<std::string, unsigned int> > lineNumberResolver_;
 };

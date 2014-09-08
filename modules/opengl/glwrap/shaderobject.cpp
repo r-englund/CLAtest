@@ -98,26 +98,37 @@ void ShaderObject::preprocess() {
 }
 
 std::string ShaderObject::embeddDefines(std::string source) {
-    std::ostringstream result;
-    for (ShaderDefineContainer::const_iterator it=shaderDefines_.begin(), itEnd = shaderDefines_.end(); it!=itEnd; ++it) {
-        result << "#define " << (*it).first << " " << (*it).second << "\n";
-        lineNumberResolver_.push_back(std::pair<std::string, unsigned int>("Define", 0));
-    }
-
-    std::string curLine;
     std::string globalGLSLHeader = ShaderManager::getPtr()->getGlobalGLSLHeader();
-
-    if (shaderType_ == GL_VERTEX_SHADER)
-        globalGLSLHeader += ShaderManager::getPtr()->getGlobalGLSLVertexDefines();
-    else if (shaderType_ == GL_FRAGMENT_SHADER)
-        globalGLSLHeader += ShaderManager::getPtr()->getGlobalGLSLFragmentDefines();
-
+    
+    std::string curLine;
     std::istringstream globalGLSLHeaderStream(globalGLSLHeader);
-
     while (std::getline(globalGLSLHeaderStream, curLine))
         lineNumberResolver_.push_back(std::pair<std::string, unsigned int>("GlobalGLSLSHeader", 0));
 
-    return globalGLSLHeader + result.str();
+    std::ostringstream extensions;
+    ShaderExtensionContainer::const_iterator it=shaderExtensions_.begin();
+    while (it != shaderExtensions_.end()) {
+        extensions << "#extension " << (*it).first << " : " << ((*it).second ? "enable" : "disable") << "\n";
+        lineNumberResolver_.push_back(std::pair<std::string, unsigned int>("Extension", 0));
+        ++it;
+    }
+
+    std::string globalDefines;
+    if (shaderType_ == GL_VERTEX_SHADER)
+        globalDefines += ShaderManager::getPtr()->getGlobalGLSLVertexDefines();
+    else if (shaderType_ == GL_FRAGMENT_SHADER)
+        globalDefines += ShaderManager::getPtr()->getGlobalGLSLFragmentDefines();
+    std::istringstream globalGLSLDefinesStream(globalDefines);
+    while (std::getline(globalGLSLDefinesStream, curLine))
+        lineNumberResolver_.push_back(std::pair<std::string, unsigned int>("GlobalGLSLSDefines", 0));
+
+    std::ostringstream defines;
+    for (ShaderDefineContainer::const_iterator it=shaderDefines_.begin(), itEnd = shaderDefines_.end(); it!=itEnd; ++it) {
+        defines << "#define " << (*it).first << " " << (*it).second << "\n";
+        lineNumberResolver_.push_back(std::pair<std::string, unsigned int>("Define", 0));
+    }
+
+    return globalGLSLHeader + extensions.str() + defines.str() + globalDefines;
 }
 
 std::string ShaderObject::embeddOutDeclarations(std::string source) {
@@ -321,6 +332,22 @@ bool ShaderObject::hasShaderDefine(const std::string& name) const {
 
 void ShaderObject::clearShaderDefines() {
     shaderDefines_.clear();
+}
+
+void ShaderObject::addShaderExtension(std::string extName, bool enabled) {
+    shaderExtensions_[extName] = enabled;
+}
+
+void ShaderObject::removeShaderExtension(std::string extName) {
+    shaderExtensions_.erase(extName);
+}
+
+bool ShaderObject::hasShaderExtension(const std::string& extName) const {
+    return shaderExtensions_.find(extName) != shaderExtensions_.end();
+}
+
+void ShaderObject::clearShaderExtensions() {
+    shaderExtensions_.clear();
 }
 
 void ShaderObject::addOutDeclaration(std::string name) {
