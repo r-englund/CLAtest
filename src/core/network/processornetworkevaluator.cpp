@@ -438,7 +438,7 @@ ProcessorNetworkEvaluator* ProcessorNetworkEvaluator::getProcessorNetworkEvaluat
 void ProcessorNetworkEvaluator::requestEvaluate() {
     //evaluation has been triggered but is currently queued
     //requestEvaluate needs to be called with evaulationQueued_ false to continue.
-    if (evaulationQueued_)
+    if (evaulationQueued_ || processorNetwork_->isLinking())
         return;
 
     //evaluation disabled

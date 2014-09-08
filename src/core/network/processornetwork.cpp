@@ -459,6 +459,9 @@ bool ProcessorNetwork::isModified() const {
     return modified_; 
 }
 
+bool ProcessorNetwork::isLinking() const{
+    return linking_;
+}
 
 bool ProcessorNetwork::isInvalidating() const { 
     return invalidating_; 
@@ -475,7 +478,7 @@ void ProcessorNetwork::onProcessorInvalidationBegin(Processor* p) {
     if (!isInvalidating()) {
         invalidating_ = true;
 
-        if (linking_ && !linkInvalidationInitiator_)
+        if (isLinking() && !linkInvalidationInitiator_)
             linkInvalidationInitiator_ = p;
     }
 }
@@ -497,7 +500,7 @@ void ProcessorNetwork::onProcessorInvalidationEnd(Processor* p) {
 }
 
 void ProcessorNetwork::onProcessorRequestEvaluate(Processor*) {
-    if (linking_ || isInvalidating())
+    if (isLinking() || isInvalidating())
         evaluationQueued_ = true;
     else {
         notifyProcessorNetworkEvaluateRequestObservers();
@@ -527,7 +530,7 @@ void ProcessorNetwork::performLinkingOnPropertyChange(Property* modifiedProperty
 
 
 void ProcessorNetwork::evaluatePropertyLinks(Property* modifiedProperty) {
-    if (linking_)
+    if (isLinking())
         return;
 
     lock();
@@ -543,7 +546,7 @@ void ProcessorNetwork::evaluatePropertyLinks(Property* modifiedProperty) {
 
     unlock();
 
-    if (linking_) {
+    if (isLinking()) {
         linking_ = false;
         if (evaluationQueued_ && linkInvalidationInitiator_!=getInvalidationInitiator())
             onProcessorRequestEvaluate(linkInvalidationInitiator_);
@@ -552,7 +555,7 @@ void ProcessorNetwork::evaluatePropertyLinks(Property* modifiedProperty) {
 }
 
 void ProcessorNetwork::evaluatePropertyLinks1(Property* modifiedProperty) {
-    if (linking_)
+    if (isLinking())
         return;
 
     lock();
@@ -584,7 +587,7 @@ void ProcessorNetwork::evaluatePropertyLinks1(Property* modifiedProperty) {
 
     unlock();
 
-    if (linking_) {
+    if (isLinking()) {
         linking_ = false;
 
         if (evaluationQueued_ && linkInvalidationInitiator_!=getInvalidationInitiator())
