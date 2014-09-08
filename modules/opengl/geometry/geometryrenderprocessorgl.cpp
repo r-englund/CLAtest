@@ -88,6 +88,7 @@ GeometryRenderProcessorGL::GeometryRenderProcessorGL()
     geomProperties_.addProperty(renderPointSize_);
 
     addProperty(geomProperties_);
+    addProperty(lightingProperty_);
 
     setAllPropertiesCurrentStateAsDefault();
 }
