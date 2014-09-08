@@ -125,6 +125,13 @@ public:
     virtual void invalidate(PropertyOwner::InvalidationLevel invalidationLevel,
                             Property* modifiedProperty = 0);
 
+    // Triggers invalidation of succesors.
+    // Perform only full reimplementation of this function, meaning never call
+    // Proccessor::invalidateSuccesors()
+    // in your reimplemented invalidation function.
+    virtual void invalidateSuccesors(PropertyOwner::InvalidationLevel invalidationLevel,
+        Property* modifiedProperty = 0);
+
     virtual void setValid();
     virtual void initializeResources() {}  // reload shaders etc. here
 
