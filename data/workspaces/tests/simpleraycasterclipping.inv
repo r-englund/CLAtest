@@ -162,7 +162,7 @@
                 </Property>
             </Properties>
         </Processor>
-        <Processor type="org.inviwo.CubeProxyGeometry" identifier="CubeProxyGeometry" id="ref1">
+        <Processor type="org.inviwo.CubeProxyGeometry" identifier="CubeProxyGeometry" id="ref5">
             <MetaDataList>
                 <MetaData type="ProcessorMetaData">
                     <position x="-525" y="-650" />
@@ -195,64 +195,27 @@
                 </Property>
             </Properties>
         </Processor>
-        <Processor type="org.inviwo.VolumeSource" identifier="VolumeSource" id="ref5">
+        <Processor type="org.inviwo.VolumeSource" identifier="VolumeSource" id="ref1">
             <MetaDataList>
                 <MetaData type="ProcessorMetaData">
                     <position x="-675" y="-725" />
                     <visibility content="1" />
-                    <selection content="1" />
+                    <selection content="0" />
                 </MetaData>
             </MetaDataList>
             <Properties>
-                <Property type="CompositeProperty" identifier="Basis" displayName="Basis and offset" key="Basis">
+                <Property type="FloatVec3Property" identifier="angles" displayName="Angles" key="angles">
                     <usageMode content="0" />
                     <visible content="1" />
-                    <Properties>
-                        <Property type="FloatVec3Property" identifier="angles" displayName="Angles" key="angles">
-                            <usageMode content="0" />
-                            <visible content="1" />
-                        </Property>
-                        <Property type="FloatVec3Property" identifier="length" displayName="Lengths" key="length">
-                            <usageMode content="0" />
-                            <visible content="1" />
-                        </Property>
-                        <Property type="FloatVec3Property" identifier="offset" displayName="Offset" key="offset">
-                            <usageMode content="0" />
-                            <visible content="1" />
-                        </Property>
-                        <Property type="BoolProperty" identifier="override" displayName="Override" key="override">
-                            <usageMode content="0" />
-                            <visible content="1" />
-                        </Property>
-                    </Properties>
                 </Property>
-                <Property type="CompositeProperty" identifier="Information" displayName="Data information" key="Information">
+                <Property type="DoubleMinMaxProperty" identifier="dataRange" displayName="Data range" key="dataRange">
+                    <semantics semantics="Text" />
                     <usageMode content="0" />
                     <visible content="1" />
-                    <Properties>
-                        <Property type="DoubleMinMaxProperty" identifier="dataRange" displayName="Data range" key="dataRange">
-                            <semantics semantics="Text" />
-                            <usageMode content="0" />
-                            <visible content="1" />
-                        </Property>
-                        <Property type="StringProperty" identifier="dimensions" displayName="Dimensions" key="dimensions">
-                            <usageMode content="0" />
-                            <visible content="1" />
-                        </Property>
-                        <Property type="StringProperty" identifier="format" displayName="Format" key="format">
-                            <usageMode content="0" />
-                            <visible content="1" />
-                        </Property>
-                        <Property type="DoubleMinMaxProperty" identifier="valueRange" displayName="Value range" key="valueRange">
-                            <semantics semantics="Text" />
-                            <usageMode content="0" />
-                            <visible content="1" />
-                        </Property>
-                        <Property type="StringProperty" identifier="valueUnit" displayName="Value unit" key="valueUnit">
-                            <usageMode content="0" />
-                            <visible content="1" />
-                        </Property>
-                    </Properties>
+                </Property>
+                <Property type="StringProperty" identifier="dimensions" displayName="Dimensions" key="dimensions">
+                    <usageMode content="0" />
+                    <visible content="1" />
                 </Property>
                 <Property type="FileProperty" identifier="filename" displayName="Volume file" key="filename">
                     <usageMode content="0" />
@@ -267,6 +230,22 @@
                     <acceptMode content="0" />
                     <fileMode content="0" />
                 </Property>
+                <Property type="StringProperty" identifier="format" displayName="Format" key="format">
+                    <usageMode content="0" />
+                    <visible content="1" />
+                </Property>
+                <Property type="FloatVec3Property" identifier="length" displayName="Lengths" key="length">
+                    <usageMode content="0" />
+                    <visible content="1" />
+                </Property>
+                <Property type="FloatVec3Property" identifier="offset" displayName="Offset" key="offset">
+                    <usageMode content="0" />
+                    <visible content="1" />
+                </Property>
+                <Property type="BoolProperty" identifier="override" displayName="Override" key="override">
+                    <usageMode content="0" />
+                    <visible content="1" />
+                </Property>
                 <Property type="BoolProperty" identifier="playSequence" displayName="Play Sequence" key="playSequence">
                     <usageMode content="0" />
                     <visible content="0" />
@@ -275,13 +254,22 @@
                     <usageMode content="0" />
                     <visible content="0" />
                 </Property>
+                <Property type="DoubleMinMaxProperty" identifier="valueRange" displayName="Value range" key="valueRange">
+                    <semantics semantics="Text" />
+                    <usageMode content="0" />
+                    <visible content="1" />
+                </Property>
+                <Property type="StringProperty" identifier="valueUnit" displayName="Value unit" key="valueUnit">
+                    <usageMode content="0" />
+                    <visible content="1" />
+                </Property>
                 <Property type="IntProperty" identifier="volumesPerSecond" displayName="Volumes Per Second" key="volumesPerSecond">
                     <usageMode content="0" />
                     <visible content="0" />
                 </Property>
             </Properties>
         </Processor>
-        <Processor type="org.inviwo.EntryExitPoints" identifier="EntryExitPoints" id="ref3">
+        <Processor type="org.inviwo.EntryExitPoints" identifier="EntryExitPoints" id="ref2">
             <MetaDataList>
                 <MetaData type="ProcessorMetaData">
                     <position x="-525" y="-500" />
@@ -439,14 +427,14 @@
                 </InteractionHandler>
             </InteractonHandlers>
             <Properties>
-                <Property type="CameraProperty" identifier="camera" displayName="Camera" key="camera" id="ref4">
+                <Property type="CameraProperty" identifier="camera" displayName="Camera" key="camera" id="ref3">
                     <usageMode content="0" />
                     <visible content="1" />
                     <lookFrom type="FloatVec3Property" identifier="lookFrom" displayName="Look from">
                         <semantics semantics="Spherical" />
                         <usageMode content="0" />
                         <visible content="1" />
-                        <value x="2.0250297" y="-3.5344934" z="2.880383" />
+                        <value x="2.0250297" y="-3.5344946" z="2.880383" />
                     </lookFrom>
                     <lookTo type="FloatVec3Property" identifier="lookTo" displayName="Look to">
                         <usageMode content="0" />
@@ -476,7 +464,7 @@
                     </nearPlane>
                     <farPlane type="FloatProperty" identifier="far" displayName="Far Plane">
                         <minvalue content="0.1" />
-                        <maxvalue content="100" />
+                        <maxvalue content="100.00004" />
                         <increment content="0.1" />
                         <usageMode content="0" />
                         <visible content="1" />
@@ -493,7 +481,7 @@
                 </Property>
             </Properties>
         </Processor>
-        <Processor type="org.inviwo.CanvasGL" identifier="CanvasGL" id="ref0">
+        <Processor type="org.inviwo.CanvasGL" identifier="CanvasGL" id="ref4">
             <MetaDataList>
                 <MetaData type="ProcessorMetaData">
                     <position x="-600" y="-325" />
@@ -501,7 +489,7 @@
                     <selection content="0" />
                 </MetaData>
                 <MetaData type="ProcessorWidgetMetaData">
-                    <position x="1054" y="525" />
+                    <position x="1062" y="556" />
                     <dimension x="256" y="256" />
                     <visibility content="1" />
                 </MetaData>
@@ -549,12 +537,12 @@
                 </Property>
             </Properties>
         </Processor>
-        <Processor type="org.inviwo.MeshClipping" identifier="MeshClipping" id="ref2">
+        <Processor type="org.inviwo.MeshClipping" identifier="MeshClipping" id="ref0">
             <MetaDataList>
                 <MetaData type="ProcessorMetaData">
                     <position x="-475" y="-575" />
                     <visibility content="1" />
-                    <selection content="0" />
+                    <selection content="1" />
                 </MetaData>
             </MetaDataList>
             <Properties>
@@ -566,12 +554,12 @@
                 <Property type="FloatVec3Property" identifier="planeNormal" displayName="Plane Normal" key="planeNormal">
                     <usageMode content="0" />
                     <visible content="1" />
-                    <value x="-0.69999999" y="0.1" z="-1" />
+                    <value x="-1" y="0.057999969" z="-1" />
                 </Property>
                 <Property type="FloatVec3Property" identifier="planePoint" displayName="Plane Point" key="planePoint">
                     <usageMode content="0" />
                     <visible content="1" />
-                    <value x="0" y="-7.4000001" z="0.2" />
+                    <value x="0.85599995" y="4.408" z="0.52600002" />
                 </Property>
                 <Property type="BoolProperty" identifier="renderAsPoints" displayName="Render As Points by Default" key="renderAsPoints">
                     <usageMode content="0" />
@@ -583,7 +571,7 @@
     <Connections>
         <Connection>
             <OutPort identifier="entry-points">
-                <Processor type="org.inviwo.EntryExitPoints" identifier="EntryExitPoints" reference="ref3" />
+                <Processor type="org.inviwo.EntryExitPoints" identifier="EntryExitPoints" reference="ref2" />
             </OutPort>
             <InPort identifier="entry-points">
                 <Processor type="org.inviwo.SimpleRaycaster" identifier="SimpleRaycaster" reference="ref6" />
@@ -591,7 +579,7 @@
         </Connection>
         <Connection>
             <OutPort identifier="exit-points">
-                <Processor type="org.inviwo.EntryExitPoints" identifier="EntryExitPoints" reference="ref3" />
+                <Processor type="org.inviwo.EntryExitPoints" identifier="EntryExitPoints" reference="ref2" />
             </OutPort>
             <InPort identifier="exit-points">
                 <Processor type="org.inviwo.SimpleRaycaster" identifier="SimpleRaycaster" reference="ref6" />
@@ -602,36 +590,36 @@
                 <Processor type="org.inviwo.SimpleRaycaster" identifier="SimpleRaycaster" reference="ref6" />
             </OutPort>
             <InPort identifier="inport">
-                <Processor type="org.inviwo.CanvasGL" identifier="CanvasGL" reference="ref0" />
+                <Processor type="org.inviwo.CanvasGL" identifier="CanvasGL" reference="ref4" />
             </InPort>
         </Connection>
         <Connection>
             <OutPort identifier="geometry.outport">
-                <Processor type="org.inviwo.CubeProxyGeometry" identifier="CubeProxyGeometry" reference="ref1" />
+                <Processor type="org.inviwo.CubeProxyGeometry" identifier="CubeProxyGeometry" reference="ref5" />
             </OutPort>
             <InPort identifier="geometry.input">
-                <Processor type="org.inviwo.MeshClipping" identifier="MeshClipping" reference="ref2" />
+                <Processor type="org.inviwo.MeshClipping" identifier="MeshClipping" reference="ref0" />
             </InPort>
         </Connection>
         <Connection>
             <OutPort identifier="geometry.output">
-                <Processor type="org.inviwo.MeshClipping" identifier="MeshClipping" reference="ref2" />
+                <Processor type="org.inviwo.MeshClipping" identifier="MeshClipping" reference="ref0" />
             </OutPort>
             <InPort identifier="geometry">
-                <Processor type="org.inviwo.EntryExitPoints" identifier="EntryExitPoints" reference="ref3" />
+                <Processor type="org.inviwo.EntryExitPoints" identifier="EntryExitPoints" reference="ref2" />
             </InPort>
         </Connection>
         <Connection>
             <OutPort identifier="data">
-                <Processor type="org.inviwo.VolumeSource" identifier="VolumeSource" reference="ref5" />
+                <Processor type="org.inviwo.VolumeSource" identifier="VolumeSource" reference="ref1" />
             </OutPort>
             <InPort identifier="volume.inport">
-                <Processor type="org.inviwo.CubeProxyGeometry" identifier="CubeProxyGeometry" reference="ref1" />
+                <Processor type="org.inviwo.CubeProxyGeometry" identifier="CubeProxyGeometry" reference="ref5" />
             </InPort>
         </Connection>
         <Connection>
             <OutPort identifier="data">
-                <Processor type="org.inviwo.VolumeSource" identifier="VolumeSource" reference="ref5" />
+                <Processor type="org.inviwo.VolumeSource" identifier="VolumeSource" reference="ref1" />
             </OutPort>
             <InPort identifier="volume">
                 <Processor type="org.inviwo.SimpleRaycaster" identifier="SimpleRaycaster" reference="ref6" />
@@ -642,12 +630,12 @@
         <PropertyLink>
             <Properties>
                 <Property type="CameraProperty" identifier="camera" displayName="Camera" key="camera" reference="ref7" />
-                <Property type="CameraProperty" identifier="camera" displayName="Camera" key="camera" reference="ref4" />
+                <Property type="CameraProperty" identifier="camera" displayName="Camera" key="camera" reference="ref3" />
             </Properties>
         </PropertyLink>
         <PropertyLink>
             <Properties>
-                <Property type="CameraProperty" identifier="camera" displayName="Camera" key="camera" reference="ref4" />
+                <Property type="CameraProperty" identifier="camera" displayName="Camera" key="camera" reference="ref3" />
                 <Property type="CameraProperty" identifier="camera" displayName="Camera" key="camera" reference="ref7" />
             </Properties>
         </PropertyLink>
