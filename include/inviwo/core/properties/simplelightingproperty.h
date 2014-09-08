@@ -14,6 +14,16 @@ namespace inviwo {
  * Add simple light properties, position, ambient, diffuse, specular color. Used for phong shading.
  */
 
+namespace ShadingMode {
+    enum Modes {
+        None,
+        Ambient,
+        Diffuse,
+        Specular,
+        Phong,
+    };
+}
+
 class IVW_CORE_API SimpleLightingProperty : public CompositeProperty {
 public:
     SimpleLightingProperty(std::string identifier, std::string displayName,
@@ -21,7 +31,7 @@ public:
                            PropertySemantics semantics = PropertySemantics::Default);
     virtual ~SimpleLightingProperty(){}
 
-    OptionPropertyString shadingMode_;
+    OptionPropertyInt shadingMode_;
     FloatVec3Property lightPosition_;
     FloatVec3Property lightColorAmbient_;
     FloatVec3Property lightColorDiffuse_;
