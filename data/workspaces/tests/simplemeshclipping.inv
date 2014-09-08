@@ -11,7 +11,7 @@
                     <selection content="0" />
                 </MetaData>
                 <MetaData type="ProcessorWidgetMetaData">
-                    <position x="653" y="432" />
+                    <position x="445" y="452" />
                     <dimension x="256" y="256" />
                     <visibility content="1" />
                 </MetaData>
@@ -59,7 +59,7 @@
                 </Property>
             </Properties>
         </Processor>
-        <Processor type="org.inviwo.MeshClipping" identifier="MeshClipping" id="ref2">
+        <Processor type="org.inviwo.MeshClipping" identifier="MeshClipping" id="ref3">
             <MetaDataList>
                 <MetaData type="ProcessorMetaData">
                     <position x="-600" y="-525" />
@@ -89,7 +89,7 @@
                 </Property>
             </Properties>
         </Processor>
-        <Processor type="org.inviwo.GeometryRenderGL" identifier="GeometryRenderGL" id="ref3">
+        <Processor type="org.inviwo.GeometryRenderGL" identifier="GeometryRenderGL" id="ref2">
             <MetaDataList>
                 <MetaData type="ProcessorMetaData">
                     <position x="-650" y="-425" />
@@ -247,10 +247,6 @@
                 </InteractionHandler>
             </InteractonHandlers>
             <Properties>
-                <Property type="BoolProperty" identifier="applyLightAttenuation" displayName="Light attenuation" key="applyLightAttenuation">
-                    <usageMode content="0" />
-                    <visible content="1" />
-                </Property>
                 <Property type="CameraProperty" identifier="camera" displayName="Camera" key="camera">
                     <usageMode content="0" />
                     <visible content="1" />
@@ -298,52 +294,71 @@
                     <usageMode content="0" />
                     <visible content="1" />
                 </Property>
-                <Property type="OptionPropertyInt" identifier="cullFace" displayName="Cull Face" key="cullFace">
+                <Property type="CompositeProperty" identifier="geometry" displayName="Geometry Rendering Properties" key="geometry">
                     <usageMode content="0" />
                     <visible content="1" />
+                    <Properties>
+                        <Property type="OptionPropertyInt" identifier="cullFace" displayName="Cull Face" key="cullFace">
+                            <usageMode content="0" />
+                            <visible content="1" />
+                        </Property>
+                        <Property type="OptionPropertyInt" identifier="polygonMode" displayName="Polygon Mode" key="polygonMode">
+                            <usageMode content="0" />
+                            <visible content="1" />
+                        </Property>
+                        <Property type="FloatProperty" identifier="renderPointSize" displayName="Point Size" key="renderPointSize">
+                            <usageMode content="0" />
+                            <visible content="1" />
+                        </Property>
+                    </Properties>
                 </Property>
-                <Property type="FloatVec3Property" identifier="lightAttenuation" displayName="Light attenuation values" key="lightAttenuation">
+                <Property type="CompositeProperty" identifier="lighting" displayName="Lighting" key="lighting">
                     <usageMode content="0" />
                     <visible content="1" />
-                </Property>
-                <Property type="FloatVec3Property" identifier="lightColorAmbient" displayName="Ambient color" key="lightColorAmbient">
-                    <semantics semantics="Color" />
-                    <usageMode content="0" />
-                    <visible content="1" />
-                </Property>
-                <Property type="FloatVec3Property" identifier="lightColorDiffuse" displayName="Diffuse color" key="lightColorDiffuse">
-                    <semantics semantics="Color" />
-                    <usageMode content="0" />
-                    <visible content="1" />
-                    <value x="0.49803922" y="0.49803922" z="0.49803922" />
-                </Property>
-                <Property type="FloatVec3Property" identifier="lightColorSpecular" displayName="Specular color" key="lightColorSpecular">
-                    <semantics semantics="Color" />
-                    <usageMode content="0" />
-                    <visible content="1" />
-                </Property>
-                <Property type="FloatVec3Property" identifier="lightPosition" displayName="Position" key="lightPosition">
-                    <semantics semantics="Spherical" />
-                    <usageMode content="0" />
-                    <visible content="1" />
-                </Property>
-                <Property type="IntProperty" identifier="materialShininess" displayName="Material shininess" key="materialShininess">
-                    <usageMode content="0" />
-                    <visible content="1" />
-                </Property>
-                <Property type="OptionPropertyInt" identifier="polygonMode" displayName="Polygon Mode" key="polygonMode">
-                    <usageMode content="0" />
-                    <visible content="1" />
-                </Property>
-                <Property type="FloatProperty" identifier="renderPointSize" displayName="Point Size" key="renderPointSize">
-                    <usageMode content="0" />
-                    <visible content="1" />
+                    <Properties>
+                        <Property type="BoolProperty" identifier="applyLightAttenuation" displayName="Light attenuation" key="applyLightAttenuation">
+                            <usageMode content="0" />
+                            <visible content="1" />
+                        </Property>
+                        <Property type="FloatVec3Property" identifier="lightAttenuation" displayName="Light attenuation values" key="lightAttenuation">
+                            <usageMode content="0" />
+                            <visible content="1" />
+                        </Property>
+                        <Property type="FloatVec3Property" identifier="lightColorAmbient" displayName="Ambient color" key="lightColorAmbient">
+                            <semantics semantics="Color" />
+                            <usageMode content="0" />
+                            <visible content="1" />
+                            <value x="0.098039217" y="0.098039217" z="0.098039217" />
+                        </Property>
+                        <Property type="FloatVec3Property" identifier="lightColorDiffuse" displayName="Diffuse color" key="lightColorDiffuse">
+                            <semantics semantics="Color" />
+                            <usageMode content="0" />
+                            <visible content="1" />
+                            <value x="0.74901962" y="0.74901962" z="0.74901962" />
+                        </Property>
+                        <Property type="FloatVec3Property" identifier="lightColorSpecular" displayName="Specular color" key="lightColorSpecular">
+                            <semantics semantics="Color" />
+                            <usageMode content="0" />
+                            <visible content="1" />
+                            <value x="0.74901962" y="0.74901962" z="0.74901962" />
+                        </Property>
+                        <Property type="FloatVec3Property" identifier="lightPosition" displayName="Position" key="lightPosition">
+                            <semantics semantics="Spherical" />
+                            <usageMode content="0" />
+                            <visible content="1" />
+                        </Property>
+                        <Property type="IntProperty" identifier="materialShininess" displayName="Material shininess" key="materialShininess">
+                            <usageMode content="0" />
+                            <visible content="1" />
+                        </Property>
+                        <Property type="OptionPropertyInt" identifier="shadingMode" displayName="Shading" key="shadingMode">
+                            <usageMode content="0" />
+                            <visible content="1" />
+                            <selectedIdentifier content="none" />
+                        </Property>
+                    </Properties>
                 </Property>
                 <Property type="ButtonProperty" identifier="resetView" displayName="Reset Camera" key="resetView">
-                    <usageMode content="0" />
-                    <visible content="1" />
-                </Property>
-                <Property type="OptionPropertyString" identifier="shadingMode" displayName="Shading" key="shadingMode">
                     <usageMode content="0" />
                     <visible content="1" />
                 </Property>
@@ -381,15 +396,15 @@
     <Connections>
         <Connection>
             <OutPort identifier="geometry.output">
-                <Processor type="org.inviwo.MeshClipping" identifier="MeshClipping" reference="ref2" />
+                <Processor type="org.inviwo.MeshClipping" identifier="MeshClipping" reference="ref3" />
             </OutPort>
             <InPort identifier="geometry.inport">
-                <Processor type="org.inviwo.GeometryRenderGL" identifier="GeometryRenderGL" reference="ref3" />
+                <Processor type="org.inviwo.GeometryRenderGL" identifier="GeometryRenderGL" reference="ref2" />
             </InPort>
         </Connection>
         <Connection>
             <OutPort identifier="image.outport">
-                <Processor type="org.inviwo.GeometryRenderGL" identifier="GeometryRenderGL" reference="ref3" />
+                <Processor type="org.inviwo.GeometryRenderGL" identifier="GeometryRenderGL" reference="ref2" />
             </OutPort>
             <InPort identifier="inport">
                 <Processor type="org.inviwo.CanvasGL" identifier="CanvasGL" reference="ref1" />
@@ -400,7 +415,7 @@
                 <Processor type="org.inviwo.MeshCreator" identifier="MeshCreator" reference="ref0" />
             </OutPort>
             <InPort identifier="geometry.input">
-                <Processor type="org.inviwo.MeshClipping" identifier="MeshClipping" reference="ref2" />
+                <Processor type="org.inviwo.MeshClipping" identifier="MeshClipping" reference="ref3" />
             </InPort>
         </Connection>
     </Connections>
