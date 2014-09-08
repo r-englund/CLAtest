@@ -231,9 +231,7 @@ void Processor::invalidate(PropertyOwner::InvalidationLevel invalidationLevel, P
         return;
     }
 
-    for (std::vector<Outport*>::iterator it = outports_.begin(); it != outports_.end(); ++it){
-        (*it)->invalidate(PropertyOwner::INVALID_OUTPUT);
-    }
+    invalidateSuccesors(invalidationLevel, modifiedProperty);
 
     notifyObserversInvalidationEnd(this);
 
@@ -242,6 +240,11 @@ void Processor::invalidate(PropertyOwner::InvalidationLevel invalidationLevel, P
     }
 }
 
+void Processor::invalidateSuccesors(PropertyOwner::InvalidationLevel invalidationLevel, Property* modifiedProperty) {
+    for (std::vector<Outport*>::iterator it = outports_.begin(); it != outports_.end(); ++it){
+        (*it)->invalidate(PropertyOwner::INVALID_OUTPUT);
+    }
+}
 
 bool Processor::isEndProcessor() const {
     return outports_.empty();
