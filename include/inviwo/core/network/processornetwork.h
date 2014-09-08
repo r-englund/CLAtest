@@ -281,6 +281,8 @@ public:
     void setModified(bool modified);
     bool isModified() const;
 
+    bool isLinking() const;
+
     bool isInvalidating() const;
     void onAboutPropertyChange(Property*);
     void onProcessorInvalidationBegin(Processor*);
