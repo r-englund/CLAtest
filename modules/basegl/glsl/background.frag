@@ -40,14 +40,28 @@ uniform TEXTURE_TYPE depth_;
 
 uniform bool hasData_;
 uniform int backgroundStyle_;
+uniform ivec2 checkerBoardSize_;
+uniform ivec2 textureSize_;
 uniform vec4 color1_;
 uniform vec4 color2_;
 
 vec4 checkerBoard(vec2 texCoords) {
-    if ((int(floor(texCoords.x*10.0) + floor(texCoords.y*10.0)) & 1) == 0)
-        return color1_;
-    else
-        return color2_;
+	int a = int(gl_FragCoord.x)  / checkerBoardSize_.x;
+
+	int b = int(textureSize_.y -  gl_FragCoord.y)  / checkerBoardSize_.y;
+	if(a%2==0){
+		if(b%2==0){ 
+			return color1_;
+		}else{
+			return color2_;
+		}
+	}else{
+		if(b%2==1){
+			return color1_;
+		}else{
+			return color2_;
+		}
+	}
 }
 
 vec4 linearGradient(vec2 texCoords) {

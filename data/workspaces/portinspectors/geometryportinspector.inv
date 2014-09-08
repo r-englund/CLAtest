@@ -8,7 +8,7 @@
                 <MetaData type="ProcessorMetaData">
                     <position x="-525" y="-550" />
                     <visibility content="1" />
-                    <selection content="1" />
+                    <selection content="0" />
                 </MetaData>
             </MetaDataList>
             <InteractonHandlers>
@@ -161,10 +161,6 @@
                 </InteractionHandler>
             </InteractonHandlers>
             <Properties>
-                <Property type="BoolProperty" identifier="applyLightAttenuation" displayName="Light attenuation" key="applyLightAttenuation">
-                    <usageMode content="0" />
-                    <visible content="1" />
-                </Property>
                 <Property type="CameraProperty" identifier="camera" displayName="Camera" key="camera">
                     <usageMode content="0" />
                     <visible content="1" />
@@ -206,66 +202,39 @@
                     <usageMode content="0" />
                     <visible content="1" />
                 </Property>
-                <Property type="OptionPropertyInt" identifier="cullFace" displayName="Cull Face" key="cullFace">
+                <Property type="CompositeProperty" identifier="geometry" displayName="Geometry Rendering Properties" key="geometry">
                     <usageMode content="0" />
                     <visible content="1" />
-                </Property>
-                <Property type="FloatVec3Property" identifier="lightAttenuation" displayName="Light attenuation values" key="lightAttenuation">
-                    <usageMode content="0" />
-                    <visible content="1" />
-                </Property>
-                <Property type="FloatVec3Property" identifier="lightColorAmbient" displayName="Ambient color" key="lightColorAmbient">
-                    <semantics semantics="Color" />
-                    <usageMode content="0" />
-                    <visible content="1" />
-                </Property>
-                <Property type="FloatVec3Property" identifier="lightColorDiffuse" displayName="Diffuse color" key="lightColorDiffuse">
-                    <semantics semantics="Color" />
-                    <usageMode content="0" />
-                    <visible content="1" />
-                    <value x="0.49803922" y="0.49803922" z="0.49803922" />
-                </Property>
-                <Property type="FloatVec3Property" identifier="lightColorSpecular" displayName="Specular color" key="lightColorSpecular">
-                    <semantics semantics="Color" />
-                    <usageMode content="0" />
-                    <visible content="1" />
-                </Property>
-                <Property type="FloatVec3Property" identifier="lightPosition" displayName="Position" key="lightPosition">
-                    <semantics semantics="Spherical" />
-                    <usageMode content="0" />
-                    <visible content="1" />
-                </Property>
-                <Property type="IntProperty" identifier="materialShininess" displayName="Material shininess" key="materialShininess">
-                    <usageMode content="0" />
-                    <visible content="1" />
-                </Property>
-                <Property type="OptionPropertyInt" identifier="polygonMode" displayName="Polygon Mode" key="polygonMode">
-                    <usageMode content="0" />
-                    <visible content="1" />
-                </Property>
-                <Property type="FloatProperty" identifier="renderPointSize" displayName="Point Size" key="renderPointSize">
-                    <usageMode content="0" />
-                    <visible content="1" />
+                    <Properties>
+                        <Property type="OptionPropertyInt" identifier="cullFace" displayName="Cull Face" key="cullFace">
+                            <usageMode content="0" />
+                            <visible content="1" />
+                        </Property>
+                        <Property type="OptionPropertyInt" identifier="polygonMode" displayName="Polygon Mode" key="polygonMode">
+                            <usageMode content="0" />
+                            <visible content="1" />
+                        </Property>
+                        <Property type="FloatProperty" identifier="renderPointSize" displayName="Point Size" key="renderPointSize">
+                            <usageMode content="0" />
+                            <visible content="1" />
+                        </Property>
+                    </Properties>
                 </Property>
                 <Property type="ButtonProperty" identifier="resetView" displayName="Reset Camera" key="resetView">
                     <usageMode content="0" />
                     <visible content="1" />
                 </Property>
-                <Property type="OptionPropertyString" identifier="shadingMode" displayName="Shading" key="shadingMode">
-                    <usageMode content="0" />
-                    <visible content="1" />
-                </Property>
             </Properties>
         </Processor>
-        <Processor type="org.inviwo.CanvasGL" identifier="CanvasGL" id="ref1">
+        <Processor type="org.inviwo.CanvasGL" identifier="CanvasGL" id="ref2">
             <MetaDataList>
                 <MetaData type="ProcessorMetaData">
-                    <position x="-525" y="-475" />
+                    <position x="-525" y="-400" />
                     <visibility content="1" />
                     <selection content="0" />
                 </MetaData>
                 <MetaData type="ProcessorWidgetMetaData">
-                    <position x="24" y="90" />
+                    <position x="32" y="120" />
                     <dimension x="128" y="128" />
                     <visibility content="1" />
                 </MetaData>
@@ -314,6 +283,39 @@
                 </Property>
             </Properties>
         </Processor>
+        <Processor type="org.inviwo.Background" identifier="Background" id="ref1">
+            <MetaDataList>
+                <MetaData type="ProcessorMetaData">
+                    <position x="-525" y="-475" />
+                    <visibility content="1" />
+                    <selection content="1" />
+                </MetaData>
+            </MetaDataList>
+            <Properties>
+                <Property type="OptionPropertyInt" identifier="backgroundStyle" displayName="Style" key="backgroundStyle">
+                    <usageMode content="0" />
+                    <visible content="1" />
+                    <selectedIdentifier content="checkerBoard" />
+                </Property>
+                <Property type="IntVec2Property" identifier="checkerBoardSize" displayName="Checker Board Size" key="checkerBoardSize">
+                    <usageMode content="0" />
+                    <visible content="1" />
+                    <value x="8" y="8" />
+                </Property>
+                <Property type="FloatVec4Property" identifier="color1" displayName="Color 1" key="color1">
+                    <semantics semantics="Color" />
+                    <usageMode content="0" />
+                    <visible content="1" />
+                    <value x="1" y="1" z="1" w="1" />
+                </Property>
+                <Property type="FloatVec4Property" identifier="color2" displayName="Color 2" key="color2">
+                    <semantics semantics="Color" />
+                    <usageMode content="0" />
+                    <visible content="1" />
+                    <value x="0.80392158" y="0.80392158" z="0.80392158" w="1" />
+                </Property>
+            </Properties>
+        </Processor>
     </Processors>
     <Connections>
         <Connection>
@@ -321,7 +323,15 @@
                 <Processor type="org.inviwo.GeometryRenderGL" identifier="GeometryRenderGL" reference="ref0" />
             </OutPort>
             <InPort identifier="inport">
-                <Processor type="org.inviwo.CanvasGL" identifier="CanvasGL" reference="ref1" />
+                <Processor type="org.inviwo.Background" identifier="Background" reference="ref1" />
+            </InPort>
+        </Connection>
+        <Connection>
+            <OutPort identifier="outport">
+                <Processor type="org.inviwo.Background" identifier="Background" reference="ref1" />
+            </OutPort>
+            <InPort identifier="inport">
+                <Processor type="org.inviwo.CanvasGL" identifier="CanvasGL" reference="ref2" />
             </InPort>
         </Connection>
     </Connections>

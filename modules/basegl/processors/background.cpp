@@ -48,7 +48,10 @@ Background::Background()
       backgroundStyle_("backgroundStyle", "Style", PropertyOwner::INVALID_RESOURCES),
       color1_("color1", "Color 1", vec4(0.0)),
       color2_("color2", "Color 2", vec4(1.0)),
-      shader_(NULL) {
+      checkerBoardSize_("checkerBoardSize","Checker Board Size",ivec2(10,10),ivec2(1,1),ivec2(256,256)),
+      shader_(NULL)
+
+{
       
     addPort(inport_);
     addPort(outport_);
@@ -61,6 +64,7 @@ Background::Background()
     addProperty(color1_);
     color2_.setSemantics(PropertySemantics::Color);
     addProperty(color2_);
+    addProperty(checkerBoardSize_);
 }
 
 Background::~Background() {
@@ -80,6 +84,7 @@ void Background::deinitialize() {
 
 void Background::initializeResources() {
     std::string shaderDefine;
+    checkerBoardSize_.setVisible(false);
 
     switch (backgroundStyle_.get()) {
         case 0 : // linear gradient
@@ -92,6 +97,7 @@ void Background::initializeResources() {
 
         case 2 : // checker board
             shaderDefine = "checkerBoard(texCoords)";
+            checkerBoardSize_.setVisible(true);
             break;
     }
 
@@ -130,6 +136,8 @@ void Background::process() {
     shader_->setUniform("hasData_",inport_.hasData());
     shader_->setUniform("color1_", color1_.get());
     shader_->setUniform("color2_", color2_.get());
+    shader_->setUniform("checkerBoardSize_", checkerBoardSize_.get());
+    shader_->setUniform("textureSize_", (ivec2)outport_.getData()->getDimension());
     renderImagePlaneRect();
     shader_->deactivate();
     deactivateCurrentTarget();
