@@ -689,7 +689,8 @@ void ProcessorNetwork::deserialize(IvwDeserializer& d) throw (Exception) {
     d.deserialize("ProcessorNetworkVersion", version);
 
     if(version != processorNetworkVersion_){
-        LogWarn("Old network version, performing updates...")
+        LogWarn("Old network version << (" << version << " performing updates to "
+                << processorNetworkVersion_ << " file: " << d.getFileName());
         NetworkConverter nv(version);
         d.convertVersion(&nv); 
     }
@@ -839,9 +840,8 @@ const int ProcessorNetwork::processorNetworkVersion_ = 1;
 
 
 ProcessorNetwork::NetworkConverter::NetworkConverter(int from)
-    : VersionConverter(), from_(from) {
+    : VersionConverter(), from_(from) {}
 
-}
 bool ProcessorNetwork::NetworkConverter::convert(TxElement* root) {
     switch (from_) {
         case 0:
@@ -867,7 +867,6 @@ void ProcessorNetwork::NetworkConverter::updateProcessorType(TxElement* node) {
 
     if (key == "Processor") {
         std::string type = node->GetAttributeOrDefault("type", "");
-
         if (splitString(type, '.').size() < 3){
             node->SetAttribute("type", "org.inviwo."+ type);   
         }

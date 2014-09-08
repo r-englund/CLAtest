@@ -65,21 +65,13 @@ class TransferFunctionPropertyWidgetQt;
 class IVW_QTWIDGETS_API TransferFunctionPropertyDialog : public PropertyEditorWidgetQt,
                                                          public TransferFunctionObserver {
     Q_OBJECT
-
 public:
     TransferFunctionPropertyDialog(TransferFunctionProperty* property, QWidget* parent);
     ~TransferFunctionPropertyDialog();
 
-    /** \Updates and draws the visual transfer function
-    *
-    *      Fetches the float array from the TransferFunction and draws a line for each value
-    *      Redraws it fully every time, to be optimized if it is allowed to stay
-    */
     void updateFromProperty();
-
-    QLinearGradient* getTFGradient() { return gradient_; }
-
-    TransferFunctionEditorView* getEditorView() { return tfEditorView_; }
+    QLinearGradient* getTFGradient();
+    TransferFunctionEditorView* getEditorView();
 
     virtual void onControlPointAdded(TransferFunctionDataPoint* p);
     virtual void onControlPointRemoved(TransferFunctionDataPoint* p);

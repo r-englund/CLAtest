@@ -98,7 +98,7 @@ std::string Processor::setIdentifier(const std::string& identifier) {
     int i = 2;
 
     while (usedIdentifiers_.find(newIdentifier) != usedIdentifiers_.end()) {
-        newIdentifier = baseIdentifier + toString(i++);
+        newIdentifier = baseIdentifier + " " + toString(i++);
     }
 
     usedIdentifiers_.insert(newIdentifier);
@@ -109,7 +109,7 @@ std::string Processor::setIdentifier(const std::string& identifier) {
 }
 
 std::string Processor::getIdentifier() {
-    if (identifier_.empty()) setIdentifier(getClassIdentifier());
+    if (identifier_.empty()) setIdentifier(getDisplayName());
     return identifier_;
 }
 

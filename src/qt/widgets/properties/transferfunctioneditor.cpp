@@ -31,6 +31,17 @@
  *********************************************************************************/
 
 #include <inviwo/qt/widgets/properties/transferfunctioneditor.h>
+#include <inviwo/core/datastructures/transferfunction.h>
+#include <inviwo/qt/widgets/properties/transferfunctioneditorcontrolpoint.h>
+
+#include <QBrush>
+
+#include <QGraphicsSceneMouseEvent>
+#include <QGraphicsView>
+#include <QKeyEvent>
+#include <QLineF>
+#include <QPainter>
+#include <QPen>
 
 namespace inviwo {
 
@@ -185,14 +196,14 @@ void TransferFunctionEditor::addControlPoint(QPointF pos, TransferFunctionDataPo
 }
 
 void TransferFunctionEditor::removeControlPoint(TransferFunctionEditorControlPoint* controlPoint) {
-    if (transferFunction_->getNumDataPoints() > 1)
+    if (transferFunction_->getNumPoints() > 1)
         transferFunction_->removePoint(
             const_cast<TransferFunctionDataPoint*>(controlPoint->getPoint()));
 }
 
 void TransferFunctionEditor::recalculateControlPoints() {
     if (!mouseDrag_) {
-        if (controlPoints_.size() != transferFunction_->getNumDataPoints()) {
+        if (controlPoints_.size() != transferFunction_->getNumPoints()) {
             for (size_t i = 0; i < controlPoints_.size(); i++) {
                 removeItem(controlPoints_[i]);
                 delete controlPoints_[i];
@@ -201,7 +212,7 @@ void TransferFunctionEditor::recalculateControlPoints() {
             controlPoints_.clear();
 
             // initialize editor with current tf
-            for (size_t i = 0; i < transferFunction_->getNumDataPoints(); i++) {
+            for (size_t i = 0; i < transferFunction_->getNumPoints(); i++) {
                 TransferFunctionDataPoint* dataPoint =
                     transferFunction_->getPoint(static_cast<int>(i));
                 vec2 pos = dataPoint->getPos();
@@ -321,6 +332,42 @@ void TransferFunctionEditor::setDataMap(const DataMapper& dataMap) {
 
 inviwo::DataMapper TransferFunctionEditor::getDataMap() const {
     return dataMap_;
+}
+
+float TransferFunctionEditor::getZoomRangeXMin() const {
+    return zoomRangeXMin_;
+}
+
+void TransferFunctionEditor::setZoomRangeXMin(float min) {
+    zoomRangeXMin_ = min;
+}
+
+float TransferFunctionEditor::getZoomRangeXMax() const {
+    return zoomRangeXMax_;
+}
+
+void TransferFunctionEditor::setZoomRangeXMax(float max) {
+    zoomRangeXMax_ = max;
+}
+
+float TransferFunctionEditor::getZoomRangeYMin() const {
+    return zoomRangeYMin_;
+}
+
+void TransferFunctionEditor::setZoomRangeYMin(float min) {
+    zoomRangeYMin_ = min;
+}
+
+float TransferFunctionEditor::getZoomRangeYMax() const {
+    return zoomRangeYMax_;
+}
+
+void TransferFunctionEditor::setZoomRangeYMax(float max) {
+    zoomRangeYMax_ = max;
+}
+
+QGraphicsView* TransferFunctionEditor::getView() {
+    return view_;
 }
 
 }

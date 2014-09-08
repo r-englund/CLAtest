@@ -30,58 +30,26 @@
  *
  *********************************************************************************/
 
-#ifndef IVW_EDITORGRAPICSITEM_H
-#define IVW_EDITORGRAPICSITEM_H
-
-#include <inviwo/qt/editor/inviwoqteditordefine.h>
-
-#include <QGraphicsItem>
-#include <QGraphicsRectItem>
-#include <QGraphicsSceneHelpEvent>
-#include <inviwo/qt/widgets/properties/propertywidgetqt.h>
-
+#include <inviwo/qt/widgets/properties/transferfunctioncontrolpointconnection.h>
+#include <QPainterPathStroker>
 namespace inviwo {
 
-IVW_QTEDITOR_API enum InviwoUserGraphicsItemType {
-    ProcessorGraphicsType = Number_of_InviwoWidgetGraphicsItemTypes,
-    CurveGraphicsType,
-    ConnectionDragGraphicsType,
-    ConnectionGraphicsType,
-    LinkGraphicsType,
-    LinkConnectionDragGraphicsType, 
-    LinkConnectionGraphicsType, 
-    ProcessorProgressGraphicsType,
-    ProcessorStatusGraphicsType,
-    ProcessorLinkGraphicsType,
-    ProcessorInportGraphicsType,
-    ProcessorOutportGraphicsType
-};
+TransferFunctionControlPointConnection::TransferFunctionControlPointConnection() {}
 
-// Z value for various graphics items.
-static const qreal DRAGING_ITEM_DEPTH = 4.0f;
-static const qreal PROCESSORGRAPHICSITEM_DEPTH = 2.0f;
-static const qreal SELECTED_PROCESSORGRAPHICSITEM_DEPTH = 3.0f;
-static const qreal CONNECTIONGRAPHICSITEM_DEPTH = 1.0f;
-static const qreal LINKGRAPHICSITEM_DEPTH = 1.0f;
+TransferFunctionControlPointConnection::~TransferFunctionControlPointConnection() {}
 
-class Port;
+void TransferFunctionControlPointConnection::paint(QPainter* p,
+                                                   const QStyleOptionGraphicsItem* options,
+                                                   QWidget* widget) {}
 
-class IVW_QTEDITOR_API EditorGrapicsItem : public QGraphicsRectItem {
-public:
-    EditorGrapicsItem();
-    EditorGrapicsItem(QGraphicsItem* parent);
-    virtual ~EditorGrapicsItem();
-    QPoint mapPosToSceen(QPointF pos) const;
+QRectF TransferFunctionControlPointConnection::boundingRect() const {
+    return path_.boundingRect();
+}
 
-    static const QPainterPath makeRoundedBox(QRectF rect, float radius );
-
-    virtual void showToolTip(QGraphicsSceneHelpEvent* event);
-    void showPortInfo(QGraphicsSceneHelpEvent* e, Port* port) const;
-
-protected:
-    void showToolTipHelper(QGraphicsSceneHelpEvent* event, QString string) const;
-};
+QPainterPath TransferFunctionControlPointConnection::shape() const {
+    QPainterPathStroker pathStrocker;
+    pathStrocker.setWidth(10.0);
+    return pathStrocker.createStroke(path_);
+}
 
 }  // namespace
-
-#endif  // IVW_EDITORGRAPICSITEM_H

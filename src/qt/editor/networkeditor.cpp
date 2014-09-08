@@ -1578,11 +1578,13 @@ QPointF NetworkEditor::snapToGrid(QPointF pos) {
 }
 
 void NetworkEditor::drawBackground(QPainter* painter, const QRectF& rect) {
+    painter->save();
     painter->setWorldMatrixEnabled(true);
     painter->fillRect(rect, Qt::darkGray);
     qreal left = int(rect.left()) - (int(rect.left()) % GRID_SPACING);
     qreal top = int(rect.top()) - (int(rect.top()) % GRID_SPACING);
     QVarLengthArray<QLineF, 100> linesX;
+    painter->setPen(QColor(153,153,153));
 
     for (qreal x = left; x < rect.right(); x += GRID_SPACING)
         linesX.append(QLineF(x, rect.top(), x, rect.bottom()));
@@ -1594,6 +1596,7 @@ void NetworkEditor::drawBackground(QPainter* painter, const QRectF& rect) {
 
     painter->drawLines(linesX.data(), linesX.size());
     painter->drawLines(linesY.data(), linesY.size());
+    painter->restore();
 
     // For testing purpuses only. Draw bounding rects around all graphics items
     // QList<QGraphicsItem*> items = QGraphicsScene::items(Qt::DescendingOrder);

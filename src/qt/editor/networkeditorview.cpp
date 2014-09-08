@@ -52,6 +52,7 @@ NetworkEditorView::NetworkEditorView(NetworkEditor* networkEditor, QWidget* pare
     setMouseTracking(true);
     setDragMode(QGraphicsView::RubberBandDrag);
     setViewportUpdateMode(QGraphicsView::SmartViewportUpdate);
+    setCacheMode(QGraphicsView::CacheBackground);
 }
 
 NetworkEditorView::~NetworkEditorView() { QGraphicsView::setScene(NULL); }

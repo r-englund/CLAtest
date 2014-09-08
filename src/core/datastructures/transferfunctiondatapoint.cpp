@@ -30,7 +30,6 @@
  *
  *********************************************************************************/
 
-#include <inviwo/core/datastructures/transferfunction.h>
 #include <inviwo/core/datastructures/transferfunctiondatapoint.h>
 
 namespace inviwo {
@@ -41,21 +40,37 @@ TransferFunctionDataPoint::TransferFunctionDataPoint(const vec2& pos, const vec4
     , notify_(true) {
 }
 
+TransferFunctionDataPoint::TransferFunctionDataPoint(const TransferFunctionDataPoint& rhs) 
+    : pos_(rhs.pos_), rgba_(rhs.rgba_), notify_(rhs.notify_) {
+}
+
+TransferFunctionDataPoint& TransferFunctionDataPoint::operator=(const TransferFunctionDataPoint& that) {
+    if (this != &that) {
+        pos_ = that.pos_;
+        rgba_ = that.rgba_;
+        notify_ = that.notify_;
+    }
+    return *this;
+}
+
 TransferFunctionDataPoint::~TransferFunctionDataPoint() {}
 
 void TransferFunctionDataPoint::setPos(const vec2& pos) {
+    if(pos==pos_ && pos.y == rgba_.a) return;
     pos_ = pos;
     rgba_.a = pos.y;
     notifyTransferFunctionPointObservers();
 }
 
 void TransferFunctionDataPoint::setRGBA(const vec4& rgba) {
+    if(rgba==rgba_ && rgba.a == pos_.y) return;
     pos_.y = rgba.a;
     rgba_ = rgba;
     notifyTransferFunctionPointObservers();
 }
 
 void TransferFunctionDataPoint::setRGB(const vec3& rgb) {
+    if(rgb.r == rgba_.r && rgb.g == rgba_.g && rgb.b == rgba_.b) return;
     rgba_.r = rgb.r;
     rgba_.g = rgb.g;
     rgba_.b = rgb.b;
@@ -63,12 +78,14 @@ void TransferFunctionDataPoint::setRGB(const vec3& rgb) {
 }
 
 void TransferFunctionDataPoint::setA(float alpha) {
+    if(pos_.y == alpha && rgba_.a == alpha) return;
     pos_.y = alpha;
     rgba_.a = alpha;
     notifyTransferFunctionPointObservers();
 }
 
 void TransferFunctionDataPoint::setPosA(const vec2& pos, float alpha) {
+    if(pos_ == pos && rgba_.a == alpha) return;
     pos_ = pos;
     rgba_.a = alpha;
     notifyTransferFunctionPointObservers();
@@ -92,6 +109,30 @@ void TransferFunctionDataPoint::serialize(IvwSerializer& s) const {
 void TransferFunctionDataPoint::deserialize(IvwDeserializer& d) {
     d.deserialize("pos", pos_);
     d.deserialize("rgba", rgba_);
+}
+
+bool operator==(const TransferFunctionDataPoint& lhs, const TransferFunctionDataPoint& rhs) {
+    return lhs.pos_ == rhs.pos_ && lhs.rgba_ == rhs.rgba_;
+}
+
+bool operator!=(const TransferFunctionDataPoint& lhs, const TransferFunctionDataPoint& rhs) {
+    return !operator==(lhs, rhs);
+}
+
+bool operator<(const TransferFunctionDataPoint& lhs, const TransferFunctionDataPoint& rhs) {
+    return lhs.pos_.x < rhs.pos_.x;
+}
+
+bool operator>(const TransferFunctionDataPoint& lhs, const TransferFunctionDataPoint& rhs) {
+    return rhs < lhs;
+}
+
+bool operator<=(const TransferFunctionDataPoint& lhs, const TransferFunctionDataPoint& rhs) {
+    return !(rhs < lhs);
+}
+
+bool operator>=(const TransferFunctionDataPoint& lhs, const TransferFunctionDataPoint& rhs) {
+    return !(lhs < rhs);
 }
 
 } // namespace

@@ -53,14 +53,15 @@ set(MOC_FILES
 #--------------------------------------------------------------------
 # Add header files
 set(HEADER_FILES
-    ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/rawdatareaderdialogqt.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/eventconverterqt.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/eventpropertymanager.h
+    ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/inviwofiledialog.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/inviwoqtwidgetsdefine.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/labelgraphicsitem.h
+    ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/properties/transferfunctioncontrolpointconnection.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/properties/transferfunctioneditorcontrolpoint.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/qtwidgetmodule.h
-    ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/inviwofiledialog.h
+    ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/rawdatareaderdialogqt.h
     ${MOC_FILES}
 )
 ivw_group("Header Files" ${HEADER_FILES})
@@ -80,6 +81,7 @@ set(SOURCE_FILES
     eventpropertymanagerwidget.cpp
     inviwoapplicationqt.cpp
     inviwodockwidget.cpp
+    inviwofiledialog.cpp
     labelgraphicsitem.cpp
     lightpositionwidgetqt.cpp
     mappingpopup.cpp
@@ -111,6 +113,7 @@ set(SOURCE_FILES
     properties/texteditorwidgetqt.cpp
     properties/transferfunctioneditor.cpp
     properties/transferfunctioneditorcontrolpoint.cpp
+	properties/transferfunctioncontrolpointconnection.cpp
     properties/transferfunctioneditorview.cpp
     properties/transferfunctionpropertydialog.cpp
     properties/transferfunctionpropertywidgetqt.cpp 
@@ -121,7 +124,7 @@ set(SOURCE_FILES
     rawdatareaderdialogqt.cpp
     sliderwidgetqt.cpp
     spinboxrangesliderwidgetqt.cpp
-    inviwofiledialog.cpp
+   
 )
 
 ivw_group("Source Files" ${SOURCE_FILES})

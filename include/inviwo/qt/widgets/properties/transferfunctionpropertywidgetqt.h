@@ -33,13 +33,16 @@
 #ifndef IVW_TRANSFERFUNCTIONPROPERTYWIDGET_H
 #define IVW_TRANSFERFUNCTIONPROPERTYWIDGET_H
 
+#include <inviwo/qt/widgets/inviwoqtwidgetsdefine.h>
 #include <inviwo/qt/widgets/properties/propertywidgetqt.h>
-#include <inviwo/qt/widgets/properties/transferfunctionpropertydialog.h>
-#include <inviwo/qt/widgets/inviwoapplicationqt.h>
-#include <inviwo/qt/widgets/editablelabelqt.h>
-#include <QHBoxLayout>
+
+class QPushButton;
 
 namespace inviwo {
+
+class EditableLabelQt;
+class TransferFunctionPropertyDialog;
+class TransferFunctionProperty;
 
 class IVW_QTWIDGETS_API TransferFunctionPropertyWidgetQt : public PropertyWidgetQt {
     Q_OBJECT
@@ -53,8 +56,6 @@ public:
 private:
     EditableLabelQt* label_;
     QPushButton* btnOpenTF_;
-
-    //TODO: Remove redundant reference to property editor widget
     TransferFunctionPropertyDialog* transferFunctionDialog_;
 
     void generateWidget();

@@ -33,6 +33,9 @@
 #include <inviwo/qt/widgets/properties/transferfunctionpropertywidgetqt.h>
 #include <inviwo/qt/widgets/properties/collapsiblegroupboxwidgetqt.h>
 #include <inviwo/qt/widgets/inviwoapplicationqt.h>
+#include <inviwo/qt/widgets/editablelabelqt.h>
+#include <inviwo/qt/widgets/properties/transferfunctionpropertydialog.h>
+#include <QHBoxLayout>
 
 namespace inviwo {
 
@@ -51,10 +54,12 @@ TransferFunctionPropertyWidgetQt::~TransferFunctionPropertyWidgetQt() {
 
 void TransferFunctionPropertyWidgetQt::generateWidget() {
     InviwoApplicationQt* app = dynamic_cast<InviwoApplicationQt*>(InviwoApplication::getPtr());
-    transferFunctionDialog_ = new TransferFunctionPropertyDialog(static_cast<TransferFunctionProperty*>(property_), app->getMainWindow());
+    transferFunctionDialog_ = new TransferFunctionPropertyDialog(
+        static_cast<TransferFunctionProperty*>(property_), app->getMainWindow());
     setEditorWidget(transferFunctionDialog_);
     // notify the transfer function dialog that the volume with the histogram is already there
-    // TODO: Make sure that this work without notify. Can we do this in another way? It seems very weird...
+    // TODO: Make sure that this work without notify. Can we do this in another way? It seems very
+    // weird...
     transferFunctionDialog_->getEditorView()->onTransferFunctionChange();
     QHBoxLayout* hLayout = new QHBoxLayout();
     hLayout->setContentsMargins(0, 0, 0, 0);
@@ -74,7 +79,7 @@ void TransferFunctionPropertyWidgetQt::generateWidget() {
     hLayout->addWidget(btnOpenTF_);
     setLayout(hLayout);
     updateFromProperty();
-    //initializes position, visibility,size of the widget from meta data
+    // initializes position, visibility,size of the widget from meta data
     initializeEditorWidgetsMetaData();
 
     QSizePolicy sp = sizePolicy();

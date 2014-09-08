@@ -33,9 +33,12 @@
 #include <inviwo/qt/widgets/properties/transferfunctionpropertydialog.h>
 #include <inviwo/qt/widgets/properties/transferfunctionpropertywidgetqt.h>
 #include <inviwo/qt/widgets/properties/collapsiblegroupboxwidgetqt.h>
+#include <inviwo/qt/widgets/properties/transferfunctioneditorcontrolpoint.h>
 #include <inviwo/core/util/urlparser.h>
 #include <QFileDialog>
 #include <QDockWidget>
+#include <QGraphicsItem>
+
 
 namespace inviwo {
 
@@ -45,7 +48,7 @@ TransferFunctionPropertyDialog::TransferFunctionPropertyDialog(TransferFunctionP
     , TransferFunctionObserver()
     , sliderRange_(1000)
     , tfProperty_(tfProperty)
-    , tfPixmap_(0) {
+    , tfPixmap_(NULL) {
 
     setAllowedAreas(Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea);
     generateWidget();
@@ -191,7 +194,6 @@ void TransferFunctionPropertyDialog::switchInterpolationType(int interpolationTy
     } else {
         tfProperty_->get().setInterpolationType(TransferFunction::InterpolationCubic);
     }
-
     tfEditor_->redrawConnections();
 }
 
@@ -240,8 +242,7 @@ void TransferFunctionPropertyDialog::updateTFPreview() {
 }
 
 void TransferFunctionPropertyDialog::updateFromProperty() {
-    std::string processorName =
-        (dynamic_cast<Processor*>(tfProperty_->getOwner()->getProcessor()))->getIdentifier();
+    std::string processorName = tfProperty_->getOwner()->getProcessor()->getIdentifier();
     QString windowTitle = QString::fromStdString(tfProperty_->getDisplayName() + " (") +
                           QString::fromStdString(processorName) + QString::fromStdString(")");
     setWindowTitle(windowTitle);
@@ -249,8 +250,8 @@ void TransferFunctionPropertyDialog::updateFromProperty() {
     TransferFunction& transFunc = tfProperty_->get();
     QVector<QGradientStop> gradientStops;
 
-    for (size_t i = 0; i < transFunc.getNumDataPoints(); i++) {
-        TransferFunctionDataPoint* curPoint = transFunc.getPoint(static_cast<int>(i));
+    for (int i = 0; i < transFunc.getNumPoints(); i++) {
+        TransferFunctionDataPoint* curPoint = transFunc.getPoint(i);
         vec4 curColor = curPoint->getRGBA();
 
         // increase alpha to allow better visibility by 1 - (a - 1)^4
@@ -272,11 +273,13 @@ void TransferFunctionPropertyDialog::updateColorWheel() {
     
     if (selection.size() > 0) {
         TransferFunctionEditorControlPoint* tfPoint =
-            dynamic_cast<TransferFunctionEditorControlPoint*>(selection.at(0));
+            qgraphicsitem_cast<TransferFunctionEditorControlPoint*>(selection.at(0));
 
         if (selection.size() == 1 && tfPoint) {
             vec4 color = tfPoint->getPoint()->getRGBA() * 255.0f;
+            colorWheel_->blockSignals(true);
             colorWheel_->setColor(QColor(color.r, color.g, color.b, color.a));
+            colorWheel_->blockSignals(false);
 
             if (!colorChange_) {
                 colorDialog_->setCurrentColor(QColor(color.r, color.g, color.b, color.a));
@@ -289,7 +292,8 @@ void TransferFunctionPropertyDialog::updateColorWheel() {
 void TransferFunctionPropertyDialog::showColorDialog() {
     QList<QGraphicsItem*> selection = tfEditor_->selectedItems();
 
-    if (selection.size()==1 && dynamic_cast<TransferFunctionEditorControlPoint*>(selection.at(0))) {
+    if (selection.size() == 1 &&
+        qgraphicsitem_cast<TransferFunctionEditorControlPoint*>(selection.at(0))) {
         colorDialog_->show();
     }
 }
@@ -310,7 +314,7 @@ void TransferFunctionPropertyDialog::setPointColor(QColor color) {
 
     for (int i=0; i<selection.size(); i++) {
         TransferFunctionEditorControlPoint* tfcp =
-            dynamic_cast<TransferFunctionEditorControlPoint*>(selection.at(i));
+            qgraphicsitem_cast<TransferFunctionEditorControlPoint*>(selection.at(i));
 
         if (tfcp) {
             tfcp->getPoint()->setRGB(newRgb);
@@ -345,7 +349,6 @@ void TransferFunctionPropertyDialog::changeMask(int maskMin, int maskMax) {
     tfEditorView_->setMask(maskMinF, maskMaxF);
 
     updateTFPreview();
-    //tfEditorView_->update();
     tfProperty_->get().invalidate();
     tfProperty_->propertyModified();
 }
@@ -432,24 +435,29 @@ void TransferFunctionPropertyDialog::dockLocationChanged(Qt::DockWidgetArea dock
 }
 
 void TransferFunctionPropertyDialog::onControlPointAdded(TransferFunctionDataPoint* p) {
-    //tfEditor_->recalculateControlPoints();
     tfEditor_->onControlPointAdded(p);
     updateFromProperty();
     tfProperty_->propertyModified();
 }
 
 void TransferFunctionPropertyDialog::onControlPointRemoved(TransferFunctionDataPoint* p) {
-    //tfEditor_->recalculateControlPoints();
     tfEditor_->onControlPointRemoved(p);
     updateFromProperty();
     tfProperty_->propertyModified();
 }
 
 void TransferFunctionPropertyDialog::onControlPointChanged(const TransferFunctionDataPoint* p) {
-    //tfEditor_->recalculateControlPoints();
     tfEditor_->onControlPointChanged(p);
     updateFromProperty();
     tfProperty_->propertyModified();
+}
+
+QLinearGradient* TransferFunctionPropertyDialog::getTFGradient() {
+    return gradient_;
+}
+
+TransferFunctionEditorView* TransferFunctionPropertyDialog::getEditorView() {
+    return tfEditorView_;
 }
 
 } // namespace

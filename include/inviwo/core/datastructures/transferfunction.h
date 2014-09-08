@@ -38,14 +38,13 @@
 #ifndef IVW_TRANSFERFUNCTION_H
 #define IVW_TRANSFERFUNCTION_H
 
-#include <stdlib.h>
 #include <inviwo/core/common/inviwocoredefine.h>
-#include <inviwo/core/datastructures/image/layer.h>
-#include <inviwo/core/ports/imageport.h>
 #include <inviwo/core/datastructures/transferfunctiondatapoint.h>
 #include <inviwo/core/util/observer.h>
 
 namespace inviwo {
+
+class Layer;
 
 class IVW_CORE_API TransferFunctionObserver: public Observer {
 public:
@@ -58,19 +57,9 @@ public:
 class IVW_CORE_API TransferFunctionObservable: public Observable<TransferFunctionObserver> {
 public:
     TransferFunctionObservable(): Observable<TransferFunctionObserver>() {};
-
-    void notifyControlPointAdded(TransferFunctionDataPoint* p) const {
-        for (ObserverSet::reverse_iterator it = observers_->rbegin(); it != observers_->rend(); ++it) 
-            static_cast<TransferFunctionObserver*>(*it)->onControlPointAdded(p);
-    }
-    void notifyControlPointRemoved(TransferFunctionDataPoint* p) const {
-        for (ObserverSet::reverse_iterator it = observers_->rbegin(); it != observers_->rend(); ++it) 
-            static_cast<TransferFunctionObserver*>(*it)->onControlPointRemoved(p);
-    }
-    void notifyControlPointChanged(const TransferFunctionDataPoint* p) const {
-        for (ObserverSet::reverse_iterator it = observers_->rbegin(); it != observers_->rend(); ++it) 
-            static_cast<TransferFunctionObserver*>(*it)->onControlPointChanged(p);
-    }
+    void notifyControlPointAdded(TransferFunctionDataPoint* p) const;
+    void notifyControlPointRemoved(TransferFunctionDataPoint* p) const;
+    void notifyControlPointChanged(const TransferFunctionDataPoint* p) const;
 };
 
 class IVW_CORE_API TransferFunction
@@ -92,8 +81,8 @@ public:
     virtual ~TransferFunction();
 
     const Layer* getData() const;
-    size_t getNumDataPoints() const { return dataPoints_.size(); }
-    int getTextureSize() { return textureSize_; }
+    int getNumPoints() const;
+    int getTextureSize();
 
     TransferFunctionDataPoint* getPoint(int i) const;
 
@@ -104,24 +93,13 @@ public:
 
     void clearPoints();
 
-    float getMaskMin() const {
-        return maskMin_;
-    }
-    void setMaskMin(float maskMin) {
-        maskMin_ = maskMin;
-    }
-    float getMaskMax() const {
-        return maskMax_;
-    }
-    void setMaskMax(float maskMax) {
-        maskMax_ = maskMax;
-    }
-    void setInterpolationType(InterpolationType interpolationType) {
-        interpolationType_ = interpolationType;
-    }
-    InterpolationType getInterpolationType() const {
-        return interpolationType_;
-    }
+    float getMaskMin() const;
+    void setMaskMin(float maskMin);
+    float getMaskMax() const;
+    void setMaskMax(float maskMax);
+    void setInterpolationType(InterpolationType interpolationType);
+    InterpolationType getInterpolationType() const;
+
     /** 
      * Notify that the layer data (texture) needs to be updated next time it is requested.
      */
@@ -133,16 +111,14 @@ public:
     virtual void deserialize(IvwDeserializer& d);
 
     typedef std::vector<TransferFunctionDataPoint*> TFPoints;
-
-    friend bool operator==(const TransferFunction& lhs,
-                           const TransferFunction& rhs);
+    friend bool operator==(const TransferFunction& lhs, const TransferFunction& rhs);
 protected:
     void calcTransferValues();
-private:
 
+private:
     float maskMin_;
     float maskMax_;
-    TFPoints dataPoints_;
+    TFPoints points_;
     InterpolationType interpolationType_;
 
     int textureSize_;
@@ -150,19 +126,8 @@ private:
     Layer* data_;
 };
 
-inline bool operator==(const TransferFunction& lhs,
-                       const TransferFunction& rhs){
-    return lhs.maskMin_ == rhs.maskMin_
-        && lhs.maskMax_ == rhs.maskMax_
-        && lhs.interpolationType_ == rhs.interpolationType_
-        && lhs.dataPoints_ == rhs.dataPoints_;
-    
-}
-inline bool operator!=(const TransferFunction& lhs,
-                       const TransferFunction& rhs) {
-                       return !operator==(lhs,rhs);
-}
-
+bool operator==(const TransferFunction& lhs, const TransferFunction& rhs);
+bool operator!=(const TransferFunction& lhs, const TransferFunction& rhs);
 
 } // namespace
 #endif // IVW_TRANSFERFUNCTION_H

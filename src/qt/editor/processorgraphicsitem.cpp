@@ -344,7 +344,6 @@ void ProcessorGraphicsItem::onProcessorPortAdded(Processor *, Port *port){
 void ProcessorGraphicsItem::onProcessorAboutToProcess(Processor*) {
     processCount_++;
     countLabel_->setText(QString::fromStdString(toString(processCount_)));
-    statusItem_->setRunning(true);
     clock_.start();
 }
 void ProcessorGraphicsItem::onProcessorFinishedProcess(Processor*) {
@@ -352,7 +351,6 @@ void ProcessorGraphicsItem::onProcessorFinishedProcess(Processor*) {
     evalTime_ = clock_.getElapsedMiliseconds();
     maxEvalTime_ = maxEvalTime_ < evalTime_ ? evalTime_ : maxEvalTime_;
     totEvalTime_ += evalTime_;
-    statusItem_->setRunning(false);
 }
 #endif
 
@@ -367,15 +365,17 @@ void ProcessorGraphicsItem::showToolTip(QGraphicsSceneHelpEvent* e) {
          <b style='color:white;'>%1</b>\
          <table border='0' cellspacing='0' cellpadding='0' style='border-color:white;white-space:pre;'>\
          <tr><td style='color:#bbb;padding-right:8px;'>Identifier:</td><td><nobr>%2</nobr></td></tr>\
-         <tr><td style='color:#bbb;padding-right:8px;'>Category:</td><td><nobr>%3</nobr></td></tr>\
-         <tr><td style='color:#bbb;padding-right:8px;'>Code State:</td><td><nobr>%4</nobr></td></tr>\
-         <tr><td style='color:#bbb;padding-right:8px;'>Tags:</td><td><nobr>%5</nobr></td></tr>\
-         <tr><td style='color:#bbb;padding-right:8px;'>Eval Count:</td><td><nobr>%6</nobr></td></tr>\
-         <tr><td style='color:#bbb;padding-right:8px;'>Eval Time:</td><td><nobr>%7 ms</nobr></td></tr>\
-         <tr><td style='color:#bbb;padding-right:8px;'>Mean Time:</td><td><nobr>%8 ms</nobr></td></tr>\
-         <tr><td style='color:#bbb;padding-right:8px;'>Max Time:</td><td><nobr>%9 ms</nobr></td></tr>\
+         <tr><td style='color:#bbb;padding-right:8px;'>Class Identifier:</td><td><nobr>%3</nobr></td></tr>\
+         <tr><td style='color:#bbb;padding-right:8px;'>Category:</td><td><nobr>%4</nobr></td></tr>\
+         <tr><td style='color:#bbb;padding-right:8px;'>Code State:</td><td><nobr>%5</nobr></td></tr>\
+         <tr><td style='color:#bbb;padding-right:8px;'>Tags:</td><td><nobr>%6</nobr></td></tr>\
+         <tr><td style='color:#bbb;padding-right:8px;'>Eval Count:</td><td><nobr>%7</nobr></td></tr>\
+         <tr><td style='color:#bbb;padding-right:8px;'>Eval Time:</td><td><nobr>%8 ms</nobr></td></tr>\
+         <tr><td style='color:#bbb;padding-right:8px;'>Mean Time:</td><td><nobr>%9 ms</nobr></td></tr>\
+         <tr><td style='color:#bbb;padding-right:8px;'>Max Time:</td><td><nobr>%10 ms</nobr></td></tr>\
          </tr></table></body></html>")
          .arg(processor_->getDisplayName().c_str())
+         .arg(processor_->getIdentifier().c_str())
          .arg(processor_->getClassIdentifier().c_str())
          .arg(processor_->getCategory().c_str())
          .arg(Processor::getCodeStateString(processor_->getCodeState()).c_str())
@@ -391,11 +391,13 @@ void ProcessorGraphicsItem::showToolTip(QGraphicsSceneHelpEvent* e) {
          <b style='color:white;'>%1</b>\
          <table border='0' cellspacing='0' cellpadding='0' style='border-color:white;white-space:pre;'>\
          <tr><td style='color:#bbb;padding-right:8px;'>Identifier:</td><td><nobr>%2</nobr></td></tr>\
-         <tr><td style='color:#bbb;padding-right:8px;'>Category:</td><td><nobr>%3</nobr></td></tr>\
-         <tr><td style='color:#bbb;padding-right:8px;'>Code State:</td><td><nobr>%4</nobr></td></tr>\
-         <tr><td style='color:#bbb;padding-right:8px;'>Tags:</td><td><nobr>%5</nobr></td></tr>\
+         <tr><td style='color:#bbb;padding-right:8px;'>Class Identifier:</td><td><nobr>%3</nobr></td></tr>\
+         <tr><td style='color:#bbb;padding-right:8px;'>Category:</td><td><nobr>%4</nobr></td></tr>\
+         <tr><td style='color:#bbb;padding-right:8px;'>Code State:</td><td><nobr>%5</nobr></td></tr>\
+         <tr><td style='color:#bbb;padding-right:8px;'>Tags:</td><td><nobr>%6</nobr></td></tr>\
          </tr></table></body></html>")
          .arg(processor_->getDisplayName().c_str())
+         .arg(processor_->getIdentifier().c_str())
          .arg(processor_->getClassIdentifier().c_str())
          .arg(processor_->getCategory().c_str())
          .arg(Processor::getCodeStateString(processor_->getCodeState()).c_str())

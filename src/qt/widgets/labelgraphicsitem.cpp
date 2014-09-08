@@ -104,10 +104,11 @@ void LabelGraphicsItem::updateCrop() {
 }
 
 void LabelGraphicsItem::keyPressEvent(QKeyEvent* event) {
-    if (event->key() == Qt::Key_Return)
+    if (event->key() == Qt::Key_Return || event->key() == Qt::Key_Enter) {
         clearFocus();
-    else if (event->key() != Qt::Key_Space)
+    } else {
         QGraphicsTextItem::keyPressEvent(event);
+    }
 }
 
 void LabelGraphicsItem::focusInEvent(QFocusEvent* event) {
