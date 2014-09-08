@@ -66,6 +66,7 @@ private:
     OptionPropertyInt backgroundStyle_;
     FloatVec4Property color1_;
     FloatVec4Property color2_;
+    IntVec2Property checkerBoardSize_;
 
     Shader* shader_;
 
