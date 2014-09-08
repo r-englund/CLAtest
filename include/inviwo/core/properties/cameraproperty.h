@@ -59,6 +59,7 @@ public:
     virtual ~CameraProperty();
 
     void resetCamera();
+    void setCamera(const CameraProperty*);
 
     vec3& getLookFrom() { return lookFrom_.get(); }
     const vec3& getLookFrom() const { return lookFrom_.get(); }

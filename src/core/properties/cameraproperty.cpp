@@ -95,6 +95,11 @@ void CameraProperty::resetCamera() {
     setFovy(initialFovy_);
 }
 
+void CameraProperty::setCamera(const CameraProperty* cam){
+    setLook(cam->getLookFrom(), cam->getLookTo(), cam->getLookUp());
+    setFovy(cam->getFovy());
+}
+
 void CameraProperty::setLookFrom(vec3 lookFrom) { lookFrom_.set(lookFrom); }
 
 void CameraProperty::setLookTo(vec3 lookTo) { lookTo_.set(lookTo); }
