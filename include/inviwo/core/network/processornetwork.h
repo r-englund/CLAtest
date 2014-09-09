@@ -343,8 +343,7 @@ private:
 
     bool linking_;
     Processor* linkInvalidationInitiator_;
-
-
+    
     class NetworkConverter : public VersionConverter {
     public:
         typedef void (NetworkConverter::*updateType)(TxElement*);

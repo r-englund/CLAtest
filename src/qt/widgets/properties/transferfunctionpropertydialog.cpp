@@ -48,6 +48,8 @@ TransferFunctionPropertyDialog::TransferFunctionPropertyDialog(TransferFunctionP
     , TransferFunctionObserver()
     , sliderRange_(1000)
     , tfProperty_(tfProperty)
+    , tfEditor_(NULL)
+    , tfEditorView_(NULL)
     , tfPixmap_(NULL) {
 
     setAllowedAreas(Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea);
@@ -150,7 +152,7 @@ void TransferFunctionPropertyDialog::generateWidget() {
     colorDialog_ = new QColorDialog();
     colorDialog_->setWindowFlags(Qt::WindowStaysOnTopHint);
     connect(colorDialog_, SIGNAL(currentColorChanged(QColor)),
-            this, SLOT(setPointColorDialog()));
+            this, SLOT(setPointColorDialog(QColor)));
     
     QFrame* leftPanel = new QFrame(this);
     QGridLayout* leftLayout = new QGridLayout();
@@ -280,9 +282,9 @@ void TransferFunctionPropertyDialog::updateColorWheel() {
             colorWheel_->setColor(QColor(color.r, color.g, color.b, color.a));
             colorWheel_->blockSignals(false);
 
-            if (!colorChange_) {
-                colorDialog_->setCurrentColor(QColor(color.r, color.g, color.b, color.a));
-            }
+            colorDialog_->blockSignals(true);
+            colorDialog_->setCurrentColor(QColor(color.r, color.g, color.b, color.a));
+            colorDialog_->blockSignals(false);
         }
     }
 }
@@ -290,20 +292,17 @@ void TransferFunctionPropertyDialog::updateColorWheel() {
 // Connected to doubleClick on the tfEditor
 void TransferFunctionPropertyDialog::showColorDialog() {
     QList<QGraphicsItem*> selection = tfEditor_->selectedItems();
-
-    if (selection.size() == 1 &&
-        qgraphicsitem_cast<TransferFunctionEditorControlPoint*>(selection.at(0))) {
+    if (selection.size() > 0) {
         colorDialog_->show();
     }
 }
 
 // Connected to currentColorChanged on the colorDialog_
-void TransferFunctionPropertyDialog::setPointColorDialog() {
-    QColor color = colorDialog_->currentColor();
+void TransferFunctionPropertyDialog::setPointColorDialog(QColor color) {
     setPointColor(color);
-    colorChange_ = true;
-    updateColorWheel();
-    colorChange_ = false;
+    colorWheel_->blockSignals(true);
+    colorWheel_->setColor(color);
+    colorWheel_->blockSignals(false);
 }
 
 // Connected to colorChange on the colorWheel_

@@ -79,7 +79,7 @@ public:
 
 public slots:
     void setPointColor(QColor color);
-    void setPointColorDialog();
+    void setPointColorDialog(QColor color);
     void updateColorWheel();
     void showColorDialog();
     void switchInterpolationType(int interpolationType);
