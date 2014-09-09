@@ -673,8 +673,6 @@ void ProcessorNetwork::serialize(IvwSerializer& s) const {
     s.serialize("ProcessorNetworkVersion", processorNetworkVersion_);
     s.serialize("Processors", processors_, "Processor");
     s.serialize("Connections", portConnections_, "Connection");
-    //TODO: ProcessorLinks are Deprecated. Remove
-    //s.serialize("ProcessorLinks", processorLinks_, "ProcessorLink");
     s.serialize("PropertyLinks", propertyLinks_, "PropertyLink");
 }
 
@@ -688,9 +686,9 @@ void ProcessorNetwork::deserialize(IvwDeserializer& d) throw (Exception) {
     int version = 0;
     d.deserialize("ProcessorNetworkVersion", version);
 
-    if(version != processorNetworkVersion_){
-        LogWarn("Old network version << (" << version << " performing updates to "
-                << processorNetworkVersion_ << " file: " << d.getFileName());
+    if(version != processorNetworkVersion_) {
+        LogWarn("Old network version, performing updates (" << version << " to "
+                << processorNetworkVersion_ << ") file: " << d.getFileName());
         NetworkConverter nv(version);
         d.convertVersion(&nv); 
     }
