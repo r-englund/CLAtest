@@ -115,14 +115,13 @@ void PointLightSourceProcessor::handleInteractionEventsChanged() {
     }
 }
 
-PointLightSourceProcessor::PointLightInteractionHandler::PointLightInteractionHandler(FloatVec3Property* pl, CameraProperty* cam, float sceneRadius) 
+PointLightSourceProcessor::PointLightInteractionHandler::PointLightInteractionHandler(FloatVec3Property* pl, CameraProperty* cam) 
     : InteractionHandler()
     , lightPosition_(pl)
     , camera_(cam)    
     , lookUp_(camera_->getLookUp())
     , lookTo_(0.f)
-    , trackball_(&(pl->get()), &lookTo_, &lookUp_)
-    , sceneRadius_(sceneRadius) {
+    , trackball_(&(pl->get()), &lookTo_, &lookUp_) {
     static_cast<TrackballObservable*>(&trackball_)->addObserver(this);
     camera_->onChange(this, &PointLightInteractionHandler::onCameraChanged); 
 }
@@ -151,12 +150,14 @@ void PointLightSourceProcessor::PointLightInteractionHandler::setLightPosFromScr
     vec2 deviceCoord(2.f*(normalizedScreenCoord-0.5f)); 
     // Flip vertical axis since mouse event y position starts at top of screen
     deviceCoord.y *= -1.f;
+    // Use half distance between look from and look to positions as scene radius.
+    float sceneRadius = 0.5f*glm::length(camera_->getLookTo()-camera_->getLookFrom());
     vec3 rayOrigin = camera_->getWorldPosFromNormalizedDeviceCoords(vec3(deviceCoord, 0.f)); 
     vec3 rayDir = glm::normalize(camera_->getWorldPosFromNormalizedDeviceCoords(vec3(deviceCoord, 1.f))-rayOrigin); 
     float t0 = 0, t1 = std::numeric_limits<float>::max();
     float lightRadius = glm::length(lightPosition_->get());
 
-    if (raySphereIntersection(vec3(0.f), sceneRadius_, rayOrigin, rayDir, &t0, &t1)) {
+    if (raySphereIntersection(vec3(0.f), sceneRadius, rayOrigin, rayDir, &t0, &t1)) {
         lightPosition_->set(glm::normalize(rayOrigin + t1*rayDir)*lightRadius);
     } else {
 
