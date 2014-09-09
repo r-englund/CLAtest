@@ -80,7 +80,7 @@ protected:
     class ImageLayoutGLInteractionHandler : public InteractionHandler {
 
     public:
-        ImageLayoutGLInteractionHandler();
+        ImageLayoutGLInteractionHandler(ImageLayoutGL*);
         ~ImageLayoutGLInteractionHandler(){};
 
         void invokeEvent(Event* event);
@@ -88,6 +88,8 @@ protected:
         ivec2 getActivePosition() { return activePosition_; }
 
     private:
+        ImageLayoutGL* src_;
+
         MouseEvent activePositionChangeEvent_;
 
         bool viewportActive_;

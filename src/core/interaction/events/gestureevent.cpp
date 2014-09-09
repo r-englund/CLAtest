@@ -46,6 +46,10 @@ GestureEvent::GestureEvent(vec2 deltaPos, double deltaDistance, GestureEvent::Ge
 
 GestureEvent::~GestureEvent() {}
 
+void GestureEvent::modify(vec2 posNorm){
+    screenPosNorm_ = posNorm;
+}
+
 void GestureEvent::serialize(IvwSerializer& s) const {
     InteractionEvent::serialize(s);
 }

@@ -34,7 +34,6 @@
 #define IVW_EVENT_H
 
 #include <inviwo/core/common/inviwocoredefine.h>
-#include <inviwo/core/common/inviwo.h>
 #include <inviwo/core/io/serialization/ivwserializable.h>
 
 namespace inviwo {
@@ -45,8 +44,14 @@ public:
     Event();
     virtual ~Event();
 
+    void markAsUsed();
+    bool hasBeenUsed();
+
     virtual void serialize(IvwSerializer& s) const;
     virtual void deserialize(IvwDeserializer& d);
+
+private:
+    bool used_;
 };
 
 } // namespace

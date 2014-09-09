@@ -79,6 +79,8 @@ public:
     inline MouseEvent::MouseWheelOrientation wheelOrientation() const { return wheelOrientation_; }
     inline uvec2 canvasSize() const {return canvasSize_; }
 
+    void modify(ivec2, uvec2);
+
     virtual std::string getClassName() const { return "MouseEvent"; }
 
     virtual void serialize(IvwSerializer& s) const;

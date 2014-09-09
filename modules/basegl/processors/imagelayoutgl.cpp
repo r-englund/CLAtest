@@ -78,7 +78,7 @@ ImageLayoutGL::ImageLayoutGL()
     layout_.onChange(this, &ImageLayoutGL::onStatusChange);
     resizeContent_.onChange(this, &ImageLayoutGL::onStatusChange);
 
-    layoutHandler_ = new ImageLayoutGLInteractionHandler();
+    layoutHandler_ = new ImageLayoutGLInteractionHandler(this);
     addInteractionHandler(layoutHandler_);
     setAllPropertiesCurrentStateAsDefault();
 }
@@ -235,8 +235,9 @@ void ImageLayoutGL::onStatusChange() {
     updateViewports();
 }
 
-ImageLayoutGL::ImageLayoutGLInteractionHandler::ImageLayoutGLInteractionHandler() 
+ImageLayoutGL::ImageLayoutGLInteractionHandler::ImageLayoutGLInteractionHandler(ImageLayoutGL* src) 
     : InteractionHandler()
+    , src_(src)
     , activePositionChangeEvent_(ivec2(0), MouseEvent::MOUSE_BUTTON_LEFT, MouseEvent::MOUSE_STATE_PRESS, InteractionEvent::MODIFIER_NONE, uvec2(512))
     , viewportActive_(false)
     , activePosition_(ivec2(0)) {
@@ -251,7 +252,90 @@ void ImageLayoutGL::ImageLayoutGLInteractionHandler::invokeEvent(Event* event){
         }
         else if(viewportActive_ && mouseEvent->state() == MouseEvent::MOUSE_STATE_RELEASE){
             viewportActive_ = false;
+            return;
         }
+
+        ivec2 mPos = mouseEvent->pos();
+        uvec2 cSize = mouseEvent->canvasSize();
+
+        switch (src_->layout_.getSelectedValue())
+        {
+        case ImageLayoutTypes::HorizontalSplit:
+            cSize.y /= 2;
+            if(activePosition_.y > static_cast<int>(cSize.y)){
+                mPos.y -= cSize.y;
+            }
+            mouseEvent->modify(mPos, cSize);
+            break;
+        case ImageLayoutTypes::VerticalSplit:
+            cSize.x /= 2;
+            if(activePosition_.x > static_cast<int>(cSize.x)){
+                mPos.x -= cSize.x;
+            }
+            mouseEvent->modify(mPos, cSize);
+            break;
+        case ImageLayoutTypes::CrossSplit:
+            cSize /= 2;
+            if(activePosition_.x > static_cast<int>(cSize.x)){
+                mPos.x -= cSize.x;
+            }
+            if(activePosition_.y > static_cast<int>(cSize.y)){
+                mPos.y -= cSize.y;
+            }
+            mouseEvent->modify(mPos, cSize);
+            break;
+        case ImageLayoutTypes::ThreeLeftOneRight:
+            //TODO: Implement this coordinate transformation
+            break;
+        case ImageLayoutTypes::ThreeRightOneLeft: 
+            //TODO: Implement this coordinate transformation
+            break;
+        case ImageLayoutTypes::Single:
+        default:
+            break;
+        }
+
+        return;
+    }
+
+    GestureEvent* gestureEvent = dynamic_cast<GestureEvent*>(event);
+    if (gestureEvent) {
+        vec2 mPosNorm = gestureEvent->screenPosNormalized();
+
+        switch (src_->layout_.getSelectedValue())
+        {
+        case ImageLayoutTypes::HorizontalSplit:
+            if(mPosNorm.y > 0.5f){
+                mPosNorm.y -= 0.5f;
+            }
+            gestureEvent->modify(mPosNorm);
+            break;
+        case ImageLayoutTypes::VerticalSplit:
+            if(mPosNorm.x > 0.5f){
+                mPosNorm.x -= 0.5f;
+            }
+            gestureEvent->modify(mPosNorm);
+            break;
+        case ImageLayoutTypes::CrossSplit:
+            if(mPosNorm.x > 0.5f){
+                mPosNorm.x -= 0.5f;
+            }
+            if(mPosNorm.y > 0.5f){
+                mPosNorm.y -= 0.5f;
+            }
+            gestureEvent->modify(mPosNorm);
+            break;
+        case ImageLayoutTypes::ThreeLeftOneRight: 
+            //TODO: Implement this coordinate transformation
+            break;
+        case ImageLayoutTypes::ThreeRightOneLeft: 
+            //TODO: Implement this coordinate transformation
+            break;
+        case ImageLayoutTypes::Single:
+        default:
+            break;
+        }
+
         return;
     }
 
