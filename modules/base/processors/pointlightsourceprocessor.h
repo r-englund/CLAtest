@@ -45,7 +45,7 @@
 
 namespace inviwo {
 
-class IVW_MODULE_BASE_API PointLightSourceProcessor : public Processor, public TrackballObserver {
+class IVW_MODULE_BASE_API PointLightSourceProcessor : public Processor {
 public:
     PointLightSourceProcessor();
     virtual ~PointLightSourceProcessor();
@@ -55,22 +55,52 @@ public:
 protected:
     virtual void process();
 
-    void onCameraChanged();
     void handleInteractionEventsChanged();
-    virtual void onAllTrackballChanged(const Trackball* trackball);
-    virtual void onLookFromChanged(const Trackball* trackball);
-    virtual void onLookToChanged(const Trackball* trackball);
-    virtual void onLookUpChanged(const Trackball* trackball);
 
-    class PointLightInteractionHandler : public InteractionHandler {
+    /* 
+     * Enables light source to be placed relative to camera using middle mouse button or pan gesture with two fingers. 
+     * Uses trackball interaction for all other types of interaction. 
+     */
+    class PointLightInteractionHandler : public InteractionHandler, public TrackballObserver {
     public:
-        PointLightInteractionHandler(FloatVec3Property*, CameraProperty*);
+        PointLightInteractionHandler(FloatVec3Property*, CameraProperty*, float sceneRadius = 1.f);
         ~PointLightInteractionHandler(){};
 
         void invokeEvent(Event* event);
+        /** 
+         * \brief Changes the direction of the light source, relative to the camera, 
+         * such that it acts as if it comes from the direction where the user clicked on the screen.
+         *
+         * Intersects a sphere covering the scene and places the light source 
+         * in the direction of the intersection point but at the same distance from the origin as before. 
+         * If the intersection is outside the sphere the light source will be placed perpendicular 
+         * to the camera at the same distance as before.
+         *
+         * 
+         * @param vec2 normalizedScreenCoord Coordinates in [0 1], where y coordinate is 0 at top of screen.
+         */
+        void setLightPosFromScreenCoords(const vec2& normalizedScreenCoord);
+
+        // Notify property when trackball changed
+        void onAllTrackballChanged( const Trackball* trackball );
+        void onLookFromChanged( const Trackball* trackball );
+        void onCameraChanged();
+
+        /** 
+         * Bounding radius of scene in world space.
+         *
+         * @return float radius
+         */
+        float getSceneRadius() const { return sceneRadius_; }
+        void setSceneRadius(float val) { sceneRadius_ = val; }
     private:
-        FloatVec3Property* pointLight_;
+        FloatVec3Property* lightPosition_;
         CameraProperty* camera_;
+        Trackball trackball_;
+        vec3 lookUp_; ///< Necessary for trackball
+        vec3 lookTo_; ///< Necessary for trackball
+        float sceneRadius_; ///< Radius used for bounding sphere
+
     };
 
     /**
@@ -95,9 +125,7 @@ private:
     CameraProperty camera_;
     BoolProperty handleInteractionEvents_; ///< Enable or disable interactions from canvas
 
-    Trackball* trackball_;
-    vec3 lookUp_; ///< Necessary for trackball
-    vec3 lookTo_; ///< Necessary for trackball
+    PointLightInteractionHandler* lightInteractionHandler_;
     PointLight* lightSource_;
 };
 

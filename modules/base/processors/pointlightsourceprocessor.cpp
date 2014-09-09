@@ -31,7 +31,8 @@
  *********************************************************************************/
 
 #include "pointlightsourceprocessor.h"
-
+#include <inviwo/core/util/intersection/rayplaneintersection.h>
+#include <inviwo/core/util/intersection/raysphereintersection.h>
 
 namespace inviwo {
 
@@ -50,9 +51,7 @@ PointLightSourceProcessor::PointLightSourceProcessor()
     , lightPosition_("lightPosition", "Light Source Position", vec3(1.f, 0.65f, 0.65f), vec3(-1.f), vec3(1.f))
     , lightEnabled_("lightEnabled", "Enabled", true)
     , camera_("camera", "Camera", vec3(0.0f, 0.0f, -2.0f), vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 1.0f, 0.0f), NULL, PropertyOwner::VALID) 
-    , handleInteractionEvents_("handleEvents", "Handle interaction events", false)
-    , lookUp_(0.f, 1.f, 0.f)
-    , lookTo_(0) {
+    , handleInteractionEvents_("handleEvents", "Handle interaction events", false) {
     addPort(outport_);
     addProperty(lightPosition_);
     addProperty(lightDiffuse_);
@@ -71,18 +70,10 @@ PointLightSourceProcessor::PointLightSourceProcessor()
     lightPosition_.setSemantics(PropertySemantics::LightPosition);
     lightDiffuse_.setSemantics(PropertySemantics::Color);
     lightSource_ = new PointLight();
-    //addInteractionHandler(new PointLightInteractionHandler(&lightPosition_, &camera_));
-    // Pass references to positions that will be changed by the trackball
-    trackball_ = new Trackball(&lightPosition_.get(), &lookTo_, &lookUp_);
-    // Add as observer to notify property about changes.
-    static_cast<TrackballObservable*>(trackball_)->addObserver(this);
+    lightInteractionHandler_ = new PointLightInteractionHandler(&lightPosition_, &camera_);
 
     addProperty(handleInteractionEvents_);
     handleInteractionEvents_.onChange(this, &PointLightSourceProcessor::handleInteractionEventsChanged);
-
-    camera_.onChange(this, &PointLightSourceProcessor::onCameraChanged);
-
-
 }
 
 PointLightSourceProcessor::~PointLightSourceProcessor() {
@@ -114,55 +105,83 @@ void PointLightSourceProcessor::updatePointLightSource(PointLight* lightSource) 
     lightSource->setEnabled(lightEnabled_.get());
 }
 
-void PointLightSourceProcessor::onAllTrackballChanged( const Trackball* trackball ) {
-    lightPosition_.propertyModified();
-}
 
-void PointLightSourceProcessor::onLookFromChanged( const Trackball* trackball ) {
-    lightPosition_.propertyModified();
-}
-
-void PointLightSourceProcessor::onLookToChanged( const Trackball* trackball ) {
-
-}
-
-void PointLightSourceProcessor::onLookUpChanged( const Trackball* trackball ) {
-
-}
 
 void PointLightSourceProcessor::handleInteractionEventsChanged() {
     if (handleInteractionEvents_.get()) {
-        addInteractionHandler(trackball_);
+        addInteractionHandler(lightInteractionHandler_);
     } else {
-        removeInteractionHandler(trackball_);
+        removeInteractionHandler(lightInteractionHandler_);
     }
 }
 
-void PointLightSourceProcessor::onCameraChanged() {
-    // This makes sure that the interaction with the light source is consistent with the direction of the camera
-    *trackball_->getLookUp() = camera_.getLookUp();
-}
-
-PointLightSourceProcessor::PointLightInteractionHandler::PointLightInteractionHandler(FloatVec3Property* pl, CameraProperty* cam) 
+PointLightSourceProcessor::PointLightInteractionHandler::PointLightInteractionHandler(FloatVec3Property* pl, CameraProperty* cam, float sceneRadius) 
     : InteractionHandler()
-    , pointLight_(pl)
-    , camera_(cam) {
+    , lightPosition_(pl)
+    , camera_(cam)    
+    , lookUp_(camera_->getLookUp())
+    , lookTo_(0.f)
+    , trackball_(&(pl->get()), &lookTo_, &lookUp_)
+    , sceneRadius_(sceneRadius) {
+    static_cast<TrackballObservable*>(&trackball_)->addObserver(this);
+    camera_->onChange(this, &PointLightInteractionHandler::onCameraChanged); 
 }
 
-void PointLightSourceProcessor::PointLightInteractionHandler::invokeEvent(Event* event){
+void PointLightSourceProcessor::PointLightInteractionHandler::invokeEvent(Event* event) {
     GestureEvent* gestureEvent = dynamic_cast<GestureEvent*>(event);
     if (gestureEvent) {
-        if(gestureEvent->type() == GestureEvent::PAN && gestureEvent->numFingers() == 3){
-            mat4 projectionMatrix = camera_->projectionMatrix();
-            float clipW = projectionMatrix[2][3] / (-(projectionMatrix[2][2] / projectionMatrix[3][2]));
-            vec4 clipCoords = vec4(((gestureEvent->screenPosNormalized()*2.f)-1.f) * clipW, 0.f, clipW);
-            vec4 eyeCoords = camera_->inverseProjectionMatrix() * clipCoords;
-            vec4 worldCoords = camera_->inverseViewMatrix() * eyeCoords;
-            worldCoords /= worldCoords.w;
-            pointLight_->set(worldCoords.xyz());
+        if(gestureEvent->type() == GestureEvent::PAN && gestureEvent->numFingers() == 2){
+            setLightPosFromScreenCoords(gestureEvent->screenPosNormalized());
+            return;
         }
-        return;
     }
+    MouseEvent* mouseEvent = dynamic_cast<MouseEvent*>(event);
+    if (mouseEvent) {
+        int button = mouseEvent->button();
+        if (button == MouseEvent::MouseButton::MOUSE_BUTTON_MIDDLE) {
+            setLightPosFromScreenCoords(mouseEvent->posNormalized());
+            return;
+        } 
+    } 
+    trackball_.invokeEvent(event);
+}
+
+void PointLightSourceProcessor::PointLightInteractionHandler::setLightPosFromScreenCoords(const vec2& normalizedScreenCoord)
+{
+    vec2 deviceCoord(2.f*(normalizedScreenCoord-0.5f)); 
+    // Flip vertical axis since mouse event y position starts at top of screen
+    deviceCoord.y *= -1.f;
+    vec3 rayOrigin = camera_->getWorldPosFromNormalizedDeviceCoords(vec3(deviceCoord, 0.f)); 
+    vec3 rayDir = glm::normalize(camera_->getWorldPosFromNormalizedDeviceCoords(vec3(deviceCoord, 1.f))-rayOrigin); 
+    float t0 = 0, t1 = std::numeric_limits<float>::max();
+    float lightRadius = glm::length(lightPosition_->get());
+
+    if (raySphereIntersection(vec3(0.f), sceneRadius_, rayOrigin, rayDir, &t0, &t1)) {
+        lightPosition_->set(glm::normalize(rayOrigin + t1*rayDir)*lightRadius);
+    } else {
+
+        // Project it to the rim of the sphere
+        t0 = 0; t1 = std::numeric_limits<float>::max();
+        if (rayPlaneIntersection(camera_->getLookTo(), glm::normalize(camera_->getLookTo()-camera_->getLookFrom()), rayOrigin, rayDir, &t0, &t1)) {
+            // Project it to the edge of the sphere
+            lightPosition_->set(glm::normalize(rayOrigin + t1*rayDir)*lightRadius);
+        }
+    }
+    // Ensure that up vector is same as camera afterwards
+    *(trackball_.getLookUp()) = camera_->getLookUp();
+}
+
+void PointLightSourceProcessor::PointLightInteractionHandler::onAllTrackballChanged(const Trackball* trackball) {
+    lightPosition_->propertyModified();
+}
+
+void PointLightSourceProcessor::PointLightInteractionHandler::onLookFromChanged(const Trackball* trackball) {
+    lightPosition_->propertyModified();
+}
+
+void PointLightSourceProcessor::PointLightInteractionHandler::onCameraChanged() {
+    // This makes sure that the interaction with the light source is consistent with the direction of the camera
+    *(trackball_.getLookUp()) = camera_->getLookUp();
 }
 
 } // namespace
