@@ -82,7 +82,12 @@ DataSequence<T>& DataSequence<T>::operator=(const DataSequence<T>& rhs){
 }
 
 template <typename T>
-DataSequence<T>::~DataSequence() {}
+DataSequence<T>::~DataSequence() {
+    while (!sequenceContainer_.empty()){
+        delete sequenceContainer_.back();
+        sequenceContainer_.pop_back();
+    }
+}
 
 template <typename T>
 void DataSequence<T>::add(T* d) {
