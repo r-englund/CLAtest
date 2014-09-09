@@ -34,8 +34,17 @@
 
 namespace inviwo {
 
-Event::Event() {}
+Event::Event() : IvwSerializable(), used_(false) {}
+
 Event::~Event() {}
+
+void Event::markAsUsed(){
+    used_ = true;
+}
+
+bool Event::hasBeenUsed(){
+    return used_;
+}
 
 void Event::serialize(IvwSerializer& s) const {}
 void Event::deserialize(IvwDeserializer& d) {}

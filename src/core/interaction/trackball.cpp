@@ -181,6 +181,8 @@ void Trackball::invokeEvent(Event* event) {
         }
         isMouseBeingPressedAndHold_ = false;
 
+        gestureEvent->markAsUsed();
+
         return;
     }
 
@@ -207,6 +209,8 @@ void Trackball::invokeEvent(Event* event) {
                 pan(mouseEvent);
         } else if (state == MouseEvent::MOUSE_STATE_RELEASE)
             isMouseBeingPressedAndHold_ = false;
+
+        mouseEvent->markAsUsed();
 
         return;
     }
@@ -257,6 +261,8 @@ void Trackball::invokeEvent(Event* event) {
             && modifier == stepPanRightEvent_.modifier()
             && state == KeyboardEvent::KEY_STATE_PRESS)
             stepPan(RIGHT);
+
+        keyEvent->markAsUsed();
 
         return;
     }

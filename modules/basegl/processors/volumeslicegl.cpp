@@ -120,7 +120,7 @@ VolumeSliceGL::VolumeSliceGL()
     tfMappingEnabled_.onChange(this, &VolumeSliceGL::tfMappingEnabledChanged);
     addProperty(tfMappingEnabled_);
     // Make sure that opacity does not affect the mapped color.
-    if (transferFunction_.get().getNumPoints() > 0) {
+    if (transferFunction_.get().getNumDataPoints() > 0) {
         transferFunction_.get().getPoint(0)->setA(1.f);
     }
     transferFunction_.setCurrentStateAsDefault();
@@ -526,13 +526,10 @@ VolumeSliceGL::VolumeSliceGLInteractionHandler::VolumeSliceGLInteractionHandler(
 }
 
 void VolumeSliceGL::VolumeSliceGLInteractionHandler::invokeEvent(Event* event){
-    if(!slicer_->handleInteractionEvents_.get())
+    if(!slicer_->handleInteractionEvents_.get() || event->hasBeenUsed())
         return;
 
     GestureEvent* gestureEvent = dynamic_cast<GestureEvent*>(event);
-    KeyboardEvent* keyEvent = dynamic_cast<KeyboardEvent*>(event);
-    MouseEvent* mouseEvent = dynamic_cast<MouseEvent*>(event);
-
     if (gestureEvent) {
         if(gestureEvent->type() == GestureEvent::PAN){
             if (gestureEvent->deltaPos().y < 0)
@@ -540,22 +537,11 @@ void VolumeSliceGL::VolumeSliceGLInteractionHandler::invokeEvent(Event* event){
             else if (gestureEvent->deltaPos().y > 0)
                 slicer_->shiftSlice(-1);
         }
+        return;
     }
-    else if (keyEvent) {
-        int button = keyEvent->button();
-        KeyboardEvent::KeyState state = keyEvent->state();
-        InteractionEvent::Modifier modifier = keyEvent->modifier();
 
-        if (button == upEvent_.button()
-            && modifier == upEvent_.modifier()
-            && state == KeyboardEvent::KEY_STATE_PRESS)
-            slicer_->shiftSlice(1);
-        else if (button == downEvent_.button()
-            && modifier == downEvent_.modifier()
-            && state == KeyboardEvent::KEY_STATE_PRESS)
-            slicer_->shiftSlice(-1);
-    }
-    else if (mouseEvent) {
+    MouseEvent* mouseEvent = dynamic_cast<MouseEvent*>(event);
+    if (mouseEvent) {
         MouseEvent::MouseState state = mouseEvent->state();
         InteractionEvent::Modifier modifier = mouseEvent->modifier();
 
@@ -568,9 +554,28 @@ void VolumeSliceGL::VolumeSliceGLInteractionHandler::invokeEvent(Event* event){
             && (mouseEvent->button() == MouseEvent::MOUSE_BUTTON_LEFT)
             && ((state == MouseEvent::MOUSE_STATE_MOVE)
             || (state == MouseEvent::MOUSE_STATE_PRESS))) {
-            vec2 mousePos(mouseEvent->posNormalized());
-            slicer_->setVolPosFromScreenPos(vec2(mousePos.x, 1.0f - mousePos.y));
+                vec2 mousePos(mouseEvent->posNormalized());
+                slicer_->setVolPosFromScreenPos(vec2(mousePos.x, 1.0f - mousePos.y));
         }
+        return;
+    }
+
+    KeyboardEvent* keyEvent = dynamic_cast<KeyboardEvent*>(event);
+    if (keyEvent) {
+        int button = keyEvent->button();
+        KeyboardEvent::KeyState state = keyEvent->state();
+        InteractionEvent::Modifier modifier = keyEvent->modifier();
+
+        if (button == upEvent_.button()
+            && modifier == upEvent_.modifier()
+            && state == KeyboardEvent::KEY_STATE_PRESS)
+            slicer_->shiftSlice(1);
+        else if (button == downEvent_.button()
+            && modifier == downEvent_.modifier()
+            && state == KeyboardEvent::KEY_STATE_PRESS)
+            slicer_->shiftSlice(-1);
+
+        return;
     }
 }
 

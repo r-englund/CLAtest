@@ -66,6 +66,8 @@ public:
     inline int numFingers() { return numFingers_; }
     inline vec2 screenPosNormalized() { return screenPosNorm_; }
 
+    void modify(vec2);
+
     virtual std::string getClassName() const { return "GestureEvent"; }
 
     virtual void serialize(IvwSerializer& s) const;

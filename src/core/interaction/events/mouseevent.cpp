@@ -90,6 +90,11 @@ MouseEvent::MouseEvent(MouseEvent::MouseButton button, InteractionEvent::Modifie
 
 MouseEvent::~MouseEvent() {}
 
+void MouseEvent::modify(ivec2 newPosition, uvec2 newCanvasSize) {
+    position_ = newPosition;
+    canvasSize_ = newCanvasSize;
+};
+
 void MouseEvent::serialize(IvwSerializer& s) const {
     InteractionEvent::serialize(s);
     s.serialize("button", buttonName_);
