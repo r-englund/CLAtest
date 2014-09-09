@@ -38,10 +38,6 @@
 
 namespace inviwo {
 
-// bool TFPointComparer(TransferFunctionDataPoint* a, TransferFunctionDataPoint* b) {
-//     return a->getPos().x < b->getPos().x;
-// }
-
 TransferFunction::TransferFunction(int textureSize)
     : TransferFunctionObservable()
     , maskMin_(0.0f)
@@ -129,7 +125,8 @@ void TransferFunction::addPoint(const vec2& pos, const vec4& color) {
 
 void TransferFunction::addPoint(TransferFunctionDataPoint* dataPoint) {
     dataPoint->addObserver(this);
-    TFPoints::iterator pos = std::lower_bound(points_.begin(), points_.end(), dataPoint);
+    TFPoints::iterator pos = std::lower_bound(points_.begin(), points_.end(), dataPoint,
+                                              comparePtr<TransferFunctionDataPoint>);
     points_.insert(pos, dataPoint);
 
     invalidate();
@@ -157,7 +154,7 @@ void TransferFunction::clearPoints() {
 }
 
 void TransferFunction::onTransferFunctionPointChange(const TransferFunctionDataPoint* p){
-    std::stable_sort(points_.begin(), points_.end());
+    std::stable_sort(points_.begin(), points_.end(), comparePtr<TransferFunctionDataPoint>);
     invalidate();
     notifyControlPointChanged(p);
 }
@@ -165,7 +162,7 @@ void TransferFunction::onTransferFunctionPointChange(const TransferFunctionDataP
 void TransferFunction::calcTransferValues() {
     vec4* dataArray = static_cast<vec4*>(data_->getEditableRepresentation<LayerRAM>()->getData());
 
-    std::stable_sort(points_.begin(), points_.end());
+    std::stable_sort(points_.begin(), points_.end(), comparePtr<TransferFunctionDataPoint>);
 
     if (points_.size() == 0) { // in case of 0 points     
         for (int i = 0; i < textureSize_; i++) {
@@ -255,6 +252,7 @@ float TransferFunction::getMaskMin() const {
 
 void TransferFunction::setMaskMin(float maskMin) {
     maskMin_ = maskMin;
+    invalidate();
 }
 
 float TransferFunction::getMaskMax() const {
@@ -263,10 +261,12 @@ float TransferFunction::getMaskMax() const {
 
 void TransferFunction::setMaskMax(float maskMax) {
     maskMax_ = maskMax;
+    invalidate();
 }
 
 void TransferFunction::setInterpolationType(InterpolationType interpolationType) {
     interpolationType_ = interpolationType;
+    invalidate();
 }
 
 inviwo::TransferFunction::InterpolationType TransferFunction::getInterpolationType() const {

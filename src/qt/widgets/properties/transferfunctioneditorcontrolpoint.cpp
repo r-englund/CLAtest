@@ -31,6 +31,7 @@
  *********************************************************************************/
 
 #include <inviwo/qt/widgets/properties/transferfunctioneditorcontrolpoint.h>
+#include <inviwo/qt/widgets/properties/transferfunctioncontrolpointconnection.h>
 #include <inviwo/core/datastructures/transferfunctiondatapoint.h>
 #include <inviwo/qt/widgets/properties/transferfunctioneditor.h>
 #include <inviwo/qt/widgets/properties/transferfunctioneditorview.h>
@@ -40,6 +41,7 @@
 #include <QGraphicsSceneEvent>
 #include <QGraphicsView>
 #include <QPainter>
+#include <QKeyEvent>
 
 namespace inviwo {
 
@@ -48,11 +50,12 @@ TransferFunctionEditorControlPoint::TransferFunctionEditorControlPoint(
     : QGraphicsItem()
     , left_(NULL)
     , right_(NULL)
+    , size_(14.0f)
+    , showLabel_(false)
     , isEditingPoint_(false)
     , dataPoint_(datapoint)
     , dataMap_(dataMap)
-    , size_(14.0f)
-    , showLabel_(false) {
+    , currentPos_() {
 
     setFlags(ItemIgnoresTransformations | ItemIsFocusable | ItemIsMovable | ItemIsSelectable |
              ItemSendsGeometryChanges);
@@ -75,7 +78,8 @@ void TransferFunctionEditorControlPoint::paint(QPainter* painter,
     pen.setCapStyle(Qt::RoundCap);
     pen.setStyle(Qt::SolidLine);
     isSelected() ? pen.setColor(QColor(213, 79, 79)) : pen.setColor(QColor(66, 66, 66));
-    QBrush brush = QBrush(QColor::fromRgbF(dataPoint_->getRGBA().r, dataPoint_->getRGBA().g,
+    QBrush brush = QBrush(QColor::fromRgbF(dataPoint_->getRGBA().r,
+                                           dataPoint_->getRGBA().g,
                                            dataPoint_->getRGBA().b));
     painter->setPen(pen);
     painter->setBrush(brush);
@@ -119,9 +123,8 @@ QRectF TransferFunctionEditorControlPoint::boundingRect() const {
 }
 
 QPainterPath TransferFunctionEditorControlPoint::shape() const {
-    float bBoxSize = size_ + 0.0f;
     QPainterPath path;
-    path.addEllipse(QRectF(-bBoxSize / 2.0, -bBoxSize / 2.0f, bBoxSize, bBoxSize));
+    path.addEllipse(QRectF(-size_ / 2.0, -size_ / 2.0f, size_, size_));
     return path;
 }
 
@@ -139,31 +142,44 @@ void TransferFunctionEditorControlPoint::hoverLeaveEvent(QGraphicsSceneHoverEven
     update();
 }
 
-
 QVariant TransferFunctionEditorControlPoint::itemChange(GraphicsItemChange change,
                                                         const QVariant& value) {
     if (change == QGraphicsItem::ItemPositionChange && scene()) {
         // constrain positions to valid view positions
-        QPointF newPos = value.toPointF();
+        currentPos_ = value.toPointF();
         QRectF rect = scene()->sceneRect();
 
-        if (!rect.contains(newPos)) {
-            newPos.setX(qMin(rect.right(), qMax(newPos.x(), rect.left())));
-            newPos.setY(qMin(rect.bottom(), qMax(newPos.y(), rect.top())));
+        if (!rect.contains(currentPos_)) {
+            currentPos_.setX(qMin(rect.right(), qMax(currentPos_.x(), rect.left())));
+            currentPos_.setY(qMin(rect.bottom(), qMax(currentPos_.y(), rect.top())));
+        }
+        
+        if(left_) {
+            if(left_->left_ && *(left_->left_) > *this){
+                qobject_cast<TransferFunctionEditor*>(scene())->updateConnections();
+            } else {
+                left_->updateShape();
+            }
+        }
+        if(right_) {
+            if(right_->right_ && *(right_->right_) < *this){
+                qobject_cast<TransferFunctionEditor*>(scene())->updateConnections();
+            } else {
+                right_->updateShape();
+            }
         }
 
         // update the associated transfer function data point
-        QPointF controlPointPos = pos();
         if (!isEditingPoint_) {
             isEditingPoint_ = true;
             dataPoint_->setPosA(
-                vec2(controlPointPos.x() / rect.width(), controlPointPos.y() / rect.height()),
-                controlPointPos.y() / rect.height());
+                vec2(currentPos_.x() / rect.width(), currentPos_.y() / rect.height()),
+                currentPos_.y() / rect.height());
             isEditingPoint_ = false;
         }
 
         // return the constraint position
-        return newPos;
+        return currentPos_;
     }
 
     return QGraphicsItem::itemChange(change, value);
@@ -174,7 +190,8 @@ void TransferFunctionEditorControlPoint::onTransferFunctionPointChange(
     if (!isEditingPoint_) {
         isEditingPoint_ = true;
         QRectF rect = scene()->sceneRect();
-        setPos(p->getPos().x * rect.width(), p->getPos().y * rect.height());
+        QPointF newpos(p->getPos().x * rect.width(), p->getPos().y * rect.height());
+        if(newpos != pos()) setPos(newpos);
         isEditingPoint_ = false;
     }
 }
@@ -212,8 +229,44 @@ TransferFunctionDataPoint* TransferFunctionEditorControlPoint::getPoint() const 
     return dataPoint_;
 }
 
-bool TransferFunctionEditorControlPoint::operator==(const TransferFunctionDataPoint* point) const {
-    return dataPoint_ == point;
+void TransferFunctionEditorControlPoint::setPos(const QPointF & pos) {
+    currentPos_ = pos;
+    QGraphicsItem::setPos(pos);
+}
+
+const QPointF& TransferFunctionEditorControlPoint::getCurrentPos() const{
+    return currentPos_;
+}
+
+
+bool operator==(const TransferFunctionEditorControlPoint& lhs,
+                const TransferFunctionEditorControlPoint& rhs) {
+    return *lhs.dataPoint_ == *rhs.dataPoint_;
+}
+
+bool operator!=(const TransferFunctionEditorControlPoint& lhs,
+                const TransferFunctionEditorControlPoint& rhs) {
+    return !operator==(lhs, rhs);
+}
+
+bool operator<(const TransferFunctionEditorControlPoint& lhs,
+               const TransferFunctionEditorControlPoint& rhs) {
+    return lhs.currentPos_.x() < rhs.currentPos_.x();
+}
+
+bool operator>(const TransferFunctionEditorControlPoint& lhs,
+               const TransferFunctionEditorControlPoint& rhs) {
+    return rhs < lhs;
+}
+
+bool operator<=(const TransferFunctionEditorControlPoint& lhs,
+                const TransferFunctionEditorControlPoint& rhs) {
+    return !(rhs < lhs);
+}
+
+bool operator>=(const TransferFunctionEditorControlPoint& lhs,
+                const TransferFunctionEditorControlPoint& rhs) {
+    return !(lhs < rhs);
 }
 
 const double TransferFunctionEditorControlPoint::textHeight_ = 20;

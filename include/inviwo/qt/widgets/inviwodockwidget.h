@@ -36,6 +36,8 @@
 #include <inviwo/qt/widgets/inviwoqtwidgetsdefine.h>
 #include <QDockWidget>
 
+class QKeyEvent;
+
 namespace inviwo {
 
 class IVW_QTWIDGETS_API InviwoDockWidget : public QDockWidget {
@@ -46,6 +48,8 @@ public:
     virtual ~InviwoDockWidget();
 
     virtual void show();
+    
+    virtual void keyPressEvent(QKeyEvent* event);
 };
 
 } // namespace

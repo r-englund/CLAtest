@@ -31,6 +31,7 @@
  *********************************************************************************/
 
 #include <inviwo/qt/widgets/inviwodockwidget.h>
+#include <QKeyEvent>
 
 namespace inviwo {
 
@@ -48,5 +49,13 @@ void InviwoDockWidget::show(){
     QDockWidget::show();
 }
 
+void InviwoDockWidget::keyPressEvent(QKeyEvent* event) {
+    if(event->key() == Qt::Key_Escape && isFloating()){
+        hide();
+    }else{
+        event->ignore();
+    }
+    QDockWidget::keyPressEvent(event);
+}
 
 } // namespace
