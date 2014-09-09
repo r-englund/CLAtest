@@ -63,7 +63,7 @@ protected:
      */
     class PointLightInteractionHandler : public InteractionHandler, public TrackballObserver {
     public:
-        PointLightInteractionHandler(FloatVec3Property*, CameraProperty*, float sceneRadius = 1.f);
+        PointLightInteractionHandler(FloatVec3Property*, CameraProperty*);
         ~PointLightInteractionHandler(){};
 
         void invokeEvent(Event* event);
@@ -86,20 +86,12 @@ protected:
         void onLookFromChanged( const Trackball* trackball );
         void onCameraChanged();
 
-        /** 
-         * Bounding radius of scene in world space.
-         *
-         * @return float radius
-         */
-        float getSceneRadius() const { return sceneRadius_; }
-        void setSceneRadius(float val) { sceneRadius_ = val; }
     private:
         FloatVec3Property* lightPosition_;
         CameraProperty* camera_;
         Trackball trackball_;
         vec3 lookUp_; ///< Necessary for trackball
         vec3 lookTo_; ///< Necessary for trackball
-        float sceneRadius_; ///< Radius used for bounding sphere
 
     };
 
