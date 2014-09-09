@@ -138,7 +138,7 @@ void PointLightSourceProcessor::PointLightInteractionHandler::invokeEvent(Event*
     MouseEvent* mouseEvent = dynamic_cast<MouseEvent*>(event);
     if (mouseEvent) {
         int button = mouseEvent->button();
-        if (button == MouseEvent::MouseButton::MOUSE_BUTTON_MIDDLE) {
+        if (button == MouseEvent::MOUSE_BUTTON_MIDDLE) {
             setLightPosFromScreenCoords(mouseEvent->posNormalized());
             return;
         } 
