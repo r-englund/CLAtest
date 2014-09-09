@@ -26,15 +26,9 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  * 
- * Main file authors: Viktor Axelsson, Timo Ropinski
+ * Main file authors: Peter Steneteg
  *
  *********************************************************************************/
-
-/** \Inherited from QGraphicsScene for editing a transfer function (TransferFunction)
- *
- *  Class for graphical configuration of a transfer function
- *
- */
 
 #ifndef IVW_TRANSFERFUNCTIONEDITOR_H
 #define IVW_TRANSFERFUNCTIONEDITOR_H
@@ -49,10 +43,12 @@
 class QGraphicsView;
 class QGraphicsPathItem;
 
+
 namespace inviwo {
 
 class TransferFunction;
 class TransferFunctionEditorControlPoint;
+class TransferFunctionControlPointConnection;
 class TransferFunctionDataPoint;
 
 class IVW_QTWIDGETS_API TransferFunctionEditor : public QGraphicsScene {
@@ -72,12 +68,11 @@ public:
     void setZoomRangeYMax(float max);
 
     QGraphicsView* getView();
-    void redrawConnections();
 
     void setDataMap(const DataMapper& dataMap);
     DataMapper getDataMap() const;
 
-    void recalculateControlPoints();
+    void updateConnections();
 
     virtual void onControlPointAdded(TransferFunctionDataPoint* p);
     virtual void onControlPointRemoved(TransferFunctionDataPoint* p);
@@ -91,6 +86,7 @@ public slots:
 
 protected:
     void mousePressEvent(QGraphicsSceneMouseEvent* e);
+    void mouseMoveEvent(QGraphicsSceneMouseEvent* e);
     void mouseReleaseEvent(QGraphicsSceneMouseEvent* e);
     void mouseDoubleClickEvent(QGraphicsSceneMouseEvent* e);
     void keyPressEvent(QKeyEvent* e);
@@ -123,8 +119,11 @@ private :
     TransferFunction* transferFunction_; ///< Pointer to widget's member variable
 
     QGraphicsPathItem* graphicsPathItem_;
-    std::vector<TransferFunctionEditorControlPoint*> controlPoints_; ///< Control points in the transfer function graph
-
+    
+    typedef std::vector<TransferFunctionEditorControlPoint*> PointVec;
+    typedef std::vector<TransferFunctionControlPointConnection*> ConnectionVec;
+    PointVec points_;
+    ConnectionVec connections_;
     bool mouseDrag_;
     DataMapper dataMap_;
 };

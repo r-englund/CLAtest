@@ -77,6 +77,12 @@ public:
     virtual void serialize(IvwSerializer& s) const;
     virtual void deserialize(IvwDeserializer& d);
 
+    // Override
+    virtual void set(const TransferFunction& value);
+    virtual void onControlPointAdded(TransferFunctionDataPoint* p);
+    virtual void onControlPointRemoved(TransferFunctionDataPoint* p);
+    virtual void onControlPointChanged(const TransferFunctionDataPoint* p);
+
 private:
     vec2 zoomH_;
     vec2 defaultZoomH_;

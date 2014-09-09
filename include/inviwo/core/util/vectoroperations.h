@@ -73,6 +73,12 @@ bool hasTypeInVector(const std::vector<U> vec) {
     return false;
 }
 
+template <typename T>
+bool comparePtr(T* a, T* b) { return (*a < *b); }
+
+template <typename T>
+bool equalPtr(T* a, T* b) { return (*a == *b); }
+
 } // namespace
 
 #endif // IVW_VECTOROPERATIONS_H

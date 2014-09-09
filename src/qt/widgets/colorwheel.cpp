@@ -45,13 +45,14 @@ namespace inviwo {
 ColorWheel::ColorWheel(QWidget* parent) :
     QWidget(parent),
     initSize(200,200),
+    wheel(initSize),
     mouseDown(false),
     margin(0),
     wheelWidth(30),
     current(Qt::red),
     inWheel(false),
-    inSquare(false)
-{
+    inSquare(false) {
+    
     current = current.toHsv();
     setMinimumSize(200, 200);
     setMaximumSize(200, 200);

@@ -194,7 +194,6 @@ void TransferFunctionPropertyDialog::switchInterpolationType(int interpolationTy
     } else {
         tfProperty_->get().setInterpolationType(TransferFunction::InterpolationCubic);
     }
-    tfEditor_->redrawConnections();
 }
 
 void TransferFunctionPropertyDialog::updateTFPreview() {
@@ -349,8 +348,6 @@ void TransferFunctionPropertyDialog::changeMask(int maskMin, int maskMax) {
     tfEditorView_->setMask(maskMinF, maskMaxF);
 
     updateTFPreview();
-    tfProperty_->get().invalidate();
-    tfProperty_->propertyModified();
 }
 
 void TransferFunctionPropertyDialog::importTransferFunction() {
@@ -366,7 +363,6 @@ void TransferFunctionPropertyDialog::importTransferFunction() {
         TransferFunction tf;
         tf.deserialize(deserializer);
         tfProperty_->set(tf);
-        tfEditor_->recalculateControlPoints();
         updateFromProperty();
     }
 }
@@ -437,19 +433,16 @@ void TransferFunctionPropertyDialog::dockLocationChanged(Qt::DockWidgetArea dock
 void TransferFunctionPropertyDialog::onControlPointAdded(TransferFunctionDataPoint* p) {
     tfEditor_->onControlPointAdded(p);
     updateFromProperty();
-    tfProperty_->propertyModified();
 }
 
 void TransferFunctionPropertyDialog::onControlPointRemoved(TransferFunctionDataPoint* p) {
     tfEditor_->onControlPointRemoved(p);
     updateFromProperty();
-    tfProperty_->propertyModified();
 }
 
 void TransferFunctionPropertyDialog::onControlPointChanged(const TransferFunctionDataPoint* p) {
     tfEditor_->onControlPointChanged(p);
     updateFromProperty();
-    tfProperty_->propertyModified();
 }
 
 QLinearGradient* TransferFunctionPropertyDialog::getTFGradient() {

@@ -48,6 +48,8 @@ TransferFunctionProperty::TransferFunctionProperty(std::string identifier,
     , showHistogram_(true)
     , defaultShowHistogram_(true)
     , volumeInport_(volumeInport) {
+    
+    this->value_.addObserver(this);
 }
 
 TransferFunctionProperty::~TransferFunctionProperty() {
@@ -110,6 +112,7 @@ void TransferFunctionProperty::setMask(float maskMin, float maskMax) {
     }
     this->value_.setMaskMin(maskMin);
     this->value_.setMaskMax(maskMax);
+    propertyModified();
 }
 
 const vec2 TransferFunctionProperty::getMask() const {
@@ -136,6 +139,22 @@ void TransferFunctionProperty::setZoomV(float zoomVMin, float zoomVMax) {
         zoomVMax = zoomVMin;
     }
     zoomV_ = vec2(zoomVMin, zoomVMax);
+}
+
+void TransferFunctionProperty::set(const TransferFunction& value) {
+    this->value_.removeObserver(this);
+    TemplateProperty<TransferFunction>::set(value);
+    this->value_.addObserver(this);
+}
+
+void TransferFunctionProperty::onControlPointAdded(TransferFunctionDataPoint* p) {
+    propertyModified();
+}
+void TransferFunctionProperty::onControlPointRemoved(TransferFunctionDataPoint* p) {
+    propertyModified();
+}
+void TransferFunctionProperty::onControlPointChanged(const TransferFunctionDataPoint* p) {
+    propertyModified();
 }
 
 

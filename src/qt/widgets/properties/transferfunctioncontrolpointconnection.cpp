@@ -31,25 +31,114 @@
  *********************************************************************************/
 
 #include <inviwo/qt/widgets/properties/transferfunctioncontrolpointconnection.h>
+#include <inviwo/qt/widgets/properties/transferfunctioneditorcontrolpoint.h>
 #include <QPainterPathStroker>
+#include <QGraphicsScene>
+#include <QRectF>
+#include <QPainter>
+
 namespace inviwo {
 
-TransferFunctionControlPointConnection::TransferFunctionControlPointConnection() {}
+TransferFunctionControlPointConnection::TransferFunctionControlPointConnection()
+    : QGraphicsItem(), left_(NULL), right_(NULL), path_(), shape_(), rect_() {
+    updateShape();
+}
 
 TransferFunctionControlPointConnection::~TransferFunctionControlPointConnection() {}
 
 void TransferFunctionControlPointConnection::paint(QPainter* p,
                                                    const QStyleOptionGraphicsItem* options,
-                                                   QWidget* widget) {}
+                                                   QWidget* widget) {
+    IVW_UNUSED_PARAM(options);
+    IVW_UNUSED_PARAM(widget);
+
+    p->save();
+    p->setRenderHint(QPainter::Antialiasing, true);
+
+    QPen pathPen(QColor(66, 66, 66));
+    pathPen.setWidth(3.0);
+    pathPen.setCosmetic(true);
+    
+    p->setPen(pathPen);
+    p->drawPath(path_);
+    p->restore();
+}
+
+void TransferFunctionControlPointConnection::updateShape() {
+    if (left_ == NULL && right_ == NULL) {
+        path_ = QPainterPath();
+    }
+    
+    path_ = QPainterPath(getStart());
+    path_.lineTo(getStop());
+    
+    rect_ = path_.boundingRect();
+    
+    QPainterPathStroker pathStrocker;
+    pathStrocker.setWidth(10.0);
+    shape_ = pathStrocker.createStroke(path_);
+    
+    prepareGeometryChange();
+    update();
+}
+
+QPointF TransferFunctionControlPointConnection::getStart() const {
+    QPointF start;
+    if(left_) {
+        start = left_->getCurrentPos();
+    } else if (right_ && scene()) {
+        start = QPointF(scene()->sceneRect().left(), right_->getCurrentPos().y());
+    }
+    return start;
+}
+
+QPointF TransferFunctionControlPointConnection::getStop() const {
+    QPointF stop;
+    if(right_) {
+        stop = right_->getCurrentPos();
+    } else if (left_ && scene()) {
+        stop = QPointF(scene()->sceneRect().right(), left_->getCurrentPos().y());
+    }
+    return stop;
+}
 
 QRectF TransferFunctionControlPointConnection::boundingRect() const {
-    return path_.boundingRect();
+    return rect_;
 }
 
 QPainterPath TransferFunctionControlPointConnection::shape() const {
-    QPainterPathStroker pathStrocker;
-    pathStrocker.setWidth(10.0);
-    return pathStrocker.createStroke(path_);
+    return shape_;
+}
+
+bool operator==(const TransferFunctionControlPointConnection& lhs,
+                const TransferFunctionControlPointConnection& rhs) {
+    return lhs.getStart() == rhs.getStart() && lhs.getStop() == rhs.getStop();
+}
+
+bool operator!=(const TransferFunctionControlPointConnection& lhs,
+                const TransferFunctionControlPointConnection& rhs) {
+    return !operator==(lhs, rhs);
+}
+
+bool operator<(const TransferFunctionControlPointConnection& lhs,
+               const TransferFunctionControlPointConnection& rhs) {
+    return 0.5f * (lhs.getStart().x() + lhs.getStop().x()) <
+           0.5f * (rhs.getStart().x() + rhs.getStop().x());
+}
+
+bool operator>(const TransferFunctionControlPointConnection& lhs,
+               const TransferFunctionControlPointConnection& rhs) {
+    return rhs < lhs;
+}
+
+bool operator<=(const TransferFunctionControlPointConnection& lhs,
+                const TransferFunctionControlPointConnection& rhs) {
+    return !(rhs < lhs);
+}
+
+bool operator>=(const TransferFunctionControlPointConnection& lhs,
+                const TransferFunctionControlPointConnection& rhs) {
+    return !(lhs < rhs);
 }
 
 }  // namespace

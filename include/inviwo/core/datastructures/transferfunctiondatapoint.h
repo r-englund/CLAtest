@@ -43,14 +43,14 @@ class TransferFunctionDataPoint;
 
 class IVW_CORE_API TransferFunctionPointObserver : public Observer {
 public:
-    TransferFunctionPointObserver() : Observer(){};
-    virtual void onTransferFunctionPointChange(const TransferFunctionDataPoint* p){};
+    TransferFunctionPointObserver() : Observer() {};
+    virtual void onTransferFunctionPointChange(const TransferFunctionDataPoint* p) {};
 };
 
 class IVW_CORE_API TransferFunctionPointObservable
     : public Observable<TransferFunctionPointObserver> {
 public:
-    TransferFunctionPointObservable() : Observable<TransferFunctionPointObserver>(){};
+    TransferFunctionPointObservable() : Observable<TransferFunctionPointObserver>() {};
     void notifyTransferFunctionPointObservers() const;
 };
 
@@ -77,12 +77,12 @@ public:
     virtual void serialize(IvwSerializer& s) const;
     virtual void deserialize(IvwDeserializer& d);
 
-    friend inline bool operator==(const TransferFunctionDataPoint& lhs,
-                                  const TransferFunctionDataPoint& rhs);
+    friend bool operator==(const TransferFunctionDataPoint& lhs,
+                           const TransferFunctionDataPoint& rhs);
 
     // Compare points by their "x" value
-    friend inline bool operator<(const TransferFunctionDataPoint& lhs,
-                                 const TransferFunctionDataPoint& rhs);
+    friend bool operator<(const TransferFunctionDataPoint& lhs,
+                          const TransferFunctionDataPoint& rhs);
 
 private:
     vec2 pos_;
@@ -90,12 +90,18 @@ private:
     bool notify_;
 };
 
-bool operator==(const TransferFunctionDataPoint& lhs, const TransferFunctionDataPoint& rhs);
-bool operator!=(const TransferFunctionDataPoint& lhs, const TransferFunctionDataPoint& rhs);
-bool operator<(const TransferFunctionDataPoint& lhs, const TransferFunctionDataPoint& rhs);
-bool operator>(const TransferFunctionDataPoint& lhs, const TransferFunctionDataPoint& rhs);
-bool operator<=(const TransferFunctionDataPoint& lhs, const TransferFunctionDataPoint& rhs);
-bool operator>=(const TransferFunctionDataPoint& lhs, const TransferFunctionDataPoint& rhs);
+IVW_CORE_API bool operator==(const TransferFunctionDataPoint& lhs,
+                             const TransferFunctionDataPoint& rhs);
+IVW_CORE_API bool operator!=(const TransferFunctionDataPoint& lhs,
+                             const TransferFunctionDataPoint& rhs);
+IVW_CORE_API bool operator<(const TransferFunctionDataPoint& lhs,
+                            const TransferFunctionDataPoint& rhs);
+IVW_CORE_API bool operator>(const TransferFunctionDataPoint& lhs,
+                            const TransferFunctionDataPoint& rhs);
+IVW_CORE_API bool operator<=(const TransferFunctionDataPoint& lhs,
+                             const TransferFunctionDataPoint& rhs);
+IVW_CORE_API bool operator>=(const TransferFunctionDataPoint& lhs,
+                             const TransferFunctionDataPoint& rhs);
 }  // namespace
 
 #endif  // IVW_TRANSFERFUNCTIONDATAPOINT_H
