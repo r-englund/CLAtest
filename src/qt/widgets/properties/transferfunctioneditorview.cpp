@@ -42,6 +42,8 @@
 #include <QThread>
 #include <QtEvents>
 #include <QGraphicsScene>
+#include <QPainter>
+#include <QBrush>
 
 namespace inviwo {
 
@@ -50,7 +52,6 @@ TransferFunctionEditorView::TransferFunctionEditorView(TransferFunctionProperty*
     , tfProperty_(tfProperty)
     , volumeInport_(tfProperty->getVolumeInport())
     , showHistogram_(tfProperty->getShowHistogram())
-    , barWidth_(1.0)
     , histogramTheadWorking_(false)
     , workerThread_(NULL)
     , invalidatedHistogram_(true)
@@ -170,17 +171,18 @@ void TransferFunctionEditorView::histogramThreadFinished() {
 void TransferFunctionEditorView::updateHistogram() {
     if (!invalidatedHistogram_) return;
 
-    histogramBars_.clear();
+    histograms_.clear();
 
-    const NormalizedHistogram* normHistogram = getNormalizedHistogram();
-    if (normHistogram) {
-        QRectF sRect = sceneRect();
+    int channel = 0;
+    const NormalizedHistogram* normHistogram;
+    QRectF sRect = sceneRect();
 
+    while((normHistogram = getNormalizedHistogram(channel)) !=NULL) {
+        ++channel;
+        histograms_.push_back(QPolygonF());        
         const std::vector<double>* normHistogramData = normHistogram->getData();
-        histogramBars_.reserve(normHistogramData->size());
-
         double histSize = static_cast<double>(normHistogramData->size());
-        barWidth_ = sRect.width() / histSize;
+        double stepSize = sRect.width() / histSize;
 
         double scale = 1.0;
         switch (showHistogram_) {
@@ -204,6 +206,9 @@ void TransferFunctionEditorView::updateHistogram() {
         }
         double height;
         double maxCount = normHistogram->getMaximumBinValue();
+
+        histograms_.back() << QPointF(0.0f,0.0f);
+
         for (double i = 0; i < histSize; i++) {
             if (showHistogram_ == 5) {
                 height =
@@ -214,26 +219,26 @@ void TransferFunctionEditorView::updateHistogram() {
                 height = normHistogramData->at(static_cast<size_t>(i)) / scale;
                 height = std::min(height, 1.0);
             }
-            histogramBars_.push_back(
-                QLineF(i / histSize * sRect.width(), 0.0, i / histSize * sRect.width(),
-                       height * sRect.height()));
+            height *= sRect.height();
+            histograms_.back() << QPointF(i*stepSize, height) << QPointF((i+1)*stepSize, height);
         }
+        histograms_.back() << QPointF(sRect.width(),0.0f) << QPointF(0.0f,0.0f);
     }
 
     invalidatedHistogram_ = false;
 }
 
-const NormalizedHistogram* TransferFunctionEditorView::getNormalizedHistogram() {
+const NormalizedHistogram* TransferFunctionEditorView::getNormalizedHistogram(int channel) {
     if (volumeInport_ && volumeInport_->hasData()) {
         const VolumeRAM* volumeRAM = volumeInport_->getData()->getRepresentation<VolumeRAM>();
 
         if (volumeRAM) {
             if (volumeRAM->hasNormalizedHistogram())
-                return volumeRAM->getNormalizedHistogram();
+                return volumeRAM->getNormalizedHistogram(1, 2048, channel);
             else if (!histogramTheadWorking_) {
                 histogramTheadWorking_ = true;
                 workerThread_ = new QThread();
-                HistogramWorkerQt* worker = new HistogramWorkerQt(volumeRAM);
+                HistogramWorkerQt* worker = new HistogramWorkerQt(volumeRAM, 2048);
                 worker->moveToThread(workerThread_);
                 connect(workerThread_, SIGNAL(started()), worker, SLOT(process()));
                 connect(worker, SIGNAL(finished()), workerThread_, SLOT(quit()));
@@ -271,12 +276,19 @@ void TransferFunctionEditorView::drawBackground(QPainter* painter, const QRectF&
     // histogram
     if (showHistogram_ > 0) {
         updateHistogram();
-        if (histogramBars_.size() > 0) {
+        for (int i = 0; i < histograms_.size(); ++i) {
             QPen pen;
             pen.setColor(QColor(68, 102, 170, 150));
-            pen.setWidthF(barWidth_);
+            pen.setWidthF(2.0f);
+            pen.setCosmetic(true);
             painter->setPen(pen);
-            painter->drawLines(&histogramBars_[0], static_cast<int>(histogramBars_.size()));
+
+            QBrush brush;
+            brush.setColor(QColor(68, 102, 170, 100));
+            brush.setStyle(Qt::SolidPattern);
+            painter->setBrush(brush);
+            
+            painter->drawPolygon(histograms_[i]);
         }
     }
 }
@@ -329,8 +341,8 @@ void HistogramWorkerQt::process() {
     emit finished();
 }
 
-HistogramWorkerQt::HistogramWorkerQt(const VolumeRAM* volumeRAM, std::size_t numBins /*= 2048u*/) : volumeRAM_(volumeRAM), numBins_(numBins) {
-
+HistogramWorkerQt::HistogramWorkerQt(const VolumeRAM* volumeRAM, std::size_t numBins /*= 2048u*/) 
+    : volumeRAM_(volumeRAM), numBins_(numBins) {
 }
 
 HistogramWorkerQt::~HistogramWorkerQt() {

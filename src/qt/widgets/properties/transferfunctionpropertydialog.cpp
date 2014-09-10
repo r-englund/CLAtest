@@ -128,7 +128,7 @@ void TransferFunctionPropertyDialog::generateWidget() {
     
     btnExportTF_ = new QPushButton("Export");
     connect(btnExportTF_, SIGNAL(clicked()), this, SLOT(exportTransferFunction()));
-    btnImportTF_->setStyleSheet(QString("min-width: 30px; padding-left: 7px; padding-right: 7px;"));
+    btnExportTF_->setStyleSheet(QString("min-width: 30px; padding-left: 7px; padding-right: 7px;"));
 
     tfPreview_ = new QLabel();
     tfPreview_->setMinimumSize(1,20);
@@ -137,19 +137,19 @@ void TransferFunctionPropertyDialog::generateWidget() {
     tfPreview_->setSizePolicy(sliderPol);
     
     cmbInterpolation_ = new QComboBox();
-    cmbInterpolation_->addItem("linear interpolation");
-    //cmbInterpolation_->addItem("cubic interpolation"); // Not implemented... (yet)
+    cmbInterpolation_->addItem("Interpolation: Linear");
+    //cmbInterpolation_->addItem("Interpolation: Cubic"); // Not implemented... (yet)
     cmbInterpolation_->setCurrentIndex(tfProperty_->get().getInterpolationType());
     connect(cmbInterpolation_, SIGNAL(currentIndexChanged(int)),
             this, SLOT(switchInterpolationType(int)));
     
     chkShowHistogram_ = new QComboBox();
-    chkShowHistogram_->addItem("No Histogram");
-    chkShowHistogram_->addItem("Histogram 100%");
-    chkShowHistogram_->addItem("Histogram 99%");
-    chkShowHistogram_->addItem("Histogram 95%");
-    chkShowHistogram_->addItem("Histogram 90%");
-    chkShowHistogram_->addItem("Histogram Log");
+    chkShowHistogram_->addItem("Histogram: Off");
+    chkShowHistogram_->addItem("Histogram: 100%");
+    chkShowHistogram_->addItem("Histogram: 99%");
+    chkShowHistogram_->addItem("Histogram: 95%");
+    chkShowHistogram_->addItem("Histogram: 90%");
+    chkShowHistogram_->addItem("Histogram: Log");
     chkShowHistogram_->setCurrentIndex(tfProperty_->getShowHistogram());
     connect(chkShowHistogram_, SIGNAL(currentIndexChanged(int)), this, SLOT(showHistogram(int)));
     
@@ -167,6 +167,8 @@ void TransferFunctionPropertyDialog::generateWidget() {
     
     QFrame* leftPanel = new QFrame(this);
     QGridLayout* leftLayout = new QGridLayout();
+    leftLayout->setContentsMargins(0, 0, 0, 0);
+    leftLayout->setSpacing(7);
     leftLayout->addWidget(zoomVSlider_,  0, 0);
     leftLayout->addWidget(tfEditorView_, 0, 1);
     leftLayout->addWidget(zoomHSlider_,  1, 1);
@@ -176,22 +178,27 @@ void TransferFunctionPropertyDialog::generateWidget() {
     
     QFrame* rightPanel = new QFrame(this);
     QVBoxLayout* rightLayout = new QVBoxLayout();
+    rightLayout->setContentsMargins(0, 0, 0, 0);
+    rightLayout->setSpacing(7);
     rightLayout->setAlignment(Qt::AlignTop);
     rightLayout->addWidget(colorWheel_);
-
+    rightLayout->addWidget(cmbInterpolation_);
+    rightLayout->addWidget(chkShowHistogram_);
+    rightLayout->addWidget(pointMoveMode_);
+    rightLayout->addStretch(3);
     QHBoxLayout* rowLayout = new QHBoxLayout();
     rowLayout->addWidget(btnClearTF_);
     rowLayout->addWidget(btnImportTF_);
     rowLayout->addWidget(btnExportTF_);
-
     rightLayout->addLayout(rowLayout);
-    rightLayout->addWidget(cmbInterpolation_);
-    rightLayout->addWidget(chkShowHistogram_);
-    rightLayout->addWidget(pointMoveMode_);
+
+
     rightPanel->setLayout(rightLayout);
     
     QFrame* mainPanel = new QFrame(this);
     QHBoxLayout* mainLayout = new QHBoxLayout();
+    mainLayout->setContentsMargins(7, 7, 7, 7);
+    mainLayout->setSpacing(7);
     mainLayout->addWidget(leftPanel);
     mainLayout->addWidget(rightPanel);
     mainPanel->setLayout(mainLayout);
