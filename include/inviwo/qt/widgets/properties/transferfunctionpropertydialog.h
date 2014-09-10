@@ -92,6 +92,7 @@ public slots:
     void exportTransferFunction();
     void showHistogram(int type);
     void dockLocationChanged(Qt::DockWidgetArea dockArea);
+    void changeMoveMode(int i);
 
 protected:
     virtual void resizeEvent(QResizeEvent*);
@@ -110,6 +111,8 @@ private:
     QPushButton* btnExportTF_;
     QComboBox* cmbInterpolation_;
     QComboBox* chkShowHistogram_;
+
+    QComboBox* pointMoveMode_;
 
     QLabel* tfPreview_;  ///< View that contains the scene for the painted transfer function
     QPixmap* tfPixmap_;
