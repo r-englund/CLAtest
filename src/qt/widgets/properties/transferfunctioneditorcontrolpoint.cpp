@@ -144,26 +144,52 @@ void TransferFunctionEditorControlPoint::hoverLeaveEvent(QGraphicsSceneHoverEven
 
 QVariant TransferFunctionEditorControlPoint::itemChange(GraphicsItemChange change,
                                                         const QVariant& value) {
-    if (change == QGraphicsItem::ItemPositionChange && scene()) {
+    
+    TransferFunctionEditor* tfe = qobject_cast<TransferFunctionEditor*>(scene());
+    
+    if (change == QGraphicsItem::ItemPositionChange && tfe) {
         // constrain positions to valid view positions
         currentPos_ = value.toPointF();
         QRectF rect = scene()->sceneRect();
+
+        int moveMode = tfe->getMoveMode();
 
         if (!rect.contains(currentPos_)) {
             currentPos_.setX(qMin(rect.right(), qMax(currentPos_.x(), rect.left())));
             currentPos_.setY(qMin(rect.bottom(), qMax(currentPos_.y(), rect.top())));
         }
-        
-        if(left_) {
-            if(left_->left_ && *(left_->left_) > *this){
-                qobject_cast<TransferFunctionEditor*>(scene())->updateConnections();
+
+        if (left_) {
+            if (left_->left_ && *(left_->left_) > *this) {
+                switch(moveMode) {
+                    case 0: // Free
+                        break;
+                    case 1: // Restrict
+                        currentPos_.setX(left_->left_->getCurrentPos().x());
+                        break;
+                    case 2: // Push
+                        left_->left_->setPos(QPointF(currentPos_.x(), left_->left_->getCurrentPos().y()));
+                        break;
+                }
+
+                tfe->updateConnections();
             } else {
                 left_->updateShape();
             }
         }
-        if(right_) {
-            if(right_->right_ && *(right_->right_) < *this){
-                qobject_cast<TransferFunctionEditor*>(scene())->updateConnections();
+        if (right_) {
+            if (right_->right_ && *(right_->right_) < *this) {
+                switch (moveMode) {
+                    case 0: // Free
+                        break;
+                    case 1: // Restrict
+                        currentPos_.setX(right_->right_->getCurrentPos().x());
+                        break;
+                    case 2: // Push
+                        right_->right_->setPos(QPointF(currentPos_.x(), right_->right_->getCurrentPos().y()));
+                        break;
+                }
+                tfe->updateConnections();
             } else {
                 right_->updateShape();
             }

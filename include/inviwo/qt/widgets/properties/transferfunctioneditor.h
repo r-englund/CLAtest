@@ -73,6 +73,8 @@ public:
     DataMapper getDataMap() const;
 
     void updateConnections();
+    int getMoveMode() const;
+    void setMoveMode(int i);
 
     virtual void onControlPointAdded(TransferFunctionDataPoint* p);
     virtual void onControlPointRemoved(TransferFunctionDataPoint* p);
@@ -109,7 +111,6 @@ protected:
 
 private :
     void addControlPoint(QPointF pos, TransferFunctionDataPoint* dataPoint);
-
     float zoomRangeXMin_;
     float zoomRangeXMax_;
     float zoomRangeYMin_;
@@ -127,8 +128,8 @@ private :
     bool mouseDrag_;
     DataMapper dataMap_;
 
-    std::vector<std::vector<TransferFunctionEditorControlPoint*>> groups_;
-
+    std::vector<std::vector<TransferFunctionEditorControlPoint*> > groups_;
+    int moveMode_;
 };
 
 } // namespace

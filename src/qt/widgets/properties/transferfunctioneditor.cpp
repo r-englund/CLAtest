@@ -70,7 +70,8 @@ TransferFunctionEditor::TransferFunctionEditor(TransferFunction* transferFunctio
     , zoomRangeYMax_(1.0)
     , view_(view)
     , transferFunction_(transferFunction)
-    , groups_() {
+    , groups_()
+    , moveMode_(0) {
 
     setSceneRect(0.0, 0.0, 512.0, 512.0);
     mouseDrag_ = false;
@@ -497,6 +498,14 @@ void TransferFunctionEditor::setZoomRangeYMax(float max) {
 
 QGraphicsView* TransferFunctionEditor::getView() {
     return view_;
+}
+
+void TransferFunctionEditor::setMoveMode(int i) {
+   moveMode_ = i; 
+}
+
+int TransferFunctionEditor::getMoveMode() const {
+    return moveMode_;
 }
 
 }
