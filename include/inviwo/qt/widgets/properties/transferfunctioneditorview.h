@@ -64,7 +64,7 @@ public slots:
     void updateZoom();
 
 protected:
-    const NormalizedHistogram* getNormalizedHistogram();
+    const NormalizedHistogram* getNormalizedHistogram(int channel = 0);
 
     void resizeEvent(QResizeEvent* event);
     void drawForeground(QPainter* painter, const QRectF& rect);
@@ -77,8 +77,7 @@ private:
     VolumeInport* volumeInport_;
     int showHistogram_;
 
-    double barWidth_;
-    std::vector<QLineF> histogramBars_;
+    std::vector<QPolygonF> histograms_;
 
     bool histogramTheadWorking_;
     QThread* workerThread_;

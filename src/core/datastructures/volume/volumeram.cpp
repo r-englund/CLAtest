@@ -128,7 +128,9 @@ NormalizedHistogram* VolumeRAM::getNormalizedHistogram(int sampleRate,
 const NormalizedHistogram* VolumeRAM::getNormalizedHistogram(int sampleRate,
                                                              std::size_t maxNumberOfBins,
                                                              int component) const {
-    if (!calculatingHistogram_ && data_ && (!histograms_ || histograms_->empty() || !histograms_->at(component)->isValid()))
+    if (data_ && !calculatingHistogram_ && (!histograms_ || histograms_->empty() ||
+                                            (static_cast<int>(histograms_->size()) > component &&
+                                             !histograms_->at(component)->isValid())))
         calculateHistogram(sampleRate, maxNumberOfBins);
 
     if (histograms_ && static_cast<int>(histograms_->size()) > component) {
