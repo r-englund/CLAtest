@@ -90,17 +90,17 @@ private:
     bool notify_;
 };
 
-IVW_CORE_API bool operator==(const TransferFunctionDataPoint& lhs,
+bool operator==(const TransferFunctionDataPoint& lhs,
                              const TransferFunctionDataPoint& rhs);
-IVW_CORE_API bool operator!=(const TransferFunctionDataPoint& lhs,
+bool operator!=(const TransferFunctionDataPoint& lhs,
                              const TransferFunctionDataPoint& rhs);
-IVW_CORE_API bool operator<(const TransferFunctionDataPoint& lhs,
+bool operator<(const TransferFunctionDataPoint& lhs,
                             const TransferFunctionDataPoint& rhs);
-IVW_CORE_API bool operator>(const TransferFunctionDataPoint& lhs,
+bool operator>(const TransferFunctionDataPoint& lhs,
                             const TransferFunctionDataPoint& rhs);
-IVW_CORE_API bool operator<=(const TransferFunctionDataPoint& lhs,
+bool operator<=(const TransferFunctionDataPoint& lhs,
                              const TransferFunctionDataPoint& rhs);
-IVW_CORE_API bool operator>=(const TransferFunctionDataPoint& lhs,
+bool operator>=(const TransferFunctionDataPoint& lhs,
                              const TransferFunctionDataPoint& rhs);
 }  // namespace
 
