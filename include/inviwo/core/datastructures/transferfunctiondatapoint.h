@@ -77,11 +77,11 @@ public:
     virtual void serialize(IvwSerializer& s) const;
     virtual void deserialize(IvwDeserializer& d);
 
-    friend bool operator==(const TransferFunctionDataPoint& lhs,
+    friend IVW_CORE_API bool operator==(const TransferFunctionDataPoint& lhs,
                            const TransferFunctionDataPoint& rhs);
 
     // Compare points by their "x" value
-    friend bool operator<(const TransferFunctionDataPoint& lhs,
+    friend IVW_CORE_API bool operator<(const TransferFunctionDataPoint& lhs,
                           const TransferFunctionDataPoint& rhs);
 
 private:
@@ -90,17 +90,17 @@ private:
     bool notify_;
 };
 
-bool operator==(const TransferFunctionDataPoint& lhs,
+IVW_CORE_API bool operator==(const TransferFunctionDataPoint& lhs,
                              const TransferFunctionDataPoint& rhs);
-bool operator!=(const TransferFunctionDataPoint& lhs,
+IVW_CORE_API bool operator!=(const TransferFunctionDataPoint& lhs,
                              const TransferFunctionDataPoint& rhs);
-bool operator<(const TransferFunctionDataPoint& lhs,
+IVW_CORE_API bool operator<(const TransferFunctionDataPoint& lhs,
                             const TransferFunctionDataPoint& rhs);
-bool operator>(const TransferFunctionDataPoint& lhs,
+IVW_CORE_API bool operator>(const TransferFunctionDataPoint& lhs,
                             const TransferFunctionDataPoint& rhs);
-bool operator<=(const TransferFunctionDataPoint& lhs,
+IVW_CORE_API bool operator<=(const TransferFunctionDataPoint& lhs,
                              const TransferFunctionDataPoint& rhs);
-bool operator>=(const TransferFunctionDataPoint& lhs,
+IVW_CORE_API bool operator>=(const TransferFunctionDataPoint& lhs,
                              const TransferFunctionDataPoint& rhs);
 }  // namespace
 

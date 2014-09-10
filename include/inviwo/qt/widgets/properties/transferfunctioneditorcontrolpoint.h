@@ -69,11 +69,11 @@ public:
     const QPointF& getCurrentPos() const;
     void setPos(const QPointF & pos);
     
-    friend bool operator==(const TransferFunctionEditorControlPoint& lhs,
+    friend IVW_QTWIDGETS_API bool operator==(const TransferFunctionEditorControlPoint& lhs,
                            const TransferFunctionEditorControlPoint& rhs);
 
     // Compare points by their "x" value
-    friend bool operator<(const TransferFunctionEditorControlPoint& lhs,
+    friend IVW_QTWIDGETS_API bool operator<(const TransferFunctionEditorControlPoint& lhs,
                           const TransferFunctionEditorControlPoint& rhs);
 
     TransferFunctionControlPointConnection* left_;   // Non-owning reference
@@ -101,17 +101,17 @@ private:
     QPointF currentPos_;
 };
 
-bool operator==(const TransferFunctionEditorControlPoint& lhs,
+IVW_QTWIDGETS_API bool operator==(const TransferFunctionEditorControlPoint& lhs,
                                   const TransferFunctionEditorControlPoint& rhs);
-bool operator!=(const TransferFunctionEditorControlPoint& lhs,
+IVW_QTWIDGETS_API bool operator!=(const TransferFunctionEditorControlPoint& lhs,
                                   const TransferFunctionEditorControlPoint& rhs);
-bool operator<(const TransferFunctionEditorControlPoint& lhs,
+IVW_QTWIDGETS_API bool operator<(const TransferFunctionEditorControlPoint& lhs,
                                  const TransferFunctionEditorControlPoint& rhs);
-bool operator>(const TransferFunctionEditorControlPoint& lhs,
+IVW_QTWIDGETS_API bool operator>(const TransferFunctionEditorControlPoint& lhs,
                                  const TransferFunctionEditorControlPoint& rhs);
-bool operator<=(const TransferFunctionEditorControlPoint& lhs,
+IVW_QTWIDGETS_API bool operator<=(const TransferFunctionEditorControlPoint& lhs,
                                   const TransferFunctionEditorControlPoint& rhs);
-bool operator>=(const TransferFunctionEditorControlPoint& lhs,
+IVW_QTWIDGETS_API bool operator>=(const TransferFunctionEditorControlPoint& lhs,
                                   const TransferFunctionEditorControlPoint& rhs);
 
 }  // namespace
