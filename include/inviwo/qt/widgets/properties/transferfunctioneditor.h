@@ -126,6 +126,9 @@ private :
     ConnectionVec connections_;
     bool mouseDrag_;
     DataMapper dataMap_;
+
+    std::vector<std::vector<TransferFunctionEditorControlPoint*>> groups_;
+
 };
 
 } // namespace

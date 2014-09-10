@@ -69,7 +69,9 @@ TransferFunctionEditor::TransferFunctionEditor(TransferFunction* transferFunctio
     , zoomRangeYMin_(0.0)
     , zoomRangeYMax_(1.0)
     , view_(view)
-    , transferFunction_(transferFunction) {
+    , transferFunction_(transferFunction)
+    , groups_() {
+
     setSceneRect(0.0, 0.0, 512.0, 512.0);
     mouseDrag_ = false;
     // initialize editor with current tf
@@ -79,6 +81,10 @@ TransferFunctionEditor::TransferFunctionEditor(TransferFunction* transferFunctio
     
     for (int i = 0; i < transferFunction_->getNumPoints(); ++i){
         onControlPointAdded(transferFunction_->getPoint(i));
+    }
+
+    for (int i = 0; i<10; ++i) {
+        groups_.push_back(std::vector<TransferFunctionEditorControlPoint*>());
     }
 }
 
@@ -145,20 +151,22 @@ void TransferFunctionEditor::mouseDoubleClickEvent(QGraphicsSceneMouseEvent* e) 
 }
 
 void TransferFunctionEditor::keyPressEvent(QKeyEvent* e) {
+    int k = e->key();
+
     InviwoApplication::getPtr()->getProcessorNetwork()->lock();
-    if (e->key() == 'A' && e->modifiers() == Qt::ControlModifier) {  // Select all
+    if (k == 'A' && e->modifiers() == Qt::ControlModifier) {                // Select all
         QList<QGraphicsItem*> itemList = items();
         for (int i = 0; i < itemList.size(); i++) {
             itemList[i]->setSelected(true);
         }
 
-    } else if (e->key() == 'D' && e->modifiers() == Qt::ControlModifier) {  // Select none
+    } else if (k == 'D' && e->modifiers() == Qt::ControlModifier) {         // Select none
         QList<QGraphicsItem*> itemList = selectedItems();
         for (int i = 0; i < itemList.size(); i++) {
             itemList[i]->setSelected(false);
         }
 
-    } else if (e->key() == Qt::Key_Delete) {  // Delete selected
+    } else if (k == Qt::Key_Delete) {  // Delete selected
         QList<QGraphicsItem*> itemList = selectedItems();
         for (int i = 0; i < itemList.size(); i++) {
             TransferFunctionEditorControlPoint* p =
@@ -168,40 +176,32 @@ void TransferFunctionEditor::keyPressEvent(QKeyEvent* e) {
             }
         }
 
-    } else if (e->modifiers() != Qt::ControlModifier &&  // Move points
-               (e->key() == Qt::Key_Left || e->key() == Qt::Key_Right || e->key() == Qt::Key_Up ||
-                e->key() == Qt::Key_Down || e->key() == 'I' || e->key() == 'J' || e->key() == 'K' ||
-                e->key() == 'L')) {
+    } else if (!(e->modifiers() & Qt::ControlModifier) &&                     // Move points
+               (k == Qt::Key_Left || k == Qt::Key_Right || k == Qt::Key_Up || k == Qt::Key_Down || 
+                k == 'I' || k == 'J' || k == 'K' || k == 'L')) {
         QPointF delta;
-        switch (e->key()) {
+        float x = sceneRect().width() / 1000.0;
+        float y = sceneRect().height() / 1000.0;
+        switch (k) {
             case Qt::Key_Left:
-                delta = QPointF(-1.0f, 0.0f);
+            case 'J':
+                delta = QPointF(-x, 0.0f);
                 break;
             case Qt::Key_Right:
-                delta = QPointF(1.0f, 0.0f);
+            case 'L':
+                delta = QPointF(x, 0.0f);
                 break;
             case Qt::Key_Up:
-                delta = QPointF(0.0f, 1.0f);
+            case 'I':
+                delta = QPointF(0.0f, y);
                 break;
             case Qt::Key_Down:
-                delta = QPointF(0.0f, -1.0f);
-                break;
-
-            case 'J':
-                delta = QPointF(-1.0f, 0.0f);
-                break;
-            case 'L':
-                delta = QPointF(1.0f, 0.0f);
-                break;
-            case 'I':
-                delta = QPointF(0.0f, 1.0f);
-                break;
             case 'K':
-                delta = QPointF(0.0f, -1.0f);
+                delta = QPointF(0.0f, -y);
                 break;
         }
 
-        if (e->modifiers() == Qt::ShiftModifier || e->modifiers() == Qt::AltModifier) {
+        if (e->modifiers() & Qt::ShiftModifier || e->modifiers() & Qt::AltModifier) {
             delta *= 10.0;
         }
 
@@ -210,8 +210,9 @@ void TransferFunctionEditor::keyPressEvent(QKeyEvent* e) {
             selitems[i]->setPos(selitems[i]->pos() + delta);
         }
 
-    } else if (e->modifiers() == Qt::ControlModifier &&  // Modify selection
-               (e->key() == 'I' || e->key() == 'J' || e->key() == 'K' || e->key() == 'L')) {
+    } else if (e->modifiers() & Qt::ControlModifier &&                     // Modify selection
+               (k == Qt::Key_Left || k == Qt::Key_Right || k == Qt::Key_Up || k == Qt::Key_Down ||
+                k == 'I' || k == 'J' || k == 'K' || k == 'L')) {
         QList<QGraphicsItem*> selitems = selectedItems();
 
         std::vector<TransferFunctionEditorControlPoint*> points;
@@ -223,36 +224,112 @@ void TransferFunctionEditor::keyPressEvent(QKeyEvent* e) {
         std::stable_sort(points.begin(), points.end(),
                          comparePtr<TransferFunctionEditorControlPoint>);
 
-        switch (e->key()) {
+        switch (k) {
+            case Qt::Key_Left:
             case 'J':
                 if (points.size() > 0) {
                     if (points.front()->left_ && points.front()->left_->left_) {
                         points.front()->left_->left_->setSelected(true);
+                        if (!(e->modifiers() & Qt::ShiftModifier)) {
+                            points.back()->setSelected(false);
+                        }
                     }
                 } else if (points_.size() > 0) {
                     points_.back()->setSelected(true);
                 }
 
                 break;
+            case Qt::Key_Right:
             case 'L':
                 if (points.size() > 0) {
                     if (points.back()->right_ && points.back()->right_->right_) {
                         points.back()->right_->right_->setSelected(true);
+                        if (!(e->modifiers() & Qt::ShiftModifier)) {
+                            points.front()->setSelected(false);
+                        }
                     }
                 } else if (points_.size() > 0) {
                     points_.front()->setSelected(true);
                 }
                 break;
+            case Qt::Key_Up:
             case 'I':
                 if (points.size() > 0) {
                     points.front()->setSelected(false);
                 }
                 break;
+            case Qt::Key_Down:
             case 'K':
                 if (points.size() > 0) {
                     points.back()->setSelected(false);
                 }
                 break;
+        }
+    
+    } else if ((k >= '0' && k <= '9') ||                               // Groups selection
+               k == '!' || k =='"' || k =='#' || k =='¤' || k =='%' || k =='&' || k =='(' || 
+               k ==')' || k =='=') {                                                                
+        int group = 0;
+        switch(k) {
+            case '0':
+            case '=':
+                group = 0;
+                break;
+            case '1':
+            case '!':
+                group = 1;
+                break;
+            case '2':
+            case '"':
+                group = 2;
+                break;
+            case '3':
+            case '#':
+                group = 3;
+                break;
+            case '4':
+            case '¤':
+                group = 4;
+                break;
+            case '5':
+            case '%':
+                group = 5;
+                break;
+            case '6':
+            case '&':
+                group = 6;
+                break;
+            case '7':
+            case '/':
+                group = 7;
+                break;
+            case '8':
+            case '(':
+                group = 8;
+                break;
+            case '9':
+            case ')':
+                group = 9;
+                break;
+        }
+
+        QList<QGraphicsItem*> selitems = selectedItems();
+        if (e->modifiers() & Qt::ControlModifier) { // Create group
+            groups_[group].clear();
+            for (int i = 0; i < selitems.size(); i++) {
+                TransferFunctionEditorControlPoint* p =
+                    qgraphicsitem_cast<TransferFunctionEditorControlPoint*>(selitems[i]);
+                if (p) groups_[group].push_back(p);
+            }
+        } else {
+            if (!(e->modifiers() & Qt::ShiftModifier)) {
+                 for (int i = 0; i < selitems.size(); i++) {
+                    selitems[i]->setSelected(false);
+                 }
+            }
+            for (int i = 0; i < groups_[group].size(); i++) {
+                groups_[group][i]->setSelected(true);
+            }     
         }
     } else {
         e->ignore();
@@ -328,13 +405,19 @@ void TransferFunctionEditor::onControlPointAdded(TransferFunctionDataPoint* p) {
 }
 
 void TransferFunctionEditor::onControlPointRemoved(TransferFunctionDataPoint* p) {
-    std::vector<TransferFunctionEditorControlPoint*>::iterator it =
-        std::find_if(points_.begin(), points_.end(), ControlPointEquals(p));
+    std::vector<TransferFunctionEditorControlPoint*>::iterator it;
+    
+    // remove point from all groups
+    for (int i = 0; i < groups_.size(); i++){
+        it = std::find_if(groups_[i].begin(), groups_[i].end(), ControlPointEquals(p)); 
+        if (it != groups_[i].end()) groups_[i].erase(it);
+    }
+    
+    // remove item.
+    it = std::find_if(points_.begin(), points_.end(), ControlPointEquals(p));
     if (it != points_.end()) {
-        removeItem((*it));
         delete *it;
         points_.erase(it);
-        
         updateConnections();
     }
 }

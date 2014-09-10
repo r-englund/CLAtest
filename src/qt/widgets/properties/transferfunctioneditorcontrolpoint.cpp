@@ -90,8 +90,8 @@ void TransferFunctionEditorControlPoint::paint(QPainter* painter,
         QTextStream labelStream(&label);
         labelStream.setRealNumberPrecision(3);
         labelStream << "a("
-                    << dataMap_.dataRange.x +
-                           dataPoint_->getPos().x * (dataMap_.dataRange.y - dataMap_.dataRange.x)
+                    << dataMap_.valueRange.x +
+                           dataPoint_->getPos().x * (dataMap_.valueRange.y - dataMap_.valueRange.x)
                     << ")=";
         labelStream << dataPoint_->getRGBA().a;
 
