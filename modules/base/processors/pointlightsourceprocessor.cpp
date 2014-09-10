@@ -127,10 +127,14 @@ PointLightSourceProcessor::PointLightInteractionHandler::PointLightInteractionHa
 }
 
 void PointLightSourceProcessor::PointLightInteractionHandler::invokeEvent(Event* event) {
+    if(event->hasBeenUsed())
+        return;
+
     GestureEvent* gestureEvent = dynamic_cast<GestureEvent*>(event);
     if (gestureEvent) {
         if(gestureEvent->type() == GestureEvent::PAN && gestureEvent->numFingers() == 2){
             setLightPosFromScreenCoords(gestureEvent->screenPosNormalized());
+            gestureEvent->markAsUsed();
             return;
         }
     }
@@ -139,6 +143,7 @@ void PointLightSourceProcessor::PointLightInteractionHandler::invokeEvent(Event*
         int button = mouseEvent->button();
         if (button == MouseEvent::MOUSE_BUTTON_MIDDLE) {
             setLightPosFromScreenCoords(mouseEvent->posNormalized());
+            mouseEvent->markAsUsed();
             return;
         } 
     } 
