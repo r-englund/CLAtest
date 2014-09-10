@@ -78,17 +78,17 @@ private:
     QRectF rect_;
 };
 
-IVW_QTWIDGETS_API bool operator==(const TransferFunctionControlPointConnection& lhs,
+bool operator==(const TransferFunctionControlPointConnection& lhs,
                                   const TransferFunctionControlPointConnection& rhs);
-IVW_QTWIDGETS_API bool operator!=(const TransferFunctionControlPointConnection& lhs,
+bool operator!=(const TransferFunctionControlPointConnection& lhs,
                                   const TransferFunctionControlPointConnection& rhs);
-IVW_QTWIDGETS_API bool operator<(const TransferFunctionControlPointConnection& lhs,
+bool operator<(const TransferFunctionControlPointConnection& lhs,
                                  const TransferFunctionControlPointConnection& rhs);
-IVW_QTWIDGETS_API bool operator>(const TransferFunctionControlPointConnection& lhs,
+bool operator>(const TransferFunctionControlPointConnection& lhs,
                                  const TransferFunctionControlPointConnection& rhs);
-IVW_QTWIDGETS_API bool operator<=(const TransferFunctionControlPointConnection& lhs,
+bool operator<=(const TransferFunctionControlPointConnection& lhs,
                                   const TransferFunctionControlPointConnection& rhs);
-IVW_QTWIDGETS_API bool operator>=(const TransferFunctionControlPointConnection& lhs,
+bool operator>=(const TransferFunctionControlPointConnection& lhs,
                                   const TransferFunctionControlPointConnection& rhs);
 
 }  // namespace

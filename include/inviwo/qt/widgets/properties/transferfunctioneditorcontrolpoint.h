@@ -101,17 +101,17 @@ private:
     QPointF currentPos_;
 };
 
-IVW_QTWIDGETS_API bool operator==(const TransferFunctionEditorControlPoint& lhs,
+bool operator==(const TransferFunctionEditorControlPoint& lhs,
                                   const TransferFunctionEditorControlPoint& rhs);
-IVW_QTWIDGETS_API bool operator!=(const TransferFunctionEditorControlPoint& lhs,
+bool operator!=(const TransferFunctionEditorControlPoint& lhs,
                                   const TransferFunctionEditorControlPoint& rhs);
-IVW_QTWIDGETS_API bool operator<(const TransferFunctionEditorControlPoint& lhs,
+bool operator<(const TransferFunctionEditorControlPoint& lhs,
                                  const TransferFunctionEditorControlPoint& rhs);
-IVW_QTWIDGETS_API bool operator>(const TransferFunctionEditorControlPoint& lhs,
+bool operator>(const TransferFunctionEditorControlPoint& lhs,
                                  const TransferFunctionEditorControlPoint& rhs);
-IVW_QTWIDGETS_API bool operator<=(const TransferFunctionEditorControlPoint& lhs,
+bool operator<=(const TransferFunctionEditorControlPoint& lhs,
                                   const TransferFunctionEditorControlPoint& rhs);
-IVW_QTWIDGETS_API bool operator>=(const TransferFunctionEditorControlPoint& lhs,
+bool operator>=(const TransferFunctionEditorControlPoint& lhs,
                                   const TransferFunctionEditorControlPoint& rhs);
 
 }  // namespace
