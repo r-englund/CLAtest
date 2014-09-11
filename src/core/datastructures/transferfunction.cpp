@@ -99,7 +99,7 @@ void TransferFunction::addPoint(const vec2& pos) {
         int leftNeighborID = 0;
         int rightNeighborID = 0;
 
-        for (int i = 0; i < points_.size(); i++)
+        for (int i = 0; i < static_cast<int>(points_.size()); i++)
             if (points_[i]->getPos().x <= pos.x)
                 leftNeighborID = i;
             else if (rightNeighborID == 0 && points_[i]->getPos().x > pos.x)
