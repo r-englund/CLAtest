@@ -42,10 +42,6 @@ DataGroupRepresentation::DataGroupRepresentation(const DataGroupRepresentation& 
 
 DataGroupRepresentation::~DataGroupRepresentation() { }
 
-std::string DataGroupRepresentation::getClassName() const {
-    return "DataGroupRepresentation";
-}
-
 DataGroupRepresentation& DataGroupRepresentation::operator=(const DataGroupRepresentation& that) {
     if (this != &that)
         DataRepresentation::operator=(that);

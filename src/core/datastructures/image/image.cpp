@@ -32,6 +32,7 @@
 
 #include <inviwo/core/datastructures/image/image.h>
 #include <inviwo/core/datastructures/image/imageram.h>
+#include <inviwo/core/datastructures/image/imagedisk.h>
 
 namespace inviwo {
 
@@ -124,13 +125,13 @@ Image::~Image() {
 std::string Image::getDataInfo() const{
     std::stringstream ss;
     ss << "<table border='0' cellspacing='0' cellpadding='0' style='border-color:white;white-space:pre;'>\n"
-       << "<tr><td style='color:#bbb;padding-right:8px;'>Type</td><td><nobr>" << "image (Color: " << colorLayers_.size()
-       << ", Depth: " << (getDepthLayer() ? "Yes" : "No")
-       << ", Picking: " << (getPickingLayer() ? "Yes" : "No") << ")" << "</nobr></td></tr>\n"
-
+       << "<tr><td style='color:#bbb;padding-right:8px;'>Type</td><td><nobr>" << "Image </nobr></td></tr>\n"
+       << "<tr><td style='color:#bbb;padding-right:8px;'>Color channels</td><td><nobr>" << colorLayers_.size() << "</nobr></td></tr>\n"
+       << "<tr><td style='color:#bbb;padding-right:8px;'>Depth</td><td><nobr>" << (getDepthLayer() ? "Yes" : "No") << "</nobr></td></tr>\n"
+       << "<tr><td style='color:#bbb;padding-right:8px;'>Picking</td><td><nobr>" << (getPickingLayer() ? "Yes" : "No") << "</nobr></td></tr>\n"
        << "<tr><td style='color:#bbb;padding-right:8px;'>Format</td><td><nobr>" << getDataFormat()->getString() << "</nobr></td></tr>\n"
-       << "<tr><td style='color:#bbb;padding-right:8px;'>Width</td><td><nobr>" << getDimension().x << "</nobr></td></tr>\n"
-       << "<tr><td style='color:#bbb;padding-right:8px;'>Height</td><td><nobr>" << getDimension().y << "</nobr></td></tr>\n"
+       << "<tr><td style='color:#bbb;padding-right:8px;'>Dimension</td><td><nobr>" << "(" << getDimension().x << ", "
+       << getDimension().y << ")" << "</nobr></td></tr>\n"
        << "</tr></table>\n";
     return ss.str();
 }
@@ -285,38 +286,42 @@ void Image::resize(uvec2 dimensions) {
 }
 
 void Image::resizeRepresentations(Image* targetImage, uvec2 targetDim) {
-    //targetImage->resize(targetDim);
+    // targetImage->resize(targetDim);
     std::vector<DataGroupRepresentation*>& targetRepresentations = targetImage->representations_;
 
     if (targetRepresentations.size()) {
-        //Avoid resize of ImageRAM and ImageDisk if we have another representation
+        // Avoid resize of ImageRAM and ImageDisk if we have another representation
         bool existsMoreThenDiskAndRAMRepresentation = false;
 
-        for (size_t j=0; j<targetRepresentations.size(); j++) {
-            if (targetRepresentations[j]->getClassName() != "ImageRAM" && targetRepresentations[j]->getClassName() != "ImageDisk")
+        for (size_t j = 0; j < targetRepresentations.size(); j++) {
+            if (!dynamic_cast<ImageRAM*>(targetRepresentations[j]) &&
+                !dynamic_cast<ImageDisk*>(targetRepresentations[j]))
                 existsMoreThenDiskAndRAMRepresentation = true;
         }
 
         ImageRepresentation* sourceImageRepresentation = 0;
         ImageRepresentation* targetImageRepresentation = 0;
 
-        for (size_t i=0; i<representations_.size(); i++) {
-            for (size_t j=0; j<targetRepresentations.size(); j++) {
-                if (representations_[i]->getClassName()==targetRepresentations[j]->getClassName()) {
-                    if (!existsMoreThenDiskAndRAMRepresentation || (targetRepresentations[j]->getClassName() != "ImageRAM"
-                            && targetRepresentations[j]->getClassName() != "ImageDisk")) {
-                        sourceImageRepresentation = static_cast<ImageRepresentation*>(representations_[i]);
+        for (size_t i = 0; i < representations_.size(); i++) {
+            for (size_t j = 0; j < targetRepresentations.size(); j++) {
+                if (typeid(*representations_[i]) == typeid(*targetRepresentations[j])) {
+                    if (!existsMoreThenDiskAndRAMRepresentation ||
+                        (!dynamic_cast<ImageRAM*>(targetRepresentations[j]) &&
+                         !dynamic_cast<ImageDisk*>(targetRepresentations[j]))) {
+                        sourceImageRepresentation =
+                            static_cast<ImageRepresentation*>(representations_[i]);
                         sourceImageRepresentation->update(false);
-                        targetImageRepresentation = static_cast<ImageRepresentation*>(targetRepresentations[j]);
+                        targetImageRepresentation =
+                            static_cast<ImageRepresentation*>(targetRepresentations[j]);
                         targetImageRepresentation->update(false);
-                        sourceImageRepresentation->copyAndResizeRepresentation(targetImageRepresentation);
+                        sourceImageRepresentation->copyAndResizeRepresentation(
+                            targetImageRepresentation);
                     }
                 }
             }
         }
-    }
-    else {
-        //If not representation exist, create ImageRAM one
+    } else {
+        // If not representation exist, create ImageRAM one
         const ImageRAM* imageRAM = this->getRepresentation<ImageRAM>();
         imageRAM->copyAndResizeRepresentation(targetImage->getEditableRepresentation<ImageRAM>());
     }

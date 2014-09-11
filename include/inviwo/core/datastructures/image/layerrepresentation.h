@@ -52,7 +52,6 @@ public:
     virtual LayerRepresentation* clone() const = 0;
     virtual ~LayerRepresentation();
 
-    virtual std::string getClassName() const { return "LayerRepresentation"; }
     virtual void performOperation(DataOperation*) const {};
     virtual void resize(uvec2 dimensions);
     virtual bool copyAndResizeLayer(DataRepresentation*) const = 0;

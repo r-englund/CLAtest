@@ -51,7 +51,6 @@ public:
     virtual void initialize() = 0;
     virtual void deinitialize() = 0;
 
-    virtual std::string getClassName() const;
     virtual void setDimension(uvec2 dimensions);
     virtual void resize(uvec2 dimensions) = 0;
     virtual bool copyAndResizeLayer(DataRepresentation*) const;

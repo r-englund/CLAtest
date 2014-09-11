@@ -50,7 +50,6 @@ public:
     virtual ~LayerDisk();
     virtual void initialize();
     virtual void deinitialize();
-    virtual std::string getClassName() const;
     virtual bool copyAndResizeLayer(DataRepresentation*) const;
     virtual void resize(uvec2);
     /**

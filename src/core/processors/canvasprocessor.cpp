@@ -232,13 +232,14 @@ void CanvasProcessor::performEvaluationAtNextShow() {
 void CanvasProcessor::performEvaluateRequest() {
     if (canvas_ && canvas_->getProcessorNetworkEvaluator()) {
         if (processorWidget_) {
-            if (processorWidget_->getVisibilityMetaData())
+            if (processorWidget_->getVisibilityMetaData()) {
                 notifyObserversRequestEvaluate(this);
-            else
+            } else {
                 performEvaluationAtNextShow();
-        }
-        else
+            }
+        } else {
             notifyObserversRequestEvaluate(this);
+        }
     }
 }
 

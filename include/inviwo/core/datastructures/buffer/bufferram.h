@@ -51,8 +51,6 @@ public:
     virtual void initialize();
     virtual void deinitialize();
 
-    virtual std::string getClassName() const { return "BufferRAM"; }
-
     virtual void setSize(size_t size);
 
     virtual void* getData() = 0;

@@ -168,11 +168,11 @@ void ProcessorWidgetQt::resizeEvent(QResizeEvent* event) {
 }
 
 void ProcessorWidgetQt::showEvent(QShowEvent* event) {
-    ProcessorWidget::show();
+    QWidget::showEvent(event);
 }
 
 void ProcessorWidgetQt::closeEvent(QCloseEvent* event) {
-    ProcessorWidget::hide();
+    QWidget::closeEvent(event);
 }
 
 void ProcessorWidgetQt::moveEvent(QMoveEvent* event) {

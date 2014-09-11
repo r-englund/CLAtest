@@ -53,10 +53,6 @@ DataRepresentation& DataRepresentation::operator=(const DataRepresentation& that
 
 DataRepresentation::~DataRepresentation() { }
 
-std::string DataRepresentation::getClassName() const {
-    return "DataRepresentation";
-}
-
 const DataFormatBase* DataRepresentation::getDataFormat() const {
     return dataFormatBase_;
 }

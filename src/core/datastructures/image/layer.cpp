@@ -130,7 +130,7 @@ void Layer::resizeRepresentations(Layer* targetLayer, uvec2 targetDim) {
                 for (int j=0; j<numberOfTargets; j++) {
                     targetRepresentation = static_cast<LayerRepresentation*>(targetRepresentations[j]);
 
-                    if (layerRepresentation->getClassName()==targetRepresentation->getClassName()) {
+                    if (typeid(*layerRepresentation)==typeid(*targetRepresentation)) {
                         if (layerRepresentation->copyAndResizeLayer(targetRepresentation)) {
                             targetLayer->setRepresentationAsValid(j);
                             targetLayer->lastValidRepresentation_ = targetRepresentations[j];

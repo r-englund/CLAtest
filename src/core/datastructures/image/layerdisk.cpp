@@ -70,10 +70,6 @@ void LayerDisk::initialize() {}
 
 void LayerDisk::deinitialize() {}
 
-std::string LayerDisk::getClassName() const {
-    return "LayerDisk";
-}
-
 bool LayerDisk::copyAndResizeLayer(DataRepresentation*) const {
     return false;
 }
