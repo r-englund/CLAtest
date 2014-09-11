@@ -45,7 +45,7 @@ public:
     MetaData(const MetaData& rhs);
     MetaData& operator=(const MetaData& that);
     virtual ~MetaData();
-    virtual std::string getClassName() const;
+    virtual std::string getClassIdentifier() const;
     virtual MetaData* clone() const;
     virtual void serialize(IvwSerializer& s) const;
     virtual void deserialize(IvwDeserializer& d);
@@ -65,7 +65,7 @@ public:
     MetaDataPrimitiveType(const MetaDataPrimitiveType& rhs);
     MetaDataPrimitiveType& operator=(const MetaDataPrimitiveType& that);
     virtual ~MetaDataPrimitiveType() {};
-    virtual std::string getClassName() const;
+    virtual std::string getClassIdentifier() const;
     virtual MetaDataPrimitiveType<T>* clone() const;
     virtual void serialize(IvwSerializer& s) const;
     virtual void deserialize(IvwDeserializer& d);
@@ -112,7 +112,7 @@ MetaDataPrimitiveType<T>& MetaDataPrimitiveType<T>::operator=(
 }
 
 template <typename T>
-std::string MetaDataPrimitiveType<T>::getClassName() const {
+std::string MetaDataPrimitiveType<T>::getClassIdentifier() const {
     std::ostringstream name;
     name << "MetaDataPrimitiveType<" << typeid(T).name() << ">";
     return name.str();
@@ -136,7 +136,7 @@ T MetaDataPrimitiveType<T>::get() const {
 template <typename T>
 void inviwo::MetaDataPrimitiveType<T>::serialize(IvwSerializer& s) const {
     s.serialize("MetaData", value_);
-    s.serialize(IvwSerializeConstants::TYPE_ATTRIBUTE, getClassName(), true);
+    s.serialize(IvwSerializeConstants::TYPE_ATTRIBUTE, getClassIdentifier(), true);
 }
 
 template <typename T>
@@ -152,7 +152,7 @@ void inviwo::MetaDataPrimitiveType<T>::deserialize(IvwDeserializer& d) {
         n##MetaData();\
         n##MetaData(t value);\
         virtual ~n##MetaData() {};\
-        virtual std::string getClassName() const;\
+        virtual std::string getClassIdentifier() const;\
         virtual n##MetaData* clone() const;\
     };
 #include <inviwo/core/metadata/metadatadefinefunc.h>
@@ -170,7 +170,7 @@ public:
     VectorMetaData<4,T>(Vector<4,T> value): MetaDataPrimitiveType<Vector<4,T> >(value) {};
     virtual ~VectorMetaData<4,T>() {};
 
-    virtual std::string getClassName() const {
+    virtual std::string getClassIdentifier() const {
         std::ostringstream name;
         name << "VectorMetaData<4, " << typeid(T).name() << ">";
         return name.str();
@@ -180,7 +180,7 @@ public:
     }
     virtual void serialize(IvwSerializer& s) const {
         s.serialize("MetaData", this->get().getGLM());
-        s.serialize(IvwSerializeConstants::TYPE_ATTRIBUTE, getClassName(), true);
+        s.serialize(IvwSerializeConstants::TYPE_ATTRIBUTE, getClassIdentifier(), true);
     };
     virtual void deserialize(IvwDeserializer& d)  {
         glm::detail::tvec4<T, glm::defaultp> u(0);
@@ -196,7 +196,7 @@ public:
     VectorMetaData<3,T>() : MetaDataPrimitiveType<Vector<3,T> >(Vector<3,T>(0)) {};
     VectorMetaData<3,T>(Vector<3,T> value): MetaDataPrimitiveType<Vector<3,T> >(value) {};
     virtual ~VectorMetaData<3,T>() {};
-    virtual std::string getClassName() const {
+    virtual std::string getClassIdentifier() const {
         std::ostringstream name;
         name << "VectorMetaData<3, " << typeid(T).name() << ">";
         return name.str();
@@ -206,7 +206,7 @@ public:
     };
     virtual void serialize(IvwSerializer& s) const {
         s.serialize("MetaData", this->get().getGLM());
-        s.serialize(IvwSerializeConstants::TYPE_ATTRIBUTE, getClassName(), true);
+        s.serialize(IvwSerializeConstants::TYPE_ATTRIBUTE, getClassIdentifier(), true);
     };
     virtual void deserialize(IvwDeserializer& d)  {
         glm::detail::tvec3<T, glm::defaultp> u(0);
@@ -221,7 +221,7 @@ public:
     VectorMetaData<2,T>() : MetaDataPrimitiveType<Vector<2,T> >(Vector<2,T>(0)) {};
     VectorMetaData<2,T>(Vector<2,T> value): MetaDataPrimitiveType<Vector<2,T> >(value) {};
     virtual ~VectorMetaData<2,T>() {};
-    virtual std::string getClassName() const {
+    virtual std::string getClassIdentifier() const {
         std::ostringstream name;
         name << "VectorMetaData<2, " << typeid(T).name() << ">";
         return name.str();
@@ -231,7 +231,7 @@ public:
     };
     virtual void serialize(IvwSerializer& s) const {
         s.serialize("MetaData", this->get().getGLM());
-        s.serialize(IvwSerializeConstants::TYPE_ATTRIBUTE, getClassName(), true);
+        s.serialize(IvwSerializeConstants::TYPE_ATTRIBUTE, getClassIdentifier(), true);
     };
     virtual void deserialize(IvwDeserializer& d)  {
         glm::detail::tvec2<T, glm::defaultp> u(0);
@@ -249,7 +249,7 @@ public:
     MatrixMetaData<4,T>() : MetaDataPrimitiveType<Matrix<4,T> >(Matrix<4,T>(0)) {};
     MatrixMetaData<4,T>(Matrix<4,T> value): MetaDataPrimitiveType<Matrix<4,T> >(value) {};
     virtual ~MatrixMetaData<4,T>() {};
-    virtual std::string getClassName() const {
+    virtual std::string getClassIdentifier() const {
         std::ostringstream name;
         name << "MatrixMetaData<4, " << typeid(T).name() << ">";
         return name.str();
@@ -259,7 +259,7 @@ public:
     };
     virtual void serialize(IvwSerializer& s) const {
         s.serialize("MetaData", this->get().getGLM());
-        s.serialize(IvwSerializeConstants::TYPE_ATTRIBUTE, getClassName(), true);
+        s.serialize(IvwSerializeConstants::TYPE_ATTRIBUTE, getClassIdentifier(), true);
     };
     virtual void deserialize(IvwDeserializer& d)  {
         glm::detail::tmat4x4<T, glm::defaultp> u(0);
@@ -273,7 +273,7 @@ public:
     MatrixMetaData<3,T>() : MetaDataPrimitiveType<Matrix<3,T> >(Matrix<3,T>(0)) {};
     MatrixMetaData<3,T>(Matrix<3,T> value): MetaDataPrimitiveType<Matrix<3,T> >(value) {};
     virtual ~MatrixMetaData<3,T>() {};
-    virtual std::string getClassName() const {
+    virtual std::string getClassIdentifier() const {
         std::ostringstream name;
         name << "MatrixMetaData<3, " << typeid(T).name() << ">";
         return name.str();
@@ -283,7 +283,7 @@ public:
     };
     virtual void serialize(IvwSerializer& s) const {
         s.serialize("MetaData", this->get().getGLM());
-        s.serialize(IvwSerializeConstants::TYPE_ATTRIBUTE, getClassName(), true);
+        s.serialize(IvwSerializeConstants::TYPE_ATTRIBUTE, getClassIdentifier(), true);
     };
     virtual void deserialize(IvwDeserializer& d)  {
         glm::detail::tmat3x3<T, glm::defaultp> u(0);
@@ -297,7 +297,7 @@ public:
     MatrixMetaData<2,T>() : MetaDataPrimitiveType<Matrix<2,T> >(Matrix<2,T>(0)) {};
     MatrixMetaData<2,T>(Matrix<2,T> value): MetaDataPrimitiveType<Matrix<2,T> >(value) {};
     virtual ~MatrixMetaData<2,T>() {};
-    virtual std::string getClassName() const {
+    virtual std::string getClassIdentifier() const {
         std::ostringstream name;
         name << "MatrixMetaData<2, " << typeid(T).name() << ">";
         return name.str();
@@ -307,7 +307,7 @@ public:
     };
     virtual void serialize(IvwSerializer& s) const {
         s.serialize("MetaData", this->get().getGLM());
-        s.serialize(IvwSerializeConstants::TYPE_ATTRIBUTE, getClassName(), true);
+        s.serialize(IvwSerializeConstants::TYPE_ATTRIBUTE, getClassIdentifier(), true);
     };
     virtual void deserialize(IvwDeserializer& d)  {
         glm::detail::tmat2x2<T, glm::defaultp> u(0);

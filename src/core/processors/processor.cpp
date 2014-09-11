@@ -292,7 +292,7 @@ MetaData* Processor::getMetaData(std::string className) {
     MetaData* meta = 0;
 
     for (size_t i=0; i<metaData_.size(); i++) {
-        if (metaData_[i]->getClassName()==className) {
+        if (metaData_[i]->getClassIdentifier()==className) {
             meta = metaData_[i];
             break;
         }

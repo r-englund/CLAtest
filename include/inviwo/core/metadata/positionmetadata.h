@@ -47,7 +47,7 @@ public:
     PositionMetaData(int x, int y);
     virtual ~PositionMetaData();
 
-    virtual std::string getClassName() const { return "PositionMetaData"; }
+    virtual std::string getClassIdentifier() const { return "PositionMetaData"; }
     virtual PositionMetaData* clone() const;
 
     virtual void serialize(IvwSerializer& s) const;

@@ -41,7 +41,7 @@ MetaData& MetaData::operator=(const MetaData& that) {
 }
 MetaData::~MetaData() {}
 
-std::string MetaData::getClassName() const {
+std::string MetaData::getClassIdentifier() const {
     return "MetaData";
 }
 
@@ -64,7 +64,7 @@ bool MetaData::equal(const MetaData& rhs) const {
 #define MetaDataMacro(n, t, d, v) \
     n##MetaData::n##MetaData() : MetaDataPrimitiveType<t>(d) {}; \
     n##MetaData::n##MetaData(t value) : MetaDataPrimitiveType<t>(value) {}; \
-    std::string n##MetaData::getClassName() const {std::stringstream s; s << #n; s << "MetaData"; return s.str(); }; \
+    std::string n##MetaData::getClassIdentifier() const {std::stringstream s; s << #n; s << "MetaData"; return s.str(); }; \
     n##MetaData* n##MetaData::clone() const { return new n##MetaData(*this); }; \
      
 #include <inviwo/core/metadata/metadatadefinefunc.h>

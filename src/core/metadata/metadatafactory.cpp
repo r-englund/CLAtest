@@ -43,8 +43,8 @@ MetaDataFactory::MetaDataFactory() {}
 MetaDataFactory::~MetaDataFactory() {}
 
 void MetaDataFactory::registerObject(MetaData* meta) {
-    if (metaDataClassMap_.find(meta->getClassName()) == metaDataClassMap_.end())
-        metaDataClassMap_.insert(std::make_pair(meta->getClassName(), meta));
+    if (metaDataClassMap_.find(meta->getClassIdentifier()) == metaDataClassMap_.end())
+        metaDataClassMap_.insert(std::make_pair(meta->getClassIdentifier(), meta));
 }
 
 IvwSerializable* MetaDataFactory::create(std::string className) const {

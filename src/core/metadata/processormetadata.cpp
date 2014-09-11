@@ -87,7 +87,7 @@ bool ProcessorMetaData::isSelected() {
 
 void ProcessorMetaData::serialize(IvwSerializer& s) const {
     //   CompositeMetaData::serialize(s);
-    s.serialize("type", getClassName(), true);
+    s.serialize("type", getClassIdentifier(), true);
     s.serialize("position", positionMetaData_.get());
     s.serialize("visibility", visiblityMetaData_.get());
     s.serialize("selection", selectionMetaData_.get());
