@@ -52,7 +52,6 @@ public:
     virtual DataRepresentation* clone() const = 0;
     virtual ~DataRepresentation();
 
-    virtual std::string getClassName() const;
     const DataFormatBase* getDataFormat() const;
     std::string getDataFormatString() const;
     DataFormatEnums::Id getDataFormatId() const;

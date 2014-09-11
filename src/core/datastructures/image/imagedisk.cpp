@@ -59,11 +59,6 @@ void ImageDisk::initialize() {
 
 void ImageDisk::deinitialize() {}
 
-
-std::string ImageDisk::getClassName() const {
-    return "ImageDisk";
-}
-
 bool ImageDisk::copyAndResizeRepresentation(DataRepresentation*) const {
     return false;
 }

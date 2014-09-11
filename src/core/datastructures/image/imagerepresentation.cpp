@@ -53,10 +53,6 @@ ImageRepresentation::~ImageRepresentation() {}
 
 void ImageRepresentation::performOperation(DataOperation*) const {}
 
-std::string ImageRepresentation::getClassName() const {
-    return "ImageRepresentation";
-}
-
 uvec2 ImageRepresentation::getDimension() const {
     return getOwner()->getDimension();
 }

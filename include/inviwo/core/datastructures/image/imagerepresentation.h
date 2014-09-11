@@ -52,7 +52,6 @@ public:
     virtual ~ImageRepresentation();
 
     virtual void performOperation(DataOperation*) const;
-    virtual std::string getClassName() const;
 
     uvec2 getDimension() const;
 

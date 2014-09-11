@@ -54,10 +54,6 @@ LayerRAM& LayerRAM::operator=(const LayerRAM& that) {
 LayerRAM::~LayerRAM() {
 }
 
-std::string LayerRAM::getClassName() const {
-    return "LayerRAM";
-}
-
 bool LayerRAM::copyAndResizeLayer(DataRepresentation* targetLayerRam) const {
     const LayerRAM* source = this;
     LayerRAM* target = dynamic_cast<LayerRAM*>(targetLayerRam);

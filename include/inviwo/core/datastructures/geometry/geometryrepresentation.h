@@ -45,7 +45,6 @@ public:
     GeometryRepresentation(const GeometryRepresentation& rhs);
     virtual ~GeometryRepresentation();
     virtual void performOperation(DataOperation*) const;
-    virtual std::string getClassName() const;
 
     virtual void initialize() = 0;
     virtual void deinitialize() = 0;

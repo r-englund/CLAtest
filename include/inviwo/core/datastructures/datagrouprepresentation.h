@@ -63,7 +63,6 @@ public:
     virtual DataGroupRepresentation* clone() const = 0;
     virtual ~DataGroupRepresentation();
 
-    virtual std::string getClassName() const;
     virtual void performOperation(DataOperation*) const = 0;
 
     void setAsInvalid();

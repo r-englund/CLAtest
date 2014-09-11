@@ -50,7 +50,6 @@ public:
     virtual void initialize();
     virtual void deinitialize();
 
-    virtual std::string getClassName() const;
     virtual bool copyAndResizeRepresentation(DataRepresentation*) const;
 
 protected:

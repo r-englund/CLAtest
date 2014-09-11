@@ -3,7 +3,7 @@
     <!-- Don't edit the following code -->
     <ProcessorNetworkVersion content="1" />
     <Processors>
-        <Processor type="org.inviwo.CanvasGL" identifier="CanvasGL" id="ref2">
+        <Processor type="org.inviwo.CanvasGL" identifier="CanvasGL" id="ref0">
             <MetaDataList>
                 <MetaData type="ProcessorMetaData">
                     <position x="-600" y="-275" />
@@ -11,7 +11,7 @@
                     <selection content="0" />
                 </MetaData>
                 <MetaData type="ProcessorWidgetMetaData">
-                    <position x="749" y="437" />
+                    <position x="757" y="467" />
                     <dimension x="256" y="256" />
                     <visibility content="1" />
                 </MetaData>
@@ -92,7 +92,7 @@
                 </Property>
             </Properties>
         </Processor>
-        <Processor type="org.inviwo.VolumeSlice" identifier="Slice" id="ref0">
+        <Processor type="org.inviwo.VolumeSliceGL" identifier="Volume Slice" id="ref2">
             <MetaDataList>
                 <MetaData type="ProcessorMetaData">
                     <position x="-600" y="-425" />
@@ -104,13 +104,89 @@
                 <InteractionHandler type="undefined" />
             </InteractonHandlers>
             <Properties>
+                <Property type="FloatProperty" identifier="alphaOffset" displayName="Alpha Offset" key="alphaOffset">
+                    <usageMode content="0" />
+                    <visible content="1" />
+                </Property>
+                <Property type="BoolProperty" identifier="flipHorizontal" displayName="Flip Horizontal View" key="flipHorizontal">
+                    <usageMode content="0" />
+                    <visible content="1" />
+                </Property>
+                <Property type="BoolProperty" identifier="flipVertical" displayName="Flip Vertical View" key="flipVertical">
+                    <usageMode content="0" />
+                    <visible content="1" />
+                </Property>
+                <Property type="BoolProperty" identifier="handleEvents" displayName="Handle interaction events" key="handleEvents">
+                    <usageMode content="0" />
+                    <visible content="1" />
+                </Property>
+                <Property type="FloatVec4Property" identifier="indicatorColor" displayName="Indicator Color" key="indicatorColor">
+                    <semantics semantics="Color" />
+                    <usageMode content="0" />
+                    <visible content="1" />
+                    <value x="1" y="0.80000001" z="0.098039217" w="0.80000001" />
+                </Property>
+                <Property type="BoolProperty" identifier="posPicking" displayName="Enable Picking" key="posPicking">
+                    <usageMode content="0" />
+                    <visible content="1" />
+                </Property>
+                <Property type="OptionPropertyFloat" identifier="rotation" displayName="Rotation (ccw)" key="rotation">
+                    <usageMode content="0" />
+                    <visible content="1" />
+                </Property>
+                <Property type="BoolProperty" identifier="showIndicator" displayName="Show Position Indicator" key="showIndicator">
+                    <usageMode content="0" />
+                    <visible content="1" />
+                    <readonly content="1" />
+                </Property>
                 <Property type="OptionPropertyInt" identifier="sliceAxis" displayName="Slice along axis" key="sliceAxis">
                     <usageMode content="0" />
                     <visible content="1" />
                 </Property>
-                <Property type="IntProperty" identifier="sliceNumber" displayName="Slice Number" key="sliceNumber">
+                <Property type="IntProperty" identifier="sliceX" displayName="X Volume Position" key="sliceX">
                     <usageMode content="0" />
                     <visible content="1" />
+                </Property>
+                <Property type="IntProperty" identifier="sliceY" displayName="Y Volume Position" key="sliceY">
+                    <usageMode content="0" />
+                    <visible content="1" />
+                    <readonly content="1" />
+                </Property>
+                <Property type="IntProperty" identifier="sliceZ" displayName="Z Volume Position" key="sliceZ">
+                    <usageMode content="0" />
+                    <visible content="1" />
+                    <readonly content="1" />
+                </Property>
+                <Property type="BoolProperty" identifier="tfMappingEnabled" displayName="Enable Transfer Function" key="tfMappingEnabled">
+                    <usageMode content="0" />
+                    <visible content="1" />
+                </Property>
+                <Property type="TransferFunctionProperty" identifier="transferFunction" displayName="Transfer function" key="transferFunction">
+                    <usageMode content="0" />
+                    <visible content="1" />
+                    <MetaDataList>
+                        <MetaData type="PropertyEditorWidgetMetaData">
+                            <position x="0" y="0" />
+                            <dimension x="256" y="256" />
+                            <visibility content="0" />
+                            <dockstatus content="DockedRight" />
+                        </MetaData>
+                    </MetaDataList>
+                    <transferFunction>
+                        <maskMin content="0" />
+                        <maskMax content="1" />
+                        <dataPoints>
+                            <point>
+                                <pos x="0" y="1" />
+                                <rgba x="0" y="0" z="0" w="1" />
+                            </point>
+                            <point>
+                                <pos x="1" y="1" />
+                                <rgba x="1" y="1" z="1" w="1" />
+                            </point>
+                        </dataPoints>
+                        <interpolationType_ content="0" />
+                    </transferFunction>
                 </Property>
             </Properties>
         </Processor>
@@ -121,12 +197,12 @@
                 <Processor type="org.inviwo.Background" identifier="Background" reference="ref1" />
             </OutPort>
             <InPort identifier="inport">
-                <Processor type="org.inviwo.CanvasGL" identifier="CanvasGL" reference="ref2" />
+                <Processor type="org.inviwo.CanvasGL" identifier="CanvasGL" reference="ref0" />
             </InPort>
         </Connection>
         <Connection>
             <OutPort identifier="image.outport">
-                <Processor type="org.inviwo.VolumeSlice" identifier="Slice" reference="ref0" />
+                <Processor type="org.inviwo.VolumeSliceGL" identifier="Volume Slice" reference="ref2" />
             </OutPort>
             <InPort identifier="inport">
                 <Processor type="org.inviwo.Background" identifier="Background" reference="ref1" />

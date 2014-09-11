@@ -55,6 +55,8 @@ public:
     
     T* getCurrent();
 
+    virtual std::string getDataInfo() const;
+
     size_t getNumSequences() const;
 
 protected:
@@ -62,6 +64,27 @@ protected:
     int currentIdx_;
 
 };
+
+template <typename T>
+std::string inviwo::DataSequence<T>::getDataInfo() const {
+
+    std::stringstream ss;
+    ss << "<table border='0' cellspacing='0' cellpadding='0' style='border-color:white;white-space:pre;'>\n"
+        << "<tr><td style='color:#bbb;padding-right:8px;'>Type</td><td><nobr>Data Sequence</nobr></td></tr>\n"
+        << "<tr><td style='color:#bbb;padding-right:8px;'>Size</td><td><nobr>" << sequenceContainer_.size() << "</nobr></td></tr>\n"
+        << "<tr><td style='color:#bbb;padding-right:8px;'>Current</td><td><nobr>" << currentIdx_ << "</nobr></td></tr>\n"
+        << "</table>\n"
+        << "<br/>\n"
+        << "<b>Element</b>\n";
+
+    const BaseData* data = dynamic_cast<const BaseData*>(sequenceContainer_[currentIdx_]);
+    if (data) {
+        ss << data->getDataInfo();
+    } else {
+        ss << "Not a BaseData Object";
+    }
+    return ss.str();
+}
 
 template <typename T>
 DataSequence<T>::DataSequence() : T(), currentIdx_(0) {}

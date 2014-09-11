@@ -55,8 +55,6 @@ public:
     virtual void performOperation(DataOperation*) const {};
     virtual void setSize(size_t size) {  size_ = size; }
 
-
-    virtual std::string getClassName() const { return "BufferRepresentation"; }
     /**
      * Return the number of elements in the buffer.
      *

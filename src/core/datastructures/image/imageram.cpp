@@ -67,10 +67,6 @@ void ImageRAM::initialize() {
 void ImageRAM::deinitialize() {
 }
 
-std::string ImageRAM::getClassName() const {
-    return "ImageRAM";
-}
-
 bool ImageRAM::copyAndResizeRepresentation(DataRepresentation* targetRep) const {
     const ImageRAM* source = this;
     ImageRAM* target = dynamic_cast<ImageRAM*>(targetRep);
