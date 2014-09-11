@@ -78,12 +78,15 @@ PointLightSourceProcessor::PointLightSourceProcessor()
 
 PointLightSourceProcessor::~PointLightSourceProcessor() {
     delete lightSource_;
+    removeInteractionHandler(lightInteractionHandler_);
+    delete lightInteractionHandler_;
     const std::vector<InteractionHandler*>& interactionHandlers = getInteractionHandlers();
     for(size_t i=0; i<interactionHandlers.size(); ++i) {
         InteractionHandler* handler = interactionHandlers[i];
         removeInteractionHandler(handler);
-        delete handler;
+        LogWarn("Interaction handler was not removed and deleted");
     }
+
 }
 
 void PointLightSourceProcessor::process() {
@@ -127,8 +130,8 @@ PointLightSourceProcessor::PointLightInteractionHandler::PointLightInteractionHa
 }
 
 void PointLightSourceProcessor::PointLightInteractionHandler::invokeEvent(Event* event) {
-    if(event->hasBeenUsed())
-        return;
+    //if(event->hasBeenUsed())
+    //    return;
 
     GestureEvent* gestureEvent = dynamic_cast<GestureEvent*>(event);
     if (gestureEvent) {
