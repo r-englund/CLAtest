@@ -53,7 +53,7 @@ public:
 
     inline KeyboardEvent::KeyState state() const { return state_; }
 
-    virtual std::string getClassName() const { return "KeyboardEvent"; }
+    virtual std::string getClassIdentifier() const { return "KeyboardEvent"; }
     virtual void serialize(IvwSerializer& s) const;
     virtual void deserialize(IvwDeserializer& d);
 

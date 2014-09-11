@@ -39,7 +39,7 @@ DialogFactoryObject::DialogFactoryObject(const std::string& className)
     : className_(className) {
 }
 
-std::string DialogFactoryObject::getClassName() const {
+std::string DialogFactoryObject::getClassIdentifier() const {
     return className_;
 }
 

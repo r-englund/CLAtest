@@ -38,7 +38,7 @@ InteractionHandler::InteractionHandler() : EventListener() {}
 InteractionHandler::~InteractionHandler() {}
 
 void InteractionHandler::serialize(IvwSerializer& s) const {
-    s.serialize("type", getClassName(), true);
+    s.serialize("type", getClassIdentifier(), true);
 }
 
 void InteractionHandler::deserialize(IvwDeserializer& d) {

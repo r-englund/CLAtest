@@ -69,7 +69,7 @@ public:
     virtual void serialize(IvwSerializer& s) const;
     virtual void deserialize(IvwDeserializer& d);
 
-    std::string getClassName()  const { return "EventProperty"; }
+    std::string getClassIdentifier()  const { return "EventProperty"; }
 
     InteractionEvent* getEvent() const { return event_; }
     Action* getAction() const { return action_; }

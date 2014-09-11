@@ -43,7 +43,7 @@ PropertyWidgetFactory::~PropertyWidgetFactory() {}
 
 
 void PropertyWidgetFactory::registerObject(PropertyWidgetFactoryObject* propertyWidget) {
-    std::string className = propertyWidget->getClassName();
+    std::string className = propertyWidget->getClassIdentifier();
     PropertySemantics sematics = propertyWidget->getSematics();
     std::pair<WidgetMap::const_iterator, WidgetMap::const_iterator> sameKeys;
     sameKeys = widgetMap_.equal_range(className);
@@ -61,7 +61,7 @@ void PropertyWidgetFactory::registerObject(PropertyWidgetFactoryObject* property
 PropertyWidget* PropertyWidgetFactory::create(Property* property) {
     PropertySemantics sematics = property->getSemantics();
     std::pair<WidgetMap::const_iterator, WidgetMap::const_iterator> sameKeys;
-    sameKeys = widgetMap_.equal_range(property->getClassName());
+    sameKeys = widgetMap_.equal_range(property->getClassIdentifier());
 
     for (WidgetMap::const_iterator it = sameKeys.first; it != sameKeys.second; ++it) {
         if (sematics == it->second->getSematics())
@@ -71,12 +71,12 @@ PropertyWidget* PropertyWidgetFactory::create(Property* property) {
     for (WidgetMap::const_iterator it = sameKeys.first; it != sameKeys.second; ++it) {
         if (PropertySemantics::Default == it->second->getSematics()) {
             LogWarn("Requested property widget semantics ("<< sematics <<") for property ("
-                    <<property->getClassName()<<") does not exist, returning default semantics.");
+                    <<property->getClassIdentifier()<<") does not exist, returning default semantics.");
             return it->second->create(property);
         }
     }
 
-    LogWarn("Can not find a property widget for property: " << property->getClassName() << "("<< sematics <<")");
+    LogWarn("Can not find a property widget for property: " << property->getClassIdentifier() << "("<< sematics <<")");
     return 0;
 }
 
@@ -96,7 +96,7 @@ bool PropertyWidgetFactory::isValidType(std::string className) const {
 
 std::vector<PropertySemantics> PropertyWidgetFactory::getSupportedSemanicsForProperty(Property* property) {
     std::pair<WidgetMap::const_iterator, WidgetMap::const_iterator> sameKeys;
-    sameKeys = widgetMap_.equal_range(property->getClassName());
+    sameKeys = widgetMap_.equal_range(property->getClassIdentifier());
     std::vector<PropertySemantics> semantics;
 
     for (WidgetMap::const_iterator it = sameKeys.first; it != sameKeys.second; ++it)

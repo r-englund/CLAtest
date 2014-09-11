@@ -65,7 +65,7 @@ public:
     virtual void setCurrentStateAsDefault();
     virtual void resetToDefaultState();
 
-    virtual std::string getClassName() const;
+    virtual std::string getClassIdentifier() const;
 
     virtual Variant getVariant();
     virtual void setVariant(const Variant& v);
@@ -116,7 +116,7 @@ typedef OrdinalProperty<dmat4> DoubleMat4Property;
 
 
 template<typename T>
-std::string OrdinalProperty<T>::getClassName() const {
+std::string OrdinalProperty<T>::getClassIdentifier() const {
     std::stringstream ss;
     ss << Defaultvalues<T>::getName() << "Property";
     return ss.str();

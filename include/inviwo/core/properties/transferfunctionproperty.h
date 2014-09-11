@@ -56,7 +56,7 @@ public:
         
     ~TransferFunctionProperty();
 
-    virtual std::string getClassName()  const { return "TransferFunctionProperty"; }
+    virtual std::string getClassIdentifier()  const { return "TransferFunctionProperty"; }
 
     const vec2 getMask() const;
     void setMask(float maskMin, float maskMax);

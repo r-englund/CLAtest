@@ -52,7 +52,6 @@ public:
                cl_mem_flags readWriteFlag = CL_MEM_READ_WRITE);
     ElementBufferCLGL(const ElementBufferCLGL& rhs);
     virtual ~ElementBufferCLGL();
-    virtual std::string getClassName() const { return "ElementBufferCLGL"; }
 
 protected:
 

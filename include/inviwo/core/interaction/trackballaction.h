@@ -61,7 +61,7 @@ public:
     TrackballAction(TrackballAction::Actions action);
     ~TrackballAction();
 
-    virtual std::string getClassName() const { return "TrackballAction"; }
+    virtual std::string getClassIdentifier() const { return "TrackballAction"; }
 
     virtual void serialize(IvwSerializer& s) const;
     virtual void deserialize(IvwDeserializer& d);

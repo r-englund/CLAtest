@@ -90,7 +90,7 @@ public:
     Processor* getProcessor() const;
     std::string getIdentifier() const;
 
-    virtual std::string getClassName() const = 0;
+    virtual std::string getClassIdentifier() const = 0;
     virtual std::string getContentInfo() const = 0;
 
     virtual bool isConnected() const = 0;

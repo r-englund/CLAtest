@@ -77,7 +77,7 @@ PyObject* py_setCameraFocus(PyObject* /*self*/, PyObject* args) {
         return 0;
     }
 
-    const std::string className = theProperty->getClassName();
+    const std::string className = theProperty->getClassIdentifier();
 
     if (className == "CameraProperty") {
         vec3 focus;
@@ -127,7 +127,7 @@ PyObject* py_setCameraUp(PyObject* /*self*/, PyObject* args) {
         return 0;
     }
 
-    const std::string className = theProperty->getClassName();
+    const std::string className = theProperty->getClassIdentifier();
 
     if (className == "CameraProperty") {
         vec3 up;
@@ -178,7 +178,7 @@ PyObject* py_setCameraPos(PyObject* /*self*/, PyObject* args) {
         return 0;
     }
 
-    const std::string className = theProperty->getClassName();
+    const std::string className = theProperty->getClassIdentifier();
 
     if (className == "CameraProperty") {
         vec3 from;

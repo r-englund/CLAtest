@@ -40,7 +40,7 @@ PortFactory::~PortFactory() {}
 
 
 void PortFactory::registeryObject(PortFactoryObject* port) {
-    std::string className = port->getClassName();
+    std::string className = port->getClassIdentifier();
     PortClassMap::const_iterator it = portClassMap_.find(className);
 
     if (it == portClassMap_.end())

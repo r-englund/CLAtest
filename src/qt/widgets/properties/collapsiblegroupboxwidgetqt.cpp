@@ -153,7 +153,7 @@ void CollapsibleGroupBoxWidgetQt::addProperty(Property* prop) {
         
         propertyWidget->hideWidget();
     } else {
-        LogWarn("Could not find a widget for property: " << prop->getClassName());
+        LogWarn("Could not find a widget for property: " << prop->getClassIdentifier());
     }
 }
 
@@ -365,7 +365,7 @@ void CollapsibleGroupBoxWidgetQt::updatePropertyWidgetSemantics(PropertyWidgetQt
             
             
         } else {
-            LogWarn("Could not change semantic for property: " << prop->getClassName());
+            LogWarn("Could not change semantic for property: " << prop->getClassIdentifier());
         }
         
         
@@ -390,7 +390,7 @@ void CollapsibleGroupBoxWidgetQt::onDidAddProperty(Property* prop, size_t index)
         
         updateVisibility();
     } else {
-        LogWarn("Could not find a widget for property: " << prop->getClassName());
+        LogWarn("Could not find a widget for property: " << prop->getClassIdentifier());
     }
 
 }

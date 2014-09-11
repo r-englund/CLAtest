@@ -63,7 +63,7 @@ public:
     virtual int getVariantType();
     virtual void serialize(IvwSerializer& s) const;
     virtual void deserialize(IvwDeserializer& d);
-    virtual std::string getClassName() const { return "DirectoryProperty"; }
+    virtual std::string getClassIdentifier() const { return "DirectoryProperty"; }
     virtual void registerFileIndexingHandle(IntProperty* indexHandle) {
         // TODO: use composite property if possible.
         fileIndexingHandle_ = indexHandle;

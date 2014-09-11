@@ -46,7 +46,7 @@ public:
 
     virtual Port* create(std::string identifier) = 0;
 
-    std::string getClassName() const;
+    std::string getClassIdentifier() const;
 
 private:
     std::string className_;

@@ -43,7 +43,7 @@ PropertyFactory::~PropertyFactory() {}
 
 
 void PropertyFactory::registeryObject(PropertyFactoryObject* property) {
-    std::string className = property->getClassName();
+    std::string className = property->getClassIdentifier();
     PropertyClassMap::const_iterator it = propertyClassMap_.find(className);
 
     if (it == propertyClassMap_.end())

@@ -77,7 +77,7 @@ public:
      */
     virtual void pressButton() { propertyModified(); }
 
-    virtual std::string getClassName()  const {
+    virtual std::string getClassIdentifier()  const {
         return "ButtonProperty";
     }
 

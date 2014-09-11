@@ -54,7 +54,6 @@ public:
     void initialize();
     void deinitialize();
     virtual ImageGL* clone() const;
-    virtual std::string getClassName() const { return "ImageGL"; }
 
     void reAttachAllLayers(bool clearLayers = false);
 

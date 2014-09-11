@@ -234,7 +234,7 @@ MetaData* Property::getMetaData(std::string className) {
 }
 
 void Property::serialize(IvwSerializer& s) const {
-    s.serialize("type", getClassName(), true);
+    s.serialize("type", getClassIdentifier(), true);
     s.serialize("identifier", identifier_, true);
     s.serialize("displayName", displayName_, true);
     if (semantics_ != PropertySemantics::Default) {

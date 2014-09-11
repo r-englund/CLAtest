@@ -39,7 +39,7 @@ PropertyFactoryObject::PropertyFactoryObject(const std::string& className)
 
 PropertyFactoryObject::~PropertyFactoryObject() {}
 
-std::string PropertyFactoryObject::getClassName() const {
+std::string PropertyFactoryObject::getClassIdentifier() const {
     return className_;
 }
 

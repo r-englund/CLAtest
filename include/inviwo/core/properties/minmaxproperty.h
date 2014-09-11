@@ -69,7 +69,7 @@ public:
 
     void setRange(const glm::detail::tvec2<T, glm::defaultp>& value);
 
-    virtual std::string getClassName() const;
+    virtual std::string getClassIdentifier() const;
 
     virtual Variant getVariant();
     virtual void setVariant(const Variant& v);
@@ -98,7 +98,7 @@ typedef MinMaxProperty<double> DoubleMinMaxProperty;
 typedef MinMaxProperty<int> IntMinMaxProperty;
 
 template <typename T>
-std::string MinMaxProperty<T>::getClassName() const {
+std::string MinMaxProperty<T>::getClassIdentifier() const {
     std::stringstream ss;
     ss << Defaultvalues<T>::getName() << "MinMaxProperty";
     return ss.str();

@@ -52,8 +52,6 @@ public:
     virtual ~VolumeGL();
     virtual VolumeGL* clone() const;
 
-    virtual std::string getClassName() const { return "VolumeGL"; }
-
     void bindTexture(GLenum texUnit) const;
     void unbindTexture() const;
 

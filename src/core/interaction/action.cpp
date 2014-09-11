@@ -38,7 +38,7 @@ Action::Action() {};
 Action::~Action() {};
 
 void Action::serialize(IvwSerializer& s) const {
-    s.serialize("type", getClassName(), true);
+    s.serialize("type", getClassIdentifier(), true);
 }
 
 void Action::deserialize(IvwDeserializer& d) {

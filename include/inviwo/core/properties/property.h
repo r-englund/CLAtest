@@ -76,7 +76,7 @@ public:
     Property();
     virtual ~Property();
 
-    virtual std::string getClassName()  const { return "undefined"; }
+    virtual std::string getClassIdentifier()  const { return "undefined"; }
 
     virtual std::string getIdentifier() const;
     virtual void setIdentifier(const std::string& identifier);

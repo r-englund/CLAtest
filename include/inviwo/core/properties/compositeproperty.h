@@ -50,7 +50,7 @@ public:
     virtual ~CompositeProperty();
 
     virtual void setOwner(PropertyOwner* owner);
-    virtual std::string getClassName()  const { return "CompositeProperty"; }
+    virtual std::string getClassIdentifier()  const { return "CompositeProperty"; }
 
     virtual bool getReadOnly() const; // returns true if all sub properties are read only
     virtual void setReadOnly(const bool& value);

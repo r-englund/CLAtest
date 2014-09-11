@@ -43,7 +43,7 @@ InteractionEvent::InteractionEvent() {
 InteractionEvent::~InteractionEvent() {}
 
 void InteractionEvent::serialize(IvwSerializer& s) const {
-    s.serialize("type", getClassName(), true);
+    s.serialize("type", getClassIdentifier(), true);
     s.serialize("modifier", modifierName_);
 }
 

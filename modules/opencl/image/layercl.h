@@ -48,7 +48,6 @@ public:
             const void* data = NULL);
     LayerCL(const LayerCL& other);
     virtual ~LayerCL();
-    virtual std::string getClassName() const { return "LayerCL"; }
     virtual void initialize() {};
     virtual void deinitialize();
     virtual LayerCL* clone() const;

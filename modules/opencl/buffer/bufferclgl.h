@@ -51,7 +51,6 @@ public:
                cl_mem_flags readWriteFlag = CL_MEM_READ_WRITE);
     BufferCLGL(const BufferCLGL& rhs);
     virtual ~BufferCLGL();
-    virtual std::string getClassName() const { return "BufferCLGL"; }
     virtual void initialize() {};
     virtual void deinitialize();
     virtual BufferCLGL* clone() const;

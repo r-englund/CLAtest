@@ -7,7 +7,7 @@ DialogFactory::DialogFactory() {}
 DialogFactory::~DialogFactory() {}
 
 void DialogFactory::registerObject(DialogFactoryObject* dialog) {
-    std::string className = dialog->getClassName();
+    std::string className = dialog->getClassIdentifier();
 
     if (map_.find(className) != map_.end()) {
         LogWarn("Dialog already registed: " << className);

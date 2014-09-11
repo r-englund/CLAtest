@@ -35,7 +35,7 @@
 namespace inviwo {
 
 bool SimpleCondition::canLink(Property* src, Property* dst, bool compareVariantType) {
-    if (src->getClassName() == dst->getClassName()) return true;
+    if (src->getClassIdentifier() == dst->getClassIdentifier()) return true;
 
     if (compareVariantType == true)
         return Variant::canConvert(src->getVariantType(), dst->getVariantType());
@@ -50,9 +50,9 @@ bool PartiallyMatchingIdCondition::canLink(Property* src, Property* dst) {
     std::transform(srcIdentifier.begin(), srcIdentifier.end(), srcIdentifier.begin(), tolower);
     std::string dstIdentifier = dst->getIdentifier();
     std::transform(dstIdentifier.begin(), dstIdentifier.end(), dstIdentifier.begin(), tolower);
-    std::string srcClassName = src->getClassName();
+    std::string srcClassName = src->getClassIdentifier();
     std::transform(srcClassName.begin(), srcClassName.end(), srcClassName.begin(), tolower);
-    std::string dstClassName = dst->getClassName();
+    std::string dstClassName = dst->getClassIdentifier();
     std::transform(dstClassName.begin(), dstClassName.end(), dstClassName.begin(), tolower);
 
     //does class name occurs in identifiers
