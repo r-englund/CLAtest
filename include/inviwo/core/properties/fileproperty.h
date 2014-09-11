@@ -69,7 +69,7 @@ public:
     virtual int getVariantType();
     virtual void serialize(IvwSerializer& s) const;
     virtual void deserialize(IvwDeserializer& d);
-    virtual std::string getClassName() const { return "FileProperty"; }
+    virtual std::string getClassIdentifier() const { return "FileProperty"; }
 
     virtual void addNameFilter(std::string);
     virtual void clearNameFilters();

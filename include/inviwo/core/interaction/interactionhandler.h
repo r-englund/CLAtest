@@ -45,7 +45,7 @@ public:
     InteractionHandler();
     virtual ~InteractionHandler();
 
-    virtual std::string getClassName() const { return "undefined"; }
+    virtual std::string getClassIdentifier() const { return "undefined"; }
 
     void serialize(IvwSerializer& s) const;
     void deserialize(IvwDeserializer& d);

@@ -69,7 +69,7 @@ public:
                         PropertyOwner::InvalidationLevel invalidationLevel=PropertyOwner::INVALID_OUTPUT,
                         PropertySemantics semantics = PropertySemantics::Default);
 
-    virtual std::string getClassName()  const { return "ImageEditorProperty"; }
+    virtual std::string getClassIdentifier()  const { return "ImageEditorProperty"; }
     void addLabel(vec2 start, vec2 end, std::string name="");
     void setDimension(ivec2 imgSize);
     std::vector<ImageLabel*> getLabels() const;

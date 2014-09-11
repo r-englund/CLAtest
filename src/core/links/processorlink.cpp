@@ -54,7 +54,7 @@ void ProcessorLink::autoLinkPropertiesByType() {
     LinkEvaluator leval;
 
     for (size_t i=0; i<srcProperties.size(); i++) {
-        dstProperty = inProcessor->getPropertyByIdentifier(srcProperties[i]->getClassName());
+        dstProperty = inProcessor->getPropertyByIdentifier(srcProperties[i]->getClassIdentifier());
 
         if (dstProperty) leval.evaluate(srcProperties[i], dstProperty);
     }

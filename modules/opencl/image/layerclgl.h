@@ -58,7 +58,6 @@ public:
     virtual ~LayerCLGL();
     LayerCLGL(const LayerCLGL& rhs);
 
-    virtual std::string getClassName() const { return "LayerCLGL"; }
     virtual void initialize() {};
     virtual void deinitialize();
     virtual LayerCLGL* clone() const;

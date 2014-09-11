@@ -47,7 +47,7 @@ public:
     virtual Property* create(std::string identifier,
                              std::string displayName) = 0;
 
-    std::string getClassName() const;
+    std::string getClassIdentifier() const;
 
 private:
     std::string className_;

@@ -64,7 +64,7 @@ void LinkSettings::initialize() {
 void LinkSettings::deinitialize()  {}
 
 bool LinkSettings::isLinkable(Property* property)  {
-    Property* prop = getPropertyByIdentifier("link-" + property->getClassName());
+    Property* prop = getPropertyByIdentifier("link-" + property->getClassIdentifier());
 
     if (prop) {
         BoolProperty* linkOption = dynamic_cast<BoolProperty*>(prop);

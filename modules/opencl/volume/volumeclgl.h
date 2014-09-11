@@ -51,7 +51,6 @@ public:
 
     virtual VolumeCLGL* clone() const;
     virtual ~VolumeCLGL();
-    virtual std::string getClassName() const { return "VolumeCLGL"; }
     virtual void initialize() {};
     virtual void deinitialize();
 

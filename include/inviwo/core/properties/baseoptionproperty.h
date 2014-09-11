@@ -71,7 +71,7 @@ public:
     virtual bool isSelectedIdentifier(std::string identifier) const = 0;
     virtual bool isSelectedDisplayName(std::string name) const = 0;
 
-    virtual std::string getClassName() const { return "BaseOptionProperty"; }
+    virtual std::string getClassIdentifier() const { return "BaseOptionProperty"; }
     virtual void set(const Property* srcProperty) {
         const BaseOptionProperty* optionSrcProp = dynamic_cast<const BaseOptionProperty*>(srcProperty);
 
@@ -254,7 +254,7 @@ public:
         : BaseTemplateOptionProperty<T>(identifier, displayName, invalidationLevel, semantics) {
     }
 
-    virtual std::string getClassName() const {
+    virtual std::string getClassIdentifier() const {
         return "OptionProperty" + Defaultvalues<T>::getName();
     }
 };
@@ -275,7 +275,7 @@ public:
     virtual void addOption(std::string identifier, std::string displayName) {
         BaseTemplateOptionProperty<std::string>::addOption(identifier, displayName, identifier);
     }
-    virtual std::string getClassName() const {
+    virtual std::string getClassIdentifier() const {
         return "OptionPropertyString";
     }
 };

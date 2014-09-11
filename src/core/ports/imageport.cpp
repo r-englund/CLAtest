@@ -157,7 +157,7 @@ std::string ImageInport::getContentInfo() const {
     if (hasData())
         return getData()->getDataInfo();
     else
-        return getClassName() + " has no data.";
+        return getClassIdentifier() + " has no data.";
 }
 
 ////////////////////////////// ImageOutport ////////////////////////////////////////////

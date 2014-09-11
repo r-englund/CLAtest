@@ -40,7 +40,7 @@ PropertyWidgetFactoryObject::PropertyWidgetFactoryObject(const std::string& clas
 
 PropertyWidgetFactoryObject::~PropertyWidgetFactoryObject() {}
 
-std::string PropertyWidgetFactoryObject::getClassName() const {
+std::string PropertyWidgetFactoryObject::getClassIdentifier() const {
     return className_;
 }
 

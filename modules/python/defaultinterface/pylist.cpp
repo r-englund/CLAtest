@@ -73,7 +73,7 @@ PyObject* py_listProperties(PyObject* /*self*/, PyObject* args) {
 
         for (std::vector<Property*>::const_iterator p = props.begin(); p != props.end(); ++p) {
             std::string name = (*p)->getIdentifier();
-            std::string type  = (*p)->getClassName();
+            std::string type  = (*p)->getClassIdentifier();
             PyRun_SimpleString(("print \""+ name + " : "+ type + "\"").c_str());
         }
     }

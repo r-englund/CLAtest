@@ -47,7 +47,6 @@ public:
     ImageCL();
     ImageCL(const ImageCL& other);
     virtual ~ImageCL();
-    virtual std::string getClassName() const { return "ImageCL"; }
     virtual ImageCL* clone() const;
     virtual void initialize();
     virtual void deinitialize();

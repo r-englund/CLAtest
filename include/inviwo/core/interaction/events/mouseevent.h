@@ -81,7 +81,7 @@ public:
 
     void modify(ivec2, uvec2);
 
-    virtual std::string getClassName() const { return "MouseEvent"; }
+    virtual std::string getClassIdentifier() const { return "MouseEvent"; }
 
     virtual void serialize(IvwSerializer& s) const;
     virtual void deserialize(IvwDeserializer& d);

@@ -39,7 +39,7 @@ PortFactoryObject::PortFactoryObject(const std::string& className)
 
 PortFactoryObject::~PortFactoryObject() {}
 
-std::string PortFactoryObject::getClassName() const {
+std::string PortFactoryObject::getClassIdentifier() const {
     return className_;
 }
 

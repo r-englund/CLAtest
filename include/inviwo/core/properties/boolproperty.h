@@ -56,7 +56,7 @@ public:
                  PropertyOwner::InvalidationLevel invalidationLevel=PropertyOwner::INVALID_OUTPUT,
                  PropertySemantics semantics = PropertySemantics::Default);
 
-    virtual std::string getClassName()  const { return "BoolProperty"; }
+    virtual std::string getClassIdentifier()  const { return "BoolProperty"; }
     
     virtual Variant getVariant();
     virtual void setVariant(const Variant&);

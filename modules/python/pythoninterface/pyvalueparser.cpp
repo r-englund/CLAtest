@@ -338,7 +338,7 @@ PyObject* PyValueParser::toPyObject(std::string str) {
 }
 
 void PyValueParser::setProperty(Property* p, PyObject* args) {
-    std::string className = p->getClassName();
+    std::string className = p->getClassIdentifier();
 
     if (className == "BoolProperty")
         static_cast<BoolProperty*>(p)->set(parse<bool>(args));
@@ -468,7 +468,7 @@ PyObject* PyValueParser::getProperty(Property* p) {
 
         return Py_BuildValue("(fff)(fff)(fff)",from.x,from.y,from.z,to.x,to.y,to.z,up.x,up.y,up.z);
     }   
-    std::string msg = std::string("Could create a python value of property  ") + p->getIdentifier() + " which is of type " + p->getClassName();
+    std::string msg = std::string("Could create a python value of property  ") + p->getIdentifier() + " which is of type " + p->getClassIdentifier();
     PyErr_SetString(PyExc_TypeError, msg.c_str());
     return 0;
 }

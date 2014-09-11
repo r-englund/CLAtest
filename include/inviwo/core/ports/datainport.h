@@ -126,7 +126,7 @@ std::string DataInport<T>::getContentInfo() const {
             return "Not a BaseData Object";
         }
     } else {
-        return getClassName() + " has no data.";
+        return getClassIdentifier() + " has no data.";
     }
 }
 

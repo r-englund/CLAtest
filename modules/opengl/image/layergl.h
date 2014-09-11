@@ -51,8 +51,6 @@ public:
     virtual ~LayerGL();
     virtual LayerGL* clone() const;
 
-    virtual std::string getClassName() const { return "LayerGL"; }
-
     virtual void setDimension(uvec2 dimensions) { resize(dimensions); }
 
     void bindTexture(GLenum texUnit) const;

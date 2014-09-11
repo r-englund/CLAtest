@@ -137,7 +137,7 @@ PyObject* py_saveTransferFunction(PyObject* /*self*/, PyObject* args) {
 
     if (!tf) {
         std::string msg = std::string("saveTransferFunction() no transfer function property with id: ") + propertyID + ", ("+propertyID
-                          +" is of type "+ theProperty->getClassName() +  ")";
+                          +" is of type "+ theProperty->getClassIdentifier() +  ")";
         PyErr_SetString(PyExc_TypeError, msg.c_str());
         return 0;
     }
@@ -180,7 +180,7 @@ PyObject* py_loadTransferFunction(PyObject* /*self*/, PyObject* args) {
 
     if (!tf) {
         std::string msg = std::string("loadTransferFunction() no transfer function property with id: ") + propertyID + ", ("+propertyID
-                          +" is of type "+ theProperty->getClassName() +  ")";
+                          +" is of type "+ theProperty->getClassIdentifier() +  ")";
         PyErr_SetString(PyExc_TypeError, msg.c_str());
         return 0;
     }
@@ -231,7 +231,7 @@ PyObject* py_clearTransferfunction(PyObject* /*self*/, PyObject* args) {
 
     if (!tf) {
         std::string msg = std::string("clearTransferfunction() no transfer function property with id: ") + propertyID + ", ("+propertyID
-                          +" is of type "+ theProperty->getClassName() +  ")";
+                          +" is of type "+ theProperty->getClassIdentifier() +  ")";
         PyErr_SetString(PyExc_TypeError, msg.c_str());
         return 0;
     }
@@ -271,7 +271,7 @@ PyObject* py_addPointTransferFunction(PyObject* /*self*/, PyObject* args) {
 
     if (!tf) {
         std::string msg = std::string("addPointToTransferFunction() no transfer function property with id: ") + propertyID + ", ("+propertyID
-                          +" is of type "+ theProperty->getClassName() +  ")";
+                          +" is of type "+ theProperty->getClassIdentifier() +  ")";
         PyErr_SetString(PyExc_TypeError, msg.c_str());
         return 0;
     }

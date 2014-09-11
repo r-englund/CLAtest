@@ -494,7 +494,7 @@ bool NetworkEditor::addPortInspector(std::string processorIdentifier, std::strin
     if (!port) return false;
 
     PortInspector* portInspector =
-        PortInspectorFactory::getPtr()->getPortInspectorForPortClass(port->getClassName());
+        PortInspectorFactory::getPtr()->getPortInspectorForPortClass(port->getClassIdentifier());
 
     if (portInspector && !portInspector->isActive()) {
         portInspector->setActive(true);
@@ -608,7 +608,7 @@ bool NetworkEditor::addPortInspector(std::string processorIdentifier, std::strin
 
 std::vector<unsigned char>* NetworkEditor::renderPortInspectorImage(Port* port, std::string type) {
     PortInspector* portInspector =
-        PortInspectorFactory::getPtr()->getPortInspectorForPortClass(port->getClassName());
+        PortInspectorFactory::getPtr()->getPortInspectorForPortClass(port->getClassIdentifier());
 
     ProcessorNetwork* network = InviwoApplication::getPtr()->getProcessorNetwork();
     std::vector<unsigned char>* data = NULL;
@@ -723,7 +723,7 @@ void NetworkEditor::removePortInspector() {
         Outport* port = processor->getOutport(portIdentifier);
         if (port) {
             PortInspector* portInspector =
-                PortInspectorFactory::getPtr()->getPortInspectorForPortClass(port->getClassName());
+                PortInspectorFactory::getPtr()->getPortInspectorForPortClass(port->getClassIdentifier());
 
             if (portInspector && portInspector->isActive()) {
                 InviwoApplication::getPtr()->getProcessorNetwork()->lock();
@@ -1338,7 +1338,7 @@ void NetworkEditor::placeProcessorOnProcessor(ProcessorGraphicsItem* processorIt
     for (std::vector<Property*>::iterator newit = newProps.begin(); newit != newProps.end(); ++newit) {
         for (std::vector<Property*>::iterator oldit = oldProps.begin(); oldit != oldProps.end(); ++oldit) {
             if ( (*newit)->getIdentifier() == (*oldit)->getIdentifier()
-                && (*newit)->getClassName() == (*oldit)->getClassName()) {
+                && (*newit)->getClassIdentifier() == (*oldit)->getClassIdentifier()) {
                 (*newit)->set(*oldit);
                 propertymap[(*oldit)] = (*newit);
             }

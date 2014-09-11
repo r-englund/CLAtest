@@ -359,7 +359,7 @@ PyObject* py_clickButton(PyObject* /*self*/, PyObject* args) {
 
     if (!button) {
         std::string msg = std::string("clickButton() no button property with id: ") + propertyID + ", ("+propertyID  +" is of type "+
-                          theProperty->getClassName() +  ")";
+                          theProperty->getClassIdentifier() +  ")";
         PyErr_SetString(PyExc_TypeError, msg.c_str());
         return 0;
     }

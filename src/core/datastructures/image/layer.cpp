@@ -112,7 +112,6 @@ void  Layer::setDimension(const uvec2& dim) {
 }
 
 void Layer::resizeRepresentations(Layer* targetLayer, uvec2 targetDim) {
-    //TODO: check if getClassName() is necessary.
     //TODO: And also need to be tested on multiple representations_ such as LayerRAM, LayerDisk etc.,
     //TODO: optimize the code
     targetLayer->resize(targetDim);

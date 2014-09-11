@@ -107,7 +107,7 @@ void SettingsWidget::updateSettingsWidget() {
                     connect(propertyWidget, SIGNAL(updateSemantics(PropertyWidgetQt*)), this,
                             SLOT(updatePropertyWidgetSemantics(PropertyWidgetQt*)));
                 } else {
-                    LogWarn("Could not find a widget for property: " << props[j]->getClassName());
+                    LogWarn("Could not find a widget for property: " << props[j]->getClassIdentifier());
                 }
             }
         }
@@ -149,7 +149,7 @@ void SettingsWidget::updatePropertyWidgetSemantics(PropertyWidgetQt* widget) {
         }
 
     } else {
-        LogWarn("Could not change semantic for property: " << prop->getClassName());
+        LogWarn("Could not change semantic for property: " << prop->getClassIdentifier());
     }
 }
 

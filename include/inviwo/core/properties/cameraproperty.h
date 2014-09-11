@@ -109,7 +109,7 @@ public:
 
     virtual void serialize(IvwSerializer& s) const;
     virtual void deserialize(IvwDeserializer& d);
-    virtual std::string getClassName() const { return "CameraProperty"; }
+    virtual std::string getClassIdentifier() const { return "CameraProperty"; }
 
     void setInport(Inport* inport);
     void fitWithBasis(const mat3& basis);

@@ -49,7 +49,7 @@ public:
 
     virtual PropertyWidget* create(Property*) = 0;
 
-    std::string getClassName() const;
+    std::string getClassIdentifier() const;
     PropertySemantics getSematics() const;
 
 private:
