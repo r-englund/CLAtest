@@ -68,7 +68,7 @@ public:
     PropertyEditorWidgetMetaData& operator=(const PropertyEditorWidgetMetaData& that);
     virtual ~PropertyEditorWidgetMetaData();
 
-    virtual std::string getClassName() const { return "PropertyEditorWidgetMetaData"; }
+    virtual std::string getClassIdentifier() const { return "PropertyEditorWidgetMetaData"; }
     virtual PropertyEditorWidgetMetaData* clone() const;
 
     virtual void serialize(IvwSerializer& s) const;

@@ -77,7 +77,7 @@ void PositionMetaData::setY(const int& y) {
 }
 
 void PositionMetaData::serialize(IvwSerializer& s) const {
-    s.serialize("type", getClassName(), true);
+    s.serialize("type", getClassIdentifier(), true);
     s.serialize("position", value_);
 }
 

@@ -49,7 +49,7 @@ public:
     ProcessorWidgetMetaData& operator=(const ProcessorWidgetMetaData& that);
     virtual ~ProcessorWidgetMetaData();
 
-    virtual std::string getClassName() const { return "ProcessorWidgetMetaData"; }
+    virtual std::string getClassIdentifier() const { return "ProcessorWidgetMetaData"; }
     virtual ProcessorWidgetMetaData* clone() const;
 
     virtual void serialize(IvwSerializer& s) const;

@@ -89,7 +89,7 @@ bool ProcessorWidgetMetaData::isVisible() const {
 }
 
 void ProcessorWidgetMetaData::serialize(IvwSerializer& s) const {
-    s.serialize("type", getClassName(), true);
+    s.serialize("type", getClassIdentifier(), true);
     s.serialize("position", positionMetaData_.get());
     s.serialize("dimension", dimensionMetaData_.get());
     s.serialize("visibility", visiblityMetaData_.get());
