@@ -134,10 +134,9 @@ endif(CMAKE_COMPILER_2005)
 # Mac specific
 if(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
   add_definitions(-DDARWIN)
-  option(IVW_USE_GLFW_NOT_OPENGLQT "Use GLFW for context creation instead of OpenGLQt module" ON)
-else()
-  option(IVW_USE_GLFW_NOT_OPENGLQT "Use GLFW for context creation instead of OpenGLQt module" OFF)
 endif()
+option(IVW_USE_GLFW_NOT_OPENGLQT "Use GLFW for context creation instead of OpenGLQt module" OFF)
+
 mark_as_advanced(FORCE IVW_USE_GLFW_NOT_OPENGLQT)
 
 #--------------------------------------------------------------------
