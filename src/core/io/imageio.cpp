@@ -111,21 +111,34 @@ inline FREE_IMAGE_TYPE getFreeImageFormatFromDataFormat(inviwo::DataFormatEnums:
             return FIT_BITMAP;
 
         case inviwo::DataFormatEnums::UINT16:
+        case inviwo::DataFormatEnums::Vec2UINT16:
             return FIT_UINT16;
 
         case inviwo::DataFormatEnums::INT16:
+        case inviwo::DataFormatEnums::Vec2INT16:
+        case inviwo::DataFormatEnums::Vec3INT16:
+        case inviwo::DataFormatEnums::Vec4INT16:
             return FIT_INT16;
 
         case inviwo::DataFormatEnums::UINT32:
+        case inviwo::DataFormatEnums::Vec2UINT32:
+        case inviwo::DataFormatEnums::Vec3UINT32:
+        case inviwo::DataFormatEnums::Vec4UINT32:
             return FIT_UINT32;
 
         case inviwo::DataFormatEnums::INT32:
+        case inviwo::DataFormatEnums::Vec2INT32:
+        case inviwo::DataFormatEnums::Vec3INT32:
+        case inviwo::DataFormatEnums::Vec4INT32:
             return FIT_INT32;
 
         case inviwo::DataFormatEnums::FLOAT32:
+        case inviwo::DataFormatEnums::Vec2FLOAT32:
             return FIT_FLOAT;
 
         case inviwo::DataFormatEnums::FLOAT64:
+        case inviwo::DataFormatEnums::Vec3FLOAT64:
+        case inviwo::DataFormatEnums::Vec4FLOAT64:
             return FIT_DOUBLE;
 
         case inviwo::DataFormatEnums::Vec2FLOAT64:
@@ -307,13 +320,14 @@ void* ImageIO::rescaleLayerRAM(const LayerRAM* srcLayerRam, uvec2 dst_dim) {
             break;
     }
 
-    FreeImage_Unload(bitmap);
     ivwAssert(rawData!=NULL, "Unable to rescale image ram representation.");
+
+    FreeImage_Unload(bitmap);
     return rawData;
 }
 
 void ImageIO::switchChannels(FIBITMAP* bitmap, uvec2 dim, int channels) {
-    if (channels > 2) {
+    if (bitmap && channels > 2) {
         unsigned int c = static_cast<unsigned int>(channels);
         BYTE* result = FreeImage_GetBits(bitmap);
         BYTE tmp;
@@ -350,6 +364,8 @@ template<typename T>
 FIBITMAP* ImageIO::createBitmapFromData(const T* data, FREE_IMAGE_TYPE type, uvec2 dim, size_t bitsPerPixel, int channels,
                                         const DataFormatBase* format) {
     FIBITMAP* dib = allocateBitmap(type, dim, bitsPerPixel, channels);
+    if(!dib)
+        return NULL;
     unsigned int bytespp = FreeImage_GetLine(dib) / FreeImage_GetWidth(dib);
     T* bits = (T*)FreeImage_GetBits(dib);
 
@@ -421,6 +437,8 @@ void* ImageIO::fiBitmapToDataArray(void* dst, FIBITMAP* bitmap, size_t bitsPerPi
     FREE_IMAGE_TYPE type = FreeImage_GetImageType(bitmap);
     uvec2 dim(width, height);
     FIBITMAP* bitmapNEW = allocateBitmap(type, dim, bitsPerPixel, channels);
+    if(!bitmapNEW)
+        return NULL;
     FreeImage_Paste(bitmapNEW, bitmap, 0, 0, 256);
     switchChannels(bitmapNEW, dim, channels);
     void* pixelValues = static_cast<void*>(FreeImage_GetBits(bitmapNEW));
@@ -446,6 +464,8 @@ void* ImageIO::fiBitmapToDataArrayAndRescale(void* dst, FIBITMAP* bitmap, uvec2 
 
     FREE_IMAGE_TYPE type = FreeImage_GetImageType(bitmap);
     FIBITMAP* bitmap2 = allocateBitmap(type, dim, bitsPerPixel, channels);
+    if(!bitmap2)
+        return NULL;
     FreeImage_Paste(bitmap2, bitmap, 0, 0, 256);
     FIBITMAP* bitmapNEW = FreeImage_Rescale(bitmap2, static_cast<int>(dst_dim.x), static_cast<int>(dst_dim.y), FILTER_BILINEAR);
     FreeImage_Unload(bitmap2);

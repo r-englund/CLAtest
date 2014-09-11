@@ -276,7 +276,7 @@ void TransferFunctionEditorView::drawBackground(QPainter* painter, const QRectF&
     // histogram
     if (showHistogram_ > 0) {
         updateHistogram();
-        for (int i = 0; i < histograms_.size(); ++i) {
+        for (int i = 0; i < static_cast<int>(histograms_.size()); ++i) {
             QPen pen;
             pen.setColor(QColor(68, 102, 170, 150));
             pen.setWidthF(2.0f);

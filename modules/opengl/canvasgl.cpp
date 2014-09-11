@@ -166,10 +166,12 @@ void CanvasGL::multiDrawImagePlaneRect(int instances) {
 
 void CanvasGL::renderLayer() {
     const LayerGL* layerGL = imageGL_->getLayerGL(layerType_);
-    TextureUnit textureUnit;
-    layerGL->bindTexture(textureUnit.getEnum());
-    renderTexture(textureUnit.getUnitNumber());
-    layerGL->unbindTexture();
+    if(layerGL){
+        TextureUnit textureUnit;
+        layerGL->bindTexture(textureUnit.getEnum());
+        renderTexture(textureUnit.getUnitNumber());
+        layerGL->unbindTexture();
+    }
 }
 
 void CanvasGL::renderNoise() {

@@ -328,7 +328,7 @@ void TransferFunctionEditor::keyPressEvent(QKeyEvent* e) {
                     selitems[i]->setSelected(false);
                  }
             }
-            for (int i = 0; i < groups_[group].size(); i++) {
+            for (int i = 0; i < static_cast<int>(groups_[group].size()); i++) {
                 groups_[group][i]->setSelected(true);
             }     
         }
@@ -409,7 +409,7 @@ void TransferFunctionEditor::onControlPointRemoved(TransferFunctionDataPoint* p)
     std::vector<TransferFunctionEditorControlPoint*>::iterator it;
     
     // remove point from all groups
-    for (int i = 0; i < groups_.size(); i++){
+    for (int i = 0; i < static_cast<int>(groups_.size()); i++){
         it = std::find_if(groups_[i].begin(), groups_[i].end(), ControlPointEquals(p)); 
         if (it != groups_[i].end()) groups_[i].erase(it);
     }
@@ -441,14 +441,14 @@ void TransferFunctionEditor::updateConnections() {
     connections_[0]->left_ = NULL;
     connections_[connections_.size()-1]->right_ = NULL;
     
-    for (int i = 0; i < points_.size(); ++i){
+    for (int i = 0; i < static_cast<int>(points_.size()); ++i){
         points_[i]->left_ = connections_[i];
         points_[i]->right_ = connections_[i+1];
         connections_[i]->right_ = points_[i];
         connections_[i+1]->left_ = points_[i];
     }
     
-    for (int i = 0; i < connections_.size(); ++i){
+    for (int i = 0; i < static_cast<int>(connections_.size()); ++i){
         connections_[i]->updateShape();
     }
 }
