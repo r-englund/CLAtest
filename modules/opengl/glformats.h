@@ -36,6 +36,7 @@
 #include <modules/opengl/openglmoduledefine.h>
 #include <inviwo/core/util/formats.h>
 #include <inviwo/core/util/assertion.h>
+#include <modules/opengl/inviwoopengl.h>
 
 namespace inviwo {
 

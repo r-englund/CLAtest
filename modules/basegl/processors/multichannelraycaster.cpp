@@ -1,7 +1,10 @@
 #include "multichannelraycaster.h"
 #include <modules/opengl/shaderutils.h>
 #include <modules/opengl/volume/volumegl.h>
+#include <modules/opengl/image/layergl.h>
 #include <modules/opengl/glwrap/textureunit.h>
+#include <modules/opengl/textureutils.h>
+#include <modules/opengl/volumeutils.h>
 #include <inviwo/core/datastructures/volume/volume.h>
 
 namespace inviwo {
@@ -13,7 +16,7 @@ ProcessorCategory(MultichannelRaycaster, "Volume Rendering");
 ProcessorCodeState(MultichannelRaycaster, CODE_STATE_EXPERIMENTAL);
 
 MultichannelRaycaster::MultichannelRaycaster()
-    : ProcessorGL()
+    : Processor()
     , shader_(NULL)
     , shaderFileName_("multichannlraycaster.frag")
     , volumePort_("volume")
@@ -39,13 +42,13 @@ MultichannelRaycaster::MultichannelRaycaster()
     addPort(exitPort_, "ImagePortGroup1");
     addPort(outport_, "ImagePortGroup1");
 
-    volumePort_.onChange(this, &MultichannelRaycaster::onVolumeChange);
-
     addProperty(raycasting_);
     addProperty(camera_);
     addProperty(lighting_);
 
-    addProperty(transferFunctions_);    
+    addProperty(transferFunctions_);
+    
+    volumePort_.onChange(this, &MultichannelRaycaster::initializeResources);
 }
 
 
@@ -58,7 +61,7 @@ MultichannelRaycaster::~MultichannelRaycaster() {
 }
 
 void MultichannelRaycaster::initialize() {
-    ProcessorGL::initialize();
+    Processor::initialize();
     shader_ = new Shader(shaderFileName_, false);
     initializeResources();
 }
@@ -66,16 +69,22 @@ void MultichannelRaycaster::initialize() {
 void MultichannelRaycaster::deinitialize() {
     if (shader_) delete shader_;
     shader_ = NULL;
-    ProcessorGL::deinitialize();
+    Processor::deinitialize();
 }
 
 void MultichannelRaycaster::initializeResources() {
-    addShaderDefines(shader_, raycasting_);
-    addShaderDefines(shader_, camera_);
-    addShaderDefines(shader_, lighting_);
+    util::glAddShaderDefines(shader_, raycasting_);
+    util::glAddShaderDefines(shader_, camera_);
+    util::glAddShaderDefines(shader_, lighting_);
 
     if (volumePort_.hasData()) {
         const int channels = volumePort_.getData()->getDataFormat()->getComponents();
+        
+        std::vector<Property*> tfs = transferFunctions_.getProperties();
+        for (int i = 0; i < static_cast<int>(tfs.size()); i++) {
+            tfs[i]->setVisible(i < channels ? true : false);
+        }
+        
         std::stringstream ss;
         ss << channels;
         shader_->getFragmentShaderObject()->addShaderDefine("NUMBER_OF_CHANNELS", ss.str());
@@ -84,10 +93,13 @@ void MultichannelRaycaster::initializeResources() {
         for (int i = 0; i < channels; ++i) {
             ss2 << "gradient = RC_CALC_GRADIENTS_FOR_CHANNEL(voxel, samplePos, volume_,"
              << " volumeParameters_, t, rayDirection, entryTex_, entryParameters_," << i << ");"
+            
              << "color = RC_APPLY_CLASSIFICATION_FOR_CHANNEL(transferFuncs_[" << i
              << "], voxel, " << i << ")"
+            
              << "color.rgb = RC_APPLY_SHADING(color.rgb, color.rgb, vec3(1.0), samplePos,"
              << " gradient, lightPosition_, vec3(0.0));"
+            
              << "result = RC_APPLY_COMPOSITING(result, color, samplePos, voxel, gradient,"
              << " t, tDepth, tIncr);";
         }
@@ -97,24 +109,12 @@ void MultichannelRaycaster::initializeResources() {
 
 }
 
-void MultichannelRaycaster::onVolumeChange() {
-    if (volumePort_.hasData()) {
-        initializeResources();
-        int channels = volumePort_.getData()->getDataFormat()->getComponents();
-
-        std::vector<Property*> tfs = transferFunctions_.getProperties();
-        for (int i = 0; i < static_cast<int>(tfs.size()); i++) {
-            tfs[i]->setVisible(i < channels ? true : false);
-        }
-    }
-}
-
 void MultichannelRaycaster::process() {   
     LGL_ERROR;
     std::vector<Property*> tfs = transferFunctions_.getProperties();
     TextureUnit entryColorUnit, entryDepthUnit, exitColorUnit, exitDepthUnit;
-    bindTextures(entryPort_, entryColorUnit.getEnum(), entryDepthUnit.getEnum());
-    bindTextures(exitPort_, exitColorUnit.getEnum(), exitDepthUnit.getEnum());
+    util::glBindTextures(entryPort_, entryColorUnit.getEnum(), entryDepthUnit.getEnum());
+    util::glBindTextures(exitPort_, exitColorUnit.getEnum(), exitDepthUnit.getEnum());
 
     TextureUnit volUnit;
     const Volume* volume = volumePort_.getData();
@@ -133,31 +133,34 @@ void MultichannelRaycaster::process() {
         tfUnitNumbers[channel] = transFuncUnits[channel].getUnitNumber();
     }
     
-    activateAndClearTarget(outport_);
+    util::glActivateAndClearTarget(outport_);
     shader_->activate();
-    setGlobalShaderParameters(shader_);
-    shader_->setUniform("channels_", channels);
+    
+    util::glSetTextureParameters(outport_, shader_, "outportParameters_");
+    
     shader_->setUniform("transferFuncs_", tfUnitNumbers, channels);
+
     shader_->setUniform("entryColorTex_", entryColorUnit.getUnitNumber());
     shader_->setUniform("entryDepthTex_", entryDepthUnit.getUnitNumber());
-    setTextureParameters(entryPort_, shader_, "entryParameters_");
+    util::glSetTextureParameters(entryPort_, shader_, "entryParameters_");
+
     shader_->setUniform("exitColorTex_", exitColorUnit.getUnitNumber());
     shader_->setUniform("exitDepthTex_", exitDepthUnit.getUnitNumber());
-    setTextureParameters(exitPort_, shader_, "exitParameters_");
-    shader_->setUniform("volume_", volUnit.getUnitNumber());
-    volumeGL->setVolumeUniforms(volume, shader_, "volumeParameters_");
+    util::glSetTextureParameters(exitPort_, shader_, "exitParameters_");
+ 
+    
     shader_->setUniform("viewToTexture_",
                         volume->getCoordinateTransformer().getWorldToTextureMatrix());
-
-    shader_->setUniform("channel_", 1);
-
-    setShaderUniforms(shader_, raycasting_);
-    setShaderUniforms(shader_, camera_);
-    setShaderUniforms(shader_, lighting_);
+ 
+    shader_->setUniform("volume_", volUnit.getUnitNumber());
+    util::glSetShaderUniforms(shader_, volume, "volumeParameters_");
+    util::glSetShaderUniforms(shader_, raycasting_);
+    util::glSetShaderUniforms(shader_, camera_);
+    util::glSetShaderUniforms(shader_, lighting_);
     
-    renderImagePlaneRect();
+    util::glSingleDrawImagePlaneRect();
     shader_->deactivate();
-    deactivateCurrentTarget();
+    util::glDeactivateCurrentTarget();
     LGL_ERROR;
 
     delete[] transFuncUnits;
