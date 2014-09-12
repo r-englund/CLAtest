@@ -165,7 +165,7 @@ void Trackball::invokeEvent(Event* event) {
             *lookFrom_ = *lookFrom_-normdirection*(static_cast<float>(vecLength*gestureEvent->deltaDistance()));
             notifyLookFromChanged(this);
         }
-        else if(gestureEvent->type() == GestureEvent::PAN && gestureEvent->numFingers() == 2){
+        else if(gestureEvent->type() == GestureEvent::PAN && gestureEvent->numFingers() == 3){
             vec3 offsetVector = vec3(gestureEvent->deltaPos().x*2.f, gestureEvent->deltaPos().y*2.f, 0.f);
 
             //The resulting rotation needs to be mapped to the camera distance,
