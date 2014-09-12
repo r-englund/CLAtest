@@ -2,7 +2,9 @@
 
 namespace inviwo {
 
-void addShaderDefines(Shader* shader, const SimpleLightingProperty& property) {
+namespace util {
+
+void glAddShaderDefines(Shader* shader, const SimpleLightingProperty& property) {
     std::string shadingKey =
         "RC_APPLY_SHADING(colorAmb, colorDiff, colorSpec, samplePos, gradient, lightPos, "
         "cameraPos)";
@@ -24,7 +26,7 @@ void addShaderDefines(Shader* shader, const SimpleLightingProperty& property) {
 
 }
 
-void setShaderUniforms(Shader* shader, const SimpleLightingProperty& property) {
+void glSetShaderUniforms(Shader* shader, const SimpleLightingProperty& property) {
     shader->setUniform("lightPosition_", property.lightPosition_.get());
     shader->setUniform("lightColorAmbient_", property.lightColorAmbient_.get());
     shader->setUniform("lightColorDiffuse_", property.lightColorDiffuse_.get());
@@ -33,9 +35,9 @@ void setShaderUniforms(Shader* shader, const SimpleLightingProperty& property) {
 }
 
 
-void addShaderDefines(Shader* shader, const CameraProperty& property) {}
+void glAddShaderDefines(Shader* shader, const CameraProperty& property) {}
 
-void setShaderUniforms(Shader* shader, const CameraProperty& property) {
+void glSetShaderUniforms(Shader* shader, const CameraProperty& property) {
     shader->setUniform("viewMatrix_", property.viewMatrix());
     shader->setUniform("cameraPosition_", property.getLookFrom());
     shader->setUniform("zNear_", property.getNearPlaneDist());
@@ -43,7 +45,7 @@ void setShaderUniforms(Shader* shader, const CameraProperty& property) {
 }
 
 
-void addShaderDefines(Shader* shader, const SimpleRaycastingProperty& property) {
+void glAddShaderDefines(Shader* shader, const SimpleRaycastingProperty& property) {
     // gradient computation defines
     std::string gradientComputationKey =
         "RC_CALC_GRADIENTS(voxel, samplePos, volume_, volumeStruct_, t, rayDirection, "
@@ -133,9 +135,11 @@ void addShaderDefines(Shader* shader, const SimpleRaycastingProperty& property) 
 
     shader->getFragmentShaderObject()->addShaderDefine(compositingKey, compositingValue);
 }
-void setShaderUniforms(Shader* shader, const SimpleRaycastingProperty& property) {
+void glSetShaderUniforms(Shader* shader, const SimpleRaycastingProperty& property) {
     shader->setUniform("samplingRate_", property.samplingRate_.get());
     shader->setUniform("isoValue_", property.isoValue_.get());
 }
+
+} // namspace util
 
 }  // namespace

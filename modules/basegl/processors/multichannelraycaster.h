@@ -3,7 +3,7 @@
 
 #include <modules/basegl/baseglmoduledefine.h>
 #include <inviwo/core/common/inviwo.h>
-#include <modules/opengl/processorgl.h>
+#include <inviwo/core/processors/processor.h>
 #include <inviwo/core/properties/transferfunctionproperty.h>
 #include <inviwo/core/properties/simplelightingproperty.h>
 #include <inviwo/core/properties/simpleraycastingproperty.h>
@@ -15,7 +15,7 @@
 
 namespace inviwo {
 
-class IVW_MODULE_BASEGL_API MultichannelRaycaster  : public ProcessorGL { 
+class IVW_MODULE_BASEGL_API MultichannelRaycaster  : public Processor {
 public:
     MultichannelRaycaster();
     virtual ~MultichannelRaycaster();
@@ -30,8 +30,6 @@ protected:
     virtual void process();
 
 private:
-    void onVolumeChange();
-
     Shader* shader_;
     std::string shaderFileName_;
 

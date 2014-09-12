@@ -45,10 +45,12 @@ set(HEADER_FILES
     ${IVW_MODULE_DIR}/opengl/rendering/meshrenderer.h
     ${IVW_MODULE_DIR}/opengl/shaderutils.h
     ${IVW_MODULE_DIR}/opengl/textureobserver.h
+    ${IVW_MODULE_DIR}/opengl/textureutils.h
     ${IVW_MODULE_DIR}/opengl/volume/distancetransformram.h
     ${IVW_MODULE_DIR}/opengl/volume/volumegl.h
     ${IVW_MODULE_DIR}/opengl/volume/volumeglconverter.h
     ${IVW_MODULE_DIR}/opengl/volume/volumeraycastergl.h
+    ${IVW_MODULE_DIR}/opengl/volumeutils.h
 )
 ivw_group("Header Files" ${HEADER_FILES})
 
@@ -92,10 +94,12 @@ set(SOURCE_FILES
     ${IVW_MODULE_DIR}/opengl/processorgl.cpp
     ${IVW_MODULE_DIR}/opengl/rendering/meshrenderer.cpp
     ${IVW_MODULE_DIR}/opengl/shaderutils.cpp
+    ${IVW_MODULE_DIR}/opengl/textureutils.cpp
     ${IVW_MODULE_DIR}/opengl/volume/distancetransformram.cpp
     ${IVW_MODULE_DIR}/opengl/volume/volumegl.cpp
     ${IVW_MODULE_DIR}/opengl/volume/volumeglconverter.cpp
     ${IVW_MODULE_DIR}/opengl/volume/volumeraycastergl.cpp
+    ${IVW_MODULE_DIR}/opengl/volumeutils.cpp
 )
 ivw_group("Source Files" ${SOURCE_FILES})
 

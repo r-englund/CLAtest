@@ -46,6 +46,8 @@ uniform TEXTURE_TYPE exitColorTex_;
 uniform TEXTURE_TYPE exitDepthTex_;
 uniform TEXTURE_PARAMETERS exitParameters_;
 
+uniform TEXTURE_PARAMETERS outportParameters_;
+
 uniform VOLUME_TYPE volume_;
 uniform VOLUME_PARAMETERS volumeParameters_;
 
@@ -98,7 +100,7 @@ vec4 rayTraversal(vec3 entryPoint, vec3 exitPoint, vec2 texCoords) {
 }
 
 void main() {
-    vec2 texCoords = gl_FragCoord.xy * screenDimRCP_;
+    vec2 texCoords = gl_FragCoord.xy * outportParameters_.dimensionsRCP_;
     vec3 entryPoint = texture(entryColorTex_, texCoords).rgb;
     vec3 exitPoint = texture(exitColorTex_, texCoords).rgb;
  

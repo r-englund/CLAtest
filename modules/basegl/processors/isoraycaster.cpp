@@ -95,9 +95,9 @@ void ISORaycaster::deinitialize() {
 
 void ISORaycaster::initializeResources(){
     
-    addShaderDefines(shader_, raycasting_);
-    addShaderDefines(shader_, camera_);
-    addShaderDefines(shader_, lighting_);
+    util::glAddShaderDefines(shader_, raycasting_);
+    util::glAddShaderDefines(shader_, camera_);
+    util::glAddShaderDefines(shader_, lighting_);
 
 
     if (volumePort_.hasData()) {
@@ -171,9 +171,9 @@ void ISORaycaster::process() {
 
     shader_->setUniform("channel_", channel_.getSelectedValue());
 
-    setShaderUniforms(shader_, raycasting_);
-    setShaderUniforms(shader_, camera_);
-    setShaderUniforms(shader_, lighting_);
+    util::glSetShaderUniforms(shader_, raycasting_);
+    util::glSetShaderUniforms(shader_, camera_);
+    util::glSetShaderUniforms(shader_, lighting_);
 
     renderImagePlaneRect();
     shader_->deactivate();
