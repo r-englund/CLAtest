@@ -32,6 +32,7 @@
 
 #include "imagelayoutgl.h"
 #include <modules/opengl/glwrap/textureunit.h>
+#include <inviwo/core/interaction/events/gestureevent.h>
 #include <inviwo/core/interaction/events/touchevent.h>
 
 namespace inviwo {

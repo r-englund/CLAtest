@@ -52,6 +52,7 @@
 
 
 #include <inviwo/qt/editor/linkdialog.h>
+#include <inviwo/core/common/inviwoapplication.h>
 #include <inviwo/core/util/variant.h>
 #include <inviwo/core/properties/compositeproperty.h>
 

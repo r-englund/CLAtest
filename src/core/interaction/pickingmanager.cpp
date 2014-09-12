@@ -32,6 +32,9 @@
 
 #include <inviwo/core/interaction/pickingmanager.h>
 #include <inviwo/core/util/colorconversion.h>
+#include <inviwo/core/properties/boolproperty.h>
+#include <inviwo/core/common/inviwoapplication.h>
+#include <inviwo/core/util/settings/systemsettings.h>
 
 namespace inviwo {
 

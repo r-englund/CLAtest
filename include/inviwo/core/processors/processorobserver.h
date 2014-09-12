@@ -33,6 +33,8 @@
 #ifndef IVW_PROCESSOROBSERVER_H
 #define IVW_PROCESSOROBSERVER_H
 
+#include <inviwo/core/properties/property.h>
+#include <inviwo/core/ports/port.h>
 #include <inviwo/core/common/inviwocoredefine.h>
 #include <inviwo/core/util/observer.h>
 

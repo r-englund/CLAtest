@@ -42,6 +42,7 @@
 #include <inviwo/core/ports/volumeport.h>
 #include <inviwo/core/ports/geometryport.h>
 #include <inviwo/core/properties/boolproperty.h>
+#include <inviwo/core/properties/buttonproperty.h>
 #include <inviwo/core/properties/ordinalproperty.h>
 #include <inviwo/core/properties/stringproperty.h>
 #include <modules/opengl/inviwoopengl.h>

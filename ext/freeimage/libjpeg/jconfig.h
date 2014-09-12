@@ -70,7 +70,7 @@ typedef unsigned char boolean;
 
 #undef RIGHT_SHIFT_IS_UNSIGNED
 
-#define USE_MAC_MEMMGR		/* Define this if you use jmemmac.c */
+//#define USE_MAC_MEMMGR		/* Define this if you use jmemmac.c */
 
 #define ALIGN_TYPE long		/* Needed for 680x0 Macs */
 

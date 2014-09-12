@@ -1,6 +1,7 @@
 #ifndef IVW_INVIWOFILEDIALOG_H
 #define IVW_INVIWOFILEDIALOG_H
 
+#include <inviwo/core/common/inviwoapplication.h>
 #include <inviwo/qt/widgets/inviwoqtwidgetsdefine.h>
 #include <string>
 #include <QFileDialog>

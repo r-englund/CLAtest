@@ -38,6 +38,7 @@
 #include <inviwo/core/io/rawvolumereader.h>
 #include <inviwo/core/network/processornetwork.h>
 #include <inviwo/core/datastructures/volume/volumeram.h>
+#include <inviwo/core/common/inviwoapplication.h>
 #include <glm/gtx/vector_angle.hpp>
 #include <math.h>
 

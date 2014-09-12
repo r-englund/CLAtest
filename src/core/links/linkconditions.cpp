@@ -31,6 +31,7 @@
  *********************************************************************************/
 
 #include <inviwo/core/links/linkconditions.h>
+#include <inviwo/core/util/variant.h>
 
 namespace inviwo {
 

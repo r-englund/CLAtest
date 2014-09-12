@@ -30,6 +30,8 @@
  *
  *********************************************************************************/
 
+#include <inviwo/core/common/inviwoapplication.h>
+#include <inviwo/core/util/settings/systemsettings.h>
 #include <inviwo/qt/editor/editorgrapicsitem.h>
 #include <inviwo/qt/editor/networkeditor.h>
 #include <QGraphicsScene>

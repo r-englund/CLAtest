@@ -37,12 +37,13 @@
 
 #include <inviwo/core/io/serialization/ivwserializebase.h>
 #include <inviwo/core/util/exception.h>
-#include <inviwo/core/io/serialization/versionconverter.h>
+
 
 namespace inviwo {
 
 class IvwSerializable;
-
+class VersionConverter;
+    
 class IVW_CORE_API IvwDeserializer : public  IvwSerializeBase {
 public:
     /**

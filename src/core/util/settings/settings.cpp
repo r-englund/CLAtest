@@ -32,6 +32,7 @@
 
 #include <inviwo/core/util/settings/settings.h>
 #include <inviwo/core/util/urlparser.h>
+#include <inviwo/core/common/inviwoapplication.h>
 
 namespace inviwo {
 

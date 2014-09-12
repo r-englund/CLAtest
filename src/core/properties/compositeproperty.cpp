@@ -32,6 +32,7 @@
 
 #include <inviwo/core/properties/compositeproperty.h>
 #include <inviwo/core/properties/templateproperty.h>
+#include <inviwo/core/common/inviwoapplication.h>
 
 namespace inviwo {
 
