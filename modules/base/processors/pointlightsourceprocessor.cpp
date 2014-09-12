@@ -135,7 +135,7 @@ void PointLightSourceProcessor::PointLightInteractionHandler::invokeEvent(Event*
 
     GestureEvent* gestureEvent = dynamic_cast<GestureEvent*>(event);
     if (gestureEvent) {
-        if(gestureEvent->type() == GestureEvent::PAN && gestureEvent->numFingers() == 2){
+        if(gestureEvent->type() == GestureEvent::PAN){
             setLightPosFromScreenCoords(gestureEvent->screenPosNormalized());
             gestureEvent->markAsUsed();
             return;
