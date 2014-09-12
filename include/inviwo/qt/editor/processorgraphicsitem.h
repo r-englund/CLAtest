@@ -33,6 +33,7 @@
 #ifndef IVW_PROCESSORGRAPHICSITEM_H
 #define IVW_PROCESSORGRAPHICSITEM_H
 
+#include <inviwo/core/processors/processorobserver.h>
 #include <inviwo/qt/editor/inviwoqteditordefine.h>
 #include <inviwo/qt/editor/editorgrapicsitem.h>
 #include <inviwo/qt/widgets/labelgraphicsitem.h>

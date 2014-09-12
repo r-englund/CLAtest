@@ -34,6 +34,7 @@
 #include <inviwo/qt/widgets/properties/transferfunctionpropertywidgetqt.h>
 #include <inviwo/qt/widgets/properties/collapsiblegroupboxwidgetqt.h>
 #include <inviwo/qt/widgets/properties/transferfunctioneditorcontrolpoint.h>
+#include <inviwo/core/common/inviwoapplication.h>
 #include <inviwo/core/util/urlparser.h>
 #include <QFileDialog>
 #include <QDockWidget>

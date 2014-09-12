@@ -38,6 +38,7 @@
 #include <QKeyEvent>
 #include <QLabel>
 
+#include <inviwo/core/common/inviwo.h>
 #include <inviwo/qt/editor/consolewidget.h>
 
 namespace inviwo {

@@ -33,6 +33,7 @@
 #ifndef IVW_MAPPINGWIDGET_H
 #define IVW_MAPPINGWIDGET_H
 
+#include <inviwo/core/network/processornetworkobserver.h>
 #include <inviwo/qt/editor/inviwoqteditordefine.h>
 #include <inviwo/qt/widgets/inviwodockwidget.h>
 #include <inviwo/core/util/observer.h>

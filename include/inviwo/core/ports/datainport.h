@@ -36,6 +36,7 @@
 #include <inviwo/core/common/inviwo.h>
 #include <inviwo/core/common/inviwocoredefine.h>
 #include <inviwo/core/ports/singleinport.h>
+#include <inviwo/core/datastructures/data.h>
 
 namespace inviwo {
 

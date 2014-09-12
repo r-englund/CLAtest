@@ -35,6 +35,7 @@
 
 #include <inviwo/qt/widgets/inviwoqtwidgetsdefine.h>
 #include <inviwo/core/datastructures/transferfunction.h>
+#include <inviwo/core/ports/volumeport.h>
 #include <QGraphicsView>
 
 namespace inviwo {

@@ -34,6 +34,7 @@
 #include <inviwo/core/datastructures/image/layerram.h>
 #include <inviwo/core/datastructures/image/layer.h>
 #include <inviwo/core/ports/imageport.h>
+#include <inviwo/core/util/vectoroperations.h>
 #include <math.h>
 
 namespace inviwo {

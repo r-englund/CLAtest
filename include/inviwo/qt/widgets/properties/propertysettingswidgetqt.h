@@ -45,6 +45,7 @@
 #include <QString>
 #include <inviwo/qt/widgets/inviwoqtwidgetsdefine.h>
 // Core
+#include <inviwo/core/common/inviwoapplication.h>
 #include <inviwo/core/properties/ordinalproperty.h>
 
 

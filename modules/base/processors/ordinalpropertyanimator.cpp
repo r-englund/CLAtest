@@ -1,4 +1,5 @@
 #include "ordinalpropertyanimator.h"
+#include <inviwo/core/common/inviwoapplication.h>
 
 namespace inviwo {
 

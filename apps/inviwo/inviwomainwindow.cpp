@@ -35,6 +35,7 @@
 #include <inviwo/qt/editor/networkeditorview.h>
 #include <inviwo/qt/widgets/inviwoapplicationqt.h>
 #include <inviwo/core/util/commandlineparser.h>
+#include <inviwo/core/util/settings/systemsettings.h>
 
 #include <inviwo/qt/widgets/inviwofiledialog.h>
 
