@@ -34,6 +34,7 @@
 #define IVW_ENTRYEXITPOINTS_H
 
 #include <modules/basegl/baseglmoduledefine.h>
+#include <inviwo/core/processors/processor.h>
 #include <inviwo/core/common/inviwo.h>
 #include <inviwo/core/properties/boolproperty.h>
 #include <inviwo/core/properties/cameraproperty.h>
@@ -42,14 +43,13 @@
 #include <inviwo/core/ports/volumeport.h>
 #include <inviwo/core/rendering/geometryrenderer.h>
 #include <modules/opengl/inviwoopengl.h>
-#include <modules/opengl/processorgl.h>
 #include <modules/opengl/glwrap/shader.h>
 #include <inviwo/core/common/inviwoapplication.h>
 
 namespace inviwo {
 class CameraTrackball;
 
-class IVW_MODULE_BASEGL_API EntryExitPoints : public ProcessorGL {
+class IVW_MODULE_BASEGL_API EntryExitPoints : public Processor {
 public:
     EntryExitPoints();
     ~EntryExitPoints();
