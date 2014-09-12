@@ -89,10 +89,13 @@ Property* PropertyOwner::removeProperty(Property& property) {
     return removeProperty(&property);
 }
 
-Property* PropertyOwner::getPropertyByIdentifier(std::string identifier) const {
+Property* PropertyOwner::getPropertyByIdentifier(const std::string& identifier , bool reqursiveSearch) const {
     for (size_t i=0; i<properties_.size(); i++)
         if ((properties_[i]->getIdentifier()).compare(identifier) == 0)
             return properties_[i];
+        else if (reqursiveSearch && dynamic_cast<PropertyOwner*>(properties_[i])){
+            return dynamic_cast<PropertyOwner*>(properties_[i])->getPropertyByIdentifier(identifier);
+        }
 
     return NULL;
 }
