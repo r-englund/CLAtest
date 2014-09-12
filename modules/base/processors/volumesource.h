@@ -110,8 +110,8 @@ private:
     FloatVec3Property angles_;
     FloatVec3Property offset_;
 
-    BoolProperty playSequence_;
     IntProperty selectedSequenceIndex_;
+    BoolProperty playSequence_;
     IntProperty volumesPerSecond_;
 
     vec3 overrideLengths_;

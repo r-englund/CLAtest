@@ -89,9 +89,9 @@ protected:
     private:
         FloatVec3Property* lightPosition_;
         CameraProperty* camera_;
-        Trackball trackball_;
         vec3 lookUp_; ///< Necessary for trackball
         vec3 lookTo_; ///< Necessary for trackball
+        Trackball trackball_;
 
     };
 

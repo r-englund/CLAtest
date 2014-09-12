@@ -82,6 +82,8 @@ VolumeRaycasterGL::VolumeRaycasterGL(std::string programFileName)
     , camera_("camera", "Camera", vec3(0.0f, 0.0f, -3.5f), vec3(0.0f, 0.0f, 0.0f),
               vec3(0.0f, 1.0f, 0.0f)) {
     addBasicProperties();
+    
+    LogWarn("VolumeRaycasterGL is depricated, do not use.");
 }
 
 void VolumeRaycasterGL::addBasicProperties() {

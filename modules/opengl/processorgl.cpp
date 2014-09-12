@@ -36,8 +36,9 @@
 namespace inviwo {
 
 ProcessorGL::ProcessorGL()
-    : Processor(), rectArray_(NULL)
-{}
+    : Processor(), rectArray_(NULL) {
+    LogWarn("ProcessorGL is depricated, do not use.");
+}
 ProcessorGL::~ProcessorGL() {
     delete rectArray_;
 }

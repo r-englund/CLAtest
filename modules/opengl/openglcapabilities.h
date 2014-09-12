@@ -58,11 +58,12 @@ public:
         std::string profile_;
     };
 
+    //#undef INTEL
     enum GlVendor {
-        NVIDIA,
-        AMD,
-        INTEL,
-        UNKNOWN
+        VENDOR_NVIDIA,
+        VENDOR_AMD,
+        VENDOR_INTEL,
+        VENDOR_UNKNOWN
     };
 
     OpenGLCapabilities();
