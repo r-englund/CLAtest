@@ -26,11 +26,15 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
- * Main file author: Daniel Jönsson
+ * Main file author: Daniel Jï¿½nsson
  *
  *********************************************************************************/
 
+#include <inviwo/core/common/inviwo.h>
 #include <inviwo/qt/widgets/angleradiuswidget.h>
+#include <cmath>
+#include <iostream>
+#include <sstream>
 #include <QStylePainter>
 #include <QPointF>
 #include <QMouseEvent>
@@ -130,8 +134,6 @@ void AngleRadiusWidget::paintEvent(QPaintEvent *) {
  
     painter.setBrush(QBrush(palette().shadow().color(), Qt::SolidPattern));
     painter.drawEllipse(QPointF(x, y), angleIndicatorCircleDiameter, angleIndicatorCircleDiameter);
-
-    
 }
 
 void AngleRadiusWidget::mouseMoveEvent(QMouseEvent* event) {
