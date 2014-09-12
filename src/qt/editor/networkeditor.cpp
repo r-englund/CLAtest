@@ -196,27 +196,24 @@ void NetworkEditor::autoLinkOnAddedProcessor(Processor* addedProcessor) {
         for (size_t j = 0; j < existingProcessors.size(); j++) {
             if (existingProcessors[j] != addedProcessor) {
                 std::vector<Property*> srcProperties = existingProcessors[j]->getProperties();
-                bool linkCreated = false;
 
                 std::vector<PropertyLink*> newLinks;
 
-                for (size_t k = 0; k < srcProperties.size(); k++) {
-                    if (AutoLinker::canLink(srcProperties[k], dstProperty,
-                                            DefaultLinkingCondition) &&
-                        linkSettings->isLinkable(srcProperties[k]) &&
-                        linkSettings->isLinkable(dstProperty)) {
-                        Property* srcProperty = srcProperties[k];
-                        newLinks.push_back(
-                            InviwoApplication::getPtr()->getProcessorNetwork()->addLink(
+                if (linkSettings->isLinkable(dstProperty)){
+                    for (size_t k = 0; k < srcProperties.size(); k++) if (linkSettings->isLinkable(srcProperties[k])) {
+                        if (AutoLinker::canLink(srcProperties[k], dstProperty, DefaultLinkingCondition)) {
+                            Property* srcProperty = srcProperties[k];
+                            newLinks.push_back(
+                                InviwoApplication::getPtr()->getProcessorNetwork()->addLink(
                                 srcProperty, dstProperty));
-                        newLinks.push_back(
-                            InviwoApplication::getPtr()->getProcessorNetwork()->addLink(
+                            newLinks.push_back(
+                                InviwoApplication::getPtr()->getProcessorNetwork()->addLink(
                                 dstProperty, srcProperty));
+                        }
                     }
                 }
 
-                // Never called?
-                if (linkCreated) {
+                if (!newLinks.empty()) {
                     if (std::find(invalidProcessors.begin(), invalidProcessors.end(),
                                   existingProcessors[j]) == invalidProcessors.end()) {
                         invalidProcessors.push_back(existingProcessors[j]);

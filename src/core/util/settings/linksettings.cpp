@@ -55,8 +55,9 @@ void LinkSettings::initialize() {
     std::vector<std::string> properties = PropertyFactory::getPtr()->getRegistedPropertyClassNames();
     std::sort(properties.begin(), properties.end());
 
+     CameraProperty cam("", "");
     for (size_t i = 0; i<properties.size(); i++) {
-        BoolProperty* linkPropery = new BoolProperty("link-" + properties[i], properties[i], false);
+        BoolProperty* linkPropery = new BoolProperty("link-" + properties[i], properties[i], (properties[i] == cam.getClassIdentifier()) != 0 ? true : false);
         linkProperties_.addProperty(linkPropery);
     }
 }
@@ -64,7 +65,7 @@ void LinkSettings::initialize() {
 void LinkSettings::deinitialize()  {}
 
 bool LinkSettings::isLinkable(Property* property)  {
-    Property* prop = getPropertyByIdentifier("link-" + property->getClassIdentifier());
+    Property* prop = getPropertyByIdentifier("link-" + property->getClassIdentifier(),true);
 
     if (prop) {
         BoolProperty* linkOption = dynamic_cast<BoolProperty*>(prop);
