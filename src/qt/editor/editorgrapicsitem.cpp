@@ -100,7 +100,6 @@ void EditorGrapicsItem::showPortInfo(QGraphicsSceneHelpEvent* e, Port* port) con
 
     if(!inspector && !portinfo) return;
 
-    QPoint pos = e->screenPos();
     std::vector<unsigned char>* data = NULL;
     int size = settings->portInspectorSize_.get();
 
@@ -132,7 +131,6 @@ void EditorGrapicsItem::showPortInfo(QGraphicsSceneHelpEvent* e, Port* port) con
     }
     info.append("</table>");
     info.append("</body></html>");
-    e->setScreenPos(e->screenPos());
     showToolTipHelper(e, info);
     
     delete data;

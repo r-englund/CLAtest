@@ -269,12 +269,12 @@ glm::u64 OpenGLCapabilities::getCurrentAvailableTextureMem() throw (Exception) {
     try {
         GLint nCurAvailMemoryInKB[4] = {0};
 
-        if (glVendor_ == NVIDIA) {
+        if (glVendor_ == VENDOR_NVIDIA) {
 #ifdef GL_NVX_gpu_memory_info
             glGetIntegerv(GL_GPU_MEMORY_INFO_CURRENT_AVAILABLE_VIDMEM_NVX, nCurAvailMemoryInKB);
 #endif
         }
-        else if (glVendor_ == AMD) {
+        else if (glVendor_ == VENDOR_AMD) {
 #ifdef GL_ATI_meminfo
             glGetIntegerv(GL_TEXTURE_FREE_MEMORY_ATI, nCurAvailMemoryInKB);
 #endif
@@ -293,14 +293,14 @@ glm::u64 OpenGLCapabilities::getTotalAvailableTextureMem() throw (Exception) {
     glm::u64 totalAvailableTexMemInBytes = 0;
 
     try {
-        if (glVendor_ == NVIDIA) {
+        if (glVendor_ == VENDOR_NVIDIA) {
 #ifdef GL_NVX_gpu_memory_info
             GLint nTotalAvailMemoryInKB[4] = {0};
             glGetIntegerv(GL_GPU_MEMORY_INFO_TOTAL_AVAILABLE_MEMORY_NVX, nTotalAvailMemoryInKB);
             totalAvailableTexMemInBytes = KILOBYTES_TO_BYTES(static_cast<glm::u64>(nTotalAvailMemoryInKB[0]));
 #endif
         }
-        else if (glVendor_ == AMD) {
+        else if (glVendor_ == VENDOR_AMD) {
 #if defined(WGL_AMD_gpu_association)
             UINT n = wglGetGPUIDsAMD(0, 0);
             UINT *ids = new UINT[n];
@@ -387,13 +387,13 @@ void OpenGLCapabilities::retrieveStaticInfo() {
     glVendorStr_ = std::string((vendor!=NULL ? reinterpret_cast<const char*>(vendor) : "INVALID"));
 
     if (glVendorStr_.find("NVIDIA") != std::string::npos)
-        glVendor_ = NVIDIA;
+        glVendor_ = VENDOR_NVIDIA;
     else if (glVendorStr_.find("AMD") != std::string::npos || glVendorStr_.find("ATI") != std::string::npos)
-        glVendor_ = AMD;
+        glVendor_ = VENDOR_AMD;
     else if (glVendorStr_.find("INTEL") != std::string::npos || glVendorStr_.find("Intel") != std::string::npos)
-        glVendor_ = INTEL;
+        glVendor_ = VENDOR_INTEL;
     else
-        glVendor_ = UNKNOWN;
+        glVendor_ = VENDOR_UNKNOWN;
 
     const GLubyte* glrender = glGetString(GL_RENDERER);
     glRenderStr_ = std::string((glrender!=NULL ? reinterpret_cast<const char*>(glrender) : "INVALID"));

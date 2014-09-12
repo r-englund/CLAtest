@@ -268,7 +268,7 @@ void TransferFunctionEditor::keyPressEvent(QKeyEvent* e) {
         }
     
     } else if ((k >= '0' && k <= '9') ||                               // Groups selection
-               k == '!' || k =='"' || k =='#' || k =='¤' || k =='%' || k =='&' || k =='(' || 
+               k == '!' || k =='"' || k =='#' || k ==Qt::Key_paragraph || k =='%' || k =='&' || k =='(' ||
                k ==')' || k =='=') {                                                                
         int group = 0;
         switch(k) {
@@ -289,7 +289,7 @@ void TransferFunctionEditor::keyPressEvent(QKeyEvent* e) {
                 group = 3;
                 break;
             case '4':
-            case '¤':
+            case Qt::Key_paragraph:
                 group = 4;
                 break;
             case '5':

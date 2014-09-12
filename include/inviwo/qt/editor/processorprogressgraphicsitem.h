@@ -60,7 +60,6 @@ protected:
 
 private:
     QSize size_;
-    float lineWidth_;
     ProgressBar* progressBar_;
 };
 
