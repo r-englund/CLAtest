@@ -39,9 +39,11 @@
 #include <inviwo/core/datastructures/datagrouprepresentation.h>
 
 namespace inviwo {
-/** \brief The base class for all DataGroup objects.
+/** 
+ *  \class DataGroup
  *
- *  DataGroup is the base class for all the DataGroup objects.
+ *  \brief The base class for all DataGroup objects.
+ *
  *  It owns or has reference to zero or many Data objects.
  *
  *  It also owns DataGroupRepresentations, which has references to DataRepresentations,
@@ -54,7 +56,6 @@ namespace inviwo {
  *    - DataGroupRepresentation becomes invalid when a child representations becomes invalid, thus we do not know when it's valid
  *      and we need to call update before we return it from getRepresentation.
  */
-
 class IVW_CORE_API DataGroup : public BaseData {
 
 public:

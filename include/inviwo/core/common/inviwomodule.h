@@ -60,6 +60,11 @@ namespace inviwo {
 
 class Settings;
 
+/**
+ * \class InviwoModule
+ *
+ * \brief A module class contains registrations of functionality, such as processors, ports, properties etc.
+ */
 class IVW_CORE_API InviwoModule {
 
 public:

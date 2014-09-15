@@ -42,7 +42,8 @@ namespace inviwo {
 
 /** \class MultiInport
  *
- * Support class for inports that can handle multiple inputs.
+ * \brief Support class for inports that can handle multiple inputs.
+ *
  * This class allows us to check if an Inport
  * can handle multiple connections through dynamic_cast.
  * @see MultiDataInport

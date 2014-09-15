@@ -52,14 +52,14 @@ public:
     virtual std::string getDataInfo() const;
 };
 
-/** \brief The base class for all data objects.
+/** 
+ * \class Data
+ * 
+ * \brief The base class for all data objects.
  *
  *  Data is the base class for all the data objects.
  *  It is responsible for holding the DateRepresentations
  *  and the format of the data.
- *  TODO: write a good overview here
- *
- *  --------
  *
  *  Requirements:
  *      1. Copy constructor for deep copy

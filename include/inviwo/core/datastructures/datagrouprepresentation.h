@@ -40,7 +40,12 @@
 
 namespace inviwo {
 
-/** \brief The base class for all DataGroupRepresentation objects.
+class DataGroup;
+
+/** 
+ *  \class DataGroupRepresentation
+ *
+ *  \brief The base class for all DataGroupRepresentation objects.
  *
  *  It has reference to zero or many DataRepresentation objects, but never owns them,
  *  they are always owned by the Data object.
@@ -49,9 +54,6 @@ namespace inviwo {
  *    - DataGroupRepresentation does not own DataRepresentation, does should never delete them.
  *    - DataGroupRepresentation becomes invalid when a child DataRepresentation is invalid.
  */
-
-class DataGroup;
-
 class IVW_CORE_API DataGroupRepresentation : public DataRepresentation {
 
     friend class DataGroup;

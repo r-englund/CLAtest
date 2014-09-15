@@ -45,9 +45,11 @@ namespace inviwo {
 template<typename T>
 class DataOutport;
 
-/** \class MultiDataInport
+/** 
+ * \class MultiDataInport
  *
- * Port for handling multiple inports.
+ * \brief Port for handling multiple inports.
+ *
  * First template argument is the data contained within
  * the ports and the second one is the port class.
  * Usage example:

@@ -42,6 +42,11 @@ namespace inviwo {
 class Processor;
 class MultiInport;
 
+/**
+ * \class Port
+ *
+ * \brief A port can be connected to another port and is owned by a processor.
+ */
 class IVW_CORE_API Port : public IvwSerializable {
 
     friend class Processor;
