@@ -32,23 +32,24 @@
 
 #include "imagemixer.h"
 #include <modules/opengl/glwrap/textureunit.h>
+#include <modules/opengl/glwrap/shader.h>
+#include <modules/opengl/textureutils.h>
 
 namespace inviwo {
 
 ProcessorClassIdentifier(ImageMixer, "org.inviwo.ImageMixer");
-ProcessorDisplayName(ImageMixer,  "Image Mixer");
+ProcessorDisplayName(ImageMixer, "Image Mixer");
 ProcessorTags(ImageMixer, Tags::GL);
 ProcessorCategory(ImageMixer, "Image Operation");
 ProcessorCodeState(ImageMixer, CODE_STATE_EXPERIMENTAL);
 
 ImageMixer::ImageMixer()
-    : ProcessorGL()
+    : Processor()
     , inport0_("inport0")
     , inport1_("inport1")
     , outport_("outport", &inport0_, COLOR_ONLY)
     , alpha_("alpha", "Alpha", 0.5f, 0.0f, 1.0f)
-    , blendingMode_("compositingMode", "Compositing", PropertyOwner::INVALID_RESOURCES)
-{
+    , blendingMode_("compositingMode", "Compositing", PropertyOwner::INVALID_RESOURCES) {
     addPort(inport0_);
     addPort(inport1_);
     addPort(outport_);
@@ -63,31 +64,31 @@ ImageMixer::ImageMixer()
 ImageMixer::~ImageMixer() {}
 
 void ImageMixer::initialize() {
-    ProcessorGL::initialize();
+    Processor::initialize();
     shader_ = new Shader("img_mix.frag", false);
     initializeResources();
 }
 
 void ImageMixer::deinitialize() {
     delete shader_;
-    ProcessorGL::deinitialize();
+    Processor::deinitialize();
 }
 
 void ImageMixer::process() {
-    ivwAssert(inport0_.getData()!=0, "Inport0 empty.");
-    ivwAssert(inport1_.getData()!=0, "Inport1 empty.");
+    ivwAssert(inport0_.getData() != 0, "Inport0 empty.");
+    ivwAssert(inport1_.getData() != 0, "Inport1 empty.");
     uvec2 csize = outport_.getData()->getDimension();
-    bindColorTexture(inport0_, GL_TEXTURE1);
-    bindColorTexture(inport1_, GL_TEXTURE2);
-    activateAndClearTarget(outport_);
+    util::glBindColorTexture(inport0_, GL_TEXTURE1);
+    util::glBindColorTexture(inport1_, GL_TEXTURE2);
+    util::glActivateAndClearTarget(outport_);
     shader_->activate();
     shader_->setUniform("inport0_", 1);
     shader_->setUniform("inport1_", 2);
     shader_->setUniform("alpha_", alpha_.get());
     shader_->setUniform("screenDimRCP_", vec2(1.f / csize[0], 1.f / csize[1]));
-    renderImagePlaneRect();
+    util::glSingleDrawImagePlaneRect();
     shader_->deactivate();
-    deactivateCurrentTarget();
+    util::glDeactivateCurrentTarget();
 }
 
 void ImageMixer::initializeResources() {
@@ -106,4 +107,4 @@ void ImageMixer::initializeResources() {
     shader_->build();
 }
 
-} // namespace
+}  // namespace
