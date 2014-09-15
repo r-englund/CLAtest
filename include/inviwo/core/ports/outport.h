@@ -43,7 +43,11 @@ class SingleInport;
 class MultiInport;
 class Inport;
 
-
+/**
+ * \class Outport
+ *
+ * \brief The Outport can be connected to an arbitary number of Inports.
+ */
 class IVW_CORE_API Outport : public Port {
 
     friend class SingleInport;

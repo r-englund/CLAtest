@@ -41,6 +41,11 @@ namespace inviwo {
 
 class Outport;
 
+/**
+ * \class SingleInport
+ *
+ * \brief The SingleInport can be connected to only one outport at a time.
+ */
 class IVW_CORE_API SingleInport : public Inport {
 
 public:

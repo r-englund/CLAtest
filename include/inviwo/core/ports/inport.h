@@ -42,6 +42,14 @@ namespace inviwo {
 
 class Outport;
 
+/**
+ * \class Inport
+ *
+ * \brief An Inport can be connected to an Outport.
+ *
+ * The approved connection can be determined by the canConnectTo function.
+ * 
+ */
 class IVW_CORE_API Inport : public Port {
 
 public:

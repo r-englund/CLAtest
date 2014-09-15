@@ -52,6 +52,13 @@ namespace inviwo {
 
 class ProcessorNetworkEvaluator;
 
+/**
+ * \class InviwoApplication
+ *
+ * \brief The main application which holds the instances of all modules.
+ *
+ * All modules should be owned and accessed trough this singleton, as well as the processor network and the evaluator.
+ */
 class IVW_CORE_API InviwoApplication : public Singleton<InviwoApplication> {
 
 public:

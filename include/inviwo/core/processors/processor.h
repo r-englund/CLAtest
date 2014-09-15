@@ -68,6 +68,14 @@ namespace inviwo {
 #define ProcessorCategory(T, category) const std::string T::CATEGORY = category;
 #define ProcessorCodeState(T, codeState) const CodeState T::CODE_STATE = codeState;
 
+/**
+ * \class Processor
+ *
+ * \brief A processor generally performs operation on input data and outputs the new result.
+ *
+ * It can hold arbitrary number of inports and outports, as well as properties which can be used 
+ * to customize the processors behavior. 
+ */
 class IVW_CORE_API Processor : public PropertyOwner, public ProcessorObservable {
 
 public:
