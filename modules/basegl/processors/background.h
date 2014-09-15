@@ -35,16 +35,17 @@
 
 #include <modules/basegl/baseglmoduledefine.h>
 #include <inviwo/core/common/inviwo.h>
+#include <inviwo/core/processors/processor.h>
 #include <inviwo/core/properties/baseoptionproperty.h>
 #include <inviwo/core/properties/ordinalproperty.h>
+#include <inviwo/core/properties/buttonproperty.h>
 #include <inviwo/core/ports/imageport.h>
 #include <modules/opengl/inviwoopengl.h>
-#include <modules/opengl/processorgl.h>
 #include <modules/opengl/glwrap/shader.h>
 
 namespace inviwo {
 
-class IVW_MODULE_BASEGL_API Background : public ProcessorGL {
+class IVW_MODULE_BASEGL_API Background : public Processor {
 public:
     Background();
     ~Background();
@@ -58,8 +59,10 @@ public:
 
 protected:
     virtual void process();
-    virtual bool isReady()const;
+
 private:
+    void switchColors();
+
     ImageInport inport_;
     ImageOutport outport_;
 
@@ -67,7 +70,7 @@ private:
     FloatVec4Property color1_;
     FloatVec4Property color2_;
     IntVec2Property checkerBoardSize_;
-
+    ButtonProperty switchColors_;
     Shader* shader_;
 
     bool hadData_;

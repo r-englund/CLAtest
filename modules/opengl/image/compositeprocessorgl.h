@@ -36,16 +36,18 @@
 #include <modules/opengl/openglmoduledefine.h>
 #include <modules/opengl/inviwoopengl.h>
 #include <inviwo/core/common/inviwo.h>
-#include <modules/opengl/processorgl.h>
+#include <inviwo/core/processors/processor.h>
+#include <inviwo/core/ports/imageport.h>
 
 namespace inviwo {
 
-class IVW_MODULE_OPENGL_API CompositeProcessorGL : public ProcessorGL {
+class Shader;
 
+class IVW_MODULE_OPENGL_API CompositeProcessorGL : public Processor {
 public:
     CompositeProcessorGL();
     CompositeProcessorGL(std::string programFileName);
-    virtual ~CompositeProcessorGL(){}
+    virtual ~CompositeProcessorGL() {}
 
     void initialize();
     void deinitialize();
@@ -60,6 +62,6 @@ protected:
     Shader* shader_;
 };
 
-} // namespace
+}  // namespace
 
-#endif // IVW_COMPOSITEPROCESSORGL_H
+#endif  // IVW_COMPOSITEPROCESSORGL_H

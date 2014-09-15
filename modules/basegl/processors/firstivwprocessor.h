@@ -35,16 +35,16 @@
 
 #include <modules/basegl/baseglmoduledefine.h>
 #include <inviwo/core/common/inviwo.h>
+#include <inviwo/core/processors/processor.h>
 #include <inviwo/core/properties/ordinalproperty.h>
 #include <inviwo/core/datastructures/buffer/buffer.h>
 #include <modules/opengl/inviwoopengl.h>
-#include <modules/opengl/processorgl.h>
 #include <modules/opengl/glwrap/shader.h>
 #include <modules/opengl/buffer/buffergl.h>
 
 namespace inviwo {
 
-class IVW_MODULE_BASEGL_API FirstIvwProcessor : public ProcessorGL {
+class IVW_MODULE_BASEGL_API FirstIvwProcessor : public Processor {
 public:
     FirstIvwProcessor();
 

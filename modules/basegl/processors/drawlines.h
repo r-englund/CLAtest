@@ -45,6 +45,8 @@
 
 namespace inviwo {
 
+class Shader;
+
 //Hold Ctrl+D and click Left Mouse Button to Add Point
 class IVW_MODULE_BASEGL_API DrawLines : public CompositeProcessorGL {
 public:

@@ -45,6 +45,7 @@
 
 
 namespace inviwo {
+class Shader;
 
 class IVW_MODULE_BASEGL_API PositionWidgetProcessor : public CompositeProcessorGL {
 public:

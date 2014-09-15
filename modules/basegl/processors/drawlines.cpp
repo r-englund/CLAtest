@@ -32,23 +32,24 @@
 
 #include "drawlines.h"
 #include <inviwo/core/datastructures/buffer/bufferramprecision.h>
+#include <modules/opengl/glwrap/shader.h>
+#include <modules/opengl/textureutils.h>
 
 namespace inviwo {
 
 ProcessorClassIdentifier(DrawLines, "org.inviwo.DrawLines");
-ProcessorDisplayName(DrawLines,  "Draw Lines");
+ProcessorDisplayName(DrawLines, "Draw Lines");
 ProcessorTags(DrawLines, Tags::GL);
 ProcessorCategory(DrawLines, "Drawing");
 ProcessorCodeState(DrawLines, CODE_STATE_EXPERIMENTAL);
 
 DrawLines::DrawLines()
     : CompositeProcessorGL()
-     , inport_("inport")
-     , outport_("outport", &inport_, COLOR_ONLY)
-     , lineSize_("lineSize", "Line Size", 5, 1, 10)
-     , lineColor_("lineColor", "Line Color", vec4(1.f))
-     , clearButton_("clearButton", "Clear Lines")
-{
+    , inport_("inport")
+    , outport_("outport", &inport_, COLOR_ONLY)
+    , lineSize_("lineSize", "Line Size", 5, 1, 10)
+    , lineColor_("lineColor", "Line Color", vec4(1.f))
+    , clearButton_("clearButton", "Clear Lines") {
     addPort(inport_);
     addPort(outport_);
 
@@ -63,7 +64,7 @@ DrawLines::DrawLines()
 
 DrawLines::~DrawLines() {
     const std::vector<InteractionHandler*>& interactionHandlers = getInteractionHandlers();
-    for(size_t i=0; i<interactionHandlers.size(); ++i) {
+    for (size_t i = 0; i < interactionHandlers.size(); ++i) {
         InteractionHandler* handler = interactionHandlers[i];
         removeInteractionHandler(handler);
         delete handler;
@@ -88,13 +89,13 @@ void DrawLines::deinitialize() {
 }
 
 void DrawLines::process() {
-    activateAndClearTarget(outport_);
+    util::glActivateAndClearTarget(outport_);
     glLineWidth(static_cast<float>(lineSize_.get()));
     lineShader_->activate();
     lineShader_->setUniform("color_", lineColor_.get());
     lineRenderer_->render();
     glPointSize(1.f);
-    deactivateCurrentTarget();
+    util::glDeactivateCurrentTarget();
     compositePortsToOutport(outport_, inport_);
 }
 
@@ -106,26 +107,24 @@ void DrawLines::clearLines() {
     lines_->getAttributes(0)->getEditableRepresentation<Position2dBufferRAM>()->clear();
 }
 
-DrawLines::DrawLinesInteractionHandler::DrawLinesInteractionHandler(DrawLines* dfh) 
+DrawLines::DrawLinesInteractionHandler::DrawLinesInteractionHandler(DrawLines* dfh)
     : InteractionHandler()
     , drawPosEvent(MouseEvent::MOUSE_BUTTON_LEFT, InteractionEvent::MODIFIER_CTRL)
     , drawEnableEvent_('D', InteractionEvent::MODIFIER_CTRL)
     , drawer_(dfh)
-    , drawModeEnabled_(false) {
-}
+    , drawModeEnabled_(false) {}
 
-void DrawLines::DrawLinesInteractionHandler::invokeEvent(Event* event){
+void DrawLines::DrawLinesInteractionHandler::invokeEvent(Event* event) {
     KeyboardEvent* keyEvent = dynamic_cast<KeyboardEvent*>(event);
     if (keyEvent) {
         int button = keyEvent->button();
         KeyboardEvent::KeyState state = keyEvent->state();
         InteractionEvent::Modifier modifier = keyEvent->modifier();
 
-        if (button == drawEnableEvent_.button() && modifier == drawEnableEvent_.modifier()){
-            if(state == KeyboardEvent::KEY_STATE_PRESS){
+        if (button == drawEnableEvent_.button() && modifier == drawEnableEvent_.modifier()) {
+            if (state == KeyboardEvent::KEY_STATE_PRESS) {
                 drawModeEnabled_ = true;
-            }
-            else if(state == KeyboardEvent::KEY_STATE_RELEASE){
+            } else if (state == KeyboardEvent::KEY_STATE_RELEASE) {
                 drawModeEnabled_ = false;
             }
         }
@@ -133,18 +132,19 @@ void DrawLines::DrawLinesInteractionHandler::invokeEvent(Event* event){
     }
 
     MouseEvent* mouseEvent = dynamic_cast<MouseEvent*>(event);
-    if (drawModeEnabled_ && mouseEvent && (mouseEvent->state() == MouseEvent::MOUSE_STATE_PRESS || mouseEvent->state() == MouseEvent::MOUSE_STATE_MOVE)) {
-        if (mouseEvent->modifier() == drawPosEvent.modifier()
-            && mouseEvent->button() == drawPosEvent.button()) {
-                vec2 line = mouseEvent->posNormalized();
-                line *= 2.f;
-                line -= 1.f;
-                line.y = -line.y;
-                drawer_->addPoint(line);
-                drawer_->invalidate(PropertyOwner::INVALID_OUTPUT);
+    if (drawModeEnabled_ && mouseEvent && (mouseEvent->state() == MouseEvent::MOUSE_STATE_PRESS ||
+                                           mouseEvent->state() == MouseEvent::MOUSE_STATE_MOVE)) {
+        if (mouseEvent->modifier() == drawPosEvent.modifier() &&
+            mouseEvent->button() == drawPosEvent.button()) {
+            vec2 line = mouseEvent->posNormalized();
+            line *= 2.f;
+            line -= 1.f;
+            line.y = -line.y;
+            drawer_->addPoint(line);
+            drawer_->invalidate(PropertyOwner::INVALID_OUTPUT);
         }
         return;
     }
 }
 
-} // namespace
+}  // namespace

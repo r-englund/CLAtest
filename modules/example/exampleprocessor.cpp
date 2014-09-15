@@ -31,7 +31,6 @@
  *********************************************************************************/
 
 #include "exampleprocessor.h"
-#include <inviwo/core/datastructures/geometry/simplemeshcreator.h>
 
 namespace inviwo {
 
@@ -42,7 +41,7 @@ ProcessorCategory(ExampleProcessor, "Geometry Creation");
 ProcessorCodeState(ExampleProcessor, CODE_STATE_EXPERIMENTAL);
 
 ExampleProcessor::ExampleProcessor()
-    : ProcessorGL()
+    : Processor()
     , inport_("volume.inport")
     , outport_("geometry.outport") {
     addPort(inport_);
@@ -52,11 +51,11 @@ ExampleProcessor::ExampleProcessor()
 ExampleProcessor::~ExampleProcessor() {}
 
 void ExampleProcessor::initialize() {
-    ProcessorGL::initialize();
+    Processor::initialize();
 }
 
 void ExampleProcessor::deinitialize() {
-    ProcessorGL::deinitialize();
+    Processor::deinitialize();
 }
 
 void ExampleProcessor::process() {

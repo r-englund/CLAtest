@@ -32,21 +32,22 @@
 
 #include "findedges.h"
 #include <inviwo/core/datastructures/image/imageram.h>
+#include <modules/opengl/textureutils.h>
 
 namespace inviwo {
 
 ProcessorClassIdentifier(FindEdges, "org.inviwo.FindEdges");
-ProcessorDisplayName(FindEdges,  "Find Edges");
+ProcessorDisplayName(FindEdges, "Find Edges");
 ProcessorTags(FindEdges, Tags::GL);
 ProcessorCategory(FindEdges, "Image Operation");
 ProcessorCodeState(FindEdges, CODE_STATE_EXPERIMENTAL);
 
 FindEdges::FindEdges()
-    : ProcessorGL(),
-      inport_("inport"),
-      outport_("outport", &inport_, COLOR_ONLY),
-      alpha_("alpha", "Alpha", 0.5f, 0.0f, 1.0f)
-{
+    : Processor()
+    , inport_("inport")
+    , outport_("outport", &inport_, COLOR_ONLY)
+    , alpha_("alpha", "Alpha", 0.5f, 0.0f, 1.0f) {
+
     addPort(inport_);
     addPort(outport_);
     addProperty(alpha_);
@@ -55,7 +56,7 @@ FindEdges::FindEdges()
 FindEdges::~FindEdges() {}
 
 void FindEdges::initialize() {
-    ProcessorGL::initialize();
+    Processor::initialize();
     shader_ = new Shader("img_findedges.frag");
 }
 
@@ -65,15 +66,16 @@ void FindEdges::deinitialize() {
 }
 
 void FindEdges::process() {
-    activateTarget(outport_);
-    bindColorTexture(inport_, GL_TEXTURE0);
+    util::glActivateTarget(outport_);
+    util::glBindColorTexture(inport_, GL_TEXTURE0);
     shader_->activate();
     shader_->setUniform("inport_", 0);
     shader_->setUniform("alpha_", alpha_.get());
-    shader_->setUniform("dimension_", vec2(1.f / outport_.getDimension()[0], 1.f / outport_.getDimension()[1]));
-    renderImagePlaneRect();
+    shader_->setUniform("dimension_",
+                        vec2(1.f / outport_.getDimension()[0], 1.f / outport_.getDimension()[1]));
+    util::glSingleDrawImagePlaneRect();
     shader_->deactivate();
-    deactivateCurrentTarget();
+    util::glDeactivateCurrentTarget();
 }
 
-} // namespace
+}  // namespace
