@@ -32,53 +32,53 @@
 
 #include "compositeprocessorgl.h"
 #include <modules/opengl/glwrap/textureunit.h>
+#include <modules/opengl/glwrap/shader.h>
+#include <modules/opengl/textureutils.h>
 
 namespace inviwo {
 
 CompositeProcessorGL::CompositeProcessorGL()
-    : ProcessorGL(),
-      shaderFileName_("composite.frag"), shader_(NULL)
-{}
+    : Processor(), shaderFileName_("composite.frag"), shader_(NULL) {}
 
 CompositeProcessorGL::CompositeProcessorGL(std::string programFileName)
-    : ProcessorGL(),
-      shaderFileName_(programFileName), shader_(NULL)
-{}
+    : Processor(), shaderFileName_(programFileName), shader_(NULL) {}
 
 void CompositeProcessorGL::initialize() {
-    ProcessorGL::initialize();
+    Processor::initialize();
     shader_ = new Shader(shaderFileName_);
 }
 
 void CompositeProcessorGL::deinitialize() {
     delete shader_;
     shader_ = NULL;
-    ProcessorGL::deinitialize();
+    Processor::deinitialize();
 }
 
 void CompositeProcessorGL::compositePortsToOutport(ImageOutport& outport, ImageInport& inport) {
     if (inport.isReady() && outport.isReady()) {
-        activateTarget(outport);
+        util::glActivateTarget(outport);
         TextureUnit inportColorUnit, inportDepthUnit, inportPickingUnit;
-        bindTextures(inport, inportColorUnit.getEnum(), inportDepthUnit.getEnum(), inportPickingUnit.getEnum());
+        util::glBindTextures(inport, inportColorUnit.getEnum(), inportDepthUnit.getEnum(),
+                     inportPickingUnit.getEnum());
         TextureUnit outportColorUnit, outportDepthUnit, outportPickingUnit;
-        bindTextures(outport, outportColorUnit.getEnum(), outportDepthUnit.getEnum(), outportPickingUnit.getEnum());
+        util::glBindTextures(outport, outportColorUnit.getEnum(), outportDepthUnit.getEnum(),
+                     outportPickingUnit.getEnum());
         shader_->activate();
-        setGlobalShaderParameters(shader_);
+        vec2 dim = static_cast<vec2>(outport.getDimension());
+        shader_->setUniform("screenDim_", dim);
+        shader_->setUniform("screenDimRCP_", vec2(1.0f,1.0f)/dim);
         shader_->setUniform("texColor0_", inportColorUnit.getUnitNumber());
         shader_->setUniform("texDepth0_", inportDepthUnit.getUnitNumber());
         shader_->setUniform("texPicking0_", inportPickingUnit.getUnitNumber());
         shader_->setUniform("texColor1_", outportColorUnit.getUnitNumber());
         shader_->setUniform("texDepth1_", outportDepthUnit.getUnitNumber());
         shader_->setUniform("texPicking1_", outportPickingUnit.getUnitNumber());
-        renderImagePlaneRect();
+        util::glSingleDrawImagePlaneRect();
         shader_->deactivate();
-        deactivateCurrentTarget();
+        util::glDeactivateCurrentTarget();
     }
 }
 
-void CompositeProcessorGL::initializeResources() {
-    shader_->rebuild();
-}
+void CompositeProcessorGL::initializeResources() { shader_->rebuild(); }
 
-} // namespace
+}  // namespace

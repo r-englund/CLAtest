@@ -32,6 +32,8 @@
 
 #include "drawfreehand.h"
 #include <inviwo/core/datastructures/buffer/bufferramprecision.h>
+#include <modules/opengl/glwrap/shader.h>
+#include <modules/opengl/textureutils.h>
 
 namespace inviwo {
 
@@ -88,14 +90,14 @@ void DrawFreeHand::deinitialize() {
 }
 
 void DrawFreeHand::process() {
-    activateAndClearTarget(outport_);
+    util::glActivateAndClearTarget(outport_);
     glPointSize(static_cast<float>(pointSize_.get()));
     pointShader_->activate();
     pointShader_->setUniform("color_", pointColor_.get());
     pointRenderer_->render();
     pointShader_->deactivate();
     glPointSize(1.f);
-    deactivateCurrentTarget();
+    util::glDeactivateCurrentTarget();
     compositePortsToOutport(outport_, inport_);
 }
 

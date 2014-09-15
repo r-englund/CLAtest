@@ -35,14 +35,14 @@
 
 #include <modules/example/examplemoduledefine.h>
 #include <inviwo/core/common/inviwo.h>
+#include <inviwo/core/processors/processor.h>
 #include <inviwo/core/ports/geometryport.h>
 #include <inviwo/core/ports/volumeport.h>
-#include <modules/opengl/inviwoopengl.h>
-#include <modules/opengl/processorgl.h>
+
 
 namespace inviwo {
 
-class IVW_MODULE_EXAMPLE_API ExampleProcessor : public ProcessorGL {
+class IVW_MODULE_EXAMPLE_API ExampleProcessor : public Processor {
 public:
     ExampleProcessor();
     ~ExampleProcessor();

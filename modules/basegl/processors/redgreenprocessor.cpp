@@ -31,44 +31,39 @@
  *********************************************************************************/
 
 #include "redgreenprocessor.h"
+#include <modules/opengl/textureutils.h>
 
 namespace inviwo {
 
 ProcessorClassIdentifier(RedGreenProcessor, "org.inviwo.RedGreenProcessor");
-ProcessorDisplayName(RedGreenProcessor,  "Red Green Processor");
+ProcessorDisplayName(RedGreenProcessor, "Red Green Processor");
 ProcessorTags(RedGreenProcessor, Tags::GL);
 ProcessorCategory(RedGreenProcessor, "Various");
 ProcessorCodeState(RedGreenProcessor, CODE_STATE_STABLE);
 
 RedGreenProcessor::RedGreenProcessor()
-    : ProcessorGL(),
-      outportRed_("outportRed"),
-      outportGreen_("outportGreen")
-{
+    : Processor(), outportRed_("outportRed"), outportGreen_("outportGreen") {
+
     addPort(outportRed_);
     addPort(outportGreen_);
 }
 
 RedGreenProcessor::~RedGreenProcessor() {}
 
-void RedGreenProcessor::initialize() {
-    Processor::initialize();
-}
+void RedGreenProcessor::initialize() { Processor::initialize(); }
 
-void RedGreenProcessor::deinitialize() {
-    Processor::deinitialize();
-}
+void RedGreenProcessor::deinitialize() { Processor::deinitialize(); }
 
 void RedGreenProcessor::process() {
-    activateTarget(outportRed_);
+    util::glActivateTarget(outportRed_);
     glClearColor(1.0, 0.0, 0.0, 1.0);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    deactivateCurrentTarget();
-    activateTarget(outportGreen_);
+    util::glDeactivateCurrentTarget();
+    util::glActivateTarget(outportGreen_);
     glClearColor(0.0, 1.0, 0.0, 1.0);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glClearColor(0.0, 0.0, 0.0, 0.0);
-    deactivateCurrentTarget();
+    util::glDeactivateCurrentTarget();
 }
 
-} // namespace
+}  // namespace

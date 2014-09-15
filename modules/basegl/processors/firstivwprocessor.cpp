@@ -32,6 +32,7 @@
 
 #include "firstivwprocessor.h"
 #include <inviwo/core/datastructures/buffer/bufferramprecision.h>
+#include <modules/opengl/textureutils.h>
 
 namespace inviwo {
 
@@ -43,7 +44,7 @@ ProcessorCodeState(FirstIvwProcessor, CODE_STATE_STABLE);
 
 
 FirstIvwProcessor::FirstIvwProcessor()
-    : ProcessorGL()
+    : Processor()
     , color_("color", "Color", vec3(1.0f), vec3(0.0f), vec3(1.0f), vec3(0.1f))
     , outport_("outport", COLOR_ONLY) {
     addProperty(color_);
@@ -51,7 +52,7 @@ FirstIvwProcessor::FirstIvwProcessor()
 }
 
 void FirstIvwProcessor::initialize() {
-    ProcessorGL::initialize();
+    Processor::initialize();
     shader_ = new Shader("minimal.vert", "img_color.frag");
 
     quad_ = new Position2dBuffer();
@@ -74,12 +75,12 @@ void FirstIvwProcessor::deinitialize() {
     delete shader_;
     delete quad_;
     delete triangle_;
-    ProcessorGL::deinitialize();
+    Processor::deinitialize();
 }
 
 void FirstIvwProcessor::process() {
     glDisable(GL_DEPTH_TEST);
-    activateAndClearTarget(outport_);
+    util::glActivateAndClearTarget(outport_);
     shader_->activate();
 
     //Render Quad
@@ -95,7 +96,7 @@ void FirstIvwProcessor::process() {
     triangleGL_->disable();
 
     shader_->deactivate();
-    deactivateCurrentTarget();
+    util::glDeactivateCurrentTarget();
     glEnable(GL_DEPTH_TEST);
 }
 

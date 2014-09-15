@@ -32,6 +32,7 @@
 
 #include "background.h"
 #include <modules/opengl/glwrap/textureunit.h>
+#include <modules/opengl/textureutils.h>
 
 namespace inviwo {
 
@@ -42,17 +43,16 @@ ProcessorCategory(Background, "Image Operation");
 ProcessorCodeState(Background, CODE_STATE_EXPERIMENTAL);
 
 Background::Background()
-    : ProcessorGL(),
-      inport_("inport"),
-      outport_("outport", &inport_, COLOR_ONLY),
-      backgroundStyle_("backgroundStyle", "Style", PropertyOwner::INVALID_RESOURCES),
-      color1_("color1", "Color 1", vec4(0.0)),
-      color2_("color2", "Color 2", vec4(1.0)),
-      checkerBoardSize_("checkerBoardSize","Checker Board Size",ivec2(10,10),ivec2(1,1),ivec2(256,256)),
-      shader_(NULL)
-
-{
-      
+    : Processor()
+    , inport_("inport")
+    , outport_("outport", &inport_, COLOR_ONLY)
+    , backgroundStyle_("backgroundStyle", "Style", PropertyOwner::INVALID_RESOURCES)
+    , color1_("color1", "Color 1", vec4(0.0))
+    , color2_("color2", "Color 2", vec4(1.0))
+    , checkerBoardSize_("checkerBoardSize", "Checker Board Size", ivec2(10, 10), ivec2(1, 1),
+                        ivec2(256, 256))
+    , switchColors_("Switch colors", "switch colors", PropertyOwner::VALID)
+    , shader_(NULL) {
     addPort(inport_);
     addPort(outport_);
     backgroundStyle_.addOption("linearGradient", "Linear gradient", 0);
@@ -65,13 +65,21 @@ Background::Background()
     color2_.setSemantics(PropertySemantics::Color);
     addProperty(color2_);
     addProperty(checkerBoardSize_);
+    addProperty(switchColors_);
+    switchColors_.onChange(this, &Background::switchColors);
 }
 
 Background::~Background() {
 }
 
+void Background::switchColors() {
+    vec4 tmp = color1_.get();
+    color1_.set(color2_.get());
+    color2_.set(tmp);
+}
+
 void Background::initialize() {
-    ProcessorGL::initialize();
+    Processor::initialize();
     shader_ = new Shader("background.frag", false);
     initializeResources();
 }
@@ -119,32 +127,34 @@ void Background::process() {
         initializeResources();
     }
 
-    activateTarget(outport_);
+    util::glActivateTarget(outport_);
     TextureUnit srcColorUnit, srcDepthUnit;
 
     if (inport_.hasData())
-        bindTextures(inport_, srcColorUnit.getEnum(),srcDepthUnit.getEnum());
+        util::glBindTextures(inport_, srcColorUnit.getEnum(),srcDepthUnit.getEnum());
 
     shader_->activate();
-    setGlobalShaderParameters(shader_);
+    
+    vec2 dim = static_cast<vec2>(outport_.getDimension());
+    shader_->setUniform("screenDim_", dim);
+    shader_->setUniform("screenDimRCP_", vec2(1.0f,1.0f)/dim);
+
     shader_->setUniform("srcColorTex_", srcColorUnit.getUnitNumber());
     shader_->setUniform("depth_", srcDepthUnit.getUnitNumber());
 
     if (inport_.hasData())
-        setTextureParameters(inport_, shader_, "srcColorParameters_");
+        util::glSetTextureParameters(inport_, shader_, "srcColorParameters_");
 
     shader_->setUniform("hasData_",inport_.hasData());
     shader_->setUniform("color1_", color1_.get());
     shader_->setUniform("color2_", color2_.get());
     shader_->setUniform("checkerBoardSize_", checkerBoardSize_.get());
     shader_->setUniform("textureSize_", (ivec2)outport_.getData()->getDimension());
-    renderImagePlaneRect();
+    
+    util::glSingleDrawImagePlaneRect();
     shader_->deactivate();
-    deactivateCurrentTarget();
+    util::glDeactivateCurrentTarget();
 }
 
-bool Background::isReady()const {
-    return true;
-}
 
 } // namespace
