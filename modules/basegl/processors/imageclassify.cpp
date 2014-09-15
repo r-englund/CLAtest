@@ -32,21 +32,24 @@
 
 #include "imageclassify.h"
 #include <modules/opengl/glwrap/textureunit.h>
+#include <modules/opengl/textureutils.h>
+#include <modules/opengl/image/layergl.h>
+#include <modules/opengl/glwrap/shader.h>
 
 namespace inviwo {
 
 ProcessorClassIdentifier(ImageClassify, "org.inviwo.ImageClassify");
-ProcessorDisplayName(ImageClassify,  "Image Classify");
+ProcessorDisplayName(ImageClassify, "Image Classify");
 ProcessorTags(ImageClassify, Tags::GL);
 ProcessorCategory(ImageClassify, "Image Operation");
 ProcessorCodeState(ImageClassify, CODE_STATE_EXPERIMENTAL);
 
 ImageClassify::ImageClassify()
-    : ProcessorGL(),
-      inport_("inport"),
-      outport_("outport", &inport_, COLOR_ONLY),
-      transferFunction_("transferFunction", "Transfer function", TransferFunction())
-{
+    : Processor()
+    , inport_("inport")
+    , outport_("outport", &inport_, COLOR_ONLY)
+    , transferFunction_("transferFunction", "Transfer function", TransferFunction()) {
+    
     shader_ = NULL;
     addPort(inport_);
     addPort(outport_);
@@ -56,7 +59,7 @@ ImageClassify::ImageClassify()
 ImageClassify::~ImageClassify() {}
 
 void ImageClassify::initialize() {
-    ProcessorGL::initialize();
+    Processor::initialize();
     shader_ = new Shader("img_classify.frag");
 }
 
@@ -71,15 +74,16 @@ void ImageClassify::process() {
     const LayerGL* transferFunctionGL = tfLayer->getRepresentation<LayerGL>();
     transferFunctionGL->bindTexture(transFuncUnit.getEnum());
     TextureUnit inUnit;
-    bindColorTexture(inport_, inUnit.getEnum());
-    activateTarget(outport_);
+    util::glBindColorTexture(inport_, inUnit.getEnum());
+    util::glActivateTarget(outport_);
     shader_->activate();
     shader_->setUniform("inport_", inUnit.getUnitNumber());
-    shader_->setUniform("dimension_", vec2(1.f / outport_.getDimension()[0], 1.f / outport_.getDimension()[1]));
+    shader_->setUniform("dimension_",
+                        vec2(1.f / outport_.getDimension()[0], 1.f / outport_.getDimension()[1]));
     shader_->setUniform("transferFunc_", transFuncUnit.getUnitNumber());
-    renderImagePlaneRect();
+    util::glSingleDrawImagePlaneRect();
     shader_->deactivate();
-    deactivateCurrentTarget();
+    util::glDeactivateCurrentTarget();
 }
 
-} // namespace
+}  // namespace

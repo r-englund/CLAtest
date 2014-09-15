@@ -31,22 +31,20 @@
  *********************************************************************************/
 
 #include "imagegrayscale.h"
+#include <modules/opengl/textureutils.h>
+#include <modules/opengl/glwrap/shader.h>
 
 namespace inviwo {
 
 ProcessorClassIdentifier(ImageGrayscale, "org.inviwo.ImageGrayscale");
-ProcessorDisplayName(ImageGrayscale,  "Image Grayscale");
+ProcessorDisplayName(ImageGrayscale, "Image Grayscale");
 ProcessorTags(ImageGrayscale, Tags::GL);
 ProcessorCategory(ImageGrayscale, "Image Operation");
 ProcessorCodeState(ImageGrayscale, CODE_STATE_EXPERIMENTAL);
 
 ImageGrayscale::ImageGrayscale()
-    : ProcessorGL(),
-      inport_("inport"),
-      outport_("outport", &inport_, COLOR_ONLY)
+    : Processor(), inport_("inport"), outport_("outport", &inport_, COLOR_ONLY), shader_(NULL) {
 
-{
-    shader_ = NULL;
     addPort(inport_);
     addPort(outport_);
 }
@@ -54,7 +52,7 @@ ImageGrayscale::ImageGrayscale()
 ImageGrayscale::~ImageGrayscale() {}
 
 void ImageGrayscale::initialize() {
-    ProcessorGL::initialize();
+    Processor::initialize();
     shader_ = new Shader("img_graysc.frag");
 }
 
@@ -64,14 +62,15 @@ void ImageGrayscale::deinitialize() {
 }
 
 void ImageGrayscale::process() {
-    activateTarget(outport_);
-    bindColorTexture(inport_, GL_TEXTURE0);
+    util::glActivateTarget(outport_);
+    util::glBindColorTexture(inport_, GL_TEXTURE0);
     shader_->activate();
     shader_->setUniform("inport_", 0);
-    shader_->setUniform("screenDimRCP_", vec2(1.f / outport_.getDimension()[0], 1.f / outport_.getDimension()[1]));
-    renderImagePlaneRect();
+    shader_->setUniform("screenDimRCP_",
+                        vec2(1.f / outport_.getDimension()[0], 1.f / outport_.getDimension()[1]));
+    util::glSingleDrawImagePlaneRect();
     shader_->deactivate();
-    deactivateCurrentTarget();
+    util::glDeactivateCurrentTarget();
 }
 
-} // namespace
+}  // namespace

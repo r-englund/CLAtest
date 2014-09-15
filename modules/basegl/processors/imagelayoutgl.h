@@ -35,6 +35,7 @@
 
 #include <modules/basegl/baseglmoduledefine.h>
 #include <inviwo/core/common/inviwo.h>
+#include <inviwo/core/processors/processor.h>
 #include <inviwo/core/interaction/events/mouseevent.h>
 #include <inviwo/core/properties/boolproperty.h>
 #include <inviwo/core/properties/baseoptionproperty.h>
@@ -42,8 +43,6 @@
 #include <inviwo/core/ports/imageport.h>
 #include <inviwo/core/ports/multidatainport.h>
 #include <modules/opengl/inviwoopengl.h>
-#include <modules/opengl/processorgl.h>
-#include <modules/opengl/glwrap/shader.h>
 
 namespace inviwo {
 
@@ -58,8 +57,10 @@ namespace ImageLayoutTypes {
     };
 }
 
+class Shader;
+
 //Right mouse click activates the area for mouse/key interactions.
-class IVW_MODULE_BASEGL_API ImageLayoutGL : public ProcessorGL {
+class IVW_MODULE_BASEGL_API ImageLayoutGL : public Processor {
 public:
     ImageLayoutGL();
     ~ImageLayoutGL();

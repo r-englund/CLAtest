@@ -35,6 +35,7 @@
 #include <modules/opengl/glwrap/shader.h>
 #include <modules/opengl/glwrap/textureunit.h>
 #include <modules/opengl/shaderutils.h>
+#include <modules/opengl/textureutils.h>
 
 namespace inviwo {
 
@@ -45,7 +46,7 @@ ProcessorCategory(ISORaycaster, "Volume Rendering");
 ProcessorCodeState(ISORaycaster, CODE_STATE_STABLE);
 
 ISORaycaster::ISORaycaster()
-    : ProcessorGL()
+    : Processor()
     , shader_(0)
     , volumePort_("volume")
     , entryPort_("entry-points")
@@ -80,16 +81,15 @@ ISORaycaster::ISORaycaster()
 
 
 void ISORaycaster::initialize() {
-    ProcessorGL::initialize();
+    Processor::initialize();
     shader_ = new Shader("isoraycasting.frag", false);
     initializeResources();
 }
 
 void ISORaycaster::deinitialize() {
     if (shader_) delete shader_;
-
-    shader_ = 0;
-    ProcessorGL::deinitialize();
+    shader_ = NULL;
+    Processor::deinitialize();
 }
 
 
@@ -142,8 +142,8 @@ void ISORaycaster::process() {
     }
     LGL_ERROR;
     TextureUnit entryColorUnit, entryDepthUnit, exitColorUnit, exitDepthUnit;
-    bindTextures(entryPort_, entryColorUnit.getEnum(), entryDepthUnit.getEnum());
-    bindTextures(exitPort_, exitColorUnit.getEnum(), exitDepthUnit.getEnum());
+    util::glBindTextures(entryPort_, entryColorUnit.getEnum(), entryDepthUnit.getEnum());
+    util::glBindTextures(exitPort_, exitColorUnit.getEnum(), exitDepthUnit.getEnum());
 
     TextureUnit volUnit;
     const Volume* volume = volumePort_.getData();
@@ -151,17 +151,19 @@ void ISORaycaster::process() {
     volumeGL->bindTexture(volUnit.getEnum());
 
 
-    activateAndClearTarget(outport_);
+    util::glActivateAndClearTarget(outport_);
     shader_->activate();
-    setGlobalShaderParameters(shader_);
     
+    vec2 dim = static_cast<vec2>(outport_.getDimension());
+    shader_->setUniform("screenDim_", dim);
+    shader_->setUniform("screenDimRCP_", vec2(1.0f,1.0f)/dim);
   
     shader_->setUniform("entryColorTex_", entryColorUnit.getUnitNumber());
     shader_->setUniform("entryDepthTex_", entryDepthUnit.getUnitNumber());
-    setTextureParameters(entryPort_, shader_, "entryParameters_");
+    util::glSetTextureParameters(entryPort_, shader_, "entryParameters_");
     shader_->setUniform("exitColorTex_", exitColorUnit.getUnitNumber());
     shader_->setUniform("exitDepthTex_", exitDepthUnit.getUnitNumber());
-    setTextureParameters(exitPort_, shader_, "exitParameters_");
+    util::glSetTextureParameters(exitPort_, shader_, "exitParameters_");
 
     shader_->setUniform("volume_", volUnit.getUnitNumber());
     volumeGL->setVolumeUniforms(volumePort_.getData(), shader_, "volumeParameters_");
@@ -175,9 +177,9 @@ void ISORaycaster::process() {
     util::glSetShaderUniforms(shader_, camera_);
     util::glSetShaderUniforms(shader_, lighting_);
 
-    renderImagePlaneRect();
+    util::glSingleDrawImagePlaneRect();
     shader_->deactivate();
-    deactivateCurrentTarget();
+    util::glDeactivateCurrentTarget();
 }
 
 } // namespace
