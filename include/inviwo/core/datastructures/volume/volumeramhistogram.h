@@ -89,7 +89,7 @@ public:
             }
             break;
         }
-        return static_cast<size_t>(std::ceil((dataRange.y - dataRange.x) / delta) + 1);
+        return std::min(maxNumberOfBins,static_cast<size_t>(std::ceil((dataRange.y - dataRange.x) / delta) + 1));
     }
 
 private:
