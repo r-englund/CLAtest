@@ -1,9 +1,6 @@
 import sys
 import inviwo_internal
 
-import sys
-import inviwo_internal
-
 class OutputRedirectStdout(object):
     def __init__(self,out):
         self.old = out

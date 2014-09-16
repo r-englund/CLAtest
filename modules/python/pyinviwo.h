@@ -65,7 +65,7 @@ namespace inviwo {
 class IVW_MODULE_PYTHON_API PyInviwo : public Singleton<PyInviwo> , public Observable<PyInviwoObserver> {
 public:
     PyInviwo();
-    ~PyInviwo();
+    virtual ~PyInviwo();
 
 
 
