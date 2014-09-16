@@ -44,9 +44,14 @@ file(GLOB_RECURSE LIBOPENJPEG_SOURCE_FILES ${CMAKE_CURRENT_SOURCE_DIR}/libopenjp
 list(REMOVE_ITEM LIBOPENJPEG_SOURCE_FILES ${CMAKE_CURRENT_SOURCE_DIR}/libopenjpeg/t1_generate_luts.c)
 
 #--------------------------------------------------------------------
-# Add LIBPNG files
-#file(GLOB_RECURSE LIBPNG_HEADER_FILES ${CMAKE_CURRENT_SOURCE_DIR}/libpng/*.h)
-#file(GLOB_RECURSE LIBPNG_SOURCE_FILES ${CMAKE_CURRENT_SOURCE_DIR}/libpng/*.c)
+# Link to LIBPNG or add LIBPNG files
+find_package(PNG QUIET)
+if(PNG_FOUND)
+    ivw_add_dependencies(PNG)
+else()
+    file(GLOB_RECURSE LIBPNG_HEADER_FILES ${CMAKE_CURRENT_SOURCE_DIR}/libpng/*.h)
+    file(GLOB_RECURSE LIBPNG_SOURCE_FILES ${CMAKE_CURRENT_SOURCE_DIR}/libpng/*.c)
+endif(PNG_FOUND)
 
 #--------------------------------------------------------------------
 # Add LIBRawLite files
