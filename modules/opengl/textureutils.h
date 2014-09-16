@@ -42,6 +42,8 @@
 #include <modules/opengl/glwrap/textureunit.h>
 
 namespace inviwo {
+
+class BufferObjectArray;
 class Shader;
 
 namespace util {
@@ -106,6 +108,11 @@ IVW_MODULE_OPENGL_API void glSetTextureParameters(const ImageInport& inport, Sha
                                                   const std::string samplerID);
 IVW_MODULE_OPENGL_API void glSetTextureParameters(const ImageOutport& outport, Shader* shader,
                                                   const std::string samplerID);
+
+// Draw image plane.
+IVW_MODULE_OPENGL_API BufferObjectArray* glEnableImagePlaneRect();
+
+IVW_MODULE_OPENGL_API void glDisableImagePlaneRect(BufferObjectArray*);
 
 IVW_MODULE_OPENGL_API void glSingleDrawImagePlaneRect();
 

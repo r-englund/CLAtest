@@ -57,7 +57,6 @@ public:
  * 
  * \brief The base class for all data objects.
  *
- *  Data is the base class for all the data objects.
  *  It is responsible for holding the DateRepresentations
  *  and the format of the data.
  *
