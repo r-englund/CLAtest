@@ -45,8 +45,8 @@ list(REMOVE_ITEM LIBOPENJPEG_SOURCE_FILES ${CMAKE_CURRENT_SOURCE_DIR}/libopenjpe
 
 #--------------------------------------------------------------------
 # Add LIBPNG files
-file(GLOB_RECURSE LIBPNG_HEADER_FILES ${CMAKE_CURRENT_SOURCE_DIR}/libpng/*.h)
-file(GLOB_RECURSE LIBPNG_SOURCE_FILES ${CMAKE_CURRENT_SOURCE_DIR}/libpng/*.c)
+#file(GLOB_RECURSE LIBPNG_HEADER_FILES ${CMAKE_CURRENT_SOURCE_DIR}/libpng/*.h)
+#file(GLOB_RECURSE LIBPNG_SOURCE_FILES ${CMAKE_CURRENT_SOURCE_DIR}/libpng/*.c)
 
 #--------------------------------------------------------------------
 # Add LIBRawLite files
