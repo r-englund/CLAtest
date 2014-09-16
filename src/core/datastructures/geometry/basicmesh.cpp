@@ -399,6 +399,104 @@ BasicMesh* BasicMesh::colorsphere(const vec3& center,
     return mesh;
 }
 
+static vec3 V(const mat4& m,const vec3 v){
+    vec4 V = m * vec4(v,1);
+    return V.xyz() / V.w;
+}
+
+static vec3 N(const mat4& m,const vec3 v){
+    vec4 V = m * vec4(v,0);
+    return V.xyz();
+}
+
+BasicMesh* BasicMesh::box(const mat4& m, const vec4 &color){
+    BasicMesh* mesh = new BasicMesh();
+    mesh->setBasisAndOffset(mat4(1));
+    
+    IndexBufferRAM* indices = mesh->addIndexBuffer(GeometryEnums::TRIANGLES,GeometryEnums::NONE);
+
+    //Front back
+    mesh->addVertex(V(m,vec3(0,0,0)),N(m,vec3(0,0,-1)),vec3(0,0,0),color);    
+    mesh->addVertex(V(m,vec3(1,0,0)),N(m,vec3(0,0,-1)),vec3(1,0,0),color);    
+    mesh->addVertex(V(m,vec3(1,1,0)),N(m,vec3(0,0,-1)),vec3(1,1,0),color);    
+    mesh->addVertex(V(m,vec3(0,1,0)),N(m,vec3(0,0,-1)),vec3(0,1,0),color);    
+    int o = 0;
+    indices->add(0);
+    indices->add(2);    
+    indices->add(1);
+    indices->add(0);
+    indices->add(3);    
+    indices->add(2);
+
+    mesh->addVertex(V(m,vec3(0,0,1)),N(m,vec3(0,0,1)),vec3(0,0,1),color);    
+    mesh->addVertex(V(m,vec3(1,0,1)),N(m,vec3(0,0,1)),vec3(1,0,1),color);    
+    mesh->addVertex(V(m,vec3(1,1,1)),N(m,vec3(0,0,1)),vec3(1,1,1),color);    
+    mesh->addVertex(V(m,vec3(0,1,1)),N(m,vec3(0,0,1)),vec3(0,1,1),color);    
+    o += 4;
+    indices->add(0+o); 
+    indices->add(1+o);   
+    indices->add(2+o);
+    indices->add(0+o);    
+    indices->add(2+o);
+    indices->add(3+o);
+
+
+
+    //Right left
+    mesh->addVertex(V(m,vec3(0,0,0)),N(m,vec3(-1,0,0)),vec3(0,0,0),color);       
+    mesh->addVertex(V(m,vec3(0,1,0)),N(m,vec3(-1,0,0)),vec3(0,1,0),color);    
+    mesh->addVertex(V(m,vec3(0,1,1)),N(m,vec3(-1,0,0)),vec3(0,1,1),color);    
+    mesh->addVertex(V(m,vec3(0,0,1)),N(m,vec3(-1,0,0)),vec3(0,0,1),color);    
+    o += 4;
+    indices->add(0+o); 
+    indices->add(2+o);   
+    indices->add(1+o);
+    indices->add(0+o);  
+    indices->add(3+o);  
+    indices->add(2+o);
+
+    mesh->addVertex(V(m,vec3(1,0,0)),N(m,vec3(1,0,0)),vec3(1,0,0),color);      
+    mesh->addVertex(V(m,vec3(1,1,0)),N(m,vec3(1,0,0)),vec3(1,1,0),color);    
+    mesh->addVertex(V(m,vec3(1,1,1)),N(m,vec3(1,0,0)),vec3(1,1,1),color);    
+    mesh->addVertex(V(m,vec3(1,0,1)),N(m,vec3(1,0,0)),vec3(1,0,1),color);    
+    o += 4;
+    indices->add(0+o);   
+    indices->add(1+o);
+    indices->add(2+o); 
+    indices->add(0+o);  
+    indices->add(2+o);
+    indices->add(3+o);  
+
+
+
+    //top bottom
+    mesh->addVertex(V(m,vec3(0,1,0)),N(m,vec3(0,1,0)),vec3(0,1,0),color);    
+    mesh->addVertex(V(m,vec3(1,1,0)),N(m,vec3(0,1,0)),vec3(1,1,0),color);    
+    mesh->addVertex(V(m,vec3(1,1,1)),N(m,vec3(0,1,0)),vec3(1,1,1),color);    
+    mesh->addVertex(V(m,vec3(0,1,1)),N(m,vec3(0,1,0)),vec3(0,1,1),color);    
+    o += 4;
+    indices->add(0+o);   
+    indices->add(2+o); 
+    indices->add(1+o);
+    indices->add(0+o);  
+    indices->add(3+o);  
+    indices->add(2+o);
+
+    mesh->addVertex(V(m,vec3(0,0,0)),N(m,vec3(0,-1,0)),vec3(0,-1,0),color);     
+    mesh->addVertex(V(m,vec3(1,0,0)),N(m,vec3(0,-1,0)),vec3(1,-1,0),color);    
+    mesh->addVertex(V(m,vec3(1,0,1)),N(m,vec3(0,-1,0)),vec3(1,-1,1),color);    
+    mesh->addVertex(V(m,vec3(0,0,1)),N(m,vec3(0,-1,0)),vec3(0,-1,1),color);    
+    o += 4;
+    indices->add(0+o);    
+    indices->add(1+o);
+    indices->add(2+o);
+    indices->add(0+o);    
+    indices->add(2+o);
+    indices->add(3+o);
+
+    return mesh;
+}
+
 BasicMesh* BasicMesh::coordindicator(const vec3& center,
                                      const float& size) {
 

@@ -52,6 +52,7 @@ public:
     static BasicMesh* colorsphere(const vec3& center,
                                   const float& radius);
 
+    static BasicMesh* box(const mat4& orientation, const vec4 &color = vec4(1,1,1,1));
 
     static BasicMesh* coordindicator(const vec3& center,
                                      const float& size);
