@@ -31,6 +31,7 @@
  *********************************************************************************/
 
 #include <inviwo/core/util/commandlineparser.h>
+#include <inviwo/core/common/inviwoapplication.h>
 
 #include <gtest/gtest.h>
 namespace inviwo{

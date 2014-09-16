@@ -34,7 +34,7 @@
 #include <inviwo/core/metadata/metadata.h>
 #include <inviwo/core/io/serialization/ivwserializable.h>
 #include <string.h>
-
+#include <inviwo/core/common/inviwoapplication.h>
 #include <gtest/gtest.h>
 
 

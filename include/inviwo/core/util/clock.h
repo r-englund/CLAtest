@@ -37,6 +37,9 @@
 #include <string>
 #include <time.h>
 
+#ifdef WIN32
+#include <Windows.h>
+#endif
 
 namespace inviwo {
 

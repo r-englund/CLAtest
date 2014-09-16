@@ -37,6 +37,8 @@
 #include <inviwo/core/resources/templateresource.h>
 #include <inviwo/core/datastructures/volume/volumeramprecision.h>
 #include <modules/opengl/volume/volumegl.h>
+#include <inviwo/core/common/inviwoapplication.h>
+#include <inviwo/core/util/urlparser.h>
 #include <math.h>
 
 #include <gtest/gtest.h>

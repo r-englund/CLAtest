@@ -32,6 +32,7 @@
 
 #include <inviwo/core/util/observer.h>
 #include <inviwo/core/util/assertion.h>
+#include <sstream>
 
 namespace inviwo {
 

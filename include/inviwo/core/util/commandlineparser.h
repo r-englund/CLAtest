@@ -34,12 +34,15 @@
 #define IVW_COMMANDLINEPARSER_H
 
 #include <inviwo/core/common/inviwo.h>
-#include <inviwo/core/common/inviwo.h>
 
-#undef HAVE_CONFIG_H
-#include <tclap/CmdLine.h>
 #include <string>
 #include <vector>
+
+namespace TCLAP {
+class CmdLine;
+template <typename T> class ValueArg;
+class SwitchArg;
+}
 
 namespace inviwo {
 

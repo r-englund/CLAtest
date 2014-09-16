@@ -1022,7 +1022,7 @@ template<> inline DataFormatEnums::Id DataVec3UINT64::id() { return DataFormatEn
 
 #define DataNormalizedSignedVec3(F, G) \
     template<> inline double F::valueToNormalizedDouble(void* val) const { return normalizeSignedVec3<double, G::type, G::bits>(val).x; } \
-    template<> inline dvec2 F::valueToNormalizedVec2Double(void* val) const { return normalizeSignedVec2<double, G::type, G::bits>(val).xy(); } \
+    template<> inline dvec2 F::valueToNormalizedVec2Double(void* val) const { return normalizeSignedVec3<double, G::type, G::bits>(val).xy(); } \
     template<> inline dvec3 F::valueToNormalizedVec3Double(void* val) const { return normalizeSignedVec3<double, G::type, G::bits>(val); } \
     template<> inline dvec4 F::valueToNormalizedVec4Double(void* val) const { return vec3ToVec4<double>(normalizeSignedVec3<double, G::type, G::bits>(val)); } \
     DataConvertVec3(F, G)

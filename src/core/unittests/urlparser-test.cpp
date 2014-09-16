@@ -31,7 +31,7 @@
  *********************************************************************************/
 
 #include <inviwo/core/util/urlparser.h>
-
+#include <inviwo/core/common/inviwoapplication.h>
 #include <gtest/gtest.h>
 
 
