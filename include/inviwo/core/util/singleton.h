@@ -35,6 +35,7 @@
 
 #include <inviwo/core/util/assertion.h>
 #include <inviwo/core/common/inviwocoredefine.h>
+#include <sstream>
 #include <vector>
 
 namespace inviwo {

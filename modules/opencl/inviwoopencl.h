@@ -36,6 +36,7 @@
 #include <iostream>
 #include <glm/glm.hpp>
 
+#include <inviwo/core/common/inviwo.h>
 #include <inviwo/core/util/formats.h>
 #include <inviwo/core/util/singleton.h>
 #include <inviwo/core/common/inviwoapplication.h>

@@ -38,6 +38,7 @@
 #include <modules/unittests/logerrorcounter.h>
 #include "inviwo/core/datastructures/transferfunction.h"
 #include "inviwo/core/properties/transferfunctionproperty.h"
+#include <inviwo/core/common/inviwoapplication.h>
 
 namespace inviwo{
 

@@ -32,6 +32,9 @@
 
 #include <inviwo/core/util/commandlineparser.h>
 
+#undef HAVE_CONFIG_H
+#include <tclap/CmdLine.h>
+
 namespace inviwo {
 
 CommandLineParser::CommandLineParser() {

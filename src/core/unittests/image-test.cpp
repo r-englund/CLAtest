@@ -36,6 +36,7 @@
 #include <inviwo/core/datastructures/image/image.h>
 #include <inviwo/core/datastructures/image/layerdisk.h>
 #include <inviwo/core/datastructures/image/layerramprecision.h>
+#include <inviwo/core/common/inviwoapplication.h>
 
 namespace inviwo{
 
