@@ -32,6 +32,10 @@
 
 #include "lightvolumegl.h"
 #include <modules/opengl/volume/volumegl.h>
+#include <modules/opengl/glwrap/framebufferobject.h>
+#include <modules/opengl/glwrap/shader.h>
+#include <modules/opengl/image/layergl.h>
+#include <modules/opengl/textureutils.h>
 #include <inviwo/core/datastructures/light/pointlight.h>
 #include <inviwo/core/datastructures/light/directionallight.h>
 
@@ -105,7 +109,7 @@ inline void definePermutationMatrices(mat4& permMat, mat4& permLightMat, int per
 }
 
 LightVolumeGL::LightVolumeGL()
-    : ProcessorGL(),
+    : Processor(),
       inport_("inport"),
       outport_("outport"),
       lightSource_("lightSource"),
@@ -144,7 +148,8 @@ LightVolumeGL::~LightVolumeGL() {
 }
 
 void LightVolumeGL::initialize() {
-    ProcessorGL::initialize();
+    Processor::initialize();
+
     propagationShader_ = new Shader("lighting/lightpropagation.vert", "lighting/lightpropagation.geom", "lighting/lightpropagation.frag", true);
     mergeShader_ = new Shader("lighting/lightvolumeblend.vert", "lighting/lightvolumeblend.geom", "lighting/lightvolumeblend.frag", true);
 
@@ -157,7 +162,6 @@ void LightVolumeGL::initialize() {
 }
 
 void LightVolumeGL::deinitialize() {
-    ProcessorGL::deinitialize();
     delete propagationShader_;
     propagationShader_ = NULL;
     delete mergeShader_;
@@ -172,6 +176,8 @@ void LightVolumeGL::deinitialize() {
 
     delete mergeFBO_;
     mergeFBO_ = NULL;
+    
+    Processor::deinitialize();
 }
 
 void LightVolumeGL::propagation3DTextureParameterFunction(Texture*) {
@@ -213,7 +219,8 @@ void LightVolumeGL::process() {
     propagationShader_->setUniform("transferFunc_", transFuncUnit.getUnitNumber());
     propagationShader_->setUniform("lightVolumeParameters_.dimensions_", volumeDimOutF_);
     propagationShader_->setUniform("lightVolumeParameters_.dimensionsRCP_", volumeDimOutFRCP_);
-    enableDrawImagePlaneRect();
+
+    BufferObjectArray* rectArray = util::glEnableImagePlaneRect();
 
     //Perform propagation passes
     for (int i=0; i<2; ++i) {
@@ -239,14 +246,15 @@ void LightVolumeGL::process() {
         for (unsigned int z=0; z<volumeDimOut_.z; ++z) {
             glFramebufferTexture3DEXT(GL_FRAMEBUFFER_EXT, GL_COLOR_ATTACHMENT0_EXT, GL_TEXTURE_3D, propParams_[i].vol->getTexture()->getID(), 0, z);
             propagationShader_->setUniform("sliceNum_", static_cast<GLint>(z));
-            singleDrawImagePlaneRect();
+            glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
             glFlush();
         }
 
         propParams_[i].fbo->deactivate();
     }
 
-    disableDrawImagePlaneRect();
+    util::glDisableImagePlaneRect(rectArray);
+
     propagationShader_->deactivate();
     mergeShader_->activate();
     mergeShader_->setUniform("lightVolume_", lightVolUnit[0].getUnitNumber());
@@ -263,7 +271,7 @@ void LightVolumeGL::process() {
     if (reattach)
         mergeFBO_->attachColorTexture(outVolumeGL->getTexture(), 0);
 
-    renderImagePlaneRect(static_cast<int>(volumeDimOut_.z));
+    util::glMultiDrawImagePlaneRect(static_cast<int>(volumeDimOut_.z));
     mergeShader_->deactivate();
     mergeFBO_->deactivate();
 }
@@ -481,6 +489,11 @@ void LightVolumeGL::updatePermuationMatrices(const vec3& lightDir, PropagationPa
     blendingFactor_ = static_cast<float>(1.f-(2.f*glm::acos<float>(glm::dot(invertedLightPosNorm, -faceNormals_[closestFace]))/M_PI));
     //LogInfo("Blending Factor: " << blendingFactor_);
     calculatedOnes_ = true;
+}
+ 
+LightVolumeGL::PropagationParameters::~PropagationParameters() { 
+    delete fbo; 
+    delete vol;
 }
 
 } // namespace

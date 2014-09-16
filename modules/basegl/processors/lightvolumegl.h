@@ -36,19 +36,22 @@
 #include <modules/basegl/baseglmoduledefine.h>
 #include <inviwo/core/common/inviwo.h>
 #include <modules/opengl/inviwoopengl.h>
-#include <modules/opengl/processorgl.h>
+#include <inviwo/core/processors/processor.h>
 #include <inviwo/core/ports/volumeport.h>
 #include <inviwo/core/ports/datainport.h>
 #include <inviwo/core/datastructures/baselightsource.h>
 #include <inviwo/core/properties/boolproperty.h>
 #include <inviwo/core/properties/baseoptionproperty.h>
 #include <inviwo/core/properties/transferfunctionproperty.h>
-#include <modules/opengl/glwrap/framebufferobject.h>
-#include <modules/opengl/volume/volumegl.h>
 
 namespace inviwo {
 
-class IVW_MODULE_BASEGL_API LightVolumeGL : public ProcessorGL {
+class FrameBufferObject;
+class Shader;
+class Texture;
+class VolumeGL;
+
+class IVW_MODULE_BASEGL_API LightVolumeGL : public Processor {
 public:
     LightVolumeGL();
     ~LightVolumeGL();
@@ -72,7 +75,7 @@ protected:
         vec4 permutedLightDirection;
 
         PropagationParameters() : fbo(NULL), vol(NULL) {}
-        ~PropagationParameters() { delete fbo; delete vol; };
+        ~PropagationParameters();
     };
 
     bool lightSourceChanged();

@@ -212,31 +212,30 @@ void glSetTextureParameters(const ImageOutport& outport, Shader* shader,
     glSetTextureParameters(outport.getConstData(), shader, samplerID);
 }
 
-void glSingleDrawImagePlaneRect() {
+BufferObjectArray* glEnableImagePlaneRect() {
     BufferObjectArray* rectArray = new BufferObjectArray();
     CanvasGL::attachImagePlanRect(rectArray);
     glDepthFunc(GL_ALWAYS);
     rectArray->bind();
+    return rectArray;
+}
 
-    glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
-
+void glDisableImagePlaneRect(BufferObjectArray* rectArray) {
     rectArray->unbind();
     glDepthFunc(GL_LESS);
+}
 
+void glSingleDrawImagePlaneRect() {
+    BufferObjectArray* rectArray = glEnableImagePlaneRect();
+    glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+    glDisableImagePlaneRect(rectArray);
     delete rectArray;
 }
 
 void glMultiDrawImagePlaneRect(int instances) {
-    BufferObjectArray* rectArray = new BufferObjectArray();
-    CanvasGL::attachImagePlanRect(rectArray);
-    glDepthFunc(GL_ALWAYS);
-    rectArray->bind();
-
+    BufferObjectArray* rectArray = glEnableImagePlaneRect();
     glDrawArraysInstanced(GL_TRIANGLE_STRIP, 0, 4, instances);
-
-    rectArray->unbind();
-    glDepthFunc(GL_LESS);
-
+    glDisableImagePlaneRect(rectArray);
     delete rectArray;
 }
 }
