@@ -67,7 +67,6 @@ add_library(inviwo-qteditor ${SOURCE_FILES} ${MOC_FILES} ${HEADER_FILES})
 
 # Add core dependencies to this list
 ivw_add_dependencies(
-    InviwoCore
     InviwoQtWidgets
 )
 

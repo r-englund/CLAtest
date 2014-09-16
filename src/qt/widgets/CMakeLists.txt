@@ -138,15 +138,15 @@ ivw_define_qt_definitions()
 # Create library
 add_library(inviwo-qtwidgets ${SOURCE_FILES} ${MOC_FILES} ${HEADER_FILES})
 
-# Add core dependencies to this list
-ivw_add_dependencies(InviwoCore)
-
 # Add qt dependencies to this list
 if(DESIRED_QT_VERSION MATCHES 5)
     ivw_add_dependencies(Qt5Core Qt5Gui Qt5Widgets)    
 else()
     ivw_add_dependencies(Qt)
 endif()
+
+# Add core dependencies to this list
+ivw_add_dependencies(InviwoCore)
 
 #--------------------------------------------------------------------
 # Optimize compilation with pre-compilied headers based on inviwo-core
