@@ -46,7 +46,7 @@ namespace inviwo {
 PyObject* py_canvascount(PyObject* /*self*/, PyObject* /*args*/) {
     if (InviwoApplication::getPtr() && InviwoApplication::getPtr()->getProcessorNetwork()) {
         std::vector<CanvasProcessor*> canvases = InviwoApplication::getPtr()->getProcessorNetwork()->getProcessorsByType<CanvasProcessor>();
-        return Py_BuildValue("i",canvases.size());
+        return PyValueParser::toPyObject(canvases.size());
     }
 
     Py_RETURN_NONE;
