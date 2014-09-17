@@ -43,7 +43,7 @@ ProcessorCategory(HeightFieldMapper, "Heightfield");
 ProcessorCodeState(HeightFieldMapper, CODE_STATE_EXPERIMENTAL); 
 
 HeightFieldMapper::HeightFieldMapper()
-    : ProcessorGL()
+    : Processor()
     , inport_("image.inport", true)
     , outport_("image.outport", 0, COLOR_ONLY) // &inport_
     , scalingModeProp_("scalingmode", "Scaling Mode")
@@ -71,11 +71,11 @@ HeightFieldMapper::HeightFieldMapper()
 HeightFieldMapper::~HeightFieldMapper() {}
 
 void HeightFieldMapper::initialize() {
-    ProcessorGL::initialize();
+    Processor::initialize();
 }
 
 void HeightFieldMapper::deinitialize() {
-    ProcessorGL::deinitialize();
+    Processor::deinitialize();
 }
 
 void HeightFieldMapper::process() {

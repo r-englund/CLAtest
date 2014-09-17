@@ -34,6 +34,7 @@
 #include <modules/opengl/volume/volumegl.h>
 #include <modules/opengl/glwrap/shader.h>
 #include <modules/opengl/glwrap/textureunit.h>
+#include <modules/opengl/textureutils.h>
 
 namespace inviwo {
 
@@ -89,28 +90,28 @@ void SimpleRaycaster::process() {
     TextureUnit transFuncUnit;
     bindTransferFunction(transferFunction_.get(), transFuncUnit.getEnum());
     TextureUnit entryColorUnit, entryDepthUnit, exitColorUnit, exitDepthUnit;
-    bindTextures(entryPort_, entryColorUnit.getEnum(), entryDepthUnit.getEnum());
-    bindTextures(exitPort_, exitColorUnit.getEnum(), exitDepthUnit.getEnum());
+    util::glBindTextures(entryPort_, entryColorUnit.getEnum(), entryDepthUnit.getEnum());
+    util::glBindTextures(exitPort_, exitColorUnit.getEnum(), exitDepthUnit.getEnum());
     TextureUnit volUnit;
     bindVolume(volumePort_, volUnit.getEnum());
-    activateAndClearTarget(outport_);
+    util::glActivateAndClearTarget(outport_);
     shader_->activate();
     setGlobalShaderParameters(shader_);
     shader_->setUniform("transferFunc_", transFuncUnit.getUnitNumber());
     shader_->setUniform("entryColorTex_", entryColorUnit.getUnitNumber());
     shader_->setUniform("entryDepthTex_", entryDepthUnit.getUnitNumber());
-    setTextureParameters(entryPort_, shader_, "entryParameters_");
+    util::glSetTextureParameters(entryPort_, shader_, "entryParameters_");
     shader_->setUniform("exitColorTex_", exitColorUnit.getUnitNumber());
     shader_->setUniform("exitDepthTex_", exitDepthUnit.getUnitNumber());
-    setTextureParameters(exitPort_, shader_, "exitParameters_");
+    util::glSetTextureParameters(exitPort_, shader_, "exitParameters_");
     shader_->setUniform("volume_", volUnit.getUnitNumber());
     setVolumeParameters(volumePort_, shader_, "volumeParameters_");
     shader_->setUniform("samplingRate_", samplingRate_.get());
     shader_->setUniform("isoValue_", isoValue_.get());
     shader_->setUniform("channel_", channel_.getSelectedValue());
-    renderImagePlaneRect();
+    util::glSingleDrawImagePlaneRect();
     shader_->deactivate();
-    deactivateCurrentTarget();
+    util::glDeactivateCurrentTarget();
 }
 
 } // namespace

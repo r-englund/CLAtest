@@ -36,8 +36,8 @@
 #include <modules/fontrendering/fontrenderingmoduledefine.h>
 #include <inviwo/core/common/inviwo.h>
 #include <inviwo/core/ports/imageport.h>
+#include <inviwo/core/processors/processor.h>
 #include <modules/opengl/inviwoopengl.h>
-#include <modules/opengl/processorgl.h>
 #include <inviwo/core/properties/baseoptionproperty.h>
 #include <inviwo/core/properties/stringproperty.h>
 #include <inviwo/core/properties/ordinalproperty.h>
@@ -46,7 +46,9 @@
 
 namespace inviwo {
 
-class IVW_MODULE_FONTRENDERING_API TextOverlayGL : public ProcessorGL {
+class Shader;
+
+class IVW_MODULE_FONTRENDERING_API TextOverlayGL : public Processor {
 public:
     TextOverlayGL();
     ~TextOverlayGL();

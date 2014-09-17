@@ -34,9 +34,11 @@
 #define IVW_VOLUMESLICEGL_H
 
 #include <modules/basegl/baseglmoduledefine.h>
-#include <inviwo/core/common/inviwo.h>
 #include <modules/opengl/inviwoopengl.h>
-#include <modules/opengl/processorgl.h>
+
+#include <inviwo/core/common/inviwo.h>
+#include <inviwo/core/processors/processor.h>
+#include <inviwo/core/interaction/interactionhandler.h>
 #include <inviwo/core/interaction/events/keyboardevent.h>
 #include <inviwo/core/interaction/events/mouseevent.h>
 #include <inviwo/core/ports/volumeport.h>
@@ -46,13 +48,14 @@
 #include <inviwo/core/properties/ordinalproperty.h>
 #include <inviwo/core/properties/transferfunctionproperty.h>
 #include <inviwo/core/datastructures/geometry/geometrytype.h>
-#include <modules/opengl/glwrap/shader.h>
+
 
 namespace inviwo {
 
+class Shader;
 class Mesh;
 
-class IVW_MODULE_BASEGL_API VolumeSliceGL : public ProcessorGL {
+class IVW_MODULE_BASEGL_API VolumeSliceGL : public Processor {
 public:
     VolumeSliceGL();
     ~VolumeSliceGL();

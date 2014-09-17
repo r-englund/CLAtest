@@ -2,14 +2,19 @@
 #define IVW_MULTIPLANAR_H
 
 #include <modules/basegl/baseglmoduledefine.h>
-#include <modules/opengl/processorgl.h>
+#include <inviwo/core/processors/processor.h>
 #include <inviwo/core/common/inviwo.h>
+#include <inviwo/core/properties/boolproperty.h>
+#include <inviwo/core/properties/ordinalproperty.h>
 #include <inviwo/core/properties/cameraproperty.h>
 #include <inviwo/core/properties/transferfunctionproperty.h>
+#include <inviwo/core/ports/imageport.h>
 
 namespace inviwo {
 
-class IVW_MODULE_BASEGL_API MultiPlanar : public ProcessorGL { 
+class Shader;
+
+class IVW_MODULE_BASEGL_API MultiPlanar : public Processor { 
 public:
     MultiPlanar();
     virtual ~MultiPlanar(){}

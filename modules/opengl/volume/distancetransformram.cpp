@@ -31,7 +31,6 @@
  *********************************************************************************/
 
 #include "distancetransformram.h"
-//#include <inviwo/core/datastructures/geometry/simplemeshcreator.h>
 
 namespace inviwo {
 
@@ -42,7 +41,7 @@ ProcessorCategory(DistanceTransformRAM, "Volume Operation");
 ProcessorCodeState(DistanceTransformRAM, CODE_STATE_EXPERIMENTAL); 
 
 DistanceTransformRAM::DistanceTransformRAM()
-    : ProcessorGL()
+    : Processor()
     , volumePort_("volume.inport")
     , outport_("volume.outport")
     , transformEnabled_("transformActive", "Enabled", true)
@@ -72,7 +71,7 @@ DistanceTransformRAM::~DistanceTransformRAM() {
 }
 
 void DistanceTransformRAM::initialize() {
-    ProcessorGL::initialize();
+    Processor::initialize();
     dirty_ = true;
 
     #ifndef __clang__
@@ -93,7 +92,7 @@ void DistanceTransformRAM::initialize() {
 }
 
 void DistanceTransformRAM::deinitialize() {
-    ProcessorGL::deinitialize();
+    Processor::deinitialize();
 
     numThreads_ = 0;
 }

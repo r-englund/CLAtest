@@ -31,12 +31,16 @@
  *********************************************************************************/
 
 #include "volumeraycastergl.h"
+#include <modules/opengl/glwrap/shader.h>
+#include <modules/opengl/glwrap/textureunit.h>
+#include <modules/opengl/volume/volumegl.h>
+#include <modules/opengl/image/layergl.h>
 
 namespace inviwo {
 
 VolumeRaycasterGL::VolumeRaycasterGL()
-    : ProcessorGL()
-    , shader_(0)
+    : Processor()
+    , shader_(NULL)
     , shaderFileName_("raycasting.frag")
     , samplingRate_("samplingRate", "Sampling rate", 2.0f, 1.0f, 10.0f)
     , isoValue_("isoValue", "Iso value", 0.5f, 0.0f, 1.0f)
@@ -61,8 +65,8 @@ VolumeRaycasterGL::VolumeRaycasterGL()
 }
 
 VolumeRaycasterGL::VolumeRaycasterGL(std::string programFileName)
-    : ProcessorGL()
-    , shader_(0)
+    : Processor()
+    , shader_(NULL)
     , shaderFileName_(programFileName)
     , samplingRate_("samplingRate", "Sampling rate", 2.0f, 1.0f, 10.0f)
     , isoValue_("isoValue", "Iso value", 0.5f, 0.0f, 1.0f)
@@ -150,7 +154,7 @@ void VolumeRaycasterGL::addShadingProperties() {
 }
 
 void VolumeRaycasterGL::initialize() {
-    ProcessorGL::initialize();
+    Processor::initialize();
     shader_ = new Shader(shaderFileName_, false);
     initializeResources();
 }
@@ -159,7 +163,7 @@ void VolumeRaycasterGL::deinitialize() {
     if (shader_) delete shader_;
 
     shader_ = 0;
-    ProcessorGL::deinitialize();
+    Processor::deinitialize();
 }
 
 void VolumeRaycasterGL::initializeResources() {
@@ -290,7 +294,19 @@ void VolumeRaycasterGL::setVolumeParameters(const VolumeInport& inport, Shader* 
 }
 
 void VolumeRaycasterGL::setGlobalShaderParameters(Shader* shader) {
-    ProcessorGL::setGlobalShaderParameters(shader);
+    vec2 screenDimensions = vec2(0.0f,0.0f);
+    std::vector<Outport*> outports = getOutports();
+    for (size_t i = 0; i < outports.size(); i++) {
+        ImageOutport* imageOutport = dynamic_cast<ImageOutport*>(outports[i]);
+
+        if (imageOutport) {
+            screenDimensions = imageOutport->getDimension();
+            break;
+        }
+    }
+    shader_->setUniform("screenDim_", screenDimensions);
+    shader_->setUniform("screenDimRCP_", vec2(1.0f, 1.0f) / screenDimensions);
+
     // sampling uniform
     shader->setUniform("samplingRate_", samplingRate_.get());
     // camera uniform
