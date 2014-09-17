@@ -11,9 +11,11 @@
 #include <inviwo/core/properties/compositeproperty.h>
 #include <inviwo/core/ports/imageport.h>
 #include <inviwo/core/ports/volumeport.h>
-#include <modules/opengl/glwrap/shader.h>
+
 
 namespace inviwo {
+
+class Shader;
 
 class IVW_MODULE_BASEGL_API MultichannelRaycaster  : public Processor {
 public:

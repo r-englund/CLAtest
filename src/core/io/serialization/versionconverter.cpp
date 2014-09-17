@@ -35,4 +35,5 @@
 namespace inviwo {
 VersionConverter::VersionConverter() {}
 
+
 }  // namespace

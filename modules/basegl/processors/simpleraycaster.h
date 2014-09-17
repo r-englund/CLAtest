@@ -35,27 +35,44 @@
 
 #include <modules/basegl/baseglmoduledefine.h>
 #include <inviwo/core/common/inviwo.h>
+#include <inviwo/core/processors/processor.h>
 #include <inviwo/core/properties/baseoptionproperty.h>
 #include <inviwo/core/properties/transferfunctionproperty.h>
+#include <inviwo/core/properties/simplelightingproperty.h>
+#include <inviwo/core/properties/simpleraycastingproperty.h>
+#include <inviwo/core/properties/cameraproperty.h>
+#include <inviwo/core/properties/compositeproperty.h>
 #include <inviwo/core/ports/imageport.h>
 #include <inviwo/core/ports/volumeport.h>
-#include <modules/opengl/inviwoopengl.h>
-#include <modules/opengl/volume/volumeraycastergl.h>
+
 
 namespace inviwo {
 
-class IVW_MODULE_BASEGL_API SimpleRaycaster : public VolumeRaycasterGL {
+class Shader;
+
+class IVW_MODULE_BASEGL_API SimpleRaycaster : public Processor {
 public:
     SimpleRaycaster();
 
     InviwoProcessorInfo();
+
+    virtual void initialize();
+    virtual void deinitialize();
+    virtual void initializeResources();
+
+    virtual void deserialize(IvwDeserializer& d); 
 
 protected:
     virtual void process();
 
 private:
     void onVolumeChange();
+    void fixNetwork(TxElement*);
 
+    void findPropsForComposite(TxElement* node, const CompositeProperty& prop);
+
+    Shader* shader_;
+    
     VolumeInport volumePort_;
     ImageInport entryPort_;
     ImageInport exitPort_;
@@ -63,6 +80,10 @@ private:
 
     TransferFunctionProperty transferFunction_;
     OptionPropertyInt channel_;
+
+    SimpleRaycastingProperty raycasting_;
+    CameraProperty camera_;
+    SimpleLightingProperty lighting_;
 };
 
 } // namespace

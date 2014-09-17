@@ -35,11 +35,14 @@
 
 #include <modules/opengl/openglmoduledefine.h>
 #include <inviwo/core/common/inviwo.h>
+#include <inviwo/core/datastructures/volume/volume.h>
 #include <inviwo/core/ports/imageport.h>
+#include <inviwo/core/ports/volumeport.h>
 #include <modules/opengl/portgroup.h>
 #include <modules/opengl/inviwoopengl.h>
 #include <modules/opengl/glwrap/shader.h>
 #include <modules/opengl/glwrap/textureunit.h>
+#include <inviwo/core/properties/transferfunctionproperty.h>
 
 namespace inviwo {
 
@@ -58,7 +61,7 @@ IVW_MODULE_OPENGL_API void glClearCurrentTarget();
 IVW_MODULE_OPENGL_API void glUpdateAndActivateTarget(ImageOutport& outport, ImageInport& inport);
 
 
-// Bind textures
+// Bind textures with glenum
 IVW_MODULE_OPENGL_API void bindTextures(const Image* image, bool color, bool depth, bool picking,
                                         GLenum colorTexUnit, GLenum depthTexUnit,
                                         GLenum pickingTexUnit);
@@ -83,6 +86,27 @@ IVW_MODULE_OPENGL_API void glBindTextures(const ImageInport& inport, GLenum colo
 IVW_MODULE_OPENGL_API void glBindTextures(const ImageOutport& outport, GLenum colorTexUnit,
                                           GLenum depthTexUnit, GLenum pickingTexUnit);
 
+// Bind textures with TextureUnit
+IVW_MODULE_OPENGL_API void glBindColorTexture(const ImageInport& inport, const TextureUnit& texUnit);
+IVW_MODULE_OPENGL_API void glBindColorTexture(const ImageOutport& outport, const TextureUnit& texUnit);
+IVW_MODULE_OPENGL_API void glBindDepthTexture(const ImageInport& inport, const TextureUnit& texUnit);
+IVW_MODULE_OPENGL_API void glBindDepthTexture(const ImageOutport& outport, const TextureUnit& texUnit);
+IVW_MODULE_OPENGL_API void glBindPickingTexture(const ImageInport& inport, const TextureUnit& texUnit);
+IVW_MODULE_OPENGL_API void glBindPickingTexture(const ImageOutport& outport, const TextureUnit& texUnit);
+IVW_MODULE_OPENGL_API void glBindTextures(const Image* image, const TextureUnit& colorTexUnit,
+                                          const TextureUnit& depthTexUnit);
+IVW_MODULE_OPENGL_API void glBindTextures(const ImageInport& inport, const TextureUnit& colorTexUnit,
+                                          const TextureUnit& depthTexUnit);
+IVW_MODULE_OPENGL_API void glBindTextures(const ImageOutport& outport, const TextureUnit& colorTexUnit,
+                                          const TextureUnit& depthTexUnit);
+
+IVW_MODULE_OPENGL_API void glBindTextures(const Image* image, const TextureUnit& colorTexUnit,
+                                          const TextureUnit& depthTexUnit, const TextureUnit& pickingTexUnit);
+IVW_MODULE_OPENGL_API void glBindTextures(const ImageInport& inport, const TextureUnit& colorTexUnit,
+                                          const TextureUnit& depthTexUnit, const TextureUnit& pickingTexUnit);
+IVW_MODULE_OPENGL_API void glBindTextures(const ImageOutport& outport, const TextureUnit& colorTexUnit,
+                                          const TextureUnit& depthTexUnit, const TextureUnit& pickingTexUnit);
+
 
 
 // Unbind textures
@@ -99,7 +123,13 @@ IVW_MODULE_OPENGL_API void glUnbindTextures(const Image* image);
 IVW_MODULE_OPENGL_API void glUnbindTextures(const ImageInport& inport);
 IVW_MODULE_OPENGL_API void glUnbindTextures(const ImageOutport& outport);
 
+// convenience texture bindings
+IVW_MODULE_OPENGL_API void glBindTexture(const TransferFunctionProperty& tf,
+                                         const TextureUnit& texUnit);
 
+IVW_MODULE_OPENGL_API void glBindTexture(const Volume* volume, const TextureUnit& texUnit);
+
+IVW_MODULE_OPENGL_API void glBindTexture(const VolumeInport& inport, const TextureUnit& texUnit);
 
 // Shader defines.
 IVW_MODULE_OPENGL_API void glSetTextureParameters(const Image* image, Shader* shader,
