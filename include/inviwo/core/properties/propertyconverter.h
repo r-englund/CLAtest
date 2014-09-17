@@ -84,10 +84,10 @@ public:
     virtual ~OrdinalPropertyConverter() {}
 
     virtual void convert(const srcProperty *src, dstProperty *dst) const {
-        dst->setMinValue(static_cast<dstProperty::type>(src->getMinValue()));
-        dst->setMaxValue(static_cast<dstProperty::type>(src->getMaxValue()));
-        dst->setIncrement(static_cast<dstProperty::type>(src->getIncrement()));
-        dst->set(static_cast<dstProperty::type>(src->get()));
+        dst->setMinValue(static_cast<typename dstProperty::type>(src->getMinValue()));
+        dst->setMaxValue(static_cast<typename dstProperty::type>(src->getMaxValue()));
+        dst->setIncrement(static_cast<typename dstProperty::type>(src->getIncrement()));
+        dst->set(static_cast<typename dstProperty::type>(src->get()));
     }
 };
 
