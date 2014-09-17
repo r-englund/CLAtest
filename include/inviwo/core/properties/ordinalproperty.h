@@ -44,7 +44,6 @@ namespace inviwo {
 template <typename T>
 class OrdinalProperty : public TemplateProperty<T> {
 public:
-    typedef T type;
 
     OrdinalProperty(
         std::string identifier, std::string displayName, T value = Defaultvalues<T>::getVal(),
