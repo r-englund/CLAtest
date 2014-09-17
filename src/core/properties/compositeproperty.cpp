@@ -126,9 +126,7 @@ void CompositeProperty::set(const Property* srcProperty) {
         for (size_t i = 0; i < subProperties.size(); i++)
             this->properties_[i]->set(subProperties[i]);
 
-    } else {
-        this->setVariant(const_cast<Property*>(srcProperty)->getVariant());
-    }
+    } 
 
     propertyModified();
 

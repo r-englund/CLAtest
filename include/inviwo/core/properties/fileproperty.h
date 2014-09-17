@@ -64,9 +64,6 @@ public:
                  std::string contentType = "default",
                  PropertyOwner::InvalidationLevel invalidationLevel = PropertyOwner::INVALID_OUTPUT,
                  PropertySemantics semantics = PropertySemantics::Default);
-    virtual Variant getVariant();
-    virtual void setVariant(const Variant&);
-    virtual int getVariantType();
     virtual void serialize(IvwSerializer& s) const;
     virtual void deserialize(IvwDeserializer& d);
     virtual std::string getClassIdentifier() const { return "FileProperty"; }

@@ -205,31 +205,6 @@ public:
     virtual void setCurrentStateAsDefault();
     virtual void resetToDefaultState();
 
-    /**
-     * Variants are used while linking. All options are converted to strings 
-     * (including values) and hence variant type is string.
-     * @return int VariantType as integer
-     */
-    virtual int getVariantType() {
-        return Variant::VariantTypeString;
-    }
-
-    /**
-     *  Variants are used while linking.
-     *  All options are converted to strings (including values) and hence variant type is string.
-     *  values must have overloaded streaming operator <<
-     *  @return inviwo::Variant variant
-     */
-    virtual Variant getVariant();
-
-    /**
-     * Variants are used while linking. All options are converted to strings 
-     * (including values) and hence variant type is string.
-     * values must have overloaded streaming operator >>
-     * @param const Variant & input source variant
-     */
-    virtual void setVariant(const Variant& inVariant);
-
     virtual void serialize(IvwSerializer& s) const;
     virtual void deserialize(IvwDeserializer& d);
 
@@ -503,23 +478,6 @@ void inviwo::BaseTemplateOptionProperty<T>::setCurrentStateAsDefault() {
     Property::setCurrentStateAsDefault();
     defaultSelectedIndex_ = selectedIndex_;
     defaultOptions_ = options_;
-}
-
-template<typename T>
-Variant inviwo::BaseTemplateOptionProperty<T>::getVariant() {
-    std::stringstream ss;
-    ss << getSelectedIndex() << std::endl;
-    return Variant(ss.str());
-}
-
-template<typename T>
-void inviwo::BaseTemplateOptionProperty<T>::setVariant(const Variant& inVariant) {
-    std::string textLine;
-    std::istringstream ss(inVariant.getString());
-    int seletctedOption=0;
-    getline(ss, textLine);
-    seletctedOption = atoi(textLine.c_str());
-    setSelectedIndex(seletctedOption);
 }
 
 template<typename T>

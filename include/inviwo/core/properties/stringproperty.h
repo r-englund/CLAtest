@@ -72,12 +72,6 @@ public:
                    PropertySemantics semantics=PropertySemantics::Default);
 
     virtual std::string getClassIdentifier()  const { return "StringProperty"; }
-
-    Variant getVariant();
-
-    void setVariant(const Variant& v);
-
-    int getVariantType();
 };
 
 } // namespace

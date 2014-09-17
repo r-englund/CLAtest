@@ -90,13 +90,6 @@ void DirectoryProperty::setDirectoryTree(std::vector<std::string> dirTree) {
     directoryTree_ = dirTree;
 }
 
-int DirectoryProperty::getVariantType() { return Variant::VariantTypeString; }
-
-Variant DirectoryProperty::getVariant() { return Variant(get()); }
-
-void DirectoryProperty::setVariant(const Variant& val) {
-    if (val.canConvert(getVariantType())) set(val.getString());
-}
 
 void DirectoryProperty::serialize(IvwSerializer& s) const {
     Property::serialize(s);

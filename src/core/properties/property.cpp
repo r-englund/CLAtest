@@ -31,7 +31,6 @@
  *********************************************************************************/
 
 #include <inviwo/core/properties/property.h>
-#include <inviwo/core/util/variant.h>
 #include <inviwo/core/common/inviwoapplication.h>
 #include <inviwo/core/util/settings/systemsettings.h>
 
@@ -202,16 +201,6 @@ void Property::setPropertyModified(bool modified) {
 
 bool Property::isPropertyModified() const {
     return propertyModified_;
-}
-
-Variant Property::getVariant() {
-    return Variant(getVariantType());
-}
-
-void Property::setVariant(const Variant&) {}
-
-int Property::getVariantType() {
-    return Variant::VariantTypeInvalid;
 }
 
 MetaData* Property::getMetaData(std::string className) {

@@ -247,6 +247,7 @@ void InviwoModule::registerRepresentationConverter(RepresentationConverter* repr
     RepresentationConverterFactory::getPtr()->registerObject(representationConverter);
 }
 void InviwoModule::registerResource(Resource* resource) {resources_.push_back(resource);}
-void InviwoModule::registerSettings(Settings* settings) {moduleSettings_.push_back(settings);}
+void InviwoModule::registerSettings(Settings* settings) { moduleSettings_.push_back(settings); }
+
 
 } // namespace

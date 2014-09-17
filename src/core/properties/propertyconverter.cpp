@@ -26,28 +26,26 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
- * Main file authors: Sathish Kottravel, Erik Sundén
+ * Main file authors: Peter Steneteg
  *
  *********************************************************************************/
 
-#ifndef IVW_LIKEVALUATOR_H
-#define IVW_LIKEVALUATOR_H
-
-#include <inviwo/core/common/inviwocoredefine.h>
-#include <inviwo/core/properties/property.h>
+#include <inviwo/core/properties/propertyconverter.h>
 
 namespace inviwo {
 
-//TODO:
-//Make this base class to support more evaluator types
-class IVW_CORE_API LinkEvaluator {
-public:
-    LinkEvaluator();
-    void evaluate(Property* src, Property* dst);
-private:
-    bool canLink(Property* src, Property* dst);
-};
+PropertyConverter::PropertyConverter(const std::string &srcClassIdentifier,
+                                     const std::string &dstClassIdentifier)
+    : srcClassIdentifier_(srcClassIdentifier), dstClassIdentifier_(dstClassIdentifier) {}
 
-} // namespace
+PropertyConverter::~PropertyConverter() {}
 
-#endif // IVW_LIKEVALUATOR_H
+std::string PropertyConverter::getSourceProcessorClassIdenetifier() const {
+    return srcClassIdentifier_;
+}
+
+std::string PropertyConverter::getDestinationProcessorClassIdenetifier() const {
+    return dstClassIdentifier_;
+}
+
+}  // namespace
