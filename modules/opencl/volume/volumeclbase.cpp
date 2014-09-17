@@ -31,6 +31,7 @@
  *********************************************************************************/
 
 #include <modules/opencl/volume/volumeclbase.h>
+#include <inviwo/core/datastructures/datamapper.h>
 
 namespace inviwo {
 

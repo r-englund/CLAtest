@@ -33,7 +33,7 @@
 #include <modules/opencl/clockcl.h>
 #include <modules/opencl/inviwoopencl.h>
 #include <inviwo/core/util/logcentral.h>
-
+#include <inviwo/core/util/assertion.h>
 
 namespace inviwo {
 
