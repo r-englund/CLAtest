@@ -43,6 +43,7 @@ template<typename T>
 class TemplateProperty : public Property {
 
 public:
+    typedef T type;
 
     TemplateProperty(std::string identifier, std::string displayName, T value,
                      PropertyOwner::InvalidationLevel invalidationLevel = PropertyOwner::INVALID_OUTPUT,

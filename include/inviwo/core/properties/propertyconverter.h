@@ -36,6 +36,8 @@
 #include <inviwo/core/common/inviwocoredefine.h>
 #include <inviwo/core/common/inviwo.h>
 
+#include <inviwo/core/properties/templateproperty.h>
+
 namespace inviwo {
 
 class IVW_CORE_API PropertyConverter {
