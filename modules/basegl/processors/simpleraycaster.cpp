@@ -35,6 +35,12 @@
 #include <modules/opengl/glwrap/shader.h>
 #include <modules/opengl/glwrap/textureunit.h>
 #include <modules/opengl/textureutils.h>
+#include <inviwo/core/io/serialization/ivwserialization.h>
+#include <inviwo/core/io/serialization/versionconverter.h>
+#include <modules/opengl/glwrap/shader.h>
+#include <modules/opengl/textureutils.h>
+#include <modules/opengl/shaderutils.h>
+#include <modules/opengl/volumeutils.h>
 
 namespace inviwo {
 
@@ -45,13 +51,16 @@ ProcessorCategory(SimpleRaycaster, "Volume Rendering");
 ProcessorCodeState(SimpleRaycaster, CODE_STATE_STABLE);
 
 SimpleRaycaster::SimpleRaycaster()
-    : VolumeRaycasterGL("raycasting.frag")
+    : Processor()
     , volumePort_("volume")
     , entryPort_("entry-points")
     , exitPort_("exit-points")
     , outport_("outport", &entryPort_, COLOR_DEPTH)
     , transferFunction_("transferFunction", "Transfer function", TransferFunction(), &volumePort_)
-    , channel_("channel", "Render Channel") {
+    , channel_("channel", "Render Channel")
+    , raycasting_("raycaster", "Raycasting")
+    , camera_("camera", "Camera")
+    , lighting_("lighting", "Lighting") {
     
     addPort(volumePort_, "VolumePortGroup");
     addPort(entryPort_, "ImagePortGroup1");
@@ -63,11 +72,33 @@ SimpleRaycaster::SimpleRaycaster()
     
     volumePort_.onChange(this, &SimpleRaycaster::onVolumeChange);
     
-    addProperty(transferFunction_);
-    addProperty(isoValue_);
+    addProperty(raycasting_);
+    addProperty(camera_);
+    addProperty(lighting_);
     addProperty(channel_);
-    addShadingProperties();
+    addProperty(transferFunction_);   
 }
+
+
+void SimpleRaycaster::initialize() {
+    Processor::initialize();
+    shader_ = new Shader("raycasting.frag", false);
+    initializeResources();
+}
+
+void SimpleRaycaster::deinitialize() {
+    if (shader_) delete shader_;
+    shader_ = NULL;
+    Processor::deinitialize();
+}
+
+void SimpleRaycaster::initializeResources() {
+    util::glAddShaderDefines(shader_, raycasting_);
+    util::glAddShaderDefines(shader_, camera_);
+    util::glAddShaderDefines(shader_, lighting_);
+    shader_->build();
+}
+
 
 void SimpleRaycaster::onVolumeChange(){
     if (volumePort_.hasData()){
@@ -87,31 +118,91 @@ void SimpleRaycaster::onVolumeChange(){
 }
 
 void SimpleRaycaster::process() {
-    TextureUnit transFuncUnit;
-    bindTransferFunction(transferFunction_.get(), transFuncUnit.getEnum());
-    TextureUnit entryColorUnit, entryDepthUnit, exitColorUnit, exitDepthUnit;
-    util::glBindTextures(entryPort_, entryColorUnit.getEnum(), entryDepthUnit.getEnum());
-    util::glBindTextures(exitPort_, exitColorUnit.getEnum(), exitDepthUnit.getEnum());
-    TextureUnit volUnit;
-    bindVolume(volumePort_, volUnit.getEnum());
+    TextureUnit tfUnit, entryColorUnit, entryDepthUnit, exitColorUnit, exitDepthUnit, volUnit;
+    util::glBindTexture(transferFunction_, tfUnit);
+    util::glBindTextures(entryPort_, entryColorUnit, entryDepthUnit);
+    util::glBindTextures(exitPort_, exitColorUnit, exitDepthUnit);
+    util::glBindTexture(volumePort_, volUnit);
+
     util::glActivateAndClearTarget(outport_);
     shader_->activate();
-    setGlobalShaderParameters(shader_);
-    shader_->setUniform("transferFunc_", transFuncUnit.getUnitNumber());
+    vec2 dim = static_cast<vec2>(outport_.getDimension());
+    shader_->setUniform("screenDim_", dim);
+    shader_->setUniform("screenDimRCP_", vec2(1.0f, 1.0f) / dim);
+    shader_->setUniform("transferFunc_", tfUnit.getUnitNumber());
+    
     shader_->setUniform("entryColorTex_", entryColorUnit.getUnitNumber());
-    shader_->setUniform("entryDepthTex_", entryDepthUnit.getUnitNumber());
+    shader_->setUniform("entryDepthTex_", entryDepthUnit.getUnitNumber());   
     util::glSetTextureParameters(entryPort_, shader_, "entryParameters_");
+    
     shader_->setUniform("exitColorTex_", exitColorUnit.getUnitNumber());
     shader_->setUniform("exitDepthTex_", exitDepthUnit.getUnitNumber());
     util::glSetTextureParameters(exitPort_, shader_, "exitParameters_");
-    shader_->setUniform("volume_", volUnit.getUnitNumber());
-    setVolumeParameters(volumePort_, shader_, "volumeParameters_");
-    shader_->setUniform("samplingRate_", samplingRate_.get());
-    shader_->setUniform("isoValue_", isoValue_.get());
+    
+    shader_->setUniform("viewToTexture_",
+                        volumePort_.getData()->getCoordinateTransformer().getWorldToTextureMatrix());
+    
     shader_->setUniform("channel_", channel_.getSelectedValue());
+
+    shader_->setUniform("volume_", volUnit.getUnitNumber());    
+    util::glSetShaderUniforms(shader_, volumePort_.getData(), "volumeParameters_");
+    util::glSetShaderUniforms(shader_, raycasting_);
+    util::glSetShaderUniforms(shader_, camera_);
+    util::glSetShaderUniforms(shader_, lighting_);
+
     util::glSingleDrawImagePlaneRect();
     shader_->deactivate();
     util::glDeactivateCurrentTarget();
+}
+
+void SimpleRaycaster::deserialize(IvwDeserializer& d) {
+    TraversingVersionConverter<SimpleRaycaster> tvc(this, &SimpleRaycaster::fixNetwork);
+    d.convertVersion(&tvc);
+    Processor::deserialize(d);
+}
+
+void SimpleRaycaster::fixNetwork(TxElement* node) {
+    std::string key;
+    node->GetValue(&key);
+    std::string parent;
+    node->Parent()->GetValue(&parent);
+
+    if (key == "Properties" && parent == "Processor") {
+        findPropsForComposite(node, lighting_);
+        findPropsForComposite(node, raycasting_);
+    }
+}
+
+void SimpleRaycaster::findPropsForComposite(TxElement* node, const CompositeProperty& prop) {
+    TxElement* propitem = new TxElement("Property");
+    propitem->SetAttribute("type", prop.getClassIdentifier());
+    propitem->SetAttribute("identifier", prop.getIdentifier());
+    propitem->SetAttribute("displayName", prop.getDisplayName());
+    propitem->SetAttribute("key", prop.getIdentifier());
+    TxElement* list = new TxElement("Properties");
+
+    propitem->LinkEndChild(list);
+    node->LinkEndChild(propitem);
+
+    std::vector<Property*> props = prop.getProperties();
+
+    for (int i = 0; i < props.size(); ++i) {
+        ticpp::Iterator<ticpp::Element> child;
+        for (child = child.begin(node); child != child.end(); child++) {
+            std::string name;
+            child->GetValue(&name);
+            std::string type = child->GetAttributeOrDefault("type", "");
+            std::string id = child->GetAttributeOrDefault("identifier", "");
+
+            if (props[i]->getClassIdentifier() == type && props[i]->getIdentifier() == id) {
+                LogInfo("Match for: " << prop.getIdentifier() << "."
+                        << props[i]->getIdentifier() << " to: " << name
+                        << " type: " << type << " id: " << id);
+
+                list->InsertEndChild(*(child.Get()));
+            }
+        }
+    }
 }
 
 } // namespace

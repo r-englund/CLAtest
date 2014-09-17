@@ -6,6 +6,7 @@
 #include <modules/opengl/textureutils.h>
 #include <modules/opengl/volumeutils.h>
 #include <inviwo/core/datastructures/volume/volume.h>
+#include <modules/opengl/glwrap/shader.h>
 
 namespace inviwo {
 

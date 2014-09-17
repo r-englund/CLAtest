@@ -45,6 +45,7 @@ namespace util {
 
 IVW_MODULE_OPENGL_API void glSetShaderUniforms(Shader* shader, const Volume* volume,
                                                const std::string& samplerID);
+
 }
 
 }  // namespace

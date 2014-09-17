@@ -32,7 +32,9 @@
 
 #include "textureutils.h"
 #include "canvasgl.h"
+#include <modules/opengl/volume/volumegl.h>
 #include <modules/opengl/image/imagegl.h>
+#include <modules/opengl/image/layergl.h>
 #include <modules/opengl/glwrap/bufferobjectarray.h>
 
 namespace inviwo {
@@ -140,6 +142,65 @@ void glBindTextures(const ImageOutport& outport, GLenum colorTexUnit, GLenum dep
                    pickingTexUnit);
 }
 
+void glBindColorTexture(const ImageInport& inport, const TextureUnit& texUnit) {
+    glBindTextures(inport.getData(), true, false, false, texUnit.getEnum(), 0, 0);
+}
+
+void glBindColorTexture(const ImageOutport& outport, const TextureUnit& texUnit) {
+    glBindTextures(outport.getConstData(), true, false, false, texUnit.getEnum(), 0, 0);
+}
+
+void glBindDepthTexture(const ImageInport& inport, const TextureUnit& texUnit) {
+    glBindTextures(inport.getData(), false, true, false, 0, texUnit.getEnum(), 0);
+}
+
+void glBindDepthTexture(const ImageOutport& outport, const TextureUnit& texUnit) {
+    glBindTextures(outport.getConstData(), false, true, false, 0, texUnit.getEnum(), 0);
+}
+
+void glBindPickingTexture(const ImageInport& inport, const TextureUnit& texUnit) {
+    glBindTextures(inport.getData(), false, false, true, 0, 0, texUnit.getEnum());
+}
+
+void glBindPickingTexture(const ImageOutport& outport, const TextureUnit& texUnit) {
+    glBindTextures(outport.getConstData(), false, false, true, 0, 0, texUnit.getEnum());
+}
+
+void glBindTextures(const Image* image, const TextureUnit& colorTexUnit,
+                    const TextureUnit& depthTexUnit) {
+    glBindTextures(image, true, true, false, colorTexUnit.getEnum(), depthTexUnit.getEnum(), 0);
+}
+
+void glBindTextures(const ImageInport& inport, const TextureUnit& colorTexUnit,
+                    const TextureUnit& depthTexUnit) {
+    glBindTextures(inport.getData(), true, true, false, colorTexUnit.getEnum(),
+                   depthTexUnit.getEnum(), 0);
+}
+
+void glBindTextures(const ImageOutport& outport, const TextureUnit& colorTexUnit,
+                    const TextureUnit& depthTexUnit) {
+    glBindTextures(outport.getConstData(), true, true, false, colorTexUnit.getEnum(),
+                   depthTexUnit.getEnum(), 0);
+}
+
+void glBindTextures(const Image* image, const TextureUnit& colorTexUnit,
+                    const TextureUnit& depthTexUnit, const TextureUnit& pickingTexUnit) {
+    glBindTextures(image, true, true, true, colorTexUnit.getEnum(), depthTexUnit.getEnum(),
+                   pickingTexUnit.getEnum());
+}
+
+void glBindTextures(const ImageInport& inport, const TextureUnit& colorTexUnit,
+                    const TextureUnit& depthTexUnit, const TextureUnit& pickingTexUnit) {
+    glBindTextures(inport.getData(), true, true, true, colorTexUnit.getEnum(),
+                   depthTexUnit.getEnum(), pickingTexUnit.getEnum());
+}
+
+void glBindTextures(const ImageOutport& outport, const TextureUnit& colorTexUnit,
+                    const TextureUnit& depthTexUnit, const TextureUnit& pickingTexUnit) {
+    glBindTextures(outport.getConstData(), true, true, true, colorTexUnit.getEnum(),
+                   depthTexUnit.getEnum(), pickingTexUnit.getEnum());
+}
+
 void glUnbindTextures(const Image* image, bool color, bool depth, bool picking) {
     const ImageGL* imageGL = image->getRepresentation<ImageGL>();
     if (color) {
@@ -237,6 +298,23 @@ void glMultiDrawImagePlaneRect(int instances) {
     glDrawArraysInstanced(GL_TRIANGLE_STRIP, 0, 4, instances);
     glDisableImagePlaneRect(rectArray);
     delete rectArray;
+}
+
+void glBindTexture(const TransferFunctionProperty& tfp, const TextureUnit& texUnit) {
+    const Layer* tfLayer = tfp.get().getData();
+    if (tfLayer) {
+        const LayerGL* transferFunctionGL = tfLayer->getRepresentation<LayerGL>();
+        transferFunctionGL->bindTexture(texUnit.getEnum());
+    }
+}
+
+void glBindTexture(const Volume* volume, const TextureUnit& texUnit) {
+    const VolumeGL* volumeGL = volume->getRepresentation<VolumeGL>();
+    volumeGL->bindTexture(texUnit.getEnum());
+}
+
+void glBindTexture(const VolumeInport& inport, const TextureUnit& texUnit) {
+    glBindTexture(inport.getData(), texUnit);
 }
 }
 

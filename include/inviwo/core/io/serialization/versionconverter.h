@@ -45,6 +45,46 @@ public:
     virtual bool convert(TxElement* root) = 0;
 };
 
+
+template <typename T>
+class TraversingVersionConverter : public VersionConverter {
+public:
+    typedef void (T::*ConvertNodeFunPtr)(TxElement*);
+
+    TraversingVersionConverter(T* obj, ConvertNodeFunPtr fPtr);
+    virtual ~TraversingVersionConverter(){}
+    virtual bool convert(TxElement* root);
+
+private:
+    void traverseNodes(TxElement* node, ConvertNodeFunPtr update);
+    T* obj_;
+    ConvertNodeFunPtr fPtr_;
+};
+
+template <typename T>
+bool inviwo::TraversingVersionConverter<T>::convert(TxElement* root) {
+    traverseNodes(root, fPtr_); 
+    return true;
+}
+
+template <typename T>
+inviwo::TraversingVersionConverter<T>::TraversingVersionConverter(T* obj, ConvertNodeFunPtr fPtr) 
+    : VersionConverter()
+    , obj_(obj)
+    , fPtr_(fPtr) {
+}
+
+template <typename T>
+void inviwo::TraversingVersionConverter<T>::traverseNodes(TxElement* node, ConvertNodeFunPtr update) {
+    (obj_->*fPtr_)(node);
+    ticpp::Iterator<ticpp::Element> child;
+    for (child = child.begin(node); child != child.end(); child++) {
+        traverseNodes(child.Get(), update);
+    }
+}
+
+
+
 } // namespace
 
 #endif // IVW_VERSIONCONVERTER_H
