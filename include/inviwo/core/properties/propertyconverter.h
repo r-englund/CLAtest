@@ -78,7 +78,7 @@ public:
 template <typename srcProperty, typename dstProperty>
 class OrdinalPropertyConverter : public TemplatePropertyConverter<srcProperty, dstProperty> {
 public:
-    OrdinalPropertyConverter() : TemplatePropertyConverter() {}
+    OrdinalPropertyConverter() : TemplatePropertyConverter<srcProperty, dstProperty>() {}
     virtual ~OrdinalPropertyConverter() {}
 
     virtual void convert(const srcProperty *src, dstProperty *dst) const {
@@ -92,7 +92,7 @@ public:
 template <typename srcProperty>
 class DefaultPropertyConverter : public TemplatePropertyConverter<srcProperty, srcProperty> {
 public:
-    DefaultPropertyConverter() : TemplatePropertyConverter() {}
+    DefaultPropertyConverter() : TemplatePropertyConverter<srcProperty, srcProperty>() {}
 
     virtual void convert(const srcProperty *src, srcProperty *dst) const { dst->set(src); }
 };
@@ -100,7 +100,7 @@ public:
 template <typename srcProperty>
 class ScalarToStringConverter : public TemplatePropertyConverter<srcProperty, StringProperty> {
 public:
-    ScalarToStringConverter() : TemplatePropertyConverter() {}
+    ScalarToStringConverter() : TemplatePropertyConverter<srcProperty, StringProperty>() {}
     virtual ~ScalarToStringConverter() {}
 
     virtual void convert(const srcProperty *src, StringProperty *dst) const {
@@ -111,7 +111,7 @@ public:
 template <typename srcProperty>
 class VectorToStringConverter : public TemplatePropertyConverter<srcProperty, StringProperty> {
 public:
-    VectorToStringConverter() : TemplatePropertyConverter() {}
+    VectorToStringConverter() : TemplatePropertyConverter<srcProperty, StringProperty>() {}
     virtual ~VectorToStringConverter() {}
 
     virtual void convert(const srcProperty *src, StringProperty *dst) const {
