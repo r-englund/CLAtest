@@ -76,7 +76,7 @@ PyObject* py_listProperties(PyObject* /*self*/, PyObject* args) {
         for (std::vector<Property*>::const_iterator p = props.begin(); p != props.end(); ++p) {
             std::string name = (*p)->getIdentifier();
             std::string type  = (*p)->getClassIdentifier();
-            PyRun_SimpleString(("print \""+ name + " : "+ type + "\"").c_str());
+            PyRun_SimpleString(("print(\""+ name + " : "+ type + "\")").c_str());
         }
     }
 
@@ -92,7 +92,7 @@ PyObject* py_listProcesoors(PyObject* /*self*/, PyObject* /*args*/) {
         for (std::vector<Processor*>::const_iterator processor = processors.begin(); processor!=processors.end(); ++processor) {
             std::string name = (*processor)->getIdentifier();
             std::string type = (*processor)->getClassIdentifier();
-            PyRun_SimpleString(("print \""+ name + " : "+ type + "\"").c_str());
+            PyRun_SimpleString(("print(\""+ name + " : "+ type + "\")").c_str());
         }
     }
 
