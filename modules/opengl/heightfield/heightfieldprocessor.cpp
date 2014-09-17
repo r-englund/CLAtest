@@ -34,6 +34,8 @@
 #include <inviwo/core/datastructures/geometry/simplemeshcreator.h>
 #include <inviwo/core/datastructures/light/directionallight.h>
 #include <inviwo/core/util/glmstreamoperators.h>
+#include <modules/opengl/glwrap/textureunit.h>
+#include <modules/opengl/textureutils.h>
 
 namespace inviwo {
 
@@ -100,7 +102,7 @@ void HeightFieldProcessor::process() {
     // bind input textures
     TextureUnit heightFieldUnit;
     if (inportHeightfield_.isReady()) {
-        bindColorTexture(inportHeightfield_, heightFieldUnit.getEnum());
+        util::glBindColorTexture(inportHeightfield_, heightFieldUnit.getEnum());
     } else if (terrainShadingMode == HF_SHADING_HEIGHTFIELD) {
         // switch to flat shading since color texture is not available
         terrainShadingMode = HF_SHADING_FLAT;
@@ -109,7 +111,7 @@ void HeightFieldProcessor::process() {
     
     TextureUnit colorTexUnit;
     if (inportTexture_.isReady()) {
-        bindColorTexture(inportTexture_, colorTexUnit.getEnum());
+        util::glBindColorTexture(inportTexture_, colorTexUnit.getEnum());
     } else if (terrainShadingMode == HF_SHADING_COLORTEX) {
         // switch to flat shading since heightfield texture is not available
         terrainShadingMode = HF_SHADING_FLAT;
@@ -118,7 +120,7 @@ void HeightFieldProcessor::process() {
     
     TextureUnit normalTexUnit;
     if (inportNormalMap_.isReady()) {
-        bindColorTexture(inportNormalMap_, normalTexUnit.getEnum());
+        util::glBindColorTexture(inportNormalMap_, normalTexUnit.getEnum());
     } else {
         // switch of lighting
         lighting = false;

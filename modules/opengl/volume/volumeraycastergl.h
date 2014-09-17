@@ -35,22 +35,21 @@
 
 #include <modules/opengl/openglmoduledefine.h>
 #include <inviwo/core/common/inviwo.h>
+#include <inviwo/core/processors/processor.h>
 #include <inviwo/core/datastructures/transferfunction.h>
 #include <inviwo/core/ports/volumeport.h>
 #include <inviwo/core/properties/ordinalproperty.h>
 #include <inviwo/core/properties/baseoptionproperty.h>
-
 #include <inviwo/core/properties/boolproperty.h>
 #include <inviwo/core/properties/cameraproperty.h>
+
 #include <modules/opengl/inviwoopengl.h>
-#include <modules/opengl/processorgl.h>
-#include <modules/opengl/volume/volumegl.h>
-#include <modules/opengl/glwrap/shader.h>
-#include <modules/opengl/glwrap/textureunit.h>
 
 namespace inviwo {
 
-class IVW_MODULE_OPENGL_API VolumeRaycasterGL : public ProcessorGL {
+class Shader;
+
+class IVW_MODULE_OPENGL_API VolumeRaycasterGL : public Processor {
 
 public:
     VolumeRaycasterGL();

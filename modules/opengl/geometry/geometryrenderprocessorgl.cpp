@@ -37,6 +37,8 @@
 #include <inviwo/core/rendering/geometryrendererfactory.h>
 #include <modules/opengl/rendering/meshrenderer.h>
 #include <inviwo/core/processors/processor.h>
+#include <modules/opengl/glwrap/shader.h>
+#include <modules/opengl/textureutils.h>
 
 namespace inviwo {
 
@@ -47,7 +49,7 @@ ProcessorCategory(GeometryRenderProcessorGL, "Geometry Rendering");
 ProcessorCodeState(GeometryRenderProcessorGL, CODE_STATE_STABLE);
 
 GeometryRenderProcessorGL::GeometryRenderProcessorGL()
-    : ProcessorGL()
+    : Processor()
     , inport_("geometry.inport")
     , outport_("image.outport")
     , camera_("camera", "Camera")
@@ -101,7 +103,7 @@ GeometryRenderProcessorGL::~GeometryRenderProcessorGL() {
 }
 
 void GeometryRenderProcessorGL::initialize() {
-    ProcessorGL::initialize();
+    Processor::initialize();
     shader_ = new Shader("geometryrendering.vert", "geometryrendering.frag", false);
     initializeResources();
 }
@@ -114,7 +116,7 @@ void GeometryRenderProcessorGL::deinitialize() {
     if (shader_) 
         delete shader_;
     shader_ = NULL;
-    ProcessorGL::deinitialize();
+    Processor::deinitialize();
 }
 
 void GeometryRenderProcessorGL::initializeResources() {
@@ -164,7 +166,7 @@ void GeometryRenderProcessorGL::process() {
         glEnable(GL_DEPTH_TEST);
     }
 
-    activateAndClearTarget(outport_);
+    util::glActivateAndClearTarget(outport_);
 
     shader_->activate();
     setGlobalShaderParameters(shader_);
@@ -195,7 +197,7 @@ void GeometryRenderProcessorGL::process() {
 
     shader_->deactivate();
 
-    deactivateCurrentTarget();
+    util::glDeactivateCurrentTarget();
 
     if (culling) {
         glDisable(GL_CULL_FACE);
@@ -259,7 +261,9 @@ void GeometryRenderProcessorGL::centerViewOnGeometry() {
 }
 
 void GeometryRenderProcessorGL::setGlobalShaderParameters(Shader* shader) {
-    ProcessorGL::setGlobalShaderParameters(shader);
+    vec2 dim = static_cast<vec2>(outport_.getDimension());
+    shader_->setUniform("screenDim_", dim);
+    shader_->setUniform("screenDimRCP_", vec2(1.0f, 1.0f) / dim);
     // camera uniform
     shader->setUniform("viewMatrix_", camera_.viewMatrix());
     shader->setUniform("cameraPosition_", camera_.getLookFrom());

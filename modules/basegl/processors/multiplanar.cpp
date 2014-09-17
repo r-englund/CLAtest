@@ -2,6 +2,8 @@
 #include <inviwo/core/rendering/geometryrendererfactory.h>
 #include <inviwo/core/datastructures/geometry/simplemeshcreator.h>
 #include <modules/opengl/volume/volumegl.h>
+#include <modules/opengl/glwrap/shader.h>
+#include <modules/opengl/textureutils.h>
 
 namespace inviwo {
 
@@ -12,7 +14,7 @@ ProcessorCategory(MultiPlanar, "Volume Rendering");
 ProcessorCodeState(MultiPlanar, CODE_STATE_EXPERIMENTAL);
 
 MultiPlanar::MultiPlanar()
-    : ProcessorGL()
+    : Processor()
     , sliceXYPort_("inport.sliceXY")
     , sliceXZPort_("inport.sliceXZ")
     , sliceYZPort_("inport.sliceYZ")
@@ -39,21 +41,19 @@ MultiPlanar::MultiPlanar()
 }
 
 void MultiPlanar::initialize() {
-    ProcessorGL::initialize();
+    Processor::initialize();
     shader_ = new Shader("standard.vert", "multiplanar.frag", false);
-
     shader_->build();
 }
 
 void MultiPlanar::deinitialize() {
     delete shader_;
-    ProcessorGL::deinitialize();
+    Processor::deinitialize();
 }
 
 Geometry* MultiPlanar::createSliceXYGeometry() {
     SimpleMesh* rectangle = new SimpleMesh();
     rectangle->initialize();
-    //rectangle->setBasisAndOffset(volumePort_.getData()->getBasisAndOffset());
     rectangle->setBasisAndOffset(mat4(1.0f));
 
     vec3 posLl(0.0, 0.0, (float)sliceXYPos_.get()/(float)sliceXYPos_.getMaxValue());
@@ -79,7 +79,6 @@ Geometry* MultiPlanar::createSliceXYGeometry() {
 Geometry* MultiPlanar::createSliceXZGeometry() {
     SimpleMesh* rectangle = new SimpleMesh();
     rectangle->initialize();
-    //rectangle->setBasisAndOffset(volumePort_.getData()->getBasisAndOffset());
     rectangle->setBasisAndOffset(mat4(1.0f));
 
     vec3 posLl(0.0, (float)sliceXZPos_.get()/(float)sliceXZPos_.getMaxValue(), 0.0);
@@ -105,7 +104,6 @@ Geometry* MultiPlanar::createSliceXZGeometry() {
 Geometry* MultiPlanar::createSliceYZGeometry() {
     SimpleMesh* rectangle = new SimpleMesh();
     rectangle->initialize();
-    //rectangle->setBasisAndOffset(volumePort_.getData()->getBasisAndOffset());
     rectangle->setBasisAndOffset(mat4(1.0f));
 
     vec3 posLl((float)sliceYZPos_.get()/(float)sliceYZPos_.getMaxValue(), 0.0, 0.0);
@@ -131,19 +129,22 @@ Geometry* MultiPlanar::createSliceYZGeometry() {
 void MultiPlanar::process() {
     glDepthFunc(GL_LESS);
 
-    activateAndClearTarget(outport_);
+    util::glActivateAndClearTarget(outport_);
 
     shader_->activate();
-    setGlobalShaderParameters(shader_);
-    //mat4 modelMatrix = geom->getWorldTransform()*geom->getBasisAndOffset();
-    mat4 modelMatrix = mat4(1.0f);//volumePort_.getData()->getBasisAndOffset();
+    
+    vec2 dim = static_cast<vec2>(outport_.getDimension());
+    shader_->setUniform("screenDim_", dim);
+    shader_->setUniform("screenDimRCP_", vec2(1.0f, 1.0f) / dim);
+
+    mat4 modelMatrix = mat4(1.0f);
     shader_->setUniform("modelViewProjectionMatrix_", camera_.projectionMatrix()*camera_.viewMatrix()*modelMatrix);
 
     TextureUnit sliceUnit;
     shader_->setUniform("sliceTex_", sliceUnit.getUnitNumber());
     if (showSliceXY_.get()) {
-        bindColorTexture(sliceXYPort_, sliceUnit.getEnum());
-        setTextureParameters(sliceXYPort_, shader_, "sliceTexParameters_");
+        util::glBindColorTexture(sliceXYPort_, sliceUnit.getEnum());
+        util::glSetTextureParameters(sliceXYPort_, shader_, "sliceTexParameters_");
         Geometry* sliceXYGeom = createSliceXYGeometry();
         GeometryRenderer* sliceXYRenderer = GeometryRendererFactory::getPtr()->create(sliceXYGeom);
         sliceXYRenderer->render();
@@ -151,8 +152,8 @@ void MultiPlanar::process() {
         delete sliceXYRenderer;
     }
     if (showSliceXZ_.get()) {
-        bindColorTexture(sliceXZPort_, sliceUnit.getEnum());
-        setTextureParameters(sliceXZPort_, shader_, "sliceTexParameters_");
+        util::glBindColorTexture(sliceXZPort_, sliceUnit.getEnum());
+        util::glSetTextureParameters(sliceXZPort_, shader_, "sliceTexParameters_");
         Geometry* sliceXZGeom = createSliceXZGeometry();
         GeometryRenderer* sliceXZRenderer = GeometryRendererFactory::getPtr()->create(sliceXZGeom);
         sliceXZRenderer->render();
@@ -160,8 +161,8 @@ void MultiPlanar::process() {
         delete sliceXZRenderer;
     }
     if (showSliceYZ_.get()) {
-        bindColorTexture(sliceYZPort_, sliceUnit.getEnum());
-        setTextureParameters(sliceYZPort_, shader_, "sliceTexParameters_");
+        util::glBindColorTexture(sliceYZPort_, sliceUnit.getEnum());
+        util::glSetTextureParameters(sliceYZPort_, shader_, "sliceTexParameters_");
         Geometry* sliceYZGeom = createSliceYZGeometry();
         GeometryRenderer* sliceYZRenderer = GeometryRendererFactory::getPtr()->create(sliceYZGeom);
         sliceYZRenderer->render();
@@ -169,7 +170,7 @@ void MultiPlanar::process() {
         delete sliceYZRenderer;
     }
     shader_->deactivate();
-    deactivateCurrentTarget();
+    util::glDeactivateCurrentTarget();
 }
 
 } // namespace

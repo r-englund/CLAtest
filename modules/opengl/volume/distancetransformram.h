@@ -39,6 +39,7 @@
 #include <inviwo/core/util/clock.h>
 
 #include <inviwo/core/common/inviwo.h>
+#include <inviwo/core/processors/processor.h>
 #include <inviwo/core/ports/volumeport.h>
 #include <inviwo/core/ports/geometryport.h>
 #include <inviwo/core/properties/boolproperty.h>
@@ -46,7 +47,6 @@
 #include <inviwo/core/properties/ordinalproperty.h>
 #include <inviwo/core/properties/stringproperty.h>
 #include <modules/opengl/inviwoopengl.h>
-#include <modules/opengl/processorgl.h>
 #include <inviwo/core/processors/progressbarowner.h>
 #include <inviwo/core/datastructures/volume/volumeram.h>
 
@@ -56,7 +56,7 @@
 
 namespace inviwo {
 
-class IVW_MODULE_OPENGL_API DistanceTransformRAM : public ProcessorGL, public ProgressBarOwner {
+class IVW_MODULE_OPENGL_API DistanceTransformRAM : public Processor, public ProgressBarOwner {
 public:
     DistanceTransformRAM();
     ~DistanceTransformRAM();

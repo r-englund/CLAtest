@@ -35,20 +35,21 @@
 
 #include <modules/opengl/openglmoduledefine.h>
 #include <inviwo/core/common/inviwo.h>
+#include <inviwo/core/processors/processor.h>
 #include <inviwo/core/ports/imageport.h>
 #include <inviwo/core/datastructures/image/image.h>
 #include <inviwo/core/properties/baseoptionproperty.h>
 #include <inviwo/core/properties/ordinalproperty.h>
 #include <inviwo/core/properties/minmaxproperty.h>
 #include <modules/opengl/inviwoopengl.h>
-#include <modules/opengl/processorgl.h>
+
 
 namespace inviwo {
 
 // HeightFieldMapper converts an arbitrary input image to grayscale float image to be used 
 // in heightfields. Additionally, data values are mapped to either an user-defined range 
 // or are scaled to fit in a given maximum height based on the sea level.
-class IVW_MODULE_OPENGL_API HeightFieldMapper : public ProcessorGL {
+class IVW_MODULE_OPENGL_API HeightFieldMapper : public Processor {
 public:
     HeightFieldMapper();
     ~HeightFieldMapper();

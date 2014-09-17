@@ -31,28 +31,30 @@
  *********************************************************************************/
 
 #include "imageprocessorgl.h"
+#include <modules/opengl/glwrap/shader.h>
+
 
 namespace inviwo {
 
 ImageProcessorGL::ImageProcessorGL()
-    : ProcessorGL(),
+    : Processor(),
       shaderFileName_("pipethrough.frag")
 {}
 
 ImageProcessorGL::ImageProcessorGL(std::string shaderFileName)
-    : ProcessorGL(),
+    : Processor(),
       shaderFileName_(shaderFileName)
 {}
 
 void ImageProcessorGL::initialize() {
-    ProcessorGL::initialize();
+    Processor::initialize();
     shader_ = new Shader(shaderFileName_);
 }
 
 void ImageProcessorGL::deinitialize() {
     delete shader_;
     shader_ = 0;
-    ProcessorGL::deinitialize();
+    Processor::deinitialize();
 }
 
 void ImageProcessorGL::initializeResources() {

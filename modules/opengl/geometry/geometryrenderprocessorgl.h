@@ -34,6 +34,7 @@
 #define IVW_GEOMETRYRENDERPROCESSORGL_H
 
 #include <inviwo/core/common/inviwo.h>
+#include <inviwo/core/processors/processor.h>
 #include <inviwo/core/interaction/cameratrackball.h>
 #include <inviwo/core/ports/geometryport.h>
 #include <inviwo/core/ports/imageport.h>
@@ -45,12 +46,14 @@
 #include <inviwo/core/properties/simplelightingproperty.h>
 #include <inviwo/core/rendering/geometryrenderer.h>
 #include <modules/opengl/openglmoduledefine.h>
-#include <modules/opengl/processorgl.h>
 #include <vector>
 
 namespace inviwo {
+
+class Shader;
 class CameraTrackball;
-class IVW_MODULE_OPENGL_API GeometryRenderProcessorGL : public ProcessorGL {
+
+class IVW_MODULE_OPENGL_API GeometryRenderProcessorGL : public Processor {
 public:
     GeometryRenderProcessorGL();
     ~GeometryRenderProcessorGL();
