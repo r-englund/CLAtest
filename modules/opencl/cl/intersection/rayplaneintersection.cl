@@ -60,11 +60,10 @@ bool rayPlaneIntersection(const float3 planePos, const float3 planeNormal, const
 
 // Intersects a ray with a Quad.
 // If intersecting, t1 is the point of intersection along the ray
-// C-D
+// D-C
 // | |
 // A-B
 bool rayQuadIntersection(const float3 A, const float3 B, const float3 C, const float3 D, const float3 o, const float3 d, float * __restrict t0, float* __restrict t1) { 
-
     // Test if intersection is within bounds
     float3 oa = A - o;
     float3 ob = B - o;
@@ -101,8 +100,15 @@ bool rayQuadIntersection(const float3 A, const float3 B, const float3 C, const f
         hitPoint = u*A+v*D+w*C;
         
     }
-    *t1 = length(hitPoint-o);
-    return true;
+    float3 hitDir = hitPoint-o;
+    if (dot(hitDir, d) >= 0) {
+        float t = length(hitDir);
+        if (t >= *t0 && t <= *t1) {
+            *t1 = t; 
+            return true;
+        } 
+    }
+    return false;
 
 }
 
