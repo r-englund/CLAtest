@@ -30,13 +30,10 @@
  *
  *********************************************************************************/
 
-#include <modules/opencl/glmcl.h>
 #include <modules/opencl/inviwoopencl.h>
-
+#include <modules/opencl/glmcl.h>
 
 namespace cl {
-
-
 
 // Kernel argument specializations for vec3 types:
 // int, uint, float

@@ -35,6 +35,7 @@
 
 #include <inviwo/core/common/inviwo.h>
 #include <inviwo/core/datastructures/image/layerrepresentation.h>
+#include <inviwo/core/datastructures/volume/volume.h>
 #include <modules/opencl/inviwoopencl.h>
 #include <modules/opencl/openclmoduledefine.h>
 

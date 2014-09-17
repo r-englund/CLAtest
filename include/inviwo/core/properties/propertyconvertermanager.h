@@ -39,6 +39,7 @@
 namespace inviwo {
 
 class PropertyConverter;
+class Property;
 
 class IVW_CORE_API PropertyConverterManager : public Singleton<PropertyConverterManager> {
 public:
@@ -58,7 +59,7 @@ public:
     PropertyConverter *getConverter(const Property *srcProperty, const Property *dstProperty) const;
 
 private:
-    std::map<std::pair<std::string, std::string>, PropertyConverter *> converters_;
+    std::map<std::pair<std::string, std::string>, PropertyConverter*> converters_;
 };
 
 template <typename T>

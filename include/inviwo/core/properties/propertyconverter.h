@@ -37,6 +37,7 @@
 #include <inviwo/core/common/inviwo.h>
 
 #include <inviwo/core/properties/templateproperty.h>
+#include <inviwo/core/properties/stringproperty.h>
 
 namespace inviwo {
 

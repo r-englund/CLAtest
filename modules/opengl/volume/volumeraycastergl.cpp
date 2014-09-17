@@ -31,6 +31,7 @@
  *********************************************************************************/
 
 #include "volumeraycastergl.h"
+#include <inviwo/core/ports/imageport.h>
 #include <modules/opengl/glwrap/shader.h>
 #include <modules/opengl/glwrap/textureunit.h>
 #include <modules/opengl/volume/volumegl.h>

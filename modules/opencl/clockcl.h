@@ -34,8 +34,10 @@
 #define IVW_CLOCK_CL_H
 
 #include <modules/opencl/openclmoduledefine.h>
+#include <modules/opencl/inviwoopencl.h>
 #include <modules/opencl/cl.hpp>
 #include <inviwo/core/util/clock.h>
+#include <inviwo/core/util/assertion.h>
 
 namespace inviwo {
 

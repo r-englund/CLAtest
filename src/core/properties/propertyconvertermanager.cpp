@@ -31,8 +31,8 @@
  *********************************************************************************/
 
 #include <inviwo/core/properties/propertyconvertermanager.h>
-
 #include <inviwo/core/properties/propertyconverter.h>
+#include <inviwo/core/properties/property.h>
 
 namespace inviwo {
 
