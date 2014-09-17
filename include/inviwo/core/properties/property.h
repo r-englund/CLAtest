@@ -67,8 +67,8 @@ namespace inviwo {
 class IVW_CORE_API Property : public IvwSerializable {
 
 public:
-    Property(std::string identifier,
-             std::string displayName,
+    Property(const std::string &identifier,
+             const std::string &displayName,
              PropertyOwner::InvalidationLevel invalidationLevel=PropertyOwner::INVALID_OUTPUT,
              PropertySemantics semantics = PropertySemantics::Default);
     Property();
@@ -118,7 +118,7 @@ public:
     bool hasWidgets()const;
 
 
-    MetaData* getMetaData(std::string meta);
+    MetaData* getMetaData(const std::string &meta);
 
     /**
      *  Save the current state of the property as the default. This state will then be used as a 
@@ -165,6 +165,7 @@ private:
     bool defaultReadOnly_;
 
     PropertySemantics semantics_;
+    PropertySemantics defaultSemantics_;
     UsageMode usageMode_;
     bool visible_;
 

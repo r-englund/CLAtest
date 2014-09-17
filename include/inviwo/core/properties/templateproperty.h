@@ -45,7 +45,7 @@ class TemplateProperty : public Property {
 public:
     typedef T type;
 
-    TemplateProperty(std::string identifier, std::string displayName, T value,
+    TemplateProperty(const std::string &identifier,const std::string &displayName, const T &value,
                      PropertyOwner::InvalidationLevel invalidationLevel = PropertyOwner::INVALID_OUTPUT,
                      PropertySemantics semantics = PropertySemantics::Default);
 
@@ -79,7 +79,7 @@ void inviwo::TemplateProperty<T>::setCurrentStateAsDefault() {
 }
 
 template <typename T>
-TemplateProperty<T>::TemplateProperty(std::string identifier, std::string displayName, T value,
+TemplateProperty<T>::TemplateProperty(const std::string &identifier, const std::string &displayName, const T &value,
                                       PropertyOwner::InvalidationLevel invalidationLevel,
                                       PropertySemantics semantics)
     : Property(identifier, displayName, invalidationLevel, semantics)
@@ -106,7 +106,6 @@ void TemplateProperty<T>::set(const Property* srcProperty) {
         dynamic_cast<const TemplateProperty<T>*>(srcProperty);
     if (templatedSrcProp) {
         this->value_ = templatedSrcProp->value_;
-        this->defaultValue_ = templatedSrcProp->defaultValue_;
     }
 
     Property::set(srcProperty);

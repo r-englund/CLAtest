@@ -38,8 +38,8 @@ namespace inviwo {
 
 std::map<std::string,std::string> Property::groupDisplayNames_;
 
-Property::Property(std::string identifier,
-                   std::string displayName,
+Property::Property(const std::string &identifier,
+                   const std::string &displayName,
                    PropertyOwner::InvalidationLevel invalidationLevel,
                    PropertySemantics semantics)
     : IvwSerializable()
@@ -48,6 +48,7 @@ Property::Property(std::string identifier,
     , readOnly_(false)
     , defaultReadOnly_(false)
     , semantics_(semantics)
+    , defaultSemantics_(semantics)
     , usageMode_(APPLICATION)
     , visible_(true)
     , propertyModified_(false)
@@ -65,6 +66,7 @@ Property::Property()
     , readOnly_(false)
     , defaultReadOnly_(false)
     , semantics_(PropertySemantics::Default)
+    , defaultSemantics_(PropertySemantics::Default)
     , usageMode_(APPLICATION)
     , visible_(true)
     , propertyModified_(false)
@@ -203,7 +205,7 @@ bool Property::isPropertyModified() const {
     return propertyModified_;
 }
 
-MetaData* Property::getMetaData(std::string className) {
+MetaData* Property::getMetaData(const std::string &className) {
     //TODO: Code is very similar to processor getMetaData. Use common scheme
     MetaData* meta = 0;
 
@@ -226,7 +228,7 @@ void Property::serialize(IvwSerializer& s) const {
     s.serialize("type", getClassIdentifier(), true);
     s.serialize("identifier", identifier_, true);
     s.serialize("displayName", displayName_, true);
-    if (semantics_ != PropertySemantics::Default) {
+    if (semantics_ != defaultSemantics_) {
         s.serialize("semantics", semantics_);
     }
     s.serialize("usageMode", usageMode_);
@@ -299,6 +301,7 @@ bool Property::getVisible() {
 
 void Property::setCurrentStateAsDefault() {
     defaultReadOnly_ = readOnly_;
+    defaultSemantics_ = semantics_;
 }
 
 void Property::resetToDefaultState() {
