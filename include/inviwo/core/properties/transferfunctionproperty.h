@@ -47,9 +47,9 @@ class IVW_CORE_API TransferFunctionProperty
     , public TransferFunctionObserver {
 
 public:
-    TransferFunctionProperty(std::string identifier,
-                             std::string displayName,
-                             TransferFunction value = TransferFunction(),
+    TransferFunctionProperty(const std::string &identifier,
+                             const std::string &displayName,
+                             const TransferFunction &value = TransferFunction(),
                              VolumeInport* volumeInport = NULL,
                              PropertyOwner::InvalidationLevel invalidationLevel=PropertyOwner::INVALID_OUTPUT,
                              PropertySemantics semantics=PropertySemantics::Default);
@@ -78,10 +78,8 @@ public:
     virtual void deserialize(IvwDeserializer& d);
 
     // Override
-    virtual void set(const TransferFunction& value);
-    virtual void set(const TransferFunctionProperty *value){
-        set(value->get());
-    }
+    virtual void set(const TransferFunction& property);
+    virtual void set(const Property *property);
     virtual void onControlPointAdded(TransferFunctionDataPoint* p);
     virtual void onControlPointRemoved(TransferFunctionDataPoint* p);
     virtual void onControlPointChanged(const TransferFunctionDataPoint* p);

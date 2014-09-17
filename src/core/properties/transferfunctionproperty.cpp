@@ -34,9 +34,9 @@
 
 namespace inviwo {
 
-TransferFunctionProperty::TransferFunctionProperty(std::string identifier,
-                                                   std::string displayName,
-                                                   TransferFunction value,
+TransferFunctionProperty::TransferFunctionProperty(const std::string &identifier,
+                                                   const std::string &displayName,
+                                                   const TransferFunction &value,
                                                    VolumeInport* volumeInport,
                                                    PropertyOwner::InvalidationLevel invalidationLevel,
                                                    PropertySemantics semantics)
@@ -145,6 +145,14 @@ void TransferFunctionProperty::set(const TransferFunction& value) {
     this->value_.removeObserver(this);
     TemplateProperty<TransferFunction>::set(value);
     this->value_.addObserver(this);
+}
+
+void TransferFunctionProperty::set(const Property *property) {
+    const TransferFunctionProperty *tfp = dynamic_cast<const TransferFunctionProperty*>(property);
+    if (tfp){
+        set(tfp->get());
+    }
+    TemplateProperty<TransferFunction>::set(property);
 }
 
 void TransferFunctionProperty::onControlPointAdded(TransferFunctionDataPoint* p) {

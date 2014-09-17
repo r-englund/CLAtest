@@ -5,16 +5,16 @@
  *
  * Copyright (c) 2012-2014 Inviwo Foundation
  * All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met: 
- * 
+ * modification, are permitted provided that the following conditions are met:
+ *
  * 1. Redistributions of source code must retain the above copyright notice, this
- * list of conditions and the following disclaimer. 
+ * list of conditions and the following disclaimer.
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  * this list of conditions and the following disclaimer in the documentation
- * and/or other materials provided with the distribution. 
- * 
+ * and/or other materials provided with the distribution.
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
  * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
@@ -25,7 +25,7 @@
  * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- * 
+ *
  * Main file authors: Erik Sundén, Timo Ropinski, Rickard Englund
  *
  *********************************************************************************/
@@ -44,11 +44,11 @@ namespace inviwo {
 template <typename T>
 class OrdinalProperty : public TemplateProperty<T> {
 public:
-
     OrdinalProperty(
-        std::string identifier, std::string displayName, T value = Defaultvalues<T>::getVal(),
-        T minValue = Defaultvalues<T>::getMin(), T maxValue = Defaultvalues<T>::getMax(),
-        T increment = Defaultvalues<T>::getInc(),
+        const std::string& identifier, const std::string& displayName,
+        const T& value = Defaultvalues<T>::getVal(), const T& minValue = Defaultvalues<T>::getMin(),
+        const T& maxValue = Defaultvalues<T>::getMax(),
+        const T& increment = Defaultvalues<T>::getInc(),
         PropertyOwner::InvalidationLevel invalidationLevel = PropertyOwner::INVALID_OUTPUT,
         PropertySemantics semantics = PropertySemantics::Default);
 
@@ -83,13 +83,13 @@ private:
     T defaultIncrement_;
 };
 
-//Scalar properties
+// Scalar properties
 typedef OrdinalProperty<float> FloatProperty;
 typedef OrdinalProperty<int> IntProperty;
 typedef OrdinalProperty<glm::i64> Int64Property;
 typedef OrdinalProperty<double> DoubleProperty;
 
-//Vector properties 
+// Vector properties
 typedef OrdinalProperty<vec2> FloatVec2Property;
 typedef OrdinalProperty<vec3> FloatVec3Property;
 typedef OrdinalProperty<vec4> FloatVec4Property;
@@ -102,7 +102,7 @@ typedef OrdinalProperty<ivec2> IntVec2Property;
 typedef OrdinalProperty<ivec3> IntVec3Property;
 typedef OrdinalProperty<ivec4> IntVec4Property;
 
-//Matrix properties
+// Matrix properties
 typedef OrdinalProperty<mat2> FloatMat2Property;
 typedef OrdinalProperty<mat3> FloatMat3Property;
 typedef OrdinalProperty<mat4> FloatMat4Property;
@@ -111,8 +111,7 @@ typedef OrdinalProperty<dmat2> DoubleMat2Property;
 typedef OrdinalProperty<dmat3> DoubleMat3Property;
 typedef OrdinalProperty<dmat4> DoubleMat4Property;
 
-
-template<typename T>
+template <typename T>
 std::string OrdinalProperty<T>::getClassIdentifier() const {
     std::stringstream ss;
     ss << Defaultvalues<T>::getName() << "Property";
@@ -120,8 +119,9 @@ std::string OrdinalProperty<T>::getClassIdentifier() const {
 }
 
 template <typename T>
-OrdinalProperty<T>::OrdinalProperty(std::string identifier, std::string displayName, T value,
-                                    T minValue, T maxValue, T increment,
+OrdinalProperty<T>::OrdinalProperty(const std::string& identifier, const std::string& displayName,
+                                    const T& value, const T& minValue, const T& maxValue,
+                                    const T& increment,
                                     PropertyOwner::InvalidationLevel invalidationLevel,
                                     PropertySemantics semantics)
     : TemplateProperty<T>(identifier, displayName, value, invalidationLevel, semantics)
@@ -130,13 +130,11 @@ OrdinalProperty<T>::OrdinalProperty(std::string identifier, std::string displayN
     , increment_(increment)
     , defaultMinValue_(minValue)
     , defaultMaxValue_(maxValue)
-    , defaultIncrement_(increment) {
-}
-
+    , defaultIncrement_(increment) {}
 
 template <typename T>
 void OrdinalProperty<T>::set(const T& value) {
-    if(TemplateProperty<T>::value_ != value){
+    if (TemplateProperty<T>::value_ != value) {
         TemplateProperty<T>::set(value);
     }
 }
@@ -149,10 +147,7 @@ void OrdinalProperty<T>::set(const Property* srcProperty) {
         this->minValue_ = templatedSrcProp->minValue_;
         this->maxValue_ = templatedSrcProp->maxValue_;
         this->increment_ = templatedSrcProp->increment_;
-        this->defaultMinValue_ = templatedSrcProp->defaultMinValue_;
-        this->defaultMaxValue_ = templatedSrcProp->defaultMaxValue_;
-        this->defaultIncrement_ = templatedSrcProp->defaultIncrement_;
-    } 
+    }
 
     TemplateProperty<T>::set(srcProperty);
 }
@@ -174,39 +169,34 @@ T OrdinalProperty<T>::getIncrement() const {
 
 template <typename T>
 void OrdinalProperty<T>::setMinValue(const T& value) {
-    if (value == minValue_)
-        return;
+    if (value == minValue_) return;
     minValue_ = value;
     Property::propertyModified();
-    
 }
 
 template <typename T>
 void OrdinalProperty<T>::setMaxValue(const T& value) {
-    if (value == maxValue_)
-        return;
+    if (value == maxValue_) return;
     maxValue_ = value;
     Property::propertyModified();
 }
 
 template <typename T>
 void OrdinalProperty<T>::setIncrement(const T& value) {
-    if (value == increment_)
-        return;
+    if (value == increment_) return;
     increment_ = value;
     Property::propertyModified();
 }
 
-
-template<typename T>
-void inviwo::OrdinalProperty<T>::resetToDefaultState() {   
+template <typename T>
+void inviwo::OrdinalProperty<T>::resetToDefaultState() {
     minValue_ = defaultMinValue_;
     maxValue_ = defaultMaxValue_;
     increment_ = defaultIncrement_;
     TemplateProperty<T>::resetToDefaultState();
 }
 
-template<typename T>
+template <typename T>
 void inviwo::OrdinalProperty<T>::setCurrentStateAsDefault() {
     TemplateProperty<T>::setCurrentStateAsDefault();
     defaultMinValue_ = minValue_;
@@ -214,8 +204,7 @@ void inviwo::OrdinalProperty<T>::setCurrentStateAsDefault() {
     defaultIncrement_ = increment_;
 }
 
-
-template<typename T>
+template <typename T>
 void OrdinalProperty<T>::serialize(IvwSerializer& s) const {
     if (minValue_ != defaultMinValue_) {
         s.serialize("minvalue", minValue_);
@@ -226,20 +215,19 @@ void OrdinalProperty<T>::serialize(IvwSerializer& s) const {
     if (increment_ != defaultIncrement_) {
         s.serialize("increment", increment_);
     }
-    
+
     TemplateProperty<T>::serialize(s);
 }
 
-
-template<typename T>
+template <typename T>
 void OrdinalProperty<T>::deserialize(IvwDeserializer& d) {
     d.deserialize("minvalue", minValue_);
     d.deserialize("maxvalue", maxValue_);
     d.deserialize("increment", increment_);
-    
+
     TemplateProperty<T>::deserialize(d);
 }
 
-} // namespace
+}  // namespace
 
-#endif // IVW_ORDINALPROPERTY_H
+#endif  // IVW_ORDINALPROPERTY_H
