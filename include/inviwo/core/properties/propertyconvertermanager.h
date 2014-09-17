@@ -26,28 +26,55 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
- * Main file authors: Sathish Kottravel, Erik Sundén
+ * Main file authors: Peter Steneteg
  *
  *********************************************************************************/
 
-#ifndef IVW_LIKEVALUATOR_H
-#define IVW_LIKEVALUATOR_H
+#ifndef IVW_PROPERTYCONVERTERMANAGER_H
+#define IVW_PROPERTYCONVERTERMANAGER_H
 
 #include <inviwo/core/common/inviwocoredefine.h>
-#include <inviwo/core/properties/property.h>
+#include <inviwo/core/common/inviwo.h>
 
 namespace inviwo {
 
-//TODO:
-//Make this base class to support more evaluator types
-class IVW_CORE_API LinkEvaluator {
+class PropertyConverter;
+
+class IVW_CORE_API PropertyConverterManager : public Singleton<PropertyConverterManager> {
 public:
-    LinkEvaluator();
-    void evaluate(Property* src, Property* dst);
+    PropertyConverterManager();
+    virtual ~PropertyConverterManager();
+
+    template <typename T>
+    void registerConvert();
+
+    bool canConvert(const std::string &srcClassIdentifier,
+                    const std::string &dstClassIdentifier) const;
+    bool canConvert(const Property *srcProperty, const Property *dstProperty) const;
+
+    PropertyConverter *getConverter(const std::string &srcClassIdentifier,
+                                    const std::string &dstClassIdentifier) const;
+
+    PropertyConverter *getConverter(const Property *srcProperty, const Property *dstProperty) const;
+
 private:
-    bool canLink(Property* src, Property* dst);
+    std::map<std::pair<std::string, std::string>, PropertyConverter *> converters_;
 };
 
-} // namespace
+template <typename T>
+void PropertyConverterManager::registerConvert() {
+    T *converter = new T();
+    std::string src = converter->getSourceProcessorClassIdenetifier();
+    std::string dst = converter->getDestinationProcessorClassIdenetifier();
+    if (canConvert(src, dst)) {
+        LogWarn("Property Converter from type " << src << " to type " << dst
+                                                << " already registered");
+        delete converter;
+        return;
+    }
+    converters_.insert(std::make_pair(std::make_pair(src, dst), converter));
+}
 
-#endif // IVW_LIKEVALUATOR_H
+}  // namespace
+
+#endif  // IVW_PROPERTYCONVERTERMANAGER_H

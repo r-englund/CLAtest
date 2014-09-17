@@ -43,8 +43,6 @@
 
 namespace inviwo {
 
-class Variant;
-
 /** \class Property
  * 
  *  Concepts:
@@ -140,9 +138,6 @@ public:
     virtual void propertyModified();
     virtual void setPropertyModified(bool modified);
     virtual bool isPropertyModified() const;
-    virtual Variant getVariant();
-    virtual void setVariant(const Variant&);
-    virtual int getVariantType();
     virtual void set(const Property* src);
 
     virtual void serialize(IvwSerializer& s) const;

@@ -58,7 +58,8 @@
 
 namespace inviwo {
 
-class Settings;
+    class Settings;
+    class PropertyConverter;
 
 /**
  * \class InviwoModule
@@ -66,7 +67,6 @@ class Settings;
  * \brief A module class contains registrations of functionality, such as processors, ports, properties etc.
  */
 class IVW_CORE_API InviwoModule {
-
 public:
     InviwoModule();
     virtual ~InviwoModule();
@@ -154,8 +154,9 @@ private:
 };
 
 
+#define registerPropertyConverter(T) {PropertyConverterManager::getPtr()->registerConvert< T >();}
 #define registerProcessor(T) { registerProcessorObject(new ProcessorFactoryObjectTemplate<T>()); }
-#define registerProperty(T) { registerPropertyObject(new PropertyFactoryObjectTemplate<T>(#T)); }
+#define registerProperty(T) { registerPropertyObject(new PropertyFactoryObjectTemplate<T>(#T));  registerPropertyConverter(DefaultPropertyConverter< T >); }
 #define registerPropertyWidget(T, P, semantics) { registerPropertyWidgetObject(new PropertyWidgetFactoryObjectTemplate<T,P>(#P, PropertySemantics(semantics))); }
 #define registerPort(T) { registerPortObject(new PortFactoryObjectTemplate<T>(#T)); }
 #define registerDialog(P, T) { registerDialogObject(new DialogFactoryObjectTemplate<T>(P)); }

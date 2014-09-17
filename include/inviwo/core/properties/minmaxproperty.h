@@ -71,10 +71,6 @@ public:
 
     virtual std::string getClassIdentifier() const;
 
-    virtual Variant getVariant();
-    virtual void setVariant(const Variant& v);
-    virtual int getVariantType();
-
     virtual void setCurrentStateAsDefault();
     virtual void resetToDefaultState();
 
@@ -161,9 +157,7 @@ void inviwo::MinMaxProperty<T>::set(const Property* srcProperty) {
         this->minSeparation_ = templatedSrcProp->minSeparation_;
         this->defaultMinSeparation_ = templatedSrcProp->defaultMinSeparation_;
 
-    } else {
-        this->setVariant(const_cast<Property*>(srcProperty)->getVariant());
-    }
+    } 
 
     TemplateProperty<glm::detail::tvec2<T, glm::defaultp> >::set(srcProperty);
 }
@@ -214,20 +208,6 @@ void MinMaxProperty<T>::setRange(const glm::detail::tvec2<T, glm::defaultp>& val
     setRangeMax(value.y);
 }
 
-template <typename T>
-Variant MinMaxProperty<T>::getVariant() {
-    return Variant(TemplateProperty<glm::detail::tvec2<T, glm::defaultp> >::value_);
-}
-
-template <typename T>
-void MinMaxProperty<T>::setVariant(const Variant& v) {
-    if (v.canConvert(getVariantType())) this->set(v.get<glm::detail::tvec2<T, glm::defaultp> >());
-}
-
-template <typename T>
-int MinMaxProperty<T>::getVariantType() {
-    return getVariant().getType();
-}
 
 template <typename T>
 void MinMaxProperty<T>::resetToDefaultState() {

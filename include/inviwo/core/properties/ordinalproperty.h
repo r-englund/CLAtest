@@ -44,6 +44,8 @@ namespace inviwo {
 template <typename T>
 class OrdinalProperty : public TemplateProperty<T> {
 public:
+    typedef T type;
+
     OrdinalProperty(
         std::string identifier, std::string displayName, T value = Defaultvalues<T>::getVal(),
         T minValue = Defaultvalues<T>::getMin(), T maxValue = Defaultvalues<T>::getMax(),
@@ -66,10 +68,6 @@ public:
     virtual void resetToDefaultState();
 
     virtual std::string getClassIdentifier() const;
-
-    virtual Variant getVariant();
-    virtual void setVariant(const Variant& v);
-    virtual int getVariantType();
 
     virtual void serialize(IvwSerializer& s) const;
     virtual void deserialize(IvwDeserializer& d);
@@ -155,8 +153,7 @@ void OrdinalProperty<T>::set(const Property* srcProperty) {
         this->defaultMinValue_ = templatedSrcProp->defaultMinValue_;
         this->defaultMaxValue_ = templatedSrcProp->defaultMaxValue_;
         this->defaultIncrement_ = templatedSrcProp->defaultIncrement_;
-    } else
-        this->setVariant(const_cast<Property*>(srcProperty)->getVariant());
+    } 
 
     TemplateProperty<T>::set(srcProperty);
 }
@@ -201,27 +198,6 @@ void OrdinalProperty<T>::setIncrement(const T& value) {
     Property::propertyModified();
 }
 
-template <typename T>
-Variant OrdinalProperty<T>::getVariant() {
-    return Variant(TemplateProperty<T>::value_);
-}
-
-template <typename T>
-void OrdinalProperty<T>::setVariant(const Variant& v) {
-    if (v.canConvert(getVariantType())) {
-        //Input variant type can be different from property variant type
-        Variant currentVariant(getVariant());
-        //Invokes conversion during assignment operation
-        currentVariant = v;
-        //Get from variants and set
-        this->set(currentVariant.get<T>());
-    }
-}
-
-template <typename T>
-int OrdinalProperty<T>::getVariantType() {
-    return getVariant().getType();
-}
 
 template<typename T>
 void inviwo::OrdinalProperty<T>::resetToDefaultState() {   

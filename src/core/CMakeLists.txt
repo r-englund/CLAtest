@@ -175,6 +175,8 @@ set(HEADER_FILES
     ${IVW_INCLUDE_DIR}/inviwo/core/properties/minmaxproperty.h
     ${IVW_INCLUDE_DIR}/inviwo/core/properties/ordinalproperty.h
     ${IVW_INCLUDE_DIR}/inviwo/core/properties/property.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/properties/propertyconverter.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/properties/propertyconvertermanager.h
     ${IVW_INCLUDE_DIR}/inviwo/core/properties/propertyfactory.h
     ${IVW_INCLUDE_DIR}/inviwo/core/properties/propertyfactoryobject.h
     ${IVW_INCLUDE_DIR}/inviwo/core/properties/propertyowner.h
@@ -230,7 +232,6 @@ set(HEADER_FILES
     ${IVW_INCLUDE_DIR}/inviwo/core/util/systemcapabilities.h
     ${IVW_INCLUDE_DIR}/inviwo/core/util/timer.h
     ${IVW_INCLUDE_DIR}/inviwo/core/util/urlparser.h
-    ${IVW_INCLUDE_DIR}/inviwo/core/util/variant.h
     ${IVW_INCLUDE_DIR}/inviwo/core/util/vectoroperations.h
 )
 ivw_group("Header Files" ${HEADER_FILES})
@@ -368,6 +369,8 @@ set(SOURCE_FILES
     properties/fileproperty.cpp
     properties/imageeditorproperty.cpp   
     properties/property.cpp
+    properties/propertyconverter.cpp
+    properties/propertyconvertermanager.cpp
     properties/propertyfactory.cpp
     properties/propertyfactoryobject.cpp
     properties/propertyowner.cpp
@@ -406,7 +409,6 @@ set(SOURCE_FILES
     util/systemcapabilities.cpp
     util/timer.cpp
     util/urlparser.cpp
-    util/variant.cpp
 )
 ivw_group("Source Files" ${SOURCE_FILES})
 

@@ -58,9 +58,6 @@ public:
     virtual std::vector<std::string> getFiles(std::string filters = "*.*") const;
     virtual void setDirectoryTree(std::vector<std::string> dirTree);
     void updateDirectoryTree();
-    virtual Variant getVariant();
-    virtual void setVariant(const Variant&);
-    virtual int getVariantType();
     virtual void serialize(IvwSerializer& s) const;
     virtual void deserialize(IvwDeserializer& d);
     virtual std::string getClassIdentifier() const { return "DirectoryProperty"; }

@@ -53,7 +53,6 @@
 
 #include <inviwo/qt/editor/linkdialog.h>
 #include <inviwo/core/common/inviwoapplication.h>
-#include <inviwo/core/util/variant.h>
 #include <inviwo/core/properties/compositeproperty.h>
 
 #define IS_SUB_PROPERTY(prop) (prop->getOwner()->getProcessor() != prop->getOwner())
@@ -755,8 +754,14 @@ void LinkDialogGraphicsScene::mouseReleaseEvent(QGraphicsSceneMouseEvent* e) {
         if (endProperty_ && (endProperty_!=startProperty_)) {
             Property* sProp = startProperty_->getGraphicsItemData();
             Property* eProp = endProperty_->getGraphicsItemData();
-            if (SimpleCondition::canLink(sProp, eProp, true))
+            bool src2dst = SimpleCondition::canLink(sProp, eProp);
+            bool dst2src = SimpleCondition::canLink(eProp, sProp);
+            if (src2dst &&dst2src)
                 addPropertyLink(sProp, eProp, true);
+            else if (src2dst)
+                addPropertyLink(sProp, eProp, false);
+            else if (dst2src)
+                addPropertyLink(eProp, sProp, false);
         }
 
         startProperty_ = NULL;

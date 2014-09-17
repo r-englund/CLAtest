@@ -36,7 +36,6 @@
 #include <inviwo/core/common/inviwocoredefine.h>
 #include <inviwo/core/common/inviwo.h>
 #include <inviwo/core/properties/property.h>
-#include <inviwo/core/util/variant.h>
 
 namespace inviwo {
 
@@ -107,8 +106,6 @@ void TemplateProperty<T>::set(const Property* srcProperty) {
     if (templatedSrcProp) {
         this->value_ = templatedSrcProp->value_;
         this->defaultValue_ = templatedSrcProp->defaultValue_;
-    } else {
-        this->setVariant(const_cast<Property*>(srcProperty)->getVariant());
     }
 
     Property::set(srcProperty);

@@ -47,13 +47,6 @@ FileProperty::FileProperty(std::string identifier, std::string displayName, std:
     addNameFilter("All Files (*.*)");
 }
 
-int FileProperty::getVariantType() { return Variant::VariantTypeString; }
-
-Variant FileProperty::getVariant() { return Variant(get()); }
-
-void FileProperty::setVariant(const Variant& val) {
-    if (val.canConvert(getVariantType())) set(val.getString());
-}
 
 void FileProperty::serialize(IvwSerializer& s) const {
     Property::serialize(s);

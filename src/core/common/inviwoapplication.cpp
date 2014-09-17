@@ -47,6 +47,7 @@
 #include <inviwo/core/resources/resourcemanager.h>
 #include <inviwo/core/util/dialogfactory.h>
 #include <inviwo/core/util/urlparser.h>
+#include <inviwo/core/properties/propertyconvertermanager.h>
 
 namespace inviwo {
 
@@ -117,6 +118,7 @@ void InviwoApplication::initialize(registerModuleFuncPtr regModuleFunc) {
     ProcessorWidgetFactory::init();
     PropertyFactory::init();
     PropertyWidgetFactory::init();
+    PropertyConverterManager::init();
     RepresentationConverterFactory::init();
     
     //Create and register core
@@ -170,6 +172,7 @@ void InviwoApplication::deinitialize() {
     ProcessorWidgetFactory::deleteInstance();
     PropertyFactory::deleteInstance();
     PropertyWidgetFactory::deleteInstance();
+    PropertyConverterManager::deleteInstance();
     RepresentationConverterFactory::deleteInstance();
 
     initialized_ = false;

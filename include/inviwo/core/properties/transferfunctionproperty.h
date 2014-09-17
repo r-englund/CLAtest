@@ -79,6 +79,9 @@ public:
 
     // Override
     virtual void set(const TransferFunction& value);
+    virtual void set(const TransferFunctionProperty *value){
+        set(value->get());
+    }
     virtual void onControlPointAdded(TransferFunctionDataPoint* p);
     virtual void onControlPointRemoved(TransferFunctionDataPoint* p);
     virtual void onControlPointChanged(const TransferFunctionDataPoint* p);

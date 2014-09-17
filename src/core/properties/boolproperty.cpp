@@ -41,18 +41,5 @@ BoolProperty::BoolProperty(std::string identifier,
     : TemplateProperty<bool>(identifier, displayName, value, invalidationLevel, semantics) {
 }
 
-int BoolProperty::getVariantType() {
-    return Variant::VariantTypeBool;
-}
-
-Variant BoolProperty::getVariant() {
-    return Variant(get());
-}
-
-void  BoolProperty::setVariant(const Variant& val) {
-    if (val.canConvert(getVariantType()))
-        set(val.getBool());
-}
-
 
 } // namespace

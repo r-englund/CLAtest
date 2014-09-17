@@ -57,10 +57,6 @@ public:
                  PropertySemantics semantics = PropertySemantics::Default);
 
     virtual std::string getClassIdentifier()  const { return "BoolProperty"; }
-    
-    virtual Variant getVariant();
-    virtual void setVariant(const Variant&);
-    virtual int getVariantType();
 };
 
 } // namespace

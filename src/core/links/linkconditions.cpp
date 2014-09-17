@@ -31,17 +31,12 @@
  *********************************************************************************/
 
 #include <inviwo/core/links/linkconditions.h>
-#include <inviwo/core/util/variant.h>
+#include <inviwo/core/properties/propertyconvertermanager.h>
 
 namespace inviwo {
 
-bool SimpleCondition::canLink(Property* src, Property* dst, bool compareVariantType) {
-    if (src->getClassIdentifier() == dst->getClassIdentifier()) return true;
-
-    if (compareVariantType == true)
-        return Variant::canConvert(src->getVariantType(), dst->getVariantType());
-
-    return false;
+bool SimpleCondition::canLink(Property* src, Property* dst) {
+	return PropertyConverterManager::getPtr()->canConvert(src,dst);
 }
 
 bool PartiallyMatchingIdCondition::canLink(Property* src, Property* dst) {

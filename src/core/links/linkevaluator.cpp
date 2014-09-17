@@ -32,7 +32,8 @@
 
 #include <inviwo/core/links/linkevaluator.h>
 #include <inviwo/core/links/linkconditions.h>
-#include <inviwo/core/util/variant.h>
+#include <inviwo/core/properties/propertyconvertermanager.h>
+#include <inviwo/core/properties/propertyconverter.h>
 
 namespace inviwo {
 
@@ -42,24 +43,14 @@ void LinkEvaluator::evaluate(Property* src, Property* dst) {
     ivwAssert(src!=0, "source property expected");
     ivwAssert(dst!=0, "destination property expected");
 
-    if (canLink(src, dst))
-        dst->set(src);
+    //TODO create a link evaluator for each link and chache the converter so that it does need to be looked up for each frame
+	PropertyConverter* convetrter = PropertyConverterManager::getPtr()->getConverter(src,dst);
+    if (convetrter)
+        convetrter->convert(src, dst);
 }
 
 bool LinkEvaluator::canLink(Property* src, Property* dst) {
-    if (SimpleCondition::canLink(src,dst)) return true;
-
-    return canConvert(src->getVariant(), dst->getVariant());
-}
-
-bool LinkEvaluator::canConvert(const Variant& src, const Variant& dst) {
-    //Replace with variant based condition
-    if (src.getType() == Variant::VariantTypeInvalid || dst.getType() == Variant::VariantTypeInvalid) {
-        //Error message
-        return false;
-    }
-
-    return Variant::canConvert(src.getType(), dst.getType());
+    return PropertyConverterManager::getPtr()->canConvert(src,dst);
 }
 
 }

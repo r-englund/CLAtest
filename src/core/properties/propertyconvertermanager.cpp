@@ -26,28 +26,43 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
- * Main file authors: Sathish Kottravel, Erik Sundén
+ * Main file authors: Peter Steneteg
  *
  *********************************************************************************/
 
-#ifndef IVW_LIKEVALUATOR_H
-#define IVW_LIKEVALUATOR_H
+#include <inviwo/core/properties/propertyconvertermanager.h>
 
-#include <inviwo/core/common/inviwocoredefine.h>
-#include <inviwo/core/properties/property.h>
+#include <inviwo/core/properties/propertyconverter.h>
 
 namespace inviwo {
 
-//TODO:
-//Make this base class to support more evaluator types
-class IVW_CORE_API LinkEvaluator {
-public:
-    LinkEvaluator();
-    void evaluate(Property* src, Property* dst);
-private:
-    bool canLink(Property* src, Property* dst);
-};
+PropertyConverterManager::PropertyConverterManager() {}
 
-} // namespace
+PropertyConverterManager::~PropertyConverterManager() {}
 
-#endif // IVW_LIKEVALUATOR_H
+bool PropertyConverterManager::canConvert(const std::string &srcClassIdentifier,
+                                          const std::string &dstClassIdentifier) const {
+    return getConverter(srcClassIdentifier, dstClassIdentifier) != 0;
+}
+
+bool PropertyConverterManager::canConvert(const Property *srcProperty,
+                                          const Property *dstProperty) const {
+    return getConverter(srcProperty->getClassIdentifier(), dstProperty->getClassIdentifier()) != 0;
+}
+
+PropertyConverter *PropertyConverterManager::getConverter(
+    const std::string &srcClassIdentifier, const std::string &dstClassIdentifier) const {
+    std::map<std::pair<std::string, std::string>, PropertyConverter *>::const_iterator converter;
+    converter = converters_.find(std::make_pair(srcClassIdentifier, dstClassIdentifier));
+    if (converter != converters_.end()) {
+        return converter->second;
+    }
+    return 0;
+}
+
+PropertyConverter *PropertyConverterManager::getConverter(const Property *srcProperty,
+                                                          const Property *dstProperty) const {
+    return getConverter(srcProperty->getClassIdentifier(), dstProperty->getClassIdentifier());
+}
+
+}  // namespace
