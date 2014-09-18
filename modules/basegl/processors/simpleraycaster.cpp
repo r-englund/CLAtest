@@ -31,12 +31,11 @@
  *********************************************************************************/
 
 #include "simpleraycaster.h"
+#include <inviwo/core/io/serialization/ivwserialization.h>
+#include <inviwo/core/io/serialization/versionconverter.h>
 #include <modules/opengl/volume/volumegl.h>
 #include <modules/opengl/glwrap/shader.h>
 #include <modules/opengl/glwrap/textureunit.h>
-#include <modules/opengl/textureutils.h>
-#include <inviwo/core/io/serialization/ivwserialization.h>
-#include <inviwo/core/io/serialization/versionconverter.h>
 #include <modules/opengl/glwrap/shader.h>
 #include <modules/opengl/textureutils.h>
 #include <modules/opengl/shaderutils.h>
@@ -98,7 +97,6 @@ void SimpleRaycaster::initializeResources() {
     util::glAddShaderDefines(shader_, lighting_);
     shader_->build();
 }
-
 
 void SimpleRaycaster::onVolumeChange(){
     if (volumePort_.hasData()){
