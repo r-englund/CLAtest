@@ -103,7 +103,7 @@ inviwo::TraversingVersionConverter<T>::TraversingVersionConverter(T* obj, Conver
 
 template <typename T>
 bool inviwo::TraversingVersionConverter<T>::traverseNodes(TxElement* node, ConvertNodeFunPtr update) {
-    res = true;
+    bool res = true;
     res = res && (obj_->*fPtr_)(node);
     ticpp::Iterator<ticpp::Element> child;
     for (child = child.begin(node); child != child.end(); child++) {
