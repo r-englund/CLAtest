@@ -119,28 +119,28 @@ bool util::xmlFindMatchingSubPropertiesForComposites(
 
 TxElement* util::xmlGetElement(TxElement* node, std::string path) {
     std::vector<std::string> parts = splitString(path, '/');
-    if(parts.size()>0){
+    if (parts.size() > 0) {
         std::vector<std::string> components = splitString(parts[0], '&');
         std::string name = components[0];
-        
+
         ticpp::Iterator<ticpp::Element> child;
         for (child = child.begin(node); child != child.end(); child++) {
             bool match = true;
             std::string childname;
             child->GetValue(&childname);
-            if(childname == name) {
-                for(int i = 1; i<components.size(); ++i) {
-                   std::vector<std::string> pair = splitString(components[i], '=');
-                   match = match && child->GetAttributeOrDefault(pair[0], "") == pair[1];
+            if (childname == name) {
+                for (int i = 1; i < components.size(); ++i) {
+                    std::vector<std::string> pair = splitString(components[i], '=');
+                    match = match && child->GetAttributeOrDefault(pair[0], "") == pair[1];
                 }
-            }else{
+            } else {
                 match = false;
             }
             if (match) break;
         }
-        if(parts.size()>1){
-            return xmlGetElement(child.Get(), joinString(parts.begin()+1, parts.end(), "/"));
-        }else{
+        if (parts.size() > 1) {
+            return xmlGetElement(child.Get(), joinString(parts.begin() + 1, parts.end(), "/"));
+        } else {
             return child.Get();
         }
     }
