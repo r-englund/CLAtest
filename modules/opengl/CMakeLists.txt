@@ -109,20 +109,14 @@ set(SHADER_FILES
     ${IVW_MODULE_DIR}/opengl/glsl/composite.frag
     ${IVW_MODULE_DIR}/opengl/glsl/geometryrendering.frag
     ${IVW_MODULE_DIR}/opengl/glsl/geometryrendering.vert
-    ${IVW_MODULE_DIR}/opengl/glsl/heightfield.vert
     ${IVW_MODULE_DIR}/opengl/glsl/heightfield.frag
+    ${IVW_MODULE_DIR}/opengl/glsl/heightfield.vert
     ${IVW_MODULE_DIR}/opengl/glsl/img_color.frag
     ${IVW_MODULE_DIR}/opengl/glsl/img_copy.frag
     ${IVW_MODULE_DIR}/opengl/glsl/img_identity.vert
     ${IVW_MODULE_DIR}/opengl/glsl/img_noise.frag
     ${IVW_MODULE_DIR}/opengl/glsl/img_texturequad.frag
     ${IVW_MODULE_DIR}/opengl/glsl/img_texturequad.vert
-    ${IVW_MODULE_DIR}/opengl/glsl/minimal.vert
-    ${IVW_MODULE_DIR}/opengl/glsl/picking.frag
-    ${IVW_MODULE_DIR}/opengl/glsl/raycasting.frag
-    ${IVW_MODULE_DIR}/opengl/glsl/isoraycasting.frag
-    ${IVW_MODULE_DIR}/opengl/glsl/standard.frag
-    ${IVW_MODULE_DIR}/opengl/glsl/standard.vert
     ${IVW_MODULE_DIR}/opengl/glsl/include/inc_classification.frag
     ${IVW_MODULE_DIR}/opengl/glsl/include/inc_compositing.frag
     ${IVW_MODULE_DIR}/opengl/glsl/include/inc_depth.frag
@@ -131,6 +125,21 @@ set(SHADER_FILES
     ${IVW_MODULE_DIR}/opengl/glsl/include/inc_sampler2d.frag
     ${IVW_MODULE_DIR}/opengl/glsl/include/inc_sampler3d.frag
     ${IVW_MODULE_DIR}/opengl/glsl/include/inc_shading.frag
+    ${IVW_MODULE_DIR}/opengl/glsl/isoraycasting.frag
+    ${IVW_MODULE_DIR}/opengl/glsl/minimal.vert
+    ${IVW_MODULE_DIR}/opengl/glsl/picking.frag
+    ${IVW_MODULE_DIR}/opengl/glsl/raycasting.frag
+    ${IVW_MODULE_DIR}/opengl/glsl/standard.frag
+    ${IVW_MODULE_DIR}/opengl/glsl/standard.vert
+    ${IVW_MODULE_DIR}/opengl/glsl/utils/depth.frag
+    ${IVW_MODULE_DIR}/opengl/glsl/utils/gradients.frag
+    ${IVW_MODULE_DIR}/opengl/glsl/utils/sampler2d.frag
+    ${IVW_MODULE_DIR}/opengl/glsl/utils/sampler2d.frag
+    ${IVW_MODULE_DIR}/opengl/glsl/utils/sampler2d.frag
+    ${IVW_MODULE_DIR}/opengl/glsl/utils/sampler2d.frag
+    ${IVW_MODULE_DIR}/opengl/glsl/utils/sampler3d.frag
+    ${IVW_MODULE_DIR}/opengl/glsl/utils/shading.frag
+    ${IVW_MODULE_DIR}/opengl/glsl/utils/structs.frag
 )
 ivw_group("Shader Files" ${SHADER_FILES})
 

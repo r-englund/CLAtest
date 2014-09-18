@@ -144,7 +144,7 @@ void MultiPlanar::process() {
     shader_->setUniform("sliceTex_", sliceUnit.getUnitNumber());
     if (showSliceXY_.get()) {
         util::glBindColorTexture(sliceXYPort_, sliceUnit.getEnum());
-        util::glSetTextureParameters(sliceXYPort_, shader_, "sliceTexParameters_");
+        util::glSetShaderUniforms(shader_, sliceXYPort_, "sliceTexParameters_");
         Geometry* sliceXYGeom = createSliceXYGeometry();
         GeometryRenderer* sliceXYRenderer = GeometryRendererFactory::getPtr()->create(sliceXYGeom);
         sliceXYRenderer->render();
@@ -153,7 +153,7 @@ void MultiPlanar::process() {
     }
     if (showSliceXZ_.get()) {
         util::glBindColorTexture(sliceXZPort_, sliceUnit.getEnum());
-        util::glSetTextureParameters(sliceXZPort_, shader_, "sliceTexParameters_");
+        util::glSetShaderUniforms(shader_, sliceXZPort_, "sliceTexParameters_");
         Geometry* sliceXZGeom = createSliceXZGeometry();
         GeometryRenderer* sliceXZRenderer = GeometryRendererFactory::getPtr()->create(sliceXZGeom);
         sliceXZRenderer->render();
@@ -162,7 +162,7 @@ void MultiPlanar::process() {
     }
     if (showSliceYZ_.get()) {
         util::glBindColorTexture(sliceYZPort_, sliceUnit.getEnum());
-        util::glSetTextureParameters(sliceYZPort_, shader_, "sliceTexParameters_");
+        util::glSetShaderUniforms(shader_, sliceYZPort_, "sliceTexParameters_");
         Geometry* sliceYZGeom = createSliceYZGeometry();
         GeometryRenderer* sliceYZRenderer = GeometryRendererFactory::getPtr()->create(sliceYZGeom);
         sliceYZRenderer->render();

@@ -5,6 +5,7 @@ namespace inviwo {
 namespace util {
 
 void glAddShaderDefines(Shader* shader, const SimpleLightingProperty& property) {
+    // This version is depricated.
     std::string shadingKey =
         "RC_APPLY_SHADING(colorAmb, colorDiff, colorSpec, samplePos, gradient, lightPos, "
         "cameraPos)";
@@ -20,10 +21,29 @@ void glAddShaderDefines(Shader* shader, const SimpleLightingProperty& property) 
         shadingValue = "shadeSpecular(colorSpec, samplePos, gradient, lightPos, cameraPos);";
     else if (property.shadingMode_.isSelectedIdentifier("phong"))
         shadingValue =
-        "shadePhong(colorAmb, colorDiff, colorSpec, samplePos, gradient, lightPos, cameraPos);";
+            "shadePhong(colorAmb, colorDiff, colorSpec, samplePos, gradient, lightPos, cameraPos);";
 
     shader->getFragmentShaderObject()->addShaderDefine(shadingKey, shadingValue);
 
+    // New version
+    shadingKey =
+        "APPLY_LIGHTING(light, camera, volume, colorAmb, colorDiff, colorSpec, samplePos, gradient)";
+    shadingValue = "";
+
+    if (property.shadingMode_.isSelectedIdentifier("none"))
+        shadingValue = "colorAmb;";
+    else if (property.shadingMode_.isSelectedIdentifier("ambient"))
+        shadingValue = "shadeAmbient(light, colorAmb);";
+    else if (property.shadingMode_.isSelectedIdentifier("diffuse"))
+        shadingValue = "shadeDiffuse(light, camera, volume, colorDiff, samplePos, gradient);";
+    else if (property.shadingMode_.isSelectedIdentifier("specular"))
+        shadingValue =
+            "shadeSpecular(light, camera, volume, colorSpec, samplePos, gradient);";
+    else if (property.shadingMode_.isSelectedIdentifier("phong"))
+        shadingValue =
+            "shadePhong(light, camera, volume, colorAmb, colorDiff, colorSpec, samplePos, gradient);";
+
+    shader->getFragmentShaderObject()->addShaderDefine(shadingKey, shadingValue);
 }
 
 void glSetShaderUniforms(Shader* shader, const SimpleLightingProperty& property) {
@@ -34,8 +54,16 @@ void glSetShaderUniforms(Shader* shader, const SimpleLightingProperty& property)
     shader->setUniform("lightSpecularExponent_", property.lightSpecularExponent_.get());
 }
 
+void glSetShaderUniforms(Shader* shader, const SimpleLightingProperty& property, std::string name) {
+    shader->setUniform(name + ".lightPosition_", property.lightPosition_.get());
+    shader->setUniform(name + ".lightColorAmbient_", property.lightColorAmbient_.get());
+    shader->setUniform(name + ".lightColorDiffuse_", property.lightColorDiffuse_.get());
+    shader->setUniform(name + ".lightColorSpecular_", property.lightColorSpecular_.get());
+    shader->setUniform(name + ".lightSpecularExponent_", property.lightSpecularExponent_.get());
+}
 
-void glAddShaderDefines(Shader* shader, const CameraProperty& property) {}
+void glAddShaderDefines(Shader* shader, const CameraProperty& property) {
+}
 
 void glSetShaderUniforms(Shader* shader, const CameraProperty& property) {
     shader->setUniform("viewMatrix_", property.viewMatrix());
@@ -43,6 +71,14 @@ void glSetShaderUniforms(Shader* shader, const CameraProperty& property) {
     shader->setUniform("zNear_", property.getNearPlaneDist());
     shader->setUniform("zFar_", property.getFarPlaneDist());
 }
+
+void glSetShaderUniforms(Shader* shader, const CameraProperty& property, std::string name) {
+    shader->setUniform(name + ".viewMatrix_", property.viewMatrix());
+    shader->setUniform(name + ".cameraPosition_", property.getLookFrom());
+    shader->setUniform(name + ".zNear_", property.getNearPlaneDist());
+    shader->setUniform(name + ".zFar_", property.getFarPlaneDist());
+}
+
 
 
 void glAddShaderDefines(Shader* shader, const SimpleRaycastingProperty& property) {
@@ -91,6 +127,51 @@ void glAddShaderDefines(Shader* shader, const SimpleRaycastingProperty& property
         "gradientBackwardDiff(voxel.r, volume_, volumeStruct_, samplePos, channel_);";
     shader->getFragmentShaderObject()->addShaderDefine(gradientComputationKey,
                                                         gradientComputationValue);
+
+    // New versions
+    gradientComputationKey =
+        "CALC_GRADIENTS(voxel, volume, volumeParams, samplePos)";
+    gradientComputationValue = "";
+
+    if (property.gradientComputationMode_.isSelectedIdentifier("none"))
+        gradientComputationValue = "voxel.xyz;";
+    else if (property.gradientComputationMode_.isSelectedIdentifier("forward"))
+        gradientComputationValue =
+        "gradientForwardDiff(voxel.r, volume, volumeParams, samplePos);";
+    else if (property.gradientComputationMode_.isSelectedIdentifier("central"))
+        gradientComputationValue =
+        "gradientCentralDiff(voxel.r, volume, volumeParams, samplePos);";
+    else if (property.gradientComputationMode_.isSelectedIdentifier("central-higher"))
+        gradientComputationValue =
+        "gradientCentralDiffH(voxel.r, volume, volumeParams, samplePos);";
+    else if (property.gradientComputationMode_.isSelectedIdentifier("backward"))
+        gradientComputationValue =
+        "gradientBackwardDiff(voxel.r, volume, volumeParams, samplePos);";
+
+    shader->getFragmentShaderObject()->addShaderDefine(gradientComputationKey,
+                                                       gradientComputationValue);
+
+    gradientComputationKey =
+        "CALC_GRADIENTS_FOR_CHANNEL(voxel, volume, volumeParams, samplePos, channel_)";
+    gradientComputationValue = "";
+
+    if (property.gradientComputationMode_.isSelectedIdentifier("none"))
+        gradientComputationValue = "voxel.xyz;";
+    else if (property.gradientComputationMode_.isSelectedIdentifier("forward"))
+        gradientComputationValue =
+        "gradientForwardDiff(voxel, volume_, volumeParams, samplePos, channel_);";
+    else if (property.gradientComputationMode_.isSelectedIdentifier("central"))
+        gradientComputationValue =
+        "gradientCentralDiff(voxel, volume_, volumeParams, samplePos, channel_);";
+    else if (property.gradientComputationMode_.isSelectedIdentifier("central-higher"))
+        gradientComputationValue =
+        "gradientCentralDiffH(voxel, volume_, volumeParams, samplePos, channel_);";
+    else if (property.gradientComputationMode_.isSelectedIdentifier("backward"))
+        gradientComputationValue =
+        "gradientBackwardDiff(voxel, volume_, volumeParams, samplePos, channel_);";
+    shader->getFragmentShaderObject()->addShaderDefine(gradientComputationKey,
+                                                       gradientComputationValue);
+
 
 
     // classification defines

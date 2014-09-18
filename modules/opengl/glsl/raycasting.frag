@@ -29,27 +29,35 @@
  * Main file authors: Timo Ropinski, Erik Sundén
  *
  *********************************************************************************/
+#include "utils/structs.frag"
+#include "utils/shading.frag"
+#include "utils/sampler2d.frag"
+#include "utils/sampler3d.frag"
+#include "utils/depth.frag"
+#include "utils/gradients.frag"
 
-#include "include/inc_sampler2d.frag"
-#include "include/inc_sampler3d.frag"
-#include "include/inc_raycasting.frag"
 #include "include/inc_classification.frag"
-#include "include/inc_gradients.frag"
-#include "include/inc_shading.frag"
 #include "include/inc_compositing.frag"
-#include "include/inc_depth.frag"
 
-uniform TEXTURE_TYPE entryColorTex_;
-uniform TEXTURE_TYPE entryDepthTex_;
+uniform TEXTURE_PARAMETERS outportParameters_;
+
 uniform TEXTURE_PARAMETERS entryParameters_;
-uniform TEXTURE_TYPE exitColorTex_;
-uniform TEXTURE_TYPE exitDepthTex_;
+uniform sampler2D entryColorTex_;
+uniform sampler2D entryDepthTex_;
+
 uniform TEXTURE_PARAMETERS exitParameters_;
+uniform sampler2D exitColorTex_;
+uniform sampler2D exitDepthTex_;
 
-uniform VOLUME_TYPE volume_;
 uniform VOLUME_PARAMETERS volumeParameters_;
+uniform sampler3D volume_;
 
+uniform SHADING_PARAMETERS light_;
+uniform CAMERA_PARAMETERS camera_;
 uniform int channel_;
+
+uniform float samplingRate_;
+uniform float isoValue_;
 
 // set threshold for early ray termination
 #define ERT_THRESHOLD 0.99
@@ -58,30 +66,40 @@ vec4 rayTraversal(vec3 entryPoint, vec3 exitPoint, vec2 texCoords) {
     vec4 result = vec4(0.0);
     vec3 rayDirection = exitPoint - entryPoint;
     float tEnd = length(rayDirection);
-    float tIncr = min(tEnd, tEnd / (samplingRate_*length(rayDirection*volumeParameters_.dimensions_)));
-    float samples = ceil(tEnd/tIncr);
-    tIncr = tEnd/samples;
-    float t = 0.5f*tIncr; 
+    float tIncr =
+        min(tEnd, tEnd / (samplingRate_ * length(rayDirection * volumeParameters_.dimensions_)));
+    float samples = ceil(tEnd / tIncr);
+    tIncr = tEnd / samples;
+    float t = 0.5f * tIncr;
     rayDirection = normalize(rayDirection);
     float tDepth = -1.0;
-    vec4 color; vec4 voxel;
-    vec3 samplePos; vec3 gradient;
+    vec4 color;
+    vec4 voxel;
+    vec3 samplePos;
+    vec3 gradient;
     while (t < tEnd) {
         samplePos = entryPoint + t * rayDirection;
         voxel = getNormalizedVoxel(volume_, volumeParameters_, samplePos);
-        gradient = RC_CALC_GRADIENTS_FOR_CHANNEL(voxel, samplePos, volume_, volumeParameters_, t, rayDirection, entryTex_, entryParameters_, channel_);
+
+        gradient = CALC_GRADIENTS_FOR_CHANNEL(voxel, volume_, volumeParameters_, samplePos, channel_);
+
         color = RC_APPLY_CLASSIFICATION_FOR_CHANNEL(transferFunc_, voxel, channel_);
-        color.rgb = RC_APPLY_SHADING(color.rgb, color.rgb, vec3(1.0), samplePos, gradient, lightPosition_, vec3(0.0));
+
+        color.rgb = APPLY_LIGHTING(light_, camera_, volumeParameters_, color.rgb, color.rgb,
+                                   vec3(1.0), samplePos, gradient);
+
         result = RC_APPLY_COMPOSITING(result, color, samplePos, voxel, gradient, t, tDepth, tIncr);
 
         // early ray termination
-        if (result.a > ERT_THRESHOLD) t = tEnd;
-        else t += tIncr;
+        if (result.a > ERT_THRESHOLD)
+            t = tEnd;
+        else
+            t += tIncr;
     }
 
     if (tDepth != -1.0)
-        tDepth = calculateDepthValue(tDepth, texture(entryDepthTex_, texCoords).z, 
-									 texture(exitDepthTex_, texCoords).z);
+        tDepth = calculateDepthValue(camera_, tDepth, texture(entryDepthTex_, texCoords).z,
+                                     texture(exitDepthTex_, texCoords).z);
     else
         tDepth = 1.0;
 
@@ -90,7 +108,7 @@ vec4 rayTraversal(vec3 entryPoint, vec3 exitPoint, vec2 texCoords) {
 }
 
 void main() {
-    vec2 texCoords = gl_FragCoord.xy * screenDimRCP_;
+    vec2 texCoords = gl_FragCoord.xy * outportParameters_.dimensionsRCP_;
     vec3 entryPoint = texture(entryColorTex_, texCoords).rgb;
     vec3 exitPoint = texture(exitColorTex_, texCoords).rgb;
 

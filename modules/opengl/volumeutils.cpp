@@ -34,6 +34,7 @@
 #include "glformats.h"
 
 #include <inviwo/core/datastructures/volume/volume.h>
+#include <inviwo/core/ports/volumeport.h>
 #include <modules/opengl/glwrap/shader.h>
 
 namespace inviwo {
@@ -44,10 +45,8 @@ void glSetShaderUniforms(Shader* shader, const Volume* volume, const std::string
     vec3 dimF = static_cast<vec3>(volume->getDimension());
     shader->setUniform(samplerID + ".dimensions_", dimF);
     shader->setUniform(samplerID + ".dimensionsRCP_", vec3(1.f) / dimF);
-    shader->setUniform(samplerID + ".volumeToWorldTransform_", volume->getWorldTransform());
-    // Note: The basically the same code is used in VolumeCLGL and VolumeCL as well.
-    // Changes here should also be done there.
-    // adjust data scaling to volume data range
+    shader->setUniform(samplerID + ".worldToTexture_",
+                       volume->getCoordinateTransformer().getWorldToTextureMatrix());
 
     dvec2 dataRange = volume->dataMap_.dataRange;
     DataMapper defaultRange(volume->getDataFormat());
@@ -92,6 +91,10 @@ void glSetShaderUniforms(Shader* shader, const Volume* volume, const std::string
     shader->setUniform(samplerID + ".signedFormatScaling_",
                        static_cast<float>(1.0 - signedScalingFactor));
     shader->setUniform(samplerID + ".signedFormatOffset_", static_cast<float>(signedOffset));
+}
+
+void glSetShaderUniforms(Shader* shader, const VolumeInport& port, const std::string& samplerID) {
+    glSetShaderUniforms(shader, port.getData(), samplerID);
 }
 
 }

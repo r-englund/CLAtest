@@ -3,7 +3,7 @@
  * Inviwo - Interactive Visualization Workshop
  * Version 0.6b
  *
- * Copyright (c) 2012-2014 Inviwo Foundation
+ * Copyright (c) 2013-2014 Inviwo Foundation
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -26,32 +26,39 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
- * Main file authors: Peter Steneteg
+ * Main file author: Peter Stenetg
  *
  *********************************************************************************/
 
-#ifndef IVW_VOLUMEUTILS_H
-#define IVW_VOLUMEUTILS_H
+ #define VOLUME_TYPE sampler3D
+ #define TEXTURE_TYPE sampler2D
 
-#include <modules/opengl/openglmoduledefine.h>
-#include <inviwo/core/common/inviwo.h>
+struct SHADING_PARAMETERS {
+    vec3 lightPosition_;
+    vec3 lightColorAmbient_;
+    vec3 lightColorDiffuse_;
+    vec3 lightColorSpecular_;
+    int lightSpecularExponent_;
+};
 
-namespace inviwo {
+struct TEXTURE_PARAMETERS {
+    vec2 dimensions_;
+    vec2 dimensionsRCP_;
+};
 
-class Shader;
-class Volume;
-class VolumeInport;
+struct VOLUME_PARAMETERS {
+    vec3 dimensions_;
+    vec3 dimensionsRCP_;
+    mat4 worldToTexture_;
+    float formatScaling_; //Reversed, meaning scaling = (1-bitScaling_), as 0 is default for single uniforms.
+    float formatOffset_;
+    float signedFormatScaling_; //Reversed, meaning scaling = (1-bitScaling_), as 0 is default for single uniforms.
+    float signedFormatOffset_;
+};
 
-namespace util {
-
-IVW_MODULE_OPENGL_API void glSetShaderUniforms(Shader* shader, const Volume* volume,
-                                               const std::string& samplerID);
-
-IVW_MODULE_OPENGL_API void glSetShaderUniforms(Shader* shader, const VolumeInport& port,
-                                               const std::string& samplerID);
-
-}
-
-}  // namespace
-
-#endif  // IVW_VOLUMEUTILS_H
+struct CAMERA_PARAMETERS {
+    mat4 viewMatrix_;
+    vec3 cameraPosition_;
+	float zNear_;
+	float zFar_;
+};

@@ -18,16 +18,23 @@ IVW_MODULE_OPENGL_API void glAddShaderDefines(Shader* shader,
                                               const SimpleLightingProperty& property);
 IVW_MODULE_OPENGL_API void glSetShaderUniforms(Shader* shader,
                                                const SimpleLightingProperty& property);
+IVW_MODULE_OPENGL_API void glSetShaderUniforms(Shader* shader,
+                                               const SimpleLightingProperty& property,
+                                               std::string name);
 
 // CameraProperty
 IVW_MODULE_OPENGL_API void glAddShaderDefines(Shader* shader, const CameraProperty& property);
 IVW_MODULE_OPENGL_API void glSetShaderUniforms(Shader* shader, const CameraProperty& property);
+IVW_MODULE_OPENGL_API void glSetShaderUniforms(Shader* shader, const CameraProperty& property,
+                                               std::string name);
 
 // SimpleRaycastingProperty
 IVW_MODULE_OPENGL_API void glAddShaderDefines(Shader* shader,
                                               const SimpleRaycastingProperty& property);
 IVW_MODULE_OPENGL_API void glSetShaderUniforms(Shader* shader,
                                                const SimpleRaycastingProperty& property);
+
+
 
 }  // namspace util
 

@@ -12,7 +12,7 @@ SimpleLightingProperty::SimpleLightingProperty(std::string identifier, std::stri
     , lightColorAmbient_("lightColorAmbient", "Ambient color", vec3(0.1f, 0.1f, 0.1f))
     , lightColorDiffuse_("lightColorDiffuse", "Diffuse color", vec3(0.75f, 0.75f, 0.75f))
     , lightColorSpecular_("lightColorSpecular", "Specular color", vec3(0.75f, 0.75f, 0.75f))
-    , lightSpecularExponent_("materialShininess", "Material shininess", 110, 0, 180)
+    , lightSpecularExponent_("materialShininess", "Material shininess", 110, 1, 180)
     , applyLightAttenuation_("applyLightAttenuation", "Light attenuation", false)
     , lightAttenuation_("lightAttenuation", "Light attenuation values", vec3(1.0f, 0.0f, 0.0f)) {
 

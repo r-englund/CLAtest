@@ -3,7 +3,7 @@
     <!-- Don't edit the following code -->
     <ProcessorNetworkVersion content="1" />
     <Processors>
-        <Processor type="org.inviwo.SimpleRaycaster" identifier="SimpleRaycaster" id="ref1">
+        <Processor type="org.inviwo.SimpleRaycaster" identifier="SimpleRaycaster" id="ref6">
             <MetaDataList>
                 <MetaData type="ProcessorMetaData">
                     <position x="-475" y="-450" />
@@ -12,15 +12,10 @@
                 </MetaData>
             </MetaDataList>
             <Properties>
-                <Property type="BoolProperty" identifier="applyLightAttenuation" displayName="Light attenuation" key="applyLightAttenuation">
-                    <usageMode content="0" />
-                    <visible content="1" />
-                </Property>
-                <Property type="CameraProperty" identifier="camera" displayName="Camera" key="camera" id="ref2">
+                <Property type="CameraProperty" identifier="camera" displayName="Camera" key="camera" id="ref7">
                     <usageMode content="0" />
                     <visible content="1" />
                     <lookFrom type="FloatVec3Property" identifier="lookFrom" displayName="Look from">
-                        <semantics semantics="Spherical" />
                         <usageMode content="0" />
                         <visible content="1" />
                         <value x="12.103707" y="12.196181" z="-14.230612" />
@@ -60,66 +55,82 @@
                     <usageMode content="0" />
                     <visible content="1" />
                 </Property>
-                <Property type="OptionPropertyString" identifier="classificationMode" displayName="Classification" key="classificationMode">
+                <Property type="CompositeProperty" identifier="lighting" displayName="Lighting" key="lighting">
                     <usageMode content="0" />
                     <visible content="1" />
+                    <Properties>
+                        <Property type="BoolProperty" identifier="applyLightAttenuation" displayName="Light attenuation" key="applyLightAttenuation">
+                            <usageMode content="0" />
+                            <visible content="1" />
+                        </Property>
+                        <Property type="FloatVec3Property" identifier="lightAttenuation" displayName="Light attenuation values" key="lightAttenuation">
+                            <usageMode content="0" />
+                            <visible content="1" />
+                        </Property>
+                        <Property type="FloatVec3Property" identifier="lightColorAmbient" displayName="Ambient color" key="lightColorAmbient">
+                            <semantics semantics="Color" />
+                            <usageMode content="0" />
+                            <visible content="1" />
+                            <value x="0.93333334" y="0.93333334" z="0.93333334" />
+                        </Property>
+                        <Property type="FloatVec3Property" identifier="lightColorDiffuse" displayName="Diffuse color" key="lightColorDiffuse">
+                            <semantics semantics="Color" />
+                            <usageMode content="0" />
+                            <visible content="1" />
+                            <value x="0.49803922" y="0.49803922" z="0.49803922" />
+                        </Property>
+                        <Property type="FloatVec3Property" identifier="lightColorSpecular" displayName="Specular color" key="lightColorSpecular">
+                            <semantics semantics="Color" />
+                            <usageMode content="0" />
+                            <visible content="1" />
+                            <value x="1" y="1" z="1" />
+                        </Property>
+                        <Property type="FloatVec3Property" identifier="lightPosition" displayName="Position" key="lightPosition">
+                            <minvalue x="0" y="0" z="0" />
+                            <maxvalue x="1" y="1" z="1" />
+                            <semantics semantics="Spherical" />
+                            <usageMode content="0" />
+                            <visible content="1" />
+                            <value x="0.45033321" y="-0.43301272" z="0.59974992" />
+                        </Property>
+                        <Property type="IntProperty" identifier="materialShininess" displayName="Material shininess" key="materialShininess">
+                            <usageMode content="0" />
+                            <visible content="1" />
+                            <value content="3" />
+                        </Property>
+                        <Property type="OptionPropertyInt" identifier="shadingMode" displayName="Shading" key="shadingMode">
+                            <usageMode content="0" />
+                            <visible content="1" />
+                        </Property>
+                    </Properties>
                 </Property>
-                <Property type="OptionPropertyString" identifier="compositingMode" displayName="Compositing" key="compositingMode">
+                <Property type="CompositeProperty" identifier="raycaster" displayName="Raycasting" key="raycaster">
                     <usageMode content="0" />
                     <visible content="1" />
-                </Property>
-                <Property type="OptionPropertyString" identifier="gradientComputationMode" displayName="Gradient computation" key="gradientComputationMode">
-                    <usageMode content="0" />
-                    <visible content="1" />
-                </Property>
-                <Property type="FloatProperty" identifier="isoValue" displayName="Iso value" key="isoValue">
-                    <usageMode content="0" />
-                    <visible content="1" />
-                </Property>
-                <Property type="FloatVec3Property" identifier="lightAttenuation" displayName="Light attenuation values" key="lightAttenuation">
-                    <usageMode content="0" />
-                    <visible content="1" />
-                </Property>
-                <Property type="FloatVec3Property" identifier="lightColorAmbient" displayName="Ambient color" key="lightColorAmbient">
-                    <semantics semantics="Color" />
-                    <usageMode content="0" />
-                    <visible content="1" />
-                    <value x="0.93333334" y="0.93333334" z="0.93333334" />
-                </Property>
-                <Property type="FloatVec3Property" identifier="lightColorDiffuse" displayName="Diffuse color" key="lightColorDiffuse">
-                    <semantics semantics="Color" />
-                    <usageMode content="0" />
-                    <visible content="1" />
-                    <value x="0.49803922" y="0.49803922" z="0.49803922" />
-                </Property>
-                <Property type="FloatVec3Property" identifier="lightColorSpecular" displayName="Specular color" key="lightColorSpecular">
-                    <semantics semantics="Color" />
-                    <usageMode content="0" />
-                    <visible content="1" />
-                    <value x="1" y="1" z="1" />
-                </Property>
-                <Property type="FloatVec3Property" identifier="lightPosition" displayName="Position" key="lightPosition">
-                    <minvalue x="0" y="0" z="0" />
-                    <maxvalue x="1" y="1" z="1" />
-                    <semantics semantics="Spherical" />
-                    <usageMode content="0" />
-                    <visible content="1" />
-                    <value x="0.45033321" y="-0.43301272" z="0.59974992" />
-                </Property>
-                <Property type="IntProperty" identifier="materialShininess" displayName="Material shininess" key="materialShininess">
-                    <usageMode content="0" />
-                    <visible content="1" />
-                    <value content="3" />
-                </Property>
-                <Property type="FloatProperty" identifier="samplingRate" displayName="Sampling rate" key="samplingRate">
-                    <increment content="0.1" />
-                    <usageMode content="0" />
-                    <visible content="1" />
-                    <value content="3" />
-                </Property>
-                <Property type="OptionPropertyString" identifier="shadingMode" displayName="Shading" key="shadingMode">
-                    <usageMode content="0" />
-                    <visible content="1" />
+                    <Properties>
+                        <Property type="OptionPropertyString" identifier="classificationMode" displayName="Classification" key="classificationMode">
+                            <usageMode content="0" />
+                            <visible content="1" />
+                        </Property>
+                        <Property type="OptionPropertyString" identifier="compositingMode" displayName="Compositing" key="compositingMode">
+                            <usageMode content="0" />
+                            <visible content="1" />
+                        </Property>
+                        <Property type="OptionPropertyString" identifier="gradientComputationMode" displayName="Gradient computation" key="gradientComputationMode">
+                            <usageMode content="0" />
+                            <visible content="1" />
+                        </Property>
+                        <Property type="FloatProperty" identifier="isoValue" displayName="Iso value" key="isoValue">
+                            <usageMode content="0" />
+                            <visible content="1" />
+                        </Property>
+                        <Property type="FloatProperty" identifier="samplingRate" displayName="Sampling rate" key="samplingRate">
+                            <increment content="0.1" />
+                            <usageMode content="0" />
+                            <visible content="1" />
+                            <value content="3" />
+                        </Property>
+                    </Properties>
                 </Property>
                 <Property type="TransferFunctionProperty" identifier="transferFunction" displayName="Transfer function" key="transferFunction">
                     <usageMode content="0" />
@@ -174,7 +185,7 @@
                 </Property>
             </Properties>
         </Processor>
-        <Processor type="org.inviwo.CubeProxyGeometry" identifier="CubeProxyGeometry" id="ref0">
+        <Processor type="org.inviwo.CubeProxyGeometry" identifier="CubeProxyGeometry" id="ref5">
             <MetaDataList>
                 <MetaData type="ProcessorMetaData">
                     <position x="-450" y="-625" />
@@ -207,7 +218,7 @@
                 </Property>
             </Properties>
         </Processor>
-        <Processor type="org.inviwo.EntryExitPoints" identifier="EntryExitPoints" id="ref5">
+        <Processor type="org.inviwo.EntryExitPoints" identifier="EntryExitPoints" id="ref2">
             <MetaDataList>
                 <MetaData type="ProcessorMetaData">
                     <position x="-450" y="-550" />
@@ -365,11 +376,10 @@
                 </InteractionHandler>
             </InteractonHandlers>
             <Properties>
-                <Property type="CameraProperty" identifier="camera" displayName="Camera" key="camera" id="ref6">
+                <Property type="CameraProperty" identifier="camera" displayName="Camera" key="camera" id="ref3">
                     <usageMode content="0" />
                     <visible content="1" />
                     <lookFrom type="FloatVec3Property" identifier="lookFrom" displayName="Look from">
-                        <semantics semantics="Spherical" />
                         <usageMode content="0" />
                         <visible content="1" />
                         <value x="12.103707" y="12.196181" z="-14.230612" />
@@ -415,7 +425,7 @@
                 </Property>
             </Properties>
         </Processor>
-        <Processor type="org.inviwo.CanvasGL" identifier="CanvasGL" id="ref7">
+        <Processor type="org.inviwo.CanvasGL" identifier="CanvasGL" id="ref4">
             <MetaDataList>
                 <MetaData type="ProcessorMetaData">
                     <position x="-475" y="-300" />
@@ -423,7 +433,7 @@
                     <selection content="0" />
                 </MetaData>
                 <MetaData type="ProcessorWidgetMetaData">
-                    <position x="350" y="260" />
+                    <position x="358" y="290" />
                     <dimension x="512" y="512" />
                     <visibility content="1" />
                 </MetaData>
@@ -472,7 +482,7 @@
                 </Property>
             </Properties>
         </Processor>
-        <Processor type="org.inviwo.VolumeSource" identifier="VolumeSource" id="ref4">
+        <Processor type="org.inviwo.VolumeSource" identifier="VolumeSource" id="ref1">
             <MetaDataList>
                 <MetaData type="ProcessorMetaData">
                     <position x="-475" y="-700" />
@@ -508,7 +518,6 @@
                     <visible content="1" />
                     <Properties>
                         <Property type="DoubleMinMaxProperty" identifier="dataRange" displayName="Data range" key="dataRange">
-                            <semantics semantics="Text" />
                             <usageMode content="0" />
                             <visible content="1" />
                         </Property>
@@ -521,7 +530,6 @@
                             <visible content="1" />
                         </Property>
                         <Property type="DoubleMinMaxProperty" identifier="valueRange" displayName="Value range" key="valueRange">
-                            <semantics semantics="Text" />
                             <usageMode content="0" />
                             <visible content="1" />
                         </Property>
@@ -558,7 +566,7 @@
                 </Property>
             </Properties>
         </Processor>
-        <Processor type="org.inviwo.Background" identifier="Background" id="ref3">
+        <Processor type="org.inviwo.Background" identifier="Background" id="ref0">
             <MetaDataList>
                 <MetaData type="ProcessorMetaData">
                     <position x="-475" y="-375" />
@@ -567,9 +575,17 @@
                 </MetaData>
             </MetaDataList>
             <Properties>
+                <Property type="ButtonProperty" identifier="Switch colors" displayName="switch colors" key="Switch colors">
+                    <usageMode content="0" />
+                    <visible content="1" />
+                </Property>
                 <Property type="OptionPropertyInt" identifier="backgroundStyle" displayName="Style" key="backgroundStyle">
                     <usageMode content="0" />
                     <visible content="1" />
+                </Property>
+                <Property type="IntVec2Property" identifier="checkerBoardSize" displayName="Checker Board Size" key="checkerBoardSize">
+                    <usageMode content="0" />
+                    <visible content="0" />
                 </Property>
                 <Property type="FloatVec4Property" identifier="color1" displayName="Color 1" key="color1">
                     <semantics semantics="Color" />
@@ -589,72 +605,72 @@
     <Connections>
         <Connection>
             <OutPort identifier="geometry.outport">
-                <Processor type="org.inviwo.CubeProxyGeometry" identifier="CubeProxyGeometry" reference="ref0" />
+                <Processor type="org.inviwo.CubeProxyGeometry" identifier="CubeProxyGeometry" reference="ref5" />
             </OutPort>
             <InPort identifier="geometry">
-                <Processor type="org.inviwo.EntryExitPoints" identifier="EntryExitPoints" reference="ref5" />
+                <Processor type="org.inviwo.EntryExitPoints" identifier="EntryExitPoints" reference="ref2" />
             </InPort>
         </Connection>
         <Connection>
             <OutPort identifier="entry-points">
-                <Processor type="org.inviwo.EntryExitPoints" identifier="EntryExitPoints" reference="ref5" />
+                <Processor type="org.inviwo.EntryExitPoints" identifier="EntryExitPoints" reference="ref2" />
             </OutPort>
             <InPort identifier="entry-points">
-                <Processor type="org.inviwo.SimpleRaycaster" identifier="SimpleRaycaster" reference="ref1" />
+                <Processor type="org.inviwo.SimpleRaycaster" identifier="SimpleRaycaster" reference="ref6" />
             </InPort>
         </Connection>
         <Connection>
             <OutPort identifier="exit-points">
-                <Processor type="org.inviwo.EntryExitPoints" identifier="EntryExitPoints" reference="ref5" />
+                <Processor type="org.inviwo.EntryExitPoints" identifier="EntryExitPoints" reference="ref2" />
             </OutPort>
             <InPort identifier="exit-points">
-                <Processor type="org.inviwo.SimpleRaycaster" identifier="SimpleRaycaster" reference="ref1" />
+                <Processor type="org.inviwo.SimpleRaycaster" identifier="SimpleRaycaster" reference="ref6" />
             </InPort>
         </Connection>
         <Connection>
             <OutPort identifier="outport">
-                <Processor type="org.inviwo.SimpleRaycaster" identifier="SimpleRaycaster" reference="ref1" />
+                <Processor type="org.inviwo.SimpleRaycaster" identifier="SimpleRaycaster" reference="ref6" />
             </OutPort>
             <InPort identifier="inport">
-                <Processor type="org.inviwo.Background" identifier="Background" reference="ref3" />
+                <Processor type="org.inviwo.Background" identifier="Background" reference="ref0" />
             </InPort>
         </Connection>
         <Connection>
             <OutPort identifier="outport">
-                <Processor type="org.inviwo.Background" identifier="Background" reference="ref3" />
+                <Processor type="org.inviwo.Background" identifier="Background" reference="ref0" />
             </OutPort>
             <InPort identifier="inport">
-                <Processor type="org.inviwo.CanvasGL" identifier="CanvasGL" reference="ref7" />
+                <Processor type="org.inviwo.CanvasGL" identifier="CanvasGL" reference="ref4" />
             </InPort>
         </Connection>
         <Connection>
             <OutPort identifier="data">
-                <Processor type="org.inviwo.VolumeSource" identifier="VolumeSource" reference="ref4" />
+                <Processor type="org.inviwo.VolumeSource" identifier="VolumeSource" reference="ref1" />
             </OutPort>
             <InPort identifier="volume.inport">
-                <Processor type="org.inviwo.CubeProxyGeometry" identifier="CubeProxyGeometry" reference="ref0" />
+                <Processor type="org.inviwo.CubeProxyGeometry" identifier="CubeProxyGeometry" reference="ref5" />
             </InPort>
         </Connection>
         <Connection>
             <OutPort identifier="data">
-                <Processor type="org.inviwo.VolumeSource" identifier="VolumeSource" reference="ref4" />
+                <Processor type="org.inviwo.VolumeSource" identifier="VolumeSource" reference="ref1" />
             </OutPort>
             <InPort identifier="volume">
-                <Processor type="org.inviwo.SimpleRaycaster" identifier="SimpleRaycaster" reference="ref1" />
+                <Processor type="org.inviwo.SimpleRaycaster" identifier="SimpleRaycaster" reference="ref6" />
             </InPort>
         </Connection>
     </Connections>
     <PropertyLinks>
         <PropertyLink>
             <Properties>
-                <Property type="CameraProperty" identifier="camera" displayName="Camera" key="camera" reference="ref2" />
-                <Property type="CameraProperty" identifier="camera" displayName="Camera" key="camera" reference="ref6" />
+                <Property type="CameraProperty" identifier="camera" displayName="Camera" key="camera" reference="ref7" />
+                <Property type="CameraProperty" identifier="camera" displayName="Camera" key="camera" reference="ref3" />
             </Properties>
         </PropertyLink>
         <PropertyLink>
             <Properties>
-                <Property type="CameraProperty" identifier="camera" displayName="Camera" key="camera" reference="ref6" />
-                <Property type="CameraProperty" identifier="camera" displayName="Camera" key="camera" reference="ref2" />
+                <Property type="CameraProperty" identifier="camera" displayName="Camera" key="camera" reference="ref3" />
+                <Property type="CameraProperty" identifier="camera" displayName="Camera" key="camera" reference="ref7" />
             </Properties>
         </PropertyLink>
     </PropertyLinks>

@@ -3,7 +3,7 @@
     <!-- Don't edit the following code -->
     <ProcessorNetworkVersion content="1" />
     <Processors>
-        <Processor type="org.inviwo.CubeProxyGeometry" identifier="CubeProxyGeometry" id="ref0">
+        <Processor type="org.inviwo.CubeProxyGeometry" identifier="CubeProxyGeometry" id="ref16">
             <MetaDataList>
                 <MetaData type="ProcessorMetaData">
                     <position x="-775" y="-625" />
@@ -37,7 +37,7 @@
                 </Property>
             </Properties>
         </Processor>
-        <Processor type="org.inviwo.EntryExitPoints" identifier="EntryExitPoints" id="ref1">
+        <Processor type="org.inviwo.EntryExitPoints" identifier="EntryExitPoints" id="ref10">
             <MetaDataList>
                 <MetaData type="ProcessorMetaData">
                     <position x="-775" y="-550" />
@@ -195,11 +195,10 @@
                 </InteractionHandler>
             </InteractonHandlers>
             <Properties>
-                <Property type="CameraProperty" identifier="camera" displayName="Camera" key="camera" id="ref2">
+                <Property type="CameraProperty" identifier="camera" displayName="Camera" key="camera" id="ref11">
                     <usageMode content="0" />
                     <visible content="1" />
                     <lookFrom type="FloatVec3Property" identifier="lookFrom" displayName="Look from">
-                        <semantics semantics="Spherical" />
                         <usageMode content="0" />
                         <visible content="1" />
                         <value x="2.2114346" y="-4.2041035" z="-0.93176794" />
@@ -244,7 +243,7 @@
                 </Property>
             </Properties>
         </Processor>
-        <Processor type="org.inviwo.CanvasGL" identifier="CanvasGL" id="ref10">
+        <Processor type="org.inviwo.CanvasGL" identifier="CanvasGL" id="ref0">
             <MetaDataList>
                 <MetaData type="ProcessorMetaData">
                     <position x="-625" y="-350" />
@@ -252,7 +251,7 @@
                     <selection content="0" />
                 </MetaData>
                 <MetaData type="ProcessorWidgetMetaData">
-                    <position x="925" y="541" />
+                    <position x="933" y="571" />
                     <dimension x="256" y="256" />
                     <visibility content="1" />
                 </MetaData>
@@ -300,7 +299,7 @@
                 </Property>
             </Properties>
         </Processor>
-        <Processor type="org.inviwo.VolumeSource" identifier="VolumeSource" id="ref3">
+        <Processor type="org.inviwo.VolumeSource" identifier="VolumeSource" id="ref12">
             <MetaDataList>
                 <MetaData type="ProcessorMetaData">
                     <position x="-625" y="-700" />
@@ -336,7 +335,6 @@
                     <visible content="1" />
                     <Properties>
                         <Property type="DoubleMinMaxProperty" identifier="dataRange" displayName="Data range" key="dataRange">
-                            <semantics semantics="Text" />
                             <usageMode content="0" />
                             <visible content="1" />
                         </Property>
@@ -349,7 +347,6 @@
                             <visible content="1" />
                         </Property>
                         <Property type="DoubleMinMaxProperty" identifier="valueRange" displayName="Value range" key="valueRange">
-                            <semantics semantics="Text" />
                             <usageMode content="0" />
                             <visible content="1" />
                         </Property>
@@ -386,7 +383,7 @@
                 </Property>
             </Properties>
         </Processor>
-        <Processor type="org.inviwo.LightingRaycaster" identifier="LightingRaycaster" id="ref11">
+        <Processor type="org.inviwo.LightingRaycaster" identifier="LightingRaycaster" id="ref1">
             <MetaDataList>
                 <MetaData type="ProcessorMetaData">
                     <position x="-625" y="-450" />
@@ -395,15 +392,10 @@
                 </MetaData>
             </MetaDataList>
             <Properties>
-                <Property type="BoolProperty" identifier="applyLightAttenuation" displayName="Light attenuation" key="applyLightAttenuation">
-                    <usageMode content="0" />
-                    <visible content="1" />
-                </Property>
-                <Property type="CameraProperty" identifier="camera" displayName="Camera" key="camera" id="ref14">
+                <Property type="CameraProperty" identifier="camera" displayName="Camera" key="camera" id="ref4">
                     <usageMode content="0" />
                     <visible content="1" />
                     <lookFrom type="FloatVec3Property" identifier="lookFrom" displayName="Look from">
-                        <semantics semantics="Spherical" />
                         <usageMode content="0" />
                         <visible content="1" />
                         <value x="2.2114346" y="-4.2041035" z="-0.93176794" />
@@ -438,70 +430,90 @@
                         <visible content="1" />
                     </farPlane>
                 </Property>
-                <Property type="OptionPropertyString" identifier="classificationMode" displayName="Classification" key="classificationMode">
+                <Property type="OptionPropertyInt" identifier="channel" displayName="Render Channel" key="channel">
                     <usageMode content="0" />
                     <visible content="1" />
                 </Property>
-                <Property type="OptionPropertyString" identifier="compositingMode" displayName="Compositing" key="compositingMode">
+                <Property type="CompositeProperty" identifier="lighting" displayName="Lighting" key="lighting">
                     <usageMode content="0" />
                     <visible content="1" />
+                    <Properties>
+                        <Property type="BoolProperty" identifier="applyLightAttenuation" displayName="Light attenuation" key="applyLightAttenuation">
+                            <usageMode content="0" />
+                            <visible content="1" />
+                        </Property>
+                        <Property type="FloatVec3Property" identifier="lightAttenuation" displayName="Light attenuation values" key="lightAttenuation">
+                            <usageMode content="0" />
+                            <visible content="1" />
+                        </Property>
+                        <Property type="FloatVec3Property" identifier="lightColorAmbient" displayName="Ambient color" key="lightColorAmbient">
+                            <semantics semantics="Color" />
+                            <usageMode content="0" />
+                            <visible content="1" />
+                            <value x="0.49803922" y="0.49803922" z="0.49803922" />
+                        </Property>
+                        <Property type="FloatVec3Property" identifier="lightColorDiffuse" displayName="Diffuse color" key="lightColorDiffuse" id="ref6">
+                            <semantics semantics="Color" />
+                            <usageMode content="0" />
+                            <visible content="1" />
+                            <value x="0.27450982" y="0.38431373" z="1" />
+                        </Property>
+                        <Property type="FloatVec3Property" identifier="lightColorSpecular" displayName="Specular color" key="lightColorSpecular">
+                            <semantics semantics="Color" />
+                            <usageMode content="0" />
+                            <visible content="1" />
+                            <value x="0.49803922" y="0.49803922" z="0.49803922" />
+                        </Property>
+                        <Property type="FloatVec3Property" identifier="lightPosition" displayName="Position" key="lightPosition" id="ref5">
+                            <minvalue x="0" y="0" z="0" />
+                            <maxvalue x="1" y="1" z="1" />
+                            <semantics semantics="Spherical" />
+                            <usageMode content="0" />
+                            <visible content="1" />
+                            <value x="0.5704903" y="-0.70632136" z="1.0102762" />
+                        </Property>
+                        <Property type="IntProperty" identifier="materialShininess" displayName="Material shininess" key="materialShininess">
+                            <usageMode content="0" />
+                            <visible content="1" />
+                        </Property>
+                        <Property type="OptionPropertyInt" identifier="shadingMode" displayName="Shading" key="shadingMode">
+                            <usageMode content="0" />
+                            <visible content="1" />
+                            <selectedIdentifier content="none" />
+                        </Property>
+                        <Property type="BoolProperty" identifier="supportColoredLight" displayName="Enable Light Color" key="supportColoredLight" id="ref2">
+                            <usageMode content="0" />
+                            <visible content="1" />
+                        </Property>
+                    </Properties>
                 </Property>
-                <Property type="OptionPropertyString" identifier="gradientComputationMode" displayName="Gradient computation" key="gradientComputationMode">
+                <Property type="CompositeProperty" identifier="raycaster" displayName="Raycasting" key="raycaster">
                     <usageMode content="0" />
                     <visible content="1" />
+                    <Properties>
+                        <Property type="OptionPropertyString" identifier="classificationMode" displayName="Classification" key="classificationMode">
+                            <usageMode content="0" />
+                            <visible content="1" />
+                        </Property>
+                        <Property type="OptionPropertyString" identifier="compositingMode" displayName="Compositing" key="compositingMode">
+                            <usageMode content="0" />
+                            <visible content="1" />
+                        </Property>
+                        <Property type="OptionPropertyString" identifier="gradientComputationMode" displayName="Gradient computation" key="gradientComputationMode">
+                            <usageMode content="0" />
+                            <visible content="1" />
+                        </Property>
+                        <Property type="FloatProperty" identifier="isoValue" displayName="Iso value" key="isoValue">
+                            <usageMode content="0" />
+                            <visible content="1" />
+                        </Property>
+                        <Property type="FloatProperty" identifier="samplingRate" displayName="Sampling rate" key="samplingRate">
+                            <usageMode content="0" />
+                            <visible content="1" />
+                        </Property>
+                    </Properties>
                 </Property>
-                <Property type="FloatProperty" identifier="isoValue" displayName="Iso value" key="isoValue">
-                    <usageMode content="0" />
-                    <visible content="1" />
-                </Property>
-                <Property type="FloatVec3Property" identifier="lightAttenuation" displayName="Light attenuation values" key="lightAttenuation">
-                    <usageMode content="0" />
-                    <visible content="1" />
-                </Property>
-                <Property type="FloatVec3Property" identifier="lightColorAmbient" displayName="Ambient color" key="lightColorAmbient">
-                    <semantics semantics="Color" />
-                    <usageMode content="0" />
-                    <visible content="1" />
-                    <value x="0.49803922" y="0.49803922" z="0.49803922" />
-                </Property>
-                <Property type="FloatVec3Property" identifier="lightColorDiffuse" displayName="Diffuse color" key="lightColorDiffuse" id="ref13">
-                    <semantics semantics="Color" />
-                    <usageMode content="0" />
-                    <visible content="1" />
-                    <value x="0.27450982" y="0.38431373" z="1" />
-                </Property>
-                <Property type="FloatVec3Property" identifier="lightColorSpecular" displayName="Specular color" key="lightColorSpecular">
-                    <semantics semantics="Color" />
-                    <usageMode content="0" />
-                    <visible content="1" />
-                    <value x="0.49803922" y="0.49803922" z="0.49803922" />
-                </Property>
-                <Property type="FloatVec3Property" identifier="lightPosition" displayName="Position" key="lightPosition" id="ref12">
-                    <minvalue x="0" y="0" z="0" />
-                    <maxvalue x="1" y="1" z="1" />
-                    <semantics semantics="Spherical" />
-                    <usageMode content="0" />
-                    <visible content="1" />
-                    <value x="0.5704903" y="-0.70632136" z="1.0102762" />
-                </Property>
-                <Property type="IntProperty" identifier="materialShininess" displayName="Material shininess" key="materialShininess">
-                    <usageMode content="0" />
-                    <visible content="1" />
-                </Property>
-                <Property type="FloatProperty" identifier="samplingRate" displayName="Sampling rate" key="samplingRate">
-                    <usageMode content="0" />
-                    <visible content="1" />
-                </Property>
-                <Property type="OptionPropertyString" identifier="shadingMode" displayName="Shading" key="shadingMode">
-                    <usageMode content="0" />
-                    <visible content="1" />
-                    <selectedIdentifier content="none" />
-                </Property>
-                <Property type="BoolProperty" identifier="supportColoredLight" displayName="Enable Light Color" key="supportColoredLight" id="ref16">
-                    <usageMode content="0" />
-                    <visible content="1" />
-                </Property>
-                <Property type="TransferFunctionProperty" identifier="transferFunction" displayName="Transfer function" key="transferFunction" id="ref15">
+                <Property type="TransferFunctionProperty" identifier="transferFunction" displayName="Transfer function" key="transferFunction" id="ref3">
                     <usageMode content="0" />
                     <visible content="1" />
                     <MetaDataList>
@@ -542,7 +554,7 @@
                 </Property>
             </Properties>
         </Processor>
-        <Processor type="org.inviwo.LightVolumeGL" identifier="LightVolumeGL" id="ref4">
+        <Processor type="org.inviwo.LightVolumeGL" identifier="LightVolumeGL" id="ref7">
             <MetaDataList>
                 <MetaData type="ProcessorMetaData">
                     <position x="-525" y="-575" />
@@ -555,11 +567,11 @@
                     <usageMode content="0" />
                     <visible content="1" />
                 </Property>
-                <Property type="BoolProperty" identifier="supportColoredLight" displayName="Support Light Color" key="supportColoredLight" id="ref5">
+                <Property type="BoolProperty" identifier="supportColoredLight" displayName="Support Light Color" key="supportColoredLight" id="ref8">
                     <usageMode content="0" />
                     <visible content="1" />
                 </Property>
-                <Property type="TransferFunctionProperty" identifier="transferFunction" displayName="Transfer function" key="transferFunction" id="ref6">
+                <Property type="TransferFunctionProperty" identifier="transferFunction" displayName="Transfer function" key="transferFunction" id="ref9">
                     <usageMode content="0" />
                     <visible content="1" />
                     <MetaDataList>
@@ -605,7 +617,7 @@
                 </Property>
             </Properties>
         </Processor>
-        <Processor type="org.inviwo.Directional light source" identifier="Directional light source" id="ref7">
+        <Processor type="org.inviwo.Directional light source" identifier="Directional light source" id="ref13">
             <MetaDataList>
                 <MetaData type="ProcessorMetaData">
                     <position x="-375" y="-650" />
@@ -614,7 +626,7 @@
                 </MetaData>
             </MetaDataList>
             <Properties>
-                <Property type="FloatVec4Property" identifier="lightDiffuse" displayName="Color" key="lightDiffuse" id="ref8">
+                <Property type="FloatVec4Property" identifier="lightDiffuse" displayName="Color" key="lightDiffuse" id="ref14">
                     <semantics semantics="Color" />
                     <usageMode content="0" />
                     <visible content="1" />
@@ -624,7 +636,7 @@
                     <usageMode content="0" />
                     <visible content="1" />
                 </Property>
-                <Property type="FloatVec3Property" identifier="lightPosition" displayName="Light Source Position" key="lightPosition" id="ref9">
+                <Property type="FloatVec3Property" identifier="lightPosition" displayName="Light Source Position" key="lightPosition" id="ref15">
                     <semantics semantics="LightPosition" />
                     <usageMode content="0" />
                     <visible content="1" />
@@ -641,136 +653,136 @@
     <Connections>
         <Connection>
             <OutPort identifier="geometry.outport">
-                <Processor type="org.inviwo.CubeProxyGeometry" identifier="CubeProxyGeometry" reference="ref0" />
+                <Processor type="org.inviwo.CubeProxyGeometry" identifier="CubeProxyGeometry" reference="ref16" />
             </OutPort>
             <InPort identifier="geometry">
-                <Processor type="org.inviwo.EntryExitPoints" identifier="EntryExitPoints" reference="ref1" />
+                <Processor type="org.inviwo.EntryExitPoints" identifier="EntryExitPoints" reference="ref10" />
             </InPort>
         </Connection>
         <Connection>
             <OutPort identifier="data">
-                <Processor type="org.inviwo.VolumeSource" identifier="VolumeSource" reference="ref3" />
+                <Processor type="org.inviwo.VolumeSource" identifier="VolumeSource" reference="ref12" />
             </OutPort>
             <InPort identifier="volume.inport">
-                <Processor type="org.inviwo.CubeProxyGeometry" identifier="CubeProxyGeometry" reference="ref0" />
+                <Processor type="org.inviwo.CubeProxyGeometry" identifier="CubeProxyGeometry" reference="ref16" />
             </InPort>
         </Connection>
         <Connection>
             <OutPort identifier="entry-points">
-                <Processor type="org.inviwo.EntryExitPoints" identifier="EntryExitPoints" reference="ref1" />
+                <Processor type="org.inviwo.EntryExitPoints" identifier="EntryExitPoints" reference="ref10" />
             </OutPort>
             <InPort identifier="entry-points">
-                <Processor type="org.inviwo.LightingRaycaster" identifier="LightingRaycaster" reference="ref11" />
+                <Processor type="org.inviwo.LightingRaycaster" identifier="LightingRaycaster" reference="ref1" />
             </InPort>
         </Connection>
         <Connection>
             <OutPort identifier="exit-points">
-                <Processor type="org.inviwo.EntryExitPoints" identifier="EntryExitPoints" reference="ref1" />
+                <Processor type="org.inviwo.EntryExitPoints" identifier="EntryExitPoints" reference="ref10" />
             </OutPort>
             <InPort identifier="exit-points">
-                <Processor type="org.inviwo.LightingRaycaster" identifier="LightingRaycaster" reference="ref11" />
+                <Processor type="org.inviwo.LightingRaycaster" identifier="LightingRaycaster" reference="ref1" />
             </InPort>
         </Connection>
         <Connection>
             <OutPort identifier="outport">
-                <Processor type="org.inviwo.LightingRaycaster" identifier="LightingRaycaster" reference="ref11" />
+                <Processor type="org.inviwo.LightingRaycaster" identifier="LightingRaycaster" reference="ref1" />
             </OutPort>
             <InPort identifier="inport">
-                <Processor type="org.inviwo.CanvasGL" identifier="CanvasGL" reference="ref10" />
+                <Processor type="org.inviwo.CanvasGL" identifier="CanvasGL" reference="ref0" />
             </InPort>
         </Connection>
         <Connection>
             <OutPort identifier="data">
-                <Processor type="org.inviwo.VolumeSource" identifier="VolumeSource" reference="ref3" />
+                <Processor type="org.inviwo.VolumeSource" identifier="VolumeSource" reference="ref12" />
             </OutPort>
             <InPort identifier="inport">
-                <Processor type="org.inviwo.LightVolumeGL" identifier="LightVolumeGL" reference="ref4" />
+                <Processor type="org.inviwo.LightVolumeGL" identifier="LightVolumeGL" reference="ref7" />
             </InPort>
         </Connection>
         <Connection>
             <OutPort identifier="DirectionalLightSource">
-                <Processor type="org.inviwo.Directional light source" identifier="Directional light source" reference="ref7" />
+                <Processor type="org.inviwo.Directional light source" identifier="Directional light source" reference="ref13" />
             </OutPort>
             <InPort identifier="lightSource">
-                <Processor type="org.inviwo.LightVolumeGL" identifier="LightVolumeGL" reference="ref4" />
+                <Processor type="org.inviwo.LightVolumeGL" identifier="LightVolumeGL" reference="ref7" />
             </InPort>
         </Connection>
         <Connection>
             <OutPort identifier="data">
-                <Processor type="org.inviwo.VolumeSource" identifier="VolumeSource" reference="ref3" />
+                <Processor type="org.inviwo.VolumeSource" identifier="VolumeSource" reference="ref12" />
             </OutPort>
             <InPort identifier="volume">
-                <Processor type="org.inviwo.LightingRaycaster" identifier="LightingRaycaster" reference="ref11" />
+                <Processor type="org.inviwo.LightingRaycaster" identifier="LightingRaycaster" reference="ref1" />
             </InPort>
         </Connection>
         <Connection>
             <OutPort identifier="outport">
-                <Processor type="org.inviwo.LightVolumeGL" identifier="LightVolumeGL" reference="ref4" />
+                <Processor type="org.inviwo.LightVolumeGL" identifier="LightVolumeGL" reference="ref7" />
             </OutPort>
             <InPort identifier="lightVolume">
-                <Processor type="org.inviwo.LightingRaycaster" identifier="LightingRaycaster" reference="ref11" />
+                <Processor type="org.inviwo.LightingRaycaster" identifier="LightingRaycaster" reference="ref1" />
             </InPort>
         </Connection>
     </Connections>
     <PropertyLinks>
         <PropertyLink>
             <Properties>
-                <Property type="TransferFunctionProperty" identifier="transferFunction" displayName="Transfer function" key="transferFunction" reference="ref6" />
-                <Property type="TransferFunctionProperty" identifier="transferFunction" displayName="Transfer function" key="transferFunction" reference="ref15" />
+                <Property type="TransferFunctionProperty" identifier="transferFunction" displayName="Transfer function" key="transferFunction" reference="ref9" />
+                <Property type="TransferFunctionProperty" identifier="transferFunction" displayName="Transfer function" key="transferFunction" reference="ref3" />
             </Properties>
         </PropertyLink>
         <PropertyLink>
             <Properties>
-                <Property type="TransferFunctionProperty" identifier="transferFunction" displayName="Transfer function" key="transferFunction" reference="ref15" />
-                <Property type="TransferFunctionProperty" identifier="transferFunction" displayName="Transfer function" key="transferFunction" reference="ref6" />
+                <Property type="TransferFunctionProperty" identifier="transferFunction" displayName="Transfer function" key="transferFunction" reference="ref3" />
+                <Property type="TransferFunctionProperty" identifier="transferFunction" displayName="Transfer function" key="transferFunction" reference="ref9" />
             </Properties>
         </PropertyLink>
         <PropertyLink>
             <Properties>
-                <Property type="BoolProperty" identifier="supportColoredLight" displayName="Enable Light Color" key="supportColoredLight" reference="ref16" />
-                <Property type="BoolProperty" identifier="supportColoredLight" displayName="Support Light Color" key="supportColoredLight" reference="ref5" />
+                <Property type="BoolProperty" identifier="supportColoredLight" displayName="Enable Light Color" key="supportColoredLight" reference="ref2" />
+                <Property type="BoolProperty" identifier="supportColoredLight" displayName="Support Light Color" key="supportColoredLight" reference="ref8" />
             </Properties>
         </PropertyLink>
         <PropertyLink>
             <Properties>
-                <Property type="BoolProperty" identifier="supportColoredLight" displayName="Support Light Color" key="supportColoredLight" reference="ref5" />
-                <Property type="BoolProperty" identifier="supportColoredLight" displayName="Enable Light Color" key="supportColoredLight" reference="ref16" />
+                <Property type="BoolProperty" identifier="supportColoredLight" displayName="Support Light Color" key="supportColoredLight" reference="ref8" />
+                <Property type="BoolProperty" identifier="supportColoredLight" displayName="Enable Light Color" key="supportColoredLight" reference="ref2" />
             </Properties>
         </PropertyLink>
         <PropertyLink>
             <Properties>
-                <Property type="FloatVec3Property" identifier="lightPosition" displayName="Light Source Position" key="lightPosition" reference="ref9" />
-                <Property type="FloatVec3Property" identifier="lightPosition" displayName="Position" key="lightPosition" reference="ref12" />
+                <Property type="FloatVec3Property" identifier="lightPosition" displayName="Light Source Position" key="lightPosition" reference="ref15" />
+                <Property type="FloatVec3Property" identifier="lightPosition" displayName="Position" key="lightPosition" reference="ref5" />
             </Properties>
         </PropertyLink>
         <PropertyLink>
             <Properties>
-                <Property type="FloatVec3Property" identifier="lightPosition" displayName="Position" key="lightPosition" reference="ref12" />
-                <Property type="FloatVec3Property" identifier="lightPosition" displayName="Light Source Position" key="lightPosition" reference="ref9" />
+                <Property type="FloatVec3Property" identifier="lightPosition" displayName="Position" key="lightPosition" reference="ref5" />
+                <Property type="FloatVec3Property" identifier="lightPosition" displayName="Light Source Position" key="lightPosition" reference="ref15" />
             </Properties>
         </PropertyLink>
         <PropertyLink>
             <Properties>
-                <Property type="FloatVec4Property" identifier="lightDiffuse" displayName="Color" key="lightDiffuse" reference="ref8" />
-                <Property type="FloatVec3Property" identifier="lightColorDiffuse" displayName="Diffuse color" key="lightColorDiffuse" reference="ref13" />
+                <Property type="FloatVec4Property" identifier="lightDiffuse" displayName="Color" key="lightDiffuse" reference="ref14" />
+                <Property type="FloatVec3Property" identifier="lightColorDiffuse" displayName="Diffuse color" key="lightColorDiffuse" reference="ref6" />
             </Properties>
         </PropertyLink>
         <PropertyLink>
             <Properties>
-                <Property type="FloatVec3Property" identifier="lightColorDiffuse" displayName="Diffuse color" key="lightColorDiffuse" reference="ref13" />
-                <Property type="FloatVec4Property" identifier="lightDiffuse" displayName="Color" key="lightDiffuse" reference="ref8" />
+                <Property type="FloatVec3Property" identifier="lightColorDiffuse" displayName="Diffuse color" key="lightColorDiffuse" reference="ref6" />
+                <Property type="FloatVec4Property" identifier="lightDiffuse" displayName="Color" key="lightDiffuse" reference="ref14" />
             </Properties>
         </PropertyLink>
         <PropertyLink>
             <Properties>
-                <Property type="CameraProperty" identifier="camera" displayName="Camera" key="camera" reference="ref14" />
-                <Property type="CameraProperty" identifier="camera" displayName="Camera" key="camera" reference="ref2" />
+                <Property type="CameraProperty" identifier="camera" displayName="Camera" key="camera" reference="ref4" />
+                <Property type="CameraProperty" identifier="camera" displayName="Camera" key="camera" reference="ref11" />
             </Properties>
         </PropertyLink>
         <PropertyLink>
             <Properties>
-                <Property type="CameraProperty" identifier="camera" displayName="Camera" key="camera" reference="ref2" />
-                <Property type="CameraProperty" identifier="camera" displayName="Camera" key="camera" reference="ref14" />
+                <Property type="CameraProperty" identifier="camera" displayName="Camera" key="camera" reference="ref11" />
+                <Property type="CameraProperty" identifier="camera" displayName="Camera" key="camera" reference="ref4" />
             </Properties>
         </PropertyLink>
     </PropertyLinks>
