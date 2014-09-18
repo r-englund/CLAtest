@@ -95,6 +95,7 @@ protected:
     std::vector<Property*> properties_;
 
 private:
+    bool findPropsForComposites(TxElement*);
     InvalidationLevel invalidationLevel_;
     
     struct property_has_identifier {
