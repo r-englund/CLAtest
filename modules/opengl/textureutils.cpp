@@ -257,20 +257,20 @@ void glUnbindTextures(const ImageOutport& outport) {
     glUnbindTextures(outport.getConstData(), true, true, true);
 }
 
-void glSetTextureParameters(const Image* image, Shader* shader, const std::string samplerID) {
+void glSetShaderUniforms(Shader* shader, const Image* image, const std::string samplerID) {
     vec2 dimensions = vec2(image->getDimension());
     shader->setUniform(samplerID + ".dimensions_", dimensions);
     shader->setUniform(samplerID + ".dimensionsRCP_", vec2(1.0f) / dimensions);
 }
 
-void glSetTextureParameters(const ImageInport& inport, Shader* shader,
+void glSetShaderUniforms(Shader* shader, const ImageInport& inport,
                             const std::string samplerID) {
-    glSetTextureParameters(inport.getData(), shader, samplerID);
+    glSetShaderUniforms(shader, inport.getData(),  samplerID);
 }
 
-void glSetTextureParameters(const ImageOutport& outport, Shader* shader,
+void glSetShaderUniforms(Shader* shader, const ImageOutport& outport,
                             const std::string samplerID) {
-    glSetTextureParameters(outport.getConstData(), shader, samplerID);
+    glSetShaderUniforms(shader, outport.getConstData(), samplerID);
 }
 
 BufferObjectArray* glEnableImagePlaneRect() {

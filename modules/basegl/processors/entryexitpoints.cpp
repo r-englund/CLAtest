@@ -161,14 +161,14 @@ void EntryExitPoints::process() {
         capNearClippingPrg_->setUniform(
             "screenDimRCP_", vec2(1.0f, 1.0f) / static_cast<vec2>(entryPort_.getDimension()));
 
-        util::glSetTextureParameters(entryPort_, capNearClippingPrg_, "outportParameters_");
+        util::glSetShaderUniforms(capNearClippingPrg_, entryPort_, "outportParameters_");
 
         capNearClippingPrg_->setUniform("entryColorTex_", entryColorUnit.getUnitNumber());
         capNearClippingPrg_->setUniform("entryDepthTex_", entryDepthUnit.getUnitNumber());
-        util::glSetTextureParameters(entryPort_, capNearClippingPrg_, "entryParameters_");
+        util::glSetShaderUniforms(capNearClippingPrg_, entryPort_, "entryParameters_");
         capNearClippingPrg_->setUniform("exitColorTex_", exitColorUnit.getUnitNumber());
         capNearClippingPrg_->setUniform("exitDepthTex_", exitDepthUnit.getUnitNumber());
-        util::glSetTextureParameters(exitPort_, capNearClippingPrg_, "exitParameters_");
+        util::glSetShaderUniforms(capNearClippingPrg_, exitPort_, "exitParameters_");
         // the rendered plane is specified in camera coordinates
         // thus we must transform from camera to world to texture coordinates
         mat4 worldToTexMat = geom->getCoordinateTransformer().getWorldToTextureMatrix();

@@ -3,7 +3,7 @@
  * Inviwo - Interactive Visualization Workshop
  * Version 0.6b
  *
- * Copyright (c) 2012-2014 Inviwo Foundation
+ * Copyright (c) 2013-2014 Inviwo Foundation
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -26,32 +26,33 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
- * Main file authors: Peter Steneteg
+ * Main file author: Timo Ropinski
  *
  *********************************************************************************/
 
-#ifndef IVW_VOLUMEUTILS_H
-#define IVW_VOLUMEUTILS_H
-
-#include <modules/opengl/openglmoduledefine.h>
-#include <inviwo/core/common/inviwo.h>
-
-namespace inviwo {
-
-class Shader;
-class Volume;
-class VolumeInport;
-
-namespace util {
-
-IVW_MODULE_OPENGL_API void glSetShaderUniforms(Shader* shader, const Volume* volume,
-                                               const std::string& samplerID);
-
-IVW_MODULE_OPENGL_API void glSetShaderUniforms(Shader* shader, const VolumeInport& port,
-                                               const std::string& samplerID);
-
+float convertScreenToEye(CAMERA_PARAMETERS camera, float depthScreen) {
+    float depthNDC = 2.0 * depthScreen - 1.0;
+    float depthEye = 2.0 * camera.zNear_ * camera.zFar_ /
+                     (camera.zFar_ + camera.zNear_ - depthNDC * (camera.zFar_ - camera.zNear_));
+    return depthEye;
 }
 
-}  // namespace
+float convertEyeToScreen(CAMERA_PARAMETERS camera, float depthEye) {
+    float A = -(camera.zFar_+camera.zNear_)/(camera.zFar_-camera.zNear_);
+    float B = (-2.0*camera.zFar_*camera.zNear_) / (camera.zFar_-camera.zNear_);
+    float depthScreen = 0.5*(-A*depthEye + B) / depthEye + 0.5;
+    return depthScreen;
+}
 
-#endif  // IVW_VOLUMEUTILS_H
+float calculateDepthValue(CAMERA_PARAMETERS camera, float t, float entryDepthScreen, float exitDepthScreen) {
+    // to calculate the correct depth values, which are not linear in the deph buffer,
+    // we must first convert our screen space coordinates into eye coordinates and interpolate there.
+    // transform into eye space
+    float entryDepthEye = convertScreenToEye(camera, entryDepthScreen);
+    float exitDepthEye  = convertScreenToEye(camera, exitDepthScreen);
+    // compute the depth value in clip space
+    float resultEye = entryDepthEye + t * (exitDepthEye - entryDepthEye);
+    // transform back to screen space
+    float resultScreen = convertEyeToScreen(camera, resultEye);
+    return resultScreen;
+}

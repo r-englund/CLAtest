@@ -143,7 +143,7 @@ void Background::process() {
     shader_->setUniform("depth_", srcDepthUnit.getUnitNumber());
 
     if (inport_.hasData())
-        util::glSetTextureParameters(inport_, shader_, "srcColorParameters_");
+        util::glSetShaderUniforms(shader_, inport_, "srcColorParameters_");
 
     shader_->setUniform("hasData_",inport_.hasData());
     shader_->setUniform("color1_", color1_.get());

@@ -137,17 +137,17 @@ void MultichannelRaycaster::process() {
     util::glActivateAndClearTarget(outport_);
     shader_->activate();
     
-    util::glSetTextureParameters(outport_, shader_, "outportParameters_");
+    util::glSetShaderUniforms(shader_, outport_, "outportParameters_");
     
     shader_->setUniform("transferFuncs_", tfUnitNumbers, channels);
 
     shader_->setUniform("entryColorTex_", entryColorUnit.getUnitNumber());
     shader_->setUniform("entryDepthTex_", entryDepthUnit.getUnitNumber());
-    util::glSetTextureParameters(entryPort_, shader_, "entryParameters_");
+    util::glSetShaderUniforms(shader_, entryPort_, "entryParameters_");
 
     shader_->setUniform("exitColorTex_", exitColorUnit.getUnitNumber());
     shader_->setUniform("exitDepthTex_", exitDepthUnit.getUnitNumber());
-    util::glSetTextureParameters(exitPort_, shader_, "exitParameters_");
+    util::glSetShaderUniforms(shader_, exitPort_, "exitParameters_");
  
     
     shader_->setUniform("viewToTexture_",

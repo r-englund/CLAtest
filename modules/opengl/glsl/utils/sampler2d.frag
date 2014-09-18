@@ -3,7 +3,7 @@
  * Inviwo - Interactive Visualization Workshop
  * Version 0.6b
  *
- * Copyright (c) 2012-2014 Inviwo Foundation
+ * Copyright (c) 2013-2014 Inviwo Foundation
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -26,32 +26,14 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
- * Main file authors: Peter Steneteg
+ * Main file author: Peter Steneteg
  *
- *********************************************************************************/
+ **********
 
-#ifndef IVW_VOLUMEUTILS_H
-#define IVW_VOLUMEUTILS_H
-
-#include <modules/opengl/openglmoduledefine.h>
-#include <inviwo/core/common/inviwo.h>
-
-namespace inviwo {
-
-class Shader;
-class Volume;
-class VolumeInport;
-
-namespace util {
-
-IVW_MODULE_OPENGL_API void glSetShaderUniforms(Shader* shader, const Volume* volume,
-                                               const std::string& samplerID);
-
-IVW_MODULE_OPENGL_API void glSetShaderUniforms(Shader* shader, const VolumeInport& port,
-                                               const std::string& samplerID);
-
+vec4 textureLookup2Dnormalized(sampler2D tex, TEXTURE_PARAMETERS textureParams, vec2 samplePos) {
+    return texture(tex, samplePos);
 }
 
-}  // namespace
-
-#endif  // IVW_VOLUMEUTILS_H
+vec4 textureLookup2Dscreen(sampler2D tex, TEXTURE_PARAMETERS textureParams, vec2 samplePos) {
+    return texture(tex, samplePos*screenDimRCP_);
+}
