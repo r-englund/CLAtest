@@ -35,6 +35,8 @@
 
 #include <inviwo/core/common/inviwocoredefine.h>
 #include <inviwo/core/common/inviwo.h>
+#include <inviwo/core/properties/property.h>
+#include <inviwo/core/properties/compositeproperty.h>
 
 namespace inviwo {
 
@@ -45,26 +47,51 @@ public:
     virtual bool convert(TxElement* root) = 0;
 };
 
+template <typename T>
+class NodeVersionConverter : public VersionConverter {
+public:
+    typedef bool (T::*ConvertNodeFunPtr)(TxElement*);
+
+    NodeVersionConverter(T* obj, ConvertNodeFunPtr fPtr);
+    virtual ~NodeVersionConverter(){}
+    virtual bool convert(TxElement* root);
+
+private:
+    T* obj_;
+    ConvertNodeFunPtr fPtr_;
+};
+
+template <typename T>
+inviwo::NodeVersionConverter<T>::NodeVersionConverter(T* obj, ConvertNodeFunPtr fPtr)
+    : VersionConverter()
+    , obj_(obj)
+    , fPtr_(fPtr) {
+
+}
+
+template <typename T>
+bool inviwo::NodeVersionConverter<T>::convert(TxElement* root) {
+    return (obj_->*fPtr_)(root);
+}
 
 template <typename T>
 class TraversingVersionConverter : public VersionConverter {
 public:
-    typedef void (T::*ConvertNodeFunPtr)(TxElement*);
+    typedef bool (T::*ConvertNodeFunPtr)(TxElement*);
 
     TraversingVersionConverter(T* obj, ConvertNodeFunPtr fPtr);
     virtual ~TraversingVersionConverter(){}
     virtual bool convert(TxElement* root);
 
 private:
-    void traverseNodes(TxElement* node, ConvertNodeFunPtr update);
+    bool traverseNodes(TxElement* node, ConvertNodeFunPtr update);
     T* obj_;
     ConvertNodeFunPtr fPtr_;
 };
 
 template <typename T>
 bool inviwo::TraversingVersionConverter<T>::convert(TxElement* root) {
-    traverseNodes(root, fPtr_); 
-    return true;
+    return traverseNodes(root, fPtr_); 
 }
 
 template <typename T>
@@ -75,17 +102,29 @@ inviwo::TraversingVersionConverter<T>::TraversingVersionConverter(T* obj, Conver
 }
 
 template <typename T>
-void inviwo::TraversingVersionConverter<T>::traverseNodes(TxElement* node, ConvertNodeFunPtr update) {
-    (obj_->*fPtr_)(node);
+bool inviwo::TraversingVersionConverter<T>::traverseNodes(TxElement* node, ConvertNodeFunPtr update) {
+    res = true;
+    res = res && (obj_->*fPtr_)(node);
     ticpp::Iterator<ticpp::Element> child;
     for (child = child.begin(node); child != child.end(); child++) {
-        traverseNodes(child.Get(), update);
+        res = res && traverseNodes(child.Get(), update);
     }
+    return res;
 }
 
+namespace util {
+IVW_CORE_API bool xmlCopyMatchingSubPropsIntoComposite(TxElement* node,
+                                                       const CompositeProperty& prop);
+IVW_CORE_API bool xmlHasProp(TxElement* node, const Property& prop);
+IVW_CORE_API std::vector<TxElement*> xmlGetMatchingElements(TxElement* processornode,
+                                                            std::string key);
+IVW_CORE_API bool xmlFindMatchingSubPropertiesForComposites(
+    TxElement* node, std::vector<const CompositeProperty*> props);
+IVW_CORE_API TxElement* xmlGetElement(TxElement* node, std::string path);
 
+}  // namespace
 
-} // namespace
+}  // namespace
 
 #endif // IVW_VERSIONCONVERTER_H
 

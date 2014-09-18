@@ -156,53 +156,15 @@ void SimpleRaycaster::process() {
 }
 
 void SimpleRaycaster::deserialize(IvwDeserializer& d) {
-    TraversingVersionConverter<SimpleRaycaster> tvc(this, &SimpleRaycaster::fixNetwork);
+    NodeVersionConverter<SimpleRaycaster> tvc(this, &SimpleRaycaster::fixNetwork);
     d.convertVersion(&tvc);
     Processor::deserialize(d);
 }
 
-void SimpleRaycaster::fixNetwork(TxElement* node) {
-    std::string key;
-    node->GetValue(&key);
-    std::string parent;
-    node->Parent()->GetValue(&parent);
-
-    if (key == "Properties" && parent == "Processor") {
-        findPropsForComposite(node, lighting_);
-        findPropsForComposite(node, raycasting_);
-    }
-}
-
-void SimpleRaycaster::findPropsForComposite(TxElement* node, const CompositeProperty& prop) {
-    TxElement* propitem = new TxElement("Property");
-    propitem->SetAttribute("type", prop.getClassIdentifier());
-    propitem->SetAttribute("identifier", prop.getIdentifier());
-    propitem->SetAttribute("displayName", prop.getDisplayName());
-    propitem->SetAttribute("key", prop.getIdentifier());
-    TxElement* list = new TxElement("Properties");
-
-    propitem->LinkEndChild(list);
-    node->LinkEndChild(propitem);
-
-    std::vector<Property*> props = prop.getProperties();
-
-    for (int i = 0; i < props.size(); ++i) {
-        ticpp::Iterator<ticpp::Element> child;
-        for (child = child.begin(node); child != child.end(); child++) {
-            std::string name;
-            child->GetValue(&name);
-            std::string type = child->GetAttributeOrDefault("type", "");
-            std::string id = child->GetAttributeOrDefault("identifier", "");
-
-            if (props[i]->getClassIdentifier() == type && props[i]->getIdentifier() == id) {
-                LogInfo("Match for: " << prop.getIdentifier() << "."
-                        << props[i]->getIdentifier() << " to: " << name
-                        << " type: " << type << " id: " << id);
-
-                list->InsertEndChild(*(child.Get()));
-            }
-        }
-    }
+bool SimpleRaycaster::fixNetwork(TxElement* node) {
+    TxElement* p = util::xmlGetElement(node, "Properties/Property&type=OptionPropertyString&identifier=shadingMode");
+    if(p) p->SetAttribute("type", "OptionPropertyInt");
+    return true;
 }
 
 } // namespace

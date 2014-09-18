@@ -33,6 +33,7 @@
 #include <inviwo/core/properties/property.h>
 #include <inviwo/core/properties/propertyowner.h>
 #include <inviwo/core/io/serialization/ivwserializable.h>
+#include <inviwo/core/io/serialization/versionconverter.h>
 
 namespace inviwo {
 
@@ -135,6 +136,12 @@ void PropertyOwner::deserialize(IvwDeserializer& d) {
     *           eg., list of identifier for each property and "identifier"
     *
     */
+
+
+    NodeVersionConverter<PropertyOwner> tvc(this, &PropertyOwner::findPropsForComposites);
+    d.convertVersion(&tvc);
+
+
     std::map<std::string, Property*> propertyMap;
 
     for (std::vector<Property*>::const_iterator it = properties_.begin(); it != properties_.end(); ++it)
@@ -142,6 +149,18 @@ void PropertyOwner::deserialize(IvwDeserializer& d) {
 
     d.deserialize("Properties", propertyMap, "Property", "identifier") ;
 }
+
+bool PropertyOwner::findPropsForComposites(TxElement* node) {
+    std::vector<const CompositeProperty*> props;
+    for (std::vector<Property*>::const_iterator it = properties_.begin(); it != properties_.end(); ++it) {
+        CompositeProperty* cp = dynamic_cast<CompositeProperty*>(*it);
+        if(cp){
+            props.push_back(cp);
+        }
+    }
+    return util::xmlFindMatchingSubPropertiesForComposites(node, props);
+}
+
 void PropertyOwner::setAllPropertiesCurrentStateAsDefault(){
     for (std::vector<Property*>::iterator it = properties_.begin(); it != properties_.end(); ++it)
         (*it)->setCurrentStateAsDefault();

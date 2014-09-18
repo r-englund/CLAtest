@@ -67,9 +67,7 @@ protected:
 
 private:
     void onVolumeChange();
-    void fixNetwork(TxElement*);
-
-    void findPropsForComposite(TxElement* node, const CompositeProperty& prop);
+    bool fixNetwork(TxElement*);
 
     Shader* shader_;
     

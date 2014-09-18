@@ -50,6 +50,16 @@ std::vector<std::string> splitString(const std::string& str, char delimeter) {
     return strings;
 }
 
+
+std::string joinString(const std::vector<std::string>& str, std::string delimeter /*= ' '*/) {
+    std::stringstream ss;
+    for(int i = 0; i < str.size()-1; ++i){
+        ss << str[i] << delimeter;
+    }
+    ss << str.back();
+    return ss.str();
+}
+
 std::vector<std::string> splitStringWithMultipleDelimiters(const std::string& str,
                                                            std::vector<char> delimiters) {
     if (!delimiters.size()) {
