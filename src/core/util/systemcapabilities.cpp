@@ -42,12 +42,15 @@ namespace inviwo {
 #define SystemInfoNotFound(message) { LogInfoCustom("SystemInfo",message << " Info could not be retrieved"); }
 
 SystemCapabilities::SystemCapabilities() {
-
+#ifdef IVW_SIGAR
     sigar_open(&sigar_);
+#endif
 }
 
 SystemCapabilities::~SystemCapabilities() {
+#ifdef IVW_SIGAR
     sigar_close(sigar_);
+#endif
 }
 
 
