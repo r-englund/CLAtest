@@ -35,34 +35,53 @@
 
 #include <modules/basegl/baseglmoduledefine.h>
 #include <inviwo/core/common/inviwo.h>
+#include <inviwo/core/processors/processor.h>
+#include <inviwo/core/properties/boolproperty.h>
 #include <inviwo/core/properties/transferfunctionproperty.h>
+#include <inviwo/core/properties/simplelightingproperty.h>
+#include <inviwo/core/properties/simpleraycastingproperty.h>
+#include <inviwo/core/properties/cameraproperty.h>
 #include <inviwo/core/ports/imageport.h>
 #include <inviwo/core/ports/volumeport.h>
-#include <modules/opengl/inviwoopengl.h>
-#include <modules/opengl/volume/volumeraycastergl.h>
 
 namespace inviwo {
 
-class IVW_MODULE_BASEGL_API LightingRaycaster : public VolumeRaycasterGL {
+class Shader;
+
+class IVW_MODULE_BASEGL_API LightingRaycaster : public Processor {
 public:
     LightingRaycaster();
 
     InviwoProcessorInfo();
 
-    void initializeResources();
+    virtual void initialize();
+    virtual void deinitialize();
+    virtual void initializeResources();
+
+    virtual void deserialize(IvwDeserializer& d); 
 
 protected:
     virtual void process();
 
 private:
+    void onVolumeChange();
+    bool fixNetwork(TxElement*);
+    
+    Shader* shader_;
+
     VolumeInport volumePort_;
     ImageInport entryPort_;
     ImageInport exitPort_;
     VolumeInport lightVolumePort_;
     ImageOutport outport_;
 
-    TransferFunctionProperty transferFunction_;
     BoolProperty enableLightColor_;
+    TransferFunctionProperty transferFunction_;
+    OptionPropertyInt channel_;
+
+    SimpleRaycastingProperty raycasting_;
+    CameraProperty camera_;
+    SimpleLightingProperty lighting_;
 };
 
 } // namespace
