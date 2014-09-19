@@ -34,6 +34,7 @@
 #define IVW_CANVASGL_H
 
 #include <modules/opengl/openglmoduledefine.h>
+#include <modules/opengl/inviwoopengl.h>
 #include <inviwo/core/util/canvas.h>
 #include <inviwo/core/processors/processorwidget.h>
 
