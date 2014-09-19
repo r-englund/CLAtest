@@ -35,12 +35,15 @@
 
 #include <modules/base/basemoduledefine.h>
 #include <inviwo/core/common/inviwo.h>
-#include <inviwo/core/datastructures/light/spotlight.h>
+#include <inviwo/core/datastructures/baselightsource.h>
+#include <inviwo/core/properties/compositeproperty.h>
 #include <inviwo/core/ports/dataoutport.h>
 #include <inviwo/core/properties/ordinalproperty.h>
 #include <inviwo/core/processors/processor.h>
 
 namespace inviwo {
+
+class SpotLight;
 
 class IVW_MODULE_BASE_API SpotLightSourceProcessor : public Processor {
 public:
@@ -63,12 +66,11 @@ protected:
 private:
     DataOutport<LightSource> outport_;
 
+    CompositeProperty lighting_;
     FloatProperty lightPowerProp_;
     FloatVec2Property lightSize_;
-
     FloatVec4Property lightDiffuse_;
     FloatVec3Property lightPosition_;
-
     FloatProperty lightConeRadiusAngle_;
     FloatProperty lightFallOffAngle_;
 

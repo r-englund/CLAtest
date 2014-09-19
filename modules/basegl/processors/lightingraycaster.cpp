@@ -31,6 +31,8 @@
  *********************************************************************************/
 
 #include "lightingraycaster.h"
+#include <inviwo/core/io/serialization/ivwserialization.h>
+#include <inviwo/core/io/serialization/versionconverter.h>
 #include <modules/opengl/volume/volumegl.h>
 #include <modules/opengl/glwrap/shader.h>
 #include <modules/opengl/glwrap/textureunit.h>
@@ -55,9 +57,9 @@ LightingRaycaster::LightingRaycaster()
     , exitPort_("exit-points")
     , lightVolumePort_("lightVolume")
     , outport_("outport", &entryPort_, COLOR_DEPTH)
-    , transferFunction_("transferFunction", "Transfer function", TransferFunction(), &volumePort_)
     , enableLightColor_("supportColoredLight", "Enable Light Color", false,
                         PropertyOwner::INVALID_RESOURCES)
+    , transferFunction_("transferFunction", "Transfer function", TransferFunction(), &volumePort_)
     , channel_("channel", "Render Channel")
     , raycasting_("raycaster", "Raycasting")
     , camera_("camera", "Camera")

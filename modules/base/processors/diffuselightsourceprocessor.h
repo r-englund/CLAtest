@@ -33,12 +33,13 @@
 #ifndef IVW_DIFFUSE_LIGHT_SOURCE_PROCESSOR_H
 #define IVW_DIFFUSE_LIGHT_SOURCE_PROCESSOR_H
 
-#include <modules/base/basemoduledefine.h>
 #include <inviwo/core/common/inviwo.h>
-#include <inviwo/core/datastructures/light/diffuselight.h>
+#include <inviwo/core/datastructures/baselightsource.h>
 #include <inviwo/core/ports/dataoutport.h>
-#include <inviwo/core/properties/ordinalproperty.h>
 #include <inviwo/core/processors/processor.h>
+#include <inviwo/core/properties/compositeproperty.h>
+#include <inviwo/core/properties/ordinalproperty.h>
+#include <modules/base/basemoduledefine.h>
 
 namespace inviwo {
 
@@ -65,15 +66,15 @@ protected:
 private:
     DataOutport<LightSource> outport_;
 
+    CompositeProperty lighting_;
     FloatProperty lightPowerProp_;
     FloatVec2Property lightSize_;
-
     FloatVec4Property lightDiffuse_;
     FloatVec3Property lightPosition_;
 
     DiffuseLight* lightSource_;
 };
 
-} // namespace
+}  // namespace
 
-#endif // IVW_DIFFUSE_LIGHT_SOURCE_PROCESSOR_H
+#endif  // IVW_DIFFUSE_LIGHT_SOURCE_PROCESSOR_H

@@ -53,6 +53,9 @@ VolumeSliceGL::VolumeSliceGL()
     : Processor()
     , inport_("volume.inport")
     , outport_("image.outport", COLOR_ONLY)
+    , trafoGroup_("trafoGroup", "Transformations")
+    , pickGroup_("pickGroup", "Position Selection")
+    , tfGroup_("tfGroup", "Transfer Function")
     , sliceAlongAxis_("sliceAxis", "Slice along axis")
     , sliceX_("sliceX", "X Volume Position", 128, 1, 256)
     , sliceY_("sliceY", "Y Volume Position", 128, 1, 256)
@@ -95,6 +98,7 @@ VolumeSliceGL::VolumeSliceGL()
     addProperty(sliceY_);
     addProperty(sliceZ_);
 
+    // Transformations
     rotationAroundAxis_.addOption("0", "0 deg", 0.f);
     rotationAroundAxis_.addOption("90", "90 deg", glm::radians(90.f));
     rotationAroundAxis_.addOption("180", "180 deg", glm::radians(180.f));
@@ -102,46 +106,34 @@ VolumeSliceGL::VolumeSliceGL()
     rotationAroundAxis_.set(0.f);
     rotationAroundAxis_.setCurrentStateAsDefault();
     rotationAroundAxis_.onChange(this, &VolumeSliceGL::planeSettingsChanged);
-    addProperty(rotationAroundAxis_);
-
+    trafoGroup_.addProperty(rotationAroundAxis_);
     flipHorizontal_.onChange(this, &VolumeSliceGL::planeSettingsChanged);
-    addProperty(flipHorizontal_);
+    trafoGroup_.addProperty(flipHorizontal_);
     flipVertical_.onChange(this, &VolumeSliceGL::planeSettingsChanged);
-    addProperty(flipVertical_);
+    trafoGroup_.addProperty(flipVertical_);
+    addProperty(trafoGroup_);
 
+    // Position Selection
     posPicking_.onChange(this, &VolumeSliceGL::posPickingChanged);
-    addProperty(posPicking_);
+    pickGroup_.addProperty(posPicking_);
     showIndicator_.setReadOnly(posPicking_.get());
-    addProperty(showIndicator_);
-
+    pickGroup_.addProperty(showIndicator_);
     indicatorColor_.setSemantics(PropertySemantics::Color);
     indicatorColor_.onChange(this, &VolumeSliceGL::invalidateMesh);
-    addProperty(indicatorColor_);
+    pickGroup_.addProperty(indicatorColor_);
+    addProperty(pickGroup_);
 
+    // Transfer Function
     tfMappingEnabled_.onChange(this, &VolumeSliceGL::tfMappingEnabledChanged);
-    addProperty(tfMappingEnabled_);
+    tfGroup_.addProperty(tfMappingEnabled_);
     // Make sure that opacity does not affect the mapped color.
     if (transferFunction_.get().getNumPoints() > 0) {
         transferFunction_.get().getPoint(0)->setA(1.f);
     }
     transferFunction_.setCurrentStateAsDefault();
-    addProperty(transferFunction_);
-    addProperty(tfAlphaOffset_);
-
-    rotationAroundAxis_.setGroupID("trafoGroup");
-    flipHorizontal_.setGroupID("trafoGroup");
-    flipVertical_.setGroupID("trafoGroup");
-    Property::setGroupDisplayName("trafoGroup", "Transformations");
-
-    posPicking_.setGroupID("pickGroup");
-    showIndicator_.setGroupID("pickGroup");
-    indicatorColor_.setGroupID("pickGroup");
-    Property::setGroupDisplayName("pickGroup", "Position Selection");
-
-    tfMappingEnabled_.setGroupID("tfGroup");
-    transferFunction_.setGroupID("tfGroup");
-    tfAlphaOffset_.setGroupID("tfGroup");
-    Property::setGroupDisplayName("tfGroup", "Transfer Function");
+    tfGroup_.addProperty(transferFunction_);
+    tfGroup_.addProperty(tfAlphaOffset_);
+    addProperty(tfGroup_);
 
     addProperty(handleInteractionEvents_);
     addInteractionHandler(new VolumeSliceGLInteractionHandler(this));

@@ -71,9 +71,6 @@ public:
     ShadingFunctionEnum::Enum getPhaseFunctionEnum() const;
 
     virtual void phaseFunctionChanged();
-    std::string getGroupId() const { return "materialProperties"; }
-
-    virtual void serialize(IvwSerializer& s) const;
     virtual void deserialize(IvwDeserializer& d);
 
 

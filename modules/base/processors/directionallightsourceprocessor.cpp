@@ -31,6 +31,7 @@
  *********************************************************************************/
 
 #include "directionallightsourceprocessor.h"
+#include <inviwo/core/datastructures/light/directionallight.h>
 
 namespace inviwo {
 
@@ -43,21 +44,20 @@ ProcessorCodeState(DirectionalLightSourceProcessor, CODE_STATE_EXPERIMENTAL);
 DirectionalLightSourceProcessor::DirectionalLightSourceProcessor()
     : Processor()
     , outport_("DirectionalLightSource")
+    , lighting_("lighting", "Light Parameters")
     , lightPowerProp_("lightPower", "Light power (%)", 50.f, 0.f, 100.f)
     , lightDiffuse_("lightDiffuse", "Color", vec4(1.0f))
     , lightPosition_("lightPosition", "Light Source Position", vec3(100.f), vec3(-100.f), vec3(100.f))
     , lightEnabled_("lightEnabled", "Enabled", true) {
+
     addPort(outport_);
-    addProperty(lightPosition_);
-    addProperty(lightDiffuse_);
-    addProperty(lightPowerProp_);
-    addProperty(lightEnabled_);
-    // assign lighting properties to property group
-    lightPosition_.setGroupID("lighting");
-    lightDiffuse_.setGroupID("lighting");
-    lightPowerProp_.setGroupID("lighting");
-    lightEnabled_.setGroupID("lighting");
-    Property::setGroupDisplayName("lighting", "Light Parameters");
+
+    lighting_.addProperty(lightPosition_);
+    lighting_.addProperty(lightDiffuse_);
+    lighting_.addProperty(lightPowerProp_);
+    lighting_.addProperty(lightEnabled_);
+    addProperty(lighting_);
+
     lightPosition_.setSemantics(PropertySemantics::LightPosition);
     lightDiffuse_.setSemantics(PropertySemantics::Color);
     lightSource_ = new DirectionalLight();

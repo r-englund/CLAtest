@@ -31,6 +31,8 @@
  *********************************************************************************/
 
 #include "spotlightsourceprocessor.h"
+#include <inviwo/core/datastructures/light/spotlight.h>
+
 
 namespace inviwo {
 
@@ -43,6 +45,7 @@ ProcessorCodeState(SpotLightSourceProcessor, CODE_STATE_EXPERIMENTAL);
 SpotLightSourceProcessor::SpotLightSourceProcessor()
     : Processor()
     , outport_("SpotLightSource")
+    , lighting_("lighting", "Light Parameters")
     , lightPowerProp_("lightPower", "Light power (%)", 50.f, 0.f, 100.f)
     , lightSize_("lightSize", "Light size", vec2(1.5f, 1.5f), vec2(0.0f, 0.0f), vec2(3.0f, 3.0f))
     , lightDiffuse_("lightDiffuse", "Color", vec4(1.0f))
@@ -50,20 +53,15 @@ SpotLightSourceProcessor::SpotLightSourceProcessor()
     , lightConeRadiusAngle_("lightConeRadiusAngle", "Light Cone Radius Angle", 30.f, 1.f, 90.f)
     , lightFallOffAngle_("lightFallOffAngle", "Light Fall Off Angle", 5.f, 0.f, 30.f){
     addPort(outport_);
-    addProperty(lightPosition_);
-    addProperty(lightConeRadiusAngle_);
-    addProperty(lightFallOffAngle_);
-    addProperty(lightDiffuse_);
-    addProperty(lightPowerProp_);
-    addProperty(lightSize_);
-    // assign lighting properties to property group
-    lightPosition_.setGroupID("lighting");
-    lightConeRadiusAngle_.setGroupID("lighting");
-    lightFallOffAngle_.setGroupID("lighting");
-    lightDiffuse_.setGroupID("lighting");
-    lightPowerProp_.setGroupID("lighting");
-    lightSize_.setGroupID("lighting");
-    Property::setGroupDisplayName("lighting", "Light Parameters");
+
+    lighting_.addProperty(lightPosition_);
+    lighting_.addProperty(lightConeRadiusAngle_);
+    lighting_.addProperty(lightFallOffAngle_);
+    lighting_.addProperty(lightDiffuse_);
+    lighting_.addProperty(lightPowerProp_);
+    lighting_.addProperty(lightSize_);
+    addProperty(lighting_);
+
     lightPosition_.setSemantics(PropertySemantics::LightPosition);
     lightDiffuse_.setSemantics(PropertySemantics::Color);
     lightSource_ = new SpotLight();
