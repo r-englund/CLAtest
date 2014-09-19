@@ -34,21 +34,21 @@
 #define IVW_VOLUMESLICEGL_H
 
 #include <modules/basegl/baseglmoduledefine.h>
-#include <modules/opengl/inviwoopengl.h>
 
 #include <inviwo/core/common/inviwo.h>
-#include <inviwo/core/processors/processor.h>
-#include <inviwo/core/interaction/interactionhandler.h>
+#include <inviwo/core/datastructures/geometry/geometrytype.h>
 #include <inviwo/core/interaction/events/keyboardevent.h>
 #include <inviwo/core/interaction/events/mouseevent.h>
-#include <inviwo/core/ports/volumeport.h>
+#include <inviwo/core/interaction/interactionhandler.h>
 #include <inviwo/core/ports/imageport.h>
-#include <inviwo/core/properties/boolproperty.h>
+#include <inviwo/core/ports/volumeport.h>
+#include <inviwo/core/processors/processor.h>
 #include <inviwo/core/properties/baseoptionproperty.h>
+#include <inviwo/core/properties/boolproperty.h>
+#include <inviwo/core/properties/compositeproperty.h>
 #include <inviwo/core/properties/ordinalproperty.h>
 #include <inviwo/core/properties/transferfunctionproperty.h>
-#include <inviwo/core/datastructures/geometry/geometrytype.h>
-
+#include <modules/opengl/inviwoopengl.h>
 
 namespace inviwo {
 
@@ -77,12 +77,13 @@ protected:
     class VolumeSliceGLInteractionHandler : public InteractionHandler {
     public:
         VolumeSliceGLInteractionHandler(VolumeSliceGL* vs);
-        ~VolumeSliceGLInteractionHandler(){};
+        ~VolumeSliceGLInteractionHandler() {};
 
         void invokeEvent(Event* event);
+
     private:
         MouseEvent wheelEvent_;
-        MouseEvent mousePressEvent_; // used for position selection
+        MouseEvent mousePressEvent_;  // used for position selection
 
         KeyboardEvent upEvent_;
         KeyboardEvent downEvent_;
@@ -110,14 +111,14 @@ protected:
     inline int getAxisIndex(int axis) const {
         // axis should be of type CoordinateEnums::CartesianCoordinateAxis
         switch (axis) {
-        case inviwo::CoordinateEnums::X:
-            return 0;
-        case inviwo::CoordinateEnums::Y:
-            return 1;
-        case inviwo::CoordinateEnums::Z:
-            return 2;
-        default:
-            return 0;
+            case inviwo::CoordinateEnums::X:
+                return 0;
+            case inviwo::CoordinateEnums::Y:
+                return 1;
+            case inviwo::CoordinateEnums::Z:
+                return 2;
+            default:
+                return 0;
         }
     }
 
@@ -125,11 +126,15 @@ private:
     VolumeInport inport_;
     ImageOutport outport_;
 
-    OptionPropertyInt sliceAlongAxis_;  // Axis enum (Cannot serialize/deserialize enums so we use an int and cast it)
+    CompositeProperty trafoGroup_;
+    CompositeProperty pickGroup_;
+    CompositeProperty tfGroup_;
+
+    OptionPropertyInt sliceAlongAxis_;  // Axis enum
     IntProperty sliceX_;
     IntProperty sliceY_;
     IntProperty sliceZ_;
-    IntProperty *slices_[3]; // array to access the individual slices via index
+    IntProperty* slices_[3];                  // array to access the individual slices via index
     OptionPropertyFloat rotationAroundAxis_;  // Clockwise rotation around slice axis
     BoolProperty flipHorizontal_;
     BoolProperty flipVertical_;
@@ -145,15 +150,14 @@ private:
     BoolProperty handleInteractionEvents_;
 
     Shader* shader_;
-    Shader *indicatorShader_;
+    Shader* indicatorShader_;
 
-    Mesh *meshCrossHair_;
-    Mesh *meshBox_; // second mesh needed since Mesh does not support multiple connectivity types
+    Mesh* meshCrossHair_;
+    Mesh* meshBox_;  // second mesh needed since Mesh does not support multiple connectivity types
     bool meshDirty_;
 
     uvec3 volumeDimensions_;
 };
-
 }
 
-#endif //IVW_VOLUMESLICEGL_H
+#endif  // IVW_VOLUMESLICEGL_H

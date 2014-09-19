@@ -33,17 +33,20 @@
 #ifndef IVW_POINT_LIGHT_SOURCE_PROCESSOR_H
 #define IVW_POINT_LIGHT_SOURCE_PROCESSOR_H
 
-#include <modules/base/basemoduledefine.h>
 #include <inviwo/core/common/inviwo.h>
-#include <inviwo/core/datastructures/light/pointlight.h>
+#include <inviwo/core/datastructures/baselightsource.h>
+#include <inviwo/core/interaction/trackball.h>
 #include <inviwo/core/ports/dataoutport.h>
-#include <inviwo/core/properties/ordinalproperty.h>
+#include <inviwo/core/processors/processor.h>
 #include <inviwo/core/properties/boolproperty.h>
 #include <inviwo/core/properties/cameraproperty.h>
-#include <inviwo/core/processors/processor.h>
-#include <inviwo/core/interaction/trackball.h>
+#include <inviwo/core/properties/ordinalproperty.h>
+#include <modules/base/basemoduledefine.h>
 
 namespace inviwo {
+
+class PointLight;
+class PointLightInteractionHandler;
 
 class IVW_MODULE_BASE_API PointLightSourceProcessor : public Processor {
 public:
@@ -106,17 +109,14 @@ protected:
 private:
     DataOutport<LightSource> outport_;
 
+    CompositeProperty lighting_;
     FloatProperty lightPowerProp_;
     FloatProperty lightSize_;
-
     FloatVec4Property lightDiffuse_;
     FloatVec3Property lightPosition_;
-
     BoolProperty lightEnabled_;
-
     CameraProperty camera_;
     BoolProperty handleInteractionEvents_; ///< Enable or disable interactions from canvas
-
     PointLightInteractionHandler* lightInteractionHandler_;
     PointLight* lightSource_;
 };

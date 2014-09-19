@@ -33,6 +33,8 @@
 #include "pointlightsourceprocessor.h"
 #include <inviwo/core/util/intersection/rayplaneintersection.h>
 #include <inviwo/core/util/intersection/raysphereintersection.h>
+#include <inviwo/core/datastructures/light/pointlight.h>
+
 
 namespace inviwo {
 
@@ -45,6 +47,7 @@ ProcessorCodeState(PointLightSourceProcessor, CODE_STATE_EXPERIMENTAL);
 PointLightSourceProcessor::PointLightSourceProcessor()
     : Processor()
     , outport_("PointLightSource")
+    , lighting_("lighting", "Light Parameters")
     , lightPowerProp_("lightPower", "Light power (%)", 50.f, 0.f, 100.f)
     , lightSize_("lightSize", "Light radius", 1.5f, 0.0f, 3.0f)
     , lightDiffuse_("lightDiffuse", "Color", vec4(1.0f))
@@ -53,20 +56,16 @@ PointLightSourceProcessor::PointLightSourceProcessor()
     , camera_("camera", "Camera", vec3(0.0f, 0.0f, -2.0f), vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 1.0f, 0.0f), NULL, PropertyOwner::VALID) 
     , handleInteractionEvents_("handleEvents", "Handle interaction events", false) {
     addPort(outport_);
-    addProperty(lightPosition_);
-    addProperty(lightDiffuse_);
-    addProperty(lightPowerProp_);
-    addProperty(lightSize_);
-    addProperty(lightEnabled_);
+    lighting_.addProperty(lightPosition_);
+    lighting_.addProperty(lightDiffuse_);
+    lighting_.addProperty(lightPowerProp_);
+    lighting_.addProperty(lightSize_);
+    lighting_.addProperty(lightEnabled_);
+    addProperty(lighting_);
+    
     addProperty(camera_);
     camera_.setVisible(false);
-    // assign lighting properties to property group
-    lightPosition_.setGroupID("lighting");
-    lightDiffuse_.setGroupID("lighting");
-    lightPowerProp_.setGroupID("lighting");
-    lightSize_.setGroupID("lighting");
-    lightEnabled_.setGroupID("lighting");
-    Property::setGroupDisplayName("lighting", "Light Parameters");
+    
     lightPosition_.setSemantics(PropertySemantics::LightPosition);
     lightDiffuse_.setSemantics(PropertySemantics::Color);
     lightSource_ = new PointLight();

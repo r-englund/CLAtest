@@ -38,14 +38,12 @@ AdvancedMaterialProperty::AdvancedMaterialProperty(
     std::string identifier, std::string displayName,
     PropertyOwner::InvalidationLevel invalidationLevel, PropertySemantics semantics)
     : CompositeProperty(identifier, displayName, invalidationLevel,
-                        semantics)  // Material properties
+                        semantics)
     , phaseFunctionProp("phaseFunction", "Phase function", PropertyOwner::VALID)
     , indexOfRefractionProp("IOR", "Index of refraction", 1.f, 1.f, 20.f)
     , roughnessProp("roughness", "Roughness", 0.1f, 0.01f, 1.f)
     , specularColorProp("specularColor", "Specular color", vec4(1.f))
     , anisotropyProp("anisotropy", "Anisotropy (g)", 0.f, -1.f, 1.f) {
-    std::string materialGroupID = getGroupId();
-    Property::setGroupDisplayName(materialGroupID, "Material");
 
     phaseFunctionProp.addOption("isotropic", "Isotropic");
     phaseFunctionProp.addOption("HenyeyGreenstein", "Henyey-Greenstein");
@@ -58,14 +56,8 @@ AdvancedMaterialProperty::AdvancedMaterialProperty(
     phaseFunctionProp.addOption("mix", "Mix");
     phaseFunctionProp.setCurrentStateAsDefault();
     phaseFunctionProp.onChange(this, &AdvancedMaterialProperty::phaseFunctionChanged);
-    phaseFunctionProp.setGroupID(materialGroupID);
 
-    specularColorProp.setGroupID(materialGroupID);
     specularColorProp.setSemantics(PropertySemantics::Color);
-
-    indexOfRefractionProp.setGroupID(materialGroupID);
-    roughnessProp.setGroupID(materialGroupID);
-    anisotropyProp.setGroupID(materialGroupID);
 
     addProperty(phaseFunctionProp);
     addProperty(indexOfRefractionProp);
@@ -171,22 +163,8 @@ ShadingFunctionEnum::Enum AdvancedMaterialProperty::getPhaseFunctionEnum() const
     }
 }
 
-void AdvancedMaterialProperty::serialize(IvwSerializer& s) const {
-    Property::serialize(s);
-    s.serialize("phaseFunction", phaseFunctionProp);
-    s.serialize("IOR", indexOfRefractionProp);
-    s.serialize("roughness", roughnessProp);
-    s.serialize("specularColor", specularColorProp);
-    s.serialize("anisotropy", anisotropyProp);
-}
-
 void AdvancedMaterialProperty::deserialize(IvwDeserializer& d) {
-    Property::deserialize(d);
-    d.deserialize("phaseFunction", phaseFunctionProp);
-    d.deserialize("IOR", indexOfRefractionProp);
-    d.deserialize("roughness", roughnessProp);
-    d.deserialize("specularColor", specularColorProp);
-    d.deserialize("anisotropy", anisotropyProp);
+    CompositeProperty::deserialize(d);
     phaseFunctionChanged();
 }
 
