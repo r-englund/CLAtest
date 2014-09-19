@@ -119,7 +119,7 @@ IVW_CORE_API bool xmlHasProp(TxElement* node, const Property& prop);
 IVW_CORE_API std::vector<TxElement*> xmlGetMatchingElements(TxElement* processornode,
                                                             std::string key);
 IVW_CORE_API bool xmlFindMatchingSubPropertiesForComposites(
-    TxElement* node, std::vector<const CompositeProperty*> props);
+    TxElement* node, const std::vector<const CompositeProperty*>& props);
 IVW_CORE_API TxElement* xmlGetElement(TxElement* node, std::string path);
 
 }  // namespace
