@@ -109,8 +109,8 @@ void DrawLines::clearLines() {
 
 DrawLines::DrawLinesInteractionHandler::DrawLinesInteractionHandler(DrawLines* dfh)
     : InteractionHandler()
-    , drawPosEvent(MouseEvent::MOUSE_BUTTON_LEFT, InteractionEvent::MODIFIER_CTRL)
-    , drawEnableEvent_('D', InteractionEvent::MODIFIER_CTRL)
+    , drawPosEvent(MouseEvent::MOUSE_BUTTON_LEFT, InteractionEvent::MODIFIER_NONE)
+    , drawEnableEvent_('d', InteractionEvent::MODIFIER_CTRL)
     , drawer_(dfh)
     , drawModeEnabled_(false) {}
 
@@ -121,11 +121,11 @@ void DrawLines::DrawLinesInteractionHandler::invokeEvent(Event* event) {
         KeyboardEvent::KeyState state = keyEvent->state();
         InteractionEvent::Modifier modifier = keyEvent->modifier();
 
-        if (button == drawEnableEvent_.button() && modifier == drawEnableEvent_.modifier()) {
+        if (button == 68 && modifier == drawEnableEvent_.modifier()) {
             if (state == KeyboardEvent::KEY_STATE_PRESS) {
                 drawModeEnabled_ = true;
             } else if (state == KeyboardEvent::KEY_STATE_RELEASE) {
-                drawModeEnabled_ = false;
+                //drawModeEnabled_ = false;
             }
         }
         return;
