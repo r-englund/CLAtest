@@ -49,14 +49,14 @@ public:
     PortInspectorFactory();
     virtual ~PortInspectorFactory();
 
-    void registerObject(PortInspector* portInspector);
+    void registerObject(PortInspectorFactoryObject* portInspector);
 
     virtual PortInspector* getPortInspectorForPortClass(std::string className);
 
     virtual IvwSerializable* create(std::string className) const { return 0; }
     virtual bool isValidType(std::string className) const;
 
-    typedef std::map<std::string, PortInspector*> PortInspectorMap;
+    typedef std::map<std::string, PortInspectorFactoryObject*> PortInspectorMap;
 
 private:
     PortInspectorMap portInspectors_;

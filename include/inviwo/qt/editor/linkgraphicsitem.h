@@ -46,7 +46,7 @@ class ProcessorLinkGraphicsItem;
 class ProcessorGraphicsItem;
 class ProcessorLink;
 
-class IVW_QTEDITOR_API LinkGraphicsItem : public EditorGrapicsItem {
+class IVW_QTEDITOR_API LinkGraphicsItem : public EditorGraphicsItem {
 public:
     LinkGraphicsItem(QPointF startPoint, QPointF endPoint, ivec3 color = ivec3(255, 255, 255),
                      QPointF startDir = QPointF(1.0f, 0.0), QPointF endDir = QPointF(0.0f, 0.0f));

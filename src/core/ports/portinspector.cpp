@@ -35,9 +35,9 @@
 #include <inviwo/core/io/serialization/ivwserialization.h>
 
 namespace inviwo {
-PortInspector::PortInspector(std::string portClassName, std::string inspectorWorkspace)
-    : inspectorNetworkFileName_(inspectorWorkspace)
-    , portClassName_(portClassName)
+PortInspector::PortInspector(std::string portClassIdentifier, std::string inspectorWorkspaceFileName)
+    : inspectorNetworkFileName_(inspectorWorkspaceFileName)
+    , portClassIdentifier_(portClassIdentifier)
     , active_(false)
     , needsUpdate_(false)
     , inspectorNetwork_(NULL) {
@@ -63,7 +63,7 @@ std::string PortInspector::getInspectorNetworkFileName() {
 }
 
 std::string PortInspector::getPortClassName() {
-    return portClassName_;
+    return portClassIdentifier_;
 }
 
 std::vector<Inport*> PortInspector::getInports() {
@@ -159,9 +159,18 @@ void PortInspector::initialize() {
 
 }
 
+PortInspectorFactoryObject::PortInspectorFactoryObject(const std::string& portClassIdentifier,
+                               const std::string& inspectorWorkspaceFileName)
+    : portClassIdentifier_(portClassIdentifier)
+    , inspectorWorkspaceFileName_(inspectorWorkspaceFileName) {}
 
+std::string PortInspectorFactoryObject::getClassIdentifier() const {
+    return portClassIdentifier_;
+}
 
-
+PortInspector* PortInspectorFactoryObject::create() {
+    return new PortInspector(portClassIdentifier_, inspectorWorkspaceFileName_);
+}
 
 } // namespace
 

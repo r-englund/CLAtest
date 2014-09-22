@@ -45,7 +45,7 @@ class Port;
 class ConnectionGraphicsItem;
 class ProcessorGraphicsItem;
 
-class IVW_QTEDITOR_API ProcessorPortGraphicsItem : public EditorGrapicsItem {
+class IVW_QTEDITOR_API ProcessorPortGraphicsItem : public EditorGraphicsItem {
 public:
     ProcessorPortGraphicsItem(ProcessorGraphicsItem* parent, const QPointF& pos, bool up,
                               Port* port);

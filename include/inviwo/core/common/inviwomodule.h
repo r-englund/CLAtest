@@ -83,7 +83,7 @@ public:
     const std::vector<DialogFactoryObject*>& getDialogs() const;
     const std::vector<MetaData*>& getMetaData() const;
     const std::vector<PortFactoryObject*>& getPorts() const;
-    const std::vector<PortInspector*>& getPortInspectors() const;
+    const std::vector<PortInspectorFactoryObject*>& getPortInspectors() const;
     const std::vector<ProcessorFactoryObject*>& getProcessors() const;
     const std::vector< std::pair<std::string, ProcessorWidget*> >& getProcessorWidgets() const;
     const std::vector<PropertyFactoryObject*>& getProperties() const;
@@ -110,7 +110,7 @@ protected:
     void registerDialogObject(DialogFactoryObject* dialog);
     void registerMetaData(MetaData* meta);
     void registerPortObject(PortFactoryObject* port);
-    void registerPortInspector(PortInspector* portInspector);
+    void registerPortInspectorObject(PortInspectorFactoryObject* portInspector);
     void registerProcessorObject(ProcessorFactoryObject* processor);
     void registerProcessorWidget(std::string processorClassName, ProcessorWidget* processorWidget);
     void registerPropertyObject(PropertyFactoryObject* property);
@@ -143,7 +143,7 @@ private:
     std::vector<DialogFactoryObject*> dialogs_;
     std::vector<MetaData*> metadata_;
     std::vector<PortFactoryObject*> ports_;
-    std::vector<PortInspector*> portInspectors_;
+    std::vector<PortInspectorFactoryObject*> portInspectors_;
     std::vector<ProcessorFactoryObject*> processors_;
     std::vector<std::pair<std::string, ProcessorWidget*> > processorWidgets_;
     std::vector<PropertyFactoryObject*> properties_;
@@ -160,6 +160,7 @@ private:
 #define registerPropertyWidget(T, P, semantics) { registerPropertyWidgetObject(new PropertyWidgetFactoryObjectTemplate<T,P>(#P, PropertySemantics(semantics))); }
 #define registerPort(T) { registerPortObject(new PortFactoryObjectTemplate<T>(#T)); }
 #define registerDialog(P, T) { registerDialogObject(new DialogFactoryObjectTemplate<T>(P)); }
+#define registerPortInspector(P, T) { registerPortInspectorObject(new PortInspectorFactoryObject(P,T)); }
 
 
 } // namespace

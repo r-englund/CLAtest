@@ -30,8 +30,8 @@
  *
  *********************************************************************************/
 
-#ifndef IVW_EDITORGRAPICSITEM_H
-#define IVW_EDITORGRAPICSITEM_H
+#ifndef IVW_EDITORGRAPHICSITEM_H
+#define IVW_EDITORGRAPHICSITEM_H
 
 #include <inviwo/qt/editor/inviwoqteditordefine.h>
 
@@ -66,22 +66,22 @@ static const qreal LINKGRAPHICSITEM_DEPTH = 1.0f;
 
 class Port;
 
-class IVW_QTEDITOR_API EditorGrapicsItem : public QGraphicsRectItem {
+class IVW_QTEDITOR_API EditorGraphicsItem : public QGraphicsRectItem {
 public:
-    EditorGrapicsItem();
-    EditorGrapicsItem(QGraphicsItem* parent);
-    virtual ~EditorGrapicsItem();
+    EditorGraphicsItem();
+    EditorGraphicsItem(QGraphicsItem* parent);
+    virtual ~EditorGraphicsItem();
     QPoint mapPosToSceen(QPointF pos) const;
 
     static const QPainterPath makeRoundedBox(QRectF rect, float radius );
 
     virtual void showToolTip(QGraphicsSceneHelpEvent* event);
     void showPortInfo(QGraphicsSceneHelpEvent* e, Port* port) const;
-
+    
 protected:
     void showToolTipHelper(QGraphicsSceneHelpEvent* event, QString string) const;
 };
 
 }  // namespace
 
-#endif  // IVW_EDITORGRAPICSITEM_H
+#endif  // IVW_EDITORGRAPHICSITEM_H

@@ -5,16 +5,16 @@
  *
  * Copyright (c) 2014 Inviwo Foundation
  * All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met: 
- * 
+ * modification, are permitted provided that the following conditions are met:
+ *
  * 1. Redistributions of source code must retain the above copyright notice, this
- * list of conditions and the following disclaimer. 
+ * list of conditions and the following disclaimer.
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  * this list of conditions and the following disclaimer in the documentation
- * and/or other materials provided with the distribution. 
- * 
+ * and/or other materials provided with the distribution.
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
  * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
@@ -25,7 +25,7 @@
  * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- * 
+ *
  * Main file author: Peter Steneteg
  *
  *********************************************************************************/
@@ -42,13 +42,11 @@
 #include <inviwo/core/util/fileobserver.h>
 #include <string.h>
 
-
-
 namespace inviwo {
 
 class IVW_CORE_API PortInspector : public FileObserver {
 public:
-    PortInspector(std::string portClassName, std::string inspectorWorkspace);
+    PortInspector(std::string portClassIdentifier, std::string inspectorWorkspaceFileName);
     virtual ~PortInspector();
 
     std::string getInspectorNetworkFileName();
@@ -66,7 +64,7 @@ private:
     void initialize();
 
     std::string inspectorNetworkFileName_;
-    std::string portClassName_;
+    std::string portClassIdentifier_;
     bool active_;
     bool needsUpdate_;
     ProcessorNetwork* inspectorNetwork_;
@@ -80,7 +78,21 @@ private:
     virtual void fileChanged(std::string fileName);
 };
 
-} // namespace
+class IVW_CORE_API PortInspectorFactoryObject {
+public:
+    PortInspectorFactoryObject(const std::string& portClassIdentifier,
+                               const std::string& inspectorWorkspaceFileName);
+    virtual ~PortInspectorFactoryObject() {}
 
-#endif // IVW_PORTINSPECTOR_H
+    virtual PortInspector* create();
 
+    std::string getClassIdentifier() const;
+
+private:
+    std::string portClassIdentifier_;
+    std::string inspectorWorkspaceFileName_;
+};
+
+}  // namespace
+
+#endif  // IVW_PORTINSPECTOR_H

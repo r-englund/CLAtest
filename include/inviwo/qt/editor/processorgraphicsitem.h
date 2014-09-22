@@ -54,7 +54,7 @@ class Port;
 class Inport;
 class Outport;
 
-class IVW_QTEDITOR_API ProcessorGraphicsItem : public EditorGrapicsItem,
+class IVW_QTEDITOR_API ProcessorGraphicsItem : public EditorGraphicsItem,
                                                public ProcessorObserver,
                                                public LabelGraphicsItemObserver {
 public:

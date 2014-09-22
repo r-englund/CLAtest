@@ -41,7 +41,7 @@
 namespace inviwo {
 
 
-class IVW_QTEDITOR_API ProcessorProgressGraphicsItem : public EditorGrapicsItem,
+class IVW_QTEDITOR_API ProcessorProgressGraphicsItem : public EditorGraphicsItem,
                                                        public ProgressBarObserver {
 public:
     ProcessorProgressGraphicsItem(QGraphicsRectItem* parent, ProgressBar* processor);

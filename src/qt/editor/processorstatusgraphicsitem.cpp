@@ -40,7 +40,7 @@
 namespace inviwo {
 
 ProcessorStatusGraphicsItem::ProcessorStatusGraphicsItem(QGraphicsRectItem* parent, Processor* processor)
-    : EditorGrapicsItem(parent), processor_(processor), size_(10.0f), lineWidth_(3.0f), running_(false) {
+    : EditorGraphicsItem(parent), processor_(processor), size_(10.0f), lineWidth_(3.0f), running_(false) {
 
 
     setRect(-0.5f * size_ - lineWidth_, -0.5f * size_ - lineWidth_, size_ + 2.0*lineWidth_,

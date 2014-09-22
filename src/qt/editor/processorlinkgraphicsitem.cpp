@@ -42,7 +42,7 @@
 namespace inviwo {
 
 ProcessorLinkGraphicsItem::ProcessorLinkGraphicsItem(ProcessorGraphicsItem* parent)
-    : EditorGrapicsItem(parent), processor_(parent), leftItem_(NULL), rightItem_(NULL) {
+    : EditorGraphicsItem(parent), processor_(parent), leftItem_(NULL), rightItem_(NULL) {
     setFlags(ItemSendsScenePositionChanges);
     setCacheMode(QGraphicsItem::DeviceCoordinateCache);
 
@@ -88,7 +88,7 @@ void ProcessorLinkGraphicsItem::updateLinkPositions() {
 
 ProcessorLinkGraphicsItem::LinkItem::LinkItem(ProcessorLinkGraphicsItem* parent, QPointF pos,
                                               float angle)
-    : EditorGrapicsItem(parent), parent_(parent), pos_(pos), angle_(angle), size_(4.0f), lineWidth_(1.3f) {
+    : EditorGraphicsItem(parent), parent_(parent), pos_(pos), angle_(angle), size_(4.0f), lineWidth_(1.3f) {
     setRect(-0.5f * size_ - 2.0 * lineWidth_, -0.5f * size_ - 2.0 * lineWidth_, size_ + 4.0 * lineWidth_,
             size_ + 4.0 * lineWidth_);
     setCacheMode(QGraphicsItem::DeviceCoordinateCache);

@@ -49,6 +49,8 @@ namespace inviwo {
 
 class Inport;
 class Outport;
+class PortInspector;
+class EditorGraphicsItem;
 class ProcessorGraphicsItem;
 class ProcessorOutportGraphicsItem;
 class ProcessorInportGraphicsItem;
@@ -57,6 +59,7 @@ class ConnectionGraphicsItem;
 class ConnectionDragGraphicsItem;
 class LinkConnectionGraphicsItem;
 class LinkConnectionDragGraphicsItem;
+
 
 class NetworkEditorObserver : public Observer {
 public:
@@ -150,16 +153,22 @@ public:
     void initiateLink(ProcessorLinkGraphicsItem* item, QPointF pos);
 
     // Port inspectors
-    bool addPortInspector(std::string processorIdentifier, std::string portIdentifier, QPointF pos);
-
+    bool addPortInspector(Outport* port, QPointF pos);
+    void removePortInspector(Outport* port);
     std::vector<unsigned char>* renderPortInspectorImage(Port* port, std::string type);
-
-    void removePortInspector();
 
     void updateLeds();
 
 public slots:
     void cacheProcessorProperty(Processor*);
+
+    void contextMenuRenameProcessor(EditorGraphicsItem*);
+    void contextMenuShowInspector(EditorGraphicsItem*);
+    void contextMenuDeleteProcessor(EditorGraphicsItem*);
+    void contextMenuShowHideWidget(EditorGraphicsItem*);
+    void contextMenuDeleteConnection(EditorGraphicsItem*);
+    void contextMenuDeleteLink(EditorGraphicsItem*);
+    void contextMenuEditLink(EditorGraphicsItem*);
 
 protected:
     void mousePressEvent(QGraphicsSceneMouseEvent* e);
@@ -185,6 +194,7 @@ protected:
     void helpEvent(QGraphicsSceneHelpEvent* helpEvent);
     // Override for custom events
     virtual bool event(QEvent* e);
+    
 
 private:
     enum NetworkEditorFlags { None = 0, CanvasHidden = 1, UseOriginalCanvasSize = 1 << 2 };
@@ -242,11 +252,13 @@ private:
     typedef std::map<Processor*, ProcessorGraphicsItem*> ProcessorMap;
     typedef std::map<PortConnection*, ConnectionGraphicsItem*> ConnectionMap;
     typedef std::map<ProcessorLink*, LinkConnectionGraphicsItem*> LinkMap;
+    typedef std::map<Outport*, PortInspector*> PortInspectorMap;
 
     ProcessorMap processorGraphicsItems_;
     ConnectionMap connectionGraphicsItems_;
     LinkMap linkGraphicsItems_;
-
+    PortInspectorMap portInspectors_;
+    
     // Drag n drop state
     ConnectionGraphicsItem* oldConnectionTarget_;
     ProcessorGraphicsItem* oldProcessorTarget_;
@@ -260,11 +272,6 @@ private:
     bool modified_;
     int cacheProcessorPropertyDoneEventId_;
     int markModifedFlaseEventId_;
-
-
-    // Port inspection state:
-    std::string portInspectorProcessorIdentifier_;
-    std::string portInspectorPortIdentifier_;
 };
 
 template <typename T>
@@ -277,6 +284,21 @@ T* inviwo::NetworkEditor::getGraphicsItemAt(const QPointF pos) const {
     }
     return NULL;
 }
+
+class SignalMapperObject : public QObject {
+    Q_OBJECT
+public:
+    SignalMapperObject() : QObject(), item_(NULL) {}
+
+public slots:
+    void tiggerAction() { emit(triggered(item_)); }
+
+signals:
+    void triggered(EditorGraphicsItem*);
+
+public:
+    EditorGraphicsItem* item_;
+};
 
 }  // namespace
 
