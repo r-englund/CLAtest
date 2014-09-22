@@ -42,13 +42,13 @@
 
 namespace inviwo {
 
-EditorGrapicsItem::EditorGrapicsItem() : QGraphicsRectItem() {}
+EditorGraphicsItem::EditorGraphicsItem() : QGraphicsRectItem() {}
 
-EditorGrapicsItem::EditorGrapicsItem(QGraphicsItem* parent) : QGraphicsRectItem(parent) {}
+EditorGraphicsItem::EditorGraphicsItem(QGraphicsItem* parent) : QGraphicsRectItem(parent) {}
 
-EditorGrapicsItem::~EditorGrapicsItem() {}
+EditorGraphicsItem::~EditorGraphicsItem() {}
 
-QPoint EditorGrapicsItem::mapPosToSceen(QPointF inPos) const {
+QPoint EditorGraphicsItem::mapPosToSceen(QPointF inPos) const {
     if (scene() != NULL                                  // the focus item belongs to a scene
         && !scene()->views().isEmpty()                   // that scene is displayed in a view...
         && scene()->views().first() != NULL              // ... which is not null...
@@ -65,7 +65,7 @@ QPoint EditorGrapicsItem::mapPosToSceen(QPointF inPos) const {
 
 }
 
-const QPainterPath EditorGrapicsItem::makeRoundedBox(QRectF rect, float radius) {
+const QPainterPath EditorGraphicsItem::makeRoundedBox(QRectF rect, float radius) {
     QPainterPath roundRectPath;
     roundRectPath.moveTo(rect.left(), rect.top() + radius);
     roundRectPath.lineTo(rect.left(), rect.bottom() - radius);
@@ -84,18 +84,18 @@ const QPainterPath EditorGrapicsItem::makeRoundedBox(QRectF rect, float radius) 
     return roundRectPath;
 }
 
-void EditorGrapicsItem::showToolTip(QGraphicsSceneHelpEvent* e) {
+void EditorGraphicsItem::showToolTip(QGraphicsSceneHelpEvent* e) {
     showToolTipHelper(e, QString("Test"));
 }
 
-void EditorGrapicsItem::showToolTipHelper(QGraphicsSceneHelpEvent* e, QString string) const {
+void EditorGraphicsItem::showToolTipHelper(QGraphicsSceneHelpEvent* e, QString string) const {
     QGraphicsView* v = scene()->views().first();
     QRectF rect = this->mapRectToScene(this->rect());
     QRect viewRect = v->mapFromScene(rect).boundingRect();
     QToolTip::showText(e->screenPos(), string, v, viewRect);
 }
 
-void EditorGrapicsItem::showPortInfo(QGraphicsSceneHelpEvent* e, Port* port) const {
+void EditorGraphicsItem::showPortInfo(QGraphicsSceneHelpEvent* e, Port* port) const {
     SystemSettings* settings = InviwoApplication::getPtr()->getSettingsByType<SystemSettings>();
     bool portinfo = settings->enablePortInformationProperty_.get();
     bool inspector = settings->enablePortInspectorsProperty_.get();

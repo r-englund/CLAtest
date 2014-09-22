@@ -49,7 +49,7 @@ namespace inviwo {
 
 ProcessorPortGraphicsItem::ProcessorPortGraphicsItem(ProcessorGraphicsItem* parent,
                                                      const QPointF& pos, bool up, Port* port)
-    : EditorGrapicsItem(parent)
+    : EditorGraphicsItem(parent)
     , processor_(parent)
     , port_(port)
     , size_(9.0f)
@@ -108,7 +108,7 @@ QVariant ProcessorPortGraphicsItem::itemChange(GraphicsItemChange change, const 
     if (change == QGraphicsItem::ItemScenePositionHasChanged) {
         updateConnectionPositions();
     }
-    return EditorGrapicsItem::itemChange(change, value);
+    return EditorGraphicsItem::itemChange(change, value);
 }
 
 std::vector<ConnectionGraphicsItem*> ProcessorPortGraphicsItem::getConnections() {

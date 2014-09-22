@@ -41,7 +41,7 @@ namespace inviwo {
 
 ProcessorProgressGraphicsItem::ProcessorProgressGraphicsItem(QGraphicsRectItem* parent,
                                                              ProgressBar* progressBar)
-    : EditorGrapicsItem(parent), size_(126, 5.0f), progressBar_(progressBar) {
+    : EditorGraphicsItem(parent), size_(126, 5.0f), progressBar_(progressBar) {
     setRect(-0.5f * size_.width(), 
             -0.5f * size_.height() + 3,
             size_.width(), size_.height());

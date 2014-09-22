@@ -43,7 +43,7 @@ namespace inviwo {
 class ProcessorGraphicsItem;
 class LinkConnectionGraphicsItem;
 
-class IVW_QTEDITOR_API ProcessorLinkGraphicsItem : public EditorGrapicsItem {
+class IVW_QTEDITOR_API ProcessorLinkGraphicsItem : public EditorGraphicsItem {
 public:
     ProcessorLinkGraphicsItem(ProcessorGraphicsItem* parent);
     virtual ~ProcessorLinkGraphicsItem(){}
@@ -67,7 +67,7 @@ protected:
     virtual QVariant itemChange(GraphicsItemChange change, const QVariant& value);
 
 private:
-    class IVW_QTEDITOR_API LinkItem : public EditorGrapicsItem {
+    class IVW_QTEDITOR_API LinkItem : public EditorGraphicsItem {
     public:
         LinkItem(ProcessorLinkGraphicsItem* parent, QPointF pos, float angle);
         virtual ~LinkItem();

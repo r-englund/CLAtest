@@ -52,7 +52,7 @@ class ProcessorOutportGraphicsItem;
 class ProcessorInportGraphicsItem;
 class PortInspectionManager;
 
-class IVW_QTEDITOR_API CurveGraphicsItem : public EditorGrapicsItem {
+class IVW_QTEDITOR_API CurveGraphicsItem : public EditorGraphicsItem {
 public:
     CurveGraphicsItem(QPointF startPoint, QPointF endPoint, uvec3 color = uvec3(38, 38, 38));
     ~CurveGraphicsItem();

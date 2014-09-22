@@ -39,11 +39,11 @@ PortInspectorFactory::PortInspectorFactory() {}
 
 PortInspectorFactory::~PortInspectorFactory() {}
 
-void PortInspectorFactory::registerObject(PortInspector* portInspector) {
-    std::string className = portInspector->getPortClassName();
+void PortInspectorFactory::registerObject(PortInspectorFactoryObject* portInspectorObj) {
+    std::string className = portInspectorObj->getClassIdentifier();
 
     if (portInspectors_.find(className) == portInspectors_.end())
-        portInspectors_.insert(std::make_pair(className, portInspector));
+        portInspectors_.insert(std::make_pair(className, portInspectorObj));
     else
         LogWarn("PortInspector for " << className << " already registered");
 }
@@ -52,7 +52,7 @@ PortInspector* PortInspectorFactory::getPortInspectorForPortClass(std::string cl
     PortInspectorMap::iterator it = portInspectors_.find(className);
 
     if (it != portInspectors_.end())
-        return it->second;
+        return it->second->create();
     else
         return NULL;
 }

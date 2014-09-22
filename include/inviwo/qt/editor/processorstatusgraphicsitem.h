@@ -43,7 +43,7 @@ namespace inviwo {
 
 class Processor;
 
-class IVW_QTEDITOR_API ProcessorStatusGraphicsItem : public EditorGrapicsItem, public ProcessorWidgetObserver {
+class IVW_QTEDITOR_API ProcessorStatusGraphicsItem : public EditorGraphicsItem, public ProcessorWidgetObserver {
 public:
     ProcessorStatusGraphicsItem(QGraphicsRectItem* parent, Processor* processor);
     virtual ~ProcessorStatusGraphicsItem(){}
