@@ -120,7 +120,8 @@ Trackball::Trackball(vec3* lookFrom, vec3* lookTo, vec3* lookUp)
 
 Trackball::~Trackball() {}
 
-vec3 Trackball::mapNormalizedMousePosToTrackball(vec2 mousePos, float dist) {
+vec3 Trackball::mapNormalizedMousePosToTrackball(const vec2& mousePos, float dist /*= 1.f*/)
+{
     // set x and y to lie in interval [-r, r]
     float r = RADIUS;
     vec3 result = vec3(mousePos.x-RADIUS, -1.0f*(mousePos.y-RADIUS), 0.0f)*dist;
@@ -139,7 +140,7 @@ vec3 Trackball::mapNormalizedMousePosToTrackball(vec2 mousePos, float dist) {
     return glm::normalize(result);
 }
 
-vec3 Trackball::mapToTrackball(vec3 pos, float dist) {
+vec3 Trackball::mapToObject(vec3 pos, float dist) {
     //return (camera_->viewMatrix() * vec4(pos,0)).xyz;
     //TODO: Use proper co-ordinate transformation matrices
     //Get x,y,z axis vectors of current camera view
@@ -172,7 +173,7 @@ void Trackball::invokeEvent(Event* event) {
             //as if the trackball is located at a certain distance from the camera.
             //TODO: Verify this
             float zDist = (glm::length(*lookFrom_-*lookTo_)-1.f)/M_PI;
-            vec3 mappedOffsetVector = mapToTrackball(offsetVector, zDist);
+            vec3 mappedOffsetVector = mapToObject(offsetVector, zDist);
 
             *lookTo_ += mappedOffsetVector;
             *lookFrom_ += mappedOffsetVector;
@@ -294,7 +295,7 @@ void Trackball::rotate(MouseEvent* mouseEvent) {
         //difference vector in trackball co-ordinates
         vec3 trackBallOffsetVector = lastTrackballPos_ - curTrackballPos;
         //compute next camera position
-        vec3 mappedTrackBallOffsetVector = mapToTrackball(trackBallOffsetVector);
+        vec3 mappedTrackBallOffsetVector = mapToObject(trackBallOffsetVector);
         vec3 currentCamPos = *lookFrom_;
         vec3 nextCamPos = currentCamPos + mappedTrackBallOffsetVector;
 
@@ -364,7 +365,7 @@ void Trackball::pan(MouseEvent* mouseEvent) {
     //float zDist = (glm::length(*lookFrom_-*lookTo_)-1.f)/M_PI;
     //vec3 mappedTrackBallOffsetVector = mapToCamera(trackBallOffsetVector, zDist);
 
-    vec3 mappedTrackBallOffsetVector = mapToTrackball(trackBallOffsetVector);
+    vec3 mappedTrackBallOffsetVector = mapToObject(trackBallOffsetVector);
 
     if (curMousePos != lastMousePos_) {
         *lookTo_ += mappedTrackBallOffsetVector;
@@ -407,7 +408,7 @@ void Trackball::stepRotate(Direction dir) {
     //difference vector in trackball co-ordinates
     vec3 trackBallOffsetVector = trackballOrigin - trackballDirection;
     //compute next camera position
-    vec3 mappedTrackBallOffsetVector = mapToTrackball(trackBallOffsetVector);
+    vec3 mappedTrackBallOffsetVector = mapToObject(trackBallOffsetVector);
     vec3 currentCamPos = *lookFrom_;
     vec3 nextCamPos = currentCamPos + mappedTrackBallOffsetVector;
 
@@ -465,7 +466,7 @@ void Trackball::stepPan(Direction dir) {
     vec3 trackBallOffsetVector = trackballOrigin - trackballDirection;
     //compute next camera position
     trackBallOffsetVector.z = 0.0f;
-    vec3 mappedTrackBallOffsetVector = mapToTrackball(trackBallOffsetVector);
+    vec3 mappedTrackBallOffsetVector = mapToObject(trackBallOffsetVector);
     *lookTo_  += mappedTrackBallOffsetVector;
     *lookFrom_ += mappedTrackBallOffsetVector;
     notifyAllChanged(this);
@@ -495,24 +496,24 @@ void Trackball::deserialize(IvwDeserializer& d) {
     PropertyOwner::deserialize(d);
 }
 
-void Trackball::rotateFromPosToPos(vec3 currentCamPos, vec3 nextCamPos, float rotationAngle) {
+void Trackball::rotateFromPosToPos(const vec3& currentCamPos, const vec3& nextCamPos, float rotationAngle)
+{
     //rotation axis
     vec3 rotationAxis = glm::cross(currentCamPos, nextCamPos);
     // generate quaternion and rotate camera
     rotationAxis = glm::normalize(rotationAxis);
     quat quaternion = glm::angleAxis(rotationAngle, rotationAxis);
     float lookLength = glm::length(*lookFrom_-*lookTo_);
-    vec3 offset = *lookTo_;
-    vec3 rotation = glm::rotate(quaternion, offset);
-    *lookTo_ = rotation;
-    *lookFrom_ = glm::rotate(quaternion, *lookFrom_);
+    *lookFrom_ = *lookTo_+glm::rotate(quaternion, *lookFrom_-*lookTo_);
     *lookUp_ = glm::rotate(quaternion, *lookUp_);
 
     // Check the length of the length-vector, might change due to float precision
-    if (lookLength != glm::length(*lookFrom_-*lookTo_)) {
-        float diff = lookLength/glm::length(*lookFrom_-*lookTo_);
-        *lookTo_ = (*lookTo_) * diff;
-    }
+    //vec3 direction = *lookFrom_-*lookTo_;
+    //float newLookLength = glm::length(direction);
+    //if (lookLength != newLookLength) {
+    //    float diff = newLookLength- lookLength;
+    //    *lookFrom_ += glm::normalize(direction) * diff;
+    //}
 
     notifyAllChanged(this);
 }
