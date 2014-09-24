@@ -42,6 +42,7 @@ class QLineEdit;
 class QToolButton;
 class QGroupBox;
 class QPushButton;
+class QLabel;
 
 namespace inviwo {
 
@@ -65,6 +66,8 @@ public:
 
     void setPropertyOwner(PropertyOwner* propertyOwner);
     PropertyOwner* getPropertyOwner() const;
+
+    void setShowIfEmpty(bool val);
 
     // Overridden from PropertyWidget
     virtual void showWidget();
@@ -111,8 +114,9 @@ private:
     QToolButton* btnCollapse_;
     QWidget* propertyWidgetGroup_;
     QVBoxLayout* propertyWidgetGroupLayout_;
-
+    QLabel* defaultLabel_;
     PropertyOwner* propertyOwner_;
+    bool showIfEmpty_;
 };
 
 

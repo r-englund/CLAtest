@@ -176,6 +176,7 @@ CollapsibleGroupBoxWidgetQt* PropertyListWidget::createPropertiesForProcessor(
     CollapsibleGroupBoxWidgetQt* widget =
         new CollapsibleGroupBoxWidgetQt(processor->getIdentifier());
     widget->setPropertyOwner(processor);
+    widget->setShowIfEmpty(true);
 
     std::vector<Property*> props = processor->getProperties();
     for (size_t i = 0; i < props.size(); i++) {
