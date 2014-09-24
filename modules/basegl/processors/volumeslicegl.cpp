@@ -63,6 +63,7 @@ VolumeSliceGL::VolumeSliceGL()
     , rotationAroundAxis_("rotation", "Rotation (ccw)")
     , flipHorizontal_("flipHorizontal", "Flip Horizontal View", false)
     , flipVertical_("flipVertical", "Flip Vertical View", false)
+    , volumeWrapping_("volumeWrapping", "Volume Texture Wrapping")
     , posPicking_("posPicking", "Enable Picking", false)
     , showIndicator_("showIndicator", "Show Position Indicator", true)
     , indicatorColor_("indicatorColor", "Indicator Color", vec4(1.0f, 0.8f, 0.1f, 0.8f), vec4(0.0f),
@@ -111,6 +112,15 @@ VolumeSliceGL::VolumeSliceGL()
     trafoGroup_.addProperty(flipHorizontal_);
     flipVertical_.onChange(this, &VolumeSliceGL::planeSettingsChanged);
     trafoGroup_.addProperty(flipVertical_);
+    volumeWrapping_.addOption("0", "Use incoming wrapping", 0);
+    volumeWrapping_.addOption("1", "Clamp", GL_CLAMP);
+    volumeWrapping_.addOption("2", "Clamp to invisible border", GL_CLAMP_TO_BORDER);
+    volumeWrapping_.addOption("3", "Clamp to edge", GL_CLAMP_TO_EDGE);
+    volumeWrapping_.addOption("4", "Mirrored repeat", GL_MIRRORED_REPEAT);
+    volumeWrapping_.addOption("5", "Repeat", GL_REPEAT);
+    volumeWrapping_.set(0);
+    volumeWrapping_.setCurrentStateAsDefault();
+    trafoGroup_.addProperty(volumeWrapping_);
     addProperty(trafoGroup_);
 
     // Position Selection
@@ -179,7 +189,21 @@ void VolumeSliceGL::process() {
     transferFunctionGL->bindTexture(transFuncUnit.getEnum());
     TextureUnit volUnit;
     const VolumeGL* volumeGL = inport_.getData()->getRepresentation<VolumeGL>();
-    volumeGL->bindTexture(volUnit.getEnum());
+    volUnit.activate();
+    volumeGL->getTexture()->bind();
+    GLint wrapS, wrapT, wrapR;
+    if(volumeWrapping_.get() > 0){
+        glGetTexParameteriv(GL_TEXTURE_3D, GL_TEXTURE_WRAP_S, &wrapS);
+        glGetTexParameteriv(GL_TEXTURE_3D, GL_TEXTURE_WRAP_T, &wrapT);
+        glGetTexParameteriv(GL_TEXTURE_3D, GL_TEXTURE_WRAP_R, &wrapR);
+        glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_WRAP_S, volumeWrapping_.get());
+        glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_WRAP_T, volumeWrapping_.get());
+        glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_WRAP_R, volumeWrapping_.get());
+        if(volumeWrapping_.get() == GL_CLAMP_TO_BORDER)
+            glTexParameterfv(GL_TEXTURE_3D, GL_TEXTURE_BORDER_COLOR, glm::value_ptr(vec4(0.f)));
+    }
+    TextureUnit::setZeroUnit();
+
     util::glActivateAndClearTarget(outport_);
     shader_->activate();
     vec2 dim = static_cast<vec2>(outport_.getDimension());
@@ -204,6 +228,14 @@ void VolumeSliceGL::process() {
     }
 
     util::glDeactivateCurrentTarget();
+
+    if(volumeWrapping_.get() > 0){
+        volUnit.activate();
+        glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_WRAP_S, wrapS);
+        glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_WRAP_T, wrapT);
+        glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_WRAP_R, wrapR);
+        TextureUnit::setZeroUnit();
+    }
 }
 
 int VolumeSliceGL::getSliceNumber() const {
