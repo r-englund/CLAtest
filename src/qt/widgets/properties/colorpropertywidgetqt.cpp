@@ -110,7 +110,10 @@ void ColorPropertyWidgetQt::updateFromProperty() {
                                                           stop: 0.1 "+currentColor_->name()+", \
                                                           stop:0.9 "+currentColor_->name()+", \
                                                           stop:1 "+bottomColor.name()+"); }");
+
+    colorDialog_->blockSignals(true);
     colorDialog_->setCurrentColor(*currentColor_);
+    colorDialog_->blockSignals(false);
 }
 
 QColor ColorPropertyWidgetQt::getCurrentColor() {

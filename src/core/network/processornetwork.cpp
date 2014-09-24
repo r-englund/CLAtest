@@ -61,8 +61,7 @@ ProcessorNetwork::ProcessorNetwork()
     , invalidating_(false)
     , linkEvaluator_(NULL)
     , evaluationQueued_(false)
-    , linking_(false)
-    , linkInvalidationInitiator_(NULL) {
+    , linking_(false) {
     linkEvaluator_ = new LinkEvaluator();
 }
 
@@ -477,9 +476,6 @@ void ProcessorNetwork::onProcessorInvalidationBegin(Processor* p) {
 
     if (!isInvalidating()) {
         invalidating_ = true;
-
-        if (isLinking() && !linkInvalidationInitiator_)
-            linkInvalidationInitiator_ = p;
     }
 }
 
@@ -492,7 +488,7 @@ void ProcessorNetwork::onProcessorInvalidationEnd(Processor* p) {
     if (processorsInvalidating_.empty()) {
         invalidating_ = false;
 
-        if(evaluationQueued_){
+        if(evaluationQueued_ && !isLinking()){
             notifyProcessorNetworkEvaluateRequestObservers();
             evaluationQueued_ = false;
         }
@@ -530,8 +526,7 @@ void ProcessorNetwork::performLinkingOnPropertyChange(Property* modifiedProperty
 
 
 void ProcessorNetwork::evaluatePropertyLinks(Property* modifiedProperty) {
-    if (isLinking())
-        return;
+    if (isLinking()) return;
 
     lock();
     linking_ = true;
@@ -546,12 +541,7 @@ void ProcessorNetwork::evaluatePropertyLinks(Property* modifiedProperty) {
 
     unlock();
 
-    if (isLinking()) {
-        linking_ = false;
-        if (evaluationQueued_ && linkInvalidationInitiator_!=getInvalidationInitiator())
-            onProcessorRequestEvaluate(linkInvalidationInitiator_);
-        linkInvalidationInitiator_ = NULL;
-    }
+    if (isLinking()) linking_ = false;
 }
 
 void ProcessorNetwork::evaluatePropertyLinks1(Property* modifiedProperty) {
@@ -590,10 +580,10 @@ void ProcessorNetwork::evaluatePropertyLinks1(Property* modifiedProperty) {
     if (isLinking()) {
         linking_ = false;
 
-        if (evaluationQueued_ && linkInvalidationInitiator_!=getInvalidationInitiator())
-            onProcessorRequestEvaluate(linkInvalidationInitiator_);
-
-        linkInvalidationInitiator_ = NULL;
+//         if (evaluationQueued_ && linkInvalidationInitiator_!=getInvalidationInitiator())
+//             onProcessorRequestEvaluate(linkInvalidationInitiator_);
+// 
+//         linkInvalidationInitiator_ = NULL;
     }
 }
 
