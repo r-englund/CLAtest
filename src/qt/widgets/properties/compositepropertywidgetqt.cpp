@@ -37,9 +37,9 @@
 namespace inviwo {
 
 CompositePropertyWidgetQt::CompositePropertyWidgetQt(CompositeProperty* property)
-    : CollapsibleGroupBoxWidgetQt(property->getIdentifier(), property->getDisplayName())
+    : CollapsibleGroupBoxWidgetQt(property->getDisplayName())
     , property_(property) {
-    
+    setPropertyOwner(property);
     std::vector<Property*> subProperties = property_->getProperties();
     for (size_t i = 0; i < subProperties.size(); i++) {
         addProperty(subProperties[i]);

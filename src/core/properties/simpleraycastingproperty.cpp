@@ -8,7 +8,7 @@ SimpleRaycastingProperty::SimpleRaycastingProperty(
     : CompositeProperty(identifier, displayName, invalidationLevel, semantics)
     , classificationMode_("classificationMode", "Classification", PropertyOwner::INVALID_RESOURCES)
     , compositingMode_("compositingMode", "Compositing", PropertyOwner::INVALID_RESOURCES)
-    , gradientComputationMode_("gradientComputationMode", "Gradient computation",
+    , gradientComputationMode_("gradientComputationMode", "Gradient",
     PropertyOwner::INVALID_RESOURCES)
     , samplingRate_("samplingRate", "Sampling rate", 2.0f, 1.0f, 10.0f)
     , isoValue_("isoValue", "Iso value", 0.5f, 0.0f, 1.0f) {

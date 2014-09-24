@@ -46,9 +46,7 @@ class IVW_QTWIDGETS_API InviwoDockWidget : public QDockWidget {
 public:
     InviwoDockWidget(QString title, QWidget* parent);
     virtual ~InviwoDockWidget();
-
     virtual void show();
-    
     virtual void keyPressEvent(QKeyEvent* event);
 };
 

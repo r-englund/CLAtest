@@ -33,33 +33,29 @@
 #ifndef IVW_COLLAPSIVEGROUPBOXWIDGETQT_H
 #define IVW_COLLAPSIVEGROUPBOXWIDGETQT_H
 
-#include <QLineEdit>
-#include <QToolButton>
-#include <QGroupBox>
-#include <QPushButton>
-
 #include <inviwo/qt/widgets/inviwoqtwidgetsdefine.h>
-#include <inviwo/qt/widgets/eventpropertymanager.h>
 #include <inviwo/qt/widgets/properties/propertywidgetqt.h>
-
-#include <inviwo/qt/widgets/editablelabelqt.h>
-#include <inviwo/qt/widgets/propertylistwidget.h>
-#include <inviwo/qt/widgets/properties/eventpropertywidgetqt.h>
-
-#include <inviwo/core/properties/property.h>
 #include <inviwo/core/properties/propertyownerobserver.h>
+#include <inviwo/core/processors/processorobserver.h>
+
+class QLineEdit;
+class QToolButton;
+class QGroupBox;
+class QPushButton;
 
 namespace inviwo {
 
+class Property;
+class PropertyOwner;
+class EditableLabelQt;
+
 class IVW_QTWIDGETS_API CollapsibleGroupBoxWidgetQt : public PropertyWidgetQt,
-                                                      public PropertyOwnerObserver {
+                                                      public PropertyOwnerObserver,
+                                                      public ProcessorObserver {
     Q_OBJECT
 
 public:
-    CollapsibleGroupBoxWidgetQt(std::string identifier, std::string displayName = "");
-
-    virtual std::string getIdentifier() const;
-    virtual void setIdentifier(const std::string& identifier);
+    CollapsibleGroupBoxWidgetQt(std::string displayName = "");
 
     virtual std::string getDisplayName() const;
     virtual void setDisplayName(const std::string& displayName);
@@ -69,7 +65,9 @@ public:
 
     void updateFromProperty();
     void addProperty(Property* tmpProperty);
-    void generateEventPropertyWidgets(EventPropertyManager* eventPropertyManager);
+
+    void setPropertyOwner(PropertyOwner* propertyOwner);
+    PropertyOwner* getPropertyOwner() const;
 
     std::vector<Property*> getProperties();
 
@@ -92,6 +90,9 @@ public:
     virtual void onDidAddProperty(Property* property, size_t index);
     virtual void onWillRemoveProperty(Property* property, size_t index);
 
+    // Override ProcessorObserver
+    void onProcessorIdentifierChange(Processor*);
+
 public slots:
     void toggleCollapsed();
     void updateVisibility();
@@ -101,14 +102,11 @@ public slots:
     virtual void resetPropertyToDefaultState();
     void updatePropertyWidgetSemantics(PropertyWidgetQt*);
 
-protected slots:
-    void setGroupDisplayName();
 
 protected:
     void generateWidget();
     void updateWidgets();
 
-    std::string identifier_;
     std::string displayName_;
     bool collapsed_;
 
@@ -118,9 +116,10 @@ protected:
 private:
     EditableLabelQt* label_;
     QToolButton* btnCollapse_;
-
     QWidget* propertyWidgetGroup_;
     QVBoxLayout* propertyWidgetGroupLayout_;
+
+    PropertyOwner* propertyOwner_;
 };
 
 
