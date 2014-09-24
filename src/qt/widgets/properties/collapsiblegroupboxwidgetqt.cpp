@@ -43,6 +43,7 @@
 #include <QToolButton>
 #include <QGroupBox>
 #include <QPushButton>
+#include <QLabel>
 
 namespace inviwo {
 
@@ -51,7 +52,8 @@ CollapsibleGroupBoxWidgetQt::CollapsibleGroupBoxWidgetQt(std::string displayName
     , PropertyOwnerObserver()
     , displayName_(displayName)
     , collapsed_(false)
-    , propertyOwner_(NULL) {
+    , propertyOwner_(NULL)
+    , showIfEmpty_(false) {
     
     setObjectName("CollapsibleGroupBoxWidgetQt");
     generateWidget();
@@ -68,6 +70,10 @@ void CollapsibleGroupBoxWidgetQt::generateWidget() {
 
     propertyWidgetGroup_ = new QWidget(this);
     propertyWidgetGroup_->setLayout(propertyWidgetGroupLayout_);
+
+    defaultLabel_ = new QLabel("No properties available");
+
+    propertyWidgetGroupLayout_->addWidget(defaultLabel_);
 
     btnCollapse_ = new QToolButton(this);
     btnCollapse_->setIcon(QIcon(":/stylesheets/images/arrow_darker_down.png"));
@@ -182,7 +188,7 @@ UsageMode CollapsibleGroupBoxWidgetQt::getUsageMode() const {
 };
 
 bool CollapsibleGroupBoxWidgetQt::getVisible() const {
-    bool visible = false;
+    bool visible = showIfEmpty_;
     for (size_t i = 0; i < propertyWidgets_.size(); i++) {
         visible = visible || propertyWidgets_[i]->getVisible();
     }
@@ -208,8 +214,7 @@ void CollapsibleGroupBoxWidgetQt::updateVisibility() {
                     collapsiveWidget->showWidget();
                 } else if (appMode < collapsiveWidget->getUsageMode() || !isVisible()) {
                     collapsiveWidget->hideWidget();
-                }
-                
+                }               
                 collapsiveWidget->updateVisibility();
             }
         }
@@ -218,6 +223,12 @@ void CollapsibleGroupBoxWidgetQt::updateVisibility() {
         hideWidget();
     }
     
+    bool empty = true;
+    for(int i = 0; i < propertyWidgets_.size(); ++i){
+        empty &= propertyWidgets_[i]->isHidden();
+    }
+    defaultLabel_->setVisible(empty);
+
     updateContextMenu();
 }
 
@@ -377,6 +388,10 @@ PropertyOwner* CollapsibleGroupBoxWidgetQt::getPropertyOwner() const {
 
 std::vector<PropertyWidgetQt*> CollapsibleGroupBoxWidgetQt::getPropertyWidgets() {
     return propertyWidgets_;
+}
+
+void CollapsibleGroupBoxWidgetQt::setShowIfEmpty(bool val) {
+    showIfEmpty_ = val;
 }
 
 
