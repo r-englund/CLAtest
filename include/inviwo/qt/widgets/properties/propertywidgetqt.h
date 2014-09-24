@@ -121,15 +121,13 @@ protected:
 
     QMenu* semanicsMenuItem_;
     QActionGroup* semanticsActionGroup_;
-    
-    
+      
 private:
     QMenu* contextMenu_;
-    QMap<QString,QMenu*> moduleSubMenus_;
+    QMap<QString, QMenu*> moduleSubMenus_;
 };
 
 //PropertyEditorWidget owned by PropertyWidget
-
 class IVW_QTWIDGETS_API PropertyEditorWidgetQt : public InviwoDockWidget, public PropertyEditorWidget {
     Q_OBJECT
 public:

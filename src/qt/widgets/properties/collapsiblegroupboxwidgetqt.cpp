@@ -116,9 +116,6 @@ QSize CollapsibleGroupBoxWidgetQt::minimumSizeHint() const {
     return size;
 }
 
-void CollapsibleGroupBoxWidgetQt::updateFromProperty() {
-}
-
 void CollapsibleGroupBoxWidgetQt::showWidget() {
     for (size_t i = 0; i < propertyWidgets_.size(); i++) {
         propertyWidgets_[i]->showWidget();
@@ -151,7 +148,8 @@ void CollapsibleGroupBoxWidgetQt::addProperty(Property* prop) {
         static_cast<PropertyWidgetQt*>(PropertyWidgetFactory::getPtr()->create(prop));
 
     if (propertyWidget) {
-        addWidget(propertyWidget);
+        propertyWidgetGroupLayout_->addWidget(propertyWidget);
+        propertyWidgets_.push_back(propertyWidget);
         prop->registerWidget(propertyWidget);
         connect(propertyWidget, SIGNAL(usageModeChanged()), this, SLOT(updateContextMenu()));
         connect(propertyWidget, SIGNAL(updateSemantics(PropertyWidgetQt*)),
@@ -260,27 +258,6 @@ void CollapsibleGroupBoxWidgetQt::serialize(IvwSerializer& s) const {
 void CollapsibleGroupBoxWidgetQt::deserialize(IvwDeserializer& d) {
     d.deserialize("collapsed", collapsed_);
     d.deserialize("displayName", displayName_);
-}
-
-void CollapsibleGroupBoxWidgetQt::addWidget(QWidget* widget) {
-    propertyWidgetGroupLayout_->addWidget(widget);
-    PropertyWidgetQt* propertyWidget = static_cast<PropertyWidgetQt*>(widget);
-    if (std::find(propertyWidgets_.begin(), propertyWidgets_.end(), propertyWidget) ==
-        propertyWidgets_.end()) {
-        propertyWidgets_.push_back(propertyWidget);
-    }
-}
-
-void CollapsibleGroupBoxWidgetQt::removeWidget(QWidget* widget) {
-    propertyWidgetGroupLayout_->removeWidget(widget);
-    PropertyWidgetQt* propertyWidget = static_cast<PropertyWidgetQt*>(widget);
-
-    std::vector<PropertyWidgetQt*>::iterator it =
-        std::find(propertyWidgets_.begin(), propertyWidgets_.end(), propertyWidget);
-    
-    if (it != propertyWidgets_.end()) {
-        propertyWidgets_.erase(it);
-    }
 }
 
 void CollapsibleGroupBoxWidgetQt::resetPropertyToDefaultState() {
@@ -396,6 +373,10 @@ void CollapsibleGroupBoxWidgetQt::setPropertyOwner(PropertyOwner* propertyOwner)
 
 PropertyOwner* CollapsibleGroupBoxWidgetQt::getPropertyOwner() const {
     return propertyOwner_;
+}
+
+std::vector<PropertyWidgetQt*> CollapsibleGroupBoxWidgetQt::getPropertyWidgets() {
+    return propertyWidgets_;
 }
 
 

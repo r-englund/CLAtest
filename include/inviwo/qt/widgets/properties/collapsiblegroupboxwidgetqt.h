@@ -53,45 +53,39 @@ class IVW_QTWIDGETS_API CollapsibleGroupBoxWidgetQt : public PropertyWidgetQt,
                                                       public PropertyOwnerObserver,
                                                       public ProcessorObserver {
     Q_OBJECT
-
 public:
     CollapsibleGroupBoxWidgetQt(std::string displayName = "");
-
     virtual std::string getDisplayName() const;
     virtual void setDisplayName(const std::string& displayName);
+    bool isCollapsed();
 
-    virtual UsageMode getUsageMode() const;
-    bool getVisible() const;
-
-    void updateFromProperty();
     void addProperty(Property* tmpProperty);
+    std::vector<Property*> getProperties();
+    std::vector<PropertyWidgetQt*> getPropertyWidgets();
 
     void setPropertyOwner(PropertyOwner* propertyOwner);
     PropertyOwner* getPropertyOwner() const;
 
-    std::vector<Property*> getProperties();
-
-    bool isCollapsed();
-
+    // Overridden from PropertyWidget
     virtual void showWidget();
     virtual void hideWidget();
+    bool getVisible() const;
+    virtual UsageMode getUsageMode() const;
+    virtual void updateFromProperty(){};
 
-    void addWidget(QWidget* widget);
-    void removeWidget(QWidget* widget);
-    std::vector<PropertyWidgetQt*> getPropertyWidgets() { return propertyWidgets_; };
-
-    virtual QSize sizeHint() const;
-    virtual QSize minimumSizeHint() const;
-
-    virtual void serialize(IvwSerializer& s) const;
-    virtual void deserialize(IvwDeserializer& d);
-    
     // Overridden from PropertyOwnerObserver to add and remove properties dynamically
     virtual void onDidAddProperty(Property* property, size_t index);
     virtual void onWillRemoveProperty(Property* property, size_t index);
 
     // Override ProcessorObserver
     void onProcessorIdentifierChange(Processor*);
+
+    // Overridden from QWidget
+    virtual QSize sizeHint() const;
+    virtual QSize minimumSizeHint() const;
+
+    virtual void serialize(IvwSerializer& s) const;
+    virtual void deserialize(IvwDeserializer& d);
 
 public slots:
     void toggleCollapsed();
@@ -101,7 +95,6 @@ public slots:
     virtual void labelDidChange();
     virtual void resetPropertyToDefaultState();
     void updatePropertyWidgetSemantics(PropertyWidgetQt*);
-
 
 protected:
     void generateWidget();

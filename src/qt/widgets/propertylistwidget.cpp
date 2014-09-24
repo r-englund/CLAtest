@@ -49,7 +49,6 @@
 
 namespace inviwo {
 
-
 PropertyListFrame::PropertyListFrame(QWidget* parent) : QWidget(parent) {
     QSizePolicy sp(QSizePolicy::Fixed, QSizePolicy::MinimumExpanding);
     sp.setVerticalStretch(0);
@@ -78,15 +77,14 @@ void PropertyListFrame::paintEvent(QPaintEvent*) {
 
 PropertyListWidget::PropertyListWidget(QWidget* parent)
     : InviwoDockWidget(tr("Properties"), parent) {
-
     setObjectName("ProcessorListWidget");
     setAllowedAreas(Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea);
-    
+
     QSizePolicy sp(QSizePolicy::Fixed, QSizePolicy::MinimumExpanding);
     sp.setVerticalStretch(1);
     sp.setHorizontalStretch(1);
     setSizePolicy(sp);
-    
+
     scrollArea_ = new QScrollArea(this);
     scrollArea_->setWidgetResizable(true);
     scrollArea_->setMinimumWidth(320);
@@ -117,8 +115,8 @@ void PropertyListWidget::addProcessorProperties(Processor* processor) {
             devWidgets_[processor] = widget;
         }
         widget->showWidget();
-    }    
-    QWidget::raise(); // Put this tab in front
+    }
+    QWidget::raise();  // Put this tab in front
 }
 
 void PropertyListWidget::removeProcessorProperties(Processor* processor) {
@@ -129,7 +127,7 @@ void PropertyListWidget::removeProcessorProperties(Processor* processor) {
         if (elm != devWidgets_.end()) {
             devWidgets_.erase(elm);
         }
-       
+
         it->second->hideWidget();
     }
 }
@@ -138,7 +136,6 @@ void PropertyListWidget::removeAndDeleteProcessorProperties(Processor* processor
     WidgetMap::iterator it = widgetMap_.find(processor);
 
     if (it != widgetMap_.end()) {
-
         WidgetMap::iterator elm = devWidgets_.find(processor);
         if (elm != devWidgets_.end()) {
             devWidgets_.erase(elm);
@@ -148,9 +145,9 @@ void PropertyListWidget::removeAndDeleteProcessorProperties(Processor* processor
         listLayout_->removeWidget(it->second);
 
         std::vector<PropertyWidgetQt*> propertyWidgets = it->second->getPropertyWidgets();
- 
+
         for (size_t i = 0; i < propertyWidgets.size(); i++) {
-            if(propertyWidgets[i]->getProperty())
+            if (propertyWidgets[i]->getProperty())
                 propertyWidgets[i]->getProperty()->deregisterWidget(propertyWidgets[i]);
         }
 
@@ -175,7 +172,6 @@ CollapsibleGroupBoxWidgetQt* PropertyListWidget::getPropertiesForProcessor(Proce
 
 CollapsibleGroupBoxWidgetQt* PropertyListWidget::createPropertiesForProcessor(
     Processor* processor) {
-       
     // create property widget and store it in the map
     CollapsibleGroupBoxWidgetQt* widget =
         new CollapsibleGroupBoxWidgetQt(processor->getIdentifier());
@@ -192,7 +188,6 @@ CollapsibleGroupBoxWidgetQt* PropertyListWidget::createPropertiesForProcessor(
 
     widgetMap_[processor] = widget;
 
-    
     // add observer for onProcessorIdentifierChange
     processor->ProcessorObservable::addObserver(widget);
 
