@@ -138,6 +138,7 @@ private:
     OptionPropertyFloat rotationAroundAxis_;  // Clockwise rotation around slice axis
     BoolProperty flipHorizontal_;
     BoolProperty flipVertical_;
+    OptionPropertyInt volumeWrapping_; 
 
     BoolProperty posPicking_;
     BoolProperty showIndicator_;
