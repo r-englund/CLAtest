@@ -60,8 +60,7 @@ PropertyWidgetQt::PropertyWidgetQt()
     , applicationUsageModeAction_(NULL)
     , semanicsMenuItem_(NULL)
     , semanticsActionGroup_(NULL)
-    , contextMenu_(NULL)
-    , cached_(true) {
+    , contextMenu_(NULL)  {
     setContextMenuPolicy(Qt::CustomContextMenu);
     connect(this, SIGNAL(customContextMenuRequested(const QPoint&)), this,
             SLOT(showContextMenu(const QPoint&)));
@@ -77,8 +76,7 @@ PropertyWidgetQt::PropertyWidgetQt(Property* property)
     , applicationUsageModeAction_(NULL)
     , semanicsMenuItem_(NULL)
     , semanticsActionGroup_(NULL)
-    , contextMenu_(NULL)
-    , cached_(true) {
+    , contextMenu_(NULL) {
     setContextMenuPolicy(Qt::CustomContextMenu);
     connect(this, SIGNAL(customContextMenuRequested(const QPoint&)), this,
             SLOT(showContextMenu(const QPoint&)));
@@ -88,8 +86,6 @@ PropertyWidgetQt::PropertyWidgetQt(Property* property)
 PropertyWidgetQt::~PropertyWidgetQt() {}
 
 void PropertyWidgetQt::setVisible(bool visible) {
-    if (cached_) return;
-
     if (visible) {
         QWidget::setVisible(true);
     } else {
@@ -98,7 +94,6 @@ void PropertyWidgetQt::setVisible(bool visible) {
 }
 
 void PropertyWidgetQt::showWidget() {
-    cached_ = false;
     if (isHidden() && getVisible()) {
         updateContextMenu();
         this->show();
@@ -490,13 +485,11 @@ void PropertyWidgetQt::setSpacingAndMargins(QLayout* layout) {
 }
 
 QSize PropertyWidgetQt::sizeHint() const {
-    QSize size = layout()->sizeHint();
-    return size;
+    return layout()->sizeHint();
 }
 
 QSize PropertyWidgetQt::minimumSizeHint() const {
-    QSize size = layout()->sizeHint();
-    return size;
+    return layout()->sizeHint();
 }
 
 //////////////////////////////////////////////////////////////////////////

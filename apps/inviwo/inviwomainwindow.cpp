@@ -34,6 +34,7 @@
 #include <inviwo/core/network/processornetworkevaluator.h>
 #include <inviwo/qt/editor/networkeditorview.h>
 #include <inviwo/qt/widgets/inviwoapplicationqt.h>
+#include <inviwo/qt/widgets/propertylistwidget.h>
 #include <inviwo/core/util/commandlineparser.h>
 #include <inviwo/core/util/settings/systemsettings.h>
 
@@ -75,7 +76,6 @@ InviwoMainWindow::InviwoMainWindow()
 }
 
 InviwoMainWindow::~InviwoMainWindow() {
-
     deinitialize();
     NetworkEditor::deleteInstance();
     LogCentral::getPtr()->unregisterLogger(consoleWidget_);
@@ -96,10 +96,13 @@ void InviwoMainWindow::initialize() {
     settingsWidget_->hide();
     processorTreeWidget_ = new ProcessorTreeWidget(this);
     addDockWidget(Qt::LeftDockWidgetArea, processorTreeWidget_);
+
     propertyListWidget_ = new PropertyListWidget(this);
+    networkEditor_->setPropertyListWidget(propertyListWidget_);
     addDockWidget(Qt::RightDockWidgetArea, propertyListWidget_);
     PropertyListWidgetObserver::addObservation(propertyListWidget_);
     propertyListWidget_->addObserver(this);
+    
     addDockWidget(Qt::BottomDockWidgetArea, consoleWidget_);
     // load settings and restore window state
     QSettings settings("Inviwo", "Inviwo");

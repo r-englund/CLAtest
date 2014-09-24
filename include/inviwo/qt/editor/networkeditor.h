@@ -59,7 +59,7 @@ class ConnectionGraphicsItem;
 class ConnectionDragGraphicsItem;
 class LinkConnectionGraphicsItem;
 class LinkConnectionDragGraphicsItem;
-
+class PropertyListWidget;
 
 class NetworkEditorObserver : public Observer {
 public:
@@ -158,6 +158,9 @@ public:
     std::vector<unsigned char>* renderPortInspectorImage(Port* port, std::string type);
 
     void updateLeds();
+
+    void setPropertyListWidget(PropertyListWidget* widget);
+    PropertyListWidget* getPropertyListWidget() const;
 
 public slots:
     void cacheProcessorProperty(Processor*);
@@ -266,6 +269,8 @@ private:
     // Connection and link state
     ConnectionDragGraphicsItem* connectionCurve_;
     LinkConnectionDragGraphicsItem* linkCurve_;
+
+    PropertyListWidget* propertyListWidget_;
 
     static const int GRID_SPACING;
     std::string filename_;

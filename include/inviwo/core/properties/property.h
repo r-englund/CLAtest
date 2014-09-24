@@ -80,11 +80,11 @@ public:
     virtual void setIdentifier(const std::string& identifier);
     virtual std::string getDisplayName() const;
     virtual void setDisplayName(const std::string& displayName);
-    std::string getGroupID()const;
-    void setGroupID(const std::string& groupID);
-    std::string getGroupDisplayName()const;
-    static void setGroupDisplayName(const std::string& groupID, const std::string& groupDisplayName);
 
+    // Depricated
+    void setGroupID(const std::string& groupID);
+    static void setGroupDisplayName(const std::string& groupID, const std::string& groupDisplayName);
+    //
 
     virtual PropertySemantics getSemantics() const;
     virtual void setSemantics(const PropertySemantics& semantics);
@@ -174,10 +174,6 @@ private:
 
     PropertyOwner* owner_;
     std::vector<PropertyWidget*> propertyWidgets_;
-
-    std::string groupID_;
-    std::string groupDisplayName_;
-    static std::map<std::string, std::string> groupDisplayNames_;
 
     PropertyWidget* initiatingWidget_;
 

@@ -34,6 +34,7 @@
 #include <inviwo/core/properties/propertywidgetfactory.h>
 #include <inviwo/core/common/inviwoapplication.h>
 #include <inviwo/core/util/settings/systemsettings.h>
+#include <inviwo/core/util/clock.h>
 #include <inviwo/qt/widgets/properties/collapsiblegroupboxwidgetqt.h>
 #include <QLabel>
 #include <QVBoxLayout>
@@ -72,17 +73,20 @@ void PropertyListFrame::paintEvent(QPaintEvent*) {
     style()->drawPrimitive(QStyle::PE_Widget, &opt, &p, this);
 }
 
-PropertyListWidget* PropertyListWidget::propertyListWidget_ = 0;
-
 PropertyListWidget::PropertyListWidget(QWidget* parent)
     : InviwoDockWidget(tr("Properties"), parent), PropertyListWidgetObservable() {
     setObjectName("ProcessorListWidget");
     setAllowedAreas(Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea);
-    propertyListWidget_ = this;
-    scrollArea_ = new QScrollArea(propertyListWidget_);
+    
+    QSizePolicy sp(QSizePolicy::Fixed, QSizePolicy::MinimumExpanding);
+    sp.setVerticalStretch(1);
+    sp.setHorizontalStretch(1);
+    setSizePolicy(sp);
+    
+    scrollArea_ = new QScrollArea(this);
     scrollArea_->setWidgetResizable(true);
     scrollArea_->setMinimumWidth(320);
-    scrollArea_->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    scrollArea_->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
     scrollArea_->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
     scrollArea_->setFrameShape(QFrame::NoFrame);
     scrollArea_->setContentsMargins(0, 0, 0, 0);
@@ -108,11 +112,11 @@ void PropertyListWidget::addProcessorProperties(Processor* processor) {
     CollapsibleGroupBoxWidgetQt* widget = getProcessorPropertiesItem(processor);
 
     if (widget) {
-        WidgetVector::iterator elm = std::find(devWidgets_.begin(), devWidgets_.end(), widget);
+        WidgetMap::iterator elm = devWidgets_.find(processor);
         if (elm == devWidgets_.end()) {
-            devWidgets_.push_back(widget);
+            devWidgets_[processor] = widget;
         }
-        
+        IVW_CPU_PROFILING("show props" + processor->getIdentifier());
         widget->showWidget();
     }
     // Put this tab in front
@@ -123,7 +127,7 @@ void PropertyListWidget::removeProcessorProperties(Processor* processor) {
     WidgetMap::iterator it = widgetMap_.find(processor);
 
     if (it != widgetMap_.end()) {
-        WidgetVector::iterator elm = std::find(devWidgets_.begin(), devWidgets_.end(), it->second);
+        WidgetMap::iterator elm = devWidgets_.find(processor);
         if (elm != devWidgets_.end()) {
             devWidgets_.erase(elm);
         }
@@ -137,19 +141,13 @@ void PropertyListWidget::removeAndDeleteProcessorProperties(Processor* processor
 
     if (it != widgetMap_.end()) {
 
-        WidgetVector::iterator elm = std::find(devWidgets_.begin(), devWidgets_.end(), it->second);
+        WidgetMap::iterator elm = devWidgets_.find(processor);
         if (elm != devWidgets_.end()) {
             devWidgets_.erase(elm);
         }
 
         it->second->hideWidget();
-        int height = 0;
-        for (WidgetVector::iterator elm = devWidgets_.begin(); elm != devWidgets_.end(); ++elm) {
-            height += (*elm)->sizeHint().height();
-        }
-
         listLayout_->removeWidget(it->second);
-
 
         CollapsibleGroupBoxWidgetQt* collapsiveGropWidget = it->second;
         std::vector<PropertyWidgetQt*> propertyWidgets = collapsiveGropWidget->getPropertyWidgets();
@@ -176,12 +174,12 @@ void PropertyListWidget::cacheProcessorPropertiesItem(Processor* processor) {
 }
 
 CollapsibleGroupBoxWidgetQt* PropertyListWidget::getProcessorPropertiesItem(Processor* processor) {
+    
+    CollapsibleGroupBoxWidgetQt* processorPropertyWidget = NULL;
+
     // check if processor widget has been already generated
     WidgetMap::iterator it = widgetMap_.find(processor);
-    CollapsibleGroupBoxWidgetQt* processorPropertyWidget = 0;
-
     if (it != widgetMap_.end()) {
-        // property widget has already been created and stored in the map
         processorPropertyWidget = it->second;
     } else {
         processorPropertyWidget = createNewProcessorPropertiesItem(processor);
@@ -192,48 +190,37 @@ CollapsibleGroupBoxWidgetQt* PropertyListWidget::getProcessorPropertiesItem(Proc
 
 CollapsibleGroupBoxWidgetQt* PropertyListWidget::createNewProcessorPropertiesItem(
     Processor* processor) {
+    
+    IVW_CPU_PROFILING("create props" + processor->getIdentifier());
+    
     // create property widget and store it in the map
-    CollapsibleGroupBoxWidgetQt* processorPropertyWidget =
+    CollapsibleGroupBoxWidgetQt* widget =
         new CollapsibleGroupBoxWidgetQt(processor->getIdentifier(), processor->getIdentifier());
-
-    processor->ProcessorObservable::addObserver(this);
-
+    widget->hideWidget();
+    
     std::vector<Property*> props = processor->getProperties();
-    std::map<std::string, CollapsibleGroupBoxWidgetQt*> groups;
-
     for (size_t i = 0; i < props.size(); i++) {
-        if (props[i]->getGroupID() != "") {
-            std::map<std::string, CollapsibleGroupBoxWidgetQt*>::iterator it = groups.find(props[i]->getGroupID());
-            if (it == groups.end()) {
-                CollapsibleGroupBoxWidgetQt* group = new CollapsibleGroupBoxWidgetQt(
-                    props[i]->getGroupDisplayName(), props[i]->getGroupDisplayName());
-                processorPropertyWidget->addWidget(group);
-                groups[props[i]->getGroupID()] = group;
-                group->addProperty(props[i]);
-            } else {
-                it->second->addProperty(props[i]);
-            }
-        } else {
-            processorPropertyWidget->addProperty(props[i]);
-        }
+        widget->addProperty(props[i]);
     }
 
-    listLayout_->insertWidget(0, processorPropertyWidget, 0, Qt::AlignTop);
-    processorPropertyWidget->updateVisibility();
-    processorPropertyWidget->hideWidget();
+    listLayout_->insertWidget(0, widget, 0, Qt::AlignTop);
+    widget->updateVisibility();
+    widget->hideWidget();
 
-    widgetMap_[processor] = processorPropertyWidget;
+    widgetMap_[processor] = widget;
 
-    // Add the widget as a property owner observer
+    
+    // add observer for onProcessorIdentifierChange
+    processor->ProcessorObservable::addObserver(this);
+
+    // Add the widget as a property owner observer for dynamic property addition and removal
     processor->PropertyOwnerObservable::addObserver(
-        static_cast<PropertyOwnerObserver*>(processorPropertyWidget));
+        static_cast<PropertyOwnerObserver*>(widget));
 
-    return processorPropertyWidget;
+    return widget;
 }
 
 void PropertyListWidget::propertyModified() { notifyPropertyListWidgetObservers(); }
-
-PropertyListWidget* PropertyListWidget::instance() { return propertyListWidget_; }
 
 void PropertyListWidget::setUsageMode(bool applicationMode) {
     if (applicationMode) {
@@ -258,8 +245,8 @@ void PropertyListWidget::setUsageMode(UsageMode usageMode) {
     }
 
     if (usageMode_ == DEVELOPMENT) {
-        for (WidgetVector::iterator it = devWidgets_.begin(); it != devWidgets_.end(); ++it) {
-            (*it)->showWidget();
+        for (WidgetMap::iterator it = devWidgets_.begin(); it != devWidgets_.end(); ++it) {
+            it->second->showWidget();
         }
     }
 }
@@ -274,22 +261,26 @@ bool PropertyListWidget::event(QEvent* e) {
         PropertyListEvent* ple = static_cast<PropertyListEvent*>(e);
         ple->accept();
 
-        Processor* p = InviwoApplication::getPtr()->getProcessorNetwork()
-                                                  ->getProcessorByName(ple->identifier_);
+        Processor* p = ple->processor_;
         if (p == NULL) {
             return true;
         }
 
         switch (ple->action_) {
-            case PropertyListEvent::ADD:
+            case PropertyListEvent::ADD: {
+                IVW_CPU_PROFILING("add props" + p->getIdentifier());
                 addProcessorProperties(p);
                 break;
-            case PropertyListEvent::REMOVE:
+            }
+            case PropertyListEvent::REMOVE: {
                 removeProcessorProperties(p);
                 break;
-            case PropertyListEvent::CACHE:
+            }
+            case PropertyListEvent::CACHE: {
+                IVW_CPU_PROFILING("cache props" + p->getIdentifier());
                 cacheProcessorPropertiesItem(p);
                 break;
+            }
         }
 
         return true;

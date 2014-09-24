@@ -154,7 +154,7 @@ void TransferFunctionEditor::mouseDoubleClickEvent(QGraphicsSceneMouseEvent* e) 
 
 void TransferFunctionEditor::keyPressEvent(QKeyEvent* e) {
     int k = e->key();
-
+    e->accept();
     InviwoApplication::getPtr()->getProcessorNetwork()->lock();
     if (k == 'A' && e->modifiers() == Qt::ControlModifier) {                // Select all
         QList<QGraphicsItem*> itemList = items();
@@ -335,10 +335,10 @@ void TransferFunctionEditor::keyPressEvent(QKeyEvent* e) {
         }
     } else {
         e->ignore();
+        QGraphicsScene::keyPressEvent(e);
     }
     InviwoApplication::getPtr()->getProcessorNetwork()->unlock();
 
-    QGraphicsScene::keyPressEvent(e);
 }
 
 void TransferFunctionEditor::addControlPoint(QPointF pos) {

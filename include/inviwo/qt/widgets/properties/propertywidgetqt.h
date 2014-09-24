@@ -126,8 +126,6 @@ protected:
 private:
     QMenu* contextMenu_;
     QMap<QString,QMenu*> moduleSubMenus_;
-
-    bool cached_;
 };
 
 //PropertyEditorWidget owned by PropertyWidget

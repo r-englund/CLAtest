@@ -36,8 +36,6 @@
 
 namespace inviwo {
 
-std::map<std::string,std::string> Property::groupDisplayNames_;
-
 Property::Property(const std::string &identifier,
                    const std::string &displayName,
                    PropertyOwner::InvalidationLevel invalidationLevel,
@@ -54,8 +52,6 @@ Property::Property(const std::string &identifier,
     , propertyModified_(false)
     , invalidationLevel_(invalidationLevel)
     , owner_(NULL)
-    , groupID_("")
-    , groupDisplayName_("")
     , initiatingWidget_(NULL) {
 }
 
@@ -72,8 +68,6 @@ Property::Property()
     , propertyModified_(false)
     , invalidationLevel_(PropertyOwner::INVALID_OUTPUT)
     , owner_(NULL)
-    , groupID_("")
-    , groupDisplayName_("")
     , initiatingWidget_(NULL)  {
 }
 
@@ -167,11 +161,7 @@ bool Property::hasWidgets() const {
 }
 
 void Property::setGroupID(const std::string& groupID) {
-    groupID_ = groupID;
-}
-
-std::string Property::getGroupID()const {
-    return groupID_;
+    LogWarn("Deprication: Property::setGroupID is depricated used CompositeProperty instead");
 }
 
 void Property::propertyModified() {
@@ -258,11 +248,6 @@ void Property::deserialize(IvwDeserializer& d) {
 
 void Property::setGroupDisplayName(const std::string& groupID, const std::string& groupDisplayName) {   
     LogWarnCustom("Property", "Deprication: Property::setGroupDisplayName is depricated used CompositeProperty instead (id: " << groupID << " name " << groupDisplayName << ")");
-    Property::groupDisplayNames_.insert(std::pair<std::string,std::string>(groupID, groupDisplayName));
-}
-
-std::string Property::getGroupDisplayName() const {
-    return groupDisplayNames_[groupID_];
 }
 
 void Property::setUsageMode(UsageMode visibilityMode) {

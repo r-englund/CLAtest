@@ -49,11 +49,6 @@ class CollapsibleGroupBoxWidgetQt;
 class IVW_QTWIDGETS_API PropertyListWidgetObserver : public Observer {
 public:
     PropertyListWidgetObserver() : Observer() {};
-
-    /**
-    * This method will be called when observed object changes.
-    * Override it to add behavior.
-    */
     virtual void onPropertyListWidgetChange() {};
 };
 
@@ -83,32 +78,24 @@ public:
 class IVW_QTWIDGETS_API PropertyListEvent : public QEvent {
     Q_GADGET
 public:
+    enum Action { ADD = 0, REMOVE = 1, CACHE = 2 };
 
-    enum Action {
-        ADD = 0,
-        REMOVE = 1,
-        CACHE = 2
-    };
+    PropertyListEvent(Action action, Processor* processor)
+        : QEvent(PROPERY_LIST_EVENT), action_(action), processor_(processor) {}
 
-    PropertyListEvent(Action action, const std::string identifier)
-        : QEvent(PROPERY_LIST_EVENT)
-        , action_(action)
-        , identifier_(identifier) {}
-    
     static QEvent::Type type() {
         if (PROPERY_LIST_EVENT == QEvent::None) {
             PROPERY_LIST_EVENT = static_cast<QEvent::Type>(QEvent::registerEventType());
         }
         return PROPERY_LIST_EVENT;
     }
-    
+
     Action action_;
-    const std::string identifier_;
-    
+    Processor* processor_;
+
 private:
     static QEvent::Type PROPERY_LIST_EVENT;
 };
-
 
 class IVW_QTWIDGETS_API PropertyListWidget : public InviwoDockWidget,
                                              public PropertyListWidgetObservable,
@@ -116,28 +103,24 @@ class IVW_QTWIDGETS_API PropertyListWidget : public InviwoDockWidget,
     Q_OBJECT
 
 public:
-    static PropertyListWidget* instance();
-
     PropertyListWidget(QWidget* parent);
     ~PropertyListWidget();
 
     void addProcessorProperties(Processor* processor);
     void removeProcessorProperties(Processor* processor);
     void removeAndDeleteProcessorProperties(Processor* processor);
-    
-    //override 
+
+    // override
     void onProcessorIdentifierChange(Processor*);
     UsageMode getUsageMode();
 
     void cacheProcessorPropertiesItem(Processor* processor);
-    
 
     void updateProcessorIdentifier(std::string oldName, std::string newName);
 
     virtual bool event(QEvent* e);
 
     typedef std::map<Processor*, CollapsibleGroupBoxWidgetQt*> WidgetMap;
-    typedef std::vector<CollapsibleGroupBoxWidgetQt*> WidgetVector;
 
 public slots:
     void setUsageMode(bool value);  // True = Application, False = Developer
@@ -147,7 +130,6 @@ protected slots:
     void propertyModified();
 
 protected:
-    static PropertyListWidget* propertyListWidget_;
     mutable WidgetMap widgetMap_;
 
 private:
@@ -157,11 +139,9 @@ private:
     UsageMode usageMode_;
 
     QVBoxLayout* listLayout_;
-    WidgetVector devWidgets_;
+    WidgetMap devWidgets_;
     QWidget* listWidget_;
     QScrollArea* scrollArea_;
-
-
 };
 
 }  // namespace
