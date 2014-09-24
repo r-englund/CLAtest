@@ -116,7 +116,7 @@ void PropertyListWidget::addProcessorProperties(Processor* processor) {
         if (elm == devWidgets_.end()) {
             devWidgets_[processor] = widget;
         }
-        IVW_CPU_PROFILING("show props" + processor->getIdentifier());
+        //IVW_CPU_PROFILING("show properties for processor: " + processor->getIdentifier());
         widget->showWidget();
     }
     // Put this tab in front
@@ -191,12 +191,11 @@ CollapsibleGroupBoxWidgetQt* PropertyListWidget::getProcessorPropertiesItem(Proc
 CollapsibleGroupBoxWidgetQt* PropertyListWidget::createNewProcessorPropertiesItem(
     Processor* processor) {
     
-    IVW_CPU_PROFILING("create props" + processor->getIdentifier());
+    //IVW_CPU_PROFILING("create propertywidgets for processor: " + processor->getIdentifier());
     
     // create property widget and store it in the map
     CollapsibleGroupBoxWidgetQt* widget =
         new CollapsibleGroupBoxWidgetQt(processor->getIdentifier(), processor->getIdentifier());
-    widget->hideWidget();
     
     std::vector<Property*> props = processor->getProperties();
     for (size_t i = 0; i < props.size(); i++) {
@@ -268,7 +267,6 @@ bool PropertyListWidget::event(QEvent* e) {
 
         switch (ple->action_) {
             case PropertyListEvent::ADD: {
-                IVW_CPU_PROFILING("add props" + p->getIdentifier());
                 addProcessorProperties(p);
                 break;
             }
@@ -277,7 +275,6 @@ bool PropertyListWidget::event(QEvent* e) {
                 break;
             }
             case PropertyListEvent::CACHE: {
-                IVW_CPU_PROFILING("cache props" + p->getIdentifier());
                 cacheProcessorPropertiesItem(p);
                 break;
             }

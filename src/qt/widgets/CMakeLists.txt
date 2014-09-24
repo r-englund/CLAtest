@@ -48,11 +48,6 @@ set(MOC_FILES
     ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/properties/transferfunctionpropertywidgetqt.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/properties/transferfunctionpropertydialog.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/propertyselectiontreewidget.h
-    ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/propertytree/propertyleaf.h
-    ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/propertytree/propertyownernode.h
-    ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/propertytree/propertytreeitem.h
-    ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/propertytree/propertytreeleaf.h
-    ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/propertytree/propertytreenode.h
 )
 
 #--------------------------------------------------------------------
@@ -129,11 +124,6 @@ set(SOURCE_FILES
     rawdatareaderdialogqt.cpp
     sliderwidgetqt.cpp
     spinboxrangesliderwidgetqt.cpp
-    propertytree/propertyleaf.cpp
-    propertytree/propertyownernode.cpp
-    propertytree/propertytreeitem.cpp
-    propertytree/propertytreeleaf.cpp
-    propertytree/propertytreenode.cpp
 )
 
 ivw_group("Source Files" ${SOURCE_FILES})
