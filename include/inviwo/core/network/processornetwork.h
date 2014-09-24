@@ -292,7 +292,10 @@ public:
     Processor* getInvalidationInitiator();
 
     inline void lock() { locked_++; }
-    inline void unlock() { (locked_>0) ? locked_-- : locked_=0;notifyProcessorNetworkUnlockedObservers(); }
+    inline void unlock() { 
+        (locked_>0) ? locked_-- : locked_ = 0;
+        if (locked_==0) notifyProcessorNetworkUnlockedObservers(); 
+    }
     inline bool islocked() const { return (locked_!=0); }
 
     virtual void serialize(IvwSerializer& s) const;
@@ -343,7 +346,6 @@ private:
     bool evaluationQueued_;
 
     bool linking_;
-    Processor* linkInvalidationInitiator_;
     
     class NetworkConverter : public VersionConverter {
     public:
