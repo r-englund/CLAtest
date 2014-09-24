@@ -80,32 +80,12 @@ void EventPropertyManagerWidget::drawEventPropertyWidgets() {
         if (std::find(addedProperties.begin(), addedProperties.end(), properties[i]) != addedProperties.end())
             continue;
 
-        if (properties[i]->getGroupID()!="") {
-            CollapsibleGroupBoxWidgetQt* group = new CollapsibleGroupBoxWidgetQt(properties[i]->getGroupID(), properties[i]->getGroupID());
 
-            //Add all the properties with the same group assigned
-            for (size_t k=0; k<properties.size(); k++) {
-                Property* tmpProperty = properties[k];
-
-                if (properties[i]->getGroupID() == tmpProperty->getGroupID()) {
-                    group->addProperty(tmpProperty);
-                    addedProperties.push_back(tmpProperty);
-                }
-            }
-
-            group->generateEventPropertyWidgets(eventPropertyManager_);
-
-            if (groupCollapsed[group->getIdentifier()])
-                group->hide();
-
-            mainLayout_->addWidget(group);
-        } else {
-            PropertyWidgetQt* propertyWidget =
-                static_cast<PropertyWidgetQt*>(PropertyWidgetFactory::getPtr()->create(properties[i]));
-            mainLayout_->addWidget(propertyWidget);
-            properties[i]->registerWidget(propertyWidget);
-            dynamic_cast<EventPropertyWidgetQt*>(propertyWidget)->setManager(eventPropertyManager_);
-        }
+        PropertyWidgetQt* propertyWidget =
+            static_cast<PropertyWidgetQt*>(PropertyWidgetFactory::getPtr()->create(properties[i]));
+        mainLayout_->addWidget(propertyWidget);
+        properties[i]->registerWidget(propertyWidget);
+        dynamic_cast<EventPropertyWidgetQt*>(propertyWidget)->setManager(eventPropertyManager_);
     }
 }
 

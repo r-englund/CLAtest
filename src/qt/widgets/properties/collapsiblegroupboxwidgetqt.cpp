@@ -179,7 +179,8 @@ void CollapsibleGroupBoxWidgetQt::setIdentifier(const std::string& identifier) {
 std::string CollapsibleGroupBoxWidgetQt::getDisplayName() const { return displayName_; }
 
 void CollapsibleGroupBoxWidgetQt::setDisplayName(const std::string& displayName) {
-    PropertyListWidget::instance()->updateProcessorIdentifier(displayName_, displayName);
+    // TODO Peter fix.
+    // PropertyListWidget::getPtr()->updateProcessorIdentifier(displayName_, displayName);
     displayName_ = displayName;
 }
 

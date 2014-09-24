@@ -50,6 +50,7 @@
 #include <inviwo/core/properties/propertyownerobserver.h>
 
 namespace inviwo {
+
 class IVW_QTWIDGETS_API CollapsibleGroupBoxWidgetQt : public PropertyWidgetQt,
                                                       public PropertyOwnerObserver {
     Q_OBJECT
@@ -120,8 +121,8 @@ private:
 
     QWidget* propertyWidgetGroup_;
     QVBoxLayout* propertyWidgetGroupLayout_;
-    // QFrame* frame_;
 };
+
 
 } // namespace
 

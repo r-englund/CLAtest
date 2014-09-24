@@ -64,7 +64,7 @@ public:
                             (dstProperty("", "")).getClassIdentifier()) {}
     virtual ~TemplatePropertyConverter() {}
 
-    void convert(const Property *src, Property *dst) const {
+    virtual void convert(const Property *src, Property *dst) const {
         const srcProperty *s = dynamic_cast<const srcProperty *>(src);
         dstProperty *d = dynamic_cast<dstProperty *>(dst);
         if (s && d) {

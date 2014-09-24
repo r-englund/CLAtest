@@ -80,35 +80,20 @@ void SettingsWidget::updateSettingsWidget() {
         scrollAreaTab->setWidget(listWidget);
 
         std::vector<Property*> props = settings[i]->getProperties();
-        std::map<std::string, CollapsibleGroupBoxWidgetQt*> groups;
-
+ 
         for (size_t j = 0; j < props.size(); j++) {
-            if (props[j]->getGroupID() != "") {
-                std::map<std::string, CollapsibleGroupBoxWidgetQt*>::iterator it = groups.find(props[j]->getGroupID());
-                if (it == groups.end()) {
-                    CollapsibleGroupBoxWidgetQt* group = new CollapsibleGroupBoxWidgetQt(
-                        props[j]->getGroupDisplayName(), props[j]->getGroupDisplayName());
-                    listLayout->addWidget(group);
-                    groups.insert(std::make_pair(props[i]->getGroupID(), group));
-                    group->addProperty(props[j]);
-                    group->showWidget();
-                } else {
-                    it->second->addProperty(props[j]);
-                    it->second->showWidget();
-                }
-            } else {
-                PropertyWidgetQt* propertyWidget = static_cast<PropertyWidgetQt*>(
-                    PropertyWidgetFactory::getPtr()->create(props[j]));
 
-                if (propertyWidget) {
-                    listLayout->addWidget(propertyWidget);
-                    props[j]->registerWidget(propertyWidget);
-                    propertyWidget->showWidget();
-                    connect(propertyWidget, SIGNAL(updateSemantics(PropertyWidgetQt*)), this,
-                            SLOT(updatePropertyWidgetSemantics(PropertyWidgetQt*)));
-                } else {
-                    LogWarn("Could not find a widget for property: " << props[j]->getClassIdentifier());
-                }
+            PropertyWidgetQt* propertyWidget = static_cast<PropertyWidgetQt*>(
+                PropertyWidgetFactory::getPtr()->create(props[j]));
+
+            if (propertyWidget) {
+                listLayout->addWidget(propertyWidget);
+                props[j]->registerWidget(propertyWidget);
+                propertyWidget->showWidget();
+                connect(propertyWidget, SIGNAL(updateSemantics(PropertyWidgetQt*)), this,
+                        SLOT(updatePropertyWidgetSemantics(PropertyWidgetQt*)));
+            } else {
+                LogWarn("Could not find a widget for property: " << props[j]->getClassIdentifier());
             }
         }
 

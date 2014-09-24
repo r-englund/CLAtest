@@ -289,10 +289,7 @@ ProcessorGraphicsItem* NetworkEditor::addProcessorGraphicsItem(Processor* proces
     ProcessorGraphicsItem* processorGraphicsItem = new ProcessorGraphicsItem(processor);
     processorGraphicsItem->setVisible(visible);
     processorGraphicsItem->setSelected(selected);
-
-    // TODO: if (!sceneRect().contains(pos)) CLAMP_TO_SCENE_RECT;
     processorGraphicsItem->setPos(pos);
-
     addItem(processorGraphicsItem);
     processorGraphicsItems_[processor] = processorGraphicsItem;
 
@@ -334,21 +331,21 @@ void NetworkEditor::removeProcessorGraphicsItem(Processor* processor) {
 
 void NetworkEditor::addPropertyWidgets(Processor* processor) {
     QCoreApplication::postEvent(
-        PropertyListWidget::instance(),
-        new PropertyListEvent(PropertyListEvent::ADD, processor->getIdentifier()),
+        propertyListWidget_,
+        new PropertyListEvent(PropertyListEvent::ADD, processor),
         Qt::LowEventPriority);
 }
 
 void NetworkEditor::removePropertyWidgets(Processor* processor) {
     QCoreApplication::postEvent(
-        PropertyListWidget::instance(),
-        new PropertyListEvent(PropertyListEvent::REMOVE, processor->getIdentifier()),
+        propertyListWidget_,
+        new PropertyListEvent(PropertyListEvent::REMOVE, processor),
         Qt::LowEventPriority);
 }
 
 void NetworkEditor::removeAndDeletePropertyWidgets(Processor* processor) {
     // Will not use events here since we might delete the processor
-    PropertyListWidget::instance()->removeAndDeleteProcessorProperties(processor);
+    propertyListWidget_->removeAndDeleteProcessorProperties(processor);
 }
 
 // remove processor widget unnecessary as processor widget is removed when processor is destroyed
@@ -383,6 +380,12 @@ void NetworkEditor::removeProcessorWidget(Processor* processor) {
         delete processorWidget;
     }
 }
+
+
+void NetworkEditor::setPropertyListWidget(PropertyListWidget* widget) {
+    propertyListWidget_ = widget;
+}
+PropertyListWidget* NetworkEditor::getPropertyListWidget() const { return propertyListWidget_; }
 
 /////////////////////////////////////////////////////////
 //   PRIVATE METHODS FOR ADDING/REMOVING CONNECTIONS   //
@@ -740,8 +743,7 @@ void NetworkEditor::cacheProcessorProperty(Processor* p) {
         InviwoApplication::getPtr()->getProcessorNetwork()->getProcessors();
     bool preModifiedStatus = modified_;
     if (std::find(processors.begin(), processors.end(), p) != processors.end()) {
-        PropertyListWidget* propertyListWidget = PropertyListWidget::instance();
-        propertyListWidget->cacheProcessorPropertiesItem(p);
+        propertyListWidget_->cacheProcessorPropertiesItem(p);
     }
     setModified(preModifiedStatus);
 }
@@ -1523,9 +1525,9 @@ bool NetworkEditor::loadNetwork(std::istream& stream, const std::string& path) {
                                     QPointF(meta->getPosition().x, meta->getPosition().y),
                                     meta->isVisible(), meta->isSelected(), false, false);
     }
-    PropertyListWidget::instance()->setUsageMode(InviwoApplication::getPtr()
-                                                     ->getSettingsByType<SystemSettings>()
-                                                     ->applicationUsageModeProperty_.get());
+    propertyListWidget_->setUsageMode(InviwoApplication::getPtr()
+                                               ->getSettingsByType<SystemSettings>()
+                                               ->applicationUsageModeProperty_.get());
 
     // add connections
     std::vector<PortConnection*> connections =
@@ -1566,8 +1568,8 @@ bool NetworkEditor::loadNetwork(std::istream& stream, const std::string& path) {
     // Queue event to cache all the widgets since the creation can be slow.
     for (std::vector<Processor*>::iterator it = processors.begin(); it != processors.end(); ++it) {
         QCoreApplication::postEvent(
-            PropertyListWidget::instance(),
-            new PropertyListEvent(PropertyListEvent::CACHE, (*it)->getIdentifier()),
+            propertyListWidget_,
+            new PropertyListEvent(PropertyListEvent::CACHE, *it),
             Qt::LowEventPriority);
     }
 
