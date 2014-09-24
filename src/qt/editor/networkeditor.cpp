@@ -1526,8 +1526,8 @@ bool NetworkEditor::loadNetwork(std::istream& stream, const std::string& path) {
                                     meta->isVisible(), meta->isSelected(), false, false);
     }
     propertyListWidget_->setUsageMode(InviwoApplication::getPtr()
-                                               ->getSettingsByType<SystemSettings>()
-                                               ->applicationUsageModeProperty_.get());
+                                      ->getSettingsByType<SystemSettings>()
+                                      ->getApplicationUsageMode());
 
     // add connections
     std::vector<PortConnection*> connections =

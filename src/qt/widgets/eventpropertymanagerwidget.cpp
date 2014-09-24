@@ -61,10 +61,6 @@ void EventPropertyManagerWidget::onEventPropertyManagerChange() {
 void EventPropertyManagerWidget::emptyLayout(QVBoxLayout* layout) {
     while (!layout->isEmpty()) {
         QWidget* w =  layout->takeAt(0)->widget();
-        CollapsibleGroupBoxWidgetQt* box = dynamic_cast<CollapsibleGroupBoxWidgetQt*>(w);
-
-        if (box)
-            groupCollapsed[box->getIdentifier()] = box->isCollapsed();
 
         layout->removeWidget(w);
         delete w;

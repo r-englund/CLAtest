@@ -37,6 +37,7 @@
 #include <inviwo/qt/widgets/inviwoapplicationqt.h>
 #include <apps/inviwo/inviwomainwindow.h>
 #include <QDialogButtonBox>
+#include <QMouseEvent>
 
 namespace inviwo {
 

@@ -36,6 +36,7 @@
 #include <inviwo/qt/widgets/editablelabelqt.h>
 #include <inviwo/qt/widgets/properties/transferfunctionpropertydialog.h>
 #include <QHBoxLayout>
+#include <QPushButton>
 
 namespace inviwo {
 
@@ -66,7 +67,7 @@ void TransferFunctionPropertyWidgetQt::generateWidget() {
     hLayout->setSpacing(7);
 
     btnOpenTF_ = new QPushButton();
-    btnOpenTF_->setFixedSize(200, 20);
+    btnOpenTF_->setFixedSize(180, 20);
 
     label_ = new EditableLabelQt(this, property_->getDisplayName());
     hLayout->addWidget(label_);

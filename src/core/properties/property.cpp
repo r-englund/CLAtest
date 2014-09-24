@@ -136,9 +136,11 @@ void Property::registerWidget(PropertyWidget* propertyWidget) {
 }
 
 void Property::deregisterWidget(PropertyWidget* propertyWidget) {
-    if (std::find(propertyWidgets_.begin(), propertyWidgets_.end(), propertyWidget)!=propertyWidgets_.end()) {
-        propertyWidgets_.erase(std::remove(propertyWidgets_.begin(), propertyWidgets_.end(),
-                                           propertyWidget), propertyWidgets_.end());
+    if (std::find(propertyWidgets_.begin(), propertyWidgets_.end(), propertyWidget) !=
+        propertyWidgets_.end()) {
+        propertyWidgets_.erase(
+            std::remove(propertyWidgets_.begin(), propertyWidgets_.end(), propertyWidget),
+            propertyWidgets_.end());
     }
 }
 

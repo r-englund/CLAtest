@@ -33,19 +33,25 @@
 #include <inviwo/qt/widgets/properties/collapsiblegroupboxwidgetqt.h>
 #include <inviwo/qt/widgets/properties/compositepropertywidgetqt.h>
 #include <inviwo/core/common/inviwoapplication.h>
+#include <inviwo/core/properties/property.h>
 #include <inviwo/core/util/settings/systemsettings.h>
 #include <inviwo/core/properties/propertywidgetfactory.h>
 #include <inviwo/core/network/processornetwork.h>
+#include <inviwo/qt/widgets/editablelabelqt.h>
+
+#include <QLineEdit>
+#include <QToolButton>
+#include <QGroupBox>
+#include <QPushButton>
 
 namespace inviwo {
 
-CollapsibleGroupBoxWidgetQt::CollapsibleGroupBoxWidgetQt(std::string identifier,
-                                                         std::string displayName)
+CollapsibleGroupBoxWidgetQt::CollapsibleGroupBoxWidgetQt(std::string displayName)
     : PropertyWidgetQt()
     , PropertyOwnerObserver()
-    , identifier_(identifier)
     , displayName_(displayName)
-    , collapsed_(false) {
+    , collapsed_(false)
+    , propertyOwner_(NULL) {
     
     setObjectName("CollapsibleGroupBoxWidgetQt");
     generateWidget();
@@ -157,40 +163,17 @@ void CollapsibleGroupBoxWidgetQt::addProperty(Property* prop) {
     }
 }
 
-void CollapsibleGroupBoxWidgetQt::generateEventPropertyWidgets(EventPropertyManager* epm) {
-    for (size_t i = 0; i < properties_.size(); i++) {
-        const std::vector<PropertyWidget*>& widgets = properties_[i]->getWidgets();
-        for (size_t j = 0; j < widgets.size(); j++) {
-            EventPropertyWidgetQt* ep = dynamic_cast<EventPropertyWidgetQt*>(widgets[j]);
-            if (ep) {
-                ep->setManager(epm);
-            }
-        }
-    }
-}
-
-std::string CollapsibleGroupBoxWidgetQt::getIdentifier() const { return identifier_; }
-
-void CollapsibleGroupBoxWidgetQt::setIdentifier(const std::string& identifier) {
-    identifier_ = identifier;
-    label_->setText(identifier);
-}
-
 std::string CollapsibleGroupBoxWidgetQt::getDisplayName() const { return displayName_; }
 
 void CollapsibleGroupBoxWidgetQt::setDisplayName(const std::string& displayName) {
-    // TODO Peter fix.
-    // PropertyListWidget::getPtr()->updateProcessorIdentifier(displayName_, displayName);
     displayName_ = displayName;
+    if(propertyOwner_) {
+        Processor* p = dynamic_cast<Processor*>(propertyOwner_);
+        if(p) p->setIdentifier(displayName);
+    }
 }
 
 std::vector<Property*> CollapsibleGroupBoxWidgetQt::getProperties() { return properties_; }
-
-void CollapsibleGroupBoxWidgetQt::setGroupDisplayName() {
-    displayName_ = label_->getText();
-    label_->setText(displayName_);
-    Property::setGroupDisplayName(identifier_, displayName_);
-}
 
 UsageMode CollapsibleGroupBoxWidgetQt::getUsageMode() const {
     UsageMode mode = DEVELOPMENT;
@@ -275,12 +258,8 @@ void CollapsibleGroupBoxWidgetQt::serialize(IvwSerializer& s) const {
 }
 
 void CollapsibleGroupBoxWidgetQt::deserialize(IvwDeserializer& d) {
-    bool value;
-    std::string dispName;
-    d.deserialize("collapsed", value);
-    d.deserialize("displayName", dispName);
-    displayName_ = dispName;
-    collapsed_ = value;
+    d.deserialize("collapsed", collapsed_);
+    d.deserialize("displayName", displayName_);
 }
 
 void CollapsibleGroupBoxWidgetQt::addWidget(QWidget* widget) {
@@ -404,6 +383,19 @@ void CollapsibleGroupBoxWidgetQt::onWillRemoveProperty(Property* prop, size_t in
     properties_.erase(properties_.begin()+index);
     
     updateVisibility();
+}
+
+void CollapsibleGroupBoxWidgetQt::onProcessorIdentifierChange(Processor* processor) {
+    displayName_ = processor->getIdentifier();
+    label_->setText(processor->getIdentifier());
+}
+
+void CollapsibleGroupBoxWidgetQt::setPropertyOwner(PropertyOwner* propertyOwner) {
+    propertyOwner_ = propertyOwner;
+}
+
+PropertyOwner* CollapsibleGroupBoxWidgetQt::getPropertyOwner() const {
+    return propertyOwner_;
 }
 
 

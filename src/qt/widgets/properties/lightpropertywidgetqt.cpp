@@ -32,6 +32,7 @@
 
 #include <inviwo/qt/widgets/properties/lightpropertywidgetqt.h>
 #include <inviwo/qt/widgets/properties/compositepropertywidgetqt.h>
+#include <QGroupBox>
 
 namespace inviwo {
 

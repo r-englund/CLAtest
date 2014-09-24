@@ -42,21 +42,20 @@
 #include <QMenuBar>
 #include <QAction>
 #include <inviwo/core/properties/baseoptionproperty.h>
-#include <inviwo/qt/editor/mappingwidget.h>
-#include <inviwo/qt/editor/settingswidget.h>
-#include <inviwo/qt/editor/consolewidget.h>
-#include <inviwo/qt/editor/processorlistwidget.h>
-#include <inviwo/qt/widgets/propertylistwidget.h>
-#include <inviwo/qt/editor/resourcemanagerwidget.h>
 #include <inviwo/qt/editor/networkeditor.h>
 
 namespace inviwo {
 
 class NetworkEditorView;
 class NetworkEditor;
+class PropertyListWidget;
+class ProcessorTreeWidget;
+class ResourceManagerWidget;
+class ConsoleWidget;
+class SettingsWidget;
+class MappingWidget;
 
 class InviwoMainWindow : public QMainWindow,
-    public PropertyListWidgetObserver,
     public NetworkEditorObserver,
     public ProcessorNetworkObserver {
     Q_OBJECT

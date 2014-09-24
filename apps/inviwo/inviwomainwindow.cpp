@@ -35,8 +35,13 @@
 #include <inviwo/qt/editor/networkeditorview.h>
 #include <inviwo/qt/widgets/inviwoapplicationqt.h>
 #include <inviwo/qt/widgets/propertylistwidget.h>
+#include <inviwo/qt/editor/processorlistwidget.h>
 #include <inviwo/core/util/commandlineparser.h>
 #include <inviwo/core/util/settings/systemsettings.h>
+#include <inviwo/qt/editor/resourcemanagerwidget.h>
+#include <inviwo/qt/editor/consolewidget.h>
+#include <inviwo/qt/editor/settingswidget.h>
+#include <inviwo/qt/editor/mappingwidget.h>
 
 #include <inviwo/qt/widgets/inviwofiledialog.h>
 
@@ -62,7 +67,6 @@ namespace inviwo {
 
 InviwoMainWindow::InviwoMainWindow() 
     : QMainWindow()
-    , PropertyListWidgetObserver()
     , ProcessorNetworkObserver() 
     , visibilityModeProperty_(NULL) {
     
@@ -100,8 +104,6 @@ void InviwoMainWindow::initialize() {
     propertyListWidget_ = new PropertyListWidget(this);
     networkEditor_->setPropertyListWidget(propertyListWidget_);
     addDockWidget(Qt::RightDockWidgetArea, propertyListWidget_);
-    PropertyListWidgetObserver::addObservation(propertyListWidget_);
-    propertyListWidget_->addObserver(this);
     
     addDockWidget(Qt::BottomDockWidgetArea, consoleWidget_);
     // load settings and restore window state
@@ -574,13 +576,13 @@ void InviwoMainWindow::visibilityModeChangedInSettings(){
             if(visibilityModeAction_->isChecked()){
                 visibilityModeAction_->setChecked(false);
             }
-            propertyListWidget_->setUsageMode(false);
+            propertyListWidget_->setUsageMode(DEVELOPMENT);
             setVisibilityMode(false);
         } else if (selectedIdx == APPLICATION) {
             if(!visibilityModeAction_->isChecked()){
                 visibilityModeAction_->setChecked(true);
             }
-            propertyListWidget_->setUsageMode(true);
+            propertyListWidget_->setUsageMode(APPLICATION);
             setVisibilityMode(true);
         }
         updateWindowTitle();
