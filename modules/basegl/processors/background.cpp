@@ -47,8 +47,8 @@ Background::Background()
     , inport_("inport")
     , outport_("outport", &inport_, COLOR_ONLY)
     , backgroundStyle_("backgroundStyle", "Style", PropertyOwner::INVALID_RESOURCES)
-    , color1_("color1", "Color 1", vec4(0.0))
-    , color2_("color2", "Color 2", vec4(1.0))
+    , color1_("color1", "Color 1", vec4(0.0f, 0.0f, 0.0f, 1.0f))
+    , color2_("color2", "Color 2", vec4(1.0f))
     , checkerBoardSize_("checkerBoardSize", "Checker Board Size", ivec2(10, 10), ivec2(1, 1),
                         ivec2(256, 256))
     , switchColors_("Switch colors", "switch colors", PropertyOwner::VALID)
@@ -88,6 +88,12 @@ void Background::deinitialize() {
     delete shader_;
     shader_ = NULL;
     Processor::deinitialize();
+}
+
+
+bool Background::isReady() const {
+    if (inport_.isConnected()) return Processor::isReady();
+    return true;
 }
 
 void Background::initializeResources() {
