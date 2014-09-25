@@ -46,8 +46,8 @@ public:
     PropertyConverter(const std::string &srcClassIdentifier, const std::string &dstClassIdentifier);
     virtual ~PropertyConverter();
 
-    std::string getSourceProcessorClassIdenetifier() const;
-    std::string getDestinationProcessorClassIdenetifier() const;
+    std::string getSourcePropertyClassIdenetifier() const;
+    std::string getDestinationPropertyClassIdenetifier() const;
 
     virtual void convert(const Property *srcProperty, Property *dstProperty) const = 0;
 

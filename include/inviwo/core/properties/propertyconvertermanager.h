@@ -65,8 +65,8 @@ private:
 template <typename T>
 void PropertyConverterManager::registerConvert() {
     T *converter = new T();
-    std::string src = converter->getSourceProcessorClassIdenetifier();
-    std::string dst = converter->getDestinationProcessorClassIdenetifier();
+    std::string src = converter->getSourcePropertyClassIdenetifier();
+    std::string dst = converter->getDestinationPropertyClassIdenetifier();
     if (canConvert(src, dst)) {
         LogWarn("Property Converter from type " << src << " to type " << dst
                                                 << " already registered");
