@@ -55,7 +55,7 @@ bool util::xmlCopyMatchingSubPropsIntoComposite(TxElement* node, const Composite
 
     for (int i = 0; i < props.size(); ++i) {
         bool match = false;
-        LogWarnCustom("VersionConverter", "    Lock for match to: " << prop.getIdentifier() << "."
+        LogWarnCustom("VersionConverter", "    Looking for match to: " << prop.getIdentifier() << "."
                                                                     << props[i]->getIdentifier());
         ticpp::Iterator<ticpp::Element> child;
         for (child = child.begin(node); child != child.end(); child++) {
@@ -112,9 +112,16 @@ bool util::xmlFindMatchingSubPropertiesForComposites(
     for (int i = 0; i < props.size(); ++i) {
         if (!util::xmlHasProp(pelm[0], *props[i])) {
             LogWarnCustom("VersionConverter", "Could not find serialized version of composite property: "
-                                                  << props[i]->getIdentifier()
-                                                  << ". Looking for matching sub properties");
-            res = util::xmlCopyMatchingSubPropsIntoComposite(pelm[0], *props[i]) && res;
+                                                  << props[i]->getIdentifier());
+
+            LogWarnCustom("VersionConverter", "Looking for matching Composite");
+            bool foundMatchingComposite = util::xmlCopyMatchingCompositeProperty(pelm[0], *props[i]);
+            bool foundSubProp = false;
+            if(!foundMatchingComposite) {
+                LogWarnCustom("VersionConverter", "Looking for matching sub properties");
+                foundSubProp = util::xmlCopyMatchingSubPropsIntoComposite(pelm[0], *props[i]);
+            }
+            res = res && (foundSubProp || foundMatchingComposite);
         }
     }
     return res;
@@ -151,6 +158,25 @@ TxElement* util::xmlGetElement(TxElement* node, std::string path) {
         }
     }
     return NULL;
+}
+
+bool util::xmlCopyMatchingCompositeProperty(TxElement* node, const CompositeProperty& prop) {
+    ticpp::Iterator<ticpp::Element> child;
+    for (child = child.begin(node); child != child.end(); child++) {
+        std::string name;
+        child->GetValue(&name);
+        std::string type = child->GetAttributeOrDefault("type", "");
+        std::string id = child->GetAttributeOrDefault("identifier", "");
+
+        if (type == "CompositeProperty" && prop.getIdentifier() == id) {
+            LogWarnCustom("VersionConverter", "    Found Composite with same identifier");
+
+            TxElement* newChild = node->InsertEndChild(*(child.Get()))->ToElement();
+            newChild->SetAttribute("type", prop.getClassIdentifier());
+            return true;
+        }
+    }
+    return false;
 }
 
 }  // namespace
