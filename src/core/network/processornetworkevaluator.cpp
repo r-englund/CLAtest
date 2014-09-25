@@ -474,9 +474,6 @@ void ProcessorNetworkEvaluator::evaluate() {
     if (processorStatesDirty_) {
         // network topology has changed, update internal processor states
         updateProcessorStates();
-
-        // old approach:
-        //determineProcessingOrder();
     }
 
     std::vector<Processor *>::iterator it = processorsSorted_.begin();

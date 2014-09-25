@@ -40,11 +40,11 @@ PropertyConverter::PropertyConverter(const std::string &srcClassIdentifier,
 
 PropertyConverter::~PropertyConverter() {}
 
-std::string PropertyConverter::getSourceProcessorClassIdenetifier() const {
+std::string PropertyConverter::getSourcePropertyClassIdenetifier() const {
     return srcClassIdentifier_;
 }
 
-std::string PropertyConverter::getDestinationProcessorClassIdenetifier() const {
+std::string PropertyConverter::getDestinationPropertyClassIdenetifier() const {
     return dstClassIdentifier_;
 }
 

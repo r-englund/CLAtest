@@ -141,6 +141,7 @@ InviwoCore::InviwoCore() : InviwoModule() {
     registerPortInspector("GeometryOutport", InviwoApplication::getPtr()->getPath(InviwoApplication::PATH_PORTINSPECTORS, "geometryportinspector.inv"));
     
     //registerProperty(EventProperty); TODO fix "default" contructor with 2 args...
+    registerProperty(CompositeProperty);
     registerProperty(AdvancedMaterialProperty);
     registerProperty(BoolProperty);
     registerProperty(ButtonProperty);

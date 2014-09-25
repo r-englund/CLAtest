@@ -344,7 +344,6 @@ private:
     LinkEvaluator* linkEvaluator_;
 
     bool evaluationQueued_;
-
     bool linking_;
     
     class NetworkConverter : public VersionConverter {
@@ -353,13 +352,10 @@ private:
         NetworkConverter(int from);
         virtual bool convert(TxElement* root);
         int from_;
-
     private:
-
         void updateProcessorType(TxElement* node);
         void traverseNodes(TxElement* node, updateType update);
     };
-
 };
 
 template<class T>

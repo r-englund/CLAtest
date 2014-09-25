@@ -39,16 +39,10 @@ namespace inviwo {
 namespace {
 class KeepTrueWhileInScope {
 public:
-    KeepTrueWhileInScope(bool* b) :variable_(b) {
-        (*variable_) = true;
-    }
-
-    ~KeepTrueWhileInScope() {
-        (*variable_) = false;
-    }
-
+    KeepTrueWhileInScope(bool* b) : variable_(b) { (*variable_) = true; }
+    ~KeepTrueWhileInScope() { (*variable_) = false; }
 private:
-    bool* variable_;;
+    bool* variable_;
 };
 }
 

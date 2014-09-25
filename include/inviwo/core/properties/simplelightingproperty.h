@@ -31,6 +31,8 @@ public:
                            PropertySemantics semantics = PropertySemantics::Default);
     virtual ~SimpleLightingProperty(){}
 
+    virtual std::string getClassIdentifier()  const { return "SimpleLightingProperty"; }
+
     OptionPropertyInt shadingMode_;
     FloatVec3Property lightPosition_;
     FloatVec3Property lightColorAmbient_;
