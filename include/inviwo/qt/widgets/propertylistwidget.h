@@ -35,7 +35,7 @@
 
 #include <inviwo/qt/widgets/inviwoqtwidgetsdefine.h>
 #include <inviwo/qt/widgets/inviwodockwidget.h>
-
+#include <inviwo/core/properties/propertyvisibility.h>
 #include <QWidget>
 #include <QEvent>
 
