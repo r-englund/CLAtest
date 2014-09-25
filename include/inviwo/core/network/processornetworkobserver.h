@@ -49,15 +49,41 @@ public:
     virtual void onProcessorNetworkChange() {};
     virtual void onProcessorNetworkEvaluateRequest() {};
     virtual void onProcessorNetworkUnlocked() {};
+
+    // Processors
+    virtual void onProcessorNetworkWillAddProcessor(Processor* processor) {};
+    virtual void onProcessorNetworkDidAddProcessor(Processor* processor) {};
+    virtual void onProcessorNetworkWillRemoveProcessor(Processor* processor) {};
+    virtual void onProcessorNetworkDidRemoveProcessor(Processor* processor) {};
+
+    // Connections
+    virtual void onProcessorNetworkWillAddConnection(PortConnection* connection) {};
+    virtual void onProcessorNetworkDidAddConnection(PortConnection* connection) {};
+    virtual void onProcessorNetworkWillRemoveConnection(PortConnection* connection) {};
+    virtual void onProcessorNetworkDidRemoveConnection(PortConnection* connection) {};
+
 };
 
 class IVW_CORE_API ProcessorNetworkObservable: public Observable<ProcessorNetworkObserver> {
 public:
     ProcessorNetworkObservable(): Observable<ProcessorNetworkObserver>() {};
 
-    void notifyProcessorNetworkObservers() const;
-    void notifyProcessorNetworkEvaluateRequestObservers() const;
-    void notifyProcessorNetworkUnlockedObservers() const;
+    void notifyObserversProcessorNetworkChanged() const;
+    void notifyObserversProcessorNetworkEvaluateRequest() const;
+    void notifyObserversProcessorNetworkUnlocked() const;
+
+    // Processors
+    void notifyObserversProcessorNetworkWillAddProcessor(Processor* processor) const;
+    void notifyObserversProcessorNetworkDidAddProcessor(Processor* processor) const;
+    void notifyObserversProcessorNetworkWillRemoveProcessor(Processor* processor) const;
+    void notifyObserversProcessorNetworkDidRemoveProcessor(Processor* processor) const;
+
+    // Connections
+    void notifyObserversProcessorNetworkWillAddConnection(PortConnection* connection) const;
+    void notifyObserversProcessorNetworkDidAddConnection(PortConnection* connection) const;
+    void notifyObserversProcessorNetworkWillRemoveConnection(PortConnection* connection) const;
+    void notifyObserversProcessorNetworkDidRemoveConnection(PortConnection* connection) const;
+
 };
 
 } // namespace

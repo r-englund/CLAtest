@@ -294,7 +294,7 @@ public:
     inline void lock() { locked_++; }
     inline void unlock() { 
         (locked_>0) ? locked_-- : locked_ = 0;
-        if (locked_==0) notifyProcessorNetworkUnlockedObservers(); 
+        if (locked_==0) notifyObserversProcessorNetworkUnlocked(); 
     }
     inline bool islocked() const { return (locked_!=0); }
 
@@ -312,6 +312,8 @@ public:
     */
     void clear();
 
+    typedef std::map<std::pair<Outport*, Inport*>, PortConnection*> PortConnectionMap;
+    typedef std::vector<PortConnection*> PortConnectionVector;
 
 private:
     //Property Linking support
@@ -335,7 +337,7 @@ private:
     bool modified_;
     unsigned int locked_;
     std::vector<Processor*> processors_;
-    std::vector<PortConnection*> portConnections_;
+    PortConnectionMap portConnections_;
     std::vector<PropertyLink*> propertyLinks_;
 
     bool deserializing_;

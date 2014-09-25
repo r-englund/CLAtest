@@ -35,7 +35,7 @@
 
 namespace inviwo {
 
-void ProcessorNetworkObservable::notifyProcessorNetworkObservers() const {
+void ProcessorNetworkObservable::notifyObserversProcessorNetworkChanged() const {
     // Notify observers
     for (ObserverSet::reverse_iterator it = observers_->rbegin(); it != observers_->rend(); ++it) {
         // static_cast can be used since only template class objects can be added
@@ -43,20 +43,65 @@ void ProcessorNetworkObservable::notifyProcessorNetworkObservers() const {
     }
 }
 
-void ProcessorNetworkObservable::notifyProcessorNetworkEvaluateRequestObservers() const {
-    // Notify observers
+void ProcessorNetworkObservable::notifyObserversProcessorNetworkEvaluateRequest() const {
     for (ObserverSet::reverse_iterator it = observers_->rbegin(); it != observers_->rend(); ++it) {
-        // static_cast can be used since only template class objects can be added
         static_cast<ProcessorNetworkObserver*>(*it)->onProcessorNetworkEvaluateRequest();
     }
 }
 
-void ProcessorNetworkObservable::notifyProcessorNetworkUnlockedObservers() const {
-    // Notify observers
+void ProcessorNetworkObservable::notifyObserversProcessorNetworkUnlocked() const {
     for (ObserverSet::reverse_iterator it = observers_->rbegin(); it != observers_->rend(); ++it) {
-        // static_cast can be used since only template class objects can be added
         static_cast<ProcessorNetworkObserver*>(*it)->onProcessorNetworkUnlocked();
     }
 }
+
+void ProcessorNetworkObservable::notifyObserversProcessorNetworkWillAddProcessor(Processor* processor) const {
+    for (ObserverSet::reverse_iterator it = observers_->rbegin(); it != observers_->rend(); ++it) {
+        static_cast<ProcessorNetworkObserver*>(*it)->onProcessorNetworkWillAddProcessor(processor);
+    }
+}
+
+void ProcessorNetworkObservable::notifyObserversProcessorNetworkDidAddProcessor(Processor* processor) const {
+    for (ObserverSet::reverse_iterator it = observers_->rbegin(); it != observers_->rend(); ++it) {
+        static_cast<ProcessorNetworkObserver*>(*it)->onProcessorNetworkDidAddProcessor(processor);
+    }
+}
+
+void ProcessorNetworkObservable::notifyObserversProcessorNetworkWillRemoveProcessor(Processor* processor) const {
+    for (ObserverSet::reverse_iterator it = observers_->rbegin(); it != observers_->rend(); ++it) {
+        static_cast<ProcessorNetworkObserver*>(*it)->onProcessorNetworkWillRemoveProcessor(processor);
+    }
+}
+
+void ProcessorNetworkObservable::notifyObserversProcessorNetworkDidRemoveProcessor(Processor* processor) const {
+    for (ObserverSet::reverse_iterator it = observers_->rbegin(); it != observers_->rend(); ++it) {
+        static_cast<ProcessorNetworkObserver*>(*it)->onProcessorNetworkDidRemoveProcessor(processor);
+    }
+}
+
+void ProcessorNetworkObservable::notifyObserversProcessorNetworkWillAddConnection(PortConnection* portConnection) const {
+    for (ObserverSet::reverse_iterator it = observers_->rbegin(); it != observers_->rend(); ++it) {
+        static_cast<ProcessorNetworkObserver*>(*it)->onProcessorNetworkWillAddConnection(portConnection);
+    }
+}
+
+void ProcessorNetworkObservable::notifyObserversProcessorNetworkDidAddConnection(PortConnection* portConnection) const {
+    for (ObserverSet::reverse_iterator it = observers_->rbegin(); it != observers_->rend(); ++it) {
+        static_cast<ProcessorNetworkObserver*>(*it)->onProcessorNetworkDidAddConnection(portConnection);
+    }
+}
+
+void ProcessorNetworkObservable::notifyObserversProcessorNetworkWillRemoveConnection(PortConnection* portConnection) const {
+    for (ObserverSet::reverse_iterator it = observers_->rbegin(); it != observers_->rend(); ++it) {
+        static_cast<ProcessorNetworkObserver*>(*it)->onProcessorNetworkWillRemoveConnection(portConnection);
+    }
+}
+
+void ProcessorNetworkObservable::notifyObserversProcessorNetworkDidRemoveConnection(PortConnection* portConnection) const {
+    for (ObserverSet::reverse_iterator it = observers_->rbegin(); it != observers_->rend(); ++it) {
+        static_cast<ProcessorNetworkObserver*>(*it)->onProcessorNetworkDidRemoveConnection(portConnection);
+    }
+}
+
 
 } // namespace
