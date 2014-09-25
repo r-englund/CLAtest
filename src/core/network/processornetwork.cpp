@@ -66,46 +66,50 @@ ProcessorNetwork::~ProcessorNetwork() {
 }
 
 void ProcessorNetwork::addProcessor(Processor* processor) {
-    ivwAssert(std::find(processors_.begin(), processors_.end(), processor)==processors_.end(),
-              "Processor instance already contained in processor network.");
+    notifyObserversProcessorNetworkWillAddProcessor(processor);
     processors_.push_back(processor);
     processor->ProcessorObservable::addObserver(this);
     modified();
+    notifyObserversProcessorNetworkDidAddProcessor(processor);
 }
 
 void ProcessorNetwork::removeProcessor(Processor* processor) {
-    ivwAssert(std::find(processors_.begin(), processors_.end(), processor)!=processors_.end(),
-              "Processor instance not contained in processor network.");
-    // remove all connections for this processor
-    std::vector<PortConnection*> portConnections = portConnections_;
+    notifyObserversProcessorNetworkWillRemoveProcessor(processor);
 
-    for (size_t i=0; i<portConnections.size(); i++)
-        if (portConnections[i]->involvesProcessor(processor))
-            removeConnection(portConnections[i]->getOutport(),
-                             portConnections[i]->getInport());
+    // Remove all connections for this processor
+    std::vector<Outport*> outports;
+    std::vector<Inport*> inports;
+    outports = processor->getOutports();
+    for (int i = 0; i < outports.size(); ++i) {
+        inports = outports[i]->getConnectedInports();
+        for (int j = 0; j < inports.size(); ++j) {
+            removeConnection(outports[i], inports[j]);
+        }
+    }
+    inports = processor->getInports();
+    for (int i = 0; i < outports.size(); ++i) {
+        outports = inports[i]->getConnectedOutports();
+        for (int j = 0; j < inports.size(); ++j) {
+            removeConnection(outports[i], inports[j]);
+        }
+    }
 
-    // remove all links for this processor
-    std::vector<ProcessorLink*> processorLinks = processorLinks_;
-
-    for (size_t i=0; i<processorLinks.size(); i++)
-        if (processorLinks[i]->getSourceProcessor()==processor || processorLinks[i]->getDestinationProcessor()==processor )
-            removeLink(processorLinks[i]->getDestinationProcessor(),
-                       processorLinks[i]->getSourceProcessor());
-
+    // Remove all links for this processor
     std::vector<PropertyLink*> propertyLinks = propertyLinks_;
-
-    for (size_t i=0; i<propertyLinks.size(); i++) {
+    for (size_t i = 0; i < propertyLinks.size(); i++) {
         if (propertyLinks[i]->getSourceProperty()->getOwner()->getProcessor() == processor ||
-            propertyLinks[i]->getDestinationProperty()->getOwner()->getProcessor() == processor
-            ) {
-                removeLink(propertyLinks[i]->getSourceProperty(), propertyLinks[i]->getDestinationProperty());
+            propertyLinks[i]->getDestinationProperty()->getOwner()->getProcessor() == processor) {
+            removeLink(propertyLinks[i]->getSourceProperty(),
+                       propertyLinks[i]->getDestinationProperty());
         }
     }
 
     // remove processor itself
-    processors_.erase(std::remove(processors_.begin(), processors_.end(), processor), processors_.end());
+    processors_.erase(std::remove(processors_.begin(), processors_.end(), processor),
+                      processors_.end());
     processor->ProcessorObservable::removeObserver(this);
     modified();
+    notifyObserversProcessorNetworkDidRemoveProcessor(processor);
 }
 
 void ProcessorNetwork::removeAndDeleteProcessor(Processor* processor) {
@@ -133,26 +137,31 @@ PortConnection* ProcessorNetwork::addConnection(Outport* sourcePort, Inport* des
     PortConnection* connection = getConnection(sourcePort, destPort);
 
     if (!connection && sourcePort && destPort && destPort->canConnectTo(sourcePort)) {
+        notifyObserversProcessorNetworkWillAddConnection(connection);
+
         connection = new PortConnection(sourcePort, destPort);
-        portConnections_.push_back(connection);
+        portConnections_[std::make_pair(sourcePort,destPort)] = connection;
         modified();
         destPort->connectTo(sourcePort);
         
+        notifyObserversProcessorNetworkDidAddConnection(connection);
     }
 
     return connection;
 }
 
 void ProcessorNetwork::removeConnection(Outport* sourcePort, Inport* destPort) {
-    for (size_t i=0; i<portConnections_.size(); i++) {
-        if (portConnections_[i]->getOutport()==sourcePort &&
-            portConnections_[i]->getInport()==destPort) {
-            modified();
-            destPort->disconnectFrom(sourcePort);
-            delete portConnections_[i];
-            portConnections_.erase(portConnections_.begin()+i);
-            break;
-        }
+    PortConnectionMap::iterator it = portConnections_.find(std::make_pair(sourcePort, destPort));
+    if (it != portConnections_.end()) {
+        PortConnection* connection = it->second;
+        notifyObserversProcessorNetworkWillRemoveConnection(connection);
+
+        modified();
+        destPort->disconnectFrom(sourcePort);
+        portConnections_.erase(it);
+
+        notifyObserversProcessorNetworkDidRemoveConnection(connection);
+        delete connection;
     }
 }
 
@@ -164,17 +173,20 @@ bool ProcessorNetwork::isConnected(Outport* sourcePort, Inport* destPort) {
 }
 
 PortConnection* ProcessorNetwork::getConnection(Outport* sourcePort, Inport* destPort) {
-    for (size_t i = 0; i < portConnections_.size(); i++) {
-        if (portConnections_[i]->getOutport() == sourcePort &&
-            portConnections_[i]->getInport() == destPort)
-            return portConnections_[i];
+    PortConnectionMap::iterator it = portConnections_.find(std::make_pair(sourcePort, destPort));
+    if (it != portConnections_.end()) {
+        return it->second;
     }
-
     return NULL;
 }
 
 std::vector<PortConnection*> ProcessorNetwork::getConnections() const {
-    return portConnections_;
+    PortConnectionVector connections_;
+    for (PortConnectionMap::const_iterator it = portConnections_.begin(); it != portConnections_.end();
+         ++it) {
+        connections_.push_back(it->second);
+    }
+    return connections_;
 }
 
 ///////////////////////////////////////////////////////////////////////
@@ -461,10 +473,11 @@ bool ProcessorNetwork::isInvalidating() const {
 }
 
 void ProcessorNetwork::onProcessorInvalidationBegin(Processor* p) {
-    std::vector<Processor*>::iterator it = std::find_if(processorsInvalidating_.begin(), processorsInvalidating_.end(), ComparePointers<Processor>(p));
+    std::vector<Processor*>::iterator it =
+        std::find_if(processorsInvalidating_.begin(), processorsInvalidating_.end(),
+                     ComparePointers<Processor>(p));
 
-    if(it != processorsInvalidating_.end())
-        return;
+    if (it != processorsInvalidating_.end()) return;
 
     processorsInvalidating_.push_back(p);
 
@@ -474,16 +487,17 @@ void ProcessorNetwork::onProcessorInvalidationBegin(Processor* p) {
 }
 
 void ProcessorNetwork::onProcessorInvalidationEnd(Processor* p) {
-    std::vector<Processor*>::iterator it = std::find_if(processorsInvalidating_.begin(), processorsInvalidating_.end(), ComparePointers<Processor>(p));
+    std::vector<Processor*>::iterator it =
+        std::find_if(processorsInvalidating_.begin(), processorsInvalidating_.end(),
+        ComparePointers<Processor>(p));
 
-    if(it != processorsInvalidating_.end())
-        processorsInvalidating_.erase(it);
+    if (it != processorsInvalidating_.end()) processorsInvalidating_.erase(it);
 
     if (processorsInvalidating_.empty()) {
         invalidating_ = false;
 
-        if(evaluationQueued_ && !isLinking()){
-            notifyProcessorNetworkEvaluateRequestObservers();
+        if (evaluationQueued_ && !isLinking()) {
+            notifyObserversProcessorNetworkEvaluateRequest();
             evaluationQueued_ = false;
         }
     }
@@ -493,7 +507,7 @@ void ProcessorNetwork::onProcessorRequestEvaluate(Processor*) {
     if (isLinking() || isInvalidating())
         evaluationQueued_ = true;
     else {
-        notifyProcessorNetworkEvaluateRequestObservers();
+        notifyObserversProcessorNetworkEvaluateRequest();
         evaluationQueued_ = false;
     }
 }
@@ -510,7 +524,7 @@ Processor* ProcessorNetwork::getInvalidationInitiator() {
 
 void ProcessorNetwork::onAboutPropertyChange(Property* modifiedProperty) {
     performLinkingOnPropertyChange(modifiedProperty);
-    notifyProcessorNetworkObservers();
+    notifyObserversProcessorNetworkChanged();
 }
 
 void ProcessorNetwork::performLinkingOnPropertyChange(Property* modifiedProperty) {
@@ -656,7 +670,7 @@ std::vector<ProcessorLink*> ProcessorNetwork::getSortedProcessorLinksFromPropert
 void ProcessorNetwork::serialize(IvwSerializer& s) const {
     s.serialize("ProcessorNetworkVersion", processorNetworkVersion_);
     s.serialize("Processors", processors_, "Processor");
-    s.serialize("Connections", portConnections_, "Connection");
+    s.serialize("Connections", getConnections(), "Connection");
     s.serialize("PropertyLinks", propertyLinks_, "PropertyLink");
 }
 
@@ -811,7 +825,7 @@ void ProcessorNetwork::deserialize(IvwDeserializer& d) throw (Exception) {
         throw AbortException("Unknown Exception.");
     }
 
-    notifyProcessorNetworkObservers();
+    notifyObserversProcessorNetworkChanged();
 }
 
 bool ProcessorNetwork::isDeserializing()const {
