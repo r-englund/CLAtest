@@ -39,9 +39,9 @@ matplotlib.use('Agg') #option to plot images and graphs in non-GUI mode
 import matplotlib.pyplot as plt
 
 #input image layer (SourceImage) which needs to be processed
-SourceImage = pypackagesutil.getLayerData("NumpyImageContour", "SourceImage")
+SourceImage = pypackagesutil.getLayerData("Numpy Image Contour", "SourceImage")
 #iso/contour values
-ContourValues = inviwo.getPropertyValue("NumpyImageContour","contourvalues")
+ContourValues = inviwo.getPropertyValue("Numpy Image Contour","contourvalues")
 
 ###############################################################################
 # convenience functions
