@@ -26,12 +26,11 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
- * Main file author: Daniel Jönsson
+ * Main file author: Peter Steneteg
  *
  *********************************************************************************/
 
 #include <inviwo/core/network/processornetworkobserver.h>
-
 
 namespace inviwo {
 
@@ -100,6 +99,30 @@ void ProcessorNetworkObservable::notifyObserversProcessorNetworkWillRemoveConnec
 void ProcessorNetworkObservable::notifyObserversProcessorNetworkDidRemoveConnection(PortConnection* portConnection) const {
     for (ObserverSet::reverse_iterator it = observers_->rbegin(); it != observers_->rend(); ++it) {
         static_cast<ProcessorNetworkObserver*>(*it)->onProcessorNetworkDidRemoveConnection(portConnection);
+    }
+}
+
+void ProcessorNetworkObservable::notifyObserversProcessorNetworkWillAddLink(PropertyLink* propertyLink) const {
+    for (ObserverSet::reverse_iterator it = observers_->rbegin(); it != observers_->rend(); ++it) {
+        static_cast<ProcessorNetworkObserver*>(*it)->onProcessorNetworkWillAddLink(propertyLink);
+    }
+}
+
+void ProcessorNetworkObservable::notifyObserversProcessorNetworkDidAddLink(PropertyLink* propertyLink) const {
+    for (ObserverSet::reverse_iterator it = observers_->rbegin(); it != observers_->rend(); ++it) {
+        static_cast<ProcessorNetworkObserver*>(*it)->onProcessorNetworkDidAddLink(propertyLink);
+    }
+}
+
+void ProcessorNetworkObservable::notifyObserversProcessorNetworkWillRemoveLink(PropertyLink* propertyLink) const {
+    for (ObserverSet::reverse_iterator it = observers_->rbegin(); it != observers_->rend(); ++it) {
+        static_cast<ProcessorNetworkObserver*>(*it)->onProcessorNetworkWillRemoveLink(propertyLink);
+    }
+}
+
+void ProcessorNetworkObservable::notifyObserversProcessorNetworkDidRemoveLink(PropertyLink* propertyLink) const {
+    for (ObserverSet::reverse_iterator it = observers_->rbegin(); it != observers_->rend(); ++it) {
+        static_cast<ProcessorNetworkObserver*>(*it)->onProcessorNetworkDidRemoveLink(propertyLink);
     }
 }
 

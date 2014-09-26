@@ -26,7 +26,7 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  * 
- * Main file authors: Daniel Jönsson
+ * Main file authors: Peter Steneteg
  *
  *********************************************************************************/
 
@@ -37,6 +37,10 @@
 #include <inviwo/core/util/observer.h>
 
 namespace inviwo {
+
+class Processor;
+class PortConnection;
+class PropertyLink;
 
 class IVW_CORE_API ProcessorNetworkObserver: public Observer {
 public:
@@ -62,6 +66,11 @@ public:
     virtual void onProcessorNetworkWillRemoveConnection(PortConnection* connection) {};
     virtual void onProcessorNetworkDidRemoveConnection(PortConnection* connection) {};
 
+    // Links
+    virtual void onProcessorNetworkWillAddLink(PropertyLink* propertyLink) {};
+    virtual void onProcessorNetworkDidAddLink(PropertyLink* propertyLink) {};
+    virtual void onProcessorNetworkWillRemoveLink(PropertyLink* propertyLink) {};
+    virtual void onProcessorNetworkDidRemoveLink(PropertyLink* propertyLink) {};
 };
 
 class IVW_CORE_API ProcessorNetworkObservable: public Observable<ProcessorNetworkObserver> {
@@ -83,6 +92,12 @@ public:
     void notifyObserversProcessorNetworkDidAddConnection(PortConnection* connection) const;
     void notifyObserversProcessorNetworkWillRemoveConnection(PortConnection* connection) const;
     void notifyObserversProcessorNetworkDidRemoveConnection(PortConnection* connection) const;
+
+    // Links
+    void notifyObserversProcessorNetworkWillAddLink(PropertyLink* propertyLink) const;
+    void notifyObserversProcessorNetworkDidAddLink(PropertyLink* propertyLink) const;
+    void notifyObserversProcessorNetworkWillRemoveLink(PropertyLink* propertyLink) const;
+    void notifyObserversProcessorNetworkDidRemoveLink(PropertyLink* propertyLink) const;
 
 };
 
