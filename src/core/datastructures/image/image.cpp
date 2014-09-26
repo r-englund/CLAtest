@@ -139,7 +139,7 @@ std::string Image::getDataInfo() const{
 void Image::deinitialize() {
     for (std::vector<Layer*>::iterator it = colorLayers_.begin(); it != colorLayers_.end(); ++it)
         delete(*it);
-
+    colorLayers_.clear();
     delete depthLayer_;
     delete pickingLayer_;
 }
