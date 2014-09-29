@@ -38,12 +38,14 @@
 
 namespace inviwo {
 
-enum LinkingConditions { NoLinkCondition=0,
-                         LinkMatchingTypes=1<<1,
-                         LinkMatchingId=1<<2,
-                         ApplyAllConditions=~0,
-                         DefaultLinkingCondition=LinkMatchingTypes
-                       };
+enum LinkingConditions {
+    NoLinkCondition = 0,
+    LinkMatchingTypes = 1 << 1,
+    LinkMatchingId = 1 << 2,
+    LinkMatchingTypeAndId = 1 << 1 | 1 << 2,
+    ApplyAllConditions = ~0,
+    DefaultLinkingCondition = LinkMatchingTypes
+};
 
 
 class IVW_CORE_API SimpleCondition {

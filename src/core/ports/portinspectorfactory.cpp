@@ -37,7 +37,13 @@ namespace inviwo {
 
 PortInspectorFactory::PortInspectorFactory() {}
 
-PortInspectorFactory::~PortInspectorFactory() {}
+PortInspectorFactory::~PortInspectorFactory() {
+    for (PortInsectorCache::iterator cit = cache_.begin(); cit != cache_.end(); ++cit) {
+        for (std::vector<PortInspector*>::iterator vit = cit->second.begin(); vit != cit->second.end(); ++vit) {
+            delete *vit;
+        }
+    }
+}
 
 void PortInspectorFactory::registerObject(PortInspectorFactoryObject* portInspectorObj) {
     std::string className = portInspectorObj->getClassIdentifier();
@@ -49,12 +55,24 @@ void PortInspectorFactory::registerObject(PortInspectorFactoryObject* portInspec
 }
 
 PortInspector* PortInspectorFactory::getPortInspectorForPortClass(std::string className) {
+    // Look in cache for an inactive port insepctor.
+    PortInsectorCache::iterator cit = cache_.find(className);
+    if (cit != cache_.end()) {
+        for (std::vector<PortInspector*>::iterator vit = cit->second.begin(); vit != cit->second.end(); ++vit) {
+            if (!(*vit)->isActive()){
+                return *vit;
+            }
+        }
+    }
+    
+    // Create a new port inspector
     PortInspectorMap::iterator it = portInspectors_.find(className);
-
-    if (it != portInspectors_.end())
-        return it->second->create();
-    else
-        return NULL;
+    if (it != portInspectors_.end()) {
+        PortInspector* p = it->second->create();
+        cache_[className].push_back(p);
+        return p;
+    }
+    return NULL;
 }
 
 bool PortInspectorFactory::isValidType(std::string className) const {
