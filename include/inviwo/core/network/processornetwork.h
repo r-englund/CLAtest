@@ -48,6 +48,20 @@
 
 namespace inviwo {
 
+// A Pair of processors independent of order, ProcessorPair(p1,p2) is equal to ProcessorPair(p2,p1)
+class IVW_CORE_API ProcessorPair {
+public:
+    ProcessorPair(Processor* p1, Processor* p2);
+    friend IVW_CORE_API bool operator==(const ProcessorPair& p1, const ProcessorPair& p2);
+    friend IVW_CORE_API bool operator<(const ProcessorPair& p1, const ProcessorPair& p2);
+
+    const Processor* processor1_;
+    const Processor* processor2_;
+};
+IVW_CORE_API bool operator==(const ProcessorPair& p1, const ProcessorPair& p2);
+IVW_CORE_API bool operator<(const ProcessorPair& p1, const ProcessorPair& p2);
+
+
 /**
  * This class manages the current processor network. It can be thought of as a container of
  * Processor instances, which Port instances are connected through PortConnection instances,
@@ -65,9 +79,19 @@ namespace inviwo {
  * which means that no graphical representations are generated for the added entities. Adding
  * and removing of the graphical representations is done in the NetworkEditor.
  */
-class IVW_CORE_API ProcessorNetwork : public IvwSerializable, public ProcessorNetworkObservable, public ProcessorObserver {
-
+class IVW_CORE_API ProcessorNetwork : public IvwSerializable,
+                                      public ProcessorNetworkObservable,
+                                      public ProcessorObserver {
 public:
+    typedef std::map<std::string, Processor*> ProcessorMap;
+    typedef std::vector<Processor*> ProcessorVector;
+
+    typedef std::map<std::pair<Outport*, Inport*>, PortConnection*> PortConnectionMap;
+    typedef std::vector<PortConnection*> PortConnectionVector;
+
+    typedef std::map<std::pair<Property*, Property*>, PropertyLink*> PropertyLinkMap;
+    typedef std::vector<PropertyLink*> PropertyLinkVector;
+    typedef std::map<ProcessorPair, PropertyLinkVector> ProcessorLinkMap;
 
     ProcessorNetwork();
     virtual ~ProcessorNetwork();
@@ -174,18 +198,9 @@ public:
     *
     * @return A vector of Connections
     */
-    std::vector<PortConnection*> getConnections() const;
+    PortConnectionVector getConnections() const;
 
-    ///////////////////////////////////////////////////////////////////////
-    //TODO: ProcessorLinks are Deprecated. To be removed
-    ProcessorLink* addLink(PropertyOwner* sourceProcessor, PropertyOwner* destProcessor);
-    void removeLink(PropertyOwner* sourceProcessor, PropertyOwner* destProcessor);
-    bool isLinked(PropertyOwner* src, PropertyOwner* dst);
-    ProcessorLink* getProcessorLink(PropertyOwner* sourceProcessor, PropertyOwner* destProcessor) const;
-    std::vector<ProcessorLink*> getProcessorLinks() const;
-    ///////////////////////////////////////////////////////////////////////
-    
-    /** 
+    /**
      * Create and add Property Link to the network
      *
      * Adds a link between two properties, that are owned by processor network.
@@ -215,6 +230,7 @@ public:
      * @return bool true if link exists otherwise returns false
      */
     bool isLinked(Property* sourceProperty, Property* destinationProperty);
+
     /** 
      * Find Property Link
      *
@@ -230,19 +246,8 @@ public:
      * 
      * @return std::vector<PropertyLink*> List of all property links owned by processor network
      */
-    std::vector<PropertyLink*> getLinks() const;
-    /** 
-     * Remove bidirectional Property Link
-     *
-     * Searches for bidirectional link between start and end properties
-     * In other words property that goes from end to start and removes it
-     * 
-     * @param[in] sourceProperty Property at which link starts
-     * @param[in] destinationProperty Property at which link ends
-     * @return void
-     */
-    void removeBidirectionalPair(Property* sourceProperty, Property* destinationProperty);
-    /** 
+    PropertyLinkVector getLinks() const;
+   /**
      * Get bidirectional Property Link
      *
      * Searches for bidirectional link between start and end properties
@@ -252,7 +257,9 @@ public:
      * @param[in] destinationProperty Property at which link ends
      * @return void
      */
-    PropertyLink* getBidirectionalPair(Property* sourceProperty, Property* destinationProperty);
+
+    // Very shady function // Peter
+    bool isLinkedBidirectional(Property* sourceProperty, Property* destinationProperty);
     /** 
      * Modify or invalidate property of links
      *
@@ -261,15 +268,8 @@ public:
      * @param[in] processor given property owner
      * @return void
      */
-    void setLinkModifiedByOwner(PropertyOwner* processor);
-    /** 
-     * Get all property links between two processors, though direction is not accounted
-     * 
-     * @param[in] sourceProcessor start processor
-     * @param[in] destinationProcessor end processor
-     * @return std::vector<PropertyLink*> List of all property links between sourceProcessor and destinationProcessor
-     */
-    std::vector<PropertyLink*> getLinksBetweenProcessors(PropertyOwner* sourceProcessor, PropertyOwner* destinationProcessor);
+
+    PropertyLinkVector getLinksBetweenProcessors(Processor* p1, Processor* p2);
     /** 
      * Properties that are linked to the given property where the given property is a source property
      *
@@ -278,6 +278,9 @@ public:
      */
     std::vector<Property*> getLinkedProperties(Property* property);
 
+
+    void autoLinkProcessor(Processor* processor);
+
     void modified();
     void setModified(bool modified);
     bool isModified() const;
@@ -285,12 +288,15 @@ public:
     bool isLinking() const;
 
     bool isInvalidating() const;
-    void onAboutPropertyChange(Property*);
-    void onProcessorInvalidationBegin(Processor*);
-    void onProcessorInvalidationEnd(Processor*);
-    void onProcessorRequestEvaluate(Processor* p = NULL);
+    
+    // ProcessorObserver overrides.
+    virtual void onAboutPropertyChange(Property*);
+    virtual void onProcessorInvalidationBegin(Processor*);
+    virtual void onProcessorInvalidationEnd(Processor*);
+    virtual void onProcessorRequestEvaluate(Processor* p = NULL);
+    virtual void onProcessorIdentifierChange(Processor*);
+    
     Processor* getInvalidationInitiator();
-
     inline void lock() { locked_++; }
     inline void unlock() { 
         (locked_>0) ? locked_-- : locked_ = 0;
@@ -311,10 +317,7 @@ public:
     * further operation.
     */
     void clear();
-
-    typedef std::map<std::pair<Outport*, Inport*>, PortConnection*> PortConnectionMap;
-    typedef std::vector<PortConnection*> PortConnectionVector;
-
+    
 private:
     //Property Linking support
     void performLinkingOnPropertyChange(Property* modifiedProperty);
@@ -322,27 +325,29 @@ private:
     void addToPrimaryCache(PropertyLink* propertyLink);
     void removeFromPrimaryCache(PropertyLink* propertyLink);
     void clearSecondaryCache();
+    
+    std::vector<Property*> getPropertiesRecursive(PropertyOwner* owner);
 
     static const int processorNetworkVersion_;
 
-    ///////////////////////////////////////////////////////////////////////
-    //TODO: ProcessorLinks are Deprecated. To be removed
-    std::vector<ProcessorLink*> getSortedProcessorLinksFromProperty(Property*);
-    void evaluatePropertyLinks1(Property*);
-    std::vector<ProcessorLink*> processorLinks_;
-    ///////////////////////////////////////////////////////////////////////
-
+    // The primary link cache is a map with all source properties and a vector of properties that
+    // they link directly to
     std::map<Property*, std::vector<Property*> > propertyLinkPrimaryCache_;
+    // The secondary link cache is a map with all source properties and a vector of ALL the
+    // properties that they link to. Directly or indirectly.
     std::map<Property*, std::vector<Property*> > propertyLinkSecondaryCache_;
+    // A cache of all links between two processors.
+    ProcessorLinkMap processorLinksCache_;
+
     bool modified_;
     unsigned int locked_;
-    std::vector<Processor*> processors_;
+    ProcessorMap processors_;
     PortConnectionMap portConnections_;
-    std::vector<PropertyLink*> propertyLinks_;
+    PropertyLinkMap propertyLinks_;
 
     bool deserializing_;
     bool invalidating_;
-    std::vector<Processor*> processorsInvalidating_;
+    ProcessorVector processorsInvalidating_;
     LinkEvaluator* linkEvaluator_;
 
     bool evaluationQueued_;
@@ -363,13 +368,10 @@ private:
 template<class T>
 std::vector<T*> ProcessorNetwork::getProcessorsByType() const {
     std::vector<T*> processors;
-
-    for (size_t i=0; i<processors_.size(); i++) {
-        T* processor = dynamic_cast<T*>(processors_[i]);
-
+    for (ProcessorMap::const_iterator it = processors_.begin(); it != processors_.end(); ++it) {
+        T* processor = dynamic_cast<T*>(it->second);
         if (processor) processors.push_back(processor);
     }
-
     return processors;
 }
 

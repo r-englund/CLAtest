@@ -244,11 +244,9 @@ void LinkConnectionDragGraphicsItem::updateShape() {
 //////////////////////////////////////////////////////////////////////////
 
 LinkConnectionGraphicsItem::LinkConnectionGraphicsItem(ProcessorLinkGraphicsItem* outLink,
-                                                       ProcessorLinkGraphicsItem* inLink,
-                                                       ProcessorLink* link)
+                                                       ProcessorLinkGraphicsItem* inLink)
     : LinkConnectionDragGraphicsItem(outLink, QPointF(0,0))
-    , inLink_(inLink)
-    , link_(link) {
+    , inLink_(inLink) {
     setFlags(ItemIsSelectable | ItemIsFocusable);
 
     outLink_->addLink(this);
@@ -337,12 +335,9 @@ void LinkConnectionGraphicsItem::updateShape() {
     prepareGeometryChange();
 }
 
-ProcessorLink* LinkConnectionGraphicsItem::getProcessorLink() const {
-    return link_;
-}
 
 void LinkConnectionGraphicsItem::showToolTip(QGraphicsSceneHelpEvent* e) {
-    showToolTipHelper(e, QString(link_->getLinkInfoHtml().c_str()));
+    //showToolTipHelper(e, QString(link_->getLinkInfoHtml().c_str()));
 }
 
 

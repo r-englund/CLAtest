@@ -157,8 +157,8 @@ void DialogConnectionGraphicsItem::updateStartEndPoint() {
 }
 
 bool DialogConnectionGraphicsItem::isBidirectional() {
-    return InviwoApplication::getPtr()->getProcessorNetwork()->getBidirectionalPair(
-               propertyLink_->getSourceProperty(), propertyLink_->getDestinationProperty()) != 0;
+    return InviwoApplication::getPtr()->getProcessorNetwork()->isLinkedBidirectional(
+               propertyLink_->getSourceProperty(), propertyLink_->getDestinationProperty());
 }
 
 void DialogConnectionGraphicsItem::switchDirection() {
@@ -908,13 +908,15 @@ void LinkDialogGraphicsScene::removePropertyLink(DialogConnectionGraphicsItem* p
         startProperty->prepareGeometryChange();
         endProperty->prepareGeometryChange();
     }
-    */
+
 
     ProcessorLink* processorLink = processorNetwork_->getProcessorLink(src_, dest_);
     if (processorLink) {
         processorLink->removePropertyLinks(startProperty->getGraphicsItemData(), endProperty->getGraphicsItemData());
         processorLink->removePropertyLinks(endProperty->getGraphicsItemData(), startProperty->getGraphicsItemData());
     }
+    */
+
 
     PropertyLink* link = processorNetwork_->getLink(startProperty->getGraphicsItemData(), endProperty->getGraphicsItemData());
     if (link) {
@@ -977,17 +979,7 @@ bool LinkDialogGraphicsScene::isPropertyLinkBidirectional(DialogConnectionGraphi
     LinkDialogPropertyGraphicsItem* startProperty = propertyLink->getStartProperty();
     LinkDialogPropertyGraphicsItem* endProperty = propertyLink->getEndProperty();
 
-    ///////////////////////////////////////////////////////////////////////
-    //TODO: ProcessorLinks are Deprecated. To be removed
-
-    /*
-    PropertyOwner* startProcessor = src_;
-    PropertyOwner* endProcessor = dest_;
-    ProcessorLink* processorLink = processorNetwork_->getLink(startProcessor, endProcessor);
-    PropertyLink* propLink = processorLink->getPropertyLink(startProperty->getGraphicsItemData(), endProperty->getGraphicsItemData());
-    return processorLink->getBidirectionalPair(propLink)!=0;
-    */
-    return processorNetwork_->getBidirectionalPair(startProperty->getGraphicsItemData(), endProperty->getGraphicsItemData())!=0;
+    return processorNetwork_->isLinkedBidirectional(startProperty->getGraphicsItemData(), endProperty->getGraphicsItemData());
 }
 
 void LinkDialogGraphicsScene::makePropertyLinkBidirectional(DialogConnectionGraphicsItem* propertyLink, bool isBidirectional) {
@@ -1134,156 +1126,138 @@ void LinkDialogGraphicsScene::contextMenuEvent(QGraphicsSceneContextMenuEvent* e
     }
 }
 
-void LinkDialogGraphicsScene::initScene(std::vector<Processor*> srcProcessorList, std::vector<Processor*> dstProcessorList) {
-    int xPosition = linkDialogWidth/4;
+void LinkDialogGraphicsScene::initScene(std::vector<Processor*> srcProcessorList,
+                                        std::vector<Processor*> dstProcessorList) {
+    int xPosition = linkDialogWidth / 4;
     int yPosition = processorItemHeight;
-    int xIncrement = linkDialogWidth/2;
+    int xIncrement = linkDialogWidth / 2;
     int yIncrement = processorItemHeight;
 
-    for (size_t i=0; i<srcProcessorList.size(); i++) {
+    for (size_t i = 0; i < srcProcessorList.size(); i++) {
         addProcessorsItemsToScene(srcProcessorList[i], xPosition, yPosition);
-        yPosition+=yIncrement;
+        yPosition += yIncrement;
     }
 
-    xPosition+=xIncrement;
+    xPosition += xIncrement;
     yPosition = processorItemHeight;
 
-    for (size_t i=0; i<dstProcessorList.size(); i++) {
+    for (size_t i = 0; i < dstProcessorList.size(); i++) {
         addProcessorsItemsToScene(dstProcessorList[i], xPosition, yPosition);
-        yPosition+=yIncrement;
+        yPosition += yIncrement;
     }
 
-    ///////////////////////////////////////////////////////////////////////
-    //TODO: ProcessorLinks are Deprecated. To be removed
-
-    /*
-    std::vector<ProcessorLink*> processorLinks = processorNetwork_->getLinks();
-
-    for (size_t i=0; i<processorLinks.size(); i++) {
-        PropertyOwner* srcProcessor = processorLinks[i]->getSourceProcessor();
-        PropertyOwner* dstProcessor = processorLinks[i]->getDestinationProcessor();
-
-        if (std::find(srcProcessorList.begin(), srcProcessorList.end(), srcProcessor) == srcProcessorList.end() &&
-            std::find(dstProcessorList.begin(), dstProcessorList.end(), srcProcessor) == dstProcessorList.end())
-            continue;
-
-        if (std::find(srcProcessorList.begin(), srcProcessorList.end(), dstProcessor) == srcProcessorList.end() &&
-            std::find(dstProcessorList.begin(), dstProcessorList.end(), dstProcessor) == dstProcessorList.end())
-            continue;
-
-        //inProcessor, outProcessor cannot be in the same processor list. But that case can never occur
-        std::vector<PropertyLink*> propertyLinks = processorLinks[i]->getPropertyLinks();
-        std::vector<PropertyLink*> pairList;
-        PropertyLink* pair=0;
-
-        for (size_t j=0; j<propertyLinks.size(); j++) {
-            if (std::find(pairList.begin(), pairList.end(), propertyLinks[j])==pairList.end()) {
-                addPropertyLink(propertyLinks[j]);
-                pair = processorLinks[i]->getBidirectionalPair(propertyLinks[j]);
-
-                if (pair) pairList.push_back(pair);
-            }
-        }
-    }
-    */
-
-    for (size_t i=0; i<srcProcessorList.size(); i++) {
-        PropertyOwner* srcProcessor = srcProcessorList[i];
-        PropertyOwner* dstProcessor = dstProcessorList[i];
-        std::vector<PropertyLink*> networkLinks = processorNetwork_->getLinksBetweenProcessors(srcProcessor, dstProcessor);
+    for (size_t i = 0; i < srcProcessorList.size(); i++) {
+        Processor* srcProcessor = srcProcessorList[i];
+        Processor* dstProcessor = dstProcessorList[i];
+        std::vector<PropertyLink*> networkLinks =
+            processorNetwork_->getLinksBetweenProcessors(srcProcessor, dstProcessor);
 
         std::vector<PropertyLink*> pairList;
-        PropertyLink* pair=0;
+        PropertyLink* pair = 0;
 
-        std::vector<PropertyLink*> propertyLinks; //uni directional links only
+        std::vector<PropertyLink*> propertyLinks;  // uni directional links only
 
-        for (size_t j=0; j<networkLinks.size(); j++) {
-            if (std::find(pairList.begin(), pairList.end(), networkLinks[j])==pairList.end()) {
+        for (size_t j = 0; j < networkLinks.size(); j++) {
+            if (std::find(pairList.begin(), pairList.end(), networkLinks[j]) == pairList.end()) {
                 propertyLinks.push_back(networkLinks[j]);
-                pair =  processorNetwork_->getBidirectionalPair(networkLinks[j]->getSourceProperty(), networkLinks[j]->getDestinationProperty());
-                if (pair) pairList.push_back(pair);
+                if (processorNetwork_->isLinkedBidirectional(
+                        networkLinks[j]->getSourceProperty(),
+                        networkLinks[j]->getDestinationProperty())) {
+                    pairList.push_back(pair);
+                }
             }
         }
 
         pairList.clear();
-        for (size_t j=0; j<propertyLinks.size(); j++) {
-            if (std::find(pairList.begin(), pairList.end(), propertyLinks[j])==pairList.end()) 
-            {
+        for (size_t j = 0; j < propertyLinks.size(); j++) {
+            if (std::find(pairList.begin(), pairList.end(), propertyLinks[j]) == pairList.end()) {
+                CompositeProperty* compositeSrcProperty =
+                    IS_COMPOSITE_PROPERTY(propertyLinks[j]->getSourceProperty());
+                CompositeProperty* compositeDstProperty =
+                    IS_COMPOSITE_PROPERTY(propertyLinks[j]->getDestinationProperty());
 
-                CompositeProperty* compositeSrcProperty = IS_COMPOSITE_PROPERTY(propertyLinks[j]->getSourceProperty());
-                CompositeProperty* compositeDstProperty = IS_COMPOSITE_PROPERTY(propertyLinks[j]->getDestinationProperty());
+                if (compositeSrcProperty && compositeDstProperty && expandProperties_) {
+                    // LogWarn("Removing Composite Property Link. Adding Sub-Property Links")
+                    bool bidirectional = processorNetwork_->isLinkedBidirectional(
+                        propertyLinks[j]->getSourceProperty(),
+                        propertyLinks[j]->getDestinationProperty());
 
-                if ( compositeSrcProperty && compositeDstProperty && expandProperties_) {
-                    //LogWarn("Removing Composite Property Link. Adding Sub-Property Links")
-                    bool bidirectional = false;
-                    pair =  processorNetwork_->getBidirectionalPair(propertyLinks[j]->getSourceProperty(), propertyLinks[j]->getDestinationProperty());
-                    if (pair) {
-                        bidirectional = true;
-                    }
-
-                    //remove composite property link and add sub property links
-                    //TODO: Recursive composite properties yet to be detected here
+                    // remove composite property link and add sub property links
+                    // TODO: Recursive composite properties yet to be detected here
 
                     std::vector<Property*> srcProperties = compositeSrcProperty->getProperties();
                     std::vector<Property*> dstProperties = compositeDstProperty->getProperties();
 
-                    Property* s = propertyLinks[j]->getSourceProperty(); 
+                    Property* s = propertyLinks[j]->getSourceProperty();
                     Property* d = propertyLinks[j]->getDestinationProperty();
                     processorNetwork_->removeLink(s, d);
                     processorNetwork_->removeLink(d, s);
 
-                   //Two different sub-properties can be linked which is not allowed now.
-                   if (srcProperties.size() == dstProperties.size()) {
-                       for (size_t k=0; k<srcProperties.size(); k++)
+                    // Two different sub-properties can be linked which is not allowed now.
+                    if (srcProperties.size() == dstProperties.size()) {
+                        for (size_t k = 0; k < srcProperties.size(); k++)
                             addPropertyLink(srcProperties[k], dstProperties[k], bidirectional);
-                   }
-                   else {
-                       //TODO: Perform auto link?
-                       LogWarn("Unable to link compsite sub-properties")
-                   }
-                }
-                else {
+                    } else {
+                        // TODO: Perform auto link?
+                        LogWarn("Unable to link compsite sub-properties")
+                    }
+                } else {
                     bool isSubProperty = IS_SUB_PROPERTY(propertyLinks[j]->getSourceProperty());
 
                     if (isSubProperty && !expandProperties_) {
                         bool isBirectional = false;
 
-                        Property* compsrc = getParentCompositeProperty(propertyLinks[j]->getSourceProperty(), srcProcessorList[i]);
-                        Property* compdst = getParentCompositeProperty(propertyLinks[j]->getDestinationProperty(), dstProcessorList[i]);
+                        Property* compsrc = getParentCompositeProperty(
+                            propertyLinks[j]->getSourceProperty(), srcProcessorList[i]);
+                        Property* compdst = getParentCompositeProperty(
+                            propertyLinks[j]->getDestinationProperty(), dstProcessorList[i]);
 
                         if (compsrc && compdst) {
-                            CompositeProperty* compositeSrcProperty = IS_COMPOSITE_PROPERTY(compsrc);
-                            CompositeProperty* compositeDstProperty = IS_COMPOSITE_PROPERTY(compdst);
+                            CompositeProperty* compositeSrcProperty =
+                                IS_COMPOSITE_PROPERTY(compsrc);
+                            CompositeProperty* compositeDstProperty =
+                                IS_COMPOSITE_PROPERTY(compdst);
 
-                            std::vector<Property*> srcProperties = compositeSrcProperty->getProperties();
-                            std::vector<Property*> dstProperties = compositeDstProperty->getProperties();
+                            std::vector<Property*> srcProperties =
+                                compositeSrcProperty->getProperties();
+                            std::vector<Property*> dstProperties =
+                                compositeDstProperty->getProperties();
 
                             if (srcProperties.size() == dstProperties.size()) {
-                                //LogWarn("Remove Sub-Property Links. Add Composite Property Link")
-                                for (size_t k=0; k<srcProperties.size(); k++) {
-
+                                // LogWarn("Remove Sub-Property Links. Add Composite Property Link")
+                                for (size_t k = 0; k < srcProperties.size(); k++) {
                                     if (srcProperties[k] == propertyLinks[j]->getSourceProperty() &&
-                                        dstProperties[k] == propertyLinks[j]->getDestinationProperty()) {
-                                        pair =  processorNetwork_->getBidirectionalPair(srcProperties[k], dstProperties[k]);
-                                        if (pair) isBirectional = true;
-                                        processorNetwork_->removeLink(srcProperties[k], dstProperties[k]);
-                                        if (pair) processorNetwork_->removeLink(dstProperties[k], srcProperties[k]);
+                                        dstProperties[k] ==
+                                            propertyLinks[j]->getDestinationProperty()) {
+                                        isBirectional = processorNetwork_->isLinkedBidirectional(
+                                            srcProperties[k], dstProperties[k]);
+
+                                        processorNetwork_->removeLink(srcProperties[k],
+                                                                      dstProperties[k]);
+                                        if (isBirectional)
+                                            processorNetwork_->removeLink(dstProperties[k],
+                                                                          srcProperties[k]);
                                     }
                                 }
 
                                 if (!processorNetwork_->getLink(compsrc, compdst)) {
-                                    addPropertyLink(compositeSrcProperty, compositeDstProperty, isBirectional);
-                                    pair =  processorNetwork_->getBidirectionalPair(compositeSrcProperty, compositeDstProperty);
-                                    if (pair) pairList.push_back(pair);
+                                    addPropertyLink(compositeSrcProperty, compositeDstProperty,
+                                                    isBirectional);
+                                    if (processorNetwork_->isLinkedBidirectional(
+                                        compositeSrcProperty, compositeDstProperty)){
+                                        pairList.push_back(pair);
+                                    }
                                 }
                             }
                         }
-                    }
-                    else {
-                        //LogWarn("Just adding the sub-properties as it is")
+                    } else {
+                        // LogWarn("Just adding the sub-properties as it is")
                         addPropertyLink(propertyLinks[j]);
-                        pair =  processorNetwork_->getBidirectionalPair(propertyLinks[j]->getSourceProperty(), propertyLinks[j]->getDestinationProperty());
-                        if (pair) pairList.push_back(pair);
+                        if (processorNetwork_->isLinkedBidirectional(
+                            propertyLinks[j]->getSourceProperty(),
+                            propertyLinks[j]->getDestinationProperty())) {
+                            pairList.push_back(propertyLinks[j]);
+                        }
                     }
                 }
             }
@@ -1292,6 +1266,7 @@ void LinkDialogGraphicsScene::initScene(std::vector<Processor*> srcProcessorList
 
     currentConnectionGraphicsItems_.clear();
 }
+
 
 Property* LinkDialogGraphicsScene::getParentCompositeProperty(Property* subProperty, Processor* processor) {
     //uses recursion
@@ -1515,46 +1490,46 @@ void LinkDialog::clickedOkayButton() {
     }
     */
 
-    if (linkDialogScene_->currentLinkItemsCount()) {
-        InviwoApplication::getPtr()->getProcessorNetwork()->setLinkModifiedByOwner(src_);
-    }
+//    if (linkDialogScene_->currentLinkItemsCount()) {
+//        InviwoApplication::getPtr()->getProcessorNetwork()->setLinkModifiedByOwner(src_);
+//    }
+//
+//    updateProcessorLinks();
 
-    updateProcessorLinks();
-
-    std::vector<PropertyLink*> propertyLinks = InviwoApplication::getPtr()->getProcessorNetwork()->getLinksBetweenProcessors(src_, dest_);
-    for (size_t j=0; j<propertyLinks.size(); j++) {
-
-        if (expandCompositeOption_->isChecked()) {
-            //LogWarn("Invalidation of sub-properties set to invalid")
-            if (IS_SUB_PROPERTY(propertyLinks[j]->getSourceProperty()))
-                propertyLinks[j]->getSourceProperty()->setInvalidationLevel(PropertyOwner::INVALID_OUTPUT);
-            if (IS_SUB_PROPERTY(propertyLinks[j]->getDestinationProperty()))
-                propertyLinks[j]->getDestinationProperty()->setInvalidationLevel(PropertyOwner::INVALID_OUTPUT);
-        }
-        else {
-            //LogWarn("Invalidation of sub-properties set to valid")
-            setValidationLevelOfSubPropertiesOfCompositeProperties(propertyLinks[j]->getSourceProperty(), PropertyOwner::VALID);
-            setValidationLevelOfSubPropertiesOfCompositeProperties(propertyLinks[j]->getDestinationProperty(), PropertyOwner::VALID);
-        }
-    }
+//     std::vector<PropertyLink*> propertyLinks = InviwoApplication::getPtr()->getProcessorNetwork()->getLinksBetweenProcessors(src_, dest_);
+//     for (size_t j=0; j<propertyLinks.size(); j++) {
+// 
+//         if (expandCompositeOption_->isChecked()) {
+//             //LogWarn("Invalidation of sub-properties set to invalid")
+//             if (IS_SUB_PROPERTY(propertyLinks[j]->getSourceProperty()))
+//                 propertyLinks[j]->getSourceProperty()->setInvalidationLevel(PropertyOwner::INVALID_OUTPUT);
+//             if (IS_SUB_PROPERTY(propertyLinks[j]->getDestinationProperty()))
+//                 propertyLinks[j]->getDestinationProperty()->setInvalidationLevel(PropertyOwner::INVALID_OUTPUT);
+//         }
+//         else {
+//             //LogWarn("Invalidation of sub-properties set to valid")
+//             setValidationLevelOfSubPropertiesOfCompositeProperties(propertyLinks[j]->getSourceProperty(), PropertyOwner::VALID);
+//             setValidationLevelOfSubPropertiesOfCompositeProperties(propertyLinks[j]->getDestinationProperty(), PropertyOwner::VALID);
+//         }
+//     }
 
     //accept();
-    InviwoApplication::getPtr()->getProcessorNetwork()->updatePropertyLinkCaches();
+    //InviwoApplication::getPtr()->getProcessorNetwork()->updatePropertyLinkCaches();
     hide();
     eventLoop_.quit();
 }
 
 void LinkDialog::updateProcessorLinks() {
-    ProcessorLink* processorLink = InviwoApplication::getPtr()->getProcessorNetwork()->getProcessorLink(src_, dest_);
-    std::vector<PropertyLink*> propertyLinks = InviwoApplication::getPtr()->getProcessorNetwork()->getLinksBetweenProcessors(src_, dest_);
-    //if (propertyLinks.size()) 
-    {
-        if (!processorLink) processorLink = InviwoApplication::getPtr()->getProcessorNetwork()->addLink(src_, dest_);
-        processorLink->removeAllPropertyLinks();
-        for (size_t j=0; j<propertyLinks.size(); j++) {
-            processorLink->addPropertyLinks(propertyLinks[j]);
-        }
-    }
+//     ProcessorLink* processorLink = InviwoApplication::getPtr()->getProcessorNetwork()->getProcessorLink(src_, dest_);
+//     std::vector<PropertyLink*> propertyLinks = InviwoApplication::getPtr()->getProcessorNetwork()->getLinksBetweenProcessors(src_, dest_);
+//     //if (propertyLinks.size()) 
+//     {
+//         if (!processorLink) processorLink = InviwoApplication::getPtr()->getProcessorNetwork()->addLink(src_, dest_);
+//         processorLink->removeAllPropertyLinks();
+//         for (size_t j=0; j<propertyLinks.size(); j++) {
+//             processorLink->addPropertyLinks(propertyLinks[j]);
+//         }
+//     }
 }
 
 void LinkDialog::clickedCancelButton() {

@@ -44,6 +44,7 @@
 #include <inviwo/core/network/processornetworkevaluator.h>
 #include <inviwo/core/util/singleton.h>
 #include <inviwo/core/util/observer.h>
+#include <inviwo/core/processors/processorwidgetobserver.h>
 
 namespace inviwo {
 
@@ -83,34 +84,7 @@ public:
     NetworkEditor();
     virtual ~NetworkEditor();
 
-    /**
-     * \brief This method adds a processor to the network.
-     * - modified called by processornetwork
-     * - models and views are added independently (e.g., addProcessor vs.
-     *addProcessorRepresentation)
-     *
-     * Before the processor is added to the network, its identifier is analyzed and
-     * if necessary changed, such that the processor names within each network are unique.
-     *
-     * @param Processor* processor The processor to be added
-     * @param pos Position in the network editor, wher ethe graphical representation should be
-     *located
-     * @param visible Shall the graphical representation be visible
-     */
-    ProcessorGraphicsItem* addProcessor(Processor* processor, QPointF pos,
-                                        bool showProcessor = true, bool selectProcessor = true,
-                                        bool showPropertyWidgets = true,
-                                        bool showProcessorWidget = true);
-    void removeProcessor(Processor* processor);
-
-    ConnectionGraphicsItem* addConnection(Outport* outport, Inport* inport);
-    void removeConnection(Outport* outport, Inport* inport);
-
-    LinkConnectionGraphicsItem* addLink(PropertyOwner* processor1, PropertyOwner* processor2);
-    void removeLink(PropertyOwner* processor1, PropertyOwner* processor2);
-
     void clearNetwork();
-    bool saveNetwork(std::string fileName);
 
     /**
      * Save network to stream.
@@ -120,7 +94,8 @@ public:
      * @return bool true if successful, false otherwise.
      */
     bool saveNetwork(std::ostream stream);
-    bool loadNetwork(std::string fileName);
+    bool saveNetwork(std::string fileName);
+    
     /**
      * Load network from a stream. The path will be used to calculate relative directories of data
      * (nothing will be stored in the path).
@@ -129,6 +104,7 @@ public:
      * deserialization.
      */
     bool loadNetwork(std::istream& stream, const std::string& path);
+    bool loadNetwork(std::string fileName);
 
     std::string getCurrentFilename() const { return filename_; }
 
@@ -140,8 +116,6 @@ public:
 
     bool isModified() const;
     void setModified(const bool modified = true);
-
-    virtual void onProcessorNetworkChange() { setModified(); };
 
     static QPointF snapToGrid(QPointF pos);
 
@@ -161,6 +135,19 @@ public:
 
     void setPropertyListWidget(PropertyListWidget* widget);
     PropertyListWidget* getPropertyListWidget() const;
+
+    // Overrides for ProcessorNetworkObserver 
+    virtual void onProcessorNetworkChange() { setModified(); };
+    
+    virtual void onProcessorNetworkDidAddProcessor(Processor* processor);
+    virtual void onProcessorNetworkWillRemoveProcessor(Processor* processor);
+    
+    virtual void onProcessorNetworkDidAddConnection(PortConnection* connection);
+    virtual void onProcessorNetworkWillRemoveConnection(PortConnection* connection);
+    
+    virtual void onProcessorNetworkDidAddLink(PropertyLink* propertyLink);
+    virtual void onProcessorNetworkDidRemoveLink(PropertyLink* propertyLink);
+    
 
 public slots:
     void cacheProcessorProperty(Processor*);
@@ -186,12 +173,10 @@ protected:
     void dragMoveEvent(QGraphicsSceneDragDropEvent* de);
     void dropEvent(QGraphicsSceneDragDropEvent* de);
 
-    void placeProcessorOnConnection(ProcessorGraphicsItem* processorItem,
+    void placeProcessorOnConnection(Processor* processorItem,
                                     ConnectionGraphicsItem* connectionItem);
-    void placeProcessorOnProcessor(ProcessorGraphicsItem* processorItem,
-                                   ProcessorGraphicsItem* oldProcessorItem);
-
-    void autoLinkOnAddedProcessor(Processor*);
+    void placeProcessorOnProcessor(Processor* processorItem,
+                                   Processor* oldProcessorItem);
 
     // Override for tooltips
     void helpEvent(QGraphicsSceneHelpEvent* helpEvent);
@@ -209,7 +194,6 @@ private:
     ProcessorGraphicsItem* addProcessorRepresentations(Processor* processor, QPointF pos,
                                                        bool showProcessor = true,
                                                        bool selectProcessor = true,
-                                                       bool showPropertyWidgets = true,
                                                        bool showProcessorWidget = true);
     void removeProcessorRepresentations(Processor* processor);
     ProcessorGraphicsItem* addProcessorGraphicsItem(Processor* processor, QPointF pos,
@@ -227,11 +211,11 @@ private:
     void removeLink(LinkConnectionGraphicsItem* linkGraphicsItem);
     LinkConnectionGraphicsItem* addLinkGraphicsItem(Processor* processor1, Processor* processor2);
     void removeLinkGraphicsItem(LinkConnectionGraphicsItem* linkGraphicsItem);
-    void showLinkDialog(LinkConnectionGraphicsItem* linkConnectionGraphicsItem);
+    void showLinkDialog(Processor* processor1, Processor* processor2);
 
     ProcessorGraphicsItem* getProcessorGraphicsItem(Processor* key) const;
     ConnectionGraphicsItem* getConnectionGraphicsItem(PortConnection* key) const;
-    LinkConnectionGraphicsItem* getLinkGraphicsItem(ProcessorLink* key) const;
+    LinkConnectionGraphicsItem* getLinkGraphicsItem(ProcessorPair key) const;
     LinkConnectionGraphicsItem* getLinkGraphicsItem(Processor* processor1,
                                                     Processor* processor2) const;
 
@@ -254,7 +238,7 @@ private:
 
     typedef std::map<Processor*, ProcessorGraphicsItem*> ProcessorMap;
     typedef std::map<PortConnection*, ConnectionGraphicsItem*> ConnectionMap;
-    typedef std::map<ProcessorLink*, LinkConnectionGraphicsItem*> LinkMap;
+    typedef std::map<ProcessorPair, LinkConnectionGraphicsItem*> LinkMap;
     typedef std::map<Outport*, PortInspector*> PortInspectorMap;
 
     ProcessorMap processorGraphicsItems_;
@@ -279,6 +263,7 @@ private:
     int markModifedFlaseEventId_;
 };
 
+
 template <typename T>
 T* inviwo::NetworkEditor::getGraphicsItemAt(const QPointF pos) const {
     QList<QGraphicsItem*> graphicsItems = items(pos);
@@ -289,6 +274,33 @@ T* inviwo::NetworkEditor::getGraphicsItemAt(const QPointF pos) const {
     }
     return NULL;
 }
+
+class IVW_QTEDITOR_API PortInspectorObserver : public ProcessorWidgetObserver {
+public:
+    PortInspectorObserver(NetworkEditor* editor, Outport* port)
+        : ProcessorWidgetObserver(), editor_(editor), port_(port) {}
+    virtual void onProcessorWidgetHide(ProcessorWidget* widget);
+    NetworkEditor* editor_;
+    Outport* port_;
+};
+
+class IVW_QTEDITOR_API PortInspectorEvent : public QEvent {
+    Q_GADGET
+public:
+    PortInspectorEvent(Outport* port) : QEvent(PORT_INSPECTOR_EVENT), port_(port) {}
+
+    static QEvent::Type type() {
+        if (PORT_INSPECTOR_EVENT == QEvent::None) {
+            PORT_INSPECTOR_EVENT = static_cast<QEvent::Type>(QEvent::registerEventType());
+        }
+        return PORT_INSPECTOR_EVENT;
+    }
+
+    Outport* port_;
+
+private:
+    static QEvent::Type PORT_INSPECTOR_EVENT;
+};
 
 class SignalMapperObject : public QObject {
     Q_OBJECT

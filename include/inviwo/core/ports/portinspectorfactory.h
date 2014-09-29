@@ -57,9 +57,12 @@ public:
     virtual bool isValidType(std::string className) const;
 
     typedef std::map<std::string, PortInspectorFactoryObject*> PortInspectorMap;
-
+    typedef std::map<std::string, std::vector<PortInspector*> > PortInsectorCache;
+    
 private:
     PortInspectorMap portInspectors_;
+    PortInsectorCache cache_;
+    
 
 };
 

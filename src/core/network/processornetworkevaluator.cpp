@@ -89,7 +89,7 @@ void ProcessorNetworkEvaluator::initializeNetwork() {
             processors[i]->initialize();
 }
 
-void ProcessorNetworkEvaluator::registerCanvas(Canvas* canvas, std::string associatedProcessName) {
+void ProcessorNetworkEvaluator::registerCanvas(Canvas* canvas, std::string associatedProcessorName) {
     if (std::find(registeredCanvases_.begin(), registeredCanvases_.end(), canvas)!=registeredCanvases_.end()) {
         //already registered, hence force deregisterCanvas
         deregisterCanvas(canvas);
@@ -100,7 +100,7 @@ void ProcessorNetworkEvaluator::registerCanvas(Canvas* canvas, std::string assoc
     std::vector<CanvasProcessor*> canvasProcessors = processorNetwork_->getProcessorsByType<CanvasProcessor>();
 
     for (size_t i=0; i<canvasProcessors.size(); i++) {
-        if (canvasProcessors[i]->getIdentifier() == associatedProcessName)
+        if (canvasProcessors[i]->getIdentifier() == associatedProcessorName)
             canvasProcessors[i]->setCanvas(canvas);
     }
 }

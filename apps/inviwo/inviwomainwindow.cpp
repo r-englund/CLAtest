@@ -89,21 +89,25 @@ void InviwoMainWindow::initialize() {
     networkEditorView_ = new NetworkEditorView(networkEditor_, this);
     NetworkEditorObserver::addObservation(getNetworkEditor());
     setCentralWidget(networkEditorView_);
+    
     resourceManagerWidget_ = new ResourceManagerWidget(this);
     addDockWidget(Qt::LeftDockWidgetArea, resourceManagerWidget_);
     resourceManagerWidget_->hide();
+    
     mappingwidget_ = new MappingWidget(this);
     addDockWidget(Qt::LeftDockWidgetArea, mappingwidget_);
     mappingwidget_->hide();
+    
     settingsWidget_ = new SettingsWidget(this);
     addDockWidget(Qt::LeftDockWidgetArea, settingsWidget_);
     settingsWidget_->hide();
+    
     processorTreeWidget_ = new ProcessorTreeWidget(this);
     addDockWidget(Qt::LeftDockWidgetArea, processorTreeWidget_);
 
     propertyListWidget_ = new PropertyListWidget(this);
-    networkEditor_->setPropertyListWidget(propertyListWidget_);
     addDockWidget(Qt::RightDockWidgetArea, propertyListWidget_);
+    networkEditor_->setPropertyListWidget(propertyListWidget_);
     
     addDockWidget(Qt::BottomDockWidgetArea, consoleWidget_);
     // load settings and restore window state
@@ -230,10 +234,8 @@ void InviwoMainWindow::addMenus() {
 
     fileMenuItem_ = new QMenu(tr("&File"),menuBar_);
     viewMenuItem_ = new QMenu(tr("&View"),menuBar_);
-    viewModeItem_ = new QMenu(tr("&View mode"),menuBar_);
     menuBar_->insertMenu(first, fileMenuItem_);
     menuBar_->insertMenu(first, viewMenuItem_);
-    viewMenuItem_->addMenu(viewModeItem_);
     helpMenuItem_ = menuBar_->addMenu(tr("&Help"));
 }
 
@@ -288,7 +290,7 @@ void InviwoMainWindow::addMenuActions() {
     viewMenuItem_->addAction(resourceManagerWidget_->toggleViewAction());
 
     // application/developer mode menu entries
-    visibilityModeAction_ = new QAction(tr("&Application / Developer Mode"), this);
+    visibilityModeAction_ = new QAction(tr("&Application Mode"), this);
     visibilityModeAction_->setCheckable(true);
     visibilityModeAction_->setChecked(false);
 
@@ -329,7 +331,6 @@ void InviwoMainWindow::addToolBars() {
     workspaceToolBar_->addAction(workspaceActionOpen_);
     workspaceToolBar_->addAction(workspaceActionSave_);
     workspaceToolBar_->addAction(workspaceActionSaveAs_);
-   // workspaceToolBar_->addAction(workspaceActionSaveAsCopy_);
     viewModeToolBar_ = addToolBar("View");
     viewModeToolBar_->setObjectName("viewModeToolBar");
     viewModeToolBar_->addAction(visibilityModeAction_);
@@ -388,13 +389,11 @@ std::string InviwoMainWindow::getCurrentWorkspace() {
 
 void InviwoMainWindow::newWorkspace() {
 #ifdef IVW_PYTHON_QT
-
     if (PythonEditorWidget::getPtr()->isActiveWindow() &&
         PythonEditorWidget::getPtr()->hasFocus()) {
         PythonEditorWidget::getPtr()->setDefaultText();
         return;
     }
-
 #endif
 
     if (currentWorkspaceFileName_ != "")
@@ -416,6 +415,8 @@ void InviwoMainWindow::openWorkspace(QString workspaceFileName) {
 
     getNetworkEditor()->loadNetwork(workspaceFileName.toLocal8Bit().constData());
     onNetworkEditorFileChanged(workspaceFileName.toLocal8Bit().constData());
+    addToRecentWorkspaces(workspaceFileName);
+    saveWindowState();
 }
 
 void InviwoMainWindow::onNetworkEditorFileChanged(const std::string& filename) {
@@ -485,7 +486,7 @@ void InviwoMainWindow::saveWorkspace() {
         getNetworkEditor()->saveNetwork(currentWorkspaceFileName_.toLocal8Bit().constData());
         updateWindowTitle();
     }
-
+    
     /*
     // The following code snippet allows to reload the Qt style sheets during runtime,
     // which is handy while we change them. once the style sheets have been finalized,
@@ -519,6 +520,7 @@ void InviwoMainWindow::saveWorkspaceAs() {
         setCurrentWorkspace(path);
         addToRecentWorkspaces(path);
     }
+    saveWindowState();
 }
 
 void InviwoMainWindow::saveWorkspaceAsCopy() {
@@ -542,6 +544,7 @@ void InviwoMainWindow::saveWorkspaceAsCopy() {
         getNetworkEditor()->saveNetwork(path.toLocal8Bit().constData());
         addToRecentWorkspaces(path);
     }
+    saveWindowState();
 }
 
 
@@ -608,14 +611,7 @@ void InviwoMainWindow::exitInviwo() {
     InviwoApplication::getPtr()->closeInviwoApplication();
 }
 
-void InviwoMainWindow::closeEvent(QCloseEvent* event) {
-    if (!askToSaveWorkspaceChanges()) {
-        event->ignore();
-        return;
-    }
-
-    getNetworkEditor()->clearNetwork();
-    // save window state
+void InviwoMainWindow::saveWindowState() {
     QSettings settings("Inviwo", "Inviwo");
     settings.beginGroup("mainwindow");
     settings.setValue("geometry", saveGeometry());
@@ -625,10 +621,24 @@ void InviwoMainWindow::closeEvent(QCloseEvent* event) {
     settings.setValue("size", size());
     settings.setValue("recentFileList", recentFileList_);
     if(!currentWorkspaceFileName_.contains("untitled.inv"))
-        settings.setValue("workspaceOnLastSucessfullExit",currentWorkspaceFileName_ );
+        settings.setValue("workspaceOnLastSucessfullExit", currentWorkspaceFileName_);
     else
-        settings.setValue("workspaceOnLastSucessfullExit","" );
+        settings.setValue("workspaceOnLastSucessfullExit", "");
     settings.endGroup();
+}
+void InviwoMainWindow::loadWindowState() {
+}
+
+void InviwoMainWindow::closeEvent(QCloseEvent* event) {
+    if (!askToSaveWorkspaceChanges()) {
+        event->ignore();
+        return;
+    }
+
+    getNetworkEditor()->clearNetwork();
+    // save window state
+    saveWindowState();
+
     settingsWidget_->saveSettings();
     QMainWindow::closeEvent(event);
 }

@@ -43,8 +43,8 @@ namespace inviwo {
 
 /** \class ClockGL
  *
- * Simple timer for OpenGL. 
- * Uses OpenGL queries if OpenGL 3.3 or higher is supported, 
+ * Simple timer for OpenGL.
+ * Uses OpenGL queries if OpenGL 3.3 or higher is supported,
  * otherwise uses CPU which calls glFinish before stopping time.
  * Usage is simplified by the macros (does nothing unless IVW_PROFILING is defined)
  * IVW_OPENGL_PROFILING("My message")
@@ -67,50 +67,68 @@ public:
      * @return float Time in milliseconds
      */
     float getElapsedTime() const;
-    
 
 private:
 #ifdef GL_VERSION_3_3
     GLuint queries_[2];
-#else 
+#else
     Clock clock_;
 #endif
-    
 };
 
 /** \class ScopedClockGL
  *
- * Scoped timer for OpenGL that prints elapsed time in destructor. 
+ * Scoped timer for OpenGL that prints elapsed time in destructor.
  * Usage is simplified by the macros (does nothing unless IVW_PROFILING is defined)
  * IVW_OPENGL_PROFILING("My message")
  *
  */
 class ScopedClockGL {
 public:
-    ScopedClockGL(const std::string& logSource, const std::string& message): logSource_(logSource), logMessage_(message) { clock_.start(); }
+    ScopedClockGL(const std::string& logSource, const std::string& message,
+                  float logIfAtLeastMilliSec = 0.0f)
+        : logSource_(logSource), logMessage_(message), logIfAtLeastMilliSec_(logIfAtLeastMilliSec) {
+        clock_.start();
+    }
     virtual ~ScopedClockGL() {
         clock_.stop();
-        std::stringstream message;
-        message << logMessage_ << ": " << clock_.getElapsedTime() << " ms";
-        LogCentral::getPtr()->log(logSource_, inviwo::Info, __FILE__, __FUNCTION__, __LINE__, message.str());
-    }   
+        if (clock_.getElapsedTime() > logIfAtLeastMilliSec_) {
+            std::stringstream message;
+            message << logMessage_ << ": " << clock_.getElapsedTime() << " ms";
+            LogCentral::getPtr()->log(logSource_, inviwo::Info, __FILE__, __FUNCTION__, __LINE__,
+                                      message.str());
+        }
+    }
 
 private:
     // Default constructor not allowed
     ScopedClockGL() {};
     ClockGL clock_;
-    std::string logSource_; 
+    std::string logSource_;
     std::string logMessage_;
+    float logIfAtLeastMilliSec_;
 };
 
-#if IVW_PROFILING 
-#define IVW_OPENGL_PROFILING(message) \
-    std::ostringstream ADDLINE(__stream); ADDLINE(__stream) << message; \
-    ScopedClockGL ADDLINE(__clock)(parseTypeIdName(std::string(typeid(this).name())), ADDLINE(__stream).str());
+#if IVW_PROFILING
+#define IVW_OPENGL_PROFILING(message)                                                 \
+    std::ostringstream ADDLINE(__stream);                                             \
+    ADDLINE(__stream) << message;                                                     \
+    ScopedClockGL ADDLINE(__clock)(parseTypeIdName(std::string(typeid(this).name())), \
+                                   ADDLINE(__stream).str());
 #else
-#define IVW_OPENGL_PROFILING(message) 
+#define IVW_OPENGL_PROFILING(message)
 #endif
 
-} // namespace
+#if IVW_PROFILING
+#define IVW_OPENGL_PROFILING_IF(time, message)                                        \
+    std::ostringstream ADDLINE(__stream);                                             \
+    ADDLINE(__stream) << message;                                                     \
+    ScopedClockGL ADDLINE(__clock)(parseTypeIdName(std::string(typeid(this).name())), \
+                                   ADDLINE(__stream).str(), time);
+#else
+#define IVW_OPENGL_PROFILING(message)
+#endif
 
-#endif // IVW_CLOCK_GL_H
+}  // namespace
+
+#endif  // IVW_CLOCK_GL_H

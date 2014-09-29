@@ -113,11 +113,9 @@ protected:
 class IVW_QTEDITOR_API LinkConnectionGraphicsItem : public LinkConnectionDragGraphicsItem {
 public:
     LinkConnectionGraphicsItem(ProcessorLinkGraphicsItem* outLink,
-                               ProcessorLinkGraphicsItem* inLink,
-                               ProcessorLink* link);
+                               ProcessorLinkGraphicsItem* inLink);
     ~LinkConnectionGraphicsItem();
 
-    virtual ProcessorLink* getProcessorLink() const;
     virtual ProcessorLinkGraphicsItem* getDestProcessorLinkGraphicsItem() const;
     virtual ProcessorGraphicsItem* getDestProcessorGraphicsItem() const;
     virtual void updateShape();
@@ -130,7 +128,6 @@ public:
 protected:
     virtual QPainterPath obtainCurvePath() const;
     ProcessorLinkGraphicsItem* inLink_;  //< non-onwing reference
-    ProcessorLink* link_;  //< non-onwing reference
 };
 
 }  // namespace

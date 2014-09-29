@@ -108,7 +108,7 @@ void EntryExitPoints::process() {
     if (renderer_ == NULL) {
         return;
     }
-    IVW_OPENGL_PROFILING("")
+    IVW_OPENGL_PROFILING_IF(0, "");
 
     glEnable(GL_CULL_FACE);
     glDepthFunc(GL_ALWAYS);

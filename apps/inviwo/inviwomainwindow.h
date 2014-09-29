@@ -107,6 +107,9 @@ private:
     void addToolBars();
     void closeEvent(QCloseEvent* event);
 
+    void saveWindowState();
+    void loadWindowState();
+
     bool askToSaveWorkspaceChanges();
 
     void addToRecentWorkspaces(QString workspaceFileName);
