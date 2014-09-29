@@ -126,8 +126,8 @@ float CameraProperty::getNearPlaneDist() const { return nearPlane_.get(); }
 
 float CameraProperty::getFarPlaneDist() const { return farPlane_.get(); }
 
-// XY between -1 -> 1, Z between 0 -> 1
-vec3 CameraProperty::getWorldPosFromNormalizedDeviceCoords(vec3 ndcCoords) const {
+// XYZ between -1 -> 1
+vec3 CameraProperty::getWorldPosFromNormalizedDeviceCoords(const vec3& ndcCoords) const {
     float clipW = projectionMatrix_[2][3] /
                   (ndcCoords.z - (projectionMatrix_[2][2] / projectionMatrix_[3][2]));
     vec4 clipCoords = vec4(ndcCoords * clipW, clipW);
