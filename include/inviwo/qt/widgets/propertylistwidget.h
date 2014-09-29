@@ -38,6 +38,7 @@
 #include <inviwo/core/properties/propertyvisibility.h>
 #include <QWidget>
 #include <QEvent>
+#include <map>
 
 class QVBoxLayout;
 class QScrollArea;
