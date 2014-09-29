@@ -82,7 +82,13 @@ public:
     float getNearPlaneDist() const;
     float getFarPlaneDist() const;
 
-    vec3 getWorldPosFromNormalizedDeviceCoords(vec3 ndcCoords) const;
+    /** 
+     * \brief Convert from normalized device coordinates (xyz in [-1 1]) to world coordinates.
+     * 
+     * @param vec3 ndcCoords Coordinates in [-1 1]
+     * @return vec3 World space position
+     */
+    vec3 getWorldPosFromNormalizedDeviceCoords(const vec3& ndcCoords) const;
 
     void updateViewMatrix();
     void updateProjectionMatrix();

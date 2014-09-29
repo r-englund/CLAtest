@@ -99,9 +99,8 @@ void PositionWidgetProcessor::updateWidgetPositionFromPicking(const PickingObjec
 
     vec2 pos = p->getPickingPosition();
     float depth = static_cast<float>(p->getPickingDepth());
-    // TODO: do we not need to incorporate transformations here?
-    vec3 startNdc = vec3((2.f * pos.x) - 1.f, (2.f * pos.y) - 1.f, depth);
-    vec3 endNdc = vec3((2.f * (pos.x + move.x)) - 1.f, (2.f * (pos.y + move.y)) - 1.f, depth);
+    vec3 startNdc = vec3(2.f * pos - 1.f, 2.f * depth - 1.f);
+    vec3 endNdc = vec3(2.f * (pos + move) - 1.f, 2.f * depth - 1.f);
     vec3 startWorld = camera_.getWorldPosFromNormalizedDeviceCoords(startNdc);
     vec3 endWorld = camera_.getWorldPosFromNormalizedDeviceCoords(endNdc);
     position_.set(position_.get() + (endWorld - startWorld));
