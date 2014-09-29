@@ -60,6 +60,8 @@ VolumeSliceGL::VolumeSliceGL()
     , sliceX_("sliceX", "X Volume Position", 128, 1, 256)
     , sliceY_("sliceY", "Y Volume Position", 128, 1, 256)
     , sliceZ_("sliceZ", "Z Volume Position", 128, 1, 256)
+    , planeNormal_("planeNormal", "Slice Plane Normal", vec3(1.f,0.f,0.f), vec3(-1.f,-1.f,-1.f), vec3(1.f, 1.f, 1.f), vec3(0.01f, 0.01f, 0.01f))
+    , planeOffset_("planeOffset", "Slice Plane Offset", 0.5f, 0.0f, 1.0f, 0.01f)
     , rotationAroundAxis_("rotation", "Rotation (ccw)")
     , flipHorizontal_("flipHorizontal", "Flip Horizontal View", false)
     , flipVertical_("flipVertical", "Flip Vertical View", false)
@@ -85,11 +87,13 @@ VolumeSliceGL::VolumeSliceGL()
     slices_[0] = &sliceX_;
     slices_[1] = &sliceY_;
     slices_[2] = &sliceZ_;
+    slices_[3] = NULL;
 
     inport_.onChange(this, &VolumeSliceGL::updateMaxSliceNumber);
     sliceAlongAxis_.addOption("x", "y-z plane (X axis)", CoordinateEnums::X);
     sliceAlongAxis_.addOption("y", "z-x plane (Y axis)", CoordinateEnums::Y);
     sliceAlongAxis_.addOption("z", "x-y plane (Z axis)", CoordinateEnums::Z);
+    sliceAlongAxis_.addOption("p", "plane equation", 3);
     sliceAlongAxis_.set(CoordinateEnums::X);
     sliceAlongAxis_.setCurrentStateAsDefault();
     sliceAlongAxis_.onChange(this, &VolumeSliceGL::sliceAxisChanged);
@@ -98,6 +102,10 @@ VolumeSliceGL::VolumeSliceGL()
     addProperty(sliceX_);
     addProperty(sliceY_);
     addProperty(sliceZ_);
+
+    addProperty(planeNormal_);
+    planeNormal_.onChange(this, &VolumeSliceGL::planeSettingsChanged);
+    addProperty(planeOffset_);
 
     // Transformations
     rotationAroundAxis_.addOption("0", "0 deg", 0.f);
@@ -243,6 +251,9 @@ int VolumeSliceGL::getSliceNumber() const {
 }
 
 float VolumeSliceGL::getNormalizedSliceNumber() const {
+    if(sliceAlongAxis_.get() == 3)
+        return glm::abs(planeOffset_.get());
+
     IntProperty* prop = slices_[getAxisIndex(sliceAlongAxis_.get())];
     return (static_cast<float>(prop->get()) - 0.5f) /
            glm::max<float>(static_cast<float>(prop->getMaxValue()), 1.f);
@@ -372,11 +383,17 @@ void VolumeSliceGL::updateReadOnlyStates() {
         for (int i = 0; i < 3; ++i) {
             slices_[i]->setReadOnly(false);
         }
+        planeNormal_.setReadOnly(false);
+        planeOffset_.setReadOnly(false);
     } else {
-        IntProperty* activeSlice = slices_[getAxisIndex(sliceAlongAxis_.get())];
+        IntProperty* activeSlice = NULL;
+        if(sliceAlongAxis_.get() < 3)
+            activeSlice = slices_[getAxisIndex(sliceAlongAxis_.get())];
         for (int i = 0; i < 3; ++i) {
             slices_[i]->setReadOnly(slices_[i] != activeSlice);
         }
+        planeNormal_.setReadOnly(activeSlice != NULL);
+        planeOffset_.setReadOnly(activeSlice != NULL);
     }
     showIndicator_.setReadOnly(!posPicking_.get());
 }
@@ -471,33 +488,80 @@ void VolumeSliceGL::planeSettingsChanged() {
                 shader_->getFragmentShaderObject()->addShaderDefine("coordPlanePermute(x,y,z)",
                                                                     fV + "y," + "z," + fH + "x");
                 break;
-            case CoordinateEnums::Z:
+            default:;
                 shader_->getFragmentShaderObject()->addShaderDefine("coordPlanePermute(x,y,z)",
                                                                     fH + "x," + fV + "y,z");
                 break;
         }
-
         shader_->getFragmentShaderObject()->addShaderDefine("COORD_PLANE_PERMUTE");
 
         shader_->getFragmentShaderObject()->build();
         shader_->link();
         // Rotation
         float rotationAngle = rotationAroundAxis_.get();
-        vec3 sliceAxis;
-        switch (sliceAlongAxis_.get()) {
-            case CoordinateEnums::X:
-                sliceAxis = vec3(-1.f, 0.f, 0.f);
-                break;
-            case CoordinateEnums::Y:
-                sliceAxis = vec3(0.f, -1.f, 0.f);
-                break;
-            case CoordinateEnums::Z:
-                sliceAxis = vec3(0.f, 0.f, -1.f);
-                break;
+        vec3 sliceAxis = vec3(0.f, 0.f, -1.f);
+        vec3 rotationOffset = vec3(0.f);
+
+        mat4 rotationMat;
+
+        //Rotation to plane equation
+        if(sliceAlongAxis_.get() == 3){
+            vec3 axisNormal = glm::normalize(sliceAxis);
+            vec3 planeNormal = glm::normalize(planeNormal_.get());
+
+            float cosTheta = glm::dot(axisNormal, planeNormal);
+
+            quat rotationQuat;
+            vec3 rotationAxis;
+            if (cosTheta < -1 + 0.001f){
+                rotationAxis = glm::cross(vec3(0.0f, 0.0f, 1.0f), axisNormal);
+                if (glm::length2(rotationAxis) < 0.01 )
+                    rotationAxis = glm::cross(vec3(1.0f, 0.0f, 0.0f), axisNormal);
+
+                rotationAxis = glm::normalize(rotationAxis);
+                rotationQuat = glm::angleAxis(180.0f, rotationAxis);
+            }
+
+            rotationAxis = glm::cross(axisNormal, planeNormal);
+
+            float s = sqrt( (1+cosTheta)*2 );
+            float invs = 1 / s;
+
+            rotationQuat = quat(
+                s * 0.5f, 
+                rotationAxis.x * invs,
+                rotationAxis.y * invs,
+                rotationAxis.z * invs
+                );
+
+            //rotationMat = glm::rotate(rotationAngle, sliceAxis);
+            rotationMat *= glm::toMat4(rotationQuat);
+            
+            // Offset during rotation to rotate around the center point
+            rotationOffset = vec3(-0.5f) + 0.5f * rotationAxis;
+            rotationMat = glm::translate(rotationMat, rotationOffset);
         }
-        // Offset during rotation to rotate around the center point
-        vec3 rotationOffset = vec3(-0.5f) + 0.5f * sliceAxis;
-        mat4 rotationMat = glm::translate(glm::rotate(rotationAngle, sliceAxis), rotationOffset);
+        else{
+            switch (sliceAlongAxis_.get()) {
+                case CoordinateEnums::X:
+                    sliceAxis = vec3(-1.f, 0.f, 0.f);
+                    break;
+                case CoordinateEnums::Y:
+                    sliceAxis = vec3(0.f, -1.f, 0.f);
+                    break;
+                case CoordinateEnums::Z:
+                    sliceAxis = vec3(0.f, 0.f, -1.f);
+                    break;
+                default:
+                    break;
+            }
+            rotationMat = glm::rotate(rotationAngle, sliceAxis);
+
+            // Offset during rotation to rotate around the center point
+            rotationOffset = vec3(-0.5f) + 0.5f * sliceAxis;
+            rotationMat = glm::translate(rotationMat, rotationOffset);
+        }
+
         shader_->activate();
         shader_->setUniform("sliceAxisRotationMatrix_", rotationMat);
         // Translate back after rotation
