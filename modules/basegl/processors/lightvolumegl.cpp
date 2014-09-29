@@ -234,12 +234,10 @@ void LightVolumeGL::process() {
         propagationShader_->setUniform("permutationMatrix_", propParams_[i].axisPermutation);
 
         if (lightSource_.getData()->getLightSourceType() == LightSourceType::LIGHT_POINT) {
-            propagationShader_->setUniform("pointLight_", true);
             propagationShader_->setUniform("lightPos_", lightPos_);
             propagationShader_->setUniform("permutedLightMatrix_", propParams_[i].axisPermutationLight);
         }
         else {
-            propagationShader_->setUniform("pointLight_", false);
             propagationShader_->setUniform("permutedLightDirection_", propParams_[i].permutedLightDirection);
         }
 
@@ -278,7 +276,7 @@ void LightVolumeGL::process() {
 
 bool LightVolumeGL::lightSourceChanged() {
     vec3 color = vec3(1.f);
-    vec3 directionToCenterOfVolume = vec3(0.f);
+    vec3 lightDirection = vec3(0.f);
 
     switch (lightSource_.getData()->getLightSourceType())
     {
@@ -293,7 +291,14 @@ bool LightVolumeGL::lightSourceChanged() {
             const DirectionalLight* directionLight = dynamic_cast<const DirectionalLight*>(lightSource_.getData());
 
             if (directionLight) {
-                directionToCenterOfVolume = directionLight->getDirection();
+                mat4 worldToTexture = inport_.getData()->getCoordinateTransformer().getWorldToTextureMatrix();
+                vec4 lightPositionTexture = worldToTexture * vec4(-directionLight->getDirection(), 1.f);
+                lightPos_ = lightPositionTexture.xyz();
+                lightDirection = lightPos_ - vec3(0.5f);
+                if (glm::length(lightDirection) == 0)
+                    lightDirection = vec3(1,0,0);
+                else
+                    lightDirection = glm::normalize(lightDirection);
                 color = directionLight->getIntensity();
             }
 
@@ -311,11 +316,14 @@ bool LightVolumeGL::lightSourceChanged() {
             const PointLight* pointLight = dynamic_cast<const PointLight*>(lightSource_.getData());
 
             if (pointLight) {
-                mat4 toWorld = inport_.getData()->getWorldTransform();
-                vec4 volumeCenterWorldW = toWorld * vec4(0.f, 0.f, 0.f, 1.f);
-                vec3 volumeCenterWorld = volumeCenterWorldW.xyz();
-                lightPos_ = pointLight->getPosition();
-                directionToCenterOfVolume = glm::normalize(volumeCenterWorld - lightPos_);
+                mat4 worldToTexture = inport_.getData()->getCoordinateTransformer().getWorldToTextureMatrix();
+                vec4 lightPositionTexture = worldToTexture * vec4(pointLight->getPosition(), 1.f);
+                lightPos_ = lightPositionTexture.xyz();
+                lightDirection = lightPos_ - vec3(0.5f);
+                if (glm::length(lightDirection) == 0)
+                    lightDirection = vec3(1,0,0);
+                else
+                    lightDirection = glm::normalize(lightDirection);
                 color = pointLight->getIntensity();
             }
 
@@ -327,7 +335,7 @@ bool LightVolumeGL::lightSourceChanged() {
             break;
     }
 
-    updatePermuationMatrices(directionToCenterOfVolume, &propParams_[0], &propParams_[1]);
+    updatePermuationMatrices(lightDirection, &propParams_[0], &propParams_[1]);
     bool lightColorChanged = false;
 
     if (color.r != lightColor_.r) {
@@ -446,48 +454,49 @@ void LightVolumeGL::borderColorTextureParameterFunction() {
 }
 
 void LightVolumeGL::updatePermuationMatrices(const vec3& lightDir, PropagationParameters* closest, PropagationParameters* secondClosest) {
-    if (calculatedOnes_ && lightDir==lightDir_)
+    if(calculatedOnes_ && lightDir==lightDir_)
         return;
 
     lightDir_ = lightDir;
-    vec3 invertedLightPos = -lightDir;
-    vec3 invertedLightPosNorm = glm::normalize(invertedLightPos);
+
     //Calculate closest and second closest axis-aligned face.
-    float thisVal = glm::dot(faceNormals_[0], invertedLightPosNorm - faceCenters_[0]);
+    float thisVal = glm::dot(faceNormals_[0], -lightDir);
     float closestVal = thisVal;
     float secondClosestVal = 0.f;
     int closestFace = 0;
-    int secondClosestFace = -1;
-
-    for (int i=1; i<6; ++i) {
-        thisVal = glm::dot(faceNormals_[i], invertedLightPosNorm - faceCenters_[i]);
-
-        if (thisVal < closestVal) {
+    int secondClosestFace = 0;
+    for(int i=1; i<6; ++i){
+        thisVal = glm::dot(faceNormals_[i], -lightDir);
+        if(thisVal > closestVal){
             secondClosestVal = closestVal;
             secondClosestFace = closestFace;
             closestVal = thisVal;
             closestFace = i;
         }
-        else if (thisVal < secondClosestVal) {
+        else if(thisVal > secondClosestVal){
             secondClosestVal = thisVal;
             secondClosestFace = i;
         }
     }
 
-    vec4 tmpLightDir = vec4(lightDir.x, lightDir.y, lightDir.z, 1.f);
+    vec4 tmpLightDir = vec4(-lightDir.x, -lightDir.y, -lightDir.z, 1.f);
+
     //Perform permutation calculation for closest face
     definePermutationMatrices(closest->axisPermutation, closest->axisPermutationLight, closestFace);
     //LogInfo("1st Axis Permutation: " << closest->axisPermutation);
     closest->axisPermutationINV = glm::inverse(closest->axisPermutation);
     closest->permutedLightDirection = closest->axisPermutationLight * tmpLightDir;
+
     //Perform permutation calculation for second closest face
     definePermutationMatrices(secondClosest->axisPermutation, secondClosest->axisPermutationLight, secondClosestFace);
     //LogInfo("2nd Axis Permutation: " << secondClosest->axisPermutation);
     secondClosest->axisPermutationINV = glm::inverse(secondClosest->axisPermutation);
     secondClosest->permutedLightDirection = secondClosest->axisPermutationLight * tmpLightDir;
+
     //Calculate the blending factor
-    blendingFactor_ = static_cast<float>(1.f-(2.f*glm::acos<float>(glm::dot(invertedLightPosNorm, -faceNormals_[closestFace]))/M_PI));
+    blendingFactor_ = static_cast<float>(1.f-(2.f*glm::acos<float>(closestVal)/M_PI));
     //LogInfo("Blending Factor: " << blendingFactor_);
+
     calculatedOnes_ = true;
 }
  

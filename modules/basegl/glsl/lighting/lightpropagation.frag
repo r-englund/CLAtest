@@ -57,12 +57,11 @@ vec4 propagateLight(in vec3 coord, in vec3 coordPerm) {
     vec4 color = applyTF(transferFunc_, voxel);
     //Calculate previous permuted coordinate
 #ifdef POINT_LIGHT
-    vec4 worldPos = volumeParameters_.volumeToWorldTransform_ * vec4(coordPerm, 1.0);
-    vec4 permLightDir = permutedLightMatrix_ * normalize(worldPos - vec4(lightPos_, 1.0));
-    vec3 previousPermutedCoord = vec3(coord.xy - permLightDir.xy * lightVolumeParameters_.dimensionsRCP_.z,
+    vec4 permLightDir = permutedLightMatrix_ * vec4(normalize(coordPerm - lightPos_), 1.0);
+    vec3 previousPermutedCoord = vec3(coord.xy - permLightDir.xy * lightVolumeParameters_.dimensionsRCP_.z/max(1e-4,abs(permLightDir.z)),
                                       coord.z - lightVolumeParameters_.dimensionsRCP_.z);
 #else
-    vec3 previousPermutedCoord = vec3(coord.xy - permutedLightDirection_.xy * lightVolumeParameters_.dimensionsRCP_.z,
+    vec3 previousPermutedCoord = vec3(coord.xy - permutedLightDirection_.xy * lightVolumeParameters_.dimensionsRCP_.z/max(1e-4,abs(permutedLightDirection_.z)),
                                       coord.z - lightVolumeParameters_.dimensionsRCP_.z);
 #endif
     //Retrieve previous light value
