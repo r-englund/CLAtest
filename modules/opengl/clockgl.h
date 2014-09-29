@@ -126,7 +126,7 @@ private:
     ScopedClockGL ADDLINE(__clock)(parseTypeIdName(std::string(typeid(this).name())), \
                                    ADDLINE(__stream).str(), time);
 #else
-#define IVW_OPENGL_PROFILING_IF(message)
+#define IVW_OPENGL_PROFILING_IF(time, message)
 #endif
 
 }  // namespace
