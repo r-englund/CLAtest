@@ -99,7 +99,7 @@ private:
 template<typename T, size_t B>
 class BufferRAMCustomPrecision : public BufferRAMPrecision<T> {
 public:
-    BufferRAMCustomPrecision(size_t size = 0, const DataFormatBase* format = DataFormatBase::get(), BufferType type = POSITION_ATTRIB,
+    BufferRAMCustomPrecision(size_t size = 0, const DataFormatBase* format = DataFormat<T,B>::get(), BufferType type = POSITION_ATTRIB,
                              BufferUsage usage = STATIC)
         : BufferRAMPrecision<T>(size, format, type, usage) {}
     virtual ~BufferRAMCustomPrecision() {};
