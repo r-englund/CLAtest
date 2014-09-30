@@ -649,8 +649,14 @@ void NetworkEditor::mouseMoveEvent(QGraphicsSceneMouseEvent* e) {
 }
 
 void NetworkEditor::mouseReleaseEvent(QGraphicsSceneMouseEvent* e) {
-     ProcessorNetwork* network = InviwoApplication::getPtr()->getProcessorNetwork();
+    ProcessorNetwork* network = InviwoApplication::getPtr()->getProcessorNetwork();
     
+    for(ProcessorMap::iterator it = processorGraphicsItems_.begin(); it != processorGraphicsItems_.end(); ++it) {
+        QPointF pos = it->second->pos();
+        QPointF newpos = snapToGrid(pos);
+        if (pos != newpos) it->second->setPos(newpos);
+    }
+
     if (connectionCurve_) {
         // connection drag mode
         Outport* startPort = connectionCurve_->getOutportGraphicsItem()->getPort();
