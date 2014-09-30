@@ -286,7 +286,6 @@ void ProcessorGraphicsItem::snapToGrid() {
 QVariant ProcessorGraphicsItem::itemChange(GraphicsItemChange change, const QVariant& value) {
     switch (change) {
         case QGraphicsItem::ItemPositionHasChanged:
-            snapToGrid();
             if (processorMeta_) processorMeta_->setPosition(ivec2(x(), y()));
             break;
         case QGraphicsItem::ItemSelectedHasChanged:
