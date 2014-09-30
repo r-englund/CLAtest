@@ -95,7 +95,7 @@ namespace inviwo {
         PyObject* ret = PyEval_EvalCode(BYTE_CODE, glb, glb);
         bool success = checkRuntimeError();
         Py_XDECREF(ret);
-        Py_XDECREF(glb);
+  //      Py_XDECREF(glb);
         return success;
     }
 

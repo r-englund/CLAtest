@@ -620,10 +620,6 @@ void InviwoMainWindow::saveWindowState() {
     settings.setValue("pos", pos());
     settings.setValue("size", size());
     settings.setValue("recentFileList", recentFileList_);
-    if(!currentWorkspaceFileName_.contains("untitled.inv"))
-        settings.setValue("workspaceOnLastSucessfullExit", currentWorkspaceFileName_);
-    else
-        settings.setValue("workspaceOnLastSucessfullExit", "");
     settings.endGroup();
 }
 void InviwoMainWindow::loadWindowState() {
@@ -634,12 +630,20 @@ void InviwoMainWindow::closeEvent(QCloseEvent* event) {
         event->ignore();
         return;
     }
-
+    QString loadedNetwork = currentWorkspaceFileName_;
     getNetworkEditor()->clearNetwork();
     // save window state
     saveWindowState();
-
     settingsWidget_->saveSettings();
+
+    QSettings settings("Inviwo", "Inviwo");
+    settings.beginGroup("mainwindow");
+    if (!loadedNetwork.contains("untitled.inv"))
+        settings.setValue("workspaceOnLastSucessfullExit", loadedNetwork);
+    else
+        settings.setValue("workspaceOnLastSucessfullExit", "");
+    settings.endGroup();
+
     QMainWindow::closeEvent(event);
 }
 
