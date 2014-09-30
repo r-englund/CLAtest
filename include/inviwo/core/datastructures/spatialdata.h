@@ -313,8 +313,8 @@ template <unsigned int N>
 SpatialEntity<N>::SpatialEntity()
     : transformer_(new SpatialCoordinateTransformer<N>(this))
     , worldTransform_(1.0f) {
-        Vector<N,float> offset(-1.0f);
-        Matrix<N,float> basis(2.0f);
+        Vector<N,float> offset(0.0f);
+        Matrix<N,float> basis(1.0f);
         setBasis(basis);
         setOffset(offset);
 }
@@ -323,8 +323,8 @@ template <unsigned int N>
 SpatialEntity<N>::SpatialEntity(CoordinateTransformer<N>* transformer)
     : transformer_(transformer)
     , worldTransform_(1.0f) {
-    Vector<N,float> offset(-1.0f);
-    Matrix<N,float> basis(2.0f);
+    Vector<N,float> offset(0.0f);
+    Matrix<N,float> basis(1.0f);
     setBasis(basis);
     setOffset(offset);
 }
@@ -333,7 +333,7 @@ template <unsigned int N>
 SpatialEntity<N>::SpatialEntity(const Vector<N,float>& offset, CoordinateTransformer<N>* transformer)
     : transformer_(transformer)
     , worldTransform_(1.0f) {
-    Matrix<N,float> basis(2.0f);
+    Matrix<N,float> basis(1.0f);
     setBasis(basis);
     setOffset(offset);
 }
@@ -341,7 +341,7 @@ template <unsigned int N>
 SpatialEntity<N>::SpatialEntity(const Matrix<N,float>& basis, CoordinateTransformer<N>* transformer)
     : transformer_(transformer)
     , worldTransform_(1.0f) {
-    Vector<N,float> offset(-1.0f);
+    Vector<N,float> offset(0.0f);
     setBasis(basis);
     setOffset(offset);
 }
