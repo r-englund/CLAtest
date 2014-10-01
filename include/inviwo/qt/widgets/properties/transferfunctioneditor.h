@@ -119,8 +119,6 @@ private :
     QGraphicsView* view_;
     TransferFunction* transferFunction_; ///< Pointer to widget's member variable
 
-    QGraphicsPathItem* graphicsPathItem_;
-    
     typedef std::vector<TransferFunctionEditorControlPoint*> PointVec;
     typedef std::vector<TransferFunctionControlPointConnection*> ConnectionVec;
     PointVec points_;
