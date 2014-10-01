@@ -66,17 +66,14 @@ VolumeSource::VolumeSource()
     , volumesPerSecond_("volumesPerSecond", "Volumes Per Second", 30, 1, 60, 1, PropertyOwner::VALID)
     , dimensions_("dimensions", "Dimensions")
     , format_("format", "Format", "")
+    , basis_("Basis", "Basis and offset")
+    , information_("Information", "Data information")
     , isDeserializing_(false)
     , sequenceTimer_(NULL) {
 
     DataSource<Volume, VolumeOutport>::file_.setContentType("volume");
     DataSource<Volume, VolumeOutport>::file_.setDisplayName("Volume file");
 
-    overRideDefaults_.setGroupDisplayName("Basis", "Basis and offset");
-    overRideDefaults_.setGroupID("Basis");
-    lengths_.setGroupID("Basis");
-    angles_.setGroupID("Basis");
-    offset_.setGroupID("Basis");
     lengths_.setReadOnly(true);
     angles_.setReadOnly(true);
     offset_.setReadOnly(true);
@@ -86,31 +83,26 @@ VolumeSource::VolumeSource()
     dimensions_.setCurrentStateAsDefault();
     format_.setCurrentStateAsDefault();
 
-    dimensions_.setGroupDisplayName("Information", "Data information");
-    dimensions_.setGroupID("Information");
-    format_.setGroupID("Information");
-    dataRange_.setGroupID("Information");
-    valueRange_.setGroupID("Information");
-    valueUnit_.setGroupID("Information");
-
     overrideLengths_ = lengths_.get();
     overrideAngles_ = angles_.get();
     overrideOffset_ = offset_.get();
 
     overRideDefaults_.onChange(this, &VolumeSource::onOverrideChange);
 
-    addProperty(dimensions_);
-    addProperty(format_);
+    information_.addProperty(dimensions_);
+    information_.addProperty(format_);
+    information_.addProperty(dataRange_);
+    information_.addProperty(valueRange_);
+    information_.addProperty(valueUnit_);
 
-    addProperty(dataRange_);
-    addProperty(valueRange_);
-    addProperty(valueUnit_);
+    addProperty(information_);
 
-    addProperty(overRideDefaults_);
-    addProperty(lengths_);
-    addProperty(angles_);
-    addProperty(offset_);
+    basis_.addProperty(overRideDefaults_);
+    basis_.addProperty(lengths_);
+    basis_.addProperty(angles_);
+    basis_.addProperty(offset_);
 
+	addProperty(basis_);
     addProperty(playSequence_);
     playSequence_.setVisible(false);
     playSequence_.onChange(this, &VolumeSource::onPlaySequenceToggled);

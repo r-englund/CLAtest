@@ -45,6 +45,7 @@
 #include <inviwo/core/ports/volumeport.h>
 #include <inviwo/core/properties/ordinalproperty.h>
 #include <inviwo/core/util/timer.h>
+#include <inviwo/core/properties/compositeproperty.h>
 
 namespace inviwo {
 
@@ -120,6 +121,9 @@ private:
     // Readonly only use to show information
     StringProperty dimensions_;
     StringProperty format_;
+    
+    CompositeProperty basis_;
+    CompositeProperty information_;
 
     VolumeSourceState oldState;
 
