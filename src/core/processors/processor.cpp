@@ -341,7 +341,7 @@ void Processor::setValid() {
         (*it)->setInvalidationLevel(VALID);
 }
 
-void Processor::invalidationEnabled(){
+void Processor::invalidationEnabled() {
     invalidationEnabled_ = true;
 }
 
