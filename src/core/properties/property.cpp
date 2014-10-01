@@ -72,10 +72,6 @@ Property::Property()
 }
 
 Property::~Property() {
-    while (!metaData_.empty()) {
-        delete metaData_.back();
-        metaData_.pop_back();
-    }
 }
 
 std::string Property::getIdentifier() const {
@@ -121,6 +117,11 @@ void Property::setInvalidationLevel(PropertyOwner::InvalidationLevel invalidatio
 }
 
 PropertyOwner* Property::getOwner() {
+    return owner_;
+}
+
+
+const PropertyOwner* Property::getOwner() const {
     return owner_;
 }
 
@@ -194,25 +195,6 @@ bool Property::isPropertyModified() const {
     return propertyModified_;
 }
 
-MetaData* Property::getMetaData(const std::string &className) {
-    //TODO: Code is very similar to processor getMetaData. Use common scheme
-    MetaData* meta = 0;
-
-    for (size_t i=0; i<metaData_.size(); i++) {
-        if (metaData_[i]->getClassIdentifier()==className) {
-            meta = metaData_[i];
-            break;
-        }
-    }
-
-    if (!meta) {
-        meta = dynamic_cast<MetaData*>(MetaDataFactory::getPtr()->create(className));
-        metaData_.push_back(meta);
-    }
-
-    return meta;
-}
-
 void Property::serialize(IvwSerializer& s) const {
     s.serialize("type", getClassIdentifier(), true);
     s.serialize("identifier", identifier_, true);
@@ -225,9 +207,7 @@ void Property::serialize(IvwSerializer& s) const {
     if (readOnly_ != defaultReadOnly_) {
         s.serialize("readonly", readOnly_);
     }
-    if (metaData_.size() > 0) {
-        s.serialize("MetaDataList", metaData_, "MetaData");
-    }
+    MetaDataOwner::serialize(s);
 }
 
 void Property::deserialize(IvwDeserializer& d) {
@@ -241,8 +221,8 @@ void Property::deserialize(IvwDeserializer& d) {
     usageMode_ = static_cast<UsageMode>(mode);
     d.deserialize("visible", visible_);
     d.deserialize("readonly", readOnly_);
-    d.deserialize("MetaDataList", metaData_, "MetaData");
     updateVisibility();
+    MetaDataOwner::deserialize(d);
 }
 
 void Property::setGroupDisplayName(const std::string& groupID, const std::string& groupDisplayName) {   

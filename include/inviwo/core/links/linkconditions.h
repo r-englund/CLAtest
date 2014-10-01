@@ -51,7 +51,7 @@ enum LinkingConditions {
 class IVW_CORE_API SimpleCondition {
 public:
     SimpleCondition() {}
-    static bool canLink(Property* src, Property* dst);
+    static bool canLink(const Property* src, const Property* dst);
     static LinkingConditions conditionType() { return LinkMatchingTypes;}
     static std::string conditionName() { return "Matching Type";}
 };
@@ -59,7 +59,7 @@ public:
 class IVW_CORE_API PartiallyMatchingIdCondition {
 public:
     PartiallyMatchingIdCondition() {}
-    static bool canLink(Property* src, Property* dst);
+    static bool canLink(const Property* src,const Property* dst);
     static LinkingConditions conditionType() { return LinkMatchingId;}
     static std::string conditionName() { return "Matching Id";}
 };
@@ -67,7 +67,7 @@ public:
 class IVW_CORE_API AutoLinker {
 public:
     AutoLinker() {}
-    static bool canLink(Property* src, Property* dst, LinkingConditions);
+    static bool canLink(const Property* src,const Property* dst, LinkingConditions);
 
 };
 

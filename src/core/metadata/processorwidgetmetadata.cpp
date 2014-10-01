@@ -36,23 +36,23 @@ namespace inviwo {
 
 ProcessorWidgetMetaData::ProcessorWidgetMetaData()
     : MetaData()
-    , positionMetaData_(ivec2(0))
-    , dimensionMetaData_(ivec2(256))
-    , visiblityMetaData_(false) {
+    , position_(0,0)
+    , dimension_(256,256)
+    , visibility_(false) {
 }
 
 ProcessorWidgetMetaData::ProcessorWidgetMetaData(const ProcessorWidgetMetaData& rhs)
     : MetaData()
-    , positionMetaData_(rhs.positionMetaData_)
-    , dimensionMetaData_(rhs.dimensionMetaData_)
-    , visiblityMetaData_(rhs.visiblityMetaData_) {
+    , position_(rhs.position_)
+    , dimension_(rhs.dimension_)
+    , visibility_(rhs.visibility_) {
 }
 
 ProcessorWidgetMetaData& ProcessorWidgetMetaData::operator=(const ProcessorWidgetMetaData& that) {
     if (this != &that) {
-        positionMetaData_ = that.positionMetaData_;
-        dimensionMetaData_ = that.dimensionMetaData_;
-        visiblityMetaData_ = that.visiblityMetaData_;
+        position_ = that.position_;
+        dimension_ = that.dimension_;
+        visibility_ = that.visibility_;
     }
 
     return *this;
@@ -64,56 +64,51 @@ ProcessorWidgetMetaData* ProcessorWidgetMetaData::clone() const {
     return new ProcessorWidgetMetaData(*this);
 }
 
-void ProcessorWidgetMetaData::setWidgetPosition(ivec2 pos) {
-    positionMetaData_.set(pos);
+void ProcessorWidgetMetaData::setWidgetPosition(const ivec2 &pos) {
+    position_ = pos;
 }
 
-ivec2 ProcessorWidgetMetaData::getWidgetPosition() {
-    return positionMetaData_.get();
+ivec2 ProcessorWidgetMetaData::getWidgetPosition() const {
+    return position_;
 }
 
-void ProcessorWidgetMetaData::setDimension(ivec2 dim) {
-    dimensionMetaData_.set(dim);
+void ProcessorWidgetMetaData::setDimension(const ivec2 &dim) {
+    dimension_ = dim;
 }
 
 ivec2 ProcessorWidgetMetaData::getDimension() const {
-    return dimensionMetaData_.get();
+    return dimension_;
 }
 
 void ProcessorWidgetMetaData::setVisibile(bool visibility) {
-    visiblityMetaData_.set(visibility);
+    visibility_  = visibility;
 }
 
 bool ProcessorWidgetMetaData::isVisible() const {
-    return visiblityMetaData_.get();
+    return visibility_;
 }
 
 void ProcessorWidgetMetaData::serialize(IvwSerializer& s) const {
     s.serialize("type", getClassIdentifier(), true);
-    s.serialize("position", positionMetaData_.get());
-    s.serialize("dimension", dimensionMetaData_.get());
-    s.serialize("visibility", visiblityMetaData_.get());
+    s.serialize("position", position_);
+    s.serialize("dimension", dimension_);
+    s.serialize("visibility", visibility_);
 }
 
 void ProcessorWidgetMetaData::deserialize(IvwDeserializer& d) {
     std::string className;
-    ivec2 position, dimension;
-    bool visibility;
     d.deserialize("type", className, true);
-    d.deserialize("position", position);
-    d.deserialize("dimension", dimension);
-    d.deserialize("visibility", visibility);
-    positionMetaData_.set(position);
-    dimensionMetaData_.set(dimension);
-    visiblityMetaData_.set(visibility);
+    d.deserialize("position", position_);
+    d.deserialize("dimension", dimension_);
+    d.deserialize("visibility", visibility_);
 }
 
 bool ProcessorWidgetMetaData::equal(const MetaData& rhs) const {
     const ProcessorWidgetMetaData* tmp = dynamic_cast<const ProcessorWidgetMetaData*>(&rhs);
     if (tmp) {
-        return tmp->positionMetaData_ == positionMetaData_
-            && tmp->visiblityMetaData_ == visiblityMetaData_
-            && tmp->dimensionMetaData_ == dimensionMetaData_;
+        return tmp->position_ == position_
+            && tmp->visibility_ == visibility_
+            && tmp->dimension_ == dimension_;
     } else {
         return false;
     }

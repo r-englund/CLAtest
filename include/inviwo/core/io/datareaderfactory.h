@@ -72,7 +72,7 @@ public:
     }
 
     template <typename T>
-    DataReaderType<T>* getReaderForTypeAndExtension(std::string ext) {
+    DataReaderType<T>* getReaderForTypeAndExtension(const std::string &ext) {
         ExtensionMap::iterator it = readerForExtension_.find(ext);
 
         if (it != readerForExtension_.end()) {

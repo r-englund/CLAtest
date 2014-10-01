@@ -34,22 +34,20 @@
 
 namespace inviwo {
 
-ProcessorMetaData::ProcessorMetaData() {
-    visiblityMetaData_.set(true);
-    selectionMetaData_.set(false);
+    ProcessorMetaData::ProcessorMetaData() : position_(0,0) , visibility_(true), selection_(false){
 }
 
 ProcessorMetaData::ProcessorMetaData(const ProcessorMetaData& rhs)
-    : positionMetaData_(rhs.positionMetaData_)
-    , visiblityMetaData_(rhs.visiblityMetaData_)
-    , selectionMetaData_(rhs.selectionMetaData_) {
+    : position_(rhs.position_)
+    , visibility_(rhs.visibility_)
+    , selection_(rhs.selection_) {
 }
 
 ProcessorMetaData& ProcessorMetaData::operator=(const ProcessorMetaData& that) {
     if (this != &that) {
-        positionMetaData_ = that.positionMetaData_;
-        visiblityMetaData_ = that.visiblityMetaData_;
-        selectionMetaData_ = that.selectionMetaData_;
+        position_ = that.position_;
+        visibility_ = that.visibility_;
+        selection_ = that.selection_;
     }
 
     return *this;
@@ -61,60 +59,51 @@ ProcessorMetaData* ProcessorMetaData::clone() const {
     return new ProcessorMetaData(*this);
 }
 
-void ProcessorMetaData::setPosition(ivec2 pos) {
-    positionMetaData_.set(pos);
+void ProcessorMetaData::setPosition(const ivec2 &pos) {
+    position_ = pos;
 }
 
-ivec2 ProcessorMetaData::getPosition() {
-    return positionMetaData_.get();
+ivec2 ProcessorMetaData::getPosition() const{
+    return position_;
 }
 
 void ProcessorMetaData::setVisibile(bool visibility) {
-    visiblityMetaData_.set(visibility);
+    visibility_ = visibility;
 }
 
-bool ProcessorMetaData::isVisible() {
-    return visiblityMetaData_.get();
+bool ProcessorMetaData::isVisible() const {
+    return visibility_;
 }
 
 void ProcessorMetaData::setSelected(bool selection) {
-    selectionMetaData_.set(selection);
+    selection_ = selection;
 }
 
-bool ProcessorMetaData::isSelected() {
-    return selectionMetaData_.get();
+bool ProcessorMetaData::isSelected() const {
+    return selection_;
 }
 
 void ProcessorMetaData::serialize(IvwSerializer& s) const {
-    //   CompositeMetaData::serialize(s);
     s.serialize("type", getClassIdentifier(), true);
-    s.serialize("position", positionMetaData_.get());
-    s.serialize("visibility", visiblityMetaData_.get());
-    s.serialize("selection", selectionMetaData_.get());
+    s.serialize("position", position_);
+    s.serialize("visibility", visibility_);
+    s.serialize("selection", selection_);
 }
 
 void ProcessorMetaData::deserialize(IvwDeserializer& d) {
     std::string className;
-    ivec2 position(positionMetaData_.get());
-    bool visibility=visiblityMetaData_.get();
-    bool selection=selectionMetaData_.get();
-    //   CompositeMetaData::deserialize(d);
     d.deserialize("type", className, true);
-    d.deserialize("position", position);
-    d.deserialize("visibility", visibility);
-    d.deserialize("selection", selection);
-    //TODO check if position is within current monitors
-    positionMetaData_.set(position);
-    visiblityMetaData_.set(visibility);
-    selectionMetaData_.set(selection);
+    d.deserialize("position", position_);
+    d.deserialize("visibility", visibility_);
+    d.deserialize("selection", selection_);
 }
 
 bool ProcessorMetaData::equal(const MetaData& rhs) const {
     const ProcessorMetaData* tmp = dynamic_cast<const ProcessorMetaData*>(&rhs);
     if (tmp) {
-        return operator==<ivec2>(tmp->positionMetaData_, positionMetaData_)
-            && operator==<bool>(tmp->visiblityMetaData_, visiblityMetaData_)
-            && operator==<bool>(tmp->selectionMetaData_, selectionMetaData_);
+        return operator==<ivec2>(tmp->position_, position_)
+            && operator==<bool>(tmp->visibility_, visibility_)
+            && operator==<bool>(tmp->selection_, selection_);
     } else {
         return false;
     }

@@ -50,18 +50,14 @@ Processor::Processor()
     , identifier_("")
     , initialized_(false)
     , invalidationEnabled_(true) {
+    createMetaData<ProcessorMetaData>("ProcessorMetaData");
 }
 
 Processor::~Processor() {
     usedIdentifiers_.erase(identifier_);
-
-    while (!metaData_.empty()) {
-        delete metaData_.back();
-        metaData_.pop_back();
-    }
 }
 
-void Processor::addPort(Inport* port, std::string portDependencySet) {
+void Processor::addPort(Inport* port, const std::string &portDependencySet) {
     // TODO: check if port with same name has been added before
     port->setProcessor(this);
     inports_.push_back(port);
@@ -69,11 +65,11 @@ void Processor::addPort(Inport* port, std::string portDependencySet) {
     notifyObserversProcessorPortAdded(this,port);
 }
 
-void Processor::addPort(Inport& port, std::string portDependencySet) {
+void Processor::addPort(Inport& port, const std::string &portDependencySet) {
     addPort(&port, portDependencySet);
 }
 
-void Processor::addPort(Outport* port, std::string portDependencySet) {
+void Processor::addPort(Outport* port, const std::string &portDependencySet) {
     // TODO: check if port with same name has been added before
     port->setProcessor(this);
     outports_.push_back(port);
@@ -81,7 +77,7 @@ void Processor::addPort(Outport* port, std::string portDependencySet) {
     notifyObserversProcessorPortAdded(this,port);
 }
 
-void Processor::addPort(Outport& port, std::string portDependencySet) {
+void Processor::addPort(Outport& port, const std::string &portDependencySet) {
     addPort(&port, portDependencySet);
 }
 
@@ -125,7 +121,7 @@ bool Processor::hasProcessorWidget() const {
     return (processorWidget_ != NULL);
 }
 
-Port* Processor::getPort(std::string identifier) const {
+Port* Processor::getPort(const std::string &identifier) const {
     for (std::vector<Inport*>::const_iterator it = inports_.begin(); it != inports_.end(); ++it)
         if ((*it)->getIdentifier() == identifier)
             return (*it);
@@ -137,7 +133,7 @@ Port* Processor::getPort(std::string identifier) const {
     return NULL;
 }
 
-Inport* Processor::getInport(std::string identifier) const {
+Inport* Processor::getInport(const std::string &identifier) const {
     for (std::vector<Inport*>::const_iterator it = inports_.begin(); it != inports_.end(); ++it)
         if ((*it)->getIdentifier() == identifier)
             return (*it);
@@ -145,7 +141,7 @@ Inport* Processor::getInport(std::string identifier) const {
     return NULL;
 }
 
-Outport* Processor::getOutport(std::string identifier) const {
+Outport* Processor::getOutport(const std::string &identifier) const {
     for (std::vector<Outport*>::const_iterator it = outports_.begin(); it != outports_.end(); ++it)
         if ((*it)->getIdentifier() == identifier)
             return (*it);
@@ -165,7 +161,7 @@ const std::vector<Inport*>& Processor::getInports(Event*) const {
     return inports_;
 }
 
-std::vector<Port*> Processor::getPortsByDependencySet(std::string portDependencySet) const {
+std::vector<Port*> Processor::getPortsByDependencySet(const std::string &portDependencySet) const {
     return portDependencySets_.getGroupedData(portDependencySet);
 }
 
@@ -287,34 +283,15 @@ void Processor::invokeInteractionEvent(Event* event) {
         interactionHandlers_[i]->invokeEvent(event);
 }
 
-
-MetaData* Processor::getMetaData(std::string className) {
-    MetaData* meta = 0;
-
-    for (size_t i=0; i<metaData_.size(); i++) {
-        if (metaData_[i]->getClassIdentifier()==className) {
-            meta = metaData_[i];
-            break;
-        }
-    }
-
-    if (!meta) {
-        meta = dynamic_cast<MetaData*>(MetaDataFactory::getPtr()->create(className));
-        metaData_.push_back(meta);
-    }
-
-    return meta;
-}
-
 void Processor::serialize(IvwSerializer& s) const {
     s.serialize("type", getClassIdentifier(), true);
     s.serialize("identifier", identifier_, true);
-    s.serialize("MetaDataList", metaData_, "MetaData") ;
 
     if (interactionHandlers_.size() != 0)
         s.serialize("InteractonHandlers", interactionHandlers_, "InteractionHandler");
 
     PropertyOwner::serialize(s);
+    MetaDataOwner::serialize(s);
 }
 
 void Processor::deserialize(IvwDeserializer& d) {
@@ -322,13 +299,13 @@ void Processor::deserialize(IvwDeserializer& d) {
     std::string identifier;
     d.deserialize("type", className, true);
     d.deserialize("identifier", identifier, true);
-    d.deserialize("MetaDataList", metaData_, "MetaData") ;
     setIdentifier(identifier);
 
     if (interactionHandlers_.size() != 0)
         d.deserialize("InteractonHandlers", interactionHandlers_, "InteractionHandler");
 
     PropertyOwner::deserialize(d);
+    MetaDataOwner::deserialize(d);
 }
 
 void Processor::setValid() {

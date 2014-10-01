@@ -482,8 +482,7 @@ void NetworkEditor::addExternalNetwork(std::string fileName, std::string identif
     for (size_t i = 0; i < processors.size(); i++) {
         std::string newIdentifier = identifierPrefix + "_" + processors[i]->getIdentifier();
         processors[i]->setIdentifier(newIdentifier);
-        ProcessorMetaData* meta =
-            dynamic_cast<ProcessorMetaData*>(processors[i]->getMetaData("ProcessorMetaData"));
+        ProcessorMetaData* meta = processors[i]->getMetaData<ProcessorMetaData>("ProcessorMetaData");
         meta->setPosition(meta->getPosition() + pos);
         network->addProcessor(processors[i]);
     }
@@ -956,8 +955,7 @@ void NetworkEditor::dropEvent(QGraphicsSceneDragDropEvent* e) {
 
             clearSelection();
 
-            ProcessorMetaData* meta =
-                dynamic_cast<ProcessorMetaData*>(processor->getMetaData("ProcessorMetaData"));
+            ProcessorMetaData* meta = processor->getMetaData<ProcessorMetaData>("ProcessorMetaData");
 
             if (oldProcessorTarget_) {
                 meta->setPosition(
@@ -1441,8 +1439,7 @@ void NetworkEditor::contextMenuEditLink(EditorGraphicsItem* item) {
 
 void NetworkEditor::onProcessorNetworkDidAddProcessor(Processor* processor) {
     setModified(true);
-    ProcessorMetaData* meta =
-        dynamic_cast<ProcessorMetaData*>(processor->getMetaData("ProcessorMetaData"));
+    ProcessorMetaData* meta = processor->getMetaData<ProcessorMetaData>("ProcessorMetaData");
 
     addProcessorRepresentations(processor, QPointF(meta->getPosition().x, meta->getPosition().y),
         meta->isVisible(), meta->isSelected(), meta->isVisible());

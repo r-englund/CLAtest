@@ -56,17 +56,17 @@ public:
     virtual void deserialize(IvwDeserializer& d);
     virtual bool equal(const MetaData& rhs) const;
 
-    void setPosition(ivec2 pos);
-    ivec2 getPosition();
+    void setPosition(const ivec2 &pos);
+    ivec2 getPosition()const;
     void setVisibile(bool visibility);
-    bool isVisible();
+    bool isVisible()const;
     void setSelected(bool selection);
-    bool isSelected();
+    bool isSelected()const;
 
 private:
-    IVec2MetaData positionMetaData_;
-    BoolMetaData visiblityMetaData_;
-    BoolMetaData selectionMetaData_;
+    ivec2 position_;
+    bool visibility_;
+    bool selection_;
 };
 
 } // namespace

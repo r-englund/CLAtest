@@ -47,7 +47,7 @@ void MetaDataFactory::registerObject(MetaData* meta) {
         metaDataClassMap_.insert(std::make_pair(meta->getClassIdentifier(), meta));
 }
 
-IvwSerializable* MetaDataFactory::create(std::string className) const {
+IvwSerializable* MetaDataFactory::create(const std::string &className) const {
     std::map<std::string, MetaData*>::iterator it = metaDataClassMap_.find(className);
 
     if (it != metaDataClassMap_.end())
@@ -56,7 +56,7 @@ IvwSerializable* MetaDataFactory::create(std::string className) const {
         return 0;
 }
 
-bool MetaDataFactory::isValidType(std::string className) const {
+bool MetaDataFactory::isValidType(const std::string &className) const {
     std::map<std::string, MetaData*>::iterator it = metaDataClassMap_.find(className);
 
     if (it != metaDataClassMap_.end())

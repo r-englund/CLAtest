@@ -44,7 +44,7 @@ namespace inviwo {
 class IVW_CORE_API SystemSettings : public Settings {
 
 public:
-    SystemSettings(std::string id="System Settings");
+    SystemSettings();
     virtual ~SystemSettings();
     virtual void initialize();
     virtual void deinitialize();

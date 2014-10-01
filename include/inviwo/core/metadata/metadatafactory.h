@@ -48,8 +48,8 @@ public:
     virtual ~MetaDataFactory();
 
     void registerObject(MetaData* meta);
-    virtual IvwSerializable* create(std::string className) const;
-    virtual bool isValidType(std::string className) const;
+    virtual IvwSerializable* create(const std::string &className) const;
+    virtual bool isValidType(const std::string &className) const;
 
     typedef std::map<std::string, MetaData*> MetaDataClassMap;
 

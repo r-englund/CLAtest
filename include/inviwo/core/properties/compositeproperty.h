@@ -76,9 +76,20 @@ public:
     // Override from the property owner
     virtual Processor* getProcessor() {
         PropertyOwner* owner = getOwner();
-        if(owner) {
+        if (owner) {
             return owner->getProcessor();
-        } else {
+        }
+        else {
+            return NULL;
+        }
+    }
+
+    virtual const Processor* getProcessor() const {
+        const PropertyOwner* owner = getOwner();
+        if (owner) {
+            return owner->getProcessor();
+        }
+        else {
             return NULL;
         }
     }

@@ -53,7 +53,7 @@ void ProcessorFactory::registerObject(ProcessorFactoryObject* processor) {
     }
 }
 
-IvwSerializable* ProcessorFactory::create(std::string classIdentifier) const {
+IvwSerializable* ProcessorFactory::create(const std::string &classIdentifier) const {
     std::map<std::string, ProcessorFactoryObject*>::iterator it = processorClassMap_.find(classIdentifier);
 
     if (it != processorClassMap_.end()) {
@@ -68,7 +68,7 @@ IvwSerializable* ProcessorFactory::create(std::string classIdentifier) const {
     return NULL;
 }
 
-bool ProcessorFactory::isValidType(std::string classIdentifier) const {
+bool ProcessorFactory::isValidType(const std::string &classIdentifier) const {
     std::map<std::string, ProcessorFactoryObject*>::iterator it = processorClassMap_.find(classIdentifier);
 
     if (it != processorClassMap_.end())

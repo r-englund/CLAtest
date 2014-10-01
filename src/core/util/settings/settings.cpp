@@ -36,7 +36,7 @@
 
 namespace inviwo {
 
-Settings::Settings(std::string id) : identifier_(id), isDeserializing_(false) {}
+Settings::Settings(const std::string &id) : identifier_(id), isDeserializing_(false) {}
 
 Settings::~Settings() {}
 

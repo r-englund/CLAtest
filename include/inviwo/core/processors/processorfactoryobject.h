@@ -44,8 +44,8 @@ class Processor;
 
 class IVW_CORE_API ProcessorFactoryObject {
 public:
-    ProcessorFactoryObject(std::string classIdentifier, std::string displayName, Tags tags,
-                           std::string category, CodeState codeState)
+    ProcessorFactoryObject(const std::string &classIdentifier, const std::string &displayName, Tags tags,
+                           const std::string &category, CodeState codeState)
         : classIdentifier_(classIdentifier)
         , displayName_(displayName)
         , tags_(tags)

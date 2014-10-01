@@ -54,7 +54,7 @@ void PortInspectorFactory::registerObject(PortInspectorFactoryObject* portInspec
         LogWarn("PortInspector for " << className << " already registered");
 }
 
-PortInspector* PortInspectorFactory::getPortInspectorForPortClass(std::string className) {
+PortInspector* PortInspectorFactory::getPortInspectorForPortClass(const std::string &className) {
     // Look in cache for an inactive port insepctor.
     PortInsectorCache::iterator cit = cache_.find(className);
     if (cit != cache_.end()) {
@@ -75,7 +75,7 @@ PortInspector* PortInspectorFactory::getPortInspectorForPortClass(std::string cl
     return NULL;
 }
 
-bool PortInspectorFactory::isValidType(std::string className) const {
+bool PortInspectorFactory::isValidType(const std::string &className) const {
     PortInspectorMap::const_iterator it = portInspectors_.find(className);
 
     if (it != portInspectors_.end())

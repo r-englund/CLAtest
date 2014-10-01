@@ -37,8 +37,8 @@
 
 namespace inviwo {
 
-SystemSettings::SystemSettings(std::string id) :
-    Settings(id)
+SystemSettings::SystemSettings() :
+Settings("System Settings")
     , applicationUsageModeProperty_("applicationUsageMode", "Application usage mode")
     , txtEditorProperty_("txtEditor", "Use system text editor", true)
     , shaderReloadingProperty_("shaderReloading", "Automatically reload shaders", true)

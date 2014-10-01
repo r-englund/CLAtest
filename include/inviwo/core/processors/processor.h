@@ -76,7 +76,11 @@ namespace inviwo {
  * It can hold arbitrary number of inports and outports, as well as properties which can be used 
  * to customize the processors behavior. 
  */
-class IVW_CORE_API Processor : public PropertyOwner, public ProcessorObservable {
+class IVW_CORE_API Processor 
+    : public PropertyOwner
+    , public MetaDataOwner
+    , public ProcessorObservable
+{
 
 public:
     Processor();
@@ -97,15 +101,13 @@ public:
     ProcessorWidget* getProcessorWidget() const;
     bool hasProcessorWidget() const;
 
-    MetaData* getMetaData(std::string meta);
-
     virtual void initialize();
     virtual void deinitialize();
     bool isInitialized() const;
 
-    Port* getPort(std::string identifier) const;
-    Inport* getInport(std::string identifier) const;
-    Outport* getOutport(std::string identifier) const;
+    Port* getPort(const std::string &identifier) const;
+    Inport* getInport(const std::string &identifier) const;
+    Outport* getOutport(const std::string &identifier) const;
 
     const std::vector<Inport*>& getInports() const;
     const std::vector<Outport*>& getOutports() const;
@@ -113,7 +115,7 @@ public:
     virtual const std::vector<Inport*>& getInports(Event*) const;
 
     std::vector<std::string> getPortDependencySets() const;
-    std::vector<Port*> getPortsByDependencySet(std::string portDependencySet) const;
+    std::vector<Port*> getPortsByDependencySet(const std::string &portDependencySet) const;
     std::string getPortDependencySet(Port* port) const;
 
     bool allInportsConnected() const;
@@ -163,6 +165,7 @@ public:
 
     // Override from the property owner
     virtual Processor* getProcessor() { return this; }
+    virtual const Processor* getProcessor() const { return this; }
 
 
     virtual void serialize(IvwSerializer& s) const;
@@ -175,11 +178,11 @@ protected:
     void invalidationEnabled();
     void invalidationDisabled();
 
-    void addPort(Inport* port, std::string portDependencySet="default");
-    void addPort(Inport& port, std::string portDependencySet="default");
+    void addPort(Inport* port, const std::string &portDependencySet = "default");
+    void addPort(Inport& port, const std::string & portDependencySet = "default");
 
-    void addPort(Outport* port, std::string portDependencySet="default");
-    void addPort(Outport& port, std::string portDependencySet="default");
+    void addPort(Outport* port, const std::string &portDependencySet = "default");
+    void addPort(Outport& port, const std::string &portDependencySet = "default");
 
     virtual void performEvaluateRequest();
 
@@ -191,8 +194,6 @@ private:
     std::vector<Outport*> outports_;
     std::vector<InteractionHandler*> interactionHandlers_;
 
-    //TODO: Use map
-    std::vector<MetaData*> metaData_;
     Group<std::string, Port*> portDependencySets_;
     static std::set<std::string> usedIdentifiers_;
 

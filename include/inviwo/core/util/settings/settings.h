@@ -44,7 +44,7 @@ namespace inviwo {
 class IVW_CORE_API Settings : public PropertyOwner {
 
 public:
-    Settings(std::string id = "");
+    Settings(const std::string &id = "");
     virtual ~Settings();
 
     virtual void initialize(){};

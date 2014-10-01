@@ -56,17 +56,17 @@ public:
     virtual void deserialize(IvwDeserializer& d);
     virtual bool equal(const MetaData& rhs) const;
 
-    void setWidgetPosition(ivec2 pos);
-    ivec2 getWidgetPosition();
-    void setDimension(ivec2 dim);
+    void setWidgetPosition(const ivec2 &pos);
+    ivec2 getWidgetPosition()const;
+    void setDimension(const ivec2 &dim);
     ivec2 getDimension() const;
     void setVisibile(bool visibility);
     bool isVisible() const;
 
 private:
-    IVec2MetaData positionMetaData_;
-    IVec2MetaData dimensionMetaData_;
-    BoolMetaData visiblityMetaData_;
+    ivec2 position_;
+    ivec2 dimension_;
+    bool visibility_;
 
 };
 

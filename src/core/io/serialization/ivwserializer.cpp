@@ -43,7 +43,7 @@ IvwSerializer::IvwSerializer(IvwSerializer& s, bool allowReference)
     initialize();
 }
 
-IvwSerializer::IvwSerializer(std::string fileName, bool allowReference)
+IvwSerializer::IvwSerializer(const std::string& fileName, bool allowReference)
     : IvwSerializeBase(fileName, allowReference) {
     initialize();
 }

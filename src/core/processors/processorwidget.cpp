@@ -59,7 +59,7 @@ ProcessorWidget::~ProcessorWidget() {
 
 
 void ProcessorWidget::initialize() {
-    metaData_ = dynamic_cast<ProcessorWidgetMetaData*>(processor_->getMetaData("ProcessorWidgetMetaData"));
+    metaData_ = processor_->createMetaData<ProcessorWidgetMetaData>("ProcessorWidgetMetaData");
 }
 
 void ProcessorWidget::deinitialize() {

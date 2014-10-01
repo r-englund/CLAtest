@@ -50,12 +50,12 @@ MetaDataMap* MetaDataMap::clone() const {
     return new MetaDataMap(*this);
 }
 
-void MetaDataMap::add(std::string key, MetaData* metaData) {
+void MetaDataMap::add(const std::string &key, MetaData* metaData) {
     remove(key);
     metaData_[key] = metaData;
 }
 
-void MetaDataMap::remove(std::string key) {
+void MetaDataMap::remove(const std::string &key) {
     iterator it = metaData_.find(key);
 
     if (it != metaData_.end() && it->second) {
@@ -71,7 +71,7 @@ void MetaDataMap::removeAll() {
     metaData_.clear();
 }
 
-void MetaDataMap::rename(std::string newKey, std::string oldKey) {
+void MetaDataMap::rename(const std::string &newKey, const std::string &oldKey) {
     MetaData* data = get(oldKey);
 
     if (data) {
@@ -89,16 +89,15 @@ std::vector<std::string> MetaDataMap::getKeys() const {
     return keys;
 }
 
-MetaData* MetaDataMap::get(std::string key) {
+MetaData* MetaDataMap::get(const std::string &key) {
     cIterator it = metaData_.find(key);
 
     if (it!=metaData_.end())
         return it->second;
-
     return NULL;
 }
 
-const MetaData* MetaDataMap::get(std::string key) const {
+const MetaData* MetaDataMap::get(const std::string &key) const {
     cIterator it = metaData_.find(key);
 
     if (it!=metaData_.end())
