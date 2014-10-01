@@ -728,17 +728,19 @@ void NetworkEditor::keyPressEvent(QKeyEvent* e) {
         ProcessorNetwork* network = InviwoApplication::getPtr()->getProcessorNetwork();
 
         // delete selected graphics items
-        QList<QGraphicsItem*> selectedGraphicsItems = selectedItems();
 
+        QList<QGraphicsItem*> selectedGraphicsItems = selectedItems();
         for (int i = 0; i < selectedGraphicsItems.size(); i++) {
             // Remove Connection
             ConnectionGraphicsItem* connectionGraphicsItem =
                 qgraphicsitem_cast<ConnectionGraphicsItem*>(selectedGraphicsItems[i]);
             if (connectionGraphicsItem) {
                 removeConnection(connectionGraphicsItem);
-                continue;
             }
-  
+        }
+
+        selectedGraphicsItems = selectedItems();
+        for (int i = 0; i < selectedGraphicsItems.size(); i++) {
             // Remove Link
             LinkConnectionGraphicsItem* linkGraphicsItem =
                 qgraphicsitem_cast<LinkConnectionGraphicsItem*>(selectedGraphicsItems[i]);
@@ -746,7 +748,10 @@ void NetworkEditor::keyPressEvent(QKeyEvent* e) {
                 removeLink(linkGraphicsItem);
                 continue;
             }
+        }
 
+        selectedGraphicsItems = selectedItems();
+        for (int i = 0; i < selectedGraphicsItems.size(); i++) {
             // Remove Processor
             ProcessorGraphicsItem* processorGraphicsItem =
                 qgraphicsitem_cast<ProcessorGraphicsItem*>(selectedGraphicsItems[i]);
@@ -958,7 +963,8 @@ void NetworkEditor::dropEvent(QGraphicsSceneDragDropEvent* e) {
                 meta->setPosition(
                     vec2(oldProcessorTarget_->scenePos().x(), oldProcessorTarget_->scenePos().y()));
             } else {
-                meta->setPosition(vec2(e->scenePos().x(), e->scenePos().y()));
+                QPointF spos = snapToGrid(e->scenePos());
+                meta->setPosition(vec2(spos.x(), spos.y()));
             }
 
             InviwoApplication::getPtr()->getProcessorNetwork()->addProcessor(processor);

@@ -158,32 +158,19 @@ std::vector<Inport*> MultiInport::getInports() const {
 }
 
 std::vector<Outport*> MultiInport::getConnectedOutports() const {
-    InportVec::const_iterator it = inports_->begin();
-    InportVec::const_iterator endIt = inports_->end();
-    std::vector<Outport*> connectedOutports;
+    std::vector<Outport*> allOutports;
 
-    for (; it != endIt; ++it) {
-        std::vector<Outport*> inportConnectedOutports = (*it)->getConnectedOutports();
-        std::vector<Outport*>::const_iterator outportIt = inportConnectedOutports.begin();
-        std::vector<Outport*>::const_iterator outportEndIt = inportConnectedOutports.end();
-
-        for (; outportIt != outportEndIt; ++outportIt)
-            connectedOutports.push_back(*outportIt);
+    for (InportVec::const_iterator it = inports_->begin(); it != inports_->end(); ++it) {
+        std::vector<Outport*> outports = (*it)->getConnectedOutports();
+        allOutports.insert(allOutports.end(), outports.begin(), outports.end());
     }
 
-    it = vectorInports_->begin();
-    endIt = vectorInports_->end();
-    for (; it != endIt; ++it) {
-        std::vector<Outport*> inportConnectedOutports = (*it)->getConnectedOutports();
-        std::vector<Outport*>::const_iterator outportIt = inportConnectedOutports.begin();
-        std::vector<Outport*>::const_iterator outportEndIt = inportConnectedOutports.end();
-
-        for (; outportIt != outportEndIt; ++outportIt)
-            connectedOutports.push_back(*outportIt);
+    for (InportVec::const_iterator  it = vectorInports_->begin(); it != vectorInports_->end(); ++it) {
+        std::vector<Outport*> outports = (*it)->getConnectedOutports();
+        allOutports.insert(allOutports.end(), outports.begin(), outports.end());
     }
 
-
-    return connectedOutports;
+    return allOutports;
 }
 
 size_t MultiInport::getNumConnectedOutports() const {
