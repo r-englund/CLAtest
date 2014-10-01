@@ -35,8 +35,11 @@
 #include <inviwo/qt/widgets/properties/collapsiblegroupboxwidgetqt.h>
 #include <inviwo/qt/widgets/properties/transferfunctioneditorcontrolpoint.h>
 #include <inviwo/core/common/inviwoapplication.h>
+#include <inviwo/core/datastructures/image/layerram.h>
 #include <inviwo/core/util/urlparser.h>
+#include <inviwo/core/io/imageio.h>
 #include <QFileDialog>
+#include <QImage>
 #include <QDockWidget>
 #include <QGraphicsItem>
 #include <QPushButton>
@@ -395,21 +398,39 @@ void TransferFunctionPropertyDialog::exportTransferFunction() {
     exportFileDialog.setDirectory(InviwoApplication::getPtr()->getPath(InviwoApplication::PATH_TRANSFERFUNCTIONS).c_str());
     exportFileDialog.setAcceptMode(QFileDialog::AcceptSave);
     exportFileDialog.setFileMode(QFileDialog::AnyFile);
-    exportFileDialog.setNameFilter("*.itf");
+    exportFileDialog.setNameFilter("Inviwo Transfer Function (*.itf);;TF Image (*.png)"); // ;;All files (*.*)
 
     if (exportFileDialog.exec()) {
         std::string file = exportFileDialog.selectedFiles().at(0).toLocal8Bit().constData();
         std::string extension = URLParser::getFileExtension(file);
 
         if (extension == "") {
+            // fall-back to standard inviwo TF format
             file.append(".itf");
-        } else if (extension != "itf") {
-            URLParser::replaceFileExtension(file, "itf");
         }
 
-        IvwSerializer serializer(file);
-        tfProperty_->get().serialize(serializer);
-        serializer.writeFile();
+        if (extension == "png") {
+            TransferFunction &tf = tfProperty_->get();
+            const Layer* layer = tf.getData();
+            vec2 texSize(tf.getTextureSize(), 1);
+            const vec4 *data = static_cast<const vec4 *>(layer->getRepresentation<LayerRAM>()->getData());
+            std::vector<unsigned char> imgData;
+            std::size_t imgSize = texSize.x * texSize.y * 4;
+            imgData.resize(texSize.x * texSize.y * 4);
+            
+            for (std::size_t i=0; i<texSize.x * texSize.y; ++i) {
+                for (int c=0; c<4; ++c) {
+                    imgData[4 * i + c] = static_cast<unsigned char>(std::min(std::max(data[i][c] * 255.0f, 0.0f), 255.0f));
+                }
+            }
+            //ImageIO::saveLayer(file.c_str(), layer);
+            QImage img(&imgData[0], texSize.x, texSize.y, QImage::Format_RGBA8888);
+            img.save(QString::fromStdString(file));
+        } else if (extension == "itf") {
+            IvwSerializer serializer(file);
+            tfProperty_->get().serialize(serializer);
+            serializer.writeFile();
+        }
     }
 }
 
