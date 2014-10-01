@@ -67,8 +67,7 @@ public:
                              PropertySemantics semantics = PropertySemantics::Default);
     virtual ~AdvancedMaterialProperty();
 
-
-    virtual std::string getClassIdentifier()  const { return "AdvancedMaterialProperty"; }
+    InviwoPropertyInfo();
 
     vec4 getCombinedMaterialParameters() const;
     ShadingFunctionEnum::Enum getPhaseFunctionEnum() const;

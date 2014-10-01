@@ -54,13 +54,13 @@ public:
         std::string contentType = "default",
         PropertyOwner::InvalidationLevel invalidationLevel = PropertyOwner::INVALID_OUTPUT,
         PropertySemantics semantics = PropertySemantics::Default);
+    InviwoPropertyInfo();
     virtual std::vector<std::string> getDirectoryTree() const;
     virtual std::vector<std::string> getFiles(std::string filters = "*.*") const;
     virtual void setDirectoryTree(std::vector<std::string> dirTree);
     void updateDirectoryTree();
     virtual void serialize(IvwSerializer& s) const;
     virtual void deserialize(IvwDeserializer& d);
-    virtual std::string getClassIdentifier() const { return "DirectoryProperty"; }
     virtual void registerFileIndexingHandle(IntProperty* indexHandle) {
         // TODO: use composite property if possible.
         fileIndexingHandle_ = indexHandle;

@@ -60,8 +60,8 @@ private:
 template<typename T, typename P>
 class PropertyWidgetFactoryObjectTemplate : public PropertyWidgetFactoryObject {
 public:
-    PropertyWidgetFactoryObjectTemplate(const std::string& className, const PropertySemantics& semantics)
-        : PropertyWidgetFactoryObject(className, semantics) {}
+    PropertyWidgetFactoryObjectTemplate(const PropertySemantics& semantics)
+        : PropertyWidgetFactoryObject(P::CLASS_IDENTIFIER, semantics) {}
 
     virtual ~PropertyWidgetFactoryObjectTemplate() {}
 

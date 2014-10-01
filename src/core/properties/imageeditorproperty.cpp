@@ -55,6 +55,7 @@ void ImageLabel::deserialize(IvwDeserializer& d) {
     d.deserialize("size", rectSize_);
 }
 
+PropertyClassIdentifier(ImageEditorProperty, "org.inviwo.ImageEditorProperty");
 
 ImageEditorProperty::ImageEditorProperty(std::string identifier, std::string displayName,std::string value,
         PropertyOwner::InvalidationLevel invalidationLevel,

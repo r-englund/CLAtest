@@ -42,15 +42,15 @@
 namespace inviwo {
 
 class IVW_CORE_API CompositeProperty : public Property, public PropertyOwner {
-
 public:
     CompositeProperty(std::string identifier, std::string displayName,
                       PropertyOwner::InvalidationLevel invalidationLevel=PropertyOwner::INVALID_OUTPUT,
                       PropertySemantics semantics = PropertySemantics::Default);
     virtual ~CompositeProperty();
 
+    InviwoPropertyInfo();
+
     virtual void setOwner(PropertyOwner* owner);
-    virtual std::string getClassIdentifier()  const { return "CompositeProperty"; }
 
     virtual bool getReadOnly() const; // returns true if all sub properties are read only
     virtual void setReadOnly(const bool& value);

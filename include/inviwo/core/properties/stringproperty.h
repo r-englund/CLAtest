@@ -71,7 +71,7 @@ public:
                    PropertyOwner::InvalidationLevel invalidationLevel = PropertyOwner::INVALID_OUTPUT,
                    PropertySemantics semantics=PropertySemantics::Default);
 
-    virtual std::string getClassIdentifier()  const { return "StringProperty"; }
+    InviwoPropertyInfo();
 };
 
 } // namespace

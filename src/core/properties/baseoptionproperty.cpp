@@ -3,18 +3,18 @@
  * Inviwo - Interactive Visualization Workshop
  * Version 0.6b
  *
- * Copyright (c) 2014 Inviwo Foundation
+ * Copyright (c) 2012-2014 Inviwo Foundation
  * All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met: 
- * 
+ * modification, are permitted provided that the following conditions are met:
+ *
  * 1. Redistributions of source code must retain the above copyright notice, this
- * list of conditions and the following disclaimer. 
+ * list of conditions and the following disclaimer.
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  * this list of conditions and the following disclaimer in the documentation
- * and/or other materials provided with the distribution. 
- * 
+ * and/or other materials provided with the distribution.
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
  * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
@@ -25,49 +25,29 @@
  * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- * 
- * Main file author: Peter Steneteg
+ *
+ * Main file authors: Peter Steneteg
  *
  *********************************************************************************/
 
-#ifndef IVW_PROPERTYFACTORYOBJECT_H
-#define IVW_PROPERTYFACTORYOBJECT_H
-
-#include <inviwo/core/common/inviwocoredefine.h>
-#include <inviwo/core/common/inviwo.h>
-#include <inviwo/core/properties/property.h>
+#include <inviwo/core/properties/baseoptionproperty.h>
 
 namespace inviwo {
+PropertyClassIdentifier(OptionPropertyString, "org.inviwo.OptionPropertyString");
 
-class IVW_CORE_API PropertyFactoryObject {
-public:
-    PropertyFactoryObject(const std::string& className);
-    virtual ~PropertyFactoryObject();
+void OptionPropertyString::addOption(std::string identifier, std::string displayName,
+                                     std::string value) {
+    TemplateOptionProperty<std::string>::addOption(identifier, displayName, value);
+}
 
-    virtual Property* create(std::string identifier,
-                             std::string displayName) = 0;
+void OptionPropertyString::addOption(std::string identifier, std::string displayName) {
+    TemplateOptionProperty<std::string>::addOption(identifier, displayName, identifier);
+}
 
-    std::string getClassIdentifier() const;
+OptionPropertyString::OptionPropertyString(
+    std::string identifier, std::string displayName,
+    PropertyOwner::InvalidationLevel invalidationLevel /*= PropertyOwner::INVALID_OUTPUT*/,
+    PropertySemantics semantics /*= PropertySemantics::Default*/)
+    : TemplateOptionProperty<std::string>(identifier, displayName, invalidationLevel, semantics) {}
 
-private:
-    std::string className_;
-};
-
-template<typename T>
-class PropertyFactoryObjectTemplate : public PropertyFactoryObject {
-public:
-    PropertyFactoryObjectTemplate()
-        : PropertyFactoryObject(T::CLASS_IDENTIFIER) {}
-
-    virtual ~PropertyFactoryObjectTemplate() {}
-
-    virtual Property* create(std::string identifier,
-                             std::string displayName) {
-        return static_cast<Property*>(new T(identifier, displayName));
-    }
-};
-
-} // namespace
-
-#endif // IVW_PROPERTYFACTORYOBJECT_H
-
+}  // namespace

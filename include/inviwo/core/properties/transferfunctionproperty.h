@@ -55,8 +55,7 @@ public:
                              PropertySemantics semantics=PropertySemantics::Default);
         
     ~TransferFunctionProperty();
-
-    virtual std::string getClassIdentifier()  const { return "TransferFunctionProperty"; }
+    InviwoPropertyInfo();
 
     const vec2 getMask() const;
     void setMask(float maskMin, float maskMax);

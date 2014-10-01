@@ -362,6 +362,7 @@ private:
     private:
         void updateProcessorType(TxElement* node);
         void updateMetaDataTree(TxElement* node);
+        void updatePropertType(TxElement* node);
         void traverseNodes(TxElement* node, updateType update);
     };
 };

@@ -2,6 +2,8 @@
 
 namespace inviwo {
 
+PropertyClassIdentifier(SimpleRaycastingProperty, "org.inviwo.SimpleRaycastingProperty");
+
 SimpleRaycastingProperty::SimpleRaycastingProperty(
     std::string identifier, std::string displayName,
     PropertyOwner::InvalidationLevel invalidationLevel, PropertySemantics semantics)

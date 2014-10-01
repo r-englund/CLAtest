@@ -750,7 +750,7 @@ bool ProcessorNetwork::isDeserializing()const {
     return deserializing_;
 }
 
-const int ProcessorNetwork::processorNetworkVersion_ = 2;
+const int ProcessorNetwork::processorNetworkVersion_ = 3;
 
 
 ProcessorNetwork::NetworkConverter::NetworkConverter(int from)
@@ -762,6 +762,8 @@ bool ProcessorNetwork::NetworkConverter::convert(TxElement* root) {
             traverseNodes(root, &ProcessorNetwork::NetworkConverter::updateProcessorType);
         case 1:
             traverseNodes(root, &ProcessorNetwork::NetworkConverter::updateMetaDataTree);
+        case 2:
+            traverseNodes(root, &ProcessorNetwork::NetworkConverter::updatePropertType);
         default:
             break;
     }
@@ -799,12 +801,83 @@ void ProcessorNetwork::NetworkConverter::updateMetaDataTree(TxElement* node) {
     std::string key;
     node->GetValue(&key);
 
-    if (key == "MetaDataList"){
+    if (key == "MetaDataList") {
         node->SetValue("MetaDataMap");
     }
-    if (key == "MetaData"){
+    if (key == "MetaData") {
         node->SetValue("MetaDataItem");
         node->SetAttribute("key", node->GetAttribute("type"));
+    }
+}
+
+void ProcessorNetwork::NetworkConverter::updatePropertType(TxElement* node) {
+    std::string key;
+    node->GetValue(&key);
+
+    std::string renamed[] = {
+        "undefined",
+        "BoolProperty",
+        "AdvancedMaterialProperty",
+        "BaseOptionProperty",
+        "OptionPropertyFloat",
+        "OptionPropertyDouble",
+        "OptionPropertyInt",
+        "OptionPropertyInt64",
+        "OptionPropertyFloatVec2",
+        "OptionPropertyFloatVec3",
+        "OptionPropertyFloatVec4",
+        "OptionPropertyDoubleVec2",
+        "OptionPropertyDoubleVec3",
+        "OptionPropertyDoubleVec4",
+        "OptionPropertyIntVec2",
+        "OptionPropertyIntVec3",
+        "OptionPropertyIntVec4",
+        "OptionPropertyFloatMat2",
+        "OptionPropertyFloatMat3",
+        "OptionPropertyFloatMat4",
+        "OptionPropertyDoubleMat2",
+        "OptionPropertyDoubleMat3",
+        "OptionPropertyDoubleMat4",
+        "ButtonProperty",
+        "CameraProperty",
+        "CompositeProperty",
+        "DirectoryProperty",
+        "EventProperty",
+        "FileProperty",
+        "ImageEditorProperty",
+        "FloatMinMaxProperty",
+        "DoubleMinMaxProperty",
+        "IntMinMaxProperty",
+        "FloatProperty",
+        "DoubleProperty",
+        "IntProperty",
+        "Int64Property",
+        "FloatVec2Property",
+        "FloatVec3Property",
+        "FloatVec4Property",
+        "DoubleVec2Property",
+        "DoubleVec3Property",
+        "DoubleVec4Property",
+        "IntVec2Property",
+        "IntVec3Property",
+        "IntVec4Property",
+        "FloatMat2Property",
+        "FloatMat3Property",
+        "FloatMat4Property",
+        "DoubleMat2Property",
+        "DoubleMat3Property",
+        "DoubleMat4Property",
+        "SimpleLightingProperty",
+        "SimpleRaycastingProperty",
+        "StringProperty",
+        "TransferFunctionProperty" };
+
+    if (key == "Property") {
+        std::string type = node->GetAttributeOrDefault("type", "");
+        int size = sizeof(renamed)/sizeof(std::string);
+        if(std::find(renamed, renamed+size, type) != renamed+size) {
+            node->SetAttribute("type", "org.inviwo." + type);
+        }
     }
 }
 

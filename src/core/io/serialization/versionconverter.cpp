@@ -55,8 +55,9 @@ bool util::xmlCopyMatchingSubPropsIntoComposite(TxElement* node, const Composite
 
     for (int i = 0; i < props.size(); ++i) {
         bool match = false;
-        LogWarnCustom("VersionConverter", "    Looking for match to: " << prop.getIdentifier() << "."
-                                                                    << props[i]->getIdentifier());
+        std::stringstream ss;
+
+        ss << "Looking for match to: " << prop.getIdentifier() << "." << props[i]->getIdentifier();
         ticpp::Iterator<ticpp::Element> child;
         for (child = child.begin(node); child != child.end(); child++) {
             std::string name;
@@ -64,14 +65,18 @@ bool util::xmlCopyMatchingSubPropsIntoComposite(TxElement* node, const Composite
             std::string type = child->GetAttributeOrDefault("type", "");
             std::string id = child->GetAttributeOrDefault("identifier", "");
 
-            if (props[i]->getClassIdentifier() == type && props[i]->getIdentifier() == id) {
-                LogWarnCustom("VersionConverter", "        Match found type: " << type
-                                                                               << " id: " << id);
+            if (props[i]->getIdentifier() == id && (
+                props[i]->getClassIdentifier() == type || 
+                props[i]->getClassIdentifier() == splitString(type, '.').back())) {
+                ss << ": Match found type: " << type << " id: " << id;
                 list->InsertEndChild(*(child.Get()));
                 match = true;
             }
         }
-        if (!match) LogWarnCustom("VersionConverter", "        No match found!");
+        if (!match) ss << ": No match found!";
+
+        LogWarnCustom("VersionConverter", "    " + ss.str());
+
         res = res && match;
     }
     return res;
@@ -168,7 +173,7 @@ bool util::xmlCopyMatchingCompositeProperty(TxElement* node, const CompositeProp
         std::string type = child->GetAttributeOrDefault("type", "");
         std::string id = child->GetAttributeOrDefault("identifier", "");
 
-        if (type == "CompositeProperty" && prop.getIdentifier() == id) {
+        if ((type == "CompositeProperty" || type == "org.inviwo.CompositeProperty") && prop.getIdentifier() == id) {
             LogWarnCustom("VersionConverter", "    Found Composite with same identifier");
 
             TxElement* newChild = node->InsertEndChild(*(child.Get()))->ToElement();

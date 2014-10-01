@@ -36,6 +36,8 @@
 
 namespace inviwo {
 
+PropertyClassIdentifier(Property, "org.inviwo.undefined");
+
 Property::Property(const std::string &identifier,
                    const std::string &displayName,
                    PropertyOwner::InvalidationLevel invalidationLevel,

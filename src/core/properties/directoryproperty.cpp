@@ -37,6 +37,8 @@
 
 namespace inviwo {
 
+PropertyClassIdentifier(DirectoryProperty, "org.inviwo.DirectoryProperty");
+
 DirectoryProperty::DirectoryProperty(std::string identifier, std::string displayName,
                                      std::string value, std::string contentType,
                                      PropertyOwner::InvalidationLevel invalidationLevel,

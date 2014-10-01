@@ -54,6 +54,8 @@ public:
         : Property(identifier, displayName, invalidationLevel, semantics) {
     }
 
+    virtual std::string getClassIdentifier() const = 0;
+
     virtual void clearOptions() = 0;
 
     virtual size_t size() const = 0;
@@ -71,7 +73,6 @@ public:
     virtual bool isSelectedIdentifier(std::string identifier) const = 0;
     virtual bool isSelectedDisplayName(std::string name) const = 0;
 
-    virtual std::string getClassIdentifier() const { return "BaseOptionProperty"; }
     virtual void set(const Property* srcProperty) {
         const BaseOptionProperty* optionSrcProp = dynamic_cast<const BaseOptionProperty*>(srcProperty);
 
@@ -229,36 +230,27 @@ public:
         : BaseTemplateOptionProperty<T>(identifier, displayName, invalidationLevel, semantics) {
     }
 
-    virtual std::string getClassIdentifier() const {
-        return "OptionProperty" + Defaultvalues<T>::getName();
-    }
+    InviwoPropertyInfo();
 };
 
+template <typename T> PropertyClassIdentifier(TemplateOptionProperty<T>, "org.inviwo.OptionProperty" + Defaultvalues<T>::getName());
+
 // Specialization for strings.
-template<>
-class TemplateOptionProperty<std::string> : public BaseTemplateOptionProperty<std::string>{
+class IVW_CORE_API OptionPropertyString : public TemplateOptionProperty<std::string> {
 public:
-    TemplateOptionProperty(std::string identifier,
-                           std::string displayName,
-                           PropertyOwner::InvalidationLevel invalidationLevel = PropertyOwner::INVALID_OUTPUT,
-                           PropertySemantics semantics = PropertySemantics::Default) 
-        : BaseTemplateOptionProperty<std::string>(identifier, displayName, invalidationLevel, semantics) {
-    }
-    virtual void addOption(std::string identifier, std::string displayName, std::string value) {
-        BaseTemplateOptionProperty<std::string>::addOption(identifier, displayName, value);
-    }
-    virtual void addOption(std::string identifier, std::string displayName) {
-        BaseTemplateOptionProperty<std::string>::addOption(identifier, displayName, identifier);
-    }
-    virtual std::string getClassIdentifier() const {
-        return "OptionPropertyString";
-    }
+    OptionPropertyString(
+        std::string identifier, std::string displayName,
+        PropertyOwner::InvalidationLevel invalidationLevel = PropertyOwner::INVALID_OUTPUT,
+        PropertySemantics semantics = PropertySemantics::Default);
+    InviwoPropertyInfo();
+
+    virtual void addOption(std::string identifier, std::string displayName, std::string value);
+    virtual void addOption(std::string identifier, std::string displayName);
 };
 
 typedef TemplateOptionProperty<int> OptionPropertyInt;
 typedef TemplateOptionProperty<float> OptionPropertyFloat;
 typedef TemplateOptionProperty<double> OptionPropertyDouble;
-typedef TemplateOptionProperty<std::string> OptionPropertyString;
 
 
 template <typename T>

@@ -16,9 +16,8 @@ public:
                              PropertySemantics semantics = PropertySemantics::Default);
     virtual ~SimpleRaycastingProperty(){}
 
-
-    virtual std::string getClassIdentifier()  const { return "SimpleRaycastingProperty"; }
-
+    InviwoPropertyInfo();
+        
     OptionPropertyString classificationMode_;
     OptionPropertyString compositingMode_;
     OptionPropertyString gradientComputationMode_;

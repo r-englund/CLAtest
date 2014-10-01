@@ -34,6 +34,8 @@
 
 namespace inviwo {
 
+PropertyClassIdentifier(AdvancedMaterialProperty, "org.inviwo.AdvancedMaterialProperty");
+
 AdvancedMaterialProperty::AdvancedMaterialProperty(
     std::string identifier, std::string displayName,
     PropertyOwner::InvalidationLevel invalidationLevel, PropertySemantics semantics)

@@ -34,6 +34,8 @@
 
 namespace inviwo {
 
+PropertyClassIdentifier(BoolProperty, "org.inviwo.BoolProperty");
+
 BoolProperty::BoolProperty(std::string identifier,
                            std::string displayName, bool value,
                            PropertyOwner::InvalidationLevel invalidationLevel,
