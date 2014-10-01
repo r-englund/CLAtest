@@ -224,7 +224,7 @@ void CollapsibleGroupBoxWidgetQt::updateVisibility() {
     }
     
     bool empty = true;
-    for(int i = 0; i < propertyWidgets_.size(); ++i){
+    for(size_t i = 0; i < propertyWidgets_.size(); ++i){
         empty &= propertyWidgets_[i]->isHidden();
     }
     defaultLabel_->setVisible(empty);

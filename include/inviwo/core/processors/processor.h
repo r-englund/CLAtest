@@ -175,8 +175,8 @@ public:
     static const std::string getCodeStateString(CodeState state);
 
 protected:
-    void invalidationEnabled();
-    void invalidationDisabled();
+    void enableInvalidation();
+    void disableInvalidation();
 
     void addPort(Inport* port, const std::string &portDependencySet = "default");
     void addPort(Inport& port, const std::string & portDependencySet = "default");

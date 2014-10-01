@@ -98,16 +98,16 @@ void ProcessorNetwork::removeProcessor(Processor* processor) {
     std::vector<Outport*> outports;
     std::vector<Inport*> inports;
     outports = processor->getOutports();
-    for (int i = 0; i < outports.size(); ++i) {
+    for (size_t i = 0; i < outports.size(); ++i) {
         inports = outports[i]->getConnectedInports();
-        for (int j = 0; j < inports.size(); ++j) {
+        for (size_t j = 0; j < inports.size(); ++j) {
             removeConnection(outports[i], inports[j]);
         }
     }
     inports = processor->getInports();
-    for (int i = 0; i < inports.size(); ++i) {
+    for (size_t i = 0; i < inports.size(); ++i) {
         outports = inports[i]->getConnectedOutports();
-        for (int j = 0; j < outports.size(); ++j) {
+        for (size_t j = 0; j < outports.size(); ++j) {
             removeConnection(outports[j], inports[i]);
         }
     }
@@ -680,7 +680,7 @@ void ProcessorNetwork::deserialize(IvwDeserializer& d) throw (Exception) {
     try {
         ProcessorVector processors;
         d.deserialize("Processors", processors, "Processor");
-        for (int i = 0; i < processors.size(); ++i) {
+        for (size_t i = 0; i < processors.size(); ++i) {
             if (processors[i]) {
                 addProcessor(processors[i]);
             }else{
