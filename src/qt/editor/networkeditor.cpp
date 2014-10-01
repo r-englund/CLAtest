@@ -755,7 +755,7 @@ void NetworkEditor::keyPressEvent(QKeyEvent* e) {
             ProcessorGraphicsItem* processorGraphicsItem =
                 qgraphicsitem_cast<ProcessorGraphicsItem*>(selectedGraphicsItems[i]);
             if (processorGraphicsItem && !processorGraphicsItem->isEditingProcessorName()) {
-                 network->removeProcessor(processorGraphicsItem->getProcessor());
+                 network->removeAndDeleteProcessor(processorGraphicsItem->getProcessor());
                  continue;
             }
         }
@@ -1145,7 +1145,7 @@ void NetworkEditor::clearNetwork() {
     ResourceManager::getPtr()->clearAllResources();
 
     for (size_t i = 0; i < processors.size(); i++) {
-        InviwoApplication::getPtr()->getProcessorNetwork()->removeProcessor(processors[i]);
+        InviwoApplication::getPtr()->getProcessorNetwork()->removeAndDeleteProcessor(processors[i]);
     }
 
     InviwoApplication::getPtr()->getProcessorNetwork()->unlock();
@@ -1402,7 +1402,7 @@ void NetworkEditor::contextMenuDeleteProcessor(EditorGraphicsItem* item) {
     ProcessorGraphicsItem* p = qgraphicsitem_cast<ProcessorGraphicsItem*>(item);
     if (p) {
         Processor* processor = p->getProcessor();
-        InviwoApplication::getPtr()->getProcessorNetwork()->removeProcessor(processor);
+        InviwoApplication::getPtr()->getProcessorNetwork()->removeAndDeleteProcessor(processor);
     }
 }
 void NetworkEditor::contextMenuShowHideWidget(EditorGraphicsItem* item) {
