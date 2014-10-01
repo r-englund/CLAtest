@@ -130,7 +130,7 @@ void CubeProxyGeometry::onVolumeChange() {
 
     dims_ = inport_.getData()->getDimension();
     
-    invalidationDisabled();
+	InviwoApplication::getPtr()->getProcessorNetwork()->lock();
 
     clipX_.setRangeMax(dims_.x);
     clipY_.setRangeMax(dims_.y);
@@ -140,7 +140,11 @@ void CubeProxyGeometry::onVolumeChange() {
     clipY_.set(y * static_cast<float>(dims_.y));
     clipZ_.set(z * static_cast<float>(dims_.z));
 
-    invalidationEnabled();
+	clipX_.setCurrentStateAsDefault();
+	clipY_.setCurrentStateAsDefault();
+	clipZ_.setCurrentStateAsDefault();
+
+	InviwoApplication::getPtr()->getProcessorNetwork()->unlock();
 }
 
 } // namespace

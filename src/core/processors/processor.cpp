@@ -219,9 +219,6 @@ bool Processor::isInitialized() const {
 }
 
 void Processor::invalidate(PropertyOwner::InvalidationLevel invalidationLevel, Property* modifiedProperty) {
-    if(!invalidationEnabled_)
-        return;
-
     notifyObserversInvalidationBegin(this);
     PropertyOwner::invalidate(invalidationLevel, modifiedProperty);
 
@@ -339,14 +336,6 @@ void Processor::setValid() {
 
     for (std::vector<Outport*>::iterator it = outports_.begin(); it != outports_.end(); ++it)
         (*it)->setInvalidationLevel(VALID);
-}
-
-void Processor::invalidationEnabled() {
-    invalidationEnabled_ = true;
-}
-
-void Processor::invalidationDisabled(){
-    invalidationEnabled_ = false;
 }
 
 void Processor::performEvaluateRequest() {
