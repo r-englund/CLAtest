@@ -77,6 +77,8 @@ SimpleRaycaster::SimpleRaycaster()
     addProperty(transferFunction_);   
 }
 
+SimpleRaycaster::~SimpleRaycaster() {
+}
 
 void SimpleRaycaster::initialize() {
     Processor::initialize();
