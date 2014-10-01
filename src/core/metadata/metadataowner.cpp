@@ -69,4 +69,13 @@ void MetaDataOwner::copyMetaDataTo(MetaDataOwner &dst) {
 }
 
 
+void MetaDataOwner::serialize(IvwSerializer& s) const {
+    metaData_->serialize(s);
+}
+
+void MetaDataOwner::deserialize(IvwDeserializer& d) {
+    metaData_->deserialize(d);
+}
+
+
 } // namespace

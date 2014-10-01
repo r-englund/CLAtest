@@ -50,13 +50,14 @@ void PropertyFactory::registeryObject(PropertyFactoryObject* property) {
         propertyClassMap_.insert(std::make_pair(className, property));
     else
         LogWarn("Property with class name: " << className << " already registed");
+        
 }
 
-IvwSerializable* PropertyFactory::create(std::string className) const {
+IvwSerializable* PropertyFactory::create(const std::string &className) const {
     return NULL;
 }
 
-bool PropertyFactory::isValidType(std::string className) const {
+bool PropertyFactory::isValidType(const std::string &className) const {
     PropertyClassMap::const_iterator it = propertyClassMap_.find(className);
 
     if (it != propertyClassMap_.end())
@@ -65,7 +66,7 @@ bool PropertyFactory::isValidType(std::string className) const {
         return false;
 }
 
-Property* PropertyFactory::getProperty(std::string className, std::string identifier, std::string displayName) {
+Property* PropertyFactory::getProperty(const std::string &className, const std::string &identifier, const std::string &displayName) {
     PropertyClassMap::const_iterator it = propertyClassMap_.find(className);
 
     if (it != propertyClassMap_.end())

@@ -72,7 +72,7 @@ public:
     }
 
     template <typename T>
-    DataWriterType<T>* getWriterForTypeAndExtension(std::string ext) {
+    DataWriterType<T>* getWriterForTypeAndExtension(const std::string &ext) {
         ExtensionMap::iterator it = writerForExtension_.find(ext);
 
         if (it != writerForExtension_.end()) {

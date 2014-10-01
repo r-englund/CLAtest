@@ -58,7 +58,7 @@ public:
      * @param bool allowReference disables or enables reference management schemes.
      * @throws SerializationException
      */
-    IvwSerializer(std::string fileName, bool allowReference=true);
+    IvwSerializer(const std::string &fileName, bool allowReference=true);
 
     virtual ~IvwSerializer();
 

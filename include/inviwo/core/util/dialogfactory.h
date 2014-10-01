@@ -17,11 +17,11 @@ public:
     DialogFactory();
     virtual ~DialogFactory();
 
-    virtual Dialog* getDialog(std::string className) const;
+    virtual Dialog* getDialog(const std::string &className) const;
 
     void registerObject(DialogFactoryObject* dialog);
-    virtual IvwSerializable* create(std::string className) const;
-    virtual bool isValidType(std::string className) const;
+    virtual IvwSerializable* create(const std::string &classIdentifier) const;
+    virtual bool isValidType(const std::string &classIdentifier) const;
 
     typedef std::multimap<std::string, DialogFactoryObject*> DialogMap;
 private:

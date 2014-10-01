@@ -80,12 +80,12 @@ PropertyWidget* PropertyWidgetFactory::create(Property* property) {
     return 0;
 }
 
-IvwSerializable* PropertyWidgetFactory::create(std::string className) const {
+IvwSerializable* PropertyWidgetFactory::create(const std::string &className) const {
     // Widgets are not serializable...
     return 0;
 }
 
-bool PropertyWidgetFactory::isValidType(std::string className) const {
+bool PropertyWidgetFactory::isValidType(const std::string &className) const {
     WidgetMap::const_iterator it = widgetMap_.find(className);
 
     if (it != widgetMap_.end())

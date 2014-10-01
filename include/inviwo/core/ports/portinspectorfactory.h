@@ -51,10 +51,10 @@ public:
 
     void registerObject(PortInspectorFactoryObject* portInspector);
 
-    virtual PortInspector* getPortInspectorForPortClass(std::string className);
+    virtual PortInspector* getPortInspectorForPortClass(const std::string &className);
 
-    virtual IvwSerializable* create(std::string className) const { return 0; }
-    virtual bool isValidType(std::string className) const;
+    virtual IvwSerializable* create(const std::string &className) const { return 0; }
+    virtual bool isValidType(const std::string &className) const;
 
     typedef std::map<std::string, PortInspectorFactoryObject*> PortInspectorMap;
     typedef std::map<std::string, std::vector<PortInspector*> > PortInsectorCache;

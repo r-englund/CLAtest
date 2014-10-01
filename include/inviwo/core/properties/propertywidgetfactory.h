@@ -52,8 +52,8 @@ public:
     PropertyWidget* create(Property* property);
 
     void registerObject(PropertyWidgetFactoryObject* propertyWidget);
-    virtual IvwSerializable* create(std::string className) const;
-    virtual bool isValidType(std::string className) const;
+    virtual IvwSerializable* create(const std::string &className) const;
+    virtual bool isValidType(const std::string &className) const;
 
     std::vector<PropertySemantics> getSupportedSemanicsForProperty(Property* property);
 

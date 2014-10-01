@@ -50,13 +50,12 @@ public:
 
     void registeryObject(PropertyFactoryObject* property);
 
-    virtual IvwSerializable* create(std::string className) const;
+    virtual IvwSerializable* create(const std::string &className) const;
 
-    virtual Property* getProperty(std::string className,
-                                  std::string identifier,
-                                  std::string displayName);
+    virtual Property *getProperty(const std::string &className, const std::string &identifier,
+        const std::string &displayName);
 
-    virtual bool isValidType(std::string className) const;
+    virtual bool isValidType(const std::string &className) const;
 
     std::vector<std::string> getRegistedPropertyClassNames();
 

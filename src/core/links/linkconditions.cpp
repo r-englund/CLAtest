@@ -35,11 +35,11 @@
 
 namespace inviwo {
 
-bool SimpleCondition::canLink(Property* src, Property* dst) {
+bool SimpleCondition::canLink(const Property* src,const Property* dst) {
 	return PropertyConverterManager::getPtr()->canConvert(src,dst);
 }
 
-bool PartiallyMatchingIdCondition::canLink(Property* src, Property* dst) {
+bool PartiallyMatchingIdCondition::canLink(const Property* src, const Property* dst) {
     bool canLink = false;
     //conversion to lower case
     std::string srcIdentifier = src->getIdentifier();
@@ -64,7 +64,7 @@ bool PartiallyMatchingIdCondition::canLink(Property* src, Property* dst) {
     return canLink;
 }
 
-bool AutoLinker::canLink(Property* src, Property* dst, LinkingConditions givenConditions) {
+bool AutoLinker::canLink(const Property* src,const Property* dst, LinkingConditions givenConditions) {
     int satisfiedConditions = 0;
 
     //does properties have same class names

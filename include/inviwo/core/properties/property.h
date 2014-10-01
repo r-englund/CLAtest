@@ -39,6 +39,7 @@
 #include <inviwo/core/properties/propertysemantics.h>
 #include <inviwo/core/properties/propertyvisibility.h>
 #include <inviwo/core/util/callback.h>
+#include <inviwo/core/metadata/metadataowner.h>
 
 
 namespace inviwo {
@@ -64,7 +65,7 @@ namespace inviwo {
  */
 
 
-class IVW_CORE_API Property : public IvwSerializable {
+class IVW_CORE_API Property : public IvwSerializable , public MetaDataOwner {
 
 public:
     Property(const std::string &identifier,
@@ -106,6 +107,7 @@ public:
     void setInvalidationLevel(PropertyOwner::InvalidationLevel invalidationLevel) ;
 
     PropertyOwner* getOwner();
+    const PropertyOwner* getOwner()const ;
     virtual void setOwner(PropertyOwner* owner);
 
 
@@ -126,9 +128,6 @@ public:
     void clearInitiatingWidget();
     void updateWidgets();
     bool hasWidgets()const;
-
-
-    MetaData* getMetaData(const std::string &meta);
 
     /**
      *  Save the current state of the property as the default. This state will then be used as a 
@@ -187,8 +186,6 @@ private:
 
     PropertyWidget* initiatingWidget_;
 
-    //TODO: Use map (Refer Processor meta-data list)
-    std::vector<MetaData*> metaData_;
 };
 
 } // namespace

@@ -421,12 +421,71 @@ std::vector<Property*> ProcessorNetwork::getLinkedProperties(Property* property)
     return linkedProperties;
 }
 
+struct LinkCheck {
+    LinkCheck() : linkSettings_(InviwoApplication::getPtr()->getSettingsByType<LinkSettings>()){ }
+    bool operator()(const Property *p)const{ return !linkSettings_->isLinkable(p); }
+private:
+    LinkSettings* linkSettings_;
+};
+
+struct AutoLinkCheck {
+    AutoLinkCheck(const Property *p, LinkingConditions linkCondition) : property_(p), linkCondition_(linkCondition){}
+    bool operator()(const Property *p)const{ return !AutoLinker::canLink(p, property_, linkCondition_); }
+private:
+    const Property *property_;
+    LinkingConditions linkCondition_;
+};
+
+
+
+
+struct AutoLinkSort{
+    AutoLinkSort(const Property *p){
+        pos_ = getPosition(p);
+    }
+
+    bool operator()(const Property *a, const Property *b){
+        // TODO Figure out which candidate is best.
+        // using distance now
+        float da = glm::distance(pos_, getPosition(a));
+        float db = glm::distance(pos_, getPosition(b));
+        return da < db;
+    }
+
+private:
+    vec2 pos_;
+    std::map<const Property *, vec2> cache_;
+
+    vec2 getPosition(const Property *p) {
+        std::map<const Property *, vec2>::const_iterator it = cache_.find(p);
+        if (it != cache_.end())
+            return it->second;
+        return cache_[p] = getPosition(p->getOwner()->getProcessor());
+    }
+
+    vec2 getPosition(const Processor* processor) {
+            ProcessorMetaData* meta =processor->getMetaData<ProcessorMetaData>("ProcessorMetaData");
+           if (meta) {
+               return static_cast<vec2>(meta->getPosition());
+           }
+           else {
+                LogWarnCustom("getProcessorPosition", "No ProcessorMetaData for added processor found while auto linking");
+                return vec2(0, 0);
+            }
+        return vec2(0, 0);
+    }
+};
 
 void ProcessorNetwork::autoLinkProcessor(Processor* processor) {
-    LinkSettings* linkSettings = InviwoApplication::getPtr()->getSettingsByType<LinkSettings>();
-    
+    LinkCheck linkChecker;
+
     std::vector<Property*> destprops = getPropertiesRecursive(processor);
-    
+    destprops.erase(std::remove_if(destprops.begin(), destprops.end(), linkChecker), destprops.end()); //remove properties for which autolinking is disalbed
+
+    if (destprops.size() == 0) {  // no candidates for autolinking in the new processor
+        return;
+    }
+
     std::vector<Property*> properties;
     for (ProcessorMap::iterator it = processors_.begin(); it != processors_.end(); ++it) {
         if( it->second != processor) {
@@ -434,21 +493,23 @@ void ProcessorNetwork::autoLinkProcessor(Processor* processor) {
             properties.insert(properties.end(),p.begin(), p.end());
         }
     }
-    
+    properties.erase(std::remove_if(properties.begin(), properties.end(), linkChecker), properties.end()); //remove properties for which autolinking is disalbed
+    if (properties.size() == 0) {  // no candidates for autolinking in the new processor
+        return;
+    }
+
+
     for(std::vector<Property*>::iterator dit = destprops.begin(); dit!=destprops.end(); ++dit) {
-        if (linkSettings->isLinkable(*dit)) {
-            std::vector<Property*> candidates;
-            for(std::vector<Property*>::iterator sit = properties.begin(); sit!=properties.end(); ++sit) {
-                if (AutoLinker::canLink(*sit, *dit, LinkMatchingTypeAndId)) {
-                    candidates.push_back(*sit);
-                }
-            }
-            if(candidates.size()>0) {
-                // TODO Figure out which candidate is best.
-                addLink(candidates[0], *dit);
-                addLink(*dit, candidates[0]);
-            }
-        }
+        std::vector<Property*> candidates = properties;
+        AutoLinkCheck autoLinkChecker(*dit, LinkMatchingTypeAndId);
+        std::remove_if(candidates.begin(), candidates.end(), autoLinkChecker);
+        AutoLinkSort sorter(*dit);
+        std::sort(candidates.begin(), candidates.end(), sorter);
+
+        if(candidates.size()>0) {
+            addLink(candidates[0], *dit);
+            addLink(*dit, candidates[0]);
+        }        
     }
 }
 
@@ -689,7 +750,7 @@ bool ProcessorNetwork::isDeserializing()const {
     return deserializing_;
 }
 
-const int ProcessorNetwork::processorNetworkVersion_ = 1;
+const int ProcessorNetwork::processorNetworkVersion_ = 2;
 
 
 ProcessorNetwork::NetworkConverter::NetworkConverter(int from)
@@ -699,6 +760,8 @@ bool ProcessorNetwork::NetworkConverter::convert(TxElement* root) {
     switch (from_) {
         case 0:
             traverseNodes(root, &ProcessorNetwork::NetworkConverter::updateProcessorType);
+        case 1:
+            traverseNodes(root, &ProcessorNetwork::NetworkConverter::updateMetaDataTree);
         default:
             break;
     }
@@ -721,8 +784,27 @@ void ProcessorNetwork::NetworkConverter::updateProcessorType(TxElement* node) {
     if (key == "Processor") {
         std::string type = node->GetAttributeOrDefault("type", "");
         if (splitString(type, '.').size() < 3){
-            node->SetAttribute("type", "org.inviwo."+ type);   
+            node->SetAttribute("type", "org.inviwo." + type);
         }
+    }
+    if (key == "MetaDataList"){
+        node->SetValue("MetaDataMap");
+    }
+    if (key == "MetaData"){
+        node->SetValue("MetaDataItem");
+    }
+}
+
+void ProcessorNetwork::NetworkConverter::updateMetaDataTree(TxElement* node) {
+    std::string key;
+    node->GetValue(&key);
+
+    if (key == "MetaDataList"){
+        node->SetValue("MetaDataMap");
+    }
+    if (key == "MetaData"){
+        node->SetValue("MetaDataItem");
+        node->SetAttribute("key", node->GetAttribute("type"));
     }
 }
 

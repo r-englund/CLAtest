@@ -46,8 +46,8 @@ public:
     Factory() {}
     virtual ~Factory() {}
 
-    virtual IvwSerializable* create(std::string className) const { return 0; }
-    virtual bool isValidType(std::string className) const {return false; }
+    virtual IvwSerializable* create(const std::string &className) const { return 0; }
+    virtual bool isValidType(const std::string &className) const { return false; }
 };
 
 } // namespace

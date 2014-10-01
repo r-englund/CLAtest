@@ -38,7 +38,7 @@
 
 namespace inviwo {
 
-LinkSettings::LinkSettings(std::string id) 
+LinkSettings::LinkSettings(const std::string &id) 
     : Settings(id)
     , linkProperties_("auto-link-properties", "Auto Link Properties") {
 
@@ -64,7 +64,7 @@ void LinkSettings::initialize() {
 
 void LinkSettings::deinitialize()  {}
 
-bool LinkSettings::isLinkable(Property* property)  {
+bool LinkSettings::isLinkable(const Property* property)  {
     Property* prop = getPropertyByIdentifier("link-" + property->getClassIdentifier(),true);
 
     if (prop) {

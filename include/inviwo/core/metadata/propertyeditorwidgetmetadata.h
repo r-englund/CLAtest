@@ -44,7 +44,7 @@ namespace inviwo {
 class IVW_CORE_API PropertyEditorWidgetDockStatus {
 public:
     PropertyEditorWidgetDockStatus();
-    PropertyEditorWidgetDockStatus(std::string dockStatus);
+    PropertyEditorWidgetDockStatus(const std::string &dockStatus);
     PropertyEditorWidgetDockStatus(const PropertyEditorWidgetDockStatus& rhs);
     virtual ~PropertyEditorWidgetDockStatus() {}
     PropertyEditorWidgetDockStatus& operator=(const PropertyEditorWidgetDockStatus& rhs);
@@ -75,9 +75,9 @@ public:
     virtual void deserialize(IvwDeserializer& d);
     virtual bool equal(const MetaData& rhs) const;
 
-    void setWidgetPosition(ivec2 pos);
-    ivec2 getWidgetPosition();
-    void setDimension(ivec2 dim);
+    void setWidgetPosition(const ivec2 &pos);
+    ivec2 getWidgetPosition()const;
+    void setDimension(const ivec2 &dim);
     ivec2 getDimension() const;
     void setVisibile(bool visibility);
     bool isVisible() const;
@@ -85,10 +85,10 @@ public:
     const PropertyEditorWidgetDockStatus getDocStatus() const;
 
 private:
-    IVec2MetaData positionMetaData_;
-    IVec2MetaData dimensionMetaData_;
-    BoolMetaData visiblityMetaData_;
-    StringMetaData dockStatusMetaData_;
+    ivec2 position_;
+    ivec2 dimension_;
+    bool visibility_;
+    std::string dockStatus_;
 };
 
 } // namespace

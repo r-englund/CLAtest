@@ -66,8 +66,7 @@ PropertyEditorWidget::PropertyEditorWidget() : metaData_(0) {}
 PropertyEditorWidget::~PropertyEditorWidget() {}
 
 void PropertyEditorWidget::initialize(Property* property) {
-    metaData_ = dynamic_cast<PropertyEditorWidgetMetaData*>(
-        property->getMetaData("PropertyEditorWidgetMetaData"));
+    metaData_ = property->createMetaData<PropertyEditorWidgetMetaData>("PropertyEditorWidgetMetaData");
 }
 
 void PropertyEditorWidget::deinitialize() {}
@@ -78,22 +77,22 @@ void PropertyEditorWidget::showEditor() { metaData_->setVisibile(true); }
 
 void PropertyEditorWidget::hideEditor() { metaData_->setVisibile(false); }
 
-void PropertyEditorWidget::setEditorDimension(ivec2 dimension) {
+void PropertyEditorWidget::setEditorDimension(const ivec2 &dimension) {
     metaData_->setDimension(dimension);
 }
 
-void PropertyEditorWidget::moveEditor(ivec2 pos) { metaData_->setWidgetPosition(pos); }
+void PropertyEditorWidget::moveEditor(const ivec2 &pos) { metaData_->setWidgetPosition(pos); }
 
 void PropertyEditorWidget::setDockStatus(PropertyEditorWidgetDockStatus dockStatus) {
     metaData_->setDockStatus(dockStatus);
 }
-bool PropertyEditorWidget::getEditorVisibilityMetaData() { return metaData_->isVisible(); }
+bool PropertyEditorWidget::getEditorVisibilityMetaData() const { return metaData_->isVisible(); }
 
-ivec2 PropertyEditorWidget::getEditorPositionMetaData() { return metaData_->getWidgetPosition(); }
+ivec2 PropertyEditorWidget::getEditorPositionMetaData() const { return metaData_->getWidgetPosition(); }
 
-ivec2 PropertyEditorWidget::getEditorDimensionMetaData() { return metaData_->getDimension(); }
+ivec2 PropertyEditorWidget::getEditorDimensionMetaData() const { return metaData_->getDimension(); }
 
-PropertyEditorWidgetDockStatus PropertyEditorWidget::getEditorDockStatus() {
+PropertyEditorWidgetDockStatus PropertyEditorWidget::getEditorDockStatus() const {
     return metaData_->getDocStatus();
 }
 

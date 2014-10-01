@@ -41,11 +41,11 @@ namespace inviwo {
 class IVW_CORE_API LinkSettings : public Settings {
 
 public:
-    LinkSettings(std::string id="Link Settings");
+    LinkSettings(const std::string &id="Link Settings");
     virtual ~LinkSettings();
     virtual void initialize();
     virtual void deinitialize();
-    virtual bool isLinkable(Property* property);
+    virtual bool isLinkable(const Property* property);
 
 private:
     CompositeProperty linkProperties_;

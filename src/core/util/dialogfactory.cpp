@@ -17,7 +17,7 @@ void DialogFactory::registerObject(DialogFactoryObject* dialog) {
 }
 
 
-Dialog* DialogFactory::getDialog(std::string className) const {
+Dialog* DialogFactory::getDialog(const std::string &className) const {
     DialogMap::const_iterator it = map_.find(className);
 
     if (it != map_.end()) {
@@ -27,12 +27,12 @@ Dialog* DialogFactory::getDialog(std::string className) const {
     }
 }
 
-IvwSerializable* DialogFactory::create(std::string className) const {
+IvwSerializable* DialogFactory::create(const std::string &className) const {
     // Dialogs are not serializable...
     return 0;
 }
 
-bool DialogFactory::isValidType(std::string className) const {
+bool DialogFactory::isValidType(const std::string &className) const {
     if (map_.find(className) != map_.end())
         return true;
     else

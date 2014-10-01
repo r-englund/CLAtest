@@ -48,12 +48,12 @@ public:
 
     void registeryObject(PortFactoryObject* property);
 
-    virtual IvwSerializable* create(std::string className) const;
+    virtual IvwSerializable* create(const std::string &classIdentifier) const;
 
-    virtual Port* getPort(std::string className,
-                          std::string identifier);
+    virtual Port* getPort(const std::string &className,
+                          const std::string &identifier);
 
-    virtual bool isValidType(std::string className) const;
+    virtual bool isValidType(const std::string &classIdentifier) const;
 
     std::vector<std::string> getRegistedPortClassNames();
 

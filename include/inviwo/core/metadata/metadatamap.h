@@ -45,13 +45,13 @@ public:
     MetaDataMap(const MetaDataMap&);
     virtual ~MetaDataMap();
     virtual MetaDataMap* clone() const;
-    void add(std::string key, MetaData* metaData);
-    void remove(std::string key);
+    void add(const std::string &key, MetaData* metaData);
+    void remove(const std::string &key);
     void removeAll();
-    void rename(std::string newKey, std::string oldKey);
+    void rename(const std::string &newKey, const std::string& oldKey);
     std::vector<std::string> getKeys() const;
-    MetaData* get(std::string key);
-    const MetaData* get(std::string key) const;
+    MetaData* get(const std::string &key);
+    const MetaData* get(const std::string &key) const;
 
     MetaDataMap& operator=(const MetaDataMap& map);
 
