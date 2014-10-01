@@ -53,6 +53,7 @@ class Shader;
 class IVW_MODULE_BASEGL_API SimpleRaycaster : public Processor {
 public:
     SimpleRaycaster();
+    virtual ~SimpleRaycaster();
 
     InviwoProcessorInfo();
 
@@ -65,11 +66,11 @@ public:
 protected:
     virtual void process();
 
+    Shader* shader_;
+
 private:
     void onVolumeChange();
     bool fixNetwork(TxElement*);
-
-    Shader* shader_;
     
     VolumeInport volumePort_;
     ImageInport entryPort_;
