@@ -89,6 +89,8 @@ protected:
 
     InportVec* inports_;
     InportVec* vectorInports_;
+
+	unsigned int numConnections_;
 };
 
 } // namespace
