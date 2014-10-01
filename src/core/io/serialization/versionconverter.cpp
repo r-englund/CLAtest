@@ -53,7 +53,7 @@ bool util::xmlCopyMatchingSubPropsIntoComposite(TxElement* node, const Composite
 
     bool res = false;
 
-    for (int i = 0; i < props.size(); ++i) {
+    for (size_t i = 0; i < props.size(); ++i) {
         bool match = false;
         std::stringstream ss;
 
@@ -114,7 +114,7 @@ bool util::xmlFindMatchingSubPropertiesForComposites(
 
     bool res = true;
 
-    for (int i = 0; i < props.size(); ++i) {
+    for (size_t i = 0; i < props.size(); ++i) {
         if (!util::xmlHasProp(pelm[0], *props[i])) {
             LogWarnCustom("VersionConverter", "Could not find serialized version of composite property: "
                                                   << props[i]->getIdentifier());
@@ -144,7 +144,7 @@ TxElement* util::xmlGetElement(TxElement* node, std::string path) {
             std::string childname;
             child->GetValue(&childname);
             if (childname == name) {
-                for (int i = 1; i < components.size(); ++i) {
+                for (size_t i = 1; i < components.size(); ++i) {
                     std::vector<std::string> pair = splitString(components[i], '=');
                     match = match && child->GetAttributeOrDefault(pair[0], "") == pair[1];
                 }

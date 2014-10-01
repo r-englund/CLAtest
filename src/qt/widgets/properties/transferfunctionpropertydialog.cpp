@@ -413,19 +413,17 @@ void TransferFunctionPropertyDialog::exportTransferFunction() {
             TransferFunction &tf = tfProperty_->get();
             const Layer* layer = tf.getData();
             vec2 texSize(tf.getTextureSize(), 1);
-            const vec4 *data = static_cast<const vec4 *>(layer->getRepresentation<LayerRAM>()->getData());
-            std::vector<unsigned char> imgData;
-            std::size_t imgSize = texSize.x * texSize.y * 4;
-            imgData.resize(texSize.x * texSize.y * 4);
+            const vec4* readData = static_cast<const vec4*>(layer->getRepresentation<LayerRAM>()->getData());
+            Layer writeLayer(layer->getDimension(), DataVec4UINT8::get());
+            glm::u8vec4* writeData = static_cast<glm::u8vec4*>(writeLayer.getEditableRepresentation<LayerRAM>()->getData());
             
             for (std::size_t i=0; i<texSize.x * texSize.y; ++i) {
                 for (int c=0; c<4; ++c) {
-                    imgData[4 * i + c] = static_cast<unsigned char>(std::min(std::max(data[i][c] * 255.0f, 0.0f), 255.0f));
+                    writeData[i][c] = static_cast<glm::u8>(std::min(std::max(readData[i][c] * 255.0f, 0.0f), 255.0f));
                 }
             }
-            //ImageIO::saveLayer(file.c_str(), layer);
-            QImage img(&imgData[0], texSize.x, texSize.y, QImage::Format_RGBA8888);
-            img.save(QString::fromStdString(file));
+
+            ImageIO::saveLayer(file.c_str(), &writeLayer);
         } else if (extension == "itf") {
             IvwSerializer serializer(file);
             tfProperty_->get().serialize(serializer);

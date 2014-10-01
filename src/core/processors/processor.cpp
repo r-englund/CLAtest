@@ -321,7 +321,7 @@ void Processor::setValid() {
         (*it)->setInvalidationLevel(VALID);
 }
 
-void Processor::invalidationEnabled() {
+void Processor::enableInvalidation() {
     invalidationEnabled_ = true;
     if(invalidationRequestLevel_ > PropertyOwner::VALID){
         invalidate(invalidationRequestLevel_);
@@ -329,7 +329,7 @@ void Processor::invalidationEnabled() {
     }
 }
 
-void Processor::invalidationDisabled(){
+void Processor::disableInvalidation(){
     invalidationRequestLevel_ = PropertyOwner::VALID;
     invalidationEnabled_ = false;
 }
