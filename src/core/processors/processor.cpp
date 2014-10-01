@@ -49,7 +49,8 @@ Processor::Processor()
     , processorWidget_(0)
     , identifier_("")
     , initialized_(false)
-    , invalidationEnabled_(true) {
+    , invalidationEnabled_(true)
+    , invalidationRequestLevel_(PropertyOwner::VALID) {
     createMetaData<ProcessorMetaData>("ProcessorMetaData");
 }
 
@@ -215,8 +216,10 @@ bool Processor::isInitialized() const {
 }
 
 void Processor::invalidate(PropertyOwner::InvalidationLevel invalidationLevel, Property* modifiedProperty) {
-    if(!invalidationEnabled_)
+    if(!invalidationEnabled_){
+        invalidationRequestLevel_ = invalidationLevel;
         return;
+    }
 
     notifyObserversInvalidationBegin(this);
     PropertyOwner::invalidate(invalidationLevel, modifiedProperty);
@@ -320,9 +323,14 @@ void Processor::setValid() {
 
 void Processor::invalidationEnabled() {
     invalidationEnabled_ = true;
+    if(invalidationRequestLevel_ > PropertyOwner::VALID){
+        invalidate(invalidationRequestLevel_);
+        invalidationRequestLevel_ = PropertyOwner::VALID;
+    }
 }
 
 void Processor::invalidationDisabled(){
+    invalidationRequestLevel_ = PropertyOwner::VALID;
     invalidationEnabled_ = false;
 }
 

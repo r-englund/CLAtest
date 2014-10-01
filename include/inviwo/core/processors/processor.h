@@ -199,6 +199,7 @@ private:
 
     bool initialized_;
     bool invalidationEnabled_;
+    PropertyOwner::InvalidationLevel invalidationRequestLevel_;
 };
 
 } // namespace
