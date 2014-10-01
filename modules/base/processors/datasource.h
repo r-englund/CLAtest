@@ -32,12 +32,13 @@ protected:
 
     PortType port_;
     FileProperty file_;
+    DataType* loadedData_;
     bool isDeserializing_;
 };
 
 template <typename DataType, typename PortType>
 DataSource<DataType, PortType>::DataSource()
-    : Processor(), port_("data"), file_("filename", "File"), isDeserializing_(false) {
+    : Processor(), port_("data"), file_("filename", "File"), loadedData_(NULL), isDeserializing_(false) {
     addPort(port_);
     file_.onChange(this, &DataSource::load);
     std::vector<FileExtension> ext = DataReaderFactory::getPtr()->getExtensionsForType<DataType>();
@@ -77,6 +78,7 @@ void DataSource<DataType, PortType>::load() {
 
     if (resource) {
         port_.setData(resource->getData(), false);
+        loadedData_ = resource->getData();
         dataLoaded(resource->getData());
     } else {
         std::string fileExtension = URLParser::getFileExtension(file_.get());
@@ -89,6 +91,7 @@ void DataSource<DataType, PortType>::load() {
                 ResourceManager::getPtr()->addResource(
                     new TemplateResource<DataType>(file_.get(), data));
                 port_.setData(data, false);
+                loadedData_ = data;
                 dataLoaded(data);
             }
             catch (DataReaderException const& e) {

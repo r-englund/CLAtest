@@ -57,13 +57,15 @@ public:
     void deinitialize();
 
     virtual T* getData();
-    virtual T* getDataSequence();
+    virtual DataSequence<T>* getDataSequence();
 
     virtual const T* getConstData() const;
-    virtual const T* getConstDataSequence() const;
+    virtual const DataSequence<T>* getConstDataSequence() const;
 
     void setData(T* data, bool ownsData = true);
     void setConstData(const T* data);
+
+    T* detachDataFromOutport();
 
     bool hasData() const;
     bool hasDataSequence() const;
@@ -75,7 +77,6 @@ public:
 
 protected:
     T* data_;
-    T* ownedData_;
     bool ownsData_;
     bool isSequence_;
 };
@@ -83,7 +84,7 @@ protected:
 template <typename T>
 DataOutport<T>::DataOutport(std::string identifier, PropertyOwner::InvalidationLevel invalidationLevel)
     : Outport(identifier, invalidationLevel),
-    data_(NULL), ownedData_(NULL), ownsData_(false), isSequence_(false)
+    data_(NULL), ownsData_(false), isSequence_(false)
 {
 }
 
@@ -91,8 +92,6 @@ template <typename T>
 DataOutport<T>::~DataOutport() {
     if (ownsData_ && data_)
         delete data_;
-    else if(!ownsData_ && ownedData_)
-        delete ownedData_;
 }
 
 template <typename T>
@@ -103,12 +102,7 @@ void DataOutport<T>::deinitialize() {}
 
 template <typename T>
 T* DataOutport<T>::getData() {
-    //Asking for writable data, outport becomes data owner again
-    if(!ownsData_ && ownedData_){
-        data_ = ownedData_;
-        ownsData_ = true;
-        dataChanged();
-    }
+    ivwAssert(ownsData_, "Port does not own data, so can not return writable data.");
 
     if(isSequence_)
         return static_cast<DataSequence<T>*>(data_)->getCurrent();
@@ -117,16 +111,11 @@ T* DataOutport<T>::getData() {
 }
 
 template <typename T>
-T* DataOutport<T>::getDataSequence() {
-    //Asking for writable data, outport becomes data owner again
-    if(!ownsData_ && ownedData_){
-        data_ = ownedData_;
-        ownsData_ = true;
-        dataChanged();
-    }
+DataSequence<T>* DataOutport<T>::getDataSequence() {
+    ivwAssert(ownsData_, "Port does not own data, so can not return writable data.");
 
     if(isSequence_)
-        return data_;
+        return static_cast<DataSequence<T>*>(data_);
 
     return NULL;
 }
@@ -140,9 +129,9 @@ const T* DataOutport<T>::getConstData() const {
 }
 
 template <typename T>
-const T* DataOutport<T>::getConstDataSequence() const {
+const DataSequence<T>* DataOutport<T>::getConstDataSequence() const {
     if(isSequence_)
-        return const_cast<const T*>(data_);
+        return const_cast<const DataSequence<T>*>(static_cast<DataSequence<T>*>(data_));
 
     return NULL;
 }
@@ -166,8 +155,8 @@ void DataOutport<T>::setData(T* data, bool ownsData) {
 template <typename T>
 void DataOutport<T>::setConstData(const T* data) {
     if (ownsData_ && data_) {
-        //Save allocated data
-        ownedData_ = data_;
+        //Delete old data
+        delete data_;
     }
 
     ownsData_ = false;
@@ -178,6 +167,16 @@ void DataOutport<T>::setConstData(const T* data) {
     data_ = const_cast<T*>(data);
 
     dataChanged();
+}
+
+template <typename T>
+T* DataOutport<T>::detachDataFromOutport() {
+    if (ownsData_) {
+        ownsData_ = false;
+        return data_;
+    }
+
+    return NULL;
 }
 
 template <typename T>
