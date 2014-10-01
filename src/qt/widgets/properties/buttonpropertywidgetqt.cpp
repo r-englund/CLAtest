@@ -62,6 +62,7 @@ void ButtonPropertyWidgetQt::handleButton() {
 }
 void ButtonPropertyWidgetQt::updateFromProperty() {
     button_->setDisabled(property_->getReadOnly());
+    button_->setText(QString::fromStdString(property_->getDisplayName()));
 }
 
 QPushButton* ButtonPropertyWidgetQt::getButton() {
