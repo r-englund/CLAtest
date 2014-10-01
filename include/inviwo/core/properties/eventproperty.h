@@ -66,10 +66,10 @@ public:
 
     virtual ~EventProperty();
 
+    InviwoPropertyInfo();
+
     virtual void serialize(IvwSerializer& s) const;
     virtual void deserialize(IvwDeserializer& d);
-
-    std::string getClassIdentifier()  const { return "EventProperty"; }
 
     InteractionEvent* getEvent() const { return event_; }
     Action* getAction() const { return action_; }

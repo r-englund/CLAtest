@@ -52,6 +52,8 @@ public:
         PropertyOwner::InvalidationLevel invalidationLevel = PropertyOwner::INVALID_OUTPUT,
         PropertySemantics semantics = PropertySemantics::Default);
 
+    InviwoPropertyInfo();
+
     T getMinValue() const;
     T getMaxValue() const;
     T getIncrement() const;
@@ -65,8 +67,6 @@ public:
 
     virtual void setCurrentStateAsDefault();
     virtual void resetToDefaultState();
-
-    virtual std::string getClassIdentifier() const;
 
     virtual void serialize(IvwSerializer& s) const;
     virtual void deserialize(IvwDeserializer& d);
@@ -111,12 +111,7 @@ typedef OrdinalProperty<dmat2> DoubleMat2Property;
 typedef OrdinalProperty<dmat3> DoubleMat3Property;
 typedef OrdinalProperty<dmat4> DoubleMat4Property;
 
-template <typename T>
-std::string OrdinalProperty<T>::getClassIdentifier() const {
-    std::stringstream ss;
-    ss << Defaultvalues<T>::getName() << "Property";
-    return ss.str();
-}
+template <typename T> PropertyClassIdentifier(OrdinalProperty<T>,  "org.inviwo." + Defaultvalues<T>::getName() + "Property");
 
 template <typename T>
 OrdinalProperty<T>::OrdinalProperty(const std::string& identifier, const std::string& displayName,

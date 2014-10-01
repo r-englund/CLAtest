@@ -69,12 +69,12 @@ SimpleRaycaster::SimpleRaycaster()
     channel_.setCurrentStateAsDefault();
     
     volumePort_.onChange(this, &SimpleRaycaster::onVolumeChange);
-    
+
+    addProperty(channel_);
+    addProperty(transferFunction_);
     addProperty(raycasting_);
     addProperty(camera_);
     addProperty(lighting_);
-    addProperty(channel_);
-    addProperty(transferFunction_);   
 }
 
 SimpleRaycaster::~SimpleRaycaster() {

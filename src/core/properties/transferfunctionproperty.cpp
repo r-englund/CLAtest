@@ -34,6 +34,8 @@
 
 namespace inviwo {
 
+PropertyClassIdentifier(TransferFunctionProperty, "org.inviwo.TransferFunctionProperty");
+
 TransferFunctionProperty::TransferFunctionProperty(const std::string &identifier,
                                                    const std::string &displayName,
                                                    const TransferFunction &value,

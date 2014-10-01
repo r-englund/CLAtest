@@ -48,6 +48,8 @@ namespace inviwo {
 class IVW_CORE_API CameraProperty : public CompositeProperty, public EventListener {
 
 public:
+    InviwoPropertyInfo();
+
     CameraProperty(std::string identifier,
                    std::string displayName,
                    vec3 eye = vec3(0.0f, 0.0f, -2.0f),
@@ -115,7 +117,6 @@ public:
 
     virtual void serialize(IvwSerializer& s) const;
     virtual void deserialize(IvwDeserializer& d);
-    virtual std::string getClassIdentifier() const { return "CameraProperty"; }
 
     void setInport(Inport* inport);
     void fitWithBasis(const mat3& basis);

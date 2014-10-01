@@ -34,6 +34,8 @@
 
 namespace inviwo {
 
+PropertyClassIdentifier(EventProperty, "org.inviwo.EventProperty");
+
 EventProperty::EventProperty(std::string identifier, std::string displayName, InteractionEvent* e, Action* action,
                              PropertyOwner::InvalidationLevel invalidationLevel,
                              PropertySemantics semantics)

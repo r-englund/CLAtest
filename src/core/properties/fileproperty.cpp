@@ -36,6 +36,8 @@
 
 namespace inviwo {
 
+PropertyClassIdentifier(FileProperty, "org.inviwo.FileProperty");
+
 FileProperty::FileProperty(std::string identifier, std::string displayName, std::string value,
                            std::string contentType,
                            PropertyOwner::InvalidationLevel invalidationLevel,

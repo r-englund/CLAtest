@@ -2,6 +2,8 @@
 
 namespace inviwo {
 
+PropertyClassIdentifier(SimpleLightingProperty, "org.inviwo.SimpleLightingProperty");
+
 SimpleLightingProperty::SimpleLightingProperty(std::string identifier, std::string displayName,
                                                PropertyOwner::InvalidationLevel invalidationLevel,
                                                PropertySemantics semantics)

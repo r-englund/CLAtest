@@ -50,16 +50,16 @@ namespace inviwo {
  *
  * @see ButtonPropertyWidgetQt
  */
-class ButtonProperty : public Property {
+class IVW_CORE_API ButtonProperty : public Property {
 
 public:
     ButtonProperty(std::string identifier,
                    std::string displayName,
                    PropertyOwner::InvalidationLevel invalidationLevel=PropertyOwner::INVALID_OUTPUT,
-                   PropertySemantics semantics = PropertySemantics::Default)
-        : Property(identifier,displayName,invalidationLevel,semantics) {
-    }
-
+                   PropertySemantics semantics = PropertySemantics::Default);
+    
+    InviwoPropertyInfo();
+    
     /**
      * Overrides the default implementation to 
      * enable buttons to be linked.
@@ -68,19 +68,14 @@ public:
      * 
      * @param src Button property
      */
-    virtual void set(const Property* src) { pressButton(); }
+    virtual void set(const Property* src);
 
     /**
      * Causes onChange to be called. 
      * @see propertyModified
      * @see onChange
      */
-    virtual void pressButton() { propertyModified(); }
-
-    virtual std::string getClassIdentifier()  const {
-        return "ButtonProperty";
-    }
-
+    virtual void pressButton();
 };
 
 } //namespace

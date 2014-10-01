@@ -36,6 +36,8 @@
 
 namespace inviwo {
 
+PropertyClassIdentifier(CompositeProperty, "org.inviwo.CompositeProperty");
+
 CompositeProperty::CompositeProperty(std::string identifier, std::string displayName,
                                      PropertyOwner::InvalidationLevel invalidationLevel,
                                      PropertySemantics semantics)

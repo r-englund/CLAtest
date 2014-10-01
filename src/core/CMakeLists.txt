@@ -361,7 +361,9 @@ set(SOURCE_FILES
     processors/processorwidgetobserver.cpp
     processors/progressbar.cpp
     properties/advancedmaterialproperty.cpp
+    properties/baseoptionproperty.cpp
     properties/boolproperty.cpp
+    properties/buttonproperty.cpp
     properties/cameraproperty.cpp
     properties/compositeproperty.cpp
     properties/directoryproperty.cpp    

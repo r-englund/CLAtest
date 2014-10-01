@@ -46,6 +46,7 @@ namespace inviwo {
 
 class IVW_CORE_API FileProperty : public TemplateProperty<std::string> {
 public:
+    InviwoPropertyInfo();
     enum AcceptMode { AcceptOpen, AcceptSave };
     enum FileMode { AnyFile, ExistingFile, Directory, ExistingFiles, DirectoryOnly };
 
@@ -66,7 +67,6 @@ public:
                  PropertySemantics semantics = PropertySemantics::Default);
     virtual void serialize(IvwSerializer& s) const;
     virtual void deserialize(IvwDeserializer& d);
-    virtual std::string getClassIdentifier() const { return "FileProperty"; }
 
     virtual void addNameFilter(std::string);
     virtual void clearNameFilters();

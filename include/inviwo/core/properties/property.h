@@ -44,7 +44,16 @@
 
 namespace inviwo {
 
+#define InviwoPropertyInfo()                                                    \
+    virtual std::string getClassIdentifier() const { return CLASS_IDENTIFIER; } \
+    static const std::string CLASS_IDENTIFIER;
+
+#define PropertyClassIdentifier(T, classIdentifier) \
+    const std::string T::CLASS_IDENTIFIER = classIdentifier;
+
 /** \class Property
+ * 
+ *  \brief A Property represents a parameter to a processor. 
  * 
  *  Concepts:
  *   - Owner: A property can have a owner, usually a processor. If the property is modified, by 
@@ -75,7 +84,8 @@ public:
     Property();
     virtual ~Property();
 
-    virtual std::string getClassIdentifier()  const { return "undefined"; }
+    // Should be called by all inheriting classes
+    InviwoPropertyInfo();
 
     virtual std::string getIdentifier() const;
     virtual void setIdentifier(const std::string& identifier);
@@ -87,7 +97,7 @@ public:
      */
     virtual void setDisplayName(const std::string& displayName);
 
-    // Depricated
+    // Deprecated
     void setGroupID(const std::string& groupID);
     static void setGroupDisplayName(const std::string& groupID, const std::string& groupDisplayName);
     //

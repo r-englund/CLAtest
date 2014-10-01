@@ -52,6 +52,8 @@ public:
         PropertyOwner::InvalidationLevel invalidationLevel = PropertyOwner::INVALID_OUTPUT,
         PropertySemantics semantics = PropertySemantics::Default);
 
+    InviwoPropertyInfo();
+
     T getRangeMin() const;
     T getRangeMax() const;
     T getIncrement() const;
@@ -68,8 +70,6 @@ public:
     void setMinSeparation(const T& value);
 
     void setRange(const glm::detail::tvec2<T, glm::defaultp>& value);
-
-    virtual std::string getClassIdentifier() const;
 
     virtual void setCurrentStateAsDefault();
     virtual void resetToDefaultState();
@@ -93,12 +93,7 @@ typedef MinMaxProperty<float> FloatMinMaxProperty;
 typedef MinMaxProperty<double> DoubleMinMaxProperty;
 typedef MinMaxProperty<int> IntMinMaxProperty;
 
-template <typename T>
-std::string MinMaxProperty<T>::getClassIdentifier() const {
-    std::stringstream ss;
-    ss << Defaultvalues<T>::getName() << "MinMaxProperty";
-    return ss.str();
-}
+template <typename T> PropertyClassIdentifier(MinMaxProperty<T>, "org.inviwo." + Defaultvalues<T>::getName() + "MinMaxProperty" );
 
 template <typename T>
 MinMaxProperty<T>::MinMaxProperty(std::string identifier, std::string displayName, T valueMin,

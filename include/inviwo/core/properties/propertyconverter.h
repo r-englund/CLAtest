@@ -60,8 +60,7 @@ template <typename srcProperty, typename dstProperty>
 class TemplatePropertyConverter : public PropertyConverter {
 public:
     TemplatePropertyConverter()
-        : PropertyConverter((srcProperty("", "")).getClassIdentifier(),
-                            (dstProperty("", "")).getClassIdentifier()) {}
+        : PropertyConverter(srcProperty::CLASS_IDENTIFIER, dstProperty::CLASS_IDENTIFIER) {}
     virtual ~TemplatePropertyConverter() {}
 
     virtual void convert(const Property *src, Property *dst) const {
