@@ -154,10 +154,6 @@ void GeometryRenderProcessorGL::process() {
         return;
     }
 
-    if (renderers_.empty()) {
-        return;
-    }
-
     GLint prevPolygonMode[2];
     glGetIntegerv(GL_POLYGON_MODE, prevPolygonMode);
     glPolygonMode(GL_FRONT_AND_BACK, polygonMode_.get());
