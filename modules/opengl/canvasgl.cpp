@@ -67,6 +67,7 @@ void CanvasGL::initialize() {
     LGL_ERROR;
     noiseShader_ = new Shader("img_texturequad.vert", "img_noise.frag");
     LGL_ERROR;
+    Canvas::initialize();
 }
 
 void CanvasGL::initializeGLEW() {
@@ -98,6 +99,7 @@ void CanvasGL::deinitialize() {
     noiseShader_ = NULL;
     delete rectArray_;
     rectArray_ = NULL;
+    Canvas::deinitialize();
 }
 
 void CanvasGL::defaultGLState(){
