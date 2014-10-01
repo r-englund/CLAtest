@@ -370,11 +370,11 @@ FIBITMAP* ImageIO::createBitmapFromData(const T* data, FREE_IMAGE_TYPE type, uve
     T* bits = (T*)FreeImage_GetBits(dib);
 
     //Scale normalized float value to from 0 - 1 to 0  - 255
-    if (type == FIT_FLOAT) {
+    if ((type == FIT_FLOAT) || (type == FIT_RGBF) || (type == FIT_RGBAF)) {
         T value;
         format->doubleToValue(255.0, &value);
 
-        for (unsigned int i = 0; i < dim.x * dim.y; i++)
+        for (unsigned int i = 0; i < dim.x * dim.y * channels; i++)
             bits[i] = data[i]*value;
 
         FIBITMAP* dibConvert = FreeImage_ConvertToStandardType(dib);
