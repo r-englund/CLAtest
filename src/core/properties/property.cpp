@@ -92,6 +92,7 @@ std::string Property::getDisplayName() const {
 
 void Property::setDisplayName(const std::string& displayName) {
     displayName_ = displayName;
+    updateWidgets();
 }
 
 PropertySemantics Property::getSemantics()const {
@@ -105,11 +106,7 @@ void Property::setSemantics(const PropertySemantics& semantics) {
 
 void Property::setReadOnly(const bool& value) {
     readOnly_ = value;
-    for(size_t i = 0; i < propertyWidgets_.size(); i++) {
-        if(propertyWidgets_[i] != 0 && propertyWidgets_[i] != initiatingWidget_) {
-            propertyWidgets_[i]->updateFromProperty();
-        }
-    }
+    updateWidgets();
 }
 
 bool Property::getReadOnly()const {

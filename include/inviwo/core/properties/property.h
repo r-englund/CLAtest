@@ -79,6 +79,11 @@ public:
     virtual std::string getIdentifier() const;
     virtual void setIdentifier(const std::string& identifier);
     virtual std::string getDisplayName() const;
+    /** 
+     * \brief Set display name and update widgets
+     * 
+     * @param const std::string & displayName The name to be displayed in the GUI
+     */
     virtual void setDisplayName(const std::string& displayName);
 
     // Depricated
@@ -89,6 +94,11 @@ public:
     virtual PropertySemantics getSemantics() const;
     virtual void setSemantics(const PropertySemantics& semantics);
 
+    /** 
+     * \brief Enable/disable editing of property value and update widgets
+     * 
+     * @param const bool & value True if read only, false otherwise
+     */
     virtual void setReadOnly(const bool& value);
     virtual bool getReadOnly() const;
 
