@@ -769,65 +769,73 @@ void NetworkEditor::keyPressEvent(QKeyEvent* e) {
 
 void NetworkEditor::contextMenuEvent(QGraphicsSceneContextMenuEvent* e) {
     QMenu menu;
-    
+
     SignalMapperObject moRename;
     SignalMapperObject moDelete;
     SignalMapperObject moShowHide;
-    
+
     SignalMapperObject moShowInspector;
     SignalMapperObject moDeleteLink;
     SignalMapperObject moEditLink;
     SignalMapperObject moDeleteConnection;
-    
+
     QList<QGraphicsItem*> graphicsItems = items(e->scenePos());
-    for (int i = 0; i < graphicsItems.size(); i++) {
+    for (int i = 0; i < std::min(1, graphicsItems.size()); i++) {
         ProcessorOutportGraphicsItem* outport =
             qgraphicsitem_cast<ProcessorOutportGraphicsItem*>(graphicsItems[i]);
         if (outport) {
             QAction* showPortInsector = menu.addAction(tr("Show Port Inspector"));
+            showPortInsector->setCheckable(true);
+            if (portInspectors_.find(outport->getPort()) != portInspectors_.end()) {
+                showPortInsector->setChecked(true);
+            }
             moShowInspector.item_ = outport;
             connect(showPortInsector, SIGNAL(triggered()), &moShowInspector, SLOT(tiggerAction()));
-            connect(&moShowInspector, SIGNAL(triggered(EditorGraphicsItem*)),
-                    this, SLOT(contextMenuShowInspector(EditorGraphicsItem*)));
+            connect(&moShowInspector, SIGNAL(triggered(EditorGraphicsItem*)), this,
+                    SLOT(contextMenuShowInspector(EditorGraphicsItem*)));
         }
-        
+
         ProcessorInportGraphicsItem* inport =
             qgraphicsitem_cast<ProcessorInportGraphicsItem*>(graphicsItems[i]);
         if (inport) {
             QAction* showPortInsector = menu.addAction(tr("Show Port Inspector"));
+            showPortInsector->setCheckable(true);
+            if (portInspectors_.find(inport->getPort()->getConnectedOutport()) !=
+                portInspectors_.end()) {
+                showPortInsector->setChecked(true);
+            }
             moShowInspector.item_ = inport;
             connect(showPortInsector, SIGNAL(triggered()), &moShowInspector, SLOT(tiggerAction()));
-            connect(&moShowInspector, SIGNAL(triggered(EditorGraphicsItem*)),
-                    this, SLOT(contextMenuShowInspector(EditorGraphicsItem*)));
+            connect(&moShowInspector, SIGNAL(triggered(EditorGraphicsItem*)), this,
+                    SLOT(contextMenuShowInspector(EditorGraphicsItem*)));
         }
-        
+
         ProcessorGraphicsItem* processor =
             qgraphicsitem_cast<ProcessorGraphicsItem*>(graphicsItems[i]);
         if (processor) {
             QAction* renameAction = menu.addAction(tr("Rename Processor"));
             QAction* deleteAction = menu.addAction(tr("Delete Processor"));
-            
+
             moRename.item_ = processor;
             moDelete.item_ = processor;
-            
+
             connect(renameAction, SIGNAL(triggered()), &moRename, SLOT(tiggerAction()));
-            connect(&moRename, SIGNAL(triggered(EditorGraphicsItem*)),
-                    this, SLOT(contextMenuRenameProcessor(EditorGraphicsItem*)));
-            
+            connect(&moRename, SIGNAL(triggered(EditorGraphicsItem*)), this,
+                    SLOT(contextMenuRenameProcessor(EditorGraphicsItem*)));
+
             connect(deleteAction, SIGNAL(triggered()), &moDelete, SLOT(tiggerAction()));
-            connect(&moDelete, SIGNAL(triggered(EditorGraphicsItem*)),
-                    this, SLOT(contextMenuDeleteProcessor(EditorGraphicsItem*)));
-            
+            connect(&moDelete, SIGNAL(triggered(EditorGraphicsItem*)), this,
+                    SLOT(contextMenuDeleteProcessor(EditorGraphicsItem*)));
+
             if (processor->getProcessor()->hasProcessorWidget()) {
                 QAction* showAction = menu.addAction(tr("Show Widget"));
                 showAction->setCheckable(true);
                 moShowHide.item_ = processor;
                 connect(showAction, SIGNAL(triggered()), &moShowHide, SLOT(tiggerAction()));
-                connect(&moShowHide, SIGNAL(triggered(EditorGraphicsItem*)),
-                    this, SLOT(contextMenuShowHideWidget(EditorGraphicsItem*)));
-                
-                ProcessorWidget* processorWidget =
-                    processor->getProcessor()->getProcessorWidget();
+                connect(&moShowHide, SIGNAL(triggered(EditorGraphicsItem*)), this,
+                        SLOT(contextMenuShowHideWidget(EditorGraphicsItem*)));
+
+                ProcessorWidget* processorWidget = processor->getProcessor()->getProcessorWidget();
                 if (processorWidget) {
                     showAction->setChecked(processorWidget->isVisible());
                 }
@@ -839,33 +847,38 @@ void NetworkEditor::contextMenuEvent(QGraphicsSceneContextMenuEvent* e) {
         if (portconnection) {
             QAction* deleteConnection = menu.addAction(tr("Delete Connection"));
             moDeleteConnection.item_ = portconnection;
-            connect(deleteConnection, SIGNAL(triggered()), &moDeleteConnection, SLOT(tiggerAction()));
-            connect(&moDeleteConnection, SIGNAL(triggered(EditorGraphicsItem*)),
-                    this, SLOT(contextMenuDeleteConnection(EditorGraphicsItem*)));
-            
+            connect(deleteConnection, SIGNAL(triggered()), &moDeleteConnection,
+                    SLOT(tiggerAction()));
+            connect(&moDeleteConnection, SIGNAL(triggered(EditorGraphicsItem*)), this,
+                    SLOT(contextMenuDeleteConnection(EditorGraphicsItem*)));
+
             QAction* showPortInsector = menu.addAction(tr("Show Port Inspector"));
+            showPortInsector->setCheckable(true);
+            if (portInspectors_.find(portconnection->getOutportGraphicsItem()->getPort()) !=
+                portInspectors_.end()) {
+                showPortInsector->setChecked(true);
+            }
             moShowInspector.item_ = portconnection->getOutportGraphicsItem();
             connect(showPortInsector, SIGNAL(triggered()), &moShowInspector, SLOT(tiggerAction()));
-            connect(&moShowInspector, SIGNAL(triggered(EditorGraphicsItem*)),
-                    this, SLOT(contextMenuShowInspector(EditorGraphicsItem*)));
+            connect(&moShowInspector, SIGNAL(triggered(EditorGraphicsItem*)), this,
+                    SLOT(contextMenuShowInspector(EditorGraphicsItem*)));
         }
-        
+
         LinkConnectionGraphicsItem* linkconnection =
             qgraphicsitem_cast<LinkConnectionGraphicsItem*>(graphicsItems[i]);
         if (linkconnection) {
             QAction* deleteLink = menu.addAction(tr("Delete Links"));
             moDeleteLink.item_ = linkconnection;
             connect(deleteLink, SIGNAL(triggered()), &moDeleteLink, SLOT(tiggerAction()));
-            connect(&moDeleteLink, SIGNAL(triggered(EditorGraphicsItem*)),
-                    this, SLOT(contextMenuDeleteLink(EditorGraphicsItem*)));
-            
+            connect(&moDeleteLink, SIGNAL(triggered(EditorGraphicsItem*)), this,
+                    SLOT(contextMenuDeleteLink(EditorGraphicsItem*)));
+
             QAction* editLink = menu.addAction(tr("Edit Links"));
             moEditLink.item_ = linkconnection;
             connect(editLink, SIGNAL(triggered()), &moEditLink, SLOT(tiggerAction()));
-            connect(&moEditLink, SIGNAL(triggered(EditorGraphicsItem*)),
-                    this, SLOT(contextMenuEditLink(EditorGraphicsItem*)));
+            connect(&moEditLink, SIGNAL(triggered(EditorGraphicsItem*)), this,
+                    SLOT(contextMenuEditLink(EditorGraphicsItem*)));
         }
-        
     }
     if (menu.actions().size() > 0) {
         menu.exec(QCursor::pos());
@@ -1135,6 +1148,13 @@ void NetworkEditor::clearNetwork() {
     //TODO move to ProecssorNetwork
     InviwoApplication::getPtr()->getProcessorNetwork()->lock();
 
+    // We need to clear the portInspectors manually otherwise the pointers in the 
+    // PortInspector networks won't be cleared
+    PortInspectorMap portInspectors = portInspectors_;
+    for (PortInspectorMap::iterator it = portInspectors.begin(); it != portInspectors.end(); ++it) {
+        removePortInspector(it->first);
+    }
+
     // Invalidate inports to alert processors that they should stop their calculations.
     std::vector<Processor*> processors =
         InviwoApplication::getPtr()->getProcessorNetwork()->getProcessors();
@@ -1379,9 +1399,7 @@ void NetworkEditor::contextMenuRenameProcessor(EditorGraphicsItem* item) {
     }
 }
 
-void NetworkEditor::contextMenuShowInspector(EditorGraphicsItem* item) {
-    LogInfo("Port inspector...");
-    
+void NetworkEditor::contextMenuShowInspector(EditorGraphicsItem* item) {   
     Outport* port = NULL;
     QPointF pos;
     ProcessorInportGraphicsItem* pin = qgraphicsitem_cast<ProcessorInportGraphicsItem*>(item);
@@ -1396,8 +1414,11 @@ void NetworkEditor::contextMenuShowInspector(EditorGraphicsItem* item) {
         return;
     }
     
-    addPortInspector(port, pos);
-    
+    if (portInspectors_.find(port)==portInspectors_.end()) {
+        addPortInspector(port, pos);
+    } else {
+        removePortInspector(port);
+    }
 }
 
 void NetworkEditor::contextMenuDeleteProcessor(EditorGraphicsItem* item) {
