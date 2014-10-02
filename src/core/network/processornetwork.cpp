@@ -31,6 +31,7 @@
  *********************************************************************************/
 
 #include <inviwo/core/network/processornetwork.h>
+#include <inviwo/core/metadata/processormetadata.h>
 #include <inviwo/core/util/vectoroperations.h>
 #include <inviwo/core/util/settings/linksettings.h>
 #include <inviwo/core/common/inviwoapplication.h>
