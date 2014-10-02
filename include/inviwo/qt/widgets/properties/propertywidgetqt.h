@@ -86,7 +86,9 @@ public slots:
     virtual void setDeveloperUsageMode(bool value);
     virtual void setApplicationUsageMode(bool value);
     virtual void changeSemantics(QAction* action);
-    
+    virtual void copy();
+    virtual void paste();
+
     void moduleAction();
 signals:
     void usageModeChanged();
@@ -118,6 +120,8 @@ protected:
     QActionGroup* usageModeActionGroup_;
     QAction* developerUsageModeAction_;
     QAction* applicationUsageModeAction_;
+    QAction* copyAction_;
+    QAction* pasteAction_;
 
     QMenu* semanicsMenuItem_;
     QActionGroup* semanticsActionGroup_;
@@ -125,6 +129,8 @@ protected:
 private:
     QMenu* contextMenu_;
     QMap<QString, QMenu*> moduleSubMenus_;
+
+    static const Property* copySource;
 };
 
 //PropertyEditorWidget owned by PropertyWidget

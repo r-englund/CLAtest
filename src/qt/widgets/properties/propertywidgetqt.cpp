@@ -58,6 +58,8 @@ PropertyWidgetQt::PropertyWidgetQt()
     , usageModeActionGroup_(NULL)
     , developerUsageModeAction_(NULL)
     , applicationUsageModeAction_(NULL)
+    , copyAction_(NULL)
+    , pasteAction_(NULL)
     , semanicsMenuItem_(NULL)
     , semanticsActionGroup_(NULL)
     , contextMenu_(NULL)  {
@@ -204,6 +206,11 @@ void PropertyWidgetQt::generateContextMenu() {
         usageModeActionGroup_->addAction(applicationUsageModeAction_);
         contextMenu_->addMenu(usageModeItem_);
 
+        copyAction_ = new QAction("Copy", this);
+        contextMenu_->addAction(copyAction_);
+        pasteAction_ = new QAction("Paste", this);
+        contextMenu_->addAction(pasteAction_);
+
         if (property_) {
             semanicsMenuItem_ = new QMenu(tr("&Semantics"), contextMenu_);
             semanticsActionGroup_ = new QActionGroup(this);
@@ -245,6 +252,9 @@ void PropertyWidgetQt::generateContextMenu() {
                 SLOT(setApplicationUsageMode(bool)));
 
         connect(resetAction, SIGNAL(triggered()), this, SLOT(resetPropertyToDefaultState()));
+
+        connect(copyAction_, SIGNAL(triggered()), this, SLOT(copy()));
+        connect(pasteAction_, SIGNAL(triggered()), this, SLOT(paste()));
 
         // Module actions.
         generateModuleMenuActions();
@@ -492,6 +502,18 @@ QSize PropertyWidgetQt::sizeHint() const {
 QSize PropertyWidgetQt::minimumSizeHint() const {
     return layout()->sizeHint();
 }
+
+void PropertyWidgetQt::copy() {
+    copySource = property_;
+}
+
+void PropertyWidgetQt::paste() {
+    if(copySource) {
+        property_->set(copySource);
+    }
+}
+
+const Property* PropertyWidgetQt::copySource = NULL;
 
 //////////////////////////////////////////////////////////////////////////
 
