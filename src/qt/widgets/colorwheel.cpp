@@ -118,14 +118,14 @@ QColor ColorWheel::posColor(const QPoint& point) {
         // radius of inner circle
         qreal ir = r-wheelWidth;
         // left corner of square
-        qreal m = w/2.0-ir/qSqrt(2);
+        qreal m = w/2.0 - ir/qSqrt(2);
         QPoint p = point - QPoint(m, m);
-        qreal SquareWidth = 2*ir/qSqrt(2);
+        qreal SquareWidth = qFloor(2*ir/qSqrt(2));
         return QColor::fromHsvF(current.hueF(),
-                                p.x()/SquareWidth,
-                                p.y()/SquareWidth);
+                                p.x() / SquareWidth,
+                                p.y() / SquareWidth);
     }
-
+    
     return QColor();
 }
 
@@ -355,7 +355,7 @@ void ColorWheel::composeWheel() {
 }
 
 void ColorWheel::hueChanged(const int& hue) {
-    if (hue<0 ||hue>359)return;
+    if (hue < 0 || hue > 359) return;
 
     int s = current.saturation();
     int v = current.value();
