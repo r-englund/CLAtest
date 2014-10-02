@@ -121,7 +121,9 @@ ProcessorGraphicsItem* NetworkEditor::addProcessorRepresentations(Processor* pro
     }
 
     if (processor->hasProcessorWidget()) {
-        processor->getProcessorWidget()->setVisible(showProcessorWidget);
+        if (showProcessorWidget) {
+            processor->getProcessorWidget()->show();
+        }
         processor->getProcessorWidget()->addObserver(ret->getStatusItem());
     }
     return ret;
@@ -203,7 +205,6 @@ void NetworkEditor::addProcessorWidget(Processor* processor, bool visible) {
 
         processor->setProcessorWidget(processorWidget);
         processor->getProcessorWidget()->initialize();
-        // TODO: Serialize if visible and check this on network load
         processor->getProcessorWidget()->setVisible(visible);
     }
 }
