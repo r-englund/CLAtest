@@ -118,7 +118,6 @@ void TransferFunctionPropertyDialog::generateWidget() {
     connect(maskSlider_, SIGNAL(valuesChanged(int, int)),
             this, SLOT(changeMask(int, int)));
     
-    colorChange_ = false;
     colorWheel_ = new ColorWheel();
     connect(colorWheel_, SIGNAL(colorChange(QColor)), this, SLOT(setPointColor(QColor)));
     
@@ -319,23 +318,29 @@ void TransferFunctionPropertyDialog::updateColorWheel() {
 // Connected to doubleClick on the tfEditor
 void TransferFunctionPropertyDialog::showColorDialog() {
     QList<QGraphicsItem*> selection = tfEditor_->selectedItems();
-    if (selection.size() > 0) {
+    if (selection.size() > 0 && colorDialog_->isHidden()) {
+        TransferFunctionEditorControlPoint* tfcp = 
+            qgraphicsitem_cast<TransferFunctionEditorControlPoint*>(selection[0]);
+        vec4 color = tfcp->getPoint()->getRGBA() * 255.0f;
+
+        colorDialog_->blockSignals(true);
+        colorDialog_->setCurrentColor(QColor(color.r, color.g, color.b, color.a));
+        colorDialog_->blockSignals(false);
         colorDialog_->show();
     }
 }
 
-// Connected to currentColorChanged on the colorDialog_
-void TransferFunctionPropertyDialog::setPointColorDialog(QColor color) {
-    setPointColor(color);
-    colorWheel_->blockSignals(true);
-    colorWheel_->setColor(color);
-    colorWheel_->blockSignals(false);
-}
 
 // Connected to colorChange on the colorWheel_
 void TransferFunctionPropertyDialog::setPointColor(QColor color) {
     QList<QGraphicsItem*> selection = tfEditor_->selectedItems();
     vec3 newRgb = vec3(color.redF(), color.greenF(), color.blueF());
+
+    if(colorDialog_->isVisible()) {
+        colorDialog_->blockSignals(true);
+        colorDialog_->setCurrentColor(color);
+        colorDialog_->blockSignals(false);
+    }
 
     for (int i=0; i<selection.size(); i++) {
         TransferFunctionEditorControlPoint* tfcp =
@@ -346,6 +351,26 @@ void TransferFunctionPropertyDialog::setPointColor(QColor color) {
         }
     }
 }
+
+// Connected to currentColorChanged on the colorDialog_
+void TransferFunctionPropertyDialog::setPointColorDialog(QColor color) {
+    QList<QGraphicsItem*> selection = tfEditor_->selectedItems();
+    vec3 newRgb = vec3(color.redF(), color.greenF(), color.blueF());
+
+    colorWheel_->blockSignals(true);
+    colorWheel_->setColor(color);
+    colorWheel_->blockSignals(false);
+
+    for (int i = 0; i < selection.size(); i++) {
+        TransferFunctionEditorControlPoint* tfcp =
+            qgraphicsitem_cast<TransferFunctionEditorControlPoint*>(selection.at(i));
+
+        if (tfcp) {
+            tfcp->getPoint()->setRGB(newRgb);
+        }
+    }
+}
+
 
 void TransferFunctionPropertyDialog::changeVerticalZoom(int zoomMin, int zoomMax) {
     // normalize zoom values, as sliders in TransferFunctionPropertyDialog

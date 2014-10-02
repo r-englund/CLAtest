@@ -126,7 +126,6 @@ private:
     RangeSliderQt* zoomHSlider_;
     RangeSliderQt* maskSlider_;
 
-    bool colorChange_;
     void generateWidget();
     void updateTFPreview();
 };
