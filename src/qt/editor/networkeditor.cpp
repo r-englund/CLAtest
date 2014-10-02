@@ -70,6 +70,7 @@
 #include <QGraphicsSceneMouseEvent>
 #include <QMenu>
 #include <QVarLengthArray>
+#include <QTimer>
 
 
 namespace inviwo {
@@ -1447,10 +1448,9 @@ void NetworkEditor::onProcessorNetworkDidAddProcessor(Processor* processor) {
     // Workaround: Do not cache if invisible. The renderPortInspectorImage will remove widgets,
     // before the event has add time to add them... 
     if (!meta->isSelected() && meta->isVisible()){
-        QCoreApplication::postEvent(
-                propertyListWidget_,
-                new PropertyListEvent(PropertyListEvent::CACHE, processor),
-                Qt::LowEventPriority);
+        // Create a delay object whoes only job it is to post an cache event, and then delete itself.
+        CacheDelay* delay = new CacheDelay(processor, propertyListWidget_);
+        QTimer::singleShot(2000, delay, SLOT(postEvent()));
     }
 }
 void NetworkEditor::onProcessorNetworkWillRemoveProcessor(Processor* processor) {
@@ -1499,5 +1499,15 @@ void PortInspectorObserver::onProcessorWidgetHide(ProcessorWidget* widget) {
     delete this;
 }
 QEvent::Type PortInspectorEvent::PORT_INSPECTOR_EVENT = QEvent::None;
+
+void CacheDelay::postEvent() {
+    QCoreApplication::postEvent(propertyListWidget_,
+                                new PropertyListEvent(PropertyListEvent::CACHE, processor_),
+                                10 * Qt::LowEventPriority);
+    delete this;
+}
+
+CacheDelay::CacheDelay(Processor* processor, PropertyListWidget* propertyListWidget)
+    : processor_(processor), propertyListWidget_(propertyListWidget) {}
 
 }  // namespace

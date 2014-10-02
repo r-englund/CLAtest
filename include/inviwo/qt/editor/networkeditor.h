@@ -302,6 +302,17 @@ private:
     static QEvent::Type PORT_INSPECTOR_EVENT;
 };
 
+class IVW_QTEDITOR_API CacheDelay : public QObject {
+    Q_OBJECT
+public:
+    CacheDelay(Processor* processor, PropertyListWidget* propertyListWidget);
+public slots:
+    void postEvent();
+private:
+    Processor* processor_;
+    PropertyListWidget* propertyListWidget_;
+};
+
 class SignalMapperObject : public QObject {
     Q_OBJECT
 public:

@@ -40,6 +40,7 @@ CompositePropertyWidgetQt::CompositePropertyWidgetQt(CompositeProperty* property
     : CollapsibleGroupBoxWidgetQt(property->getDisplayName())
     , property_(property) {
     setPropertyOwner(property);
+    PropertyWidget::setProperty(property);
     std::vector<Property*> subProperties = property_->getProperties();
     for (size_t i = 0; i < subProperties.size(); i++) {
         addProperty(subProperties[i]);
@@ -69,28 +70,5 @@ void CompositePropertyWidgetQt::setApplicationUsageMode(bool value) {
     CollapsibleGroupBoxWidgetQt::setApplicationUsageMode(value);
     property_->setUsageMode(APPLICATION);
 }
-
-std::string CompositePropertyWidgetQt::getToolTipText() {
-    if (property_) {
-        std::stringstream ss;
-
-        ss << makeToolTipTop(property_->getDisplayName());
-        ss << makeToolTipTableTop();
-        ss << makeToolTipRow("Identifier", property_->getIdentifier());
-        ss << makeToolTipRow("Path", joinString(property_->getPath(), "."));
-        ss << makeToolTipRow("Semantics", property_->getSemantics().getString());
-        ss << makeToolTipRow("Validation Level", PropertyOwner::invalidationLevelToString(
-            property_->Property::getInvalidationLevel()));
-        ss << makeToolTipTableBottom();
-        ss << makeToolTipBottom();
-
-        return ss.str();
-    } else {
-        return "";
-    }
-}
-
-
-
 
 } // namespace
