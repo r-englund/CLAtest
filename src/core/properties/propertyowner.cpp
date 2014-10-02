@@ -79,9 +79,10 @@ Property* PropertyOwner::removeProperty(Property* property) {
         std::find(properties_.begin(), properties_.end(), property);
     if (it != properties_.end()) {
         prop = *it;
-        notifyObserversWillRemoveProperty(prop, std::distance(properties_.begin(), it));
+        size_t index = std::distance(properties_.begin(), it);
+        notifyObserversWillRemoveProperty(prop, index);
         properties_.erase(it);
-        notifyObserversDidRemoveProperty(prop, std::distance(properties_.begin(), it));
+        notifyObserversDidRemoveProperty(prop, index);
     }
     return prop;
 }

@@ -122,7 +122,18 @@ namespace inviwo {
 
 
     void PyInviwo::addModulePath(const std::string& path){
-        LogError("NOT YET IMPLEMENTED");
+        if (!Py_IsInitialized()) {
+            LogWarn("addModulePath(): not initialized");
+            return;
+        }
+
+        std::string pathConv = path;
+        replaceInString(pathConv, "\\", "/");
+        std::string runString = "import sys\n";
+        runString.append(std::string("sys.path.append('") + pathConv + std::string("')"));
+        int ret = PyRun_SimpleString(runString.c_str());
+
+        if (ret != 0) LogWarn("Failed to add '" + pathConv + "' to Python module search path");
     }
 
     void PyInviwo::initPythonCInterface() {
