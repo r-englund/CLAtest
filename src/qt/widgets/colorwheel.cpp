@@ -39,8 +39,19 @@
  *********************************************************************************/
 
 #include <inviwo/qt/widgets/colorwheel.h>
+#include <QPainter>
+#include <QResizeEvent>
+#include <QStyleOption>
+#include <QtCore/qmath.h> 
+
+#include <algorithm>
 
 namespace inviwo {
+
+template <class T>
+inline T clamp(T value, T lower, T higher) {
+    return std::min(std::max(value, lower), higher);
+}
 
 ColorWheel::ColorWheel(QWidget* parent) :
     QWidget(parent),
@@ -54,8 +65,8 @@ ColorWheel::ColorWheel(QWidget* parent) :
     inSquare(false) {
     
     current = current.toHsv();
-    setMinimumSize(200, 200);
-    setMaximumSize(200, 200);
+    setMinimumSize(initSize);
+    setMaximumSize(initSize);
     setCursor(Qt::CrossCursor);
 }
 
@@ -103,8 +114,7 @@ QColor ColorWheel::posColor(const QPoint& point) {
             }
         }
 
-        hue = hue>359?359:hue;
-        hue = hue<0?0:hue;
+        int hueI = clamp(static_cast<int>(hue), 0, 359);
         return QColor::fromHsv(hue,
                                current.saturation(),
                                current.value());
@@ -120,10 +130,10 @@ QColor ColorWheel::posColor(const QPoint& point) {
         // left corner of square
         qreal m = w/2.0 - ir/qSqrt(2);
         QPoint p = point - QPoint(m, m);
-        qreal SquareWidth = qFloor(2*ir/qSqrt(2));
-        return QColor::fromHsvF(current.hueF(),
-                                p.x() / SquareWidth,
-                                p.y() / SquareWidth);
+        qreal SquareWidth = (ir * qSqrt(2));
+        return QColor::fromHsv(current.hueF(),
+                               clamp(static_cast<int>(p.x() / SquareWidth * 255.0), 0, 255),
+                               clamp(static_cast<int>(p.y() / SquareWidth * 255.0), 0, 255));
     }
     
     return QColor();
@@ -242,10 +252,11 @@ void ColorWheel::drawWheelImage(const QSize& newSize) {
     QStyleOption option;
     option.initFrom(this);
     QBrush background = option.palette.window();
+    //background.setColor("orange");
     wheelImage = QImage(newSize, QImage::Format_ARGB32_Premultiplied);
     wheelImage.fill(background.color());
     QPainter painter(&wheelImage);
-    painter.setRenderHint(QPainter::Antialiasing);
+    //painter.setRenderHint(QPainter::Antialiasing);
     QConicalGradient conicalGradient(0, 0, 0);
     conicalGradient.setColorAt(0.0, Qt::red);
     conicalGradient.setColorAt(60.0/360.0, Qt::yellow);
@@ -255,14 +266,19 @@ void ColorWheel::drawWheelImage(const QSize& newSize) {
     conicalGradient.setColorAt(300.0/360.0, Qt::magenta);
     conicalGradient.setColorAt(1.0, Qt::red);
     // outer circle
-    painter.translate(r/2, r/2);
+    //painter.translate(r/2.0, r/2.0);
     QBrush brush(conicalGradient);
     painter.setPen(Qt::NoPen);
     painter.setBrush(brush);
-    painter.drawEllipse(QPoint(0,0),r/2-margin,r/2-margin);
+    painter.drawEllipse(QPointF(r/2.0, r/2.0), r/2.0 - margin, r/2.0 - margin);
     // inner circle
     painter.setBrush(background);
-    painter.drawEllipse(QPoint(0,0),r/2-margin-wheelWidth,r/2-margin-wheelWidth);
+    painter.drawEllipse(QPointF(r/2.0, r/2.0), r/2.0 - margin - wheelWidth, r/2.0 - margin - wheelWidth);
+
+    //painter.setPen(QColor("gray"));
+    //painter.drawLine(QPointF(0.0, 0.0), QPointF(r, r));
+    //painter.drawLine(QPointF(0.0, r), QPointF(r, 0.0));
+
     // calculate wheel region
     wheelRegion = QRegion(r/2, r/2, r-2*margin, r-2*margin, QRegion::Ellipse);
     wheelRegion.translate(-(r-2*margin)/2, -(r-2*margin)/2);
@@ -273,14 +289,6 @@ void ColorWheel::drawWheelImage(const QSize& newSize) {
 }
 
 void ColorWheel::drawSquareImage(const int& hue) {
-    // region of the widget
-    int w = qMin(width(), height());
-    // radius of outer circle
-    qreal r = w/2-margin;
-    // radius of inner circle
-    qreal ir = r-wheelWidth;
-    // left corner of square
-    qreal m = w/2.0-ir/qSqrt(2);
     QImage square(255,255, QImage::Format_ARGB32_Premultiplied);
     QColor color;
     QRgb vv;
@@ -293,9 +301,24 @@ void ColorWheel::drawSquareImage(const int& hue) {
         }
     }
 
-    qreal SquareWidth = 2*ir/qSqrt(2);
-    squareImage = square.scaled(SquareWidth,SquareWidth);
-    squareRegion = QRegion(m, m, SquareWidth, SquareWidth);
+    // region of the widget
+    int w = qMin(width(), height());
+    // radius of outer circle
+    qreal r = w/2.0 - margin;
+    // radius of inner circle
+    qreal ir = r - wheelWidth;
+    // left corner of square
+    qreal m = w/2.0 - ir/qSqrt(2.0);
+
+    QRectF rect;
+    rect.setTopLeft(QPointF(m, m));
+    rect.setWidth(2.0 * ir / qSqrt(2.0));
+    rect.setHeight(2.0 * ir / qSqrt(2.0));
+    squareRegion = QRegion(rect.toRect());
+
+    qreal SquareWidth = ir * qSqrt(2.0);
+    squareImage = square; // .scaled(SquareWidth,SquareWidth);
+    //squareRegion = QRegion(m, m, SquareWidth, SquareWidth);
 }
 
 void ColorWheel::drawIndicator(const int& hue) {
@@ -348,7 +371,7 @@ void ColorWheel::drawPicker(const QColor& color) {
 void ColorWheel::composeWheel() {
     QPainter composePainter(&wheel);
     composePainter.drawImage(0, 0, wheelImage);
-    composePainter.drawImage(squareRegion.boundingRect().topLeft(), squareImage);
+    composePainter.drawImage(squareRegion.boundingRect(), squareImage);
     composePainter.end();
     drawIndicator(current.hue());
     drawPicker(current);

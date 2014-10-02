@@ -318,14 +318,7 @@ void TransferFunctionPropertyDialog::updateColorWheel() {
 // Connected to doubleClick on the tfEditor
 void TransferFunctionPropertyDialog::showColorDialog() {
     QList<QGraphicsItem*> selection = tfEditor_->selectedItems();
-    if (selection.size() > 0 && colorDialog_->isHidden()) {
-        TransferFunctionEditorControlPoint* tfcp = 
-            qgraphicsitem_cast<TransferFunctionEditorControlPoint*>(selection[0]);
-        vec4 color = tfcp->getPoint()->getRGBA() * 255.0f;
-
-        colorDialog_->blockSignals(true);
-        colorDialog_->setCurrentColor(QColor(color.r, color.g, color.b, color.a));
-        colorDialog_->blockSignals(false);
+    if (selection.size() > 0) {
         colorDialog_->show();
     }
 }
@@ -336,11 +329,10 @@ void TransferFunctionPropertyDialog::setPointColor(QColor color) {
     QList<QGraphicsItem*> selection = tfEditor_->selectedItems();
     vec3 newRgb = vec3(color.redF(), color.greenF(), color.blueF());
 
-    if(colorDialog_->isVisible()) {
-        colorDialog_->blockSignals(true);
-        colorDialog_->setCurrentColor(color);
-        colorDialog_->blockSignals(false);
-    }
+    // update Color dialog to reflect the color changes
+    colorDialog_->blockSignals(true);
+    colorDialog_->setCurrentColor(color);
+    colorDialog_->blockSignals(false);
 
     for (int i=0; i<selection.size(); i++) {
         TransferFunctionEditorControlPoint* tfcp =
