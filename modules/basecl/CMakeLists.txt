@@ -8,6 +8,7 @@ set(HEADER_FILES
     ${IVW_MODULE_DIR}/basecl/processors/entryexitpointscl.h
     ${IVW_MODULE_DIR}/basecl/processors/volumefirsthitcl.h
 	${IVW_MODULE_DIR}/basecl/processors/volumemaxcl.h
+	${IVW_MODULE_DIR}/basecl/runningimagemeanandstandarddeviationcl.h
 )
 ivw_group("Header Files" ${HEADER_FILES})
 
@@ -17,6 +18,7 @@ set(SOURCE_FILES
     ${IVW_MODULE_DIR}/basecl/processors/entryexitpointscl.cpp
     ${IVW_MODULE_DIR}/basecl/processors/volumefirsthitcl.cpp
 	${IVW_MODULE_DIR}/basecl/processors/volumemaxcl.cpp
+	${IVW_MODULE_DIR}/basecl/runningimagemeanandstandarddeviationcl.cpp
 )
 ivw_group("Source Files" ${SOURCE_FILES})
 
@@ -24,6 +26,7 @@ ivw_group("Source Files" ${SOURCE_FILES})
 # Add OpenCL files
 set(SHADER_FILES
     ${IVW_MODULE_DIR}/basecl/cl/entryexitpoints.cl
+	${IVW_MODULE_DIR}/basecl/cl/statistics/runningmeanandstandarddeviation.cl
     ${IVW_MODULE_DIR}/basecl/cl/volumefirsthit.cl
 	${IVW_MODULE_DIR}/basecl/cl/volumemax.cl
 )
