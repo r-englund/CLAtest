@@ -87,13 +87,18 @@ void MeshClipping::process() {
     */
     if (clippingEnabled_.get()) {
         const Geometry* geom = inport_.getData();
-        //LogInfo("Calling clipping method.");
-        Geometry* clippedPlaneGeom = clipGeometryAgainstPlaneRevised(geom, Plane(planePoint_.get(), planeNormal_.get()));
-        clippedPlaneGeom->setBasisAndOffset(inport_.getData()->getBasisAndOffset());
-        clippedPlaneGeom->setWorldTransform(inport_.getData()->getWorldTransform());
-        //LogInfo("Setting new mesh as outport data.");
-        outport_.setData(clippedPlaneGeom);
-        //LogInfo("Done.");
+        // LogInfo("Calling clipping method.");
+        Geometry* clippedPlaneGeom =
+            clipGeometryAgainstPlaneRevised(geom, Plane(planePoint_.get(), planeNormal_.get()));
+        if (clippedPlaneGeom) {
+            clippedPlaneGeom->setBasisAndOffset(inport_.getData()->getBasisAndOffset());
+            clippedPlaneGeom->setWorldTransform(inport_.getData()->getWorldTransform());
+            // LogInfo("Setting new mesh as outport data.");
+            outport_.setData(clippedPlaneGeom);
+        }else{
+            outport_.setConstData(inport_.getData());
+        }
+        // LogInfo("Done.");
     } else {
         outport_.setConstData(inport_.getData());
     }
