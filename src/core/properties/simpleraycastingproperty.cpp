@@ -38,7 +38,7 @@ SimpleRaycastingProperty::SimpleRaycastingProperty(
     gradientComputationMode_.addOption("backward", "Backward differences");
     gradientComputationMode_.addOption("central", "Central differences");
     gradientComputationMode_.addOption("central-higher", "Higher order central differences");
-    gradientComputationMode_.setSelectedIdentifier("forward");
+    gradientComputationMode_.setSelectedIdentifier("central");
     gradientComputationMode_.setCurrentStateAsDefault();
     addProperty(gradientComputationMode_);
 
