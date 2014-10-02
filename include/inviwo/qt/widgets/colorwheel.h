@@ -43,11 +43,14 @@
 
 #include <inviwo/qt/widgets/inviwoqtwidgetsdefine.h>
 #include <QWidget>
-#include <QPainter>
-#include <QResizeEvent>
-#include <QStyleOption>
-#include <QtCore/qmath.h>
-#include <QDebug>
+#include <QImage>
+#include <QPixmap>
+#include <QColor>
+
+class QMouseEvent;
+class QResizeEvent;
+class QPaintEvent;
+
 namespace inviwo {
 
 class IVW_QTWIDGETS_API ColorWheel : public QWidget {
@@ -91,7 +94,7 @@ private:
     void drawPicker(const QColor& color);
     void drawSquareImage(const int& hue);
     void composeWheel();
-    double PI;
+
 private slots:
     void hueChanged(const int& hue);
     void svChanged(const QColor& newcolor);
