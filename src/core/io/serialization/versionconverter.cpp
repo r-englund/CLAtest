@@ -36,9 +36,9 @@
 namespace inviwo {
 VersionConverter::VersionConverter() {}
 
-
-
 bool util::xmlCopyMatchingSubPropsIntoComposite(TxElement* node, const CompositeProperty& prop) {
+    LogInfoCustom("VersionConverter", "  Looking for matching sub properties");
+
     TxElement* propitem = new TxElement("Property");
     propitem->SetAttribute("type", prop.getClassIdentifier());
     propitem->SetAttribute("identifier", prop.getIdentifier());
@@ -55,9 +55,7 @@ bool util::xmlCopyMatchingSubPropsIntoComposite(TxElement* node, const Composite
 
     for (size_t i = 0; i < props.size(); ++i) {
         bool match = false;
-        std::stringstream ss;
 
-        ss << "Looking for match to: " << prop.getIdentifier() << "." << props[i]->getIdentifier();
         ticpp::Iterator<ticpp::Element> child;
         for (child = child.begin(node); child != child.end(); child++) {
             std::string name;
@@ -65,18 +63,22 @@ bool util::xmlCopyMatchingSubPropsIntoComposite(TxElement* node, const Composite
             std::string type = child->GetAttributeOrDefault("type", "");
             std::string id = child->GetAttributeOrDefault("identifier", "");
 
-            if (props[i]->getIdentifier() == id && (
-                props[i]->getClassIdentifier() == type || 
-                props[i]->getClassIdentifier() == splitString(type, '.').back())) {
-                ss << ": Match found type: " << type << " id: " << id;
+            if (props[i]->getIdentifier() == id &&
+                (props[i]->getClassIdentifier() == type ||
+                 props[i]->getClassIdentifier() == splitString(type, '.').back())) {
+                LogInfoCustom("VersionConverter", "    Match for sub property: " +
+                                                          joinString(props[i]->getPath(), ".") +
+                                                          " found in type: "
+                                                      << type << " id: " << id);
+
                 list->InsertEndChild(*(child.Get()));
                 match = true;
             }
         }
-        if (!match) ss << ": No match found!";
-
-        LogWarnCustom("VersionConverter", "    " + ss.str());
-
+        if (!match) {
+            LogWarnCustom("VersionConverter", "    No match found for sup property: " +
+                                                  joinString(props[i]->getPath(), "."));
+        }
         res = res && match;
     }
     return res;
@@ -116,15 +118,16 @@ bool util::xmlFindMatchingSubPropertiesForComposites(
 
     for (size_t i = 0; i < props.size(); ++i) {
         if (!util::xmlHasProp(pelm[0], *props[i])) {
-            LogWarnCustom("VersionConverter", "Could not find serialized version of composite property: "
-                                                  << props[i]->getIdentifier());
+            LogWarnCustom("VersionConverter",
+                          "Could not find serialized version of composite property: "
+                              << joinString(props[i]->getPath(),"."));
 
-            LogWarnCustom("VersionConverter", "Looking for matching Composite");
-            bool foundMatchingComposite = util::xmlCopyMatchingCompositeProperty(pelm[0], *props[i]);
+            
+            bool foundMatchingComposite =
+                util::xmlCopyMatchingCompositeProperty(pelm[0], *props[i]);
             bool foundSubProp = false;
-            if(!foundMatchingComposite) {
-                LogWarnCustom("VersionConverter", "Looking for matching sub properties");
-                foundSubProp = util::xmlCopyMatchingSubPropsIntoComposite(pelm[0], *props[i]);
+            if (!foundMatchingComposite) {
+               foundSubProp = util::xmlCopyMatchingSubPropsIntoComposite(pelm[0], *props[i]);
             }
             res = res && (foundSubProp || foundMatchingComposite);
         }
@@ -166,6 +169,8 @@ TxElement* util::xmlGetElement(TxElement* node, std::string path) {
 }
 
 bool util::xmlCopyMatchingCompositeProperty(TxElement* node, const CompositeProperty& prop) {
+    LogInfoCustom("VersionConverter", "  Looking for matching Composite");
+    
     ticpp::Iterator<ticpp::Element> child;
     for (child = child.begin(node); child != child.end(); child++) {
         std::string name;
@@ -174,13 +179,15 @@ bool util::xmlCopyMatchingCompositeProperty(TxElement* node, const CompositeProp
         std::string id = child->GetAttributeOrDefault("identifier", "");
 
         if ((type == "CompositeProperty" || type == "org.inviwo.CompositeProperty") && prop.getIdentifier() == id) {
-            LogWarnCustom("VersionConverter", "    Found Composite with same identifier");
+            LogInfoCustom("VersionConverter", "    Found Composite with same identifier");
 
             TxElement* newChild = node->InsertEndChild(*(child.Get()))->ToElement();
             newChild->SetAttribute("type", prop.getClassIdentifier());
             return true;
         }
     }
+    LogWarnCustom("VersionConverter", "    No Composite found");
+
     return false;
 }
 

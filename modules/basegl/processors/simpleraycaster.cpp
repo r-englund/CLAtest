@@ -147,16 +147,4 @@ void SimpleRaycaster::process() {
     util::glDeactivateCurrentTarget();
 }
 
-void SimpleRaycaster::deserialize(IvwDeserializer& d) {
-    NodeVersionConverter<SimpleRaycaster> tvc(this, &SimpleRaycaster::fixNetwork);
-    d.convertVersion(&tvc);
-    Processor::deserialize(d);
-}
-
-bool SimpleRaycaster::fixNetwork(TxElement* node) {
-    TxElement* p = util::xmlGetElement(node, "Properties/Property&type=OptionPropertyString&identifier=shadingMode");
-    if(p) p->SetAttribute("type", "OptionPropertyInt");
-    return true;
-}
-
 } // namespace

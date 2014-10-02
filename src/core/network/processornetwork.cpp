@@ -661,7 +661,7 @@ void ProcessorNetwork::serialize(IvwSerializer& s) const {
     s.serialize("PropertyLinks", getLinks(), "PropertyLink");
 }
 
-void ProcessorNetwork::deserialize(IvwDeserializer& d) throw (Exception) {
+void ProcessorNetwork::deserialize(IvwDeserializer& d) throw(Exception) {
     // This will set deserializing_ to true while keepTrueWillAlive is in scope
     // and set it to false no matter how we leave the scope
     KeepTrueWhileInScope keepTrueWillAlive(&deserializing_);
@@ -669,40 +669,38 @@ void ProcessorNetwork::deserialize(IvwDeserializer& d) throw (Exception) {
     int version = 0;
     d.deserialize("ProcessorNetworkVersion", version);
 
-    if(version != processorNetworkVersion_) {
-        LogWarn("Old network version, performing updates (" << version << " to "
-                << processorNetworkVersion_ << ") file: " << d.getFileName());
+    if (version != processorNetworkVersion_) {
+        LogWarn("Loading old workspace (" << d.getFileName()<< ") version: "
+                << version << ". Updating to version: " << processorNetworkVersion_);
         NetworkConverter nv(version);
-        d.convertVersion(&nv); 
+        d.convertVersion(&nv);
     }
 
-    //Processors
+    // Processors
     try {
         ProcessorVector processors;
         d.deserialize("Processors", processors, "Processor");
         for (size_t i = 0; i < processors.size(); ++i) {
             if (processors[i]) {
                 addProcessor(processors[i]);
-            }else{
+            } else {
                 LogWarn("Failed deserialization: Processor Nr." << i);
             }
         }
-    }
-    catch (const SerializationException& exception) {
+    } catch (const SerializationException& exception) {
         clear();
         throw AbortException("DeSerialization exception " + exception.getMessage());
-    }
-    catch (...) {
+    } catch (...) {
         clear();
         throw AbortException("Unknown Exception.");
     }
 
-    //Connections
+    // Connections
     try {
         std::vector<PortConnection*> portConnections;
         d.deserialize("Connections", portConnections, "Connection");
 
-        for (size_t i=0; i<portConnections.size(); i++) {
+        for (size_t i = 0; i < portConnections.size(); i++) {
             if (portConnections[i]) {
                 Outport* outPort = portConnections[i]->getOutport();
                 Inport* inPort = portConnections[i]->getInport();
@@ -723,15 +721,17 @@ void ProcessorNetwork::deserialize(IvwDeserializer& d) throw (Exception) {
         throw AbortException("Unknown Exception.");
     }
 
-    //Links
+    // Links
     try {
         std::vector<PropertyLink*> propertyLinks;
         d.deserialize("PropertyLinks", propertyLinks, "PropertyLink");
-        
-        for (size_t j=0; j<propertyLinks.size(); j++) {
-            if (propertyLinks[j]->getSourceProperty() && propertyLinks[j]->getDestinationProperty()) {
-                addLink(propertyLinks[j]->getSourceProperty(), propertyLinks[j]->getDestinationProperty());
-                delete propertyLinks[j];             
+
+        for (size_t j = 0; j < propertyLinks.size(); j++) {
+            if (propertyLinks[j]->getSourceProperty() &&
+                propertyLinks[j]->getDestinationProperty()) {
+                addLink(propertyLinks[j]->getSourceProperty(),
+                        propertyLinks[j]->getDestinationProperty());
+                delete propertyLinks[j];
             } else {
                 LogWarn("Unable to establish property link Nr: " << j);
             }
@@ -750,7 +750,7 @@ bool ProcessorNetwork::isDeserializing()const {
     return deserializing_;
 }
 
-const int ProcessorNetwork::processorNetworkVersion_ = 3;
+const int ProcessorNetwork::processorNetworkVersion_ = 4;
 
 
 ProcessorNetwork::NetworkConverter::NetworkConverter(int from)
@@ -764,6 +764,8 @@ bool ProcessorNetwork::NetworkConverter::convert(TxElement* root) {
             traverseNodes(root, &ProcessorNetwork::NetworkConverter::updateMetaDataTree);
         case 2:
             traverseNodes(root, &ProcessorNetwork::NetworkConverter::updatePropertType);
+        case 3:
+            traverseNodes(root, &ProcessorNetwork::NetworkConverter::updateShadingMode);
         default:
             break;
     }
@@ -811,9 +813,6 @@ void ProcessorNetwork::NetworkConverter::updateMetaDataTree(TxElement* node) {
 }
 
 void ProcessorNetwork::NetworkConverter::updatePropertType(TxElement* node) {
-    std::string key;
-    node->GetValue(&key);
-
     std::string renamed[] = {
         "undefined",
         "BoolProperty",
@@ -823,6 +822,7 @@ void ProcessorNetwork::NetworkConverter::updatePropertType(TxElement* node) {
         "OptionPropertyDouble",
         "OptionPropertyInt",
         "OptionPropertyInt64",
+        "OptionPropertyString",
         "OptionPropertyFloatVec2",
         "OptionPropertyFloatVec3",
         "OptionPropertyFloatVec4",
@@ -872,6 +872,9 @@ void ProcessorNetwork::NetworkConverter::updatePropertType(TxElement* node) {
         "StringProperty",
         "TransferFunctionProperty" };
 
+    std::string key;
+    node->GetValue(&key);
+
     if (key == "Property") {
         std::string type = node->GetAttributeOrDefault("type", "");
         int size = sizeof(renamed)/sizeof(std::string);
@@ -881,8 +884,17 @@ void ProcessorNetwork::NetworkConverter::updatePropertType(TxElement* node) {
     }
 }
 
+void ProcessorNetwork::NetworkConverter::updateShadingMode(TxElement* node) {
+    std::string key;
+    node->GetValue(&key);
 
-
-
+    if (key == "Property") {
+        std::string type = node->GetAttributeOrDefault("type", "");
+        std::string identifier = node->GetAttributeOrDefault("identifier", "");
+        if (type == "org.inviwo.OptionPropertyString" && identifier == "shadingMode") {
+            node->SetAttribute("type", "org.inviwo.OptionPropertyInt");
+        }
+    }
+}
 
 } // namespace

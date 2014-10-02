@@ -70,6 +70,26 @@ void CompositePropertyWidgetQt::setApplicationUsageMode(bool value) {
     property_->setUsageMode(APPLICATION);
 }
 
+std::string CompositePropertyWidgetQt::getToolTipText() {
+    if (property_) {
+        std::stringstream ss;
+
+        ss << makeToolTipTop(property_->getDisplayName());
+        ss << makeToolTipTableTop();
+        ss << makeToolTipRow("Identifier", property_->getIdentifier());
+        ss << makeToolTipRow("Path", joinString(property_->getPath(), "."));
+        ss << makeToolTipRow("Semantics", property_->getSemantics().getString());
+        ss << makeToolTipRow("Validation Level", PropertyOwner::invalidationLevelToString(
+            property_->Property::getInvalidationLevel()));
+        ss << makeToolTipTableBottom();
+        ss << makeToolTipBottom();
+
+        return ss.str();
+    } else {
+        return "";
+    }
+}
+
 
 
 

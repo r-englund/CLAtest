@@ -66,6 +66,7 @@ public:
     virtual Property* removeProperty(Property* property);
     virtual Property* removeProperty(Property& property);
 
+    virtual std::vector<std::string> getPath() const;
 
     std::vector<Property*> getProperties() const { return properties_; }
     Property* getPropertyByIdentifier(const std::string& identifier, bool reqursiveSearch = false) const;

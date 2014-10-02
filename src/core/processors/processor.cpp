@@ -351,4 +351,10 @@ const std::string Processor::getCodeStateString(CodeState state) {
     }
 }
 
+std::vector<std::string> Processor::getPath() const {
+    std::vector<std::string> path;
+    path.push_back(identifier_);
+    return path;
+}
+
 } // namespace

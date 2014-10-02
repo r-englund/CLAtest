@@ -51,6 +51,9 @@ public:
     CompositePropertyWidgetQt(CompositeProperty* property);
     virtual void updateFromProperty();
 
+protected:
+    virtual std::string getToolTipText();
+
 protected slots:
     virtual void setDeveloperUsageMode(bool value);
     virtual void setApplicationUsageMode(bool value);
