@@ -52,10 +52,10 @@ using namespace inviwo;
 
 int main(int argc, char** argv) {
     int ret = -1;
-    inviwo::ConsoleLogger* logger = new inviwo::ConsoleLogger();
     {
         // scope for ivw app
-        inviwo::LogCentral::getPtr()->registerLogger(logger);
+        inviwo::LogCentral::init();
+        inviwo::LogCentral::getPtr()->registerLogger(new inviwo::ConsoleLogger());
 
         // Search for directory containing data folder to find application basepath.
         // Working directory will be used if data folder is not found in parent directories.
@@ -83,7 +83,6 @@ int main(int argc, char** argv) {
         app.closeInviwoApplication();
         glfwTerminate();
     }
-    delete logger;
 
     return ret;
 }

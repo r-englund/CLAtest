@@ -58,6 +58,7 @@
 #include <QMessageBox>
 #include <QSettings>
 #include <QUrl>
+#include <QVariant>
 
 #ifdef IVW_PYTHON_QT
 #include <modules/pythonqt/pythoneditorwidget.h>
@@ -138,7 +139,8 @@ void InviwoMainWindow::initialize() {
     }
 
     recentFileList_ = settings.value("recentFileList").toStringList();
-    workspaceOnLastSucessfullExit_ = settings.value("workspaceOnLastSucessfullExit", "").toString();
+    QString firstWorkspace = InviwoApplication::getPtr()->getPath(InviwoApplication::PATH_WORKSPACES , "boron.inv").c_str();
+    workspaceOnLastSucessfullExit_ = settings.value("workspaceOnLastSucessfullExit", QVariant::fromValue(firstWorkspace)).toString();
     settings.setValue("workspaceOnLastSucessfullExit", "");
     settings.endGroup();
     rootDir_ =

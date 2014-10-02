@@ -100,9 +100,9 @@ void VolumeExport::exportVolume() {
             LogError("Error: Cound not find a writer for the specified extension and data type");
         }
     } else if (volumeFile_.get().empty()) {
-        LogError("Error: Please specify a file to write to");
+        LogWarn("Error: Please specify a file to write to");
     } else if (!volume) {
-        LogError("Error: Please connect a volume to export");
+        LogWarn("Error: Please connect a volume to export");
     }
 }
 
