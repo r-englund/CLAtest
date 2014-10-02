@@ -791,12 +791,6 @@ void ProcessorNetwork::NetworkConverter::updateProcessorType(TxElement* node) {
             node->SetAttribute("type", "org.inviwo." + type);
         }
     }
-    if (key == "MetaDataList"){
-        node->SetValue("MetaDataMap");
-    }
-    if (key == "MetaData"){
-        node->SetValue("MetaDataItem");
-    }
 }
 
 void ProcessorNetwork::NetworkConverter::updateMetaDataTree(TxElement* node) {
