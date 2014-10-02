@@ -96,6 +96,7 @@ public:
      */
     std::string setIdentifier(const std::string& identifier);
     std::string getIdentifier();
+    virtual std::vector<std::string> getPath() const;
 
     void setProcessorWidget(ProcessorWidget* processorWidget);
     ProcessorWidget* getProcessorWidget() const;

@@ -167,6 +167,34 @@ void CompositeProperty::deserialize(IvwDeserializer& d){
 
 }
 
+std::vector<std::string> CompositeProperty::getPath() const {
+    std::vector<std::string> path;
+    const PropertyOwner* owner = getOwner();
+    if (owner) {
+        path = owner->getPath();
+    }
+    path.push_back(getIdentifier());
+    return path;
+}
+
+Processor* CompositeProperty::getProcessor() {
+    PropertyOwner* owner = getOwner();
+    if (owner) {
+        return owner->getProcessor();
+    } else {
+        return NULL;
+    }
+}
+
+const Processor* CompositeProperty::getProcessor() const {
+    const PropertyOwner* owner = getOwner();
+    if (owner) {
+        return owner->getProcessor();
+    } else {
+        return NULL;
+    }
+}
+
 
 
 

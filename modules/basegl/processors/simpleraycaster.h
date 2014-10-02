@@ -61,16 +61,12 @@ public:
     virtual void deinitialize();
     virtual void initializeResources();
 
-    virtual void deserialize(IvwDeserializer& d); 
-
 protected:
     virtual void process();
-
     Shader* shader_;
 
 private:
     void onVolumeChange();
-    bool fixNetwork(TxElement*);
     
     VolumeInport volumePort_;
     ImageInport entryPort_;

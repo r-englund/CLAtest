@@ -79,6 +79,15 @@ Property::~Property() {
 std::string Property::getIdentifier() const {
     return identifier_;
 }
+std::vector<std::string> Property::getPath() const {
+    std::vector<std::string> path;
+    if(owner_) {
+        path = owner_->getPath();
+    } 
+    path.push_back(identifier_);
+    return path;
+}
+
 
 void Property::setIdentifier(const std::string& identifier) {
     identifier_ = identifier;

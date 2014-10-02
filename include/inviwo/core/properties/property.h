@@ -88,6 +88,7 @@ public:
     InviwoPropertyInfo();
 
     virtual std::string getIdentifier() const;
+    virtual std::vector<std::string> getPath() const;
     virtual void setIdentifier(const std::string& identifier);
     virtual std::string getDisplayName() const;
     /** 

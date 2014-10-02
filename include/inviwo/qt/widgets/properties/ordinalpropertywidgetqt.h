@@ -296,6 +296,7 @@ std::string OrdinalPropertyWidgetQt<BT, T>::getToolTipText() {
     ss << this->makeToolTipTop(this->ordinalproperty_->getDisplayName());
     ss << this->makeToolTipTableTop();
     ss << this->makeToolTipRow("Identifier", this->ordinalproperty_->getIdentifier());
+    ss << this->makeToolTipRow("Path", joinString(property_->getPath(),"."));
     ss << this->makeToolTipRow("Semantics", this->ordinalproperty_->getSemantics().getString());
     ss << this->makeToolTipRow("Validation Level", PropertyOwner::invalidationLevelToString(
                                              this->ordinalproperty_->getInvalidationLevel()));

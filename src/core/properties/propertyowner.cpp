@@ -185,4 +185,8 @@ std::string PropertyOwner::invalidationLevelToString(InvalidationLevel level) {
     }
 }
 
+std::vector<std::string> PropertyOwner::getPath() const {
+    return std::vector<std::string>();
+}
+
 } // namespace
