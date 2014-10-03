@@ -8,7 +8,6 @@
 #include <QUrl>
 #include <QDir>
 #include <QSettings>
-#include "qsettings.h"
 
 namespace inviwo {
 
@@ -26,14 +25,23 @@ public:
 
     void useNativeDialog(const bool &use = true);
 
+    // overrides
+    virtual void setNameFilter(const QString &filters);
+    virtual void setNameFilters(const QStringList &filters);
+    virtual void setSidebarUrls(const QList<QUrl> &urls);
+
     virtual int exec();
 
     static QString getPreviousPath(const QString &pathType);
     static void setPreviousPath(const QString &pathType, const QString &path);
 
+    static QString getPreviousExtension(const QString &pathType);
+    static void setPreviousExtension(const QString &pathType, const QString &path);
+
 protected:
     QList<QUrl> sidebarURLs_;
     QStringList extension_;
+    QString selectedExtension_;
     QString pathType_;
 
     static QSettings globalSettings_;
