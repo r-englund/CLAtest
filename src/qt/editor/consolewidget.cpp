@@ -132,12 +132,15 @@ void ConsoleWidget::log(std::string logSource, unsigned int logLevel, const char
             infoLabel_->setText(toString(++numInfos_).c_str());
             break;
 
-        case Warn:
+        case Warn: {
             textField_->setTextColor(warnTextColor_);
-            message = QString::fromStdString("(" + logSource + ") " + logMsg);
+            std::ostringstream lineNumberStr;
+            lineNumberStr << lineNumber;
+            message = QString::fromStdString("(" + logSource + ") [" + std::string(fileName) +
+                ", " + lineNumberStr.str() + "]: " + logMsg);
             warningsLabel_->setText(toString(++numWarnings_).c_str());
             break;
-
+        }
         case Error: {
             textField_->setTextColor(errorTextColor_);
             std::ostringstream lineNumberStr;

@@ -81,23 +81,10 @@ void FilePropertyWidgetQt::generateWidget() {
 }
 
 void FilePropertyWidgetQt::setPropertyValue() {
-    // dialog window settings
-    // Setup sidebar
-    QList<QUrl> sidebarURLs;
+    
     QString dataDir_ = QString::fromStdString(
         InviwoApplication::getPtr()->getPath(InviwoApplication::PATH_DATA));
-    sidebarURLs << QUrl::fromLocalFile(QDir(dataDir_).absolutePath());
-#if (QT_VERSION >= QT_VERSION_CHECK(5, 0, 0))
-    sidebarURLs << QUrl::fromLocalFile(
-        QStandardPaths::writableLocation(QStandardPaths::DesktopLocation));
-    sidebarURLs << QUrl::fromLocalFile(
-        QStandardPaths::writableLocation(QStandardPaths::HomeLocation));
-#else
-    sidebarURLs << QUrl::fromLocalFile(
-        QDesktopServices::storageLocation(QDesktopServices::DesktopLocation));
-    sidebarURLs << QUrl::fromLocalFile(
-        QDesktopServices::storageLocation(QDesktopServices::HomeLocation));
-#endif
+    
     // Setup default path
     QString path;
 
@@ -108,15 +95,15 @@ void FilePropertyWidgetQt::setPropertyValue() {
 
     // Setup Extensions
     std::vector<std::string> filters = property_->getNameFilters();
-    QStringList extension;
-
-    for (std::vector<std::string>::const_iterator it = filters.begin(); it != filters.end(); ++it)
-        extension.push_back(QString::fromStdString(*it));
-
     InviwoFileDialog importFileDialog(this, property_->getDisplayName(),
                                       property_->getContentType());
-    // QFileDialog importFileDialog(this, QString::fromStdString(property_->getDisplayName()),
-    // path);
+    
+
+   // importFileDialog.addSidebarPath()
+
+    for (std::vector<std::string>::const_iterator it = filters.begin(); it != filters.end(); ++it)
+        importFileDialog.addExtension(*it);
+
 
     switch (property_->getAcceptMode()) {
         case FileProperty::AcceptSave:
@@ -156,9 +143,7 @@ void FilePropertyWidgetQt::setPropertyValue() {
             importFileDialog.setFileMode(QFileDialog::AnyFile);
     }
 
-    importFileDialog.setNameFilters(extension);
-    importFileDialog.setSidebarUrls(sidebarURLs);
-
+//    importFileDialog.setSidebarUrls(sidebarURLs);
     if (importFileDialog.exec()) {
         QString path = importFileDialog.selectedFiles().at(0);
         property_->set(path.toLocal8Bit().constData());
