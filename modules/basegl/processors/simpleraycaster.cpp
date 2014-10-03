@@ -99,7 +99,7 @@ void SimpleRaycaster::initializeResources() {
     shader_->build();
 }
 
-void SimpleRaycaster::onVolumeChange(){
+void SimpleRaycaster::onVolumeChange() {
     if (volumePort_.hasData()){
         int channels = volumePort_.getData()->getDataFormat()->getComponents();
 

@@ -39,7 +39,7 @@ PropertySettingsWidgetQt::PropertySettingsWidgetQt(Property* property, QWidget* 
     : QWidget(NULL)
     , gridLayout_(this)
     , btnApply_("Apply", this)
-    , btnSave_("Save", this)
+    , btnOk_("Ok", this)
     , btnCancel_("Cancel", this)
     , property_(property) {
     

@@ -99,7 +99,7 @@ protected:
 
     QGridLayout gridLayout_;
     QPushButton btnApply_;
-    QPushButton btnSave_;
+    QPushButton btnOk_;
     QPushButton btnCancel_;
     std::vector<SinglePropertySetting*> settings_;
 
@@ -127,7 +127,7 @@ public:
 
     virtual void generateWidget() {
         connect(&btnApply_, SIGNAL(clicked()), this, SLOT(apply()));
-        connect(&btnSave_, SIGNAL(clicked()), this, SLOT(save()));
+        connect(&btnOk_, SIGNAL(clicked()), this, SLOT(save()));
         connect(&btnCancel_, SIGNAL(clicked()), this, SLOT(cancel()));
 
         gridLayout_.setContentsMargins(10, 10, 10, 10);
@@ -163,7 +163,7 @@ public:
         }
 
         gridLayout_.addWidget(&btnApply_, count + 1, 0, 1, 1);
-        gridLayout_.addWidget(&btnSave_, count + 1, 1, 1, 2);
+        gridLayout_.addWidget(&btnOk_, count + 1, 1, 1, 2);
         gridLayout_.addWidget(&btnCancel_, count + 1, 3, 1, 2);
         gridLayout_.setColumnStretch(2, 2);
 
