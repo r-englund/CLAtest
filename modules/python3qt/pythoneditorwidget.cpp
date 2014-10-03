@@ -48,7 +48,7 @@
 #include <QPlainTextEdit>
 #include <QFrame>
 #include <inviwo/core/util/clock.h>
-#include "inviwo/qt/widgets/properties/syntaxhighlighter.h"
+#include <inviwo/qt/widgets/properties/syntaxhighlighter.h>
 
 #include <inviwo/qt/widgets/inviwofiledialog.h>
 
@@ -76,11 +76,9 @@ PythonEditorWidget::PythonEditorWidget(QWidget* parent)
     settings_.beginGroup("PythonEditor");
     QString lastFile = settings_.value("lastScript", "").toString();
     settings_.endGroup();
-    setAllowedAreas(Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea);
-    setFloating(true);
+    setVisible(false);
     buildWidget();
     resize(500, 700);
-    setVisible(false);
     
     InviwoApplication::getPtr()->registerFileObserver(this);
     unsavedChanges_ = false;
@@ -88,6 +86,9 @@ PythonEditorWidget::PythonEditorWidget(QWidget* parent)
 
 
     if (lastFile.size() != 0) loadFile(lastFile.toLocal8Bit().constData(), false);
+
+    setAllowedAreas(Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea);
+    setFloating(true);
 }
 
 
