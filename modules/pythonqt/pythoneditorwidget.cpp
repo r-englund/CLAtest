@@ -77,20 +77,19 @@ PythonEditorWidget::PythonEditorWidget(QWidget* parent)
     settings_.beginGroup("PythonEditor");
     QString lastFile = settings_.value("lastScript", "").toString();
     settings_.endGroup();
-    setAllowedAreas(Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea);
-    setFloating(true);
+    setVisible(false);
     buildWidget();
     resize(500, 700);
-    setVisible(false);
     ProcessorNetwork* processorNetwork = InviwoApplication::getPtr()->getProcessorNetwork();
     processorNetwork->addObserver(this);
     
     InviwoApplication::getPtr()->registerFileObserver(this);
     unsavedChanges_ = false;
 
-
-
     if (lastFile.size() != 0) loadFile(lastFile.toLocal8Bit().constData(), false);
+
+    setAllowedAreas(Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea);
+    setFloating(true);
 }
 
 void PythonEditorWidget::onProcessorNetworkChange() {
