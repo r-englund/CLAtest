@@ -66,11 +66,10 @@
 
 namespace inviwo {
 
-InviwoMainWindow::InviwoMainWindow() 
+InviwoMainWindow::InviwoMainWindow()
     : QMainWindow()
-    , ProcessorNetworkObserver() 
+    , ProcessorNetworkObserver()
     , visibilityModeProperty_(NULL) {
-    
     NetworkEditor::init();
     networkEditor_ = NetworkEditor::getPtr();
     // initialize console widget first to receive log messages
@@ -90,26 +89,26 @@ void InviwoMainWindow::initialize() {
     networkEditorView_ = new NetworkEditorView(networkEditor_, this);
     NetworkEditorObserver::addObservation(getNetworkEditor());
     setCentralWidget(networkEditorView_);
-    
+
     resourceManagerWidget_ = new ResourceManagerWidget(this);
     addDockWidget(Qt::LeftDockWidgetArea, resourceManagerWidget_);
     resourceManagerWidget_->hide();
-    
+
     mappingwidget_ = new MappingWidget(this);
     addDockWidget(Qt::LeftDockWidgetArea, mappingwidget_);
     mappingwidget_->hide();
-    
+
     settingsWidget_ = new SettingsWidget(this);
     addDockWidget(Qt::LeftDockWidgetArea, settingsWidget_);
     settingsWidget_->hide();
-    
+
     processorTreeWidget_ = new ProcessorTreeWidget(this);
     addDockWidget(Qt::LeftDockWidgetArea, processorTreeWidget_);
 
     propertyListWidget_ = new PropertyListWidget(this);
     addDockWidget(Qt::RightDockWidgetArea, propertyListWidget_);
     networkEditor_->setPropertyListWidget(propertyListWidget_);
-    
+
     addDockWidget(Qt::BottomDockWidgetArea, consoleWidget_);
     // load settings and restore window state
     QSettings settings("Inviwo", "Inviwo");
@@ -139,8 +138,11 @@ void InviwoMainWindow::initialize() {
     }
 
     recentFileList_ = settings.value("recentFileList").toStringList();
-    QString firstWorkspace = InviwoApplication::getPtr()->getPath(InviwoApplication::PATH_WORKSPACES , "boron.inv").c_str();
-    workspaceOnLastSucessfullExit_ = settings.value("workspaceOnLastSucessfullExit", QVariant::fromValue(firstWorkspace)).toString();
+    QString firstWorkspace = InviwoApplication::getPtr()
+                                 ->getPath(InviwoApplication::PATH_WORKSPACES, "boron.inv")
+                                 .c_str();
+    workspaceOnLastSucessfullExit_ = settings.value("workspaceOnLastSucessfullExit",
+                                                    QVariant::fromValue(firstWorkspace)).toString();
     settings.setValue("workspaceOnLastSucessfullExit", "");
     settings.endGroup();
     rootDir_ =
@@ -153,15 +155,30 @@ void InviwoMainWindow::initialize() {
     addMenuActions();
     addToolBars();
     updateRecentWorkspaces();
+
+#ifdef WIN32
+    QWidget* w = new QWidget();
+    w->move(-5000, -5000);
+    w->show();
+    QPoint widgetPos = w->pos();
+    QRect widgetGeo = w->geometry();
+    QPoint offset(widgetGeo.left() - widgetPos.x(), widgetGeo.top() - widgetPos.y());
+    w->hide();
+    delete w;
+
+    static_cast<InviwoApplicationQt*>(InviwoApplicationQt::getPtr())
+        ->setWindowDecorationOffset(offset);
+#endif
 }
 
 void InviwoMainWindow::showWindow() {
-    if (maximized_) showMaximized();
-    else show();
+    if (maximized_)
+        showMaximized();
+    else
+        show();
 };
 
-void InviwoMainWindow::deinitialize() {
-}
+void InviwoMainWindow::deinitialize() {}
 
 void InviwoMainWindow::initializeWorkspace() {
     ProcessorNetwork* processorNetwork =
@@ -170,9 +187,7 @@ void InviwoMainWindow::initializeWorkspace() {
     processorNetwork->addObserver(this);
 }
 
-void InviwoMainWindow::onProcessorNetworkChange() {
-    updateWindowTitle();
-}
+void InviwoMainWindow::onProcessorNetworkChange() { updateWindowTitle(); }
 
 bool InviwoMainWindow::processCommandLineArgs() {
     const CommandLineParser* cmdparser =
@@ -231,11 +246,10 @@ void InviwoMainWindow::addMenus() {
     menuBar_ = menuBar();
     QAction* first = 0;
 
-    if (menuBar_->actions().size() > 0)
-        first = menuBar_->actions()[0];
+    if (menuBar_->actions().size() > 0) first = menuBar_->actions()[0];
 
-    fileMenuItem_ = new QMenu(tr("&File"),menuBar_);
-    viewMenuItem_ = new QMenu(tr("&View"),menuBar_);
+    fileMenuItem_ = new QMenu(tr("&File"), menuBar_);
+    viewMenuItem_ = new QMenu(tr("&View"), menuBar_);
     menuBar_->insertMenu(first, fileMenuItem_);
     menuBar_->insertMenu(first, viewMenuItem_);
     helpMenuItem_ = menuBar_->addMenu(tr("&Help"));
@@ -302,8 +316,9 @@ void InviwoMainWindow::addMenuActions() {
     visibilityModeAction_->setIcon(visibilityModeIcon);
     viewMenuItem_->addAction(visibilityModeAction_);
 
-    visibilityModeProperty_ =
-        &InviwoApplication::getPtr()->getSettingsByType<SystemSettings>()->applicationUsageModeProperty_;
+    visibilityModeProperty_ = &InviwoApplication::getPtr()
+                                   ->getSettingsByType<SystemSettings>()
+                                   ->applicationUsageModeProperty_;
     visibilityModeProperty_->onChange(this, &InviwoMainWindow::visibilityModeChangedInSettings);
 
     connect(visibilityModeAction_, SIGNAL(triggered(bool)), this, SLOT(setVisibilityMode(bool)));
@@ -373,8 +388,7 @@ void InviwoMainWindow::addToRecentWorkspaces(QString workspaceFileName) {
     recentFileList_.removeAll(workspaceFileName);
     recentFileList_.prepend(workspaceFileName);
 
-    if (recentFileList_.size() > maxNumRecentFiles_)
-        recentFileList_.removeLast();
+    if (recentFileList_.size() > maxNumRecentFiles_) recentFileList_.removeLast();
 
     updateRecentWorkspaces();
 }
@@ -426,14 +440,13 @@ void InviwoMainWindow::onNetworkEditorFileChanged(const std::string& filename) {
     addToRecentWorkspaces(filename.c_str());
 }
 
-void InviwoMainWindow::onModifiedStatusChanged(const bool &newStatus){
-    updateWindowTitle();
-}
+void InviwoMainWindow::onModifiedStatusChanged(const bool& newStatus) { updateWindowTitle(); }
 
 void InviwoMainWindow::openLastWorkspace() {
     // if a workspace is defined by an argument, that workspace is opened, otherwise, the last
     // opened workspace is used
-    const CommandLineParser* cmdparser = inviwo::InviwoApplicationQt::getPtr()->getCommandLineParser();
+    const CommandLineParser* cmdparser =
+        inviwo::InviwoApplicationQt::getPtr()->getCommandLineParser();
 
     if (cmdparser->getLoadWorkspaceFromArg())
         openWorkspace(static_cast<const QString>(cmdparser->getWorkspacePath().c_str()));
@@ -451,10 +464,10 @@ void InviwoMainWindow::openWorkspace() {
         openFileDialog.addSidebarPath(InviwoApplication::PATH_WORKSPACES);
         openFileDialog.addSidebarPath(workspaceFileDir_);
 
-        openFileDialog.addExtension("inv","Inviwo File");
+        openFileDialog.addExtension("inv", "Inviwo File");
 
         openFileDialog.setFileMode(QFileDialog::AnyFile);
-        
+
         if (openFileDialog.exec()) {
             QString path = openFileDialog.selectedFiles().at(0);
             openWorkspace(path);
@@ -466,8 +479,7 @@ void InviwoMainWindow::openRecentWorkspace() {
     QAction* action = qobject_cast<QAction*>(sender());
 
     if (action) {
-        if(askToSaveWorkspaceChanges())
-            openWorkspace(action->data().toString());
+        if (askToSaveWorkspaceChanges()) openWorkspace(action->data().toString());
     }
 }
 
@@ -488,7 +500,7 @@ void InviwoMainWindow::saveWorkspace() {
         getNetworkEditor()->saveNetwork(currentWorkspaceFileName_.toLocal8Bit().constData());
         updateWindowTitle();
     }
-    
+
     /*
     // The following code snippet allows to reload the Qt style sheets during runtime,
     // which is handy while we change them. once the style sheets have been finalized,
@@ -511,7 +523,7 @@ void InviwoMainWindow::saveWorkspaceAs() {
     saveFileDialog.addSidebarPath(InviwoApplication::PATH_WORKSPACES);
     saveFileDialog.addSidebarPath(workspaceFileDir_);
 
-    saveFileDialog.addExtension("inv","Inviwo File");
+    saveFileDialog.addExtension("inv", "Inviwo File");
 
     if (saveFileDialog.exec()) {
         QString path = saveFileDialog.selectedFiles().at(0);
@@ -535,8 +547,7 @@ void InviwoMainWindow::saveWorkspaceAsCopy() {
     saveFileDialog.addSidebarPath(InviwoApplication::PATH_WORKSPACES);
     saveFileDialog.addSidebarPath(workspaceFileDir_);
 
-    saveFileDialog.addExtension("inv","Inviwo File");
-
+    saveFileDialog.addExtension("inv", "Inviwo File");
 
     if (saveFileDialog.exec()) {
         QString path = saveFileDialog.selectedFiles().at(0);
@@ -549,7 +560,6 @@ void InviwoMainWindow::saveWorkspaceAsCopy() {
     saveWindowState();
 }
 
-
 void InviwoMainWindow::disableEvaluation(bool disable) {
     if (disable)
         inviwo::InviwoApplicationQt::getPtr()->getProcessorNetworkEvaluator()->disableEvaluation();
@@ -559,32 +569,36 @@ void InviwoMainWindow::disableEvaluation(bool disable) {
 
 void InviwoMainWindow::showAboutBox() {
     std::string aboutText;
-    aboutText.append("<b>Inviwo V"+IVW_VERSION+"</b><br>");
+    aboutText.append("<b>Inviwo V" + IVW_VERSION + "</b><br>");
     aboutText.append("Interactive Visualization Workshop<br>");
     aboutText.append("&copy; 2012-2014 The Inviwo Foundation<br>");
     aboutText.append("<a href='http://www.inviwo.org/'>http://www.inviwo.org/</a>");
-    aboutText.append("<p>Inviwo is a rapid prototyping environment for interactive \
+    aboutText.append(
+        "<p>Inviwo is a rapid prototyping environment for interactive \
                      visualizations.<br>It is licensed under the Simplified BSD license.</p>");
     aboutText.append("<p><b>Core Team:</b><br>");
-    aboutText.append("Rickard Englund, Daniel J&ouml;nsson, Sathish Kottravel, Timo Ropinski, Peter Steneteg, Erik Sund&eacute;n</p>");
+    aboutText.append(
+        "Rickard Englund, Daniel J&ouml;nsson, Sathish Kottravel, Timo Ropinski, Peter Steneteg, "
+        "Erik Sund&eacute;n</p>");
     aboutText.append("<p><b>Additional Developers:</b><br>");
     aboutText.append("Alexander Johansson, Johan Noren, Viktor Axelsson</p>");
     aboutText.append("<p><b>Former Developers:</b><br>");
     aboutText.append("Hans-Christian Helltegen, Andreas Valter, Emanuel Winblad</p>");
-    QMessageBox::about(this, QString::fromStdString("Inviwo V"+IVW_VERSION), QString::fromStdString(aboutText));
+    QMessageBox::about(this, QString::fromStdString("Inviwo V" + IVW_VERSION),
+                       QString::fromStdString(aboutText));
 }
 
-void InviwoMainWindow::visibilityModeChangedInSettings(){
-    if(visibilityModeProperty_){
+void InviwoMainWindow::visibilityModeChangedInSettings() {
+    if (visibilityModeProperty_) {
         size_t selectedIdx = visibilityModeProperty_->getSelectedIndex();
         if (selectedIdx == DEVELOPMENT) {
-            if(visibilityModeAction_->isChecked()){
+            if (visibilityModeAction_->isChecked()) {
                 visibilityModeAction_->setChecked(false);
             }
             propertyListWidget_->setUsageMode(DEVELOPMENT);
             setVisibilityMode(false);
         } else if (selectedIdx == APPLICATION) {
-            if(!visibilityModeAction_->isChecked()){
+            if (!visibilityModeAction_->isChecked()) {
                 visibilityModeAction_->setChecked(true);
             }
             propertyListWidget_->setUsageMode(APPLICATION);
@@ -597,12 +611,10 @@ void InviwoMainWindow::visibilityModeChangedInSettings(){
 // False == Development, True = Application
 void InviwoMainWindow::setVisibilityMode(bool applicationView) {
     size_t selectedIdx = visibilityModeProperty_->getSelectedIndex();
-    if(applicationView) {
-        if(selectedIdx != APPLICATION)
-            visibilityModeProperty_->setSelectedIndex(APPLICATION);
-    }else{
-        if(selectedIdx != DEVELOPMENT)
-            visibilityModeProperty_->setSelectedIndex(DEVELOPMENT);
+    if (applicationView) {
+        if (selectedIdx != APPLICATION) visibilityModeProperty_->setSelectedIndex(APPLICATION);
+    } else {
+        if (selectedIdx != DEVELOPMENT) visibilityModeProperty_->setSelectedIndex(DEVELOPMENT);
     }
     networkEditorView_->hideNetwork(applicationView);
     updateWindowTitle();
@@ -624,8 +636,7 @@ void InviwoMainWindow::saveWindowState() {
     settings.setValue("recentFileList", recentFileList_);
     settings.endGroup();
 }
-void InviwoMainWindow::loadWindowState() {
-}
+void InviwoMainWindow::loadWindowState() {}
 
 void InviwoMainWindow::closeEvent(QCloseEvent* event) {
     if (!askToSaveWorkspaceChanges()) {
@@ -677,5 +688,4 @@ bool InviwoMainWindow::askToSaveWorkspaceChanges() {
     return continueOperation;
 }
 
-
-} // namespace
+}  // namespace

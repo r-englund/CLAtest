@@ -31,7 +31,7 @@
  *********************************************************************************/
 
 #include <inviwo/qt/widgets/processors/processorwidgetqt.h>
-
+#include <apps/inviwo/inviwomainwindow.h>
 #include <QApplication>
 #include <QDesktopWidget>
 #include <QResizeEvent>
@@ -62,17 +62,21 @@ void ProcessorWidgetQt::initialize() {
 
     // determine size of window border (frame size) 
     // as long as widget is not shown, no border exists, i.e. this->pos() == this->geometry().topLeft()
-    /*ivec2 dim = ProcessorWidget::getDimensionMetaData();
-    QWidget::move(-5000,-5000);
-    // resize widget to requested size, otherwise it will end up 31x31 large (canvas_ in processor widget does not exist yet)
-    QWidget::resize(dim.x, dim.y);
-    QWidget::show();
-    QPoint widgetPos = this->pos();
-    QRect widgetGeo = this->geometry();
-    ivec2 delta = ivec2(widgetGeo.left() - widgetPos.x(), widgetGeo.top() - widgetPos.y());
-    QWidget::hide();
+    ivec2 dim = ProcessorWidget::getDimensionMetaData();
+//     QWidget::move(-5000,-5000);
+//     // resize widget to requested size, otherwise it will end up 31x31 large (canvas_ in processor widget does not exist yet)
+//     QWidget::resize(dim.x, dim.y);
+//     QWidget::show();
+//     QPoint widgetPos = this->pos();
+//     QRect widgetGeo = this->geometry();
+//     ivec2 delta = ivec2(widgetGeo.left() - widgetPos.x(), widgetGeo.top() - widgetPos.y());
+//     QWidget::hide();
     // adjust window position by delta (do this only once when creating the widget!)
-    pos -= delta;*/
+    //pos -= delta;
+
+//     QWidget::move(-5000, -5000);
+//     QWidget::show();
+//     QWidget::hide();
 
 
     // check if geometry is on screen and alter otherwise
@@ -92,7 +96,8 @@ void ProcessorWidgetQt::initialize() {
     InviwoApplicationQt* app = dynamic_cast<InviwoApplicationQt*>(InviwoApplication::getPtr());
     if(app){
         QPoint appPos = app->getMainWindow()->pos();
-
+        QPoint offset = app->getWindowDecorationOffset();            
+        pos -= vec2(offset.x(), offset.y());
 
         if (!wholeScreenGeometry.contains(QPoint(pos.x, pos.y)) || !wholeScreenGeometry.contains(bottomRight)) { //if the widget is outside visible screen
             pos = ivec2(appPos.x(), appPos.y());

@@ -34,6 +34,7 @@
 #include <inviwo/core/datastructures/buffer/bufferramprecision.h>
 #include <modules/opengl/glwrap/shader.h>
 #include <modules/opengl/textureutils.h>
+#include <inviwo/core/interaction/interactionhandler.h>
 
 namespace inviwo {
 

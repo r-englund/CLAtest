@@ -32,6 +32,10 @@
 
 #include <inviwo/core/processors/processor.h>
 #include <inviwo/core/metadata/metadatafactory.h>
+#include <inviwo/core/metadata/processormetadata.h>
+#include <inviwo/core/interaction/interactionhandler.h>
+#include <inviwo/core/interaction/events/event.h>
+#include <inviwo/core/processors/processorwidget.h>
 #include <inviwo/core/util/factory.h>
 
 namespace inviwo {

@@ -51,7 +51,8 @@ InviwoApplicationQt::InviwoApplicationQt(std::string displayName,
         int& argc,
         char** argv)
     : QApplication(argc, argv)
-    , InviwoApplication(argc, argv, displayName, basePath) {
+    , InviwoApplication(argc, argv, displayName, basePath)
+    , windowDecorationOffset_(0,0) {
     QCoreApplication::setOrganizationName("Inviwo Foundation");
     QCoreApplication::setOrganizationDomain("inviwo.org");
     QCoreApplication::setApplicationName(displayName.c_str());
@@ -72,7 +73,8 @@ void InviwoApplicationQt::setMainWindow(QMainWindow* mainWindow) {
 }
 
 void InviwoApplicationQt::registerFileObserver(FileObserver* fileObserver) {
-    ivwAssert(std::find(fileObservers_.begin(),fileObservers_.end(),fileObserver)==fileObservers_.end(),
+    ivwAssert(std::find(fileObservers_.begin(), fileObservers_.end(), fileObserver) ==
+              fileObservers_.end(),
               "File observer already registered.");
     fileObservers_.push_back(fileObserver);
 }
@@ -97,13 +99,14 @@ void InviwoApplicationQt::fileChanged(QString fileName) {
     if (QFile::exists(fileName)) {
         std::string fileNameStd = fileName.toLocal8Bit().constData();
 
-        for (size_t i=0; i<fileObservers_.size(); i++) {
+        for (size_t i = 0; i < fileObservers_.size(); i++) {
             std::vector<std::string> observedFiles = fileObservers_[i]->getFiles();
 
-            if (std::find(observedFiles.begin(), observedFiles.end(), fileNameStd) != observedFiles.end())
+            if (std::find(observedFiles.begin(), observedFiles.end(), fileNameStd) !=
+                observedFiles.end())
                 fileObservers_[i]->fileChanged(fileNameStd);
         }
-   
+
         if (!fileWatcher_->files().contains(fileName)) {
             fileWatcher_->addPath(fileName);
         }
@@ -115,19 +118,23 @@ void InviwoApplicationQt::closeInviwoApplication() {
 }
 
 void InviwoApplicationQt::playSound(unsigned int soundID) {
-    // Qt currently does not support playing sounds from resources
+// Qt currently does not support playing sounds from resources
 #if (QT_VERSION < QT_VERSION_CHECK(5, 0, 0))
-    if ((dynamic_cast<BoolProperty*>
-         (InviwoApplication::getPtr()->getSettingsByType<SystemSettings>()->getPropertyByIdentifier("enableSound"))->get())) {
-        if (soundID == IVW_OK) QSound::play(QString::fromStdString(InviwoApplication::getPtr()->getPath(InviwoApplication::PATH_RESOURCES)
-                                                +"sounds/ok.wav"));
-        else if (soundID == IVW_ERROR) QSound::play(QString::fromStdString(InviwoApplication::getPtr()->getPath(
-                        InviwoApplication::PATH_RESOURCES)+"sounds/error.wav"));
+    if ((dynamic_cast<BoolProperty*>(InviwoApplication::getPtr()
+                                         ->getSettingsByType<SystemSettings>()
+                                         ->getPropertyByIdentifier("enableSound"))->get())) {
+        if (soundID == IVW_OK)
+            QSound::play(QString::fromStdString(
+                InviwoApplication::getPtr()->getPath(InviwoApplication::PATH_RESOURCES) +
+                "sounds/ok.wav"));
+        else if (soundID == IVW_ERROR)
+            QSound::play(QString::fromStdString(
+                InviwoApplication::getPtr()->getPath(InviwoApplication::PATH_RESOURCES) +
+                "sounds/error.wav"));
     }
 
 #endif
 }
-
 
 void InviwoApplicationQt::initialize(registerModuleFuncPtr regModuleFunc) {
     LogInfoCustom("InviwoInfo", "Qt Version " << QT_VERSION_STR);
@@ -190,6 +197,15 @@ void InviwoApplicationQt::logQtMessages(QtMsgType type, const QMessageLogContext
             abort();
     }
 }
+
+QPoint InviwoApplicationQt::getWindowDecorationOffset() const {
+   return windowDecorationOffset_;
+}
+
+void InviwoApplicationQt::setWindowDecorationOffset(QPoint windowDecorationOffset) {
+    windowDecorationOffset_ = windowDecorationOffset;
+}
+
 #endif
 
 

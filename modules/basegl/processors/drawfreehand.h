@@ -42,6 +42,7 @@
 #include <modules/opengl/rendering/meshrenderer.h>
 #include <inviwo/core/properties/ordinalproperty.h>
 #include <inviwo/core/properties/buttonproperty.h>
+#include <inviwo/core/interaction/interactionhandler.h>
 
 namespace inviwo {
 
