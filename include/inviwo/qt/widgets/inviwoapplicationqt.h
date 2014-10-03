@@ -66,6 +66,9 @@ public:
 
     virtual Timer* createTimer() const;
 
+    QPoint getWindowDecorationOffset() const;
+    void setWindowDecorationOffset(QPoint windowDecorationOffset);
+
 public slots:
     void fileChanged(QString fileName);
 
@@ -81,6 +84,9 @@ private:
     QMainWindow* mainWindow_;
     std::vector<FileObserver*> fileObservers_;
     QFileSystemWatcher* fileWatcher_;
+
+    // Only non zero on windows, due to a QT bug in window decoration handling.
+    QPoint windowDecorationOffset_;
 };
 
 }  // namespace

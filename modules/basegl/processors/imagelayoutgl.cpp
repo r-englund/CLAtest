@@ -35,6 +35,7 @@
 #include <inviwo/core/interaction/events/gestureevent.h>
 #include <inviwo/core/interaction/events/touchevent.h>
 #include <modules/opengl/glwrap/shader.h>
+#include <inviwo/core/interaction/interactionhandler.h>
 #include <modules/opengl/textureutils.h>
 
 namespace inviwo {

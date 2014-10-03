@@ -42,6 +42,7 @@
 #include <inviwo/core/properties/ordinalproperty.h>
 #include <inviwo/core/datastructures/volume/volumeramslice.h>
 #include <inviwo/core/interaction/events/mouseevent.h>
+#include <inviwo/core/interaction/interactionhandler.h>
 #include <inviwo/core/interaction/events/keyboardevent.h>
 
 namespace inviwo {

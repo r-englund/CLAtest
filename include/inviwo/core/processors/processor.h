@@ -5,16 +5,16 @@
  *
  * Copyright (c) 2012-2014 Inviwo Foundation
  * All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met: 
- * 
+ * modification, are permitted provided that the following conditions are met:
+ *
  * 1. Redistributions of source code must retain the above copyright notice, this
- * list of conditions and the following disclaimer. 
+ * list of conditions and the following disclaimer.
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  * this list of conditions and the following disclaimer in the documentation
- * and/or other materials provided with the distribution. 
- * 
+ * and/or other materials provided with the distribution.
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
  * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
@@ -25,7 +25,7 @@
  * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- * 
+ *
  * Main file authors: Erik Sundén, Timo Ropinski
  *
  *********************************************************************************/
@@ -35,19 +35,19 @@
 
 #include <inviwo/core/common/inviwocoredefine.h>
 #include <inviwo/core/common/inviwo.h>
-#include <inviwo/core/interaction/interactionhandler.h>
-#include <inviwo/core/interaction/events/event.h>
 #include <inviwo/core/ports/inport.h>
 #include <inviwo/core/ports/outport.h>
+#include <inviwo/core/processors/processorobserver.h>
+#include <inviwo/core/properties/propertyowner.h>
 #include <inviwo/core/processors/processorstate.h>
 #include <inviwo/core/processors/processortags.h>
-#include <inviwo/core/processors/processorwidget.h>
-#include <inviwo/core/properties/propertyowner.h>
-#include <inviwo/core/metadata/metadata.h>
 #include <inviwo/core/util/group.h>
-#include <inviwo/core/processors/processorobserver.h>
 
 namespace inviwo {
+
+class Event;
+class InteractionHandler;
+class ProcessorWidget;
 
 #define InviwoProcessorInfo()                                                   \
     virtual std::string getClassIdentifier() const { return CLASS_IDENTIFIER; } \
@@ -73,15 +73,12 @@ namespace inviwo {
  *
  * \brief A processor generally performs operation on input data and outputs the new result.
  *
- * It can hold arbitrary number of inports and outports, as well as properties which can be used 
- * to customize the processors behavior. 
+ * It can hold arbitrary number of inports and outports, as well as properties which can be used
+ * to customize the processors behavior.
  */
-class IVW_CORE_API Processor 
-    : public PropertyOwner
-    , public MetaDataOwner
-    , public ProcessorObservable
-{
-
+class IVW_CORE_API Processor : public PropertyOwner,
+                               public MetaDataOwner,
+                               public ProcessorObservable {
 public:
     Processor();
     virtual ~Processor();
@@ -106,9 +103,9 @@ public:
     virtual void deinitialize();
     bool isInitialized() const;
 
-    Port* getPort(const std::string &identifier) const;
-    Inport* getInport(const std::string &identifier) const;
-    Outport* getOutport(const std::string &identifier) const;
+    Port* getPort(const std::string& identifier) const;
+    Inport* getInport(const std::string& identifier) const;
+    Outport* getOutport(const std::string& identifier) const;
 
     const std::vector<Inport*>& getInports() const;
     const std::vector<Outport*>& getOutports() const;
@@ -116,7 +113,7 @@ public:
     virtual const std::vector<Inport*>& getInports(Event*) const;
 
     std::vector<std::string> getPortDependencySets() const;
-    std::vector<Port*> getPortsByDependencySet(const std::string &portDependencySet) const;
+    std::vector<Port*> getPortsByDependencySet(const std::string& portDependencySet) const;
     std::string getPortDependencySet(Port* port) const;
 
     bool allInportsConnected() const;
@@ -141,7 +138,7 @@ public:
     // Proccessor::invalidateSuccesors()
     // in your reimplemented invalidation function.
     virtual void invalidateSuccesors(PropertyOwner::InvalidationLevel invalidationLevel,
-        Property* modifiedProperty = 0);
+                                     Property* modifiedProperty = 0);
 
     virtual void setValid();
     virtual void initializeResources() {}  // reload shaders etc. here
@@ -168,10 +165,8 @@ public:
     virtual Processor* getProcessor() { return this; }
     virtual const Processor* getProcessor() const { return this; }
 
-
     virtual void serialize(IvwSerializer& s) const;
     virtual void deserialize(IvwDeserializer& d);
-
 
     static const std::string getCodeStateString(CodeState state);
 
@@ -179,11 +174,11 @@ protected:
     void enableInvalidation();
     void disableInvalidation();
 
-    void addPort(Inport* port, const std::string &portDependencySet = "default");
-    void addPort(Inport& port, const std::string & portDependencySet = "default");
+    void addPort(Inport* port, const std::string& portDependencySet = "default");
+    void addPort(Inport& port, const std::string& portDependencySet = "default");
 
-    void addPort(Outport* port, const std::string &portDependencySet = "default");
-    void addPort(Outport& port, const std::string &portDependencySet = "default");
+    void addPort(Outport* port, const std::string& portDependencySet = "default");
+    void addPort(Outport& port, const std::string& portDependencySet = "default");
 
     virtual void performEvaluateRequest();
 
@@ -203,6 +198,6 @@ private:
     PropertyOwner::InvalidationLevel invalidationRequestLevel_;
 };
 
-} // namespace
+}  // namespace
 
-#endif // IVW_PROCESSOR_H
+#endif  // IVW_PROCESSOR_H

@@ -34,6 +34,7 @@
 #include <inviwo/core/network/processornetwork.h>
 #include <inviwo/qt/widgets/eventpropertymanager.h>
 #include <inviwo/qt/widgets/eventpropertymanagerwidget.h>
+#include <inviwo/core/interaction/interactionhandler.h>
 #include <inviwo/core/common/inviwoapplication.h>
 
 namespace inviwo {
