@@ -157,6 +157,12 @@ void InviwoMainWindow::initialize() {
     updateRecentWorkspaces();
 
 #ifdef WIN32
+    // Fix window offset when restoring old position for correct positioning
+    // The frame size should be determined only once before starting up the 
+    // main application and stored in InviwoApplicationQt
+    // determine size of window border (frame size) 
+    // as long as widget is not shown, no border exists, i.e. this->pos() == this->geometry().topLeft()
+
     QWidget* w = new QWidget();
     w->move(-5000, -5000);
     w->show();

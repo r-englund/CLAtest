@@ -44,8 +44,7 @@ namespace inviwo {
 
 InviwoSplashScreen::InviwoSplashScreen()
     : QSplashScreen(dynamic_cast<InviwoApplicationQt*>(inviwo::InviwoApplicationQt::getPtr())->getMainWindow(),
-                    QPixmap(":/images/splashscreen.png"),
-                    Qt::WindowStaysOnTopHint)
+                    QPixmap(":/images/splashscreen.png") /*,Qt::WindowStaysOnTopHint*/)
 {
     const CommandLineParser* cmdparser = inviwo::InviwoApplicationQt::getPtr()->getCommandLineParser();
     showSplashScreen_ = cmdparser->getShowSplashScreen();
