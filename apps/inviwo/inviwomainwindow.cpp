@@ -157,6 +157,7 @@ void InviwoMainWindow::initialize() {
     updateRecentWorkspaces();
 
 #ifdef WIN32
+#if (QT_VERSION >= QT_VERSION_CHECK(5, 0, 0))
     // Fix window offset when restoring old position for correct positioning
     // The frame size should be determined only once before starting up the 
     // main application and stored in InviwoApplicationQt
@@ -174,6 +175,7 @@ void InviwoMainWindow::initialize() {
 
     static_cast<InviwoApplicationQt*>(InviwoApplicationQt::getPtr())
         ->setWindowDecorationOffset(offset);
+#endif
 #endif
 }
 
