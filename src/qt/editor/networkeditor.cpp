@@ -83,6 +83,7 @@ NetworkEditor::NetworkEditor()
     , oldProcessorTarget_(NULL)
     , connectionCurve_(NULL)
     , linkCurve_(NULL)
+    , linkDialog_(NULL)
     , filename_("")
     , modified_(false)
     , cacheProcessorPropertyDoneEventId_(-1)
@@ -257,13 +258,16 @@ void NetworkEditor::removeConnectionGraphicsItem(PortConnection* connection) {
 
 LinkConnectionGraphicsItem* NetworkEditor::addLinkGraphicsItem(Processor* processor1,
                                                                Processor* processor2) {
-    ProcessorLinkGraphicsItem* p1 = getProcessorGraphicsItem(processor1)->getLinkGraphicsItem();
-    ProcessorLinkGraphicsItem* p2 = getProcessorGraphicsItem(processor2)->getLinkGraphicsItem();
-    
-    LinkConnectionGraphicsItem* linkGraphicsItem = new LinkConnectionGraphicsItem(p1, p2);
-    linkGraphicsItems_[ProcessorPair(processor1,processor2)] = linkGraphicsItem;
-    addItem(linkGraphicsItem);
-    return linkGraphicsItem;
+
+    if (processor1 && processor2) {
+        ProcessorLinkGraphicsItem* p1 = getProcessorGraphicsItem(processor1)->getLinkGraphicsItem();
+        ProcessorLinkGraphicsItem* p2 = getProcessorGraphicsItem(processor2)->getLinkGraphicsItem();
+
+        LinkConnectionGraphicsItem* linkGraphicsItem = new LinkConnectionGraphicsItem(p1, p2);
+        linkGraphicsItems_[ProcessorPair(processor1,processor2)] = linkGraphicsItem;
+        addItem(linkGraphicsItem);
+        return linkGraphicsItem;
+    }
 }
 
 void NetworkEditor::removeLink(LinkConnectionGraphicsItem* linkGraphicsItem) {
@@ -291,10 +295,14 @@ void NetworkEditor::removeLinkGraphicsItem(LinkConnectionGraphicsItem* linkGraph
 
 void NetworkEditor::showLinkDialog(Processor* processor1, Processor* processor2) {
     InviwoApplicationQt* app = dynamic_cast<InviwoApplicationQt*>(InviwoApplication::getPtr());
-    LinkDialog* linkDialog = new LinkDialog(processor1, processor2, app->getMainWindow());
+    if (!linkDialog_) 
+        linkDialog_ = new LinkDialog(processor1, processor2, app->getMainWindow());
+    else {
+        linkDialog_->initDialog(processor1, processor2);
+    }
 
-    if (!linkDialog->exec()) {
-        delete linkDialog;
+    if (!linkDialog_->exec()) {
+        LogWarn("LinkDialog closed")
     }
 }
 
