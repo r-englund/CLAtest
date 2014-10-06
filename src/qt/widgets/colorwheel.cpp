@@ -115,7 +115,7 @@ QColor ColorWheel::posColor(const QPoint& point) {
         }
 
         int hueI = clamp(static_cast<int>(hue), 0, 359);
-        return QColor::fromHsv(hue,
+        return QColor::fromHsv(hueI,
                                current.saturation(),
                                current.value());
     }
@@ -252,12 +252,12 @@ void ColorWheel::drawWheelImage(const QSize& newSize) {
     QStyleOption option;
     option.initFrom(this);
     QBrush background = option.palette.window();
-    //background.setColor("orange");
     wheelImage = QImage(newSize, QImage::Format_ARGB32_Premultiplied);
     wheelImage.fill(background.color());
+    QPointF center(r/2.0, r/2.0);
     QPainter painter(&wheelImage);
-    //painter.setRenderHint(QPainter::Antialiasing);
-    QConicalGradient conicalGradient(0, 0, 0);
+    painter.setRenderHint(QPainter::Antialiasing);
+    QConicalGradient conicalGradient(center, 0);
     conicalGradient.setColorAt(0.0, Qt::red);
     conicalGradient.setColorAt(60.0/360.0, Qt::yellow);
     conicalGradient.setColorAt(120.0/360.0, Qt::green);
@@ -266,15 +266,15 @@ void ColorWheel::drawWheelImage(const QSize& newSize) {
     conicalGradient.setColorAt(300.0/360.0, Qt::magenta);
     conicalGradient.setColorAt(1.0, Qt::red);
     // outer circle
-    //painter.translate(r/2.0, r/2.0);
     QBrush brush(conicalGradient);
     painter.setPen(Qt::NoPen);
     painter.setBrush(brush);
-    painter.drawEllipse(QPointF(r/2.0, r/2.0), r/2.0 - margin, r/2.0 - margin);
+    painter.drawEllipse(center, r/2.0 - margin, r/2.0 - margin);
     // inner circle
     painter.setBrush(background);
-    painter.drawEllipse(QPointF(r/2.0, r/2.0), r/2.0 - margin - wheelWidth, r/2.0 - margin - wheelWidth);
-
+    painter.drawEllipse(center, r/2.0 - margin - wheelWidth, r/2.0 - margin - wheelWidth);
+    
+    // debug layout: draw diagonal cross
     //painter.setPen(QColor("gray"));
     //painter.drawLine(QPointF(0.0, 0.0), QPointF(r, r));
     //painter.drawLine(QPointF(0.0, r), QPointF(r, 0.0));
