@@ -61,6 +61,7 @@ class ConnectionDragGraphicsItem;
 class LinkConnectionGraphicsItem;
 class LinkConnectionDragGraphicsItem;
 class PropertyListWidget;
+class LinkDialog;
 
 class NetworkEditorObserver : public Observer {
 public:
@@ -251,6 +252,7 @@ private:
     ProcessorGraphicsItem* oldProcessorTarget_;
     
     // Connection and link state
+    LinkDialog* linkDialog_;
     ConnectionDragGraphicsItem* connectionCurve_;
     LinkConnectionDragGraphicsItem* linkCurve_;
 

@@ -240,7 +240,7 @@ public:
     void setNetwork(ProcessorNetwork* network) {processorNetwork_ = network;}
     ProcessorNetwork* getNetwork() {return processorNetwork_;}
 
-    void initScene(std::vector<Processor*> srcProcessorList, std::vector<Processor*> dstProcessorList);
+    void initScene(Processor* srcProcessor, Processor* dstProcessor);
     void clearSceneRepresentations();
     void removeCurrentPropertyLinks();
     void removeAllPropertyLinks();
@@ -324,6 +324,7 @@ class IVW_QTEDITOR_API LinkDialog : public InviwoDockWidget {
 public:
     LinkDialog(QWidget* parent);
     LinkDialog(Processor* src, Processor* dest, QWidget* parent);
+    void initDialog(Processor* src, Processor* dest);
     virtual void closeEvent ( QCloseEvent * event );
     int exec();
     ~LinkDialog();
@@ -337,7 +338,7 @@ private slots:
     void setValidationLevelOfSubPropertiesOfCompositeProperties(Property* compositeProperty, PropertyOwner::InvalidationLevel invalidationLevel);
 
 private:
-    void initDialog();
+    void initDialogLayout();
     void updateProcessorLinks();
 
     LinkDialogGraphicsView* linkDialogView_;
