@@ -58,7 +58,8 @@ CanvasProcessor::CanvasProcessor()
     , saveLayerButton_("saveLayer", "Save Image Layer", PropertyOwner::VALID)
     , inputSize_("inputSize", "Input Dimension Parameters")
     , canvas_(NULL)
-    , queuedRequest_(false) {
+    , queuedRequest_(false)
+    , ignoreResizeCallback_(false) {
     addPort(inport_);
     addProperty(inputSize_);
 
@@ -121,7 +122,7 @@ Canvas* CanvasProcessor::getCanvas() const { return canvas_; }
 
 // Called by dimensions onChange.
 void CanvasProcessor::resizeCanvas() {
-    if (processorWidget_) {
+    if (processorWidget_ && !ignoreResizeCallback_) {
         processorWidget_->setDimension(dimensions_.get());
     }
 }
@@ -133,7 +134,11 @@ void CanvasProcessor::setCanvasSize(ivec2 dim) {
 
 ivec2 CanvasProcessor::getCanvasSize() const { return dimensions_.get(); }
 
-void CanvasProcessor::updateCanvasSize(ivec2 dim) { dimensions_.set(dim); }
+void CanvasProcessor::updateCanvasSize(ivec2 dim) { 
+    ignoreResizeCallback_ = true;
+    dimensions_.set(dim); 
+    ignoreResizeCallback_ = false;
+}
 
 bool CanvasProcessor::getUseCustomDimensions() const { return enableCustomInputDimensions_.get(); }
 ivec2 CanvasProcessor::getCustomDimensions() const { return customInputDimensions_.get(); }

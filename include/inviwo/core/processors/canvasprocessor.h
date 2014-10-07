@@ -97,6 +97,7 @@ private:
 
     Canvas* canvas_;
     bool queuedRequest_;
+    bool ignoreResizeCallback_;
 };
 
 } // namespace
