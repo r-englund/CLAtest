@@ -33,7 +33,7 @@
 #ifndef IVW_DISTANCETRANSFORMRAM_H
 #define IVW_DISTANCETRANSFORMRAM_H
 
-#include <modules/opengl/openglmoduledefine.h>
+#include <modules/base/basemoduledefine.h>
 
 #include <inviwo/core/util/assertion.h>
 #include <inviwo/core/util/clock.h>
@@ -46,7 +46,6 @@
 #include <inviwo/core/properties/buttonproperty.h>
 #include <inviwo/core/properties/ordinalproperty.h>
 #include <inviwo/core/properties/stringproperty.h>
-#include <modules/opengl/inviwoopengl.h>
 #include <inviwo/core/processors/progressbarowner.h>
 #include <inviwo/core/datastructures/volume/volumeram.h>
 
@@ -56,7 +55,7 @@
 
 namespace inviwo {
 
-class IVW_MODULE_OPENGL_API DistanceTransformRAM : public Processor, public ProgressBarOwner {
+class DistanceTransformRAM : public Processor, public ProgressBarOwner {
 public:
     DistanceTransformRAM();
     ~DistanceTransformRAM();
