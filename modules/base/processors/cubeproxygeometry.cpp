@@ -123,10 +123,10 @@ void CubeProxyGeometry::onVolumeChange() {
     x = clipX_.get();
     y = clipY_.get();
     z = clipZ_.get();
-
-    x /= static_cast<float>(clipX_.getRangeMax());
-    y /= static_cast<float>(clipY_.getRangeMax());
-    z /= static_cast<float>(clipZ_.getRangeMax());
+// 
+//     x /= static_cast<float>(clipX_.getRangeMax());
+//     y /= static_cast<float>(clipY_.getRangeMax());
+//     z /= static_cast<float>(clipZ_.getRangeMax());
 
     dims_ = inport_.getData()->getDimension();
     
@@ -136,9 +136,13 @@ void CubeProxyGeometry::onVolumeChange() {
     clipY_.setRangeMax(dims_.y);
     clipZ_.setRangeMax(dims_.z);
 
-    clipX_.set(x * static_cast<float>(dims_.x));
-    clipY_.set(y * static_cast<float>(dims_.y));
-    clipZ_.set(z * static_cast<float>(dims_.z));
+//     clipX_.set(x * static_cast<float>(dims_.x));
+//     clipY_.set(y * static_cast<float>(dims_.y));
+//     clipZ_.set(z * static_cast<float>(dims_.z));
+
+    clipX_.set(vec2(std::min(x.x, static_cast<float>(dims_.x)),std::min(x.y, static_cast<float>(dims_.x))));
+    clipY_.set(vec2(std::min(y.x, static_cast<float>(dims_.y)),std::min(y.y, static_cast<float>(dims_.y))));
+    clipZ_.set(vec2(std::min(z.x, static_cast<float>(dims_.z)),std::min(z.y, static_cast<float>(dims_.z))));
 
     clipX_.setCurrentStateAsDefault();
     clipY_.setCurrentStateAsDefault();
