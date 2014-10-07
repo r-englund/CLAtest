@@ -56,11 +56,7 @@ public:
 
     // this function is to be called when the network topology was changed
     void topologyUpdated();
-
-    void registerCanvas(Canvas* canvas, std::string associatedProcessName);
-    void deregisterCanvas(Canvas* canvas);
     void saveSnapshotAllCanvases(std::string dir, std::string default_name = "", std::string ext = ".png");
-    std::vector<Canvas*> getRegisteredCanvases() { return registeredCanvases_; }
 
     Canvas* getDefaultRenderContext() { return defaultContext_; }
     void setDefaultRenderContext(Canvas*);
@@ -109,11 +105,12 @@ private:
 
     ProcessorNetwork* processorNetwork_;
 
-    std::vector<Processor *> processorsSorted_; // the sorted list of processors obtained through topological sorting
+    // the sorted list of processors obtained through topological sorting
+    std::vector<Processor *> processorsSorted_;
     
     struct ProcessorState {
         ProcessorState() : visited(false) {}
-        ProcessorState(const ProcessorList &predecessors) : visited(false),pred(predecessors) {}
+        ProcessorState(const ProcessorList &predecessors) : visited(false), pred(predecessors) {}
         bool visited;
         ProcessorList pred; // list of all predecessors
         // additional information?
@@ -123,10 +120,10 @@ private:
     // TODO: replace std::map with std::unordered_map when using C++11!
     //
     // map contains a dummy element for NULL processor
-    typedef std::map<Processor *, ProcessorState> ProcMap;
+    typedef std::map<Processor*, ProcessorState> ProcMap;
     typedef ProcMap::iterator ProcMapIt;
     typedef ProcMap::const_iterator const_ProcMapIt;
-    typedef std::pair<Processor *, ProcessorState> ProcMapPair;
+    typedef std::pair<Processor*, ProcessorState> ProcMapPair;
 
     ProcMap processorStates_;
 
@@ -144,10 +141,6 @@ private:
 
     PropertyMap propertiesVisited_;
 
-    //std::vector<Processor*> processorsVisited_; // a bool vector containing flags whether a processor has been visited during traversal
-    //std::vector<Property*> propertiesVisited_;
-
-    std::vector<Canvas*> registeredCanvases_;
     Canvas* defaultContext_;
     Processor* eventInitiator_;
 
@@ -156,9 +149,7 @@ private:
 
     bool processorStatesDirty_; // flag for lazy topology evaluation
 
-    static std::map<ProcessorNetwork*,ProcessorNetworkEvaluator*> processorNetworkEvaluators_;
-
-    //unsigned int reEvaluationHits_;
+    static std::map<ProcessorNetwork*, ProcessorNetworkEvaluator*> processorNetworkEvaluators_;
 };
 
 } // namespace

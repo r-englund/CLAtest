@@ -45,12 +45,11 @@ ProcessorNetworkEvaluator::ProcessorNetworkEvaluator(ProcessorNetwork* processor
     : processorNetwork_(processorNetwork)
     , evaulationQueued_(false)
     , evaluationDisabled_(false)
-    , processorStatesDirty_(true)
-{
-    registeredCanvases_.clear();
+    , processorStatesDirty_(true) {
+
     initializeNetwork();
-    defaultContext_ = 0;
-    eventInitiator_ = 0;
+    defaultContext_ = NULL;
+    eventInitiator_ = NULL;
     ivwAssert(processorNetworkEvaluators_.find(processorNetwork) == processorNetworkEvaluators_.end() ,
               "A ProcessorNetworkEvaluator for the given ProcessorNetwork is already created");
     processorNetworkEvaluators_[processorNetwork] = this;
@@ -88,43 +87,6 @@ void ProcessorNetworkEvaluator::initializeNetwork() {
         if (!processors[i]->isInitialized())
             processors[i]->initialize();
 }
-
-void ProcessorNetworkEvaluator::registerCanvas(Canvas* canvas, std::string associatedProcessorName) {
-    if (std::find(registeredCanvases_.begin(), registeredCanvases_.end(), canvas)!=registeredCanvases_.end()) {
-        //already registered, hence force deregisterCanvas
-        deregisterCanvas(canvas);
-    }
-
-    registeredCanvases_.push_back(canvas);
-    canvas->setNetworkEvaluator(this);
-    std::vector<CanvasProcessor*> canvasProcessors = processorNetwork_->getProcessorsByType<CanvasProcessor>();
-
-    for (size_t i=0; i<canvasProcessors.size(); i++) {
-        if (canvasProcessors[i]->getIdentifier() == associatedProcessorName)
-            canvasProcessors[i]->setCanvas(canvas);
-    }
-}
-
-void ProcessorNetworkEvaluator::deregisterCanvas(Canvas* canvas) {
-    std::vector<CanvasProcessor*> canvasProcessors = processorNetwork_->getProcessorsByType<CanvasProcessor>();
-
-    for (unsigned int i=0; i<canvasProcessors.size(); i++) {
-        Canvas* curCanvas = canvasProcessors[i]->getCanvas();
-
-        if (curCanvas==canvas) {
-            if (std::find(registeredCanvases_.begin(), registeredCanvases_.end(), canvas)!=registeredCanvases_.end()) {
-                canvas->setNetworkEvaluator(0);
-                canvasProcessors[i]->setCanvas(0);
-                registeredCanvases_.erase(std::remove(registeredCanvases_.begin(), registeredCanvases_.end(),
-                                                      canvas), registeredCanvases_.end());
-                return;
-            }
-        }
-    }
-
-    LogError("Trying to deregister unregistered Canvas.");
-}
-
 
 void ProcessorNetworkEvaluator::saveSnapshotAllCanvases(std::string dir, std::string default_name, std::string ext) {
     std::vector<inviwo::CanvasProcessor*> pv = processorNetwork_->getProcessorsByType<inviwo::CanvasProcessor>();
@@ -374,9 +336,9 @@ void ProcessorNetworkEvaluator::propagateResizeEvent(Canvas* canvas, ResizeEvent
     // avoid continues evaluation when port change
     processorNetwork_->lock();
     // find the canvas processor from which the event was emitted
-    eventInitiator_= 0;
+    eventInitiator_= NULL;
     eventInitiator_= retrieveCanvasProcessor(canvas);
-    ivwAssert(eventInitiator_!=0, "Invalid resize event encountered.");
+    ivwAssert(eventInitiator_!=NULL, "Invalid resize event encountered.");
     // propagate size of canvas to all preceding processors through port
     // event initiator is a canvas processor, hence one ImageInport should exist
     ImageInport* imageInport = static_cast<ImageInport*>(eventInitiator_->getInports()[0]);
@@ -384,7 +346,7 @@ void ProcessorNetworkEvaluator::propagateResizeEvent(Canvas* canvas, ResizeEvent
     // enable network evaluation again
     processorNetwork_->unlock();
 
-    eventInitiator_ = 0;
+    eventInitiator_ = NULL;
 }
 
 void ProcessorNetworkEvaluator::onProcessorInvalidationEnd(Processor* p) {

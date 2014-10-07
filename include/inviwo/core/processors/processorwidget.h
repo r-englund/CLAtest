@@ -35,12 +35,13 @@
 
 #include <inviwo/core/common/inviwocoredefine.h>
 #include <inviwo/core/common/inviwo.h>
-#include <inviwo/core/metadata/processorwidgetmetadata.h>
 #include <inviwo/core/processors/processorwidgetobserver.h>
 
 namespace inviwo {
 
 class Processor;
+class ProcessorWidgetMetaData;
+    
 class IVW_CORE_API ProcessorWidget : public ProcessorWidgetObservable {
 
 public:
@@ -50,27 +51,25 @@ public:
     ProcessorWidget& operator=(const ProcessorWidget& that);
 
     virtual ProcessorWidget* create() const = 0;
-    virtual void initialize() = 0;
-    virtual void deinitialize() = 0;
-    virtual void setVisible(bool visible);
+    virtual void initialize();
+    virtual void deinitialize();
+
+    virtual void setProcessor(Processor* processor);
+    virtual Processor* getProcessor();
+
     virtual bool isVisible();
+    virtual void setVisible(bool visible);
     virtual void show();
     virtual void hide();
+    
+    virtual glm::ivec2 getDimension();
     virtual void setDimension(ivec2);
-    virtual void move(ivec2);
-    virtual void setProcessor(Processor* processor) {processor_ = processor;}
-    virtual Processor* getProcessor() {return processor_;}
-
-    bool getVisibilityMetaData();
-
-private:
-    ProcessorWidgetMetaData* metaData_;
-
+    virtual glm::ivec2 getPosition();
+    virtual void setPosition(ivec2);
+    
 protected:
-    Processor* processor_;
-
-    ivec2 getPositionMetaData();
-    ivec2 getDimensionMetaData();
+    Processor* processor_; //< non owning reference.
+    ProcessorWidgetMetaData* metaData_; //< non owning reference.
 };
 
 } // namespace

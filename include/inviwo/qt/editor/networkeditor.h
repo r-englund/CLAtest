@@ -194,14 +194,11 @@ private:
     // Processors
     ProcessorGraphicsItem* addProcessorRepresentations(Processor* processor, QPointF pos,
                                                        bool showProcessor = true,
-                                                       bool selectProcessor = true,
-                                                       bool showProcessorWidget = true);
+                                                       bool selectProcessor = true);
     void removeProcessorRepresentations(Processor* processor);
     ProcessorGraphicsItem* addProcessorGraphicsItem(Processor* processor, QPointF pos,
                                                     bool visible = true, bool selected = true);
     void removeProcessorGraphicsItem(Processor* processor);
-    void addProcessorWidget(Processor* processor, bool visible = true);
-    void removeProcessorWidget(Processor* processor);
 
     // Connections
     void removeConnection(ConnectionGraphicsItem* connectionGraphicsItem);

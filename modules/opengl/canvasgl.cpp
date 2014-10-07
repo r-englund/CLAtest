@@ -32,6 +32,7 @@
 
 #include "canvasgl.h"
 #include <inviwo/core/datastructures/geometry/mesh.h>
+#include <inviwo/core/processors/processor.h>
 #include <modules/opengl/inviwoopengl.h>
 #include <modules/opengl/glwrap/shader.h>
 #include <modules/opengl/image/imagegl.h>
@@ -168,7 +169,7 @@ void CanvasGL::multiDrawImagePlaneRect(int instances) {
 
 void CanvasGL::renderLayer() {
     const LayerGL* layerGL = imageGL_->getLayerGL(layerType_);
-    if(layerGL){
+    if(layerGL) {
         TextureUnit textureUnit;
         layerGL->bindTexture(textureUnit.getEnum());
         renderTexture(textureUnit.getUnitNumber());
@@ -227,7 +228,7 @@ void CanvasGL::checkChannels(int channels) {
 }
 
 void CanvasGL::enableDrawImagePlaneRect() {
-    screenAlignedRectGL_->enable();
+	    screenAlignedRectGL_->enable();
 }
 
 void CanvasGL::disableDrawImagePlaneRect() {

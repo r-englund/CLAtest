@@ -34,11 +34,13 @@
 
 namespace inviwo {
 
+const std::string ProcessorWidgetMetaData::CLASS_IDENTIFIER = "ProcessorWidgetMetaData";
+
 ProcessorWidgetMetaData::ProcessorWidgetMetaData()
     : MetaData()
     , position_(0,0)
     , dimension_(256,256)
-    , visibility_(false) {
+    , visibility_(true) {
 }
 
 ProcessorWidgetMetaData::ProcessorWidgetMetaData(const ProcessorWidgetMetaData& rhs)
@@ -64,11 +66,11 @@ ProcessorWidgetMetaData* ProcessorWidgetMetaData::clone() const {
     return new ProcessorWidgetMetaData(*this);
 }
 
-void ProcessorWidgetMetaData::setWidgetPosition(const ivec2 &pos) {
+void ProcessorWidgetMetaData::setPosition(const ivec2 &pos) {
     position_ = pos;
 }
 
-ivec2 ProcessorWidgetMetaData::getWidgetPosition() const {
+ivec2 ProcessorWidgetMetaData::getPosition() const {
     return position_;
 }
 

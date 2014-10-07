@@ -45,20 +45,27 @@ class IVW_QTWIDGETS_API ProcessorWidgetQt : public QWidget, public ProcessorWidg
 public:
     ProcessorWidgetQt();
     virtual ~ProcessorWidgetQt();
+    ProcessorWidgetQt(const ProcessorWidgetQt& rhs);
+    ProcessorWidgetQt& operator=(const ProcessorWidgetQt& that);
 
     virtual ProcessorWidget* create() const = 0;
-    virtual void initialize() = 0;
-    virtual void deinitialize() = 0;
-    virtual void setVisible(bool visible);
-    virtual void show();
-    virtual void hide();
-    virtual void move(ivec2 pos);
-    virtual void setDimension(ivec2 dimensions);
+    virtual void initialize();
+    virtual void deinitialize();
+    
+    virtual void setVisible(bool visible); // Override QWidget && ProcessorWidget
+    virtual void show(); // Override ProcessorWidget
+    virtual void hide(); // Override ProcessorWidget
+    virtual void setPosition(glm::ivec2 pos); // Override ProcessorWidget
+    virtual void setDimension(ivec2 dimensions); // Override ProcessorWidget
 
+    virtual void move(ivec2 pos); // Mirror QWidget::move
+    
 protected:
+    // Override QWidget events
     virtual void resizeEvent(QResizeEvent*);
     virtual void closeEvent(QCloseEvent*);
     virtual void showEvent(QShowEvent*);
+    virtual void hideEvent(QHideEvent*);
     virtual void moveEvent(QMoveEvent*);
 
 private:

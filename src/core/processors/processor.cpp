@@ -50,7 +50,7 @@ ProcessorCodeState(Processor, CODE_STATE_EXPERIMENTAL);
 
 Processor::Processor()
     : PropertyOwner(), ProcessorObservable()
-    , processorWidget_(0)
+    , processorWidget_(NULL)
     , identifier_("")
     , initialized_(false)
     , invalidationEnabled_(true)

@@ -80,9 +80,9 @@ int UnitTestsModule::runAllTests() {
                                                          << (warnCountAfter - warnCount)
                                                          << " warnings");
     }
-    if (errCount != errCount) {
+    if (errCount != errCountAfter) {
         LogWarnCustom("UnitTestsModule::runAllTest", "The tnittest runs generated "
-                                                         << (errCount - errCount) << " errors");
+                                                         << (errCountAfter - errCount) << " errors");
     }
 
     return res;
