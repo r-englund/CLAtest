@@ -1452,7 +1452,7 @@ void NetworkEditor::onProcessorNetworkDidAddProcessor(Processor* processor) {
     // before the event has add time to add them... 
     if (!meta->isSelected() && meta->isVisible()){
         // Create a delay object whoes only job it is to post an cache event, and then delete itself.
-        CacheDelay* delay = new CacheDelay(processor, propertyListWidget_);
+        CacheDelay* delay = new CacheDelay(processor->getIdentifier(), propertyListWidget_);
         QTimer::singleShot(2000, delay, SLOT(postEvent()));
     }
 }
@@ -1505,12 +1505,12 @@ QEvent::Type PortInspectorEvent::PORT_INSPECTOR_EVENT = QEvent::None;
 
 void CacheDelay::postEvent() {
     QCoreApplication::postEvent(propertyListWidget_,
-                                new PropertyListEvent(PropertyListEvent::CACHE, processor_),
+                                new PropertyListEvent(PropertyListEvent::CACHE, processorId_),
                                 10 * Qt::LowEventPriority);
     delete this;
 }
 
-CacheDelay::CacheDelay(Processor* processor, PropertyListWidget* propertyListWidget)
-    : processor_(processor), propertyListWidget_(propertyListWidget) {}
+CacheDelay::CacheDelay(std::string processorId, PropertyListWidget* propertyListWidget)
+    : processorId_(processorId), propertyListWidget_(propertyListWidget) {}
 
 }  // namespace

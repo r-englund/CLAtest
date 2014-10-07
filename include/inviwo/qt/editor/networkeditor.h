@@ -304,11 +304,11 @@ private:
 class IVW_QTEDITOR_API CacheDelay : public QObject {
     Q_OBJECT
 public:
-    CacheDelay(Processor* processor, PropertyListWidget* propertyListWidget);
+    CacheDelay(std::string processorId, PropertyListWidget* propertyListWidget);
 public slots:
     void postEvent();
 private:
-    Processor* processor_;
+    std::string processorId_;
     PropertyListWidget* propertyListWidget_;
 };
 

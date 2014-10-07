@@ -33,6 +33,7 @@
 #include <inviwo/qt/widgets/propertylistwidget.h>
 #include <inviwo/core/properties/propertywidgetfactory.h>
 #include <inviwo/core/common/inviwoapplication.h>
+#include <inviwo/core/network/processornetwork.h>
 #include <inviwo/core/util/settings/systemsettings.h>
 #include <inviwo/core/util/clock.h>
 #include <inviwo/qt/widgets/properties/collapsiblegroupboxwidgetqt.h>
@@ -157,17 +158,29 @@ void PropertyListWidget::removeAndDeleteProcessorProperties(Processor* processor
 }
 
 void PropertyListWidget::cacheProcessorPropertiesItem(Processor* processor) {
-    getPropertiesForProcessor(processor);
+    WidgetMap::iterator it = widgetMap_.find(processor);
+    if (it == widgetMap_.end()) {
+        createPropertiesForProcessor(processor);
+    }
 }
 
 CollapsibleGroupBoxWidgetQt* PropertyListWidget::getPropertiesForProcessor(Processor* processor) {
     // check if processor widget has been already generated
+    CollapsibleGroupBoxWidgetQt* res;
+
     WidgetMap::iterator it = widgetMap_.find(processor);
     if (it != widgetMap_.end()) {
-        return it->second;
+        res = it->second;
     } else {
-        return createPropertiesForProcessor(processor);
+        res = createPropertiesForProcessor(processor);
     }
+
+    if(listLayout_->indexOf(res) < 0) {  // Not in the layout yet.    
+        listLayout_->insertWidget(0, res, 0, Qt::AlignTop);
+        res->updateVisibility();
+    }
+
+    return res;
 }
 
 CollapsibleGroupBoxWidgetQt* PropertyListWidget::createPropertiesForProcessor(
@@ -177,16 +190,12 @@ CollapsibleGroupBoxWidgetQt* PropertyListWidget::createPropertiesForProcessor(
         new CollapsibleGroupBoxWidgetQt(processor->getIdentifier());
     widget->setPropertyOwner(processor);
     widget->setShowIfEmpty(true);
+    widget->hideWidget();
 
     std::vector<Property*> props = processor->getProperties();
     for (size_t i = 0; i < props.size(); i++) {
         widget->addProperty(props[i]);
-    }
-
-    listLayout_->insertWidget(0, widget, 0, Qt::AlignTop);
-    widget->updateVisibility();
-    widget->hideWidget();
-
+    }   
     widgetMap_[processor] = widget;
 
     // add observer for onProcessorIdentifierChange
@@ -224,7 +233,10 @@ bool PropertyListWidget::event(QEvent* e) {
 
         Processor* p = ple->processor_;
         if (p == NULL) {
-            return true;
+            p = InviwoApplication::getPtr()->getProcessorNetwork()->getProcessorByName(ple->processorId_);
+            if(p== NULL) {
+                return true;
+            }
         }
 
         switch (ple->action_) {
