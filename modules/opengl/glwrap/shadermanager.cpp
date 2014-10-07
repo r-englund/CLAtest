@@ -36,8 +36,8 @@
 #include <inviwo/core/util/settings/systemsettings.h>
 #include <inviwo/core/util/filesystem.h>
 #include <modules/opengl/openglmodule.h>
-#include <modules/opengl/processorgl.h>
 #include <pathsexternalmodules.h>
+#include <string>
 
 namespace inviwo {
 
@@ -103,9 +103,11 @@ void ShaderManager::fileChanged(std::string shaderFilename) {
                 //TODO: Don't invalidate all processors when shader change, invalidate only owners if shader has one.
                 std::vector<Processor*> processors = InviwoApplication::getPtr()->getProcessorNetwork()->getProcessors();
 
-                for (size_t i=0; i<processors.size(); i++)
-                    if (dynamic_cast<ProcessorGL*>(processors[i]))
+                for (size_t i=0; i<processors.size(); i++) {
+                    std::string tags = processors[i]->getTags().getString();
+                    if (tags.find_first_of(Tags::GL.getString()) != std::string::npos)
                         processors[i]->invalidate(PropertyOwner::INVALID_RESOURCES);
+                }
             } else InviwoApplication::getPtr()->playSound(InviwoApplication::IVW_ERROR);
         }
     }
