@@ -63,24 +63,24 @@ int main(int argc, char** argv) {
     app.setApplicationName(QString::fromStdString(appName));
     app.setAttribute(Qt::AA_NativeWindows);
 
-
     LogCentral::init();
-    //LogCentral::getPtr()->registerLogger(new ConsoleLogger());
+    // LogCentral::getPtr()->registerLogger(new ConsoleLogger());
 
     InviwoApplication inviwoApp(argc, argv, appName, inviwo::filesystem::findBasePath());
 
-    //Initialize all modules
+    // Initialize all modules
     inviwoApp.initialize(&inviwo::registerAllModules);
 
-    //Continue initialization of default context
-    CanvasQt* sharedCanvas = static_cast<CanvasQt*>(inviwoApp.getProcessorNetworkEvaluator()->getDefaultRenderContext());
+    // Continue initialization of default context
+    CanvasQt* sharedCanvas =
+        static_cast<CanvasQt*>(inviwoApp.getProcessorNetworkEvaluator()->getDefaultRenderContext());
     sharedCanvas->initialize();
     sharedCanvas->activate();
 
-    //Set canvas as central widget
+    // Set canvas as central widget
     QMainWindow mainWin;
 
-    //Load simpleraycaster scene
+    // Load simpleraycaster scene
     inviwoApp.getProcessorNetwork()->lock();
     const CommandLineParser* cmdparser = inviwoApp.getCommandLineParser();
     std::string workspace;
@@ -88,14 +88,15 @@ int main(int argc, char** argv) {
     if (cmdparser->getLoadWorkspaceFromArg())
         workspace = cmdparser->getWorkspacePath();
     else
-        workspace = inviwoApp.getPath(InviwoApplication::PATH_WORKSPACES, "tests/simpleraycaster.inv");
+        workspace =
+            inviwoApp.getPath(InviwoApplication::PATH_WORKSPACES, "tests/simpleraycaster.inv");
 
     IvwDeserializer xmlDeserializer(workspace);
     inviwoApp.getProcessorNetwork()->deserialize(xmlDeserializer);
     std::vector<Processor*> processors = inviwoApp.getProcessorNetwork()->getProcessors();
-    int i=0;
+    int i = 0;
 
-    for (std::vector<Processor*>::iterator it = processors.begin(); it!=processors.end(); ++it) {
+    for (std::vector<Processor*>::iterator it = processors.begin(); it != processors.end(); ++it) {
         (*it)->invalidate(PropertyOwner::INVALID_RESOURCES);
         CanvasProcessor* canvasProcessor = dynamic_cast<CanvasProcessor*>((*it));
 
@@ -103,12 +104,12 @@ int main(int argc, char** argv) {
             CanvasProcessorWidgetQt* canvasWidget = new CanvasProcessorWidgetQt();
             canvasWidget->setProcessor(canvasProcessor);
             canvasWidget->initialize();
-            inviwoApp.getProcessorNetworkEvaluator()->registerCanvas(canvasProcessor->getCanvas(), canvasProcessor->getIdentifier());
+            canvasProcessor->getCanvas()->setNetworkEvaluator(inviwoApp.getProcessorNetworkEvaluator());
             canvasProcessor->setProcessorWidget(canvasWidget);
-            if(i==0)
-                mainWin.setCentralWidget(canvasWidget);
+            if (i == 0) mainWin.setCentralWidget(canvasWidget);
             canvasWidget->show();
-            dynamic_cast<CanvasGL*>(canvasProcessor->getCanvas())->resize(uvec2(canvasProcessor->getCanvasSize().x, canvasProcessor->getCanvasSize().y));
+            dynamic_cast<CanvasGL*>(canvasProcessor->getCanvas())->resize(
+                uvec2(canvasProcessor->getCanvasSize().x, canvasProcessor->getCanvasSize().y));
         }
     }
 
@@ -118,15 +119,15 @@ int main(int argc, char** argv) {
     if (cmdparser->getCaptureAfterStartup()) {
         std::string path = cmdparser->getOutputPath();
 
-        if (path.empty())
-            path = inviwoApp.getPath(InviwoApplication::PATH_IMAGES);
+        if (path.empty()) path = inviwoApp.getPath(InviwoApplication::PATH_IMAGES);
 
-        inviwoApp.getProcessorNetworkEvaluator()->saveSnapshotAllCanvases(path, cmdparser->getSnapshotName());
+        inviwoApp.getProcessorNetworkEvaluator()->saveSnapshotAllCanvases(
+            path, cmdparser->getSnapshotName());
     }
 
     mainWin.showFullScreen();
 
-    if (cmdparser->getQuitApplicationAfterStartup()){
+    if (cmdparser->getQuitApplicationAfterStartup()) {
         inviwoApp.closeInviwoApplication();
         app.quit();
         return 0;

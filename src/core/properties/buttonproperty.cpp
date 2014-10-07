@@ -46,4 +46,6 @@ void ButtonProperty::set(const Property* src) { pressButton(); }
 
 void ButtonProperty::pressButton() { propertyModified(); }
 
+void ButtonProperty::resetToDefaultState() {}
+
 }  // namespace

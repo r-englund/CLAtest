@@ -76,6 +76,9 @@ public:
      * @see onChange
      */
     virtual void pressButton();
+
+    // Override Property::resetToDefaultState, to avoid calling propertyModified  on reset.
+    virtual void resetToDefaultState();
 };
 
 } //namespace
