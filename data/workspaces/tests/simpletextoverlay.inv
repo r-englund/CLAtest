@@ -1,143 +1,157 @@
 <?xml version="1.0" ?>
 <InviwoTreeData version="1.0">
     <!-- Don't edit the following code -->
-    <ProcessorNetworkVersion content="1" />
+    <ProcessorNetworkVersion content="4" />
     <Processors>
-        <Processor type="org.inviwo.FirstIVWProcessor" identifier="FirstIVWProcessor" id="ref0">
-            <MetaDataList>
-                <MetaData type="ProcessorMetaData">
-                    <position x="-650" y="-700" />
-                    <visibility content="1" />
-                    <selection content="0" />
-                </MetaData>
-            </MetaDataList>
+        <Processor type="org.inviwo.CanvasGL" identifier="CanvasGL" id="ref0">
             <Properties>
-                <Property type="FloatVec3Property" identifier="color" displayName="Color" key="color">
+                <Property type="org.inviwo.CompositeProperty" identifier="inputSize" displayName="Input Dimension Parameters" key="inputSize">
                     <usageMode content="0" />
                     <visible content="1" />
-                    <value x="1" y="0.60000002" z="1" />
-                </Property>
-            </Properties>
-        </Processor>
-        <Processor type="org.inviwo.CanvasGL" identifier="CanvasGL" id="ref3">
-            <MetaDataList>
-                <MetaData type="ProcessorMetaData">
-                    <position x="-675" y="-425" />
-                    <visibility content="1" />
-                    <selection content="0" />
-                </MetaData>
-                <MetaData type="ProcessorWidgetMetaData">
-                    <position x="1019" y="503" />
-                    <dimension x="256" y="256" />
-                    <visibility content="1" />
-                </MetaData>
-            </MetaDataList>
-            <Properties>
-                <Property type="CompositeProperty" identifier="inputSize" displayName="Input Dimension Parameters" key="inputSize">
-                    <usageMode content="0" />
-                    <visible content="1" />
+                    <MetaDataMap />
                     <Properties>
-                        <Property type="FloatProperty" identifier="aspectRatioScaling" displayName="Aspect Ratio Scaling" key="aspectRatioScaling">
+                        <Property type="org.inviwo.FloatProperty" identifier="aspectRatioScaling" displayName="Aspect Ratio Scaling" key="aspectRatioScaling">
                             <usageMode content="0" />
                             <visible content="0" />
+                            <MetaDataMap />
                         </Property>
-                        <Property type="IntVec2Property" identifier="customInputDimensions" displayName="Input Image Dimensions" key="customInputDimensions">
+                        <Property type="org.inviwo.IntVec2Property" identifier="customInputDimensions" displayName="Input Image Dimensions" key="customInputDimensions">
                             <usageMode content="0" />
                             <visible content="0" />
                             <readonly content="1" />
+                            <MetaDataMap />
                         </Property>
-                        <Property type="IntVec2Property" identifier="dimensions" displayName="Dimensions" key="dimensions">
+                        <Property type="org.inviwo.IntVec2Property" identifier="dimensions" displayName="Dimensions" key="dimensions">
                             <usageMode content="0" />
                             <visible content="1" />
+                            <MetaDataMap />
                         </Property>
-                        <Property type="BoolProperty" identifier="enableCustomInputDimensions" displayName="Enable Custom Input Dimensions" key="enableCustomInputDimensions">
+                        <Property type="org.inviwo.BoolProperty" identifier="enableCustomInputDimensions" displayName="Enable Custom Input Dimensions" key="enableCustomInputDimensions">
                             <usageMode content="0" />
                             <visible content="1" />
+                            <MetaDataMap />
                         </Property>
-                        <Property type="BoolProperty" identifier="keepAspectRatio" displayName="Keep Aspect Ratio" key="keepAspectRatio">
+                        <Property type="org.inviwo.BoolProperty" identifier="keepAspectRatio" displayName="Keep Aspect Ratio" key="keepAspectRatio">
                             <usageMode content="0" />
                             <visible content="0" />
+                            <MetaDataMap />
                         </Property>
                     </Properties>
                 </Property>
-                <Property type="DirectoryProperty" identifier="layerDir" displayName="Output Directory" key="layerDir">
+                <Property type="org.inviwo.DirectoryProperty" identifier="layerDir" displayName="Output Directory" key="layerDir">
                     <usageMode content="0" />
                     <visible content="1" />
+                    <MetaDataMap />
                     <directory content="../../../../../../" />
                 </Property>
-                <Property type="ButtonProperty" identifier="saveLayer" displayName="Save Image Layer" key="saveLayer">
+                <Property type="org.inviwo.ButtonProperty" identifier="saveLayer" displayName="Save Image Layer" key="saveLayer">
                     <usageMode content="0" />
                     <visible content="1" />
+                    <MetaDataMap />
                 </Property>
-                <Property type="OptionPropertyInt" identifier="visibleLayer" displayName="Visible Layer" key="visibleLayer">
+                <Property type="org.inviwo.OptionPropertyInt" identifier="visibleLayer" displayName="Visible Layer" key="visibleLayer">
                     <usageMode content="0" />
                     <visible content="1" />
+                    <MetaDataMap />
                 </Property>
             </Properties>
-        </Processor>
-        <Processor type="org.inviwo.TextOverlayGL" identifier="TextOverlayGL" id="ref2">
-            <MetaDataList>
-                <MetaData type="ProcessorMetaData">
-                    <position x="-625" y="-600" />
+            <MetaDataMap>
+                <MetaDataItem type="ProcessorMetaData" key="ProcessorMetaData">
+                    <position x="-675" y="-425" />
                     <visibility content="1" />
                     <selection content="0" />
-                </MetaData>
-            </MetaDataList>
+                </MetaDataItem>
+                <MetaDataItem type="ProcessorWidgetMetaData" key="ProcessorWidgetMetaData">
+                    <position x="1019" y="503" />
+                    <dimension x="256" y="256" />
+                    <visibility content="1" />
+                </MetaDataItem>
+            </MetaDataMap>
+        </Processor>
+        <Processor type="org.inviwo.FirstIVWProcessor" identifier="FirstIVWProcessor" id="ref2">
             <Properties>
-                <Property type="FloatVec4Property" identifier="FloatColor" displayName="FloatColor" key="FloatColor">
-                    <semantics semantics="Color" />
+                <Property type="org.inviwo.FloatVec3Property" identifier="color" displayName="Color" key="color">
                     <usageMode content="0" />
                     <visible content="1" />
+                    <MetaDataMap />
+                    <value x="1" y="0.60000002" z="1" />
+                </Property>
+            </Properties>
+            <MetaDataMap>
+                <MetaDataItem type="ProcessorMetaData" key="ProcessorMetaData">
+                    <position x="-650" y="-700" />
+                    <visibility content="1" />
+                    <selection content="0" />
+                </MetaDataItem>
+            </MetaDataMap>
+        </Processor>
+        <Processor type="org.inviwo.TextOverlayGL" identifier="TextOverlayGL" id="ref3">
+            <Properties>
+                <Property type="org.inviwo.FloatVec4Property" identifier="FloatColor" displayName="FloatColor" key="FloatColor">
+                    <usageMode content="0" />
+                    <visible content="1" />
+                    <MetaDataMap />
                     <value x="1" y="0" z="0" w="1" />
                 </Property>
-                <Property type="OptionPropertyInt" identifier="Font size" displayName="Font size" key="Font size">
+                <Property type="org.inviwo.OptionPropertyInt" identifier="Font size" displayName="Font size" key="Font size">
                     <usageMode content="0" />
                     <visible content="1" />
+                    <MetaDataMap />
                 </Property>
-                <Property type="FloatVec2Property" identifier="Position" displayName="Position" key="Position">
+                <Property type="org.inviwo.FloatVec2Property" identifier="Position" displayName="Position" key="Position">
                     <usageMode content="0" />
                     <visible content="1" />
+                    <MetaDataMap />
                     <value x="0.2087" y="0.70869994" />
                 </Property>
-                <Property type="StringProperty" identifier="Text" displayName="Text" key="Text">
-                    <semantics semantics="TextEditor" />
+                <Property type="org.inviwo.StringProperty" identifier="Text" displayName="Text" key="Text">
                     <usageMode content="0" />
                     <visible content="1" />
+                    <MetaDataMap />
                     <value content="GREEN AREA" />
                 </Property>
             </Properties>
-        </Processor>
-        <Processor type="org.inviwo.TextOverlayGL" identifier="TextOverlayGL1" id="ref1">
-            <MetaDataList>
-                <MetaData type="ProcessorMetaData">
-                    <position x="-625" y="-500" />
+            <MetaDataMap>
+                <MetaDataItem type="ProcessorMetaData" key="ProcessorMetaData">
+                    <position x="-625" y="-600" />
                     <visibility content="1" />
                     <selection content="0" />
-                </MetaData>
-            </MetaDataList>
+                </MetaDataItem>
+            </MetaDataMap>
+        </Processor>
+        <Processor type="org.inviwo.TextOverlayGL" identifier="TextOverlayGL1" id="ref1">
             <Properties>
-                <Property type="FloatVec4Property" identifier="FloatColor" displayName="FloatColor" key="FloatColor">
-                    <semantics semantics="Color" />
+                <Property type="org.inviwo.FloatVec4Property" identifier="FloatColor" displayName="FloatColor" key="FloatColor">
                     <usageMode content="0" />
                     <visible content="1" />
+                    <MetaDataMap />
                     <value x="0.15294118" y="0.090196081" z="0.83529413" w="1" />
                 </Property>
-                <Property type="OptionPropertyInt" identifier="Font size" displayName="Font size" key="Font size">
+                <Property type="org.inviwo.OptionPropertyInt" identifier="Font size" displayName="Font size" key="Font size">
                     <usageMode content="0" />
                     <visible content="1" />
+                    <MetaDataMap />
                 </Property>
-                <Property type="FloatVec2Property" identifier="Position" displayName="Position" key="Position">
+                <Property type="org.inviwo.FloatVec2Property" identifier="Position" displayName="Position" key="Position">
                     <usageMode content="0" />
                     <visible content="1" />
+                    <MetaDataMap />
                     <value x="0.2087" y="0" />
                 </Property>
-                <Property type="StringProperty" identifier="Text" displayName="Text" key="Text">
-                    <semantics semantics="TextEditor" />
+                <Property type="org.inviwo.StringProperty" identifier="Text" displayName="Text" key="Text">
                     <usageMode content="0" />
                     <visible content="1" />
+                    <MetaDataMap />
                     <value content="PINK     AREA" />
                 </Property>
             </Properties>
+            <MetaDataMap>
+                <MetaDataItem type="ProcessorMetaData" key="ProcessorMetaData">
+                    <position x="-625" y="-500" />
+                    <visibility content="1" />
+                    <selection content="0" />
+                </MetaDataItem>
+            </MetaDataMap>
         </Processor>
     </Processors>
     <Connections>
@@ -146,23 +160,23 @@
                 <Processor type="org.inviwo.TextOverlayGL" identifier="TextOverlayGL1" reference="ref1" />
             </OutPort>
             <InPort identifier="inport">
-                <Processor type="org.inviwo.CanvasGL" identifier="CanvasGL" reference="ref3" />
+                <Processor type="org.inviwo.CanvasGL" identifier="CanvasGL" reference="ref0" />
             </InPort>
         </Connection>
         <Connection>
             <OutPort identifier="outport">
-                <Processor type="org.inviwo.TextOverlayGL" identifier="TextOverlayGL" reference="ref2" />
+                <Processor type="org.inviwo.FirstIVWProcessor" identifier="FirstIVWProcessor" reference="ref2" />
+            </OutPort>
+            <InPort identifier="inport">
+                <Processor type="org.inviwo.TextOverlayGL" identifier="TextOverlayGL" reference="ref3" />
+            </InPort>
+        </Connection>
+        <Connection>
+            <OutPort identifier="outport">
+                <Processor type="org.inviwo.TextOverlayGL" identifier="TextOverlayGL" reference="ref3" />
             </OutPort>
             <InPort identifier="inport">
                 <Processor type="org.inviwo.TextOverlayGL" identifier="TextOverlayGL1" reference="ref1" />
-            </InPort>
-        </Connection>
-        <Connection>
-            <OutPort identifier="outport">
-                <Processor type="org.inviwo.FirstIVWProcessor" identifier="FirstIVWProcessor" reference="ref0" />
-            </OutPort>
-            <InPort identifier="inport">
-                <Processor type="org.inviwo.TextOverlayGL" identifier="TextOverlayGL" reference="ref2" />
             </InPort>
         </Connection>
     </Connections>

@@ -1,153 +1,172 @@
 <?xml version="1.0" ?>
 <InviwoTreeData version="1.0">
     <!-- Don't edit the following code -->
-    <ProcessorNetworkVersion content="1" />
+    <ProcessorNetworkVersion content="4" />
     <Processors>
-        <Processor type="org.inviwo.ImageSource" identifier="ImageSource" id="ref1">
-            <MetaDataList>
-                <MetaData type="ProcessorMetaData">
-                    <position x="-575" y="-700" />
-                    <visibility content="1" />
-                    <selection content="0" />
-                </MetaData>
-            </MetaDataList>
+        <Processor type="org.inviwo.CanvasGL" identifier="CanvasGL" id="ref1">
             <Properties>
-                <Property type="FileProperty" identifier="imageFileName" displayName="Image file name" key="imageFileName">
+                <Property type="org.inviwo.CompositeProperty" identifier="inputSize" displayName="Input Dimension Parameters" key="inputSize">
                     <usageMode content="0" />
                     <visible content="1" />
+                    <MetaDataMap />
+                    <Properties>
+                        <Property type="org.inviwo.FloatProperty" identifier="aspectRatioScaling" displayName="Aspect Ratio Scaling" key="aspectRatioScaling">
+                            <usageMode content="0" />
+                            <visible content="0" />
+                            <MetaDataMap />
+                        </Property>
+                        <Property type="org.inviwo.IntVec2Property" identifier="customInputDimensions" displayName="Input Image Dimensions" key="customInputDimensions">
+                            <usageMode content="0" />
+                            <visible content="0" />
+                            <readonly content="1" />
+                            <MetaDataMap />
+                        </Property>
+                        <Property type="org.inviwo.IntVec2Property" identifier="dimensions" displayName="Dimensions" key="dimensions">
+                            <usageMode content="0" />
+                            <visible content="1" />
+                            <MetaDataMap />
+                            <value x="512" y="512" />
+                        </Property>
+                        <Property type="org.inviwo.BoolProperty" identifier="enableCustomInputDimensions" displayName="Enable Custom Input Dimensions" key="enableCustomInputDimensions">
+                            <usageMode content="0" />
+                            <visible content="1" />
+                            <MetaDataMap />
+                        </Property>
+                        <Property type="org.inviwo.BoolProperty" identifier="keepAspectRatio" displayName="Keep Aspect Ratio" key="keepAspectRatio">
+                            <usageMode content="0" />
+                            <visible content="0" />
+                            <MetaDataMap />
+                        </Property>
+                    </Properties>
+                </Property>
+                <Property type="org.inviwo.DirectoryProperty" identifier="layerDir" displayName="Output Directory" key="layerDir">
+                    <usageMode content="0" />
+                    <visible content="1" />
+                    <MetaDataMap />
+                    <directory content="../../../../../../../../../" />
+                </Property>
+                <Property type="org.inviwo.ButtonProperty" identifier="saveLayer" displayName="Save Image Layer" key="saveLayer">
+                    <usageMode content="0" />
+                    <visible content="1" />
+                    <MetaDataMap />
+                </Property>
+                <Property type="org.inviwo.OptionPropertyInt" identifier="visibleLayer" displayName="Visible Layer" key="visibleLayer">
+                    <usageMode content="0" />
+                    <visible content="1" />
+                    <MetaDataMap />
+                </Property>
+            </Properties>
+            <MetaDataMap>
+                <MetaDataItem type="ProcessorMetaData" key="ProcessorMetaData">
+                    <position x="-475" y="-525" />
+                    <visibility content="1" />
+                    <selection content="0" />
+                </MetaDataItem>
+                <MetaDataItem type="ProcessorWidgetMetaData" key="ProcessorWidgetMetaData">
+                    <position x="818" y="485" />
+                    <dimension x="512" y="512" />
+                    <visibility content="1" />
+                </MetaDataItem>
+            </MetaDataMap>
+        </Processor>
+        <Processor type="org.inviwo.CanvasGL" identifier="CanvasGL1" id="ref2">
+            <Properties>
+                <Property type="org.inviwo.CompositeProperty" identifier="inputSize" displayName="Input Dimension Parameters" key="inputSize">
+                    <usageMode content="0" />
+                    <visible content="1" />
+                    <MetaDataMap />
+                    <Properties>
+                        <Property type="org.inviwo.FloatProperty" identifier="aspectRatioScaling" displayName="Aspect Ratio Scaling" key="aspectRatioScaling">
+                            <usageMode content="0" />
+                            <visible content="0" />
+                            <MetaDataMap />
+                        </Property>
+                        <Property type="org.inviwo.IntVec2Property" identifier="customInputDimensions" displayName="Input Image Dimensions" key="customInputDimensions">
+                            <usageMode content="0" />
+                            <visible content="0" />
+                            <readonly content="1" />
+                            <MetaDataMap />
+                        </Property>
+                        <Property type="org.inviwo.IntVec2Property" identifier="dimensions" displayName="Dimensions" key="dimensions">
+                            <usageMode content="0" />
+                            <visible content="1" />
+                            <MetaDataMap />
+                        </Property>
+                        <Property type="org.inviwo.BoolProperty" identifier="enableCustomInputDimensions" displayName="Enable Custom Input Dimensions" key="enableCustomInputDimensions">
+                            <usageMode content="0" />
+                            <visible content="1" />
+                            <MetaDataMap />
+                        </Property>
+                        <Property type="org.inviwo.BoolProperty" identifier="keepAspectRatio" displayName="Keep Aspect Ratio" key="keepAspectRatio">
+                            <usageMode content="0" />
+                            <visible content="0" />
+                            <MetaDataMap />
+                        </Property>
+                    </Properties>
+                </Property>
+                <Property type="org.inviwo.DirectoryProperty" identifier="layerDir" displayName="Output Directory" key="layerDir">
+                    <usageMode content="0" />
+                    <visible content="1" />
+                    <MetaDataMap />
+                    <directory content="../../../../../../../../../" />
+                </Property>
+                <Property type="org.inviwo.ButtonProperty" identifier="saveLayer" displayName="Save Image Layer" key="saveLayer">
+                    <usageMode content="0" />
+                    <visible content="1" />
+                    <MetaDataMap />
+                </Property>
+                <Property type="org.inviwo.OptionPropertyInt" identifier="visibleLayer" displayName="Visible Layer" key="visibleLayer">
+                    <usageMode content="0" />
+                    <visible content="1" />
+                    <MetaDataMap />
+                </Property>
+            </Properties>
+            <MetaDataMap>
+                <MetaDataItem type="ProcessorMetaData" key="ProcessorMetaData">
+                    <position x="-650" y="-525" />
+                    <visibility content="1" />
+                    <selection content="0" />
+                </MetaDataItem>
+                <MetaDataItem type="ProcessorWidgetMetaData" key="ProcessorWidgetMetaData">
+                    <position x="526" y="484" />
+                    <dimension x="256" y="256" />
+                    <visibility content="1" />
+                </MetaDataItem>
+            </MetaDataMap>
+        </Processor>
+        <Processor type="org.inviwo.ImageSource" identifier="ImageSource" id="ref0">
+            <Properties>
+                <Property type="org.inviwo.FileProperty" identifier="imageFileName" displayName="Image file name" key="imageFileName">
+                    <usageMode content="0" />
+                    <visible content="1" />
+                    <MetaDataMap />
                     <url content="../../images/swirl1.tga" />
                     <nameFilter />
                     <acceptMode content="0" />
                     <fileMode content="0" />
                 </Property>
             </Properties>
-        </Processor>
-        <Processor type="org.inviwo.CanvasGL" identifier="CanvasGL" id="ref0">
-            <MetaDataList>
-                <MetaData type="ProcessorMetaData">
-                    <position x="-475" y="-525" />
+            <MetaDataMap>
+                <MetaDataItem type="ProcessorMetaData" key="ProcessorMetaData">
+                    <position x="-575" y="-700" />
                     <visibility content="1" />
                     <selection content="0" />
-                </MetaData>
-                <MetaData type="ProcessorWidgetMetaData">
-                    <position x="818" y="485" />
-                    <dimension x="512" y="512" />
-                    <visibility content="1" />
-                </MetaData>
-            </MetaDataList>
-            <Properties>
-                <Property type="CompositeProperty" identifier="inputSize" displayName="Input Dimension Parameters" key="inputSize">
-                    <usageMode content="0" />
-                    <visible content="1" />
-                    <Properties>
-                        <Property type="FloatProperty" identifier="aspectRatioScaling" displayName="Aspect Ratio Scaling" key="aspectRatioScaling">
-                            <usageMode content="0" />
-                            <visible content="0" />
-                        </Property>
-                        <Property type="IntVec2Property" identifier="customInputDimensions" displayName="Input Image Dimensions" key="customInputDimensions">
-                            <usageMode content="0" />
-                            <visible content="0" />
-                            <readonly content="1" />
-                        </Property>
-                        <Property type="IntVec2Property" identifier="dimensions" displayName="Dimensions" key="dimensions">
-                            <usageMode content="0" />
-                            <visible content="1" />
-                            <value x="512" y="512" />
-                        </Property>
-                        <Property type="BoolProperty" identifier="enableCustomInputDimensions" displayName="Enable Custom Input Dimensions" key="enableCustomInputDimensions">
-                            <usageMode content="0" />
-                            <visible content="1" />
-                        </Property>
-                        <Property type="BoolProperty" identifier="keepAspectRatio" displayName="Keep Aspect Ratio" key="keepAspectRatio">
-                            <usageMode content="0" />
-                            <visible content="0" />
-                        </Property>
-                    </Properties>
-                </Property>
-                <Property type="DirectoryProperty" identifier="layerDir" displayName="Output Directory" key="layerDir">
-                    <usageMode content="0" />
-                    <visible content="1" />
-                    <directory content="../../../../../../../../../" />
-                </Property>
-                <Property type="ButtonProperty" identifier="saveLayer" displayName="Save Image Layer" key="saveLayer">
-                    <usageMode content="0" />
-                    <visible content="1" />
-                </Property>
-                <Property type="OptionPropertyInt" identifier="visibleLayer" displayName="Visible Layer" key="visibleLayer">
-                    <usageMode content="0" />
-                    <visible content="1" />
-                </Property>
-            </Properties>
-        </Processor>
-        <Processor type="org.inviwo.CanvasGL" identifier="CanvasGL1" id="ref2">
-            <MetaDataList>
-                <MetaData type="ProcessorMetaData">
-                    <position x="-650" y="-525" />
-                    <visibility content="1" />
-                    <selection content="0" />
-                </MetaData>
-                <MetaData type="ProcessorWidgetMetaData">
-                    <position x="526" y="484" />
-                    <dimension x="256" y="256" />
-                    <visibility content="1" />
-                </MetaData>
-            </MetaDataList>
-            <Properties>
-                <Property type="CompositeProperty" identifier="inputSize" displayName="Input Dimension Parameters" key="inputSize">
-                    <usageMode content="0" />
-                    <visible content="1" />
-                    <Properties>
-                        <Property type="FloatProperty" identifier="aspectRatioScaling" displayName="Aspect Ratio Scaling" key="aspectRatioScaling">
-                            <usageMode content="0" />
-                            <visible content="0" />
-                        </Property>
-                        <Property type="IntVec2Property" identifier="customInputDimensions" displayName="Input Image Dimensions" key="customInputDimensions">
-                            <usageMode content="0" />
-                            <visible content="0" />
-                            <readonly content="1" />
-                        </Property>
-                        <Property type="IntVec2Property" identifier="dimensions" displayName="Dimensions" key="dimensions">
-                            <usageMode content="0" />
-                            <visible content="1" />
-                        </Property>
-                        <Property type="BoolProperty" identifier="enableCustomInputDimensions" displayName="Enable Custom Input Dimensions" key="enableCustomInputDimensions">
-                            <usageMode content="0" />
-                            <visible content="1" />
-                        </Property>
-                        <Property type="BoolProperty" identifier="keepAspectRatio" displayName="Keep Aspect Ratio" key="keepAspectRatio">
-                            <usageMode content="0" />
-                            <visible content="0" />
-                        </Property>
-                    </Properties>
-                </Property>
-                <Property type="DirectoryProperty" identifier="layerDir" displayName="Output Directory" key="layerDir">
-                    <usageMode content="0" />
-                    <visible content="1" />
-                    <directory content="../../../../../../../../../" />
-                </Property>
-                <Property type="ButtonProperty" identifier="saveLayer" displayName="Save Image Layer" key="saveLayer">
-                    <usageMode content="0" />
-                    <visible content="1" />
-                </Property>
-                <Property type="OptionPropertyInt" identifier="visibleLayer" displayName="Visible Layer" key="visibleLayer">
-                    <usageMode content="0" />
-                    <visible content="1" />
-                </Property>
-            </Properties>
+                </MetaDataItem>
+            </MetaDataMap>
         </Processor>
     </Processors>
     <Connections>
         <Connection>
             <OutPort identifier="image.outport">
-                <Processor type="org.inviwo.ImageSource" identifier="ImageSource" reference="ref1" />
+                <Processor type="org.inviwo.ImageSource" identifier="ImageSource" reference="ref0" />
             </OutPort>
             <InPort identifier="inport">
-                <Processor type="org.inviwo.CanvasGL" identifier="CanvasGL" reference="ref0" />
+                <Processor type="org.inviwo.CanvasGL" identifier="CanvasGL" reference="ref1" />
             </InPort>
         </Connection>
         <Connection>
             <OutPort identifier="image.outport">
-                <Processor type="org.inviwo.ImageSource" identifier="ImageSource" reference="ref1" />
+                <Processor type="org.inviwo.ImageSource" identifier="ImageSource" reference="ref0" />
             </OutPort>
             <InPort identifier="inport">
                 <Processor type="org.inviwo.CanvasGL" identifier="CanvasGL1" reference="ref2" />
