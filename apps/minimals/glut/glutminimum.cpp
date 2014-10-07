@@ -98,13 +98,15 @@ int main(int argc, char** argv) {
 
         if (canvasProcessor) {
             if (i==0) {
-                inviwoApp.getProcessorNetworkEvaluator()->registerCanvas(canvas, canvasProcessor->getIdentifier());
+                canvas->setNetworkEvaluator(inviwoApp.getProcessorNetworkEvaluator());
+                canvasProcessor->setCanvas(canvas);
                 canvas->setWindowTitle(inviwoApp.getDisplayName() + " : " + canvasProcessor->getIdentifier());
                 canvas->setWindowSize(uvec2(canvasProcessor->getCanvasSize()));
             }
             else {
                 CanvasGLUT* newC = new CanvasGLUT(canvasProcessor->getIdentifier(), uvec2(canvasProcessor->getCanvasSize()));
-                inviwoApp.getProcessorNetworkEvaluator()->registerCanvas(newC, canvasProcessor->getIdentifier());
+                newC->setNetworkEvaluator(inviwoApp.getProcessorNetworkEvaluator());
+                canvasProcessor->setCanvas(newC);
                 newC->initializeGL();
                 newC->initialize();
             }
