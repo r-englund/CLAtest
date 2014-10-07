@@ -118,7 +118,7 @@ void LayerGL::resize(uvec2 dimensions) {
     if (texture_) {
         texture_->unbind();
         texture_->resize(dimensions_);
-        texture_->unbind();
+        texture_->bind();
     }
 }
 

@@ -32,86 +32,66 @@
 
 #include <inviwo/core/processors/processorwidget.h>
 #include <inviwo/core/processors/processor.h>
+#include <inviwo/core/metadata/processorwidgetmetadata.h>
 
 namespace inviwo {
 
 ProcessorWidget::ProcessorWidget()
-    : ProcessorWidgetObservable()
-    , metaData_(NULL)
-    , processor_(NULL) {}
+    : ProcessorWidgetObservable(), processor_(NULL), metaData_(NULL) {}
 
-ProcessorWidget::ProcessorWidget(const ProcessorWidget& rhs) : metaData_(rhs.metaData_), processor_(rhs.processor_) {
+ProcessorWidget::ProcessorWidget(const ProcessorWidget& rhs)
+    : ProcessorWidgetObservable(rhs), processor_(rhs.processor_), metaData_(rhs.metaData_) {}
 
-}
 ProcessorWidget& ProcessorWidget::operator=(const ProcessorWidget& that) {
     if (this != &that) {
-        metaData_ = that.metaData_;
         processor_ = that.processor_;
+        metaData_ = that.metaData_;
+        ObservableInterface::operator=(that);
     }
     return *this;
 }
 
 ProcessorWidget::~ProcessorWidget() {
-    if(processor_) {
+    if (processor_) {
         processor_->setProcessorWidget(NULL);
     }
 }
-
 
 void ProcessorWidget::initialize() {
     metaData_ = processor_->createMetaData<ProcessorWidgetMetaData>("ProcessorWidgetMetaData");
 }
 
-void ProcessorWidget::deinitialize() {
-    //FIXME: should metaData_ be set to NULL???
-}
+void ProcessorWidget::deinitialize() { metaData_ = NULL; }
 
 void ProcessorWidget::setVisible(bool visible) {
-    if(visible){
+    metaData_->setVisibile(visible);
+    if (visible) {
         notifyObserversAboutShow(this);
-    }else{
+        if (processor_) {
+            processor_->invalidate(PropertyOwner::INVALID_OUTPUT);
+        }
+    } else {
         notifyObserversAboutHide(this);
     }
-    metaData_->setVisibile(visible);
 }
 
-bool ProcessorWidget::isVisible(){
-    return metaData_->isVisible();
-}
+bool ProcessorWidget::isVisible() { return metaData_->isVisible(); }
 
 void ProcessorWidget::show() {
-    metaData_->setVisibile(true);
-    notifyObserversAboutShow(this);
-    if(processor_){
-        processor_->invalidate(PropertyOwner::INVALID_OUTPUT);   
-    }
+    ProcessorWidget::setVisible(true);
 }
 
 void ProcessorWidget::hide() {
-    metaData_->setVisibile(false);
-    notifyObserversAboutShow(this);
+    ProcessorWidget::setVisible(false);
 }
+    
+Processor* ProcessorWidget::getProcessor() { return processor_; }
+void ProcessorWidget::setProcessor(Processor* processor) { processor_ = processor; }
 
-void ProcessorWidget::setDimension(ivec2 dimension) {
-    metaData_->setDimension(dimension);
-}
+glm::ivec2 ProcessorWidget::getDimension() { return metaData_->getDimension(); }
+void ProcessorWidget::setDimension(glm::ivec2 dimension) { metaData_->setDimension(dimension); }
 
-void ProcessorWidget::move(ivec2 pos) {
-    metaData_->setWidgetPosition(pos);
-}
+glm::ivec2 ProcessorWidget::getPosition() { return metaData_->getPosition(); }
+void ProcessorWidget::setPosition(glm::ivec2 pos) { metaData_->setPosition(pos); }
 
-bool ProcessorWidget::getVisibilityMetaData() {
-    return metaData_->isVisible();
-}
-
-ivec2 ProcessorWidget::getPositionMetaData() {
-    return metaData_->getWidgetPosition();
-}
-
-ivec2 ProcessorWidget::getDimensionMetaData() {
-    return metaData_->getDimension();
-}
-
-
-
-} // namespace
+}  // namespace

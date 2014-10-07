@@ -107,9 +107,10 @@ void ImageInport::changeDataDimensions(ResizeEvent* resizeEvent) {
         dimensions_ = dimensions;
     else
         dimensions_ = dimMax;
-
+    
     resizeEvent->setSize(dimensions_);
     propagateResizeToPredecessor(resizeEvent);
+    
     invalidate(PropertyOwner::INVALID_OUTPUT);
 }
 

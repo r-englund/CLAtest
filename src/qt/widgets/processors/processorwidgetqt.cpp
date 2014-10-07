@@ -41,56 +41,48 @@
 
 namespace inviwo {
 
-ProcessorWidgetQt::ProcessorWidgetQt()
-    : QWidget(NULL), ProcessorWidget()
-{
-    QWidget::move(0, 0);
-    QWidget::resize(32, 32);
-    QWidget::setVisible(false);
-}
+ProcessorWidgetQt::ProcessorWidgetQt() : QWidget(NULL), ProcessorWidget() {}
 
 ProcessorWidgetQt::~ProcessorWidgetQt() {}
 
 void ProcessorWidgetQt::initialize() {
     ProcessorWidget::initialize();
-    ivec2 pos = ProcessorWidget::getPositionMetaData();
+    ivec2 dim = ProcessorWidget::getDimension();
+    QWidget::resize(dim.x, dim.y);
 
-    // determine size of window border (frame size) 
-    // as long as widget is not shown, no border exists, i.e. this->pos() == this->geometry().topLeft()
-    ivec2 dim = ProcessorWidget::getDimensionMetaData();
-
-
-    // check if geometry is on screen and alter otherwise
-    //TODO: Desktop screen info should be added to system capabilities
+    // Check if geometry is on screen and alter otherwise
+    // TODO: Desktop screen info should be added to system capabilities
+    ivec2 pos = ProcessorWidget::getPosition();
     QDesktopWidget* desktop = QApplication::desktop();
     int primaryScreenIndex = desktop->primaryScreen();
     QRect wholeScreenGeometry = desktop->screenGeometry(primaryScreenIndex);
 
-    for (int i=0; i<desktop->screenCount(); i++) {
-        if (i!=primaryScreenIndex)
+    for (int i = 0; i < desktop->screenCount(); i++) {
+        if (i != primaryScreenIndex)
             wholeScreenGeometry = wholeScreenGeometry.united(desktop->screenGeometry(i));
     }
 
-    wholeScreenGeometry.setRect(wholeScreenGeometry.x()-10, wholeScreenGeometry.y()-10,
-                                wholeScreenGeometry.width()+20, wholeScreenGeometry.height()+20);
-    QPoint bottomRight = QPoint(pos.x+this->width(), pos.y+this->height());
+    wholeScreenGeometry.setRect(wholeScreenGeometry.x() - 10, wholeScreenGeometry.y() - 10,
+                                wholeScreenGeometry.width() + 20,
+                                wholeScreenGeometry.height() + 20);
+    QPoint bottomRight = QPoint(pos.x + this->width(), pos.y + this->height());
     InviwoApplicationQt* app = dynamic_cast<InviwoApplicationQt*>(InviwoApplication::getPtr());
-    if(app){
+    if (app) {
         QPoint appPos = app->getMainWindow()->pos();
 
 #if (QT_VERSION >= QT_VERSION_CHECK(5, 0, 0))
-        QPoint offset = app->getWindowDecorationOffset();            
+        QPoint offset = app->getWindowDecorationOffset();
         pos -= vec2(offset.x(), offset.y());
 #endif
 
-        if (!wholeScreenGeometry.contains(QPoint(pos.x, pos.y)) || !wholeScreenGeometry.contains(bottomRight)) { //if the widget is outside visible screen
+        if (!wholeScreenGeometry.contains(QPoint(pos.x, pos.y)) ||
+            !wholeScreenGeometry.contains(bottomRight)) {// If the widget is outside visible screen
             pos = ivec2(appPos.x(), appPos.y());
             pos += offsetWidget();
             QWidget::move(pos.x, pos.y);
-        }
-        else {
+        } else {
             if (!(pos.x == 0 && pos.y == 0))
-                //TODO: Detect if processor position is set. Need to figure out better way.
+                // TODO: Detect if processor position is set. Need to figure out better way.
                 QWidget::move(pos.x, pos.y);
             else {
                 pos = ivec2(appPos.x(), appPos.y());
@@ -127,27 +119,29 @@ void ProcessorWidgetQt::deinitialize() {
 }
 
 void ProcessorWidgetQt::setVisible(bool visible) {
-    ProcessorWidget::setVisible(visible);
+    // The subsequent events will call ProcessorWidget.
     QWidget::setVisible(visible);
 }
 
 void ProcessorWidgetQt::show() {
-    ProcessorWidget::show();
-    QWidget::show();
+    ProcessorWidgetQt::setVisible(true);
 }
 
 void ProcessorWidgetQt::hide() {
-    ProcessorWidget::hide();
-    QWidget::hide();
+    ProcessorWidgetQt::setVisible(false);
 }
 
-void ProcessorWidgetQt::move(ivec2 pos) {
-    ProcessorWidget::move(pos);
+void ProcessorWidgetQt::setPosition(glm::ivec2 pos) {
+    //ProcessorWidget::setPosition(pos); Will be called by the Move event.
     QWidget::move(pos.x, pos.y);
+}
+    
+void ProcessorWidgetQt::move(ivec2 pos) {
+    ProcessorWidgetQt::setPosition(pos);
 }
 
 void ProcessorWidgetQt::setDimension(ivec2 dimensions) {
-    ProcessorWidget::setDimension(dimensions);
+    // ProcessorWidget::setDimension(dimensions);  Will be called by the Resize event.
     QWidget::resize(dimensions.x, dimensions.y);
 }
 
@@ -157,15 +151,22 @@ void ProcessorWidgetQt::resizeEvent(QResizeEvent* event) {
 }
 
 void ProcessorWidgetQt::showEvent(QShowEvent* event) {
+    ProcessorWidget::setVisible(true);
     QWidget::showEvent(event);
 }
 
 void ProcessorWidgetQt::closeEvent(QCloseEvent* event) {
+    ProcessorWidget::setVisible(false);
     QWidget::closeEvent(event);
 }
 
+void ProcessorWidgetQt::hideEvent(QHideEvent* event) {
+    ProcessorWidget::setVisible(false);
+    QWidget::hideEvent(event);
+}
+    
 void ProcessorWidgetQt::moveEvent(QMoveEvent* event) {
-    ProcessorWidget::move(ivec2(event->pos().x(), event->pos().y()));
+    ProcessorWidget::setPosition(ivec2(event->pos().x(), event->pos().y()));
     QWidget::moveEvent(event);
 }
 

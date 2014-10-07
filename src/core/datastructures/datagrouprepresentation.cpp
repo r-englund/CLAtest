@@ -53,7 +53,7 @@ void DataGroupRepresentation::setAsInvalid() {
     valid_ = false;
 }
 
-bool DataGroupRepresentation::isValid() {
+bool DataGroupRepresentation::isValid() const {
     return valid_;
 }
 

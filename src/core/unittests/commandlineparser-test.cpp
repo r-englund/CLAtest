@@ -36,10 +36,10 @@
 #include <gtest/gtest.h>
 namespace inviwo{
 
-TEST(CommandLineParserTest,DefaultTest) {
+TEST(CommandLineParserTest, DefaultTest) {
     const int argc = 1;
-    char* argv[argc] = {"unittests.exe"};
-    CommandLineParser clp(argc,argv);
+    char *argv[argc] = {"unittests.exe"};
+    CommandLineParser clp(argc, argv);
     clp.initialize();
     clp.parse();
     EXPECT_STREQ("", clp.getOutputPath().c_str());
@@ -56,7 +56,7 @@ TEST(CommandLineParserTest,DefaultTest) {
 }
 
 
-TEST(CommandLineParserTest,InviwoApplicationsParserTest) {
+TEST(CommandLineParserTest, InviwoApplicationsParserTest) {
     InviwoApplication* app = InviwoApplication::getPtr();
     const CommandLineParser* clp = app->getCommandLineParser();
     ASSERT_TRUE(clp != 0);
@@ -75,9 +75,9 @@ TEST(CommandLineParserTest,InviwoApplicationsParserTest) {
 
 
 
-TEST(CommandLineParserTest,CommandLineParserTest) {
+TEST(CommandLineParserTest, CommandLineParserTest) {
     const int argc = 3;
-    char* argv[argc] = {"unittests.exe", "-w", "C:/Just/A/Path/"};
+    char *argv[argc] = {"unittests.exe", "-w", "C:/Just/A/Path/"};
     CommandLineParser clp(argc, argv);
     clp.initialize();
     clp.parse();

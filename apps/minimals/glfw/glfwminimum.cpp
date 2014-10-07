@@ -96,7 +96,10 @@ int main(int argc, char** argv) {
                 currentC->initializeGL();
                 currentC->initialize();
             }
-            inviwoApp.getProcessorNetworkEvaluator()->registerCanvas(currentC, canvasProcessor->getIdentifier());
+
+            currentC->setNetworkEvaluator(inviwoApp.getProcessorNetworkEvaluator());
+            canvasProcessor->setCanvas(currentC);
+            
             currentC->setWindowTitle(inviwoApp.getDisplayName() + " : " + canvasProcessor->getIdentifier());
             currentC->setWindowSize(uvec2(canvasProcessor->getCanvasSize()));
             currentC->show();

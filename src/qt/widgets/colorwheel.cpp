@@ -315,10 +315,7 @@ void ColorWheel::drawSquareImage(const int& hue) {
     rect.setWidth(2.0 * ir / qSqrt(2.0));
     rect.setHeight(2.0 * ir / qSqrt(2.0));
     squareRegion = QRegion(rect.toRect());
-
-    qreal SquareWidth = ir * qSqrt(2.0);
-    squareImage = square; // .scaled(SquareWidth,SquareWidth);
-    //squareRegion = QRegion(m, m, SquareWidth, SquareWidth);
+    squareImage = square;
 }
 
 void ColorWheel::drawIndicator(const int& hue) {

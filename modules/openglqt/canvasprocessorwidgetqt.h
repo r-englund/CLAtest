@@ -47,20 +47,23 @@ public:
     CanvasProcessorWidgetQt();
     virtual ~CanvasProcessorWidgetQt();
 
+    virtual ProcessorWidget* create() const;
     virtual void initialize();
     virtual void deinitialize();
-    virtual ProcessorWidget* create() const;
+
+    // Override ProcessorWidgetQt
+    virtual void setVisible(bool visible);
     virtual void show();
     virtual void hide();
 
 protected:
-    void resizeEvent(QResizeEvent*);
-    void showEvent(QShowEvent*);
-    void closeEvent(QCloseEvent*);
+    // Override ProcessorWidgetQt
+    virtual void resizeEvent(QResizeEvent*);
+    virtual void showEvent(QShowEvent*);
+    virtual void closeEvent(QCloseEvent*);
 
 private:
     CanvasQt* canvas_;
-
     bool hasSharedCanvas_;
 };
 

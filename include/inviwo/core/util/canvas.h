@@ -71,10 +71,10 @@ public:
 
     bool isInitialized();
 
-protected:
     void setNetworkEvaluator(ProcessorNetworkEvaluator* networkEvaluator);
     ProcessorNetworkEvaluator* getProcessorNetworkEvaluator();
 
+protected:
     void activateDefaultRenderContext();
 
     void interactionEvent(InteractionEvent* e);

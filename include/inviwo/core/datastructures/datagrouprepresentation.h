@@ -68,7 +68,7 @@ public:
     virtual void performOperation(DataOperation*) const = 0;
 
     void setAsInvalid();
-    bool isValid();
+    bool isValid() const;
 
     virtual void initialize() = 0;
     virtual void deinitialize() = 0;

@@ -36,6 +36,7 @@
 #include <inviwo/core/io/serialization/ivwdeserializer.h>
 #include <inviwo/core/io/serialization/ivwserializer.h>
 #include <inviwo/core/metadata/processormetadata.h>
+#include <inviwo/core/metadata/processorwidgetmetadata.h>
 #include <inviwo/core/ports/geometryport.h>
 #include <inviwo/core/ports/imageport.h>
 #include <inviwo/core/ports/inport.h>
@@ -81,9 +82,9 @@ NetworkEditor::NetworkEditor()
     : QGraphicsScene()
     , oldConnectionTarget_(NULL)
     , oldProcessorTarget_(NULL)
+    , linkDialog_(NULL)
     , connectionCurve_(NULL)
     , linkCurve_(NULL)
-    , linkDialog_(NULL)
     , filename_("")
     , modified_(false)
     , cacheProcessorPropertyDoneEventId_(-1)
@@ -104,45 +105,42 @@ NetworkEditor::~NetworkEditor() {}
 ////////////////////////////////////////////////////////
 ProcessorGraphicsItem* NetworkEditor::addProcessorRepresentations(Processor* processor, QPointF pos,
                                                                   bool showProcessor,
-                                                                  bool selectProcessor,
-                                                                  bool showProcessorWidget) {
+                                                                  bool selectProcessor) {
     // generate GUI representations (graphics item, property widget, processor widget)
     ProcessorGraphicsItem* ret =
         addProcessorGraphicsItem(processor, pos, showProcessor, selectProcessor);
 
+    ProcessorWidget* processorWidget =
+        dynamic_cast<ProcessorWidget*>(ProcessorWidgetFactory::getPtr()->create(processor));
+    if (processorWidget) {
+        processorWidget->setProcessor(processor);
 
-    // We need to register the canvas before we show it.
-    addProcessorWidget(processor, false);
-
-    // TODO: Generalize by registering output/end processors (can also be e.g. VolumeSave)
-    CanvasProcessor* canvasProcessor = dynamic_cast<CanvasProcessor*>(processor);
-    if (canvasProcessor) {
-        InviwoApplication::getPtr()->getProcessorNetworkEvaluator()->registerCanvas(
-            canvasProcessor->getCanvas(), canvasProcessor->getIdentifier());
-    }
-
-    if (processor->hasProcessorWidget()) {
-        if (showProcessorWidget) {
-            processor->getProcessorWidget()->show();
+        ProcessorWidgetQt* processorWidgetQt = dynamic_cast<ProcessorWidgetQt*>(processorWidget);
+        if (processorWidgetQt) {
+            InviwoApplicationQt* app =
+                dynamic_cast<InviwoApplicationQt*>(InviwoApplication::getPtr());
+            processorWidgetQt->setParent(app->getMainWindow(),
+                                         Qt::Window | Qt::WindowStaysOnTopHint);
         }
-        processor->getProcessorWidget()->addObserver(ret->getStatusItem());
+        processorWidget->initialize();
+        processorWidget->setVisible(processorWidget->ProcessorWidget::isVisible());
+        processor->setProcessorWidget(processorWidget);
+        processorWidget->addObserver(ret->getStatusItem());
     }
     return ret;
 }
 
 void NetworkEditor::removeProcessorRepresentations(Processor* processor) {
-    // deregister processors which act as initiation points for the network evaluation
-    // TODO: generalize, should be done for all output/end processors
-    CanvasProcessor* canvasProcessor = dynamic_cast<CanvasProcessor*>(processor);
-
-    if (canvasProcessor)
-        InviwoApplication::getPtr()->getProcessorNetworkEvaluator()->deregisterCanvas(
-            canvasProcessor->getCanvas());
-
     removeProcessorGraphicsItem(processor);
     removeAndDeletePropertyWidgets(processor);
+    
     // processor widget should be removed here since it is added in addProcessorRepresentations()
-    removeProcessorWidget(processor);
+    ProcessorWidget* processorWidget = processor->getProcessorWidget();
+    if (processorWidget) {
+        processorWidget->deinitialize();
+        processor->setProcessorWidget(NULL);
+        delete processorWidget;
+    }
 }
 
 ProcessorGraphicsItem* NetworkEditor::addProcessorGraphicsItem(Processor* processor, QPointF pos,
@@ -186,37 +184,6 @@ void NetworkEditor::removePropertyWidgets(Processor* processor) {
 void NetworkEditor::removeAndDeletePropertyWidgets(Processor* processor) {
     // Will not use events here since we might delete the processor
     propertyListWidget_->removeAndDeleteProcessorProperties(processor);
-}
-
-// remove processor widget unnecessary as processor widget is removed when processor is destroyed
-void NetworkEditor::addProcessorWidget(Processor* processor, bool visible) {
-    ProcessorWidget* processorWidget =
-        dynamic_cast<ProcessorWidget*>(ProcessorWidgetFactory::getPtr()->create(processor));
-
-    if (processorWidget) {
-        processorWidget->setProcessor(processor);
-
-        ProcessorWidgetQt* processorWidgetQt = dynamic_cast<ProcessorWidgetQt*>(processorWidget);
-        if (processorWidgetQt) {
-            InviwoApplicationQt* app =
-                dynamic_cast<InviwoApplicationQt*>(InviwoApplication::getPtr());
-            processorWidgetQt->setParent(app->getMainWindow(),
-                                         Qt::Window | Qt::WindowStaysOnTopHint);
-        }
-
-        processor->setProcessorWidget(processorWidget);
-        processor->getProcessorWidget()->initialize();
-        processor->getProcessorWidget()->setVisible(visible);
-    }
-}
-
-void NetworkEditor::removeProcessorWidget(Processor* processor) {
-    ProcessorWidget* processorWidget = processor->getProcessorWidget();
-    if (processorWidget) {
-        processorWidget->deinitialize();
-        processor->setProcessorWidget(NULL);
-        delete processorWidget;
-    }
 }
 
 void NetworkEditor::setPropertyListWidget(PropertyListWidget* widget) {
@@ -268,6 +235,7 @@ LinkConnectionGraphicsItem* NetworkEditor::addLinkGraphicsItem(Processor* proces
         addItem(linkGraphicsItem);
         return linkGraphicsItem;
     }
+    return NULL;
 }
 
 void NetworkEditor::removeLink(LinkConnectionGraphicsItem* linkGraphicsItem) {
@@ -362,10 +330,11 @@ bool NetworkEditor::addPortInspector(Outport* port, QPointF pos) {
             int size = InviwoApplication::getPtr()
                            ->getSettingsByType<SystemSettings>()
                            ->portInspectorSize_.get();
+            processorWidgetQt->setDimension(ivec2(size,size));
             processorWidgetQt->setMinimumSize(size, size);
             processorWidgetQt->setMaximumSize(size, size);
             processorWidgetQt->setWindowFlags(Qt::CustomizeWindowHint | Qt::Tool);
-            processorWidgetQt->move(ivec2(pos.x(), pos.y()));
+            processorWidgetQt->setPosition(ivec2(pos.x(), pos.y()));
             processorWidgetQt->show();
             processorWidgetQt->addObserver(new PortInspectorObserver(this, outport));
         }
@@ -1473,7 +1442,7 @@ void NetworkEditor::onProcessorNetworkDidAddProcessor(Processor* processor) {
     ProcessorMetaData* meta = processor->getMetaData<ProcessorMetaData>("ProcessorMetaData");
 
     addProcessorRepresentations(processor, QPointF(meta->getPosition().x, meta->getPosition().y),
-        meta->isVisible(), meta->isSelected(), meta->isVisible());
+        meta->isVisible(), meta->isSelected());
     
     // Workaround: Do not cache if invisible. The renderPortInspectorImage will remove widgets,
     // before the event has add time to add them... 

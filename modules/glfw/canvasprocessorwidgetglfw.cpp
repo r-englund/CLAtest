@@ -52,7 +52,7 @@ ProcessorWidget* CanvasProcessorWidgetGLFW::create() const {
 void CanvasProcessorWidgetGLFW::initialize() {
     canvasProcessor_ = dynamic_cast<CanvasProcessor*>(processor_);
     ProcessorWidget::initialize();
-    ivec2 dim = getDimensionMetaData();
+    ivec2 dim = getDimension();
     uvec2 dimU = uvec2(dim.x, dim.y);
 
     CanvasGLFW::setAlwaysOnTopByDefault(true);

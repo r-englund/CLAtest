@@ -55,22 +55,22 @@ public:
 
     virtual void initialize();
     virtual void deinitialize();
-
     virtual void process();
 
     void setCanvas(Canvas* canvas);
     Canvas* getCanvas() const;
     void setCanvasSize(ivec2);
     ivec2 getCanvasSize() const;
+    void updateCanvasSize(ivec2);
 
-    virtual void invalidate(PropertyOwner::InvalidationLevel invalidationLevel,
-                            Property* modifiedProperty=0);
+    bool getUseCustomDimensions() const;
+    ivec2 getCustomDimensions() const;
 
     void saveImageLayer();
     void saveImageLayer(const char* filePath);
     std::vector<unsigned char>* getImageLayerAsCodedBuffer(const std::string& type);
-    void triggerQueuedEvaluation();
 
+    void triggerQueuedEvaluation();
     virtual bool isReady() const;
 
 protected:
@@ -83,20 +83,20 @@ protected:
     BoolProperty enableCustomInputDimensions_;
     IntVec2Property customInputDimensions_;
     BoolProperty keepAspectRatio_;
-    FloatProperty aspectRatioScaling_; //customInputDimensions_ * aspectRatioScaling_ = dimensions_, but with aspect ratio preservation
-    OptionPropertyInt visibleLayer_; // LayerType enum (Cannot serialize/deserialize enums so we use an int and cast it)
+    //customInputDimensions_ * aspectRatioScaling_ = dimensions_, but with aspect ratio preservation
+    FloatProperty aspectRatioScaling_;
+    OptionPropertyInt visibleLayer_;
     DirectoryProperty saveLayerDirectory_;
     ButtonProperty saveLayerButton_;
     CompositeProperty inputSize_;
 
 private:
-    Canvas* canvas_;
-    bool disableResize_;
-    bool queuedRequest_;
-
     void resizeCanvas();
     void sizeSchemeChanged();
     void ratioChanged();
+
+    Canvas* canvas_;
+    bool queuedRequest_;
 };
 
 } // namespace
