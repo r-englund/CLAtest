@@ -137,6 +137,7 @@ ivec2 CanvasProcessor::getCanvasSize() const { return dimensions_.get(); }
 void CanvasProcessor::updateCanvasSize(ivec2 dim) { 
     ignoreResizeCallback_ = true;
     dimensions_.set(dim); 
+    sizeSchemeChanged();
     ignoreResizeCallback_ = false;
 }
 

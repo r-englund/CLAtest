@@ -113,13 +113,13 @@ void ProcessorNetwork::removeProcessor(Processor* processor) {
         }
     }
 
-    // Workaround for multiInport shit.
+    // Temporary workaround until someone fixes the MultiInports.
     // The code above should work, but a MultiInport has several Inports in it.
-    // So a connecion in made between a Outport and a MultiInport. But when you ask
+    // So a connection in made between a Outport and a MultiInport. But when you ask
     // the Outport for it's connected inports you will NOT get the MultiInport but a
     // SingleInport within the MultiInport. This is not the same port as the connection
-    // was make to, hence will will not find it, and can not delete it!!!
-    // TODO when the MultiInport behave properly, remove this.
+    // was make to, hence will will not find it, and can not delete it!
+    // TODO when the MultiInport behaves as a standard port, remove this.
     PortConnectionMap connections = portConnections_;
     for (PortConnectionMap::iterator it = connections.begin(); it != connections.end(); ++it) {
         if(it->second->getInport()->getProcessor() == processor ||
@@ -128,6 +128,7 @@ void ProcessorNetwork::removeProcessor(Processor* processor) {
             removeConnection(it->second->getOutport(), it->second->getInport());
         }
     }
+    // end workaround.
 
     // Remove all links for this processor
     PropertyLinkMap propertyLinks = propertyLinks_;

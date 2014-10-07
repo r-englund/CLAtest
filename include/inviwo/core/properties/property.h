@@ -98,11 +98,6 @@ public:
      */
     virtual void setDisplayName(const std::string& displayName);
 
-    // Deprecated
-    void setGroupID(const std::string& groupID);
-    static void setGroupDisplayName(const std::string& groupID, const std::string& groupDisplayName);
-    //
-
     virtual PropertySemantics getSemantics() const;
     virtual void setSemantics(const PropertySemantics& semantics);
 
