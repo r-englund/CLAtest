@@ -43,6 +43,17 @@ namespace inviwo {
 
 ProcessorWidgetQt::ProcessorWidgetQt() : QWidget(NULL), ProcessorWidget() {}
 
+ProcessorWidgetQt::ProcessorWidgetQt(const ProcessorWidgetQt& rhs) 
+    : QWidget(NULL)
+    , ProcessorWidget(rhs) {}
+
+ProcessorWidgetQt& ProcessorWidgetQt::operator=(const ProcessorWidgetQt& that) {
+    if (this != &that) {
+        ProcessorWidget::operator=(that);
+    }
+    return *this;
+}
+
 ProcessorWidgetQt::~ProcessorWidgetQt() {}
 
 void ProcessorWidgetQt::initialize() {
