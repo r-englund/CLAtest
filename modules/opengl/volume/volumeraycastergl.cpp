@@ -144,14 +144,14 @@ void VolumeRaycasterGL::addShadingProperties() {
     addProperty(applyLightAttenuation_);
     addProperty(lightAttenuation_);
     // assign lighting properties to property group
-    lightPosition_.setGroupID("lighting");
-    lightColorAmbient_.setGroupID("lighting");
-    lightColorDiffuse_.setGroupID("lighting");
-    lightColorSpecular_.setGroupID("lighting");
-    lightSpecularExponent_.setGroupID("lighting");
-    applyLightAttenuation_.setGroupID("lighting");
-    lightAttenuation_.setGroupID("lighting");
-    Property::setGroupDisplayName("lighting", "Lighting Parameters");
+//     lightPosition_.setGroupID("lighting");
+//     lightColorAmbient_.setGroupID("lighting");
+//     lightColorDiffuse_.setGroupID("lighting");
+//     lightColorSpecular_.setGroupID("lighting");
+//     lightSpecularExponent_.setGroupID("lighting");
+//     applyLightAttenuation_.setGroupID("lighting");
+//     lightAttenuation_.setGroupID("lighting");
+//     Property::setGroupDisplayName("lighting", "Lighting Parameters");
 }
 
 void VolumeRaycasterGL::initialize() {

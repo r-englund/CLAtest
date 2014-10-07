@@ -160,18 +160,10 @@ void CanvasProcessorWidgetQt::closeEvent(QCloseEvent* event) {
 
 void CanvasProcessorWidgetQt::resizeEvent(QResizeEvent* event) {
     if(!event->spontaneous()) return;
-
     uvec2 dim(event->size().width(), event->size().height());
     CanvasProcessor* cp = static_cast<CanvasProcessor*>(processor_);
-    
-    cp->updateCanvasSize(dim);
-    if (cp->getUseCustomDimensions()) {
-        canvas_->CanvasGL::resize(dim, cp->getCustomDimensions());
-    } else {
-        canvas_->CanvasGL::resize(dim, dim);
-    }
-    
     ProcessorWidgetQt::resizeEvent(event);
+    cp->updateCanvasSize(dim);  
 }
 
 }  // namespace

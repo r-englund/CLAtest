@@ -171,10 +171,6 @@ bool Property::hasWidgets() const {
     return !propertyWidgets_.empty();
 }
 
-void Property::setGroupID(const std::string& groupID) {
-    LogWarn("Deprication: Property::setGroupID is depricated used CompositeProperty instead");
-}
-
 void Property::propertyModified() {
     onChangeCallback_.invokeAll();
     setPropertyModified(true);
@@ -234,10 +230,6 @@ void Property::deserialize(IvwDeserializer& d) {
     d.deserialize("readonly", readOnly_);
     updateVisibility();
     MetaDataOwner::deserialize(d);
-}
-
-void Property::setGroupDisplayName(const std::string& groupID, const std::string& groupDisplayName) {   
-    LogWarnCustom("Property", "Deprication: Property::setGroupDisplayName is depricated used CompositeProperty instead (id: " << groupID << " name " << groupDisplayName << ")");
 }
 
 void Property::setUsageMode(UsageMode visibilityMode) {

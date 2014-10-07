@@ -189,6 +189,7 @@ void CanvasGL::renderNoise() {
 }
 
 void CanvasGL::renderTexture(int unitNumber) {
+    LogInfo("render: " << getScreenDimension().x <<", "<< getScreenDimension().y);
     activate();
     glViewport(0, 0, getScreenDimension().x, getScreenDimension().y);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
