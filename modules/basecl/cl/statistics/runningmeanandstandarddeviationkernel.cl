@@ -30,32 +30,43 @@
  *
  *********************************************************************************/
 
-#ifndef RUNNING_MEAN_AND_STANDARD_DEVIATION_CL
-#define RUNNING_MEAN_AND_STANDARD_DEVIATION_CL
-
-#include "samplers.cl" 
+#include "runningmeanandstandarddeviation.cl" 
 /*
  * Compute running average and standard deviation given new samples
  * http://en.wikipedia.org/wiki/Standard_deviation (Rapid calculation methods)
  */
+__kernel void runningMeanAndStandardDeviationKernel(
+      int2 nSamples
+    , read_only image2d_t sampleImg
+    , float iteration // 1 ... N
+    , read_only image2d_t prevMeanImg
+    , write_only image2d_t nextMeanImg
+    , read_only image2d_t prevStdImg
+    , write_only image2d_t newStdImg
+    ) 
+{ 
+    //output image pixel coordinates 
+    int2 globalId = (int2)(get_global_id(0), get_global_id(1));  
+ 
+    int threadId = get_global_id(0) + get_global_id(1)*nSamples.x;
+    if (any(globalId>=nSamples)) {
+        return;
+    }
+    
+    float4 sample = read_imagef(sampleImg, smpUNormNoClampNearest, globalId);  
+    if (iteration != 1.f) {
+        float4 mean = read_imagef(prevMeanImg, smpUNormNoClampNearest, globalId);  
+        float4 std = read_imagef(prevStdImg, smpUNormNoClampNearest, globalId);  
+        float multiplier = 1.f;
+		runningMeanAndStandardDeviation(iteration, multiplier, sample, &mean, &std);
+        write_imagef(newStdImg, globalId, std);
+        write_imagef(nextMeanImg, globalId, mean);
+        
+    } else {
+        write_imagef(newStdImg, globalId, (float4)(0.f));
+        write_imagef(nextMeanImg, globalId, sample);
+    }
 
-void runningMeanAndStandardDeviation(float iteration, float multiplier, float4 sample,
-									 float4* __restrict mean, float4* __restrict std)
-{
-	const float4 prevMean = *mean;
-	const float4 prevStd = *std;
-	if(iteration != 1.f) {
-		float4 newMean = prevMean + (sample-prevMean)/iteration;
-		float4 Qprev = (iteration-2.f)*prevStd/multiplier;
-		float4 Q = Qprev + (sample-prevMean)*(sample-newMean);
-		float4 newStd = multiplier*Q/(iteration-1.f);
-		newStd.w = 1.f;
-		*std = newStd;
-        *mean = newMean;
-	} else {
-        *std = (float4)(0.f);
-        *mean = sample;
-	}
+    //
+
 }
-
-#endif

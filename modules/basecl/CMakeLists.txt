@@ -27,6 +27,7 @@ ivw_group("Source Files" ${SOURCE_FILES})
 set(SHADER_FILES
     ${IVW_MODULE_DIR}/basecl/cl/entryexitpoints.cl
 	${IVW_MODULE_DIR}/basecl/cl/statistics/runningmeanandstandarddeviation.cl
+	${IVW_MODULE_DIR}/basecl/cl/statistics/runningmeanandstandarddeviationkernel.cl
     ${IVW_MODULE_DIR}/basecl/cl/volumefirsthit.cl
 	${IVW_MODULE_DIR}/basecl/cl/volumemax.cl
 )

@@ -44,7 +44,7 @@ RunningImageMeanAndStandardDeviationCL::RunningImageMeanAndStandardDeviationCL(c
     standardDeviation_[1] = Layer(layerDimension, DataVec4FLOAT32::get());
     mean_[0] = Layer(layerDimension, DataVec4FLOAT32::get());
     mean_[1] = Layer(layerDimension, DataVec4FLOAT32::get());
-    kernel_ = addKernel("statistics/runningmeanandstandarddeviation.cl", "runningMeanAndStandardDeviationKernel");
+    kernel_ = addKernel("statistics/runningmeanandstandarddeviationkernel.cl", "runningMeanAndStandardDeviationKernel");
 }
 
 bool RunningImageMeanAndStandardDeviationCL::computeMeanAndStandardDeviation(const Layer* newSamples, int iteration, Layer*& outMean, Layer*& outStandardDeviation, bool useGLSharing, const VECTOR_CLASS<cl::Event> *waitForEvents, cl::Event *event) {
