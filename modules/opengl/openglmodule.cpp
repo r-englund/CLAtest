@@ -46,7 +46,6 @@
 #include <modules/opengl/openglmodule.h>
 #include <modules/opengl/openglcapabilities.h>
 #include <modules/opengl/rendering/meshrenderer.h>
-#include <modules/opengl/volume/distancetransformram.h>
 #include <modules/opengl/volume/volumeglconverter.h>
 
 namespace inviwo {
@@ -83,7 +82,6 @@ OpenGLModule::OpenGLModule() :
     registerRepresentationConverter(new ElementBufferGL2RAMConverter());
 
     registerProcessor(CanvasProcessorGL);
-    registerProcessor(DistanceTransformRAM);
     registerProcessor(GeometryRenderProcessorGL);
     registerProcessor(HeightFieldMapper);
     registerProcessor(HeightFieldProcessor);

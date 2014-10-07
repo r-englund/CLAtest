@@ -25,6 +25,7 @@ set(HEADER_FILES
     ${IVW_MODULE_DIR}/base/processors/volumesource.h
     ${IVW_MODULE_DIR}/base/processors/volumesubsample.h
     ${IVW_MODULE_DIR}/base/processors/volumesubset.h
+    ${IVW_MODULE_DIR}/base/processors/distancetransformram.h
 )
 ivw_group("Header Files" ${HEADER_FILES})
 
@@ -51,6 +52,7 @@ set(SOURCE_FILES
     ${IVW_MODULE_DIR}/base/processors/volumesource.cpp
     ${IVW_MODULE_DIR}/base/processors/volumesubsample.cpp
     ${IVW_MODULE_DIR}/base/processors/volumesubset.cpp
+    ${IVW_MODULE_DIR}/base/processors/distancetransformram.cpp
 )
 ivw_group("Source Files" ${SOURCE_FILES})
 

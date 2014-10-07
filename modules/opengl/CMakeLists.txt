@@ -46,7 +46,6 @@ set(HEADER_FILES
     ${IVW_MODULE_DIR}/opengl/shaderutils.h
     ${IVW_MODULE_DIR}/opengl/textureobserver.h
     ${IVW_MODULE_DIR}/opengl/textureutils.h
-    ${IVW_MODULE_DIR}/opengl/volume/distancetransformram.h
     ${IVW_MODULE_DIR}/opengl/volume/volumegl.h
     ${IVW_MODULE_DIR}/opengl/volume/volumeglconverter.h
     ${IVW_MODULE_DIR}/opengl/volume/volumeraycastergl.h
@@ -95,7 +94,6 @@ set(SOURCE_FILES
     ${IVW_MODULE_DIR}/opengl/rendering/meshrenderer.cpp
     ${IVW_MODULE_DIR}/opengl/shaderutils.cpp
     ${IVW_MODULE_DIR}/opengl/textureutils.cpp
-    ${IVW_MODULE_DIR}/opengl/volume/distancetransformram.cpp
     ${IVW_MODULE_DIR}/opengl/volume/volumegl.cpp
     ${IVW_MODULE_DIR}/opengl/volume/volumeglconverter.cpp
     ${IVW_MODULE_DIR}/opengl/volume/volumeraycastergl.cpp
@@ -154,5 +152,5 @@ ivw_add_to_module_pack(${IVW_MODULE_DIR}/opengl/glsl)
 #--------------------------------------------------------------------
 # Build GLEW if it couldn't be found
 if(BUILD_GLEW)
-	add_subdirectory(ext/glew)
+    add_subdirectory(ext/glew)
 endif(BUILD_GLEW)

@@ -34,6 +34,7 @@
 #include <modules/base/processors/cubeproxygeometry.h>
 #include <modules/base/processors/diffuselightsourceprocessor.h>
 #include <modules/base/processors/directionallightsourceprocessor.h>
+#include <modules/base/processors/distancetransformram.h>
 #include <modules/base/processors/geometrysource.h>
 #include <modules/base/processors/imageexport.h>
 #include <modules/base/processors/imagesource.h>
@@ -58,6 +59,7 @@ BaseModule::BaseModule() : InviwoModule() {
     registerProcessor(CubeProxyGeometry);
     registerProcessor(DiffuseLightSourceProcessor);
     registerProcessor(DirectionalLightSourceProcessor);
+    registerProcessor(DistanceTransformRAM);
     registerProcessor(GeometrySource);
     registerProcessor(ImageExport);
     registerProcessor(ImageSource);
