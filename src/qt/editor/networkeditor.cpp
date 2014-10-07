@@ -362,7 +362,6 @@ void NetworkEditor::removePortInspector(Outport* port) {
     }
 }
 
-
 std::vector<unsigned char>* NetworkEditor::renderPortInspectorImage(Port* port, std::string type) {
     PortInspector* portInspector =
         PortInspectorFactory::getPtr()->getPortInspectorForPortClass(port->getClassIdentifier());
@@ -375,6 +374,11 @@ std::vector<unsigned char>* NetworkEditor::renderPortInspectorImage(Port* port, 
         network->lock();
         // Add processors to the network
         CanvasProcessor* canvasProcessor = portInspector->getCanvasProcessor();
+
+        ProcessorWidgetMetaData* wm = canvasProcessor->createMetaData<ProcessorWidgetMetaData>(
+            ProcessorWidgetMetaData::CLASS_IDENTIFIER);
+        wm->setVisibile(false);
+
         std::vector<Processor*> processors = portInspector->getProcessors();
         for (size_t i = 0; i < processors.size(); i++) {
             network->addProcessor(processors[i]);
@@ -402,14 +406,13 @@ std::vector<unsigned char>* NetworkEditor::renderPortInspectorImage(Port* port, 
             network->autoLinkProcessor(processors[i]);
         }
 
-
         int size = InviwoApplication::getPtr()
-            ->getSettingsByType<SystemSettings>()
-            ->portInspectorSize_.get();
+                       ->getSettingsByType<SystemSettings>()
+                       ->portInspectorSize_.get();
         canvasProcessor->setCanvasSize(ivec2(size, size));
 
         network->unlock();
-        
+
         data = canvasProcessor->getImageLayerAsCodedBuffer(type);
 
         // remove the network...
@@ -417,6 +420,7 @@ std::vector<unsigned char>* NetworkEditor::renderPortInspectorImage(Port* port, 
         for (size_t i = 0; i < processors.size(); i++) network->removeProcessor(processors[i]);
         network->unlock();
 
+        wm->setVisibile(true);
         portInspector->setActive(false);
     }
     return data;

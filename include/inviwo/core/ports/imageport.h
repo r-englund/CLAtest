@@ -66,7 +66,7 @@ public:
     void setOutportDeterminesSize(bool outportDeterminesSize);
     bool isOutportDeterminingSize() const;
     static uvec3 colorCode;
-    virtual std::string getClassIdentifier() const { return "ImageInport"; }
+    virtual std::string getClassIdentifier() const { return "org.inviwo.ImageInport"; }
     virtual std::string getContentInfo() const;
 
     void setResizeScale(vec2);
@@ -119,7 +119,7 @@ public:
      */
     void setDimension(const uvec2& newDimension);
     uvec3 getColorCode() const;
-    virtual std::string getClassIdentifier() const { return "ImageOutport"; }
+    virtual std::string getClassIdentifier() const { return "org.inviwo.ImageOutport"; }
 
     bool addResizeEventListener(EventListener*);
     bool removeResizeEventListener(EventListener*);

@@ -85,7 +85,7 @@ public:
     void deinitialize() {}
 
     uvec3 getColorCode() const { return VectorDataPortColor::colorCode; }
-    virtual std::string getClassIdentifier() const { return "VectorDataInport"; }
+    virtual std::string getClassIdentifier() const { return "org.inviwo.VectorDataInport"; }
 };
 
 template <typename Type>
@@ -102,7 +102,7 @@ public:
     void deinitialize() {}
 
     uvec3 getColorCode() const { return VectorDataPortColor::colorCode; }
-    virtual std::string getClassIdentifier() const { return "VectorDataOutport"; }
+    virtual std::string getClassIdentifier() const { return "org.inviwo.VectorDataOutport"; }
 };
 
 } // namespace
