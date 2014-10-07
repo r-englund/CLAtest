@@ -79,7 +79,7 @@ public:
 
     std::vector<Processor*> getDirectSuccessors();
 
-    virtual std::string getClassIdentifier() const {return "Outport";}
+    virtual std::string getClassIdentifier() const {return "org.inviwo.Outport";}
     virtual std::string getContentInfo() const {return "";}
 
 protected:

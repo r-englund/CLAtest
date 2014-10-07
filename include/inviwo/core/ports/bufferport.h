@@ -53,7 +53,7 @@ public:
 
     uvec3 getColorCode() const;
     static uvec3 colorCode;
-    virtual std::string getClassIdentifier() const {return "BufferInport";}
+    virtual std::string getClassIdentifier() const {return "org.inviwo.BufferInport";}
 };
 
 class IVW_CORE_API BufferOutport : public DataOutport<Buffer> {
@@ -68,7 +68,7 @@ public:
     void deinitialize();
 
     uvec3 getColorCode() const;
-    virtual std::string getClassIdentifier() const {return "BufferOutport";}
+    virtual std::string getClassIdentifier() const {return "org.inviwo.BufferOutport";}
 };
 
 } // namespace
