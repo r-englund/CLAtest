@@ -232,18 +232,18 @@ void LinkDialogPropertyGraphicsItem::paint(QPainter* p, const QStyleOptionGraphi
     QLinearGradient grad(rect().topLeft(), rect().bottomLeft());
 
     if (isSelected()) {
-        grad.setColorAt(0.0f, QColor(110,77,77));
-        grad.setColorAt(0.2f, QColor(110,77,77));
-        grad.setColorAt(1.0f, QColor(50,0,0));
+        QColor bgColor = Qt::blue;
+        grad.setColorAt(0.0f, bgColor);
+        grad.setColorAt(1.0f, bgColor);
     } else {        
         if (isCompositeSubProperty_) {
-            grad.setColorAt(0.0f, QColor(127,127,102));
-            grad.setColorAt(0.5f, QColor(127,127,102));
-            grad.setColorAt(1.0f, QColor(127,127,102));
+            QColor bgColor = Qt::darkGray;
+            grad.setColorAt(0.0f, bgColor);
+            grad.setColorAt(1.0f, bgColor);
         } else {
-            grad.setColorAt(0.0f, QColor(255,255,204));
-            grad.setColorAt(0.5f, QColor(255,255,204));
-            grad.setColorAt(1.0f, QColor(255,255,204));
+            QColor bgColor = Qt::lightGray;
+            grad.setColorAt(0.0f, bgColor);
+            grad.setColorAt(1.0f, bgColor);
         }
     }
 

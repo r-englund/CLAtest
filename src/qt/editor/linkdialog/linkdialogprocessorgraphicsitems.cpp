@@ -80,17 +80,21 @@ void LinkDialogProcessorGraphicsItem::paint(QPainter* p, const QStyleOptionGraph
     p->save();
     p->setPen(Qt::black);
     p->setRenderHint(QPainter::Antialiasing, true);
+    QColor topColor(140, 140, 140);
+    QColor middleColor(59, 61, 61);
+    QColor bottomColor(40, 40, 40);
     // paint processor
     QLinearGradient grad(rect().topLeft(), rect().bottomLeft());
 
     if (isSelected()) {
-        grad.setColorAt(0.0f, QColor(110,77,77));
-        grad.setColorAt(0.2f, QColor(110,77,77));
-        grad.setColorAt(1.0f, QColor(50,38,38));
+        grad.setColorAt(0.0f, topColor);
+        grad.setColorAt(0.2f, middleColor);
+        grad.setColorAt(0.5f, Qt::darkRed);
+        grad.setColorAt(1.0f, bottomColor);
     } else {
-        grad.setColorAt(0.0f, QColor(77,77,77));
-        grad.setColorAt(0.2f, QColor(77,77,77));
-        grad.setColorAt(1.0f, QColor(38,38,38));
+        grad.setColorAt(0.0f, topColor);
+        grad.setColorAt(0.2f, middleColor);
+        grad.setColorAt(1.0f, bottomColor);
     }
 
     p->setBrush(grad);

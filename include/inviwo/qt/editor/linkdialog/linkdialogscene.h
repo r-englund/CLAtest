@@ -48,6 +48,7 @@ class LinkDialogPropertyGraphicsItem;
 class LinkDialogProcessorGraphicsItem;
 
 class IVW_QTEDITOR_API LinkDialogGraphicsScene : public QGraphicsScene {
+    Q_OBJECT
 public:
     LinkDialogGraphicsScene(QWidget* parent);
     ~LinkDialogGraphicsScene() {}
@@ -105,6 +106,12 @@ protected:
     void addProcessorsItemsToScene(Processor* prcoessor, int xPosition, int yPosition);
     DialogConnectionGraphicsItem* getConnectionGraphicsItem(LinkDialogPropertyGraphicsItem*, LinkDialogPropertyGraphicsItem*);
 
+    //smooth scroll effect support
+    void offsetItems(float yIncrement, bool scrollLeft);
+    int currentScrollSteps_;
+private slots:
+    void executeTimeLine(qreal);
+    void terminateTimeLine();
 private:
     DialogCurveGraphicsItem* linkCurve_;
     LinkDialogPropertyGraphicsItem* startProperty_;
@@ -120,6 +127,7 @@ private:
     void removeConnectionFromCurrentList(DialogConnectionGraphicsItem*);
     Property* getParentCompositeProperty(Property* property, Processor* processor);
     bool expandProperties_;
+    bool mouseOnLeftSide_;
 };
 
 } //namespace
