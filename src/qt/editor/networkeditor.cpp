@@ -72,6 +72,7 @@
 #include <QMenu>
 #include <QVarLengthArray>
 #include <QTimer>
+#include <QPainter>
 
 
 namespace inviwo {

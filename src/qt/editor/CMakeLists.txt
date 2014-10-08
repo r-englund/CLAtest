@@ -27,6 +27,12 @@ set(HEADER_FILES
     ${IVW_INCLUDE_DIR}/inviwo/qt/editor/processorportgraphicsitem.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/editor/processorprogressgraphicsitem.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/editor/processorstatusgraphicsitem.h
+    ${IVW_INCLUDE_DIR}/inviwo/qt/editor/linkdialog/linkdialoggraphicsitems.h
+    ${IVW_INCLUDE_DIR}/inviwo/qt/editor/linkdialog/linkdialogcurvegraphicsitems.h
+    ${IVW_INCLUDE_DIR}/inviwo/qt/editor/linkdialog/linkdialogprocessorgraphicsitems.h
+    ${IVW_INCLUDE_DIR}/inviwo/qt/editor/linkdialog/linkdialogpropertygraphicsitems.h
+    ${IVW_INCLUDE_DIR}/inviwo/qt/editor/linkdialog/linkdialogscene.h
+    ${IVW_INCLUDE_DIR}/inviwo/qt/editor/linkdialog/linkdialogview.h
     ${MOC_FILES}
 )
 ivw_group("Header Files" ${HEADER_FILES})
@@ -53,6 +59,11 @@ set(SOURCE_FILES
     resourcemanagerwidget.cpp
     settingswidget.cpp
     linkdialog/linkdialog.cpp
+    linkdialog/linkdialogcurvegraphicsitems.cpp
+    linkdialog/linkdialogprocessorgraphicsitems.cpp
+    linkdialog/linkdialogpropertygraphicsitems.cpp
+    linkdialog/linkdialogscene.cpp
+    linkdialog/linkdialogview.cpp
 )
 ivw_group("Source Files" ${SOURCE_FILES})
 

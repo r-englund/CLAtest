@@ -56,8 +56,8 @@ NumpyVolumeHistogram::NumpyVolumeHistogram()
 
     addProperty(savePDFDirectory_);
     addProperty(savePDFButton_);
-    savePDFDirectory_.setGroupID("PDF Options");
-    savePDFButton_.setGroupID("PDF Options");
+    //savePDFDirectory_.setGroupID("PDF Options");
+    //savePDFButton_.setGroupID("PDF Options");
 
     pythonScriptFile_.set(InviwoApplication::getPtr()->getPath(InviwoApplication::PATH_MODULES) +
                           "pypackages/scripts/numpy/numpyvolumehistogram.py");
