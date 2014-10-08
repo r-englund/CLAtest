@@ -66,10 +66,11 @@ void FindEdges::deinitialize() {
 }
 
 void FindEdges::process() {
+    TextureUnit image;
     util::glActivateTarget(outport_);
-    util::glBindColorTexture(inport_, GL_TEXTURE0);
+    util::glBindColorTexture(inport_, image);
     shader_->activate();
-    shader_->setUniform("inport_", 0);
+    shader_->setUniform("inport_", image.getUnitNumber());
     shader_->setUniform("alpha_", alpha_.get());
     shader_->setUniform("dimension_",
                         vec2(1.f / outport_.getDimension()[0], 1.f / outport_.getDimension()[1]));
