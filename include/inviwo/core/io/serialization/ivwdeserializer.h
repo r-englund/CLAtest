@@ -453,7 +453,12 @@ inline void IvwDeserializer::deserializePrimitives(const std::string& key, T& da
             rootElement_->GetAttribute(
                 IvwSerializeConstants::CONTENT_ATTRIBUTE, &data);
         }
-    } catch (TxException&) {}
+    } catch (TxException&) {
+        try {
+            rootElement_->FirstChildElement(key)->GetAttribute(
+                IvwSerializeConstants::CONTENT_ATTRIBUTE, &data);
+        } catch (TxException&) {}
+    }
 }
 
 template<class T>
