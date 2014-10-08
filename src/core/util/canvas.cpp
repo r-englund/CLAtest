@@ -188,10 +188,17 @@ void Canvas::touchEvent(TouchEvent* e){
 }
 
 uvec2 Canvas::mousePosToPixelCoordinates(ivec2 mpos) {
-    uvec2 pos(std::max(mpos.x, 0), std::max(mpos.y, 0));
-    pos = glm::min(pos, getScreenDimension());
-    pos.y = getScreenDimension().y - pos.y;
-    return pos;
+    ivec2 pos = mpos;
+    ivec2 dim(getScreenDimension());
+    pos.x = std::max(pos.x - 1, 0);
+    pos.x = std::min(pos.x, dim.x - 1);
+    
+    pos.y = std::max(dim.y - pos.y - 1, 0);
+    pos.y = std::min(pos.y, dim.y - 1);
+    
+    LogInfo("pos " << pos.x << ", " << pos.y);
+    
+    return uvec2(pos);
 }
 
 } // namespace
