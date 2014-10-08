@@ -69,7 +69,7 @@ public:
     virtual std::vector<std::string> getPath() const;
 
     std::vector<Property*> getProperties() const { return properties_; }
-    Property* getPropertyByIdentifier(const std::string& identifier, bool reqursiveSearch = false) const;
+    Property* getPropertyByIdentifier(const std::string& identifier, bool recursiveSearch = false) const;
     template <class T>
     std::vector<T*> getPropertiesByType() const;
 

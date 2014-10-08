@@ -40,20 +40,20 @@ MappingPopup::MappingPopup(EventProperty* eventProperty, EventPropertyManager* p
 }
 
 // Sends the first event back to the property and closes the window
-void MappingPopup::mousePressEvent(QMouseEvent* event) {
-    parentManager_->changeMouseMapping(eventProperty_, EventConverterQt::getMouseButton(event), EventConverterQt::getModifier(event));
+void MappingPopup::mousePressEvent(QMouseEvent* e) {
+    parentManager_->changeMouseMapping(eventProperty_, EventConverterQt::getMouseButton(e), EventConverterQt::getModifier(e));
 }
 
-void MappingPopup::keyReleaseEvent(QKeyEvent* event) {
-    char button = EventConverterQt::getKeyButton(event);
+void MappingPopup::keyReleaseEvent(QKeyEvent* keyEvent) {
+	char button = EventConverterQt::getKeyButton(keyEvent);
 
     if (button > 0) {
-        parentManager_->changeKeyMapping(eventProperty_, button, EventConverterQt::getModifier(event));
+		parentManager_->changeKeyMapping(eventProperty_, button, EventConverterQt::getModifier(keyEvent));
         this->close();
     }
 }
 
-void MappingPopup::mouseReleaseEvent(QMouseEvent* event) {
+void MappingPopup::mouseReleaseEvent(QMouseEvent* e) {
     this->close();
 }
 

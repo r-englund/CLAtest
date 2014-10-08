@@ -47,7 +47,7 @@ public:
     InviwoDockWidget(QString title, QWidget* parent);
     virtual ~InviwoDockWidget();
     virtual void show();
-    virtual void keyPressEvent(QKeyEvent* event);
+	virtual void keyPressEvent(QKeyEvent* keyEvent);
 };
 
 } // namespace

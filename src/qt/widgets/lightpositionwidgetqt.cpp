@@ -60,22 +60,22 @@ void inviwo::LightPositionWidgetQt::generateWidget() {
 }
 
 
-void LightPositionWidgetQt::mousePressEvent(QMouseEvent* event) {
+void LightPositionWidgetQt::mousePressEvent(QMouseEvent* e) {
     mouseDown_ = true;
 }
 
-void LightPositionWidgetQt::mouseMoveEvent(QMouseEvent* event) {
+void LightPositionWidgetQt::mouseMoveEvent(QMouseEvent* e) {
     if (!mouseDown_) return;
 
-    setNewPosition(event);
+    setNewPosition(e);
 }
 
-void LightPositionWidgetQt::mouseReleaseEvent(QMouseEvent* event) {
-    setNewPosition(event);
+void LightPositionWidgetQt::mouseReleaseEvent(QMouseEvent* e) {
+    setNewPosition(e);
 }
 
-void LightPositionWidgetQt::setNewPosition(QMouseEvent* event) {
-    const QPoint p = event->pos();
+void LightPositionWidgetQt::setNewPosition(QMouseEvent* e) {
+    const QPoint p = e->pos();
     QPoint center(gradientPixmap_->width()/2, gradientPixmap_->height()/2);
     float x = p.x()-center.x();
     float y = p.y()-center.y();

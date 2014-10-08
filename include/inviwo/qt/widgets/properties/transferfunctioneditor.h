@@ -91,7 +91,7 @@ protected:
     void mouseMoveEvent(QGraphicsSceneMouseEvent* e);
     void mouseReleaseEvent(QGraphicsSceneMouseEvent* e);
     void mouseDoubleClickEvent(QGraphicsSceneMouseEvent* e);
-    void keyPressEvent(QKeyEvent* e);
+	void keyPressEvent(QKeyEvent* keyEvent);
 
     /** \Add new control point
     *      Adds a new control point at the event position

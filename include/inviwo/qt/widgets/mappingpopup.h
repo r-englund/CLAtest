@@ -48,9 +48,9 @@ class IVW_QTWIDGETS_API MappingPopup : public QWidget {
 public:
     MappingPopup(EventProperty* eventProperty, EventPropertyManager* parentManager);
 
-    void keyReleaseEvent(QKeyEvent* event);
-    void mouseReleaseEvent(QMouseEvent* event);
-    void mousePressEvent(QMouseEvent* event);
+	void keyReleaseEvent(QKeyEvent* keyEvent);
+    void mouseReleaseEvent(QMouseEvent* e);
+    void mousePressEvent(QMouseEvent* e);
 
 private:
     EventProperty* eventProperty_;

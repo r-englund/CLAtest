@@ -136,13 +136,13 @@ void AngleRadiusWidget::paintEvent(QPaintEvent *) {
     painter.drawEllipse(QPointF(x, y), angleIndicatorCircleDiameter, angleIndicatorCircleDiameter);
 }
 
-void AngleRadiusWidget::mouseMoveEvent(QMouseEvent* event) {
-    setAngleRadiusAtPosition(event->pos());
+void AngleRadiusWidget::mouseMoveEvent(QMouseEvent* e) {
+    setAngleRadiusAtPosition(e->pos());
 }
 
-void AngleRadiusWidget::mousePressEvent(QMouseEvent* event) {
-    if (event->button() == Qt::LeftButton)
-        setAngleRadiusAtPosition(event->pos());
+void AngleRadiusWidget::mousePressEvent(QMouseEvent* e) {
+    if (e->button() == Qt::LeftButton)
+        setAngleRadiusAtPosition(e->pos());
 }
 
 void AngleRadiusWidget::setAngle(double angle) {

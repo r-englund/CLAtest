@@ -53,14 +53,14 @@ public:
     Group() {}
     ~Group() {}
 
-    // Erase all data corressponding to each key
+    // Erase all data corresponding to each key
     void deinitialize() {
         std::vector<KEY> keys = getGroupKeys();
 
         for (size_t i = 0; i < keys.size(); i++) groupMap_.erase(keys[i]);
     }
 
-    // Get the data corressponding to supplied key. There can be multiple data for each key.
+    // Get the data corresponding to supplied key. There can be multiple data for each key.
     std::vector<DATA> getGroupedData(KEY groupKEY) const {
         std::pair<typename GroupMap::const_iterator, typename GroupMap::const_iterator> pgRangeIt;
         std::vector<DATA> ports;

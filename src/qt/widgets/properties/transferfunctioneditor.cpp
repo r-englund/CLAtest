@@ -152,17 +152,18 @@ void TransferFunctionEditor::mouseDoubleClickEvent(QGraphicsSceneMouseEvent* e) 
     QGraphicsScene::mouseDoubleClickEvent(e);
 }
 
-void TransferFunctionEditor::keyPressEvent(QKeyEvent* e) {
-    int k = e->key();
-    e->accept();
+void TransferFunctionEditor::keyPressEvent(QKeyEvent* keyEvent) {
+	int k = keyEvent->key();
+	keyEvent->accept();
     InviwoApplication::getPtr()->getProcessorNetwork()->lock();
-    if (k == 'A' && e->modifiers() == Qt::ControlModifier) {                // Select all
+	if (k == 'A' && keyEvent->modifiers() == Qt::ControlModifier) {                // Select all
         QList<QGraphicsItem*> itemList = items();
         for (int i = 0; i < itemList.size(); i++) {
             itemList[i]->setSelected(true);
         }
 
-    } else if (k == 'D' && e->modifiers() == Qt::ControlModifier) {         // Select none
+	}
+	else if (k == 'D' && keyEvent->modifiers() == Qt::ControlModifier) {         // Select none
         QList<QGraphicsItem*> itemList = selectedItems();
         for (int i = 0; i < itemList.size(); i++) {
             itemList[i]->setSelected(false);
@@ -178,7 +179,8 @@ void TransferFunctionEditor::keyPressEvent(QKeyEvent* e) {
             }
         }
 
-    } else if (!(e->modifiers() & Qt::ControlModifier) &&                     // Move points
+	}
+	else if (!(keyEvent->modifiers() & Qt::ControlModifier) &&                     // Move points
                (k == Qt::Key_Left || k == Qt::Key_Right || k == Qt::Key_Up || k == Qt::Key_Down || 
                 k == 'I' || k == 'J' || k == 'K' || k == 'L')) {
         QPointF delta;
@@ -203,7 +205,7 @@ void TransferFunctionEditor::keyPressEvent(QKeyEvent* e) {
                 break;
         }
 
-        if (e->modifiers() & Qt::ShiftModifier || e->modifiers() & Qt::AltModifier) {
+		if (keyEvent->modifiers() & Qt::ShiftModifier || keyEvent->modifiers() & Qt::AltModifier) {
             delta *= 10.0;
         }
 
@@ -212,7 +214,8 @@ void TransferFunctionEditor::keyPressEvent(QKeyEvent* e) {
             selitems[i]->setPos(selitems[i]->pos() + delta);
         }
 
-    } else if (e->modifiers() & Qt::ControlModifier &&                     // Modify selection
+	}
+	else if (keyEvent->modifiers() & Qt::ControlModifier &&                     // Modify selection
                (k == Qt::Key_Left || k == Qt::Key_Right || k == Qt::Key_Up || k == Qt::Key_Down ||
                 k == 'I' || k == 'J' || k == 'K' || k == 'L')) {
         QList<QGraphicsItem*> selitems = selectedItems();
@@ -232,7 +235,7 @@ void TransferFunctionEditor::keyPressEvent(QKeyEvent* e) {
                 if (points.size() > 0) {
                     if (points.front()->left_ && points.front()->left_->left_) {
                         points.front()->left_->left_->setSelected(true);
-                        if (!(e->modifiers() & Qt::ShiftModifier)) {
+						if (!(keyEvent->modifiers() & Qt::ShiftModifier)) {
                             points.back()->setSelected(false);
                         }
                     }
@@ -246,7 +249,7 @@ void TransferFunctionEditor::keyPressEvent(QKeyEvent* e) {
                 if (points.size() > 0) {
                     if (points.back()->right_ && points.back()->right_->right_) {
                         points.back()->right_->right_->setSelected(true);
-                        if (!(e->modifiers() & Qt::ShiftModifier)) {
+						if (!(keyEvent->modifiers() & Qt::ShiftModifier)) {
                             points.front()->setSelected(false);
                         }
                     }
@@ -316,7 +319,7 @@ void TransferFunctionEditor::keyPressEvent(QKeyEvent* e) {
         }
 
         QList<QGraphicsItem*> selitems = selectedItems();
-        if (e->modifiers() & Qt::ControlModifier) { // Create group
+		if (keyEvent->modifiers() & Qt::ControlModifier) { // Create group
             groups_[group].clear();
             for (int i = 0; i < selitems.size(); i++) {
                 TransferFunctionEditorControlPoint* p =
@@ -324,7 +327,7 @@ void TransferFunctionEditor::keyPressEvent(QKeyEvent* e) {
                 if (p) groups_[group].push_back(p);
             }
         } else {
-            if (!(e->modifiers() & Qt::ShiftModifier)) {
+			if (!(keyEvent->modifiers() & Qt::ShiftModifier)) {
                  for (int i = 0; i < selitems.size(); i++) {
                     selitems[i]->setSelected(false);
                  }
@@ -334,8 +337,8 @@ void TransferFunctionEditor::keyPressEvent(QKeyEvent* e) {
             }     
         }
     } else {
-        e->ignore();
-        QGraphicsScene::keyPressEvent(e);
+		keyEvent->ignore();
+		QGraphicsScene::keyPressEvent(keyEvent);
     }
     InviwoApplication::getPtr()->getProcessorNetwork()->unlock();
 

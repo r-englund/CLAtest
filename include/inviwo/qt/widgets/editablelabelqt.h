@@ -64,7 +64,7 @@ private:
     PropertyWidgetQt* propertyWidget_;
     QMenu* contextMenu_;
     QAction* renameAction_;
-    void mouseDoubleClickEvent(QMouseEvent* event);
+    void mouseDoubleClickEvent(QMouseEvent* e);
     std::string shortenText();
     bool shortenText_;
 
