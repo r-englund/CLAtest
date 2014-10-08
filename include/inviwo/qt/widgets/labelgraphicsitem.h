@@ -82,7 +82,7 @@ protected:
     bool doCrop(const QString& str);
     void updateCrop();
 
-    void keyPressEvent(QKeyEvent* event);
+	void keyPressEvent(QKeyEvent* keyEvent);
     void focusInEvent(QFocusEvent* event);
     void focusOutEvent(QFocusEvent* event);
 

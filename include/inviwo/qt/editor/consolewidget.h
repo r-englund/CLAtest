@@ -52,7 +52,7 @@ public:
     void log(std::string logSource, unsigned int logLevel, const char* fileName, const char* functionName, int lineNumber, std::string logMsg);
 
 private:
-    void keyPressEvent(QKeyEvent* e);
+	void keyPressEvent(QKeyEvent* keyEvent);
 
     QTextEdit* textField_;
     /// Log level colors

@@ -144,11 +144,13 @@ public:
      * @param bool allowReference disables or enables reference management schemes.
      */
     IvwSerializeBase(std::istream& stream, const std::string& path, bool allowReference=true);
-    /**
+    
+	/**
      * \brief Destructor
      */
     virtual ~IvwSerializeBase();
-    /**
+    
+	/**
      * \brief gets the xml file name.
      */
     virtual std::string getFileName();
@@ -163,21 +165,13 @@ public:
      * @return bool true or false
      */
     bool isPrimitiveType(const std::type_info& type) const;
-    /**
-     * \brief Checks whether the given type is a primitive pointer type.
-     *
-     * return true if type is one of following type:
-     * bool*, char*, signed int*, unsigned int*, float*, double*, long double*, std::string*
-     *
-     * @param const std::type_info & type can be one of  bool, char, signed int, unsigned int, float, double, long double, std::string.
-     * @return bool true or false.
-     */
-    bool isPrimitivePointerType(const std::type_info& type) const;
-    /**
+
+	/**
      * \brief Enable or disable reference flag.
      */
     void setAllowReference(const bool& allowReference);
-    /**
+
+	/**
      * \brief Registers all factories from all modules.
      */
     virtual void registerFactories(void);

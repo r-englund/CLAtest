@@ -147,15 +147,15 @@ QSize ColorWheel::minimumSizeHint() const {
     return initSize;
 }
 
-void ColorWheel::mousePressEvent(QMouseEvent* event) {
-    lastPos = event->pos();
+void ColorWheel::mousePressEvent(QMouseEvent* e) {
+    lastPos = e->pos();
 
     if (wheelRegion.contains(lastPos)) {
         inWheel = true;
         inSquare = false;
         QColor color = posColor(lastPos);
 
-        if (event->button()==Qt::RightButton) hueChanged(color.hue());
+        if (e->button()==Qt::RightButton) hueChanged(color.hue());
         else setColor(color);
     } else if (squareRegion.contains(lastPos)) {
         inWheel = false;
@@ -167,8 +167,8 @@ void ColorWheel::mousePressEvent(QMouseEvent* event) {
     mouseDown = true;
 }
 
-void ColorWheel::mouseMoveEvent(QMouseEvent* event) {
-    lastPos = event->pos();
+void ColorWheel::mouseMoveEvent(QMouseEvent* e) {
+    lastPos = e->pos();
 
     if (!mouseDown) return;
 

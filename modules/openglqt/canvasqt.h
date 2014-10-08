@@ -97,8 +97,8 @@ protected:
     void mouseReleaseEvent(QMouseEvent* e);
     void mouseMoveEvent(QMouseEvent* e);
     void wheelEvent (QWheelEvent* e);
-    void keyPressEvent(QKeyEvent* e);
-    void keyReleaseEvent(QKeyEvent* e);
+    void keyPressEvent(QKeyEvent* keyEvent);
+	void keyReleaseEvent(QKeyEvent* keyEvent);
 
     static CanvasQt* getSharedCanvas();
 

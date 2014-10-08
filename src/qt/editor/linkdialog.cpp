@@ -1077,8 +1077,8 @@ void LinkDialogGraphicsScene::initializePorpertyLinkRepresentation(LinkDialogPro
         connectionGraphicsItems_[i]->updateConnectionDrawing();
 }
 
-void LinkDialogGraphicsScene::keyPressEvent(QKeyEvent* e) {
-    if (e->key() == Qt::Key_Delete) {
+void LinkDialogGraphicsScene::keyPressEvent(QKeyEvent* keyEvent) {
+	if (keyEvent->key() == Qt::Key_Delete) {
         QList<QGraphicsItem*> selectedGraphicsItems = selectedItems();
 
         for (int i=0; i<selectedGraphicsItems.size(); i++) {
@@ -1091,7 +1091,7 @@ void LinkDialogGraphicsScene::keyPressEvent(QKeyEvent* e) {
         }
     }
 
-    QGraphicsScene::keyPressEvent(e);
+	QGraphicsScene::keyPressEvent(keyEvent);
 }
 
 void LinkDialogGraphicsScene::contextMenuEvent(QGraphicsSceneContextMenuEvent* e) {

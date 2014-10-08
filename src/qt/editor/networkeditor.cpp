@@ -704,9 +704,9 @@ void NetworkEditor::mouseDoubleClickEvent(QGraphicsSceneMouseEvent* e) {
     }
 }
 
-void NetworkEditor::keyPressEvent(QKeyEvent* e) {
-    if (e->key() == Qt::Key_Delete) {
-        e->accept();
+void NetworkEditor::keyPressEvent(QKeyEvent* keyEvent) {
+	if (keyEvent->key() == Qt::Key_Delete) {
+		keyEvent->accept();
         ProcessorNetwork* network = InviwoApplication::getPtr()->getProcessorNetwork();
 
         // delete selected graphics items
@@ -743,8 +743,8 @@ void NetworkEditor::keyPressEvent(QKeyEvent* e) {
             }
         }
     } else {
-        e->ignore();
-        QGraphicsScene::keyPressEvent(e);
+		keyEvent->ignore();
+		QGraphicsScene::keyPressEvent(keyEvent);
     }
 }
 

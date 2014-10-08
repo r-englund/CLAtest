@@ -51,9 +51,9 @@ class IVW_QTWIDGETS_API LightPositionWidgetQt : public QLabel {
     Q_OBJECT
 
 protected:
-    void mousePressEvent(QMouseEvent* event);
-    void mouseMoveEvent(QMouseEvent* event);
-    void mouseReleaseEvent(QMouseEvent* event);
+    void mousePressEvent(QMouseEvent* e);
+    void mouseMoveEvent(QMouseEvent* e);
+    void mouseReleaseEvent(QMouseEvent* e);
 public:
 
     LightPositionWidgetQt();

@@ -181,21 +181,6 @@ std::string IvwSerializeBase::getFileName() {
     return fileName_;
 }
 
-bool IvwSerializeBase::isPrimitivePointerType(const std::type_info& type) const {
-    if (type == typeid(bool*)
-        || type == typeid(char*)
-        || type == typeid(int*)
-        || type == typeid(signed int*)
-        || type == typeid(unsigned int*)
-        || type == typeid(float*)
-        || type == typeid(double*)
-        || type == typeid(long double*)
-        || type == typeid(std::string*))
-        return true;
-
-    return false;
-}
-
 bool IvwSerializeBase::isPrimitiveType(const std::type_info& type) const {
     if (type == typeid(bool)
         || type == typeid(char)

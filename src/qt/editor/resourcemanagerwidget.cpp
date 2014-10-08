@@ -75,9 +75,9 @@ void ResourceManagerWidget::resourceRemoved(const Resource* resource)
         model_->removeRow(model_->indexFromItem(*it).row());
 }
 
-void ResourceManagerWidget::keyPressEvent(QKeyEvent* event)
+void ResourceManagerWidget::keyPressEvent(QKeyEvent* keyEvent)
 {
-    if (event->key() == Qt::Key_Delete)
+	if (keyEvent->key() == Qt::Key_Delete)
         removeSelectedItems();
 }
 

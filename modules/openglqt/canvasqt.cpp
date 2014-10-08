@@ -330,13 +330,13 @@ void CanvasQt::wheelEvent(QWheelEvent* e){
     delete mouseEvent;
 }
 
-void CanvasQt::keyPressEvent(QKeyEvent* e) {
+void CanvasQt::keyPressEvent(QKeyEvent* keyEvent) {
 #ifdef USE_QWINDOW
     QWindow* parent = this->parent();
 #else
     QWidget* parent = this->parentWidget();
 #endif
-    if(parent && e->key() == Qt::Key_F && e->modifiers() == Qt::ShiftModifier){
+	if (parent && keyEvent->key() == Qt::Key_F && keyEvent->modifiers() == Qt::ShiftModifier){
         if(parent->windowState() == Qt::WindowFullScreen) {
             parent->showNormal();
         } else {
@@ -346,25 +346,25 @@ void CanvasQt::keyPressEvent(QKeyEvent* e) {
 
     if (!processorNetworkEvaluator_) return;
 
-    KeyboardEvent* keyEvent = new KeyboardEvent(
-        EventConverterQt::getKeyButton(e),
-        EventConverterQt::getModifier(e),
+    KeyboardEvent* pressKeyEvent = new KeyboardEvent(
+		EventConverterQt::getKeyButton(keyEvent),
+		EventConverterQt::getModifier(keyEvent),
         KeyboardEvent::KEY_STATE_PRESS);
-    e->accept();
-    Canvas::keyPressEvent(keyEvent);
-    delete keyEvent;
+	keyEvent->accept();
+	Canvas::keyPressEvent(pressKeyEvent);
+	delete pressKeyEvent;
 }
 
-void CanvasQt::keyReleaseEvent(QKeyEvent* e) {
+void CanvasQt::keyReleaseEvent(QKeyEvent* keyEvent) {
     if (!processorNetworkEvaluator_) return;
 
-    KeyboardEvent* keyEvent = new KeyboardEvent(
-        EventConverterQt::getKeyButton(e),
-        EventConverterQt::getModifier(e),
+    KeyboardEvent* releaseKeyEvent = new KeyboardEvent(
+		EventConverterQt::getKeyButton(keyEvent),
+		EventConverterQt::getModifier(keyEvent),
         KeyboardEvent::KEY_STATE_RELEASE);
-    e->accept();
-    Canvas::keyReleaseEvent(keyEvent);
-    delete keyEvent;
+	keyEvent->accept();
+	Canvas::keyReleaseEvent(releaseKeyEvent);
+	delete releaseKeyEvent;
 }
 
 CanvasQt* CanvasQt::getSharedCanvas() { 

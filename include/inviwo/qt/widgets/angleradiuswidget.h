@@ -51,8 +51,8 @@ public:
 
     virtual void paintEvent(QPaintEvent *);
 
-    void mousePressEvent(QMouseEvent* event);
-    void mouseMoveEvent(QMouseEvent* event);
+    void mousePressEvent(QMouseEvent* e);
+    void mouseMoveEvent(QMouseEvent* e);
 
     void setAngle(double angle);
     double getAngle() const { return angle_;}

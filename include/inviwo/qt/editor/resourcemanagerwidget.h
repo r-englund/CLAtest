@@ -53,7 +53,7 @@ public:
     ~ResourceManagerWidget();
     void resourceAdded(const Resource* resource);
     void resourceRemoved(const Resource* resource);
-    void keyPressEvent(QKeyEvent* event);
+	void keyPressEvent(QKeyEvent* keyEvent);
 private:
     void buildLayout();
     void removeSelectedItems();

@@ -162,8 +162,8 @@ void ConsoleWidget::log(std::string logSource, unsigned int logLevel, const char
     textField_->setTextCursor(c);
 }
 
-void ConsoleWidget::keyPressEvent(QKeyEvent* e) {
-    if (e->key() == Qt::Key_E && e->modifiers() == Qt::ControlModifier){
+void ConsoleWidget::keyPressEvent(QKeyEvent* keyEvent) {
+	if (keyEvent->key() == Qt::Key_E && keyEvent->modifiers() == Qt::ControlModifier){
         textField_->clear();
         errorsLabel_->setText("0");
         warningsLabel_->setText("0");
