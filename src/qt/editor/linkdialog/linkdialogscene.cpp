@@ -36,6 +36,8 @@
 #include <inviwo/qt/editor/linkdialog/linkdialogpropertygraphicsitems.h>
 #include <inviwo/qt/editor/linkdialog/linkdialogcurvegraphicsitems.h>
 
+#include <QTimeLine>
+
 namespace inviwo {
 
 LinkDialogGraphicsScene::LinkDialogGraphicsScene(QWidget* parent)
@@ -46,7 +48,9 @@ LinkDialogGraphicsScene::LinkDialogGraphicsScene(QWidget* parent)
     , startProperty_(0)
     , endProperty_(0)
     , processorNetwork_(0)
-    , expandProperties_(false) {
+    , expandProperties_(false)
+    , mouseOnLeftSide_(false)
+    , currentScrollSteps_(0) {
 
     // The defalt bsp tends to crash...  
     setItemIndexMethod(QGraphicsScene::NoIndex);
@@ -97,6 +101,17 @@ void LinkDialogGraphicsScene::mousePressEvent(QGraphicsSceneMouseEvent* e) {
 }
 
 void LinkDialogGraphicsScene::mouseMoveEvent(QGraphicsSceneMouseEvent* e) {
+
+    QPointF pos = e->scenePos();
+    if (pos.x() > linkDialogWidth/2 ) {
+        //LogWarn("Right")
+        mouseOnLeftSide_ = false;
+    }
+    else {
+        //LogWarn("Left")
+        mouseOnLeftSide_ = true;
+    }
+
     if (linkCurve_) {
         QPointF center = startProperty_->getShortestBoundaryPointTo(e->scenePos());
         linkCurve_->setStartPoint(center) ;
@@ -216,39 +231,41 @@ void LinkDialogGraphicsScene::wheelEvent(QGraphicsSceneWheelEvent* e) {
     float yIncrement = processorItemHeight*(1.0f/10.0f);
 
     if (e->modifiers() == Qt::ControlModifier) {
-        LogWarn("Wheel delta" << e->delta())
+        //LogWarn("Wheel delta" << e->delta())
         
         //note:delta can be positive or negative (wheel rotated away from user or towards user)
         int numDegrees = e->delta() / 8;
         int numSteps = numDegrees / 15;
         yIncrement*=numSteps;
+
+        currentScrollSteps_ = numSteps;
+
+        QTimeLine *anim = new QTimeLine(750, this);
+        anim->setUpdateInterval(20);
+        connect(anim, SIGNAL(valueChanged(qreal)), SLOT(executeTimeLine(qreal)));
+        connect(anim, SIGNAL(finished()), SLOT(terminateTimeLine()));
+        anim->start();
         
     } else {
         //QGraphicsScene::wheelEvent(e);
         e->accept();
         return;
-    }    
-
-    bool mouseOnLeftSide = false;
-    QPointF pos = e->scenePos();
-    if (pos.x() > linkDialogWidth/2 ) {
-        //LogWarn("Right")
-        mouseOnLeftSide = false;
-    }
-    else {
-        //LogWarn("Left")
-        mouseOnLeftSide = true;
     }   
 
+    e->accept();
+    //QGraphicsScene::wheelEvent(e);
+}
+
+void LinkDialogGraphicsScene::offsetItems(float yIncrement, bool scrollLeft) {
     //QPointF zoomOffset = allViews[0]->mapToScene(0, yIncrement);
     QPointF zoomOffset = QPointF(0.0f, yIncrement);
 
     LinkDialogProcessorGraphicsItem* procGraphicsItem=0;
     foreach(procGraphicsItem, processorGraphicsItems_) {
-        
+
         QPointF pos = procGraphicsItem->scenePos();
-        if (mouseOnLeftSide && pos.x()>=linkDialogWidth/2) continue;
-        if (!mouseOnLeftSide && pos.x()<linkDialogWidth/2) continue;
+        if (scrollLeft && pos.x()>=linkDialogWidth/2) continue;
+        if (!scrollLeft && pos.x()<linkDialogWidth/2) continue;
 
         procGraphicsItem->setPos(pos.x()+zoomOffset.x(), pos.y()+zoomOffset.y());
         std::vector<LinkDialogPropertyGraphicsItem*> propItems = procGraphicsItem->getPropertyItemList();
@@ -260,10 +277,17 @@ void LinkDialogGraphicsScene::wheelEvent(QGraphicsSceneWheelEvent* e) {
             }
         }
     }
-
-    e->accept();
-    //QGraphicsScene::wheelEvent(e);
 }
+
+void LinkDialogGraphicsScene::executeTimeLine(qreal x) {
+    float yIncrement = processorItemHeight*(0.09f)*(currentScrollSteps_);
+    offsetItems(yIncrement, mouseOnLeftSide_);
+}
+
+void LinkDialogGraphicsScene::terminateTimeLine() {
+    sender()->~QObject();
+}
+
 
 void LinkDialogGraphicsScene::addPropertyLink(Property* sProp, Property* eProp,
                                               bool bidirectional) {

@@ -42,7 +42,9 @@ LinkDialogGraphicsView::LinkDialogGraphicsView(QWidget* parent) : QGraphicsView(
 }
 
 void LinkDialogGraphicsView::setDialogScene(LinkDialogGraphicsScene* scene) {
-    scene->setBackgroundBrush(QBrush(Qt::lightGray));
+    QColor bgColor;
+    bgColor.setNamedColor("#4d4d4d");
+    scene->setBackgroundBrush(bgColor);
     setScene(scene);
     scene_ = scene;
 }
