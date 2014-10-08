@@ -54,7 +54,7 @@
 #include <inviwo/core/util/settings/systemsettings.h>
 #include <inviwo/core/util/urlparser.h>
 #include <inviwo/qt/editor/connectiongraphicsitem.h>
-#include <inviwo/qt/editor/linkdialog.h>
+#include <inviwo/qt/editor/linkdialog/linkdialog.h>
 #include <inviwo/qt/editor/linkgraphicsitem.h>
 #include <inviwo/qt/editor/processorgraphicsitem.h>
 #include <inviwo/qt/editor/processorlinkgraphicsitem.h>
