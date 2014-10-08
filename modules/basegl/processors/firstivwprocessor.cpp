@@ -80,7 +80,7 @@ void FirstIvwProcessor::deinitialize() {
 
 void FirstIvwProcessor::process() {
     glDisable(GL_DEPTH_TEST);
-    util::glActivateAndClearTarget(outport_);
+    utilgl::activateAndClearTarget(outport_);
     shader_->activate();
 
     //Render Quad
@@ -96,7 +96,7 @@ void FirstIvwProcessor::process() {
     triangleGL_->disable();
 
     shader_->deactivate();
-    util::glDeactivateCurrentTarget();
+    utilgl::deactivateCurrentTarget();
     glEnable(GL_DEPTH_TEST);
 }
 

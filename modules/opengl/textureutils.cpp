@@ -39,35 +39,35 @@
 
 namespace inviwo {
 
-namespace util {
-void glActivateTarget(ImageOutport& outport) {
+namespace utilgl {
+void activateTarget(ImageOutport& outport) {
     Image* outImage = outport.getData();
     ImageGL* outImageGL = outImage->getEditableRepresentation<ImageGL>();
     outImageGL->activateBuffer();
 }
 
-void glDeactivateCurrentTarget() { FrameBufferObject::deactivateFBO(); }
+void deactivateCurrentTarget() { FrameBufferObject::deactivateFBO(); }
 
-void glClearCurrentTarget() { glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); }
+void clearCurrentTarget() { glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); }
 
-void glActivateAndClearTarget(ImageOutport& outport) {
-    glActivateTarget(outport);
-    glClearCurrentTarget();
+void activateAndClearTarget(ImageOutport& outport) {
+    activateTarget(outport);
+    clearCurrentTarget();
 }
 
-void glActivateAndClearTargets(PortGroup& portGroup) {
+void activateAndClearTargets(PortGroup& portGroup) {
     portGroup.activate();
-    glClearCurrentTarget();
+    clearCurrentTarget();
 }
 
-void glUpdateAndActivateTarget(ImageOutport& outport, ImageInport& inport) {
+void updateAndActivateTarget(ImageOutport& outport, ImageInport& inport) {
     Image* outImage = outport.getData();
     ImageGL* outImageGL = outImage->getEditableRepresentation<ImageGL>();
     outImageGL->updateFrom(inport.getData()->getRepresentation<ImageGL>());
     outImageGL->activateBuffer();
 }
 
-void glBindTextures(const Image* image, bool color, bool depth, bool picking, GLenum colorTexUnit,
+void bindTextures(const Image* image, bool color, bool depth, bool picking, GLenum colorTexUnit,
                     GLenum depthTexUnit, GLenum pickingTexUnit) {
     const ImageGL* imageGL = image->getRepresentation<ImageGL>();
     if (color) {
@@ -90,118 +90,118 @@ void glBindTextures(const Image* image, bool color, bool depth, bool picking, GL
     }
 }
 
-void glBindColorTexture(const ImageInport& inport, GLenum texUnit) {
-    glBindTextures(inport.getData(), true, false, false, texUnit, 0, 0);
+void bindColorTexture(const ImageInport& inport, GLenum texUnit) {
+    bindTextures(inport.getData(), true, false, false, texUnit, 0, 0);
 }
 
-void glBindColorTexture(const ImageOutport& outport, GLenum texUnit) {
-    glBindTextures(outport.getConstData(), true, false, false, texUnit, 0, 0);
+void bindColorTexture(const ImageOutport& outport, GLenum texUnit) {
+    bindTextures(outport.getConstData(), true, false, false, texUnit, 0, 0);
 }
 
-void glBindDepthTexture(const ImageInport& inport, GLenum texUnit) {
-    glBindTextures(inport.getData(), false, true, false, 0, texUnit, 0);
+void bindDepthTexture(const ImageInport& inport, GLenum texUnit) {
+    bindTextures(inport.getData(), false, true, false, 0, texUnit, 0);
 }
 
-void glBindDepthTexture(const ImageOutport& outport, GLenum texUnit) {
-    glBindTextures(outport.getConstData(), false, true, false, 0, texUnit, 0);
+void bindDepthTexture(const ImageOutport& outport, GLenum texUnit) {
+    bindTextures(outport.getConstData(), false, true, false, 0, texUnit, 0);
 }
 
-void glBindPickingTexture(const ImageInport& inport, GLenum texUnit) {
-    glBindTextures(inport.getData(), false, false, true, 0, 0, texUnit);
+void bindPickingTexture(const ImageInport& inport, GLenum texUnit) {
+    bindTextures(inport.getData(), false, false, true, 0, 0, texUnit);
 }
 
-void glBindPickingTexture(const ImageOutport& outport, GLenum texUnit) {
-    glBindTextures(outport.getConstData(), false, false, true, 0, 0, texUnit);
+void bindPickingTexture(const ImageOutport& outport, GLenum texUnit) {
+    bindTextures(outport.getConstData(), false, false, true, 0, 0, texUnit);
 }
 
-void glBindTextures(const Image* image, GLenum colorTexUnit, GLenum depthTexUnit) {
-    glBindTextures(image, true, true, false, colorTexUnit, depthTexUnit, 0);
+void bindTextures(const Image* image, GLenum colorTexUnit, GLenum depthTexUnit) {
+    bindTextures(image, true, true, false, colorTexUnit, depthTexUnit, 0);
 }
 
-void glBindTextures(const ImageInport& inport, GLenum colorTexUnit, GLenum depthTexUnit) {
-    glBindTextures(inport.getData(), true, true, false, colorTexUnit, depthTexUnit, 0);
+void bindTextures(const ImageInport& inport, GLenum colorTexUnit, GLenum depthTexUnit) {
+    bindTextures(inport.getData(), true, true, false, colorTexUnit, depthTexUnit, 0);
 }
 
-void glBindTextures(const ImageOutport& outport, GLenum colorTexUnit, GLenum depthTexUnit) {
-    glBindTextures(outport.getConstData(), true, true, false, colorTexUnit, depthTexUnit, 0);
+void bindTextures(const ImageOutport& outport, GLenum colorTexUnit, GLenum depthTexUnit) {
+    bindTextures(outport.getConstData(), true, true, false, colorTexUnit, depthTexUnit, 0);
 }
 
-void glBindTextures(const Image* image, GLenum colorTexUnit, GLenum depthTexUnit,
+void bindTextures(const Image* image, GLenum colorTexUnit, GLenum depthTexUnit,
                     GLenum pickingTexUnit) {
-    glBindTextures(image, true, true, true, colorTexUnit, depthTexUnit, pickingTexUnit);
+    bindTextures(image, true, true, true, colorTexUnit, depthTexUnit, pickingTexUnit);
 }
 
-void glBindTextures(const ImageInport& inport, GLenum colorTexUnit, GLenum depthTexUnit,
+void bindTextures(const ImageInport& inport, GLenum colorTexUnit, GLenum depthTexUnit,
                     GLenum pickingTexUnit) {
-    glBindTextures(inport.getData(), true, true, true, colorTexUnit, depthTexUnit, pickingTexUnit);
+    bindTextures(inport.getData(), true, true, true, colorTexUnit, depthTexUnit, pickingTexUnit);
 }
 
-void glBindTextures(const ImageOutport& outport, GLenum colorTexUnit, GLenum depthTexUnit,
+void bindTextures(const ImageOutport& outport, GLenum colorTexUnit, GLenum depthTexUnit,
                     GLenum pickingTexUnit) {
-    glBindTextures(outport.getConstData(), true, true, true, colorTexUnit, depthTexUnit,
+    bindTextures(outport.getConstData(), true, true, true, colorTexUnit, depthTexUnit,
                    pickingTexUnit);
 }
 
-void glBindColorTexture(const ImageInport& inport, const TextureUnit& texUnit) {
-    glBindTextures(inport.getData(), true, false, false, texUnit.getEnum(), 0, 0);
+void bindColorTexture(const ImageInport& inport, const TextureUnit& texUnit) {
+    bindTextures(inport.getData(), true, false, false, texUnit.getEnum(), 0, 0);
 }
 
-void glBindColorTexture(const ImageOutport& outport, const TextureUnit& texUnit) {
-    glBindTextures(outport.getConstData(), true, false, false, texUnit.getEnum(), 0, 0);
+void bindColorTexture(const ImageOutport& outport, const TextureUnit& texUnit) {
+    bindTextures(outport.getConstData(), true, false, false, texUnit.getEnum(), 0, 0);
 }
 
-void glBindDepthTexture(const ImageInport& inport, const TextureUnit& texUnit) {
-    glBindTextures(inport.getData(), false, true, false, 0, texUnit.getEnum(), 0);
+void bindDepthTexture(const ImageInport& inport, const TextureUnit& texUnit) {
+    bindTextures(inport.getData(), false, true, false, 0, texUnit.getEnum(), 0);
 }
 
-void glBindDepthTexture(const ImageOutport& outport, const TextureUnit& texUnit) {
-    glBindTextures(outport.getConstData(), false, true, false, 0, texUnit.getEnum(), 0);
+void bindDepthTexture(const ImageOutport& outport, const TextureUnit& texUnit) {
+    bindTextures(outport.getConstData(), false, true, false, 0, texUnit.getEnum(), 0);
 }
 
-void glBindPickingTexture(const ImageInport& inport, const TextureUnit& texUnit) {
-    glBindTextures(inport.getData(), false, false, true, 0, 0, texUnit.getEnum());
+void bindPickingTexture(const ImageInport& inport, const TextureUnit& texUnit) {
+    bindTextures(inport.getData(), false, false, true, 0, 0, texUnit.getEnum());
 }
 
-void glBindPickingTexture(const ImageOutport& outport, const TextureUnit& texUnit) {
-    glBindTextures(outport.getConstData(), false, false, true, 0, 0, texUnit.getEnum());
+void bindPickingTexture(const ImageOutport& outport, const TextureUnit& texUnit) {
+    bindTextures(outport.getConstData(), false, false, true, 0, 0, texUnit.getEnum());
 }
 
-void glBindTextures(const Image* image, const TextureUnit& colorTexUnit,
+void bindTextures(const Image* image, const TextureUnit& colorTexUnit,
                     const TextureUnit& depthTexUnit) {
-    glBindTextures(image, true, true, false, colorTexUnit.getEnum(), depthTexUnit.getEnum(), 0);
+    bindTextures(image, true, true, false, colorTexUnit.getEnum(), depthTexUnit.getEnum(), 0);
 }
 
-void glBindTextures(const ImageInport& inport, const TextureUnit& colorTexUnit,
+void bindTextures(const ImageInport& inport, const TextureUnit& colorTexUnit,
                     const TextureUnit& depthTexUnit) {
-    glBindTextures(inport.getData(), true, true, false, colorTexUnit.getEnum(),
+    bindTextures(inport.getData(), true, true, false, colorTexUnit.getEnum(),
                    depthTexUnit.getEnum(), 0);
 }
 
-void glBindTextures(const ImageOutport& outport, const TextureUnit& colorTexUnit,
+void bindTextures(const ImageOutport& outport, const TextureUnit& colorTexUnit,
                     const TextureUnit& depthTexUnit) {
-    glBindTextures(outport.getConstData(), true, true, false, colorTexUnit.getEnum(),
+    bindTextures(outport.getConstData(), true, true, false, colorTexUnit.getEnum(),
                    depthTexUnit.getEnum(), 0);
 }
 
-void glBindTextures(const Image* image, const TextureUnit& colorTexUnit,
+void bindTextures(const Image* image, const TextureUnit& colorTexUnit,
                     const TextureUnit& depthTexUnit, const TextureUnit& pickingTexUnit) {
-    glBindTextures(image, true, true, true, colorTexUnit.getEnum(), depthTexUnit.getEnum(),
+    bindTextures(image, true, true, true, colorTexUnit.getEnum(), depthTexUnit.getEnum(),
                    pickingTexUnit.getEnum());
 }
 
-void glBindTextures(const ImageInport& inport, const TextureUnit& colorTexUnit,
+void bindTextures(const ImageInport& inport, const TextureUnit& colorTexUnit,
                     const TextureUnit& depthTexUnit, const TextureUnit& pickingTexUnit) {
-    glBindTextures(inport.getData(), true, true, true, colorTexUnit.getEnum(),
+    bindTextures(inport.getData(), true, true, true, colorTexUnit.getEnum(),
                    depthTexUnit.getEnum(), pickingTexUnit.getEnum());
 }
 
-void glBindTextures(const ImageOutport& outport, const TextureUnit& colorTexUnit,
+void bindTextures(const ImageOutport& outport, const TextureUnit& colorTexUnit,
                     const TextureUnit& depthTexUnit, const TextureUnit& pickingTexUnit) {
-    glBindTextures(outport.getConstData(), true, true, true, colorTexUnit.getEnum(),
+    bindTextures(outport.getConstData(), true, true, true, colorTexUnit.getEnum(),
                    depthTexUnit.getEnum(), pickingTexUnit.getEnum());
 }
 
-void glUnbindTextures(const Image* image, bool color, bool depth, bool picking) {
+void unbindTextures(const Image* image, bool color, bool depth, bool picking) {
     const ImageGL* imageGL = image->getRepresentation<ImageGL>();
     if (color) {
         const LayerGL* layer = imageGL->getColorLayerGL();
@@ -223,57 +223,57 @@ void glUnbindTextures(const Image* image, bool color, bool depth, bool picking) 
     }
 }
 
-void glUnbindColorTexture(const ImageInport& inport) {
-    glUnbindTextures(inport.getData(), true, false, false);
+void unbindColorTexture(const ImageInport& inport) {
+    unbindTextures(inport.getData(), true, false, false);
 }
 
-void glUnbindColorTexture(const ImageOutport& outport) {
-    glUnbindTextures(outport.getConstData(), true, false, false);
+void unbindColorTexture(const ImageOutport& outport) {
+    unbindTextures(outport.getConstData(), true, false, false);
 }
 
-void glUnbindDepthTexture(const ImageInport& inport) {
-    glUnbindTextures(inport.getData(), false, true, false);
+void unbindDepthTexture(const ImageInport& inport) {
+    unbindTextures(inport.getData(), false, true, false);
 }
 
-void glUnbindDepthTexture(const ImageOutport& outport) {
-    glUnbindTextures(outport.getConstData(), false, true, false);
+void unbindDepthTexture(const ImageOutport& outport) {
+    unbindTextures(outport.getConstData(), false, true, false);
 }
 
-void glUnbindPickingTexture(const ImageInport& inport) {
-    glUnbindTextures(inport.getData(), false, false, true);
+void unbindPickingTexture(const ImageInport& inport) {
+    unbindTextures(inport.getData(), false, false, true);
 }
 
-void glUnbindPickingTexture(const ImageOutport& outport) {
-    glUnbindTextures(outport.getConstData(), false, false, true);
+void unbindPickingTexture(const ImageOutport& outport) {
+    unbindTextures(outport.getConstData(), false, false, true);
 }
 
-void glUnbindTextures(const Image* image) { glUnbindTextures(image, true, true, true); }
+void unbindTextures(const Image* image) { unbindTextures(image, true, true, true); }
 
-void glUnbindTextures(const ImageInport& inport) {
-    glUnbindTextures(inport.getData(), true, true, true);
+void unbindTextures(const ImageInport& inport) {
+    unbindTextures(inport.getData(), true, true, true);
 }
 
-void glUnbindTextures(const ImageOutport& outport) {
-    glUnbindTextures(outport.getConstData(), true, true, true);
+void unbindTextures(const ImageOutport& outport) {
+    unbindTextures(outport.getConstData(), true, true, true);
 }
 
-void glSetShaderUniforms(Shader* shader, const Image* image, const std::string samplerID) {
+void setShaderUniforms(Shader* shader, const Image* image, const std::string samplerID) {
     vec2 dimensions = vec2(image->getDimension());
     shader->setUniform(samplerID + ".dimensions_", dimensions);
     shader->setUniform(samplerID + ".dimensionsRCP_", vec2(1.0f) / dimensions);
 }
 
-void glSetShaderUniforms(Shader* shader, const ImageInport& inport,
+void setShaderUniforms(Shader* shader, const ImageInport& inport,
                             const std::string samplerID) {
-    glSetShaderUniforms(shader, inport.getData(),  samplerID);
+    setShaderUniforms(shader, inport.getData(),  samplerID);
 }
 
-void glSetShaderUniforms(Shader* shader, const ImageOutport& outport,
+void setShaderUniforms(Shader* shader, const ImageOutport& outport,
                             const std::string samplerID) {
-    glSetShaderUniforms(shader, outport.getConstData(), samplerID);
+    setShaderUniforms(shader, outport.getConstData(), samplerID);
 }
 
-BufferObjectArray* glEnableImagePlaneRect() {
+BufferObjectArray* enableImagePlaneRect() {
     BufferObjectArray* rectArray = new BufferObjectArray();
     CanvasGL::attachImagePlanRect(rectArray);
     glDepthFunc(GL_ALWAYS);
@@ -281,26 +281,26 @@ BufferObjectArray* glEnableImagePlaneRect() {
     return rectArray;
 }
 
-void glDisableImagePlaneRect(BufferObjectArray* rectArray) {
+void disableImagePlaneRect(BufferObjectArray* rectArray) {
     rectArray->unbind();
     glDepthFunc(GL_LESS);
 }
 
-void glSingleDrawImagePlaneRect() {
-    BufferObjectArray* rectArray = glEnableImagePlaneRect();
+void singleDrawImagePlaneRect() {
+    BufferObjectArray* rectArray = enableImagePlaneRect();
     glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
-    glDisableImagePlaneRect(rectArray);
+    disableImagePlaneRect(rectArray);
     delete rectArray;
 }
 
-void glMultiDrawImagePlaneRect(int instances) {
-    BufferObjectArray* rectArray = glEnableImagePlaneRect();
+void multiDrawImagePlaneRect(int instances) {
+    BufferObjectArray* rectArray = enableImagePlaneRect();
     glDrawArraysInstanced(GL_TRIANGLE_STRIP, 0, 4, instances);
-    glDisableImagePlaneRect(rectArray);
+    disableImagePlaneRect(rectArray);
     delete rectArray;
 }
 
-void glBindTexture(const TransferFunctionProperty& tfp, const TextureUnit& texUnit) {
+void bindTexture(const TransferFunctionProperty& tfp, const TextureUnit& texUnit) {
     const Layer* tfLayer = tfp.get().getData();
     if (tfLayer) {
         const LayerGL* transferFunctionGL = tfLayer->getRepresentation<LayerGL>();
@@ -308,13 +308,13 @@ void glBindTexture(const TransferFunctionProperty& tfp, const TextureUnit& texUn
     }
 }
 
-void glBindTexture(const Volume* volume, const TextureUnit& texUnit) {
+void bindTexture(const Volume* volume, const TextureUnit& texUnit) {
     const VolumeGL* volumeGL = volume->getRepresentation<VolumeGL>();
     volumeGL->bindTexture(texUnit.getEnum());
 }
 
-void glBindTexture(const VolumeInport& inport, const TextureUnit& texUnit) {
-    glBindTexture(inport.getData(), texUnit);
+void bindTexture(const VolumeInport& inport, const TextureUnit& texUnit) {
+    bindTexture(inport.getData(), texUnit);
 }
 }
 

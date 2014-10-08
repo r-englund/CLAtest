@@ -56,12 +56,12 @@ void CompositeProcessorGL::deinitialize() {
 
 void CompositeProcessorGL::compositePortsToOutport(ImageOutport& outport, ImageInport& inport) {
     if (inport.isReady() && outport.isReady()) {
-        util::glActivateTarget(outport);
+        utilgl::activateTarget(outport);
         TextureUnit inportColorUnit, inportDepthUnit, inportPickingUnit;
-        util::glBindTextures(inport, inportColorUnit.getEnum(), inportDepthUnit.getEnum(),
+        utilgl::bindTextures(inport, inportColorUnit.getEnum(), inportDepthUnit.getEnum(),
                      inportPickingUnit.getEnum());
         TextureUnit outportColorUnit, outportDepthUnit, outportPickingUnit;
-        util::glBindTextures(outport, outportColorUnit.getEnum(), outportDepthUnit.getEnum(),
+        utilgl::bindTextures(outport, outportColorUnit.getEnum(), outportDepthUnit.getEnum(),
                      outportPickingUnit.getEnum());
         shader_->activate();
         vec2 dim = static_cast<vec2>(outport.getDimension());
@@ -73,9 +73,9 @@ void CompositeProcessorGL::compositePortsToOutport(ImageOutport& outport, ImageI
         shader_->setUniform("texColor1_", outportColorUnit.getUnitNumber());
         shader_->setUniform("texDepth1_", outportDepthUnit.getUnitNumber());
         shader_->setUniform("texPicking1_", outportPickingUnit.getUnitNumber());
-        util::glSingleDrawImagePlaneRect();
+        utilgl::singleDrawImagePlaneRect();
         shader_->deactivate();
-        util::glDeactivateCurrentTarget();
+        utilgl::deactivateCurrentTarget();
     }
 }
 

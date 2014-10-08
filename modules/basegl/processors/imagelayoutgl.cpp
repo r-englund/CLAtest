@@ -153,7 +153,7 @@ void ImageLayoutGL::process() {
     // updateViewports();
     TextureUnit colorUnit, depthUnit, pickingUnit;
 
-    util::glActivateAndClearTarget(outport_);
+    utilgl::activateAndClearTarget(outport_);
 
     shader_->activate();
     shader_->setUniform("screenDim_", dim);
@@ -164,15 +164,15 @@ void ImageLayoutGL::process() {
 
     size_t minNum = std::min(images.size(), viewCoords_.size());
     for (size_t i = 0; i < minNum; ++i) {
-        util::glBindTextures(images[i], colorUnit.getEnum(), depthUnit.getEnum(), pickingUnit.getEnum());
+        utilgl::bindTextures(images[i], colorUnit.getEnum(), depthUnit.getEnum(), pickingUnit.getEnum());
         glViewport(static_cast<int>(viewCoords_[i].x), static_cast<int>(viewCoords_[i].y),
                    viewCoords_[i].z, viewCoords_[i].w);
-        util::glSingleDrawImagePlaneRect();
+        utilgl::singleDrawImagePlaneRect();
     }
 
     glViewport(0, 0, dim.x, dim.y);
     shader_->deactivate();
-    util::glDeactivateCurrentTarget();
+    utilgl::deactivateCurrentTarget();
     TextureUnit::setZeroUnit();
 }
 

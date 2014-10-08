@@ -55,15 +55,15 @@ void RedGreenProcessor::initialize() { Processor::initialize(); }
 void RedGreenProcessor::deinitialize() { Processor::deinitialize(); }
 
 void RedGreenProcessor::process() {
-    util::glActivateTarget(outportRed_);
+    utilgl::activateTarget(outportRed_);
     glClearColor(1.0, 0.0, 0.0, 1.0);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    util::glDeactivateCurrentTarget();
-    util::glActivateTarget(outportGreen_);
+    utilgl::deactivateCurrentTarget();
+    utilgl::activateTarget(outportGreen_);
     glClearColor(0.0, 1.0, 0.0, 1.0);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glClearColor(0.0, 0.0, 0.0, 0.0);
-    util::glDeactivateCurrentTarget();
+    utilgl::deactivateCurrentTarget();
 }
 
 }  // namespace

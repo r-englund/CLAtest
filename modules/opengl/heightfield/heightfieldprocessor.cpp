@@ -102,7 +102,7 @@ void HeightFieldProcessor::process() {
     // bind input textures
     TextureUnit heightFieldUnit;
     if (inportHeightfield_.isReady()) {
-        util::glBindColorTexture(inportHeightfield_, heightFieldUnit.getEnum());
+        utilgl::bindColorTexture(inportHeightfield_, heightFieldUnit.getEnum());
     } else if (terrainShadingMode == HF_SHADING_HEIGHTFIELD) {
         // switch to flat shading since color texture is not available
         terrainShadingMode = HF_SHADING_FLAT;
@@ -111,7 +111,7 @@ void HeightFieldProcessor::process() {
     
     TextureUnit colorTexUnit;
     if (inportTexture_.isReady()) {
-        util::glBindColorTexture(inportTexture_, colorTexUnit.getEnum());
+        utilgl::bindColorTexture(inportTexture_, colorTexUnit.getEnum());
     } else if (terrainShadingMode == HF_SHADING_COLORTEX) {
         // switch to flat shading since heightfield texture is not available
         terrainShadingMode = HF_SHADING_FLAT;
@@ -120,7 +120,7 @@ void HeightFieldProcessor::process() {
     
     TextureUnit normalTexUnit;
     if (inportNormalMap_.isReady()) {
-        util::glBindColorTexture(inportNormalMap_, normalTexUnit.getEnum());
+        utilgl::bindColorTexture(inportNormalMap_, normalTexUnit.getEnum());
     } else {
         // switch of lighting
         lighting = false;

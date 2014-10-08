@@ -212,7 +212,7 @@ void VolumeSliceGL::process() {
     }
     TextureUnit::setZeroUnit();
 
-    util::glActivateAndClearTarget(outport_);
+    utilgl::activateAndClearTarget(outport_);
     shader_->activate();
     vec2 dim = static_cast<vec2>(outport_.getDimension());
     shader_->setUniform("screenDim_", dim);
@@ -228,14 +228,14 @@ void VolumeSliceGL::process() {
     shader_->setUniform("dimension_", vec2(1.0f / outport_.getData()->getDimension().x,
                                            1.0f / outport_.getData()->getDimension().y));
     shader_->setUniform("sliceNum_", getNormalizedSliceNumber());
-    util::glSingleDrawImagePlaneRect();
+    utilgl::singleDrawImagePlaneRect();
     shader_->deactivate();
 
     if (posPicking_.get() && showIndicator_.get()) {
         renderPositionIndicator();
     }
 
-    util::glDeactivateCurrentTarget();
+    utilgl::deactivateCurrentTarget();
 
     if(volumeWrapping_.get() > 0){
         volUnit.activate();

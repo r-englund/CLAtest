@@ -95,9 +95,9 @@ void ISORaycaster::deinitialize() {
 
 void ISORaycaster::initializeResources(){
     
-    util::glAddShaderDefines(shader_, raycasting_);
-    util::glAddShaderDefines(shader_, camera_);
-    util::glAddShaderDefines(shader_, lighting_);
+    utilgl::addShaderDefines(shader_, raycasting_);
+    utilgl::addShaderDefines(shader_, camera_);
+    utilgl::addShaderDefines(shader_, lighting_);
 
 
     if (volumePort_.hasData()) {
@@ -142,8 +142,8 @@ void ISORaycaster::process() {
     }
     LGL_ERROR;
     TextureUnit entryColorUnit, entryDepthUnit, exitColorUnit, exitDepthUnit;
-    util::glBindTextures(entryPort_, entryColorUnit.getEnum(), entryDepthUnit.getEnum());
-    util::glBindTextures(exitPort_, exitColorUnit.getEnum(), exitDepthUnit.getEnum());
+    utilgl::bindTextures(entryPort_, entryColorUnit.getEnum(), entryDepthUnit.getEnum());
+    utilgl::bindTextures(exitPort_, exitColorUnit.getEnum(), exitDepthUnit.getEnum());
 
     TextureUnit volUnit;
     const Volume* volume = volumePort_.getData();
@@ -151,7 +151,7 @@ void ISORaycaster::process() {
     volumeGL->bindTexture(volUnit.getEnum());
 
 
-    util::glActivateAndClearTarget(outport_);
+    utilgl::activateAndClearTarget(outport_);
     shader_->activate();
     
     vec2 dim = static_cast<vec2>(outport_.getDimension());
@@ -160,10 +160,10 @@ void ISORaycaster::process() {
   
     shader_->setUniform("entryColorTex_", entryColorUnit.getUnitNumber());
     shader_->setUniform("entryDepthTex_", entryDepthUnit.getUnitNumber());
-    util::glSetShaderUniforms(shader_, entryPort_, "entryParameters_");
+    utilgl::setShaderUniforms(shader_, entryPort_, "entryParameters_");
     shader_->setUniform("exitColorTex_", exitColorUnit.getUnitNumber());
     shader_->setUniform("exitDepthTex_", exitDepthUnit.getUnitNumber());
-    util::glSetShaderUniforms(shader_, exitPort_, "exitParameters_");
+    utilgl::setShaderUniforms(shader_, exitPort_, "exitParameters_");
 
     shader_->setUniform("volume_", volUnit.getUnitNumber());
     volumeGL->setVolumeUniforms(volumePort_.getData(), shader_, "volumeParameters_");
@@ -173,13 +173,13 @@ void ISORaycaster::process() {
 
     shader_->setUniform("channel_", channel_.getSelectedValue());
 
-    util::glSetShaderUniforms(shader_, raycasting_);
-    util::glSetShaderUniforms(shader_, camera_);
-    util::glSetShaderUniforms(shader_, lighting_);
+    utilgl::setShaderUniforms(shader_, raycasting_);
+    utilgl::setShaderUniforms(shader_, camera_);
+    utilgl::setShaderUniforms(shader_, lighting_);
 
-    util::glSingleDrawImagePlaneRect();
+    utilgl::singleDrawImagePlaneRect();
     shader_->deactivate();
-    util::glDeactivateCurrentTarget();
+    utilgl::deactivateCurrentTarget();
 }
 
 } // namespace

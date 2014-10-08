@@ -108,7 +108,7 @@ void PositionWidgetProcessor::updateWidgetPositionFromPicking(const PickingObjec
 }
 
 void PositionWidgetProcessor::process() {
-    util::glActivateAndClearTarget(outport_);
+    utilgl::activateAndClearTarget(outport_);
     MeshRenderer renderer(static_cast<const Mesh*>(geometryInport_.getData()));
     shader_->activate();
     shader_->setUniform("pickingColor_", widgetPickingObject_->getPickingColor());
@@ -124,7 +124,7 @@ void PositionWidgetProcessor::process() {
     glDepthFunc(GL_LESS);
 
     shader_->deactivate();
-    util::glDeactivateCurrentTarget();
+    utilgl::deactivateCurrentTarget();
     compositePortsToOutport(outport_, imageInport_);
 }
 

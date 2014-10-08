@@ -220,7 +220,7 @@ void LightVolumeGL::process() {
     propagationShader_->setUniform("lightVolumeParameters_.dimensions_", volumeDimOutF_);
     propagationShader_->setUniform("lightVolumeParameters_.dimensionsRCP_", volumeDimOutFRCP_);
 
-    BufferObjectArray* rectArray = util::glEnableImagePlaneRect();
+    BufferObjectArray* rectArray = utilgl::enableImagePlaneRect();
 
     //Perform propagation passes
     for (int i=0; i<2; ++i) {
@@ -251,7 +251,7 @@ void LightVolumeGL::process() {
         propParams_[i].fbo->deactivate();
     }
 
-    util::glDisableImagePlaneRect(rectArray);
+    utilgl::disableImagePlaneRect(rectArray);
 
     propagationShader_->deactivate();
     mergeShader_->activate();
@@ -269,7 +269,7 @@ void LightVolumeGL::process() {
     if (reattach)
         mergeFBO_->attachColorTexture(outVolumeGL->getTexture(), 0);
 
-    util::glMultiDrawImagePlaneRect(static_cast<int>(volumeDimOut_.z));
+    utilgl::multiDrawImagePlaneRect(static_cast<int>(volumeDimOut_.z));
     mergeShader_->deactivate();
     mergeFBO_->deactivate();
 }

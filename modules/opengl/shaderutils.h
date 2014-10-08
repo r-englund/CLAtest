@@ -11,32 +11,32 @@
 
 namespace inviwo {
 
-namespace util {
+namespace utilgl {
 
 // SimpleLightingProperty
-IVW_MODULE_OPENGL_API void glAddShaderDefines(Shader* shader,
+IVW_MODULE_OPENGL_API void addShaderDefines(Shader* shader,
                                               const SimpleLightingProperty& property);
-IVW_MODULE_OPENGL_API void glSetShaderUniforms(Shader* shader,
+IVW_MODULE_OPENGL_API void setShaderUniforms(Shader* shader,
                                                const SimpleLightingProperty& property);
-IVW_MODULE_OPENGL_API void glSetShaderUniforms(Shader* shader,
+IVW_MODULE_OPENGL_API void setShaderUniforms(Shader* shader,
                                                const SimpleLightingProperty& property,
                                                std::string name);
 
 // CameraProperty
-IVW_MODULE_OPENGL_API void glAddShaderDefines(Shader* shader, const CameraProperty& property);
-IVW_MODULE_OPENGL_API void glSetShaderUniforms(Shader* shader, const CameraProperty& property);
-IVW_MODULE_OPENGL_API void glSetShaderUniforms(Shader* shader, const CameraProperty& property,
+IVW_MODULE_OPENGL_API void addShaderDefines(Shader* shader, const CameraProperty& property);
+IVW_MODULE_OPENGL_API void setShaderUniforms(Shader* shader, const CameraProperty& property);
+IVW_MODULE_OPENGL_API void setShaderUniforms(Shader* shader, const CameraProperty& property,
                                                std::string name);
 
 // SimpleRaycastingProperty
-IVW_MODULE_OPENGL_API void glAddShaderDefines(Shader* shader,
+IVW_MODULE_OPENGL_API void addShaderDefines(Shader* shader,
                                               const SimpleRaycastingProperty& property);
-IVW_MODULE_OPENGL_API void glSetShaderUniforms(Shader* shader,
+IVW_MODULE_OPENGL_API void setShaderUniforms(Shader* shader,
                                                const SimpleRaycastingProperty& property);
 
 
 
-}  // namspace util
+}  // namspace utilgl
 
 }  // namespace
 

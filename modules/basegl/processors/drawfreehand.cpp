@@ -91,14 +91,14 @@ void DrawFreeHand::deinitialize() {
 }
 
 void DrawFreeHand::process() {
-    util::glActivateAndClearTarget(outport_);
+    utilgl::activateAndClearTarget(outport_);
     glPointSize(static_cast<float>(pointSize_.get()));
     pointShader_->activate();
     pointShader_->setUniform("color_", pointColor_.get());
     pointRenderer_->render();
     pointShader_->deactivate();
     glPointSize(1.f);
-    util::glDeactivateCurrentTarget();
+    utilgl::deactivateCurrentTarget();
     compositePortsToOutport(outport_, inport_);
 }
 

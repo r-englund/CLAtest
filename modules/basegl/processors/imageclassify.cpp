@@ -74,16 +74,16 @@ void ImageClassify::process() {
     const LayerGL* transferFunctionGL = tfLayer->getRepresentation<LayerGL>();
     transferFunctionGL->bindTexture(transFuncUnit.getEnum());
     TextureUnit inUnit;
-    util::glBindColorTexture(inport_, inUnit.getEnum());
-    util::glActivateTarget(outport_);
+    utilgl::bindColorTexture(inport_, inUnit.getEnum());
+    utilgl::activateTarget(outport_);
     shader_->activate();
     shader_->setUniform("inport_", inUnit.getUnitNumber());
     shader_->setUniform("dimension_",
                         vec2(1.f / outport_.getDimension()[0], 1.f / outport_.getDimension()[1]));
     shader_->setUniform("transferFunc_", transFuncUnit.getUnitNumber());
-    util::glSingleDrawImagePlaneRect();
+    utilgl::singleDrawImagePlaneRect();
     shader_->deactivate();
-    util::glDeactivateCurrentTarget();
+    utilgl::deactivateCurrentTarget();
 }
 
 }  // namespace

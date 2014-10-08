@@ -2,9 +2,9 @@
 
 namespace inviwo {
 
-namespace util {
+namespace utilgl {
 
-void glAddShaderDefines(Shader* shader, const SimpleLightingProperty& property) {
+void addShaderDefines(Shader* shader, const SimpleLightingProperty& property) {
     // This version is depricated.
     std::string shadingKey =
         "RC_APPLY_SHADING(colorAmb, colorDiff, colorSpec, samplePos, gradient, lightPos, "
@@ -46,7 +46,7 @@ void glAddShaderDefines(Shader* shader, const SimpleLightingProperty& property) 
     shader->getFragmentShaderObject()->addShaderDefine(shadingKey, shadingValue);
 }
 
-void glSetShaderUniforms(Shader* shader, const SimpleLightingProperty& property) {
+void setShaderUniforms(Shader* shader, const SimpleLightingProperty& property) {
     shader->setUniform("lightPosition_", property.lightPosition_.get());
     shader->setUniform("lightColorAmbient_", property.lightColorAmbient_.get());
     shader->setUniform("lightColorDiffuse_", property.lightColorDiffuse_.get());
@@ -54,7 +54,7 @@ void glSetShaderUniforms(Shader* shader, const SimpleLightingProperty& property)
     shader->setUniform("lightSpecularExponent_", property.lightSpecularExponent_.get());
 }
 
-void glSetShaderUniforms(Shader* shader, const SimpleLightingProperty& property, std::string name) {
+void setShaderUniforms(Shader* shader, const SimpleLightingProperty& property, std::string name) {
     shader->setUniform(name + ".lightPosition_", property.lightPosition_.get());
     shader->setUniform(name + ".lightColorAmbient_", property.lightColorAmbient_.get());
     shader->setUniform(name + ".lightColorDiffuse_", property.lightColorDiffuse_.get());
@@ -62,17 +62,17 @@ void glSetShaderUniforms(Shader* shader, const SimpleLightingProperty& property,
     shader->setUniform(name + ".lightSpecularExponent_", property.lightSpecularExponent_.get());
 }
 
-void glAddShaderDefines(Shader* shader, const CameraProperty& property) {
+void addShaderDefines(Shader* shader, const CameraProperty& property) {
 }
 
-void glSetShaderUniforms(Shader* shader, const CameraProperty& property) {
+void setShaderUniforms(Shader* shader, const CameraProperty& property) {
     shader->setUniform("viewMatrix_", property.viewMatrix());
     shader->setUniform("cameraPosition_", property.getLookFrom());
     shader->setUniform("zNear_", property.getNearPlaneDist());
     shader->setUniform("zFar_", property.getFarPlaneDist());
 }
 
-void glSetShaderUniforms(Shader* shader, const CameraProperty& property, std::string name) {
+void setShaderUniforms(Shader* shader, const CameraProperty& property, std::string name) {
     shader->setUniform(name + ".viewMatrix_", property.viewMatrix());
     shader->setUniform(name + ".cameraPosition_", property.getLookFrom());
     shader->setUniform(name + ".zNear_", property.getNearPlaneDist());
@@ -81,7 +81,7 @@ void glSetShaderUniforms(Shader* shader, const CameraProperty& property, std::st
 
 
 
-void glAddShaderDefines(Shader* shader, const SimpleRaycastingProperty& property) {
+void addShaderDefines(Shader* shader, const SimpleRaycastingProperty& property) {
     // gradient computation defines
     std::string gradientComputationKey =
         "RC_CALC_GRADIENTS(voxel, samplePos, volume_, volumeStruct_, t, rayDirection, "
@@ -216,11 +216,11 @@ void glAddShaderDefines(Shader* shader, const SimpleRaycastingProperty& property
 
     shader->getFragmentShaderObject()->addShaderDefine(compositingKey, compositingValue);
 }
-void glSetShaderUniforms(Shader* shader, const SimpleRaycastingProperty& property) {
+void setShaderUniforms(Shader* shader, const SimpleRaycastingProperty& property) {
     shader->setUniform("samplingRate_", property.samplingRate_.get());
     shader->setUniform("isoValue_", property.isoValue_.get());
 }
 
-} // namspace util
+} // namspace utilgl
 
 }  // namespace

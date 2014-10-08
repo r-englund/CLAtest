@@ -63,15 +63,15 @@ void ImageGrayscale::deinitialize() {
 
 void ImageGrayscale::process() {
     TextureUnit image;
-    util::glActivateTarget(outport_);
-    util::glBindColorTexture(inport_, image);
+    utilgl::activateTarget(outport_);
+    utilgl::bindColorTexture(inport_, image);
     shader_->activate();
     shader_->setUniform("inport_", image.getUnitNumber());
     shader_->setUniform("screenDimRCP_",
                         vec2(1.f / outport_.getDimension()[0], 1.f / outport_.getDimension()[1]));
-    util::glSingleDrawImagePlaneRect();
+    utilgl::singleDrawImagePlaneRect();
     shader_->deactivate();
-    util::glDeactivateCurrentTarget();
+    utilgl::deactivateCurrentTarget();
 }
 
 }  // namespace

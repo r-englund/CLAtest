@@ -39,9 +39,9 @@
 
 namespace inviwo {
 
-namespace util {
+namespace utilgl {
 
-void glSetShaderUniforms(Shader* shader, const Volume* volume, const std::string& samplerID) {
+void setShaderUniforms(Shader* shader, const Volume* volume, const std::string& samplerID) {
     vec3 dimF = static_cast<vec3>(volume->getDimension());
     shader->setUniform(samplerID + ".dimensions_", dimF);
     shader->setUniform(samplerID + ".dimensionsRCP_", vec3(1.f) / dimF);
@@ -93,8 +93,8 @@ void glSetShaderUniforms(Shader* shader, const Volume* volume, const std::string
     shader->setUniform(samplerID + ".signedFormatOffset_", static_cast<float>(signedOffset));
 }
 
-void glSetShaderUniforms(Shader* shader, const VolumeInport& port, const std::string& samplerID) {
-    glSetShaderUniforms(shader, port.getData(), samplerID);
+void setShaderUniforms(Shader* shader, const VolumeInport& port, const std::string& samplerID) {
+    setShaderUniforms(shader, port.getData(), samplerID);
 }
 
 }
