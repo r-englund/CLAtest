@@ -77,13 +77,14 @@ void ImageMixer::deinitialize() {
 void ImageMixer::process() {
     ivwAssert(inport0_.getData() != 0, "Inport0 empty.");
     ivwAssert(inport1_.getData() != 0, "Inport1 empty.");
+    TextureUnit image1, image2;
     uvec2 csize = outport_.getData()->getDimension();
-    util::glBindColorTexture(inport0_, GL_TEXTURE1);
-    util::glBindColorTexture(inport1_, GL_TEXTURE2);
+    util::glBindColorTexture(inport0_, image1);
+    util::glBindColorTexture(inport1_, image2);
     util::glActivateAndClearTarget(outport_);
     shader_->activate();
-    shader_->setUniform("inport0_", 1);
-    shader_->setUniform("inport1_", 2);
+    shader_->setUniform("inport0_", image1.getUnitNumber());
+    shader_->setUniform("inport1_", image2.getUnitNumber());
     shader_->setUniform("alpha_", alpha_.get());
     shader_->setUniform("screenDimRCP_", vec2(1.f / csize[0], 1.f / csize[1]));
     util::glSingleDrawImagePlaneRect();
