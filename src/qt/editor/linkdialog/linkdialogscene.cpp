@@ -161,6 +161,110 @@ void LinkDialogGraphicsScene::mouseDoubleClickEvent(QGraphicsSceneMouseEvent* e)
         QGraphicsScene::mouseDoubleClickEvent(e);
 }
 
+
+void LinkDialogGraphicsScene::keyPressEvent(QKeyEvent* keyEvent) {
+    if (keyEvent->key() == Qt::Key_Delete) {
+        QList<QGraphicsItem*> selectedGraphicsItems = selectedItems();
+
+        for (int i=0; i<selectedGraphicsItems.size(); i++) {
+            DialogConnectionGraphicsItem* connectionGraphicsItem = qgraphicsitem_cast<DialogConnectionGraphicsItem*>(selectedGraphicsItems[i]);
+
+            if (connectionGraphicsItem) {
+                removeConnectionFromCurrentList(connectionGraphicsItem);
+                removePropertyLink(connectionGraphicsItem);
+            }
+        }
+    }
+
+    QGraphicsScene::keyPressEvent(keyEvent);
+}
+
+void LinkDialogGraphicsScene::contextMenuEvent(QGraphicsSceneContextMenuEvent* e) {
+    DialogConnectionGraphicsItem* linkGraphicsItem = getSceneGraphicsItemAt<DialogConnectionGraphicsItem>(e->scenePos()) ;
+
+    if (linkGraphicsItem && linkGraphicsItem->getPropertyLink()) {
+        QMenu menu;
+        QAction* deleteAction = menu.addAction("Delete");
+        QAction* biDirectionAction = menu.addAction("BiDirectional");
+        biDirectionAction->setCheckable(true);
+        QAction* switchDirection = menu.addAction("Switch Direction");
+
+        if (isPropertyLinkBidirectional(linkGraphicsItem))
+            biDirectionAction->setChecked(true);
+        else
+            biDirectionAction->setChecked(false);
+
+        QAction* result = menu.exec(QCursor::pos());
+
+        if (result == deleteAction) {
+            removeConnectionFromCurrentList(linkGraphicsItem);
+            removePropertyLink(linkGraphicsItem);
+        }
+        else if (result == biDirectionAction) {
+            if (biDirectionAction->isChecked())
+                makePropertyLinkBidirectional(linkGraphicsItem, true);
+            else
+                makePropertyLinkBidirectional(linkGraphicsItem, false);
+        }
+        else if (result == switchDirection)
+            switchPropertyLinkDirection(linkGraphicsItem);
+    }
+}
+
+void LinkDialogGraphicsScene::wheelEvent(QGraphicsSceneWheelEvent* e) {
+
+    float yIncrement = processorItemHeight*(1.0f/10.0f);
+
+    if (e->modifiers() == Qt::ControlModifier) {
+        LogWarn("Wheel delta" << e->delta())
+        
+        //note:delta can be positive or negative (wheel rotated away from user or towards user)
+        int numDegrees = e->delta() / 8;
+        int numSteps = numDegrees / 15;
+        yIncrement*=numSteps;
+        
+    } else {
+        //QGraphicsScene::wheelEvent(e);
+        e->accept();
+        return;
+    }    
+
+    bool mouseOnLeftSide = false;
+    QPointF pos = e->scenePos();
+    if (pos.x() > linkDialogWidth/2 ) {
+        //LogWarn("Right")
+        mouseOnLeftSide = false;
+    }
+    else {
+        //LogWarn("Left")
+        mouseOnLeftSide = true;
+    }   
+
+    //QPointF zoomOffset = allViews[0]->mapToScene(0, yIncrement);
+    QPointF zoomOffset = QPointF(0.0f, yIncrement);
+
+    LinkDialogProcessorGraphicsItem* procGraphicsItem=0;
+    foreach(procGraphicsItem, processorGraphicsItems_) {
+        
+        QPointF pos = procGraphicsItem->scenePos();
+        if (mouseOnLeftSide && pos.x()>=linkDialogWidth/2) continue;
+        if (!mouseOnLeftSide && pos.x()<linkDialogWidth/2) continue;
+
+        procGraphicsItem->setPos(pos.x()+zoomOffset.x(), pos.y()+zoomOffset.y());
+        std::vector<LinkDialogPropertyGraphicsItem*> propItems = procGraphicsItem->getPropertyItemList();
+        for (size_t i=0; i<propItems.size(); i++) {
+            propItems[i]->updatePositionBasedOnProcessor(expandProperties_);
+            const std::vector<DialogConnectionGraphicsItem*> connections = propItems[i]->getConnectionGraphicsItems();
+            for (size_t j=0; j<connections.size(); j++) {
+                connections[j]->updateConnectionDrawing();
+            }
+        }
+    }
+
+    e->accept();
+    //QGraphicsScene::wheelEvent(e);
+}
+
 void LinkDialogGraphicsScene::addPropertyLink(Property* sProp, Property* eProp,
                                               bool bidirectional) {
     LinkDialogPropertyGraphicsItem* startProperty =
@@ -438,54 +542,6 @@ void LinkDialogGraphicsScene::initializePorpertyLinkRepresentation(LinkDialogPro
         connectionGraphicsItems_[i]->updateConnectionDrawing();
 }
 
-void LinkDialogGraphicsScene::keyPressEvent(QKeyEvent* keyEvent) {
-	if (keyEvent->key() == Qt::Key_Delete) {
-        QList<QGraphicsItem*> selectedGraphicsItems = selectedItems();
-
-        for (int i=0; i<selectedGraphicsItems.size(); i++) {
-            DialogConnectionGraphicsItem* connectionGraphicsItem = qgraphicsitem_cast<DialogConnectionGraphicsItem*>(selectedGraphicsItems[i]);
-
-            if (connectionGraphicsItem) {
-                removeConnectionFromCurrentList(connectionGraphicsItem);
-                removePropertyLink(connectionGraphicsItem);
-            }
-        }
-    }
-
-	QGraphicsScene::keyPressEvent(keyEvent);
-}
-
-void LinkDialogGraphicsScene::contextMenuEvent(QGraphicsSceneContextMenuEvent* e) {
-    DialogConnectionGraphicsItem* linkGraphicsItem = getSceneGraphicsItemAt<DialogConnectionGraphicsItem>(e->scenePos()) ;
-
-    if (linkGraphicsItem && linkGraphicsItem->getPropertyLink()) {
-        QMenu menu;
-        QAction* deleteAction = menu.addAction("Delete");
-        QAction* biDirectionAction = menu.addAction("BiDirectional");
-        biDirectionAction->setCheckable(true);
-        QAction* switchDirection = menu.addAction("Switch Direction");
-
-        if (isPropertyLinkBidirectional(linkGraphicsItem))
-            biDirectionAction->setChecked(true);
-        else
-            biDirectionAction->setChecked(false);
-
-        QAction* result = menu.exec(QCursor::pos());
-
-        if (result == deleteAction) {
-            removeConnectionFromCurrentList(linkGraphicsItem);
-            removePropertyLink(linkGraphicsItem);
-        }
-        else if (result == biDirectionAction) {
-            if (biDirectionAction->isChecked())
-                makePropertyLinkBidirectional(linkGraphicsItem, true);
-            else
-                makePropertyLinkBidirectional(linkGraphicsItem, false);
-        }
-        else if (result == switchDirection)
-            switchPropertyLinkDirection(linkGraphicsItem);
-    }
-}
 
 void LinkDialogGraphicsScene::initScene(Processor* srcProcessor,
                                         Processor* dstProcessor) {

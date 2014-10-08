@@ -347,6 +347,7 @@ void LinkDialogPropertyGraphicsItem::paint(QPainter* p, const QStyleOptionGraphi
     }
 
     p->restore();
+
 }
 
 QVariant LinkDialogPropertyGraphicsItem::itemChange(GraphicsItemChange change, const QVariant& value) {
@@ -415,6 +416,10 @@ QPointF LinkDialogPropertyGraphicsItem::calculateArrowCenter(size_t curPort, boo
 
     vec*=curPort;
     return tl+vec;
+}
+
+const std::vector<DialogConnectionGraphicsItem*>& LinkDialogPropertyGraphicsItem::getConnectionGraphicsItems() const {
+    return connectionItems_;
 }
 
 } //namespace
