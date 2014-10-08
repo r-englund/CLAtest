@@ -37,6 +37,7 @@
 #include <QMouseEvent>
 #include <QWheelEvent>
 #include <QGraphicsScene>
+#include <QGraphicsItem>
 #include <QGraphicsSceneMouseEvent>
 
 namespace inviwo {
