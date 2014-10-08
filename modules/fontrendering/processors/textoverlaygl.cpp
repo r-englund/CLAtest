@@ -162,9 +162,9 @@ void TextOverlayGL::render_text(const char* text, float x, float y, float sx, fl
 }
 
 void TextOverlayGL::process() {
-    util::glActivateAndClearTarget(outport_);
+    utilgl::activateAndClearTarget(outport_);
     TextureUnit colorUnit, depthUnit, pickingUnit;
-    util::glBindTextures(inport_, colorUnit.getEnum(), depthUnit.getEnum(), pickingUnit.getEnum());
+    utilgl::bindTextures(inport_, colorUnit.getEnum(), depthUnit.getEnum(), pickingUnit.getEnum());
 
     copyShader_->activate();
 
@@ -175,7 +175,7 @@ void TextOverlayGL::process() {
     copyShader_->setUniform("color_", colorUnit.getUnitNumber());
     copyShader_->setUniform("depth_", depthUnit.getUnitNumber());
     copyShader_->setUniform("picking_", pickingUnit.getUnitNumber());
-    util::glSingleDrawImagePlaneRect();
+    utilgl::singleDrawImagePlaneRect();
     copyShader_->deactivate();
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -202,7 +202,7 @@ void TextOverlayGL::process() {
     textShader_->deactivate();
     glDisableVertexAttribArray(attribute_location);
     glDisable(GL_BLEND);
-    util::glDeactivateCurrentTarget();
+    utilgl::deactivateCurrentTarget();
 }
 
 }  // namespace

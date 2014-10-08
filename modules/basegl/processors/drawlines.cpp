@@ -89,13 +89,13 @@ void DrawLines::deinitialize() {
 }
 
 void DrawLines::process() {
-    util::glActivateAndClearTarget(outport_);
+    utilgl::activateAndClearTarget(outport_);
     glLineWidth(static_cast<float>(lineSize_.get()));
     lineShader_->activate();
     lineShader_->setUniform("color_", lineColor_.get());
     lineRenderer_->render();
     glPointSize(1.f);
-    util::glDeactivateCurrentTarget();
+    utilgl::deactivateCurrentTarget();
     compositePortsToOutport(outport_, inport_);
 }
 

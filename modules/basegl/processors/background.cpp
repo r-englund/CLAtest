@@ -133,11 +133,11 @@ void Background::process() {
         initializeResources();
     }
 
-    util::glActivateTarget(outport_);
+    utilgl::activateTarget(outport_);
     TextureUnit srcColorUnit, srcDepthUnit;
 
     if (inport_.hasData())
-        util::glBindTextures(inport_, srcColorUnit.getEnum(),srcDepthUnit.getEnum());
+        utilgl::bindTextures(inport_, srcColorUnit.getEnum(),srcDepthUnit.getEnum());
 
     shader_->activate();
     
@@ -149,7 +149,7 @@ void Background::process() {
     shader_->setUniform("depth_", srcDepthUnit.getUnitNumber());
 
     if (inport_.hasData())
-        util::glSetShaderUniforms(shader_, inport_, "srcColorParameters_");
+        utilgl::setShaderUniforms(shader_, inport_, "srcColorParameters_");
 
     shader_->setUniform("hasData_",inport_.hasData());
     shader_->setUniform("color1_", color1_.get());
@@ -157,9 +157,9 @@ void Background::process() {
     shader_->setUniform("checkerBoardSize_", checkerBoardSize_.get());
     shader_->setUniform("textureSize_", (ivec2)outport_.getData()->getDimension());
     
-    util::glSingleDrawImagePlaneRect();
+    utilgl::singleDrawImagePlaneRect();
     shader_->deactivate();
-    util::glDeactivateCurrentTarget();
+    utilgl::deactivateCurrentTarget();
 }
 
 

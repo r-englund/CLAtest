@@ -42,12 +42,12 @@ class Shader;
 class Volume;
 class VolumeInport;
 
-namespace util {
+namespace utilgl {
 
-IVW_MODULE_OPENGL_API void glSetShaderUniforms(Shader* shader, const Volume* volume,
+IVW_MODULE_OPENGL_API void setShaderUniforms(Shader* shader, const Volume* volume,
                                                const std::string& samplerID);
 
-IVW_MODULE_OPENGL_API void glSetShaderUniforms(Shader* shader, const VolumeInport& port,
+IVW_MODULE_OPENGL_API void setShaderUniforms(Shader* shader, const VolumeInport& port,
                                                const std::string& samplerID);
 
 }

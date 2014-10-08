@@ -114,7 +114,7 @@ void EntryExitPoints::process() {
     glEnable(GL_CULL_FACE);
     glDepthFunc(GL_ALWAYS);
     // generate exit points
-    util::glActivateAndClearTarget(exitPort_);
+    utilgl::activateAndClearTarget(exitPort_);
     glPointSize(1.f);
     glCullFace(GL_FRONT);
     genericShader_->activate();
@@ -122,7 +122,7 @@ void EntryExitPoints::process() {
     genericShader_->setUniform("modelViewProjectionMatrix_",
                                camera_.projectionMatrix() * camera_.viewMatrix() * modelMatrix);
     renderer_->render();
-    util::glDeactivateCurrentTarget();
+    utilgl::deactivateCurrentTarget();
     // generate entry points
     ImageGL* tmpEntryPointsGL;
 
@@ -141,35 +141,35 @@ void EntryExitPoints::process() {
         tmpEntryPointsGL->activateBuffer();
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     } else {
-        util::glActivateAndClearTarget(entryPort_);
+        utilgl::activateAndClearTarget(entryPort_);
     }
 
     glCullFace(GL_BACK);
     renderer_->render();
     genericShader_->deactivate();
-    util::glDeactivateCurrentTarget();
+    utilgl::deactivateCurrentTarget();
 
     if (capNearClipping_.get()) {
         // render an image plane aligned quad to cap the proxy geometry
-        util::glActivateAndClearTarget(entryPort_);
+        utilgl::activateAndClearTarget(entryPort_);
         TextureUnit entryColorUnit, entryDepthUnit, exitColorUnit, exitDepthUnit;
         tmpEntryPointsGL->getColorLayerGL()->bindTexture(entryColorUnit.getEnum());
         tmpEntryPointsGL->getDepthLayerGL()->bindTexture(entryDepthUnit.getEnum());
-        util::glBindTextures(exitPort_, exitColorUnit.getEnum(), exitDepthUnit.getEnum());
+        utilgl::bindTextures(exitPort_, exitColorUnit.getEnum(), exitDepthUnit.getEnum());
         capNearClippingPrg_->activate();
 
         capNearClippingPrg_->setUniform("screenDim_", static_cast<vec2>(entryPort_.getDimension()));
         capNearClippingPrg_->setUniform(
             "screenDimRCP_", vec2(1.0f, 1.0f) / static_cast<vec2>(entryPort_.getDimension()));
 
-        util::glSetShaderUniforms(capNearClippingPrg_, entryPort_, "outportParameters_");
+        utilgl::setShaderUniforms(capNearClippingPrg_, entryPort_, "outportParameters_");
 
         capNearClippingPrg_->setUniform("entryColorTex_", entryColorUnit.getUnitNumber());
         capNearClippingPrg_->setUniform("entryDepthTex_", entryDepthUnit.getUnitNumber());
-        util::glSetShaderUniforms(capNearClippingPrg_, entryPort_, "entryParameters_");
+        utilgl::setShaderUniforms(capNearClippingPrg_, entryPort_, "entryParameters_");
         capNearClippingPrg_->setUniform("exitColorTex_", exitColorUnit.getUnitNumber());
         capNearClippingPrg_->setUniform("exitDepthTex_", exitDepthUnit.getUnitNumber());
-        util::glSetShaderUniforms(capNearClippingPrg_, exitPort_, "exitParameters_");
+        utilgl::setShaderUniforms(capNearClippingPrg_, exitPort_, "exitParameters_");
         // the rendered plane is specified in camera coordinates
         // thus we must transform from camera to world to texture coordinates
         mat4 worldToTexMat = geom->getCoordinateTransformer().getWorldToTextureMatrix();
@@ -177,9 +177,9 @@ void EntryExitPoints::process() {
             "NDCToTextureMat_",
             worldToTexMat * camera_.inverseViewMatrix() * camera_.inverseProjectionMatrix());
         capNearClippingPrg_->setUniform("nearDist_", camera_.getNearPlaneDist());
-        util::glSingleDrawImagePlaneRect();
+        utilgl::singleDrawImagePlaneRect();
         capNearClippingPrg_->deactivate();
-        util::glDeactivateCurrentTarget();
+        utilgl::deactivateCurrentTarget();
     }
 
     glDepthFunc(GL_LESS);

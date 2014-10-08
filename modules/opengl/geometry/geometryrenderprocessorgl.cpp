@@ -162,7 +162,7 @@ void GeometryRenderProcessorGL::process() {
         glEnable(GL_DEPTH_TEST);
     }
 
-    util::glActivateAndClearTarget(outport_);
+    utilgl::activateAndClearTarget(outport_);
 
     shader_->activate();
     setGlobalShaderParameters(shader_);
@@ -193,7 +193,7 @@ void GeometryRenderProcessorGL::process() {
 
     shader_->deactivate();
 
-    util::glDeactivateCurrentTarget();
+    utilgl::deactivateCurrentTarget();
 
     if (culling) {
         glDisable(GL_CULL_FACE);

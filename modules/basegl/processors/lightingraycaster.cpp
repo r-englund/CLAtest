@@ -97,9 +97,9 @@ void LightingRaycaster::deinitialize() {
 }
 
 void LightingRaycaster::initializeResources() {
-    util::glAddShaderDefines(shader_, raycasting_);
-    util::glAddShaderDefines(shader_, camera_);
-    util::glAddShaderDefines(shader_, lighting_);
+    utilgl::addShaderDefines(shader_, raycasting_);
+    utilgl::addShaderDefines(shader_, camera_);
+    utilgl::addShaderDefines(shader_, lighting_);
     
     shader_->build();
     if (enableLightColor_.get())
@@ -131,14 +131,14 @@ void LightingRaycaster::onVolumeChange() {
 
 void LightingRaycaster::process() {
     TextureUnit tfUnit, entryColorUnit, entryDepthUnit, exitColorUnit, exitDepthUnit, volUnit;
-    util::glBindTexture(transferFunction_, tfUnit);
-    util::glBindTextures(entryPort_, entryColorUnit, entryDepthUnit);
-    util::glBindTextures(exitPort_, exitColorUnit, exitDepthUnit);
-    util::glBindTexture(volumePort_, volUnit);
+    utilgl::bindTexture(transferFunction_, tfUnit);
+    utilgl::bindTextures(entryPort_, entryColorUnit, entryDepthUnit);
+    utilgl::bindTextures(exitPort_, exitColorUnit, exitDepthUnit);
+    utilgl::bindTexture(volumePort_, volUnit);
     TextureUnit lightVolUnit;
-    util::glBindTexture(lightVolumePort_, lightVolUnit);
+    utilgl::bindTexture(lightVolumePort_, lightVolUnit);
     
-    util::glActivateAndClearTarget(outport_);
+    utilgl::activateAndClearTarget(outport_);
     shader_->activate();
 
     vec2 dim = static_cast<vec2>(outport_.getDimension());
@@ -148,23 +148,23 @@ void LightingRaycaster::process() {
     shader_->setUniform("transferFunc_", tfUnit.getUnitNumber());
     shader_->setUniform("entryColorTex_", entryColorUnit.getUnitNumber());
     shader_->setUniform("entryDepthTex_", entryDepthUnit.getUnitNumber());
-    util::glSetShaderUniforms(shader_, entryPort_, "entryParameters_");
+    utilgl::setShaderUniforms(shader_, entryPort_, "entryParameters_");
     shader_->setUniform("exitColorTex_", exitColorUnit.getUnitNumber());
     shader_->setUniform("exitDepthTex_", exitDepthUnit.getUnitNumber());
-    util::glSetShaderUniforms(shader_, exitPort_, "exitParameters_");
+    utilgl::setShaderUniforms(shader_, exitPort_, "exitParameters_");
     shader_->setUniform("volume_", volUnit.getUnitNumber());
-    util::glSetShaderUniforms(shader_, volumePort_.getData(), "volumeParameters_");
+    utilgl::setShaderUniforms(shader_, volumePort_.getData(), "volumeParameters_");
     shader_->setUniform("lightVolume_", lightVolUnit.getUnitNumber());
-    util::glSetShaderUniforms(shader_, lightVolumePort_.getData(), "lightVolumeParameters_");
+    utilgl::setShaderUniforms(shader_, lightVolumePort_.getData(), "lightVolumeParameters_");
 
-    util::glSetShaderUniforms(shader_, raycasting_);
-    util::glSetShaderUniforms(shader_, camera_);
-    util::glSetShaderUniforms(shader_, lighting_);
+    utilgl::setShaderUniforms(shader_, raycasting_);
+    utilgl::setShaderUniforms(shader_, camera_);
+    utilgl::setShaderUniforms(shader_, lighting_);
 
-    util::glSingleDrawImagePlaneRect();
+    utilgl::singleDrawImagePlaneRect();
     
     shader_->deactivate();
-    util::glDeactivateCurrentTarget();
+    utilgl::deactivateCurrentTarget();
 }
 
 void LightingRaycaster::deserialize(IvwDeserializer& d) {

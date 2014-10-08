@@ -93,9 +93,9 @@ void SimpleRaycaster::deinitialize() {
 }
 
 void SimpleRaycaster::initializeResources() {
-    util::glAddShaderDefines(shader_, raycasting_);
-    util::glAddShaderDefines(shader_, camera_);
-    util::glAddShaderDefines(shader_, lighting_);
+    utilgl::addShaderDefines(shader_, raycasting_);
+    utilgl::addShaderDefines(shader_, camera_);
+    utilgl::addShaderDefines(shader_, lighting_);
     shader_->build();
 }
 
@@ -118,33 +118,33 @@ void SimpleRaycaster::onVolumeChange() {
 
 void SimpleRaycaster::process() {
     TextureUnit tfUnit, entryColorUnit, entryDepthUnit, exitColorUnit, exitDepthUnit, volUnit;
-    util::glBindTexture(transferFunction_, tfUnit);
-    util::glBindTextures(entryPort_, entryColorUnit, entryDepthUnit);
-    util::glBindTextures(exitPort_, exitColorUnit, exitDepthUnit);
-    util::glBindTexture(volumePort_, volUnit);
+    utilgl::bindTexture(transferFunction_, tfUnit);
+    utilgl::bindTextures(entryPort_, entryColorUnit, entryDepthUnit);
+    utilgl::bindTextures(exitPort_, exitColorUnit, exitDepthUnit);
+    utilgl::bindTexture(volumePort_, volUnit);
 
-    util::glActivateAndClearTarget(outport_);
+    utilgl::activateAndClearTarget(outport_);
     shader_->activate();
 
-    util::glSetShaderUniforms(shader_, outport_, "outportParameters_");
+    utilgl::setShaderUniforms(shader_, outport_, "outportParameters_");
     shader_->setUniform("transferFunc_", tfUnit.getUnitNumber());
     shader_->setUniform("entryColorTex_", entryColorUnit.getUnitNumber());
     shader_->setUniform("entryDepthTex_", entryDepthUnit.getUnitNumber());   
-    util::glSetShaderUniforms(shader_, entryPort_, "entryParameters_");
+    utilgl::setShaderUniforms(shader_, entryPort_, "entryParameters_");
     shader_->setUniform("exitColorTex_", exitColorUnit.getUnitNumber());
     shader_->setUniform("exitDepthTex_", exitDepthUnit.getUnitNumber());
-    util::glSetShaderUniforms(shader_, exitPort_, "exitParameters_");     
+    utilgl::setShaderUniforms(shader_, exitPort_, "exitParameters_");     
     shader_->setUniform("channel_", channel_.getSelectedValue());
     shader_->setUniform("volume_", volUnit.getUnitNumber());    
-    util::glSetShaderUniforms(shader_, volumePort_, "volumeParameters_");
-    util::glSetShaderUniforms(shader_, raycasting_);
-    util::glSetShaderUniforms(shader_, camera_, "camera_");
-    util::glSetShaderUniforms(shader_, lighting_, "light_");
+    utilgl::setShaderUniforms(shader_, volumePort_, "volumeParameters_");
+    utilgl::setShaderUniforms(shader_, raycasting_);
+    utilgl::setShaderUniforms(shader_, camera_, "camera_");
+    utilgl::setShaderUniforms(shader_, lighting_, "light_");
 
-    util::glSingleDrawImagePlaneRect();
+    utilgl::singleDrawImagePlaneRect();
 
     shader_->deactivate();
-    util::glDeactivateCurrentTarget();
+    utilgl::deactivateCurrentTarget();
 }
 
 } // namespace

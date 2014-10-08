@@ -129,7 +129,7 @@ Geometry* MultiPlanar::createSliceYZGeometry() {
 void MultiPlanar::process() {
     glDepthFunc(GL_LESS);
 
-    util::glActivateAndClearTarget(outport_);
+    utilgl::activateAndClearTarget(outport_);
 
     shader_->activate();
     
@@ -143,8 +143,8 @@ void MultiPlanar::process() {
     TextureUnit sliceUnit;
     shader_->setUniform("sliceTex_", sliceUnit.getUnitNumber());
     if (showSliceXY_.get()) {
-        util::glBindColorTexture(sliceXYPort_, sliceUnit.getEnum());
-        util::glSetShaderUniforms(shader_, sliceXYPort_, "sliceTexParameters_");
+        utilgl::bindColorTexture(sliceXYPort_, sliceUnit.getEnum());
+        utilgl::setShaderUniforms(shader_, sliceXYPort_, "sliceTexParameters_");
         Geometry* sliceXYGeom = createSliceXYGeometry();
         GeometryRenderer* sliceXYRenderer = GeometryRendererFactory::getPtr()->create(sliceXYGeom);
         sliceXYRenderer->render();
@@ -152,8 +152,8 @@ void MultiPlanar::process() {
         delete sliceXYRenderer;
     }
     if (showSliceXZ_.get()) {
-        util::glBindColorTexture(sliceXZPort_, sliceUnit.getEnum());
-        util::glSetShaderUniforms(shader_, sliceXZPort_, "sliceTexParameters_");
+        utilgl::bindColorTexture(sliceXZPort_, sliceUnit.getEnum());
+        utilgl::setShaderUniforms(shader_, sliceXZPort_, "sliceTexParameters_");
         Geometry* sliceXZGeom = createSliceXZGeometry();
         GeometryRenderer* sliceXZRenderer = GeometryRendererFactory::getPtr()->create(sliceXZGeom);
         sliceXZRenderer->render();
@@ -161,8 +161,8 @@ void MultiPlanar::process() {
         delete sliceXZRenderer;
     }
     if (showSliceYZ_.get()) {
-        util::glBindColorTexture(sliceYZPort_, sliceUnit.getEnum());
-        util::glSetShaderUniforms(shader_, sliceYZPort_, "sliceTexParameters_");
+        utilgl::bindColorTexture(sliceYZPort_, sliceUnit.getEnum());
+        utilgl::setShaderUniforms(shader_, sliceYZPort_, "sliceTexParameters_");
         Geometry* sliceYZGeom = createSliceYZGeometry();
         GeometryRenderer* sliceYZRenderer = GeometryRendererFactory::getPtr()->create(sliceYZGeom);
         sliceYZRenderer->render();
@@ -170,7 +170,7 @@ void MultiPlanar::process() {
         delete sliceYZRenderer;
     }
     shader_->deactivate();
-    util::glDeactivateCurrentTarget();
+    utilgl::deactivateCurrentTarget();
 }
 
 } // namespace
