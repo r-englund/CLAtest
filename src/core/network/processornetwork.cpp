@@ -96,7 +96,14 @@ void ProcessorNetwork::addProcessor(Processor* processor) {
 
 void ProcessorNetwork::removeProcessor(Processor* processor) {
     // Remove all connections for this processor
-    std::vector<Outport*> outports;
+     std::vector<PortConnection*> portConnections = getConnections();
+    for (size_t i=0; i<portConnections.size(); i++)
+        if (portConnections[i]->involvesProcessor(processor))
+            removeConnection(portConnections[i]->getOutport(),
+            portConnections[i]->getInport());
+
+    //FIXME: Crashing!!
+    /*std::vector<Outport*> outports;
     std::vector<Inport*> inports;
     outports = processor->getOutports();
     for (size_t i = 0; i < outports.size(); ++i) {
@@ -111,7 +118,7 @@ void ProcessorNetwork::removeProcessor(Processor* processor) {
         for (size_t j = 0; j < outports.size(); ++j) {
             removeConnection(outports[j], inports[i]);
         }
-    }
+    }*/
 
     // Temporary workaround until someone fixes the MultiInports.
     // The code above should work, but a MultiInport has several Inports in it.
