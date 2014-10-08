@@ -35,7 +35,7 @@
 
 #include <inviwo/qt/editor/inviwoqteditordefine.h>
 #include <QMouseEvent>
-#include <QWheelEvent>
+#include <QGraphicsSceneWheelEvent>
 #include <QGraphicsScene>
 #include <QGraphicsItem>
 #include <QGraphicsSceneMouseEvent>
@@ -91,6 +91,7 @@ protected:
     void mouseReleaseEvent(QGraphicsSceneMouseEvent* e);
     void mouseDoubleClickEvent(QGraphicsSceneMouseEvent* e);
     void keyPressEvent(QKeyEvent* keyEvent);
+    void wheelEvent(QGraphicsSceneWheelEvent* e);
     void contextMenuEvent(QGraphicsSceneContextMenuEvent* e);
     void addPropertyLink(LinkDialogPropertyGraphicsItem* outProperty, LinkDialogPropertyGraphicsItem* inProperty, bool isBidirectional);
     void removePropertyLink(DialogConnectionGraphicsItem* propertyLink);

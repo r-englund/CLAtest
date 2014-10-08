@@ -96,6 +96,7 @@ public:
     void addConnectionGraphicsItem(DialogConnectionGraphicsItem*);
     size_t getConnectionGraphicsItemCount() const;
     void removeConnectionGraphicsItem(DialogConnectionGraphicsItem*);
+    const std::vector<DialogConnectionGraphicsItem*>& getConnectionGraphicsItems() const;
 
 protected:
     virtual void paint(QPainter* p, const QStyleOptionGraphicsItem* options, QWidget* widget);

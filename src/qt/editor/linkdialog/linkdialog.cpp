@@ -55,7 +55,7 @@ LinkDialog::LinkDialog(Processor* src, Processor* dest, QWidget* parent) :Inviwo
 
 void LinkDialog::initDialogLayout() {
     setFloating(true);
-    //setWindowModality (Qt::ApplicationModal);
+    setWindowModality (Qt::ApplicationModal);
     /*
     //Custom title bar for consistency with other docked widgets
     QString style("padding-top: 5px; \

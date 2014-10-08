@@ -132,7 +132,7 @@ void LinkDialogProcessorGraphicsItem::setProcessor(Processor* processor, bool ex
                 //LogWarn("Found composite sub properties")
                 std::vector<Property*> subProperties = compProp->getProperties();
                 for (size_t j=0; j<subProperties.size(); j++) {
-                    LinkDialogPropertyGraphicsItem* compItem = new LinkDialogPropertyGraphicsItem(this, subProperties[j]);                
+                    LinkDialogPropertyGraphicsItem* compItem = new LinkDialogPropertyGraphicsItem(this, subProperties[j]);
                     propertyGraphicsItems_.push_back(compItem);
                 }
             }
