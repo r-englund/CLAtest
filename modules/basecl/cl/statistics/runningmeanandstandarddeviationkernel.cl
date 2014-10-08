@@ -30,7 +30,7 @@
  *
  *********************************************************************************/
 
-#include "runningmeanandstandarddeviation.cl" 
+#include "statistics/runningmeanandstandarddeviation.cl" 
 /*
  * Compute running average and standard deviation given new samples
  * http://en.wikipedia.org/wiki/Standard_deviation (Rapid calculation methods)
