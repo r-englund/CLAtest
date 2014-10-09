@@ -220,7 +220,7 @@ private:
      * @param key  Parent node key e.g, "Property"
      * @param data Object to be deserialized
      */
-    void deserializePrimitives(const std::string& key, std::string& data);
+    void deserializePrimitive(const std::string& key, std::string& data);
 
     /**
      * \brief Deserialize primitive data type which string data which is an
@@ -241,7 +241,7 @@ private:
      *        (except string)
      */
     template <typename T>
-    void deserializePrimitives(const std::string& key, T& data);
+    void deserializePrimitive(const std::string& key, T& data);
 
     /**
      * \brief Deserialize vector data structure vec2, ive2, vec3, ivec3, etc.,
@@ -404,7 +404,7 @@ template<class T>
 inline void IvwDeserializer::deserialize(const std::string& key, T*& data) {
     TxElement* keyNode;
 
-    if (getChild_) {
+    if (retrieveChild_) {
         try {
             keyNode = rootElement_->FirstChildElement(key);
         } catch (TxException&) {
@@ -444,9 +444,9 @@ inline void IvwDeserializer::deserialize(const std::string& key, T*& data) {
 }
 
 template<class T>
-inline void IvwDeserializer::deserializePrimitives(const std::string& key, T& data) {
+inline void IvwDeserializer::deserializePrimitive(const std::string& key, T& data) {
     try {
-        if (getChild_) {
+        if (retrieveChild_) {
             rootElement_->FirstChildElement(key)->GetAttribute(
                 IvwSerializeConstants::CONTENT_ATTRIBUTE, &data);
         } else {

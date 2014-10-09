@@ -40,17 +40,17 @@
 
 namespace inviwo {
 
-IvwSerializeBase::NodeSwitch::NodeSwitch(IvwSerializeBase& serializer, TxElement* node, bool getChild)
+	IvwSerializeBase::NodeSwitch::NodeSwitch(IvwSerializeBase& serializer, TxElement* node, bool retrieveChild)
     : serializer_(serializer)
     , storedNode_(serializer_.rootElement_)
-    , storedGetChild_(serializer_.getChild_) {
+    , storedRetrieveChild_(serializer_.retrieveChild_) {
     serializer_.rootElement_ = node;
-    serializer_.getChild_ = getChild;
+	serializer_.retrieveChild_ = retrieveChild;
 }
 
 IvwSerializeBase::NodeSwitch::~NodeSwitch() {
     serializer_.rootElement_ = storedNode_;
-    serializer_.getChild_ = storedGetChild_;
+    serializer_.retrieveChild_ = storedRetrieveChild_;
 }
 
 IvwSerializeBase::ReferenceDataContainer::ReferenceDataContainer() {
