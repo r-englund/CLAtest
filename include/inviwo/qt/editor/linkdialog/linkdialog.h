@@ -48,6 +48,8 @@
 namespace inviwo {
 
 class Processor;
+class Property;
+class PropertyOwner;
 class LinkDialogGraphicsView;
 class LinkDialogGraphicsScene;
 
