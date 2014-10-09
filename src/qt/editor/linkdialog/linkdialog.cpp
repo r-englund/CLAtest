@@ -34,6 +34,7 @@
 #include <inviwo/qt/editor/linkdialog/linkdialoggraphicsitems.h>
 #include <inviwo/qt/editor/linkdialog/linkdialogscene.h>
 #include <inviwo/qt/editor/linkdialog/linkdialogview.h>
+#include <inviwo/core/processors/processor.h>
 
 namespace inviwo {
 

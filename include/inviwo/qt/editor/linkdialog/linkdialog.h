@@ -47,6 +47,7 @@
 
 namespace inviwo {
 
+class Processor;
 class LinkDialogGraphicsView;
 class LinkDialogGraphicsScene;
 
