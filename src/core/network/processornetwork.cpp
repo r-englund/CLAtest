@@ -759,6 +759,30 @@ bool ProcessorNetwork::isDeserializing()const {
     return deserializing_;
 }
 
+Property* ProcessorNetwork::getProperty(std::vector<std::string> path) const {
+    if (path.size() > 2){
+        Processor* processor = getProcessorByName(path[0]);
+        if (processor) {
+            Property* property = processor->getPropertyByIdentifier(path[1]);
+            if (property) {
+                int i = 2;
+                while (path.size() > i) {
+                    CompositeProperty* comp = dynamic_cast<CompositeProperty*>(property);
+                    if(comp) {
+                        i++;
+                        property = comp->getPropertyByIdentifier(path[i]);
+                        if(!property) return NULL;
+                    }else{
+                        return NULL;
+                    }
+                }
+                return property;
+            }
+        }
+    }
+    return NULL;
+}
+
 const int ProcessorNetwork::processorNetworkVersion_ = 4;
 
 
