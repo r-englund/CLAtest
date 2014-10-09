@@ -82,6 +82,7 @@ public:
     void setUniform(const std::string &name, const ivec2 &value)const;
     void setUniform(const std::string &name, const ivec3 &value)const;
     void setUniform(const std::string &name, const ivec4 &value)const;
+    void setUniform(const std::string &name, const mat3 &value)const;
     void setUniform(const std::string &name, const mat4 &value)const;
 
 private:

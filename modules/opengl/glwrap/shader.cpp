@@ -267,6 +267,14 @@ void Shader::setUniform(const std::string &name, const GLfloat *value, int count
     IVW_ELSE_WARN
 }
 
+void Shader::setUniform(const std::string &name, const mat3 &value) const {
+    GLint uniformLocation = glGetUniformLocation(id_, name.c_str());
+
+    if (uniformLocation != -1)
+        glUniformMatrix3fv(uniformLocation, 1, GL_FALSE, glm::value_ptr(value));
+    IVW_ELSE_WARN
+}
+
 void Shader::setUniform(const std::string &name, const mat4 &value) const {
     GLint uniformLocation = glGetUniformLocation(id_, name.c_str());
 

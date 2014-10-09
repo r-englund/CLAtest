@@ -167,7 +167,7 @@ void ISORaycaster::process() {
 
     shader_->setUniform("volume_", volUnit.getUnitNumber());
     volumeGL->setVolumeUniforms(volumePort_.getData(), shader_, "volumeParameters_");
-    mat4 viewToTexture = volumePort_.getData()->getCoordinateTransformer().getWorldToTextureMatrix();
+    mat4 viewToTexture = camera_.inverseViewMatrix()*volumePort_.getData()->getCoordinateTransformer().getWorldToTextureMatrix();
     shader_->setUniform("viewToTexture_", viewToTexture);
 
 

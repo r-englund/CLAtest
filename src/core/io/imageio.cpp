@@ -189,8 +189,13 @@ void ImageIO::saveLayer(const char* filename, const Layer* inputLayer) {
         FreeImage_Unload(bitmap);
     }
     else {
-        //Unknown file ending
-        LogErrorCustom("ImageIO", "Unknown file ending.");
+        if (inputLayer == NULL) {
+            LogErrorCustom("ImageIO", "Cannot save NULL image.");
+        } else {
+            //Unknown file ending
+            LogErrorCustom("ImageIO", "Unknown file ending.");
+        }
+
     }
 }
 

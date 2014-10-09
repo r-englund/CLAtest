@@ -29,18 +29,11 @@
  * Main file author: Timo Ropinski
  *
  *********************************************************************************/
+#ifndef IVW_INCSAMPLER3D_GLSL
+#define IVW_INCSAMPLER3D_GLSL
 
-#define VOLUME_TYPE sampler3D
 
-struct VOLUME_PARAMETERS {
-    vec3 dimensions_;
-    vec3 dimensionsRCP_;
-    mat4 volumeToWorldTransform_;
-    float formatScaling_; //Reversed, meaning scaling = (1-bitScaling_), as 0 is default for single uniforms.
-    float formatOffset_;
-    float signedFormatScaling_; //Reversed, meaning scaling = (1-bitScaling_), as 0 is default for single uniforms.
-    float signedFormatOffset_;
-};
+#include "utils/structs.frag"
 
 //
 // Fetch texture data using texture coordinates [0,1]
@@ -96,3 +89,5 @@ vec4 getSignNormalizedVoxel(VOLUME_TYPE volume, VOLUME_PARAMETERS volumeParams, 
         * (1.0 - volumeParams.signedFormatScaling_);
 #endif
 }
+
+#endif // IVW_INCSAMPLER3D_GLSL
