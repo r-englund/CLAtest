@@ -92,22 +92,16 @@ void MultichannelRaycaster::initializeResources() {
 
         std::stringstream ss2;
         for (int i = 0; i < channels; ++i) {
-            ss2 << "gradient = CALC_GRADIENTS_FOR_CHANNEL(voxel, volume_, volumeParameters_, "
-                << "    samplePos, " << i << ");"
-            
-                << "color = RC_APPLY_CLASSIFICATION_FOR_CHANNEL(transferFuncs_[" << i << "], "
-                << "    voxel, " << i << ")"
-            
+            ss2 << "color = RC_APPLY_CLASSIFICATION_FOR_CHANNEL(transferFuncs_[" << i << "], "
+                << "voxel, " << i << ")"          
                 << "color.rgb = APPLY_LIGHTING(light_, camera_, volumeParameters_, color.rgb, "
-                << "    color.rgb, vec3(1.0), samplePos, gradient);"
-             
-                << "result = RC_APPLY_COMPOSITING(result, color, samplePos, voxel, gradient,"
-                << "    t, tDepth, tIncr);";
+                << "color.rgb, vec3(1.0), samplePos, gradients[" << i <<"]);"
+                << "result = RC_APPLY_COMPOSITING(result, color, samplePos, voxel, "
+                << "gradients[" << i <<"], t, tDepth, tIncr);";
         }
         shader_->getFragmentShaderObject()->addShaderDefine("SAMPLE_CHANNELS", ss2.str());
         shader_->build();
     }
-
 }
 
 void MultichannelRaycaster::process() {   

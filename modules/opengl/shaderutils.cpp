@@ -128,7 +128,7 @@ void addShaderDefines(Shader* shader, const SimpleRaycastingProperty& property) 
     shader->getFragmentShaderObject()->addShaderDefine(gradientComputationKey,
                                                         gradientComputationValue);
 
-    // New versions
+    // New versions for the opengl/glsl/util/* branch
     gradientComputationKey =
         "CALC_GRADIENTS(voxel, volume, volumeParams, samplePos)";
     gradientComputationValue = "";
@@ -152,23 +152,23 @@ void addShaderDefines(Shader* shader, const SimpleRaycastingProperty& property) 
                                                        gradientComputationValue);
 
     gradientComputationKey =
-        "CALC_GRADIENTS_FOR_CHANNEL(voxel, volume, volumeParams, samplePos, channel)";
+        "CALC_ALL_GRADIENTS(voxel, volume, volumeParams, samplePos)";
     gradientComputationValue = "";
 
     if (property.gradientComputationMode_.isSelectedIdentifier("none"))
         gradientComputationValue = "voxel.xyz;";
     else if (property.gradientComputationMode_.isSelectedIdentifier("forward"))
         gradientComputationValue =
-        "gradientForwardDiff(voxel, volume, volumeParams, samplePos, channel);";
+        "gradientForwardDiff(voxel, volume, volumeParams, samplePos);";
     else if (property.gradientComputationMode_.isSelectedIdentifier("central"))
         gradientComputationValue =
-        "gradientCentralDiff(voxel, volume, volumeParams, samplePos, channel);";
+        "gradientCentralDiff(voxel, volume, volumeParams, samplePos);";
     else if (property.gradientComputationMode_.isSelectedIdentifier("central-higher"))
         gradientComputationValue =
-        "gradientCentralDiffH(voxel, volume, volumeParams, samplePos, channel);";
+        "gradientCentralDiffH(voxel, volume, volumeParams, samplePos);";
     else if (property.gradientComputationMode_.isSelectedIdentifier("backward"))
         gradientComputationValue =
-        "gradientBackwardDiff(voxel, volume, volumeParams, samplePos, channel);";
+        "gradientBackwardDiff(voxel, volume, volumeParams, samplePos);";
     shader->getFragmentShaderObject()->addShaderDefine(gradientComputationKey,
                                                        gradientComputationValue);
 

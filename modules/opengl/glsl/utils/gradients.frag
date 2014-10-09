@@ -34,97 +34,87 @@
 
 /********** For selected channel **********/
 
-// Compute unnormalized world space gradient using forward difference: f' = ( f(x+h)-f(x) ) / h
-vec3 gradientForwardDiff(vec4 intensity, VOLUME_TYPE volume, VOLUME_PARAMETERS volumeParams, vec3 samplePos, int channel) {
+// Compute world space gradient using forward difference: f' = ( f(x+h)-f(x) ) / h
+mat4x3 gradientForwardDiff(vec4 intensity, VOLUME_TYPE volume, VOLUME_PARAMETERS volumeParams, vec3 samplePos) {
     //Of order O(h^2) forward differences
     // Value at f(x+h)
-    vec3 fDs;
-    // Moving a fixed distance h along each xyz-axis in world space, which correspond to moving along
+    mat3x4 fDs;
+	// Moving a fixed distance h along each xyz-axis in world space, which correspond to moving along
     // three basis vectors in texture space. 
     // This will be the minimum world space voxel spacing for volumes with orthogonal basis function.
-    fDs.x = getNormalizedVoxel(volume, volumeParams, samplePos + volumeParams.textureSpaceGradientSpacing_[0])[channel];
-    fDs.y = getNormalizedVoxel(volume, volumeParams, samplePos + volumeParams.textureSpaceGradientSpacing_[1])[channel];
-    fDs.z = getNormalizedVoxel(volume, volumeParams, samplePos + volumeParams.textureSpaceGradientSpacing_[2])[channel];
+    fDs[0] = getNormalizedVoxel(volume, volumeParams, samplePos + volumeParams.textureSpaceGradientSpacing_[0]);
+    fDs[1] = getNormalizedVoxel(volume, volumeParams, samplePos + volumeParams.textureSpaceGradientSpacing_[1]);
+    fDs[2] = getNormalizedVoxel(volume, volumeParams, samplePos + volumeParams.textureSpaceGradientSpacing_[2]);
     // f' = ( f(x+h)-f(x) ) / h
-    return (fDs-intensity[channel])/(volumeParams.worldSpaceGradientSpacing_);
+	return transpose(fDs - mat3x4(intensity,intensity,intensity)) / volumeParams.worldSpaceGradientSpacing_;
 }
 
-// Compute unnormalized world space gradient using central difference: f' = ( f(x+h)-f(x-h) ) / 2*h
-vec3 gradientCentralDiff(vec4 intensity, VOLUME_TYPE volume, VOLUME_PARAMETERS volumeParams, vec3 samplePos, int channel) {
-    //Of order O(h^2) central differences
-    vec3 cDs; 
+// Compute world space gradient using central difference: f' = ( f(x+h)-f(x-h) ) / 2*h
+mat4x3 gradientCentralDiff(vec4 intensity, VOLUME_TYPE volume, VOLUME_PARAMETERS volumeParams, vec3 samplePos) {
+    // Of order O(h^2) central differences
+    mat3x4 cDs; 
     // Value at f(x+h)
-    cDs.x = getNormalizedVoxel(volume, volumeParams, samplePos + volumeParams.textureSpaceGradientSpacing_[0])[channel];
-    cDs.y = getNormalizedVoxel(volume, volumeParams, samplePos + volumeParams.textureSpaceGradientSpacing_[1])[channel];
-    cDs.z = getNormalizedVoxel(volume, volumeParams, samplePos + volumeParams.textureSpaceGradientSpacing_[2])[channel];
+    cDs[0] = getNormalizedVoxel(volume, volumeParams, samplePos + volumeParams.textureSpaceGradientSpacing_[0]);
+    cDs[1] = getNormalizedVoxel(volume, volumeParams, samplePos + volumeParams.textureSpaceGradientSpacing_[1]);
+    cDs[2] = getNormalizedVoxel(volume, volumeParams, samplePos + volumeParams.textureSpaceGradientSpacing_[2]);
     // Value at f(x-h)
-    cDs.x = cDs.x - getNormalizedVoxel(volume, volumeParams, samplePos - volumeParams.textureSpaceGradientSpacing_[0])[channel];
-    cDs.y = cDs.y - getNormalizedVoxel(volume, volumeParams, samplePos - volumeParams.textureSpaceGradientSpacing_[1])[channel];
-    cDs.z = cDs.z - getNormalizedVoxel(volume, volumeParams, samplePos - volumeParams.textureSpaceGradientSpacing_[2])[channel];
+    cDs[0] -= getNormalizedVoxel(volume, volumeParams, samplePos - volumeParams.textureSpaceGradientSpacing_[0]);
+    cDs[1] -= getNormalizedVoxel(volume, volumeParams, samplePos - volumeParams.textureSpaceGradientSpacing_[1]);
+    cDs[2] -= getNormalizedVoxel(volume, volumeParams, samplePos - volumeParams.textureSpaceGradientSpacing_[2]);
     // f' = ( f(x+h)-f(x-h) ) / 2*h
-    return cDs/(2.0*volumeParams.worldSpaceGradientSpacing_);
+    return transpose(cDs) / (2.0*volumeParams.worldSpaceGradientSpacing_);
 }
 
-// Compute unnormalized world space gradient using backward difference: f' = ( f(x)-f(x-h) ) / h
-vec3 gradientBackwardDiff(vec4 intensity, VOLUME_TYPE volume, VOLUME_PARAMETERS volumeParams, vec3 samplePos, int channel) {
-    //Of order O(h^2) backward differences
-    // Value at f(x-h)
-    vec3 fDs;
-    fDs.x = getNormalizedVoxel(volume, volumeParams, samplePos - volumeParams.textureSpaceGradientSpacing_[0])[channel];
-    fDs.y = getNormalizedVoxel(volume, volumeParams, samplePos - volumeParams.textureSpaceGradientSpacing_[1])[channel];
-    fDs.z = getNormalizedVoxel(volume, volumeParams, samplePos - volumeParams.textureSpaceGradientSpacing_[2])[channel];
+// Compute world space gradient using backward difference: f' = ( f(x)-f(x-h) ) / h
+mat4x3 gradientBackwardDiff(vec4 intensity, VOLUME_TYPE volume, VOLUME_PARAMETERS volumeParams, vec3 samplePos) {
+    // Of order O(h^2) backward differences
+    mat3x4 fDs;
+	// Value at f(x-h)
+    fDs[0] = getNormalizedVoxel(volume, volumeParams, samplePos - volumeParams.textureSpaceGradientSpacing_[0]);
+    fDs[1] = getNormalizedVoxel(volume, volumeParams, samplePos - volumeParams.textureSpaceGradientSpacing_[1]);
+    fDs[2] = getNormalizedVoxel(volume, volumeParams, samplePos - volumeParams.textureSpaceGradientSpacing_[2]);
     // f' = ( f(x)-f(x-h) ) / h
-    return (intensity[channel]-fDs)/(volumeParams.worldSpaceGradientSpacing_);
+    return transpose(mat3x4(intensity,intensity,intensity)-fDs) / volumeParams.worldSpaceGradientSpacing_;
 }
 
-// Compute unnormalized world space gradient using higher order central difference: f' = ( -f(x+2h)+8.f(x+h)-8.f(x-h)+f(x-2h) ) / 12*h
-vec3 gradientCentralDiffH(vec4 intensity, VOLUME_TYPE volume, VOLUME_PARAMETERS volumeParams, vec3 samplePos, int channel) {
+// Compute world space gradient using higher order central difference: f' = ( -f(x+2h)+8.f(x+h)-8.f(x-h)+f(x-2h) ) / 12*h
+mat4x3 gradientCentralDiffH(vec4 intensity, VOLUME_TYPE volume, VOLUME_PARAMETERS volumeParams, vec3 samplePos) {
     //Of order O(h^4) central differences
-    vec3 voxelSpacing = volumeParams.dimensionsRCP_;
-    vec3 cDs;
-    // f' = ( -f(x+2h)+8.f(x+h)-8.f(x-h)+f(x-2h) ) / 12*h
-    // Value at 8.f(x+h)
-    cDs.x = 8.0 * getNormalizedVoxel(volume, volumeParams, samplePos + volumeParams.textureSpaceGradientSpacing_[0])[channel];
-    cDs.y = 8.0 * getNormalizedVoxel(volume, volumeParams, samplePos + volumeParams.textureSpaceGradientSpacing_[1])[channel];
-    cDs.z = 8.0 * getNormalizedVoxel(volume, volumeParams, samplePos + volumeParams.textureSpaceGradientSpacing_[2])[channel];
+    mat3x4 cDs;
+     // Value at 8.f(x+h)
+    cDs[0] = 8.0 * getNormalizedVoxel(volume, volumeParams, samplePos + volumeParams.textureSpaceGradientSpacing_[0]);
+    cDs[1] = 8.0 * getNormalizedVoxel(volume, volumeParams, samplePos + volumeParams.textureSpaceGradientSpacing_[1]);
+    cDs[2] = 8.0 * getNormalizedVoxel(volume, volumeParams, samplePos + volumeParams.textureSpaceGradientSpacing_[2]);
     // Value at 8.f(x-h)
-    cDs.x = cDs.x - 8.0 * getNormalizedVoxel(volume, volumeParams, samplePos - volumeParams.textureSpaceGradientSpacing_[0])[channel];
-    cDs.y = cDs.y - 8.0 * getNormalizedVoxel(volume, volumeParams, samplePos - volumeParams.textureSpaceGradientSpacing_[1])[channel];
-    cDs.z = cDs.z - 8.0 * getNormalizedVoxel(volume, volumeParams, samplePos - volumeParams.textureSpaceGradientSpacing_[2])[channel];
+    cDs[0] -= 8.0 * getNormalizedVoxel(volume, volumeParams, samplePos - volumeParams.textureSpaceGradientSpacing_[0]);
+    cDs[1] -= 8.0 * getNormalizedVoxel(volume, volumeParams, samplePos - volumeParams.textureSpaceGradientSpacing_[1]);
+    cDs[2] -= 8.0 * getNormalizedVoxel(volume, volumeParams, samplePos - volumeParams.textureSpaceGradientSpacing_[2]);
     // Value at -f(x+2h)
-    cDs.x = cDs.x - getNormalizedVoxel(volume, volumeParams, samplePos + volumeParams.textureSpaceGradientSpacing_[0])[channel];
-    cDs.y = cDs.y - getNormalizedVoxel(volume, volumeParams, samplePos + volumeParams.textureSpaceGradientSpacing_[1])[channel];
-    cDs.z = cDs.z - getNormalizedVoxel(volume, volumeParams, samplePos + volumeParams.textureSpaceGradientSpacing_[2])[channel];
+    cDs[0] -= getNormalizedVoxel(volume, volumeParams, samplePos + volumeParams.textureSpaceGradientSpacing_[0]);
+    cDs[1] -= getNormalizedVoxel(volume, volumeParams, samplePos + volumeParams.textureSpaceGradientSpacing_[1]);
+    cDs[2] -= getNormalizedVoxel(volume, volumeParams, samplePos + volumeParams.textureSpaceGradientSpacing_[2]);
     // Value at f(x+2h)
-    cDs.x = cDs.x + getNormalizedVoxel(volume, volumeParams, samplePos - volumeParams.textureSpaceGradientSpacing_[0])[channel];
-    cDs.y = cDs.y + getNormalizedVoxel(volume, volumeParams, samplePos - volumeParams.textureSpaceGradientSpacing_[1])[channel];
-    cDs.z = cDs.z + getNormalizedVoxel(volume, volumeParams, samplePos - volumeParams.textureSpaceGradientSpacing_[2])[channel];
+    cDs[0] += getNormalizedVoxel(volume, volumeParams, samplePos - volumeParams.textureSpaceGradientSpacing_[0]);
+    cDs[1] += getNormalizedVoxel(volume, volumeParams, samplePos - volumeParams.textureSpaceGradientSpacing_[1]);
+    cDs[2] += getNormalizedVoxel(volume, volumeParams, samplePos - volumeParams.textureSpaceGradientSpacing_[2]);
     // f' = ( -f(x+2h)+8.f(x+h)-8.f(x-h)+f(x-2h) ) / 12*h
-    return (cDs)/(12.0*volumeParams.worldSpaceGradientSpacing_);
+    return transpose(cDs)/(12.0*volumeParams.worldSpaceGradientSpacing_);
 }
 
-// Compute unnormalized world space gradient using forward difference: f' = ( f(x+h)-f(x) ) / h
-vec3 gradientForwardDiff(float intensity, VOLUME_TYPE volume, VOLUME_PARAMETERS volumeParams, vec3 samplePos) {
-    //Of order O(h^2) forward differences
-    return gradientForwardDiff(vec4(intensity), volume, volumeParams, samplePos, 0);
-}
 
 /********** For the first channel (red) **********/
-// Compute unnormalized world space gradient using central difference: f' = ( f(x+h)-f(x-h) ) / 2*h
-vec3 gradientCentralDiff(float intensity, VOLUME_TYPE volume, VOLUME_PARAMETERS volumeParams, vec3 samplePos) {
-    //Of order O(h^2) central differences
-    return gradientCentralDiff(vec4(intensity), volume, volumeParams, samplePos, 0);
-}
 
-// Compute unnormalized world space gradient using backward difference: f' = ( f(x)-f(x-h) ) / h
-vec3 gradientBackwardDiff(float intensity, VOLUME_TYPE volume, VOLUME_PARAMETERS volumeParams, vec3 samplePos) {
-    //Of order O(h^2) backward differences
-    return gradientBackwardDiff(vec4(intensity), volume, volumeParams, samplePos, 0);
+vec3 gradientForwardDiff(float intensity, VOLUME_TYPE volume, VOLUME_PARAMETERS volumeParams, vec3 samplePos) {
+    return gradientForwardDiff(vec4(intensity), volume, volumeParams, samplePos)[0];
 }
-// Compute unnormalized world space gradient using higher order central difference: f' = ( -f(x+2h)+8.f(x+h)-8.f(x-h)+f(x-2h) ) / 12*h
+vec3 gradientCentralDiff(float intensity, VOLUME_TYPE volume, VOLUME_PARAMETERS volumeParams, vec3 samplePos) {
+    return gradientCentralDiff(vec4(intensity), volume, volumeParams, samplePos)[0];
+}
+vec3 gradientBackwardDiff(float intensity, VOLUME_TYPE volume, VOLUME_PARAMETERS volumeParams, vec3 samplePos) {
+    return gradientBackwardDiff(vec4(intensity), volume, volumeParams, samplePos)[0];
+}
 vec3 gradientCentralDiffH(float intensity, VOLUME_TYPE volume, VOLUME_PARAMETERS volumeParams, vec3 samplePos) {
-    // Of order O(h^4) central differences
-    return gradientCentralDiffH(vec4(intensity), volume, volumeParams, samplePos, 0);
+    return gradientCentralDiffH(vec4(intensity), volume, volumeParams, samplePos)[0];
 }
 
 #endif // IVW_GRADIENTS_GLSL
