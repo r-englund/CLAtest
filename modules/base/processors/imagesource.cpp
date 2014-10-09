@@ -83,14 +83,8 @@ void ImageSource::process() {
     }
 
     Image* outImage = outport_.getData();
-
     if (outImage) {
-        LayerDisk* outLayerDisk;
-        if(outImage->getColorLayer()->hasRepresentation<LayerDisk>()){
-            outLayerDisk = outImage->getColorLayer()->getEditableRepresentation<LayerDisk>();
-        } else {
-            load();
-        }
+        outImage->resize(outImage->getDimension());
     }
 }
 
