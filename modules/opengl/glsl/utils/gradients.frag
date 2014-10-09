@@ -74,7 +74,7 @@ vec3 gradientBackwardDiff(vec4 intensity, VOLUME_TYPE volume, VOLUME_PARAMETERS 
     fDs.y = getNormalizedVoxel(volume, volumeParams, samplePos - volumeParams.textureSpaceGradientSpacing_[1])[channel];
     fDs.z = getNormalizedVoxel(volume, volumeParams, samplePos - volumeParams.textureSpaceGradientSpacing_[2])[channel];
     // f' = ( f(x)-f(x-h) ) / h
-    return mat3(volumeParams.textureToWorld_)*(intensity[channel]-fDs)/(volumeParams.worldSpaceGradientSpacing_);
+    return (intensity[channel]-fDs)/(volumeParams.worldSpaceGradientSpacing_);
 }
 
 // Compute unnormalized world space gradient using higher order central difference: f' = ( -f(x+2h)+8.f(x+h)-8.f(x-h)+f(x-2h) ) / 12*h
