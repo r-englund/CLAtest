@@ -77,16 +77,7 @@ bool ImageSource::isReady() const {
     return URLParser::fileExists(imageFileName_.get());
 }
 
-void ImageSource::process() {
-    if (this->isDeserializing_) {
-        return;
-    }
-
-    Image* outImage = outport_.getData();
-    if (outImage) {
-        outImage->resize(outImage->getDimension());
-    }
-}
+void ImageSource::process() {}
 
 void ImageSource::load() {
     if (isDeserializing_ || imageFileName_.get() == "") {
