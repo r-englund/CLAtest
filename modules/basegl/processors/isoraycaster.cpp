@@ -108,13 +108,12 @@ void ISORaycaster::initializeResources(){
 
         std::stringstream ss2;
         for (int i = 0; i < channels; ++i) {
-            ss2 << "gradient = RC_CALC_GRADIENTS_FOR_CHANNEL(voxel, samplePos, volume_,"
+            ss2 << "gradient = COMPUTE_GRADIENTS_FOR_CHANNEL(voxel, samplePos, volume_,"
                 << " volumeParameters_, t, rayDirection, entryTex_, entryParameters_," << i << ");"
-                << "color = RC_APPLY_CLASSIFICATION_FOR_CHANNEL(transferFuncs_[" << i
-                << "], voxel, " << i << ")"
-                << "color.rgb = RC_APPLY_SHADING(color.rgb, color.rgb, vec3(1.0), samplePos,"
+                << "color = APPLY_CLASSIFICATION(transferFuncs_[" << i << "], voxel)"
+                << "color.rgb = APPLY_SHADING(color.rgb, color.rgb, vec3(1.0), samplePos,"
                 << " gradient, lightPosition_, vec3(0.0));"
-                << "result = RC_APPLY_COMPOSITING(result, color, samplePos, voxel, gradient,"
+                << "result = APPLY_COMPOSITING(result, color, samplePos, voxel, gradient,"
                 << " t, tDepth, tIncr);";
         }
         shader_->getFragmentShaderObject()->addShaderDefine("SAMPLE_CHANNELS", ss2.str());

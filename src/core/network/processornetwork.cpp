@@ -765,7 +765,7 @@ Property* ProcessorNetwork::getProperty(std::vector<std::string> path) const {
         if (processor) {
             Property* property = processor->getPropertyByIdentifier(path[1]);
             if (property) {
-                int i = 2;
+                size_t i = 2;
                 while (path.size() > i) {
                     CompositeProperty* comp = dynamic_cast<CompositeProperty*>(property);
                     if(comp) {

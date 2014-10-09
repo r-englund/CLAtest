@@ -34,7 +34,7 @@
 #include "include/inc_sampler3d.frag"
 #include "include/inc_raycasting.frag"
 #include "include/inc_classification.frag"
-#include "include/inc_gradients.frag"
+#include "utils/gradients.frag"
 #include "include/inc_shading.frag"
 #include "include/inc_compositing.frag"
 #include "include/inc_depth.frag"
@@ -70,9 +70,9 @@ vec4 rayTraversal(vec3 entryPoint, vec3 exitPoint, vec2 texCoords) {
     while (t < tEnd) {
         vec3 samplePos = entryPoint + t * rayDirection;
         vec4 voxel = getNormalizedVoxel(volume_, volumeParameters_, samplePos);
-        vec3 gradient = RC_CALC_GRADIENTS(voxel, samplePos, volume_, volumeParameters_, t, rayDirection, entryTex_, entryParameters_);
-        vec4 color = RC_APPLY_CLASSIFICATION(transferFunc_, voxel);
-        color.rgb = RC_APPLY_SHADING(color.rgb, color.rgb, vec3(1.0), samplePos, gradient, lightPosition_, cameraPosition_);
+        vec3 gradient = COMPUTE_GRADIENTS(voxel, volume_, volumeParameters_, samplePos);
+        vec4 color = APPLY_CLASSIFICATION(transferFunc_, voxel);
+        color.rgb = APPLY_SHADING(color.rgb, color.rgb, vec3(1.0), samplePos, gradient, lightPosition_, cameraPosition_);
         //Light Volume Compositing
         vec4 lightVoxel = getVoxel(lightVolume_, lightVolumeParameters_, samplePos);
 #ifdef LIGHT_COLOR_ENABLED
@@ -82,7 +82,7 @@ vec4 rayTraversal(vec3 entryPoint, vec3 exitPoint, vec2 texCoords) {
 #else
         color.rgb *= lightVoxel.r;
 #endif
-        result = RC_APPLY_COMPOSITING(result, color, samplePos, voxel, gradient, t, tDepth, tIncr);
+        result = APPLY_COMPOSITING(result, color, samplePos, voxel, gradient, t, tDepth, tIncr);
 
         // early ray termination
         if (result.a > ERT_THRESHOLD) t = tEnd;

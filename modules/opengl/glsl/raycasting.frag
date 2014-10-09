@@ -34,8 +34,8 @@
 #include "utils/sampler2d.frag"
 #include "utils/sampler3d.frag"
 #include "utils/depth.frag"
-#include "utils/gradients.frag"
 
+#include "utils/gradients.frag"
 #include "include/inc_classification.frag"
 #include "include/inc_compositing.frag"
 
@@ -81,14 +81,14 @@ vec4 rayTraversal(vec3 entryPoint, vec3 exitPoint, vec2 texCoords) {
         samplePos = entryPoint + t * rayDirection;
         voxel = getNormalizedVoxel(volume_, volumeParameters_, samplePos);
 
-        gradient = CALC_GRADIENTS_FOR_CHANNEL(voxel, volume_, volumeParameters_, samplePos, channel_);
+        gradient = COMPUTE_GRADIENTS_FOR_CHANNEL(voxel, samplePos, volume_, volumeParameters_, t, rayDirection, entryTex_, entryParameters_, channel_);
 
-        color = RC_APPLY_CLASSIFICATION_FOR_CHANNEL(transferFunc_, voxel, channel_);
+        color = APPLY_CLASSIFICATION_FOR_CHANNEL(transferFunc_, voxel);
 
         color.rgb = APPLY_LIGHTING(light_, camera_, volumeParameters_, color.rgb, color.rgb,
                                    vec3(1.0), samplePos, gradient);
 
-        result = RC_APPLY_COMPOSITING(result, color, samplePos, voxel, gradient, t, tDepth, tIncr);
+        result = APPLY_COMPOSITING(result, color, samplePos, voxel, gradient, t, tDepth, tIncr);
 
         // early ray termination
         if (result.a > ERT_THRESHOLD) {

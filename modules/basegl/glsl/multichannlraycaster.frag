@@ -84,7 +84,7 @@ vec4 rayTraversal(vec3 entryPoint, vec3 exitPoint, vec2 texCoords) {
         samplePos = entryPoint + t * rayDirection;
         voxel = getNormalizedVoxel(volume_, volumeParameters_, samplePos);
         
-		gradients = CALC_ALL_GRADIENTS(voxel, volume_, volumeParameters_, samplePos);
+		gradients = COMPUTE_ALL_GRADIENTS(voxel, volume_, volumeParameters_, samplePos);
 
         // macro defined in MultichannelRaycaster::initializeResources()            
 		SAMPLE_CHANNELS
