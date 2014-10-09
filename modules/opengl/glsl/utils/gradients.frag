@@ -32,9 +32,6 @@
 #ifndef IVW_GRADIENTS_GLSL
 #define IVW_GRADIENTS_GLSL
 
-//Higher order gradients
-
-
 /********** For selected channel **********/
 
 // Compute unnormalized world space gradient using forward difference: f' = ( f(x+h)-f(x) ) / h
@@ -112,6 +109,7 @@ vec3 gradientForwardDiff(float intensity, VOLUME_TYPE volume, VOLUME_PARAMETERS 
     return gradientForwardDiff(vec4(intensity), volume, volumeParams, samplePos, 0);
 }
 
+/********** For the first channel (red) **********/
 // Compute unnormalized world space gradient using central difference: f' = ( f(x+h)-f(x-h) ) / 2*h
 vec3 gradientCentralDiff(float intensity, VOLUME_TYPE volume, VOLUME_PARAMETERS volumeParams, vec3 samplePos) {
     //Of order O(h^2) central differences

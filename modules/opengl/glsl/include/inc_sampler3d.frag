@@ -32,7 +32,6 @@
 #ifndef IVW_INCSAMPLER3D_GLSL
 #define IVW_INCSAMPLER3D_GLSL
 
-
 #include "utils/structs.frag"
 
 //
