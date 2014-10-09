@@ -78,14 +78,17 @@ vec4 rayTraversal(vec3 entryPoint, vec3 exitPoint, vec2 texCoords) {
     vec4 color;
     vec4 voxel;
     vec3 samplePos;
-    vec3 gradient;
+    mat4x3 gradients;
+
     while (t < tEnd) {
         samplePos = entryPoint + t * rayDirection;
         voxel = getNormalizedVoxel(volume_, volumeParameters_, samplePos);
         
-        // macro defined in MultichannelRaycaster::initializeResources()
-        SAMPLE_CHANNELS
-        
+		gradients = CALC_ALL_GRADIENTS(voxel, volume_, volumeParameters_, samplePos);
+
+        // macro defined in MultichannelRaycaster::initializeResources()            
+		SAMPLE_CHANNELS
+
         // early ray termination
         if (result.a > ERT_THRESHOLD) {
             t = tEnd;
