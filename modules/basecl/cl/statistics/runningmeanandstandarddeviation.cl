@@ -39,22 +39,29 @@
  * http://en.wikipedia.org/wiki/Standard_deviation (Rapid calculation methods)
  */
 
-void runningMeanAndStandardDeviation(float iteration, float multiplier, float4 sample,
+void runningMeanAndStandardDeviation(int iteration, float multiplier, float4 sample,
 									 float4* __restrict mean, float4* __restrict std)
 {
-	const float4 prevMean = *mean;
-	const float4 prevStd = *std;
-	if(iteration != 1.f) {
-		float4 newMean = prevMean + (sample-prevMean)/iteration;
-		float4 Qprev = (iteration-2.f)*prevStd/multiplier;
-		float4 Q = Qprev + (sample-prevMean)*(sample-newMean);
-		float4 newStd = multiplier*Q/(iteration-1.f);
-		newStd.w = 1.f;
-		*std = newStd;
-        *mean = newMean;
-	} else {
-        *std = (float4)(0.f);
-        *mean = sample;
+	const float4 oldM = *mean;
+	const float4 oldS = *std;
+	const float N = (float)iteration;
+
+	if(iteration <= 1)
+	{
+		*mean = (float4)(sample.xyz,1.f);
+		*std = (float4)(0.f,0.f,0.f,1.f);
+	}
+	else
+	{
+		float4 newM = oldM + (sample - oldM)/N;
+		newM.w = 1.f;
+		float4 Qprev = (N-2.f)*oldS/multiplier;
+		float4 Q = Qprev + (sample-oldM)*(sample-newM);
+		float4 newS = multiplier*Q/(N-1.f);
+		newS.w = 1.f;
+		
+		*mean = newM;
+		*std = newS;
 	}
 }
 

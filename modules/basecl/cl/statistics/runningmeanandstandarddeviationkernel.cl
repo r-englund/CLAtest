@@ -63,8 +63,8 @@ __kernel void runningMeanAndStandardDeviationKernel(
         write_imagef(nextMeanImg, globalId, mean);
         
     } else {
-        write_imagef(newStdImg, globalId, (float4)(0.f));
-        write_imagef(nextMeanImg, globalId, sample);
+        write_imagef(newStdImg, globalId, (float4)(0.f,0.f,0.f,1.f));
+        write_imagef(nextMeanImg, globalId, (float4)(sample.xyz, 1.f));
     }
 
     //
