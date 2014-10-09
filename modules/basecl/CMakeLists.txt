@@ -33,6 +33,11 @@ set(SHADER_FILES
 )
 ivw_group("Shader Files" ${SHADER_FILES})
 
+set(TEST_FILES
+    ${IVW_MODULE_DIR}/basecl/tests/runningimagemeanandstandarddeviationcl-test.cpp
+)
+ivw_add_unittest(${TEST_FILES})
+
 #--------------------------------------------------------------------
 # Add definition
 ivw_add_definition(__CL_ENABLE_EXCEPTIONS)
