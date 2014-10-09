@@ -83,7 +83,7 @@ vec4 rayTraversal(vec3 entryPoint, vec3 exitPoint, vec2 texCoords) {
 
         gradient = COMPUTE_GRADIENTS_FOR_CHANNEL(voxel, samplePos, volume_, volumeParameters_, t, rayDirection, entryTex_, entryParameters_, channel_);
 
-        color = APPLY_CLASSIFICATION_FOR_CHANNEL(transferFunc_, voxel);
+        color = APPLY_CLASSIFICATION(transferFunc_, voxel);
 
         color.rgb = APPLY_LIGHTING(light_, camera_, volumeParameters_, color.rgb, color.rgb,
                                    vec3(1.0), samplePos, gradient);
