@@ -278,6 +278,7 @@ public:
      */
     std::vector<Property*> getLinkedProperties(Property* property);
 
+    Property* getProperty(std::vector<std::string> path) const;
 
     void autoLinkProcessor(Processor* processor);
 
