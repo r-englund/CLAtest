@@ -3,7 +3,7 @@
  * Inviwo - Interactive Visualization Workshop
  * Version 0.6b
  *
- * Copyright (c) 2014 Inviwo Foundation
+ * Copyright (c) 2013-2014 Inviwo Foundation
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -26,41 +26,38 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
- * Main file author: Erik Sundén
+ * Main file authors: Erik Sundén
  *
  *********************************************************************************/
 
-#ifndef IVW_LAYERDISK_H
-#define IVW_LAYERDISK_H
+#ifndef IVW_FREEIMAGEREADER_H
+#define IVW_FREEIMAGEREADER_H
 
-#include <inviwo/core/common/inviwocoredefine.h>
-#include <inviwo/core/datastructures/diskrepresentation.h>
-#include <inviwo/core/datastructures/image/layerrepresentation.h>
+#include <modules/freeimage/freeimagemoduledefine.h>
+#include <inviwo/core/common/inviwo.h>
+#include <inviwo/core/io/datareader.h>
 
 namespace inviwo {
 
-class IVW_CORE_API LayerDisk : public LayerRepresentation, public DiskRepresentation {
+class Layer;
+class LayerDisk;
 
+/** \brief Reader for Images files
+ *
+ */
+class IVW_MODULE_FREEIMAGE_API FreeImageReader : public DataReaderType<Layer> {
 public:
-    LayerDisk(LayerType type = COLOR_LAYER);
-    LayerDisk(std::string url, LayerType type = COLOR_LAYER);
-    LayerDisk(const LayerDisk& rhs);
-    LayerDisk& operator=(const LayerDisk& that);
-    virtual LayerDisk* clone() const;
-    virtual ~LayerDisk();
-    virtual void initialize();
-    virtual void deinitialize();
-    virtual bool copyAndResizeLayer(DataRepresentation*) const;
+    FreeImageReader();
+    FreeImageReader(const FreeImageReader& rhs);
+    FreeImageReader& operator=(const FreeImageReader& that);
+    virtual FreeImageReader* clone() const;
+    virtual ~FreeImageReader() {}
 
-    /**
-     * \brief Updates the data format retrieved during loading
-     *
-     * @param const DataFormatBase* the new dataformat
-     *
-     */
-    void updateDataFormat(const DataFormatBase*);
+    virtual Layer* readMetaData(const std::string filePath);
+    virtual void* readData() const;
+    virtual void readDataInto(void* dest) const;
 };
 
-} // namespace
+}  // namespace
 
-#endif // IVW_LAYERDISK_H
+#endif  // IVW_FREEIMAGEREADER_H

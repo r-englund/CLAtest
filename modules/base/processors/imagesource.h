@@ -56,9 +56,15 @@ public:
 protected:
     virtual void process();
 
+    void load();
+
+    virtual void deserialize(IvwDeserializer& d);
+
 private:
     ImageOutport outport_;
     FileProperty imageFileName_;
+
+    bool isDeserializing_;
 };
 
 } // namespace

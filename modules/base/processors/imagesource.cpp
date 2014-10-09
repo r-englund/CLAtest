@@ -34,6 +34,7 @@
 #include <inviwo/core/common/inviwoapplication.h>
 #include <inviwo/core/datastructures/image/imagedisk.h>
 #include <inviwo/core/datastructures/image/layerdisk.h>
+#include <inviwo/core/io/datareaderfactory.h>
 #include <inviwo/core/util/urlparser.h>
 
 namespace inviwo {
@@ -50,6 +51,15 @@ ImageSource::ImageSource()
      imageFileName_("imageFileName", "Image file name", "" , "image")
 {
     addPort(outport_);
+
+    imageFileName_.onChange(this, &ImageSource::load);
+    std::vector<FileExtension> ext = DataReaderFactory::getPtr()->getExtensionsForType<Layer>();
+    for (std::vector<FileExtension>::const_iterator it = ext.begin(); it != ext.end(); ++it) {
+        std::stringstream ss;
+        ss << it->description_ << " (*." << it->extension_ << ")";
+        imageFileName_.addNameFilter(ss.str());
+    }
+
     addProperty(imageFileName_);
 }
 
@@ -67,10 +77,11 @@ bool ImageSource::isReady() const {
     return URLParser::fileExists(imageFileName_.get());
 }
 
-/**
- * Creates a ImageDisk representation if there isn't an object already defined.
- **/
 void ImageSource::process() {
+    if (this->isDeserializing_) {
+        return;
+    }
+
     Image* outImage = outport_.getData();
 
     if (outImage) {
@@ -78,17 +89,43 @@ void ImageSource::process() {
         if(outImage->getColorLayer()->hasRepresentation<LayerDisk>()){
             outLayerDisk = outImage->getColorLayer()->getEditableRepresentation<LayerDisk>();
         } else {
-            outLayerDisk = new LayerDisk(imageFileName_.get());
-            outImage->getColorLayer()->addRepresentation(outLayerDisk);
-        }
-
-        if (outLayerDisk->getSourceFile() != imageFileName_.get()) {
-            outImage = new Image();
-            outport_.setData(outImage);
-            outLayerDisk = new LayerDisk(imageFileName_.get());
-            outImage->getColorLayer()->addRepresentation(outLayerDisk);
+            load();
         }
     }
+}
+
+void ImageSource::load() {
+    if (isDeserializing_ || imageFileName_.get() == "") {
+        return;
+    }
+
+    std::string fileExtension = URLParser::getFileExtension(imageFileName_.get());
+    DataReaderType<Layer>* reader = DataReaderFactory::getPtr()->getReaderForTypeAndExtension<Layer>(fileExtension);
+
+    if (reader) {
+        try {
+            Layer* outLayer = reader->readMetaData(imageFileName_.get());
+            Image* outImage = new Image(outLayer);
+            outport_.setData(outImage);
+        }
+        catch (DataReaderException const& e) {
+            LogError("Could not load data: " << imageFileName_.get() << ", " << e.getMessage());
+            imageFileName_.set("");
+        }
+    } else {
+        LogError("Could not find a data reader for file: " << imageFileName_.get());
+        imageFileName_.set("");
+    }
+}
+
+/**
+ * Deserialize everything first then load the data
+ */
+void ImageSource::deserialize(IvwDeserializer& d) {
+    isDeserializing_ = true;
+    Processor::deserialize(d);
+    isDeserializing_ = false;
+    load();
 }
 
 } // namespace

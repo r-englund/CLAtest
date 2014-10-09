@@ -163,6 +163,7 @@ void NetworkEditor::removeProcessorGraphicsItem(Processor* processor) {
 
     if (oldProcessorTarget_ == processorGraphicsItem) oldProcessorTarget_ = NULL;
 
+    removeItem(processorGraphicsItem);
     processorGraphicsItems_.erase(processor);
     // delete processor graphics item
     delete processorGraphicsItem;

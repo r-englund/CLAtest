@@ -35,7 +35,8 @@
 
 #include <inviwo/core/common/inviwocoredefine.h>
 #include <inviwo/core/common/inviwo.h>
-#include "inviwo/core/datastructures/data.h"
+#include <inviwo/core/datastructures/data.h>
+#include <inviwo/core/datastructures/diskrepresentation.h>
 #include <inviwo/core/util/fileextension.h>
 #include <inviwo/core/util/exception.h>
 
@@ -52,6 +53,9 @@ public:
  *
  */
 class IVW_CORE_API DataReader {
+
+friend class DiskRepresentation;
+
 public:
     DataReader();
     DataReader(const DataReader& rhs);
@@ -67,6 +71,9 @@ public:
     void addExtension(FileExtension ext);
 
 protected:
+    void setOwner(DiskRepresentation* owner) { owner_ = owner; };
+
+    DiskRepresentation* owner_;
 
 private:
     std::vector<FileExtension> extensions_;

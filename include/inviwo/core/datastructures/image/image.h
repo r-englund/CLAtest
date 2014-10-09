@@ -46,6 +46,7 @@ class IVW_CORE_API Image : public DataGroup {
 public:
     Image(uvec2 dimensions = uvec2(32,32), ImageType type = COLOR_DEPTH, const DataFormatBase* format = DataVec4UINT8::get(),
           bool allowMissingLayers = false);
+    Image(Layer* colorLayer, ImageType type = COLOR_DEPTH, bool allowMissingLayers = false);
     Image(const Image&);
     Image& operator=(const Image& that);
     virtual Image* clone() const;
@@ -54,7 +55,7 @@ public:
 
     void deinitialize();
 
-    void initialize(uvec2 dimensions, const DataFormatBase*);
+    void initialize(uvec2 dimensions, const DataFormatBase*, Layer* colorLayer = NULL);
 
     uvec2 getDimension() const;
 

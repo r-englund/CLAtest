@@ -35,9 +35,10 @@
 
 #include <inviwo/core/common/inviwocoredefine.h>
 #include <string>
-#include <inviwo/core/io/datareader.h>
 
 namespace inviwo {
+
+class DataReader;
 
 class IVW_CORE_API DiskRepresentation {
 

@@ -31,6 +31,7 @@
  *********************************************************************************/
 
 #include <inviwo/core/datastructures/diskrepresentation.h>
+#include <inviwo/core/io/datareader.h>
 
 namespace inviwo {
 
@@ -40,7 +41,8 @@ DiskRepresentation::DiskRepresentation(std::string srcFile) : sourceFile_(srcFil
 
 DiskRepresentation::DiskRepresentation(const DiskRepresentation& rhs)
     : sourceFile_(rhs.sourceFile_)
-    , reader_(rhs.reader_!=NULL?rhs.reader_->clone():NULL) {
+    , reader_(NULL) {
+    setDataReader(rhs.reader_!=NULL?rhs.reader_->clone():NULL);
 }
 
 DiskRepresentation& DiskRepresentation::operator=(const DiskRepresentation& that) {
@@ -52,7 +54,7 @@ DiskRepresentation& DiskRepresentation::operator=(const DiskRepresentation& that
             reader_ = NULL;
         }
 
-        reader_ = that.reader_!=NULL?that.reader_->clone():NULL;
+        setDataReader(that.reader_!=NULL?that.reader_->clone():NULL);
     }
 
     return *this;
@@ -78,10 +80,14 @@ bool DiskRepresentation::hasSourceFile() const {
 }
 
 void DiskRepresentation::setDataReader(DataReader* reader) {
+    if(!reader)
+        return;
+    
     if (reader_)
         delete reader_;
 
     reader_ = reader;
+    reader->setOwner(this);
 }
 
 void* DiskRepresentation::readData() const {

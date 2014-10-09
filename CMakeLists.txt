@@ -21,6 +21,7 @@ option(IVW_SIGAR "Use sigar to detect system capabilities" ON)
 # Modules
 build_module(Base)
 build_module(BaseGL)
+build_module(FreeImage)
 build_module(OpenGL)
 build_module(OpenGLQt)
 
