@@ -151,7 +151,7 @@ void MultichannelRaycaster::process() {
  
     
     shader_->setUniform("viewToTexture_",
-                        volume->getCoordinateTransformer().getWorldToTextureMatrix());
+                        camera_.inverseViewMatrix()*volume->getCoordinateTransformer().getWorldToTextureMatrix());
  
     shader_->setUniform("volume_", volUnit.getUnitNumber());
     utilgl::setShaderUniforms(shader_, volume, "volumeParameters_");

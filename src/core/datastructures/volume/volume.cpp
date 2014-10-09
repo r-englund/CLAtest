@@ -132,4 +132,33 @@ DataRepresentation* Volume::createDefaultRepresentation() {
     return volDisk;
 }
 
+float Volume::getWorldSpaceGradientSpacing() const {
+    mat3 textureToWorld = mat3(getCoordinateTransformer().getTextureToWorldMatrix());
+
+    // Find the maximum distance we can go from the center of a voxel without ending up outside the voxel
+    // Shorten each basis to the distance from one voxel to the next
+    mat3 voxelSpaceBasis;
+    for (int dim = 0; dim < 3; ++dim) {
+        voxelSpaceBasis[dim] = textureToWorld[dim]/static_cast<float>(getDimension()[dim]);
+    }
+    
+    // Find the distance three of the sides of a voxel
+    // Project x-axis onto the y-axis. 
+    // Distance from that point to the x-axis will be the shortest distance 
+    vec3 distanceToSide;
+    vec3 projectedAxes[3]; 
+    // Project x onto y axis, x onto z axis and y onto z axis
+    vec3 xOntoY = voxelSpaceBasis[1]*glm::dot(voxelSpaceBasis[0], voxelSpaceBasis[1]);
+    vec3 xOntoZ = voxelSpaceBasis[2]*glm::dot(voxelSpaceBasis[0], voxelSpaceBasis[2]);
+    vec3 yOntoZ = voxelSpaceBasis[2]*glm::dot(voxelSpaceBasis[1], voxelSpaceBasis[2]);
+    distanceToSide[0] = glm::distance(voxelSpaceBasis[0], xOntoY);
+    distanceToSide[1] = glm::distance(voxelSpaceBasis[0], xOntoZ);
+    distanceToSide[2] = glm::distance(voxelSpaceBasis[1], yOntoZ);
+
+    // From the center of the voxel we can go half of the minumum distance without going outside
+    float minimumDistance = 0.5f*std::min(distanceToSide[0], std::min(distanceToSide[1], distanceToSide[2]));
+    // Return the minumum distance we can travel along each basis
+    return minimumDistance;
+}
+
 }  // namespace

@@ -289,7 +289,7 @@ void VolumeRaycasterGL::setVolumeParameters(const VolumeInport& inport, Shader* 
     if(volume){
         const VolumeGL* volumeGL = volume->getRepresentation<VolumeGL>();
         volumeGL->setVolumeUniforms(volume, shader, samplerID);
-        mat4 viewToTexture = volume->getCoordinateTransformer().getWorldToTextureMatrix();
+        mat4 viewToTexture = camera_.inverseViewMatrix()*volume->getCoordinateTransformer().getWorldToTextureMatrix();
         shader->setUniform("viewToTexture_", viewToTexture);
     }
 }

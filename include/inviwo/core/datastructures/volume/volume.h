@@ -67,6 +67,7 @@ public:
     mat4 getWorldTransform() const;
     void setWorldTransform(const mat4& mat);
 
+    float getWorldSpaceGradientSpacing() const;
     DataMapper dataMap_;
 
 protected:
