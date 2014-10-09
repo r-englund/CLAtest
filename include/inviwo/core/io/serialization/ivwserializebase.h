@@ -203,7 +203,7 @@ public:
          * @param IvwSerializeBase & serializer reference to serializer or deserializer
          * @param TxElement * node //Parent (Ticpp Node) element.
          */
-        NodeSwitch(IvwSerializeBase& serializer, TxElement* node, bool getChild = true);
+        NodeSwitch(IvwSerializeBase& serializer, TxElement* node, bool retrieveChild = true);
         /**
          * \brief Destructor
          */
@@ -212,7 +212,7 @@ public:
     private:
         IvwSerializeBase& serializer_;  //reference to serializer or deserializer
         TxElement* storedNode_; //Parent (Ticpp Node) element.
-        bool storedGetChild_;
+        bool storedRetrieveChild_;
     };
 
     struct IVW_CORE_API ReferenceData {
@@ -250,7 +250,7 @@ protected:
     TxDocument doc_;
     TxElement* rootElement_;
     bool allowRef_;
-    bool getChild_;
+    bool retrieveChild_;
     ReferenceDataContainer refDataContainer_;
 };
 

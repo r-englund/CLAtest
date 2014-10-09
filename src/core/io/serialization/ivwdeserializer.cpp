@@ -78,7 +78,7 @@ void IvwDeserializer::deserialize(const std::string& key, IvwSerializable& sObj)
     try {
         TxElement* keyNode;
 
-        if (getChild_)
+        if (retrieveChild_)
             keyNode = rootElement_->FirstChildElement(key);
         else
             keyNode = rootElement_;
@@ -94,8 +94,8 @@ void IvwDeserializer::deserializeAttributes(const std::string& key, std::string&
     } catch (TxException&) {}
 }
 
-void IvwDeserializer::deserializePrimitives(const std::string& key, std::string& data) {
-    if (getChild_) {
+void IvwDeserializer::deserializePrimitive(const std::string& key, std::string& data) {
+    if (retrieveChild_) {
         rootElement_->FirstChildElement(key)->GetAttribute(
             IvwSerializeConstants::CONTENT_ATTRIBUTE, &data);
     } else
@@ -109,7 +109,7 @@ void IvwDeserializer::deserialize(const std::string& key,
         deserializeAttributes(key, data);
     else {
         try {
-            deserializePrimitives(key, data);
+            deserializePrimitive(key, data);
         } catch (TxException&) {
             //Try one more time to deserialize as string attribute (content attribute)
             try {
@@ -122,43 +122,43 @@ void IvwDeserializer::deserialize(const std::string& key,
 
 
 void IvwDeserializer::deserialize(const std::string& key, bool& data) {
-    deserializePrimitives<bool>(key, data);
+    deserializePrimitive<bool>(key, data);
 }
 void IvwDeserializer::deserialize(const std::string& key, float& data) {
-    deserializePrimitives<float>(key, data);
+    deserializePrimitive<float>(key, data);
 }
 void IvwDeserializer::deserialize(const std::string& key, double& data) {
-    deserializePrimitives<double>(key, data);
+    deserializePrimitive<double>(key, data);
 }
 void IvwDeserializer::deserialize(const std::string& key, signed char& data) {
-    deserializePrimitives<signed char>(key, data);
+    deserializePrimitive<signed char>(key, data);
 }
 void IvwDeserializer::deserialize(const std::string& key, unsigned char& data) {
-    deserializePrimitives<unsigned char>(key, data);
+    deserializePrimitive<unsigned char>(key, data);
 }
 void IvwDeserializer::deserialize(const std::string& key, char& data) {
-    deserializePrimitives<char>(key, data);
+    deserializePrimitive<char>(key, data);
 }
 void IvwDeserializer::deserialize(const std::string& key, short& data) {
-    deserializePrimitives<short>(key, data);
+    deserializePrimitive<short>(key, data);
 }
 void IvwDeserializer::deserialize(const std::string& key, unsigned short& data) {
-    deserializePrimitives<unsigned short>(key, data);
+    deserializePrimitive<unsigned short>(key, data);
 }
 void IvwDeserializer::deserialize(const std::string& key, int& data) {
-    deserializePrimitives<int>(key, data);
+    deserializePrimitive<int>(key, data);
 }
 void IvwDeserializer::deserialize(const std::string& key, unsigned int& data) {
-    deserializePrimitives<unsigned int>(key, data);
+    deserializePrimitive<unsigned int>(key, data);
 }
 void IvwDeserializer::deserialize(const std::string& key, long& data) {
-    deserializePrimitives<long>(key, data);
+    deserializePrimitive<long>(key, data);
 }
 void IvwDeserializer::deserialize(const std::string& key, long long& data) {
-    deserializePrimitives<long long>(key, data);
+    deserializePrimitive<long long>(key, data);
 }
 void IvwDeserializer::deserialize(const std::string& key, unsigned long long& data) {
-    deserializePrimitives<unsigned long long>(key, data);
+    deserializePrimitive<unsigned long long>(key, data);
 }
 
 void IvwDeserializer::readXMLData() {

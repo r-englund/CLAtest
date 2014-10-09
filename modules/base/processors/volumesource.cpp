@@ -151,7 +151,7 @@ void VolumeSource::onOverrideChange() {
 void VolumeSource::dataLoaded(Volume* volume) {
     InviwoApplication::getPtr()->getProcessorNetwork()->lock();
     
-    // Save the old state, used when we have deserialized to be able to restore deserilized values
+    // Save the old state, used when we have deserialized to be able to restore deserialized values
     // after the file loading have read in the default values.
     saveState();
 
@@ -210,7 +210,7 @@ void VolumeSource::dataLoaded(Volume* volume) {
     dimensions_.setCurrentStateAsDefault();
     format_.setCurrentStateAsDefault();
 
-    // If we where deserializing, we just wrote over all the state, now we have to restore it.
+    // If we were deserializing, we just wrote over all the state, now we have to restore it.
     if (isDeserializing_) {
         restoreState();
         overrideLengths_ = lengths_.get();
@@ -268,7 +268,7 @@ void VolumeSource::saveState(){
 
 void VolumeSource::restoreState() {
     // This is more tricky than it seems since, we have saved all the properties, but since we only 
-    // de serialize when something changed, we will not have written data in all the saved 
+    // deserialize when something changed, we will not have written data in all the saved 
     // properties hence some might still only hold the default state since construction, so we have
     // to check if the state has changed before we restore it.
 
