@@ -92,17 +92,17 @@ void MultichannelRaycaster::initializeResources() {
 
         std::stringstream ss2;
         for (int i = 0; i < channels; ++i) {
-            ss2 << "gradient = RC_CALC_GRADIENTS_FOR_CHANNEL(voxel, samplePos, volume_,"
-             << " volumeParameters_, t, rayDirection, entryTex_, entryParameters_," << i << ");"
+            ss2 << "gradient = CALC_GRADIENTS_FOR_CHANNEL(voxel, volume_, volumeParameters_, "
+                << "    samplePos, " << i << ");"
             
-             << "color = RC_APPLY_CLASSIFICATION_FOR_CHANNEL(transferFuncs_[" << i
-             << "], voxel, " << i << ")"
+                << "color = RC_APPLY_CLASSIFICATION_FOR_CHANNEL(transferFuncs_[" << i << "], "
+                << "    voxel, " << i << ")"
             
-             << "color.rgb = RC_APPLY_SHADING(color.rgb, color.rgb, vec3(1.0), samplePos,"
-             << " gradient, lightPosition_, vec3(0.0));"
-            
-             << "result = RC_APPLY_COMPOSITING(result, color, samplePos, voxel, gradient,"
-             << " t, tDepth, tIncr);";
+                << "color.rgb = APPLY_LIGHTING(light_, camera_, volumeParameters_, color.rgb, "
+                << "    color.rgb, vec3(1.0), samplePos, gradient);"
+             
+                << "result = RC_APPLY_COMPOSITING(result, color, samplePos, voxel, gradient,"
+                << "    t, tDepth, tIncr);";
         }
         shader_->getFragmentShaderObject()->addShaderDefine("SAMPLE_CHANNELS", ss2.str());
         shader_->build();
@@ -112,54 +112,40 @@ void MultichannelRaycaster::initializeResources() {
 
 void MultichannelRaycaster::process() {   
     LGL_ERROR;
-    std::vector<Property*> tfs = transferFunctions_.getProperties();
-    TextureUnit entryColorUnit, entryDepthUnit, exitColorUnit, exitDepthUnit;
+    TextureUnit entryColorUnit, entryDepthUnit, exitColorUnit, exitDepthUnit, volUnit;
     utilgl::bindTextures(entryPort_, entryColorUnit.getEnum(), entryDepthUnit.getEnum());
     utilgl::bindTextures(exitPort_, exitColorUnit.getEnum(), exitDepthUnit.getEnum());
+    utilgl::bindTexture(volumePort_, volUnit);
 
-    TextureUnit volUnit;
-    const Volume* volume = volumePort_.getData();
-    const VolumeGL* volumeGL = volume->getRepresentation<VolumeGL>();
-    volumeGL->bindTexture(volUnit.getEnum());
-
-    const int channels = volume->getDataFormat()->getComponents();
-
+    std::vector<Property*> tfs = transferFunctions_.getProperties();
+    const int channels =  volumePort_.getData()->getDataFormat()->getComponents();
     TextureUnit* transFuncUnits = new TextureUnit[channels];
     GLint* tfUnitNumbers = new GLint[channels];
-
     for (int channel = 0; channel < channels; channel++) {
-        const Layer* tfLayer = static_cast<TransferFunctionProperty*>(tfs[channel])->get().getData();
-        const LayerGL* transferFunctionGL = tfLayer->getRepresentation<LayerGL>();
-        transferFunctionGL->bindTexture(transFuncUnits[channel].getEnum());
+        utilgl::bindTexture(*static_cast<TransferFunctionProperty*>(tfs[channel]), 
+                            transFuncUnits[channel]);
         tfUnitNumbers[channel] = transFuncUnits[channel].getUnitNumber();
     }
     
     utilgl::activateAndClearTarget(outport_);
     shader_->activate();
     
-    utilgl::setShaderUniforms(shader_, outport_, "outportParameters_");
-    
+    utilgl::setShaderUniforms(shader_, outport_, "outportParameters_");    
     shader_->setUniform("transferFuncs_", tfUnitNumbers, channels);
-
     shader_->setUniform("entryColorTex_", entryColorUnit.getUnitNumber());
     shader_->setUniform("entryDepthTex_", entryDepthUnit.getUnitNumber());
     utilgl::setShaderUniforms(shader_, entryPort_, "entryParameters_");
-
     shader_->setUniform("exitColorTex_", exitColorUnit.getUnitNumber());
     shader_->setUniform("exitDepthTex_", exitDepthUnit.getUnitNumber());
-    utilgl::setShaderUniforms(shader_, exitPort_, "exitParameters_");
- 
-    
-    shader_->setUniform("viewToTexture_",
-                        camera_.inverseViewMatrix()*volume->getCoordinateTransformer().getWorldToTextureMatrix());
- 
+    utilgl::setShaderUniforms(shader_, exitPort_, "exitParameters_");    
     shader_->setUniform("volume_", volUnit.getUnitNumber());
-    utilgl::setShaderUniforms(shader_, volume, "volumeParameters_");
+    utilgl::setShaderUniforms(shader_, volumePort_, "volumeParameters_");
     utilgl::setShaderUniforms(shader_, raycasting_);
-    utilgl::setShaderUniforms(shader_, camera_);
-    utilgl::setShaderUniforms(shader_, lighting_);
+    utilgl::setShaderUniforms(shader_, camera_, "camera_");
+    utilgl::setShaderUniforms(shader_, lighting_, "light_");
     
     utilgl::singleDrawImagePlaneRect();
+
     shader_->deactivate();
     utilgl::deactivateCurrentTarget();
     LGL_ERROR;

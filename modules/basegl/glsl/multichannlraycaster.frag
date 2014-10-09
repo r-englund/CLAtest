@@ -26,45 +26,46 @@
 * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 *
-* Main file authors: Timo Ropinski, Erik Sundén
+* Main file authors: Peter Steneteg
 *
 *********************************************************************************/
+#include "utils/structs.frag"
+#include "utils/shading.frag"
+#include "utils/sampler2d.frag"
+#include "utils/sampler3d.frag"
+#include "utils/depth.frag"
+#include "utils/gradients.frag"
 
-#include "include/inc_sampler2d.frag"
-#include "include/inc_sampler3d.frag"
-#include "include/inc_raycasting.frag"
 #include "include/inc_classification.frag"
-#include "include/inc_gradients.frag"
-#include "include/inc_shading.frag"
 #include "include/inc_compositing.frag"
-#include "include/inc_depth.frag"
-
-uniform TEXTURE_TYPE entryColorTex_;
-uniform TEXTURE_TYPE entryDepthTex_;
-uniform TEXTURE_PARAMETERS entryParameters_;
-uniform TEXTURE_TYPE exitColorTex_;
-uniform TEXTURE_TYPE exitDepthTex_;
-uniform TEXTURE_PARAMETERS exitParameters_;
 
 uniform TEXTURE_PARAMETERS outportParameters_;
 
-uniform VOLUME_TYPE volume_;
+uniform TEXTURE_PARAMETERS entryParameters_;
+uniform sampler2D entryColorTex_;
+uniform sampler2D entryDepthTex_;
+
+uniform TEXTURE_PARAMETERS exitParameters_;
+uniform sampler2D exitColorTex_;
+uniform sampler2D exitDepthTex_;
+
 uniform VOLUME_PARAMETERS volumeParameters_;
+uniform sampler3D volume_;
+
+uniform SHADING_PARAMETERS light_;
+uniform CAMERA_PARAMETERS camera_;
+
+uniform float samplingRate_;
+uniform float isoValue_;
 
 // NUMBER_OF_CHANNELS is defined in initializeResources
 uniform sampler2D transferFuncs_[NUMBER_OF_CHANNELS];
 
 // set threshold for early ray termination
-#define ERT_THRESHOLD 0.95
+#define ERT_THRESHOLD 0.99
 
 vec4 rayTraversal(vec3 entryPoint, vec3 exitPoint, vec2 texCoords) {
     vec4 result = vec4(0.0);
-    float tDepth = -1.0;
-    vec4 color;
-    vec4 voxel;
-    vec3 samplePos;
-    vec3 gradient;
-
     vec3 rayDirection = exitPoint - entryPoint;
     float tEnd = length(rayDirection);
     float tIncr =
@@ -73,7 +74,11 @@ vec4 rayTraversal(vec3 entryPoint, vec3 exitPoint, vec2 texCoords) {
     tIncr = tEnd / samples;
     float t = 0.5f * tIncr;
     rayDirection = normalize(rayDirection);
-
+    float tDepth = -1.0;
+    vec4 color;
+    vec4 voxel;
+    vec3 samplePos;
+    vec3 gradient;
     while (t < tEnd) {
         samplePos = entryPoint + t * rayDirection;
         voxel = getNormalizedVoxel(volume_, volumeParameters_, samplePos);
@@ -82,18 +87,19 @@ vec4 rayTraversal(vec3 entryPoint, vec3 exitPoint, vec2 texCoords) {
         SAMPLE_CHANNELS
         
         // early ray termination
-        if (result.a > ERT_THRESHOLD)
+        if (result.a > ERT_THRESHOLD) {
             t = tEnd;
-        else
+        } else {
             t += tIncr;
+		}
     }
 
     if (tDepth != -1.0) {
-        tDepth = calculateDepthValue(tDepth, texture(entryDepthTex_, texCoords).z,
+        tDepth = calculateDepthValue(camera_, tDepth, texture(entryDepthTex_, texCoords).z,
                                      texture(exitDepthTex_, texCoords).z);
     } else {
         tDepth = 1.0;
-    }
+	}
 
     gl_FragDepth = tDepth;
     return result;
@@ -103,9 +109,9 @@ void main() {
     vec2 texCoords = gl_FragCoord.xy * outportParameters_.dimensionsRCP_;
     vec3 entryPoint = texture(entryColorTex_, texCoords).rgb;
     vec3 exitPoint = texture(exitColorTex_, texCoords).rgb;
- 
+
     if (entryPoint == exitPoint) discard;
 
-    vec4 color = rayTraversal(entryPoint, exitPoint, texCoords);    
+    vec4 color = rayTraversal(entryPoint, exitPoint, texCoords);
     FragData0 = color;
 }

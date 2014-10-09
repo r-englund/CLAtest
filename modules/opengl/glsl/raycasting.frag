@@ -91,17 +91,19 @@ vec4 rayTraversal(vec3 entryPoint, vec3 exitPoint, vec2 texCoords) {
         result = RC_APPLY_COMPOSITING(result, color, samplePos, voxel, gradient, t, tDepth, tIncr);
 
         // early ray termination
-        if (result.a > ERT_THRESHOLD)
+        if (result.a > ERT_THRESHOLD) {
             t = tEnd;
-        else
+        } else {
             t += tIncr;
+		}
     }
 
-    if (tDepth != -1.0)
+    if (tDepth != -1.0) {
         tDepth = calculateDepthValue(camera_, tDepth, texture(entryDepthTex_, texCoords).z,
                                      texture(exitDepthTex_, texCoords).z);
-    else
+    } else {
         tDepth = 1.0;
+	}
 
     gl_FragDepth = tDepth;
     return result;

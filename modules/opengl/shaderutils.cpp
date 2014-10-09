@@ -84,47 +84,47 @@ void setShaderUniforms(Shader* shader, const CameraProperty& property, std::stri
 void addShaderDefines(Shader* shader, const SimpleRaycastingProperty& property) {
     // gradient computation defines
     std::string gradientComputationKey =
-        "RC_CALC_GRADIENTS(voxel, samplePos, volume_, volumeStruct_, t, rayDirection, "
-        "entryPoints_, entryParameters_)";
+        "RC_CALC_GRADIENTS(voxel, samplePos, volume, volumeStruct, t, rayDirection, "
+        "entryPoints, entryParameters)";
     std::string gradientComputationValue = "";
 
     if (property.gradientComputationMode_.isSelectedIdentifier("none"))
         gradientComputationValue = "voxel.xyz;";
     else if (property.gradientComputationMode_.isSelectedIdentifier("forward"))
         gradientComputationValue =
-        "gradientForwardDiff(voxel.r, volume_, volumeStruct_, samplePos);";
+        "gradientForwardDiff(voxel.r, volume, volumeStruct, samplePos);";
     else if (property.gradientComputationMode_.isSelectedIdentifier("central"))
         gradientComputationValue =
-        "gradientCentralDiff(voxel.r, volume_, volumeStruct_, samplePos);";
+        "gradientCentralDiff(voxel.r, volume, volumeStruct, samplePos);";
     else if (property.gradientComputationMode_.isSelectedIdentifier("central-higher"))
         gradientComputationValue =
-        "gradientCentralDiffH(voxel.r, volume_, volumeStruct_, samplePos);";
+        "gradientCentralDiffH(voxel.r, volume, volumeStruct, samplePos);";
     else if (property.gradientComputationMode_.isSelectedIdentifier("backward"))
         gradientComputationValue =
-        "gradientBackwardDiff(voxel.r, volume_, volumeStruct_, samplePos);";
+        "gradientBackwardDiff(voxel.r, volume, volumeStruct, samplePos);";
 
     shader->getFragmentShaderObject()->addShaderDefine(gradientComputationKey,
                                                         gradientComputationValue);
 
     gradientComputationKey =
-        "RC_CALC_GRADIENTS_FOR_CHANNEL(voxel, samplePos, volume_, volumeStruct_, t, rayDirection, "
-        "entryPoints_, entryParameters_, channel_)";
+        "RC_CALC_GRADIENTS_FOR_CHANNEL(voxel, samplePos, volume, volumeStruct, t, rayDirection, "
+        "entryPoints, entryParameters, channel)";
     gradientComputationValue = "";
 
     if (property.gradientComputationMode_.isSelectedIdentifier("none"))
         gradientComputationValue = "voxel.xyz;";
     else if (property.gradientComputationMode_.isSelectedIdentifier("forward"))
         gradientComputationValue =
-        "gradientForwardDiff(voxel.r, volume_, volumeStruct_, samplePos, channel_);";
+        "gradientForwardDiff(voxel, volume, volumeStruct, samplePos, channel);";
     else if (property.gradientComputationMode_.isSelectedIdentifier("central"))
         gradientComputationValue =
-        "gradientCentralDiff(voxel.r, volume_, volumeStruct_, samplePos, channel_);";
+        "gradientCentralDiff(voxel, volume, volumeStruct, samplePos, channel);";
     else if (property.gradientComputationMode_.isSelectedIdentifier("central-higher"))
         gradientComputationValue =
-        "gradientCentralDiffH(voxel.r, volume_, volumeStruct_, samplePos, channel_);";
+        "gradientCentralDiffH(voxel, volume, volumeStruct, samplePos, channel);";
     else if (property.gradientComputationMode_.isSelectedIdentifier("backward"))
         gradientComputationValue =
-        "gradientBackwardDiff(voxel.r, volume_, volumeStruct_, samplePos, channel_);";
+        "gradientBackwardDiff(voxel, volume, volumeStruct, samplePos, channel);";
     shader->getFragmentShaderObject()->addShaderDefine(gradientComputationKey,
                                                         gradientComputationValue);
 
@@ -152,43 +152,43 @@ void addShaderDefines(Shader* shader, const SimpleRaycastingProperty& property) 
                                                        gradientComputationValue);
 
     gradientComputationKey =
-        "CALC_GRADIENTS_FOR_CHANNEL(voxel, volume, volumeParams, samplePos, channel_)";
+        "CALC_GRADIENTS_FOR_CHANNEL(voxel, volume, volumeParams, samplePos, channel)";
     gradientComputationValue = "";
 
     if (property.gradientComputationMode_.isSelectedIdentifier("none"))
         gradientComputationValue = "voxel.xyz;";
     else if (property.gradientComputationMode_.isSelectedIdentifier("forward"))
         gradientComputationValue =
-        "gradientForwardDiff(voxel, volume_, volumeParams, samplePos, channel_);";
+        "gradientForwardDiff(voxel, volume, volumeParams, samplePos, channel);";
     else if (property.gradientComputationMode_.isSelectedIdentifier("central"))
         gradientComputationValue =
-        "gradientCentralDiff(voxel, volume_, volumeParams, samplePos, channel_);";
+        "gradientCentralDiff(voxel, volume, volumeParams, samplePos, channel);";
     else if (property.gradientComputationMode_.isSelectedIdentifier("central-higher"))
         gradientComputationValue =
-        "gradientCentralDiffH(voxel, volume_, volumeParams, samplePos, channel_);";
+        "gradientCentralDiffH(voxel, volume, volumeParams, samplePos, channel);";
     else if (property.gradientComputationMode_.isSelectedIdentifier("backward"))
         gradientComputationValue =
-        "gradientBackwardDiff(voxel, volume_, volumeParams, samplePos, channel_);";
+        "gradientBackwardDiff(voxel, volume, volumeParams, samplePos, channel);";
     shader->getFragmentShaderObject()->addShaderDefine(gradientComputationKey,
                                                        gradientComputationValue);
 
 
 
     // classification defines
-    std::string classificationKey = "RC_APPLY_CLASSIFICATION(transferFunc_, voxel)";
+    std::string classificationKey = "RC_APPLY_CLASSIFICATION(transferFunc, voxel)";
     std::string classificationValue = "";
     if (property.classificationMode_.isSelectedIdentifier("none"))
         classificationValue = "vec4(voxel);";
     else if (property.classificationMode_.isSelectedIdentifier("transfer-function"))
-        classificationValue = "applyTF(transferFunc_, voxel);";
+        classificationValue = "applyTF(transferFunc, voxel);";
     shader->getFragmentShaderObject()->addShaderDefine(classificationKey, classificationValue);
 
-    classificationKey = "RC_APPLY_CLASSIFICATION_FOR_CHANNEL(transferFunc_, voxel, channel)";
+    classificationKey = "RC_APPLY_CLASSIFICATION_FOR_CHANNEL(transferFunc, voxel, channel)";
     classificationValue = "";
     if (property.classificationMode_.isSelectedIdentifier("none"))
         classificationValue = "vec4(voxel);";
     else if (property.classificationMode_.isSelectedIdentifier("transfer-function"))
-        classificationValue = "applyTF(transferFunc_, voxel, channel);";
+        classificationValue = "applyTF(transferFunc, voxel, channel);";
     shader->getFragmentShaderObject()->addShaderDefine(classificationKey, classificationValue);
 
 
