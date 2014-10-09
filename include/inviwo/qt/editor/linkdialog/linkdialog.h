@@ -42,14 +42,13 @@
 #include <QPushButton>
 #include <QEventLoop>
 #include <QLineEdit>
-
+#include <inviwo/core/properties/propertyowner.h>
 #include <inviwo/qt/widgets/inviwodockwidget.h>
 
 namespace inviwo {
 
 class Processor;
 class Property;
-class PropertyOwner;
 class LinkDialogGraphicsView;
 class LinkDialogGraphicsScene;
 
