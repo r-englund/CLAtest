@@ -195,9 +195,7 @@ uvec2 Canvas::mousePosToPixelCoordinates(ivec2 mpos) {
     
     pos.y = std::max(dim.y - pos.y - 1, 0);
     pos.y = std::min(pos.y, dim.y - 1);
-    
-    LogInfo("pos " << pos.x << ", " << pos.y);
-    
+        
     return uvec2(pos);
 }
 

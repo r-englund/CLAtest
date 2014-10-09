@@ -103,7 +103,7 @@ vec3 gradientCentralDiffH(float intensity, VOLUME_TYPE volume, VOLUME_PARAMETERS
 
 
 // For selected channel
-vec3 gradientForwardDiff(float intensity, VOLUME_TYPE volume, VOLUME_PARAMETERS volumeParams, vec3 samplePos, int channel) {
+vec3 gradientForwardDiff(vec4 intensity, VOLUME_TYPE volume, VOLUME_PARAMETERS volumeParams, vec3 samplePos, int channel) {
     //Of order O(h^2) forward differences
     vec3 voxelSpacing = volumeParams.dimensionsRCP_;
     // Value at f(x+h)
@@ -113,10 +113,10 @@ vec3 gradientForwardDiff(float intensity, VOLUME_TYPE volume, VOLUME_PARAMETERS 
     fDs.z = getNormalizedVoxel(volume, volumeParams, samplePos + vec3(0.0, 0.0, voxelSpacing.z))[channel];
     // Note that this computation is performed in texture space (by using voxelSpacing)
     // f' = ( f(x+h)-f(x) ) / voxelSpacing
-    return (fDs-intensity)/(voxelSpacing);
+    return (fDs-intensity[channel])/(voxelSpacing);
 }
 
-vec3 gradientCentralDiff(float intensity, VOLUME_TYPE volume, VOLUME_PARAMETERS volumeParams, vec3 samplePos, int channel) {
+vec3 gradientCentralDiff(vec4 intensity, VOLUME_TYPE volume, VOLUME_PARAMETERS volumeParams, vec3 samplePos, int channel) {
     //Of order O(h^2) central differences
     vec3 voxelSpacing = volumeParams.dimensionsRCP_;
     vec3 cDs;
@@ -133,7 +133,7 @@ vec3 gradientCentralDiff(float intensity, VOLUME_TYPE volume, VOLUME_PARAMETERS 
     return (cDs)/(2.0*voxelSpacing);
 }
 
-vec3 gradientBackwardDiff(float intensity, VOLUME_TYPE volume, VOLUME_PARAMETERS volumeParams, vec3 samplePos, int channel) {
+vec3 gradientBackwardDiff(vec4 intensity, VOLUME_TYPE volume, VOLUME_PARAMETERS volumeParams, vec3 samplePos, int channel) {
     //Of order O(h^2) backward differences
     vec3 voxelSpacing = volumeParams.dimensionsRCP_;
     // Value at f(x-h)
@@ -143,12 +143,12 @@ vec3 gradientBackwardDiff(float intensity, VOLUME_TYPE volume, VOLUME_PARAMETERS
     fDs.z = getNormalizedVoxel(volume, volumeParams, samplePos - vec3(0.0, 0.0, voxelSpacing.z))[channel];
     // Note that this computation is performed in texture space (by using voxelSpacing)
     // f' = ( f(x)-f(x-h) ) / voxelSpacing
-    return (intensity-fDs)/(voxelSpacing);
+    return (intensity[channel]-fDs)/(voxelSpacing);
 }
 
 //Higher order gradients
 
-vec3 gradientCentralDiffH(float intensity, VOLUME_TYPE volume, VOLUME_PARAMETERS volumeParams, vec3 samplePos, int channel) {
+vec3 gradientCentralDiffH(vec4 intensity, VOLUME_TYPE volume, VOLUME_PARAMETERS volumeParams, vec3 samplePos, int channel) {
     //Of order O(h^4) central differences
     vec3 voxelSpacing = volumeParams.dimensionsRCP_;
     vec3 cDs;
