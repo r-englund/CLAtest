@@ -74,24 +74,8 @@ bool LayerDisk::copyAndResizeLayer(DataRepresentation*) const {
     return false;
 }
 
-//Hold the requested size of the image, not the actual size
-//If the actual image should be loaded without recaling, the dimension need to equal zero
-void LayerDisk::resize(uvec2 dim) {
-    dimensions_ = dim;
-}
-
-void* LayerDisk::loadFileData(void* dst, uvec2& outDimension, DataFormatEnums::Id& outFormatId) const {
-    if (hasSourceFile())
-        return ImageIO::loadImageToData(dst, getSourceFile(), outDimension, outFormatId);
-
-    return NULL;
-}
-
-void* LayerDisk::loadFileDataAndRescale(void* dst, uvec2 dstDimesion, DataFormatEnums::Id& outFormatId) const {
-    if (hasSourceFile())
-        return ImageIO::loadImageToDataAndRescale(dst, getSourceFile(), dstDimesion, outFormatId);
-
-    return NULL;
+void LayerDisk::updateDataFormat(const DataFormatBase* format){
+    setDataFormat(format);
 }
 
 } // namespace

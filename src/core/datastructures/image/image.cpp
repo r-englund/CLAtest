@@ -36,11 +36,23 @@
 
 namespace inviwo {
 
-Image::Image(uvec2 dimensions, ImageType comb, const DataFormatBase* format, bool allowMissingLayers)
+Image::Image(uvec2 dimensions, ImageType type, const DataFormatBase* format, bool allowMissingLayers)
     : DataGroup()
     , allowMissingLayers_(allowMissingLayers)
-    , imageType_(comb) {
+    , imageType_(type) {
     initialize(dimensions, format);
+}
+
+Image::Image(Layer* colorLayer, ImageType type, bool allowMissingLayers)
+: DataGroup()
+, allowMissingLayers_(allowMissingLayers)
+, imageType_(type) {
+    if(colorLayer){
+        initialize(colorLayer->getDimension(), colorLayer->getDataFormat(), colorLayer);
+    }
+    else{
+        initialize(uvec2(32,32), DataVec4UINT8::get());
+    }
 }
 
 Image::Image(const Image& rhs)
@@ -144,8 +156,12 @@ void Image::deinitialize() {
     delete pickingLayer_;
 }
 
-void Image::initialize(uvec2 dimensions, const DataFormatBase* format) {
-    addColorLayer(new Layer(dimensions, format));
+void Image::initialize(uvec2 dimensions, const DataFormatBase* format, Layer* colorLayer) {
+    if(colorLayer)
+        addColorLayer(colorLayer);
+    else
+        addColorLayer(new Layer(dimensions, format));
+
     depthLayer_ = NULL;
     pickingLayer_ = NULL;
 

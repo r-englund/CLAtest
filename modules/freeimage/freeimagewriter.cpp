@@ -3,7 +3,7 @@
  * Inviwo - Interactive Visualization Workshop
  * Version 0.6b
  *
- * Copyright (c) 2014 Inviwo Foundation
+ * Copyright (c) 2013-2014 Inviwo Foundation
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -30,37 +30,37 @@
  *
  *********************************************************************************/
 
-#ifndef IVW_LAYERDISK_H
-#define IVW_LAYERDISK_H
+#include <modules/freeimage/freeimagewriter.h>
+#include <inviwo/core/util/urlparser.h>
 
-#include <inviwo/core/common/inviwocoredefine.h>
-#include <inviwo/core/datastructures/diskrepresentation.h>
-#include <inviwo/core/datastructures/image/layerrepresentation.h>
 
 namespace inviwo {
 
-class IVW_CORE_API LayerDisk : public LayerRepresentation, public DiskRepresentation {
+FreeImageWriter::FreeImageWriter() 
+    : DataWriterType<Layer>() {
+    addExtension(FileExtension("png", "Portable Network Graphics"));
+    addExtension(FileExtension("jpg", "Joint Photographic Experts Group"));
+    addExtension(FileExtension("jpeg", "Joint Photographic Experts Group"));
+    addExtension(FileExtension("tiff", "Tagged Image File Format"));
+    addExtension(FileExtension("bmp", "Windows bitmap"));
+    addExtension(FileExtension("exr", "OpenEXR"));
+    addExtension(FileExtension("hdr", "High dynamic range"));
+}
 
-public:
-    LayerDisk(LayerType type = COLOR_LAYER);
-    LayerDisk(std::string url, LayerType type = COLOR_LAYER);
-    LayerDisk(const LayerDisk& rhs);
-    LayerDisk& operator=(const LayerDisk& that);
-    virtual LayerDisk* clone() const;
-    virtual ~LayerDisk();
-    virtual void initialize();
-    virtual void deinitialize();
-    virtual bool copyAndResizeLayer(DataRepresentation*) const;
+FreeImageWriter::FreeImageWriter(const FreeImageWriter& rhs) : DataWriterType<Layer>(rhs) {}
 
-    /**
-     * \brief Updates the data format retrieved during loading
-     *
-     * @param const DataFormatBase* the new dataformat
-     *
-     */
-    void updateDataFormat(const DataFormatBase*);
-};
+FreeImageWriter& FreeImageWriter::operator=(const FreeImageWriter& that) {
+    if (this != &that)
+        DataWriterType<Layer>::operator=(that);
+
+    return *this;
+}
+
+FreeImageWriter* FreeImageWriter::clone() const {
+    return new FreeImageWriter(*this);
+}
+
+void FreeImageWriter::writeData(const Layer* data, const std::string filePath) const {
+}
 
 } // namespace
-
-#endif // IVW_LAYERDISK_H

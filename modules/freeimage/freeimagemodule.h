@@ -3,7 +3,7 @@
  * Inviwo - Interactive Visualization Workshop
  * Version 0.6b
  *
- * Copyright (c) 2014 Inviwo Foundation
+ * Copyright (c) 2012-2014 Inviwo Foundation
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -26,41 +26,25 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
- * Main file author: Erik Sundén
+ * Main file authors: Erik Sundén
  *
  *********************************************************************************/
 
-#ifndef IVW_LAYERDISK_H
-#define IVW_LAYERDISK_H
+#ifndef IVW_FREEIMAGEMODULE_H
+#define IVW_FREEIMAGEMODULE_H
 
-#include <inviwo/core/common/inviwocoredefine.h>
-#include <inviwo/core/datastructures/diskrepresentation.h>
-#include <inviwo/core/datastructures/image/layerrepresentation.h>
+#include <modules/freeimage/freeimagemoduledefine.h>
+#include <inviwo/core/common/inviwomodule.h>
 
 namespace inviwo {
 
-class IVW_CORE_API LayerDisk : public LayerRepresentation, public DiskRepresentation {
+class IVW_MODULE_FREEIMAGE_API FreeImageModule : public InviwoModule {
 
 public:
-    LayerDisk(LayerType type = COLOR_LAYER);
-    LayerDisk(std::string url, LayerType type = COLOR_LAYER);
-    LayerDisk(const LayerDisk& rhs);
-    LayerDisk& operator=(const LayerDisk& that);
-    virtual LayerDisk* clone() const;
-    virtual ~LayerDisk();
-    virtual void initialize();
-    virtual void deinitialize();
-    virtual bool copyAndResizeLayer(DataRepresentation*) const;
+    FreeImageModule();
 
-    /**
-     * \brief Updates the data format retrieved during loading
-     *
-     * @param const DataFormatBase* the new dataformat
-     *
-     */
-    void updateDataFormat(const DataFormatBase*);
 };
 
 } // namespace
 
-#endif // IVW_LAYERDISK_H
+#endif // IVW_FREEIMAGEMODULE_H

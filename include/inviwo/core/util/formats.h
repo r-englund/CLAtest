@@ -229,16 +229,12 @@ public:
     DataFormatBase(DataFormatEnums::Id t, size_t bA, size_t bS, int c, double max, double min, DataFormatEnums::NumericType nt, std::string s);
     virtual ~DataFormatBase();
 
-    static const DataFormatBase* get() {
-        if (!instance_[DataFormatEnums::NOT_SPECIALIZED])
-            instance_[DataFormatEnums::NOT_SPECIALIZED] = new DataFormatBase();
-
-        return instance_[DataFormatEnums::NOT_SPECIALIZED];
-    }
+    static const DataFormatBase* get();
+    static const DataFormatBase* get(DataFormatEnums::Id id);
+    static const DataFormatBase* get(std::string name);
+    static const DataFormatBase* get(DataFormatEnums::NumericType type, int components, int precision);
 
     static void cleanDataFormatBases();
-
-    static const DataFormatBase* get(std::string name);
 
     static size_t bitsAllocated() { return 0; }
     static size_t bitsStored() { return 0; }
@@ -246,8 +242,6 @@ public:
     static DataFormatEnums::NumericType numericType() { return DataFormatEnums::NOT_SPECIALIZED_TYPE; }
     static std::string str() { return "Error, type specialization not implemented"; }
     static DataFormatEnums::Id id() { return DataFormatEnums::NOT_SPECIALIZED; }
-    static const DataFormatBase* getDataFormat(DataFormatEnums::NumericType type, int components,
-                                                               int precision);
 
     virtual double valueToDouble(void*) const;
     virtual dvec2 valueToVec2Double(void*) const;

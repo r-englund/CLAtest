@@ -41,6 +41,11 @@
 
 namespace inviwo {
 
+/**
+ * \class CanvasProcessorGL
+ *
+ * \brief Takes and ImageInport and renders it into a OpenGL window i.e. a canvas.
+ */
 class IVW_MODULE_OPENGL_API CanvasProcessorGL : public CanvasProcessor {
 public:
     CanvasProcessorGL();
