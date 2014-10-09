@@ -67,6 +67,19 @@ public:
     mat4 getWorldTransform() const;
     void setWorldTransform(const mat4& mat);
 
+    /** 
+     * \brief Computes the spacing to be used for gradient computation. Also works for volume with non-orthogonal basis.
+     *
+     * Finds the maximum distance we can go from the center of a voxel without ending up outside the voxel.
+     * For a volume with orthogonal basis it will be half the minumum voxel spacing in world space.
+     *  _____
+     * |     |
+     * |  .  | <- Computes minimum distance from center point to edges.
+     * |_____|
+     *   
+     * To get the spacing in texture space use: getWorldSpaceGradientSpacing()*mat3(worldToTextureMatrix)
+     * @return Step size for gradient computation in world space.
+     */
     float getWorldSpaceGradientSpacing() const;
     DataMapper dataMap_;
 
