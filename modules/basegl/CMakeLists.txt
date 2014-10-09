@@ -61,7 +61,7 @@ set(SHADER_FILES
     ${IVW_MODULE_DIR}/basegl/glsl/img_findedges.frag
     ${IVW_MODULE_DIR}/basegl/glsl/img_graysc.frag
     ${IVW_MODULE_DIR}/basegl/glsl/img_mix.frag
-	${IVW_MODULE_DIR}/basegl/glsl/multichannlraycaster.frag
+	${IVW_MODULE_DIR}/basegl/glsl/multichannelraycaster.frag
     ${IVW_MODULE_DIR}/basegl/glsl/multiplanar.frag
     ${IVW_MODULE_DIR}/basegl/glsl/volumeslice.frag
     ${IVW_MODULE_DIR}/basegl/glsl/lighting/lightingraycasting.frag

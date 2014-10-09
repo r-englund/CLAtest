@@ -19,7 +19,7 @@ ProcessorCodeState(MultichannelRaycaster, CODE_STATE_EXPERIMENTAL);
 MultichannelRaycaster::MultichannelRaycaster()
     : Processor()
     , shader_(NULL)
-    , shaderFileName_("multichannlraycaster.frag")
+    , shaderFileName_("multichannelraycaster.frag")
     , volumePort_("volume")
     , entryPort_("entry-points")
     , exitPort_("exit-points")
@@ -92,7 +92,7 @@ void MultichannelRaycaster::initializeResources() {
 
         std::stringstream ss2;
         for (int i = 0; i < channels; ++i) {
-            ss2 << "color = APPLY_CLASSIFICATION(transferFuncs_[" << i << "], voxel)"         
+            ss2 << "color = APPLY_CLASSIFICATION(transferFuncs_[" << i << "], voxel[" << i << "])"         
                 << "color.rgb = APPLY_LIGHTING(light_, camera_, volumeParameters_, color.rgb, "
                 << "color.rgb, vec3(1.0), samplePos, gradients[" << i <<"]);"
                 << "result = APPLY_COMPOSITING(result, color, samplePos, voxel, "

@@ -3,7 +3,7 @@
     <!-- Don't edit the following code -->
     <ProcessorNetworkVersion content="4" />
     <Processors>
-        <Processor type="org.inviwo.GeometryRenderGL" identifier="GeometryRenderGL" id="ref0">
+        <Processor type="org.inviwo.GeometryRenderGL" identifier="GeometryRenderGL" id="ref2">
             <InteractonHandlers>
                 <InteractionHandler type="Trackball">
                     <Properties>
@@ -175,7 +175,7 @@
                         <usageMode content="0" />
                         <visible content="1" />
                         <MetaDataMap />
-                        <value x="0.45308384" y="-0.1003681" z="-0.75753671" />
+                        <value x="0.38339984" y="-0.075077064" z="-0.78904766" />
                     </lookFrom>
                     <lookTo type="org.inviwo.FloatVec3Property" identifier="lookTo" displayName="Look to">
                         <usageMode content="0" />
@@ -187,7 +187,7 @@
                         <usageMode content="0" />
                         <visible content="1" />
                         <MetaDataMap />
-                        <value x="-0.040730361" y="0.998873" z="-0.02435297" />
+                        <value x="-0.042143375" y="0.99910617" z="0.0032198797" />
                     </lookUp>
                     <fovy type="org.inviwo.FloatProperty" identifier="fov" displayName="FOV">
                         <usageMode content="0" />
@@ -276,7 +276,7 @@
                             <usageMode content="0" />
                             <visible content="1" />
                             <MetaDataMap />
-                            <value x="1.3095516" y="-0.27205342" z="2.4548013" />
+                            <value x="-26.218151" y="-3.9588308e-006" z="-23.601963" />
                         </Property>
                         <Property type="org.inviwo.IntProperty" identifier="materialShininess" displayName="Material shininess" key="materialShininess">
                             <usageMode content="0" />
@@ -432,7 +432,7 @@
                 </MetaDataItem>
             </MetaDataMap>
         </Processor>
-        <Processor type="org.inviwo.VolumeSubsample" identifier="VolumeSubsample" id="ref2">
+        <Processor type="org.inviwo.VolumeSubsample" identifier="VolumeSubsample" id="ref0">
             <Properties>
                 <Property type="org.inviwo.BoolProperty" identifier="adjustBasisAndOffset" displayName="Adjust Basis and Offset" key="adjustBasisAndOffset">
                     <usageMode content="0" />
@@ -518,7 +518,7 @@
                     <selection content="0" />
                 </MetaDataItem>
                 <MetaDataItem type="ProcessorWidgetMetaData" key="ProcessorWidgetMetaData">
-                    <position x="298" y="643" />
+                    <position x="209" y="166" />
                     <dimension x="608" y="299" />
                     <visibility content="1" />
                 </MetaDataItem>
@@ -527,11 +527,11 @@
     </Processors>
     <Connections>
         <Connection>
-            <OutPort identifier="image.outport">
-                <Processor type="org.inviwo.GeometryRenderGL" identifier="GeometryRenderGL" reference="ref0" />
+            <OutPort identifier="volume.outport">
+                <Processor type="org.inviwo.VolumeSubsample" identifier="VolumeSubsample" reference="ref0" />
             </OutPort>
-            <InPort identifier="inport">
-                <Processor type="org.inviwo.CanvasGL" identifier="image.outport" reference="ref3" />
+            <InPort identifier="volume">
+                <Processor type="org.inviwo.Surface Extraction" identifier="Surface Extraction" reference="ref4" />
             </InPort>
         </Connection>
         <Connection>
@@ -539,15 +539,15 @@
                 <Processor type="org.inviwo.VolumeSource" identifier="VolumeSource" reference="ref1" />
             </OutPort>
             <InPort identifier="volume.inport">
-                <Processor type="org.inviwo.VolumeSubsample" identifier="VolumeSubsample" reference="ref2" />
+                <Processor type="org.inviwo.VolumeSubsample" identifier="VolumeSubsample" reference="ref0" />
             </InPort>
         </Connection>
         <Connection>
-            <OutPort identifier="volume.outport">
-                <Processor type="org.inviwo.VolumeSubsample" identifier="VolumeSubsample" reference="ref2" />
+            <OutPort identifier="image.outport">
+                <Processor type="org.inviwo.GeometryRenderGL" identifier="GeometryRenderGL" reference="ref2" />
             </OutPort>
-            <InPort identifier="volume">
-                <Processor type="org.inviwo.Surface Extraction" identifier="Surface Extraction" reference="ref4" />
+            <InPort identifier="inport">
+                <Processor type="org.inviwo.CanvasGL" identifier="image.outport" reference="ref3" />
             </InPort>
         </Connection>
         <Connection>
@@ -555,7 +555,7 @@
                 <Processor type="org.inviwo.Surface Extraction" identifier="Surface Extraction" reference="ref4" />
             </OutPort>
             <InPort identifier="geometry.inport">
-                <Processor type="org.inviwo.GeometryRenderGL" identifier="GeometryRenderGL" reference="ref0" />
+                <Processor type="org.inviwo.GeometryRenderGL" identifier="GeometryRenderGL" reference="ref2" />
             </InPort>
         </Connection>
     </Connections>
