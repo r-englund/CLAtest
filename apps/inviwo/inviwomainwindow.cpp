@@ -210,18 +210,6 @@ bool InviwoMainWindow::processCommandLineArgs() {
 
 #endif
 
-    if (cmdparser->getCaptureAfterStartup()) {
-        ProcessorNetworkEvaluator* networkEvaluator =
-            inviwo::InviwoApplicationQt::getPtr()->getProcessorNetworkEvaluator();
-        networkEvaluator->requestEvaluate();
-        std::string path = cmdparser->getOutputPath();
-
-        if (path.empty())
-            path = InviwoApplication::getPtr()->getPath(InviwoApplication::PATH_IMAGES);
-
-        networkEvaluator->saveSnapshotAllCanvases(path, cmdparser->getSnapshotName());
-    }
-
     if (cmdparser->getScreenGrabAfterStartup()) {
         std::string path = cmdparser->getOutputPath();
 
@@ -240,6 +228,19 @@ bool InviwoMainWindow::processCommandLineArgs() {
         // QPixmap screenGrab = QPixmap::grabWindow(winId());
         std::string fileName = cmdparser->getScreenGrabName();
         screenGrab.save(QString::fromStdString(path + "/" + fileName), "png");
+    }
+
+    if (cmdparser->getCaptureAfterStartup()) {
+        ProcessorNetworkEvaluator* networkEvaluator =
+            inviwo::InviwoApplicationQt::getPtr()->getProcessorNetworkEvaluator();
+        networkEvaluator->requestEvaluate();
+        std::string path = cmdparser->getOutputPath();
+        
+        if (path.empty())
+            path = InviwoApplication::getPtr()->getPath(InviwoApplication::PATH_IMAGES);
+        
+        repaint();
+        networkEvaluator->saveSnapshotAllCanvases(path, cmdparser->getSnapshotName());
     }
 
     if (cmdparser->getQuitApplicationAfterStartup()) {

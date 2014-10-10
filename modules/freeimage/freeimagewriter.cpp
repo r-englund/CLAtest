@@ -31,7 +31,7 @@
  *********************************************************************************/
 
 #include <modules/freeimage/freeimagewriter.h>
-#include <inviwo/core/io/imageio.h>
+#include <modules/freeimage/freeimageutils.h>
 #include <inviwo/core/util/urlparser.h>
 #include <inviwo/core/datastructures/image/layer.h>
 
@@ -62,11 +62,11 @@ FreeImageWriter* FreeImageWriter::clone() const {
 }
 
 void FreeImageWriter::writeData(const Layer* data, const std::string filePath) const {
-    ImageIO::saveLayer(filePath.c_str(), data);
+    FreeImageUtils::saveLayer(filePath.c_str(), data);
 }
 
 std::vector<unsigned char>* FreeImageWriter::writeDataToBuffer(const Layer* data, const std::string fileType) const {
-    return ImageIO::saveLayerToBuffer(fileType.c_str(), data);
+    return FreeImageUtils::saveLayerToBuffer(fileType.c_str(), data);
 }
 
 } // namespace

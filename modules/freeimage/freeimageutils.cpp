@@ -30,9 +30,9 @@
  *
  *********************************************************************************/
 
-#include <inviwo/core/io/imageio.h>
+#include <modules/freeimage/freeimageutils.h>
 
-bool ImageIO::loader_initialized = false;
+bool FreeImageUtils::loader_initialized = false;
 
 inline DataFormatEnums::Id getDataFormatFromBitmap(FIBITMAP* bitmap) {
     FREE_IMAGE_TYPE type = FreeImage_GetImageType(bitmap);
@@ -163,7 +163,7 @@ inline FREE_IMAGE_TYPE getFreeImageFormatFromDataFormat(inviwo::DataFormatEnums:
     return FIT_UNKNOWN;
 }
 
-void ImageIO::saveLayer(const char* filename, const Layer* inputLayer) {
+void FreeImageUtils::saveLayer(const char* filename, const Layer* inputLayer) {
     initLoader();
     FREE_IMAGE_FORMAT imageFormat = FreeImage_GetFIFFromFilename(filename);
 
@@ -199,7 +199,7 @@ void ImageIO::saveLayer(const char* filename, const Layer* inputLayer) {
     }
 }
 
-bool ImageIO::readInImage(std::string filename, FIBITMAP** bitmap) {
+bool FreeImageUtils::readInImage(std::string filename, FIBITMAP** bitmap) {
     const char* file_name_char = (char*)(filename.c_str());
     FREE_IMAGE_FORMAT imageFormat = FIF_UNKNOWN;
     //Get file format of input file
@@ -221,7 +221,7 @@ bool ImageIO::readInImage(std::string filename, FIBITMAP** bitmap) {
     return (imageFormat != FIF_UNKNOWN);
 }
 
-bool ImageIO::isValidImageFile(std::string filename) {
+bool FreeImageUtils::isValidImageFile(std::string filename) {
     initLoader();
     const char* file_name_char = (char*)(filename.c_str());
     FREE_IMAGE_FORMAT imageFormat = FIF_UNKNOWN;
@@ -240,7 +240,7 @@ bool ImageIO::isValidImageFile(std::string filename) {
     return (imageFormat != FIF_UNKNOWN);
 }
 
-void* ImageIO::loadImageToData(void* data, std::string filename, uvec2& out_dim, inviwo::DataFormatEnums::Id& out_format) {
+void* FreeImageUtils::loadImageToData(void* data, std::string filename, uvec2& out_dim, inviwo::DataFormatEnums::Id& out_format) {
     initLoader();
     FIBITMAP* bitmap = 0;
     void* outData = data;
@@ -270,7 +270,7 @@ void* ImageIO::loadImageToData(void* data, std::string filename, uvec2& out_dim,
     return outData;
 }
 
-void* ImageIO::loadImageToDataAndRescale(void* data, std::string filename, uvec2 dst_dim, inviwo::DataFormatEnums::Id& out_format) {
+void* FreeImageUtils::loadImageToDataAndRescale(void* data, std::string filename, uvec2 dst_dim, inviwo::DataFormatEnums::Id& out_format) {
     initLoader();
     FIBITMAP* bitmap = 0;
     void* outData = data;
@@ -297,12 +297,12 @@ void* ImageIO::loadImageToDataAndRescale(void* data, std::string filename, uvec2
     return outData;
 }
 
-void* ImageIO::rescaleLayer(const Layer* inputLayer, uvec2 dst_dim) {
+void* FreeImageUtils::rescaleLayer(const Layer* inputLayer, uvec2 dst_dim) {
     const LayerRAM* layerRam = inputLayer->getRepresentation<LayerRAM>();
     return rescaleLayerRAM(layerRam, dst_dim);
 }
 
-void* ImageIO::rescaleLayerRAM(const LayerRAM* srcLayerRam, uvec2 dst_dim) {
+void* FreeImageUtils::rescaleLayerRAM(const LayerRAM* srcLayerRam, uvec2 dst_dim) {
     ivwAssert(srcLayerRam!=NULL, "LayerRAM representation does not exist.");
     initLoader();
     void* rawData = NULL;
@@ -331,7 +331,7 @@ void* ImageIO::rescaleLayerRAM(const LayerRAM* srcLayerRam, uvec2 dst_dim) {
     return rawData;
 }
 
-void ImageIO::switchChannels(FIBITMAP* bitmap, uvec2 dim, int channels) {
+void FreeImageUtils::switchChannels(FIBITMAP* bitmap, uvec2 dim, int channels) {
     if (bitmap && channels > 2) {
         unsigned int c = static_cast<unsigned int>(channels);
         BYTE* result = FreeImage_GetBits(bitmap);
@@ -345,7 +345,7 @@ void ImageIO::switchChannels(FIBITMAP* bitmap, uvec2 dim, int channels) {
     }
 }
 
-FIBITMAP* ImageIO::allocateBitmap(FREE_IMAGE_TYPE type, uvec2 dim, size_t bitsPerPixel, int channels) {
+FIBITMAP* FreeImageUtils::allocateBitmap(FREE_IMAGE_TYPE type, uvec2 dim, size_t bitsPerPixel, int channels) {
     unsigned int rMask = FI_RGBA_RED_MASK;
     unsigned int gMask = FI_RGBA_GREEN_MASK;
     unsigned int bMask = FI_RGBA_BLUE_MASK;
@@ -366,7 +366,7 @@ FIBITMAP* ImageIO::allocateBitmap(FREE_IMAGE_TYPE type, uvec2 dim, size_t bitsPe
 }
 
 template<typename T>
-FIBITMAP* ImageIO::createBitmapFromData(const T* data, FREE_IMAGE_TYPE type, uvec2 dim, size_t bitsPerPixel, int channels,
+FIBITMAP* FreeImageUtils::createBitmapFromData(const T* data, FREE_IMAGE_TYPE type, uvec2 dim, size_t bitsPerPixel, int channels,
                                         const DataFormatBase* format) {
     FIBITMAP* dib = allocateBitmap(type, dim, bitsPerPixel, channels);
     if(!dib)
@@ -392,14 +392,14 @@ FIBITMAP* ImageIO::createBitmapFromData(const T* data, FREE_IMAGE_TYPE type, uve
 }
 
 template<typename T>
-FIBITMAP* ImageIO::handleBitmapCreations(const T* data, FREE_IMAGE_TYPE type, uvec2 dim, size_t bitsPerPixel, int channels,
+FIBITMAP* FreeImageUtils::handleBitmapCreations(const T* data, FREE_IMAGE_TYPE type, uvec2 dim, size_t bitsPerPixel, int channels,
         const DataFormatBase* format) {
     FIBITMAP* bitmap = createBitmapFromData<T>(data, type, dim, bitsPerPixel, channels, format);
     switchChannels(bitmap, dim, channels);
     return bitmap;
 }
 
-FIBITMAP* ImageIO::createBitmapFromData(const LayerRAM* inputLayer) {
+FIBITMAP* FreeImageUtils::createBitmapFromData(const LayerRAM* inputLayer) {
     initLoader();
     FREE_IMAGE_TYPE formatType = getFreeImageFormatFromDataFormat(inputLayer->getDataFormatId());
 
@@ -419,7 +419,7 @@ FIBITMAP* ImageIO::createBitmapFromData(const LayerRAM* inputLayer) {
     return NULL;
 }
 
-void ImageIO::copyBitmapToData(FIBITMAP* bitmap, LayerRAM* outImage){
+void FreeImageUtils::copyBitmapToData(FIBITMAP* bitmap, LayerRAM* outImage){
     initLoader();
     switch (outImage->getDataFormat()->getId())
     {
@@ -436,7 +436,7 @@ void ImageIO::copyBitmapToData(FIBITMAP* bitmap, LayerRAM* outImage){
 }
 
 template<typename T>
-void* ImageIO::fiBitmapToDataArray(void* dst, FIBITMAP* bitmap, size_t bitsPerPixel, int channels) {
+void* FreeImageUtils::fiBitmapToDataArray(void* dst, FIBITMAP* bitmap, size_t bitsPerPixel, int channels) {
     unsigned int width = FreeImage_GetWidth(bitmap);
     unsigned int height = FreeImage_GetHeight(bitmap);
     FREE_IMAGE_TYPE type = FreeImage_GetImageType(bitmap);
@@ -459,7 +459,7 @@ void* ImageIO::fiBitmapToDataArray(void* dst, FIBITMAP* bitmap, size_t bitsPerPi
 }
 
 template<typename T>
-void* ImageIO::fiBitmapToDataArrayAndRescale(void* dst, FIBITMAP* bitmap, uvec2 dst_dim, size_t bitsPerPixel, int channels) {
+void* FreeImageUtils::fiBitmapToDataArrayAndRescale(void* dst, FIBITMAP* bitmap, uvec2 dst_dim, size_t bitsPerPixel, int channels) {
     int width = FreeImage_GetWidth(bitmap);
     int height = FreeImage_GetHeight(bitmap);
     uvec2 dim(width, height);
@@ -487,14 +487,14 @@ void* ImageIO::fiBitmapToDataArrayAndRescale(void* dst, FIBITMAP* bitmap, uvec2 
     return dst;
 }
 
-void ImageIO::initLoader() {
+void FreeImageUtils::initLoader() {
     if (!loader_initialized) {
         loader_initialized = true;
         FreeImage_Initialise(1);
     }
 }
 
-std::vector<unsigned char>* ImageIO::saveLayerToBuffer(const char* type, const Layer* inputLayer) {
+std::vector<unsigned char>* FreeImageUtils::saveLayerToBuffer(const char* type, const Layer* inputLayer) {
     initLoader();
     FREE_IMAGE_FORMAT imageFormat = FreeImage_GetFIFFromFilename(type);
 
