@@ -53,6 +53,7 @@ public:
     virtual ~FreeImageWriter() {};
 
     virtual void writeData(const Layer* data, const std::string filePath) const;
+    virtual std::vector<unsigned char>* writeDataToBuffer(const Layer* data, const std::string fileType) const;
 };
 
 } // namespace

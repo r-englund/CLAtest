@@ -65,4 +65,8 @@ void FreeImageWriter::writeData(const Layer* data, const std::string filePath) c
     ImageIO::saveLayer(filePath.c_str(), data);
 }
 
+std::vector<unsigned char>* FreeImageWriter::writeDataToBuffer(const Layer* data, const std::string fileType) const {
+    return ImageIO::saveLayerToBuffer(fileType.c_str(), data);
+}
+
 } // namespace

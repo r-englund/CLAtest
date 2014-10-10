@@ -88,6 +88,9 @@ public:
     virtual ~DataWriterType() {};
 
     virtual void writeData(const T* data, const std::string filePath) const = 0;
+    virtual std::vector<unsigned char>* writeDataToBuffer(const T* data, const std::string fileType) const {
+        return NULL;
+    }
 };
 
 

@@ -31,7 +31,6 @@
  *********************************************************************************/
 
 #include <inviwo/core/common/inviwoapplication.h>
-#include <inviwo/core/io/imageio.h>
 #include <inviwo/core/processors/canvasprocessor.h>
 #include <inviwo/core/util/canvas.h>
 #include <inviwo/core/util/datetime.h>
@@ -234,7 +233,26 @@ std::vector<unsigned char>* CanvasProcessor::getImageLayerAsCodedBuffer(const st
     if (!inport_.hasData()) return NULL;
     const Image* image = inport_.getData();
     const Layer* layer = image->getLayer(static_cast<LayerType>(visibleLayer_.get()));
-    return ImageIO::saveLayerToBuffer(type.c_str(), layer);
+
+    if (layer){
+        DataWriterType<Layer>* writer =
+            DataWriterFactory::getPtr()->getWriterForTypeAndExtension<Layer>(type);
+
+        if (writer) {
+            try {
+                return writer->writeDataToBuffer(layer, type);
+            } catch (DataWriterException const& e) {
+                LogError(e.getMessage());
+            }
+        } else {
+            LogError("Error: Cound not find a writer for the specified data type");
+        }
+    }
+    else {
+        LogError("Error: Cound not find layer to write");
+    }
+
+    return NULL;
 }
 
 void CanvasProcessor::process() { canvas_->activate(); }

@@ -67,13 +67,8 @@ bool LayerRAM::copyAndResizeLayer(DataRepresentation* targetLayerRam) const {
         return true;
 
     if (source->getDimension() != target->getDimension()) {
-        //CPU image rescaling using imageIO
-        void* rawData = ImageIO::rescaleLayerRAM(source, target->getDimension());
-
-        if (!rawData)
-            return false;
-
-        target->setData(rawData);
+        //CPU image rescaling not supported
+        return false;
     }
     else {
         if (!target->getData()) {
