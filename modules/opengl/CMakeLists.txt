@@ -125,6 +125,8 @@ set(SHADER_FILES
     ${IVW_MODULE_DIR}/opengl/glsl/raycasting.frag
     ${IVW_MODULE_DIR}/opengl/glsl/standard.frag
     ${IVW_MODULE_DIR}/opengl/glsl/standard.vert
+    ${IVW_MODULE_DIR}/opengl/glsl/utils/classification.frag
+    ${IVW_MODULE_DIR}/opengl/glsl/utils/compositing.frag
     ${IVW_MODULE_DIR}/opengl/glsl/utils/depth.frag
     ${IVW_MODULE_DIR}/opengl/glsl/utils/gradients.frag
     ${IVW_MODULE_DIR}/opengl/glsl/utils/sampler2d.frag

@@ -26,47 +26,14 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
- * Main file author: Peter Stenetg
+ * Main file author: Timo Ropinski
  *
  *********************************************************************************/
 
-#ifndef IVW_STRUCTS_GLSL
-#define IVW_STRUCTS_GLSL
+vec4 applyTF(sampler2D transferFunction, vec4 voxel) {
+    return texture(transferFunction, vec2(voxel.r, 0.5));
+}
 
-#define VOLUME_TYPE sampler3D
-#define TEXTURE_TYPE sampler2D
-
-struct SHADING_PARAMETERS {
-    vec3 lightPosition_;
-    vec3 lightColorAmbient_;
-    vec3 lightColorDiffuse_;
-    vec3 lightColorSpecular_;
-    int lightSpecularExponent_;
-};
-
-struct TEXTURE_PARAMETERS {
-    vec2 dimensions_;
-    vec2 dimensionsRCP_;
-};
-
-struct VOLUME_PARAMETERS {
-    vec3 dimensions_;
-    vec3 dimensionsRCP_;
-    mat4 worldToTexture_;
-    mat4 textureToWorld_;
-    mat3 textureSpaceGradientSpacing_; // Maximum distance we can without going outside a voxel from the center of it (half of minimum voxel spacing for volumes with orthogonal basis)
-    float worldSpaceGradientSpacing_;  // Gradients are returned in world space and hence we need this to get correct length
-    float formatScaling_; //Reversed, meaning scaling = (1-bitScaling_), as 0 is default for single uniforms.
-    float formatOffset_;
-    float signedFormatScaling_; //Reversed, meaning scaling = (1-bitScaling_), as 0 is default for single uniforms.
-    float signedFormatOffset_;
-};
-
-struct CAMERA_PARAMETERS {
-    mat4 viewMatrix_;
-    vec3 cameraPosition_;
-	float zNear_;
-	float zFar_;
-};
-
-#endif // IVW_STRUCTS_GLSL
+vec4 applyTF(sampler2D transferFunction, float intensity) {
+    return texture(transferFunction, vec2(intensity, 0.5));
+}

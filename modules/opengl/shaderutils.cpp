@@ -5,7 +5,7 @@ namespace inviwo {
 namespace utilgl {
 
 void addShaderDefines(Shader* shader, const SimpleLightingProperty& property) {
-    // This version is depricated.
+    // This version is depricated. // opengl/glsl/include/inc_shading.frag
     std::string shadingKey =
         "APPLY_SHADING(colorAmb, colorDiff, colorSpec, samplePos, gradient, lightPos, "
         "cameraPos)";
@@ -25,7 +25,8 @@ void addShaderDefines(Shader* shader, const SimpleLightingProperty& property) {
 
     shader->getFragmentShaderObject()->addShaderDefine(shadingKey, shadingValue);
 
-    // New version
+
+    // New version // opengl/glsl/utils/shading.frag
     shadingKey =
         "APPLY_LIGHTING(light, camera, volume, colorAmb, colorDiff, colorSpec, samplePos, gradient)";
     shadingValue = "";
@@ -85,31 +86,32 @@ void addShaderDefines(Shader* shader, const SimpleRaycastingProperty& property) 
     std::string gradientComputationKey = "";
     std::string gradientComputationValue = "";
 
-    // gradient computation defines
-    /*gradientComputationKey =
-        "COMPUTE_GRADIENTS(voxel, samplePos, volume, volumeStruct, t, rayDirection, "
-        "entryPoints, entryParameters)";
+    // Compute the gradient for channel 1;
+    gradientComputationKey =
+        "COMPUTE_GRADIENT(voxel, volume, volumeParams, samplePos)";
+    gradientComputationValue = "";
 
     if (property.gradientComputationMode_.isSelectedIdentifier("none"))
         gradientComputationValue = "voxel.xyz;";
     else if (property.gradientComputationMode_.isSelectedIdentifier("forward"))
         gradientComputationValue =
-        "gradientForwardDiff(voxel.r, volume, volumeStruct, samplePos);";
+        "gradientForwardDiff(voxel, volume, volumeParams, samplePos, 0);";
     else if (property.gradientComputationMode_.isSelectedIdentifier("central"))
         gradientComputationValue =
-        "gradientCentralDiff(voxel.r, volume, volumeStruct, samplePos);";
+        "gradientCentralDiff(voxel, volume, volumeParams, samplePos, 0);";
     else if (property.gradientComputationMode_.isSelectedIdentifier("central-higher"))
         gradientComputationValue =
-        "gradientCentralDiffH(voxel.r, volume, volumeStruct, samplePos);";
+        "gradientCentralDiffH(voxel, volume, volumeParams, samplePos, 0);";
     else if (property.gradientComputationMode_.isSelectedIdentifier("backward"))
         gradientComputationValue =
-        "gradientBackwardDiff(voxel.r, volume, volumeStruct, samplePos);";
+        "gradientBackwardDiff(voxel, volume, volumeParams, samplePos, 0);";
 
     shader->getFragmentShaderObject()->addShaderDefine(gradientComputationKey,
-                                                        gradientComputationValue);*/
+                                                       gradientComputationValue);
+
 
     gradientComputationKey =
-        "COMPUTE_GRADIENTS_FOR_CHANNEL(voxel, samplePos, volume, volumeStruct, t, rayDirection, "
+        "COMPUTE_GRADIENT_FOR_CHANNEL(voxel, samplePos, volume, volumeStruct, t, rayDirection, "
         "entryPoints, entryParameters, channel)";
     gradientComputationValue = "";
 
@@ -130,28 +132,6 @@ void addShaderDefines(Shader* shader, const SimpleRaycastingProperty& property) 
     shader->getFragmentShaderObject()->addShaderDefine(gradientComputationKey,
                                                         gradientComputationValue);
 
-    // New versions for the opengl/glsl/util/* branch
-    gradientComputationKey =
-        "COMPUTE_GRADIENTS(voxel, volume, volumeParams, samplePos)";
-    gradientComputationValue = "";
-
-    if (property.gradientComputationMode_.isSelectedIdentifier("none"))
-        gradientComputationValue = "voxel.xyz;";
-    else if (property.gradientComputationMode_.isSelectedIdentifier("forward"))
-        gradientComputationValue =
-        "gradientForwardDiff(voxel.r, volume, volumeParams, samplePos);";
-    else if (property.gradientComputationMode_.isSelectedIdentifier("central"))
-        gradientComputationValue =
-        "gradientCentralDiff(voxel.r, volume, volumeParams, samplePos);";
-    else if (property.gradientComputationMode_.isSelectedIdentifier("central-higher"))
-        gradientComputationValue =
-        "gradientCentralDiffH(voxel.r, volume, volumeParams, samplePos);";
-    else if (property.gradientComputationMode_.isSelectedIdentifier("backward"))
-        gradientComputationValue =
-        "gradientBackwardDiff(voxel.r, volume, volumeParams, samplePos);";
-
-    shader->getFragmentShaderObject()->addShaderDefine(gradientComputationKey,
-                                                       gradientComputationValue);
 
     gradientComputationKey =
         "COMPUTE_ALL_GRADIENTS(voxel, volume, volumeParams, samplePos)";
