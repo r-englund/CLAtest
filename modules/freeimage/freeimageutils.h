@@ -37,7 +37,7 @@
 #include <inviwo/core/common/inviwo.h>
 #include <inviwo/core/datastructures/image/layer.h>
 #include <inviwo/core/datastructures/image/layerram.h>
-#include <freeimage/FreeImage.h>
+#include <modules/freeimage/ext/freeimage/FreeImage.h>
 
 using namespace inviwo;
 

@@ -471,7 +471,6 @@ ivw_include_directories(${CMAKE_BINARY_DIR}/modules/_generated)
 # Add core dependencies to this list
 ivw_add_dependencies(
     TiCPP
-    FreeImage
 )
 if(IVW_SIGAR)
 ivw_add_dependencies(
