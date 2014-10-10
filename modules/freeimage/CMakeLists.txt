@@ -1,3 +1,7 @@
+if(IVW_MODULE_FREEIMAGE)
+	add_subdirectory(ext/freeimage)
+endif(IVW_MODULE_FREEIMAGE)
+
 #--------------------------------------------------------------------
 # FreeImage Module
 ivw_module(FreeImage)
