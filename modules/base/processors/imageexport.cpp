@@ -33,7 +33,6 @@
 #include "imageexport.h"
 #include <inviwo/core/common/inviwoapplication.h>
 #include <inviwo/core/datastructures/image/imageram.h>
-#include <inviwo/core/io/imageio.h>
 #include <inviwo/core/io/datawriterfactory.h>
 #include <inviwo/core/util/urlparser.h>
 #include <inviwo/core/util/fileextension.h>
@@ -97,13 +96,33 @@ void ImageExport::process() {
 void ImageExport::processExport(){
     exportQueued_ = false;
     const Image* image = imagePort_.getData();
+
     if (image && !imageFile_.get().empty()) {
         const Layer* layer = image->getColorLayer();
-        ImageIO::saveLayer(imageFile_.get().c_str(), layer);
+        if (layer){
+            std::string fileExtension = URLParser::getFileExtension(imageFile_.get());
+            DataWriterType<Layer>* writer =
+                DataWriterFactory::getPtr()->getWriterForTypeAndExtension<Layer>(fileExtension);
+
+            if (writer) {
+                try {
+                    writer->setOverwrite(overwrite_.get());
+                    writer->writeData(layer, imageFile_.get());
+                    LogInfo("Image color layer exported to disk: " << imageFile_.get());
+                } catch (DataWriterException const& e) {
+                    LogError(e.getMessage());
+                }
+            } else {
+                LogError("Error: Cound not find a writer for the specified extension and data type");
+            }
+        }
+        else {
+            LogError("Error: Cound not find color layer to write out");
+        }
     } else if (imageFile_.get().empty()) {
-        LogError("Error: Please specify a file to write to");
+        LogWarn("Error: Please specify a file to write to");
     } else if (!image) {
-        LogError("Error: Please connect a image to export");
+        LogWarn("Error: Please connect an image to export");
     }
 }
 

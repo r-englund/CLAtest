@@ -78,7 +78,7 @@ PyObject* py_snapshot(PyObject* /*self*/, PyObject* args) {
         return 0;
     }
 
-    canvas->saveImageLayer(filename.c_str());
+    canvas->saveImageLayer(filename);
     Py_RETURN_NONE;
 }
 
@@ -102,7 +102,7 @@ PyObject* py_snapshotCanvas(PyObject* /*self*/, PyObject* args) {
         return 0;
     }
 
-    canvases[index]->saveImageLayer(filename);
+    canvases[index]->saveImageLayer(std::string(filename));
     Py_RETURN_NONE;
 }
 

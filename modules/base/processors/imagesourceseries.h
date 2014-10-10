@@ -43,6 +43,8 @@
 
 namespace inviwo {
 
+class FileExtension;
+
 class IVW_MODULE_BASE_API ImageSourceSeries : public Processor {
 public:
     ImageSourceSeries();
@@ -57,11 +59,15 @@ public:
 protected:
     virtual void process();
 
+    bool isValidImageFile(std::string);
+
 private:
     ImageOutport outport_;
     ButtonProperty findFilesButton_;
     DirectoryProperty imageFileDirectory_;
     IntProperty currentImageIndex_;
+
+    std::vector<FileExtension> validExtensions_;
 };
 
 } // namespace

@@ -37,7 +37,7 @@
 #include <inviwo/core/common/inviwoapplication.h>
 #include <inviwo/core/datastructures/image/layerram.h>
 #include <inviwo/core/util/urlparser.h>
-#include <inviwo/core/io/imageio.h>
+#include <inviwo/core/io/datawriterfactory.h>
 #include <QFileDialog>
 #include <QImage>
 #include <QDockWidget>
@@ -440,7 +440,19 @@ void TransferFunctionPropertyDialog::exportTransferFunction() {
                 }
             }
 
-            ImageIO::saveLayer(file.c_str(), &writeLayer);
+            DataWriterType<Layer>* writer =
+                DataWriterFactory::getPtr()->getWriterForTypeAndExtension<Layer>(extension);
+
+            if (writer) {
+                try {
+                    writer->setOverwrite(true);
+                    writer->writeData(&writeLayer, file);
+                } catch (DataWriterException const& e) {
+                    LogError(e.getMessage());
+                }
+            } else {
+                LogError("Error: Cound not find a writer for the specified extension and data type");
+            }
         } else if (extension == "itf") {
             IvwSerializer serializer(file);
             tfProperty_->get().serialize(serializer);

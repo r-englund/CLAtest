@@ -31,8 +31,9 @@
  *********************************************************************************/
 
 #include <modules/freeimage/freeimagewriter.h>
+#include <inviwo/core/io/imageio.h>
 #include <inviwo/core/util/urlparser.h>
-
+#include <inviwo/core/datastructures/image/layer.h>
 
 namespace inviwo {
 
@@ -61,6 +62,7 @@ FreeImageWriter* FreeImageWriter::clone() const {
 }
 
 void FreeImageWriter::writeData(const Layer* data, const std::string filePath) const {
+    ImageIO::saveLayer(filePath.c_str(), data);
 }
 
 } // namespace
