@@ -32,7 +32,7 @@
 
 #include "tonemappingcpuprocessor.h"
 #include <inviwo/core/datastructures/image/imageram.h>
-#include <inviwo/core/io/imageio.h>
+#include <modules/freeimage/freeimageutils.h>
 
 namespace inviwo {
 
@@ -116,7 +116,7 @@ void ToneMappingCPUProcessor::process() {
             second = fattal02Attenuation_.get();
         }
 
-        FIBITMAP* bitmap = ImageIO::createBitmapFromData(inImageRam->getColorLayerRAM());
+        FIBITMAP* bitmap = FreeImageUtils::createBitmapFromData(inImageRam->getColorLayerRAM());
         FreeImage_ToneMapping(bitmap, tmo, first, second);
 
         if(outport_.getData()->getDataFormat() != DataVec3UINT8::get() || outport_.getData()->getDimension() != inImageRam->getDimension()){
@@ -125,7 +125,7 @@ void ToneMappingCPUProcessor::process() {
         
         ImageRAM* outImageRam = outport_.getData()->getEditableRepresentation<ImageRAM>();
         LayerRAM* out = outImageRam->getColorLayerRAM();
-        ImageIO::copyBitmapToData(bitmap, out);
+        FreeImageUtils::copyBitmapToData(bitmap, out);
 
         FreeImage_Unload(bitmap);
     }

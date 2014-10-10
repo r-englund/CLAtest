@@ -31,7 +31,7 @@
  *********************************************************************************/
 
 #include <modules/freeimage/freeimagereader.h>
-#include <inviwo/core/io/imageio.h>
+#include <modules/freeimage/freeimageutils.h>
 #include <inviwo/core/util/urlparser.h>
 #include <inviwo/core/datastructures/image/layer.h>
 #include <inviwo/core/datastructures/image/layerdisk.h>
@@ -91,9 +91,9 @@ void FreeImageReader::readDataInto(void* destination) const {
         DataFormatEnums::Id formatId = DataFormatEnums::NOT_SPECIALIZED;
 
         if (dimension != uvec2(0))
-            ImageIO::loadImageToDataAndRescale(destination, layerDisk->getSourceFile(), dimension, formatId);
+            FreeImageUtils::loadImageToDataAndRescale(destination, layerDisk->getSourceFile(), dimension, formatId);
         else{
-            ImageIO::loadImageToData(destination, layerDisk->getSourceFile(), dimension, formatId);
+            FreeImageUtils::loadImageToData(destination, layerDisk->getSourceFile(), dimension, formatId);
             layerDisk->setDimension(dimension);
         }
 
@@ -110,9 +110,9 @@ void* FreeImageReader::readData() const {
         DataFormatEnums::Id formatId = DataFormatEnums::NOT_SPECIALIZED;
 
         if (dimension != uvec2(0))
-            data = ImageIO::loadImageToDataAndRescale(NULL, layerDisk->getSourceFile(), dimension, formatId);
+            data = FreeImageUtils::loadImageToDataAndRescale(NULL, layerDisk->getSourceFile(), dimension, formatId);
         else{
-            data = ImageIO::loadImageToData(NULL, layerDisk->getSourceFile(), dimension, formatId);
+            data = FreeImageUtils::loadImageToData(NULL, layerDisk->getSourceFile(), dimension, formatId);
             layerDisk->setDimension(dimension);
         }
 

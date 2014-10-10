@@ -32,7 +32,6 @@
 
 #include <inviwo/core/datastructures/image/layerram.h>
 #include <inviwo/core/datastructures/image/layerramprecision.h>
-#include <inviwo/core/io/imageio.h>
 
 namespace inviwo {
 

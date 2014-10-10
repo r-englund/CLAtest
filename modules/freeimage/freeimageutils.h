@@ -30,10 +30,10 @@
  *
  *********************************************************************************/
 
-#ifndef IVW_IMAGELOADER_H
-#define IVW_IMAGELOADER_H
+#ifndef IVW_FREEIMAGEUTILS_H
+#define IVW_FREEIMAGEUTILS_H
 
-#include <inviwo/core/common/inviwocoredefine.h>
+#include <modules/freeimage/freeimagemoduledefine.h>
 #include <inviwo/core/common/inviwo.h>
 #include <inviwo/core/datastructures/image/layer.h>
 #include <inviwo/core/datastructures/image/layerram.h>
@@ -41,10 +41,10 @@
 
 using namespace inviwo;
 
-class IVW_CORE_API ImageIO {
+class IVW_MODULE_FREEIMAGE_API FreeImageUtils {
 public:
-    ImageIO() {};
-    ~ImageIO() {
+    FreeImageUtils() {};
+    ~FreeImageUtils() {
         FreeImage_DeInitialise();
     }
     /**
@@ -158,4 +158,4 @@ private:
 
     static bool loader_initialized;
 };
-#endif // IVW_IMAGELOADER_H
+#endif // IVW_FREEIMAGEUTILS_H
