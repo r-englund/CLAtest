@@ -760,7 +760,7 @@ bool ProcessorNetwork::isDeserializing()const {
 }
 
 Property* ProcessorNetwork::getProperty(std::vector<std::string> path) const {
-    if (path.size() > 2){
+    if (path.size() >= 2){
         Processor* processor = getProcessorByName(path[0]);
         if (processor) {
             Property* property = processor->getPropertyByIdentifier(path[1]);
