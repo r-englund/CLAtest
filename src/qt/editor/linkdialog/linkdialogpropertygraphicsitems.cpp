@@ -40,10 +40,11 @@
 namespace inviwo {
 
 LinkDialogPropertyGraphicsItem::LinkDialogPropertyGraphicsItem(LinkDialogProcessorGraphicsItem* processor,
-        Property* prop) : GraphicsItemData<Property>()
-        , isCompositeSubProperty_(false)
-        , isTopItem_(true)
-        , isBottomItem_(true) {
+        Property* prop,
+        int subPropertyLevel) : GraphicsItemData<Property>()
+        , subPropertyLevel_(subPropertyLevel)
+        , isExpanded_(false)
+        , index_(0) {
     setZValue(LINKDIALOG_PROCESSOR_GRAPHICSITEM_DEPTH);
     //setFlags(ItemIsMovable | ItemIsSelectable | ItemIsFocusable | ItemSendsGeometryChanges);
     setRect(-propertyItemWidth/2, -propertyItemHeight/2, propertyItemWidth, propertyItemHeight);
@@ -63,77 +64,84 @@ LinkDialogPropertyGraphicsItem::LinkDialogPropertyGraphicsItem(LinkDialogProcess
     typeLabel_->setCrop(9, 8);
     processorGraphicsItem_ = processor;
     setProperty(prop);
-    updatePositionBasedOnProcessor();
-}
 
-void LinkDialogPropertyGraphicsItem::updatePositionBasedOnProcessor(bool isComposite) {
-    if (!processorGraphicsItem_) return;
-
-    Processor* processor = processorGraphicsItem_->getProcessor();
-    int ind = 0;
-    int subPropInd = 0;
-    Property* prop = getGraphicsItemData();
-
-    if (prop) {
-        std::vector<Property*> properties = processor->getProperties();
-
-        for (size_t i=0; i<properties.size(); i++) {
-            if (prop == properties[i])
-                break;
-
-            bool found = false;
-            CompositeProperty* compPorp = IS_COMPOSITE_PROPERTY( properties[i]);
-            if (compPorp && isComposite) {
-                std::vector<Property*> subProperties = compPorp->getProperties();
-                
-                for (size_t j=0; j<subProperties.size(); j++) { 
-                    if (prop == subProperties[j]) {
-                        //LogWarn("Found property in composite property")
-                        isCompositeSubProperty_ = true;
-                        found = true;
-                        break;
-                    }
-                    ind++;
-                    subPropInd++;
-                }
-
-                if (subPropInd == 0 && found)  {
-                    isTopItem_ = true;  
-                    isBottomItem_ = false;
-                }
-                else if (subPropInd >= static_cast<int>(subProperties.size())-1  && found) {
-                    isBottomItem_ = true; 
-                    isTopItem_ = false;
-                }
-                else if (found) {
-                    isBottomItem_ = false; 
-                    isTopItem_ = false;
-                }
-
-                if (found) break;
-                continue;
-                //ind+=subPropInd;
-            }
-
-            if (found) break;
-            ind++;
+    CompositeProperty* compProp = IS_COMPOSITE_PROPERTY(prop);
+    if (compProp) {
+        //LogWarn("Found composite sub properties")
+        std::vector<Property*> subProperties = compProp->getProperties();
+        for (size_t j=0; j<subProperties.size(); j++) {
+            LinkDialogPropertyGraphicsItem* compItem = new LinkDialogPropertyGraphicsItem(processor, subProperties[j], subPropertyLevel_+1);
+            compItem->hide();
+            subPropertyGraphicsItems_.push_back(compItem);
         }
     }
-
-    QPointF tr;
-    QPointF br;
-    tr = processorGraphicsItem_->rect().topRight();
-    br = processorGraphicsItem_->rect().bottomRight();
-    QPointF processorMappedDim = processorGraphicsItem_->mapToParent(tr) - processorGraphicsItem_->mapToParent(br);
-    tr = rect().topRight();
-    br = rect().bottomRight();
-    QPointF propertyMappedDim = mapToParent(tr) -  mapToParent(br);
-    qreal initialOffset = fabs(processorMappedDim.y()/2.0) + fabs(propertyMappedDim.y()/2.0);
-    QPointF p = processorGraphicsItem_->pos();
-    setPos(QPointF(p.x(), p.y()+ initialOffset + (ind*fabs(propertyMappedDim.y()))));
 }
 
 LinkDialogPropertyGraphicsItem::~LinkDialogPropertyGraphicsItem() {}
+
+void LinkDialogPropertyGraphicsItem::setIndex(int index) {
+    index_ = index;
+}
+
+void LinkDialogPropertyGraphicsItem::setPropertyItemIndex(int &currIndex) {
+    setIndex(currIndex);
+    currIndex++;
+    if (isExpanded_) {
+        for (size_t i=0; i<subPropertyGraphicsItems_.size(); i++)
+            subPropertyGraphicsItems_[i]->setPropertyItemIndex(currIndex);
+    }
+    else {
+        for (size_t i=0; i<subPropertyGraphicsItems_.size(); i++)
+            subPropertyGraphicsItems_[i]->setIndex(index_);
+    }
+}
+
+void LinkDialogPropertyGraphicsItem::updatePositionBasedOnIndex() {
+    if (!processorGraphicsItem_) return;
+
+    QPointF tl;
+    QPointF br;
+    tl = processorGraphicsItem_->rect().topLeft();
+    br = processorGraphicsItem_->rect().bottomRight();
+    QPointF processorMappedDim = processorGraphicsItem_->mapToParent(tl) - processorGraphicsItem_->mapToParent(br);
+    tl = rect().topLeft();
+    br = rect().bottomRight();
+    QPointF propertyMappedDim = mapToParent(tl) -  mapToParent(br);
+    qreal initialOffset = fabs(processorMappedDim.y());
+    QPointF p = processorGraphicsItem_->pos();
+
+    qreal px = p.x() ; //+ fabs(subPropertyLevel_*propertyMappedDim.x()/10);
+    qreal py = p.y()+ initialOffset + (index_*fabs(propertyMappedDim.y()));
+    setPos(QPointF(px,py));
+    //LogWarn("SubProperty Level is : " << subPropertyLevel_ << " Index " << index_ << " Mapped dim y" << propertyMappedDim.y() << " (" << px << "," << py << ")")
+}
+
+void LinkDialogPropertyGraphicsItem::expand() {
+    if (!subPropertyGraphicsItems_.size()) return;
+    isExpanded_ = true;
+    for (size_t i=0; i<subPropertyGraphicsItems_.size(); i++) {
+        subPropertyGraphicsItems_[i]->expand();
+        subPropertyGraphicsItems_[i]->show();
+    }
+}
+
+void LinkDialogPropertyGraphicsItem::collapse() {
+    if (!subPropertyGraphicsItems_.size()) return;
+    isExpanded_ = false;
+    for (size_t i=0; i<subPropertyGraphicsItems_.size(); i++) {
+        subPropertyGraphicsItems_[i]->collapse();
+        subPropertyGraphicsItems_[i]->hide();
+    }
+}
+
+bool LinkDialogPropertyGraphicsItem::hasSubProperties() {
+    return (subPropertyGraphicsItems_.size()>0);
+}
+
+bool LinkDialogPropertyGraphicsItem::isExpanded() {
+    return isExpanded_;
+}
+
 
 QSizeF LinkDialogPropertyGraphicsItem::sizeHint(Qt::SizeHint which, const QSizeF& constraint) const
 {
@@ -236,7 +244,7 @@ void LinkDialogPropertyGraphicsItem::paint(QPainter* p, const QStyleOptionGraphi
         grad.setColorAt(0.0f, bgColor);
         grad.setColorAt(1.0f, bgColor);
     } else {        
-        if (isCompositeSubProperty_) {
+        if (subPropertyLevel_) {
             QColor bgColor = Qt::darkGray;
             grad.setColorAt(0.0f, bgColor);
             grad.setColorAt(1.0f, bgColor);
@@ -280,9 +288,7 @@ void LinkDialogPropertyGraphicsItem::paint(QPainter* p, const QStyleOptionGraphi
     p->drawPath(roundRectPath_Left);
 
     //Bottom
-    if (!isBottomItem_ && !isTopItem_) p->setPen(greyPen);
-    else if (isBottomItem_) p->setPen(blackPen);
-    else p->setPen(greyPen);
+    p->setPen(greyPen);
     roundRectPath_Bottom.moveTo(bRect.left(), bRect.bottom());
     roundRectPath_Bottom.lineTo(bRect.right(), bRect.bottom());
     p->drawPath(roundRectPath_Bottom);
@@ -294,9 +300,7 @@ void LinkDialogPropertyGraphicsItem::paint(QPainter* p, const QStyleOptionGraphi
     p->drawPath(roundRectPath_Right);
 
     //Top
-    if (!isBottomItem_ && !isTopItem_) p->setPen(greyPen);
-    else if (isTopItem_)  p->setPen(blackPen);
-    else p->setPen(greyPen);
+    p->setPen(greyPen);
     roundRectPath_Top.moveTo(bRect.left(), bRect.top());
     roundRectPath_Top.lineTo(bRect.right(), bRect.top());
     p->drawPath(roundRectPath_Top);
@@ -420,6 +424,10 @@ QPointF LinkDialogPropertyGraphicsItem::calculateArrowCenter(size_t curPort, boo
 
 const std::vector<DialogConnectionGraphicsItem*>& LinkDialogPropertyGraphicsItem::getConnectionGraphicsItems() const {
     return connectionItems_;
+}
+
+const std::vector<LinkDialogPropertyGraphicsItem*>& LinkDialogPropertyGraphicsItem::getSubPropertyItemList() const {
+    return subPropertyGraphicsItems_;
 }
 
 } //namespace

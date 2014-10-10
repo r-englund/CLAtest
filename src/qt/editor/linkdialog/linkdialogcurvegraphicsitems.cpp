@@ -33,6 +33,7 @@
 #include <QVector2D>
 #include <QGraphicsSceneMouseEvent>
 
+#include <inviwo/core/common/inviwoapplication.h>
 #include <inviwo/qt/editor/linkdialog/linkdialogcurvegraphicsitems.h>
 #include <inviwo/qt/editor/linkdialog/linkdialogpropertygraphicsitems.h>
 
