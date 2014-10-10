@@ -139,7 +139,7 @@ add_library(inviwo-qtwidgets ${SOURCE_FILES} ${MOC_FILES} ${HEADER_FILES})
 
 # Add qt dependencies to this list
 if(DESIRED_QT_VERSION MATCHES 5)
-    ivw_add_dependencies(Qt5Core Qt5Gui Qt5Widgets Qt5Help)    
+    ivw_add_dependencies(Qt5Core Qt5Gui Qt5Widgets)    
 else()
     ivw_add_dependencies(Qt)
 endif()
