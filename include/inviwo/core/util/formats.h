@@ -42,8 +42,7 @@
 #include <limits>
 #include <string>
 
-#include <freeimage/openexr/half/half.h>
-#include <freeimage/openexr/half/halfLimits.h>
+#include <half/half.hpp>
 
 /*! \brief Defines general useful formats and new data types
  * Non-virtual, meaning no dynamic_cast as string comparison is as fast/faster
@@ -546,11 +545,7 @@ public:
 /*---------------Single Value Formats------------------*/
 
 // Floats
-#ifdef __unix
-typedef DataFormat<glm::f32, 16>  DataFLOAT16;
-#else
-typedef GenericDataFormat(half)     DataFLOAT16;
-#endif
+typedef GenericDataFormat(half_float::half)     DataFLOAT16;
 typedef GenericDataFormat(glm::f32) DataFLOAT32;
 typedef GenericDataFormat(glm::f64) DataFLOAT64;
 
@@ -571,12 +566,8 @@ typedef GenericDataFormat(glm::u64)  DataUINT64;
 /*---------------Vec2 Formats--------------------*/
 
 // Floats
-#ifdef __unix
-typedef DataFormat<glm::f32vec2, 32>  DataVec2FLOAT16;
-#else
-typedef glm::detail::tvec2<half, glm::defaultp> f16vec2;
+typedef glm::detail::tvec2<half_float::half, glm::defaultp> f16vec2;
 typedef GenericDataFormat(f16vec2) DataVec2FLOAT16;
-#endif
 typedef GenericDataFormat(glm::f32vec2) DataVec2FLOAT32;
 typedef GenericDataFormat(glm::f64vec2) DataVec2FLOAT64;
 
@@ -597,12 +588,8 @@ typedef GenericDataFormat(glm::u64vec2) DataVec2UINT64;
 /*---------------Vec3 Formats--------------------*/
 
 // Floats
-#ifdef __unix
-typedef DataFormat<glm::f32vec3, 48>  DataVec3FLOAT16;
-#else
-typedef glm::detail::tvec3<half, glm::defaultp> f16vec3;
+typedef glm::detail::tvec3<half_float::half, glm::defaultp> f16vec3;
 typedef GenericDataFormat(f16vec3) DataVec3FLOAT16;
-#endif
 typedef GenericDataFormat(glm::f32vec3) DataVec3FLOAT32;
 typedef GenericDataFormat(glm::f64vec3) DataVec3FLOAT64;
 
@@ -623,12 +610,8 @@ typedef GenericDataFormat(glm::u64vec3) DataVec3UINT64;
 /*---------------Vec4 Value Formats------------------*/
 
 // Floats
-#ifdef __unix
-typedef DataFormat<glm::f32vec4, 64>  DataVec4FLOAT16;
-#else
-typedef glm::detail::tvec4<half, glm::defaultp> f16vec4;
+typedef glm::detail::tvec4<half_float::half, glm::defaultp> f16vec4;
 typedef GenericDataFormat(f16vec4) DataVec4FLOAT16;
-#endif
 typedef GenericDataFormat(glm::f32vec4) DataVec4FLOAT32;
 typedef GenericDataFormat(glm::f64vec4) DataVec4FLOAT64;
 

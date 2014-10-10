@@ -31,7 +31,6 @@
  *********************************************************************************/
 
 #include <inviwo/core/datastructures/image/layerdisk.h>
-#include <inviwo/core/io/imageio.h>
 
 namespace inviwo {
 

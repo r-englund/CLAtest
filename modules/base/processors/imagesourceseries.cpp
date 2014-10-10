@@ -32,10 +32,10 @@
 
 #include "imagesourceseries.h"
 #include <inviwo/core/common/inviwoapplication.h>
-#include <inviwo/core/io/imageio.h>
-#include <inviwo/core/util/urlparser.h>
 #include <inviwo/core/datastructures/image/imagedisk.h>
 #include <inviwo/core/datastructures/image/layerdisk.h>
+#include <inviwo/core/io/datareaderfactory.h>
+#include <inviwo/core/util/urlparser.h>
 
 namespace inviwo {
 
@@ -56,6 +56,9 @@ ImageSourceSeries::ImageSourceSeries()
     addProperty(imageFileDirectory_);
     addProperty(findFilesButton_);
     addProperty(currentImageIndex_);
+
+    validExtensions_ = DataReaderFactory::getPtr()->getExtensionsForType<Layer>();
+
     imageFileDirectory_.registerFileIndexingHandle(&currentImageIndex_);
     findFilesButton_.onChange(this, &ImageSourceSeries::onFindFiles);
 }
@@ -77,7 +80,7 @@ void ImageSourceSeries::onFindFiles() {
     std::vector<std::string> displayNames;
 
     for (size_t i=0; i<files.size(); i++) {
-        if (ImageIO::isValidImageFile(files[i])) {
+        if (isValidImageFile(files[i])) {
             std::string displayName = URLParser::getFileNameWithExtension(files[i]);
             ids.push_back(displayName+"_id");
             displayNames.push_back(displayName);
@@ -108,7 +111,7 @@ void ImageSourceSeries::process() {
         std::vector<std::string> fileNames;
 
         for (size_t i=0; i<filesInDirectory.size(); i++) {
-            if (ImageIO::isValidImageFile(filesInDirectory[i])) {
+            if (isValidImageFile(filesInDirectory[i])) {
                 fileNames.push_back(filesInDirectory[i]);
             }
         }
@@ -142,6 +145,16 @@ void ImageSourceSeries::process() {
         //Original image dimension loaded from disk may differ from requested dimension.
         outLayerDisk->resize(outImage->getDimension());
     }
+}
+
+bool ImageSourceSeries::isValidImageFile(std::string fileName){
+    std::string fileExtension = URLParser::getFileExtension(fileName);
+    for (std::vector<FileExtension>::const_iterator it = validExtensions_.begin(); it != validExtensions_.end(); ++it) {
+        if(fileExtension == it->extension_)
+            return true;
+    }
+
+    return false;
 }
 
 } // namespace

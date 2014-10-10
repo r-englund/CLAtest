@@ -38,6 +38,9 @@
 #include <inviwo/core/util/stringconversion.h>
 #include <inviwo/core/processors/processorwidget.h>
 #include <inviwo/core/network/processornetworkevaluator.h>
+#include <inviwo/core/io/datawriterfactory.h>
+#include <inviwo/core/util/urlparser.h>
+#include <inviwo/core/util/fileextension.h>
 
 namespace inviwo {
 
@@ -193,14 +196,38 @@ void CanvasProcessor::ratioChanged() {
 void CanvasProcessor::saveImageLayer() {
     std::string snapshotPath(saveLayerDirectory_.get() + "/" + toLower(getIdentifier()) + "-" +
                              currentDateTime() + ".png");
-    saveImageLayer(snapshotPath.c_str());
+    saveImageLayer(snapshotPath);
 }
 
-void CanvasProcessor::saveImageLayer(const char* snapshotPath) {
-    if (!inport_.hasData()) return;
+void CanvasProcessor::saveImageLayer(std::string snapshotPath) {
     const Image* image = inport_.getData();
-    const Layer* layer = image->getLayer(static_cast<LayerType>(visibleLayer_.get()));
-    ImageIO::saveLayer(snapshotPath, layer);
+    if (image) {
+        const Layer* layer = image->getColorLayer();
+        if (layer){
+            std::string fileExtension = URLParser::getFileExtension(snapshotPath);
+            DataWriterType<Layer>* writer =
+                DataWriterFactory::getPtr()->getWriterForTypeAndExtension<Layer>(fileExtension);
+
+            if (writer) {
+                try {
+                    writer->setOverwrite(true);
+                    writer->writeData(layer, snapshotPath);
+                    LogInfo("Canvas layer exported to disk: " << snapshotPath);
+                } catch (DataWriterException const& e) {
+                    LogError(e.getMessage());
+                }
+            } else {
+                LogError("Error: Cound not find a writer for the specified extension and data type");
+            }
+        }
+        else {
+            LogError("Error: Cound not find color layer to write out");
+        }
+    } else if (snapshotPath.empty()) {
+        LogWarn("Error: Please specify a file to write to");
+    } else if (!image) {
+        LogWarn("Error: Please connect an image to export");
+    }
 }
 
 std::vector<unsigned char>* CanvasProcessor::getImageLayerAsCodedBuffer(const std::string& type) {

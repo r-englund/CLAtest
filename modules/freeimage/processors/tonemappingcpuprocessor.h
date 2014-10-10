@@ -33,7 +33,7 @@
 #ifndef IVW_TONEMAPPINGCPUPROCESSOR_H
 #define IVW_TONEMAPPINGCPUPROCESSOR_H
 
-#include <modules/base/basemoduledefine.h>
+#include <modules/freeimage/freeimagemoduledefine.h>
 #include <inviwo/core/common/inviwo.h>
 #include <inviwo/core/processors/processor.h>
 #include <inviwo/core/ports/imageport.h>
@@ -42,7 +42,7 @@
 
 namespace inviwo {
 
-class IVW_MODULE_BASE_API ToneMappingCPUProcessor : public Processor {
+class IVW_MODULE_FREEIMAGE_API ToneMappingCPUProcessor : public Processor {
 public:
     ToneMappingCPUProcessor();
     ~ToneMappingCPUProcessor();

@@ -67,7 +67,7 @@ public:
     ivec2 getCustomDimensions() const;
 
     void saveImageLayer();
-    void saveImageLayer(const char* filePath);
+    void saveImageLayer(std::string filePath);
     std::vector<unsigned char>* getImageLayerAsCodedBuffer(const std::string& type);
 
     void triggerQueuedEvaluation();
