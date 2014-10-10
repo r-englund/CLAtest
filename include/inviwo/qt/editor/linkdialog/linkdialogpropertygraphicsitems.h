@@ -65,7 +65,7 @@ class LinkDialogProcessorGraphicsItem;
 class IVW_QTEDITOR_API LinkDialogPropertyGraphicsItem : public GraphicsItemData<Property> {
 
 public:
-    LinkDialogPropertyGraphicsItem(LinkDialogProcessorGraphicsItem*, Property*);
+    LinkDialogPropertyGraphicsItem(LinkDialogProcessorGraphicsItem*, Property*, int subPropertyLevel=0);
     ~LinkDialogPropertyGraphicsItem();
 
     void setProperty(Property* property);
@@ -79,7 +79,15 @@ public:
     QPointF getShortestBoundaryPointTo(LinkDialogPropertyGraphicsItem*);
     QPointF getShortestBoundaryPointTo(QPointF);
 
-    void updatePositionBasedOnProcessor(bool isComposite=false);
+    void expand();
+    void collapse();
+    bool hasSubProperties();
+    bool isExpanded();
+    void updatePositionBasedOnIndex();
+    void setIndex(int index);
+    void setPropertyItemIndex(int &currIndex);
+    LinkDialogProcessorGraphicsItem* getProcessorItem() const {return processorGraphicsItem_;}
+    int getLevel() const {return subPropertyLevel_;}
 
     QPointF calculateArrowCenter(size_t curPort, bool computeRight) const;
     QRectF calculateArrowRect(size_t curPort, bool computeRight) const;
@@ -97,6 +105,7 @@ public:
     size_t getConnectionGraphicsItemCount() const;
     void removeConnectionGraphicsItem(DialogConnectionGraphicsItem*);
     const std::vector<DialogConnectionGraphicsItem*>& getConnectionGraphicsItems() const;
+    const std::vector<LinkDialogPropertyGraphicsItem*>& getSubPropertyItemList() const;
 
 protected:
     virtual void paint(QPainter* p, const QStyleOptionGraphicsItem* options, QWidget* widget);
@@ -107,11 +116,14 @@ private:
     LabelGraphicsItem* classLabel_;
     LabelGraphicsItem* typeLabel_;
     LinkDialogProcessorGraphicsItem* processorGraphicsItem_;
-    //int arrowCount_;
     std::vector<DialogConnectionGraphicsItem*> connectionItems_;
-    bool isCompositeSubProperty_;
-    bool isTopItem_;
-    bool isBottomItem_;
+    std::vector<LinkDialogPropertyGraphicsItem*> subPropertyGraphicsItems_;
+    int subPropertyLevel_;
+    bool isExpanded_;
+    int index_;
+    //bool isTopItem_;
+    //bool isBottomItem_;
+
 };
 
 } //namespace

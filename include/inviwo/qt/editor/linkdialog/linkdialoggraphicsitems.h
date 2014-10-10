@@ -59,7 +59,7 @@ static const qreal LINKDIALOG_PROCESSOR_GRAPHICSITEM_DEPTH = 1.0f;
 static const qreal LINKDIALOG_PROPERTY_GRAPHICSITEM_DEPTH = 2.0f;
 static const qreal LINKDIALOG_CONNECTION_GRAPHICSITEM_DEPTH = 3.0f;
 
-static const int processorItemWidth = 175; //all other parameters depends on processor width.
+static const int processorItemWidth = 250; //all other parameters depends on processor width.
 static const int processorItemHeight = 50;
 static const int processorRoundedCorners = 9;
 static const int processorLabelHeight = 8;
@@ -73,7 +73,7 @@ static const int propertyRoundedCorners = 0;
 static const int propertyLabelHeight = 8;
 
 static const int arrowDimensionWidth = propertyItemWidth/10;
-static const int arrowDimensionHeight =arrowDimensionWidth/2;
+static const int arrowDimensionHeight = arrowDimensionWidth/2;
 
 #define IS_SUB_PROPERTY(prop) (prop->getOwner()->getProcessor() != prop->getOwner())
 #define IS_COMPOSITE_PROPERTY(prop) dynamic_cast<CompositeProperty*>(prop)

@@ -112,7 +112,7 @@ void LinkDialog::initDialogLayout() {
     connect(deleteAllLinkPushButton_, SIGNAL(clicked()), this, SLOT(clickedDeleteAllLinksPushButton()));
     autoLinkPushButtonLayout->addWidget(deleteAllLinkPushButton_, 10);
     //expand composite
-    expandCompositeOption_ = new QCheckBox("Expand Properties", this);
+    expandCompositeOption_ = new QCheckBox("Expand All Properties", this);
     expandCompositeOption_->setChecked(EXPAND_SUB_PROPERTIES_BY_DEFAULT);
     autoLinkPushButtonLayout->addWidget(expandCompositeOption_, 10);
     connect(expandCompositeOption_, SIGNAL(toggled(bool)), this, SLOT(expandCompositeProperties(bool)));
@@ -132,60 +132,11 @@ void LinkDialog::initDialogLayout() {
 }
 
 void LinkDialog::clickedOkayButton() {
-
-    ///////////////////////////////////////////////////////////////////////
-    //TODO: ProcessorLinks are Deprecated. To be removed
-
-    /*
-    if (linkDialogScene_->currentLinkItemsCount()) {
-        ProcessorLink* link = linkDialogScene_->getNetwork()->getLink(src_, dest_);
-
-        if (link)
-            link->setModifiedByPropertyOwner(src_);
-    }
-    */
-
-//    if (linkDialogScene_->currentLinkItemsCount()) {
-//        InviwoApplication::getPtr()->getProcessorNetwork()->setLinkModifiedByOwner(src_);
-//    }
-//
-//    updateProcessorLinks();
-
-//     std::vector<PropertyLink*> propertyLinks = InviwoApplication::getPtr()->getProcessorNetwork()->getLinksBetweenProcessors(src_, dest_);
-//     for (size_t j=0; j<propertyLinks.size(); j++) {
-// 
-//         if (expandCompositeOption_->isChecked()) {
-//             //LogWarn("Invalidation of sub-properties set to invalid")
-//             if (IS_SUB_PROPERTY(propertyLinks[j]->getSourceProperty()))
-//                 propertyLinks[j]->getSourceProperty()->setInvalidationLevel(PropertyOwner::INVALID_OUTPUT);
-//             if (IS_SUB_PROPERTY(propertyLinks[j]->getDestinationProperty()))
-//                 propertyLinks[j]->getDestinationProperty()->setInvalidationLevel(PropertyOwner::INVALID_OUTPUT);
-//         }
-//         else {
-//             //LogWarn("Invalidation of sub-properties set to valid")
-//             setValidationLevelOfSubPropertiesOfCompositeProperties(propertyLinks[j]->getSourceProperty(), PropertyOwner::VALID);
-//             setValidationLevelOfSubPropertiesOfCompositeProperties(propertyLinks[j]->getDestinationProperty(), PropertyOwner::VALID);
-//         }
-//     }
-
-    //accept();
-    //InviwoApplication::getPtr()->getProcessorNetwork()->updatePropertyLinkCaches();
     hide();
     eventLoop_.quit();
 }
 
-void LinkDialog::updateProcessorLinks() {
-//     ProcessorLink* processorLink = InviwoApplication::getPtr()->getProcessorNetwork()->getProcessorLink(src_, dest_);
-//     std::vector<PropertyLink*> propertyLinks = InviwoApplication::getPtr()->getProcessorNetwork()->getLinksBetweenProcessors(src_, dest_);
-//     //if (propertyLinks.size()) 
-//     {
-//         if (!processorLink) processorLink = InviwoApplication::getPtr()->getProcessorNetwork()->addLink(src_, dest_);
-//         processorLink->removeAllPropertyLinks();
-//         for (size_t j=0; j<propertyLinks.size(); j++) {
-//             processorLink->addPropertyLinks(propertyLinks[j]);
-//         }
-//     }
-}
+void LinkDialog::updateProcessorLinks() {}
 
 void LinkDialog::clickedCancelButton() {
     linkDialogScene_->removeCurrentPropertyLinks();

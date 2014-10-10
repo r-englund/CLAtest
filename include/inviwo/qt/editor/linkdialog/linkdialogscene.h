@@ -40,6 +40,8 @@
 #include <QGraphicsItem>
 #include <QGraphicsSceneMouseEvent>
 
+#include <inviwo/core/network/processornetworkobserver.h>
+
 namespace inviwo {
 
 class DialogConnectionGraphicsItem;
@@ -47,7 +49,7 @@ class DialogCurveGraphicsItem;
 class LinkDialogPropertyGraphicsItem;
 class LinkDialogProcessorGraphicsItem;
 
-class IVW_QTEDITOR_API LinkDialogGraphicsScene : public QGraphicsScene {
+class IVW_QTEDITOR_API LinkDialogGraphicsScene : public QGraphicsScene, public ProcessorNetworkObserver {
     Q_OBJECT
 public:
     LinkDialogGraphicsScene(QWidget* parent);
@@ -82,6 +84,9 @@ public:
     int currentLinkItemsCount();
     void setExpandProperties(bool expand);
     void updatePropertyItemsOfAllProcessors();
+
+    virtual void onProcessorNetworkDidAddLink(PropertyLink* propertyLink);
+    virtual void onProcessorNetworkDidRemoveLink(PropertyLink* propertyLink);
 
     PropertyOwner* src_;
     PropertyOwner* dest_;

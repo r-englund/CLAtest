@@ -75,6 +75,7 @@ QGraphicsItem* LinkDialogGraphicsScene::getPropertyGraphicsItemAt(Property* prop
 }
 
 void LinkDialogGraphicsScene::mousePressEvent(QGraphicsSceneMouseEvent* e) {
+
     LinkDialogPropertyGraphicsItem* tempProperty =
         getSceneGraphicsItemAt<LinkDialogPropertyGraphicsItem>(e->scenePos());
 
@@ -170,6 +171,14 @@ void LinkDialogGraphicsScene::mouseDoubleClickEvent(QGraphicsSceneMouseEvent* e)
                     makePropertyLinkBidirectional(propertyLink, true);
             }
         }
+        else {
+            if (propertyItem->isExpanded())
+                propertyItem->collapse();
+            else
+                propertyItem->expand();
+
+            propertyItem->getProcessorItem()->updatePropertyItemPositions();
+        }
 
         e->accept();
     } else
@@ -258,7 +267,7 @@ void LinkDialogGraphicsScene::wheelEvent(QGraphicsSceneWheelEvent* e) {
 
 void LinkDialogGraphicsScene::offsetItems(float yIncrement, bool scrollLeft) {
     //QPointF zoomOffset = allViews[0]->mapToScene(0, yIncrement);
-    QPointF zoomOffset = QPointF(0.0f, yIncrement);
+    QPointF scrollOffset = QPointF(0.0f, yIncrement);
 
     LinkDialogProcessorGraphicsItem* procGraphicsItem=0;
     foreach(procGraphicsItem, processorGraphicsItems_) {
@@ -267,10 +276,10 @@ void LinkDialogGraphicsScene::offsetItems(float yIncrement, bool scrollLeft) {
         if (scrollLeft && pos.x()>=linkDialogWidth/2) continue;
         if (!scrollLeft && pos.x()<linkDialogWidth/2) continue;
 
-        procGraphicsItem->setPos(pos.x()+zoomOffset.x(), pos.y()+zoomOffset.y());
+        procGraphicsItem->setPos(pos.x()+scrollOffset.x(), pos.y()+scrollOffset.y());
         std::vector<LinkDialogPropertyGraphicsItem*> propItems = procGraphicsItem->getPropertyItemList();
         for (size_t i=0; i<propItems.size(); i++) {
-            propItems[i]->updatePositionBasedOnProcessor(expandProperties_);
+            propItems[i]->updatePositionBasedOnIndex();
             const std::vector<DialogConnectionGraphicsItem*> connections = propItems[i]->getConnectionGraphicsItems();
             for (size_t j=0; j<connections.size(); j++) {
                 connections[j]->updateConnectionDrawing();
@@ -332,22 +341,6 @@ void LinkDialogGraphicsScene::addPropertyLink(LinkDialogPropertyGraphicsItem* st
     Property* sProp = startProperty->getGraphicsItemData();
     Property* eProp = endProperty->getGraphicsItemData();
 
-    ///////////////////////////////////////////////////////////////////////
-    //TODO: ProcessorLinks are Deprecated. To be removed
-
-    /*
-    PropertyOwner* startProcessor = src_;
-    PropertyOwner* endProcessor = dest_;
-    ProcessorLink* processorLink = processorNetwork_->getLink(startProcessor, endProcessor);
-
-    if (processorLink && !processorLink->isLinked(sProp, eProp) && !processorLink->isLinked(eProp, sProp)) {
-        processorLink->addPropertyLinks(sProp, eProp, startProcessor, endProcessor);
-        PropertyLink* propertyLink = processorLink->getPropertyLink(sProp, eProp);
-
-        if (propertyLink) initializePorpertyLinkRepresentation(startProperty, endProperty, propertyLink);
-    }
-    */
-
     if (!processorNetwork_->getLink(sProp, eProp)) {
         PropertyLink* propertyLink = processorNetwork_->addLink(sProp, eProp);
         if (propertyLink) initializePorpertyLinkRepresentation(startProperty, endProperty, propertyLink);
@@ -376,36 +369,6 @@ void LinkDialogGraphicsScene::removePropertyLink(DialogConnectionGraphicsItem* p
     //LogInfo("Removing Property Link.");
     LinkDialogPropertyGraphicsItem* startProperty = propertyLink->getStartProperty();
     LinkDialogPropertyGraphicsItem* endProperty = propertyLink->getEndProperty();
-
-    ///////////////////////////////////////////////////////////////////////
-    //TODO: ProcessorLinks are Deprecated. To be removed
-
-    /*
-    PropertyOwner* startProcessor = src_;
-    PropertyOwner* endProcessor = dest_;
-    ProcessorLink* processorLink = processorNetwork_->getLink(startProcessor, endProcessor);
-
-    if (processorLink->isLinked(startProperty->getGraphicsItemData(), endProperty->getGraphicsItemData())) {
-        propertyLink->hide();
-        connectionGraphicsItems_.erase(std::remove(connectionGraphicsItems_.begin(), connectionGraphicsItems_.end(), propertyLink),
-                                       connectionGraphicsItems_.end());
-        removeItem(propertyLink);
-        propertyLink->deinitialize();
-        cleanupAfterRemoveLink(propertyLink);
-        delete propertyLink;
-        processorLink->removePropertyLinks(startProperty->getGraphicsItemData(), endProperty->getGraphicsItemData());
-        startProperty->prepareGeometryChange();
-        endProperty->prepareGeometryChange();
-    }
-
-
-    ProcessorLink* processorLink = processorNetwork_->getProcessorLink(src_, dest_);
-    if (processorLink) {
-        processorLink->removePropertyLinks(startProperty->getGraphicsItemData(), endProperty->getGraphicsItemData());
-        processorLink->removePropertyLinks(endProperty->getGraphicsItemData(), startProperty->getGraphicsItemData());
-    }
-    */
-
 
     PropertyLink* link = processorNetwork_->getLink(startProperty->getGraphicsItemData(), endProperty->getGraphicsItemData());
     if (link) {
@@ -475,25 +438,6 @@ void LinkDialogGraphicsScene::makePropertyLinkBidirectional(DialogConnectionGrap
     LinkDialogPropertyGraphicsItem* startProperty = propertyLink->getStartProperty();
     LinkDialogPropertyGraphicsItem* endProperty = propertyLink->getEndProperty();
 
-    ///////////////////////////////////////////////////////////////////////
-    //TODO: ProcessorLinks are Deprecated. To be removed
-
-    /*
-    PropertyOwner* startProcessor = src_;
-    PropertyOwner* endProcessor = dest_;
-    ProcessorLink* processorLink = processorNetwork_->getLink(startProcessor, endProcessor);
-    PropertyLink* propLink = processorLink->getPropertyLink(startProperty->getGraphicsItemData(), endProperty->getGraphicsItemData());
-
-    if (isBidirectional) {
-        if (processorLink->getBidirectionalPair(propLink)==0)
-            processorLink->addPropertyLinks(endProperty->getGraphicsItemData(), startProperty->getGraphicsItemData(), endProcessor, startProcessor);
-    }
-    else {
-        if (processorLink->getBidirectionalPair(propLink))
-            processorLink->removeBidirectionalPair(startProperty->getGraphicsItemData(), endProperty->getGraphicsItemData());
-    }
-    */
-
     PropertyLink* propLink = processorNetwork_->getLink(endProperty->getGraphicsItemData(), startProperty->getGraphicsItemData());
     if (isBidirectional) {
         if (!propLink) processorNetwork_->addLink(endProperty->getGraphicsItemData(), startProperty->getGraphicsItemData());
@@ -540,22 +484,6 @@ DialogConnectionGraphicsItem* LinkDialogGraphicsScene::getConnectionGraphicsItem
 void LinkDialogGraphicsScene::initializePorpertyLinkRepresentation(LinkDialogPropertyGraphicsItem* outProperty,
         LinkDialogPropertyGraphicsItem* inProperty,
         PropertyLink* propertyLink) {
-
-    ///////////////////////////////////////////////////////////////////////
-    //TODO: ProcessorLinks are Deprecated. To be removed
-
-    /*
-    PropertyOwner* startProcessor = src_;
-    PropertyOwner* endProcessor = dest_;
-    ProcessorLink* processorLink = processorNetwork_->getLink(startProcessor, endProcessor);
-    DialogConnectionGraphicsItem* cItem = new DialogConnectionGraphicsItem(outProperty, inProperty, propertyLink, processorLink);
-    addItem(cItem);
-    cItem->show();
-    connectionGraphicsItems_.push_back(cItem);
-
-    for (size_t i=0; i<connectionGraphicsItems_.size(); i++)
-        connectionGraphicsItems_[i]->updateConnectionDrawing();
-    */
 
     DialogConnectionGraphicsItem* cItem = new DialogConnectionGraphicsItem(outProperty, inProperty, propertyLink);
     addItem(cItem);
@@ -769,36 +697,18 @@ void LinkDialogGraphicsScene::addProcessorsItemsToScene(Processor* processor, in
     procGraphicsItem->setProcessor(processor, expandProperties_);
     addItem(procGraphicsItem);
     procGraphicsItem->show();
-    std::vector<LinkDialogPropertyGraphicsItem*> propItems = procGraphicsItem->getPropertyItemList();
 
-    for (size_t i=0; i<propItems.size(); i++) {
+    std::vector<LinkDialogPropertyGraphicsItem*> propItems = procGraphicsItem->getPropertyItemList();
+    for (size_t i=0; i<propItems.size(); i++)
         addItem(propItems[i]);
-        propItems[i]->show();
-        propItems[i]->updatePositionBasedOnProcessor(expandProperties_);
-    }
 }
 
-void LinkDialogGraphicsScene::updatePropertyItemsOfAllProcessors() {
-    //make sure link items are handled before calling this function
-    LinkDialogProcessorGraphicsItem* procGraphicsItem;
-    foreach(procGraphicsItem, processorGraphicsItems_) {
-        Processor* processor = procGraphicsItem->getProcessor();
-        {
-            std::vector<LinkDialogPropertyGraphicsItem*> propItems = procGraphicsItem->getPropertyItemList();
-            for (size_t i=0; i<propItems.size(); i++) {
-                propItems[i]->hide();
-                removeItem(propItems[i]);
-            }
+void LinkDialogGraphicsScene::onProcessorNetworkDidAddLink(PropertyLink* propertyLink) {
 
-            procGraphicsItem->setProcessor(processor, expandProperties_);
-            propItems = procGraphicsItem->getPropertyItemList();
-            for (size_t i=0; i<propItems.size(); i++) {
-                addItem(propItems[i]);
-                propItems[i]->show();
-                propItems[i]->updatePositionBasedOnProcessor(expandProperties_);
-            }
-        }
-    }
+}
+
+void LinkDialogGraphicsScene::onProcessorNetworkDidRemoveLink(PropertyLink* propertyLink) {
+
 }
 
 } //namespace

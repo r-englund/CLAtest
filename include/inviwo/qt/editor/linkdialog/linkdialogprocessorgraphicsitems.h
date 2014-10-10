@@ -70,7 +70,9 @@ public:
     void setProcessor(Processor* processor, bool expandProperties=false);
     Processor* getProcessor() {return getGraphicsItemData();}
 
-    std::vector<LinkDialogPropertyGraphicsItem*> getPropertyItemList() {return propertyGraphicsItems_;}
+    void updatePropertyItemPositions();
+
+    const std::vector<LinkDialogPropertyGraphicsItem*>& getPropertyItemList() const {return propertyGraphicsItems_;}
 
     QSizeF sizeHint(Qt::SizeHint which, const QSizeF& constraint = QSizeF()) const;
 

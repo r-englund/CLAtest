@@ -131,23 +131,38 @@ void LinkDialogProcessorGraphicsItem::setProcessor(Processor* processor, bool ex
         std::vector<Property*> properties = processor->getProperties();
 
         for (size_t i=0; i<properties.size(); i++) {
-            CompositeProperty* compProp = IS_COMPOSITE_PROPERTY(properties[i]);
-            if (compProp && expandProperties) {
-                //LogWarn("Found composite sub properties")
-                std::vector<Property*> subProperties = compProp->getProperties();
-                for (size_t j=0; j<subProperties.size(); j++) {
-                    LinkDialogPropertyGraphicsItem* compItem = new LinkDialogPropertyGraphicsItem(this, subProperties[j]);
-                    propertyGraphicsItems_.push_back(compItem);
-                }
-            }
-            else {
-                propertyGraphicsItems_.push_back(new LinkDialogPropertyGraphicsItem(this, properties[i]));
+            LinkDialogPropertyGraphicsItem* compItem = new LinkDialogPropertyGraphicsItem(this, properties[i]);
+            compItem->show();
+            if (expandProperties)
+                compItem->expand();
+            else
+                compItem->collapse();
+            propertyGraphicsItems_.push_back(compItem);
+
+            std::vector<LinkDialogPropertyGraphicsItem*> subPropGraphicsItems = compItem->getSubPropertyItemList();
+            for (size_t j=0; j<subPropGraphicsItems.size(); j++) {
+                if (expandProperties) subPropGraphicsItems[j]->show();
+                else subPropGraphicsItems[j]->hide();
+                propertyGraphicsItems_.push_back(subPropGraphicsItems[j]);
             }
         }
+
+        updatePropertyItemPositions();
     } else {
         nameLabel_->setText("");
         classLabel_->setText("");
     }
+}
+
+void LinkDialogProcessorGraphicsItem::updatePropertyItemPositions() {
+    int globalIndex = 0;
+    for (size_t i=0; i<propertyGraphicsItems_.size(); i++) {
+        if (propertyGraphicsItems_[i]->getLevel() == 0)
+            propertyGraphicsItems_[i]->setPropertyItemIndex(globalIndex);
+    }
+
+    for (size_t i=0; i<propertyGraphicsItems_.size(); i++)
+        propertyGraphicsItems_[i]->updatePositionBasedOnIndex();
 }
 
 } //namespace
