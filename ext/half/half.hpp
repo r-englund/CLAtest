@@ -927,7 +927,11 @@ namespace half_float
 		/// Default constructor.
 		/// This initializes the half to 0. Although this does not match the builtin types' default-initialization semantics 
 		/// and may be less efficient than no initialization, it is needed to provide proper value-initialization semantics.
-		HALF_CONSTEXPR half() : data_() {}
+#if __APPLE__
+       HALF_CONSTEXPR  half() = default;  // no initialization
+#else
+       HALF_CONSTEXPR half() : data_() {}
+#endif
 
 		/// Copy constructor.
 		/// \tparam T type of concrete half expression
@@ -946,7 +950,11 @@ namespace half_float
 		/// \tparam T type of concrete half expression
 		/// \param rhs half expression to copy from
 		/// \return reference to this half
-		half& operator=(detail::expr rhs) { return *this = static_cast<float>(rhs); }
+#if __APPLE__
+        half& operator=(detail::expr rhs) = default;
+#else
+        half& operator=(detail::expr rhs) { return *this = static_cast<float>(rhs); }
+#endif
 
 		/// Arithmetic assignment.
 		/// \tparam T type of concrete half expression
