@@ -70,7 +70,7 @@ vec4 rayTraversal(vec3 entryPoint, vec3 exitPoint, vec2 texCoords) {
     while (t < tEnd) {
         vec3 samplePos = entryPoint + t * rayDirection;
         vec4 voxel = getNormalizedVoxel(volume_, volumeParameters_, samplePos);
-        vec3 gradient = COMPUTE_GRADIENTS(voxel, volume_, volumeParameters_, samplePos);
+        vec3 gradient = COMPUTE_GRADIENT(voxel, volume_, volumeParameters_, samplePos);
         vec4 color = APPLY_CLASSIFICATION(transferFunc_, voxel);
         color.rgb = APPLY_SHADING(color.rgb, color.rgb, vec3(1.0), samplePos, gradient, lightPosition_, cameraPosition_);
         //Light Volume Compositing

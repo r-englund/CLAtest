@@ -30,16 +30,20 @@
 *
 *********************************************************************************/
 #include "utils/structs.frag"
-#include "utils/shading.frag"
 #include "utils/sampler2d.frag"
 #include "utils/sampler3d.frag"
+
+#include "utils/classification.frag"
+#include "utils/compositing.frag"
 #include "utils/depth.frag"
 #include "utils/gradients.frag"
+#include "utils/shading.frag"
 
-#include "include/inc_classification.frag"
-#include "include/inc_compositing.frag"
 
-uniform TEXTURE_PARAMETERS outportParameters_;
+uniform VOLUME_PARAMETERS volumeParameters_;
+uniform sampler3D volume_;
+
+uniform sampler2D transferFunc_;
 
 uniform TEXTURE_PARAMETERS entryParameters_;
 uniform sampler2D entryColorTex_;
@@ -49,8 +53,7 @@ uniform TEXTURE_PARAMETERS exitParameters_;
 uniform sampler2D exitColorTex_;
 uniform sampler2D exitDepthTex_;
 
-uniform VOLUME_PARAMETERS volumeParameters_;
-uniform sampler3D volume_;
+uniform TEXTURE_PARAMETERS outportParameters_;
 
 uniform SHADING_PARAMETERS light_;
 uniform CAMERA_PARAMETERS camera_;
@@ -61,8 +64,7 @@ uniform float isoValue_;
 // NUMBER_OF_CHANNELS is defined in initializeResources
 uniform sampler2D transferFuncs_[NUMBER_OF_CHANNELS];
 
-// set threshold for early ray termination
-#define ERT_THRESHOLD 0.99
+#define ERT_THRESHOLD 0.99 // threshold for early ray termination
 
 vec4 rayTraversal(vec3 entryPoint, vec3 exitPoint, vec2 texCoords) {
     vec4 result = vec4(0.0);

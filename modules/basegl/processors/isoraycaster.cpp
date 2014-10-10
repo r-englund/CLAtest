@@ -108,7 +108,7 @@ void ISORaycaster::initializeResources(){
 
         std::stringstream ss2;
         for (int i = 0; i < channels; ++i) {
-            ss2 << "gradient = COMPUTE_GRADIENTS_FOR_CHANNEL(voxel, samplePos, volume_,"
+            ss2 << "gradient = COMPUTE_GRADIENT_FOR_CHANNEL(voxel, samplePos, volume_,"
                 << " volumeParameters_, t, rayDirection, entryTex_, entryParameters_," << i << ");"
                 << "color = APPLY_CLASSIFICATION(transferFuncs_[" << i << "], voxel[" << i << "])"
                 << "color.rgb = APPLY_SHADING(color.rgb, color.rgb, vec3(1.0), samplePos,"

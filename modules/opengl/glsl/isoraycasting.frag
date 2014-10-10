@@ -86,7 +86,7 @@ vec4 rayTraversal(vec3 entryPoint, vec3 exitPoint, vec2 texCoords) {
         bool sampOutside = voxel[channel_] < isoValue_;
         float th = 0.001;
         if(abs(diff) < th){ //close enough to the surface
-            gradient = COMPUTE_GRADIENTS_FOR_CHANNEL(voxel, samplePos, volume_, volumeParameters_, t, rayDirection, entryTex_, entryParameters_, channel_);
+            gradient = COMPUTE_GRADIENT_FOR_CHANNEL(voxel, samplePos, volume_, volumeParameters_, t, rayDirection, entryTex_, entryParameters_, channel_);
             result.rgb = APPLY_SHADING(vec3(1.0), vec3(1.0), vec3(1.0), samplePos, gradient, lightPosition_, vec3(0.0));
             result.a = 1.0;
             t += tEnd;
