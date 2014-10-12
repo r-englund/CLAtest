@@ -9,6 +9,7 @@ set(HEADER_FILES
     ${IVW_MODULE_DIR}/base/processors/datasource.h
     ${IVW_MODULE_DIR}/base/processors/diffuselightsourceprocessor.h
     ${IVW_MODULE_DIR}/base/processors/directionallightsourceprocessor.h
+    ${IVW_MODULE_DIR}/base/processors/distancetransformram.h
     ${IVW_MODULE_DIR}/base/processors/geometrysource.h
     ${IVW_MODULE_DIR}/base/processors/imageexport.h
     ${IVW_MODULE_DIR}/base/processors/imagesource.h
@@ -16,6 +17,7 @@ set(HEADER_FILES
     ${IVW_MODULE_DIR}/base/processors/meshclipping.h
     ${IVW_MODULE_DIR}/base/processors/meshcreator.h
     ${IVW_MODULE_DIR}/base/processors/ordinalpropertyanimator.h
+    ${IVW_MODULE_DIR}/base/processors/pixeltobufferprocessor.h
     ${IVW_MODULE_DIR}/base/processors/pointlightsourceprocessor.h
     ${IVW_MODULE_DIR}/base/processors/spotlightsourceprocessor.h
     ${IVW_MODULE_DIR}/base/processors/volumebasistransformer.h
@@ -24,7 +26,6 @@ set(HEADER_FILES
     ${IVW_MODULE_DIR}/base/processors/volumesource.h
     ${IVW_MODULE_DIR}/base/processors/volumesubsample.h
     ${IVW_MODULE_DIR}/base/processors/volumesubset.h
-    ${IVW_MODULE_DIR}/base/processors/distancetransformram.h
 )
 ivw_group("Header Files" ${HEADER_FILES})
 
@@ -35,6 +36,7 @@ set(SOURCE_FILES
     ${IVW_MODULE_DIR}/base/processors/cubeproxygeometry.cpp
     ${IVW_MODULE_DIR}/base/processors/diffuselightsourceprocessor.cpp
     ${IVW_MODULE_DIR}/base/processors/directionallightsourceprocessor.cpp
+    ${IVW_MODULE_DIR}/base/processors/distancetransformram.cpp
     ${IVW_MODULE_DIR}/base/processors/geometrysource.cpp
     ${IVW_MODULE_DIR}/base/processors/imageexport.cpp
     ${IVW_MODULE_DIR}/base/processors/imagesource.cpp
@@ -42,6 +44,7 @@ set(SOURCE_FILES
     ${IVW_MODULE_DIR}/base/processors/meshclipping.cpp
     ${IVW_MODULE_DIR}/base/processors/meshcreator.cpp
     ${IVW_MODULE_DIR}/base/processors/ordinalpropertyanimator.cpp
+    ${IVW_MODULE_DIR}/base/processors/pixeltobufferprocessor.cpp
     ${IVW_MODULE_DIR}/base/processors/pointlightsourceprocessor.cpp
     ${IVW_MODULE_DIR}/base/processors/spotlightsourceprocessor.cpp
     ${IVW_MODULE_DIR}/base/processors/volumebasistransformer.cpp
@@ -50,7 +53,6 @@ set(SOURCE_FILES
     ${IVW_MODULE_DIR}/base/processors/volumesource.cpp
     ${IVW_MODULE_DIR}/base/processors/volumesubsample.cpp
     ${IVW_MODULE_DIR}/base/processors/volumesubset.cpp
-    ${IVW_MODULE_DIR}/base/processors/distancetransformram.cpp
 )
 ivw_group("Source Files" ${SOURCE_FILES})
 

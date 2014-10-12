@@ -41,6 +41,7 @@
 #include <modules/base/processors/imagesourceseries.h>
 #include <modules/base/processors/meshclipping.h>
 #include <modules/base/processors/meshcreator.h>
+#include <modules/base/processors/pixeltobufferprocessor.h>
 #include <modules/base/processors/pointlightsourceprocessor.h>
 #include <modules/base/processors/ordinalpropertyanimator.h>
 #include <modules/base/processors/spotlightsourceprocessor.h>
@@ -65,6 +66,7 @@ BaseModule::BaseModule() : InviwoModule() {
     registerProcessor(ImageSourceSeries);
     registerProcessor(MeshClipping);
     registerProcessor(MeshCreator);
+    registerProcessor(PixelToBufferProcessor);
     registerProcessor(PointLightSourceProcessor);
     registerProcessor(OrdinalPropertyAnimator);
     registerProcessor(SpotLightSourceProcessor);
