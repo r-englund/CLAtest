@@ -76,6 +76,7 @@ void BufferGL::bind() const {
 }
 
 void BufferGL::initialize(const void* data, GLsizeiptr sizeInBytes) {
+    BufferRepresentation::setSize(sizeInBytes/getSizeOfElement());
     buffer_->initialize(data, sizeInBytes);
 }
 

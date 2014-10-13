@@ -35,11 +35,11 @@
 
 namespace inviwo {
 
-BufferObjectArray::BufferObjectArray() : id_(0u) {
+BufferObjectArray::BufferObjectArray() : id_(0u), attachedBuffers_(NUMBER_OF_BUFFER_TYPES) {
     initialize();
 }
 
-BufferObjectArray::BufferObjectArray(const BufferObjectArray& rhs) : id_(0u) {
+BufferObjectArray::BufferObjectArray(const BufferObjectArray& rhs) : id_(0u), attachedBuffers_(NUMBER_OF_BUFFER_TYPES) {
     initialize();
 
     bind();
@@ -59,7 +59,6 @@ BufferObjectArray::~BufferObjectArray() {
 
 void BufferObjectArray::initialize() {
     glGenVertexArrays(1, &id_);
-    attachedBuffers_.resize(NUMBER_OF_BUFFER_TYPES);
     attachedNum_ = 0;
 }
 
@@ -106,7 +105,7 @@ void BufferObjectArray::attachBufferObject(const BufferObject* bo, GLuint locati
     if(bo)
         pointToObject(bo, location);
 
-    attachedBuffers_.insert(attachedBuffers_.begin()+location, bo);
+    attachedBuffers_.at(location) = bo;
     attachedNum_++;
 }
 

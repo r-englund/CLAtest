@@ -52,7 +52,10 @@ void ElementBufferRAM2GLConverter::update(const DataRepresentation* source,
                                           DataRepresentation* destination) {
     const BufferRAM* src = static_cast<const BufferRAM*>(source);
     ElementBufferGL* dst = static_cast<ElementBufferGL*>(destination);
-    dst->upload(src->getData(), src->getSize()*src->getSizeOfElement());
+    if (src->getSize() != dst->getSize()) 
+        dst->initialize(src->getData(), src->getSize()*src->getSizeOfElement());
+    else
+        dst->upload(src->getData(), src->getSize()*src->getSizeOfElement());
 }
 
 
