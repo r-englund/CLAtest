@@ -172,7 +172,6 @@ namespace inviwo {
     void PyInviwo::initDefaultInterfaces(){
         inviwoInternalPyModule_ = new PyModule("inviwo_internal");
         inviwoInternalPyModule_->addMethod(new PyStdOutCatcher());
-        registerPyModule(inviwoInternalPyModule_);
 
 
         inviwoPyModule_ = new PyModule("inviwo");
@@ -212,6 +211,7 @@ namespace inviwo {
 
 
         registerPyModule(inviwoPyModule_);
+        registerPyModule(inviwoInternalPyModule_);
     }
     
     void PyInviwo::initOutputRedirector()
