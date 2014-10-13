@@ -102,6 +102,10 @@ VolumeSliceGL::VolumeSliceGL()
     addProperty(sliceX_);
     addProperty(sliceY_);
     addProperty(sliceZ_);
+    // Invalidate selected voxel cursor when current slice changes
+    sliceX_.onChange(this, &VolumeSliceGL::invalidateMesh);
+    sliceY_.onChange(this, &VolumeSliceGL::invalidateMesh);
+    sliceZ_.onChange(this, &VolumeSliceGL::invalidateMesh);
 
     addProperty(planeNormal_);
     planeNormal_.onChange(this, &VolumeSliceGL::planeSettingsChanged);
@@ -378,6 +382,7 @@ void VolumeSliceGL::shiftSlice(int shift) {
 }
 
 void VolumeSliceGL::updateReadOnlyStates() {
+    disableInvalidation();
     // enable/disable slice sliders accordingly
     if (posPicking_.get()) {
         for (int i = 0; i < 3; ++i) {
@@ -396,6 +401,7 @@ void VolumeSliceGL::updateReadOnlyStates() {
         planeOffset_.setReadOnly(activeSlice != NULL);
     }
     showIndicator_.setReadOnly(!posPicking_.get());
+    enableInvalidation();
 }
 
 void VolumeSliceGL::setVolPosFromScreenPos(vec2 pos) {
@@ -433,10 +439,11 @@ void VolumeSliceGL::setVolPosFromScreenPos(vec2 pos) {
             curPos.z = slice;
             break;
     }
+    disableInvalidation();
     sliceX_.set(curPos.x);
     sliceY_.set(curPos.y);
     sliceZ_.set(curPos.z);
-    meshDirty_ = true;
+    enableInvalidation();
 }
 
 vec2 VolumeSliceGL::getScreenPosFromVolPos() {
@@ -591,6 +598,7 @@ void VolumeSliceGL::updateMaxSliceNumber() {
     if (!inport_.hasData()) {
         return;
     }
+    disableInvalidation();
     uvec3 dims = inport_.getData()->getDimension();
     if (dims.x != sliceX_.getMaxValue()) {
         sliceX_.setMaxValue(static_cast<int>(dims.x));
@@ -604,6 +612,7 @@ void VolumeSliceGL::updateMaxSliceNumber() {
         sliceZ_.setMaxValue(static_cast<int>(dims.z));
         sliceZ_.set(static_cast<int>(dims.z) / 2);
     }
+    enableInvalidation();
 }
 
 VolumeSliceGL::VolumeSliceGLInteractionHandler::VolumeSliceGLInteractionHandler(VolumeSliceGL* vs)
