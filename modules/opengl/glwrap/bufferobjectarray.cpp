@@ -61,7 +61,6 @@ BufferObjectArray::~BufferObjectArray() {
 
 void BufferObjectArray::initialize() {
     glGenVertexArrays(1, &id_);
-    nextNonGeneric_ = NUMBER_OF_BUFFER_TYPES;
 
 #ifdef GL_VERSION_2_0
     if(maxVertexAttribSize_<1){
@@ -90,7 +89,6 @@ void BufferObjectArray::clear() {
             attachedBuffers_[i] = NULL;
         }
     }
-    nextNonGeneric_ = NUMBER_OF_BUFFER_TYPES;
 }
 
 void BufferObjectArray::bind() const {
@@ -101,28 +99,39 @@ void BufferObjectArray::unbind() const {
     glBindVertexArray(0);
 }
 
-void BufferObjectArray::attachBufferObjectToGenericLocation(const BufferObject* bo){
+int BufferObjectArray::attachBufferObject(const BufferObject* bo){
+    if(!bo){
+        LogError("Error: No valid BufferObject");
+        return -1;
+    }
+
     if(!attachedBuffers_[bo->getBufferType()]){
         pointToObject(bo, static_cast<GLuint>(bo->getBufferType()));
         attachedBuffers_[bo->getBufferType()] = bo;
+        return static_cast<int>(bo->getBufferType());
     }
     else{
-        attachBufferObject(bo, static_cast<GLuint>(nextNonGeneric_));
+        std::vector<const BufferObject*>::iterator it = std::find(attachedBuffers_.begin(), attachedBuffers_.end(), static_cast<const BufferObject*>(NULL));
+        if (it != attachedBuffers_.end()){
+            int location = it - attachedBuffers_.begin();
+            pointToObject(bo, location);
+            attachedBuffers_.at(location) = bo;
+            return location;
+        }
+        else{
+            LogError("Error: No available locations for attaching the buffer object.");
+            return -1;
+        }
     }
-}
-
-void BufferObjectArray::attachBufferObject(const BufferObject* bo){
-    attachBufferObject(bo, static_cast<GLuint>(nextNonGeneric_));
 }
 
 void BufferObjectArray::attachBufferObject(const BufferObject* bo, GLuint location) {
     if(bo)
         pointToObject(bo, location);
+    else
+        LogError("Error: No valid BufferObject");
 
     attachedBuffers_.at(location) = bo;
-
-    if(location == nextNonGeneric_)
-        nextNonGeneric_++;
 }
 
 void BufferObjectArray::pointToObject(const BufferObject* bo, GLuint location) {

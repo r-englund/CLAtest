@@ -106,7 +106,7 @@ void BufferGL::enable() const {
     if(!bufferArray_){
         bufferArray_ = new BufferObjectArray();
         bufferArray_->bind();
-        bufferArray_->attachBufferObject(buffer_);
+        bufferArray_->attachBufferObject(buffer_, 0);
     }
     else
         bufferArray_->bind();
