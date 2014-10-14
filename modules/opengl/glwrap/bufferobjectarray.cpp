@@ -35,6 +35,8 @@
 
 namespace inviwo {
 
+int BufferObjectArray::maxVertexAttribSize_ = 0;
+
 BufferObjectArray::BufferObjectArray() : id_(0u), attachedBuffers_(NUMBER_OF_BUFFER_TYPES) {
     initialize();
 }
@@ -59,7 +61,18 @@ BufferObjectArray::~BufferObjectArray() {
 
 void BufferObjectArray::initialize() {
     glGenVertexArrays(1, &id_);
-    attachedNum_ = 0;
+    nextNonGeneric_ = NUMBER_OF_BUFFER_TYPES;
+
+#ifdef GL_VERSION_2_0
+    if(maxVertexAttribSize_<1){
+        glGetIntegerv(GL_MAX_VERTEX_ATTRIBS, (GLint*)&maxVertexAttribSize_);
+    }
+#endif
+
+    attachedBuffers_.reserve(maxVertexAttribSize_);
+    for (int i=0; i < maxVertexAttribSize_; ++i) {
+        attachedBuffers_.push_back(NULL);
+    }
 }
 
 void BufferObjectArray::deinitialize() {
@@ -72,10 +85,12 @@ GLuint BufferObjectArray::getId() const {
 
 void BufferObjectArray::clear() {
     for (GLuint i=0; i < static_cast<GLuint>(attachedBuffers_.size()); ++i) {
-        glDisableVertexAttribArray(i);
-        attachedBuffers_[i] = NULL;
+        if(attachedBuffers_[i]){
+            glDisableVertexAttribArray(i);
+            attachedBuffers_[i] = NULL;
+        }
     }
-    attachedNum_ = 0;
+    nextNonGeneric_ = NUMBER_OF_BUFFER_TYPES;
 }
 
 void BufferObjectArray::bind() const {
@@ -90,15 +105,14 @@ void BufferObjectArray::attachBufferObjectToGenericLocation(const BufferObject* 
     if(!attachedBuffers_[bo->getBufferType()]){
         pointToObject(bo, static_cast<GLuint>(bo->getBufferType()));
         attachedBuffers_[bo->getBufferType()] = bo;
-        attachedNum_++;
     }
     else{
-        attachBufferObject(bo, static_cast<GLuint>(attachedNum_));
+        attachBufferObject(bo, static_cast<GLuint>(nextNonGeneric_));
     }
 }
 
 void BufferObjectArray::attachBufferObject(const BufferObject* bo){
-    attachBufferObject(bo, static_cast<GLuint>(attachedNum_));
+    attachBufferObject(bo, static_cast<GLuint>(nextNonGeneric_));
 }
 
 void BufferObjectArray::attachBufferObject(const BufferObject* bo, GLuint location) {
@@ -106,13 +120,19 @@ void BufferObjectArray::attachBufferObject(const BufferObject* bo, GLuint locati
         pointToObject(bo, location);
 
     attachedBuffers_.at(location) = bo;
-    attachedNum_++;
+
+    if(location == nextNonGeneric_)
+        nextNonGeneric_++;
 }
 
 void BufferObjectArray::pointToObject(const BufferObject* bo, GLuint location) {
-    glEnableVertexAttribArray(location);
-    bo->bind();
-    glVertexAttribPointer(location, bo->getGLFormat().channels, bo->getGLFormat().type, GL_FALSE, 0, (void*)0);
+    if(location < attachedBuffers_.size()){
+        glEnableVertexAttribArray(location);
+        bo->bind();
+        glVertexAttribPointer(location, bo->getGLFormat().channels, bo->getGLFormat().type, GL_FALSE, 0, (void*)0);
+    }
+    else
+        LogError("Error: VertexAttribArray location exceeds maximum allowed range");
 }
 
 const BufferObject* BufferObjectArray::getBufferObject(size_t idx) const{

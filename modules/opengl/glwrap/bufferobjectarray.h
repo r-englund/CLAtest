@@ -70,8 +70,9 @@ private:
 private:
     GLuint id_;
     std::vector<const BufferObject*> attachedBuffers_;
-    size_t attachedNum_;
+    size_t nextNonGeneric_;
 
+    static int maxVertexAttribSize_;
 };
 
 
