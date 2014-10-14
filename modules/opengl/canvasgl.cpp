@@ -151,9 +151,9 @@ void CanvasGL::update() {
 void CanvasGL::attachImagePlanRect(BufferObjectArray* arrayObject) {
     if (arrayObject) {
         arrayObject->bind();
-        arrayObject->attachBufferObjectToGenericLocation(
+        arrayObject->attachBufferObject(
             screenAlignedRectGL_->getBufferGL(0)->getBufferObject());
-        arrayObject->attachBufferObjectToGenericLocation(
+        arrayObject->attachBufferObject(
             screenAlignedRectGL_->getBufferGL(1)->getBufferObject());
         arrayObject->unbind();
     }
@@ -207,9 +207,9 @@ void CanvasGL::drawRect() {
     delete rectArray_;
     rectArray_ = new BufferObjectArray();
     rectArray_->bind();
-    rectArray_->attachBufferObjectToGenericLocation(
+    rectArray_->attachBufferObject(
         screenAlignedRectGL_->getBufferGL(0)->getBufferObject());
-    rectArray_->attachBufferObjectToGenericLocation(
+    rectArray_->attachBufferObject(
         screenAlignedRectGL_->getBufferGL(1)->getBufferObject());
     glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
     rectArray_->unbind();

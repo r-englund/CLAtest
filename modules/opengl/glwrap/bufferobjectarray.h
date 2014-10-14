@@ -58,8 +58,14 @@ public:
 
     void clear();
 
-    void attachBufferObjectToGenericLocation(const BufferObject*);
-    void attachBufferObject(const BufferObject*);
+    /* 
+    *  Attach buffer object to generic location based on Buffer::BufferType
+    *  or if generic location is occupied, add it to the closest available 
+    *  after the range for generic locations.
+    */
+    int attachBufferObject(const BufferObject*);
+
+    // Attach buffer object to specific location
     void attachBufferObject(const BufferObject*, GLuint);
 
     const BufferObject* getBufferObject(size_t idx = 0) const;
@@ -70,7 +76,6 @@ private:
 private:
     GLuint id_;
     std::vector<const BufferObject*> attachedBuffers_;
-    size_t nextNonGeneric_;
 
     static int maxVertexAttribSize_;
 };

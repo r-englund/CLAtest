@@ -86,14 +86,14 @@ void MeshGL::update(bool editable) {
         for (std::vector<Buffer*>::const_iterator it = owner->getBuffers().begin(); it != owner->getBuffers().end(); ++it) {
             BufferGL* bufGL = (*it)->getEditableRepresentation<BufferGL>();
             attributesGL_.push_back(bufGL);
-            attributesArray_->attachBufferObjectToGenericLocation(bufGL->getBufferObject());
+            attributesArray_->attachBufferObject(bufGL->getBufferObject());
         }
     }
     else {
         for (std::vector<Buffer*>::const_iterator it = owner->getBuffers().begin(); it != owner->getBuffers().end(); ++it) {
             const BufferGL* bufGL = (*it)->getRepresentation<BufferGL>();
             attributesGL_.push_back(bufGL);
-            attributesArray_->attachBufferObjectToGenericLocation(bufGL->getBufferObject());
+            attributesArray_->attachBufferObject(bufGL->getBufferObject());
         }
     }
     attributesArray_->unbind();
