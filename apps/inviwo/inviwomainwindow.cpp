@@ -25,8 +25,8 @@
  * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- *
- * Main file author: Timo Ropinski
+ * 
+ * Contact: Timo Ropinski
  *
  *********************************************************************************/
 
@@ -587,12 +587,13 @@ void InviwoMainWindow::showAboutBox() {
                      visualizations.<br>It is licensed under the Simplified BSD license.</p>");
     aboutText.append("<p><b>Core Team:</b><br>");
     aboutText.append(
-        "Rickard Englund, Daniel J&ouml;nsson, Sathish Kottravel, Timo Ropinski, Peter Steneteg, "
-        "Erik Sund&eacute;n</p>");
+        "Erik Sund&eacute;n, Daniel J&ouml;nsson, Peter Steneteg, Rickard Englund, Sathish Kottravel, "
+        "Timo Ropinski</p>");
     aboutText.append("<p><b>Additional Developers:</b><br>");
-    aboutText.append("Alexander Johansson, Johan Noren, Viktor Axelsson</p>");
+    aboutText.append("Martin Falk</p>");
     aboutText.append("<p><b>Former Developers:</b><br>");
-    aboutText.append("Hans-Christian Helltegen, Andreas Valter, Emanuel Winblad</p>");
+    aboutText.append("Alexander Johansson, Andreas Valter, Johan Nor&eacute;n, Emanuel Winblad, "
+        "Hans-Christian Helltegen, Viktor Axelsson</p>");
     QMessageBox::about(this, QString::fromStdString("Inviwo V" + IVW_VERSION),
                        QString::fromStdString(aboutText));
 }
