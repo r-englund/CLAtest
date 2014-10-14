@@ -55,9 +55,15 @@ PyMethodDef* PyModule::getPyMethodDefs(){
     PyMethodDef* embMethods = new PyMethodDef[N + 1];
     
     for (size_t i = 0; i < N; i++){
-        embMethods[i] = { methods_[i]->getName2(), methods_[i]->getFunc(), methods_[i]->getFlags(), methods_[i]->getDesc2() };
+        embMethods[i].ml_name = methods_[i]->getName2();
+        embMethods[i].ml_meth = methods_[i]->getFunc();
+        embMethods[i].ml_flags = methods_[i]->getFlags();
+        embMethods[i].ml_doc = methods_[i]->getDesc2();
     }
-    embMethods[N] = { NULL, NULL, 0, NULL };
+    embMethods[N].ml_name = NULL;
+    embMethods[N].ml_meth = NULL;
+    embMethods[N].ml_flags = 0;
+    embMethods[N].ml_doc = NULL;
     return embMethods;
 
 }
