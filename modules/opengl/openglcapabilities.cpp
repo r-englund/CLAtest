@@ -76,7 +76,21 @@ bool OpenGLCapabilities::GLSLShaderVersion::hasProfile() {
     return (profile_ != "");
 }
 
-OpenGLCapabilities::OpenGLCapabilities() {
+OpenGLCapabilities::OpenGLCapabilities()
+    : shadersAreSupported_(false)
+    , shadersAreSupportedARB_(false)
+    , maxProgramLoopCount_(-1)
+    , texSupported_(false)
+    , tex3DSupported_(false)
+    , texArraySupported_(false)
+    , fboSupported_(false)
+    , maxTexSize_(-1)
+    , max3DTexSize_(-1)
+    , maxArrayTexSize_(-1)
+    , maxArrayVertexAttribs_(-1)
+    , maxColorAttachments_(-1)
+    , numTexUnits_(-1)
+{
     supportedShaderVersions_.clear();
     currentGlobalGLSLHeader_ = "";
     currentGlobalGLSLVertexDefines_ = "";
@@ -353,6 +367,10 @@ int OpenGLCapabilities::getMaxArrayTexSize() {
     return maxArrayTexSize_;
 }
 
+int OpenGLCapabilities::getMaxArrayVertexAttribs() {
+    return maxArrayVertexAttribs_;
+}
+
 int OpenGLCapabilities::getMaxColorAttachments() {
     return maxColorAttachments_;
 }
@@ -513,6 +531,9 @@ void OpenGLCapabilities::retrieveStaticInfo() {
     else
         max3DTexSize_ = 0;
 
+#endif
+#ifdef GL_VERSION_2_0
+     glGetIntegerv(GL_MAX_VERTEX_ATTRIBS, (GLint*)&maxArrayVertexAttribs_);
 #endif
 #ifdef GL_VERSION_3_0
     if(glVersion >= 300){

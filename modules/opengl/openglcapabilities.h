@@ -97,6 +97,7 @@ public:
     int getMaxTexSize();
     int getMax3DTexSize();
     int getMaxArrayTexSize();
+    int getMaxArrayVertexAttribs();
     int getMaxColorAttachments();
     int getNumTexUnits();
 
@@ -145,6 +146,7 @@ private:
     int maxTexSize_;
     int max3DTexSize_;
     int maxArrayTexSize_;
+    int maxArrayVertexAttribs_;
     int maxColorAttachments_;
     int numTexUnits_;
 };
