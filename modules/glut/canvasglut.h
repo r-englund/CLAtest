@@ -33,11 +33,11 @@
 #ifndef IVW_CANVASGLUT_H
 #define IVW_CANVASGLUT_H
 
-#include "modules/glut/glutmoduledefine.h"
+#include <modules/glut/glutmoduledefine.h>
 #include <stdlib.h>
-#include "modules/opengl/inviwoopengl.h"
+#include <modules/opengl/inviwoopengl.h>
 #include <GL/freeglut.h>
-#include "modules/opengl/canvasgl.h"
+#include <modules/opengl/canvasgl.h>
 
 namespace inviwo {
 
