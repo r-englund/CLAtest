@@ -119,9 +119,12 @@ void PositionWidgetProcessor::process() {
                                       geometryInport_.getData()->getBasisAndOffset();
     shader_->setUniform("modelViewProjectionMatrix_", modelViewProjectionMatrix_);
 
+    glEnable(GL_CULL_FACE); 
+    glCullFace(GL_BACK);
     glDepthFunc(GL_ALWAYS);
     renderer.render();
     glDepthFunc(GL_LESS);
+    glDisable(GL_CULL_FACE);
 
     shader_->deactivate();
     utilgl::deactivateCurrentTarget();
