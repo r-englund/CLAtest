@@ -5,72 +5,72 @@ ivw_module(BaseGL)
 #--------------------------------------------------------------------
 # Add header files
 set(HEADER_FILES
-    ${IVW_MODULE_DIR}/basegl/processors/background.h
-    ${IVW_MODULE_DIR}/basegl/processors/drawlines.h
-    ${IVW_MODULE_DIR}/basegl/processors/drawfreehand.h
-    ${IVW_MODULE_DIR}/basegl/processors/entryexitpoints.h
-    ${IVW_MODULE_DIR}/basegl/processors/findedges.h
-    ${IVW_MODULE_DIR}/basegl/processors/firstivwprocessor.h
-    ${IVW_MODULE_DIR}/basegl/processors/imageclassify.h
-    ${IVW_MODULE_DIR}/basegl/processors/imagegrayscale.h
-    ${IVW_MODULE_DIR}/basegl/processors/imagelayoutgl.h
-    ${IVW_MODULE_DIR}/basegl/processors/imagemixer.h
-    ${IVW_MODULE_DIR}/basegl/processors/lightingraycaster.h
-    ${IVW_MODULE_DIR}/basegl/processors/lightvolumegl.h
-	${IVW_MODULE_DIR}/basegl/processors/multichannelraycaster.h
-    ${IVW_MODULE_DIR}/basegl/processors/multiplanar.h
-    ${IVW_MODULE_DIR}/basegl/processors/positionwidgetprocessor.h
-    ${IVW_MODULE_DIR}/basegl/processors/redgreenprocessor.h
-    ${IVW_MODULE_DIR}/basegl/processors/simpleraycaster.h
-    ${IVW_MODULE_DIR}/basegl/processors/isoraycaster.h
-    ${IVW_MODULE_DIR}/basegl/processors/volumeslicegl.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/processors/background.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/processors/drawlines.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/processors/drawfreehand.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/processors/entryexitpoints.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/processors/findedges.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/processors/firstivwprocessor.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/processors/imageclassify.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/processors/imagegrayscale.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/processors/imagelayoutgl.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/processors/imagemixer.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/processors/lightingraycaster.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/processors/lightvolumegl.h
+	${CMAKE_CURRENT_SOURCE_DIR}/processors/multichannelraycaster.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/processors/multiplanar.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/processors/positionwidgetprocessor.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/processors/redgreenprocessor.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/processors/simpleraycaster.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/processors/isoraycaster.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/processors/volumeslicegl.h
 )
 ivw_group("Header Files" ${HEADER_FILES})
 
 #--------------------------------------------------------------------
 # Add source files
 set(SOURCE_FILES
-    ${IVW_MODULE_DIR}/basegl/processors/background.cpp
-    ${IVW_MODULE_DIR}/basegl/processors/drawlines.cpp
-    ${IVW_MODULE_DIR}/basegl/processors/drawfreehand.cpp
-    ${IVW_MODULE_DIR}/basegl/processors/entryexitpoints.cpp
-    ${IVW_MODULE_DIR}/basegl/processors/findedges.cpp
-    ${IVW_MODULE_DIR}/basegl/processors/firstivwprocessor.cpp
-    ${IVW_MODULE_DIR}/basegl/processors/imageclassify.cpp
-    ${IVW_MODULE_DIR}/basegl/processors/imagegrayscale.cpp
-    ${IVW_MODULE_DIR}/basegl/processors/imagelayoutgl.cpp
-    ${IVW_MODULE_DIR}/basegl/processors/imagemixer.cpp
-    ${IVW_MODULE_DIR}/basegl/processors/lightingraycaster.cpp
-    ${IVW_MODULE_DIR}/basegl/processors/lightvolumegl.cpp
-	${IVW_MODULE_DIR}/basegl/processors/multichannelraycaster.cpp
-    ${IVW_MODULE_DIR}/basegl/processors/multiplanar.cpp
-    ${IVW_MODULE_DIR}/basegl/processors/positionwidgetprocessor.cpp
-    ${IVW_MODULE_DIR}/basegl/processors/redgreenprocessor.cpp
-    ${IVW_MODULE_DIR}/basegl/processors/simpleraycaster.cpp
-    ${IVW_MODULE_DIR}/basegl/processors/isoraycaster.cpp
-    ${IVW_MODULE_DIR}/basegl/processors/volumeslicegl.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/processors/background.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/processors/drawlines.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/processors/drawfreehand.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/processors/entryexitpoints.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/processors/findedges.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/processors/firstivwprocessor.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/processors/imageclassify.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/processors/imagegrayscale.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/processors/imagelayoutgl.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/processors/imagemixer.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/processors/lightingraycaster.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/processors/lightvolumegl.cpp
+	${CMAKE_CURRENT_SOURCE_DIR}/processors/multichannelraycaster.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/processors/multiplanar.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/processors/positionwidgetprocessor.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/processors/redgreenprocessor.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/processors/simpleraycaster.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/processors/isoraycaster.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/processors/volumeslicegl.cpp
 )
 ivw_group("Source Files" ${SOURCE_FILES})
 
 #--------------------------------------------------------------------
 # Add shaders
 set(SHADER_FILES
-    ${IVW_MODULE_DIR}/basegl/glsl/background.frag
-    ${IVW_MODULE_DIR}/basegl/glsl/capnearclipping.frag
-    ${IVW_MODULE_DIR}/basegl/glsl/img_classify.frag
-    ${IVW_MODULE_DIR}/basegl/glsl/img_findedges.frag
-    ${IVW_MODULE_DIR}/basegl/glsl/img_graysc.frag
-    ${IVW_MODULE_DIR}/basegl/glsl/img_mix.frag
-	${IVW_MODULE_DIR}/basegl/glsl/multichannelraycaster.frag
-    ${IVW_MODULE_DIR}/basegl/glsl/multiplanar.frag
-    ${IVW_MODULE_DIR}/basegl/glsl/volumeslice.frag
-    ${IVW_MODULE_DIR}/basegl/glsl/lighting/lightingraycasting.frag
-	${IVW_MODULE_DIR}/basegl/glsl/lighting/lightpropagation.frag
-    ${IVW_MODULE_DIR}/basegl/glsl/lighting/lightpropagation.geom
-    ${IVW_MODULE_DIR}/basegl/glsl/lighting/lightpropagation.vert
-    ${IVW_MODULE_DIR}/basegl/glsl/lighting/lightvolumeblend.frag
-    ${IVW_MODULE_DIR}/basegl/glsl/lighting/lightvolumeblend.geom
-    ${IVW_MODULE_DIR}/basegl/glsl/lighting/lightvolumeblend.vert
+    ${CMAKE_CURRENT_SOURCE_DIR}/glsl/background.frag
+    ${CMAKE_CURRENT_SOURCE_DIR}/glsl/capnearclipping.frag
+    ${CMAKE_CURRENT_SOURCE_DIR}/glsl/img_classify.frag
+    ${CMAKE_CURRENT_SOURCE_DIR}/glsl/img_findedges.frag
+    ${CMAKE_CURRENT_SOURCE_DIR}/glsl/img_graysc.frag
+    ${CMAKE_CURRENT_SOURCE_DIR}/glsl/img_mix.frag
+	${CMAKE_CURRENT_SOURCE_DIR}/glsl/multichannelraycaster.frag
+    ${CMAKE_CURRENT_SOURCE_DIR}/glsl/multiplanar.frag
+    ${CMAKE_CURRENT_SOURCE_DIR}/glsl/volumeslice.frag
+    ${CMAKE_CURRENT_SOURCE_DIR}/glsl/lighting/lightingraycasting.frag
+	${CMAKE_CURRENT_SOURCE_DIR}/glsl/lighting/lightpropagation.frag
+    ${CMAKE_CURRENT_SOURCE_DIR}/glsl/lighting/lightpropagation.geom
+    ${CMAKE_CURRENT_SOURCE_DIR}/glsl/lighting/lightpropagation.vert
+    ${CMAKE_CURRENT_SOURCE_DIR}/glsl/lighting/lightvolumeblend.frag
+    ${CMAKE_CURRENT_SOURCE_DIR}/glsl/lighting/lightvolumeblend.geom
+    ${CMAKE_CURRENT_SOURCE_DIR}/glsl/lighting/lightvolumeblend.vert
 )
 ivw_group("Shader Files" ${SHADER_FILES})
 
@@ -80,4 +80,4 @@ ivw_create_module(${SOURCE_FILES} ${HEADER_FILES} ${SHADER_FILES})
 
 #--------------------------------------------------------------------
 # Add shader directory to pack
-ivw_add_to_module_pack(${IVW_MODULE_DIR}/basegl/glsl)
+ivw_add_to_module_pack(${CMAKE_CURRENT_SOURCE_DIR}/glsl)

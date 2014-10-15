@@ -13,16 +13,16 @@ ivw_module(GLUT)
 #--------------------------------------------------------------------
 # Add header files
 set(HEADER_FILES
-    ${IVW_MODULE_DIR}/glut/canvasglut.h
-    ${IVW_MODULE_DIR}/glut/glutmodule.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/canvasglut.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/glutmodule.h
 )
 ivw_group("Header Files" ${HEADER_FILES})
 
 #--------------------------------------------------------------------
 # Add source files
 set(SOURCE_FILES
-    ${IVW_MODULE_DIR}/glut/canvasglut.cpp
-    ${IVW_MODULE_DIR}/glut/glutmodule.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/canvasglut.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/glutmodule.cpp
 )
 ivw_group("Source Files" ${SOURCE_FILES})
 

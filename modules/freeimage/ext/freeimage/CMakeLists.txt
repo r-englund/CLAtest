@@ -211,31 +211,31 @@ add_library(freeimage ${SOURCE_FILES} ${LIBJPEG_SOURCE_FILES} ${LIBOPENJPEG_SOUR
 #	InternalZLib
 #	)
 
-ivw_include_directories(${IVW_MODULE_DIR}/freeimage/ext/freeimage/)
-ivw_include_directories(${IVW_MODULE_DIR}/freeimage/ext/freeimage/FreeImage)
-ivw_include_directories(${IVW_MODULE_DIR}/freeimage/ext/freeimage/libjpeg)
-ivw_include_directories(${IVW_MODULE_DIR}/freeimage/ext/freeimage/libopenjpeg)
-ivw_include_directories(${IVW_MODULE_DIR}/freeimage/ext/freeimage/libpng)
-ivw_include_directories(${IVW_MODULE_DIR}/freeimage/ext/freeimage/librawlite)
-ivw_include_directories(${IVW_MODULE_DIR}/freeimage/ext/freeimage/libtiff4)
-ivw_include_directories(${IVW_MODULE_DIR}/freeimage/ext/freeimage/openexr/half)
-ivw_include_directories(${IVW_MODULE_DIR}/freeimage/ext/freeimage/openexr/imath)
-ivw_include_directories(${IVW_MODULE_DIR}/freeimage/ext/freeimage/openexr/ilmimf)
-ivw_include_directories(${IVW_MODULE_DIR}/freeimage/ext/freeimage/openexr/ilmthread)
-ivw_include_directories(${IVW_MODULE_DIR}/freeimage/ext/freeimage/openexr/iex)
-ivw_include_directories(${IVW_MODULE_DIR}/freeimage/ext/freeimage/openexr)
-ivw_include_directories(${IVW_MODULE_DIR}/freeimage/ext/freeimage/zlib)
+ivw_include_directories(${CMAKE_CURRENT_SOURCE_DIR})
+ivw_include_directories(${CMAKE_CURRENT_SOURCE_DIR}/FreeImage)
+ivw_include_directories(${CMAKE_CURRENT_SOURCE_DIR}/libjpeg)
+ivw_include_directories(${CMAKE_CURRENT_SOURCE_DIR}/libopenjpeg)
+ivw_include_directories(${CMAKE_CURRENT_SOURCE_DIR}/libpng)
+ivw_include_directories(${CMAKE_CURRENT_SOURCE_DIR}/librawlite)
+ivw_include_directories(${CMAKE_CURRENT_SOURCE_DIR}/libtiff4)
+ivw_include_directories(${CMAKE_CURRENT_SOURCE_DIR}/openexr/half)
+ivw_include_directories(${CMAKE_CURRENT_SOURCE_DIR}/openexr/imath)
+ivw_include_directories(${CMAKE_CURRENT_SOURCE_DIR}/openexr/ilmimf)
+ivw_include_directories(${CMAKE_CURRENT_SOURCE_DIR}/openexr/ilmthread)
+ivw_include_directories(${CMAKE_CURRENT_SOURCE_DIR}/openexr/iex)
+ivw_include_directories(${CMAKE_CURRENT_SOURCE_DIR}/openexr)
+ivw_include_directories(${CMAKE_CURRENT_SOURCE_DIR}/zlib)
 
 #--------------------------------------------------------------------
 # This is to use .lib file, should be deleted when real linker is working 
-# link_directories(${IVW_MODULE_DIR}/freeimage/ext/freeimage/FreeImageLib/)
+# link_directories(${CMAKE_CURRENT_SOURCE_DIR}/FreeImageLib/)
 
 # ivw_add_dependency_libraries(FreeImage)
 
 # SET_TARGET_PROPERTIES( freeimage PROPERTIES LINK_FLAGS
-# 					"/LIBPATH:${IVW_MODULE_DIR}/freeimage/ext/freeimage/FreeImageLib/" )
+# 					"/LIBPATH:${CMAKE_CURRENT_SOURCE_DIR}/FreeImageLib/" )
 
-# LIST(APPEND _allLibsDir "${IVW_MODULE_DIR}/freeimage/ext/freeimage/FreeImageLib" )
+# LIST(APPEND _allLibsDir "${CMAKE_CURRENT_SOURCE_DIR}/FreeImageLib" )
 
 #---------------------------------------------------------------------
 

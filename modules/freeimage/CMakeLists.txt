@@ -9,10 +9,10 @@ ivw_module(FreeImage)
 #--------------------------------------------------------------------
 # Add header files
 set(HEADER_FILES
-    ${IVW_MODULE_DIR}/freeimage/freeimageutils.h
-    ${IVW_MODULE_DIR}/freeimage/freeimagereader.h
-    ${IVW_MODULE_DIR}/freeimage/freeimagewriter.h
-    ${IVW_MODULE_DIR}/freeimage/processors/tonemappingcpuprocessor.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/freeimageutils.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/freeimagereader.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/freeimagewriter.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/processors/tonemappingcpuprocessor.h
 )
 ivw_group("Header Files" ${HEADER_FILES})
 
@@ -20,10 +20,10 @@ ivw_group("Header Files" ${HEADER_FILES})
 #--------------------------------------------------------------------
 # Add source files
 set(SOURCE_FILES
-    ${IVW_MODULE_DIR}/freeimage/freeimageutils.cpp
-    ${IVW_MODULE_DIR}/freeimage/freeimagereader.cpp
-    ${IVW_MODULE_DIR}/freeimage/freeimagewriter.cpp
-    ${IVW_MODULE_DIR}/freeimage/processors/tonemappingcpuprocessor.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/freeimageutils.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/freeimagereader.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/freeimagewriter.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/processors/tonemappingcpuprocessor.cpp
 )
 ivw_group("Source Files" ${SOURCE_FILES})
 

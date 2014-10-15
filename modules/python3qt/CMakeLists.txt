@@ -10,17 +10,17 @@ ivw_module(Python3Qt)
 #--------------------------------------------------------------------
 # Add MOC files
 set(MOC_FILES
-    ${IVW_MODULE_DIR}/python3qt/pythoneditorwidget.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/pythoneditorwidget.h
 )
 
 #--------------------------------------------------------------------
 # Add header files
 set(HEADER_FILES
-    ${IVW_MODULE_DIR}/python3qt/pythoninfowidget.h
-    ${IVW_MODULE_DIR}/python3qt/pythonmenu.h
-    ${IVW_MODULE_DIR}/python3qt/pythonqtmethods/pythonqtmethods.h
-    ${IVW_MODULE_DIR}/python3qt/python3qtmodule.h
-    ${IVW_MODULE_DIR}/python3qt/python3qtmoduledefine.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/pythoninfowidget.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/pythonmenu.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/pythonqtmethods/pythonqtmethods.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/python3qtmodule.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/python3qtmoduledefine.h
     ${MOC_FILES}
 )
 ivw_group("Header Files" ${HEADER_FILES})
@@ -31,11 +31,11 @@ source_group("MOC Files" FILES ${MOC_FILES})
 #--------------------------------------------------------------------
 # Add source files
 set(SOURCE_FILES
-    ${IVW_MODULE_DIR}/python3qt/pythoneditorwidget.cpp
-    ${IVW_MODULE_DIR}/python3qt/pythoninfowidget.cpp
-    ${IVW_MODULE_DIR}/python3qt/pythonmenu.cpp
-    ${IVW_MODULE_DIR}/python3qt/pythonqtmethods/pythonqtmethods.cpp
-    ${IVW_MODULE_DIR}/python3qt/python3qtmodule.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/pythoneditorwidget.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/pythoninfowidget.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/pythonmenu.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/pythonqtmethods/pythonqtmethods.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/python3qtmodule.cpp
 )
 ivw_group("Source Files" ${SOURCE_FILES})
 
