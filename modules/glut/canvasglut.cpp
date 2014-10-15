@@ -31,7 +31,7 @@
  *********************************************************************************/
 
 #include "canvasglut.h"
-#include "inviwo/core/network/processornetworkevaluator.h"
+#include <inviwo/core/network/processornetworkevaluator.h>
 
 namespace inviwo {
 

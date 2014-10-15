@@ -48,7 +48,7 @@
 #include <QPlainTextEdit>
 #include <QFrame>
 #include <inviwo/core/util/clock.h>
-#include "inviwo/qt/widgets/properties/syntaxhighlighter.h"
+#include <inviwo/qt/widgets/properties/syntaxhighlighter.h>
 
 #include <inviwo/qt/widgets/inviwofiledialog.h>
 

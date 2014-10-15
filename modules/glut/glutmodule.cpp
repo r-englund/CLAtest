@@ -30,9 +30,8 @@
  *
  *********************************************************************************/
 
-#include "modules/glut/glutmodule.h"
-
-#include "modules/glut/canvasglut.h"
+#include <modules/glut/glutmodule.h>
+#include <modules/glut/canvasglut.h>
 
 namespace inviwo {
 
