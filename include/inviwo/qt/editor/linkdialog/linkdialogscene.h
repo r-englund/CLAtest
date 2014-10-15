@@ -83,6 +83,8 @@ public:
     void addPropertyLink(Property* srcProperty, Property* dstProperty, bool bidirectional);
     int currentLinkItemsCount();
     void setExpandProperties(bool expand);
+    void expandOrCollapseLinkedProcessorItems(LinkDialogProcessorGraphicsItem* processorGraphicsItem, bool expand);
+    void expandOrCollapseLinkedPropertyItems(LinkDialogPropertyGraphicsItem* propertyItem, bool expand);
     void updatePropertyItemsOfAllProcessors();
 
     virtual void onProcessorNetworkDidAddLink(PropertyLink* propertyLink);

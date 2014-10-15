@@ -105,7 +105,7 @@ public:
     size_t getConnectionGraphicsItemCount() const;
     void removeConnectionGraphicsItem(DialogConnectionGraphicsItem*);
     const std::vector<DialogConnectionGraphicsItem*>& getConnectionGraphicsItems() const;
-    const std::vector<LinkDialogPropertyGraphicsItem*>& getSubPropertyItemList() const;
+    std::vector<LinkDialogPropertyGraphicsItem*> getSubPropertyItemList(bool recursive=false) const;
 
 protected:
     virtual void paint(QPainter* p, const QStyleOptionGraphicsItem* options, QWidget* widget);
