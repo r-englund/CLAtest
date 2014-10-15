@@ -94,6 +94,8 @@ mark_as_advanced(EXECUTABLE_OUTPUT_PATH LIBRARY_OUTPUT_PATH)
 # Set Common Variables
 get_filename_component(IVW_ROOT_DIR ${CMAKE_CURRENT_LIST_DIR} PATH)
 set(IVW_INCLUDE_DIR ${IVW_ROOT_DIR}/include)
+set(IVW_CORE_INCLUDE_DIR ${IVW_ROOT_DIR}/core/include)
+set(IVW_QT_INCLUDE_DIR ${IVW_ROOT_DIR}/qt/include)
 set(IVW_MODULE_DIR ${IVW_ROOT_DIR}/modules)
 set(IVW_SOURCE_DIR ${IVW_ROOT_DIR}/src)
 set(IVW_APPLICATION_DIR ${IVW_ROOT_DIR}/apps)

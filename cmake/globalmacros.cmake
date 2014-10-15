@@ -67,6 +67,14 @@ macro(ivw_set_cpack_name cpack_name)
 endmacro()
 
 #--------------------------------------------------------------------
+# Add cmake moudle path
+macro(ivw_add_cmake_find_package_path)
+    foreach(item ${ARGN})
+		set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${item})
+    endforeach()
+endmacro()
+
+#--------------------------------------------------------------------
 # Add unittests
 macro(ivw_add_unittest)
 	if(IVW_MODULE_UNITTESTS)
@@ -336,6 +344,23 @@ macro(generate_module_registration_file module_classes modules_class_paths)
     join(";" "\n" MODULE_HEADERS ${headers})
     join(":;" "\n" MODULE_CLASS_FUNCTIONS ${functions})
     configure_file(${IVW_CMAKE_SOURCE_MODULE_DIR}/mod_registration_template.h ${CMAKE_BINARY_DIR}/modules/_generated/moduleregistration.h @ONLY)
+endmacro()
+
+#--------------------------------------------------------------------
+# Create CMAKE file for pre-process 
+macro(ivw_create_shader_resource)
+    set(output "")
+	foreach(current_path ${ARGN})
+		get_filename_component(filename ${current_path} NAME_WE)
+		#Add: file(READ filename variable)
+		list(APPEND output "file(READ ${current_path} ${filename})\n")
+		#Add: file(WRITE filename variable)
+		set(filename_with_dollar "\${${filename}}")
+		string(REPLACE ${CMAKE_CURRENT_SOURCE_DIR} "" current_relative_path ${current_path})
+		list(APPEND output "file(WRITE ${CMAKE_BINARY_DIR}/modules/${_projectName}${current_relative_path} ${filename_with_dollar})\n")
+    endforeach()
+	file(WRITE ${CMAKE_BINARY_DIR}/modules/${_projectName}/create_shader_resource.cmake ${output})
+	add_custom_command(TARGET inviwo-module-${_projectName} PRE_BUILD  COMMAND ${CMAKE_COMMAND} -P ${CMAKE_BINARY_DIR}/modules/${_projectName}/create_shader_resource.cmake)
 endmacro()
 
 #--------------------------------------------------------------------
