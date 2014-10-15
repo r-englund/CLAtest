@@ -5,134 +5,134 @@ ivw_module(OpenGL)
 #--------------------------------------------------------------------
 # Add header files
 set(HEADER_FILES
-    ${IVW_MODULE_DIR}/opengl/buffer/buffergl.h
-    ${IVW_MODULE_DIR}/opengl/buffer/bufferglconverter.h
-    ${IVW_MODULE_DIR}/opengl/buffer/elementbuffergl.h
-    ${IVW_MODULE_DIR}/opengl/buffer/elementbufferglconverter.h
-    ${IVW_MODULE_DIR}/opengl/canvasgl.h
-    ${IVW_MODULE_DIR}/opengl/canvasprocessorgl.h
-    ${IVW_MODULE_DIR}/opengl/clockgl.h
-    ${IVW_MODULE_DIR}/opengl/geometry/geometrygl.h
-    ${IVW_MODULE_DIR}/opengl/geometry/geometryrenderprocessorgl.h
-    ${IVW_MODULE_DIR}/opengl/geometry/meshgl.h
-    ${IVW_MODULE_DIR}/opengl/glformats.h
-    ${IVW_MODULE_DIR}/opengl/glwrap/bufferobject.h
-    ${IVW_MODULE_DIR}/opengl/glwrap/bufferobjectarray.h
-    ${IVW_MODULE_DIR}/opengl/glwrap/elementbufferobject.h
-    ${IVW_MODULE_DIR}/opengl/glwrap/framebufferobject.h
-    ${IVW_MODULE_DIR}/opengl/glwrap/renderbufferobject.h
-    ${IVW_MODULE_DIR}/opengl/glwrap/shader.h
-    ${IVW_MODULE_DIR}/opengl/glwrap/shadermanager.h
-    ${IVW_MODULE_DIR}/opengl/glwrap/shaderobject.h
-    ${IVW_MODULE_DIR}/opengl/glwrap/texture.h
-    ${IVW_MODULE_DIR}/opengl/glwrap/texture2d.h
-    ${IVW_MODULE_DIR}/opengl/glwrap/texture2darray.h
-    ${IVW_MODULE_DIR}/opengl/glwrap/texture3d.h
-    ${IVW_MODULE_DIR}/opengl/glwrap/texturecallback.h
-    ${IVW_MODULE_DIR}/opengl/glwrap/textureunit.h
-    ${IVW_MODULE_DIR}/opengl/heightfield/heightfieldmapper.h
-    ${IVW_MODULE_DIR}/opengl/heightfield/heightfieldprocessor.h
-    ${IVW_MODULE_DIR}/opengl/image/compositeprocessorgl.h
-    ${IVW_MODULE_DIR}/opengl/image/imagegl.h
-    ${IVW_MODULE_DIR}/opengl/image/imageprocessorgl.h
-    ${IVW_MODULE_DIR}/opengl/image/layergl.h
-    ${IVW_MODULE_DIR}/opengl/image/layerglconverter.h
-    ${IVW_MODULE_DIR}/opengl/inviwoopengl.h
-    ${IVW_MODULE_DIR}/opengl/openglcapabilities.h
-    ${IVW_MODULE_DIR}/opengl/openglmodule.h
-    ${IVW_MODULE_DIR}/opengl/portgroup.h
-    ${IVW_MODULE_DIR}/opengl/rendering/meshrenderer.h
-    ${IVW_MODULE_DIR}/opengl/shaderutils.h
-    ${IVW_MODULE_DIR}/opengl/textureobserver.h
-    ${IVW_MODULE_DIR}/opengl/textureutils.h
-    ${IVW_MODULE_DIR}/opengl/volume/volumegl.h
-    ${IVW_MODULE_DIR}/opengl/volume/volumeglconverter.h
-    ${IVW_MODULE_DIR}/opengl/volumeutils.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/buffer/buffergl.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/buffer/bufferglconverter.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/buffer/elementbuffergl.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/buffer/elementbufferglconverter.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/canvasgl.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/canvasprocessorgl.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/clockgl.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/geometry/geometrygl.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/geometry/geometryrenderprocessorgl.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/geometry/meshgl.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/glformats.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/glwrap/bufferobject.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/glwrap/bufferobjectarray.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/glwrap/elementbufferobject.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/glwrap/framebufferobject.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/glwrap/renderbufferobject.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/glwrap/shader.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/glwrap/shadermanager.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/glwrap/shaderobject.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/glwrap/texture.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/glwrap/texture2d.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/glwrap/texture2darray.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/glwrap/texture3d.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/glwrap/texturecallback.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/glwrap/textureunit.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/heightfield/heightfieldmapper.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/heightfield/heightfieldprocessor.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/image/compositeprocessorgl.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/image/imagegl.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/image/imageprocessorgl.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/image/layergl.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/image/layerglconverter.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/inviwoopengl.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/openglcapabilities.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/openglmodule.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/portgroup.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/rendering/meshrenderer.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/shaderutils.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/textureobserver.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/textureutils.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/volume/volumegl.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/volume/volumeglconverter.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/volumeutils.h
 )
 ivw_group("Header Files" ${HEADER_FILES})
 
 #--------------------------------------------------------------------
 # Add source files
 set(SOURCE_FILES
-    ${IVW_MODULE_DIR}/opengl/buffer/buffergl.cpp
-    ${IVW_MODULE_DIR}/opengl/buffer/bufferglconverter.cpp
-    ${IVW_MODULE_DIR}/opengl/buffer/elementbuffergl.cpp
-    ${IVW_MODULE_DIR}/opengl/buffer/elementbufferglconverter.cpp
-    ${IVW_MODULE_DIR}/opengl/canvasgl.cpp
-    ${IVW_MODULE_DIR}/opengl/canvasprocessorgl.cpp
-    ${IVW_MODULE_DIR}/opengl/clockgl.cpp
-    ${IVW_MODULE_DIR}/opengl/geometry/geometrygl.cpp
-    ${IVW_MODULE_DIR}/opengl/geometry/geometryrenderprocessorgl.cpp
-    ${IVW_MODULE_DIR}/opengl/geometry/meshgl.cpp
-    ${IVW_MODULE_DIR}/opengl/glwrap/bufferobject.cpp
-    ${IVW_MODULE_DIR}/opengl/glwrap/bufferobjectarray.cpp
-    ${IVW_MODULE_DIR}/opengl/glwrap/elementbufferobject.cpp
-    ${IVW_MODULE_DIR}/opengl/glwrap/framebufferobject.cpp
-    ${IVW_MODULE_DIR}/opengl/glwrap/renderbufferobject.cpp
-    ${IVW_MODULE_DIR}/opengl/glwrap/shader.cpp
-    ${IVW_MODULE_DIR}/opengl/glwrap/shadermanager.cpp
-    ${IVW_MODULE_DIR}/opengl/glwrap/shaderobject.cpp
-    ${IVW_MODULE_DIR}/opengl/glwrap/texture.cpp
-    ${IVW_MODULE_DIR}/opengl/glwrap/texture2d.cpp
-    ${IVW_MODULE_DIR}/opengl/glwrap/texture2darray.cpp
-    ${IVW_MODULE_DIR}/opengl/glwrap/texture3d.cpp
-    ${IVW_MODULE_DIR}/opengl/glwrap/textureunit.cpp
-    ${IVW_MODULE_DIR}/opengl/heightfield/heightfieldmapper.cpp
-    ${IVW_MODULE_DIR}/opengl/heightfield/heightfieldprocessor.cpp
-    ${IVW_MODULE_DIR}/opengl/image/compositeprocessorgl.cpp
-    ${IVW_MODULE_DIR}/opengl/image/imagegl.cpp
-    ${IVW_MODULE_DIR}/opengl/image/imageprocessorgl.cpp
-    ${IVW_MODULE_DIR}/opengl/image/layergl.cpp
-    ${IVW_MODULE_DIR}/opengl/image/layerglconverter.cpp
-    ${IVW_MODULE_DIR}/opengl/inviwoopengl.cpp
-    ${IVW_MODULE_DIR}/opengl/openglcapabilities.cpp
-    ${IVW_MODULE_DIR}/opengl/openglmodule.cpp
-    ${IVW_MODULE_DIR}/opengl/portgroup.cpp
-    ${IVW_MODULE_DIR}/opengl/rendering/meshrenderer.cpp
-    ${IVW_MODULE_DIR}/opengl/shaderutils.cpp
-    ${IVW_MODULE_DIR}/opengl/textureutils.cpp
-    ${IVW_MODULE_DIR}/opengl/volume/volumegl.cpp
-    ${IVW_MODULE_DIR}/opengl/volume/volumeglconverter.cpp
-    ${IVW_MODULE_DIR}/opengl/volumeutils.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/buffer/buffergl.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/buffer/bufferglconverter.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/buffer/elementbuffergl.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/buffer/elementbufferglconverter.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/canvasgl.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/canvasprocessorgl.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/clockgl.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/geometry/geometrygl.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/geometry/geometryrenderprocessorgl.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/geometry/meshgl.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/glwrap/bufferobject.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/glwrap/bufferobjectarray.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/glwrap/elementbufferobject.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/glwrap/framebufferobject.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/glwrap/renderbufferobject.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/glwrap/shader.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/glwrap/shadermanager.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/glwrap/shaderobject.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/glwrap/texture.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/glwrap/texture2d.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/glwrap/texture2darray.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/glwrap/texture3d.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/glwrap/textureunit.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/heightfield/heightfieldmapper.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/heightfield/heightfieldprocessor.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/image/compositeprocessorgl.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/image/imagegl.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/image/imageprocessorgl.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/image/layergl.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/image/layerglconverter.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/inviwoopengl.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/openglcapabilities.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/openglmodule.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/portgroup.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/rendering/meshrenderer.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/shaderutils.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/textureutils.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/volume/volumegl.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/volume/volumeglconverter.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/volumeutils.cpp
 )
 ivw_group("Source Files" ${SOURCE_FILES})
 
 #--------------------------------------------------------------------
 # Add shaders
 set(SHADER_FILES
-    ${IVW_MODULE_DIR}/opengl/glsl/composite.frag
-    ${IVW_MODULE_DIR}/opengl/glsl/geometryrendering.frag
-    ${IVW_MODULE_DIR}/opengl/glsl/geometryrendering.vert
-    ${IVW_MODULE_DIR}/opengl/glsl/heightfield.frag
-    ${IVW_MODULE_DIR}/opengl/glsl/heightfield.vert
-    ${IVW_MODULE_DIR}/opengl/glsl/img_color.frag
-    ${IVW_MODULE_DIR}/opengl/glsl/img_copy.frag
-    ${IVW_MODULE_DIR}/opengl/glsl/img_identity.vert
-    ${IVW_MODULE_DIR}/opengl/glsl/img_noise.frag
-    ${IVW_MODULE_DIR}/opengl/glsl/img_texturequad.frag
-    ${IVW_MODULE_DIR}/opengl/glsl/img_texturequad.vert
-    ${IVW_MODULE_DIR}/opengl/glsl/include/inc_classification.frag
-    ${IVW_MODULE_DIR}/opengl/glsl/include/inc_compositing.frag
-    ${IVW_MODULE_DIR}/opengl/glsl/include/inc_depth.frag
-    ${IVW_MODULE_DIR}/opengl/glsl/include/inc_gradients.frag
-    ${IVW_MODULE_DIR}/opengl/glsl/include/inc_raycasting.frag
-    ${IVW_MODULE_DIR}/opengl/glsl/include/inc_sampler2d.frag
-    ${IVW_MODULE_DIR}/opengl/glsl/include/inc_sampler3d.frag
-    ${IVW_MODULE_DIR}/opengl/glsl/include/inc_shading.frag
-    ${IVW_MODULE_DIR}/opengl/glsl/isoraycasting.frag
-    ${IVW_MODULE_DIR}/opengl/glsl/minimal.vert
-    ${IVW_MODULE_DIR}/opengl/glsl/picking.frag
-    ${IVW_MODULE_DIR}/opengl/glsl/raycasting.frag
-    ${IVW_MODULE_DIR}/opengl/glsl/standard.frag
-    ${IVW_MODULE_DIR}/opengl/glsl/standard.vert
-    ${IVW_MODULE_DIR}/opengl/glsl/utils/classification.frag
-    ${IVW_MODULE_DIR}/opengl/glsl/utils/compositing.frag
-    ${IVW_MODULE_DIR}/opengl/glsl/utils/depth.frag
-    ${IVW_MODULE_DIR}/opengl/glsl/utils/gradients.frag
-    ${IVW_MODULE_DIR}/opengl/glsl/utils/sampler2d.frag
-    ${IVW_MODULE_DIR}/opengl/glsl/utils/sampler3d.frag
-    ${IVW_MODULE_DIR}/opengl/glsl/utils/shading.frag
-    ${IVW_MODULE_DIR}/opengl/glsl/utils/structs.frag
+    ${CMAKE_CURRENT_SOURCE_DIR}/glsl/composite.frag
+    ${CMAKE_CURRENT_SOURCE_DIR}/glsl/geometryrendering.frag
+    ${CMAKE_CURRENT_SOURCE_DIR}/glsl/geometryrendering.vert
+    ${CMAKE_CURRENT_SOURCE_DIR}/glsl/heightfield.frag
+    ${CMAKE_CURRENT_SOURCE_DIR}/glsl/heightfield.vert
+    ${CMAKE_CURRENT_SOURCE_DIR}/glsl/img_color.frag
+    ${CMAKE_CURRENT_SOURCE_DIR}/glsl/img_copy.frag
+    ${CMAKE_CURRENT_SOURCE_DIR}/glsl/img_identity.vert
+    ${CMAKE_CURRENT_SOURCE_DIR}/glsl/img_noise.frag
+    ${CMAKE_CURRENT_SOURCE_DIR}/glsl/img_texturequad.frag
+    ${CMAKE_CURRENT_SOURCE_DIR}/glsl/img_texturequad.vert
+    ${CMAKE_CURRENT_SOURCE_DIR}/glsl/include/inc_classification.frag
+    ${CMAKE_CURRENT_SOURCE_DIR}/glsl/include/inc_compositing.frag
+    ${CMAKE_CURRENT_SOURCE_DIR}/glsl/include/inc_depth.frag
+    ${CMAKE_CURRENT_SOURCE_DIR}/glsl/include/inc_gradients.frag
+    ${CMAKE_CURRENT_SOURCE_DIR}/glsl/include/inc_raycasting.frag
+    ${CMAKE_CURRENT_SOURCE_DIR}/glsl/include/inc_sampler2d.frag
+    ${CMAKE_CURRENT_SOURCE_DIR}/glsl/include/inc_sampler3d.frag
+    ${CMAKE_CURRENT_SOURCE_DIR}/glsl/include/inc_shading.frag
+    ${CMAKE_CURRENT_SOURCE_DIR}/glsl/isoraycasting.frag
+    ${CMAKE_CURRENT_SOURCE_DIR}/glsl/minimal.vert
+    ${CMAKE_CURRENT_SOURCE_DIR}/glsl/picking.frag
+    ${CMAKE_CURRENT_SOURCE_DIR}/glsl/raycasting.frag
+    ${CMAKE_CURRENT_SOURCE_DIR}/glsl/standard.frag
+    ${CMAKE_CURRENT_SOURCE_DIR}/glsl/standard.vert
+    ${CMAKE_CURRENT_SOURCE_DIR}/glsl/utils/classification.frag
+    ${CMAKE_CURRENT_SOURCE_DIR}/glsl/utils/compositing.frag
+    ${CMAKE_CURRENT_SOURCE_DIR}/glsl/utils/depth.frag
+    ${CMAKE_CURRENT_SOURCE_DIR}/glsl/utils/gradients.frag
+    ${CMAKE_CURRENT_SOURCE_DIR}/glsl/utils/sampler2d.frag
+    ${CMAKE_CURRENT_SOURCE_DIR}/glsl/utils/sampler3d.frag
+    ${CMAKE_CURRENT_SOURCE_DIR}/glsl/utils/shading.frag
+    ${CMAKE_CURRENT_SOURCE_DIR}/glsl/utils/structs.frag
 )
 ivw_group("Shader Files" ${SHADER_FILES})
 
@@ -141,8 +141,12 @@ ivw_group("Shader Files" ${SHADER_FILES})
 ivw_create_module(${SOURCE_FILES} ${HEADER_FILES} ${SHADER_FILES})
 
 #--------------------------------------------------------------------
+# Create a shader resource file
+ivw_create_shader_resource(${SHADER_FILES})
+
+#--------------------------------------------------------------------
 # Add shader directory to pack
-ivw_add_to_module_pack(${IVW_MODULE_DIR}/opengl/glsl)
+ivw_add_to_module_pack(${CMAKE_CURRENT_SOURCE_DIR}/glsl)
 
 #--------------------------------------------------------------------
 # Build GLEW if it couldn't be found

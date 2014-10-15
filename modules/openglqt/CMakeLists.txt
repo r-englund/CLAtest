@@ -12,16 +12,16 @@ ivw_module(OpenGLQt)
 #--------------------------------------------------------------------
 # Add MOC files
 set(MOC_FILES
-    ${IVW_MODULE_DIR}/openglqt/canvasqt.h
-    ${IVW_MODULE_DIR}/openglqt/canvasprocessorwidgetqt.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/canvasqt.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/canvasprocessorwidgetqt.h
 )
 
 #--------------------------------------------------------------------
 # Add header files
 set(HEADER_FILES
-    ${IVW_MODULE_DIR}/openglqt/openglqtcapabilities.h
-    ${IVW_MODULE_DIR}/openglqt/openglqtmodule.h
-    ${IVW_MODULE_DIR}/openglqt/openglqtmoduledefine.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/openglqtcapabilities.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/openglqtmodule.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/openglqtmoduledefine.h
     ${MOC_FILES}
 )
 ivw_group("Header Files" ${HEADER_FILES})
@@ -32,10 +32,10 @@ source_group("MOC Files" FILES ${MOC_FILES})
 #--------------------------------------------------------------------
 # Add source files
 set(SOURCE_FILES
-    ${IVW_MODULE_DIR}/openglqt/canvasqt.cpp
-    ${IVW_MODULE_DIR}/openglqt/openglqtcapabilities.cpp
-    ${IVW_MODULE_DIR}/openglqt/openglqtmodule.cpp
-    ${IVW_MODULE_DIR}/openglqt/canvasprocessorwidgetqt.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/canvasqt.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/openglqtcapabilities.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/openglqtmodule.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/canvasprocessorwidgetqt.cpp
 )
 ivw_group("Source Files" ${SOURCE_FILES})
 

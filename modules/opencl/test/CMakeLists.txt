@@ -3,7 +3,7 @@ ivw_project(opencl)
 #--------------------------------------------------------------------
 # Add source files
 set(SOURCE_FILES
-    ${IVW_MODULE_DIR}/opencl/test/opencl.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/test/opencl.cpp
 )
 
 #--------------------------------------------------------------------

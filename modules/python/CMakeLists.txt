@@ -5,22 +5,22 @@ ivw_module(Python)
 #--------------------------------------------------------------------
 # Add header files
 set(HEADER_FILES
-    ${IVW_MODULE_DIR}/python/defaultinterface/pycamera.h
-    ${IVW_MODULE_DIR}/python/defaultinterface/pycanvas.h    
-    ${IVW_MODULE_DIR}/python/defaultinterface/pylist.h
-    ${IVW_MODULE_DIR}/python/defaultinterface/pyproperties.h
-    ${IVW_MODULE_DIR}/python/defaultinterface/pyutil.h
-    ${IVW_MODULE_DIR}/python/defaultinterface/pyvolume.h
-    ${IVW_MODULE_DIR}/python/pyinviwo.h
-    ${IVW_MODULE_DIR}/python/pyinviwoobserver.h
-    ${IVW_MODULE_DIR}/python/pythonexecutionoutputobeserver.h
-    ${IVW_MODULE_DIR}/python/pythoninterface/pymethod.h
-    ${IVW_MODULE_DIR}/python/pythoninterface/pymodule.h
-    ${IVW_MODULE_DIR}/python/pythoninterface/pyvalueparser.h
-    ${IVW_MODULE_DIR}/python/pythonmodule.h
-    ${IVW_MODULE_DIR}/python/pythonmoduledefine.h
-    ${IVW_MODULE_DIR}/python/pythonscript.h
-    ${IVW_MODULE_DIR}/python/pythonscriptrecorderutil.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/defaultinterface/pycamera.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/defaultinterface/pycanvas.h    
+    ${CMAKE_CURRENT_SOURCE_DIR}/defaultinterface/pylist.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/defaultinterface/pyproperties.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/defaultinterface/pyutil.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/defaultinterface/pyvolume.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/pyinviwo.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/pyinviwoobserver.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/pythonexecutionoutputobeserver.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/pythoninterface/pymethod.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/pythoninterface/pymodule.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/pythoninterface/pyvalueparser.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/pythonmodule.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/pythonmoduledefine.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/pythonscript.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/pythonscriptrecorderutil.h
 )
 
 ivw_group("Header Files" ${HEADER_FILES})
@@ -28,21 +28,21 @@ ivw_group("Header Files" ${HEADER_FILES})
 #--------------------------------------------------------------------
 # Add source files
 set(SOURCE_FILES
-    ${IVW_MODULE_DIR}/python/defaultinterface/pycamera.cpp
-    ${IVW_MODULE_DIR}/python/defaultinterface/pycanvas.cpp
-    ${IVW_MODULE_DIR}/python/defaultinterface/pylist.cpp
-    ${IVW_MODULE_DIR}/python/defaultinterface/pyproperties.cpp
-    ${IVW_MODULE_DIR}/python/defaultinterface/pyutil.cpp
-    ${IVW_MODULE_DIR}/python/defaultinterface/pyvolume.cpp
-    ${IVW_MODULE_DIR}/python/pyinviwo.cpp
-    ${IVW_MODULE_DIR}/python/pyinviwoobserver.cpp
-    ${IVW_MODULE_DIR}/python/pythonexecutionoutputobeserver.cpp
-    ${IVW_MODULE_DIR}/python/pythoninterface/pymethod.cpp
-    ${IVW_MODULE_DIR}/python/pythoninterface/pymodule.cpp
-    ${IVW_MODULE_DIR}/python/pythoninterface/pyvalueparser.cpp
-    ${IVW_MODULE_DIR}/python/pythonmodule.cpp
-    ${IVW_MODULE_DIR}/python/pythonscript.cpp
-    ${IVW_MODULE_DIR}/python/pythonscriptrecorderutil.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/defaultinterface/pycamera.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/defaultinterface/pycanvas.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/defaultinterface/pylist.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/defaultinterface/pyproperties.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/defaultinterface/pyutil.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/defaultinterface/pyvolume.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/pyinviwo.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/pyinviwoobserver.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/pythonexecutionoutputobeserver.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/pythoninterface/pymethod.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/pythoninterface/pymodule.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/pythoninterface/pyvalueparser.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/pythonmodule.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/pythonscript.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/pythonscriptrecorderutil.cpp
 )
 ivw_group("Source Files" ${SOURCE_FILES})
 

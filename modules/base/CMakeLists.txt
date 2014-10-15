@@ -5,27 +5,27 @@ ivw_module(Base)
 #--------------------------------------------------------------------
 # Add header files
 set(HEADER_FILES
-    ${IVW_MODULE_DIR}/base/processors/cubeproxygeometry.h
-    ${IVW_MODULE_DIR}/base/processors/datasource.h
-    ${IVW_MODULE_DIR}/base/processors/diffuselightsourceprocessor.h
-    ${IVW_MODULE_DIR}/base/processors/directionallightsourceprocessor.h
-    ${IVW_MODULE_DIR}/base/processors/distancetransformram.h
-    ${IVW_MODULE_DIR}/base/processors/geometrysource.h
-    ${IVW_MODULE_DIR}/base/processors/imageexport.h
-    ${IVW_MODULE_DIR}/base/processors/imagesource.h
-    ${IVW_MODULE_DIR}/base/processors/imagesourceseries.h
-    ${IVW_MODULE_DIR}/base/processors/meshclipping.h
-    ${IVW_MODULE_DIR}/base/processors/meshcreator.h
-    ${IVW_MODULE_DIR}/base/processors/ordinalpropertyanimator.h
-    ${IVW_MODULE_DIR}/base/processors/pixeltobufferprocessor.h
-    ${IVW_MODULE_DIR}/base/processors/pointlightsourceprocessor.h
-    ${IVW_MODULE_DIR}/base/processors/spotlightsourceprocessor.h
-    ${IVW_MODULE_DIR}/base/processors/volumebasistransformer.h
-    ${IVW_MODULE_DIR}/base/processors/volumeexport.h
-    ${IVW_MODULE_DIR}/base/processors/volumeslice.h
-    ${IVW_MODULE_DIR}/base/processors/volumesource.h
-    ${IVW_MODULE_DIR}/base/processors/volumesubsample.h
-    ${IVW_MODULE_DIR}/base/processors/volumesubset.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/processors/cubeproxygeometry.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/processors/datasource.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/processors/diffuselightsourceprocessor.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/processors/directionallightsourceprocessor.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/processors/distancetransformram.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/processors/geometrysource.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/processors/imageexport.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/processors/imagesource.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/processors/imagesourceseries.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/processors/meshclipping.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/processors/meshcreator.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/processors/ordinalpropertyanimator.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/processors/pixeltobufferprocessor.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/processors/pointlightsourceprocessor.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/processors/spotlightsourceprocessor.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/processors/volumebasistransformer.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/processors/volumeexport.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/processors/volumeslice.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/processors/volumesource.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/processors/volumesubsample.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/processors/volumesubset.h
 )
 ivw_group("Header Files" ${HEADER_FILES})
 
@@ -33,26 +33,26 @@ ivw_group("Header Files" ${HEADER_FILES})
 #--------------------------------------------------------------------
 # Add source files
 set(SOURCE_FILES
-    ${IVW_MODULE_DIR}/base/processors/cubeproxygeometry.cpp
-    ${IVW_MODULE_DIR}/base/processors/diffuselightsourceprocessor.cpp
-    ${IVW_MODULE_DIR}/base/processors/directionallightsourceprocessor.cpp
-    ${IVW_MODULE_DIR}/base/processors/distancetransformram.cpp
-    ${IVW_MODULE_DIR}/base/processors/geometrysource.cpp
-    ${IVW_MODULE_DIR}/base/processors/imageexport.cpp
-    ${IVW_MODULE_DIR}/base/processors/imagesource.cpp
-    ${IVW_MODULE_DIR}/base/processors/imagesourceseries.cpp
-    ${IVW_MODULE_DIR}/base/processors/meshclipping.cpp
-    ${IVW_MODULE_DIR}/base/processors/meshcreator.cpp
-    ${IVW_MODULE_DIR}/base/processors/ordinalpropertyanimator.cpp
-    ${IVW_MODULE_DIR}/base/processors/pixeltobufferprocessor.cpp
-    ${IVW_MODULE_DIR}/base/processors/pointlightsourceprocessor.cpp
-    ${IVW_MODULE_DIR}/base/processors/spotlightsourceprocessor.cpp
-    ${IVW_MODULE_DIR}/base/processors/volumebasistransformer.cpp
-    ${IVW_MODULE_DIR}/base/processors/volumeexport.cpp
-    ${IVW_MODULE_DIR}/base/processors/volumeslice.cpp
-    ${IVW_MODULE_DIR}/base/processors/volumesource.cpp
-    ${IVW_MODULE_DIR}/base/processors/volumesubsample.cpp
-    ${IVW_MODULE_DIR}/base/processors/volumesubset.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/processors/cubeproxygeometry.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/processors/diffuselightsourceprocessor.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/processors/directionallightsourceprocessor.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/processors/distancetransformram.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/processors/geometrysource.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/processors/imageexport.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/processors/imagesource.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/processors/imagesourceseries.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/processors/meshclipping.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/processors/meshcreator.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/processors/ordinalpropertyanimator.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/processors/pixeltobufferprocessor.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/processors/pointlightsourceprocessor.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/processors/spotlightsourceprocessor.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/processors/volumebasistransformer.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/processors/volumeexport.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/processors/volumeslice.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/processors/volumesource.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/processors/volumesubsample.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/processors/volumesubset.cpp
 )
 ivw_group("Source Files" ${SOURCE_FILES})
 

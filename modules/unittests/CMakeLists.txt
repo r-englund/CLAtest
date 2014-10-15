@@ -12,7 +12,7 @@ if(BUILD_SHARED_LIBS)
 	add_definitions(-DGTEST_LINKED_AS_SHARED_LIBRARY=1)
 endif()
 
-include_directories(${IVW_MODULE_DIR}/unittests/ext/gtest-1.7.0/include)
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/ext/gtest-1.7.0/include)
 include_directories(${CMAKE_BINARY_DIR}/modules/_generated)
 ivw_link_directories(${LIBRARY_OUTPUT_PATH})
 
@@ -54,9 +54,9 @@ ivw_register_use_of_modules(${package_list})
 
 set(HEADER_FILES
 #    ${CMAKE_BINARY_DIR}/modules/_generated/unittests.h
-    ${IVW_MODULE_DIR}/unittests/logerrorcounter.h
-    ${IVW_MODULE_DIR}/unittests/unittestsmodule.h
-    ${IVW_MODULE_DIR}/unittests/unittestsmoduledefine.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/logerrorcounter.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/unittestsmodule.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/unittestsmoduledefine.h
 )
 
 ivw_group("Header Files" ${HEADER_FILES})
@@ -72,8 +72,8 @@ FILE(READ "${CMAKE_BINARY_DIR}/modules/_generated/unittests_temp.h" contents)
 
 set(SOURCE_FILES
     ${contents}
-    ${IVW_MODULE_DIR}/unittests/logerrorcounter.cpp
-    ${IVW_MODULE_DIR}/unittests/unittestsmodule.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/logerrorcounter.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/unittestsmodule.cpp
 )
 
 file(REMOVE ${CMAKE_BINARY_DIR}/modules/_generated/unittests_temp.h)

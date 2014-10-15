@@ -13,25 +13,25 @@ ivw_module(Fontrendering)
 #--------------------------------------------------------------------
 # Add header files
 set(HEADER_FILES
-	${IVW_MODULE_DIR}/fontrendering/fontrenderingmodule.h
-	${IVW_MODULE_DIR}/fontrendering/fontrenderingmoduledefine.h
-	${IVW_MODULE_DIR}/fontrendering/processors/textoverlaygl.h
+	${CMAKE_CURRENT_SOURCE_DIR}/fontrenderingmodule.h
+	${CMAKE_CURRENT_SOURCE_DIR}/fontrenderingmoduledefine.h
+	${CMAKE_CURRENT_SOURCE_DIR}/processors/textoverlaygl.h
 )
 ivw_group("Header Files" ${HEADER_FILES})
 
 #--------------------------------------------------------------------
 # Add source files
 set(SOURCE_FILES
-	${IVW_MODULE_DIR}/fontrendering/fontrenderingmodule.cpp
-	${IVW_MODULE_DIR}/fontrendering/processors/textoverlaygl.cpp
+	${CMAKE_CURRENT_SOURCE_DIR}/fontrenderingmodule.cpp
+	${CMAKE_CURRENT_SOURCE_DIR}/processors/textoverlaygl.cpp
 )
 ivw_group("Source Files" ${SOURCE_FILES})
 
 #--------------------------------------------------------------------
 # Add shaders
 set(SHADER_FILES
-    ${IVW_MODULE_DIR}/fontrendering/glsl/fontrendering_freetype.frag
-    ${IVW_MODULE_DIR}/fontrendering/glsl/fontrendering_freetype.vert
+    ${CMAKE_CURRENT_SOURCE_DIR}/glsl/fontrendering_freetype.frag
+    ${CMAKE_CURRENT_SOURCE_DIR}/glsl/fontrendering_freetype.vert
 )
 ivw_group("Shader Files" ${SHADER_FILES})
 
@@ -41,4 +41,4 @@ ivw_create_module(${SOURCE_FILES} ${HEADER_FILES} ${SHADER_FILES})
 
 #--------------------------------------------------------------------
 # Add shader directory to pack
-ivw_add_to_module_pack(${IVW_MODULE_DIR}/fontrendering/glsl)
+ivw_add_to_module_pack(${CMAKE_CURRENT_SOURCE_DIR}/glsl)

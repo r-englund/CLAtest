@@ -8,9 +8,9 @@ set(GLEW_VERSION ${GLEW_MAJOR_VERSION}.${GLEW_MINOR_VERSION}.${GLEW_PATCH_VERSIO
 #--------------------------------------------------------------------
 # Add header files
 set(HEADER_FILES
-    ${IVW_MODULE_DIR}/opengl/ext/glew/include/GL/glew.h
-    ${IVW_MODULE_DIR}/opengl/ext/glew/include/GL/glxew.h
-    ${IVW_MODULE_DIR}/opengl/ext/glew/include/GL/wglew.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/include/GL/glew.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/include/GL/glxew.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/include/GL/wglew.h
 )
 
 source_group("Header Files" FILES ${HEADER_FILES})
@@ -18,7 +18,7 @@ source_group("Header Files" FILES ${HEADER_FILES})
 #--------------------------------------------------------------------
 # Add source files
 set(SOURCE_FILES
-    ${IVW_MODULE_DIR}/opengl/ext/glew/src/glew.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/glew.c
 )
 
 source_group("Source Files" FILES ${SOURCE_FILES})

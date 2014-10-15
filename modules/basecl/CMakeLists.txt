@@ -5,36 +5,36 @@ ivw_module(BaseCL)
 #--------------------------------------------------------------------
 # Add header files
 set(HEADER_FILES
-    ${IVW_MODULE_DIR}/basecl/processors/entryexitpointscl.h
-    ${IVW_MODULE_DIR}/basecl/processors/volumefirsthitcl.h
-	${IVW_MODULE_DIR}/basecl/processors/volumemaxcl.h
-	${IVW_MODULE_DIR}/basecl/runningimagemeanandstandarddeviationcl.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/processors/entryexitpointscl.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/processors/volumefirsthitcl.h
+	${CMAKE_CURRENT_SOURCE_DIR}/processors/volumemaxcl.h
+	${CMAKE_CURRENT_SOURCE_DIR}/runningimagemeanandstandarddeviationcl.h
 )
 ivw_group("Header Files" ${HEADER_FILES})
 
 #--------------------------------------------------------------------
 # Add source files
 set(SOURCE_FILES
-    ${IVW_MODULE_DIR}/basecl/processors/entryexitpointscl.cpp
-    ${IVW_MODULE_DIR}/basecl/processors/volumefirsthitcl.cpp
-	${IVW_MODULE_DIR}/basecl/processors/volumemaxcl.cpp
-	${IVW_MODULE_DIR}/basecl/runningimagemeanandstandarddeviationcl.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/processors/entryexitpointscl.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/processors/volumefirsthitcl.cpp
+	${CMAKE_CURRENT_SOURCE_DIR}/processors/volumemaxcl.cpp
+	${CMAKE_CURRENT_SOURCE_DIR}/runningimagemeanandstandarddeviationcl.cpp
 )
 ivw_group("Source Files" ${SOURCE_FILES})
 
 #--------------------------------------------------------------------
 # Add OpenCL files
 set(SHADER_FILES
-    ${IVW_MODULE_DIR}/basecl/cl/entryexitpoints.cl
-	${IVW_MODULE_DIR}/basecl/cl/statistics/runningmeanandstandarddeviation.cl
-	${IVW_MODULE_DIR}/basecl/cl/statistics/runningmeanandstandarddeviationkernel.cl
-    ${IVW_MODULE_DIR}/basecl/cl/volumefirsthit.cl
-	${IVW_MODULE_DIR}/basecl/cl/volumemax.cl
+    ${CMAKE_CURRENT_SOURCE_DIR}/cl/entryexitpoints.cl
+	${CMAKE_CURRENT_SOURCE_DIR}/cl/statistics/runningmeanandstandarddeviation.cl
+	${CMAKE_CURRENT_SOURCE_DIR}/cl/statistics/runningmeanandstandarddeviationkernel.cl
+    ${CMAKE_CURRENT_SOURCE_DIR}/cl/volumefirsthit.cl
+	${CMAKE_CURRENT_SOURCE_DIR}/cl/volumemax.cl
 )
 ivw_group("Shader Files" ${SHADER_FILES})
 
 #set(TEST_FILES
-#    ${IVW_MODULE_DIR}/basecl/tests/runningimagemeanandstandarddeviationcl-test.cpp
+#    ${CMAKE_CURRENT_SOURCE_DIR}/tests/runningimagemeanandstandarddeviationcl-test.cpp
 #)
 #ivw_add_unittest(${TEST_FILES})
 
@@ -48,4 +48,4 @@ ivw_create_module(${SOURCE_FILES} ${HEADER_FILES} ${SHADER_FILES})
 
 #--------------------------------------------------------------------
 # Add kernel directory to pack
-ivw_add_to_module_pack(${IVW_MODULE_DIR}/basecl/cl)
+ivw_add_to_module_pack(${CMAKE_CURRENT_SOURCE_DIR}/cl)
