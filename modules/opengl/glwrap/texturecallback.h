@@ -92,4 +92,4 @@ private:
 
 } // namespace
 
-#endif // IVW_TEXTURECALLBACK_H, settingsWidget_(0)
+#endif // IVW_TEXTURECALLBACK_H
