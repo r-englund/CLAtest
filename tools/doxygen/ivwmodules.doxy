@@ -2369,3 +2369,13 @@ GENERATE_LEGEND        = YES
 # This tag requires that the tag HAVE_DOT is set to YES.
 
 DOT_CLEANUP            = YES
+
+
+#---------------------------------------------------------------------------
+# Generate help files for Qt Creator
+#---------------------------------------------------------------------------
+GENERATE_QHP           = YES
+QCH_FILE               = "ivwmodules.qch"
+QHP_NAMESPACE          = "se.liu.Inviwo"
+QHP_VIRTUAL_FOLDER     = "doc"
+QHG_LOCATION           =  "C:/Qt/Qt5.3.0/5.3/msvc2013_64_opengl/bin/qhelpgenerator.exe"

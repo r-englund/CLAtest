@@ -38,6 +38,7 @@
 #include <QWidget>
 #include <QMimeData>
 #include <QHeaderView>
+//#include <QtHelp/QHelpEngineCore>
 
 #include <inviwo/core/common/inviwoapplication.h>
 #include <inviwo/qt/editor/processorlistwidget.h>
@@ -53,6 +54,9 @@ void ProcessorTree::mousePressEvent(QMouseEvent* e) {
         dragStartPosition_ = e->pos();
 
     QTreeWidget::mousePressEvent(e);
+
+
+	//QHelpEngineCore helpEngine("mycollection.qhc");
 }
 
 void ProcessorTree::mouseMoveEvent(QMouseEvent* e) {
