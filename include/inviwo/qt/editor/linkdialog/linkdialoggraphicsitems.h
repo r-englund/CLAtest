@@ -68,11 +68,14 @@ static const int linkDialogWidth = processorItemWidth*4;
 static const int linkDialogHeight = processorItemHeight*12;
 
 static const int propertyItemWidth = processorItemWidth*3/4;
-static const int propertyItemHeight = processorItemHeight;
+static const int propertyItemHeight = processorItemHeight*3/4;
 static const int propertyRoundedCorners = 0;
 static const int propertyLabelHeight = 8;
 
-static const int arrowDimensionWidth = propertyItemWidth/10;
+static const int propertyExpandCollapseButtonSize = 8;
+static const int propertyExpandCollapseOffset = 16;
+
+static const int arrowDimensionWidth = propertyItemWidth/15;
 static const int arrowDimensionHeight = arrowDimensionWidth/2;
 
 #define IS_SUB_PROPERTY(prop) (prop->getOwner()->getProcessor() != prop->getOwner())

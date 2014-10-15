@@ -47,18 +47,19 @@ LinkDialogPropertyGraphicsItem::LinkDialogPropertyGraphicsItem(LinkDialogProcess
         , index_(0) {
     setZValue(LINKDIALOG_PROCESSOR_GRAPHICSITEM_DEPTH);
     //setFlags(ItemIsMovable | ItemIsSelectable | ItemIsFocusable | ItemSendsGeometryChanges);
-    setRect(-propertyItemWidth/2, -propertyItemHeight/2, propertyItemWidth, propertyItemHeight);
+    int propWidth = propertyItemWidth-(subPropertyLevel_*propertyExpandCollapseOffset);
+    setRect(-propWidth/2, -propertyItemHeight/2, propWidth, propertyItemHeight);
     QGraphicsDropShadowEffect* processorShadowEffect = new QGraphicsDropShadowEffect();
     processorShadowEffect->setOffset(3.0);
     processorShadowEffect->setBlurRadius(3.0);
     setGraphicsEffect(processorShadowEffect);
     classLabel_ = new LabelGraphicsItem(this);
-    classLabel_->setPos(-propertyItemWidth/2.0+propertyLabelHeight/2.0, -propertyItemHeight/2.0+propertyLabelHeight);
+    classLabel_->setPos(-propWidth/2.0+propertyLabelHeight/2.0, -propertyItemHeight/2.0+propertyLabelHeight);
     classLabel_->setDefaultTextColor(Qt::black);
     classLabel_->setFont(QFont("Segoe", propertyLabelHeight, QFont::Black, false));
     classLabel_->setCrop(9, 8);
     typeLabel_ = new LabelGraphicsItem(this);
-    typeLabel_->setPos(-propertyItemWidth/2.0+propertyLabelHeight/2.0, -propertyItemHeight/2.0+propertyLabelHeight*2.5);
+    typeLabel_->setPos(-propWidth/2.0+propertyLabelHeight/2.0, -propertyItemHeight/2.0+propertyLabelHeight*2.5);
     typeLabel_->setDefaultTextColor(Qt::black);
     typeLabel_->setFont(QFont("Segoe", processorLabelHeight, QFont::Normal, true));
     typeLabel_->setCrop(9, 8);
@@ -99,20 +100,31 @@ void LinkDialogPropertyGraphicsItem::setPropertyItemIndex(int &currIndex) {
 void LinkDialogPropertyGraphicsItem::updatePositionBasedOnIndex() {
     if (!processorGraphicsItem_) return;
 
-    QPointF tl;
-    QPointF br;
-    tl = processorGraphicsItem_->rect().topLeft();
-    br = processorGraphicsItem_->rect().bottomRight();
+    QPointF tl = processorGraphicsItem_->rect().topLeft();
+    QPointF br = processorGraphicsItem_->rect().bottomRight();
     QPointF processorMappedDim = processorGraphicsItem_->mapToParent(tl) - processorGraphicsItem_->mapToParent(br);
+
     tl = rect().topLeft();
     br = rect().bottomRight();
     QPointF propertyMappedDim = mapToParent(tl) -  mapToParent(br);
+
     qreal initialOffset = fabs(processorMappedDim.y());
     QPointF p = processorGraphicsItem_->pos();
 
-    qreal px = p.x() ; //+ fabs(subPropertyLevel_*propertyMappedDim.x()/10);
+    qreal px = p.x() + fabs((float)subPropertyLevel_*propertyExpandCollapseOffset/2);
     qreal py = p.y()+ initialOffset + (index_*fabs(propertyMappedDim.y()));
     setPos(QPointF(px,py));
+
+   /* 
+   int propWidth = 0;    
+    bool parentExpanded = false;
+    if (parentExpanded)
+        propWidth =  propertyItemWidth-(subPropertyLevel_*propertyExpandCollapseOffset);
+    else
+        propWidth =  propertyItemWidth;
+    setRect(-propWidth/2, -propertyItemHeight/2, propWidth, propertyItemHeight);
+    */
+
     //LogWarn("SubProperty Level is : " << subPropertyLevel_ << " Index " << index_ << " Mapped dim y" << propertyMappedDim.y() << " (" << px << "," << py << ")")
 }
 
@@ -426,8 +438,20 @@ const std::vector<DialogConnectionGraphicsItem*>& LinkDialogPropertyGraphicsItem
     return connectionItems_;
 }
 
-const std::vector<LinkDialogPropertyGraphicsItem*>& LinkDialogPropertyGraphicsItem::getSubPropertyItemList() const {
-    return subPropertyGraphicsItems_;
+std::vector<LinkDialogPropertyGraphicsItem*> LinkDialogPropertyGraphicsItem::getSubPropertyItemList(bool recursive) const {
+    if (!recursive)
+        return subPropertyGraphicsItems_;
+
+    std::vector<LinkDialogPropertyGraphicsItem*> subProps;
+
+    for (size_t i=0; i<subPropertyGraphicsItems_.size(); i++) {
+        subProps.push_back(subPropertyGraphicsItems_[i]);
+        std::vector<LinkDialogPropertyGraphicsItem*> props = subPropertyGraphicsItems_[i]->getSubPropertyItemList(recursive);
+        for (size_t j=0; j<props.size(); j++)
+            subProps.push_back(props[j]);
+    }
+
+    return subProps;
 }
 
 } //namespace

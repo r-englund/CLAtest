@@ -34,6 +34,7 @@
 
 #include <inviwo/qt/editor/linkdialog/linkdialogprocessorgraphicsitems.h>
 #include <inviwo/qt/editor/linkdialog/linkdialogpropertygraphicsitems.h>
+#include <inviwo/qt/editor/linkdialog/linkdialogcurvegraphicsitems.h>
 
 namespace inviwo {
 
@@ -133,16 +134,16 @@ void LinkDialogProcessorGraphicsItem::setProcessor(Processor* processor, bool ex
         for (size_t i=0; i<properties.size(); i++) {
             LinkDialogPropertyGraphicsItem* compItem = new LinkDialogPropertyGraphicsItem(this, properties[i]);
             compItem->show();
-            if (expandProperties)
+            /*if (expandProperties)
                 compItem->expand();
             else
-                compItem->collapse();
+                compItem->collapse();*/
             propertyGraphicsItems_.push_back(compItem);
 
             std::vector<LinkDialogPropertyGraphicsItem*> subPropGraphicsItems = compItem->getSubPropertyItemList();
             for (size_t j=0; j<subPropGraphicsItems.size(); j++) {
-                if (expandProperties) subPropGraphicsItems[j]->show();
-                else subPropGraphicsItems[j]->hide();
+                /*if (expandProperties) subPropGraphicsItems[j]->show();
+                else subPropGraphicsItems[j]->hide();*/
                 propertyGraphicsItems_.push_back(subPropGraphicsItems[j]);
             }
         }
@@ -163,6 +164,13 @@ void LinkDialogProcessorGraphicsItem::updatePropertyItemPositions() {
 
     for (size_t i=0; i<propertyGraphicsItems_.size(); i++)
         propertyGraphicsItems_[i]->updatePositionBasedOnIndex();
+
+    for (size_t i=0; i<propertyGraphicsItems_.size(); i++) {
+        std::vector<DialogConnectionGraphicsItem*> connections = propertyGraphicsItems_[i]->getConnectionGraphicsItems();
+        for (size_t j=0; j<connections.size(); j++)
+            connections[j]->updateConnectionDrawing();
+
+    }
 }
 
 } //namespace
