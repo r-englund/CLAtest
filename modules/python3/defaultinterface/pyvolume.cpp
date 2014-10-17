@@ -46,68 +46,6 @@
 #include <inviwo/core/util/urlparser.h>
 
 namespace inviwo {
-PyObject* py_setVoxel(PyObject* /*self*/, PyObject* args) {
-    static PySetVoxelMethod p;
-
-    if (!p.testParams(args))
-        return 0;
-
-    std::string volume = PyValueParser::parse<std::string>(PyTuple_GetItem(args, 0));
-    uvec3 voxel = PyValueParser::parse<uvec3>(PyTuple_GetItem(args, 1));
-    float value = PyValueParser::parse<float>(PyTuple_GetItem(args, 2));
-    Processor* processor = InviwoApplication::getPtr()->getProcessorNetwork()->getProcessorByName(volume);
-
-    if (!processor) {
-        PyErr_SetString(PyExc_TypeError, ("setVoxel(vol,(x,y,z),v). No processor with id " + volume).c_str());
-        return 0;
-    }
-
-    std::vector<Outport*> ports = processor->getOutports();
-    VolumeOutport* volumePort = 0;
-
-    for (size_t i = 0; i<ports.size() && volumePort==0; i++) {
-        volumePort = dynamic_cast<VolumeOutport*>(ports[i]);
-    }
-
-    if (!volumePort) {
-        PyErr_SetString(PyExc_TypeError, ("setVoxel(vol,(x,y,z),v). No volume outport on processor " + volume).c_str());
-        return 0;
-    }
-
-    VolumeRAM* vol = volumePort->getData()->getEditableRepresentation<VolumeRAM>();
-    vol->setValueFromSingleDouble(voxel,value*255);
-    Py_RETURN_NONE;
-}
-
-PyObject* py_getVolumeDimension(PyObject* /*self*/, PyObject* args) {
-    static PyGetVolumeDimension p;
-
-    if (!p.testParams(args))
-        return 0;
-
-    std::string volume = PyValueParser::parse<std::string>(PyTuple_GetItem(args, 0));
-    Processor* processor = InviwoApplication::getPtr()->getProcessorNetwork()->getProcessorByName(volume);
-
-    if (!processor) {
-        PyErr_SetString(PyExc_TypeError, ("setVoxel(vol,(x,y,z),v). No processor with id " + volume).c_str());
-        return 0;
-    }
-
-    std::vector<Outport*> ports = processor->getOutports();
-    VolumeOutport* volumePort = 0;
-
-    for (size_t i = 0; i<ports.size() && volumePort==0; i++) {
-        volumePort = dynamic_cast<VolumeOutport*>(ports[i]);
-    }
-
-    if (!volumePort) {
-        PyErr_SetString(PyExc_TypeError, ("setVoxel(vol,(x,y,z),v). No volume outport on processor " + volume).c_str());
-        return 0;
-    }
-
-    return PyValueParser::toPyObject(volumePort->getData()->getDimension());
-}
-
 
 
 PyObject* py_saveTransferFunction(PyObject* /*self*/, PyObject* args) {
@@ -280,26 +218,6 @@ PyObject* py_addPointTransferFunction(PyObject* /*self*/, PyObject* args) {
     tf->get().addPoint(pos,vec4(color,pos.y));
     tf->setPropertyModified(true);
     Py_RETURN_NONE;
-}
-
-
-
-PySetVoxelMethod::PySetVoxelMethod()
-    : processor_("processor")
-    , property_("property")
-    , voxelPosition_("voxelPosition")
-    , voxelValue_("voxelValue")
-{
-    addParam(&processor_);
-    addParam(&property_);
-    addParam(&voxelPosition_);
-    addParam(&voxelValue_);
-}
-
-PyGetVolumeDimension::PyGetVolumeDimension()
-    : processor_("processor")
-{
-    addParam(&processor_);
 }
 
 

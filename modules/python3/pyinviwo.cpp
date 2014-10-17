@@ -198,8 +198,6 @@ namespace inviwo {
         inviwoPyModule_->addMethod(new PyGetImagePathMethod());
         inviwoPyModule_->addMethod(new PyGetModulePathMethod());
         inviwoPyModule_->addMethod(new PyGetTransferFunctionPath());
-        inviwoPyModule_->addMethod(new PySetVoxelMethod());
-        inviwoPyModule_->addMethod(new PyGetVolumeDimension());
         inviwoPyModule_->addMethod(new PyGetMemoryUsage());
         inviwoPyModule_->addMethod(new PyClearResourceManage());
         inviwoPyModule_->addMethod(new PyEnableEvaluation());

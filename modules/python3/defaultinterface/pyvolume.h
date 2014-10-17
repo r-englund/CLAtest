@@ -42,45 +42,11 @@
 namespace inviwo {
 
 
-PyObject* py_setVoxel(PyObject* /*self*/, PyObject* args);
-PyObject* py_getVolumeDimension(PyObject* /*self*/, PyObject* args);
-
 PyObject* py_saveTransferFunction(PyObject* /*self*/, PyObject* args);
 PyObject* py_loadTransferFunction(PyObject* /*self*/, PyObject* args);
 
 PyObject* py_clearTransferfunction(PyObject* /*self*/, PyObject* args);
 PyObject* py_addPointTransferFunction(PyObject* /*self*/, PyObject* args);
-
-
-class IVW_MODULE_PYTHON3_API PySetVoxelMethod : public PyMethod {
-public:
-    PySetVoxelMethod();
-    virtual ~PySetVoxelMethod() {}
-
-    virtual std::string getName()const {return "setVoxel";}
-    virtual std::string getDesc()const {return "Set voxel value of volume vol, at (x,y,z) ot value v (between 0-1).";}
-    virtual PyCFunction getFunc() {return py_setVoxel;}
-
-private:
-    PyParamString processor_;
-    PyParamString property_;
-    PyParamUVec3  voxelPosition_;
-    PyParamFloat  voxelValue_;
-};
-
-
-class IVW_MODULE_PYTHON3_API PyGetVolumeDimension : public PyMethod {
-public:
-    PyGetVolumeDimension();
-    virtual ~PyGetVolumeDimension() {}
-
-    virtual std::string getName()const {return "getVolumeDimension";}
-    virtual std::string getDesc()const {return "Get dimesnion of volume.";}
-    virtual PyCFunction getFunc() {return py_getVolumeDimension;}
-
-private:
-    PyParamString processor_;
-};
 
 
 
