@@ -256,7 +256,7 @@ bool PropertyListWidget::event(QEvent* e) {
 
         return true;
     } else {
-        return QWidget::event(e);
+        return InviwoDockWidget::event(e);
     }
 }
 
