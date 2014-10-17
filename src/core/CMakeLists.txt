@@ -463,6 +463,7 @@ ivw_include_directories(${IVW_INCLUDE_DIR})
 ivw_include_directories(${IVW_EXTENSIONS_DIR})
 ivw_include_directories(${IVW_ROOT_DIR})
 ivw_include_directories(${IVW_MODULE_DIR})
+# Add path for external modules
 if (NOT "${IVW_EXTERNAL_MODULES}" STREQUAL "")
 foreach(dir ${IVW_EXTERNAL_MODULES})
 ivw_include_directories(${dir})
