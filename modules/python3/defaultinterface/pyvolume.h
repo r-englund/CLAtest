@@ -60,8 +60,7 @@ public:
     virtual PyCFunction getFunc() {return py_saveTransferFunction;}
 
 private:
-    PyParamString processor_;
-    PyParamString property_;
+    PyParamString path_;
     PyParamString filename_;
 };
 
@@ -77,8 +76,7 @@ public:
     virtual PyCFunction getFunc() {return py_loadTransferFunction;}
 
 private:
-    PyParamString processor_;
-    PyParamString property_;
+    PyParamString path_;
     PyParamString filename_;
 };
 
@@ -94,8 +92,7 @@ public:
     virtual PyCFunction getFunc() {return py_clearTransferfunction;}
 
 private:
-    PyParamString processor_;
-    PyParamString property_;
+    PyParamString path_;
 };
 
 
@@ -109,8 +106,7 @@ public:
     virtual PyCFunction getFunc() {return py_addPointTransferFunction;}
 
 private:
-    PyParamString processor_;
-    PyParamString property_;
+    PyParamString path_;
     PyParamVec2 pos_;
     PyParamVec3 color_;
 };

@@ -358,65 +358,66 @@ namespace inviwo {
     void PyValueParser::setProperty(Property* p, PyObject* args) {
         std::string className = p->getClassIdentifier();
 
-        if (className == "BoolProperty")
+
+        if (className == "org.inviwo.BoolProperty")
             static_cast<BoolProperty*>(p)->set(parse<bool>(args));
-        else if (className == "FloatProperty")
+        else if (className == "org.inviwo.FloatProperty")
             static_cast<FloatProperty*>(p)->set(parse<float>(args));
-        else if (className == "DoubleProperty")
+        else if (className == "org.inviwo.DoubleProperty")
             static_cast<DoubleProperty*>(p)->set(parse<float>(args));
-        else if (className == "IntProperty")
+        else if (className == "org.inviwo.IntProperty")
             static_cast<IntProperty*>(p)->set(parse<int>(args));
-        else if (className == "StringProperty")
+        else if (className == "org.inviwo.StringProperty")
             static_cast<StringProperty*>(p)->set(parse<std::string>(args));
-        else if (className == "FileProperty")
+        else if (className == "org.inviwo.FileProperty")
             static_cast<FileProperty*>(p)->set(parse<std::string>(args));
-        else if (className == "DirectoryProperty")
+        else if (className == "org.inviwo.DirectoryProperty")
             static_cast<DirectoryProperty*>(p)->set(parse<std::string>(args));
-        else if (className == "IntVec2Property")
+        else if (className == "org.inviwo.IntVec2Property")
             static_cast<IntVec2Property*>(p)->set(parse<ivec2>(args));
-        else if (className == "IntVec3Property")
+        else if (className == "org.inviwo.IntVec3Property")
             static_cast<IntVec3Property*>(p)->set(parse<ivec3>(args));
-        else if (className == "IntVec4Property")
+        else if (className == "org.inviwo.IntVec4Property")
             static_cast<IntVec4Property*>(p)->set(parse<ivec4>(args));
-        else if (className == "FloatVec2Property")
+        else if (className == "org.inviwo.FloatVec2Property")
             static_cast<FloatVec2Property*>(p)->set(parse<vec2>(args));
-        else if (className == "FloatVec3Property")
+        else if (className == "org.inviwo.FloatVec3Property")
             static_cast<FloatVec3Property*>(p)->set(parse<vec3>(args));
-        else if (className == "FloatVec4Property")
+        else if (className == "org.inviwo.FloatVec4Property")
             static_cast<FloatVec4Property*>(p)->set(parse<vec4>(args));
-        else if (className == "FloatMat2Property")
+        else if (className == "org.inviwo.FloatMat2Property")
             static_cast<FloatVec2Property*>(p)->set(parse<vec2>(args));
-        else if (className == "FloatMat3Property")
+        else if (className == "org.inviwo.FloatMat3Property")
             static_cast<FloatVec3Property*>(p)->set(parse<vec3>(args));
-        else if (className == "FloatMat4Property")
+        else if (className == "org.inviwo.FloatMat4Property")
             static_cast<FloatVec4Property*>(p)->set(parse<vec4>(args));
-        else if (className == "FloatMinMaxProperty")
+        else if (className == "org.inviwo.FloatMinMaxProperty")
             static_cast<FloatMinMaxProperty*>(p)->set(parse<vec2>(args));
-        else if (className == "DoubleVec2Property")
+        else if (className == "org.inviwo.DoubleVec2Property")
             static_cast<DoubleVec2Property*>(p)->set(parse<dvec2>(args));
-        else if (className == "DoubleVec3Property")
+        else if (className == "org.inviwo.DoubleVec3Property")
             static_cast<DoubleVec3Property*>(p)->set(parse<dvec3>(args));
-        else if (className == "DoubleVec4Property")
+        else if (className == "org.inviwo.DoubleVec4Property")
             static_cast<DoubleVec4Property*>(p)->set(parse<dvec4>(args));
-        else if (className == "DoubleMat2Property")
+        else if (className == "org.inviwo.DoubleMat2Property")
             static_cast<DoubleVec2Property*>(p)->set(parse<dvec2>(args));
-        else if (className == "DoubleMat3Property")
+        else if (className == "org.inviwo.DoubleMat3Property")
             static_cast<DoubleVec3Property*>(p)->set(parse<dvec3>(args));
-        else if (className == "DoubleMat4Property")
+        else if (className == "org.inviwo.DoubleMat4Property")
             static_cast<DoubleVec4Property*>(p)->set(parse<dvec4>(args));
-        else if (className == "DoubleMinMaxProperty")
+        else if (className == "org.inviwo.DoubleMinMaxProperty")
             static_cast<DoubleMinMaxProperty*>(p)->set(parse<dvec2>(args));
-        else if (className == "OptionPropertyInt")
+        else if (className == "org.inviwo.OptionPropertyInt")
             static_cast<OptionPropertyInt*>(p)->set(parse<int>(args));
-        else if (className == "OptionPropertyFloat")
+        else if (className == "org.inviwo.OptionPropertyFloat")
             static_cast<OptionPropertyFloat*>(p)->set(parse<float>(args));
-        else if (className == "OptionPropertyString")
+        else if (className == "org.inviwo.OptionPropertyString")
             static_cast<OptionPropertyString*>(p)->set(parse<std::string>(args));
-        else if (className == "OptionPropertyDouble")
+        else if (className == "org.inviwo.OptionPropertyDouble")
             static_cast<OptionPropertyDouble*>(p)->set(parse<double>(args));
-        else if (className == "IntMinMaxProperty")
+        else if (className == "org.inviwo.IntMinMaxProperty")
             static_cast<IntMinMaxProperty*>(p)->set(parse<ivec2>(args));
-        else if (className == "CameraProperty") {
+        else if (className == "org.inviwo.CameraProperty") {
             vec3 from, to, up;
 
             // float fovy,nearP,farP;

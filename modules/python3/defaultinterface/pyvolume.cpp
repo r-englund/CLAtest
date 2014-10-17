@@ -54,29 +54,22 @@ PyObject* py_saveTransferFunction(PyObject* /*self*/, PyObject* args) {
     if (!p.testParams(args))
         return 0;
 
-    std::string processorName = PyValueParser::parse<std::string>(PyTuple_GetItem(args, 0));
-    std::string propertyID    = PyValueParser::parse<std::string>(PyTuple_GetItem(args, 1));
-    std::string filename      = PyValueParser::parse<std::string>(PyTuple_GetItem(args, 2));
-    Processor* processor = InviwoApplication::getPtr()->getProcessorNetwork()->getProcessorByName(processorName);
-
-    if (!processor) {
-        std::string msg = std::string("saveTransferFunction() no processor with name: ") + processorName;
-        PyErr_SetString(PyExc_TypeError, msg.c_str());
-        return 0;
-    }
-
-    Property* theProperty = processor->getPropertyByIdentifier(propertyID);
+    std::string path = std::string(PyValueParser::parse<std::string>(PyTuple_GetItem(args, 0)));
+    Property* theProperty = InviwoApplication::getPtr()->getProcessorNetwork()->getProperty(splitString(path, '.'));
 
     if (!theProperty) {
-        std::string msg = std::string("saveTransferFunction() no property with id: ") + propertyID;
+        std::string msg = std::string("setPropertyValue() no property with path: ") + path;
         PyErr_SetString(PyExc_TypeError, msg.c_str());
         return 0;
     }
 
+
+    std::string filename      = PyValueParser::parse<std::string>(PyTuple_GetItem(args, 1));
+    
     TransferFunctionProperty* tf = dynamic_cast<TransferFunctionProperty*>(theProperty);
 
     if (!tf) {
-        std::string msg = std::string("saveTransferFunction() no transfer function property with id: ") + propertyID + ", ("+propertyID
+        std::string msg = std::string("saveTransferFunction() no transfer function property at path: ") + ", (" + path
                           +" is of type "+ theProperty->getClassIdentifier() +  ")";
         PyErr_SetString(PyExc_TypeError, msg.c_str());
         return 0;
@@ -97,29 +90,21 @@ PyObject* py_loadTransferFunction(PyObject* /*self*/, PyObject* args) {
     if (!p.testParams(args))
         return 0;
 
-    std::string processorName = PyValueParser::parse<std::string>(PyTuple_GetItem(args, 0));
-    std::string propertyID    = PyValueParser::parse<std::string>(PyTuple_GetItem(args, 1));
-    std::string filename      = PyValueParser::parse<std::string>(PyTuple_GetItem(args, 2));
-    Processor* processor = InviwoApplication::getPtr()->getProcessorNetwork()->getProcessorByName(processorName);
-
-    if (!processor) {
-        std::string msg = std::string("loadTransferFunction() no processor with name: ") + processorName;
-        PyErr_SetString(PyExc_TypeError, msg.c_str());
-        return 0;
-    }
-
-    Property* theProperty = processor->getPropertyByIdentifier(propertyID);
+    std::string path = std::string(PyValueParser::parse<std::string>(PyTuple_GetItem(args, 0)));
+    Property* theProperty = InviwoApplication::getPtr()->getProcessorNetwork()->getProperty(splitString(path, '.'));
 
     if (!theProperty) {
-        std::string msg = std::string("loadTransferFunction() no property with id: ") + propertyID;
+        std::string msg = std::string("setPropertyValue() no property with path: ") + path;
         PyErr_SetString(PyExc_TypeError, msg.c_str());
         return 0;
     }
-
+    
+    std::string filename = PyValueParser::parse<std::string>(PyTuple_GetItem(args, 2));
+    
     TransferFunctionProperty* tf = dynamic_cast<TransferFunctionProperty*>(theProperty);
 
     if (!tf) {
-        std::string msg = std::string("loadTransferFunction() no transfer function property with id: ") + propertyID + ", ("+propertyID
+        std::string msg = std::string("loadTransferFunction() no transfer function property with id: ") + path + ", ("+path
                           +" is of type "+ theProperty->getClassIdentifier() +  ")";
         PyErr_SetString(PyExc_TypeError, msg.c_str());
         return 0;
@@ -148,28 +133,19 @@ PyObject* py_clearTransferfunction(PyObject* /*self*/, PyObject* args) {
 
     if (!p.testParams(args))
         return 0;
-    std::string processorName = PyValueParser::parse<std::string>(PyTuple_GetItem(args, 0));
-    std::string propertyID = PyValueParser::parse<std::string>(PyTuple_GetItem(args, 1));
-    Processor* processor = InviwoApplication::getPtr()->getProcessorNetwork()->getProcessorByName(processorName);
+    std::string path = std::string(PyValueParser::parse<std::string>(PyTuple_GetItem(args, 0)));
 
-    if (!processor) {
-        std::string msg = std::string("clearTransferfunction() no processor with name: ") + processorName;
-        PyErr_SetString(PyExc_TypeError, msg.c_str());
-        return 0;
-    }
-
-    Property* theProperty = processor->getPropertyByIdentifier(propertyID);
+    Property* theProperty = InviwoApplication::getPtr()->getProcessorNetwork()->getProperty(splitString(path, '.'));
 
     if (!theProperty) {
-        std::string msg = std::string("clearTransferfunction() no property with id: ") + propertyID;
+        std::string msg = std::string("setPropertyValue() no property with path: ") + path;
         PyErr_SetString(PyExc_TypeError, msg.c_str());
         return 0;
     }
-
     TransferFunctionProperty* tf = dynamic_cast<TransferFunctionProperty*>(theProperty);
 
     if (!tf) {
-        std::string msg = std::string("clearTransferfunction() no transfer function property with id: ") + propertyID + ", ("+propertyID
+        std::string msg = std::string("clearTransferfunction() no transfer function property with id: ") + path + ", ("+path
                           +" is of type "+ theProperty->getClassIdentifier() +  ")";
         PyErr_SetString(PyExc_TypeError, msg.c_str());
         return 0;
@@ -186,30 +162,23 @@ PyObject* py_addPointTransferFunction(PyObject* /*self*/, PyObject* args) {
     if (!p.testParams(args))
         return 0;
 
-    std::string processorName = PyValueParser::parse<std::string>(PyTuple_GetItem(args, 0));
-    std::string propertyID    = PyValueParser::parse<std::string>(PyTuple_GetItem(args, 1));
-    vec2 pos = PyValueParser::parse<vec2>(PyTuple_GetItem(args, 2));
-    vec3 color = PyValueParser::parse<vec3>(PyTuple_GetItem(args, 3));
-    Processor* processor = InviwoApplication::getPtr()->getProcessorNetwork()->getProcessorByName(processorName);
-
-    if (!processor) {
-        std::string msg = std::string("addPointToTransferFunction() no processor with name: ") + processorName;
-        PyErr_SetString(PyExc_TypeError, msg.c_str());
-        return 0;
-    }
-
-    Property* theProperty = processor->getPropertyByIdentifier(propertyID);
+    
+    std::string path = std::string(PyValueParser::parse<std::string>(PyTuple_GetItem(args, 0)));
+    Property* theProperty = InviwoApplication::getPtr()->getProcessorNetwork()->getProperty(splitString(path, '.'));
 
     if (!theProperty) {
-        std::string msg = std::string("addPointToTransferFunction() no property with id: ") + propertyID;
+        std::string msg = std::string("setPropertyValue() no property with path: ") + path;
         PyErr_SetString(PyExc_TypeError, msg.c_str());
         return 0;
     }
 
+    vec2 pos = PyValueParser::parse<vec2>(PyTuple_GetItem(args, 1));
+    vec3 color = PyValueParser::parse<vec3>(PyTuple_GetItem(args, 2));
+    
     TransferFunctionProperty* tf = dynamic_cast<TransferFunctionProperty*>(theProperty);
 
     if (!tf) {
-        std::string msg = std::string("addPointToTransferFunction() no transfer function property with id: ") + propertyID + ", ("+propertyID
+        std::string msg = std::string("addPointToTransferFunction() no transfer function property with id: ") + path + ", ("+path
                           +" is of type "+ theProperty->getClassIdentifier() +  ")";
         PyErr_SetString(PyExc_TypeError, msg.c_str());
         return 0;
@@ -222,47 +191,39 @@ PyObject* py_addPointTransferFunction(PyObject* /*self*/, PyObject* args) {
 
 
 PySaveTransferFunction::PySaveTransferFunction()
-    : processor_("processor")
-    , property_("property")
+    : path_("path")
     , filename_("filename")
 {
-    addParam(&processor_);
-    addParam(&property_);
+    addParam(&path_);
     addParam(&filename_);
 }
 
 
 
 PyLoadTransferFunction::PyLoadTransferFunction()
-    : processor_("processor")
-    , property_("property")
+    : path_("path")
     , filename_("filename")
 {
-    addParam(&processor_);
-    addParam(&property_);
+    addParam(&path_);
     addParam(&filename_);
 }
 
 
 PyClearTransferfunction::PyClearTransferfunction()
-    : processor_("processor")
-    , property_("property")
+    : path_("path")
 {
-    addParam(&processor_);
-    addParam(&property_);
+    addParam(&path_);
 }
 
 
 
 
 PyAddTransferFunction::PyAddTransferFunction()
-    : processor_("processor")
-    , property_("property")
+    : path_("path")
     , pos_("position")
     , color_("color")
 {
-    addParam(&processor_);
-    addParam(&property_);
+    addParam(&path_);
     addParam(&pos_);
     addParam(&color_);
 }

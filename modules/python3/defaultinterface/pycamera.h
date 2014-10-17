@@ -53,8 +53,7 @@ public:
     virtual std::string getDesc()const {return "Function to set the cameras focal point.";}
     virtual PyCFunction getFunc() {return py_setCameraFocus;}
 private:
-    PyParamString processor_;
-    PyParamString property_;
+    PyParamString path_;
     PyParamVec3   focusPoint_;
 };
 
@@ -67,8 +66,7 @@ public:
     virtual std::string getDesc()const {return "Function to set the cameras up direction.";}
     virtual PyCFunction getFunc() {return py_setCameraUp;}
 private:
-    PyParamString processor_;
-    PyParamString property_;
+    PyParamString path_;
     PyParamVec3   upVector_;
 
 };
@@ -82,8 +80,7 @@ public:
     virtual std::string getDesc()const {return "Function to set the cameras position.";}
     virtual PyCFunction getFunc() {return py_setCameraPos;}
 private:
-    PyParamString processor_;
-    PyParamString property_;
+    PyParamString path_;
     PyParamVec3   position_;
 
 };
