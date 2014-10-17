@@ -44,7 +44,10 @@ LinkDialog::LinkDialog(QWidget* parent) : InviwoDockWidget("Edit Processor Link 
     //Handle multiple processor links here
 }
 
-LinkDialog::~LinkDialog() {}
+LinkDialog::~LinkDialog() {
+    delete linkDialogScene_;
+    delete linkDialogView_;
+}
 
 LinkDialog::LinkDialog(Processor* src, Processor* dest, QWidget* parent) :InviwoDockWidget("Edit Processor Link Dialog", parent) {
     src_ = src;
@@ -80,15 +83,16 @@ void LinkDialog::initDialogLayout() {
     setAllowedAreas(Qt::NoDockWidgetArea);
     QFrame* frame = new QFrame();
 
-    QSize rSize(linkDialogWidth, linkDialogHeight);
-    setFixedSize(rSize);
+    QSize rSize(linkDialogWidth, linkDialogHeight+100);
+    setFixedWidth(rSize.width());
+    //setSize(rSize.width());
     QVBoxLayout* mainLayout = new QVBoxLayout(frame);
     linkDialogView_ = new LinkDialogGraphicsView(this);
     linkDialogScene_ = new LinkDialogGraphicsScene(this);
     linkDialogScene_->src_ = src_;
     linkDialogScene_->dest_ = dest_;
     linkDialogView_->setDialogScene(linkDialogScene_);
-    linkDialogView_->setSceneRect(0,0,rSize.width(), rSize.height()*5);
+    //linkDialogView_->setSceneRect(0,0,rSize.width(), rSize.height()*5);
     linkDialogView_->fitInView(linkDialogView_->rect());
     linkDialogView_->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
     mainLayout->addWidget(linkDialogView_);
@@ -112,10 +116,10 @@ void LinkDialog::initDialogLayout() {
     connect(deleteAllLinkPushButton_, SIGNAL(clicked()), this, SLOT(clickedDeleteAllLinksPushButton()));
     autoLinkPushButtonLayout->addWidget(deleteAllLinkPushButton_, 10);
     //expand composite
-    expandCompositeOption_ = new QCheckBox("Expand All Properties", this);
-    expandCompositeOption_->setChecked(EXPAND_SUB_PROPERTIES_BY_DEFAULT);
-    autoLinkPushButtonLayout->addWidget(expandCompositeOption_, 10);
-    connect(expandCompositeOption_, SIGNAL(toggled(bool)), this, SLOT(expandCompositeProperties(bool)));
+    expandCompositeButton_ = new QPushButton("Expand All Properties", this);
+    expandCompositeButton_->setChecked(EXPAND_SUB_PROPERTIES_BY_DEFAULT);
+    autoLinkPushButtonLayout->addWidget(expandCompositeButton_, 30);
+    connect(expandCompositeButton_, SIGNAL(clicked()), this, SLOT(expandCompositeProperties()));
     commonButtonLayout->addLayout(autoLinkPushButtonLayout);
 
     //okay cancel button
@@ -150,15 +154,6 @@ void LinkDialog::closeEvent ( QCloseEvent * event ) {
    eventLoop_.quit();
 }
 
-void LinkDialog::setValidationLevelOfSubPropertiesOfCompositeProperties(Property* property, PropertyOwner::InvalidationLevel invalidationLevel) {
-    CompositeProperty* compositeProperty = IS_COMPOSITE_PROPERTY(property);
-    if (!compositeProperty) return;
-    std::vector<Property*> subProps = compositeProperty->getProperties();
-    for (size_t i=0; i<subProps.size(); i++) {
-        subProps[i]->setInvalidationLevel(invalidationLevel);
-    }
-}
-
 void LinkDialog::clickedAutoLinkPushButton() {
     std::vector<Property*> srcProperties = src_->getProperties();
     std::vector<Property*> dstProperties = dest_->getProperties();
@@ -173,10 +168,11 @@ void LinkDialog::clickedAutoLinkPushButton() {
             selectedTypes|=PartiallyMatchingIdCondition::conditionType();
     }
 
+    bool linkSubProperties = false; //TODO: check if composite property is expanded
     for (size_t i=0; i<srcProperties.size(); i++) {
         for (size_t j=0; j<dstProperties.size(); j++) {
 
-            if (expandCompositeOption_->isChecked()) {
+            if (linkSubProperties) {
                 if (AutoLinker::canLink(srcProperties[i], dstProperties[j], (LinkingConditions) selectedTypes)) {
                     CompositeProperty* compSrc = IS_COMPOSITE_PROPERTY(srcProperties[i]);
                     CompositeProperty* compDst = IS_COMPOSITE_PROPERTY(dstProperties[j]);
@@ -205,15 +201,15 @@ void LinkDialog::clickedDeleteAllLinksPushButton() {
     linkDialogScene_->removeAllPropertyLinks();
 }
 
-void LinkDialog::expandCompositeProperties(bool expand) {
-    linkDialogScene_->setExpandProperties(expand);
+void LinkDialog::expandCompositeProperties() {
+    linkDialogScene_->setExpandProperties(true);
     initDialog(src_, dest_);
 }
 
 void LinkDialog::initDialog(Processor* src, Processor* dest) {
     linkDialogScene_->clearSceneRepresentations();
     QSize rSize(linkDialogWidth, linkDialogHeight);
-    linkDialogView_->setSceneRect(0,0,rSize.width(), rSize.height()*5);
+    //linkDialogView_->setSceneRect(0,0,rSize.width(), rSize.height()*5);
     linkDialogView_->fitInView(linkDialogView_->rect());
     linkDialogView_->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
     src_ = src;
@@ -228,6 +224,13 @@ int LinkDialog::exec() {
     return eventLoop_.exec();
 }
 
+QSize LinkDialog::sizeHint() const {
+    QSize size = layout()->sizeHint();
+    size.setHeight(linkDialogHeight);
+    return size;
+}
+
+//////////////////////////////////////////////////////////////////////////
 
 CheckableQComboBox::CheckableQComboBox(QWidget *parent , std::string widgetName, std::vector<std::string> options) : QComboBox(parent),widgetName_(widgetName) {
     setEditable(true);

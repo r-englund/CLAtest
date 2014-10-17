@@ -41,11 +41,14 @@ namespace inviwo {
 
 LinkDialogPropertyGraphicsItem::LinkDialogPropertyGraphicsItem(LinkDialogProcessorGraphicsItem* processor,
         Property* prop,
+        LinkDialogPropertyGraphicsItem* parentPropertyGraphicsItem,
         int subPropertyLevel) : GraphicsItemData<Property>()
         , subPropertyLevel_(subPropertyLevel)
         , isExpanded_(false)
-        , index_(0) {
-    setZValue(LINKDIALOG_PROCESSOR_GRAPHICSITEM_DEPTH);
+        , index_(0)
+        , parentPropertyGraphicsItem_(parentPropertyGraphicsItem)
+        , animateEnabled_(false) {
+    setZValue(LINKDIALOG_PROPERTY_GRAPHICSITEM_DEPTH);
     //setFlags(ItemIsMovable | ItemIsSelectable | ItemIsFocusable | ItemSendsGeometryChanges);
     int propWidth = propertyItemWidth-(subPropertyLevel_*propertyExpandCollapseOffset);
     setRect(-propWidth/2, -propertyItemHeight/2, propWidth, propertyItemHeight);
@@ -71,7 +74,7 @@ LinkDialogPropertyGraphicsItem::LinkDialogPropertyGraphicsItem(LinkDialogProcess
         //LogWarn("Found composite sub properties")
         std::vector<Property*> subProperties = compProp->getProperties();
         for (size_t j=0; j<subProperties.size(); j++) {
-            LinkDialogPropertyGraphicsItem* compItem = new LinkDialogPropertyGraphicsItem(processor, subProperties[j], subPropertyLevel_+1);
+            LinkDialogPropertyGraphicsItem* compItem = new LinkDialogPropertyGraphicsItem(processor, subProperties[j], this, subPropertyLevel_+1);
             compItem->hide();
             subPropertyGraphicsItems_.push_back(compItem);
         }
@@ -83,6 +86,19 @@ LinkDialogPropertyGraphicsItem::~LinkDialogPropertyGraphicsItem() {}
 void LinkDialogPropertyGraphicsItem::setIndex(int index) {
     index_ = index;
 }
+
+const int LinkDialogPropertyGraphicsItem::getIndex() const { 
+    return index_;
+}
+
+void LinkDialogPropertyGraphicsItem::setAnimate(bool animate) {
+    animateEnabled_ = animate;
+}
+
+const bool LinkDialogPropertyGraphicsItem::getAnimate() const { 
+    return animateEnabled_;
+}
+
 
 void LinkDialogPropertyGraphicsItem::setPropertyItemIndex(int &currIndex) {
     setIndex(currIndex);
@@ -97,7 +113,7 @@ void LinkDialogPropertyGraphicsItem::setPropertyItemIndex(int &currIndex) {
     }
 }
 
-void LinkDialogPropertyGraphicsItem::updatePositionBasedOnIndex() {
+void LinkDialogPropertyGraphicsItem::updatePositionBasedOnIndex(float animateExpansion) {
     if (!processorGraphicsItem_) return;
 
     QPointF tl = processorGraphicsItem_->rect().topLeft();
@@ -112,18 +128,34 @@ void LinkDialogPropertyGraphicsItem::updatePositionBasedOnIndex() {
     QPointF p = processorGraphicsItem_->pos();
 
     qreal px = p.x() + fabs((float)subPropertyLevel_*propertyExpandCollapseOffset/2);
-    qreal py = p.y()+ initialOffset + (index_*fabs(propertyMappedDim.y()));
-    setPos(QPointF(px,py));
+    qreal py = p.y() + initialOffset + index_*fabs(propertyMappedDim.y());
 
-   /* 
-   int propWidth = 0;    
-    bool parentExpanded = false;
-    if (parentExpanded)
+    int propWidth = 0;
+    int propHeight = propertyItemHeight;
+
+    bool parentExpanded = (parentPropertyGraphicsItem_ && parentPropertyGraphicsItem_->isExpanded());
+    if (parentExpanded) {
+        //offsetting with respect to parent ( using current sub-property level)
         propWidth =  propertyItemWidth-(subPropertyLevel_*propertyExpandCollapseOffset);
-    else
+
+        if (parentPropertyGraphicsItem_->getAnimate()) {
+            px = p.x() + fabs((float)subPropertyLevel_*propertyExpandCollapseOffset/2)*animateExpansion;
+            float diff = parentPropertyGraphicsItem_->getIndex()+(index_-parentPropertyGraphicsItem_->getIndex())*animateExpansion;
+            py = p.y() + initialOffset + diff*fabs(propertyMappedDim.y());
+        }
+    }
+    else {
+        //no offsetting if parent is collapsed
         propWidth =  propertyItemWidth;
-    setRect(-propWidth/2, -propertyItemHeight/2, propWidth, propertyItemHeight);
-    */
+        px = p.x();
+    }
+
+    
+
+    setRect(-propWidth/2, -propertyItemHeight/2, propWidth, propHeight);
+
+    setPos(QPointF(px,py));
+    
 
     //LogWarn("SubProperty Level is : " << subPropertyLevel_ << " Index " << index_ << " Mapped dim y" << propertyMappedDim.y() << " (" << px << "," << py << ")")
 }
@@ -300,7 +332,7 @@ void LinkDialogPropertyGraphicsItem::paint(QPainter* p, const QStyleOptionGraphi
     p->drawPath(roundRectPath_Left);
 
     //Bottom
-    p->setPen(greyPen);
+    p->setPen(blackPen);
     roundRectPath_Bottom.moveTo(bRect.left(), bRect.bottom());
     roundRectPath_Bottom.lineTo(bRect.right(), bRect.bottom());
     p->drawPath(roundRectPath_Bottom);
@@ -312,7 +344,7 @@ void LinkDialogPropertyGraphicsItem::paint(QPainter* p, const QStyleOptionGraphi
     p->drawPath(roundRectPath_Right);
 
     //Top
-    p->setPen(greyPen);
+    p->setPen(blackPen);
     roundRectPath_Top.moveTo(bRect.left(), bRect.top());
     roundRectPath_Top.lineTo(bRect.right(), bRect.top());
     p->drawPath(roundRectPath_Top);

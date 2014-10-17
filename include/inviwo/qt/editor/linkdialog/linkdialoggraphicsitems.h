@@ -47,6 +47,7 @@
 #include <QStandardItemModel>
 #include <QEventLoop>
 #include <QCheckBox>
+#include <QTimeLine>
 
 #include <inviwo/core/links/processorlink.h>
 #include <inviwo/core/links/linkconditions.h>
@@ -67,10 +68,10 @@ static const int processorLabelHeight = 8;
 static const int linkDialogWidth = processorItemWidth*4;
 static const int linkDialogHeight = processorItemHeight*12;
 
-static const int propertyItemWidth = processorItemWidth*3/4;
-static const int propertyItemHeight = processorItemHeight*3/4;
-static const int propertyRoundedCorners = 0;
 static const int propertyLabelHeight = 8;
+static const int propertyItemWidth = processorItemWidth*3/4;
+static const int propertyItemHeight = processorItemHeight*3/4 + 2*propertyLabelHeight;
+static const int propertyRoundedCorners = 0;
 
 static const int propertyExpandCollapseButtonSize = 8;
 static const int propertyExpandCollapseOffset = 16;

@@ -67,6 +67,7 @@ private:
     std::string widgetName_;
 };
 
+//////////////////////////////////////////////////////////////////////////
 
 class IVW_QTEDITOR_API LinkDialog : public InviwoDockWidget {
     Q_OBJECT
@@ -76,6 +77,7 @@ public:
     void initDialog(Processor* src, Processor* dest);
     virtual void closeEvent ( QCloseEvent * event );
     int exec();
+    virtual QSize sizeHint() const;
     ~LinkDialog();
 
 private slots:
@@ -83,8 +85,7 @@ private slots:
     void clickedCancelButton();
     void clickedAutoLinkPushButton();
     void clickedDeleteAllLinksPushButton();
-    void expandCompositeProperties(bool);
-    void setValidationLevelOfSubPropertiesOfCompositeProperties(Property* compositeProperty, PropertyOwner::InvalidationLevel invalidationLevel);
+    void expandCompositeProperties();
 
 private:
     void initDialogLayout();
@@ -95,14 +96,12 @@ private:
     QDialogButtonBox* okayCancelbuttonBox_;
     QPushButton* autoLinkPushButton_;
     CheckableQComboBox* autoLinkOptions_;
-    QCheckBox* expandCompositeOption_;
+    QPushButton* expandCompositeButton_;
     QPushButton* deleteAllLinkPushButton_;
     Processor* src_;
     Processor* dest_;
     QEventLoop eventLoop_;
 };
-
-/*---------------------------------------------------------------------------------------*/
 
 } //namespace
 
