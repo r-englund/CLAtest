@@ -2,5 +2,5 @@
 import inviwo
 import inviwoqt 
 
-for i in range(0, 5):
-   inviwoqt.loadWorkspace( inviwo.getDataPath() + "/workspaces/tests/simpleraycaster.inv")
+
+inviwoqt.loadWorkspace( inviwo.getDataPath() + "/workspaces/tests/simpleraycaster.inv")
