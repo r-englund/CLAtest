@@ -40,7 +40,12 @@
 #include <QGraphicsItem>
 #include <QGraphicsSceneMouseEvent>
 
+#include <inviwo/core/network/processornetwork.h>
 #include <inviwo/core/network/processornetworkobserver.h>
+#include <inviwo/core/processors/processor.h>
+#include <inviwo/core/properties/propertyowner.h>
+#include <inviwo/core/properties/property.h>
+#include <inviwo/core/links/propertylink.h>
 
 namespace inviwo {
 
@@ -132,7 +137,6 @@ private:
 
     void addConnectionToCurrentList(DialogConnectionGraphicsItem*);
     void removeConnectionFromCurrentList(DialogConnectionGraphicsItem*);
-    Property* getParentCompositeProperty(Property* property, Processor* processor);
     bool expandProperties_;
     bool mouseOnLeftSide_;
 };

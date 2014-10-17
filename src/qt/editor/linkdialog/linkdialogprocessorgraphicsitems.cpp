@@ -30,15 +30,16 @@
  *
  *********************************************************************************/
 
-#include <QGraphicsDropShadowEffect>
-
 #include <inviwo/qt/editor/linkdialog/linkdialogprocessorgraphicsitems.h>
 #include <inviwo/qt/editor/linkdialog/linkdialogpropertygraphicsitems.h>
 #include <inviwo/qt/editor/linkdialog/linkdialogcurvegraphicsitems.h>
 
+#include <QGraphicsDropShadowEffect>
+#include <QTimeLine>
+
 namespace inviwo {
 
-LinkDialogProcessorGraphicsItem::LinkDialogProcessorGraphicsItem() : GraphicsItemData<Processor>() {
+LinkDialogProcessorGraphicsItem::LinkDialogProcessorGraphicsItem() : GraphicsItemData<Processor>(), animateExpansion_(1.0) {
     setZValue(LINKDIALOG_PROCESSOR_GRAPHICSITEM_DEPTH);
     //setFlags(ItemIsMovable | ItemIsSelectable | ItemIsFocusable | ItemSendsGeometryChanges);
     setRect(-processorItemWidth/2, -processorItemHeight/2, processorItemWidth, processorItemHeight);
@@ -134,16 +135,9 @@ void LinkDialogProcessorGraphicsItem::setProcessor(Processor* processor, bool ex
         for (size_t i=0; i<properties.size(); i++) {
             LinkDialogPropertyGraphicsItem* compItem = new LinkDialogPropertyGraphicsItem(this, properties[i]);
             compItem->show();
-            /*if (expandProperties)
-                compItem->expand();
-            else
-                compItem->collapse();*/
             propertyGraphicsItems_.push_back(compItem);
-
-            std::vector<LinkDialogPropertyGraphicsItem*> subPropGraphicsItems = compItem->getSubPropertyItemList();
+            std::vector<LinkDialogPropertyGraphicsItem*> subPropGraphicsItems = compItem->getSubPropertyItemList(true);
             for (size_t j=0; j<subPropGraphicsItems.size(); j++) {
-                /*if (expandProperties) subPropGraphicsItems[j]->show();
-                else subPropGraphicsItems[j]->hide();*/
                 propertyGraphicsItems_.push_back(subPropGraphicsItems[j]);
             }
         }
@@ -155,22 +149,60 @@ void LinkDialogProcessorGraphicsItem::setProcessor(Processor* processor, bool ex
     }
 }
 
-void LinkDialogProcessorGraphicsItem::updatePropertyItemPositions() {
+void LinkDialogProcessorGraphicsItem::updatePropertyItemPositions(bool animateExpansion) {
     int globalIndex = 0;
     for (size_t i=0; i<propertyGraphicsItems_.size(); i++) {
         if (propertyGraphicsItems_[i]->getLevel() == 0)
             propertyGraphicsItems_[i]->setPropertyItemIndex(globalIndex);
     }
 
+    if (animateExpansion) {
+        animationStart();
+    }
+    else {
+        animateExpansion_=1.0f;
+        updateAll();
+    }
+
+}
+
+void LinkDialogProcessorGraphicsItem::animationStart() {
+    animateExpansion_ = 0.1f;
+
+    QTimeLine *anim = new QTimeLine(50, this);
+    anim->setUpdateInterval(20);
+    connect(anim, SIGNAL(valueChanged(qreal)), SLOT(animate(qreal)));
+    connect(anim, SIGNAL(finished()), SLOT(animationEnd()));
+    anim->start();
+}
+
+void LinkDialogProcessorGraphicsItem::animate(qreal incr) {
+    if (animateExpansion_>1.0 || animateExpansion_<0.0f) {
+        animationEnd();
+    }
+    else {
+        animateExpansion_+=incr;
+        updateAll();
+    }
+}
+
+void LinkDialogProcessorGraphicsItem::updateAll() {
     for (size_t i=0; i<propertyGraphicsItems_.size(); i++)
-        propertyGraphicsItems_[i]->updatePositionBasedOnIndex();
+        propertyGraphicsItems_[i]->updatePositionBasedOnIndex(animateExpansion_);
 
     for (size_t i=0; i<propertyGraphicsItems_.size(); i++) {
         std::vector<DialogConnectionGraphicsItem*> connections = propertyGraphicsItems_[i]->getConnectionGraphicsItems();
         for (size_t j=0; j<connections.size(); j++)
             connections[j]->updateConnectionDrawing();
-
     }
+}
+
+void LinkDialogProcessorGraphicsItem::animationEnd() {
+    animateExpansion_ = 1.0f;
+    sender()->~QObject();
+    updateAll();
+    for (size_t i=0; i<propertyGraphicsItems_.size(); i++)
+        propertyGraphicsItems_[i]->setAnimate(false);
 }
 
 } //namespace

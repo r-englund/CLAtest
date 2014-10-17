@@ -65,7 +65,7 @@ class LinkDialogProcessorGraphicsItem;
 class IVW_QTEDITOR_API LinkDialogPropertyGraphicsItem : public GraphicsItemData<Property> {
 
 public:
-    LinkDialogPropertyGraphicsItem(LinkDialogProcessorGraphicsItem*, Property*, int subPropertyLevel=0);
+    LinkDialogPropertyGraphicsItem(LinkDialogProcessorGraphicsItem*, Property*, LinkDialogPropertyGraphicsItem* parentPropertyGraphicsItem=0, int subPropertyLevel=0);
     ~LinkDialogPropertyGraphicsItem();
 
     void setProperty(Property* property);
@@ -83,8 +83,11 @@ public:
     void collapse();
     bool hasSubProperties();
     bool isExpanded();
-    void updatePositionBasedOnIndex();
+    void updatePositionBasedOnIndex(float animateExpansion=1.0);
     void setIndex(int index);
+    const int getIndex() const;
+    void setAnimate(bool animate);
+    const bool getAnimate() const;
     void setPropertyItemIndex(int &currIndex);
     LinkDialogProcessorGraphicsItem* getProcessorItem() const {return processorGraphicsItem_;}
     int getLevel() const {return subPropertyLevel_;}
@@ -116,11 +119,13 @@ private:
     LabelGraphicsItem* classLabel_;
     LabelGraphicsItem* typeLabel_;
     LinkDialogProcessorGraphicsItem* processorGraphicsItem_;
+    LinkDialogPropertyGraphicsItem* parentPropertyGraphicsItem_;
     std::vector<DialogConnectionGraphicsItem*> connectionItems_;
     std::vector<LinkDialogPropertyGraphicsItem*> subPropertyGraphicsItems_;
     int subPropertyLevel_;
     bool isExpanded_;
     int index_;
+    bool animateEnabled_;
     //bool isTopItem_;
     //bool isBottomItem_;
 

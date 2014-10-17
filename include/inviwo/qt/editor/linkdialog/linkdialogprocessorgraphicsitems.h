@@ -61,8 +61,8 @@ namespace inviwo {
 
 class LinkDialogPropertyGraphicsItem;
 
-class IVW_QTEDITOR_API LinkDialogProcessorGraphicsItem : public GraphicsItemData<Processor> {
-
+class IVW_QTEDITOR_API LinkDialogProcessorGraphicsItem : public QObject, public GraphicsItemData<Processor> {
+    Q_OBJECT
 public:
     LinkDialogProcessorGraphicsItem();
     ~LinkDialogProcessorGraphicsItem();
@@ -70,7 +70,7 @@ public:
     void setProcessor(Processor* processor, bool expandProperties=false);
     Processor* getProcessor() {return getGraphicsItemData();}
 
-    void updatePropertyItemPositions();
+    void updatePropertyItemPositions(bool animateExpansion=false);
 
     const std::vector<LinkDialogPropertyGraphicsItem*>& getPropertyItemList() const {return propertyGraphicsItems_;}
 
@@ -84,10 +84,17 @@ protected:
     virtual void paint(QPainter* p, const QStyleOptionGraphicsItem* options, QWidget* widget);
     virtual QVariant itemChange(GraphicsItemChange change, const QVariant& value);
 
+private slots:
+    void animationStart();
+    void animate(qreal incr);
+    void animationEnd();
+
 private:
+    void updateAll();
     LabelGraphicsItem* nameLabel_;
     LabelGraphicsItem* classLabel_;
     std::vector<LinkDialogPropertyGraphicsItem*> propertyGraphicsItems_;
+    float animateExpansion_;
 };
 
 } //namespace
