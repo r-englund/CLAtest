@@ -44,6 +44,7 @@
 #include <QPainter>
 #include <QToolTip>
 #include <QHelpEvent>
+#include <QClipboard>
 
 namespace inviwo {
 
@@ -60,6 +61,7 @@ PropertyWidgetQt::PropertyWidgetQt()
     , applicationUsageModeAction_(NULL)
     , copyAction_(NULL)
     , pasteAction_(NULL)
+    , copyPathAction_(NULL)
     , semanicsMenuItem_(NULL)
     , semanticsActionGroup_(NULL)
     , contextMenu_(NULL)  {
@@ -208,8 +210,12 @@ void PropertyWidgetQt::generateContextMenu() {
 
         copyAction_ = new QAction("Copy", this);
         contextMenu_->addAction(copyAction_);
+
         pasteAction_ = new QAction("Paste", this);
         contextMenu_->addAction(pasteAction_);
+
+        copyPathAction_ = new QAction("Copy path", this);
+        contextMenu_->addAction(copyPathAction_);
 
         if (property_) {
             semanicsMenuItem_ = new QMenu(tr("&Semantics"), contextMenu_);
@@ -255,6 +261,7 @@ void PropertyWidgetQt::generateContextMenu() {
 
         connect(copyAction_, SIGNAL(triggered()), this, SLOT(copy()));
         connect(pasteAction_, SIGNAL(triggered()), this, SLOT(paste()));
+        connect(copyPathAction_, SIGNAL(triggered()), this, SLOT(copyPath()));
 
         // Module actions.
         generateModuleMenuActions();
@@ -512,6 +519,12 @@ void PropertyWidgetQt::paste() {
         property_->set(copySource);
     }
 }
+
+void PropertyWidgetQt::copyPath() {
+    std::string path = joinString(property_->getPath(),".");
+    QApplication::clipboard()->setText(path.c_str());
+}
+
 
 const Property* PropertyWidgetQt::copySource = NULL;
 

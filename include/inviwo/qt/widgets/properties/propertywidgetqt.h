@@ -88,6 +88,7 @@ public slots:
     virtual void changeSemantics(QAction* action);
     virtual void copy();
     virtual void paste();
+    virtual void copyPath();
 
     void moduleAction();
 signals:
@@ -122,6 +123,7 @@ protected:
     QAction* applicationUsageModeAction_;
     QAction* copyAction_;
     QAction* pasteAction_;
+    QAction* copyPathAction_;
 
     QMenu* semanicsMenuItem_;
     QActionGroup* semanticsActionGroup_;
