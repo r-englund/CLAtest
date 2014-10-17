@@ -99,7 +99,7 @@ PyObject* py_loadTransferFunction(PyObject* /*self*/, PyObject* args) {
         return 0;
     }
     
-    std::string filename = PyValueParser::parse<std::string>(PyTuple_GetItem(args, 2));
+    std::string filename = PyValueParser::parse<std::string>(PyTuple_GetItem(args, 1));
     
     TransferFunctionProperty* tf = dynamic_cast<TransferFunctionProperty*>(theProperty);
 

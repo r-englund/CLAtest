@@ -61,10 +61,10 @@ PyObject* py_setCameraFocus(PyObject* /*self*/, PyObject* args) {
     CameraProperty* cam = dynamic_cast<CameraProperty*>(theProperty);
     if (cam) {
         vec3 focus;
-        char* dummy1,*dummy2;
-        int d1,d2;
+        char* dummy1;
+        int d1;
 
-        if (!PyArg_ParseTuple(args,"s#s#(fff)", &dummy1,&d1,&dummy2,&d2,
+        if (!PyArg_ParseTuple(args, "s#(fff)", &dummy1, &d1,
                               &focus.x,&focus.y,&focus.z
                              )) {
             std::string msg = std::string("setCameraFocus() Failed to parse values for camera, needs to be on the format: (posX,posY,posZ) ") +
@@ -101,10 +101,10 @@ PyObject* py_setCameraUp(PyObject* /*self*/, PyObject* args) {
     CameraProperty* cam = dynamic_cast<CameraProperty*>(theProperty);
     if (cam) {
         vec3 up;
-        char* dummy1,*dummy2;
-        int d1,d2;
+        char* dummy1;
+        int d1;
 
-        if (!PyArg_ParseTuple(args,"s#s#(fff)", &dummy1,&d1,&dummy2,&d2,
+        if (!PyArg_ParseTuple(args,"s#(fff)", &dummy1,&d1,
                               &up.x,&up.y,&up.z
                              )) {
             std::string msg = std::string("setCameraUp() Failed to parse values for camera, needs to be on the format: (dirX,dirY,dirZ) ") + path;
@@ -140,10 +140,10 @@ PyObject* py_setCameraPos(PyObject* /*self*/, PyObject* args) {
     CameraProperty* cam = dynamic_cast<CameraProperty*>(theProperty);
     if (cam) {
         vec3 from;
-        char* dummy1,*dummy2;
-        int d1,d2;
+        char* dummy1;
+        int d1;
 
-        if (!PyArg_ParseTuple(args,"s#s#(fff)", &dummy1,&d1,&dummy2,&d2,
+        if (!PyArg_ParseTuple(args, "s#(fff)", &dummy1, &d1,
                               &from.x,&from.y,&from.z
                              )) {
             std::string msg = std::string("setPropertyValue() Failed to parse values for camera, needs to be on the format: (posX,posY,posZ) ") +
