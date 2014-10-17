@@ -464,8 +464,11 @@ ivw_include_directories(${IVW_EXTENSIONS_DIR})
 ivw_include_directories(${IVW_ROOT_DIR})
 ivw_include_directories(${IVW_MODULE_DIR})
 if (NOT "${IVW_EXTERNAL_MODULES}" STREQUAL "")
-ivw_include_directories(${IVW_EXTERNAL_MODULES})
-endif()
+foreach(dir ${IVW_EXTERNAL_MODULES})
+ivw_include_directories(${dir})
+get_filename_component(dir_parent ${dir} PATH)
+ivw_include_directories(${dir_parent})
+endforeach()
 ivw_include_directories(${CMAKE_BINARY_DIR}/modules/_generated)
 
 # Add core dependencies to this list
