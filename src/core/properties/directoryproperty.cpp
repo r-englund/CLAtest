@@ -102,22 +102,32 @@ void DirectoryProperty::serialize(IvwSerializer& s) const {
         basePath = InviwoApplication::getPtr()->getPath(
             InviwoApplication::PATH_DATA);  // why workspaces
 
-    std::string relativePath = URLParser::getRelativePath(basePath, absoluteFilePath);
-    s.serialize("directory", relativePath);
+    std::string serializePath;
+
+    if (!absoluteFilePath.empty() && URLParser::sameDrive(basePath, absoluteFilePath))
+        serializePath = URLParser::getRelativePath(basePath, absoluteFilePath);
+    else
+        serializePath = absoluteFilePath;
+
+    s.serialize("directory", serializePath);
 }
 
 void DirectoryProperty::deserialize(IvwDeserializer& d) {
     Property::deserialize(d);
-    std::string relativePath;
-    d.deserialize("directory", relativePath);
-    std::string basePath = d.getFileName();
+    std::string serializePath;
+    d.deserialize("directory", serializePath);
 
-    if (basePath.empty())
-        basePath = InviwoApplication::getPtr()->getPath(
-            InviwoApplication::PATH_DATA);  // why workspaces
+    if (!URLParser::isAbsolutePath(serializePath) && !serializePath.empty()) {
+        std::string basePath = d.getFileName();
 
-    basePath = URLParser::getFileDirectory(basePath);
-    set(basePath + relativePath);
+        if (basePath.empty())
+            basePath = InviwoApplication::getPtr()->getPath(InviwoApplication::PATH_DATA);
+
+        basePath = URLParser::getFileDirectory(basePath);
+        set(basePath + serializePath);
+    } else {
+        set(serializePath);
+    }
 }
 
 void DirectoryProperty::setContentType(const std::string& contentType) {
