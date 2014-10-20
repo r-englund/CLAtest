@@ -271,8 +271,8 @@ void NetworkEditor::showLinkDialog(Processor* processor1, Processor* processor2)
         linkDialog_->initDialog(processor1, processor2);
     }
 
-    if (!linkDialog_->exec()) {
-        LogWarn("LinkDialog closed")
+    if (linkDialog_->exec()) {
+        LogWarn("LinkDialog not deinitialized properly")
     }
 }
 
