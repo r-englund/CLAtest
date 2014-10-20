@@ -97,30 +97,30 @@ void LinkDialog::initDialogLayout() {
     linkDialogView_->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
     mainLayout->addWidget(linkDialogView_);
     QHBoxLayout* commonButtonLayout = new QHBoxLayout;
-    //auto link button
-    QHBoxLayout* autoLinkPushButtonLayout = new QHBoxLayout;
-    autoLinkPushButtonLayout->setAlignment(Qt::AlignLeft);
+    //smart link button
+    QHBoxLayout* smartLinkPushButtonLayout = new QHBoxLayout;
+    smartLinkPushButtonLayout->setAlignment(Qt::AlignLeft);
     //qt documentation
-    //auto link button
-    autoLinkPushButton_ = new QPushButton("AutoLink", this);
-    connect(autoLinkPushButton_, SIGNAL(clicked()), this, SLOT(clickedAutoLinkPushButton()));
-    autoLinkPushButtonLayout->addWidget(autoLinkPushButton_, 10);
+    //smart link button
+    smartLinkPushButton_ = new QPushButton("SmartLink", this);
+    connect(smartLinkPushButton_, SIGNAL(clicked()), this, SLOT(clickedSmartLinkPushButton()));
+    smartLinkPushButtonLayout->addWidget(smartLinkPushButton_, 10);
     //checkable combo box
     std::vector<std::string> options;
     options.push_back(SimpleCondition::conditionName());
     options.push_back(PartiallyMatchingIdCondition::conditionName());
-    autoLinkOptions_ = new CheckableQComboBox(this,"AutoLink Filter", options);
-    autoLinkPushButtonLayout->addWidget(autoLinkOptions_, 20);
+    smartLinkOptions_ = new CheckableQComboBox(this,"AutoLink Filter", options);
+    smartLinkPushButtonLayout->addWidget(smartLinkOptions_, 20);
     //delete button
     deleteAllLinkPushButton_ = new QPushButton("Delete All", this);
     connect(deleteAllLinkPushButton_, SIGNAL(clicked()), this, SLOT(clickedDeleteAllLinksPushButton()));
-    autoLinkPushButtonLayout->addWidget(deleteAllLinkPushButton_, 10);
+    smartLinkPushButtonLayout->addWidget(deleteAllLinkPushButton_, 10);
     //expand composite
     expandCompositeButton_ = new QPushButton("Expand All Properties", this);
     expandCompositeButton_->setChecked(EXPAND_SUB_PROPERTIES_BY_DEFAULT);
-    autoLinkPushButtonLayout->addWidget(expandCompositeButton_, 30);
+    smartLinkPushButtonLayout->addWidget(expandCompositeButton_, 30);
     connect(expandCompositeButton_, SIGNAL(clicked()), this, SLOT(expandCompositeProperties()));
-    commonButtonLayout->addLayout(autoLinkPushButtonLayout);
+    commonButtonLayout->addLayout(smartLinkPushButtonLayout);
 
     //okay cancel button
     QHBoxLayout* okayCancelButtonLayout = new QHBoxLayout;
@@ -154,11 +154,11 @@ void LinkDialog::closeEvent ( QCloseEvent * event ) {
    eventLoop_.quit();
 }
 
-void LinkDialog::clickedAutoLinkPushButton() {
+void LinkDialog::clickedSmartLinkPushButton() {
     std::vector<Property*> srcProperties = src_->getProperties();
     std::vector<Property*> dstProperties = dest_->getProperties();
     int selectedTypes = (int) NoLinkCondition;
-    std::vector<std::string> selectedConditons = autoLinkOptions_->getCheckedItems();
+    std::vector<std::string> selectedConditons = smartLinkOptions_->getCheckedItems();
 
     for (size_t i=0; i<selectedConditons.size(); i++) {
         if (selectedConditons[i] == SimpleCondition::conditionName())
@@ -247,7 +247,7 @@ CheckableQComboBox::CheckableQComboBox(QWidget *parent , std::string widgetName,
 
     setModel(stdandardModel_);
     lineEdit()->setText(QString(widgetName_.c_str()));
-    connect(stdandardModel_, SIGNAL(dataChanged(const QModelIndex&, const QModelIndex&)), this, SLOT(onAutoLinkOptionChecked(const QModelIndex&,
+    connect(stdandardModel_, SIGNAL(dataChanged(const QModelIndex&, const QModelIndex&)), this, SLOT(onSmartLinkOptionChecked(const QModelIndex&,
             const QModelIndex&)));
 }
 
@@ -277,9 +277,9 @@ std::vector<std::string> CheckableQComboBox::getCheckedItems() {
     return checkedItemString;
 }
 
-void CheckableQComboBox::onAutoLinkOptionChecked(const QModelIndex& tl, const QModelIndex& br) {
+void CheckableQComboBox::onSmartLinkOptionChecked(const QModelIndex& tl, const QModelIndex& br) {
     if (isItemChecked(tl.row())) {
-        //do some maintenance stuff here
+        //do some maintenance stuff here if required
     }
 
     lineEdit()->setText(QString(widgetName_.c_str()));

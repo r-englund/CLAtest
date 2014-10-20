@@ -60,7 +60,7 @@ public:
     bool isItemChecked(int i);
     std::vector<std::string> getCheckedItems();
 public slots:
-    void onAutoLinkOptionChecked(const QModelIndex&, const QModelIndex&);
+    void onSmartLinkOptionChecked(const QModelIndex&, const QModelIndex&);
 private:
     QStandardItemModel* stdandardModel_;
     std::vector<QStandardItem*> standardItems_;
@@ -83,7 +83,7 @@ public:
 private slots:
     void clickedOkayButton();
     void clickedCancelButton();
-    void clickedAutoLinkPushButton();
+    void clickedSmartLinkPushButton();
     void clickedDeleteAllLinksPushButton();
     void expandCompositeProperties();
 
@@ -94,8 +94,8 @@ private:
     LinkDialogGraphicsView* linkDialogView_;
     LinkDialogGraphicsScene* linkDialogScene_;
     QDialogButtonBox* okayCancelbuttonBox_;
-    QPushButton* autoLinkPushButton_;
-    CheckableQComboBox* autoLinkOptions_;
+    QPushButton* smartLinkPushButton_;
+    CheckableQComboBox* smartLinkOptions_;
     QPushButton* expandCompositeButton_;
     QPushButton* deleteAllLinkPushButton_;
     Processor* src_;
