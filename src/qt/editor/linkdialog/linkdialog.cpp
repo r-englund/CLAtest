@@ -168,9 +168,11 @@ void LinkDialog::clickedSmartLinkPushButton() {
             selectedTypes|=PartiallyMatchingIdCondition::conditionType();
     }
 
-    bool linkSubProperties = false; //TODO: check if composite property is expanded
     for (size_t i=0; i<srcProperties.size(); i++) {
         for (size_t j=0; j<dstProperties.size(); j++) {
+
+            bool linkSubProperties = linkDialogScene_->isPropertyExpanded(srcProperties[i]) ||
+                                     linkDialogScene_->isPropertyExpanded(dstProperties[j]);
 
             if (linkSubProperties) {
                 if (AutoLinker::canLink(srcProperties[i], dstProperties[j], (LinkingConditions) selectedTypes)) {

@@ -56,7 +56,7 @@ LinkDialogGraphicsScene::LinkDialogGraphicsScene(QWidget* parent)
     setItemIndexMethod(QGraphicsScene::NoIndex);
 }
 
-QGraphicsItem* LinkDialogGraphicsScene::getPropertyGraphicsItemAt(Property* property) {
+QGraphicsItem* LinkDialogGraphicsScene::getPropertyGraphicsItemOf(Property* property) {
     LinkDialogPropertyGraphicsItem* graphicsItem = 0;
 
     for (size_t i = 0; i < processorGraphicsItems_.size(); i++) {
@@ -238,29 +238,19 @@ void LinkDialogGraphicsScene::contextMenuEvent(QGraphicsSceneContextMenuEvent* e
 void LinkDialogGraphicsScene::wheelEvent(QGraphicsSceneWheelEvent* e) {
 
     float yIncrement = processorItemHeight*(1.0f/10.0f);
-
-    if (e->modifiers() == Qt::ControlModifier) {
-        //LogWarn("Wheel delta" << e->delta())
         
-        //note:delta can be positive or negative (wheel rotated away from user or towards user)
-        int numDegrees = e->delta() / 8;
-        int numSteps = numDegrees / 15;
-        yIncrement*=numSteps;
+    //note:delta can be positive or negative (wheel rotated away from user or towards user)
+    int numDegrees = e->delta() / 8;
+    int numSteps = numDegrees / 15;
+    yIncrement*=numSteps;
 
-        currentScrollSteps_ = numSteps;
+    currentScrollSteps_ = numSteps;
 
-        QTimeLine *anim = new QTimeLine(750, this);
-        anim->setUpdateInterval(20);
-        connect(anim, SIGNAL(valueChanged(qreal)), SLOT(executeTimeLine(qreal)));
-        connect(anim, SIGNAL(finished()), SLOT(terminateTimeLine()));
-        anim->start();
-        
-    } else {
-        //QGraphicsScene::wheelEvent(e);
-        e->accept();
-        return;
-    }   
-
+    QTimeLine *anim = new QTimeLine(750, this);
+    anim->setUpdateInterval(20);
+    connect(anim, SIGNAL(valueChanged(qreal)), SLOT(executeTimeLine(qreal)));
+    connect(anim, SIGNAL(finished()), SLOT(terminateTimeLine()));
+    anim->start();
     e->accept();
     //QGraphicsScene::wheelEvent(e);
 }
@@ -299,9 +289,9 @@ void LinkDialogGraphicsScene::terminateTimeLine() {
 void LinkDialogGraphicsScene::addPropertyLink(Property* sProp, Property* eProp,
                                               bool bidirectional) {
     LinkDialogPropertyGraphicsItem* startProperty =
-        qgraphicsitem_cast<LinkDialogPropertyGraphicsItem*>(getPropertyGraphicsItemAt(sProp));
+        qgraphicsitem_cast<LinkDialogPropertyGraphicsItem*>(getPropertyGraphicsItemOf(sProp));
     LinkDialogPropertyGraphicsItem* endProperty =
-        qgraphicsitem_cast<LinkDialogPropertyGraphicsItem*>(getPropertyGraphicsItemAt(eProp));
+        qgraphicsitem_cast<LinkDialogPropertyGraphicsItem*>(getPropertyGraphicsItemOf(eProp));
     addPropertyLink(startProperty, endProperty, bidirectional);
     DialogConnectionGraphicsItem* propertyLinkItem =
         getConnectionGraphicsItem(startProperty, endProperty);
@@ -344,7 +334,7 @@ void LinkDialogGraphicsScene::expandOrCollapseLinkedPropertyItems(LinkDialogProp
                 Property* parentProperty = dynamic_cast<Property*>(linkedSubProps[j]->getOwner());
                 if (parentProperty) {
                     LinkDialogPropertyGraphicsItem* endP =
-                        qgraphicsitem_cast<LinkDialogPropertyGraphicsItem*>(getPropertyGraphicsItemAt(parentProperty));
+                        qgraphicsitem_cast<LinkDialogPropertyGraphicsItem*>(getPropertyGraphicsItemOf(parentProperty));
                     endP->setAnimate(true);
                     if (expand) endP->expand();
                     else endP->collapse();
@@ -359,12 +349,19 @@ void LinkDialogGraphicsScene::expandOrCollapseLinkedPropertyItems(LinkDialogProp
     }
 }
 
+bool LinkDialogGraphicsScene::isPropertyExpanded(Property* property) {
+    LinkDialogPropertyGraphicsItem* propItem =
+        qgraphicsitem_cast<LinkDialogPropertyGraphicsItem*>(getPropertyGraphicsItemOf(property));
+    if(propItem) return propItem->isExpanded();
+    return false;
+}
+
 void LinkDialogGraphicsScene::addPropertyLink(PropertyLink* propertyLink) {
     //For adding representations for existing links in the network
     //LogInfo("Adding Property Link.");
-    LinkDialogPropertyGraphicsItem* startProperty =  qgraphicsitem_cast<LinkDialogPropertyGraphicsItem*>(getPropertyGraphicsItemAt(
+    LinkDialogPropertyGraphicsItem* startProperty =  qgraphicsitem_cast<LinkDialogPropertyGraphicsItem*>(getPropertyGraphicsItemOf(
                 propertyLink->getSourceProperty()));
-    LinkDialogPropertyGraphicsItem* endProperty =  qgraphicsitem_cast<LinkDialogPropertyGraphicsItem*>(getPropertyGraphicsItemAt(
+    LinkDialogPropertyGraphicsItem* endProperty =  qgraphicsitem_cast<LinkDialogPropertyGraphicsItem*>(getPropertyGraphicsItemOf(
                 propertyLink->getDestinationProperty()));
 
     if (startProperty && endProperty)
