@@ -950,11 +950,7 @@ namespace half_float
 		/// \tparam T type of concrete half expression
 		/// \param rhs half expression to copy from
 		/// \return reference to this half
-#if __APPLE__
-        half& operator=(detail::expr rhs) = default;
-#else
         half& operator=(detail::expr rhs) { return *this = static_cast<float>(rhs); }
-#endif
 
 		/// Arithmetic assignment.
 		/// \tparam T type of concrete half expression
