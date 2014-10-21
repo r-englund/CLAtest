@@ -77,7 +77,7 @@ public:
         return 0;
     }
 
-    QGraphicsItem* getPropertyGraphicsItemAt(Property* property);
+    QGraphicsItem* getPropertyGraphicsItemOf(Property* property);
     void setNetwork(ProcessorNetwork* network) {processorNetwork_ = network;}
     ProcessorNetwork* getNetwork() {return processorNetwork_;}
 
@@ -91,6 +91,7 @@ public:
     void expandOrCollapseLinkedProcessorItems(LinkDialogProcessorGraphicsItem* processorGraphicsItem, bool expand);
     void expandOrCollapseLinkedPropertyItems(LinkDialogPropertyGraphicsItem* propertyItem, bool expand);
     void updatePropertyItemsOfAllProcessors();
+    bool isPropertyExpanded(Property* property);
 
     virtual void onProcessorNetworkDidAddLink(PropertyLink* propertyLink);
     virtual void onProcessorNetworkDidRemoveLink(PropertyLink* propertyLink);
