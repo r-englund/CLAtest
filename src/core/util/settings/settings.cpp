@@ -62,7 +62,7 @@ void Settings::loadFromDisk(){
     filename = InviwoApplication::getPtr()->getPath(InviwoApplication::PATH_SETTINGS,filename);
 
     isDeserializing_ = true;
-    if(URLParser::fileExists(filename)){
+    if(filesystem::fileExists(filename)){
         IvwDeserializer d(filename);
         deserialize(d);
     }

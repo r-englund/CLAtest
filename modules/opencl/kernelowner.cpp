@@ -41,12 +41,12 @@ cl::Kernel* KernelOwner::addKernel(const std::string& filePath,
                             const std::string& defines /*= ""*/ ) {
     if (filePath.length() > 0) {
         std::string absoluteFileName = filePath;
-        if (!URLParser::fileExists(absoluteFileName)) {
+        if (!filesystem::fileExists(absoluteFileName)) {
             // Search in include directories added by modules
             const std::vector<std::string> openclSearchPaths = OpenCL::getPtr()->getCommonIncludeDirectories();
 
             for (size_t i=0; i<openclSearchPaths.size(); i++) {
-                if (URLParser::fileExists(openclSearchPaths[i]+"/"+filePath)) {
+                if (filesystem::fileExists(openclSearchPaths[i]+"/"+filePath)) {
                     absoluteFileName = openclSearchPaths[i]+"/"+filePath;
                     break;
                 }

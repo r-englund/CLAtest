@@ -59,10 +59,10 @@ PyObject* py_loadWorkspace(PyObject* /*self*/, PyObject* args) {
 
     std::string filename = PyValueParser::parse<std::string>(PyTuple_GetItem(args, 0));
 
-    if (!URLParser::fileExists(filename)) {
+    if (!filesystem::fileExists(filename)) {
         filename = InviwoApplication::getPtr()->getPath(InviwoApplication::PATH_MODULES) + filename;
 
-        if (!URLParser::fileExists(filename)) {
+        if (!filesystem::fileExists(filename)) {
             std::string msg = std::string("loadWorkspace() could not find file") + filename;
             PyErr_SetString(PyExc_TypeError, msg.c_str());
             return 0;

@@ -52,32 +52,26 @@ std::string URLParser::addBasePath(const std::string url) {
     return InviwoApplication::getPtr()->getBasePath()+url;
 }
 
-bool URLParser::fileExists(std::string fileName) {
-    // http://stackoverflow.com/questions/12774207/fastest-way-to-check-if-a-file-exist-using-standard-c-c11-c
-    struct stat buffer;
-    return (stat(fileName.c_str(), &buffer) == 0);
-}
-
-std::string URLParser::getFileDirectory(const std::string url) {
+std::string URLParser::getFileDirectory(const std::string& url) {
     size_t pos = url.find_last_of("\\/") + 1;
     std::string fileDirectory = url.substr(0, pos);
     return fileDirectory;
 }
 
-std::string URLParser::getFileNameWithExtension(const std::string url) {
+std::string URLParser::getFileNameWithExtension(const std::string& url) {
     size_t pos = url.find_last_of("\\/") + 1;
     std::string fileNameWithExtension = url.substr(pos, url.length());
     return fileNameWithExtension;
 }
 
-std::string URLParser::getFileNameWithoutExtension(const std::string url) {
+std::string URLParser::getFileNameWithoutExtension(const std::string& url) {
     std::string fileNameWithExtension = getFileNameWithExtension(url);
     size_t pos = fileNameWithExtension.find_last_of(".");
     std::string fileNameWithoutExtension = fileNameWithExtension.substr(0, pos);
     return fileNameWithoutExtension;
 }
 
-std::string URLParser::getFileExtension(const std::string url) {
+std::string URLParser::getFileExtension(const std::string& url) {
     std::string filename = getFileNameWithExtension(url);
     size_t pos = filename.rfind(".");
 
@@ -88,13 +82,13 @@ std::string URLParser::getFileExtension(const std::string url) {
     return fileExtension;
 }
 
-std::string URLParser::replaceFileExtension(const std::string url, const std::string newFileExtension) {
+std::string URLParser::replaceFileExtension(const std::string& url, const std::string& newFileExtension) {
     size_t pos = url.find_last_of(".") + 1;
     std::string newUrl = url.substr(0, pos) + newFileExtension;
     return newUrl;
 }
 
-std::string URLParser::getRelativePath(const std::string& bPath, const std::string absolutePath) {
+std::string URLParser::getRelativePath(const std::string& bPath, const std::string& absolutePath) {
     // FIXME: is the case that the bath path and the absolute path are lying on different drives considered?
     std::string basePath(getFileDirectory(bPath));
     std::string absPath(getFileDirectory(absolutePath));
@@ -164,10 +158,10 @@ bool URLParser::isAbsolutePath(const std::string& path) {
 
 bool URLParser::sameDrive(const std::string& absPath1, const std::string absPath2) {
 #ifdef WIN32
-    ivwAssert(isAbsolutePath(absPath1), "Given path is not absolute.");
-    ivwAssert(isAbsolutePath(absPath2), "Given path is not absolute.");
-
-    if (toupper(absPath1[0])==toupper(absPath2[0])) return true;
+    // Check if drives are equal and that they are not absolute paths.
+    // We only need to check if one of the directories are absolute since the 
+    // first comparison will return false otherwise.
+    if (toupper(absPath1[0])==toupper(absPath2[0]) && !isAbsolutePath(absPath1)) return true;
     else return false;
 
 #else
@@ -197,7 +191,7 @@ bool URLParser::sameDrive(const std::string& absPath1, const std::string absPath
 
 
 
-std::string URLParser::getInviwoUserSettingsPath(){
+std::string URLParser::getInviwoUserSettingsPath() {
     std::stringstream ss;
 #ifdef _WIN32 
     ss << helperSHGetKnownFolderPath(FOLDERID_RoamingAppData);
@@ -225,32 +219,6 @@ std::string URLParser::getInviwoUserSettingsPath(){
     LogWarnCustom("","Get User Setting Path is not implemented for current system");
 #endif
     return ss.str();
-}
-
-
-void URLParser::createDirectoryRecursivly(std::string path){
-    replaceInString(path,"\\","/");
-    std::vector<std::string> v = splitString(path,'/');
-
-    std::string pathPart;
-#ifdef _WIN32
-    pathPart += v.front();
-    v.erase(v.begin());
-#endif
-
-    while(!v.empty()){
-        pathPart += "/" + v.front();
-        v.erase(v.begin());
-#ifdef _WIN32 
-        mkdir(pathPart.c_str());
-#elif defined(__unix__) 
-        mkdir(pathPart.c_str(),0755);
-#elif defined(__APPLE__)
-        mkdir(pathPart.c_str(),0755);
-#else
-        LogWarnCustom("","createDirectoryRecursivly is not implemented for current system");
-#endif
-    }
 }
 
 }

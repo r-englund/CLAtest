@@ -71,6 +71,11 @@ public:
     InviwoModule();
     virtual ~InviwoModule();
 
+    /** 
+     * \brief Get module identifier, i.e the module folder name.
+     * 
+     * @return std::string 
+     */
     std::string getIdentifier() const;
 
     bool isInitialized() const;
@@ -96,10 +101,23 @@ public:
     std::string getDescription() const;
     void setDescription(const std::string& description) const;
 
+    /** 
+     * Get the path to this module directory.
+     * For instance: C:/inviwo/modules/mymodule/
+     * @note Assumes that getIdentifier() returns the module folder name.
+     * @return std::string Path to module directory
+     */
+    std::string getPath() const;
+
     virtual void initialize();
     virtual void deinitialize();
 
 protected:
+    /** 
+     * \brief Set the name of the module. I.e module folder name
+     * 
+     * @param const std::string & identifier Name of module folder
+     */
     void setIdentifier(const std::string& identifier);
 
     void registerCapabilities(Capabilities* info);
@@ -126,12 +144,10 @@ protected:
      */
     virtual void setupModuleSettings();
 
-    std::string getPath(const std::string& suffix = "") const;
-
     std::vector<Settings*> moduleSettings_;
 
 private:
-    std::string identifier_;
+    std::string identifier_; ///< Module folder name
 
     bool initialized_;
 

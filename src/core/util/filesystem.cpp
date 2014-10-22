@@ -68,15 +68,16 @@ std::string getWorkingDirectory() {
 }
 
 
-bool directoryExists(const std::string& path) {
-    struct stat info;
+bool fileExists(const std::string& filePath) {
+    // http://stackoverflow.com/questions/12774207/fastest-way-to-check-if-a-file-exist-using-standard-c-c11-c
+    struct stat buffer;
+    return (stat(filePath.c_str(), &buffer) == 0);
+}
 
-    if (stat(path.c_str(), &info)) {
-        return false; // Cannot access
-    } else if (info.st_mode & S_IFDIR)
-        return true;
-    else
-        return false;
+
+bool directoryExists(const std::string& path) {
+    struct stat buffer;
+    return (stat(path.c_str(), &buffer) == 0 && (buffer.st_mode & S_IFDIR));
 }
 
 
@@ -108,6 +109,31 @@ std::string findBasePath() {
     return basePath;
 }
 
+void createDirectoryRecursivly(std::string path) {
+    replaceInString(path,"\\","/");
+    std::vector<std::string> v = splitString(path,'/');
+
+    std::string pathPart;
+#ifdef _WIN32
+    pathPart += v.front();
+    v.erase(v.begin());
+#endif
+
+    while(!v.empty()) {
+        pathPart += "/" + v.front();
+        v.erase(v.begin());
+#ifdef _WIN32 
+        mkdir(pathPart.c_str());
+#elif defined(__unix__) 
+        mkdir(pathPart.c_str(),0755);
+#elif defined(__APPLE__)
+        mkdir(pathPart.c_str(),0755);
+#else
+        LogWarnCustom("","createDirectoryRecursivly is not implemented for current system");
+#endif
+    }
 }
 
-}
+} // end namespace filesystem
+
+} // end namespace inviwo

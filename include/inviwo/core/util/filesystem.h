@@ -41,19 +41,28 @@ namespace inviwo {
 namespace filesystem {
 
 /**
-    * Get the working directory of the application.
-    *
-    * @note getBasePath should be used in the framework in general.
-    * @see getBasePath
-    * @return Full path to working directory.
-    */
+ * Get the working directory of the application.
+ *
+ * @note getBasePath should be used in the framework in general.
+ * @see getBasePath
+ * @return Full path to working directory.
+ */
 IVW_CORE_API std::string getWorkingDirectory();
 
-/**
- * Check if a directory exists.
+/** 
+ * \brief Check if a file exists.
+ * @see directoryExists for directories
+ * @param std::string fileName The path to the file
+ * @return bool True if file exists, false otherwise
+ */
+IVW_CORE_API bool fileExists(const std::string& filePath);
+
+/** 
+ * Check if the directory exists
  *
+ * @see fileExists for files
  * @param path Directory path
- * @return True if found, otherwise false.
+ * @return bool True if directory exists, false otherwise
  */
 IVW_CORE_API bool directoryExists(const std::string& path);
 
@@ -72,6 +81,8 @@ IVW_CORE_API std::string getParentFolderPath(const std::string& path, const std:
  * @return The directory considered to be the basePath.
  */
 IVW_CORE_API std::string findBasePath();
+
+IVW_CORE_API void createDirectoryRecursivly(std::string path);
 
 } // namespace
 

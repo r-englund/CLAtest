@@ -94,7 +94,7 @@ void DataSource<DataType, PortType>::invalidateOutput() {
 
 template <typename DataType, typename PortType>
 bool DataSource<DataType, PortType>::isReady() const {
-    return URLParser::fileExists(file_.get());
+    return filesystem::fileExists(file_.get());
 }
 
 /**

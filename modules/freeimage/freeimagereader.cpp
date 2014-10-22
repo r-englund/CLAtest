@@ -64,10 +64,10 @@ FreeImageReader& FreeImageReader::operator=(const FreeImageReader& that) {
 FreeImageReader* FreeImageReader::clone() const { return new FreeImageReader(*this); }
 
 Layer* FreeImageReader::readMetaData(std::string filePath) {
-    if (!URLParser::fileExists(filePath)) {
+    if (!filesystem::fileExists(filePath)) {
         std::string newPath = URLParser::addBasePath(filePath);
 
-        if (URLParser::fileExists(newPath)) {
+        if (filesystem::fileExists(newPath)) {
             filePath = newPath;
         } else {
             throw DataReaderException("Error could not find input file: " + filePath);

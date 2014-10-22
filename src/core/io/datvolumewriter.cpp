@@ -58,10 +58,10 @@ DatVolumeWriter* DatVolumeWriter::clone() const {
 void DatVolumeWriter::writeData(const Volume* data, const std::string filePath) const {
     std::string rawPath = URLParser::replaceFileExtension(filePath, "raw");
 
-    if (URLParser::fileExists(filePath)  && !overwrite_)
+    if (filesystem::fileExists(filePath)  && !overwrite_)
         throw DataWriterException("Error: Output file: " + filePath + " already exists");
 
-    if (URLParser::fileExists(rawPath) && !overwrite_)
+    if (filesystem::fileExists(rawPath) && !overwrite_)
         throw DataWriterException("Error: Output file: " + rawPath + " already exists");
 
     std::string fileDirectory = URLParser::getFileDirectory(filePath);

@@ -46,7 +46,7 @@
 #include <inviwo/core/rendering/geometryrendererfactory.h>
 #include <inviwo/core/resources/resourcemanager.h>
 #include <inviwo/core/util/dialogfactory.h>
-#include <inviwo/core/util/urlparser.h>
+#include <inviwo/core/util/filesystem.h>
 #include <inviwo/core/properties/propertyconvertermanager.h>
 
 namespace inviwo {
@@ -232,7 +232,7 @@ std::string InviwoApplication::getPath(PathType pathType, const std::string& suf
     }
 
     if(createFolder){
-        URLParser::createDirectoryRecursivly(result);
+        filesystem::createDirectoryRecursivly(result);
     }
     result += suffix;
     return result;
