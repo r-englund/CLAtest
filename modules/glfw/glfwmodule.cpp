@@ -65,6 +65,7 @@ GLFWModule::~GLFWModule() {
 }
 
 void GLFWModule::deinitialize() {
+    InviwoModule::deinitialize();
     GLFWSharedCanvas_->deinitialize();
 }
 
