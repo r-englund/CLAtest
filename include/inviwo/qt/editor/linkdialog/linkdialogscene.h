@@ -40,12 +40,6 @@
 #include <QGraphicsItem>
 #include <QGraphicsSceneMouseEvent>
 
-#include <inviwo/core/network/processornetwork.h>
-#include <inviwo/core/network/processornetworkobserver.h>
-#include <inviwo/core/processors/processor.h>
-#include <inviwo/core/properties/propertyowner.h>
-#include <inviwo/core/properties/property.h>
-#include <inviwo/core/links/propertylink.h>
 
 namespace inviwo {
 
@@ -53,6 +47,12 @@ class DialogConnectionGraphicsItem;
 class DialogCurveGraphicsItem;
 class LinkDialogPropertyGraphicsItem;
 class LinkDialogProcessorGraphicsItem;
+
+class ProcessorNetwork;
+class Processor;
+class Property;
+class PropertyOwner;
+class PropertyLink;
 
 class IVW_QTEDITOR_API LinkDialogGraphicsScene : public QGraphicsScene, public ProcessorNetworkObserver {
     Q_OBJECT

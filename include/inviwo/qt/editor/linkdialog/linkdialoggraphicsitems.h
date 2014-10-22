@@ -49,9 +49,7 @@
 #include <QCheckBox>
 #include <QTimeLine>
 
-#include <inviwo/core/links/processorlink.h>
-#include <inviwo/core/links/linkconditions.h>
-#include <inviwo/core/network/processornetwork.h>
+#include <inviwo/core/properties/property.h>
 #include <inviwo/qt/widgets/labelgraphicsitem.h>
 #include <inviwo/qt/editor/connectiongraphicsitem.h>
 #include <inviwo/qt/widgets/inviwodockwidget.h>

@@ -37,6 +37,10 @@
 #include <inviwo/qt/editor/linkdialog/linkdialogcurvegraphicsitems.h>
 #include <inviwo/qt/editor/linkdialog/linkdialogpropertygraphicsitems.h>
 
+#include <inviwo/core/links/processorlink.h>
+#include <inviwo/core/links/linkconditions.h>
+#include <inviwo/core/network/processornetwork.h>
+
 namespace inviwo {
 
 DialogCurveGraphicsItem::DialogCurveGraphicsItem(QPointF startPoint, QPointF endPoint, uvec3 color) :

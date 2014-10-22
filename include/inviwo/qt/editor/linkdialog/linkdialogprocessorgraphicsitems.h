@@ -48,9 +48,6 @@
 #include <QEventLoop>
 #include <QCheckBox>
 
-#include <inviwo/core/links/processorlink.h>
-#include <inviwo/core/links/linkconditions.h>
-#include <inviwo/core/network/processornetwork.h>
 #include <inviwo/qt/widgets/labelgraphicsitem.h>
 #include <inviwo/qt/editor/connectiongraphicsitem.h>
 #include <inviwo/qt/widgets/inviwodockwidget.h>
@@ -60,6 +57,7 @@
 namespace inviwo {
 
 class LinkDialogPropertyGraphicsItem;
+class Processor;
 
 class IVW_QTEDITOR_API LinkDialogProcessorGraphicsItem : public QObject, public GraphicsItemData<Processor> {
     Q_OBJECT

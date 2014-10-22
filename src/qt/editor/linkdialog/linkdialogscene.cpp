@@ -36,6 +36,13 @@
 #include <inviwo/qt/editor/linkdialog/linkdialogpropertygraphicsitems.h>
 #include <inviwo/qt/editor/linkdialog/linkdialogcurvegraphicsitems.h>
 
+#include <inviwo/core/network/processornetwork.h>
+#include <inviwo/core/network/processornetworkobserver.h>
+#include <inviwo/core/processors/processor.h>
+#include <inviwo/core/properties/propertyowner.h>
+#include <inviwo/core/properties/property.h>
+#include <inviwo/core/links/propertylink.h>
+
 #include <QTimeLine>
 
 namespace inviwo {
