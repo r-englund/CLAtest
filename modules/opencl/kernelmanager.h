@@ -68,12 +68,13 @@ public:
     /**
      * Creates and builds an OpenCL program. Will automatically reload the program and
      * kernels when the file changes.
+     * Only provide the file name as the file will be searched for in all the include paths.
+     * The KernelManager will make sure that the processor is not evaluated if building fails.
      * @note KernelManager manages pointer memory, do not delete it.
      *
      * @param fileName (const std::string &) File name
      * @param defines (const std::string &) Compiler defines
      * @return (cl::Program*) Pointer to a program no matter if it was succesfully built or not.
-     * The KernelManager will make sure that the processor is not evaluated if building fails.
      */
     cl::Program* buildProgram(const std::string& fileName, const std::string& defines = "");
 

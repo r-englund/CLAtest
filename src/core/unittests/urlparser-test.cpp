@@ -40,9 +40,9 @@ namespace inviwo{
 
 TEST(URLParserTest,fileExistsTest) {
 #ifdef __FILE__
-    EXPECT_TRUE(URLParser::fileExists(__FILE__));
+    EXPECT_TRUE(filesystem::fileExists(__FILE__));
 #endif
-    EXPECT_TRUE(URLParser::fileExists(InviwoApplication::getPtr()->getCommandLineParser()->getARGV()[0]));//Cant find current executable
+    EXPECT_TRUE(filesystem::fileExists(InviwoApplication::getPtr()->getCommandLineParser()->getARGV()[0]));//Cant find current executable
 }
 
 TEST(URLParserTest,fileExtensionTest) {

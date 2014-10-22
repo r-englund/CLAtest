@@ -33,6 +33,7 @@
 #include <modules/opencl/kernelmanager.h>
 #include <inviwo/core/common/inviwoapplication.h>
 #include <inviwo/core/util/vectoroperations.h>
+#include <inviwo/core/util/filesystem.h>
 #include <modules/opengl/openglmodule.h>
 #include <modules/opencl/kernelowner.h>
 
@@ -47,7 +48,21 @@ KernelManager::~KernelManager() {
 }
 
 cl::Program* KernelManager::buildProgram(const std::string& fileName, const std::string& defines /*= ""*/) {
-    std::pair <ProgramMap::iterator, ProgramMap::iterator> range = programs_.equal_range(fileName);
+
+    std::string absoluteFileName = fileName;
+    if (!filesystem::fileExists(absoluteFileName)) {
+        // Search in include directories added by modules
+        const std::vector<std::string> openclSearchPaths = OpenCL::getPtr()->getCommonIncludeDirectories();
+
+        for (size_t i=0; i<openclSearchPaths.size(); i++) {
+            if (filesystem::fileExists(openclSearchPaths[i]+"/"+fileName)) {
+                absoluteFileName = openclSearchPaths[i]+"/"+fileName;
+                break;
+            }
+        }
+    }
+
+    std::pair <ProgramMap::iterator, ProgramMap::iterator> range = programs_.equal_range(absoluteFileName);
 
     for (ProgramMap::iterator it = range.first; it != range.second; ++it) {
         if (it->second.defines == defines) {
@@ -58,7 +73,7 @@ cl::Program* KernelManager::buildProgram(const std::string& fileName, const std:
     cl::Program* program = new cl::Program();
 
     try {
-        *program = cl::Program(OpenCL::buildProgram(fileName, defines));
+        *program = cl::Program(OpenCL::buildProgram(absoluteFileName, defines));
 
         try {
             std::vector<cl::Kernel> kernels;
@@ -68,7 +83,7 @@ cl::Program* KernelManager::buildProgram(const std::string& fileName, const std:
                 kernels_.insert(std::pair<cl::Program*, cl::Kernel*>(program, new cl::Kernel(*kernelIt)));
             }
         } catch (cl::Error& err) {
-            LogError(fileName << " Failed to create kernels, Error:" << err.what() << "(" << err.err() << "), " << errorCodeToString(
+            LogError(absoluteFileName << " Failed to create kernels, Error:" << err.what() << "(" << err.err() << "), " << errorCodeToString(
                          err.err()) << std::endl);
         }
     } catch (cl::Error&) {
@@ -77,8 +92,8 @@ cl::Program* KernelManager::buildProgram(const std::string& fileName, const std:
     ProgramIdentifier uniqueProgram;
     uniqueProgram.defines = defines;
     uniqueProgram.program = program;
-    programs_.insert(std::pair<std::string, ProgramIdentifier>(fileName, uniqueProgram));
-    startFileObservation(fileName);
+    programs_.insert(std::pair<std::string, ProgramIdentifier>(absoluteFileName, uniqueProgram));
+    startFileObservation(absoluteFileName);
     return program;
 }
 

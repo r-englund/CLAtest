@@ -126,8 +126,22 @@ InviwoModule::~InviwoModule() {
 
 std::string InviwoModule::getIdentifier() const { return identifier_; }
 
-std::string InviwoModule::getPath(const std::string& suffix) const {
-    return InviwoApplication::getPtr()->getPath(InviwoApplication::PATH_MODULES, suffix);
+std::string InviwoModule::getPath() const {
+    std::string moduleNameLowerCase = getIdentifier();
+    std::transform(moduleNameLowerCase.begin(), moduleNameLowerCase.end(), moduleNameLowerCase.begin(), std::tolower);
+    if (filesystem::directoryExists(InviwoApplication::getPtr()->getPath(InviwoApplication::PATH_MODULES) + moduleNameLowerCase)) {
+        return InviwoApplication::getPtr()->getPath(InviwoApplication::PATH_MODULES) + moduleNameLowerCase;
+    }
+#ifdef IVW_EXTERNAL_MODULES_PATH_COUNT
+    for(int i=0; i < IVW_EXTERNAL_MODULES_PATH_COUNT; ++i) {
+        std::string directory = externalModulePaths_[i] + "/" + moduleNameLowerCase:
+        if(filesystem::directoryExists(directory)) {
+            return directory;
+        }
+    }
+#endif
+    LogWarn(moduleNameLowerCase << " directory was not found");
+    return InviwoApplication::getPtr()->getPath(InviwoApplication::PATH_MODULES) + moduleNameLowerCase;
 }
 
 void InviwoModule::initialize() {

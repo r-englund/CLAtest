@@ -48,7 +48,7 @@ void FileObserver::startFileObservation(std::string fileName) {
     if (isObserved(fileName))
         increaseNumObservers(fileName);
     else {
-        if (URLParser::fileExists(fileName)) {
+        if (filesystem::fileExists(fileName)) {
             observedFiles_.push_back(std::pair<std::string,int>(fileName, 1));
             InviwoApplication::getPtr()->startFileObservation(fileName);
         }

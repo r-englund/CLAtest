@@ -68,15 +68,16 @@ std::string getWorkingDirectory() {
 }
 
 
-bool directoryExists(const std::string& path) {
-    struct stat info;
+bool fileExists(const std::string& filePath) {
+    // http://stackoverflow.com/questions/12774207/fastest-way-to-check-if-a-file-exist-using-standard-c-c11-c
+    struct stat buffer;
+    return (stat(filePath.c_str(), &buffer) == 0);
+}
 
-    if (stat(path.c_str(), &info)) {
-        return false; // Cannot access
-    } else if (info.st_mode & S_IFDIR)
-        return true;
-    else
-        return false;
+
+bool directoryExists(const std::string& path) {
+    struct stat buffer;
+    return (stat(path.c_str(), &buffer) == 0 && (buffer.st_mode & S_IFDIR));
 }
 
 
@@ -108,6 +109,81 @@ std::string findBasePath() {
     return basePath;
 }
 
+void createDirectoryRecursivly(std::string path) {
+    replaceInString(path,"\\","/");
+    std::vector<std::string> v = splitString(path,'/');
+
+    std::string pathPart;
+#ifdef _WIN32
+    pathPart += v.front();
+    v.erase(v.begin());
+#endif
+
+    while(!v.empty()) {
+        pathPart += "/" + v.front();
+        v.erase(v.begin());
+#ifdef _WIN32 
+        mkdir(pathPart.c_str());
+#elif defined(__unix__) 
+        mkdir(pathPart.c_str(),0755);
+#elif defined(__APPLE__)
+        mkdir(pathPart.c_str(),0755);
+#else
+        LogWarnCustom("","createDirectoryRecursivly is not implemented for current system");
+#endif
+    }
 }
 
+// ---------- Helper function to retrieve inviwo settings folder -----------//
+#ifdef _WIN32
+static std::string helperSHGetKnownFolderPath(const KNOWNFOLDERID &id){
+    PWSTR path;
+    HRESULT hr = SHGetKnownFolderPath(id,0,NULL,&path);
+    std::string s = "";
+    if(SUCCEEDED(hr)){
+        char ch[1024];
+        static const char DefChar = ' ';
+        WideCharToMultiByte(CP_ACP,0,path,-1, ch,1024,&DefChar, NULL);
+        s =  std::string(ch);
+    }else{
+        LogErrorCustom("URLParser::getUserSettingsPath","SHGetKnownFolderPath failed to get settings folder");
+    }
+
+    CoTaskMemFree(path);
+    return s;
 }
+#endif 
+
+std::string getInviwoUserSettingsPath() {
+    std::stringstream ss;
+#ifdef _WIN32 
+    ss << helperSHGetKnownFolderPath(FOLDERID_RoamingAppData);
+    ss << "/Inviwo/";
+#elif defined(__unix__) 
+    ss << std::getenv("HOME");
+    ss << "/.inviwo/";
+#elif defined(__APPLE__)
+    // Taken from:
+    // http://stackoverflow.com/questions/5123361/finding-library-application-support-from-c?rq=1
+    // A depricated solution, but a solution...
+
+    FSRef ref;
+    OSType folderType = kApplicationSupportFolderType;
+    int MAX_PATH = 512;
+    char path[PATH_MAX];
+
+    STARTCLANGIGNORE("-Wdeprecated-declarations")
+        FSFindFolder( kUserDomain, folderType, kCreateFolder, &ref );
+    FSRefMakePath( &ref, (UInt8*)&path, MAX_PATH );
+    ENDCLANGIGNORE
+
+        ss << path << "/org.inviwo.network-editor/";
+#else
+    LogWarnCustom("","Get User Setting Path is not implemented for current system");
+#endif
+    return ss.str();
+}
+
+} // end namespace filesystem
+
+} // end namespace inviwo

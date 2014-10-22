@@ -42,19 +42,23 @@ class IVW_CORE_API URLParser {
 public:
     URLParser() {}
 
+    /** 
+     * \brief Adds the InviwoApplication base path before the url
+     *
+     * @see InviwoApplication::getBasePath
+     * @param const std::string url Relative path
+     * @return std::string InviwoApplication base path + url
+     */
     static std::string addBasePath(const std::string url);
-    static bool fileExists(std::string fileName);
-    static std::string getFileDirectory(const std::string url);
-    static std::string getFileNameWithExtension(const std::string url);
-    static std::string getFileNameWithoutExtension(const std::string url);
-    static std::string getFileExtension(const std::string url);
-    static std::string replaceFileExtension(const std::string url, const std::string newFileExtension);
-    static std::string getRelativePath(const std::string& basePath, const std::string absolutePath);
+
+    static std::string getFileDirectory(const std::string& url);
+    static std::string getFileNameWithExtension(const std::string& url);
+    static std::string getFileNameWithoutExtension(const std::string& url);
+    static std::string getFileExtension(const std::string& url);
+    static std::string replaceFileExtension(const std::string& url, const std::string& newFileExtension);
+    static std::string getRelativePath(const std::string& basePath, const std::string& absolutePath);
     static bool isAbsolutePath(const std::string& path);
     static bool sameDrive(const std::string& absPath1, const std::string absPath2);
-
-    static std::string getInviwoUserSettingsPath();
-    static void createDirectoryRecursivly(std::string path);
 };
 
 } // namespace

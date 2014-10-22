@@ -57,13 +57,15 @@ public:
 
     /**
      * Builds, adds and returns the kernel if successfully built. 
+     * Only provide the file name as the file will be searched for in all the include paths.
+     *
      * @note Do not delete the returned kernel
-     * @param filePath Path to file containing kernel
+     * @param filePath Name of the file containing kernel, i.e. myfile.cl
      * @param kernelName Name of kernel
      * @param defines Defines to be set when building kernel
      * @return bool Kernel if successfully built, otherwise NULL
      */
-    cl::Kernel* addKernel(const std::string& filePath, const std::string& kernelName, const std::string& defines = "");
+    cl::Kernel* addKernel(const std::string& fileName, const std::string& kernelName, const std::string& defines = "");
 
     const std::set<cl::Kernel*>& getKernels() const { return kernels_; }
 

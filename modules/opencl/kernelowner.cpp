@@ -36,24 +36,12 @@
 
 namespace inviwo {
 
-cl::Kernel* KernelOwner::addKernel(const std::string& filePath,
+cl::Kernel* KernelOwner::addKernel(const std::string& fileName,
                             const std::string& kernelName,
                             const std::string& defines /*= ""*/ ) {
-    if (filePath.length() > 0) {
-        std::string absoluteFileName = filePath;
-        if (!URLParser::fileExists(absoluteFileName)) {
-            // Search in include directories added by modules
-            const std::vector<std::string> openclSearchPaths = OpenCL::getPtr()->getCommonIncludeDirectories();
+    if (fileName.length() > 0) {
 
-            for (size_t i=0; i<openclSearchPaths.size(); i++) {
-                if (URLParser::fileExists(openclSearchPaths[i]+"/"+filePath)) {
-                    absoluteFileName = openclSearchPaths[i]+"/"+filePath;
-                    break;
-                }
-            }
-        }
-
-        cl::Program* program = KernelManager::getPtr()->buildProgram(absoluteFileName, defines);
+        cl::Program* program = KernelManager::getPtr()->buildProgram(fileName, defines);
 
         cl::Kernel* kernel = KernelManager::getPtr()->getKernel(program, kernelName, this);
         if (kernel) {
