@@ -141,10 +141,7 @@ void LightingRaycaster::process() {
     utilgl::activateAndClearTarget(outport_);
     shader_->activate();
 
-    vec2 dim = static_cast<vec2>(outport_.getDimension());
-    shader_->setUniform("screenDim_", dim);
-    shader_->setUniform("screenDimRCP_", vec2(1.0f, 1.0f) / dim);
-
+    utilgl::setShaderUniforms(shader_, outport_, "outportParameters_");
     shader_->setUniform("transferFunc_", tfUnit.getUnitNumber());
     shader_->setUniform("entryColorTex_", entryColorUnit.getUnitNumber());
     shader_->setUniform("entryDepthTex_", entryDepthUnit.getUnitNumber());
@@ -153,13 +150,12 @@ void LightingRaycaster::process() {
     shader_->setUniform("exitDepthTex_", exitDepthUnit.getUnitNumber());
     utilgl::setShaderUniforms(shader_, exitPort_, "exitParameters_");
     shader_->setUniform("volume_", volUnit.getUnitNumber());
-    utilgl::setShaderUniforms(shader_, volumePort_.getData(), "volumeParameters_");
+    utilgl::setShaderUniforms(shader_, volumePort_, "volumeParameters_");
     shader_->setUniform("lightVolume_", lightVolUnit.getUnitNumber());
-    utilgl::setShaderUniforms(shader_, lightVolumePort_.getData(), "lightVolumeParameters_");
-
+    utilgl::setShaderUniforms(shader_, lightVolumePort_, "lightVolumeParameters_");
     utilgl::setShaderUniforms(shader_, raycasting_);
-    utilgl::setShaderUniforms(shader_, camera_);
-    utilgl::setShaderUniforms(shader_, lighting_);
+    utilgl::setShaderUniforms(shader_, camera_, "camera_");
+    utilgl::setShaderUniforms(shader_, lighting_, "light_");
 
     utilgl::singleDrawImagePlaneRect();
     
