@@ -45,6 +45,8 @@
 #include <inviwo/core/rendering/geometryrendererfactory.h>
 #include <inviwo/core/util/dialogfactory.h>
 
+#include <algorithm>
+
 namespace inviwo {
 
 InviwoModule::InviwoModule() : identifier_("undefined"), initialized_(false) {}
