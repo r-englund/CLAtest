@@ -41,10 +41,20 @@ namespace inviwo{
 
 #define SERIALITION_FILE_NAME InviwoApplication::getPtr()->getPath(InviwoApplication::PATH_MODULES,"unittests/tmpfiles/serilizationtests.xml")
 
-TEST(SerialitionTest,initTest) {
+    TEST(SerialitionTest, initTest) {
+        std::string filename = SERIALITION_FILE_NAME;
+        IvwSerializer serializer(filename);
+        EXPECT_TRUE(true);
+    }
+
+
+    
+TEST(SerialitionTest,writeFile) {
     std::string filename = SERIALITION_FILE_NAME;
     IvwSerializer serializer(filename);
-    EXPECT_TRUE(true);
+    serializer.serialize("test", 3.1415f);
+    serializer.writeFile();
+    EXPECT_TRUE(URLParser::fileExists(filename));
 }
 
 template <typename T>
