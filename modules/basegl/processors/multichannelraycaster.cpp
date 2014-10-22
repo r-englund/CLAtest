@@ -128,7 +128,7 @@ void MultichannelRaycaster::initializeResources() {
                 << "color.rgb = APPLY_LIGHTING(light_, camera_, volumeParameters_, color.rgb, "
                 << "color.rgb, vec3(1.0), samplePos, gradients[" << i <<"]);"
                 << "result = APPLY_COMPOSITING(result, color, samplePos, voxel, "
-                << "gradients[" << i <<"], t, tDepth, tIncr);";
+                << "gradients[" << i <<"], camera_, isoValue_, t, tDepth, tIncr);";
         }
         shader_->getFragmentShaderObject()->addShaderDefine("SAMPLE_CHANNELS", ss2.str());
         shader_->build();

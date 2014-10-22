@@ -36,6 +36,7 @@
 #include <modules/opengl/glwrap/textureunit.h>
 #include <modules/opengl/shaderutils.h>
 #include <modules/opengl/textureutils.h>
+#include <modules/opengl/volumeutils.h>
 
 namespace inviwo {
 
@@ -47,7 +48,7 @@ ProcessorCodeState(ISORaycaster, CODE_STATE_STABLE);
 
 ISORaycaster::ISORaycaster()
     : Processor()
-    , shader_(0)
+    , shader_(NULL)
     , volumePort_("volume")
     , entryPort_("entry-points")
     , exitPort_("exit-points")
@@ -98,83 +99,49 @@ void ISORaycaster::initializeResources(){
     utilgl::addShaderDefines(shader_, raycasting_);
     utilgl::addShaderDefines(shader_, camera_);
     utilgl::addShaderDefines(shader_, lighting_);
-
-
-    if (volumePort_.hasData()) {
-        const int channels = volumePort_.getData()->getDataFormat()->getComponents();
-        std::stringstream ss;
-        ss << channels;
-        shader_->getFragmentShaderObject()->addShaderDefine("NUMBER_OF_CHANNELS", ss.str());
-
-        std::stringstream ss2;
-        for (int i = 0; i < channels; ++i) {
-            ss2 << "gradient = COMPUTE_GRADIENT_FOR_CHANNEL(voxel, samplePos, volume_,"
-                << " volumeParameters_, t, rayDirection, entryTex_, entryParameters_," << i << ");"
-                << "color = APPLY_CLASSIFICATION(transferFuncs_[" << i << "], voxel[" << i << "])"
-                << "color.rgb = APPLY_SHADING(color.rgb, color.rgb, vec3(1.0), samplePos,"
-                << " gradient, lightPosition_, vec3(0.0));"
-                << "result = APPLY_COMPOSITING(result, color, samplePos, voxel, gradient,"
-                << " t, tDepth, tIncr);";
-        }
-        shader_->getFragmentShaderObject()->addShaderDefine("SAMPLE_CHANNELS", ss2.str());
-    }
-
-   
+  
     shader_->build();
 }
     
 void ISORaycaster::onVolumeChange(){
-    if(volumePort_.hasData()){
+    if (volumePort_.hasData()) {
         int channels = volumePort_.getData()->getDataFormat()->getComponents();
-        while(channels < static_cast<int>(channel_.size())){
-            channel_.removeOption(static_cast<int>(channel_.size())-1);
+
+        if (channels == static_cast<int>(channel_.size()))
+            return;
+
+        channel_.clearOptions();
+        for (int i = 0; i < channels; i++) {
+            std::stringstream ss;
+            ss << "Channel " << i;
+            channel_.addOption(ss.str(), ss.str(), i);
         }
+        channel_.setCurrentStateAsDefault();
     }
 }
 
 void ISORaycaster::process() {
-    int channels = volumePort_.getData()->getDataFormat()->getComponents();
-    for(int i = static_cast<int>(channel_.size());i<channels;i++){
-        std::stringstream ss;
-        ss << "Channel " << i;
-        channel_.addOption(ss.str() , ss.str(), i);
-    }
-    LGL_ERROR;
-    TextureUnit entryColorUnit, entryDepthUnit, exitColorUnit, exitDepthUnit;
+    TextureUnit entryColorUnit, entryDepthUnit, exitColorUnit, exitDepthUnit, volUnit;
     utilgl::bindTextures(entryPort_, entryColorUnit.getEnum(), entryDepthUnit.getEnum());
     utilgl::bindTextures(exitPort_, exitColorUnit.getEnum(), exitDepthUnit.getEnum());
-
-    TextureUnit volUnit;
-    const Volume* volume = volumePort_.getData();
-    const VolumeGL* volumeGL = volume->getRepresentation<VolumeGL>();
-    volumeGL->bindTexture(volUnit.getEnum());
-
+    utilgl::bindTexture(volumePort_, volUnit);
 
     utilgl::activateAndClearTarget(outport_);
     shader_->activate();
     
-    vec2 dim = static_cast<vec2>(outport_.getDimension());
-    shader_->setUniform("screenDim_", dim);
-    shader_->setUniform("screenDimRCP_", vec2(1.0f,1.0f)/dim);
-  
+    utilgl::setShaderUniforms(shader_, outport_, "outportParameters_");
     shader_->setUniform("entryColorTex_", entryColorUnit.getUnitNumber());
     shader_->setUniform("entryDepthTex_", entryDepthUnit.getUnitNumber());
     utilgl::setShaderUniforms(shader_, entryPort_, "entryParameters_");
     shader_->setUniform("exitColorTex_", exitColorUnit.getUnitNumber());
     shader_->setUniform("exitDepthTex_", exitDepthUnit.getUnitNumber());
     utilgl::setShaderUniforms(shader_, exitPort_, "exitParameters_");
-
-    shader_->setUniform("volume_", volUnit.getUnitNumber());
-    volumeGL->setVolumeUniforms(volumePort_.getData(), shader_, "volumeParameters_");
-    mat4 viewToTexture = camera_.inverseViewMatrix()*volumePort_.getData()->getCoordinateTransformer().getWorldToTextureMatrix();
-    shader_->setUniform("viewToTexture_", viewToTexture);
-
-
     shader_->setUniform("channel_", channel_.getSelectedValue());
-
+    shader_->setUniform("volume_", volUnit.getUnitNumber());
+    utilgl::setShaderUniforms(shader_, volumePort_, "volumeParameters_");
     utilgl::setShaderUniforms(shader_, raycasting_);
-    utilgl::setShaderUniforms(shader_, camera_);
-    utilgl::setShaderUniforms(shader_, lighting_);
+    utilgl::setShaderUniforms(shader_, camera_, "camera_");
+    utilgl::setShaderUniforms(shader_, lighting_, "light_");
 
     utilgl::singleDrawImagePlaneRect();
     shader_->deactivate();

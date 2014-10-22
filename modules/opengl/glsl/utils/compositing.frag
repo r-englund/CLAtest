@@ -25,7 +25,7 @@
  * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- * 
+ *
  * Contact: Timo Ropinski
  *
  *********************************************************************************/
@@ -33,15 +33,15 @@
 // set reference sampling interval for opacity correction
 #define REF_SAMPLING_INTERVAL 150.0
 
-vec4 compositeDVR(in vec4 curResult, in vec4 color, in float t, inout float tDepth, in float tIncr) {
+vec4 compositeDVR(in vec4 curResult, in vec4 color, in float t, inout float tDepth,
+                  in float tIncr) {
     vec4 result = curResult;
 
-    if (tDepth == -1.0 && color.a > 0.0)
-        tDepth = t;
+    if (tDepth == -1.0 && color.a > 0.0) tDepth = t;
 
-    color.a = 1.0 - pow(1.0-color.a, tIncr*REF_SAMPLING_INTERVAL);
-    result.rgb = result.rgb + (1.0-result.a) * color.a * color.rgb;
-    result.a = result.a + (1.0-result.a) * color.a;
+    color.a = 1.0 - pow(1.0 - color.a, tIncr * REF_SAMPLING_INTERVAL);
+    result.rgb = result.rgb + (1.0 - result.a) * color.a * color.rgb;
+    result.a = result.a + (1.0 - result.a) * color.a;
     return result;
 }
 
@@ -56,7 +56,8 @@ vec4 compositeMIP(in vec4 curResult, in vec4 color, in float t, inout float tDep
     return result;
 }
 
-vec4 compositeFHP(in vec4 curResult, in vec4 color, in vec3 samplePos, in float t, inout float tDepth) {
+vec4 compositeFHP(in vec4 curResult, in vec4 color, in vec3 samplePos, in float t,
+                  inout float tDepth) {
     vec4 result = curResult;
 
     if (result == vec4(0.0) && color.a > 0.0) {
@@ -67,46 +68,48 @@ vec4 compositeFHP(in vec4 curResult, in vec4 color, in vec3 samplePos, in float 
     return result;
 }
 
-vec4 compositeFHN(in vec4 curResult, in vec4 color, in vec3 gradient, in float t, inout float tDepth) {
+vec4 compositeFHN(in vec4 curResult, in vec4 color, in vec3 gradient, in float t,
+                  inout float tDepth) {
     vec4 result = curResult;
 
     if (result == vec4(0.0) && color.a > 0.0) {
         tDepth = t;
-        result = vec4(normalize(gradient)*0.5+0.5, 1.0);
+        result = vec4(normalize(gradient) * 0.5 + 0.5, 1.0);
     }
 
     return result;
 }
 
-vec4 compositeFHN_VS(in vec4 curResult, in vec4 color, in vec3 gradient, in float t, in mat4 cameraViewMatrix, inout float tDepth) {
+vec4 compositeFHN_VS(in vec4 curResult, in vec4 color, in vec3 gradient, in float t,
+                     in CAMERA_PARAMETERS camera, inout float tDepth) {
     vec4 result = curResult;
 
     if (result == vec4(0.0) && color.a > 0.0) {
-        tDepth = t;	
+        tDepth = t;
         vec4 fh_normal = vec4(normalize(gradient), 0.0);
-        vec4 transformed_normal = cameraViewMatrix * fh_normal;
-        result = vec4(normalize(transformed_normal.xyz)*0.5+0.5, 1.0);
+        vec4 transformed_normal = camera.viewMatrix_ * fh_normal;
+        result = vec4(normalize(transformed_normal.xyz) * 0.5 + 0.5, 1.0);
     }
 
     return result;
 }
 
-vec4 compositeFHD(in vec4 curResult, in vec4 color, in vec3 samplePos, in float t, inout float tDepth) {
+vec4 compositeFHD(in vec4 curResult, in vec4 color, in float t, inout float tDepth) {
     vec4 result = curResult;
 
     if (result == vec4(0.0) && color.a > 0.0) {
         tDepth = t;
-        result = vec4(t,t,t, 1.0);
+        result = vec4(t, t, t, 1.0);
     }
 
     return result;
 }
 
-vec4 compositeISO(in vec4 curResult, in vec4 color, in float intensity, in float t, inout float tDepth, in float tIncr, in float isoValue) {
+vec4 compositeISO(in vec4 curResult, in vec4 color, in float intensity, in float t,
+                  inout float tDepth, in float tIncr, in float isoValue) {
     vec4 result = curResult;
-    if (intensity >= isoValue-0.01 && intensity <= isoValue+0.01) {
-        if (tDepth == -1.0)
-            tDepth = t;
+    if (intensity >= isoValue - 0.01 && intensity <= isoValue + 0.01) {
+        if (tDepth == -1.0) tDepth = t;
         color.a = 1.0 - pow(1.0 - color.a, tIncr * REF_SAMPLING_INTERVAL);
         result.rgb = result.rgb + (1.0 - result.a) * color.a * color.rgb;
         result.a = result.a + (1.0 - result.a) * color.a;
@@ -114,10 +117,11 @@ vec4 compositeISO(in vec4 curResult, in vec4 color, in float intensity, in float
     return result;
 }
 
-vec4 compositeISON(in vec4 curResult, in vec4 color, in float intensity, in vec3 gradient, in float t, inout float tDepth, in float isoValue) {
+vec4 compositeISON(in vec4 curResult, in vec4 color, in float intensity, in vec3 gradient,
+                   in float t, inout float tDepth, in float isoValue) {
     vec4 result = curResult;
 
-    if (intensity >= isoValue-0.01 && intensity <= isoValue+0.01) {
+    if (intensity >= isoValue - 0.01 && intensity <= isoValue + 0.01) {
         result = compositeFHN(curResult, color, gradient, t, tDepth);
     }
 

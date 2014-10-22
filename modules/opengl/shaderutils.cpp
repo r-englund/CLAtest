@@ -37,31 +37,10 @@ namespace inviwo {
 namespace utilgl {
 
 void addShaderDefines(Shader* shader, const SimpleLightingProperty& property) {
-    // This version is depricated. // opengl/glsl/include/inc_shading.frag
+    // implementations in  modules/opengl/glsl/utils/shading.frag
     std::string shadingKey =
-        "APPLY_SHADING(colorAmb, colorDiff, colorSpec, samplePos, gradient, lightPos, "
-        "cameraPos)";
-    std::string shadingValue = "";
-
-    if (property.shadingMode_.isSelectedIdentifier("none"))
-        shadingValue = "colorAmb;";
-    else if (property.shadingMode_.isSelectedIdentifier("ambient"))
-        shadingValue = "shadeAmbient(colorAmb);";
-    else if (property.shadingMode_.isSelectedIdentifier("diffuse"))
-        shadingValue = "shadeDiffuse(colorDiff, samplePos, gradient, lightPos);";
-    else if (property.shadingMode_.isSelectedIdentifier("specular"))
-        shadingValue = "shadeSpecular(colorSpec, samplePos, gradient, lightPos, cameraPos);";
-    else if (property.shadingMode_.isSelectedIdentifier("phong"))
-        shadingValue =
-            "shadePhong(colorAmb, colorDiff, colorSpec, samplePos, gradient, lightPos, cameraPos);";
-
-    shader->getFragmentShaderObject()->addShaderDefine(shadingKey, shadingValue);
-
-
-    // New version // opengl/glsl/utils/shading.frag
-    shadingKey =
         "APPLY_LIGHTING(light, camera, volume, colorAmb, colorDiff, colorSpec, samplePos, gradient)";
-    shadingValue = "";
+    std::string shadingValue = "";
 
     if (property.shadingMode_.isSelectedIdentifier("none"))
         shadingValue = "colorAmb;";
@@ -143,24 +122,23 @@ void addShaderDefines(Shader* shader, const SimpleRaycastingProperty& property) 
 
 
     gradientComputationKey =
-        "COMPUTE_GRADIENT_FOR_CHANNEL(voxel, samplePos, volume, volumeStruct, t, rayDirection, "
-        "entryPoints, entryParameters, channel)";
+        "COMPUTE_GRADIENT_FOR_CHANNEL(voxel, volume, volumeParams, samplePos, channel)";
     gradientComputationValue = "";
 
     if (property.gradientComputationMode_.isSelectedIdentifier("none"))
         gradientComputationValue = "voxel.xyz;";
     else if (property.gradientComputationMode_.isSelectedIdentifier("forward"))
         gradientComputationValue =
-        "gradientForwardDiff(voxel, volume, volumeStruct, samplePos, channel);";
+        "gradientForwardDiff(voxel, volume, volumeParams, samplePos, channel);";
     else if (property.gradientComputationMode_.isSelectedIdentifier("central"))
         gradientComputationValue =
-        "gradientCentralDiff(voxel, volume, volumeStruct, samplePos, channel);";
+        "gradientCentralDiff(voxel, volume, volumeParams, samplePos, channel);";
     else if (property.gradientComputationMode_.isSelectedIdentifier("central-higher"))
         gradientComputationValue =
-        "gradientCentralDiffH(voxel, volume, volumeStruct, samplePos, channel);";
+        "gradientCentralDiffH(voxel, volume, volumeParams, samplePos, channel);";
     else if (property.gradientComputationMode_.isSelectedIdentifier("backward"))
         gradientComputationValue =
-        "gradientBackwardDiff(voxel, volume, volumeStruct, samplePos, channel);";
+        "gradientBackwardDiff(voxel, volume, volumeParams, samplePos, channel);";
     shader->getFragmentShaderObject()->addShaderDefine(gradientComputationKey,
                                                         gradientComputationValue);
 
@@ -187,7 +165,6 @@ void addShaderDefines(Shader* shader, const SimpleRaycastingProperty& property) 
                                                        gradientComputationValue);
 
 
-
     // classification defines
     std::string classificationKey = "APPLY_CLASSIFICATION(transferFunc, voxel)";
     std::string classificationValue = "";
@@ -199,7 +176,7 @@ void addShaderDefines(Shader* shader, const SimpleRaycastingProperty& property) 
 
     // compositing defines
     std::string compositingKey =
-        "APPLY_COMPOSITING(result, color, samplePos, voxel, gradient, t, tDepth, tIncr)";
+        "APPLY_COMPOSITING(result, color, samplePos, voxel, gradient, camera, isoValue, t, tDepth, tIncr)";
     std::string compositingValue;
 
     if (property.compositingMode_.isSelectedIdentifier("dvr"))
@@ -211,13 +188,13 @@ void addShaderDefines(Shader* shader, const SimpleRaycastingProperty& property) 
     else if (property.compositingMode_.isSelectedIdentifier("fhn"))
         compositingValue = "compositeFHN(result, color, gradient, t, tDepth);";
     else if (property.compositingMode_.isSelectedIdentifier("fhnvs"))
-        compositingValue = "compositeFHN_VS(result, color, gradient, t, viewMatrix_, tDepth);";
+        compositingValue = "compositeFHN_VS(result, color, gradient, t, camera, tDepth);";
     else if (property.compositingMode_.isSelectedIdentifier("fhd"))
-        compositingValue = "compositeFHD(result, color, gradient, t, tDepth);";
+        compositingValue = "compositeFHD(result, color, t, tDepth);";
     else if (property.compositingMode_.isSelectedIdentifier("iso"))
-        compositingValue = "compositeISO(result, color, voxel.r, t, tDepth, tIncr, isoValue_);";
+        compositingValue = "compositeISO(result, color, voxel.r, t, tDepth, tIncr, isoValue);";
     else if (property.compositingMode_.isSelectedIdentifier("ison"))
-        compositingValue = "compositeISON(result, color, voxel.r, gradient, t, tDepth, isoValue_);";
+        compositingValue = "compositeISON(result, color, voxel.r, gradient, t, tDepth, isoValue);";
 
     shader->getFragmentShaderObject()->addShaderDefine(compositingKey, compositingValue);
 }

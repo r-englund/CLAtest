@@ -84,14 +84,15 @@ vec4 rayTraversal(vec3 entryPoint, vec3 exitPoint, vec2 texCoords) {
         samplePos = entryPoint + t * rayDirection;
         voxel = getNormalizedVoxel(volume_, volumeParameters_, samplePos);
 
-        gradient = COMPUTE_GRADIENT_FOR_CHANNEL(voxel, samplePos, volume_, volumeParameters_, t, rayDirection, entryTex_, entryParameters_, channel_);
+        gradient = COMPUTE_GRADIENT_FOR_CHANNEL(voxel, volume_, volumeParameters_, samplePos, channel_);
 
         color = APPLY_CLASSIFICATION(transferFunc_, voxel);
 
         color.rgb = APPLY_LIGHTING(light_, camera_, volumeParameters_, color.rgb, color.rgb,
                                    vec3(1.0), samplePos, gradient);
 
-        result = APPLY_COMPOSITING(result, color, samplePos, voxel, gradient, t, tDepth, tIncr);
+        result = APPLY_COMPOSITING(result, color, samplePos, voxel, gradient, camera_, isoValue_, 
+                                   t, tDepth, tIncr);
 
         // early ray termination
         if (result.a > ERT_THRESHOLD) {
