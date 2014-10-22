@@ -50,6 +50,8 @@
 #include <inviwo/core/properties/propertyconvertermanager.h>
 
 namespace inviwo {
+// Helper function to retriever user settings path
+void getInviwoUserSettingsPath();
 
 // TODO: are the first two constructors needed? Otherwise remove.
 InviwoApplication::InviwoApplication()
@@ -223,7 +225,7 @@ std::string InviwoApplication::getPath(PathType pathType, const std::string& suf
             break;
 
         case inviwo::InviwoApplication::PATH_SETTINGS:
-            result = URLParser::getInviwoUserSettingsPath();
+            result = filesystem::getInviwoUserSettingsPath();
             break;
 
 
@@ -281,6 +283,5 @@ std::vector<Settings*> InviwoApplication::getModuleSettings(size_t startIdx) {
 
     return allModuleSettings;
 }
-
 
 } // namespace

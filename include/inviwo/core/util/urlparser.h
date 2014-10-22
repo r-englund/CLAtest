@@ -59,8 +59,6 @@ public:
     static std::string getRelativePath(const std::string& basePath, const std::string& absolutePath);
     static bool isAbsolutePath(const std::string& path);
     static bool sameDrive(const std::string& absPath1, const std::string absPath2);
-
-    static std::string getInviwoUserSettingsPath();
 };
 
 } // namespace

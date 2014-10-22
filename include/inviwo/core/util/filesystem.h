@@ -84,6 +84,14 @@ IVW_CORE_API std::string findBasePath();
 
 IVW_CORE_API void createDirectoryRecursivly(std::string path);
 
+/** 
+ * Get inviwo settings folder for current user
+ * Will for instance be AppData/Inviwo/ on windows.
+ * 
+ * @return std::string Inviwo user settings folder
+ */
+IVW_CORE_API std::string getInviwoUserSettingsPath();
+
 } // namespace
 
 } // namespace
