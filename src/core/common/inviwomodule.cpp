@@ -130,7 +130,7 @@ std::string InviwoModule::getIdentifier() const { return identifier_; }
 
 std::string InviwoModule::getPath() const {
     std::string moduleNameLowerCase = getIdentifier();
-    std::transform(moduleNameLowerCase.begin(), moduleNameLowerCase.end(), moduleNameLowerCase.begin(), std::tolower);
+    std::transform(moduleNameLowerCase.begin(), moduleNameLowerCase.end(), moduleNameLowerCase.begin(), ::tolower);
     if (filesystem::directoryExists(InviwoApplication::getPtr()->getPath(InviwoApplication::PATH_MODULES) + moduleNameLowerCase)) {
         return InviwoApplication::getPtr()->getPath(InviwoApplication::PATH_MODULES) + moduleNameLowerCase;
     }
