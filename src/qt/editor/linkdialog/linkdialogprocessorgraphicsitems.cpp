@@ -37,6 +37,10 @@
 #include <QGraphicsDropShadowEffect>
 #include <QTimeLine>
 
+#include <inviwo/core/links/processorlink.h>
+#include <inviwo/core/links/linkconditions.h>
+#include <inviwo/core/network/processornetwork.h>
+
 namespace inviwo {
 
 LinkDialogProcessorGraphicsItem::LinkDialogProcessorGraphicsItem() : GraphicsItemData<Processor>(), animateExpansion_(1.0) {
