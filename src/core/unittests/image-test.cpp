@@ -39,16 +39,19 @@
 #include <inviwo/core/common/inviwoapplication.h>
 #include <inviwo/core/io/datareaderfactory.h>
 
+#include <modules/unittests/unittestsmodule.h>
+
 namespace inviwo{
 
 
-#define IMG_RGB InviwoApplication::getPtr()->getPath(InviwoApplication::PATH_MODULES,"unittests/testdata/images/2x2.bmp")
-#define IMG_WHITE InviwoApplication::getPtr()->getPath(InviwoApplication::PATH_MODULES,"unittests/testdata/images/white.bmp")
-#define IMG_RANGE InviwoApplication::getPtr()->getPath(InviwoApplication::PATH_MODULES,"unittests/testdata/images/range.bmp")
+#define IMG_RGB InviwoApplication::getPtr()->getModuleByType<UnitTestsModule>()->getPath() + "/testdata/images/2x2.bmp"
+#define IMG_WHITE InviwoApplication::getPtr()->getModuleByType<UnitTestsModule>()->getPath() + "/testdata/images/white.bmp"
+#define IMG_RANGE InviwoApplication::getPtr()->getModuleByType<UnitTestsModule>()->getPath() + "/testdata/images/range.bmp"
 
 TEST(ImageTests,ImageLoadWhite) {
+    InviwoApplication::getPtr()->getModuleByType<UnitTestsModule>()->getPath();
     std::string imgFile = IMG_WHITE;
-    ASSERT_TRUE(URLParser::fileExists(imgFile));
+    ASSERT_TRUE(filesystem::fileExists(imgFile));
 
     LayerDisk* disk = new LayerDisk(imgFile);
     ASSERT_TRUE(disk != 0);
@@ -96,7 +99,7 @@ TEST(ImageTests,ImageLoadWhite) {
 
 TEST(ImageTests, ImageLoadRGB) {
     std::string imgFile = IMG_RGB;
-    ASSERT_TRUE(URLParser::fileExists(imgFile));
+    ASSERT_TRUE(filesystem::fileExists(imgFile));
 
     LayerDisk* disk = new LayerDisk(imgFile);
     ASSERT_TRUE(disk != 0);
@@ -143,7 +146,7 @@ TEST(ImageTests, ImageLoadRGB) {
 
 TEST(ImageTests, ImageLoadRange) {
     std::string imgFile = IMG_RANGE;
-    ASSERT_TRUE(URLParser::fileExists(imgFile));
+    ASSERT_TRUE(filesystem::fileExists(imgFile));
 
     LayerDisk* disk = new LayerDisk(imgFile);
     ASSERT_TRUE(disk != 0);
@@ -180,7 +183,7 @@ TEST(ImageTests, ImageLoadRange) {
 
 TEST(ImageTests, ImageResize) {
     std::string imgFile = IMG_RGB;
-    ASSERT_TRUE(URLParser::fileExists(imgFile));
+    ASSERT_TRUE(filesystem::fileExists(imgFile));
 
     LayerDisk* disk = new LayerDisk(imgFile);
     ASSERT_TRUE(disk != 0);

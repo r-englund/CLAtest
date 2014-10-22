@@ -54,7 +54,7 @@ TEST(SerialitionTest,writeFile) {
     IvwSerializer serializer(filename);
     serializer.serialize("test", 3.1415f);
     serializer.writeFile();
-    EXPECT_TRUE(URLParser::fileExists(filename));
+    EXPECT_TRUE(filesystem::fileExists(filename));
 }
 
 template <typename T>
