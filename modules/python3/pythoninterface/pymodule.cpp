@@ -41,30 +41,32 @@ namespace inviwo {
 
 std::map<PyObject*,PyModule*> PyModule::instances_;
 
-PyModule::PyModule(std::string moduleName):moduleName_(moduleName) {
+PyModule::PyModule(std::string moduleName):moduleName_(moduleName) , embMethods_(0) {
 
     addMethod(new PyInfoMethod());
 }
 
 PyModule::~PyModule() {
     while (!methods_.empty()) {delete methods_.back(); methods_.pop_back();}
+    delete embMethods_;
 }
 
 PyMethodDef* PyModule::getPyMethodDefs(){
     size_t N = methods_.size();
-    PyMethodDef* embMethods = new PyMethodDef[N + 1];
+    if(embMethods_) delete embMethods_;
+    embMethods_ = new PyMethodDef[N + 1];
     
     for (size_t i = 0; i < N; i++){
-        embMethods[i].ml_name = methods_[i]->getName2();
-        embMethods[i].ml_meth = methods_[i]->getFunc();
-        embMethods[i].ml_flags = methods_[i]->getFlags();
-        embMethods[i].ml_doc = methods_[i]->getDesc2();
+        embMethods_[i].ml_name = methods_[i]->getName2();
+        embMethods_[i].ml_meth = methods_[i]->getFunc();
+        embMethods_[i].ml_flags = methods_[i]->getFlags();
+        embMethods_[i].ml_doc = methods_[i]->getDesc2();
     }
-    embMethods[N].ml_name = NULL;
-    embMethods[N].ml_meth = NULL;
-    embMethods[N].ml_flags = 0;
-    embMethods[N].ml_doc = NULL;
-    return embMethods;
+    embMethods_[N].ml_name = NULL;
+    embMethods_[N].ml_meth = NULL;
+    embMethods_[N].ml_flags = 0;
+    embMethods_[N].ml_doc = NULL;
+    return embMethods_;
 
 }
 

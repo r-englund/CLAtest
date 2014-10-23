@@ -78,7 +78,9 @@ private:
 class ModuleCallback {
 public:
     ModuleCallback() : callBack_(0) {}
-    virtual ~ModuleCallback() {};
+    virtual ~ModuleCallback() {
+        delete callBack_;
+    };
 
     template <typename U>
     void invoke(const U* p) const {
