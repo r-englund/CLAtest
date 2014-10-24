@@ -48,7 +48,7 @@
 
 namespace inviwo {
 
-std::string URLParser::addBasePath(const std::string url) {
+std::string URLParser::addBasePath(const std::string& url) {
     return InviwoApplication::getPtr()->getBasePath()+url;
 }
 
@@ -164,13 +164,33 @@ bool URLParser::isAbsolutePath(const std::string& path) {
 #endif
 }
 
-bool URLParser::sameDrive(const std::string& absPath1, const std::string absPath2) {
+bool URLParser::sameDrive(const std::string& refPath, const std::string& queryPath) {
 #ifdef WIN32
-    // Check if drives are equal and that they are not absolute paths.
-    // We only need to check if one of the directories are absolute since the 
-    // first comparison will return false otherwise.
-    if (toupper(absPath1[0])==toupper(absPath2[0]) && !isAbsolutePath(absPath1)) return true;
-    else return false;
+    bool refPathIsRelative = !isAbsolutePath(refPath);
+    bool queryPathIsRelative = !isAbsolutePath(queryPath);
+    std::string referencePath(refPath); // local copy of refPath
+
+    if (refPathIsRelative) {
+        if (queryPathIsRelative) {
+            // both paths are relative, assuming same drive
+            return true;
+        }
+        else {
+            // reference path is relative, but queryPath is absolute
+            // use base path as reference
+            referencePath = InviwoApplication::getPtr()->getBasePath();
+        }
+    }
+    else if (queryPathIsRelative) {
+        // refPath is absolute, queryPath is relative
+        return true;
+    }
+
+    if (referencePath.empty() || queryPath.empty())
+        return false;
+
+    // check equality of drive letters
+    return (toupper(referencePath[0]) == toupper(queryPath[0]));
 
 #else
     return true;

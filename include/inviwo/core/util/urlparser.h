@@ -49,7 +49,7 @@ public:
      * @param const std::string url Relative path
      * @return std::string InviwoApplication base path + url
      */
-    static std::string addBasePath(const std::string url);
+    static std::string addBasePath(const std::string& url);
 
     static std::string getFileDirectory(const std::string& url);
     static std::string getFileNameWithExtension(const std::string& url);
@@ -58,7 +58,17 @@ public:
     static std::string replaceFileExtension(const std::string& url, const std::string& newFileExtension);
     static std::string getRelativePath(const std::string& basePath, const std::string& absolutePath);
     static bool isAbsolutePath(const std::string& path);
-    static bool sameDrive(const std::string& absPath1, const std::string absPath2);
+    /** 
+     * \brief Checks whether the second path is on the same drive as the first path
+     *
+     * If both paths are relative, this function returns true. If only refPath is relative
+     * InviwoApplication::getBasePath is used instead as reference.
+     * 
+     * @param const std::string& refPath reference path, if relative then InviwoApplication::getBasePath is used instead
+     * @param const std::string& queryPath path to be checked
+     * @return true if queryPath and refPath are located on the same drive (on Windows), always true on all other systems
+     */
+    static bool sameDrive(const std::string& refPath, const std::string& queryPath);
 };
 
 } // namespace
