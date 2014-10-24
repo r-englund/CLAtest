@@ -36,15 +36,18 @@ uniform vec3 lightPos_ = vec3(0.0, 0.0, -1.0);
 uniform vec3 lightPos1_;
 uniform vec3 lightPos2_;
 
-out vec2 texCoord2D_;
-out vec3 normal_;
-out vec3 viewDir_;
+uniform mat4 modelViewMatrix_;
+uniform mat4 projectionMatrix_;
 
-out vec3 lightDir_;
+out vec4 worldPosition_;
+out vec3 normal_;
+out vec4 color_;
+out vec3 texCoord_;
 
 out float height_;
 
 void main() {
+/*
     gl_FrontColor = gl_Color;
     texCoord2D_ = gl_MultiTexCoord0.st;
     
@@ -61,6 +64,16 @@ void main() {
     // use directional lighting
     //lightDir_ = (gl_ModelViewMatrix * vec4(lightPos_, 0.0)).xyz;
     lightDir_ = lightPos_;
+    */
     
-    gl_Position = gl_ProjectionMatrix * posWorld;
+    color_ = in_Color;
+    texCoord_ = in_TexCoord;
+    
+    float height = texture2D(inportHeightfield_, texCoord_.xy).r;
+    height_ = height * heightScale_;
+    vec4 pos = in_Vertex + vec4(0.0f, 0.0f, height * heightScale_, 0.0f);
+
+    worldPosition_ = modelViewMatrix_ * pos;
+    normal_ = (modelViewMatrix_ * vec4(in_Normal,0)).xyz;
+    gl_Position = projectionMatrix_ * worldPosition_;
 }
