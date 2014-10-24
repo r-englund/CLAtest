@@ -38,7 +38,14 @@ namespace inviwo {
 
 PropertyConverterManager::PropertyConverterManager() {}
 
-PropertyConverterManager::~PropertyConverterManager() {}
+PropertyConverterManager::~PropertyConverterManager() {
+
+    std::map<std::pair<std::string, std::string>, PropertyConverter *>::iterator converter;
+    for (converter = converters_.begin(); converter != converters_.end(); ++converter){
+        delete converter->second;
+    }
+    converters_.clear();
+}
 
 bool PropertyConverterManager::canConvert(const std::string &srcClassIdentifier,
                                           const std::string &dstClassIdentifier) const {

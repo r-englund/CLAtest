@@ -58,6 +58,7 @@ uniform sampler2D exitColorTex_;
 uniform sampler2D exitDepthTex_;
 uniform TEXTURE_PARAMETERS exitParameters_;
 
+uniform SHADING_PARAMETERS light_;
 uniform CAMERA_PARAMETERS camera_;
 
 uniform float samplingRate_;

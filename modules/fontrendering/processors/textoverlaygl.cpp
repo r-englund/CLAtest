@@ -52,14 +52,14 @@ TextOverlayGL::TextOverlayGL()
     , font_size_(20)
     , xpos_(0)
     , ypos_(0)
-    , floatColor_("FloatColor", "FloatColor", vec4(0.2f), vec4(0.0f), vec4(0.1f), vec4(1.0f),
+    , color_("color_", "Color", vec4(1.0f), vec4(0.0f), vec4(0.0f), vec4(0.01f),
                   PropertyOwner::INVALID_OUTPUT, PropertySemantics::Color)
     , optionPropertyIntFontSize_("Font size", "Font size")
     , floatVec2FontPos_("Position", "Position", vec2(0.0f)) {
     addPort(inport_);
     addPort(outport_);
     addProperty(textStringProperty_);
-    addProperty(floatColor_);
+    addProperty(color_);
     addProperty(floatVec2FontPos_);
     floatVec2FontPos_.setMinValue(vec2(0.0f));
     floatVec2FontPos_.setMaxValue(vec2(1.0f));
@@ -153,7 +153,7 @@ void TextOverlayGL::render_text(const char* text, float x, float y, float sx, fl
             {x2, -y2, 0, 0}, {x2 + w, -y2, 1, 0}, {x2, -y2 - h, 0, 1}, {x2 + w, -y2 - h, 1, 1},
         };
         textShader_->setUniform("tex", (GLint)unitNumber);
-        textShader_->setUniform("color", floatColor_.get());
+        textShader_->setUniform("color", color_.get());
         glBufferData(GL_ARRAY_BUFFER, sizeof(box), box, GL_STREAM_DRAW);
         glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
         x += (fontface_->glyph->advance.x >> 6) * sx;

@@ -44,7 +44,7 @@ namespace inviwo{
 
 class ProcessorCreationTests : public ::testing::TestWithParam<std::string> {
 protected:
-    ProcessorCreationTests() {}
+    ProcessorCreationTests() : p(0) {}
 
     virtual ~ProcessorCreationTests() {
         EXPECT_TRUE(p==0);

@@ -55,6 +55,8 @@
 #include <inviwo/core/util/capabilities.h>
 #include <inviwo/core/util/dialogfactoryobject.h>
 
+#include <inviwo/core/properties/propertyconverter.h>
+#include <inviwo/core/properties/propertyconvertermanager.h>
 
 namespace inviwo {
 

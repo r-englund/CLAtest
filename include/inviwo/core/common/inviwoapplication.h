@@ -94,7 +94,7 @@ public:
      *
      * @return
      */
-    const std::string& getBasePath() { return basePath_; }
+    const std::string& getBasePath() const { return basePath_; }
 
     /**
      * Get basePath +  pathType + suffix.

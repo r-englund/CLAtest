@@ -60,6 +60,7 @@ VolumeSliceGL::VolumeSliceGL()
     , sliceX_("sliceX", "X Volume Position", 128, 1, 256)
     , sliceY_("sliceY", "Y Volume Position", 128, 1, 256)
     , sliceZ_("sliceZ", "Z Volume Position", 128, 1, 256)
+    , worldPosition_("worldPosition_", "World Position", vec3(0.0f), vec3(-10.0f), vec3(10.0f), vec3(0.01f), PropertyOwner::VALID)
     , planeNormal_("planeNormal", "Slice Plane Normal", vec3(1.f,0.f,0.f), vec3(-1.f,-1.f,-1.f), vec3(1.f, 1.f, 1.f), vec3(0.01f, 0.01f, 0.01f))
     , planeOffset_("planeOffset", "Slice Plane Offset", 0.5f, 0.0f, 1.0f, 0.01f)
     , rotationAroundAxis_("rotation", "Rotation (ccw)")
@@ -106,6 +107,9 @@ VolumeSliceGL::VolumeSliceGL()
     sliceX_.onChange(this, &VolumeSliceGL::invalidateMesh);
     sliceY_.onChange(this, &VolumeSliceGL::invalidateMesh);
     sliceZ_.onChange(this, &VolumeSliceGL::invalidateMesh);
+
+    worldPosition_.onChange(this, &VolumeSliceGL::updatePos);
+    addProperty(worldPosition_);
 
     addProperty(planeNormal_);
     planeNormal_.onChange(this, &VolumeSliceGL::planeSettingsChanged);
@@ -265,6 +269,15 @@ float VolumeSliceGL::getNormalizedSliceNumber() const {
 
 void VolumeSliceGL::renderPositionIndicator() {
     if (meshDirty_) {
+
+        mat4 basis = inport_.getData()->getBasisAndOffset();
+        vec4 pos(static_cast<float>(sliceX_.get()), static_cast<float>(sliceY_.get()),
+            static_cast<float>(sliceZ_.get()), 1.0f);
+
+        mat4 trans = inport_.getData()->getCoordinateTransformer().getIndexToWorldMatrix();
+
+        worldPosition_.set(vec3(trans*pos));
+
         updateIndicatorMesh();
     }
 
@@ -613,6 +626,20 @@ void VolumeSliceGL::updateMaxSliceNumber() {
         sliceZ_.set(static_cast<int>(dims.z) / 2);
     }
     enableInvalidation();
+}
+
+void VolumeSliceGL::updatePos() {
+    if (meshDirty_) return;
+
+    mat4 trans = inport_.getData()->getCoordinateTransformer().getWorldToIndexMatrix();
+    vec3 pos  = vec3(trans * vec4(worldPosition_.get().x, worldPosition_.get().y, worldPosition_.get().z, 1.0f));
+    ivec3 ipos = static_cast<ivec3>(pos);
+
+    ivec3 dim = static_cast<ivec3>(inport_.getData()->getDimension());
+
+    sliceX_.set(std::min(std::max(0, ipos.x), dim.x-1));
+    sliceY_.set(std::min(std::max(0, ipos.y), dim.y-1));
+    sliceZ_.set(std::min(std::max(0, ipos.z), dim.z-1));
 }
 
 VolumeSliceGL::VolumeSliceGLInteractionHandler::VolumeSliceGLInteractionHandler(VolumeSliceGL* vs)

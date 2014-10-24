@@ -170,7 +170,6 @@ void InviwoApplication::deinitialize() {
     MetaDataFactory::deleteInstance();
     PortFactory::deleteInstance();
     PortInspectorFactory::deleteInstance();
-    ProcessorFactory::deleteInstance();
     ProcessorWidgetFactory::deleteInstance();
     PropertyFactory::deleteInstance();
     PropertyWidgetFactory::deleteInstance();
@@ -236,8 +235,7 @@ std::string InviwoApplication::getPath(PathType pathType, const std::string& suf
     if(createFolder){
         filesystem::createDirectoryRecursivly(result);
     }
-    result += suffix;
-    return result;
+    return result + suffix;
 }
 
 void InviwoApplication::printApplicationInfo() {

@@ -37,22 +37,43 @@
 #include <inviwo/core/datastructures/image/layerdisk.h>
 #include <inviwo/core/datastructures/image/layerramprecision.h>
 #include <inviwo/core/common/inviwoapplication.h>
+#include <inviwo/core/io/datareaderfactory.h>
+
+#include <modules/unittests/unittestsmodule.h>
 
 namespace inviwo{
 
 
-#define IMG_RGB InviwoApplication::getPtr()->getPath(InviwoApplication::PATH_MODULES,"unittests/testdata/images/2x2.bmp")
-#define IMG_WHITE InviwoApplication::getPtr()->getPath(InviwoApplication::PATH_MODULES,"unittests/testdata/images/white.bmp")
-#define IMG_RANGE InviwoApplication::getPtr()->getPath(InviwoApplication::PATH_MODULES,"unittests/testdata/images/range.bmp")
+#define IMG_RGB InviwoApplication::getPtr()->getModuleByType<UnitTestsModule>()->getPath() + "/testdata/images/2x2.bmp"
+#define IMG_WHITE InviwoApplication::getPtr()->getModuleByType<UnitTestsModule>()->getPath() + "/testdata/images/white.bmp"
+#define IMG_RANGE InviwoApplication::getPtr()->getModuleByType<UnitTestsModule>()->getPath() + "/testdata/images/range.bmp"
 
 TEST(ImageTests,ImageLoadWhite) {
+    InviwoApplication::getPtr()->getModuleByType<UnitTestsModule>()->getPath();
+    std::string imgFile = IMG_WHITE;
+    ASSERT_TRUE(filesystem::fileExists(imgFile));
+
+    LayerDisk* disk = new LayerDisk(imgFile);
+    ASSERT_TRUE(disk != 0);
+
+    std::string ext = URLParser::getFileExtension(imgFile);
+    EXPECT_EQ(ext, "bmp");
+
+
+    DataReader* reader = DataReaderFactory::getPtr()->getReaderForTypeAndExtension<Layer>(ext);
+    ASSERT_TRUE(reader != 0);
+
+    disk->setDataReader(reader);
+
     Image img;
-    img.getColorLayer()->addRepresentation(new LayerDisk(IMG_WHITE));
+    img.getColorLayer()->addRepresentation(disk);
     const LayerRAM* layer = img.getColorLayer()->getRepresentation<LayerRAM>();
     ASSERT_TRUE(layer!=0);
+
     uvec2 dim = layer->getDimension();
     EXPECT_EQ(dim.x,2);
     EXPECT_EQ(dim.y,2);
+
     dvec4 a = layer->getValueAsVec4Double(uvec2(0,0));
     dvec4 b = layer->getValueAsVec4Double(uvec2(0,1));
     dvec4 c = layer->getValueAsVec4Double(uvec2(1,0));
@@ -76,9 +97,24 @@ TEST(ImageTests,ImageLoadWhite) {
 }
 
 
-TEST(ImageTests,ImageLoadRGB) {
+TEST(ImageTests, ImageLoadRGB) {
+    std::string imgFile = IMG_RGB;
+    ASSERT_TRUE(filesystem::fileExists(imgFile));
+
+    LayerDisk* disk = new LayerDisk(imgFile);
+    ASSERT_TRUE(disk != 0);
+
+    std::string ext = URLParser::getFileExtension(imgFile);
+    EXPECT_EQ(ext, "bmp");
+
+
+    DataReader* reader = DataReaderFactory::getPtr()->getReaderForTypeAndExtension<Layer>(ext);
+    ASSERT_TRUE(reader != 0);
+
+    disk->setDataReader(reader);
+
     Image img;
-    img.getColorLayer()->addRepresentation(new LayerDisk(IMG_RGB));
+    img.getColorLayer()->addRepresentation(disk);
     const LayerRAM* layer = img.getColorLayer()->getRepresentation<LayerRAM>();
     ASSERT_TRUE(layer!=0);
     uvec2 dim = layer->getDimension();
@@ -108,9 +144,24 @@ TEST(ImageTests,ImageLoadRGB) {
 
 
 
-TEST(ImageTests,ImageLoadRange) {
+TEST(ImageTests, ImageLoadRange) {
+    std::string imgFile = IMG_RANGE;
+    ASSERT_TRUE(filesystem::fileExists(imgFile));
+
+    LayerDisk* disk = new LayerDisk(imgFile);
+    ASSERT_TRUE(disk != 0);
+
+    std::string ext = URLParser::getFileExtension(imgFile);
+    EXPECT_EQ(ext, "bmp");
+
+
+    DataReader* reader = DataReaderFactory::getPtr()->getReaderForTypeAndExtension<Layer>(ext);
+    ASSERT_TRUE(reader != 0);
+
+    disk->setDataReader(reader);
+
     Image img;
-    img.getColorLayer()->addRepresentation(new LayerDisk(IMG_RANGE));
+    img.getColorLayer()->addRepresentation(disk);
     const LayerRAM* layer = img.getColorLayer()->getRepresentation<LayerRAM>();
     ASSERT_TRUE(layer!=0);
     uvec2 dim = layer->getDimension();
@@ -130,9 +181,24 @@ TEST(ImageTests,ImageLoadRange) {
 
 
 
-TEST(ImageTests,ImageResize) {
+TEST(ImageTests, ImageResize) {
+    std::string imgFile = IMG_RGB;
+    ASSERT_TRUE(filesystem::fileExists(imgFile));
+
+    LayerDisk* disk = new LayerDisk(imgFile);
+    ASSERT_TRUE(disk != 0);
+
+    std::string ext = URLParser::getFileExtension(imgFile);
+    EXPECT_EQ(ext, "bmp");
+
+
+    DataReader* reader = DataReaderFactory::getPtr()->getReaderForTypeAndExtension<Layer>(ext);
+    ASSERT_TRUE(reader != 0);
+
+    disk->setDataReader(reader);
+
     Image img;
-    img.getColorLayer()->addRepresentation(new LayerDisk(IMG_RGB));
+    img.getColorLayer()->addRepresentation(disk);
     const LayerRAM* layer = img.getColorLayer()->getRepresentation<LayerRAM>();
     ASSERT_TRUE(layer!=0);
     uvec2 dim = layer->getDimension();

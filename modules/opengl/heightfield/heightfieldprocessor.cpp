@@ -47,14 +47,13 @@ ProcessorCodeState(HeightFieldProcessor, CODE_STATE_EXPERIMENTAL);
 
 HeightFieldProcessor::HeightFieldProcessor()
     : GeometryRenderProcessorGL()
-    , inportHeightfield_("heightfield.inport", true)
-    , inportTexture_("texture.inport", true)
-    , inportNormalMap_("normalmap.inport", true)
+    , inportHeightfield_("heightfield.inport", false)
+    , inportTexture_("texture.inport", false)
+    , inportNormalMap_("normalmap.inport", false)
     , inportLightSource_("lightsource.inport")
-    , heightScale_("heightScale", "Height Scale", 1.0f, 0.0f, 100.0f)
+    , heightScale_("heightScale", "Height Scale", 1.0f, 0.0f, 10.0f)
     , terrainShadingMode_("terrainShadingMode", "Terrain Shading")
-    , lightingProperty_("lighting", "Lighting", false)
-    , shader_(0)
+    , lightingEnabledProperty_("lighting", "Lighting", false)
     , lighting_(false)
 {
     inportHeightfield_.onChange(this, &HeightFieldProcessor::heightfieldChanged);
@@ -72,8 +71,7 @@ HeightFieldProcessor::HeightFieldProcessor()
     terrainShadingMode_.setCurrentStateAsDefault();
     addProperty(terrainShadingMode_);
 
-    //lightingProperty_.onChange(this, &HeightFieldProcessor::lightingChanged);
-    addProperty(lightingProperty_);
+    //lightingEnabledProperty_.onChange(this, &HeightFieldProcessor::lightingChanged);
 }
 
 HeightFieldProcessor::~HeightFieldProcessor() 
@@ -81,81 +79,58 @@ HeightFieldProcessor::~HeightFieldProcessor()
 }
 
 void HeightFieldProcessor::initialize() {
-    GeometryRenderProcessorGL::initialize();
+    Processor::initialize();
 
     // initialize shader to offset vertices in the vertex shader
-    shader_ = new Shader("heightfield.vert", "heightfield.frag", true);
-}
+    shader_ = new Shader("heightfield.vert", "heightfield.frag", false);
 
-void HeightFieldProcessor::deinitialize() {
-    // cleanup shader
-    delete shader_;
-
-    GeometryRenderProcessorGL::deinitialize();
+    GeometryRenderProcessorGL::initializeResources();
 }
 
 void HeightFieldProcessor::process() {
     int terrainShadingMode = terrainShadingMode_.get();
 
-    bool lighting = (lightingProperty_.get() && inportLightSource_.isReady());
+    bool lighting = (lightingEnabledProperty_.get() && inportLightSource_.isReady());
+    shader_->activate();
 
     // bind input textures
-    TextureUnit heightFieldUnit;
+    TextureUnit heightFieldUnit, colorTexUnit, normalTexUnit;
+
     if (inportHeightfield_.isReady()) {
         utilgl::bindColorTexture(inportHeightfield_, heightFieldUnit.getEnum());
     } else if (terrainShadingMode == HF_SHADING_HEIGHTFIELD) {
         // switch to flat shading since color texture is not available
         terrainShadingMode = HF_SHADING_FLAT;
     }
-    TextureUnit::setZeroUnit();
-    
-    TextureUnit colorTexUnit;
+
     if (inportTexture_.isReady()) {
         utilgl::bindColorTexture(inportTexture_, colorTexUnit.getEnum());
     } else if (terrainShadingMode == HF_SHADING_COLORTEX) {
         // switch to flat shading since heightfield texture is not available
         terrainShadingMode = HF_SHADING_FLAT;
     }
-    TextureUnit::setZeroUnit();
-    
-    TextureUnit normalTexUnit;
+
     if (inportNormalMap_.isReady()) {
         utilgl::bindColorTexture(inportNormalMap_, normalTexUnit.getEnum());
     } else {
         // switch of lighting
         lighting = false;
     }
-    TextureUnit::setZeroUnit();
 
     //bool lightColorChanged = false;
     //if(inportLightSource_.getInvalidationLevel() >= INVALID_OUTPUT) {
     //    lightColorChanged = lightSourceChanged();
     //}
 
-    shader_->activate();
     shader_->setUniform("inportHeightfield_", heightFieldUnit.getUnitNumber());
     shader_->setUniform("inportTexture_", colorTexUnit.getUnitNumber());
     shader_->setUniform("inportNormalMap_", normalTexUnit.getUnitNumber());
     shader_->setUniform("terrainShadingMode_", terrainShadingMode);
     shader_->setUniform("heightScale_", heightScale_.get());
 
-    shader_->setUniform("lighting_", lighting ? 1 : 0);
-    if (lighting) {
-
-        const DirectionalLight* directionLight = dynamic_cast<const DirectionalLight*>(inportLightSource_.getData());
-
-        shader_->setUniform("lightPos_", directionLight->getDirection());
-        shader_->setUniform("lightIntensity_", directionLight->getIntensity());
-
-        //directionLight->getDirection();
-        //directionLight->getIntensity();
-        //directionLight->getPower();
-    }
-
     // render mesh
     GeometryRenderProcessorGL::process();
-
-    shader_->deactivate();
+    TextureUnit::setZeroUnit();
 }
 
 void HeightFieldProcessor::setupLight() {
@@ -217,7 +192,7 @@ void HeightFieldProcessor::setupLight() {
 }
 
 void HeightFieldProcessor::lightingChanged() {
-    if (lighting_ != lightingProperty_.get()) {
+    if (lighting_ != lightingEnabledProperty_.get()) {
         // state of lighting changed, adjust shader
     }
 }
@@ -231,17 +206,17 @@ void HeightFieldProcessor::heightfieldChanged() {
     const Image *img = inportHeightfield_.getData();
     const DataFormatBase* format = img->getDataFormat();
 
-    str << "Heightfield Port Properties:"
-        << "\ndim: " << glm::to_string(img->getDimension())
-        << "\nType: " << img->getImageType()
-        << "\nNum Color Layers: " << img->getNumberOfColorLayers()
-        << std::endl << std::endl
-        << "Format:"
-        << "\nName: " << format->getString()
-        << "\nComponents: " << format->getComponents()
-        ;
+    //str << "Heightfield Port Properties:"
+    //    << "\ndim: " << glm::to_string(img->getDimension())
+    //    << "\nType: " << img->getImageType()
+    //    << "\nNum Color Layers: " << img->getNumberOfColorLayers()
+    //    << std::endl << std::endl
+    //    << "Format:"
+    //    << "\nName: " << format->getString()
+    //    << "\nComponents: " << format->getComponents()
+    //    ;
 
-    LogInfo(str.str());
+    //LogInfo(str.str());
 }
 
 

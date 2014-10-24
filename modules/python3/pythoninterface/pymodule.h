@@ -74,7 +74,7 @@ private:
     PyObject* moduleObject_;
     PyObject* dict_;
     PyObject* name_;
-
+    PyMethodDef* embMethods_;
     static std::map<PyObject*,PyModule*> instances_;
 
 

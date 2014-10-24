@@ -44,12 +44,12 @@ ProcessorCodeState(HeightFieldMapper, CODE_STATE_EXPERIMENTAL);
 
 HeightFieldMapper::HeightFieldMapper()
     : Processor()
-    , inport_("image.inport", true)
+    , inport_("image.inport", false)
     , outport_("image.outport", 0, COLOR_ONLY) // &inport_
     , scalingModeProp_("scalingmode", "Scaling Mode")
-    , heightRange_("heightrange", "Height Range", 0.0f, 1.0f, -1.0e4f, 1.0e4f)
-    , maxHeight_("maxheight", "Maximum Height", 1.0f, 0.0f, 1.0e6f)
-    , seaLevel_("sealevel", "Sea Level", 0.0f, -1.0e6f, 1.0e6f)
+    , heightRange_("heightrange", "Height Range", 0.0f, 1.0f, -1.0e1f, 1.0e1f)
+    , maxHeight_("maxheight", "Maximum Height", 1.0f, 0.0f, 1.0e1f)
+    , seaLevel_("sealevel", "Sea Level", 0.0f, -1.0e1f, 1.0e1f)
 {
     addPort(inport_);
     addPort(outport_);
@@ -66,6 +66,9 @@ HeightFieldMapper::HeightFieldMapper()
     addProperty(seaLevel_);
 
     setAllPropertiesCurrentStateAsDefault();
+
+    // update UI state
+    scalingModeChanged();
 }
 
 HeightFieldMapper::~HeightFieldMapper() {}
@@ -93,7 +96,7 @@ void HeightFieldMapper::process() {
     const DataFormatBase* format = srcImg->getDataFormat();
     int numInputChannels = format->getComponents();
     if (numInputChannels > 1) {
-        LogWarn("input image has more than one channel. Using first channel.");
+        //LogWarn("input image has more than one channel. Using first channel.");
     }
 
     glm::uvec2 dim = srcImg->getDimension();
@@ -106,41 +109,41 @@ void HeightFieldMapper::process() {
         Image *img = new Image(dim, COLOR_ONLY, DataFLOAT32::get());
         outport_.setData(img);
         outImg = img;
-        LogInfo("created float output img");
+        //LogInfo("created float output img");
     }
     else if (outImg->getDimension() != dim) {
         // adjust dimensions of output image
         outImg->resize(dim);
 
-        std::ostringstream str;
-        str << "Output img resized: " << glm::to_string(outImg->getDimension())
-            << "   port dimension: " << glm::to_string(outport_.getDimension()) << std::endl;
-        LogInfo(str.str());
+        //std::ostringstream str;
+        //str << "Output img resized: " << glm::to_string(outImg->getDimension())
+        //    << "   port dimension: " << glm::to_string(outport_.getDimension()) << std::endl;
+        //LogInfo(str.str());
     }
     
 
     std::ostringstream str;
     const DataFormatBase* format2 = outImg->getDataFormat();
 
-    str << "Input Image:"
-        << "\ndim: " << glm::to_string(srcImg->getDimension())
-        << "\nType: " << srcImg->getImageType()
-        << "\nNum Color Layers: " << srcImg->getNumberOfColorLayers()
-        << std::endl << std::endl
-        << "Format:"
-        << "\nName: " << format->getString()
-        << "\nComponents: " << format->getComponents()
-        << "Output Image:"
-        << "\ndim: " << glm::to_string(outImg->getDimension())
-        << "\nType: " << outImg->getImageType()
-        << "\nNum Color Layers: " << outImg->getNumberOfColorLayers()
-        << std::endl << std::endl
-        << "Format:"
-        << "\nName: " << format2->getString()
-        << "\nComponents: " << format2->getComponents()
-        ;
+    //str << "Input Image:"
+    //    << "\ndim: " << glm::to_string(srcImg->getDimension())
+    //    << "\nType: " << srcImg->getImageType()
+    //    << "\nNum Color Layers: " << srcImg->getNumberOfColorLayers()
+    //    << std::endl << std::endl
+    //    << "Format:"
+    //    << "\nName: " << format->getString()
+    //    << "\nComponents: " << format->getComponents()
+    //    << "Output Image:"
+    //    << "\ndim: " << glm::to_string(outImg->getDimension())
+    //    << "\nType: " << outImg->getImageType()
+    //    << "\nNum Color Layers: " << outImg->getNumberOfColorLayers()
+    //    << std::endl << std::endl
+    //    << "Format:"
+    //    << "\nName: " << format2->getString()
+    //    << "\nComponents: " << format2->getComponents()
+    //    ;
 
-    LogInfo(str.str());
+    //LogInfo(str.str());
 
 
 

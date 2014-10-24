@@ -47,26 +47,32 @@ OrdinalPropertyAnimator::OrdinalPropertyAnimator()
     , type_("property", "Property")
     , delay_("delay", "Delay (ms)", 50, 1, 10000, 1)
     , pbc_("pbc", "Periodic", true)
-    , active_("active", "Active", true) {
+    , active_("active", "Active", true) 
+{
     
     timer_ = InviwoApplication::getPtr()->createTimer();
-
-    timer_->setElapsedTimeCallback(this, &OrdinalPropertyAnimator::timerEvent);
+    if (timer_ == NULL){
+        LogWarn("Failed to create timer");
+    }
+    else{
+        timer_->setElapsedTimeCallback(this, &OrdinalPropertyAnimator::timerEvent);
+    }
+    
 
     delay_.onChange(this, &OrdinalPropertyAnimator::updateTimerInterval);
 
-    properties_.push_back(new PrimProp<float>("FloatProperty", "FloatProperty"));
-    properties_.push_back(new VecProp<vec2>("FloatVec2Property", "FloatVec2Property"));
-    properties_.push_back(new VecProp<vec3>("FloatVec3Property", "FloatVec3Property"));
-    properties_.push_back(new VecProp<vec4>("FloatVec4Property", "FloatVec4Property"));
-    properties_.push_back(new PrimProp<double>("DoubleProperty","DoubleProperty"));
-    properties_.push_back(new VecProp<dvec2>("DoubleVec2Property", "DoubleVec2Property"));
-    properties_.push_back(new VecProp<dvec3>("DoubleVec3Property", "DoubleVec3Property"));
-    properties_.push_back(new VecProp<dvec4>("DoubleVec4Property", "DoubleVec4Property"));
-    properties_.push_back(new PrimProp<int>("IntProperty", "IntProperty"));
-    properties_.push_back(new VecProp<ivec2>("IntVec2Property", "IntVec2Property"));
-    properties_.push_back(new VecProp<ivec3>("IntVec3Property", "IntVec3Property"));
-    properties_.push_back(new VecProp<ivec4>("IntVec4Property", "IntVec4Property"));
+    properties_.push_back(new PrimProp<float>("org.inviwo.FloatProperty", "org.inviwo.FloatProperty"));
+    properties_.push_back(new VecProp<vec2>("org.inviwo.FloatVec2Property", "org.inviwo.FloatVec2Property"));
+    properties_.push_back(new VecProp<vec3>("org.inviwo.FloatVec3Property", "org.inviwo.FloatVec3Property"));
+    properties_.push_back(new VecProp<vec4>("org.inviwo.FloatVec4Property", "org.inviwo.FloatVec4Property"));
+    properties_.push_back(new PrimProp<double>("org.inviwo.DoubleProperty","org.inviwo.DoubleProperty"));
+    properties_.push_back(new VecProp<dvec2>("org.inviwo.DoubleVec2Property", "org.inviwo.DoubleVec2Property"));
+    properties_.push_back(new VecProp<dvec3>("org.inviwo.DoubleVec3Property", "org.inviwo.DoubleVec3Property"));
+    properties_.push_back(new VecProp<dvec4>("org.inviwo.DoubleVec4Property", "org.inviwo.DoubleVec4Property"));
+    properties_.push_back(new PrimProp<int>("org.inviwo.IntProperty", "org.inviwo.IntProperty"));
+    properties_.push_back(new VecProp<ivec2>("org.inviwo.IntVec2Property", "org.inviwo.IntVec2Property"));
+    properties_.push_back(new VecProp<ivec3>("org.inviwo.IntVec3Property", "org.inviwo.IntVec3Property"));
+    properties_.push_back(new VecProp<ivec4>("org.inviwo.IntVec4Property", "org.inviwo.IntVec4Property"));
 
     addProperty(type_);
     addProperty(active_);
@@ -93,6 +99,8 @@ OrdinalPropertyAnimator::OrdinalPropertyAnimator()
 
     changeProperty();
     updateTimerInterval();
+
+    setAllPropertiesCurrentStateAsDefault();
 }
 
 OrdinalPropertyAnimator::~OrdinalPropertyAnimator() {

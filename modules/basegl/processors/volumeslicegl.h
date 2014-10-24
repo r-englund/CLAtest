@@ -123,6 +123,8 @@ protected:
     }
 
 private:
+    void updatePos(); 
+
     VolumeInport inport_;
     ImageOutport outport_;
 
@@ -134,6 +136,9 @@ private:
     IntProperty sliceX_;
     IntProperty sliceY_;
     IntProperty sliceZ_;
+
+    FloatVec3Property worldPosition_;
+
     FloatVec3Property planeNormal_;
     FloatProperty planeOffset_;
     IntProperty* slices_[4];                  // array to access the individual slices via index

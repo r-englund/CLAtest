@@ -59,7 +59,6 @@ public:
     }
 
     virtual void initialize();
-    virtual void deinitialize();
 
 protected:
     virtual void process();
@@ -81,9 +80,8 @@ private:
 
     FloatProperty heightScale_; // Scale height of input image
     OptionPropertyInt terrainShadingMode_;
-    BoolProperty lightingProperty_;
+    BoolProperty lightingEnabledProperty_;
 
-    Shader *shader_;
     bool lighting_;
 };
 

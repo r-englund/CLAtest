@@ -59,8 +59,6 @@ PositionWidgetProcessor::PositionWidgetProcessor()
     addPort(imageInport_);
     addPort(outport_);
     addProperty(position_);
-    position_.setVisible(false);
-
     addProperty(camera_);
     trackball_ = new CameraTrackball(&camera_);
     addInteractionHandler(trackball_);
