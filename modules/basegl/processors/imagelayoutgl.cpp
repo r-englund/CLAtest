@@ -49,7 +49,7 @@ ProcessorCodeState(ImageLayoutGL, CODE_STATE_EXPERIMENTAL);
 ImageLayoutGL::ImageLayoutGL()
     : Processor()
     , multiinport_("multiinport")
-    , outport_("outport")
+    , outport_("outport", COLOR_DEPTH_PICKING)
     , layout_("layout", "Layout")
     , resizeContent_("resizeContent", "Resize Content", false)
     , horizontalSplitter_("horizontalSplitter", "Horizontal Splitter", 0.5f, 0.f, 1.f)
