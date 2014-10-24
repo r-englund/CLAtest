@@ -90,6 +90,8 @@ std::string URLParser::replaceFileExtension(const std::string& url, const std::s
 
 std::string URLParser::getRelativePath(const std::string& bPath, const std::string& absolutePath) {
     // FIXME: is the case that the bath path and the absolute path are lying on different drives considered?
+    // FIXME: different drives don't matter, since the first path token will be different (split only for '/' and '\\')
+    // FIXME: however, we have to make sure, both paths are absolute!
     std::string basePath(getFileDirectory(bPath));
     std::string absPath(getFileDirectory(absolutePath));
     std::string fileName(getFileNameWithExtension(absolutePath));
@@ -144,14 +146,20 @@ std::string URLParser::getRelativePath(const std::string& bPath, const std::stri
 
 bool URLParser::isAbsolutePath(const std::string& path) {
 #ifdef WIN32
+    if (path.size() < 2) {
+        return false;
+    }
 
-    if (toupper(path[0])>='A'&&toupper(path[0])<='Z'&&path[1]==':') return true;
-    else return false;
+    // check for '[A-Z]:' in the begin of path
+    char driveLetter = toupper(path[0]);
+    return ((driveLetter >= 'A') && (driveLetter <= 'Z') && (path[1] == ':'));
 
 #else
 
-    if (path[0]=='/') return true;
-    else return false;
+    if (path.empty())
+        return false;
+
+    return (path[0] == '/');
 
 #endif
 }
