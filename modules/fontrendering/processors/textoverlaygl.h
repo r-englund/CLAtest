@@ -74,7 +74,7 @@ private:
     float xpos_;
     float ypos_;
     
-    FloatVec4Property floatColor_;
+    FloatVec4Property color_;
     OptionPropertyInt optionPropertyIntFontSize_;
     FloatVec2Property floatVec2FontPos_;
 
