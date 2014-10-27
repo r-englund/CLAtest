@@ -31,6 +31,7 @@
  *********************************************************************************/
 
 #include <inviwo/core/util/canvas.h>
+#include <inviwo/core/datastructures/image/image.h>
 #include <inviwo/core/datastructures/geometry/mesh.h>
 #include <inviwo/core/datastructures/buffer/bufferramprecision.h>
 #include <inviwo/core/network/processornetworkevaluator.h>

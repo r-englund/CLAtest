@@ -35,7 +35,6 @@
 
 #include <inviwo/core/common/inviwocoredefine.h>
 #include <inviwo/core/common/inviwo.h>
-#include <inviwo/core/datastructures/image/image.h>
 #include <inviwo/core/datastructures/image/imagetypes.h>
 #include <inviwo/core/datastructures/geometry/geometry.h>
 #include <inviwo/core/interaction/pickingcontainer.h>
@@ -49,6 +48,7 @@ namespace inviwo {
 
 class ProcessorNetworkEvaluator;
 template <class Layer> class DataWriterType;
+class Image;
 
 class IVW_CORE_API Canvas {
 
