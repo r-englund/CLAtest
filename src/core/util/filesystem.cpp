@@ -42,6 +42,8 @@
 #ifdef WIN32
 #include <windows.h>
 #include <tchar.h>
+#elif defined(__APPLE__)
+#include <CoreServices/CoreServices.h>
 #else
 #include <unistd.h>
 #endif
@@ -173,11 +175,12 @@ std::string getInviwoUserSettingsPath() {
     char path[PATH_MAX];
 
     STARTCLANGIGNORE("-Wdeprecated-declarations")
-        FSFindFolder( kUserDomain, folderType, kCreateFolder, &ref );
+    FSFindFolder( kUserDomain, folderType, kCreateFolder, &ref );
     FSRefMakePath( &ref, (UInt8*)&path, MAX_PATH );
     ENDCLANGIGNORE
 
-        ss << path << "/org.inviwo.network-editor/";
+    ss << path << "/org.inviwo.network-editor/";
+    
 #else
     LogWarnCustom("","Get User Setting Path is not implemented for current system");
 #endif
