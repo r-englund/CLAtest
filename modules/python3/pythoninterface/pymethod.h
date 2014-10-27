@@ -55,11 +55,13 @@ private:
 };
 
 template<typename T>
-class IVW_MODULE_PYTHON3_API PyParam : public PyParamBase {
+class PyParam : public PyParamBase {
 public:
     PyParam(std::string paramName,bool optional) : PyParamBase(paramName,optional) {}
     virtual ~PyParam() {}
-    virtual bool testParam(void* arg);
+    virtual bool testParam(void* arg){
+        return PyValueParser::is<T>(static_cast<PyObject*>(arg));
+    }
 };
 
 #define PY_PARAM(T,t,n) class IVW_MODULE_PYTHON3_API PyParam##t : public PyParam<T>{ \
@@ -80,7 +82,7 @@ PY_PARAM(uvec3,UVec3,"uvec3")
 PY_PARAM(uvec4,UVec4,"uvec4")
 
 
-class PyParamVarious : public PyParamBase {
+class IVW_MODULE_PYTHON3_API PyParamVarious : public PyParamBase {
 public:
     PyParamVarious(std::string paramName,bool optional = false) : PyParamBase(paramName,optional) {}
     virtual ~PyParamVarious() {}

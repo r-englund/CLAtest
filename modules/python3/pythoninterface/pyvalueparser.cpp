@@ -110,7 +110,7 @@ namespace inviwo {
     std::string parseStr(PyObject* args) {
         PyObject * temp_bytes = PyUnicode_AsEncodedString(args, "ASCII", "strict"); // Owned reference
         if (temp_bytes != NULL) {
-            auto my_result = PyBytes_AS_STRING(temp_bytes); // Borrowed pointer
+            char* my_result = PyBytes_AS_STRING(temp_bytes); // Borrowed pointer
             std::string str = strdup(my_result);
             Py_DECREF(temp_bytes);
             return str;
@@ -509,97 +509,97 @@ namespace inviwo {
     }
 
     template <>
-    bool IVW_MODULE_PYTHON3_API PyValueParser::is<bool>(PyObject* arg) {
+    IVW_MODULE_PYTHON3_API bool  PyValueParser::is<bool>(PyObject* arg) {
         return PyBool_Check(arg);
     }
     template <>
-    bool IVW_MODULE_PYTHON3_API PyValueParser::is<double>(PyObject* arg) {
+    IVW_MODULE_PYTHON3_API bool  PyValueParser::is<double>(PyObject* arg) {
         return PyFloat_Check(arg) || is<int>(arg);
     }
     template <>
-    bool IVW_MODULE_PYTHON3_API PyValueParser::is<float>(PyObject* arg) {
+    IVW_MODULE_PYTHON3_API bool  PyValueParser::is<float>(PyObject* arg) {
         return PyFloat_Check(arg) || is<int>(arg);
     }
     template <>
-    bool IVW_MODULE_PYTHON3_API PyValueParser::is<char>(PyObject* arg) {
+    IVW_MODULE_PYTHON3_API bool  PyValueParser::is<char>(PyObject* arg) {
         return is<int>(arg);
     }
     template <>
-    bool IVW_MODULE_PYTHON3_API PyValueParser::is<short>(PyObject* arg) {
+    IVW_MODULE_PYTHON3_API bool  PyValueParser::is<short>(PyObject* arg) {
         return is<int>(arg);
     }
     template <>
-    bool IVW_MODULE_PYTHON3_API PyValueParser::is<long>(PyObject* arg) {
+    IVW_MODULE_PYTHON3_API bool  PyValueParser::is<long>(PyObject* arg) {
         return PyLong_Check(arg);
     }
     template <>
-    bool IVW_MODULE_PYTHON3_API PyValueParser::is<unsigned int>(PyObject* arg) {
+    IVW_MODULE_PYTHON3_API bool  PyValueParser::is<unsigned int>(PyObject* arg) {
         return is<int>(arg);
     }
     template <>
-    bool IVW_MODULE_PYTHON3_API PyValueParser::is<unsigned long>(PyObject* arg) {
-        return is<int>(arg);
-    }
-
-    template <>
-    bool IVW_MODULE_PYTHON3_API PyValueParser::is<unsigned long long>(PyObject* arg) {
+    IVW_MODULE_PYTHON3_API bool  PyValueParser::is<unsigned long>(PyObject* arg) {
         return is<int>(arg);
     }
 
     template <>
-    bool IVW_MODULE_PYTHON3_API PyValueParser::is<vec2>(PyObject* arg) {
+    IVW_MODULE_PYTHON3_API bool  PyValueParser::is<unsigned long long>(PyObject* arg) {
+        return is<int>(arg);
+    }
+
+    template <>
+    IVW_MODULE_PYTHON3_API bool  PyValueParser::is<vec2>(PyObject* arg) {
         return testTuple<float, 2>(arg);
     }
     template <>
-    bool IVW_MODULE_PYTHON3_API PyValueParser::is<vec3>(PyObject* arg) {
+    IVW_MODULE_PYTHON3_API bool  PyValueParser::is<vec3>(PyObject* arg) {
         return testTuple<float, 3>(arg);
     }
     template <>
-    bool IVW_MODULE_PYTHON3_API PyValueParser::is<vec4>(PyObject* arg) {
+    IVW_MODULE_PYTHON3_API bool  PyValueParser::is<vec4>(PyObject* arg) {
         return testTuple<float, 4>(arg);
     }
 
     template <>
-    bool IVW_MODULE_PYTHON3_API PyValueParser::is<dvec2>(PyObject* arg) {
+    IVW_MODULE_PYTHON3_API bool  PyValueParser::is<dvec2>(PyObject* arg) {
         return testTuple<double, 2>(arg);
     }
     template <>
-    bool IVW_MODULE_PYTHON3_API PyValueParser::is<dvec3>(PyObject* arg) {
+    IVW_MODULE_PYTHON3_API bool  PyValueParser::is<dvec3>(PyObject* arg) {
         return testTuple<double, 3>(arg);
     }
     template <>
-    bool IVW_MODULE_PYTHON3_API PyValueParser::is<dvec4>(PyObject* arg) {
+    IVW_MODULE_PYTHON3_API bool  PyValueParser::is<dvec4>(PyObject* arg) {
         return testTuple<double, 4>(arg);
     }
 
     template <>
-    bool IVW_MODULE_PYTHON3_API PyValueParser::is<ivec2>(PyObject* arg) {
+    IVW_MODULE_PYTHON3_API bool  PyValueParser::is<ivec2>(PyObject* arg) {
         return testTuple<int, 2>(arg);
     }
     template <>
-    bool IVW_MODULE_PYTHON3_API PyValueParser::is<ivec3>(PyObject* arg) {
+    IVW_MODULE_PYTHON3_API bool  PyValueParser::is<ivec3>(PyObject* arg) {
         return testTuple<int, 3>(arg);
     }
     template <>
-    bool IVW_MODULE_PYTHON3_API PyValueParser::is<ivec4>(PyObject* arg) {
+    IVW_MODULE_PYTHON3_API bool  PyValueParser::is<ivec4>(PyObject* arg) {
         return testTuple<int, 4>(arg);
     }
 
     template <>
-    bool IVW_MODULE_PYTHON3_API PyValueParser::is<uvec2>(PyObject* arg) {
+    IVW_MODULE_PYTHON3_API bool  PyValueParser::is<uvec2>(PyObject* arg) {
         return testTuple<unsigned int, 2>(arg);
     }
     template <>
-    bool IVW_MODULE_PYTHON3_API PyValueParser::is<uvec3>(PyObject* arg) {
+    IVW_MODULE_PYTHON3_API bool  PyValueParser::is<uvec3>(PyObject* arg) {
         return testTuple<unsigned int, 3>(arg);
     }
     template <>
-    bool IVW_MODULE_PYTHON3_API PyValueParser::is<uvec4>(PyObject* arg) {
+    IVW_MODULE_PYTHON3_API bool  PyValueParser::is<uvec4>(PyObject* arg) {
         return testTuple<unsigned int, 4>(arg);
     }
 
     template <>
-    bool IVW_MODULE_PYTHON3_API PyValueParser::is<mat2>(PyObject* arg) {
+    IVW_MODULE_PYTHON3_API bool  PyValueParser::is<mat2>(PyObject* arg) {
         if (!PyTuple_Check(arg)) return false;
 
         if (PyTuple_Size(arg) != 2) {
@@ -610,7 +610,7 @@ namespace inviwo {
             testTuple<float, 2>(PyTuple_GetItem(arg, 1));
     }
     template <>
-    bool IVW_MODULE_PYTHON3_API PyValueParser::is<mat3>(PyObject* arg) {
+    IVW_MODULE_PYTHON3_API bool  PyValueParser::is<mat3>(PyObject* arg) {
         if (!PyTuple_Check(arg)) return false;
 
         if (PyTuple_Size(arg) != 3) {
@@ -622,7 +622,7 @@ namespace inviwo {
             testTuple<float, 3>(PyTuple_GetItem(arg, 2));
     }
     template <>
-    bool IVW_MODULE_PYTHON3_API PyValueParser::is<mat4>(PyObject* arg) {
+    IVW_MODULE_PYTHON3_API bool  PyValueParser::is<mat4>(PyObject* arg) {
         if (!PyTuple_Check(arg)) return false;
 
         if (PyTuple_Size(arg) != 4) {
@@ -636,12 +636,12 @@ namespace inviwo {
     }
 
     template <>
-    bool IVW_MODULE_PYTHON3_API PyValueParser::is<std::string>(PyObject* arg) {
+    IVW_MODULE_PYTHON3_API bool  PyValueParser::is<std::string>(PyObject* arg) {
         return PyUnicode_Check(arg);
     }
 
     template <>
-    bool IVW_MODULE_PYTHON3_API PyValueParser::is<int>(PyObject* arg) {
+    IVW_MODULE_PYTHON3_API bool  PyValueParser::is<int>(PyObject* arg) {
         return PyLong_Check(arg);
     }
 
