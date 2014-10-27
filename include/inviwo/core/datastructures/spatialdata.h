@@ -218,11 +218,11 @@ public:
         Matrix<N+1,float> mat(0.0f);
 
         for (int i=0; i<N; i++)
-            mat[i][i]=static_cast<float>(dim[i]);
+            mat[i][i]=static_cast<float>(dim[i]-1);
 
         // Offset to coordinates to center them in the middle of the texel/voxel.
         for (int i=0; i<N; i++) {
-            mat[N][i] = -0.5f;
+            mat[N][i] = 0.5f;
         }
 
         mat[N][N]=1.0f;
