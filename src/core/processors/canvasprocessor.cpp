@@ -204,14 +204,24 @@ void CanvasProcessor::saveImageLayer(std::string snapshotPath) {
         const Layer* layer = image->getColorLayer();
         if (layer){
             std::string fileExtension = URLParser::getFileExtension(snapshotPath);
-            DataWriterType<Layer>* writer =
-                DataWriterFactory::getPtr()->getWriterForTypeAndExtension<Layer>(fileExtension);
+            DataWriterType<Layer>* writer = NULL;
+            bool deleteWriter = true;
+            if(Canvas::generalLayerWriter_ && fileExtension == "png"){
+                writer = Canvas::generalLayerWriter_;
+                deleteWriter = false;
+            }
+            else{
+                DataWriterType<Layer>* writer =
+                    DataWriterFactory::getPtr()->getWriterForTypeAndExtension<Layer>(fileExtension);
+            }
 
             if (writer) {
                 try {
                     writer->setOverwrite(true);
                     writer->writeData(layer, snapshotPath);
                     LogInfo("Canvas layer exported to disk: " << snapshotPath);
+                    if(deleteWriter)
+                        delete writer;
                 } catch (DataWriterException const& e) {
                     LogError(e.getMessage());
                 }

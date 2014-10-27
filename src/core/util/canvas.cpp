@@ -34,12 +34,14 @@
 #include <inviwo/core/datastructures/geometry/mesh.h>
 #include <inviwo/core/datastructures/buffer/bufferramprecision.h>
 #include <inviwo/core/network/processornetworkevaluator.h>
+#include <inviwo/core/io/datawriterfactory.h>
 
 namespace inviwo {
 
 EventHandler* eventHandler_();
 
 Geometry* Canvas::screenAlignedRect_ = NULL;
+DataWriterType<Layer>* Canvas::generalLayerWriter_ = NULL;
 
 Canvas::Canvas(uvec2 dimensions)
     : initialized_(false)
@@ -70,12 +72,19 @@ Canvas::Canvas(uvec2 dimensions)
         screenAlignedRectMesh->addAttribute(texCoordsBuffer);
         screenAlignedRect_ = screenAlignedRectMesh;
     }
+
+    if(!generalLayerWriter_){
+        generalLayerWriter_ = DataWriterFactory::getPtr()->getWriterForTypeAndExtension<Layer>("png");
+    }
 }
 
 Canvas::~Canvas() {
     if (!shared_) {
         delete screenAlignedRect_;
         screenAlignedRect_ = NULL;
+
+        delete generalLayerWriter_;
+        generalLayerWriter_ = NULL;
     }
 
     delete pickingContainer_;
