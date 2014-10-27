@@ -45,6 +45,8 @@
 #include <inviwo/core/rendering/geometryrendererfactory.h>
 #include <inviwo/core/util/dialogfactory.h>
 
+#include <pathsexternalmodules.h>
+
 #include <algorithm>
 
 namespace inviwo {
@@ -136,7 +138,7 @@ std::string InviwoModule::getPath() const {
     }
 #ifdef IVW_EXTERNAL_MODULES_PATH_COUNT
     for(int i=0; i < IVW_EXTERNAL_MODULES_PATH_COUNT; ++i) {
-        std::string directory = externalModulePaths_[i] + "/" + moduleNameLowerCase:
+        std::string directory = externalModulePaths_[i] + "/" + moduleNameLowerCase;
         if(filesystem::directoryExists(directory)) {
             return directory;
         }
