@@ -3,7 +3,7 @@
     <!-- Don't edit the following code -->
     <ProcessorNetworkVersion content="4" />
     <Processors>
-        <Processor type="org.inviwo.CanvasGL" identifier="CanvasGL" id="ref0">
+        <Processor type="org.inviwo.CanvasGL" identifier="CanvasGL" id="ref2">
             <Properties>
                 <Property type="org.inviwo.CompositeProperty" identifier="inputSize" displayName="Input Dimension Parameters" key="inputSize">
                     <usageMode content="0" />
@@ -62,13 +62,13 @@
                     <selection content="0" />
                 </MetaDataItem>
                 <MetaDataItem type="ProcessorWidgetMetaData" key="ProcessorWidgetMetaData">
-                    <position x="1019" y="503" />
+                    <position x="235" y="477" />
                     <dimension x="256" y="256" />
                     <visibility content="1" />
                 </MetaDataItem>
             </MetaDataMap>
         </Processor>
-        <Processor type="org.inviwo.FirstIVWProcessor" identifier="FirstIVWProcessor" id="ref2">
+        <Processor type="org.inviwo.FirstIVWProcessor" identifier="FirstIVWProcessor" id="ref3">
             <Properties>
                 <Property type="org.inviwo.FloatVec3Property" identifier="color" displayName="Color" key="color">
                     <usageMode content="0" />
@@ -85,14 +85,8 @@
                 </MetaDataItem>
             </MetaDataMap>
         </Processor>
-        <Processor type="org.inviwo.TextOverlayGL" identifier="TextOverlayGL" id="ref3">
+        <Processor type="org.inviwo.TextOverlayGL" identifier="TextOverlayGL" id="ref1">
             <Properties>
-                <Property type="org.inviwo.FloatVec4Property" identifier="FloatColor" displayName="FloatColor" key="FloatColor">
-                    <usageMode content="0" />
-                    <visible content="1" />
-                    <MetaDataMap />
-                    <value x="1" y="0" z="0" w="1" />
-                </Property>
                 <Property type="org.inviwo.OptionPropertyInt" identifier="Font size" displayName="Font size" key="Font size">
                     <usageMode content="0" />
                     <visible content="1" />
@@ -104,11 +98,22 @@
                     <MetaDataMap />
                     <value x="0.2087" y="0.70869994" />
                 </Property>
+                <Property type="org.inviwo.FloatVec2Property" identifier="Reference" displayName="Reference" key="Reference">
+                    <usageMode content="0" />
+                    <visible content="1" />
+                    <MetaDataMap />
+                </Property>
                 <Property type="org.inviwo.StringProperty" identifier="Text" displayName="Text" key="Text">
                     <usageMode content="0" />
                     <visible content="1" />
                     <MetaDataMap />
                     <value content="GREEN AREA" />
+                </Property>
+                <Property type="org.inviwo.FloatVec4Property" identifier="color_" displayName="Color" key="color_">
+                    <usageMode content="0" />
+                    <visible content="1" />
+                    <MetaDataMap />
+                    <value x="1" y="0" z="0" w="1" />
                 </Property>
             </Properties>
             <MetaDataMap>
@@ -119,14 +124,8 @@
                 </MetaDataItem>
             </MetaDataMap>
         </Processor>
-        <Processor type="org.inviwo.TextOverlayGL" identifier="TextOverlayGL1" id="ref1">
+        <Processor type="org.inviwo.TextOverlayGL" identifier="TextOverlayGL1" id="ref0">
             <Properties>
-                <Property type="org.inviwo.FloatVec4Property" identifier="FloatColor" displayName="FloatColor" key="FloatColor">
-                    <usageMode content="0" />
-                    <visible content="1" />
-                    <MetaDataMap />
-                    <value x="0.15294118" y="0.090196081" z="0.83529413" w="1" />
-                </Property>
                 <Property type="org.inviwo.OptionPropertyInt" identifier="Font size" displayName="Font size" key="Font size">
                     <usageMode content="0" />
                     <visible content="1" />
@@ -138,11 +137,22 @@
                     <MetaDataMap />
                     <value x="0.2087" y="0" />
                 </Property>
+                <Property type="org.inviwo.FloatVec2Property" identifier="Reference" displayName="Reference" key="Reference">
+                    <usageMode content="0" />
+                    <visible content="1" />
+                    <MetaDataMap />
+                </Property>
                 <Property type="org.inviwo.StringProperty" identifier="Text" displayName="Text" key="Text">
                     <usageMode content="0" />
                     <visible content="1" />
                     <MetaDataMap />
                     <value content="PINK     AREA" />
+                </Property>
+                <Property type="org.inviwo.FloatVec4Property" identifier="color_" displayName="Color" key="color_">
+                    <usageMode content="0" />
+                    <visible content="1" />
+                    <MetaDataMap />
+                    <value x="0" y="0" z="1" w="1" />
                 </Property>
             </Properties>
             <MetaDataMap>
@@ -157,26 +167,26 @@
     <Connections>
         <Connection>
             <OutPort identifier="outport">
-                <Processor type="org.inviwo.TextOverlayGL" identifier="TextOverlayGL1" reference="ref1" />
+                <Processor type="org.inviwo.TextOverlayGL" identifier="TextOverlayGL1" reference="ref0" />
             </OutPort>
             <InPort identifier="inport">
-                <Processor type="org.inviwo.CanvasGL" identifier="CanvasGL" reference="ref0" />
+                <Processor type="org.inviwo.CanvasGL" identifier="CanvasGL" reference="ref2" />
             </InPort>
         </Connection>
         <Connection>
             <OutPort identifier="outport">
-                <Processor type="org.inviwo.FirstIVWProcessor" identifier="FirstIVWProcessor" reference="ref2" />
+                <Processor type="org.inviwo.TextOverlayGL" identifier="TextOverlayGL" reference="ref1" />
             </OutPort>
             <InPort identifier="inport">
-                <Processor type="org.inviwo.TextOverlayGL" identifier="TextOverlayGL" reference="ref3" />
+                <Processor type="org.inviwo.TextOverlayGL" identifier="TextOverlayGL1" reference="ref0" />
             </InPort>
         </Connection>
         <Connection>
             <OutPort identifier="outport">
-                <Processor type="org.inviwo.TextOverlayGL" identifier="TextOverlayGL" reference="ref3" />
+                <Processor type="org.inviwo.FirstIVWProcessor" identifier="FirstIVWProcessor" reference="ref3" />
             </OutPort>
             <InPort identifier="inport">
-                <Processor type="org.inviwo.TextOverlayGL" identifier="TextOverlayGL1" reference="ref1" />
+                <Processor type="org.inviwo.TextOverlayGL" identifier="TextOverlayGL" reference="ref1" />
             </InPort>
         </Connection>
     </Connections>
