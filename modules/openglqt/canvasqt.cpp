@@ -119,6 +119,7 @@ CanvasQt::CanvasQt(QWidget* parent, uvec2 dim)
       , swapBuffersAllowed_(false)
 #ifndef QT_NO_GESTURES
       , gestureMode_(false)
+      , lastType_(Qt::CustomGesture)
       , lastNumFingers_(0)
       , screenPositionNormalized_(vec2(0.f))
 #endif
@@ -385,6 +386,8 @@ void CanvasQt::exposeEvent(QExposeEvent *e){
 void CanvasQt::touchEvent(QTouchEvent* touch) {
     if (!processorNetworkEvaluator_) return;
 
+    //std::cout << "TOUCH" << std::endl;
+
     QTouchEvent::TouchPoint firstPoint = touch->touchPoints()[0];
     ivec2 pos = ivec2(static_cast<int>(glm::floor(firstPoint.pos().x())), static_cast<int>(glm::floor(firstPoint.pos().y())));
     TouchEvent::TouchState touchState;
@@ -457,6 +460,8 @@ bool CanvasQt::gestureEvent(QGestureEvent* ge) {
     QPanGesture* panGesture = NULL;
     QPinchGesture* pinchGesture = NULL;
 
+    //std::cout << "GESTURE" << std::endl;
+
     if((gesture = ge->gesture(Qt::PanGesture))){
         panGesture = static_cast<QPanGesture *>(gesture);
     }
@@ -466,16 +471,23 @@ bool CanvasQt::gestureEvent(QGestureEvent* ge) {
 
     if(panGesture && pinchGesture){
         double absDeltaDist = glm::abs(static_cast<double>(pinchGesture->scaleFactor())-1.0);
-        //std::cout << absDeltaDist << std::endl;
-        if(absDeltaDist > 0.05)
+        if(absDeltaDist > 0.05 || (lastType_ == Qt::PinchGesture || lastType_ != Qt::PanGesture)){
+            lastType_ = Qt::PinchGesture;
             pinchTriggered(pinchGesture);
-        else
+        }
+        else{
+            lastType_ = Qt::PanGesture;
             panTriggered(panGesture);
+        }
     }
     else if(panGesture){
+        lastType_ = Qt::PanGesture;
         panTriggered(panGesture);
     }
     else if(pinchGesture){
+        double absDeltaDist = glm::abs(static_cast<double>(pinchGesture->scaleFactor())-1.0);
+        if(absDeltaDist > 0.05)
+            lastType_ = Qt::PinchGesture;
         pinchTriggered(pinchGesture);
     }
 
