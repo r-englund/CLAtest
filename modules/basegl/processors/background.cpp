@@ -118,7 +118,7 @@ void Background::initializeResources() {
     shader_->getFragmentShaderObject()->addShaderDefine("BACKGROUND_STYLE_FUNCTION", shaderDefine);
 
     if (inport_.hasData()) {
-        shader_->getFragmentShaderObject()->addShaderDefine("SRC_COLOR", "texture(srcColorTex_, texCoords)");
+        shader_->getFragmentShaderObject()->addShaderDefine("SRC_COLOR", "texture(inputTex_, texCoords)");
         hadData_ = true;
     } else {
         shader_->getFragmentShaderObject()->addShaderDefine("SRC_COLOR", "vec4(0.0,0.0,0.0,0.0)");
@@ -134,30 +134,19 @@ void Background::process() {
     }
 
     utilgl::activateTarget(outport_);
-    TextureUnit srcColorUnit, srcDepthUnit;
-
-    if (inport_.hasData())
-        utilgl::bindTextures(inport_, srcColorUnit.getEnum(),srcDepthUnit.getEnum());
+    TextureUnit srcColorUnit;
+    if (inport_.hasData()) utilgl::bindColorTexture(inport_, srcColorUnit);
 
     shader_->activate();
     
-    vec2 dim = static_cast<vec2>(outport_.getDimension());
-    shader_->setUniform("screenDim_", dim);
-    shader_->setUniform("screenDimRCP_", vec2(1.0f,1.0f)/dim);
-
-    shader_->setUniform("srcColorTex_", srcColorUnit.getUnitNumber());
-    shader_->setUniform("depth_", srcDepthUnit.getUnitNumber());
-
-    if (inport_.hasData())
-        utilgl::setShaderUniforms(shader_, inport_, "srcColorParameters_");
-
-    shader_->setUniform("hasData_",inport_.hasData());
+    utilgl::setShaderUniforms(shader_, outport_, "outportParameters_");
+    shader_->setUniform("inputTex_", srcColorUnit.getUnitNumber());
     shader_->setUniform("color1_", color1_.get());
     shader_->setUniform("color2_", color2_.get());
     shader_->setUniform("checkerBoardSize_", checkerBoardSize_.get());
-    shader_->setUniform("textureSize_", (ivec2)outport_.getData()->getDimension());
     
     utilgl::singleDrawImagePlaneRect();
+
     shader_->deactivate();
     utilgl::deactivateCurrentTarget();
 }
