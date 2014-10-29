@@ -42,6 +42,8 @@
 #ifdef WIN32
 #include <windows.h>
 #include <tchar.h>
+#include <direct.h>
+#include <Shlobj.h>
 #elif defined(__APPLE__)
 #include <CoreServices/CoreServices.h>
 #else
@@ -125,7 +127,7 @@ void createDirectoryRecursivly(std::string path) {
         pathPart += "/" + v.front();
         v.erase(v.begin());
 #ifdef _WIN32 
-        mkdir(pathPart.c_str());
+        _mkdir(pathPart.c_str());
 #elif defined(__unix__) 
         mkdir(pathPart.c_str(),0755);
 #elif defined(__APPLE__)

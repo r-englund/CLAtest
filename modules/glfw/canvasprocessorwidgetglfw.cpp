@@ -33,15 +33,14 @@
 #include <modules/glfw/canvasprocessorwidgetglfw.h>
 #include <modules/glfw/canvasglfw.h>
 #include <inviwo/core/processors/canvasprocessor.h>
+#include <inviwo/core/common/inviwoapplication.h>
 
 namespace inviwo {
 
 CanvasProcessorWidgetGLFW::CanvasProcessorWidgetGLFW()
     : ProcessorWidget()
       , canvas_(0)
-      , hasSharedCanvas_(false)
-{
-}
+      , hasSharedCanvas_(false) {}
 
 CanvasProcessorWidgetGLFW::~CanvasProcessorWidgetGLFW() {}
 

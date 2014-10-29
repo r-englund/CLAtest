@@ -34,6 +34,7 @@
 #define  IVW_LINKDIALOG_SCENE_H
 
 #include <inviwo/qt/editor/inviwoqteditordefine.h>
+#include <inviwo/core/network/processornetworkobserver.h>
 #include <QMouseEvent>
 #include <QGraphicsSceneWheelEvent>
 #include <QGraphicsScene>

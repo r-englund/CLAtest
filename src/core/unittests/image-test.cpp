@@ -38,7 +38,7 @@
 #include <inviwo/core/datastructures/image/layerramprecision.h>
 #include <inviwo/core/common/inviwoapplication.h>
 #include <inviwo/core/io/datareaderfactory.h>
-
+#include <inviwo/core/util/urlparser.h>
 #include <modules/unittests/unittestsmodule.h>
 
 namespace inviwo{

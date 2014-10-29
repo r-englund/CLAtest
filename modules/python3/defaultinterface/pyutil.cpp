@@ -35,7 +35,7 @@
 #include "pyutil.h"
 
 #include <modules/python3/pythoninterface/pyvalueparser.h>
-
+#include <inviwo/core/util/systemcapabilities.h>
 #include <inviwo/core/common/inviwoapplication.h>
 #include <inviwo/core/processors/processor.h>
 #include <inviwo/core/resources/resourcemanager.h>

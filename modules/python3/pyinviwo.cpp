@@ -31,7 +31,7 @@
  *********************************************************************************/
 
 #include <modules/python3/pythonincluder.h>
-
+#include <inviwo/core/common/inviwoapplication.h>
 #include "pyinviwo.h"
 
 #include <modules/python3/pythonscript.h>

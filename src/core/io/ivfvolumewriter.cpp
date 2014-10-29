@@ -32,6 +32,7 @@
 
 #include <inviwo/core/io/ivfvolumewriter.h>
 #include <inviwo/core/util/urlparser.h>
+#include <inviwo/core/util/filesystem.h>
 #include <inviwo/core/datastructures/volume/volumeram.h>
 
 namespace inviwo {
