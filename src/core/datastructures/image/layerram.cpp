@@ -33,6 +33,7 @@
 #include <inviwo/core/datastructures/image/layerram.h>
 #include <inviwo/core/datastructures/image/layerramprecision.h>
 #include <inviwo/core/util/canvas.h>
+#include <inviwo/core/io/datawriter.h>
 
 namespace inviwo {
 
