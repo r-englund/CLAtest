@@ -3,7 +3,7 @@
     <!-- Don't edit the following code -->
     <ProcessorNetworkVersion content="4" />
     <Processors>
-        <Processor type="org.inviwo.CanvasGL" identifier="CanvasGL" id="ref3">
+        <Processor type="org.inviwo.CanvasGL" identifier="CanvasGL" id="ref0">
             <Properties>
                 <Property type="org.inviwo.CompositeProperty" identifier="inputSize" displayName="Input Dimension Parameters" key="inputSize">
                     <usageMode content="0" />
@@ -57,7 +57,7 @@
             </Properties>
             <MetaDataMap>
                 <MetaDataItem type="ProcessorMetaData" key="ProcessorMetaData">
-                    <position x="-675" y="-325" />
+                    <position x="-650" y="-350" />
                     <visibility content="1" />
                     <selection content="0" />
                 </MetaDataItem>
@@ -68,7 +68,7 @@
                 </MetaDataItem>
             </MetaDataMap>
         </Processor>
-        <Processor type="org.inviwo.GeometryRenderGL" identifier="GeometryRenderGL" id="ref0">
+        <Processor type="org.inviwo.GeometryRenderGL" identifier="GeometryRenderGL" id="ref1">
             <InteractonHandlers>
                 <InteractionHandler type="Trackball">
                     <Properties>
@@ -370,11 +370,11 @@
                 <MetaDataItem type="ProcessorMetaData" key="ProcessorMetaData">
                     <position x="-650" y="-425" />
                     <visibility content="1" />
-                    <selection content="1" />
+                    <selection content="0" />
                 </MetaDataItem>
             </MetaDataMap>
         </Processor>
-        <Processor type="org.inviwo.MeshClipping" identifier="MeshClipping" id="ref1">
+        <Processor type="org.inviwo.MeshClipping" identifier="MeshClipping" id="ref2">
             <Properties>
                 <Property type="org.inviwo.BoolProperty" identifier="clippingEnabled" displayName="Enable clipping" key="clippingEnabled">
                     <usageMode content="0" />
@@ -402,13 +402,13 @@
             </Properties>
             <MetaDataMap>
                 <MetaDataItem type="ProcessorMetaData" key="ProcessorMetaData">
-                    <position x="-600" y="-525" />
+                    <position x="-650" y="-500" />
                     <visibility content="1" />
                     <selection content="0" />
                 </MetaDataItem>
             </MetaDataMap>
         </Processor>
-        <Processor type="org.inviwo.MeshCreator" identifier="MeshCreator" id="ref2">
+        <Processor type="org.inviwo.MeshCreator" identifier="MeshCreator" id="ref3">
             <Properties>
                 <Property type="org.inviwo.OptionPropertyInt" identifier="meshType" displayName="Mesh Type" key="meshType">
                     <usageMode content="0" />
@@ -434,9 +434,57 @@
             </Properties>
             <MetaDataMap>
                 <MetaDataItem type="ProcessorMetaData" key="ProcessorMetaData">
-                    <position x="-650" y="-600" />
+                    <position x="-650" y="-650" />
                     <visibility content="1" />
                     <selection content="0" />
+                </MetaDataItem>
+            </MetaDataMap>
+        </Processor>
+        <Processor type="org.inviwo.WorldTransformGeoemtry" identifier="World Transform Geoemtry" id="ref4">
+            <Properties>
+                <Property type="org.inviwo.FloatMat4Property" identifier="matrix_" displayName="Transformation Matrix" key="matrix_">
+                    <usageMode content="0" />
+                    <visible content="1" />
+                    <MetaDataMap />
+                    <value>
+                        <row0 x="2" y="0" z="0" w="0" />
+                        <row1 x="0" y="2" z="0" w="0" />
+                        <row2 x="0" y="0" z="2" w="0" />
+                        <row3 x="-1" y="-1" z="-1" w="1" />
+                    </value>
+                </Property>
+                <Property type="org.inviwo.FloatProperty" identifier="rotationAngle" displayName="Angle" key="rotationAngle">
+                    <usageMode content="0" />
+                    <visible content="0" />
+                    <MetaDataMap />
+                </Property>
+                <Property type="org.inviwo.FloatVec3Property" identifier="rotationAxis" displayName="Axis" key="rotationAxis">
+                    <usageMode content="0" />
+                    <visible content="0" />
+                    <MetaDataMap />
+                </Property>
+                <Property type="org.inviwo.FloatVec3Property" identifier="scale" displayName="Scale" key="scale">
+                    <usageMode content="0" />
+                    <visible content="0" />
+                    <MetaDataMap />
+                </Property>
+                <Property type="org.inviwo.FloatVec3Property" identifier="translate_" displayName="Translate" key="translate_">
+                    <usageMode content="0" />
+                    <visible content="0" />
+                    <MetaDataMap />
+                </Property>
+                <Property type="org.inviwo.OptionPropertyInt" identifier="type_" displayName="Type" key="type_">
+                    <usageMode content="0" />
+                    <visible content="1" />
+                    <MetaDataMap />
+                    <selectedIdentifier content="user" />
+                </Property>
+            </Properties>
+            <MetaDataMap>
+                <MetaDataItem type="ProcessorMetaData" key="ProcessorMetaData">
+                    <position x="-650" y="-575" />
+                    <visibility content="1" />
+                    <selection content="1" />
                 </MetaDataItem>
             </MetaDataMap>
         </Processor>
@@ -444,26 +492,34 @@
     <Connections>
         <Connection>
             <OutPort identifier="image.outport">
-                <Processor type="org.inviwo.GeometryRenderGL" identifier="GeometryRenderGL" reference="ref0" />
+                <Processor type="org.inviwo.GeometryRenderGL" identifier="GeometryRenderGL" reference="ref1" />
             </OutPort>
             <InPort identifier="inport">
-                <Processor type="org.inviwo.CanvasGL" identifier="CanvasGL" reference="ref3" />
+                <Processor type="org.inviwo.CanvasGL" identifier="CanvasGL" reference="ref0" />
             </InPort>
         </Connection>
         <Connection>
             <OutPort identifier="geometry.output">
-                <Processor type="org.inviwo.MeshClipping" identifier="MeshClipping" reference="ref1" />
+                <Processor type="org.inviwo.MeshClipping" identifier="MeshClipping" reference="ref2" />
             </OutPort>
             <InPort identifier="geometry.inport">
-                <Processor type="org.inviwo.GeometryRenderGL" identifier="GeometryRenderGL" reference="ref0" />
+                <Processor type="org.inviwo.GeometryRenderGL" identifier="GeometryRenderGL" reference="ref1" />
             </InPort>
         </Connection>
         <Connection>
             <OutPort identifier="outport">
-                <Processor type="org.inviwo.MeshCreator" identifier="MeshCreator" reference="ref2" />
+                <Processor type="org.inviwo.MeshCreator" identifier="MeshCreator" reference="ref3" />
+            </OutPort>
+            <InPort identifier="inport_">
+                <Processor type="org.inviwo.WorldTransformGeoemtry" identifier="World Transform Geoemtry" reference="ref4" />
+            </InPort>
+        </Connection>
+        <Connection>
+            <OutPort identifier="outport_">
+                <Processor type="org.inviwo.WorldTransformGeoemtry" identifier="World Transform Geoemtry" reference="ref4" />
             </OutPort>
             <InPort identifier="geometry.input">
-                <Processor type="org.inviwo.MeshClipping" identifier="MeshClipping" reference="ref1" />
+                <Processor type="org.inviwo.MeshClipping" identifier="MeshClipping" reference="ref2" />
             </InPort>
         </Connection>
     </Connections>

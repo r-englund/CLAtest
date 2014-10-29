@@ -250,7 +250,6 @@ void MarchingTetrahedron::evaluate() {
     BasicMesh *mesh = new BasicMesh();
     IndexBufferRAM *indexBuffer =
         mesh->addIndexBuffer(GeometryEnums::TRIANGLES, GeometryEnums::NONE);
-    mesh->initialize();
 
     const Volume *baseVolume = dynamic_cast<const Volume *>(volume->getOwner());
     if (baseVolume) {

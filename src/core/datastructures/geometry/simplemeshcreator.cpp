@@ -38,7 +38,6 @@ namespace inviwo {
 SimpleMesh* SimpleMeshCreator::rectangularPrism(vec3 posLlf, vec3 posUrb, vec3 texCoordLlf,
         vec3 texCoordUrb, vec4 colorLlf, vec4 colorUrb) {
     SimpleMesh* recPrism = new SimpleMesh();
-    recPrism->initialize();
     // Set identity matrix
     recPrism->setBasisAndOffset(mat4(1.f));
     //8 corners
@@ -80,7 +79,6 @@ SimpleMesh* SimpleMeshCreator::parallelepiped(glm::vec3 pos, glm::vec3 p1, glm::
         glm::vec3 tex, glm::vec3 t1, glm::vec3 t2, glm::vec3 t3,
         glm::vec4 col, glm::vec4 c1, glm::vec4 c2, glm::vec4 c3) {
     SimpleMesh* ppd = new SimpleMesh();
-    ppd->initialize();
     // Set identity matrix
     ppd->setBasisAndOffset(mat4(1.f)); 
 
@@ -123,7 +121,6 @@ SimpleMesh* SimpleMeshCreator::parallelepiped(glm::vec3 pos, glm::vec3 p1, glm::
 
 SimpleMesh* SimpleMeshCreator::rectangle(vec3 posLl, vec3 posUr) {
     SimpleMesh* rec = new SimpleMesh();
-    rec->initialize();
     // Set identity matrix
     rec->setBasisAndOffset(mat4(1.f));
     vec3 texCoordLl(0,0,0);
@@ -154,7 +151,6 @@ SimpleMesh* SimpleMeshCreator::sphere(float radius, unsigned int numLoops, unsig
     numLoops = std::max(4u, numLoops);
     segmentsPerLoop = std::max(8u, segmentsPerLoop);
 
-    spheremesh->initialize();
     // Set identity matrix
     spheremesh->setBasisAndOffset(mat4(1.f));
     
@@ -216,7 +212,6 @@ SimpleMesh* SimpleMeshCreator::sphere(float radius, unsigned int numLoops, unsig
     numLoops = std::max(4u, numLoops);
     segmentsPerLoop = std::max(8u, segmentsPerLoop);
 
-    spheremesh->initialize();
     // Set identity matrix
     spheremesh->setBasisAndOffset(mat4(1.f));
 
@@ -276,7 +271,6 @@ SimpleMesh* SimpleMeshCreator::sphere(float radius, unsigned int numLoops, unsig
 SimpleMesh* SimpleMeshCreator::plane(glm::vec3 pos, glm::vec2 extent, 
                   unsigned int meshResX, unsigned int meshResY) {
     SimpleMesh* plane = new SimpleMesh();
-    plane->initialize();
     // Set identity matrix
     plane->setBasisAndOffset(mat4(1.f));
 

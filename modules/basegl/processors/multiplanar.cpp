@@ -85,7 +85,6 @@ void MultiPlanar::deinitialize() {
 
 Geometry* MultiPlanar::createSliceXYGeometry() {
     SimpleMesh* rectangle = new SimpleMesh();
-    rectangle->initialize();
     rectangle->setBasisAndOffset(mat4(1.0f));
 
     vec3 posLl(0.0, 0.0, (float)sliceXYPos_.get()/(float)sliceXYPos_.getMaxValue());
@@ -110,7 +109,6 @@ Geometry* MultiPlanar::createSliceXYGeometry() {
 
 Geometry* MultiPlanar::createSliceXZGeometry() {
     SimpleMesh* rectangle = new SimpleMesh();
-    rectangle->initialize();
     rectangle->setBasisAndOffset(mat4(1.0f));
 
     vec3 posLl(0.0, (float)sliceXZPos_.get()/(float)sliceXZPos_.getMaxValue(), 0.0);
@@ -135,7 +133,6 @@ Geometry* MultiPlanar::createSliceXZGeometry() {
 
 Geometry* MultiPlanar::createSliceYZGeometry() {
     SimpleMesh* rectangle = new SimpleMesh();
-    rectangle->initialize();
     rectangle->setBasisAndOffset(mat4(1.0f));
 
     vec3 posLl((float)sliceYZPos_.get()/(float)sliceYZPos_.getMaxValue(), 0.0, 0.0);

@@ -44,8 +44,10 @@ class IVW_CORE_API Geometry : public DataGroup, public SpatialEntity<3> {
 
 public:
     Geometry();
-    virtual ~Geometry();
+    Geometry(const Geometry& rhs);
+    Geometry& operator=(const Geometry& that);
     virtual Geometry* clone() const;
+    virtual ~Geometry();
 };
 
 } // namespace

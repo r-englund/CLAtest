@@ -68,9 +68,20 @@ Canvas::Canvas(uvec2 dimensions)
         texCoordsBufferRAM->add(vec2(1.0f, 0.0f));
         texCoordsBufferRAM->add(vec2(0.0f, 1.0f));
         texCoordsBufferRAM->add(vec2(1.0f, 1.0f));
-        Mesh* screenAlignedRectMesh = new Mesh(GeometryEnums::TRIANGLES, GeometryEnums::STRIP);
+
+        IndexBuffer* indices_ = new IndexBuffer();
+        Mesh::AttributesInfo(GeometryEnums::TRIANGLES, GeometryEnums::STRIP);
+        IndexBufferRAM* indexBufferRAM = indices_->getEditableRepresentation<IndexBufferRAM>();
+        indexBufferRAM->add(0);
+        indexBufferRAM->add(1);
+        indexBufferRAM->add(2);
+        indexBufferRAM->add(3);
+
+        Mesh* screenAlignedRectMesh = new Mesh();
         screenAlignedRectMesh->addAttribute(verticesBuffer);
         screenAlignedRectMesh->addAttribute(texCoordsBuffer);
+        screenAlignedRectMesh->addIndicies(Mesh::AttributesInfo(GeometryEnums::TRIANGLES, GeometryEnums::STRIP), indices_);
+
         screenAlignedRect_ = screenAlignedRectMesh;
     }
 

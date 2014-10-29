@@ -311,10 +311,8 @@ void VolumeSliceGL::updateIndicatorMesh() {
     delete meshCrossHair_;
     delete meshBox_;
     meshCrossHair_ = new Mesh;
-    meshCrossHair_->initialize();
     meshCrossHair_->setBasisAndOffset(mat4(1.0f));
     meshBox_ = new Mesh;
-    meshBox_->initialize();
     meshBox_->setBasisAndOffset(mat4(1.0f));
 
     uvec2 canvasSize(outport_.getDimension());

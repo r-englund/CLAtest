@@ -60,7 +60,7 @@ public:
     virtual void initialize();
     virtual void initialize(void*);
     virtual void deinitialize();
-    virtual BufferRAMPrecision* clone() const;
+    virtual BufferRAMPrecision<T>* clone() const;
 
     virtual void* getData() { return (data_->empty() ? NULL : &data_->front()); }
     virtual const void* getData() const {return (data_->empty() ? NULL : &data_->front()); }
@@ -104,11 +104,31 @@ public:
         : BufferRAMPrecision<T>(size, format, type, usage) {}
     virtual ~BufferRAMCustomPrecision() {};
 
+    BufferRAMCustomPrecision(const BufferRAMCustomPrecision<T, B>& rhs);
+
+    BufferRAMCustomPrecision<T,B>& operator=(const BufferRAMCustomPrecision<T,B>& rhs) {
+        if (this != &rhs) {
+           BufferRAMPrecision<T>::operator=(rhs);
+        }
+        return *this;
+    };
+
+    virtual BufferRAMCustomPrecision<T, B>* clone() const;
+
 private:
     static const DataFormatBase* defaultformat() {
         return  DataFormat<T, B>::get();
     }
 };
+
+template<typename T, size_t B>
+inviwo::BufferRAMCustomPrecision<T, B>::BufferRAMCustomPrecision(const BufferRAMCustomPrecision<T, B>& rhs)
+    : BufferRAMPrecision<T>(rhs) {}
+
+template<typename T, size_t B>
+BufferRAMCustomPrecision<T, B>* inviwo::BufferRAMCustomPrecision<T, B>::clone() const {
+    return new BufferRAMCustomPrecision<T,B>(*this);
+}
 
 template<typename T>
 BufferRAMPrecision<T>::BufferRAMPrecision(size_t size, const DataFormatBase* format, BufferType type, BufferUsage usage) :

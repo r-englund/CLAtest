@@ -25,7 +25,7 @@
  * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- * 
+ *
  * Contact: Erik Sundén
  *
  *********************************************************************************/
@@ -39,13 +39,15 @@
 namespace inviwo {
 
 class IVW_CORE_API SimpleMesh : public Mesh {
-
 public:
-    SimpleMesh(GeometryEnums::RenderType rt = GeometryEnums::POINTS, GeometryEnums::ConnectivityType ct = GeometryEnums::NONE);
+    SimpleMesh(GeometryEnums::RenderType rt = GeometryEnums::POINTS,
+               GeometryEnums::ConnectivityType ct = GeometryEnums::NONE);
+    SimpleMesh(const SimpleMesh& rhs);
+    SimpleMesh& operator=(const SimpleMesh& that);
+    virtual SimpleMesh* clone() const;
     virtual ~SimpleMesh();
+
     virtual void performOperation(DataOperation*) const {};
-    virtual void initialize();
-    virtual void deinitialize();
 
     void addVertex(vec3 pos, vec3 texCoord, vec4 color);
     void addIndex(unsigned int idx);
@@ -54,14 +56,8 @@ public:
     const TexCoord3dBuffer* getTexCoordList() const;
     const ColorBuffer* getColorList() const;
     const IndexBuffer* getIndexList() const;
-
-protected:
-    Position3dBuffer* vertexPositions_;
-    TexCoord3dBuffer* vertexTexCoords_;
-    ColorBuffer* vertexColors_;
-    IndexBuffer* indices_;
 };
 
-} // namespace
+}  // namespace
 
-#endif // IVW_SIMPLEMESHRAM_H
+#endif  // IVW_SIMPLEMESHRAM_H
