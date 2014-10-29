@@ -2,6 +2,10 @@
 # Inviwo Qt Application
 ivw_project(inviwo_qtminimum)
 
+if(POLICY CMP0043)
+    cmake_policy(SET CMP0043 OLD) # Ignore compile definitions.
+endif()
+
 #--------------------------------------------------------------------
 # Add source files
 set(SOURCE_FILES

@@ -6,6 +6,10 @@ else()
 cmake_minimum_required(VERSION 2.8.4)
 cmake_policy(VERSION 2.8.4)
 endif()
+if(POLICY CMP0046)
+    cmake_policy(SET CMP0046 OLD) # Missing dependencies policy.
+endif()
+
 project(inviwo-projects)
 
 # Build
