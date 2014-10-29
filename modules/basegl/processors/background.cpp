@@ -40,7 +40,7 @@ ProcessorClassIdentifier(Background, "org.inviwo.Background");
 ProcessorDisplayName(Background,  "Background");
 ProcessorTags(Background, Tags::GL);
 ProcessorCategory(Background, "Image Operation");
-ProcessorCodeState(Background, CODE_STATE_EXPERIMENTAL);
+ProcessorCodeState(Background, CODE_STATE_STABLE);
 
 Background::Background()
     : Processor()
