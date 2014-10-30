@@ -58,6 +58,8 @@ private:
     QPushButton* btnOpenTF_;
     TransferFunctionPropertyDialog* transferFunctionDialog_;
 
+    virtual void resizeEvent(QResizeEvent * event);
+
     void generateWidget();
 
 public slots:

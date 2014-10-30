@@ -102,6 +102,8 @@ ProcessorTreeWidget::ProcessorTreeWidget(QWidget* parent) : InviwoDockWidget(tr(
     processorTree_ = new ProcessorTree(this);
     processorTree_->setHeaderHidden(true);
     processorTree_->setColumnCount(2);
+    processorTree_->setIndentation(10);
+    processorTree_->setAnimated(true);
     processorTree_->header()->setStretchLastSection(false);
     #if (QT_VERSION >= QT_VERSION_CHECK(5, 0, 0))
     processorTree_->header()->setSectionResizeMode(0, QHeaderView::Stretch);

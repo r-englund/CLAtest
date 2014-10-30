@@ -38,6 +38,8 @@
 #include <QLabel>
 #include <QWidget>
 #include <QMenu>
+#include <QLineEdit>
+#include <QPushButton>
 #include <inviwo/qt/widgets/inviwodockwidget.h>
 #include <inviwo/core/properties/propertyvisibility.h>
 #include <inviwo/core/properties/propertywidget.h>
@@ -52,6 +54,26 @@ IVW_QTWIDGETS_API enum InviwoWidgetGraphicsItemType {
 };
 
 class Property;
+
+class IVW_QTWIDGETS_API IvwLineEdit : public QLineEdit {
+    Q_OBJECT
+public:
+    IvwLineEdit(QWidget* parent);
+    virtual ~IvwLineEdit();
+
+    QSize sizeHint() const;
+};
+
+class IVW_QTWIDGETS_API IvwPushButton : public QPushButton {
+    Q_OBJECT
+public:
+    IvwPushButton(QWidget* parent);
+    virtual ~IvwPushButton();
+
+    QSize sizeHint() const;
+    QSize minimumSizeHint() const;
+};
+
 
 class IVW_QTWIDGETS_API PropertyWidgetQt : public QWidget, public PropertyWidget {
     Q_OBJECT

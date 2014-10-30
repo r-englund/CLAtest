@@ -66,8 +66,7 @@ void TransferFunctionPropertyWidgetQt::generateWidget() {
     hLayout->setContentsMargins(0, 0, 0, 0);
     hLayout->setSpacing(7);
 
-    btnOpenTF_ = new QPushButton();
-    btnOpenTF_->setFixedSize(180, 20);
+    btnOpenTF_ = new IvwPushButton(this);
 
     label_ = new EditableLabelQt(this, property_->getDisplayName());
     hLayout->addWidget(label_);
@@ -89,10 +88,11 @@ void TransferFunctionPropertyWidgetQt::generateWidget() {
 }
 
 void TransferFunctionPropertyWidgetQt::updateFromProperty() {
-    int gradientWidth = btnOpenTF_->width();
+    QSize gradientSize = btnOpenTF_->size() - QSize(2, 2);
+
     QLinearGradient* gradient = transferFunctionDialog_->getTFGradient();
-    gradient->setFinalStop(gradientWidth, 0);
-    QPixmap tfPixmap(gradientWidth, btnOpenTF_->height());
+    gradient->setFinalStop(gradientSize.width(), 0);
+    QPixmap tfPixmap(gradientSize);
     QPainter tfPainter(&tfPixmap);
     QPixmap checkerBoard(10, 10);
     QPainter checkerBoardPainter(&checkerBoard);
@@ -101,33 +101,34 @@ void TransferFunctionPropertyWidgetQt::updateFromProperty() {
     checkerBoardPainter.fillRect(0, 5, 5, 5, Qt::darkGray);
     checkerBoardPainter.fillRect(5, 5, 5, 5, Qt::lightGray);
     checkerBoardPainter.end();
-    tfPainter.fillRect(0, 0, gradientWidth, btnOpenTF_->height(), QBrush(checkerBoard));
-    tfPainter.fillRect(0, 0, gradientWidth, btnOpenTF_->height(), *gradient);
-    // Cast for convenience (safe to static cast since we know that property_ is a TransferFunctionProperty)
+    tfPainter.fillRect(0, 0, gradientSize.width(), gradientSize.height(), QBrush(checkerBoard));
+    tfPainter.fillRect(0, 0, gradientSize.width(), gradientSize.height(), *gradient);
+    // Cast for convenience (safe to static cast since we know that property_ is a
+    // TransferFunctionProperty)
     TransferFunctionProperty* tfProperty = static_cast<TransferFunctionProperty*>(property_);
     // draw masking indicators
     if (tfProperty->getMask().x > 0.0f) {
-        tfPainter.fillRect(0, 0,
-                           static_cast<int>(tfProperty->getMask().x*gradientWidth), btnOpenTF_->height(),
-                           QColor(25,25,25,100));
+        tfPainter.fillRect(0, 0, static_cast<int>(tfProperty->getMask().x * gradientSize.width()),
+                           btnOpenTF_->height(), QColor(25, 25, 25, 100));
 
-        tfPainter.drawLine(static_cast<int>(tfProperty->getMask().x*gradientWidth), 0,
-                           static_cast<int>(tfProperty->getMask().x*gradientWidth), btnOpenTF_->height());
+        tfPainter.drawLine(static_cast<int>(tfProperty->getMask().x * gradientSize.width()), 0,
+                           static_cast<int>(tfProperty->getMask().x * gradientSize.width()),
+                           btnOpenTF_->height());
     }
 
     if (tfProperty->getMask().y < 1.0f) {
-        tfPainter.fillRect(static_cast<int>(tfProperty->getMask().y*gradientWidth),
-                           0,
-                           static_cast<int>((1.0f - tfProperty->getMask().y)*gradientWidth)+1,
-                           btnOpenTF_->height(),
-                           QColor(25,25,25,150));
-        
-        tfPainter.drawLine(static_cast<int>(tfProperty->getMask().y*gradientWidth), 0,
-                           static_cast<int>(tfProperty->getMask().y*gradientWidth), btnOpenTF_->height());
+        tfPainter.fillRect(
+            static_cast<int>(tfProperty->getMask().y * gradientSize.width()), 0,
+            static_cast<int>((1.0f - tfProperty->getMask().y) * gradientSize.width()) + 1,
+            btnOpenTF_->height(), QColor(25, 25, 25, 150));
+
+        tfPainter.drawLine(static_cast<int>(tfProperty->getMask().y * gradientSize.width()), 0,
+                           static_cast<int>(tfProperty->getMask().y * gradientSize.width()),
+                           btnOpenTF_->height());
     }
 
     btnOpenTF_->setIcon(tfPixmap);
-    btnOpenTF_->setIconSize(btnOpenTF_->size());
+    btnOpenTF_->setIconSize(gradientSize);
 
     this->setDisabled(property_->getReadOnly());
 }
@@ -140,6 +141,12 @@ void TransferFunctionPropertyWidgetQt::openTransferFunctionDialog() {
 
 void TransferFunctionPropertyWidgetQt::setPropertyDisplayName() {
     property_->setDisplayName(label_->getText());
+}
+
+// Needed to resize the graident preview.
+void TransferFunctionPropertyWidgetQt::resizeEvent(QResizeEvent* event) {
+    updateFromProperty();
+    PropertyWidgetQt::resizeEvent(event);
 }
 
 }//namespace

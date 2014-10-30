@@ -126,8 +126,6 @@ public slots:
     void setPropertyValue();
     bool writeToFile();
     bool writeToString();
-    void setPropertyDisplayName();
-
 };
 
 

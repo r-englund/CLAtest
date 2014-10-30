@@ -56,10 +56,7 @@ void ColorPropertyWidgetQt::generateWidget() {
     currentColor_ = new QColor();
     colorDialog_ = new QColorDialog(this);
     colorDialog_->setOption(QColorDialog::ShowAlphaChannel, true);
-    btnColor_ = new QPushButton(this);
-    btnColor_->setFixedWidth(100);
-    btnColor_->setFixedHeight(20);
-
+    btnColor_ = new IvwPushButton(this);
     btnColor_->setEnabled(!property_->getReadOnly());
 
     connect(btnColor_, SIGNAL(clicked()), this, SLOT(openColorDialog()));

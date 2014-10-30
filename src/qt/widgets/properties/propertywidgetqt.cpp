@@ -48,6 +48,20 @@
 
 namespace inviwo {
 
+IvwLineEdit::IvwLineEdit(QWidget* parent) : QLineEdit(parent) {}
+IvwLineEdit::~IvwLineEdit() {}
+QSize IvwLineEdit::sizeHint() const { return QSize(18, 18); }
+
+IvwPushButton::IvwPushButton(QWidget* parent) : QPushButton(parent) {
+    QSizePolicy sp = sizePolicy();
+    sp.setHorizontalPolicy(QSizePolicy::Minimum);
+    sp.setHorizontalStretch(3);
+    setSizePolicy(sp);
+}
+IvwPushButton::~IvwPushButton() {}
+QSize IvwPushButton::sizeHint() const { return QSize(18, 18); }
+QSize IvwPushButton::minimumSizeHint() const { return sizeHint(); }
+
 int PropertyWidgetQt::MINIMUM_WIDTH = 250;
 int PropertyWidgetQt::SPACING = 7;
 int PropertyWidgetQt::MARGIN = 0;
@@ -186,8 +200,6 @@ void PropertyWidgetQt::paintEvent(QPaintEvent* pe) {
     QPainter p(this);
     style()->drawPrimitive(QStyle::PE_Widget, &o, &p, this);
 };
-
-//void PropertyWidgetQt::visibilityModified(int mode) {}
 
 void PropertyWidgetQt::generateContextMenu() {
     if (!contextMenu_) {
