@@ -146,7 +146,6 @@ float Volume::getWorldSpaceGradientSpacing() const {
     // Project x-axis onto the y-axis. 
     // Distance from that point to the x-axis will be the shortest distance 
     vec3 distanceToSide;
-    vec3 projectedAxes[3]; 
     // Project x onto y axis, x onto z axis and y onto z axis
     vec3 xOntoY = voxelSpaceBasis[1]*glm::dot(voxelSpaceBasis[0], voxelSpaceBasis[1]);
     vec3 xOntoZ = voxelSpaceBasis[2]*glm::dot(voxelSpaceBasis[0], voxelSpaceBasis[2]);

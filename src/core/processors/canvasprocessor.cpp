@@ -211,8 +211,7 @@ void CanvasProcessor::saveImageLayer(std::string snapshotPath) {
                 deleteWriter = false;
             }
             else{
-                DataWriterType<Layer>* writer =
-                    DataWriterFactory::getPtr()->getWriterForTypeAndExtension<Layer>(fileExtension);
+                writer = DataWriterFactory::getPtr()->getWriterForTypeAndExtension<Layer>(fileExtension);
             }
 
             if (writer) {

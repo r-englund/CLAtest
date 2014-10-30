@@ -122,8 +122,8 @@ void HeightFieldMapper::process() {
     }
     
 
-    std::ostringstream str;
-    const DataFormatBase* format2 = outImg->getDataFormat();
+    //std::ostringstream str;
+    //const DataFormatBase* format2 = outImg->getDataFormat();
 
     //str << "Input Image:"
     //    << "\ndim: " << glm::to_string(srcImg->getDimension())

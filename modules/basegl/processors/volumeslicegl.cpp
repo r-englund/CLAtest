@@ -269,8 +269,6 @@ float VolumeSliceGL::getNormalizedSliceNumber() const {
 
 void VolumeSliceGL::renderPositionIndicator() {
     if (meshDirty_) {
-
-        mat4 basis = inport_.getData()->getBasisAndOffset();
         vec4 pos(static_cast<float>(sliceX_.get()), static_cast<float>(sliceY_.get()),
             static_cast<float>(sliceZ_.get()), 1.0f);
 

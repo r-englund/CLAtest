@@ -401,7 +401,6 @@ Image* ImageOutport::getResizedImageData(uvec2 requiredDimensions) {
 
     // TODO: Map traverse is expensive. Optimize
     for (ImagePortMap::iterator it = imageDataMap_.begin(); it != imageDataMap_.end(); ++it) {
-        uvec2 mapDataDimensions = it->second->getDimension();
         if (it->second->getDimension() == requiredDimensions){ 
             return it->second;
         }

@@ -120,7 +120,6 @@ TextEditorWidgetQt::~TextEditorWidgetQt() {
 }
 
 void TextEditorWidgetQt::generateWidget() {
-    QLayout* layout;
     QHBoxLayout* hLayout = new QHBoxLayout();
     hLayout->setContentsMargins(0, 0, 0, 0);
     hLayout->setSpacing(0);
@@ -131,16 +130,14 @@ void TextEditorWidgetQt::generateWidget() {
     if (dynamic_cast<FileProperty*>(property_)) {
         fileWidget_ = new FilePropertyWidgetQt(static_cast<FileProperty*>(property_));
         connect(btnEdit_, SIGNAL(clicked()), this, SLOT(editFile()));
-        layout = fileWidget_->layout();
+        fileWidget_->layout()->addWidget(btnEdit_);
         hLayout->addWidget(fileWidget_);
     } else if (dynamic_cast<StringProperty*>(property_)) {
         stringWidget_ = new StringPropertyWidgetQt(static_cast<StringProperty*>(property_));
         connect(btnEdit_, SIGNAL(clicked()), this, SLOT(editString()));
-        layout = stringWidget_->layout();
+        stringWidget_->layout()->addWidget(btnEdit_);
         hLayout->addWidget(stringWidget_);
     }
-
-    layout->addWidget(btnEdit_);
 
     setLayout(hLayout);
 

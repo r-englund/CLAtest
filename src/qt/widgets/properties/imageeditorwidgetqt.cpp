@@ -535,7 +535,6 @@ ImageEditorWidgetQt::~ImageEditorWidgetQt() {
 }
 
 void ImageEditorWidgetQt::generateWidget() {
-    QLayout* layout;
     QHBoxLayout* hLayout = new QHBoxLayout();
     hLayout->setContentsMargins(0, 0, 0, 0);
     hLayout->setSpacing(0);
@@ -546,11 +545,9 @@ void ImageEditorWidgetQt::generateWidget() {
     if (dynamic_cast<FileProperty*>(property_)) {
         fileWidget_ = new FilePropertyWidgetQt(static_cast<FileProperty*>(property_));
         connect(btnEdit_,SIGNAL(clicked()),this,SLOT(editImageLabel()));
-        layout = fileWidget_->layout();
+        fileWidget_->layout()->addWidget(btnEdit_);
         hLayout->addWidget(fileWidget_);
     }
-
-    layout->addWidget(btnEdit_);
     setLayout(hLayout);
     
     imageLabelWidget_= new ImageLabelWidget();

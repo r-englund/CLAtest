@@ -202,9 +202,9 @@ void HeightFieldProcessor::heightfieldChanged() {
     if (!inportHeightfield_.isConnected())
         return;
 
-    std::ostringstream str;
-    const Image *img = inportHeightfield_.getData();
-    const DataFormatBase* format = img->getDataFormat();
+    //std::ostringstream str;
+    //const Image *img = inportHeightfield_.getData();
+    //const DataFormatBase* format = img->getDataFormat();
 
     //str << "Heightfield Port Properties:"
     //    << "\ndim: " << glm::to_string(img->getDimension())

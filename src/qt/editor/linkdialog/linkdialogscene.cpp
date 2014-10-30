@@ -51,13 +51,13 @@ LinkDialogGraphicsScene::LinkDialogGraphicsScene(QWidget* parent)
     : QGraphicsScene(parent)
     , src_(0)
     , dest_(0)
+    , currentScrollSteps_(0)
     , linkCurve_(0)
     , startProperty_(0)
     , endProperty_(0)
     , processorNetwork_(0)
     , expandProperties_(false)
-    , mouseOnLeftSide_(false)
-    , currentScrollSteps_(0) {
+    , mouseOnLeftSide_(false) {
 
     // The defalt bsp tends to crash...  
     setItemIndexMethod(QGraphicsScene::NoIndex);
