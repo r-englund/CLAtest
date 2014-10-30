@@ -211,6 +211,10 @@ void PropertyListWidget::setUsageMode(UsageMode usageMode) {
     for (WidgetMap::const_iterator it = widgetMap_.begin(); it != widgetMap_.end(); it++) {
         CollapsibleGroupBoxWidgetQt* widget = it->second;
 
+        if (listLayout_->indexOf(widget) < 0) {  // Not in the layout yet.    
+            listLayout_->insertWidget(0, widget, 0, Qt::AlignTop);
+        }
+
         widget->updateVisibility();
 
         if (usageMode == DEVELOPMENT) {
