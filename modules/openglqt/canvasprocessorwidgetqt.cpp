@@ -36,10 +36,6 @@
 #include <inviwo/core/common/inviwoapplication.h>
 #include <QGridLayout>
 
-#if defined(__APPLE__) && (QT_VERSION >= QT_VERSION_CHECK(5, 1, 0))
-//#define USE_QWINDOW
-#endif
-
 namespace inviwo {
 
 CanvasProcessorWidgetQt::CanvasProcessorWidgetQt()
@@ -58,7 +54,9 @@ CanvasProcessorWidgetQt::~CanvasProcessorWidgetQt() {
     }
 }
 
-ProcessorWidget* CanvasProcessorWidgetQt::create() const { return new CanvasProcessorWidgetQt(); }
+ProcessorWidget* CanvasProcessorWidgetQt::create() const {
+    return new CanvasProcessorWidgetQt();
+}
 
 void CanvasProcessorWidgetQt::initialize() {
     ProcessorWidgetQt::initialize();
@@ -88,11 +86,12 @@ void CanvasProcessorWidgetQt::initialize() {
     container->setAttribute(Qt::WA_OpaquePaintEvent);
     gridLayout->addWidget(container, 0, 0);
     setLayout(gridLayout);
-    setWindowFlags(Qt::Window
-#ifndef WIN32
-                   | Qt::WindowStaysOnTopHint
+    
+#ifdef WIN32
+    setWindowFlags(Qt::Window);
+#else
+    setWindowFlags(Qt::Tool);
 #endif
-                   );
 
     canvasProcessor->setCanvas(static_cast<Canvas*>(canvas_));
     canvas_->setNetworkEvaluator(InviwoApplication::getPtr()->getProcessorNetworkEvaluator());
