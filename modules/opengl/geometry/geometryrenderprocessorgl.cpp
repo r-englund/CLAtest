@@ -175,7 +175,8 @@ void GeometryRenderProcessorGL::process() {
     }
 
     if (polygonMode_.get()==GL_LINE) {
-        glEnable(GL_LINE_SMOOTH);
+        // FIX: disabled line smoothing to avoid blending artifacts with background (issue #611)
+        //glEnable(GL_LINE_SMOOTH);
         glLineWidth((GLfloat)renderPointSize_.get());
     }
     else if (polygonMode_.get()==GL_POINT)
@@ -188,8 +189,10 @@ void GeometryRenderProcessorGL::process() {
         (*it)->render();
     }
 
-    if (polygonMode_.get()==GL_LINE)
-        glDisable(GL_LINE_SMOOTH);
+    if (polygonMode_.get()==GL_LINE) {
+        // FIX: disabled line smoothing to avoid blending artifacts with background (issue #611)
+        //glDisable(GL_LINE_SMOOTH);
+    }
 
     shader_->deactivate();
 
