@@ -163,20 +163,22 @@ void LinkDialogPropertyGraphicsItem::updatePositionBasedOnIndex(float animateExp
     //LogWarn("SubProperty Level is : " << subPropertyLevel_ << " Index " << index_ << " Mapped dim y" << propertyMappedDim.y() << " (" << px << "," << py << ")")
 }
 
-void LinkDialogPropertyGraphicsItem::expand() {
+void LinkDialogPropertyGraphicsItem::expand(bool expandSubProperties) {
     if (!subPropertyGraphicsItems_.size()) return;
     isExpanded_ = true;
+    if (!expandSubProperties) return;
     for (size_t i=0; i<subPropertyGraphicsItems_.size(); i++) {
-        subPropertyGraphicsItems_[i]->expand();
+        subPropertyGraphicsItems_[i]->expand(false);
         subPropertyGraphicsItems_[i]->show();
     }
 }
 
-void LinkDialogPropertyGraphicsItem::collapse() {
+void LinkDialogPropertyGraphicsItem::collapse(bool collapseSubProperties) {
     if (!subPropertyGraphicsItems_.size()) return;
     isExpanded_ = false;
+    if (!collapseSubProperties) return;
     for (size_t i=0; i<subPropertyGraphicsItems_.size(); i++) {
-        subPropertyGraphicsItems_[i]->collapse();
+        subPropertyGraphicsItems_[i]->collapse(false);
         subPropertyGraphicsItems_[i]->hide();
     }
 }

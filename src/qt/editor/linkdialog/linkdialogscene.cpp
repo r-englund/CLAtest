@@ -76,6 +76,33 @@ QGraphicsItem* LinkDialogGraphicsScene::getPropertyGraphicsItemOf(Property* prop
                 break;
             }
         }
+
+        if (graphicsItem) break;
+    }
+
+    if (!graphicsItem) {
+        //This is slightly expensive search to do it only if you don't find required item in direct children
+        for (size_t i = 0; i < processorGraphicsItems_.size(); i++) {
+
+            std::vector<LinkDialogPropertyGraphicsItem*> propertyItems =
+                processorGraphicsItems_[i]->getPropertyItemList();
+
+            for (size_t j = 0; j < propertyItems.size(); j++) {
+                std::vector<LinkDialogPropertyGraphicsItem*> subPropertyItems =
+                    propertyItems[j]->getSubPropertyItemList(true);
+
+                for (size_t k = 0; k < subPropertyItems.size(); k++) {
+                    if ( subPropertyItems[k]->getGraphicsItemData() == property) {
+                        graphicsItem = subPropertyItems[k];
+                        break;
+                    }
+                }
+
+                if (graphicsItem) break;
+            }
+
+            if (graphicsItem) break;
+        }
     }
 
     return graphicsItem;
@@ -331,8 +358,8 @@ void LinkDialogGraphicsScene::expandOrCollapseLinkedPropertyItems(LinkDialogProp
 
         propertyItem->setAnimate(true);
 
-        if (expand) propertyItem->expand();
-        else propertyItem->collapse();
+        if (expand) propertyItem->expand(true);
+        else propertyItem->collapse(true);
 
         std::vector<LinkDialogPropertyGraphicsItem*> subProps = propertyItem->getSubPropertyItemList(true);
         for (size_t i=0; i<subProps.size(); i++) {
@@ -343,8 +370,8 @@ void LinkDialogGraphicsScene::expandOrCollapseLinkedPropertyItems(LinkDialogProp
                     LinkDialogPropertyGraphicsItem* endP =
                         qgraphicsitem_cast<LinkDialogPropertyGraphicsItem*>(getPropertyGraphicsItemOf(parentProperty));
                     endP->setAnimate(true);
-                    if (expand) endP->expand();
-                    else endP->collapse();
+                    if (expand) endP->expand(true);
+                    else endP->collapse(true);
 
                 }
             }
