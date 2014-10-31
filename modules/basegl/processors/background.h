@@ -74,7 +74,6 @@ private:
     IntVec2Property checkerBoardSize_;
     ButtonProperty switchColors_;
     Shader* shader_;
-
     bool hadData_;
 };
 

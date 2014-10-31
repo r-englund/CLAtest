@@ -52,16 +52,17 @@ public:
         AttributesInfo(GeometryEnums::RenderType r, GeometryEnums::ConnectivityType c) : rt(r), ct(c) {}
     };
 
+    typedef std::vector<std::pair<AttributesInfo, IndexBuffer*> > IndexVector; 
+
     Mesh();
     Mesh(const Mesh& rhs);
-    Mesh(GeometryEnums::RenderType rt, GeometryEnums::ConnectivityType ct);
+    Mesh& operator=(const Mesh& that);
+    virtual Mesh* clone() const;
     virtual ~Mesh();
     virtual std::string getDataInfo() const;
 
     virtual void performOperation(DataOperation*) const {};
-    virtual void initialize();
-    virtual void deinitialize();
-    virtual Mesh* clone() const;
+
     /**
      * Add a buffer with rendering data, such as positions/colors/normals. 
      *
@@ -88,8 +89,8 @@ public:
      */
     void addIndicies(AttributesInfo info, IndexBuffer* ind);
 
-    const std::vector<Buffer*>& getBuffers() { return attributes_; }
-    const std::vector<std::pair<AttributesInfo, IndexBuffer*> >& getIndexBuffers() { return indexAttributes_; }
+    const std::vector<Buffer*>& getBuffers() const;
+    const IndexVector& getIndexBuffers() const;
 
     const Buffer* getAttributes(size_t idx) const;
     const Buffer* getIndicies(size_t idx) const;
@@ -106,9 +107,9 @@ public:
 protected:
     std::vector<Buffer*> attributes_;
     std::vector<bool> attributesOwnership_; // Indicates if the Mesh owns the corresponding Buffer in attributes_
-    AttributesInfo attributesInfo_;
-    std::vector<std::pair<AttributesInfo, IndexBuffer*> > indexAttributes_;
+    IndexVector indexAttributes_;
 
+    void deinitialize();
 };
 
 } // namespace

@@ -91,6 +91,9 @@ public:
     virtual std::vector<unsigned char>* writeDataToBuffer(const T* data, const std::string fileType) const {
         return NULL;
     }
+    virtual bool writeDataToRepresentation(const DataRepresentation* src, DataRepresentation* dst) const {
+        return false;
+    }
 };
 
 

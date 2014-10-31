@@ -25,7 +25,7 @@
  * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- * 
+ *
  * Contact: Rickard Englund
  *
  *********************************************************************************/
@@ -38,19 +38,17 @@
 
 namespace inviwo {
 
-    class PyInviwo;
+class PyInviwo;
 
 class IVW_MODULE_PYTHON3_API Python3Module : public InviwoModule {
-
 public:
     Python3Module();
     virtual ~Python3Module();
-
 
 private:
     PyInviwo* pyInviwo_;
 };
 
-} // namespace
+}  // namespace
 
-#endif // IVW_PYTHON3MODULE_H
+#endif  // IVW_PYTHON3MODULE_H

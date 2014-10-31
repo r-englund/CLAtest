@@ -482,12 +482,12 @@ typedef struct {
 } sigar_disk_usage_t;
 
 /* XXX for sigar_file_system_usage_t compat */
-#define disk_reads disk.reads
-#define disk_writes disk.writes
-#define disk_write_bytes disk.write_bytes
-#define disk_read_bytes disk.read_bytes
-#define disk_queue disk.queue
-#define disk_service_time disk.service_time
+//#define disk_reads disk.reads
+//#define disk_writes disk.writes
+//#define disk_write_bytes disk.write_bytes
+//#define disk_read_bytes disk.read_bytes
+//#define disk_queue disk.queue
+//#define disk_service_time disk.service_time
 
 typedef struct {
     sigar_disk_usage_t disk;

@@ -202,7 +202,6 @@ protected:
     QLabel* labelPositionX_;
     QLabel* labelPositionY_;
     float sceneScaleFactor_;
-    /*void showEvent(QShowEvent *);*/
 };
 
 /////////////////////////////////////////////////
@@ -228,7 +227,6 @@ public slots:
     void editImageLabel();
     void setPropertyValue();
     bool writeImageLabel();
-    void setPropertyDisplayName();
 };
 
 

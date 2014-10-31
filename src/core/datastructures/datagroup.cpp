@@ -40,7 +40,7 @@ DataGroup::DataGroup()
 }
 
 DataGroup::DataGroup(const DataGroup& rhs)
-    : BaseData()
+    : BaseData(rhs)
     , editableUpdate_(false) {
 }
 

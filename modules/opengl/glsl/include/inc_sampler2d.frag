@@ -33,13 +33,7 @@
 uniform vec2 screenDim_;
 uniform vec2 screenDimRCP_;
 
-#define TEXTURE_TYPE sampler2D
-
-struct TEXTURE_PARAMETERS {
-    vec2 dimensions_;
-    vec2 dimensionsRCP_;
-};
-
+#include "utils/structs.glsl"
 
 vec4 textureLookup2Dnormalized(TEXTURE_TYPE tex, TEXTURE_PARAMETERS textureParams, vec2 samplePos) {
     return texture(tex, samplePos);

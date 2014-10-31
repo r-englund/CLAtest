@@ -31,6 +31,7 @@
  *********************************************************************************/
 
 #include "meshclipping.h"
+#include <inviwo/core/datastructures/geometry/basicmesh.h>
 #include <inviwo/core/datastructures/geometry/edge.h>
 #include <inviwo/core/datastructures/geometry/polygon.h>
 #include <inviwo/core/datastructures/geometry/simplemeshcreator.h>
@@ -239,24 +240,41 @@ std::vector<EdgeIndex> triangleListtoEdgeList(const std::vector<unsigned int>* t
 }
 
 Geometry* MeshClipping::clipGeometryAgainstPlaneRevised(const Geometry* in, Plane plane) {
+    GeometryEnums::ConnectivityType indexAttrInfo;
+    const std::vector<vec3>* vertexList;
+    const std::vector<vec3>* texcoordlist;
+    const std::vector<vec4>* colorList;
+    const std::vector<unsigned int>* triangleList;
+    
     const SimpleMesh* inputMesh = dynamic_cast<const SimpleMesh*>(in);
-
-    if (!inputMesh) {
-        LogError("Can only clip a SimpleMesh*");
-        return NULL;
+    if (inputMesh) {
+        vertexList = inputMesh->getVertexList()->getRepresentation<Position3dBufferRAM>()->getDataContainer();
+        texcoordlist = inputMesh->getTexCoordList()->getRepresentation<TexCoord3dBufferRAM>()->getDataContainer();
+        colorList = inputMesh->getColorList()->getRepresentation<ColorBufferRAM>()->getDataContainer();
+        triangleList = inputMesh->getIndexList()->getRepresentation<IndexBufferRAM>()->getDataContainer();
+        indexAttrInfo = inputMesh->getIndexAttributesInfo(0).ct;
+    } else {
+        // TODO do clipping in all the index list now we only consider the first one 
+        const BasicMesh* inputMesh = dynamic_cast<const BasicMesh*>(in);
+        if(inputMesh) {
+            vertexList = inputMesh->getVertices()->getRepresentation<Position3dBufferRAM>()->getDataContainer();
+            texcoordlist = inputMesh->getTexCoords()->getRepresentation<TexCoord3dBufferRAM>()->getDataContainer();
+            colorList = inputMesh->getColors()->getRepresentation<ColorBufferRAM>()->getDataContainer();
+            triangleList = inputMesh->getIndexBuffers()[0].second->getRepresentation<IndexBufferRAM>()->getDataContainer();
+            indexAttrInfo = inputMesh->getIndexBuffers()[0].first.ct;
+        } else {
+            LogError("Unsupported mesh type, only simeple and basic meshes are supported");
+            return NULL;
+        }
     }
 
-    const std::vector<vec3>* vertexList = inputMesh->getVertexList()->getRepresentation<Position3dBufferRAM>()->getDataContainer();
-    const std::vector<vec3>* texcoordlist = inputMesh->getTexCoordList()->getRepresentation<TexCoord3dBufferRAM>()->getDataContainer();
-    const std::vector<vec4>* colorList = inputMesh->getColorList()->getRepresentation<ColorBufferRAM>()->getDataContainer();
-    const std::vector<unsigned int>* triangleList = inputMesh->getIndexList()->getRepresentation<IndexBufferRAM>()->getDataContainer();
+
     SimpleMesh* outputMesh = new SimpleMesh(GeometryEnums::TRIANGLES);
-    outputMesh->initialize();
 
     //Check if we are using indicies
     if (triangleList->size() > 0) {
         //Check if it is a Triangle Strip
-        if (inputMesh->getIndexAttributesInfo(0).ct == GeometryEnums::STRIP) {
+        if (indexAttrInfo == GeometryEnums::STRIP) {
             // Iterate over edges by edge
             unsigned int idx[3];
             std::vector<vec3> newVertices;
@@ -803,7 +821,6 @@ Geometry* MeshClipping::clipGeometryAgainstPlane(const Geometry* in, Plane plane
     // Bygg ny SimpleMesh här från outputList-vektor
     //LogInfo("Buildning new mesh from clipped vertices.");
     SimpleMesh* outputMesh = new SimpleMesh();
-    outputMesh->initialize();
 
     for (unsigned int i=0; i<outputList.size(); ++i) {
         outputMesh->addVertex(outputList.at(i), glm::vec3(1.f), glm::vec4(1.,i/(float)outputList.size(),0.,1.0f));

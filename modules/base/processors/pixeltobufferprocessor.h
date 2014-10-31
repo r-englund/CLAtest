@@ -40,7 +40,8 @@
 #include <inviwo/core/ports/bufferport.h>
 #include <inviwo/core/ports/imageport.h>
 #include <inviwo/core/properties/ordinalproperty.h>
-
+#include <inviwo/core/properties/buttonproperty.h>
+#include <inviwo/core/properties/boolproperty.h>
 
 namespace inviwo {
 

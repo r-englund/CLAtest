@@ -42,35 +42,46 @@
 namespace inviwo {
 BasicMesh::BasicMesh()
     : Mesh() {
-        
-    vertices_ = new Position3dBuffer();
-    addAttribute(vertices_);
-    
-    texCoords_ = new TexCoord3dBuffer();
-    addAttribute(texCoords_);
-    
-    colors_ = new ColorBuffer();
-    addAttribute(colors_);
-    
-    normals_ = new NormalBuffer();
-    addAttribute(normals_);
-        
+    addAttribute(new Position3dBuffer()); // pos 0
+    addAttribute(new TexCoord3dBuffer()); // pos 1
+    addAttribute(new ColorBuffer());      // pos 2
+    addAttribute(new NormalBuffer());     // pos 3 
+}
+
+BasicMesh::BasicMesh(const BasicMesh& rhs) 
+    : Mesh(rhs) {}
+
+BasicMesh& BasicMesh::operator=(const BasicMesh& that) {
+    if (this != &that) {
+        Mesh::operator=(that);
+    }
+    return *this;
+}
+
+BasicMesh* BasicMesh::clone() const {
+    return new BasicMesh(*this);
 }
 
 BasicMesh::~BasicMesh() {
 }
- 
-    
-void BasicMesh::addVertex(vec3 pos, vec3 normal, vec3 texCoord, vec4 color){
-    vertices_->getEditableRepresentation<Position3dBufferRAM>()->add(pos);
-    normals_->getEditableRepresentation<NormalBufferRAM>()->add(normal);
-    texCoords_->getEditableRepresentation<TexCoord3dBufferRAM>()->add(texCoord);
-    colors_->getEditableRepresentation<ColorBufferRAM>()->add(color);
+
+void BasicMesh::addVertex(vec3 pos, vec3 normal, vec3 texCoord, vec4 color) {
+    static_cast<Position3dBuffer*>(attributes_[0])
+        ->getEditableRepresentation<Position3dBufferRAM>()
+        ->add(pos);
+    static_cast<TexCoord3dBuffer*>(attributes_[1])
+        ->getEditableRepresentation<TexCoord3dBufferRAM>()
+        ->add(texCoord);
+    static_cast<ColorBuffer*>(attributes_[2])->getEditableRepresentation<ColorBufferRAM>()->add(
+        color);
+    static_cast<NormalBuffer*>(attributes_[3])->getEditableRepresentation<NormalBufferRAM>()->add(
+        normal);
 }
 
-IndexBufferRAM* BasicMesh::addIndexBuffer(GeometryEnums::RenderType rt, GeometryEnums::ConnectivityType ct) {
+IndexBufferRAM* BasicMesh::addIndexBuffer(GeometryEnums::RenderType rt,
+                                          GeometryEnums::ConnectivityType ct) {
     IndexBuffer* indices_ = new IndexBuffer();
-    addIndicies(Mesh::AttributesInfo(rt,ct), indices_);
+    addIndicies(Mesh::AttributesInfo(rt, ct), indices_);
     return indices_->getEditableRepresentation<IndexBufferRAM>();
 }
 
@@ -78,10 +89,10 @@ std::string BasicMesh::getDataInfo() const {
     std::stringstream ss;
     ss  << "<table border='0' cellspacing='0' cellpadding='0' style='border-color:white;white-space:pre;'>\n"
         << "<tr><td style='color:#bbb;padding-right:8px;'>Type</td><td><nobr>Basic mesh</nobr></td></tr>\n"
-        << "<tr><td style='color:#bbb;padding-right:8px;'>Vertiecs</td><td><nobr>" << vertices_->getSize() << "</nobr></td></tr>\n"
-        << "<tr><td style='color:#bbb;padding-right:8px;'>Normal</td><td><nobr>" << normals_->getSize() << "</nobr></td></tr>\n"
-        << "<tr><td style='color:#bbb;padding-right:8px;'>Texture Coords</td><td><nobr>" << texCoords_->getSize() << "</nobr></td></tr>\n"
-        << "<tr><td style='color:#bbb;padding-right:8px;'>Colors</td><td><nobr>" << colors_->getSize() << "</nobr></td></tr>\n"
+        << "<tr><td style='color:#bbb;padding-right:8px;'>Vertiecs</td><td><nobr>" << attributes_[0]->getSize() << "</nobr></td></tr>\n"
+        << "<tr><td style='color:#bbb;padding-right:8px;'>Normal</td><td><nobr>" << attributes_[3]->getSize() << "</nobr></td></tr>\n"
+        << "<tr><td style='color:#bbb;padding-right:8px;'>Texture Coords</td><td><nobr>" << attributes_[1]->getSize() << "</nobr></td></tr>\n"
+        << "<tr><td style='color:#bbb;padding-right:8px;'>Colors</td><td><nobr>" << attributes_[2]->getSize() << "</nobr></td></tr>\n"
         << "<tr><td style='color:#bbb;padding-right:8px;'>Index buffers</td><td><nobr>" << getNumberOfIndicies() << "</nobr></td></tr>\n"
         << "</tr></table>\n";
 
@@ -93,42 +104,47 @@ void BasicMesh::append(const BasicMesh* mesh) {
     const NormalBufferRAM* norm = mesh->getNormals()->getRepresentation<NormalBufferRAM>();
     const TexCoord3dBufferRAM* tex = mesh->getTexCoords()->getRepresentation<TexCoord3dBufferRAM>();
     const ColorBufferRAM* col = mesh->getColors()->getRepresentation<ColorBufferRAM>();
-    
-    size_t size = vertices_->getSize();
-    
-    vertices_->getEditableRepresentation<Position3dBufferRAM>()->append(pos->getDataContainer());
-    normals_->getEditableRepresentation<NormalBufferRAM>()->append(norm->getDataContainer());
-    texCoords_->getEditableRepresentation<TexCoord3dBufferRAM>()->append(tex->getDataContainer());
-    colors_->getEditableRepresentation<ColorBufferRAM>()->append(col->getDataContainer());
-    
+
+    size_t size = attributes_[0]->getSize();
+
+    static_cast<Position3dBuffer*>(attributes_[0])
+        ->getEditableRepresentation<Position3dBufferRAM>()
+        ->append(pos->getDataContainer());
+    static_cast<TexCoord3dBuffer*>(attributes_[1])
+        ->getEditableRepresentation<TexCoord3dBufferRAM>()
+        ->append(tex->getDataContainer());
+    static_cast<ColorBuffer*>(attributes_[2])->getEditableRepresentation<ColorBufferRAM>()->append(
+        col->getDataContainer());
+    static_cast<NormalBuffer*>(attributes_[3])
+        ->getEditableRepresentation<NormalBufferRAM>()
+        ->append(norm->getDataContainer());
+
     for (size_t i = 0; i < mesh->indexAttributes_.size(); ++i) {
         std::pair<AttributesInfo, IndexBuffer*> buffer = mesh->indexAttributes_[i];
-        
+
         IndexBufferRAM* ind = addIndexBuffer(buffer.first.rt, buffer.first.ct);
- 
+
         const std::vector<unsigned int>* newinds =
             buffer.second->getRepresentation<IndexBufferRAM>()->getDataContainer();
-        
-        //transform(newinds->begin(), newinds->end(), ind->getDataContainer()->end(),
-        //          bind2nd(std::plus<unsigned int>(), size));
-        
-        for (std::vector<unsigned int>::const_iterator it = newinds->begin(); it!=newinds->end(); ++it) {
+
+        for (std::vector<unsigned int>::const_iterator it = newinds->begin(); it != newinds->end();
+             ++it) {
             ind->add(static_cast<const unsigned int>(*it + size));
         }
     }
 }
 
 const Position3dBuffer* BasicMesh::getVertices() const {
-    return vertices_;
+    return static_cast<Position3dBuffer*>(attributes_[0]);
 }
 const TexCoord3dBuffer* BasicMesh::getTexCoords() const {
-    return texCoords_;
+    return static_cast<TexCoord3dBuffer*>(attributes_[1]);
 }
 const ColorBuffer* BasicMesh::getColors() const {
-    return colors_;
+    return static_cast<ColorBuffer*>(attributes_[2]);
 }
 const NormalBuffer* BasicMesh::getNormals() const {
-    return normals_;
+    return static_cast<NormalBuffer*>(attributes_[3]);
 }
     
     
@@ -626,10 +642,6 @@ BasicMesh* BasicMesh::boundingbox(const mat4& basisandoffset, const vec4& color)
 
     return mesh;
 }
-
-
-
-
 } // namespace
 
 

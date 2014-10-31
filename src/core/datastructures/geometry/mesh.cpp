@@ -34,11 +34,12 @@
 
 namespace inviwo {
 
-Mesh::Mesh() : Geometry(), attributesInfo_(AttributesInfo()) {}
+Mesh::Mesh() : Geometry() {}
 
-Mesh::Mesh(const Mesh& rhs) : Geometry(rhs), attributesInfo_(rhs.attributesInfo_) {
+Mesh::Mesh(const Mesh& rhs) : Geometry(rhs) {
     std::vector<bool>::const_iterator itOwnership = rhs.attributesOwnership_.begin();
-    for (std::vector<Buffer*>::const_iterator it = rhs.attributes_.begin(), itEnd = rhs.attributes_.end(); it != itEnd; ++it, ++itOwnership) {
+    std::vector<Buffer*>::const_iterator it;
+    for (it = rhs.attributes_.begin(); it != rhs.attributes_.end(); ++it, ++itOwnership) {
         if (*itOwnership) {
             addAttribute(static_cast<Buffer*>((*it)->clone()));
         } else {
@@ -46,17 +47,67 @@ Mesh::Mesh(const Mesh& rhs) : Geometry(rhs), attributesInfo_(rhs.attributesInfo_
         }
     }
 
-    for (std::vector<std::pair<AttributesInfo, IndexBuffer*> >::const_iterator it = rhs.indexAttributes_.begin() ;
-         it != rhs.indexAttributes_.end(); ++it)
+    for (IndexVector::const_iterator it = rhs.indexAttributes_.begin();
+         it != rhs.indexAttributes_.end(); ++it) {
         addIndicies(it->first, static_cast<IndexBuffer*>(it->second->clone()));
+    }
 }
 
-Mesh::Mesh(GeometryEnums::RenderType rt, GeometryEnums::ConnectivityType ct)
-    : Geometry(), attributesInfo_(AttributesInfo(rt, ct))
-{}
+Mesh& Mesh::operator=(const Mesh& that) {
+    if (this != &that) {
+        Geometry::operator=(that);
+        deinitialize();
+
+        std::vector<bool>::const_iterator itOwnership = that.attributesOwnership_.begin();
+        std::vector<Buffer*>::const_iterator it;
+        for (it = that.attributes_.begin(); it != that.attributes_.end(); ++it, ++itOwnership) {
+            if (*itOwnership) {
+                addAttribute(static_cast<Buffer*>((*it)->clone()));
+            } else {
+                addAttribute(*it, false);
+            }
+        }
+
+        for (IndexVector::const_iterator it = that.indexAttributes_.begin();
+             it != that.indexAttributes_.end(); ++it) {
+            addIndicies(it->first, static_cast<IndexBuffer*>(it->second->clone()));
+        }
+    }
+    return *this;
+}
 
 Mesh::~Mesh() {
     deinitialize();
+}
+
+
+Mesh* Mesh::clone() const {
+    return new Mesh(*this);
+}
+
+void Mesh::deinitialize() {
+    std::vector<bool>::const_iterator itOwnership = attributesOwnership_.begin();
+    for (std::vector<Buffer*>::iterator it = attributes_.begin(), itEnd = attributes_.end();
+         it != itEnd; ++it, ++itOwnership) {
+        if (*itOwnership) delete (*it);
+    }
+
+    for (IndexVector::iterator it = indexAttributes_.begin(), itEnd = indexAttributes_.end();
+         it != itEnd; ++it) {
+        delete it->second;
+    }
+
+    attributes_.clear();
+    attributesOwnership_.clear();
+    indexAttributes_.clear();
+}
+
+const std::vector<Buffer*>& Mesh::getBuffers() const {
+    return attributes_;
+}
+
+const Mesh::IndexVector& Mesh::getIndexBuffers() const {
+    return indexAttributes_;
 }
 
 std::string Mesh::getDataInfo() const{
@@ -64,9 +115,9 @@ std::string Mesh::getDataInfo() const{
 
     ss << "<table border='0' cellspacing='0' cellpadding='0' style='border-color:white;white-space:pre;'>\n"
         << "<tr><td style='color:#bbb;padding-right:8px;'>Type</td><td><nobr>Mesh</nobr></td></tr>\n"
-        << "<tr><td style='color:#bbb;padding-right:8px;'>Data</td><td><nobr>"; 
+        << "<tr><td style='color:#bbb;padding-right:8px;'>Data</td><td><nobr>";
 
-    switch(getAttributesInfo().rt){
+    switch (getAttributesInfo().rt) {
         case GeometryEnums::POINTS:
             ss << "Points";
             break;
@@ -77,30 +128,14 @@ std::string Mesh::getDataInfo() const{
             ss << "Triangles";
             break;
         default:
-            ss << "Not specified"; 
+            ss << "Not specified";
     }
     ss << "</nobr></td></tr>\n"
-       << "</tr></table>\n";
-    
+        << "</tr></table>\n";
+
     return ss.str();
 }
 
-Mesh* Mesh::clone() const {
-    return new Mesh(*this);
-}
-
-void Mesh::initialize() {}
-
-void Mesh::deinitialize() {
-    std::vector<bool>::const_iterator itOwnership = attributesOwnership_.begin();
-    for (std::vector<Buffer*>::iterator it = attributes_.begin(), itEnd = attributes_.end(); it != itEnd; ++it, ++itOwnership) {
-        if (*itOwnership)
-            delete(*it);
-    }
-
-    for (std::vector<std::pair<AttributesInfo, IndexBuffer*> >::iterator it = indexAttributes_.begin(), itEnd = indexAttributes_.end(); it != itEnd; ++it)
-        delete it->second;
-}
 
 void Mesh::addAttribute(Buffer* att, bool takeOwnership /*= true*/) {
     attributes_.push_back(att);
@@ -139,7 +174,7 @@ Buffer* Mesh::getIndicies(size_t idx) {
 }
 
 Mesh::AttributesInfo Mesh::getAttributesInfo() const {
-    return attributesInfo_;
+    return indexAttributes_[0].first;
 }
 
 Mesh::AttributesInfo Mesh::getIndexAttributesInfo(size_t idx) const {

@@ -54,6 +54,7 @@ public:
 
     virtual void writeData(const Layer* data, const std::string filePath) const;
     virtual std::vector<unsigned char>* writeDataToBuffer(const Layer* data, const std::string fileType) const;
+    virtual bool writeDataToRepresentation(const DataRepresentation* src, DataRepresentation* dst) const;
 };
 
 } // namespace

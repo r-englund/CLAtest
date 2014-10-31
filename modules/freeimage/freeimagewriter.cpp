@@ -69,4 +69,37 @@ std::vector<unsigned char>* FreeImageWriter::writeDataToBuffer(const Layer* data
     return FreeImageUtils::saveLayerToBuffer(fileType.c_str(), data);
 }
 
+bool FreeImageWriter::writeDataToRepresentation(const DataRepresentation* src, DataRepresentation* dst) const {
+    const LayerRAM* source = dynamic_cast<const LayerRAM*>(src);
+    LayerRAM* target = dynamic_cast<LayerRAM*>(dst);
+
+    if (!source || !target) {
+        return false;
+        LogError("Target representation missing.");
+    }
+
+    if (!source->getData())
+        return true;
+
+    if (source->getDimension() != target->getDimension()) {
+        //CPU image rescaling using imageIO
+        void* rawData = FreeImageUtils::rescaleLayerRAM(source, target->getDimension());
+
+        if (!rawData)
+            return false;
+
+        target->setData(rawData);
+    }
+    else {
+        if (!target->getData()) {
+            return false;
+            LogError("Target should have data.");
+        }
+
+        memcpy(target->getData(), source->getData(), source->getDimension().x*source->getDimension().y*source->getDataFormat()->getBitsAllocated());
+    }
+
+    return true;
+}
+
 } // namespace

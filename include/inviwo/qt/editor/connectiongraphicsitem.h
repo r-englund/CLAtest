@@ -45,6 +45,7 @@
 namespace inviwo {
 
 class Port;
+class PortConnection;
 class Inport;
 class Outport;
 class ProcessorGraphicsItem;

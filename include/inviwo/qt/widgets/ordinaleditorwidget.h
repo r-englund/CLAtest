@@ -36,7 +36,7 @@
 #include <inviwo/qt/widgets/inviwoqtwidgetsdefine.h>
 #include <inviwo/core/common/inviwo.h>
 #include <inviwo/qt/widgets/sliderwidgetqt.h>
-#include <QLineEdit>
+#include <inviwo/qt/widgets/properties/propertywidgetqt.h>
 
 namespace inviwo {
 
@@ -53,7 +53,7 @@ protected:
     void applyInit();
     void applyValue();
 
-    QLineEdit* editor_;
+    IvwLineEdit* editor_;
 
 private slots:
     void updateFromEditor();

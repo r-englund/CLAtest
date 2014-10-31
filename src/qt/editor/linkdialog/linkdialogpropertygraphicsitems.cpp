@@ -39,30 +39,32 @@
 
 namespace inviwo {
 
-LinkDialogPropertyGraphicsItem::LinkDialogPropertyGraphicsItem(LinkDialogProcessorGraphicsItem* processor,
-        Property* prop,
-        LinkDialogPropertyGraphicsItem* parentPropertyGraphicsItem,
-        int subPropertyLevel) : GraphicsItemData<Property>()
-        , subPropertyLevel_(subPropertyLevel)
-        , isExpanded_(false)
-        , index_(0)
-        , parentPropertyGraphicsItem_(parentPropertyGraphicsItem)
-        , animateEnabled_(false) {
+LinkDialogPropertyGraphicsItem::LinkDialogPropertyGraphicsItem(
+    LinkDialogProcessorGraphicsItem* processor, Property* prop,
+    LinkDialogPropertyGraphicsItem* parentPropertyGraphicsItem, int subPropertyLevel)
+    : GraphicsItemData<Property>()
+    , parentPropertyGraphicsItem_(parentPropertyGraphicsItem)
+    , subPropertyLevel_(subPropertyLevel)
+    , isExpanded_(false)
+    , index_(0)
+    , animateEnabled_(false) {
     setZValue(LINKDIALOG_PROPERTY_GRAPHICSITEM_DEPTH);
-    //setFlags(ItemIsMovable | ItemIsSelectable | ItemIsFocusable | ItemSendsGeometryChanges);
-    int propWidth = propertyItemWidth-(subPropertyLevel_*propertyExpandCollapseOffset);
-    setRect(-propWidth/2, -propertyItemHeight/2, propWidth, propertyItemHeight);
+    // setFlags(ItemIsMovable | ItemIsSelectable | ItemIsFocusable | ItemSendsGeometryChanges);
+    int propWidth = propertyItemWidth - (subPropertyLevel_ * propertyExpandCollapseOffset);
+    setRect(-propWidth / 2, -propertyItemHeight / 2, propWidth, propertyItemHeight);
     QGraphicsDropShadowEffect* processorShadowEffect = new QGraphicsDropShadowEffect();
     processorShadowEffect->setOffset(3.0);
     processorShadowEffect->setBlurRadius(3.0);
     setGraphicsEffect(processorShadowEffect);
     classLabel_ = new LabelGraphicsItem(this);
-    classLabel_->setPos(-propWidth/2.0+propertyLabelHeight/2.0, -propertyItemHeight/2.0+propertyLabelHeight);
+    classLabel_->setPos(-propWidth / 2.0 + propertyLabelHeight / 2.0,
+                        -propertyItemHeight / 2.0 + propertyLabelHeight);
     classLabel_->setDefaultTextColor(Qt::black);
     classLabel_->setFont(QFont("Segoe", propertyLabelHeight, QFont::Black, false));
     classLabel_->setCrop(9, 8);
     typeLabel_ = new LabelGraphicsItem(this);
-    typeLabel_->setPos(-propWidth/2.0+propertyLabelHeight/2.0, -propertyItemHeight/2.0+propertyLabelHeight*2.5);
+    typeLabel_->setPos(-propWidth / 2.0 + propertyLabelHeight / 2.0,
+                       -propertyItemHeight / 2.0 + propertyLabelHeight * 2.5);
     typeLabel_->setDefaultTextColor(Qt::black);
     typeLabel_->setFont(QFont("Segoe", processorLabelHeight, QFont::Normal, true));
     typeLabel_->setCrop(9, 8);
@@ -71,10 +73,11 @@ LinkDialogPropertyGraphicsItem::LinkDialogPropertyGraphicsItem(LinkDialogProcess
 
     CompositeProperty* compProp = IS_COMPOSITE_PROPERTY(prop);
     if (compProp) {
-        //LogWarn("Found composite sub properties")
+        // LogWarn("Found composite sub properties")
         std::vector<Property*> subProperties = compProp->getProperties();
-        for (size_t j=0; j<subProperties.size(); j++) {
-            LinkDialogPropertyGraphicsItem* compItem = new LinkDialogPropertyGraphicsItem(processor, subProperties[j], this, subPropertyLevel_+1);
+        for (size_t j = 0; j < subProperties.size(); j++) {
+            LinkDialogPropertyGraphicsItem* compItem = new LinkDialogPropertyGraphicsItem(
+                processor, subProperties[j], this, subPropertyLevel_ + 1);
             compItem->hide();
             subPropertyGraphicsItems_.push_back(compItem);
         }
@@ -160,20 +163,22 @@ void LinkDialogPropertyGraphicsItem::updatePositionBasedOnIndex(float animateExp
     //LogWarn("SubProperty Level is : " << subPropertyLevel_ << " Index " << index_ << " Mapped dim y" << propertyMappedDim.y() << " (" << px << "," << py << ")")
 }
 
-void LinkDialogPropertyGraphicsItem::expand() {
+void LinkDialogPropertyGraphicsItem::expand(bool expandSubProperties) {
     if (!subPropertyGraphicsItems_.size()) return;
     isExpanded_ = true;
+    if (!expandSubProperties) return;
     for (size_t i=0; i<subPropertyGraphicsItems_.size(); i++) {
-        subPropertyGraphicsItems_[i]->expand();
+        subPropertyGraphicsItems_[i]->expand(false);
         subPropertyGraphicsItems_[i]->show();
     }
 }
 
-void LinkDialogPropertyGraphicsItem::collapse() {
+void LinkDialogPropertyGraphicsItem::collapse(bool collapseSubProperties) {
     if (!subPropertyGraphicsItems_.size()) return;
     isExpanded_ = false;
+    if (!collapseSubProperties) return;
     for (size_t i=0; i<subPropertyGraphicsItems_.size(); i++) {
-        subPropertyGraphicsItems_[i]->collapse();
+        subPropertyGraphicsItems_[i]->collapse(false);
         subPropertyGraphicsItems_[i]->hide();
     }
 }

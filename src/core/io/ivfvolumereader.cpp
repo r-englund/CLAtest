@@ -35,6 +35,7 @@
 #include <inviwo/core/datastructures/volume/volumetypeclassification.h>
 #include <inviwo/core/datastructures/volume/volumedisk.h>
 #include <inviwo/core/util/urlparser.h>
+#include <inviwo/core/util/filesystem.h>
 
 namespace inviwo {
 

@@ -25,7 +25,7 @@
  * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- * 
+ *
  * Contact: Erik Sundén
  *
  *********************************************************************************/
@@ -37,11 +37,20 @@ namespace inviwo {
 
 Geometry::Geometry() : DataGroup(), SpatialEntity<3>() {}
 
+Geometry::Geometry(const Geometry& rhs) : DataGroup(rhs), SpatialEntity<3>(rhs) {}
+
+Geometry& Geometry::operator=(const Geometry& that) {
+    if (this != &that) {
+        DataGroup::operator=(that);
+        SpatialEntity<3>::operator=(that);
+    }
+    return *this;
+}
+
+Geometry::~Geometry() {}
+
 Geometry* Geometry::clone() const {
     return new Geometry(*this);
 }
 
-Geometry::~Geometry() {
-}
-
-} // namespace
+}  // namespace

@@ -35,7 +35,7 @@
 
 #include <inviwo/core/common/inviwocoredefine.h>
 #include <inviwo/core/common/inviwo.h>
-#include <inviwo/core/datastructures/image/image.h>
+#include <inviwo/core/datastructures/image/layer.h>
 #include <inviwo/core/datastructures/image/imagetypes.h>
 #include <inviwo/core/datastructures/geometry/geometry.h>
 #include <inviwo/core/interaction/pickingcontainer.h>
@@ -48,11 +48,14 @@
 namespace inviwo {
 
 class ProcessorNetworkEvaluator;
+template <class Layer> class DataWriterType;
+class Image;
 
 class IVW_CORE_API Canvas {
 
     friend class CanvasProcessor;
     friend class ProcessorNetworkEvaluator;
+    friend class LayerRAM;
 
 public:
     Canvas(uvec2 dimensions);
@@ -93,6 +96,7 @@ protected:
     uvec2 mousePosToPixelCoordinates(ivec2 mpos);
 
     static Geometry* screenAlignedRect_;
+    static DataWriterType<Layer>* generalLayerWriter_;
 
     bool initialized_;
     bool shared_;

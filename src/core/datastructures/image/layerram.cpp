@@ -32,6 +32,8 @@
 
 #include <inviwo/core/datastructures/image/layerram.h>
 #include <inviwo/core/datastructures/image/layerramprecision.h>
+#include <inviwo/core/util/canvas.h>
+#include <inviwo/core/io/datawriter.h>
 
 namespace inviwo {
 
@@ -54,7 +56,10 @@ LayerRAM::~LayerRAM() {
 }
 
 bool LayerRAM::copyAndResizeLayer(DataRepresentation* targetLayerRam) const {
-    const LayerRAM* source = this;
+    return Canvas::generalLayerWriter_->writeDataToRepresentation(this, targetLayerRam);
+
+
+    /*const LayerRAM* source = this;
     LayerRAM* target = dynamic_cast<LayerRAM*>(targetLayerRam);
 
     if (!target) {
@@ -78,7 +83,7 @@ bool LayerRAM::copyAndResizeLayer(DataRepresentation* targetLayerRam) const {
         memcpy(target->getData(), source->getData(), source->getDimension().x*source->getDimension().y*source->getDataFormat()->getBitsAllocated());
     }
 
-    return true;
+    return true;*/
 }
 
 void LayerRAM::setDimension(uvec2 dimensions) {

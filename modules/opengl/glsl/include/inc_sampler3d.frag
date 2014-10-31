@@ -33,7 +33,7 @@
 #ifndef IVW_INCSAMPLER3D_GLSL
 #define IVW_INCSAMPLER3D_GLSL
 
-#include "utils/structs.frag"
+#include "utils/structs.glsl"
 
 //
 // Fetch texture data using texture coordinates [0,1]

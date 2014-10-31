@@ -36,34 +36,39 @@
 namespace inviwo {
 
 SimpleMesh::SimpleMesh(GeometryEnums::RenderType rt, GeometryEnums::ConnectivityType ct)
-    : Mesh(rt, ct) {
+    : Mesh() {
+
+    addAttribute(new Position3dBuffer()); // pos 0
+    addAttribute(new TexCoord3dBuffer()); // pos 1
+    addAttribute(new ColorBuffer());      // pos 2
+    addIndicies(Mesh::AttributesInfo(rt,ct),  new IndexBuffer());
+}
+
+SimpleMesh::SimpleMesh(const SimpleMesh& rhs) : Mesh(rhs) {}
+
+SimpleMesh& SimpleMesh::operator=(const SimpleMesh& that) {
+    if (this != &that) {
+        Mesh::operator=(that);
+    }
+    return *this;
+}
+
+SimpleMesh* SimpleMesh::clone() const {
+    return new SimpleMesh(*this);
 }
 
 SimpleMesh::~SimpleMesh() {
     deinitialize();
 }
 
-void SimpleMesh::initialize() {
-    vertexPositions_ = new Position3dBuffer();
-    addAttribute(vertexPositions_);
-    vertexTexCoords_ = new TexCoord3dBuffer();
-    addAttribute(vertexTexCoords_);
-    vertexColors_ = new ColorBuffer();
-    addAttribute(vertexColors_);
-    indices_ = new IndexBuffer();
-    addIndicies(Mesh::AttributesInfo(), indices_);
-}
-
-void SimpleMesh::deinitialize() {}
-
 void SimpleMesh::addVertex(vec3 pos, vec3 texCoord, vec4 color) {
-    vertexPositions_->getEditableRepresentation<Position3dBufferRAM>()->add(pos);
-    vertexTexCoords_->getEditableRepresentation<TexCoord3dBufferRAM>()->add(texCoord);
-    vertexColors_->getEditableRepresentation<ColorBufferRAM>()->add(color);
+    static_cast<Position3dBuffer*>(attributes_[0])->getEditableRepresentation<Position3dBufferRAM>()->add(pos);
+    static_cast<TexCoord3dBuffer*>(attributes_[1])->getEditableRepresentation<TexCoord3dBufferRAM>()->add(texCoord);
+    static_cast<ColorBuffer*>(attributes_[2])->getEditableRepresentation<ColorBufferRAM>()->add(color);
 }
 
 void SimpleMesh::addIndex(unsigned int idx) {
-    indices_->getEditableRepresentation<IndexBufferRAM>()->add(idx);
+    indexAttributes_[0].second->getEditableRepresentation<IndexBufferRAM>()->add(idx);
 }
 
 void SimpleMesh::setIndicesInfo(GeometryEnums::RenderType rt, GeometryEnums::ConnectivityType ct) {
@@ -71,20 +76,22 @@ void SimpleMesh::setIndicesInfo(GeometryEnums::RenderType rt, GeometryEnums::Con
 }
 
 const Position3dBuffer* SimpleMesh::getVertexList() const {
-    return this->vertexPositions_;
+    return static_cast<const Position3dBuffer*>(attributes_[0]);
 }
 
 const TexCoord3dBuffer* SimpleMesh::getTexCoordList() const {
-    return this->vertexTexCoords_;
+    return static_cast<const TexCoord3dBuffer*>(attributes_[1]);
 }
 
 const ColorBuffer* SimpleMesh::getColorList() const {
-    return this->vertexColors_;
+    return static_cast<const ColorBuffer*>(attributes_[2]);
 }
 
 const IndexBuffer* SimpleMesh::getIndexList() const {
-    return this->indices_;
+    return indexAttributes_[0].second;
 }
+
+
 
 } // namespace
 

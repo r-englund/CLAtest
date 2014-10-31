@@ -121,33 +121,24 @@ TextEditorWidgetQt::~TextEditorWidgetQt() {
 
 void TextEditorWidgetQt::generateWidget() {
     QHBoxLayout* hLayout = new QHBoxLayout();
-    setSpacingAndMargins(hLayout);
-
-    label_ = new EditableLabelQt(this, property_->getDisplayName());
-    hLayout->addWidget(label_);
-
-    QHBoxLayout* hWidgetLayout = new QHBoxLayout();
-    hWidgetLayout->setContentsMargins(0, 0, 0, 0);
-    QWidget* widget = new QWidget();
-    widget->setLayout(hWidgetLayout);
+    hLayout->setContentsMargins(0, 0, 0, 0);
+    hLayout->setSpacing(0);
 
     btnEdit_ = new QToolButton();
     btnEdit_->setIcon(QIcon(":/icons/edit.png"));
 
     if (dynamic_cast<FileProperty*>(property_)) {
         fileWidget_ = new FilePropertyWidgetQt(static_cast<FileProperty*>(property_));
-        connect(btnEdit_, SIGNAL(clicked()),this,SLOT(editFile()));
-        hWidgetLayout->addWidget(fileWidget_);
-    }
-    else if (dynamic_cast<StringProperty*>(property_)) {
+        connect(btnEdit_, SIGNAL(clicked()), this, SLOT(editFile()));
+        fileWidget_->layout()->addWidget(btnEdit_);
+        hLayout->addWidget(fileWidget_);
+    } else if (dynamic_cast<StringProperty*>(property_)) {
         stringWidget_ = new StringPropertyWidgetQt(static_cast<StringProperty*>(property_));
-        connect(btnEdit_, SIGNAL(clicked()),this,SLOT(editString()));
-        hWidgetLayout->addWidget(stringWidget_);
+        connect(btnEdit_, SIGNAL(clicked()), this, SLOT(editString()));
+        stringWidget_->layout()->addWidget(btnEdit_);
+        hLayout->addWidget(stringWidget_);
     }
 
-    hWidgetLayout->addWidget(btnEdit_);
-
-    hLayout->addWidget(widget);
     setLayout(hLayout);
 
     textEditorWidget_= new ModifiedWidget();
@@ -247,26 +238,21 @@ bool TextEditorWidgetQt::saveDialog() {
     if (textEditorWidget_->textEditor_->document()->isModified() ||
         htmlEditorWidget_->htmlEditor_->document()->isModified()) {
         QMessageBox::StandardButton ret;
-        ret = QMessageBox::warning(this, tr("Application"),
-                                   tr("The document has been modified.\n"
-                                      "Do you want to save your changes?"),
+        ret = QMessageBox::warning(this, tr("Application"), tr("The document has been modified.\n"
+                                                               "Do you want to save your changes?"),
                                    QMessageBox::Save | QMessageBox::Discard | QMessageBox::Cancel);
 
         if (ret == QMessageBox::Save) {
-            if (dynamic_cast<FileProperty*>(property_))
-                return TextEditorWidgetQt::writeToFile();
+            if (dynamic_cast<FileProperty*>(property_)) return TextEditorWidgetQt::writeToFile();
 
             if (dynamic_cast<StringProperty*>(property_))
                 return TextEditorWidgetQt::writeToString();
-        }
-        else if (ret == QMessageBox::Cancel)
+        } else if (ret == QMessageBox::Cancel)
             return false;
     }
 
     return true;
 }
-
-
 
 void TextEditorWidgetQt::updateFromProperty() {
     StringProperty* stringProp = dynamic_cast<StringProperty*>(property_);
@@ -282,11 +268,6 @@ void TextEditorWidgetQt::updateFromProperty() {
 SyntaxHighligther* TextEditorWidgetQt::getSyntaxHighligther() {
     return textEditorWidget_->getSyntaxHighligther();
 }
-
-void TextEditorWidgetQt::setPropertyDisplayName() {
-    property_->setDisplayName(label_->getText());
-}
-
 
 
 } // namespace

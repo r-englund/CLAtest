@@ -76,8 +76,9 @@ DrawFreeHand::~DrawFreeHand() {
 void DrawFreeHand::initialize() {
     CompositeProcessorGL::initialize();
     pointShader_ = new Shader("img_color.frag");
-    points_ = new Mesh(GeometryEnums::POINTS, GeometryEnums::NONE);
-    points_->initialize();
+    points_ = new Mesh();
+    points_->addIndicies(Mesh::AttributesInfo(GeometryEnums::POINTS, GeometryEnums::NONE),
+                        new IndexBuffer());
     points_->addAttribute(new Position2dBuffer());
     pointRenderer_ = new MeshRenderer(points_);
 }

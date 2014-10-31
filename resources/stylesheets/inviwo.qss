@@ -343,15 +343,15 @@ QAbstractSpinBox:disabled {
                                 stop:0 #282828, stop:0.2 #666, stop:1 #666);
 }
 
-/* QSlider styles */
-QSlider::add-page:horizontal {
+/* QSlider styles and part of the QSplitter styles (shading) */
+QSlider::add-page:horizontal, QSplitter[Vertical="false"] QFrame {
     border: 1px solid #111111;
     padding: 1px;
     background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
                                 stop:0 #fff, stop:0.36 #eee,
                                 stop:0.64 #ddd, stop:1 #eee);
 }
-QSlider::sub-page:horizontal {
+QSlider::sub-page:horizontal, QSplitter[Vertical="false"] QFrame#valueArea {
     border: 1px solid #111111;
     text-align: top;
     padding: 1px;
@@ -359,7 +359,7 @@ QSlider::sub-page:horizontal {
                                 stop:0 #78d, stop:0.36 #46a,
                                 stop:0.64 #45a, stop:1 #238);
 }
-QSlider::add-page:vertical {
+QSlider::add-page:vertical, QSplitter[Vertical="true"] QFrame#valueArea {
     border: 1px solid #111111;
     text-align: top;
     padding: 1px;
@@ -367,7 +367,7 @@ QSlider::add-page:vertical {
                                 stop:0 #78d, stop:0.36 #46a,
                                 stop:0.64 #45a, stop:1 #238);
 }
-QSlider::sub-page:vertical {
+QSlider::sub-page:vertical, QSplitter[Vertical="true"] QFrame {
     border: 1px solid #111111;
     padding: 1px;
     background: qlineargradient(x1: 0, y1: 0, x2: 1, y2: ,
@@ -410,28 +410,28 @@ QSlider::groove:vertical, QSlider::groove:horizontal {
     border: 1px solid #bbb;
     background: white;
 }
-QSlider::sub-page:horizontal:disabled {
+QSlider::sub-page:horizontal:disabled, QSplitter[Vertical="false"] QFrame:disabled#valueArea {
     /*background: #666;*/
     border-color: #999;
     background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
                                 stop:0 #5a5a5a, stop:0.36 #555,
                                 stop:0.64 #555, stop:1 #4b4b4b);
 }
-QSlider::add-page:horizontal:disabled {
+QSlider::add-page:horizontal:disabled, QSplitter[Vertical="false"] QFrame:disabled {
     /*background: #ccc;*/
     border-color: #999;
     background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
                                 stop:0 #d0d0d0, stop:0.36 #cacaca,
                                 stop:0.64 #c0c0c0, stop:1 #aaa);
 }
-QSlider::sub-page:vertical:disabled {
+QSlider::sub-page:vertical:disabled , QSplitter[Vertical="true"] QFrame:disabled {
     /*background: #ccc;*/
     border-color: #999;
     background: qlineargradient(x1: 0, y1: 0, x2: 1, y2: 0,
                                 stop:0 #d0d0d0, stop:0.36 #cacaca,
                                 stop:0.64 #c0c0c0, stop:1 #aaa);
 }
-QSlider::add-page:vertical:disabled {
+QSlider::add-page:vertical:disabled, QSplitter[Vertical="true"] QFrame:disabled#valueArea {
     /*background: #666;*/
     border-color: #999;
     background: qlineargradient(x1: 0, y1: 0, x2: 1, y2: 0,
@@ -453,21 +453,38 @@ QSplitter:vertical {
 QSplitter:horizontal {
     width: 10px;
 }
+/* main color definition for splitters is done with QSlider (see above) 
+   only cosmetics are done here (rounded corners)!
+*/
 QSplitter QFrame {
-    border: 1px solid #111111;
-    border-radius: 4px;
-    padding: 1px;
-    background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
-                                stop:0 #fff, stop:0.4999 #eee,
-                                stop:0.5 #ddd, stop:1 #eee);
+    border-radius: 0px;
+}
+QSplitter[Vertical="true"] QFrame[LeftPart="false"] {
+    /* lower part of splitter */
+    border-bottom-left-radius: 4px;
+    border-bottom-right-radius: 4px;
+}
+QSplitter[Vertical="true"] QFrame[LeftPart="true"] {
+    /* upper part of splitter */
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+}
+QSplitter[Vertical="false"] QFrame[LeftPart="true"] {
+    /* left part of splitter */
+    border-top-left-radius: 4px;
+    border-bottom-left-radius: 4px;
+}
+QSplitter[Vertical="false"] QFrame[LeftPart="false"] {
+    /* right part of splitter */
+    border-top-right-radius: 4px;
+    border-bottom-right-radius: 4px;
 }
 QSplitter QFrame#valueArea {
-    border-radius: 0px;
-    background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
-                                stop:0 #78d, stop:0.4999 #46a,
-                                stop:0.5 #45a, stop:1 #238);
-
+    padding: 0px;
+    background: red;
 }
+
+
 QSplitter::handle:vertical, QSplitter::handle:horizontal {
     border: 1px solid #111111;
     border-radius: 4px;

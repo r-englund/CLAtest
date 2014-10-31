@@ -43,6 +43,9 @@ namespace inviwo {
 class IVW_CORE_API BasicMesh : public Mesh {
 public:
     BasicMesh();
+    BasicMesh(const BasicMesh& rhs);
+    BasicMesh& operator=(const BasicMesh& that);
+    virtual BasicMesh* clone() const;
     virtual ~BasicMesh();
     
     void addVertex(vec3 pos, vec3 normal, vec3 texCoord, vec4 color);
@@ -91,17 +94,10 @@ public:
 
     static BasicMesh* boundingbox(const mat4& basisandoffset, const vec4& color);
 
-    
-    
 protected:
     static vec3 orthvec(const vec3& vec);
     static vec3 calcnormal(const vec3& r, const vec3& p);
     static vec3 tospherical(const vec2& v);
-
-    Position3dBuffer* vertices_;
-    TexCoord3dBuffer* texCoords_;
-    ColorBuffer* colors_;
-    NormalBuffer* normals_;
 };
 
 } // namespace

@@ -269,8 +269,6 @@ float VolumeSliceGL::getNormalizedSliceNumber() const {
 
 void VolumeSliceGL::renderPositionIndicator() {
     if (meshDirty_) {
-
-        mat4 basis = inport_.getData()->getBasisAndOffset();
         vec4 pos(static_cast<float>(sliceX_.get()), static_cast<float>(sliceY_.get()),
             static_cast<float>(sliceZ_.get()), 1.0f);
 
@@ -311,10 +309,8 @@ void VolumeSliceGL::updateIndicatorMesh() {
     delete meshCrossHair_;
     delete meshBox_;
     meshCrossHair_ = new Mesh;
-    meshCrossHair_->initialize();
     meshCrossHair_->setBasisAndOffset(mat4(1.0f));
     meshBox_ = new Mesh;
-    meshBox_->initialize();
     meshBox_->setBasisAndOffset(mat4(1.0f));
 
     uvec2 canvasSize(outport_.getDimension());

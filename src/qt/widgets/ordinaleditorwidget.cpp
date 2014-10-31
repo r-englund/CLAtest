@@ -43,7 +43,10 @@ BaseOrdinalEditorWidget::~BaseOrdinalEditorWidget() {
 
 void BaseOrdinalEditorWidget::generateWidget() {
     QHBoxLayout* hLayout = new QHBoxLayout();
-    editor_ = new QLineEdit(this);
+    editor_ = new IvwLineEdit(this);
+    QSizePolicy sp = editor_->sizePolicy();
+    sp.setHorizontalPolicy(QSizePolicy::Minimum);
+    editor_->setSizePolicy(sp);
     hLayout->addWidget(editor_);
     hLayout->setContentsMargins(0, 0, 0, 0);
     hLayout->setSpacing(0);

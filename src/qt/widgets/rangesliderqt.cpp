@@ -45,20 +45,12 @@ RangeSliderQt::RangeSliderQt(Qt::Orientation orientation, QWidget* parent)
     addWidget(left);
     addWidget(middle_);
     addWidget(right);
-    left->setStyleSheet(QString(
-                            "QSplitter QFrame {"
-                            "  border-top-right-radius: 0px;"
-                            "  border-bottom-right-radius: 0px;"
-                            "}"
-                        ));
-    middle_->setObjectName("valueArea");
-    right->setStyleSheet(QString(
-                             "QSplitter QFrame {"
-                             "  border-top-left-radius: 0px;"
-                             "  border-bottom-left-radius: 0px;"
-                             "}"
-                         ));
 
+    this->setProperty("Vertical", orientation == Qt::Vertical);
+    left->setProperty("LeftPart", true);
+    right->setProperty("LeftPart", false);
+
+    middle_->setObjectName("valueArea");
     range_[0] = 0;
     range_[1] = 10;
     value_[0] = 0;

@@ -42,6 +42,10 @@
 #ifdef WIN32
 #include <windows.h>
 #include <tchar.h>
+#include <direct.h>
+#include <Shlobj.h>
+#elif defined(__APPLE__)
+#include <CoreServices/CoreServices.h>
 #else
 #include <unistd.h>
 #endif
@@ -123,7 +127,7 @@ void createDirectoryRecursivly(std::string path) {
         pathPart += "/" + v.front();
         v.erase(v.begin());
 #ifdef _WIN32 
-        mkdir(pathPart.c_str());
+        _mkdir(pathPart.c_str());
 #elif defined(__unix__) 
         mkdir(pathPart.c_str(),0755);
 #elif defined(__APPLE__)
@@ -173,11 +177,12 @@ std::string getInviwoUserSettingsPath() {
     char path[PATH_MAX];
 
     STARTCLANGIGNORE("-Wdeprecated-declarations")
-        FSFindFolder( kUserDomain, folderType, kCreateFolder, &ref );
+    FSFindFolder( kUserDomain, folderType, kCreateFolder, &ref );
     FSRefMakePath( &ref, (UInt8*)&path, MAX_PATH );
     ENDCLANGIGNORE
 
-        ss << path << "/org.inviwo.network-editor/";
+    ss << path << "/org.inviwo.network-editor/";
+    
 #else
     LogWarnCustom("","Get User Setting Path is not implemented for current system");
 #endif

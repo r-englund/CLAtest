@@ -35,6 +35,7 @@
 
 #include <modules/python3/python3moduledefine.h>
 #include <inviwo/core/common/inviwo.h>
+#include <inviwo/core/util/observer.h>
 #include <modules/python3/pythoninterface/pymodule.h>
 
 namespace inviwo {

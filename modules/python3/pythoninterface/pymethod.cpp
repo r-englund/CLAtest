@@ -143,10 +143,4 @@ int PyMethod::getFlags(){
 
 
 
-template<typename T>
-bool PyParam<T>::testParam(void* arg)
-{
-    return PyValueParser::is<T>(static_cast<PyObject*>(arg));
-}
-
 }//namespace

@@ -11,7 +11,7 @@ import inviwo_internal
 #hard coded urls
 #TODO: Use web scraping to get updated versions or host it in ftp
 WinPythonInstallerURL = 'http://www.lfd.uci.edu/~gohlke/pythonlibs/'
-RAND_VAR = 'ekvkz8ci/' #this is dynamic???
+RAND_VAR = '4y6heurj/' #this is dynamic???
 WinPythonInstallerURL = WinPythonInstallerURL + RAND_VAR
 
 unofficialPythonPackages_27 = defaultdict(list)
@@ -38,10 +38,14 @@ unofficialPythonPackages_27['six'].append(WinPythonInstallerURL+'six-1.7.3.win-a
 unofficialPythonPackages_27['six'].append(WinPythonInstallerURL+'six-1.7.3.win32-py2.7.exe')
 
 #scikit-learn & #scikit-image
-unofficialPythonPackages_27['scikit-learn'].append(WinPythonInstallerURL+'scikit-learn-0.15.1.win-amd64-py2.7.exe')
-unofficialPythonPackages_27['scikit-learn'].append(WinPythonInstallerURL+'scikit-learn-0.15.1.win32-py2.7.exe')
+unofficialPythonPackages_27['scikit-learn'].append(WinPythonInstallerURL+'scikit-learn-0.15.2.win-amd64-py2.7.exe')
+unofficialPythonPackages_27['scikit-learn'].append(WinPythonInstallerURL+'scikit-learn-0.15.2.win32-py2.7.exe')
 unofficialPythonPackages_27['scikit-image'].append(WinPythonInstallerURL+'scikit-image-0.10.1.win-amd64-py2.7.exe')
 unofficialPythonPackages_27['scikit-image'].append(WinPythonInstallerURL+'scikit-image-0.10.1.win32-py2.7.exe')
+
+#scikit dependencies
+unofficialPythonPackages_27['scipy'].append(WinPythonInstallerURL+'scipy-0.14.0.win-amd64-py2.7.exe')
+unofficialPythonPackages_27['scipy'].append(WinPythonInstallerURL+'scipy-0.14.0.win32-py2.7.exe')
 
 #pycuda & dependencies
 unofficialPythonPackages_27['pycuda'].append(WinPythonInstallerURL+'pycuda-2013.1.1-cuda-6.0.37.win-amd64-py2.7.exe')

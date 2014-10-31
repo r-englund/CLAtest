@@ -79,8 +79,8 @@ public:
     QPointF getShortestBoundaryPointTo(LinkDialogPropertyGraphicsItem*);
     QPointF getShortestBoundaryPointTo(QPointF);
 
-    void expand();
-    void collapse();
+    void expand(bool expandSubProperties=false);
+    void collapse(bool collapseSubProperties=false);
     bool hasSubProperties();
     bool isExpanded();
     void updatePositionBasedOnIndex(float animateExpansion=1.0);

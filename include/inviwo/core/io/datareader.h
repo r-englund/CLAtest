@@ -63,7 +63,6 @@ public:
     virtual DataReader* clone() const = 0;
     virtual ~DataReader() {};
 
-    virtual BaseData* readMetaData(const std::string filePath) = 0;
     virtual void* readData() const = 0;
     virtual void readDataInto(void* dest) const = 0;
 

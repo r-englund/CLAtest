@@ -31,15 +31,18 @@
  *********************************************************************************/
 
 #include <inviwo/core/util/canvas.h>
+#include <inviwo/core/datastructures/image/image.h>
 #include <inviwo/core/datastructures/geometry/mesh.h>
 #include <inviwo/core/datastructures/buffer/bufferramprecision.h>
 #include <inviwo/core/network/processornetworkevaluator.h>
+#include <inviwo/core/io/datawriterfactory.h>
 
 namespace inviwo {
 
 EventHandler* eventHandler_();
 
 Geometry* Canvas::screenAlignedRect_ = NULL;
+DataWriterType<Layer>* Canvas::generalLayerWriter_ = NULL;
 
 Canvas::Canvas(uvec2 dimensions)
     : initialized_(false)
@@ -65,10 +68,25 @@ Canvas::Canvas(uvec2 dimensions)
         texCoordsBufferRAM->add(vec2(1.0f, 0.0f));
         texCoordsBufferRAM->add(vec2(0.0f, 1.0f));
         texCoordsBufferRAM->add(vec2(1.0f, 1.0f));
-        Mesh* screenAlignedRectMesh = new Mesh(GeometryEnums::TRIANGLES, GeometryEnums::STRIP);
+
+        IndexBuffer* indices_ = new IndexBuffer();
+        Mesh::AttributesInfo(GeometryEnums::TRIANGLES, GeometryEnums::STRIP);
+        IndexBufferRAM* indexBufferRAM = indices_->getEditableRepresentation<IndexBufferRAM>();
+        indexBufferRAM->add(0);
+        indexBufferRAM->add(1);
+        indexBufferRAM->add(2);
+        indexBufferRAM->add(3);
+
+        Mesh* screenAlignedRectMesh = new Mesh();
         screenAlignedRectMesh->addAttribute(verticesBuffer);
         screenAlignedRectMesh->addAttribute(texCoordsBuffer);
+        screenAlignedRectMesh->addIndicies(Mesh::AttributesInfo(GeometryEnums::TRIANGLES, GeometryEnums::STRIP), indices_);
+
         screenAlignedRect_ = screenAlignedRectMesh;
+    }
+
+    if(!generalLayerWriter_){
+        generalLayerWriter_ = DataWriterFactory::getPtr()->getWriterForTypeAndExtension<Layer>("png");
     }
 }
 
@@ -76,6 +94,9 @@ Canvas::~Canvas() {
     if (!shared_) {
         delete screenAlignedRect_;
         screenAlignedRect_ = NULL;
+
+        delete generalLayerWriter_;
+        generalLayerWriter_ = NULL;
     }
 
     delete pickingContainer_;

@@ -52,7 +52,18 @@
 #include <modules/base/processors/volumesubsample.h>
 #include <modules/base/processors/volumesubset.h>
 
+#include <inviwo/core/processors/processor.h>
+#include <inviwo/core/ports/geometryport.h>
+#include <inviwo/core/ports/volumeport.h>
+
 namespace inviwo {
+
+typedef BasisTransform<GeometryInport, GeometryOutport> BasisTransformGeoemtry;
+typedef BasisTransform<VolumeInport, VolumeOutport> BasisTransformVolume;
+template <> ProcessorClassIdentifier(BasisTransformGeoemtry, "org.inviwo.BasisTransformGeoemtry");
+template <> ProcessorDisplayName(BasisTransformGeoemtry, "Basis Transform Geometry");
+template <> ProcessorClassIdentifier(BasisTransformVolume, "org.inviwo.BasisTransformVolume");
+template <> ProcessorDisplayName(BasisTransformVolume, "Basis Transform Volume");
 
 BaseModule::BaseModule() : InviwoModule() {
     setIdentifier("Base");
@@ -72,7 +83,8 @@ BaseModule::BaseModule() : InviwoModule() {
     registerProcessor(SpotLightSourceProcessor);
     registerProcessor(VolumeSource);
     registerProcessor(VolumeExport);
-    registerProcessor(VolumeBasisTransformer);
+    registerProcessor(BasisTransformGeoemtry);
+    registerProcessor(BasisTransformVolume);
     registerProcessor(VolumeSlice);
     registerProcessor(VolumeSubsample);
     registerProcessor(VolumeSubset);
