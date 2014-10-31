@@ -311,8 +311,21 @@ void Image::resizeRepresentations(Image* targetImage, uvec2 targetDim) {
 
         for (size_t j = 0; j < targetRepresentations.size(); j++) {
             if (!dynamic_cast<ImageRAM*>(targetRepresentations[j]) &&
-                !dynamic_cast<ImageDisk*>(targetRepresentations[j]))
+                !dynamic_cast<ImageDisk*>(targetRepresentations[j])){
                 existsMoreThenDiskAndRAMRepresentation = true;
+                break;
+            }
+        }
+
+        if (existsMoreThenDiskAndRAMRepresentation){
+            existsMoreThenDiskAndRAMRepresentation = false;
+            for (size_t j = 0; j < representations_.size(); j++) {
+                if (!dynamic_cast<ImageRAM*>(representations_[j]) &&
+                    !dynamic_cast<ImageDisk*>(representations_[j])){
+                    existsMoreThenDiskAndRAMRepresentation = true;
+                    break;
+                }
+            }
         }
 
         ImageRepresentation* sourceImageRepresentation = 0;

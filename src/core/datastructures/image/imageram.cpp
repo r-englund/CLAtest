@@ -106,8 +106,10 @@ void ImageRAM::update(bool editable) {
 
         Layer* depthLayer = owner->getDepthLayer();
 
-        if (depthLayer)
+        if (depthLayer){
+            depthLayer->setDimension(getColorLayerRAM()->getDimension());
             depthLayerRAM_ = depthLayer->getEditableRepresentation<LayerRAM>();
+        }
 
         Layer* pickingLayer = owner->getPickingLayer();
 
@@ -126,8 +128,10 @@ void ImageRAM::update(bool editable) {
 
         Layer* depthLayer = owner->getDepthLayer();
 
-        if (depthLayer)
+        if (depthLayer){
+            depthLayer->setDimension(getColorLayerRAM()->getDimension());
             depthLayerRAM_ = const_cast<LayerRAM*>(depthLayer->getRepresentation<LayerRAM>());
+        }
 
         Layer* pickingLayer = owner->getPickingLayer();
 

@@ -105,6 +105,9 @@ void Layer::resize(uvec2 dimensions) {
 
 
 uvec2 Layer::getDimension() const {
+    if (hasRepresentations())
+        return static_cast<LayerRepresentation*>(representations_[0])->getDimension();
+
     return StructuredGridEntity<2>::getDimension();
 }
 void  Layer::setDimension(const uvec2& dim) {

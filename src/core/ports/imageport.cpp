@@ -33,6 +33,7 @@
 #include <inviwo/core/ports/imageport.h>
 #include <inviwo/core/ports/multidatainport.h>
 #include <inviwo/core/processors/processor.h>
+#include <inviwo/core/datastructures/image/imageram.h>
 
 namespace inviwo {
 
@@ -263,14 +264,11 @@ Image* ImageOutport::getData() {
 
 void ImageOutport::dataChanged() {
     imageDataMap_.clear();
-    std::string dimensionString = glm::to_string(dimensions_);
+    std::string dimensionString = glm::to_string(data_->getDimension());
     imageDataMap_.insert(std::make_pair(dimensionString, data_));
 }
 
 void ImageOutport::changeDataDimensions(ResizeEvent* resizeEvent) {
-    if (!handleResizeEvents_) {
-        return;
-    }
     // This function should check which dimension request exists, by going through the successors
     // and checking registeredDimensions.
     // We do only want to propagate when there is not a registeredDimension which is larger then the
@@ -283,6 +281,11 @@ void ImageOutport::changeDataDimensions(ResizeEvent* resizeEvent) {
 
     std::vector<Inport*> inports = getConnectedInports();
     std::vector<uvec2> registeredDimensions;
+
+    //Always save data_ dimension if outport determine output size
+    if (!handleResizeEvents_) {
+        registeredDimensions.push_back(data_->getDimension());
+    }
 
     for (size_t i = 0; i < inports.size(); i++) {
         ImageInport* imageInport = dynamic_cast<ImageInport*>(inports[i]);
@@ -361,10 +364,21 @@ void ImageOutport::changeDataDimensions(ResizeEvent* resizeEvent) {
             delete invalidImage;
         }
     }
+
     //uvec2 largestDim = glm::max(getDimension(), requiredDimensions);
     uvec2 largestDim = getDimension();
-    // Set largest data
-    setLargestImageData(resizeEvent);
+
+    //Don't continue is outport determine output size
+    if (handleResizeEvents_) {
+        // Set largest data
+        setLargestImageData(resizeEvent);
+    }
+    else{
+        // Send update to listeners
+        if (data_->getDimension() != dimensions_) broadcast(resizeEvent);
+
+        dimensions_ = data_->getDimension();
+    }
 
     // Stop resize propagation if outport change hasn't change.
     // Invalid to output new size
@@ -379,7 +393,7 @@ void ImageOutport::changeDataDimensions(ResizeEvent* resizeEvent) {
         }
         // Propagate the resize event
         propagateResizeEventToPredecessor(resizeEvent);
-    }else if(resultImage && resultImage != data_) {
+    }else if(resultImage && resultImage != data_ && data_->getDimension() != uvec2(0)) {
         data_->resizeRepresentations(resultImage, resultImage->getDimension());
     } 
 }
@@ -388,6 +402,25 @@ uvec2 ImageOutport::getDimension() const { return dimensions_; }
 
 Image* ImageOutport::getResizedImageData(uvec2 requiredDimensions) {
     if (mapDataInvalid_) {
+        //If data_ dimension is zero, we need to update data_ first
+        uvec2 zeroDim = uvec2(0);
+        if (data_->getDimension() == zeroDim){
+            const ImageRAM* imageRAM = data_->getRepresentation<ImageRAM>();
+
+            //Remove any reference to zero sized image and add reference to data_
+            if (data_->getDimension() != zeroDim){
+                std::string zeroDimString = glm::to_string(zeroDim);
+                imageDataMap_.erase(zeroDimString);
+
+                std::string dataDimString = glm::to_string(data_->getDimension());
+
+                if (imageDataMap_.find(dataDimString) != imageDataMap_.end())
+                    imageDataMap_[dataDimString] = data_;
+                else
+                    imageDataMap_.insert(std::make_pair(glm::to_string(data_->getDimension()), data_));
+            }
+        }
+
         // Resize all map data once
         for (ImagePortMap::iterator it = imageDataMap_.begin(); it != imageDataMap_.end(); ++it) {
             if (it->second != data_) {
