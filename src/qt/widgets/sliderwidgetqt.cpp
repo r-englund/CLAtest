@@ -122,14 +122,16 @@ void BaseSliderWidgetQt::updateFromSpinBox() {
 }
 
 void BaseSliderWidgetQt::updateSpinBox() {
+    spinnerValue_ = transformValueToSpinner();
     spinBox_->blockSignals(true);
-    spinBox_->setValue(transformValueToSpinner());
+    spinBox_->setValue(spinnerValue_);
     spinBox_->blockSignals(false);
 }
 
 void BaseSliderWidgetQt::updateSlider() {
+    sliderValue_ = transformValueToSlider();
     slider_->blockSignals(true);
-    slider_->setValue(transformValueToSlider());
+    slider_->setValue(sliderValue_);
     slider_->blockSignals(false);
 }
 
