@@ -63,18 +63,31 @@ __kernel void volumeMaxKernel(read_only image3d_t volumeIn, float2 volumeDataSca
     }
     float maxVal = 0;
     int4 startCoord = (int4)(globalId*region.xyz, 0);
-    for (int z = 0; z < region.z; ++z) {
-        for (int y = 0; y < region.y; ++y) {
-            for (int x = 0; x < region.x; ++x) {
-                maxVal = max(maxVal, getVoxelUnormS(volumeIn, startCoord+(int4)(x, y, z, 0), volumeDataScaling));
+    int4 endCoord = min(startCoord+region, get_image_dim(volumeIn));
+    for (int z = startCoord.z; z < endCoord.z; ++z) {
+        for (int y = startCoord.y; y < endCoord.y; ++y) {
+            for (int x = startCoord.x; x < endCoord.x; ++x) {
+                //if (any((int3)(x, y, z) >= (int3)(80))) {
+                //    printf("xyz == %v3i\n", (int3)(x, y, z));
+                //}
+                //if (all((int3)(x, y, z) < get_image_dim(volumeIn).xyz))
+                maxVal = max(maxVal, getVoxelUnormS(volumeIn, (int4)(x, y, z, 0), volumeDataScaling));
+
             }
         }
     }
+    //if(get_global_id(0) > 9 || get_global_id(1) > 9 || get_global_id(2) > 9) {
+    //    printf("CellcoordStart == %v3i\n", startCoord);
+    //    printf("CellcoordEnd == %v3i\n", endCoord);
+    //}
+    //if (any(globalId>=get_image_dim(volumeOut).xyz) || any(globalId<(int3)(0))) {
+    //    return;
+    //}
 #ifdef SUPPORTS_VOLUME_WRITE
     #ifdef VOLUME_UINT_TYPE
         write_imageui(volumeOut, (int4)(globalId, 0), (uint4)(maxVal)); 
     #else
-        write_imagef(volumeOut, (int4)(globalId, 0), (float4)(convert_float4(maxVal))); 
+        write_imagef(volumeOut, (int4)(globalId/4, 0), (float4)(maxVal)); 
     #endif
 #else
     int threadId = get_global_id(0) + get_global_id(1)*outDim.x+get_global_id(2)*outDim.x*outDim.y;

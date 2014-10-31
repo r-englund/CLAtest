@@ -142,8 +142,8 @@ void VolumeMaxCL::executeVolumeOperation(const VolumeCLBase* volumeCL, VolumeCLB
             tmpVolumeCL = tmpVolume_->getEditableRepresentation<BufferCL>();
             kernel_->setArg(argIndex++, *tmpVolumeCL);
         }
-        kernel_->setArg(argIndex++, ivec3(outDim));
-        kernel_->setArg(argIndex++, ivec3(volumeRegionSize_.get()));
+        kernel_->setArg(argIndex++, ivec4(outDim, 0));
+        kernel_->setArg(argIndex++, ivec4(volumeRegionSize_.get()));
                
         OpenCL::getPtr()->getQueue().enqueueNDRangeKernel(*kernel_, cl::NullRange, globalWorkGroupSize , localWorkgroupSize, NULL, &events[0]);
 
