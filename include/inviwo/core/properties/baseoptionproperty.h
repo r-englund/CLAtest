@@ -156,6 +156,8 @@ class BaseTemplateOptionProperty : public BaseOptionProperty {
     };
 
 public:
+    typedef T valueType;
+
     BaseTemplateOptionProperty(std::string identifier, 
                                std::string displayName,
                                PropertyOwner::InvalidationLevel invalidationLevel=PropertyOwner::INVALID_OUTPUT,

@@ -62,6 +62,16 @@ IvwPushButton::~IvwPushButton() {}
 QSize IvwPushButton::sizeHint() const { return QSize(18, 18); }
 QSize IvwPushButton::minimumSizeHint() const { return sizeHint(); }
 
+IvwComboBox::IvwComboBox(QWidget* parent) : QComboBox(parent) {
+    QSizePolicy sp = sizePolicy();
+    sp.setHorizontalPolicy(QSizePolicy::Minimum);
+    sp.setHorizontalStretch(3);
+    setSizePolicy(sp);
+}
+IvwComboBox::~IvwComboBox() {}
+QSize IvwComboBox::sizeHint() const { return QSize(18, QComboBox::sizeHint().height()); }
+QSize IvwComboBox::minimumSizeHint() const { return sizeHint(); }
+
 int PropertyWidgetQt::MINIMUM_WIDTH = 250;
 int PropertyWidgetQt::SPACING = 7;
 int PropertyWidgetQt::MARGIN = 0;

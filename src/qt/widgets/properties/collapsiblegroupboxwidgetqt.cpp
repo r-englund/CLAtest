@@ -89,10 +89,14 @@ void CollapsibleGroupBoxWidgetQt::generateWidget() {
     resetButton->setToolTip(tr("Reset the group of properties to its default state"));
 
     QHBoxLayout* heading = new QHBoxLayout();
+    heading->setContentsMargins(0, 0, 0, 0);
     heading->setSpacing(PropertyWidgetQt::SPACING);
     heading->addWidget(btnCollapse_);
     heading->addWidget(label_);
-    heading->addStretch(10);
+    QSizePolicy labelPol = label_->sizePolicy();
+    labelPol.setHorizontalStretch(10);
+    label_->setSizePolicy(labelPol);
+    heading->addStretch(1);
     heading->addWidget(resetButton);
 
     QVBoxLayout* layout = new QVBoxLayout();

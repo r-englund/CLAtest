@@ -43,7 +43,7 @@ template<typename T>
 class TemplateProperty : public Property {
 
 public:
-    typedef T type;
+    typedef T valueType;
 
     TemplateProperty(const std::string &identifier,const std::string &displayName, const T &value,
                      PropertyOwner::InvalidationLevel invalidationLevel = PropertyOwner::INVALID_OUTPUT,
@@ -60,7 +60,6 @@ public:
     virtual void serialize(IvwSerializer& s) const;
     virtual void deserialize(IvwDeserializer& d);
 
-    typedef T valueType;
 protected:
     T value_;
     T defaultValue_;
