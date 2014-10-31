@@ -81,23 +81,12 @@ bool FreeImageWriter::writeDataToRepresentation(const DataRepresentation* src, D
     if (!source->getData())
         return true;
 
-    if (source->getDimension() != target->getDimension()) {
-        //CPU image rescaling using imageIO
-        void* rawData = FreeImageUtils::rescaleLayerRAM(source, target->getDimension());
+    void* rawData = FreeImageUtils::rescaleLayerRAM(source, target->getDimension());
 
-        if (!rawData)
-            return false;
+    if (!rawData)
+        return false;
 
-        target->setData(rawData);
-    }
-    else {
-        if (!target->getData()) {
-            return false;
-            LogError("Target should have data.");
-        }
-
-        memcpy(target->getData(), source->getData(), source->getDimension().x*source->getDimension().y*source->getDataFormat()->getBitsAllocated());
-    }
+    target->setData(rawData);
 
     return true;
 }

@@ -57,33 +57,6 @@ LayerRAM::~LayerRAM() {
 
 bool LayerRAM::copyAndResizeLayer(DataRepresentation* targetLayerRam) const {
     return Canvas::generalLayerWriter_->writeDataToRepresentation(this, targetLayerRam);
-
-
-    /*const LayerRAM* source = this;
-    LayerRAM* target = dynamic_cast<LayerRAM*>(targetLayerRam);
-
-    if (!target) {
-        return false;
-        LogError("Target representation missing.");
-    }
-
-    if (!source->getData())
-        return true;
-
-    if (source->getDimension() != target->getDimension()) {
-        //CPU image rescaling not supported
-        return false;
-    }
-    else {
-        if (!target->getData()) {
-            return false;
-            LogError("Target should have data.");
-        }
-
-        memcpy(target->getData(), source->getData(), source->getDimension().x*source->getDimension().y*source->getDataFormat()->getBitsAllocated());
-    }
-
-    return true;*/
 }
 
 void LayerRAM::setDimension(uvec2 dimensions) {
