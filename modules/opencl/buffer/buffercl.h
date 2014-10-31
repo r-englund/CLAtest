@@ -68,7 +68,21 @@ public:
     cl::Buffer getEditableBuffer() { return *clBuffer_; }
     const cl::Buffer& getBuffer() const { return *const_cast<const cl::Buffer*>(clBuffer_); }
 
+    /** 
+     * \brief Copies data from RAM to OpenCL.
+     * 
+     * @param const void * data Pointer to data
+     * @param size_t size Size in bytes to copy
+     */
     void upload(const void* data, size_t size);
+    /** 
+     * \brief Copies the entire buffer to RAM memory.
+     *
+     * Copies getSize()*getSizeOfElement() bytes into data.
+     * Pointer needs to be allocated beforehand.
+     * 
+     * @param void * data Pointer to data
+     */
     void download(void* data) const;
 
 protected:
