@@ -30,8 +30,8 @@
  *
  *********************************************************************************/
 
-#include "utils/structs.frag"
-#include "utils/sampler2d.frag"
+#include "utils/structs.glsl"
+#include "utils/sampler2d.glsl"
 
 uniform sampler2D inputTex_;
 uniform TEXTURE_PARAMETERS outportParameters_;

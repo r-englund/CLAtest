@@ -30,15 +30,15 @@
  *
  *********************************************************************************/
 
-#include "utils/structs.frag"
-#include "utils/sampler2d.frag"
-#include "utils/sampler3d.frag"
+#include "utils/structs.glsl"
+#include "utils/sampler2d.glsl"
+#include "utils/sampler3d.glsl"
 
-#include "utils/classification.frag"
-#include "utils/compositing.frag"
-#include "utils/depth.frag"
-#include "utils/gradients.frag"
-#include "utils/shading.frag"
+#include "utils/classification.glsl"
+#include "utils/compositing.glsl"
+#include "utils/depth.glsl"
+#include "utils/gradients.glsl"
+#include "utils/shading.glsl"
 
 
 uniform VOLUME_PARAMETERS volumeParameters_;
