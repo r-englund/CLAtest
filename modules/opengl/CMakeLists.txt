@@ -125,14 +125,14 @@ set(SHADER_FILES
     ${CMAKE_CURRENT_SOURCE_DIR}/glsl/raycasting.frag
     ${CMAKE_CURRENT_SOURCE_DIR}/glsl/standard.frag
     ${CMAKE_CURRENT_SOURCE_DIR}/glsl/standard.vert
-    ${CMAKE_CURRENT_SOURCE_DIR}/glsl/utils/classification.frag
-    ${CMAKE_CURRENT_SOURCE_DIR}/glsl/utils/compositing.frag
-    ${CMAKE_CURRENT_SOURCE_DIR}/glsl/utils/depth.frag
-    ${CMAKE_CURRENT_SOURCE_DIR}/glsl/utils/gradients.frag
-    ${CMAKE_CURRENT_SOURCE_DIR}/glsl/utils/sampler2d.frag
-    ${CMAKE_CURRENT_SOURCE_DIR}/glsl/utils/sampler3d.frag
-    ${CMAKE_CURRENT_SOURCE_DIR}/glsl/utils/shading.frag
-    ${CMAKE_CURRENT_SOURCE_DIR}/glsl/utils/structs.frag
+    ${CMAKE_CURRENT_SOURCE_DIR}/glsl/utils/classification.glsl
+    ${CMAKE_CURRENT_SOURCE_DIR}/glsl/utils/compositing.glsl
+    ${CMAKE_CURRENT_SOURCE_DIR}/glsl/utils/depth.glsl
+    ${CMAKE_CURRENT_SOURCE_DIR}/glsl/utils/gradients.glsl
+    ${CMAKE_CURRENT_SOURCE_DIR}/glsl/utils/sampler2d.glsl
+    ${CMAKE_CURRENT_SOURCE_DIR}/glsl/utils/sampler3d.glsl
+    ${CMAKE_CURRENT_SOURCE_DIR}/glsl/utils/shading.glsl
+    ${CMAKE_CURRENT_SOURCE_DIR}/glsl/utils/structs.glsl
 )
 ivw_group("Shader Files" ${SHADER_FILES})
 
