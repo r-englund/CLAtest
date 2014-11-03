@@ -40,7 +40,7 @@ Volume::Volume(uvec3 dimensions, const DataFormatBase* format)
     : Data(format), StructuredGridEntity<3>(dimensions), dataMap_(format) {}
 
 Volume::Volume(const Volume& rhs)
-    : Data(rhs), StructuredGridEntity<3>(rhs), dataMap_(rhs.dataFormatBase_) {}
+    : Data(rhs), StructuredGridEntity<3>(rhs), dataMap_(rhs.dataMap_) {}
 
 Volume::Volume(VolumeRepresentation* in)
     : Data(in->getDataFormat())
