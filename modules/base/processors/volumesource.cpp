@@ -58,8 +58,9 @@ VolumeSource::VolumeSource()
                   0.0, 0.0, PropertyOwner::INVALID_OUTPUT, PropertySemantics("Text"))
     , valueUnit_("valueUnit", "Value unit", "arb. unit.")
     , overRideDefaults_("override", "Override", false)
-    , lengths_("length", "Lengths", vec3(1.0f), vec3(0.0f), vec3(10.0f))
-    , angles_("angles", "Angles", vec3(90.0f), vec3(0.0f), vec3(180.0f), vec3(1.0f))
+    , a_("a", "A", vec3(1.0f, 0.0f, 0.0f), vec3(-10.0f), vec3(10.0f))
+    , b_("b", "B", vec3(0.0f, 1.0f, 0.0f), vec3(-10.0f), vec3(10.0f))
+    , c_("c", "C", vec3(0.0f, 0.0f, 1.0f), vec3(-10.0f), vec3(10.0f))
     , offset_("offset", "Offset", vec3(0.0f), vec3(-10.0f), vec3(10.0f))
     , selectedSequenceIndex_("selectedSequenceIndex", "Selected Sequence Index", 1, 1, 1, 1, PropertyOwner::VALID)
     , playSequence_("playSequence", "Play Sequence", false)
@@ -74,8 +75,9 @@ VolumeSource::VolumeSource()
     DataSource<Volume, VolumeOutport>::file_.setContentType("volume");
     DataSource<Volume, VolumeOutport>::file_.setDisplayName("Volume file");
 
-    lengths_.setReadOnly(true);
-    angles_.setReadOnly(true);
+    a_.setReadOnly(true);
+    b_.setReadOnly(true);
+    c_.setReadOnly(true);
     offset_.setReadOnly(true);
 
     dimensions_.setReadOnly(true);
@@ -83,8 +85,9 @@ VolumeSource::VolumeSource()
     dimensions_.setCurrentStateAsDefault();
     format_.setCurrentStateAsDefault();
 
-    overrideLengths_ = lengths_.get();
-    overrideAngles_ = angles_.get();
+    overrideA_ = a_.get();
+    overrideB_ = b_.get();
+    overrideC_ = c_.get();
     overrideOffset_ = offset_.get();
 
     overRideDefaults_.onChange(this, &VolumeSource::onOverrideChange);
@@ -98,8 +101,9 @@ VolumeSource::VolumeSource()
     addProperty(information_);
 
     basis_.addProperty(overRideDefaults_);
-    basis_.addProperty(lengths_);
-    basis_.addProperty(angles_);
+    basis_.addProperty(a_);
+    basis_.addProperty(b_);
+    basis_.addProperty(c_);
     basis_.addProperty(offset_);
 
 	addProperty(basis_);
@@ -129,21 +133,27 @@ void VolumeSource::onOverrideChange() {
     }
 
     if (!overRideDefaults_.get()) {
-        overrideLengths_ = lengths_.get();
-        overrideAngles_ = angles_.get();
+        overrideA_ = a_.get();
+        overrideB_ = b_.get();
+        overrideC_ = c_.get();
         overrideOffset_ = offset_.get();
-        lengths_.resetToDefaultState();
-        angles_.resetToDefaultState();
+        a_.resetToDefaultState();
+        b_.resetToDefaultState();
+        c_.resetToDefaultState();
         offset_.resetToDefaultState();
-        lengths_.setReadOnly(true);
-        angles_.setReadOnly(true);
+        a_.setReadOnly(true);
+        b_.setReadOnly(true);
+        c_.setReadOnly(true);
         offset_.setReadOnly(true);
     } else {
-        lengths_.set(overrideLengths_);
-        angles_.set(overrideAngles_);
+        a_.set(overrideA_);
+        b_.set(overrideB_);
+        c_.set(overrideC_);
         offset_.set(overrideOffset_);
-        lengths_.setReadOnly(false);
-        angles_.setReadOnly(false);
+        
+        a_.setReadOnly(false);
+        b_.setReadOnly(false);
+        c_.setReadOnly(false);
         offset_.setReadOnly(false);
     }
 }
@@ -161,20 +171,11 @@ void VolumeSource::dataLoaded(Volume* volume) {
     valueUnit_.set(volume->dataMap_.valueUnit);
     
     // calculate and set properties basis properties.
-    vec3 a(volume->getBasis()[0]);
-    vec3 b(volume->getBasis()[1]);
-    vec3 c(volume->getBasis()[2]);
-    vec3 offset(volume->getOffset());
-    float alpha = glm::degrees(glm::angle(b, c));
-    float beta = glm::degrees(glm::angle(c, a));
-    float gamma = glm::degrees(glm::angle(a, b));
-    lengths_.setMaxValue(vec3(2.0f * (glm::length(a) + glm::length(b) + glm::length(c))));
-    offset_.setMaxValue(vec3(5.0 * glm::length(offset)));
-    offset_.setMinValue(vec3(-5.0 * glm::length(offset)));
-    lengths_.set(vec3(glm::length(a), glm::length(b), glm::length(c)));
-    angles_.set(vec3(alpha, beta, gamma));
-    offset_.set(offset);
-
+    a_.set(volume->getBasis()[0]);
+    b_.set(volume->getBasis()[1]);
+    c_.set(volume->getBasis()[2]);
+    offset_.set(volume->getOffset());
+    
     // Display the format and dimension, read only.
     std::stringstream ss;
     ss << volume->getDimension().x << " x "
@@ -204,8 +205,9 @@ void VolumeSource::dataLoaded(Volume* volume) {
     dataRange_.setCurrentStateAsDefault();
     valueRange_.setCurrentStateAsDefault();
     valueUnit_.setCurrentStateAsDefault();
-    lengths_.setCurrentStateAsDefault();
-    angles_.setCurrentStateAsDefault();
+    a_.setCurrentStateAsDefault();
+    b_.setCurrentStateAsDefault();
+    c_.setCurrentStateAsDefault();
     offset_.setCurrentStateAsDefault();
     dimensions_.setCurrentStateAsDefault();
     format_.setCurrentStateAsDefault();
@@ -213,8 +215,9 @@ void VolumeSource::dataLoaded(Volume* volume) {
     // If we were deserializing, we just wrote over all the state, now we have to restore it.
     if (isDeserializing_) {
         restoreState();
-        overrideLengths_ = lengths_.get();
-        overrideAngles_ = angles_.get();
+        overrideA_ = a_.get();
+        overrideB_ = b_.get();
+        overrideC_ = b_.get();
         overrideOffset_ = offset_.get();
     } else {
         // Setup override values. This will trigger onOverrideChange().
@@ -261,8 +264,9 @@ void VolumeSource::saveState(){
     oldState.valueRange.set(&valueRange_);
     oldState.valueUnit.set(&valueUnit_);
     oldState.overRideDefaults.set(&overRideDefaults_);
-    oldState.lengths.set(&lengths_);
-    oldState.angles.set(&angles_);
+    oldState.a.set(&a_);
+    oldState.b.set(&b_);
+    oldState.c.set(&c_);
     oldState.offset.set(&offset_);
 }
 
@@ -281,8 +285,9 @@ void VolumeSource::restoreState() {
 
     StringProperty defaultValueUnit("valueUnit", "Value unit", "arb. unit.");
     BoolProperty defaultOverRideDefaults("override", "Override", false);
-    FloatVec3Property defaultLengths("length", "Lengths", vec3(1.0f), vec3(0.0f), vec3(10.0f));
-    FloatVec3Property defaultAngles("angles", "Angles", vec3(90.0f), vec3(0.0f), vec3(180.0f), vec3(1.0f));
+    FloatVec3Property defaultA("a", "a", vec3(1.0f, 0.0f, 0.0f), vec3(-10.0f), vec3(10.0f));
+    FloatVec3Property defaultB("b", "b", vec3(0.0f, 1.0f, 0.0f), vec3(-10.0f), vec3(10.0f));
+    FloatVec3Property defaultC("c", "c", vec3(0.0f, 0.0f, 1.0f), vec3(-10.0f), vec3(10.0f));
     FloatVec3Property defaultOffset("offset", "Offset", vec3(0.0f), vec3(-10.0f), vec3(10.0f));
 
     defaultDataRange.set(&oldState.dataRange);
@@ -301,13 +306,17 @@ void VolumeSource::restoreState() {
     defaultOverRideDefaults.resetToDefaultState();
     VolumeSourceState::assignStateIfChanged(oldState.overRideDefaults, defaultOverRideDefaults, overRideDefaults_);
 
-    defaultLengths.set(&oldState.lengths);
-    defaultLengths.resetToDefaultState();
-    VolumeSourceState::assignStateIfChanged(oldState.lengths, defaultLengths, lengths_);
+    defaultA.set(&oldState.a);
+    defaultA.resetToDefaultState();
+    VolumeSourceState::assignStateIfChanged(oldState.a, defaultA, a_);
 
-    defaultAngles.set(&oldState.angles);
-    defaultAngles.resetToDefaultState();
-    VolumeSourceState::assignStateIfChanged(oldState.angles, defaultAngles, angles_);
+    defaultB.set(&oldState.b);
+    defaultB.resetToDefaultState();
+    VolumeSourceState::assignStateIfChanged(oldState.b, defaultB, b_);
+    
+    defaultC.set(&oldState.c);
+    defaultC.resetToDefaultState();
+    VolumeSourceState::assignStateIfChanged(oldState.c, defaultC, c_);
 
     defaultOffset.set(&oldState.offset);
     defaultOffset.resetToDefaultState();
@@ -324,22 +333,16 @@ void VolumeSource::process() {
     if (loadedData_) {
         out = static_cast<Volume*>(loadedData_);
 
-        float a = lengths_.get()[0];
-        float b = lengths_.get()[1];
-        float c = lengths_.get()[2];
-        vec3 offset = offset_.get();
-        float alpha = glm::radians(angles_.get()[0]);
-        float beta = glm::radians(angles_.get()[1]);
-        float gamma = glm::radians(angles_.get()[2]);
-        float v = std::sqrt(1 - std::cos(alpha) * std::cos(alpha) -
-                            std::cos(beta) * std::cos(beta) - std::cos(gamma) * std::cos(gamma) -
-                            2 * std::cos(alpha) * std::cos(beta) * std::cos(gamma));
-        mat4 newBasisAndOffset(
-            a, b * std::cos(gamma), c * std::cos(beta), offset[0], 0.0f, b * std::sin(gamma),
-            c * (std::cos(alpha) - std::cos(beta) * std::cos(gamma)) / std::sin(gamma), offset[1],
-            0.0f, 0.0f, c * v / std::sin(gamma), offset[2], 0.0f, 0.0f, 0.0f, 1.0f);
+        vec3 a = a_.get();
+        vec3 b = b_.get();
+        vec3 c = c_.get();
+        vec4 offset = vec4(offset_.get(), 1.0f);
+        mat3 basis(a,b,c);
         
-        out->setBasisAndOffset(glm::transpose(newBasisAndOffset));
+        mat4 basisAndOffset(basis);
+        basisAndOffset[3] = offset;
+
+        out->setBasisAndOffset(basisAndOffset);
         
         if (out->dataMap_.dataRange != dataRange_.get() && out->hasRepresentation<VolumeRAM>()) {
             VolumeRAM* volumeRAM = out->getEditableRepresentation<VolumeRAM>();
@@ -373,9 +376,11 @@ VolumeSource::VolumeSourceState::VolumeSourceState()
                  0.0, 0.0, PropertyOwner::INVALID_OUTPUT, PropertySemantics("Text"))
     , valueUnit("valueUnit", "Value unit", "arb. unit.")
     , overRideDefaults("override", "Override", false)
-    , lengths("length", "Lengths", vec3(1.0f), vec3(0.0f), vec3(10.0f))
-    , angles("angles", "Angles", vec3(90.0f), vec3(0.0f), vec3(180.0f), vec3(1.0f))
-    , offset("offset", "Offset", vec3(0.0f), vec3(-10.0f), vec3(10.0f)) {}
+    , a("a", "a", vec3(1.0f, 0.0f, 0.0f), vec3(-10.0f), vec3(10.0f))
+    , b("b", "b", vec3(0.0f, 1.0f, 0.0f), vec3(-10.0f), vec3(10.0f))
+    , c("c", "c", vec3(0.0f, 0.0f, 1.0f), vec3(-10.0f), vec3(10.0f))
+    , offset("offset", "Offset", vec3(0.0f), vec3(-10.0f), vec3(10.0f)) {
+}
 
 void VolumeSource::VolumeSourceState::assignStateIfChanged(const DoubleMinMaxProperty& in,
                                                            const DoubleMinMaxProperty& ref,
