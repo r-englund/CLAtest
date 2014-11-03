@@ -39,11 +39,12 @@
 #include <inviwo/core/processors/processor.h>
 #include <modules/opengl/glwrap/shader.h>
 #include <modules/opengl/textureutils.h>
+#include <modules/opengl/shaderutils.h>
 
 namespace inviwo {
 
 ProcessorClassIdentifier(GeometryRenderProcessorGL, "org.inviwo.GeometryRenderGL");
-ProcessorDisplayName(GeometryRenderProcessorGL,  "Geometry Render");
+ProcessorDisplayName(GeometryRenderProcessorGL,  "Geometry Renderer");
 ProcessorTags(GeometryRenderProcessorGL, Tags::GL);
 ProcessorCategory(GeometryRenderProcessorGL, "Geometry Rendering");
 ProcessorCodeState(GeometryRenderProcessorGL, CODE_STATE_STABLE);
@@ -121,31 +122,7 @@ void GeometryRenderProcessorGL::deinitialize() {
 
 void GeometryRenderProcessorGL::initializeResources() {
     // shading defines
-    std::string shadingKey = "APPLY_SHADING(colorAmb, colorDiff, colorSpec, samplePos, gradient, lightPos, cameraPos)";
-    std::string shadingValue = "";
-
-    switch (lightingProperty_.shadingMode_.get()) {
-    case ShadingMode::None:
-        shadingValue = "colorAmb;";
-        break;
-    case ShadingMode::Ambient:
-        shadingValue = "shadeAmbient(colorAmb);";
-        break;
-    case ShadingMode::Diffuse:
-        shadingValue = "shadeDiffuse(colorDiff, samplePos, gradient, lightPos);";
-        break;
-    case ShadingMode::Specular:
-        shadingValue = "shadeSpecular(colorSpec, samplePos, gradient, lightPos, cameraPos);";
-        break;
-    case ShadingMode::Phong:
-        shadingValue = "shadePhong(colorAmb, colorDiff, colorSpec, samplePos, gradient, lightPos, cameraPos);";
-        break;
-    default:
-        break;
-    }
-
-    shader_->getFragmentShaderObject()->addShaderDefine(shadingKey, shadingValue);
-
+    utilgl::addShaderDefines(shader_, lightingProperty_);
     shader_->build();
 }
 
@@ -166,7 +143,8 @@ void GeometryRenderProcessorGL::process() {
 
     shader_->activate();
     setGlobalShaderParameters(shader_);
-    shader_->setUniform("projectionMatrix_", camera_.projectionMatrix());
+    utilgl::setShaderUniforms(shader_, camera_, "camera_");
+    utilgl::setShaderUniforms(shader_, lightingProperty_, "lighting_");
 
     bool culling = (cullFace_.get() != 0);
     if (culling) {
@@ -183,6 +161,8 @@ void GeometryRenderProcessorGL::process() {
         glPointSize((GLfloat)renderPointSize_.get());
 
     for (std::vector<GeometryRenderer*>::const_iterator it = renderers_.begin(), endIt = renderers_.end(); it != endIt; ++it) {
+        //utilgl::setShaderUniforms(shader_, camera_, *(*it)->getGeometry());
+        utilgl::setShaderUniforms(shader_, *(*it)->getGeometry(), "geometry_");
         shader_->setUniform("viewToTexture_", camera_.inverseViewMatrix()*(*it)->getGeometry()->getCoordinateTransformer().getWorldToModelMatrix());
         mat4 modelViewMatrix = camera_.viewMatrix()*(*it)->getGeometry()->getWorldTransform()*(*it)->getGeometry()->getBasisAndOffset();
         shader_->setUniform("modelViewMatrix_", modelViewMatrix);
@@ -266,12 +246,6 @@ void GeometryRenderProcessorGL::setGlobalShaderParameters(Shader* shader) {
     // camera uniform
     shader->setUniform("viewMatrix_", camera_.viewMatrix());
     shader->setUniform("cameraPosition_", camera_.getLookFrom());
-    // illumination uniforms
-    shader->setUniform("lightPosition_", lightingProperty_.lightPosition_.get());
-    shader->setUniform("lightColorAmbient_", lightingProperty_.lightColorAmbient_.get());
-    shader->setUniform("lightColorDiffuse_", lightingProperty_.lightColorDiffuse_.get());
-    shader->setUniform("lightColorSpecular_", lightingProperty_.lightColorSpecular_.get());
-    shader->setUniform("lightSpecularExponent_", lightingProperty_.lightSpecularExponent_.get());
 }
 
 void GeometryRenderProcessorGL::updateRenderers() {

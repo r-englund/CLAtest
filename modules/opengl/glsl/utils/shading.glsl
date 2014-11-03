@@ -29,58 +29,48 @@
  * Contact: Rickard Englund
  *
  *********************************************************************************/
+#ifndef IVW_SHADING_GLSL
+#define IVW_SHADING_GLSL
 
-vec3 shadeAmbient(SHADING_PARAMETERS light, vec3 colorAmb) {
-    return colorAmb * light.lightColorAmbient_;
+#include "utils/structs.glsl"
+
+vec3 shadeAmbient(LIGHTING_PARAMETERS lighting, vec3 materialAmbientColor) {
+    return materialAmbientColor * lighting.lightColor_;
 }
 
-vec3 shadeDiffuseCalculation(SHADING_PARAMETERS light, vec3 colorDiff, vec3 normal, vec3 lightDir) {
-    return colorDiff * light.lightColorDiffuse_ * max(dot(normal, lightDir), 0.0);
+vec3 shadeDiffuseCalculation(LIGHTING_PARAMETERS lighting, vec3 materialDiffuseColor, vec3 normal, vec3 toLightDir) {
+    return materialDiffuseColor * lighting.lightColor_ * max(dot(normal, toLightDir), 0.0);
 }
 
-vec3 shadeSpecularCalculation(SHADING_PARAMETERS light, vec3 colorSpec, vec3 normal, vec3 lightDir,
-                              vec3 cameraDir) {
-    vec3 halfway = normalize(cameraDir + lightDir);
-    return colorSpec * light.lightColorSpecular_ *
-           pow(max(dot(normal, halfway), 0.0), light.lightSpecularExponent_);
+vec3 shadeSpecularCalculation(LIGHTING_PARAMETERS lighting, vec3 materialSpecularColor, vec3 normal, vec3 toLightDir,
+                              vec3 toCameraDir) {
+    vec3 halfway = normalize(toCameraDir + toLightDir);
+    return materialSpecularColor * lighting.lightColor_ *
+           pow(max(dot(normal, halfway), 0.0), lighting.materialSpecularExponent_);
 }
 
-vec3 shadeDiffuse(SHADING_PARAMETERS light, CAMERA_PARAMETERS camera, VOLUME_PARAMETERS volume,
-                  vec3 colorDiff, vec3 position, vec3 gradient) {
-    vec3 lightPos = light.lightPosition_;
-    vec3 lightInVoxelSpace = (volume.worldToTexture_ * vec4(vec3(-lightPos), 1.0)).xyz;
-    vec3 gradientInViewSpace = (camera.viewMatrix_ * vec4(gradient, 0.0)).xyz;
-    return shadeDiffuseCalculation(light, colorDiff, normalize(gradientInViewSpace),
-                                   normalize(lightInVoxelSpace - position));
+// All positions and directions are assumed to be in world space!
+vec3 shadeDiffuse(LIGHTING_PARAMETERS lighting, vec3 materialDiffuseColor,
+                  vec3 position, vec3 normal) {
+    return shadeDiffuseCalculation(lighting, materialDiffuseColor, normal,
+                                   normalize(lighting.lightPosition_ - position));
 }
 
-vec3 shadeSpecular(SHADING_PARAMETERS light, CAMERA_PARAMETERS camera, VOLUME_PARAMETERS volume,
-                   vec3 colorSpec, vec3 position, vec3 gradient) {
-    vec3 lightPos = light.lightPosition_;
-    vec3 cameraPos = camera.cameraPosition_;
-    vec3 lightInVoxelSpace = (volume.worldToTexture_ * vec4(vec3(-lightPos), 1.0)).xyz;
-    vec3 cameraInVoxelSpace = (volume.worldToTexture_ * vec4(cameraPos, 1.0)).xyz;
-    vec3 gradientInViewSpace = (camera.viewMatrix_ * vec4(gradient, 0.0)).xyz;
-
-    return shadeSpecularCalculation(light, colorSpec, normalize(gradientInViewSpace),
-                                    normalize(lightInVoxelSpace - position),
-                                    normalize(cameraInVoxelSpace - position));
+vec3 shadeSpecular(LIGHTING_PARAMETERS lighting, vec3 materialSpecularColor,
+                   vec3 position, vec3 normal, vec3 toCameraDir) {
+    return shadeSpecularCalculation(lighting, materialSpecularColor, normal,
+                                    normalize(lighting.lightPosition_ - position), 
+                                    toCameraDir);
 }
 
-vec3 shadePhong(SHADING_PARAMETERS light, CAMERA_PARAMETERS camera, VOLUME_PARAMETERS volume,
-                vec3 colorAmb, vec3 colorDiff, vec3 colorSpec, vec3 position, vec3 gradient) {
-    vec3 lightPos = light.lightPosition_;
-     vec3 cameraPos = camera.cameraPosition_;
-    vec3 lightInVoxelSpace = (volume.worldToTexture_ * vec4(vec3(-lightPos), 1.0)).xyz;
-    vec3 cameraInVoxelSpace = (volume.worldToTexture_ * vec4(cameraPos, 1.0)).xyz;
-    vec3 gradientInViewSpace = (camera.viewMatrix_ * vec4(gradient, 0.0)).xyz;
-
-    vec3 normal = normalize(gradientInViewSpace);
-    vec3 lightDir = normalize(lightInVoxelSpace - position);
-    vec3 cameraDir = normalize(cameraInVoxelSpace - position);
-
-    vec3 resAmb = shadeAmbient(light, colorAmb);
-    vec3 resDiff = shadeDiffuseCalculation(light, colorDiff, normal, lightDir);
-    vec3 resSpec = shadeSpecularCalculation(light, colorSpec, normal, lightDir, cameraDir);
+vec3 shadePhong(LIGHTING_PARAMETERS lighting, 
+                vec3 materialAmbientColor, vec3 materialDiffuseColor, vec3 materialSpecularColor,
+                vec3 position, vec3 normal, vec3 toCameraDir) {
+    vec3 toLightDir = normalize(lighting.lightPosition_ - position);
+    vec3 resAmb = shadeAmbient(lighting, materialAmbientColor); 
+    vec3 resDiff = shadeDiffuse(lighting, materialDiffuseColor, normal, toLightDir);
+    vec3 resSpec = shadeSpecularCalculation(lighting, materialSpecularColor, normal, toLightDir, toCameraDir);
     return resAmb + resDiff + resSpec;
 }
+
+#endif

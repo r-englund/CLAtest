@@ -139,7 +139,9 @@ void SimpleRaycaster::process() {
     utilgl::setShaderUniforms(shader_, volumePort_, "volumeParameters_");
     utilgl::setShaderUniforms(shader_, raycasting_);
     utilgl::setShaderUniforms(shader_, camera_, "camera_");
-    utilgl::setShaderUniforms(shader_, lighting_, "light_");
+    SimpleLightingProperty tmp = lighting_;
+    tmp.lightPosition_.set((volumePort_.getData()->getCoordinateTransformer().getTextureToWorldMatrix()*vec4(lighting_.lightPosition_.get(), 1.f)).xyz);
+    utilgl::setShaderUniforms(shader_, tmp, "lighting_");
 
     utilgl::singleDrawImagePlaneRect();
 

@@ -41,14 +41,14 @@ SimpleLightingProperty::SimpleLightingProperty(std::string identifier, std::stri
                                                PropertySemantics semantics)
     : CompositeProperty(identifier, displayName, invalidationLevel, semantics)
     , shadingMode_("shadingMode", "Shading", PropertyOwner::INVALID_RESOURCES)
+    , materialAmbientColor_("lightColorAmbient", "Material ambient color", vec3(0.0f))
+    , materialSpecularColor_("lightColorSpecular", "Material specular color", vec3(1.f))
+    , materialSpecularExponent_("materialShininess", "Material shininess", 110, 1, 180)
     , lightPosition_("lightPosition", "Position", vec3(0.0f, 0.7071f, 0.7071f), vec3(-10, -10, -10),
                      vec3(10, 10, 10))
-    , lightColorAmbient_("lightColorAmbient", "Ambient color", vec3(0.1f, 0.1f, 0.1f))
-    , lightColorDiffuse_("lightColorDiffuse", "Diffuse color", vec3(0.75f, 0.75f, 0.75f))
-    , lightColorSpecular_("lightColorSpecular", "Specular color", vec3(0.75f, 0.75f, 0.75f))
-    , lightSpecularExponent_("materialShininess", "Material shininess", 110, 1, 180)
-    , applyLightAttenuation_("applyLightAttenuation", "Light attenuation", false)
-    , lightAttenuation_("lightAttenuation", "Light attenuation values", vec3(1.0f, 0.0f, 0.0f)) {
+    , lightColor_("lightColorDiffuse", "Light color", vec3(1.f))
+    , lightAttenuation_("lightAttenuation", "Light attenuation values", vec3(1.0f, 0.0f, 0.0f))
+    , applyLightAttenuation_("applyLightAttenuation", "Light attenuation", false) {
 
     shadingMode_.addOption("none", "No Shading", ShadingMode::None);
     shadingMode_.addOption("ambient", "Ambient", ShadingMode::Ambient);
@@ -59,17 +59,17 @@ SimpleLightingProperty::SimpleLightingProperty(std::string identifier, std::stri
     shadingMode_.setCurrentStateAsDefault();
 
     lightPosition_.setSemantics(PropertySemantics("Spherical"));
-    lightColorAmbient_.setSemantics(PropertySemantics::Color);
-    lightColorDiffuse_.setSemantics(PropertySemantics::Color);
-    lightColorSpecular_.setSemantics(PropertySemantics::Color);
+    materialAmbientColor_.setSemantics(PropertySemantics::Color);
+    lightColor_.setSemantics(PropertySemantics::Color);
+    materialSpecularColor_.setSemantics(PropertySemantics::Color);
 
     // add properties
     addProperty(shadingMode_);
     addProperty(lightPosition_);
-    addProperty(lightColorAmbient_);
-    addProperty(lightColorDiffuse_);
-    addProperty(lightColorSpecular_);
-    addProperty(lightSpecularExponent_);
+    addProperty(lightColor_);
+    addProperty(materialAmbientColor_);
+    addProperty(materialSpecularColor_);
+    addProperty(materialSpecularExponent_);
     addProperty(applyLightAttenuation_);
     addProperty(lightAttenuation_);
 }

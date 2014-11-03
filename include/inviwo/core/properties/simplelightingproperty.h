@@ -66,13 +66,19 @@ public:
     InviwoPropertyInfo();
 
     OptionPropertyInt shadingMode_;
+    // Material properties
+    // Diffuse color often come from the object 
+    // so we neglect it here
+    FloatVec3Property materialAmbientColor_;
+    FloatVec3Property materialSpecularColor_;
+    IntProperty materialSpecularExponent_;
+    // Light properties
     FloatVec3Property lightPosition_;
-    FloatVec3Property lightColorAmbient_;
-    FloatVec3Property lightColorDiffuse_;
-    FloatVec3Property lightColorSpecular_;
-    IntProperty lightSpecularExponent_;
-    BoolProperty applyLightAttenuation_;
+    FloatVec3Property lightColor_; 
     FloatVec3Property lightAttenuation_;
+
+    BoolProperty applyLightAttenuation_;
+
 
 };
 

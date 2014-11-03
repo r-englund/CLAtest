@@ -30,8 +30,11 @@
  *
  *********************************************************************************/
 
-uniform mat4 modelViewMatrix_;
-uniform mat4 projectionMatrix_;
+#include "utils/structs.glsl"
+
+
+uniform MODEL_PARAMETERS geometry_;
+uniform CAMERA_PARAMETERS camera_;
 
 out vec4 worldPosition_;
 out vec3 normal_;
@@ -41,7 +44,7 @@ out vec3 texCoord_;
 void main() {
     color_ = in_Color;
     texCoord_ = in_TexCoord;
-    worldPosition_ = modelViewMatrix_ * in_Vertex;
-    normal_ = (modelViewMatrix_ * vec4(in_Normal,0)).xyz;
-    gl_Position = projectionMatrix_ * worldPosition_;
+    worldPosition_ = geometry_.modelToWorldMatrix_ * in_Vertex;
+    normal_ = geometry_.modelToWorldNormalMatrix_ * in_Normal;
+    gl_Position = camera_.worldToClipMatrix_ * worldPosition_;
 }
