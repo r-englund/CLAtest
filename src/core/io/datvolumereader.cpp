@@ -112,8 +112,7 @@ Volume* DatVolumeReader::readMetaData(std::string filePath) {
 
         textLine = trim(textLine);
         if (textLine == "" || textLine[0] == '#' || textLine[0] == '/') continue;
-
-        parts = splitString(textLine, ':');
+        parts = splitString(splitString(textLine,'#')[0], ':');
         if (parts.size() != 2) continue;
 
         key = toLower(trim(parts[0]));
@@ -222,9 +221,7 @@ Volume* DatVolumeReader::readMetaData(std::string filePath) {
 
     // If not specified, center the data around origo.
     if (!hasOffset) {
-        offset[0] = -basis[0][0] / 2.0f;
-        offset[1] = -basis[1][1] / 2.0f;
-        offset[2] = -basis[2][2] / 2.0f;
+        offset = -0.5f*(basis[0]+basis[1]+basis[2]);
     }
 
     volume->setBasis(basis);
