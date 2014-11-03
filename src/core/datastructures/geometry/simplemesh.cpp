@@ -36,7 +36,7 @@
 namespace inviwo {
 
 SimpleMesh::SimpleMesh(GeometryEnums::RenderType rt, GeometryEnums::ConnectivityType ct)
-    : Mesh() {
+    : Mesh(rt, ct) {
 
     addAttribute(new Position3dBuffer()); // pos 0
     addAttribute(new TexCoord3dBuffer()); // pos 1
