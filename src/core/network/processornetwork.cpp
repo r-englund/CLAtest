@@ -782,7 +782,7 @@ Property* ProcessorNetwork::getProperty(std::vector<std::string> path) const {
     return NULL;
 }
 
-const int ProcessorNetwork::processorNetworkVersion_ = 4;
+const int ProcessorNetwork::processorNetworkVersion_ = 5;
 
 
 ProcessorNetwork::NetworkConverter::NetworkConverter(int from)
@@ -798,6 +798,8 @@ bool ProcessorNetwork::NetworkConverter::convert(TxElement* root) {
             traverseNodes(root, &ProcessorNetwork::NetworkConverter::updatePropertType);
         case 3:
             traverseNodes(root, &ProcessorNetwork::NetworkConverter::updateShadingMode);
+        case 4:
+            traverseNodes(root, &ProcessorNetwork::NetworkConverter::updateCameraToComposite);
         default:
             break;
     }
@@ -920,6 +922,58 @@ void ProcessorNetwork::NetworkConverter::updateShadingMode(TxElement* node) {
         if (type == "org.inviwo.OptionPropertyString" && identifier == "shadingMode") {
             node->SetAttribute("type", "org.inviwo.OptionPropertyInt");
         }
+    }
+}
+
+void ProcessorNetwork::NetworkConverter::updateCameraToComposite(TxElement* node) {
+    std::string key;
+    node->GetValue(&key);
+
+    if (key == "Property") {
+        std::string type = node->GetAttributeOrDefault("type", "");
+        std::string identifier = node->GetAttributeOrDefault("identifier", "");
+        if (type == "org.inviwo.CameraProperty" && identifier == "camera") {
+            std::vector<TxElement> subNodeVector;
+
+            //create
+            TxElement newNode;
+            newNode.SetValue("Properties");
+
+            //temp list
+            std::vector<TxElement*> toBeDeleted;
+
+            //copy and remove children
+            ticpp::Iterator<TxElement> child;
+            for (child = child.begin(node); child != child.end(); child++) {
+                std::string propKey;
+                TxElement* subNode = child.Get();
+                subNode->GetValue(&propKey);
+                if (propKey=="lookFrom" ||
+                    propKey=="lookTo" ||
+                    propKey=="lookUp" ||
+                    propKey=="fovy" ||
+                    propKey=="aspectRatio" ||
+                    propKey=="nearPlane" ||
+                    propKey=="farPlane"
+                    ) 
+                {
+                    subNode->SetValue("Property");
+                    newNode.InsertEndChild(*subNode->Clone());
+                    toBeDeleted.push_back(subNode);
+                }
+            }
+
+          for (size_t i=0; i<toBeDeleted.size(); i++) {
+              node->RemoveChild(toBeDeleted[i]);
+          }
+
+          //insert new node
+          node->InsertEndChild(newNode);
+
+          LogWarn("Camera property updated to composite property. Workspace requires resave")
+        }
+
+
     }
 }
 
