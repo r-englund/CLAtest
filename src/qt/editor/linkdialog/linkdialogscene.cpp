@@ -369,10 +369,11 @@ void LinkDialogGraphicsScene::expandOrCollapseLinkedPropertyItems(LinkDialogProp
                 if (parentProperty) {
                     LinkDialogPropertyGraphicsItem* endP =
                         qgraphicsitem_cast<LinkDialogPropertyGraphicsItem*>(getPropertyGraphicsItemOf(parentProperty));
-                    endP->setAnimate(true);
-                    if (expand) endP->expand(true);
-                    else endP->collapse(true);
-
+                    if(endP){
+                        endP->setAnimate(true);
+                        if (expand) endP->expand(true);
+                        else endP->collapse(true);
+                    }
                 }
             }
         }
