@@ -39,15 +39,25 @@
 
 namespace inviwo {
 
-template<typename T>
-class TemplateProperty : public Property {
+template class TemplateProperty<std::string>;
+template class TemplateProperty<bool>;
 
+template <typename T>
+class TemplateProperty : public Property {
 public:
     typedef T valueType;
 
-    TemplateProperty(const std::string &identifier,const std::string &displayName, const T &value,
-                     PropertyOwner::InvalidationLevel invalidationLevel = PropertyOwner::INVALID_OUTPUT,
-                     PropertySemantics semantics = PropertySemantics::Default);
+    InviwoPropertyInfo();
+
+    TemplateProperty(
+        const std::string& identifier, const std::string& displayName, const T& value = T(),
+        PropertyOwner::InvalidationLevel invalidationLevel = PropertyOwner::INVALID_OUTPUT,
+        PropertySemantics semantics = PropertySemantics::Default);
+
+    TemplateProperty(const TemplateProperty& rhs);
+    TemplateProperty<T>& operator=(const TemplateProperty<T>& that);
+    virtual TemplateProperty* clone() const;
+    virtual ~TemplateProperty();
 
     virtual T& get();
     virtual const T& get() const { return value_; };
@@ -56,7 +66,7 @@ public:
 
     virtual void setCurrentStateAsDefault();
     virtual void resetToDefaultState();
-            
+
     virtual void serialize(IvwSerializer& s) const;
     virtual void deserialize(IvwDeserializer& d);
 
@@ -64,6 +74,54 @@ protected:
     T value_;
     T defaultValue_;
 };
+
+
+template <typename T>
+const std::string TemplateProperty<T>::CLASS_IDENTIFIER = "org.inviwo.TemplateProperty";
+
+typedef TemplateProperty<std::string> StringProperty;
+const std::string StringProperty::CLASS_IDENTIFIER = "org.inviwo.StringProperty";
+
+typedef TemplateProperty<bool> BoolProperty;
+const std::string BoolProperty::CLASS_IDENTIFIER = "org.inviwo.BoolProperty";
+
+// StringProperty* StringProperty::clone() const {
+//     return new StringProperty(*this);
+// }
+// 
+// BoolProperty* BoolProperty::clone() const {
+//     return new BoolProperty(*this);
+// }
+
+template <typename T>
+TemplateProperty<T>* TemplateProperty<T>::clone() const {
+    return new TemplateProperty<T>(*this);
+}
+
+template<typename T>
+TemplateProperty<T>::TemplateProperty(const TemplateProperty<T>& rhs)
+    : Property(rhs)
+    , value_(rhs.value_)
+    , defaultValue_(rhs.defaultValue_) {
+}
+
+template<typename T>
+TemplateProperty<T>& TemplateProperty<T>::operator=(const TemplateProperty<T>& that) {
+    if (this != &that) {
+        Property::operator=(that);
+        value_ = that.value_;
+        defaultValue_ = that.defaultValue_;
+    }
+    return *this;
+}
+
+//template<typename T>
+//TemplateProperty<T>::operator T() {
+//    return value_;
+//}
+
+template<typename T>
+TemplateProperty<T>::~TemplateProperty() {}
 
 template<typename T>
 void inviwo::TemplateProperty<T>::resetToDefaultState() { 
@@ -124,7 +182,6 @@ void TemplateProperty<T>::deserialize(IvwDeserializer& d) {
     d.deserialize("value", value_);
     propertyModified();
 }
-
 
 } // namespace
 

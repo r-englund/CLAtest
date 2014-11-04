@@ -82,6 +82,9 @@ public:
              PropertyOwner::InvalidationLevel invalidationLevel=PropertyOwner::INVALID_OUTPUT,
              PropertySemantics semantics = PropertySemantics::Default);
     Property();
+    Property(const Property& rhs);
+    Property& operator=(const Property& that);
+    virtual Property* clone() const;
     virtual ~Property();
 
     // Should be called by all inheriting classes
@@ -113,14 +116,14 @@ public:
     void setInvalidationLevel(PropertyOwner::InvalidationLevel invalidationLevel) ;
 
     PropertyOwner* getOwner();
-    const PropertyOwner* getOwner()const ;
+    const PropertyOwner* getOwner() const;
     virtual void setOwner(PropertyOwner* owner);
 
 
     // Widget calls
     void registerWidget(PropertyWidget* propertyWidget);
     void deregisterWidget(PropertyWidget* propertyWidget);
-    const std::vector<PropertyWidget*>& getWidgets() const { return propertyWidgets_; }
+    const std::vector<PropertyWidget*>& getWidgets() const;
     
     /**
      *  This function should be called by propertywidgets before they initiate a property
@@ -133,7 +136,7 @@ public:
     void setInitiatingWidget(PropertyWidget*);
     void clearInitiatingWidget();
     void updateWidgets();
-    bool hasWidgets()const;
+    bool hasWidgets() const;
 
     /**
      *  Save the current state of the property as the default. This state will then be used as a 
@@ -158,29 +161,30 @@ public:
     virtual void serialize(IvwSerializer& s) const;
     virtual void deserialize(IvwDeserializer& d);
 
-    template <typename T>
-    void onChange(T* o, void (T::*m)()) {
-        onChangeCallback_.addMemberFunction(o,m);
-    }
+    template <typename T> void onChange(T* o, void (T::*m)());
 
-    virtual UsageMode getUsageMode() const { return usageMode_; };
+    virtual UsageMode getUsageMode() const;
     virtual void setUsageMode(UsageMode visibilityMode);
     virtual bool getVisible();
     virtual void setVisible(bool val);
 
-    virtual void updateVisibility();  // TODO protected?
+    virtual void updateVisibility();
 
 protected:
     CallBackList onChangeCallback_;
 
 private:
     std::string identifier_;
+
     std::string displayName_;
+    std::string defaultDisplayName_;
+
     bool readOnly_;
     bool defaultReadOnly_;
 
     PropertySemantics semantics_;
     PropertySemantics defaultSemantics_;
+
     UsageMode usageMode_;
     bool visible_;
 
@@ -191,8 +195,12 @@ private:
     std::vector<PropertyWidget*> propertyWidgets_;
 
     PropertyWidget* initiatingWidget_;
-
 };
+
+template <typename T>
+void Property::onChange(T* o, void (T::*m)()) {
+    onChangeCallback_.addMemberFunction(o, m);
+}
 
 } // namespace
 

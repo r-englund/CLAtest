@@ -43,8 +43,10 @@ Property::Property(const std::string &identifier,
                    PropertyOwner::InvalidationLevel invalidationLevel,
                    PropertySemantics semantics)
     : IvwSerializable()
+    , MetaDataOwner()
     , identifier_(identifier)
     , displayName_(displayName)
+    , defaultDisplayName_(displayName)
     , readOnly_(false)
     , defaultReadOnly_(false)
     , semantics_(semantics)
@@ -59,8 +61,10 @@ Property::Property(const std::string &identifier,
 
 Property::Property()
     : IvwSerializable()
+    , MetaDataOwner()
     , identifier_("")
     , displayName_("")
+    , defaultDisplayName_("")
     , readOnly_(false)
     , defaultReadOnly_(false)
     , semantics_(PropertySemantics::Default)
@@ -71,6 +75,49 @@ Property::Property()
     , invalidationLevel_(PropertyOwner::INVALID_OUTPUT)
     , owner_(NULL)
     , initiatingWidget_(NULL)  {
+}
+
+Property::Property(const Property& rhs)
+    : IvwSerializable()
+    , MetaDataOwner(rhs)
+    , identifier_(rhs.identifier_)
+    , displayName_(rhs.displayName_)
+    , defaultDisplayName_(rhs.defaultDisplayName_)
+    , readOnly_(rhs.readOnly_)
+    , defaultReadOnly_(rhs.defaultReadOnly_)
+    , semantics_(rhs.semantics_)
+    , defaultSemantics_(rhs.defaultSemantics_)
+    , usageMode_(rhs.usageMode_)
+    , visible_(rhs.visible_)
+    , propertyModified_(rhs.propertyModified_)
+    , invalidationLevel_(rhs.invalidationLevel_)
+    , owner_(rhs.owner_)
+    , initiatingWidget_(rhs.initiatingWidget_) {
+}
+
+Property& Property::operator=(const Property& that) {
+    if (this != &that) {
+        MetaDataOwner::operator=(that);
+        identifier_ = that.identifier_;
+        displayName_  = that.displayName_;
+        defaultDisplayName_ = that.defaultDisplayName_;
+        readOnly_ = that.readOnly_;
+        defaultReadOnly_ = that.defaultReadOnly_;
+        semantics_ = that.semantics_;
+        defaultSemantics_ = that.defaultSemantics_;
+        usageMode_ = that.usageMode_;
+        visible_ = that.visible_;
+        propertyModified_ = that.propertyModified_;
+        invalidationLevel_ = that.invalidationLevel_;
+        owner_ = that.owner_;
+        initiatingWidget_ = that.initiatingWidget_;
+    }
+
+    return *this;
+}
+
+Property* Property::clone() const {
+    return new Property(*this);
 }
 
 Property::~Property() {
@@ -279,5 +326,17 @@ void Property::resetToDefaultState() {
 void Property::set(const Property* src) {
     propertyModified();
 }
+
+inviwo::UsageMode Property::getUsageMode() const {
+    return usageMode_;
+}
+
+const std::vector<PropertyWidget*>& Property::getWidgets() const {
+    return propertyWidgets_;
+}
+
+
+
+
 
 } // namespace

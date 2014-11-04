@@ -30,22 +30,13 @@
  *
  *********************************************************************************/
 
-#include <inviwo/core/properties/boolproperty.h>
+#include <inviwo/core/properties/templateproperty.h>
 
 namespace inviwo {
-
-// PropertyClassIdentifier(BoolProperty, "org.inviwo.BoolProperty");
-// 
-// BoolProperty::BoolProperty(std::string identifier,
-//                            std::string displayName, bool value,
-//                            PropertyOwner::InvalidationLevel invalidationLevel,
-//                            PropertySemantics semantics)
-//     : TemplateProperty<bool>(identifier, displayName, value, invalidationLevel, semantics) {
-// }
-// 
-// BoolProperty* BoolProperty::clone() const {
-//     return new BoolProperty(*this);
-// }
+// template <>
+// IVW_CORE_API const std::string StringProperty::CLASS_IDENTIFIER = "org.inviwo.StringProperty";
+// template <>
+// IVW_CORE_API const std::string BoolProperty::CLASS_IDENTIFIER = "org.inviwo.BoolProperty";
 
 
 } // namespace
