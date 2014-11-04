@@ -36,6 +36,7 @@
 #include <inviwo/qt/widgets/inviwoqtwidgetsdefine.h>
 #include <QDoubleSpinBox>
 
+class QTimerEvent;
 
 namespace inviwo {
 
@@ -61,6 +62,13 @@ public:
      *
      */
     virtual void setDecimals(int decimals);
+
+    /** 
+     * \brief Overrides the timerEvent to prevent
+     * spinbox to be updated twice in case of 
+     * calculations being slows
+     */
+    virtual void timerEvent(QTimerEvent *event);
 protected:
     QSize cachedSizeHint_;
     int displayDecimals_;
