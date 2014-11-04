@@ -57,6 +57,9 @@ InviwoFileDialog::InviwoFileDialog(QWidget *parent, const std::string &title,
         QDesktopServices::storageLocation(QDesktopServices::HomeLocation));
 #endif
     useNativeDialog();
+#if (QT_VERSION >= QT_VERSION_CHECK(5, 2, 0))
+    QFileDialog::setOption(QFileDialog::DontUseCustomDirectoryIcons);
+#endif
 }
 
 void InviwoFileDialog::useNativeDialog(const bool &use) {
