@@ -382,7 +382,6 @@ set(SOURCE_FILES
     properties/simplelightingproperty.cpp
     properties/simpleraycastingproperty.cpp
     properties/stringproperty.cpp
-	properties/templateproperty.cpp
     properties/transferfunctionproperty.cpp
     rendering/geometryrendererfactory.cpp
     resources/resourcemanager.cpp

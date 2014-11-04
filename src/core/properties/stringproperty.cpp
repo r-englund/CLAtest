@@ -34,18 +34,13 @@
 
 namespace inviwo {
 
-// PropertyClassIdentifier(StringProperty, "org.inviwo.StringProperty");
-// 
-// StringProperty::StringProperty(std::string identifier,
-//                                std::string displayName,
-//                                std::string value,
-//                                PropertyOwner::InvalidationLevel invalidationLevel,
-//                                PropertySemantics semantics)
-//     : TemplateProperty<std::string>(identifier, displayName,value, invalidationLevel, semantics) {
-// }
-// 
-// StringProperty* StringProperty::clone() const {
-//     return new StringProperty(*this);
-// }
+PropertyClassIdentifier(StringProperty, "org.inviwo.StringProperty");
 
-} // namespace
+StringProperty::StringProperty(std::string identifier, std::string displayName, std::string value,
+                               PropertyOwner::InvalidationLevel invalidationLevel,
+                               PropertySemantics semantics)
+    : TemplateProperty<std::string>(identifier, displayName, value, invalidationLevel, semantics) {}
+
+StringProperty* StringProperty::clone() const { return new StringProperty(*this); }
+
+}  // namespace

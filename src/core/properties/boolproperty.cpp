@@ -34,18 +34,13 @@
 
 namespace inviwo {
 
-// PropertyClassIdentifier(BoolProperty, "org.inviwo.BoolProperty");
-// 
-// BoolProperty::BoolProperty(std::string identifier,
-//                            std::string displayName, bool value,
-//                            PropertyOwner::InvalidationLevel invalidationLevel,
-//                            PropertySemantics semantics)
-//     : TemplateProperty<bool>(identifier, displayName, value, invalidationLevel, semantics) {
-// }
-// 
-// BoolProperty* BoolProperty::clone() const {
-//     return new BoolProperty(*this);
-// }
+PropertyClassIdentifier(BoolProperty, "org.inviwo.BoolProperty");
 
+BoolProperty::BoolProperty(std::string identifier, std::string displayName, bool value,
+                           PropertyOwner::InvalidationLevel invalidationLevel,
+                           PropertySemantics semantics)
+    : TemplateProperty<bool>(identifier, displayName, value, invalidationLevel, semantics) {}
 
-} // namespace
+BoolProperty* BoolProperty::clone() const { return new BoolProperty(*this); }
+
+}  // namespace

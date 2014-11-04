@@ -37,30 +37,27 @@
 #include <inviwo/core/properties/templateproperty.h>
 
 namespace inviwo {
-// /** class BoolProperty
-//  *\brief The BoolProperty class provides a property holding boolean values
-//  *
-//  * A bool property are normally used by a processor.
-//  * The bool property is created and added in the constructor of the processor.
-//  * The propertys widget consist of a checkbox that sets the value of the property.
-//  * @see TemplateProperty
-//  * @see BoolPropertyWidgetQt
-//  */
-// 
-// class IVW_CORE_API BoolProperty : public TemplateProperty<bool> {
-// 
-// public:
-//     BoolProperty(std::string identifier,
-//                  std::string displayName,
-//                  bool value = false,
-//                  PropertyOwner::InvalidationLevel invalidationLevel=PropertyOwner::INVALID_OUTPUT,
-//                  PropertySemantics semantics = PropertySemantics::Default);
-// 
-//     virtual BoolProperty* clone() const;
-// 
-//     InviwoPropertyInfo();
-// };
+/** class BoolProperty
+ *\brief The BoolProperty class provides a property holding boolean values
+ *
+ * A bool property are normally used by a processor.
+ * The bool property is created and added in the constructor of the processor.
+ * The propertys widget consist of a checkbox that sets the value of the property.
+ * @see TemplateProperty
+ * @see BoolPropertyWidgetQt
+ */
 
-} // namespace
+class IVW_CORE_API BoolProperty : public TemplateProperty<bool> {
+public:
+    BoolProperty(std::string identifier, std::string displayName, bool value = false,
+                 PropertyOwner::InvalidationLevel invalidationLevel = PropertyOwner::INVALID_OUTPUT,
+                 PropertySemantics semantics = PropertySemantics::Default);
+
+    virtual BoolProperty* clone() const;
+
+    InviwoPropertyInfo();
+};
+
+}  // namespace
 
 #endif // IVW_BOOLPROPERTY_H

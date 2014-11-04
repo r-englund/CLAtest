@@ -1164,6 +1164,7 @@ DEFAULTVALUES(dmat3, uvec2(3, 3), "DoubleMat3", dmat3(0.), dmat3(0.), dmat3(0.)+
 DEFAULTVALUES(dmat4, uvec2(4, 4), "DoubleMat4", dmat4(0.), dmat4(0.), dmat4(0.)+1.0, dmat4(0.)+0.01)
 
 DEFAULTVALUES(std::string, uvec2(1, 1), "String", "", "", "", "")
+DEFAULTVALUES(bool, uvec2(1, 1), "Bool", false, false, true, true)
 
 #undef DEFAULTVALUES
 

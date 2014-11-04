@@ -39,15 +39,10 @@
 
 namespace inviwo {
 
-template class TemplateProperty<std::string>;
-template class TemplateProperty<bool>;
-
 template <typename T>
 class TemplateProperty : public Property {
 public:
     typedef T valueType;
-
-    InviwoPropertyInfo();
 
     TemplateProperty(
         const std::string& identifier, const std::string& displayName, const T& value = T(),
@@ -57,6 +52,7 @@ public:
     TemplateProperty(const TemplateProperty& rhs);
     TemplateProperty<T>& operator=(const TemplateProperty<T>& that);
     virtual TemplateProperty* clone() const;
+    operator T();
     virtual ~TemplateProperty();
 
     virtual T& get();
@@ -74,24 +70,6 @@ protected:
     T value_;
     T defaultValue_;
 };
-
-
-template <typename T>
-const std::string TemplateProperty<T>::CLASS_IDENTIFIER = "org.inviwo.TemplateProperty";
-
-typedef TemplateProperty<std::string> StringProperty;
-const std::string StringProperty::CLASS_IDENTIFIER = "org.inviwo.StringProperty";
-
-typedef TemplateProperty<bool> BoolProperty;
-const std::string BoolProperty::CLASS_IDENTIFIER = "org.inviwo.BoolProperty";
-
-// StringProperty* StringProperty::clone() const {
-//     return new StringProperty(*this);
-// }
-// 
-// BoolProperty* BoolProperty::clone() const {
-//     return new BoolProperty(*this);
-// }
 
 template <typename T>
 TemplateProperty<T>* TemplateProperty<T>::clone() const {
@@ -115,10 +93,10 @@ TemplateProperty<T>& TemplateProperty<T>::operator=(const TemplateProperty<T>& t
     return *this;
 }
 
-//template<typename T>
-//TemplateProperty<T>::operator T() {
-//    return value_;
-//}
+template<typename T>
+TemplateProperty<T>::operator T() {
+    return value_;
+}
 
 template<typename T>
 TemplateProperty<T>::~TemplateProperty() {}

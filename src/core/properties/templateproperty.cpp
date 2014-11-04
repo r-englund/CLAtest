@@ -33,10 +33,10 @@
 #include <inviwo/core/properties/templateproperty.h>
 
 namespace inviwo {
-// template <>
-// IVW_CORE_API const std::string StringProperty::CLASS_IDENTIFIER = "org.inviwo.StringProperty";
-// template <>
-// IVW_CORE_API const std::string BoolProperty::CLASS_IDENTIFIER = "org.inviwo.BoolProperty";
+//template <>
+//IVW_CORE_API const std::string StringProperty::CLASS_IDENTIFIER = "org.inviwo.StringProperty";
+//template <>
+//IVW_CORE_API const std::string BoolProperty::CLASS_IDENTIFIER = "org.inviwo.BoolProperty";
 
 
 } // namespace
