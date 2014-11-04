@@ -58,9 +58,9 @@ protected:
         if (str.find("StackWalker") != std::string::npos) {
             vector_->clear();
         } else if (str.find("ERROR: ") != std::string::npos) {
-            return;
+           // return;
         } else if (str.find("filename not available") != std::string::npos) {
-            return;
+           // return;
         }
 
         inviwo::replaceInString(str,"\n",""); //remove new line character at the end of the string that we get fro stack walker
