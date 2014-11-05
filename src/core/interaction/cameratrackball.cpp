@@ -25,7 +25,7 @@
  * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- * 
+ *
  * Contact: Daniel Jönsson
  *
  *********************************************************************************/
@@ -34,34 +34,36 @@
 
 namespace inviwo {
 
-CameraTrackball::CameraTrackball( CameraProperty* cameraProp ) : Trackball(&cameraProp->getLookFrom(), &cameraProp->getLookTo(), &cameraProp->getLookUp()), cameraProp_(cameraProp) {
+CameraTrackball::CameraTrackball(CameraProperty* cameraProp)
+    : Trackball(&cameraProp->getLookFrom(), &cameraProp->getLookTo(), &cameraProp->getLookUp())
+    , cameraProp_(cameraProp) {
     static_cast<TrackballObservable*>(this)->addObserver(this);
 }
 
-CameraTrackball::~CameraTrackball() {
+CameraTrackball::~CameraTrackball() {}
 
-}
-
-void CameraTrackball::onAllTrackballChanged( const Trackball* trackball ) {
+void CameraTrackball::onAllTrackballChanged(const Trackball* trackball) {
     cameraProp_->updateViewMatrix();
 }
 
-void CameraTrackball::onLookFromChanged( const Trackball* trackball ) {
-    //Don't allow zooming such that the lookAt point is further away then the far plane.
+void CameraTrackball::onLookFromChanged(const Trackball* trackball) {
+    // Don't allow zooming such that the lookAt point is further away then the far plane.
     float maxDistance = cameraProp_->getFarPlaneDist() - 5.f;
     float dist = glm::distance(cameraProp_->getLookTo(), cameraProp_->getLookFrom());
-    if(maxDistance < dist)
-        cameraProp_->setLookFrom(cameraProp_->getLookTo()+(glm::normalize(cameraProp_->getLookFrom()-cameraProp_->getLookTo())*maxDistance));
+    if (maxDistance < dist)
+        cameraProp_->setLookFrom(
+            cameraProp_->getLookTo() +
+            (glm::normalize(cameraProp_->getLookFrom() - cameraProp_->getLookTo()) * maxDistance));
 
     cameraProp_->updateViewMatrix();
 }
 
-void CameraTrackball::onLookToChanged( const Trackball* trackball ) {
+void CameraTrackball::onLookToChanged(const Trackball* trackball) {
     cameraProp_->updateViewMatrix();
 }
 
-void CameraTrackball::onLookUpChanged( const Trackball* trackball ) {
+void CameraTrackball::onLookUpChanged(const Trackball* trackball) {
     cameraProp_->updateViewMatrix();
 }
 
-} // namespace
+}  // namespace

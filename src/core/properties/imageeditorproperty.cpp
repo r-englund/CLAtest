@@ -43,6 +43,27 @@ ImageLabel::ImageLabel(vec2 startPoint, vec2 rectSize, std::string name)
     , rectSize_(rectSize) {
 }
 
+ImageEditorProperty::ImageEditorProperty(const ImageEditorProperty& rhs)
+    : FileProperty(rhs)
+    , labels_(rhs.labels_)
+    , dimensions_(rhs.dimensions_) {
+}
+
+ImageEditorProperty& ImageEditorProperty::operator=(const ImageEditorProperty& that) {
+    if (this != &that) {
+        FileProperty::operator=(that);
+        labels_ = that.labels_;
+        dimensions_ = that.dimensions_;
+    }
+    return *this;
+}
+
+ImageEditorProperty* ImageEditorProperty::clone() const {
+    return new ImageEditorProperty(*this);
+}
+
+ImageEditorProperty::~ImageEditorProperty() {}
+
 void ImageLabel::serialize(IvwSerializer& s) const {
     s.serialize("labelName", name_, true);
     s.serialize("topLeft", startPoint_);
@@ -69,17 +90,14 @@ void ImageEditorProperty::setDimension(ivec2 imgSize) {
 }
 
 void ImageEditorProperty::addLabel(vec2 startPoint, vec2 rectSize, std::string name) {
-    labels_.push_back(new ImageLabel(startPoint, rectSize, name));
+    labels_.push_back(ImageLabel(startPoint, rectSize, name));
 }
 
-std::vector<ImageLabel*> ImageEditorProperty::getLabels() const {
+const std::vector<ImageLabel>& ImageEditorProperty::getLabels() const {
     return labels_;
 }
 
 void ImageEditorProperty::clearLabels() {
-    for (size_t i=0; i<labels_.size(); i++)
-        delete labels_[i];
-
     labels_.clear();
 }
 

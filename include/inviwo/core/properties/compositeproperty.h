@@ -43,12 +43,16 @@ namespace inviwo {
 
 class IVW_CORE_API CompositeProperty : public Property, public PropertyOwner {
 public:
+    InviwoPropertyInfo();
+
     CompositeProperty(std::string identifier, std::string displayName,
                       PropertyOwner::InvalidationLevel invalidationLevel=PropertyOwner::INVALID_OUTPUT,
                       PropertySemantics semantics = PropertySemantics::Default);
+    
+    CompositeProperty(const CompositeProperty& rhs);
+    CompositeProperty& operator=(const CompositeProperty& that);
+    virtual CompositeProperty* clone() const;
     virtual ~CompositeProperty();
-
-    InviwoPropertyInfo();
 
     virtual void setOwner(PropertyOwner* owner);
 

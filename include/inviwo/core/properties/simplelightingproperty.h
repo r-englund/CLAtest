@@ -59,13 +59,17 @@ namespace ShadingMode {
 
 class IVW_CORE_API SimpleLightingProperty : public CompositeProperty {
 public:
+    InviwoPropertyInfo();
+
     SimpleLightingProperty(std::string identifier, std::string displayName,
                            PropertyOwner::InvalidationLevel = PropertyOwner::INVALID_OUTPUT,
                            PropertySemantics semantics = PropertySemantics::Default);
-    virtual ~SimpleLightingProperty(){}
-
-    InviwoPropertyInfo();
-
+    
+    SimpleLightingProperty(const SimpleLightingProperty& rhs);
+    SimpleLightingProperty& operator=(const SimpleLightingProperty& that);
+    virtual SimpleLightingProperty* clone() const;
+    virtual ~SimpleLightingProperty();
+    
     OptionPropertyInt shadingMode_;
     FloatVec3Property lightPosition_;
     FloatVec3Property lightColorAmbient_;

@@ -47,6 +47,7 @@ namespace inviwo {
 
 class IVW_CORE_API DirectoryProperty : public TemplateProperty<std::string> {
 public:
+    InviwoPropertyInfo();
     DirectoryProperty(
         std::string identifier, 
         std::string displayName, 
@@ -54,7 +55,12 @@ public:
         std::string contentType = "default",
         PropertyOwner::InvalidationLevel invalidationLevel = PropertyOwner::INVALID_OUTPUT,
         PropertySemantics semantics = PropertySemantics::Default);
-    InviwoPropertyInfo();
+    
+    DirectoryProperty(const DirectoryProperty& rhs);
+    DirectoryProperty& operator=(const DirectoryProperty& that);
+    virtual DirectoryProperty* clone() const;
+    virtual ~DirectoryProperty();
+
     virtual std::vector<std::string> getDirectoryTree() const;
     virtual std::vector<std::string> getFiles(std::string filters = "*.*") const;
     virtual void setDirectoryTree(std::vector<std::string> dirTree);
@@ -76,7 +82,7 @@ public:
 protected:
     // TODO: currently tree contains file names only.
     std::vector<std::string> directoryTree_;
-    IntProperty* fileIndexingHandle_;
+    IntProperty* fileIndexingHandle_; // Owning!?! //Peter
     std::string contentType_;
 };
 

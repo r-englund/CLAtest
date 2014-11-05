@@ -62,12 +62,15 @@ enum Enum {
  */
 class IVW_CORE_API AdvancedMaterialProperty: public CompositeProperty {
 public:
+    InviwoPropertyInfo();
     AdvancedMaterialProperty(std::string identifier, std::string displayName,
                              PropertyOwner::InvalidationLevel=PropertyOwner::INVALID_OUTPUT,
                              PropertySemantics semantics = PropertySemantics::Default);
+    
+    AdvancedMaterialProperty(const AdvancedMaterialProperty& rhs);
+    AdvancedMaterialProperty& operator=(const AdvancedMaterialProperty& that);
+    virtual AdvancedMaterialProperty* clone() const;
     virtual ~AdvancedMaterialProperty();
-
-    InviwoPropertyInfo();
 
     vec4 getCombinedMaterialParameters() const;
     ShadingFunctionEnum::Enum getPhaseFunctionEnum() const;

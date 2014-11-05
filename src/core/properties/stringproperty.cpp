@@ -41,6 +41,21 @@ StringProperty::StringProperty(std::string identifier, std::string displayName, 
                                PropertySemantics semantics)
     : TemplateProperty<std::string>(identifier, displayName, value, invalidationLevel, semantics) {}
 
-StringProperty* StringProperty::clone() const { return new StringProperty(*this); }
+StringProperty::StringProperty(const StringProperty& rhs)
+    : TemplateProperty<std::string>(rhs)	{
+}
+
+StringProperty& StringProperty::operator=(const StringProperty& that) {
+    if (this != &that) {
+        TemplateProperty<std::string>::operator=(that);
+    }
+    return *this;
+}
+
+StringProperty* StringProperty::clone() const {
+    return new StringProperty(*this);
+}
+
+StringProperty::~StringProperty() {}
 
 }  // namespace

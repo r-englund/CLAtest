@@ -95,7 +95,7 @@ public:
     }
 
     template <typename T>
-    void removeMemberFunction(T* o, void (T::*m)()) {
+    void removeMemberFunction(T* o) {
         std::map<void*, BaseCallBack*>::iterator it = callBackList_.find(o);
 
         if (it != callBackList_.end()) {

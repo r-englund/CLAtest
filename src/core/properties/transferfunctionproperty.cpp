@@ -43,6 +43,7 @@ TransferFunctionProperty::TransferFunctionProperty(const std::string &identifier
                                                    PropertyOwner::InvalidationLevel invalidationLevel,
                                                    PropertySemantics semantics)
     : TemplateProperty<TransferFunction>(identifier, displayName, value, invalidationLevel, semantics)
+    , TransferFunctionObserver()
     , zoomH_(0.0f, 1.0f)
     , defaultZoomH_(0.0f, 1.0f)
     , zoomV_(0.0f, 1.0f)
@@ -52,6 +53,41 @@ TransferFunctionProperty::TransferFunctionProperty(const std::string &identifier
     , volumeInport_(volumeInport) {
     
     this->value_.addObserver(this);
+}
+
+TransferFunctionProperty::TransferFunctionProperty(const TransferFunctionProperty& rhs)
+    : TemplateProperty<TransferFunction>(rhs)
+    , TransferFunctionObserver()
+    , zoomH_(rhs.zoomH_)
+    , defaultZoomH_(rhs.defaultZoomH_)
+    , zoomV_(rhs.zoomV_)
+    , defaultZoomV_(rhs.defaultZoomV_)
+    , showHistogram_(rhs.showHistogram_)
+    , defaultShowHistogram_(rhs.defaultShowHistogram_)
+    , volumeInport_(rhs.volumeInport_) {
+
+    this->value_.addObserver(this);
+
+}
+
+TransferFunctionProperty& TransferFunctionProperty::operator=(const TransferFunctionProperty& that) {
+    if (this != &that) {
+        this->value_.removeObserver(this);
+        TemplateProperty<TransferFunction>::operator=(that);
+        this->value_.addObserver(this);
+        zoomH_ = that.zoomH_;
+        defaultZoomH_ = that.defaultZoomH_;
+        zoomV_ = that.zoomV_;
+        defaultZoomV_ = that.defaultZoomV_;
+        showHistogram_ = that.showHistogram_;
+        defaultShowHistogram_ = that.defaultShowHistogram_;
+        volumeInport_ = that.volumeInport_;
+    }
+    return *this;
+}
+
+TransferFunctionProperty* TransferFunctionProperty::clone() const {
+    return new TransferFunctionProperty(*this);
 }
 
 TransferFunctionProperty::~TransferFunctionProperty() {

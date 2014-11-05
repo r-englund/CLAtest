@@ -76,7 +76,7 @@ public:
         if(add)
             onInvalidCallback_.addMemberFunction(o,m);
         else
-            onInvalidCallback_.removeMemberFunction(o,m);
+            onInvalidCallback_.removeMemberFunction(o);
     }
 
 protected:

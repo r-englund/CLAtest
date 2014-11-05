@@ -44,6 +44,8 @@ namespace inviwo {
 template <typename T>
 class MinMaxProperty : public TemplateProperty<glm::detail::tvec2<T, glm::defaultp> > {
 public:
+    InviwoPropertyInfo();
+
     MinMaxProperty(
         std::string identifier, std::string displayName, T valueMin = Defaultvalues<T>::getMin(),
         T valueMax = Defaultvalues<T>::getMax(), T rangeMin = Defaultvalues<T>::getMin(),
@@ -52,7 +54,10 @@ public:
         PropertyOwner::InvalidationLevel invalidationLevel = PropertyOwner::INVALID_OUTPUT,
         PropertySemantics semantics = PropertySemantics::Default);
 
-    InviwoPropertyInfo();
+    MinMaxProperty(const MinMaxProperty& rhs);
+    MinMaxProperty& operator=(const MinMaxProperty& that);
+    virtual MinMaxProperty* clone() const;
+    virtual ~MinMaxProperty();
 
     T getRangeMin() const;
     T getRangeMax() const;
@@ -109,6 +114,40 @@ MinMaxProperty<T>::MinMaxProperty(std::string identifier, std::string displayNam
     , defaultIncrement_(increment)
     , minSeparation_(minSeparation)
     , defaultMinSeparation_(minSeparation) {}
+
+template <typename T>
+MinMaxProperty<T>::MinMaxProperty(const MinMaxProperty<T>& rhs)
+    : TemplateProperty<glm::detail::tvec2<T, glm::defaultp> >(rhs)  
+    , range_(rhs.range_)
+    , defaultRange_(rhs.defaultRange_)
+    , increment_(rhs.increment_)
+    , defaultIncrement_(rhs.defaultIncrement_)
+    , minSeparation_(rhs.minSeparation_)
+    , defaultMinSeparation_(rhs.defaultMinSeparation_) {
+ }
+
+template <typename T>
+MinMaxProperty<T>& MinMaxProperty<T>::operator=(const MinMaxProperty<T>& that) {
+    if (this != &that) {
+        TemplateProperty<glm::detail::tvec2<T, glm::defaultp> >::operator=(that);
+        range_ = that.range_;
+        defaultRange_ = that.defaultRange_;
+        increment_ = that.increment_;
+        defaultIncrement_ = that.defaultIncrement_;
+        minSeparation_ = that.minSeparation_;
+        defaultMinSeparation_ = that.defaultMinSeparation_;
+    }
+    return *this;
+}
+
+template <typename T>
+MinMaxProperty<T>* MinMaxProperty<T>::clone() const {
+    return new MinMaxProperty<T>(*this);
+}
+
+template <typename T>
+MinMaxProperty<T>::~MinMaxProperty() {}
+
 
 template <typename T>
 T MinMaxProperty<T>::getRangeMin() const {

@@ -84,6 +84,12 @@ public:
     void onChange(T* o, void (T::*m)()) {
         onChangeCallback_.addMemberFunction(o,m);
     }
+
+    template <typename T>
+    void removeOnChange(T* o) {
+        onChangeCallback_.removeMemberFunction(o);
+    }
+
     void callOnChangeIfChanged();
     virtual bool isChanged();
     virtual void setChanged(bool changed = true);

@@ -44,6 +44,8 @@ namespace inviwo {
 template <typename T>
 class OrdinalProperty : public TemplateProperty<T> {
 public:
+    InviwoPropertyInfo();
+
     OrdinalProperty(
         const std::string& identifier, const std::string& displayName,
         const T& value = Defaultvalues<T>::getVal(), const T& minValue = Defaultvalues<T>::getMin(),
@@ -52,7 +54,10 @@ public:
         PropertyOwner::InvalidationLevel invalidationLevel = PropertyOwner::INVALID_OUTPUT,
         PropertySemantics semantics = PropertySemantics::Default);
 
-    InviwoPropertyInfo();
+    OrdinalProperty(const OrdinalProperty<T>& rhs);
+    OrdinalProperty<T>& operator=(const OrdinalProperty<T>& that);
+    //virtual OrdinalProperty<T>* clone() const;
+    virtual ~OrdinalProperty();
 
     T getMinValue() const;
     T getMaxValue() const;
@@ -126,6 +131,40 @@ OrdinalProperty<T>::OrdinalProperty(const std::string& identifier, const std::st
     , defaultMinValue_(minValue)
     , defaultMaxValue_(maxValue)
     , defaultIncrement_(increment) {}
+
+
+template <typename T>
+OrdinalProperty<T>::OrdinalProperty(const OrdinalProperty<T>& rhs)
+    : TemplateProperty<T>(rhs)
+    , minValue_(rhs.minValue_)
+    , maxValue_(rhs.maxValue_)
+    , increment_(rhs.increment_)
+    , defaultMinValue_(rhs.defaultMaxValue_)
+    , defaultMaxValue_(rhs.defaultMaxValue_)
+    , defaultIncrement_(rhs.defaultIncrement_) {
+}
+
+template <typename T>
+OrdinalProperty<T>& OrdinalProperty<T>::operator=(const OrdinalProperty<T>& that) {
+    if (this != &that) {
+        TemplateProperty<T>::operator=(that);
+        minValue_ = that.minValue_;
+        maxValue_ = that.maxValue_;
+        increment_ = that.increment_;
+        defaultMinValue_ = that.defaultMaxValue_;
+        defaultMaxValue_ = that.defaultMaxValue_;
+        defaultIncrement_ = that.defaultIncrement_;
+    }
+    return *this;
+}
+
+// template <typename T>
+// OrdinalProperty<T>* OrdinalProperty<T>::clone() const {
+//     return new OrdinalProperty<T>(*this);
+// }
+
+template <typename T>
+OrdinalProperty<T>::~OrdinalProperty() {}
 
 template <typename T>
 void OrdinalProperty<T>::set(const T& value) {

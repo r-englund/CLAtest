@@ -47,15 +47,22 @@ class IVW_CORE_API TransferFunctionProperty
     , public TransferFunctionObserver {
 
 public:
+    InviwoPropertyInfo();
+    
     TransferFunctionProperty(const std::string &identifier,
                              const std::string &displayName,
                              const TransferFunction &value = TransferFunction(),
                              VolumeInport* volumeInport = NULL,
                              PropertyOwner::InvalidationLevel invalidationLevel=PropertyOwner::INVALID_OUTPUT,
                              PropertySemantics semantics=PropertySemantics::Default);
-        
-    ~TransferFunctionProperty();
-    InviwoPropertyInfo();
+    
+
+
+
+    TransferFunctionProperty(const TransferFunctionProperty& rhs);
+    TransferFunctionProperty& operator=(const TransferFunctionProperty& that);  
+    virtual TransferFunctionProperty* clone() const;
+    virtual ~TransferFunctionProperty();
 
     const vec2 getMask() const;
     void setMask(float maskMin, float maskMax);

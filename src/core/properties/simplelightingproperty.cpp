@@ -74,4 +74,46 @@ SimpleLightingProperty::SimpleLightingProperty(std::string identifier, std::stri
     addProperty(lightAttenuation_);
 }
 
+SimpleLightingProperty::SimpleLightingProperty(const SimpleLightingProperty& rhs)
+    : CompositeProperty(rhs)
+    , shadingMode_(rhs.shadingMode_)
+    , lightPosition_(rhs.lightPosition_) 
+    , lightColorAmbient_(rhs.lightColorAmbient_) 
+    , lightColorDiffuse_(rhs.lightColorDiffuse_)
+    , lightColorSpecular_(rhs.lightColorSpecular_)
+    , lightSpecularExponent_(rhs.lightSpecularExponent_)
+    , applyLightAttenuation_(rhs.applyLightAttenuation_)
+    , lightAttenuation_(rhs.lightAttenuation_) {
+
+    addProperty(shadingMode_);
+    addProperty(lightPosition_);
+    addProperty(lightColorAmbient_);
+    addProperty(lightColorDiffuse_);
+    addProperty(lightColorSpecular_);
+    addProperty(lightSpecularExponent_);
+    addProperty(applyLightAttenuation_);
+    addProperty(lightAttenuation_);
+}
+
+SimpleLightingProperty& SimpleLightingProperty::operator=(const SimpleLightingProperty& that) {
+    if (this != &that) {
+        CompositeProperty::operator=(that);
+        shadingMode_ = that.shadingMode_;
+        lightPosition_ = that.lightPosition_;
+        lightColorAmbient_ = that.lightColorAmbient_;
+        lightColorDiffuse_ = that.lightColorDiffuse_;
+        lightColorSpecular_ = that.lightColorSpecular_;
+        lightSpecularExponent_ = that.lightSpecularExponent_;
+        applyLightAttenuation_ = that.applyLightAttenuation_;
+        lightAttenuation_ = that.lightAttenuation_;
+    }
+    return *this;
+}
+
+SimpleLightingProperty* SimpleLightingProperty::clone() const {
+    return new SimpleLightingProperty(*this);
+}
+
+SimpleLightingProperty::~SimpleLightingProperty() {}
+
 }  // namespace

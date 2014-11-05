@@ -44,9 +44,32 @@ DirectoryProperty::DirectoryProperty(std::string identifier, std::string display
                                      PropertyOwner::InvalidationLevel invalidationLevel,
                                      PropertySemantics semantics)
     : TemplateProperty<std::string>(identifier, displayName, value, invalidationLevel, semantics)
-    , fileIndexingHandle_(0)
-    , contentType_(contentType)
-{}
+    , fileIndexingHandle_(NULL)
+    , contentType_(contentType) {
+}
+
+DirectoryProperty::DirectoryProperty(const DirectoryProperty& rhs)
+    : TemplateProperty<std::string>(rhs)
+    , directoryTree_(rhs.directoryTree_)
+    , fileIndexingHandle_(NULL) // Fix?
+    , contentType_(rhs.contentType_) {
+}
+
+DirectoryProperty& DirectoryProperty::operator=(const DirectoryProperty& that) {
+    if (this != &that) {
+        TemplateProperty<std::string>::operator=(that);
+        directoryTree_ = that.directoryTree_;
+        fileIndexingHandle_ = NULL;  // Fix?
+        contentType_ = that.contentType_;
+    }
+    return *this;
+}
+
+DirectoryProperty* DirectoryProperty::clone() const {
+    return new DirectoryProperty(*this);
+}
+
+DirectoryProperty::~DirectoryProperty() {}
 
 std::vector<std::string> DirectoryProperty::getDirectoryTree() const { return directoryTree_; }
 

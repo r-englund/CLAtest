@@ -58,26 +58,30 @@ public:
                    Inport* inport = NULL,
                    PropertyOwner::InvalidationLevel=PropertyOwner::INVALID_OUTPUT,
                    PropertySemantics semantics = PropertySemantics::Default);
+    
+    CameraProperty(const CameraProperty& rhs);
+    CameraProperty& operator=(const CameraProperty& that);
+    virtual CameraProperty* clone() const;
     virtual ~CameraProperty();
 
     void resetCamera();
     void setCamera(const CameraProperty*);
 
-    vec3& getLookFrom() { return lookFrom_.get(); }
-    const vec3& getLookFrom() const { return lookFrom_.get(); }
+    vec3& getLookFrom();
+    const vec3& getLookFrom() const;
     void setLookFrom(vec3 lookFrom);
-    vec3& getLookTo() { return lookTo_.get(); }
-    const vec3& getLookTo() const { return lookTo_.get(); }
+    vec3& getLookTo();
+    const vec3& getLookTo() const;
     void setLookTo(vec3 lookTo);
-    vec3& getLookUp() { return lookUp_.get(); }
-    const vec3& getLookUp() const { return lookUp_.get(); }
+    vec3& getLookUp();
+    const vec3& getLookUp() const;
     void setLookUp(vec3 lookUp);
-    vec3 getLookRight() const { return lookRight_; }
+    vec3 getLookRight() const;
 
-    float getFovy() const { return fovy_.get(); }
+    float getFovy() const;
     void setFovy(float fovy);
 
-    float getAspectRatio() const { return aspectRatio_.get(); }
+    float getAspectRatio() const;
 
     void setLook(vec3 lookFrom, vec3 lookTo, vec3 lookUp);
 
@@ -94,10 +98,10 @@ public:
 
     void updateViewMatrix();
     void updateProjectionMatrix();
-    const mat4& viewMatrix() const { return viewMatrix_; }
-    const mat4& projectionMatrix() const { return projectionMatrix_; }
-    const mat4& inverseViewMatrix() const { return inverseViewMatrix_; }
-    const mat4& inverseProjectionMatrix() const { return inverseProjectionMatrix_; }
+    const mat4& viewMatrix() const;
+    const mat4& projectionMatrix() const;
+    const mat4& inverseViewMatrix() const;
+    const mat4& inverseProjectionMatrix() const;
 
     void setProjectionMatrix(float fovy, float aspect, float farPlane, float nearPlane);
 
@@ -111,9 +115,9 @@ public:
     // Use lock and unlock to set several camera properties without casing evaluation,
     // then call invalidate().
     void invalidate();
-    void lockInvalidation() { lockInvalidation_ = true; }
-    void unlockInvalidation() { lockInvalidation_ = false; }
-    bool isInvalidationLocked() { return lockInvalidation_; }
+    void lockInvalidation();
+    void unlockInvalidation();
+    bool isInvalidationLocked();
 
     virtual void serialize(IvwSerializer& s) const;
     virtual void deserialize(IvwDeserializer& d);
@@ -140,13 +144,8 @@ private:
     bool lockInvalidation_;
 
     Inport* inport_;
-    const SpatialEntity<3>* data_;
+    const SpatialEntity<3>* data_; //< non-owning reference;
     mat3 oldBasis_;
-
-    const glm::vec3 initialEye_;
-    const glm::vec3 initialCenter_;
-    const glm::vec3 initialUp_;
-    const float initialFovy_;
 };
 
 } // namespace

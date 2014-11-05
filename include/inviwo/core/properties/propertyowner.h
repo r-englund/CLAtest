@@ -45,6 +45,8 @@ class Property;
 class IVW_CORE_API PropertyOwner : public PropertyOwnerObservable, public IvwSerializable {
 public:
     PropertyOwner();
+    PropertyOwner(const PropertyOwner& rhs);
+    PropertyOwner& operator=(const PropertyOwner& that);
     virtual ~PropertyOwner();
 
     // invalidation level must be sorted based on their complexity,
@@ -60,8 +62,7 @@ public:
 
     virtual void addProperty(Property* property);
     virtual void addProperty(Property& property);
-    
-    
+       
     virtual Property* removeProperty(const std::string& identifier);
     virtual Property* removeProperty(Property* property);
     virtual Property* removeProperty(Property& property);
@@ -94,7 +95,7 @@ public:
     static std::string invalidationLevelToString(InvalidationLevel level);
 
 protected:
-    std::vector<Property*> properties_;
+    std::vector<Property*> properties_; //< non-owning references.
 
 private:
     bool findPropsForComposites(TxElement*);

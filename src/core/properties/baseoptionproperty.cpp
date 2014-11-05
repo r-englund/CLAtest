@@ -25,7 +25,7 @@
  * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- * 
+ *
  * Contact: Peter Steneteg
  *
  *********************************************************************************/
@@ -49,5 +49,33 @@ OptionPropertyString::OptionPropertyString(
     PropertyOwner::InvalidationLevel invalidationLevel /*= PropertyOwner::INVALID_OUTPUT*/,
     PropertySemantics semantics /*= PropertySemantics::Default*/)
     : TemplateOptionProperty<std::string>(identifier, displayName, invalidationLevel, semantics) {}
+
+OptionPropertyString::OptionPropertyString(const OptionPropertyString& rhs)
+: TemplateOptionProperty<std::string>(rhs)	{
+}
+
+OptionPropertyString& OptionPropertyString::operator=(const OptionPropertyString& that) {
+    if (this != &that) {
+        TemplateOptionProperty<std::string>::operator=(that);
+    }
+    return *this;
+}
+
+OptionPropertyString* OptionPropertyString::clone() const {
+    return new OptionPropertyString(*this);
+}
+
+OptionPropertyString::~OptionPropertyString() {}
+
+BaseOptionProperty::BaseOptionProperty(const BaseOptionProperty& rhs) : Property(rhs) {}
+
+BaseOptionProperty::BaseOptionProperty(
+    std::string identifier, std::string displayName,
+    PropertyOwner::InvalidationLevel invalidationLevel /*=PropertyOwner::INVALID_OUTPUT*/,
+    PropertySemantics semantics /*=PropertySemantics::Default*/)
+    : Property(identifier, displayName, invalidationLevel, semantics) {}
+
+BaseOptionProperty::~BaseOptionProperty() {}
+
 
 }  // namespace

@@ -42,15 +42,12 @@ namespace inviwo {
 
 class IVW_CORE_API InteractionEvent : public Event {
 public:
-    enum Modifier {
-        MODIFIER_NONE  =      0,
-        MODIFIER_ALT,
-        MODIFIER_CTRL,
-        MODIFIER_SHIFT,
-        COUNT
-    };
+    enum Modifier { MODIFIER_NONE = 0, MODIFIER_ALT, MODIFIER_CTRL, MODIFIER_SHIFT, COUNT };
 
     InteractionEvent();
+    InteractionEvent(const InteractionEvent& rhs);
+    InteractionEvent& operator=(const InteractionEvent& that);
+    virtual InteractionEvent* clone() const;
     virtual ~InteractionEvent();
 
     inline int button() const { return button_; }
@@ -68,9 +65,9 @@ protected:
     int button_;
     std::string modifierName_;
     std::string buttonName_;
-    std::string modifierNames_[COUNT];
+    static const std::string modifierNames_[COUNT];
 };
 
-} // namespace
+}  // namespace
 
 #endif // IVW_INTERACTIONEVENT_H

@@ -42,6 +42,19 @@ PropertyOwner::PropertyOwner()
     , invalidationLevel_(PropertyOwner::VALID) {
 }
 
+PropertyOwner::PropertyOwner(const PropertyOwner& rhs)
+    : PropertyOwnerObservable()
+    , invalidationLevel_(rhs.invalidationLevel_) {
+}
+
+PropertyOwner& PropertyOwner::operator=(const PropertyOwner& that) {
+    if (this != &that) {
+        invalidationLevel_ = that.invalidationLevel_;
+        properties_.clear();
+    }
+    return *this;
+}
+
 PropertyOwner::~PropertyOwner() {
     properties_.clear();
 }

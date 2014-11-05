@@ -51,6 +51,7 @@ namespace inviwo {
 
 class IVW_CORE_API StringProperty : public TemplateProperty<std::string> {
 public:
+    InviwoPropertyInfo();
     /**
      *  \brief Constructor for the StringProperty
      *
@@ -63,9 +64,10 @@ public:
         PropertyOwner::InvalidationLevel invalidationLevel = PropertyOwner::INVALID_OUTPUT,
         PropertySemantics semantics = PropertySemantics::Default);
 
-    InviwoPropertyInfo();
-
+    StringProperty(const StringProperty& rhs);
+    StringProperty& operator=(const StringProperty& that);
     virtual StringProperty* clone() const;
+    virtual ~StringProperty();
 };
 
 }  // namespace

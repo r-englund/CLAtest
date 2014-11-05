@@ -41,6 +41,20 @@ BoolProperty::BoolProperty(std::string identifier, std::string displayName, bool
                            PropertySemantics semantics)
     : TemplateProperty<bool>(identifier, displayName, value, invalidationLevel, semantics) {}
 
-BoolProperty* BoolProperty::clone() const { return new BoolProperty(*this); }
+BoolProperty::BoolProperty(const BoolProperty& rhs)
+    : TemplateProperty<bool>(rhs) {}
+
+BoolProperty& BoolProperty::operator=(const BoolProperty& that) {
+    if (this != &that) {
+        TemplateProperty<bool>::operator=(that);
+    }
+    return *this;
+}
+
+BoolProperty* BoolProperty::clone() const {
+    return new BoolProperty(*this);
+}
+
+BoolProperty::~BoolProperty() {}
 
 }  // namespace

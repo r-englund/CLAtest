@@ -576,11 +576,11 @@ void ImageEditorWidgetQt::loadImageLabel() {
         tmpPropertyValue_ = static_cast<FileProperty*>(property_)->get();
         imageLabelWidget_->addBackGroundImage(tmpPropertyValue_);
         ImageEditorProperty* imageProperty  = static_cast<ImageEditorProperty*>(property_);
-        const std::vector<ImageLabel*> labels = imageProperty->getLabels();
+        const std::vector<ImageLabel> labels = imageProperty->getLabels();
 
         for (size_t i=0; i<labels.size(); i++) {
-            QPointF topLeft(labels[i]->getTopLeft()[0], labels[i]->getTopLeft()[1]);
-            QPointF rectSize(labels[i]->getSize()[0], labels[i]->getSize()[1]);
+            QPointF topLeft(labels[i].getTopLeft()[0], labels[i].getTopLeft()[1]);
+            QPointF rectSize(labels[i].getSize()[0], labels[i].getSize()[1]);
             imageLabelWidget_->view_->addRectangle(topLeft, rectSize);
         }
     }

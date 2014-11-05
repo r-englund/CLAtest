@@ -34,12 +34,33 @@
 
 namespace inviwo {
 
-InteractionEvent::InteractionEvent() {
-    modifierNames_[MODIFIER_NONE] = "";
-    modifierNames_[MODIFIER_ALT] = "Alt";
-    modifierNames_[MODIFIER_CTRL] = "Ctrl";
-    modifierNames_[MODIFIER_SHIFT] = "Shift";
+const std::string InteractionEvent::modifierNames_[] = {"", "Alt", "Ctrl", "Shift"};
+
+InteractionEvent::InteractionEvent() {}
+
+InteractionEvent::InteractionEvent(const InteractionEvent& rhs)
+    : Event(rhs)
+    , modifier_(rhs.modifier_)
+    , button_(rhs.button_)
+    , modifierName_(rhs.modifierName_)
+    , buttonName_(rhs.buttonName_) {
 }
+
+InteractionEvent& InteractionEvent::operator=(const InteractionEvent& that) {
+    if (this != &that) {
+        Event::operator=(that);
+        modifier_ = that.modifier_;
+        button_ = that.button_;
+        modifierName_ = that.modifierName_;
+        buttonName_ = that.buttonName_;
+    }
+    return *this;
+}
+
+InteractionEvent* InteractionEvent::clone() const {
+    return new InteractionEvent(*this);
+}
+
 InteractionEvent::~InteractionEvent() {}
 
 void InteractionEvent::serialize(IvwSerializer& s) const {

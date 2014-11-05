@@ -68,6 +68,37 @@ AdvancedMaterialProperty::AdvancedMaterialProperty(
     addProperty(anisotropyProp);
 }
 
+AdvancedMaterialProperty::AdvancedMaterialProperty(const AdvancedMaterialProperty& rhs)
+    : CompositeProperty(rhs)
+    , phaseFunctionProp(rhs.phaseFunctionProp) 
+    , indexOfRefractionProp(rhs.indexOfRefractionProp)
+    , roughnessProp(rhs.roughnessProp)
+    , specularColorProp(rhs.specularColorProp)
+    , anisotropyProp(rhs.anisotropyProp) {
+
+    addProperty(phaseFunctionProp);
+    addProperty(indexOfRefractionProp);
+    addProperty(roughnessProp);
+    addProperty(specularColorProp);
+    addProperty(anisotropyProp);
+}
+
+AdvancedMaterialProperty& AdvancedMaterialProperty::operator=(const AdvancedMaterialProperty& that) {
+    if (this != &that) {
+        CompositeProperty::operator=(that);
+        phaseFunctionProp = that.phaseFunctionProp;
+        indexOfRefractionProp = that.indexOfRefractionProp;
+        roughnessProp = that.roughnessProp;
+        specularColorProp = that.specularColorProp;
+        anisotropyProp = that.anisotropyProp;
+    }
+    return *this;
+}
+
+AdvancedMaterialProperty* AdvancedMaterialProperty::clone() const {
+    return new AdvancedMaterialProperty(*this);
+}
+
 AdvancedMaterialProperty::~AdvancedMaterialProperty() {}
 
 vec4 AdvancedMaterialProperty::getCombinedMaterialParameters() const {

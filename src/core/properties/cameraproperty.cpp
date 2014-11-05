@@ -61,11 +61,7 @@ CameraProperty::CameraProperty(std::string identifier, std::string displayName, 
     , lockInvalidation_(false)
     , inport_(inport)
     , data_(0)
-    , oldBasis_(0)
-    , initialEye_(eye)
-    , initialCenter_(center)
-    , initialUp_(lookUp)
-    , initialFovy_(60.0f) {
+    , oldBasis_(0) {
 
     lookFrom_.onChange(this, &CameraProperty::updateViewMatrix);
     lookTo_.onChange(this, &CameraProperty::updateViewMatrix);
@@ -90,11 +86,67 @@ CameraProperty::CameraProperty(std::string identifier, std::string displayName, 
     if (inport_) inport_->onChange(this, &CameraProperty::inportChanged);
 }
 
+CameraProperty::CameraProperty(const CameraProperty& rhs)
+    : CompositeProperty(rhs)
+    , EventListener(rhs)
+    , lookFrom_(rhs.lookFrom_)
+    , lookTo_(rhs.lookTo_)
+    , lookUp_(rhs.lookUp_)
+    , fovy_(rhs.fovy_)
+    , aspectRatio_(rhs.aspectRatio_)
+    , nearPlane_(rhs.nearPlane_)
+    , farPlane_(rhs.farPlane_)
+    , lockInvalidation_(false)
+    , inport_(rhs.inport_)
+    , data_(NULL)
+    , oldBasis_(0) {
+
+    if (inport_) inport_->onChange(this, &CameraProperty::inportChanged);
+
+    inportChanged();
+}
+
+CameraProperty& CameraProperty::operator=(const CameraProperty& that) {
+    if (this != &that) {
+        CompositeProperty::operator=(that);
+        EventListener::operator=(that);
+        lookFrom_ = that.lookFrom_;
+        lookTo_ = that.lookTo_;
+        lookUp_ = that.lookUp_;
+        fovy_ = that.fovy_;
+        aspectRatio_ = that.aspectRatio_;
+        nearPlane_ = that.nearPlane_;
+        farPlane_ = that.farPlane_;
+        
+        if(inport_) inport_->removeOnChange(this);
+        inport_ = that.inport_;
+        if (inport_) inport_->onChange(this, &CameraProperty::inportChanged);
+        data_ = NULL;
+        oldBasis_ = mat3(0);
+
+        inportChanged();
+    }
+    return *this;
+}
+
+CameraProperty* CameraProperty::clone() const {
+    return new CameraProperty(*this);
+}
+
 CameraProperty::~CameraProperty() {}
 
 void CameraProperty::resetCamera() {
-    setLook(initialEye_, initialCenter_, initialUp_);
-    setFovy(initialFovy_);
+    bool lock = isInvalidationLocked();
+    if (!lock) lockInvalidation();
+
+    lookFrom_.resetToDefaultState();
+    lookTo_.resetToDefaultState();
+    lookUp_.resetToDefaultState();
+    fovy_.resetToDefaultState();
+
+    if (!lock) unlockInvalidation();
+
+    invalidate();
 }
 
 void CameraProperty::setCamera(const CameraProperty* cam){
@@ -121,7 +173,7 @@ void CameraProperty::setLook(vec3 lookFrom, vec3 lookTo, vec3 lookUp) {
 
     if (!lock) unlockInvalidation();
 
-    updateViewMatrix();
+    invalidate();
 }
 
 float CameraProperty::getNearPlaneDist() const { return nearPlane_.get(); }
@@ -262,6 +314,70 @@ void CameraProperty::inportChanged() {
     }
 
     data_ = data;
+}
+
+vec3& CameraProperty::getLookFrom() {
+    return lookFrom_.get();
+}
+
+const vec3& CameraProperty::getLookFrom() const {
+    return lookFrom_.get();
+}
+
+vec3& CameraProperty::getLookTo() {
+    return lookTo_.get();
+}
+
+const vec3& CameraProperty::getLookTo() const {
+    return lookTo_.get();
+}
+
+vec3& CameraProperty::getLookUp() {
+    return lookUp_.get();
+}
+
+const vec3& CameraProperty::getLookUp() const {
+    return lookUp_.get();
+}
+
+vec3 CameraProperty::getLookRight() const {
+    return lookRight_;
+}
+
+float CameraProperty::getFovy() const {
+    return fovy_.get();
+}
+
+float CameraProperty::getAspectRatio() const {
+    return aspectRatio_.get();
+}
+
+const mat4& CameraProperty::viewMatrix() const {
+    return viewMatrix_;
+}
+
+const mat4& CameraProperty::projectionMatrix() const {
+    return projectionMatrix_;
+}
+
+const mat4& CameraProperty::inverseViewMatrix() const {
+    return inverseViewMatrix_;
+}
+
+const mat4& CameraProperty::inverseProjectionMatrix() const {
+    return inverseProjectionMatrix_;
+}
+
+void CameraProperty::lockInvalidation() {
+    lockInvalidation_ = true;
+}
+
+void CameraProperty::unlockInvalidation() {
+    lockInvalidation_ = false;
+}
+
+bool CameraProperty::isInvalidationLocked() {
+    return lockInvalidation_;
 }
 
 }  // namespace

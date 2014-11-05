@@ -43,12 +43,15 @@ namespace inviwo {
 
 class IVW_CORE_API SimpleRaycastingProperty : public CompositeProperty { 
 public:
+    InviwoPropertyInfo();
     SimpleRaycastingProperty(std::string identifier, std::string displayName,
                              PropertyOwner::InvalidationLevel = PropertyOwner::INVALID_OUTPUT,
                              PropertySemantics semantics = PropertySemantics::Default);
-    virtual ~SimpleRaycastingProperty(){}
-
-    InviwoPropertyInfo();
+    
+    SimpleRaycastingProperty(const SimpleRaycastingProperty& rhs);
+    SimpleRaycastingProperty& operator=(const SimpleRaycastingProperty& that);
+    virtual SimpleRaycastingProperty* clone() const;
+    virtual ~SimpleRaycastingProperty();
         
     OptionPropertyString classificationMode_;
     OptionPropertyString compositingMode_;

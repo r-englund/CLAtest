@@ -65,6 +65,12 @@ public:
                  std::string contentType = "default",
                  PropertyOwner::InvalidationLevel invalidationLevel = PropertyOwner::INVALID_OUTPUT,
                  PropertySemantics semantics = PropertySemantics::Default);
+
+    FileProperty(const FileProperty& rhs);
+    FileProperty& operator=(const FileProperty& that);
+    virtual FileProperty* clone() const;
+    virtual ~FileProperty();
+
     virtual void serialize(IvwSerializer& s) const;
     virtual void deserialize(IvwDeserializer& d);
 
