@@ -282,8 +282,8 @@ template<typename T>
 inviwo::BaseTemplateOptionProperty<T>::BaseTemplateOptionProperty(const BaseTemplateOptionProperty<T>& rhs) 
     : BaseOptionProperty(rhs)
     , selectedIndex_(rhs.selectedIndex_)
-    , defaultSelectedIndex_(rhs.defaultSelectedIndex_)
     , options_(rhs.options_)
+    , defaultSelectedIndex_(rhs.defaultSelectedIndex_)
     , defaultOptions_(rhs.defaultOptions_) {
 }
 
