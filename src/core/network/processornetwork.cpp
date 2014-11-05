@@ -932,7 +932,7 @@ void ProcessorNetwork::NetworkConverter::updateCameraToComposite(TxElement* node
     if (key == "Property") {
         std::string type = node->GetAttributeOrDefault("type", "");
         std::string identifier = node->GetAttributeOrDefault("identifier", "");
-        if (type == "org.inviwo.CameraProperty" && identifier == "camera") {
+        if (type == "org.inviwo.CameraProperty") {
             std::vector<TxElement> subNodeVector;
 
             //create
