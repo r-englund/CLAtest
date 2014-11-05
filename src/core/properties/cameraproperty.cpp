@@ -236,25 +236,12 @@ void CameraProperty::invokeEvent(Event* event) {
 
 void CameraProperty::serialize(IvwSerializer& s) const {
     Property::serialize(s);
-    s.serialize("lookFrom", lookFrom_);
-    s.serialize("lookTo", lookTo_);
-    s.serialize("lookUp", lookUp_);
-    s.serialize("fovy", fovy_);
-    s.serialize("aspectRatio", aspectRatio_);
-    s.serialize("nearPlane", nearPlane_);
-    s.serialize("farPlane", farPlane_);
+    PropertyOwner::serialize(s);
 }
 
 void CameraProperty::deserialize(IvwDeserializer& d) {
     Property::deserialize(d);
-    d.deserialize("lookFrom", lookFrom_);
-    d.deserialize("lookTo", lookTo_);
-    d.deserialize("lookUp", lookUp_);
-    d.deserialize("fovy", fovy_);
-    d.deserialize("aspectRatio", aspectRatio_);
-    d.deserialize("nearPlane", nearPlane_);
-    d.deserialize("farPlane", farPlane_);
-    
+    PropertyOwner::deserialize(d);
     lockInvalidation();
     updateViewMatrix();
     updateProjectionMatrix();

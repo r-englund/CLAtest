@@ -104,6 +104,12 @@ public:
 protected:
 
     virtual SliderVector makeSliders(QWidget* widget) {
+
+        std::vector<QString> sphericalChars;
+        sphericalChars.push_back(QString("r"));
+        sphericalChars.push_back(QString("<html>&theta;</html>"));
+        sphericalChars.push_back(QString("<html>&phi;</html>"));
+
         QSizePolicy sliderPol = widget->sizePolicy();
         sliderPol.setHorizontalStretch(3);
         widget->setSizePolicy(sliderPol);
@@ -129,17 +135,12 @@ protected:
                 QWidget* widget;
                 if(ordinalproperty_->getSemantics() == PropertySemantics("Spherical")) {
                     
-                    std::vector<QString> chars;
-                    chars.push_back(QString("r"));
-                    chars.push_back(QString("θ"));
-                    chars.push_back(QString("φ"));
-                    
                     widget = new QWidget(this);
                     QHBoxLayout* hLayout = new QHBoxLayout();
                     hLayout->setContentsMargins(0, 0, 0, 0);
                     hLayout->setSpacing(7);
                     widget->setLayout(hLayout);
-                    hLayout->addWidget(new QLabel(chars[i], this));
+                    hLayout->addWidget(new QLabel(sphericalChars[i], this));
                     hLayout->addWidget(controlWidget);
                 }else{
                     widget = controlWidget;

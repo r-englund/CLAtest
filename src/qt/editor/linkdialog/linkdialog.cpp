@@ -92,8 +92,6 @@ void LinkDialog::initDialogLayout() {
     QVBoxLayout* mainLayout = new QVBoxLayout(frame);
     linkDialogView_ = new LinkDialogGraphicsView(this);
     linkDialogScene_ = new LinkDialogGraphicsScene(this);
-    linkDialogScene_->src_ = src_;
-    linkDialogScene_->dest_ = dest_;
     linkDialogView_->setDialogScene(linkDialogScene_);
     //linkDialogView_->setSceneRect(0,0,rSize.width(), rSize.height()*5);
     linkDialogView_->fitInView(linkDialogView_->rect());

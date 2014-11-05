@@ -96,10 +96,6 @@ public:
 
     virtual void onProcessorNetworkDidAddLink(PropertyLink* propertyLink);
     virtual void onProcessorNetworkDidRemoveLink(PropertyLink* propertyLink);
-
-    PropertyOwner* src_;
-    PropertyOwner* dest_;
-
 protected:
     void mousePressEvent(QGraphicsSceneMouseEvent* e);
     void mouseMoveEvent(QGraphicsSceneMouseEvent* e);
@@ -117,7 +113,7 @@ protected:
     void switchPropertyLinkDirection(DialogConnectionGraphicsItem* propertyLink);
     void initializePorpertyLinkRepresentation(LinkDialogPropertyGraphicsItem* outProperty, LinkDialogPropertyGraphicsItem* inProperty,
             PropertyLink* propLink);
-    void addProcessorsItemsToScene(Processor* prcoessor, int xPosition, int yPosition);
+    LinkDialogProcessorGraphicsItem* addProcessorsItemsToScene(Processor* prcoessor, int xPosition, int yPosition);
     DialogConnectionGraphicsItem* getConnectionGraphicsItem(LinkDialogPropertyGraphicsItem*, LinkDialogPropertyGraphicsItem*);
 
     //smooth scroll effect support
@@ -131,7 +127,8 @@ private:
     LinkDialogPropertyGraphicsItem* startProperty_;
     LinkDialogPropertyGraphicsItem* endProperty_;
 
-    std::vector<LinkDialogProcessorGraphicsItem*> processorGraphicsItems_;
+    LinkDialogProcessorGraphicsItem* srcProcessorGraphicsItem_;
+    LinkDialogProcessorGraphicsItem* dstProcessorGraphicsItem_;
     std::vector<DialogConnectionGraphicsItem*> connectionGraphicsItems_;
     std::vector<DialogConnectionGraphicsItem*> currentConnectionGraphicsItems_;
 
@@ -141,6 +138,8 @@ private:
     void removeConnectionFromCurrentList(DialogConnectionGraphicsItem*);
     bool expandProperties_;
     bool mouseOnLeftSide_;
+
+    std::map<Property*, LinkDialogPropertyGraphicsItem*> propertyGraphicsItemCache_;
 };
 
 } //namespace
