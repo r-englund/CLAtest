@@ -60,6 +60,7 @@ Processor::Processor()
 
 Processor::~Processor() {
     usedIdentifiers_.erase(identifier_);
+    portDependencySets_.deinitialize();
 }
 
 void Processor::addPort(Inport* port, const std::string &portDependencySet) {
@@ -211,7 +212,6 @@ void Processor::deinitialize() {
     for (std::vector<Outport*>::iterator it = outports_.begin(); it != outports_.end(); ++it)
         (*it)->deinitialize();
 
-    portDependencySets_.deinitialize();
     initialized_ = false;
 }
 
