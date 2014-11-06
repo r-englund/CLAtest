@@ -162,6 +162,7 @@ public:
     virtual void deserialize(IvwDeserializer& d);
 
     template <typename T> void onChange(T* o, void (T::*m)());
+    template <typename T> void removeOnChange(T* o);
 
     virtual UsageMode getUsageMode() const;
     virtual void setUsageMode(UsageMode visibilityMode);
@@ -196,6 +197,11 @@ private:
 
     PropertyWidget* initiatingWidget_;
 };
+
+template <typename T>
+void inviwo::Property::removeOnChange(T* o) {
+    onChangeCallback_.removeMemberFunction(o);
+}
 
 template <typename T>
 void Property::onChange(T* o, void (T::*m)()) {
