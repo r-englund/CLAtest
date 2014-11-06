@@ -45,36 +45,15 @@ Property::Property(const std::string &identifier,
     : IvwSerializable()
     , MetaDataOwner()
     , identifier_(identifier)
-    , displayName_(displayName)
-    , defaultDisplayName_(displayName)
-    , readOnly_(false)
-    , defaultReadOnly_(false)
-    , semantics_(semantics)
-    , defaultSemantics_(semantics)
-    , usageMode_(APPLICATION)
-    , visible_(true)
+    , displayName_("displayName", displayName)
+    , readOnly_("readonly", false)
+    , semantics_("semantics", semantics)
+    , usageMode_("usageMode", APPLICATION)
+    , visible_("visible", true)
     , propertyModified_(false)
     , invalidationLevel_(invalidationLevel)
     , owner_(NULL)
     , initiatingWidget_(NULL) {
-}
-
-Property::Property()
-    : IvwSerializable()
-    , MetaDataOwner()
-    , identifier_("")
-    , displayName_("")
-    , defaultDisplayName_("")
-    , readOnly_(false)
-    , defaultReadOnly_(false)
-    , semantics_(PropertySemantics::Default)
-    , defaultSemantics_(PropertySemantics::Default)
-    , usageMode_(APPLICATION)
-    , visible_(true)
-    , propertyModified_(false)
-    , invalidationLevel_(PropertyOwner::INVALID_OUTPUT)
-    , owner_(NULL)
-    , initiatingWidget_(NULL)  {
 }
 
 Property::Property(const Property& rhs)
@@ -82,11 +61,8 @@ Property::Property(const Property& rhs)
     , MetaDataOwner(rhs)
     , identifier_(rhs.identifier_)
     , displayName_(rhs.displayName_)
-    , defaultDisplayName_(rhs.defaultDisplayName_)
     , readOnly_(rhs.readOnly_)
-    , defaultReadOnly_(rhs.defaultReadOnly_)
     , semantics_(rhs.semantics_)
-    , defaultSemantics_(rhs.defaultSemantics_)
     , usageMode_(rhs.usageMode_)
     , visible_(rhs.visible_)
     , propertyModified_(rhs.propertyModified_)
@@ -100,11 +76,8 @@ Property& Property::operator=(const Property& that) {
         MetaDataOwner::operator=(that);
         identifier_ = that.identifier_;
         displayName_  = that.displayName_;
-        defaultDisplayName_ = that.defaultDisplayName_;
         readOnly_ = that.readOnly_;
-        defaultReadOnly_ = that.defaultReadOnly_;
         semantics_ = that.semantics_;
-        defaultSemantics_ = that.defaultSemantics_;
         usageMode_ = that.usageMode_;
         visible_ = that.visible_;
         propertyModified_ = that.propertyModified_;
@@ -252,15 +225,14 @@ bool Property::isPropertyModified() const {
 void Property::serialize(IvwSerializer& s) const {
     s.serialize("type", getClassIdentifier(), true);
     s.serialize("identifier", identifier_, true);
-    s.serialize("displayName", displayName_, true);
-    if (semantics_ != defaultSemantics_) {
-        s.serialize("semantics", semantics_);
+    if (!displayName_.isDefault()) {
+        s.serialize(displayName_.name, displayName_, true);
     }
-    s.serialize("usageMode", usageMode_);
-    s.serialize("visible", visible_);
-    if (readOnly_ != defaultReadOnly_) {
-        s.serialize("readonly", readOnly_);
-    }
+    semantics_.serialize(s);
+    usageMode_.serialize(s);
+    visible_.serialize(s);
+    readOnly_.serialize(s);
+
     MetaDataOwner::serialize(s);
 }
 
@@ -268,13 +240,16 @@ void Property::deserialize(IvwDeserializer& d) {
     std::string className;
     d.deserialize("type", className, true);
     d.deserialize("identifier", identifier_, true);
-    d.deserialize("displayName", displayName_, true);
-    d.deserialize("semantics", semantics_);
+    d.deserialize(displayName_.name, displayName_.value, true);
+    semantics_.deserialize(d);
+
     int mode = usageMode_;
-    d.deserialize("usageMode", mode);
+    d.deserialize(usageMode_.name, mode);
     usageMode_ = static_cast<UsageMode>(mode);
-    d.deserialize("visible", visible_);
-    d.deserialize("readonly", readOnly_);
+
+    visible_.deserialize(d);
+    readOnly_.deserialize(d);
+
     updateVisibility();
     MetaDataOwner::deserialize(d);
 }
@@ -312,14 +287,13 @@ bool Property::getVisible() {
     return visible_;
 }
 
-
 void Property::setCurrentStateAsDefault() {
-    defaultReadOnly_ = readOnly_;
-    defaultSemantics_ = semantics_;
+    readOnly_.setAsDefault();
+    semantics_.setAsDefault();
 }
 
 void Property::resetToDefaultState() {
-    readOnly_ = defaultReadOnly_;
+    readOnly_.reset();
     propertyModified();
 }
 

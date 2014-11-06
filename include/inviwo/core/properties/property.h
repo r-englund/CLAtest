@@ -51,6 +51,45 @@ namespace inviwo {
 #define PropertyClassIdentifier(T, classIdentifier) \
     const std::string T::CLASS_IDENTIFIER = classIdentifier;
 
+template <typename T>
+struct ValueWrapper {
+    ValueWrapper(T val) : value(val), default(val), name("") {}
+    ValueWrapper(std::string valname, T val) : value(val), default(val), name(valname) {}
+    ValueWrapper(const ValueWrapper<T>& rhs) : value(rhs.value), default(rhs.default), name(rhs.name) {}
+    ValueWrapper<T>& operator=(const ValueWrapper<T>& that) {
+        if (this != &that) {
+            value = that.value;
+            default = that.default;
+            name = that.name;
+        }
+        return *this;
+    }
+    ValueWrapper<T>& operator=(const T& val) {
+        value = val;
+        return *this;
+    }
+    operator T() { return value; }
+    operator const T() const { return value; }
+
+    bool isDefault() const { return value == default; }
+    void reset() { value = default; }
+    void setAsDefault() { default = value; }
+
+    void serialize(IvwSerializer& s, bool force = false) const {
+        if (force || !isDefault()) s.serialize(name, value);
+    }
+
+    void deserialize(IvwDeserializer& d) {
+        d.deserialize(name, value);
+    }
+
+    T value;
+    T default;
+    std::string name;
+};
+
+
+
 /** \class Property
  * 
  *  \brief A Property represents a parameter to a processor. 
@@ -77,48 +116,45 @@ namespace inviwo {
 class IVW_CORE_API Property : public IvwSerializable , public MetaDataOwner {
 
 public:
-    Property(const std::string &identifier,
-             const std::string &displayName,
-             PropertyOwner::InvalidationLevel invalidationLevel=PropertyOwner::INVALID_OUTPUT,
+    InviwoPropertyInfo(); // Should be included by all inheriting classes
+
+    Property(const std::string &identifier = "",
+             const std::string &displayName = "",
+             PropertyOwner::InvalidationLevel invalidationLevel = PropertyOwner::INVALID_OUTPUT,
              PropertySemantics semantics = PropertySemantics::Default);
-    Property();
     Property(const Property& rhs);
     Property& operator=(const Property& that);
     virtual Property* clone() const;
     virtual ~Property();
 
-    // Should be called by all inheriting classes
-    InviwoPropertyInfo();
 
+    virtual void setIdentifier(const std::string& identifier);
     virtual std::string getIdentifier() const;
     virtual std::vector<std::string> getPath() const;
-    virtual void setIdentifier(const std::string& identifier);
-    virtual std::string getDisplayName() const;
+    
     /** 
-     * \brief Set display name and update widgets
-     * 
-     * @param const std::string & displayName The name to be displayed in the GUI
+     * \brief A property's name displayed to the user
      */
     virtual void setDisplayName(const std::string& displayName);
+    virtual std::string getDisplayName() const;
 
-    virtual PropertySemantics getSemantics() const;
+    
     virtual void setSemantics(const PropertySemantics& semantics);
+    virtual PropertySemantics getSemantics() const;
 
     /** 
-     * \brief Enable/disable editing of property value and update widgets
-     * 
-     * @param const bool & value True if read only, false otherwise
+     * \brief Enable or disable editing of property
      */
     virtual void setReadOnly(const bool& value);
     virtual bool getReadOnly() const;
 
+    void setInvalidationLevel(PropertyOwner::InvalidationLevel invalidationLevel);
     PropertyOwner::InvalidationLevel getInvalidationLevel() const;
-    void setInvalidationLevel(PropertyOwner::InvalidationLevel invalidationLevel) ;
-
+   
+    virtual void setOwner(PropertyOwner* owner);
     PropertyOwner* getOwner();
     const PropertyOwner* getOwner() const;
-    virtual void setOwner(PropertyOwner* owner);
-
+    
 
     // Widget calls
     void registerWidget(PropertyWidget* propertyWidget);
@@ -126,12 +162,10 @@ public:
     const std::vector<PropertyWidget*>& getWidgets() const;
     
     /**
-     *  This function should be called by propertywidgets before they initiate a property
-     *  change. This is needed becouse when the property is modified it needs to update all
+     *  This function should be called by property widgets before they initiate a property
+     *  change. This is needed because when the property is modified it needs to update all
      *  of its widgets. And since it won't know if the change started in one of them we will
-     *  update the propertywidget that started the change...
-     *
-     *  @param PropertyWidget* <#PropertyWidget* description#>
+     *  update the property widget that started the change
      */
     void setInitiatingWidget(PropertyWidget*);
     void clearInitiatingWidget();
@@ -164,10 +198,11 @@ public:
     template <typename T> void onChange(T* o, void (T::*m)());
     template <typename T> void removeOnChange(T* o);
 
-    virtual UsageMode getUsageMode() const;
     virtual void setUsageMode(UsageMode visibilityMode);
-    virtual bool getVisible();
+    virtual UsageMode getUsageMode() const;
+
     virtual void setVisible(bool val);
+    virtual bool getVisible();
 
     virtual void updateVisibility();
 
@@ -177,18 +212,12 @@ protected:
 private:
     std::string identifier_;
 
-    std::string displayName_;
-    std::string defaultDisplayName_;
-
-    bool readOnly_;
-    bool defaultReadOnly_;
-
-    PropertySemantics semantics_;
-    PropertySemantics defaultSemantics_;
-
-    UsageMode usageMode_;
-    bool visible_;
-
+    ValueWrapper<std::string> displayName_;
+    ValueWrapper<bool> readOnly_;
+    ValueWrapper<PropertySemantics> semantics_;
+    ValueWrapper<UsageMode> usageMode_;
+    ValueWrapper<bool> visible_;
+    
     bool propertyModified_;
     PropertyOwner::InvalidationLevel invalidationLevel_;
 
