@@ -79,13 +79,9 @@ public:
     static uvec2 getDim() { return Defaultvalues<T>::getDim(); }
 
 private:
-    T minValue_;
-    T maxValue_;
-    T increment_;
-
-    T defaultMinValue_;
-    T defaultMaxValue_;
-    T defaultIncrement_;
+    ValueWrapper<T> minValue_;
+    ValueWrapper<T> maxValue_;
+    ValueWrapper<T> increment_;
 };
 
 // Scalar properties
@@ -125,12 +121,10 @@ OrdinalProperty<T>::OrdinalProperty(const std::string& identifier, const std::st
                                     PropertyOwner::InvalidationLevel invalidationLevel,
                                     PropertySemantics semantics)
     : TemplateProperty<T>(identifier, displayName, value, invalidationLevel, semantics)
-    , minValue_(minValue)
-    , maxValue_(maxValue)
-    , increment_(increment)
-    , defaultMinValue_(minValue)
-    , defaultMaxValue_(maxValue)
-    , defaultIncrement_(increment) {}
+    , minValue_("minvalue", minValue)
+    , maxValue_("maxvalue", maxValue)
+    , increment_("increment", increment) {
+}
 
 
 template <typename T>
@@ -138,10 +132,7 @@ OrdinalProperty<T>::OrdinalProperty(const OrdinalProperty<T>& rhs)
     : TemplateProperty<T>(rhs)
     , minValue_(rhs.minValue_)
     , maxValue_(rhs.maxValue_)
-    , increment_(rhs.increment_)
-    , defaultMinValue_(rhs.defaultMaxValue_)
-    , defaultMaxValue_(rhs.defaultMaxValue_)
-    , defaultIncrement_(rhs.defaultIncrement_) {
+    , increment_(rhs.increment_) {
 }
 
 template <typename T>
@@ -151,9 +142,6 @@ OrdinalProperty<T>& OrdinalProperty<T>::operator=(const OrdinalProperty<T>& that
         minValue_ = that.minValue_;
         maxValue_ = that.maxValue_;
         increment_ = that.increment_;
-        defaultMinValue_ = that.defaultMaxValue_;
-        defaultMaxValue_ = that.defaultMaxValue_;
-        defaultIncrement_ = that.defaultIncrement_;
     }
     return *this;
 }
@@ -168,9 +156,7 @@ OrdinalProperty<T>::~OrdinalProperty() {}
 
 template <typename T>
 void OrdinalProperty<T>::set(const T& value) {
-    if (TemplateProperty<T>::value_ != value) {
-        TemplateProperty<T>::set(value);
-    }
+    TemplateProperty<T>::set(value);
 }
 
 template <typename T>
@@ -178,9 +164,9 @@ void OrdinalProperty<T>::set(const Property* srcProperty) {
     const OrdinalProperty<T>* templatedSrcProp =
         dynamic_cast<const OrdinalProperty<T>*>(srcProperty);
     if (templatedSrcProp) {
-        this->minValue_ = templatedSrcProp->minValue_;
-        this->maxValue_ = templatedSrcProp->maxValue_;
-        this->increment_ = templatedSrcProp->increment_;
+        this->minValue_.value = templatedSrcProp->minValue_.value;
+        this->maxValue_.value = templatedSrcProp->maxValue_.value;
+        this->increment_.value = templatedSrcProp->increment_.value;
     }
 
     TemplateProperty<T>::set(srcProperty);
@@ -223,42 +209,34 @@ void OrdinalProperty<T>::setIncrement(const T& value) {
 }
 
 template <typename T>
-void inviwo::OrdinalProperty<T>::resetToDefaultState() {
-    minValue_ = defaultMinValue_;
-    maxValue_ = defaultMaxValue_;
-    increment_ = defaultIncrement_;
+void OrdinalProperty<T>::resetToDefaultState() {
+    minValue_.reset();
+    maxValue_.reset();
+    increment_.reset();
     TemplateProperty<T>::resetToDefaultState();
 }
 
 template <typename T>
-void inviwo::OrdinalProperty<T>::setCurrentStateAsDefault() {
+void OrdinalProperty<T>::setCurrentStateAsDefault() {
     TemplateProperty<T>::setCurrentStateAsDefault();
-    defaultMinValue_ = minValue_;
-    defaultMaxValue_ = maxValue_;
-    defaultIncrement_ = increment_;
+    minValue_.setAsDefault();
+    maxValue_.setAsDefault();
+    increment_.setAsDefault();
 }
 
 template <typename T>
 void OrdinalProperty<T>::serialize(IvwSerializer& s) const {
-    if (minValue_ != defaultMinValue_) {
-        s.serialize("minvalue", minValue_);
-    }
-    if (maxValue_ != defaultMaxValue_) {
-        s.serialize("maxvalue", maxValue_);
-    }
-    if (increment_ != defaultIncrement_) {
-        s.serialize("increment", increment_);
-    }
-
+    minValue_.serialize(s, serializationMode_);
+    maxValue_.serialize(s, serializationMode_);
+    increment_.serialize(s, serializationMode_);
     TemplateProperty<T>::serialize(s);
 }
 
 template <typename T>
 void OrdinalProperty<T>::deserialize(IvwDeserializer& d) {
-    d.deserialize("minvalue", minValue_);
-    d.deserialize("maxvalue", maxValue_);
-    d.deserialize("increment", increment_);
-
+    minValue_.deserialize(d);
+    maxValue_.deserialize(d);
+    increment_.deserialize(d);
     TemplateProperty<T>::deserialize(d);
 }
 

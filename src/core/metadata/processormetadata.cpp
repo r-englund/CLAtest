@@ -100,10 +100,14 @@ void ProcessorMetaData::deserialize(IvwDeserializer& d) {
 
 bool ProcessorMetaData::equal(const MetaData& rhs) const {
     const ProcessorMetaData* tmp = dynamic_cast<const ProcessorMetaData*>(&rhs);
-    if (tmp) {
-        return operator==<ivec2>(tmp->position_, position_)
-            && operator==<bool>(tmp->visibility_, visibility_)
-            && operator==<bool>(tmp->selection_, selection_);
+    if (tmp) { 
+        return  tmp->position_ == position_ 
+            && tmp->visibility_ == visibility_ 
+            && tmp->selection_ == selection_;
+
+//         return operator==<ivec2>(tmp->position_, position_)
+//             && operator==<bool>(tmp->visibility_, visibility_)
+//             && operator==<bool>(tmp->selection_, selection_);
     } else {
         return false;
     }

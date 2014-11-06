@@ -51,7 +51,7 @@ namespace inviwo {
 #define PropertyClassIdentifier(T, classIdentifier) \
     const std::string T::CLASS_IDENTIFIER = classIdentifier;
 
-enum PropertySerializationMode {
+enum IVW_CORE_API PropertySerializationMode {
     DEFAULT = 0,
     ALL
 };
@@ -74,8 +74,8 @@ struct ValueWrapper {
         value = val;
         return *this;
     }
-    operator T() { return value; }
-    operator const T() const { return value; }
+    operator T&() { return value; }
+    operator const T&() const { return value; }
 
     bool isDefault() const { return value == defaultValue; }
     void reset() { value = defaultValue; }
@@ -91,7 +91,36 @@ struct ValueWrapper {
     T value;
     T defaultValue;
     std::string name;
+
+
+    template <typename U> friend bool operator==(const ValueWrapper<U>& lhs, const ValueWrapper<U>& rhs);
+    template <typename U> friend bool operator< (const ValueWrapper<U>& lhs, const ValueWrapper<U>& rhs);
+                                                           
+    template <typename U> friend bool operator==(const ValueWrapper<U>& lhs, const U& rhs);
+    template <typename U> friend bool operator< (const ValueWrapper<U>& lhs, const U& rhs);
 };
+
+template <typename T> bool operator==(const ValueWrapper<T>& lhs, const ValueWrapper<T>& rhs){ return lhs.value == rhs.value; }
+template <typename T> bool operator< (const ValueWrapper<T>& lhs, const ValueWrapper<T>& rhs){ return lhs.value < rhs.value; }
+template <typename T> bool operator!=(const ValueWrapper<T>& lhs, const ValueWrapper<T>& rhs){ return !operator==(lhs, rhs); }
+template <typename T> bool operator> (const ValueWrapper<T>& lhs, const ValueWrapper<T>& rhs){ return  operator< (rhs, lhs); }
+template <typename T> bool operator<=(const ValueWrapper<T>& lhs, const ValueWrapper<T>& rhs){ return !operator> (lhs, rhs); }
+template <typename T> bool operator>=(const ValueWrapper<T>& lhs, const ValueWrapper<T>& rhs){ return !operator< (lhs, rhs); }
+
+template <typename T> bool operator==(const ValueWrapper<T>& lhs, const T& rhs){ return lhs.value == rhs; }
+template <typename T> bool operator< (const ValueWrapper<T>& lhs, const T& rhs){ return lhs.value < rhs; }
+template <typename T> bool operator!=(const ValueWrapper<T>& lhs, const T& rhs){ return !operator==(lhs, rhs); }
+template <typename T> bool operator> (const ValueWrapper<T>& lhs, const T& rhs){ return  operator< (rhs, lhs); }
+template <typename T> bool operator<=(const ValueWrapper<T>& lhs, const T& rhs){ return !operator> (lhs, rhs); }
+template <typename T> bool operator>=(const ValueWrapper<T>& lhs, const T& rhs){ return !operator< (lhs, rhs); }
+
+template <typename T> bool operator==(const T& lhs, const ValueWrapper<T>& rhs){ return rhs == lhs; }
+template <typename T> bool operator< (const T& lhs, const ValueWrapper<T>& rhs){ return rhs >= lhs; }
+template <typename T> bool operator!=(const T& lhs, const ValueWrapper<T>& rhs){ return !operator==(rhs, lhs); }
+template <typename T> bool operator> (const T& lhs, const ValueWrapper<T>& rhs){ return  operator< (rhs, lhs); }
+template <typename T> bool operator<=(const T& lhs, const ValueWrapper<T>& rhs){ return !operator>(lhs, rhs); }
+template <typename T> bool operator>=(const T& lhs, const ValueWrapper<T>& rhs){ return !operator< (lhs, rhs); }
+
 
 /** \class Property
  * 

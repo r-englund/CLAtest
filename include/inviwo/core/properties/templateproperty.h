@@ -56,7 +56,7 @@ public:
     virtual ~TemplateProperty();
 
     virtual T& get();
-    virtual const T& get() const { return value_; };
+    virtual const T& get() const;
     virtual void set(const T& value);
     virtual void set(const Property* srcProperty);
 
@@ -67,20 +67,23 @@ public:
     virtual void deserialize(IvwDeserializer& d);
 
 protected:
-    T value_;
-    T defaultValue_;
+    ValueWrapper<T> value_;
 };
 
-// template <typename T>
-// TemplateProperty<T>* TemplateProperty<T>::clone() const {
-//     return new TemplateProperty<T>(*this);
-// }
+template <typename T>
+TemplateProperty<T>::TemplateProperty(const std::string& identifier, const std::string& displayName,
+                                      const T& value,
+                                      PropertyOwner::InvalidationLevel invalidationLevel,
+                                      PropertySemantics semantics)
+    : Property(identifier, displayName, invalidationLevel, semantics)
+    , value_("value", value) {
+}
+
 
 template<typename T>
 TemplateProperty<T>::TemplateProperty(const TemplateProperty<T>& rhs)
     : Property(rhs)
-    , value_(rhs.value_)
-    , defaultValue_(rhs.defaultValue_) {
+    , value_(rhs.value_) {
 }
 
 template<typename T>
@@ -88,10 +91,14 @@ TemplateProperty<T>& TemplateProperty<T>::operator=(const TemplateProperty<T>& t
     if (this != &that) {
         Property::operator=(that);
         value_ = that.value_;
-        defaultValue_ = that.defaultValue_;
     }
     return *this;
 }
+
+// template <typename T>
+// TemplateProperty<T>* TemplateProperty<T>::clone() const {
+//     return new TemplateProperty<T>(*this);
+// }
 
 template<typename T>
 TemplateProperty<T>::operator T() {
@@ -103,23 +110,14 @@ TemplateProperty<T>::~TemplateProperty() {}
 
 template<typename T>
 void inviwo::TemplateProperty<T>::resetToDefaultState() { 
-    value_ = defaultValue_;
+    value_.reset();
     Property::resetToDefaultState();
 }
 
 template<typename T>
 void inviwo::TemplateProperty<T>::setCurrentStateAsDefault() {
     Property::setCurrentStateAsDefault();
-    defaultValue_ = value_;
-}
-
-template <typename T>
-TemplateProperty<T>::TemplateProperty(const std::string &identifier, const std::string &displayName, const T &value,
-                                      PropertyOwner::InvalidationLevel invalidationLevel,
-                                      PropertySemantics semantics)
-    : Property(identifier, displayName, invalidationLevel, semantics)
-    , value_(value)
-    , defaultValue_(value) {
+    value_.setAsDefault();
 }
 
 template <typename T>
@@ -128,9 +126,13 @@ T& TemplateProperty<T>::get() {
 }
 
 template <typename T>
+const T& TemplateProperty<T>::get() const {
+    return value_;
+}
+
+template <typename T>
 void TemplateProperty<T>::set(const T& value) {
-    if (value == value_)
-        return;
+    if (value == value_) return;
     value_ = value;
     propertyModified();
 }
@@ -140,7 +142,7 @@ void TemplateProperty<T>::set(const Property* srcProperty) {
     const TemplateProperty<T>* templatedSrcProp =
         dynamic_cast<const TemplateProperty<T>*>(srcProperty);
     if (templatedSrcProp) {
-        this->value_ = templatedSrcProp->value_;
+        this->value_.value = templatedSrcProp->value_.value;
     }
 
     Property::set(srcProperty);
@@ -149,15 +151,13 @@ void TemplateProperty<T>::set(const Property* srcProperty) {
 template <typename T>
 void TemplateProperty<T>::serialize(IvwSerializer& s) const {
     Property::serialize(s);
-    if (value_ != defaultValue_) {
-        s.serialize("value", value_);
-    }
+    value_.serialize(s, serializationMode_);
 }
 
 template <typename T>
 void TemplateProperty<T>::deserialize(IvwDeserializer& d) {
     Property::deserialize(d);
-    d.deserialize("value", value_);
+    value_.deserialize(d);
     propertyModified();
 }
 
