@@ -44,6 +44,7 @@ Property::Property(const std::string &identifier,
                    PropertySemantics semantics)
     : IvwSerializable()
     , MetaDataOwner()
+    , serializationMode_(PropertySerializationMode::DEFAULT)
     , identifier_(identifier)
     , displayName_("displayName", displayName)
     , readOnly_("readonly", false)
@@ -59,6 +60,7 @@ Property::Property(const std::string &identifier,
 Property::Property(const Property& rhs)
     : IvwSerializable()
     , MetaDataOwner(rhs)
+    , serializationMode_(rhs.serializationMode_)
     , identifier_(rhs.identifier_)
     , displayName_(rhs.displayName_)
     , readOnly_(rhs.readOnly_)
@@ -74,6 +76,7 @@ Property::Property(const Property& rhs)
 Property& Property::operator=(const Property& that) {
     if (this != &that) {
         MetaDataOwner::operator=(that);
+        serializationMode_ = that.serializationMode_;
         identifier_ = that.identifier_;
         displayName_  = that.displayName_;
         readOnly_ = that.readOnly_;
@@ -225,13 +228,13 @@ bool Property::isPropertyModified() const {
 void Property::serialize(IvwSerializer& s) const {
     s.serialize("type", getClassIdentifier(), true);
     s.serialize("identifier", identifier_, true);
-    if (!displayName_.isDefault()) {
+    if (serializationMode_ == PropertySerializationMode::ALL || !displayName_.isDefault()) {
         s.serialize(displayName_.name, displayName_, true);
     }
-    semantics_.serialize(s);
-    usageMode_.serialize(s);
-    visible_.serialize(s);
-    readOnly_.serialize(s);
+    semantics_.serialize(s, serializationMode_);
+    usageMode_.serialize(s, serializationMode_);
+    visible_.serialize(s, serializationMode_);
+    readOnly_.serialize(s, serializationMode_);
 
     MetaDataOwner::serialize(s);
 }
@@ -307,6 +310,14 @@ inviwo::UsageMode Property::getUsageMode() const {
 
 const std::vector<PropertyWidget*>& Property::getWidgets() const {
     return propertyWidgets_;
+}
+
+void Property::setSerializationMode(PropertySerializationMode mode) {
+    serializationMode_ = mode;
+}
+
+PropertySerializationMode Property::getSerializationMode() const {
+    return serializationMode_;
 }
 
 

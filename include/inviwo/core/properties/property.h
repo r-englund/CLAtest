@@ -51,15 +51,21 @@ namespace inviwo {
 #define PropertyClassIdentifier(T, classIdentifier) \
     const std::string T::CLASS_IDENTIFIER = classIdentifier;
 
+enum PropertySerializationMode {
+    DEFAULT = 0,
+    ALL
+};
+
 template <typename T>
 struct ValueWrapper {
-    ValueWrapper(T val) : value(val), default(val), name("") {}
-    ValueWrapper(std::string valname, T val) : value(val), default(val), name(valname) {}
-    ValueWrapper(const ValueWrapper<T>& rhs) : value(rhs.value), default(rhs.default), name(rhs.name) {}
+    ValueWrapper(T val) : value(val), defaultValue(val), name("") {}
+    ValueWrapper(std::string valname, T val) : value(val), defaultValue(val), name(valname) {}
+    ValueWrapper(const ValueWrapper<T>& rhs)
+        : value(rhs.value), defaultValue(rhs.defaultValue), name(rhs.name) {}
     ValueWrapper<T>& operator=(const ValueWrapper<T>& that) {
         if (this != &that) {
             value = that.value;
-            default = that.default;
+            defaultValue = that.defaultValue;
             name = that.name;
         }
         return *this;
@@ -71,24 +77,21 @@ struct ValueWrapper {
     operator T() { return value; }
     operator const T() const { return value; }
 
-    bool isDefault() const { return value == default; }
-    void reset() { value = default; }
-    void setAsDefault() { default = value; }
+    bool isDefault() const { return value == defaultValue; }
+    void reset() { value = defaultValue; }
+    void setAsDefault() { defaultValue = value; }
 
-    void serialize(IvwSerializer& s, bool force = false) const {
-        if (force || !isDefault()) s.serialize(name, value);
+    void serialize(IvwSerializer& s,
+                   PropertySerializationMode mode = PropertySerializationMode::DEFAULT) const {
+        if (mode == PropertySerializationMode::ALL || !isDefault()) s.serialize(name, value);
     }
 
-    void deserialize(IvwDeserializer& d) {
-        d.deserialize(name, value);
-    }
+    void deserialize(IvwDeserializer& d) { d.deserialize(name, value); }
 
     T value;
-    T default;
+    T defaultValue;
     std::string name;
 };
-
-
 
 /** \class Property
  * 
@@ -114,7 +117,6 @@ struct ValueWrapper {
 
 
 class IVW_CORE_API Property : public IvwSerializable , public MetaDataOwner {
-
 public:
     InviwoPropertyInfo(); // Should be included by all inheriting classes
 
@@ -201,6 +203,9 @@ public:
     virtual void setUsageMode(UsageMode visibilityMode);
     virtual UsageMode getUsageMode() const;
 
+    virtual void setSerializationMode(PropertySerializationMode mode);
+    virtual PropertySerializationMode getSerializationMode() const;
+
     virtual void setVisible(bool val);
     virtual bool getVisible();
 
@@ -208,6 +213,7 @@ public:
 
 protected:
     CallBackList onChangeCallback_;
+    PropertySerializationMode serializationMode_;
 
 private:
     std::string identifier_;
