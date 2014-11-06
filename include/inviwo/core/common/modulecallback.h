@@ -38,7 +38,7 @@
 
 namespace inviwo {
 
-class CallbackWithSingleArgument {
+class IVW_CORE_API CallbackWithSingleArgument {
 public:
     CallbackWithSingleArgument() {}
     virtual ~CallbackWithSingleArgument() {}
@@ -75,7 +75,7 @@ private:
     T* obj_;
 };
 
-class ModuleCallback {
+class IVW_CORE_API ModuleCallback {
 public:
     ModuleCallback() : callBack_(0) {}
     virtual ~ModuleCallback() {
