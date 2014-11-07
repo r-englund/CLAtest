@@ -50,9 +50,6 @@ public:
 
     InviwoProcessorInfo();
 
-    void initialize();
-    void deinitialize();
-
 protected:
     virtual void process();
 
