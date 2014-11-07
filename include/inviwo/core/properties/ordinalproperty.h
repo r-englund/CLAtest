@@ -226,9 +226,9 @@ void OrdinalProperty<T>::setCurrentStateAsDefault() {
 
 template <typename T>
 void OrdinalProperty<T>::serialize(IvwSerializer& s) const {
-    minValue_.serialize(s, serializationMode_);
-    maxValue_.serialize(s, serializationMode_);
-    increment_.serialize(s, serializationMode_);
+    minValue_.serialize(s, this->serializationMode_);
+    maxValue_.serialize(s, this->serializationMode_);
+    increment_.serialize(s, this->serializationMode_);
     TemplateProperty<T>::serialize(s);
 }
 

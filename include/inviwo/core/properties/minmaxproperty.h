@@ -198,8 +198,8 @@ void inviwo::MinMaxProperty<T>::set(const Property* srcProperty) {
 
 template <typename T>
 void MinMaxProperty<T>::setRangeMin(const T& value) {
-    if (get().x < value || get().x == range_.x) {
-        get().x = value;
+    if (this->get().x < value || this->get().x == range_.x) {
+        this->get().x = value;
     }
 
     range_.x = value;
@@ -210,8 +210,8 @@ template <typename T>
 void MinMaxProperty<T>::setRangeMax(const T& value) {
     if (range_.y == value) return;
 
-    if (get().y > value || get().y == range_.y) {
-        get().y = value;
+    if (this->get().y > value || this->get().y == range_.y) {
+        this->get().y = value;
     }
 
     range_.y = value;
