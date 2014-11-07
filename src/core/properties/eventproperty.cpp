@@ -25,7 +25,7 @@
  * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- * 
+ *
  * Contact: Sathish Kottravel
  *
  *********************************************************************************/
@@ -36,16 +36,31 @@ namespace inviwo {
 
 PropertyClassIdentifier(EventProperty, "org.inviwo.EventProperty");
 
-EventProperty::EventProperty(std::string identifier, std::string displayName, InteractionEvent* e, Action* action,
-                             PropertyOwner::InvalidationLevel invalidationLevel,
+EventProperty::EventProperty(std::string identifier, std::string displayName, InteractionEvent* e,
+                             Action* action, PropertyOwner::InvalidationLevel invalidationLevel,
                              PropertySemantics semantics)
     : Property(identifier, displayName, invalidationLevel, semantics) {
     event_ = e;
     action_ = action;
 }
 
-EventProperty::~EventProperty() {
+EventProperty::EventProperty(const EventProperty& rhs)
+    : Property(rhs), event_(rhs.event_->clone()), action_(rhs.action_->clone()) {}
+
+EventProperty& EventProperty::operator=(const EventProperty& that) {
+    if (this != &that) {
+        Property::operator=(that);
+        delete event_;
+        event_ = that.event_->clone();
+        delete action_;
+        action_ = that.action_->clone();
+    }
+    return *this;
 }
+
+EventProperty* EventProperty::clone() const { return new EventProperty(*this); }
+
+EventProperty::~EventProperty() {}
 
 void EventProperty::serialize(IvwSerializer& s) const {
     Property::serialize(s);
@@ -59,4 +74,16 @@ void EventProperty::deserialize(IvwDeserializer& d) {
     d.deserialize("Action", *action_);
 }
 
-} // namespace
+InteractionEvent* EventProperty::getEvent() const {
+    return event_;
+}
+
+Action* EventProperty::getAction() const {
+    return action_;
+}
+
+void EventProperty::setEvent(InteractionEvent* e) {
+    event_ = e;
+}
+
+}  // namespace

@@ -126,6 +126,13 @@ Canvas* CanvasProcessor::getCanvas() const { return canvas_; }
 void CanvasProcessor::resizeCanvas() {
     if (processorWidget_ && !ignoreResizeCallback_) {
         processorWidget_->setDimension(dimensions_.get());
+        if (canvas_) {
+            if (enableCustomInputDimensions_.get()) {
+                canvas_->resize(uvec2(dimensions_.get()), uvec2(customInputDimensions_.get()));
+            } else {
+                canvas_->resize(uvec2(dimensions_.get()), uvec2(dimensions_.get()));
+            }
+        }
     }
 }
 

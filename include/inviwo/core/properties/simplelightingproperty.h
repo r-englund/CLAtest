@@ -37,6 +37,7 @@
 #include <inviwo/core/common/inviwo.h>
 #include <inviwo/core/properties/ordinalproperty.h>
 #include <inviwo/core/properties/boolproperty.h>
+#include <inviwo/core/properties/templateproperty.h>
 #include <inviwo/core/properties/compositeproperty.h>
 #include <inviwo/core/properties/baseoptionproperty.h>
 
@@ -58,13 +59,17 @@ namespace ShadingMode {
 
 class IVW_CORE_API SimpleLightingProperty : public CompositeProperty {
 public:
+    InviwoPropertyInfo();
+
     SimpleLightingProperty(std::string identifier, std::string displayName,
                            PropertyOwner::InvalidationLevel = PropertyOwner::INVALID_OUTPUT,
                            PropertySemantics semantics = PropertySemantics::Default);
-    virtual ~SimpleLightingProperty(){}
-
-    InviwoPropertyInfo();
-
+    
+    SimpleLightingProperty(const SimpleLightingProperty& rhs);
+    SimpleLightingProperty& operator=(const SimpleLightingProperty& that);
+    virtual SimpleLightingProperty* clone() const;
+    virtual ~SimpleLightingProperty();
+    
     OptionPropertyInt shadingMode_;
     // Material properties
     // Diffuse color often come from the object 
@@ -76,7 +81,6 @@ public:
     // Light properties
     FloatVec3Property lightPosition_;
     FloatVec3Property lightAttenuation_;
-
     BoolProperty applyLightAttenuation_;
 
 

@@ -44,22 +44,21 @@ public:
     virtual void invoke() const=0;
 };
 
-
 template <typename T>
 class MemberFunctionCallBack : public BaseCallBack {
 public:
-    typedef void (T::*fPointerType1)();
+    typedef void (T::*fPointerType)();
     virtual ~MemberFunctionCallBack() {}
-    MemberFunctionCallBack(T* obj, fPointerType1 functionPtr)
-        : functionPtr1_(functionPtr)
+    MemberFunctionCallBack(T* obj, fPointerType functionPtr)
+        : functionPtr_(functionPtr)
         , obj_(obj) {}
 
     virtual void invoke() const {
-        if (functionPtr1_)(*obj_.*functionPtr1_)();
+        if (functionPtr_)(*obj_.*functionPtr_)();
     }
 
 private:
-    fPointerType1 functionPtr1_;
+    fPointerType functionPtr_;
     T* obj_;
 };
 
@@ -67,41 +66,37 @@ private:
 // Example usage
 // CallBackList cbList;
 // cbList.addMemberFunction(&myClassObject, &MYClassObject::myFunction);
-
-//TODO: Use map that uses string as keys : CallBackMap
 class CallBackList {
 public:
     CallBackList() {}
     virtual ~CallBackList() {
-        std::map<void*,BaseCallBack*>::iterator it;
+        std::map<void*, BaseCallBack*>::iterator it;
 
-        for (it=callBackList_.begin(); it!=callBackList_.end(); ++it)
-            delete it->second;
+        for (it = callBackList_.begin(); it != callBackList_.end(); ++it) delete it->second;
 
         callBackList_.clear();
     }
 
     void invokeAll() const {
-        std::map<void*,BaseCallBack*>::const_iterator it;
-
-        for (it=callBackList_.begin(); it!=callBackList_.end(); ++it)
-            it->second->invoke();
+        std::map<void*, BaseCallBack*>::const_iterator it;
+        for (it = callBackList_.begin(); it != callBackList_.end(); ++it) it->second->invoke();
     }
 
     template <typename T>
     void addMemberFunction(T* o, void (T::*m)()) {
-        std::map<void*,BaseCallBack*>::iterator it = callBackList_.find(o);
+        std::map<void*, BaseCallBack*>::iterator it = callBackList_.find(o);
 
         if (it != callBackList_.end()) {
             delete it->second;
             it->second = new MemberFunctionCallBack<T>(o, m);
-        } else
+        } else {
             callBackList_[o] = new MemberFunctionCallBack<T>(o, m);
+        }
     }
 
     template <typename T>
-    void removeMemberFunction(T* o, void (T::*m)()) {
-        std::map<void*,BaseCallBack*>::iterator it = callBackList_.find(o);
+    void removeMemberFunction(T* o) {
+        std::map<void*, BaseCallBack*>::iterator it = callBackList_.find(o);
 
         if (it != callBackList_.end()) {
             delete it->second;
@@ -110,7 +105,7 @@ public:
     }
 
 private:
-    std::map<void*,BaseCallBack*> callBackList_;
+    std::map<void*, BaseCallBack*> callBackList_;
 };
 
 class SingleCallBack {

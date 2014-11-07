@@ -74,9 +74,7 @@ DrawLines::~DrawLines() {
 void DrawLines::initialize() {
     CompositeProcessorGL::initialize();
     lineShader_ = new Shader("img_color.frag");
-    lines_ = new Mesh();
-    lines_->addIndicies(Mesh::AttributesInfo(GeometryEnums::LINES, GeometryEnums::STRIP),
-                        new IndexBuffer());
+    lines_ = new Mesh(GeometryEnums::LINES, GeometryEnums::STRIP);
     lines_->addAttribute(new Position2dBuffer());
     lineRenderer_ = new MeshRenderer(lines_);
 }

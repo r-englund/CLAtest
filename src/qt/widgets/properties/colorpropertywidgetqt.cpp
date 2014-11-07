@@ -53,6 +53,8 @@ void ColorPropertyWidgetQt::generateWidget() {
     QHBoxLayout* hLayout = new QHBoxLayout();
     hLayout->setContentsMargins(0, 0, 0, 0);
     hLayout->setSpacing(7);
+    setLayout(hLayout);
+    
     currentColor_ = new QColor();
     colorDialog_ = new QColorDialog(this);
     colorDialog_->setOption(QColorDialog::ShowAlphaChannel, true);
@@ -63,11 +65,27 @@ void ColorPropertyWidgetQt::generateWidget() {
     connect(colorDialog_, SIGNAL(currentColorChanged(QColor)), this, SLOT(setPropertyValue()));
     label_ = new EditableLabelQt(this, property_->getDisplayName());
     hLayout->addWidget(label_);
+    
+    {
+        QWidget* widget = new QWidget(this);
+        QSizePolicy sliderPol = widget->sizePolicy();
+        sliderPol.setHorizontalStretch(3);
+        widget->setSizePolicy(sliderPol);
+        QGridLayout* vLayout = new QGridLayout();
+        widget->setLayout(vLayout);
+        vLayout->setContentsMargins(0, 0, 0, 0);
+        vLayout->setSpacing(0);
+        
+        vLayout->addWidget(btnColor_);
+        hLayout->addWidget(widget);
+    }
+    
+    
     connect(label_, SIGNAL(textChanged()), this, SLOT(setPropertyDisplayName()));
 
-    hLayout->addWidget(btnColor_);
-    setLayout(hLayout);
-
+    
+    
+    setFixedHeight(sizeHint().height());
     QSizePolicy sp = sizePolicy();
     sp.setVerticalPolicy(QSizePolicy::Fixed);
     setSizePolicy(sp);

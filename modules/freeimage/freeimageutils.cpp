@@ -464,18 +464,40 @@ void* FreeImageUtils::fiBitmapToDataArrayAndRescale(void* dst, FIBITMAP* bitmap,
     int height = FreeImage_GetHeight(bitmap);
     uvec2 dim(width, height);
 
+    //No rescale needed if output is of same size as input
     if (dim==dst_dim)
         return fiBitmapToDataArray<T>(dst, bitmap, bitsPerPixel, channels);
 
+    //We want to respect aspect ratio, so check if we need to perform some alteration for that
+    float ratioSource = static_cast<float>(dim.x) / static_cast<float>(dim.y);
+    float ratioTarget = static_cast<float>(dst_dim.x) / static_cast<float>(dst_dim.y);
+
+    //Determine size of our the image we want to scale from
+    uvec2 dimTmp = dim;
+    int pasteLeft = 0;
+    int pasteTop = 0;
+    if (ratioTarget > ratioSource){
+        dimTmp.x = static_cast<glm::u32>(glm::ceil(static_cast<float>(dim.x)*(ratioTarget / ratioSource)));
+        pasteLeft = static_cast<int>((dimTmp.x-dim.x)/2);
+    }
+    else if(ratioTarget < ratioSource){
+        dimTmp.y = static_cast<glm::u32>(glm::ceil(static_cast<float>(dim.y)*(ratioSource / ratioTarget)));
+        pasteTop = static_cast<int>((dimTmp.y-dim.y)/2);
+    }
+
+    //Allocate our tmp bitmap
     FREE_IMAGE_TYPE type = FreeImage_GetImageType(bitmap);
-    FIBITMAP* bitmap2 = allocateBitmap(type, dim, bitsPerPixel, channels);
-    if(!bitmap2)
+    FIBITMAP* bitmapTmp = allocateBitmap(type, dimTmp, bitsPerPixel, channels);
+    if(!bitmapTmp)
         return NULL;
-    FreeImage_Paste(bitmap2, bitmap, 0, 0, 256);
-    FIBITMAP* bitmapNEW = FreeImage_Rescale(bitmap2, static_cast<int>(dst_dim.x), static_cast<int>(dst_dim.y), FILTER_BILINEAR);
-    FreeImage_Unload(bitmap2);
-    switchChannels(bitmapNEW, dst_dim, channels);
-    void* pixelValues = static_cast<void*>(FreeImage_GetBits(bitmapNEW));
+    //Paste source into our tmp, to be used for scaling
+    FreeImage_Paste(bitmapTmp, bitmap, pasteLeft, pasteTop, 256);
+
+    //Rescale to proper dimension
+    FIBITMAP* bitmapRescaled = FreeImage_Rescale(bitmapTmp, static_cast<int>(dst_dim.x), static_cast<int>(dst_dim.y), FILTER_BILINEAR);
+    FreeImage_Unload(bitmapTmp);
+    switchChannels(bitmapRescaled, dst_dim, channels);
+    void* pixelValues = static_cast<void*>(FreeImage_GetBits(bitmapRescaled));
 
     if (!dst) {
         T* dstAlloc = new T[dst_dim.x*dst_dim.y];
@@ -483,7 +505,7 @@ void* FreeImageUtils::fiBitmapToDataArrayAndRescale(void* dst, FIBITMAP* bitmap,
     }
 
     memcpy(dst, pixelValues, dst_dim.x*dst_dim.y*sizeof(T));
-    FreeImage_Unload(bitmapNEW);
+    FreeImage_Unload(bitmapRescaled);
     return dst;
 }
 

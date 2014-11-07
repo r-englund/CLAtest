@@ -36,12 +36,26 @@ namespace inviwo {
 
 PropertyClassIdentifier(StringProperty, "org.inviwo.StringProperty");
 
-StringProperty::StringProperty(std::string identifier,
-                               std::string displayName,
-                               std::string value,
+StringProperty::StringProperty(std::string identifier, std::string displayName, std::string value,
                                PropertyOwner::InvalidationLevel invalidationLevel,
                                PropertySemantics semantics)
-    : TemplateProperty<std::string>(identifier, displayName,value, invalidationLevel, semantics) {
+    : TemplateProperty<std::string>(identifier, displayName, value, invalidationLevel, semantics) {}
+
+StringProperty::StringProperty(const StringProperty& rhs)
+    : TemplateProperty<std::string>(rhs)	{
 }
 
-} // namespace
+StringProperty& StringProperty::operator=(const StringProperty& that) {
+    if (this != &that) {
+        TemplateProperty<std::string>::operator=(that);
+    }
+    return *this;
+}
+
+StringProperty* StringProperty::clone() const {
+    return new StringProperty(*this);
+}
+
+StringProperty::~StringProperty() {}
+
+}  // namespace

@@ -634,8 +634,9 @@ void NetworkEditor::mouseMoveEvent(QGraphicsSceneMouseEvent* e) {
 
 void NetworkEditor::mouseReleaseEvent(QGraphicsSceneMouseEvent* e) {
     ProcessorNetwork* network = InviwoApplication::getPtr()->getProcessorNetwork();
-    
-    for(ProcessorMap::iterator it = processorGraphicsItems_.begin(); it != processorGraphicsItems_.end(); ++it) {
+
+    for (ProcessorMap::iterator it = processorGraphicsItems_.begin();
+         it != processorGraphicsItems_.end(); ++it) {
         QPointF pos = it->second->pos();
         QPointF newpos = snapToGrid(pos);
         if (pos != newpos) it->second->setPos(newpos);
@@ -664,20 +665,28 @@ void NetworkEditor::mouseReleaseEvent(QGraphicsSceneMouseEvent* e) {
 
     } else if (linkCurve_) {
         // link drag mode
+        ProcessorGraphicsItem* start =
+            linkCurve_->getSrcProcessorLinkGraphicsItem()->getProcessorGraphicsItem();
+        Processor* startProcessor = start->getProcessor();
+
+        delete linkCurve_;
+        linkCurve_ = NULL;
+
         ProcessorGraphicsItem* endProcessorItem = getProcessorGraphicsItemAt(e->scenePos());
         if (endProcessorItem) {
             Processor* endProcessor = endProcessorItem->getProcessor();
-            Processor* startProcessor = linkCurve_->getSrcProcessorLinkGraphicsItem()
-                                            ->getProcessorGraphicsItem()
-                                            ->getProcessor();
+
+            // Add a temporary link item while the dialog is shown.
+//            LinkConnectionGraphicsItem* linkGraphicsItem = new LinkConnectionGraphicsItem(
+//                start->getLinkGraphicsItem(), endProcessorItem->getLinkGraphicsItem());
+//            addItem(linkGraphicsItem);
 
             if (startProcessor != endProcessor) {
                 showLinkDialog(startProcessor, endProcessor);
             }
-        }
 
-        delete linkCurve_;
-        linkCurve_ = NULL;
+//            delete linkGraphicsItem;
+        }
         e->accept();
     }
 

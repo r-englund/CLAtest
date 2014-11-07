@@ -42,12 +42,15 @@ namespace inviwo {
 class IVW_CORE_API Action : public IvwSerializable {
 public:
     Action();
+    Action(const Action& rhs);
+    Action& operator=(const Action& that);
+    virtual Action* clone() const;
     virtual ~Action();
 
-    std::string name() const { return actionName_; }
-    int action() const { return action_; }
+    std::string name() const;
+    int action() const;
 
-    virtual std::string getClassIdentifier() const { return "Undefined"; }
+    virtual std::string getClassIdentifier() const;
 
     virtual void serialize(IvwSerializer& s) const;
     virtual void deserialize(IvwDeserializer& d);

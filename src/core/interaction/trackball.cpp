@@ -90,19 +90,7 @@ Trackball::Trackball(vec3* lookFrom, vec3* lookTo, vec3* lookUp)
     , stepPanDownProperty_("stepPanDown", "Step pan down",             &stepPanDownEvent_,&stepPanDownAction_)
     , stepPanRightProperty_("stepPanRight", "Step pan right",          &stepPanRightEvent_,&stepPanRightAction_)
 {
-//    rotateEventProperty_.setGroupID("Continuous movement");
-//    zoomEventProperty_.setGroupID("Continuous movement");
-//    panEventProperty_.setGroupID("Continuous movement");
-//    stepRotateUpProperty_.setGroupID("Step rotation");
-//    stepRotateLeftProperty_.setGroupID("Step rotation");
-//    stepRotateDownProperty_.setGroupID("Step rotation");
-//    stepRotateRightProperty_.setGroupID("Step rotation");
-//    stepZoomInProperty_.setGroupID("Step zooming");
-//    stepZoomOutProperty_.setGroupID("Step zooming");
-//    stepPanUpProperty_.setGroupID("Step panning");
-//    stepPanLeftProperty_.setGroupID("Step panning");
-//    stepPanDownProperty_.setGroupID("Step panning");
-//    stepPanRightProperty_.setGroupID("Step panning");
+
     addProperty(&rotateEventProperty_);
     addProperty(&zoomEventProperty_);
     addProperty(&panEventProperty_);

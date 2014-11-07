@@ -51,6 +51,77 @@ namespace inviwo {
 #define PropertyClassIdentifier(T, classIdentifier) \
     const std::string T::CLASS_IDENTIFIER = classIdentifier;
 
+enum IVW_CORE_API PropertySerializationMode {
+    DEFAULT = 0,
+    ALL
+};
+
+template <typename T>
+struct ValueWrapper {
+    ValueWrapper(T val) : value(val), defaultValue(val), name("") {}
+    ValueWrapper(std::string valname, T val) : value(val), defaultValue(val), name(valname) {}
+    ValueWrapper(const ValueWrapper<T>& rhs)
+        : value(rhs.value), defaultValue(rhs.defaultValue), name(rhs.name) {}
+    ValueWrapper<T>& operator=(const ValueWrapper<T>& that) {
+        if (this != &that) {
+            value = that.value;
+            defaultValue = that.defaultValue;
+            name = that.name;
+        }
+        return *this;
+    }
+    ValueWrapper<T>& operator=(const T& val) {
+        value = val;
+        return *this;
+    }
+    operator T&() { return value; }
+    operator const T&() const { return value; }
+
+    bool isDefault() const { return value == defaultValue; }
+    void reset() { value = defaultValue; }
+    void setAsDefault() { defaultValue = value; }
+
+    void serialize(IvwSerializer& s,
+                   PropertySerializationMode mode = DEFAULT) const {
+        if (mode == ALL || !isDefault()) s.serialize(name, value);
+    }
+
+    void deserialize(IvwDeserializer& d) { d.deserialize(name, value); }
+
+    T value;
+    T defaultValue;
+    std::string name;
+
+
+    template <typename U> friend bool operator==(const ValueWrapper<U>& lhs, const ValueWrapper<U>& rhs);
+    template <typename U> friend bool operator< (const ValueWrapper<U>& lhs, const ValueWrapper<U>& rhs);
+                                                           
+    template <typename U> friend bool operator==(const ValueWrapper<U>& lhs, const U& rhs);
+    template <typename U> friend bool operator< (const ValueWrapper<U>& lhs, const U& rhs);
+};
+
+template <typename T> bool operator==(const ValueWrapper<T>& lhs, const ValueWrapper<T>& rhs){ return lhs.value == rhs.value; }
+template <typename T> bool operator< (const ValueWrapper<T>& lhs, const ValueWrapper<T>& rhs){ return lhs.value < rhs.value; }
+template <typename T> bool operator!=(const ValueWrapper<T>& lhs, const ValueWrapper<T>& rhs){ return !operator==(lhs, rhs); }
+template <typename T> bool operator> (const ValueWrapper<T>& lhs, const ValueWrapper<T>& rhs){ return  operator< (rhs, lhs); }
+template <typename T> bool operator<=(const ValueWrapper<T>& lhs, const ValueWrapper<T>& rhs){ return !operator> (lhs, rhs); }
+template <typename T> bool operator>=(const ValueWrapper<T>& lhs, const ValueWrapper<T>& rhs){ return !operator< (lhs, rhs); }
+
+template <typename T> bool operator==(const ValueWrapper<T>& lhs, const T& rhs){ return lhs.value == rhs; }
+template <typename T> bool operator< (const ValueWrapper<T>& lhs, const T& rhs){ return lhs.value < rhs; }
+template <typename T> bool operator!=(const ValueWrapper<T>& lhs, const T& rhs){ return !operator==(lhs, rhs); }
+template <typename T> bool operator> (const ValueWrapper<T>& lhs, const T& rhs){ return  operator< (rhs, lhs); }
+template <typename T> bool operator<=(const ValueWrapper<T>& lhs, const T& rhs){ return !operator> (lhs, rhs); }
+template <typename T> bool operator>=(const ValueWrapper<T>& lhs, const T& rhs){ return !operator< (lhs, rhs); }
+
+template <typename T> bool operator==(const T& lhs, const ValueWrapper<T>& rhs){ return rhs == lhs; }
+template <typename T> bool operator< (const T& lhs, const ValueWrapper<T>& rhs){ return rhs >= lhs; }
+template <typename T> bool operator!=(const T& lhs, const ValueWrapper<T>& rhs){ return !operator==(rhs, lhs); }
+template <typename T> bool operator> (const T& lhs, const ValueWrapper<T>& rhs){ return  operator< (rhs, lhs); }
+template <typename T> bool operator<=(const T& lhs, const ValueWrapper<T>& rhs){ return !operator>(lhs, rhs); }
+template <typename T> bool operator>=(const T& lhs, const ValueWrapper<T>& rhs){ return !operator< (lhs, rhs); }
+
+
 /** \class Property
  * 
  *  \brief A Property represents a parameter to a processor. 
@@ -75,65 +146,62 @@ namespace inviwo {
 
 
 class IVW_CORE_API Property : public IvwSerializable , public MetaDataOwner {
-
 public:
-    Property(const std::string &identifier,
-             const std::string &displayName,
-             PropertyOwner::InvalidationLevel invalidationLevel=PropertyOwner::INVALID_OUTPUT,
+    InviwoPropertyInfo(); // Should be included by all inheriting classes
+
+    Property(const std::string &identifier = "",
+             const std::string &displayName = "",
+             PropertyOwner::InvalidationLevel invalidationLevel = PropertyOwner::INVALID_OUTPUT,
              PropertySemantics semantics = PropertySemantics::Default);
-    Property();
+    Property(const Property& rhs);
+    Property& operator=(const Property& that);
+    virtual Property* clone() const;
     virtual ~Property();
 
-    // Should be called by all inheriting classes
-    InviwoPropertyInfo();
 
+    virtual void setIdentifier(const std::string& identifier);
     virtual std::string getIdentifier() const;
     virtual std::vector<std::string> getPath() const;
-    virtual void setIdentifier(const std::string& identifier);
-    virtual std::string getDisplayName() const;
+    
     /** 
-     * \brief Set display name and update widgets
-     * 
-     * @param const std::string & displayName The name to be displayed in the GUI
+     * \brief A property's name displayed to the user
      */
     virtual void setDisplayName(const std::string& displayName);
+    virtual std::string getDisplayName() const;
 
-    virtual PropertySemantics getSemantics() const;
+    
     virtual void setSemantics(const PropertySemantics& semantics);
+    virtual PropertySemantics getSemantics() const;
 
     /** 
-     * \brief Enable/disable editing of property value and update widgets
-     * 
-     * @param const bool & value True if read only, false otherwise
+     * \brief Enable or disable editing of property
      */
     virtual void setReadOnly(const bool& value);
     virtual bool getReadOnly() const;
 
+    void setInvalidationLevel(PropertyOwner::InvalidationLevel invalidationLevel);
     PropertyOwner::InvalidationLevel getInvalidationLevel() const;
-    void setInvalidationLevel(PropertyOwner::InvalidationLevel invalidationLevel) ;
-
-    PropertyOwner* getOwner();
-    const PropertyOwner* getOwner()const ;
+   
     virtual void setOwner(PropertyOwner* owner);
-
+    PropertyOwner* getOwner();
+    const PropertyOwner* getOwner() const;
+    
 
     // Widget calls
     void registerWidget(PropertyWidget* propertyWidget);
     void deregisterWidget(PropertyWidget* propertyWidget);
-    const std::vector<PropertyWidget*>& getWidgets() const { return propertyWidgets_; }
+    const std::vector<PropertyWidget*>& getWidgets() const;
     
     /**
-     *  This function should be called by propertywidgets before they initiate a property
-     *  change. This is needed becouse when the property is modified it needs to update all
+     *  This function should be called by property widgets before they initiate a property
+     *  change. This is needed because when the property is modified it needs to update all
      *  of its widgets. And since it won't know if the change started in one of them we will
-     *  update the propertywidget that started the change...
-     *
-     *  @param PropertyWidget* <#PropertyWidget* description#>
+     *  update the property widget that started the change
      */
     void setInitiatingWidget(PropertyWidget*);
     void clearInitiatingWidget();
     void updateWidgets();
-    bool hasWidgets()const;
+    bool hasWidgets() const;
 
     /**
      *  Save the current state of the property as the default. This state will then be used as a 
@@ -158,32 +226,33 @@ public:
     virtual void serialize(IvwSerializer& s) const;
     virtual void deserialize(IvwDeserializer& d);
 
-    template <typename T>
-    void onChange(T* o, void (T::*m)()) {
-        onChangeCallback_.addMemberFunction(o,m);
-    }
+    template <typename T> void onChange(T* o, void (T::*m)());
+    template <typename T> void removeOnChange(T* o);
 
-    virtual UsageMode getUsageMode() const { return usageMode_; };
     virtual void setUsageMode(UsageMode visibilityMode);
-    virtual bool getVisible();
-    virtual void setVisible(bool val);
+    virtual UsageMode getUsageMode() const;
 
-    virtual void updateVisibility();  // TODO protected?
+    virtual void setSerializationMode(PropertySerializationMode mode);
+    virtual PropertySerializationMode getSerializationMode() const;
+
+    virtual void setVisible(bool val);
+    virtual bool getVisible();
+
+    virtual void updateVisibility();
 
 protected:
     CallBackList onChangeCallback_;
+    PropertySerializationMode serializationMode_;
 
 private:
     std::string identifier_;
-    std::string displayName_;
-    bool readOnly_;
-    bool defaultReadOnly_;
 
-    PropertySemantics semantics_;
-    PropertySemantics defaultSemantics_;
-    UsageMode usageMode_;
-    bool visible_;
-
+    ValueWrapper<std::string> displayName_;
+    ValueWrapper<bool> readOnly_;
+    ValueWrapper<PropertySemantics> semantics_;
+    ValueWrapper<UsageMode> usageMode_;
+    ValueWrapper<bool> visible_;
+    
     bool propertyModified_;
     PropertyOwner::InvalidationLevel invalidationLevel_;
 
@@ -191,8 +260,17 @@ private:
     std::vector<PropertyWidget*> propertyWidgets_;
 
     PropertyWidget* initiatingWidget_;
-
 };
+
+template <typename T>
+void inviwo::Property::removeOnChange(T* o) {
+    onChangeCallback_.removeMemberFunction(o);
+}
+
+template <typename T>
+void Property::onChange(T* o, void (T::*m)()) {
+    onChangeCallback_.addMemberFunction(o, m);
+}
 
 } // namespace
 

@@ -304,35 +304,61 @@ void Image::resize(uvec2 dimensions) {
 void Image::resizeRepresentations(Image* targetImage, uvec2 targetDim) {
     // targetImage->resize(targetDim);
     std::vector<DataGroupRepresentation*>& targetRepresentations = targetImage->representations_;
+    size_t numRepTargets = targetRepresentations.size();
 
-    if (targetRepresentations.size()) {
-        // Avoid resize of ImageRAM and ImageDisk if we have another representation
-        bool existsMoreThenDiskAndRAMRepresentation = false;
+    if (numRepTargets > 0) {
+        //Scheme: Only ask for one editable representations to resize
+        //Thus all others can update from one resized version
 
-        for (size_t j = 0; j < targetRepresentations.size(); j++) {
-            if (!dynamic_cast<ImageRAM*>(targetRepresentations[j]) &&
-                !dynamic_cast<ImageDisk*>(targetRepresentations[j]))
-                existsMoreThenDiskAndRAMRepresentation = true;
+        // Find out in which preferred order we wanna try resizing
+        // We prefer the order, unknown - ImageRAM - ImageDisk.
+        std::vector<size_t> preferredResizeOrder;
+        preferredResizeOrder.resize(targetRepresentations.size());
+        size_t nextInsertIdx = 0;
+        bool imageDiskFound = false;
+        bool imageRamFound = false;
+        for (size_t j = 0; j < numRepTargets; j++) {
+            if (dynamic_cast<ImageRAM*>(targetRepresentations[j])){
+                if(imageDiskFound){
+                    preferredResizeOrder[numRepTargets-2] = j;
+                }
+                else{
+                    preferredResizeOrder[numRepTargets-1] = j;
+                }
+                imageRamFound = true;
+            }
+            else if (dynamic_cast<ImageDisk*>(targetRepresentations[j])){
+                if(imageRamFound){
+                    preferredResizeOrder[numRepTargets-2] = preferredResizeOrder[numRepTargets-1];
+                    preferredResizeOrder[numRepTargets-1] = j;
+                }
+                else{
+                    preferredResizeOrder[numRepTargets-1] = j;
+                }
+                imageDiskFound = true;
+            }
+            else{
+                preferredResizeOrder[nextInsertIdx] = j;
+                nextInsertIdx++;
+            }
         }
 
         ImageRepresentation* sourceImageRepresentation = 0;
         ImageRepresentation* targetImageRepresentation = 0;
 
-        for (size_t i = 0; i < representations_.size(); i++) {
-            for (size_t j = 0; j < targetRepresentations.size(); j++) {
-                if (typeid(*representations_[i]) == typeid(*targetRepresentations[j])) {
-                    if (!existsMoreThenDiskAndRAMRepresentation ||
-                        (!dynamic_cast<ImageRAM*>(targetRepresentations[j]) &&
-                         !dynamic_cast<ImageDisk*>(targetRepresentations[j]))) {
-                        sourceImageRepresentation =
-                            static_cast<ImageRepresentation*>(representations_[i]);
-                        sourceImageRepresentation->update(false);
-                        targetImageRepresentation =
-                            static_cast<ImageRepresentation*>(targetRepresentations[j]);
-                        targetImageRepresentation->update(false);
-                        sourceImageRepresentation->copyAndResizeRepresentation(
-                            targetImageRepresentation);
-                    }
+        bool copyDone = false;
+        for (size_t i = 0; i < targetRepresentations.size() && !copyDone; i++) {
+            for (size_t j = 0; j < representations_.size() && !copyDone; j++) {
+                if (typeid(*representations_[j]) == typeid(*targetRepresentations[preferredResizeOrder[i]])) {
+                    sourceImageRepresentation =
+                        static_cast<ImageRepresentation*>(representations_[j]);
+                    sourceImageRepresentation->update(false);
+                    targetImageRepresentation =
+                        static_cast<ImageRepresentation*>(targetRepresentations[preferredResizeOrder[i]]);
+                    targetImageRepresentation->update(true);
+                    sourceImageRepresentation->copyAndResizeRepresentation(
+                        targetImageRepresentation);
+                    copyDone = true;
                 }
             }
         }

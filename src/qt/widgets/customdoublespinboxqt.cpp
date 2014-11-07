@@ -32,12 +32,15 @@
 
 #include <inviwo/qt/widgets/customdoublespinboxqt.h>
 #include <limits>
+#include <QTimerEvent>
 
 namespace inviwo {
 
 
 
-CustomDoubleSpinBoxQt::CustomDoubleSpinBoxQt(QWidget* parent /*= 0*/) {
+CustomDoubleSpinBoxQt::CustomDoubleSpinBoxQt(QWidget* parent /*= 0*/) 
+    : QDoubleSpinBox(parent)
+{
     // Enables setting number of decimals to display
     displayDecimals_ = decimals();
     // Save default sizeHint before changing decimal property
@@ -65,6 +68,11 @@ void CustomDoubleSpinBoxQt::setDecimals(int decimals) {
     QDoubleSpinBox::setDecimals(std::numeric_limits<double>::max_exponent);
     setValue(val);
     blockSignals(false);
+}
+
+
+void CustomDoubleSpinBoxQt::timerEvent(QTimerEvent *event) {
+    event->accept();
 }
 
 } // namespace inviwo

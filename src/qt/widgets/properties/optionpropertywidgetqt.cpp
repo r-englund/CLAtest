@@ -43,7 +43,11 @@ OptionPropertyWidgetQt::OptionPropertyWidgetQt(BaseOptionProperty* property)
 
 void OptionPropertyWidgetQt::generateWidget() {
     QHBoxLayout* hLayout = new QHBoxLayout();
-    comboBox_ = new QComboBox();
+    hLayout->setContentsMargins(0, 0, 0, 0);
+    hLayout->setSpacing(7);
+    setLayout(hLayout);
+
+    comboBox_ = new IvwComboBox(this);
     updateFromProperty();
 
     comboBox_->setEnabled(!property_->getReadOnly());
@@ -53,16 +57,28 @@ void OptionPropertyWidgetQt::generateWidget() {
             this,
             SLOT(showContextMenu(const QPoint&)));
     
-    label_ = new EditableLabelQt(this, property_->getDisplayName());
-    
-    hLayout->addWidget(label_);
-    hLayout->addWidget(comboBox_);
-    hLayout->setContentsMargins(0, 0, 0, 0);
-    hLayout->setSpacing(7);
     QSizePolicy slidersPol = comboBox_->sizePolicy();
     slidersPol.setHorizontalStretch(3);
     comboBox_->setSizePolicy(slidersPol);
-    setLayout(hLayout);
+    
+    label_ = new EditableLabelQt(this, property_->getDisplayName());
+    
+    hLayout->addWidget(label_);
+    
+    {
+        QWidget* widget = new QWidget(this);
+        QSizePolicy sliderPol = widget->sizePolicy();
+        sliderPol.setHorizontalStretch(3);
+        widget->setSizePolicy(sliderPol);
+        QGridLayout* vLayout = new QGridLayout();
+        widget->setLayout(vLayout);
+        vLayout->setContentsMargins(0, 0, 0, 0);
+        vLayout->setSpacing(0);
+        
+        vLayout->addWidget(comboBox_);
+        hLayout->addWidget(widget);
+    }
+    
     connect(comboBox_, SIGNAL(currentIndexChanged(int)),this, SLOT(optionChanged()));
     connect(label_, SIGNAL(textChanged()),this, SLOT(setPropertyDisplayName()));   
 }

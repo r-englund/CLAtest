@@ -310,7 +310,11 @@ void bindTexture(const TransferFunctionProperty& tfp, const TextureUnit& texUnit
 
 void bindTexture(const Volume* volume, const TextureUnit& texUnit) {
     const VolumeGL* volumeGL = volume->getRepresentation<VolumeGL>();
-    volumeGL->bindTexture(texUnit.getEnum());
+    if (volumeGL) {
+        volumeGL->bindTexture(texUnit.getEnum());
+    } else {
+        LogErrorCustom("TextureUtils", "Could not get a GL representation from volume");
+    }
 }
 
 void bindTexture(const VolumeInport& inport, const TextureUnit& texUnit) {

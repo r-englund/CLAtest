@@ -81,8 +81,9 @@ private:
         DoubleMinMaxProperty valueRange;
         StringProperty valueUnit;
         BoolProperty overRideDefaults;
-        FloatVec3Property lengths;
-        FloatVec3Property angles;
+        FloatVec3Property a;
+        FloatVec3Property b;
+        FloatVec3Property c;
         FloatVec3Property offset;
 
         static void assignStateIfChanged(const DoubleMinMaxProperty& in, 
@@ -106,16 +107,18 @@ private:
     DoubleMinMaxProperty valueRange_;
     StringProperty valueUnit_;
     BoolProperty overRideDefaults_;
-    FloatVec3Property lengths_;
-    FloatVec3Property angles_;
+    FloatVec3Property a_;
+    FloatVec3Property b_;
+    FloatVec3Property c_;
     FloatVec3Property offset_;
 
     IntProperty selectedSequenceIndex_;
     BoolProperty playSequence_;
     IntProperty volumesPerSecond_;
 
-    vec3 overrideLengths_;
-    vec3 overrideAngles_;
+    vec3 overrideA_;
+    vec3 overrideB_;
+    vec3 overrideC_;
     vec3 overrideOffset_;
     
     // Readonly only use to show information

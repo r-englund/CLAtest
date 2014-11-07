@@ -55,6 +55,8 @@ public:
     typedef std::vector<std::pair<AttributesInfo, IndexBuffer*> > IndexVector; 
 
     Mesh();
+    Mesh(GeometryEnums::RenderType rt, GeometryEnums::ConnectivityType ct);
+
     Mesh(const Mesh& rhs);
     Mesh& operator=(const Mesh& that);
     virtual Mesh* clone() const;
@@ -98,7 +100,7 @@ public:
     Buffer* getAttributes(size_t idx);
     Buffer* getIndicies(size_t idx);
 
-    AttributesInfo getAttributesInfo() const;
+    AttributesInfo getDefaultAttributesInfo() const;
     AttributesInfo getIndexAttributesInfo(size_t idx) const;
 
     size_t getNumberOfAttributes() const;
@@ -108,6 +110,7 @@ protected:
     std::vector<Buffer*> attributes_;
     std::vector<bool> attributesOwnership_; // Indicates if the Mesh owns the corresponding Buffer in attributes_
     IndexVector indexAttributes_;
+    AttributesInfo defaultAttributeInfo_;
 
     void deinitialize();
 };

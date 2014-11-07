@@ -51,10 +51,17 @@ public:
     void setText(std::string txt);
     void setContextMenu(QMenu* menu) {contextMenu_ = menu;};
     void setShortenText(bool shorten);
+    
+    QSize sizeHint() const;
+    QSize minimumSizeHint() const;
+    
 public slots:
     void edit();
     void finishEditing();
     void showContextMenu(const QPoint& pos);
+
+protected:
+    virtual void resizeEvent(QResizeEvent *);
 
 private:
     QLabel* label_;

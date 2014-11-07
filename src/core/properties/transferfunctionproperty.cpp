@@ -43,15 +43,43 @@ TransferFunctionProperty::TransferFunctionProperty(const std::string &identifier
                                                    PropertyOwner::InvalidationLevel invalidationLevel,
                                                    PropertySemantics semantics)
     : TemplateProperty<TransferFunction>(identifier, displayName, value, invalidationLevel, semantics)
-    , zoomH_(0.0f, 1.0f)
-    , defaultZoomH_(0.0f, 1.0f)
-    , zoomV_(0.0f, 1.0f)
-    , defaultZoomV_(0.0f, 1.0f)
-    , showHistogram_(true)
-    , defaultShowHistogram_(true)
+    , TransferFunctionObserver()
+    , zoomH_("zoomH_", vec2(0.0f, 1.0f))
+    , zoomV_("zoomV_", vec2(0.0f, 1.0f))
+    , showHistogram_("showHistogram_", true)
     , volumeInport_(volumeInport) {
     
-    this->value_.addObserver(this);
+    // rename the "value" to make the serialized file easier to understand.
+    this->value_.name = "transferFunction";
+    this->value_.value.addObserver(this);
+}
+
+TransferFunctionProperty::TransferFunctionProperty(const TransferFunctionProperty& rhs)
+    : TemplateProperty<TransferFunction>(rhs)
+    , TransferFunctionObserver()
+    , zoomH_(rhs.zoomH_)
+    , zoomV_(rhs.zoomV_)
+    , showHistogram_(rhs.showHistogram_)
+    , volumeInport_(rhs.volumeInport_) {
+
+    this->value_.value.addObserver(this);
+}
+
+TransferFunctionProperty& TransferFunctionProperty::operator=(const TransferFunctionProperty& that) {
+    if (this != &that) {
+        this->value_.value.removeObserver(this);
+        TemplateProperty<TransferFunction>::operator=(that);
+        this->value_.value.addObserver(this);
+        zoomH_ = that.zoomH_;
+        zoomV_ = that.zoomV_;
+        showHistogram_ = that.showHistogram_;
+        volumeInport_ = that.volumeInport_;
+    }
+    return *this;
+}
+
+TransferFunctionProperty* TransferFunctionProperty::clone() const {
+    return new TransferFunctionProperty(*this);
 }
 
 TransferFunctionProperty::~TransferFunctionProperty() {
@@ -71,40 +99,30 @@ VolumeInport* TransferFunctionProperty::getVolumeInport() {
 }
 
 void TransferFunctionProperty::resetToDefaultState() {
-    zoomH_ = defaultZoomH_;
-    zoomV_ = defaultZoomV_;
-    showHistogram_ = defaultShowHistogram_;
+    zoomH_.reset();
+    zoomV_.reset();
+    showHistogram_.reset();
     TemplateProperty<TransferFunction>::resetToDefaultState();
 }
 void TransferFunctionProperty::setCurrentStateAsDefault() {
     TemplateProperty<TransferFunction>::setCurrentStateAsDefault();
-    defaultZoomH_ = zoomH_;
-    defaultZoomV_ = zoomV_;
-    defaultShowHistogram_ = showHistogram_;
+    zoomH_.setAsDefault();
+    zoomV_.setAsDefault();
+    showHistogram_.setAsDefault();
 }
 
 void TransferFunctionProperty::serialize(IvwSerializer& s) const {
-    Property::serialize(s);
-    if (zoomH_ != defaultZoomH_) {
-        s.serialize("zoomH_", zoomH_);
-    }
-    if (zoomV_ != defaultZoomV_) {
-        s.serialize("zoomV_", zoomV_);
-    }
-    if (showHistogram_ != defaultShowHistogram_) {
-        s.serialize("showHistogram_", showHistogram_);
-    }
-    if (this->value_ != this->defaultValue_) {
-        s.serialize("transferFunction", this->value_);
-    }
+    TemplateProperty<TransferFunction>::serialize(s);
+    zoomH_.serialize(s, this->serializationMode_);
+    zoomV_.serialize(s, this->serializationMode_);
+    showHistogram_.serialize(s, this->serializationMode_);
 }
 
 void TransferFunctionProperty::deserialize(IvwDeserializer& d) {
-    Property::deserialize(d);
-    d.deserialize("zoomH_", zoomH_);
-    d.deserialize("zoomV_", zoomV_);
-    d.deserialize("showHistogram_", showHistogram_);
-    d.deserialize("transferFunction", this->value_);
+    TemplateProperty<TransferFunction>::deserialize(d);
+    zoomH_.deserialize(d);
+    zoomV_.deserialize(d);
+    showHistogram_.deserialize(d);
     propertyModified();
 }
 
@@ -112,13 +130,13 @@ void TransferFunctionProperty::setMask(float maskMin, float maskMax) {
     if (maskMax < maskMin) {
         maskMax = maskMin;
     }
-    this->value_.setMaskMin(maskMin);
-    this->value_.setMaskMax(maskMax);
+    this->value_.value.setMaskMin(maskMin);
+    this->value_.value.setMaskMax(maskMax);
     propertyModified();
 }
 
 const vec2 TransferFunctionProperty::getMask() const {
-    return vec2(this->value_.getMaskMin(), this->value_.getMaskMax());
+    return vec2(this->value_.value.getMaskMin(), this->value_.value.getMaskMax());
 }
 
 const vec2& TransferFunctionProperty::getZoomH() const {
@@ -144,9 +162,9 @@ void TransferFunctionProperty::setZoomV(float zoomVMin, float zoomVMax) {
 }
 
 void TransferFunctionProperty::set(const TransferFunction& value) {
-    this->value_.removeObserver(this);
+    this->value_.value.removeObserver(this);
     TemplateProperty<TransferFunction>::set(value);
-    this->value_.addObserver(this);
+    this->value_.value.addObserver(this);
 }
 
 void TransferFunctionProperty::set(const Property *property) {

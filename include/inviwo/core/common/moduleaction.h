@@ -33,14 +33,14 @@
 #ifndef IVW_MODULE_ACTION_H
 #define IVW_MODULE_ACTION_H
 
+#include <inviwo/core/common/inviwocoredefine.h>
 #include <inviwo/core/common/modulecallback.h>
 
 namespace inviwo {
 
 class InviwoModule;
 
-
-class ModuleCallBackActionState {
+class IVW_CORE_API ModuleCallBackActionState {
 public:
     enum Status { Default =0,
                   Enabled =1,

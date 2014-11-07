@@ -50,9 +50,10 @@ public:
     BaseOptionProperty(std::string identifier,
                        std::string displayName,
                        PropertyOwner::InvalidationLevel invalidationLevel=PropertyOwner::INVALID_OUTPUT,
-                       PropertySemantics semantics=PropertySemantics::Default)
-        : Property(identifier, displayName, invalidationLevel, semantics) {
-    }
+                       PropertySemantics semantics=PropertySemantics::Default);
+
+    BaseOptionProperty(const BaseOptionProperty& rhs);
+    virtual ~BaseOptionProperty();
 
     virtual std::string getClassIdentifier() const = 0;
 
@@ -156,11 +157,18 @@ class BaseTemplateOptionProperty : public BaseOptionProperty {
     };
 
 public:
+    typedef T valueType;
+
     BaseTemplateOptionProperty(std::string identifier, 
                                std::string displayName,
                                PropertyOwner::InvalidationLevel invalidationLevel=PropertyOwner::INVALID_OUTPUT,
                                PropertySemantics semantics=PropertySemantics::Default);
     
+    BaseTemplateOptionProperty(const BaseTemplateOptionProperty<T>& rhs);
+    BaseTemplateOptionProperty<T>& operator=(const BaseTemplateOptionProperty<T>& that);
+    //virtual BaseTemplateOptionProperty<T>* clone() const = 0;
+    virtual ~BaseTemplateOptionProperty();
+
     /**
      * \brief Adds an option to the property
      *
@@ -223,14 +231,15 @@ template<typename T>
 class TemplateOptionProperty : public BaseTemplateOptionProperty<T> {
 
 public:
+    InviwoPropertyInfo();
     TemplateOptionProperty(std::string identifier,
                            std::string displayName,
                            PropertyOwner::InvalidationLevel invalidationLevel = PropertyOwner::INVALID_OUTPUT,
-                           PropertySemantics semantics = PropertySemantics::Default)
-        : BaseTemplateOptionProperty<T>(identifier, displayName, invalidationLevel, semantics) {
-    }
-
-    InviwoPropertyInfo();
+                           PropertySemantics semantics = PropertySemantics::Default);
+    TemplateOptionProperty(const TemplateOptionProperty<T>& rhs);
+    TemplateOptionProperty<T>& operator=(const TemplateOptionProperty<T>& that);
+//    virtual TemplateOptionProperty<T>* clone() const;
+    virtual ~TemplateOptionProperty();
 };
 
 template <typename T> PropertyClassIdentifier(TemplateOptionProperty<T>, "org.inviwo.OptionProperty" + Defaultvalues<T>::getName());
@@ -238,11 +247,16 @@ template <typename T> PropertyClassIdentifier(TemplateOptionProperty<T>, "org.in
 // Specialization for strings.
 class IVW_CORE_API OptionPropertyString : public TemplateOptionProperty<std::string> {
 public:
+    InviwoPropertyInfo();
     OptionPropertyString(
         std::string identifier, std::string displayName,
         PropertyOwner::InvalidationLevel invalidationLevel = PropertyOwner::INVALID_OUTPUT,
         PropertySemantics semantics = PropertySemantics::Default);
-    InviwoPropertyInfo();
+
+    OptionPropertyString(const OptionPropertyString& rhs);
+    OptionPropertyString& operator=(const OptionPropertyString& that);
+    virtual OptionPropertyString* clone() const;
+    virtual ~OptionPropertyString();
 
     virtual void addOption(std::string identifier, std::string displayName, std::string value);
     virtual void addOption(std::string identifier, std::string displayName);
@@ -262,6 +276,33 @@ BaseTemplateOptionProperty<T>::BaseTemplateOptionProperty(std::string identifier
     , selectedIndex_(0)
     , defaultSelectedIndex_(0) {
 }
+
+
+template<typename T>
+inviwo::BaseTemplateOptionProperty<T>::BaseTemplateOptionProperty(const BaseTemplateOptionProperty<T>& rhs) 
+    : BaseOptionProperty(rhs)
+    , selectedIndex_(rhs.selectedIndex_)
+    , options_(rhs.options_)
+    , defaultSelectedIndex_(rhs.defaultSelectedIndex_)
+    , defaultOptions_(rhs.defaultOptions_) {
+}
+
+template<typename T>
+BaseTemplateOptionProperty<T>& BaseTemplateOptionProperty<T>::operator=(const BaseTemplateOptionProperty<T>& that) {
+    if (this != &that) {
+        BaseOptionProperty::operator=(that);
+        selectedIndex_ = that.selectedIndex_;
+        defaultSelectedIndex_ = that.defaultSelectedIndex_;
+        options_.clear();
+        options_.insert(options_.end(), that.options_.begin(), that.options_.end());
+        defaultOptions_.clear();
+        defaultOptions_.insert(defaultOptions_.end(), that.defaultOptions_.begin(), that.defaultOptions_.end());
+    }
+    return *this;
+}
+
+template<typename T>
+BaseTemplateOptionProperty<T>::~BaseTemplateOptionProperty() {}
 
 template<typename T>
 void BaseTemplateOptionProperty<T>::addOption(std::string identifier, std::string displayName, T value) {
@@ -475,10 +516,10 @@ void inviwo::BaseTemplateOptionProperty<T>::setCurrentStateAsDefault() {
 template<typename T>
 void BaseTemplateOptionProperty<T>::serialize(IvwSerializer& s) const {
     BaseOptionProperty::serialize(s);
-    if (options_ != defaultOptions_ && options_.size() > 0) {
+    if ((this->serializationMode_==ALL || options_ != defaultOptions_ )&& options_.size() > 0) {
         s.serialize("options", options_, "option");
     }
-    if (selectedIndex_ != defaultSelectedIndex_ && options_.size() > 0) {
+    if ((this->serializationMode_==ALL || selectedIndex_ != defaultSelectedIndex_) && options_.size() > 0) {
         s.serialize("selectedIdentifier", getSelectedIdentifier());
     }
 }
@@ -499,6 +540,37 @@ void BaseTemplateOptionProperty<T>::deserialize(IvwDeserializer& d) {
         setSelectedValue(value);
     }
 }
+
+template <typename T>
+TemplateOptionProperty<T>::TemplateOptionProperty(
+    std::string identifier, std::string displayName,
+    PropertyOwner::InvalidationLevel invalidationLevel /*= PropertyOwner::INVALID_OUTPUT*/,
+    PropertySemantics semantics /*= PropertySemantics::Default*/)
+    : BaseTemplateOptionProperty<T>(identifier, displayName, invalidationLevel, semantics) {}
+
+template <typename T>
+TemplateOptionProperty<T>::TemplateOptionProperty(const TemplateOptionProperty<T>& rhs) 
+    : BaseTemplateOptionProperty<T>(rhs) {
+}
+
+template <typename T>
+TemplateOptionProperty<T>& TemplateOptionProperty<T>::operator=(
+    const TemplateOptionProperty<T>& that) {
+    if (this != &that) {
+        BaseTemplateOptionProperty<T>::operator=(that);
+    }
+    return *this;
+}
+
+// template <typename T>
+// TemplateOptionProperty<T>* TemplateOptionProperty<T>::clone() const {
+//     return new TemplateOptionProperty<T>(*this);
+// }
+
+
+
+template <typename T>
+TemplateOptionProperty<T>::~TemplateOptionProperty() {}
 
 } // namespace inviwo
 

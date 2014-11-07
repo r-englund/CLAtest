@@ -86,10 +86,8 @@ public:
     LinkDialogPropertyGraphicsItem* getStartProperty() const { return startPropertyGraphicsItem_; }
     LinkDialogPropertyGraphicsItem* getEndProperty() const { return endPropertyGraphicsItem_; }
 
-    void switchDirection();
     bool isBidirectional();
-    void initialize();
-    void deinitialize();
+
     void setStartArrowHeadIndex(size_t index) {startArrowHeadIndex_ = index;}
     void setEndArrowHeadIndex(size_t index) {endArrowHeadIndex_ = index;}
     size_t getStartArrowHeadIndex() { return startArrowHeadIndex_;}

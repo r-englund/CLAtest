@@ -47,15 +47,19 @@ class IVW_CORE_API TransferFunctionProperty
     , public TransferFunctionObserver {
 
 public:
+    InviwoPropertyInfo();
+    
     TransferFunctionProperty(const std::string &identifier,
                              const std::string &displayName,
                              const TransferFunction &value = TransferFunction(),
                              VolumeInport* volumeInport = NULL,
                              PropertyOwner::InvalidationLevel invalidationLevel=PropertyOwner::INVALID_OUTPUT,
                              PropertySemantics semantics=PropertySemantics::Default);
-        
-    ~TransferFunctionProperty();
-    InviwoPropertyInfo();
+    
+    TransferFunctionProperty(const TransferFunctionProperty& rhs);
+    TransferFunctionProperty& operator=(const TransferFunctionProperty& that);  
+    virtual TransferFunctionProperty* clone() const;
+    virtual ~TransferFunctionProperty();
 
     const vec2 getMask() const;
     void setMask(float maskMin, float maskMax);
@@ -84,12 +88,9 @@ public:
     virtual void onControlPointChanged(const TransferFunctionDataPoint* p);
 
 private:
-    vec2 zoomH_;
-    vec2 defaultZoomH_;
-    vec2 zoomV_;
-    vec2 defaultZoomV_;
-    int showHistogram_;
-    int defaultShowHistogram_;
+    ValueWrapper<vec2> zoomH_;
+    ValueWrapper<vec2> zoomV_;
+    ValueWrapper<int> showHistogram_;
 
     VolumeInport* volumeInport_;
 };

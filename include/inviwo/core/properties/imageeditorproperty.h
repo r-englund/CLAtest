@@ -63,22 +63,26 @@ private:
 
 class IVW_CORE_API ImageEditorProperty : public FileProperty {
 public:
+    InviwoPropertyInfo();
     ImageEditorProperty(
         std::string identifier, std::string displayName, std::string value = "",
         PropertyOwner::InvalidationLevel invalidationLevel = PropertyOwner::INVALID_OUTPUT,
         PropertySemantics semantics = PropertySemantics::Default);
 
-    InviwoPropertyInfo();
+    ImageEditorProperty(const ImageEditorProperty& rhs);
+    ImageEditorProperty& operator=(const ImageEditorProperty& that);
+    virtual ImageEditorProperty* clone() const;
+    virtual ~ImageEditorProperty();
 
     void addLabel(vec2 start, vec2 end, std::string name = "");
     void setDimension(ivec2 imgSize);
-    std::vector<ImageLabel*> getLabels() const;
+    const std::vector<ImageLabel>& getLabels() const;
     void clearLabels();
     virtual void serialize(IvwSerializer& s) const;
     virtual void deserialize(IvwDeserializer& d);
 
 private:
-    std::vector<ImageLabel*> labels_;
+    std::vector<ImageLabel> labels_;
     ivec2 dimensions_;
 };
 

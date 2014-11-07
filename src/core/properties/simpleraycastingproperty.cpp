@@ -76,7 +76,39 @@ SimpleRaycastingProperty::SimpleRaycastingProperty(
 
     addProperty(samplingRate_);
     addProperty(isoValue_);
-
 }
+
+SimpleRaycastingProperty::SimpleRaycastingProperty(const SimpleRaycastingProperty& rhs)
+    : CompositeProperty(rhs)
+    , classificationMode_(rhs.classificationMode_)
+    , compositingMode_(rhs.compositingMode_)
+    , gradientComputationMode_(rhs.gradientComputationMode_)
+    , samplingRate_(rhs.samplingRate_) 
+    , isoValue_(rhs.isoValue_) {
+    
+    addProperty(classificationMode_);
+    addProperty(compositingMode_);
+    addProperty(gradientComputationMode_);
+    addProperty(samplingRate_);
+    addProperty(isoValue_);
+}
+
+SimpleRaycastingProperty& SimpleRaycastingProperty::operator=(const SimpleRaycastingProperty& that) {
+    if (this != &that) {
+        CompositeProperty::operator=(that);
+        classificationMode_ = that.classificationMode_;
+        compositingMode_ = that.compositingMode_;
+        gradientComputationMode_ = that.gradientComputationMode_;
+        samplingRate_ = that.samplingRate_;
+        isoValue_ = that.isoValue_;
+    }
+    return *this;
+}
+
+SimpleRaycastingProperty* SimpleRaycastingProperty::clone() const {
+    return new SimpleRaycastingProperty(*this);
+}
+
+SimpleRaycastingProperty::~SimpleRaycastingProperty() {}
 
 }  // namespace

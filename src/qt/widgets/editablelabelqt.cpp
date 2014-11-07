@@ -32,6 +32,8 @@
 
 #include <inviwo/qt/widgets/editablelabelqt.h>
 
+#include <QFontMetrics>
+
 namespace inviwo {
 
 EditableLabelQt::EditableLabelQt(QWidget* parent, std::string text, bool shortenText)
@@ -76,6 +78,8 @@ void EditableLabelQt::generateWidget() {
     QSizePolicy labelPol = this->sizePolicy();
     labelPol.setHorizontalStretch(1);
     this->setSizePolicy(labelPol);
+    label_->setSizePolicy(labelPol);
+    lineEdit_->setSizePolicy(labelPol);
 
     label_->setContextMenuPolicy(Qt::CustomContextMenu);
     connect(label_,
@@ -96,6 +100,17 @@ void EditableLabelQt::edit() {
     lineEdit_->setFocus();
     lineEdit_->selectAll();
 }
+
+QSize EditableLabelQt::sizeHint() const { return QSize(18, 18); }
+QSize EditableLabelQt::minimumSizeHint() const { return sizeHint(); }
+
+void EditableLabelQt::resizeEvent(QResizeEvent *event) {
+    if (shortenText_){
+        label_->setText(QString::fromStdString(shortenText()));
+    }
+    QWidget::resizeEvent(event);
+}
+
 
 void EditableLabelQt::mouseDoubleClickEvent(QMouseEvent* e) {
     edit();
@@ -140,14 +155,8 @@ void EditableLabelQt::showContextMenu(const QPoint& pos) {
 }
 
 std::string EditableLabelQt::shortenText() {
-    if (text_.length()>25) {
-        std::string shortText = text_.substr(0,15)+"..."+text_.substr(text_.length()-7,7);
-        label_->setToolTip(QString::fromStdString(text_));
-        return shortText;
-    } else {
-        label_->setToolTip(QString::fromStdString(""));
-        return text_;
-    }
+    QFontMetrics fm = label_->fontMetrics();
+    return fm.elidedText(QString::fromStdString(text_), Qt::ElideRight, width()).toStdString();
 }
 
 void EditableLabelQt::setShortenText(bool shorten) {

@@ -53,12 +53,17 @@ namespace inviwo {
 class IVW_CORE_API ButtonProperty : public Property {
 
 public:
+    InviwoPropertyInfo();
     ButtonProperty(std::string identifier,
                    std::string displayName,
                    PropertyOwner::InvalidationLevel invalidationLevel=PropertyOwner::INVALID_OUTPUT,
                    PropertySemantics semantics = PropertySemantics::Default);
     
-    InviwoPropertyInfo();
+
+    ButtonProperty(const ButtonProperty& rhs);
+    ButtonProperty& operator=(const ButtonProperty& that);
+    virtual ButtonProperty* clone() const;
+    virtual ~ButtonProperty();
     
     /**
      * Overrides the default implementation to 

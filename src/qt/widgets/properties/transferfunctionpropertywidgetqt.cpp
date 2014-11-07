@@ -76,7 +76,20 @@ void TransferFunctionPropertyWidgetQt::generateWidget() {
 
     btnOpenTF_->setEnabled(!property_->getReadOnly());
 
-    hLayout->addWidget(btnOpenTF_);
+    {
+        QWidget* widget = new QWidget(this);
+        QSizePolicy sliderPol = widget->sizePolicy();
+        sliderPol.setHorizontalStretch(3);
+        widget->setSizePolicy(sliderPol);
+        QGridLayout* vLayout = new QGridLayout();
+        widget->setLayout(vLayout);
+        vLayout->setContentsMargins(0, 0, 0, 0);
+        vLayout->setSpacing(0);
+        
+        vLayout->addWidget(btnOpenTF_);
+        hLayout->addWidget(widget);
+    }
+
     setLayout(hLayout);
     updateFromProperty();
     // initializes position, visibility,size of the widget from meta data

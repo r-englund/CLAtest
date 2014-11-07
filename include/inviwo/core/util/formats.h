@@ -1155,15 +1155,16 @@ DEFAULTVALUES(ivec2, uvec2(2, 1), "IntVec2", ivec2(0), ivec2(0), ivec2(10), ivec
 DEFAULTVALUES(ivec3, uvec2(3, 1), "IntVec3", ivec3(0), ivec3(0), ivec3(10), ivec3(1))
 DEFAULTVALUES(ivec4, uvec2(4, 1), "IntVec4", ivec4(0), ivec4(0), ivec4(10), ivec4(1))
 
-DEFAULTVALUES(mat2, uvec2(2, 2), "FloatMat2", mat2(0.f), mat2(0.f), mat2(1.f), mat2(0.01f))
-DEFAULTVALUES(mat3, uvec2(3, 3), "FloatMat3", mat3(0.f), mat3(0.f), mat3(1.f), mat3(0.01f))
-DEFAULTVALUES(mat4, uvec2(4, 4), "FloatMat4", mat4(0.f), mat4(0.f), mat4(1.f), mat4(0.01f))
+DEFAULTVALUES(mat2, uvec2(2, 2), "FloatMat2", mat2(0.f), mat2(0.f), mat2(0.f)+1.0f, mat2(0.f)+0.01f)
+DEFAULTVALUES(mat3, uvec2(3, 3), "FloatMat3", mat3(0.f), mat3(0.f), mat3(0.f)+1.0f, mat3(0.f)+0.01f)
+DEFAULTVALUES(mat4, uvec2(4, 4), "FloatMat4", mat4(0.f), mat4(0.f), mat4(0.f)+1.0f, mat4(0.f)+0.01f)
 
-DEFAULTVALUES(dmat2, uvec2(2, 2), "DoubleMat2", dmat2(0.), dmat2(0.), dmat2(1.), dmat2(0.01))
-DEFAULTVALUES(dmat3, uvec2(3, 3), "DoubleMat3", dmat3(0.), dmat3(0.), dmat3(1.), dmat3(0.01))
-DEFAULTVALUES(dmat4, uvec2(4, 4), "DoubleMat4", dmat4(0.), dmat4(0.), dmat4(1.), dmat4(0.01))
+DEFAULTVALUES(dmat2, uvec2(2, 2), "DoubleMat2", dmat2(0.), dmat2(0.), dmat2(0.)+1.0, dmat2(0.)+0.01)
+DEFAULTVALUES(dmat3, uvec2(3, 3), "DoubleMat3", dmat3(0.), dmat3(0.), dmat3(0.)+1.0, dmat3(0.)+0.01)
+DEFAULTVALUES(dmat4, uvec2(4, 4), "DoubleMat4", dmat4(0.), dmat4(0.), dmat4(0.)+1.0, dmat4(0.)+0.01)
 
 DEFAULTVALUES(std::string, uvec2(1, 1), "String", "", "", "", "")
+DEFAULTVALUES(bool, uvec2(1, 1), "Bool", false, false, true, true)
 
 #undef DEFAULTVALUES
 

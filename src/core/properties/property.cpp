@@ -43,34 +43,57 @@ Property::Property(const std::string &identifier,
                    PropertyOwner::InvalidationLevel invalidationLevel,
                    PropertySemantics semantics)
     : IvwSerializable()
+    , MetaDataOwner()
+    , serializationMode_(DEFAULT)
     , identifier_(identifier)
-    , displayName_(displayName)
-    , readOnly_(false)
-    , defaultReadOnly_(false)
-    , semantics_(semantics)
-    , defaultSemantics_(semantics)
-    , usageMode_(APPLICATION)
-    , visible_(true)
+    , displayName_("displayName", displayName)
+    , readOnly_("readonly", false)
+    , semantics_("semantics", semantics)
+    , usageMode_("usageMode", APPLICATION)
+    , visible_("visible", true)
     , propertyModified_(false)
     , invalidationLevel_(invalidationLevel)
     , owner_(NULL)
     , initiatingWidget_(NULL) {
 }
 
-Property::Property()
+Property::Property(const Property& rhs)
     : IvwSerializable()
-    , identifier_("")
-    , displayName_("")
-    , readOnly_(false)
-    , defaultReadOnly_(false)
-    , semantics_(PropertySemantics::Default)
-    , defaultSemantics_(PropertySemantics::Default)
-    , usageMode_(APPLICATION)
-    , visible_(true)
-    , propertyModified_(false)
-    , invalidationLevel_(PropertyOwner::INVALID_OUTPUT)
-    , owner_(NULL)
-    , initiatingWidget_(NULL)  {
+    , MetaDataOwner(rhs)
+    , serializationMode_(rhs.serializationMode_)
+    , identifier_(rhs.identifier_)
+    , displayName_(rhs.displayName_)
+    , readOnly_(rhs.readOnly_)
+    , semantics_(rhs.semantics_)
+    , usageMode_(rhs.usageMode_)
+    , visible_(rhs.visible_)
+    , propertyModified_(rhs.propertyModified_)
+    , invalidationLevel_(rhs.invalidationLevel_)
+    , owner_(rhs.owner_)
+    , initiatingWidget_(rhs.initiatingWidget_) {
+}
+
+Property& Property::operator=(const Property& that) {
+    if (this != &that) {
+        MetaDataOwner::operator=(that);
+        serializationMode_ = that.serializationMode_;
+        identifier_ = that.identifier_;
+        displayName_  = that.displayName_;
+        readOnly_ = that.readOnly_;
+        semantics_ = that.semantics_;
+        usageMode_ = that.usageMode_;
+        visible_ = that.visible_;
+        propertyModified_ = that.propertyModified_;
+        invalidationLevel_ = that.invalidationLevel_;
+        owner_ = that.owner_;
+        initiatingWidget_ = that.initiatingWidget_;
+    }
+
+    return *this;
+}
+
+Property* Property::clone() const {
+    return new Property(*this);
 }
 
 Property::~Property() {
@@ -193,7 +216,6 @@ void Property::propertyModified() {
     updateWidgets();
 }
 
-
 void Property::setPropertyModified(bool modified) {
     propertyModified_ = modified;
 }
@@ -205,15 +227,14 @@ bool Property::isPropertyModified() const {
 void Property::serialize(IvwSerializer& s) const {
     s.serialize("type", getClassIdentifier(), true);
     s.serialize("identifier", identifier_, true);
-    s.serialize("displayName", displayName_, true);
-    if (semantics_ != defaultSemantics_) {
-        s.serialize("semantics", semantics_);
+    if (serializationMode_ == ALL || !displayName_.isDefault()) {
+        s.serialize(displayName_.name, displayName_, true);
     }
-    s.serialize("usageMode", usageMode_);
-    s.serialize("visible", visible_);
-    if (readOnly_ != defaultReadOnly_) {
-        s.serialize("readonly", readOnly_);
-    }
+    semantics_.serialize(s, serializationMode_);
+    usageMode_.serialize(s, serializationMode_);
+    visible_.serialize(s, serializationMode_);
+    readOnly_.serialize(s, serializationMode_);
+
     MetaDataOwner::serialize(s);
 }
 
@@ -221,13 +242,16 @@ void Property::deserialize(IvwDeserializer& d) {
     std::string className;
     d.deserialize("type", className, true);
     d.deserialize("identifier", identifier_, true);
-    d.deserialize("displayName", displayName_, true);
-    d.deserialize("semantics", semantics_);
+    d.deserialize(displayName_.name, displayName_.value, true);
+    semantics_.deserialize(d);
+
     int mode = usageMode_;
-    d.deserialize("usageMode", mode);
+    d.deserialize(usageMode_.name, mode);
     usageMode_ = static_cast<UsageMode>(mode);
-    d.deserialize("visible", visible_);
-    d.deserialize("readonly", readOnly_);
+
+    visible_.deserialize(d);
+    readOnly_.deserialize(d);
+
     updateVisibility();
     MetaDataOwner::deserialize(d);
 }
@@ -265,19 +289,38 @@ bool Property::getVisible() {
     return visible_;
 }
 
-
 void Property::setCurrentStateAsDefault() {
-    defaultReadOnly_ = readOnly_;
-    defaultSemantics_ = semantics_;
+    readOnly_.setAsDefault();
+    semantics_.setAsDefault();
 }
 
 void Property::resetToDefaultState() {
-    readOnly_ = defaultReadOnly_;
+    readOnly_.reset();
     propertyModified();
 }
 
 void Property::set(const Property* src) {
     propertyModified();
 }
+
+inviwo::UsageMode Property::getUsageMode() const {
+    return usageMode_;
+}
+
+const std::vector<PropertyWidget*>& Property::getWidgets() const {
+    return propertyWidgets_;
+}
+
+void Property::setSerializationMode(PropertySerializationMode mode) {
+    serializationMode_ = mode;
+}
+
+PropertySerializationMode Property::getSerializationMode() const {
+    return serializationMode_;
+}
+
+
+
+
 
 } // namespace

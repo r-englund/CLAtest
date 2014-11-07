@@ -43,6 +43,23 @@ CompositeProperty::CompositeProperty(std::string identifier, std::string display
                                      PropertySemantics semantics)
     : Property(identifier, displayName, invalidationLevel, semantics), PropertyOwner() {}
 
+CompositeProperty::CompositeProperty(const CompositeProperty& rhs)
+    : Property(rhs)
+    , PropertyOwner(rhs) {
+}
+
+CompositeProperty& CompositeProperty::operator=(const CompositeProperty& that) {
+    if (this != &that) {
+        Property::operator=(that);
+        PropertyOwner::operator=(that);
+    }
+    return *this;
+}
+
+CompositeProperty* CompositeProperty::clone() const {
+    return new CompositeProperty(*this);
+}
+
 CompositeProperty::~CompositeProperty() {}
 
 

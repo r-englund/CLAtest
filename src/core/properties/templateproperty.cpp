@@ -26,48 +26,17 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  * 
- * Contact: Erik Sundén
+ * Contact: Peter Steneteg
  *
  *********************************************************************************/
 
-#ifndef IVW_CUBEPROXYGEOMETRY_H
-#define IVW_CUBEPROXYGEOMETRY_H
-
-#include <modules/base/basemoduledefine.h>
-#include <inviwo/core/common/inviwo.h>
-#include <inviwo/core/processors/processor.h>
-#include <inviwo/core/ports/geometryport.h>
-#include <inviwo/core/ports/volumeport.h>
-#include <inviwo/core/properties/boolproperty.h>
-#include <inviwo/core/properties/minmaxproperty.h>
+#include <inviwo/core/properties/templateproperty.h>
 
 namespace inviwo {
+//template <>
+//IVW_CORE_API const std::string StringProperty::CLASS_IDENTIFIER = "org.inviwo.StringProperty";
+//template <>
+//IVW_CORE_API const std::string BoolProperty::CLASS_IDENTIFIER = "org.inviwo.BoolProperty";
 
-class IVW_MODULE_BASE_API CubeProxyGeometry : public Processor {
-public:
-    CubeProxyGeometry();
-    ~CubeProxyGeometry();
-
-    InviwoProcessorInfo();
-
-protected:
-    virtual void process();
-
-    void onVolumeChange();
-
-private:
-    VolumeInport inport_;
-    GeometryOutport outport_;
-
-    BoolProperty clippingEnabled_;
-
-    IntMinMaxProperty clipX_;
-    IntMinMaxProperty clipY_;
-    IntMinMaxProperty clipZ_;
-
-    uvec3 dims_;
-};
 
 } // namespace
-
-#endif // IVW_CUBEPROXYGEOMETRY_H

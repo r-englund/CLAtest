@@ -48,8 +48,8 @@ CubeProxyGeometry::CubeProxyGeometry()
       clippingEnabled_("clippingEnabled", "Enable Clipping", true),
       clipX_("clipX", "Clip X Slices", 0, 256, 0, 256, 1, 1),
       clipY_("clipY", "Clip Y Slices", 0, 256, 0, 256, 1, 1),
-      clipZ_("clipZ", "Clip Z Slices", 0, 256, 0, 256, 1, 1)
-{
+      clipZ_("clipZ", "Clip Z Slices", 0, 256, 0, 256, 1, 1) {
+      
     addPort(inport_);
     addPort(outport_);
     addProperty(clippingEnabled_);
@@ -58,18 +58,16 @@ CubeProxyGeometry::CubeProxyGeometry()
     addProperty(clipZ_);
     dims_ = uvec3(1,1,1);
 
+    // Since the clips depend on the input volume dimensions, we make sure to always
+    // serialize them so we can do a proper renomalization when we load new data.
+    clipX_.setSerializationMode(ALL);
+    clipY_.setSerializationMode(ALL);
+    clipZ_.setSerializationMode(ALL);
+
     inport_.onChange(this, &CubeProxyGeometry::onVolumeChange);
 }
 
 CubeProxyGeometry::~CubeProxyGeometry() {}
-
-void CubeProxyGeometry::initialize() {
-    Processor::initialize();
-}
-
-void CubeProxyGeometry::deinitialize() {
-    Processor::deinitialize();
-}
 
 void CubeProxyGeometry::process() {
     vec3 startDataTexCoord = vec3(0.0);
@@ -108,7 +106,7 @@ void CubeProxyGeometry::process() {
         c3 = c3*(static_cast<float>(clipZ_.get().y)-static_cast<float>(clipZ_.get().x))/static_cast<float>(dims_.z);
     }
 
-    // Create parallelepiped and set it to the outport
+    // Create parallelepiped and set it to the outport. The outport will own the data.
     Geometry* geom = SimpleMeshCreator::parallelepiped(pos, p1, p2, p3,
                                                        tex, t1, t2, t3,
                                                        col, c1, c2, c3);
@@ -123,11 +121,14 @@ void CubeProxyGeometry::onVolumeChange() {
     x = clipX_.get();
     y = clipY_.get();
     z = clipZ_.get();
-// 
-//     x /= static_cast<float>(clipX_.getRangeMax());
-//     y /= static_cast<float>(clipY_.getRangeMax());
-//     z /= static_cast<float>(clipZ_.getRangeMax());
+ 
+    // Normalize x,y,z to 0 to 1 with respect to the current max.
+    x /= static_cast<float>(clipX_.getRangeMax());
+    y /= static_cast<float>(clipY_.getRangeMax());
+    z /= static_cast<float>(clipZ_.getRangeMax());
 
+
+    // Update to the new dimensions.
     dims_ = inport_.getData()->getDimension();
     
     disableInvalidation();
@@ -136,14 +137,12 @@ void CubeProxyGeometry::onVolumeChange() {
     clipY_.setRangeMax(dims_.y);
     clipZ_.setRangeMax(dims_.z);
 
-//     clipX_.set(x * static_cast<float>(dims_.x));
-//     clipY_.set(y * static_cast<float>(dims_.y));
-//     clipZ_.set(z * static_cast<float>(dims_.z));
+    // Keep the relative positions of the clipping.
+    clipX_.set(x * static_cast<float>(dims_.x));
+    clipY_.set(y * static_cast<float>(dims_.y));
+    clipZ_.set(z * static_cast<float>(dims_.z));
 
-    clipX_.set(vec2(std::min(x.x, static_cast<float>(dims_.x)),std::min(x.y, static_cast<float>(dims_.x))));
-    clipY_.set(vec2(std::min(y.x, static_cast<float>(dims_.y)),std::min(y.y, static_cast<float>(dims_.y))));
-    clipZ_.set(vec2(std::min(z.x, static_cast<float>(dims_.z)),std::min(z.y, static_cast<float>(dims_.z))));
-
+    // set the new dimensions to default if we were to press reset
     clipX_.setCurrentStateAsDefault();
     clipY_.setCurrentStateAsDefault();
     clipZ_.setCurrentStateAsDefault();

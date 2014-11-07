@@ -25,13 +25,13 @@
  * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- * 
+ *
  * Contact: Sathish Kottravel
  *
  *********************************************************************************/
 
-#ifndef  IVW_LINKDIALOG_SCENE_H
-#define  IVW_LINKDIALOG_SCENE_H
+#ifndef IVW_LINKDIALOG_SCENE_H
+#define IVW_LINKDIALOG_SCENE_H
 
 #include <inviwo/qt/editor/inviwoqteditordefine.h>
 #include <inviwo/core/network/processornetworkobserver.h>
@@ -40,7 +40,6 @@
 #include <QGraphicsScene>
 #include <QGraphicsItem>
 #include <QGraphicsSceneMouseEvent>
-
 
 namespace inviwo {
 
@@ -55,94 +54,114 @@ class Property;
 class PropertyOwner;
 class PropertyLink;
 
-class IVW_QTEDITOR_API LinkDialogGraphicsScene : public QGraphicsScene, public ProcessorNetworkObserver {
+class IVW_QTEDITOR_API LinkDialogGraphicsScene : public QGraphicsScene,
+                                                 public ProcessorNetworkObserver {
     Q_OBJECT
 public:
     LinkDialogGraphicsScene(QWidget* parent);
     ~LinkDialogGraphicsScene() {}
 
     template <typename T>
-    T* getSceneGraphicsItemAt(const QPointF pos, const Qt::ItemSelectionMode mode= Qt::IntersectsItemShape,
-                              Qt::SortOrder order=Qt::DescendingOrder) const {
-        QList<QGraphicsItem*> graphicsItems =items(pos, mode, order);
+    T* getSceneGraphicsItemAt(const QPointF pos,
+                              const Qt::ItemSelectionMode mode = Qt::IntersectsItemShape,
+                              Qt::SortOrder order = Qt::DescendingOrder) const;
 
-        if (graphicsItems.size() > 0) {
-            for (int i=0; i<graphicsItems.size(); i++) {
-                T* graphicsItem = qgraphicsitem_cast<T*>(graphicsItems[i]);
-
-                if (graphicsItem)
-                    return graphicsItem;
-            }
-        }
-
-        return 0;
-    }
-
-    QGraphicsItem* getPropertyGraphicsItemOf(Property* property);
-    void setNetwork(ProcessorNetwork* network) {processorNetwork_ = network;}
-    ProcessorNetwork* getNetwork() {return processorNetwork_;}
+    void setNetwork(ProcessorNetwork* network);
+    ProcessorNetwork* getNetwork();
 
     void initScene(Processor* srcProcessor, Processor* dstProcessor);
     void clearSceneRepresentations();
+
     void removeCurrentPropertyLinks();
     void removeAllPropertyLinks();
+
     void addPropertyLink(Property* srcProperty, Property* dstProperty, bool bidirectional);
     int currentLinkItemsCount();
     void setExpandProperties(bool expand);
-    void expandOrCollapseLinkedProcessorItems(LinkDialogProcessorGraphicsItem* processorGraphicsItem, bool expand);
-    void expandOrCollapseLinkedPropertyItems(LinkDialogPropertyGraphicsItem* propertyItem, bool expand);
+    void expandOrCollapseLinkedProcessorItems(
+        LinkDialogProcessorGraphicsItem* processorGraphicsItem, bool expand);
+
+    void expandOrCollapseLinkedPropertyItems(LinkDialogPropertyGraphicsItem* propertyItem,
+                                             bool expand);
+
     void updatePropertyItemsOfAllProcessors();
     bool isPropertyExpanded(Property* property);
 
     virtual void onProcessorNetworkDidAddLink(PropertyLink* propertyLink);
     virtual void onProcessorNetworkDidRemoveLink(PropertyLink* propertyLink);
 
-    PropertyOwner* src_;
-    PropertyOwner* dest_;
-
 protected:
-    void mousePressEvent(QGraphicsSceneMouseEvent* e);
-    void mouseMoveEvent(QGraphicsSceneMouseEvent* e);
-    void mouseReleaseEvent(QGraphicsSceneMouseEvent* e);
-    void mouseDoubleClickEvent(QGraphicsSceneMouseEvent* e);
-    void keyPressEvent(QKeyEvent* keyEvent);
-    void wheelEvent(QGraphicsSceneWheelEvent* e);
-    void contextMenuEvent(QGraphicsSceneContextMenuEvent* e);
-    void addPropertyLink(LinkDialogPropertyGraphicsItem* outProperty, LinkDialogPropertyGraphicsItem* inProperty, bool isBidirectional);
-    void removePropertyLink(DialogConnectionGraphicsItem* propertyLink);
-    void cleanupAfterRemoveLink(DialogConnectionGraphicsItem* propertyLink);
-    void addPropertyLink(PropertyLink* propertyLink);
-    bool isPropertyLinkBidirectional(DialogConnectionGraphicsItem* propertyLink);
-    void makePropertyLinkBidirectional(DialogConnectionGraphicsItem* propertyLink, bool isBidirectional);
-    void switchPropertyLinkDirection(DialogConnectionGraphicsItem* propertyLink);
-    void initializePorpertyLinkRepresentation(LinkDialogPropertyGraphicsItem* outProperty, LinkDialogPropertyGraphicsItem* inProperty,
-            PropertyLink* propLink);
-    void addProcessorsItemsToScene(Processor* prcoessor, int xPosition, int yPosition);
-    DialogConnectionGraphicsItem* getConnectionGraphicsItem(LinkDialogPropertyGraphicsItem*, LinkDialogPropertyGraphicsItem*);
+    // Overload qt events
+    virtual void mousePressEvent(QGraphicsSceneMouseEvent* e);
+    virtual void mouseMoveEvent(QGraphicsSceneMouseEvent* e);
+    virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent* e);
+    virtual void mouseDoubleClickEvent(QGraphicsSceneMouseEvent* e);
+    virtual void keyPressEvent(QKeyEvent* keyEvent);
+    virtual void wheelEvent(QGraphicsSceneWheelEvent* e);
+    virtual void contextMenuEvent(QGraphicsSceneContextMenuEvent* e);
 
-    //smooth scroll effect support
+
+    void removePropertyLink(DialogConnectionGraphicsItem* propertyLink);
+
+    void cleanupAfterRemoveLink(DialogConnectionGraphicsItem* propertyLink);
+
+    bool isPropertyLinkBidirectional(DialogConnectionGraphicsItem* propertyLink);
+    void makePropertyLinkBidirectional(DialogConnectionGraphicsItem* propertyLink,
+                                       bool isBidirectional);
+    void switchPropertyLinkDirection(DialogConnectionGraphicsItem* propertyLink);
+
+    DialogConnectionGraphicsItem* initializePropertyLinkRepresentation(PropertyLink* propLink);
+    void removePropertyLinkRepresentation(PropertyLink* propLink);
+
+    LinkDialogProcessorGraphicsItem* addProcessorsItemsToScene(Processor* prcoessor, int xPosition,
+                                                               int yPosition);
+    DialogConnectionGraphicsItem* getConnectionGraphicsItem(LinkDialogPropertyGraphicsItem*,
+                                                            LinkDialogPropertyGraphicsItem*);
+
+    // smooth scroll effect support
     void offsetItems(float yIncrement, bool scrollLeft);
     int currentScrollSteps_;
 private slots:
     void executeTimeLine(qreal);
     void terminateTimeLine();
+
 private:
+    QGraphicsItem* getPropertyGraphicsItemOf(Property* property);
+    void addConnectionToCurrentList(DialogConnectionGraphicsItem*);
+    void removeConnectionFromCurrentList(DialogConnectionGraphicsItem*);
+
     DialogCurveGraphicsItem* linkCurve_;
     LinkDialogPropertyGraphicsItem* startProperty_;
     LinkDialogPropertyGraphicsItem* endProperty_;
 
-    std::vector<LinkDialogProcessorGraphicsItem*> processorGraphicsItems_;
+    LinkDialogProcessorGraphicsItem* srcProcessorGraphicsItem_;
+    LinkDialogProcessorGraphicsItem* dstProcessorGraphicsItem_;
     std::vector<DialogConnectionGraphicsItem*> connectionGraphicsItems_;
     std::vector<DialogConnectionGraphicsItem*> currentConnectionGraphicsItems_;
 
     ProcessorNetwork* processorNetwork_;
 
-    void addConnectionToCurrentList(DialogConnectionGraphicsItem*);
-    void removeConnectionFromCurrentList(DialogConnectionGraphicsItem*);
     bool expandProperties_;
     bool mouseOnLeftSide_;
+
+    std::map<Property*, LinkDialogPropertyGraphicsItem*> propertyGraphicsItemCache_;
 };
 
-} //namespace
+template <typename T>
+T* LinkDialogGraphicsScene::getSceneGraphicsItemAt(const QPointF pos,
+                                                   const Qt::ItemSelectionMode mode,
+                                                   Qt::SortOrder order) const {
+    QList<QGraphicsItem*> graphicsItems = items(pos, mode, order);
 
-#endif //IVW_LINKDIALOG_SCENE_H
+    if (graphicsItems.size() > 0) {
+        for (int i = 0; i < graphicsItems.size(); i++) {
+            T* graphicsItem = qgraphicsitem_cast<T*>(graphicsItems[i]);
+            if (graphicsItem) return graphicsItem;
+        }
+    }
+    return NULL;
+}
+
+}  // namespace
+
+#endif  // IVW_LINKDIALOG_SCENE_H

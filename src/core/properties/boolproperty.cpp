@@ -36,12 +36,25 @@ namespace inviwo {
 
 PropertyClassIdentifier(BoolProperty, "org.inviwo.BoolProperty");
 
-BoolProperty::BoolProperty(std::string identifier,
-                           std::string displayName, bool value,
+BoolProperty::BoolProperty(std::string identifier, std::string displayName, bool value,
                            PropertyOwner::InvalidationLevel invalidationLevel,
                            PropertySemantics semantics)
-    : TemplateProperty<bool>(identifier, displayName, value, invalidationLevel, semantics) {
+    : TemplateProperty<bool>(identifier, displayName, value, invalidationLevel, semantics) {}
+
+BoolProperty::BoolProperty(const BoolProperty& rhs)
+    : TemplateProperty<bool>(rhs) {}
+
+BoolProperty& BoolProperty::operator=(const BoolProperty& that) {
+    if (this != &that) {
+        TemplateProperty<bool>::operator=(that);
+    }
+    return *this;
 }
 
+BoolProperty* BoolProperty::clone() const {
+    return new BoolProperty(*this);
+}
 
-} // namespace
+BoolProperty::~BoolProperty() {}
+
+}  // namespace

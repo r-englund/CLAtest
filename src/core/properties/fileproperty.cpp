@@ -49,6 +49,28 @@ FileProperty::FileProperty(std::string identifier, std::string displayName, std:
     addNameFilter("All Files (*.*)");
 }
 
+FileProperty::FileProperty(const FileProperty& rhs  )
+    : TemplateProperty<std::string>(rhs)
+    , nameFilters_(rhs.nameFilters_)
+    , acceptMode_(rhs.acceptMode_)
+    , fileMode_(rhs.fileMode_) {
+}
+
+FileProperty& FileProperty::operator=(const FileProperty& that) {
+    if (this != &that) {
+        TemplateProperty<std::string>::operator=(that);
+        nameFilters_ = that.nameFilters_;
+        acceptMode_ = that.acceptMode_;
+        fileMode_ = that.fileMode_;
+    }
+    return *this;
+}
+
+FileProperty* FileProperty::clone() const {
+    return new FileProperty(*this);
+}
+
+FileProperty::~FileProperty() {}
 
 void FileProperty::serialize(IvwSerializer& s) const {
     Property::serialize(s);

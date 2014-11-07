@@ -91,7 +91,7 @@ QPainterPath CurveGraphicsItem::obtainCurvePath(QPointF startPoint, QPointF endP
 
     QPointF off(0, delta);
     QPointF ctrlPoint1 = curvStart + off;
-    QPointF ctrlPoint2 = curvEnd - off;  //*/
+    QPointF ctrlPoint2 = curvEnd - off;
 
     QPainterPath bezierCurve;
     bezierCurve.moveTo(startPoint);

@@ -42,6 +42,7 @@
 #include <modules/opengl/geometry/geometryrenderprocessorgl.h>
 #include <modules/opengl/glwrap/shader.h>
 #include <inviwo/core/properties/ordinalproperty.h>
+#include <inviwo/core/properties/templateproperty.h>
 #include <vector>
 
 namespace inviwo {

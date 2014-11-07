@@ -121,8 +121,9 @@ void DataSource<DataType, PortType>::load() {
         if (reader) {
             try {
                 DataType* data = reader->readMetaData(file_.get());
-                ResourceManager::getPtr()->addResource(
-                    new TemplateResource<DataType>(file_.get(), data));
+                // Disabled the resourcemanager until it work properly.
+                // ResourceManager::getPtr()->addResource(
+                //    new TemplateResource<DataType>(file_.get(), data));
                 port_.setData(data, false);
                 loadedData_ = data;
                 dataLoaded(data);

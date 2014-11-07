@@ -257,17 +257,7 @@ public:
      * @param[in] destinationProperty Property at which link ends
      * @return void
      */
-
-    // Very shady function // Peter
     bool isLinkedBidirectional(Property* sourceProperty, Property* destinationProperty);
-    /** 
-     * Modify or invalidate property of links
-     *
-     * Modify or invalidate property of a link where the property belongs to a given property owner
-     * 
-     * @param[in] processor given property owner
-     * @return void
-     */
 
     PropertyLinkVector getLinksBetweenProcessors(Processor* p1, Processor* p2);
     /** 
@@ -310,7 +300,7 @@ public:
 
     bool isDeserializing()const;
     void updatePropertyLinkCaches();
-
+    void evaluatePropertyLinks(Property*);
 
     /**
     * Clears the network objects processors, port connections, property links etc.,
@@ -322,7 +312,6 @@ public:
 private:
     //Property Linking support
     void performLinkingOnPropertyChange(Property* modifiedProperty);
-    void evaluatePropertyLinks(Property*);
     void addToPrimaryCache(PropertyLink* propertyLink);
     void removeFromPrimaryCache(PropertyLink* propertyLink);
     void clearSecondaryCache();
@@ -365,6 +354,7 @@ private:
         void updateMetaDataTree(TxElement* node);
         void updatePropertType(TxElement* node);
         void updateShadingMode(TxElement* node);
+        void updateCameraToComposite(TxElement* node);
         void traverseNodes(TxElement* node, updateType update);
     };
 };

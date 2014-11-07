@@ -43,7 +43,7 @@ MeshRenderer::MeshRenderer(): meshToRender_(NULL) {
 MeshRenderer::MeshRenderer(const Mesh* mesh)
     : meshToRender_(mesh) {
         
-    initialize(mesh->getAttributesInfo());
+    initialize(mesh->getDefaultAttributesInfo());
 }
 
 MeshRenderer::MeshRenderer(const Mesh* mesh, Mesh::AttributesInfo ai)

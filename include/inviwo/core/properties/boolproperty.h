@@ -48,17 +48,19 @@ namespace inviwo {
  */
 
 class IVW_CORE_API BoolProperty : public TemplateProperty<bool> {
-
 public:
-    BoolProperty(std::string identifier,
-                 std::string displayName,
-                 bool value = false,
-                 PropertyOwner::InvalidationLevel invalidationLevel=PropertyOwner::INVALID_OUTPUT,
+    InviwoPropertyInfo();
+
+    BoolProperty(std::string identifier, std::string displayName, bool value = false,
+                 PropertyOwner::InvalidationLevel invalidationLevel = PropertyOwner::INVALID_OUTPUT,
                  PropertySemantics semantics = PropertySemantics::Default);
 
-    InviwoPropertyInfo();
+    BoolProperty(const BoolProperty& rhs);
+    BoolProperty& operator=(const BoolProperty& rhs);
+    virtual BoolProperty* clone() const;
+    virtual ~BoolProperty();
 };
 
-} // namespace
+}  // namespace
 
 #endif // IVW_BOOLPROPERTY_H

@@ -42,9 +42,16 @@
 
 namespace inviwo {
 
-LinkDialog::LinkDialog(QWidget* parent) : InviwoDockWidget("Edit Processor Link Dialog", parent) {
-    IVW_UNUSED_PARAM(parent);
-    //Handle multiple processor links here
+LinkDialog::LinkDialog(Processor* src, Processor* dest, QWidget* parent)
+    : InviwoDockWidget("Edit Property Links", parent)
+    , src_(src)
+    , dest_(dest) {
+
+    initDialogLayout();
+    //Network is required to add property links created in dialog (or remove )
+    linkDialogScene_->setNetwork(InviwoApplication::getPtr()->getProcessorNetwork());
+    linkDialogScene_->setExpandProperties(false);
+    linkDialogScene_->initScene(src_, dest_);
 }
 
 LinkDialog::~LinkDialog() {
@@ -52,84 +59,59 @@ LinkDialog::~LinkDialog() {
     delete linkDialogView_;
 }
 
-LinkDialog::LinkDialog(Processor* src, Processor* dest, QWidget* parent) :InviwoDockWidget("Edit Processor Link Dialog", parent) {
-    src_ = src;
-    dest_ = dest;
-    initDialogLayout();
-    linkDialogScene_->setNetwork(InviwoApplication::getPtr()->getProcessorNetwork()); //Network is required to add property links created in dialog (or remove )
-    linkDialogScene_->setExpandProperties(EXPAND_SUB_PROPERTIES_BY_DEFAULT);
-    linkDialogScene_->initScene(src, dest);
-}
-
 void LinkDialog::initDialogLayout() {
     setFloating(true);
-    setWindowModality (Qt::ApplicationModal);
-    /*
-    //Custom title bar for consistency with other docked widgets
-    QString style("padding-top: 5px; \
-                   padding-left: 5px; \
-                   border-radius: 3px; \
-                   background: qlineargradient(x1:0, y1:0, x2:0, y2:1,stop:0 #888888, stop:0.4 #555555, stop:0.5 #000000, stop:1 #111111);"
-                   );
-    
-     QFrame* titleBar = new QFrame();
-     QVBoxLayout* lableLayout = new QVBoxLayout(titleBar);
-     QLabel *titleText = new QLabel("Edit Processor Link Dialog");
-     titleText->setStyleSheet(style);
-     lableLayout->addWidget(titleText);
-     setTitleBarWidget(titleBar);
-     //titleBarWidget()->setStyleSheet(style);
-     setWindowFlags(Qt::Window | Qt::FramelessWindowHint);*/
-    
+    // setWindowModality(Qt::ApplicationModal); //Why?!? /Peter
+
     setObjectName("LinkDialogWidget");
-    //setAllowedAreas(Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea);
     setAllowedAreas(Qt::NoDockWidgetArea);
     QFrame* frame = new QFrame();
 
-    QSize rSize(linkDialogWidth, linkDialogHeight+100);
+    QSize rSize(linkDialogWidth, linkDialogHeight + 100);
     setFixedWidth(rSize.width());
-    //setSize(rSize.width());
     QVBoxLayout* mainLayout = new QVBoxLayout(frame);
     linkDialogView_ = new LinkDialogGraphicsView(this);
     linkDialogScene_ = new LinkDialogGraphicsScene(this);
-    linkDialogScene_->src_ = src_;
-    linkDialogScene_->dest_ = dest_;
     linkDialogView_->setDialogScene(linkDialogScene_);
-    //linkDialogView_->setSceneRect(0,0,rSize.width(), rSize.height()*5);
     linkDialogView_->fitInView(linkDialogView_->rect());
     linkDialogView_->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
     mainLayout->addWidget(linkDialogView_);
     QHBoxLayout* commonButtonLayout = new QHBoxLayout;
-    //smart link button
+
+    // smart link button
     QHBoxLayout* smartLinkPushButtonLayout = new QHBoxLayout;
     smartLinkPushButtonLayout->setAlignment(Qt::AlignLeft);
-    //qt documentation
-    //smart link button
+
+    // smart link button
     smartLinkPushButton_ = new QPushButton("SmartLink", this);
     connect(smartLinkPushButton_, SIGNAL(clicked()), this, SLOT(clickedSmartLinkPushButton()));
     smartLinkPushButtonLayout->addWidget(smartLinkPushButton_, 10);
-    //checkable combo box
+
+    // checkable combo box
     std::vector<std::string> options;
     options.push_back(SimpleCondition::conditionName());
     options.push_back(PartiallyMatchingIdCondition::conditionName());
-    smartLinkOptions_ = new CheckableQComboBox(this,"AutoLink Filter", options);
+    smartLinkOptions_ = new CheckableQComboBox(this, "AutoLink Filter", options);
     smartLinkPushButtonLayout->addWidget(smartLinkOptions_, 20);
-    //delete button
+
+    // delete button
     deleteAllLinkPushButton_ = new QPushButton("Delete All", this);
-    connect(deleteAllLinkPushButton_, SIGNAL(clicked()), this, SLOT(clickedDeleteAllLinksPushButton()));
+    connect(deleteAllLinkPushButton_, SIGNAL(clicked()), this,
+            SLOT(clickedDeleteAllLinksPushButton()));
     smartLinkPushButtonLayout->addWidget(deleteAllLinkPushButton_, 10);
-    //expand composite
+
+    // expand composite
     expandCompositeButton_ = new QPushButton("Expand All Properties", this);
-    expandCompositeButton_->setChecked(EXPAND_SUB_PROPERTIES_BY_DEFAULT);
+    expandCompositeButton_->setChecked(false);
     smartLinkPushButtonLayout->addWidget(expandCompositeButton_, 30);
     connect(expandCompositeButton_, SIGNAL(clicked()), this, SLOT(expandCompositeProperties()));
     commonButtonLayout->addLayout(smartLinkPushButtonLayout);
 
-    //okay cancel button
+    // okay cancel button
     QHBoxLayout* okayCancelButtonLayout = new QHBoxLayout;
     okayCancelButtonLayout->setAlignment(Qt::AlignRight);
-    //qt documentation
-    okayCancelbuttonBox_ = new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel, Qt::Horizontal, this);
+    okayCancelbuttonBox_ =
+        new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel, Qt::Horizontal, this);
     connect(okayCancelbuttonBox_, SIGNAL(accepted()), this, SLOT(clickedOkayButton()));
     connect(okayCancelbuttonBox_, SIGNAL(rejected()), this, SLOT(clickedCancelButton()));
     okayCancelButtonLayout->addWidget(okayCancelbuttonBox_);
@@ -147,13 +129,12 @@ void LinkDialog::updateProcessorLinks() {}
 
 void LinkDialog::clickedCancelButton() {
     linkDialogScene_->removeCurrentPropertyLinks();
-    //accept();
     updateProcessorLinks();
     hide();
     eventLoop_.quit();
 }
 
-void LinkDialog::closeEvent ( QCloseEvent * event ) {
+void LinkDialog::closeEvent(QCloseEvent* event) {
    eventLoop_.quit();
 }
 

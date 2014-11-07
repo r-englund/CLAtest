@@ -42,6 +42,24 @@ DataMapper::DataMapper() {
     initWithFormat(DataUINT8::get());
 }
 
+DataMapper::DataMapper(const DataMapper& rhs)
+    : dataRange(rhs.dataRange)
+    , valueRange(rhs.valueRange)
+    , valueUnit(rhs.valueUnit) {
+}
+
+DataMapper& DataMapper::operator=(const DataMapper& that) {
+    if (this != &that) {
+        dataRange = that.dataRange;
+        valueRange = that.valueRange;
+        valueUnit = that.valueUnit;
+    }
+    return *this;
+}
+DataMapper* DataMapper::clone() const {
+    return new DataMapper(*this);
+};
+
 void DataMapper::initWithFormat(const DataFormatBase* format){
     dataRange.y = format->getMax();
     switch (format->getNumericType()) {

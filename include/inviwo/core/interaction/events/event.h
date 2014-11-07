@@ -25,7 +25,7 @@
  * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- * 
+ *
  * Contact: Timo Ropinski
  *
  *********************************************************************************/
@@ -40,8 +40,10 @@ namespace inviwo {
 
 class IVW_CORE_API Event : public IvwSerializable {
 public:
-
     Event();
+    Event(const Event& rhs);
+    Event& operator=(const Event& that);
+    virtual Event* clone() const;
     virtual ~Event();
 
     void markAsUsed();
@@ -54,6 +56,6 @@ private:
     bool used_;
 };
 
-} // namespace
+}  // namespace
 
-#endif // IVW_EVENT_H
+#endif  // IVW_EVENT_H

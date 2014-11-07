@@ -36,6 +36,21 @@ namespace inviwo {
 
 Event::Event() : IvwSerializable(), used_(false) {}
 
+Event::Event(const Event& rhs)
+    : used_(rhs.used_)	{
+}
+
+Event& Event::operator=(const Event& that) {
+    if (this != &that) {
+        used_ = that.used_;
+    }
+    return *this;
+}
+
+Event* Event::clone() const {
+    return new Event(*this);
+}
+
 Event::~Event() {}
 
 void Event::markAsUsed(){

@@ -47,8 +47,8 @@ SimpleLightingProperty::SimpleLightingProperty(std::string identifier, std::stri
     , specularExponent_("materialShininess", "Shininess", 110, 1, 180)
     , lightPosition_("lightPosition", "Position", vec3(0.0f, 0.7071f, 0.7071f), vec3(-10, -10, -10),
                      vec3(10, 10, 10))
-    , lightAttenuation_("lightAttenuation", "Light attenuation values", vec3(1.0f, 0.0f, 0.0f))
-    , applyLightAttenuation_("applyLightAttenuation", "Light attenuation", false) {
+    , lightAttenuation_("lightAttenuation", "Attenuation", vec3(1.0f, 0.0f, 0.0f))
+    , applyLightAttenuation_("applyLightAttenuation", "Enable Light Attenuation", false) {
 
     shadingMode_.addOption("none", "No Shading", ShadingMode::None);
     shadingMode_.addOption("ambient", "Ambient", ShadingMode::Ambient);
@@ -73,5 +73,47 @@ SimpleLightingProperty::SimpleLightingProperty(std::string identifier, std::stri
     addProperty(applyLightAttenuation_);
     addProperty(lightAttenuation_);
 }
+
+SimpleLightingProperty::SimpleLightingProperty(const SimpleLightingProperty& rhs)
+    : CompositeProperty(rhs)
+    , shadingMode_(rhs.shadingMode_)
+    , ambientColor_(rhs.ambientColor_) 
+    , diffuseColor_(rhs.diffuseColor_)
+    , specularColor_(rhs.specularColor_)
+    , specularExponent_(rhs.specularExponent_)
+    , lightPosition_(rhs.lightPosition_)
+    , lightAttenuation_(rhs.lightAttenuation_)
+    , applyLightAttenuation_(rhs.applyLightAttenuation_) {
+
+    addProperty(shadingMode_);
+    addProperty(lightPosition_);
+    addProperty(ambientColor_);
+    addProperty(diffuseColor_);
+    addProperty(specularColor_);
+    addProperty(specularExponent_);
+    addProperty(applyLightAttenuation_);
+    addProperty(lightAttenuation_);
+}
+
+SimpleLightingProperty& SimpleLightingProperty::operator=(const SimpleLightingProperty& that) {
+    if (this != &that) {
+        CompositeProperty::operator=(that);
+        shadingMode_ = that.shadingMode_;
+        ambientColor_ = that.ambientColor_;
+        diffuseColor_ = that.diffuseColor_;
+        specularColor_ = that.specularColor_;
+        specularExponent_ = that.specularExponent_;
+        lightPosition_ = that.lightPosition_;
+        lightAttenuation_ = that.lightAttenuation_;
+        applyLightAttenuation_ = that.applyLightAttenuation_;
+    }
+    return *this;
+}
+
+SimpleLightingProperty* SimpleLightingProperty::clone() const {
+    return new SimpleLightingProperty(*this);
+}
+
+SimpleLightingProperty::~SimpleLightingProperty() {}
 
 }  // namespace

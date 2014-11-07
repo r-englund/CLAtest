@@ -40,6 +40,7 @@
 #include <QMenu>
 #include <QLineEdit>
 #include <QPushButton>
+#include <QComboBox>
 #include <inviwo/qt/widgets/inviwodockwidget.h>
 #include <inviwo/core/properties/propertyvisibility.h>
 #include <inviwo/core/properties/propertywidget.h>
@@ -69,6 +70,16 @@ class IVW_QTWIDGETS_API IvwPushButton : public QPushButton {
 public:
     IvwPushButton(QWidget* parent);
     virtual ~IvwPushButton();
+
+    QSize sizeHint() const;
+    QSize minimumSizeHint() const;
+};
+
+class IVW_QTWIDGETS_API IvwComboBox : public QComboBox {
+    Q_OBJECT
+public:
+    IvwComboBox(QWidget* parent);
+    virtual ~IvwComboBox();
 
     QSize sizeHint() const;
     QSize minimumSizeHint() const;

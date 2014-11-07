@@ -35,7 +35,25 @@
 namespace inviwo {
 
 Action::Action() {};
-Action::~Action() {};
+
+Action::Action(const Action& rhs)
+    : actionName_(rhs.actionName_)
+    , action_(rhs.action_) {
+}
+
+Action& Action::operator=(const Action& that) {
+    if (this != &that) {
+        actionName_ = that.actionName_;
+        action_ = that.action_;
+    }
+    return *this;
+}
+
+Action* Action::clone() const {
+    return new Action(*this);
+}
+
+Action::~Action() {}
 
 void Action::serialize(IvwSerializer& s) const {
     s.serialize("type", getClassIdentifier(), true);
@@ -44,6 +62,18 @@ void Action::serialize(IvwSerializer& s) const {
 void Action::deserialize(IvwDeserializer& d) {
     std::string className;
     d.deserialize("type", className, true);
+}
+
+std::string Action::name() const {
+    return actionName_;
+}
+
+int Action::action() const {
+    return action_;
+}
+
+std::string Action::getClassIdentifier() const {
+    return "Undefined";
 }
 
 } // namespace

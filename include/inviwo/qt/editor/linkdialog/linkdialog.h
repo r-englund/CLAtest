@@ -73,7 +73,6 @@ private:
 class IVW_QTEDITOR_API LinkDialog : public InviwoDockWidget {
     Q_OBJECT
 public:
-    LinkDialog(QWidget* parent);
     LinkDialog(Processor* src, Processor* dest, QWidget* parent);
     void initDialog(Processor* src, Processor* dest);
     virtual void closeEvent ( QCloseEvent * event );

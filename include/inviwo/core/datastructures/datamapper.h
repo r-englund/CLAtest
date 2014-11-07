@@ -42,6 +42,9 @@ class IVW_CORE_API DataMapper {
 public:
     DataMapper();
     DataMapper(const DataFormatBase* format);
+    DataMapper(const DataMapper& rhs);
+    DataMapper& operator=(const DataMapper& that);
+    virtual DataMapper* clone() const;
     virtual ~DataMapper() {}
 
     dvec2 dataRange;

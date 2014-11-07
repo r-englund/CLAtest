@@ -25,7 +25,7 @@
  * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- * 
+ *
  * Contact: Sathish Kottravel
  *
  *********************************************************************************/
@@ -41,11 +41,13 @@ namespace inviwo {
 
 /** class EventProperty
  *
- * Property which contains one event and one action to represent the current key binding for the contained action.
+ * Property which contains one event and one action to represent the current key binding for the
+ *contained action.
  * @see EventPropertyWidgetQt
  */
 class IVW_CORE_API EventProperty : public Property {
 public:
+    InviwoPropertyInfo();
     /**
      * \brief Constructor used to create a new action-key binding.
      *
@@ -57,22 +59,21 @@ public:
      * @param Action action The action to be bound to an event
      * @param PropertySemantics semantics
      */
-    EventProperty(std::string identifier,
-                  std::string displayName,
-                  InteractionEvent* e,
-                  Action* action,
-                  PropertyOwner::InvalidationLevel invalidationLevel=PropertyOwner::INVALID_OUTPUT,
-                  PropertySemantics semantics = PropertySemantics::Default);
+    EventProperty(
+        std::string identifier, std::string displayName, InteractionEvent* e, Action* action,
+        PropertyOwner::InvalidationLevel invalidationLevel = PropertyOwner::INVALID_OUTPUT,
+        PropertySemantics semantics = PropertySemantics::Default);
 
+    EventProperty(const EventProperty& rhs);
+    EventProperty& operator=(const EventProperty& that);
+    virtual EventProperty* clone() const;
     virtual ~EventProperty();
-
-    InviwoPropertyInfo();
 
     virtual void serialize(IvwSerializer& s) const;
     virtual void deserialize(IvwDeserializer& d);
 
-    InteractionEvent* getEvent() const { return event_; }
-    Action* getAction() const { return action_; }
+    InteractionEvent* getEvent() const;
+    Action* getAction() const;
 
     /**
      * \brief Maps action to new event.
@@ -81,14 +82,13 @@ public:
      *
      * @param Event e The new event
      */
-    void setEvent(InteractionEvent* e) { event_ = e; }
+    void setEvent(InteractionEvent* e);
 
 private:
-    InteractionEvent* event_;
-    Action* action_;
+    InteractionEvent* event_; //< non-owning reference
+    Action* action_;          //< non-owning reference   
 };
 
-} // namespace
+}  // namespace
 
-#endif // IVW_EVENTPROPERTY_H
-
+#endif  // IVW_EVENTPROPERTY_H
