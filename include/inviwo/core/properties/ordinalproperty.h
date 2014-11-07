@@ -56,14 +56,14 @@ public:
 
     OrdinalProperty(const OrdinalProperty<T>& rhs);
     OrdinalProperty<T>& operator=(const OrdinalProperty<T>& that);
-    //virtual OrdinalProperty<T>* clone() const;
+    //virtual OrdinalProperty<T>* clone() const; // See ticket #642
     virtual ~OrdinalProperty();
 
     T getMinValue() const;
     T getMaxValue() const;
     T getIncrement() const;
 
-    virtual void set(const T& value);  // Need to implement this to avoid compiler confusion with
+    virtual void set(const T& value);  // Need to reimplement this to avoid compiler confusion with
                                        // set(const Property*)
     virtual void set(const Property* src);
     void setMinValue(const T& value);
