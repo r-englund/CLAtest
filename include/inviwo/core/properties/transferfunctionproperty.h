@@ -56,9 +56,6 @@ public:
                              PropertyOwner::InvalidationLevel invalidationLevel=PropertyOwner::INVALID_OUTPUT,
                              PropertySemantics semantics=PropertySemantics::Default);
     
-
-
-
     TransferFunctionProperty(const TransferFunctionProperty& rhs);
     TransferFunctionProperty& operator=(const TransferFunctionProperty& that);  
     virtual TransferFunctionProperty* clone() const;
@@ -91,12 +88,9 @@ public:
     virtual void onControlPointChanged(const TransferFunctionDataPoint* p);
 
 private:
-    vec2 zoomH_;
-    vec2 defaultZoomH_;
-    vec2 zoomV_;
-    vec2 defaultZoomV_;
-    int showHistogram_;
-    int defaultShowHistogram_;
+    ValueWrapper<vec2> zoomH_;
+    ValueWrapper<vec2> zoomV_;
+    ValueWrapper<int> showHistogram_;
 
     VolumeInport* volumeInport_;
 };
