@@ -235,13 +235,11 @@ void CameraProperty::invokeEvent(Event* event) {
 }
 
 void CameraProperty::serialize(IvwSerializer& s) const {
-    Property::serialize(s);
-    PropertyOwner::serialize(s);
+    CompositeProperty::serialize(s);
 }
 
 void CameraProperty::deserialize(IvwDeserializer& d) {
-    Property::deserialize(d);
-    PropertyOwner::deserialize(d);
+    CompositeProperty::deserialize(d);
     lockInvalidation();
     updateViewMatrix();
     updateProjectionMatrix();
