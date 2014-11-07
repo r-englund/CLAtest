@@ -144,7 +144,7 @@ void GeometryRenderProcessorGL::process() {
     shader_->activate();
     setGlobalShaderParameters(shader_);
     utilgl::setShaderUniforms(shader_, camera_, "camera_");
-    utilgl::setShaderUniforms(shader_, lightingProperty_, "lighting_");
+    utilgl::setShaderUniforms(shader_, lightingProperty_, "light_");
 
     bool culling = (cullFace_.get() != 0);
     if (culling) {

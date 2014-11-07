@@ -36,12 +36,12 @@
 #define VOLUME_TYPE sampler3D
 #define TEXTURE_TYPE sampler2D
 
-struct LIGHTING_PARAMETERS {
-    vec3 lightPosition_; 
-    vec3 lightColor_; // Light color and power
-    vec3 materialAmbientColor_;
-    vec3 materialSpecularColor_;
-    int materialSpecularExponent_;
+struct LIGHT_PARAMETERS {
+    vec3 position_; 
+    vec3 ambientColor_;
+    vec3 diffuseColor_; 
+    vec3 specularColor_;
+    int specularExponent_;
 };
 
 struct TEXTURE_PARAMETERS {

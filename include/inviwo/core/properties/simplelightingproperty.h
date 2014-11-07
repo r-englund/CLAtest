@@ -69,12 +69,12 @@ public:
     // Material properties
     // Diffuse color often come from the object 
     // so we neglect it here
-    FloatVec3Property materialAmbientColor_;
-    FloatVec3Property materialSpecularColor_;
-    IntProperty materialSpecularExponent_;
+    FloatVec3Property ambientColor_;
+    FloatVec3Property diffuseColor_; 
+    FloatVec3Property specularColor_;
+    IntProperty specularExponent_;
     // Light properties
     FloatVec3Property lightPosition_;
-    FloatVec3Property lightColor_; 
     FloatVec3Property lightAttenuation_;
 
     BoolProperty applyLightAttenuation_;

@@ -60,18 +60,18 @@ void addShaderDefines(Shader* shader, const SimpleLightingProperty& property) {
 
 void setShaderUniforms(Shader* shader, const SimpleLightingProperty& property) {
     shader->setUniform("lightPosition_", property.lightPosition_.get());
-    shader->setUniform("lightColor_", property.lightColor_.get());
-    shader->setUniform("materialAmbientColor_", property.materialAmbientColor_.get());
-    shader->setUniform("materialSpecularColor_", property.materialSpecularColor_.get());
-    shader->setUniform("materialSpecularExponent_", property.materialSpecularExponent_.get());
+    shader->setUniform("lightAmbientColor_", property.ambientColor_.get());
+    shader->setUniform("lightDiffuseColor_", property.diffuseColor_.get());
+    shader->setUniform("lightSpecularColor_", property.specularColor_.get());
+    shader->setUniform("lightSpecularExponent_", property.specularExponent_.get());
 }
 
 void setShaderUniforms(Shader* shader, const SimpleLightingProperty& property, std::string name) {
-    shader->setUniform(name + ".lightPosition_", property.lightPosition_.get());
-    shader->setUniform(name + ".lightColor_", property.lightColor_.get());
-    shader->setUniform(name + ".materialAmbientColor_", property.materialAmbientColor_.get());
-    shader->setUniform(name + ".materialSpecularColor_", property.materialSpecularColor_.get());
-    shader->setUniform(name + ".materialSpecularExponent_", property.materialSpecularExponent_.get());
+    shader->setUniform(name + ".position_", property.lightPosition_.get());
+    shader->setUniform(name + ".ambientColor_", property.ambientColor_.get());
+    shader->setUniform(name + ".diffuseColor_", property.diffuseColor_.get());
+    shader->setUniform(name + ".specularColor_", property.specularColor_.get());
+    shader->setUniform(name + ".specularExponent_", property.specularExponent_.get());
 }
 
 void addShaderDefines(Shader* shader, const CameraProperty& property) {

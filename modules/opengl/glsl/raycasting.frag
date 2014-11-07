@@ -56,7 +56,7 @@ uniform sampler2D exitDepthTex_;
 
 uniform TEXTURE_PARAMETERS outportParameters_;
 
-uniform LIGHTING_PARAMETERS lighting_;
+uniform LIGHT_PARAMETERS light_;
 uniform CAMERA_PARAMETERS camera_;
 uniform int channel_;
 
@@ -86,11 +86,10 @@ vec4 rayTraversal(vec3 entryPoint, vec3 exitPoint, vec2 texCoords) {
 
         vec3 gradient = COMPUTE_GRADIENT_FOR_CHANNEL(voxel, volume_, volumeParameters_, samplePos, channel_);
         gradient = normalize(gradient);
-
         color = APPLY_CLASSIFICATION(transferFunc_, voxel); 
         // World space position
-        vec3 position = (volumeParameters_.textureToWorld_*vec4(samplePos, 1.0)).xyz;
-        color.rgb = APPLY_LIGHTING(lighting_, color.rgb, color.rgb, vec3(1.0), position, gradient, toCameraDir);
+        vec3 worldSpacePosition = (volumeParameters_.textureToWorld_*vec4(samplePos, 1.0)).xyz;
+        color.rgb = APPLY_LIGHTING(light_, color.rgb, color.rgb, vec3(1.0), worldSpacePosition, gradient, toCameraDir);
 
         result = APPLY_COMPOSITING(result, color, samplePos, voxel, gradient, camera_, isoValue_, 
                                    t, tDepth, tIncr);

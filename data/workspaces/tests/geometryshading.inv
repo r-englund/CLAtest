@@ -1,0 +1,424 @@
+<?xml version="1.0" ?>
+<InviwoTreeData version="1.0">
+    <!-- Don't edit the following code -->
+    <ProcessorNetworkVersion content="4" />
+    <Processors>
+        <Processor type="org.inviwo.CanvasGL" identifier="Canvas" id="ref1">
+            <Properties>
+                <Property type="org.inviwo.CompositeProperty" identifier="inputSize" displayName="Input Dimension Parameters" key="inputSize">
+                    <usageMode content="0" />
+                    <visible content="1" />
+                    <MetaDataMap />
+                    <Properties>
+                        <Property type="org.inviwo.FloatProperty" identifier="aspectRatioScaling" displayName="Aspect Ratio Scaling" key="aspectRatioScaling">
+                            <usageMode content="0" />
+                            <visible content="0" />
+                            <MetaDataMap />
+                        </Property>
+                        <Property type="org.inviwo.IntVec2Property" identifier="customInputDimensions" displayName="Input Image Dimensions" key="customInputDimensions">
+                            <usageMode content="0" />
+                            <visible content="0" />
+                            <readonly content="1" />
+                            <MetaDataMap />
+                        </Property>
+                        <Property type="org.inviwo.IntVec2Property" identifier="dimensions" displayName="Dimensions" key="dimensions">
+                            <usageMode content="0" />
+                            <visible content="1" />
+                            <MetaDataMap />
+                            <value x="265" y="256" />
+                        </Property>
+                        <Property type="org.inviwo.BoolProperty" identifier="enableCustomInputDimensions" displayName="Enable Custom Input Dimensions" key="enableCustomInputDimensions">
+                            <usageMode content="0" />
+                            <visible content="1" />
+                            <MetaDataMap />
+                        </Property>
+                        <Property type="org.inviwo.BoolProperty" identifier="keepAspectRatio" displayName="Keep Aspect Ratio" key="keepAspectRatio">
+                            <usageMode content="0" />
+                            <visible content="0" />
+                            <MetaDataMap />
+                        </Property>
+                    </Properties>
+                </Property>
+                <Property type="org.inviwo.DirectoryProperty" identifier="layerDir" displayName="Output Directory" key="layerDir">
+                    <usageMode content="0" />
+                    <visible content="1" />
+                    <MetaDataMap />
+                    <directory content="" />
+                </Property>
+                <Property type="org.inviwo.ButtonProperty" identifier="saveLayer" displayName="Save Image Layer" key="saveLayer">
+                    <usageMode content="0" />
+                    <visible content="1" />
+                    <MetaDataMap />
+                </Property>
+                <Property type="org.inviwo.OptionPropertyInt" identifier="visibleLayer" displayName="Visible Layer" key="visibleLayer">
+                    <usageMode content="0" />
+                    <visible content="1" />
+                    <MetaDataMap />
+                </Property>
+            </Properties>
+            <MetaDataMap>
+                <MetaDataItem type="ProcessorMetaData" key="ProcessorMetaData">
+                    <position x="75" y="100" />
+                    <visibility content="1" />
+                    <selection content="0" />
+                </MetaDataItem>
+                <MetaDataItem type="ProcessorWidgetMetaData" key="ProcessorWidgetMetaData">
+                    <position x="370" y="167" />
+                    <dimension x="265" y="256" />
+                    <visibility content="1" />
+                </MetaDataItem>
+            </MetaDataMap>
+        </Processor>
+        <Processor type="org.inviwo.GeometryRenderGL" identifier="Geometry Renderer" id="ref0">
+            <InteractonHandlers>
+                <InteractionHandler type="Trackball">
+                    <Properties>
+                        <Property type="org.inviwo.EventProperty" identifier="stepPanDown" displayName="Step pan down" key="stepPanDown">
+                            <usageMode content="0" />
+                            <visible content="1" />
+                            <MetaDataMap />
+                            <Event type="KeyboardEvent">
+                                <modifier content="Shift" />
+                                <button content="s" />
+                            </Event>
+                            <Action type="TrackballAction">
+                                <action content="Step pan down" />
+                            </Action>
+                        </Property>
+                        <Property type="org.inviwo.EventProperty" identifier="stepPanLeft" displayName="Step pan left" key="stepPanLeft">
+                            <usageMode content="0" />
+                            <visible content="1" />
+                            <MetaDataMap />
+                            <Event type="KeyboardEvent">
+                                <modifier content="Shift" />
+                                <button content="a" />
+                            </Event>
+                            <Action type="TrackballAction">
+                                <action content="Step pan left" />
+                            </Action>
+                        </Property>
+                        <Property type="org.inviwo.EventProperty" identifier="stepPanRight" displayName="Step pan right" key="stepPanRight">
+                            <usageMode content="0" />
+                            <visible content="1" />
+                            <MetaDataMap />
+                            <Event type="KeyboardEvent">
+                                <modifier content="Shift" />
+                                <button content="d" />
+                            </Event>
+                            <Action type="TrackballAction">
+                                <action content="Step pan right" />
+                            </Action>
+                        </Property>
+                        <Property type="org.inviwo.EventProperty" identifier="stepPanUp" displayName="Step pan up" key="stepPanUp">
+                            <usageMode content="0" />
+                            <visible content="1" />
+                            <MetaDataMap />
+                            <Event type="KeyboardEvent">
+                                <modifier content="Shift" />
+                                <button content="w" />
+                            </Event>
+                            <Action type="TrackballAction">
+                                <action content="Step pan up" />
+                            </Action>
+                        </Property>
+                        <Property type="org.inviwo.EventProperty" identifier="stepRotateDown" displayName="Step rotate down" key="stepRotateDown">
+                            <usageMode content="0" />
+                            <visible content="1" />
+                            <MetaDataMap />
+                            <Event type="KeyboardEvent">
+                                <modifier content="" />
+                                <button content="s" />
+                            </Event>
+                            <Action type="TrackballAction">
+                                <action content="Step rotate down" />
+                            </Action>
+                        </Property>
+                        <Property type="org.inviwo.EventProperty" identifier="stepRotateLeft" displayName="Step rotate left" key="stepRotateLeft">
+                            <usageMode content="0" />
+                            <visible content="1" />
+                            <MetaDataMap />
+                            <Event type="KeyboardEvent">
+                                <modifier content="" />
+                                <button content="a" />
+                            </Event>
+                            <Action type="TrackballAction">
+                                <action content="Step rotate left" />
+                            </Action>
+                        </Property>
+                        <Property type="org.inviwo.EventProperty" identifier="stepRotateRight" displayName="Step rotate right" key="stepRotateRight">
+                            <usageMode content="0" />
+                            <visible content="1" />
+                            <MetaDataMap />
+                            <Event type="KeyboardEvent">
+                                <modifier content="" />
+                                <button content="d" />
+                            </Event>
+                            <Action type="TrackballAction">
+                                <action content="Step rotate right" />
+                            </Action>
+                        </Property>
+                        <Property type="org.inviwo.EventProperty" identifier="stepRotateUp" displayName="Step rotate up" key="stepRotateUp">
+                            <usageMode content="0" />
+                            <visible content="1" />
+                            <MetaDataMap />
+                            <Event type="KeyboardEvent">
+                                <modifier content="" />
+                                <button content="w" />
+                            </Event>
+                            <Action type="TrackballAction">
+                                <action content="Step rotate up" />
+                            </Action>
+                        </Property>
+                        <Property type="org.inviwo.EventProperty" identifier="stepZoomIn" displayName="Step zoom in" key="stepZoomIn">
+                            <usageMode content="0" />
+                            <visible content="1" />
+                            <MetaDataMap />
+                            <Event type="KeyboardEvent">
+                                <modifier content="" />
+                                <button content="r" />
+                            </Event>
+                            <Action type="TrackballAction">
+                                <action content="Step zoom in" />
+                            </Action>
+                        </Property>
+                        <Property type="org.inviwo.EventProperty" identifier="stepZoomOut" displayName="Step zoom out" key="stepZoomOut">
+                            <usageMode content="0" />
+                            <visible content="1" />
+                            <MetaDataMap />
+                            <Event type="KeyboardEvent">
+                                <modifier content="" />
+                                <button content="f" />
+                            </Event>
+                            <Action type="TrackballAction">
+                                <action content="Step zoom out" />
+                            </Action>
+                        </Property>
+                        <Property type="org.inviwo.EventProperty" identifier="trackballPan" displayName="Pan" key="trackballPan">
+                            <usageMode content="0" />
+                            <visible content="1" />
+                            <MetaDataMap />
+                            <Event type="MouseEvent">
+                                <modifier content="" />
+                                <button content="Middle mouse button" />
+                            </Event>
+                            <Action type="TrackballAction">
+                                <action content="Trackball pan" />
+                            </Action>
+                        </Property>
+                        <Property type="org.inviwo.EventProperty" identifier="trackballRotate" displayName="Rotate" key="trackballRotate">
+                            <usageMode content="0" />
+                            <visible content="1" />
+                            <MetaDataMap />
+                            <Event type="MouseEvent">
+                                <modifier content="" />
+                                <button content="Left mouse button" />
+                            </Event>
+                            <Action type="TrackballAction">
+                                <action content="Trackball rotate" />
+                            </Action>
+                        </Property>
+                        <Property type="org.inviwo.EventProperty" identifier="trackballZoom" displayName="Zoom" key="trackballZoom">
+                            <usageMode content="0" />
+                            <visible content="1" />
+                            <MetaDataMap />
+                            <Event type="MouseEvent">
+                                <modifier content="" />
+                                <button content="Right mouse button" />
+                            </Event>
+                            <Action type="TrackballAction">
+                                <action content="Trackball zoom" />
+                            </Action>
+                        </Property>
+                    </Properties>
+                </InteractionHandler>
+            </InteractonHandlers>
+            <Properties>
+                <Property type="org.inviwo.CameraProperty" identifier="camera" displayName="Camera" key="camera">
+                    <usageMode content="0" />
+                    <visible content="1" />
+                    <MetaDataMap />
+                    <lookFrom type="org.inviwo.FloatVec3Property" identifier="lookFrom" displayName="Look from">
+                        <semantics semantics="Default" />
+                        <usageMode content="0" />
+                        <visible content="1" />
+                        <MetaDataMap />
+                    </lookFrom>
+                    <lookTo type="org.inviwo.FloatVec3Property" identifier="lookTo" displayName="Look to">
+                        <usageMode content="0" />
+                        <visible content="1" />
+                        <MetaDataMap />
+                    </lookTo>
+                    <lookUp type="org.inviwo.FloatVec3Property" identifier="lookUp" displayName="Look up">
+                        <usageMode content="0" />
+                        <visible content="1" />
+                        <MetaDataMap />
+                        <value x="0.0054028779" y="0.97864795" z="-0.024626382" />
+                    </lookUp>
+                    <fovy type="org.inviwo.FloatProperty" identifier="fov" displayName="FOV">
+                        <usageMode content="0" />
+                        <visible content="1" />
+                        <MetaDataMap />
+                    </fovy>
+                    <aspectRatio type="org.inviwo.FloatProperty" identifier="aspectRatio" displayName="Aspect Ratio">
+                        <usageMode content="0" />
+                        <visible content="1" />
+                        <MetaDataMap />
+                        <value content="1.0351563" />
+                    </aspectRatio>
+                    <nearPlane type="org.inviwo.FloatProperty" identifier="near" displayName="Near Plane">
+                        <usageMode content="0" />
+                        <visible content="1" />
+                        <MetaDataMap />
+                    </nearPlane>
+                    <farPlane type="org.inviwo.FloatProperty" identifier="far" displayName="Far Plane">
+                        <usageMode content="0" />
+                        <visible content="1" />
+                        <MetaDataMap />
+                    </farPlane>
+                </Property>
+                <Property type="org.inviwo.ButtonProperty" identifier="centerView" displayName="Center view on geometry" key="centerView">
+                    <usageMode content="0" />
+                    <visible content="1" />
+                    <MetaDataMap />
+                </Property>
+                <Property type="org.inviwo.CompositeProperty" identifier="geometry" displayName="Geometry Rendering Properties" key="geometry">
+                    <usageMode content="0" />
+                    <visible content="1" />
+                    <MetaDataMap />
+                    <Properties>
+                        <Property type="org.inviwo.OptionPropertyInt" identifier="cullFace" displayName="Cull Face" key="cullFace">
+                            <usageMode content="0" />
+                            <visible content="1" />
+                            <MetaDataMap />
+                            <selectedIdentifier content="cullback" />
+                        </Property>
+                        <Property type="org.inviwo.OptionPropertyInt" identifier="polygonMode" displayName="Polygon Mode" key="polygonMode">
+                            <usageMode content="0" />
+                            <visible content="1" />
+                            <MetaDataMap />
+                        </Property>
+                        <Property type="org.inviwo.FloatProperty" identifier="renderPointSize" displayName="Point Size" key="renderPointSize">
+                            <usageMode content="0" />
+                            <visible content="1" />
+                            <MetaDataMap />
+                        </Property>
+                    </Properties>
+                </Property>
+                <Property type="org.inviwo.SimpleLightingProperty" identifier="lighting" displayName="Lighting" key="lighting">
+                    <usageMode content="0" />
+                    <visible content="1" />
+                    <MetaDataMap />
+                    <Properties>
+                        <Property type="org.inviwo.BoolProperty" identifier="applyLightAttenuation" displayName="Light attenuation" key="applyLightAttenuation">
+                            <usageMode content="0" />
+                            <visible content="1" />
+                            <MetaDataMap />
+                        </Property>
+                        <Property type="org.inviwo.FloatVec3Property" identifier="lightAttenuation" displayName="Light attenuation values" key="lightAttenuation">
+                            <usageMode content="0" />
+                            <visible content="1" />
+                            <MetaDataMap />
+                        </Property>
+                        <Property type="org.inviwo.FloatVec3Property" identifier="lightColorAmbient" displayName="Ambient color" key="lightColorAmbient">
+                            <usageMode content="0" />
+                            <visible content="1" />
+                            <MetaDataMap />
+                            <value x="0.22745098" y="0.22745098" z="0.22745098" />
+                        </Property>
+                        <Property type="org.inviwo.FloatVec3Property" identifier="lightColorDiffuse" displayName="Diffuse color" key="lightColorDiffuse">
+                            <usageMode content="0" />
+                            <visible content="1" />
+                            <MetaDataMap />
+                        </Property>
+                        <Property type="org.inviwo.FloatVec3Property" identifier="lightColorSpecular" displayName="Specular color" key="lightColorSpecular">
+                            <usageMode content="0" />
+                            <visible content="1" />
+                            <MetaDataMap />
+                            <value x="0.74509805" y="0.74509805" z="0.74509805" />
+                        </Property>
+                        <Property type="org.inviwo.FloatVec3Property" identifier="lightPosition" displayName="Position" key="lightPosition">
+                            <semantics semantics="Default" />
+                            <usageMode content="0" />
+                            <visible content="1" />
+                            <MetaDataMap />
+                            <value x="0" y="3.0059996" z="0" />
+                        </Property>
+                        <Property type="org.inviwo.IntProperty" identifier="materialShininess" displayName="Shininess" key="materialShininess">
+                            <usageMode content="0" />
+                            <visible content="1" />
+                            <MetaDataMap />
+                            <value content="104" />
+                        </Property>
+                        <Property type="org.inviwo.OptionPropertyInt" identifier="shadingMode" displayName="Shading" key="shadingMode">
+                            <usageMode content="0" />
+                            <visible content="1" />
+                            <MetaDataMap />
+                        </Property>
+                    </Properties>
+                </Property>
+                <Property type="org.inviwo.ButtonProperty" identifier="resetView" displayName="Reset Camera" key="resetView">
+                    <usageMode content="0" />
+                    <visible content="1" />
+                    <MetaDataMap />
+                </Property>
+            </Properties>
+            <MetaDataMap>
+                <MetaDataItem type="ProcessorMetaData" key="ProcessorMetaData">
+                    <position x="100" y="-75" />
+                    <visibility content="1" />
+                    <selection content="0" />
+                </MetaDataItem>
+            </MetaDataMap>
+        </Processor>
+        <Processor type="org.inviwo.MeshCreator" identifier="Mesh Creator" id="ref2">
+            <Properties>
+                <Property type="org.inviwo.OptionPropertyInt" identifier="meshType" displayName="Mesh Type" key="meshType">
+                    <usageMode content="0" />
+                    <visible content="1" />
+                    <MetaDataMap />
+                </Property>
+                <Property type="org.inviwo.IntProperty" identifier="resX" displayName="Mesh res. (horiz.)" key="resX">
+                    <usageMode content="0" />
+                    <visible content="1" />
+                    <MetaDataMap />
+                </Property>
+                <Property type="org.inviwo.IntProperty" identifier="resY" displayName="Mesh res. (vert.)" key="resY">
+                    <usageMode content="0" />
+                    <visible content="1" />
+                    <MetaDataMap />
+                </Property>
+                <Property type="org.inviwo.FloatProperty" identifier="scale" displayName="Size scaling" key="scale">
+                    <usageMode content="0" />
+                    <visible content="1" />
+                    <MetaDataMap />
+                </Property>
+            </Properties>
+            <MetaDataMap>
+                <MetaDataItem type="ProcessorMetaData" key="ProcessorMetaData">
+                    <position x="150" y="-275" />
+                    <visibility content="1" />
+                    <selection content="0" />
+                </MetaDataItem>
+            </MetaDataMap>
+        </Processor>
+    </Processors>
+    <Connections>
+        <Connection>
+            <OutPort identifier="image.outport">
+                <Processor type="org.inviwo.GeometryRenderGL" identifier="Geometry Renderer" reference="ref0" />
+            </OutPort>
+            <InPort identifier="inport">
+                <Processor type="org.inviwo.CanvasGL" identifier="Canvas" reference="ref1" />
+            </InPort>
+        </Connection>
+        <Connection>
+            <OutPort identifier="outport">
+                <Processor type="org.inviwo.MeshCreator" identifier="Mesh Creator" reference="ref2" />
+            </OutPort>
+            <InPort identifier="geometry.inport">
+                <Processor type="org.inviwo.GeometryRenderGL" identifier="Geometry Renderer" reference="ref0" />
+            </InPort>
+        </Connection>
+    </Connections>
+    <PropertyLinks />
+</InviwoTreeData>
