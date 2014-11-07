@@ -35,20 +35,14 @@
 namespace inviwo {
 
 PropertyLink::PropertyLink()
-    : srcProperty_(0),
-      dstProperty_(0) {
+    : srcProperty_(NULL),
+      dstProperty_(NULL) {
 }
 
 PropertyLink::~PropertyLink() {}
 
 PropertyLink::PropertyLink(Property* srcProperty, Property* destProperty)
     : srcProperty_(srcProperty), dstProperty_(destProperty) {
-}
-
-void PropertyLink::switchDirection() {
-    Property* tempProperty = srcProperty_;
-    srcProperty_ = dstProperty_;
-    dstProperty_ = tempProperty;
 }
 
 void PropertyLink::serialize(IvwSerializer& s) const {

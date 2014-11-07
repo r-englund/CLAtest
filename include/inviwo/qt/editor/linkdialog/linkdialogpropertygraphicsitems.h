@@ -98,10 +98,6 @@ public:
     DialogConnectionGraphicsItem* getArrowConnectionAt(const QPointF pos) const;
     bool isArrowPointedRight(DialogConnectionGraphicsItem* cItem);
 
-    //void addArrow() {arrowCount_++;}
-    //int getArrowCount() {return arrowCount_;}
-    //void removeArrow() {arrowCount_--;}
-
     void prepareGeometryChange() {QGraphicsItem::prepareGeometryChange();}
 
     void addConnectionGraphicsItem(DialogConnectionGraphicsItem*);
@@ -115,7 +111,6 @@ protected:
     virtual QVariant itemChange(GraphicsItemChange change, const QVariant& value);
 
 private:
-
     LabelGraphicsItem* classLabel_;
     LabelGraphicsItem* typeLabel_;
     LinkDialogProcessorGraphicsItem* processorGraphicsItem_;
@@ -126,9 +121,6 @@ private:
     bool isExpanded_;
     int index_;
     bool animateEnabled_;
-    //bool isTopItem_;
-    //bool isBottomItem_;
-
 };
 
 } //namespace

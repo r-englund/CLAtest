@@ -70,23 +70,17 @@ DialogConnectionGraphicsItem::DialogConnectionGraphicsItem(LinkDialogPropertyGra
                             uvec3(38,38,38)),
     startPropertyGraphicsItem_(startProperty),
     endPropertyGraphicsItem_(endProperty),
-    propertyLink_(propertyLink)
-{
+    propertyLink_(propertyLink) {
+    
     setFlags(ItemIsSelectable | ItemIsFocusable);
-    initialize();
-}
-
-DialogConnectionGraphicsItem::~DialogConnectionGraphicsItem() {
-}
-
-void DialogConnectionGraphicsItem::initialize() {
+    
     startPropertyGraphicsItem_->addConnectionGraphicsItem(this);
     setStartArrowHeadIndex(startPropertyGraphicsItem_->getConnectionGraphicsItemCount());
     endPropertyGraphicsItem_->addConnectionGraphicsItem(this);
     setEndArrowHeadIndex(endPropertyGraphicsItem_->getConnectionGraphicsItemCount());
 }
 
-void DialogConnectionGraphicsItem::deinitialize() {
+DialogConnectionGraphicsItem::~DialogConnectionGraphicsItem() {
     startPropertyGraphicsItem_->removeConnectionGraphicsItem(this);
     endPropertyGraphicsItem_->removeConnectionGraphicsItem(this);
     propertyLink_ = NULL;
@@ -107,6 +101,7 @@ void DialogConnectionGraphicsItem::updateStartEndPoint() {
         arrowCenter = aCenterL;
 
     setStartPoint(arrowCenter);
+    
     //End Property
     aCenterR = endPropertyGraphicsItem_->calculateArrowCenter(endArrowHeadIndex_, true);
     aCenterL = endPropertyGraphicsItem_->calculateArrowCenter(endArrowHeadIndex_, false);
@@ -124,17 +119,6 @@ void DialogConnectionGraphicsItem::updateStartEndPoint() {
 bool DialogConnectionGraphicsItem::isBidirectional() {
     return InviwoApplication::getPtr()->getProcessorNetwork()->isLinkedBidirectional(
                propertyLink_->getSourceProperty(), propertyLink_->getDestinationProperty());
-}
-
-void DialogConnectionGraphicsItem::switchDirection() {
-    LinkDialogPropertyGraphicsItem* tempProp = getEndProperty();
-    endPropertyGraphicsItem_ = getStartProperty();
-    startPropertyGraphicsItem_ = tempProp;
-    size_t temp = endArrowHeadIndex_;
-    endArrowHeadIndex_ = startArrowHeadIndex_;
-    startArrowHeadIndex_ = temp;
-
-    if (propertyLink_) propertyLink_->switchDirection();
 }
 
 void DialogConnectionGraphicsItem::updateConnectionDrawing() {

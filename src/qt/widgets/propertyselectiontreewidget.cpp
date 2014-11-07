@@ -186,7 +186,7 @@ void PropertySelectionTreeDialog::initDialog() {
 
 void PropertySelectionTreeDialog::clickedOkayButton() {
     accept();
-    selectedProperties_ =  selectionTree_->getSelectedProperties(processorNetwork_);
+    selectedProperties_ = selectionTree_->getSelectedProperties(processorNetwork_);
 }
 
 void PropertySelectionTreeDialog::clickedCancelButton() {

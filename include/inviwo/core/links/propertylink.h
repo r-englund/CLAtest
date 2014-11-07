@@ -46,14 +46,10 @@ public :
     PropertyLink(Property* srcProperty, Property* dstProperty);
     virtual ~PropertyLink();
 
-    void setSourceProperty(Property* src) { srcProperty_=src; }
-    void setDestinationProperty(Property* dst) { dstProperty_=dst; }    
     Property* getSourceProperty() const { return srcProperty_; }
     Property* getDestinationProperty() const { return dstProperty_; }    
     virtual void serialize(IvwSerializer& s) const;
     virtual void deserialize(IvwDeserializer& d);
-
-    void switchDirection();
 
 private:
     Property* srcProperty_;

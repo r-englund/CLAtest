@@ -77,9 +77,9 @@ static const int propertyExpandCollapseOffset = 16;
 static const int arrowDimensionWidth = propertyItemWidth/15;
 static const int arrowDimensionHeight = arrowDimensionWidth/2;
 
+// WE should not use macros for this kind of things. //Peter.
 #define IS_SUB_PROPERTY(prop) (prop->getOwner()->getProcessor() != prop->getOwner())
 #define IS_COMPOSITE_PROPERTY(prop) dynamic_cast<CompositeProperty*>(prop)
-#define EXPAND_SUB_PROPERTIES_BY_DEFAULT false
 
 namespace inviwo {
 

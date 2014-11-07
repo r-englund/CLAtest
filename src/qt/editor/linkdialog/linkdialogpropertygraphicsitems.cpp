@@ -388,8 +388,7 @@ void LinkDialogPropertyGraphicsItem::paint(QPainter* p, const QStyleOptionGraphi
             rectPath.lineTo(arrowRect.left(), arrowRect.bottom());
             rectPath.lineTo(arrowRect.right(), arrowRect.bottom()-arrowRect.height()/2);
             rectPath.closeSubpath();
-        }
-        else {
+        } else {
             rectPath.moveTo(arrowRect.right(), arrowRect.top());
             rectPath.lineTo(arrowRect.right(), arrowRect.bottom());
             rectPath.lineTo(arrowRect.left(), arrowRect.bottom()-arrowRect.height()/2);
@@ -446,7 +445,7 @@ QPointF LinkDialogPropertyGraphicsItem::getShortestBoundaryPointTo(QPointF inPos
 
 QPointF LinkDialogPropertyGraphicsItem::calculateArrowCenter(size_t curPort, bool computeRight) const {
     size_t arrowCount = getConnectionGraphicsItemCount();
-    QPointF o = pos() ;
+    QPointF o = pos();
 
     if (computeRight) {
         QPointF br = o + QPointF(rect().width()/2, rect().height()/2);
@@ -458,17 +457,17 @@ QPointF LinkDialogPropertyGraphicsItem::calculateArrowCenter(size_t curPort, boo
 
         vec*=curPort;
         return tr+vec;
+    } else {
+        QPointF bl = o + QPointF(-rect().width()/2, rect().height()/2);
+        QPointF tl = o + QPointF(-rect().width()/2, -rect().height()/2);
+        QPointF vec(bl - tl);
+        vec = vec/(arrowCount+1) ;
+
+        if (arrowCount==0) vec = vec/2;
+
+        vec*=curPort;
+        return tl+vec;
     }
-
-    QPointF bl = o + QPointF(-rect().width()/2, rect().height()/2);
-    QPointF tl = o + QPointF(-rect().width()/2, -rect().height()/2);
-    QPointF vec(bl - tl);
-    vec = vec/(arrowCount+1) ;
-
-    if (arrowCount==0) vec = vec/2;
-
-    vec*=curPort;
-    return tl+vec;
 }
 
 const std::vector<DialogConnectionGraphicsItem*>& LinkDialogPropertyGraphicsItem::getConnectionGraphicsItems() const {

@@ -431,29 +431,29 @@ std::vector<Property*> ProcessorNetwork::getLinkedProperties(Property* property)
 }
 
 struct LinkCheck {
-    LinkCheck() : linkSettings_(InviwoApplication::getPtr()->getSettingsByType<LinkSettings>()){ }
-    bool operator()(const Property *p)const{ return !linkSettings_->isLinkable(p); }
+    LinkCheck() : linkSettings_(InviwoApplication::getPtr()->getSettingsByType<LinkSettings>()) {}
+    bool operator()(const Property *p) const { return !linkSettings_->isLinkable(p); }
+
 private:
-    LinkSettings* linkSettings_;
+    LinkSettings *linkSettings_;
 };
 
 struct AutoLinkCheck {
-    AutoLinkCheck(const Property *p, LinkingConditions linkCondition) : property_(p), linkCondition_(linkCondition){}
-    bool operator()(const Property *p)const{ return !AutoLinker::canLink(p, property_, linkCondition_); }
+    AutoLinkCheck(const Property *p, LinkingConditions linkCondition)
+        : property_(p), linkCondition_(linkCondition) {}
+    bool operator()(const Property *p) const {
+        return !AutoLinker::canLink(p, property_, linkCondition_);
+    }
+
 private:
     const Property *property_;
     LinkingConditions linkCondition_;
 };
 
+struct AutoLinkSort {
+    AutoLinkSort(const Property *p) { pos_ = getPosition(p); }
 
-
-
-struct AutoLinkSort{
-    AutoLinkSort(const Property *p){
-        pos_ = getPosition(p);
-    }
-
-    bool operator()(const Property *a, const Property *b){
+    bool operator()(const Property *a, const Property *b) {
         // TODO Figure out which candidate is best.
         // using distance now
         float da = glm::distance(pos_, getPosition(a));
@@ -467,20 +467,19 @@ private:
 
     vec2 getPosition(const Property *p) {
         std::map<const Property *, vec2>::const_iterator it = cache_.find(p);
-        if (it != cache_.end())
-            return it->second;
+        if (it != cache_.end()) return it->second;
         return cache_[p] = getPosition(p->getOwner()->getProcessor());
     }
 
-    vec2 getPosition(const Processor* processor) {
-            ProcessorMetaData* meta =processor->getMetaData<ProcessorMetaData>("ProcessorMetaData");
-           if (meta) {
-               return static_cast<vec2>(meta->getPosition());
-           }
-           else {
-                LogWarnCustom("getProcessorPosition", "No ProcessorMetaData for added processor found while auto linking");
-                return vec2(0, 0);
-            }
+    vec2 getPosition(const Processor *processor) {
+        ProcessorMetaData *meta = processor->getMetaData<ProcessorMetaData>("ProcessorMetaData");
+        if (meta) {
+            return static_cast<vec2>(meta->getPosition());
+        } else {
+            LogWarnCustom("getProcessorPosition",
+                          "No ProcessorMetaData for added processor found while auto linking");
+            return vec2(0, 0);
+        }
         return vec2(0, 0);
     }
 };
@@ -517,6 +516,7 @@ void ProcessorNetwork::autoLinkProcessor(Processor* processor) {
 
         if(candidates.size()>0) {
             addLink(candidates[0], *dit);
+            evaluatePropertyLinks(candidates[0]); // Propagate the link to the new Processor.
             addLink(*dit, candidates[0]);
         }        
     }
