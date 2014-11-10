@@ -44,9 +44,19 @@ vec3 shadeDiffuseCalculation(LIGHT_PARAMETERS light_, vec3 materialDiffuseColor,
 
 vec3 shadeSpecularCalculation(LIGHT_PARAMETERS light_, vec3 materialSpecularColor, vec3 normal, vec3 toLightDir,
                               vec3 toCameraDir) {
-    vec3 halfway = normalize(toCameraDir + toLightDir);
-    return materialSpecularColor * light_.specularColor_ *
-           pow(max(dot(normal, halfway), 0.0), light_.specularExponent_);
+    vec3 camDir = normalize(toCameraDir);
+    vec3 halfway = camDir + toLightDir;
+
+    // check for special case where the light source is exactly opposite
+    // to the view direction, i.e. the length of the halfway vector is zero
+    if (dot(halfway, halfway) < 1.0e-6) { // check for squared length
+        return vec3(0.0);
+    }
+    else {
+        halfway = normalize(halfway);
+        return materialSpecularColor * light_.specularColor_ *
+               pow(max(dot(normal, halfway), 0.0), light_.specularExponent_);
+    }
 }
 
 // All positions and directions are assumed to be in world space!
@@ -68,14 +78,8 @@ vec3 shadePhong(LIGHT_PARAMETERS light_,
                 vec3 position, vec3 normal, vec3 toCameraDir) {
     vec3 toLightDir = normalize(light_.position_ - position);
     vec3 resAmb = shadeAmbient(light_, materialAmbientColor); 
-    //if (dot(normal, toLightDir) < 0) return resAmb;
-    vec3 resDiff = shadeDiffuse(light_, materialDiffuseColor, normal, toLightDir);
+    vec3 resDiff = shadeDiffuseCalculation(light_, materialDiffuseColor, normal, toLightDir);
     vec3 resSpec = shadeSpecularCalculation(light_, materialSpecularColor, normal, toLightDir, toCameraDir);
-    //return normalize(toCameraDir + toLightDir);
-    //vec3 halfway = normalize(toCameraDir + toLightDir);
-    //return vec3(dot(normal, halfway));
-    //return normal*0.5+0.5;
-    //return resAmb+ vec3(dot(toLightDir, normal));
     return resAmb + resDiff + resSpec;
 }
 
