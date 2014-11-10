@@ -60,7 +60,8 @@ public:
 private:
     void updateWidget();
     void buildLayout();
-    void findProcessorsWithInteractionHandlers(std::vector<Processor*>* container, std::vector<Processor*> processors);
+    void findProcessorsWithInteractionHandlers(std::vector<Processor*>* container,
+                                               std::vector<Processor*> processors);
 
     ProcessorNetwork* processorNetwork_;
     EventPropertyManager* eventPropertyManager_;
@@ -72,7 +73,6 @@ private:
     int currentIndex_;
 public slots:
     void comboBoxChange();
-
 };
 
 } // namespace

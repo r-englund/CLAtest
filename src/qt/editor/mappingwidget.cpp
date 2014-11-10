@@ -25,7 +25,7 @@
  * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- * 
+ *
  * Contact: Sathish Kottravel
  *
  *********************************************************************************/
@@ -39,18 +39,20 @@
 
 namespace inviwo {
 
-MappingWidget::MappingWidget(QWidget* parent) : InviwoDockWidget(tr("Input Mapping"), parent), ProcessorNetworkObserver() {
+MappingWidget::MappingWidget(QWidget* parent)
+    : InviwoDockWidget(tr("Input Mapping"), parent), ProcessorNetworkObserver() {
     setObjectName("MappingWidget");
     setAllowedAreas(Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea);
     processorNetwork_ = InviwoApplication::getPtr()->getProcessorNetwork();
+
     eventPropertyManager_ = new EventPropertyManager();
-    addObservation(processorNetwork_);
     processorNetwork_->addObserver(this);
     buildLayout();
     currentIndex_ = 0;
     prevProcessorsWithInteractionHandlersSize_ = 0;
     processorsWithInteractionHandlers_ = new std::vector<Processor*>();
-    findProcessorsWithInteractionHandlers(processorsWithInteractionHandlers_, processorNetwork_->getProcessors());
+    findProcessorsWithInteractionHandlers(processorsWithInteractionHandlers_,
+                                          processorNetwork_->getProcessors());
     updateWidget();
 }
 
@@ -66,7 +68,8 @@ void MappingWidget::buildLayout() {
     QVBoxLayout* mainLayout = new QVBoxLayout();
     QVBoxLayout* topLayout = new QVBoxLayout();
     QScrollArea* scrollArea = new QScrollArea();
-    EventPropertyManagerWidget* eventPropertyManagerWidget_ = new EventPropertyManagerWidget(eventPropertyManager_);
+    EventPropertyManagerWidget* eventPropertyManagerWidget_ =
+        new EventPropertyManagerWidget(eventPropertyManager_);
     // mainLayout contains topLayout and scrollArea.
     // scrollArea contains a widget with the botLayout.
     // Eventpropertywidgets will be added to the botlayout.
@@ -81,25 +84,30 @@ void MappingWidget::buildLayout() {
 }
 
 void MappingWidget::onProcessorNetworkChange() {
-    findProcessorsWithInteractionHandlers(processorsWithInteractionHandlers_, processorNetwork_->getProcessors());
+    // change to onDidAddProcessor etc...
+
+
+    findProcessorsWithInteractionHandlers(processorsWithInteractionHandlers_,
+                                          processorNetwork_->getProcessors());
 
     if (processorsWithInteractionHandlers_->size() != prevProcessorsWithInteractionHandlersSize_)
         updateWidget();
 }
 
 void MappingWidget::updateWidget() {
-    if (comboBox_->count() > 0)
-        currentIndex_ =  comboBox_->currentIndex();
+    if (comboBox_->count() > 0) currentIndex_ = comboBox_->currentIndex();
 
     comboBox_->clear();
     std::vector<EventProperty*> eventProperties, tmp;
-    std::map<std::string, std::vector<EventProperty*> >* eventPropertyMap = eventPropertyManager_->getEventPropertyMap();
+    std::map<std::string, std::vector<EventProperty*> >* eventPropertyMap =
+        eventPropertyManager_->getEventPropertyMap();
     eventPropertyMap->clear();
     PropertyOwner* eventPropertyOwner;
 
     // Get all eventproperties from the processornetwork
     for (size_t i = 0; i < processorsWithInteractionHandlers_->size(); ++i) {
-        const std::vector<InteractionHandler*>& interactionHandlers = processorsWithInteractionHandlers_->at(i)->getInteractionHandlers();
+        const std::vector<InteractionHandler*>& interactionHandlers =
+            processorsWithInteractionHandlers_->at(i)->getInteractionHandlers();
 
         for (size_t j = 0; j < interactionHandlers.size(); ++j) {
             eventPropertyOwner = dynamic_cast<PropertyOwner*>(interactionHandlers.at(j));
@@ -111,12 +119,13 @@ void MappingWidget::updateWidget() {
         }
 
         // Add vector of eventproperties to map with processor identifier as key
-        eventPropertyMap->insert(std::pair<std::string, std::vector<EventProperty*> >(processorsWithInteractionHandlers_->at(i)->getIdentifier(), eventProperties));
+        eventPropertyMap->insert(std::pair<std::string, std::vector<EventProperty*> >(
+            processorsWithInteractionHandlers_->at(i)->getIdentifier(), eventProperties));
         comboBox_->addItem(processorsWithInteractionHandlers_->at(i)->getIdentifier().c_str());
         eventProperties.clear();
     }
 
-    if (currentIndex_ > comboBox_->count()-1) currentIndex_ = 0;
+    if (currentIndex_ > comboBox_->count() - 1) currentIndex_ = 0;
 
     // Set selected processor and draw eventpropertywidgets
     if (comboBox_->count() > 0) {
@@ -134,13 +143,13 @@ void MappingWidget::comboBoxChange() {
     eventPropertyManager_->setActiveProcessor(identifier.c_str());
 }
 
-void MappingWidget::findProcessorsWithInteractionHandlers(std::vector<Processor*>* container, std::vector<Processor*> processors) {
+void MappingWidget::findProcessorsWithInteractionHandlers(std::vector<Processor*>* container,
+                                                          std::vector<Processor*> processors) {
     container->clear();
 
     for (size_t i = 0; i < processors.size(); ++i) {
-        if (processors.at(i)->hasInteractionHandler())
-            container->push_back(processors.at(i));
+        if (processors.at(i)->hasInteractionHandler()) container->push_back(processors.at(i));
     }
 }
 
-} // namespace
+}  // namespace
