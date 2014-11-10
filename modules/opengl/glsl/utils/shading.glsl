@@ -42,7 +42,7 @@ vec3 shadeDiffuseCalculation(LIGHT_PARAMETERS light_, vec3 materialDiffuseColor,
     return materialDiffuseColor * light_.diffuseColor_ * max(dot(normal, toLightDir), 0.0);
 }
 
-vec3 shadeSpecularCalculation(LIGHT_PARAMETERS light_, vec3 materialSpecularColor, vec3 normal, vec3 toLightDir,
+vec3 shadeSpecularBlinnPhongCalculation(LIGHT_PARAMETERS light_, vec3 materialSpecularColor, vec3 normal, vec3 toLightDir,
                               vec3 toCameraDir) {
     vec3 camDir = normalize(toCameraDir);
     vec3 halfway = camDir + toLightDir;
@@ -59,6 +59,14 @@ vec3 shadeSpecularCalculation(LIGHT_PARAMETERS light_, vec3 materialSpecularColo
     }
 }
 
+vec3 shadeSpecularPhongCalculation(LIGHT_PARAMETERS light_, vec3 materialSpecularColor, vec3 normal, vec3 toLightDir,
+                              vec3 toCameraDir) {
+    vec3 camDir = normalize(toCameraDir);
+    vec3 r = reflect(-toLightDir, normal);
+    return materialSpecularColor * light_.specularColor_ *
+           pow(max(dot(r, toCameraDir), 0.0), light_.specularExponent_ * 0.25);
+}
+
 // All positions and directions are assumed to be in world space!
 vec3 shadeDiffuse(LIGHT_PARAMETERS light_, vec3 materialDiffuseColor,
                   vec3 position, vec3 normal) {
@@ -68,9 +76,19 @@ vec3 shadeDiffuse(LIGHT_PARAMETERS light_, vec3 materialDiffuseColor,
 
 vec3 shadeSpecular(LIGHT_PARAMETERS light_, vec3 materialSpecularColor,
                    vec3 position, vec3 normal, vec3 toCameraDir) {
-    return shadeSpecularCalculation(light_, materialSpecularColor, normal,
+    return shadeSpecularPhongCalculation(light_, materialSpecularColor, normal,
                                     normalize(light_.position_ - position), 
                                     toCameraDir);
+}
+
+vec3 shadeBlinnPhong(LIGHT_PARAMETERS light_, 
+                vec3 materialAmbientColor, vec3 materialDiffuseColor, vec3 materialSpecularColor,
+                vec3 position, vec3 normal, vec3 toCameraDir) {
+    vec3 toLightDir = normalize(light_.position_ - position);
+    vec3 resAmb = shadeAmbient(light_, materialAmbientColor); 
+    vec3 resDiff = shadeDiffuseCalculation(light_, materialDiffuseColor, normal, toLightDir);
+    vec3 resSpec = shadeSpecularBlinnPhongCalculation(light_, materialSpecularColor, normal, toLightDir, toCameraDir);
+    return resAmb + resDiff + resSpec;
 }
 
 vec3 shadePhong(LIGHT_PARAMETERS light_, 
@@ -79,7 +97,7 @@ vec3 shadePhong(LIGHT_PARAMETERS light_,
     vec3 toLightDir = normalize(light_.position_ - position);
     vec3 resAmb = shadeAmbient(light_, materialAmbientColor); 
     vec3 resDiff = shadeDiffuseCalculation(light_, materialDiffuseColor, normal, toLightDir);
-    vec3 resSpec = shadeSpecularCalculation(light_, materialSpecularColor, normal, toLightDir, toCameraDir);
+    vec3 resSpec = shadeSpecularPhongCalculation(light_, materialSpecularColor, normal, toLightDir, toCameraDir);
     return resAmb + resDiff + resSpec;
 }
 

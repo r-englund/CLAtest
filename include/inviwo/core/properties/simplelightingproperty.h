@@ -53,6 +53,7 @@ namespace ShadingMode {
         Ambient,
         Diffuse,
         Specular,
+        BlinnPhong,
         Phong,
     };
 }

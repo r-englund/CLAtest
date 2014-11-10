@@ -54,6 +54,7 @@ SimpleLightingProperty::SimpleLightingProperty(std::string identifier, std::stri
     shadingMode_.addOption("ambient", "Ambient", ShadingMode::Ambient);
     shadingMode_.addOption("diffuse", "Diffuse", ShadingMode::Diffuse);
     shadingMode_.addOption("specular", "Specular", ShadingMode::Specular);
+    shadingMode_.addOption("blinnphong", "Phong", ShadingMode::BlinnPhong);
     shadingMode_.addOption("phong", "Phong", ShadingMode::Phong);
     shadingMode_.setSelectedValue(ShadingMode::Phong);
     shadingMode_.setCurrentStateAsDefault();

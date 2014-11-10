@@ -42,18 +42,27 @@ void addShaderDefines(Shader* shader, const SimpleLightingProperty& property) {
         "APPLY_LIGHTING(lighting, materialAmbientColor, materialDiffuseColor, materialSpecularColor, position, normal, toCameraDir)";
     std::string shadingValue = "";
 
-    if (property.shadingMode_.isSelectedIdentifier("none"))
-        shadingValue = "materialAmbientColor;";
-    else if (property.shadingMode_.isSelectedIdentifier("ambient"))
+    switch(property.shadingMode_.get()) {
+    case ShadingMode::Ambient:
         shadingValue = "shadeAmbient(lighting, materialAmbientColor);";
-    else if (property.shadingMode_.isSelectedIdentifier("diffuse"))
+        break;
+    case ShadingMode::Diffuse:
         shadingValue = "shadeDiffuse(lighting, materialDiffuseColor, position, normal);";
-    else if (property.shadingMode_.isSelectedIdentifier("specular"))
-        shadingValue =
-            "shadeSpecular(lighting, materialSpecularColor, position, normal, toCameraDir);";
-    else if (property.shadingMode_.isSelectedIdentifier("phong"))
-        shadingValue =
-            "shadePhong(lighting, materialAmbientColor, materialDiffuseColor, materialSpecularColor, position, normal, toCameraDir);";
+        break;
+    case ShadingMode::Specular:
+        shadingValue = "shadeSpecular(lighting, materialSpecularColor, position, normal, toCameraDir);";
+        break;
+    case ShadingMode::BlinnPhong:
+        shadingValue = "shadeBlinnPhong(lighting, materialAmbientColor, materialDiffuseColor, materialSpecularColor, position, normal, toCameraDir);";
+        break;
+    case ShadingMode::Phong:
+        shadingValue = "shadePhong(lighting, materialAmbientColor, materialDiffuseColor, materialSpecularColor, position, normal, toCameraDir);";
+        break;
+    case ShadingMode::None:
+    default:
+        shadingValue = "materialAmbientColor;";
+        break;
+    }
 
     shader->getFragmentShaderObject()->addShaderDefine(shadingKey, shadingValue);
 }
