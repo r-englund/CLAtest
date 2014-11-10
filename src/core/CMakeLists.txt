@@ -120,7 +120,6 @@ set(HEADER_FILES
     ${IVW_INCLUDE_DIR}/inviwo/core/links/processorlink.h
     ${IVW_INCLUDE_DIR}/inviwo/core/links/propertylink.h   
     ${IVW_INCLUDE_DIR}/inviwo/core/metadata/metadata.h
-    ${IVW_INCLUDE_DIR}/inviwo/core/metadata/metadatadefinefunc.h
     ${IVW_INCLUDE_DIR}/inviwo/core/metadata/metadatafactory.h
     ${IVW_INCLUDE_DIR}/inviwo/core/metadata/metadatamap.h
     ${IVW_INCLUDE_DIR}/inviwo/core/metadata/metadataowner.h

@@ -40,14 +40,14 @@
 
 namespace inviwo {
 
-class IVW_CORE_API PositionMetaData : public IVec2MetaData {
+class IVW_CORE_API PositionMetaData : public IntVec2MetaData {
 
 public:
     PositionMetaData();
     PositionMetaData(int x, int y);
     virtual ~PositionMetaData();
 
-    virtual std::string getClassIdentifier() const { return "PositionMetaData"; }
+    virtual std::string getClassIdentifier() const { return "org.inviwo.PositionMetaData"; }
     virtual PositionMetaData* clone() const;
 
     virtual void serialize(IvwSerializer& s) const;

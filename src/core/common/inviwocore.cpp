@@ -97,8 +97,29 @@ InviwoCore::InviwoCore() : InviwoModule() {
     registerRepresentationConverter(new LayerDisk2RAMConverter());
     registerRepresentationConverter(new GeometryDisk2RAMConverter());
     // Register MetaData
-#define MetaDataMacro(n, t, d, v) registerMetaData(new n##MetaData());
-#include <inviwo/core/metadata/metadatadefinefunc.h>
+    registerMetaData(new BoolMetaData());
+    registerMetaData(new IntMetaData());
+    registerMetaData(new FloatMetaData());
+    registerMetaData(new DoubleMetaData());
+    registerMetaData(new StringMetaData());
+    registerMetaData(new FloatVec2MetaData());
+    registerMetaData(new FloatVec3MetaData());
+    registerMetaData(new FloatVec4MetaData());
+    registerMetaData(new DoubleVec2MetaData());
+    registerMetaData(new DoubleVec3MetaData());
+    registerMetaData(new DoubleVec4MetaData());
+    registerMetaData(new IntVec2MetaData());
+    registerMetaData(new IntVec3MetaData());
+    registerMetaData(new IntVec4MetaData());
+    registerMetaData(new UIntVec2MetaData());
+    registerMetaData(new UIntVec3MetaData());
+    registerMetaData(new UIntVec4MetaData());
+    registerMetaData(new FloatMat2MetaData());
+    registerMetaData(new FloatMat3MetaData());
+    registerMetaData(new FloatMat4MetaData());
+    registerMetaData(new DoubleMat2MetaData());
+    registerMetaData(new DoubleMat4MetaData());
+    registerMetaData(new DoubleMat3MetaData());
     registerMetaData(new VectorMetaData<2,float>());
     registerMetaData(new VectorMetaData<3,float>());
     registerMetaData(new VectorMetaData<4,float>());

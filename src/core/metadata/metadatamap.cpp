@@ -116,7 +116,7 @@ MetaDataMap& MetaDataMap::operator=(const MetaDataMap& map) {
 }
 
 void MetaDataMap::serialize(IvwSerializer& s) const {
-    s.serialize("MetaDataMap", metaData_, "MetaDataItem");
+    if (!metaData_.empty()) s.serialize("MetaDataMap", metaData_, "MetaDataItem");
 }
 
 void MetaDataMap::deserialize(IvwDeserializer& d) {

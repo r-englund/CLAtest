@@ -61,13 +61,14 @@ bool MetaData::equal(const MetaData& rhs) const {
     return false;
 }
 
-#define MetaDataMacro(n, t, d, v) \
-    n##MetaData::n##MetaData() : MetaDataPrimitiveType<t>(d) {}; \
-    n##MetaData::n##MetaData(t value) : MetaDataPrimitiveType<t>(value) {}; \
-    std::string n##MetaData::getClassIdentifier() const {std::stringstream s; s << #n; s << "MetaData"; return s.str(); }; \
-    n##MetaData* n##MetaData::clone() const { return new n##MetaData(*this); }; \
-     
-#include <inviwo/core/metadata/metadatadefinefunc.h>
+//
+//#define MetaDataMacro(n, t, d, v) \
+//    n##MetaData::n##MetaData() : MetaDataPrimitiveType<t>(d) {}; \
+//    n##MetaData::n##MetaData(t value) : MetaDataPrimitiveType<t>(value) {}; \
+//    std::string n##MetaData::getClassIdentifier() const {std::stringstream s; s << #n; s << "MetaData"; return s.str(); }; \
+//    n##MetaData* n##MetaData::clone() const { return new n##MetaData(*this); }; \
+//     
+//#include <inviwo/core/metadata/metadatadefinefunc.h>
 
 bool operator==(const MetaData& lhs, const MetaData& rhs) {
     return lhs.equal(rhs);

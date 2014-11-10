@@ -34,7 +34,7 @@
 
 namespace inviwo {
 
-const std::string ProcessorWidgetMetaData::CLASS_IDENTIFIER = "ProcessorWidgetMetaData";
+const std::string ProcessorWidgetMetaData::CLASS_IDENTIFIER = "org.inviwo.ProcessorWidgetMetaData";
 
 ProcessorWidgetMetaData::ProcessorWidgetMetaData()
     : MetaData()
