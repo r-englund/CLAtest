@@ -123,6 +123,9 @@ InviwoCore::InviwoCore() : InviwoModule() {
     registerMetaData(new VectorMetaData<2,float>());
     registerMetaData(new VectorMetaData<3,float>());
     registerMetaData(new VectorMetaData<4,float>());
+    registerMetaData(new VectorMetaData<2,double>());
+    registerMetaData(new VectorMetaData<3,double>());
+    registerMetaData(new VectorMetaData<4,double>());
     registerMetaData(new VectorMetaData<2,int>());
     registerMetaData(new VectorMetaData<3,int>());
     registerMetaData(new VectorMetaData<4,int>());
@@ -132,6 +135,9 @@ InviwoCore::InviwoCore() : InviwoModule() {
     registerMetaData(new MatrixMetaData<2,float>());
     registerMetaData(new MatrixMetaData<3,float>());
     registerMetaData(new MatrixMetaData<4,float>());
+    registerMetaData(new MatrixMetaData<2,double>());
+    registerMetaData(new MatrixMetaData<3,double>());
+    registerMetaData(new MatrixMetaData<4,double>());
     registerMetaData(new PositionMetaData());
     registerMetaData(new ProcessorMetaData());
     registerMetaData(new ProcessorWidgetMetaData());

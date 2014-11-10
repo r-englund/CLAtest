@@ -57,7 +57,6 @@ public:
 bool IVW_CORE_API operator==(const MetaData& lhs, const MetaData& rhs);
 bool IVW_CORE_API operator!=(const MetaData& lhs, const MetaData& rhs);
 
-/*---------------------------------------------------------------------*/
 
 template <typename T, int N, int M>
 class MetaDataPrimitiveType : public MetaData {};
@@ -116,7 +115,6 @@ MetaDataPrimitiveType<T, 0, 0>& MetaDataPrimitiveType<T, 0, 0>::operator=(
         value_ = that.value_;
         MetaData::operator=(that);
     }
-
     return *this;
 }
 

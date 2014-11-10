@@ -353,6 +353,7 @@ private:
         void updateProcessorType(TxElement* node);
         void updateMetaDataTree(TxElement* node);
         void updatePropertType(TxElement* node);
+        void updateMetaDataType(TxElement* node);
         void updateShadingMode(TxElement* node);
         void updateCameraToComposite(TxElement* node);
         void traverseNodes(TxElement* node, updateType update);
