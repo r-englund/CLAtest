@@ -79,7 +79,7 @@ PositionWidgetProcessor::~PositionWidgetProcessor() {
 void PositionWidgetProcessor::initialize() {
     CompositeProcessorGL::initialize();
     shader_ = new Shader("standard.vert", "picking.frag");
-    widgetPickingObject_ = PickingManager::instance()->registerPickingCallback(
+    widgetPickingObject_ = PickingManager::getPtr()->registerPickingCallback(
         this, &PositionWidgetProcessor::updateWidgetPositionFromPicking);
 }
 
@@ -87,7 +87,7 @@ void PositionWidgetProcessor::deinitialize() {
     CompositeProcessorGL::deinitialize();
     delete shader_;
     shader_ = NULL;
-    PickingManager::instance()->unregisterPickingObject(widgetPickingObject_);
+    PickingManager::getPtr()->unregisterPickingObject(widgetPickingObject_);
 }
 
 void PositionWidgetProcessor::updateWidgetPositionFromPicking(const PickingObject* p) {

@@ -60,8 +60,6 @@ void Action::serialize(IvwSerializer& s) const {
 }
 
 void Action::deserialize(IvwDeserializer& d) {
-    std::string className;
-    d.deserialize("type", className, true);
 }
 
 std::string Action::name() const {

@@ -51,16 +51,16 @@ Trackball::Trackball(vec3* lookFrom, vec3* lookTo, vec3* lookUp)
     , rotateEvent_(MouseEvent::MOUSE_BUTTON_LEFT, InteractionEvent::MODIFIER_NONE)
     , zoomEvent_(MouseEvent::MOUSE_BUTTON_RIGHT, InteractionEvent::MODIFIER_NONE)
     , panEvent_(MouseEvent::MOUSE_BUTTON_MIDDLE, InteractionEvent::MODIFIER_NONE)
-    , stepRotateUpEvent_('w',InteractionEvent::MODIFIER_NONE, KeyboardEvent::KEY_STATE_PRESS)
-    , stepRotateLeftEvent_('a',InteractionEvent::MODIFIER_NONE, KeyboardEvent::KEY_STATE_PRESS)
-    , stepRotateDownEvent_('s',InteractionEvent::MODIFIER_NONE, KeyboardEvent::KEY_STATE_PRESS)
-    , stepRotateRightEvent_('d',InteractionEvent::MODIFIER_NONE, KeyboardEvent::KEY_STATE_PRESS)
-    , stepZoomInEvent_('r',InteractionEvent::MODIFIER_NONE, KeyboardEvent::KEY_STATE_PRESS)
-    , stepZoomOutEvent_('f',InteractionEvent::MODIFIER_NONE, KeyboardEvent::KEY_STATE_PRESS)
-    , stepPanUpEvent_('w',InteractionEvent::MODIFIER_SHIFT, KeyboardEvent::KEY_STATE_PRESS)
-    , stepPanLeftEvent_('a',InteractionEvent::MODIFIER_SHIFT, KeyboardEvent::KEY_STATE_PRESS)
-    , stepPanDownEvent_('s',InteractionEvent::MODIFIER_SHIFT, KeyboardEvent::KEY_STATE_PRESS)
-    , stepPanRightEvent_('d',InteractionEvent::MODIFIER_SHIFT, KeyboardEvent::KEY_STATE_PRESS)
+    , stepRotateUpEvent_('w', InteractionEvent::MODIFIER_NONE, KeyboardEvent::KEY_STATE_PRESS)
+    , stepRotateLeftEvent_('a', InteractionEvent::MODIFIER_NONE, KeyboardEvent::KEY_STATE_PRESS)
+    , stepRotateDownEvent_('s', InteractionEvent::MODIFIER_NONE, KeyboardEvent::KEY_STATE_PRESS)
+    , stepRotateRightEvent_('d', InteractionEvent::MODIFIER_NONE, KeyboardEvent::KEY_STATE_PRESS)
+    , stepZoomInEvent_('r', InteractionEvent::MODIFIER_NONE, KeyboardEvent::KEY_STATE_PRESS)
+    , stepZoomOutEvent_('f', InteractionEvent::MODIFIER_NONE, KeyboardEvent::KEY_STATE_PRESS)
+    , stepPanUpEvent_('w', InteractionEvent::MODIFIER_SHIFT, KeyboardEvent::KEY_STATE_PRESS)
+    , stepPanLeftEvent_('a', InteractionEvent::MODIFIER_SHIFT, KeyboardEvent::KEY_STATE_PRESS)
+    , stepPanDownEvent_('s', InteractionEvent::MODIFIER_SHIFT, KeyboardEvent::KEY_STATE_PRESS)
+    , stepPanRightEvent_('d', InteractionEvent::MODIFIER_SHIFT, KeyboardEvent::KEY_STATE_PRESS)
 
     , rotateAction_(TrackballAction::TRACKBALL_ROTATE)
     , zoomAction_(TrackballAction::TRACKBALL_ZOOM)
@@ -76,34 +76,38 @@ Trackball::Trackball(vec3* lookFrom, vec3* lookTo, vec3* lookUp)
     , stepPanDownAction_(TrackballAction::TRACKBALL_STEPPAN_DOWN)
     , stepPanRightAction_(TrackballAction::TRACKBALL_STEPPAN_RIGHT)
 
-    , rotateEventProperty_("trackballRotate", "Rotate", &rotateEvent_,  &rotateAction_)
+    , rotateEventProperty_("trackballRotate", "Rotate", &rotateEvent_, &rotateAction_)
     , zoomEventProperty_("trackballZoom", "Zoom", &zoomEvent_, &zoomAction_)
     , panEventProperty_("trackballPan", "Pan", &panEvent_, &panAction_)
-    , stepRotateUpProperty_("stepRotateUp", "Step rotate up",           &stepRotateUpEvent_, &stepRotateUpAction_)
-    , stepRotateLeftProperty_("stepRotateLeft", "Step rotate left",    &stepRotateLeftEvent_, &stepRotateLeftAction_)
-    , stepRotateDownProperty_("stepRotateDown", "Step rotate down",    &stepRotateDownEvent_, &stepRotateDownAction_)
-    , stepRotateRightProperty_("stepRotateRight", "Step rotate right", &stepRotateRightEvent_, &stepRotateRightAction_)
-    , stepZoomInProperty_("stepZoomIn", "Step zoom in",                &stepZoomInEvent_, &stepZoomInAction_)
-    , stepZoomOutProperty_("stepZoomOut", "Step zoom out",             &stepZoomOutEvent_, &stepZoomOutAction_)
-    , stepPanUpProperty_("stepPanUp", "Step pan up",                   &stepPanUpEvent_, &stepPanUpAction_)
-    , stepPanLeftProperty_("stepPanLeft", "Step pan left",             &stepPanLeftEvent_,&stepPanLeftAction_)
-    , stepPanDownProperty_("stepPanDown", "Step pan down",             &stepPanDownEvent_,&stepPanDownAction_)
-    , stepPanRightProperty_("stepPanRight", "Step pan right",          &stepPanRightEvent_,&stepPanRightAction_)
-{
-
-    addProperty(&rotateEventProperty_);
-    addProperty(&zoomEventProperty_);
-    addProperty(&panEventProperty_);
-    addProperty(&stepRotateUpProperty_);
-    addProperty(&stepRotateLeftProperty_);
-    addProperty(&stepRotateDownProperty_);
-    addProperty(&stepRotateRightProperty_);
-    addProperty(&stepZoomInProperty_);
-    addProperty(&stepZoomOutProperty_);
-    addProperty(&stepPanUpProperty_);
-    addProperty(&stepPanLeftProperty_);
-    addProperty(&stepPanDownProperty_);
-    addProperty(&stepPanRightProperty_);
+    , stepRotateUpProperty_("stepRotateUp", "Step rotate up", &stepRotateUpEvent_,
+                            &stepRotateUpAction_)
+    , stepRotateLeftProperty_("stepRotateLeft", "Step rotate left", &stepRotateLeftEvent_,
+                              &stepRotateLeftAction_)
+    , stepRotateDownProperty_("stepRotateDown", "Step rotate down", &stepRotateDownEvent_,
+                              &stepRotateDownAction_)
+    , stepRotateRightProperty_("stepRotateRight", "Step rotate right", &stepRotateRightEvent_,
+                               &stepRotateRightAction_)
+    , stepZoomInProperty_("stepZoomIn", "Step zoom in", &stepZoomInEvent_, &stepZoomInAction_)
+    , stepZoomOutProperty_("stepZoomOut", "Step zoom out", &stepZoomOutEvent_, &stepZoomOutAction_)
+    , stepPanUpProperty_("stepPanUp", "Step pan up", &stepPanUpEvent_, &stepPanUpAction_)
+    , stepPanLeftProperty_("stepPanLeft", "Step pan left", &stepPanLeftEvent_, &stepPanLeftAction_)
+    , stepPanDownProperty_("stepPanDown", "Step pan down", &stepPanDownEvent_, &stepPanDownAction_)
+    , stepPanRightProperty_("stepPanRight", "Step pan right", &stepPanRightEvent_,
+                            &stepPanRightAction_) {
+        
+    addProperty(rotateEventProperty_);
+    addProperty(zoomEventProperty_);
+    addProperty(panEventProperty_);
+    addProperty(stepRotateUpProperty_);
+    addProperty(stepRotateLeftProperty_);
+    addProperty(stepRotateDownProperty_);
+    addProperty(stepRotateRightProperty_);
+    addProperty(stepZoomInProperty_);
+    addProperty(stepZoomOutProperty_);
+    addProperty(stepPanUpProperty_);
+    addProperty(stepPanLeftProperty_);
+    addProperty(stepPanDownProperty_);
+    addProperty(stepPanRightProperty_);
 }
 
 Trackball::~Trackball() {}

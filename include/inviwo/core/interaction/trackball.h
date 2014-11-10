@@ -71,35 +71,33 @@ public:
  *
  * @see TrackballObserver
  */
-class IVW_CORE_API TrackballObservable: public Observable<TrackballObserver> {
+class IVW_CORE_API TrackballObservable : public Observable<TrackballObserver> {
 public:
-    TrackballObservable(): Observable<TrackballObserver>() {};
+    TrackballObservable() : Observable<TrackballObserver>(){};
 
     void notifyAllChanged(const Trackball* trackball) const {
         // Notify observers
-        for (ObserverSet::iterator it = observers_->begin(), itEnd = observers_->end(); it != itEnd; ++it) {
+        for (ObserverSet::iterator it = observers_->begin(), itEnd = observers_->end(); it != itEnd;
+             ++it) {
             // static_cast can be used since only template class objects can be added
             static_cast<TrackballObserver*>(*it)->onAllTrackballChanged(trackball);
         }
     }
     void notifyLookFromChanged(const Trackball* trackball) const {
-        // Notify observers
-        for (ObserverSet::iterator it = observers_->begin(), itEnd = observers_->end(); it != itEnd; ++it) {
-            // static_cast can be used since only template class objects can be added
+        for (ObserverSet::iterator it = observers_->begin(), itEnd = observers_->end(); it != itEnd;
+             ++it) {
             static_cast<TrackballObserver*>(*it)->onLookFromChanged(trackball);
         }
     }
     void notifyLookToChanged(const Trackball* trackball) const {
-        // Notify observers
-        for (ObserverSet::iterator it = observers_->begin(), itEnd = observers_->end(); it != itEnd; ++it) {
-            // static_cast can be used since only template class objects can be added
+        for (ObserverSet::iterator it = observers_->begin(), itEnd = observers_->end(); it != itEnd;
+             ++it) {
             static_cast<TrackballObserver*>(*it)->onLookToChanged(trackball);
         }
     }
     void notifyLookUpChanged(const Trackball* trackball) const {
-        // Notify observers
-        for (ObserverSet::iterator it = observers_->begin(), itEnd = observers_->end(); it != itEnd; ++it) {
-            // static_cast can be used since only template class objects can be added
+        for (ObserverSet::iterator it = observers_->begin(), itEnd = observers_->end(); it != itEnd;
+             ++it) {
             static_cast<TrackballObserver*>(*it)->onLookUpChanged(trackball);
         }
     }

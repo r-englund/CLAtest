@@ -53,16 +53,12 @@ private:
     DataVec3UINT8::type color_;
 };
 
-class IVW_CORE_API PickingManager {
+class IVW_CORE_API PickingManager : public Singleton<PickingManager> {
 
     friend class PickingContainer;
 
 public:
-    static PickingManager* instance() {
-        static PickingManager instance;// Guaranteed to be destroyed. Instantiated on first use.
-        return &instance;
-    }
-    ~PickingManager();
+    virtual ~PickingManager();
 
     template <typename T>
     const PickingObject* registerPickingCallback(T* o, void (T::*m)(const PickingObject*), bool readDepth = true) {

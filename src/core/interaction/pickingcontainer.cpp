@@ -50,7 +50,7 @@ bool PickingContainer::isPickableSelected() { return selected_; }
 bool PickingContainer::performPick(const uvec2& coord) {
     prevCoord_ = coord;
 
-    if (PickingManager::instance()->pickingEnabled() && src_) {
+    if (PickingManager::getPtr()->pickingEnabled() && src_) {
         const Layer* pickingLayer = src_->getPickingLayer();
 
         if (pickingLayer) {
@@ -59,7 +59,7 @@ bool PickingContainer::performPick(const uvec2& coord) {
             dvec3 pickedColor = (value.a > 0.0 ? value.rgb() : dvec3(0.0));
             DataVec3UINT8::type pickedColorUINT8;
             DataVec3UINT8::get()->vec3DoubleToValue(pickedColor*255.0, &pickedColorUINT8);
-            currentPickObj_ = PickingManager::instance()->getPickingObjectFromColor(pickedColorUINT8);
+            currentPickObj_ = PickingManager::getPtr()->getPickingObjectFromColor(pickedColorUINT8);
 
             if (currentPickObj_) {
                 setPickableSelected(true);

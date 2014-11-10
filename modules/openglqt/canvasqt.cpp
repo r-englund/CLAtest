@@ -386,8 +386,6 @@ void CanvasQt::exposeEvent(QExposeEvent *e){
 void CanvasQt::touchEvent(QTouchEvent* touch) {
     if (!processorNetworkEvaluator_) return;
 
-    //std::cout << "TOUCH" << std::endl;
-
     QTouchEvent::TouchPoint firstPoint = touch->touchPoints()[0];
     ivec2 pos = ivec2(static_cast<int>(glm::floor(firstPoint.pos().x())), static_cast<int>(glm::floor(firstPoint.pos().y())));
     TouchEvent::TouchState touchState;
@@ -459,8 +457,6 @@ bool CanvasQt::gestureEvent(QGestureEvent* ge) {
     QGesture* gesture = NULL;
     QPanGesture* panGesture = NULL;
     QPinchGesture* pinchGesture = NULL;
-
-    //std::cout << "GESTURE" << std::endl;
 
     if((gesture = ge->gesture(Qt::PanGesture))){
         panGesture = static_cast<QPanGesture *>(gesture);

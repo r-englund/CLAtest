@@ -56,7 +56,7 @@ protected:
     virtual void onLookToChanged(const Trackball* trackball);
     virtual void onLookUpChanged(const Trackball* trackball);
 
-    CameraProperty* cameraProp_;
+    CameraProperty* cameraProp_; //< non-owning reference
 };
 
 } // namespace
