@@ -38,12 +38,15 @@ EventConverterQt::EventConverterQt() {}
 EventConverterQt::~EventConverterQt() {}
 
 char EventConverterQt::getKeyButton(QKeyEvent* e) {
-    char key = toupper(e->nativeVirtualKey());
-
-    if ((key >= '0' && key <= '9')||(key >= 'A' && key <= 'Z'))
-        return key;
-    else
-        return 0;
+    return static_cast<char>(e->key());
+    
+// This does not work on OSX and makes no sense. 
+//    char key = toupper(e->nativeVirtualKey());
+//
+//    if ((key >= '0' && key <= '9')||(key >= 'A' && key <= 'Z'))
+//        return key;
+//    else
+//        return 0;
 }
 
 MouseEvent::MouseButton inviwo::EventConverterQt::getMouseButton(QMouseEvent* e) {

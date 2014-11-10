@@ -142,7 +142,6 @@ private:
     PropertyMap propertiesVisited_;
 
     Canvas* defaultContext_;
-    Processor* eventInitiator_;
 
     bool evaulationQueued_;
     bool evaluationDisabled_;

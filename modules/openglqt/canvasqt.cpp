@@ -135,7 +135,7 @@ CanvasQt::CanvasQt(QWidget* parent, uvec2 dim)
     }
 
     setAutoBufferSwap(false);
-    setFocusPolicy(Qt::TabFocus);
+    setFocusPolicy(Qt::StrongFocus);
 
 #ifndef QT_NO_GESTURES
     grabGesture(Qt::PanGesture);

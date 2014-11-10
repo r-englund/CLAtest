@@ -143,7 +143,19 @@ private:
         DOWN,
         RIGHT
     };
+    
+    vec3 mapNormalizedMousePosToTrackball(const vec2& mousePos, float dist = 1.f);
+    vec3 mapToObject(vec3 pos, float dist = 1.f);
+    void rotate(MouseEvent* mouseEvent);
 
+    void rotateFromPosToPos(const vec3& currentCamPos, const vec3& nextCamPos, float rotationAngle);
+
+    void zoom(MouseEvent* mouseEvent);
+    void pan(MouseEvent* mouseEvent);
+    void stepRotate(Direction dir);
+    void stepZoom(Direction dir);
+    void stepPan(Direction dir);
+    
     float pixelWidth_;
     bool isMouseBeingPressedAndHold_;
 
@@ -154,9 +166,7 @@ private:
     vec3* lookTo_;
     vec3* lookUp_;
 
-
-
-
+    // Events
     MouseEvent rotateEvent_;
     MouseEvent zoomEvent_;
     MouseEvent panEvent_;
@@ -173,8 +183,7 @@ private:
     KeyboardEvent stepPanDownEvent_;
     KeyboardEvent stepPanRightEvent_;
 
-
-
+    // Actions
     TrackballAction rotateAction_;
     TrackballAction zoomAction_;
     TrackballAction panAction_;
@@ -191,7 +200,7 @@ private:
     TrackballAction stepPanDownAction_;
     TrackballAction stepPanRightAction_;
 
-
+    // Event Properties.
     EventProperty rotateEventProperty_;
     EventProperty zoomEventProperty_;
     EventProperty panEventProperty_;
@@ -207,18 +216,6 @@ private:
     EventProperty stepPanLeftProperty_;
     EventProperty stepPanDownProperty_;
     EventProperty stepPanRightProperty_;
-
-    vec3 mapNormalizedMousePosToTrackball(const vec2& mousePos, float dist = 1.f);
-    vec3 mapToObject(vec3 pos, float dist = 1.f);
-    void rotate(MouseEvent* mouseEvent);
-
-    void rotateFromPosToPos(const vec3& currentCamPos, const vec3& nextCamPos, float rotationAngle);
-
-    void zoom(MouseEvent* mouseEvent);
-    void pan(MouseEvent* mouseEvent);
-    void stepRotate(Direction dir);
-    void stepZoom(Direction dir);
-    void stepPan(Direction dir);
 };
 
 }
