@@ -52,7 +52,9 @@ class IVW_QTWIDGETS_API EventPropertyWidgetQt : public PropertyWidgetQt {
 public:
     EventPropertyWidgetQt(EventProperty* eventproperty);
     void updateFromProperty();
-    void setManager(EventPropertyManager* eventPropertyManager) { eventPropertyManager_ = eventPropertyManager; };
+    void setManager(EventPropertyManager* eventPropertyManager) {
+        eventPropertyManager_ = eventPropertyManager;
+    };
 
 private:
     EventProperty* eventproperty_;

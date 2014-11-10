@@ -69,8 +69,6 @@ void InteractionEvent::serialize(IvwSerializer& s) const {
 }
 
 void InteractionEvent::deserialize(IvwDeserializer& d) {
-    std::string className;
-    d.deserialize("type", className, true);
     d.deserialize("modifier", modifierName_);
 
     for (size_t i = 0; i < COUNT; ++i) {

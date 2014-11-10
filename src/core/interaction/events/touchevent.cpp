@@ -35,19 +35,12 @@
 namespace inviwo {
 
 TouchEvent::TouchEvent(ivec2 position, TouchEvent::TouchState state)
-    : InteractionEvent(),
-      position_(position),
-      state_(state) {
-}
+    : InteractionEvent(), position_(position), state_(state) {}
 
 TouchEvent::~TouchEvent() {}
 
-void TouchEvent::serialize(IvwSerializer& s) const {
-    InteractionEvent::serialize(s);
-}
+void TouchEvent::serialize(IvwSerializer& s) const { InteractionEvent::serialize(s); }
 
-void TouchEvent::deserialize(IvwDeserializer& d) {
-    InteractionEvent::deserialize(d);
-}
+void TouchEvent::deserialize(IvwDeserializer& d) { InteractionEvent::deserialize(d); }
 
-} // namespace
+}  // namespace

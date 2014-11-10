@@ -42,7 +42,7 @@ namespace inviwo {
 class IVW_CORE_API TouchEvent : public InteractionEvent {
 public:
     enum TouchState {
-        TOUCH_STATE_NONE    =      0,
+        TOUCH_STATE_NONE = 0,
         TOUCH_STATE_STARTED,
         TOUCH_STATE_UPDATED,
         TOUCH_STATE_ENDED

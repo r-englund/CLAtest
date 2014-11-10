@@ -42,7 +42,7 @@ namespace inviwo {
 class IVW_CORE_API MouseEvent : public InteractionEvent {
 public:
     enum MouseButton {
-        MOUSE_BUTTON_NONE   =      0,
+        MOUSE_BUTTON_NONE = 0,
         MOUSE_BUTTON_LEFT,
         MOUSE_BUTTON_MIDDLE,
         MOUSE_BUTTON_RIGHT,
@@ -50,7 +50,7 @@ public:
     };
 
     enum MouseState {
-        MOUSE_STATE_NONE    =      0,
+        MOUSE_STATE_NONE = 0,
         MOUSE_STATE_MOVE,
         MOUSE_STATE_PRESS,
         MOUSE_STATE_RELEASE,
@@ -58,26 +58,27 @@ public:
     };
 
     enum MouseWheelOrientation {
-        MOUSE_WHEEL_NONE    =      0,
+        MOUSE_WHEEL_NONE = 0,
         MOUSE_WHEEL_HORIZONTAL,
         MOUSE_WHEEL_VERTICAL
     };
 
     MouseEvent(ivec2 position, int delta, MouseEvent::MouseButton button,
-        MouseEvent::MouseState state, MouseEvent::MouseWheelOrientation orientation, InteractionEvent::Modifier modifier, uvec2 canvasSize);
-    MouseEvent(ivec2 position, MouseEvent::MouseButton button,
-               MouseEvent::MouseState state, InteractionEvent::Modifier modifier, uvec2 canvasSize);
+               MouseEvent::MouseState state, MouseEvent::MouseWheelOrientation orientation,
+               InteractionEvent::Modifier modifier, uvec2 canvasSize);
+    MouseEvent(ivec2 position, MouseEvent::MouseButton button, MouseEvent::MouseState state,
+               InteractionEvent::Modifier modifier, uvec2 canvasSize);
     MouseEvent(MouseEvent::MouseButton button, InteractionEvent::Modifier modifier);
     ~MouseEvent();
 
     inline ivec2 pos() const { return position_; }
-    inline vec2 posNormalized() const { return vec2(vec2(position_)/vec2(canvasSize_)); }
+    inline vec2 posNormalized() const { return vec2(vec2(position_) / vec2(canvasSize_)); }
     inline int wheelSteps() const { return wheelSteps_; }
     inline unsigned int x() const { return position_.x; }
     inline unsigned int y() const { return position_.y; }
     inline MouseEvent::MouseState state() const { return state_; }
     inline MouseEvent::MouseWheelOrientation wheelOrientation() const { return wheelOrientation_; }
-    inline uvec2 canvasSize() const {return canvasSize_; }
+    inline uvec2 canvasSize() const { return canvasSize_; }
 
     void modify(ivec2, uvec2);
 

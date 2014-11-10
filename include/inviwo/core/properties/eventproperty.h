@@ -69,20 +69,18 @@ public:
     virtual EventProperty* clone() const;
     virtual ~EventProperty();
 
-    virtual void serialize(IvwSerializer& s) const;
-    virtual void deserialize(IvwDeserializer& d);
-
-    InteractionEvent* getEvent() const;
-    Action* getAction() const;
-
     /**
      * \brief Maps action to new event.
-     *
-     * Changes the current action-to-key binding by replacing the old event with a new.
-     *
-     * @param Event e The new event
+     * Changes the current action-to-key binding by replacing the old event with a new
      */
     void setEvent(InteractionEvent* e);
+    InteractionEvent* getEvent() const;
+    
+    void setAction(Action* action);
+    Action* getAction() const;
+
+    virtual void serialize(IvwSerializer& s) const;
+    virtual void deserialize(IvwDeserializer& d);
 
 private:
     InteractionEvent* event_; //< non-owning reference

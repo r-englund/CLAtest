@@ -34,7 +34,8 @@
 
 namespace inviwo {
 
-inviwo::EventPropertyWidgetQt::EventPropertyWidgetQt(EventProperty* eventproperty) {
+EventPropertyWidgetQt::EventPropertyWidgetQt(EventProperty* eventproperty)
+    : PropertyWidgetQt(eventproperty) {
     eventproperty_ = eventproperty;
     generateWidget();
 }

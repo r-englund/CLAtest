@@ -25,7 +25,7 @@
  * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- * 
+ *
  * Contact: Sathish Kottravel
  *
  *********************************************************************************/
@@ -38,19 +38,20 @@ EventPropertyManager::EventPropertyManager() : EventPropertyManagerObservable() 
 EventPropertyManager::~EventPropertyManager() {}
 
 // Remap with a mouse event
-void EventPropertyManager::changeMouseMapping(EventProperty* eventProperty, MouseEvent::MouseButton button,
-        InteractionEvent::Modifier modifier) {
+void EventPropertyManager::changeMouseMapping(EventProperty* eventProperty,
+                                              MouseEvent::MouseButton button,
+                                              InteractionEvent::Modifier modifier) {
     if (dynamic_cast<MouseEvent*>(eventProperty->getEvent())) {
-        
-        if(eventPropertyMap_.empty())
-            return;
+        if (eventPropertyMap_.empty()) return;
 
         // Look for event conflicts
         std::vector<EventProperty*> eventProperties = eventPropertyMap_[activeProcessor_];
 
         for (size_t i = 0; i < eventProperties.size(); ++i) {
-            if (eventProperties.at(i)->getEvent()->button() == button && eventProperties.at(i)->getEvent()->modifier() == modifier)
-                eventProperties.at(i)->setEvent(new MouseEvent(MouseEvent::MOUSE_BUTTON_NONE, InteractionEvent::MODIFIER_NONE));
+            if (eventProperties.at(i)->getEvent()->button() == button &&
+                eventProperties.at(i)->getEvent()->modifier() == modifier)
+                eventProperties.at(i)->setEvent(
+                    new MouseEvent(MouseEvent::MOUSE_BUTTON_NONE, InteractionEvent::MODIFIER_NONE));
         }
 
         // Do the remapping
@@ -67,20 +68,23 @@ void EventPropertyManager::changeMouseMapping(EventProperty* eventProperty, Mous
 }
 
 // Remap with a keyboard event
-void EventPropertyManager::changeKeyMapping(EventProperty* eventProperty, char button, InteractionEvent::Modifier modifier) {
+void EventPropertyManager::changeKeyMapping(EventProperty* eventProperty, char button,
+                                            InteractionEvent::Modifier modifier) {
     if (dynamic_cast<KeyboardEvent*>(eventProperty->getEvent())) {
         // Look for event conflicts
         std::vector<EventProperty*> eventProperties = eventPropertyMap_[activeProcessor_];
 
         for (size_t i = 0; i < eventProperties.size(); ++i) {
-            if (eventProperties.at(i)->getEvent()->button() == button && eventProperties.at(i)->getEvent()->modifier() == modifier)
+            if (eventProperties.at(i)->getEvent()->button() == button &&
+                eventProperties.at(i)->getEvent()->modifier() == modifier)
                 eventProperties.at(i)->setEvent(new KeyboardEvent());
         }
 
         // Do the remapping
         for (size_t i = 0; i < eventProperties.size(); ++i) {
             if (eventProperty->getIdentifier() == eventProperties.at(i)->getIdentifier()) {
-                eventProperties.at(i)->setEvent(new KeyboardEvent(button, modifier, KeyboardEvent::KEY_STATE_PRESS));
+                eventProperties.at(i)
+                    ->setEvent(new KeyboardEvent(button, modifier, KeyboardEvent::KEY_STATE_PRESS));
                 break;
             }
         }
@@ -98,7 +102,7 @@ std::vector<EventProperty*> EventPropertyManager::getEventPropertiesFromMap() {
 
 void EventPropertyManager::setActiveProcessor(std::string processorIdentifier) {
     activeProcessor_ = processorIdentifier;
-    //notifyEventPropertyManagerObservers();
+    // notifyEventPropertyManagerObservers();
 }
 
 bool EventPropertyManager::isEmpty() {
@@ -108,4 +112,4 @@ bool EventPropertyManager::isEmpty() {
         return true;
 }
 
-} // namespace
+}  // namespace

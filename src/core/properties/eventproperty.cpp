@@ -50,9 +50,7 @@ EventProperty::EventProperty(const EventProperty& rhs)
 EventProperty& EventProperty::operator=(const EventProperty& that) {
     if (this != &that) {
         Property::operator=(that);
-        delete event_;
         event_ = that.event_->clone();
-        delete action_;
         action_ = that.action_->clone();
     }
     return *this;
@@ -84,6 +82,10 @@ Action* EventProperty::getAction() const {
 
 void EventProperty::setEvent(InteractionEvent* e) {
     event_ = e;
+}
+
+void EventProperty::setAction(Action* action) {
+    action_ = action;
 }
 
 }  // namespace
