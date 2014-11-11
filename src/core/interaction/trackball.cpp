@@ -48,21 +48,21 @@ Trackball::Trackball(vec3* lookFrom, vec3* lookTo, vec3* lookUp)
     , lookTo_(lookTo)
     , lookUp_(lookUp)
 
-    , rotateEvent_(MouseEvent::MOUSE_BUTTON_LEFT, InteractionEvent::MODIFIER_NONE)
+    , rotateEvent_(MouseEvent::MOUSE_BUTTON_LEFT, InteractionEvent::MODIFIER_NONE, MouseEvent::MOUSE_STATE_MOVE)
     , zoomEvent_(MouseEvent::MOUSE_BUTTON_RIGHT, InteractionEvent::MODIFIER_NONE)
     , panEvent_(MouseEvent::MOUSE_BUTTON_MIDDLE, InteractionEvent::MODIFIER_NONE)
-    , stepRotateUpEvent_('w', InteractionEvent::MODIFIER_NONE, KeyboardEvent::KEY_STATE_PRESS)
-    , stepRotateLeftEvent_('a', InteractionEvent::MODIFIER_NONE, KeyboardEvent::KEY_STATE_PRESS)
-    , stepRotateDownEvent_('s', InteractionEvent::MODIFIER_NONE, KeyboardEvent::KEY_STATE_PRESS)
-    , stepRotateRightEvent_('d', InteractionEvent::MODIFIER_NONE, KeyboardEvent::KEY_STATE_PRESS)
-    , stepZoomInEvent_('r', InteractionEvent::MODIFIER_NONE, KeyboardEvent::KEY_STATE_PRESS)
-    , stepZoomOutEvent_('f', InteractionEvent::MODIFIER_NONE, KeyboardEvent::KEY_STATE_PRESS)
-    , stepPanUpEvent_('w', InteractionEvent::MODIFIER_SHIFT, KeyboardEvent::KEY_STATE_PRESS)
-    , stepPanLeftEvent_('a', InteractionEvent::MODIFIER_SHIFT, KeyboardEvent::KEY_STATE_PRESS)
-    , stepPanDownEvent_('s', InteractionEvent::MODIFIER_SHIFT, KeyboardEvent::KEY_STATE_PRESS)
-    , stepPanRightEvent_('d', InteractionEvent::MODIFIER_SHIFT, KeyboardEvent::KEY_STATE_PRESS)
+    , stepRotateUpEvent_('W', InteractionEvent::MODIFIER_NONE, KeyboardEvent::KEY_STATE_PRESS)
+    , stepRotateLeftEvent_('A', InteractionEvent::MODIFIER_NONE, KeyboardEvent::KEY_STATE_PRESS)
+    , stepRotateDownEvent_('S', InteractionEvent::MODIFIER_NONE, KeyboardEvent::KEY_STATE_PRESS)
+    , stepRotateRightEvent_('D', InteractionEvent::MODIFIER_NONE, KeyboardEvent::KEY_STATE_PRESS)
+    , stepZoomInEvent_('R', InteractionEvent::MODIFIER_NONE, KeyboardEvent::KEY_STATE_PRESS)
+    , stepZoomOutEvent_('F', InteractionEvent::MODIFIER_NONE, KeyboardEvent::KEY_STATE_PRESS)
+    , stepPanUpEvent_('W', InteractionEvent::MODIFIER_SHIFT, KeyboardEvent::KEY_STATE_PRESS)
+    , stepPanLeftEvent_('A', InteractionEvent::MODIFIER_SHIFT, KeyboardEvent::KEY_STATE_PRESS)
+    , stepPanDownEvent_('S', InteractionEvent::MODIFIER_SHIFT, KeyboardEvent::KEY_STATE_PRESS)
+    , stepPanRightEvent_('D', InteractionEvent::MODIFIER_SHIFT, KeyboardEvent::KEY_STATE_PRESS)
 
-    , rotateAction_(TrackballAction::TRACKBALL_ROTATE)
+    , rotateAction_(TrackballAction::TRACKBALL_ROTATE, this, &Trackball::rotate)
     , zoomAction_(TrackballAction::TRACKBALL_ZOOM)
     , panAction_(TrackballAction::TRACKBALL_PAN)
     , stepRotateUpAction_(TrackballAction::TRACKBALL_STEPROTATE_UP)
@@ -185,12 +185,18 @@ void Trackball::invokeEvent(Event* event) {
         MouseEvent::MouseState state = mouseEvent->state();
         InteractionEvent::Modifier modifier = mouseEvent->modifiers();
 
-        if (button == rotateEvent_.button()
-            && modifier == rotateEvent_.modifiers()
-            && (state == MouseEvent::MOUSE_STATE_MOVE || state == MouseEvent::MOUSE_STATE_PRESS)) {
-                //perform rotation
-                rotate(mouseEvent);
-        } else if (button == zoomEvent_.button()
+        if(rotateEvent_.matching(mouseEvent)) rotateAction_.invoke(mouseEvent);
+
+
+
+//         if (button == rotateEvent_.button()
+//             && modifier == rotateEvent_.modifiers()
+//             && (state == MouseEvent::MOUSE_STATE_MOVE || state == MouseEvent::MOUSE_STATE_PRESS)) {
+//                 //perform rotation
+//                 rotate(mouseEvent);
+//         } else 
+        
+        if (button == zoomEvent_.button()
             && modifier == zoomEvent_.modifiers()
             && (state == MouseEvent::MOUSE_STATE_MOVE || state == MouseEvent::MOUSE_STATE_PRESS)) {
                 //perform zoom
@@ -261,7 +267,9 @@ void Trackball::invokeEvent(Event* event) {
     }
 }
 
-void Trackball::rotate(MouseEvent* mouseEvent) {
+void Trackball::rotate(Event* event) {  
+    MouseEvent* mouseEvent = static_cast<MouseEvent*>(event);
+    
     ivwAssert(mouseEvent!=0, "Invalid mouse event.");
     // ROTATION
     vec2 curMousePos = mouseEvent->posNormalized();

@@ -56,7 +56,7 @@ public:
 #ifndef QT_NO_GESTURES
     static GestureEvent::GestureState getGestureState(QGesture* e);
 #endif
-    static char getKeyButton(QKeyEvent* e);
+    static int getKeyButton(QKeyEvent* e);
 };
 } // namespace
 #endif // IVW_EVENTCONVERTERQT_H

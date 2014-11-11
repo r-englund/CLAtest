@@ -37,8 +37,8 @@ namespace inviwo {
 EventConverterQt::EventConverterQt() {}
 EventConverterQt::~EventConverterQt() {}
 
-char EventConverterQt::getKeyButton(QKeyEvent* e) {
-    return static_cast<char>(e->key());
+int EventConverterQt::getKeyButton(QKeyEvent* e) {
+    return e->key();
     
 // This does not work on OSX and makes no sense. 
 //    char key = toupper(e->nativeVirtualKey());

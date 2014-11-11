@@ -34,39 +34,41 @@
 
 namespace inviwo {
 
-TrackballAction::TrackballAction(TrackballAction::Actions action) {
-    actionNames_[TRACKBALL_ROTATE] = "Trackball rotate";
-    actionNames_[TRACKBALL_ZOOM] = "Trackball zoom";
-    actionNames_[TRACKBALL_PAN] = "Trackball pan";
-    actionNames_[TRACKBALL_STEPROTATE_UP] = "Step rotate up";
-    actionNames_[TRACKBALL_STEPROTATE_LEFT] = "Step rotate left";
-    actionNames_[TRACKBALL_STEPROTATE_DOWN] = "Step rotate down";
-    actionNames_[TRACKBALL_STEPROTATE_RIGHT] = "Step rotate right";
-    actionNames_[TRACKBALL_STEPZOOM_IN] = "Step zoom in";
-    actionNames_[TRACKBALL_STEPZOOM_OUT] = "Step zoom out";
-    actionNames_[TRACKBALL_STEPPAN_UP] = "Step pan up";
-    actionNames_[TRACKBALL_STEPPAN_LEFT] = "Step pan left";
-    actionNames_[TRACKBALL_STEPPAN_DOWN] = "Step pan down";
-    actionNames_[TRACKBALL_STEPPAN_RIGHT] = "Step pan right";
-    action_ = action;
-    actionName_ = actionNames_[action];
+TrackballAction::TrackballAction(TrackballAction::Actions action)
+    : Action(actionNames_[action])
+    , action_(action) {
 }
 
 TrackballAction::~TrackballAction() {}
 
 void TrackballAction::serialize(IvwSerializer& s) const {
     Action::serialize(s);
-    s.serialize("action", actionName_);
+    s.serialize("action", name_);
 }
 void TrackballAction::deserialize(IvwDeserializer& d) {
-    d.deserialize("action", actionName_);
+    d.deserialize("action", name_);
 
     for (int i = 0; i < COUNT; ++i) {
-        if (actionNames_[i] == actionName_) {
+        if (actionNames_[i] == name_) {
             action_ = i;
             break;
         }
     }
 }
+
+const std::string TrackballAction::actionNames_[COUNT] = {
+    "Trackball rotate",
+    "Trackball zoom",
+    "Trackball pan",
+    "Step rotate up",
+    "Step rotate left",
+    "Step rotate down",
+    "Step rotate right",
+    "Step zoom in",
+    "Step zoom out",
+    "Step pan up",
+    "Step pan left",
+    "Step pan down",
+    "Step pan right" };
 
 } //namespace

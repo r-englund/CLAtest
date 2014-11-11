@@ -36,6 +36,7 @@
 #include <inviwo/core/interaction/action.h>
 #include <inviwo/core/common/inviwocoredefine.h>
 #include <inviwo/core/common/inviwo.h>
+#include <inviwo/core/util/callback.h>
 
 namespace inviwo {
 
@@ -58,6 +59,9 @@ public:
         COUNT
     };
 
+    template <typename T>
+    TrackballAction(TrackballAction::Actions action, T* obj, void (T::*m)(Event*));
+
     TrackballAction(TrackballAction::Actions action);
     ~TrackballAction();
 
@@ -67,8 +71,16 @@ public:
     virtual void deserialize(IvwDeserializer& d);
 
 private:
-    std::string actionNames_[COUNT];
+    static const std::string actionNames_[COUNT];
+    int action_;
 };
+
+template <typename T>
+inviwo::TrackballAction::TrackballAction(TrackballAction::Actions action, T* obj,
+                                         void (T::*m)(Event*))
+    : Action(actionNames_[action], obj, m) 
+    , action_(action) {
+}
 
 } // namespace
 

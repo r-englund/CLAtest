@@ -141,7 +141,7 @@ private:
     
     vec3 mapNormalizedMousePosToTrackball(const vec2& mousePos, float dist = 1.f);
     vec3 mapToObject(vec3 pos, float dist = 1.f);
-    void rotate(MouseEvent* mouseEvent);
+    void rotate(Event* mouseEvent);
 
     void rotateFromPosToPos(const vec3& currentCamPos, const vec3& nextCamPos, float rotationAngle);
 
