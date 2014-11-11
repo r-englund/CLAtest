@@ -122,9 +122,9 @@ void DrawFreeHand::DrawFreeHandInteractionHandler::invokeEvent(Event* event){
     if (keyEvent) {
         int button = keyEvent->button();
         KeyboardEvent::KeyState state = keyEvent->state();
-        InteractionEvent::Modifier modifier = keyEvent->modifier();
+        InteractionEvent::Modifier modifier = keyEvent->modifiers();
 
-        if (button == drawEnableEvent_.button() && modifier == drawEnableEvent_.modifier()){
+        if (button == drawEnableEvent_.button() && modifier == drawEnableEvent_.modifiers()){
             if(state == KeyboardEvent::KEY_STATE_PRESS){
                 drawModeEnabled_ = true;
             }
@@ -137,7 +137,7 @@ void DrawFreeHand::DrawFreeHandInteractionHandler::invokeEvent(Event* event){
 
     MouseEvent* mouseEvent = dynamic_cast<MouseEvent*>(event);
     if (drawModeEnabled_ && mouseEvent) {
-        if (mouseEvent->modifier() == drawPosEvent.modifier()
+        if (mouseEvent->modifiers() == drawPosEvent.modifiers()
             && mouseEvent->button() == drawPosEvent.button()) {
                 vec2 point = mouseEvent->posNormalized();
                 point *= 2.f;

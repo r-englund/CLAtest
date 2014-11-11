@@ -183,20 +183,20 @@ void Trackball::invokeEvent(Event* event) {
     if (mouseEvent) {
         int button = mouseEvent->button();
         MouseEvent::MouseState state = mouseEvent->state();
-        InteractionEvent::Modifier modifier = mouseEvent->modifier();
+        InteractionEvent::Modifier modifier = mouseEvent->modifiers();
 
         if (button == rotateEvent_.button()
-            && modifier == rotateEvent_.modifier()
+            && modifier == rotateEvent_.modifiers()
             && (state == MouseEvent::MOUSE_STATE_MOVE || state == MouseEvent::MOUSE_STATE_PRESS)) {
                 //perform rotation
                 rotate(mouseEvent);
         } else if (button == zoomEvent_.button()
-            && modifier == zoomEvent_.modifier()
+            && modifier == zoomEvent_.modifiers()
             && (state == MouseEvent::MOUSE_STATE_MOVE || state == MouseEvent::MOUSE_STATE_PRESS)) {
                 //perform zoom
                 zoom(mouseEvent);
         } else if (button == panEvent_.button()
-            && modifier == panEvent_.modifier()
+            && modifier == panEvent_.modifiers()
             && (state == MouseEvent::MOUSE_STATE_MOVE || state == MouseEvent::MOUSE_STATE_PRESS)) {
                 //perform pan
                 pan(mouseEvent);
@@ -212,46 +212,46 @@ void Trackball::invokeEvent(Event* event) {
     if (keyEvent) {
         int button = keyEvent->button();
         KeyboardEvent::KeyState state = keyEvent->state();
-        InteractionEvent::Modifier modifier = keyEvent->modifier();
+        InteractionEvent::Modifier modifier = keyEvent->modifiers();
 
         if (button == stepRotateUpEvent_.button()
-            && modifier == stepRotateUpEvent_.modifier()
+            && modifier == stepRotateUpEvent_.modifiers()
             && state == KeyboardEvent::KEY_STATE_PRESS)
             stepRotate(UP);
         else if (button == stepRotateLeftEvent_.button()
-            && modifier == stepRotateLeftEvent_.modifier()
+            && modifier == stepRotateLeftEvent_.modifiers()
             && state == KeyboardEvent::KEY_STATE_PRESS)
             stepRotate(LEFT);
         else if (button == stepRotateDownEvent_.button()
-            && modifier == stepRotateDownEvent_.modifier()
+            && modifier == stepRotateDownEvent_.modifiers()
             && state == KeyboardEvent::KEY_STATE_PRESS)
             stepRotate(DOWN);
         else if (button == stepRotateRightEvent_.button()
-            && modifier == stepRotateRightEvent_.modifier()
+            && modifier == stepRotateRightEvent_.modifiers()
             && state == KeyboardEvent::KEY_STATE_PRESS)
             stepRotate(RIGHT);
         else if (button == stepZoomInEvent_.button()
-            && modifier == stepZoomInEvent_.modifier()
+            && modifier == stepZoomInEvent_.modifiers()
             && state == KeyboardEvent::KEY_STATE_PRESS)
             stepZoom(UP);
         else if (button == stepZoomOutEvent_.button()
-            && modifier == stepZoomOutEvent_.modifier()
+            && modifier == stepZoomOutEvent_.modifiers()
             && state == KeyboardEvent::KEY_STATE_PRESS)
             stepZoom(DOWN);
         else if (button == stepPanUpEvent_.button()
-            && modifier == stepPanUpEvent_.modifier()
+            && modifier == stepPanUpEvent_.modifiers()
             && state == KeyboardEvent::KEY_STATE_PRESS)
             stepPan(UP);
         else if (button == stepPanLeftEvent_.button()
-            && modifier == stepPanLeftEvent_.modifier()
+            && modifier == stepPanLeftEvent_.modifiers()
             && state == KeyboardEvent::KEY_STATE_PRESS)
             stepPan(LEFT);
         else if (button == stepPanDownEvent_.button()
-            && modifier == stepPanDownEvent_.modifier()
+            && modifier == stepPanDownEvent_.modifiers()
             && state == KeyboardEvent::KEY_STATE_PRESS)
             stepPan(DOWN);
         else if (button == stepPanRightEvent_.button()
-            && modifier == stepPanRightEvent_.modifier()
+            && modifier == stepPanRightEvent_.modifiers()
             && state == KeyboardEvent::KEY_STATE_PRESS)
             stepPan(RIGHT);
 

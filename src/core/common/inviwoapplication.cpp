@@ -34,6 +34,7 @@
 #include <inviwo/core/datastructures/representationconverterfactory.h>
 #include <inviwo/core/io/datareaderfactory.h>
 #include <inviwo/core/io/datawriterfactory.h>
+#include <inviwo/core/interaction/pickingmanager.h>
 #include <inviwo/core/metadata/metadatafactory.h>
 #include <inviwo/core/network/processornetworkevaluator.h>
 #include <inviwo/core/ports/portfactory.h>
@@ -114,6 +115,7 @@ void InviwoApplication::initialize(registerModuleFuncPtr regModuleFunc) {
     DialogFactory::init();
     GeometryRendererFactory::init();
     MetaDataFactory::init();
+    PickingManager::init();
     PortFactory::init();
     PortInspectorFactory::init();
     ProcessorFactory::init();
@@ -168,6 +170,7 @@ void InviwoApplication::deinitialize() {
     DialogFactory::deleteInstance();
     GeometryRendererFactory::deleteInstance();
     MetaDataFactory::deleteInstance();
+    PickingManager::deleteInstance();
     PortFactory::deleteInstance();
     PortInspectorFactory::deleteInstance();
     ProcessorWidgetFactory::deleteInstance();

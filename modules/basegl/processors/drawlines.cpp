@@ -118,9 +118,9 @@ void DrawLines::DrawLinesInteractionHandler::invokeEvent(Event* event) {
     if (keyEvent) {
         int button = keyEvent->button();
         KeyboardEvent::KeyState state = keyEvent->state();
-        InteractionEvent::Modifier modifier = keyEvent->modifier();
+        InteractionEvent::Modifier modifier = keyEvent->modifiers();
 
-        if (button == 68 && modifier == drawEnableEvent_.modifier()) {
+        if (button == 68 && modifier == drawEnableEvent_.modifiers()) {
             if (state == KeyboardEvent::KEY_STATE_PRESS) {
                 drawModeEnabled_ = true;
             } else if (state == KeyboardEvent::KEY_STATE_RELEASE) {
@@ -133,7 +133,7 @@ void DrawLines::DrawLinesInteractionHandler::invokeEvent(Event* event) {
     MouseEvent* mouseEvent = dynamic_cast<MouseEvent*>(event);
     if (drawModeEnabled_ && mouseEvent && (mouseEvent->state() == MouseEvent::MOUSE_STATE_PRESS ||
                                            mouseEvent->state() == MouseEvent::MOUSE_STATE_MOVE)) {
-        if (mouseEvent->modifier() == drawPosEvent.modifier() &&
+        if (mouseEvent->modifiers() == drawPosEvent.modifiers() &&
             mouseEvent->button() == drawPosEvent.button()) {
             vec2 line = mouseEvent->posNormalized();
             line *= 2.f;

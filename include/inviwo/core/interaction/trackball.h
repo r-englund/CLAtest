@@ -48,11 +48,10 @@
 #include <inviwo/core/util/observer.h>
 
 namespace inviwo {
+
 class Trackball;
 /** \class TrackballObserver
- *
  * Trackball observer that gets notified when positions and directions change.
- *
  * @see TrackballObservable
  */
 class IVW_CORE_API TrackballObserver: public Observer {
@@ -66,9 +65,7 @@ public:
 
 
 /** \class TrackballObservable
- *
  * Can call notifyObserversInvalidationBegin and notifyObserversInvalidationEnd
- *
  * @see TrackballObserver
  */
 class IVW_CORE_API TrackballObservable : public Observable<TrackballObserver> {

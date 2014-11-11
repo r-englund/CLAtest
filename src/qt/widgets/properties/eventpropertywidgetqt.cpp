@@ -42,11 +42,11 @@ EventPropertyWidgetQt::EventPropertyWidgetQt(EventProperty* eventproperty)
 
 void inviwo::EventPropertyWidgetQt::generateWidget() {
     delete layout(); // Make sure there is no previous layout
-    std::string modifierName = eventproperty_->getEvent()->modifierName();
+    std::string modifierName = eventproperty_->getEvent()->modifierNames();
 
     if (modifierName != "") modifierName.append("-");
 
-    std::string eventName = modifierName + eventproperty_->getEvent()->buttonName();
+    std::string eventName = modifierName; // TODO Fix + eventproperty_->getEvent()->buttonName();
     std::string actionName = eventproperty_->getAction()->name();
     QHBoxLayout* hLayout = new QHBoxLayout();
     button_ = new QPushButton(eventName.c_str());

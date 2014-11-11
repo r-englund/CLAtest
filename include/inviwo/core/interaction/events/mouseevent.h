@@ -25,7 +25,7 @@
  * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- * 
+ *
  * Contact: Timo Ropinski
  *
  *********************************************************************************/
@@ -63,13 +63,26 @@ public:
         MOUSE_WHEEL_VERTICAL
     };
 
+    // Mouse and wheel event
     MouseEvent(ivec2 position, int delta, MouseEvent::MouseButton button,
-               MouseEvent::MouseState state, MouseEvent::MouseWheelOrientation orientation,
-               InteractionEvent::Modifier modifier, uvec2 canvasSize);
-    MouseEvent(ivec2 position, MouseEvent::MouseButton button, MouseEvent::MouseState state,
-               InteractionEvent::Modifier modifier, uvec2 canvasSize);
-    MouseEvent(MouseEvent::MouseButton button, InteractionEvent::Modifier modifier);
-    ~MouseEvent();
+               MouseEvent::MouseState state = MOUSE_STATE_NONE,
+               MouseEvent::MouseWheelOrientation orientation = MOUSE_WHEEL_NONE,
+               InteractionEvent::Modifier modifiers = InteractionEvent::MODIFIER_NONE,
+               uvec2 canvasSize = uvec2(0));
+
+    // Mouse event
+    MouseEvent(ivec2 position, MouseEvent::MouseButton button,
+               MouseEvent::MouseState state = MOUSE_STATE_NONE,
+               InteractionEvent::Modifier modifiers = InteractionEvent::MODIFIER_NONE,
+               uvec2 canvasSize = uvec2(0));
+
+    // Selector
+    MouseEvent(MouseEvent::MouseButton button,
+               InteractionEvent::Modifier modifiers = InteractionEvent::MODIFIER_NONE,
+               MouseEvent::MouseState state = MOUSE_STATE_NONE,
+               MouseEvent::MouseWheelOrientation orientation = MOUSE_WHEEL_NONE);
+
+    virtual ~MouseEvent();
 
     inline ivec2 pos() const { return position_; }
     inline vec2 posNormalized() const { return vec2(vec2(position_) / vec2(canvasSize_)); }
@@ -79,23 +92,31 @@ public:
     inline MouseEvent::MouseState state() const { return state_; }
     inline MouseEvent::MouseWheelOrientation wheelOrientation() const { return wheelOrientation_; }
     inline uvec2 canvasSize() const { return canvasSize_; }
-
+    inline MouseButton button() const { return button_; }
     void modify(ivec2, uvec2);
 
-    virtual std::string getClassIdentifier() const { return "MouseEvent"; }
+    virtual std::string getClassIdentifier() const;
 
     virtual void serialize(IvwSerializer& s) const;
     virtual void deserialize(IvwDeserializer& d);
 
+    virtual bool matching(const Event* aEvent) const;
+    virtual bool matching(const MouseEvent* aEvent) const;
+
 private:
-    ivec2 position_;
-    int wheelSteps_;
+    // Event selectors:
+    MouseEvent::MouseButton button_;
     MouseEvent::MouseState state_;
     MouseEvent::MouseWheelOrientation wheelOrientation_;
+
+    // Event state:
+    ivec2 position_;
+    int wheelSteps_;
     uvec2 canvasSize_;
-    std::string buttonNames_[COUNT];
+
+    static const std::string buttonNames_[COUNT];
 };
 
-} // namespace
+}  // namespace
 
-#endif // IVW_MOUSEEVENT_H
+#endif  // IVW_MOUSEEVENT_H

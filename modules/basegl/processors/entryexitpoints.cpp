@@ -69,7 +69,6 @@ EntryExitPoints::EntryExitPoints()
     trackball_ = new CameraTrackball(&camera_);
     addInteractionHandler(trackball_);
     entryPort_.addResizeEventListener(&camera_);
-
     geometryPort_.onChange(this, &EntryExitPoints::onGeometryChange);
 }
 
@@ -108,8 +107,6 @@ void EntryExitPoints::process() {
     if (renderer_ == NULL) {
         return;
     }
-    
-    //IVW_OPENGL_PROFILING_IF(0, "");
 
     glEnable(GL_CULL_FACE);
     glDepthFunc(GL_ALWAYS);

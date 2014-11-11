@@ -25,7 +25,7 @@
  * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- * 
+ *
  * Contact: Sathish Kottravel
  *
  *********************************************************************************/
@@ -40,27 +40,34 @@ namespace inviwo {
 
 class IVW_CORE_API KeyboardEvent : public InteractionEvent {
 public:
-    enum KeyState {
-        KEY_STATE_NONE = 0,
-        KEY_STATE_PRESS,
-        KEY_STATE_RELEASE
-    };
+    enum KeyState { KEY_STATE_NONE = 0, KEY_STATE_PRESS, KEY_STATE_RELEASE };
 
-    KeyboardEvent();
-    KeyboardEvent(char ascii, InteractionEvent::Modifier modifier=InteractionEvent::MODIFIER_NONE,
-                  KeyboardEvent::KeyState state=KeyboardEvent::KEY_STATE_PRESS);
-    ~KeyboardEvent();
+    KeyboardEvent(int key = 0,
+                  InteractionEvent::Modifier modifiers = InteractionEvent::MODIFIER_NONE,
+                  KeyboardEvent::KeyState state = KeyboardEvent::KEY_STATE_PRESS);
 
-    inline KeyboardEvent::KeyState state() const { return state_; }
+    KeyboardEvent(const KeyboardEvent& rhs);
+    KeyboardEvent& operator=(const KeyboardEvent& that);
+    virtual KeyboardEvent* clone() const;
+    virtual ~KeyboardEvent();
 
-    virtual std::string getClassIdentifier() const { return "KeyboardEvent"; }
+    KeyboardEvent::KeyState state() const;
+    virtual int button() const;
+
+    virtual std::string getClassIdentifier() const;
     virtual void serialize(IvwSerializer& s) const;
     virtual void deserialize(IvwDeserializer& d);
 
+    virtual bool matching(const Event* aEvent) const;
+    virtual bool matching(const KeyboardEvent* aEvent) const;
+
+
 private:
+    // Event selectors:
     KeyboardEvent::KeyState state_;
+    int key_;
 };
 
-} // namespace
+}  // namespace
 
-#endif // IVW_KEYBOARDEVENT_H
+#endif  // IVW_KEYBOARDEVENT_H

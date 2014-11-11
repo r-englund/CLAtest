@@ -37,6 +37,25 @@ namespace inviwo {
 ResizeEvent::ResizeEvent(uvec2 canvasSize)
     : Event(), size_(canvasSize), previousSize_(canvasSize) {}
 
+ResizeEvent::ResizeEvent(const ResizeEvent& rhs)
+    : Event(rhs)
+    , size_(rhs.size_)
+    , previousSize_(rhs.previousSize_) {
+}
+
+ResizeEvent& ResizeEvent::operator=(const ResizeEvent& that) {
+    if (this != &that) {
+        Event::operator=(that);
+        size_ = that.size_;
+        previousSize_ = that.previousSize_;
+    }
+    return *this;
+}
+
+ResizeEvent* ResizeEvent::clone() const {
+    return new ResizeEvent(*this);
+}
+
 ResizeEvent::~ResizeEvent() {}
 
 }  // namespace

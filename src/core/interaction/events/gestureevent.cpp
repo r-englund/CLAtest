@@ -25,7 +25,7 @@
  * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- * 
+ *
  * Contact: Erik Sundén
  *
  *********************************************************************************/
@@ -34,28 +34,63 @@
 
 namespace inviwo {
 
-GestureEvent::GestureEvent(vec2 deltaPos, double deltaDistance, GestureEvent::GestureType type, GestureEvent::GestureState state, int numFingers, vec2 screenPosNorm)
+GestureEvent::GestureEvent(vec2 deltaPos, double deltaDistance, GestureEvent::GestureType type,
+                           GestureEvent::GestureState state, int numFingers, vec2 screenPosNorm)
     : InteractionEvent()
-      , deltaPos_(deltaPos)
-      , deltaDistance_(deltaDistance)
-      , type_(type)
-      , state_(state)
-      , numFingers_(numFingers)
-      , screenPosNorm_(screenPosNorm) {
+    , type_(type)
+    , state_(state)
+    , numFingers_(numFingers)
+    , deltaPos_(deltaPos)
+    , deltaDistance_(deltaDistance)
+    , screenPosNorm_(screenPosNorm) {}
+
+GestureEvent::GestureEvent(const GestureEvent& rhs) 
+    : InteractionEvent(rhs)
+    , type_(rhs.type_)
+    , state_(rhs.state_)
+    , numFingers_(rhs.numFingers_)
+    , deltaPos_(rhs.deltaPos_)
+    , deltaDistance_(rhs.deltaDistance_)
+    , screenPosNorm_(rhs.screenPosNorm_) {
 }
+
+GestureEvent& GestureEvent::operator=(const GestureEvent& that) {
+    if (this != &that) {
+        InteractionEvent::operator=(that);
+        type_ = that.type_;
+        state_ = that.state_;
+        numFingers_ = that.numFingers_;
+        deltaPos_ = that.deltaPos_;
+        deltaDistance_ = that.deltaDistance_;
+        screenPosNorm_ = that.screenPosNorm_;
+    }
+    return *this;
+}
+
+GestureEvent* GestureEvent::clone() const { return new GestureEvent(*this); }
 
 GestureEvent::~GestureEvent() {}
 
-void GestureEvent::modify(vec2 posNorm){
-    screenPosNorm_ = posNorm;
+void GestureEvent::modify(vec2 posNorm) { screenPosNorm_ = posNorm; }
+
+void GestureEvent::serialize(IvwSerializer& s) const { InteractionEvent::serialize(s); }
+
+void GestureEvent::deserialize(IvwDeserializer& d) { InteractionEvent::deserialize(d); }
+
+bool GestureEvent::matching(const Event* aEvent) const {
+    const GestureEvent* event = dynamic_cast<const GestureEvent*>(aEvent);
+    if (event) {
+        return matching(event);
+    } else {
+        return false;
+    }
 }
 
-void GestureEvent::serialize(IvwSerializer& s) const {
-    InteractionEvent::serialize(s);
+bool GestureEvent::matching(const GestureEvent* aEvent) const {
+    return type_ == aEvent->type_
+        && state_ == aEvent->state_
+        && numFingers_ == aEvent->numFingers_
+        && modifiers_ == aEvent->modifiers_;
 }
 
-void GestureEvent::deserialize(IvwDeserializer& d) {
-    InteractionEvent::deserialize(d);
-}
-
-} // namespace
+}  // namespace

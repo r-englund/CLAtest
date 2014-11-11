@@ -150,11 +150,14 @@ void CanvasGLUT::mouse(int button, int state, int x, int y) {
     thisCanvas->mouseButton_ = mapMouseButton(button);
     thisCanvas->mouseState_ = mapMouseState(state);
     thisCanvas->mouseModifiers_ = mapModifiers(glutGetModifiers());
-    MouseEvent* mouseEvent = new MouseEvent(ivec2(x, y), thisCanvas->mouseButton_,
-                                            thisCanvas->mouseState_, thisCanvas->mouseModifiers_, thisCanvas->getScreenDimension());
+    MouseEvent* mouseEvent =
+        new MouseEvent(ivec2(x, y), thisCanvas->mouseButton_, thisCanvas->mouseState_,
+                       thisCanvas->mouseModifiers_, thisCanvas->getScreenDimension());
 
-    if (thisCanvas->mouseState_ == MouseEvent::MOUSE_STATE_PRESS) canvases_[glutGetWindow()]->mousePressEvent(mouseEvent);
-    else if (thisCanvas->mouseState_ == MouseEvent::MOUSE_STATE_RELEASE) canvases_[glutGetWindow()]->mouseReleaseEvent(mouseEvent);
+    if (thisCanvas->mouseState_ == MouseEvent::MOUSE_STATE_PRESS)
+        canvases_[glutGetWindow()]->mousePressEvent(mouseEvent);
+    else if (thisCanvas->mouseState_ == MouseEvent::MOUSE_STATE_RELEASE)
+        canvases_[glutGetWindow()]->mouseReleaseEvent(mouseEvent);
 
     delete mouseEvent;
 }
@@ -164,8 +167,10 @@ void CanvasGLUT::mouseWheel(int button, int direction, int x, int y) {
     thisCanvas->mouseButton_ = mapMouseButton(button);
     thisCanvas->mouseState_ = MouseEvent::MOUSE_STATE_WHEEL;
     thisCanvas->mouseModifiers_ = mapModifiers(glutGetModifiers());
-    MouseEvent* mouseEvent = new MouseEvent(ivec2(x, y), direction, thisCanvas->mouseButton_,
-        thisCanvas->mouseState_, MouseEvent::MOUSE_WHEEL_VERTICAL, thisCanvas->mouseModifiers_, thisCanvas->getScreenDimension());
+    MouseEvent* mouseEvent =
+        new MouseEvent(ivec2(x, y), direction, thisCanvas->mouseButton_, thisCanvas->mouseState_,
+                       MouseEvent::MOUSE_WHEEL_VERTICAL, thisCanvas->mouseModifiers_,
+                       thisCanvas->getScreenDimension());
 
     canvases_[glutGetWindow()]->mouseWheelEvent(mouseEvent);
 
@@ -174,8 +179,9 @@ void CanvasGLUT::mouseWheel(int button, int direction, int x, int y) {
 
 void CanvasGLUT::mouseMotion(int x, int y) {
     CanvasGLUT* thisCanvas = canvases_[glutGetWindow()];
-    MouseEvent* mouseEvent = new MouseEvent(ivec2(x, y), thisCanvas->mouseButton_,
-                                            thisCanvas->mouseState_, thisCanvas->mouseModifiers_, thisCanvas->getScreenDimension());
+    MouseEvent* mouseEvent =
+        new MouseEvent(ivec2(x, y), thisCanvas->mouseButton_, thisCanvas->mouseState_,
+                       thisCanvas->mouseModifiers_, thisCanvas->getScreenDimension());
     canvases_[glutGetWindow()]->mouseMoveEvent(mouseEvent);
     delete mouseEvent;
 }

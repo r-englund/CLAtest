@@ -48,10 +48,11 @@ void EventPropertyManager::changeMouseMapping(EventProperty* eventProperty,
         std::vector<EventProperty*> eventProperties = eventPropertyMap_[activeProcessor_];
 
         for (size_t i = 0; i < eventProperties.size(); ++i) {
-            if (eventProperties.at(i)->getEvent()->button() == button &&
-                eventProperties.at(i)->getEvent()->modifier() == modifier)
+            MouseEvent* event = dynamic_cast<MouseEvent*>(eventProperties.at(i)->getEvent());
+            if (event && event->button() == button && event->modifiers() == modifier) {
                 eventProperties.at(i)->setEvent(
                     new MouseEvent(MouseEvent::MOUSE_BUTTON_NONE, InteractionEvent::MODIFIER_NONE));
+            }
         }
 
         // Do the remapping
@@ -75,9 +76,10 @@ void EventPropertyManager::changeKeyMapping(EventProperty* eventProperty, char b
         std::vector<EventProperty*> eventProperties = eventPropertyMap_[activeProcessor_];
 
         for (size_t i = 0; i < eventProperties.size(); ++i) {
-            if (eventProperties.at(i)->getEvent()->button() == button &&
-                eventProperties.at(i)->getEvent()->modifier() == modifier)
+            KeyboardEvent* event = dynamic_cast<KeyboardEvent*>(eventProperties.at(i)->getEvent());
+            if (event && event->button() == button && event->modifiers() == modifier) {
                 eventProperties.at(i)->setEvent(new KeyboardEvent());
+            }
         }
 
         // Do the remapping

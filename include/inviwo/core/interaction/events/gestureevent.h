@@ -57,7 +57,10 @@ public:
     };
 
     GestureEvent(vec2 deltaPos, double deltaDistance, GestureEvent::GestureType type, GestureEvent::GestureState state, int numFingers, vec2 screenPosNorm);
-    ~GestureEvent();
+    GestureEvent(const GestureEvent& rhs);
+    GestureEvent& operator=(const GestureEvent& that);
+    virtual GestureEvent* clone() const;
+    virtual ~GestureEvent();
 
     inline vec2 deltaPos() const { return deltaPos_; }
     inline double deltaDistance() const { return deltaDistance_; }
@@ -73,12 +76,18 @@ public:
     virtual void serialize(IvwSerializer& s) const;
     virtual void deserialize(IvwDeserializer& d);
 
+    virtual bool matching(const Event* aEvent) const;
+    virtual bool matching(const GestureEvent* aEvent) const;
+
 private:
-    vec2 deltaPos_;
-    double deltaDistance_;
+    // Event selectors
     GestureEvent::GestureType type_;
     GestureEvent::GestureState state_;
     int numFingers_;
+
+    // Event state
+    vec2 deltaPos_;
+    double deltaDistance_;
     vec2 screenPosNorm_;
 };
 
