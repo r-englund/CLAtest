@@ -25,7 +25,7 @@
  * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- * 
+ *
  * Contact: Erik Sundén
  *
  *********************************************************************************/
@@ -39,12 +39,14 @@
 namespace inviwo {
 
 PickingManager::~PickingManager() {
-    for (std::vector<PickingObject*>::iterator it = pickingObjects_.begin(); it != pickingObjects_.end(); it++)
+    for (std::vector<PickingObject*>::iterator it = pickingObjects_.begin();
+         it != pickingObjects_.end(); it++)
         delete *it;
 }
 
 bool PickingManager::unregisterPickingObject(const PickingObject* p) {
-    std::vector<PickingObject*>::iterator it = std::find(unRegisteredPickingObjects_.begin(), unRegisteredPickingObjects_.end(), p);
+    std::vector<PickingObject*>::iterator it =
+        std::find(unRegisteredPickingObjects_.begin(), unRegisteredPickingObjects_.end(), p);
 
     if (it == unRegisteredPickingObjects_.end()) {
         it = std::find(pickingObjects_.begin(), pickingObjects_.end(), p);
@@ -58,16 +60,18 @@ bool PickingManager::unregisterPickingObject(const PickingObject* p) {
     return false;
 }
 
-bool PickingManager::pickingEnabled(){
-    BoolProperty* pickingEnabledProperty = dynamic_cast<BoolProperty*>(InviwoApplication::getPtr()->getSettingsByType<SystemSettings>()->getPropertyByIdentifier("enablePicking"));
+bool PickingManager::pickingEnabled() {
+    BoolProperty* pickingEnabledProperty = dynamic_cast<BoolProperty*>(
+        InviwoApplication::getPtr()->getSettingsByType<SystemSettings>()->getPropertyByIdentifier(
+            "enablePicking"));
     return (pickingEnabledProperty && pickingEnabledProperty->get());
 }
 
 PickingObject* PickingManager::getPickingObjectFromColor(const DataVec3UINT8::type& c) {
-    std::vector<PickingObject*>::iterator it = std::find_if(pickingObjects_.begin(), pickingObjects_.end(), FindPickingObject(c));
+    std::vector<PickingObject*>::iterator it =
+        std::find_if(pickingObjects_.begin(), pickingObjects_.end(), FindPickingObject(c));
 
-    if (it != pickingObjects_.end())
-        return (*it);
+    if (it != pickingObjects_.end()) return (*it);
 
     return NULL;
 }
@@ -76,17 +80,17 @@ PickingObject* PickingManager::generatePickingObject(size_t id) {
     float idF = static_cast<float>(id);
     // Hue /Saturation / Value
     // Hue is based on Golden Ratio for unique and distinct color differences.
-    float valueDiff = 0.05f*floor(idF/100.f);
+    float valueDiff = 0.05f * floor(idF / 100.f);
 
-    if (valueDiff>0.7f) {
+    if (valueDiff > 0.7f) {
         LogError("Maximum number of picking colors reached at ID : " << id);
         return NULL;
     }
 
-    vec3 hsv = vec3(idF * M_PI - floor(idF * M_PI), 0.5f, 0.95f-valueDiff);
+    vec3 hsv = vec3(idF * M_PI - floor(idF * M_PI), 0.5f, 0.95f - valueDiff);
     dvec3 rgb = dvec3(hsv2rgb(hsv));
     DataVec3UINT8::type rgbUINT8;
-    DataVec3UINT8::get()->vec3DoubleToValue(rgb*255.0, &rgbUINT8);
+    DataVec3UINT8::get()->vec3DoubleToValue(rgb * 255.0, &rgbUINT8);
     return new PickingObject(id, rgbUINT8);
 }
 
@@ -94,27 +98,28 @@ void PickingManager::performUniqueColorGenerationTest(int iterations) {
     std::vector<DataVec3UINT8::type> colorVec;
     bool passed = true;
 
-    for (int i=0; i<iterations; i++) {
+    for (int i = 0; i < iterations; i++) {
         float idF = static_cast<float>(i);
-        float valueDiff = 0.05f*floor(idF/100.f);
+        float valueDiff = 0.05f * floor(idF / 100.f);
 
-        if (valueDiff>0.85f) {
+        if (valueDiff > 0.85f) {
             LogError("Maximum number of picking colors reached at ID : " << i);
             return;
         }
 
-        vec3 hsv = vec3(idF * M_PI - floor(idF * M_PI), 0.5f, 0.95f-valueDiff);
+        vec3 hsv = vec3(idF * M_PI - floor(idF * M_PI), 0.5f, 0.95f - valueDiff);
         dvec3 rgb = dvec3(hsv2rgb(hsv));
         DataVec3UINT8::type rgbUINT8;
-        DataVec3UINT8::get()->vec3DoubleToValue(rgb*255.0, &rgbUINT8);
+        DataVec3UINT8::get()->vec3DoubleToValue(rgb * 255.0, &rgbUINT8);
 
-        if (std::find(colorVec.begin(), colorVec.end(), rgbUINT8)!=colorVec.end()) {
+        if (std::find(colorVec.begin(), colorVec.end(), rgbUINT8) != colorVec.end()) {
             ivec3 ic = ivec3(rgbUINT8.x, rgbUINT8.y, rgbUINT8.z);
-            LogInfo("Duplicate Picking Color : (" << ic.x << "," << ic.y << "," << ic.z << ") at iteration " << i << " with valueDiff " << valueDiff);
+            LogInfo("Duplicate Picking Color : (" << ic.x << "," << ic.y << "," << ic.z
+                                                  << ") at iteration " << i << " with valueDiff "
+                                                  << valueDiff);
             passed = false;
             return;
-        }
-        else
+        } else
             colorVec.push_back(rgbUINT8);
     }
 
@@ -122,4 +127,4 @@ void PickingManager::performUniqueColorGenerationTest(int iterations) {
         LogInfo("performUniqueColorGenerationTest passed with " << iterations << " iterations");
 }
 
-} // namespace
+}  // namespace
