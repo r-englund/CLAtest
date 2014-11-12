@@ -168,6 +168,7 @@ protected:
     void mouseDoubleClickEvent(QGraphicsSceneMouseEvent* e);
 
     void keyPressEvent(QKeyEvent* keyEvent);
+    void keyReleaseEvent(QKeyEvent* keyEvent);
     void contextMenuEvent(QGraphicsSceneContextMenuEvent* e);
 
     void dragEnterEvent(QGraphicsSceneDragDropEvent* de);

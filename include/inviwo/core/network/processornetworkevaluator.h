@@ -68,9 +68,9 @@ public:
     void enableEvaluation();
     void requestEvaluate();
 
-    void propagateMouseEvent(Canvas* canvas, MouseEvent* event);
     void propagateResizeEvent(Canvas* canvas, ResizeEvent* resizeEvent);
     void propagateInteractionEvent(Canvas* canvas, InteractionEvent* event);
+    void propagateInteractionEvent(Processor* processor, InteractionEvent* event);
 
     Processor* retrieveCanvasProcessor(Canvas* canvas);
 
@@ -98,9 +98,7 @@ private:
     void updateProcessorStates();
     void resetProcessorVisitedStates();
 
-    void propagateMouseEvent(Processor* processor, MouseEvent* mouseEvent);
-    void propagateInteractionEvent(Processor* processor, InteractionEvent* event);
-
+    void propagateInteractionEventImpl(Processor* processor, InteractionEvent* event);
     bool isPortConnectedToProcessor(Port* port, Processor* processor);
 
     ProcessorNetwork* processorNetwork_;

@@ -236,18 +236,20 @@ void ProcessorNetworkEvaluator::resetProcessorVisitedStates() {
     }
 }
 
-void ProcessorNetworkEvaluator::propagateInteractionEvent(Processor* processor,
-                                                          InteractionEvent* event) {
+void ProcessorNetworkEvaluator::propagateInteractionEventImpl(Processor* processor,
+                                                              InteractionEvent* event) {
     if (!hasBeenVisited(processor)) {
+        processor->invokeInteractionEvent(event);
         setProcessorVisited(processor);
+        if (event->hasBeenUsed()) return;
+
         ProcessorList directPredecessors = getDirectPredecessors(processor, event);
 
         for (ProcessorList::iterator it = directPredecessors.begin(),
-                                     itEnd = directPredecessors.end();
-             it != itEnd; ++it) {
-            (*it)->invokeInteractionEvent(event);
+             itEnd = directPredecessors.end();
+             it != itEnd; ++it) {           
+            propagateInteractionEventImpl(*it, event);
             if (event->hasBeenUsed()) return;
-            propagateInteractionEvent(*it, event);
         }
     }
 }
@@ -256,7 +258,13 @@ void ProcessorNetworkEvaluator::propagateInteractionEvent(Canvas* canvas, Intera
     // find the canvas processor from which the event was emitted
     Processor* eventInitiator = retrieveCanvasProcessor(canvas);
     resetProcessorVisitedStates();
-    propagateInteractionEvent(eventInitiator, event);
+    propagateInteractionEventImpl(eventInitiator, event);
+}
+
+void ProcessorNetworkEvaluator::propagateInteractionEvent(Processor* processor,
+                                                          InteractionEvent* event) {
+    resetProcessorVisitedStates();
+    propagateInteractionEventImpl(processor, event);
 }
 
 bool ProcessorNetworkEvaluator::isPortConnectedToProcessor(Port* port, Processor* processor) {
