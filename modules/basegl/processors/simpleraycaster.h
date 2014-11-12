@@ -42,6 +42,7 @@
 #include <inviwo/core/properties/simpleraycastingproperty.h>
 #include <inviwo/core/properties/cameraproperty.h>
 #include <inviwo/core/properties/compositeproperty.h>
+#include <inviwo/core/properties/eventproperty.h>
 #include <inviwo/core/ports/imageport.h>
 #include <inviwo/core/ports/volumeport.h>
 
@@ -67,6 +68,7 @@ protected:
 
 private:
     void onVolumeChange();
+    void toggleShading(Event*);
     
     VolumeInport volumePort_;
     ImageInport entryPort_;
@@ -79,6 +81,8 @@ private:
     SimpleRaycastingProperty raycasting_;
     CameraProperty camera_;
     SimpleLightingProperty lighting_;
+
+    EventProperty toggleShading_;
 };
 
 } // namespace

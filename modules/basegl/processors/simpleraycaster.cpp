@@ -58,7 +58,10 @@ SimpleRaycaster::SimpleRaycaster()
     , channel_("channel", "Render Channel")
     , raycasting_("raycaster", "Raycasting")
     , camera_("camera", "Camera")
-    , lighting_("lighting", "Lighting") {
+    , lighting_("lighting", "Lighting")
+    , toggleShading_("toggleShading", "Toggle Shading",
+        new KeyboardEvent('L'), 
+        new Action("Toggle Shading", this, &SimpleRaycaster::toggleShading)) {
     
     addPort(volumePort_, "VolumePortGroup");
     addPort(entryPort_, "ImagePortGroup1");
@@ -75,6 +78,7 @@ SimpleRaycaster::SimpleRaycaster()
     addProperty(raycasting_);
     addProperty(camera_);
     addProperty(lighting_);
+    addProperty(toggleShading_);
 }
 
 SimpleRaycaster::~SimpleRaycaster() {
@@ -145,6 +149,14 @@ void SimpleRaycaster::process() {
 
     shader_->deactivate();
     utilgl::deactivateCurrentTarget();
+}
+
+void SimpleRaycaster::toggleShading(Event*) {
+    if (lighting_.shadingMode_.get() ==  ShadingMode::None) {
+        lighting_.shadingMode_.set(ShadingMode::Phong);
+    } else {
+        lighting_.shadingMode_.set(ShadingMode::None);
+    }
 }
 
 } // namespace

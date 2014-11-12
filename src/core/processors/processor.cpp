@@ -286,6 +286,8 @@ const std::vector<InteractionHandler*>& Processor::getInteractionHandlers() cons
 }
 
 void Processor::invokeInteractionEvent(Event* event) {
+    PropertyOwner::invokeInteractionEvent(event);
+
     for (size_t i=0; i<interactionHandlers_.size(); i++)
         interactionHandlers_[i]->invokeEvent(event);
 }

@@ -245,8 +245,8 @@ void ProcessorNetworkEvaluator::propagateInteractionEvent(Processor* processor,
         for (ProcessorList::iterator it = directPredecessors.begin(),
                                      itEnd = directPredecessors.end();
              it != itEnd; ++it) {
-            if ((*it)->hasInteractionHandler()) (*it)->invokeInteractionEvent(event);
-
+            (*it)->invokeInteractionEvent(event);
+            if (event->hasBeenUsed()) return;
             propagateInteractionEvent(*it, event);
         }
     }
