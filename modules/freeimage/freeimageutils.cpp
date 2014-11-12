@@ -374,6 +374,8 @@ FIBITMAP* FreeImageUtils::createBitmapFromData(const T* data, FREE_IMAGE_TYPE ty
     unsigned int bytespp = FreeImage_GetLine(dib) / FreeImage_GetWidth(dib);
     T* bits = (T*)FreeImage_GetBits(dib);
 
+    // FIXME: I commented this out (Martin, issue #650)
+    /*
     //Scale normalized float value to from 0 - 1 to 0  - 255
     if (type == FIT_FLOAT) {
         T value;
@@ -386,6 +388,7 @@ FIBITMAP* FreeImageUtils::createBitmapFromData(const T* data, FREE_IMAGE_TYPE ty
         return dibConvert;
     }
     else
+    */
         memcpy(bits, data, dim.x*dim.y*bytespp);
 
     return dib;
