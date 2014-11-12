@@ -490,14 +490,14 @@ void* FreeImageUtils::fiBitmapToDataArrayAndRescale(void* dst, FIBITMAP* bitmap,
     FIBITMAP* bitmapTmp = allocateBitmap(type, dimTmp, bitsPerPixel, channels);
     if(!bitmapTmp)
         return NULL;
+    switchChannels(bitmap, dim, channels);
     //Paste source into our tmp, to be used for scaling
     FreeImage_Paste(bitmapTmp, bitmap, pasteLeft, pasteTop, 256);
 
     //Rescale to proper dimension
     FIBITMAP* bitmapRescaled = FreeImage_Rescale(bitmapTmp, static_cast<int>(dst_dim.x), static_cast<int>(dst_dim.y), FILTER_BILINEAR);
     FreeImage_Unload(bitmapTmp);
-    switchChannels(bitmapRescaled, dst_dim, channels);
-    void* pixelValues = static_cast<void*>(FreeImage_GetBits(bitmapRescaled));
+    unsigned char* pixelValues = static_cast<unsigned char* >(FreeImage_GetBits(bitmapRescaled));
 
     if (!dst) {
         T* dstAlloc = new T[dst_dim.x*dst_dim.y];
