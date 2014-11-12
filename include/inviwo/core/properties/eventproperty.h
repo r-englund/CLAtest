@@ -83,8 +83,8 @@ public:
     virtual void deserialize(IvwDeserializer& d);
 
 private:
-    InteractionEvent* event_; //< non-owning reference
-    Action* action_;          //< non-owning reference   
+    InteractionEvent* event_; //< owning reference
+    Action* action_;          //< owning reference   
 };
 
 }  // namespace

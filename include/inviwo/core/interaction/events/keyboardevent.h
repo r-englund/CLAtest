@@ -40,18 +40,18 @@ namespace inviwo {
 
 class IVW_CORE_API KeyboardEvent : public InteractionEvent {
 public:
-    enum KeyState { KEY_STATE_NONE = 0, KEY_STATE_PRESS, KEY_STATE_RELEASE };
+    enum KeyState { KEY_STATE_NONE = 0, KEY_STATE_PRESS = 1, KEY_STATE_RELEASE = 2 };
 
     KeyboardEvent(int key = 0,
-                  InteractionEvent::Modifier modifiers = InteractionEvent::MODIFIER_NONE,
-                  KeyboardEvent::KeyState state = KeyboardEvent::KEY_STATE_PRESS);
+                  int modifiers = InteractionEvent::MODIFIER_NONE,
+                  int state = KeyboardEvent::KEY_STATE_PRESS);
 
     KeyboardEvent(const KeyboardEvent& rhs);
     KeyboardEvent& operator=(const KeyboardEvent& that);
     virtual KeyboardEvent* clone() const;
     virtual ~KeyboardEvent();
 
-    KeyboardEvent::KeyState state() const;
+    int state() const;
     virtual int button() const;
 
     virtual std::string getClassIdentifier() const;
@@ -61,10 +61,9 @@ public:
     virtual bool matching(const Event* aEvent) const;
     virtual bool matching(const KeyboardEvent* aEvent) const;
 
-
 private:
     // Event selectors:
-    KeyboardEvent::KeyState state_;
+    int state_;
     int key_;
 };
 

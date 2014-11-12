@@ -47,6 +47,7 @@ public:
     virtual ~Event();
 
     // Check if this event has the same type and selectors as aEvent.
+    // this should be the selector, and aEvent the "real" event.
     virtual bool matching(const Event* aEvent) const { return false; }
 
     void markAsUsed();

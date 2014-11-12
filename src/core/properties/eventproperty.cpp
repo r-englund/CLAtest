@@ -50,7 +50,9 @@ EventProperty::EventProperty(const EventProperty& rhs)
 EventProperty& EventProperty::operator=(const EventProperty& that) {
     if (this != &that) {
         Property::operator=(that);
+        if (event_) delete event_;
         event_ = that.event_->clone();
+        if (action_) delete action_;
         action_ = that.action_->clone();
     }
     return *this;
@@ -58,7 +60,10 @@ EventProperty& EventProperty::operator=(const EventProperty& that) {
 
 EventProperty* EventProperty::clone() const { return new EventProperty(*this); }
 
-EventProperty::~EventProperty() {}
+EventProperty::~EventProperty() {
+    if (action_) delete action_;
+    if (event_) delete event_;
+}
 
 void EventProperty::serialize(IvwSerializer& s) const {
     Property::serialize(s);
@@ -81,10 +86,12 @@ Action* EventProperty::getAction() const {
 }
 
 void EventProperty::setEvent(InteractionEvent* e) {
+    if (event_) delete event_;
     event_ = e;
 }
 
 void EventProperty::setAction(Action* action) {
+    if (action_) delete action_;
     action_ = action;
 }
 

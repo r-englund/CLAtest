@@ -43,44 +43,41 @@ class IVW_CORE_API MouseEvent : public InteractionEvent {
 public:
     enum MouseButton {
         MOUSE_BUTTON_NONE = 0,
-        MOUSE_BUTTON_LEFT,
-        MOUSE_BUTTON_MIDDLE,
-        MOUSE_BUTTON_RIGHT,
-        COUNT
+        MOUSE_BUTTON_LEFT = 1,
+        MOUSE_BUTTON_MIDDLE = 2,
+        MOUSE_BUTTON_RIGHT = 4,
+        MOUSE_BUTTON_ANY = MOUSE_BUTTON_LEFT | MOUSE_BUTTON_MIDDLE | MOUSE_BUTTON_RIGHT
     };
 
     enum MouseState {
         MOUSE_STATE_NONE = 0,
-        MOUSE_STATE_MOVE,
-        MOUSE_STATE_PRESS,
-        MOUSE_STATE_RELEASE,
-        MOUSE_STATE_WHEEL
+        MOUSE_STATE_MOVE = 1,
+        MOUSE_STATE_PRESS = 2,
+        MOUSE_STATE_RELEASE = 4,
+        MOUSE_STATE_WHEEL = 8,
+        MOUSE_STATE_ANY =
+            MOUSE_STATE_MOVE | MOUSE_STATE_PRESS | MOUSE_STATE_RELEASE | MOUSE_STATE_WHEEL
     };
 
     enum MouseWheelOrientation {
         MOUSE_WHEEL_NONE = 0,
-        MOUSE_WHEEL_HORIZONTAL,
-        MOUSE_WHEEL_VERTICAL
+        MOUSE_WHEEL_HORIZONTAL = 1,
+        MOUSE_WHEEL_VERTICAL = 2,
+        MOUSE_WHEEL_ANY = MOUSE_WHEEL_HORIZONTAL | MOUSE_WHEEL_VERTICAL
     };
 
     // Mouse and wheel event
-    MouseEvent(ivec2 position, int delta, MouseEvent::MouseButton button,
-               MouseEvent::MouseState state = MOUSE_STATE_NONE,
-               MouseEvent::MouseWheelOrientation orientation = MOUSE_WHEEL_NONE,
-               InteractionEvent::Modifier modifiers = InteractionEvent::MODIFIER_NONE,
+    MouseEvent(ivec2 position, int delta, int button, int state = MOUSE_STATE_NONE,
+               int orientation = MOUSE_WHEEL_NONE, int modifiers = InteractionEvent::MODIFIER_NONE,
                uvec2 canvasSize = uvec2(0));
 
     // Mouse event
-    MouseEvent(ivec2 position, MouseEvent::MouseButton button,
-               MouseEvent::MouseState state = MOUSE_STATE_NONE,
-               InteractionEvent::Modifier modifiers = InteractionEvent::MODIFIER_NONE,
-               uvec2 canvasSize = uvec2(0));
+    MouseEvent(ivec2 position, int button, int state = MOUSE_STATE_NONE,
+               int modifiers = InteractionEvent::MODIFIER_NONE, uvec2 canvasSize = uvec2(0));
 
     // Selector
-    MouseEvent(MouseEvent::MouseButton button,
-               InteractionEvent::Modifier modifiers = InteractionEvent::MODIFIER_NONE,
-               MouseEvent::MouseState state = MOUSE_STATE_NONE,
-               MouseEvent::MouseWheelOrientation orientation = MOUSE_WHEEL_NONE);
+    MouseEvent(int button, int modifiers = InteractionEvent::MODIFIER_NONE,
+               int state = MOUSE_STATE_NONE, int orientation = MOUSE_WHEEL_NONE);
 
     virtual ~MouseEvent();
 
@@ -89,10 +86,10 @@ public:
     inline int wheelSteps() const { return wheelSteps_; }
     inline unsigned int x() const { return position_.x; }
     inline unsigned int y() const { return position_.y; }
-    inline MouseEvent::MouseState state() const { return state_; }
-    inline MouseEvent::MouseWheelOrientation wheelOrientation() const { return wheelOrientation_; }
+    inline int state() const { return state_; }
+    inline int wheelOrientation() const { return wheelOrientation_; }
     inline uvec2 canvasSize() const { return canvasSize_; }
-    inline MouseButton button() const { return button_; }
+    inline int button() const { return button_; }
     void modify(ivec2, uvec2);
 
     virtual std::string getClassIdentifier() const;
@@ -105,16 +102,16 @@ public:
 
 private:
     // Event selectors:
-    MouseEvent::MouseButton button_;
-    MouseEvent::MouseState state_;
-    MouseEvent::MouseWheelOrientation wheelOrientation_;
+    int button_;
+    int state_;
+    int wheelOrientation_;
 
     // Event state:
     ivec2 position_;
     int wheelSteps_;
     uvec2 canvasSize_;
 
-    static const std::string buttonNames_[COUNT];
+    static const std::string buttonNames_[4];
 };
 
 }  // namespace

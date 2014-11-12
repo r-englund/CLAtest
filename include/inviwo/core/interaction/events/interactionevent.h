@@ -47,16 +47,16 @@ public:
         MODIFIER_ALT = 1, 
         MODIFIER_CTRL = 2, 
         MODIFIER_SHIFT = 4, 
-        COUNT 
+        MODIFIER_ANY = MODIFIER_ALT | MODIFIER_CTRL | MODIFIER_SHIFT
     };
 
-    InteractionEvent(Modifier modifiers = MODIFIER_NONE);
+    InteractionEvent(int modifiers = MODIFIER_NONE);
     InteractionEvent(const InteractionEvent& rhs);
     InteractionEvent& operator=(const InteractionEvent& that);
     virtual InteractionEvent* clone() const;
     virtual ~InteractionEvent();
 
-    Modifier modifiers() const;
+    int modifiers() const;
     std::string modifierNames() const;
  
     virtual std::string getClassIdentifier() const;
@@ -67,8 +67,8 @@ public:
     virtual bool matching(const Event* aEvent) const;
 
 protected:
-    Modifier modifiers_;
-    static const std::string modifierNames_[COUNT];
+    int modifiers_;
+    static const std::string modifierNames_[4];
 };
 
 }  // namespace

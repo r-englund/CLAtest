@@ -48,66 +48,83 @@ Trackball::Trackball(vec3* lookFrom, vec3* lookTo, vec3* lookUp)
     , lookTo_(lookTo)
     , lookUp_(lookUp)
 
-    , rotateEvent_(MouseEvent::MOUSE_BUTTON_LEFT, InteractionEvent::MODIFIER_NONE, MouseEvent::MOUSE_STATE_MOVE)
-    , zoomEvent_(MouseEvent::MOUSE_BUTTON_RIGHT, InteractionEvent::MODIFIER_NONE)
-    , panEvent_(MouseEvent::MOUSE_BUTTON_MIDDLE, InteractionEvent::MODIFIER_NONE)
-    , stepRotateUpEvent_('W', InteractionEvent::MODIFIER_NONE, KeyboardEvent::KEY_STATE_PRESS)
-    , stepRotateLeftEvent_('A', InteractionEvent::MODIFIER_NONE, KeyboardEvent::KEY_STATE_PRESS)
-    , stepRotateDownEvent_('S', InteractionEvent::MODIFIER_NONE, KeyboardEvent::KEY_STATE_PRESS)
-    , stepRotateRightEvent_('D', InteractionEvent::MODIFIER_NONE, KeyboardEvent::KEY_STATE_PRESS)
-    , stepZoomInEvent_('R', InteractionEvent::MODIFIER_NONE, KeyboardEvent::KEY_STATE_PRESS)
-    , stepZoomOutEvent_('F', InteractionEvent::MODIFIER_NONE, KeyboardEvent::KEY_STATE_PRESS)
-    , stepPanUpEvent_('W', InteractionEvent::MODIFIER_SHIFT, KeyboardEvent::KEY_STATE_PRESS)
-    , stepPanLeftEvent_('A', InteractionEvent::MODIFIER_SHIFT, KeyboardEvent::KEY_STATE_PRESS)
-    , stepPanDownEvent_('S', InteractionEvent::MODIFIER_SHIFT, KeyboardEvent::KEY_STATE_PRESS)
-    , stepPanRightEvent_('D', InteractionEvent::MODIFIER_SHIFT, KeyboardEvent::KEY_STATE_PRESS)
+    , mouseRotate_("trackballRotate", "Rotate", 
+        new MouseEvent(MouseEvent::MOUSE_BUTTON_LEFT, InteractionEvent::MODIFIER_NONE,
+            MouseEvent::MOUSE_STATE_PRESS | MouseEvent::MOUSE_STATE_MOVE),
+        new TrackballAction(TrackballAction::TRACKBALL_ROTATE, this, &Trackball::rotate))
+    
+    , mouseZoom_("trackballZoom", "Zoom",
+        new MouseEvent(MouseEvent::MOUSE_BUTTON_RIGHT, InteractionEvent::MODIFIER_NONE,
+            MouseEvent::MOUSE_STATE_PRESS | MouseEvent::MOUSE_STATE_MOVE),
+        new TrackballAction(TrackballAction::TRACKBALL_ZOOM, this, &Trackball::zoom))
 
-    , rotateAction_(TrackballAction::TRACKBALL_ROTATE, this, &Trackball::rotate)
-    , zoomAction_(TrackballAction::TRACKBALL_ZOOM)
-    , panAction_(TrackballAction::TRACKBALL_PAN)
-    , stepRotateUpAction_(TrackballAction::TRACKBALL_STEPROTATE_UP)
-    , stepRotateLeftAction_(TrackballAction::TRACKBALL_STEPROTATE_LEFT)
-    , stepRotateDownAction_(TrackballAction::TRACKBALL_STEPROTATE_DOWN)
-    , stepRotateRightAction_(TrackballAction::TRACKBALL_STEPROTATE_RIGHT)
-    , stepZoomInAction_(TrackballAction::TRACKBALL_STEPZOOM_IN)
-    , stepZoomOutAction_(TrackballAction::TRACKBALL_STEPZOOM_OUT)
-    , stepPanUpAction_(TrackballAction::TRACKBALL_STEPPAN_UP)
-    , stepPanLeftAction_(TrackballAction::TRACKBALL_STEPPAN_LEFT)
-    , stepPanDownAction_(TrackballAction::TRACKBALL_STEPPAN_DOWN)
-    , stepPanRightAction_(TrackballAction::TRACKBALL_STEPPAN_RIGHT)
+    , mousePan_("trackballPan", "Pan", 
+        new  MouseEvent(MouseEvent::MOUSE_BUTTON_MIDDLE, InteractionEvent::MODIFIER_NONE,
+            MouseEvent::MOUSE_STATE_PRESS | MouseEvent::MOUSE_STATE_MOVE),
+        new TrackballAction(TrackballAction::TRACKBALL_PAN, this, &Trackball::pan))
 
-    , rotateEventProperty_("trackballRotate", "Rotate", &rotateEvent_, &rotateAction_)
-    , zoomEventProperty_("trackballZoom", "Zoom", &zoomEvent_, &zoomAction_)
-    , panEventProperty_("trackballPan", "Pan", &panEvent_, &panAction_)
-    , stepRotateUpProperty_("stepRotateUp", "Step rotate up", &stepRotateUpEvent_,
-                            &stepRotateUpAction_)
-    , stepRotateLeftProperty_("stepRotateLeft", "Step rotate left", &stepRotateLeftEvent_,
-                              &stepRotateLeftAction_)
-    , stepRotateDownProperty_("stepRotateDown", "Step rotate down", &stepRotateDownEvent_,
-                              &stepRotateDownAction_)
-    , stepRotateRightProperty_("stepRotateRight", "Step rotate right", &stepRotateRightEvent_,
-                               &stepRotateRightAction_)
-    , stepZoomInProperty_("stepZoomIn", "Step zoom in", &stepZoomInEvent_, &stepZoomInAction_)
-    , stepZoomOutProperty_("stepZoomOut", "Step zoom out", &stepZoomOutEvent_, &stepZoomOutAction_)
-    , stepPanUpProperty_("stepPanUp", "Step pan up", &stepPanUpEvent_, &stepPanUpAction_)
-    , stepPanLeftProperty_("stepPanLeft", "Step pan left", &stepPanLeftEvent_, &stepPanLeftAction_)
-    , stepPanDownProperty_("stepPanDown", "Step pan down", &stepPanDownEvent_, &stepPanDownAction_)
-    , stepPanRightProperty_("stepPanRight", "Step pan right", &stepPanRightEvent_,
-                            &stepPanRightAction_) {
+    , mouseReset_("mouseReset", "Reset",
+        new  MouseEvent(MouseEvent::MOUSE_BUTTON_NONE, InteractionEvent::MODIFIER_NONE,
+        MouseEvent::MOUSE_STATE_RELEASE),
+        new Action("reset", this, &Trackball::reset))
+
+    , stepRotateUp_("stepRotateUp", "Step rotate up", 
+        new KeyboardEvent('W', InteractionEvent::MODIFIER_NONE, KeyboardEvent::KEY_STATE_PRESS),
+        new TrackballAction(TrackballAction::TRACKBALL_STEPROTATE_UP, this, &Trackball::rotateUp))
+
+    , stepRotateLeft_("stepRotateLeft", "Step rotate left",
+        new KeyboardEvent('A', InteractionEvent::MODIFIER_NONE, KeyboardEvent::KEY_STATE_PRESS),
+        new TrackballAction(TrackballAction::TRACKBALL_STEPROTATE_LEFT, this, &Trackball::rotateLeft))
+
+    , stepRotateDown_("stepRotateDown", "Step rotate down",
+        new KeyboardEvent('S', InteractionEvent::MODIFIER_NONE, KeyboardEvent::KEY_STATE_PRESS),
+        new TrackballAction(TrackballAction::TRACKBALL_STEPROTATE_DOWN, this, &Trackball::rotateDown))
+
+    , stepRotateRight_("stepRotateRight", "Step rotate right", 
+        new KeyboardEvent('D', InteractionEvent::MODIFIER_NONE, KeyboardEvent::KEY_STATE_PRESS),
+        new TrackballAction(TrackballAction::TRACKBALL_STEPROTATE_RIGHT, this, &Trackball::rotateRight))
+
+    , stepZoomIn_("stepZoomIn", "Step zoom in",
+        new KeyboardEvent('R', InteractionEvent::MODIFIER_NONE, KeyboardEvent::KEY_STATE_PRESS),
+        new TrackballAction(TrackballAction::TRACKBALL_STEPZOOM_IN, this, &Trackball::zoomIn))
+
+    , stepZoomOut_("stepZoomOut", "Step zoom out",
+        new KeyboardEvent('F', InteractionEvent::MODIFIER_NONE, KeyboardEvent::KEY_STATE_PRESS),
+        new TrackballAction(TrackballAction::TRACKBALL_STEPZOOM_OUT, this, &Trackball::zoomOut))
+
+    , stepPanUp_("stepPanUp", "Step pan up", 
+        new KeyboardEvent('W', InteractionEvent::MODIFIER_SHIFT, KeyboardEvent::KEY_STATE_PRESS),
+        new TrackballAction(TrackballAction::TRACKBALL_STEPPAN_UP, this, &Trackball::panUp))
+
+    , stepPanLeft_("stepPanLeft", "Step pan left",
+        new KeyboardEvent('A', InteractionEvent::MODIFIER_SHIFT, KeyboardEvent::KEY_STATE_PRESS),
+        new TrackballAction(TrackballAction::TRACKBALL_STEPPAN_LEFT, this, &Trackball::panLeft))
+
+    , stepPanDown_("stepPanDown", "Step pan down", 
+        new KeyboardEvent('S', InteractionEvent::MODIFIER_SHIFT, KeyboardEvent::KEY_STATE_PRESS),
+        new TrackballAction(TrackballAction::TRACKBALL_STEPPAN_DOWN, this, &Trackball::panDown))
+
+    , stepPanRight_("stepPanRight", "Step pan right", 
+        new KeyboardEvent('D', InteractionEvent::MODIFIER_SHIFT, KeyboardEvent::KEY_STATE_PRESS),
+        new TrackballAction(TrackballAction::TRACKBALL_STEPPAN_RIGHT, this, &Trackball::panRight)) {
         
-    addProperty(rotateEventProperty_);
-    addProperty(zoomEventProperty_);
-    addProperty(panEventProperty_);
-    addProperty(stepRotateUpProperty_);
-    addProperty(stepRotateLeftProperty_);
-    addProperty(stepRotateDownProperty_);
-    addProperty(stepRotateRightProperty_);
-    addProperty(stepZoomInProperty_);
-    addProperty(stepZoomOutProperty_);
-    addProperty(stepPanUpProperty_);
-    addProperty(stepPanLeftProperty_);
-    addProperty(stepPanDownProperty_);
-    addProperty(stepPanRightProperty_);
+
+    mouseReset_.setVisible(false);
+
+    addProperty(mouseRotate_);
+    addProperty(mouseZoom_);
+    addProperty(mousePan_);
+    addProperty(mouseReset_);
+    addProperty(stepRotateUp_);
+    addProperty(stepRotateLeft_);
+    addProperty(stepRotateDown_);
+    addProperty(stepRotateRight_);
+    addProperty(stepZoomIn_);
+    addProperty(stepZoomOut_);
+    addProperty(stepPanUp_);
+    addProperty(stepPanLeft_);
+    addProperty(stepPanDown_);
+    addProperty(stepPanRight_);
 }
 
 Trackball::~Trackball() {}
@@ -175,94 +192,48 @@ void Trackball::invokeEvent(Event* event) {
         isMouseBeingPressedAndHold_ = false;
 
         gestureEvent->markAsUsed();
-
         return;
     }
 
     MouseEvent* mouseEvent = dynamic_cast<MouseEvent*>(event);
     if (mouseEvent) {
-        int button = mouseEvent->button();
-        MouseEvent::MouseState state = mouseEvent->state();
-        InteractionEvent::Modifier modifier = mouseEvent->modifiers();
-
-        if(rotateEvent_.matching(mouseEvent)) rotateAction_.invoke(mouseEvent);
-
-
-
-//         if (button == rotateEvent_.button()
-//             && modifier == rotateEvent_.modifiers()
-//             && (state == MouseEvent::MOUSE_STATE_MOVE || state == MouseEvent::MOUSE_STATE_PRESS)) {
-//                 //perform rotation
-//                 rotate(mouseEvent);
-//         } else 
-        
-        if (button == zoomEvent_.button()
-            && modifier == zoomEvent_.modifiers()
-            && (state == MouseEvent::MOUSE_STATE_MOVE || state == MouseEvent::MOUSE_STATE_PRESS)) {
-                //perform zoom
-                zoom(mouseEvent);
-        } else if (button == panEvent_.button()
-            && modifier == panEvent_.modifiers()
-            && (state == MouseEvent::MOUSE_STATE_MOVE || state == MouseEvent::MOUSE_STATE_PRESS)) {
-                //perform pan
-                pan(mouseEvent);
-        } else if (state == MouseEvent::MOUSE_STATE_RELEASE)
-            isMouseBeingPressedAndHold_ = false;
-
+        if (mouseRotate_.getEvent()->matching(mouseEvent)) 
+            mouseRotate_.getAction()->invoke(mouseEvent);
+        else if (mouseZoom_.getEvent()->matching(mouseEvent))
+            mouseZoom_.getAction()->invoke(mouseEvent);
+        else if (mousePan_.getEvent()->matching(mouseEvent))
+            mousePan_.getAction()->invoke(mouseEvent);
+        else if (mouseReset_.getEvent()->matching(mouseEvent))
+            mouseReset_.getAction()->invoke(mouseEvent);
+       
         mouseEvent->markAsUsed();
-
         return;
     }
 
     KeyboardEvent* keyEvent = dynamic_cast<KeyboardEvent*>(event);
     if (keyEvent) {
-        int button = keyEvent->button();
-        KeyboardEvent::KeyState state = keyEvent->state();
-        InteractionEvent::Modifier modifier = keyEvent->modifiers();
-
-        if (button == stepRotateUpEvent_.button()
-            && modifier == stepRotateUpEvent_.modifiers()
-            && state == KeyboardEvent::KEY_STATE_PRESS)
-            stepRotate(UP);
-        else if (button == stepRotateLeftEvent_.button()
-            && modifier == stepRotateLeftEvent_.modifiers()
-            && state == KeyboardEvent::KEY_STATE_PRESS)
-            stepRotate(LEFT);
-        else if (button == stepRotateDownEvent_.button()
-            && modifier == stepRotateDownEvent_.modifiers()
-            && state == KeyboardEvent::KEY_STATE_PRESS)
-            stepRotate(DOWN);
-        else if (button == stepRotateRightEvent_.button()
-            && modifier == stepRotateRightEvent_.modifiers()
-            && state == KeyboardEvent::KEY_STATE_PRESS)
-            stepRotate(RIGHT);
-        else if (button == stepZoomInEvent_.button()
-            && modifier == stepZoomInEvent_.modifiers()
-            && state == KeyboardEvent::KEY_STATE_PRESS)
-            stepZoom(UP);
-        else if (button == stepZoomOutEvent_.button()
-            && modifier == stepZoomOutEvent_.modifiers()
-            && state == KeyboardEvent::KEY_STATE_PRESS)
-            stepZoom(DOWN);
-        else if (button == stepPanUpEvent_.button()
-            && modifier == stepPanUpEvent_.modifiers()
-            && state == KeyboardEvent::KEY_STATE_PRESS)
-            stepPan(UP);
-        else if (button == stepPanLeftEvent_.button()
-            && modifier == stepPanLeftEvent_.modifiers()
-            && state == KeyboardEvent::KEY_STATE_PRESS)
-            stepPan(LEFT);
-        else if (button == stepPanDownEvent_.button()
-            && modifier == stepPanDownEvent_.modifiers()
-            && state == KeyboardEvent::KEY_STATE_PRESS)
-            stepPan(DOWN);
-        else if (button == stepPanRightEvent_.button()
-            && modifier == stepPanRightEvent_.modifiers()
-            && state == KeyboardEvent::KEY_STATE_PRESS)
-            stepPan(RIGHT);
+        if (stepRotateUp_.getEvent()->matching(keyEvent))
+            stepRotateUp_.getAction()->invoke(keyEvent);
+        else if (stepRotateLeft_.getEvent()->matching(keyEvent))
+            stepRotateLeft_.getAction()->invoke(keyEvent);
+        else if (stepRotateDown_.getEvent()->matching(keyEvent))
+            stepRotateDown_.getAction()->invoke(keyEvent);
+        else if (stepRotateRight_.getEvent()->matching(keyEvent))
+            stepRotateRight_.getAction()->invoke(keyEvent);
+        else if (stepZoomIn_.getEvent()->matching(keyEvent))
+            stepZoomIn_.getAction()->invoke(keyEvent);
+        else if (stepZoomOut_.getEvent()->matching(keyEvent))
+            stepZoomOut_.getAction()->invoke(keyEvent);
+        else if (stepPanUp_.getEvent()->matching(keyEvent))
+            stepPanUp_.getAction()->invoke(keyEvent);
+        else if (stepPanLeft_.getEvent()->matching(keyEvent))
+            stepPanLeft_.getAction()->invoke(keyEvent);
+        else if (stepPanDown_.getEvent()->matching(keyEvent))
+            stepPanDown_.getAction()->invoke(keyEvent);
+        else if (stepPanRight_.getEvent()->matching(keyEvent))
+            stepPanRight_.getAction()->invoke(keyEvent);
 
         keyEvent->markAsUsed();
-
         return;
     }
 }
@@ -312,7 +283,9 @@ void Trackball::rotate(Event* event) {
     return;
 }
 
-void Trackball::zoom(MouseEvent* mouseEvent) {
+void Trackball::zoom(Event* event) {
+    MouseEvent* mouseEvent = static_cast<MouseEvent*>(event);
+
     ivwAssert(mouseEvent!=0, "Invalid mouse event.");
     // ZOOM
     float diff;
@@ -341,7 +314,9 @@ void Trackball::zoom(MouseEvent* mouseEvent) {
     return;
 }
 
-void Trackball::pan(MouseEvent* mouseEvent) {
+void Trackball::pan(Event* event) {
+    MouseEvent* mouseEvent = static_cast<MouseEvent*>(event);
+
     ivwAssert(mouseEvent!=0, "Invalid mouse event.");
     // PAN
     vec2 curMousePos = mouseEvent->posNormalized();
@@ -516,6 +491,85 @@ void Trackball::rotateFromPosToPos(const vec3& currentCamPos, const vec3& nextCa
     //}
 
     notifyAllChanged(this);
+}
+
+void Trackball::rotateLeft(Event* event) {
+    stepRotate(LEFT);
+}
+
+void Trackball::rotateRight(Event* event) {
+    stepRotate(RIGHT);
+}
+
+void Trackball::rotateUp(Event* event) {
+    stepRotate(UP);
+}
+
+void Trackball::rotateDown(Event* event) {
+    stepRotate(DOWN);
+}
+
+void Trackball::panLeft(Event* event) {
+    stepPan(LEFT);
+}
+
+void Trackball::panRight(Event* event) {
+    stepPan(RIGHT);
+}
+
+void Trackball::panUp(Event* event) {
+    stepPan(UP);
+}
+
+void Trackball::panDown(Event* event) {
+    stepPan(DOWN);
+}
+
+void Trackball::zoomIn(Event* event) {
+    stepZoom(UP);
+}
+
+void Trackball::zoomOut(Event* event) {
+    stepZoom(DOWN);
+}
+
+void Trackball::reset(Event* event) {
+    isMouseBeingPressedAndHold_ = false;
+}
+
+
+void TrackballObservable::notifyAllChanged(const Trackball* trackball) const {
+    // Notify observers
+    for (ObserverSet::iterator it = observers_->begin(), itEnd = observers_->end(); it != itEnd;
+         ++it) {
+        // static_cast can be used since only template class objects can be added
+        static_cast<TrackballObserver*>(*it)->onAllTrackballChanged(trackball);
+    }
+}
+
+void TrackballObservable::notifyLookFromChanged(const Trackball* trackball) const {
+    for (ObserverSet::iterator it = observers_->begin(), itEnd = observers_->end(); it != itEnd;
+         ++it) {
+        static_cast<TrackballObserver*>(*it)->onLookFromChanged(trackball);
+    }
+}
+
+void TrackballObservable::notifyLookToChanged(const Trackball* trackball) const {
+    for (ObserverSet::iterator it = observers_->begin(), itEnd = observers_->end(); it != itEnd;
+         ++it) {
+        static_cast<TrackballObserver*>(*it)->onLookToChanged(trackball);
+    }
+}
+
+void TrackballObservable::notifyLookUpChanged(const Trackball* trackball) const {
+    for (ObserverSet::iterator it = observers_->begin(), itEnd = observers_->end(); it != itEnd;
+         ++it) {
+        static_cast<TrackballObserver*>(*it)->onLookUpChanged(trackball);
+    }
+}
+
+TrackballObservable::TrackballObservable() : Observable<TrackballObserver>() {
+
 }
 
 } // namespace

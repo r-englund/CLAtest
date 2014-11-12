@@ -34,9 +34,8 @@
 
 namespace inviwo {
 
-MouseEvent::MouseEvent(ivec2 position, int delta, MouseEvent::MouseButton button,
-                       MouseEvent::MouseState state, MouseEvent::MouseWheelOrientation orientation,
-                       InteractionEvent::Modifier modifiers, uvec2 canvasSize)
+MouseEvent::MouseEvent(ivec2 position, int delta, int button, int state, int orientation,
+                       int modifiers, uvec2 canvasSize)
     : InteractionEvent(modifiers)
     , button_(button)
     , state_(state)
@@ -46,9 +45,8 @@ MouseEvent::MouseEvent(ivec2 position, int delta, MouseEvent::MouseButton button
     , wheelSteps_(delta)
     , canvasSize_(canvasSize) {}
 
-MouseEvent::MouseEvent(ivec2 position, MouseEvent::MouseButton button,
-                       MouseEvent::MouseState state /*= MOUSE_STATE_NONE*/,
-                       InteractionEvent::Modifier modifiers /*= InteractionEvent::MODIFIER_NONE*/,
+MouseEvent::MouseEvent(ivec2 position, int button, int state /*= MOUSE_STATE_NONE*/,
+                       int modifiers /*= InteractionEvent::MODIFIER_NONE*/,
                        uvec2 canvasSize /*= uvec2(0)*/)
     : InteractionEvent(modifiers)
     , button_(button)
@@ -59,10 +57,8 @@ MouseEvent::MouseEvent(ivec2 position, MouseEvent::MouseButton button,
     , wheelSteps_(0)
     , canvasSize_(canvasSize) {}
 
-MouseEvent::MouseEvent(MouseEvent::MouseButton button,
-                       InteractionEvent::Modifier modifiers /*= InteractionEvent::MODIFIER_NONE*/,
-                       MouseEvent::MouseState state /*= MOUSE_STATE_NONE*/,
-                       MouseEvent::MouseWheelOrientation orientation /*= MOUSE_WHEEL_NONE*/)
+MouseEvent::MouseEvent(int button, int modifiers /*= InteractionEvent::MODIFIER_NONE*/,
+                       int state /*= MOUSE_STATE_NONE*/, int orientation /*= MOUSE_WHEEL_NONE*/)
     : InteractionEvent(modifiers)
     , button_(button)
     , state_(state)
@@ -88,22 +84,12 @@ void MouseEvent::serialize(IvwSerializer& s) const {
 
 void MouseEvent::deserialize(IvwDeserializer& d) {
     InteractionEvent::deserialize(d);
-
-    int button = button_;
-    d.deserialize("button", button);
-    button_ = static_cast<MouseButton>(button);
-
-    int state = state_;
-    d.deserialize("state", state);
-    state_ = static_cast<MouseState>(state);
-
-    int wheelOrientation = wheelOrientation_;
-    d.deserialize("wheelOrientation", wheelOrientation);
-    wheelOrientation_ = static_cast<MouseWheelOrientation>(wheelOrientation);
+    d.deserialize("button", button_);
+    d.deserialize("state", state_);
+    d.deserialize("wheelOrientation", wheelOrientation_);
 }
 
-const std::string MouseEvent::buttonNames_[COUNT] = {"", "Left button", "Right button",
-                                                     "Right button"};
+const std::string MouseEvent::buttonNames_[] = {"", "Left button", "Right button", "Right button"};
 
 std::string MouseEvent::getClassIdentifier() const { return "org.inviwo.MouseEvent"; }
 
@@ -116,8 +102,10 @@ bool MouseEvent::matching(const Event* aEvent) const {
     }
 }
 bool MouseEvent::matching(const MouseEvent* aEvent) const {
-    return button_ == aEvent->button_ && state_ == aEvent->state_ &&
-           wheelOrientation_ == aEvent->wheelOrientation_ && modifiers_ == aEvent->modifiers_;
+    return (button_ & aEvent->button_) == aEvent->button_ 
+        && (state_ & aEvent->state_) == aEvent->state_  // aEvent.state equal to any of this.state.
+        && (wheelOrientation_ & aEvent->wheelOrientation_) == aEvent->wheelOrientation_ 
+        && modifiers_ == aEvent->modifiers_;
 }
 
 }  // namespace

@@ -662,8 +662,8 @@ void VolumeSliceGL::VolumeSliceGLInteractionHandler::invokeEvent(Event* event) {
 
     MouseEvent* mouseEvent = dynamic_cast<MouseEvent*>(event);
     if (mouseEvent) {
-        MouseEvent::MouseState state = mouseEvent->state();
-        InteractionEvent::Modifier modifier = mouseEvent->modifiers();
+        int state = mouseEvent->state();
+        int modifier = mouseEvent->modifiers();
 
         if (modifier == wheelEvent_.modifiers() && state == MouseEvent::MOUSE_STATE_WHEEL) {
             int steps = mouseEvent->wheelSteps();
@@ -681,8 +681,8 @@ void VolumeSliceGL::VolumeSliceGLInteractionHandler::invokeEvent(Event* event) {
     KeyboardEvent* keyEvent = dynamic_cast<KeyboardEvent*>(event);
     if (keyEvent) {
         int button = keyEvent->button();
-        KeyboardEvent::KeyState state = keyEvent->state();
-        InteractionEvent::Modifier modifier = keyEvent->modifiers();
+        int state = keyEvent->state();
+        int modifier = keyEvent->modifiers();
 
         if (button == upEvent_.button() && modifier == upEvent_.modifiers() &&
             state == KeyboardEvent::KEY_STATE_PRESS)

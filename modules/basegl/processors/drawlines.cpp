@@ -117,8 +117,8 @@ void DrawLines::DrawLinesInteractionHandler::invokeEvent(Event* event) {
     KeyboardEvent* keyEvent = dynamic_cast<KeyboardEvent*>(event);
     if (keyEvent) {
         int button = keyEvent->button();
-        KeyboardEvent::KeyState state = keyEvent->state();
-        InteractionEvent::Modifier modifier = keyEvent->modifiers();
+        int state = keyEvent->state();
+        int modifier = keyEvent->modifiers();
 
         if (button == 68 && modifier == drawEnableEvent_.modifiers()) {
             if (state == KeyboardEvent::KEY_STATE_PRESS) {

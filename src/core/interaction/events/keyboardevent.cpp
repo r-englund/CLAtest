@@ -34,7 +34,7 @@
 
 namespace inviwo {
 
-KeyboardEvent::KeyboardEvent(int key, InteractionEvent::Modifier modifiers, KeyboardEvent::KeyState state)
+KeyboardEvent::KeyboardEvent(int key, int modifiers, int state)
     : InteractionEvent(modifiers)
     , state_(state)
     , key_(key) {
@@ -67,9 +67,7 @@ void KeyboardEvent::serialize(IvwSerializer& s) const {
 
 void KeyboardEvent::deserialize(IvwDeserializer& d) {
     InteractionEvent::deserialize(d);
-    int state = state_;
-    d.deserialize("state", state);
-    state_ = static_cast<KeyState>(state);
+    d.deserialize("state", state_);
     d.deserialize("key", key_);
 }
 
@@ -77,7 +75,7 @@ std::string KeyboardEvent::getClassIdentifier() const {
     return "org.inviwo.KeyboardEvent";
 }
 
-KeyboardEvent::KeyState KeyboardEvent::state() const {
+int KeyboardEvent::state() const {
     return state_;
 }
 
@@ -96,7 +94,7 @@ bool KeyboardEvent::matching(const Event* aEvent) const {
 
 bool KeyboardEvent::matching(const KeyboardEvent* aEvent) const {
     return key_ == aEvent->key_
-        && state_ == aEvent->state_
+        && (state_ & aEvent->state_) == aEvent->state_
         && modifiers_ == aEvent->modifiers_;
 }
 

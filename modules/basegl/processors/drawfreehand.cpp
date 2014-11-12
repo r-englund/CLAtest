@@ -121,8 +121,8 @@ void DrawFreeHand::DrawFreeHandInteractionHandler::invokeEvent(Event* event){
     KeyboardEvent* keyEvent = dynamic_cast<KeyboardEvent*>(event);
     if (keyEvent) {
         int button = keyEvent->button();
-        KeyboardEvent::KeyState state = keyEvent->state();
-        InteractionEvent::Modifier modifier = keyEvent->modifiers();
+        int state = keyEvent->state();
+        int modifier = keyEvent->modifiers();
 
         if (button == drawEnableEvent_.button() && modifier == drawEnableEvent_.modifiers()){
             if(state == KeyboardEvent::KEY_STATE_PRESS){

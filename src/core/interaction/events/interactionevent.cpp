@@ -37,7 +37,7 @@ namespace inviwo {
 
 const std::string InteractionEvent::modifierNames_[] = {"", "Alt", "Ctrl", "Shift"};
 
-InteractionEvent::InteractionEvent(Modifier modifiers)
+InteractionEvent::InteractionEvent(int modifiers)
     : Event()
     , modifiers_(modifiers) {
 }
@@ -67,12 +67,10 @@ void InteractionEvent::serialize(IvwSerializer& s) const {
 }
 
 void InteractionEvent::deserialize(IvwDeserializer& d) {
-    int modifiers = modifiers_;
-    d.deserialize("modifiers", modifiers);
-    modifiers_ = static_cast<Modifier>(modifiers);
+    d.deserialize("modifiers", modifiers_);
 }
 
-InteractionEvent::Modifier InteractionEvent::modifiers() const {
+int InteractionEvent::modifiers() const {
     return modifiers_;
 }
 
