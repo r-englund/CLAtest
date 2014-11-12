@@ -35,11 +35,11 @@
 namespace inviwo {
 
 PositionMetaData::PositionMetaData()
-    : IVec2MetaData(ivec2(0,0))
+    : IntVec2MetaData(ivec2(0,0))
 {}
 
 PositionMetaData::PositionMetaData(int x, int y)
-    : IVec2MetaData(ivec2(x,y))
+    : IntVec2MetaData(ivec2(x,y))
 {}
 
 PositionMetaData::~PositionMetaData() {}

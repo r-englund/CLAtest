@@ -782,7 +782,7 @@ Property* ProcessorNetwork::getProperty(std::vector<std::string> path) const {
     return NULL;
 }
 
-const int ProcessorNetwork::processorNetworkVersion_ = 5;
+const int ProcessorNetwork::processorNetworkVersion_ = 6;
 
 
 ProcessorNetwork::NetworkConverter::NetworkConverter(int from)
@@ -800,6 +800,8 @@ bool ProcessorNetwork::NetworkConverter::convert(TxElement* root) {
             traverseNodes(root, &ProcessorNetwork::NetworkConverter::updateShadingMode);
         case 4:
             traverseNodes(root, &ProcessorNetwork::NetworkConverter::updateCameraToComposite);
+        case 5:
+            traverseNodes(root, &ProcessorNetwork::NetworkConverter::updateMetaDataType);
         default:
             break;
     }
@@ -907,6 +909,61 @@ void ProcessorNetwork::NetworkConverter::updatePropertType(TxElement* node) {
         std::string type = node->GetAttributeOrDefault("type", "");
         int size = sizeof(renamed)/sizeof(std::string);
         if(std::find(renamed, renamed+size, type) != renamed+size) {
+            node->SetAttribute("type", "org.inviwo." + type);
+        }
+    }
+}
+
+void ProcessorNetwork::NetworkConverter::updateMetaDataType(TxElement* node) {
+    std::string renamed[] = {
+        "BoolMetaData",
+        "IntMetaData",
+        "FloatMetaData",
+        "DoubleMetaData",
+        "StringMetaData",
+        "FloatVec2MetaData",
+        "FloatVec3MetaData",
+        "FloatVec4MetaData",
+        "DoubleVec2MetaData",
+        "DoubleVec3MetaData",
+        "DoubleVec4MetaData",
+        "IntVec2MetaData",
+        "IntVec3MetaData",
+        "IntVec4MetaData",
+        "UIntVec2MetaData",
+        "UIntVec3MetaData",
+        "UIntVec4MetaData",
+        "FloatMat2MetaData",
+        "FloatMat3MetaData",
+        "FloatMat4MetaData",
+        "DoubleMat2MetaData",
+        "DoubleMat4MetaData",
+        "DoubleMat3MetaData",
+        "VectorMetaData<2, Float>",
+        "VectorMetaData<3, Float>",
+        "VectorMetaData<4, Float>",
+        "VectorMetaData<2, Int>",
+        "VectorMetaData<3, Int>",
+        "VectorMetaData<4, Int>",
+        "VectorMetaData<2, Uint",
+        "VectorMetaData<3, UInt>",
+        "VectorMetaData<4, UInt>",
+        "MatrixMetaData<2, Float>",
+        "MatrixMetaData<3, Float>",
+        "MatrixMetaData<4, Float>",
+        "PositionMetaData",
+        "ProcessorMetaData",
+        "ProcessorWidgetMetaData",
+        "PropertyEditorWidgetMetaData"
+        
+    };
+    std::string key;
+    node->GetValue(&key);
+
+    if (key == "MetaDataItem") {
+        std::string type = node->GetAttributeOrDefault("type", "");
+        int size = sizeof(renamed)/sizeof(std::string);
+        if (std::find(renamed, renamed+size, type) != renamed+size) {
             node->SetAttribute("type", "org.inviwo." + type);
         }
     }

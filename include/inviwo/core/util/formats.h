@@ -79,6 +79,11 @@ public:
                                                x2, y2, z2, w2,
                                                x3, y3, z3, w3,
                                                x4, y4, z4, w4) {};
+    
+    
+    operator glm::detail::tmat4x4<T, glm::defaultp>&() { return *this; }
+    operator const glm::detail::tmat4x4<T, glm::defaultp>&() const { return *this; }
+    
     glm::detail::tmat4x4<T, glm::defaultp> getGLM() const {
         return *this;
     };
@@ -99,6 +104,10 @@ public:
         glm::detail::tmat3x3<T, glm::defaultp>(x1, y1, z1,
                                                x2, y2, z2,
                                                x3, y3, z3) {};
+    
+    operator glm::detail::tmat3x3<T, glm::defaultp>&() { return *this; }
+    operator const glm::detail::tmat3x3<T, glm::defaultp>&() const { return *this; }
+    
     glm::detail::tmat3x3<T, glm::defaultp> getGLM() const {
         return *this;
     };
@@ -116,6 +125,10 @@ public:
                  T x2, T y2) :
         glm::detail::tmat2x2<T, glm::defaultp>(x1, y1,
                                                x2, y2) {};
+    
+     operator glm::detail::tmat2x2<T, glm::defaultp>&() { return *this; }
+    operator const glm::detail::tmat2x2<T, glm::defaultp>&() const { return *this; }
+    
     glm::detail::tmat2x2<T, glm::defaultp> getGLM() const {
         return *this;
     };
@@ -130,6 +143,8 @@ public:
     Vector<4, T>(const glm::detail::tvec4<T, glm::defaultp>& v) : glm::detail::tvec4<T, glm::defaultp>(v) {};
     Vector<4, T>(T v) : glm::detail::tvec4<T, glm::defaultp>(v) {};
     Vector<4, T>(T v1, T v2, T v3, T v4) : glm::detail::tvec2<T, glm::defaultp>(v1, v2, v3, v4) {};
+    operator  glm::detail::tvec4<T, glm::defaultp>&() { return *this; }
+    operator const  glm::detail::tvec4<T, glm::defaultp>&() const { return *this; }
     glm::detail::tvec4<T, glm::defaultp> getGLM() const { return *this; };
 };
 template <typename T>
@@ -140,6 +155,8 @@ public:
     Vector<3, T>(const glm::detail::tvec3<T, glm::defaultp>& v) : glm::detail::tvec3<T, glm::defaultp>(v) {};
     Vector<3, T>(T v) : glm::detail::tvec3<T, glm::defaultp>(v) {};
     Vector<3, T>(T v1, T v2, T v3) : glm::detail::tvec3<T, glm::defaultp>(v1, v2, v3) {};
+    operator  glm::detail::tvec3<T, glm::defaultp>&() { return *this; }
+    operator const  glm::detail::tvec3<T, glm::defaultp>&() const { return *this; }
     glm::detail::tvec3<T, glm::defaultp> getGLM() const { return *this; };
 };
 template <typename T>
@@ -150,6 +167,8 @@ public:
     Vector<2, T>(const glm::detail::tvec2<T, glm::defaultp>& v) : glm::detail::tvec2<T, glm::defaultp>(v) {};
     Vector<2, T>(T v) : glm::detail::tvec2<T, glm::defaultp>(v) {};
     Vector<2, T>(T v1, T v2) : glm::detail::tvec2<T, glm::defaultp>(v1, v2) {};
+    operator  glm::detail::tvec2<T, glm::defaultp>&() { return *this; }
+    operator const  glm::detail::tvec2<T, glm::defaultp>&() const { return *this; }
     glm::detail::tvec2<T, glm::defaultp> getGLM() const { return *this; };
 };
 
@@ -1141,6 +1160,7 @@ public: \
 DEFAULTVALUES(float, uvec2(1, 1), "Float", 0.0f, 0.0f, 1.0f, 0.01f)
 DEFAULTVALUES(double, uvec2(1, 1), "Double", 0.0, 0.0, 1.0, 0.01)
 DEFAULTVALUES(int, uvec2(1, 1), "Int", 0, -100, 100, 1)
+DEFAULTVALUES(unsigned int, uvec2(1, 1), "UInt", 0, 0, 100, 1)
 DEFAULTVALUES(glm::i64, uvec2(1, 1), "Int64", 0, 0, 1024, 1)
 
 DEFAULTVALUES(vec2, uvec2(2, 1), "FloatVec2", vec2(0.f), vec2(0.f), vec2(1.f), vec2(0.01f))
@@ -1154,6 +1174,10 @@ DEFAULTVALUES(dvec4, uvec2(4, 1), "DoubleVec4", dvec4(0.), dvec4(0.), dvec4(1.),
 DEFAULTVALUES(ivec2, uvec2(2, 1), "IntVec2", ivec2(0), ivec2(0), ivec2(10), ivec2(1))
 DEFAULTVALUES(ivec3, uvec2(3, 1), "IntVec3", ivec3(0), ivec3(0), ivec3(10), ivec3(1))
 DEFAULTVALUES(ivec4, uvec2(4, 1), "IntVec4", ivec4(0), ivec4(0), ivec4(10), ivec4(1))
+
+DEFAULTVALUES(uvec2, uvec2(2, 1), "UIntVec2", uvec2(0), uvec2(0), uvec2(10), uvec2(1))
+DEFAULTVALUES(uvec3, uvec2(3, 1), "UIntVec3", uvec3(0), uvec3(0), uvec3(10), uvec3(1))
+DEFAULTVALUES(uvec4, uvec2(4, 1), "UIntVec4", uvec4(0), uvec4(0), uvec4(10), uvec4(1))
 
 DEFAULTVALUES(mat2, uvec2(2, 2), "FloatMat2", mat2(0.f), mat2(0.f), mat2(0.f)+1.0f, mat2(0.f)+0.01f)
 DEFAULTVALUES(mat3, uvec2(3, 3), "FloatMat3", mat3(0.f), mat3(0.f), mat3(0.f)+1.0f, mat3(0.f)+0.01f)
