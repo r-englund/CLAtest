@@ -71,7 +71,7 @@ public:
 
     void modify(vec2);
 
-    virtual std::string getClassIdentifier() const { return "GestureEvent"; }
+    virtual std::string getClassIdentifier() const { return "org.inviwo.GestureEvent"; }
 
     virtual void serialize(IvwSerializer& s) const;
     virtual void deserialize(IvwDeserializer& d);

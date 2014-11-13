@@ -31,7 +31,6 @@
  *********************************************************************************/
 
 #include <inviwo/qt/widgets/properties/optionpropertywidgetqt.h>
-#include <QComboBox>
 #include <typeinfo>
 namespace inviwo {
 OptionPropertyWidgetQt::OptionPropertyWidgetQt(BaseOptionProperty* property) 

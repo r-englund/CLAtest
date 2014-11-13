@@ -25,7 +25,7 @@
  * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- * 
+ *
  * Contact: Sathish Kottravel
  *
  *********************************************************************************/
@@ -40,54 +40,85 @@
 namespace inviwo {
 
 EventPropertyWidgetQt::EventPropertyWidgetQt(EventProperty* eventproperty)
-    : PropertyWidgetQt(eventproperty) {
-    eventproperty_ = eventproperty;
+    : PropertyWidgetQt(eventproperty)
+    , eventproperty_ (eventproperty)
+    , tmpEvent_(NULL)
+    , keyevent_(NULL)
+    , mouseEvent_(NULL) {
     generateWidget();
 }
 
 void inviwo::EventPropertyWidgetQt::generateWidget() {
     QHBoxLayout* hLayout = new QHBoxLayout();
-    button_ = new QPushButton();
-
-    label_ = new EditableLabelQt(this, eventproperty_->getDisplayName(), false);
+    setSpacingAndMargins(hLayout);
+    
+    label_ = new EditableLabelQt(this, eventproperty_->getDisplayName());
     connect(label_, SIGNAL(textChanged()), this, SLOT(setPropertyDisplayName()));
 
+    button_ = new IvwPushButton(this);
     connect(button_, SIGNAL(clicked()), this, SLOT(clickedSlot()));
     hLayout->addWidget(label_);
-    hLayout->addWidget(button_);
+
+    {
+        QWidget* widget = new QWidget(this);
+        QSizePolicy sliderPol = widget->sizePolicy();
+        sliderPol.setHorizontalStretch(3);
+        widget->setSizePolicy(sliderPol);
+        QGridLayout* vLayout = new QGridLayout();
+        widget->setLayout(vLayout);
+        vLayout->setContentsMargins(0, 0, 0, 0);
+        vLayout->setSpacing(0);
+
+        vLayout->addWidget(button_);
+        hLayout->addWidget(widget);
+    }
+
     setLayout(hLayout);
 
     setButtonText();
 }
 
-void EventPropertyWidgetQt::updateFromProperty() {
-    setButtonText();
-}
+void EventPropertyWidgetQt::updateFromProperty() { setButtonText(); }
 
 void EventPropertyWidgetQt::clickedSlot() {
-    grabKeyboard();
+    
+    if(tmpEvent_) delete tmpEvent_;
+    tmpEvent_ = eventproperty_->getEvent()->clone();
+    tmpEvent_->setModifiers(0);
 
-    tmpEvent.setButton(0);
-    tmpEvent.setModifiers(0);
+    keyevent_ = dynamic_cast<KeyboardEvent*>(tmpEvent_);
+    mouseEvent_ = dynamic_cast<MouseEvent*>(tmpEvent_);
+
+    if (keyevent_) {
+        keyevent_->setButton(0);
+        grabKeyboard();
+    } else if(mouseEvent_) { 
+        mouseEvent_->setButton(0);
+        grabMouse();
+    } else {
+        return;
+    }
 
     button_->setText("Press a button");
     button_->setEnabled(false);
+    setFocus(Qt::MouseFocusReason);
 }
 
-void EventPropertyWidgetQt::keyPressEvent(QKeyEvent * event) {
-    LogInfo("Press: " << event->key() << " txt " << event->text().toStdString() << " m " << event->modifiers());
-    
-    if (event->key() != Qt::Key_Enter && event->key() != Qt::Key_Return && event->key() != Qt::Key_Escape) {
+void EventPropertyWidgetQt::keyPressEvent(QKeyEvent* event) {
+    // LogInfo("Press: " << event->key() << " txt " << event->text().toStdString() << " m " <<
+    // event->modifiers());
 
+    if (keyevent_ && event->key() != Qt::Key_Enter && event->key() != Qt::Key_Return &&
+        event->key() != Qt::Key_Escape) {
         int key = EventConverterQt::getKeyButton(event);
         int modifer = EventConverterQt::getModifier(event);
-    
-        tmpEvent.setButton(key);
-        tmpEvent.setModifiers(tmpEvent.modifiers() | modifer);
 
-        std::string text = tmpEvent.modifierNames();
+        keyevent_->setButton(key);
+        keyevent_->setModifiers(keyevent_->modifiers() | modifer);
+
+        std::string text = keyevent_->modifierNames();
         if (text != "") text.append("-");
-        text += std::string(1, static_cast<char>(tmpEvent.button()));
+        text += std::string(1, static_cast<char>(keyevent_->button()));
 
         button_->setText(QString::fromStdString(text));
     }
@@ -95,18 +126,19 @@ void EventPropertyWidgetQt::keyPressEvent(QKeyEvent * event) {
     QWidget::keyPressEvent(event);
 }
 
-void EventPropertyWidgetQt::keyReleaseEvent(QKeyEvent * event) {
-    LogInfo("Release: " << event->key() << " txt " << event->text().toStdString() << " m " << event->modifiers());
+void EventPropertyWidgetQt::keyReleaseEvent(QKeyEvent* event) {
+    // LogInfo("Release: " << event->key() << " txt " << event->text().toStdString() << " m " <<
+    // event->modifiers());
 
-    if (event->key() == Qt::Key_Enter || event->key() == Qt::Key_Return) {
+    if (keyevent_ && (event->key() == Qt::Key_Enter || event->key() == Qt::Key_Return)) {
         releaseKeyboard();
-        eventproperty_->setEvent(tmpEvent.clone());
+        eventproperty_->setEvent(keyevent_->clone());
         setButtonText();
-        button_->setEnabled(true); 
-    } else if (event->key() == Qt::Key_Escape) {
-        releaseKeyboard();
-        setButtonText();  
         button_->setEnabled(true);
+    } else if (keyevent_ && event->key() == Qt::Key_Escape) {
+        releaseKeyboard();
+        setButtonText();
+        button_->setEnabled(true);  
     } else {
         QWidget::keyReleaseEvent(event);
     }
@@ -119,11 +151,10 @@ void EventPropertyWidgetQt::setPropertyDisplayName() {
 void EventPropertyWidgetQt::setButtonText() {
     std::string text = eventproperty_->getEvent()->modifierNames();
 
-    if (text != "") text.append("-");
-
+    if (text != "") text.append("+");
 
     KeyboardEvent* keyboardEvent = dynamic_cast<KeyboardEvent*>(eventproperty_->getEvent());
-    if (keyboardEvent) { 
+    if (keyboardEvent) {
         text += std::string(1, static_cast<char>(keyboardEvent->button()));
     }
 
@@ -135,7 +166,26 @@ void EventPropertyWidgetQt::setButtonText() {
     button_->setText(QString::fromStdString(text));
 }
 
+void EventPropertyWidgetQt::focusOutEvent(QFocusEvent* event) {
+    releaseKeyboard();
+    setButtonText();
+    button_->setEnabled(true);
+}
 
-} //namespace
+void EventPropertyWidgetQt::mousePressEvent(QMouseEvent* event) {
+    LogInfo("Release: " << event->button() <<  " m " << event->modifiers());
+    
+    if(mouseEvent_) {
+        int modifer = EventConverterQt::getModifier(event);
+        mouseEvent_->setButton(EventConverterQt::getMouseButton(event));
+        mouseEvent_->setModifiers(mouseEvent_->modifiers() | modifer);
 
+        eventproperty_->setEvent(mouseEvent_->clone());
+    }
 
+    setButtonText();
+    button_->setEnabled(true);
+    releaseMouse();
+}
+
+}  // namespace

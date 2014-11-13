@@ -68,6 +68,7 @@ EntryExitPoints::EntryExitPoints()
     handleInteractionEvents_.onChange(this, &EntryExitPoints::handleInteractionEventsChanged);
     trackball_ = new CameraTrackball(&camera_);
     addInteractionHandler(trackball_);
+    addProperty(trackball_);
     entryPort_.addResizeEventListener(&camera_);
     geometryPort_.onChange(this, &EntryExitPoints::onGeometryChange);
 }

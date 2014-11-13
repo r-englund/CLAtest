@@ -79,6 +79,10 @@ public:
     MouseEvent(int button, int modifiers = InteractionEvent::MODIFIER_NONE,
                int state = MOUSE_STATE_NONE, int orientation = MOUSE_WHEEL_NONE);
 
+    MouseEvent(const MouseEvent& rhs);
+    MouseEvent& operator=(const MouseEvent& that);
+    virtual MouseEvent* clone() const;
+
     virtual ~MouseEvent();
 
     inline ivec2 pos() const { return position_; }
@@ -90,7 +94,8 @@ public:
     inline int wheelOrientation() const { return wheelOrientation_; }
     inline uvec2 canvasSize() const { return canvasSize_; }
     inline int button() const { return button_; }
-    inline std::string buttonName() const { return buttonNames_[button_]; }
+    inline void setButton(int button) { button_ = button; }
+    std::string buttonName() const;
 
     void modify(ivec2, uvec2);
 

@@ -68,6 +68,32 @@ MouseEvent::MouseEvent(int button, int modifiers /*= InteractionEvent::MODIFIER_
     , wheelSteps_(0)
     , canvasSize_(0) {}
 
+MouseEvent::MouseEvent(const MouseEvent& rhs)
+    : InteractionEvent(rhs)
+    , button_(rhs.button_)
+    , state_(rhs.state_)
+    , wheelOrientation_(rhs.wheelOrientation_)
+    , position_(rhs.position_)
+    , wheelSteps_(rhs.wheelSteps_)
+    , canvasSize_(rhs.canvasSize_) {}
+
+MouseEvent& MouseEvent::operator=(const MouseEvent& that) {
+    if (this != &that) {
+        InteractionEvent::operator=(that);
+        button_ = that.button_;
+        state_ = that.state_;
+        wheelOrientation_ = that.wheelOrientation_;
+        position_ = that.position_;
+        wheelSteps_ = that.wheelSteps_;
+        canvasSize_ = that.canvasSize_;
+    }
+    return *this;
+}
+
+MouseEvent* MouseEvent::clone() const {
+    return new MouseEvent(*this);
+}
+
 MouseEvent::~MouseEvent() {}
 
 void MouseEvent::modify(ivec2 newPosition, uvec2 newCanvasSize) {
@@ -89,7 +115,7 @@ void MouseEvent::deserialize(IvwDeserializer& d) {
     d.deserialize("wheelOrientation", wheelOrientation_);
 }
 
-const std::string MouseEvent::buttonNames_[] = {"", "Left button", "Right button", "Right button"};
+const std::string MouseEvent::buttonNames_[] = {"", "Left button", "Middle button", "Right button"};
 
 std::string MouseEvent::getClassIdentifier() const { return "org.inviwo.MouseEvent"; }
 
@@ -107,5 +133,20 @@ bool MouseEvent::matching(const MouseEvent* aEvent) const {
         && (wheelOrientation_ & aEvent->wheelOrientation_) == aEvent->wheelOrientation_ 
         && modifiers_ == aEvent->modifiers_;
 }
+
+std::string MouseEvent::buttonName() const {
+    std::vector<std::string> names;
+    if ((button_ & MOUSE_BUTTON_LEFT) == MOUSE_BUTTON_LEFT) names.push_back(buttonNames_[1]);
+    if ((button_ & MOUSE_BUTTON_MIDDLE) == MOUSE_BUTTON_MIDDLE) names.push_back(buttonNames_[2]);
+    if ((button_ & MOUSE_BUTTON_RIGHT) == MOUSE_BUTTON_RIGHT) names.push_back(buttonNames_[3]);
+
+    if (!names.empty()) {
+        return joinString(names, "+");
+    } else {
+        return buttonNames_[0];
+    }
+}
+
+
 
 }  // namespace

@@ -60,7 +60,7 @@ public:
     inline ivec2 pos() const { return position_; }
     inline TouchEvent::TouchState state() const { return state_; }
 
-    virtual std::string getClassIdentifier() const { return "TouchEvent"; }
+    virtual std::string getClassIdentifier() const { return "org.inviwo.TouchEvent"; }
 
     virtual void serialize(IvwSerializer& s) const;
     virtual void deserialize(IvwDeserializer& d);

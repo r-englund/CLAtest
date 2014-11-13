@@ -37,9 +37,11 @@ namespace inviwo {
 static const float RADIUS = 0.5f;
 static const float STEPSIZE = 0.05f;
 
+PropertyClassIdentifier(Trackball, "org.inviwo.Trackball");
+
 Trackball::Trackball(vec3* lookFrom, vec3* lookTo, vec3* lookUp)
     : InteractionHandler()
-    , PropertyOwner()
+    , CompositeProperty("trackball", "Trackball")
     , pixelWidth_(0.007f)
     , isMouseBeingPressedAndHold_(false)
     , lastMousePos_(ivec2(0))
@@ -68,43 +70,43 @@ Trackball::Trackball(vec3* lookFrom, vec3* lookTo, vec3* lookUp)
         MouseEvent::MOUSE_STATE_RELEASE),
         new Action("reset", this, &Trackball::reset))
 
-    , stepRotateUp_("stepRotateUp", "Step rotate up", 
+    , stepRotateUp_("stepRotateUp", "Rotate up", 
         new KeyboardEvent('W', InteractionEvent::MODIFIER_NONE, KeyboardEvent::KEY_STATE_PRESS),
         new TrackballAction(TrackballAction::TRACKBALL_STEPROTATE_UP, this, &Trackball::rotateUp))
 
-    , stepRotateLeft_("stepRotateLeft", "Step rotate left",
+    , stepRotateLeft_("stepRotateLeft", "Rotate left",
         new KeyboardEvent('A', InteractionEvent::MODIFIER_NONE, KeyboardEvent::KEY_STATE_PRESS),
         new TrackballAction(TrackballAction::TRACKBALL_STEPROTATE_LEFT, this, &Trackball::rotateLeft))
 
-    , stepRotateDown_("stepRotateDown", "Step rotate down",
+    , stepRotateDown_("stepRotateDown", "Rotate down",
         new KeyboardEvent('S', InteractionEvent::MODIFIER_NONE, KeyboardEvent::KEY_STATE_PRESS),
         new TrackballAction(TrackballAction::TRACKBALL_STEPROTATE_DOWN, this, &Trackball::rotateDown))
 
-    , stepRotateRight_("stepRotateRight", "Step rotate right", 
+    , stepRotateRight_("stepRotateRight", "Rotate right", 
         new KeyboardEvent('D', InteractionEvent::MODIFIER_NONE, KeyboardEvent::KEY_STATE_PRESS),
         new TrackballAction(TrackballAction::TRACKBALL_STEPROTATE_RIGHT, this, &Trackball::rotateRight))
 
-    , stepZoomIn_("stepZoomIn", "Step zoom in",
+    , stepZoomIn_("stepZoomIn", "Zoom in",
         new KeyboardEvent('R', InteractionEvent::MODIFIER_NONE, KeyboardEvent::KEY_STATE_PRESS),
         new TrackballAction(TrackballAction::TRACKBALL_STEPZOOM_IN, this, &Trackball::zoomIn))
 
-    , stepZoomOut_("stepZoomOut", "Step zoom out",
+    , stepZoomOut_("stepZoomOut", "Zoom out",
         new KeyboardEvent('F', InteractionEvent::MODIFIER_NONE, KeyboardEvent::KEY_STATE_PRESS),
         new TrackballAction(TrackballAction::TRACKBALL_STEPZOOM_OUT, this, &Trackball::zoomOut))
 
-    , stepPanUp_("stepPanUp", "Step pan up", 
+    , stepPanUp_("stepPanUp", "Pan up", 
         new KeyboardEvent('W', InteractionEvent::MODIFIER_SHIFT, KeyboardEvent::KEY_STATE_PRESS),
         new TrackballAction(TrackballAction::TRACKBALL_STEPPAN_UP, this, &Trackball::panUp))
 
-    , stepPanLeft_("stepPanLeft", "Step pan left",
+    , stepPanLeft_("stepPanLeft", "Pan left",
         new KeyboardEvent('A', InteractionEvent::MODIFIER_SHIFT, KeyboardEvent::KEY_STATE_PRESS),
         new TrackballAction(TrackballAction::TRACKBALL_STEPPAN_LEFT, this, &Trackball::panLeft))
 
-    , stepPanDown_("stepPanDown", "Step pan down", 
+    , stepPanDown_("stepPanDown", "Pan down", 
         new KeyboardEvent('S', InteractionEvent::MODIFIER_SHIFT, KeyboardEvent::KEY_STATE_PRESS),
         new TrackballAction(TrackballAction::TRACKBALL_STEPPAN_DOWN, this, &Trackball::panDown))
 
-    , stepPanRight_("stepPanRight", "Step pan right", 
+    , stepPanRight_("stepPanRight", "Pan right", 
         new KeyboardEvent('D', InteractionEvent::MODIFIER_SHIFT, KeyboardEvent::KEY_STATE_PRESS),
         new TrackballAction(TrackballAction::TRACKBALL_STEPPAN_RIGHT, this, &Trackball::panRight)) {
         
@@ -129,8 +131,7 @@ Trackball::Trackball(vec3* lookFrom, vec3* lookTo, vec3* lookUp)
 
 Trackball::~Trackball() {}
 
-vec3 Trackball::mapNormalizedMousePosToTrackball(const vec2& mousePos, float dist /*= 1.f*/)
-{
+vec3 Trackball::mapNormalizedMousePosToTrackball(const vec2& mousePos, float dist /*= 1.f*/) {
     // set x and y to lie in interval [-r, r]
     float r = RADIUS;
     vec3 result = vec3(mousePos.x-RADIUS, -1.0f*(mousePos.y-RADIUS), 0.0f)*dist;

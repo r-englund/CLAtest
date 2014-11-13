@@ -36,8 +36,6 @@
 #include <inviwo/qt/widgets/inviwoqtwidgetsdefine.h>
 #include <inviwo/qt/widgets/properties/propertywidgetqt.h>
 
-class QPushButton;
-
 namespace inviwo {
 
 class EditableLabelQt;
@@ -55,7 +53,7 @@ public:
 
 private:
     EditableLabelQt* label_;
-    QPushButton* btnOpenTF_;
+    IvwPushButton* btnOpenTF_;
     TransferFunctionPropertyDialog* transferFunctionDialog_;
 
     virtual void resizeEvent(QResizeEvent * event);

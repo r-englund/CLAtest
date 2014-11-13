@@ -38,8 +38,6 @@
 
 #include <QObject>
 
-class QPushButton;
-
 namespace inviwo {
 
 class EditableLabelQt;
@@ -52,10 +50,12 @@ public:
     EventPropertyWidgetQt(EventProperty* eventproperty);
     void updateFromProperty();
 
-
 protected:
-    virtual void keyPressEvent(QKeyEvent * event);
-    virtual void keyReleaseEvent(QKeyEvent * event);
+    virtual void keyPressEvent(QKeyEvent* event);
+    virtual void keyReleaseEvent(QKeyEvent* event);
+    virtual void mousePressEvent(QMouseEvent* event);
+
+    virtual void focusOutEvent(QFocusEvent* event);
 
 public slots:
     void clickedSlot();
@@ -66,10 +66,12 @@ private:
     void setButtonText();
 
     EventProperty* eventproperty_;
-    QPushButton* button_;
+    IvwPushButton* button_;
     EditableLabelQt* label_;
 
-    KeyboardEvent tmpEvent;
+    InteractionEvent* tmpEvent_;
+    KeyboardEvent* keyevent_; 
+    MouseEvent* mouseEvent_;
 };
 
 } //namespace

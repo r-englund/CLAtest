@@ -43,7 +43,7 @@
 #include <inviwo/core/interaction/events/resizeevent.h>
 #include <inviwo/core/interaction/trackballaction.h>
 #include <inviwo/core/io/serialization/ivwserializable.h>
-#include <inviwo/core/properties/propertyowner.h>
+#include <inviwo/core/properties/compositeproperty.h>
 #include <inviwo/core/properties/eventproperty.h>
 #include <inviwo/core/util/observer.h>
 
@@ -77,9 +77,10 @@ public:
 };
 
 class IVW_CORE_API Trackball : public InteractionHandler,
-                               public PropertyOwner,
+                               public CompositeProperty,
                                public TrackballObservable {
 public:
+    InviwoPropertyInfo();
     /**
      * Rotates and moves object around a sphere.
      * This object does not take ownership of pointers handed to it.
@@ -95,8 +96,6 @@ public:
     virtual void invokeEvent(Event* event);
     void addProperty(Property& property);
     void addProperty(Property* property);
-
-    virtual std::string getClassIdentifier() const { return "Trackball"; }
 
     void serialize(IvwSerializer& s) const;
     void deserialize(IvwDeserializer& d);
