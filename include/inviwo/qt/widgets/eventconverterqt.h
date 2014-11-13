@@ -34,14 +34,14 @@
 #define IVW_EVENTCONVERTERQT_H
 
 #include <inviwo/qt/widgets/inviwoqtwidgetsdefine.h>
-#include <QMouseEvent>
-#include <QWheelEvent>
-#include <QInputEvent>
-#ifndef QT_NO_GESTURES
-#include <QGesture>
-#endif
 #include <inviwo/core/interaction/events/mouseevent.h>
 #include <inviwo/core/interaction/events/gestureevent.h>
+
+class QMouseEvent;
+class QWheelEvent;
+class QInputEvent;
+class QGesture;
+class QKeyEvent;
 
 namespace inviwo {
 

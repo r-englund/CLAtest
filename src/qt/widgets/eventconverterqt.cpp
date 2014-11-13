@@ -32,6 +32,14 @@
 
 #include <inviwo/qt/widgets/eventconverterqt.h>
 
+#include <QMouseEvent>
+#include <QWheelEvent>
+#include <QInputEvent>
+#include <QKeyEvent>
+#ifndef QT_NO_GESTURES
+#include <QGesture>
+#endif
+
 namespace inviwo {
 
 EventConverterQt::EventConverterQt() {}

@@ -14,7 +14,6 @@ set(MOC_FILES
     ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/inviwoapplicationqt.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/inviwodockwidget.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/lightpositionwidgetqt.h
-    ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/mappingpopup.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/ordinaleditorwidget.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/propertylistwidget.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/widgets/rangesliderqt.h
@@ -84,7 +83,6 @@ set(SOURCE_FILES
     inviwofiledialog.cpp
     labelgraphicsitem.cpp
     lightpositionwidgetqt.cpp
-    mappingpopup.cpp
     ordinaleditorwidget.cpp
     processors/processorwidgetqt.cpp
     properties/anglepropertywidgetqt.cpp

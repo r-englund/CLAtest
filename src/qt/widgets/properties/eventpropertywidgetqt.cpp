@@ -34,7 +34,6 @@
 #include <inviwo/core/properties/eventproperty.h>
 #include <inviwo/qt/widgets/editablelabelqt.h>
 #include <inviwo/qt/widgets/eventconverterqt.h>
-#include <inviwo/qt/widgets/mappingpopup.h>
 
 #include <QPushButton>
 
