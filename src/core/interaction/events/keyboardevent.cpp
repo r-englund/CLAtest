@@ -98,4 +98,12 @@ bool KeyboardEvent::matching(const KeyboardEvent* aEvent) const {
         && modifiers_ == aEvent->modifiers_;
 }
 
+void KeyboardEvent::setState(int state) {
+    state_ = state;
+}
+
+void KeyboardEvent::setButton(int button) {
+    key_ = button;
+}
+
 }  // namespace

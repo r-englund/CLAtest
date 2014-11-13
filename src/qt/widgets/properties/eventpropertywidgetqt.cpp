@@ -31,6 +31,12 @@
  *********************************************************************************/
 
 #include <inviwo/qt/widgets/properties/eventpropertywidgetqt.h>
+#include <inviwo/core/properties/eventproperty.h>
+#include <inviwo/qt/widgets/editablelabelqt.h>
+#include <inviwo/qt/widgets/eventconverterqt.h>
+#include <inviwo/qt/widgets/mappingpopup.h>
+
+#include <QPushButton>
 
 namespace inviwo {
 
@@ -41,34 +47,96 @@ EventPropertyWidgetQt::EventPropertyWidgetQt(EventProperty* eventproperty)
 }
 
 void inviwo::EventPropertyWidgetQt::generateWidget() {
-    delete layout(); // Make sure there is no previous layout
-    std::string modifierName = eventproperty_->getEvent()->modifierNames();
-
-    if (modifierName != "") modifierName.append("-");
-
-    std::string eventName = modifierName; // TODO Fix + eventproperty_->getEvent()->buttonName();
-    std::string actionName = eventproperty_->getAction()->name();
     QHBoxLayout* hLayout = new QHBoxLayout();
-    button_ = new QPushButton(eventName.c_str());
-    QLabel* label_ = new QLabel(actionName.c_str());
-    QObject::connect(button_, SIGNAL(clicked()), this, SLOT(clickedSlot()));
+    button_ = new QPushButton();
+
+    label_ = new EditableLabelQt(this, eventproperty_->getDisplayName(), false);
+    connect(label_, SIGNAL(textChanged()), this, SLOT(setPropertyDisplayName()));
+
+    connect(button_, SIGNAL(clicked()), this, SLOT(clickedSlot()));
     hLayout->addWidget(label_);
     hLayout->addWidget(button_);
     setLayout(hLayout);
+
+    setButtonText();
 }
 
 void EventPropertyWidgetQt::updateFromProperty() {
-    generateWidget();
+    setButtonText();
 }
 
 void EventPropertyWidgetQt::clickedSlot() {
-    MappingPopup* popup_ = new MappingPopup(eventproperty_, eventPropertyManager_);
-    popup_->setWindowFlags(Qt::FramelessWindowHint | Qt::Popup);
-    popup_->setFixedSize(1,1); // I am so sorry //FIX ME: Do it better
-    popup_->show();
-    button_->setText("PRESS A BUTTON");
+    grabKeyboard();
+
+    tmpEvent.setButton(0);
+    tmpEvent.setModifiers(0);
+
+    button_->setText("Press a button");
     button_->setEnabled(false);
 }
 
+void EventPropertyWidgetQt::keyPressEvent(QKeyEvent * event) {
+    LogInfo("Press: " << event->key() << " txt " << event->text().toStdString() << " m " << event->modifiers());
+    
+    if (event->key() != Qt::Key_Enter && event->key() != Qt::Key_Return && event->key() != Qt::Key_Escape) {
+
+        int key = EventConverterQt::getKeyButton(event);
+        int modifer = EventConverterQt::getModifier(event);
+    
+        tmpEvent.setButton(key);
+        tmpEvent.setModifiers(tmpEvent.modifiers() | modifer);
+
+        std::string text = tmpEvent.modifierNames();
+        if (text != "") text.append("-");
+        text += std::string(1, static_cast<char>(tmpEvent.button()));
+
+        button_->setText(QString::fromStdString(text));
+    }
+
+    QWidget::keyPressEvent(event);
+}
+
+void EventPropertyWidgetQt::keyReleaseEvent(QKeyEvent * event) {
+    LogInfo("Release: " << event->key() << " txt " << event->text().toStdString() << " m " << event->modifiers());
+
+    if (event->key() == Qt::Key_Enter || event->key() == Qt::Key_Return) {
+        releaseKeyboard();
+        eventproperty_->setEvent(tmpEvent.clone());
+        setButtonText();
+        button_->setEnabled(true); 
+    } else if (event->key() == Qt::Key_Escape) {
+        releaseKeyboard();
+        setButtonText();  
+        button_->setEnabled(true);
+    } else {
+        QWidget::keyReleaseEvent(event);
+    }
+}
+
+void EventPropertyWidgetQt::setPropertyDisplayName() {
+    property_->setDisplayName(label_->getText());
+}
+
+void EventPropertyWidgetQt::setButtonText() {
+    std::string text = eventproperty_->getEvent()->modifierNames();
+
+    if (text != "") text.append("-");
+
+
+    KeyboardEvent* keyboardEvent = dynamic_cast<KeyboardEvent*>(eventproperty_->getEvent());
+    if (keyboardEvent) { 
+        text += std::string(1, static_cast<char>(keyboardEvent->button()));
+    }
+
+    MouseEvent* mouseEvent = dynamic_cast<MouseEvent*>(eventproperty_->getEvent());
+    if (mouseEvent) {
+        text += mouseEvent->buttonName();
+    }
+
+    button_->setText(QString::fromStdString(text));
+}
+
+
 } //namespace
+
 

@@ -52,7 +52,10 @@ public:
     virtual ~KeyboardEvent();
 
     int state() const;
+    void setState(int state);
+  
     virtual int button() const;
+    void setButton(int button);
 
     virtual std::string getClassIdentifier() const;
     virtual void serialize(IvwSerializer& s) const;

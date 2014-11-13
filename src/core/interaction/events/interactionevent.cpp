@@ -95,4 +95,8 @@ bool InteractionEvent::matching(const Event* aEvent) const {
     return false;
 }
 
+void InteractionEvent::setModifiers(int modifiers) {
+    modifiers_ = modifiers;
+}
+
 } // namespace

@@ -57,6 +57,7 @@ public:
     virtual ~InteractionEvent();
 
     int modifiers() const;
+    void setModifiers(int modifiers);
     std::string modifierNames() const;
  
     virtual std::string getClassIdentifier() const;

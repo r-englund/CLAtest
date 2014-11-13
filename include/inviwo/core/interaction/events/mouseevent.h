@@ -90,6 +90,8 @@ public:
     inline int wheelOrientation() const { return wheelOrientation_; }
     inline uvec2 canvasSize() const { return canvasSize_; }
     inline int button() const { return button_; }
+    inline std::string buttonName() const { return buttonNames_[button_]; }
+
     void modify(ivec2, uvec2);
 
     virtual std::string getClassIdentifier() const;

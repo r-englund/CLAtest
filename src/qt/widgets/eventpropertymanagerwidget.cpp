@@ -81,7 +81,7 @@ void EventPropertyManagerWidget::drawEventPropertyWidgets() {
             static_cast<PropertyWidgetQt*>(PropertyWidgetFactory::getPtr()->create(properties[i]));
         mainLayout_->addWidget(propertyWidget);
         properties[i]->registerWidget(propertyWidget);
-        dynamic_cast<EventPropertyWidgetQt*>(propertyWidget)->setManager(eventPropertyManager_);
+        //dynamic_cast<EventPropertyWidgetQt*>(propertyWidget)->setManager(eventPropertyManager_);
     }
 }
 
