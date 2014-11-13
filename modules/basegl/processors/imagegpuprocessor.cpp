@@ -85,14 +85,17 @@ void ImageGPUProcessor::process() {
 
     utilgl::activateTarget(outport_);
     shader_->activate();
+
+    utilgl::setShaderUniforms(shader_, outport_, "outportParameters_");
     shader_->setUniform("inport_", imgUnit.getUnitNumber());
-    shader_->setUniform("screenDimRCP_",
-        vec2(1.f / outport_.getDimension()[0], 1.f / outport_.getDimension()[1]));
+
+    preProcess();
+
     utilgl::singleDrawImagePlaneRect();
     shader_->deactivate();
     utilgl::deactivateCurrentTarget();
 
-    afterProcess();
+    postProcess();
 }
 
 }  // namespace

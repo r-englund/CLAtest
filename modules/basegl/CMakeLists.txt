@@ -12,7 +12,6 @@ set(HEADER_FILES
     ${CMAKE_CURRENT_SOURCE_DIR}/processors/findedges.h
     ${CMAKE_CURRENT_SOURCE_DIR}/processors/firstivwprocessor.h
     ${CMAKE_CURRENT_SOURCE_DIR}/processors/imagegpuprocessor.h
-    ${CMAKE_CURRENT_SOURCE_DIR}/processors/imageclassify.h
     ${CMAKE_CURRENT_SOURCE_DIR}/processors/imagegrayscale.h
     ${CMAKE_CURRENT_SOURCE_DIR}/processors/imagelayoutgl.h
     ${CMAKE_CURRENT_SOURCE_DIR}/processors/imagemixer.h
@@ -26,6 +25,7 @@ set(HEADER_FILES
     ${CMAKE_CURRENT_SOURCE_DIR}/processors/isoraycaster.h
     ${CMAKE_CURRENT_SOURCE_DIR}/processors/volumeslicegl.h
     ${CMAKE_CURRENT_SOURCE_DIR}/processors/imageprocessing/imageinvert.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/processors/imageprocessing/imagemapping.h
 )
 ivw_group("Header Files" ${HEADER_FILES})
 
@@ -39,13 +39,12 @@ set(SOURCE_FILES
     ${CMAKE_CURRENT_SOURCE_DIR}/processors/findedges.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/processors/firstivwprocessor.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/processors/imagegpuprocessor.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/processors/imageclassify.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/processors/imagegrayscale.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/processors/imagelayoutgl.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/processors/imagemixer.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/processors/lightingraycaster.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/processors/lightvolumegl.cpp
-	${CMAKE_CURRENT_SOURCE_DIR}/processors/multichannelraycaster.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/processors/multichannelraycaster.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/processors/multiplanar.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/processors/positionwidgetprocessor.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/processors/redgreenprocessor.cpp
@@ -53,6 +52,7 @@ set(SOURCE_FILES
     ${CMAKE_CURRENT_SOURCE_DIR}/processors/isoraycaster.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/processors/volumeslicegl.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/processors/imageprocessing/imageinvert.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/processors/imageprocessing/imagemapping.cpp
 )
 ivw_group("Source Files" ${SOURCE_FILES})
 
@@ -61,9 +61,9 @@ ivw_group("Source Files" ${SOURCE_FILES})
 set(SHADER_FILES
     ${CMAKE_CURRENT_SOURCE_DIR}/glsl/background.frag
     ${CMAKE_CURRENT_SOURCE_DIR}/glsl/capnearclipping.frag
-    ${CMAKE_CURRENT_SOURCE_DIR}/glsl/img_classify.frag
     ${CMAKE_CURRENT_SOURCE_DIR}/glsl/img_findedges.frag
     ${CMAKE_CURRENT_SOURCE_DIR}/glsl/img_graysc.frag
+    ${CMAKE_CURRENT_SOURCE_DIR}/glsl/img_mapping.frag
     ${CMAKE_CURRENT_SOURCE_DIR}/glsl/img_mix.frag
     ${CMAKE_CURRENT_SOURCE_DIR}/glsl/img_invert.frag
 	${CMAKE_CURRENT_SOURCE_DIR}/glsl/multichannelraycaster.frag

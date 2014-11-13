@@ -30,14 +30,17 @@
  *
  *********************************************************************************/
 
-#include "include/inc_sampler2d.frag"
+#include "utils/structs.glsl"
+
+uniform TEXTURE_PARAMETERS outportParameters_;
 
 uniform sampler2D inport_;
+uniform vec3 lumScale_;
 
 void main() {
-    vec2 texCoords = gl_FragCoord.xy * screenDimRCP_;
+    vec2 texCoords = gl_FragCoord.xy * outportParameters_.dimensionsRCP_;
     vec4 inputColor = texture(inport_, texCoords);
-    float gray = 0.2989*inputColor.r + 0.5870*inputColor.g + 0.1140*inputColor.b;
-    vec4 color = vec4(gray, gray, gray, inputColor.a);
+    float gray = lumScale_.r *inputColor.r + lumScale_.g *inputColor.g + lumScale_.b *inputColor.b;
+    vec4 color = vec4(vec3(gray), inputColor.a);
     FragData0 = color;
 }

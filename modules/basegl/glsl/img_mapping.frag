@@ -30,39 +30,17 @@
  *
  *********************************************************************************/
 
-#ifndef IVW_IMAGEGRAYSCALE_H
-#define IVW_IMAGEGRAYSCALE_H
+#include "utils/structs.glsl"
+#include "utils/classification.glsl"
 
-#include <modules/basegl/baseglmoduledefine.h>
-#include <inviwo/core/common/inviwo.h>
-#include <inviwo/core/processors/processor.h>
-#include <inviwo/core/ports/imageport.h>
-#include <modules/opengl/inviwoopengl.h>
+uniform TEXTURE_PARAMETERS outportParameters_;
 
-namespace inviwo {
+uniform sampler2D transferFunc_;
+uniform sampler2D inport_;
 
-class Shader;
-
-class IVW_MODULE_BASEGL_API ImageGrayscale : public Processor {
-public:
-    ImageGrayscale();
-    ~ImageGrayscale();
-
-    InviwoProcessorInfo();
-
-    void initialize();
-    void deinitialize();
-
-protected:
-    virtual void process();
-
-private:
-    ImageInport inport_;
-    ImageOutport outport_;
-
-    Shader* shader_;
-};
-
-} // namespace
-
-#endif // IVW_IMAGEGRAYSCALE_H
+void main() {
+    vec2 texCoords = gl_FragCoord.xy * outportParameters_.dimensionsRCP_;
+    vec4 value = texture(inport_, texCoords);
+    vec4 color = applyTF(transferFunc_, value);
+    FragData0 = color;
+}

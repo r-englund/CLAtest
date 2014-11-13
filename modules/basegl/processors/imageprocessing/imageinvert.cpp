@@ -37,7 +37,7 @@ ProcessorClassIdentifier(ImageInvert, "org.inviwo.ImageInvert");
 ProcessorDisplayName(ImageInvert, "Image Invert");
 ProcessorTags(ImageInvert, Tags::GL);
 ProcessorCategory(ImageInvert, "Image Operation");
-ProcessorCodeState(ImageInvert, CODE_STATE_EXPERIMENTAL);
+ProcessorCodeState(ImageInvert, CODE_STATE_STABLE);
 
 ImageInvert::ImageInvert() : ImageGPUProcessor("img_invert.frag") {}
 

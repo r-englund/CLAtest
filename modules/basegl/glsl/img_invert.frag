@@ -26,16 +26,18 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  * 
- * Contact: Erik Sundén
+ * Contact: Martin Falk
  *
  *********************************************************************************/
 
-#include "include/inc_sampler2d.frag"
+#include "utils/structs.glsl"
+
+uniform TEXTURE_PARAMETERS outportParameters_;
 
 uniform sampler2D inport_;
 
 void main() {
-    vec2 texCoords = gl_FragCoord.xy * screenDimRCP_;
+    vec2 texCoords = gl_FragCoord.xy * outportParameters_.dimensionsRCP_;
     vec4 inputColor = texture(inport_, texCoords);
     vec4 color = vec4(1.0 - inputColor.rgb, inputColor.a);
     FragData0 = color;

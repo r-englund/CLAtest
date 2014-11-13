@@ -48,7 +48,7 @@ class Shader;
  *
  * The ImageGPUProcessor provides the basic structure for image processing on the GPU.
  * Derived shaders have to provide a custom fragment shader which is used during rendering.
- * Optionally, derived classes can overwrite ImageGPUProcessor::afterProcess() to perform
+ * Optionally, derived classes can overwrite ImageGPUProcessor::postProcess() to perform
  * post-processing of the image data set in the outport. Furthermore, it is possible to
  * be notified of changes in the input image by overwriting ImageGPUProcessor::afterInportChanged().
  *
@@ -66,11 +66,18 @@ public:
 protected:
     void markInvalid() { internalInvalid_ = true; }
 
+    /*! \brief this function gets called right before the actual processing but 
+     *         after the shader has been activated
+     *
+     * overwrite this function in the derived class to perform things like custom shader setup
+     */
+    virtual void preProcess(){}
+
     /*! \brief this function gets called at the end of the process function
      *
      * overwrite this function in the derived class to perform post-processing
      */
-    virtual void afterProcess(){}
+    virtual void postProcess(){}
 
     /*! \brief this function gets called whenever the inport changes
      *

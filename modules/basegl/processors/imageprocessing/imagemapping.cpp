@@ -30,42 +30,35 @@
  *
  *********************************************************************************/
 
-#ifndef IVW_IMAGECLASSIFY_H
-#define IVW_IMAGECLASSIFY_H
-
-#include <modules/basegl/baseglmoduledefine.h>
-#include <inviwo/core/common/inviwo.h>
-#include <inviwo/core/processors/processor.h>
-#include <inviwo/core/ports/imageport.h>
-#include <inviwo/core/properties/transferfunctionproperty.h>
-#include <modules/opengl/inviwoopengl.h>
+#include "imagemapping.h"
+#include <modules/opengl/glwrap/textureunit.h>
+#include <modules/opengl/textureutils.h>
+#include <modules/opengl/image/layergl.h>
+#include <modules/opengl/glwrap/shader.h>
 
 namespace inviwo {
 
-class Shader;
+ProcessorClassIdentifier(ImageMapping, "org.inviwo.ImageMapping");
+ProcessorDisplayName(ImageMapping, "Image Mapping");
+ProcessorTags(ImageMapping, Tags::GL);
+ProcessorCategory(ImageMapping, "Image Operation");
+ProcessorCodeState(ImageMapping, CODE_STATE_STABLE);
 
-class IVW_MODULE_BASEGL_API ImageClassify : public Processor {
-public:
-    ImageClassify();
-    ~ImageClassify();
+ImageMapping::ImageMapping()
+    : ImageGPUProcessor("img_mapping.frag")
+    , transferFunction_("transferFunction", "Transfer function", TransferFunction()) {
+    addProperty(transferFunction_);
+}
 
-    InviwoProcessorInfo();
+ImageMapping::~ImageMapping() {}
 
-    void initialize();
-    void deinitialize();
+void ImageMapping::preProcess() {
+    TextureUnit transFuncUnit;
+    const Layer* tfLayer = transferFunction_.get().getData();
+    const LayerGL* transferFunctionGL = tfLayer->getRepresentation<LayerGL>();
 
-protected:
-    virtual void process();
+    transferFunctionGL->bindTexture(transFuncUnit.getEnum());
+    shader_->setUniform("transferFunc_", transFuncUnit.getUnitNumber());
+}
 
-private:
-    ImageInport inport_;
-    ImageOutport outport_;
-
-    TransferFunctionProperty transferFunction_;
-
-    Shader* shader_;
-};
-
-} // namespace
-
-#endif // IVW_IMAGECLASSIFY_H
+}  // namespace
