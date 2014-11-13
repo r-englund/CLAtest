@@ -11,6 +11,7 @@ set(HEADER_FILES
     ${CMAKE_CURRENT_SOURCE_DIR}/processors/entryexitpoints.h
     ${CMAKE_CURRENT_SOURCE_DIR}/processors/findedges.h
     ${CMAKE_CURRENT_SOURCE_DIR}/processors/firstivwprocessor.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/processors/imagegpuprocessor.h
     ${CMAKE_CURRENT_SOURCE_DIR}/processors/imageclassify.h
     ${CMAKE_CURRENT_SOURCE_DIR}/processors/imagegrayscale.h
     ${CMAKE_CURRENT_SOURCE_DIR}/processors/imagelayoutgl.h
@@ -24,6 +25,7 @@ set(HEADER_FILES
     ${CMAKE_CURRENT_SOURCE_DIR}/processors/simpleraycaster.h
     ${CMAKE_CURRENT_SOURCE_DIR}/processors/isoraycaster.h
     ${CMAKE_CURRENT_SOURCE_DIR}/processors/volumeslicegl.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/processors/imageprocessing/imageinvert.h
 )
 ivw_group("Header Files" ${HEADER_FILES})
 
@@ -36,6 +38,7 @@ set(SOURCE_FILES
     ${CMAKE_CURRENT_SOURCE_DIR}/processors/entryexitpoints.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/processors/findedges.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/processors/firstivwprocessor.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/processors/imagegpuprocessor.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/processors/imageclassify.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/processors/imagegrayscale.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/processors/imagelayoutgl.cpp
@@ -49,6 +52,7 @@ set(SOURCE_FILES
     ${CMAKE_CURRENT_SOURCE_DIR}/processors/simpleraycaster.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/processors/isoraycaster.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/processors/volumeslicegl.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/processors/imageprocessing/imageinvert.cpp
 )
 ivw_group("Source Files" ${SOURCE_FILES})
 
@@ -61,6 +65,7 @@ set(SHADER_FILES
     ${CMAKE_CURRENT_SOURCE_DIR}/glsl/img_findedges.frag
     ${CMAKE_CURRENT_SOURCE_DIR}/glsl/img_graysc.frag
     ${CMAKE_CURRENT_SOURCE_DIR}/glsl/img_mix.frag
+    ${CMAKE_CURRENT_SOURCE_DIR}/glsl/img_invert.frag
 	${CMAKE_CURRENT_SOURCE_DIR}/glsl/multichannelraycaster.frag
     ${CMAKE_CURRENT_SOURCE_DIR}/glsl/multiplanar.frag
     ${CMAKE_CURRENT_SOURCE_DIR}/glsl/volumeslice.frag

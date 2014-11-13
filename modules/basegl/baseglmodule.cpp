@@ -51,6 +51,7 @@
 #include <modules/basegl/processors/simpleraycaster.h>
 #include <modules/basegl/processors/isoraycaster.h>
 #include <modules/basegl/processors/volumeslicegl.h>
+#include <modules/basegl/processors/imageprocessing/imageinvert.h>
 
 namespace inviwo {
 
@@ -77,6 +78,9 @@ BaseGLModule::BaseGLModule() : InviwoModule() {
     registerProcessor(SimpleRaycaster);
     registerProcessor(ISORaycaster);
     registerProcessor(VolumeSliceGL);
+
+    // image processing
+    registerProcessor(ImageInvert);
 }
 
 } // namespace
