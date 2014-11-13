@@ -374,6 +374,8 @@ FIBITMAP* FreeImageUtils::createBitmapFromData(const T* data, FREE_IMAGE_TYPE ty
     unsigned int bytespp = FreeImage_GetLine(dib) / FreeImage_GetWidth(dib);
     T* bits = (T*)FreeImage_GetBits(dib);
 
+    // FIXME: I commented this out (Martin, issue #650)
+    /*
     //Scale normalized float value to from 0 - 1 to 0  - 255
     if (type == FIT_FLOAT) {
         T value;
@@ -386,6 +388,7 @@ FIBITMAP* FreeImageUtils::createBitmapFromData(const T* data, FREE_IMAGE_TYPE ty
         return dibConvert;
     }
     else
+    */
         memcpy(bits, data, dim.x*dim.y*bytespp);
 
     return dib;
@@ -490,14 +493,14 @@ void* FreeImageUtils::fiBitmapToDataArrayAndRescale(void* dst, FIBITMAP* bitmap,
     FIBITMAP* bitmapTmp = allocateBitmap(type, dimTmp, bitsPerPixel, channels);
     if(!bitmapTmp)
         return NULL;
+    switchChannels(bitmap, dim, channels);
     //Paste source into our tmp, to be used for scaling
     FreeImage_Paste(bitmapTmp, bitmap, pasteLeft, pasteTop, 256);
 
     //Rescale to proper dimension
     FIBITMAP* bitmapRescaled = FreeImage_Rescale(bitmapTmp, static_cast<int>(dst_dim.x), static_cast<int>(dst_dim.y), FILTER_BILINEAR);
     FreeImage_Unload(bitmapTmp);
-    switchChannels(bitmapRescaled, dst_dim, channels);
-    void* pixelValues = static_cast<void*>(FreeImage_GetBits(bitmapRescaled));
+    unsigned char* pixelValues = static_cast<unsigned char* >(FreeImage_GetBits(bitmapRescaled));
 
     if (!dst) {
         T* dstAlloc = new T[dst_dim.x*dst_dim.y];
