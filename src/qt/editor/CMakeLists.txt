@@ -6,7 +6,6 @@ ivw_project(inviwo-qteditor)
 # Add MOC files
 set(MOC_FILES
     ${IVW_INCLUDE_DIR}/inviwo/qt/editor/consolewidget.h
-    ${IVW_INCLUDE_DIR}/inviwo/qt/editor/mappingwidget.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/editor/networkeditor.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/editor/processorlistwidget.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/editor/resourcemanagerwidget.h
@@ -47,7 +46,6 @@ set(SOURCE_FILES
     consolewidget.cpp
     editorgrapicsitem.cpp
     linkgraphicsitem.cpp
-    mappingwidget.cpp
     networkeditor.cpp
     networkeditorview.cpp
     processorgraphicsitem.cpp

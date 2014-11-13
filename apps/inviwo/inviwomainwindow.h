@@ -53,7 +53,6 @@ class ProcessorTreeWidget;
 class ResourceManagerWidget;
 class ConsoleWidget;
 class SettingsWidget;
-class MappingWidget;
 
 class InviwoMainWindow : public QMainWindow,
     public NetworkEditorObserver,
@@ -130,7 +129,6 @@ private:
     ProcessorTreeWidget* processorTreeWidget_;
     PropertyListWidget* propertyListWidget_;
     ConsoleWidget* consoleWidget_;
-    MappingWidget* mappingwidget_;
     ResourceManagerWidget* resourceManagerWidget_;
 
     // mainwindow menus
