@@ -39,11 +39,11 @@
 
 namespace inviwo {
 
-/*! \class NegativeImage
+/*! \class ImageInvert
  *
- * \brief Create the negative of an input image. Alpha channel is not touched.
+ * \brief Create the invert image of an input image. Alpha channel is not touched.
  *
- * This processor computes the negative image by subtracting the rgb channels from 1.0 
+ * This processor computes the inverted image by subtracting the rgb channels from 1.0 
  * utilizing the ImageGPUProcessor. 
  * The input range is assumed to be normalized, i.e. [0, 1]. 
  */
