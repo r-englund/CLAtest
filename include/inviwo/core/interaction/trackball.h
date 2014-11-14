@@ -39,9 +39,8 @@
 #include <inviwo/core/interaction/events/gestureevent.h>
 #include <inviwo/core/interaction/events/mouseevent.h>
 #include <inviwo/core/interaction/events/keyboardevent.h>
-#include <inviwo/core/interaction/events/eventlistener.h>
 #include <inviwo/core/interaction/events/resizeevent.h>
-#include <inviwo/core/interaction/trackballaction.h>
+#include <inviwo/core/interaction/action.h>
 #include <inviwo/core/io/serialization/ivwserializable.h>
 #include <inviwo/core/properties/compositeproperty.h>
 #include <inviwo/core/properties/eventproperty.h>
@@ -76,8 +75,7 @@ public:
     void notifyLookUpChanged(const Trackball* trackball) const;
 };
 
-class IVW_CORE_API Trackball : public InteractionHandler,
-                               public CompositeProperty,
+class IVW_CORE_API Trackball : public CompositeProperty,
                                public TrackballObservable {
 public:
     InviwoPropertyInfo();
@@ -93,12 +91,7 @@ public:
     Trackball(vec3* lookFrom, vec3* lookTo, vec3* lookUp);
     virtual ~Trackball();
 
-    virtual void invokeEvent(Event* event);
-    void addProperty(Property& property);
-    void addProperty(Property* property);
-
-    void serialize(IvwSerializer& s) const;
-    void deserialize(IvwDeserializer& d);
+    virtual void invokeInteractionEvent(Event* event);
 
     vec3* getLookTo() { return lookTo_; }
     vec3* getLookFrom() { return lookFrom_; }
@@ -135,6 +128,9 @@ private:
 
     void zoomIn(Event* event);
     void zoomOut(Event* event);
+    
+    void pinchGesture(Event* event);
+    void panGesture(Event* event);
 
     float pixelWidth_;
     bool isMouseBeingPressedAndHold_;
@@ -145,6 +141,8 @@ private:
     vec3* lookFrom_;
     vec3* lookTo_;
     vec3* lookUp_;
+
+    BoolProperty handleInteractionEvents_;
 
     // Event Properties.
     EventProperty mouseRotate_;
@@ -163,6 +161,9 @@ private:
     EventProperty stepPanLeft_;
     EventProperty stepPanDown_;
     EventProperty stepPanRight_;
+    
+    EventProperty pinchGesture_;
+    EventProperty panGesture_;
 };
 }
 

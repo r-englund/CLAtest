@@ -35,7 +35,7 @@
 namespace inviwo {
 
 GestureEvent::GestureEvent(vec2 deltaPos, double deltaDistance, GestureEvent::GestureType type,
-                           GestureEvent::GestureState state, int numFingers, vec2 screenPosNorm)
+                           int state, int numFingers, vec2 screenPosNorm)
     : InteractionEvent()
     , type_(type)
     , state_(state)
@@ -43,6 +43,17 @@ GestureEvent::GestureEvent(vec2 deltaPos, double deltaDistance, GestureEvent::Ge
     , deltaPos_(deltaPos)
     , deltaDistance_(deltaDistance)
     , screenPosNorm_(screenPosNorm) {}
+
+GestureEvent::GestureEvent(GestureEvent::GestureType type,
+                           int state, int numFingers)
+    : InteractionEvent()
+    , type_(type)
+    , state_(state)
+    , numFingers_(numFingers)
+    , deltaPos_(0)
+    , deltaDistance_(0)
+    , screenPosNorm_(0) {}
+
 
 GestureEvent::GestureEvent(const GestureEvent& rhs) 
     : InteractionEvent(rhs)
@@ -88,7 +99,7 @@ bool GestureEvent::matching(const Event* aEvent) const {
 
 bool GestureEvent::matching(const GestureEvent* aEvent) const {
     return type_ == aEvent->type_
-        && state_ == aEvent->state_
+        && (state_ & aEvent->state_) == aEvent->state_ // aEvent.state equal to any of this.state.
         && numFingers_ == aEvent->numFingers_
         && modifiers_ == aEvent->modifiers_;
 }

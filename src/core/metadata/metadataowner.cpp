@@ -68,7 +68,6 @@ void MetaDataOwner::copyMetaDataTo(MetaDataOwner &dst) {
     dst = *this;
 }
 
-
 void MetaDataOwner::serialize(IvwSerializer& s) const {
     metaData_->serialize(s);
 }

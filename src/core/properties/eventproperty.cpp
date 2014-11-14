@@ -39,9 +39,9 @@ PropertyClassIdentifier(EventProperty, "org.inviwo.EventProperty");
 EventProperty::EventProperty(std::string identifier, std::string displayName, InteractionEvent* e,
                              Action* action, PropertyOwner::InvalidationLevel invalidationLevel,
                              PropertySemantics semantics)
-    : Property(identifier, displayName, invalidationLevel, semantics) {
-    event_ = e;
-    action_ = action;
+    : Property(identifier, displayName, invalidationLevel, semantics)
+    , event_(e)
+    , action_(action) {
 }
 
 EventProperty::EventProperty(const EventProperty& rhs)
@@ -68,13 +68,11 @@ EventProperty::~EventProperty() {
 void EventProperty::serialize(IvwSerializer& s) const {
     Property::serialize(s);
     s.serialize("Event", event_);
-    s.serialize("Action", action_);
 }
 
 void EventProperty::deserialize(IvwDeserializer& d) {
     Property::deserialize(d);
-    d.deserialize("Event", *event_);
-    d.deserialize("Action", *action_);
+    d.deserialize("Event", event_);
 }
 
 InteractionEvent* EventProperty::getEvent() const {
@@ -86,12 +84,12 @@ Action* EventProperty::getAction() const {
 }
 
 void EventProperty::setEvent(InteractionEvent* e) {
-    if (event_) delete event_;
+    if (event_ && event_ != e) delete event_;
     event_ = e;
 }
 
 void EventProperty::setAction(Action* action) {
-    if (action_) delete action_;
+    if (action_ && action_ != action) delete action_;
     action_ = action;
 }
 

@@ -78,7 +78,6 @@ public:
     IntProperty lightSpecularExponent_;
     BoolProperty applyLightAttenuation_;
     FloatVec3Property lightAttenuation_;
-
 };
 
 } // namespace

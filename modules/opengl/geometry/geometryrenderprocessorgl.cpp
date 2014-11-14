@@ -55,7 +55,7 @@ GeometryRenderProcessorGL::GeometryRenderProcessorGL()
     , camera_("camera", "Camera")
     , centerViewOnGeometry_("centerView", "Center view on geometry")
     , resetViewParams_("resetView", "Reset Camera")
-    , trackball_(NULL)
+    , trackball_(&camera_)
     , geomProperties_("geometry", "Geometry Rendering Properties")
     , cullFace_("cullFace", "Cull Face")
     , polygonMode_("polygonMode", "Polygon Mode")
@@ -66,8 +66,6 @@ GeometryRenderProcessorGL::GeometryRenderProcessorGL()
     addPort(inport_);
     addPort(outport_);
     addProperty(camera_);
-    trackball_ = new CameraTrackball(&camera_);
-    addInteractionHandler(trackball_);
     centerViewOnGeometry_.onChange(this, &GeometryRenderProcessorGL::centerViewOnGeometry);
     addProperty(centerViewOnGeometry_);
     resetViewParams_.onChange(this, &GeometryRenderProcessorGL::resetViewParams);
@@ -92,15 +90,12 @@ GeometryRenderProcessorGL::GeometryRenderProcessorGL()
 
     addProperty(geomProperties_);
     addProperty(lightingProperty_);
+    addProperty(trackball_);
 
     setAllPropertiesCurrentStateAsDefault();
 }
 
-GeometryRenderProcessorGL::~GeometryRenderProcessorGL() {
-    removeInteractionHandler(trackball_);
-    delete trackball_;
-    trackball_ = NULL;
-}
+GeometryRenderProcessorGL::~GeometryRenderProcessorGL() {}
 
 void GeometryRenderProcessorGL::initialize() {
     Processor::initialize();

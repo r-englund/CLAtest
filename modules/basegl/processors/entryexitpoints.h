@@ -45,24 +45,24 @@
 #include <modules/opengl/inviwoopengl.h>
 #include <modules/opengl/glwrap/shader.h>
 #include <inviwo/core/common/inviwoapplication.h>
+#include <inviwo/core/interaction/cameratrackball.h>
 
 namespace inviwo {
-class CameraTrackball;
 
 class IVW_MODULE_BASEGL_API EntryExitPoints : public Processor {
 public:
+    InviwoProcessorInfo();
+    
     EntryExitPoints();
     ~EntryExitPoints();
 
-    InviwoProcessorInfo();
-
+    virtual void process();
     void initialize();
     void deinitialize();
 
 protected:
-    virtual void process();
-    void handleInteractionEventsChanged();
     void onGeometryChange();
+
 private:
     GeometryInport geometryPort_;
     ImageOutport entryPort_;
@@ -70,9 +70,8 @@ private:
 
     CameraProperty camera_;
     BoolProperty capNearClipping_;
-    BoolProperty handleInteractionEvents_; ///< Enable or disable camera movements from canvas
-
-    CameraTrackball* trackball_;
+    CameraTrackball trackball_;
+    
     Shader* genericShader_;
     Shader* capNearClippingPrg_;
     Image* tmpEntryPoints_;

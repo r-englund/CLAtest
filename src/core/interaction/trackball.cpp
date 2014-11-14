@@ -40,8 +40,7 @@ static const float STEPSIZE = 0.05f;
 PropertyClassIdentifier(Trackball, "org.inviwo.Trackball");
 
 Trackball::Trackball(vec3* lookFrom, vec3* lookTo, vec3* lookUp)
-    : InteractionHandler()
-    , CompositeProperty("trackball", "Trackball")
+    : CompositeProperty("trackball", "Trackball")
     , pixelWidth_(0.007f)
     , isMouseBeingPressedAndHold_(false)
     , lastMousePos_(ivec2(0))
@@ -49,69 +48,82 @@ Trackball::Trackball(vec3* lookFrom, vec3* lookTo, vec3* lookUp)
     , lookFrom_(lookFrom)
     , lookTo_(lookTo)
     , lookUp_(lookUp)
+    
+    , handleInteractionEvents_("handleEvents", "Handle interaction events", true,
+                               PropertyOwner::VALID)
 
-    , mouseRotate_("trackballRotate", "Rotate", 
+    , mouseRotate_("trackballRotate", "Rotate",
         new MouseEvent(MouseEvent::MOUSE_BUTTON_LEFT, InteractionEvent::MODIFIER_NONE,
             MouseEvent::MOUSE_STATE_PRESS | MouseEvent::MOUSE_STATE_MOVE),
-        new TrackballAction(TrackballAction::TRACKBALL_ROTATE, this, &Trackball::rotate))
+        new Action(this, &Trackball::rotate))
     
     , mouseZoom_("trackballZoom", "Zoom",
         new MouseEvent(MouseEvent::MOUSE_BUTTON_RIGHT, InteractionEvent::MODIFIER_NONE,
             MouseEvent::MOUSE_STATE_PRESS | MouseEvent::MOUSE_STATE_MOVE),
-        new TrackballAction(TrackballAction::TRACKBALL_ZOOM, this, &Trackball::zoom))
+        new Action(this, &Trackball::zoom))
 
     , mousePan_("trackballPan", "Pan", 
         new  MouseEvent(MouseEvent::MOUSE_BUTTON_MIDDLE, InteractionEvent::MODIFIER_NONE,
             MouseEvent::MOUSE_STATE_PRESS | MouseEvent::MOUSE_STATE_MOVE),
-        new TrackballAction(TrackballAction::TRACKBALL_PAN, this, &Trackball::pan))
+        new Action(this, &Trackball::pan))
 
     , mouseReset_("mouseReset", "Reset",
         new  MouseEvent(MouseEvent::MOUSE_BUTTON_NONE, InteractionEvent::MODIFIER_NONE,
-        MouseEvent::MOUSE_STATE_RELEASE),
-        new Action("reset", this, &Trackball::reset))
+            MouseEvent::MOUSE_STATE_RELEASE),
+        new Action(this, &Trackball::reset))
 
     , stepRotateUp_("stepRotateUp", "Rotate up", 
         new KeyboardEvent('W', InteractionEvent::MODIFIER_NONE, KeyboardEvent::KEY_STATE_PRESS),
-        new TrackballAction(TrackballAction::TRACKBALL_STEPROTATE_UP, this, &Trackball::rotateUp))
+        new Action(this, &Trackball::rotateUp))
 
     , stepRotateLeft_("stepRotateLeft", "Rotate left",
         new KeyboardEvent('A', InteractionEvent::MODIFIER_NONE, KeyboardEvent::KEY_STATE_PRESS),
-        new TrackballAction(TrackballAction::TRACKBALL_STEPROTATE_LEFT, this, &Trackball::rotateLeft))
+        new Action(this, &Trackball::rotateLeft))
 
     , stepRotateDown_("stepRotateDown", "Rotate down",
         new KeyboardEvent('S', InteractionEvent::MODIFIER_NONE, KeyboardEvent::KEY_STATE_PRESS),
-        new TrackballAction(TrackballAction::TRACKBALL_STEPROTATE_DOWN, this, &Trackball::rotateDown))
+        new Action(this, &Trackball::rotateDown))
 
     , stepRotateRight_("stepRotateRight", "Rotate right", 
         new KeyboardEvent('D', InteractionEvent::MODIFIER_NONE, KeyboardEvent::KEY_STATE_PRESS),
-        new TrackballAction(TrackballAction::TRACKBALL_STEPROTATE_RIGHT, this, &Trackball::rotateRight))
+        new Action(this, &Trackball::rotateRight))
 
     , stepZoomIn_("stepZoomIn", "Zoom in",
         new KeyboardEvent('R', InteractionEvent::MODIFIER_NONE, KeyboardEvent::KEY_STATE_PRESS),
-        new TrackballAction(TrackballAction::TRACKBALL_STEPZOOM_IN, this, &Trackball::zoomIn))
+        new Action(this, &Trackball::zoomIn))
 
     , stepZoomOut_("stepZoomOut", "Zoom out",
         new KeyboardEvent('F', InteractionEvent::MODIFIER_NONE, KeyboardEvent::KEY_STATE_PRESS),
-        new TrackballAction(TrackballAction::TRACKBALL_STEPZOOM_OUT, this, &Trackball::zoomOut))
+        new Action(this, &Trackball::zoomOut))
 
     , stepPanUp_("stepPanUp", "Pan up", 
         new KeyboardEvent('W', InteractionEvent::MODIFIER_SHIFT, KeyboardEvent::KEY_STATE_PRESS),
-        new TrackballAction(TrackballAction::TRACKBALL_STEPPAN_UP, this, &Trackball::panUp))
+        new Action(this, &Trackball::panUp))
 
     , stepPanLeft_("stepPanLeft", "Pan left",
         new KeyboardEvent('A', InteractionEvent::MODIFIER_SHIFT, KeyboardEvent::KEY_STATE_PRESS),
-        new TrackballAction(TrackballAction::TRACKBALL_STEPPAN_LEFT, this, &Trackball::panLeft))
+        new Action(this, &Trackball::panLeft))
 
     , stepPanDown_("stepPanDown", "Pan down", 
         new KeyboardEvent('S', InteractionEvent::MODIFIER_SHIFT, KeyboardEvent::KEY_STATE_PRESS),
-        new TrackballAction(TrackballAction::TRACKBALL_STEPPAN_DOWN, this, &Trackball::panDown))
+        new Action(this, &Trackball::panDown))
 
     , stepPanRight_("stepPanRight", "Pan right", 
         new KeyboardEvent('D', InteractionEvent::MODIFIER_SHIFT, KeyboardEvent::KEY_STATE_PRESS),
-        new TrackballAction(TrackballAction::TRACKBALL_STEPPAN_RIGHT, this, &Trackball::panRight)) {
+        new Action(this, &Trackball::panRight))
+    , pinchGesture_("pinchGesture", "Pinch",
+        new GestureEvent(GestureEvent::PINCH, GestureEvent::GESTURE_STATE_ANY, 2),
+        new Action(this, &Trackball::pinchGesture))
+    , panGesture_("panGesture", "Pan",
+        new GestureEvent(GestureEvent::PAN, GestureEvent::GESTURE_STATE_ANY, 3),
+        new Action(this, &Trackball::panGesture)) {
         
 
     mouseReset_.setVisible(false);
+    pinchGesture_.setVisible(false);
+    panGesture_.setVisible(false);
+
+    addProperty(handleInteractionEvents_);
 
     addProperty(mouseRotate_);
     addProperty(mouseZoom_);
@@ -127,71 +139,22 @@ Trackball::Trackball(vec3* lookFrom, vec3* lookTo, vec3* lookUp)
     addProperty(stepPanLeft_);
     addProperty(stepPanDown_);
     addProperty(stepPanRight_);
+    addProperty(pinchGesture_);
+    addProperty(panGesture_);
 }
 
 Trackball::~Trackball() {}
 
-vec3 Trackball::mapNormalizedMousePosToTrackball(const vec2& mousePos, float dist /*= 1.f*/) {
-    // set x and y to lie in interval [-r, r]
-    float r = RADIUS;
-    vec3 result = vec3(mousePos.x-RADIUS, -1.0f*(mousePos.y-RADIUS), 0.0f)*dist;
+void Trackball::invokeInteractionEvent(Event* event) {
+    if (!handleInteractionEvents_) return;
 
-    // Mapping according to Holroyds trackball
-    //Piece-wise sphere + hyperbolic sheet
-    if ((result.x*result.x + result.y*result.y) <= r*r/(2.0f)) {
-        //Spherical Region
-        result.z = r*r - (result.x*result.x + result.y*result.y);
-        result.z = result.z > 0.0f ? sqrtf(result.z) : 0.0f;
-    } else {
-        //Hyperbolic Region - for smooth z values
-        result.z = ((r*r)/(2.0f*sqrtf(result.x*result.x + result.y*result.y)));
-    }
-
-    return glm::normalize(result);
-}
-
-vec3 Trackball::mapToObject(vec3 pos, float dist) {
-    //return (camera_->viewMatrix() * vec4(pos,0)).xyz;
-    //TODO: Use proper co-ordinate transformation matrices
-    //Get x,y,z axis vectors of current camera view
-    vec3 currentViewYaxis = glm::normalize(*lookUp_);
-    vec3 currentViewZaxis = glm::normalize(*lookFrom_-*lookTo_);
-    vec3 currentViewXaxis = glm::normalize(glm::cross(currentViewYaxis, currentViewZaxis));
-
-    //mapping to camera co-ordinate
-    currentViewXaxis*=pos.x*dist;
-    currentViewYaxis*=pos.y*dist;
-    currentViewZaxis*=pos.z*dist;
-    return (currentViewXaxis + currentViewYaxis + currentViewZaxis);
-}
-
-
-void Trackball::invokeEvent(Event* event) {
     GestureEvent* gestureEvent = dynamic_cast<GestureEvent*>(event);
     if (gestureEvent) {
-        if(gestureEvent->type() == GestureEvent::PINCH && gestureEvent->numFingers() == 2){
-            vec3 direction = *lookFrom_ - *lookTo_;
-            float vecLength = glm::clamp(glm::length(direction), 0.5f, 4.f);
-            vec3 normdirection = glm::normalize(direction);
-            *lookFrom_ = *lookFrom_-normdirection*(static_cast<float>(vecLength*gestureEvent->deltaDistance()));
-            notifyLookFromChanged(this);
-        }
-        else if(gestureEvent->type() == GestureEvent::PAN && gestureEvent->numFingers() > 2){
-            vec3 offsetVector = vec3(gestureEvent->deltaPos().x*2.f, gestureEvent->deltaPos().y*2.f, 0.f);
-
-            //The resulting rotation needs to be mapped to the camera distance,
-            //as if the trackball is located at a certain distance from the camera.
-            //TODO: Verify this
-            float zDist = (glm::length(*lookFrom_-*lookTo_)-1.f)/M_PI;
-            vec3 mappedOffsetVector = mapToObject(offsetVector, zDist);
-
-            *lookTo_ += mappedOffsetVector;
-            *lookFrom_ += mappedOffsetVector;
-            notifyAllChanged(this);
-
-        }
-        isMouseBeingPressedAndHold_ = false;
-
+        if (pinchGesture_.getEvent()->matching(gestureEvent))
+            pinchGesture_.getAction()->invoke(gestureEvent);
+        else if (panGesture_.getEvent()->matching(gestureEvent))
+            panGesture_.getAction()->invoke(gestureEvent);
+        
         gestureEvent->markAsUsed();
         return;
     }
@@ -237,6 +200,67 @@ void Trackball::invokeEvent(Event* event) {
         keyEvent->markAsUsed();
         return;
     }
+}
+vec3 Trackball::mapNormalizedMousePosToTrackball(const vec2& mousePos, float dist /*= 1.f*/) {
+    // set x and y to lie in interval [-r, r]
+    float r = RADIUS;
+    vec3 result = vec3(mousePos.x-RADIUS, -1.0f*(mousePos.y-RADIUS), 0.0f)*dist;
+
+    // Mapping according to Holroyds trackball
+    //Piece-wise sphere + hyperbolic sheet
+    if ((result.x*result.x + result.y*result.y) <= r*r/(2.0f)) {
+        //Spherical Region
+        result.z = r*r - (result.x*result.x + result.y*result.y);
+        result.z = result.z > 0.0f ? sqrtf(result.z) : 0.0f;
+    } else {
+        //Hyperbolic Region - for smooth z values
+        result.z = ((r*r)/(2.0f*sqrtf(result.x*result.x + result.y*result.y)));
+    }
+
+    return glm::normalize(result);
+}
+
+vec3 Trackball::mapToObject(vec3 pos, float dist) {
+    //return (camera_->viewMatrix() * vec4(pos,0)).xyz;
+    //TODO: Use proper co-ordinate transformation matrices
+    //Get x,y,z axis vectors of current camera view
+    vec3 currentViewYaxis = glm::normalize(*lookUp_);
+    vec3 currentViewZaxis = glm::normalize(*lookFrom_-*lookTo_);
+    vec3 currentViewXaxis = glm::normalize(glm::cross(currentViewYaxis, currentViewZaxis));
+
+    //mapping to camera co-ordinate
+    currentViewXaxis*=pos.x*dist;
+    currentViewYaxis*=pos.y*dist;
+    currentViewZaxis*=pos.z*dist;
+    return (currentViewXaxis + currentViewYaxis + currentViewZaxis);
+}
+
+void Trackball::pinchGesture(Event* event) {
+    GestureEvent* gestureEvent = static_cast<GestureEvent*>(event);
+    vec3 direction = *lookFrom_ - *lookTo_;
+    float vecLength = glm::clamp(glm::length(direction), 0.5f, 4.f);
+    vec3 normdirection = glm::normalize(direction);
+    *lookFrom_ = *lookFrom_-normdirection*(static_cast<float>(vecLength*gestureEvent->deltaDistance()));
+    notifyLookFromChanged(this);
+    isMouseBeingPressedAndHold_ = false;
+    
+}
+
+void Trackball::panGesture(Event* event) {
+    GestureEvent* gestureEvent = static_cast<GestureEvent*>(event);
+    vec3 offsetVector =
+        vec3(gestureEvent->deltaPos().x * 2.f, gestureEvent->deltaPos().y * 2.f, 0.f);
+
+    // The resulting rotation needs to be mapped to the camera distance,
+    // as if the trackball is located at a certain distance from the camera.
+    // TODO: Verify this
+    float zDist = (glm::length(*lookFrom_ - *lookTo_) - 1.f) / M_PI;
+    vec3 mappedOffsetVector = mapToObject(offsetVector, zDist);
+
+    *lookTo_ += mappedOffsetVector;
+    *lookFrom_ += mappedOffsetVector;
+    notifyAllChanged(this);
+    isMouseBeingPressedAndHold_ = false;
 }
 
 void Trackball::rotate(Event* event) {  
@@ -450,46 +474,24 @@ void Trackball::stepPan(Direction dir) {
     return;
 }
 
-void Trackball::addProperty(Property& property) {
-    if (dynamic_cast<EventProperty*>(&property))
-        addProperty(&property);
-}
-
-void Trackball::addProperty(Property* property) {
-    if (dynamic_cast<EventProperty*>(property)) {
-        properties_.push_back(property);
-        property->setOwner(this);
-    }
-}
-
-void Trackball::serialize(IvwSerializer& s) const {
-    InteractionHandler::serialize(s);
-    PropertyOwner::serialize(s);
-}
-
-void Trackball::deserialize(IvwDeserializer& d) {
-    InteractionHandler::deserialize(d);
-    PropertyOwner::deserialize(d);
-}
-
-void Trackball::rotateFromPosToPos(const vec3& currentCamPos, const vec3& nextCamPos, float rotationAngle)
-{
-    //rotation axis
+void Trackball::rotateFromPosToPos(const vec3& currentCamPos, const vec3& nextCamPos,
+                                   float rotationAngle) {
+    // rotation axis
     vec3 rotationAxis = glm::cross(currentCamPos, nextCamPos);
     // generate quaternion and rotate camera
     rotationAxis = glm::normalize(rotationAxis);
     quat quaternion = glm::angleAxis(rotationAngle, rotationAxis);
-    //float lookLength = glm::length(*lookFrom_-*lookTo_);
-    *lookFrom_ = *lookTo_+glm::rotate(quaternion, *lookFrom_-*lookTo_);
+    // float lookLength = glm::length(*lookFrom_-*lookTo_);
+    *lookFrom_ = *lookTo_ + glm::rotate(quaternion, *lookFrom_ - *lookTo_);
     *lookUp_ = glm::rotate(quaternion, *lookUp_);
 
     // Check the length of the length-vector, might change due to float precision
-    //vec3 direction = *lookFrom_-*lookTo_;
-    //float newLookLength = glm::length(direction);
-    //if (lookLength != newLookLength) {
+    // vec3 direction = *lookFrom_-*lookTo_;
+    // float newLookLength = glm::length(direction);
+    // if (lookLength != newLookLength) {
     //    float diff = newLookLength- lookLength;
     //    *lookFrom_ += glm::normalize(direction) * diff;
-    //}
+    // }
 
     notifyAllChanged(this);
 }

@@ -96,7 +96,6 @@ set(HEADER_FILES
     ${IVW_INCLUDE_DIR}/inviwo/core/interaction/pickingmanager.h
     ${IVW_INCLUDE_DIR}/inviwo/core/interaction/pickingobject.h
     ${IVW_INCLUDE_DIR}/inviwo/core/interaction/trackball.h
-    ${IVW_INCLUDE_DIR}/inviwo/core/interaction/trackballaction.h
     ${IVW_INCLUDE_DIR}/inviwo/core/io/datareader.h
     ${IVW_INCLUDE_DIR}/inviwo/core/io/datareaderdialog.h
     ${IVW_INCLUDE_DIR}/inviwo/core/io/datareaderfactory.h
@@ -302,7 +301,6 @@ set(SOURCE_FILES
     interaction/pickingmanager.cpp
     interaction/pickingobject.cpp
     interaction/trackball.cpp
-    interaction/trackballaction.cpp
     io/datareader.cpp
     io/datareaderdialog.cpp
     io/datareaderfactory.cpp

@@ -54,27 +54,16 @@ PositionWidgetProcessor::PositionWidgetProcessor()
     , position_("position", "Position", vec3(0.0f), vec3(-100.f), vec3(100.f))
     , camera_("camera", "Camera", vec3(0.0f, 0.0f, -2.0f), vec3(0.0f, 0.0f, 0.0f),
               vec3(0.0f, 1.0f, 0.0f))
-    , handleInteractionEvents_("handleEvents", "Handle interaction events", true) {
+    , trackball_(&camera_) {
     addPort(geometryInport_);
     addPort(imageInport_);
     addPort(outport_);
     addProperty(position_);
     addProperty(camera_);
-    trackball_ = new CameraTrackball(&camera_);
-    addInteractionHandler(trackball_);
-    addProperty(handleInteractionEvents_);
-    handleInteractionEvents_.onChange(this,
-                                      &PositionWidgetProcessor::handleInteractionEventsChanged);
+    addProperty(trackball_);
 }
 
-PositionWidgetProcessor::~PositionWidgetProcessor() {
-    const std::vector<InteractionHandler*>& interactionHandlers = getInteractionHandlers();
-    for (size_t i = 0; i < interactionHandlers.size(); ++i) {
-        InteractionHandler* handler = interactionHandlers[i];
-        removeInteractionHandler(handler);
-        delete handler;
-    }
-}
+PositionWidgetProcessor::~PositionWidgetProcessor() {}
 
 void PositionWidgetProcessor::initialize() {
     CompositeProcessorGL::initialize();
@@ -129,12 +118,5 @@ void PositionWidgetProcessor::process() {
     compositePortsToOutport(outport_, imageInport_);
 }
 
-void PositionWidgetProcessor::handleInteractionEventsChanged() {
-    if (handleInteractionEvents_.get()) {
-        addInteractionHandler(trackball_);
-    } else {
-        removeInteractionHandler(trackball_);
-    }
-}
 
 }  // namespace

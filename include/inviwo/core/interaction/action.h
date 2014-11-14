@@ -41,29 +41,23 @@ namespace inviwo {
 
 class Event;
 
-class IVW_CORE_API Action : public IvwSerializable {
+class IVW_CORE_API Action {
 public:
-    Action(std::string name = "");
+    Action();
     template <typename T>
-    Action(std::string name, T* obj, void (T::*m)(Event*));
+    Action(T* obj, void (T::*m)(Event*));
     Action(const Action& rhs);
     Action& operator=(const Action& that);
     virtual Action* clone() const;
     virtual ~Action();
 
-    std::string name() const;
-
     virtual void invoke(Event* event);
-    virtual std::string getClassIdentifier() const;
 
     template <typename T>
     void setAction(T* o, void (T::*m)(Event*)) {
         if (callback_) delete callback_;
         callback_ = new ActionCallback<T>(o, m);
     }
-
-    virtual void serialize(IvwSerializer& s) const;
-    virtual void deserialize(IvwDeserializer& d);
 
 protected:
     class BaseActionCallback {
@@ -78,7 +72,7 @@ protected:
     public:
         typedef void (T::*fPointer)(Event*);
         ActionCallback(T* obj, fPointer function)
-            : BaseActionCallback(), obj_(obj), function_(function) {}
+            : BaseActionCallback(), function_(function), obj_(obj) {}
         virtual ~ActionCallback() {}
 
         virtual void invoke(Event* event) { (*obj_.*function_)(event); }
@@ -88,13 +82,12 @@ protected:
         T* obj_;
     };
 
-    std::string name_;
     BaseActionCallback* callback_;
 };
 
 template <typename T>
-Action::Action(std::string name, T* obj, void (T::*m)(Event*))
-    : name_(name), callback_(new ActionCallback<T>(obj, m)) {}
+Action::Action(T* obj, void (T::*m)(Event*))
+    : callback_(new ActionCallback<T>(obj, m)) {}
 
 }  // namespace
 

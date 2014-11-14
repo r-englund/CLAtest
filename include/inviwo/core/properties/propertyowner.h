@@ -43,6 +43,7 @@ class Processor;
 class Property;
 class Event;
 class EventProperty;
+class CompositeProperty;
 
 class IVW_CORE_API PropertyOwner : public PropertyOwnerObservable, public IvwSerializable {
 public:
@@ -100,7 +101,10 @@ public:
 
 protected:
     std::vector<Property*> properties_; //< non-owning references.
+    
+    // Chached lists of certain propertytypes
     std::vector<EventProperty*> eventProperties_; //< non-owning references.
+    std::vector<CompositeProperty*> compositeProperties_; //< non-owning references.
 
 private:
     Property* removeProperty(std::vector<Property*>::iterator it);

@@ -61,7 +61,7 @@ SimpleRaycaster::SimpleRaycaster()
     , lighting_("lighting", "Lighting")
     , toggleShading_("toggleShading", "Toggle Shading",
         new KeyboardEvent('L'), 
-        new Action("Toggle Shading", this, &SimpleRaycaster::toggleShading)) {
+        new Action(this, &SimpleRaycaster::toggleShading)) {
     
     addPort(volumePort_, "VolumePortGroup");
     addPort(entryPort_, "ImagePortGroup1");

@@ -53,6 +53,8 @@ public:
     MetaData* get(const std::string &key);
     const MetaData* get(const std::string &key) const;
 
+    bool empty() const { return metaData_.empty(); }
+    
     MetaDataMap& operator=(const MetaDataMap& map);
 
     virtual void serialize(IvwSerializer& s) const;

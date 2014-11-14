@@ -34,19 +34,16 @@
 
 namespace inviwo {
 
-Action::Action(std::string name /*= ""*/) 
-    : name_(name)
-    , callback_(NULL) {
+Action::Action()
+    : callback_(NULL) {
 }
 
 Action::Action(const Action& rhs)
-    : name_(rhs.name_)
-    , callback_(rhs.callback_) {
+    : callback_(rhs.callback_) {
 }
 
 Action& Action::operator=(const Action& that) {
     if (this != &that) {
-        name_ = that.name_;
         if(callback_) delete callback_;
         callback_ = that.callback_;
     }
@@ -59,22 +56,6 @@ Action* Action::clone() const {
 
 Action::~Action() {
     if (callback_) delete callback_;
-}
-
-void Action::serialize(IvwSerializer& s) const {
-    s.serialize("type", getClassIdentifier(), true);
-}
-
-void Action::deserialize(IvwDeserializer& d) {
-}
-
-std::string Action::name() const {
-    return name_;
-}
-
-
-std::string Action::getClassIdentifier() const {
-    return "org.inviwo.Action";
 }
 
 void Action::invoke(Event* event) {
