@@ -3,7 +3,7 @@
     <!-- Don't edit the following code -->
     <ProcessorNetworkVersion content="6" />
     <Processors>
-        <Processor type="org.inviwo.CanvasGL" identifier="CanvasGL" id="ref0">
+        <Processor type="org.inviwo.CanvasGL" identifier="CanvasGL" id="ref3">
             <Properties>
                 <Property type="org.inviwo.CompositeProperty" identifier="inputSize" key="inputSize">
                     <Properties>
@@ -34,13 +34,13 @@
                     <selection content="0" />
                 </MetaDataItem>
                 <MetaDataItem type="org.inviwo.ProcessorWidgetMetaData" key="ProcessorWidgetMetaData">
-                    <position x="1078" y="608" />
+                    <position x="947" y="595" />
                     <dimension x="256" y="256" />
                     <visibility content="1" />
                 </MetaDataItem>
             </MetaDataMap>
         </Processor>
-        <Processor type="org.inviwo.CubeProxyGeometry" identifier="CubeProxyGeometry" id="ref1">
+        <Processor type="org.inviwo.CubeProxyGeometry" identifier="CubeProxyGeometry" id="ref0">
             <Properties>
                 <Property type="org.inviwo.IntMinMaxProperty" identifier="clipX" displayName="Clip X Slices" key="clipX">
                     <semantics semantics="Default" />
@@ -82,156 +82,9 @@
                 </MetaDataItem>
             </MetaDataMap>
         </Processor>
-        <Processor type="org.inviwo.EntryExitPoints" identifier="EntryExitPoints" id="ref2">
-            <InteractonHandlers>
-                <InteractionHandler type="org.inviwo.Trackball">
-                    <Properties>
-                        <Property type="org.inviwo.EventProperty" identifier="mouseReset" key="mouseReset" id="ref7">
-                            <visible content="0" />
-                            <Event type="org.inviwo.MouseEvent">
-                                <modifiers content="0" />
-                                <button content="0" />
-                                <state content="4" />
-                                <wheelOrientation content="0" />
-                            </Event>
-                            <Action type="org.inviwo.Action" />
-                        </Property>
-                        <Property type="org.inviwo.EventProperty" identifier="stepPanDown" key="stepPanDown" id="ref16">
-                            <Event type="org.inviwo.KeyboardEvent">
-                                <modifiers content="4" />
-                                <state content="1" />
-                                <key content="83" />
-                            </Event>
-                            <Action type="TrackballAction">
-                                <action content="Step pan down" />
-                            </Action>
-                        </Property>
-                        <Property type="org.inviwo.EventProperty" identifier="stepPanLeft" key="stepPanLeft" id="ref15">
-                            <Event type="org.inviwo.KeyboardEvent">
-                                <modifiers content="4" />
-                                <state content="1" />
-                                <key content="65" />
-                            </Event>
-                            <Action type="TrackballAction">
-                                <action content="Step pan left" />
-                            </Action>
-                        </Property>
-                        <Property type="org.inviwo.EventProperty" identifier="stepPanRight" key="stepPanRight" id="ref17">
-                            <Event type="org.inviwo.KeyboardEvent">
-                                <modifiers content="4" />
-                                <state content="1" />
-                                <key content="68" />
-                            </Event>
-                            <Action type="TrackballAction">
-                                <action content="Step pan right" />
-                            </Action>
-                        </Property>
-                        <Property type="org.inviwo.EventProperty" identifier="stepPanUp" key="stepPanUp" id="ref14">
-                            <Event type="org.inviwo.KeyboardEvent">
-                                <modifiers content="4" />
-                                <state content="1" />
-                                <key content="87" />
-                            </Event>
-                            <Action type="TrackballAction">
-                                <action content="Step pan up" />
-                            </Action>
-                        </Property>
-                        <Property type="org.inviwo.EventProperty" identifier="stepRotateDown" key="stepRotateDown" id="ref10">
-                            <Event type="org.inviwo.KeyboardEvent">
-                                <modifiers content="0" />
-                                <state content="1" />
-                                <key content="83" />
-                            </Event>
-                            <Action type="TrackballAction">
-                                <action content="Step rotate down" />
-                            </Action>
-                        </Property>
-                        <Property type="org.inviwo.EventProperty" identifier="stepRotateLeft" key="stepRotateLeft" id="ref9">
-                            <Event type="org.inviwo.KeyboardEvent">
-                                <modifiers content="0" />
-                                <state content="1" />
-                                <key content="65" />
-                            </Event>
-                            <Action type="TrackballAction">
-                                <action content="Step rotate left" />
-                            </Action>
-                        </Property>
-                        <Property type="org.inviwo.EventProperty" identifier="stepRotateRight" key="stepRotateRight" id="ref11">
-                            <Event type="org.inviwo.KeyboardEvent">
-                                <modifiers content="0" />
-                                <state content="1" />
-                                <key content="68" />
-                            </Event>
-                            <Action type="TrackballAction">
-                                <action content="Step rotate right" />
-                            </Action>
-                        </Property>
-                        <Property type="org.inviwo.EventProperty" identifier="stepRotateUp" key="stepRotateUp" id="ref8">
-                            <Event type="org.inviwo.KeyboardEvent">
-                                <modifiers content="0" />
-                                <state content="1" />
-                                <key content="87" />
-                            </Event>
-                            <Action type="TrackballAction">
-                                <action content="Step rotate up" />
-                            </Action>
-                        </Property>
-                        <Property type="org.inviwo.EventProperty" identifier="stepZoomIn" key="stepZoomIn" id="ref12">
-                            <Event type="org.inviwo.KeyboardEvent">
-                                <modifiers content="0" />
-                                <state content="1" />
-                                <key content="82" />
-                            </Event>
-                            <Action type="TrackballAction">
-                                <action content="Step zoom in" />
-                            </Action>
-                        </Property>
-                        <Property type="org.inviwo.EventProperty" identifier="stepZoomOut" key="stepZoomOut" id="ref13">
-                            <Event type="org.inviwo.KeyboardEvent">
-                                <modifiers content="0" />
-                                <state content="1" />
-                                <key content="70" />
-                            </Event>
-                            <Action type="TrackballAction">
-                                <action content="Step zoom out" />
-                            </Action>
-                        </Property>
-                        <Property type="org.inviwo.EventProperty" identifier="trackballPan" key="trackballPan" id="ref6">
-                            <Event type="org.inviwo.KeyboardEvent">
-                                <modifiers content="0" />
-                                <state content="1" />
-                                <key content="65" />
-                            </Event>
-                            <Action type="TrackballAction">
-                                <action content="Trackball pan" />
-                            </Action>
-                        </Property>
-                        <Property type="org.inviwo.EventProperty" identifier="trackballRotate" key="trackballRotate" id="ref4">
-                            <Event type="org.inviwo.KeyboardEvent">
-                                <modifiers content="0" />
-                                <state content="1" />
-                                <key content="65" />
-                            </Event>
-                            <Action type="TrackballAction">
-                                <action content="Trackball rotate" />
-                            </Action>
-                        </Property>
-                        <Property type="org.inviwo.EventProperty" identifier="trackballZoom" key="trackballZoom" id="ref5">
-                            <Event type="org.inviwo.MouseEvent">
-                                <modifiers content="0" />
-                                <button content="4" />
-                                <state content="3" />
-                                <wheelOrientation content="0" />
-                            </Event>
-                            <Action type="TrackballAction">
-                                <action content="Trackball zoom" />
-                            </Action>
-                        </Property>
-                    </Properties>
-                </InteractionHandler>
-            </InteractonHandlers>
+        <Processor type="org.inviwo.EntryExitPoints" identifier="EntryExitPoints" id="ref1">
             <Properties>
-                <Property type="org.inviwo.CameraProperty" identifier="camera" key="camera" id="ref3">
+                <Property type="org.inviwo.CameraProperty" identifier="camera" key="camera" id="ref2">
                     <Properties>
                         <Property type="org.inviwo.FloatProperty" identifier="aspectRatio" key="aspectRatio">
                             <minvalue content="0" />
@@ -243,33 +96,41 @@
                             <value content="30" />
                         </Property>
                         <Property type="org.inviwo.FloatVec3Property" identifier="lookFrom" key="lookFrom">
-                            <value x="-0.42189598" y="5.2399874" z="-0.10683224" />
+                            <value x="2.3" y="-4.1999998" z="1.4" />
                         </Property>
                         <Property type="org.inviwo.FloatVec3Property" identifier="lookTo" key="lookTo" />
                         <Property type="org.inviwo.FloatVec3Property" identifier="lookUp" key="lookUp">
-                            <value x="0.33433852" y="0.050077844" z="-0.935794" />
+                            <value x="0.69999999" y="0.1" z="-0.69999999" />
                         </Property>
                         <Property type="org.inviwo.FloatProperty" identifier="near" key="near" />
                     </Properties>
                 </Property>
                 <Property type="org.inviwo.BoolProperty" identifier="capNearClipping" key="capNearClipping" />
-                <Property type="org.inviwo.BoolProperty" identifier="handleEvents" key="handleEvents" />
-                <Property type="org.inviwo.Trackball" key="trackball">
+                <Property type="org.inviwo.Trackball" identifier="trackball" key="trackball">
                     <Properties>
-                        <Property type="org.inviwo.EventProperty" identifier="mouseReset" key="mouseReset" reference="ref7" />
-                        <Property type="org.inviwo.EventProperty" identifier="stepPanDown" key="stepPanDown" reference="ref16" />
-                        <Property type="org.inviwo.EventProperty" identifier="stepPanLeft" key="stepPanLeft" reference="ref15" />
-                        <Property type="org.inviwo.EventProperty" identifier="stepPanRight" key="stepPanRight" reference="ref17" />
-                        <Property type="org.inviwo.EventProperty" identifier="stepPanUp" key="stepPanUp" reference="ref14" />
-                        <Property type="org.inviwo.EventProperty" identifier="stepRotateDown" key="stepRotateDown" reference="ref10" />
-                        <Property type="org.inviwo.EventProperty" identifier="stepRotateLeft" key="stepRotateLeft" reference="ref9" />
-                        <Property type="org.inviwo.EventProperty" identifier="stepRotateRight" key="stepRotateRight" reference="ref11" />
-                        <Property type="org.inviwo.EventProperty" identifier="stepRotateUp" key="stepRotateUp" reference="ref8" />
-                        <Property type="org.inviwo.EventProperty" identifier="stepZoomIn" key="stepZoomIn" reference="ref12" />
-                        <Property type="org.inviwo.EventProperty" identifier="stepZoomOut" key="stepZoomOut" reference="ref13" />
-                        <Property type="org.inviwo.EventProperty" identifier="trackballPan" key="trackballPan" reference="ref6" />
-                        <Property type="org.inviwo.EventProperty" identifier="trackballRotate" key="trackballRotate" reference="ref4" />
-                        <Property type="org.inviwo.EventProperty" identifier="trackballZoom" key="trackballZoom" reference="ref5" />
+                        <Property type="org.inviwo.BoolProperty" identifier="handleEvents" key="handleEvents" />
+                        <Property type="org.inviwo.EventProperty" identifier="mouseReset" key="mouseReset">
+                            <visible content="0" />
+                        </Property>
+                        <Property type="org.inviwo.EventProperty" identifier="panGesture" key="panGesture">
+                            <visible content="0" />
+                        </Property>
+                        <Property type="org.inviwo.EventProperty" identifier="pinchGesture" key="pinchGesture">
+                            <visible content="0" />
+                        </Property>
+                        <Property type="org.inviwo.EventProperty" identifier="stepPanDown" key="stepPanDown" />
+                        <Property type="org.inviwo.EventProperty" identifier="stepPanLeft" key="stepPanLeft" />
+                        <Property type="org.inviwo.EventProperty" identifier="stepPanRight" key="stepPanRight" />
+                        <Property type="org.inviwo.EventProperty" identifier="stepPanUp" key="stepPanUp" />
+                        <Property type="org.inviwo.EventProperty" identifier="stepRotateDown" key="stepRotateDown" />
+                        <Property type="org.inviwo.EventProperty" identifier="stepRotateLeft" key="stepRotateLeft" />
+                        <Property type="org.inviwo.EventProperty" identifier="stepRotateRight" key="stepRotateRight" />
+                        <Property type="org.inviwo.EventProperty" identifier="stepRotateUp" key="stepRotateUp" />
+                        <Property type="org.inviwo.EventProperty" identifier="stepZoomIn" key="stepZoomIn" />
+                        <Property type="org.inviwo.EventProperty" identifier="stepZoomOut" key="stepZoomOut" />
+                        <Property type="org.inviwo.EventProperty" identifier="trackballPan" key="trackballPan" />
+                        <Property type="org.inviwo.EventProperty" identifier="trackballRotate" key="trackballRotate" />
+                        <Property type="org.inviwo.EventProperty" identifier="trackballZoom" key="trackballZoom" />
                     </Properties>
                 </Property>
             </Properties>
@@ -277,13 +138,13 @@
                 <MetaDataItem type="org.inviwo.ProcessorMetaData" key="ProcessorMetaData">
                     <position x="-600" y="-550" />
                     <visibility content="1" />
-                    <selection content="1" />
+                    <selection content="0" />
                 </MetaDataItem>
             </MetaDataMap>
         </Processor>
-        <Processor type="org.inviwo.SimpleRaycaster" identifier="SimpleRaycaster" id="ref18">
+        <Processor type="org.inviwo.SimpleRaycaster" identifier="SimpleRaycaster" id="ref4">
             <Properties>
-                <Property type="org.inviwo.CameraProperty" identifier="camera" key="camera" id="ref19">
+                <Property type="org.inviwo.CameraProperty" identifier="camera" key="camera" id="ref5">
                     <Properties>
                         <Property type="org.inviwo.FloatProperty" identifier="aspectRatio" key="aspectRatio">
                             <minvalue content="0" />
@@ -295,11 +156,11 @@
                             <value content="30" />
                         </Property>
                         <Property type="org.inviwo.FloatVec3Property" identifier="lookFrom" key="lookFrom">
-                            <value x="-0.42189598" y="5.2399874" z="-0.10683224" />
+                            <value x="2.3" y="-4.1999998" z="1.4" />
                         </Property>
                         <Property type="org.inviwo.FloatVec3Property" identifier="lookTo" key="lookTo" />
                         <Property type="org.inviwo.FloatVec3Property" identifier="lookUp" key="lookUp">
-                            <value x="0.33433852" y="0.050077844" z="-0.935794" />
+                            <value x="0.69999999" y="0.1" z="-0.69999999" />
                         </Property>
                         <Property type="org.inviwo.FloatProperty" identifier="near" key="near" />
                     </Properties>
@@ -344,14 +205,7 @@
                         </Property>
                     </Properties>
                 </Property>
-                <Property type="org.inviwo.EventProperty" identifier="toggleShading" key="toggleShading">
-                    <Event type="org.inviwo.KeyboardEvent">
-                        <modifiers content="0" />
-                        <state content="1" />
-                        <key content="76" />
-                    </Event>
-                    <Action type="org.inviwo.Action" />
-                </Property>
+                <Property type="org.inviwo.EventProperty" identifier="toggleShading" key="toggleShading" />
                 <Property type="org.inviwo.TransferFunctionProperty" identifier="transferFunction" key="transferFunction">
                     <MetaDataMap>
                         <MetaDataItem type="org.inviwo.PropertyEditorWidgetMetaData" key="PropertyEditorWidgetMetaData">
@@ -394,7 +248,7 @@
                 </MetaDataItem>
             </MetaDataMap>
         </Processor>
-        <Processor type="org.inviwo.VolumeSource" identifier="VolumeSource" id="ref20">
+        <Processor type="org.inviwo.VolumeSource" identifier="VolumeSource" id="ref6">
             <Properties>
                 <Property type="org.inviwo.CompositeProperty" identifier="Basis" key="Basis">
                     <Properties>
@@ -447,64 +301,64 @@
     <Connections>
         <Connection>
             <OutPort identifier="geometry.outport">
-                <Processor type="org.inviwo.CubeProxyGeometry" identifier="CubeProxyGeometry" reference="ref1" />
+                <Processor type="org.inviwo.CubeProxyGeometry" identifier="CubeProxyGeometry" reference="ref0" />
             </OutPort>
             <InPort identifier="geometry">
-                <Processor type="org.inviwo.EntryExitPoints" identifier="EntryExitPoints" reference="ref2" />
+                <Processor type="org.inviwo.EntryExitPoints" identifier="EntryExitPoints" reference="ref1" />
             </InPort>
         </Connection>
         <Connection>
             <OutPort identifier="entry-points">
-                <Processor type="org.inviwo.EntryExitPoints" identifier="EntryExitPoints" reference="ref2" />
+                <Processor type="org.inviwo.EntryExitPoints" identifier="EntryExitPoints" reference="ref1" />
             </OutPort>
             <InPort identifier="entry-points">
-                <Processor type="org.inviwo.SimpleRaycaster" identifier="SimpleRaycaster" reference="ref18" />
+                <Processor type="org.inviwo.SimpleRaycaster" identifier="SimpleRaycaster" reference="ref4" />
             </InPort>
         </Connection>
         <Connection>
             <OutPort identifier="exit-points">
-                <Processor type="org.inviwo.EntryExitPoints" identifier="EntryExitPoints" reference="ref2" />
+                <Processor type="org.inviwo.EntryExitPoints" identifier="EntryExitPoints" reference="ref1" />
             </OutPort>
             <InPort identifier="exit-points">
-                <Processor type="org.inviwo.SimpleRaycaster" identifier="SimpleRaycaster" reference="ref18" />
+                <Processor type="org.inviwo.SimpleRaycaster" identifier="SimpleRaycaster" reference="ref4" />
             </InPort>
         </Connection>
         <Connection>
             <OutPort identifier="outport">
-                <Processor type="org.inviwo.SimpleRaycaster" identifier="SimpleRaycaster" reference="ref18" />
+                <Processor type="org.inviwo.SimpleRaycaster" identifier="SimpleRaycaster" reference="ref4" />
             </OutPort>
             <InPort identifier="inport">
-                <Processor type="org.inviwo.CanvasGL" identifier="CanvasGL" reference="ref0" />
+                <Processor type="org.inviwo.CanvasGL" identifier="CanvasGL" reference="ref3" />
             </InPort>
         </Connection>
         <Connection>
             <OutPort identifier="data">
-                <Processor type="org.inviwo.VolumeSource" identifier="VolumeSource" reference="ref20" />
+                <Processor type="org.inviwo.VolumeSource" identifier="VolumeSource" reference="ref6" />
             </OutPort>
             <InPort identifier="volume.inport">
-                <Processor type="org.inviwo.CubeProxyGeometry" identifier="CubeProxyGeometry" reference="ref1" />
+                <Processor type="org.inviwo.CubeProxyGeometry" identifier="CubeProxyGeometry" reference="ref0" />
             </InPort>
         </Connection>
         <Connection>
             <OutPort identifier="data">
-                <Processor type="org.inviwo.VolumeSource" identifier="VolumeSource" reference="ref20" />
+                <Processor type="org.inviwo.VolumeSource" identifier="VolumeSource" reference="ref6" />
             </OutPort>
             <InPort identifier="volume">
-                <Processor type="org.inviwo.SimpleRaycaster" identifier="SimpleRaycaster" reference="ref18" />
+                <Processor type="org.inviwo.SimpleRaycaster" identifier="SimpleRaycaster" reference="ref4" />
             </InPort>
         </Connection>
     </Connections>
     <PropertyLinks>
         <PropertyLink>
             <Properties>
-                <Property type="org.inviwo.CameraProperty" identifier="camera" key="camera" reference="ref3" />
-                <Property type="org.inviwo.CameraProperty" identifier="camera" key="camera" reference="ref19" />
+                <Property type="org.inviwo.CameraProperty" identifier="camera" key="camera" reference="ref2" />
+                <Property type="org.inviwo.CameraProperty" identifier="camera" key="camera" reference="ref5" />
             </Properties>
         </PropertyLink>
         <PropertyLink>
             <Properties>
-                <Property type="org.inviwo.CameraProperty" identifier="camera" key="camera" reference="ref19" />
-                <Property type="org.inviwo.CameraProperty" identifier="camera" key="camera" reference="ref3" />
+                <Property type="org.inviwo.CameraProperty" identifier="camera" key="camera" reference="ref5" />
+                <Property type="org.inviwo.CameraProperty" identifier="camera" key="camera" reference="ref2" />
             </Properties>
         </PropertyLink>
     </PropertyLinks>
