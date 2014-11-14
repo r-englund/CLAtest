@@ -49,6 +49,7 @@
 #include <modules/basegl/processors/simpleraycaster.h>
 #include <modules/basegl/processors/isoraycaster.h>
 #include <modules/basegl/processors/volumeslicegl.h>
+#include <modules/basegl/processors/imageprocessing/imagegamma.h>
 #include <modules/basegl/processors/imageprocessing/imagegrayscale.h>
 #include <modules/basegl/processors/imageprocessing/imageinvert.h>
 #include <modules/basegl/processors/imageprocessing/imagemapping.h>
@@ -78,6 +79,7 @@ BaseGLModule::BaseGLModule() : InviwoModule() {
     registerProcessor(VolumeSliceGL);
 
     // image processing
+    registerProcessor(ImageGamma);
     registerProcessor(ImageGrayscale);
     registerProcessor(ImageInvert);
     registerProcessor(ImageMapping);
