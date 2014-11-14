@@ -31,6 +31,7 @@
  *********************************************************************************/
 
 #include <modules/freeimage/freeimageutils.h>
+#include <algorithm>
 
 bool FreeImageUtils::loader_initialized = false;
 
@@ -333,14 +334,15 @@ void* FreeImageUtils::rescaleLayerRAM(const LayerRAM* srcLayerRam, uvec2 dst_dim
 
 void FreeImageUtils::switchChannels(FIBITMAP* bitmap, uvec2 dim, int channels) {
     if (bitmap && channels > 2) {
-        unsigned int c = static_cast<unsigned int>(channels);
-        BYTE* result = FreeImage_GetBits(bitmap);
-        BYTE tmp;
+        FREE_IMAGE_TYPE type = FreeImage_GetImageType(bitmap);
+        if (type == FIT_BITMAP) {
+            unsigned int c = static_cast<unsigned int>(channels);
+            BYTE* result = FreeImage_GetBits(bitmap);
+            BYTE tmp;
 
-        for (unsigned int i = 0; i < dim.x * dim.y; i++) {
-            tmp = result[i * c + 0];
-            result[i * c + 0] = result[i * c + 2];
-            result[i * c + 2] = tmp;
+            for (unsigned int i = 0; i < dim.x * dim.y; i++) {
+                std::swap(result[i * c], result[i * c + 2]);
+            }
         }
     }
 }
@@ -493,13 +495,13 @@ void* FreeImageUtils::fiBitmapToDataArrayAndRescale(void* dst, FIBITMAP* bitmap,
     FIBITMAP* bitmapTmp = allocateBitmap(type, dimTmp, bitsPerPixel, channels);
     if(!bitmapTmp)
         return NULL;
-    switchChannels(bitmap, dim, channels);
     //Paste source into our tmp, to be used for scaling
     FreeImage_Paste(bitmapTmp, bitmap, pasteLeft, pasteTop, 256);
 
     //Rescale to proper dimension
     FIBITMAP* bitmapRescaled = FreeImage_Rescale(bitmapTmp, static_cast<int>(dst_dim.x), static_cast<int>(dst_dim.y), FILTER_BILINEAR);
     FreeImage_Unload(bitmapTmp);
+    switchChannels(bitmapRescaled, dst_dim, channels);
     unsigned char* pixelValues = static_cast<unsigned char* >(FreeImage_GetBits(bitmapRescaled));
 
     if (!dst) {
