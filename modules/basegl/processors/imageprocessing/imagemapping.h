@@ -30,14 +30,33 @@
  *
  *********************************************************************************/
 
-#include "include/inc_classification.frag"
+#ifndef IVW_IMAGEMAPPING_H
+#define IVW_IMAGEMAPPING_H
 
-uniform sampler2D inport_;
-uniform vec2 dimension_;
+#include <modules/basegl/baseglmoduledefine.h>
+#include <inviwo/core/common/inviwo.h>
+#include <modules/basegl/processors/imagegpuprocessor.h>
+#include <inviwo/core/properties/transferfunctionproperty.h>
 
-void main() {
-    vec2 texCoords = gl_FragCoord.xy * dimension_;
-    vec4 value = texture(inport_, texCoords);
-    vec4 color = applyTF(transferFunc_, value);
-    FragData0 = color;
-}
+namespace inviwo {
+
+/*! \class ImageMapping
+ *
+ * \brief Maps the input image to an output with the help of a transfer function.
+ */
+class IVW_MODULE_BASEGL_API ImageMapping : public ImageGPUProcessor {
+public:
+    ImageMapping();
+    ~ImageMapping();
+    InviwoProcessorInfo();
+
+protected:
+    virtual void preProcess();
+
+private:
+    TransferFunctionProperty transferFunction_;
+};
+
+} // namespace
+
+#endif // IVW_IMAGEMAPPING_H

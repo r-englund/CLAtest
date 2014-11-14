@@ -38,8 +38,6 @@
 #include <modules/basegl/processors/entryexitpoints.h>
 #include <modules/basegl/processors/findedges.h>
 #include <modules/basegl/processors/firstivwprocessor.h>
-#include <modules/basegl/processors/imageclassify.h>
-#include <modules/basegl/processors/imagegrayscale.h>
 #include <modules/basegl/processors/imagelayoutgl.h>
 #include <modules/basegl/processors/imagemixer.h>
 #include <modules/basegl/processors/lightingraycaster.h>
@@ -51,6 +49,10 @@
 #include <modules/basegl/processors/simpleraycaster.h>
 #include <modules/basegl/processors/isoraycaster.h>
 #include <modules/basegl/processors/volumeslicegl.h>
+#include <modules/basegl/processors/imageprocessing/imagegamma.h>
+#include <modules/basegl/processors/imageprocessing/imagegrayscale.h>
+#include <modules/basegl/processors/imageprocessing/imageinvert.h>
+#include <modules/basegl/processors/imageprocessing/imagemapping.h>
 
 namespace inviwo {
 
@@ -64,8 +66,6 @@ BaseGLModule::BaseGLModule() : InviwoModule() {
     registerProcessor(EntryExitPoints);
     registerProcessor(FindEdges);
     registerProcessor(FirstIvwProcessor);
-    registerProcessor(ImageClassify);
-    registerProcessor(ImageGrayscale);
     registerProcessor(ImageLayoutGL);
     registerProcessor(ImageMixer);
     registerProcessor(LightingRaycaster);
@@ -77,6 +77,12 @@ BaseGLModule::BaseGLModule() : InviwoModule() {
     registerProcessor(SimpleRaycaster);
     registerProcessor(ISORaycaster);
     registerProcessor(VolumeSliceGL);
+
+    // image processing
+    registerProcessor(ImageGamma);
+    registerProcessor(ImageGrayscale);
+    registerProcessor(ImageInvert);
+    registerProcessor(ImageMapping);
 }
 
 } // namespace

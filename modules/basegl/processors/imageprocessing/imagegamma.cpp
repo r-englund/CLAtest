@@ -3,7 +3,7 @@
  * Inviwo - Interactive Visualization Workshop
  * Version 0.6b
  *
- * Copyright (c) 2013-2014 Inviwo Foundation
+ * Copyright (c) 2014 Inviwo Foundation
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -26,43 +26,32 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  * 
- * Contact: Erik Sundén
+ * Contact: Martin Falk
  *
  *********************************************************************************/
 
-#ifndef IVW_IMAGEGRAYSCALE_H
-#define IVW_IMAGEGRAYSCALE_H
-
-#include <modules/basegl/baseglmoduledefine.h>
-#include <inviwo/core/common/inviwo.h>
-#include <inviwo/core/processors/processor.h>
-#include <inviwo/core/ports/imageport.h>
-#include <modules/opengl/inviwoopengl.h>
+#include "imagegamma.h"
+#include <modules/opengl/glwrap/shader.h>
 
 namespace inviwo {
 
-class Shader;
+ProcessorClassIdentifier(ImageGamma, "org.inviwo.ImageGamma");
+ProcessorDisplayName(ImageGamma, "Image Gamma");
+ProcessorTags(ImageGamma, Tags::GL);
+ProcessorCategory(ImageGamma, "Image Operation");
+ProcessorCodeState(ImageGamma, CODE_STATE_STABLE);
 
-class IVW_MODULE_BASEGL_API ImageGrayscale : public Processor {
-public:
-    ImageGrayscale();
-    ~ImageGrayscale();
+ImageGamma::ImageGamma() 
+    : ImageGPUProcessor("img_gamma.frag")
+    , gamma_("gammaFactor", "Gamma Correction", 1.0f, 0.0f, 2.0f, 0.01f)
+{
+    addProperty(gamma_);
+}
 
-    InviwoProcessorInfo();
+ImageGamma::~ImageGamma() {}
 
-    void initialize();
-    void deinitialize();
+void ImageGamma::preProcess() {
+    shader_->setUniform("gamma_", gamma_.get());
+}
 
-protected:
-    virtual void process();
-
-private:
-    ImageInport inport_;
-    ImageOutport outport_;
-
-    Shader* shader_;
-};
-
-} // namespace
-
-#endif // IVW_IMAGEGRAYSCALE_H
+}  // namespace

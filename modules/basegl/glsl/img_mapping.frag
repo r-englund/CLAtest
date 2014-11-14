@@ -31,16 +31,16 @@
  *********************************************************************************/
 
 #include "utils/structs.glsl"
+#include "utils/classification.glsl"
 
 uniform TEXTURE_PARAMETERS outportParameters_;
 
+uniform sampler2D transferFunc_;
 uniform sampler2D inport_;
-uniform vec3 lumScale_;
 
 void main() {
     vec2 texCoords = gl_FragCoord.xy * outportParameters_.dimensionsRCP_;
-    vec4 inputColor = texture(inport_, texCoords);
-    float gray = lumScale_.r *inputColor.r + lumScale_.g *inputColor.g + lumScale_.b *inputColor.b;
-    vec4 color = vec4(vec3(gray), inputColor.a);
+    vec4 value = texture(inport_, texCoords);
+    vec4 color = applyTF(transferFunc_, value);
     FragData0 = color;
 }

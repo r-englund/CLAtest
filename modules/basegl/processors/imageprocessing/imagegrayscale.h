@@ -30,17 +30,48 @@
  *
  *********************************************************************************/
 
-#include "utils/structs.glsl"
+#ifndef IVW_IMAGEGRAYSCALE_H
+#define IVW_IMAGEGRAYSCALE_H
 
-uniform TEXTURE_PARAMETERS outportParameters_;
+#include <modules/basegl/baseglmoduledefine.h>
+#include <inviwo/core/common/inviwo.h>
+#include <modules/basegl/processors/imagegpuprocessor.h>
+#include <inviwo/core/properties/baseoptionproperty.h>
 
-uniform sampler2D inport_;
-uniform vec3 lumScale_;
+namespace inviwo {
 
-void main() {
-    vec2 texCoords = gl_FragCoord.xy * outportParameters_.dimensionsRCP_;
-    vec4 inputColor = texture(inport_, texCoords);
-    float gray = lumScale_.r *inputColor.r + lumScale_.g *inputColor.g + lumScale_.b *inputColor.b;
-    vec4 color = vec4(vec3(gray), inputColor.a);
-    FragData0 = color;
+namespace LuminanceModels {
+    enum Models {
+        PerceivedLum, // Y = 0.299 R + 0.587 G + 0.114 B
+        RelativeLum,  // Y = 0.2126 R + 0.7152 G + 0.0722 B
+        AverageLum,   // Y = 0.3333 R + 0.3333 G + 0.3333 B
+        RedOnly,      // Y = R
+        GreenOnly,    // Y = G
+        BlueOnly,     // Y = B
+    };
 }
+
+/*! \class ImageGrayscale
+ *
+ * \brief Compute a gray-scale image from color input. Alpha channel is not touched.
+ *
+ * This processor computes the gray-scale image from a color image according to either
+ * perceived luminance (Y = 0.299 R + 0.587 G + 0.114 B) or relative luminance for XYZ color
+ * space (Y = 0.2126 R + 0.7152 G + 0.0722 B) utilizing the ImageGPUProcessor. 
+ */
+class IVW_MODULE_BASEGL_API ImageGrayscale : public ImageGPUProcessor {
+public:
+    ImageGrayscale();
+    ~ImageGrayscale();
+    InviwoProcessorInfo();
+
+protected:
+    virtual void preProcess();
+
+private:
+    OptionPropertyInt luminanceModel_;
+};
+
+} // namespace
+
+#endif // IVW_IMAGEGRAYSCALE_H

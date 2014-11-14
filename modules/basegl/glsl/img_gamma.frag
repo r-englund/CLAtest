@@ -26,7 +26,7 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  * 
- * Contact: Erik Sundén
+ * Contact: Martin Falk
  *
  *********************************************************************************/
 
@@ -35,12 +35,11 @@
 uniform TEXTURE_PARAMETERS outportParameters_;
 
 uniform sampler2D inport_;
-uniform vec3 lumScale_;
+uniform float gamma_;
 
 void main() {
     vec2 texCoords = gl_FragCoord.xy * outportParameters_.dimensionsRCP_;
     vec4 inputColor = texture(inport_, texCoords);
-    float gray = lumScale_.r *inputColor.r + lumScale_.g *inputColor.g + lumScale_.b *inputColor.b;
-    vec4 color = vec4(vec3(gray), inputColor.a);
-    FragData0 = color;
+    vec4 dstColor = vec4(pow(inputColor.rgb, vec3(gamma_)), inputColor.a);
+    FragData0 = dstColor;
 }

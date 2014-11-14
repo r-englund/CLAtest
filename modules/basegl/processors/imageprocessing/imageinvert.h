@@ -3,7 +3,7 @@
  * Inviwo - Interactive Visualization Workshop
  * Version 0.6b
  *
- * Copyright (c) 2013-2014 Inviwo Foundation
+ * Copyright (c) 2014 Inviwo Foundation
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -26,21 +26,35 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  * 
- * Contact: Erik Sundén
+ * Contact: Martin Falk
  *
  *********************************************************************************/
 
-#include "utils/structs.glsl"
+#ifndef IVW_IMAGEINVERT_H
+#define IVW_IMAGEINVERT_H
 
-uniform TEXTURE_PARAMETERS outportParameters_;
+#include <modules/basegl/baseglmoduledefine.h>
+#include <inviwo/core/common/inviwo.h>
+#include <modules/basegl/processors/imagegpuprocessor.h>
 
-uniform sampler2D inport_;
-uniform vec3 lumScale_;
+namespace inviwo {
 
-void main() {
-    vec2 texCoords = gl_FragCoord.xy * outportParameters_.dimensionsRCP_;
-    vec4 inputColor = texture(inport_, texCoords);
-    float gray = lumScale_.r *inputColor.r + lumScale_.g *inputColor.g + lumScale_.b *inputColor.b;
-    vec4 color = vec4(vec3(gray), inputColor.a);
-    FragData0 = color;
-}
+/*! \class ImageInvert
+ *
+ * \brief Create the invert image of an input image. Alpha channel is not touched.
+ *
+ * This processor computes the inverted image by subtracting the rgb channels from 1.0 
+ * utilizing the ImageGPUProcessor. 
+ * The input range is assumed to be normalized, i.e. [0, 1]. 
+ */
+class IVW_MODULE_BASEGL_API ImageInvert : public ImageGPUProcessor  { 
+public:
+    ImageInvert();
+    virtual ~ImageInvert();
+    InviwoProcessorInfo();
+};
+
+} // namespace
+
+#endif // IVW_IMAGEINVERT_H
+

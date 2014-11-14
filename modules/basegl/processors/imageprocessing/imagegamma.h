@@ -3,7 +3,7 @@
  * Inviwo - Interactive Visualization Workshop
  * Version 0.6b
  *
- * Copyright (c) 2013-2014 Inviwo Foundation
+ * Copyright (c) 2014 Inviwo Foundation
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -26,21 +26,42 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  * 
- * Contact: Erik Sundén
+ * Contact: Martin Falk
  *
  *********************************************************************************/
 
-#include "utils/structs.glsl"
+#ifndef IVW_IMAGEGAMMA_H
+#define IVW_IMAGEGAMMA_H
 
-uniform TEXTURE_PARAMETERS outportParameters_;
+#include <modules/basegl/baseglmoduledefine.h>
+#include <inviwo/core/common/inviwo.h>
+#include <modules/basegl/processors/imagegpuprocessor.h>
+#include <inviwo/core/properties/ordinalproperty.h>
 
-uniform sampler2D inport_;
-uniform vec3 lumScale_;
+namespace inviwo {
 
-void main() {
-    vec2 texCoords = gl_FragCoord.xy * outportParameters_.dimensionsRCP_;
-    vec4 inputColor = texture(inport_, texCoords);
-    float gray = lumScale_.r *inputColor.r + lumScale_.g *inputColor.g + lumScale_.b *inputColor.b;
-    vec4 color = vec4(vec3(gray), inputColor.a);
-    FragData0 = color;
-}
+/*! \class ImageGamma
+ *
+ * \brief Apply gamma correction to an image. Alpha channel is not touched.
+ *
+ * This processor applies a gamma correction pow(input.rgb, gamma) utilizing 
+ * the ImageGPUProcessor. 
+ * The input range is assumed to be normalized, i.e. [0, 1]. 
+ */
+class IVW_MODULE_BASEGL_API ImageGamma : public ImageGPUProcessor  { 
+public:
+    ImageGamma();
+    virtual ~ImageGamma();
+    InviwoProcessorInfo();
+
+protected:
+    virtual void preProcess();
+
+private:
+    FloatProperty gamma_;
+};
+
+} // namespace
+
+#endif // IVW_IMAGEGAMMA_H
+
