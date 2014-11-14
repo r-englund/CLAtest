@@ -152,60 +152,9 @@ Trackball::~Trackball() {}
 
 void Trackball::invokeInteractionEvent(Event* event) {
     if (!handleInteractionEvents_) return;
-
-    GestureEvent* gestureEvent = dynamic_cast<GestureEvent*>(event);
-    if (gestureEvent) {
-        if (pinchGesture_.getEvent()->matching(gestureEvent))
-            pinchGesture_.getAction()->invoke(gestureEvent);
-        else if (panGesture_.getEvent()->matching(gestureEvent))
-            panGesture_.getAction()->invoke(gestureEvent);
-        
-        gestureEvent->markAsUsed();
-        return;
-    }
-
-    MouseEvent* mouseEvent = dynamic_cast<MouseEvent*>(event);
-    if (mouseEvent) {
-        if (mouseRotate_.getEvent()->matching(mouseEvent)) 
-            mouseRotate_.getAction()->invoke(mouseEvent);
-        else if (mouseZoom_.getEvent()->matching(mouseEvent))
-            mouseZoom_.getAction()->invoke(mouseEvent);
-        else if (mousePan_.getEvent()->matching(mouseEvent))
-            mousePan_.getAction()->invoke(mouseEvent);
-        else if (mouseReset_.getEvent()->matching(mouseEvent))
-            mouseReset_.getAction()->invoke(mouseEvent);
-       
-        mouseEvent->markAsUsed();
-        return;
-    }
-
-    KeyboardEvent* keyEvent = dynamic_cast<KeyboardEvent*>(event);
-    if (keyEvent) {
-        if (stepRotateUp_.getEvent()->matching(keyEvent))
-            stepRotateUp_.getAction()->invoke(keyEvent);
-        else if (stepRotateLeft_.getEvent()->matching(keyEvent))
-            stepRotateLeft_.getAction()->invoke(keyEvent);
-        else if (stepRotateDown_.getEvent()->matching(keyEvent))
-            stepRotateDown_.getAction()->invoke(keyEvent);
-        else if (stepRotateRight_.getEvent()->matching(keyEvent))
-            stepRotateRight_.getAction()->invoke(keyEvent);
-        else if (stepZoomIn_.getEvent()->matching(keyEvent))
-            stepZoomIn_.getAction()->invoke(keyEvent);
-        else if (stepZoomOut_.getEvent()->matching(keyEvent))
-            stepZoomOut_.getAction()->invoke(keyEvent);
-        else if (stepPanUp_.getEvent()->matching(keyEvent))
-            stepPanUp_.getAction()->invoke(keyEvent);
-        else if (stepPanLeft_.getEvent()->matching(keyEvent))
-            stepPanLeft_.getAction()->invoke(keyEvent);
-        else if (stepPanDown_.getEvent()->matching(keyEvent))
-            stepPanDown_.getAction()->invoke(keyEvent);
-        else if (stepPanRight_.getEvent()->matching(keyEvent))
-            stepPanRight_.getAction()->invoke(keyEvent);
-
-        keyEvent->markAsUsed();
-        return;
-    }
+    CompositeProperty::invokeInteractionEvent(event);
 }
+
 vec3 Trackball::mapNormalizedMousePosToTrackball(const vec2& mousePos, float dist /*= 1.f*/) {
     // set x and y to lie in interval [-r, r]
     float r = RADIUS;
