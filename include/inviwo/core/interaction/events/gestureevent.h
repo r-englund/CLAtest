@@ -79,6 +79,7 @@ public:
 
     virtual bool matching(const Event* aEvent) const;
     virtual bool matching(const GestureEvent* aEvent) const;
+    virtual bool equalSelectors(const Event* aEvent) const;
 
 private:
     // Event selectors

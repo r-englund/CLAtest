@@ -104,4 +104,16 @@ bool GestureEvent::matching(const GestureEvent* aEvent) const {
         && modifiers_ == aEvent->modifiers_;
 }
 
+bool GestureEvent::equalSelectors(const Event* aEvent) const {
+    const GestureEvent* event = dynamic_cast<const GestureEvent*>(aEvent);
+    if (event) {
+        return InteractionEvent::equalSelectors(event)
+            && type_ == event->type_
+            && state_ == event->state_
+            && numFingers_ == event->numFingers_;
+    } else {
+        return false;
+    }
+}
+
 }  // namespace

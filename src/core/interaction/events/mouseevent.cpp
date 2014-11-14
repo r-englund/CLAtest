@@ -134,6 +134,18 @@ bool MouseEvent::matching(const MouseEvent* aEvent) const {
         && modifiers_ == aEvent->modifiers_;
 }
 
+bool MouseEvent::equalSelectors(const Event* aEvent) const {
+    const MouseEvent* event = dynamic_cast<const MouseEvent*>(aEvent);
+    if (event) {
+        return InteractionEvent::equalSelectors(event)
+            && button_ == event->button_
+            && state_ == event->state_
+            && wheelOrientation_ == event->wheelOrientation_;
+    } else {
+        return false;
+    }
+}
+
 std::string MouseEvent::buttonName() const {
     std::vector<std::string> names;
     if ((button_ & MOUSE_BUTTON_LEFT) == MOUSE_BUTTON_LEFT) names.push_back(buttonNames_[1]);

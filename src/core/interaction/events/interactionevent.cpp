@@ -92,7 +92,21 @@ std::string InteractionEvent::getClassIdentifier() const {
 }
 
 bool InteractionEvent::matching(const Event* aEvent) const {
-    return false;
+    const InteractionEvent* event = dynamic_cast<const InteractionEvent*>(aEvent);
+    if (event) {
+        return modifiers_ == event->modifiers_;
+    } else {
+        return false;
+    }
+}
+
+bool InteractionEvent::equalSelectors(const Event* event) const {
+    const InteractionEvent* ievent = dynamic_cast<const InteractionEvent*>(event);
+    if (ievent) {
+        return modifiers_ == ievent->modifiers_;
+    } else {
+        return false;
+    }
 }
 
 void InteractionEvent::setModifiers(int modifiers) {

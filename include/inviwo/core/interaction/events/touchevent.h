@@ -67,6 +67,7 @@ public:
 
     virtual bool matching(const Event* aEvent) const;
     virtual bool matching(const TouchEvent* aEvent) const;
+    virtual bool equalSelectors(const Event* aEvent) const;
 
 private:
     ivec2 position_;

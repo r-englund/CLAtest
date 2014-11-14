@@ -61,8 +61,8 @@ EntryExitPoints::EntryExitPoints()
     addPort(geometryPort_);
     addPort(entryPort_, "ImagePortGroup1");
     addPort(exitPort_, "ImagePortGroup1");
-    addProperty(camera_);
     addProperty(capNearClipping_);
+    addProperty(camera_);
     addProperty(trackball_);
     entryPort_.addResizeEventListener(&camera_);
     geometryPort_.onChange(this, &EntryExitPoints::onGeometryChange);

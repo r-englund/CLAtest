@@ -105,9 +105,6 @@ void EventPropertyWidgetQt::clickedSlot() {
 }
 
 void EventPropertyWidgetQt::keyPressEvent(QKeyEvent* event) {
-    // LogInfo("Press: " << event->key() << " txt " << event->text().toStdString() << " m " <<
-    // event->modifiers());
-
     if (keyevent_ && event->key() != Qt::Key_Enter && event->key() != Qt::Key_Return &&
         event->key() != Qt::Key_Escape) {
         int key = EventConverterQt::getKeyButton(event);
@@ -127,9 +124,6 @@ void EventPropertyWidgetQt::keyPressEvent(QKeyEvent* event) {
 }
 
 void EventPropertyWidgetQt::keyReleaseEvent(QKeyEvent* event) {
-    // LogInfo("Release: " << event->key() << " txt " << event->text().toStdString() << " m " <<
-    // event->modifiers());
-
     if (keyevent_ && (event->key() == Qt::Key_Enter || event->key() == Qt::Key_Return)) {
         releaseKeyboard();
         eventproperty_->setEvent(keyevent_->clone());
@@ -172,9 +166,7 @@ void EventPropertyWidgetQt::focusOutEvent(QFocusEvent* event) {
     button_->setEnabled(true);
 }
 
-void EventPropertyWidgetQt::mousePressEvent(QMouseEvent* event) {
-    LogInfo("Release: " << event->button() <<  " m " << event->modifiers());
-    
+void EventPropertyWidgetQt::mousePressEvent(QMouseEvent* event) {  
     if(mouseEvent_) {
         int modifer = EventConverterQt::getModifier(event);
         mouseEvent_->setButton(EventConverterQt::getMouseButton(event));

@@ -41,17 +41,23 @@ EventProperty::EventProperty(std::string identifier, std::string displayName, In
                              PropertySemantics semantics)
     : Property(identifier, displayName, invalidationLevel, semantics)
     , event_(e)
+    , defaultEvent_(e->clone())
     , action_(action) {
 }
 
 EventProperty::EventProperty(const EventProperty& rhs)
-    : Property(rhs), event_(rhs.event_->clone()), action_(rhs.action_->clone()) {}
+    : Property(rhs)
+    , event_(rhs.event_->clone())
+    , defaultEvent_(rhs.defaultEvent_->clone())
+    , action_(rhs.action_->clone()) {}
 
 EventProperty& EventProperty::operator=(const EventProperty& that) {
     if (this != &that) {
         Property::operator=(that);
         if (event_) delete event_;
         event_ = that.event_->clone();
+        if (defaultEvent_) delete defaultEvent_;
+        defaultEvent_ = that.defaultEvent_->clone();
         if (action_) delete action_;
         action_ = that.action_->clone();
     }
@@ -61,13 +67,15 @@ EventProperty& EventProperty::operator=(const EventProperty& that) {
 EventProperty* EventProperty::clone() const { return new EventProperty(*this); }
 
 EventProperty::~EventProperty() {
-    if (action_) delete action_;
     if (event_) delete event_;
+    if (defaultEvent_) delete defaultEvent_;
+    if (action_) delete action_;
 }
 
 void EventProperty::serialize(IvwSerializer& s) const {
     Property::serialize(s);
-    s.serialize("Event", event_);
+    if(!event_->equalSelectors(defaultEvent_))
+        s.serialize("Event", event_);
 }
 
 void EventProperty::deserialize(IvwDeserializer& d) {
@@ -91,6 +99,16 @@ void EventProperty::setEvent(InteractionEvent* e) {
 void EventProperty::setAction(Action* action) {
     if (action_ && action_ != action) delete action_;
     action_ = action;
+}
+
+void EventProperty::setCurrentStateAsDefault() {
+    if (defaultEvent_) delete defaultEvent_;
+    defaultEvent_ = event_->clone();
+}
+
+void EventProperty::resetToDefaultState() {
+    if (event_) delete event_;
+    event_ = defaultEvent_->clone();
 }
 
 }  // namespace

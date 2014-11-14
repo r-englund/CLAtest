@@ -106,7 +106,8 @@ public:
 
     virtual bool matching(const Event* aEvent) const;
     virtual bool matching(const MouseEvent* aEvent) const;
-
+    virtual bool equalSelectors(const Event* aEvent) const;
+    
 private:
     // Event selectors:
     int button_;

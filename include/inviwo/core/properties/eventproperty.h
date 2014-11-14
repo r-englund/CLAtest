@@ -78,13 +78,17 @@ public:
     
     void setAction(Action* action);
     Action* getAction() const;
+    
+    virtual void setCurrentStateAsDefault();
+    virtual void resetToDefaultState();
 
     virtual void serialize(IvwSerializer& s) const;
     virtual void deserialize(IvwDeserializer& d);
 
 private:
-    InteractionEvent* event_; //< owning reference
-    Action* action_;          //< owning reference   
+    InteractionEvent* event_;           //< owning reference
+    InteractionEvent* defaultEvent_;    //< owning reference
+    Action* action_;                    //< owning reference
 };
 
 }  // namespace

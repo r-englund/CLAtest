@@ -98,6 +98,17 @@ bool KeyboardEvent::matching(const KeyboardEvent* aEvent) const {
         && modifiers_ == aEvent->modifiers_;
 }
 
+bool KeyboardEvent::equalSelectors(const Event* aEvent) const {
+    const KeyboardEvent* event = dynamic_cast<const KeyboardEvent*>(aEvent);
+    if (event) {
+        return InteractionEvent::equalSelectors(event)
+            && state_ == event->state_
+            && key_ == event->key_;
+    } else {
+        return false;
+    }
+}
+
 void KeyboardEvent::setState(int state) {
     state_ = state;
 }

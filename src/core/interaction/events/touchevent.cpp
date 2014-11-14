@@ -77,4 +77,15 @@ bool TouchEvent::matching(const TouchEvent* aEvent) const {
         && modifiers_ == aEvent->modifiers_;
 }
 
+bool TouchEvent::equalSelectors(const Event* aEvent) const {
+    const TouchEvent* event = dynamic_cast<const TouchEvent*>(aEvent);
+    if (event) {
+        return InteractionEvent::equalSelectors(event)
+            && state_ == event->state_;
+    } else {
+        return false;
+    }
+}
+
+
 }  // namespace

@@ -66,6 +66,7 @@ public:
     virtual void deserialize(IvwDeserializer& d);
 
     virtual bool matching(const Event* aEvent) const;
+    virtual bool equalSelectors(const Event* event) const;
 
 protected:
     int modifiers_;
