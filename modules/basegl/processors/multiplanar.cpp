@@ -51,7 +51,8 @@ MultiPlanar::MultiPlanar()
     , sliceXZPort_("inport.sliceXZ")
     , sliceYZPort_("inport.sliceYZ")
     , outport_("image.outport")
-    , camera_("camera", "Camera", vec3(0.0f, 0.0f, -2.0f), vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 1.0f, 0.0f))
+    , camera_("camera", "Camera", vec3(0.0f, 0.0f, -2.0f), vec3(0.0f, 0.0f, 0.0f),
+              vec3(0.0f, 1.0f, 0.0f))
     , showSliceXY_("showSliceXY", "Show slice XY", true)
     , showSliceXZ_("showSliceXZ", "Show slice XZ", true)
     , showSliceYZ_("showSliceYZ", "Show slice YZ", true)
@@ -59,6 +60,7 @@ MultiPlanar::MultiPlanar()
     , sliceXZPos_("sliceXZ", "Slice XZ", 1, 1, 255)
     , sliceYZPos_("sliceYZ", "Slice YZ", 1, 1, 255)
     , shader_(NULL) {
+    
     addPort(sliceXYPort_);
     addPort(sliceXZPort_);
     addPort(sliceYZPort_);
@@ -161,13 +163,14 @@ void MultiPlanar::process() {
     utilgl::activateAndClearTarget(outport_);
 
     shader_->activate();
-    
+
     vec2 dim = static_cast<vec2>(outport_.getDimension());
     shader_->setUniform("screenDim_", dim);
     shader_->setUniform("screenDimRCP_", vec2(1.0f, 1.0f) / dim);
 
     mat4 modelMatrix = mat4(1.0f);
-    shader_->setUniform("modelViewProjectionMatrix_", camera_.projectionMatrix()*camera_.viewMatrix()*modelMatrix);
+    shader_->setUniform("modelViewProjectionMatrix_",
+                        camera_.projectionMatrix() * camera_.viewMatrix() * modelMatrix);
 
     TextureUnit sliceUnit;
     shader_->setUniform("sliceTex_", sliceUnit.getUnitNumber());
