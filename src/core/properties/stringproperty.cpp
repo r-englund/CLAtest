@@ -52,6 +52,11 @@ StringProperty& StringProperty::operator=(const StringProperty& that) {
     return *this;
 }
 
+StringProperty& StringProperty::operator=(const std::string& value) {
+    TemplateProperty<std::string>::operator=(value);
+    return *this;
+}
+
 StringProperty* StringProperty::clone() const {
     return new StringProperty(*this);
 }

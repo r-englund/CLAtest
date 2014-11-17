@@ -56,6 +56,7 @@ public:
 
     OrdinalProperty(const OrdinalProperty<T>& rhs);
     OrdinalProperty<T>& operator=(const OrdinalProperty<T>& that);
+    OrdinalProperty<T>& operator=(const T& value);
     //virtual OrdinalProperty<T>* clone() const; // See ticket #642
     virtual ~OrdinalProperty();
 
@@ -143,6 +144,11 @@ OrdinalProperty<T>& OrdinalProperty<T>::operator=(const OrdinalProperty<T>& that
         maxValue_ = that.maxValue_;
         increment_ = that.increment_;
     }
+    return *this;
+}
+template <typename T>
+OrdinalProperty<T>& OrdinalProperty<T>::operator=(const T& value) {
+    TemplateProperty<T>::operator=(value);
     return *this;
 }
 

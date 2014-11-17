@@ -67,6 +67,7 @@ public:
 
     StringProperty(const StringProperty& rhs);
     StringProperty& operator=(const StringProperty& that);
+    StringProperty& operator=(const std::string& value);
     virtual StringProperty* clone() const;
     virtual ~StringProperty();
 };

@@ -66,6 +66,11 @@ FileProperty& FileProperty::operator=(const FileProperty& that) {
     return *this;
 }
 
+FileProperty& FileProperty::operator=(const std::string& value) {
+    TemplateProperty<std::string>::operator=(value);
+    return *this;
+}
+
 FileProperty* FileProperty::clone() const {
     return new FileProperty(*this);
 }

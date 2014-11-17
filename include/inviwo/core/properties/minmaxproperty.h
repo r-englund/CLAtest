@@ -56,6 +56,8 @@ public:
 
     MinMaxProperty(const MinMaxProperty& rhs);
     MinMaxProperty& operator=(const MinMaxProperty& that);
+    MinMaxProperty& operator=(const glm::detail::tvec2<T, glm::defaultp>& value);
+    
     virtual MinMaxProperty* clone() const;
     virtual ~MinMaxProperty();
 
@@ -126,6 +128,12 @@ MinMaxProperty<T>& MinMaxProperty<T>::operator=(const MinMaxProperty<T>& that) {
         increment_ = that.increment_;
         minSeparation_ = that.minSeparation_;
     }
+    return *this;
+}
+
+template <typename T>
+MinMaxProperty<T>& MinMaxProperty<T>::operator=(const glm::detail::tvec2<T, glm::defaultp>& value) {
+    TemplateProperty<glm::detail::tvec2<T, glm::defaultp> >::operator=(value);
     return *this;
 }
 
