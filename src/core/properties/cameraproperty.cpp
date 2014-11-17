@@ -58,9 +58,10 @@ CameraProperty::CameraProperty(std::string identifier, std::string displayName, 
     , aspectRatio_("aspectRatio", "Aspect Ratio", 1.0f, 0.01f, 100.0f, 0.01f, PropertyOwner::VALID)
     , farPlane_("far", "Far Plane", 100.0f, 1.0f, 1000.0f, 1.0f, PropertyOwner::VALID)
     , nearPlane_("near", "Near Plane", 0.1f, 0.001f, 10.f, 0.001f, PropertyOwner::VALID)
+    , fitToBasis_("fitToBasis_", "Fit to basis", true, PropertyOwner::VALID)
     , lockInvalidation_(false)
     , inport_(inport)
-    , data_(0)
+    , data_(NULL)
     , oldBasis_(0) {
 
     lookFrom_.onChange(this, &CameraProperty::updateViewMatrix);
@@ -77,6 +78,9 @@ CameraProperty::CameraProperty(std::string identifier, std::string displayName, 
     addProperty(aspectRatio_);
     addProperty(nearPlane_);
     addProperty(farPlane_);
+    
+    fitToBasis_.onChange(this, &CameraProperty::fitReset);
+    addProperty(fitToBasis_);
 
     lockInvalidation();
     updateViewMatrix();
@@ -96,6 +100,7 @@ CameraProperty::CameraProperty(const CameraProperty& rhs)
     , aspectRatio_(rhs.aspectRatio_)
     , farPlane_(rhs.farPlane_)
     , nearPlane_(rhs.nearPlane_)
+    , fitToBasis_(rhs.fitToBasis_)
     , lockInvalidation_(false)
     , inport_(rhs.inport_)
     , data_(NULL)
@@ -117,6 +122,7 @@ CameraProperty& CameraProperty::operator=(const CameraProperty& that) {
         aspectRatio_ = that.aspectRatio_;
         nearPlane_ = that.nearPlane_;
         farPlane_ = that.farPlane_;
+        fitToBasis_ = that.fitToBasis_;
         
         if(inport_) inport_->removeOnChange(this);
         inport_ = that.inport_;
@@ -276,11 +282,21 @@ void CameraProperty::fitWithBasis(const mat3& basis) {
     oldBasis_ = basis;
 }
 
+void CameraProperty::fitReset() {
+    data_ = NULL;
+    oldBasis_ = mat3(0.0f);
+    if (fitToBasis_) {
+        inportChanged();
+    }
+}
+
 void CameraProperty::inportChanged() {
+    if (!fitToBasis_) return;
+
     VolumeInport* volumeInport = dynamic_cast<VolumeInport*>(inport_);
     GeometryInport* geometryInport = dynamic_cast<GeometryInport*>(inport_);
-    const SpatialEntity<3>* data = 0;  // using SpatialEntity since Geometry is not derived from
-                                       // data
+    const SpatialEntity<3>* data = NULL;  // using SpatialEntity since Geometry is not derived from
+                                          // data
 
     if (volumeInport) {
         data = volumeInport->getData();
@@ -288,10 +304,10 @@ void CameraProperty::inportChanged() {
         data = geometryInport->getData();
     }
 
-    if (data_ == 0 && oldBasis_ == mat3(0.0f)) {  // first time only
-        if (volumeInport) {
+    if (data_ == NULL && oldBasis_ == mat3(0.0f)) {  // first time only
+        if (volumeInport && volumeInport->hasData()) {
             oldBasis_ = volumeInport->getData()->getBasis();
-        } else if (geometryInport) {
+        } else if (geometryInport && geometryInport->hasData()) {
             oldBasis_ = geometryInport->getData()->getBasis();
         }
     } else if (data_ != data) {
