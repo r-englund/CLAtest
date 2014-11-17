@@ -99,8 +99,6 @@ void FilePropertyWidgetQt::setPropertyValue() {
                                       property_->getContentType());
     
 
-   // importFileDialog.addSidebarPath()
-
     for (std::vector<std::string>::const_iterator it = filters.begin(); it != filters.end(); ++it)
         importFileDialog.addExtension(*it);
 
@@ -143,7 +141,6 @@ void FilePropertyWidgetQt::setPropertyValue() {
             importFileDialog.setFileMode(QFileDialog::AnyFile);
     }
 
-//    importFileDialog.setSidebarUrls(sidebarURLs);
     if (importFileDialog.exec()) {
         QString path = importFileDialog.selectedFiles().at(0);
         property_->set(path.toLocal8Bit().constData());

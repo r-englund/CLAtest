@@ -52,11 +52,16 @@ public:
     virtual ~DataSource();
 
     virtual bool isReady() const;
-
-protected:
     void load();
+    
+protected:
+    void load(bool deserialized);
+    bool isDeserializing() const;
 
+    // Called when we load new data.
     virtual void dataLoaded(DataType* data) {};
+    // Called when we deserialized old data.
+    virtual void dataDeserialized(DataType* data) {};
 
     virtual void invalidateOutput();
 
@@ -66,12 +71,20 @@ protected:
     PortType port_;
     FileProperty file_;
     DataType* loadedData_;
+
+private:
     bool isDeserializing_;
 };
 
+
 template <typename DataType, typename PortType>
 DataSource<DataType, PortType>::DataSource()
-    : Processor(), port_("data"), file_("filename", "File"), loadedData_(NULL), isDeserializing_(false) {
+    : Processor()
+    , port_("data")
+    , file_("filename", "File")
+    , loadedData_(NULL)
+    , isDeserializing_(false) {
+    
     addPort(port_);
     file_.onChange(this, &DataSource::load);
     std::vector<FileExtension> ext = DataReaderFactory::getPtr()->getExtensionsForType<DataType>();
@@ -89,6 +102,11 @@ template <typename DataType, typename PortType>
 DataSource<DataType, PortType>::~DataSource() {}
 
 template <typename DataType, typename PortType>
+bool DataSource<DataType, PortType>::isDeserializing() const {
+    return isDeserializing_;
+}
+
+template <typename DataType, typename PortType>
 void DataSource<DataType, PortType>::invalidateOutput() {
     invalidate(PropertyOwner::INVALID_OUTPUT);
 }
@@ -98,11 +116,16 @@ bool DataSource<DataType, PortType>::isReady() const {
     return filesystem::fileExists(file_.get());
 }
 
+template <typename DataType, typename PortType>
+void DataSource<DataType, PortType>::load() {
+    load(false);
+}
+
 /**
  * load is called when the filename changes, and after the deserialisation
  */
 template <typename DataType, typename PortType>
-void DataSource<DataType, PortType>::load() {
+void DataSource<DataType, PortType>::load(bool deserialized) {
     if (isDeserializing_ || file_.get() == "") {
         return;
     }
@@ -121,12 +144,16 @@ void DataSource<DataType, PortType>::load() {
         if (reader) {
             try {
                 DataType* data = reader->readMetaData(file_.get());
-                // Disabled the resourcemanager until it work properly.
+                // Disabled the resourcemanager until it works properly.
                 // ResourceManager::getPtr()->addResource(
                 //    new TemplateResource<DataType>(file_.get(), data));
                 port_.setData(data, false);
                 loadedData_ = data;
-                dataLoaded(data);
+                if(deserialized) {
+                    dataDeserialized(data);
+                } else {
+                    dataLoaded(data);
+                }
             }
             catch (DataReaderException const& e) {
                 LogError("Could not load data: " << file_.get() << ", " << e.getMessage());
@@ -151,7 +178,7 @@ void inviwo::DataSource<DataType, PortType>::deserialize(IvwDeserializer& d) {
     isDeserializing_ = true;
     Processor::deserialize(d);
     isDeserializing_ = false;
-    load();
+    load(true);
 }
 
 }  // namespace
