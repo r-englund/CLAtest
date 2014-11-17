@@ -54,10 +54,10 @@ void main() {
     vec4 fragColor = color_;
     
     if (terrainShadingMode_ == 1) { // color texture
-        fragColor = texture2D(inportTexture_, texCoord_.xy).rgba;
+        fragColor = texture(inportTexture_, texCoord_.xy).rgba;
     }
     else if (terrainShadingMode_ == 2) { // heightfield texture
-        fragColor = vec4(texture2D(inportHeightfield_, texCoord_.xy).rrr, 1.0);
+        fragColor = vec4(texture(inportHeightfield_, texCoord_.xy).rrr, 1.0);
     }
 /*	else {
         if (height_ < 0.1) 
@@ -72,7 +72,7 @@ void main() {
     */
     
     // normal mapping
-    vec3 normal = normalize(texture2D(inportNormalMap_, texCoord_.xy).rgb);
+    vec3 normal = normalize(texture(inportNormalMap_, texCoord_.xy).rgb);
     //normal = vec3(1.0, 0.0, 0.0);
         //normal = normalize(normal_);
     //if (lighting_ > 0) {
