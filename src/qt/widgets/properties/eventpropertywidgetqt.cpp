@@ -35,6 +35,10 @@
 #include <inviwo/qt/widgets/editablelabelqt.h>
 #include <inviwo/qt/widgets/eventconverterqt.h>
 
+#include <inviwo/core/interaction/events/interactionevent.h>
+#include <inviwo/core/interaction/events/mouseevent.h>
+#include <inviwo/core/interaction/events/keyboardevent.h>
+
 #include <QPushButton>
 
 namespace inviwo {

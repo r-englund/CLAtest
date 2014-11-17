@@ -33,6 +33,7 @@
 #include "simpleraycaster.h"
 #include <inviwo/core/io/serialization/ivwserialization.h>
 #include <inviwo/core/io/serialization/versionconverter.h>
+#include <inviwo/core/interaction/events/keyboardevent.h>
 #include <modules/opengl/volume/volumegl.h>
 #include <modules/opengl/glwrap/shader.h>
 #include <modules/opengl/glwrap/textureunit.h>

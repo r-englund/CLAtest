@@ -42,6 +42,9 @@ namespace inviwo {
 
 class EditableLabelQt;
 class EventProperty;
+class MouseEvent;
+class KeyboardEvent;
+class InteractionEvent;
 
 class IVW_QTWIDGETS_API EventPropertyWidgetQt : public PropertyWidgetQt {
     Q_OBJECT
