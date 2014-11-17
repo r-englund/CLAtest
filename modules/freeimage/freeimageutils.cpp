@@ -338,7 +338,6 @@ void FreeImageUtils::switchChannels(FIBITMAP* bitmap, uvec2 dim, int channels) {
         if (type == FIT_BITMAP) {
             unsigned int c = static_cast<unsigned int>(channels);
             BYTE* result = FreeImage_GetBits(bitmap);
-            BYTE tmp;
 
             for (unsigned int i = 0; i < dim.x * dim.y; i++) {
                 std::swap(result[i * c], result[i * c + 2]);
