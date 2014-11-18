@@ -119,10 +119,10 @@ IVW_CORE_API bool isAbsolutePath(const std::string& path);
  * InviwoApplication::getBasePath is used instead as reference.
  *
  * @param const std::string& refPath reference path, if relative then InviwoApplication::getBasePath
- *is used instead
+ * is used instead
  * @param const std::string& queryPath path to be checked
  * @return true if queryPath and refPath are located on the same drive (on Windows), always true on
- *all other systems
+ * all other systems
  */
 IVW_CORE_API bool sameDrive(const std::string& refPath, const std::string& queryPath);
 
