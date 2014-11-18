@@ -286,6 +286,8 @@ const std::vector<InteractionHandler*>& Processor::getInteractionHandlers() cons
 }
 
 void Processor::invokeInteractionEvent(Event* event) {
+    PropertyOwner::invokeInteractionEvent(event);
+
     for (size_t i=0; i<interactionHandlers_.size(); i++)
         interactionHandlers_[i]->invokeEvent(event);
 }
@@ -294,7 +296,7 @@ void Processor::serialize(IvwSerializer& s) const {
     s.serialize("type", getClassIdentifier(), true);
     s.serialize("identifier", identifier_, true);
 
-    if (interactionHandlers_.size() != 0)
+    if (!interactionHandlers_.empty())
         s.serialize("InteractonHandlers", interactionHandlers_, "InteractionHandler");
 
     PropertyOwner::serialize(s);
@@ -302,11 +304,9 @@ void Processor::serialize(IvwSerializer& s) const {
 }
 
 void Processor::deserialize(IvwDeserializer& d) {
-    std::string className;
     std::string identifier;
-    d.deserialize("type", className, true);
     d.deserialize("identifier", identifier, true);
-    setIdentifier(identifier);
+    setIdentifier(identifier); // Need to use setIdentifier to make sure we get a unique id.
 
     if (interactionHandlers_.size() != 0)
         d.deserialize("InteractonHandlers", interactionHandlers_, "InteractionHandler");

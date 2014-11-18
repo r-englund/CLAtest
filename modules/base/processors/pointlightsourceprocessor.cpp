@@ -54,7 +54,8 @@ PointLightSourceProcessor::PointLightSourceProcessor()
     , lightPosition_("lightPosition", "Light Source Position", vec3(1.f, 0.65f, 0.65f), vec3(-1.f), vec3(1.f))
     , lightEnabled_("lightEnabled", "Enabled", true)
     , camera_("camera", "Camera", vec3(0.0f, 0.0f, -2.0f), vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 1.0f, 0.0f), NULL, PropertyOwner::VALID) 
-    , handleInteractionEvents_("handleEvents", "Handle interaction events", false) {
+    , handleInteractionEvents_("handleEvents", "Handle interaction events", false)
+    {
     addPort(outport_);
     lighting_.addProperty(lightPosition_);
     lighting_.addProperty(lightDiffuse_);
@@ -149,7 +150,7 @@ void PointLightSourceProcessor::PointLightInteractionHandler::invokeEvent(Event*
             return;
         } 
     } 
-    trackball_.invokeEvent(event);
+    trackball_.invokeInteractionEvent(event);
 }
 
 void PointLightSourceProcessor::PointLightInteractionHandler::setLightPosFromScreenCoords(const vec2& normalizedScreenCoord)

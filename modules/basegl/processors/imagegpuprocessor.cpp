@@ -3,7 +3,7 @@
  * Inviwo - Interactive Visualization Workshop
  * Version 0.6b
  *
- * Copyright (c) 2013-2014 Inviwo Foundation
+ * Copyright (c) 2014 Inviwo Foundation
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -26,64 +26,76 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  * 
- * Contact: Erik Sundén
+ * Contact: Martin Falk
  *
  *********************************************************************************/
 
-#include "imageclassify.h"
-#include <modules/opengl/glwrap/textureunit.h>
-#include <modules/opengl/textureutils.h>
-#include <modules/opengl/image/layergl.h>
+#include "imagegpuprocessor.h"
 #include <modules/opengl/glwrap/shader.h>
+#include <modules/opengl/textureutils.h>
+#include <modules/opengl/shaderutils.h>
+#include <modules/opengl/glwrap/framebufferobject.h>
 
 namespace inviwo {
 
-ProcessorClassIdentifier(ImageClassify, "org.inviwo.ImageClassify");
-ProcessorDisplayName(ImageClassify, "Image Classify");
-ProcessorTags(ImageClassify, Tags::GL);
-ProcessorCategory(ImageClassify, "Image Operation");
-ProcessorCodeState(ImageClassify, CODE_STATE_EXPERIMENTAL);
-
-ImageClassify::ImageClassify()
+ImageGPUProcessor::ImageGPUProcessor(std::string fragmentShader)
     : Processor()
-    , inport_("inport")
-    , outport_("outport", &inport_, COLOR_ONLY)
-    , transferFunction_("transferFunction", "Transfer function", TransferFunction()) {
-    
-    shader_ = NULL;
+    , inport_(fragmentShader + "inport")
+    , outport_(fragmentShader + "outport")
+    , dataFormat_(NULL)
+    , internalInvalid_(false)
+    , fragmentShader_(fragmentShader)
+    , shader_(NULL)
+{
     addPort(inport_);
     addPort(outport_);
-    addProperty(transferFunction_);
+
+    inport_.onChange(this,&ImageGPUProcessor::inportChanged);
 }
 
-ImageClassify::~ImageClassify() {}
+ImageGPUProcessor::~ImageGPUProcessor() {}
 
-void ImageClassify::initialize() {
+void ImageGPUProcessor::initialize() {
     Processor::initialize();
-    shader_ = new Shader("img_classify.frag");
-}
-
-void ImageClassify::deinitialize() {
     delete shader_;
-    Processor::deinitialize();
+    shader_ = new Shader(fragmentShader_, true);
+    internalInvalid_ = true;
 }
 
-void ImageClassify::process() {
-    TextureUnit transFuncUnit;
-    const Layer* tfLayer = transferFunction_.get().getData();
-    const LayerGL* transferFunctionGL = tfLayer->getRepresentation<LayerGL>();
-    transferFunctionGL->bindTexture(transFuncUnit.getEnum());
-    TextureUnit inUnit;
-    utilgl::bindColorTexture(inport_, inUnit.getEnum());
+void ImageGPUProcessor::deinitialize() {
+    Processor::deinitialize();
+    delete shader_;
+}
+
+void ImageGPUProcessor::process() {
+    if (internalInvalid_ || inport_.getInvalidationLevel() >= INVALID_OUTPUT) {
+        internalInvalid_ = false;
+        const DataFormatBase* format = dataFormat_;
+        if (format == NULL) {
+            format = inport_.getData()->getDataFormat();
+        }
+
+        Image *img = new Image(inport_.getData()->getDimension(), COLOR_ONLY, format);
+        img->copyMetaDataFrom(*inport_.getData());
+        outport_.setData(img);
+    }
+
+    TextureUnit imgUnit;    
+    utilgl::bindColorTexture(inport_, imgUnit);
+
     utilgl::activateTarget(outport_);
     shader_->activate();
-    shader_->setUniform("inport_", inUnit.getUnitNumber());
-    shader_->setUniform("dimension_",
-                        vec2(1.f / outport_.getDimension()[0], 1.f / outport_.getDimension()[1]));
-    shader_->setUniform("transferFunc_", transFuncUnit.getUnitNumber());
+
+    utilgl::setShaderUniforms(shader_, outport_, "outportParameters_");
+    shader_->setUniform("inport_", imgUnit.getUnitNumber());
+
+    preProcess();
+
     utilgl::singleDrawImagePlaneRect();
     shader_->deactivate();
     utilgl::deactivateCurrentTarget();
+
+    postProcess();
 }
 
 }  // namespace

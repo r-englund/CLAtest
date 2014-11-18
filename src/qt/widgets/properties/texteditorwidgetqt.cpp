@@ -34,7 +34,7 @@
 #include <inviwo/core/common/inviwoapplication.h>
 #include <inviwo/core/common/inviwomodule.h>
 #include <inviwo/core/util/settings/systemsettings.h>
-#include <inviwo/core/util/urlparser.h>
+#include <inviwo/core/util/filesystem.h>
 
 #include <QTextDocument>
 #include <QTextBlock>
@@ -175,7 +175,7 @@ void TextEditorWidgetQt::editFile() {
         connect(htmlEditorWidget_->reLoadButton_, SIGNAL(pressed()), this, SLOT(loadFile()));
         loadFile();
         std::string fileName = static_cast<StringProperty*>(property_)->get();
-        std::string extension = URLParser::getFileExtension(fileName);
+        std::string extension = filesystem::getFileExtension(fileName);
 
         if (extension=="html" || extension=="htm")
             htmlEditorWidget_->show();
@@ -189,7 +189,7 @@ void TextEditorWidgetQt::loadFile() {
     file_ = new QFile(QString::fromStdString(tmpPropertyValue_));
     file_->open(QIODevice::ReadWrite);
     QTextStream textStream_(file_);
-    std::string extension = URLParser::getFileExtension(tmpPropertyValue_);
+    std::string extension = filesystem::getFileExtension(tmpPropertyValue_);
 
     if (extension == "html" || extension == "htm")
         htmlEditorWidget_->htmlEditor_->setPlainText(textStream_.readAll());
@@ -206,7 +206,7 @@ bool TextEditorWidgetQt::writeToFile() {
     QFileInfo qfileInfo(file_->fileName());
     QString qfilename(qfileInfo.fileName());
     std::string fileName = qfilename.toLocal8Bit().constData();
-    std::string extension = URLParser::getFileExtension(fileName);
+    std::string extension = filesystem::getFileExtension(fileName);
 
     if (extension == "html" || extension == "htm")
         textStream <<  htmlEditorWidget_->htmlOutput_->toPlainText();

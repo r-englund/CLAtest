@@ -26,40 +26,19 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  * 
- * Contact: Sathish Kottravel
+ * Contact: Martin Falk
  *
  *********************************************************************************/
 
-#ifndef IVW_OPTIONPROPERTYWIDGETQT_H
-#define IVW_OPTIONPROPERTYWIDGETQT_H
+#include "utils/structs.glsl"
 
-#include <inviwo/qt/widgets/inviwoqtwidgetsdefine.h>
+uniform TEXTURE_PARAMETERS outportParameters_;
 
-#include <inviwo/qt/widgets/properties/propertywidgetqt.h>
-#include <inviwo/core/properties/baseoptionproperty.h>
-#include <inviwo/core/properties/property.h>
-#include <inviwo/qt/widgets/editablelabelqt.h>
+uniform sampler2D inport_;
 
-namespace inviwo {
-
-class IVW_QTWIDGETS_API OptionPropertyWidgetQt : public PropertyWidgetQt {
-    Q_OBJECT
-
-public:
-    OptionPropertyWidgetQt(BaseOptionProperty* property);
-    void updateFromProperty();
-
-private:
-    BaseOptionProperty* property_;
-    IvwComboBox* comboBox_;
-    EditableLabelQt* label_;
-    void generateWidget();
-
-public slots:
-    void optionChanged();
-    void setPropertyDisplayName();
-};
-
-} // namespace
-
-#endif // IVW_OPTIONPROPERTYWIDGETQT_H
+void main() {
+    vec2 texCoords = gl_FragCoord.xy * outportParameters_.dimensionsRCP_;
+    vec4 inputColor = texture(inport_, texCoords);
+    vec4 color = vec4(1.0 - inputColor.rgb, inputColor.a);
+    FragData0 = color;
+}

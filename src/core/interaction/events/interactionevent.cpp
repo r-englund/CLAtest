@@ -31,28 +31,26 @@
  *********************************************************************************/
 
 #include <inviwo/core/interaction/events/interactionevent.h>
+#include <inviwo/core/util/stringconversion.h>
 
 namespace inviwo {
 
 const std::string InteractionEvent::modifierNames_[] = {"", "Alt", "Ctrl", "Shift"};
 
-InteractionEvent::InteractionEvent() {}
+InteractionEvent::InteractionEvent(int modifiers)
+    : Event()
+    , modifiers_(modifiers) {
+}
 
 InteractionEvent::InteractionEvent(const InteractionEvent& rhs)
     : Event(rhs)
-    , modifier_(rhs.modifier_)
-    , button_(rhs.button_)
-    , modifierName_(rhs.modifierName_)
-    , buttonName_(rhs.buttonName_) {
+    , modifiers_(rhs.modifiers_) {
 }
 
 InteractionEvent& InteractionEvent::operator=(const InteractionEvent& that) {
     if (this != &that) {
         Event::operator=(that);
-        modifier_ = that.modifier_;
-        button_ = that.button_;
-        modifierName_ = that.modifierName_;
-        buttonName_ = that.buttonName_;
+        modifiers_ = that.modifiers_;
     }
     return *this;
 }
@@ -65,20 +63,54 @@ InteractionEvent::~InteractionEvent() {}
 
 void InteractionEvent::serialize(IvwSerializer& s) const {
     s.serialize("type", getClassIdentifier(), true);
-    s.serialize("modifier", modifierName_);
+    s.serialize("modifiers", modifiers_);
 }
 
 void InteractionEvent::deserialize(IvwDeserializer& d) {
-    std::string className;
-    d.deserialize("type", className, true);
-    d.deserialize("modifier", modifierName_);
+    d.deserialize("modifiers", modifiers_);
+}
 
-    for (size_t i = 0; i < COUNT; ++i) {
-        if (modifierNames_[i] == modifierName_) {
-            modifier_ = static_cast<InteractionEvent::Modifier>(i);
-            break;
-        }
+int InteractionEvent::modifiers() const {
+    return modifiers_;
+}
+
+std::string InteractionEvent::modifierNames() const {
+    std::vector<std::string> names;
+    if ((modifiers_ & MODIFIER_ALT) == MODIFIER_ALT) names.push_back(modifierNames_[1]);
+    if ((modifiers_ & MODIFIER_CTRL) == MODIFIER_CTRL) names.push_back(modifierNames_[2]);
+    if ((modifiers_ & MODIFIER_SHIFT) == MODIFIER_SHIFT) names.push_back(modifierNames_[3]);
+
+    if (!names.empty()) {
+        return joinString(names, "+");
+    } else {
+        return "";
     }
+}
+
+std::string InteractionEvent::getClassIdentifier() const {
+    return "org.inviwo.InteractionEvent";
+}
+
+bool InteractionEvent::matching(const Event* aEvent) const {
+    const InteractionEvent* event = dynamic_cast<const InteractionEvent*>(aEvent);
+    if (event) {
+        return modifiers_ == event->modifiers_;
+    } else {
+        return false;
+    }
+}
+
+bool InteractionEvent::equalSelectors(const Event* event) const {
+    const InteractionEvent* ievent = dynamic_cast<const InteractionEvent*>(event);
+    if (ievent) {
+        return modifiers_ == ievent->modifiers_;
+    } else {
+        return false;
+    }
+}
+
+void InteractionEvent::setModifiers(int modifiers) {
+    modifiers_ = modifiers;
 }
 
 } // namespace

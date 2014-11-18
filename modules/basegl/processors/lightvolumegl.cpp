@@ -387,7 +387,7 @@ bool LightVolumeGL::volumeChanged(bool lightColorChanged) {
                 if (propParams_[i].vol)
                     delete propParams_[i].vol;
 
-                propParams_[i].vol = new VolumeGL(volumeDimOut_, format);
+                propParams_[i].vol = new VolumeGL(volumeDimOut_, format, false);
                 propParams_[i].vol->getTexture()->setTextureParameterFunction(this, &LightVolumeGL::propagation3DTextureParameterFunction);
                 propParams_[i].vol->getTexture()->initialize(NULL);
             }

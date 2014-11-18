@@ -47,6 +47,8 @@
 #include <inviwo/core/properties/simpleraycastingproperty.h>
 #include <inviwo/core/properties/advancedmaterialproperty.h>
 
+#include <inviwo/core/interaction/trackball.h>
+
 #include <inviwo/qt/widgets/properties/anglepropertywidgetqt.h>
 #include <inviwo/qt/widgets/properties/boolpropertywidgetqt.h>
 #include <inviwo/qt/widgets/properties/buttonpropertywidgetqt.h>
@@ -81,6 +83,8 @@ QtWidgetModule::QtWidgetModule() : InviwoModule() {
     registerPropertyWidget(CompositePropertyWidgetQt, SimpleLightingProperty, "Default");
     registerPropertyWidget(CompositePropertyWidgetQt, SimpleRaycastingProperty, "Default");
     registerPropertyWidget(CompositePropertyWidgetQt, AdvancedMaterialProperty, "Default");
+
+    registerPropertyWidget(CompositePropertyWidgetQt, Trackball, "Default");
 
     registerPropertyWidget(ColorPropertyWidgetQt, IntVec3Property, "Color");
     registerPropertyWidget(ColorPropertyWidgetQt, IntVec4Property, "Color");

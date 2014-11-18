@@ -37,9 +37,17 @@
 
 namespace inviwo {
 
-VolumeGL::VolumeGL(uvec3 dimensions, const DataFormatBase* format, Texture3D* tex)
-    : VolumeRepresentation(dimensions, format), volumeTexture_(tex) {
-    initialize();
+VolumeGL::VolumeGL(uvec3 dimensions, const DataFormatBase* format, bool initializeTexture)
+    : VolumeRepresentation(dimensions, format), volumeTexture_(NULL) {
+    GLFormats::GLFormat glFormat = getGLFormats()->getGLFormat(getDataFormatId());
+    volumeTexture_ = new Texture3D(dimensions_, glFormat, GL_LINEAR);
+    if(initializeTexture){
+        volumeTexture_->initialize(NULL);
+    }
+}
+
+VolumeGL::VolumeGL(Texture3D* tex, const DataFormatBase* format)
+    : VolumeRepresentation(tex->getDimension(), format), volumeTexture_(tex) {
 }
 
 VolumeGL::VolumeGL(const VolumeGL& rhs) : VolumeRepresentation(rhs) {
@@ -55,23 +63,14 @@ VolumeGL& VolumeGL::operator=(const VolumeGL& rhs) {
     return *this;
 }
 
-VolumeGL::~VolumeGL() { deinitialize(); }
-
-VolumeGL* VolumeGL::clone() const { return new VolumeGL(*this); }
-
-void VolumeGL::initialize() {
-    if (!volumeTexture_) {
-        GLFormats::GLFormat glFormat = getGLFormats()->getGLFormat(getDataFormatId());
-        volumeTexture_ = new Texture3D(dimensions_, glFormat, GL_LINEAR);
-    }
-}
-
-void VolumeGL::deinitialize() {
+VolumeGL::~VolumeGL() { 
     if (volumeTexture_ && volumeTexture_->decreaseRefCount() <= 0) {
         delete volumeTexture_;
         volumeTexture_ = NULL;
     }
 }
+
+VolumeGL* VolumeGL::clone() const { return new VolumeGL(*this); }
 
 void VolumeGL::bindTexture(GLenum texUnit) const {
     glActiveTexture(texUnit);

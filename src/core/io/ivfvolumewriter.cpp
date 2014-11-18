@@ -31,7 +31,6 @@
  *********************************************************************************/
 
 #include <inviwo/core/io/ivfvolumewriter.h>
-#include <inviwo/core/util/urlparser.h>
 #include <inviwo/core/util/filesystem.h>
 #include <inviwo/core/datastructures/volume/volumeram.h>
 
@@ -56,7 +55,7 @@ IvfVolumeWriter* IvfVolumeWriter::clone() const {
 }
 
 void IvfVolumeWriter::writeData(const Volume* volume, const std::string filePath) const {
-    std::string rawPath = URLParser::replaceFileExtension(filePath, "raw");
+    std::string rawPath = filesystem::replaceFileExtension(filePath, "raw");
 
     if (filesystem::fileExists(filePath) && !overwrite_)
         throw DataWriterException("Error: Output file: " + filePath + " already exists");
@@ -64,7 +63,7 @@ void IvfVolumeWriter::writeData(const Volume* volume, const std::string filePath
     if (filesystem::fileExists(rawPath) && !overwrite_)
         throw DataWriterException("Error: Output file: " + rawPath + " already exists");
 
-    std::string fileName = URLParser::getFileNameWithoutExtension(filePath);
+    std::string fileName = filesystem::getFileNameWithoutExtension(filePath);
     const VolumeRAM* vr = volume->getRepresentation<VolumeRAM>();
     IvwSerializer s(filePath);
     s.serialize("RawFile", fileName + ".raw");

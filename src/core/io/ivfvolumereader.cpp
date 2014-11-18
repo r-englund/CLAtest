@@ -34,7 +34,6 @@
 #include <inviwo/core/datastructures/volume/volumeramprecision.h>
 #include <inviwo/core/datastructures/volume/volumetypeclassification.h>
 #include <inviwo/core/datastructures/volume/volumedisk.h>
-#include <inviwo/core/util/urlparser.h>
 #include <inviwo/core/util/filesystem.h>
 
 namespace inviwo {
@@ -77,7 +76,7 @@ IvfVolumeReader* IvfVolumeReader::clone() const {
 
 Volume* IvfVolumeReader::readMetaData(std::string filePath)  {
     if (!filesystem::fileExists(filePath)) {
-        std::string newPath = URLParser::addBasePath(filePath);
+        std::string newPath = filesystem::addBasePath(filePath);
 
         if (filesystem::fileExists(newPath)) {
             filePath = newPath;
@@ -86,8 +85,8 @@ Volume* IvfVolumeReader::readMetaData(std::string filePath)  {
         }
     }
 
-    std::string fileDirectory = URLParser::getFileDirectory(filePath);
-    std::string fileExtension = URLParser::getFileExtension(filePath);
+    std::string fileDirectory = filesystem::getFileDirectory(filePath);
+    std::string fileExtension = filesystem::getFileExtension(filePath);
     Volume* volume = new UniformRectiLinearVolume();
     IvwDeserializer d(filePath);
     d.deserialize("RawFile", rawFile_);

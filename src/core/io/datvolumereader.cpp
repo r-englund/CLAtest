@@ -35,7 +35,6 @@
 #include <inviwo/core/datastructures/volume/volumedisk.h>
 #include <inviwo/core/datastructures/volume/volumeramprecision.h>
 #include <inviwo/core/datastructures/volume/volumetypeclassification.h>
-#include <inviwo/core/util/urlparser.h>
 #include <inviwo/core/util/filesystem.h>
 #include <inviwo/core/util/formatconversion.h>
 #include <inviwo/core/util/stringconversion.h>
@@ -77,7 +76,7 @@ DatVolumeReader* DatVolumeReader::clone() const { return new DatVolumeReader(*th
 
 Volume* DatVolumeReader::readMetaData(std::string filePath) {
     if (!filesystem::fileExists(filePath)) {
-        std::string newPath = URLParser::addBasePath(filePath);
+        std::string newPath = filesystem::addBasePath(filePath);
 
         if (filesystem::fileExists(newPath)) {
             filePath = newPath;
@@ -86,8 +85,8 @@ Volume* DatVolumeReader::readMetaData(std::string filePath) {
         }
     }
 
-    std::string fileDirectory = URLParser::getFileDirectory(filePath);
-    std::string fileExtension = URLParser::getFileExtension(filePath);
+    std::string fileDirectory = filesystem::getFileDirectory(filePath);
+    std::string fileExtension = filesystem::getFileExtension(filePath);
     // Read the dat file content
     std::istream* f = new std::ifstream(filePath.c_str());
     std::string textLine;

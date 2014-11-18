@@ -26,52 +26,39 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  * 
- * Contact: Peter Steneteg
+ * Contact: Erik Sundén
  *
  *********************************************************************************/
 
-#include "imagegrayscale.h"
+#include "imagemapping.h"
+#include <modules/opengl/glwrap/textureunit.h>
 #include <modules/opengl/textureutils.h>
+#include <modules/opengl/image/layergl.h>
 #include <modules/opengl/glwrap/shader.h>
 
 namespace inviwo {
 
-ProcessorClassIdentifier(ImageGrayscale, "org.inviwo.ImageGrayscale");
-ProcessorDisplayName(ImageGrayscale, "Image Grayscale");
-ProcessorTags(ImageGrayscale, Tags::GL);
-ProcessorCategory(ImageGrayscale, "Image Operation");
-ProcessorCodeState(ImageGrayscale, CODE_STATE_EXPERIMENTAL);
+ProcessorClassIdentifier(ImageMapping, "org.inviwo.ImageMapping");
+ProcessorDisplayName(ImageMapping, "Image Mapping");
+ProcessorTags(ImageMapping, Tags::GL);
+ProcessorCategory(ImageMapping, "Image Operation");
+ProcessorCodeState(ImageMapping, CODE_STATE_STABLE);
 
-ImageGrayscale::ImageGrayscale()
-    : Processor(), inport_("inport"), outport_("outport", &inport_, COLOR_ONLY), shader_(NULL) {
-
-    addPort(inport_);
-    addPort(outport_);
+ImageMapping::ImageMapping()
+    : ImageGPUProcessor("img_mapping.frag")
+    , transferFunction_("transferFunction", "Transfer function", TransferFunction()) {
+    addProperty(transferFunction_);
 }
 
-ImageGrayscale::~ImageGrayscale() {}
+ImageMapping::~ImageMapping() {}
 
-void ImageGrayscale::initialize() {
-    Processor::initialize();
-    shader_ = new Shader("img_graysc.frag");
-}
+void ImageMapping::preProcess() {
+    TextureUnit transFuncUnit;
+    const Layer* tfLayer = transferFunction_.get().getData();
+    const LayerGL* transferFunctionGL = tfLayer->getRepresentation<LayerGL>();
 
-void ImageGrayscale::deinitialize() {
-    delete shader_;
-    Processor::deinitialize();
-}
-
-void ImageGrayscale::process() {
-    TextureUnit image;
-    utilgl::activateTarget(outport_);
-    utilgl::bindColorTexture(inport_, image);
-    shader_->activate();
-    shader_->setUniform("inport_", image.getUnitNumber());
-    shader_->setUniform("screenDimRCP_",
-                        vec2(1.f / outport_.getDimension()[0], 1.f / outport_.getDimension()[1]));
-    utilgl::singleDrawImagePlaneRect();
-    shader_->deactivate();
-    utilgl::deactivateCurrentTarget();
+    transferFunctionGL->bindTexture(transFuncUnit.getEnum());
+    shader_->setUniform("transferFunc_", transFuncUnit.getUnitNumber());
 }
 
 }  // namespace

@@ -35,19 +35,57 @@
 namespace inviwo {
 
 TouchEvent::TouchEvent(ivec2 position, TouchEvent::TouchState state)
-    : InteractionEvent(),
-      position_(position),
-      state_(state) {
+    : InteractionEvent(), position_(position), state_(state) {}
+
+
+TouchEvent::TouchEvent(const TouchEvent& rhs)
+    : InteractionEvent(rhs)
+    , position_(rhs.position_)
+    , state_(rhs.state_) {
+}
+
+TouchEvent& TouchEvent::operator=(const TouchEvent& that) {
+    if (this != &that) {
+        InteractionEvent::operator=(that);
+        position_ = that.position_;
+        state_ = that.state_;
+    }
+    return *this;
+}
+
+TouchEvent* TouchEvent::clone() const {
+    return new TouchEvent(*this);
 }
 
 TouchEvent::~TouchEvent() {}
 
-void TouchEvent::serialize(IvwSerializer& s) const {
-    InteractionEvent::serialize(s);
+void TouchEvent::serialize(IvwSerializer& s) const { InteractionEvent::serialize(s); }
+
+void TouchEvent::deserialize(IvwDeserializer& d) { InteractionEvent::deserialize(d); }
+
+bool TouchEvent::matching(const Event* aEvent) const {
+    const TouchEvent* event = dynamic_cast<const TouchEvent*>(aEvent);
+    if (event) {
+        return matching(event);
+    } else {
+        return false;
+    }
 }
 
-void TouchEvent::deserialize(IvwDeserializer& d) {
-    InteractionEvent::deserialize(d);
+bool TouchEvent::matching(const TouchEvent* aEvent) const {
+    return state_ == aEvent->state_
+        && modifiers_ == aEvent->modifiers_;
 }
 
-} // namespace
+bool TouchEvent::equalSelectors(const Event* aEvent) const {
+    const TouchEvent* event = dynamic_cast<const TouchEvent*>(aEvent);
+    if (event) {
+        return InteractionEvent::equalSelectors(event)
+            && state_ == event->state_;
+    } else {
+        return false;
+    }
+}
+
+
+}  // namespace

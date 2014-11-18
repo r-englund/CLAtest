@@ -168,6 +168,7 @@ protected:
     void mouseDoubleClickEvent(QGraphicsSceneMouseEvent* e);
 
     void keyPressEvent(QKeyEvent* keyEvent);
+    void keyReleaseEvent(QKeyEvent* keyEvent);
     void contextMenuEvent(QGraphicsSceneContextMenuEvent* e);
 
     void dragEnterEvent(QGraphicsSceneDragDropEvent* de);
@@ -249,7 +250,6 @@ private:
     ProcessorGraphicsItem* oldProcessorTarget_;
     
     // Connection and link state
-    LinkDialog* linkDialog_;
     ConnectionDragGraphicsItem* connectionCurve_;
     LinkConnectionDragGraphicsItem* linkCurve_;
 

@@ -30,7 +30,10 @@
  *
  *********************************************************************************/
 
+#include <inviwo/core/interaction/events/event.h>
 #include <inviwo/core/properties/property.h>
+#include <inviwo/core/properties/eventproperty.h>
+#include <inviwo/core/properties/compositeproperty.h>
 #include <inviwo/core/properties/propertyowner.h>
 #include <inviwo/core/io/serialization/ivwserializable.h>
 #include <inviwo/core/io/serialization/versionconverter.h>
@@ -64,6 +67,12 @@ void PropertyOwner::addProperty(Property* property) {
     notifyObserversWillAddProperty(property, properties_.size());
     properties_.push_back(property);
     property->setOwner(this);
+    if (dynamic_cast<EventProperty*>(property)) {
+        eventProperties_.push_back(static_cast<EventProperty*>(property));
+    }
+    if (dynamic_cast<CompositeProperty*>(property)) {
+        compositeProperties_.push_back(static_cast<CompositeProperty*>(property));
+    }
     notifyObserversDidAddProperty(property, properties_.size()-1);
 }
 
@@ -72,48 +81,53 @@ void PropertyOwner::addProperty(Property& property) {
 }
 
 Property* PropertyOwner::removeProperty(const std::string& identifier) {
-    Property* prop = NULL;
-    
     std::vector<Property*>::iterator it =
         std::find_if(properties_.begin(), properties_.end(), property_has_identifier(identifier));
-    if (it != properties_.end()) {
-        prop = *it;
-        notifyObserversWillRemoveProperty(prop, std::distance(properties_.begin(), it));
-        properties_.erase(it);
-        notifyObserversDidRemoveProperty(prop, std::distance(properties_.begin(), it));
-    }
-    return prop;
+    return removeProperty(it);;
 }
 
-Property* PropertyOwner::removeProperty(Property* property) {
-    Property* prop = NULL;
-    
+Property* PropertyOwner::removeProperty(Property* property) {  
     std::vector<Property*>::iterator it =
         std::find(properties_.begin(), properties_.end(), property);
-    if (it != properties_.end()) {
-        prop = *it;
-        size_t index = std::distance(properties_.begin(), it);
-        notifyObserversWillRemoveProperty(prop, index);
-        properties_.erase(it);
-        notifyObserversDidRemoveProperty(prop, index);
-    }
-    return prop;
+    return removeProperty(it);
 }
 
 Property* PropertyOwner::removeProperty(Property& property) {
     return removeProperty(&property);
 }
 
-Property* PropertyOwner::getPropertyByIdentifier(const std::string& identifier, bool recursiveSearch) const {
-    for (size_t i=0; i<properties_.size(); i++) {
-        if (properties_[i]->getIdentifier() == identifier)
-            return properties_[i];
-        else if (recursiveSearch && dynamic_cast<PropertyOwner*>(properties_[i])){
-            Property* p = dynamic_cast<PropertyOwner*>(properties_[i])->getPropertyByIdentifier(identifier, true);
+Property* PropertyOwner::removeProperty(std::vector<Property*>::iterator it) {
+    Property* prop = NULL;
+    if (it != properties_.end()) {
+        prop = *it;
+        size_t index = std::distance(properties_.begin(), it);
+        notifyObserversWillRemoveProperty(prop, index);
+
+        std::vector<EventProperty*>::iterator 
+            eit = std::find(eventProperties_.begin(),eventProperties_.end(), *it);
+        if (eit != eventProperties_.end()) eventProperties_.erase(eit);
+        
+        std::vector<CompositeProperty*>::iterator
+            cit = std::find(compositeProperties_.begin(),compositeProperties_.end(), *it);
+        if (cit != compositeProperties_.end()) compositeProperties_.erase(cit);
+
+        properties_.erase(it);
+        notifyObserversDidRemoveProperty(prop, index);
+    }
+    return prop;
+}
+
+Property* PropertyOwner::getPropertyByIdentifier(const std::string& identifier,
+                                                 bool recursiveSearch) const {
+    for (size_t i = 0; i < properties_.size(); i++) {
+        if (properties_[i]->getIdentifier() == identifier) return properties_[i];
+    }
+    if (recursiveSearch) {
+        for (size_t i = 0; i < compositeProperties_.size(); i++) {
+            Property* p = compositeProperties_[i]->getPropertyByIdentifier(identifier, true);
             if (p) return p;
         }
     }
-
     return NULL;
 }
 
@@ -202,6 +216,21 @@ std::string PropertyOwner::invalidationLevelToString(InvalidationLevel level) {
 
 std::vector<std::string> PropertyOwner::getPath() const {
     return std::vector<std::string>();
+}
+
+void PropertyOwner::invokeInteractionEvent(Event* event) {
+    for (std::vector<EventProperty*>::iterator it = eventProperties_.begin();
+         it != eventProperties_.end(); ++it) {
+        if ((*it)->getEvent()->matching(event)) {
+            (*it)->getAction()->invoke(event);
+            if (event->hasBeenUsed()) return;
+        }
+    }
+    for (std::vector<CompositeProperty*>::iterator it = compositeProperties_.begin();
+         it != compositeProperties_.end(); ++it) {
+        (*it)->invokeInteractionEvent(event);
+        if (event->hasBeenUsed()) return;
+    }
 }
 
 } // namespace

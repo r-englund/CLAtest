@@ -40,14 +40,17 @@
 namespace inviwo {
 
 class IVW_CORE_API ResizeEvent : public Event {
-
 public:
     ResizeEvent(uvec2 newSize);
-    ~ResizeEvent();
-    inline uvec2 size() const {return size_; }
-    inline uvec2 previousSize() const {return previousSize_; }
-    inline void setSize(uvec2 csize) {size_ = csize;}
-    inline void setPreviousSize(uvec2 previousSize) {previousSize_ = previousSize;}
+    ResizeEvent(const ResizeEvent& rhs);
+    ResizeEvent& operator=(const ResizeEvent& that);
+    virtual ResizeEvent* clone() const;
+    virtual ~ResizeEvent();
+
+    inline uvec2 size() const { return size_; }
+    inline uvec2 previousSize() const { return previousSize_; }
+    inline void setSize(uvec2 csize) { size_ = csize; }
+    inline void setPreviousSize(uvec2 previousSize) { previousSize_ = previousSize; }
 
 private:
     uvec2 size_;

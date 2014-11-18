@@ -25,7 +25,7 @@
  * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- * 
+ *
  * Contact: Daniel Jönsson
  *
  *********************************************************************************/
@@ -39,77 +39,49 @@
 #include <inviwo/core/interaction/events/gestureevent.h>
 #include <inviwo/core/interaction/events/mouseevent.h>
 #include <inviwo/core/interaction/events/keyboardevent.h>
-#include <inviwo/core/interaction/events/eventlistener.h>
 #include <inviwo/core/interaction/events/resizeevent.h>
-#include <inviwo/core/interaction/trackballaction.h>
+#include <inviwo/core/interaction/action.h>
 #include <inviwo/core/io/serialization/ivwserializable.h>
-#include <inviwo/core/properties/propertyowner.h>
+#include <inviwo/core/properties/boolproperty.h>
+#include <inviwo/core/properties/compositeproperty.h>
 #include <inviwo/core/properties/eventproperty.h>
 #include <inviwo/core/util/observer.h>
 
 namespace inviwo {
+
 class Trackball;
 /** \class TrackballObserver
- *
  * Trackball observer that gets notified when positions and directions change.
- *
  * @see TrackballObservable
  */
-class IVW_CORE_API TrackballObserver: public Observer {
+class IVW_CORE_API TrackballObserver : public Observer {
 public:
-    TrackballObserver(): Observer() {};
-    virtual void onAllTrackballChanged(const Trackball* trackball) {};
-    virtual void onLookFromChanged(const Trackball* trackball) {};
-    virtual void onLookToChanged(const Trackball* trackball) {};
-    virtual void onLookUpChanged(const Trackball* trackball) {};
+    TrackballObserver() : Observer(){};
+    virtual void onAllTrackballChanged(const Trackball* trackball){};
+    virtual void onLookFromChanged(const Trackball* trackball){};
+    virtual void onLookToChanged(const Trackball* trackball){};
+    virtual void onLookUpChanged(const Trackball* trackball){};
 };
-
 
 /** \class TrackballObservable
- *
  * Can call notifyObserversInvalidationBegin and notifyObserversInvalidationEnd
- *
  * @see TrackballObserver
  */
-class IVW_CORE_API TrackballObservable: public Observable<TrackballObserver> {
+class IVW_CORE_API TrackballObservable : public Observable<TrackballObserver> {
 public:
-    TrackballObservable(): Observable<TrackballObserver>() {};
-
-    void notifyAllChanged(const Trackball* trackball) const {
-        // Notify observers
-        for (ObserverSet::iterator it = observers_->begin(), itEnd = observers_->end(); it != itEnd; ++it) {
-            // static_cast can be used since only template class objects can be added
-            static_cast<TrackballObserver*>(*it)->onAllTrackballChanged(trackball);
-        }
-    }
-    void notifyLookFromChanged(const Trackball* trackball) const {
-        // Notify observers
-        for (ObserverSet::iterator it = observers_->begin(), itEnd = observers_->end(); it != itEnd; ++it) {
-            // static_cast can be used since only template class objects can be added
-            static_cast<TrackballObserver*>(*it)->onLookFromChanged(trackball);
-        }
-    }
-    void notifyLookToChanged(const Trackball* trackball) const {
-        // Notify observers
-        for (ObserverSet::iterator it = observers_->begin(), itEnd = observers_->end(); it != itEnd; ++it) {
-            // static_cast can be used since only template class objects can be added
-            static_cast<TrackballObserver*>(*it)->onLookToChanged(trackball);
-        }
-    }
-    void notifyLookUpChanged(const Trackball* trackball) const {
-        // Notify observers
-        for (ObserverSet::iterator it = observers_->begin(), itEnd = observers_->end(); it != itEnd; ++it) {
-            // static_cast can be used since only template class objects can be added
-            static_cast<TrackballObserver*>(*it)->onLookUpChanged(trackball);
-        }
-    }
+    TrackballObservable();
+    void notifyAllChanged(const Trackball* trackball) const;
+    void notifyLookFromChanged(const Trackball* trackball) const;
+    void notifyLookToChanged(const Trackball* trackball) const;
+    void notifyLookUpChanged(const Trackball* trackball) const;
 };
 
-class IVW_CORE_API Trackball : public InteractionHandler, public PropertyOwner, public TrackballObservable {
-
+class IVW_CORE_API Trackball : public CompositeProperty,
+                               public TrackballObservable {
 public:
+    InviwoPropertyInfo();
     /**
-     * Rotates and moves object around a sphere. 
+     * Rotates and moves object around a sphere.
      * This object does not take ownership of pointers handed to it.
      * Use TrackballObserver to receive notifications when the data has changed.
      * @see TrackballCamera
@@ -120,14 +92,7 @@ public:
     Trackball(vec3* lookFrom, vec3* lookTo, vec3* lookUp);
     virtual ~Trackball();
 
-    virtual void invokeEvent(Event* event);
-    void addProperty(Property& property);
-    void addProperty(Property* property);
-
-    virtual std::string getClassIdentifier() const { return "Trackball"; }
-
-    void serialize(IvwSerializer& s) const;
-    void deserialize(IvwDeserializer& d);
+    virtual void invokeInteractionEvent(Event* event);
 
     vec3* getLookTo() { return lookTo_; }
     vec3* getLookFrom() { return lookFrom_; }
@@ -137,12 +102,36 @@ public:
     const vec3* getLookUp() const { return lookUp_; }
 
 private:
-    enum Direction {
-        UP = 0,
-        LEFT,
-        DOWN,
-        RIGHT
-    };
+    enum Direction { UP = 0, LEFT, DOWN, RIGHT };
+
+    vec3 mapNormalizedMousePosToTrackball(const vec2& mousePos, float dist = 1.f);
+    vec3 mapToObject(vec3 pos, float dist = 1.f);
+    void rotateFromPosToPos(const vec3& currentCamPos, const vec3& nextCamPos, float rotationAngle);
+
+    void rotate(Event* event);
+    void zoom(Event* event);
+    void pan(Event* event);
+    void reset(Event* event);
+
+    void stepRotate(Direction dir);
+    void stepZoom(Direction dir);
+    void stepPan(Direction dir);
+
+    void rotateLeft(Event* event);
+    void rotateRight(Event* event);
+    void rotateUp(Event* event);
+    void rotateDown(Event* event);
+
+    void panLeft(Event* event);
+    void panRight(Event* event);
+    void panUp(Event* event);
+    void panDown(Event* event);
+
+    void zoomIn(Event* event);
+    void zoomOut(Event* event);
+    
+    void pinchGesture(Event* event);
+    void panGesture(Event* event);
 
     float pixelWidth_;
     bool isMouseBeingPressedAndHold_;
@@ -154,73 +143,29 @@ private:
     vec3* lookTo_;
     vec3* lookUp_;
 
+    BoolProperty handleInteractionEvents_;
 
+    // Event Properties.
+    EventProperty mouseRotate_;
+    EventProperty mouseZoom_;
+    EventProperty mousePan_;
+    EventProperty mouseReset_;
 
+    EventProperty stepRotateUp_;
+    EventProperty stepRotateLeft_;
+    EventProperty stepRotateDown_;
+    EventProperty stepRotateRight_;
 
-    MouseEvent rotateEvent_;
-    MouseEvent zoomEvent_;
-    MouseEvent panEvent_;
-
-    KeyboardEvent stepRotateUpEvent_;
-    KeyboardEvent stepRotateLeftEvent_;
-    KeyboardEvent stepRotateDownEvent_;
-    KeyboardEvent stepRotateRightEvent_;
-
-    KeyboardEvent stepZoomInEvent_;
-    KeyboardEvent stepZoomOutEvent_;
-    KeyboardEvent stepPanUpEvent_;
-    KeyboardEvent stepPanLeftEvent_;
-    KeyboardEvent stepPanDownEvent_;
-    KeyboardEvent stepPanRightEvent_;
-
-
-
-    TrackballAction rotateAction_;
-    TrackballAction zoomAction_;
-    TrackballAction panAction_;
-
-    TrackballAction stepRotateUpAction_;
-    TrackballAction stepRotateLeftAction_;
-    TrackballAction stepRotateDownAction_;
-    TrackballAction stepRotateRightAction_;
-
-    TrackballAction stepZoomInAction_;
-    TrackballAction stepZoomOutAction_;
-    TrackballAction stepPanUpAction_;
-    TrackballAction stepPanLeftAction_;
-    TrackballAction stepPanDownAction_;
-    TrackballAction stepPanRightAction_;
-
-
-    EventProperty rotateEventProperty_;
-    EventProperty zoomEventProperty_;
-    EventProperty panEventProperty_;
-
-    EventProperty stepRotateUpProperty_;
-    EventProperty stepRotateLeftProperty_;
-    EventProperty stepRotateDownProperty_;
-    EventProperty stepRotateRightProperty_;
-
-    EventProperty stepZoomInProperty_;
-    EventProperty stepZoomOutProperty_;
-    EventProperty stepPanUpProperty_;
-    EventProperty stepPanLeftProperty_;
-    EventProperty stepPanDownProperty_;
-    EventProperty stepPanRightProperty_;
-
-    vec3 mapNormalizedMousePosToTrackball(const vec2& mousePos, float dist = 1.f);
-    vec3 mapToObject(vec3 pos, float dist = 1.f);
-    void rotate(MouseEvent* mouseEvent);
-
-    void rotateFromPosToPos(const vec3& currentCamPos, const vec3& nextCamPos, float rotationAngle);
-
-    void zoom(MouseEvent* mouseEvent);
-    void pan(MouseEvent* mouseEvent);
-    void stepRotate(Direction dir);
-    void stepZoom(Direction dir);
-    void stepPan(Direction dir);
+    EventProperty stepZoomIn_;
+    EventProperty stepZoomOut_;
+    EventProperty stepPanUp_;
+    EventProperty stepPanLeft_;
+    EventProperty stepPanDown_;
+    EventProperty stepPanRight_;
+    
+    EventProperty pinchGesture_;
+    EventProperty panGesture_;
 };
-
 }
 
-#endif // IVW_TRACKBALL_H
+#endif  // IVW_TRACKBALL_H

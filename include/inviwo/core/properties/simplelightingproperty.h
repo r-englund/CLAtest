@@ -84,7 +84,6 @@ public:
     FloatVec3Property lightAttenuation_;
     BoolProperty applyLightAttenuation_;
 
-
 };
 
 } // namespace

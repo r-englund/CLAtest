@@ -42,8 +42,6 @@ void InteractionHandler::serialize(IvwSerializer& s) const {
 }
 
 void InteractionHandler::deserialize(IvwDeserializer& d) {
-    std::string className;
-    d.deserialize("type", className, true);
 }
 
 } // namespace

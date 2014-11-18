@@ -38,7 +38,7 @@
 #include <inviwo/core/datastructures/volume/volumeramprecision.h>
 #include <modules/opengl/volume/volumegl.h>
 #include <inviwo/core/common/inviwoapplication.h>
-#include <inviwo/core/util/urlparser.h>
+#include <inviwo/core/util/filesystem.h>
 #include <math.h>
 
 #include <gtest/gtest.h>
@@ -50,7 +50,7 @@ template<typename T>
 void testVolumeLoad(std::string filename) {
     std::string file = InviwoApplication::getPtr()->getPath(InviwoApplication::PATH_MODULES)
                        + "unittests/testdata/" + filename;
-    std::string fileExtension = URLParser::getFileExtension(file);
+    std::string fileExtension = filesystem::getFileExtension(file);
     DataReaderType<Volume>* reader =
         DataReaderFactory::getPtr()->getReaderForTypeAndExtension<Volume>(fileExtension);
     ASSERT_TRUE(reader != NULL);
@@ -93,7 +93,7 @@ template<typename T>
 void testVolumeClone(std::string filename) {
     std::string file = InviwoApplication::getPtr()->getPath(InviwoApplication::PATH_MODULES)
         + "unittests/testdata/" + filename;
-    std::string fileExtension = URLParser::getFileExtension(file);
+    std::string fileExtension = filesystem::getFileExtension(file);
     DataReaderType<Volume>* reader =
         DataReaderFactory::getPtr()->getReaderForTypeAndExtension<Volume>(fileExtension);
     ASSERT_TRUE(reader != NULL);

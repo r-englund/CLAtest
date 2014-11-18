@@ -68,6 +68,7 @@ public:
 
     FileProperty(const FileProperty& rhs);
     FileProperty& operator=(const FileProperty& that);
+    FileProperty& operator=(const std::string& value);
     virtual FileProperty* clone() const;
     virtual ~FileProperty();
 

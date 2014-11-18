@@ -662,13 +662,13 @@ void VolumeSliceGL::VolumeSliceGLInteractionHandler::invokeEvent(Event* event) {
 
     MouseEvent* mouseEvent = dynamic_cast<MouseEvent*>(event);
     if (mouseEvent) {
-        MouseEvent::MouseState state = mouseEvent->state();
-        InteractionEvent::Modifier modifier = mouseEvent->modifier();
+        int state = mouseEvent->state();
+        int modifier = mouseEvent->modifiers();
 
-        if (modifier == wheelEvent_.modifier() && state == MouseEvent::MOUSE_STATE_WHEEL) {
+        if (modifier == wheelEvent_.modifiers() && state == MouseEvent::MOUSE_STATE_WHEEL) {
             int steps = mouseEvent->wheelSteps();
             slicer_->shiftSlice(steps);
-        } else if ((modifier == mousePressEvent_.modifier()) &&
+        } else if ((modifier == mousePressEvent_.modifiers()) &&
                    (mouseEvent->button() == MouseEvent::MOUSE_BUTTON_LEFT) &&
                    ((state == MouseEvent::MOUSE_STATE_MOVE) ||
                     (state == MouseEvent::MOUSE_STATE_PRESS))) {
@@ -681,13 +681,13 @@ void VolumeSliceGL::VolumeSliceGLInteractionHandler::invokeEvent(Event* event) {
     KeyboardEvent* keyEvent = dynamic_cast<KeyboardEvent*>(event);
     if (keyEvent) {
         int button = keyEvent->button();
-        KeyboardEvent::KeyState state = keyEvent->state();
-        InteractionEvent::Modifier modifier = keyEvent->modifier();
+        int state = keyEvent->state();
+        int modifier = keyEvent->modifiers();
 
-        if (button == upEvent_.button() && modifier == upEvent_.modifier() &&
+        if (button == upEvent_.button() && modifier == upEvent_.modifiers() &&
             state == KeyboardEvent::KEY_STATE_PRESS)
             slicer_->shiftSlice(1);
-        else if (button == downEvent_.button() && modifier == downEvent_.modifier() &&
+        else if (button == downEvent_.button() && modifier == downEvent_.modifiers() &&
                  state == KeyboardEvent::KEY_STATE_PRESS)
             slicer_->shiftSlice(-1);
 

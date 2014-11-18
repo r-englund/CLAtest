@@ -36,7 +36,7 @@
 #include <inviwo/qt/widgets/properties/transferfunctioneditorcontrolpoint.h>
 #include <inviwo/core/common/inviwoapplication.h>
 #include <inviwo/core/datastructures/image/layerram.h>
-#include <inviwo/core/util/urlparser.h>
+#include <inviwo/core/util/filesystem.h>
 #include <inviwo/core/io/datawriterfactory.h>
 #include <QFileDialog>
 #include <QImage>
@@ -419,7 +419,7 @@ void TransferFunctionPropertyDialog::exportTransferFunction() {
 
     if (exportFileDialog.exec()) {
         std::string file = exportFileDialog.selectedFiles().at(0).toLocal8Bit().constData();
-        std::string extension = URLParser::getFileExtension(file);
+        std::string extension = filesystem::getFileExtension(file);
 
         if (extension == "") {
             // fall-back to standard inviwo TF format

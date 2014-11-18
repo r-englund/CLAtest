@@ -43,7 +43,7 @@
 #include <inviwo/core/datastructures/volume/volumeramprecision.h>
 #include <inviwo/core/ports/volumeport.h>
 #include <inviwo/core/properties/transferfunctionproperty.h>
-#include <inviwo/core/util/urlparser.h>
+#include <inviwo/core/util/filesystem.h>
 
 namespace inviwo {
 

@@ -38,36 +38,22 @@
 
 namespace inviwo {
 
-template<typename T>
+template <typename T>
 class VolumeRAMPrecision : public VolumeRAM {
 public:
-    VolumeRAMPrecision(uvec3 dimensions = uvec3(128,128,128), const DataFormatBase* format = defaultformat());
-    VolumeRAMPrecision(T* data, uvec3 dimensions = uvec3(128,128,128), const DataFormatBase* format = defaultformat());
-    VolumeRAMPrecision(const VolumeRAMPrecision<T>& rhs)
-        : VolumeRAM(rhs) {
-        initialize(0);
-        memcpy(data_, rhs.getData(), dimensions_.x*dimensions_.y*dimensions_.z*sizeof(T));
-    }
+    VolumeRAMPrecision(uvec3 dimensions = uvec3(128, 128, 128),
+                       const DataFormatBase* format = defaultformat());
+    VolumeRAMPrecision(T* data, uvec3 dimensions = uvec3(128, 128, 128),
+                       const DataFormatBase* format = defaultformat());
+    VolumeRAMPrecision(const VolumeRAMPrecision<T>& rhs);
+    VolumeRAMPrecision<T>& operator=(const VolumeRAMPrecision<T>& that);
+    virtual VolumeRAMPrecision<T>* clone() const;
+    virtual ~VolumeRAMPrecision();
 
-    VolumeRAMPrecision<T>& operator=(const VolumeRAMPrecision<T>& rhs) {
-        if (this != &rhs) {
-            VolumeRAM::operator=(rhs);
-            delete[] data_;
-            dimensions_ = rhs.getDimension();
-            initialize(0);
-            memcpy(data_, rhs.getData(), dimensions_.x*dimensions_.y*dimensions_.z*sizeof(T));
-        }
-
-        return *this;
-    };
-    virtual ~VolumeRAMPrecision() {
-        deinitialize();
-    };
     virtual void performOperation(DataOperation* dop) const;
     using VolumeRAM::initialize;
     virtual void initialize(void*);
     virtual void deinitialize();
-    virtual VolumeRAMPrecision<T>* clone() const;
 
     using VolumeRAM::getData;
     void* getData(size_t);
@@ -80,7 +66,8 @@ public:
     void setValueFromVec3Double(const uvec3& pos, dvec3 val);
     void setValueFromVec4Double(const uvec3& pos, dvec4 val);
 
-    void setValuesFromVolume(const VolumeRAM* src, const uvec3& dstOffset, const uvec3& subSize, const uvec3& subOffset);
+    void setValuesFromVolume(const VolumeRAM* src, const uvec3& dstOffset, const uvec3& subSize,
+                             const uvec3& subOffset);
 
     double getValueAsSingleDouble(const uvec3& pos) const;
     dvec2 getValueAsVec2Double(const uvec3& pos) const;
@@ -88,25 +75,36 @@ public:
     dvec4 getValueAsVec4Double(const uvec3& pos) const;
 
 private:
-    static const DataFormatBase* defaultformat() {
-        return GenericDataFormat(T)::get();
-    }
+    static const DataFormatBase* defaultformat() { return GenericDataFormat(T)::get(); }
 };
 
-template<typename T, size_t B>
+template <typename T, size_t B>
 class VolumeRAMCustomPrecision : public VolumeRAMPrecision<T> {
 public:
-    VolumeRAMCustomPrecision(uvec3 dimensions = uvec3(128,128,128),
-                             const DataFormatBase* format =  defaultformat()) : VolumeRAMPrecision<T>(dimensions, format) {};
-    VolumeRAMCustomPrecision(T* data, uvec3 dimensions = uvec3(128,128,128),
-                             const DataFormatBase* format = defaultformat()) : VolumeRAMPrecision<T>(data, dimensions, format) {};
+    VolumeRAMCustomPrecision(uvec3 dimensions = uvec3(128, 128, 128),
+                             const DataFormatBase* format = defaultformat())
+        : VolumeRAMPrecision<T>(dimensions, format) {}
+    VolumeRAMCustomPrecision(T* data, uvec3 dimensions = uvec3(128, 128, 128),
+                             const DataFormatBase* format = defaultformat())
+        : VolumeRAMPrecision<T>(data, dimensions, format) {}
+
+    VolumeRAMCustomPrecision(const VolumeRAMCustomPrecision<T, B>& rhs)
+        : VolumeRAMPrecision<T>(rhs) {}
+    VolumeRAMCustomPrecision<T, B>& operator=(const VolumeRAMCustomPrecision<T, B>& that) {
+        if (this != &that) {
+            VolumeRAMPrecision<T>::operator=(that); 
+        }
+        return *this;
+    }
+    virtual VolumeRAMCustomPrecision<T, B>* clone() const {
+        return new VolumeRAMCustomPrecision<T, B>(*this);
+    }
+
     virtual ~VolumeRAMCustomPrecision() {};
     void performOperation(DataOperation*) const;
 
 private:
-    static const DataFormatBase* defaultformat() {
-        return DataFormat<T, B>::get();
-    }
+    static const DataFormatBase* defaultformat() { return DataFormat<T, B>::get(); }
 };
 
 template<typename T>
@@ -120,6 +118,30 @@ VolumeRAMPrecision<T>::VolumeRAMPrecision(T* data, uvec3 dimensions, const DataF
     : VolumeRAM(dimensions, format) {
     initialize(data);
 }
+
+template <typename T>
+VolumeRAMPrecision<T>::VolumeRAMPrecision(const VolumeRAMPrecision<T>& rhs)
+    : VolumeRAM(rhs) {
+    initialize(0);
+    memcpy(data_, rhs.getData(), dimensions_.x * dimensions_.y * dimensions_.z * sizeof(T));
+}
+
+template <typename T>
+VolumeRAMPrecision<T>& VolumeRAMPrecision<T>::operator=(const VolumeRAMPrecision<T>& that) {
+    if (this != &that) {
+        VolumeRAM::operator=(that);
+        delete[] data_;
+        dimensions_ = that.getDimension();
+        initialize(0);
+        memcpy(data_, that.getData(), dimensions_.x*dimensions_.y*dimensions_.z*sizeof(T));
+    }
+    return *this;
+};
+
+template <typename T>
+VolumeRAMPrecision<T>::~VolumeRAMPrecision() {
+    deinitialize();
+};
 
 template<typename T>
 void VolumeRAMPrecision<T>::initialize(void* data) {

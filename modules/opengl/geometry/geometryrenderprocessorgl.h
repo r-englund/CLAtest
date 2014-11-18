@@ -79,7 +79,7 @@ protected:
     CameraProperty camera_;
     ButtonProperty centerViewOnGeometry_;
     ButtonProperty resetViewParams_;
-    CameraTrackball* trackball_;
+    CameraTrackball trackball_;
 
     std::vector<GeometryRenderer*> renderers_;
     

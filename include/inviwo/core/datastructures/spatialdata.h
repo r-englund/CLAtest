@@ -213,16 +213,24 @@ public:
         structuredData_(structuredData) {};
     virtual ~StructuredCoordinateTransformer() {};
 
+    /**
+     * Returns the matrix transformation mapping from texture coordinates
+     * to voxel index coordinates, i.e. from [0,1] to [-0.5, number of voxels-0.5]
+     * @note Data is centered on the voxel, see OpenGL specifications, figure 8.3 
+     * http://www.opengl.org/registry/doc/glspec43.core.20120806.pdf 
+     * or for instance http://bpeers.com/articles/glpixel/
+    * @see CoordinateTransformer::getTextureToIndexMatrix
+     */
     virtual const Matrix<N+1,float> getDimensionMatrix() const {
         Vector<N,unsigned int> dim = structuredData_->getDimension();
         Matrix<N+1,float> mat(0.0f);
 
         for (int i=0; i<N; i++)
-            mat[i][i]=static_cast<float>(dim[i]-1);
+            mat[i][i]=static_cast<float>(dim[i]);
 
         // Offset to coordinates to center them in the middle of the texel/voxel.
         for (int i=0; i<N; i++) {
-            mat[N][i] = 0.5f;
+            mat[N][i] = -0.5f;
         }
 
         mat[N][N]=1.0f;

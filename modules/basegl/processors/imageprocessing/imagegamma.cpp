@@ -3,7 +3,7 @@
  * Inviwo - Interactive Visualization Workshop
  * Version 0.6b
  *
- * Copyright (c) 2013-2014 Inviwo Foundation
+ * Copyright (c) 2014 Inviwo Foundation
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -26,18 +26,32 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  * 
- * Contact: Erik Sundén
+ * Contact: Martin Falk
  *
  *********************************************************************************/
 
-#include "include/inc_classification.frag"
+#include "imagegamma.h"
+#include <modules/opengl/glwrap/shader.h>
 
-uniform sampler2D inport_;
-uniform vec2 dimension_;
+namespace inviwo {
 
-void main() {
-    vec2 texCoords = gl_FragCoord.xy * dimension_;
-    vec4 value = texture(inport_, texCoords);
-    vec4 color = applyTF(transferFunc_, value);
-    FragData0 = color;
+ProcessorClassIdentifier(ImageGamma, "org.inviwo.ImageGamma");
+ProcessorDisplayName(ImageGamma, "Image Gamma");
+ProcessorTags(ImageGamma, Tags::GL);
+ProcessorCategory(ImageGamma, "Image Operation");
+ProcessorCodeState(ImageGamma, CODE_STATE_STABLE);
+
+ImageGamma::ImageGamma() 
+    : ImageGPUProcessor("img_gamma.frag")
+    , gamma_("gammaFactor", "Gamma Correction", 1.0f, 0.0f, 2.0f, 0.01f)
+{
+    addProperty(gamma_);
 }
+
+ImageGamma::~ImageGamma() {}
+
+void ImageGamma::preProcess() {
+    shader_->setUniform("gamma_", gamma_.get());
+}
+
+}  // namespace

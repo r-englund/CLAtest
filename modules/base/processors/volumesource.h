@@ -56,53 +56,29 @@ public:
 
     InviwoProcessorInfo();
 
-    void onOverrideChange();
-    void onPlaySequenceToggled();
-    void onSequenceIndexChanged();
-
     virtual void serialize(IvwSerializer& s) const;
     virtual void deserialize(IvwDeserializer& d);
 
 protected:
     virtual void dataLoaded(Volume* data);
+    virtual void dataDeserialized(Volume* data);
     virtual void process();
     
     void onSequenceTimerEvent();
+    void onOverrideChange();
+    void onPlaySequenceToggled();
+    void onSequenceIndexChanged();
 
 private:
 
-    void saveState();
-    void restoreState();
+    // T models TemplateProperty<U>
+    template<typename T, typename U>
+    void setStateAsDefault(T& property, const U& state);
 
-    struct VolumeSourceState {
-    public:
-        VolumeSourceState();
-        DoubleMinMaxProperty dataRange;
-        DoubleMinMaxProperty valueRange;
-        StringProperty valueUnit;
-        BoolProperty overRideDefaults;
-        FloatVec3Property a;
-        FloatVec3Property b;
-        FloatVec3Property c;
-        FloatVec3Property offset;
+    CompositeProperty basis_;
+    CompositeProperty information_;
+    CompositeProperty volumeSequence_;
 
-        static void assignStateIfChanged(const DoubleMinMaxProperty& in, 
-                                         const DoubleMinMaxProperty& ref,
-                                         DoubleMinMaxProperty& out);
-
-        static void assignStateIfChanged(const StringProperty& in,
-                                         const StringProperty& ref,
-                                         StringProperty& out);
-
-        static void assignStateIfChanged(const BoolProperty& in,
-                                         const BoolProperty& ref,
-                                         BoolProperty& out);
-
-        static void assignStateIfChanged(const FloatVec3Property& in,
-                                         const FloatVec3Property& ref,
-                                         FloatVec3Property& out);
-    };
-    
     DoubleMinMaxProperty dataRange_;
     DoubleMinMaxProperty valueRange_;
     StringProperty valueUnit_;
@@ -111,29 +87,32 @@ private:
     FloatVec3Property b_;
     FloatVec3Property c_;
     FloatVec3Property offset_;
+    
+    FloatVec3Property overrideA_;
+    FloatVec3Property overrideB_;
+    FloatVec3Property overrideC_;
+    FloatVec3Property overrideOffset_;
 
+    // Readonly only use to show information
+    StringProperty dimensions_;
+    StringProperty format_;
+
+    // Sequence properties
     IntProperty selectedSequenceIndex_;
     BoolProperty playSequence_;
     IntProperty volumesPerSecond_;
 
-    vec3 overrideA_;
-    vec3 overrideB_;
-    vec3 overrideC_;
-    vec3 overrideOffset_;
-    
-    // Readonly only use to show information
-    StringProperty dimensions_;
-    StringProperty format_;
-    
-    CompositeProperty basis_;
-    CompositeProperty information_;
-
-    VolumeSourceState oldState;
-
-    bool isDeserializing_;
-
     Timer* sequenceTimer_;
 };
+
+template<typename T, typename U>
+void VolumeSource::setStateAsDefault(T& property, const U& state) {
+    U tmp = property;
+    property = state;
+    property.setCurrentStateAsDefault();
+    property = tmp;
+}
+
 
 } // namespace
 

@@ -26,55 +26,20 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  * 
- * Contact: Sathish Kottravel
+ * Contact: Martin Falk
  *
  *********************************************************************************/
 
-#ifndef IVW_MAPPINGWIDGET_H
-#define IVW_MAPPINGWIDGET_H
+#include "utils/structs.glsl"
 
-#include <inviwo/core/network/processornetworkobserver.h>
-#include <inviwo/qt/editor/inviwoqteditordefine.h>
-#include <inviwo/qt/widgets/inviwodockwidget.h>
-#include <inviwo/core/util/observer.h>
-#include <inviwo/core/properties/eventproperty.h>
-#include <vector>
-#include <QFrame>
-#include <QVBoxLayout>
-#include <QScrollArea>
-#include <QComboBox>
+uniform TEXTURE_PARAMETERS outportParameters_;
 
-namespace inviwo {
+uniform sampler2D inport_;
+uniform float gamma_;
 
-class Processor;
-class ProcessorNetwork;
-class EventPropertyManager;
-
-class IVW_QTEDITOR_API MappingWidget : public InviwoDockWidget, public ProcessorNetworkObserver {
-    Q_OBJECT
-public:
-    MappingWidget(QWidget* parent);
-    ~MappingWidget();
-    void onProcessorNetworkChange();
-
-private:
-    void updateWidget();
-    void buildLayout();
-    void findProcessorsWithInteractionHandlers(std::vector<Processor*>* container, std::vector<Processor*> processors);
-
-    ProcessorNetwork* processorNetwork_;
-    EventPropertyManager* eventPropertyManager_;
-    std::vector<Processor*>* processorsWithInteractionHandlers_;
-    size_t prevProcessorsWithInteractionHandlersSize_;
-
-    QComboBox* comboBox_;
-
-    int currentIndex_;
-public slots:
-    void comboBoxChange();
-
-};
-
-} // namespace
-
-#endif // IVW_MAPPINGWIDGET_H
+void main() {
+    vec2 texCoords = gl_FragCoord.xy * outportParameters_.dimensionsRCP_;
+    vec4 inputColor = texture(inport_, texCoords);
+    vec4 dstColor = vec4(pow(inputColor.rgb, vec3(gamma_)), inputColor.a);
+    FragData0 = dstColor;
+}

@@ -33,7 +33,7 @@
 #include "volumesource.h"
 #include <inviwo/core/resources/resourcemanager.h>
 #include <inviwo/core/resources/templateresource.h>
-#include <inviwo/core/util/urlparser.h>
+#include <inviwo/core/util/filesystem.h>
 #include <inviwo/core/io/datareaderfactory.h>
 #include <inviwo/core/io/rawvolumereader.h>
 #include <inviwo/core/network/processornetwork.h>
@@ -52,6 +52,9 @@ ProcessorCodeState(VolumeSource, CODE_STATE_EXPERIMENTAL);
 
 VolumeSource::VolumeSource()
     : DataSource<Volume, VolumeOutport>()
+    , basis_("Basis", "Basis and offset")
+    , information_("Information", "Data information")
+    , volumeSequence_("Sequence", "Sequence")
     , dataRange_("dataRange", "Data range", 0., 255.0, -DataFLOAT64::max(), DataFLOAT64::max(), 0.0,
                  0.0, PropertyOwner::INVALID_OUTPUT, PropertySemantics("Text"))
     , valueRange_("valueRange", "Value range", 0., 255.0, -DataFLOAT64::max(), DataFLOAT64::max(),
@@ -62,119 +65,188 @@ VolumeSource::VolumeSource()
     , b_("b", "B", vec3(0.0f, 1.0f, 0.0f), vec3(-10.0f), vec3(10.0f))
     , c_("c", "C", vec3(0.0f, 0.0f, 1.0f), vec3(-10.0f), vec3(10.0f))
     , offset_("offset", "Offset", vec3(0.0f), vec3(-10.0f), vec3(10.0f))
-    , selectedSequenceIndex_("selectedSequenceIndex", "Selected Sequence Index", 1, 1, 1, 1, PropertyOwner::VALID)
-    , playSequence_("playSequence", "Play Sequence", false)
-    , volumesPerSecond_("volumesPerSecond", "Volumes Per Second", 30, 1, 60, 1, PropertyOwner::VALID)
+    
+    , overrideA_("overrideA", "A", vec3(1.0f, 0.0f, 0.0f), vec3(-10.0f), vec3(10.0f))
+    , overrideB_("overrideB", "B", vec3(0.0f, 1.0f, 0.0f), vec3(-10.0f), vec3(10.0f))
+    , overrideC_("overrideC", "C", vec3(0.0f, 0.0f, 1.0f), vec3(-10.0f), vec3(10.0f))
+    , overrideOffset_("overrideOffset", "Offset", vec3(0.0f), vec3(-10.0f), vec3(10.0f))
+
     , dimensions_("dimensions", "Dimensions")
     , format_("format", "Format", "")
-    , basis_("Basis", "Basis and offset")
-    , information_("Information", "Data information")
-    , isDeserializing_(false)
+
+    , selectedSequenceIndex_("selectedSequenceIndex", "Sequence Index", 1, 1, 1, 1, PropertyOwner::VALID)
+    , playSequence_("playSequence", "Play Sequence", false)
+    , volumesPerSecond_("volumesPerSecond", "Frame rate", 30, 1, 60, 1, PropertyOwner::VALID)
+
     , sequenceTimer_(NULL) {
 
     DataSource<Volume, VolumeOutport>::file_.setContentType("volume");
     DataSource<Volume, VolumeOutport>::file_.setDisplayName("Volume file");
 
-    a_.setReadOnly(true);
-    b_.setReadOnly(true);
-    c_.setReadOnly(true);
-    offset_.setReadOnly(true);
-
     dimensions_.setReadOnly(true);
     format_.setReadOnly(true);
     dimensions_.setCurrentStateAsDefault();
     format_.setCurrentStateAsDefault();
-
-    overrideA_ = a_.get();
-    overrideB_ = b_.get();
-    overrideC_ = c_.get();
-    overrideOffset_ = offset_.get();
-
-    overRideDefaults_.onChange(this, &VolumeSource::onOverrideChange);
-
+    dataRange_.setSerializationMode(ALL);
+    valueRange_.setSerializationMode(ALL);
+    valueUnit_.setSerializationMode(ALL);
+    
     information_.addProperty(dimensions_);
     information_.addProperty(format_);
     information_.addProperty(dataRange_);
     information_.addProperty(valueRange_);
     information_.addProperty(valueUnit_);
-
     addProperty(information_);
 
+    a_.setReadOnly(true);
+    a_.setSerializationMode(ALL);
+    b_.setReadOnly(true);
+    b_.setSerializationMode(ALL);
+    c_.setReadOnly(true);
+    c_.setSerializationMode(ALL);
+    offset_.setReadOnly(true);
+    offset_.setSerializationMode(ALL);
+    
+    overrideA_.setSerializationMode(ALL);
+    overrideA_.setVisible(false);
+    overrideB_.setSerializationMode(ALL);
+    overrideB_.setVisible(false);
+    overrideC_.setSerializationMode(ALL);
+    overrideC_.setVisible(false);
+    overrideOffset_.setSerializationMode(ALL);
+    overrideOffset_.setVisible(false);
+    
+    overRideDefaults_.onChange(this, &VolumeSource::onOverrideChange);
     basis_.addProperty(overRideDefaults_);
     basis_.addProperty(a_);
     basis_.addProperty(b_);
     basis_.addProperty(c_);
     basis_.addProperty(offset_);
-
+    basis_.addProperty(overrideA_);
+    basis_.addProperty(overrideB_);
+    basis_.addProperty(overrideC_);
+    basis_.addProperty(overrideOffset_);
 	addProperty(basis_);
-    addProperty(playSequence_);
-    playSequence_.setVisible(false);
+        
     playSequence_.onChange(this, &VolumeSource::onPlaySequenceToggled);
-
-    addProperty(selectedSequenceIndex_);
-    selectedSequenceIndex_.setVisible(false);
     selectedSequenceIndex_.onChange(this, &VolumeSource::onSequenceIndexChanged);
-
-    addProperty(volumesPerSecond_);
-    volumesPerSecond_.setVisible(false);
-
+    selectedSequenceIndex_.setSerializationMode(ALL);
+    volumeSequence_.addProperty(selectedSequenceIndex_);
+    volumeSequence_.addProperty(playSequence_);
+    volumeSequence_.addProperty(volumesPerSecond_);
+    volumeSequence_.setVisible(false);
+    addProperty(volumeSequence_);
+        
     sequenceTimer_ = InviwoApplication::getPtr()->createTimer();
     sequenceTimer_->setElapsedTimeCallback(this, &VolumeSource::onSequenceTimerEvent);
 }
 
 VolumeSource::~VolumeSource() {
     delete sequenceTimer_;
-    sequenceTimer_ = 0;
 }
 
 void VolumeSource::onOverrideChange() {
-    if (this->isDeserializing_) {
-        return;
-    }
+    if (this->isDeserializing()) return;
+    
+    if (overRideDefaults_) {
+        a_.setVisible(false);
+        b_.setVisible(false);
+        c_.setVisible(false);
+        offset_.setVisible(false);
 
-    if (!overRideDefaults_.get()) {
-        overrideA_ = a_.get();
-        overrideB_ = b_.get();
-        overrideC_ = c_.get();
-        overrideOffset_ = offset_.get();
-        a_.resetToDefaultState();
-        b_.resetToDefaultState();
-        c_.resetToDefaultState();
-        offset_.resetToDefaultState();
-        a_.setReadOnly(true);
-        b_.setReadOnly(true);
-        c_.setReadOnly(true);
-        offset_.setReadOnly(true);
+        overrideA_.setVisible(true);
+        overrideB_.setVisible(true);
+        overrideC_.setVisible(true);
+        overrideOffset_.setVisible(true);
     } else {
-        a_.set(overrideA_);
-        b_.set(overrideB_);
-        c_.set(overrideC_);
-        offset_.set(overrideOffset_);
-        
-        a_.setReadOnly(false);
-        b_.setReadOnly(false);
-        c_.setReadOnly(false);
-        offset_.setReadOnly(false);
+        overrideA_.setVisible(false);
+        overrideB_.setVisible(false);
+        overrideC_.setVisible(false);
+        overrideOffset_.setVisible(false);
+
+        a_.setVisible(true);
+        b_.setVisible(true);
+        c_.setVisible(true);
+        offset_.setVisible(true);
     }
 }
 
-void VolumeSource::dataLoaded(Volume* volume) {
+void VolumeSource::dataDeserialized(Volume* volume) {
+    // We are deserializing a workspace, so here we
+    // mainly need to make sure that the defaults are correct.
+    
     InviwoApplication::getPtr()->getProcessorNetwork()->lock();
     
-    // Save the old state, used when we have deserialized to be able to restore deserialized values
-    // after the file loading have read in the default values.
-    saveState();
+    setStateAsDefault(dataRange_, volume->dataMap_.dataRange);
+    setStateAsDefault(valueRange_, volume->dataMap_.valueRange);
+    setStateAsDefault(valueUnit_, volume->dataMap_.valueUnit);
+    setStateAsDefault(a_, volume->getBasis()[0]);
+    setStateAsDefault(b_, volume->getBasis()[1]);
+    setStateAsDefault(c_, volume->getBasis()[2]);
+    setStateAsDefault(offset_, volume->getOffset());
+    
+    setStateAsDefault(overrideA_, volume->getBasis()[0]);
+    setStateAsDefault(overrideB_, volume->getBasis()[1]);
+    setStateAsDefault(overrideC_, volume->getBasis()[2]);
+    setStateAsDefault(overrideOffset_, volume->getOffset());
+    
+    std::stringstream ss;
+    ss << volume->getDimension().x << " x "
+       << volume->getDimension().y << " x "
+       << volume->getDimension().z;
 
+    DataSequence<Volume>* volumeSequence = dynamic_cast<DataSequence<Volume>*>(volume);
+    if(volumeSequence){
+        ss << " x " << volumeSequence->getNumSequences();
+        volumeSequence_.setVisible(true);
+        selectedSequenceIndex_.setMaxValue(static_cast<int>(volumeSequence->getNumSequences()));
+        setStateAsDefault(selectedSequenceIndex_, 1);
+        onPlaySequenceToggled();
+    } else {
+        volumeSequence_.setVisible(false);
+    }
+    dimensions_.set(ss.str());
+    format_.set(volume->getDataFormat()->getString());
+    dimensions_.setCurrentStateAsDefault();
+    format_.setCurrentStateAsDefault();
+    
+    InviwoApplication::getPtr()->getProcessorNetwork()->unlock();
+    invalidateOutput();
+}
+
+
+void VolumeSource::dataLoaded(Volume* volume) {
+    // Here we have loaded a new volume we need to make sure all
+    // properties have valid values and correct new defaults.
+
+    InviwoApplication::getPtr()->getProcessorNetwork()->lock();
+    
     // Set the data range from the volume
     dataRange_.set(volume->dataMap_.dataRange);
     valueRange_.set(volume->dataMap_.valueRange);
     valueUnit_.set(volume->dataMap_.valueUnit);
+    dataRange_.setCurrentStateAsDefault();
+    valueRange_.setCurrentStateAsDefault();
+    valueUnit_.setCurrentStateAsDefault();
     
-    // calculate and set properties basis properties.
+    // Set basis properties to the values from the new volume
     a_.set(volume->getBasis()[0]);
     b_.set(volume->getBasis()[1]);
     c_.set(volume->getBasis()[2]);
     offset_.set(volume->getOffset());
+    a_.setCurrentStateAsDefault();
+    b_.setCurrentStateAsDefault();
+    c_.setCurrentStateAsDefault();
+    offset_.setCurrentStateAsDefault();
+    
+    overrideA_.set(volume->getBasis()[0]);
+    overrideB_.set(volume->getBasis()[1]);
+    overrideC_.set(volume->getBasis()[2]);
+    overrideOffset_.set(volume->getOffset());
+    overrideA_.setCurrentStateAsDefault();
+    overrideB_.setCurrentStateAsDefault();
+    overrideC_.setCurrentStateAsDefault();
+    overrideOffset_.setCurrentStateAsDefault();
     
     // Display the format and dimension, read only.
     std::stringstream ss;
@@ -185,44 +257,19 @@ void VolumeSource::dataLoaded(Volume* volume) {
     DataSequence<Volume>* volumeSequence = dynamic_cast<DataSequence<Volume>*>(volume);
     if(volumeSequence){
         ss << " x " << volumeSequence->getNumSequences();
-        playSequence_.setVisible(true);
-        selectedSequenceIndex_.setVisible(true);
-        volumesPerSecond_.setVisible(true);
+        volumeSequence_.setVisible(true);
         selectedSequenceIndex_.setMaxValue(static_cast<int>(volumeSequence->getNumSequences()));
         selectedSequenceIndex_.set(1);
+        selectedSequenceIndex_.setCurrentStateAsDefault();
         onPlaySequenceToggled();
-    }
-    else{
-        playSequence_.setVisible(false);
-        selectedSequenceIndex_.setVisible(false);
-        volumesPerSecond_.setVisible(false);
+    } else {
+        volumeSequence_.setVisible(false);
     }
 
     dimensions_.set(ss.str());
     format_.set(volume->getDataFormat()->getString());
-
-    // Use state from volume as default
-    dataRange_.setCurrentStateAsDefault();
-    valueRange_.setCurrentStateAsDefault();
-    valueUnit_.setCurrentStateAsDefault();
-    a_.setCurrentStateAsDefault();
-    b_.setCurrentStateAsDefault();
-    c_.setCurrentStateAsDefault();
-    offset_.setCurrentStateAsDefault();
     dimensions_.setCurrentStateAsDefault();
     format_.setCurrentStateAsDefault();
-
-    // If we were deserializing, we just wrote over all the state, now we have to restore it.
-    if (isDeserializing_) {
-        restoreState();
-        overrideA_ = a_.get();
-        overrideB_ = b_.get();
-        overrideC_ = b_.get();
-        overrideOffset_ = offset_.get();
-    } else {
-        // Setup override values. This will trigger onOverrideChange().
-        overRideDefaults_.set(false);
-    }
 
     InviwoApplication::getPtr()->getProcessorNetwork()->unlock();
     invalidateOutput();
@@ -230,12 +277,11 @@ void VolumeSource::dataLoaded(Volume* volume) {
 
 void VolumeSource::onPlaySequenceToggled() {
     if (port_.hasDataSequence()) {
-        if(playSequence_.get()){
-            sequenceTimer_->start(1000/volumesPerSecond_.get());
+        if (playSequence_.get()) {
+            sequenceTimer_->start(1000 / volumesPerSecond_.get());
             selectedSequenceIndex_.setReadOnly(true);
             volumesPerSecond_.setReadOnly(false);
-        }
-        else{
+        } else {
             sequenceTimer_->stop();
             selectedSequenceIndex_.setReadOnly(false);
             volumesPerSecond_.setReadOnly(true);
@@ -246,7 +292,7 @@ void VolumeSource::onPlaySequenceToggled() {
 void VolumeSource::onSequenceIndexChanged() {
     if (port_.hasDataSequence()) {
         DataSequence<Volume>* volumeSequence = static_cast<DataSequence<Volume>*>(loadedData_);
-        volumeSequence->setCurrentIndex(selectedSequenceIndex_.get()-1);
+        volumeSequence->setCurrentIndex(selectedSequenceIndex_.get() - 1);
         invalidateOutput();
     }
 }
@@ -254,106 +300,44 @@ void VolumeSource::onSequenceIndexChanged() {
 void VolumeSource::onSequenceTimerEvent() {
     if (port_.hasDataSequence()) {
         sequenceTimer_->stop();
-        sequenceTimer_->start(1000/volumesPerSecond_.get());
-        selectedSequenceIndex_.set((selectedSequenceIndex_.get() < selectedSequenceIndex_.getMaxValue() ? selectedSequenceIndex_.get()+1 : 1));
+        sequenceTimer_->start(1000 / volumesPerSecond_.get());
+        
+        selectedSequenceIndex_ =
+            (selectedSequenceIndex_ < selectedSequenceIndex_.getMaxValue()
+                 ? selectedSequenceIndex_ + 1 : 1);
     }
 }
 
-void VolumeSource::saveState(){
-    oldState.dataRange.set(&dataRange_);
-    oldState.valueRange.set(&valueRange_);
-    oldState.valueUnit.set(&valueUnit_);
-    oldState.overRideDefaults.set(&overRideDefaults_);
-    oldState.a.set(&a_);
-    oldState.b.set(&b_);
-    oldState.c.set(&c_);
-    oldState.offset.set(&offset_);
-}
-
-void VolumeSource::restoreState() {
-    // This is more tricky than it seems since, we have saved all the properties, but since we only 
-    // deserialize when something changed, we will not have written data in all the saved 
-    // properties hence some might still only hold the default state since construction, so we have
-    // to check if the state has changed before we restore it.
-
-    DoubleMinMaxProperty defaultDataRange("dataRange", "Data range", 0., 255.0, -DataFLOAT64::max(),
-                                          DataFLOAT64::max(), 0.0, 0.0,
-                                          PropertyOwner::INVALID_OUTPUT, PropertySemantics("Text"));
-    DoubleMinMaxProperty defaultValueRange(
-        "valueRange", "Value range", 0., 255.0, -DataFLOAT64::max(), DataFLOAT64::max(), 0.0, 0.0,
-        PropertyOwner::INVALID_OUTPUT, PropertySemantics("Text"));
-
-    StringProperty defaultValueUnit("valueUnit", "Value unit", "arb. unit.");
-    BoolProperty defaultOverRideDefaults("override", "Override", false);
-    FloatVec3Property defaultA("a", "a", vec3(1.0f, 0.0f, 0.0f), vec3(-10.0f), vec3(10.0f));
-    FloatVec3Property defaultB("b", "b", vec3(0.0f, 1.0f, 0.0f), vec3(-10.0f), vec3(10.0f));
-    FloatVec3Property defaultC("c", "c", vec3(0.0f, 0.0f, 1.0f), vec3(-10.0f), vec3(10.0f));
-    FloatVec3Property defaultOffset("offset", "Offset", vec3(0.0f), vec3(-10.0f), vec3(10.0f));
-
-    defaultDataRange.set(&oldState.dataRange);
-    defaultDataRange.resetToDefaultState();
-    VolumeSourceState::assignStateIfChanged(oldState.dataRange, defaultDataRange, dataRange_);
-
-    defaultValueRange.set(&oldState.valueRange);
-    defaultValueRange.resetToDefaultState();
-    VolumeSourceState::assignStateIfChanged(oldState.valueRange, defaultValueRange, valueRange_);
-
-    defaultValueUnit.set(&oldState.valueUnit);
-    defaultValueUnit.resetToDefaultState();
-    VolumeSourceState::assignStateIfChanged(oldState.valueUnit, defaultValueUnit, valueUnit_);
-
-    defaultOverRideDefaults.set(&oldState.overRideDefaults);
-    defaultOverRideDefaults.resetToDefaultState();
-    VolumeSourceState::assignStateIfChanged(oldState.overRideDefaults, defaultOverRideDefaults, overRideDefaults_);
-
-    defaultA.set(&oldState.a);
-    defaultA.resetToDefaultState();
-    VolumeSourceState::assignStateIfChanged(oldState.a, defaultA, a_);
-
-    defaultB.set(&oldState.b);
-    defaultB.resetToDefaultState();
-    VolumeSourceState::assignStateIfChanged(oldState.b, defaultB, b_);
-    
-    defaultC.set(&oldState.c);
-    defaultC.resetToDefaultState();
-    VolumeSourceState::assignStateIfChanged(oldState.c, defaultC, c_);
-
-    defaultOffset.set(&oldState.offset);
-    defaultOffset.resetToDefaultState();
-    VolumeSourceState::assignStateIfChanged(oldState.offset, defaultOffset, offset_);
-}
 
 void VolumeSource::process() {
-    Volume* out;
-
-    if (this->isDeserializing_) {
-        return;
-    }
+    if (this->isDeserializing()) return;
 
     if (loadedData_) {
-        out = static_cast<Volume*>(loadedData_);
+        if (overRideDefaults_) {
+            vec4 offset = vec4(overrideOffset_.get(), 1.0f);
+            mat3 basis(overrideA_, overrideB_, overrideC_);
+            mat4 basisAndOffset(basis);
+            basisAndOffset[3] = offset;
+            loadedData_->setBasisAndOffset(basisAndOffset);
+        } else {
+            vec4 offset = vec4(offset_.get(), 1.0f);
+            mat3 basis(a_, b_, c_);
+            mat4 basisAndOffset(basis);
+            basisAndOffset[3] = offset;
+            loadedData_->setBasisAndOffset(basisAndOffset);
+        }
 
-        vec3 a = a_.get();
-        vec3 b = b_.get();
-        vec3 c = c_.get();
-        vec4 offset = vec4(offset_.get(), 1.0f);
-        mat3 basis(a,b,c);
-        
-        mat4 basisAndOffset(basis);
-        basisAndOffset[3] = offset;
-
-        out->setBasisAndOffset(basisAndOffset);
-        
-        if (out->dataMap_.dataRange != dataRange_.get() && out->hasRepresentation<VolumeRAM>()) {
-            VolumeRAM* volumeRAM = out->getEditableRepresentation<VolumeRAM>();
+        if (loadedData_->dataMap_.dataRange != dataRange_.get() &&
+            loadedData_->hasRepresentation<VolumeRAM>()) {
+            VolumeRAM* volumeRAM = loadedData_->getEditableRepresentation<VolumeRAM>();
             if (volumeRAM->hasNormalizedHistogram()) {
                 volumeRAM->getNormalizedHistogram()->setValid(false);
             }
         }
-        
-        out->dataMap_.dataRange = dataRange_.get();
-        out->dataMap_.valueRange = valueRange_.get();
-        out->dataMap_.valueUnit = valueUnit_.get();
+
+        loadedData_->dataMap_.dataRange = dataRange_.get();
+        loadedData_->dataMap_.valueRange = valueRange_.get();
+        loadedData_->dataMap_.valueUnit = valueUnit_.get();
     }
 }
 
@@ -362,86 +346,9 @@ void VolumeSource::serialize(IvwSerializer& s) const {
 }
 
 void VolumeSource::deserialize(IvwDeserializer& d) {
-    isDeserializing_ = true;
     // This function will deseialize all properties, then call load(), which will call dataLoaded()
     DataSource<Volume, VolumeOutport>::deserialize(d);
     onOverrideChange();
-    isDeserializing_ = false;
-}
-
-VolumeSource::VolumeSourceState::VolumeSourceState()
-    : dataRange("dataRange", "Data range", 0., 255.0, -DataFLOAT64::max(), DataFLOAT64::max(), 0.0,
-                0.0, PropertyOwner::INVALID_OUTPUT, PropertySemantics("Text"))
-    , valueRange("valueRange", "Value range", 0., 255.0, -DataFLOAT64::max(), DataFLOAT64::max(),
-                 0.0, 0.0, PropertyOwner::INVALID_OUTPUT, PropertySemantics("Text"))
-    , valueUnit("valueUnit", "Value unit", "arb. unit.")
-    , overRideDefaults("override", "Override", false)
-    , a("a", "a", vec3(1.0f, 0.0f, 0.0f), vec3(-10.0f), vec3(10.0f))
-    , b("b", "b", vec3(0.0f, 1.0f, 0.0f), vec3(-10.0f), vec3(10.0f))
-    , c("c", "c", vec3(0.0f, 0.0f, 1.0f), vec3(-10.0f), vec3(10.0f))
-    , offset("offset", "Offset", vec3(0.0f), vec3(-10.0f), vec3(10.0f)) {
-}
-
-void VolumeSource::VolumeSourceState::assignStateIfChanged(const DoubleMinMaxProperty& in,
-                                                           const DoubleMinMaxProperty& ref,
-                                                           DoubleMinMaxProperty& out) {
-    if (in.get() != ref.get()) {
-        out.set(in.get());
-    }
-    if (in.getRange() != ref.getRange()) {
-        out.setRange(in.getRange());
-    }
-    if (in.getIncrement() != ref.getIncrement()) {
-        out.setIncrement(in.getIncrement());
-    }
-    if (in.getMinSeparation() != ref.getMinSeparation()) {
-        out.setMinSeparation(in.getMinSeparation());
-    }
-    if (in.getReadOnly() != ref.getReadOnly()) {
-        out.setReadOnly(in.getReadOnly());
-    }
-}
-
-void VolumeSource::VolumeSourceState::assignStateIfChanged(const StringProperty& in,
-                                                           const StringProperty& ref,
-                                                           StringProperty& out) {
-    if (in.get() != ref.get()) {
-        out.set(in.get());
-    }
-    if (in.getReadOnly() != ref.getReadOnly()) {
-        out.setReadOnly(in.getReadOnly());
-    }
-}
-
-void VolumeSource::VolumeSourceState::assignStateIfChanged(const BoolProperty& in,
-                                                           const BoolProperty& ref,
-                                                           BoolProperty& out) {
-    if (in.get() != ref.get()) {
-        out.set(in.get());
-    }
-    if (in.getReadOnly() != ref.getReadOnly()) {
-        out.setReadOnly(in.getReadOnly());
-    }
-}
-
-void VolumeSource::VolumeSourceState::assignStateIfChanged(const FloatVec3Property& in,
-                                                           const FloatVec3Property& ref,
-                                                           FloatVec3Property& out) {
-    if (in.get() != ref.get()) {
-        out.set(in.get());
-    }
-    if (in.getMinValue() != ref.getMinValue()) {
-        out.setMinValue(in.getMinValue());
-    }
-    if (in.getMaxValue() != ref.getMaxValue()) {
-        out.setMaxValue(in.getMaxValue());
-    }
-    if (in.getIncrement() != ref.getIncrement()) {
-        out.setIncrement(in.getIncrement());
-    }
-    if (in.getReadOnly() != ref.getReadOnly()) {
-        out.setReadOnly(in.getReadOnly());
-    }
 }
 
 }  // namespace

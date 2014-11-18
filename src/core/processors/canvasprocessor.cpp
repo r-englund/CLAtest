@@ -38,7 +38,7 @@
 #include <inviwo/core/processors/processorwidget.h>
 #include <inviwo/core/network/processornetworkevaluator.h>
 #include <inviwo/core/io/datawriterfactory.h>
-#include <inviwo/core/util/urlparser.h>
+#include <inviwo/core/util/filesystem.h>
 #include <inviwo/core/util/fileextension.h>
 
 namespace inviwo {
@@ -210,7 +210,7 @@ void CanvasProcessor::saveImageLayer(std::string snapshotPath) {
     if (image) {
         const Layer* layer = image->getColorLayer();
         if (layer){
-            std::string fileExtension = URLParser::getFileExtension(snapshotPath);
+            std::string fileExtension = filesystem::getFileExtension(snapshotPath);
             DataWriterType<Layer>* writer = NULL;
             bool deleteWriter = true;
             if(Canvas::generalLayerWriter_ && fileExtension == "png"){

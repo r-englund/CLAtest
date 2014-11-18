@@ -33,6 +33,7 @@
 #include <inviwo/qt/editor/networkeditor.h>
 
 #include <inviwo/core/common/inviwoapplication.h>
+#include <inviwo/core/interaction/events/keyboardevent.h>
 #include <inviwo/core/io/serialization/ivwdeserializer.h>
 #include <inviwo/core/io/serialization/ivwserializer.h>
 #include <inviwo/core/metadata/processormetadata.h>
@@ -52,7 +53,7 @@
 #include <inviwo/core/util/factory.h>
 #include <inviwo/core/util/settings/linksettings.h>
 #include <inviwo/core/util/settings/systemsettings.h>
-#include <inviwo/core/util/urlparser.h>
+#include <inviwo/core/util/filesystem.h>
 #include <inviwo/qt/editor/connectiongraphicsitem.h>
 #include <inviwo/qt/editor/linkdialog/linkdialog.h>
 #include <inviwo/qt/editor/linkgraphicsitem.h>
@@ -65,6 +66,7 @@
 #include <inviwo/qt/widgets/inviwoapplicationqt.h>
 #include <inviwo/qt/widgets/processors/processorwidgetqt.h>
 #include <inviwo/qt/widgets/propertylistwidget.h>
+#include <inviwo/qt/widgets/eventconverterqt.h>
 
 #include <QApplication>
 #include <QGraphicsItem>
@@ -83,7 +85,6 @@ NetworkEditor::NetworkEditor()
     : QGraphicsScene()
     , oldConnectionTarget_(NULL)
     , oldProcessorTarget_(NULL)
-    , linkDialog_(NULL)
     , connectionCurve_(NULL)
     , linkCurve_(NULL)
     , filename_("")
@@ -265,15 +266,9 @@ void NetworkEditor::removeLinkGraphicsItem(LinkConnectionGraphicsItem* linkGraph
 
 void NetworkEditor::showLinkDialog(Processor* processor1, Processor* processor2) {
     InviwoApplicationQt* app = dynamic_cast<InviwoApplicationQt*>(InviwoApplication::getPtr());
-    if (!linkDialog_) 
-        linkDialog_ = new LinkDialog(processor1, processor2, app->getMainWindow());
-    else {
-        linkDialog_->initDialog(processor1, processor2);
-    }
-
-    if (linkDialog_->exec()) {
-        LogWarn("LinkDialog not deinitialized properly")
-    }
+    
+    LinkDialog dialog(processor1, processor2, app->getMainWindow());
+    dialog.exec();
 }
 
 //////////////////////////////////////
@@ -501,9 +496,9 @@ std::vector<std::string> NetworkEditor::saveSnapshotsInExternalNetwork(
     if (isSoundEnabled) soundProperty->set(false);
 
     std::vector<std::string> canvasSnapShotFiles;
-    std::string directory = URLParser::getFileDirectory(externalNetworkFile);
-    std::string workSpaceName = URLParser::getFileNameWithExtension(externalNetworkFile);
-    std::string newFileName = URLParser::replaceFileExtension(workSpaceName, "png");
+    std::string directory = filesystem::getFileDirectory(externalNetworkFile);
+    std::string workSpaceName = filesystem::getFileNameWithExtension(externalNetworkFile);
+    std::string newFileName = filesystem::replaceFileExtension(workSpaceName, "png");
     std::vector<Processor*> processors =
         InviwoApplication::getPtr()->getProcessorNetwork()->getProcessors();
 
@@ -675,17 +670,9 @@ void NetworkEditor::mouseReleaseEvent(QGraphicsSceneMouseEvent* e) {
         ProcessorGraphicsItem* endProcessorItem = getProcessorGraphicsItemAt(e->scenePos());
         if (endProcessorItem) {
             Processor* endProcessor = endProcessorItem->getProcessor();
-
-            // Add a temporary link item while the dialog is shown.
-//            LinkConnectionGraphicsItem* linkGraphicsItem = new LinkConnectionGraphicsItem(
-//                start->getLinkGraphicsItem(), endProcessorItem->getLinkGraphicsItem());
-//            addItem(linkGraphicsItem);
-
             if (startProcessor != endProcessor) {
                 showLinkDialog(startProcessor, endProcessor);
             }
-
-//            delete linkGraphicsItem;
         }
         e->accept();
     }
@@ -716,8 +703,8 @@ void NetworkEditor::mouseDoubleClickEvent(QGraphicsSceneMouseEvent* e) {
 }
 
 void NetworkEditor::keyPressEvent(QKeyEvent* keyEvent) {
-	if (keyEvent->key() == Qt::Key_Delete) {
-		keyEvent->accept();
+    if (keyEvent->key() == Qt::Key_Delete) {
+        keyEvent->accept();
         ProcessorNetwork* network = InviwoApplication::getPtr()->getProcessorNetwork();
 
         // delete selected graphics items
@@ -749,13 +736,63 @@ void NetworkEditor::keyPressEvent(QKeyEvent* keyEvent) {
             ProcessorGraphicsItem* processorGraphicsItem =
                 qgraphicsitem_cast<ProcessorGraphicsItem*>(selectedGraphicsItems[i]);
             if (processorGraphicsItem && !processorGraphicsItem->isEditingProcessorName()) {
-                 network->removeAndDeleteProcessor(processorGraphicsItem->getProcessor());
-                 continue;
+                network->removeAndDeleteProcessor(processorGraphicsItem->getProcessor());
+                continue;
             }
         }
     } else {
-		keyEvent->ignore();
-		QGraphicsScene::keyPressEvent(keyEvent);
+        KeyboardEvent pressKeyEvent(EventConverterQt::getKeyButton(keyEvent),
+                                    EventConverterQt::getModifier(keyEvent),
+                                    KeyboardEvent::KEY_STATE_PRESS);
+
+        QList<QGraphicsItem*> selectedGraphicsItems = selectedItems();
+        ProcessorNetworkEvaluator* network =
+            InviwoApplication::getPtr()->getProcessorNetworkEvaluator();
+
+        for (int i = 0; i < selectedGraphicsItems.size(); i++) {
+            ProcessorGraphicsItem* processorGraphicsItem =
+                qgraphicsitem_cast<ProcessorGraphicsItem*>(selectedGraphicsItems[i]);
+            if (processorGraphicsItem) {
+                Processor* p = processorGraphicsItem->getProcessor();
+                network->propagateInteractionEvent(p, &pressKeyEvent);
+                if (pressKeyEvent.hasBeenUsed()) break;
+            }
+        }
+
+        if (pressKeyEvent.hasBeenUsed()) {
+            keyEvent->accept();
+        } else {
+            keyEvent->ignore();
+            QGraphicsScene::keyPressEvent(keyEvent);
+        }
+    }
+}
+
+
+void NetworkEditor::keyReleaseEvent(QKeyEvent* keyEvent) {
+    KeyboardEvent releaseKeyEvent(EventConverterQt::getKeyButton(keyEvent),
+                                  EventConverterQt::getModifier(keyEvent),
+                                  KeyboardEvent::KEY_STATE_RELEASE);
+
+    QList<QGraphicsItem*> selectedGraphicsItems = selectedItems();
+    ProcessorNetworkEvaluator* network =
+        InviwoApplication::getPtr()->getProcessorNetworkEvaluator();
+
+    for (int i = 0; i < selectedGraphicsItems.size(); i++) {
+        ProcessorGraphicsItem* processorGraphicsItem =
+            qgraphicsitem_cast<ProcessorGraphicsItem*>(selectedGraphicsItems[i]);
+        if (processorGraphicsItem) {
+            Processor* p = processorGraphicsItem->getProcessor();
+            network->propagateInteractionEvent(p, &releaseKeyEvent);
+            if (releaseKeyEvent.hasBeenUsed()) break;
+        }
+    }
+
+    if (releaseKeyEvent.hasBeenUsed()) {
+        keyEvent->accept();
+    } else {
+        keyEvent->ignore();
+        QGraphicsScene::keyPressEvent(keyEvent);
     }
 }
 

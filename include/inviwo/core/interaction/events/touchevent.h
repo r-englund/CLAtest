@@ -42,22 +42,32 @@ namespace inviwo {
 class IVW_CORE_API TouchEvent : public InteractionEvent {
 public:
     enum TouchState {
-        TOUCH_STATE_NONE    =      0,
+        TOUCH_STATE_NONE = 0,
         TOUCH_STATE_STARTED,
         TOUCH_STATE_UPDATED,
         TOUCH_STATE_ENDED
     };
 
+
+
     TouchEvent(ivec2 pos, TouchEvent::TouchState state);
-    ~TouchEvent();
+    
+    TouchEvent(const TouchEvent& rhs);
+    TouchEvent& operator=(const TouchEvent& that);
+    virtual TouchEvent* clone() const;
+    virtual ~TouchEvent();
 
     inline ivec2 pos() const { return position_; }
     inline TouchEvent::TouchState state() const { return state_; }
 
-    virtual std::string getClassIdentifier() const { return "TouchEvent"; }
+    virtual std::string getClassIdentifier() const { return "org.inviwo.TouchEvent"; }
 
     virtual void serialize(IvwSerializer& s) const;
     virtual void deserialize(IvwDeserializer& d);
+
+    virtual bool matching(const Event* aEvent) const;
+    virtual bool matching(const TouchEvent* aEvent) const;
+    virtual bool equalSelectors(const Event* aEvent) const;
 
 private:
     ivec2 position_;

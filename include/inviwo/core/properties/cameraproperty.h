@@ -124,6 +124,7 @@ public:
 
     void setInport(Inport* inport);
     void fitWithBasis(const mat3& basis);
+    void fitReset();
     void inportChanged();
 
 private:
@@ -134,6 +135,7 @@ private:
     FloatProperty aspectRatio_;
     FloatProperty farPlane_;
     FloatProperty nearPlane_;
+    BoolProperty fitToBasis_;
 
     vec3 lookRight_;
     mat4 viewMatrix_;

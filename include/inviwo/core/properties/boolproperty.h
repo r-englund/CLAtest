@@ -56,7 +56,8 @@ public:
                  PropertySemantics semantics = PropertySemantics::Default);
 
     BoolProperty(const BoolProperty& rhs);
-    BoolProperty& operator=(const BoolProperty& rhs);
+    BoolProperty& operator=(const BoolProperty& that);
+    BoolProperty& operator=(const bool& value);
     virtual BoolProperty* clone() const;
     virtual ~BoolProperty();
 };

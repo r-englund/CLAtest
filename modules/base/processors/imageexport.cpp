@@ -34,7 +34,7 @@
 #include <inviwo/core/common/inviwoapplication.h>
 #include <inviwo/core/datastructures/image/imageram.h>
 #include <inviwo/core/io/datawriterfactory.h>
-#include <inviwo/core/util/urlparser.h>
+#include <inviwo/core/util/filesystem.h>
 #include <inviwo/core/util/fileextension.h>
 
 namespace inviwo {
@@ -100,7 +100,7 @@ void ImageExport::processExport(){
     if (image && !imageFile_.get().empty()) {
         const Layer* layer = image->getColorLayer();
         if (layer){
-            std::string fileExtension = URLParser::getFileExtension(imageFile_.get());
+            std::string fileExtension = filesystem::getFileExtension(imageFile_.get());
             DataWriterType<Layer>* writer =
                 DataWriterFactory::getPtr()->getWriterForTypeAndExtension<Layer>(fileExtension);
 

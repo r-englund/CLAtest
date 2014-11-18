@@ -105,7 +105,7 @@ void PixelToBufferProcessor::invokeEvent(Event* event) {
     MouseEvent* mouseEvent = dynamic_cast<MouseEvent*>(event);
     if (mouseEvent) {
         int button = mouseEvent->button();
-        MouseEvent::MouseState state = mouseEvent->state();
+        int state = mouseEvent->state();
 
         if (button == MouseEvent::MOUSE_BUTTON_LEFT && state == MouseEvent::MOUSE_STATE_PRESS) {
             fromPixel_.set(mouseEvent->pos());

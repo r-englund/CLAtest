@@ -37,40 +37,18 @@
 
 namespace inviwo {
 
-template<typename T>
+template <typename T>
 class LayerRAMPrecision : public LayerRAM {
 public:
-    LayerRAMPrecision(uvec2 dimensions = uvec2(256,256),
-                      LayerType type = COLOR_LAYER,
+    LayerRAMPrecision(uvec2 dimensions = uvec2(256, 256), LayerType type = COLOR_LAYER,
                       const DataFormatBase* format = defaultformat());
-
-    LayerRAMPrecision(T* data,
-                      uvec2 dimensions = uvec2(256,256),
-                      LayerType type = COLOR_LAYER,
+    LayerRAMPrecision(T* data, uvec2 dimensions = uvec2(256, 256), LayerType type = COLOR_LAYER,
                       const DataFormatBase* format = defaultformat());
+    LayerRAMPrecision(const LayerRAMPrecision<T>& rhs);
+    LayerRAMPrecision<T>& operator=(const LayerRAMPrecision<T>& that);
+    virtual LayerRAMPrecision<T>* clone() const;
+    virtual ~LayerRAMPrecision();
 
-    LayerRAMPrecision(const LayerRAMPrecision<T>& rhs)
-        : LayerRAM(rhs) {
-        initialize();
-        memcpy(data_, rhs.getData(), dimensions_.x*dimensions_.y*sizeof(T));
-    }
-    LayerRAMPrecision<T>& operator=(const LayerRAMPrecision<T>& rhs) {
-        if (this != &rhs) {
-            LayerRAM::operator=(rhs);
-            delete[] data_;
-            initialize();
-            memcpy(data_, rhs.getData(), dimensions_.x*dimensions_.y*sizeof(T));
-        }
-
-        return *this;
-    };
-    virtual LayerRAMPrecision<T>* clone() const {
-        return new LayerRAMPrecision<T>(*this);
-    }
-
-    virtual ~LayerRAMPrecision() {
-        deinitialize();
-    };
     virtual void initialize();
     virtual void initialize(void*);
     virtual void deinitialize();
@@ -87,9 +65,7 @@ public:
     dvec4 getValueAsVec4Double(const uvec2& pos) const;
 
 private:
-    static const DataFormatBase* defaultformat() {
-        return GenericDataFormat(T)::get();
-    }
+    static const DataFormatBase* defaultformat() { return GenericDataFormat(T)::get(); }
 };
 
 template<typename T, size_t B>
@@ -105,7 +81,20 @@ public:
                             const DataFormatBase* format = defaultformat())
         : LayerRAMPrecision<T>(data, dimensions, type, format) {
     }
-    virtual ~LayerRAMCustomPrecision() {};
+
+    LayerRAMCustomPrecision(const LayerRAMCustomPrecision<T,B>& rhs)
+        : LayerRAMPrecision<T>(rhs) {}
+    LayerRAMCustomPrecision<T,B>& operator=(const LayerRAMCustomPrecision<T,B>& that) {
+        if (this != &that) {
+            LayerRAMPrecision<T>::operator=(that);
+        }
+        return *this;
+    }
+    virtual LayerRAMCustomPrecision<T,B>* clone() const {
+        return new LayerRAMCustomPrecision<T,B>(*this);   
+    }
+
+    virtual ~LayerRAMCustomPrecision() {}
 
 private:
     static const DataFormatBase* defaultformat() {
@@ -113,16 +102,47 @@ private:
     }
 };
 
-template<typename T>
-LayerRAMPrecision<T>::LayerRAMPrecision(uvec2 dimensions, LayerType type, const DataFormatBase* format) : LayerRAM(dimensions, type,
-            format) {
+template <typename T>
+LayerRAMPrecision<T>::LayerRAMPrecision(uvec2 dimensions, LayerType type,
+                                        const DataFormatBase* format)
+    : LayerRAM(dimensions, type, format) {
     initialize();
 }
-template<typename T>
-LayerRAMPrecision<T>::LayerRAMPrecision(T* data, uvec2 dimensions, LayerType type, const DataFormatBase* format) : LayerRAM(dimensions,
-            type, format) {
+template <typename T>
+LayerRAMPrecision<T>::LayerRAMPrecision(T* data, uvec2 dimensions, LayerType type,
+                                        const DataFormatBase* format)
+    : LayerRAM(dimensions, type, format) {
     initialize(data);
 }
+
+template <typename T>
+LayerRAMPrecision<T>::LayerRAMPrecision(const LayerRAMPrecision<T>& rhs)
+    : LayerRAM(rhs) {
+    initialize();
+    memcpy(data_, rhs.getData(), dimensions_.x * dimensions_.y * sizeof(T));
+}
+
+template <typename T>
+LayerRAMPrecision<T>& LayerRAMPrecision<T>::operator=(const LayerRAMPrecision<T>& that) {
+    if (this != &that) {
+        LayerRAM::operator=(that);
+        delete[] data_;
+        initialize();
+        memcpy(data_, that.getData(), dimensions_.x*dimensions_.y*sizeof(T));
+    }
+
+    return *this;
+};
+
+template <typename T>
+LayerRAMPrecision<T>* LayerRAMPrecision<T>::clone() const {
+    return new LayerRAMPrecision<T>(*this);
+}
+
+template <typename T>
+LayerRAMPrecision<T>::~LayerRAMPrecision() {
+    deinitialize();
+};
 
 template<typename T>
 void LayerRAMPrecision<T>::initialize() {

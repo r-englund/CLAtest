@@ -25,7 +25,7 @@
  * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- * 
+ *
  * Contact: Sathish Kottravel
  *
  *********************************************************************************/
@@ -34,29 +34,87 @@
 
 namespace inviwo {
 
-KeyboardEvent::KeyboardEvent(char ascii, InteractionEvent::Modifier modifier, KeyboardEvent::KeyState state) : InteractionEvent() {
-    state_ = state;
-    button_ = ascii;
-    buttonName_ = ascii;
-    modifier_ = modifier;
-    modifierName_ = modifierNames_[modifier_];
+KeyboardEvent::KeyboardEvent(int key, int modifiers, int state)
+    : InteractionEvent(modifiers)
+    , state_(state)
+    , key_(key) {
 }
 
-KeyboardEvent::KeyboardEvent() {
-    buttonName_ = "";
+KeyboardEvent::KeyboardEvent(const KeyboardEvent& rhs) 
+    : InteractionEvent(rhs)
+    , state_(rhs.state_)
+    , key_(rhs.key_) {
 }
+
+KeyboardEvent& KeyboardEvent::operator=(const KeyboardEvent& that) {
+    if (this != &that) {
+        InteractionEvent::operator=(that);
+        state_ = that.state_;
+        key_ = that.key_;
+    }
+    return *this;
+}
+
+KeyboardEvent* KeyboardEvent::clone() const { return new KeyboardEvent(*this); }
 
 KeyboardEvent::~KeyboardEvent() {}
 
 void KeyboardEvent::serialize(IvwSerializer& s) const {
     InteractionEvent::serialize(s);
-    s.serialize("button", buttonName_);
+    s.serialize("state", state_);
+    s.serialize("key", key_);
 }
 
-void KeyboardEvent::deserialize(IvwDeserializer& s) {
-    InteractionEvent::deserialize(s);
-    s.deserialize("button", buttonName_);
-    button_ = buttonName_[0];
+void KeyboardEvent::deserialize(IvwDeserializer& d) {
+    InteractionEvent::deserialize(d);
+    d.deserialize("state", state_);
+    d.deserialize("key", key_);
 }
 
-} // namespace
+std::string KeyboardEvent::getClassIdentifier() const {
+    return "org.inviwo.KeyboardEvent";
+}
+
+int KeyboardEvent::state() const {
+    return state_;
+}
+
+int KeyboardEvent::button() const {
+    return key_;
+}
+
+bool KeyboardEvent::matching(const Event* aEvent) const {
+    const KeyboardEvent* event = dynamic_cast<const KeyboardEvent*>(aEvent);
+    if (event) {
+        return matching(event);
+    } else {
+        return false;
+    }
+}
+
+bool KeyboardEvent::matching(const KeyboardEvent* aEvent) const {
+    return key_ == aEvent->key_
+        && (state_ & aEvent->state_) == aEvent->state_
+        && modifiers_ == aEvent->modifiers_;
+}
+
+bool KeyboardEvent::equalSelectors(const Event* aEvent) const {
+    const KeyboardEvent* event = dynamic_cast<const KeyboardEvent*>(aEvent);
+    if (event) {
+        return InteractionEvent::equalSelectors(event)
+            && state_ == event->state_
+            && key_ == event->key_;
+    } else {
+        return false;
+    }
+}
+
+void KeyboardEvent::setState(int state) {
+    state_ = state;
+}
+
+void KeyboardEvent::setButton(int button) {
+    key_ = button;
+}
+
+}  // namespace

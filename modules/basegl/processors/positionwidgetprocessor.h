@@ -49,21 +49,20 @@ class Shader;
 
 class IVW_MODULE_BASEGL_API PositionWidgetProcessor : public CompositeProcessorGL {
 public:
+    InviwoProcessorInfo();
+
     PositionWidgetProcessor();
     virtual ~PositionWidgetProcessor();
-
-    InviwoProcessorInfo();
 
     void initialize();
     void deinitialize();
 
+    virtual void process();
+    
     bool isReady() const { return geometryInport_.isReady(); }
 
     void updateWidgetPositionFromPicking(const PickingObject*);
 
-protected:
-    virtual void process();
-    void handleInteractionEventsChanged();
 private:
     GeometryInport geometryInport_;
     ImageInport imageInport_;
@@ -72,8 +71,7 @@ private:
     FloatVec3Property position_;
 
     CameraProperty camera_;
-    BoolProperty handleInteractionEvents_; ///< Enable or disable camera movements from canvas
-    CameraTrackball* trackball_;
+    CameraTrackball trackball_;
 
     const PickingObject* widgetPickingObject_;
 

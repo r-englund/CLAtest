@@ -5,13 +5,13 @@ import time
 
 start = time.clock()
 
-d = 1
+d = 70
 steps = 360
 for i in range(0, steps):
    r = (2 * 3.14 * i) / steps
-   x = d*math.sin(r)
-   z = -d*math.cos(r)
-   inviwo.setPropertyValue("Directional light source.lightPosition",(x,0,z))
+   x = -d*math.sin(r)
+   z = d*math.cos(r)
+   inviwo.setPropertyValue("PointLightSource.lighting.lightPosition",(x,0,z))
 
 end = time.clock()
 fps = steps / (end - start)

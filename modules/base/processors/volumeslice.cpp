@@ -25,7 +25,7 @@
  * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- * 
+ *
  * Contact: Erik Sundén
  *
  *********************************************************************************/
@@ -35,18 +35,17 @@
 namespace inviwo {
 
 ProcessorClassIdentifier(VolumeSlice, "org.inviwo.VolumeSlice");
-ProcessorDisplayName(VolumeSlice,  "Volume Slice");
+ProcessorDisplayName(VolumeSlice, "Volume Slice");
 ProcessorTags(VolumeSlice, Tags::None);
 ProcessorCategory(VolumeSlice, "Volume Operation");
 ProcessorCodeState(VolumeSlice, CODE_STATE_STABLE);
 
 VolumeSlice::VolumeSlice()
-    : Processor(),
-      inport_("volume.inport"),
-      outport_("image.outport", COLOR_ONLY),
-      sliceAlongAxis_("sliceAxis", "Slice along axis"),
-      sliceNumber_("sliceNumber", "Slice Number", 4, 1, 8)
-{
+    : Processor()
+    , inport_("volume.inport")
+    , outport_("image.outport", COLOR_ONLY)
+    , sliceAlongAxis_("sliceAxis", "Slice along axis")
+    , sliceNumber_("sliceNumber", "Slice Number", 4, 1, 8) {
     addPort(inport_);
     addPort(outport_);
     sliceAlongAxis_.addOption("x", "X axis", CoordinateEnums::X);
@@ -61,83 +60,78 @@ VolumeSlice::VolumeSlice()
 
 VolumeSlice::~VolumeSlice() {
     const std::vector<InteractionHandler*>& interactionHandlers = getInteractionHandlers();
-    for(size_t i=0; i<interactionHandlers.size(); ++i) {
+    for (size_t i = 0; i < interactionHandlers.size(); ++i) {
         InteractionHandler* handler = interactionHandlers[i];
         removeInteractionHandler(handler);
         delete handler;
     }
 }
 
-void VolumeSlice::initialize() {
-    Processor::initialize();
-}
+void VolumeSlice::initialize() { Processor::initialize(); }
 
-void VolumeSlice::deinitialize() {
-    Processor::deinitialize();
-}
+void VolumeSlice::deinitialize() { Processor::deinitialize(); }
 
-void VolumeSlice::shiftSlice(int shift){
-    int newSlice = sliceNumber_.get()+shift;
-    if(newSlice >= sliceNumber_.getMinValue() && newSlice <= sliceNumber_.getMaxValue())
+void VolumeSlice::shiftSlice(int shift) {
+    int newSlice = sliceNumber_.get() + shift;
+    if (newSlice >= sliceNumber_.getMinValue() && newSlice <= sliceNumber_.getMaxValue())
         sliceNumber_.set(newSlice);
 }
 
 void VolumeSlice::process() {
     uvec3 dims = inport_.getData()->getDimension();
 
-    switch (sliceAlongAxis_.get())
-    {
+    switch (sliceAlongAxis_.get()) {
         case CoordinateEnums::X:
-            if(dims.x!=sliceNumber_.getMaxValue()){
+            if (dims.x != sliceNumber_.getMaxValue()) {
                 sliceNumber_.setMaxValue(static_cast<int>(dims.x));
-                sliceNumber_.set(static_cast<int>(dims.x)/2);
+                sliceNumber_.set(static_cast<int>(dims.x) / 2);
             }
             break;
         case CoordinateEnums::Y:
-            if(dims.y!=sliceNumber_.getMaxValue()){
+            if (dims.y != sliceNumber_.getMaxValue()) {
                 sliceNumber_.setMaxValue(static_cast<int>(dims.y));
-                sliceNumber_.set(static_cast<int>(dims.y)/2);
+                sliceNumber_.set(static_cast<int>(dims.y) / 2);
             }
             break;
         case CoordinateEnums::Z:
-            if(dims.z!=sliceNumber_.getMaxValue()){
+            if (dims.z != sliceNumber_.getMaxValue()) {
                 sliceNumber_.setMaxValue(static_cast<int>(dims.z));
-                sliceNumber_.set(static_cast<int>(dims.z)/2);
+                sliceNumber_.set(static_cast<int>(dims.z) / 2);
             }
             break;
     }
 
     const VolumeRAM* vol = inport_.getData()->getRepresentation<VolumeRAM>();
-    LayerRAM* sliceImage = VolumeRAMSlice::apply(vol, static_cast<CoordinateEnums::CartesianCoordinateAxis>(sliceAlongAxis_.get()), static_cast<unsigned int>(sliceNumber_.get()-1));
+    LayerRAM* sliceImage = VolumeRAMSlice::apply(
+        vol, static_cast<CoordinateEnums::CartesianCoordinateAxis>(sliceAlongAxis_.get()),
+        static_cast<unsigned int>(sliceNumber_.get() - 1));
 
-    Image* outImage = new Image(sliceImage->getDimension(), COLOR_ONLY, sliceImage->getDataFormat());
+    Image* outImage =
+        new Image(sliceImage->getDimension(), COLOR_ONLY, sliceImage->getDataFormat());
     outImage->getColorLayer()->addRepresentation(sliceImage);
 
     outport_.setData(outImage);
 }
 
-VolumeSlice::VolumeSliceInteractionHandler::VolumeSliceInteractionHandler(VolumeSlice* vs) 
-: InteractionHandler()
-, wheelEvent_(MouseEvent::MOUSE_BUTTON_NONE, InteractionEvent::MODIFIER_NONE)
-, upEvent_('W',InteractionEvent::MODIFIER_NONE, KeyboardEvent::KEY_STATE_PRESS)
-, downEvent_('S',InteractionEvent::MODIFIER_NONE, KeyboardEvent::KEY_STATE_PRESS)
-, slicer_(vs) {
-}
+VolumeSlice::VolumeSliceInteractionHandler::VolumeSliceInteractionHandler(VolumeSlice* vs)
+    : InteractionHandler()
+    , wheelEvent_(MouseEvent::MOUSE_BUTTON_NONE, InteractionEvent::MODIFIER_NONE)
+    , upEvent_('W', InteractionEvent::MODIFIER_NONE, KeyboardEvent::KEY_STATE_PRESS)
+    , downEvent_('S', InteractionEvent::MODIFIER_NONE, KeyboardEvent::KEY_STATE_PRESS)
+    , slicer_(vs) {}
 
-void VolumeSlice::VolumeSliceInteractionHandler::invokeEvent(Event* event){
+void VolumeSlice::VolumeSliceInteractionHandler::invokeEvent(Event* event) {
     KeyboardEvent* keyEvent = dynamic_cast<KeyboardEvent*>(event);
     if (keyEvent) {
         int button = keyEvent->button();
-        KeyboardEvent::KeyState state = keyEvent->state();
-        InteractionEvent::Modifier modifier = keyEvent->modifier();
+        int state = keyEvent->state();
+        int modifier = keyEvent->modifiers();
 
-        if (button == upEvent_.button()
-            && modifier == upEvent_.modifier()
-            && state == KeyboardEvent::KEY_STATE_PRESS)
+        if (button == upEvent_.button() && modifier == upEvent_.modifiers() &&
+            state == KeyboardEvent::KEY_STATE_PRESS)
             slicer_->shiftSlice(1);
-        else if (button == downEvent_.button()
-            && modifier == downEvent_.modifier()
-            && state == KeyboardEvent::KEY_STATE_PRESS)
+        else if (button == downEvent_.button() && modifier == downEvent_.modifiers() &&
+                 state == KeyboardEvent::KEY_STATE_PRESS)
             slicer_->shiftSlice(-1);
 
         return;
@@ -145,16 +139,15 @@ void VolumeSlice::VolumeSliceInteractionHandler::invokeEvent(Event* event){
 
     MouseEvent* mouseEvent = dynamic_cast<MouseEvent*>(event);
     if (mouseEvent) {
-        MouseEvent::MouseState state = mouseEvent->state();
-        InteractionEvent::Modifier modifier = mouseEvent->modifier();
+        int state = mouseEvent->state();
+        int modifier = mouseEvent->modifiers();
 
-        if (modifier == wheelEvent_.modifier()
-            && state == MouseEvent::MOUSE_STATE_WHEEL) {
-                int steps = mouseEvent->wheelSteps();
-                slicer_->shiftSlice(steps);
+        if (modifier == wheelEvent_.modifiers() && state == MouseEvent::MOUSE_STATE_WHEEL) {
+            int steps = mouseEvent->wheelSteps();
+            slicer_->shiftSlice(steps);
         }
         return;
     }
 }
 
-} // inviwo namespace
+}  // inviwo namespace

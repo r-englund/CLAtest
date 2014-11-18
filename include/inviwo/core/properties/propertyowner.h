@@ -41,6 +41,9 @@ namespace inviwo {
 
 class Processor;
 class Property;
+class Event;
+class EventProperty;
+class CompositeProperty;
 
 class IVW_CORE_API PropertyOwner : public PropertyOwnerObservable, public IvwSerializable {
 public:
@@ -94,10 +97,17 @@ public:
     
     static std::string invalidationLevelToString(InvalidationLevel level);
 
+    virtual void invokeInteractionEvent(Event* event);
+
 protected:
     std::vector<Property*> properties_; //< non-owning references.
+    
+    // Chached lists of certain propertytypes
+    std::vector<EventProperty*> eventProperties_; //< non-owning references.
+    std::vector<CompositeProperty*> compositeProperties_; //< non-owning references.
 
 private:
+    Property* removeProperty(std::vector<Property*>::iterator it);
     bool findPropsForComposites(TxElement*);
     InvalidationLevel invalidationLevel_;
     
@@ -117,6 +127,7 @@ std::vector<T*> PropertyOwner::getPropertiesByType(bool recursiveSearch /* = fal
         if (dynamic_cast<T*>(properties_[i])) {
             foundProperties.push_back(static_cast<T*>(properties_[i]));
         }
+// TODO fix, Did not get this to compile //Peter
 //        else if (recursiveSearch && dynamic_cast<PropertyOwner*>(properties_[i])) {
 //            std::vector<T*> subProperties =
 //                dynamic_cast<PropertyOwner*>(properties_[i])->getPropertiesByType<T>(true);

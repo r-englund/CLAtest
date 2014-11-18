@@ -41,7 +41,6 @@
 #include <inviwo/qt/editor/resourcemanagerwidget.h>
 #include <inviwo/qt/editor/consolewidget.h>
 #include <inviwo/qt/editor/settingswidget.h>
-#include <inviwo/qt/editor/mappingwidget.h>
 
 #include <inviwo/qt/widgets/inviwofiledialog.h>
 
@@ -94,10 +93,6 @@ void InviwoMainWindow::initialize() {
     resourceManagerWidget_ = new ResourceManagerWidget(this);
     addDockWidget(Qt::LeftDockWidgetArea, resourceManagerWidget_);
     resourceManagerWidget_->hide();
-
-    mappingwidget_ = new MappingWidget(this);
-    addDockWidget(Qt::LeftDockWidgetArea, mappingwidget_);
-    mappingwidget_->hide();
 
     settingsWidget_ = new SettingsWidget(this);
     addDockWidget(Qt::LeftDockWidgetArea, settingsWidget_);
@@ -305,7 +300,6 @@ void InviwoMainWindow::addMenuActions() {
     connect(exitAction_, SIGNAL(triggered()), this, SLOT(close()));
     fileMenuItem_->addAction(exitAction_);
     // dock widget visibility menu entries
-    viewMenuItem_->addAction(mappingwidget_->toggleViewAction());
     viewMenuItem_->addAction(settingsWidget_->toggleViewAction());
     processorTreeWidget_->toggleViewAction()->setText(tr("&Processor List"));
     viewMenuItem_->addAction(processorTreeWidget_->toggleViewAction());

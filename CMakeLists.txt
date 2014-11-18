@@ -9,11 +9,9 @@ endif()
 if(POLICY CMP0046)
     cmake_policy(SET CMP0046 OLD) # Missing dependencies policy.
 endif()
-if(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
-  if(POLICY CMP0042)
-    cmake_policy(SET CMP0042 OLD) # MacOSX rpath policy.
-  endif()
-endif()
+
+cmake_policy(SET CMP0042 OLD) # MacOSX rpath policy.
+
 
 project(inviwo-projects)
 
@@ -32,7 +30,13 @@ build_module(Base)
 build_module(BaseGL)
 build_module(FreeImage)
 build_module(OpenGL)
+
+# OpenGL Context created with GLFW or Qt within Inviwo by default
+if(IVW_USE_GLFW_NOT_OPENGLQT)
+build_module(GLFW)
+else()
 build_module(OpenGLQt)
+endif()
 
 # Applications/Qt
 option(IVW_QT_APPLICATION "Build Inviwo Qt Application" ON)

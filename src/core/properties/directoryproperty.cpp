@@ -33,7 +33,7 @@
 #include <inviwo/core/common/inviwoapplication.h>
 #include <inviwo/core/properties/directoryproperty.h>
 #include <inviwo/core/properties/fileproperty.h>
-#include <inviwo/core/util/urlparser.h>
+#include <inviwo/core/util/filesystem.h>
 
 namespace inviwo {
 
@@ -77,8 +77,8 @@ void DirectoryProperty::updateDirectoryTree() { updateWidgets(); }
 
 std::vector<std::string> DirectoryProperty::getFiles(std::string filters) const {
     std::vector<std::string> validFilesWithExtension;
-    std::string filterName = URLParser::getFileNameWithoutExtension(filters);
-    std::string filterExt = URLParser::getFileExtension(filters);
+    std::string filterName = filesystem::getFileNameWithoutExtension(filters);
+    std::string filterExt = filesystem::getFileExtension(filters);
     bool arbitaryName = (filterName == "*");
     bool arbitaryExt = (filterExt == "*");
 
@@ -86,21 +86,21 @@ std::vector<std::string> DirectoryProperty::getFiles(std::string filters) const 
     // Only: *.*, *.ext, name.*, name.ext
     for (size_t i = 0; i < directoryTree_.size(); i++) {
         std::string file = get() + "/";
-        file = URLParser::getFileDirectory(file) + directoryTree_[i];
+        file = filesystem::getFileDirectory(file) + directoryTree_[i];
 
         if (arbitaryName && arbitaryExt) {
             validFilesWithExtension.push_back(file);
             continue;
         }
 
-        std::string fileExt = URLParser::getFileExtension(directoryTree_[i]);
+        std::string fileExt = filesystem::getFileExtension(directoryTree_[i]);
 
         if (arbitaryName && fileExt == filterExt) {
             validFilesWithExtension.push_back(file);
             continue;
         }
 
-        std::string fileName = URLParser::getFileNameWithoutExtension(directoryTree_[i]);
+        std::string fileName = filesystem::getFileNameWithoutExtension(directoryTree_[i]);
 
         if (fileName == filterName && fileExt == filterExt) {
             validFilesWithExtension.push_back(file);
@@ -127,8 +127,8 @@ void DirectoryProperty::serialize(IvwSerializer& s) const {
 
     std::string serializePath;
 
-    if (!absoluteFilePath.empty() && URLParser::sameDrive(basePath, absoluteFilePath))
-        serializePath = URLParser::getRelativePath(basePath, absoluteFilePath);
+    if (!absoluteFilePath.empty() && filesystem::sameDrive(basePath, absoluteFilePath))
+        serializePath = filesystem::getRelativePath(basePath, absoluteFilePath);
     else
         serializePath = absoluteFilePath;
 
@@ -140,13 +140,13 @@ void DirectoryProperty::deserialize(IvwDeserializer& d) {
     std::string serializePath;
     d.deserialize("directory", serializePath);
 
-    if (!URLParser::isAbsolutePath(serializePath) && !serializePath.empty()) {
+    if (!filesystem::isAbsolutePath(serializePath) && !serializePath.empty()) {
         std::string basePath = d.getFileName();
 
         if (basePath.empty())
             basePath = InviwoApplication::getPtr()->getPath(InviwoApplication::PATH_DATA);
 
-        basePath = URLParser::getFileDirectory(basePath);
+        basePath = filesystem::getFileDirectory(basePath);
         set(basePath + serializePath);
     } else {
         set(serializePath);

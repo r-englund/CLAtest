@@ -37,33 +37,23 @@
 
 namespace inviwo {
 
-template<typename T>
+template <typename T>
 class BufferRAMPrecision : public BufferRAM {
 public:
-    BufferRAMPrecision(size_t size = 0, const DataFormatBase* format = DataFormatBase::get(), BufferType type = POSITION_ATTRIB,
-                       BufferUsage usage = STATIC);
-    BufferRAMPrecision(T* data, size_t size, const DataFormatBase* format = DataFormatBase::get(), BufferType type = POSITION_ATTRIB,
-                       BufferUsage usage = STATIC);
+    BufferRAMPrecision(size_t size = 0, const DataFormatBase* format = DataFormatBase::get(),
+                       BufferType type = POSITION_ATTRIB, BufferUsage usage = STATIC);
+    BufferRAMPrecision(T* data, size_t size, const DataFormatBase* format = DataFormatBase::get(),
+                       BufferType type = POSITION_ATTRIB, BufferUsage usage = STATIC);
     BufferRAMPrecision(const BufferRAMPrecision<T>& rhs);
-    BufferRAMPrecision<T>& operator=(const BufferRAMPrecision<T>& rhs) {
-        if (this != &rhs) {
-            size_ = rhs.getSize();
-            initialize();
-            memcpy(data_, rhs.getData(), size_*sizeof(T));
-        }
-
-        return *this;
-    };
-    virtual ~BufferRAMPrecision() {
-        deinitialize();
-    };
+    BufferRAMPrecision<T>& operator=(const BufferRAMPrecision<T>& that);
+    virtual ~BufferRAMPrecision();
     virtual void initialize();
     virtual void initialize(void*);
     virtual void deinitialize();
     virtual BufferRAMPrecision<T>* clone() const;
 
     virtual void* getData() { return (data_->empty() ? NULL : &data_->front()); }
-    virtual const void* getData() const {return (data_->empty() ? NULL : &data_->front()); }
+    virtual const void* getData() const { return (data_->empty() ? NULL : &data_->front()); }
 
     const std::vector<T>* getDataContainer() const { return data_; }
 
@@ -88,27 +78,24 @@ public:
     void clear();
 
 private:
-    static const DataFormatBase* defaultformat() {
-        return GenericDataFormat(T)::get();
-    }
+    static const DataFormatBase* defaultformat() { return GenericDataFormat(T)::get(); }
     std::vector<T>* data_;
 };
 
-
-
-template<typename T, size_t B>
+template <typename T, size_t B>
 class BufferRAMCustomPrecision : public BufferRAMPrecision<T> {
 public:
-    BufferRAMCustomPrecision(size_t size = 0, const DataFormatBase* format = DataFormat<T,B>::get(), BufferType type = POSITION_ATTRIB,
-                             BufferUsage usage = STATIC)
+    BufferRAMCustomPrecision(size_t size = 0,
+                             const DataFormatBase* format = DataFormat<T, B>::get(),
+                             BufferType type = POSITION_ATTRIB, BufferUsage usage = STATIC)
         : BufferRAMPrecision<T>(size, format, type, usage) {}
-    virtual ~BufferRAMCustomPrecision() {};
+    virtual ~BufferRAMCustomPrecision(){};
 
     BufferRAMCustomPrecision(const BufferRAMCustomPrecision<T, B>& rhs);
 
-    BufferRAMCustomPrecision<T,B>& operator=(const BufferRAMCustomPrecision<T,B>& rhs) {
+    BufferRAMCustomPrecision<T, B>& operator=(const BufferRAMCustomPrecision<T, B>& rhs) {
         if (this != &rhs) {
-           BufferRAMPrecision<T>::operator=(rhs);
+            BufferRAMPrecision<T>::operator=(rhs);
         }
         return *this;
     };
@@ -116,9 +103,7 @@ public:
     virtual BufferRAMCustomPrecision<T, B>* clone() const;
 
 private:
-    static const DataFormatBase* defaultformat() {
-        return  DataFormat<T, B>::get();
-    }
+    static const DataFormatBase* defaultformat() { return DataFormat<T, B>::get(); }
 };
 
 template<typename T, size_t B>
@@ -143,6 +128,21 @@ BufferRAMPrecision<T>::BufferRAMPrecision(const BufferRAMPrecision<T>& rhs) :
     ,data_(0) {
     initialize();
     *data_ = *(rhs.data_);
+}
+
+template<typename T>
+BufferRAMPrecision<T>& inviwo::BufferRAMPrecision<T>::operator=(const BufferRAMPrecision<T>& that) {
+    if (this != &that) {
+        size_ = that.getSize();
+        initialize();
+        memcpy(data_, that.getData(), size_*sizeof(T));
+    }
+    return *this;
+}
+
+template <typename T>
+inviwo::BufferRAMPrecision<T>::~BufferRAMPrecision() {
+    deinitialize();
 }
 
 template<typename T>

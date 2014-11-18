@@ -69,7 +69,7 @@ void main() {
     color_ = in_Color;
     texCoord_ = in_TexCoord;
     
-    float height = texture2D(inportHeightfield_, texCoord_.xy).r;
+    float height = texture(inportHeightfield_, texCoord_.xy).r;
     height_ = height * heightScale_;
     vec4 pos = in_Vertex + vec4(0.0f, 0.0f, height * heightScale_, 0.0f);
 

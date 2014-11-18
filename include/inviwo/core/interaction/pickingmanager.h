@@ -25,7 +25,7 @@
  * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- * 
+ *
  * Contact: Erik Sundén
  *
  *********************************************************************************/
@@ -38,70 +38,64 @@
 #include <inviwo/core/util/singleton.h>
 
 namespace inviwo {
-/** \class PickingManager
- * Manager for picking objects.
- */
 
 class FindPickingObject {
 public:
     FindPickingObject(const DataVec3UINT8::type& c) : color_(c) {}
-
-    bool operator()(PickingObject* obj) {
-        return obj->getPickingColorAsUINT8() == color_;
-    }
+    bool operator()(PickingObject* obj) { return obj->getPickingColorAsUINT8() == color_; }
 private:
     DataVec3UINT8::type color_;
 };
 
-class IVW_CORE_API PickingManager {
-
+/** \class PickingManager
+ * Manager for picking objects.
+ */
+class IVW_CORE_API PickingManager : public Singleton<PickingManager> {
+    friend class Singleton<PickingManager>;
     friend class PickingContainer;
-
 public:
-    static PickingManager* instance() {
-        static PickingManager instance;// Guaranteed to be destroyed. Instantiated on first use.
-        return &instance;
-    }
-    ~PickingManager();
+    virtual ~PickingManager();
 
     template <typename T>
-    const PickingObject* registerPickingCallback(T* o, void (T::*m)(const PickingObject*), bool readDepth = true) {
-        PickingObject* pickObj;
-
-        if (unRegisteredPickingObjects_.empty()) {
-            pickObj = generatePickingObject(pickingObjects_.size());
-            pickingObjects_.push_back(pickObj);
-        }
-        else {
-            pickObj = unRegisteredPickingObjects_.back();
-            unRegisteredPickingObjects_.pop_back();
-        }
-
-        pickObj->getCallbackContainer()->addMemberFunction(o,m);
-        pickObj->setReadDepth(readDepth);
-        return pickObj;
-    }
+    const PickingObject* registerPickingCallback(T* o, void (T::*m)(const PickingObject*),
+                                                 bool readDepth = true);
 
     bool unregisterPickingObject(const PickingObject*);
-
     bool pickingEnabled();
 
 protected:
-    PickingManager() {};
-    PickingManager(PickingManager const&) {};
-    void operator=(PickingManager const&) {};
-
-    PickingObject* generatePickingObject(size_t);
-
-    PickingObject* getPickingObjectFromColor(const DataVec3UINT8::type&);
-
+    PickingManager(){};
+    PickingManager(PickingManager const&){};
+    PickingManager& operator=(PickingManager const&) {return *this; };
+    
     void performUniqueColorGenerationTest(int iterations);
+    PickingObject* getPickingObjectFromColor(const DataVec3UINT8::type&);
+    PickingObject* generatePickingObject(size_t);
 
 private:
     std::vector<PickingObject*> pickingObjects_;
     std::vector<PickingObject*> unRegisteredPickingObjects_;
 };
 
-} // namespace
+template <typename T>
+const PickingObject* PickingManager::registerPickingCallback(T* o,
+                                                             void (T::*m)(const PickingObject*),
+                                                             bool readDepth /*= true*/) {
+    PickingObject* pickObj;
 
-#endif // IVW_PICKINGMANAGER_H
+    if (unRegisteredPickingObjects_.empty()) {
+        pickObj = generatePickingObject(pickingObjects_.size());
+        pickingObjects_.push_back(pickObj);
+    } else {
+        pickObj = unRegisteredPickingObjects_.back();
+        unRegisteredPickingObjects_.pop_back();
+    }
+
+    pickObj->getCallbackContainer()->addMemberFunction(o, m);
+    pickObj->setReadDepth(readDepth);
+    return pickObj;
+}
+
+}  // namespace
+
+#endif  // IVW_PICKINGMANAGER_H

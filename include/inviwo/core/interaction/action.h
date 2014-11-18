@@ -25,7 +25,7 @@
  * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- * 
+ *
  * Contact: Sathish Kottravel
  *
  *********************************************************************************/
@@ -39,27 +39,56 @@
 
 namespace inviwo {
 
-class IVW_CORE_API Action : public IvwSerializable {
+class Event;
+
+class IVW_CORE_API Action {
 public:
     Action();
+    template <typename T>
+    Action(T* obj, void (T::*m)(Event*));
     Action(const Action& rhs);
     Action& operator=(const Action& that);
     virtual Action* clone() const;
     virtual ~Action();
 
-    std::string name() const;
-    int action() const;
+    virtual void invoke(Event* event);
 
-    virtual std::string getClassIdentifier() const;
-
-    virtual void serialize(IvwSerializer& s) const;
-    virtual void deserialize(IvwDeserializer& d);
+    template <typename T>
+    void setAction(T* o, void (T::*m)(Event*)) {
+        if (callback_) delete callback_;
+        callback_ = new ActionCallback<T>(o, m);
+    }
 
 protected:
-    std::string actionName_;
-    int action_;
+    class BaseActionCallback {
+    public:
+        BaseActionCallback() {}
+        virtual void invoke(Event*) = 0;
+        virtual ~BaseActionCallback(){};
+    };
+
+    template <typename T>
+    class ActionCallback : public BaseActionCallback {
+    public:
+        typedef void (T::*fPointer)(Event*);
+        ActionCallback(T* obj, fPointer function)
+            : BaseActionCallback(), function_(function), obj_(obj) {}
+        virtual ~ActionCallback() {}
+
+        virtual void invoke(Event* event) { (*obj_.*function_)(event); }
+
+    private:
+        const fPointer function_;
+        T* obj_;
+    };
+
+    BaseActionCallback* callback_;
 };
 
-} // namespace
+template <typename T>
+Action::Action(T* obj, void (T::*m)(Event*))
+    : callback_(new ActionCallback<T>(obj, m)) {}
 
-#endif // IWE_ACTION_H
+}  // namespace
+
+#endif  // IWE_ACTION_H

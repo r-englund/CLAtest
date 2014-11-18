@@ -81,8 +81,6 @@ DialogConnectionGraphicsItem::DialogConnectionGraphicsItem(LinkDialogPropertyGra
 }
 
 DialogConnectionGraphicsItem::~DialogConnectionGraphicsItem() {
-    startPropertyGraphicsItem_->removeConnectionGraphicsItem(this);
-    endPropertyGraphicsItem_->removeConnectionGraphicsItem(this);
     propertyLink_ = NULL;
 }
 

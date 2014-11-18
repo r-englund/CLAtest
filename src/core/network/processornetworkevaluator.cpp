@@ -49,7 +49,7 @@ ProcessorNetworkEvaluator::ProcessorNetworkEvaluator(ProcessorNetwork* processor
 
     initializeNetwork();
     defaultContext_ = NULL;
-    eventInitiator_ = NULL;
+    
     ivwAssert(processorNetworkEvaluators_.find(processorNetwork) == processorNetworkEvaluators_.end() ,
               "A ProcessorNetworkEvaluator for the given ProcessorNetwork is already created");
     processorNetworkEvaluators_[processorNetwork] = this;
@@ -236,41 +236,36 @@ void ProcessorNetworkEvaluator::resetProcessorVisitedStates() {
     }
 }
 
-void ProcessorNetworkEvaluator::propagateInteractionEvent(Processor* processor, InteractionEvent* event) {
+void ProcessorNetworkEvaluator::propagateInteractionEventImpl(Processor* processor,
+                                                              InteractionEvent* event) {
     if (!hasBeenVisited(processor)) {
+        processor->invokeInteractionEvent(event);
         setProcessorVisited(processor);
+        if (event->hasBeenUsed()) return;
+
         ProcessorList directPredecessors = getDirectPredecessors(processor, event);
 
-        for (ProcessorList::iterator it = directPredecessors.begin(), itEnd=directPredecessors.end(); it!=itEnd; ++it) {
-            if ((*it)->hasInteractionHandler())
-                (*it)->invokeInteractionEvent(event);
-
-            propagateInteractionEvent(*it, event);
+        for (ProcessorList::iterator it = directPredecessors.begin(),
+             itEnd = directPredecessors.end();
+             it != itEnd; ++it) {           
+            propagateInteractionEventImpl(*it, event);
+            if (event->hasBeenUsed()) return;
         }
     }
 }
 
 void ProcessorNetworkEvaluator::propagateInteractionEvent(Canvas* canvas, InteractionEvent* event) {
     // find the canvas processor from which the event was emitted
-    eventInitiator_=0;
-    std::vector<Processor*> processors = processorNetwork_->getProcessors();
-    CanvasProcessor* canvasProcessor = NULL;
-
-    for (size_t i=0; i<processors.size(); i++) {
-        canvasProcessor = dynamic_cast<CanvasProcessor*>(processors[i]);
-
-        if (canvasProcessor && canvasProcessor->getCanvas()==canvas) {
-            eventInitiator_ = processors[i];
-            i = processors.size();
-        }
-    }
-
+    Processor* eventInitiator = retrieveCanvasProcessor(canvas);
     resetProcessorVisitedStates();
-    propagateInteractionEvent(eventInitiator_, event);
-    eventInitiator_ = 0;
+    propagateInteractionEventImpl(eventInitiator, event);
 }
 
-/// /NEW ------------------------------------------------------------
+void ProcessorNetworkEvaluator::propagateInteractionEvent(Processor* processor,
+                                                          InteractionEvent* event) {
+    resetProcessorVisitedStates();
+    propagateInteractionEventImpl(processor, event);
+}
 
 bool ProcessorNetworkEvaluator::isPortConnectedToProcessor(Port* port, Processor* processor) {
     bool isConnected = false;
@@ -336,17 +331,14 @@ void ProcessorNetworkEvaluator::propagateResizeEvent(Canvas* canvas, ResizeEvent
     // avoid continues evaluation when port change
     processorNetwork_->lock();
     // find the canvas processor from which the event was emitted
-    eventInitiator_= NULL;
-    eventInitiator_= retrieveCanvasProcessor(canvas);
-    ivwAssert(eventInitiator_!=NULL, "Invalid resize event encountered.");
+    Processor* eventInitiator = retrieveCanvasProcessor(canvas);
+    ivwAssert(eventInitiator!=NULL, "Invalid resize event encountered.");
     // propagate size of canvas to all preceding processors through port
     // event initiator is a canvas processor, hence one ImageInport should exist
-    ImageInport* imageInport = static_cast<ImageInport*>(eventInitiator_->getInports()[0]);
+    ImageInport* imageInport = static_cast<ImageInport*>(eventInitiator->getInports()[0]);
     imageInport->changeDataDimensions(resizeEvent);
     // enable network evaluation again
     processorNetwork_->unlock();
-
-    eventInitiator_ = NULL;
 }
 
 void ProcessorNetworkEvaluator::onProcessorInvalidationEnd(Processor* p) {
@@ -388,11 +380,13 @@ void ProcessorNetworkEvaluator::enableEvaluation() {
     }
 }
 
-ProcessorNetworkEvaluator* ProcessorNetworkEvaluator::getProcessorNetworkEvaluatorForProcessorNetwork(ProcessorNetwork* network) {
-    std::map<ProcessorNetwork*,ProcessorNetworkEvaluator*>::iterator it = processorNetworkEvaluators_.find(network);
+ProcessorNetworkEvaluator*
+ProcessorNetworkEvaluator::getProcessorNetworkEvaluatorForProcessorNetwork(
+    ProcessorNetwork* network) {
+    std::map<ProcessorNetwork*, ProcessorNetworkEvaluator*>::iterator it =
+        processorNetworkEvaluators_.find(network);
 
-    if (it == processorNetworkEvaluators_.end())
-        return new ProcessorNetworkEvaluator(network);
+    if (it == processorNetworkEvaluators_.end()) return new ProcessorNetworkEvaluator(network);
 
     return it->second;
 }

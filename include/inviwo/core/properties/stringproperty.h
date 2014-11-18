@@ -33,6 +33,7 @@
 #ifndef IVW_STRINGPROPERTY_H
 #define IVW_STRINGPROPERTY_H
 
+#include <inviwo/core/common/inviwocoredefine.h>
 #include <inviwo/core/properties/templateproperty.h>
 
 namespace inviwo {
@@ -66,6 +67,7 @@ public:
 
     StringProperty(const StringProperty& rhs);
     StringProperty& operator=(const StringProperty& that);
+    StringProperty& operator=(const std::string& value);
     virtual StringProperty* clone() const;
     virtual ~StringProperty();
 };

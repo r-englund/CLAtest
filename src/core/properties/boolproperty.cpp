@@ -51,6 +51,11 @@ BoolProperty& BoolProperty::operator=(const BoolProperty& that) {
     return *this;
 }
 
+BoolProperty& BoolProperty::operator=(const bool& value) {
+    TemplateProperty<bool>::operator=(value);
+    return *this;
+}
+
 BoolProperty* BoolProperty::clone() const {
     return new BoolProperty(*this);
 }

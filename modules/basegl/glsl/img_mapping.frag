@@ -26,35 +26,21 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  * 
- * Contact: Sathish Kottravel
+ * Contact: Erik Sundén
  *
  *********************************************************************************/
 
-#include <inviwo/qt/widgets/mappingpopup.h>
+#include "utils/structs.glsl"
+#include "utils/classification.glsl"
 
-namespace inviwo {
+uniform TEXTURE_PARAMETERS outportParameters_;
 
-MappingPopup::MappingPopup(EventProperty* eventProperty, EventPropertyManager* parentManager) {
-    parentManager_ = parentManager;
-    eventProperty_ = eventProperty;
+uniform sampler2D transferFunc_;
+uniform sampler2D inport_;
+
+void main() {
+    vec2 texCoords = gl_FragCoord.xy * outportParameters_.dimensionsRCP_;
+    vec4 value = texture(inport_, texCoords);
+    vec4 color = applyTF(transferFunc_, value);
+    FragData0 = color;
 }
-
-// Sends the first event back to the property and closes the window
-void MappingPopup::mousePressEvent(QMouseEvent* e) {
-    parentManager_->changeMouseMapping(eventProperty_, EventConverterQt::getMouseButton(e), EventConverterQt::getModifier(e));
-}
-
-void MappingPopup::keyReleaseEvent(QKeyEvent* keyEvent) {
-	char button = EventConverterQt::getKeyButton(keyEvent);
-
-    if (button > 0) {
-		parentManager_->changeKeyMapping(eventProperty_, button, EventConverterQt::getModifier(keyEvent));
-        this->close();
-    }
-}
-
-void MappingPopup::mouseReleaseEvent(QMouseEvent* e) {
-    this->close();
-}
-
-} // namespace

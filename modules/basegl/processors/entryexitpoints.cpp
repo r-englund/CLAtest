@@ -53,8 +53,7 @@ EntryExitPoints::EntryExitPoints()
     , camera_("camera", "Camera", vec3(0.0f, 0.0f, -2.0f), vec3(0.0f, 0.0f, 0.0f),
               vec3(0.0f, 1.0f, 0.0f), &geometryPort_)
     , capNearClipping_("capNearClipping", "Cap near plane clipping", true)
-    , handleInteractionEvents_("handleEvents", "Handle interaction events", true)
-    , trackball_(NULL)
+    , trackball_(&camera_)
     , genericShader_(NULL)
     , capNearClippingPrg_(NULL)
     , tmpEntryPoints_(NULL)
@@ -62,22 +61,14 @@ EntryExitPoints::EntryExitPoints()
     addPort(geometryPort_);
     addPort(entryPort_, "ImagePortGroup1");
     addPort(exitPort_, "ImagePortGroup1");
-    addProperty(camera_);
     addProperty(capNearClipping_);
-    addProperty(handleInteractionEvents_);
-    handleInteractionEvents_.onChange(this, &EntryExitPoints::handleInteractionEventsChanged);
-    trackball_ = new CameraTrackball(&camera_);
-    addInteractionHandler(trackball_);
+    addProperty(camera_);
+    addProperty(trackball_);
     entryPort_.addResizeEventListener(&camera_);
-
     geometryPort_.onChange(this, &EntryExitPoints::onGeometryChange);
 }
 
-EntryExitPoints::~EntryExitPoints() {
-    removeInteractionHandler(trackball_);
-    delete trackball_;
-    trackball_ = NULL;
-}
+EntryExitPoints::~EntryExitPoints() {}
 
 void EntryExitPoints::initialize() {
     Processor::initialize();
@@ -108,8 +99,6 @@ void EntryExitPoints::process() {
     if (renderer_ == NULL) {
         return;
     }
-    
-    //IVW_OPENGL_PROFILING_IF(0, "");
 
     glEnable(GL_CULL_FACE);
     glDepthFunc(GL_ALWAYS);
@@ -184,14 +173,6 @@ void EntryExitPoints::process() {
 
     glDepthFunc(GL_LESS);
     glDisable(GL_CULL_FACE);
-}
-
-void EntryExitPoints::handleInteractionEventsChanged() {
-    if (handleInteractionEvents_.get()) {
-        addInteractionHandler(trackball_);
-    } else {
-        removeInteractionHandler(trackball_);
-    }
 }
 
 void EntryExitPoints::onGeometryChange() {

@@ -26,39 +26,37 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  * 
- * Contact: Sathish Kottravel
+ * Contact: Erik Sundén
  *
  *********************************************************************************/
 
-#ifndef IVW_EVENTPROPERTYMANAGERWIDGET_H
-#define IVW_EVENTPROPERTYMANAGERWIDGET_H
+#ifndef IVW_IMAGEMAPPING_H
+#define IVW_IMAGEMAPPING_H
 
-#include <inviwo/core/util/observer.h>
-#include <inviwo/qt/widgets/eventpropertymanager.h>
-#include <inviwo/qt/widgets/properties/eventpropertywidgetqt.h>
-
-#include <QVBoxLayout>
-#include <QWidget>
+#include <modules/basegl/baseglmoduledefine.h>
+#include <inviwo/core/common/inviwo.h>
+#include <modules/basegl/processors/imagegpuprocessor.h>
+#include <inviwo/core/properties/transferfunctionproperty.h>
 
 namespace inviwo {
 
-class IVW_QTWIDGETS_API EventPropertyManagerWidget : public QWidget, public EventPropertyManagerObserver {
-    Q_OBJECT
-
+/*! \class ImageMapping
+ *
+ * \brief Maps the input image to an output with the help of a transfer function.
+ */
+class IVW_MODULE_BASEGL_API ImageMapping : public ImageGPUProcessor {
 public:
-    EventPropertyManagerWidget(EventPropertyManager* eventPropertyManager);
-    ~EventPropertyManagerWidget();
+    ImageMapping();
+    ~ImageMapping();
+    InviwoProcessorInfo();
 
-    void onEventPropertyManagerChange();
+protected:
+    virtual void preProcess();
+
 private:
-    void emptyLayout(QVBoxLayout* layout);
-    void drawEventPropertyWidgets();
-
-    EventPropertyManager* eventPropertyManager_;
-    QVBoxLayout* mainLayout_;
-    std::map<std::string, bool> groupCollapsed;
+    TransferFunctionProperty transferFunction_;
 };
 
-} //namespace
+} // namespace
 
-#endif // IVW_EVENTPROPERTYMANAGERWIDGET_H
+#endif // IVW_IMAGEMAPPING_H

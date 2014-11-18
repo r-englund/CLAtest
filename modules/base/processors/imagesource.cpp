@@ -35,7 +35,7 @@
 #include <inviwo/core/datastructures/image/imagedisk.h>
 #include <inviwo/core/datastructures/image/layerdisk.h>
 #include <inviwo/core/io/datareaderfactory.h>
-#include <inviwo/core/util/urlparser.h>
+#include <inviwo/core/util/filesystem.h>
 
 namespace inviwo {
 
@@ -85,7 +85,7 @@ void ImageSource::load() {
         return;
     }
 
-    std::string fileExtension = URLParser::getFileExtension(imageFileName_.get());
+    std::string fileExtension = filesystem::getFileExtension(imageFileName_.get());
     DataReaderType<Layer>* reader = DataReaderFactory::getPtr()->getReaderForTypeAndExtension<Layer>(fileExtension);
 
     if (reader) {

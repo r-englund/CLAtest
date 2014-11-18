@@ -3,7 +3,7 @@
  * Inviwo - Interactive Visualization Workshop
  * Version 0.6b
  *
- * Copyright (c) 2013-2014 Inviwo Foundation
+ * Copyright (c) 2014 Inviwo Foundation
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -26,43 +26,86 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  * 
- * Contact: Erik Sundén
+ * Contact: Martin Falk
  *
  *********************************************************************************/
 
-#ifndef IVW_IMAGEGRAYSCALE_H
-#define IVW_IMAGEGRAYSCALE_H
+#ifndef IVW_IMAGEGPUPROCESSOR_H
+#define IVW_IMAGEGPUPROCESSOR_H
 
 #include <modules/basegl/baseglmoduledefine.h>
 #include <inviwo/core/common/inviwo.h>
 #include <inviwo/core/processors/processor.h>
 #include <inviwo/core/ports/imageport.h>
-#include <modules/opengl/inviwoopengl.h>
 
 namespace inviwo {
 
 class Shader;
 
-class IVW_MODULE_BASEGL_API ImageGrayscale : public Processor {
+/*! \class ImageGPUProcessor
+ *
+ * \brief Base class for image processing on the GPU.
+ *
+ * The ImageGPUProcessor provides the basic structure for image processing on the GPU.
+ * Derived shaders have to provide a custom fragment shader which is used during rendering.
+ * Optionally, derived classes can overwrite ImageGPUProcessor::postProcess() to perform
+ * post-processing of the image data set in the outport. Furthermore, it is possible to
+ * be notified of changes in the input image by overwriting ImageGPUProcessor::afterInportChanged().
+ *
+ * \see VolumeGPUProcessor
+ */
+class IVW_MODULE_BASEGL_API ImageGPUProcessor : public Processor { 
 public:
-    ImageGrayscale();
-    ~ImageGrayscale();
-
-    InviwoProcessorInfo();
+    ImageGPUProcessor(std::string fragmentShader);
+    virtual ~ImageGPUProcessor();
 
     void initialize();
     void deinitialize();
 
-protected:
     virtual void process();
+protected:
+    void markInvalid() { internalInvalid_ = true; }
 
-private:
+    /*! \brief this function gets called right before the actual processing but 
+     *         after the shader has been activated
+     *
+     * overwrite this function in the derived class to perform things like custom shader setup
+     */
+    virtual void preProcess(){}
+
+    /*! \brief this function gets called at the end of the process function
+     *
+     * overwrite this function in the derived class to perform post-processing
+     */
+    virtual void postProcess(){}
+
+    /*! \brief this function gets called whenever the inport changes
+     *
+     * overwrite this function in the derived class to be notified of inport onChange events
+     */
+    virtual void afterInportChanged() {}
+
     ImageInport inport_;
     ImageOutport outport_;
 
+    const DataFormatBase* dataFormat_;
+
+    bool internalInvalid_;
+
+    std::string fragmentShader_;
+
     Shader* shader_;
+
+private: 
+    /*! \brief call-back function for onChange events of the inport
+     */
+    void inportChanged() {
+        markInvalid();
+        afterInportChanged();
+    }
 };
 
 } // namespace
 
-#endif // IVW_IMAGEGRAYSCALE_H
+#endif // IVW_IMAGEGPUPROCESSOR_H
+

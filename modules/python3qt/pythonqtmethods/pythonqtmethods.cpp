@@ -35,7 +35,7 @@
 #include "pythonqtmethods.h"
 #include <modules/python3/pythoninterface/pyvalueparser.h>
 #include <inviwo/core/common/inviwoapplication.h>
-#include <inviwo/core/util/urlparser.h>
+#include <inviwo/core/util/filesystem.h>
 #include <inviwo/qt/editor/networkeditor.h>
 #include <inviwo/qt/widgets/inviwoapplicationqt.h>
 

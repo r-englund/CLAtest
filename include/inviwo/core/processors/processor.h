@@ -159,7 +159,7 @@ public:
     void removeInteractionHandler(InteractionHandler* interactionHandler);
     bool hasInteractionHandler() const;
     const std::vector<InteractionHandler*>& getInteractionHandlers() const;
-    void invokeInteractionEvent(Event* event);
+    virtual void invokeInteractionEvent(Event* event);
 
     // Override from the property owner
     virtual Processor* getProcessor() { return this; }

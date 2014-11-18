@@ -139,8 +139,10 @@ const DataSequence<T>* DataOutport<T>::getConstDataSequence() const {
 template <typename T>
 void DataOutport<T>::setData(T* data, bool ownsData) {
     if (ownsData_ && data_) {
-        //Delete old data
-        delete data_;
+        if (data != data_) {
+            //Delete old data
+            delete data_;
+        }
     }
 
     isSequence_ = (dynamic_cast<DataSequence<T>*>(data) != NULL);
@@ -155,8 +157,10 @@ void DataOutport<T>::setData(T* data, bool ownsData) {
 template <typename T>
 void DataOutport<T>::setConstData(const T* data) {
     if (ownsData_ && data_) {
-        //Delete old data
-        delete data_;
+        if (data != data_) {
+            //Delete old data
+            delete data_;
+        }
     }
 
     ownsData_ = false;

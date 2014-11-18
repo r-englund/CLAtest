@@ -96,7 +96,6 @@ set(HEADER_FILES
     ${IVW_INCLUDE_DIR}/inviwo/core/interaction/pickingmanager.h
     ${IVW_INCLUDE_DIR}/inviwo/core/interaction/pickingobject.h
     ${IVW_INCLUDE_DIR}/inviwo/core/interaction/trackball.h
-    ${IVW_INCLUDE_DIR}/inviwo/core/interaction/trackballaction.h
     ${IVW_INCLUDE_DIR}/inviwo/core/io/datareader.h
     ${IVW_INCLUDE_DIR}/inviwo/core/io/datareaderdialog.h
     ${IVW_INCLUDE_DIR}/inviwo/core/io/datareaderfactory.h
@@ -229,7 +228,6 @@ set(HEADER_FILES
     ${IVW_INCLUDE_DIR}/inviwo/core/util/stringconversion.h
     ${IVW_INCLUDE_DIR}/inviwo/core/util/systemcapabilities.h
     ${IVW_INCLUDE_DIR}/inviwo/core/util/timer.h
-    ${IVW_INCLUDE_DIR}/inviwo/core/util/urlparser.h
     ${IVW_INCLUDE_DIR}/inviwo/core/util/vectoroperations.h
 )
 ivw_group("Header Files" ${HEADER_FILES})
@@ -302,7 +300,6 @@ set(SOURCE_FILES
     interaction/pickingmanager.cpp
     interaction/pickingobject.cpp
     interaction/trackball.cpp
-    interaction/trackballaction.cpp
     io/datareader.cpp
     io/datareaderdialog.cpp
     io/datareaderfactory.cpp
@@ -407,7 +404,6 @@ set(SOURCE_FILES
     util/stringconversion.cpp
     util/systemcapabilities.cpp
     util/timer.cpp
-    util/urlparser.cpp
 )
 ivw_group("Source Files" ${SOURCE_FILES})
 

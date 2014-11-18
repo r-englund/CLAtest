@@ -3,7 +3,7 @@
  * Inviwo - Interactive Visualization Workshop
  * Version 0.6b
  *
- * Copyright (c) 2013-2014 Inviwo Foundation
+ * Copyright (c) 2014 Inviwo Foundation
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -26,37 +26,35 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  * 
- * Contact: Sathish Kottravel
+ * Contact: Martin Falk
  *
  *********************************************************************************/
 
-#ifndef IVW_MAPPINGPOPUP_H
-#define IVW_MAPPINGPOPUP_H
+#ifndef IVW_IMAGEINVERT_H
+#define IVW_IMAGEINVERT_H
 
-#include <inviwo/qt/widgets/inviwoqtwidgetsdefine.h>
-#include <inviwo/core/properties/eventproperty.h>
-#include <inviwo/qt/widgets/eventconverterqt.h>
-#include <inviwo/qt/widgets/eventpropertymanager.h>
-
-#include <QWidget>
+#include <modules/basegl/baseglmoduledefine.h>
+#include <inviwo/core/common/inviwo.h>
+#include <modules/basegl/processors/imagegpuprocessor.h>
 
 namespace inviwo {
 
-class IVW_QTWIDGETS_API MappingPopup : public QWidget {
-    Q_OBJECT
-
+/*! \class ImageInvert
+ *
+ * \brief Create the invert image of an input image. Alpha channel is not touched.
+ *
+ * This processor computes the inverted image by subtracting the rgb channels from 1.0 
+ * utilizing the ImageGPUProcessor. 
+ * The input range is assumed to be normalized, i.e. [0, 1]. 
+ */
+class IVW_MODULE_BASEGL_API ImageInvert : public ImageGPUProcessor  { 
 public:
-    MappingPopup(EventProperty* eventProperty, EventPropertyManager* parentManager);
-
-	void keyReleaseEvent(QKeyEvent* keyEvent);
-    void mouseReleaseEvent(QMouseEvent* e);
-    void mousePressEvent(QMouseEvent* e);
-
-private:
-    EventProperty* eventProperty_;
-    EventPropertyManager* parentManager_;
+    ImageInvert();
+    virtual ~ImageInvert();
+    InviwoProcessorInfo();
 };
 
 } // namespace
 
-#endif // IVW_MAPPINGPOPUP_H
+#endif // IVW_IMAGEINVERT_H
+

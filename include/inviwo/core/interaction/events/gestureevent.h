@@ -25,7 +25,7 @@
  * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- * 
+ *
  * Contact: Erik Sundén
  *
  *********************************************************************************/
@@ -41,47 +41,58 @@ namespace inviwo {
 
 class IVW_CORE_API GestureEvent : public InteractionEvent {
 public:
-    enum GestureType {
-        PAN   =      0,
-        PINCH,
-        SWIPE,
-        COUNT
-    };
+    enum GestureType { PAN = 0, PINCH, SWIPE, COUNT };
 
     enum GestureState {
-        GESTURE_STATE_NONE    =      0,
-        GESTURE_STATE_STARTED,
-        GESTURE_STATE_UPDATED,
-        GESTURE_STATE_ENDED,
-        GESTURE_STATE_CANCELED
+        GESTURE_STATE_NONE = 0,
+        GESTURE_STATE_STARTED = 1,
+        GESTURE_STATE_UPDATED = 2,
+        GESTURE_STATE_ENDED = 4,
+        GESTURE_STATE_CANCELED = 8,
+        GESTURE_STATE_ANY = GESTURE_STATE_STARTED | GESTURE_STATE_UPDATED | GESTURE_STATE_ENDED |
+                            GESTURE_STATE_CANCELED
     };
 
-    GestureEvent(vec2 deltaPos, double deltaDistance, GestureEvent::GestureType type, GestureEvent::GestureState state, int numFingers, vec2 screenPosNorm);
-    ~GestureEvent();
+    GestureEvent(vec2 deltaPos, double deltaDistance, GestureEvent::GestureType type,
+                 int state, int numFingers, vec2 screenPosNorm);
+
+    GestureEvent(GestureEvent::GestureType type, int state, int numFingers);
+
+    GestureEvent(const GestureEvent& rhs);
+    GestureEvent& operator=(const GestureEvent& that);
+    virtual GestureEvent* clone() const;
+    virtual ~GestureEvent();
 
     inline vec2 deltaPos() const { return deltaPos_; }
     inline double deltaDistance() const { return deltaDistance_; }
     inline GestureEvent::GestureType type() const { return type_; }
-    inline GestureEvent::GestureState state() const { return state_; }
+    inline int state() const { return state_; }
     inline int numFingers() { return numFingers_; }
     inline vec2 screenPosNormalized() { return screenPosNorm_; }
 
     void modify(vec2);
 
-    virtual std::string getClassIdentifier() const { return "GestureEvent"; }
+    virtual std::string getClassIdentifier() const { return "org.inviwo.GestureEvent"; }
 
     virtual void serialize(IvwSerializer& s) const;
     virtual void deserialize(IvwDeserializer& d);
 
+    virtual bool matching(const Event* aEvent) const;
+    virtual bool matching(const GestureEvent* aEvent) const;
+    virtual bool equalSelectors(const Event* aEvent) const;
+
 private:
+    // Event selectors
+    GestureEvent::GestureType type_;
+    int state_;
+    int numFingers_;
+
+    // Event state
     vec2 deltaPos_;
     double deltaDistance_;
-    GestureEvent::GestureType type_;
-    GestureEvent::GestureState state_;
-    int numFingers_;
     vec2 screenPosNorm_;
 };
 
-} // namespace
+}  // namespace
 
-#endif // IVW_GESTUREEVENT_H
+#endif  // IVW_GESTUREEVENT_H

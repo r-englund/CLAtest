@@ -51,8 +51,12 @@ public:
 
     TemplateProperty(const TemplateProperty& rhs);
     TemplateProperty<T>& operator=(const TemplateProperty<T>& that);
-//    virtual TemplateProperty<T>* clone() const; // See ticket #642
-    virtual operator T();
+    TemplateProperty<T>& operator=(const T& value);
+    
+//    virtual TemplateProperty<T>* clone() const // See ticket #642
+    virtual operator T&();
+    virtual operator const T&() const;
+
     virtual ~TemplateProperty();
 
     virtual T& get();
@@ -95,13 +99,27 @@ TemplateProperty<T>& TemplateProperty<T>::operator=(const TemplateProperty<T>& t
     return *this;
 }
 
+template<typename T>
+TemplateProperty<T>& TemplateProperty<T>::operator=(const T& value) {
+    if (value_ != value) {
+        value_ = value;
+        propertyModified();
+    }
+    return *this;
+}
+
 // template <typename T>
 // TemplateProperty<T>* TemplateProperty<T>::clone() const {
 //     return new TemplateProperty<T>(*this);
 // }
 
 template<typename T>
-TemplateProperty<T>::operator T() {
+TemplateProperty<T>::operator T&() {
+    return value_;
+}
+
+template<typename T>
+TemplateProperty<T>::operator const T&() const {
     return value_;
 }
 

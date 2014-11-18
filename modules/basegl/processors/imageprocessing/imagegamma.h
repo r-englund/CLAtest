@@ -3,7 +3,7 @@
  * Inviwo - Interactive Visualization Workshop
  * Version 0.6b
  *
- * Copyright (c) 2013-2014 Inviwo Foundation
+ * Copyright (c) 2014 Inviwo Foundation
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -26,40 +26,42 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  * 
- * Contact: Sathish Kottravel
+ * Contact: Martin Falk
  *
  *********************************************************************************/
 
-#ifndef IVW_OPTIONPROPERTYWIDGETQT_H
-#define IVW_OPTIONPROPERTYWIDGETQT_H
+#ifndef IVW_IMAGEGAMMA_H
+#define IVW_IMAGEGAMMA_H
 
-#include <inviwo/qt/widgets/inviwoqtwidgetsdefine.h>
-
-#include <inviwo/qt/widgets/properties/propertywidgetqt.h>
-#include <inviwo/core/properties/baseoptionproperty.h>
-#include <inviwo/core/properties/property.h>
-#include <inviwo/qt/widgets/editablelabelqt.h>
+#include <modules/basegl/baseglmoduledefine.h>
+#include <inviwo/core/common/inviwo.h>
+#include <modules/basegl/processors/imagegpuprocessor.h>
+#include <inviwo/core/properties/ordinalproperty.h>
 
 namespace inviwo {
 
-class IVW_QTWIDGETS_API OptionPropertyWidgetQt : public PropertyWidgetQt {
-    Q_OBJECT
-
+/*! \class ImageGamma
+ *
+ * \brief Apply gamma correction to an image. Alpha channel is not touched.
+ *
+ * This processor applies a gamma correction pow(input.rgb, gamma) utilizing 
+ * the ImageGPUProcessor. 
+ * The input range is assumed to be normalized, i.e. [0, 1]. 
+ */
+class IVW_MODULE_BASEGL_API ImageGamma : public ImageGPUProcessor  { 
 public:
-    OptionPropertyWidgetQt(BaseOptionProperty* property);
-    void updateFromProperty();
+    ImageGamma();
+    virtual ~ImageGamma();
+    InviwoProcessorInfo();
+
+protected:
+    virtual void preProcess();
 
 private:
-    BaseOptionProperty* property_;
-    IvwComboBox* comboBox_;
-    EditableLabelQt* label_;
-    void generateWidget();
-
-public slots:
-    void optionChanged();
-    void setPropertyDisplayName();
+    FloatProperty gamma_;
 };
 
 } // namespace
 
-#endif // IVW_OPTIONPROPERTYWIDGETQT_H
+#endif // IVW_IMAGEGAMMA_H
+

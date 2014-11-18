@@ -36,7 +36,6 @@
 #include <inviwo/qt/widgets/editablelabelqt.h>
 #include <inviwo/qt/widgets/properties/transferfunctionpropertydialog.h>
 #include <QHBoxLayout>
-#include <QPushButton>
 
 namespace inviwo {
 

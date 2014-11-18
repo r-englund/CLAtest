@@ -3,7 +3,7 @@
  * Inviwo - Interactive Visualization Workshop
  * Version 0.6b
  *
- * Copyright (c) 2012-2014 Inviwo Foundation
+ * Copyright (c) 2013-2014 Inviwo Foundation
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -26,17 +26,52 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  * 
- * Contact: Peter Steneteg
+ * Contact: Erik Sundén
  *
  *********************************************************************************/
 
-#include <inviwo/core/properties/templateproperty.h>
+#ifndef IVW_IMAGEGRAYSCALE_H
+#define IVW_IMAGEGRAYSCALE_H
+
+#include <modules/basegl/baseglmoduledefine.h>
+#include <inviwo/core/common/inviwo.h>
+#include <modules/basegl/processors/imagegpuprocessor.h>
+#include <inviwo/core/properties/baseoptionproperty.h>
 
 namespace inviwo {
-//template <>
-//IVW_CORE_API const std::string StringProperty::CLASS_IDENTIFIER = "org.inviwo.StringProperty";
-//template <>
-//IVW_CORE_API const std::string BoolProperty::CLASS_IDENTIFIER = "org.inviwo.BoolProperty";
 
+namespace LuminanceModels {
+    enum Models {
+        PerceivedLum, // Y = 0.299 R + 0.587 G + 0.114 B
+        RelativeLum,  // Y = 0.2126 R + 0.7152 G + 0.0722 B
+        AverageLum,   // Y = 0.3333 R + 0.3333 G + 0.3333 B
+        RedOnly,      // Y = R
+        GreenOnly,    // Y = G
+        BlueOnly,     // Y = B
+    };
+}
+
+/*! \class ImageGrayscale
+ *
+ * \brief Compute a gray-scale image from color input. Alpha channel is not touched.
+ *
+ * This processor computes the gray-scale image from a color image according to either
+ * perceived luminance (Y = 0.299 R + 0.587 G + 0.114 B) or relative luminance for XYZ color
+ * space (Y = 0.2126 R + 0.7152 G + 0.0722 B) utilizing the ImageGPUProcessor. 
+ */
+class IVW_MODULE_BASEGL_API ImageGrayscale : public ImageGPUProcessor {
+public:
+    ImageGrayscale();
+    ~ImageGrayscale();
+    InviwoProcessorInfo();
+
+protected:
+    virtual void preProcess();
+
+private:
+    OptionPropertyInt luminanceModel_;
+};
 
 } // namespace
+
+#endif // IVW_IMAGEGRAYSCALE_H

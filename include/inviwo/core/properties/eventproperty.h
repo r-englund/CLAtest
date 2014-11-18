@@ -69,24 +69,26 @@ public:
     virtual EventProperty* clone() const;
     virtual ~EventProperty();
 
+    /**
+     * \brief Maps action to new event.
+     * Changes the current action-to-key binding by replacing the old event with a new
+     */
+    void setEvent(InteractionEvent* e);
+    InteractionEvent* getEvent() const;
+    
+    void setAction(Action* action);
+    Action* getAction() const;
+    
+    virtual void setCurrentStateAsDefault();
+    virtual void resetToDefaultState();
+
     virtual void serialize(IvwSerializer& s) const;
     virtual void deserialize(IvwDeserializer& d);
 
-    InteractionEvent* getEvent() const;
-    Action* getAction() const;
-
-    /**
-     * \brief Maps action to new event.
-     *
-     * Changes the current action-to-key binding by replacing the old event with a new.
-     *
-     * @param Event e The new event
-     */
-    void setEvent(InteractionEvent* e);
-
 private:
-    InteractionEvent* event_; //< non-owning reference
-    Action* action_;          //< non-owning reference   
+    InteractionEvent* event_;           //< owning reference
+    InteractionEvent* defaultEvent_;    //< owning reference
+    Action* action_;                    //< owning reference
 };
 
 }  // namespace

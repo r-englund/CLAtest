@@ -25,7 +25,7 @@
  * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- * 
+ *
  * Contact: Daniel Jönsson
  *
  *********************************************************************************/
@@ -59,9 +59,10 @@ public:
 protected:
     virtual void process();
 
-    void computeEntryExitPoints(const mat4& NDCToTextureMat, const cl::Image& entryPointsCL, const cl::Image& exitPointsCL,
-                                const uvec2& outportDim, cl::Event* profilingEvent);
-    void handleInteractionEventsChanged();
+    void computeEntryExitPoints(const mat4& NDCToTextureMat, const cl::Image& entryPointsCL,
+                                const cl::Image& exitPointsCL, const uvec2& outportDim,
+                                cl::Event* profilingEvent);
+
 private:
     GeometryInport geometryPort_;
     ImageOutport entryPort_;
@@ -70,13 +71,11 @@ private:
     CameraProperty camera_;
     IntVec2Property workGroupSize_;
     BoolProperty useGLSharing_;
-    BoolProperty handleInteractionEvents_; ///< Enable or disable camera movements from canvas
 
-    CameraTrackball* trackball_;
+    CameraTrackball trackball_;
     cl::Kernel* entryExitKernel_;
-
 };
 
-} // namespace
+}  // namespace
 
-#endif // IVW_ENTRYEXITPOINTS_CL_H
+#endif  // IVW_ENTRYEXITPOINTS_CL_H
