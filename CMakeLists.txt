@@ -10,7 +10,7 @@ if(POLICY CMP0046)
     cmake_policy(SET CMP0046 OLD) # Missing dependencies policy.
 endif()
 
-if(CMAKE_MAJOR_VERSION VERSION_GREATER 3)
+if(CMAKE_VERSION VERSION_GREATER "3.0.0")
 	cmake_policy(SET CMP0042 OLD) # MacOSX rpath policy.
 endif()
 
