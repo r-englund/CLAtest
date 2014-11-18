@@ -36,7 +36,7 @@ namespace inviwo {
 
 ProcessorClassIdentifier(VolumeSlice, "org.inviwo.VolumeSlice");
 ProcessorDisplayName(VolumeSlice, "Volume Slice");
-ProcessorTags(VolumeSlice, Tags::None);
+ProcessorTags(VolumeSlice, Tags::CPU);
 ProcessorCategory(VolumeSlice, "Volume Operation");
 ProcessorCodeState(VolumeSlice, CODE_STATE_STABLE);
 
@@ -78,7 +78,9 @@ void VolumeSlice::shiftSlice(int shift) {
 }
 
 void VolumeSlice::process() {
-    uvec3 dims = inport_.getData()->getDimension();
+    const VolumeRAM* vol = inport_.getData()->getRepresentation<VolumeRAM>();
+
+    uvec3 dims = vol->getDimension();
 
     switch (sliceAlongAxis_.get()) {
         case CoordinateEnums::X:
@@ -101,7 +103,6 @@ void VolumeSlice::process() {
             break;
     }
 
-    const VolumeRAM* vol = inport_.getData()->getRepresentation<VolumeRAM>();
     LayerRAM* sliceImage = VolumeRAMSlice::apply(
         vol, static_cast<CoordinateEnums::CartesianCoordinateAxis>(sliceAlongAxis_.get()),
         static_cast<unsigned int>(sliceNumber_.get() - 1));
