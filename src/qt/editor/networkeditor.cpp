@@ -85,7 +85,6 @@ NetworkEditor::NetworkEditor()
     : QGraphicsScene()
     , oldConnectionTarget_(NULL)
     , oldProcessorTarget_(NULL)
-    , linkDialog_(NULL)
     , connectionCurve_(NULL)
     , linkCurve_(NULL)
     , filename_("")
@@ -267,15 +266,9 @@ void NetworkEditor::removeLinkGraphicsItem(LinkConnectionGraphicsItem* linkGraph
 
 void NetworkEditor::showLinkDialog(Processor* processor1, Processor* processor2) {
     InviwoApplicationQt* app = dynamic_cast<InviwoApplicationQt*>(InviwoApplication::getPtr());
-    if (!linkDialog_) 
-        linkDialog_ = new LinkDialog(processor1, processor2, app->getMainWindow());
-    else {
-        linkDialog_->initDialog(processor1, processor2);
-    }
-
-    if (linkDialog_->exec()) {
-        LogWarn("LinkDialog not deinitialized properly")
-    }
+    
+    LinkDialog dialog(processor1, processor2, app->getMainWindow());
+    dialog.exec();
 }
 
 //////////////////////////////////////

@@ -54,10 +54,7 @@ LinkDialog::LinkDialog(Processor* src, Processor* dest, QWidget* parent)
     linkDialogScene_->initScene(src_, dest_);
 }
 
-LinkDialog::~LinkDialog() {
-    delete linkDialogScene_;
-    delete linkDialogView_;
-}
+LinkDialog::~LinkDialog() {}
 
 void LinkDialog::initDialogLayout() {
     setFloating(true);
