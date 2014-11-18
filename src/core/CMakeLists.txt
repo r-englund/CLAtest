@@ -425,7 +425,7 @@ set(TEST_FILES
     ${CMAKE_CURRENT_SOURCE_DIR}/unittests/inviwoapplication-test.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/unittests/commandlineparser-test.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/unittests/processorcreation-test.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/unittests/filesystem-test.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/unittests/urlparser-test.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/unittests/volume-test.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/unittests/image-test.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/unittests/stacktrace-test.cpp
