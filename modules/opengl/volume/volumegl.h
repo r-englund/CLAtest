@@ -46,7 +46,8 @@ class Volume;
 class IVW_MODULE_OPENGL_API VolumeGL : public VolumeRepresentation {
 
 public:
-    VolumeGL(uvec3 dimensions = uvec3(128,128,128), const DataFormatBase* format = DataFormatBase::get(), Texture3D* tex = NULL);
+    VolumeGL(uvec3 dimensions = uvec3(128,128,128), const DataFormatBase* format = DataFormatBase::get(), bool initializeTexture = true);
+    VolumeGL(Texture3D* tex, const DataFormatBase* format);
     VolumeGL(const VolumeGL& rhs);
     VolumeGL& operator=(const VolumeGL& rhs);
     virtual ~VolumeGL();
@@ -61,10 +62,6 @@ public:
     const Texture3D* getTexture() const;
 
     void setVolumeUniforms(const Volume* volume, Shader* shader, const std::string& samplerID) const;
-
-protected:
-    void initialize();
-    void deinitialize();
 
 private:
     Texture3D* volumeTexture_;
