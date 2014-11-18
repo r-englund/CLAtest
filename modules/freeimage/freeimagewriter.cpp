@@ -32,7 +32,7 @@
 
 #include <modules/freeimage/freeimagewriter.h>
 #include <modules/freeimage/freeimageutils.h>
-#include <inviwo/core/util/urlparser.h>
+#include <inviwo/core/util/filesystem.h>
 #include <inviwo/core/datastructures/image/layer.h>
 
 namespace inviwo {

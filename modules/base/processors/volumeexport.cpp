@@ -35,7 +35,7 @@
 #include <inviwo/core/datastructures/volume/volumeram.h>
 #include <inviwo/core/io/datawriter.h>
 #include <inviwo/core/io/datawriterfactory.h>
-#include <inviwo/core/util/urlparser.h>
+#include <inviwo/core/util/filesystem.h>
 #include <inviwo/core/util/fileextension.h>
 
 namespace inviwo {
@@ -84,7 +84,7 @@ void VolumeExport::exportVolume() {
     const Volume* volume = volumePort_.getData();
 
     if (volume && !volumeFile_.get().empty()) {
-        std::string fileExtension = URLParser::getFileExtension(volumeFile_.get());
+        std::string fileExtension = filesystem::getFileExtension(volumeFile_.get());
         DataWriterType<Volume>* writer =
             DataWriterFactory::getPtr()->getWriterForTypeAndExtension<Volume>(fileExtension);
 

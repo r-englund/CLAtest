@@ -32,7 +32,7 @@
 
 #include <inviwo/core/common/inviwoapplication.h>
 #include <inviwo/core/properties/fileproperty.h>
-#include <inviwo/core/util/urlparser.h>
+#include <inviwo/core/util/filesystem.h>
 
 namespace inviwo {
 
@@ -88,8 +88,8 @@ void FileProperty::serialize(IvwSerializer& s) const {
 
     std::string serializePath;
 
-    if (absoluteFilePath.size() != 0 && URLParser::sameDrive(basePath, absoluteFilePath))
-        serializePath = URLParser::getRelativePath(basePath, absoluteFilePath);
+    if (absoluteFilePath.size() != 0 && filesystem::sameDrive(basePath, absoluteFilePath))
+        serializePath = filesystem::getRelativePath(basePath, absoluteFilePath);
     else
         serializePath = absoluteFilePath;
 
@@ -105,13 +105,13 @@ void FileProperty::deserialize(IvwDeserializer& d) {
 
     d.deserialize("url", serializePath);
 
-    if (!URLParser::isAbsolutePath(serializePath) && !serializePath.empty()) {
+    if (!filesystem::isAbsolutePath(serializePath) && !serializePath.empty()) {
         std::string basePath = d.getFileName();
 
         if (basePath.empty())
             basePath = InviwoApplication::getPtr()->getPath(InviwoApplication::PATH_DATA);
 
-        basePath = URLParser::getFileDirectory(basePath);
+        basePath = filesystem::getFileDirectory(basePath);
         set(basePath + serializePath);
     } else {
         set(serializePath);

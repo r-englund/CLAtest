@@ -36,7 +36,7 @@
 
 #include <inviwo/core/util/assertion.h>
 #include <inviwo/core/util/stringconversion.h>
-#include <inviwo/core/util/urlparser.h>
+#include <inviwo/core/util/filesystem.h>
 
 #include <modules/python3/pythonexecutionoutputobservable.h>
 

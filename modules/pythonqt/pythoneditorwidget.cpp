@@ -34,7 +34,7 @@
 #include <inviwo/core/common/inviwoapplication.h>
 #include <inviwo/core/network/processornetwork.h>
 #include <inviwo/core/util/logcentral.h>
-#include <inviwo/core/util/urlparser.h>
+#include <inviwo/core/util/filesystem.h>
 #include <modules/python/pythonmodule.h>
 #include <QCommandLinkButton>
 #include <QSplitter>
@@ -199,7 +199,7 @@ void PythonEditorWidget::appendToOutput(const std::string& msg, bool error) {
 }
 
 void PythonEditorWidget::fileChanged(std::string fileName) {
-    std::string msg = "The file " + URLParser::getFileNameWithExtension(scriptFileName_) +
+    std::string msg = "The file " + filesystem::getFileNameWithExtension(scriptFileName_) +
                       " has been modified outside of Inwivo, do you want to reload its contents";
     int ret = QMessageBox::question(this, "Python Editor", msg.c_str(), "Yes", "No");
 

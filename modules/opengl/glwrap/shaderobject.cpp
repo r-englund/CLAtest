@@ -36,7 +36,7 @@
 #include <string>
 
 #include <inviwo/core/io/textfilereader.h>
-#include <inviwo/core/util/urlparser.h>
+#include <inviwo/core/util/filesystem.h>
 #include <modules/opengl/glwrap/shadermanager.h>
 
 
@@ -55,7 +55,7 @@ ShaderObject::~ShaderObject() {
 
 bool ShaderObject::initialize(bool compileShader) {
     // Help developer to spot errors
-    std::string fileExtension = URLParser::getFileExtension(fileName_);
+    std::string fileExtension = filesystem::getFileExtension(fileName_);
 
     if ((fileExtension == "vert" && shaderType_ != GL_VERTEX_SHADER)
         || (fileExtension == "geom" && shaderType_ != GL_GEOMETRY_SHADER)

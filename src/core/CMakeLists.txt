@@ -228,7 +228,6 @@ set(HEADER_FILES
     ${IVW_INCLUDE_DIR}/inviwo/core/util/stringconversion.h
     ${IVW_INCLUDE_DIR}/inviwo/core/util/systemcapabilities.h
     ${IVW_INCLUDE_DIR}/inviwo/core/util/timer.h
-    ${IVW_INCLUDE_DIR}/inviwo/core/util/urlparser.h
     ${IVW_INCLUDE_DIR}/inviwo/core/util/vectoroperations.h
 )
 ivw_group("Header Files" ${HEADER_FILES})
@@ -405,7 +404,6 @@ set(SOURCE_FILES
     util/stringconversion.cpp
     util/systemcapabilities.cpp
     util/timer.cpp
-    util/urlparser.cpp
 )
 ivw_group("Source Files" ${SOURCE_FILES})
 
@@ -427,7 +425,7 @@ set(TEST_FILES
     ${CMAKE_CURRENT_SOURCE_DIR}/unittests/inviwoapplication-test.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/unittests/commandlineparser-test.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/unittests/processorcreation-test.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/unittests/urlparser-test.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/unittests/filesystem-test.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/unittests/volume-test.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/unittests/image-test.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/unittests/stacktrace-test.cpp

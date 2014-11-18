@@ -31,7 +31,6 @@
  *********************************************************************************/
 
 #include <inviwo/core/io/datvolumewriter.h>
-#include <inviwo/core/util/urlparser.h>
 #include <inviwo/core/util/filesystem.h>
 #include <inviwo/core/datastructures/volume/volumeram.h>
 
@@ -57,7 +56,7 @@ DatVolumeWriter* DatVolumeWriter::clone() const {
 }
 
 void DatVolumeWriter::writeData(const Volume* data, const std::string filePath) const {
-    std::string rawPath = URLParser::replaceFileExtension(filePath, "raw");
+    std::string rawPath = filesystem::replaceFileExtension(filePath, "raw");
 
     if (filesystem::fileExists(filePath)  && !overwrite_)
         throw DataWriterException("Error: Output file: " + filePath + " already exists");
@@ -65,9 +64,9 @@ void DatVolumeWriter::writeData(const Volume* data, const std::string filePath) 
     if (filesystem::fileExists(rawPath) && !overwrite_)
         throw DataWriterException("Error: Output file: " + rawPath + " already exists");
 
-    std::string fileDirectory = URLParser::getFileDirectory(filePath);
-    std::string fileExtension = URLParser::getFileExtension(filePath);
-    std::string fileName = URLParser::getFileNameWithoutExtension(filePath);
+    std::string fileDirectory = filesystem::getFileDirectory(filePath);
+    std::string fileExtension = filesystem::getFileExtension(filePath);
+    std::string fileName = filesystem::getFileNameWithoutExtension(filePath);
     //Write the .dat file content
     std::stringstream ss;
     const VolumeRAM* vr = data->getRepresentation<VolumeRAM>();

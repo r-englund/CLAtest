@@ -25,7 +25,7 @@
  * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- * 
+ *
  * Contact: Daniel Jönsson
  *
  *********************************************************************************/
@@ -49,7 +49,7 @@ namespace filesystem {
  */
 IVW_CORE_API std::string getWorkingDirectory();
 
-/** 
+/**
  * \brief Check if a file exists.
  * @see directoryExists for directories
  * @param std::string fileName The path to the file
@@ -57,7 +57,7 @@ IVW_CORE_API std::string getWorkingDirectory();
  */
 IVW_CORE_API bool fileExists(const std::string& filePath);
 
-/** 
+/**
  * Check if the directory exists
  *
  * @see fileExists for files
@@ -73,10 +73,12 @@ IVW_CORE_API bool directoryExists(const std::string& path);
  * @param parentFolder Folder to find.
  * @return The directory where the folder was found if found, otherwise path.
  */
-IVW_CORE_API std::string getParentFolderPath(const std::string& path, const std::string& parentFolder);
+IVW_CORE_API std::string getParentFolderPath(const std::string& path,
+                                             const std::string& parentFolder);
 
 /**
- * Finds base path which contains subfolders such as "data" and "modules" where external files are stored
+ * Finds base path which contains subfolders such as "data" and "modules" where external files are
+ *stored
  *
  * @return The directory considered to be the basePath.
  */
@@ -84,16 +86,48 @@ IVW_CORE_API std::string findBasePath();
 
 IVW_CORE_API void createDirectoryRecursivly(std::string path);
 
-/** 
+/**
  * Get inviwo settings folder for current user
  * Will for instance be AppData/Inviwo/ on windows.
- * 
+ *
  * @return std::string Inviwo user settings folder
  */
 IVW_CORE_API std::string getInviwoUserSettingsPath();
 
-} // namespace
+/**
+ * \brief Adds the InviwoApplication base path before the url
+ *
+ * @see InviwoApplication::getBasePath
+ * @param const std::string url Relative path
+ * @return std::string InviwoApplication base path + url
+ */
+IVW_CORE_API std::string addBasePath(const std::string& url);
 
-} // namespace
+IVW_CORE_API std::string getFileDirectory(const std::string& url);
+IVW_CORE_API std::string getFileNameWithExtension(const std::string& url);
+IVW_CORE_API std::string getFileNameWithoutExtension(const std::string& url);
+IVW_CORE_API std::string getFileExtension(const std::string& url);
+IVW_CORE_API std::string replaceFileExtension(const std::string& url,
+                                              const std::string& newFileExtension);
+IVW_CORE_API std::string getRelativePath(const std::string& basePath,
+                                         const std::string& absolutePath);
+IVW_CORE_API bool isAbsolutePath(const std::string& path);
+/**
+ * \brief Checks whether the second path is on the same drive as the first path
+ *
+ * If both paths are relative, this function returns true. If only refPath is relative
+ * InviwoApplication::getBasePath is used instead as reference.
+ *
+ * @param const std::string& refPath reference path, if relative then InviwoApplication::getBasePath
+ *is used instead
+ * @param const std::string& queryPath path to be checked
+ * @return true if queryPath and refPath are located on the same drive (on Windows), always true on
+ *all other systems
+ */
+IVW_CORE_API bool sameDrive(const std::string& refPath, const std::string& queryPath);
 
-#endif // IVW_FILE_SYSTEM_H
+}  // namespace
+
+}  // namespace
+
+#endif  // IVW_FILE_SYSTEM_H

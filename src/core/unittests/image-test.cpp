@@ -38,7 +38,7 @@
 #include <inviwo/core/datastructures/image/layerramprecision.h>
 #include <inviwo/core/common/inviwoapplication.h>
 #include <inviwo/core/io/datareaderfactory.h>
-#include <inviwo/core/util/urlparser.h>
+#include <inviwo/core/util/filesystem.h>
 #include <modules/unittests/unittestsmodule.h>
 
 namespace inviwo{
@@ -56,7 +56,7 @@ TEST(ImageTests,ImageLoadWhite) {
     LayerDisk* disk = new LayerDisk(imgFile);
     ASSERT_TRUE(disk != 0);
 
-    std::string ext = URLParser::getFileExtension(imgFile);
+    std::string ext = filesystem::getFileExtension(imgFile);
     EXPECT_EQ(ext, "bmp");
 
 
@@ -104,7 +104,7 @@ TEST(ImageTests, ImageLoadRGB) {
     LayerDisk* disk = new LayerDisk(imgFile);
     ASSERT_TRUE(disk != 0);
 
-    std::string ext = URLParser::getFileExtension(imgFile);
+    std::string ext = filesystem::getFileExtension(imgFile);
     EXPECT_EQ(ext, "bmp");
 
 
@@ -151,7 +151,7 @@ TEST(ImageTests, ImageLoadRange) {
     LayerDisk* disk = new LayerDisk(imgFile);
     ASSERT_TRUE(disk != 0);
 
-    std::string ext = URLParser::getFileExtension(imgFile);
+    std::string ext = filesystem::getFileExtension(imgFile);
     EXPECT_EQ(ext, "bmp");
 
 
@@ -188,7 +188,7 @@ TEST(ImageTests, ImageResize) {
     LayerDisk* disk = new LayerDisk(imgFile);
     ASSERT_TRUE(disk != 0);
 
-    std::string ext = URLParser::getFileExtension(imgFile);
+    std::string ext = filesystem::getFileExtension(imgFile);
     EXPECT_EQ(ext, "bmp");
 
 

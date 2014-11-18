@@ -39,6 +39,7 @@
 
 // For working directory
 #include <stdio.h> // FILENAME_MAX
+
 #ifdef WIN32
 #include <windows.h>
 #include <tchar.h>
@@ -49,7 +50,7 @@
 #else
 #include <unistd.h>
 #endif
-#include <stdio.h>  // defines FILENAME_MAX
+
 
 namespace inviwo {
 
@@ -150,7 +151,7 @@ static std::string helperSHGetKnownFolderPath(const KNOWNFOLDERID &id){
         WideCharToMultiByte(CP_ACP,0,path,-1, ch,1024,&DefChar, NULL);
         s =  std::string(ch);
     }else{
-        LogErrorCustom("URLParser::getUserSettingsPath","SHGetKnownFolderPath failed to get settings folder");
+        LogErrorCustom("filesystem::getUserSettingsPath","SHGetKnownFolderPath failed to get settings folder");
     }
 
     CoTaskMemFree(path);
@@ -188,6 +189,155 @@ std::string getInviwoUserSettingsPath() {
 #endif
     return ss.str();
 }
+
+
+std::string addBasePath(const std::string& url) {
+    return InviwoApplication::getPtr()->getBasePath() + url;
+}
+
+std::string getFileDirectory(const std::string& url) {
+    size_t pos = url.find_last_of("\\/") + 1;
+    std::string fileDirectory = url.substr(0, pos);
+    return fileDirectory;
+}
+
+std::string getFileNameWithExtension(const std::string& url) {
+    size_t pos = url.find_last_of("\\/") + 1;
+    std::string fileNameWithExtension = url.substr(pos, url.length());
+    return fileNameWithExtension;
+}
+
+std::string getFileNameWithoutExtension(const std::string& url) {
+    std::string fileNameWithExtension = getFileNameWithExtension(url);
+    size_t pos = fileNameWithExtension.find_last_of(".");
+    std::string fileNameWithoutExtension = fileNameWithExtension.substr(0, pos);
+    return fileNameWithoutExtension;
+}
+
+std::string getFileExtension(const std::string& url) {
+    std::string filename = getFileNameWithExtension(url);
+    size_t pos = filename.rfind(".");
+
+    if (pos == std::string::npos)
+        return "";
+
+    std::string fileExtension = filename.substr(pos + 1, url.length());
+    return fileExtension;
+}
+
+std::string replaceFileExtension(const std::string& url, const std::string& newFileExtension) {
+    size_t pos = url.find_last_of(".") + 1;
+    std::string newUrl = url.substr(0, pos) + newFileExtension;
+    return newUrl;
+}
+
+std::string getRelativePath(const std::string& bPath, const std::string& absolutePath) {
+    // FIXME: is the case that the bath path and the absolute path are lying on different drives considered?
+    // FIXME: different drives don't matter, since the first path token will be different (split only for '/' and '\\')
+    // FIXME: however, we have to make sure, both paths are absolute!
+    std::string basePath(getFileDirectory(bPath));
+    std::string absPath(getFileDirectory(absolutePath));
+    std::string fileName(getFileNameWithExtension(absolutePath));
+    std::string relativePath("");
+
+    //if given base path is empty use system base path
+    if (basePath.empty())
+        basePath = InviwoApplication::getPtr()->getBasePath();
+
+    //path as string tokens
+    std::vector<std::string> basePathTokens;
+    std::vector<std::string> absolutePathTokens;
+    size_t pos = 0, pos1 = std::string::npos;
+
+    while (pos != std::string::npos) {
+        pos1 = basePath.find_first_of("\\/", pos);
+
+        if (pos1 != pos)
+            basePathTokens.push_back(basePath.substr(pos, pos1 - pos));
+
+        pos = basePath.find_first_not_of("\\/", pos1);
+    }
+
+    pos = 0, pos1 = std::string::npos;
+
+    while (pos != std::string::npos) {
+        pos1 = absPath.find_first_of("\\/", pos);
+
+        if (pos1 != pos)
+            absolutePathTokens.push_back(absPath.substr(pos, pos1 - pos));
+
+        pos = absPath.find_first_not_of("\\/", pos1);
+    }
+
+    //discard matching tokens
+    for (size_t i = 0; (i < basePathTokens.size() && i < absolutePathTokens.size()); i++) {
+        if (basePathTokens[i] == absolutePathTokens[i])
+            basePathTokens[i] = absolutePathTokens[i] = "";
+        else
+            break;
+    }
+
+    //handle non-matching tokens
+    for (size_t i = 0; i < basePathTokens.size(); i++)
+    if (basePathTokens[i] != "") relativePath += "../";
+
+    for (size_t i = 0; i < absolutePathTokens.size(); i++)
+    if (absolutePathTokens[i] != "") relativePath += (absolutePathTokens[i] + "/");
+
+    return relativePath + fileName;
+}
+
+bool isAbsolutePath(const std::string& path) {
+#ifdef WIN32
+    if (path.size() < 2) {
+        return false;
+    }
+
+    // check for '[A-Z]:' in the begin of path
+    char driveLetter = toupper(path[0]);
+    return ((driveLetter >= 'A') && (driveLetter <= 'Z') && (path[1] == ':'));
+
+#else
+
+    if (path.empty())
+        return false;
+
+    return (path[0] == '/');
+
+#endif
+}
+
+bool sameDrive(const std::string& refPath, const std::string& queryPath) {
+#ifdef WIN32
+    bool refPathIsRelative = !isAbsolutePath(refPath);
+    bool queryPathIsRelative = !isAbsolutePath(queryPath);
+    std::string referencePath(refPath); // local copy of refPath
+
+    if (refPathIsRelative) {
+        if (queryPathIsRelative) {
+            // both paths are relative, assuming same drive
+            return true;
+        } else {
+            // reference path is relative, but queryPath is absolute
+            // use base path as reference
+            referencePath = InviwoApplication::getPtr()->getBasePath();
+        }
+    } else if (queryPathIsRelative) {
+        // refPath is absolute, queryPath is relative
+        return true;
+    }
+
+    if (referencePath.empty() || queryPath.empty())
+        return false;
+
+    // check equality of drive letters
+    return (toupper(referencePath[0]) == toupper(queryPath[0]));
+
+#else
+    return true;
+#endif
+}
+
 
 } // end namespace filesystem
 

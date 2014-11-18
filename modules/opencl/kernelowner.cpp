@@ -32,7 +32,7 @@
 
 #include <modules/opencl/kernelowner.h>
 #include <modules/opencl/kernelmanager.h>
-#include <inviwo/core/util/urlparser.h>
+#include <inviwo/core/util/filesystem.h>
 
 namespace inviwo {
 

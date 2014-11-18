@@ -33,7 +33,7 @@
 #include "volumesource.h"
 #include <inviwo/core/resources/resourcemanager.h>
 #include <inviwo/core/resources/templateresource.h>
-#include <inviwo/core/util/urlparser.h>
+#include <inviwo/core/util/filesystem.h>
 #include <inviwo/core/io/datareaderfactory.h>
 #include <inviwo/core/io/rawvolumereader.h>
 #include <inviwo/core/network/processornetwork.h>

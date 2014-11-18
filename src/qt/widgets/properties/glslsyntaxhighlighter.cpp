@@ -32,7 +32,7 @@
 
 #include <inviwo/qt/widgets/properties/syntaxhighlighter.h>
 #include <inviwo/core/common/inviwomodule.h>
-#include <inviwo/core/util/urlparser.h>
+#include <inviwo/core/util/filesystem.h>
 
 #include <QTextDocument>
 #include <QTextBlock>

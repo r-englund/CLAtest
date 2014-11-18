@@ -32,7 +32,6 @@
 
 #include <modules/freeimage/freeimagereader.h>
 #include <modules/freeimage/freeimageutils.h>
-#include <inviwo/core/util/urlparser.h>
 #include <inviwo/core/util/filesystem.h>
 #include <inviwo/core/datastructures/image/layer.h>
 #include <inviwo/core/datastructures/image/layerdisk.h>
@@ -66,7 +65,7 @@ FreeImageReader* FreeImageReader::clone() const { return new FreeImageReader(*th
 
 Layer* FreeImageReader::readMetaData(std::string filePath) {
     if (!filesystem::fileExists(filePath)) {
-        std::string newPath = URLParser::addBasePath(filePath);
+        std::string newPath = filesystem::addBasePath(filePath);
 
         if (filesystem::fileExists(newPath)) {
             filePath = newPath;

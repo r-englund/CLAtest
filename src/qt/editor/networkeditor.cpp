@@ -53,7 +53,7 @@
 #include <inviwo/core/util/factory.h>
 #include <inviwo/core/util/settings/linksettings.h>
 #include <inviwo/core/util/settings/systemsettings.h>
-#include <inviwo/core/util/urlparser.h>
+#include <inviwo/core/util/filesystem.h>
 #include <inviwo/qt/editor/connectiongraphicsitem.h>
 #include <inviwo/qt/editor/linkdialog/linkdialog.h>
 #include <inviwo/qt/editor/linkgraphicsitem.h>
@@ -496,9 +496,9 @@ std::vector<std::string> NetworkEditor::saveSnapshotsInExternalNetwork(
     if (isSoundEnabled) soundProperty->set(false);
 
     std::vector<std::string> canvasSnapShotFiles;
-    std::string directory = URLParser::getFileDirectory(externalNetworkFile);
-    std::string workSpaceName = URLParser::getFileNameWithExtension(externalNetworkFile);
-    std::string newFileName = URLParser::replaceFileExtension(workSpaceName, "png");
+    std::string directory = filesystem::getFileDirectory(externalNetworkFile);
+    std::string workSpaceName = filesystem::getFileNameWithExtension(externalNetworkFile);
+    std::string newFileName = filesystem::replaceFileExtension(workSpaceName, "png");
     std::vector<Processor*> processors =
         InviwoApplication::getPtr()->getProcessorNetwork()->getProcessors();
 

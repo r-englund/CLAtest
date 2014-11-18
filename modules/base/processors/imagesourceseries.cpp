@@ -35,7 +35,7 @@
 #include <inviwo/core/datastructures/image/imagedisk.h>
 #include <inviwo/core/datastructures/image/layerdisk.h>
 #include <inviwo/core/io/datareaderfactory.h>
-#include <inviwo/core/util/urlparser.h>
+#include <inviwo/core/util/filesystem.h>
 
 namespace inviwo {
 
@@ -81,7 +81,7 @@ void ImageSourceSeries::onFindFiles() {
 
     for (size_t i=0; i<files.size(); i++) {
         if (isValidImageFile(files[i])) {
-            std::string displayName = URLParser::getFileNameWithExtension(files[i]);
+            std::string displayName = filesystem::getFileNameWithExtension(files[i]);
             ids.push_back(displayName+"_id");
             displayNames.push_back(displayName);
         }
@@ -148,7 +148,7 @@ void ImageSourceSeries::process() {
 }
 
 bool ImageSourceSeries::isValidImageFile(std::string fileName){
-    std::string fileExtension = URLParser::getFileExtension(fileName);
+    std::string fileExtension = filesystem::getFileExtension(fileName);
     for (std::vector<FileExtension>::const_iterator it = validExtensions_.begin(); it != validExtensions_.end(); ++it) {
         if(fileExtension == it->extension_)
             return true;

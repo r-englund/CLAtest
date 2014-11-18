@@ -38,7 +38,6 @@
 #include <inviwo/core/processors/processor.h>
 #include <inviwo/core/properties/fileproperty.h>
 #include <inviwo/core/io/datareaderfactory.h>
-#include <inviwo/core/util/urlparser.h>
 #include <inviwo/core/util/filesystem.h>
 #include <inviwo/core/resources/resourcemanager.h>
 #include <inviwo/core/resources/templateresource.h>
@@ -137,7 +136,7 @@ void DataSource<DataType, PortType>::load(bool deserialized) {
         loadedData_ = resource->getData();
         dataLoaded(resource->getData());
     } else {
-        std::string fileExtension = URLParser::getFileExtension(file_.get());
+        std::string fileExtension = filesystem::getFileExtension(file_.get());
         DataReaderType<DataType>* reader =
             DataReaderFactory::getPtr()->getReaderForTypeAndExtension<DataType>(fileExtension);
 
