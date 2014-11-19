@@ -1501,12 +1501,12 @@ void NetworkEditor::contextMenuEditLink(EditorGraphicsItem* item) {
     }
 }
 
-#if IVW_PROFILING
 void NetworkEditor::contextMenuResetTimeMeasurements(EditorGraphicsItem* item) {
+#if IVW_PROFILING
     ProcessorGraphicsItem* p = qgraphicsitem_cast<ProcessorGraphicsItem*>(item);
     p->resetTimeMeasurements();
-}
 #endif
+}
 
 void NetworkEditor::onProcessorNetworkDidAddProcessor(Processor* processor) {
     setModified(true);
