@@ -36,22 +36,18 @@
 
 namespace inviwo {
 
-Image::Image(uvec2 dimensions, ImageType type, const DataFormatBase* format, bool allowMissingLayers)
-    : DataGroup()
-    , allowMissingLayers_(allowMissingLayers)
-    , imageType_(type) {
+Image::Image(uvec2 dimensions, ImageType type, const DataFormatBase* format,
+             bool allowMissingLayers)
+    : DataGroup(), allowMissingLayers_(allowMissingLayers), imageType_(type) {
     initialize(dimensions, format);
 }
 
 Image::Image(Layer* colorLayer, ImageType type, bool allowMissingLayers)
-: DataGroup()
-, allowMissingLayers_(allowMissingLayers)
-, imageType_(type) {
-    if(colorLayer){
+    : DataGroup(), allowMissingLayers_(allowMissingLayers), imageType_(type) {
+    if (colorLayer) {
         initialize(colorLayer->getDimension(), colorLayer->getDataFormat(), colorLayer);
-    }
-    else{
-        initialize(uvec2(32,32), DataVec4UINT8::get());
+    } else {
+        initialize(uvec2(32, 32), DataVec4UINT8::get());
     }
 }
 

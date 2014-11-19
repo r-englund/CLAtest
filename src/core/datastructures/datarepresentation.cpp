@@ -35,19 +35,17 @@
 
 namespace inviwo {
 
-DataRepresentation::DataRepresentation()
-    : dataFormatBase_(DataUINT8::get()),owner_(NULL) {}
+DataRepresentation::DataRepresentation() : dataFormatBase_(DataUINT8::get()), owner_(NULL) {}
 DataRepresentation::DataRepresentation(const DataFormatBase* format)
-    : dataFormatBase_(format),owner_(NULL) {}
+    : dataFormatBase_(format), owner_(NULL) {}
 DataRepresentation::DataRepresentation(const DataRepresentation& rhs)
-    : dataFormatBase_(rhs.dataFormatBase_),owner_(rhs.owner_) {}
+    : dataFormatBase_(rhs.dataFormatBase_), owner_(rhs.owner_) {}
 
 DataRepresentation& DataRepresentation::operator=(const DataRepresentation& that) {
     if (this != &that) {
         dataFormatBase_ = that.dataFormatBase_;
         owner_ = that.owner_;
     }
-
     return *this;
 }
 
