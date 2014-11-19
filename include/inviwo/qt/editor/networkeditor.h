@@ -161,6 +161,10 @@ public slots:
     void contextMenuDeleteLink(EditorGraphicsItem*);
     void contextMenuEditLink(EditorGraphicsItem*);
 
+#if IVW_PROFILING
+    void contextMenuResetTimeMeasurements(EditorGraphicsItem*);
+#endif
+
 protected:
     void mousePressEvent(QGraphicsSceneMouseEvent* e);
     void mouseMoveEvent(QGraphicsSceneMouseEvent* e);
