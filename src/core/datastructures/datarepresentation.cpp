@@ -67,7 +67,7 @@ void DataRepresentation::setDataFormat(const DataFormatBase* format) {
     dataFormatBase_ = format;
 }
 
-void DataRepresentation::setPointerToOwner(BaseData* owner) {
+void DataRepresentation::setOwner(BaseData* owner) {
     owner_ = owner;
 }
 

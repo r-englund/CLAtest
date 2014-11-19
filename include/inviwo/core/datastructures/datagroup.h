@@ -110,7 +110,7 @@ const T* DataGroup::getRepresentation() const {
     DataGroupRepresentation* basRep = dynamic_cast<DataGroupRepresentation*>(result);
 
     if (basRep) {
-        basRep->setPointerToOwner(const_cast<DataGroup*>(this));
+        basRep->setOwner(const_cast<DataGroup*>(this));
         basRep->initialize();
         basRep->update(editableUpdate_);
         basRep->setAsValid();

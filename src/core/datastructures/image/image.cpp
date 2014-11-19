@@ -76,7 +76,7 @@ Image::Image(const Image& rhs)
         ImageRepresentation* imRep = dynamic_cast<ImageRepresentation*>(representations_[i]);
 
         if (imRep) {
-            imRep->setPointerToOwner(this);
+            imRep->setOwner(this);
             imRep->setAsInvalid();
             //imRep->update(true);
         }
@@ -111,7 +111,7 @@ Image& Image::operator=(const Image& that) {
             ImageRepresentation* imRep = dynamic_cast<ImageRepresentation*>(representations_[i]);
 
             if (imRep) {
-                imRep->setPointerToOwner(this);
+                imRep->setOwner(this);
                 imRep->setAsInvalid();
                 //imRep->update(true);
             }

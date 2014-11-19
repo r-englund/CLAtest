@@ -57,7 +57,7 @@ public:
     DataFormatEnums::Id getDataFormatId() const;
     virtual void performOperation(DataOperation*) const = 0;
 
-    void setPointerToOwner(BaseData*);
+    virtual void setOwner(BaseData*);
     virtual BaseData* getOwner();
     virtual const BaseData* getOwner() const;
 
