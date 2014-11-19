@@ -50,7 +50,7 @@ class DataOutport : public Outport {
 
     friend class MultiDataInport<T, DataInport<T> >;
 public:
-    DataOutport(std::string identifier, PropertyOwner::InvalidationLevel invalidationLevel=PropertyOwner::INVALID_OUTPUT);
+    DataOutport(std::string identifier, InvalidationLevel invalidationLevel=INVALID_OUTPUT);
     virtual ~DataOutport();
 
     void initialize();
@@ -82,7 +82,7 @@ protected:
 };
 
 template <typename T>
-DataOutport<T>::DataOutport(std::string identifier, PropertyOwner::InvalidationLevel invalidationLevel)
+DataOutport<T>::DataOutport(std::string identifier, InvalidationLevel invalidationLevel)
     : Outport(identifier, invalidationLevel),
     data_(NULL), ownsData_(false), isSequence_(false)
 {

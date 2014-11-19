@@ -50,7 +50,7 @@ bool Inport::isReady() const {
     return isConnected() && getConnectedOutport()->isValid(); 
 }
 
-void Inport::invalidate(PropertyOwner::InvalidationLevel invalidationLevel) {
+void Inport::invalidate(InvalidationLevel invalidationLevel) {
     Port::invalidate(invalidationLevel);
 }
 

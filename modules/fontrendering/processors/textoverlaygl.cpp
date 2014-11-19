@@ -48,13 +48,13 @@ TextOverlayGL::TextOverlayGL()
     : Processor()
     , inport_("inport")
     , outport_("outport", &inport_)
-    , text_("Text", "Text", "Lorem ipsum etc.", PropertyOwner::INVALID_OUTPUT,
+    , text_("Text", "Text", "Lorem ipsum etc.", INVALID_OUTPUT,
             PropertySemantics::TextEditor)
     , font_size_(20)
     , xpos_(0)
     , ypos_(0)
     , color_("color_", "Color", vec4(1.0f), vec4(0.0f), vec4(1.0f), vec4(0.01f),
-                  PropertyOwner::INVALID_OUTPUT, PropertySemantics::Color)
+                  INVALID_OUTPUT, PropertySemantics::Color)
     , fontSize_("Font size", "Font size")
     , fontPos_("Position", "Position", vec2(0.0f), vec2(0.0f), vec2(1.0f), vec2(0.01f))
     , refPos_("Reference", "Reference", vec2(-1.0f), vec2(-1.0f), vec2(1.0f), vec2(0.01f))

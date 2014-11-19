@@ -34,10 +34,10 @@
 #define IVW_PROPERTY_H
 
 #include <inviwo/core/common/inviwocoredefine.h>
-#include <inviwo/core/properties/propertyowner.h>
 #include <inviwo/core/properties/propertywidget.h>
 #include <inviwo/core/properties/propertysemantics.h>
 #include <inviwo/core/properties/propertyvisibility.h>
+#include <inviwo/core/properties/invalidationlevel.h>
 #include <inviwo/core/util/callback.h>
 #include <inviwo/core/metadata/metadataowner.h>
 
@@ -100,27 +100,44 @@ struct ValueWrapper {
     template <typename U> friend bool operator< (const ValueWrapper<U>& lhs, const U& rhs);
 };
 
-template <typename T> bool operator==(const ValueWrapper<T>& lhs, const ValueWrapper<T>& rhs){ return lhs.value == rhs.value; }
-template <typename T> bool operator< (const ValueWrapper<T>& lhs, const ValueWrapper<T>& rhs){ return lhs.value < rhs.value; }
-template <typename T> bool operator!=(const ValueWrapper<T>& lhs, const ValueWrapper<T>& rhs){ return !operator==(lhs, rhs); }
-template <typename T> bool operator> (const ValueWrapper<T>& lhs, const ValueWrapper<T>& rhs){ return  operator< (rhs, lhs); }
-template <typename T> bool operator<=(const ValueWrapper<T>& lhs, const ValueWrapper<T>& rhs){ return !operator> (lhs, rhs); }
-template <typename T> bool operator>=(const ValueWrapper<T>& lhs, const ValueWrapper<T>& rhs){ return !operator< (lhs, rhs); }
+template <typename T>
+bool operator==(const ValueWrapper<T>& lhs, const ValueWrapper<T>& rhs){ return lhs.value == rhs.value; }
+template <typename T>
+bool operator< (const ValueWrapper<T>& lhs, const ValueWrapper<T>& rhs){ return lhs.value < rhs.value; }
+template <typename T>
+bool operator!=(const ValueWrapper<T>& lhs, const ValueWrapper<T>& rhs){ return !operator==(lhs, rhs); }
+template <typename T>
+bool operator> (const ValueWrapper<T>& lhs, const ValueWrapper<T>& rhs){ return  operator< (rhs, lhs); }
+template <typename T>
+bool operator<=(const ValueWrapper<T>& lhs, const ValueWrapper<T>& rhs){ return !operator> (lhs, rhs); }
+template <typename T>
+bool operator>=(const ValueWrapper<T>& lhs, const ValueWrapper<T>& rhs){ return !operator< (lhs, rhs); }
 
-template <typename T> bool operator==(const ValueWrapper<T>& lhs, const T& rhs){ return lhs.value == rhs; }
-template <typename T> bool operator< (const ValueWrapper<T>& lhs, const T& rhs){ return lhs.value < rhs; }
-template <typename T> bool operator!=(const ValueWrapper<T>& lhs, const T& rhs){ return !operator==(lhs, rhs); }
-template <typename T> bool operator> (const ValueWrapper<T>& lhs, const T& rhs){ return  operator< (rhs, lhs); }
-template <typename T> bool operator<=(const ValueWrapper<T>& lhs, const T& rhs){ return !operator> (lhs, rhs); }
-template <typename T> bool operator>=(const ValueWrapper<T>& lhs, const T& rhs){ return !operator< (lhs, rhs); }
+template <typename T>
+bool operator==(const ValueWrapper<T>& lhs, const T& rhs){ return lhs.value == rhs; }
+template <typename T>
+bool operator< (const ValueWrapper<T>& lhs, const T& rhs){ return lhs.value < rhs; }
+template <typename T>
+bool operator!=(const ValueWrapper<T>& lhs, const T& rhs){ return !operator==(lhs, rhs); }
+template <typename T>
+bool operator> (const ValueWrapper<T>& lhs, const T& rhs){ return  operator< (rhs, lhs); }
+template <typename T>
+bool operator<=(const ValueWrapper<T>& lhs, const T& rhs){ return !operator> (lhs, rhs); }
+template <typename T>
+bool operator>=(const ValueWrapper<T>& lhs, const T& rhs){ return !operator< (lhs, rhs); }
 
-template <typename T> bool operator==(const T& lhs, const ValueWrapper<T>& rhs){ return rhs == lhs; }
-template <typename T> bool operator< (const T& lhs, const ValueWrapper<T>& rhs){ return rhs >= lhs; }
-template <typename T> bool operator!=(const T& lhs, const ValueWrapper<T>& rhs){ return !operator==(rhs, lhs); }
-template <typename T> bool operator> (const T& lhs, const ValueWrapper<T>& rhs){ return  operator< (rhs, lhs); }
-template <typename T> bool operator<=(const T& lhs, const ValueWrapper<T>& rhs){ return !operator>(lhs, rhs); }
-template <typename T> bool operator>=(const T& lhs, const ValueWrapper<T>& rhs){ return !operator< (lhs, rhs); }
-
+template <typename T>
+bool operator==(const T& lhs, const ValueWrapper<T>& rhs){ return rhs == lhs; }
+template <typename T>
+bool operator< (const T& lhs, const ValueWrapper<T>& rhs){ return rhs >= lhs; }
+template <typename T>
+bool operator!=(const T& lhs, const ValueWrapper<T>& rhs){ return !operator==(rhs, lhs); }
+template <typename T>
+bool operator> (const T& lhs, const ValueWrapper<T>& rhs){ return  operator< (rhs, lhs); }
+template <typename T>
+bool operator<=(const T& lhs, const ValueWrapper<T>& rhs){ return !operator>(lhs, rhs); }
+template <typename T>
+bool operator>=(const T& lhs, const ValueWrapper<T>& rhs){ return !operator< (lhs, rhs); }
 
 /** \class Property
  * 
@@ -144,6 +161,7 @@ template <typename T> bool operator>=(const T& lhs, const ValueWrapper<T>& rhs){
  *   
  */
 
+class PropertyOwner;
 
 class IVW_CORE_API Property : public IvwSerializable , public MetaDataOwner {
 public:
@@ -151,7 +169,7 @@ public:
 
     Property(const std::string &identifier = "",
              const std::string &displayName = "",
-             PropertyOwner::InvalidationLevel invalidationLevel = PropertyOwner::INVALID_OUTPUT,
+             InvalidationLevel invalidationLevel = INVALID_OUTPUT,
              PropertySemantics semantics = PropertySemantics::Default);
     Property(const Property& rhs);
     Property& operator=(const Property& that);
@@ -179,8 +197,8 @@ public:
     virtual void setReadOnly(const bool& value);
     virtual bool getReadOnly() const;
 
-    void setInvalidationLevel(PropertyOwner::InvalidationLevel invalidationLevel);
-    PropertyOwner::InvalidationLevel getInvalidationLevel() const;
+    void setInvalidationLevel(InvalidationLevel invalidationLevel);
+    InvalidationLevel getInvalidationLevel() const;
    
     virtual void setOwner(PropertyOwner* owner);
     PropertyOwner* getOwner();
@@ -254,7 +272,7 @@ private:
     ValueWrapper<bool> visible_;
     
     bool propertyModified_;
-    PropertyOwner::InvalidationLevel invalidationLevel_;
+    InvalidationLevel invalidationLevel_;
 
     PropertyOwner* owner_;
     std::vector<PropertyWidget*> propertyWidgets_;

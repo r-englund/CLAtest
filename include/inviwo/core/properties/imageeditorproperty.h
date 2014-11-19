@@ -66,7 +66,7 @@ public:
     InviwoPropertyInfo();
     ImageEditorProperty(
         std::string identifier, std::string displayName, std::string value = "",
-        PropertyOwner::InvalidationLevel invalidationLevel = PropertyOwner::INVALID_OUTPUT,
+        InvalidationLevel invalidationLevel = INVALID_OUTPUT,
         PropertySemantics semantics = PropertySemantics::Default);
 
     ImageEditorProperty(const ImageEditorProperty& rhs);

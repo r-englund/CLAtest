@@ -68,7 +68,7 @@ void ProcessorWidget::setVisible(bool visible) {
     if (visible) {
         notifyObserversAboutShow(this);
         if (processor_) {
-            processor_->invalidate(PropertyOwner::INVALID_OUTPUT);
+            processor_->invalidate(INVALID_OUTPUT);
         }
     } else {
         notifyObserversAboutHide(this);

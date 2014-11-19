@@ -44,7 +44,7 @@ PyProcessorBase::PyProcessorBase()
     , pythonScriptFile_("pythonScript", "Edit Script", 
                         InviwoApplication::getPtr()->getPath(InviwoApplication::PATH_MODULES) +
                             "pypackages/scripts/pyavailablepackagesinfo.py", "script",
-                        PropertyOwner::INVALID_OUTPUT, PropertySemantics("TextEditor"))
+                        INVALID_OUTPUT, PropertySemantics("TextEditor"))
     , runScript_("runScript", "Run Script")
     , script_()
     , requiresRun_(false) {

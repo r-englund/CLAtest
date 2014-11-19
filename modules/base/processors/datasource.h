@@ -107,7 +107,7 @@ bool DataSource<DataType, PortType>::isDeserializing() const {
 
 template <typename DataType, typename PortType>
 void DataSource<DataType, PortType>::invalidateOutput() {
-    invalidate(PropertyOwner::INVALID_OUTPUT);
+    invalidate(INVALID_OUTPUT);
 }
 
 template <typename DataType, typename PortType>

@@ -37,7 +37,7 @@
 namespace inviwo {
 
 SingleInport::SingleInport(std::string identifier,
-                           PropertyOwner::InvalidationLevel invalidationLevel)
+                           InvalidationLevel invalidationLevel)
     : Inport(identifier)
     , connectedOutport_(NULL)
     , invalidationLevel_(invalidationLevel) {
@@ -50,7 +50,7 @@ void SingleInport::connectTo(Outport* outport) {
     connectedOutport_ = outport;
     outport->connectTo(this);
     changed_ = true;
-    invalidate(PropertyOwner::INVALID_OUTPUT);
+    invalidate(INVALID_OUTPUT);
 }
 
 void SingleInport::disconnectFrom(Outport* outport) {
@@ -59,7 +59,7 @@ void SingleInport::disconnectFrom(Outport* outport) {
         connectedOutport_ = NULL;
         outport->disconnectFrom(this);
         changed_ = true;
-        invalidate(PropertyOwner::INVALID_OUTPUT);
+        invalidate(INVALID_OUTPUT);
     }
 }
 
@@ -71,17 +71,17 @@ bool SingleInport::isConnectedTo(Outport* outport) const {
     return connectedOutport_==outport;
 }
 
-PropertyOwner::InvalidationLevel SingleInport::getInvalidationLevel() const{
+InvalidationLevel SingleInport::getInvalidationLevel() const{
     return invalidationLevel_;
 }
 
-void SingleInport::setInvalidationLevel(PropertyOwner::InvalidationLevel invalidationLevel){
+void SingleInport::setInvalidationLevel(InvalidationLevel invalidationLevel){
     invalidationLevel_ = invalidationLevel;
     setChanged();
 }
 
-void SingleInport::invalidate(PropertyOwner::InvalidationLevel invalidationLevel) {
-    if(getInvalidationLevel() == PropertyOwner::VALID && invalidationLevel >= PropertyOwner::INVALID_OUTPUT)
+void SingleInport::invalidate(InvalidationLevel invalidationLevel) {
+    if(getInvalidationLevel() == VALID && invalidationLevel >= INVALID_OUTPUT)
         onInvalidCallback_.invokeAll();
     invalidationLevel_ = std::max(invalidationLevel_, invalidationLevel);
     Inport::invalidate(invalidationLevel);

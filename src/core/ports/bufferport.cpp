@@ -38,7 +38,7 @@ namespace inviwo {
 uvec3 BufferInport::colorCode = uvec3(255,113,0);
 
 // Buffer Inport
-BufferInport::BufferInport(std::string identifier, PropertyOwner::InvalidationLevel invalidationLevel)
+BufferInport::BufferInport(std::string identifier, InvalidationLevel invalidationLevel)
     : DataInport<Buffer>(identifier, invalidationLevel)
 {}
 
@@ -55,12 +55,12 @@ uvec3 BufferInport::getColorCode() const {
 }
 
 // Buffer Outport
-BufferOutport::BufferOutport(std::string identifier, PropertyOwner::InvalidationLevel invalidationLevel)
+BufferOutport::BufferOutport(std::string identifier, InvalidationLevel invalidationLevel)
     : DataOutport<Buffer>(identifier, invalidationLevel) {
 
 }
 
-BufferOutport::BufferOutport(std::string identifier, size_t size, const DataFormatBase* format, PropertyOwner::InvalidationLevel invalidationLevel)
+BufferOutport::BufferOutport(std::string identifier, size_t size, const DataFormatBase* format, InvalidationLevel invalidationLevel)
     : DataOutport<Buffer>(identifier, invalidationLevel) {
     setData(new Buffer(size, format), true);
 }

@@ -51,7 +51,7 @@ VolumeExport::VolumeExport()
     , volumePort_("volume")
     , volumeFile_("volumeFileName", "Volume file name",
                   InviwoApplication::getPtr()->getPath(InviwoApplication::PATH_VOLUMES,"newvolume.dat") , "volume")
-    , exportVolumeButton_("snapshot", "Export Volume", PropertyOwner::VALID)
+    , exportVolumeButton_("snapshot", "Export Volume", VALID)
     , overwrite_("overwrite", "Overwrite", false) {
     std::vector<FileExtension> ext = DataWriterFactory::getPtr()->getExtensionsForType<Volume>();
 

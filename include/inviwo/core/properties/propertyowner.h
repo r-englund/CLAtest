@@ -36,11 +36,11 @@
 #include <inviwo/core/common/inviwocoredefine.h>
 #include <inviwo/core/common/inviwo.h>
 #include <inviwo/core/properties/propertyownerobserver.h>
+#include <inviwo/core/properties/property.h>
 
 namespace inviwo {
 
 class Processor;
-class Property;
 class Event;
 class EventProperty;
 class CompositeProperty;
@@ -51,17 +51,6 @@ public:
     PropertyOwner(const PropertyOwner& rhs);
     PropertyOwner& operator=(const PropertyOwner& that);
     virtual ~PropertyOwner();
-
-    // invalidation level must be sorted based on their complexity,
-    // whereby higher numbers (later entry in the list) involve more
-    // expensive update operations
-    enum InvalidationLevel {
-        VALID,
-        INVALID_OUTPUT,
-        INVALID_RESOURCES,
-        INVALID_PROGRAM = INVALID_RESOURCES,  // deprecated
-        INVALID_RENDERING = INVALID_OUTPUT    // deprecated
-    };
 
     virtual void addProperty(Property* property);
     virtual void addProperty(Property& property);
@@ -77,10 +66,10 @@ public:
     template <class T>
     std::vector<T*> getPropertiesByType(bool recursiveSearch = false) const;
 
-    bool isValid() { return (invalidationLevel_ == PropertyOwner::VALID); }
+    bool isValid() { return (invalidationLevel_ == VALID); }
     virtual void setValid();
     InvalidationLevel getInvalidationLevel() { return invalidationLevel_; }
-    virtual void invalidate(PropertyOwner::InvalidationLevel invalidationLevel,
+    virtual void invalidate(InvalidationLevel invalidationLevel,
                             Property* modifiedProperty = NULL);
 
     // Should return the processor that the owner belongs or is.
@@ -128,12 +117,12 @@ std::vector<T*> PropertyOwner::getPropertiesByType(bool recursiveSearch /* = fal
             foundProperties.push_back(static_cast<T*>(properties_[i]));
         }
 // TODO fix, Did not get this to compile //Peter
-//        else if (recursiveSearch && dynamic_cast<PropertyOwner*>(properties_[i])) {
-//            std::vector<T*> subProperties =
-//                dynamic_cast<PropertyOwner*>(properties_[i])->getPropertiesByType<T>(true);
-//            foundProperties.insert(foundProperties.end(), subProperties.begin(),
-//                                   subProperties.end());
-//        }
+        else if (recursiveSearch && dynamic_cast<PropertyOwner*>(properties_[i])) {
+            std::vector<T*> subProperties =
+                dynamic_cast<PropertyOwner*>(properties_[i])->getPropertiesByType<T>(true);
+            foundProperties.insert(foundProperties.end(), subProperties.begin(),
+                                   subProperties.end());
+        }
     }
     return foundProperties;
 }

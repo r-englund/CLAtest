@@ -46,7 +46,7 @@ class DataOutport;
 template<typename T>
 class DataInport : public SingleInport {
 public:
-    DataInport(std::string identifier, PropertyOwner::InvalidationLevel invalidationLevel=PropertyOwner::INVALID_OUTPUT);
+    DataInport(std::string identifier, InvalidationLevel invalidationLevel=INVALID_OUTPUT);
     virtual ~DataInport();
 
     void initialize();
@@ -65,7 +65,7 @@ public:
 
 
 template <typename T>
-DataInport<T>::DataInport(std::string identifier, PropertyOwner::InvalidationLevel invalidationLevel)
+DataInport<T>::DataInport(std::string identifier, InvalidationLevel invalidationLevel)
     : SingleInport(identifier, invalidationLevel)
 {
 }

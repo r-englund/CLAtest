@@ -106,7 +106,7 @@ void ShaderManager::fileChanged(std::string shaderFilename) {
                 for (size_t i=0; i<processors.size(); i++) {
                     std::string tags = processors[i]->getTags().getString();
                     if (tags.find_first_of(Tags::GL.getString()) != std::string::npos)
-                        processors[i]->invalidate(PropertyOwner::INVALID_RESOURCES);
+                        processors[i]->invalidate(INVALID_RESOURCES);
                 }
             } else InviwoApplication::getPtr()->playSound(InviwoApplication::IVW_ERROR);
         }

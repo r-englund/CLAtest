@@ -144,7 +144,7 @@ void DrawFreeHand::DrawFreeHandInteractionHandler::invokeEvent(Event* event){
                 point -= 1.f;
                 point.y = -point.y;
                 drawer_->addPoint(point);
-                drawer_->invalidate(PropertyOwner::INVALID_OUTPUT);
+                drawer_->invalidate(INVALID_OUTPUT);
         }
         return;
     }

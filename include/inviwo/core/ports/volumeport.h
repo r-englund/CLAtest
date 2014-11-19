@@ -44,7 +44,7 @@ class IVW_CORE_API VolumeInport : public DataInport<Volume> {
 
 public:
     VolumeInport(std::string identifier,
-                 PropertyOwner::InvalidationLevel invalidationLevel=PropertyOwner::INVALID_OUTPUT);
+                 InvalidationLevel invalidationLevel=INVALID_OUTPUT);
     virtual ~VolumeInport();
 
     void initialize();
@@ -59,7 +59,7 @@ class IVW_CORE_API VolumeOutport : public DataOutport<Volume> {
 
 public:
     VolumeOutport(std::string identifier,
-                  PropertyOwner::InvalidationLevel invalidationLevel=PropertyOwner::INVALID_OUTPUT);
+                  InvalidationLevel invalidationLevel=INVALID_OUTPUT);
     virtual ~VolumeOutport();
 
     void initialize();

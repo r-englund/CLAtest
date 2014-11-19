@@ -54,7 +54,7 @@ Processor::Processor()
     , identifier_("")
     , initialized_(false)
     , invalidationEnabled_(true)
-    , invalidationRequestLevel_(PropertyOwner::VALID) {
+    , invalidationRequestLevel_(VALID) {
     createMetaData<ProcessorMetaData>("ProcessorMetaData");
 }
 
@@ -219,7 +219,7 @@ bool Processor::isInitialized() const {
     return initialized_;
 }
 
-void Processor::invalidate(PropertyOwner::InvalidationLevel invalidationLevel, Property* modifiedProperty) {
+void Processor::invalidate(InvalidationLevel invalidationLevel, Property* modifiedProperty) {
     if(!invalidationEnabled_){
         invalidationRequestLevel_ = invalidationLevel;
         return;
@@ -243,9 +243,9 @@ void Processor::invalidate(PropertyOwner::InvalidationLevel invalidationLevel, P
     }
 }
 
-void Processor::invalidateSuccesors(PropertyOwner::InvalidationLevel invalidationLevel, Property* modifiedProperty) {
+void Processor::invalidateSuccesors(InvalidationLevel invalidationLevel, Property* modifiedProperty) {
     for (std::vector<Outport*>::iterator it = outports_.begin(); it != outports_.end(); ++it){
-        (*it)->invalidate(PropertyOwner::INVALID_OUTPUT);
+        (*it)->invalidate(INVALID_OUTPUT);
     }
 }
 
@@ -327,14 +327,14 @@ void Processor::setValid() {
 
 void Processor::enableInvalidation() {
     invalidationEnabled_ = true;
-    if(invalidationRequestLevel_ > PropertyOwner::VALID){
+    if(invalidationRequestLevel_ > VALID){
         invalidate(invalidationRequestLevel_);
-        invalidationRequestLevel_ = PropertyOwner::VALID;
+        invalidationRequestLevel_ = VALID;
     }
 }
 
 void Processor::disableInvalidation(){
-    invalidationRequestLevel_ = PropertyOwner::VALID;
+    invalidationRequestLevel_ = VALID;
     invalidationEnabled_ = false;
 }
 

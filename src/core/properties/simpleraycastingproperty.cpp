@@ -38,12 +38,12 @@ PropertyClassIdentifier(SimpleRaycastingProperty, "org.inviwo.SimpleRaycastingPr
 
 SimpleRaycastingProperty::SimpleRaycastingProperty(
     std::string identifier, std::string displayName,
-    PropertyOwner::InvalidationLevel invalidationLevel, PropertySemantics semantics)
+    InvalidationLevel invalidationLevel, PropertySemantics semantics)
     : CompositeProperty(identifier, displayName, invalidationLevel, semantics)
-    , classificationMode_("classificationMode", "Classification", PropertyOwner::INVALID_RESOURCES)
-    , compositingMode_("compositingMode", "Compositing", PropertyOwner::INVALID_RESOURCES)
+    , classificationMode_("classificationMode", "Classification", INVALID_RESOURCES)
+    , compositingMode_("compositingMode", "Compositing", INVALID_RESOURCES)
     , gradientComputationMode_("gradientComputationMode", "Gradient",
-    PropertyOwner::INVALID_RESOURCES)
+    INVALID_RESOURCES)
     , samplingRate_("samplingRate", "Sampling rate", 2.0f, 1.0f, 10.0f)
     , isoValue_("isoValue", "Iso value", 0.5f, 0.0f, 1.0f) {
 

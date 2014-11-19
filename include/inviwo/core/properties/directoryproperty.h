@@ -53,7 +53,7 @@ public:
         std::string displayName, 
         std::string value = "",
         std::string contentType = "default",
-        PropertyOwner::InvalidationLevel invalidationLevel = PropertyOwner::INVALID_OUTPUT,
+        InvalidationLevel invalidationLevel = INVALID_OUTPUT,
         PropertySemantics semantics = PropertySemantics::Default);
     
     DirectoryProperty(const DirectoryProperty& rhs);

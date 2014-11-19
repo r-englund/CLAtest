@@ -44,21 +44,21 @@ PropertyClassIdentifier(CameraProperty, "org.inviwo.CameraProperty");
 
 CameraProperty::CameraProperty(std::string identifier, std::string displayName, vec3 eye,
                                vec3 center, vec3 lookUp, Inport* inport,
-                               PropertyOwner::InvalidationLevel invalidationLevel,
+                               InvalidationLevel invalidationLevel,
                                PropertySemantics semantics)
     : CompositeProperty(identifier, displayName, invalidationLevel, semantics)
     , EventListener()
     , lookFrom_("lookFrom", "Look from", eye, -vec3(10.0f), vec3(10.0f), vec3(0.1f),
-                PropertyOwner::VALID, PropertySemantics("Spherical"))
+                VALID, PropertySemantics("Spherical"))
     , lookTo_("lookTo", "Look to", center, -vec3(10.0f), vec3(10.0f), vec3(0.1f),
-              PropertyOwner::VALID)
+              VALID)
     , lookUp_("lookUp", "Look up", lookUp, -vec3(10.0f), vec3(10.0f), vec3(0.1f),
-              PropertyOwner::VALID)
-    , fovy_("fov", "FOV", 60.0f, 30.0f, 360.0f, 0.1f, PropertyOwner::VALID)
-    , aspectRatio_("aspectRatio", "Aspect Ratio", 1.0f, 0.01f, 100.0f, 0.01f, PropertyOwner::VALID)
-    , farPlane_("far", "Far Plane", 100.0f, 1.0f, 1000.0f, 1.0f, PropertyOwner::VALID)
-    , nearPlane_("near", "Near Plane", 0.1f, 0.001f, 10.f, 0.001f, PropertyOwner::VALID)
-    , fitToBasis_("fitToBasis_", "Fit to basis", true, PropertyOwner::VALID)
+              VALID)
+    , fovy_("fov", "FOV", 60.0f, 30.0f, 360.0f, 0.1f, VALID)
+    , aspectRatio_("aspectRatio", "Aspect Ratio", 1.0f, 0.01f, 100.0f, 0.01f, VALID)
+    , farPlane_("far", "Far Plane", 100.0f, 1.0f, 1000.0f, 1.0f, VALID)
+    , nearPlane_("near", "Near Plane", 0.1f, 0.001f, 10.f, 0.001f, VALID)
+    , fitToBasis_("fitToBasis_", "Fit to basis", true, VALID)
     , lockInvalidation_(false)
     , inport_(inport)
     , data_(NULL)
@@ -224,7 +224,7 @@ void CameraProperty::invalidate() {
     if (!isInvalidationLocked()) Property::propertyModified();
 }
 
-void CameraProperty::invalidate(PropertyOwner::InvalidationLevel invalidationLevel,
+void CameraProperty::invalidate(InvalidationLevel invalidationLevel,
                                 Property* modifiedProperty) {
     CompositeProperty::invalidate(invalidationLevel, modifiedProperty);
 }

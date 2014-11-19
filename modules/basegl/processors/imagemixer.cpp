@@ -49,7 +49,7 @@ ImageMixer::ImageMixer()
     , inport1_("inport1")
     , outport_("outport", &inport0_, COLOR_ONLY)
     , alpha_("alpha", "Alpha", 0.5f, 0.0f, 1.0f)
-    , blendingMode_("compositingMode", "Compositing", PropertyOwner::INVALID_RESOURCES) {
+    , blendingMode_("compositingMode", "Compositing", INVALID_RESOURCES) {
     addPort(inport0_);
     addPort(inport1_);
     addPort(outport_);

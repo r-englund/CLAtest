@@ -50,7 +50,7 @@ PyCUDAImageInverter::PyCUDAImageInverter()
     , cudaKernelFile_("cudaKernel", "Edit Kernel",
                       InviwoApplication::getPtr()->getPath(InviwoApplication::PATH_MODULES) +
                           "pypackages/scripts/pycuda/pycudaimageinvert.cu",
-                      "default", PropertyOwner::INVALID_OUTPUT, PropertySemantics("TextEditor"))
+                      "default", INVALID_OUTPUT, PropertySemantics("TextEditor"))
     , cachedImageData_(0) {
     addPort(inport_);
     addPort(outport_);

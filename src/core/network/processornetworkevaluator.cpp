@@ -437,7 +437,7 @@ void ProcessorNetworkEvaluator::evaluate() {
         if (!(*it)->isValid()) {
             if ((*it)->isReady()) {
                 // re-initialize resources (e.g., shaders) if necessary
-                if ((*it)->getInvalidationLevel() >= PropertyOwner::INVALID_RESOURCES)
+                if ((*it)->getInvalidationLevel() >= INVALID_RESOURCES)
                     (*it)->initializeResources();
 
                 // call onChange for all invalid inports

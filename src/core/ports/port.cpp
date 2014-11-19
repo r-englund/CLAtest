@@ -75,7 +75,7 @@ void Port::deserialize(IvwDeserializer& d) {
     d.deserialize("Processor", processor_);
 }
 
-void Port::invalidate(PropertyOwner::InvalidationLevel invalidationLevel) {
+void Port::invalidate(InvalidationLevel invalidationLevel) {
     processor_->invalidate(invalidationLevel);
 }
 

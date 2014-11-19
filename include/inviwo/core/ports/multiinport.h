@@ -54,14 +54,14 @@ public:
     MultiInport(std::string identifier);
     virtual ~MultiInport();
 
-    virtual void invalidate(PropertyOwner::InvalidationLevel invalidationLevel);
+    virtual void invalidate(InvalidationLevel invalidationLevel);
 
     bool isConnected() const { return !inports_->empty() || !vectorInports_->empty(); }
 
     bool isConnectedTo(Outport* outport) const;
 
-    virtual PropertyOwner::InvalidationLevel getInvalidationLevel() const;
-    virtual void setInvalidationLevel(PropertyOwner::InvalidationLevel invalidationLevel);
+    virtual InvalidationLevel getInvalidationLevel() const;
+    virtual void setInvalidationLevel(InvalidationLevel invalidationLevel);
     virtual void setChanged(bool changed = true);
     virtual bool isChanged();
 

@@ -169,6 +169,7 @@ set(HEADER_FILES
     ${IVW_INCLUDE_DIR}/inviwo/core/properties/eventproperty.h
     ${IVW_INCLUDE_DIR}/inviwo/core/properties/fileproperty.h
     ${IVW_INCLUDE_DIR}/inviwo/core/properties/imageeditorproperty.h    
+    ${IVW_INCLUDE_DIR}/inviwo/core/properties/invalidationlevel.h
     ${IVW_INCLUDE_DIR}/inviwo/core/properties/minmaxproperty.h
     ${IVW_INCLUDE_DIR}/inviwo/core/properties/ordinalproperty.h
     ${IVW_INCLUDE_DIR}/inviwo/core/properties/property.h

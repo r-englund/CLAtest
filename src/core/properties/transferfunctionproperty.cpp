@@ -40,7 +40,7 @@ TransferFunctionProperty::TransferFunctionProperty(const std::string &identifier
                                                    const std::string &displayName,
                                                    const TransferFunction &value,
                                                    VolumeInport* volumeInport,
-                                                   PropertyOwner::InvalidationLevel invalidationLevel,
+                                                   InvalidationLevel invalidationLevel,
                                                    PropertySemantics semantics)
     : TemplateProperty<TransferFunction>(identifier, displayName, value, invalidationLevel, semantics)
     , TransferFunctionObserver()

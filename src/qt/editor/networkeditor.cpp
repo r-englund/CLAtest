@@ -1190,7 +1190,7 @@ void NetworkEditor::clearNetwork() {
     for (size_t p = 0; p < processors.size(); p++) {
         std::vector<Inport*> inports = processors[p]->getInports();
         for (size_t i = 0; i < inports.size(); i++)
-            inports[i]->invalidate(PropertyOwner::INVALID_OUTPUT);
+            inports[i]->invalidate(INVALID_OUTPUT);
     }
 
     ResourceManager::getPtr()->clearAllResources();

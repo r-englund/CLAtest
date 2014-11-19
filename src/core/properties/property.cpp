@@ -40,7 +40,7 @@ PropertyClassIdentifier(Property, "org.inviwo.undefined");
 
 Property::Property(const std::string &identifier,
                    const std::string &displayName,
-                   PropertyOwner::InvalidationLevel invalidationLevel,
+                   InvalidationLevel invalidationLevel,
                    PropertySemantics semantics)
     : IvwSerializable()
     , MetaDataOwner()
@@ -143,10 +143,10 @@ bool Property::getReadOnly()const {
     return readOnly_;
 }
 
-PropertyOwner::InvalidationLevel Property::getInvalidationLevel() const {
+InvalidationLevel Property::getInvalidationLevel() const {
     return invalidationLevel_;
 }
-void Property::setInvalidationLevel(PropertyOwner::InvalidationLevel invalidationLevel) {
+void Property::setInvalidationLevel(InvalidationLevel invalidationLevel) {
     invalidationLevel_ = invalidationLevel;
 }
 
@@ -208,7 +208,7 @@ void Property::propertyModified() {
         }
 
         // Invalidate Owner
-        if (getInvalidationLevel() > PropertyOwner::VALID) {
+        if (getInvalidationLevel() > VALID) {
             owner->invalidate(getInvalidationLevel(), this);        
         }
     }

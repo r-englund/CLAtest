@@ -3,7 +3,7 @@
  * Inviwo - Interactive Visualization Workshop
  * Version 0.6b
  *
- * Copyright (c) 2014 Inviwo Foundation
+ * Copyright (c) 2012-2014 Inviwo Foundation
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -25,62 +25,29 @@
  * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- * 
- * Contact: Peter Steneteg
+ *
+ * Main file authors: Peter Steneteg
  *
  *********************************************************************************/
 
-#ifndef IVW_SIMPLELIGHTINGPROPERTY_H
-#define IVW_SIMPLELIGHTINGPROPERTY_H
+#ifndef IVW_INVALIDATIONLEVEL_H
+#define IVW_INVALIDATIONLEVEL_H
 
 #include <inviwo/core/common/inviwocoredefine.h>
 #include <inviwo/core/common/inviwo.h>
-#include <inviwo/core/properties/ordinalproperty.h>
-#include <inviwo/core/properties/boolproperty.h>
-#include <inviwo/core/properties/templateproperty.h>
-#include <inviwo/core/properties/compositeproperty.h>
-#include <inviwo/core/properties/baseoptionproperty.h>
 
 namespace inviwo {
 
-/** \class SimpleLightingProperty
- * Add simple light properties, position, ambient, diffuse, specular color. Used for phong shading.
- */
-
-namespace ShadingMode {
-    enum Modes {
-        None,
-        Ambient,
-        Diffuse,
-        Specular,
-        Phong,
-    };
-}
-
-class IVW_CORE_API SimpleLightingProperty : public CompositeProperty {
-public:
-    InviwoPropertyInfo();
-
-    SimpleLightingProperty(std::string identifier, std::string displayName,
-                           InvalidationLevel = INVALID_OUTPUT,
-                           PropertySemantics semantics = PropertySemantics::Default);
-    
-    SimpleLightingProperty(const SimpleLightingProperty& rhs);
-    SimpleLightingProperty& operator=(const SimpleLightingProperty& that);
-    virtual SimpleLightingProperty* clone() const;
-    virtual ~SimpleLightingProperty();
-    
-    OptionPropertyInt shadingMode_;
-    FloatVec3Property lightPosition_;
-    FloatVec3Property lightColorAmbient_;
-    FloatVec3Property lightColorDiffuse_;
-    FloatVec3Property lightColorSpecular_;
-    IntProperty lightSpecularExponent_;
-    BoolProperty applyLightAttenuation_;
-    FloatVec3Property lightAttenuation_;
+// invalidation level must be sorted based on their complexity,
+// whereby higher numbers (later entry in the list) involve more
+// expensive update operations
+enum InvalidationLevel {
+    VALID,
+    INVALID_OUTPUT,
+    INVALID_RESOURCES
 };
 
 } // namespace
 
-#endif // IVW_SIMPLELIGHTINGPROPERTY_H
+#endif // IVW_INVALIDATIONLEVEL_H
 

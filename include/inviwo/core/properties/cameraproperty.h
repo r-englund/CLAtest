@@ -56,7 +56,7 @@ public:
                    vec3 center = vec3(0.0f),
                    vec3 lookUp = vec3(0.0f, 1.0f, 0.0f),
                    Inport* inport = NULL,
-                   PropertyOwner::InvalidationLevel=PropertyOwner::INVALID_OUTPUT,
+                   InvalidationLevel=INVALID_OUTPUT,
                    PropertySemantics semantics = PropertySemantics::Default);
     
     CameraProperty(const CameraProperty& rhs);
@@ -108,7 +108,7 @@ public:
     void invokeEvent(Event* event);
 
 
-    virtual void invalidate(PropertyOwner::InvalidationLevel invalidationLevel,
+    virtual void invalidate(InvalidationLevel invalidationLevel,
                             Property* modifiedProperty = 0);
 
     // Local camera invalidation

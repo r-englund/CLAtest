@@ -51,7 +51,7 @@ public:
         T valueMax = Defaultvalues<T>::getMax(), T rangeMin = Defaultvalues<T>::getMin(),
         T rangeMax = Defaultvalues<T>::getMax(), T increment = Defaultvalues<T>::getInc(),
         T minSeperation = 0,
-        PropertyOwner::InvalidationLevel invalidationLevel = PropertyOwner::INVALID_OUTPUT,
+        InvalidationLevel invalidationLevel = INVALID_OUTPUT,
         PropertySemantics semantics = PropertySemantics::Default);
 
     MinMaxProperty(const MinMaxProperty& rhs);
@@ -102,7 +102,7 @@ template <typename T> PropertyClassIdentifier(MinMaxProperty<T>, "org.inviwo." +
 template <typename T>
 MinMaxProperty<T>::MinMaxProperty(std::string identifier, std::string displayName, T valueMin,
                                   T valueMax, T rangeMin, T rangeMax, T increment, T minSeparation,
-                                  PropertyOwner::InvalidationLevel invalidationLevel,
+                                  InvalidationLevel invalidationLevel,
                                   PropertySemantics semantics)
     : TemplateProperty<glm::detail::tvec2<T, glm::defaultp> >(
           identifier, displayName, glm::detail::tvec2<T, glm::defaultp>(valueMin, valueMax),

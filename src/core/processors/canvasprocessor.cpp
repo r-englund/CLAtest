@@ -47,17 +47,17 @@ CanvasProcessor::CanvasProcessor()
     : Processor()
     , inport_("inport")
     , dimensions_("dimensions", "Dimensions", ivec2(256, 256), ivec2(128, 128), ivec2(4096, 4096),
-                  ivec2(1, 1), PropertyOwner::VALID)
+                  ivec2(1, 1), VALID)
     , enableCustomInputDimensions_("enableCustomInputDimensions", "Enable Custom Input Dimensions",
-                                   false, PropertyOwner::VALID)
+                                   false, VALID)
     , customInputDimensions_("customInputDimensions", "Input Image Dimensions", ivec2(256, 256),
-                             ivec2(128, 128), ivec2(4096, 4096), ivec2(1, 1), PropertyOwner::VALID)
-    , keepAspectRatio_("keepAspectRatio", "Keep Aspect Ratio", true, PropertyOwner::VALID)
+                             ivec2(128, 128), ivec2(4096, 4096), ivec2(1, 1), VALID)
+    , keepAspectRatio_("keepAspectRatio", "Keep Aspect Ratio", true, VALID)
     , aspectRatioScaling_("aspectRatioScaling", "Aspect Ratio Scaling", 1.f, 0.25f, 4.f, 0.01f,
-                          PropertyOwner::VALID)
+                          VALID)
     , visibleLayer_("visibleLayer", "Visible Layer")
     , saveLayerDirectory_("layerDir", "Output Directory", "", "image")
-    , saveLayerButton_("saveLayer", "Save Image Layer", PropertyOwner::VALID)
+    , saveLayerButton_("saveLayer", "Save Image Layer", VALID)
     , inputSize_("inputSize", "Input Dimension Parameters")
     , canvas_(NULL)
     , queuedRequest_(false)

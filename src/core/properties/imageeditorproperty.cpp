@@ -79,7 +79,7 @@ void ImageLabel::deserialize(IvwDeserializer& d) {
 PropertyClassIdentifier(ImageEditorProperty, "org.inviwo.ImageEditorProperty");
 
 ImageEditorProperty::ImageEditorProperty(std::string identifier, std::string displayName,std::string value,
-        PropertyOwner::InvalidationLevel invalidationLevel,
+        InvalidationLevel invalidationLevel,
         PropertySemantics semantics)
     : FileProperty(identifier, displayName, value , "image" , invalidationLevel, semantics)
     , labels_()

@@ -63,8 +63,8 @@ public:
     virtual bool isConnected() const;
     virtual bool isReady() const;
 
-    virtual void invalidate(PropertyOwner::InvalidationLevel invalidationLevel);
-    virtual void setInvalidationLevel(PropertyOwner::InvalidationLevel invalidationLevel) {};
+    virtual void invalidate(InvalidationLevel invalidationLevel);
+    virtual void setInvalidationLevel(InvalidationLevel invalidationLevel) {};
 
     virtual bool canConnectTo(Port* port) const { return false; }
     virtual void connectTo(Outport* outport) {};
