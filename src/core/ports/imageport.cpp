@@ -490,7 +490,7 @@ void ImageOutport::updateInputSources() {
     Image* im = static_cast<Image*>(data_);
 
     for (ImageInSourceMap::iterator it = inputSources_.begin(); it != inputSources_.end(); it++)
-        im->setInputSource(it->first, it->second->getData());
+        im->setInputSource(it->first, it->second);
 }
 
 void ImageOutport::setDimension(const uvec2& newDimension) {

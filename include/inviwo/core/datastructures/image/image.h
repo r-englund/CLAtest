@@ -83,7 +83,7 @@ public:
 
     ImageType getImageType() const;
     const DataFormatBase* getDataFormat() const;
-    void setInputSource(LayerType, const Image*);
+    void setInputSource(LayerType, const ImageInport*);
 
 protected:
     void addLayer(Layer*);
@@ -98,7 +98,7 @@ protected:
 private:
     bool allowMissingLayers_;
     ImageType imageType_;
-    typedef std::map<LayerType, const Image*> ImageSourceMap;
+    typedef std::map<LayerType, const ImageInport*> ImageSourceMap;
     ImageSourceMap inputSources_;
 };
 

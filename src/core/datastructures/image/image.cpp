@@ -245,11 +245,11 @@ const Layer* Image::getDepthLayer() const {
         return depthLayer_;
     }
 
-    // Look for a depth layer upwards in the network using the uinput sources.
+    // Look for a depth layer upwards in the network using the input sources.
     ImageSourceMap::const_iterator it = inputSources_.find(DEPTH_LAYER);
     if (it != inputSources_.end() && it->second) {
-        if(it->second)
-            return it->second->getDepthLayer();
+        const Image* img = it->second->getData();
+        if (img) return img->getDepthLayer();
     }
 
     // No depth layer found.
@@ -271,8 +271,8 @@ const Layer* Image::getPickingLayer() const {
     // Look for a picking layer upwards in the network using the input sources
     ImageSourceMap::const_iterator it = inputSources_.find(PICKING_LAYER);
     if (it != inputSources_.end() && it->second) {
-        if(it->second)
-            return it->second->getPickingLayer();
+        const Image* img = it->second->getData();
+        if (img) return img->getPickingLayer();
     }
    
     // No picking layer found.
@@ -373,7 +373,7 @@ const DataFormatBase* Image::getDataFormat() const {
     return getColorLayer()->getDataFormat();
 }
 
-void Image::setInputSource(LayerType layer, const Image* src) {
+void Image::setInputSource(LayerType layer, const ImageInport* src) {
     inputSources_[layer] = src;
 }
 
