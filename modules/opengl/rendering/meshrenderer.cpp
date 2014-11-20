@@ -65,10 +65,9 @@ void MeshRenderer::render() {
     const MeshGL* meshGL = getMeshGL();
     meshGL->enable();
     //If default is indices, render all index lists
-    DrawFunc indexDrawFunc = &MeshRenderer::renderElements;
-    if(this->*drawMethods_[0].drawFunc == indexDrawFunc){
+    if(!drawMethods_[0].elementBufferList.empty()){
         for(int i=1; i<GeometryEnums::NUMBER_OF_RENDER_TYPES; i++) {
-            if(this->*drawMethods_[i].drawFunc == indexDrawFunc)
+            if(!drawMethods_[i].elementBufferList.empty())
                 (this->*drawMethods_[i].drawFunc)(static_cast<GeometryEnums::RenderType>(i));
         }
     }
