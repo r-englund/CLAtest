@@ -116,6 +116,9 @@ protected:
     template<typename T>
     const T* createNewRepresentationUsingConverters() const;
 
+    template<typename T>
+    RepresentationConverterPackage<T>* findRepresentationConverterPackage(DataRepresentation*, RepresentationConverterFactory*) const;
+
     template<class T>
     void invalidateAllOther();
 
@@ -197,60 +200,7 @@ const T* Data::createNewRepresentationUsingConverters() const {
     }
 
     //A one-2-one converter could not be found, thus we want to find the smallest package of converters to get to our destination
-    RepresentationConverterPackage<T>* converterPackage = representationConverterFactory->getRepresentationConverterPackage<T>
-            (lastValidRepresentation_);
-
-    if (converterPackage)
-        result = lastValidRepresentation_;
-    else {
-        // Not possible to convert from last valid representation.
-        // Check if it is possible to convert from another valid representation.
-        for (int i=0; i<static_cast<int>(representations_.size()); ++i) {
-            if (isRepresentationValid(i)) {
-                RepresentationConverterPackage<T>* currentConverterPackage = representationConverterFactory->getRepresentationConverterPackage<T>
-                        (representations_[i]);
-
-                if (currentConverterPackage) {
-                    if (converterPackage) {
-                        if (currentConverterPackage->getNumberOfConverters() < converterPackage->getNumberOfConverters()) {
-                            converterPackage = currentConverterPackage;
-                            result = representations_[i];
-                        }
-                    } else {
-                        converterPackage = currentConverterPackage;
-                        result = representations_[i];
-                    }
-                }
-            }
-        }
-    }
-
-    //If not converter package was found, try to create one by combining one-2-one converters
-    if (!converterPackage) {
-        result = lastValidRepresentation_;
-
-        std::vector<RepresentationConverter*> srcConverters = representationConverterFactory->getRepresentationConvertersFrom(result);
-        std::vector<RepresentationConverter*> toConverters = representationConverterFactory->getRepresentationConvertersTo<T>();
-
-        std::vector<RepresentationConverter*>::iterator srcConverterEnd = srcConverters.end();
-        std::vector<RepresentationConverter*>::iterator toConverterEnd = toConverters.end();
-
-        for (std::vector<RepresentationConverter*>::iterator srcConverterIt = srcConverters.begin(); srcConverterIt != srcConverterEnd; ++srcConverterIt) {
-            for (std::vector<RepresentationConverter*>::iterator toConverterIt = toConverters.begin(); toConverterIt != toConverterEnd; ++toConverterIt) {
-
-                //Match srcTo with toSrc if src->srcTo and toSrc->to
-                if(!converterPackage && (*toConverterIt)->isConverterReverse(*srcConverterIt)){
-                    converterPackage = new RepresentationConverterPackage<T>;
-                    converterPackage->addConverter(*srcConverterIt);
-                    converterPackage->addConverter(*toConverterIt);
-                    //Register the new convert so we don't have to do this again
-                    representationConverterFactory->registerObject(converterPackage);
-                }
-            }
-        }
-    }
-
-    //TODO, If not converter package was found, try to create one by combining one-2-one converters with converter packages
+    RepresentationConverterPackage<T>* converterPackage = findRepresentationConverterPackage<T>(lastValidRepresentation_, representationConverterFactory);
 
     if (converterPackage) {
         const std::vector<RepresentationConverter*>* converters = converterPackage->getConverters();
@@ -263,10 +213,10 @@ const T* Data::createNewRepresentationUsingConverters() const {
 
             for (std::vector<DataRepresentation*>::const_iterator it = representations_.begin(), itEnd = representations_.end();
                  it != itEnd; ++it) {
-                if (result != *it && (*converterIt)->canConvertTo(*it)) {
-                    (*converterIt)->update(result, *it);
+                if (lastValidRepresentation_ != *it && (*converterIt)->canConvertTo(*it)) {
+                    (*converterIt)->update(lastValidRepresentation_, *it);
                     setRepresentationAsValid(static_cast<int>(representations_.size())-static_cast<int>(itEnd-it));
-                    result = *it;
+                    lastValidRepresentation_ = *it;
                     updatedRepresentation = true;
                     break;
                 }
@@ -274,18 +224,17 @@ const T* Data::createNewRepresentationUsingConverters() const {
 
             // Create the representation if it did not exist
             if (!updatedRepresentation) {
-                result = (*converterIt)->createFrom(result);
-                if(!result)
+                lastValidRepresentation_ = (*converterIt)->createFrom(lastValidRepresentation_);
+                if(!lastValidRepresentation_)
                     return NULL;
-                result->setOwner(const_cast<Data *>(this));
-                representations_.push_back(result);
+                lastValidRepresentation_->setOwner(const_cast<Data *>(this));
+                representations_.push_back(lastValidRepresentation_);
                 setRepresentationAsValid(static_cast<int>(representations_.size())-1);
             }
         }
 
-        lastValidRepresentation_ = result;
         newRepresentationCreated();
-        return dynamic_cast<T*>(result);
+        return dynamic_cast<T*>(lastValidRepresentation_);
     }
 
     return NULL;
@@ -305,9 +254,8 @@ void Data::updateRepresentation(T* representation, int index) const {
             return;
         }
 
-        //A one-2-one converter could not be found
-        RepresentationConverterPackage<T>* converterPackage = representationConverterFactory->getRepresentationConverterPackage<T>
-                (lastValidRepresentation_);
+        //A one-2-one converter could not be found, thus we want to find the smallest package of converters to get to our destination
+        RepresentationConverterPackage<T>* converterPackage = findRepresentationConverterPackage<T>(lastValidRepresentation_, representationConverterFactory);
 
         //Go-through the conversion package
         if (converterPackage) {
@@ -327,6 +275,69 @@ void Data::updateRepresentation(T* representation, int index) const {
     }
 }
 
+template<typename T>
+RepresentationConverterPackage<T>* Data::findRepresentationConverterPackage(DataRepresentation* validRepresentation, RepresentationConverterFactory* representationConverterFactory) const {
+    RepresentationConverterPackage<T>* converterPackage = representationConverterFactory->getRepresentationConverterPackage<T>
+        (validRepresentation);
+
+    DataRepresentation* result = NULL;
+    if (converterPackage)
+        return converterPackage;
+    else {
+        // Not possible to convert from last valid representation.
+        // Check if it is possible to convert from another valid representation.
+        for (int i=0; i<static_cast<int>(representations_.size()); ++i) {
+            if (isRepresentationValid(i)) {
+                RepresentationConverterPackage<T>* currentConverterPackage = representationConverterFactory->getRepresentationConverterPackage<T>
+                    (representations_[i]);
+
+                if (currentConverterPackage) {
+                    if (converterPackage) {
+                        if (currentConverterPackage->getNumberOfConverters() < converterPackage->getNumberOfConverters()) {
+                            converterPackage = currentConverterPackage;
+                            result = representations_[i];
+                        }
+                    } else {
+                        converterPackage = currentConverterPackage;
+                        result = representations_[i];
+                    }
+                }
+            }
+        }
+    }
+
+    //If not converter package was found, try to create one by combining one-2-one converters
+    if (!converterPackage) {
+        std::vector<RepresentationConverter*> srcConverters = representationConverterFactory->getRepresentationConvertersFrom(validRepresentation);
+        std::vector<RepresentationConverter*> toConverters = representationConverterFactory->getRepresentationConvertersTo<T>();
+
+        std::vector<RepresentationConverter*>::iterator srcConverterEnd = srcConverters.end();
+        std::vector<RepresentationConverter*>::iterator toConverterEnd = toConverters.end();
+
+        for (std::vector<RepresentationConverter*>::iterator srcConverterIt = srcConverters.begin(); srcConverterIt != srcConverterEnd; ++srcConverterIt) {
+            for (std::vector<RepresentationConverter*>::iterator toConverterIt = toConverters.begin(); toConverterIt != toConverterEnd; ++toConverterIt) {
+
+                //Match srcTo with toSrc if src->srcTo and toSrc->to
+                if(!converterPackage && (*toConverterIt)->isConverterReverse(*srcConverterIt)){
+                    converterPackage = new RepresentationConverterPackage<T>;
+                    converterPackage->addConverter(*srcConverterIt);
+                    converterPackage->addConverter(*toConverterIt);
+                    //Register the new convert so we don't have to do this again
+                    representationConverterFactory->registerObject(converterPackage);
+
+                    break;
+                }
+            }
+        }
+    }
+    else{
+        validRepresentation = result;
+    }
+
+    //TODO, If not converter package was found, try to create one by combining one-2-one converters with converter packages
+
+    return converterPackage;
+}
 
 template<typename T>
 T* Data::getEditableRepresentation() {
