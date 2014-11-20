@@ -85,20 +85,21 @@ protected:
     mutable std::vector<DataGroupRepresentation*> representations_;
 
 private:
-    bool editableUpdate_;
+    template<typename T>
+    T* getRepresentation(bool editable) const; 
 };
 
 template<typename T>
-const T* DataGroup::getRepresentation() const {
+T* inviwo::DataGroup::getRepresentation(bool editable) const {
     // check if a representation exists and return it
-    for (int i=0; i<static_cast<int>(representations_.size()); ++i) {
+    for (int i = 0; i < static_cast<int>(representations_.size()); ++i) {
         T* representation = dynamic_cast<T*>(representations_[i]);
 
         if (representation) {
             DataGroupRepresentation* basRep = dynamic_cast<DataGroupRepresentation*>(representation);
 
             if (basRep) {
-                basRep->update(editableUpdate_);
+                basRep->update(editable);
                 basRep->setAsValid();
                 return representation;
             }
@@ -112,7 +113,7 @@ const T* DataGroup::getRepresentation() const {
     if (basRep) {
         basRep->setOwner(const_cast<DataGroup*>(this));
         basRep->initialize();
-        basRep->update(editableUpdate_);
+        basRep->update(editable);
         basRep->setAsValid();
     }
 
@@ -121,21 +122,21 @@ const T* DataGroup::getRepresentation() const {
 }
 
 template<typename T>
+const T* DataGroup::getRepresentation() const {
+    return static_cast<const T*>(getRepresentation<T>(false));
+}
+
+template<typename T>
 T* DataGroup::getEditableRepresentation() {
-    editableUpdate_ = true;
-    T* result = const_cast<T*>(getRepresentation<T>());
-    editableUpdate_ = false;
-    return result;
+    return getRepresentation<T>(true);
 }
 
 template<typename T>
 bool DataGroup::hasRepresentation() const {
     for (int i=0; i<static_cast<int>(representations_.size()); i++) {
         T* representation = dynamic_cast<T*>(representations_[i]);
-
         if (representation) return true;
     }
-
     return false;
 }
 
