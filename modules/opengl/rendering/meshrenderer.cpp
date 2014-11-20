@@ -64,10 +64,8 @@ MeshRenderer::~MeshRenderer() {
 void MeshRenderer::render() {
     const MeshGL* meshGL = getMeshGL();
     meshGL->enable();
-    // try to render all GeometryEnums::RenderTypes except the default one
-    for(int i=1; i<GeometryEnums::NUMBER_OF_RENDER_TYPES; i++) {
-        (this->*drawMethods_[i].drawFunc)(static_cast<GeometryEnums::RenderType>(i));
-    }
+    //Render the default one
+    (this->*drawMethods_[0].drawFunc)(GeometryEnums::NOT_SPECIFIED);
     meshGL->disable(); 
 }
 
