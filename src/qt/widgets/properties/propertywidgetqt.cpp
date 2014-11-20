@@ -231,15 +231,14 @@ void PropertyWidgetQt::generateContextMenu() {
         contextMenu_->addMenu(usageModeItem_);
 
         copyAction_ = new QAction("Copy", this);
-        contextMenu_->addAction(copyAction_);
-
         pasteAction_ = new QAction("Paste", this);
-        contextMenu_->addAction(pasteAction_);
-
         copyPathAction_ = new QAction("Copy path", this);
-        contextMenu_->addAction(copyPathAction_);
 
-        if (property_) {
+        if (property_){
+            contextMenu_->addAction(copyAction_);
+            contextMenu_->addAction(pasteAction_);
+            contextMenu_->addAction(copyPathAction_);
+
             semanicsMenuItem_ = new QMenu(tr("&Semantics"), contextMenu_);
             semanticsActionGroup_ = new QActionGroup(this);
             
@@ -543,6 +542,9 @@ void PropertyWidgetQt::paste() {
 }
 
 void PropertyWidgetQt::copyPath() {
+    if (property_ == NULL){
+        return;
+    }
     std::string path = joinString(property_->getPath(),".");
     QApplication::clipboard()->setText(path.c_str());
 }
