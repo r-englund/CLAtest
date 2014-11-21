@@ -162,6 +162,8 @@ public slots:
     void contextMenuEditLink(EditorGraphicsItem*);
     void contextMenuResetTimeMeasurements(EditorGraphicsItem*);
 
+    void resetAllTimeMeasurements();
+
 protected:
     void mousePressEvent(QGraphicsSceneMouseEvent* e);
     void mouseMoveEvent(QGraphicsSceneMouseEvent* e);

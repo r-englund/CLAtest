@@ -1394,6 +1394,16 @@ void NetworkEditor::updateLeds() {
     }
 }
 
+void NetworkEditor::resetAllTimeMeasurements() {
+#if IVW_PROFILING
+    // Update the status items
+    for (ProcessorMap::iterator it = processorGraphicsItems_.begin();
+        it != processorGraphicsItems_.end(); it++) {
+            it->second->resetTimeMeasurements();
+    }
+#endif
+}
+
 // Manage various tooltips.
 void NetworkEditor::helpEvent(QGraphicsSceneHelpEvent* e) {
     QList<QGraphicsItem*> graphicsItems = items(e->scenePos());

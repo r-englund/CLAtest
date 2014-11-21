@@ -340,6 +340,14 @@ void InviwoMainWindow::addMenuActions() {
     connect(enableDisableEvaluationButton_, SIGNAL(toggled(bool)), this,
             SLOT(disableEvaluation(bool)));
 
+#if IVW_PROFILING
+    resetTimeMeasurementsButton_ = new QToolButton(this);
+    resetTimeMeasurementsButton_->setToolTip(tr("Reset All Time Measurements"));
+    resetTimeMeasurementsButton_->setCheckable(false);
+    resetTimeMeasurementsButton_->setIcon(QIcon(":/icons/stopwatch.png"));
+    connect(resetTimeMeasurementsButton_, SIGNAL(clicked()), networkEditor_, SLOT(resetAllTimeMeasurements()));
+#endif
+
     aboutBoxAction_ = new QAction(QIcon(":/icons/about.png"), tr("&About"), this);
     connect(aboutBoxAction_, SIGNAL(triggered()), this, SLOT(showAboutBox()));
     helpMenuItem_->addAction(aboutBoxAction_);
@@ -356,6 +364,7 @@ void InviwoMainWindow::addToolBars() {
     viewModeToolBar_->setObjectName("viewModeToolBar");
     viewModeToolBar_->addAction(visibilityModeAction_);
     viewModeToolBar_->addWidget(enableDisableEvaluationButton_);
+    viewModeToolBar_->addWidget(resetTimeMeasurementsButton_);
 }
 
 void InviwoMainWindow::updateWindowTitle() {

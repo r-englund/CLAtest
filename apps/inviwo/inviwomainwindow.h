@@ -150,6 +150,7 @@ private:
     QAction* visibilityModeAction_;
     QAction* aboutBoxAction_;
     QToolButton* enableDisableEvaluationButton_;
+    QToolButton* resetTimeMeasurementsButton_;
 
     // mainwindow toolbars
     QToolBar* workspaceToolBar_;
