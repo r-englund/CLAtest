@@ -68,9 +68,9 @@ protected:
     virtual void update(bool editable);
 
 private:
-    std::vector<LayerRAM*> colorLayersRAM_;
-    LayerRAM* depthLayerRAM_;
-    LayerRAM* pickingLayerRAM_;
+    std::vector<LayerRAM*> colorLayersRAM_; //< non-owning reference
+    LayerRAM* depthLayerRAM_;               //< non-owning reference
+    LayerRAM* pickingLayerRAM_;             //< non-owning reference
 };
 
 } // namespace
