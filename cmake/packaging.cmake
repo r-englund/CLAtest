@@ -209,7 +209,6 @@ endif()
 
 install(DIRECTORY ${IVW_ROOT_DIR}/data/images DESTINATION data COMPONENT images)
 install(DIRECTORY ${IVW_ROOT_DIR}/data/scripts DESTINATION data COMPONENT scripts)
-install(DIRECTORY ${IVW_ROOT_DIR}/data/settings DESTINATION data COMPONENT core)
 install(FILES ${IVW_ROOT_DIR}/data/volumes/boron.dat DESTINATION data/volumes COMPONENT volumes)
 install(FILES ${IVW_ROOT_DIR}/data/volumes/boron.raw DESTINATION data/volumes COMPONENT volumes)
 install(FILES ${IVW_ROOT_DIR}/data/workspaces/boron.inv DESTINATION data/workspaces COMPONENT workspaces)
