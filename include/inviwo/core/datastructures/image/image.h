@@ -41,6 +41,7 @@
 namespace inviwo {
 
 class ImageRepresentation;
+class ImageInport;
 
 class IVW_CORE_API Image : public DataGroup {
 public:
