@@ -143,8 +143,12 @@ bool ImageGL::copyAndResizeRepresentation(DataRepresentation* targetRep) const {
     ImageGL* target = dynamic_cast<ImageGL*>(targetRep);
     TextureUnit colorUnit, depthUnit, pickingUnit;
     source->getColorLayerGL()->bindTexture(colorUnit.getEnum());
-    source->getDepthLayerGL()->bindTexture(depthUnit.getEnum());
-    source->getPickingLayerGL()->bindTexture(pickingUnit.getEnum());
+    if (source->getDepthLayerGL()) {
+        source->getDepthLayerGL()->bindTexture(depthUnit.getEnum());
+    }
+    if (source->getPickingLayerGL()) {
+        source->getPickingLayerGL()->bindTexture(pickingUnit.getEnum());
+    }
     // Render to FBO, with correct scaling
     target->activateBuffer();
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -159,8 +163,12 @@ bool ImageGL::copyAndResizeRepresentation(DataRepresentation* targetRep) const {
 
     shader_->activate();
     shader_->setUniform("color_", colorUnit.getUnitNumber());
-    shader_->setUniform("depth_", depthUnit.getUnitNumber());
-    shader_->setUniform("picking_", pickingUnit.getUnitNumber());
+    if (source->getDepthLayerGL()) {
+        shader_->setUniform("depth_", depthUnit.getUnitNumber());
+    }
+    if (source->getPickingLayerGL()) {
+        shader_->setUniform("picking_", pickingUnit.getUnitNumber());
+    }
     shader_->setUniform("modelViewProjectionMatrix_", scale);
     glDepthMask(GL_TRUE);
     LGL_ERROR;
