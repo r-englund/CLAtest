@@ -445,7 +445,7 @@ Image* ImageOutport::getResizedImageData(uvec2 requiredDimensions) {
 
     // Image* resultImage = new Image(requiredDimensions, data_->getImageType(),
     // data_->getDataFormat());
-    Image* resultImage = dynamic_cast<Image*>(data_->clone());
+    Image* resultImage = data_->clone();
     resultImage->resize(requiredDimensions);
     std::string dimensionString = glm::to_string(requiredDimensions);
     imageDataMap_.insert(std::make_pair(dimensionString, resultImage));
