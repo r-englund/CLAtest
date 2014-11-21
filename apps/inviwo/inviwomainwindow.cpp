@@ -364,7 +364,9 @@ void InviwoMainWindow::addToolBars() {
     viewModeToolBar_->setObjectName("viewModeToolBar");
     viewModeToolBar_->addAction(visibilityModeAction_);
     viewModeToolBar_->addWidget(enableDisableEvaluationButton_);
+#if IVW_PROFILING
     viewModeToolBar_->addWidget(resetTimeMeasurementsButton_);
+#endif
 }
 
 void InviwoMainWindow::updateWindowTitle() {
