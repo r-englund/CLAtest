@@ -32,11 +32,15 @@
 
 #include "samplers.cl"
 #include "transformations.cl"
-#include "intersection/rayboxintersection.cl"
+#include "intersection/raytriangleintersection.cl"
 
-__kernel void entryexitpoints(float16 NDCToTextureMat
-							, write_only image2d_t entryPoints
-							, write_only image2d_t exitPoints) 
+__kernel void entryExitPointsKernel(float16 NDCToTextureMat
+    , float16 worldToTextureMat
+    , __global float const * __restrict vertices
+    , __global int const * __restrict indices
+    , int nIndices
+    , write_only image2d_t entryPoints
+    , write_only image2d_t exitPoints) 
 {
     int2 globalId = (int2)(get_global_id(0), get_global_id(1));      
     if( any(globalId >= get_image_dim(entryPoints)) ) {
@@ -44,7 +48,7 @@ __kernel void entryexitpoints(float16 NDCToTextureMat
     }
 
 	float2 normalizedScreenCoord = (float2)(get_global_id(0)+0.5f, get_global_id(1)+0.5f)/convert_float2(get_image_dim(entryPoints));
-	//float3 normalizedDeviceCoord = (float3)(2.0f*normalizedScreenCoord-1.0f, (nearFarPlaneDist.x+nearFarPlaneDist.y)/(nearFarPlaneDist.y-nearFarPlaneDist.x));
+	
     // Compute near and far plane points along ray (device coordinates goes from [-1 -1 -1] to [1 1 1]
     float3 normalizedDeviceCoordNear = (float3)(2.0f*normalizedScreenCoord-1.0f, -1.f);
     float3 normalizedDeviceCoordFar = (float3)(2.0f*normalizedScreenCoord-1.0f, 1.f);
@@ -52,17 +56,29 @@ __kernel void entryexitpoints(float16 NDCToTextureMat
     float3 entry = (transformPointW(NDCToTextureMat, normalizedDeviceCoordNear));
     float3 exit = (transformPointW(NDCToTextureMat, normalizedDeviceCoordFar));
     float3 dir = exit-entry;
-	BBox bbox; bbox.pMin = (float3)(0.f); bbox.pMax = (float3)(1.f);
-    float t0 = 0.f; float t1 = 1.f;
-    bool hit = rayBoxIntersection(bbox, entry.xyz, dir, &t0, &t1); 
-	if(hit) {  
+    float t = FLT_MAX;
+    bool iSect = false;
+    float t0 = FLT_MAX; float t1 = 0.f;
+    for (int i = 0; i < nIndices-2; i +=1) {
+        // Triangle strip
+        int3 triangle = 3*(int3)(*indices, *(indices+1), *(indices+2));
+        float3 v0 = (float3)(vertices[triangle.x], vertices[triangle.x+1], vertices[triangle.x+2]);
+        float3 v1 = (float3)(vertices[triangle.y], vertices[triangle.y+1], vertices[triangle.y+2]);
+        float3 v2 = (float3)(vertices[triangle.z], vertices[triangle.z+1], vertices[triangle.z+2]);
+        float tt;
+        iSect = rayTriangleIntersection(entry, dir, v0, v1, v2, &tt);
+        if (iSect) {
+            t0 = min(tt, t0);
+            t1 = max(tt, t1);
+        }
+        indices+=1;
+    }
+
+	if(t1 != 0.f) {  
         write_imagef(entryPoints, globalId,  (float4)(entry.xyz+t0*dir, 1.f));     
 		write_imagef(exitPoints, globalId,  (float4)(entry.xyz+t1*dir,1.f)); 
 	} else {
 		write_imagef(entryPoints, globalId,  (float4)(0.f));     
 		write_imagef(exitPoints, globalId,  (float4)(0.f));    
-	}
-	 
-  
+	} 
 }
-  

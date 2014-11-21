@@ -25,33 +25,57 @@
  * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- * 
+ *
  * Contact: Daniel Jönsson
  *
  *********************************************************************************/
 
-#include <modules/basecl/baseclmodule.h>
+#ifndef IVW_ENTRYEXITPOINTSCLPROCESSOR_H
+#define IVW_ENTRYEXITPOINTSCLPROCESSOR_H
 
-#include <modules/basecl/processors/entryexitpointsclprocessor.h>
-#include <modules/basecl/processors/volumefirsthitcl.h>
-#include <modules/basecl/processors/volumemaxcl.h>
+#include <modules/basecl/baseclmoduledefine.h>
+#include <inviwo/core/common/inviwo.h>
+#include <inviwo/core/interaction/cameratrackball.h>
+#include <inviwo/core/properties/cameraproperty.h>
+#include <inviwo/core/ports/geometryport.h>
+#include <inviwo/core/ports/imageport.h>
+#include <inviwo/core/ports/volumeport.h>
+#include <inviwo/core/common/inviwoapplication.h>
+#include <modules/opencl/inviwoopencl.h>
+#include <modules/opencl/kernelowner.h>
+#include <modules/basecl/meshentryexitpointscl.h>
 
 namespace inviwo {
 
-BaseCLModule::BaseCLModule() : InviwoModule() {
-    setIdentifier("BaseCL");
-    registerProcessor(EntryExitPointsCLProcessor);
-    registerProcessor(VolumeFirstHitCL);
-    registerProcessor(VolumeMaxCL);
-}
+class IVW_MODULE_BASECL_API EntryExitPointsCLProcessor : public Processor, public ProcessorKernelOwner {
+public:
+    EntryExitPointsCLProcessor();
+    virtual ~EntryExitPointsCLProcessor();
 
-void BaseCLModule::initialize() {
-    OpenCL::getPtr()->addCommonIncludeDirectory(InviwoApplication::PATH_MODULES, "basecl/cl");
-    InviwoModule::initialize();
-}
+    InviwoProcessorInfo();
 
-BaseCLModule::~BaseCLModule()
-{
-}
+    virtual void initialize();
+    virtual void deinitialize();
 
-} // namespace
+protected:
+    virtual void process();
+
+
+
+private:
+    GeometryInport geometryPort_;
+    ImageOutport entryPort_;
+    ImageOutport exitPort_;
+
+    CameraProperty camera_;
+    IntVec2Property workGroupSize_;
+    BoolProperty useGLSharing_;
+
+    CameraTrackball trackball_;
+
+    MeshEntryExitPointsCL entryExitPoints_;
+};
+
+}  // namespace
+
+#endif  // IVW_ENTRYEXITPOINTSCLPROCESSOR_H
