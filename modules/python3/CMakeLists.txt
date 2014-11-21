@@ -67,3 +67,14 @@ ivw_create_module(${SOURCE_FILES} ${HEADER_FILES} ${SHADER_FILES})
 #--------------------------------------------------------------------
 # Add shader directory to pack
 # ivw_add_to_module_pack(${CMAKE_CURRENT_SOURCE_DIR}/glsl)
+
+#--------------------------------------------------------------------
+# Add Python to package
+if(IVW_PACKAGE_PROJECT AND BUILD_SHARED_LIBS)
+   get_filename_component(FILENAME "${PYTHON3_LIBRARIES}" NAME_WE)
+   if(WIN32)
+        find_file(PYTHON3_DLL ${FILENAME}.dll)
+        mark_as_advanced(PYTHON3_DLL)
+        install(FILES ${PYTHON3_DLL} DESTINATION bin COMPONENT modules)
+   endif()
+endif()
