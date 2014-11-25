@@ -129,6 +129,10 @@ PropertySemantics Property::getSemantics()const {
     return semantics_;
 }
 
+std::string Property::getClassIdentifierForWidget()const{
+    return getClassIdentifier();
+}
+
 void Property::setSemantics(const PropertySemantics& semantics) {
     semantics_ = semantics;
 }

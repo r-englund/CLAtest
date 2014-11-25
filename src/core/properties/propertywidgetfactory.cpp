@@ -61,7 +61,7 @@ void PropertyWidgetFactory::registerObject(PropertyWidgetFactoryObject* property
 PropertyWidget* PropertyWidgetFactory::create(Property* property) {
     PropertySemantics sematics = property->getSemantics();
     std::pair<WidgetMap::const_iterator, WidgetMap::const_iterator> sameKeys;
-    sameKeys = widgetMap_.equal_range(property->getClassIdentifier());
+    sameKeys = widgetMap_.equal_range(property->getClassIdentifierForWidget()); 
 
     for (WidgetMap::const_iterator it = sameKeys.first; it != sameKeys.second; ++it) {
         if (sematics == it->second->getSematics())

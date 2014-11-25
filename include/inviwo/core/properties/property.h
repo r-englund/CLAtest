@@ -188,6 +188,14 @@ public:
     virtual std::string getDisplayName() const;
 
     
+    /** 
+     * \brief Returns which property's widget should be used
+     * when the WidgetFactory tries to create a widget.
+     * Defaults to getClassIdentifier(), should only be overridden
+     * if a subclass want to reuse another property's widget. 
+     */
+    virtual std::string getClassIdentifierForWidget()const;
+
     virtual void setSemantics(const PropertySemantics& semantics);
     virtual PropertySemantics getSemantics() const;
 
