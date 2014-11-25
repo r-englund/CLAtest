@@ -119,7 +119,7 @@ public:
      */
     void setDimension(const uvec2& newDimension);
     uvec3 getColorCode() const;
-    virtual std::string getClassIdentifier() const { return "org.inviwo.ImageOutport"; }
+    virtual std::string getClassIdentifier() const;
 
     bool addResizeEventListener(EventListener*);
     bool removeResizeEventListener(EventListener*);
@@ -131,12 +131,8 @@ public:
      * @param handleResizeEvents True if data should be resized during a resize propagation,
      * otherwise false
      */
-    void setHandleResizeEvents(bool handleResizeEvents) {
-        handleResizeEvents_ = handleResizeEvents;
-    }
-    bool isHandlingResizeEvents() const { return handleResizeEvents_; }
-
-    void setInputSource(LayerType, ImageInport*);
+    void setHandleResizeEvents(bool handleResizeEvents);
+    bool isHandlingResizeEvents() const;
 
 protected:
     Image* getResizedImageData(uvec2 dimensions);
@@ -148,7 +144,6 @@ protected:
      */
     void propagateResizeEventToPredecessor(ResizeEvent* resizeEvent);
     ResizeEvent* scaleResizeEvent(ImageInport*, ResizeEvent*);
-    void updateInputSources();
 
 private:
     uvec2 dimensions_;
@@ -157,8 +152,8 @@ private:
                                // otherwise false
     typedef std::map<std::string, Image*> ImagePortMap;
     ImagePortMap imageDataMap_;
-    typedef std::map<LayerType, const ImageInport*> ImageInSourceMap;
-    ImageInSourceMap inputSources_;
+
+    const ImageInport* inputSource_;
 };
 
 } // namespace

@@ -55,8 +55,8 @@ Image::Image(Layer* colorLayer, ImageType type, bool allowMissingLayers)
 Image::Image(const Image& rhs)
     : DataGroup(rhs)
     , allowMissingLayers_(rhs.allowMissingLayers_)
-    , imageType_(rhs.imageType_)
-    , inputSources_() {
+    , imageType_(rhs.imageType_) {
+
     for (std::vector<Layer*>::const_iterator it = rhs.colorLayers_.begin();
          it != rhs.colorLayers_.end(); ++it) {
         addColorLayer((*it)->clone());
@@ -101,7 +101,6 @@ Image& Image::operator=(const Image& that) {
         DataGroup::operator=(that);
         allowMissingLayers_ = that.allowMissingLayers_;
         imageType_ = that.imageType_;
-        inputSources_.clear();
         deinitialize();
 
         for (std::vector<Layer*>::iterator it = colorLayers_.begin();
@@ -172,19 +171,19 @@ void Image::deinitialize() {
 }
 
 void Image::initialize(uvec2 dimensions, const DataFormatBase* format, Layer* colorLayer) {
-    if(colorLayer) {
+    if (colorLayer) {
         addColorLayer(colorLayer);
     } else {
         addColorLayer(new Layer(dimensions, format));
     }
 
-    if (!allowMissingLayers_ || typeContainsDepth(getImageType())) {
+    if (!allowMissingLayers_ || typeContainsDepth(imageType_)) {
         depthLayer_ = new Layer(dimensions, DataFLOAT32::get(), DEPTH_LAYER);
     } else {
         depthLayer_ = NULL;
     }
 
-    if (!allowMissingLayers_ || typeContainsPicking(getImageType())) {
+    if (!allowMissingLayers_ || typeContainsPicking(imageType_)) {
         pickingLayer_ = new Layer(dimensions, format, PICKING_LAYER);
     } else {
         pickingLayer_ = NULL;
@@ -244,22 +243,7 @@ size_t Image::getNumberOfColorLayers() const {
 }
 
 const Layer* Image::getDepthLayer() const {
-    // Get local depth layer if available. 
-    if (typeContainsDepth(getImageType())
-        && depthLayer_
-        && depthLayer_->getLayerType() == DEPTH_LAYER) {
-        return depthLayer_;
-    }
-
-    // Look for a depth layer upwards in the network using the input sources.
-    ImageSourceMap::const_iterator it = inputSources_.find(DEPTH_LAYER);
-    if (it != inputSources_.end() && it->second) {
-        const Image* img = it->second->getData();
-        if (img) return img->getDepthLayer();
-    }
-
-    // No depth layer found.
-    return NULL;
+    return depthLayer_;
 }
 
 Layer* Image::getDepthLayer() {
@@ -267,22 +251,7 @@ Layer* Image::getDepthLayer() {
 }
 
 const Layer* Image::getPickingLayer() const {
-    // Get local picking layer if available.
-    if (typeContainsPicking(getImageType())
-        && pickingLayer_
-        && pickingLayer_->getLayerType() == PICKING_LAYER) {
-        return pickingLayer_;
-    } 
-
-    // Look for a picking layer upwards in the network using the input sources
-    ImageSourceMap::const_iterator it = inputSources_.find(PICKING_LAYER);
-    if (it != inputSources_.end() && it->second) {
-        const Image* img = it->second->getData();
-        if (img) return img->getPickingLayer();
-    }
-   
-    // No picking layer found.
-    return NULL;
+    return pickingLayer_;
 }
 
 Layer* Image::getPickingLayer() {
@@ -377,8 +346,25 @@ const DataFormatBase* Image::getDataFormat() const {
     return getColorLayer()->getDataFormat();
 }
 
-void Image::setInputSource(LayerType layer, const ImageInport* src) {
-    inputSources_[layer] = src;
+void Image::passOnLayers(const ImageInport* port) {
+    if (port->hasData()) {
+        const Image* img = port->getData();
+        if (!typeContainsDepth(imageType_)) {
+            const Layer* depth = img->getDepthLayer();
+            if (depth) {
+                if(depthLayer_) delete depthLayer_;
+                depthLayer_ = depth->clone();
+            }
+        }
+
+        if (!typeContainsPicking(imageType_)) {
+            const Layer* picking = img->getPickingLayer();
+            if (picking) {
+                if (pickingLayer_) delete pickingLayer_;
+                pickingLayer_ = picking->clone();
+            }
+        }
+    }
 }
 
 std::string Image::getDataInfo() const{

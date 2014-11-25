@@ -136,7 +136,7 @@ void CanvasGL::resize(uvec2 size) {
 }
 
 void CanvasGL::resize(uvec2 canvasSize, uvec2 imageSize) {
-    if (imageGL_) imageGL_->updateExistingLayers();
+    if (imageGL_) imageGL_->updateExistingLayers(); // Why?
 
     Canvas::resize(canvasSize, imageSize);
 }

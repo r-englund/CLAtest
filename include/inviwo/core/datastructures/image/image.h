@@ -80,7 +80,7 @@ public:
 
     ImageType getImageType() const;
     const DataFormatBase* getDataFormat() const;
-    void setInputSource(LayerType, const ImageInport*);
+    void passOnLayers(const ImageInport* port);
 
 protected:
     std::vector<Layer*> colorLayers_;   //< owning pointer
@@ -90,8 +90,6 @@ protected:
 private:
     bool allowMissingLayers_;
     ImageType imageType_;
-    typedef std::map<LayerType, const ImageInport*> ImageSourceMap;
-    ImageSourceMap inputSources_;
 };
 
 } // namespace

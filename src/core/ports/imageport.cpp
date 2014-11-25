@@ -171,7 +171,8 @@ ImageOutport::ImageOutport(std::string identifier,
     : DataOutport<Image>(identifier, invalidationLevel)
     , dimensions_(uvec2(256, 256))
     , mapDataInvalid_(true)
-    , handleResizeEvents_(handleResizeEvents) {
+    , handleResizeEvents_(handleResizeEvents)
+    , inputSource_(NULL) {
     setData(new Image(dimensions_));
     dataChanged();
 }
@@ -182,7 +183,8 @@ ImageOutport::ImageOutport(std::string identifier, ImageType type, const DataFor
     : DataOutport<Image>(identifier, invalidationLevel)
     , dimensions_(uvec2(256, 256))
     , mapDataInvalid_(true)
-    , handleResizeEvents_(handleResizeEvents){
+    , handleResizeEvents_(handleResizeEvents)
+    , inputSource_(NULL) {
     setData(new Image(dimensions_, type, format));
     dataChanged();
 }
@@ -194,13 +196,11 @@ ImageOutport::ImageOutport(std::string identifier, ImageInport* src, ImageType t
     , EventHandler()
     , dimensions_(uvec2(256, 256))
     , mapDataInvalid_(true)
-    , handleResizeEvents_(handleResizeEvents) {
+    , handleResizeEvents_(handleResizeEvents)
+    , inputSource_(src) {
 
     setData(new Image(dimensions_, type));
     dataChanged();
-    inputSources_[COLOR_LAYER] = src;
-    inputSources_[DEPTH_LAYER] = src;
-    inputSources_[PICKING_LAYER] = src;
 }
 
 ImageOutport::~ImageOutport() {
@@ -258,7 +258,7 @@ void ImageOutport::invalidate(InvalidationLevel invalidationLevel) {
 
 Image* ImageOutport::getData() {
     Image* out = DataOutport<Image>::getData();
-    updateInputSources();
+    if (inputSource_) out->passOnLayers(inputSource_);
     return out;
 }
 
@@ -282,14 +282,14 @@ void ImageOutport::changeDataDimensions(ResizeEvent* resizeEvent) {
     std::vector<Inport*> inports = getConnectedInports();
     std::vector<uvec2> registeredDimensions;
 
-    //Always save data_ dimension if outport determine output size
+    // Always save data_ dimension if outport determine output size
     if (!handleResizeEvents_) {
         registeredDimensions.push_back(data_->getDimension());
     }
 
     for (size_t i = 0; i < inports.size(); i++) {
         ImageInport* imageInport = dynamic_cast<ImageInport*>(inports[i]);
-        if(imageInport)
+        if (imageInport)
             registeredDimensions.push_back(imageInport->getDimension());
     }
 
@@ -484,15 +484,6 @@ bool ImageOutport::addResizeEventListener(EventListener* el) { return addEventLi
 
 bool ImageOutport::removeResizeEventListener(EventListener* el) { return removeEventListener(el); }
 
-void ImageOutport::setInputSource(LayerType layer, ImageInport* src) { inputSources_[layer] = src; }
-
-void ImageOutport::updateInputSources() {
-    Image* im = static_cast<Image*>(data_);
-
-    for (ImageInSourceMap::iterator it = inputSources_.begin(); it != inputSources_.end(); it++)
-        im->setInputSource(it->first, it->second);
-}
-
 void ImageOutport::setDimension(const uvec2& newDimension) {
     dimensions_ = newDimension;
     // Clear data
@@ -508,6 +499,18 @@ ResizeEvent* ImageOutport::scaleResizeEvent(ImageInport* imageInport, ResizeEven
         uvec2(static_cast<unsigned int>(static_cast<float>(sizeEvent->size().x * scale.x)),
               static_cast<unsigned int>(static_cast<float>(sizeEvent->size().y * scale.y))));
     return sizeEvent;
+}
+
+void ImageOutport::setHandleResizeEvents(bool handleResizeEvents) {
+    handleResizeEvents_ = handleResizeEvents;
+}
+
+bool ImageOutport::isHandlingResizeEvents() const {
+    return handleResizeEvents_;
+}
+
+std::string ImageOutport::getClassIdentifier() const {
+    return "org.inviwo.ImageOutport";
 }
 
 }  // namespace
