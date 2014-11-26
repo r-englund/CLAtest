@@ -46,6 +46,14 @@ ivw_group("Source Files" ${SOURCE_FILES})
 
 
 #--------------------------------------------------------------------
+# Add script files
+set(SCRIPT_FILES
+    #${CMAKE_CURRENT_SOURCE_DIR}/scripts/outputredirector.py
+)
+ivw_group("Script Files" ${SCRIPT_FILES})
+
+
+#--------------------------------------------------------------------
 # Add shaders
 #set(SHADER_FILES
     #${CMAKE_CURRENT_SOURCE_DIR}/glsl/python3processor.frag
@@ -62,7 +70,7 @@ ivw_group("Source Files" ${SOURCE_FILES})
 
 #--------------------------------------------------------------------
 # Create module
-ivw_create_module(${SOURCE_FILES} ${HEADER_FILES} ${SHADER_FILES})
+ivw_create_module(${SOURCE_FILES} ${HEADER_FILES} ${SHADER_FILES} ${SCRIPT_FILES})
 
 #--------------------------------------------------------------------
 # Add shader directory to pack
