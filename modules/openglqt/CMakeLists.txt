@@ -46,7 +46,7 @@ ivw_add_definition(QT_OPENGL_LIB)
 ivw_create_module(${SOURCE_FILES} ${MOC_FILES} ${HEADER_FILES})
 
 # Add Qt OpenGL to package
-if(IVW_PACKAGE_PROJECT AND BUILD_SHARED_LIBS)
+if(IVW_PACKAGE_PROJECT)
     if(WIN32)
         if(DESIRED_QT_VERSION MATCHES 5)
             if(Qt5OpenGL_FOUND)
