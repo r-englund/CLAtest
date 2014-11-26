@@ -45,6 +45,9 @@ public:
     Python3Module();
     virtual ~Python3Module();
 
+    virtual void initialize();
+    virtual void deinitialize();
+
 private:
     PyInviwo* pyInviwo_;
 };
