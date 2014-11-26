@@ -50,7 +50,7 @@ ivw_group("Source Files" ${SOURCE_FILES})
 #--------------------------------------------------------------------
 # Add script files
 set(SCRIPT_FILES
-    #${CMAKE_CURRENT_SOURCE_DIR}/scripts/outputredirector.py
+    ${CMAKE_CURRENT_SOURCE_DIR}/scripts/outputredirector.py
 )
 ivw_group("Script Files" ${SCRIPT_FILES})
 

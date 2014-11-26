@@ -12,7 +12,6 @@ set(HEADER_FILES
     ${CMAKE_CURRENT_SOURCE_DIR}/defaultinterface/pyproperties.h
     ${CMAKE_CURRENT_SOURCE_DIR}/defaultinterface/pyutil.h
     ${CMAKE_CURRENT_SOURCE_DIR}/defaultinterface/pyvolume.h
-    ${CMAKE_CURRENT_SOURCE_DIR}/pyinviwo.h
     ${CMAKE_CURRENT_SOURCE_DIR}/pyinviwoobserver.h
     ${CMAKE_CURRENT_SOURCE_DIR}/pythonexecutionoutputobservable.h
     ${CMAKE_CURRENT_SOURCE_DIR}/pythonincluder.h
@@ -48,7 +47,7 @@ ivw_group("Source Files" ${SOURCE_FILES})
 #--------------------------------------------------------------------
 # Add script files
 set(SCRIPT_FILES
-    #${CMAKE_CURRENT_SOURCE_DIR}/scripts/outputredirector.py
+    ${CMAKE_CURRENT_SOURCE_DIR}/scripts/outputredirector.py
 )
 ivw_group("Script Files" ${SCRIPT_FILES})
 
