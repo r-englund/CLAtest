@@ -173,7 +173,7 @@ for name in args.names:
 	(path, file)  = os.path.split(name)
 	abspath = os.path.abspath(path).split(os.sep)
 
-	if re.compile(r".*/[Ii]nviwo/include/inviwo/.*").match("/".join(abspath)):
+	if re.compile(r".*/include/inviwo/.*").match("/".join(abspath)):
 		hpath = abspath
 		newpath = []
 		incfilepath = []
@@ -194,7 +194,7 @@ for name in args.names:
 		api = "IVW_CORE_API"
 		
 		
-	elif re.compile(r".*/[Ii]nviwo/modules/.*").match("/".join(abspath)):
+	elif re.compile(r".*/modules/.*").match("/".join(abspath)):
 		mod="ERROR"
 		incfilepath=[]
 		for i in range(len(abspath)):
