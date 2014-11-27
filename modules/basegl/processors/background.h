@@ -45,6 +45,33 @@
 
 namespace inviwo {
 
+/** \docpage{Background}
+ * Adds a background to an image. 
+ * ![](background.png)
+ * The following mixing is applied
+ * 
+ *     out.rgb = in.rgb + color.rgb * color.a * (1.0 - in.a)
+ *     out.a = in.a + color.a * (1.0 - in.a)
+ * 
+ * ### Inports
+ *   * __ImageInport__ The input image.
+ *
+ * ### Outports
+ *   * __ImageOutport__ The output image.
+ * 
+ * ### Properties
+ *   * __Style__ The are three different styles to choose from Linear gradient, uniform color,
+ *     or checker board.
+ *   * __Color1__ Used as the uniform color and as color 1 in the gradient and checkerboard.
+ *   * __Color2__ Used as color 2 the gradient and checkerboard.
+ *   * __Checker Board Size__ The size of the rectangles in the checker board.
+ *   * __Switch colors__ Button to switch color 1 and 2.
+ */
+
+/**
+ * \brief Adds a background to an image.
+ *
+ */
 class IVW_MODULE_BASEGL_API Background : public Processor {
 public:
     Background();
