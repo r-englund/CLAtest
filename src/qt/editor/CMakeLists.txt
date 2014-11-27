@@ -8,6 +8,7 @@ set(MOC_FILES
     ${IVW_INCLUDE_DIR}/inviwo/qt/editor/consolewidget.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/editor/networkeditor.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/editor/processorlistwidget.h
+    ${IVW_INCLUDE_DIR}/inviwo/qt/editor/helpwidget.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/editor/resourcemanagerwidget.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/editor/settingswidget.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/editor/linkdialog/linkdialog.h
@@ -21,6 +22,10 @@ set(HEADER_FILES
     ${IVW_INCLUDE_DIR}/inviwo/qt/editor/connectiongraphicsitem.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/editor/editorgrapicsitem.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/editor/inviwoqteditordefine.h
+    ${IVW_INCLUDE_DIR}/inviwo/qt/editor/linkdialog/linkdialogcurvegraphicsitems.h
+    ${IVW_INCLUDE_DIR}/inviwo/qt/editor/linkdialog/linkdialoggraphicsitems.h
+    ${IVW_INCLUDE_DIR}/inviwo/qt/editor/linkdialog/linkdialogpropertygraphicsitems.h
+    ${IVW_INCLUDE_DIR}/inviwo/qt/editor/linkdialog/linkdialogview.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/editor/linkgraphicsitem.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/editor/networkeditorview.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/editor/processorgraphicsitem.h
@@ -28,10 +33,6 @@ set(HEADER_FILES
     ${IVW_INCLUDE_DIR}/inviwo/qt/editor/processorportgraphicsitem.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/editor/processorprogressgraphicsitem.h
     ${IVW_INCLUDE_DIR}/inviwo/qt/editor/processorstatusgraphicsitem.h
-    ${IVW_INCLUDE_DIR}/inviwo/qt/editor/linkdialog/linkdialoggraphicsitems.h
-    ${IVW_INCLUDE_DIR}/inviwo/qt/editor/linkdialog/linkdialogcurvegraphicsitems.h
-    ${IVW_INCLUDE_DIR}/inviwo/qt/editor/linkdialog/linkdialogpropertygraphicsitems.h
-    ${IVW_INCLUDE_DIR}/inviwo/qt/editor/linkdialog/linkdialogview.h
     ${MOC_FILES}
 )
 ivw_group("Header Files" ${HEADER_FILES})
@@ -44,7 +45,14 @@ source_group("MOC Files" FILES ${MOC_FILES})
 set(SOURCE_FILES
     connectiongraphicsitem.cpp
     consolewidget.cpp
+    helpwidget.cpp
     editorgrapicsitem.cpp
+    linkdialog/linkdialog.cpp
+    linkdialog/linkdialogcurvegraphicsitems.cpp
+    linkdialog/linkdialogprocessorgraphicsitems.cpp
+    linkdialog/linkdialogpropertygraphicsitems.cpp
+    linkdialog/linkdialogscene.cpp
+    linkdialog/linkdialogview.cpp
     linkgraphicsitem.cpp
     networkeditor.cpp
     networkeditorview.cpp
@@ -56,12 +64,6 @@ set(SOURCE_FILES
     processorstatusgraphicsitem.cpp
     resourcemanagerwidget.cpp
     settingswidget.cpp
-    linkdialog/linkdialog.cpp
-    linkdialog/linkdialogcurvegraphicsitems.cpp
-    linkdialog/linkdialogprocessorgraphicsitems.cpp
-    linkdialog/linkdialogpropertygraphicsitems.cpp
-    linkdialog/linkdialogscene.cpp
-    linkdialog/linkdialogview.cpp
 )
 ivw_group("Source Files" ${SOURCE_FILES})
 
@@ -75,10 +77,11 @@ ivw_define_qt_definitions()
 add_library(inviwo-qteditor ${SOURCE_FILES} ${MOC_FILES} ${HEADER_FILES})
 
 # Add core dependencies to this list
-ivw_add_dependencies(
-    InviwoQtWidgets
-)
-
+if(DESIRED_QT_VERSION MATCHES 5)
+    ivw_add_dependencies(InviwoQtWidgets Qt5Help)    
+else()
+    ivw_add_dependencies(InviwoQtWidgets)
+endif()
 #--------------------------------------------------------------------
 # Optimize compilation with pre-compilied headers based on inviwo-core
 ivw_compile_optimize_inviwo_core()

@@ -306,6 +306,11 @@ QScrollBar::handle:vertical {
     border-radius: 6px;
 }
 
+QTextBrowser {
+	background-color: #4d4d4d;
+	border-color: #444;
+	border: 0px 
+}
 
 /* QLineEdit styles */
 QLineEdit {
