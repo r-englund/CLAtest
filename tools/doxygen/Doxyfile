@@ -782,7 +782,8 @@ FILE_PATTERNS          = *.c \
                          *.h \
                          *.cl \
                          *.frag \
-                         *.vert
+                         *.vert \
+                         *.glsl
 
 # The RECURSIVE tag can be used to specify whether or not subdirectories should
 # be searched for input files as well.
@@ -1121,7 +1122,8 @@ HTML_EXTRA_STYLESHEET  =
 # files will be copied as-is; there are no commands or markers available.
 # This tag requires that the tag GENERATE_HTML is set to YES.
 
-HTML_EXTRA_FILES       = style/*
+HTML_EXTRA_FILES       = style/tabs.css \
+                         style/doxygen.css
 
 # The HTML_COLORSTYLE_HUE tag controls the color of the HTML output. Doxygen
 # will adjust the colors in the stylesheet and background images according to
@@ -1167,7 +1169,7 @@ HTML_TIMESTAMP         = YES
 # The default value is: NO.
 # This tag requires that the tag GENERATE_HTML is set to YES.
 
-HTML_DYNAMIC_SECTIONS  = NO
+HTML_DYNAMIC_SECTIONS  = YES
 
 # With HTML_INDEX_NUM_ENTRIES one can control the preferred number of entries
 # shown in the various tree structured indices initially; the user can expand
@@ -1309,7 +1311,7 @@ QCH_FILE               =
 # The default value is: org.doxygen.Project.
 # This tag requires that the tag GENERATE_QHP is set to YES.
 
-QHP_NAMESPACE          = se.liu.Inviwo
+QHP_NAMESPACE          = org.inviwo
 
 # The QHP_VIRTUAL_FOLDER tag specifies the namespace to use when generating Qt
 # Help Project output. For more information please see Qt Help Project / Virtual
