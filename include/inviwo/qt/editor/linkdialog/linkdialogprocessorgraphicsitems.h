@@ -63,7 +63,7 @@ class IVW_QTEDITOR_API LinkDialogProcessorGraphicsItem : public QObject, public 
     Q_OBJECT
 public:
     LinkDialogProcessorGraphicsItem();
-    ~LinkDialogProcessorGraphicsItem();
+    virtual ~LinkDialogProcessorGraphicsItem();
 
     void setProcessor(Processor* processor, bool expandProperties=false);
     Processor* getProcessor() {return getGraphicsItemData();}

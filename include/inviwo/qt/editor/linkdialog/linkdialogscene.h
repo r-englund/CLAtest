@@ -59,7 +59,7 @@ class IVW_QTEDITOR_API LinkDialogGraphicsScene : public QGraphicsScene,
     Q_OBJECT
 public:
     LinkDialogGraphicsScene(QWidget* parent);
-    ~LinkDialogGraphicsScene() {}
+    virtual ~LinkDialogGraphicsScene();
 
     template <typename T>
     T* getSceneGraphicsItemAt(const QPointF pos,
