@@ -53,10 +53,7 @@ Image::Image(Layer* colorLayer, ImageType type, bool allowMissingLayers)
 }
 
 Image::Image(const Image& rhs)
-    : DataGroup(rhs)
-    , allowMissingLayers_(rhs.allowMissingLayers_)
-    , imageType_(rhs.imageType_) {
-
+    : DataGroup(rhs), allowMissingLayers_(rhs.allowMissingLayers_), imageType_(rhs.imageType_) {
     for (std::vector<Layer*>::const_iterator it = rhs.colorLayers_.begin();
          it != rhs.colorLayers_.end(); ++it) {
         addColorLayer((*it)->clone());
@@ -85,13 +82,17 @@ Image::Image(const Image& rhs)
     }
 
     for (size_t i = 0; i < rhs.representations_.size(); ++i) {
-        representations_.push_back(rhs.representations_[i]->clone());
-        ImageRepresentation* imRep = dynamic_cast<ImageRepresentation*>(representations_[i]);
+        if (rhs.representations_[i]->isValid()) {
+            representations_.push_back(rhs.representations_[i]->clone());
+            ImageRepresentation* imRep = dynamic_cast<ImageRepresentation*>(representations_[i]);
 
-        if (imRep) {
-            imRep->setOwner(this);
-            imRep->setAsInvalid();
-            imRep->update(true);
+            if (imRep) {
+                imRep->setOwner(this);
+                imRep->setAsInvalid();
+                imRep->update(true);
+
+                break;
+            }
         }
     }
 }
@@ -131,13 +132,18 @@ Image& Image::operator=(const Image& that) {
         }
 
         for (size_t i = 0; i < that.representations_.size(); ++i) {
-            representations_.push_back(that.representations_[i]->clone());
-            ImageRepresentation* imRep = dynamic_cast<ImageRepresentation*>(representations_[i]);
+            if (that.representations_[i]->isValid()) {
+                representations_.push_back(that.representations_[i]->clone());
+                ImageRepresentation* imRep =
+                    dynamic_cast<ImageRepresentation*>(representations_[i]);
 
-            if (imRep) {
-                imRep->setOwner(this);
-                imRep->setAsInvalid();
-                imRep->update(true);
+                if (imRep) {
+                    imRep->setOwner(this);
+                    imRep->setAsInvalid();
+                    imRep->update(true);
+
+                    break;
+                }
             }
         }
     }
