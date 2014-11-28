@@ -46,6 +46,7 @@
 #include <frameobject.h>
 #include <modules/python3/pythoninterface/pymodule.h>
 #include "pyinviwo.h"
+#include "Python.h"
 
 #define BYTE_CODE static_cast<PyObject*>(byteCode_)
 
