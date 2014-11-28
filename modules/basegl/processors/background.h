@@ -74,19 +74,17 @@ namespace inviwo {
  */
 class IVW_MODULE_BASEGL_API Background : public Processor {
 public:
-    Background();
-    ~Background();
-
     InviwoProcessorInfo();
+    
+    Background();
+    virtual ~Background();
 
-    void initialize();
-    void deinitialize();
-
+    virtual void initialize();
+    virtual void deinitialize();
     virtual void initializeResources();
 
 protected:
     virtual void process();
-
     virtual bool isReady()const;
 
 private:
