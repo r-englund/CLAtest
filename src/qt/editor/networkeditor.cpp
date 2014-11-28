@@ -1535,6 +1535,12 @@ void NetworkEditor::onProcessorNetworkDidAddProcessor(Processor* processor) {
 }
 void NetworkEditor::onProcessorNetworkWillRemoveProcessor(Processor* processor) {
     setModified(true);
+    
+    std::vector<Outport*> outports = processor->getOutports();
+    for (std::vector<Outport*>::iterator it = outports.begin(); it != outports.end(); ++it) {
+        removePortInspector(*it);
+    }
+    
     removeProcessorRepresentations(processor);
 }
 

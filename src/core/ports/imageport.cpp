@@ -405,7 +405,7 @@ Image* ImageOutport::getResizedImageData(uvec2 requiredDimensions) {
         //If data_ dimension is zero, we need to update data_ first
         uvec2 zeroDim = uvec2(0);
         if (data_->getDimension() == zeroDim){
-            const ImageRAM* imageRAM = data_->getRepresentation<ImageRAM>();
+            data_->getRepresentation<ImageRAM>();
 
             //Remove any reference to zero sized image and add reference to data_
             if (data_->getDimension() != zeroDim){

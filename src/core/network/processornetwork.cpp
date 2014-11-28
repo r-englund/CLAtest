@@ -125,7 +125,7 @@ void ProcessorNetwork::removeProcessor(Processor* processor) {
     // So a connection in made between a Outport and a MultiInport. But when you ask
     // the Outport for it's connected inports you will NOT get the MultiInport but a
     // SingleInport within the MultiInport. This is not the same port as the connection
-    // was make to, hence will will not find it, and can not delete it!
+    // was made to, hence will will not find it, and can not delete it!
     // TODO when the MultiInport behaves as a standard port, remove this.
     PortConnectionMap connections = portConnections_;
     for (PortConnectionMap::iterator it = connections.begin(); it != connections.end(); ++it) {
