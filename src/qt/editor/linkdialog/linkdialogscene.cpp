@@ -693,4 +693,10 @@ void LinkDialogGraphicsScene::onProcessorNetworkDidRemoveLink(PropertyLink* prop
     removePropertyLinkRepresentation(propertyLink);
 }
 
+void LinkDialogGraphicsScene::onProcessorNetworkWillRemoveProcessor(Processor* processor) {
+    if (processor == srcProcessorGraphicsItem_->getProcessor() || processor == dstProcessorGraphicsItem_->getProcessor()) {
+        emit closeDialog();
+    }
+}
+
 } //namespace
