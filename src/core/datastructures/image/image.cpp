@@ -103,12 +103,6 @@ Image& Image::operator=(const Image& that) {
         imageType_ = that.imageType_;
         deinitialize();
 
-        for (std::vector<Layer*>::iterator it = colorLayers_.begin();
-             it != colorLayers_.end(); ++it) {
-            delete *it;
-        }
-        colorLayers_.clear();
-
         for (std::vector<Layer*>::const_iterator it = that.colorLayers_.begin();
              it != that.colorLayers_.end(); ++it) {
             addColorLayer((*it)->clone());
@@ -116,7 +110,6 @@ Image& Image::operator=(const Image& that) {
 
         const Layer* depth = that.getDepthLayer();
         if (depth) {
-            if (depthLayer_) delete depthLayer_;
             depthLayer_ = depth->clone();
         } else {
             depthLayer_ = NULL;
@@ -124,7 +117,6 @@ Image& Image::operator=(const Image& that) {
 
         const Layer* picking = that.getPickingLayer();
         if (picking) {
-            if (picking) delete picking;
             pickingLayer_ = that.pickingLayer_->clone();
         } else {
             pickingLayer_ = NULL;
@@ -167,7 +159,9 @@ void Image::deinitialize() {
         delete(*it);
     colorLayers_.clear();
     delete depthLayer_;
+    depthLayer_ = NULL;
     delete pickingLayer_;
+    pickingLayer_ = NULL;
 }
 
 void Image::initialize(uvec2 dimensions, const DataFormatBase* format, Layer* colorLayer) {
@@ -344,27 +338,6 @@ ImageType Image::getImageType() const {
 
 const DataFormatBase* Image::getDataFormat() const {
     return getColorLayer()->getDataFormat();
-}
-
-void Image::passOnLayers(const ImageInport* port) {
-    if (port->hasData()) {
-        const Image* img = port->getData();
-        if (!typeContainsDepth(imageType_)) {
-            const Layer* depth = img->getDepthLayer();
-            if (depth) {
-                if(depthLayer_) delete depthLayer_;
-                depthLayer_ = depth->clone();
-            }
-        }
-
-        if (!typeContainsPicking(imageType_)) {
-            const Layer* picking = img->getPickingLayer();
-            if (picking) {
-                if (pickingLayer_) delete pickingLayer_;
-                pickingLayer_ = picking->clone();
-            }
-        }
-    }
 }
 
 std::string Image::getDataInfo() const{

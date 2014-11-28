@@ -71,8 +71,6 @@ Layer::~Layer() {
     // Representations are deleted by Data destructor.
 }
 
-
-
 void Layer::resize(uvec2 dimensions) {
     setDimension(dimensions);
 

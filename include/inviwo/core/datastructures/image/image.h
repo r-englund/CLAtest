@@ -80,7 +80,6 @@ public:
 
     ImageType getImageType() const;
     const DataFormatBase* getDataFormat() const;
-    void passOnLayers(const ImageInport* port);
 
 protected:
     std::vector<Layer*> colorLayers_;   //< owning pointer

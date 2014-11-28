@@ -258,7 +258,9 @@ void ImageOutport::invalidate(InvalidationLevel invalidationLevel) {
 
 Image* ImageOutport::getData() {
     Image* out = DataOutport<Image>::getData();
-    if (inputSource_) out->passOnLayers(inputSource_);
+    if (out && inputSource_ && inputSource_->hasData()) {
+        *out = *(inputSource_->getData());
+    }
     return out;
 }
 
