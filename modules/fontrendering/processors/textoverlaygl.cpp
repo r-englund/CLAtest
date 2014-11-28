@@ -126,8 +126,6 @@ vec2 TextOverlayGL::measure_text(const char* text, float sx, float sy) {
     float maxx = 0.0f;
     float maxy = 0.0f;
 
-    float offset = 0.0f;
-
     char lf = (char)0xA;  // Line Feed Ascii for std::endl, \n
     char tab = (char)0x9;  // Tab Ascii
 
