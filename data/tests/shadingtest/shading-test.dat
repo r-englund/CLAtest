@@ -1,0 +1,8 @@
+Rawfile: shading-test.raw
+Resolution: 100 100 100
+Format: FLOAT32
+DataRange: 0 1
+BasisVector1: 10. 0. 0.
+BasisVector2: 0. 10. 0.
+BasisVector3: 0. 0. 10.
+Offset: -5. -5. -5.
