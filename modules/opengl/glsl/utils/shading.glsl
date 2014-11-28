@@ -44,8 +44,7 @@ vec3 shadeDiffuseCalculation(LIGHT_PARAMETERS light_, vec3 materialDiffuseColor,
 
 vec3 shadeSpecularBlinnPhongCalculation(LIGHT_PARAMETERS light_, vec3 materialSpecularColor, vec3 normal, vec3 toLightDir,
                               vec3 toCameraDir) {
-    vec3 camDir = normalize(toCameraDir);
-    vec3 halfway = camDir + toLightDir;
+    vec3 halfway = toCameraDir + toLightDir;
 
     // check for special case where the light source is exactly opposite
     // to the view direction, i.e. the length of the halfway vector is zero
@@ -67,7 +66,7 @@ vec3 shadeSpecularPhongCalculation(LIGHT_PARAMETERS light_, vec3 materialSpecula
            pow(max(dot(r, toCameraDir), 0.0), light_.specularExponent_ * 0.25);
 }
 
-// All positions and directions are assumed to be in world space!
+// All positions and directions must be in the same space!
 vec3 shadeDiffuse(LIGHT_PARAMETERS light_, vec3 materialDiffuseColor,
                   vec3 position, vec3 normal) {
     return shadeDiffuseCalculation(light_, materialDiffuseColor, normal,

@@ -56,7 +56,7 @@ SimpleLightingProperty::SimpleLightingProperty(std::string identifier, std::stri
     shadingMode_.addOption("specular", "Specular", ShadingMode::Specular);
     shadingMode_.addOption("blinnphong", "Blinn Phong", ShadingMode::BlinnPhong);
     shadingMode_.addOption("phong", "Phong", ShadingMode::Phong);
-    shadingMode_.setSelectedValue(ShadingMode::Phong);
+    shadingMode_.setSelectedValue(ShadingMode::BlinnPhong);
     shadingMode_.setCurrentStateAsDefault();
 
     lightPosition_.setSemantics(PropertySemantics("Spherical"));

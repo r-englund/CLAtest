@@ -42,7 +42,7 @@ in vec4 color_;
 void main() {
     vec4 fragColor = vec4(1.0);
     vec3 toCameraDir_ = camera_.cameraPosition_-worldPosition_.xyz;
-    fragColor.rgb = APPLY_LIGHTING(light_, color_.rgb, color_.rgb, vec3(1.0), worldPosition_.xyz, normalize(normal_), toCameraDir_);
+    fragColor.rgb = APPLY_LIGHTING(light_, color_.rgb, color_.rgb, vec3(1.0), worldPosition_.xyz, normalize(normal_), normalize(toCameraDir_));
 
     FragData0 = fragColor;
 }
