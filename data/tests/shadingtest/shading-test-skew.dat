@@ -1,0 +1,8 @@
+Rawfile: shading-test-skew.raw
+Resolution: 100 100 100
+Format: FLOAT32
+DataRange: 0 1
+BasisVector1: 0. 6. 6.
+BasisVector2: 6. 0. 6.
+BasisVector3: 6. 6. 0.
+Offset: -6. -6. -6.
