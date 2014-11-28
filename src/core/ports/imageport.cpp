@@ -200,6 +200,7 @@ ImageOutport::ImageOutport(std::string identifier, ImageInport* src, ImageType t
     , inputSource_(src) {
 
     setData(new Image(dimensions_, type));
+    inputSource_->onChange(this, &ImageOutport::updateImageFromInputSource);
     dataChanged();
 }
 
@@ -257,11 +258,18 @@ void ImageOutport::invalidate(InvalidationLevel invalidationLevel) {
 }
 
 Image* ImageOutport::getData() {
+    return DataOutport<Image>::getData();
+}
+
+void ImageOutport::updateImageFromInputSource() {
     Image* out = DataOutport<Image>::getData();
     if (out && inputSource_ && inputSource_->hasData()) {
-        *out = *(inputSource_->getData());
+        const Image* in = inputSource_->getData();
+        in->resizeRepresentations(out, getDimension());
+        mapDataInvalid_ = true;
+        dataChanged();
+        //*out = *(inputSource_->getData());
     }
-    return out;
 }
 
 void ImageOutport::dataChanged() {

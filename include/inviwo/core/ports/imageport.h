@@ -146,6 +146,8 @@ protected:
     ResizeEvent* scaleResizeEvent(ImageInport*, ResizeEvent*);
 
 private:
+    void updateImageFromInputSource();
+
     uvec2 dimensions_;
     bool mapDataInvalid_;
     bool handleResizeEvents_;  // True if data should be resized during a resize propagation,
