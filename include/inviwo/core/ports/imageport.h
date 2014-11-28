@@ -45,7 +45,7 @@ namespace inviwo {
 class IVW_CORE_API ImageInport : public DataInport<Image> {
 public:
     ImageInport(std::string identifier, bool outportDeterminesSize = false,
-                PropertyOwner::InvalidationLevel invalidationLevel = PropertyOwner::INVALID_OUTPUT);
+                InvalidationLevel invalidationLevel = INVALID_OUTPUT);
     virtual ~ImageInport();
 
     /** 
@@ -86,18 +86,18 @@ class IVW_CORE_API ImageOutport : public DataOutport<Image>, public EventHandler
 
 public:
     ImageOutport(std::string identifier,
-                 PropertyOwner::InvalidationLevel invalidationLevel = PropertyOwner::INVALID_OUTPUT,
+                 InvalidationLevel invalidationLevel = INVALID_OUTPUT,
                  bool handleResizeEvents = true);
     ImageOutport(std::string identifier, ImageType type,
                  const DataFormatBase* format = DataVec4UINT8::get(),
-                 PropertyOwner::InvalidationLevel invalidationLevel = PropertyOwner::INVALID_OUTPUT,
+                 InvalidationLevel invalidationLevel = INVALID_OUTPUT,
                  bool handleResizeEvents = true);
     ImageOutport(std::string identifier, ImageInport* src, ImageType type = COLOR_DEPTH,
-                 PropertyOwner::InvalidationLevel invalidationLevel = PropertyOwner::INVALID_OUTPUT,
+                 InvalidationLevel invalidationLevel = INVALID_OUTPUT,
                  bool handleResizeEvents = true);
     virtual ~ImageOutport();
 
-    virtual void invalidate(PropertyOwner::InvalidationLevel invalidationLevel);
+    virtual void invalidate(InvalidationLevel invalidationLevel);
 
     Image* getData();
 

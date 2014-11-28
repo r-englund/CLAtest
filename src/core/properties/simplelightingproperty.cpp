@@ -37,10 +37,10 @@ namespace inviwo {
 PropertyClassIdentifier(SimpleLightingProperty, "org.inviwo.SimpleLightingProperty");
 
 SimpleLightingProperty::SimpleLightingProperty(std::string identifier, std::string displayName,
-                                               PropertyOwner::InvalidationLevel invalidationLevel,
+                                               InvalidationLevel invalidationLevel,
                                                PropertySemantics semantics)
     : CompositeProperty(identifier, displayName, invalidationLevel, semantics)
-    , shadingMode_("shadingMode", "Shading", PropertyOwner::INVALID_RESOURCES)
+    , shadingMode_("shadingMode", "Shading", INVALID_RESOURCES)
     , ambientColor_("lightColorAmbient", "Ambient color", vec3(0.0f))
     , diffuseColor_("lightColorDiffuse", "Diffuse color", vec3(1.f))
     , specularColor_("lightColorSpecular", "Specular color", vec3(1.f))

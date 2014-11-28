@@ -87,6 +87,7 @@ public:
     #if IVW_PROFILING
     virtual void onProcessorAboutToProcess(Processor*);
     virtual void onProcessorFinishedProcess(Processor*);
+    void resetTimeMeasurements();
     #endif
 
 protected:

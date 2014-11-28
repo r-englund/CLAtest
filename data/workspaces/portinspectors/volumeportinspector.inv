@@ -1,44 +1,28 @@
 <?xml version="1.0" ?>
 <InviwoTreeData version="1.0">
     <!-- Don't edit the following code -->
-    <ProcessorNetworkVersion content="4" />
+    <ProcessorNetworkVersion content="6" />
     <Processors>
-        <Processor type="org.inviwo.Background" identifier="Background" id="ref1">
+        <Processor type="org.inviwo.Background" identifier="Background" id="ref0">
             <Properties>
-                <Property type="org.inviwo.ButtonProperty" identifier="Switch colors" displayName="switch colors" key="Switch colors">
-                    <usageMode content="0" />
-                    <visible content="1" />
-                    <MetaDataMap />
-                </Property>
-                <Property type="org.inviwo.OptionPropertyInt" identifier="backgroundStyle" displayName="Style" key="backgroundStyle">
-                    <usageMode content="0" />
-                    <visible content="1" />
-                    <MetaDataMap />
+                <Property type="org.inviwo.ButtonProperty" identifier="Switch colors" key="Switch colors" />
+                <Property type="org.inviwo.OptionPropertyInt" identifier="backgroundStyle" key="backgroundStyle">
                     <selectedIdentifier content="checkerBoard" />
                 </Property>
-                <Property type="org.inviwo.IntVec2Property" identifier="checkerBoardSize" displayName="Checker Board Size" key="checkerBoardSize">
-                    <usageMode content="0" />
-                    <visible content="1" />
-                    <MetaDataMap />
+                <Property type="org.inviwo.IntVec2Property" identifier="checkerBoardSize" key="checkerBoardSize">
                     <value x="8" y="8" />
                 </Property>
-                <Property type="org.inviwo.FloatVec4Property" identifier="color1" displayName="Color 1" key="color1">
+                <Property type="org.inviwo.FloatVec4Property" identifier="color1" key="color1">
                     <semantics semantics="Color" />
-                    <usageMode content="0" />
-                    <visible content="1" />
-                    <MetaDataMap />
                     <value x="1" y="1" z="1" w="1" />
                 </Property>
-                <Property type="org.inviwo.FloatVec4Property" identifier="color2" displayName="Color 2" key="color2">
+                <Property type="org.inviwo.FloatVec4Property" identifier="color2" key="color2">
                     <semantics semantics="Color" />
-                    <usageMode content="0" />
-                    <visible content="1" />
-                    <MetaDataMap />
                     <value x="0.80392158" y="0.80392158" z="0.80392158" w="1" />
                 </Property>
             </Properties>
             <MetaDataMap>
-                <MetaDataItem type="ProcessorMetaData" key="ProcessorMetaData">
+                <MetaDataItem type="org.inviwo.ProcessorMetaData" key="ProcessorMetaData">
                     <position x="-600" y="-350" />
                     <visibility content="1" />
                     <selection content="0" />
@@ -47,159 +31,82 @@
         </Processor>
         <Processor type="org.inviwo.CanvasGL" identifier="CanvasGL" id="ref2">
             <Properties>
-                <Property type="org.inviwo.CompositeProperty" identifier="inputSize" displayName="Input Dimension Parameters" key="inputSize">
-                    <usageMode content="0" />
-                    <visible content="1" />
-                    <MetaDataMap />
+                <Property type="org.inviwo.CompositeProperty" identifier="inputSize" key="inputSize">
                     <Properties>
-                        <Property type="org.inviwo.FloatProperty" identifier="aspectRatioScaling" displayName="Aspect Ratio Scaling" key="aspectRatioScaling">
-                            <usageMode content="0" />
+                        <Property type="org.inviwo.FloatProperty" identifier="aspectRatioScaling" key="aspectRatioScaling">
                             <visible content="0" />
-                            <MetaDataMap />
                         </Property>
-                        <Property type="org.inviwo.IntVec2Property" identifier="customInputDimensions" displayName="Input Image Dimensions" key="customInputDimensions">
-                            <usageMode content="0" />
+                        <Property type="org.inviwo.IntVec2Property" identifier="customInputDimensions" key="customInputDimensions">
                             <visible content="0" />
                             <readonly content="1" />
-                            <MetaDataMap />
                         </Property>
-                        <Property type="org.inviwo.IntVec2Property" identifier="dimensions" displayName="Dimensions" key="dimensions">
-                            <usageMode content="0" />
-                            <visible content="1" />
-                            <MetaDataMap />
+                        <Property type="org.inviwo.IntVec2Property" identifier="dimensions" key="dimensions">
                             <value x="128" y="128" />
                         </Property>
-                        <Property type="org.inviwo.BoolProperty" identifier="enableCustomInputDimensions" displayName="Enable Custom Input Dimensions" key="enableCustomInputDimensions">
-                            <usageMode content="0" />
-                            <visible content="1" />
-                            <MetaDataMap />
-                        </Property>
-                        <Property type="org.inviwo.BoolProperty" identifier="keepAspectRatio" displayName="Keep Aspect Ratio" key="keepAspectRatio">
-                            <usageMode content="0" />
+                        <Property type="org.inviwo.BoolProperty" identifier="enableCustomInputDimensions" key="enableCustomInputDimensions" />
+                        <Property type="org.inviwo.BoolProperty" identifier="keepAspectRatio" key="keepAspectRatio">
                             <visible content="0" />
-                            <MetaDataMap />
                         </Property>
                     </Properties>
                 </Property>
-                <Property type="org.inviwo.DirectoryProperty" identifier="layerDir" displayName="Output Directory" key="layerDir">
-                    <usageMode content="0" />
-                    <visible content="1" />
-                    <MetaDataMap />
+                <Property type="org.inviwo.DirectoryProperty" identifier="layerDir" key="layerDir">
                     <directory content="../../images" />
                 </Property>
-                <Property type="org.inviwo.ButtonProperty" identifier="saveLayer" displayName="Save Image Layer" key="saveLayer">
-                    <usageMode content="0" />
-                    <visible content="1" />
-                    <MetaDataMap />
-                </Property>
-                <Property type="org.inviwo.OptionPropertyInt" identifier="visibleLayer" displayName="Visible Layer" key="visibleLayer">
-                    <usageMode content="0" />
-                    <visible content="1" />
-                    <MetaDataMap />
-                </Property>
+                <Property type="org.inviwo.ButtonProperty" identifier="saveLayer" key="saveLayer" />
+                <Property type="org.inviwo.OptionPropertyInt" identifier="visibleLayer" key="visibleLayer" />
             </Properties>
             <MetaDataMap>
-                <MetaDataItem type="ProcessorMetaData" key="ProcessorMetaData">
+                <MetaDataItem type="org.inviwo.ProcessorMetaData" key="ProcessorMetaData">
                     <position x="-600" y="-275" />
                     <visibility content="1" />
                     <selection content="0" />
                 </MetaDataItem>
-                <MetaDataItem type="ProcessorWidgetMetaData" key="ProcessorWidgetMetaData">
-                    <position x="757" y="467" />
+                <MetaDataItem type="org.inviwo.ProcessorWidgetMetaData" key="ProcessorWidgetMetaData">
+                    <position x="529" y="430" />
                     <dimension x="128" y="128" />
                     <visibility content="1" />
                 </MetaDataItem>
             </MetaDataMap>
         </Processor>
-        <Processor type="org.inviwo.VolumeSliceGL" identifier="Volume Slice" id="ref0">
+        <Processor type="org.inviwo.VolumeSliceGL" identifier="Volume Slice" id="ref1">
             <InteractonHandlers>
                 <InteractionHandler type="undefined" />
             </InteractonHandlers>
             <Properties>
-                <Property type="org.inviwo.BoolProperty" identifier="handleEvents" displayName="Handle interaction events" key="handleEvents">
-                    <usageMode content="0" />
-                    <visible content="1" />
-                    <MetaDataMap />
-                </Property>
-                <Property type="org.inviwo.CompositeProperty" identifier="pickGroup" displayName="Position Selection" key="pickGroup">
-                    <usageMode content="0" />
-                    <visible content="1" />
-                    <MetaDataMap />
+                <Property type="org.inviwo.BoolProperty" identifier="handleEvents" key="handleEvents" />
+                <Property type="org.inviwo.CompositeProperty" identifier="pickGroup" key="pickGroup">
                     <Properties>
-                        <Property type="org.inviwo.FloatVec4Property" identifier="indicatorColor" displayName="Indicator Color" key="indicatorColor">
+                        <Property type="org.inviwo.FloatVec4Property" identifier="indicatorColor" key="indicatorColor">
                             <semantics semantics="Color" />
-                            <usageMode content="0" />
-                            <visible content="1" />
-                            <MetaDataMap />
                             <value x="1" y="0.80000001" z="0.098039217" w="0.80000001" />
                         </Property>
-                        <Property type="org.inviwo.BoolProperty" identifier="posPicking" displayName="Enable Picking" key="posPicking">
-                            <usageMode content="0" />
-                            <visible content="1" />
-                            <MetaDataMap />
-                        </Property>
-                        <Property type="org.inviwo.BoolProperty" identifier="showIndicator" displayName="Show Position Indicator" key="showIndicator">
-                            <usageMode content="0" />
-                            <visible content="1" />
+                        <Property type="org.inviwo.BoolProperty" identifier="posPicking" key="posPicking" />
+                        <Property type="org.inviwo.BoolProperty" identifier="showIndicator" key="showIndicator">
                             <readonly content="1" />
-                            <MetaDataMap />
                         </Property>
                     </Properties>
                 </Property>
-                <Property type="org.inviwo.FloatVec3Property" identifier="planeNormal" displayName="Slice Plane Normal" key="planeNormal">
-                    <usageMode content="0" />
-                    <visible content="1" />
+                <Property type="org.inviwo.FloatVec3Property" identifier="planeNormal" key="planeNormal">
                     <readonly content="1" />
-                    <MetaDataMap />
                 </Property>
-                <Property type="org.inviwo.FloatProperty" identifier="planeOffset" displayName="Slice Plane Offset" key="planeOffset">
-                    <usageMode content="0" />
-                    <visible content="1" />
+                <Property type="org.inviwo.FloatProperty" identifier="planeOffset" key="planeOffset">
                     <readonly content="1" />
-                    <MetaDataMap />
                 </Property>
-                <Property type="org.inviwo.OptionPropertyInt" identifier="sliceAxis" displayName="Slice along axis" key="sliceAxis">
-                    <usageMode content="0" />
-                    <visible content="1" />
-                    <MetaDataMap />
-                </Property>
-                <Property type="org.inviwo.IntProperty" identifier="sliceX" displayName="X Volume Position" key="sliceX">
-                    <usageMode content="0" />
-                    <visible content="1" />
-                    <MetaDataMap />
-                </Property>
-                <Property type="org.inviwo.IntProperty" identifier="sliceY" displayName="Y Volume Position" key="sliceY">
-                    <usageMode content="0" />
-                    <visible content="1" />
+                <Property type="org.inviwo.OptionPropertyInt" identifier="sliceAxis" key="sliceAxis" />
+                <Property type="org.inviwo.IntProperty" identifier="sliceX" key="sliceX" />
+                <Property type="org.inviwo.IntProperty" identifier="sliceY" key="sliceY">
                     <readonly content="1" />
-                    <MetaDataMap />
                 </Property>
-                <Property type="org.inviwo.IntProperty" identifier="sliceZ" displayName="Z Volume Position" key="sliceZ">
-                    <usageMode content="0" />
-                    <visible content="1" />
+                <Property type="org.inviwo.IntProperty" identifier="sliceZ" key="sliceZ">
                     <readonly content="1" />
-                    <MetaDataMap />
                 </Property>
-                <Property type="org.inviwo.CompositeProperty" identifier="tfGroup" displayName="Transfer Function" key="tfGroup">
-                    <usageMode content="0" />
-                    <visible content="1" />
-                    <MetaDataMap />
+                <Property type="org.inviwo.CompositeProperty" identifier="tfGroup" key="tfGroup">
                     <Properties>
-                        <Property type="org.inviwo.FloatProperty" identifier="alphaOffset" displayName="Alpha Offset" key="alphaOffset">
-                            <usageMode content="0" />
-                            <visible content="1" />
-                            <MetaDataMap />
-                        </Property>
-                        <Property type="org.inviwo.BoolProperty" identifier="tfMappingEnabled" displayName="Enable Transfer Function" key="tfMappingEnabled">
-                            <usageMode content="0" />
-                            <visible content="1" />
-                            <MetaDataMap />
-                        </Property>
-                        <Property type="org.inviwo.TransferFunctionProperty" identifier="transferFunction" displayName="Transfer function" key="transferFunction">
-                            <usageMode content="0" />
-                            <visible content="1" />
+                        <Property type="org.inviwo.FloatProperty" identifier="alphaOffset" key="alphaOffset" />
+                        <Property type="org.inviwo.BoolProperty" identifier="tfMappingEnabled" key="tfMappingEnabled" />
+                        <Property type="org.inviwo.TransferFunctionProperty" identifier="transferFunction" key="transferFunction">
                             <MetaDataMap>
-                                <MetaDataItem type="PropertyEditorWidgetMetaData" key="PropertyEditorWidgetMetaData">
+                                <MetaDataItem type="org.inviwo.PropertyEditorWidgetMetaData" key="PropertyEditorWidgetMetaData">
                                     <position x="0" y="0" />
                                     <dimension x="256" y="256" />
                                     <visibility content="0" />
@@ -224,36 +131,18 @@
                         </Property>
                     </Properties>
                 </Property>
-                <Property type="org.inviwo.CompositeProperty" identifier="trafoGroup" displayName="Transformations" key="trafoGroup">
-                    <usageMode content="0" />
-                    <visible content="1" />
-                    <MetaDataMap />
+                <Property type="org.inviwo.CompositeProperty" identifier="trafoGroup" key="trafoGroup">
                     <Properties>
-                        <Property type="org.inviwo.BoolProperty" identifier="flipHorizontal" displayName="Flip Horizontal View" key="flipHorizontal">
-                            <usageMode content="0" />
-                            <visible content="1" />
-                            <MetaDataMap />
-                        </Property>
-                        <Property type="org.inviwo.BoolProperty" identifier="flipVertical" displayName="Flip Vertical View" key="flipVertical">
-                            <usageMode content="0" />
-                            <visible content="1" />
-                            <MetaDataMap />
-                        </Property>
-                        <Property type="org.inviwo.OptionPropertyFloat" identifier="rotation" displayName="Rotation (ccw)" key="rotation">
-                            <usageMode content="0" />
-                            <visible content="1" />
-                            <MetaDataMap />
-                        </Property>
-                        <Property type="org.inviwo.OptionPropertyInt" identifier="volumeWrapping" displayName="Volume Texture Wrapping" key="volumeWrapping">
-                            <usageMode content="0" />
-                            <visible content="1" />
-                            <MetaDataMap />
-                        </Property>
+                        <Property type="org.inviwo.BoolProperty" identifier="flipHorizontal" key="flipHorizontal" />
+                        <Property type="org.inviwo.BoolProperty" identifier="flipVertical" key="flipVertical" />
+                        <Property type="org.inviwo.OptionPropertyFloat" identifier="rotation" key="rotation" />
+                        <Property type="org.inviwo.OptionPropertyInt" identifier="volumeWrapping" key="volumeWrapping" />
                     </Properties>
                 </Property>
+                <Property type="org.inviwo.FloatVec3Property" identifier="worldPosition_" key="worldPosition_" />
             </Properties>
             <MetaDataMap>
-                <MetaDataItem type="ProcessorMetaData" key="ProcessorMetaData">
+                <MetaDataItem type="org.inviwo.ProcessorMetaData" key="ProcessorMetaData">
                     <position x="-600" y="-425" />
                     <visibility content="1" />
                     <selection content="0" />
@@ -263,19 +152,19 @@
     </Processors>
     <Connections>
         <Connection>
-            <OutPort identifier="image.outport">
-                <Processor type="org.inviwo.VolumeSliceGL" identifier="Volume Slice" reference="ref0" />
-            </OutPort>
-            <InPort identifier="inport">
-                <Processor type="org.inviwo.Background" identifier="Background" reference="ref1" />
-            </InPort>
-        </Connection>
-        <Connection>
             <OutPort identifier="outport">
-                <Processor type="org.inviwo.Background" identifier="Background" reference="ref1" />
+                <Processor type="org.inviwo.Background" identifier="Background" reference="ref0" />
             </OutPort>
             <InPort identifier="inport">
                 <Processor type="org.inviwo.CanvasGL" identifier="CanvasGL" reference="ref2" />
+            </InPort>
+        </Connection>
+        <Connection>
+            <OutPort identifier="image.outport">
+                <Processor type="org.inviwo.VolumeSliceGL" identifier="Volume Slice" reference="ref1" />
+            </OutPort>
+            <InPort identifier="inport">
+                <Processor type="org.inviwo.Background" identifier="Background" reference="ref0" />
             </InPort>
         </Connection>
     </Connections>

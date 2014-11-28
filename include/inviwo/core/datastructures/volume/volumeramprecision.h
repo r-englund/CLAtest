@@ -51,7 +51,8 @@ public:
     virtual ~VolumeRAMPrecision();
 
     virtual void performOperation(DataOperation* dop) const;
-    using VolumeRAM::initialize;
+
+    virtual void initialize();
     virtual void initialize(void*);
     virtual void deinitialize();
 
@@ -110,7 +111,7 @@ private:
 template<typename T>
 VolumeRAMPrecision<T>::VolumeRAMPrecision(uvec3 dimensions, const DataFormatBase* format) 
     : VolumeRAM(dimensions, format) {
-    initialize(0);
+    initialize();
 }
 
 template<typename T>
@@ -122,7 +123,7 @@ VolumeRAMPrecision<T>::VolumeRAMPrecision(T* data, uvec3 dimensions, const DataF
 template <typename T>
 VolumeRAMPrecision<T>::VolumeRAMPrecision(const VolumeRAMPrecision<T>& rhs)
     : VolumeRAM(rhs) {
-    initialize(0);
+    initialize();
     memcpy(data_, rhs.getData(), dimensions_.x * dimensions_.y * dimensions_.z * sizeof(T));
 }
 
@@ -132,7 +133,7 @@ VolumeRAMPrecision<T>& VolumeRAMPrecision<T>::operator=(const VolumeRAMPrecision
         VolumeRAM::operator=(that);
         delete[] data_;
         dimensions_ = that.getDimension();
-        initialize(0);
+        initialize();
         memcpy(data_, that.getData(), dimensions_.x*dimensions_.y*dimensions_.z*sizeof(T));
     }
     return *this;
@@ -144,13 +145,16 @@ VolumeRAMPrecision<T>::~VolumeRAMPrecision() {
 };
 
 template<typename T>
+void VolumeRAMPrecision<T>::initialize() {
+    data_ = new T[dimensions_.x*dimensions_.y*dimensions_.z];
+}
+
+template<typename T>
 void VolumeRAMPrecision<T>::initialize(void* data) {
     if (!data)
         data_ = new T[dimensions_.x*dimensions_.y*dimensions_.z];
     else
         data_ = data;
-
-    VolumeRAM::initialize();
 }
 
 template<typename T>

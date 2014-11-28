@@ -190,7 +190,7 @@ void KernelManager::fileChanged(std::string fileName) {
             //            }
             //        }
             //    }
-            //    //processors[i]->invalidate(PropertyOwner::INVALID_RESOURCES);
+            //    //processors[i]->invalidate(INVALID_RESOURCES);
             //}
         } catch (cl::Error& err) {
             LogError(fileName << " Failed to create kernels, error:" << err.what() << "(" << err.err() << "), " << errorCodeToString(

@@ -801,6 +801,9 @@ void NetworkEditor::contextMenuEvent(QGraphicsSceneContextMenuEvent* e) {
 
     SignalMapperObject moRename;
     SignalMapperObject moDelete;
+#if IVW_PROFILING
+    SignalMapperObject moResetTM;
+#endif
     SignalMapperObject moShowHide;
 
     SignalMapperObject moShowInspector;
@@ -855,6 +858,14 @@ void NetworkEditor::contextMenuEvent(QGraphicsSceneContextMenuEvent* e) {
             connect(deleteAction, SIGNAL(triggered()), &moDelete, SLOT(tiggerAction()));
             connect(&moDelete, SIGNAL(triggered(EditorGraphicsItem*)), this,
                     SLOT(contextMenuDeleteProcessor(EditorGraphicsItem*)));
+
+#if IVW_PROFILING
+            QAction* resetTimeMeasurementsAction = menu.addAction(tr("Reset Time Measurements"));
+            moResetTM.item_ = processor;
+            connect(resetTimeMeasurementsAction, SIGNAL(triggered()), &moResetTM, SLOT(tiggerAction()));
+            connect(&moResetTM, SIGNAL(triggered(EditorGraphicsItem*)), this,
+                SLOT(contextMenuResetTimeMeasurements(EditorGraphicsItem*)));
+#endif
 
             if (processor->getProcessor()->hasProcessorWidget()) {
                 QAction* showAction = menu.addAction(tr("Show Widget"));
@@ -1190,7 +1201,7 @@ void NetworkEditor::clearNetwork() {
     for (size_t p = 0; p < processors.size(); p++) {
         std::vector<Inport*> inports = processors[p]->getInports();
         for (size_t i = 0; i < inports.size(); i++)
-            inports[i]->invalidate(PropertyOwner::INVALID_OUTPUT);
+            inports[i]->invalidate(INVALID_OUTPUT);
     }
 
     ResourceManager::getPtr()->clearAllResources();
@@ -1383,6 +1394,16 @@ void NetworkEditor::updateLeds() {
     }
 }
 
+void NetworkEditor::resetAllTimeMeasurements() {
+#if IVW_PROFILING
+    // Update the status items
+    for (ProcessorMap::iterator it = processorGraphicsItems_.begin();
+        it != processorGraphicsItems_.end(); it++) {
+            it->second->resetTimeMeasurements();
+    }
+#endif
+}
+
 // Manage various tooltips.
 void NetworkEditor::helpEvent(QGraphicsSceneHelpEvent* e) {
     QList<QGraphicsItem*> graphicsItems = items(e->scenePos());
@@ -1457,6 +1478,7 @@ void NetworkEditor::contextMenuDeleteProcessor(EditorGraphicsItem* item) {
         InviwoApplication::getPtr()->getProcessorNetwork()->removeAndDeleteProcessor(processor);
     }
 }
+
 void NetworkEditor::contextMenuShowHideWidget(EditorGraphicsItem* item) {
     ProcessorGraphicsItem* p = qgraphicsitem_cast<ProcessorGraphicsItem*>(item);
     if (p) {
@@ -1487,6 +1509,13 @@ void NetworkEditor::contextMenuEditLink(EditorGraphicsItem* item) {
         showLinkDialog(l->getSrcProcessorGraphicsItem()->getProcessor(),
                        l->getDestProcessorGraphicsItem()->getProcessor());
     }
+}
+
+void NetworkEditor::contextMenuResetTimeMeasurements(EditorGraphicsItem* item) {
+#if IVW_PROFILING
+    ProcessorGraphicsItem* p = qgraphicsitem_cast<ProcessorGraphicsItem*>(item);
+    p->resetTimeMeasurements();
+#endif
 }
 
 void NetworkEditor::onProcessorNetworkDidAddProcessor(Processor* processor) {

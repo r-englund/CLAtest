@@ -34,7 +34,6 @@
 #define IVW_VOLUMERAMOPERATIONEXECUTER_H
 
 #include <inviwo/core/datastructures/dataoperation.h>
-#include <inviwo/core/datastructures/volume/volumeramcharacteristics.h>
 #include <inviwo/core/datastructures/volume/volumeramhistogram.h>
 #include <inviwo/core/datastructures/volume/volumeramslice.h>
 #include <inviwo/core/datastructures/volume/volumeramsubset.h>
@@ -52,20 +51,6 @@ void executeOperationOnVolumeRAMPrecision(DataOperation* dop) {
         return;
     }
 
-    VolumeRAMCharacteristics* volCharacteristicsDop = dynamic_cast<VolumeRAMCharacteristics*>(dop);
-
-    if (volCharacteristicsDop) {
-        volCharacteristicsDop->evaluate<T, B>();
-        return;
-    }
-
-    VolumeRAMSlice* volSliceDop = dynamic_cast<VolumeRAMSlice*>(dop);
-
-    if (volSliceDop) {
-        volSliceDop->evaluate<T, B>();
-        return;
-    }
-
     VolumeRAMSubSet* volSubSetDop = dynamic_cast<VolumeRAMSubSet*>(dop);
 
     if (volSubSetDop) {
@@ -77,6 +62,13 @@ void executeOperationOnVolumeRAMPrecision(DataOperation* dop) {
 
     if (volSubSampleDop) {
         volSubSampleDop->evaluate<T, B>();
+        return;
+    }
+
+    VolumeRAMSlice* volSliceDop = dynamic_cast<VolumeRAMSlice*>(dop);
+
+    if (volSliceDop) {
+        volSliceDop->evaluate<T, B>();
         return;
     }
 };

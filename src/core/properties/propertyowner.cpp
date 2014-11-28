@@ -42,7 +42,7 @@ namespace inviwo {
 
 PropertyOwner::PropertyOwner()
     : PropertyOwnerObservable()
-    , invalidationLevel_(PropertyOwner::VALID) {
+    , invalidationLevel_(VALID) {
 }
 
 PropertyOwner::PropertyOwner(const PropertyOwner& rhs)
@@ -135,10 +135,10 @@ void PropertyOwner::setValid() {
     for (size_t i=0; i<properties_.size(); i++)
         properties_[i]->setPropertyModified(false);
 
-    invalidationLevel_ = PropertyOwner::VALID;
+    invalidationLevel_ = VALID;
 }
 
-void PropertyOwner::invalidate(PropertyOwner::InvalidationLevel invalidationLevel,
+void PropertyOwner::invalidate(InvalidationLevel invalidationLevel,
                                Property* modifiedProperty) {
     IVW_UNUSED_PARAM(modifiedProperty);
     invalidationLevel_ = std::max(invalidationLevel_, invalidationLevel);

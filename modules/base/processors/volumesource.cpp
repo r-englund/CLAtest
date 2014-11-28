@@ -56,9 +56,9 @@ VolumeSource::VolumeSource()
     , information_("Information", "Data information")
     , volumeSequence_("Sequence", "Sequence")
     , dataRange_("dataRange", "Data range", 0., 255.0, -DataFLOAT64::max(), DataFLOAT64::max(), 0.0,
-                 0.0, PropertyOwner::INVALID_OUTPUT, PropertySemantics("Text"))
+                 0.0, INVALID_OUTPUT, PropertySemantics("Text"))
     , valueRange_("valueRange", "Value range", 0., 255.0, -DataFLOAT64::max(), DataFLOAT64::max(),
-                  0.0, 0.0, PropertyOwner::INVALID_OUTPUT, PropertySemantics("Text"))
+                  0.0, 0.0, INVALID_OUTPUT, PropertySemantics("Text"))
     , valueUnit_("valueUnit", "Value unit", "arb. unit.")
     , overRideDefaults_("override", "Override", false)
     , a_("a", "A", vec3(1.0f, 0.0f, 0.0f), vec3(-10.0f), vec3(10.0f))
@@ -74,9 +74,9 @@ VolumeSource::VolumeSource()
     , dimensions_("dimensions", "Dimensions")
     , format_("format", "Format", "")
 
-    , selectedSequenceIndex_("selectedSequenceIndex", "Sequence Index", 1, 1, 1, 1, PropertyOwner::VALID)
+    , selectedSequenceIndex_("selectedSequenceIndex", "Sequence Index", 1, 1, 1, 1, VALID)
     , playSequence_("playSequence", "Play Sequence", false)
-    , volumesPerSecond_("volumesPerSecond", "Frame rate", 30, 1, 60, 1, PropertyOwner::VALID)
+    , volumesPerSecond_("volumesPerSecond", "Frame rate", 30, 1, 60, 1, VALID)
 
     , sequenceTimer_(NULL) {
 

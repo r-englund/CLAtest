@@ -41,11 +41,12 @@
 namespace inviwo {
 
 class ImageRepresentation;
+class ImageInport;
 
 class IVW_CORE_API Image : public DataGroup {
 public:
-    Image(uvec2 dimensions = uvec2(32,32), ImageType type = COLOR_DEPTH, const DataFormatBase* format = DataVec4UINT8::get(),
-          bool allowMissingLayers = false);
+    Image(uvec2 dimensions = uvec2(32, 32), ImageType type = COLOR_DEPTH,
+          const DataFormatBase* format = DataVec4UINT8::get(), bool allowMissingLayers = false);
     Image(Layer* colorLayer, ImageType type = COLOR_DEPTH, bool allowMissingLayers = false);
     Image(const Image&);
     Image& operator=(const Image& that);
@@ -54,15 +55,11 @@ public:
     virtual std::string getDataInfo() const;
 
     void deinitialize();
-
     void initialize(uvec2 dimensions, const DataFormatBase*, Layer* colorLayer = NULL);
 
     uvec2 getDimension() const;
 
     size_t addColorLayer(Layer*);
-
-    const std::vector<const Layer*>* getAllLayers() const;
-    const std::vector<Layer*>* getAllLayers();
 
     const Layer* getLayer(LayerType, size_t idx = 0) const;
     Layer* getLayer(LayerType, size_t idx = 0);
@@ -83,22 +80,17 @@ public:
 
     ImageType getImageType() const;
     const DataFormatBase* getDataFormat() const;
-    void setInputSource(LayerType, const Image*);
+    void setInputSource(LayerType, const ImageInport*);
 
 protected:
-    void addLayer(Layer*);
-
-    std::vector<Layer*> colorLayers_;
-    Layer* depthLayer_;
-    Layer* pickingLayer_;
-
-    std::vector<Layer*> allLayers_;
-    std::vector<const Layer*> allLayersConst_;
+    std::vector<Layer*> colorLayers_;   //< owning pointer
+    Layer* depthLayer_;                 //< owning pointer      
+    Layer* pickingLayer_;               //< owning pointer
 
 private:
     bool allowMissingLayers_;
     ImageType imageType_;
-    typedef std::map<LayerType, const Image*> ImageSourceMap;
+    typedef std::map<LayerType, const ImageInport*> ImageSourceMap;
     ImageSourceMap inputSources_;
 };
 

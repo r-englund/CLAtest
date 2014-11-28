@@ -53,7 +53,7 @@ PointLightSourceProcessor::PointLightSourceProcessor()
     , lightDiffuse_("lightDiffuse", "Color", vec4(1.0f))
     , lightPosition_("lightPosition", "Light Source Position", vec3(1.f, 0.65f, 0.65f), vec3(-1.f), vec3(1.f))
     , lightEnabled_("lightEnabled", "Enabled", true)
-    , camera_("camera", "Camera", vec3(0.0f, 0.0f, -2.0f), vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 1.0f, 0.0f), NULL, PropertyOwner::VALID) 
+    , camera_("camera", "Camera", vec3(0.0f, 0.0f, -2.0f), vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 1.0f, 0.0f), NULL, VALID) 
     , handleInteractionEvents_("handleEvents", "Handle interaction events", false)
     {
     addPort(outport_);

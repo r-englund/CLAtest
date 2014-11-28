@@ -351,6 +351,13 @@ void ProcessorGraphicsItem::onProcessorFinishedProcess(Processor*) {
     maxEvalTime_ = maxEvalTime_ < evalTime_ ? evalTime_ : maxEvalTime_;
     totEvalTime_ += evalTime_;
 }
+void ProcessorGraphicsItem::resetTimeMeasurements(){
+    processCount_ = 0;
+    countLabel_->setText(QString("0"));
+    maxEvalTime_ = 0.0;
+    evalTime_ = 0.0;
+    totEvalTime_ = 0.0;
+}
 #endif
 
 ProcessorStatusGraphicsItem* ProcessorGraphicsItem::getStatusItem() const {
@@ -381,7 +388,7 @@ void ProcessorGraphicsItem::showToolTip(QGraphicsSceneHelpEvent* e) {
          .arg(processor_->getTags().getString().c_str())
          .arg(processCount_)
          .arg(evalTime_)
-         .arg(totEvalTime_ / static_cast<double>(processCount_))
+         .arg(totEvalTime_ / std::max(static_cast<double>(processCount_), 1.0))
          .arg(maxEvalTime_)
          );    
 #else

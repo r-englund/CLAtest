@@ -63,7 +63,7 @@ public:
     InviwoPropertyInfo();
 
     SimpleLightingProperty(std::string identifier, std::string displayName,
-                           PropertyOwner::InvalidationLevel = PropertyOwner::INVALID_OUTPUT,
+                           InvalidationLevel = INVALID_OUTPUT,
                            PropertySemantics semantics = PropertySemantics::Default);
     
     SimpleLightingProperty(const SimpleLightingProperty& rhs);

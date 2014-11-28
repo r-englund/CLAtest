@@ -205,7 +205,6 @@ PyObject* py_getPropertyValue(PyObject* /*self*/, PyObject* args) {
         return 0;
 
     std::string path = std::string(PyValueParser::parse<std::string>(PyTuple_GetItem(args, 0)));
-    PyObject* parameter = PyTuple_GetItem(args, 1);
 
     Property* theProperty = InviwoApplication::getPtr()->getProcessorNetwork()->getProperty(splitString(path, '.'));
 
@@ -228,7 +227,6 @@ PyObject* py_getPropertyMaxValue(PyObject* /*self*/, PyObject* args) {
         return 0;
 
     std::string path = std::string(PyValueParser::parse<std::string>(PyTuple_GetItem(args, 0)));
-    PyObject* parameter = PyTuple_GetItem(args, 1);
 
     Property* theProperty = InviwoApplication::getPtr()->getProcessorNetwork()->getProperty(splitString(path, '.'));
 
@@ -262,7 +260,6 @@ PyObject* py_getPropertyMinValue(PyObject* /*self*/, PyObject* args) {
         return 0;
 
     std::string path = std::string(PyValueParser::parse<std::string>(PyTuple_GetItem(args, 0)));
-    PyObject* parameter = PyTuple_GetItem(args, 1);
 
     Property* theProperty = InviwoApplication::getPtr()->getProcessorNetwork()->getProperty(splitString(path, '.'));
 

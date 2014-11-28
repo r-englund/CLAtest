@@ -83,7 +83,7 @@ int main(int argc, char** argv) {
     int i=0;
 
     for (std::vector<Processor*>::iterator it = processors.begin(); it!=processors.end(); ++it) {
-        (*it)->invalidate(PropertyOwner::INVALID_RESOURCES);
+        (*it)->invalidate(INVALID_RESOURCES);
         CanvasProcessor* canvasProcessor = dynamic_cast<CanvasProcessor*>((*it));
 
         if (canvasProcessor) {

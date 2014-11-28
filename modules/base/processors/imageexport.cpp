@@ -50,7 +50,7 @@ ImageExport::ImageExport()
     , imagePort_("image")
     , imageFile_("imageFileName", "Image file name",
                   InviwoApplication::getPtr()->getPath(InviwoApplication::PATH_IMAGES,"newimage.png") , "image")
-    , exportImageButton_("snapshot", "Export Image", PropertyOwner::VALID)
+    , exportImageButton_("snapshot", "Export Image", VALID)
     , overwrite_("overwrite", "Overwrite", false)
     , exportQueued_(false){
     std::vector<FileExtension> ext = DataWriterFactory::getPtr()->getExtensionsForType<Image>();

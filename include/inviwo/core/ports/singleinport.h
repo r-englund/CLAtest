@@ -51,14 +51,14 @@ class IVW_CORE_API SingleInport : public Inport {
 public:
     /**
      * @param invalidationLevel Defines the level of invalidation used upon connection/deconnection.
-     * @see Processor::addPort(), PropertyOwner::InvalidationLevel
+     * @see Processor::addPort(), InvalidationLevel
      */
     SingleInport(std::string identifier,
-                 PropertyOwner::InvalidationLevel invalidationLevel=PropertyOwner::INVALID_OUTPUT);
+                 InvalidationLevel invalidationLevel=INVALID_OUTPUT);
     virtual ~SingleInport();
 
-    virtual PropertyOwner::InvalidationLevel getInvalidationLevel() const;
-    virtual void setInvalidationLevel(PropertyOwner::InvalidationLevel invalidationLevel);
+    virtual InvalidationLevel getInvalidationLevel() const;
+    virtual void setInvalidationLevel(InvalidationLevel invalidationLevel);
 
     virtual void connectTo(Outport* outport);
     virtual void disconnectFrom(Outport* outport);
@@ -69,7 +69,7 @@ public:
     Outport* getConnectedOutport() const { return connectedOutport_; }
     std::vector<Outport*> getConnectedOutports() const { return std::vector<Outport*>(1, connectedOutport_); }
 
-    virtual void invalidate(PropertyOwner::InvalidationLevel invalidationLevel);
+    virtual void invalidate(InvalidationLevel invalidationLevel);
 
     template <typename T>
     void onInvalid(T* o, void (T::*m)(), bool add = true) {
@@ -81,7 +81,7 @@ public:
 
 protected:
     Outport* connectedOutport_;
-    PropertyOwner::InvalidationLevel invalidationLevel_;
+    InvalidationLevel invalidationLevel_;
 
     CallBackList onInvalidCallback_;
 };

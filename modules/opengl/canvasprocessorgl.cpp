@@ -64,7 +64,7 @@ void CanvasProcessorGL::doIfNotReady() {
     static_cast<CanvasGL*>(getCanvas())->render(NULL, static_cast<LayerType>(visibleLayer_.get()));
 }
 
-void CanvasProcessorGL::invalidate(PropertyOwner::InvalidationLevel invalidationLevel,
+void CanvasProcessorGL::invalidate(InvalidationLevel invalidationLevel,
                                    Property* modifiedProperty) {
     CanvasProcessor::invalidate(invalidationLevel, modifiedProperty);
 }

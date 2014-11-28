@@ -36,7 +36,7 @@
 
 namespace inviwo {
 
-Outport::Outport(std::string identifier, PropertyOwner::InvalidationLevel invalidationLevel)
+Outport::Outport(std::string identifier, InvalidationLevel invalidationLevel)
     : Port(identifier), invalidationLevel_(invalidationLevel)
 {}
 
@@ -50,17 +50,17 @@ bool Outport::isConnectedTo(Inport* port) const {
     return !(std::find(connectedInports_.begin(),connectedInports_.end(),port)==connectedInports_.end());
 }
 
-void Outport::invalidate(PropertyOwner::InvalidationLevel invalidationLevel) {
+void Outport::invalidate(InvalidationLevel invalidationLevel) {
     invalidationLevel_ = invalidationLevel;
     invalidateConnectedInports(invalidationLevel_);
 }
 
-void Outport::invalidateConnectedInports(PropertyOwner::InvalidationLevel invalidationLevel){
+void Outport::invalidateConnectedInports(InvalidationLevel invalidationLevel){
     for (size_t i=0; i<connectedInports_.size(); i++)
         connectedInports_[i]->invalidate(invalidationLevel);
 }
 
-void Outport::setInvalidationLevel(PropertyOwner::InvalidationLevel invalidationLevel){
+void Outport::setInvalidationLevel(InvalidationLevel invalidationLevel){
     invalidationLevel_ = invalidationLevel;
     for (size_t i=0; i<connectedInports_.size(); i++)
         connectedInports_[i]->setInvalidationLevel(invalidationLevel);

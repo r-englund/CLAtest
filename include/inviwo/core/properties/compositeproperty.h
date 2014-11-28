@@ -46,7 +46,7 @@ public:
     InviwoPropertyInfo();
 
     CompositeProperty(std::string identifier, std::string displayName,
-                      PropertyOwner::InvalidationLevel invalidationLevel=PropertyOwner::INVALID_OUTPUT,
+                      InvalidationLevel invalidationLevel=INVALID_OUTPUT,
                       PropertySemantics semantics = PropertySemantics::Default);
     
     CompositeProperty(const CompositeProperty& rhs);
@@ -64,7 +64,7 @@ public:
     virtual void setPropertyModified(bool modified);
     virtual bool isPropertyModified() const;
 
-    virtual void invalidate(PropertyOwner::InvalidationLevel invalidationLevel,
+    virtual void invalidate(InvalidationLevel invalidationLevel,
                             Property* modifiedProperty = 0);
 
     virtual void setCurrentStateAsDefault();

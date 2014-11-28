@@ -41,7 +41,7 @@ uvec3 ImageInport::colorCode = uvec3(90, 127, 183);
 
 // Image Inport
 ImageInport::ImageInport(std::string identifier, bool outportDeterminesSize,
-                         PropertyOwner::InvalidationLevel invalidationLevel)
+                         InvalidationLevel invalidationLevel)
     : DataInport<Image>(identifier, invalidationLevel)
     , dimensions_(uvec2(256, 256))
     , resizeScale_(vec2(1.f, 1.f))
@@ -71,7 +71,7 @@ void ImageInport::connectTo(Outport* outport) {
         }
     }
 
-    invalidate(PropertyOwner::INVALID_OUTPUT);
+    invalidate(INVALID_OUTPUT);
 }
 
 void ImageInport::changeDataDimensions(ResizeEvent* resizeEvent) {
@@ -112,7 +112,7 @@ void ImageInport::changeDataDimensions(ResizeEvent* resizeEvent) {
     resizeEvent->setSize(dimensions_);
     propagateResizeToPredecessor(resizeEvent);
     
-    invalidate(PropertyOwner::INVALID_OUTPUT);
+    invalidate(INVALID_OUTPUT);
 }
 
 void ImageInport::propagateResizeToPredecessor(ResizeEvent* resizeEvent) {
@@ -166,7 +166,7 @@ std::string ImageInport::getContentInfo() const {
 ////////////////////////////// ImageOutport ////////////////////////////////////////////
 
 ImageOutport::ImageOutport(std::string identifier,
-                           PropertyOwner::InvalidationLevel invalidationLevel,
+                           InvalidationLevel invalidationLevel,
                            bool handleResizeEvents)
     : DataOutport<Image>(identifier, invalidationLevel)
     , dimensions_(uvec2(256, 256))
@@ -177,7 +177,7 @@ ImageOutport::ImageOutport(std::string identifier,
 }
 
 ImageOutport::ImageOutport(std::string identifier, ImageType type, const DataFormatBase* format,
-                           PropertyOwner::InvalidationLevel invalidationLevel,
+                           InvalidationLevel invalidationLevel,
                            bool handleResizeEvents)
     : DataOutport<Image>(identifier, invalidationLevel)
     , dimensions_(uvec2(256, 256))
@@ -188,7 +188,7 @@ ImageOutport::ImageOutport(std::string identifier, ImageType type, const DataFor
 }
 
 ImageOutport::ImageOutport(std::string identifier, ImageInport* src, ImageType type,
-                           PropertyOwner::InvalidationLevel invalidationLevel,
+                           InvalidationLevel invalidationLevel,
                            bool handleResizeEvents)
     : DataOutport<Image>(identifier, invalidationLevel)
     , EventHandler()
@@ -247,11 +247,11 @@ void ImageOutport::propagateResizeEventToPredecessor(ResizeEvent* resizeEvent) {
     }
 
     if (propagationEnded) {
-        getProcessor()->invalidate(PropertyOwner::INVALID_OUTPUT);
+        getProcessor()->invalidate(INVALID_OUTPUT);
     }
 }
 
-void ImageOutport::invalidate(PropertyOwner::InvalidationLevel invalidationLevel) {
+void ImageOutport::invalidate(InvalidationLevel invalidationLevel) {
     mapDataInvalid_ = true;
     Outport::invalidate(invalidationLevel);
 }
@@ -445,7 +445,7 @@ Image* ImageOutport::getResizedImageData(uvec2 requiredDimensions) {
 
     // Image* resultImage = new Image(requiredDimensions, data_->getImageType(),
     // data_->getDataFormat());
-    Image* resultImage = dynamic_cast<Image*>(data_->clone());
+    Image* resultImage = data_->clone();
     resultImage->resize(requiredDimensions);
     std::string dimensionString = glm::to_string(requiredDimensions);
     imageDataMap_.insert(std::make_pair(dimensionString, resultImage));
@@ -490,7 +490,7 @@ void ImageOutport::updateInputSources() {
     Image* im = static_cast<Image*>(data_);
 
     for (ImageInSourceMap::iterator it = inputSources_.begin(); it != inputSources_.end(); it++)
-        im->setInputSource(it->first, it->second->getData());
+        im->setInputSource(it->first, it->second);
 }
 
 void ImageOutport::setDimension(const uvec2& newDimension) {

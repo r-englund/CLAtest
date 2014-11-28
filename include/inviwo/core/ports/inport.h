@@ -44,11 +44,8 @@ class Outport;
 
 /**
  * \class Inport
- *
  * \brief An Inport can be connected to an Outport.
- *
  * The approved connection can be determined by the canConnectTo function.
- * 
  */
 class IVW_CORE_API Inport : public Port {
 
@@ -63,8 +60,8 @@ public:
     virtual bool isConnected() const;
     virtual bool isReady() const;
 
-    virtual void invalidate(PropertyOwner::InvalidationLevel invalidationLevel);
-    virtual void setInvalidationLevel(PropertyOwner::InvalidationLevel invalidationLevel) {};
+    virtual void invalidate(InvalidationLevel invalidationLevel);
+    virtual void setInvalidationLevel(InvalidationLevel invalidationLevel) {};
 
     virtual bool canConnectTo(Port* port) const { return false; }
     virtual void connectTo(Outport* outport) {};

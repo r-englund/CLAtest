@@ -86,9 +86,9 @@ protected:
     virtual void update(bool editable);
 
 private:
-    std::vector<LayerGL*> colorLayersGL_;
-    LayerGL* depthLayerGL_;
-    LayerGL* pickingLayerGL_;
+    std::vector<LayerGL*> colorLayersGL_; //< non-owning reference
+    LayerGL* depthLayerGL_;               //< non-owning reference  
+    LayerGL* pickingLayerGL_;             //< non-owning reference
 
     mutable BufferObjectArray* rectArray_;
     FrameBufferObject* frameBufferObject_;

@@ -101,9 +101,9 @@ public:
     virtual bool isConnected() const = 0;
     virtual bool isReady() const = 0;
 
-    virtual void invalidate(PropertyOwner::InvalidationLevel invalidationLevel);
-    virtual PropertyOwner::InvalidationLevel getInvalidationLevel() const { return PropertyOwner::INVALID_OUTPUT; }
-    virtual void setInvalidationLevel(PropertyOwner::InvalidationLevel invalidationLevel) = 0;
+    virtual void invalidate(InvalidationLevel invalidationLevel);
+    virtual InvalidationLevel getInvalidationLevel() const { return INVALID_OUTPUT; }
+    virtual void setInvalidationLevel(InvalidationLevel invalidationLevel) = 0;
 
     virtual void serialize(IvwSerializer& s) const;
     virtual void deserialize(IvwDeserializer& d);

@@ -50,7 +50,7 @@ Trackball::Trackball(vec3* lookFrom, vec3* lookTo, vec3* lookUp)
     , lookUp_(lookUp)
     
     , handleInteractionEvents_("handleEvents", "Handle interaction events", true,
-                               PropertyOwner::VALID)
+                               VALID)
 
     , mouseRotate_("trackballRotate", "Rotate",
         new MouseEvent(MouseEvent::MOUSE_BUTTON_LEFT, InteractionEvent::MODIFIER_NONE,
@@ -68,7 +68,7 @@ Trackball::Trackball(vec3* lookFrom, vec3* lookTo, vec3* lookUp)
         new Action(this, &Trackball::pan))
 
     , mouseReset_("mouseReset", "Reset",
-        new  MouseEvent(MouseEvent::MOUSE_BUTTON_NONE, InteractionEvent::MODIFIER_NONE,
+        new  MouseEvent(MouseEvent::MOUSE_BUTTON_ANY, InteractionEvent::MODIFIER_NONE,
             MouseEvent::MOUSE_STATE_RELEASE),
         new Action(this, &Trackball::reset))
 

@@ -95,49 +95,36 @@ void ImageRAM::update(bool editable) {
     colorLayersRAM_.clear();
     depthLayerRAM_ = NULL;
     pickingLayerRAM_ = NULL;
-
-    Image *owner = this->getOwner();
+ 
     if (editable) {
+        Image *owner = this->getOwner();
         for (size_t i=0; i<owner->getNumberOfColorLayers(); ++i){
             colorLayersRAM_.push_back(owner->getColorLayer(i)->getEditableRepresentation<LayerRAM>());
-            owner->getColorLayer(i)->setDataFormat(getColorLayerRAM(i)->getDataFormat());
-            owner->getColorLayer(i)->setDimension(getColorLayerRAM(i)->getDimension());
         }
 
         Layer* depthLayer = owner->getDepthLayer();
-
         if (depthLayer){
-            depthLayer->setDimension(getColorLayerRAM()->getDimension());
             depthLayerRAM_ = depthLayer->getEditableRepresentation<LayerRAM>();
         }
 
         Layer* pickingLayer = owner->getPickingLayer();
-
         if (pickingLayer){
-            pickingLayer->setDataFormat(getColorLayerRAM()->getDataFormat());
-            pickingLayer->setDimension(getColorLayerRAM()->getDimension());
             pickingLayerRAM_ = pickingLayer->getEditableRepresentation<LayerRAM>();
         }
     }
     else {
+        const Image *owner = this->getOwner();
         for (size_t i=0; i<owner->getNumberOfColorLayers(); ++i){
             colorLayersRAM_.push_back(const_cast<LayerRAM*>(owner->getColorLayer(i)->getRepresentation<LayerRAM>()));
-            owner->getColorLayer(i)->setDataFormat(getColorLayerRAM(i)->getDataFormat());
-            owner->getColorLayer(i)->setDimension(getColorLayerRAM(i)->getDimension());
         }
 
-        Layer* depthLayer = owner->getDepthLayer();
-
+        const Layer* depthLayer = owner->getDepthLayer();
         if (depthLayer){
-            depthLayer->setDimension(getColorLayerRAM()->getDimension());
             depthLayerRAM_ = const_cast<LayerRAM*>(depthLayer->getRepresentation<LayerRAM>());
         }
 
-        Layer* pickingLayer = owner->getPickingLayer();
-
+        const Layer* pickingLayer = owner->getPickingLayer();
         if (pickingLayer){
-            pickingLayer->setDataFormat(getColorLayerRAM()->getDataFormat());
-            pickingLayer->setDimension(getColorLayerRAM()->getDimension());
             pickingLayerRAM_ = const_cast<LayerRAM*>(pickingLayer->getRepresentation<LayerRAM>());
         }
     }

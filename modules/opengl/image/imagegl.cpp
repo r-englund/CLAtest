@@ -143,8 +143,12 @@ bool ImageGL::copyAndResizeRepresentation(DataRepresentation* targetRep) const {
     ImageGL* target = dynamic_cast<ImageGL*>(targetRep);
     TextureUnit colorUnit, depthUnit, pickingUnit;
     source->getColorLayerGL()->bindTexture(colorUnit.getEnum());
-    source->getDepthLayerGL()->bindTexture(depthUnit.getEnum());
-    source->getPickingLayerGL()->bindTexture(pickingUnit.getEnum());
+    if (source->getDepthLayerGL()) {
+        source->getDepthLayerGL()->bindTexture(depthUnit.getEnum());
+    }
+    if (source->getPickingLayerGL()) {
+        source->getPickingLayerGL()->bindTexture(pickingUnit.getEnum());
+    }
     // Render to FBO, with correct scaling
     target->activateBuffer();
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -159,8 +163,12 @@ bool ImageGL::copyAndResizeRepresentation(DataRepresentation* targetRep) const {
 
     shader_->activate();
     shader_->setUniform("color_", colorUnit.getUnitNumber());
-    shader_->setUniform("depth_", depthUnit.getUnitNumber());
-    shader_->setUniform("picking_", pickingUnit.getUnitNumber());
+    if (source->getDepthLayerGL()) {
+        shader_->setUniform("depth_", depthUnit.getUnitNumber());
+    }
+    if (source->getPickingLayerGL()) {
+        shader_->setUniform("picking_", pickingUnit.getUnitNumber());
+    }
     shader_->setUniform("modelViewProjectionMatrix_", scale);
     glDepthMask(GL_TRUE);
     LGL_ERROR;
@@ -300,8 +308,6 @@ void ImageGL::updateExistingLayers() const {
 }
 
 void ImageGL::update(bool editable) {
-    Image* owner = this->getOwner();
-
     bool reAttachTargets = (!isValid() || colorLayersGL_.empty());
 
     colorLayersGL_.clear();
@@ -309,41 +315,37 @@ void ImageGL::update(bool editable) {
     pickingLayerGL_ = NULL;
 
     if (editable) {
+        Image* owner = this->getOwner();
+
         for (size_t i = 0; i < owner->getNumberOfColorLayers(); ++i) {
             colorLayersGL_.push_back(owner->getColorLayer(i)->getEditableRepresentation<LayerGL>());
-            owner->getColorLayer(i)->setDataFormat(getColorLayerGL(i)->getDataFormat());
-            owner->getColorLayer(i)->setDimension(getColorLayerGL(i)->getDimension());
         }
 
         Layer* depthLayer = owner->getDepthLayer();
-
-        if (depthLayer) depthLayerGL_ = depthLayer->getEditableRepresentation<LayerGL>();
+        if (depthLayer) {
+            depthLayerGL_ = depthLayer->getEditableRepresentation<LayerGL>();
+        }
 
         Layer* pickingLayer = owner->getPickingLayer();
-
         if (pickingLayer) {
-            pickingLayer->setDataFormat(getColorLayerGL()->getDataFormat());
-            pickingLayer->setDimension(getColorLayerGL()->getDimension());
             pickingLayerGL_ = pickingLayer->getEditableRepresentation<LayerGL>();
         }
+
     } else {
+        const Image* owner = this->getOwner();
+
         for (size_t i = 0; i < owner->getNumberOfColorLayers(); ++i) {
             colorLayersGL_.push_back(
                 const_cast<LayerGL*>(owner->getColorLayer(i)->getRepresentation<LayerGL>()));
-            owner->getColorLayer(i)->setDataFormat(getColorLayerGL(i)->getDataFormat());
-            owner->getColorLayer(i)->setDimension(getColorLayerGL(i)->getDimension());
         }
 
-        Layer* depthLayer = owner->getDepthLayer();
-
-        if (depthLayer)
+        const Layer* depthLayer = owner->getDepthLayer();
+        if (depthLayer) {
             depthLayerGL_ = const_cast<LayerGL*>(depthLayer->getRepresentation<LayerGL>());
+        }
 
-        Layer* pickingLayer = owner->getPickingLayer();
-
+        const Layer* pickingLayer = owner->getPickingLayer();
         if (pickingLayer) {
-            pickingLayer->setDataFormat(getColorLayerGL()->getDataFormat());
-            pickingLayer->setDimension(getColorLayerGL()->getDimension());
             pickingLayerGL_ = const_cast<LayerGL*>(pickingLayer->getRepresentation<LayerGL>());
         }
     }

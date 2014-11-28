@@ -64,9 +64,16 @@ MeshRenderer::~MeshRenderer() {
 void MeshRenderer::render() {
     const MeshGL* meshGL = getMeshGL();
     meshGL->enable();
-    // try to render all GeometryEnums::RenderTypes except the default one
-    for(int i=1; i<GeometryEnums::NUMBER_OF_RENDER_TYPES; i++) {
-        (this->*drawMethods_[i].drawFunc)(static_cast<GeometryEnums::RenderType>(i));
+    //If default is indices, render all index lists
+    if(!drawMethods_[0].elementBufferList.empty()){
+        for(int i=1; i<GeometryEnums::NUMBER_OF_RENDER_TYPES; i++) {
+            if(!drawMethods_[i].elementBufferList.empty())
+                (this->*drawMethods_[i].drawFunc)(static_cast<GeometryEnums::RenderType>(i));
+        }
+    }
+    else{
+        //Render just default one
+        (this->*drawMethods_[0].drawFunc)(GeometryEnums::NOT_SPECIFIED);
     }
     meshGL->disable(); 
 }

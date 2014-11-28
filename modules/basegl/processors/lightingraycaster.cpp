@@ -58,7 +58,7 @@ LightingRaycaster::LightingRaycaster()
     , lightVolumePort_("lightVolume")
     , outport_("outport", &entryPort_, COLOR_DEPTH)
     , enableLightColor_("supportColoredLight", "Enable Light Color", false,
-                        PropertyOwner::INVALID_RESOURCES)
+                        INVALID_RESOURCES)
     , transferFunction_("transferFunction", "Transfer function", TransferFunction(), &volumePort_)
     , channel_("channel", "Render Channel")
     , raycasting_("raycaster", "Raycasting")

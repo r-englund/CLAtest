@@ -37,7 +37,7 @@ namespace inviwo {
 PropertyClassIdentifier(StringProperty, "org.inviwo.StringProperty");
 
 StringProperty::StringProperty(std::string identifier, std::string displayName, std::string value,
-                               PropertyOwner::InvalidationLevel invalidationLevel,
+                               InvalidationLevel invalidationLevel,
                                PropertySemantics semantics)
     : TemplateProperty<std::string>(identifier, displayName, value, invalidationLevel, semantics) {}
 

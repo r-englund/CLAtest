@@ -119,7 +119,10 @@ void CanvasGL::render(const Image* image, LayerType layerType) {
         imageGL_ = image->getRepresentation<ImageGL>();
         layerType_ = layerType;
         pickingContainer_->setPickingSource(image);
-        checkChannels(image->getDataFormat()->getComponents());
+        if(imageGL_)
+            checkChannels(imageGL_->getLayerGL(layerType_)->getDataFormat()->getComponents());
+        else
+            checkChannels(image->getDataFormat()->getComponents());
         renderLayer();
     } else {
         pickingContainer_->setPickingSource(NULL);
@@ -224,10 +227,12 @@ void CanvasGL::checkChannels(int channels) {
         shader_->getFragmentShaderObject()->addShaderDefine("SINGLE_CHANNEL");
         shader_->getFragmentShaderObject()->build();
         shader_->link();
+        singleChannel_ = true;
     } else if (singleChannel_ && channels == 4) {
         shader_->getFragmentShaderObject()->removeShaderDefine("SINGLE_CHANNEL");
         shader_->getFragmentShaderObject()->build();
         shader_->link();
+        singleChannel_ = false;
     }
 }
 

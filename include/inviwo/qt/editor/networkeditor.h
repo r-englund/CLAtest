@@ -160,6 +160,9 @@ public slots:
     void contextMenuDeleteConnection(EditorGraphicsItem*);
     void contextMenuDeleteLink(EditorGraphicsItem*);
     void contextMenuEditLink(EditorGraphicsItem*);
+    void contextMenuResetTimeMeasurements(EditorGraphicsItem*);
+
+    void resetAllTimeMeasurements();
 
 protected:
     void mousePressEvent(QGraphicsSceneMouseEvent* e);

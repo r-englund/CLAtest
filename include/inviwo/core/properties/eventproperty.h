@@ -61,7 +61,7 @@ public:
      */
     EventProperty(
         std::string identifier, std::string displayName, InteractionEvent* e, Action* action,
-        PropertyOwner::InvalidationLevel invalidationLevel = PropertyOwner::INVALID_OUTPUT,
+        InvalidationLevel invalidationLevel = INVALID_OUTPUT,
         PropertySemantics semantics = PropertySemantics::Default);
 
     EventProperty(const EventProperty& rhs);

@@ -67,7 +67,7 @@ public:
     virtual ~MultiDataInport();
 
     virtual bool canConnectTo(Port* port) const {
-        if(port->getProcessor() == getProcessor())
+        if(!port || port->getProcessor() == getProcessor())
             return false;
         if (dynamic_cast<DataOutport<T>*>(port))
             return true;

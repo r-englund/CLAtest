@@ -51,7 +51,7 @@ public:
         const T& value = Defaultvalues<T>::getVal(), const T& minValue = Defaultvalues<T>::getMin(),
         const T& maxValue = Defaultvalues<T>::getMax(),
         const T& increment = Defaultvalues<T>::getInc(),
-        PropertyOwner::InvalidationLevel invalidationLevel = PropertyOwner::INVALID_OUTPUT,
+        InvalidationLevel invalidationLevel = INVALID_OUTPUT,
         PropertySemantics semantics = PropertySemantics::Default);
 
     OrdinalProperty(const OrdinalProperty<T>& rhs);
@@ -119,7 +119,7 @@ template <typename T>
 OrdinalProperty<T>::OrdinalProperty(const std::string& identifier, const std::string& displayName,
                                     const T& value, const T& minValue, const T& maxValue,
                                     const T& increment,
-                                    PropertyOwner::InvalidationLevel invalidationLevel,
+                                    InvalidationLevel invalidationLevel,
                                     PropertySemantics semantics)
     : TemplateProperty<T>(identifier, displayName, value, invalidationLevel, semantics)
     , minValue_("minvalue", minValue)

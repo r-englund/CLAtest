@@ -61,6 +61,12 @@ public:
 
     LayerType getLayerType() const;
 
+    template <typename T>
+    const T* getRepresentation() const;
+
+    template <typename T>
+    T* getEditableRepresentation();
+
 protected:
     virtual DataRepresentation* createDefaultRepresentation();
 
@@ -68,6 +74,22 @@ private:
     LayerType layerType_;
 
 };
+
+template <typename T>
+T* Layer::getEditableRepresentation() {
+    T* repr =  Data::getEditableRepresentation<T>();
+    this->setDataFormat(repr->getDataFormat());
+    this->setDimension(repr->getDimension());
+    return repr;
+}
+
+template <typename T>
+const T* Layer::getRepresentation() const {
+    const T* repr = Data::getRepresentation<T>();
+    const_cast<Layer*>(this)->setDataFormat(repr->getDataFormat());
+    const_cast<Layer*>(this)->setDimension(repr->getDimension());
+    return repr;
+}
 
 } // namespace
 

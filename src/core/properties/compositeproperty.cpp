@@ -39,7 +39,7 @@ namespace inviwo {
 PropertyClassIdentifier(CompositeProperty, "org.inviwo.CompositeProperty");
 
 CompositeProperty::CompositeProperty(std::string identifier, std::string displayName,
-                                     PropertyOwner::InvalidationLevel invalidationLevel,
+                                     InvalidationLevel invalidationLevel,
                                      PropertySemantics semantics)
     : Property(identifier, displayName, invalidationLevel, semantics), PropertyOwner() {}
 
@@ -152,7 +152,7 @@ void CompositeProperty::set(const Property* srcProperty) {
     InviwoApplication::getPtr()->getProcessorNetwork()->unlock();
 }
 
-void CompositeProperty::invalidate(PropertyOwner::InvalidationLevel invalidationLevel,
+void CompositeProperty::invalidate(InvalidationLevel invalidationLevel,
                                    Property* modifiedProperty) {
     PropertyOwner::invalidate(invalidationLevel, modifiedProperty);
     Property::setInvalidationLevel(invalidationLevel);

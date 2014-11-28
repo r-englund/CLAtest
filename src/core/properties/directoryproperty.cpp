@@ -41,7 +41,7 @@ PropertyClassIdentifier(DirectoryProperty, "org.inviwo.DirectoryProperty");
 
 DirectoryProperty::DirectoryProperty(std::string identifier, std::string displayName,
                                      std::string value, std::string contentType,
-                                     PropertyOwner::InvalidationLevel invalidationLevel,
+                                     InvalidationLevel invalidationLevel,
                                      PropertySemantics semantics)
     : TemplateProperty<std::string>(identifier, displayName, value, invalidationLevel, semantics)
     , fileIndexingHandle_(NULL)

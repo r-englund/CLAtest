@@ -109,7 +109,7 @@ void Data::copyRepresentationsTo(Data* targetData) const {
 }
 
 void Data::addRepresentation(DataRepresentation* representation) {
-    representation->setPointerToOwner(this);
+    representation->setOwner(this);
     representations_.push_back(representation);
     lastValidRepresentation_ = representation;
     setRepresentationAsValid(static_cast<int>(representations_.size())-1);

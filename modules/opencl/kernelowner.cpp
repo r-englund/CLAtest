@@ -63,7 +63,7 @@ ProcessorKernelOwner::ProcessorKernelOwner(Processor* processor)
 }
 
 void ProcessorKernelOwner::onKernelCompiled( const cl::Kernel* kernel ) {
-    processor_->invalidate(PropertyOwner::INVALID_RESOURCES);
+    processor_->invalidate(INVALID_RESOURCES);
 }
 
 } // namespace

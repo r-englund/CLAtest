@@ -62,7 +62,6 @@
 #ifdef IVW_PYTHON_QT
 #include <modules/pythonqt/pythoneditorwidget.h>
 #endif
-#include "openglqt/canvasqt.h"
 
 namespace inviwo {
 
@@ -340,6 +339,14 @@ void InviwoMainWindow::addMenuActions() {
     connect(enableDisableEvaluationButton_, SIGNAL(toggled(bool)), this,
             SLOT(disableEvaluation(bool)));
 
+#if IVW_PROFILING
+    resetTimeMeasurementsButton_ = new QToolButton(this);
+    resetTimeMeasurementsButton_->setToolTip(tr("Reset All Time Measurements"));
+    resetTimeMeasurementsButton_->setCheckable(false);
+    resetTimeMeasurementsButton_->setIcon(QIcon(":/icons/stopwatch.png"));
+    connect(resetTimeMeasurementsButton_, SIGNAL(clicked()), networkEditor_, SLOT(resetAllTimeMeasurements()));
+#endif
+
     aboutBoxAction_ = new QAction(QIcon(":/icons/about.png"), tr("&About"), this);
     connect(aboutBoxAction_, SIGNAL(triggered()), this, SLOT(showAboutBox()));
     helpMenuItem_->addAction(aboutBoxAction_);
@@ -356,6 +363,9 @@ void InviwoMainWindow::addToolBars() {
     viewModeToolBar_->setObjectName("viewModeToolBar");
     viewModeToolBar_->addAction(visibilityModeAction_);
     viewModeToolBar_->addWidget(enableDisableEvaluationButton_);
+#if IVW_PROFILING
+    viewModeToolBar_->addWidget(resetTimeMeasurementsButton_);
+#endif
 }
 
 void InviwoMainWindow::updateWindowTitle() {
@@ -621,23 +631,6 @@ void InviwoMainWindow::setVisibilityMode(bool applicationView) {
     } else {
         if (selectedIdx != DEVELOPMENT) visibilityModeProperty_->setSelectedIndex(DEVELOPMENT);
     }
-
-//     ProcessorNetwork* processorNetwork =
-//         inviwo::InviwoApplicationQt::getPtr()->getProcessorNetwork();
-//     std::vector<inviwo::CanvasProcessor*> pv = processorNetwork->getProcessorsByType<inviwo::CanvasProcessor>();
-// 
-//     if(pv.size() >0 && applicationView){
-//         CanvasQt* canvas = dynamic_cast<CanvasQt*>(pv[0]->getCanvas());
-//         //pv[0]->getProcessorWidget()->hide();
-//         canvas->CanvasGL::resize(uvec2(networkEditorView_->size().width(), networkEditorView_->size().height()));
-//         takeCentralWidget();
-//         setCentralWidget(canvas);
-//         canvas->show();
-// 
-//     }else{
-//         takeCentralWidget();
-//         setCentralWidget(networkEditorView_);
-//     }
 
     networkEditorView_->hideNetwork(applicationView);
 

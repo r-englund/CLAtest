@@ -45,7 +45,7 @@ class IVW_CORE_API BufferInport : public DataInport<Buffer> {
 
 public:
     BufferInport(std::string identifier,
-        PropertyOwner::InvalidationLevel invalidationLevel=PropertyOwner::INVALID_OUTPUT);
+        InvalidationLevel invalidationLevel=INVALID_OUTPUT);
     virtual ~BufferInport();
 
     void initialize();
@@ -59,9 +59,9 @@ public:
 class IVW_CORE_API BufferOutport : public DataOutport<Buffer> {
 
 public:
-    BufferOutport(std::string identifier, PropertyOwner::InvalidationLevel invalidationLevel=PropertyOwner::INVALID_OUTPUT);
+    BufferOutport(std::string identifier, InvalidationLevel invalidationLevel=INVALID_OUTPUT);
     BufferOutport(std::string identifier, size_t size, const DataFormatBase* format = DataFLOAT32::get(),
-        PropertyOwner::InvalidationLevel invalidationLevel=PropertyOwner::INVALID_OUTPUT);
+        InvalidationLevel invalidationLevel=INVALID_OUTPUT);
     virtual ~BufferOutport();
 
     void initialize();

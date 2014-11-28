@@ -3,7 +3,7 @@
  * Inviwo - Interactive Visualization Workshop
  * Version 0.6b
  *
- * Copyright (c) 2014 Inviwo Foundation
+ * Copyright (c) 2013-2014 Inviwo Foundation
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -25,57 +25,49 @@
  * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- *
+ * 
  * Contact: Daniel Jönsson
  *
  *********************************************************************************/
 
-#ifndef IVW_ENTRYEXITPOINTS_CL_H
-#define IVW_ENTRYEXITPOINTS_CL_H
+#ifndef RAY_TRIANGLE_INTERSECTION_CL
+#define RAY_TRIANGLE_INTERSECTION_CL
 
-#include <modules/basecl/baseclmoduledefine.h>
-#include <inviwo/core/common/inviwo.h>
-#include <inviwo/core/interaction/cameratrackball.h>
-#include <inviwo/core/properties/cameraproperty.h>
-#include <inviwo/core/ports/geometryport.h>
-#include <inviwo/core/ports/imageport.h>
-#include <inviwo/core/ports/volumeport.h>
-#include <inviwo/core/common/inviwoapplication.h>
-#include <modules/opencl/inviwoopencl.h>
-#include <modules/opencl/kernelowner.h>
+// Intersects a ray with a triangle defined by three vertices.
+// If intersecting, t is the point of intersection along the ray
+bool rayTriangleIntersection(float3 o, float3 dir, float3 v0, float3 v1, float3 v2, float* t) {
+    float3 e1 = v1-v0;
+    float3 e2 = v2-v0;
+    float3 p = cross(dir, e2);
+    float a = dot(e1, p);
+    if (a > -0.00001f && a < 0.00001f) {
+        return false;
+    }
+    float f = 1.f/a;
+    // Distance from v0 to ray origin
+    float3 s = o-v0;
+    // u parameter
+    float u = f * dot(s, p);
+    if (u < 0.f || u > 1.f) {
+        return false;
+    }
+    
+    float3 q = cross(s, e1);
+    float v = f * dot(dir, q);
 
-namespace inviwo {
+    if (v < 0.f || u+v > 1.f) {
+        return false;
+    }
+    // Compute the intersection point t
 
-class IVW_MODULE_BASECL_API EntryExitPointsCL : public Processor, public ProcessorKernelOwner {
-public:
-    EntryExitPointsCL();
-    virtual ~EntryExitPointsCL();
+    *t = f * dot(e2, q);
 
-    InviwoProcessorInfo();
+    if (*t > 0.00001f) {
+        return true;
+    } else {
+        return false;
+    }
+}
 
-    virtual void initialize();
-    virtual void deinitialize();
 
-protected:
-    virtual void process();
-
-    void computeEntryExitPoints(const mat4& NDCToTextureMat, const cl::Image& entryPointsCL,
-                                const cl::Image& exitPointsCL, const uvec2& outportDim,
-                                cl::Event* profilingEvent);
-
-private:
-    GeometryInport geometryPort_;
-    ImageOutport entryPort_;
-    ImageOutport exitPort_;
-
-    CameraProperty camera_;
-    IntVec2Property workGroupSize_;
-    BoolProperty useGLSharing_;
-
-    CameraTrackball trackball_;
-    cl::Kernel* entryExitKernel_;
-};
-
-}  // namespace
-
-#endif  // IVW_ENTRYEXITPOINTS_CL_H
+#endif

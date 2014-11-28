@@ -76,8 +76,8 @@ public:
 template <typename Type>
 class VectorDataInport : public DataInport<VectorData<Type> > {
 public:
-    VectorDataInport(std::string identifier, PropertyOwner::InvalidationLevel invalidationLevel =
-                                                 PropertyOwner::INVALID_OUTPUT)
+    VectorDataInport(std::string identifier, InvalidationLevel invalidationLevel =
+                                                 INVALID_OUTPUT)
         : DataInport<VectorData<Type> >(identifier, invalidationLevel) {}
     virtual ~VectorDataInport() {}
 
@@ -91,8 +91,8 @@ public:
 template <typename Type>
 class VectorDataOutport : public DataOutport<VectorData<Type> > {
 public:
-    VectorDataOutport(std::string identifier, PropertyOwner::InvalidationLevel invalidationLevel =
-                                                  PropertyOwner::INVALID_OUTPUT)
+    VectorDataOutport(std::string identifier, InvalidationLevel invalidationLevel =
+                                                  INVALID_OUTPUT)
         : DataOutport<VectorData<Type> >(identifier, invalidationLevel) {
         this->setData(new VectorData<Type>, true);
     }

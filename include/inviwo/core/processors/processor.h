@@ -130,14 +130,14 @@ public:
     // Perform only full reimplementation of this function, meaning never call
     // Proccessor::invalidate()
     // in your reimplemented invalidation function.
-    virtual void invalidate(PropertyOwner::InvalidationLevel invalidationLevel,
+    virtual void invalidate(InvalidationLevel invalidationLevel,
                             Property* modifiedProperty = 0);
 
     // Triggers invalidation of succesors.
     // Perform only full reimplementation of this function, meaning never call
     // Proccessor::invalidateSuccesors()
     // in your reimplemented invalidation function.
-    virtual void invalidateSuccesors(PropertyOwner::InvalidationLevel invalidationLevel,
+    virtual void invalidateSuccesors(InvalidationLevel invalidationLevel,
                                      Property* modifiedProperty = 0);
 
     virtual void setValid();
@@ -195,7 +195,7 @@ private:
 
     bool initialized_;
     bool invalidationEnabled_;
-    PropertyOwner::InvalidationLevel invalidationRequestLevel_;
+    InvalidationLevel invalidationRequestLevel_;
 };
 
 }  // namespace

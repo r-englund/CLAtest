@@ -38,7 +38,7 @@ namespace inviwo {
 uvec3 GeometryInport::colorCode = uvec3(188,188,101);
 
 // Geometry Inport
-GeometryInport::GeometryInport(std::string identifier, PropertyOwner::InvalidationLevel invalidationLevel)
+GeometryInport::GeometryInport(std::string identifier, InvalidationLevel invalidationLevel)
     : DataInport<Geometry>(identifier, invalidationLevel)
 {}
 
@@ -71,7 +71,7 @@ uvec3 GeometryMultiInport::getColorCode() const {
 }
 
 // Geometry Outport
-GeometryOutport::GeometryOutport(std::string identifier, PropertyOwner::InvalidationLevel invalidationLevel)
+GeometryOutport::GeometryOutport(std::string identifier, InvalidationLevel invalidationLevel)
     : DataOutport<Geometry>(identifier, invalidationLevel)
 {}
 

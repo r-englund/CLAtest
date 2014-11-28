@@ -40,7 +40,7 @@ PropertyClassIdentifier(Property, "org.inviwo.undefined");
 
 Property::Property(const std::string &identifier,
                    const std::string &displayName,
-                   PropertyOwner::InvalidationLevel invalidationLevel,
+                   InvalidationLevel invalidationLevel,
                    PropertySemantics semantics)
     : IvwSerializable()
     , MetaDataOwner()
@@ -129,6 +129,10 @@ PropertySemantics Property::getSemantics()const {
     return semantics_;
 }
 
+std::string Property::getClassIdentifierForWidget()const{
+    return getClassIdentifier();
+}
+
 void Property::setSemantics(const PropertySemantics& semantics) {
     semantics_ = semantics;
 }
@@ -143,10 +147,10 @@ bool Property::getReadOnly()const {
     return readOnly_;
 }
 
-PropertyOwner::InvalidationLevel Property::getInvalidationLevel() const {
+InvalidationLevel Property::getInvalidationLevel() const {
     return invalidationLevel_;
 }
-void Property::setInvalidationLevel(PropertyOwner::InvalidationLevel invalidationLevel) {
+void Property::setInvalidationLevel(InvalidationLevel invalidationLevel) {
     invalidationLevel_ = invalidationLevel;
 }
 
@@ -199,8 +203,7 @@ void Property::propertyModified() {
     setPropertyModified(true);
 
     PropertyOwner* owner = getOwner();
-    if(owner) {
-
+    if (owner) {
         // Evaluate property links
         Processor* processor = owner->getProcessor();
         if (processor) {
@@ -208,7 +211,7 @@ void Property::propertyModified() {
         }
 
         // Invalidate Owner
-        if (getInvalidationLevel() > PropertyOwner::VALID) {
+        if (getInvalidationLevel() > VALID) {
             owner->invalidate(getInvalidationLevel(), this);        
         }
     }

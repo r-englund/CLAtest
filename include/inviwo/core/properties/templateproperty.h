@@ -46,7 +46,7 @@ public:
 
     TemplateProperty(
         const std::string& identifier, const std::string& displayName, const T& value = T(),
-        PropertyOwner::InvalidationLevel invalidationLevel = PropertyOwner::INVALID_OUTPUT,
+        InvalidationLevel invalidationLevel = INVALID_OUTPUT,
         PropertySemantics semantics = PropertySemantics::Default);
 
     TemplateProperty(const TemplateProperty& rhs);
@@ -77,7 +77,7 @@ protected:
 template <typename T>
 TemplateProperty<T>::TemplateProperty(const std::string& identifier, const std::string& displayName,
                                       const T& value,
-                                      PropertyOwner::InvalidationLevel invalidationLevel,
+                                      InvalidationLevel invalidationLevel,
                                       PropertySemantics semantics)
     : Property(identifier, displayName, invalidationLevel, semantics)
     , value_("value", value) {

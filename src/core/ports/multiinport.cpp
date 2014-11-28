@@ -65,10 +65,10 @@ MultiInport::~MultiInport() {
     vectorInports_ = NULL;
 }
 
-PropertyOwner::InvalidationLevel MultiInport::getInvalidationLevel() const {
+InvalidationLevel MultiInport::getInvalidationLevel() const {
     InportVec::const_iterator it = inports_->begin();
     InportVec::const_iterator endIt = inports_->end();
-    PropertyOwner::InvalidationLevel maxInvalidationLevel(PropertyOwner::VALID);
+    InvalidationLevel maxInvalidationLevel(VALID);
 
     for (; it != endIt; ++it)
         maxInvalidationLevel = std::max(maxInvalidationLevel, (*it)->getInvalidationLevel());
@@ -81,7 +81,7 @@ PropertyOwner::InvalidationLevel MultiInport::getInvalidationLevel() const {
     return maxInvalidationLevel;
 }
 
-void MultiInport::setInvalidationLevel(PropertyOwner::InvalidationLevel invalidationLevel) {
+void MultiInport::setInvalidationLevel(InvalidationLevel invalidationLevel) {
     InportVec::iterator it = inports_->begin();
     InportVec::iterator endIt = inports_->end();
     for (; it != endIt; ++it)
@@ -224,7 +224,7 @@ Outport* MultiInport::getConnectedOutport() const {
     }
 }
 
-void MultiInport::invalidate(PropertyOwner::InvalidationLevel invalidationLevel) {
+void MultiInport::invalidate(InvalidationLevel invalidationLevel) {
     InportVec::iterator it = inports_->begin();
     InportVec::iterator endIt = inports_->end();
 

@@ -33,25 +33,22 @@
 #include <inviwo/core/datastructures/image/image.h>
 #include <inviwo/core/datastructures/image/imageram.h>
 #include <inviwo/core/datastructures/image/imagedisk.h>
+#include <inviwo/core/ports/imageport.h>
 
 namespace inviwo {
 
-Image::Image(uvec2 dimensions, ImageType type, const DataFormatBase* format, bool allowMissingLayers)
-    : DataGroup()
-    , allowMissingLayers_(allowMissingLayers)
-    , imageType_(type) {
+Image::Image(uvec2 dimensions, ImageType type, const DataFormatBase* format,
+             bool allowMissingLayers)
+    : DataGroup(), allowMissingLayers_(allowMissingLayers), imageType_(type) {
     initialize(dimensions, format);
 }
 
 Image::Image(Layer* colorLayer, ImageType type, bool allowMissingLayers)
-: DataGroup()
-, allowMissingLayers_(allowMissingLayers)
-, imageType_(type) {
-    if(colorLayer){
+    : DataGroup(), allowMissingLayers_(allowMissingLayers), imageType_(type) {
+    if (colorLayer) {
         initialize(colorLayer->getDimension(), colorLayer->getDataFormat(), colorLayer);
-    }
-    else{
-        initialize(uvec2(32,32), DataVec4UINT8::get());
+    } else {
+        initialize(uvec2(32, 32), DataVec4UINT8::get());
     }
 }
 
@@ -59,30 +56,42 @@ Image::Image(const Image& rhs)
     : DataGroup(rhs)
     , allowMissingLayers_(rhs.allowMissingLayers_)
     , imageType_(rhs.imageType_)
-    , inputSources_(rhs.inputSources_) {
-    for (std::vector<Layer*>::const_iterator it = rhs.colorLayers_.begin() ; it != rhs.colorLayers_.end(); ++it)
+    , inputSources_() {
+    for (std::vector<Layer*>::const_iterator it = rhs.colorLayers_.begin();
+         it != rhs.colorLayers_.end(); ++it) {
         addColorLayer((*it)->clone());
+    }
 
-    if (rhs.depthLayer_) {
-        depthLayer_ = rhs.depthLayer_->clone();
-        addLayer(depthLayer_);
-    } else
+    const Layer* depth = rhs.getDepthLayer();
+    if (depth) {
+        depthLayer_ = depth->clone();
+    } else {
         depthLayer_ = NULL;
+    }
 
-    if (rhs.pickingLayer_) {
-        pickingLayer_ = rhs.pickingLayer_->clone();
-        addLayer(pickingLayer_);
-    } else
+    const Layer* picking = rhs.getPickingLayer();
+    if (picking) {
+        pickingLayer_ = picking->clone();
+    } else {
         pickingLayer_ = NULL;
+    }
+
+    if (depthLayer_ && pickingLayer_) {
+        imageType_ = COLOR_DEPTH_PICKING;
+    } else if (depthLayer_ && !pickingLayer_) {
+        imageType_ = COLOR_DEPTH;
+    } else {
+        imageType_ = COLOR_ONLY;
+    }
 
     for (size_t i = 0; i < rhs.representations_.size(); ++i) {
         representations_.push_back(rhs.representations_[i]->clone());
         ImageRepresentation* imRep = dynamic_cast<ImageRepresentation*>(representations_[i]);
 
         if (imRep) {
-            imRep->setPointerToOwner(this);
+            imRep->setOwner(this);
             imRep->setAsInvalid();
-            //imRep->update(true);
+            imRep->update(true);
         }
     }
 }
@@ -92,32 +101,52 @@ Image& Image::operator=(const Image& that) {
         DataGroup::operator=(that);
         allowMissingLayers_ = that.allowMissingLayers_;
         imageType_ = that.imageType_;
-        inputSources_ = that.inputSources_;
+        inputSources_.clear();
         deinitialize();
 
-        for (std::vector<Layer*>::const_iterator it = that.colorLayers_.begin(); it != that.colorLayers_.end(); ++it)
+        for (std::vector<Layer*>::iterator it = colorLayers_.begin();
+             it != colorLayers_.end(); ++it) {
+            delete *it;
+        }
+        colorLayers_.clear();
+
+        for (std::vector<Layer*>::const_iterator it = that.colorLayers_.begin();
+             it != that.colorLayers_.end(); ++it) {
             addColorLayer((*it)->clone());
+        }
 
-        if (that.depthLayer_) {
-            depthLayer_ = that.depthLayer_->clone();
-            addLayer(depthLayer_);
-        } else
+        const Layer* depth = that.getDepthLayer();
+        if (depth) {
+            if (depthLayer_) delete depthLayer_;
+            depthLayer_ = depth->clone();
+        } else {
             depthLayer_ = NULL;
+        }
 
-        if (that.pickingLayer_) {
+        const Layer* picking = that.getPickingLayer();
+        if (picking) {
+            if (picking) delete picking;
             pickingLayer_ = that.pickingLayer_->clone();
-            addLayer(pickingLayer_);
-        } else
+        } else {
             pickingLayer_ = NULL;
+        }
+
+        if (depthLayer_ && pickingLayer_) {
+            imageType_ = COLOR_DEPTH_PICKING;
+        } else if (depthLayer_ && !pickingLayer_) {
+            imageType_ = COLOR_DEPTH;
+        } else {
+            imageType_ = COLOR_ONLY;
+        }
 
         for (size_t i = 0; i < that.representations_.size(); ++i) {
             representations_.push_back(that.representations_[i]->clone());
             ImageRepresentation* imRep = dynamic_cast<ImageRepresentation*>(representations_[i]);
 
             if (imRep) {
-                imRep->setPointerToOwner(this);
+                imRep->setOwner(this);
                 imRep->setAsInvalid();
-                //imRep->update(true);
+                imRep->update(true);
             }
         }
     }
@@ -134,20 +163,6 @@ Image::~Image() {
     deinitialize();
 }
 
-std::string Image::getDataInfo() const{
-    std::stringstream ss;
-    ss << "<table border='0' cellspacing='0' cellpadding='0' style='border-color:white;white-space:pre;'>\n"
-       << "<tr><td style='color:#bbb;padding-right:8px;'>Type</td><td><nobr>" << "Image </nobr></td></tr>\n"
-       << "<tr><td style='color:#bbb;padding-right:8px;'>Color channels</td><td><nobr>" << colorLayers_.size() << "</nobr></td></tr>\n"
-       << "<tr><td style='color:#bbb;padding-right:8px;'>Depth</td><td><nobr>" << (getDepthLayer() ? "Yes" : "No") << "</nobr></td></tr>\n"
-       << "<tr><td style='color:#bbb;padding-right:8px;'>Picking</td><td><nobr>" << (getPickingLayer() ? "Yes" : "No") << "</nobr></td></tr>\n"
-       << "<tr><td style='color:#bbb;padding-right:8px;'>Format</td><td><nobr>" << getDataFormat()->getString() << "</nobr></td></tr>\n"
-       << "<tr><td style='color:#bbb;padding-right:8px;'>Dimension</td><td><nobr>" << "(" << getDimension().x << ", "
-       << getDimension().y << ")" << "</nobr></td></tr>\n"
-       << "</tr></table>\n";
-    return ss.str();
-}
-
 void Image::deinitialize() {
     for (std::vector<Layer*>::iterator it = colorLayers_.begin(); it != colorLayers_.end(); ++it)
         delete(*it);
@@ -157,27 +172,23 @@ void Image::deinitialize() {
 }
 
 void Image::initialize(uvec2 dimensions, const DataFormatBase* format, Layer* colorLayer) {
-    if(colorLayer)
+    if(colorLayer) {
         addColorLayer(colorLayer);
-    else
+    } else {
         addColorLayer(new Layer(dimensions, format));
-
-    depthLayer_ = NULL;
-    pickingLayer_ = NULL;
+    }
 
     if (!allowMissingLayers_ || typeContainsDepth(getImageType())) {
         depthLayer_ = new Layer(dimensions, DataFLOAT32::get(), DEPTH_LAYER);
-        addLayer(depthLayer_);
-    }
-    else
+    } else {
         depthLayer_ = NULL;
+    }
 
     if (!allowMissingLayers_ || typeContainsPicking(getImageType())) {
         pickingLayer_ = new Layer(dimensions, format, PICKING_LAYER);
-        addLayer(pickingLayer_);
-    }
-    else
+    } else {
         pickingLayer_ = NULL;
+    }
 }
 
 uvec2 Image::getDimension() const {
@@ -186,17 +197,8 @@ uvec2 Image::getDimension() const {
 
 size_t Image::addColorLayer(Layer* layer) {
     colorLayers_.push_back(layer);
-    addLayer(layer);
     //Return index to this layer
     return colorLayers_.size()-1;
-}
-
-const std::vector<const Layer*>* Image::getAllLayers() const {
-    return &allLayersConst_;
-}
-
-const std::vector<Layer*>* Image::getAllLayers() {
-    return &allLayers_;
 }
 
 const Layer* Image::getLayer(LayerType type, size_t idx) const {
@@ -249,11 +251,11 @@ const Layer* Image::getDepthLayer() const {
         return depthLayer_;
     }
 
-    // Look for a depth layer upwards in the network using the uinput sources.
+    // Look for a depth layer upwards in the network using the input sources.
     ImageSourceMap::const_iterator it = inputSources_.find(DEPTH_LAYER);
     if (it != inputSources_.end() && it->second) {
-        if(it->second)
-            return it->second->getDepthLayer();
+        const Image* img = it->second->getData();
+        if (img) return img->getDepthLayer();
     }
 
     // No depth layer found.
@@ -275,8 +277,8 @@ const Layer* Image::getPickingLayer() const {
     // Look for a picking layer upwards in the network using the input sources
     ImageSourceMap::const_iterator it = inputSources_.find(PICKING_LAYER);
     if (it != inputSources_.end() && it->second) {
-        if(it->second)
-            return it->second->getPickingLayer();
+        const Image* img = it->second->getData();
+        if (img) return img->getPickingLayer();
     }
    
     // No picking layer found.
@@ -321,23 +323,21 @@ void Image::resizeRepresentations(Image* targetImage, uvec2 targetDim) {
             if (dynamic_cast<ImageRAM*>(targetRepresentations[j])){
                 if(imageDiskFound){
                     preferredResizeOrder[numRepTargets-2] = j;
-                }
-                else{
+                } else {
                     preferredResizeOrder[numRepTargets-1] = j;
                 }
                 imageRamFound = true;
             }
-            else if (dynamic_cast<ImageDisk*>(targetRepresentations[j])){
+            else if (dynamic_cast<ImageDisk*>(targetRepresentations[j])) {
                 if(imageRamFound){
                     preferredResizeOrder[numRepTargets-2] = preferredResizeOrder[numRepTargets-1];
                     preferredResizeOrder[numRepTargets-1] = j;
-                }
-                else{
+                } else {
                     preferredResizeOrder[numRepTargets-1] = j;
                 }
                 imageDiskFound = true;
             }
-            else{
+            else {
                 preferredResizeOrder[nextInsertIdx] = j;
                 nextInsertIdx++;
             }
@@ -377,17 +377,22 @@ const DataFormatBase* Image::getDataFormat() const {
     return getColorLayer()->getDataFormat();
 }
 
-void Image::setInputSource(LayerType layer, const Image* src) {
+void Image::setInputSource(LayerType layer, const ImageInport* src) {
     inputSources_[layer] = src;
 }
 
-void Image::addLayer(Layer* layer) {
-    allLayers_.push_back(layer);
-    allLayersConst_.push_back(static_cast<const Layer*>(layer));
+std::string Image::getDataInfo() const{
+    std::stringstream ss;
+    ss << "<table border='0' cellspacing='0' cellpadding='0' style='border-color:white;white-space:pre;'>\n"
+        << "<tr><td style='color:#bbb;padding-right:8px;'>Type</td><td><nobr>" << "Image </nobr></td></tr>\n"
+        << "<tr><td style='color:#bbb;padding-right:8px;'>Color channels</td><td><nobr>" << colorLayers_.size() << "</nobr></td></tr>\n"
+        << "<tr><td style='color:#bbb;padding-right:8px;'>Depth</td><td><nobr>" << (getDepthLayer() ? "Yes" : "No") << "</nobr></td></tr>\n"
+        << "<tr><td style='color:#bbb;padding-right:8px;'>Picking</td><td><nobr>" << (getPickingLayer() ? "Yes" : "No") << "</nobr></td></tr>\n"
+        << "<tr><td style='color:#bbb;padding-right:8px;'>Format</td><td><nobr>" << getDataFormat()->getString() << "</nobr></td></tr>\n"
+        << "<tr><td style='color:#bbb;padding-right:8px;'>Dimension</td><td><nobr>" << "(" << getDimension().x << ", "
+        << getDimension().y << ")" << "</nobr></td></tr>\n"
+        << "</tr></table>\n";
+    return ss.str();
 }
-
-
-
-
 
 } // namespace

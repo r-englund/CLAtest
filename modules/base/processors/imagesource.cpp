@@ -47,7 +47,7 @@ ProcessorCodeState(ImageSource, CODE_STATE_EXPERIMENTAL);
 
 ImageSource::ImageSource()
     : Processor(),
-     outport_("image.outport", COLOR_ONLY, DataVec4UINT8::get(), PropertyOwner::INVALID_OUTPUT, false),
+     outport_("image.outport", COLOR_ONLY, DataVec4UINT8::get(), INVALID_OUTPUT, false),
      imageFileName_("imageFileName", "Image file name", "" , "image"),
      isDeserializing_(false)
 {

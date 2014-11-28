@@ -38,10 +38,10 @@ PropertyClassIdentifier(AdvancedMaterialProperty, "org.inviwo.AdvancedMaterialPr
 
 AdvancedMaterialProperty::AdvancedMaterialProperty(
     std::string identifier, std::string displayName,
-    PropertyOwner::InvalidationLevel invalidationLevel, PropertySemantics semantics)
+    InvalidationLevel invalidationLevel, PropertySemantics semantics)
     : CompositeProperty(identifier, displayName, invalidationLevel,
                         semantics)
-    , phaseFunctionProp("phaseFunction", "Phase function", PropertyOwner::VALID)
+    , phaseFunctionProp("phaseFunction", "Phase function", VALID)
     , indexOfRefractionProp("IOR", "Index of refraction", 1.f, 1.f, 20.f)
     , roughnessProp("roughness", "Roughness", 0.1f, 0.01f, 1.f)
     , specularColorProp("specularColor", "Specular color", vec4(1.f))

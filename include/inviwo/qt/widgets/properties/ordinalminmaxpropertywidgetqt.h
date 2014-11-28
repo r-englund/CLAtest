@@ -39,6 +39,7 @@
 #include <inviwo/qt/widgets/customdoublespinboxqt.h>
 #include <inviwo/qt/widgets/editablelabelqt.h>
 #include <inviwo/qt/widgets/rangesliderqt.h>
+#include <inviwo/core/properties/propertyowner.h>
 #include <inviwo/core/util/stringconversion.h>
 
 namespace inviwo {

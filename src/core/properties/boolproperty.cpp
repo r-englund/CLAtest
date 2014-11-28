@@ -37,7 +37,7 @@ namespace inviwo {
 PropertyClassIdentifier(BoolProperty, "org.inviwo.BoolProperty");
 
 BoolProperty::BoolProperty(std::string identifier, std::string displayName, bool value,
-                           PropertyOwner::InvalidationLevel invalidationLevel,
+                           InvalidationLevel invalidationLevel,
                            PropertySemantics semantics)
     : TemplateProperty<bool>(identifier, displayName, value, invalidationLevel, semantics) {}
 

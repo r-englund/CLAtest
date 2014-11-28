@@ -5,7 +5,8 @@ ivw_module(BaseCL)
 #--------------------------------------------------------------------
 # Add header files
 set(HEADER_FILES
-    ${CMAKE_CURRENT_SOURCE_DIR}/processors/entryexitpointscl.h
+	${CMAKE_CURRENT_SOURCE_DIR}/meshentryexitpointscl.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/processors/entryexitpointsclprocessor.h
     ${CMAKE_CURRENT_SOURCE_DIR}/processors/volumefirsthitcl.h
 	${CMAKE_CURRENT_SOURCE_DIR}/processors/volumemaxcl.h
 	${CMAKE_CURRENT_SOURCE_DIR}/runningimagemeanandstandarddeviationcl.h
@@ -15,7 +16,8 @@ ivw_group("Header Files" ${HEADER_FILES})
 #--------------------------------------------------------------------
 # Add source files
 set(SOURCE_FILES
-    ${CMAKE_CURRENT_SOURCE_DIR}/processors/entryexitpointscl.cpp
+	${CMAKE_CURRENT_SOURCE_DIR}/meshentryexitpointscl.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/processors/entryexitpointsclprocessor.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/processors/volumefirsthitcl.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/processors/volumemaxcl.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/runningimagemeanandstandarddeviationcl.cpp

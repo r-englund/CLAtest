@@ -55,7 +55,7 @@ class IVW_CORE_API Outport : public Port {
     friend class ImageInport;
 public:
     Outport(std::string identifier,
-            PropertyOwner::InvalidationLevel invalidationLevel=PropertyOwner::INVALID_OUTPUT);
+            InvalidationLevel invalidationLevel=INVALID_OUTPUT);
     virtual ~Outport();
 
     //TODO: Temporary fix to enable Deserialization. Remove this to make Outport abstract class
@@ -67,15 +67,15 @@ public:
 
     virtual bool isReady() const { return isConnected(); }
 
-    bool isValid() { return (getInvalidationLevel() == PropertyOwner::VALID); }
+    bool isValid() { return (getInvalidationLevel() == VALID); }
 
     std::vector<Inport*> getConnectedInports() const { return connectedInports_; }
 
-    virtual void invalidate(PropertyOwner::InvalidationLevel invalidationLevel);
-    void invalidateConnectedInports(PropertyOwner::InvalidationLevel invalidationLevel);
+    virtual void invalidate(InvalidationLevel invalidationLevel);
+    void invalidateConnectedInports(InvalidationLevel invalidationLevel);
 
-    virtual PropertyOwner::InvalidationLevel getInvalidationLevel() const { return invalidationLevel_; }
-    virtual void setInvalidationLevel(PropertyOwner::InvalidationLevel invalidationLevel);
+    virtual InvalidationLevel getInvalidationLevel() const { return invalidationLevel_; }
+    virtual void setInvalidationLevel(InvalidationLevel invalidationLevel);
 
     std::vector<Processor*> getDirectSuccessors();
 
@@ -89,7 +89,7 @@ protected:
     template <typename T>
     void getSuccessorsUsingPortType(std::vector<Processor*>&);
 
-    PropertyOwner::InvalidationLevel invalidationLevel_;
+    InvalidationLevel invalidationLevel_;
 private:
     std::vector<Inport*> connectedInports_;
 };

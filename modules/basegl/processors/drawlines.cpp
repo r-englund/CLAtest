@@ -140,7 +140,7 @@ void DrawLines::DrawLinesInteractionHandler::invokeEvent(Event* event) {
             line -= 1.f;
             line.y = -line.y;
             drawer_->addPoint(line);
-            drawer_->invalidate(PropertyOwner::INVALID_OUTPUT);
+            drawer_->invalidate(INVALID_OUTPUT);
         }
         return;
     }
