@@ -46,6 +46,15 @@ set(SOURCE_FILES
 )
 ivw_group("Source Files" ${SOURCE_FILES})
 
+
+#--------------------------------------------------------------------
+# Add script files
+set(SCRIPT_FILES
+    ${CMAKE_CURRENT_SOURCE_DIR}/scripts/outputredirector.py
+)
+ivw_group("Script Files" ${SCRIPT_FILES})
+
+
  set(TEST_FILES
 	${CMAKE_CURRENT_SOURCE_DIR}/tests/python-test.cpp
 )
@@ -56,7 +65,7 @@ ivw_add_unittest(${TEST_FILES})
 add_definitions(-DIVW_PYTHON)
 
 # Create module
-ivw_create_module(${SOURCE_FILES} ${HEADER_FILES})
+ivw_create_module(${SOURCE_FILES} ${HEADER_FILES} ${SHADER_FILES} ${SCRIPT_FILES})
 
 #--------------------------------------------------------------------
 # Add Python to package

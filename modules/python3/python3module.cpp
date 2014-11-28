@@ -40,15 +40,21 @@ namespace inviwo {
 
 Python3Module::Python3Module() : InviwoModule() {
     setIdentifier("Python3");
-
-    PythonExecutionOutputObservable::init();
-
-    pyInviwo_ = new PyInviwo();
 }
 
 Python3Module::~Python3Module() {
     delete pyInviwo_;
     PythonExecutionOutputObservable::deleteInstance();
+}
+
+void Python3Module::initialize() {
+    InviwoModule::initialize();
+    PythonExecutionOutputObservable::init();
+    pyInviwo_ = new PyInviwo();
+}
+
+void Python3Module::deinitialize() {
+    InviwoModule::deinitialize();
 }
 
 } // namespace

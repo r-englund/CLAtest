@@ -12,7 +12,6 @@ set(HEADER_FILES
     ${CMAKE_CURRENT_SOURCE_DIR}/defaultinterface/pyproperties.h
     ${CMAKE_CURRENT_SOURCE_DIR}/defaultinterface/pyutil.h
     ${CMAKE_CURRENT_SOURCE_DIR}/defaultinterface/pyvolume.h
-    ${CMAKE_CURRENT_SOURCE_DIR}/pyinviwo.h
     ${CMAKE_CURRENT_SOURCE_DIR}/pyinviwoobserver.h
     ${CMAKE_CURRENT_SOURCE_DIR}/pythonexecutionoutputobservable.h
     ${CMAKE_CURRENT_SOURCE_DIR}/pythonincluder.h
@@ -46,6 +45,14 @@ ivw_group("Source Files" ${SOURCE_FILES})
 
 
 #--------------------------------------------------------------------
+# Add script files
+set(SCRIPT_FILES
+    ${CMAKE_CURRENT_SOURCE_DIR}/scripts/outputredirector.py
+)
+ivw_group("Script Files" ${SCRIPT_FILES})
+
+
+#--------------------------------------------------------------------
 # Add shaders
 #set(SHADER_FILES
     #${CMAKE_CURRENT_SOURCE_DIR}/glsl/python3processor.frag
@@ -62,7 +69,7 @@ ivw_group("Source Files" ${SOURCE_FILES})
 
 #--------------------------------------------------------------------
 # Create module
-ivw_create_module(${SOURCE_FILES} ${HEADER_FILES} ${SHADER_FILES})
+ivw_create_module(${SOURCE_FILES} ${HEADER_FILES} ${SHADER_FILES} ${SCRIPT_FILES})
 
 #--------------------------------------------------------------------
 # Add shader directory to pack
@@ -76,5 +83,9 @@ if(IVW_PACKAGE_PROJECT AND BUILD_SHARED_LIBS)
         find_file(PYTHON3_DLL ${FILENAME}.dll)
         mark_as_advanced(PYTHON3_DLL)
         install(FILES ${PYTHON3_DLL} DESTINATION bin COMPONENT modules)
+		find_file(PYTHON3_MSVCR_DLL msvcr100.dll)
+		install(FILES ${PYTHON3_MSVCR_DLL} DESTINATION bin COMPONENT modules)
+		find_file(PYTHON3_MSVCP_DLL msvcp100.dll)
+		install(FILES ${PYTHON3_MSVCP_DLL} DESTINATION bin COMPONENT modules)
    endif()
 endif()

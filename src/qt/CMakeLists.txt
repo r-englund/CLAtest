@@ -52,7 +52,7 @@ if(IVW_QT_EDITOR OR IVW_QT_WIDGETS)
         mark_as_advanced(FORCE Qt5Script_DIR)
         mark_as_advanced(FORCE Qt5_DIR)
         
-        if(IVW_PACKAGE_PROJECT AND BUILD_SHARED_LIBS)
+        if(IVW_PACKAGE_PROJECT)
             if(WIN32)
                 if(Qt5Core_FOUND)
                     set(QT_BINARY_DIR "${Qt5Core_DIR}/../../../bin")

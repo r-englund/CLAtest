@@ -68,7 +68,7 @@ Trackball::Trackball(vec3* lookFrom, vec3* lookTo, vec3* lookUp)
         new Action(this, &Trackball::pan))
 
     , mouseReset_("mouseReset", "Reset",
-        new  MouseEvent(MouseEvent::MOUSE_BUTTON_NONE, InteractionEvent::MODIFIER_NONE,
+        new  MouseEvent(MouseEvent::MOUSE_BUTTON_ANY, InteractionEvent::MODIFIER_NONE,
             MouseEvent::MOUSE_STATE_RELEASE),
         new Action(this, &Trackball::reset))
 

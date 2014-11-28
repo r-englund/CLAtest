@@ -79,7 +79,7 @@ PyObject* py_setCameraFocus(PyObject* /*self*/, PyObject* args) {
 
     const std::string className = theProperty->getClassIdentifier();
 
-    if (className == "CameraProperty") {
+    if (className == "org.inviwo.CameraProperty") {
         vec3 focus;
         char* dummy1,*dummy2;
         int d1,d2;
@@ -129,7 +129,7 @@ PyObject* py_setCameraUp(PyObject* /*self*/, PyObject* args) {
 
     const std::string className = theProperty->getClassIdentifier();
 
-    if (className == "CameraProperty") {
+    if (className == "org.inviwo.CameraProperty") {
         vec3 up;
         char* dummy1,*dummy2;
         int d1,d2;
@@ -180,7 +180,7 @@ PyObject* py_setCameraPos(PyObject* /*self*/, PyObject* args) {
 
     const std::string className = theProperty->getClassIdentifier();
 
-    if (className == "CameraProperty") {
+    if (className == "org.inviwo.CameraProperty") {
         vec3 from;
         char* dummy1,*dummy2;
         int d1,d2;
@@ -209,7 +209,7 @@ PyObject* py_setCameraPos(PyObject* /*self*/, PyObject* args) {
         cam->setLookFrom(polFrom);
         Py_RETURN_NONE;
     } else {
-        std::string msg = std::string("setCameraPosition() not a cmera property: ") + className;
+        std::string msg = std::string("setCameraPosition() not a camera property: ") + className;
         PyErr_SetString(PyExc_TypeError, msg.c_str());
         return 0;
     }
