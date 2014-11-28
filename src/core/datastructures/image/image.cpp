@@ -272,7 +272,7 @@ void Image::resize(uvec2 dimensions) {
         pickingLayer_->resize(dimensions);
 }
 
-void Image::resizeRepresentations(Image* targetImage, uvec2 targetDim) {
+void Image::resizeRepresentations(Image* targetImage, uvec2 targetDim) const {
     // targetImage->resize(targetDim);
     std::vector<DataGroupRepresentation*>& targetRepresentations = targetImage->representations_;
     size_t numRepTargets = targetRepresentations.size();

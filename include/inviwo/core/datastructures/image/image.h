@@ -76,7 +76,7 @@ public:
     Layer* getPickingLayer();
 
     void resize(uvec2 dimensions);
-    void resizeRepresentations(Image* targetImage, uvec2 targetDim);
+    void resizeRepresentations(Image* targetImage, uvec2 targetDim) const;
 
     ImageType getImageType() const;
     const DataFormatBase* getDataFormat() const;
