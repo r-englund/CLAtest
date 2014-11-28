@@ -26,7 +26,7 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
- * Main file authors: Peter Steneteg
+ * Contact: <Author>
  *
  *********************************************************************************/
 
@@ -38,6 +38,13 @@
 
 namespace inviwo {
 
+/**
+ * \class <name>
+ *
+ * \brief VERY_BRIEFLY_DESCRIBE_THE_CLASS
+ *
+ * DESCRIBE_THE_CLASS
+ */
 class <api> <name> { 
 public:
     <name>();
