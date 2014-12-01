@@ -147,6 +147,7 @@ set(HEADER_FILES
     ${IVW_INCLUDE_DIR}/inviwo/core/ports/vectordataport.h
     ${IVW_INCLUDE_DIR}/inviwo/core/ports/volumeport.h
     ${IVW_INCLUDE_DIR}/inviwo/core/processors/canvasprocessor.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/processors/canvasprocessorwidget.h
     ${IVW_INCLUDE_DIR}/inviwo/core/processors/processor.h
     ${IVW_INCLUDE_DIR}/inviwo/core/processors/processorfactory.h
     ${IVW_INCLUDE_DIR}/inviwo/core/processors/processorfactoryobject.h
@@ -248,7 +249,6 @@ set(SOURCE_FILES
     datastructures/datagrouprepresentation.cpp
     datastructures/datamapper.cpp
     datastructures/dataoperation.cpp
-    datastructures/dataoperation.cpp
     datastructures/datarepresentation.cpp
     datastructures/diskrepresentation.cpp
     datastructures/geometry/basicmesh.cpp
@@ -347,6 +347,7 @@ set(SOURCE_FILES
     ports/vectordataport.cpp
     ports/volumeport.cpp
     processors/canvasprocessor.cpp
+    processors/canvasprocessorwidget.cpp
     processors/processor.cpp
     processors/processorfactory.cpp
     processors/processortags.cpp
