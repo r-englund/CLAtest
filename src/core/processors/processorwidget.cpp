@@ -44,9 +44,9 @@ ProcessorWidget::ProcessorWidget(const ProcessorWidget& rhs)
 
 ProcessorWidget& ProcessorWidget::operator=(const ProcessorWidget& that) {
     if (this != &that) {
+        ProcessorWidgetObservable::operator=(that);
         processor_ = that.processor_;
         metaData_ = that.metaData_;
-        ObservableInterface::operator=(that);
     }
     return *this;
 }
@@ -67,9 +67,7 @@ void ProcessorWidget::setVisible(bool visible) {
     metaData_->setVisibile(visible);
     if (visible) {
         notifyObserversAboutShow(this);
-        if (processor_) {
-            processor_->invalidate(INVALID_OUTPUT);
-        }
+        if (processor_) processor_->invalidate(INVALID_OUTPUT);
     } else {
         notifyObserversAboutHide(this);
     }

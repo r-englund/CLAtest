@@ -62,6 +62,7 @@ CanvasProcessor::CanvasProcessor()
     , canvas_(NULL)
     , queuedRequest_(false)
     , ignoreResizeCallback_(false) {
+
     addPort(inport_);
     addProperty(inputSize_);
 
@@ -88,7 +89,6 @@ CanvasProcessor::CanvasProcessor()
     visibleLayer_.addOption("picking", "Picking layer", PICKING_LAYER);
     visibleLayer_.set(COLOR_LAYER);
     addProperty(visibleLayer_);
-
     addProperty(saveLayerDirectory_);
 
     saveLayerButton_.onChange(this, &CanvasProcessor::saveImageLayer);
@@ -98,9 +98,6 @@ CanvasProcessor::CanvasProcessor()
 }
 
 CanvasProcessor::~CanvasProcessor() {
-    if (processorWidget_) {
-        processorWidget_->setProcessor(NULL);
-    }
 }
 
 void CanvasProcessor::initialize() { Processor::initialize(); }
