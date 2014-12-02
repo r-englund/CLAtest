@@ -45,7 +45,7 @@ ProcessorCategory(ImageMapping, "Image Operation");
 ProcessorCodeState(ImageMapping, CODE_STATE_STABLE);
 
 ImageMapping::ImageMapping()
-    : ImageGPUProcessor("img_mapping.frag")
+    : ImageGLProcessor("img_mapping.frag")
     , transferFunction_("transferFunction", "Transfer function", TransferFunction()) {
     addProperty(transferFunction_);
 }

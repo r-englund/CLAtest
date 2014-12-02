@@ -47,10 +47,12 @@
 
 namespace inviwo {
 
+class HelpWidget;
+
 class IVW_QTEDITOR_API ProcessorTree : public QTreeWidget {
 
 public:
-    ProcessorTree(QWidget* parent) : QTreeWidget(parent) {};
+    ProcessorTree(QWidget* parent);
     ~ProcessorTree() {};
     
     static const int IDENTIFIER_ROLE;
@@ -66,7 +68,7 @@ private:
 class IVW_QTEDITOR_API ProcessorTreeWidget : public InviwoDockWidget {
     Q_OBJECT
 public:
-    ProcessorTreeWidget(QWidget* parent);
+    ProcessorTreeWidget(QWidget* parent, HelpWidget* helpWidget);
     ~ProcessorTreeWidget();
 
 protected:
@@ -76,6 +78,8 @@ protected:
 
 private slots:
     void addProcessorsToTree();
+
+    void currentItemChanged(QTreeWidgetItem* current, QTreeWidgetItem* previous);
 
 private:
     
@@ -92,6 +96,8 @@ private:
     QIcon iconStable_;
     QIcon iconExperimental_;
     QIcon iconBroken_;
+
+    HelpWidget* helpWidget_;
 };
 
 class IVW_QTEDITOR_API ProcessorDragObject : public QDrag {

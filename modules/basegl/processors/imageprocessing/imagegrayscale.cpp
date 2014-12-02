@@ -43,7 +43,7 @@ ProcessorCategory(ImageGrayscale, "Image Operation");
 ProcessorCodeState(ImageGrayscale, CODE_STATE_STABLE);
 
 ImageGrayscale::ImageGrayscale()
-    : ImageGPUProcessor("img_graysc.frag")
+    : ImageGLProcessor("img_graysc.frag")
     , luminanceModel_("luminanceModel", "Luminance Model")
 {
     luminanceModel_.addOption("perceived", "Perceived", LuminanceModels::PerceivedLum);
