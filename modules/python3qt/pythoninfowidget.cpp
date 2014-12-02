@@ -45,19 +45,19 @@ namespace inviwo {
 PythonInfoWidget::PythonInfoWidget(QWidget* parent)
     :  InviwoDockWidget(tr("Python API Documentation"),parent) {
     setObjectName("PythonInfoWidget");
-    setAllowedAreas(Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea);
-    setFloating(true);
     setVisible(false);
     buildWidget();
+    resize(500, 900);
+
+    setAllowedAreas(Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea);
+    setFloating(true);
 }
 
 PythonInfoWidget::~PythonInfoWidget() {
 }
 
 void PythonInfoWidget::show(){
-    resize(500,900);
     InviwoDockWidget::show();
-    resize(500,900);
 }
 
 void PythonInfoWidget::buildWidget() {
