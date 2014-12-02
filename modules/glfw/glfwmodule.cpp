@@ -33,6 +33,7 @@
 #include <modules/glfw/glfwmodule.h>
 #include <inviwo/core/common/inviwoapplication.h>
 #include <inviwo/core/network/processornetworkevaluator.h>
+#include <inviwo/core/util/rendercontext.h>
 #include <modules/opengl/canvasprocessorgl.h>
 #include <modules/glfw/canvasprocessorwidgetglfw.h>
 
@@ -41,20 +42,16 @@ namespace inviwo {
 GLFWModule::GLFWModule() : InviwoModule() {
     setIdentifier("GLFW");
 
-    if(!glfwInit()){
+    if (!glfwInit()) {
         LogError("GLFW could not be initialized.");
     }
 
     GLFWSharedCanvas_ = new CanvasGLFW(InviwoApplication::getPtr()->getDisplayName());
     GLFWSharedCanvas_->initializeGL();
 
-    ProcessorNetwork* network = InviwoApplication::getPtr()->getProcessorNetwork();
-    if (network) {
-        ProcessorNetworkEvaluator* evaluator = ProcessorNetworkEvaluator::getProcessorNetworkEvaluatorForProcessorNetwork(network);
-        evaluator->setDefaultRenderContext(GLFWSharedCanvas_);
-        GLFWSharedCanvas_->initializeSquare();
-        GLFWSharedCanvas_->defaultGLState();
-    }
+    RenderContext::getPtr()->setDefaultRenderContext(GLFWSharedCanvas_);
+    GLFWSharedCanvas_->initializeSquare();
+    GLFWSharedCanvas_->defaultGLState();
 
     registerProcessorWidgetAndAssociate<CanvasProcessorGL>(new CanvasProcessorWidgetGLFW());
 }

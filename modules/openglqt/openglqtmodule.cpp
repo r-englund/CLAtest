@@ -35,7 +35,7 @@
 #include <inviwo/core/common/inviwoapplication.h>
 #include <modules/opengl/canvasprocessorgl.h>
 #include <modules/openglqt/canvasprocessorwidgetqt.h>
-
+#include <inviwo/core/util/rendercontext.h>
 namespace inviwo {
 
 OpenGLQtModule::OpenGLQtModule() : InviwoModule() {
@@ -44,35 +44,19 @@ OpenGLQtModule::OpenGLQtModule() : InviwoModule() {
     CanvasQt::defineDefaultContextFormat();
     qtGLSharedCanvas_ = new CanvasQt();
 
-    if (InviwoApplication::getPtr()) {
-        ProcessorNetwork* network = InviwoApplication::getPtr()->getProcessorNetwork();
-
-        if (network) {
-            ProcessorNetworkEvaluator* evaluator = ProcessorNetworkEvaluator::getProcessorNetworkEvaluatorForProcessorNetwork(network);
-            qtGLSharedCanvas_->initializeSquare();
-            qtGLSharedCanvas_->defaultGLState();
-            evaluator->setDefaultRenderContext(qtGLSharedCanvas_);
-        }
-    }
+    qtGLSharedCanvas_->initializeSquare();
+    qtGLSharedCanvas_->defaultGLState();
+    RenderContext::getPtr()->setDefaultRenderContext(qtGLSharedCanvas_);
 
     registerProcessorWidgetAndAssociate<CanvasProcessorGL>(new CanvasProcessorWidgetQt());
     registerCapabilities(new OpenGLQtCapabilities());
 }
 
 OpenGLQtModule::~OpenGLQtModule() {
-    bool sharedDeleted = false;
-    ProcessorNetwork* network = InviwoApplication::getPtr()->getProcessorNetwork();
-    if (network) {
-        ProcessorNetworkEvaluator* evaluator = ProcessorNetworkEvaluator::getProcessorNetworkEvaluatorForProcessorNetwork(network);
-        if(evaluator){
-            if(!evaluator->getDefaultRenderContext()){
-                sharedDeleted = true;
-            }
-        }
-    }
-
-    if(!sharedDeleted)
+    if (qtGLSharedCanvas_ == RenderContext::getPtr()->getDefaultRenderContext()) {
+        RenderContext::getPtr()->setDefaultRenderContext(NULL);
         delete qtGLSharedCanvas_;
+    }
 }
 
 } // namespace
