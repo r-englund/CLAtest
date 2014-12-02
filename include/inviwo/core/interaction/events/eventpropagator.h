@@ -39,6 +39,7 @@
 namespace inviwo {
 
 class ResizeEvent;
+class InteractionEvent;
 
 /**
  * \class EventPropagator
