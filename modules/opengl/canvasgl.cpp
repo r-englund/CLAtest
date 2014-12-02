@@ -131,13 +131,7 @@ void CanvasGL::render(const Image* image, LayerType layerType) {
 }
 
 void CanvasGL::resize(uvec2 size) {
-    resize(size, size);
-}
-
-void CanvasGL::resize(uvec2 canvasSize, uvec2 imageSize) {
-    //TODO if (imageGL_) imageGL_->updateExistingLayers();
-
-    Canvas::resize(canvasSize, imageSize);
+    Canvas::resize(size);
 }
 
 void CanvasGL::glSwapBuffers() {}

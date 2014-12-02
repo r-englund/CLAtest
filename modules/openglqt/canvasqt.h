@@ -88,6 +88,8 @@ public:
     void update();
     void repaint();
 
+    virtual void resize(uvec2 size);
+
 protected:
     void initializeGL();
     void paintGL();

@@ -145,7 +145,7 @@ void CanvasProcessorWidgetQt::resizeEvent(QResizeEvent* event) {
     CanvasProcessorWidget::setDimension(ivec2(event->size().width(), event->size().height()));
     QWidget::resizeEvent(event);
     cp->updateCanvasSize(dim);  
-    canvas_->CanvasGL::resize(dim, dim);
+    canvas_->CanvasGL::resize(dim);
 }
 
 void CanvasProcessorWidgetQt::closeEvent(QCloseEvent* event) {

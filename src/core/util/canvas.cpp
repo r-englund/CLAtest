@@ -50,7 +50,6 @@ Canvas::Canvas(uvec2 dimensions)
     : initialized_(false)
     , shared_(true)
     , screenDimensions_(dimensions)
-    , imageDimensions_(dimensions)
     , propagator_(NULL)
     , pickingContainer_(new PickingContainer())
     , ownerWidget_(NULL) {
@@ -124,22 +123,17 @@ void Canvas::render(const Image* im, LayerType layerType/* = COLOR_LAYER*/) {}
 
 void Canvas::activate() {}
 
-void Canvas::resize(uvec2 canvasSize, uvec2 imageSize) {
-    uvec2 previousImageDimensions = imageDimensions_;
-    imageDimensions_ = imageSize;
+void Canvas::resize(uvec2 canvasSize) {
+    uvec2 previousScreenDimensions_ = screenDimensions_;
     screenDimensions_ = canvasSize;
 
     if (propagator_) {
         RenderContext::getPtr()->activateDefaultRenderContext();
-        ResizeEvent* resizeEvent = new ResizeEvent(imageDimensions_);
-        resizeEvent->setPreviousSize(previousImageDimensions);
+        ResizeEvent* resizeEvent = new ResizeEvent(screenDimensions_);
+        resizeEvent->setPreviousSize(previousScreenDimensions_);
         propagator_->propagateResizeEvent(resizeEvent);
         delete resizeEvent;
     }
-}
-
-uvec2 Canvas::getImageDimension() {
-    return imageDimensions_;
 }
 
 uvec2 Canvas::getScreenDimension() {

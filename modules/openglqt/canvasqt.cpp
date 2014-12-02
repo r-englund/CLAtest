@@ -524,6 +524,11 @@ void CanvasQt::pinchTriggered(QPinchGesture* gesture) {
     Canvas::gestureEvent(&gestureEvent);
 }
 
+void CanvasQt::resize(uvec2 size) {
+    QGLWindow::resize(size.x, size.y);
+    CanvasGL::resize(size);
+}
+
 #endif
 
 } // namespace

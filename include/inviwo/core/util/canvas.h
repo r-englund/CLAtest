@@ -62,9 +62,8 @@ public:
     virtual void deinitialize();
     virtual void activate();
     virtual void render(const Image*, LayerType layerType = COLOR_LAYER);
-    virtual void resize(uvec2 canvasSize, uvec2 imageSize);
+    virtual void resize(uvec2 canvasSize);
 
-    uvec2 getImageDimension();
     uvec2 getScreenDimension();
 
     virtual void update();
@@ -101,7 +100,6 @@ protected:
     bool initialized_;
     bool shared_;
     uvec2 screenDimensions_;
-    uvec2 imageDimensions_;
     EventPropagator* propagator_;
     PickingContainer* pickingContainer_;
     ProcessorWidget* ownerWidget_;
