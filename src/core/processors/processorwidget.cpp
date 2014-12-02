@@ -39,18 +39,6 @@ namespace inviwo {
 ProcessorWidget::ProcessorWidget()
     : ProcessorWidgetObservable(), processor_(NULL), metaData_(NULL) {}
 
-ProcessorWidget::ProcessorWidget(const ProcessorWidget& rhs)
-    : ProcessorWidgetObservable(rhs), processor_(rhs.processor_), metaData_(rhs.metaData_) {}
-
-ProcessorWidget& ProcessorWidget::operator=(const ProcessorWidget& that) {
-    if (this != &that) {
-        ProcessorWidgetObservable::operator=(that);
-        processor_ = that.processor_;
-        metaData_ = that.metaData_;
-    }
-    return *this;
-}
-
 ProcessorWidget::~ProcessorWidget() {
     if (processor_) {
         processor_->setProcessorWidget(NULL);

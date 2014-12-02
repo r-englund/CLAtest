@@ -47,8 +47,6 @@ class IVW_CORE_API ProcessorWidget : public ProcessorWidgetObservable {
 public:
     ProcessorWidget();
     virtual ~ProcessorWidget();
-    ProcessorWidget(const ProcessorWidget& rhs);
-    ProcessorWidget& operator=(const ProcessorWidget& that);
 
     virtual void setProcessor(Processor* processor);
     virtual Processor* getProcessor();
