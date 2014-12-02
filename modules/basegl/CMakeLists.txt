@@ -11,7 +11,7 @@ set(HEADER_FILES
     ${CMAKE_CURRENT_SOURCE_DIR}/processors/entryexitpoints.h
     ${CMAKE_CURRENT_SOURCE_DIR}/processors/findedges.h
     ${CMAKE_CURRENT_SOURCE_DIR}/processors/firstivwprocessor.h
-    ${CMAKE_CURRENT_SOURCE_DIR}/processors/imagegpuprocessor.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/processors/imageglprocessor.h
     ${CMAKE_CURRENT_SOURCE_DIR}/processors/imagelayoutgl.h
     ${CMAKE_CURRENT_SOURCE_DIR}/processors/imagemixer.h
     ${CMAKE_CURRENT_SOURCE_DIR}/processors/lightingraycaster.h
@@ -39,7 +39,7 @@ set(SOURCE_FILES
     ${CMAKE_CURRENT_SOURCE_DIR}/processors/entryexitpoints.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/processors/findedges.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/processors/firstivwprocessor.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/processors/imagegpuprocessor.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/processors/imageglprocessor.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/processors/imagelayoutgl.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/processors/imagemixer.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/processors/lightingraycaster.cpp

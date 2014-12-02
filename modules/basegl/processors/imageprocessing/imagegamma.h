@@ -35,7 +35,7 @@
 
 #include <modules/basegl/baseglmoduledefine.h>
 #include <inviwo/core/common/inviwo.h>
-#include <modules/basegl/processors/imagegpuprocessor.h>
+#include <modules/basegl/processors/imageglprocessor.h>
 #include <inviwo/core/properties/ordinalproperty.h>
 
 namespace inviwo {
@@ -45,10 +45,10 @@ namespace inviwo {
  * \brief Apply gamma correction to an image. Alpha channel is not touched.
  *
  * This processor applies a gamma correction pow(input.rgb, gamma) utilizing 
- * the ImageGPUProcessor. 
+ * the ImageGLProcessor. 
  * The input range is assumed to be normalized, i.e. [0, 1]. 
  */
-class IVW_MODULE_BASEGL_API ImageGamma : public ImageGPUProcessor  { 
+class IVW_MODULE_BASEGL_API ImageGamma : public ImageGLProcessor  { 
 public:
     ImageGamma();
     virtual ~ImageGamma();

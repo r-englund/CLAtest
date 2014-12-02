@@ -30,7 +30,7 @@
  *
  *********************************************************************************/
 
-#include "imagegpuprocessor.h"
+#include "imageglprocessor.h"
 #include <modules/opengl/glwrap/shader.h>
 #include <modules/opengl/textureutils.h>
 #include <modules/opengl/shaderutils.h>
@@ -38,7 +38,7 @@
 
 namespace inviwo {
 
-ImageGPUProcessor::ImageGPUProcessor(std::string fragmentShader)
+ImageGLProcessor::ImageGLProcessor(std::string fragmentShader)
     : Processor()
     , inport_(fragmentShader + "inport")
     , outport_(fragmentShader + "outport")
@@ -50,24 +50,24 @@ ImageGPUProcessor::ImageGPUProcessor(std::string fragmentShader)
     addPort(inport_);
     addPort(outport_);
 
-    inport_.onChange(this,&ImageGPUProcessor::inportChanged);
+    inport_.onChange(this,&ImageGLProcessor::inportChanged);
 }
 
-ImageGPUProcessor::~ImageGPUProcessor() {}
+ImageGLProcessor::~ImageGLProcessor() {}
 
-void ImageGPUProcessor::initialize() {
+void ImageGLProcessor::initialize() {
     Processor::initialize();
     delete shader_;
     shader_ = new Shader(fragmentShader_, true);
     internalInvalid_ = true;
 }
 
-void ImageGPUProcessor::deinitialize() {
+void ImageGLProcessor::deinitialize() {
     Processor::deinitialize();
     delete shader_;
 }
 
-void ImageGPUProcessor::process() {
+void ImageGLProcessor::process() {
     if (internalInvalid_ || inport_.getInvalidationLevel() >= INVALID_OUTPUT) {
         internalInvalid_ = false;
         const DataFormatBase* format = dataFormat_;

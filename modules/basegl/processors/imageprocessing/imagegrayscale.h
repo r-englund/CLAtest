@@ -35,7 +35,7 @@
 
 #include <modules/basegl/baseglmoduledefine.h>
 #include <inviwo/core/common/inviwo.h>
-#include <modules/basegl/processors/imagegpuprocessor.h>
+#include <modules/basegl/processors/imageglprocessor.h>
 #include <inviwo/core/properties/baseoptionproperty.h>
 
 namespace inviwo {
@@ -57,9 +57,9 @@ namespace LuminanceModels {
  *
  * This processor computes the gray-scale image from a color image according to either
  * perceived luminance (Y = 0.299 R + 0.587 G + 0.114 B) or relative luminance for XYZ color
- * space (Y = 0.2126 R + 0.7152 G + 0.0722 B) utilizing the ImageGPUProcessor. 
+ * space (Y = 0.2126 R + 0.7152 G + 0.0722 B) utilizing the ImageGLProcessor. 
  */
-class IVW_MODULE_BASEGL_API ImageGrayscale : public ImageGPUProcessor {
+class IVW_MODULE_BASEGL_API ImageGrayscale : public ImageGLProcessor {
 public:
     ImageGrayscale();
     ~ImageGrayscale();

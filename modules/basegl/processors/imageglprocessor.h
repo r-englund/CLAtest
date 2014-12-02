@@ -30,8 +30,8 @@
  *
  *********************************************************************************/
 
-#ifndef IVW_IMAGEGPUPROCESSOR_H
-#define IVW_IMAGEGPUPROCESSOR_H
+#ifndef IVW_IMAGEGLPROCESSOR_H
+#define IVW_IMAGEGLPROCESSOR_H
 
 #include <modules/basegl/baseglmoduledefine.h>
 #include <inviwo/core/common/inviwo.h>
@@ -42,22 +42,22 @@ namespace inviwo {
 
 class Shader;
 
-/*! \class ImageGPUProcessor
+/*! \class ImageGLProcessor
  *
- * \brief Base class for image processing on the GPU.
+ * \brief Base class for image processing on the GPU using OpenGL.
  *
- * The ImageGPUProcessor provides the basic structure for image processing on the GPU.
+ * The ImageGLProcessor provides the basic structure for image processing on the GPU.
  * Derived shaders have to provide a custom fragment shader which is used during rendering.
- * Optionally, derived classes can overwrite ImageGPUProcessor::postProcess() to perform
+ * Optionally, derived classes can overwrite ImageGLProcessor::postProcess() to perform
  * post-processing of the image data set in the outport. Furthermore, it is possible to
- * be notified of changes in the input image by overwriting ImageGPUProcessor::afterInportChanged().
+ * be notified of changes in the input image by overwriting ImageGLProcessor::afterInportChanged().
  *
- * \see VolumeGPUProcessor
+ * \see VolumeGLProcessor
  */
-class IVW_MODULE_BASEGL_API ImageGPUProcessor : public Processor { 
+class IVW_MODULE_BASEGL_API ImageGLProcessor : public Processor { 
 public:
-    ImageGPUProcessor(std::string fragmentShader);
-    virtual ~ImageGPUProcessor();
+    ImageGLProcessor(std::string fragmentShader);
+    virtual ~ImageGLProcessor();
 
     void initialize();
     void deinitialize();
@@ -107,5 +107,5 @@ private:
 
 } // namespace
 
-#endif // IVW_IMAGEGPUPROCESSOR_H
+#endif // IVW_IMAGEGLPROCESSOR_H
 

@@ -39,7 +39,7 @@ ProcessorTags(ImageInvert, Tags::GL);
 ProcessorCategory(ImageInvert, "Image Operation");
 ProcessorCodeState(ImageInvert, CODE_STATE_STABLE);
 
-ImageInvert::ImageInvert() : ImageGPUProcessor("img_invert.frag") {}
+ImageInvert::ImageInvert() : ImageGLProcessor("img_invert.frag") {}
 
 ImageInvert::~ImageInvert() {}
 
