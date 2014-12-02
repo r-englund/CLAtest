@@ -59,7 +59,7 @@ class IVW_QTEDITOR_API LinkDialogGraphicsScene : public QGraphicsScene,
     Q_OBJECT
 public:
     LinkDialogGraphicsScene(QWidget* parent);
-    ~LinkDialogGraphicsScene() {}
+    virtual ~LinkDialogGraphicsScene();
 
     template <typename T>
     T* getSceneGraphicsItemAt(const QPointF pos,
@@ -89,6 +89,10 @@ public:
 
     virtual void onProcessorNetworkDidAddLink(PropertyLink* propertyLink);
     virtual void onProcessorNetworkDidRemoveLink(PropertyLink* propertyLink);
+    virtual void onProcessorNetworkWillRemoveProcessor(Processor* processor);
+
+signals:
+    void closeDialog();
 
 protected:
     // Overload qt events

@@ -3,7 +3,7 @@
  * Inviwo - Interactive Visualization Workshop
  * Version 0.6b
  *
- * Copyright (c) 2013 Inviwo Foundation
+ * Copyright (c) 2012-2014 Inviwo Foundation
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -30,51 +30,6 @@
  *
  *********************************************************************************/
 
-#include <modules/<lname>/<lname>module.h>
-
-namespace inviwo {
-
-<name>Module::<name>Module() : InviwoModule() {
-    setIdentifier("<name>");
-	
-	// Add a directory to the search path of the Shadermanager
-	//ShaderManager::getPtr()->addShaderSearchPath(InviwoApplication::PATH_MODULES, "<lname>/glsl");
-	
-	// Register objects that can be shared with the rest of inviwo here:
-	
-	// Processors
-	// registerProcessor(<name>);
-	
-	// Properties
-	// registerProperty(<name>Property);
-	
-	// Readers and writes
-	// registerDataReader(new <name>Reader());
-	// registerDataWriter(new <name>Writer());
-	
-	// Data converters
-	// registerRepresentationConverter(new <name>Disk2RAMConverter());
-
-	// Ports
-	// registerPort(<name>Outport);
-	// registerPort(<name>Inport);
-
-	// PropertyWidgets
-	// registerPropertyWidget(<name>PropertyWidgetQt, <name>Property, "Default");
-	
-	// Dialogs
-	// registerDialog("<lname>", <name>DialogQt);
-	
-	// Other varius things
-	// registerCapabilities(Capabilities* info);
-    // registerData(Data* data);
-    // registerDataRepresentation(DataRepresentation* dataRepresentation);
-	// registerSettings(new SystemSettings());
-	// registerMetaData(MetaData* meta);   
-    // registerPortInspector(PortInspector* portInspector);
-    // registerProcessorWidget(std::string processorClassName, ProcessorWidget* processorWidget);
-    // registerRenderer(GeometryRenderer* renderer);
-    // registerResource(Resource* resource);	
+void main(void) {
+		
 }
-
-} // namespace

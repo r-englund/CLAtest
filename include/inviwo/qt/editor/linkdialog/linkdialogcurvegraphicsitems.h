@@ -62,7 +62,7 @@ class IVW_QTEDITOR_API DialogCurveGraphicsItem : public CurveGraphicsItem {
 
 public:
     DialogCurveGraphicsItem(QPointF startPoint, QPointF endPoint, uvec3 color=uvec3(38,38,38));
-    ~DialogCurveGraphicsItem();
+    virtual ~DialogCurveGraphicsItem();
 
     //override for qgraphicsitem_cast (refer qt documentation)
     enum { Type = UserType + LinkDialogCurveGraphicsItemType };
@@ -80,7 +80,7 @@ class IVW_QTEDITOR_API DialogConnectionGraphicsItem : public DialogCurveGraphics
 public:
     DialogConnectionGraphicsItem(LinkDialogPropertyGraphicsItem* startProperty, LinkDialogPropertyGraphicsItem* endProperty,
                                  PropertyLink* propertyLink);
-    ~DialogConnectionGraphicsItem();
+    virtual ~DialogConnectionGraphicsItem();
 
     PropertyLink* getPropertyLink() const { return propertyLink_; }
     LinkDialogPropertyGraphicsItem* getStartProperty() const { return startPropertyGraphicsItem_; }
