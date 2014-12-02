@@ -39,7 +39,7 @@
 
 namespace inviwo {
 
-/** \docpage{<name>}
+/** \docpage{<classIdentifier>, <name>}
  * Explanation of how to use the processor.
  *
  * ### Inports

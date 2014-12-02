@@ -99,7 +99,8 @@ void HelpWidget::setupFinished() {
 }
 
 void HelpWidget::showDocForClassName(std::string classIdentifier) {
-    std::string className = splitString(classIdentifier, '.').back();
+    std::string className = joinString(splitString(classIdentifier, '.'), "_8");
+
     QUrl url(
         QString::fromStdString("qthelp://org.inviwo/doc/docpage-" + className + ".html"));
 

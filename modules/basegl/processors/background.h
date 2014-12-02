@@ -45,7 +45,7 @@
 
 namespace inviwo {
 
-/** \docpage{Background}
+/** \docpage{org.inviwo.Background, Background}
  * Adds a background to an image. 
  * ![](background.png)
  * The following mixing is applied
