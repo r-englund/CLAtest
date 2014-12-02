@@ -197,7 +197,7 @@ class Paths:
 			self.source = os.sep.join(abspath[:inviwo_pos-1] + ["src"] + abspath[inviwo_pos+1:] + [self.file_name])
 			self.cmake_file = find_cmake_file(self.source)
 			self.cmake_header_file = "/".join(["${IVW_INCLUDE_DIR}"] + abspath[inviwo_pos:] + [file.lower() +".h"])
-			self.cmake_source = make_path_relative(self.source, self.cmake_file)
+			self.cmake_source = "/".join(make_path_relative(self.source, self.cmake_file).split(os.sep))
 				
 		elif re.compile(r".*/modules/.*").match("/".join(abspath)): # Module path
 			module_pos = abspath.index("modules")
@@ -208,8 +208,8 @@ class Paths:
 			self.header_file = os.sep.join(abspath + [self.file_name + ".h"])
 			self.source = os.sep.join(abspath + [self.file_name])
 			self.cmake_file = find_cmake_file(self.source)
-			self.cmake_header_file = "${CMAKE_CURRENT_SOURCE_DIR}/"  + make_path_relative(self.header_file, self.cmake_file)
-			self.cmake_source = "${CMAKE_CURRENT_SOURCE_DIR}/"  + make_path_relative(self.source, self.cmake_file)
+			self.cmake_header_file = "${CMAKE_CURRENT_SOURCE_DIR}/"  + "/".join(make_path_relative(self.header_file, self.cmake_file).split(os.sep))
+			self.cmake_source = "${CMAKE_CURRENT_SOURCE_DIR}/"  + "/".join(make_path_relative(self.source, self.cmake_file).split(os.sep))
 		
 	def get_source_file(self, ext = ".cpp"):
 		return self.source + ext
