@@ -48,7 +48,6 @@ ProcessorNetworkEvaluator::ProcessorNetworkEvaluator(ProcessorNetwork* processor
     , processorStatesDirty_(true) {
 
     initializeNetwork();
-    defaultContext_ = NULL;
     
     ivwAssert(processorNetworkEvaluators_.find(processorNetwork) == processorNetworkEvaluators_.end() ,
               "A ProcessorNetworkEvaluator for the given ProcessorNetwork is already created");
@@ -65,17 +64,6 @@ ProcessorNetworkEvaluator::~ProcessorNetworkEvaluator() {
 
 void ProcessorNetworkEvaluator::topologyUpdated() {
     processorStatesDirty_ = true;
-}
-
-void ProcessorNetworkEvaluator::setDefaultRenderContext(Canvas* canvas) { 
-    defaultContext_ = canvas;
-    if(defaultContext_)
-        defaultContext_->setNetworkEvaluator(this);
-}
-
-void ProcessorNetworkEvaluator::activateDefaultRenderContext() const {
-    if (defaultContext_)
-        defaultContext_->activate();
 }
 
 void ProcessorNetworkEvaluator::initializeNetwork() {
@@ -418,7 +406,7 @@ void ProcessorNetworkEvaluator::requestEvaluate() {
 void ProcessorNetworkEvaluator::evaluate() {
     // lock processor network to avoid concurrent evaluation
     processorNetwork_->lock();
-    activateDefaultRenderContext();
+    RenderContext::getPtr()->activateDefaultRenderContext();
 
     // if the processor network has changed determine the new processor order
     if (processorNetwork_->isModified()) {
