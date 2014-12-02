@@ -44,5 +44,7 @@ void RenderContext::activateDefaultRenderContext() const {
     if (defaultContext_) defaultContext_->activate();
 }
 
+Canvas* RenderContext::getDefaultRenderContext() { return defaultContext_; }
+
 } // namespace
 

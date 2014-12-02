@@ -43,15 +43,15 @@ class Canvas;
 /**
  * \class RenderContext
  *
- * \brief VERY_BRIEFLY_DESCRIBE_THE_CLASS
+ * \brief Keeper of the default render context.
  *
- * DESCRIBE_THE_CLASS
  */
 class IVW_CORE_API RenderContext : public Singleton<RenderContext>{ 
 public:
     RenderContext();
     virtual ~RenderContext();
 
+    Canvas* getDefaultRenderContext(); 
     void setDefaultRenderContext(Canvas* canvas);
     void activateDefaultRenderContext() const;
 
