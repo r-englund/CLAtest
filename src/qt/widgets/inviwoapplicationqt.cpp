@@ -44,6 +44,9 @@
 #include <time.h>
 #endif
 
+#include <QApplication>
+#include <QDesktopWidget>
+
 namespace inviwo {
 
 InviwoApplicationQt::InviwoApplicationQt(std::string displayName,
@@ -204,6 +207,56 @@ QPoint InviwoApplicationQt::getWindowDecorationOffset() const {
 
 void InviwoApplicationQt::setWindowDecorationOffset(QPoint windowDecorationOffset) {
     windowDecorationOffset_ = windowDecorationOffset;
+}
+
+QPoint InviwoApplicationQt::movePointOntoDesktop(const QPoint& point, const QSize& size) {
+    QPoint pos(point);
+    QDesktopWidget* desktop = QApplication::desktop();
+    int primaryScreenIndex = desktop->primaryScreen();
+    QRect wholeScreen = desktop->screenGeometry(primaryScreenIndex);
+
+    for (int i = 0; i < desktop->screenCount(); i++) {
+        if (i != primaryScreenIndex) wholeScreen = wholeScreen.united(desktop->screenGeometry(i));
+    }
+
+    wholeScreen.setRect(wholeScreen.x() - 10, wholeScreen.y() - 10, wholeScreen.width() + 20,
+                        wholeScreen.height() + 20);
+    QPoint bottomRight = QPoint(point.x() + size.width(), point.y() + size.height());
+    QPoint appPos = getMainWindow()->pos();
+
+#if (QT_VERSION >= QT_VERSION_CHECK(5, 0, 0))
+    QPoint offset = getWindowDecorationOffset();
+    pos -= offset;
+#endif
+
+    if (!wholeScreen.contains(pos) || !wholeScreen.contains(bottomRight)) {
+        // If the widget is outside visible screen
+        pos = appPos;
+        pos += offsetWidget();
+    }
+
+    return pos;
+}
+
+QPoint InviwoApplicationQt::offsetWidget() {
+    static int offsetCounter = 0;
+    static ivec2 baseOffset(350, 100);
+
+    ivec2 pos(0, 0);
+    pos += baseOffset + ivec2(40 * offsetCounter++);
+
+    if (offsetCounter == 10) { //reset offset
+        offsetCounter = 0;
+        baseOffset.x += 200;
+        if (baseOffset.x >= 800) {
+            baseOffset.x = 350;
+            baseOffset.y += 100;
+            if (baseOffset.y >= 800) {
+                baseOffset.y = 100;
+            }
+        }
+    }
+    return QPoint(pos.x, pos.y);
 }
 
 #endif

@@ -34,6 +34,7 @@
 #include <modules/openglqt/canvasqt.h>
 #include <inviwo/core/processors/canvasprocessor.h>
 #include <inviwo/core/common/inviwoapplication.h>
+#include <inviwo/qt/widgets/inviwoapplicationqt.h>
 #include <QGridLayout>
 
 namespace inviwo {
@@ -61,8 +62,10 @@ CanvasProcessorWidgetQt* CanvasProcessorWidgetQt::create() const {
 void CanvasProcessorWidgetQt::initialize() {
     CanvasProcessorWidget::initialize();
 
+    ivec2 dim = CanvasProcessorWidget::getDimension();
+    ivec2 pos = CanvasProcessorWidget::getPosition();
+
     setWindowTitle(QString::fromStdString(processor_->getIdentifier()));
-    ivec2 dim = getDimension();
     CanvasQt* sharedCanvas = CanvasQt::getSharedCanvas();
     if (!sharedCanvas->getProcessorWidgetOwner()) {
         canvas_ = sharedCanvas;
@@ -91,7 +94,21 @@ void CanvasProcessorWidgetQt::initialize() {
 #else
     setWindowFlags(Qt::Tool);
 #endif
-    canvas_->CanvasGL::resize(dim, dim);
+    setDimension(dim);
+
+    InviwoApplicationQt* app = dynamic_cast<InviwoApplicationQt*>(InviwoApplication::getPtr());
+    if (app) {
+
+        QPoint newPos = app->movePointOntoDesktop(QPoint(pos.x, pos.y), this->size());
+
+        if (!(newPos.x() == 0 && newPos.y() == 0)) {
+            QWidget::move(newPos);
+        } else { // We guess that this is a new widget and give a new position
+            newPos = app->getMainWindow()->pos();
+            newPos += app->offsetWidget();
+            QWidget::move(newPos);
+        }
+    }
 }
 
 void CanvasProcessorWidgetQt::deinitialize() {

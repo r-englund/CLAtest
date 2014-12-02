@@ -45,8 +45,6 @@ class IVW_QTWIDGETS_API ProcessorWidgetQt : public QWidget, public ProcessorWidg
 public:
     ProcessorWidgetQt();
     virtual ~ProcessorWidgetQt();
-    ProcessorWidgetQt(const ProcessorWidgetQt& rhs);
-    ProcessorWidgetQt& operator=(const ProcessorWidgetQt& that);
 
     virtual ProcessorWidget* create() const = 0;
     virtual void initialize();
@@ -68,8 +66,6 @@ protected:
     virtual void hideEvent(QHideEvent*);
     virtual void moveEvent(QMoveEvent*);
 
-private:
-    ivec2 offsetWidget();
 };
 
 } // namespace

@@ -69,6 +69,9 @@ public:
     QPoint getWindowDecorationOffset() const;
     void setWindowDecorationOffset(QPoint windowDecorationOffset);
 
+    QPoint movePointOntoDesktop(const QPoint& point, const QSize& size);
+    QPoint offsetWidget();
+
 public slots:
     void fileChanged(QString fileName);
 
