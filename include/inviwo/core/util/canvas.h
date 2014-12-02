@@ -50,13 +50,10 @@ namespace inviwo {
 class ProcessorNetworkEvaluator;
 template <class Layer> class DataWriterType;
 class Image;
+class EventPropagator;
+class ProcessorWidget;
 
 class IVW_CORE_API Canvas {
-
-    friend class CanvasProcessor;
-    friend class ProcessorNetworkEvaluator;
-    friend class LayerRAM;
-
 public:
     Canvas(uvec2 dimensions);
     virtual ~Canvas();
@@ -74,8 +71,12 @@ public:
 
     bool isInitialized();
 
-    void setNetworkEvaluator(ProcessorNetworkEvaluator* networkEvaluator);
-    ProcessorNetworkEvaluator* getProcessorNetworkEvaluator();
+    void setEventPropagator(EventPropagator* propagator);
+    ProcessorWidget* getProcessorWidgetOwner() const;
+    void setProcessorWidgetOwner(ProcessorWidget*);
+
+    //TODO, this should not be here...
+    static DataWriterType<Layer>* generalLayerWriter_;
 
 protected:
     void activateDefaultRenderContext();
@@ -96,16 +97,14 @@ protected:
     uvec2 mousePosToPixelCoordinates(ivec2 mpos);
 
     static Geometry* screenAlignedRect_;
-    static DataWriterType<Layer>* generalLayerWriter_;
 
     bool initialized_;
     bool shared_;
     uvec2 screenDimensions_;
     uvec2 imageDimensions_;
-
+    EventPropagator* propagator_;
     PickingContainer* pickingContainer_;
-
-    ProcessorNetworkEvaluator* processorNetworkEvaluator_;
+    ProcessorWidget* ownerWidget_;
 };
 
 } // namespace

@@ -70,17 +70,14 @@ void CanvasProcessorWidgetGLFW::initialize() {
         canvas_->initialize();
 
     canvas_->setProcessorWidgetOwner(this);
-    canvasProcessor_->setCanvas(static_cast<Canvas*>(canvas_));
-    canvas_->setNetworkEvaluator(InviwoApplication::getPtr()->getProcessorNetworkEvaluator());
+//TODO    canvasProcessor_->setCanvas(static_cast<Canvas*>(canvas_));
     canvas_->setWindowSize(dimU);
 }
 
 void CanvasProcessorWidgetGLFW::deinitialize() {
     if (canvas_) {
-        canvas_->setNetworkEvaluator(NULL);
-
         CanvasProcessor* canvasProcessor = dynamic_cast<CanvasProcessor*>(processor_);
-        canvasProcessor->setCanvas(NULL);
+        //TODO canvasProcessor->setCanvas(NULL);
 
         this->hide();
         if(hasSharedCanvas_)

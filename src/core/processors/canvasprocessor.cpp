@@ -35,6 +35,7 @@
 #include <inviwo/core/util/canvas.h>
 #include <inviwo/core/util/datetime.h>
 #include <inviwo/core/util/stringconversion.h>
+#include <inviwo/core/processors/canvasprocessorwidget.h>
 #include <inviwo/core/processors/processorwidget.h>
 #include <inviwo/core/network/processornetworkevaluator.h>
 #include <inviwo/core/io/datawriterfactory.h>
@@ -59,7 +60,8 @@ CanvasProcessor::CanvasProcessor()
     , saveLayerDirectory_("layerDir", "Output Directory", "", "image")
     , saveLayerButton_("saveLayer", "Save Image Layer", VALID)
     , inputSize_("inputSize", "Input Dimension Parameters")
-    , canvas_(NULL)
+    , evaluator_(NULL)
+    , canvasWidget_(NULL)
     , queuedRequest_(false)
     , ignoreResizeCallback_(false) {
 
@@ -100,36 +102,24 @@ CanvasProcessor::CanvasProcessor()
 CanvasProcessor::~CanvasProcessor() {
 }
 
-void CanvasProcessor::initialize() { Processor::initialize(); }
+void CanvasProcessor::initialize() { 
+    Processor::initialize(); 
+    if (processorWidget_) {
+        canvasWidget_ = dynamic_cast<CanvasProcessorWidget*>(processorWidget_);
+        canvasWidget_->getCanvas()->setEventPropagator(this);
+    }
+    evaluator_ = InviwoApplication::getPtr()->getProcessorNetworkEvaluator();
+}
 
 void CanvasProcessor::deinitialize() {
     if (processorWidget_) processorWidget_->hide();
-
-    if (canvas_ &&
-        (!canvas_->getProcessorNetworkEvaluator() ||
-         canvas_ != canvas_->getProcessorNetworkEvaluator()->getDefaultRenderContext())) {
-        delete canvas_;
-        canvas_ = NULL;
-    }
-
     Processor::deinitialize();
 }
 
-void CanvasProcessor::setCanvas(Canvas* canvas) { canvas_ = canvas; }
-
-Canvas* CanvasProcessor::getCanvas() const { return canvas_; }
-
 // Called by dimensions onChange.
 void CanvasProcessor::resizeCanvas() {
-    if (processorWidget_ && !ignoreResizeCallback_) {
-        processorWidget_->setDimension(dimensions_.get());
-        if (canvas_) {
-            if (enableCustomInputDimensions_.get()) {
-                canvas_->resize(uvec2(dimensions_.get()), uvec2(customInputDimensions_.get()));
-            } else {
-                canvas_->resize(uvec2(dimensions_.get()), uvec2(dimensions_.get()));
-            }
-        }
+    if (canvasWidget_ && !ignoreResizeCallback_) {
+        canvasWidget_->setDimension(dimensions_.get());
     }
 }
 
@@ -156,12 +146,8 @@ void CanvasProcessor::sizeSchemeChanged() {
     keepAspectRatio_.setVisible(enableCustomInputDimensions_.get());
     aspectRatioScaling_.setVisible(enableCustomInputDimensions_.get() && keepAspectRatio_.get());
 
-    if (canvas_) {
-        if (enableCustomInputDimensions_.get()) {
-            canvas_->resize(uvec2(dimensions_.get()), uvec2(customInputDimensions_.get()));
-        } else {
-            canvas_->resize(uvec2(dimensions_.get()), uvec2(dimensions_.get()));
-        }
+    if (canvasWidget_ && !ignoreResizeCallback_) {
+        canvasWidget_->setDimension(dimensions_.get());
     }
 }
 
@@ -190,8 +176,6 @@ void CanvasProcessor::ratioChanged() {
             size[minDim] = static_cast<int>(static_cast<float>(size[maxDim]) * ratio);
 
             customInputDimensions_.set(size);
-        } else if (canvas_) {
-            canvas_->resize(uvec2(dimensions_.get()), uvec2(customInputDimensions_.get()));
         }
     }
 }
@@ -268,7 +252,15 @@ std::vector<unsigned char>* CanvasProcessor::getImageLayerAsCodedBuffer(const st
     return NULL;
 }
 
-void CanvasProcessor::process() { canvas_->activate(); }
+void CanvasProcessor::process() {
+    canvasWidget_->getCanvas()->activate();
+    canvasWidget_->getCanvas()->render(inport_.getData(), static_cast<LayerType>(visibleLayer_.get()));    
+}
+
+void CanvasProcessor::doIfNotReady() {
+    canvasWidget_->getCanvas()->activate();
+    canvasWidget_->getCanvas()->render(NULL, static_cast<LayerType>(visibleLayer_.get()));
+}
 
 void CanvasProcessor::triggerQueuedEvaluation() {
     if (queuedRequest_) {
@@ -280,21 +272,31 @@ void CanvasProcessor::triggerQueuedEvaluation() {
 void CanvasProcessor::performEvaluationAtNextShow() { queuedRequest_ = true; }
 
 void CanvasProcessor::performEvaluateRequest() {
-    if (canvas_ && canvas_->getProcessorNetworkEvaluator()) {
-        if (processorWidget_) {
-            if (processorWidget_->isVisible()) {
-                notifyObserversRequestEvaluate(this);
-            } else {
-                performEvaluationAtNextShow();
-            }
-        } else {
+    if (processorWidget_) {
+        if (processorWidget_->isVisible()) {
             notifyObserversRequestEvaluate(this);
+        } else {
+            performEvaluationAtNextShow();
         }
+    } else {
+        notifyObserversRequestEvaluate(this);
     }
 }
 
 bool CanvasProcessor::isReady() const {
     return Processor::isReady() && processorWidget_ && processorWidget_->isVisible();
+}
+
+void CanvasProcessor::propagateResizeEvent(ResizeEvent* event) {
+    // avoid continues evaluation when port dimension changes
+    InviwoApplication::getPtr()->getProcessorNetwork()->lock();
+    inport_.changeDataDimensions(event);
+    // enable network evaluation again
+    InviwoApplication::getPtr()->getProcessorNetwork()->unlock();
+}
+
+void CanvasProcessor::propagateInteractionEvent(InteractionEvent* event) {
+    evaluator_->propagateInteractionEvent(this, event);
 }
 
 }  // namespace

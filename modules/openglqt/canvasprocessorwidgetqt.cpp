@@ -39,7 +39,11 @@
 namespace inviwo {
 
 CanvasProcessorWidgetQt::CanvasProcessorWidgetQt()
-    : ProcessorWidgetQt(), canvas_(0), hasSharedCanvas_(false) {
+    : QWidget()
+    , CanvasProcessorWidget()
+    , canvas_(NULL)
+    , hasSharedCanvas_(false) {
+
     setMinimumSize(32, 32);
     setFocusPolicy(Qt::NoFocus);
     setAttribute(Qt::WA_OpaquePaintEvent);
@@ -48,21 +52,16 @@ CanvasProcessorWidgetQt::CanvasProcessorWidgetQt()
 
 CanvasProcessorWidgetQt::~CanvasProcessorWidgetQt() {
     if (hasSharedCanvas_ && canvas_) canvas_->setParent(NULL);
-
-    if (processor_) {
-        static_cast<CanvasProcessor*>(processor_)->setCanvas(NULL);
-    }
 }
 
-ProcessorWidget* CanvasProcessorWidgetQt::create() const {
+CanvasProcessorWidgetQt* CanvasProcessorWidgetQt::create() const {
     return new CanvasProcessorWidgetQt();
 }
 
 void CanvasProcessorWidgetQt::initialize() {
-    ProcessorWidgetQt::initialize();
+    CanvasProcessorWidget::initialize();
 
     setWindowTitle(QString::fromStdString(processor_->getIdentifier()));
-    CanvasProcessor* canvasProcessor = dynamic_cast<CanvasProcessor*>(processor_);
     ivec2 dim = getDimension();
     CanvasQt* sharedCanvas = CanvasQt::getSharedCanvas();
     if (!sharedCanvas->getProcessorWidgetOwner()) {
@@ -92,25 +91,11 @@ void CanvasProcessorWidgetQt::initialize() {
 #else
     setWindowFlags(Qt::Tool);
 #endif
-
-    canvasProcessor->setCanvas(static_cast<Canvas*>(canvas_));
-    canvas_->setNetworkEvaluator(InviwoApplication::getPtr()->getProcessorNetworkEvaluator());
-    
-    if (canvasProcessor->getUseCustomDimensions()) {
-        canvas_->CanvasGL::resize(dim, canvasProcessor->getCustomDimensions());
-    } else {
-        canvas_->CanvasGL::resize(dim, dim);
-    }
+    canvas_->CanvasGL::resize(dim, dim);
 }
 
 void CanvasProcessorWidgetQt::deinitialize() {
-    if (canvas_) {
-    
-        canvas_->setNetworkEvaluator(NULL);
-    
-        CanvasProcessor* canvasProcessor = dynamic_cast<CanvasProcessor*>(processor_);
-        canvasProcessor->setCanvas(NULL);
-    
+    if (canvas_) {        
         this->hide();
         if (hasSharedCanvas_) {
             canvas_->setProcessorWidgetOwner(NULL);
@@ -118,17 +103,10 @@ void CanvasProcessorWidgetQt::deinitialize() {
             canvas_->setParent(NULL);
         } else {
             canvas_->deinitialize();
-        }
-        // FIXME: CanvasQt is child of this object.
-        // Hence don't delete CanvasQt here or use deleteLater. Let the destructor destroy CanvasQt
-        // widget
-        // canvas_->deleteLater();
-        // if (children().size())
-        //    LogWarn("Canvas is not expected to have children");
-        canvas_ = NULL;
+        }     
+        canvas_ = NULL; // Qt will take care of deleting the canvas
     }
-
-    ProcessorWidgetQt::deinitialize();
+    CanvasProcessorWidget::deinitialize();
 }
 
 void CanvasProcessorWidgetQt::setVisible(bool visible) {
@@ -138,7 +116,7 @@ void CanvasProcessorWidgetQt::setVisible(bool visible) {
     }else{
         canvas_->hide();
     }
-    ProcessorWidgetQt::setVisible(visible);
+    QWidget::setVisible(visible); // This will trigger show/hide events.
 }
     
 void CanvasProcessorWidgetQt::show() {
@@ -148,21 +126,53 @@ void CanvasProcessorWidgetQt::hide() {
     CanvasProcessorWidgetQt::setVisible(false);
 }
 
-void CanvasProcessorWidgetQt::showEvent(QShowEvent* event) {
-    ProcessorWidgetQt::showEvent(event);
+void CanvasProcessorWidgetQt::setPosition(glm::ivec2 pos) {
+    QWidget::move(pos.x, pos.y); // This will trigger a move event.
 }
 
-void CanvasProcessorWidgetQt::closeEvent(QCloseEvent* event) {
-    canvas_->hide();
-    ProcessorWidgetQt::closeEvent(event);
+void CanvasProcessorWidgetQt::setDimension(ivec2 dimensions) {
+    QWidget::resize(dimensions.x, dimensions.y); // This will trigger a resize event.
+}
+
+Canvas* CanvasProcessorWidgetQt::getCanvas() const {
+    return canvas_;
 }
 
 void CanvasProcessorWidgetQt::resizeEvent(QResizeEvent* event) {
     if(!event->spontaneous()) return;
     uvec2 dim(event->size().width(), event->size().height());
     CanvasProcessor* cp = static_cast<CanvasProcessor*>(processor_);
-    ProcessorWidgetQt::resizeEvent(event);
+    CanvasProcessorWidget::setDimension(ivec2(event->size().width(), event->size().height()));
+    QWidget::resizeEvent(event);
     cp->updateCanvasSize(dim);  
+    canvas_->CanvasGL::resize(dim, dim);
 }
+
+void CanvasProcessorWidgetQt::closeEvent(QCloseEvent* event) {
+    canvas_->hide();
+    CanvasProcessorWidget::setVisible(false);
+    QWidget::closeEvent(event);
+}
+
+void CanvasProcessorWidgetQt::showEvent(QShowEvent* event) {
+    CanvasProcessorWidget::setVisible(true);
+    QWidget::showEvent(event);
+}
+
+void CanvasProcessorWidgetQt::hideEvent(QHideEvent* event) {
+    CanvasProcessorWidget::setVisible(false);
+    QWidget::hideEvent(event);
+}
+
+void CanvasProcessorWidgetQt::moveEvent(QMoveEvent* event) {
+    CanvasProcessorWidget::setPosition(ivec2(event->pos().x(), event->pos().y()));
+    QWidget::moveEvent(event);
+}
+
+
+
+
+
+
 
 }  // namespace

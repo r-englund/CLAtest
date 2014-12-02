@@ -51,7 +51,6 @@ const MeshGL* CanvasGL::screenAlignedRectGL_ = NULL;
 CanvasGL::CanvasGL(uvec2 dimensions)
     : Canvas(dimensions)
     , imageGL_(NULL)
-    , ownerWidget_(NULL)
     , rectArray_(NULL)
     , layerType_(COLOR_LAYER)
     , shader_(NULL)
@@ -136,7 +135,7 @@ void CanvasGL::resize(uvec2 size) {
 }
 
 void CanvasGL::resize(uvec2 canvasSize, uvec2 imageSize) {
-    if (imageGL_) imageGL_->updateExistingLayers();
+    //TODO if (imageGL_) imageGL_->updateExistingLayers();
 
     Canvas::resize(canvasSize, imageSize);
 }
@@ -242,17 +241,6 @@ void CanvasGL::enableDrawImagePlaneRect() {
 
 void CanvasGL::disableDrawImagePlaneRect() {
     screenAlignedRectGL_->disable();
-}
-
-ProcessorWidget* CanvasGL::getProcessorWidgetOwner(){
-    return ownerWidget_;
-}
-
-void CanvasGL::setProcessorWidgetOwner(ProcessorWidget* processorWidget){
-    ownerWidget_ = processorWidget;
-
-    if(!ownerWidget_)
-        imageGL_ = NULL;
 }
 
 }  // namespace

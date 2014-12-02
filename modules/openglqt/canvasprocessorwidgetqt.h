@@ -25,7 +25,7 @@
  * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- * 
+ *
  * Contact: Erik Sundén
  *
  *********************************************************************************/
@@ -34,39 +34,47 @@
 #define IVW_CANVASPROCESSORWIDGETQT_H
 
 #include <modules/openglqt/openglqtmoduledefine.h>
-#include <inviwo/qt/widgets/processors/processorwidgetqt.h>
+#include <inviwo/core/processors/canvasprocessorwidget.h>
+#include <QWidget>
 
 namespace inviwo {
 
 class CanvasQt;
 class CanvasProcessor;
 
-class IVW_MODULE_OPENGLQT_API CanvasProcessorWidgetQt : public ProcessorWidgetQt {
+class IVW_MODULE_OPENGLQT_API CanvasProcessorWidgetQt : public QWidget,
+                                                        public CanvasProcessorWidget {
     Q_OBJECT
 public:
     CanvasProcessorWidgetQt();
     virtual ~CanvasProcessorWidgetQt();
 
-    virtual ProcessorWidget* create() const;
+    virtual CanvasProcessorWidgetQt* create() const;
     virtual void initialize();
     virtual void deinitialize();
 
-    // Override ProcessorWidgetQt
+    // Override ProcessorWidget
     virtual void setVisible(bool visible);
     virtual void show();
     virtual void hide();
+    virtual void setPosition(glm::ivec2 pos); 
+    virtual void setDimension(ivec2 dimensions);
+
+    virtual Canvas* getCanvas() const;
 
 protected:
-    // Override ProcessorWidgetQt
+    // Override QWidget events
     virtual void resizeEvent(QResizeEvent*);
-    virtual void showEvent(QShowEvent*);
     virtual void closeEvent(QCloseEvent*);
+    virtual void showEvent(QShowEvent*);
+    virtual void hideEvent(QHideEvent*);
+    virtual void moveEvent(QMoveEvent*);
 
 private:
     CanvasQt* canvas_;
     bool hasSharedCanvas_;
 };
 
-} // namespace
+}  // namespace
 
-#endif // IVW_CANVASPROCESSORWIDGETQT_H
+#endif  // IVW_CANVASPROCESSORWIDGETQT_H
