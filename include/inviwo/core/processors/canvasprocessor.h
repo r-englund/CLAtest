@@ -58,10 +58,8 @@ public:
     virtual void initialize();
     virtual void deinitialize();
 
-
     void setCanvasSize(ivec2);
     ivec2 getCanvasSize() const;
-    void updateCanvasSize(ivec2);
 
     bool getUseCustomDimensions() const;
     ivec2 getCustomDimensions() const;
@@ -101,10 +99,11 @@ private:
     void sizeSchemeChanged();
     void ratioChanged();
 
+    ivec2 previousImageSize_;
+
     ProcessorNetworkEvaluator* evaluator_; //< non-owning reference
     CanvasProcessorWidget* canvasWidget_; //< non-owning reference
     bool queuedRequest_;
-    bool ignoreResizeCallback_;
 };
 
 } // namespace

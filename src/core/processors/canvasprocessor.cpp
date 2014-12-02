@@ -47,23 +47,23 @@ namespace inviwo {
 CanvasProcessor::CanvasProcessor()
     : Processor()
     , inport_("inport")
-    , dimensions_("dimensions", "Dimensions", ivec2(256, 256), ivec2(128, 128), ivec2(4096, 4096),
+    , dimensions_("dimensions", "Canvas Size", ivec2(256, 256), ivec2(128, 128), ivec2(4096, 4096),
                   ivec2(1, 1), VALID)
-    , enableCustomInputDimensions_("enableCustomInputDimensions", "Enable Custom Input Dimensions",
+    , enableCustomInputDimensions_("enableCustomInputDimensions", "Separate Image Size",
                                    false, VALID)
-    , customInputDimensions_("customInputDimensions", "Input Image Dimensions", ivec2(256, 256),
+    , customInputDimensions_("customInputDimensions", "Image Size", ivec2(256, 256),
                              ivec2(128, 128), ivec2(4096, 4096), ivec2(1, 1), VALID)
-    , keepAspectRatio_("keepAspectRatio", "Keep Aspect Ratio", true, VALID)
-    , aspectRatioScaling_("aspectRatioScaling", "Aspect Ratio Scaling", 1.f, 0.25f, 4.f, 0.01f,
+    , keepAspectRatio_("keepAspectRatio", "Lock Aspect Ratio", true, VALID)
+    , aspectRatioScaling_("aspectRatioScaling", "Image Scale", 1.f, 0.25f, 4.f, 0.01f,
                           VALID)
     , visibleLayer_("visibleLayer", "Visible Layer")
     , saveLayerDirectory_("layerDir", "Output Directory", "", "image")
     , saveLayerButton_("saveLayer", "Save Image Layer", VALID)
     , inputSize_("inputSize", "Input Dimension Parameters")
+    , previousImageSize_(customInputDimensions_)
     , evaluator_(NULL)
     , canvasWidget_(NULL)
-    , queuedRequest_(false)
-    , ignoreResizeCallback_(false) {
+    , queuedRequest_(false) {
 
     addPort(inport_);
     addProperty(inputSize_);
@@ -118,7 +118,7 @@ void CanvasProcessor::deinitialize() {
 
 // Called by dimensions onChange.
 void CanvasProcessor::resizeCanvas() {
-    if (canvasWidget_ && !ignoreResizeCallback_) {
+    if (canvasWidget_) {
         canvasWidget_->setDimension(dimensions_.get());
     }
 }
@@ -130,35 +130,35 @@ void CanvasProcessor::setCanvasSize(ivec2 dim) {
 
 ivec2 CanvasProcessor::getCanvasSize() const { return dimensions_.get(); }
 
-void CanvasProcessor::updateCanvasSize(ivec2 dim) { 
-    ignoreResizeCallback_ = true;
-    dimensions_.set(dim); 
-    sizeSchemeChanged();
-    ignoreResizeCallback_ = false;
-}
-
-bool CanvasProcessor::getUseCustomDimensions() const { return enableCustomInputDimensions_.get(); }
-ivec2 CanvasProcessor::getCustomDimensions() const { return customInputDimensions_.get(); }
+bool CanvasProcessor::getUseCustomDimensions() const { return enableCustomInputDimensions_; }
+ivec2 CanvasProcessor::getCustomDimensions() const { return customInputDimensions_; }
 
 void CanvasProcessor::sizeSchemeChanged() {
-    customInputDimensions_.setVisible(enableCustomInputDimensions_.get());
-    customInputDimensions_.setReadOnly(keepAspectRatio_.get());
-    keepAspectRatio_.setVisible(enableCustomInputDimensions_.get());
-    aspectRatioScaling_.setVisible(enableCustomInputDimensions_.get() && keepAspectRatio_.get());
+    customInputDimensions_.setVisible(enableCustomInputDimensions_);
+    customInputDimensions_.setReadOnly(keepAspectRatio_);
+    keepAspectRatio_.setVisible(enableCustomInputDimensions_);
+    aspectRatioScaling_.setVisible(enableCustomInputDimensions_ && keepAspectRatio_);
 
-    if (canvasWidget_ && !ignoreResizeCallback_) {
-        canvasWidget_->setDimension(dimensions_.get());
-    }
+
+    ResizeEvent* resizeEvent = new ResizeEvent(static_cast<uvec2>(customInputDimensions_.get()));
+    resizeEvent->setPreviousSize(static_cast<uvec2>(previousImageSize_));
+    previousImageSize_ = customInputDimensions_;
+
+    // avoid continues evaluation when port dimension changes
+    InviwoApplication::getPtr()->getProcessorNetwork()->lock();
+    inport_.changeDataDimensions(resizeEvent);
+    // enable network evaluation again
+    InviwoApplication::getPtr()->getProcessorNetwork()->unlock();
 }
 
 void CanvasProcessor::ratioChanged() {
-    customInputDimensions_.setReadOnly(keepAspectRatio_.get());
-    keepAspectRatio_.setVisible(enableCustomInputDimensions_.get());
-    aspectRatioScaling_.setVisible(enableCustomInputDimensions_.get() && keepAspectRatio_.get());
+    customInputDimensions_.setReadOnly(keepAspectRatio_);
+    keepAspectRatio_.setVisible(enableCustomInputDimensions_);
+    aspectRatioScaling_.setVisible(enableCustomInputDimensions_ && keepAspectRatio_);
 
-    if (enableCustomInputDimensions_.get()) {
-        if (keepAspectRatio_.get()) {
-            ivec2 size = dimensions_.get();
+    if (enableCustomInputDimensions_) {
+        if (keepAspectRatio_) {
+            ivec2 size = dimensions_;
 
             int maxDim, minDim;
 
@@ -172,7 +172,7 @@ void CanvasProcessor::ratioChanged() {
 
             float ratio = static_cast<float>(size[minDim]) / static_cast<float>(size[maxDim]);
             size[maxDim] =
-                static_cast<int>(static_cast<float>(size[maxDim]) * aspectRatioScaling_.get());
+                static_cast<int>(static_cast<float>(size[maxDim]) * aspectRatioScaling_);
             size[minDim] = static_cast<int>(static_cast<float>(size[maxDim]) * ratio);
 
             customInputDimensions_.set(size);
@@ -294,6 +294,15 @@ bool CanvasProcessor::isReady() const {
 void CanvasProcessor::propagateResizeEvent(ResizeEvent* event) {
     // avoid continues evaluation when port dimension changes
     InviwoApplication::getPtr()->getProcessorNetwork()->lock();
+
+    dimensions_.set(event->size());
+
+    if (enableCustomInputDimensions_) {
+        event->setSize(static_cast<uvec2>(customInputDimensions_.get()));
+        event->setPreviousSize(static_cast<uvec2>(previousImageSize_));
+        previousImageSize_ = customInputDimensions_;
+    }
+   
     inport_.changeDataDimensions(event);
     // enable network evaluation again
     InviwoApplication::getPtr()->getProcessorNetwork()->unlock();
