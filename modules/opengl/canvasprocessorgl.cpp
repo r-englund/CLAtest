@@ -47,12 +47,12 @@ CanvasProcessorGL::CanvasProcessorGL()
 
 void CanvasProcessorGL::process() {
     CanvasProcessor::process();
-    getCanvas()->render(inport_.getData(), static_cast<LayerType>(visibleLayer_.get()));
+    //getCanvas()->render(inport_.getData(), static_cast<LayerType>(visibleLayer_.get()));
 }
 
 void CanvasProcessorGL::doIfNotReady() {
     CanvasProcessor::process();
-    getCanvas()->render(NULL, static_cast<LayerType>(visibleLayer_.get()));
+    //getCanvas()->render(NULL, static_cast<LayerType>(visibleLayer_.get()));
 }
 
 } // namespace
