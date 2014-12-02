@@ -34,6 +34,4 @@
 
 namespace inviwo {
 
-
-} // namespace
-
+}  // namespace

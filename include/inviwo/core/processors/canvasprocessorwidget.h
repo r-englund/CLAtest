@@ -35,20 +35,23 @@
 
 #include <inviwo/core/common/inviwocoredefine.h>
 #include <inviwo/core/common/inviwo.h>
+#include <inviwo/core/processors/processorwidget.h>
 
 namespace inviwo {
+
+class Canvas;
 
 /**
  * \class CanvasProcessorWidget
  *
- * \brief VERY_BRIEFLY_DESCRIBE_THE_CLASS
+ * \brief A processor widget that has a canvas.
  *
- * DESCRIBE_THE_CLASS
+ * CanvasProcessorWidget is the base class for all processor widgets with canvases.
  */
-class IVW_CORE_API CanvasProcessorWidget { 
+class IVW_CORE_API CanvasProcessorWidget : public ProcessorWidget { 
 public:
-    CanvasProcessorWidget();
-    virtual ~CanvasProcessorWidget(){}
+    virtual CanvasProcessorWidget* create() const = 0;
+    virtual Canvas* getCanvas() const = 0;
 };
 
 } // namespace
