@@ -35,6 +35,7 @@
 #include <inviwo/core/processors/progressbarowner.h>
 #include <inviwo/core/util/assertion.h>
 #include <inviwo/core/util/canvas.h>
+#include <inviwo/core/util/rendercontext.h>
 
 namespace inviwo {
 
@@ -242,13 +243,6 @@ void ProcessorNetworkEvaluator::propagateInteractionEventImpl(Processor* process
     }
 }
 
-void ProcessorNetworkEvaluator::propagateInteractionEvent(Canvas* canvas, InteractionEvent* event) {
-    // find the canvas processor from which the event was emitted
-    Processor* eventInitiator = retrieveCanvasProcessor(canvas);
-    resetProcessorVisitedStates();
-    propagateInteractionEventImpl(eventInitiator, event);
-}
-
 void ProcessorNetworkEvaluator::propagateInteractionEvent(Processor* processor,
                                                           InteractionEvent* event) {
     resetProcessorVisitedStates();
@@ -297,37 +291,6 @@ bool ProcessorNetworkEvaluator::isPortConnectedToProcessor(Port* port, Processor
     return isConnected;
 }
 
-Processor* ProcessorNetworkEvaluator::retrieveCanvasProcessor(Canvas* canvas) {
-    // find the canvas processor which contains the canvas
-    Processor* processor = NULL;
-    std::vector<Processor*> processors = processorNetwork_->getProcessors();
-    CanvasProcessor* canvasProcessor = NULL;
-
-    for (size_t i=0; i<processors.size(); i++) {
-        canvasProcessor = dynamic_cast<CanvasProcessor*>(processors[i]);
-
-        if (canvasProcessor && canvasProcessor->getCanvas()==canvas) {
-            processor = processors[i];
-            i = processors.size();
-        }
-    }
-
-    return processor;
-}
-
-void ProcessorNetworkEvaluator::propagateResizeEvent(Canvas* canvas, ResizeEvent* resizeEvent) {
-    // avoid continues evaluation when port change
-    processorNetwork_->lock();
-    // find the canvas processor from which the event was emitted
-    Processor* eventInitiator = retrieveCanvasProcessor(canvas);
-    ivwAssert(eventInitiator!=NULL, "Invalid resize event encountered.");
-    // propagate size of canvas to all preceding processors through port
-    // event initiator is a canvas processor, hence one ImageInport should exist
-    ImageInport* imageInport = static_cast<ImageInport*>(eventInitiator->getInports()[0]);
-    imageInport->changeDataDimensions(resizeEvent);
-    // enable network evaluation again
-    processorNetwork_->unlock();
-}
 
 void ProcessorNetworkEvaluator::onProcessorInvalidationEnd(Processor* p) {
     processorNetwork_->onProcessorInvalidationEnd(p);

@@ -64,11 +64,7 @@ public:
     void enableEvaluation();
     void requestEvaluate();
 
-    void propagateResizeEvent(Canvas* canvas, ResizeEvent* resizeEvent);
-    void propagateInteractionEvent(Canvas* canvas, InteractionEvent* event);
     void propagateInteractionEvent(Processor* processor, InteractionEvent* event);
-
-    Processor* retrieveCanvasProcessor(Canvas* canvas);
 
     void onProcessorInvalidationEnd(Processor*);
     void onProcessorNetworkEvaluateRequest();
