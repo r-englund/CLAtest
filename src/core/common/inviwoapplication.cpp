@@ -48,6 +48,7 @@
 #include <inviwo/core/resources/resourcemanager.h>
 #include <inviwo/core/util/dialogfactory.h>
 #include <inviwo/core/util/filesystem.h>
+#include <inviwo/core/util/rendercontext.h>
 #include <inviwo/core/properties/propertyconvertermanager.h>
 
 namespace inviwo {
@@ -109,6 +110,7 @@ InviwoApplication::~InviwoApplication() {
 void InviwoApplication::initialize(registerModuleFuncPtr regModuleFunc) {
     printApplicationInfo();
     // initialize singletons 
+    RenderContext::init();
     ResourceManager::init();
     DataReaderFactory::init();
     DataWriterFactory::init();
@@ -178,7 +180,7 @@ void InviwoApplication::deinitialize() {
     PropertyWidgetFactory::deleteInstance();
     PropertyConverterManager::deleteInstance();
     RepresentationConverterFactory::deleteInstance();
-
+    RenderContext::deleteInstance();
     initialized_ = false;
 }
 
