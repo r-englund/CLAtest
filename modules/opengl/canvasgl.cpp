@@ -118,7 +118,7 @@ void CanvasGL::render(const Image* image, LayerType layerType) {
         imageGL_ = image->getRepresentation<ImageGL>();
         layerType_ = layerType;
         pickingContainer_->setPickingSource(image);
-        if(imageGL_)
+        if(imageGL_ && imageGL_->getLayerGL(layerType_))
             checkChannels(imageGL_->getLayerGL(layerType_)->getDataFormat()->getComponents());
         else
             checkChannels(image->getDataFormat()->getComponents());
@@ -167,11 +167,13 @@ void CanvasGL::multiDrawImagePlaneRect(int instances) {
 
 void CanvasGL::renderLayer() {
     const LayerGL* layerGL = imageGL_->getLayerGL(layerType_);
-    if(layerGL) {
+    if (layerGL) {
         TextureUnit textureUnit;
         layerGL->bindTexture(textureUnit.getEnum());
         renderTexture(textureUnit.getUnitNumber());
         layerGL->unbindTexture();
+    } else {
+        renderNoise();
     }
 }
 

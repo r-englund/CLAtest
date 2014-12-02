@@ -253,13 +253,17 @@ std::vector<unsigned char>* CanvasProcessor::getImageLayerAsCodedBuffer(const st
 }
 
 void CanvasProcessor::process() {
-    canvasWidget_->getCanvas()->activate();
-    canvasWidget_->getCanvas()->render(inport_.getData(), static_cast<LayerType>(visibleLayer_.get()));    
+    if(canvasWidget_ && canvasWidget_->getCanvas()) {
+        canvasWidget_->getCanvas()->activate();
+        canvasWidget_->getCanvas()->render(inport_.getData(), static_cast<LayerType>(visibleLayer_.get()));    
+    }
 }
 
 void CanvasProcessor::doIfNotReady() {
-    canvasWidget_->getCanvas()->activate();
-    canvasWidget_->getCanvas()->render(NULL, static_cast<LayerType>(visibleLayer_.get()));
+    if(canvasWidget_ && canvasWidget_->getCanvas()) {
+        canvasWidget_->getCanvas()->activate();
+        canvasWidget_->getCanvas()->render(NULL, static_cast<LayerType>(visibleLayer_.get()));
+    }
 }
 
 void CanvasProcessor::triggerQueuedEvaluation() {
