@@ -47,6 +47,8 @@ if(DESIRED_QT_VERSION MATCHES 5)
 	find_package(Qt5Help QUIET REQUIRED)     
 else()
 	find_package(Qt QUIET REQUIRED)
+	set(QT_USE_QTNETWORK TRUE)
+	set(QT_USE_QTSCRIPT TRUE)
 endif()
 
 # Create module
