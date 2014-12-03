@@ -96,8 +96,8 @@ protected:
 
 private:
     void resizeCanvas();
-    void sizeSchemeChanged();
-    void ratioChanged();
+    void sizeChanged();
+    ivec2 calcSize();
 
     ivec2 previousImageSize_;
 
