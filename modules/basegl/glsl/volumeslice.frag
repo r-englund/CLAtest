@@ -30,16 +30,17 @@
  *
  *********************************************************************************/
 
-#include "include/inc_sampler2d.frag"
-#include "include/inc_sampler3d.frag"
-#include "include/inc_classification.frag"
+#include "utils/structs.glsl"
+#include "utils/sampler3d.glsl"
+#include "utils/classification.glsl"
 
 uniform VOLUME_TYPE volume_;
 uniform VOLUME_PARAMETERS volumeParameters_;
 
+uniform sampler2D transferFunc_;
+
 uniform vec2 dimension_;
 uniform float sliceNum_;
-
 
 uniform mat4 sliceAxisRotationMatrix_; // Rotates around slice axis (offset to center point)
 uniform vec3 rotationOffset_;          // Translates coordinate back from rotation offset

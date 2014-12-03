@@ -30,7 +30,8 @@
  *
  *********************************************************************************/
 
-#include "include/inc_sampler2d.frag"
+#include "utils/structs.glsl"
+#include "utils/sampler2d.glsl"
 
 uniform TEXTURE_TYPE texColor0_;
 uniform TEXTURE_TYPE texDepth0_;

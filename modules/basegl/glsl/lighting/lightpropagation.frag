@@ -30,15 +30,18 @@
  *
  *********************************************************************************/
 
-#include "include/inc_sampler2d.frag"
-#include "include/inc_sampler3d.frag"
-#include "include/inc_classification.frag"
+#include "utils/structs.glsl"
+#include "utils/sampler2d.glsl"
+#include "utils/sampler3d.glsl"
+#include "utils/classification.glsl"
 
 uniform VOLUME_TYPE volume_;
 uniform VOLUME_PARAMETERS volumeParameters_;
 
 uniform VOLUME_TYPE lightVolume_;
 uniform VOLUME_PARAMETERS lightVolumeParameters_;
+
+uniform sampler2D transferFunc_;
 
 #ifdef POINT_LIGHT
 uniform vec3 lightPos_;
