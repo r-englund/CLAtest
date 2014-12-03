@@ -64,7 +64,7 @@ PyObject* py_resizecanvas(PyObject* /*self*/, PyObject* args) {
 
     if (argIsString) {
         std::string id = PyValueParser::parse<std::string>(arg0);
-        Processor* processor = InviwoApplication::getPtr()->getProcessorNetwork()->getProcessorByName(id);
+        Processor* processor = InviwoApplication::getPtr()->getProcessorNetwork()->getProcessorByIdentifier(id);
 
         if (!processor) {
             std::string msg = std::string("resizeCanvas(canvas,width,height) no processor with name: ") + id;

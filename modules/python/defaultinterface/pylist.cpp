@@ -62,7 +62,7 @@ PyObject* py_listProperties(PyObject* /*self*/, PyObject* args) {
     }
 
     std::string processorName = PyValueParser::parse<std::string>(PyTuple_GetItem(args, 0));
-    Processor* processor = InviwoApplication::getPtr()->getProcessorNetwork()->getProcessorByName(processorName);
+    Processor* processor = InviwoApplication::getPtr()->getProcessorNetwork()->getProcessorByIdentifier(processorName);
 
     if (!processor) {
         std::ostringstream errStr;
