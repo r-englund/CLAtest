@@ -133,13 +133,13 @@ public:
     * @param identifier Identifier of the Processor to be accessed.
     * @see getProcessorsByType(), Processor::setIdentifier(), Processor::getIdentifier()
     */
-    Processor* getProcessorByName(std::string identifier) const;
+    Processor* getProcessorByIdentifier(std::string identifier) const;
 
     /**
     * Returns a vector of Processors which are of type T. In case no Processors match T
     * an empty vector is returned.
     *
-    * @see getProcessorByName()
+    * @see getProcessorByIdentifier()
     */
     template<class T> std::vector<T*> getProcessorsByType() const;
 
