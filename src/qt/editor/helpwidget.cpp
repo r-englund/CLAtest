@@ -95,7 +95,7 @@ HelpWidget::HelpWidget(QWidget* parent)
 
 void HelpWidget::setupFinished() {
     if (!helpEngine_) return;
-    helpBrowser_->setSource(QUrl("qthelp://org.inviwo/doc/docpage-Background.html"));
+    helpBrowser_->setSource(QUrl("qthelp://org.inviwo/doc/docpage-org_8inviwo_8Background.html"));
 }
 
 void HelpWidget::showDocForClassName(std::string classIdentifier) {
