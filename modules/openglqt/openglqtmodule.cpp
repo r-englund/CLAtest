@@ -52,7 +52,9 @@ OpenGLQtModule::OpenGLQtModule() : InviwoModule() {
     registerCapabilities(new OpenGLQtCapabilities());
 }
 
-OpenGLQtModule::~OpenGLQtModule() {
+OpenGLQtModule::~OpenGLQtModule() {}
+
+void OpenGLQtModule::deinitialize() {
     if (qtGLSharedCanvas_ == RenderContext::getPtr()->getDefaultRenderContext()) {
         RenderContext::getPtr()->setDefaultRenderContext(NULL);
         delete qtGLSharedCanvas_;

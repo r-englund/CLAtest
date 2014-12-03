@@ -51,6 +51,8 @@ protected:
         registerProcessorWidget(T::CLASS_IDENTIFIER, processorWidget);
     }
 
+    virtual void deinitialize();
+
 private:
     CanvasQt* qtGLSharedCanvas_;
 };
