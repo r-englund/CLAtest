@@ -143,7 +143,7 @@ std::vector<Property*> PropertySelectionTreeWidget::getSelectedProperties(Proces
                     std::string prop = propertyId.toLocal8Bit().constData();
                     QString workspaceName = wrokspaceItem->text(0);
                     std::string workspace = workspaceName.toLocal8Bit().constData();
-                    Processor* processor = processorNetwork->getProcessorByName(proecessorId);
+                    Processor* processor = processorNetwork->getProcessorByIdentifier(proecessorId);
                     Property* selectedProperty = processor->getPropertyByIdentifier(prop);
 
                     if (selectedProperty)

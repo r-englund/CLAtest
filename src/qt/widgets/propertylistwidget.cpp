@@ -237,7 +237,7 @@ bool PropertyListWidget::event(QEvent* e) {
 
         Processor* p = ple->processor_;
         if (p == NULL) {
-            p = InviwoApplication::getPtr()->getProcessorNetwork()->getProcessorByName(ple->processorId_);
+            p = InviwoApplication::getPtr()->getProcessorNetwork()->getProcessorByIdentifier(ple->processorId_);
             if(p== NULL) {
                 return true;
             }

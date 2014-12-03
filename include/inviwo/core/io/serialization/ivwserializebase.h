@@ -167,11 +167,6 @@ public:
     bool isPrimitiveType(const std::type_info& type) const;
 
 	/**
-     * \brief Enable or disable reference flag.
-     */
-    void setAllowReference(const bool& allowReference);
-
-	/**
      * \brief Registers all factories from all modules.
      */
     virtual void registerFactories(void);

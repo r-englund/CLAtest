@@ -53,9 +53,6 @@
 using namespace inviwo;
 
 int main(int argc, char** argv) {
-#ifdef __unix__
-    setenv("XLIB_SKIP_ARGB_VISUALS", "1", 1);
-#endif
     std::string appName = "Inviwo " + IVW_VERSION + " - QtApp";
 
     QApplication app(argc, argv);

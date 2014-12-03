@@ -196,10 +196,6 @@ bool IvwSerializeBase::isPrimitiveType(const std::type_info& type) const {
     return false;
 }
 
-void IvwSerializeBase::setAllowReference(const bool& allowReference) {
-    allowRef_ = allowReference;
-}
-
 std::string IvwSerializeBase::nodeToString(const TxElement& node) {
     try {
         TiXmlPrinter printer;

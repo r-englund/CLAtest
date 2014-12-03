@@ -164,7 +164,7 @@ void ProcessorNetwork::removeAndDeleteProcessor(Processor* processor) {
     delete processor;
 }
 
-Processor* ProcessorNetwork::getProcessorByName(std::string identifier) const {
+Processor* ProcessorNetwork::getProcessorByIdentifier(std::string identifier) const {
     ProcessorMap::const_iterator it = processors_.find(identifier);
     if(it!= processors_.end()) return it->second;
     return NULL;
@@ -761,7 +761,7 @@ bool ProcessorNetwork::isDeserializing()const {
 
 Property* ProcessorNetwork::getProperty(std::vector<std::string> path) const {
     if (path.size() >= 2){
-        Processor* processor = getProcessorByName(path[0]);
+        Processor* processor = getProcessorByIdentifier(path[0]);
         if (processor) {
             Property* property = processor->getPropertyByIdentifier(path[1]);
             if (property) {
