@@ -135,7 +135,7 @@ private:
     void serializePrimitives(const std::string& key, const T& data);
 
     template<class T>
-    void serializeVector(const std::string& key, const T& vector, const bool& isColor=false);
+    void serializeVector(const std::string& key, const T& vector);
 
     /** 
      * \brief Creates xml documents and initializes factories. Does not open files or streams.
@@ -271,38 +271,33 @@ void IvwSerializer::serialize(const std::string& key, const glm::detail::tmat2x2
 
 template<class T>
 inline void IvwSerializer::serializeVector(const std::string& key,
-        const T& vector,
-        const bool& isColor) {
+        const T& vector) {
     TxElement* newNode = new TxElement(key);
     rootElement_->LinkEndChild(newNode);
     std::stringstream ss;
     ss.precision(IvwSerializeConstants::STRINGSTREAM_PRECISION);
-    ss<<(isColor ? static_cast<int>(vector[0]) : vector[0]);
-    newNode->SetAttribute(isColor ? IvwSerializeConstants::COLOR_R_ATTRIBUTE :
-                          IvwSerializeConstants::VECTOR_X_ATTRIBUTE,
+    ss<<vector[0];
+    newNode->SetAttribute(IvwSerializeConstants::VECTOR_X_ATTRIBUTE,
                           ss.str());
 
     if (vector.length() >= 2) {
         ss.str(std::string());
-        ss<<(isColor ? static_cast<int>(vector[1]) : vector[1]);
-        newNode->SetAttribute(isColor ? IvwSerializeConstants::COLOR_G_ATTRIBUTE :
-                              IvwSerializeConstants::VECTOR_Y_ATTRIBUTE,
+        ss<<vector[1];
+        newNode->SetAttribute(IvwSerializeConstants::VECTOR_Y_ATTRIBUTE,
                               ss.str());
     }
 
     if (vector.length() >= 3) {
         ss.str(std::string());
-        ss<<(isColor ? static_cast<int>(vector[2]) : vector[2]);
-        newNode->SetAttribute(isColor ? IvwSerializeConstants::COLOR_B_ATTRIBUTE :
-                              IvwSerializeConstants::VECTOR_Z_ATTRIBUTE,
+        ss<<vector[2];
+        newNode->SetAttribute(IvwSerializeConstants::VECTOR_Z_ATTRIBUTE,
                               ss.str());
     }
 
     if (vector.length() >= 4) {
         ss.str(std::string());
-        ss<<(isColor ? static_cast<int>(vector[3]) : vector[3]);
-        newNode->SetAttribute(isColor ? IvwSerializeConstants::COLOR_A_ATTRIBUTE :
-                              IvwSerializeConstants::VECTOR_W_ATTRIBUTE,
+        ss<<vector[3];
+        newNode->SetAttribute(IvwSerializeConstants::VECTOR_W_ATTRIBUTE,
                               ss.str());
     }
 
