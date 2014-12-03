@@ -140,7 +140,7 @@ DataRepresentation* VolumeCLGL2GLConverter::createFrom(const DataRepresentation*
     DataRepresentation* destination = 0;
     const VolumeCLGL* src = static_cast<const VolumeCLGL*>(source);
     Texture3D* tex = const_cast<Texture3D*>(src->getTexture());
-    destination = new VolumeGL(src->getDimension(), src->getDataFormat(), const_cast<Texture3D*>(src->getTexture()));
+    destination = new VolumeGL(const_cast<Texture3D*>(src->getTexture()), src->getDataFormat());
     // Increase reference count to indicate that LayerGL is also using the texture
     tex->increaseRefCount();
     return destination;
