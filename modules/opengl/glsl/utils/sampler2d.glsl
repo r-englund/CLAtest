@@ -37,5 +37,5 @@ vec4 textureLookup2Dnormalized(TEXTURE_TYPE tex, TEXTURE_PARAMETERS textureParam
 }
 
 vec4 textureLookup2Dscreen(TEXTURE_TYPE tex, TEXTURE_PARAMETERS textureParams, vec2 samplePos) {
-    return texture(tex, samplePos*screenDimRCP_);
+    return texture(tex, samplePos*textureParams.dimensionsRCP_);
 }
