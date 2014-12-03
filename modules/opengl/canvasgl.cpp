@@ -51,6 +51,7 @@ const MeshGL* CanvasGL::screenAlignedRectGL_ = NULL;
 CanvasGL::CanvasGL(uvec2 dimensions)
     : Canvas(dimensions)
     , imageGL_(NULL)
+    , image_(NULL)
     , rectArray_(NULL)
     , layerType_(COLOR_LAYER)
     , shader_(NULL)
@@ -99,6 +100,8 @@ void CanvasGL::deinitialize() {
     noiseShader_ = NULL;
     delete rectArray_;
     rectArray_ = NULL;
+    image_ = NULL;
+    imageGL_ = NULL;
     Canvas::deinitialize();
 }
 
@@ -114,34 +117,33 @@ void CanvasGL::defaultGLState(){
 void CanvasGL::activate() {}
 
 void CanvasGL::render(const Image* image, LayerType layerType) {
-    if (image) {
-        imageGL_ = image->getRepresentation<ImageGL>();
-        layerType_ = layerType;
-        pickingContainer_->setPickingSource(image);
-        if(imageGL_ && imageGL_->getLayerGL(layerType_))
+    image_ = image;
+    layerType_ = layerType;
+    pickingContainer_->setPickingSource(image_);    
+    if (image_) {
+        imageGL_ = image_->getRepresentation<ImageGL>();
+        if (imageGL_ && imageGL_->getLayerGL(layerType_)) {
             checkChannels(imageGL_->getLayerGL(layerType_)->getDataFormat()->getComponents());
-        else
-            checkChannels(image->getDataFormat()->getComponents());
+        } else {
+            checkChannels(image_->getDataFormat()->getComponents());
+        }
         renderLayer();
     } else {
-        pickingContainer_->setPickingSource(NULL);
         imageGL_ = NULL;
         renderNoise();
     }
 }
 
 void CanvasGL::resize(uvec2 size) {
+    imageGL_ = NULL;
+    pickingContainer_->setPickingSource(NULL);  
     Canvas::resize(size);
 }
 
 void CanvasGL::glSwapBuffers() {}
 
 void CanvasGL::update() {
-    if (imageGL_) {
-        renderLayer();
-    } else {
-        renderNoise();
-    }
+    renderLayer();
 }
 
 void CanvasGL::attachImagePlanRect(BufferObjectArray* arrayObject) {
@@ -166,14 +168,17 @@ void CanvasGL::multiDrawImagePlaneRect(int instances) {
 }
 
 void CanvasGL::renderLayer() {
-    const LayerGL* layerGL = imageGL_->getLayerGL(layerType_);
-    if (layerGL) {
-        TextureUnit textureUnit;
-        layerGL->bindTexture(textureUnit.getEnum());
-        renderTexture(textureUnit.getUnitNumber());
-        layerGL->unbindTexture();
-    } else {
-        renderNoise();
+    if (imageGL_) {
+        const LayerGL* layerGL = imageGL_->getLayerGL(layerType_);
+        if (layerGL) {
+            TextureUnit textureUnit;
+            layerGL->bindTexture(textureUnit.getEnum());
+            renderTexture(textureUnit.getUnitNumber());
+            layerGL->unbindTexture();
+            return;
+        } else {
+            renderNoise();
+        }
     }
 }
 

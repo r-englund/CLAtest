@@ -93,8 +93,10 @@ protected:
     static void disableDrawImagePlaneRect();
 
     const ImageGL* imageGL_;
+    const Image* image_;
 
 private:
+
     static bool glewInitialized_;
     static const MeshGL* screenAlignedRectGL_;
 

@@ -113,6 +113,7 @@ void Canvas::initialize() {
         pickingContainer_ = new PickingContainer();
 
     initialized_ = true;
+    propagator_ = NULL;
 }
 
 void Canvas::deinitialize() {
