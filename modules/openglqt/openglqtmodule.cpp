@@ -57,8 +57,10 @@ OpenGLQtModule::~OpenGLQtModule() {}
 void OpenGLQtModule::deinitialize() {
     if (qtGLSharedCanvas_ == RenderContext::getPtr()->getDefaultRenderContext()) {
         RenderContext::getPtr()->setDefaultRenderContext(NULL);
+        qtGLSharedCanvas_->deinitialize();
         delete qtGLSharedCanvas_;
     }
+    InviwoModule::deinitialize();
 }
 
 } // namespace
