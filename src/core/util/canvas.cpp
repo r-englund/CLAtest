@@ -152,7 +152,7 @@ void Canvas::activateDefaultRenderContext(){
 }
 
 void Canvas::interactionEvent(InteractionEvent* event) {
-    propagator_->propagateInteractionEvent(event);
+    if (propagator_) propagator_->propagateInteractionEvent(event);
 }
 
 void Canvas::mousePressEvent(MouseEvent* e) {

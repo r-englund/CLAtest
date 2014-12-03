@@ -114,6 +114,7 @@ ProcessorGraphicsItem* NetworkEditor::addProcessorRepresentations(Processor* pro
     ProcessorWidget* processorWidget = ProcessorWidgetFactory::getPtr()->create(processor);
     if (processorWidget) {
         processorWidget->setProcessor(processor);
+        processor->setProcessorWidget(processorWidget);
 
         QWidget* widget = dynamic_cast<QWidget*>(processorWidget);
         if (widget) {
@@ -122,8 +123,7 @@ ProcessorGraphicsItem* NetworkEditor::addProcessorRepresentations(Processor* pro
             widget->setParent(app->getMainWindow());
         }
         processorWidget->initialize();
-        processorWidget->setVisible(processorWidget->ProcessorWidget::isVisible());
-        processor->setProcessorWidget(processorWidget);
+        processorWidget->setVisible(processorWidget->ProcessorWidget::isVisible()); 
         processorWidget->addObserver(ret->getStatusItem());
     }
     return ret;

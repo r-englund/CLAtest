@@ -180,6 +180,7 @@ void CanvasGL::renderLayer() {
             renderNoise();
         }
     }
+    if (!image_) renderNoise();
 }
 
 void CanvasGL::renderNoise() {
