@@ -30,3 +30,15 @@
  *
  *********************************************************************************/
 
+uniform vec2 screenDim_;
+uniform vec2 screenDimRCP_;
+
+#include "utils/structs.glsl"
+
+vec4 textureLookup2Dnormalized(TEXTURE_TYPE tex, TEXTURE_PARAMETERS textureParams, vec2 samplePos) {
+    return texture(tex, samplePos);
+}
+
+vec4 textureLookup2Dscreen(TEXTURE_TYPE tex, TEXTURE_PARAMETERS textureParams, vec2 samplePos) {
+    return texture(tex, samplePos*screenDimRCP_);
+}
