@@ -36,6 +36,7 @@ uniform sampler2D inport0_;
 uniform sampler2D inport1_;
 uniform float alpha_;
 uniform vec2 dimension_;
+uniform vec2 screenDimRCP_;
 
 vec4 colorMix(vec4 colorA, vec4 colorB, vec4 param) {
     return mix(colorA, colorB, param);
