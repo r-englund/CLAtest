@@ -462,24 +462,6 @@ macro(add_internal_modules)
     #Resolve dependencies for selected modules
     resolve_module_dependencies(${IVW_MODULE_DIR} ${IVW_SORTED_MODULES})
 
-    if(IVW_MODULE_HUMANCOMPUTATIONENGINE OR IVW_MODULE_OPENGLQT)
-        # Find the QtWidgets library
-        if(DESIRED_QT_VERSION MATCHES 5)
-            find_package(Qt5Widgets QUIET REQUIRED)     
-        else()
-            find_package(Qt QUIET REQUIRED)
-        endif()
-    endif()
-
-    if(IVW_MODULE_OPENGLQT)
-        set(QT_USE_QTOPENGL TRUE)    
-    endif()
-
-    if(IVW_MODULE_HUMANCOMPUTATIONENGINE)
-        set(QT_USE_QTNETWORK TRUE)
-        set(QT_USE_QTSCRIPT TRUE)
-    endif()	
-
     #Add modules based on user config file and dependcy resolve
     add_modules(${IVW_MODULE_DIR} ${IVW_SORTED_MODULES})
 endmacro()

@@ -305,7 +305,7 @@ PyObject* py_clickButton(PyObject* /*self*/, PyObject* args) {
     ButtonProperty* button = dynamic_cast<ButtonProperty*>(theProperty);
 
     if (!button) {
-        std::string msg = std::string("clickButton() found property is not a ButtonPropåerty: ") + theProperty->getClassIdentifier();
+        std::string msg = std::string("clickButton() found property is not a ButtonProperty: ") + theProperty->getClassIdentifier();
         PyErr_SetString(PyExc_TypeError, msg.c_str());
         return 0;
     }

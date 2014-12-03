@@ -141,10 +141,6 @@ ivw_group("Shader Files" ${SHADER_FILES})
 ivw_create_module(${SOURCE_FILES} ${HEADER_FILES} ${SHADER_FILES})
 
 #--------------------------------------------------------------------
-# Create a shader resource file
-ivw_create_shader_resource(${SHADER_FILES})
-
-#--------------------------------------------------------------------
 # Add shader directory to pack
 ivw_add_to_module_pack(${CMAKE_CURRENT_SOURCE_DIR}/glsl)
 

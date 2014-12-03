@@ -42,5 +42,14 @@ ivw_group("Source Files" ${SOURCE_FILES})
 ivw_define_qt_definitions()
 ivw_add_definition(IVW_PYTHON_QT)
 
+if(DESIRED_QT_VERSION MATCHES 5)
+	find_package(Qt5Widgets QUIET REQUIRED)
+	find_package(Qt5Help QUIET REQUIRED)     
+else()
+	find_package(Qt QUIET REQUIRED)
+	set(QT_USE_QTNETWORK TRUE)
+	set(QT_USE_QTSCRIPT TRUE)
+endif()
+
 # Create module
 ivw_create_module(${SOURCE_FILES} ${MOC_FILES} ${HEADER_FILES})

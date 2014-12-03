@@ -62,18 +62,17 @@ QPainterPath DialogCurveGraphicsItem::obtainCurvePath(QPointF startPoint, QPoint
 
 //////////////////////////////////////////////////////////////////////////
 
-DialogConnectionGraphicsItem::DialogConnectionGraphicsItem(LinkDialogPropertyGraphicsItem* startProperty,
-        LinkDialogPropertyGraphicsItem* endProperty,
-        PropertyLink* propertyLink) :
-    DialogCurveGraphicsItem(startProperty->getShortestBoundaryPointTo(endProperty),
-                            endProperty->getShortestBoundaryPointTo(startProperty),
-                            uvec3(38,38,38)),
-    startPropertyGraphicsItem_(startProperty),
-    endPropertyGraphicsItem_(endProperty),
-    propertyLink_(propertyLink) {
-    
+DialogConnectionGraphicsItem::DialogConnectionGraphicsItem(
+    LinkDialogPropertyGraphicsItem* startProperty, LinkDialogPropertyGraphicsItem* endProperty,
+    PropertyLink* propertyLink)
+    : DialogCurveGraphicsItem(startProperty->getShortestBoundaryPointTo(endProperty),
+                              endProperty->getShortestBoundaryPointTo(startProperty),
+                              uvec3(38, 38, 38))
+    , startPropertyGraphicsItem_(startProperty)
+    , endPropertyGraphicsItem_(endProperty)
+    , propertyLink_(propertyLink) {
     setFlags(ItemIsSelectable | ItemIsFocusable);
-    
+
     startPropertyGraphicsItem_->addConnectionGraphicsItem(this);
     setStartArrowHeadIndex(startPropertyGraphicsItem_->getConnectionGraphicsItemCount());
     endPropertyGraphicsItem_->addConnectionGraphicsItem(this);
@@ -82,6 +81,10 @@ DialogConnectionGraphicsItem::DialogConnectionGraphicsItem(LinkDialogPropertyGra
 
 DialogConnectionGraphicsItem::~DialogConnectionGraphicsItem() {
     propertyLink_ = NULL;
+    if (startPropertyGraphicsItem_)
+        startPropertyGraphicsItem_->removeConnectionGraphicsItem(this);
+    if (endPropertyGraphicsItem_)
+        endPropertyGraphicsItem_->removeConnectionGraphicsItem(this);
 }
 
 void DialogConnectionGraphicsItem::updateStartEndPoint() {

@@ -230,6 +230,9 @@ std::string InviwoApplication::getPath(PathType pathType, const std::string& suf
             result = filesystem::getInviwoUserSettingsPath();
             break;
 
+        case inviwo::InviwoApplication::PATH_HELP:
+            result += "data/help/";
+            break;
 
         default:
             break;

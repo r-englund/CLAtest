@@ -43,7 +43,7 @@ class LinkDialogGraphicsScene;
 class IVW_QTEDITOR_API LinkDialogGraphicsView : public QGraphicsView {
 public:
     LinkDialogGraphicsView(QWidget* parent);
-    ~LinkDialogGraphicsView();
+    virtual ~LinkDialogGraphicsView();
     void setDialogScene(LinkDialogGraphicsScene* scene);
 protected:
     void mouseDoubleClickEvent(QMouseEvent* e);

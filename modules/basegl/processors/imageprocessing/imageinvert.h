@@ -35,7 +35,7 @@
 
 #include <modules/basegl/baseglmoduledefine.h>
 #include <inviwo/core/common/inviwo.h>
-#include <modules/basegl/processors/imagegpuprocessor.h>
+#include <modules/basegl/processors/imageglprocessor.h>
 
 namespace inviwo {
 
@@ -44,10 +44,10 @@ namespace inviwo {
  * \brief Create the invert image of an input image. Alpha channel is not touched.
  *
  * This processor computes the inverted image by subtracting the rgb channels from 1.0 
- * utilizing the ImageGPUProcessor. 
+ * utilizing the ImageGLProcessor. 
  * The input range is assumed to be normalized, i.e. [0, 1]. 
  */
-class IVW_MODULE_BASEGL_API ImageInvert : public ImageGPUProcessor  { 
+class IVW_MODULE_BASEGL_API ImageInvert : public ImageGLProcessor  { 
 public:
     ImageInvert();
     virtual ~ImageInvert();

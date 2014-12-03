@@ -71,9 +71,6 @@ public:
 private:
     std::string moduleName_;
     std::vector<PyMethod*> methods_;
-    PyObject* moduleObject_;
-    PyObject* dict_;
-    PyObject* name_;
     PyMethodDef* embMethods_;
     static std::map<PyObject*,PyModule*> instances_;
 

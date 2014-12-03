@@ -78,12 +78,12 @@ public:
     virtual std::string getContentInfo() const {return "";}
 
     template <typename T>
-    void onChange(T* o, void (T::*m)()) {
+    void onChange(T* o, void (T::*m)()) const {
         onChangeCallback_.addMemberFunction(o,m);
     }
 
     template <typename T>
-    void removeOnChange(T* o) {
+    void removeOnChange(T* o) const {
         onChangeCallback_.removeMemberFunction(o);
     }
 
@@ -95,7 +95,7 @@ protected:
     template <typename T>
     void getPredecessorsUsingPortType(std::vector<Processor*>&);
 
-    CallBackList onChangeCallback_;
+    mutable CallBackList onChangeCallback_;
     bool changed_;
 
 };

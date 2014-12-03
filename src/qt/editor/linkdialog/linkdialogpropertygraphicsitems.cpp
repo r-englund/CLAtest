@@ -39,7 +39,7 @@
 
 namespace inviwo {
 
-LinkDialogPropertyGraphicsItem::LinkDialogPropertyGraphicsItem(
+LinkDialogPropertyGraphicsItem::LinkDialogPropertyGraphicsItem (
     LinkDialogProcessorGraphicsItem* processor, Property* prop,
     LinkDialogPropertyGraphicsItem* parentPropertyGraphicsItem, int subPropertyLevel)
     : GraphicsItemData<Property>()
