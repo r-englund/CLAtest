@@ -74,6 +74,8 @@ void CanvasProcessorWidgetQt::initialize() {
         canvas_ = new CanvasQt(NULL, uvec2(dim.x, dim.y));
     }
 
+    canvas_->setEventPropagator(NULL);
+
     if (!canvas_->isInitialized()) canvas_->initialize();
 
     canvas_->setProcessorWidgetOwner(this);
@@ -89,11 +91,7 @@ void CanvasProcessorWidgetQt::initialize() {
     gridLayout->addWidget(container, 0, 0);
     setLayout(gridLayout);
     
-#ifdef WIN32
-    setWindowFlags(Qt::Window);
-#else
     setWindowFlags(Qt::Tool);
-#endif
     setDimension(dim);
 
     InviwoApplicationQt* app = dynamic_cast<InviwoApplicationQt*>(InviwoApplication::getPtr());
@@ -130,7 +128,7 @@ void CanvasProcessorWidgetQt::setVisible(bool visible) {
     if(visible){
         canvas_->show();
         static_cast<CanvasProcessor*>(processor_)->triggerQueuedEvaluation();
-    }else{
+    } else {
         canvas_->hide();
     }
     QWidget::setVisible(visible); // This will trigger show/hide events.
@@ -144,12 +142,10 @@ void CanvasProcessorWidgetQt::hide() {
 }
 
 void CanvasProcessorWidgetQt::setPosition(glm::ivec2 pos) {
-    if (pos == getPosition()) return;
     QWidget::move(pos.x, pos.y); // This will trigger a move event.
 }
 
 void CanvasProcessorWidgetQt::setDimension(ivec2 dimensions) {
-    if (dimensions == getDimension()) return;
     QWidget::resize(dimensions.x, dimensions.y); // This will trigger a resize event.
 }
 
@@ -158,11 +154,10 @@ Canvas* CanvasProcessorWidgetQt::getCanvas() const {
 }
 
 void CanvasProcessorWidgetQt::resizeEvent(QResizeEvent* event) {
-    if(!event->spontaneous()) return;
-    uvec2 dim(event->size().width(), event->size().height());
-    CanvasProcessorWidget::setDimension(ivec2(event->size().width(), event->size().height()));
+    if (event->spontaneous()) return;
+    ivec2 dim(event->size().width(), event->size().height());
+    CanvasProcessorWidget::setDimension(dim);
     QWidget::resizeEvent(event);
-    canvas_->resize(dim);
 }
 
 void CanvasProcessorWidgetQt::closeEvent(QCloseEvent* event) {
