@@ -34,29 +34,31 @@
 #define IVW_CANVASPROCESSORWIDGETGLFW_H
 
 #include <modules/glfw/glfwmoduledefine.h>
-#include <inviwo/core/processors/processorwidget.h>
+#include <inviwo/core/processors/canvasprocessorwidget.h>
 
 namespace inviwo {
 
 class CanvasGLFW;
 class CanvasProcessor;
 
-class IVW_MODULE_GLFW_API CanvasProcessorWidgetGLFW : public ProcessorWidget {
+class IVW_MODULE_GLFW_API CanvasProcessorWidgetGLFW : public CanvasProcessorWidget {
 public:
     CanvasProcessorWidgetGLFW();
     virtual ~CanvasProcessorWidgetGLFW();
 
     virtual void initialize();
     virtual void deinitialize();
-    virtual ProcessorWidget* create() const;
+    virtual CanvasProcessorWidgetGLFW* create() const;
+    
+    virtual void setVisible(bool visible);
     virtual void show();
     virtual void hide();
     virtual void setDimension(ivec2);
 
+    virtual Canvas* getCanvas() const;
+
 private:
     CanvasGLFW* canvas_;
-    CanvasProcessor* canvasProcessor_;
-
     bool hasSharedCanvas_;
 };
 
