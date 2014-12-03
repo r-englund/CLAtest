@@ -45,7 +45,6 @@
 #include <QToolButton>
 #include <QSpacerItem>
 #include <QHBoxLayout>
-#include <QPlainTextEdit>
 #include <QFrame>
 #include <inviwo/core/util/clock.h>
 #include <inviwo/qt/widgets/properties/syntaxhighlighter.h>
@@ -141,8 +140,9 @@ void PythonEditorWidget::buildWidget() {
     // Done creating buttons
     QSplitter* splitter = new QSplitter(content);
     splitter->setOrientation(Qt::Vertical);
-    pythonCode_ = new QPlainTextEdit(content);
+    pythonCode_ = new PythonTextEditor(content);
     pythonCode_->setObjectName("pythonEditor");
+    pythonCode_->setUndoRedoEnabled(true);
     setDefaultText();
     pythonOutput_ = new QTextEdit(content);
     pythonOutput_->setObjectName("pythonConsole");
@@ -244,6 +244,15 @@ bool PythonEditorWidget::hasFocus() const {
     if (pythonCode_->hasFocus()) return true;
 
     return false;
+}
+
+void PythonTextEditor::keyPressEvent(QKeyEvent* keyEvent){
+    if (keyEvent->key() == Qt::Key_Tab){
+        keyEvent->accept();
+        insertPlainText("    ");
+    } else{
+        QPlainTextEdit::keyPressEvent(keyEvent);
+    }
 }
 
 void PythonEditorWidget::saveAs() {
@@ -352,22 +361,6 @@ void PythonEditorWidget::clearOutput() { pythonOutput_->setText(""); }
 
 void PythonEditorWidget::onTextChange() {
     std::string source = pythonCode_->toPlainText().toLocal8Bit().constData();
-    int size = static_cast<int>(source.length());
-
-    replaceInString(source, "\t", "    ");
-
-    int prevPos = pythonCode_->textCursor().position();
-    if (size + 3 == source.size()) {  // a tab was added
-        prevPos += 3;
-    }
-
-    pythonCode_->blockSignals(true);
-    pythonCode_->setPlainText(source.c_str());
-    pythonCode_->blockSignals(false);
-
-    QTextCursor cursor = pythonCode_->textCursor();
-    cursor.setPosition(prevPos);
-    pythonCode_->setTextCursor(cursor);
 
     script_.setSource(source);
     unsavedChanges_ = true;

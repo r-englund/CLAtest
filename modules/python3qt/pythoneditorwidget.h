@@ -44,18 +44,30 @@
 #include <QColor>
 #include <QToolButton>
 #include <QSettings>
+#include <QPlainTextEdit>
 
 class QPlainTextEdit;
 
 namespace inviwo {
+
+
+    class IVW_MODULE_PYTHON3QT_API PythonTextEditor : public QPlainTextEdit{
+    public:
+        PythonTextEditor(QWidget* parent) : QPlainTextEdit(parent) {}
+        virtual ~PythonTextEditor(){}
+
+        virtual void keyPressEvent(QKeyEvent* keyEvent);
+    };
+    
 class SyntaxHighligther;
 class IVW_MODULE_PYTHON3QT_API PythonEditorWidget : public InviwoDockWidget,
                                                    public FileObserver,
-                                                   public PythonExecutionOutputObeserver{
+                                                   public PythonExecutionOutputObeserver,
+                                                   public Singleton<PythonEditorWidget> {
     Q_OBJECT
 
 public:
-    PythonEditorWidget(QWidget* parent);
+    PythonEditorWidget(QWidget* parent = 0);
     virtual ~PythonEditorWidget();
 
     void appendToOutput(const std::string& msg, bool error = false);
@@ -65,13 +77,15 @@ public:
     virtual void onPyhonExecutionOutput(const std::string &msg,const PythonExecutionOutputStream &outputType);
 
     bool hasFocus() const;
+
+
     static PythonEditorWidget* getPtr();
 
 private:
     void buildWidget();
 
     QSettings settings_;
-    QPlainTextEdit* pythonCode_;
+    PythonTextEditor* pythonCode_;
     QTextEdit* pythonOutput_;
 
     QColor infoTextColor_;
@@ -97,6 +111,7 @@ public slots:
     void clearOutput();
     void onTextChange();
 };
+
 
 }  // namespace
 

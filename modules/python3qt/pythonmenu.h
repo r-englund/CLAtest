@@ -38,7 +38,7 @@
 
 namespace inviwo {
 class PythonInfoWidget;
-class PythonEditorWidget;
+
 class IVW_MODULE_PYTHON3QT_API PythonMenu {
 public:
     PythonMenu();
@@ -46,7 +46,6 @@ public:
 
 private:
     PythonInfoWidget* infoWidget_;
-    PythonEditorWidget* pythonEditorWidget_;
 };
 
 } // namespace
