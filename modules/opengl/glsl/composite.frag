@@ -40,6 +40,7 @@ uniform TEXTURE_TYPE texPicking0_;
 uniform TEXTURE_TYPE texColor1_;
 uniform TEXTURE_TYPE texDepth1_;
 uniform TEXTURE_TYPE texPicking1_;
+uniform vec2 screenDimRCP_;
 
 void main() {
     vec2 texCoords = gl_FragCoord.xy * screenDimRCP_;
