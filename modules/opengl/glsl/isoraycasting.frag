@@ -55,7 +55,7 @@ uniform TEXTURE_PARAMETERS exitParameters_;
 
 uniform TEXTURE_PARAMETERS outportParameters_;
 
-uniform SHADING_PARAMETERS light_;
+uniform LIGHT_PARAMETERS light_;
 uniform CAMERA_PARAMETERS camera_;
 uniform int channel_;
 
@@ -86,7 +86,7 @@ vec4 rayTraversal(vec3 entryPoint, vec3 exitPoint, vec2 texCoords) {
     samplePos = entryPoint + t * rayDirection;
     bool outside = getNormalizedVoxel(volume_, volumeParameters_, samplePos)[channel_] < isoValue_;
     t += tIncr;
-
+    vec3 toCameraDir = normalize(camera_.cameraPosition_ - (volumeParameters_.textureToWorld_*vec4(entryPoint, 1.0)).xyz);
     int stop = 1000;
     while (t < tEnd && stop-- > 0) {
         samplePos = entryPoint + t * rayDirection;
@@ -97,8 +97,13 @@ vec4 rayTraversal(vec3 entryPoint, vec3 exitPoint, vec2 texCoords) {
         float th = 0.001;
         if (abs(diff) < th) { //close enough to the surface
             gradient = COMPUTE_GRADIENT_FOR_CHANNEL(voxel, volume_, volumeParameters_, samplePos, channel_);
-            result.rgb = APPLY_LIGHTING(light_, camera_, volumeParameters_, vec3(1.0), vec3(1.0),
-                                        vec3(1.0), samplePos, gradient);
+            gradient = normalize(gradient);
+
+            // World space position
+            vec3 worldSpacePosition = (volumeParameters_.textureToWorld_*vec4(samplePos, 1.0)).xyz;
+            // Note that the gradient is reversed since we define the normal of a surface as
+            // the direction towards a lower intensity medium (gradient points in the inreasing direction)
+            result.rgb = APPLY_LIGHTING(light_, color.rgb, color.rgb, vec3(1.0), worldSpacePosition, -gradient, toCameraDir);
             result.a = 1.0;
             t += tEnd;
             break;

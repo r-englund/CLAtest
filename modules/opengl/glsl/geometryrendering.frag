@@ -30,9 +30,10 @@
  *
  *********************************************************************************/
 
-#include "include/inc_shading.frag"
+#include "utils/shading.glsl"
 
-uniform vec3 cameraPosition_;
+uniform LIGHT_PARAMETERS light_;
+uniform CAMERA_PARAMETERS camera_;
 
 in vec4 worldPosition_;
 in vec3 normal_;
@@ -40,8 +41,8 @@ in vec4 color_;
 
 void main() {
     vec4 fragColor = vec4(1.0);
-
-    fragColor.rgb = APPLY_SHADING(color_.rgb, color_.rgb, color_.rgb, worldPosition_.xyz, normal_, lightPosition_, cameraPosition_);
+    vec3 toCameraDir_ = camera_.cameraPosition_-worldPosition_.xyz;
+    fragColor.rgb = APPLY_LIGHTING(light_, color_.rgb, color_.rgb, vec3(1.0), worldPosition_.xyz, normalize(normal_), normalize(toCameraDir_));
 
     FragData0 = fragColor;
 }

@@ -30,7 +30,8 @@
  *
  *********************************************************************************/
 
-#include "include/inc_sampler3d.frag"
+#include "utils/structs.glsl"
+#include "utils/sampler3d.glsl"
 
 uniform VOLUME_TYPE lightVolume_;
 uniform VOLUME_TYPE lightVolumeSec_;

@@ -56,7 +56,7 @@ uniform sampler2D exitDepthTex_;
 
 uniform TEXTURE_PARAMETERS outportParameters_;
 
-uniform SHADING_PARAMETERS light_;
+uniform LIGHT_PARAMETERS light_;
 uniform CAMERA_PARAMETERS camera_;
 
 uniform float samplingRate_;
@@ -82,13 +82,14 @@ vec4 rayTraversal(vec3 entryPoint, vec3 exitPoint, vec2 texCoords) {
     vec4 voxel;
     vec3 samplePos;
     mat4x3 gradients;
-
+    vec3 toCameraDir = normalize(camera_.cameraPosition_ - (volumeParameters_.textureToWorld_*vec4(entryPoint, 1.0)).xyz);
     while (t < tEnd) {
         samplePos = entryPoint + t * rayDirection;
         voxel = getNormalizedVoxel(volume_, volumeParameters_, samplePos);
         
 		gradients = COMPUTE_ALL_GRADIENTS(voxel, volume_, volumeParameters_, samplePos);
-
+        // World space position
+        vec3 worldSpacePosition = (volumeParameters_.textureToWorld_*vec4(samplePos, 1.0)).xyz;
         // macro defined in MultichannelRaycaster::initializeResources()            
 		SAMPLE_CHANNELS
 

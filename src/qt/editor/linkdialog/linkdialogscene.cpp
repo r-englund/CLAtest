@@ -63,7 +63,7 @@ LinkDialogGraphicsScene::LinkDialogGraphicsScene(QWidget* parent)
 
 LinkDialogGraphicsScene::~LinkDialogGraphicsScene() {
     // We need to make sure to delete the links first. since they referer to the properties
-    for(int i = 0; i<connectionGraphicsItems_.size(); ++i) {
+    for(size_t i = 0; i<connectionGraphicsItems_.size(); ++i) {
         delete connectionGraphicsItems_[i];
     }
     currentConnectionGraphicsItems_.clear();
