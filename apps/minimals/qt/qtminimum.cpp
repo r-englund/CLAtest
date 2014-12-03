@@ -47,6 +47,7 @@
 #include <inviwo/core/network/processornetworkevaluator.h>
 #include <inviwo/core/processors/canvasprocessor.h>
 #include <inviwo/core/util/filesystem.h>
+#include <inviwo/core/processors/processorwidgetfactory.h>
 #include <moduleregistration.h>
 
 using namespace inviwo;
@@ -72,8 +73,7 @@ int main(int argc, char** argv) {
     inviwoApp.initialize(&inviwo::registerAllModules);
 
     // Continue initialization of default context
-    CanvasQt* sharedCanvas =
-        static_cast<CanvasQt*>(inviwoApp.getProcessorNetworkEvaluator()->getDefaultRenderContext());
+    CanvasQt* sharedCanvas = static_cast<CanvasQt*>(RenderContext::getPtr()->getDefaultRenderContext());
     sharedCanvas->initialize();
     sharedCanvas->activate();
 
@@ -97,19 +97,19 @@ int main(int argc, char** argv) {
     int i = 0;
 
     for (std::vector<Processor*>::iterator it = processors.begin(); it != processors.end(); ++it) {
-        (*it)->invalidate(INVALID_RESOURCES);
-        CanvasProcessor* canvasProcessor = dynamic_cast<CanvasProcessor*>((*it));
+        Processor* processor = *it;
+        processor->invalidate(INVALID_RESOURCES);
 
-        if (canvasProcessor) {
-            CanvasProcessorWidgetQt* canvasWidget = new CanvasProcessorWidgetQt();
-            canvasWidget->setProcessor(canvasProcessor);
-            canvasWidget->initialize();
-            canvasProcessor->getCanvas()->setNetworkEvaluator(inviwoApp.getProcessorNetworkEvaluator());
-            canvasProcessor->setProcessorWidget(canvasWidget);
-            if (i == 0) mainWin.setCentralWidget(canvasWidget);
-            canvasWidget->show();
-            dynamic_cast<CanvasGL*>(canvasProcessor->getCanvas())->resize(
-                uvec2(canvasProcessor->getCanvasSize().x, canvasProcessor->getCanvasSize().y));
+        ProcessorWidget* processorWidget = ProcessorWidgetFactory::getPtr()->create(processor);
+        if (processorWidget) {
+            processorWidget->setProcessor(processor);
+            processorWidget->initialize();
+            processorWidget->setVisible(processorWidget->ProcessorWidget::isVisible());
+            processor->setProcessorWidget(processorWidget);
+
+            if (!mainWin.centralWidget()) { 
+                mainWin.setCentralWidget(dynamic_cast<QWidget*>(processorWidget));
+            }
         }
     }
 
