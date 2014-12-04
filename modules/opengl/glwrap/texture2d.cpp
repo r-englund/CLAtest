@@ -54,9 +54,8 @@ Texture2D::Texture2D(const Texture2D& rhs)
 {
     setTextureParameterFunction(this, &Texture2D::default2DTextureParameterFunction);
     initialize(NULL);
-    // TODO: Copy texture from other
-    // bind();
-    // glCopyTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, 0, dimensions_.x, dimensions_.y);
+    //Copy data through PBO
+    loadFromPBO(&rhs);
 }
 
 Texture2D& Texture2D::operator=(const Texture2D& rhs) {
@@ -65,7 +64,8 @@ Texture2D& Texture2D::operator=(const Texture2D& rhs) {
         dimensions_ = rhs.dimensions_;
         setTextureParameterFunction(this, &Texture2D::default2DTextureParameterFunction);
         initialize(NULL);
-        // TODO: Copy other texture content
+        //Copy data through PBO
+        loadFromPBO(&rhs);
     }
 
     return *this;

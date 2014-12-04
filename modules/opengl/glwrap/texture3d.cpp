@@ -49,9 +49,8 @@ Texture3D::Texture3D(uvec3 dimensions, GLint format, GLint internalformat, GLenu
 Texture3D::Texture3D(const Texture3D& rhs) : Texture(rhs), dimensions_(rhs.dimensions_) {
     setTextureParameterFunction(this, &Texture3D::default3DTextureParameterFunction);
     initialize(NULL);
-    // TODO: Copy texture from other
-    // bind();
-    // glCopyTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, 0, dimensions_.x, dimensions_.y);
+    //Copy data through PBO
+    loadFromPBO(&rhs);
 }
 
 Texture3D& Texture3D::operator=(const Texture3D& rhs) {
@@ -60,7 +59,8 @@ Texture3D& Texture3D::operator=(const Texture3D& rhs) {
         dimensions_ = rhs.dimensions_;
         setTextureParameterFunction(this, &Texture3D::default3DTextureParameterFunction);
         initialize(NULL);
-        // TODO: Copy other texture content
+        //Copy data through PBO
+        loadFromPBO(&rhs);
     }
 
     return *this;
