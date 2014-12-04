@@ -128,14 +128,14 @@ void DataSource<DataType, PortType>::load(bool deserialized) {
     if (isDeserializing_ || file_.get() == "") {
         return;
     }
-    TemplateResource<DataType>* resource =
+    /*TemplateResource<DataType>* resource =
         ResourceManager::getPtr()->getResourceAs<TemplateResource<DataType> >(file_.get());
 
     if (resource) {
         port_.setData(resource->getData(), false);
         loadedData_ = resource->getData();
         dataLoaded(resource->getData());
-    } else {
+    } else {*/
         std::string fileExtension = filesystem::getFileExtension(file_.get());
         DataReaderType<DataType>* reader =
             DataReaderFactory::getPtr()->getReaderForTypeAndExtension<DataType>(fileExtension);
@@ -146,7 +146,7 @@ void DataSource<DataType, PortType>::load(bool deserialized) {
                 // Disabled the resourcemanager until it works properly.
                 // ResourceManager::getPtr()->addResource(
                 //    new TemplateResource<DataType>(file_.get(), data));
-                port_.setData(data, false);
+                port_.setData(data, true);
                 loadedData_ = data;
                 if(deserialized) {
                     dataDeserialized(data);
@@ -158,10 +158,10 @@ void DataSource<DataType, PortType>::load(bool deserialized) {
                 LogError("Could not load data: " << file_.get() << ", " << e.getMessage());
                 file_.set("");
             }
-        } else {
+        /*} else {
             LogError("Could not find a data reader for file: " << file_.get());
             file_.set("");
-        }
+        }*/
     }
 }
 
