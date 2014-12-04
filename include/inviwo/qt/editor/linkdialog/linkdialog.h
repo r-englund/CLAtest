@@ -78,7 +78,7 @@ public:
     virtual void closeEvent ( QCloseEvent * event );
     int exec();
     virtual QSize sizeHint() const;
-    ~LinkDialog();
+    virtual ~LinkDialog();
 
 private slots:
     void clickedOkayButton();

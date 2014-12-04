@@ -31,9 +31,11 @@
  *********************************************************************************/
 
 #include <inviwo/core/util/canvas.h>
+#include <inviwo/core/util/rendercontext.h>
 #include <inviwo/core/datastructures/image/image.h>
 #include <inviwo/core/datastructures/geometry/mesh.h>
 #include <inviwo/core/datastructures/buffer/bufferramprecision.h>
+#include <inviwo/core/processors/canvasprocessorwidget.h>
 #include <inviwo/core/network/processornetworkevaluator.h>
 #include <inviwo/core/io/datawriterfactory.h>
 
@@ -48,9 +50,9 @@ Canvas::Canvas(uvec2 dimensions)
     : initialized_(false)
     , shared_(true)
     , screenDimensions_(dimensions)
-    , imageDimensions_(dimensions)
-    , processorNetworkEvaluator_(NULL) {
-    pickingContainer_ = new PickingContainer();
+    , propagator_(NULL)
+    , pickingContainer_(new PickingContainer())
+    , ownerWidget_(NULL) {
 
     if (!screenAlignedRect_) {
         shared_ = false;
@@ -101,10 +103,8 @@ Canvas::~Canvas() {
 
     delete pickingContainer_;
 
-    if(getProcessorNetworkEvaluator()){
-        if(this == getProcessorNetworkEvaluator()->getDefaultRenderContext()){
-            getProcessorNetworkEvaluator()->setDefaultRenderContext(NULL);
-        }
+    if (this == RenderContext::getPtr()->getDefaultRenderContext()) {
+        RenderContext::getPtr()->setDefaultRenderContext(NULL);
     }
 }
 
@@ -113,30 +113,28 @@ void Canvas::initialize() {
         pickingContainer_ = new PickingContainer();
 
     initialized_ = true;
+    propagator_ = NULL;
 }
 
-void Canvas::deinitialize() {}
+void Canvas::deinitialize() {
+    propagator_ = NULL;
+}
 
 void Canvas::render(const Image* im, LayerType layerType/* = COLOR_LAYER*/) {}
 
 void Canvas::activate() {}
 
-void Canvas::resize(uvec2 canvasSize, uvec2 imageSize) {
-    uvec2 previousImageDimensions = imageDimensions_;
-    imageDimensions_ = imageSize;
+void Canvas::resize(uvec2 canvasSize) {
+    uvec2 previousScreenDimensions_ = screenDimensions_;
     screenDimensions_ = canvasSize;
 
-    if (getProcessorNetworkEvaluator()) {
-        getProcessorNetworkEvaluator()->activateDefaultRenderContext();
-        ResizeEvent* resizeEvent = new ResizeEvent(imageDimensions_);
-        resizeEvent->setPreviousSize(previousImageDimensions);
-        getProcessorNetworkEvaluator()->propagateResizeEvent(this, resizeEvent);
+    if (propagator_) {
+        RenderContext::getPtr()->activateDefaultRenderContext();
+        ResizeEvent* resizeEvent = new ResizeEvent(screenDimensions_);
+        resizeEvent->setPreviousSize(previousScreenDimensions_);
+        propagator_->propagateResizeEvent(resizeEvent);
         delete resizeEvent;
     }
-}
-
-uvec2 Canvas::getImageDimension() {
-    return imageDimensions_;
 }
 
 uvec2 Canvas::getScreenDimension() {
@@ -149,20 +147,12 @@ bool Canvas::isInitialized(){
     return initialized_;
 }
 
-void Canvas::setNetworkEvaluator(ProcessorNetworkEvaluator* networkEvaluator) {
-    processorNetworkEvaluator_ = networkEvaluator;
-}
-
-ProcessorNetworkEvaluator* Canvas::getProcessorNetworkEvaluator() {
-    return processorNetworkEvaluator_;
-}
-
 void Canvas::activateDefaultRenderContext(){
-    getProcessorNetworkEvaluator()->activateDefaultRenderContext();
+    RenderContext::getPtr()->activateDefaultRenderContext();
 }
 
-void Canvas::interactionEvent(InteractionEvent* e) {
-    getProcessorNetworkEvaluator()->propagateInteractionEvent(this, e);
+void Canvas::interactionEvent(InteractionEvent* event) {
+    if (propagator_) propagator_->propagateInteractionEvent(event);
 }
 
 void Canvas::mousePressEvent(MouseEvent* e) {
@@ -218,6 +208,18 @@ uvec2 Canvas::mousePosToPixelCoordinates(ivec2 mpos) {
     pos.y = std::min(pos.y, dim.y - 1);
         
     return uvec2(pos);
+}
+
+void Canvas::setEventPropagator(EventPropagator* propagator) {
+    propagator_ = propagator;
+}
+
+ProcessorWidget* Canvas::getProcessorWidgetOwner() const {
+    return ownerWidget_;
+}
+
+void Canvas::setProcessorWidgetOwner(ProcessorWidget* ownerWidget) {
+    ownerWidget_  = ownerWidget;
 }
 
 } // namespace

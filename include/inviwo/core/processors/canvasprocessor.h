@@ -43,25 +43,23 @@
 #include <inviwo/core/properties/directoryproperty.h>
 #include <inviwo/core/properties/buttonproperty.h>
 #include <inviwo/core/properties/compositeproperty.h>
+#include <inviwo/core/interaction/events/eventpropagator.h>
 
 namespace inviwo {
 
-class Canvas;
+class CanvasProcessorWidget;
+class ProcessorNetworkEvaluator;
 
-class IVW_CORE_API CanvasProcessor : public Processor {
+class IVW_CORE_API CanvasProcessor : public Processor, public EventPropagator {
 public:
     CanvasProcessor();
     virtual ~CanvasProcessor();
 
     virtual void initialize();
     virtual void deinitialize();
-    virtual void process();
 
-    void setCanvas(Canvas* canvas);
-    Canvas* getCanvas() const;
     void setCanvasSize(ivec2);
     ivec2 getCanvasSize() const;
-    void updateCanvasSize(ivec2);
 
     bool getUseCustomDimensions() const;
     ivec2 getCustomDimensions() const;
@@ -73,7 +71,13 @@ public:
     void triggerQueuedEvaluation();
     virtual bool isReady() const;
 
+    virtual void propagateResizeEvent(ResizeEvent*);
+    virtual void propagateInteractionEvent(InteractionEvent*);
+
 protected:
+    virtual void process();
+    void doIfNotReady();
+
     void performEvaluationAtNextShow();
     void performEvaluateRequest();
 
@@ -92,12 +96,14 @@ protected:
 
 private:
     void resizeCanvas();
-    void sizeSchemeChanged();
-    void ratioChanged();
+    void sizeChanged();
+    ivec2 calcSize();
 
-    Canvas* canvas_;
+    ivec2 previousImageSize_;
+
+    ProcessorNetworkEvaluator* evaluator_; //< non-owning reference
+    CanvasProcessorWidget* canvasWidget_; //< non-owning reference
     bool queuedRequest_;
-    bool ignoreResizeCallback_;
 };
 
 } // namespace

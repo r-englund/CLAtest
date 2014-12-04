@@ -42,7 +42,7 @@ ProcessorCategory(ImageGamma, "Image Operation");
 ProcessorCodeState(ImageGamma, CODE_STATE_STABLE);
 
 ImageGamma::ImageGamma() 
-    : ImageGPUProcessor("img_gamma.frag")
+    : ImageGLProcessor("img_gamma.frag")
     , gamma_("gammaFactor", "Gamma Correction", 1.0f, 0.0f, 2.0f, 0.01f)
 {
     addProperty(gamma_);

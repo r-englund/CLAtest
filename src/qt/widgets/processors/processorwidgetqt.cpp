@@ -32,8 +32,6 @@
 
 #include <inviwo/qt/widgets/processors/processorwidgetqt.h>
 #include <apps/inviwo/inviwomainwindow.h>
-#include <QApplication>
-#include <QDesktopWidget>
 #include <QResizeEvent>
 #include <QMoveEvent>
 #include <inviwo/core/common/inviwo.h>
@@ -43,86 +41,28 @@ namespace inviwo {
 
 ProcessorWidgetQt::ProcessorWidgetQt() : QWidget(NULL), ProcessorWidget() {}
 
-ProcessorWidgetQt::ProcessorWidgetQt(const ProcessorWidgetQt& rhs) 
-    : QWidget(NULL)
-    , ProcessorWidget(rhs) {}
-
-ProcessorWidgetQt& ProcessorWidgetQt::operator=(const ProcessorWidgetQt& that) {
-    if (this != &that) {
-        ProcessorWidget::operator=(that);
-    }
-    return *this;
-}
-
 ProcessorWidgetQt::~ProcessorWidgetQt() {}
 
 void ProcessorWidgetQt::initialize() {
     ProcessorWidget::initialize();
     ivec2 dim = ProcessorWidget::getDimension();
+    ivec2 pos = ProcessorWidget::getPosition();
+    
     QWidget::resize(dim.x, dim.y);
 
-    // Check if geometry is on screen and alter otherwise
-    // TODO: Desktop screen info should be added to system capabilities
-    ivec2 pos = ProcessorWidget::getPosition();
-    QDesktopWidget* desktop = QApplication::desktop();
-    int primaryScreenIndex = desktop->primaryScreen();
-    QRect wholeScreenGeometry = desktop->screenGeometry(primaryScreenIndex);
-
-    for (int i = 0; i < desktop->screenCount(); i++) {
-        if (i != primaryScreenIndex)
-            wholeScreenGeometry = wholeScreenGeometry.united(desktop->screenGeometry(i));
-    }
-
-    wholeScreenGeometry.setRect(wholeScreenGeometry.x() - 10, wholeScreenGeometry.y() - 10,
-                                wholeScreenGeometry.width() + 20,
-                                wholeScreenGeometry.height() + 20);
-    QPoint bottomRight = QPoint(pos.x + this->width(), pos.y + this->height());
     InviwoApplicationQt* app = dynamic_cast<InviwoApplicationQt*>(InviwoApplication::getPtr());
     if (app) {
-        QPoint appPos = app->getMainWindow()->pos();
 
-#if (QT_VERSION >= QT_VERSION_CHECK(5, 0, 0))
-        QPoint offset = app->getWindowDecorationOffset();
-        pos -= vec2(offset.x(), offset.y());
-#endif
+       QPoint newPos = app->movePointOntoDesktop(QPoint(pos.x,pos.y), this->size());
 
-        if (!wholeScreenGeometry.contains(QPoint(pos.x, pos.y)) ||
-            !wholeScreenGeometry.contains(bottomRight)) {// If the widget is outside visible screen
-            pos = ivec2(appPos.x(), appPos.y());
-            pos += offsetWidget();
-            QWidget::move(pos.x, pos.y);
-        } else {
-            if (!(pos.x == 0 && pos.y == 0))
-                // TODO: Detect if processor position is set. Need to figure out better way.
-                QWidget::move(pos.x, pos.y);
-            else {
-                pos = ivec2(appPos.x(), appPos.y());
-                pos += offsetWidget();
-                QWidget::move(pos.x, pos.y);
-            }
+        if (!(newPos.x() == 0 && newPos.y() == 0)) {
+            QWidget::move(newPos);
+        } else { // We guess that this is a new widget and give a new position
+            newPos = app->getMainWindow()->pos();
+            newPos += app->offsetWidget();
+            QWidget::move(newPos);
         }
     }
-}
-
-ivec2 ProcessorWidgetQt::offsetWidget(){
-    static int offsetCounter = 0;
-    static ivec2 baseOffset(350,100);
-
-    ivec2 pos(0,0);
-    pos += baseOffset + ivec2(40*offsetCounter++);
-
-    if(offsetCounter==10){ //reset offset
-        offsetCounter = 0;
-        baseOffset.x += 200; 
-        if(baseOffset.x >= 800){
-            baseOffset.x = 350;
-            baseOffset.y += 100;
-            if(baseOffset.y>=800){
-                baseOffset.y = 100; 
-            }
-        }
-    }
-    return pos;
 }
 
 void ProcessorWidgetQt::deinitialize() {

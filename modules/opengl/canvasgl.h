@@ -58,7 +58,6 @@ public:
 
     virtual void render(const Image* im, LayerType layerType = COLOR_LAYER);
     virtual void resize(uvec2 size);
-    virtual void resize(uvec2 canvasSize, uvec2 imageSize);
     virtual void glSwapBuffers();
     virtual void update();
 
@@ -93,13 +92,10 @@ protected:
     static void enableDrawImagePlaneRect();
     static void disableDrawImagePlaneRect();
 
-    ProcessorWidget* getProcessorWidgetOwner();
-    void setProcessorWidgetOwner(ProcessorWidget*);
-
     const ImageGL* imageGL_;
+    const Image* image_;
 
 private:
-    ProcessorWidget* ownerWidget_;
 
     static bool glewInitialized_;
     static const MeshGL* screenAlignedRectGL_;

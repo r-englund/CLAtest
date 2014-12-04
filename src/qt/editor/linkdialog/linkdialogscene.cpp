@@ -61,6 +61,18 @@ LinkDialogGraphicsScene::LinkDialogGraphicsScene(QWidget* parent)
     setItemIndexMethod(QGraphicsScene::NoIndex);
 }
 
+LinkDialogGraphicsScene::~LinkDialogGraphicsScene() {
+    // We need to make sure to delete the links first. since they referer to the properties
+    for(size_t i = 0; i<connectionGraphicsItems_.size(); ++i) {
+        delete connectionGraphicsItems_[i];
+    }
+    currentConnectionGraphicsItems_.clear();
+    connectionGraphicsItems_.clear();
+
+    delete srcProcessorGraphicsItem_;
+    delete dstProcessorGraphicsItem_;
+}
+
 QGraphicsItem* LinkDialogGraphicsScene::getPropertyGraphicsItemOf(Property* property) {
     std::map<Property*, LinkDialogPropertyGraphicsItem*>::iterator it =
         propertyGraphicsItemCache_.find(property);
@@ -691,6 +703,12 @@ void LinkDialogGraphicsScene::onProcessorNetworkDidAddLink(PropertyLink* propert
 
 void LinkDialogGraphicsScene::onProcessorNetworkDidRemoveLink(PropertyLink* propertyLink) {
     removePropertyLinkRepresentation(propertyLink);
+}
+
+void LinkDialogGraphicsScene::onProcessorNetworkWillRemoveProcessor(Processor* processor) {
+    if (processor == srcProcessorGraphicsItem_->getProcessor() || processor == dstProcessorGraphicsItem_->getProcessor()) {
+        emit closeDialog();
+    }
 }
 
 } //namespace

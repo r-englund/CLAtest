@@ -90,6 +90,7 @@ void ProcessorNetwork::addProcessor(Processor* processor) {
     notifyObserversProcessorNetworkWillAddProcessor(processor);
     processors_[processor->getIdentifier()] = processor;
     processor->ProcessorObservable::addObserver(this);
+    processor->invalidate(INVALID_RESOURCES);
     modified();
     notifyObserversProcessorNetworkDidAddProcessor(processor);
 }
@@ -164,7 +165,7 @@ void ProcessorNetwork::removeAndDeleteProcessor(Processor* processor) {
     delete processor;
 }
 
-Processor* ProcessorNetwork::getProcessorByName(std::string identifier) const {
+Processor* ProcessorNetwork::getProcessorByIdentifier(std::string identifier) const {
     ProcessorMap::const_iterator it = processors_.find(identifier);
     if(it!= processors_.end()) return it->second;
     return NULL;
@@ -554,6 +555,7 @@ void ProcessorNetwork::clear() {
     for (size_t i=0; i<processors.size(); i++)
         removeAndDeleteProcessor(processors[i]);
 
+    locked_ = 0; // make sure we remove all locks.
     unlock();
 }
 
@@ -761,7 +763,7 @@ bool ProcessorNetwork::isDeserializing()const {
 
 Property* ProcessorNetwork::getProperty(std::vector<std::string> path) const {
     if (path.size() >= 2){
-        Processor* processor = getProcessorByName(path[0]);
+        Processor* processor = getProcessorByIdentifier(path[0]);
         if (processor) {
             Property* property = processor->getPropertyByIdentifier(path[1]);
             if (property) {

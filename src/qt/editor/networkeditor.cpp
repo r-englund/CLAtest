@@ -64,7 +64,6 @@
 #include <inviwo/qt/editor/processorprogressgraphicsitem.h>
 #include <inviwo/qt/editor/processorstatusgraphicsitem.h>
 #include <inviwo/qt/widgets/inviwoapplicationqt.h>
-#include <inviwo/qt/widgets/processors/processorwidgetqt.h>
 #include <inviwo/qt/widgets/propertylistwidget.h>
 #include <inviwo/qt/widgets/eventconverterqt.h>
 
@@ -112,21 +111,19 @@ ProcessorGraphicsItem* NetworkEditor::addProcessorRepresentations(Processor* pro
     ProcessorGraphicsItem* ret =
         addProcessorGraphicsItem(processor, pos, showProcessor, selectProcessor);
 
-    ProcessorWidget* processorWidget =
-        dynamic_cast<ProcessorWidget*>(ProcessorWidgetFactory::getPtr()->create(processor));
+    ProcessorWidget* processorWidget = ProcessorWidgetFactory::getPtr()->create(processor);
     if (processorWidget) {
         processorWidget->setProcessor(processor);
+        processor->setProcessorWidget(processorWidget);
 
-        ProcessorWidgetQt* processorWidgetQt = dynamic_cast<ProcessorWidgetQt*>(processorWidget);
-        if (processorWidgetQt) {
+        QWidget* widget = dynamic_cast<QWidget*>(processorWidget);
+        if (widget) {
             InviwoApplicationQt* app =
                 dynamic_cast<InviwoApplicationQt*>(InviwoApplication::getPtr());
-            processorWidgetQt->setParent(app->getMainWindow(),
-                                         Qt::Window | Qt::WindowStaysOnTopHint);
+            widget->setParent(app->getMainWindow());
         }
         processorWidget->initialize();
-        processorWidget->setVisible(processorWidget->ProcessorWidget::isVisible());
-        processor->setProcessorWidget(processorWidget);
+        processorWidget->setVisible(processorWidget->ProcessorWidget::isVisible()); 
         processorWidget->addObserver(ret->getStatusItem());
     }
     return ret;
@@ -320,20 +317,21 @@ bool NetworkEditor::addPortInspector(Outport* port, QPointF pos) {
         }
 
         // Setup the widget
-        ProcessorWidgetQt* processorWidgetQt =
-            dynamic_cast<ProcessorWidgetQt*>(canvasProcessor->getProcessorWidget());
-
-        if (processorWidgetQt) {
+        ProcessorWidget* processorWidget = canvasProcessor->getProcessorWidget();
+        if (processorWidget) {
             int size = InviwoApplication::getPtr()
                            ->getSettingsByType<SystemSettings>()
                            ->portInspectorSize_.get();
-            processorWidgetQt->setDimension(ivec2(size,size));
-            processorWidgetQt->setMinimumSize(size, size);
-            processorWidgetQt->setMaximumSize(size, size);
-            processorWidgetQt->setWindowFlags(Qt::CustomizeWindowHint | Qt::Tool);
-            processorWidgetQt->setPosition(ivec2(pos.x(), pos.y()));
-            processorWidgetQt->show();
-            processorWidgetQt->addObserver(new PortInspectorObserver(this, outport));
+            processorWidget->setDimension(ivec2(size,size));
+            QWidget* widget = dynamic_cast<QWidget*>(processorWidget);
+            if (widget) {
+                widget->setMinimumSize(size, size);
+                widget->setMaximumSize(size, size);
+                widget->setWindowFlags(Qt::CustomizeWindowHint | Qt::Tool);
+            }
+            processorWidget->setPosition(ivec2(pos.x(), pos.y()));
+            processorWidget->show();
+            processorWidget->addObserver(new PortInspectorObserver(this, outport));
         }
 
         network->unlock();

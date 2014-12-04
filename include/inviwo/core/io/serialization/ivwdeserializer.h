@@ -248,13 +248,10 @@ private:
      *
      * @param const std::string & key Parent node key e.g, "Property"
      * @param T & vector Glm data structures such as vec2, ive2, vec3, ivec3, etc.,
-     * @param const bool & isColor If (isColor==true) x="0" y="0" z="0" ,
-     *        If (isColor==false) isColor r="0" g="0" b="0"
      */
     template <class T>
     void deserializeVector(const std::string& key,
-                           T& vector,
-                           const bool& isColor=false);
+                           T& vector);
 };
 
 template<class T>
@@ -462,15 +459,14 @@ inline void IvwDeserializer::deserializePrimitive(const std::string& key, T& dat
 }
 
 template<class T>
-inline void IvwDeserializer::deserializeVector(const std::string& key, T& vector, const bool& isColor) {
+inline void IvwDeserializer::deserializeVector(const std::string& key, T& vector) {
     TxElement* keyNode = rootElement_->FirstChildElement(key, false);
 
     if (!keyNode) {
         //Try to finding key in the current node before exit. If not, let the exception be thrown.
         try {
             T tempVec;
-            rootElement_->GetAttribute(
-                isColor ? IvwSerializeConstants::COLOR_R_ATTRIBUTE : IvwSerializeConstants::VECTOR_X_ATTRIBUTE, &tempVec[0]);
+            rootElement_->GetAttribute(IvwSerializeConstants::VECTOR_X_ATTRIBUTE, &tempVec[0]);
             keyNode = rootElement_;
         }
         catch (TxException&) {
@@ -479,22 +475,18 @@ inline void IvwDeserializer::deserializeVector(const std::string& key, T& vector
     }
 
     std::string attr;
-    keyNode->GetAttribute(
-        isColor ? IvwSerializeConstants::COLOR_R_ATTRIBUTE : IvwSerializeConstants::VECTOR_X_ATTRIBUTE, &vector[0]);
+    keyNode->GetAttribute(IvwSerializeConstants::VECTOR_X_ATTRIBUTE, &vector[0]);
 
     if (vector.length() >= 2) {
-        keyNode->GetAttribute(
-            isColor ? IvwSerializeConstants::COLOR_G_ATTRIBUTE : IvwSerializeConstants::VECTOR_Y_ATTRIBUTE, &vector[1]);
+        keyNode->GetAttribute(IvwSerializeConstants::VECTOR_Y_ATTRIBUTE, &vector[1]);
     }
 
     if (vector.length() >= 3) {
-        keyNode->GetAttribute(
-            isColor ? IvwSerializeConstants::COLOR_B_ATTRIBUTE : IvwSerializeConstants::VECTOR_Z_ATTRIBUTE, &vector[2]);
+        keyNode->GetAttribute(IvwSerializeConstants::VECTOR_Z_ATTRIBUTE, &vector[2]);
     }
 
     if (vector.length() >= 4) {
-        keyNode->GetAttribute(
-            isColor ? IvwSerializeConstants::COLOR_A_ATTRIBUTE : IvwSerializeConstants::VECTOR_W_ATTRIBUTE, &vector[3]);
+        keyNode->GetAttribute(IvwSerializeConstants::VECTOR_W_ATTRIBUTE, &vector[3]);
     }
 }
 

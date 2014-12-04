@@ -48,7 +48,7 @@ PythonMenu::PythonMenu() {
     QAction* pythonEditorOpen = menu->addAction(QIcon(":/icons/python.png"),"&Python Editor");
     QAction* infoAction = menu->addAction("API Documentation");
     infoWidget_ = new PythonInfoWidget(win);
-    pythonEditorWidget_ = new PythonEditorWidget(win);
+    PythonEditorWidget::init( new PythonEditorWidget(win));
     win->connect(pythonEditorOpen,SIGNAL(triggered(bool)),PythonEditorWidget::getPtr(),SLOT(show(void)));
     win->connect(infoAction,SIGNAL(triggered(bool)),infoWidget_,SLOT(show(void)));
 }

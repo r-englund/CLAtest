@@ -45,9 +45,11 @@
 #include <inviwo/core/common/inviwoapplication.h>
 #include <inviwo/core/network/processornetwork.h>
 #include <inviwo/core/network/processornetworkevaluator.h>
+#include <inviwo/core/processors/processorwidget.h>
 #include <inviwo/core/processors/canvasprocessor.h>
 #include <inviwo/core/util/filesystem.h>
 #include <moduleregistration.h>
+#include <inviwo/core/processors/processorwidgetfactory.h>
 
 using namespace inviwo;
 
@@ -63,7 +65,7 @@ int main(int argc, char** argv) {
     inviwoApp.initialize(&inviwo::registerAllModules);
 
     //Continue initialization of default context
-    CanvasGLFW* sharedCanvas = static_cast<CanvasGLFW*>(inviwoApp.getProcessorNetworkEvaluator()->getDefaultRenderContext());
+    CanvasGLFW* sharedCanvas = static_cast<CanvasGLFW*>(RenderContext::getPtr()->getDefaultRenderContext());
     sharedCanvas->initialize();
     sharedCanvas->activate();
 
@@ -80,30 +82,17 @@ int main(int argc, char** argv) {
     IvwDeserializer xmlDeserializer(workspace);
     inviwoApp.getProcessorNetwork()->deserialize(xmlDeserializer);
     std::vector<Processor*> processors = inviwoApp.getProcessorNetwork()->getProcessors();
-    int i=0;
 
     for (std::vector<Processor*>::iterator it = processors.begin(); it!=processors.end(); ++it) {
-        (*it)->invalidate(INVALID_RESOURCES);
-        CanvasProcessor* canvasProcessor = dynamic_cast<CanvasProcessor*>((*it));
+        Processor* processor = *it;
+        processor->invalidate(INVALID_RESOURCES);
 
-        if (canvasProcessor) {
-            CanvasGLFW* currentC;
-            if (i==0) {
-                currentC = sharedCanvas;
-            }
-            else {
-                currentC = new CanvasGLFW(canvasProcessor->getIdentifier(), uvec2(canvasProcessor->getCanvasSize()));
-                currentC->initializeGL();
-                currentC->initialize();
-            }
-
-            currentC->setNetworkEvaluator(inviwoApp.getProcessorNetworkEvaluator());
-            canvasProcessor->setCanvas(currentC);
-            
-            currentC->setWindowTitle(inviwoApp.getDisplayName() + " : " + canvasProcessor->getIdentifier());
-            currentC->setWindowSize(uvec2(canvasProcessor->getCanvasSize()));
-            currentC->show();
-            i++;
+        ProcessorWidget* processorWidget = ProcessorWidgetFactory::getPtr()->create(processor);
+        if (processorWidget) {
+            processorWidget->setProcessor(processor);
+            processorWidget->initialize();
+            processorWidget->setVisible(processorWidget->ProcessorWidget::isVisible());
+            processor->setProcessorWidget(processorWidget);    
         }
     }
 

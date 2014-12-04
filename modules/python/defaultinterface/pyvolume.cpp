@@ -53,7 +53,7 @@ PyObject* py_setVoxel(PyObject* /*self*/, PyObject* args) {
     std::string volume = PyValueParser::parse<std::string>(PyTuple_GetItem(args, 0));
     uvec3 voxel = PyValueParser::parse<uvec3>(PyTuple_GetItem(args, 1));
     float value = PyValueParser::parse<float>(PyTuple_GetItem(args, 2));
-    Processor* processor = InviwoApplication::getPtr()->getProcessorNetwork()->getProcessorByName(volume);
+    Processor* processor = InviwoApplication::getPtr()->getProcessorNetwork()->getProcessorByIdentifier(volume);
 
     if (!processor) {
         PyErr_SetString(PyExc_TypeError, ("setVoxel(vol,(x,y,z),v). No processor with id " + volume).c_str());
@@ -84,7 +84,7 @@ PyObject* py_getVolumeDimension(PyObject* /*self*/, PyObject* args) {
         return 0;
 
     std::string volume = PyValueParser::parse<std::string>(PyTuple_GetItem(args, 0));
-    Processor* processor = InviwoApplication::getPtr()->getProcessorNetwork()->getProcessorByName(volume);
+    Processor* processor = InviwoApplication::getPtr()->getProcessorNetwork()->getProcessorByIdentifier(volume);
 
     if (!processor) {
         PyErr_SetString(PyExc_TypeError, ("setVoxel(vol,(x,y,z),v). No processor with id " + volume).c_str());
@@ -117,7 +117,7 @@ PyObject* py_saveTransferFunction(PyObject* /*self*/, PyObject* args) {
     std::string processorName = PyValueParser::parse<std::string>(PyTuple_GetItem(args, 0));
     std::string propertyID    = PyValueParser::parse<std::string>(PyTuple_GetItem(args, 1));
     std::string filename      = PyValueParser::parse<std::string>(PyTuple_GetItem(args, 2));
-    Processor* processor = InviwoApplication::getPtr()->getProcessorNetwork()->getProcessorByName(processorName);
+    Processor* processor = InviwoApplication::getPtr()->getProcessorNetwork()->getProcessorByIdentifier(processorName);
 
     if (!processor) {
         std::string msg = std::string("saveTransferFunction() no processor with name: ") + processorName;
@@ -160,7 +160,7 @@ PyObject* py_loadTransferFunction(PyObject* /*self*/, PyObject* args) {
     std::string processorName = PyValueParser::parse<std::string>(PyTuple_GetItem(args, 0));
     std::string propertyID    = PyValueParser::parse<std::string>(PyTuple_GetItem(args, 1));
     std::string filename      = PyValueParser::parse<std::string>(PyTuple_GetItem(args, 2));
-    Processor* processor = InviwoApplication::getPtr()->getProcessorNetwork()->getProcessorByName(processorName);
+    Processor* processor = InviwoApplication::getPtr()->getProcessorNetwork()->getProcessorByIdentifier(processorName);
 
     if (!processor) {
         std::string msg = std::string("loadTransferFunction() no processor with name: ") + processorName;
@@ -211,7 +211,7 @@ PyObject* py_clearTransferfunction(PyObject* /*self*/, PyObject* args) {
 
     std::string processorName = std::string(PyString_AsString(PyTuple_GetItem(args, 0)));
     std::string propertyID = std::string(PyString_AsString(PyTuple_GetItem(args, 1)));
-    Processor* processor = InviwoApplication::getPtr()->getProcessorNetwork()->getProcessorByName(processorName);
+    Processor* processor = InviwoApplication::getPtr()->getProcessorNetwork()->getProcessorByIdentifier(processorName);
 
     if (!processor) {
         std::string msg = std::string("clearTransferfunction() no processor with name: ") + processorName;
@@ -251,7 +251,7 @@ PyObject* py_addPointTransferFunction(PyObject* /*self*/, PyObject* args) {
     std::string propertyID    = PyValueParser::parse<std::string>(PyTuple_GetItem(args, 1));
     vec2 pos = PyValueParser::parse<vec2>(PyTuple_GetItem(args, 2));
     vec3 color = PyValueParser::parse<vec3>(PyTuple_GetItem(args, 3));
-    Processor* processor = InviwoApplication::getPtr()->getProcessorNetwork()->getProcessorByName(processorName);
+    Processor* processor = InviwoApplication::getPtr()->getProcessorNetwork()->getProcessorByIdentifier(processorName);
 
     if (!processor) {
         std::string msg = std::string("addPointToTransferFunction() no processor with name: ") + processorName;

@@ -38,10 +38,10 @@
 #include <QWidget>
 #include <QMimeData>
 #include <QHeaderView>
-//#include <QtHelp/QHelpEngineCore>
 
 #include <inviwo/core/common/inviwoapplication.h>
 #include <inviwo/qt/editor/processorlistwidget.h>
+#include <inviwo/qt/editor/helpwidget.h>
 #include <inviwo/core/processors/processorstate.h>
 #include <inviwo/core/processors/processortags.h>
 
@@ -54,9 +54,6 @@ void ProcessorTree::mousePressEvent(QMouseEvent* e) {
         dragStartPosition_ = e->pos();
 
     QTreeWidget::mousePressEvent(e);
-
-
-	//QHelpEngineCore helpEngine("mycollection.qhc");
 }
 
 void ProcessorTree::mouseMoveEvent(QMouseEvent* e) {
@@ -71,7 +68,13 @@ void ProcessorTree::mouseMoveEvent(QMouseEvent* e) {
     }
 }
 
-ProcessorTreeWidget::ProcessorTreeWidget(QWidget* parent) : InviwoDockWidget(tr("Processors"), parent) {
+ProcessorTree::ProcessorTree(QWidget* parent) 
+    : QTreeWidget(parent) {
+}
+
+ProcessorTreeWidget::ProcessorTreeWidget(QWidget* parent, HelpWidget* helpWidget) 
+    : InviwoDockWidget(tr("Processors"), parent) 
+    , helpWidget_(helpWidget) {
     setObjectName("ProcessorTreeWidget");
     setAllowedAreas(Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea);
     QFrame* frame = new QFrame();
@@ -114,6 +117,9 @@ ProcessorTreeWidget::ProcessorTreeWidget(QWidget* parent) : InviwoDockWidget(tr(
     #endif
     processorTree_->header()->setDefaultSectionSize(40);
     
+    connect(processorTree_, SIGNAL(currentItemChanged(QTreeWidgetItem*, QTreeWidgetItem*)),
+            this, SLOT(currentItemChanged(QTreeWidgetItem*, QTreeWidgetItem*)));
+
     addProcessorsToTree();
     vLayout->addWidget(processorTree_);
     frame->setLayout(vLayout);
@@ -282,6 +288,12 @@ void ProcessorTreeWidget::addProcessorsToTree() {
     
     processorTree_->expandAll();
     processorTree_->resizeColumnToContents(1);
+}
+
+void ProcessorTreeWidget::currentItemChanged(QTreeWidgetItem* current, QTreeWidgetItem* previous) {
+    if(!current) return;
+    std::string classname = current->data(0, ProcessorTree::IDENTIFIER_ROLE).toString().toStdString();
+    if (!classname.empty()) helpWidget_->showDocForClassName(classname);
 }
 
 static QString mimeType = "inviwo/ProcessorDragObject";

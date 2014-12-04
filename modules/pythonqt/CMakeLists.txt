@@ -40,7 +40,7 @@ set(SOURCE_FILES
 ivw_group("Source Files" ${SOURCE_FILES})
 
 ivw_define_qt_definitions()
-ivw_add_definition(IVW_PYTHON_QT)
+ivw_add_definition(IVW_PYTHON2_QT)
 
 # Create module
 ivw_create_module(${SOURCE_FILES} ${MOC_FILES} ${HEADER_FILES})

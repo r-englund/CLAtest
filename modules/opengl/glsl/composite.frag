@@ -30,7 +30,8 @@
  *
  *********************************************************************************/
 
-#include "include/inc_sampler2d.frag"
+#include "utils/structs.glsl"
+#include "utils/sampler2d.glsl"
 
 uniform TEXTURE_TYPE texColor0_;
 uniform TEXTURE_TYPE texDepth0_;
@@ -39,6 +40,7 @@ uniform TEXTURE_TYPE texPicking0_;
 uniform TEXTURE_TYPE texColor1_;
 uniform TEXTURE_TYPE texDepth1_;
 uniform TEXTURE_TYPE texPicking1_;
+uniform vec2 screenDimRCP_;
 
 void main() {
     vec2 texCoords = gl_FragCoord.xy * screenDimRCP_;

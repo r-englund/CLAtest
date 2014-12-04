@@ -71,8 +71,7 @@ int main(int argc, char** argv) {
         app.initialize(&inviwo::registerAllModules);
 
         // Continue initialization of default context
-        CanvasGLFW* sharedCanvas =
-            static_cast<CanvasGLFW*>(app.getProcessorNetworkEvaluator()->getDefaultRenderContext());
+        CanvasGLFW* sharedCanvas = static_cast<CanvasGLFW*>(RenderContext::getPtr()->getDefaultRenderContext());
         sharedCanvas->initialize();
         sharedCanvas->activate();
 

@@ -35,7 +35,7 @@
 
 #include <modules/basegl/baseglmoduledefine.h>
 #include <inviwo/core/common/inviwo.h>
-#include <modules/basegl/processors/imagegpuprocessor.h>
+#include <modules/basegl/processors/imageglprocessor.h>
 #include <inviwo/core/properties/transferfunctionproperty.h>
 
 namespace inviwo {
@@ -44,7 +44,7 @@ namespace inviwo {
  *
  * \brief Maps the input image to an output with the help of a transfer function.
  */
-class IVW_MODULE_BASEGL_API ImageMapping : public ImageGPUProcessor {
+class IVW_MODULE_BASEGL_API ImageMapping : public ImageGLProcessor {
 public:
     ImageMapping();
     ~ImageMapping();

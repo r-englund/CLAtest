@@ -45,28 +45,14 @@ ProcessorCodeState(CanvasProcessorGL, CODE_STATE_STABLE);
 CanvasProcessorGL::CanvasProcessorGL()
     : CanvasProcessor() {}
 
-void CanvasProcessorGL::initialize() {
-    CanvasProcessor::initialize();
-}
-
-void CanvasProcessorGL::deinitialize() {
-    CanvasProcessor::deinitialize();
-}
-
 void CanvasProcessorGL::process() {
     CanvasProcessor::process();
-    static_cast<CanvasGL*>(getCanvas())
-        ->render(inport_.getData(), static_cast<LayerType>(visibleLayer_.get()));
+    //getCanvas()->render(inport_.getData(), static_cast<LayerType>(visibleLayer_.get()));
 }
 
 void CanvasProcessorGL::doIfNotReady() {
     CanvasProcessor::process();
-    static_cast<CanvasGL*>(getCanvas())->render(NULL, static_cast<LayerType>(visibleLayer_.get()));
-}
-
-void CanvasProcessorGL::invalidate(InvalidationLevel invalidationLevel,
-                                   Property* modifiedProperty) {
-    CanvasProcessor::invalidate(invalidationLevel, modifiedProperty);
+    //getCanvas()->render(NULL, static_cast<LayerType>(visibleLayer_.get()));
 }
 
 } // namespace

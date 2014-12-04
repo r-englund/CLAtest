@@ -48,16 +48,10 @@ namespace inviwo {
  */
 class IVW_MODULE_OPENGL_API CanvasProcessorGL : public CanvasProcessor {
 public:
+    InviwoProcessorInfo();
+    
     CanvasProcessorGL();
     virtual ~CanvasProcessorGL() {};
-
-    InviwoProcessorInfo();
-
-    virtual void initialize();
-    virtual void deinitialize();
-
-    virtual void invalidate(InvalidationLevel invalidationLevel,
-                            Property* modifiedProperty=0);
 
 protected:
     virtual void process();

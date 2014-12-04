@@ -37,41 +37,50 @@ namespace inviwo {
 namespace utilgl {
 
 void addShaderDefines(Shader* shader, const SimpleLightingProperty& property) {
-    // implementations in  modules/opengl/glsl/utils/shading.frag
+    // implementations in  modules/opengl/glsl/utils/shading.glsl
     std::string shadingKey =
-        "APPLY_LIGHTING(light, camera, volume, colorAmb, colorDiff, colorSpec, samplePos, gradient)";
+        "APPLY_LIGHTING(lighting, materialAmbientColor, materialDiffuseColor, materialSpecularColor, position, normal, toCameraDir)";
     std::string shadingValue = "";
 
-    if (property.shadingMode_.isSelectedIdentifier("none"))
-        shadingValue = "colorAmb;";
-    else if (property.shadingMode_.isSelectedIdentifier("ambient"))
-        shadingValue = "shadeAmbient(light, colorAmb);";
-    else if (property.shadingMode_.isSelectedIdentifier("diffuse"))
-        shadingValue = "shadeDiffuse(light, camera, volume, colorDiff, samplePos, gradient);";
-    else if (property.shadingMode_.isSelectedIdentifier("specular"))
-        shadingValue =
-            "shadeSpecular(light, camera, volume, colorSpec, samplePos, gradient);";
-    else if (property.shadingMode_.isSelectedIdentifier("phong"))
-        shadingValue =
-            "shadePhong(light, camera, volume, colorAmb, colorDiff, colorSpec, samplePos, gradient);";
+    switch(property.shadingMode_.get()) {
+    case ShadingMode::Ambient:
+        shadingValue = "shadeAmbient(lighting, materialAmbientColor);";
+        break;
+    case ShadingMode::Diffuse:
+        shadingValue = "shadeDiffuse(lighting, materialDiffuseColor, position, normal);";
+        break;
+    case ShadingMode::Specular:
+        shadingValue = "shadeSpecular(lighting, materialSpecularColor, position, normal, toCameraDir);";
+        break;
+    case ShadingMode::BlinnPhong:
+        shadingValue = "shadeBlinnPhong(lighting, materialAmbientColor, materialDiffuseColor, materialSpecularColor, position, normal, toCameraDir);";
+        break;
+    case ShadingMode::Phong:
+        shadingValue = "shadePhong(lighting, materialAmbientColor, materialDiffuseColor, materialSpecularColor, position, normal, toCameraDir);";
+        break;
+    case ShadingMode::None:
+    default:
+        shadingValue = "materialAmbientColor;";
+        break;
+    }
 
     shader->getFragmentShaderObject()->addShaderDefine(shadingKey, shadingValue);
 }
 
 void setShaderUniforms(Shader* shader, const SimpleLightingProperty& property) {
     shader->setUniform("lightPosition_", property.lightPosition_.get());
-    shader->setUniform("lightColorAmbient_", property.lightColorAmbient_.get());
-    shader->setUniform("lightColorDiffuse_", property.lightColorDiffuse_.get());
-    shader->setUniform("lightColorSpecular_", property.lightColorSpecular_.get());
-    shader->setUniform("lightSpecularExponent_", property.lightSpecularExponent_.get());
+    shader->setUniform("lightAmbientColor_", property.ambientColor_.get());
+    shader->setUniform("lightDiffuseColor_", property.diffuseColor_.get());
+    shader->setUniform("lightSpecularColor_", property.specularColor_.get());
+    shader->setUniform("lightSpecularExponent_", property.specularExponent_.get());
 }
 
 void setShaderUniforms(Shader* shader, const SimpleLightingProperty& property, std::string name) {
-    shader->setUniform(name + ".lightPosition_", property.lightPosition_.get());
-    shader->setUniform(name + ".lightColorAmbient_", property.lightColorAmbient_.get());
-    shader->setUniform(name + ".lightColorDiffuse_", property.lightColorDiffuse_.get());
-    shader->setUniform(name + ".lightColorSpecular_", property.lightColorSpecular_.get());
-    shader->setUniform(name + ".lightSpecularExponent_", property.lightSpecularExponent_.get());
+    shader->setUniform(name + ".position_", property.lightPosition_.get());
+    shader->setUniform(name + ".ambientColor_", property.ambientColor_.get());
+    shader->setUniform(name + ".diffuseColor_", property.diffuseColor_.get());
+    shader->setUniform(name + ".specularColor_", property.specularColor_.get());
+    shader->setUniform(name + ".specularExponent_", property.specularExponent_.get());
 }
 
 void addShaderDefines(Shader* shader, const CameraProperty& property) {
@@ -79,6 +88,8 @@ void addShaderDefines(Shader* shader, const CameraProperty& property) {
 
 void setShaderUniforms(Shader* shader, const CameraProperty& property) {
     shader->setUniform("viewMatrix_", property.viewMatrix());
+    shader->setUniform("projectionMatrix_", property.projectionMatrix());
+    shader->setUniform("worldToClipMatrix_", property.projectionMatrix()*property.viewMatrix()); 
     shader->setUniform("cameraPosition_", property.getLookFrom());
     shader->setUniform("zNear_", property.getNearPlaneDist());
     shader->setUniform("zFar_", property.getFarPlaneDist());
@@ -86,10 +97,35 @@ void setShaderUniforms(Shader* shader, const CameraProperty& property) {
 
 void setShaderUniforms(Shader* shader, const CameraProperty& property, std::string name) {
     shader->setUniform(name + ".viewMatrix_", property.viewMatrix());
+    shader->setUniform(name + ".projectionMatrix_", property.projectionMatrix());
+    shader->setUniform(name + ".worldToClipMatrix_", property.projectionMatrix()*property.viewMatrix()); 
     shader->setUniform(name + ".cameraPosition_", property.getLookFrom());
     shader->setUniform(name + ".zNear_", property.getNearPlaneDist());
     shader->setUniform(name + ".zFar_", property.getFarPlaneDist());
 }
+
+
+void setShaderUniforms(Shader* shader, const CameraProperty& property, const SpatialEntity<3>& object) {
+    mat4 modelViewMatrix = property.viewMatrix()*object.getCoordinateTransformer().getTextureToWorldMatrix();
+    shader->setUniform("modelToViewMatrix_", modelViewMatrix);
+    shader->setUniform("modelToClipMatrix_", property.projectionMatrix()*modelViewMatrix);
+    shader->setUniform("modelToViewNormalMatrix_", glm::mat3(glm::transpose(glm::inverse(modelViewMatrix))));
+}
+
+
+IVW_MODULE_OPENGL_API void setShaderUniforms(Shader* shader, const SpatialEntity<3>& object) {
+    mat4 modelToWorldMatrix = object.getCoordinateTransformer().getTextureToWorldMatrix();
+    shader->setUniform("modelToWorldMatrix_", modelToWorldMatrix);
+    shader->setUniform("modelToWorldNormalMatrix_", glm::mat3(glm::transpose(glm::inverse(modelToWorldMatrix))));
+}
+
+IVW_MODULE_OPENGL_API void setShaderUniforms(Shader* shader, const SpatialEntity<3>& object, const std::string& name) {
+    mat4 modelToWorldMatrix = object.getCoordinateTransformer().getTextureToWorldMatrix();
+    shader->setUniform(name + ".modelToWorldMatrix_", modelToWorldMatrix);
+    shader->setUniform(name + ".modelToWorldNormalMatrix_", glm::mat3(glm::transpose(glm::inverse(modelToWorldMatrix))));
+}
+
+
 
 
 

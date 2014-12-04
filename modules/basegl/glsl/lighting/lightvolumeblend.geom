@@ -35,7 +35,8 @@
 #extension GL_EXT_geometry_shader4: enable
 #endif
 
-#include "include/inc_sampler3d.frag"
+#include "utils/structs.glsl"
+#include "utils/sampler3d.glsl"
 
 layout(triangles) in;
 layout(triangle_strip, max_vertices = 3) out;

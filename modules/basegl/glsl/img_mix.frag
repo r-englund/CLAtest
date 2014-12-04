@@ -30,19 +30,20 @@
  *
  *********************************************************************************/
 
-#include "include/inc_sampler2d.frag"
-
-vec4 colorMix(vec4 colorA, vec4 colorB, vec4 param) {
-    return mix(colorA, colorB, param);
-}
-vec4 colorAdd(vec4 colorA, vec4 colorB) {
-    return colorA+colorB;
-}
+#include "utils/sampler2d.glsl"
 
 uniform sampler2D inport0_;
 uniform sampler2D inport1_;
 uniform float alpha_;
 uniform vec2 dimension_;
+uniform vec2 screenDimRCP_;
+
+vec4 colorMix(vec4 colorA, vec4 colorB, vec4 param) {
+    return mix(colorA, colorB, param);
+}
+vec4 colorAdd(vec4 colorA, vec4 colorB) {
+    return colorA + colorB;
+}
 
 void main() {
     vec2 texCoords = gl_FragCoord.xy * screenDimRCP_;

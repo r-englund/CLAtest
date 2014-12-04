@@ -58,7 +58,7 @@ uniform sampler2D exitColorTex_;
 uniform sampler2D exitDepthTex_;
 uniform TEXTURE_PARAMETERS exitParameters_;
 
-uniform SHADING_PARAMETERS light_;
+uniform LIGHT_PARAMETERS light_;
 uniform CAMERA_PARAMETERS camera_;
 
 uniform float samplingRate_;
@@ -82,15 +82,19 @@ vec4 rayTraversal(vec3 entryPoint, vec3 exitPoint, vec2 texCoords) {
     vec3 samplePos;
     vec3 gradient;
     vec4 lightVoxel;
-
+    vec3 toCameraDir = normalize(camera_.cameraPosition_ - (volumeParameters_.textureToWorld_*vec4(entryPoint, 1.0)).xyz);
     while (t < tEnd) {
         samplePos = entryPoint + t * rayDirection;
         voxel = getNormalizedVoxel(volume_, volumeParameters_, samplePos);
 
         gradient = COMPUTE_GRADIENT(voxel, volume_, volumeParameters_, samplePos);
+        gradient = normalize(gradient);
         color = APPLY_CLASSIFICATION(transferFunc_, voxel);
-        color.rgb = APPLY_LIGHTING(light_, camera_, volumeParameters_, color.rgb, color.rgb,
-                                   vec3(1.0), samplePos, gradient);
+        // World space position
+        vec3 worldSpacePosition = (volumeParameters_.textureToWorld_*vec4(samplePos, 1.0)).xyz;
+        // Note that the gradient is reversed since we define the normal of a surface as
+        // the direction towards a lower intensity medium (gradient points in the inreasing direction)
+        color.rgb = APPLY_LIGHTING(light_, color.rgb, color.rgb, vec3(1.0), worldSpacePosition, -gradient, toCameraDir);
 
         //Light Volume Compositing
         lightVoxel = getVoxel(lightVolume_, lightVolumeParameters_, samplePos);

@@ -41,6 +41,7 @@
 #include <inviwo/qt/editor/resourcemanagerwidget.h>
 #include <inviwo/qt/editor/consolewidget.h>
 #include <inviwo/qt/editor/settingswidget.h>
+#include <inviwo/qt/editor/helpwidget.h>
 
 #include <inviwo/qt/widgets/inviwofiledialog.h>
 
@@ -59,8 +60,13 @@
 #include <QUrl>
 #include <QVariant>
 
-#ifdef IVW_PYTHON_QT
+#ifdef IVW_PYTHON2_QT
+#define IVW_PYTHON_QT
+//#include <modules/python2qt/pythoneditorwidget.h>
 #include <modules/pythonqt/pythoneditorwidget.h>
+#elif IVW_PYTHON3_QT
+#define IVW_PYTHON_QT
+#include <modules/python3qt/pythoneditorwidget.h>
 #endif
 
 namespace inviwo {
@@ -97,7 +103,10 @@ void InviwoMainWindow::initialize() {
     addDockWidget(Qt::LeftDockWidgetArea, settingsWidget_);
     settingsWidget_->hide();
 
-    processorTreeWidget_ = new ProcessorTreeWidget(this);
+    helpWidget_ = new HelpWidget(this);
+    addDockWidget(Qt::RightDockWidgetArea, helpWidget_);
+
+    processorTreeWidget_ = new ProcessorTreeWidget(this, helpWidget_);
     addDockWidget(Qt::LeftDockWidgetArea, processorTreeWidget_);
 
     propertyListWidget_ = new PropertyListWidget(this);
@@ -306,7 +315,11 @@ void InviwoMainWindow::addMenuActions() {
     viewMenuItem_->addAction(propertyListWidget_->toggleViewAction());
     consoleWidget_->toggleViewAction()->setText(tr("&Output Console"));
     viewMenuItem_->addAction(consoleWidget_->toggleViewAction());
-    viewMenuItem_->addAction(resourceManagerWidget_->toggleViewAction());
+    helpWidget_->toggleViewAction()->setText(tr("&Help"));
+    viewMenuItem_->addAction(helpWidget_->toggleViewAction());
+
+    // Disabled until we figure out what we want to use it for //Peter
+    //viewMenuItem_->addAction(resourceManagerWidget_->toggleViewAction());
 
     // application/developer mode menu entries
     visibilityModeAction_ = new QAction(tr("&Application Mode"), this);

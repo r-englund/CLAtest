@@ -88,17 +88,21 @@ public:
     void update();
     void repaint();
 
+    virtual void resize(uvec2 size);
+
 protected:
     void initializeGL();
     void paintGL();
 
-    bool event(QEvent *e);
-    void mousePressEvent(QMouseEvent* e);
-    void mouseReleaseEvent(QMouseEvent* e);
-    void mouseMoveEvent(QMouseEvent* e);
-    void wheelEvent (QWheelEvent* e);
-    void keyPressEvent(QKeyEvent* keyEvent);
-	void keyReleaseEvent(QKeyEvent* keyEvent);
+    virtual bool event(QEvent *e);
+    virtual void mousePressEvent(QMouseEvent* e);
+    virtual void mouseReleaseEvent(QMouseEvent* e);
+    virtual void mouseMoveEvent(QMouseEvent* e);
+    virtual void wheelEvent (QWheelEvent* e);
+    virtual void keyPressEvent(QKeyEvent* keyEvent);
+	virtual void keyReleaseEvent(QKeyEvent* keyEvent);
+
+    virtual void resizeEvent(QResizeEvent* event);
 
     static CanvasQt* getSharedCanvas();
 

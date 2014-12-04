@@ -33,20 +33,18 @@
 #ifndef IVW_PYTHONINCLUDER_H
 #define IVW_PYTHONINCLUDER_H
 
-#include <modules/python/pythonmoduledefine.h>
+#include <modules/python3/python3moduledefine.h>
 
-//#ifdef IVW_MODULE_PYTHON3_EXPORTS
-    #pragma warning(push)
-    #pragma warning(disable: 4273)
-    #ifdef _DEBUG
-        #undef _DEBUG //Prevent linking debug build of python
-        #include <Python.h>
-        #define _DEBUG 1
-    #else
-        #include <Python.h>
-    #endif
-    #pragma warning(pop)
-//#endif
+#pragma warning(push)
+#pragma warning(disable: 4273)
+#ifdef _DEBUG
+    #undef _DEBUG //Prevent linking debug build of python
+    #include <Python.h>
+    #define _DEBUG 1
+#else
+    #include <Python.h>
+#endif
+#pragma warning(pop)
 
 
 #endif // IVW_PYTHONINCLUDER_H

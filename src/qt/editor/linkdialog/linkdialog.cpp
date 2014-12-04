@@ -58,7 +58,6 @@ LinkDialog::~LinkDialog() {}
 
 void LinkDialog::initDialogLayout() {
     setFloating(true);
-    // setWindowModality(Qt::ApplicationModal); //Why?!? /Peter
 
     setObjectName("LinkDialogWidget");
     setAllowedAreas(Qt::NoDockWidgetArea);
@@ -74,6 +73,8 @@ void LinkDialog::initDialogLayout() {
     linkDialogView_->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
     mainLayout->addWidget(linkDialogView_);
     QHBoxLayout* commonButtonLayout = new QHBoxLayout;
+
+    connect(linkDialogScene_, SIGNAL(closeDialog()), this, SLOT(clickedOkayButton()));
 
     // smart link button
     QHBoxLayout* smartLinkPushButtonLayout = new QHBoxLayout;

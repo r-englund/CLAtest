@@ -182,7 +182,7 @@ protected:
 
     virtual void performEvaluateRequest();
 
-    ProcessorWidget* processorWidget_;
+    ProcessorWidget* processorWidget_; //< non-owning reference, the widget is owned by the editor.
 
 private:
     std::string identifier_;

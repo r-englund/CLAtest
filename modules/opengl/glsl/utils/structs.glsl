@@ -36,12 +36,12 @@
 #define VOLUME_TYPE sampler3D
 #define TEXTURE_TYPE sampler2D
 
-struct SHADING_PARAMETERS {
-    vec3 lightPosition_;
-    vec3 lightColorAmbient_;
-    vec3 lightColorDiffuse_;
-    vec3 lightColorSpecular_;
-    int lightSpecularExponent_;
+struct LIGHT_PARAMETERS {
+    vec3 position_; 
+    vec3 ambientColor_;
+    vec3 diffuseColor_; 
+    vec3 specularColor_;
+    int specularExponent_;
 };
 
 struct TEXTURE_PARAMETERS {
@@ -62,8 +62,16 @@ struct VOLUME_PARAMETERS {
     float signedFormatOffset_;
 };
 
+
+struct MODEL_PARAMETERS {
+    mat4 modelToWorldMatrix_;
+    mat3 modelToWorldNormalMatrix_;
+};
+
 struct CAMERA_PARAMETERS {
     mat4 viewMatrix_;
+    mat4 projectionMatrix_; // view to clip
+    mat4 worldToClipMatrix_; // view*projection
     vec3 cameraPosition_;
 	float zNear_;
 	float zFar_;

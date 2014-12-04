@@ -81,8 +81,10 @@ DialogConnectionGraphicsItem::DialogConnectionGraphicsItem(
 
 DialogConnectionGraphicsItem::~DialogConnectionGraphicsItem() {
     propertyLink_ = NULL;
-    startPropertyGraphicsItem_->removeConnectionGraphicsItem(this);
-    endPropertyGraphicsItem_->removeConnectionGraphicsItem(this);
+    if (startPropertyGraphicsItem_)
+        startPropertyGraphicsItem_->removeConnectionGraphicsItem(this);
+    if (endPropertyGraphicsItem_)
+        endPropertyGraphicsItem_->removeConnectionGraphicsItem(this);
 }
 
 void DialogConnectionGraphicsItem::updateStartEndPoint() {

@@ -57,10 +57,6 @@ public:
     // this function is to be called when the network topology was changed
     void topologyUpdated();
     void saveSnapshotAllCanvases(std::string dir, std::string default_name = "", std::string ext = ".png");
-
-    Canvas* getDefaultRenderContext() { return defaultContext_; }
-    void setDefaultRenderContext(Canvas*);
-    void activateDefaultRenderContext() const;
     
     void initializeNetwork();
 
@@ -68,11 +64,7 @@ public:
     void enableEvaluation();
     void requestEvaluate();
 
-    void propagateResizeEvent(Canvas* canvas, ResizeEvent* resizeEvent);
-    void propagateInteractionEvent(Canvas* canvas, InteractionEvent* event);
     void propagateInteractionEvent(Processor* processor, InteractionEvent* event);
-
-    Processor* retrieveCanvasProcessor(Canvas* canvas);
 
     void onProcessorInvalidationEnd(Processor*);
     void onProcessorNetworkEvaluateRequest();
@@ -138,8 +130,6 @@ private:
     typedef std::pair<Property *, PropertyState> PropertyMapPair;
 
     PropertyMap propertiesVisited_;
-
-    Canvas* defaultContext_;
 
     bool evaulationQueued_;
     bool evaluationDisabled_;

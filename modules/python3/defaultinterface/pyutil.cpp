@@ -60,7 +60,7 @@ PyObject* py_snapshot(PyObject* /*self*/, PyObject* args) {
 
     if (canvasName.size() != 0) {
         canvas = dynamic_cast<CanvasProcessor*>(
-            InviwoApplication::getPtr()->getProcessorNetwork()->getProcessorByName(canvasName));
+            InviwoApplication::getPtr()->getProcessorNetwork()->getProcessorByIdentifier(canvasName));
     } else {
         if (InviwoApplication::getPtr() && InviwoApplication::getPtr()->getProcessorNetwork()) {
             std::vector<CanvasProcessor*> canvases = InviwoApplication::getPtr()

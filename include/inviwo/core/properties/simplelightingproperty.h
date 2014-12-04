@@ -53,6 +53,7 @@ namespace ShadingMode {
         Ambient,
         Diffuse,
         Specular,
+        BlinnPhong,
         Phong,
     };
 }
@@ -71,13 +72,18 @@ public:
     virtual ~SimpleLightingProperty();
     
     OptionPropertyInt shadingMode_;
+    // Material properties
+    // Diffuse color often come from the object 
+    // so we neglect it here
+    FloatVec3Property ambientColor_;
+    FloatVec3Property diffuseColor_; 
+    FloatVec3Property specularColor_;
+    IntProperty specularExponent_;
+    // Light properties
     FloatVec3Property lightPosition_;
-    FloatVec3Property lightColorAmbient_;
-    FloatVec3Property lightColorDiffuse_;
-    FloatVec3Property lightColorSpecular_;
-    IntProperty lightSpecularExponent_;
-    BoolProperty applyLightAttenuation_;
     FloatVec3Property lightAttenuation_;
+    BoolProperty applyLightAttenuation_;
+
 };
 
 } // namespace

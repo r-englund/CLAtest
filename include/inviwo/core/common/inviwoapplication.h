@@ -84,7 +84,8 @@ public:
         PATH_DATABASES,          // data/databases/
         PATH_RESOURCES,          // resources/
         PATH_TRANSFERFUNCTIONS,  // data/transferfunctions/
-        PATH_SETTINGS            //
+        PATH_SETTINGS,           //
+        PATH_HELP                // data/help
     };
 
     virtual void closeInviwoApplication() {LogWarn("this application have not implemented close inviwo function");}
