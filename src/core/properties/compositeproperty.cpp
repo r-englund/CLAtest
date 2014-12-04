@@ -138,16 +138,16 @@ void CompositeProperty::set(const Property* srcProperty) {
     if (compositeSrcProp) {
         std::vector<Property*> subProperties = compositeSrcProp->getProperties();
 
-        if (subProperties.size() != this->properties_.size()) {
+        if (subProperties.size() == this->properties_.size()) {
+            for (size_t i = 0; i < subProperties.size(); i++) {
+                this->properties_[i]->set(subProperties[i]);
+            }
+
+            propertyModified();
+        } else {
             LogWarn("CompositeProperty mismatch. Unable to link");
-            return;
         }
-        for (size_t i = 0; i < subProperties.size(); i++)
-            this->properties_[i]->set(subProperties[i]);
-
     } 
-
-    propertyModified();
 
     InviwoApplication::getPtr()->getProcessorNetwork()->unlock();
 }
