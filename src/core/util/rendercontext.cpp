@@ -31,6 +31,7 @@
  *********************************************************************************/
 
 #include <inviwo/core/util/rendercontext.h>
+#include <inviwo/core/util/canvas.h>
 
 namespace inviwo {
 

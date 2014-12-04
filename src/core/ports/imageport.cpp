@@ -295,6 +295,18 @@ void ImageOutport::changeDataDimensions(ResizeEvent* resizeEvent) {
     // Always save data_ dimension if outport determine output size
     if (!handleResizeEvents_) {
         registeredDimensions.push_back(data_->getDimension());
+
+        //Fix for data_ size not correct in imageDataMap
+        for (std::map<std::string, Image*>::iterator it = imageDataMap_.begin(); it != imageDataMap_.end(); ++it) {
+            if (it->second == data_){
+                std::string dataDim = glm::to_string(registeredDimensions[0]);
+                if (it->first != dataDim){
+                    imageDataMap_.erase(it);
+                    imageDataMap_.insert(std::make_pair(dataDim, data_));
+                    break;
+                }
+            }
+        }
     }
 
     for (size_t i = 0; i < inports.size(); i++) {
