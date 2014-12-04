@@ -92,7 +92,6 @@ int main(int argc, char** argv) {
     IvwDeserializer xmlDeserializer(workspace);
     inviwoApp.getProcessorNetwork()->deserialize(xmlDeserializer);
     std::vector<Processor*> processors = inviwoApp.getProcessorNetwork()->getProcessors();
-    int i = 0;
 
     for (std::vector<Processor*>::iterator it = processors.begin(); it != processors.end(); ++it) {
         Processor* processor = *it;

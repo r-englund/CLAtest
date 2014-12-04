@@ -45,6 +45,7 @@
 #include <inviwo/core/network/processornetworkevaluator.h>
 #include <inviwo/core/processors/canvasprocessor.h>
 #include <inviwo/core/util/filesystem.h>
+#include <inviwo/core/util/rendercontext.h>
 #include <modules/base/processors/imageexport.h>
 #include <moduleregistration.h>
 
