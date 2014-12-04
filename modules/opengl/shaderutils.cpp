@@ -106,7 +106,7 @@ void setShaderUniforms(Shader* shader, const CameraProperty& property, std::stri
 
 
 void setShaderUniforms(Shader* shader, const CameraProperty& property, const SpatialEntity<3>& object) {
-    mat4 modelViewMatrix = property.viewMatrix()*object.getCoordinateTransformer().getModelToWorldMatrix();
+    mat4 modelViewMatrix = property.viewMatrix()*object.getCoordinateTransformer().getTextureToWorldMatrix();
     shader->setUniform("modelToViewMatrix_", modelViewMatrix);
     shader->setUniform("modelToClipMatrix_", property.projectionMatrix()*modelViewMatrix);
     shader->setUniform("modelToViewNormalMatrix_", glm::mat3(glm::transpose(glm::inverse(modelViewMatrix))));
@@ -114,13 +114,13 @@ void setShaderUniforms(Shader* shader, const CameraProperty& property, const Spa
 
 
 IVW_MODULE_OPENGL_API void setShaderUniforms(Shader* shader, const SpatialEntity<3>& object) {
-    mat4 modelToWorldMatrix = object.getCoordinateTransformer().getModelToWorldMatrix();
+    mat4 modelToWorldMatrix = object.getCoordinateTransformer().getTextureToWorldMatrix();
     shader->setUniform("modelToWorldMatrix_", modelToWorldMatrix);
     shader->setUniform("modelToWorldNormalMatrix_", glm::mat3(glm::transpose(glm::inverse(modelToWorldMatrix))));
 }
 
 IVW_MODULE_OPENGL_API void setShaderUniforms(Shader* shader, const SpatialEntity<3>& object, const std::string& name) {
-    mat4 modelToWorldMatrix = object.getCoordinateTransformer().getModelToWorldMatrix();
+    mat4 modelToWorldMatrix = object.getCoordinateTransformer().getTextureToWorldMatrix();
     shader->setUniform(name + ".modelToWorldMatrix_", modelToWorldMatrix);
     shader->setUniform(name + ".modelToWorldNormalMatrix_", glm::mat3(glm::transpose(glm::inverse(modelToWorldMatrix))));
 }
