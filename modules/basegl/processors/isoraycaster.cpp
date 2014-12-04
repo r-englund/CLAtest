@@ -52,7 +52,7 @@ ISORaycaster::ISORaycaster()
     , volumePort_("volume")
     , entryPort_("entry-points")
     , exitPort_("exit-points")
-    , outport_("outport", &entryPort_, COLOR_DEPTH)
+    , outport_("outport", COLOR_DEPTH)
     , channel_("channel", "Render Channel")
     , raycasting_("raycasting", "Raycasting")
     , lighting_("lighting", "Lighting")
@@ -121,6 +121,8 @@ void ISORaycaster::onVolumeChange(){
 }
 
 void ISORaycaster::process() {
+    entryPort_.passOnDataToOutport(&outport_);
+
     TextureUnit entryColorUnit, entryDepthUnit, exitColorUnit, exitDepthUnit, volUnit;
     utilgl::bindTextures(entryPort_, entryColorUnit.getEnum(), entryDepthUnit.getEnum());
     utilgl::bindTextures(exitPort_, exitColorUnit.getEnum(), exitDepthUnit.getEnum());

@@ -47,11 +47,11 @@ ProcessorCodeState(DrawFreeHand, CODE_STATE_EXPERIMENTAL);
 DrawFreeHand::DrawFreeHand()
     : CompositeProcessorGL()
     , inport_("image.inport")
-    , outport_("image.outport", &inport_, COLOR_ONLY) 
+    , outport_("image.outport", COLOR_ONLY) 
     , pointSize_("pointSize", "Point Size", 5, 1, 10)
     , pointColor_("pointColor", "Point Color", vec4(1.f))
-    , clearButton_("clearButton", "Clear Drawing")
-{
+    , clearButton_("clearButton", "Clear Drawing") {
+
     addPort(inport_);
     addPort(outport_);
 
@@ -90,6 +90,8 @@ void DrawFreeHand::deinitialize() {
 }
 
 void DrawFreeHand::process() {
+    inport_.passOnDataToOutport(&outport_);
+
     utilgl::activateAndClearTarget(outport_);
     glPointSize(static_cast<float>(pointSize_.get()));
     pointShader_->activate();

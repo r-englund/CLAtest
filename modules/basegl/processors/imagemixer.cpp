@@ -47,7 +47,7 @@ ImageMixer::ImageMixer()
     : Processor()
     , inport0_("inport0")
     , inport1_("inport1")
-    , outport_("outport", &inport0_, COLOR_ONLY)
+    , outport_("outport", COLOR_ONLY)
     , alpha_("alpha", "Alpha", 0.5f, 0.0f, 1.0f)
     , blendingMode_("compositingMode", "Compositing", INVALID_RESOURCES) {
     addPort(inport0_);
@@ -75,8 +75,8 @@ void ImageMixer::deinitialize() {
 }
 
 void ImageMixer::process() {
-    ivwAssert(inport0_.getData() != 0, "Inport0 empty.");
-    ivwAssert(inport1_.getData() != 0, "Inport1 empty.");
+    inport0_.passOnDataToOutport(&outport_);
+
     TextureUnit image1, image2;
     uvec2 csize = outport_.getData()->getDimension();
     utilgl::bindColorTexture(inport0_, image1);

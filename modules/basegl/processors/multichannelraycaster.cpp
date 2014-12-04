@@ -55,7 +55,7 @@ MultichannelRaycaster::MultichannelRaycaster()
     , volumePort_("volume")
     , entryPort_("entry-points")
     , exitPort_("exit-points")
-    , outport_("outport", &entryPort_, COLOR_DEPTH)
+    , outport_("outport", COLOR_DEPTH)
     , transferFunctions_("transfer-functions", "Transfer functions")
     , raycasting_("raycaster", "Raycasting")
     , camera_("camera", "Camera")
@@ -137,6 +137,8 @@ void MultichannelRaycaster::initializeResources() {
 
 void MultichannelRaycaster::process() {   
     LGL_ERROR;
+    entryPort_.passOnDataToOutport(&outport_);
+
     TextureUnit entryColorUnit, entryDepthUnit, exitColorUnit, exitDepthUnit, volUnit;
     utilgl::bindTextures(entryPort_, entryColorUnit.getEnum(), entryDepthUnit.getEnum());
     utilgl::bindTextures(exitPort_, exitColorUnit.getEnum(), exitDepthUnit.getEnum());

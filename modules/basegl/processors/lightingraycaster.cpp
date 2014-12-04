@@ -56,7 +56,7 @@ LightingRaycaster::LightingRaycaster()
     , entryPort_("entry-points")
     , exitPort_("exit-points")
     , lightVolumePort_("lightVolume")
-    , outport_("outport", &entryPort_, COLOR_DEPTH)
+    , outport_("outport", COLOR_DEPTH)
     , enableLightColor_("supportColoredLight", "Enable Light Color", false,
                         INVALID_RESOURCES)
     , transferFunction_("transferFunction", "Transfer function", TransferFunction(), &volumePort_)
@@ -130,6 +130,8 @@ void LightingRaycaster::onVolumeChange() {
 
 
 void LightingRaycaster::process() {
+    entryPort_.passOnDataToOutport(&outport_);
+
     TextureUnit tfUnit, entryColorUnit, entryDepthUnit, exitColorUnit, exitDepthUnit, volUnit;
     utilgl::bindTexture(transferFunction_, tfUnit);
     utilgl::bindTextures(entryPort_, entryColorUnit, entryDepthUnit);

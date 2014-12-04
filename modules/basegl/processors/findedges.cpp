@@ -45,7 +45,7 @@ ProcessorCodeState(FindEdges, CODE_STATE_EXPERIMENTAL);
 FindEdges::FindEdges()
     : Processor()
     , inport_("inport")
-    , outport_("outport", &inport_, COLOR_ONLY)
+    , outport_("outport", COLOR_ONLY)
     , alpha_("alpha", "Alpha", 0.5f, 0.0f, 1.0f) {
 
     addPort(inport_);
@@ -66,6 +66,8 @@ void FindEdges::deinitialize() {
 }
 
 void FindEdges::process() {
+    inport_.passOnDataToOutport(&outport_);
+
     TextureUnit image;
     utilgl::activateTarget(outport_);
     utilgl::bindColorTexture(inport_, image);

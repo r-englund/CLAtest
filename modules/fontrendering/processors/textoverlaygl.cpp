@@ -47,7 +47,7 @@ ProcessorCodeState(TextOverlayGL, CODE_STATE_STABLE);
 TextOverlayGL::TextOverlayGL()
     : Processor()
     , inport_("inport")
-    , outport_("outport", &inport_)
+    , outport_("outport")
     , text_("Text", "Text", "Lorem ipsum etc.", INVALID_OUTPUT,
             PropertySemantics::TextEditor)
     , font_size_(20)
@@ -220,17 +220,19 @@ void TextOverlayGL::render_text(const char* text, float x, float y, float sx, fl
 }
 
 void TextOverlayGL::process() {
-    TextureUnit colorUnit, depthUnit, pickingUnit;
-    utilgl::bindTextures(inport_, colorUnit, depthUnit, pickingUnit);
-
-    utilgl::activateAndClearTarget(outport_);
-    copyShader_->activate();
-    copyShader_->setUniform("color_", colorUnit.getUnitNumber());
-    copyShader_->setUniform("depth_", depthUnit.getUnitNumber());
-    copyShader_->setUniform("picking_", pickingUnit.getUnitNumber());
-    utilgl::singleDrawImagePlaneRect();
-    copyShader_->deactivate();
+//     TextureUnit colorUnit, depthUnit, pickingUnit;
+//     utilgl::bindTextures(inport_, colorUnit, depthUnit, pickingUnit);
+// 
+//     utilgl::activateAndClearTarget(outport_);
+//     copyShader_->activate();
+//     copyShader_->setUniform("color_", colorUnit.getUnitNumber());
+//     copyShader_->setUniform("depth_", depthUnit.getUnitNumber());
+//     copyShader_->setUniform("picking_", pickingUnit.getUnitNumber());
+//     utilgl::singleDrawImagePlaneRect();
+//     copyShader_->deactivate();
     
+    inport_.passOnDataToOutport(&outport_);
+
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     TextureUnit texUnit;

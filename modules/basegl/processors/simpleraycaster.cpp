@@ -31,6 +31,7 @@
  *********************************************************************************/
 
 #include "simpleraycaster.h"
+#include <inviwo/core/ports/imageport.h>
 #include <inviwo/core/io/serialization/ivwserialization.h>
 #include <inviwo/core/io/serialization/versionconverter.h>
 #include <inviwo/core/interaction/events/keyboardevent.h>
@@ -54,7 +55,7 @@ SimpleRaycaster::SimpleRaycaster()
     , volumePort_("volume")
     , entryPort_("entry-points")
     , exitPort_("exit-points")
-    , outport_("outport", &entryPort_, COLOR_DEPTH)
+    , outport_("outport", COLOR_DEPTH)
     , transferFunction_("transferFunction", "Transfer function", TransferFunction(), &volumePort_)
     , channel_("channel", "Render Channel")
     , raycasting_("raycaster", "Raycasting")
@@ -122,6 +123,8 @@ void SimpleRaycaster::onVolumeChange() {
 }
 
 void SimpleRaycaster::process() {
+    entryPort_.passOnDataToOutport(&outport_);
+
     TextureUnit tfUnit, entryColorUnit, entryDepthUnit, exitColorUnit, exitDepthUnit, volUnit;
     utilgl::bindTexture(transferFunction_, tfUnit);
     utilgl::bindTextures(entryPort_, entryColorUnit, entryDepthUnit);

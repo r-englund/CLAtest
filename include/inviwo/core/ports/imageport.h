@@ -42,6 +42,8 @@
 
 namespace inviwo {
 
+class ImageOutport;
+
 class IVW_CORE_API ImageInport : public DataInport<Image> {
 public:
     ImageInport(std::string identifier, bool outportDeterminesSize = false,
@@ -72,6 +74,8 @@ public:
     void setResizeScale(vec2);
     vec2 getResizeScale();
 
+    void passOnDataToOutport(ImageOutport* outport) const;
+
 protected:
     void propagateResizeToPredecessor(ResizeEvent* resizeEvent);
 
@@ -92,9 +96,7 @@ public:
                  const DataFormatBase* format = DataVec4UINT8::get(),
                  InvalidationLevel invalidationLevel = INVALID_OUTPUT,
                  bool handleResizeEvents = true);
-    ImageOutport(std::string identifier, ImageInport* src, ImageType type = COLOR_DEPTH,
-                 InvalidationLevel invalidationLevel = INVALID_OUTPUT,
-                 bool handleResizeEvents = true);
+
     virtual ~ImageOutport();
 
     virtual void invalidate(InvalidationLevel invalidationLevel);
@@ -154,8 +156,6 @@ private:
                                // otherwise false
     typedef std::map<std::string, Image*> ImagePortMap;
     ImagePortMap imageDataMap_;
-
-    const ImageInport* inputSource_;
 };
 
 } // namespace

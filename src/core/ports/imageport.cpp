@@ -163,6 +163,14 @@ std::string ImageInport::getContentInfo() const {
         return getClassIdentifier() + " has no data.";
 }
 
+void ImageInport::passOnDataToOutport(ImageOutport* outport) const {
+    if (hasData()) {
+        const Image* img = getData();
+        Image* out = outport->getData();
+        if (out) img->resizeRepresentations(out, out->getDimension());
+    }
+}
+
 ////////////////////////////// ImageOutport ////////////////////////////////////////////
 
 ImageOutport::ImageOutport(std::string identifier,
@@ -171,8 +179,7 @@ ImageOutport::ImageOutport(std::string identifier,
     : DataOutport<Image>(identifier, invalidationLevel)
     , dimensions_(uvec2(256, 256))
     , mapDataInvalid_(true)
-    , handleResizeEvents_(handleResizeEvents)
-    , inputSource_(NULL) {
+    , handleResizeEvents_(handleResizeEvents) {
     setData(new Image(dimensions_));
     dataChanged();
 }
@@ -183,24 +190,8 @@ ImageOutport::ImageOutport(std::string identifier, ImageType type, const DataFor
     : DataOutport<Image>(identifier, invalidationLevel)
     , dimensions_(uvec2(256, 256))
     , mapDataInvalid_(true)
-    , handleResizeEvents_(handleResizeEvents)
-    , inputSource_(NULL) {
+    , handleResizeEvents_(handleResizeEvents) {
     setData(new Image(dimensions_, type, format));
-    dataChanged();
-}
-
-ImageOutport::ImageOutport(std::string identifier, ImageInport* src, ImageType type,
-                           InvalidationLevel invalidationLevel,
-                           bool handleResizeEvents)
-    : DataOutport<Image>(identifier, invalidationLevel)
-    , EventHandler()
-    , dimensions_(uvec2(256, 256))
-    , mapDataInvalid_(true)
-    , handleResizeEvents_(handleResizeEvents)
-    , inputSource_(src) {
-
-    setData(new Image(dimensions_, type));
-    inputSource_->onChange(this, &ImageOutport::updateImageFromInputSource);
     dataChanged();
 }
 
@@ -259,17 +250,6 @@ void ImageOutport::invalidate(InvalidationLevel invalidationLevel) {
 
 Image* ImageOutport::getData() {
     return DataOutport<Image>::getData();
-}
-
-void ImageOutport::updateImageFromInputSource() {
-    Image* out = DataOutport<Image>::getData();
-    if (out && inputSource_ && inputSource_->hasData()) {
-        const Image* in = inputSource_->getData();
-        in->resizeRepresentations(out, getDimension());
-        mapDataInvalid_ = true;
-        dataChanged();
-        //*out = *(inputSource_->getData());
-    }
 }
 
 void ImageOutport::dataChanged() {

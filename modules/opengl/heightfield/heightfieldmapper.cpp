@@ -45,7 +45,7 @@ ProcessorCodeState(HeightFieldMapper, CODE_STATE_EXPERIMENTAL);
 HeightFieldMapper::HeightFieldMapper()
     : Processor()
     , inport_("image.inport", false)
-    , outport_("image.outport", 0, COLOR_ONLY) // &inport_
+    , outport_("image.outport", COLOR_ONLY) // &inport_
     , scalingModeProp_("scalingmode", "Scaling Mode")
     , heightRange_("heightrange", "Height Range", 0.0f, 1.0f, -1.0e1f, 1.0e1f)
     , maxHeight_("maxheight", "Maximum Height", 1.0f, 0.0f, 1.0e1f)

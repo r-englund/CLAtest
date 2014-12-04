@@ -46,7 +46,7 @@ ProcessorCodeState(DrawLines, CODE_STATE_EXPERIMENTAL);
 DrawLines::DrawLines()
     : CompositeProcessorGL()
     , inport_("inport")
-    , outport_("outport", &inport_, COLOR_ONLY)
+    , outport_("outport", COLOR_ONLY)
     , lineSize_("lineSize", "Line Size", 5, 1, 10)
     , lineColor_("lineColor", "Line Color", vec4(1.f))
     , clearButton_("clearButton", "Clear Lines") {
@@ -88,6 +88,8 @@ void DrawLines::deinitialize() {
 }
 
 void DrawLines::process() {
+    inport_.passOnDataToOutport(&outport_);
+
     utilgl::activateAndClearTarget(outport_);
     glLineWidth(static_cast<float>(lineSize_.get()));
     lineShader_->activate();

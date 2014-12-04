@@ -85,7 +85,7 @@ public:
 
 protected:
     virtual void process();
-    virtual bool isReady()const;
+    virtual bool isReady() const;
 
 private:
     void switchColors();
