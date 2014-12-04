@@ -60,8 +60,13 @@
 #include <QUrl>
 #include <QVariant>
 
-#ifdef IVW_PYTHON_QT
+#ifdef IVW_PYTHON2_QT
+#define IVW_PYTHON_QT
+//#include <modules/python2qt/pythoneditorwidget.h>
 #include <modules/pythonqt/pythoneditorwidget.h>
+#elif IVW_PYTHON3_QT
+#define IVW_PYTHON_QT
+#include <modules/python3qt/pythoneditorwidget.h>
 #endif
 
 namespace inviwo {
