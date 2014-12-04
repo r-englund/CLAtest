@@ -200,6 +200,7 @@ void InviwoApplicationQt::logQtMessages(QtMsgType type, const QMessageLogContext
             abort();
     }
 }
+#endif
 
 QPoint InviwoApplicationQt::getWindowDecorationOffset() const {
    return windowDecorationOffset_;
@@ -258,8 +259,6 @@ QPoint InviwoApplicationQt::offsetWidget() {
     }
     return QPoint(pos.x, pos.y);
 }
-
-#endif
 
 
 } // namespace
