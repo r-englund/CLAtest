@@ -90,6 +90,7 @@ void ProcessorNetwork::addProcessor(Processor* processor) {
     notifyObserversProcessorNetworkWillAddProcessor(processor);
     processors_[processor->getIdentifier()] = processor;
     processor->ProcessorObservable::addObserver(this);
+    processor->invalidate(INVALID_RESOURCES);
     modified();
     notifyObserversProcessorNetworkDidAddProcessor(processor);
 }
@@ -554,6 +555,7 @@ void ProcessorNetwork::clear() {
     for (size_t i=0; i<processors.size(); i++)
         removeAndDeleteProcessor(processors[i]);
 
+    locked_ = 0; // make sure we remove all locks.
     unlock();
 }
 
