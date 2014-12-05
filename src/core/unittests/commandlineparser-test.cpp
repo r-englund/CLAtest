@@ -38,8 +38,8 @@ namespace inviwo{
 
 TEST(CommandLineParserTest, DefaultTest) {
     const int argc = 1;
-    char *argv[argc] = {"unittests.exe"};
-    CommandLineParser clp(argc, argv);
+    const char *argv[argc] = {"unittests.exe"};
+    CommandLineParser clp(argc, const_cast<char**>(argv));
     clp.initialize();
     clp.parse();
     EXPECT_STREQ("", clp.getOutputPath().c_str());
@@ -77,8 +77,8 @@ TEST(CommandLineParserTest, InviwoApplicationsParserTest) {
 
 TEST(CommandLineParserTest, CommandLineParserTest) {
     const int argc = 3;
-    char *argv[argc] = {"unittests.exe", "-w", "C:/Just/A/Path/"};
-    CommandLineParser clp(argc, argv);
+    const char *argv[argc] = {"unittests.exe", "-w", "C:/Just/A/Path/"};
+    CommandLineParser clp(argc, const_cast<char**>(argv));
     clp.initialize();
     clp.parse();
     EXPECT_STREQ("", clp.getOutputPath().c_str());
