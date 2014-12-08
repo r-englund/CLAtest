@@ -462,7 +462,7 @@ macro(add_internal_modules)
     #Resolve dependencies for selected modules
     resolve_module_dependencies(${IVW_MODULE_DIR} ${IVW_SORTED_MODULES})
 
-    if(IVW_MODULE_PYTHONQT OR IVW_MODULE_PYTHON3QT)
+    if(IVW_MODULE_OPENGLQT OR IVW_MODULE_PYTHONQT OR IVW_MODULE_PYTHON3QT)
         # Find the QtWidgets library
         if(DESIRED_QT_VERSION MATCHES 5)
             find_package(Qt5Widgets QUIET REQUIRED)
@@ -470,6 +470,10 @@ macro(add_internal_modules)
         else()
             find_package(Qt QUIET REQUIRED)
         endif()
+    endif()
+	
+	if(IVW_MODULE_OPENGLQT)
+        set(QT_USE_QTOPENGL TRUE)    
     endif()
 
     #Add modules based on user config file and dependcy resolve
