@@ -25,7 +25,7 @@
  * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- * 
+ *
  * Contact: Peter Steneteg
  *
  *********************************************************************************/
@@ -38,7 +38,6 @@
 #include <inviwo/core/common/inviwocoredefine.h>
 #include <inviwo/core/common/inviwo.h>
 
-
 namespace inviwo {
 
 /** \brief A convenience class to generate transformation matrices between
@@ -46,7 +45,7 @@ namespace inviwo {
  *
  *  Spatial meta data in Inviwo uses 4 different coordinate systems, they are defined as
  *  - Index - The voxel indices in the data
- *  - Texture - The corresponding texture coordinates of the data.
+ *  - Data  - The corresponding texture coordinates of the data.
  *  - Model - Defines a local basis and offset for the data.
  *  - World - Puts the data at a position and angle in the scene.
  *
@@ -94,424 +93,1098 @@ namespace inviwo {
  *  This means that they have the same representation as on the gpu.
  */
 
-template<unsigned int N>
-class CoordinateTransformer {
+template <unsigned int N>
+class SpatialCoordinateTransformer {
 public:
-    CoordinateTransformer() {};
-    virtual ~CoordinateTransformer() {};
+    virtual ~SpatialCoordinateTransformer() {}
+    virtual SpatialCoordinateTransformer<N>* clone() const = 0;
     /**
-     * Returns the matrix transformation mapping from texture coordinates
-     * to voxel index coordinates, i.e. from [0,1] to [-0.5, number of voxels-0.5]
-     * @note Data is centered on the voxel, see OpenGL specifications, figure 8.3 
-     * http://www.opengl.org/registry/doc/glspec43.core.20120806.pdf 
-     * or for instance http://bpeers.com/articles/glpixel/
+     * Returns the matrix transformation mapping from raw data numbers
+     * to model space coordinates, i.e. from generally (-inf, inf), ([0,1] for textures) to (data
+     * min, data max)
      */
-    virtual const Matrix<N+1, float> getTextureToIndexMatrix() const = 0;
-
+    virtual const Matrix<N + 1, float> getDataToModelMatrix() const = 0;
     /**
-     * Returns the matrix transformation mapping from texture coordinates
-     * to data model coordinates, i.e. from [0,1] to (data min, data max)
+     * Returns the matrix transformation mapping from raw data numbers
+     * to world space coordinates, i.e. from generally (-inf, inf), ([0,1] for textures) to (-inf,
+     * inf)
      */
-    virtual const Matrix<N+1, float> getTextureToModelMatrix() const = 0;
-
+    virtual const Matrix<N + 1, float> getDataToWorldMatrix() const = 0;
     /**
-     * Returns the matrix transformation mapping from texture coordinates
-     * to opengl world coordinates, i.e. from [0,1] to (-inf, inf)
+     * Returns the matrix transformation mapping from model space coordinates
+     * to raw data numbers, i.e. from (data min, data max) to generally (-inf, inf), ([0,1] for
+     * textures)
      */
-    virtual const Matrix<N+1, float> getTextureToWorldMatrix() const = 0;
-
+    virtual const Matrix<N + 1, float> getModelToDataMatrix() const = 0;
     /**
-     * Returns the matrix transformation mapping from voxel index coordinates
-     * to texture coordinates, i.e. from [0, number of voxels-1] to [0.5/(number of voxels),1-0.5/(number of voxels)]
+     * Returns the matrix transformation mapping from model space coordinates
+     * to world space coordinates, i.e. from (data min, data max) to (-inf, inf)
      */
-    virtual const Matrix<N+1, float> getIndexToTextureMatrix() const = 0;
-
+    virtual const Matrix<N + 1, float> getModelToWorldMatrix() const = 0;
     /**
-     * Returns the matrix transformation mapping from voxel index coordinates
-     * to data model coordinates, i.e. from [0, number of voxels-1] to (data min, data max)
+     * Returns the matrix transformation mapping from world space coordinates
+     * to raw data numbers, i.e. from (-inf, inf) to generally (-inf, inf), ([0,1] for textures)
      */
-    virtual const Matrix<N+1, float> getIndexToModelMatrix() const = 0;
-
+    virtual const Matrix<N + 1, float> getWorldToDataMatrix() const = 0;
     /**
-     * Returns the matrix transformation mapping from voxel index coordinates
-     * to opengl world coordinates, i.e. from [0, number of voxels-1] to (-inf, inf)
+     * Returns the matrix transformation mapping from world space coordinates
+     * to model space coordinates, i.e. from (-inf, inf) to (data min, data max)
      */
-    virtual const Matrix<N+1, float> getIndexToWorldMatrix() const = 0;
-
-    /**
-     * Returns the matrix transformation mapping from data model coordinates
-     * to texture coordinates, i.e. from (data min, data max) to [0,1]
-     */
-    virtual const Matrix<N+1, float> getModelToTextureMatrix() const = 0;
-
-    /**
-     * Returns the matrix transformation mapping from data model coordinates
-     * to voxel index coordinates, i.e. from (data min, data max) to [0, number of voxels-1)
-     */
-    virtual const Matrix<N+1, float> getModelToIndexMatrix() const = 0;
-
-    /**
-     * Returns the matrix transformation mapping from data model coordinates
-     * to opengl world coordinates, i.e. from (data min, data max) to (-inf, inf)
-     */
-    virtual const Matrix<N+1, float> getModelToWorldMatrix() const = 0;
-
-    /**
-     * Returns the matrix transformation mapping from opengl world coordinates
-     * to texture coordinates, i.e. from (-inf, inf) to [0,1]
-     */
-    virtual const Matrix<N+1, float> getWorldToTextureMatrix() const = 0;
-
-    /**
-     * Returns the matrix transformation mapping from opengl world coordinates
-     * to voxel index coordinates, i.e. from (-inf, inf) to [0, number of voxels-1)
-     */
-    virtual const Matrix<N+1, float> getWorldToIndexMatrix() const = 0;
-
-    /**
-     * Returns the matrix transformation mapping from opengl world coordinates
-     * to data model coordinates, i.e. from (-inf, inf) to (data min, data max)
-     */
-    virtual const Matrix<N+1, float> getWorldToModelMatrix() const = 0;
-
+    virtual const Matrix<N + 1, float> getWorldToModelMatrix() const = 0;
 };
 
-template <unsigned int N> class SpatialEntity;
-
-template<unsigned int N>
-class SpatialCoordinateTransformer : public CoordinateTransformer<N> {
-public:
-    SpatialCoordinateTransformer(const SpatialEntity<N>* spatialData) : CoordinateTransformer<N>(), spatialData_(spatialData) {};
-    virtual ~SpatialCoordinateTransformer() {};
-
-    virtual const Matrix<N+1 ,float> getWorldMatrix() const;
-    virtual const Matrix<N+1, float> getBasisMatrix() const;
-    virtual const Matrix<N+1, float> getDimensionMatrix() const;
-
-    virtual const Matrix<N+1, float> getTextureToIndexMatrix() const;
-    virtual const Matrix<N+1, float> getTextureToModelMatrix() const;
-    virtual const Matrix<N+1, float> getTextureToWorldMatrix() const;
-    virtual const Matrix<N+1, float> getIndexToTextureMatrix() const;
-    virtual const Matrix<N+1, float> getIndexToModelMatrix() const;
-    virtual const Matrix<N+1, float> getIndexToWorldMatrix() const;
-    virtual const Matrix<N+1, float> getModelToTextureMatrix() const;
-    virtual const Matrix<N+1, float> getModelToIndexMatrix() const;
-    virtual const Matrix<N+1, float> getModelToWorldMatrix() const;
-    virtual const Matrix<N+1, float> getWorldToTextureMatrix() const;
-    virtual const Matrix<N+1, float> getWorldToIndexMatrix() const;
-    virtual const Matrix<N+1, float> getWorldToModelMatrix() const;
-
-private:
-    const SpatialEntity<N>* spatialData_;
-};
-
-template <unsigned int N> class StructuredGridEntity;
 template <unsigned int N>
 class StructuredCoordinateTransformer : public SpatialCoordinateTransformer<N> {
 public:
-    StructuredCoordinateTransformer(const StructuredGridEntity<N>* structuredData) : SpatialCoordinateTransformer<N>(structuredData),
-        structuredData_(structuredData) {};
-    virtual ~StructuredCoordinateTransformer() {};
-
+    virtual ~StructuredCoordinateTransformer() {}
+    virtual StructuredCoordinateTransformer<N>* clone() const = 0;
     /**
-     * Returns the matrix transformation mapping from texture coordinates
-     * to voxel index coordinates, i.e. from [0,1] to [-0.5, number of voxels-0.5]
-     * @note Data is centered on the voxel, see OpenGL specifications, figure 8.3 
-     * http://www.opengl.org/registry/doc/glspec43.core.20120806.pdf 
-     * or for instance http://bpeers.com/articles/glpixel/
-    * @see CoordinateTransformer::getTextureToIndexMatrix
+     * Returns the matrix transformation mapping from voxel index coordinates
+     * to raw data numbers, i.e. from [0, number of voxels) to generally (-inf, inf), ([0,1] for
+     * textures)
      */
-    virtual const Matrix<N+1,float> getDimensionMatrix() const {
-        Vector<N,unsigned int> dim = structuredData_->getDimension();
-        Matrix<N+1,float> mat(0.0f);
-
-        for (int i=0; i<N; i++)
-            mat[i][i]=static_cast<float>(dim[i]);
-
-        // Offset to coordinates to center them in the middle of the texel/voxel.
-        for (int i=0; i<N; i++) {
-            mat[N][i] = -0.5f;
-        }
-
-        mat[N][N]=1.0f;
-        return mat;
-    }
-
-private:
-    const StructuredGridEntity<N>* structuredData_;
+    virtual const Matrix<N + 1, float> getIndexToDataMatrix() const = 0;
+    /**
+     * Returns the matrix transformation mapping from voxel index coordinates
+     * to model space coordinates, i.e. from [0, number of voxels) to (data min, data max)
+     */
+    virtual const Matrix<N + 1, float> getIndexToModelMatrix() const = 0;
+    /**
+     * Returns the matrix transformation mapping from voxel index coordinates
+     * to world space coordinates, i.e. from [0, number of voxels) to (-inf, inf)
+     */
+    virtual const Matrix<N + 1, float> getIndexToWorldMatrix() const = 0;
+    /**
+     * Returns the matrix transformation mapping from raw data numbers
+     * to voxel index coordinates, i.e. from generally (-inf, inf), ([0,1] for textures) to [0,
+     * number of voxels)
+     */
+    virtual const Matrix<N + 1, float> getDataToIndexMatrix() const = 0;
+    /**
+     * Returns the matrix transformation mapping from raw data numbers
+     * to model space coordinates, i.e. from generally (-inf, inf), ([0,1] for textures) to (data
+     * min, data max)
+     */
+    virtual const Matrix<N + 1, float> getDataToModelMatrix() const = 0;
+    /**
+     * Returns the matrix transformation mapping from raw data numbers
+     * to world space coordinates, i.e. from generally (-inf, inf), ([0,1] for textures) to (-inf,
+     * inf)
+     */
+    virtual const Matrix<N + 1, float> getDataToWorldMatrix() const = 0;
+    /**
+     * Returns the matrix transformation mapping from model space coordinates
+     * to voxel index coordinates, i.e. from (data min, data max) to [0, number of voxels)
+     */
+    virtual const Matrix<N + 1, float> getModelToIndexMatrix() const = 0;
+    /**
+     * Returns the matrix transformation mapping from model space coordinates
+     * to raw data numbers, i.e. from (data min, data max) to generally (-inf, inf), ([0,1] for
+     * textures)
+     */
+    virtual const Matrix<N + 1, float> getModelToDataMatrix() const = 0;
+    /**
+     * Returns the matrix transformation mapping from model space coordinates
+     * to world space coordinates, i.e. from (data min, data max) to (-inf, inf)
+     */
+    virtual const Matrix<N + 1, float> getModelToWorldMatrix() const = 0;
+    /**
+     * Returns the matrix transformation mapping from world space coordinates
+     * to voxel index coordinates, i.e. from (-inf, inf) to [0, number of voxels)
+     */
+    virtual const Matrix<N + 1, float> getWorldToIndexMatrix() const = 0;
+    /**
+     * Returns the matrix transformation mapping from world space coordinates
+     * to raw data numbers, i.e. from (-inf, inf) to generally (-inf, inf), ([0,1] for textures)
+     */
+    virtual const Matrix<N + 1, float> getWorldToDataMatrix() const = 0;
+    /**
+     * Returns the matrix transformation mapping from world space coordinates
+     * to model space coordinates, i.e. from (-inf, inf) to (data min, data max)
+     */
+    virtual const Matrix<N + 1, float> getWorldToModelMatrix() const = 0;
 };
 
+template <unsigned int N>
+class SpatialCameraCoordinateTransformer : public SpatialCoordinateTransformer<N> {
+public:
+    virtual ~SpatialCameraCoordinateTransformer() {}
+    virtual SpatialCameraCoordinateTransformer<N>* clone() const = 0;
+    /**
+     * Returns the matrix transformation mapping from raw data numbers
+     * to model space coordinates, i.e. from generally (-inf, inf), ([0,1] for textures) to (data
+     * min, data max)
+     */
+    virtual const Matrix<N + 1, float> getDataToModelMatrix() const = 0;
+    /**
+     * Returns the matrix transformation mapping from raw data numbers
+     * to world space coordinates, i.e. from generally (-inf, inf), ([0,1] for textures) to (-inf,
+     * inf)
+     */
+    virtual const Matrix<N + 1, float> getDataToWorldMatrix() const = 0;
+    /**
+     * Returns the matrix transformation mapping from raw data numbers
+     * to view space coordinates, i.e. from generally (-inf, inf), ([0,1] for textures) to (-inf,
+     * inf)
+     */
+    virtual const Matrix<N + 1, float> getDataToViewMatrix() const = 0;
+    /**
+     * Returns the matrix transformation mapping from raw data numbers
+     * to clip space coordinates, i.e. from generally (-inf, inf), ([0,1] for textures) to [-1,1]
+     */
+    virtual const Matrix<N + 1, float> getDataToClipMatrix() const = 0;
+    /**
+     * Returns the matrix transformation mapping from model space coordinates
+     * to raw data numbers, i.e. from (data min, data max) to generally (-inf, inf), ([0,1] for
+     * textures)
+     */
+    virtual const Matrix<N + 1, float> getModelToDataMatrix() const = 0;
+    /**
+     * Returns the matrix transformation mapping from model space coordinates
+     * to world space coordinates, i.e. from (data min, data max) to (-inf, inf)
+     */
+    virtual const Matrix<N + 1, float> getModelToWorldMatrix() const = 0;
+    /**
+     * Returns the matrix transformation mapping from model space coordinates
+     * to view space coordinates, i.e. from (data min, data max) to (-inf, inf)
+     */
+    virtual const Matrix<N + 1, float> getModelToViewMatrix() const = 0;
+    /**
+     * Returns the matrix transformation mapping from model space coordinates
+     * to clip space coordinates, i.e. from (data min, data max) to [-1,1]
+     */
+    virtual const Matrix<N + 1, float> getModelToClipMatrix() const = 0;
+    /**
+     * Returns the matrix transformation mapping from world space coordinates
+     * to raw data numbers, i.e. from (-inf, inf) to generally (-inf, inf), ([0,1] for textures)
+     */
+    virtual const Matrix<N + 1, float> getWorldToDataMatrix() const = 0;
+    /**
+     * Returns the matrix transformation mapping from world space coordinates
+     * to model space coordinates, i.e. from (-inf, inf) to (data min, data max)
+     */
+    virtual const Matrix<N + 1, float> getWorldToModelMatrix() const = 0;
+    /**
+     * Returns the matrix transformation mapping from world space coordinates
+     * to view space coordinates, i.e. from (-inf, inf) to (-inf, inf)
+     */
+    virtual const Matrix<N + 1, float> getWorldToViewMatrix() const = 0;
+    /**
+     * Returns the matrix transformation mapping from world space coordinates
+     * to clip space coordinates, i.e. from (-inf, inf) to [-1,1]
+     */
+    virtual const Matrix<N + 1, float> getWorldToClipMatrix() const = 0;
+    /**
+     * Returns the matrix transformation mapping from view space coordinates
+     * to raw data numbers, i.e. from (-inf, inf) to generally (-inf, inf), ([0,1] for textures)
+     */
+    virtual const Matrix<N + 1, float> getViewToDataMatrix() const = 0;
+    /**
+     * Returns the matrix transformation mapping from view space coordinates
+     * to model space coordinates, i.e. from (-inf, inf) to (data min, data max)
+     */
+    virtual const Matrix<N + 1, float> getViewToModelMatrix() const = 0;
+    /**
+     * Returns the matrix transformation mapping from view space coordinates
+     * to world space coordinates, i.e. from (-inf, inf) to (-inf, inf)
+     */
+    virtual const Matrix<N + 1, float> getViewToWorldMatrix() const = 0;
+    /**
+     * Returns the matrix transformation mapping from view space coordinates
+     * to clip space coordinates, i.e. from (-inf, inf) to [-1,1]
+     */
+    virtual const Matrix<N + 1, float> getViewToClipMatrix() const = 0;
+    /**
+     * Returns the matrix transformation mapping from clip space coordinates
+     * to raw data numbers, i.e. from [-1,1] to generally (-inf, inf), ([0,1] for textures)
+     */
+    virtual const Matrix<N + 1, float> getClipToDataMatrix() const = 0;
+    /**
+     * Returns the matrix transformation mapping from clip space coordinates
+     * to model space coordinates, i.e. from [-1,1] to (data min, data max)
+     */
+    virtual const Matrix<N + 1, float> getClipToModelMatrix() const = 0;
+    /**
+     * Returns the matrix transformation mapping from clip space coordinates
+     * to world space coordinates, i.e. from [-1,1] to (-inf, inf)
+     */
+    virtual const Matrix<N + 1, float> getClipToWorldMatrix() const = 0;
+    /**
+     * Returns the matrix transformation mapping from clip space coordinates
+     * to view space coordinates, i.e. from [-1,1] to (-inf, inf)
+     */
+    virtual const Matrix<N + 1, float> getClipToViewMatrix() const = 0;
+};
+
+template <unsigned int N>
+class StructuedCameraCoordinateTransformer : public SpatialCameraCoordinateTransformer<N> {
+public:
+    virtual ~StructuedCameraCoordinateTransformer() {}
+    virtual StructuedCameraCoordinateTransformer<N>* clone() const = 0;
+    /**
+     * Returns the matrix transformation mapping from voxel index coordinates
+     * to raw data numbers, i.e. from [0, number of voxels) to generally (-inf, inf), ([0,1] for
+     * textures)
+     */
+    virtual const Matrix<N + 1, float> getIndexToDataMatrix() const = 0;
+    /**
+     * Returns the matrix transformation mapping from voxel index coordinates
+     * to model space coordinates, i.e. from [0, number of voxels) to (data min, data max)
+     */
+    virtual const Matrix<N + 1, float> getIndexToModelMatrix() const = 0;
+    /**
+     * Returns the matrix transformation mapping from voxel index coordinates
+     * to world space coordinates, i.e. from [0, number of voxels) to (-inf, inf)
+     */
+    virtual const Matrix<N + 1, float> getIndexToWorldMatrix() const = 0;
+    /**
+     * Returns the matrix transformation mapping from voxel index coordinates
+     * to view space coordinates, i.e. from [0, number of voxels) to (-inf, inf)
+     */
+    virtual const Matrix<N + 1, float> getIndexToViewMatrix() const = 0;
+    /**
+     * Returns the matrix transformation mapping from voxel index coordinates
+     * to clip space coordinates, i.e. from [0, number of voxels) to [-1,1]
+     */
+    virtual const Matrix<N + 1, float> getIndexToClipMatrix() const = 0;
+    /**
+     * Returns the matrix transformation mapping from raw data numbers
+     * to voxel index coordinates, i.e. from generally (-inf, inf), ([0,1] for textures) to [0,
+     * number of voxels)
+     */
+    virtual const Matrix<N + 1, float> getDataToIndexMatrix() const = 0;
+    /**
+     * Returns the matrix transformation mapping from raw data numbers
+     * to model space coordinates, i.e. from generally (-inf, inf), ([0,1] for textures) to (data
+     * min, data max)
+     */
+    virtual const Matrix<N + 1, float> getDataToModelMatrix() const = 0;
+    /**
+     * Returns the matrix transformation mapping from raw data numbers
+     * to world space coordinates, i.e. from generally (-inf, inf), ([0,1] for textures) to (-inf,
+     * inf)
+     */
+    virtual const Matrix<N + 1, float> getDataToWorldMatrix() const = 0;
+    /**
+     * Returns the matrix transformation mapping from raw data numbers
+     * to view space coordinates, i.e. from generally (-inf, inf), ([0,1] for textures) to (-inf,
+     * inf)
+     */
+    virtual const Matrix<N + 1, float> getDataToViewMatrix() const = 0;
+    /**
+     * Returns the matrix transformation mapping from raw data numbers
+     * to clip space coordinates, i.e. from generally (-inf, inf), ([0,1] for textures) to [-1,1]
+     */
+    virtual const Matrix<N + 1, float> getDataToClipMatrix() const = 0;
+    /**
+     * Returns the matrix transformation mapping from model space coordinates
+     * to voxel index coordinates, i.e. from (data min, data max) to [0, number of voxels)
+     */
+    virtual const Matrix<N + 1, float> getModelToIndexMatrix() const = 0;
+    /**
+     * Returns the matrix transformation mapping from model space coordinates
+     * to raw data numbers, i.e. from (data min, data max) to generally (-inf, inf), ([0,1] for
+     * textures)
+     */
+    virtual const Matrix<N + 1, float> getModelToDataMatrix() const = 0;
+    /**
+     * Returns the matrix transformation mapping from model space coordinates
+     * to world space coordinates, i.e. from (data min, data max) to (-inf, inf)
+     */
+    virtual const Matrix<N + 1, float> getModelToWorldMatrix() const = 0;
+    /**
+     * Returns the matrix transformation mapping from model space coordinates
+     * to view space coordinates, i.e. from (data min, data max) to (-inf, inf)
+     */
+    virtual const Matrix<N + 1, float> getModelToViewMatrix() const = 0;
+    /**
+     * Returns the matrix transformation mapping from model space coordinates
+     * to clip space coordinates, i.e. from (data min, data max) to [-1,1]
+     */
+    virtual const Matrix<N + 1, float> getModelToClipMatrix() const = 0;
+    /**
+     * Returns the matrix transformation mapping from world space coordinates
+     * to voxel index coordinates, i.e. from (-inf, inf) to [0, number of voxels)
+     */
+    virtual const Matrix<N + 1, float> getWorldToIndexMatrix() const = 0;
+    /**
+     * Returns the matrix transformation mapping from world space coordinates
+     * to raw data numbers, i.e. from (-inf, inf) to generally (-inf, inf), ([0,1] for textures)
+     */
+    virtual const Matrix<N + 1, float> getWorldToDataMatrix() const = 0;
+    /**
+     * Returns the matrix transformation mapping from world space coordinates
+     * to model space coordinates, i.e. from (-inf, inf) to (data min, data max)
+     */
+    virtual const Matrix<N + 1, float> getWorldToModelMatrix() const = 0;
+    /**
+     * Returns the matrix transformation mapping from world space coordinates
+     * to view space coordinates, i.e. from (-inf, inf) to (-inf, inf)
+     */
+    virtual const Matrix<N + 1, float> getWorldToViewMatrix() const = 0;
+    /**
+     * Returns the matrix transformation mapping from world space coordinates
+     * to clip space coordinates, i.e. from (-inf, inf) to [-1,1]
+     */
+    virtual const Matrix<N + 1, float> getWorldToClipMatrix() const = 0;
+    /**
+     * Returns the matrix transformation mapping from view space coordinates
+     * to voxel index coordinates, i.e. from (-inf, inf) to [0, number of voxels)
+     */
+    virtual const Matrix<N + 1, float> getViewToIndexMatrix() const = 0;
+    /**
+     * Returns the matrix transformation mapping from view space coordinates
+     * to raw data numbers, i.e. from (-inf, inf) to generally (-inf, inf), ([0,1] for textures)
+     */
+    virtual const Matrix<N + 1, float> getViewToDataMatrix() const = 0;
+    /**
+     * Returns the matrix transformation mapping from view space coordinates
+     * to model space coordinates, i.e. from (-inf, inf) to (data min, data max)
+     */
+    virtual const Matrix<N + 1, float> getViewToModelMatrix() const = 0;
+    /**
+     * Returns the matrix transformation mapping from view space coordinates
+     * to world space coordinates, i.e. from (-inf, inf) to (-inf, inf)
+     */
+    virtual const Matrix<N + 1, float> getViewToWorldMatrix() const = 0;
+    /**
+     * Returns the matrix transformation mapping from view space coordinates
+     * to clip space coordinates, i.e. from (-inf, inf) to [-1,1]
+     */
+    virtual const Matrix<N + 1, float> getViewToClipMatrix() const = 0;
+    /**
+     * Returns the matrix transformation mapping from clip space coordinates
+     * to voxel index coordinates, i.e. from [-1,1] to [0, number of voxels)
+     */
+    virtual const Matrix<N + 1, float> getClipToIndexMatrix() const = 0;
+    /**
+     * Returns the matrix transformation mapping from clip space coordinates
+     * to raw data numbers, i.e. from [-1,1] to generally (-inf, inf), ([0,1] for textures)
+     */
+    virtual const Matrix<N + 1, float> getClipToDataMatrix() const = 0;
+    /**
+     * Returns the matrix transformation mapping from clip space coordinates
+     * to model space coordinates, i.e. from [-1,1] to (data min, data max)
+     */
+    virtual const Matrix<N + 1, float> getClipToModelMatrix() const = 0;
+    /**
+     * Returns the matrix transformation mapping from clip space coordinates
+     * to world space coordinates, i.e. from [-1,1] to (-inf, inf)
+     */
+    virtual const Matrix<N + 1, float> getClipToWorldMatrix() const = 0;
+    /**
+     * Returns the matrix transformation mapping from clip space coordinates
+     * to view space coordinates, i.e. from [-1,1] to (-inf, inf)
+     */
+    virtual const Matrix<N + 1, float> getClipToViewMatrix() const = 0;
+};
+
+template <unsigned int N>
+class VolumeCoordinateTransformer : public SpatialCoordinateTransformer<N> {
+public:
+    virtual ~VolumeCoordinateTransformer() {}
+    virtual VolumeCoordinateTransformer<N>* clone() const = 0;
+    /**
+     * Returns the matrix transformation mapping from voxel index coordinates
+     * to raw data numbers, i.e. from [0, number of voxels) to generally (-inf, inf), ([0,1] for
+     * textures)
+     */
+    virtual const Matrix<N + 1, float> getIndexToTextureMatrix() const = 0;
+    /**
+     * Returns the matrix transformation mapping from voxel index coordinates
+     * to model space coordinates, i.e. from [0, number of voxels) to (data min, data max)
+     */
+    virtual const Matrix<N + 1, float> getIndexToModelMatrix() const = 0;
+    /**
+     * Returns the matrix transformation mapping from voxel index coordinates
+     * to world space coordinates, i.e. from [0, number of voxels) to (-inf, inf)
+     */
+    virtual const Matrix<N + 1, float> getIndexToWorldMatrix() const = 0;
+    /**
+     * Returns the matrix transformation mapping from raw data numbers
+     * to voxel index coordinates, i.e. from generally (-inf, inf), ([0,1] for textures) to [0,
+     * number of voxels)
+     */
+    virtual const Matrix<N + 1, float> getTextureToIndexMatrix() const = 0;
+    /**
+     * Returns the matrix transformation mapping from raw data numbers
+     * to model space coordinates, i.e. from generally (-inf, inf), ([0,1] for textures) to (data
+     * min, data max)
+     */
+    virtual const Matrix<N + 1, float> getTextureToModelMatrix() const = 0;
+    /**
+     * Returns the matrix transformation mapping from raw data numbers
+     * to world space coordinates, i.e. from generally (-inf, inf), ([0,1] for textures) to (-inf,
+     * inf)
+     */
+    virtual const Matrix<N + 1, float> getTextureToWorldMatrix() const = 0;
+    /**
+     * Returns the matrix transformation mapping from model space coordinates
+     * to voxel index coordinates, i.e. from (data min, data max) to [0, number of voxels)
+     */
+    virtual const Matrix<N + 1, float> getModelToIndexMatrix() const = 0;
+    /**
+     * Returns the matrix transformation mapping from model space coordinates
+     * to raw data numbers, i.e. from (data min, data max) to generally (-inf, inf), ([0,1] for
+     * textures)
+     */
+    virtual const Matrix<N + 1, float> getModelToTextureMatrix() const = 0;
+    /**
+     * Returns the matrix transformation mapping from model space coordinates
+     * to world space coordinates, i.e. from (data min, data max) to (-inf, inf)
+     */
+    virtual const Matrix<N + 1, float> getModelToWorldMatrix() const = 0;
+    /**
+     * Returns the matrix transformation mapping from world space coordinates
+     * to voxel index coordinates, i.e. from (-inf, inf) to [0, number of voxels)
+     */
+    virtual const Matrix<N + 1, float> getWorldToIndexMatrix() const = 0;
+    /**
+     * Returns the matrix transformation mapping from world space coordinates
+     * to raw data numbers, i.e. from (-inf, inf) to generally (-inf, inf), ([0,1] for textures)
+     */
+    virtual const Matrix<N + 1, float> getWorldToTextureMatrix() const = 0;
+    /**
+     * Returns the matrix transformation mapping from world space coordinates
+     * to model space coordinates, i.e. from (-inf, inf) to (data min, data max)
+     */
+    virtual const Matrix<N + 1, float> getWorldToModelMatrix() const = 0;
+};
+
+template <unsigned int N>
+class VolumeCameraCoordinateTransformer : public SpatialCameraCoordinateTransformer<N> {
+public:
+    virtual ~VolumeCameraCoordinateTransformer() {}
+    virtual VolumeCameraCoordinateTransformer<N>* clone() const = 0;
+    /**
+     * Returns the matrix transformation mapping from voxel index coordinates
+     * to raw data numbers, i.e. from [0, number of voxels) to generally (-inf, inf), ([0,1] for
+     * textures)
+     */
+    virtual const Matrix<N + 1, float> getIndexToTextureMatrix() const = 0;
+    /**
+     * Returns the matrix transformation mapping from voxel index coordinates
+     * to model space coordinates, i.e. from [0, number of voxels) to (data min, data max)
+     */
+    virtual const Matrix<N + 1, float> getIndexToModelMatrix() const = 0;
+    /**
+     * Returns the matrix transformation mapping from voxel index coordinates
+     * to world space coordinates, i.e. from [0, number of voxels) to (-inf, inf)
+     */
+    virtual const Matrix<N + 1, float> getIndexToWorldMatrix() const = 0;
+    /**
+     * Returns the matrix transformation mapping from voxel index coordinates
+     * to view space coordinates, i.e. from [0, number of voxels) to (-inf, inf)
+     */
+    virtual const Matrix<N + 1, float> getIndexToViewMatrix() const = 0;
+    /**
+     * Returns the matrix transformation mapping from voxel index coordinates
+     * to clip space coordinates, i.e. from [0, number of voxels) to [-1,1]
+     */
+    virtual const Matrix<N + 1, float> getIndexToClipMatrix() const = 0;
+    /**
+     * Returns the matrix transformation mapping from raw data numbers
+     * to voxel index coordinates, i.e. from generally (-inf, inf), ([0,1] for textures) to [0,
+     * number of voxels)
+     */
+    virtual const Matrix<N + 1, float> getTextureToIndexMatrix() const = 0;
+    /**
+     * Returns the matrix transformation mapping from raw data numbers
+     * to model space coordinates, i.e. from generally (-inf, inf), ([0,1] for textures) to (data
+     * min, data max)
+     */
+    virtual const Matrix<N + 1, float> getTextureToModelMatrix() const = 0;
+    /**
+     * Returns the matrix transformation mapping from raw data numbers
+     * to world space coordinates, i.e. from generally (-inf, inf), ([0,1] for textures) to (-inf,
+     * inf)
+     */
+    virtual const Matrix<N + 1, float> getTextureToWorldMatrix() const = 0;
+    /**
+     * Returns the matrix transformation mapping from raw data numbers
+     * to view space coordinates, i.e. from generally (-inf, inf), ([0,1] for textures) to (-inf,
+     * inf)
+     */
+    virtual const Matrix<N + 1, float> getTextureToViewMatrix() const = 0;
+    /**
+     * Returns the matrix transformation mapping from raw data numbers
+     * to clip space coordinates, i.e. from generally (-inf, inf), ([0,1] for textures) to [-1,1]
+     */
+    virtual const Matrix<N + 1, float> getTextureToClipMatrix() const = 0;
+    /**
+     * Returns the matrix transformation mapping from model space coordinates
+     * to voxel index coordinates, i.e. from (data min, data max) to [0, number of voxels)
+     */
+    virtual const Matrix<N + 1, float> getModelToIndexMatrix() const = 0;
+    /**
+     * Returns the matrix transformation mapping from model space coordinates
+     * to raw data numbers, i.e. from (data min, data max) to generally (-inf, inf), ([0,1] for
+     * textures)
+     */
+    virtual const Matrix<N + 1, float> getModelToTextureMatrix() const = 0;
+    /**
+     * Returns the matrix transformation mapping from model space coordinates
+     * to world space coordinates, i.e. from (data min, data max) to (-inf, inf)
+     */
+    virtual const Matrix<N + 1, float> getModelToWorldMatrix() const = 0;
+    /**
+     * Returns the matrix transformation mapping from model space coordinates
+     * to view space coordinates, i.e. from (data min, data max) to (-inf, inf)
+     */
+    virtual const Matrix<N + 1, float> getModelToViewMatrix() const = 0;
+    /**
+     * Returns the matrix transformation mapping from model space coordinates
+     * to clip space coordinates, i.e. from (data min, data max) to [-1,1]
+     */
+    virtual const Matrix<N + 1, float> getModelToClipMatrix() const = 0;
+    /**
+     * Returns the matrix transformation mapping from world space coordinates
+     * to voxel index coordinates, i.e. from (-inf, inf) to [0, number of voxels)
+     */
+    virtual const Matrix<N + 1, float> getWorldToIndexMatrix() const = 0;
+    /**
+     * Returns the matrix transformation mapping from world space coordinates
+     * to raw data numbers, i.e. from (-inf, inf) to generally (-inf, inf), ([0,1] for textures)
+     */
+    virtual const Matrix<N + 1, float> getWorldToTextureMatrix() const = 0;
+    /**
+     * Returns the matrix transformation mapping from world space coordinates
+     * to model space coordinates, i.e. from (-inf, inf) to (data min, data max)
+     */
+    virtual const Matrix<N + 1, float> getWorldToModelMatrix() const = 0;
+    /**
+     * Returns the matrix transformation mapping from world space coordinates
+     * to view space coordinates, i.e. from (-inf, inf) to (-inf, inf)
+     */
+    virtual const Matrix<N + 1, float> getWorldToViewMatrix() const = 0;
+    /**
+     * Returns the matrix transformation mapping from world space coordinates
+     * to clip space coordinates, i.e. from (-inf, inf) to [-1,1]
+     */
+    virtual const Matrix<N + 1, float> getWorldToClipMatrix() const = 0;
+    /**
+     * Returns the matrix transformation mapping from view space coordinates
+     * to voxel index coordinates, i.e. from (-inf, inf) to [0, number of voxels)
+     */
+    virtual const Matrix<N + 1, float> getViewToIndexMatrix() const = 0;
+    /**
+     * Returns the matrix transformation mapping from view space coordinates
+     * to raw data numbers, i.e. from (-inf, inf) to generally (-inf, inf), ([0,1] for textures)
+     */
+    virtual const Matrix<N + 1, float> getViewToTextureMatrix() const = 0;
+    /**
+     * Returns the matrix transformation mapping from view space coordinates
+     * to model space coordinates, i.e. from (-inf, inf) to (data min, data max)
+     */
+    virtual const Matrix<N + 1, float> getViewToModelMatrix() const = 0;
+    /**
+     * Returns the matrix transformation mapping from view space coordinates
+     * to world space coordinates, i.e. from (-inf, inf) to (-inf, inf)
+     */
+    virtual const Matrix<N + 1, float> getViewToWorldMatrix() const = 0;
+    /**
+     * Returns the matrix transformation mapping from view space coordinates
+     * to clip space coordinates, i.e. from (-inf, inf) to [-1,1]
+     */
+    virtual const Matrix<N + 1, float> getViewToClipMatrix() const = 0;
+    /**
+     * Returns the matrix transformation mapping from clip space coordinates
+     * to voxel index coordinates, i.e. from [-1,1] to [0, number of voxels)
+     */
+    virtual const Matrix<N + 1, float> getClipToIndexMatrix() const = 0;
+    /**
+     * Returns the matrix transformation mapping from clip space coordinates
+     * to raw data numbers, i.e. from [-1,1] to generally (-inf, inf), ([0,1] for textures)
+     */
+    virtual const Matrix<N + 1, float> getClipToTextureMatrix() const = 0;
+    /**
+     * Returns the matrix transformation mapping from clip space coordinates
+     * to model space coordinates, i.e. from [-1,1] to (data min, data max)
+     */
+    virtual const Matrix<N + 1, float> getClipToModelMatrix() const = 0;
+    /**
+     * Returns the matrix transformation mapping from clip space coordinates
+     * to world space coordinates, i.e. from [-1,1] to (-inf, inf)
+     */
+    virtual const Matrix<N + 1, float> getClipToWorldMatrix() const = 0;
+    /**
+     * Returns the matrix transformation mapping from clip space coordinates
+     * to view space coordinates, i.e. from [-1,1] to (-inf, inf)
+     */
+    virtual const Matrix<N + 1, float> getClipToViewMatrix() const = 0;
+};
+
+template <unsigned int N>
+class Camera;
 
 template <unsigned int N>
 class SpatialEntity {
 public:
     SpatialEntity();
-    SpatialEntity(CoordinateTransformer<N>* transformer);
-    SpatialEntity(const SpatialEntity<N>&);
-    SpatialEntity(const Vector<N,float>& offset, CoordinateTransformer<N>* transformer);
-    SpatialEntity(const Matrix<N,float>& basis, CoordinateTransformer<N>* transformer);
-    SpatialEntity(const Matrix<N+1,float>& mat, CoordinateTransformer<N>* transformer);
-    SpatialEntity(const Matrix<N,float>& basis, const Vector<N,float>& offset, CoordinateTransformer<N>* transformer);
+    SpatialEntity(const SpatialEntity<N>& rhs);
+    SpatialEntity(const Matrix<N + 1, float>& modelMatrix);
+    SpatialEntity(const Matrix<N + 1, float>& modelMatrix, const Matrix<N + 1, float>& worldMatrix);
 
     SpatialEntity<N>& operator=(const SpatialEntity<N>& that);
     virtual SpatialEntity<N>* clone() const = 0;
     virtual ~SpatialEntity();
 
-    Vector<N,float> getOffset() const;
-    void setOffset(const Vector<N,float>& offset);
+    Vector<N, float> getOffset() const;
+    void setOffset(const Vector<N, float>& offset);
 
     // Using row vectors in basis
-    Matrix<N,float> getBasis() const;
-    void setBasis(const Matrix<N,float>& basis);
+    Matrix<N, float> getBasis() const;
+    void setBasis(const Matrix<N, float>& basis);
 
-    Matrix<N+1,float> getBasisAndOffset() const;
-    void setBasisAndOffset(const Matrix<N+1,float>& mat);
+    Matrix<N + 1, float> getModelMatrix() const;
+    void setModelMatrix(const Matrix<N + 1, float>& modelMatrix);
 
-    Matrix<N+1,float> getWorldTransform() const;
-    void setWorldTransform(const Matrix<N+1,float>& mat);
+    Matrix<N + 1, float> getWorldMatrix() const;
+    void setWorldMatrix(const Matrix<N + 1, float>& worldMatrix);
 
-    virtual const CoordinateTransformer<N>& getCoordinateTransformer() const;
+    virtual const SpatialCoordinateTransformer<N>& getCoordinateTransformer() const;
 
 protected:
-    virtual CoordinateTransformer<N>* createTransformer(const SpatialEntity<N>* owner) const;
-    CoordinateTransformer<N>* transformer_;
-    Matrix<N+1, float> basisAndOffset_;
-    Matrix<N+1, float> worldTransform_;
+    SpatialEntity(SpatialCoordinateTransformer<N>* transformer);
+    SpatialEntity(SpatialCoordinateTransformer<N>* transformer,
+                  const Matrix<N + 1, float>& modelMatrix);
+    SpatialEntity(SpatialCoordinateTransformer<N>* transformer,
+                  const Matrix<N + 1, float>& modelMatrix, const Matrix<N + 1, float>& worldMatrix);
+
+    SpatialCoordinateTransformer<N>* transformer_;
+    Matrix<N + 1, float> modelMatrix_;
+    Matrix<N + 1, float> worldMatrix_;
 };
 
 template <unsigned int N>
 class StructuredGridEntity : public SpatialEntity<N> {
 public:
-    StructuredGridEntity(const Vector<N, unsigned int>& dimension);
-    StructuredGridEntity(const Vector<N,float>& offset,
-                         const Vector<N, unsigned int>& dimension);
-    StructuredGridEntity(const Matrix<N,float>& basis,
-                         const Vector<N, unsigned int>& dimension);
-    StructuredGridEntity(const Matrix<N,float>& basis,
-                         const Vector<N,float>& offset,
-                         const Vector<N, unsigned int>& dimension);
-
+    StructuredGridEntity();
     StructuredGridEntity(const StructuredGridEntity<N>& rhs);
+    StructuredGridEntity(const Vector<N, unsigned int>& dimension);
+    StructuredGridEntity(const Vector<N, unsigned int>& dimension, const Vector<N, float>& spacing);
+    StructuredGridEntity(const Vector<N, unsigned int>& dimension,
+                         const Matrix<N + 1, float>& modelMatrix);
+    StructuredGridEntity(const Vector<N, unsigned int>& dimension,
+                         const Matrix<N + 1, float>& modelMatrix,
+                         const Matrix<N + 1, float>& worldMatrix);
+
     StructuredGridEntity<N>& operator=(const StructuredGridEntity<N>& that);
     virtual StructuredGridEntity<N>* clone() const = 0;
 
     virtual ~StructuredGridEntity() {}
-    /** 
-     * Calculates basis vector and offset for a uniformly spaced grid centered around origo.
-     *
-     * @param const Vector<N,float>& spacing Distance between grid points
-     */
-    void setBasisAndOffsetWithUniformSpacing(const Vector<N,float>& spacing);
 
     Vector<N, unsigned int> getDimension() const;
     void setDimension(const Vector<N, unsigned int>& dimension);
 
+    Matrix<N + 1, float> getIndexMatrix() const;
+
+    virtual const StructuredCoordinateTransformer<N>& getCoordinateTransformer() const;
+
 protected:
-    virtual CoordinateTransformer<N>* createTransformer(const SpatialEntity<N>* owner) const;
     Vector<N, unsigned int> dimension_;
 };
 
+template <unsigned int N>
+class SpatialCoordinateTransformerImpl : public SpatialCoordinateTransformer<N> {
+public:
+    SpatialCoordinateTransformerImpl(const SpatialEntity<N>* spatialEntity);
+    SpatialCoordinateTransformerImpl(const SpatialCoordinateTransformerImpl<N>& rhs);
+    SpatialCoordinateTransformerImpl<N>& operator=(const SpatialCoordinateTransformerImpl<N>& that);
+    virtual SpatialCoordinateTransformerImpl<N>* clone() const;
+    virtual ~SpatialCoordinateTransformerImpl() {}
 
-/*---------------------------------------------------------------*/
-/*--Implementations----------------------------------------------*/
-/*--SpatialMetaData--------------------------------------------------*/
-/*---------------------------------------------------------------*/
+    virtual const Matrix<N + 1, float> getModelMatrix() const;
+    virtual const Matrix<N + 1, float> getWorldMatrix() const;
+
+    virtual const Matrix<N + 1, float> getDataToModelMatrix() const;
+    virtual const Matrix<N + 1, float> getDataToWorldMatrix() const;
+    virtual const Matrix<N + 1, float> getModelToDataMatrix() const;
+    virtual const Matrix<N + 1, float> getModelToWorldMatrix() const;
+    virtual const Matrix<N + 1, float> getWorldToDataMatrix() const;
+    virtual const Matrix<N + 1, float> getWorldToModelMatrix() const;
+
+private:
+    const SpatialEntity<N>* spatialEntity_;
+};
+
+template <unsigned int N>
+class StructuredCoordinateTransformerImpl : public StructuredCoordinateTransformer<N> {
+public:
+    StructuredCoordinateTransformerImpl(const StructuredGridEntity<N>* structuredGridEntity);
+    StructuredCoordinateTransformerImpl(const StructuredCoordinateTransformerImpl<N>& rhs);
+    StructuredCoordinateTransformerImpl<N>& operator=(
+        const StructuredCoordinateTransformerImpl<N>& that);
+    virtual StructuredCoordinateTransformerImpl<N>* clone() const;
+    virtual ~StructuredCoordinateTransformerImpl() {}
+
+    virtual const Matrix<N + 1, float> getIndexMatrix() const;
+    virtual const Matrix<N + 1, float> getModelMatrix() const;
+    virtual const Matrix<N + 1, float> getWorldMatrix() const;
+
+    virtual const Matrix<N + 1, float> getIndexToDataMatrix() const;
+    virtual const Matrix<N + 1, float> getIndexToModelMatrix() const;
+    virtual const Matrix<N + 1, float> getIndexToWorldMatrix() const;
+    virtual const Matrix<N + 1, float> getDataToIndexMatrix() const;
+    virtual const Matrix<N + 1, float> getDataToModelMatrix() const;
+    virtual const Matrix<N + 1, float> getDataToWorldMatrix() const;
+    virtual const Matrix<N + 1, float> getModelToIndexMatrix() const;
+    virtual const Matrix<N + 1, float> getModelToDataMatrix() const;
+    virtual const Matrix<N + 1, float> getModelToWorldMatrix() const;
+    virtual const Matrix<N + 1, float> getWorldToIndexMatrix() const;
+    virtual const Matrix<N + 1, float> getWorldToDataMatrix() const;
+    virtual const Matrix<N + 1, float> getWorldToModelMatrix() const;
+
+private:
+    const StructuredGridEntity<N>* structuredGridEntity_;
+};
+
+template <unsigned int N>
+class SpatialCameraCoordinateTransformerImpl : public SpatialCameraCoordinateTransformer<N> {
+public:
+    SpatialCameraCoordinateTransformerImpl(const SpatialEntity<N>* spatialEntity,
+                                           const Camera<N>* camera);
+    SpatialCameraCoordinateTransformerImpl(const SpatialCameraCoordinateTransformerImpl<N>& rhs);
+    SpatialCameraCoordinateTransformerImpl<N>& operator=(
+        const SpatialCameraCoordinateTransformerImpl<N>& that);
+    virtual SpatialCameraCoordinateTransformerImpl<N>* clone() const;
+    virtual ~SpatialCameraCoordinateTransformerImpl() {}
+
+    virtual const Matrix<N + 1, float> getModelMatrix() const;
+    virtual const Matrix<N + 1, float> getWorldMatrix() const;
+    virtual const Matrix<N + 1, float> getViewMatrix() const;
+    virtual const Matrix<N + 1, float> getProjectionMatrix() const;
+
+    virtual const Matrix<N + 1, float> getDataToModelMatrix() const;
+    virtual const Matrix<N + 1, float> getDataToWorldMatrix() const;
+    virtual const Matrix<N + 1, float> getDataToViewMatrix() const;
+    virtual const Matrix<N + 1, float> getDataToClipMatrix() const;
+    virtual const Matrix<N + 1, float> getModelToDataMatrix() const;
+    virtual const Matrix<N + 1, float> getModelToWorldMatrix() const;
+    virtual const Matrix<N + 1, float> getModelToViewMatrix() const;
+    virtual const Matrix<N + 1, float> getModelToClipMatrix() const;
+    virtual const Matrix<N + 1, float> getWorldToDataMatrix() const;
+    virtual const Matrix<N + 1, float> getWorldToModelMatrix() const;
+    virtual const Matrix<N + 1, float> getWorldToViewMatrix() const;
+    virtual const Matrix<N + 1, float> getWorldToClipMatrix() const;
+    virtual const Matrix<N + 1, float> getViewToDataMatrix() const;
+    virtual const Matrix<N + 1, float> getViewToModelMatrix() const;
+    virtual const Matrix<N + 1, float> getViewToWorldMatrix() const;
+    virtual const Matrix<N + 1, float> getViewToClipMatrix() const;
+    virtual const Matrix<N + 1, float> getClipToDataMatrix() const;
+    virtual const Matrix<N + 1, float> getClipToModelMatrix() const;
+    virtual const Matrix<N + 1, float> getClipToWorldMatrix() const;
+    virtual const Matrix<N + 1, float> getClipToViewMatrix() const;
+
+protected:
+    const SpatialEntity<N>* spatialEntity_;
+    const Camera<N>* camera_;
+};
+
+template <unsigned int N>
+class StructuedCameraCoordinateTransformerImpl : public StructuedCameraCoordinateTransformer<N> {
+public:
+    StructuedCameraCoordinateTransformerImpl(const StructuredGridEntity<N>* structuredGridEntity,
+                                             const Camera<N>* camera);
+    StructuedCameraCoordinateTransformerImpl(
+        const StructuedCameraCoordinateTransformerImpl<N>& rhs);
+    StructuedCameraCoordinateTransformerImpl<N>& operator=(
+        const StructuedCameraCoordinateTransformerImpl<N>& that);
+    virtual StructuedCameraCoordinateTransformerImpl<N>* clone() const;
+    virtual ~StructuedCameraCoordinateTransformerImpl() {}
+
+    virtual const Matrix<N + 1, float> getIndexMatrix() const;
+    virtual const Matrix<N + 1, float> getModelMatrix() const;
+    virtual const Matrix<N + 1, float> getWorldMatrix() const;
+    virtual const Matrix<N + 1, float> getViewMatrix() const;
+    virtual const Matrix<N + 1, float> getProjectionMatrix() const;
+
+    virtual const Matrix<N + 1, float> getIndexToDataMatrix() const;
+    virtual const Matrix<N + 1, float> getIndexToModelMatrix() const;
+    virtual const Matrix<N + 1, float> getIndexToWorldMatrix() const;
+    virtual const Matrix<N + 1, float> getIndexToViewMatrix() const;
+    virtual const Matrix<N + 1, float> getIndexToClipMatrix() const;
+    virtual const Matrix<N + 1, float> getDataToIndexMatrix() const;
+    virtual const Matrix<N + 1, float> getDataToModelMatrix() const;
+    virtual const Matrix<N + 1, float> getDataToWorldMatrix() const;
+    virtual const Matrix<N + 1, float> getDataToViewMatrix() const;
+    virtual const Matrix<N + 1, float> getDataToClipMatrix() const;
+    virtual const Matrix<N + 1, float> getModelToIndexMatrix() const;
+    virtual const Matrix<N + 1, float> getModelToDataMatrix() const;
+    virtual const Matrix<N + 1, float> getModelToWorldMatrix() const;
+    virtual const Matrix<N + 1, float> getModelToViewMatrix() const;
+    virtual const Matrix<N + 1, float> getModelToClipMatrix() const;
+    virtual const Matrix<N + 1, float> getWorldToIndexMatrix() const;
+    virtual const Matrix<N + 1, float> getWorldToDataMatrix() const;
+    virtual const Matrix<N + 1, float> getWorldToModelMatrix() const;
+    virtual const Matrix<N + 1, float> getWorldToViewMatrix() const;
+    virtual const Matrix<N + 1, float> getWorldToClipMatrix() const;
+    virtual const Matrix<N + 1, float> getViewToIndexMatrix() const;
+    virtual const Matrix<N + 1, float> getViewToDataMatrix() const;
+    virtual const Matrix<N + 1, float> getViewToModelMatrix() const;
+    virtual const Matrix<N + 1, float> getViewToWorldMatrix() const;
+    virtual const Matrix<N + 1, float> getViewToClipMatrix() const;
+    virtual const Matrix<N + 1, float> getClipToIndexMatrix() const;
+    virtual const Matrix<N + 1, float> getClipToDataMatrix() const;
+    virtual const Matrix<N + 1, float> getClipToModelMatrix() const;
+    virtual const Matrix<N + 1, float> getClipToWorldMatrix() const;
+    virtual const Matrix<N + 1, float> getClipToViewMatrix() const;
+
+private:
+    const StructuredGridEntity<N>* structuredGridEntity_;
+    const Camera<N>* camera_;
+};
+
+template <unsigned int N>
+class VolumeCoordinateTransformerImpl : public VolumeCoordinateTransformer<N> {
+public:
+    VolumeCoordinateTransformerImpl(const StructuredGridEntity<N>* structuredGridEntity);
+    VolumeCoordinateTransformerImpl(const VolumeCoordinateTransformerImpl<N>& rhs);
+    VolumeCoordinateTransformerImpl<N>& operator=(const VolumeCoordinateTransformerImpl<N>& that);
+    virtual VolumeCoordinateTransformerImpl<N>* clone() const;
+    virtual ~VolumeCoordinateTransformerImpl() {}
+
+    virtual const Matrix<N + 1, float> getIndexMatrix() const;
+    virtual const Matrix<N + 1, float> getModelMatrix() const;
+    virtual const Matrix<N + 1, float> getWorldMatrix() const;
+
+    virtual const Matrix<N + 1, float> getIndexToTextureMatrix() const;
+    virtual const Matrix<N + 1, float> getIndexToModelMatrix() const;
+    virtual const Matrix<N + 1, float> getIndexToWorldMatrix() const;
+    virtual const Matrix<N + 1, float> getTextureToIndexMatrix() const;
+    virtual const Matrix<N + 1, float> getTextureToModelMatrix() const;
+    virtual const Matrix<N + 1, float> getTextureToWorldMatrix() const;
+    virtual const Matrix<N + 1, float> getModelToIndexMatrix() const;
+    virtual const Matrix<N + 1, float> getModelToTextureMatrix() const;
+    virtual const Matrix<N + 1, float> getModelToWorldMatrix() const;
+    virtual const Matrix<N + 1, float> getWorldToIndexMatrix() const;
+    virtual const Matrix<N + 1, float> getWorldToTextureMatrix() const;
+    virtual const Matrix<N + 1, float> getWorldToModelMatrix() const;
+
+private:
+    const StructuredGridEntity<N>* structuredGridEntity_;
+};
+
+template <unsigned int N>
+class VolumeCameraCoordinateTransformerImpl : public VolumeCameraCoordinateTransformer<N> {
+public:
+    VolumeCameraCoordinateTransformerImpl(const StructuredGridEntity<N>* structuredGridEntity,
+                                          const Camera<N>* camera);
+    VolumeCameraCoordinateTransformerImpl(const VolumeCameraCoordinateTransformerImpl<N>& rhs);
+    VolumeCameraCoordinateTransformerImpl<N>& operator=(
+        const VolumeCameraCoordinateTransformerImpl<N>& that);
+    virtual VolumeCameraCoordinateTransformerImpl<N>* clone() const;
+    virtual ~VolumeCameraCoordinateTransformerImpl() {}
+
+    virtual const Matrix<N + 1, float> getIndexMatrix() const;
+    virtual const Matrix<N + 1, float> getModelMatrix() const;
+    virtual const Matrix<N + 1, float> getWorldMatrix() const;
+    virtual const Matrix<N + 1, float> getViewMatrix() const;
+    virtual const Matrix<N + 1, float> getProjectionMatrix() const;
+
+    virtual const Matrix<N + 1, float> getIndexToTextureMatrix() const;
+    virtual const Matrix<N + 1, float> getIndexToModelMatrix() const;
+    virtual const Matrix<N + 1, float> getIndexToWorldMatrix() const;
+    virtual const Matrix<N + 1, float> getIndexToViewMatrix() const;
+    virtual const Matrix<N + 1, float> getIndexToClipMatrix() const;
+    virtual const Matrix<N + 1, float> getTextureToIndexMatrix() const;
+    virtual const Matrix<N + 1, float> getTextureToModelMatrix() const;
+    virtual const Matrix<N + 1, float> getTextureToWorldMatrix() const;
+    virtual const Matrix<N + 1, float> getTextureToViewMatrix() const;
+    virtual const Matrix<N + 1, float> getTextureToClipMatrix() const;
+    virtual const Matrix<N + 1, float> getModelToIndexMatrix() const;
+    virtual const Matrix<N + 1, float> getModelToTextureMatrix() const;
+    virtual const Matrix<N + 1, float> getModelToWorldMatrix() const;
+    virtual const Matrix<N + 1, float> getModelToViewMatrix() const;
+    virtual const Matrix<N + 1, float> getModelToClipMatrix() const;
+    virtual const Matrix<N + 1, float> getWorldToIndexMatrix() const;
+    virtual const Matrix<N + 1, float> getWorldToTextureMatrix() const;
+    virtual const Matrix<N + 1, float> getWorldToModelMatrix() const;
+    virtual const Matrix<N + 1, float> getWorldToViewMatrix() const;
+    virtual const Matrix<N + 1, float> getWorldToClipMatrix() const;
+    virtual const Matrix<N + 1, float> getViewToIndexMatrix() const;
+    virtual const Matrix<N + 1, float> getViewToTextureMatrix() const;
+    virtual const Matrix<N + 1, float> getViewToModelMatrix() const;
+    virtual const Matrix<N + 1, float> getViewToWorldMatrix() const;
+    virtual const Matrix<N + 1, float> getViewToClipMatrix() const;
+    virtual const Matrix<N + 1, float> getClipToIndexMatrix() const;
+    virtual const Matrix<N + 1, float> getClipToTextureMatrix() const;
+    virtual const Matrix<N + 1, float> getClipToModelMatrix() const;
+    virtual const Matrix<N + 1, float> getClipToWorldMatrix() const;
+    virtual const Matrix<N + 1, float> getClipToViewMatrix() const;
+
+private:
+    const StructuredGridEntity<N>* structuredGridEntity_;
+    const Camera<N>* camera_;
+};
+
+/*---------------------------------------------------------------*
+ *  Implementations                                              *
+ *  SpatialEntity                                                *
+ *---------------------------------------------------------------*/
 
 template <unsigned int N>
 SpatialEntity<N>::SpatialEntity()
-    : transformer_(new SpatialCoordinateTransformer<N>(this))
-    , worldTransform_(1.0f) {
-        Vector<N,float> offset(0.0f);
-        Matrix<N,float> basis(1.0f);
-        setBasis(basis);
-        setOffset(offset);
-}
+    : transformer_(new SpatialCoordinateTransformerImpl<N>(this))
+    , modelMatrix_(1.0f)
+    , worldMatrix_(1.0f) {}
 
-template <unsigned int N>
-SpatialEntity<N>::SpatialEntity(CoordinateTransformer<N>* transformer)
-    : transformer_(transformer)
-    , worldTransform_(1.0f) {
-    Vector<N,float> offset(0.0f);
-    Matrix<N,float> basis(1.0f);
-    setBasis(basis);
-    setOffset(offset);
-}
-
-template <unsigned int N>
-SpatialEntity<N>::SpatialEntity(const Vector<N,float>& offset, CoordinateTransformer<N>* transformer)
-    : transformer_(transformer)
-    , worldTransform_(1.0f) {
-    Matrix<N,float> basis(1.0f);
-    setBasis(basis);
-    setOffset(offset);
-}
-template <unsigned int N>
-SpatialEntity<N>::SpatialEntity(const Matrix<N,float>& basis, CoordinateTransformer<N>* transformer)
-    : transformer_(transformer)
-    , worldTransform_(1.0f) {
-    Vector<N,float> offset(0.0f);
-    setBasis(basis);
-    setOffset(offset);
-}
-template <unsigned int N>
-SpatialEntity<N>::SpatialEntity(const Matrix<N+1,float>& mat, CoordinateTransformer<N>* transformer)
-    : transformer_(transformer)
-    , worldTransform_(1.0f) {
-    setBasisAndOffset(mat);
-}
-template <unsigned int N>
-SpatialEntity<N>::SpatialEntity(const Matrix<N,float>& basis, const Vector<N,float>& offset, CoordinateTransformer<N>* transformer)
-    : transformer_(transformer)
-    , worldTransform_(1.0f) {
-    setBasis(basis);
-    setOffset(offset);
-}
 template <unsigned int N>
 SpatialEntity<N>::SpatialEntity(const SpatialEntity<N>& rhs)
-    : transformer_(rhs.createTransformer(this))
-    , basisAndOffset_(rhs.basisAndOffset_)
-    , worldTransform_(rhs.worldTransform_) {
-}
+    : transformer_(rhs.transformer_->clone())
+    , modelMatrix_(rhs.modelMatrix_)
+    , worldMatrix_(rhs.worldMatrix_) {}
+
+template <unsigned int N>
+SpatialEntity<N>::SpatialEntity(const Matrix<N + 1, float>& modelMatrix)
+    : transformer_(new SpatialCoordinateTransformerImpl<N>(this))
+    , modelMatrix_(modelMatrix)
+    , worldMatrix_(1.0f) {}
+
+template <unsigned int N>
+SpatialEntity<N>::SpatialEntity(const Matrix<N + 1, float>& modelMatrix,
+                                const Matrix<N + 1, float>& worldMatrix)
+    : transformer_(new SpatialCoordinateTransformerImpl<N>(this))
+    , modelMatrix_(modelMatrix)
+    , worldMatrix_(worldMatrix) {}
+
+template <unsigned int N>
+SpatialEntity<N>::SpatialEntity(SpatialCoordinateTransformer<N>* transformer)
+    : transformer_(transformer), modelMatrix_(1.0f), worldMatrix_(1.0f) {}
+
+template <unsigned int N>
+SpatialEntity<N>::SpatialEntity(SpatialCoordinateTransformer<N>* transformer,
+                                const Matrix<N + 1, float>& modelMatrix)
+    : transformer_(transformer), modelMatrix_(modelMatrix), worldMatrix_(1.0f) {}
+
+template <unsigned int N>
+SpatialEntity<N>::SpatialEntity(SpatialCoordinateTransformer<N>* transformer,
+                                const Matrix<N + 1, float>& modelMatrix,
+                                const Matrix<N + 1, float>& worldMatrix)
+    : transformer_(transformer), modelMatrix_(modelMatrix), worldMatrix_(worldMatrix) {}
 
 template <unsigned int N>
 SpatialEntity<N>& SpatialEntity<N>::operator=(const SpatialEntity<N>& that) {
     if (this != &that) {
-        basisAndOffset_ = that.basisAndOffset_;
-        worldTransform_ = that.worldTransform_;
+        modelMatrix_ = that.modelMatrix_;
+        worldMatrix_ = that.worldMatrix_;
 
-        if (transformer_)
-            delete transformer_;
+        if (transformer_) delete transformer_;
 
-        transformer_ = that.createTransformer(this);
+        transformer_ = that.transformer_->clone();
     }
-
     return *this;
 }
 
 template <unsigned int N>
-CoordinateTransformer<N>* SpatialEntity<N>::createTransformer(const SpatialEntity<N>* owner) const {
-    return new SpatialCoordinateTransformer<N>(owner);
-}
-
-template <unsigned int N>
 SpatialEntity<N>::~SpatialEntity() {
-    if (transformer_)
-        delete transformer_;
-}
-
-template<unsigned int N>
-const Matrix<N+1,float> SpatialCoordinateTransformer<N>::getDimensionMatrix() const {
-    Matrix<N+1,float> mat(1.0f);
-    return mat;
-}
-
-
-template<unsigned int N>
-const Matrix<N+1,float> SpatialCoordinateTransformer<N>::getBasisMatrix() const {
-    return spatialData_->getBasisAndOffset();
-}
-
-
-template<unsigned int N>
-const Matrix<N+1,float> SpatialCoordinateTransformer<N>::getWorldMatrix() const {
-    return spatialData_->getWorldTransform();
+    if (transformer_) delete transformer_;
 }
 
 template <unsigned int N>
-Vector<N,float> SpatialEntity<N>::getOffset() const {
-    Vector<N,float> offset(0.0f);
+Vector<N, float> SpatialEntity<N>::getOffset() const {
+    Vector<N, float> offset(0.0f);
 
-    for (int i=0; i<N; i++)
-        offset[i] = basisAndOffset_[N][i];
+    for (int i = 0; i < N; i++) {
+        offset[i] = modelMatrix_[N][i];
+    }
 
     return offset;
 }
 template <unsigned int N>
-void SpatialEntity<N>::setOffset(const Vector<N,float>& offset) {
-    for (int i=0; i<N; i++)
-        basisAndOffset_[N][i] = offset[i];
+void SpatialEntity<N>::setOffset(const Vector<N, float>& offset) {
+    for (int i = 0; i < N; i++) {
+        modelMatrix_[N][i] = offset[i];
+    }
 }
 
 template <unsigned int N>
-Matrix<N,float> SpatialEntity<N>::getBasis() const {
-    Matrix<N,float> basis(1.0f);
+Matrix<N, float> SpatialEntity<N>::getBasis() const {
+    Matrix<N, float> basis(1.0f);
 
-    for (int i=0; i<N; i++) {
-        for (int j=0; j<N; j++)
-            basis[i][j] = basisAndOffset_[i][j];
+    for (int i = 0; i < N; i++) {
+        for (int j = 0; j < N; j++) {
+            basis[i][j] = modelMatrix_[i][j];
+        }
     }
-
     return basis;
 }
 
 template <unsigned int N>
-void SpatialEntity<N>::setBasis(const Matrix<N,float>& basis) {
-    for (int i=0; i<N; i++) {
-        for (int j=0; j<N; j++)
-            basisAndOffset_[i][j] = basis[i][j];
+void SpatialEntity<N>::setBasis(const Matrix<N, float>& basis) {
+    for (int i = 0; i < N; i++) {
+        for (int j = 0; j < N; j++) {
+            modelMatrix_[i][j] = basis[i][j];
+        }
     }
 }
 
 template <unsigned int N>
-Matrix<N+1,float> SpatialEntity<N>::getBasisAndOffset() const {
-    return basisAndOffset_;
+Matrix<N + 1, float> SpatialEntity<N>::getModelMatrix() const {
+    return modelMatrix_;
 }
 
 template <unsigned int N>
-void SpatialEntity<N>::setBasisAndOffset(const Matrix<N+1,float>& mat) {
-    basisAndOffset_ = mat;
+void SpatialEntity<N>::setModelMatrix(const Matrix<N + 1, float>& modelMatrix) {
+    modelMatrix_ = modelMatrix;
 }
 
 template <unsigned int N>
-Matrix<N+1,float> SpatialEntity<N>::getWorldTransform() const {
-    return worldTransform_;
+Matrix<N + 1, float> SpatialEntity<N>::getWorldMatrix() const {
+    return worldMatrix_;
 }
 template <unsigned int N>
-void SpatialEntity<N>::setWorldTransform(const Matrix<N+1,float>& mat) {
-    worldTransform_ = mat;
+void SpatialEntity<N>::setWorldMatrix(const Matrix<N + 1, float>& worldMatrix) {
+    worldMatrix_ = worldMatrix;
 }
 
 template <unsigned int N>
-const CoordinateTransformer<N>& SpatialEntity<N>::getCoordinateTransformer() const {
+const SpatialCoordinateTransformer<N>& SpatialEntity<N>::getCoordinateTransformer() const {
     return *transformer_;
 }
 
-/*---------------------------------------------------------------*/
-/*--StructuredGridMetaData-----------------------------------------------*/
-/*---------------------------------------------------------------*/
+/*---------------------------------------------------------------*
+ *  Implementations                                              *
+ *  StructuredGridEntity                                         *
+ *---------------------------------------------------------------*/
 
 template <unsigned int N>
-StructuredGridEntity<N>::StructuredGridEntity(const Vector<N, unsigned int>& dimension)
-    : SpatialEntity<N>(new StructuredCoordinateTransformer<N>(this))
-    , dimension_(dimension) {
-}
-
-template <unsigned int N>
-StructuredGridEntity<N>::StructuredGridEntity(const Vector<N,float>& offset,
-        const Vector<N, unsigned int>& dimension)
-    : SpatialEntity<N>(offset, new StructuredCoordinateTransformer<N>(this))
-    , dimension_(dimension) {
-}
-
-template <unsigned int N>
-StructuredGridEntity<N>::StructuredGridEntity(const Matrix<N,float>& basis,
-        const Vector<N, unsigned int>& dimension)
-    : SpatialEntity<N>(basis, new StructuredCoordinateTransformer<N>(this))
-    , dimension_(dimension) {
-}
-template <unsigned int N>
-StructuredGridEntity<N>::StructuredGridEntity(const Matrix<N,float>& basis,
-        const Vector<N,float>& offset,
-        const Vector<N, unsigned int>& dimension)
-    : SpatialEntity<N>(basis, offset, new StructuredCoordinateTransformer<N>(this))
-    , dimension_(dimension) {
-}
+StructuredGridEntity<N>::StructuredGridEntity()
+    : SpatialEntity<N>(new StructuredCoordinateTransformerImpl<N>(this)), dimension_(1) {}
 
 template <unsigned int N>
 StructuredGridEntity<N>::StructuredGridEntity(const StructuredGridEntity<N>& rhs)
-    : SpatialEntity<N>(rhs)
-    , dimension_(rhs.dimension_) {
+    : SpatialEntity<N>(rhs), dimension_(rhs.dimension_) {}
+
+template <unsigned int N>
+StructuredGridEntity<N>::StructuredGridEntity(const Vector<N, unsigned int>& dimension)
+    : SpatialEntity<N>(new StructuredCoordinateTransformerImpl<N>(this)), dimension_(dimension) {}
+
+template <unsigned int N>
+StructuredGridEntity<N>::StructuredGridEntity(const Vector<N, unsigned int>& dimension,
+                                              const Vector<N, float>& spacing)
+    : SpatialEntity<N>(new StructuredCoordinateTransformer<N>(this)), dimension_(dimension) {
+    Matrix<N, float> basis(dimension * spacing);
+    setBasis(basis);
+    Vector<N, float> offset(0.0f);
+    for (int i = 0; i < N; ++i) {
+        offset += basis[i];
+    }
+    setOffset(-0.5 * offset);
 }
+
+template <unsigned int N>
+StructuredGridEntity<N>::StructuredGridEntity(const Vector<N, unsigned int>& dimension,
+                                              const Matrix<N + 1, float>& modelMatrix)
+    : SpatialEntity<N>(new StructuredCoordinateTransformer<N>(this), modelMatrix)
+    , dimension_(dimension) {}
+
+template <unsigned int N>
+StructuredGridEntity<N>::StructuredGridEntity(const Vector<N, unsigned int>& dimension,
+                                              const Matrix<N + 1, float>& modelMatrix,
+                                              const Matrix<N + 1, float>& worldMatrix)
+    : SpatialEntity<N>(new StructuredCoordinateTransformer<N>(this), modelMatrix, worldMatrix)
+    , dimension_(dimension) {}
 
 template <unsigned int N>
 StructuredGridEntity<N>& StructuredGridEntity<N>::operator=(const StructuredGridEntity<N>& that) {
@@ -519,31 +1192,7 @@ StructuredGridEntity<N>& StructuredGridEntity<N>::operator=(const StructuredGrid
         SpatialEntity<N>::operator=(that);
         dimension_ = that.dimension_;
     }
-
     return *this;
-}
-
-template <unsigned int N>
-CoordinateTransformer<N>* StructuredGridEntity<N>::createTransformer(const SpatialEntity<N>* owner) const {
-    const StructuredGridEntity<N>* casted = dynamic_cast<const StructuredGridEntity<N>*>(owner);
-    if (casted)
-        return new StructuredCoordinateTransformer<N>(casted);
-    else return new SpatialCoordinateTransformer<N>(owner);
-}
-
-template <unsigned int N>
-void StructuredGridEntity<N>::setBasisAndOffsetWithUniformSpacing(const Vector<N,float>& spacing) {
-    this->basisAndOffset_ = Matrix<N+1,float>(2.f);
-    this->basisAndOffset_[N][N] = 1.f;
-    if (spacing != Vector<N,float>(0.0f)) {
-        for (int i=0; i<N; i++) {
-            this->basisAndOffset_[i][i] = dimension_[i]*spacing[i];
-        }
-    } 
-    // Center the data around origo.
-    for (int i=0; i<N; i++) {
-        this->basisAndOffset_[N][i] = -this->basisAndOffset_[i][i] / 2.0f;
-    }
 }
 
 template <unsigned int N>
@@ -555,59 +1204,805 @@ void StructuredGridEntity<N>::setDimension(const Vector<N, unsigned int>& dimens
     dimension_ = dimension;
 }
 
-/*---------------------------------------------------------------*/
-/*--SpatialCoordinateTransformer--------------------------------- */
-/*---------------------------------------------------------------*/
-
-template<unsigned int N>
-const Matrix<N+1, float> SpatialCoordinateTransformer<N>::getTextureToIndexMatrix() const {
-    return getDimensionMatrix();
-}
-template<unsigned int N>
-const Matrix<N+1, float> SpatialCoordinateTransformer<N>::getTextureToModelMatrix() const {
-	return getBasisMatrix();
-}
-template<unsigned int N>
-const Matrix<N+1, float> SpatialCoordinateTransformer<N>::getTextureToWorldMatrix() const {
-	return getWorldMatrix()*getBasisMatrix();
-}
-template<unsigned int N>
-const Matrix<N+1, float> SpatialCoordinateTransformer<N>::getIndexToTextureMatrix() const {
-	return glm::inverse(getTextureToIndexMatrix().getGLM());
-}
-template<unsigned int N>
-const Matrix<N+1, float> SpatialCoordinateTransformer<N>::getIndexToModelMatrix() const {
-	return getBasisMatrix()*glm::inverse(getTextureToIndexMatrix().getGLM());
-}
-template<unsigned int N>
-const Matrix<N+1, float> SpatialCoordinateTransformer<N>::getIndexToWorldMatrix() const {
-	return getWorldMatrix()*getBasisMatrix()*glm::inverse(getTextureToIndexMatrix().getGLM());
-}
-template<unsigned int N>
-const Matrix<N+1, float> SpatialCoordinateTransformer<N>::getModelToTextureMatrix() const {
-	return glm::inverse(getBasisMatrix().getGLM());
-}
-template<unsigned int N>
-const Matrix<N+1, float> SpatialCoordinateTransformer<N>::getModelToIndexMatrix() const {
-	return getTextureToIndexMatrix()*glm::inverse(getBasisMatrix().getGLM());
-}
-template<unsigned int N>
-const Matrix<N+1, float> SpatialCoordinateTransformer<N>::getModelToWorldMatrix() const {
-	return getWorldMatrix();
-}
-template<unsigned int N>
-const Matrix<N+1, float> SpatialCoordinateTransformer<N>::getWorldToTextureMatrix() const {
-	return glm::inverse(getWorldMatrix()*getBasisMatrix());
-}
-template<unsigned int N>
-const Matrix<N+1, float> SpatialCoordinateTransformer<N>::getWorldToIndexMatrix() const {
-	return getTextureToIndexMatrix()*glm::inverse(getWorldMatrix()*getBasisMatrix());
-}
-template<unsigned int N>
-const Matrix<N+1, float> SpatialCoordinateTransformer<N>::getWorldToModelMatrix() const {
-	return glm::inverse(getWorldMatrix().getGLM());
+template <unsigned int N>
+Matrix<N + 1, float> StructuredGridEntity<N>::getIndexMatrix() const {
+    Matrix<N + 1, float> indexMatrix(1.0f);
+    for (int i = 0; i < N; ++i) {
+        indexMatrix[i][i] = dimension_[i];
+    }
+    return indexMatrix;
 }
 
+template <unsigned int N>
+const StructuredCoordinateTransformer<N>& StructuredGridEntity<N>::getCoordinateTransformer()
+    const {
+    return *(static_cast<StructuredCoordinateTransformer<N>*>(this->transformer_));
+}
 
-} // namespace
-#endif //IVW_SPATIALDATA_H
+/*********************************************************************************
+ *  Implementations
+ *  SpatialCoordinateTransformerImpl
+ *********************************************************************************/
+
+template <unsigned int N>
+SpatialCoordinateTransformerImpl<N>::SpatialCoordinateTransformerImpl(
+    const SpatialEntity<N>* spatialEntity)
+    : SpatialCoordinateTransformer<N>(), spatialEntity_(spatialEntity) {}
+
+template <unsigned int N>
+SpatialCoordinateTransformerImpl<N>::SpatialCoordinateTransformerImpl(
+    const SpatialCoordinateTransformerImpl<N>& rhs)
+    : SpatialCoordinateTransformer<N>(rhs), spatialEntity_(rhs.spatialEntity_) {}
+
+template <unsigned int N>
+SpatialCoordinateTransformerImpl<N>& SpatialCoordinateTransformerImpl<N>::operator=(
+    const SpatialCoordinateTransformerImpl<N>& that) {
+    if (this != &that) {
+        SpatialCoordinateTransformer<N>::operator=(that);
+        spatialEntity_ = that.spatialEntity_;
+    }
+    return *this;
+}
+
+template <unsigned int N>
+SpatialCoordinateTransformerImpl<N>* SpatialCoordinateTransformerImpl<N>::clone() const {
+    return new SpatialCoordinateTransformerImpl<N>(*this);
+}
+
+template <unsigned int N>
+const Matrix<N + 1, float> SpatialCoordinateTransformerImpl<N>::getModelMatrix() const {
+    return spatialEntity_->getModelMatrix();
+}
+template <unsigned int N>
+const Matrix<N + 1, float> SpatialCoordinateTransformerImpl<N>::getWorldMatrix() const {
+    return spatialEntity_->getWorldMatrix();
+}
+
+template <unsigned int N>
+const Matrix<N + 1, float> SpatialCoordinateTransformerImpl<N>::getDataToModelMatrix() const {
+    return getModelMatrix();
+}
+template <unsigned int N>
+const Matrix<N + 1, float> SpatialCoordinateTransformerImpl<N>::getDataToWorldMatrix() const {
+    return getWorldMatrix() * getModelMatrix();
+}
+template <unsigned int N>
+const Matrix<N + 1, float> SpatialCoordinateTransformerImpl<N>::getModelToDataMatrix() const {
+    return MatrixInvert(getModelMatrix());
+}
+template <unsigned int N>
+const Matrix<N + 1, float> SpatialCoordinateTransformerImpl<N>::getModelToWorldMatrix() const {
+    return getWorldMatrix();
+}
+template <unsigned int N>
+const Matrix<N + 1, float> SpatialCoordinateTransformerImpl<N>::getWorldToDataMatrix() const {
+    return MatrixInvert(getWorldMatrix() * getModelMatrix());
+}
+template <unsigned int N>
+const Matrix<N + 1, float> SpatialCoordinateTransformerImpl<N>::getWorldToModelMatrix() const {
+    return MatrixInvert(getWorldMatrix());
+}
+
+/*********************************************************************************
+ *  Implementations
+ *  StructuredCoordinateTransformerImpl
+ *********************************************************************************/
+
+template <unsigned int N>
+StructuredCoordinateTransformerImpl<N>::StructuredCoordinateTransformerImpl(
+    const StructuredGridEntity<N>* structuredGridEntity)
+    : StructuredCoordinateTransformer<N>(), structuredGridEntity_(structuredGridEntity) {}
+
+template <unsigned int N>
+StructuredCoordinateTransformerImpl<N>::StructuredCoordinateTransformerImpl(
+    const StructuredCoordinateTransformerImpl<N>& rhs)
+    : StructuredCoordinateTransformer<N>(rhs), structuredGridEntity_(rhs.structuredGridEntity_) {}
+
+template <unsigned int N>
+StructuredCoordinateTransformerImpl<N>& StructuredCoordinateTransformerImpl<N>::operator=(
+    const StructuredCoordinateTransformerImpl<N>& that) {
+    if (this != &that) {
+        StructuredCoordinateTransformer<N>::operator=(that);
+        structuredGridEntity_ = that.structuredGridEntity_;
+    }
+    return *this;
+}
+
+template <unsigned int N>
+StructuredCoordinateTransformerImpl<N>* StructuredCoordinateTransformerImpl<N>::clone() const {
+    return new StructuredCoordinateTransformerImpl<N>(*this);
+}
+
+template <unsigned int N>
+const Matrix<N + 1, float> StructuredCoordinateTransformerImpl<N>::getIndexMatrix() const {
+    return structuredGridEntity_->getIndexMatrix();
+}
+template <unsigned int N>
+const Matrix<N + 1, float> StructuredCoordinateTransformerImpl<N>::getModelMatrix() const {
+    return structuredGridEntity_->getModelMatrix();
+}
+template <unsigned int N>
+const Matrix<N + 1, float> StructuredCoordinateTransformerImpl<N>::getWorldMatrix() const {
+    return structuredGridEntity_->getWorldMatrix();
+}
+
+template <unsigned int N>
+const Matrix<N + 1, float> StructuredCoordinateTransformerImpl<N>::getIndexToDataMatrix() const {
+    return MatrixInvert(getIndexMatrix());
+}
+template <unsigned int N>
+const Matrix<N + 1, float> StructuredCoordinateTransformerImpl<N>::getIndexToModelMatrix() const {
+    return getModelMatrix() * MatrixInvert(getIndexMatrix());
+}
+template <unsigned int N>
+const Matrix<N + 1, float> StructuredCoordinateTransformerImpl<N>::getIndexToWorldMatrix() const {
+    return getWorldMatrix() * getModelMatrix() * MatrixInvert(getIndexMatrix());
+}
+template <unsigned int N>
+const Matrix<N + 1, float> StructuredCoordinateTransformerImpl<N>::getDataToIndexMatrix() const {
+    return getIndexMatrix();
+}
+template <unsigned int N>
+const Matrix<N + 1, float> StructuredCoordinateTransformerImpl<N>::getDataToModelMatrix() const {
+    return getModelMatrix();
+}
+template <unsigned int N>
+const Matrix<N + 1, float> StructuredCoordinateTransformerImpl<N>::getDataToWorldMatrix() const {
+    return getWorldMatrix() * getModelMatrix();
+}
+template <unsigned int N>
+const Matrix<N + 1, float> StructuredCoordinateTransformerImpl<N>::getModelToIndexMatrix() const {
+    return getIndexMatrix() * MatrixInvert(getModelMatrix());
+}
+template <unsigned int N>
+const Matrix<N + 1, float> StructuredCoordinateTransformerImpl<N>::getModelToDataMatrix() const {
+    return MatrixInvert(getModelMatrix());
+}
+template <unsigned int N>
+const Matrix<N + 1, float> StructuredCoordinateTransformerImpl<N>::getModelToWorldMatrix() const {
+    return getWorldMatrix();
+}
+template <unsigned int N>
+const Matrix<N + 1, float> StructuredCoordinateTransformerImpl<N>::getWorldToIndexMatrix() const {
+    return getIndexMatrix() * MatrixInvert(getWorldMatrix() * getModelMatrix());
+}
+template <unsigned int N>
+const Matrix<N + 1, float> StructuredCoordinateTransformerImpl<N>::getWorldToDataMatrix() const {
+    return MatrixInvert(getWorldMatrix() * getModelMatrix());
+}
+template <unsigned int N>
+const Matrix<N + 1, float> StructuredCoordinateTransformerImpl<N>::getWorldToModelMatrix() const {
+    return MatrixInvert(getWorldMatrix());
+}
+
+/*********************************************************************************
+ *  Implementations
+ *  SpatialCameraCoordinateTransformerImpl
+ *********************************************************************************/
+
+template <unsigned int N>
+SpatialCameraCoordinateTransformerImpl<N>::SpatialCameraCoordinateTransformerImpl(
+    const SpatialEntity<N>* spatialEntity, const Camera<N>* camera)
+    : SpatialCameraCoordinateTransformer<N>(), spatialEntity_(spatialEntity), camera_(camera) {}
+
+template <unsigned int N>
+SpatialCameraCoordinateTransformerImpl<N>::SpatialCameraCoordinateTransformerImpl(
+    const SpatialCameraCoordinateTransformerImpl<N>& rhs)
+    : SpatialCameraCoordinateTransformer<N>(rhs)
+    , spatialEntity_(rhs.spatialEntity_)
+    , camera_(rhs.camera_) {}
+
+template <unsigned int N>
+SpatialCameraCoordinateTransformerImpl<N>& SpatialCameraCoordinateTransformerImpl<N>::operator=(
+    const SpatialCameraCoordinateTransformerImpl<N>& that) {
+    if (this != &that) {
+        SpatialCameraCoordinateTransformer<N>::operator=(that);
+        spatialEntity_ = that.spatialEntity_;
+        camera_ = that.camera_;
+    }
+    return *this;
+}
+
+template <unsigned int N>
+SpatialCameraCoordinateTransformerImpl<N>* SpatialCameraCoordinateTransformerImpl<N>::clone()
+    const {
+    return new SpatialCameraCoordinateTransformerImpl<N>(*this);
+}
+
+template <unsigned int N>
+const Matrix<N + 1, float> SpatialCameraCoordinateTransformerImpl<N>::getModelMatrix() const {
+    return spatialEntity_->getModelMatrix();
+}
+template <unsigned int N>
+const Matrix<N + 1, float> SpatialCameraCoordinateTransformerImpl<N>::getWorldMatrix() const {
+    return spatialEntity_->getWorldMatrix();
+}
+template <unsigned int N>
+const Matrix<N + 1, float> SpatialCameraCoordinateTransformerImpl<N>::getViewMatrix() const {
+    return camera_->getViewMatrix();
+}
+template <unsigned int N>
+const Matrix<N + 1, float> SpatialCameraCoordinateTransformerImpl<N>::getProjectionMatrix() const {
+    return camera_->getProjectionMatrix();
+}
+
+template <unsigned int N>
+const Matrix<N + 1, float> SpatialCameraCoordinateTransformerImpl<N>::getDataToModelMatrix() const {
+    return getModelMatrix();
+}
+template <unsigned int N>
+const Matrix<N + 1, float> SpatialCameraCoordinateTransformerImpl<N>::getDataToWorldMatrix() const {
+    return getWorldMatrix() * getModelMatrix();
+}
+template <unsigned int N>
+const Matrix<N + 1, float> SpatialCameraCoordinateTransformerImpl<N>::getDataToViewMatrix() const {
+    return getViewMatrix() * getWorldMatrix() * getModelMatrix();
+}
+template <unsigned int N>
+const Matrix<N + 1, float> SpatialCameraCoordinateTransformerImpl<N>::getDataToClipMatrix() const {
+    return getProjectionMatrix() * getViewMatrix() * getWorldMatrix() * getModelMatrix();
+}
+template <unsigned int N>
+const Matrix<N + 1, float> SpatialCameraCoordinateTransformerImpl<N>::getModelToDataMatrix() const {
+    return MatrixInvert(getModelMatrix());
+}
+template <unsigned int N>
+const Matrix<N + 1, float> SpatialCameraCoordinateTransformerImpl<N>::getModelToWorldMatrix()
+    const {
+    return getWorldMatrix();
+}
+template <unsigned int N>
+const Matrix<N + 1, float> SpatialCameraCoordinateTransformerImpl<N>::getModelToViewMatrix() const {
+    return getViewMatrix() * getWorldMatrix();
+}
+template <unsigned int N>
+const Matrix<N + 1, float> SpatialCameraCoordinateTransformerImpl<N>::getModelToClipMatrix() const {
+    return getProjectionMatrix() * getViewMatrix() * getWorldMatrix();
+}
+template <unsigned int N>
+const Matrix<N + 1, float> SpatialCameraCoordinateTransformerImpl<N>::getWorldToDataMatrix() const {
+    return MatrixInvert(getWorldMatrix() * getModelMatrix());
+}
+template <unsigned int N>
+const Matrix<N + 1, float> SpatialCameraCoordinateTransformerImpl<N>::getWorldToModelMatrix()
+    const {
+    return MatrixInvert(getWorldMatrix());
+}
+template <unsigned int N>
+const Matrix<N + 1, float> SpatialCameraCoordinateTransformerImpl<N>::getWorldToViewMatrix() const {
+    return getViewMatrix();
+}
+template <unsigned int N>
+const Matrix<N + 1, float> SpatialCameraCoordinateTransformerImpl<N>::getWorldToClipMatrix() const {
+    return getProjectionMatrix() * getViewMatrix();
+}
+template <unsigned int N>
+const Matrix<N + 1, float> SpatialCameraCoordinateTransformerImpl<N>::getViewToDataMatrix() const {
+    return MatrixInvert(getViewMatrix() * getWorldMatrix() * getModelMatrix());
+}
+template <unsigned int N>
+const Matrix<N + 1, float> SpatialCameraCoordinateTransformerImpl<N>::getViewToModelMatrix() const {
+    return MatrixInvert(getViewMatrix() * getWorldMatrix());
+}
+template <unsigned int N>
+const Matrix<N + 1, float> SpatialCameraCoordinateTransformerImpl<N>::getViewToWorldMatrix() const {
+    return MatrixInvert(getViewMatrix());
+}
+template <unsigned int N>
+const Matrix<N + 1, float> SpatialCameraCoordinateTransformerImpl<N>::getViewToClipMatrix() const {
+    return getProjectionMatrix();
+}
+template <unsigned int N>
+const Matrix<N + 1, float> SpatialCameraCoordinateTransformerImpl<N>::getClipToDataMatrix() const {
+    return MatrixInvert(getProjectionMatrix() * getViewMatrix() * getWorldMatrix() *
+                        getModelMatrix());
+}
+template <unsigned int N>
+const Matrix<N + 1, float> SpatialCameraCoordinateTransformerImpl<N>::getClipToModelMatrix() const {
+    return MatrixInvert(getProjectionMatrix() * getViewMatrix() * getWorldMatrix());
+}
+template <unsigned int N>
+const Matrix<N + 1, float> SpatialCameraCoordinateTransformerImpl<N>::getClipToWorldMatrix() const {
+    return MatrixInvert(getProjectionMatrix() * getViewMatrix());
+}
+template <unsigned int N>
+const Matrix<N + 1, float> SpatialCameraCoordinateTransformerImpl<N>::getClipToViewMatrix() const {
+    return MatrixInvert(getProjectionMatrix());
+}
+
+/*********************************************************************************
+ *  Implementations
+ *  StructuedCameraCoordinateTransformerImpl
+ *********************************************************************************/
+
+template <unsigned int N>
+StructuedCameraCoordinateTransformerImpl<N>::StructuedCameraCoordinateTransformerImpl(
+    const StructuredGridEntity<N>* structuredGridEntity, const Camera<N>* camera)
+    : StructuedCameraCoordinateTransformer<N>()
+    , structuredGridEntity_(structuredGridEntity)
+    , camera_(camera) {}
+
+template <unsigned int N>
+StructuedCameraCoordinateTransformerImpl<N>::StructuedCameraCoordinateTransformerImpl(
+    const StructuedCameraCoordinateTransformerImpl<N>& rhs)
+    : StructuedCameraCoordinateTransformer<N>(rhs)
+    , structuredGridEntity_(rhs.structuredGridEntity_)
+    , camera_(rhs.camera_) {}
+
+template <unsigned int N>
+StructuedCameraCoordinateTransformerImpl<N>& StructuedCameraCoordinateTransformerImpl<N>::operator=(
+    const StructuedCameraCoordinateTransformerImpl<N>& that) {
+    if (this != &that) {
+        StructuedCameraCoordinateTransformer<N>::operator=(that);
+        structuredGridEntity_ = that.structuredGridEntity_;
+        camera_ = that.camera_;
+    }
+    return *this;
+}
+
+template <unsigned int N>
+StructuedCameraCoordinateTransformerImpl<N>* StructuedCameraCoordinateTransformerImpl<N>::clone()
+    const {
+    return new StructuedCameraCoordinateTransformerImpl<N>(*this);
+}
+
+template <unsigned int N>
+const Matrix<N + 1, float> StructuedCameraCoordinateTransformerImpl<N>::getIndexMatrix() const {
+    return structuredGridEntity_->getIndexMatrix();
+}
+template <unsigned int N>
+const Matrix<N + 1, float> StructuedCameraCoordinateTransformerImpl<N>::getModelMatrix() const {
+    return structuredGridEntity_->getModelMatrix();
+}
+template <unsigned int N>
+const Matrix<N + 1, float> StructuedCameraCoordinateTransformerImpl<N>::getWorldMatrix() const {
+    return structuredGridEntity_->getWorldMatrix();
+}
+template <unsigned int N>
+const Matrix<N + 1, float> StructuedCameraCoordinateTransformerImpl<N>::getViewMatrix() const {
+    return camera_->getViewMatrix();
+}
+template <unsigned int N>
+const Matrix<N + 1, float> StructuedCameraCoordinateTransformerImpl<N>::getProjectionMatrix()
+    const {
+    return camera_->getProjectionMatrix();
+}
+
+template <unsigned int N>
+const Matrix<N + 1, float> StructuedCameraCoordinateTransformerImpl<N>::getIndexToDataMatrix()
+    const {
+    return MatrixInvert(getIndexMatrix());
+}
+template <unsigned int N>
+const Matrix<N + 1, float> StructuedCameraCoordinateTransformerImpl<N>::getIndexToModelMatrix()
+    const {
+    return getModelMatrix() * MatrixInvert(getIndexMatrix());
+}
+template <unsigned int N>
+const Matrix<N + 1, float> StructuedCameraCoordinateTransformerImpl<N>::getIndexToWorldMatrix()
+    const {
+    return getWorldMatrix() * getModelMatrix() * MatrixInvert(getIndexMatrix());
+}
+template <unsigned int N>
+const Matrix<N + 1, float> StructuedCameraCoordinateTransformerImpl<N>::getIndexToViewMatrix()
+    const {
+    return getViewMatrix() * getWorldMatrix() * getModelMatrix() * MatrixInvert(getIndexMatrix());
+}
+template <unsigned int N>
+const Matrix<N + 1, float> StructuedCameraCoordinateTransformerImpl<N>::getIndexToClipMatrix()
+    const {
+    return getProjectionMatrix() * getViewMatrix() * getWorldMatrix() * getModelMatrix() *
+           MatrixInvert(getIndexMatrix());
+}
+template <unsigned int N>
+const Matrix<N + 1, float> StructuedCameraCoordinateTransformerImpl<N>::getDataToIndexMatrix()
+    const {
+    return getIndexMatrix();
+}
+template <unsigned int N>
+const Matrix<N + 1, float> StructuedCameraCoordinateTransformerImpl<N>::getDataToModelMatrix()
+    const {
+    return getModelMatrix();
+}
+template <unsigned int N>
+const Matrix<N + 1, float> StructuedCameraCoordinateTransformerImpl<N>::getDataToWorldMatrix()
+    const {
+    return getWorldMatrix() * getModelMatrix();
+}
+template <unsigned int N>
+const Matrix<N + 1, float> StructuedCameraCoordinateTransformerImpl<N>::getDataToViewMatrix()
+    const {
+    return getViewMatrix() * getWorldMatrix() * getModelMatrix();
+}
+template <unsigned int N>
+const Matrix<N + 1, float> StructuedCameraCoordinateTransformerImpl<N>::getDataToClipMatrix()
+    const {
+    return getProjectionMatrix() * getViewMatrix() * getWorldMatrix() * getModelMatrix();
+}
+template <unsigned int N>
+const Matrix<N + 1, float> StructuedCameraCoordinateTransformerImpl<N>::getModelToIndexMatrix()
+    const {
+    return getIndexMatrix() * MatrixInvert(getModelMatrix());
+}
+template <unsigned int N>
+const Matrix<N + 1, float> StructuedCameraCoordinateTransformerImpl<N>::getModelToDataMatrix()
+    const {
+    return MatrixInvert(getModelMatrix());
+}
+template <unsigned int N>
+const Matrix<N + 1, float> StructuedCameraCoordinateTransformerImpl<N>::getModelToWorldMatrix()
+    const {
+    return getWorldMatrix();
+}
+template <unsigned int N>
+const Matrix<N + 1, float> StructuedCameraCoordinateTransformerImpl<N>::getModelToViewMatrix()
+    const {
+    return getViewMatrix() * getWorldMatrix();
+}
+template <unsigned int N>
+const Matrix<N + 1, float> StructuedCameraCoordinateTransformerImpl<N>::getModelToClipMatrix()
+    const {
+    return getProjectionMatrix() * getViewMatrix() * getWorldMatrix();
+}
+template <unsigned int N>
+const Matrix<N + 1, float> StructuedCameraCoordinateTransformerImpl<N>::getWorldToIndexMatrix()
+    const {
+    return getIndexMatrix() * MatrixInvert(getWorldMatrix() * getModelMatrix());
+}
+template <unsigned int N>
+const Matrix<N + 1, float> StructuedCameraCoordinateTransformerImpl<N>::getWorldToDataMatrix()
+    const {
+    return MatrixInvert(getWorldMatrix() * getModelMatrix());
+}
+template <unsigned int N>
+const Matrix<N + 1, float> StructuedCameraCoordinateTransformerImpl<N>::getWorldToModelMatrix()
+    const {
+    return MatrixInvert(getWorldMatrix());
+}
+template <unsigned int N>
+const Matrix<N + 1, float> StructuedCameraCoordinateTransformerImpl<N>::getWorldToViewMatrix()
+    const {
+    return getViewMatrix();
+}
+template <unsigned int N>
+const Matrix<N + 1, float> StructuedCameraCoordinateTransformerImpl<N>::getWorldToClipMatrix()
+    const {
+    return getProjectionMatrix() * getViewMatrix();
+}
+template <unsigned int N>
+const Matrix<N + 1, float> StructuedCameraCoordinateTransformerImpl<N>::getViewToIndexMatrix()
+    const {
+    return getIndexMatrix() * MatrixInvert(getViewMatrix() * getWorldMatrix() * getModelMatrix());
+}
+template <unsigned int N>
+const Matrix<N + 1, float> StructuedCameraCoordinateTransformerImpl<N>::getViewToDataMatrix()
+    const {
+    return MatrixInvert(getViewMatrix() * getWorldMatrix() * getModelMatrix());
+}
+template <unsigned int N>
+const Matrix<N + 1, float> StructuedCameraCoordinateTransformerImpl<N>::getViewToModelMatrix()
+    const {
+    return MatrixInvert(getViewMatrix() * getWorldMatrix());
+}
+template <unsigned int N>
+const Matrix<N + 1, float> StructuedCameraCoordinateTransformerImpl<N>::getViewToWorldMatrix()
+    const {
+    return MatrixInvert(getViewMatrix());
+}
+template <unsigned int N>
+const Matrix<N + 1, float> StructuedCameraCoordinateTransformerImpl<N>::getViewToClipMatrix()
+    const {
+    return getProjectionMatrix();
+}
+template <unsigned int N>
+const Matrix<N + 1, float> StructuedCameraCoordinateTransformerImpl<N>::getClipToIndexMatrix()
+    const {
+    return getIndexMatrix() * MatrixInvert(getProjectionMatrix() * getViewMatrix() *
+                                           getWorldMatrix() * getModelMatrix());
+}
+template <unsigned int N>
+const Matrix<N + 1, float> StructuedCameraCoordinateTransformerImpl<N>::getClipToDataMatrix()
+    const {
+    return MatrixInvert(getProjectionMatrix() * getViewMatrix() * getWorldMatrix() *
+                        getModelMatrix());
+}
+template <unsigned int N>
+const Matrix<N + 1, float> StructuedCameraCoordinateTransformerImpl<N>::getClipToModelMatrix()
+    const {
+    return MatrixInvert(getProjectionMatrix() * getViewMatrix() * getWorldMatrix());
+}
+template <unsigned int N>
+const Matrix<N + 1, float> StructuedCameraCoordinateTransformerImpl<N>::getClipToWorldMatrix()
+    const {
+    return MatrixInvert(getProjectionMatrix() * getViewMatrix());
+}
+template <unsigned int N>
+const Matrix<N + 1, float> StructuedCameraCoordinateTransformerImpl<N>::getClipToViewMatrix()
+    const {
+    return MatrixInvert(getProjectionMatrix());
+}
+
+/*********************************************************************************
+ *  Implementations
+ *  VolumeCoordinateTransformerImpl
+ *********************************************************************************/
+
+template <unsigned int N>
+VolumeCoordinateTransformerImpl<N>::VolumeCoordinateTransformerImpl(
+    const StructuredGridEntity<N>* structuredGridEntity)
+    : VolumeCoordinateTransformer<N>(), structuredGridEntity_(structuredGridEntity) {}
+
+template <unsigned int N>
+VolumeCoordinateTransformerImpl<N>::VolumeCoordinateTransformerImpl(
+    const VolumeCoordinateTransformerImpl<N>& rhs)
+    : VolumeCoordinateTransformer<N>(rhs), structuredGridEntity_(rhs.structuredGridEntity_) {}
+
+template <unsigned int N>
+VolumeCoordinateTransformerImpl<N>& VolumeCoordinateTransformerImpl<N>::operator=(
+    const VolumeCoordinateTransformerImpl<N>& that) {
+    if (this != &that) {
+        VolumeCoordinateTransformer<N>::operator=(that);
+        structuredGridEntity_ = that.structuredGridEntity_;
+    }
+    return *this;
+}
+
+template <unsigned int N>
+VolumeCoordinateTransformerImpl<N>* VolumeCoordinateTransformerImpl<N>::clone() const {
+    return new VolumeCoordinateTransformerImpl<N>(*this);
+}
+
+template <unsigned int N>
+const Matrix<N + 1, float> VolumeCoordinateTransformerImpl<N>::getIndexMatrix() const {
+    return structuredGridEntity_->getIndexMatrix();
+}
+template <unsigned int N>
+const Matrix<N + 1, float> VolumeCoordinateTransformerImpl<N>::getModelMatrix() const {
+    return structuredGridEntity_->getModelMatrix();
+}
+template <unsigned int N>
+const Matrix<N + 1, float> VolumeCoordinateTransformerImpl<N>::getWorldMatrix() const {
+    return structuredGridEntity_->getWorldMatrix();
+}
+
+template <unsigned int N>
+const Matrix<N + 1, float> VolumeCoordinateTransformerImpl<N>::getIndexToTextureMatrix() const {
+    return MatrixInvert(getIndexMatrix());
+}
+template <unsigned int N>
+const Matrix<N + 1, float> VolumeCoordinateTransformerImpl<N>::getIndexToModelMatrix() const {
+    return getModelMatrix() * MatrixInvert(getIndexMatrix());
+}
+template <unsigned int N>
+const Matrix<N + 1, float> VolumeCoordinateTransformerImpl<N>::getIndexToWorldMatrix() const {
+    return getWorldMatrix() * getModelMatrix() * MatrixInvert(getIndexMatrix());
+}
+template <unsigned int N>
+const Matrix<N + 1, float> VolumeCoordinateTransformerImpl<N>::getTextureToIndexMatrix() const {
+    return getIndexMatrix();
+}
+template <unsigned int N>
+const Matrix<N + 1, float> VolumeCoordinateTransformerImpl<N>::getTextureToModelMatrix() const {
+    return getModelMatrix();
+}
+template <unsigned int N>
+const Matrix<N + 1, float> VolumeCoordinateTransformerImpl<N>::getTextureToWorldMatrix() const {
+    return getWorldMatrix() * getModelMatrix();
+}
+template <unsigned int N>
+const Matrix<N + 1, float> VolumeCoordinateTransformerImpl<N>::getModelToIndexMatrix() const {
+    return getIndexMatrix() * MatrixInvert(getModelMatrix());
+}
+template <unsigned int N>
+const Matrix<N + 1, float> VolumeCoordinateTransformerImpl<N>::getModelToTextureMatrix() const {
+    return MatrixInvert(getModelMatrix());
+}
+template <unsigned int N>
+const Matrix<N + 1, float> VolumeCoordinateTransformerImpl<N>::getModelToWorldMatrix() const {
+    return getWorldMatrix();
+}
+template <unsigned int N>
+const Matrix<N + 1, float> VolumeCoordinateTransformerImpl<N>::getWorldToIndexMatrix() const {
+    return getIndexMatrix() * MatrixInvert(getWorldMatrix() * getModelMatrix());
+}
+template <unsigned int N>
+const Matrix<N + 1, float> VolumeCoordinateTransformerImpl<N>::getWorldToTextureMatrix() const {
+    return MatrixInvert(getWorldMatrix() * getModelMatrix());
+}
+template <unsigned int N>
+const Matrix<N + 1, float> VolumeCoordinateTransformerImpl<N>::getWorldToModelMatrix() const {
+    return MatrixInvert(getWorldMatrix());
+}
+
+/*********************************************************************************
+ *  Implementations
+ *  VolumeCameraCoordinateTransformerImpl
+ *********************************************************************************/
+
+template <unsigned int N>
+VolumeCameraCoordinateTransformerImpl<N>::VolumeCameraCoordinateTransformerImpl(
+    const StructuredGridEntity<N>* structuredGridEntity, const Camera<N>* camera)
+    : VolumeCameraCoordinateTransformer<N>()
+    , structuredGridEntity_(structuredGridEntity)
+    , camera_(camera) {}
+
+template <unsigned int N>
+VolumeCameraCoordinateTransformerImpl<N>::VolumeCameraCoordinateTransformerImpl(
+    const VolumeCameraCoordinateTransformerImpl<N>& rhs)
+    : VolumeCameraCoordinateTransformer<N>(rhs)
+    , structuredGridEntity_(rhs.structuredGridEntity_)
+    , camera_(rhs.camera_) {}
+
+template <unsigned int N>
+VolumeCameraCoordinateTransformerImpl<N>& VolumeCameraCoordinateTransformerImpl<N>::operator=(
+    const VolumeCameraCoordinateTransformerImpl<N>& that) {
+    if (this != &that) {
+        VolumeCameraCoordinateTransformer<N>::operator=(that);
+        structuredGridEntity_ = that.structuredGridEntity_;
+        camera_ = that.camera_;
+    }
+    return *this;
+}
+
+template <unsigned int N>
+VolumeCameraCoordinateTransformerImpl<N>* VolumeCameraCoordinateTransformerImpl<N>::clone() const {
+    return new VolumeCameraCoordinateTransformerImpl<N>(*this);
+}
+
+template <unsigned int N>
+const Matrix<N + 1, float> VolumeCameraCoordinateTransformerImpl<N>::getIndexMatrix() const {
+    return structuredGridEntity_->getIndexMatrix();
+}
+template <unsigned int N>
+const Matrix<N + 1, float> VolumeCameraCoordinateTransformerImpl<N>::getModelMatrix() const {
+    return structuredGridEntity_->getModelMatrix();
+}
+template <unsigned int N>
+const Matrix<N + 1, float> VolumeCameraCoordinateTransformerImpl<N>::getWorldMatrix() const {
+    return structuredGridEntity_->getWorldMatrix();
+}
+template <unsigned int N>
+const Matrix<N + 1, float> VolumeCameraCoordinateTransformerImpl<N>::getViewMatrix() const {
+    return camera_->getViewMatrix();
+}
+template <unsigned int N>
+const Matrix<N + 1, float> VolumeCameraCoordinateTransformerImpl<N>::getProjectionMatrix() const {
+    return camera_->getProjectionMatrix();
+}
+
+template <unsigned int N>
+const Matrix<N + 1, float> VolumeCameraCoordinateTransformerImpl<N>::getIndexToTextureMatrix()
+    const {
+    return MatrixInvert(getIndexMatrix());
+}
+template <unsigned int N>
+const Matrix<N + 1, float> VolumeCameraCoordinateTransformerImpl<N>::getIndexToModelMatrix() const {
+    return getModelMatrix() * MatrixInvert(getIndexMatrix());
+}
+template <unsigned int N>
+const Matrix<N + 1, float> VolumeCameraCoordinateTransformerImpl<N>::getIndexToWorldMatrix() const {
+    return getWorldMatrix() * getModelMatrix() * MatrixInvert(getIndexMatrix());
+}
+template <unsigned int N>
+const Matrix<N + 1, float> VolumeCameraCoordinateTransformerImpl<N>::getIndexToViewMatrix() const {
+    return getViewMatrix() * getWorldMatrix() * getModelMatrix() * MatrixInvert(getIndexMatrix());
+}
+template <unsigned int N>
+const Matrix<N + 1, float> VolumeCameraCoordinateTransformerImpl<N>::getIndexToClipMatrix() const {
+    return getProjectionMatrix() * getViewMatrix() * getWorldMatrix() * getModelMatrix() *
+           MatrixInvert(getIndexMatrix());
+}
+template <unsigned int N>
+const Matrix<N + 1, float> VolumeCameraCoordinateTransformerImpl<N>::getTextureToIndexMatrix()
+    const {
+    return getIndexMatrix();
+}
+template <unsigned int N>
+const Matrix<N + 1, float> VolumeCameraCoordinateTransformerImpl<N>::getTextureToModelMatrix()
+    const {
+    return getModelMatrix();
+}
+template <unsigned int N>
+const Matrix<N + 1, float> VolumeCameraCoordinateTransformerImpl<N>::getTextureToWorldMatrix()
+    const {
+    return getWorldMatrix() * getModelMatrix();
+}
+template <unsigned int N>
+const Matrix<N + 1, float> VolumeCameraCoordinateTransformerImpl<N>::getTextureToViewMatrix()
+    const {
+    return getViewMatrix() * getWorldMatrix() * getModelMatrix();
+}
+template <unsigned int N>
+const Matrix<N + 1, float> VolumeCameraCoordinateTransformerImpl<N>::getTextureToClipMatrix()
+    const {
+    return getProjectionMatrix() * getViewMatrix() * getWorldMatrix() * getModelMatrix();
+}
+template <unsigned int N>
+const Matrix<N + 1, float> VolumeCameraCoordinateTransformerImpl<N>::getModelToIndexMatrix() const {
+    return getIndexMatrix() * MatrixInvert(getModelMatrix());
+}
+template <unsigned int N>
+const Matrix<N + 1, float> VolumeCameraCoordinateTransformerImpl<N>::getModelToTextureMatrix()
+    const {
+    return MatrixInvert(getModelMatrix());
+}
+template <unsigned int N>
+const Matrix<N + 1, float> VolumeCameraCoordinateTransformerImpl<N>::getModelToWorldMatrix() const {
+    return getWorldMatrix();
+}
+template <unsigned int N>
+const Matrix<N + 1, float> VolumeCameraCoordinateTransformerImpl<N>::getModelToViewMatrix() const {
+    return getViewMatrix() * getWorldMatrix();
+}
+template <unsigned int N>
+const Matrix<N + 1, float> VolumeCameraCoordinateTransformerImpl<N>::getModelToClipMatrix() const {
+    return getProjectionMatrix() * getViewMatrix() * getWorldMatrix();
+}
+template <unsigned int N>
+const Matrix<N + 1, float> VolumeCameraCoordinateTransformerImpl<N>::getWorldToIndexMatrix() const {
+    return getIndexMatrix() * MatrixInvert(getWorldMatrix() * getModelMatrix());
+}
+template <unsigned int N>
+const Matrix<N + 1, float> VolumeCameraCoordinateTransformerImpl<N>::getWorldToTextureMatrix()
+    const {
+    return MatrixInvert(getWorldMatrix() * getModelMatrix());
+}
+template <unsigned int N>
+const Matrix<N + 1, float> VolumeCameraCoordinateTransformerImpl<N>::getWorldToModelMatrix() const {
+    return MatrixInvert(getWorldMatrix());
+}
+template <unsigned int N>
+const Matrix<N + 1, float> VolumeCameraCoordinateTransformerImpl<N>::getWorldToViewMatrix() const {
+    return getViewMatrix();
+}
+template <unsigned int N>
+const Matrix<N + 1, float> VolumeCameraCoordinateTransformerImpl<N>::getWorldToClipMatrix() const {
+    return getProjectionMatrix() * getViewMatrix();
+}
+template <unsigned int N>
+const Matrix<N + 1, float> VolumeCameraCoordinateTransformerImpl<N>::getViewToIndexMatrix() const {
+    return getIndexMatrix() * MatrixInvert(getViewMatrix() * getWorldMatrix() * getModelMatrix());
+}
+template <unsigned int N>
+const Matrix<N + 1, float> VolumeCameraCoordinateTransformerImpl<N>::getViewToTextureMatrix()
+    const {
+    return MatrixInvert(getViewMatrix() * getWorldMatrix() * getModelMatrix());
+}
+template <unsigned int N>
+const Matrix<N + 1, float> VolumeCameraCoordinateTransformerImpl<N>::getViewToModelMatrix() const {
+    return MatrixInvert(getViewMatrix() * getWorldMatrix());
+}
+template <unsigned int N>
+const Matrix<N + 1, float> VolumeCameraCoordinateTransformerImpl<N>::getViewToWorldMatrix() const {
+    return MatrixInvert(getViewMatrix());
+}
+template <unsigned int N>
+const Matrix<N + 1, float> VolumeCameraCoordinateTransformerImpl<N>::getViewToClipMatrix() const {
+    return getProjectionMatrix();
+}
+template <unsigned int N>
+const Matrix<N + 1, float> VolumeCameraCoordinateTransformerImpl<N>::getClipToIndexMatrix() const {
+    return getIndexMatrix() * MatrixInvert(getProjectionMatrix() * getViewMatrix() *
+                                           getWorldMatrix() * getModelMatrix());
+}
+template <unsigned int N>
+const Matrix<N + 1, float> VolumeCameraCoordinateTransformerImpl<N>::getClipToTextureMatrix()
+    const {
+    return MatrixInvert(getProjectionMatrix() * getViewMatrix() * getWorldMatrix() *
+                        getModelMatrix());
+}
+template <unsigned int N>
+const Matrix<N + 1, float> VolumeCameraCoordinateTransformerImpl<N>::getClipToModelMatrix() const {
+    return MatrixInvert(getProjectionMatrix() * getViewMatrix() * getWorldMatrix());
+}
+template <unsigned int N>
+const Matrix<N + 1, float> VolumeCameraCoordinateTransformerImpl<N>::getClipToWorldMatrix() const {
+    return MatrixInvert(getProjectionMatrix() * getViewMatrix());
+}
+template <unsigned int N>
+const Matrix<N + 1, float> VolumeCameraCoordinateTransformerImpl<N>::getClipToViewMatrix() const {
+    return MatrixInvert(getProjectionMatrix());
+}
+
+}  // namespace
+#endif  // IVW_SPATIALDATA_H

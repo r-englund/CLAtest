@@ -102,8 +102,8 @@ void PositionWidgetProcessor::process() {
 
     mat4 modelViewProjectionMatrix_ = camera_.projectionMatrix() * camera_.viewMatrix() *
                                       glm::translate(position_.get()) *
-                                      geometryInport_.getData()->getWorldTransform() *
-                                      geometryInport_.getData()->getBasisAndOffset();
+                                      geometryInport_.getData()->getWorldMatrix() *
+                                      geometryInport_.getData()->getModelMatrix();
     shader_->setUniform("modelViewProjectionMatrix_", modelViewProjectionMatrix_);
 
     glEnable(GL_CULL_FACE); 

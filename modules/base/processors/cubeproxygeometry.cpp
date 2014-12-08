@@ -110,8 +110,8 @@ void CubeProxyGeometry::process() {
     Geometry* geom = SimpleMeshCreator::parallelepiped(pos, p1, p2, p3,
                                                        tex, t1, t2, t3,
                                                        col, c1, c2, c3);
-    geom->setBasisAndOffset(inport_.getData()->getBasisAndOffset());
-    geom->setWorldTransform(inport_.getData()->getWorldTransform());
+    geom->setModelMatrix(inport_.getData()->getModelMatrix());
+    geom->setWorldMatrix(inport_.getData()->getWorldMatrix());
     outport_.setData(geom);
 }
 

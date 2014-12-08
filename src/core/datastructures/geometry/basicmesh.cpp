@@ -174,7 +174,7 @@ BasicMesh* BasicMesh::disk(const vec3& center,
                            const size_t& segments) {
 
     BasicMesh* mesh = new BasicMesh();
-    mesh->setBasisAndOffset(mat4(1.f));
+    mesh->setModelMatrix(mat4(1.f));
     IndexBufferRAM* inds = mesh->addIndexBuffer(GeometryEnums::TRIANGLES, GeometryEnums::NONE);
     vec3 orth = orthvec(normal);
     
@@ -207,7 +207,7 @@ BasicMesh* BasicMesh::cone(const vec3& start,
     vec3 to = vec3(0.5f, 0.0f, 0.0f);
 
     BasicMesh* mesh = new BasicMesh();
-    mesh->setBasisAndOffset(mat4(1.f));
+    mesh->setModelMatrix(mat4(1.f));
     IndexBufferRAM* inds = mesh->addIndexBuffer(GeometryEnums::TRIANGLES, GeometryEnums::NONE);
     vec3 normal = glm::normalize(stop-start);
     vec3 orth = orthvec(normal);
@@ -245,7 +245,7 @@ BasicMesh* BasicMesh::cylinder(const vec3& start,
                                const size_t& segments) {
     
     BasicMesh* mesh = new BasicMesh();
-    mesh->setBasisAndOffset(mat4(1.f));
+    mesh->setModelMatrix(mat4(1.f));
       
     IndexBufferRAM* inds = mesh->addIndexBuffer(GeometryEnums::TRIANGLES, GeometryEnums::NONE);
     vec3 normal = glm::normalize(stop-start);
@@ -293,7 +293,7 @@ BasicMesh* BasicMesh::arrow(const vec3& start,
                             const size_t& segments) {
     
     BasicMesh* mesh = new BasicMesh();
-    mesh->setBasisAndOffset(mat4(1.f));
+    mesh->setModelMatrix(mat4(1.f));
 
     vec3 mid = start + (1-arrowfraction)*(stop-start);
     BasicMesh* cylinderpart = cylinder(start, mid, color, radius, segments);
@@ -406,7 +406,7 @@ BasicMesh* BasicMesh::colorsphere(const vec3& center,
 
 
     BasicMesh* mesh = new BasicMesh();
-    mesh->setBasisAndOffset(mat4(1.f));
+    mesh->setModelMatrix(mat4(1.f));
 
     vec3 quad(0);
     for (quad.x = -1.0f; quad.x <= 1.0f; quad.x += 2.0f) {
@@ -459,7 +459,7 @@ static vec3 N(const mat4& m,const vec3 v){
 
 BasicMesh* BasicMesh::box(const mat4& m, const vec4 &color){
     BasicMesh* mesh = new BasicMesh();
-    mesh->setBasisAndOffset(mat4(1));
+    mesh->setModelMatrix(mat4(1));
     
     IndexBufferRAM* indices = mesh->addIndexBuffer(GeometryEnums::TRIANGLES,GeometryEnums::NONE);
 
@@ -555,7 +555,7 @@ BasicMesh* BasicMesh::coordindicator(const vec3& center,
     float arrowpart = 0.12f;
     float arrowRadius = 2.0f*radius;
     BasicMesh* mesh = new BasicMesh();
-    mesh->setBasisAndOffset(mat4(1.f));
+    mesh->setModelMatrix(mat4(1.f));
    
     BasicMesh* xarrow = arrow(center - vec3(bsize, 0.0f, 0.0f),
                               center + vec3(fsize, 0.0f, 0.0f),
@@ -591,7 +591,7 @@ BasicMesh* BasicMesh::coordindicator(const vec3& center,
 
 BasicMesh* BasicMesh::boundingbox(const mat4& basisandoffset, const vec4& color) {
     BasicMesh* mesh = new BasicMesh();
-    mesh->setBasisAndOffset(basisandoffset);
+    mesh->setModelMatrix(basisandoffset);
 
     mesh->addVertex(vec3(0.0, 0.0, 0.0), vec3(1.0, 1.0, 1.0), vec3(0.0, 0.0, 0.0), color);
     mesh->addVertex(vec3(1.0, 0.0, 0.0), vec3(1.0, 1.0, 1.0), vec3(1.0, 0.0, 0.0), color);

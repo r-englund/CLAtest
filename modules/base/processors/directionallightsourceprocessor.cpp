@@ -78,8 +78,8 @@ void DirectionalLightSourceProcessor::updateDirectionalLightSource(DirectionalLi
     mat4 transformationMatrix = getLightTransformationMatrix(lightPos, dir);
 
     // Offset by 0.5 to get to texture coordinates
-    lightSource->setBasisAndOffset(glm::translate(vec3(0.5f)));
-    lightSource->setWorldTransform(transformationMatrix);
+    lightSource->setModelMatrix(glm::translate(vec3(0.5f)));
+    lightSource->setWorldMatrix(transformationMatrix);
     lightSource->setSize(vec2(1.f));
     vec3 diffuseLight = lightDiffuse_.get().xyz();
     lightSource->setIntensity(lightPowerProp_.get()*diffuseLight);

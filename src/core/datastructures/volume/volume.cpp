@@ -116,14 +116,14 @@ vec3 Volume::getOffset() const { return SpatialEntity<3>::getOffset(); }
 mat3 Volume::getBasis() const { return SpatialEntity<3>::getBasis(); }
 void Volume::setBasis(const mat3& basis) { SpatialEntity<3>::setBasis(Matrix<3, float>(basis)); }
 
-mat4 Volume::getBasisAndOffset() const { return SpatialEntity<3>::getBasisAndOffset(); }
+mat4 Volume::getBasisAndOffset() const { return SpatialEntity<3>::getModelMatrix(); }
 void Volume::setBasisAndOffset(const mat4& mat) {
-    SpatialEntity<3>::setBasisAndOffset(Matrix<4, float>(mat));
+    SpatialEntity<3>::setModelMatrix(Matrix<4, float>(mat));
 }
 
-mat4 Volume::getWorldTransform() const { return SpatialEntity<3>::getWorldTransform(); }
+mat4 Volume::getWorldTransform() const { return SpatialEntity<3>::getWorldMatrix(); }
 void Volume::setWorldTransform(const mat4& mat) {
-    SpatialEntity<3>::setWorldTransform(Matrix<4, float>(mat));
+    SpatialEntity<3>::setWorldMatrix(Matrix<4, float>(mat));
 }
 
 DataRepresentation* Volume::createDefaultRepresentation() {
@@ -133,7 +133,7 @@ DataRepresentation* Volume::createDefaultRepresentation() {
 }
 
 float Volume::getWorldSpaceGradientSpacing() const {
-    mat3 textureToWorld = mat3(getCoordinateTransformer().getTextureToWorldMatrix());
+    mat3 textureToWorld = mat3(getCoordinateTransformer().getDataToWorldMatrix());
 
     // Find the maximum distance we can go from the center of a voxel without ending up outside the voxel
     // Shorten each basis to the distance from one voxel to the next

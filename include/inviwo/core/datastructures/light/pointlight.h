@@ -68,7 +68,7 @@ public:
      *
      * @param position World position of light source.
      */
-    void setPosition(const vec3& position) { getWorldTransform()[3].xyz() = position; }
+    void setPosition(const vec3& position) { getWorldMatrix()[3].xyz() = position; }
 
 protected:
     vec3 position_;

@@ -92,8 +92,8 @@ void MeshClipping::process() {
         Geometry* clippedPlaneGeom =
             clipGeometryAgainstPlaneRevised(geom, Plane(planePoint_.get(), planeNormal_.get()));
         if (clippedPlaneGeom) {
-            clippedPlaneGeom->setBasisAndOffset(inport_.getData()->getBasisAndOffset());
-            clippedPlaneGeom->setWorldTransform(inport_.getData()->getWorldTransform());
+            clippedPlaneGeom->setModelMatrix(inport_.getData()->getModelMatrix());
+            clippedPlaneGeom->setWorldMatrix(inport_.getData()->getWorldMatrix());
             // LogInfo("Setting new mesh as outport data.");
             outport_.setData(clippedPlaneGeom);
         }else{
