@@ -46,12 +46,12 @@ void setShaderUniforms(Shader* shader, const Volume* volume, const std::string& 
     shader->setUniform(samplerID + ".dimensions_", dimF);
     shader->setUniform(samplerID + ".dimensionsRCP_", vec3(1.f) / dimF);
     shader->setUniform(samplerID + ".worldToTexture_",
-                       volume->getCoordinateTransformer().getWorldToDataMatrix());
-    shader->setUniform(samplerID + ".textureToWorld_", volume->getCoordinateTransformer().getDataToWorldMatrix());
+                       volume->getCoordinateTransformer().getWorldToTextureMatrix());
+    shader->setUniform(samplerID + ".textureToWorld_", volume->getCoordinateTransformer().getTextureToWorldMatrix());
     float gradientSpacing = volume->getWorldSpaceGradientSpacing();
     // Scale the world matrix by the gradient spacing and the transform it to texture space.
     // Note that since we are dealing with real values we can multiply the scalar after the transform as well
-    shader->setUniform(samplerID + ".textureSpaceGradientSpacing_", gradientSpacing*mat3(volume->getCoordinateTransformer().getWorldToDataMatrix()));
+    shader->setUniform(samplerID + ".textureSpaceGradientSpacing_", gradientSpacing*mat3(volume->getCoordinateTransformer().getWorldToTextureMatrix()));
     shader->setUniform(samplerID + ".worldSpaceGradientSpacing_", gradientSpacing);
 
     dvec2 dataRange = volume->dataMap_.dataRange;

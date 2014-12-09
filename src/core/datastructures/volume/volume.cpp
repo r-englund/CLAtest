@@ -133,7 +133,7 @@ DataRepresentation* Volume::createDefaultRepresentation() {
 }
 
 float Volume::getWorldSpaceGradientSpacing() const {
-    mat3 textureToWorld = mat3(getCoordinateTransformer().getDataToWorldMatrix());
+    mat3 textureToWorld = mat3(getCoordinateTransformer().getTextureToWorldMatrix());
 
     // Find the maximum distance we can go from the center of a voxel without ending up outside the voxel
     // Shorten each basis to the distance from one voxel to the next

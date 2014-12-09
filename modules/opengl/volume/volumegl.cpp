@@ -94,10 +94,10 @@ void VolumeGL::setVolumeUniforms(const Volume* volume, Shader* shader,
     vec3 dimF = vec3(dimensions_);
     shader->setUniform(samplerID + ".dimensions_", dimF);
     shader->setUniform(samplerID + ".dimensionsRCP_", vec3(1.f) / dimF);
-    shader->setUniform(samplerID + ".worldToTexture_", volume->getCoordinateTransformer().getWorldToDataMatrix());
-    shader->setUniform(samplerID + ".textureToWorld_", volume->getCoordinateTransformer().getDataToWorldMatrix());
+    shader->setUniform(samplerID + ".worldToTexture_", volume->getCoordinateTransformer().getWorldToTextureMatrix());
+    shader->setUniform(samplerID + ".textureToWorld_", volume->getCoordinateTransformer().getTextureToWorldMatrix());
     float gradientSpacing = volume->getWorldSpaceGradientSpacing();
-    shader->setUniform(samplerID + ".textureSpaceGradientSpacing_", gradientSpacing*mat3(volume->getCoordinateTransformer().getWorldToDataMatrix()));
+    shader->setUniform(samplerID + ".textureSpaceGradientSpacing_", gradientSpacing*mat3(volume->getCoordinateTransformer().getWorldToTextureMatrix()));
     shader->setUniform(samplerID + ".worldSpaceGradientSpacing_", gradientSpacing);
     // Note: The basically the same code is used in VolumeCLGL and VolumeCL as well.
     // Changes here should also be done there.

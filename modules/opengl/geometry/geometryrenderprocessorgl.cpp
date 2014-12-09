@@ -155,12 +155,8 @@ void GeometryRenderProcessorGL::process() {
     else if (polygonMode_.get()==GL_POINT)
         glPointSize((GLfloat)renderPointSize_.get());
 
-    for (std::vector<GeometryRenderer*>::const_iterator it = renderers_.begin(), endIt = renderers_.end(); it != endIt; ++it) {
-        //utilgl::setShaderUniforms(shader_, camera_, *(*it)->getGeometry());
-        utilgl::setShaderUniforms(shader_, *(*it)->getGeometry(), "geometry_");
-        shader_->setUniform("viewToTexture_", camera_.inverseViewMatrix()*(*it)->getGeometry()->getCoordinateTransformer().getWorldToDataMatrix());
-        mat4 modelViewMatrix = camera_.viewMatrix()*(*it)->getGeometry()->getWorldMatrix()*(*it)->getGeometry()->getModelMatrix();
-        shader_->setUniform("modelViewMatrix_", modelViewMatrix);
+    for (std::vector<GeometryRenderer*>::const_iterator it = renderers_.begin(), endIt = renderers_.end(); it != endIt; ++it) {       
+        utilgl::setShaderUniforms(shader_, *(*it)->getGeometry(), "geometry_");                
         (*it)->render();
     }
 

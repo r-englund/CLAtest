@@ -291,7 +291,7 @@ bool LightVolumeGL::lightSourceChanged() {
             const DirectionalLight* directionLight = dynamic_cast<const DirectionalLight*>(lightSource_.getData());
 
             if (directionLight) {
-                mat4 worldToTexture = inport_.getData()->getCoordinateTransformer().getWorldToDataMatrix();
+                mat4 worldToTexture = inport_.getData()->getCoordinateTransformer().getWorldToTextureMatrix();
                 vec4 lightPositionTexture = worldToTexture * vec4(-directionLight->getDirection(), 1.f);
                 lightPos_ = lightPositionTexture.xyz();
                 lightDirection = lightPos_ - vec3(0.5f);
@@ -316,7 +316,7 @@ bool LightVolumeGL::lightSourceChanged() {
             const PointLight* pointLight = dynamic_cast<const PointLight*>(lightSource_.getData());
 
             if (pointLight) {
-                mat4 worldToTexture = inport_.getData()->getCoordinateTransformer().getWorldToDataMatrix();
+                mat4 worldToTexture = inport_.getData()->getCoordinateTransformer().getWorldToTextureMatrix();
                 vec4 lightPositionTexture = worldToTexture * vec4(pointLight->getPosition(), 1.f);
                 lightPos_ = lightPositionTexture.xyz();
                 lightDirection = lightPos_ - vec3(0.5f);
