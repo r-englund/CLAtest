@@ -225,7 +225,7 @@ Volume* DatVolumeReader::readMetaData(std::string filePath) {
 
     volume->setBasis(basis);
     volume->setOffset(offset);
-    volume->setWorldTransform(wtm);
+    volume->setWorldMatrix(wtm);
     volume->setDimension(dimension_);
 
     volume->dataMap_.initWithFormat(format_);

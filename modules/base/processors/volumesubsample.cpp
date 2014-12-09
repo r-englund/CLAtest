@@ -119,11 +119,11 @@ void VolumeSubsample::process() {
                 0.0f, 0.0f, c*v / std::sin(gamma), volOffset[2],
                 0.0f, 0.0f, 0.0f, 1.0f
                 );
-            volume->setBasisAndOffset(glm::transpose(newBasisAndOffset));
+            volume->setModelMatrix(glm::transpose(newBasisAndOffset));
         }
         else {
             // copy basis and offset
-            volume->setBasisAndOffset(inport_.getData()->getBasisAndOffset());
+            volume->setModelMatrix(inport_.getData()->getModelMatrix());
         }
         outport_.setData(volume);
     }

@@ -92,8 +92,8 @@ void VolumeMaxCL::process() {
         //volumeOut = new Volume(outDim, DataUINT32::get());
         //volumeOut = new Volume(outDim, DataFLOAT32::get());
         // Use same transformation to make sure that they are render at the same location
-        volumeOut->setBasisAndOffset(volume->getBasisAndOffset());
-        volumeOut->setWorldTransform(volume->getWorldTransform());
+        volumeOut->setModelMatrix(volume->getModelMatrix());
+        volumeOut->setWorldMatrix(volume->getWorldMatrix());
         outport_.setData(volumeOut);
     }
     Volume* volumeOut = outport_.getData();

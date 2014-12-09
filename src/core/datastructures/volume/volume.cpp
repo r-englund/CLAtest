@@ -116,13 +116,13 @@ vec3 Volume::getOffset() const { return SpatialEntity<3>::getOffset(); }
 mat3 Volume::getBasis() const { return SpatialEntity<3>::getBasis(); }
 void Volume::setBasis(const mat3& basis) { SpatialEntity<3>::setBasis(Matrix<3, float>(basis)); }
 
-mat4 Volume::getBasisAndOffset() const { return SpatialEntity<3>::getModelMatrix(); }
-void Volume::setBasisAndOffset(const mat4& mat) {
+mat4 Volume::getModelMatrix() const { return SpatialEntity<3>::getModelMatrix(); }
+void Volume::setModelMatrix(const mat4& mat) {
     SpatialEntity<3>::setModelMatrix(Matrix<4, float>(mat));
 }
 
-mat4 Volume::getWorldTransform() const { return SpatialEntity<3>::getWorldMatrix(); }
-void Volume::setWorldTransform(const mat4& mat) {
+mat4 Volume::getWorldMatrix() const { return SpatialEntity<3>::getWorldMatrix(); }
+void Volume::setWorldMatrix(const mat4& mat) {
     SpatialEntity<3>::setWorldMatrix(Matrix<4, float>(mat));
 }
 

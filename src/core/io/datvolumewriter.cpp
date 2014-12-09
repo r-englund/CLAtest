@@ -72,7 +72,7 @@ void DatVolumeWriter::writeData(const Volume* data, const std::string filePath) 
     const VolumeRAM* vr = data->getRepresentation<VolumeRAM>();
     glm::mat3 basis = glm::transpose(data->getBasis());
     glm::vec3 offset = data->getOffset();
-    glm::mat4 wtm = glm::transpose(data->getWorldTransform());
+    glm::mat4 wtm = glm::transpose(data->getWorldMatrix());
     writeKeyToString(ss, "RawFile",  fileName + ".raw");
     writeKeyToString(ss, "Resolution", vr->getDimension());
     writeKeyToString(ss, "Format",  vr->getDataFormatString());

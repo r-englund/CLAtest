@@ -117,8 +117,8 @@ void DistanceTransformRAM::process() {
         {
             //Volume* volume = new Volume(volDim_, DataUINT32::get());
             Volume* volume = new Volume(volDim_, DataUINT16::get());
-            volume->setBasisAndOffset(srcVolume->getBasisAndOffset());
-            volume->setWorldTransform(srcVolume->getWorldTransform());
+            volume->setModelMatrix(srcVolume->getModelMatrix());
+            volume->setWorldMatrix(srcVolume->getWorldMatrix());
             // pass meta data on
             volume->copyMetaDataFrom(*srcVolume);
             outport_.setData(volume);

@@ -124,7 +124,7 @@ Volume* RawVolumeReader::readMetaData(std::string filePath) {
 
         volume->setBasis(basis);
         volume->setOffset(offset);
-        volume->setWorldTransform(wtm);
+        volume->setWorldMatrix(wtm);
         volume->setDimension(dimension_);
         volume->setDataFormat(format_);
         VolumeDisk* vd = new VolumeDisk(filePath, dimension_, format_);
