@@ -10,6 +10,8 @@ set(HEADER_FILES
     ${CMAKE_CURRENT_SOURCE_DIR}/buffer/bufferclconverter.h
     ${CMAKE_CURRENT_SOURCE_DIR}/buffer/bufferclgl.h
     ${CMAKE_CURRENT_SOURCE_DIR}/buffer/bufferclglconverter.h
+	${CMAKE_CURRENT_SOURCE_DIR}/buffer/elementbuffercl.h
+	${CMAKE_CURRENT_SOURCE_DIR}/buffer/elementbufferclconverter.h
     ${CMAKE_CURRENT_SOURCE_DIR}/buffer/elementbufferclgl.h
     ${CMAKE_CURRENT_SOURCE_DIR}/buffer/elementbufferclglconverter.h
     ${CMAKE_CURRENT_SOURCE_DIR}/image/imagecl.h
@@ -49,6 +51,8 @@ set(SOURCE_FILES
     ${CMAKE_CURRENT_SOURCE_DIR}/buffer/bufferclconverter.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/buffer/bufferclgl.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/buffer/bufferclglconverter.cpp
+	${CMAKE_CURRENT_SOURCE_DIR}/buffer/elementbuffercl.cpp
+	${CMAKE_CURRENT_SOURCE_DIR}/buffer/elementbufferclconverter.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/buffer/elementbufferclgl.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/buffer/elementbufferclglconverter.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/image/imagecl.cpp
