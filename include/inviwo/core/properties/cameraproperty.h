@@ -35,15 +35,17 @@
 
 #include <inviwo/core/common/inviwocoredefine.h>
 #include <inviwo/core/common/inviwo.h>
-#include <inviwo/core/datastructures/geometry/geometry.h>
-#include <inviwo/core/datastructures/volume/volume.h>
 #include <inviwo/core/properties/boolproperty.h>
 #include <inviwo/core/properties/ordinalproperty.h>
 #include <inviwo/core/properties/compositeproperty.h>
-#include <inviwo/core/ports/inport.h>
 #include <inviwo/core/interaction/events/eventlistener.h>
 
 namespace inviwo {
+
+template <unsigned int N>
+class SpatialEntity;
+
+class Inport;
 
 class IVW_CORE_API CameraProperty : public CompositeProperty, public EventListener {
 

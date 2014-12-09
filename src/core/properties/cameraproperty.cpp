@@ -31,8 +31,11 @@
  *********************************************************************************/
 
 #include <inviwo/core/common/inviwoapplication.h>
+#include <inviwo/core/ports/inport.h>
 #include <inviwo/core/ports/geometryport.h>
 #include <inviwo/core/ports/volumeport.h>
+#include <inviwo/core/datastructures/geometry/geometry.h>
+#include <inviwo/core/datastructures/volume/volume.h>
 #include <inviwo/core/properties/cameraproperty.h>
 #include <inviwo/core/processors/processor.h>
 #include <inviwo/core/interaction/events/resizeevent.h>
