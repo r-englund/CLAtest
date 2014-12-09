@@ -18,6 +18,7 @@ set(HEADER_FILES
     ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/buffer/bufferram.h
     ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/buffer/bufferramprecision.h
     ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/buffer/bufferrepresentation.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/coordinatetransformer.h
     ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/data.h
     ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/datagroup.h
     ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/datagrouprepresentation.h
