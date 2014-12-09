@@ -48,6 +48,25 @@
 
 namespace inviwo {
 
+/** \docpage{org.inviwo.VolumeMaxCL, Volume Max}
+ * Computes the maximum data value for each sub-region of the input volume.
+ *
+ * ### Inports
+ *   * __VolumeInport__ Volume input.
+ *
+ * ### Outports
+ *   * __VolumeOutport__ Volume output of size: input volume dimension / region size, uint8.
+ * 
+ * ### Properties
+ *   * __Region size__ Size of each sub region to compute maximum value for.
+ *   * __Work group size__ OpenCL work group size (performance)
+ *   * __Use OpenGL sharing__ Share data with OpenGL (performance and compability).
+ */
+
+/**
+ * \brief Computes the maximum data value for each sub-region of the input volume.
+ *
+ */
 class IVW_MODULE_BASECL_API VolumeMaxCL : public Processor, public ProcessorKernelOwner {
 
 public:
