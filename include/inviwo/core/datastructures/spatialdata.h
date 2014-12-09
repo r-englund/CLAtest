@@ -358,17 +358,17 @@ Matrix<N + 1, float> StructuredGridEntity<N>::getIndexMatrix() const {
 
 template <unsigned int N>
 const StructuredCoordinateTransformer<N>& StructuredGridEntity<N>::getCoordinateTransformer() const {
-    if (!transformer_) transformer_ = new StructuredCoordinateTransformerImpl<N>(this);
-    return *static_cast<StructuredCoordinateTransformer<N>*>(transformer_);
+    if (!this->transformer_) this->transformer_ = new StructuredCoordinateTransformerImpl<N>(this);
+    return *static_cast<StructuredCoordinateTransformer<N>*>(this->transformer_);
 }
 
 template <unsigned int N>
 const StructuredCameraCoordinateTransformer<N>& inviwo::StructuredGridEntity<N>::getCoordinateTransformer(
     Camera<N> camera) const {
-    if (!cameraTransformer_)
-        cameraTransformer_ = new StructuredCameraCoordinateTransformerImpl<N>(this, camera);
-    static_cast<StructuredCameraCoordinateTransformerImpl<N>*>(cameraTransformer_)->setCamera(camera);
-    return *static_cast<StructuredCameraCoordinateTransformer<N>*>(cameraTransformer_);
+    if (!this->cameraTransformer_)
+        this->cameraTransformer_ = new StructuredCameraCoordinateTransformerImpl<N>(this, camera);
+    static_cast<StructuredCameraCoordinateTransformerImpl<N>*>(this->cameraTransformer_)->setCamera(camera);
+    return *static_cast<StructuredCameraCoordinateTransformer<N>*>(this->cameraTransformer_);
 }
 
 }  // namespace

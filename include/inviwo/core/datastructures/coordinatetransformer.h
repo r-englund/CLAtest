@@ -67,7 +67,7 @@ private:
 template <>
 class Camera<2> {
 public:
-    Camera<2>(const CameraProperty* camera) : camera_(camera) {}
+    Camera<2>(const CameraProperty* camera) {}
 
     const Matrix<3, float> getViewMatrix() const {
         return Matrix<3, float>(1.0f);
@@ -75,9 +75,6 @@ public:
     const Matrix<3, float> getProjectionMatrix() const {
         return Matrix<3, float>(1.0f);
     }
-
-private:
-    const CameraProperty* camera_;
 };
 
 template<unsigned int N>
