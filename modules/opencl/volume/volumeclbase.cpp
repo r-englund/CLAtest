@@ -55,7 +55,6 @@ vec2 VolumeCLBase::getVolumeDataOffsetAndScaling(const Volume* volume) const
     DataMapper defaultRange(volume->getDataFormat());
     double typescale = getCLFormats()->getCLFormat(volume->getDataFormat()->getId()).scaling;
     defaultRange.dataRange *= typescale;
-    defaultRange.dataRange *= typescale;
 
     double scalingFactor = 1.0;
     double signedScalingFactor = 1.0;
