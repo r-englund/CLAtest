@@ -120,7 +120,7 @@ public:
     void setWorldMatrix(const Matrix<N + 1, float>& worldMatrix);
 
     virtual const SpatialCoordinateTransformer<N>& getCoordinateTransformer() const;
-    virtual const SpatialCameraCoordinateTransformer<N>& getCoordinateTransformer(const Camera<N>*) const;
+    virtual const SpatialCameraCoordinateTransformer<N>& getCoordinateTransformer(Camera<N> camera) const;
 
 protected:
     mutable SpatialCoordinateTransformer<N>* transformer_;
@@ -154,7 +154,7 @@ public:
     Matrix<N + 1, float> getIndexMatrix() const;
 
     virtual const StructuredCoordinateTransformer<N>& getCoordinateTransformer() const;
-    virtual const StructuredCameraCoordinateTransformer<N>& getCoordinateTransformer(const Camera<N>*) const;
+    virtual const StructuredCameraCoordinateTransformer<N>& getCoordinateTransformer(Camera<N> camera) const;
 
 protected:
     Vector<N, unsigned int> dimension_;
@@ -275,7 +275,7 @@ const SpatialCoordinateTransformer<N>& SpatialEntity<N>::getCoordinateTransforme
 
 template <unsigned int N>
 const SpatialCameraCoordinateTransformer<N>& inviwo::SpatialEntity<N>::getCoordinateTransformer(
-    const Camera<N>* camera) const {
+    Camera<N> camera) const {
     if (!cameraTransformer_)
         cameraTransformer_ = new SpatialCameraCoordinateTransformerImpl<N>(this, camera);
     static_cast<SpatialCameraCoordinateTransformerImpl<N>*>(cameraTransformer_)->setCamera(camera);
@@ -364,7 +364,7 @@ const StructuredCoordinateTransformer<N>& StructuredGridEntity<N>::getCoordinate
 
 template <unsigned int N>
 const StructuredCameraCoordinateTransformer<N>& inviwo::StructuredGridEntity<N>::getCoordinateTransformer(
-    const Camera<N>* camera) const {
+    Camera<N> camera) const {
     if (!cameraTransformer_)
         cameraTransformer_ = new StructuredCameraCoordinateTransformerImpl<N>(this, camera);
     static_cast<StructuredCameraCoordinateTransformerImpl<N>*>(cameraTransformer_)->setCamera(camera);

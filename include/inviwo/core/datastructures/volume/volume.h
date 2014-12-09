@@ -40,6 +40,7 @@
 
 namespace inviwo {
 
+class CameraProperty;
 class VolumeRepresentation;
 
 class IVW_CORE_API Volume : public Data, public StructuredGridEntity<3> {
@@ -66,6 +67,9 @@ public:
 
     mat4 getWorldTransform() const;
     void setWorldTransform(const mat4& mat);
+
+    virtual const StructuredCameraCoordinateTransformer<3>& getCoordinateTransformer(const CameraProperty* camera) const;
+    using StructuredGridEntity<3>::getCoordinateTransformer;
 
     /** 
      * \brief Computes the spacing to be used for gradient computation. Also works for volume with non-orthogonal basis.

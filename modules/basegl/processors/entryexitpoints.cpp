@@ -162,15 +162,8 @@ void EntryExitPoints::process() {
         utilgl::setShaderUniforms(capNearClippingPrg_, exitPort_, "exitParameters_");
         // the rendered plane is specified in camera coordinates
         // thus we must transform from camera to world to texture coordinates
-        mat4 worldToTexMat = geom->getCoordinateTransformer().getWorldToDataMatrix();
-        Camera<3> cam(&camera_);
-        SpatialCameraCoordinateTransformerImpl<3> transformer(geom, &cam);
-        
-        capNearClippingPrg_->setUniform("NDCToTextureMat_", transformer.getClipToDataMatrix());
-        
-        //capNearClippingPrg_->setUniform(
-        //    "NDCToTextureMat_",
-        //    worldToTexMat * camera_.inverseViewMatrix() * camera_.inverseProjectionMatrix());
+        mat4 clipToTexMat = geom->getCoordinateTransformer(&camera_).getClipToDataMatrix();       
+        capNearClippingPrg_->setUniform("NDCToTextureMat_", clipToTexMat);
         
         capNearClippingPrg_->setUniform("nearDist_", camera_.getNearPlaneDist());
         utilgl::singleDrawImagePlaneRect();

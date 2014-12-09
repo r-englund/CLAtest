@@ -160,4 +160,8 @@ float Volume::getWorldSpaceGradientSpacing() const {
     return minimumDistance;
 }
 
+const StructuredCameraCoordinateTransformer<3>& Volume::getCoordinateTransformer(const CameraProperty* camera) const {
+    return StructuredGridEntity<3>::getCoordinateTransformer(Camera<3>(camera));
+}
+
 }  // namespace
