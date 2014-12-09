@@ -45,7 +45,24 @@
 
 
 namespace inviwo {
+/** \docpage{org.inviwo.GrayscaleCL, Image grayscale}
+ * Turns an image into grayscale using the following operation:
+ *      out = 0.2989*red + 0.5870*green + 0.1140*blue;
+ * 
+ * ### Inports
+ *   * __ImageInport__ The input color image.
+ *
+ * ### Outports
+ *   * __ImageOutport__ The output grayscale image.
+ * 
+ * ### Properties
+ *   * __Use OpenGL sharing__ Share input and output image with OpenGL
+ */
 
+/**
+ * \brief Turns an image into grayscale.
+ *
+ */
 class IVW_MODULE_OPENCL_API GrayscaleCL : public Processor, public ProcessorKernelOwner {
 public:
     GrayscaleCL();
@@ -60,7 +77,7 @@ protected:
     virtual void process();
 
 private:
-    ImageInport inputPort_;
+    ImageInport input_;
     ImageOutport outport_;
 
     BoolProperty useGLSharing_;

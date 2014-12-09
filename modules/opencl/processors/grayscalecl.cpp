@@ -42,19 +42,19 @@
 namespace inviwo {
 
 ProcessorClassIdentifier(GrayscaleCL, "org.inviwo.GrayscaleCL");
-ProcessorDisplayName(GrayscaleCL,  "Grayscale");
+ProcessorDisplayName(GrayscaleCL,  "Image grayscale");
 ProcessorTags(GrayscaleCL, Tags::CL);
 ProcessorCategory(GrayscaleCL, "Image Operation");
-ProcessorCodeState(GrayscaleCL, CODE_STATE_EXPERIMENTAL);
+ProcessorCodeState(GrayscaleCL, CODE_STATE_STABLE);
 
 GrayscaleCL::GrayscaleCL()
     : Processor(), ProcessorKernelOwner(this)
-    , inputPort_("color image")
+    , input_("color image")
     , outport_("outport")
     , useGLSharing_("glsharing", "Use OpenGL sharing", true)
     , kernel_(NULL)
 {
-    addPort(inputPort_, "ImagePortGroup1");
+    addPort(input_, "ImagePortGroup1");
     addPort(outport_, "ImagePortGroup1");
 
     addProperty(useGLSharing_);
@@ -84,7 +84,7 @@ void GrayscaleCL::process() {
 
     //outImage->resize(inImage->getDimension());
     uvec2 outportDim = outImage->getDimension();
-    const Image* inImage = inputPort_.getData();
+    const Image* inImage = input_.getData();
     try {
         if (useGLSharing_.get()) {
             SyncCLGL glSync;

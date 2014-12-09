@@ -45,7 +45,27 @@
 #include <modules/opencl/kernelowner.h>
 
 namespace inviwo {
+/** \docpage{org.inviwo.VolumeFirstHitCL, Volume First Hit}
+ * Computes the first point with non-zero opacity within a volume given entry and exit points in texture space. 
+ * ### Inports
+ *   * __VolumeInport__ The volume to intersect.
+ *   * __ImageInport__ The entry point.
+ *   * __ImageInport__ The exit point.
+ *
+ * ### Outports
+ *   * __ImageOutport__ The first hit point.
+ * 
+ * ### Properties
+ *   * __Sampling rate__ Number of sample per voxel to take.
+ *   * __Transfer function__ Transfer function to map data values into color and opacity.
+ *   * __Work group size__ OpenCL work group size (performance)
+ *   * __Use OpenGL sharing__ Share data with OpenGL (performance and compability).
+ */
 
+/**
+ * \brief Computes the first point with non-zero opacity within a volume given entry and exit points in texture space. 
+ *
+ */
 class IVW_MODULE_BASECL_API VolumeFirstHitCL : public Processor, public ProcessorKernelOwner {
 public:
     VolumeFirstHitCL();

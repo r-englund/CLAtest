@@ -46,7 +46,27 @@
 #include <modules/opencl/volume/volumeclbase.h>
 
 namespace inviwo {
+/** \docpage{org.inviwo.VolumeRaycasterCL, Volume Raycaster}
+ * Perform volume rendering on the input volume. 
+ * ### Inports
+ *   * __VolumeInport__ The volume data to render.
+ *   * __ImageInport__ The entry point.
+ *   * __ImageInport__ The exit point.
+ *
+ * ### Outports
+ *   * __ImageOutport__ Light reaching the camera through the volume.
+ * 
+ * ### Properties
+ *   * __Sampling rate__ Number of sample per voxel to take.
+ *   * __Transfer function__ Transfer function to map data values into color and opacity.
+ *   * __Work group size__ OpenCL work group size (performance)
+ *   * __Use OpenGL sharing__ Share data with OpenGL (performance and compability).
+ */
 
+/**
+ * \brief Perform volume rendering on the input volume. 
+ *
+ */
 class IVW_MODULE_OPENCL_API VolumeRaycasterCL : public Processor, public ProcessorKernelOwner {
 public:
     VolumeRaycasterCL();
