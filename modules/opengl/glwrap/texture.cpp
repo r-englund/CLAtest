@@ -182,7 +182,7 @@ void Texture::unbindFromPBO() const {
 
 void Texture::unbindToPBO() const {
     glBindBuffer(GL_PIXEL_PACK_BUFFER_ARB, 0);
-    LGL_ERROR;
+    LGL_ERROR_SUPPRESS;
 }
 
 void Texture::download(void* data) const {
@@ -222,8 +222,8 @@ void Texture::loadFromPBO(const Texture* src) {
     setupAsyncReadBackPBO();
     src->bindFromPBO();
     upload(NULL);
-    unbind();
     src->unbindFromPBO();
+    unbind();
     LGL_ERROR;
 }
 

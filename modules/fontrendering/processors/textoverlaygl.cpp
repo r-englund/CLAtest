@@ -244,7 +244,9 @@ void TextOverlayGL::process() {
     GLuint attribute_location = 0;
     glEnableVertexAttribArray(attribute_location);
     glBindBuffer(GL_ARRAY_BUFFER, vboCharacter_);
-    glVertexAttribPointer(attribute_location, 4, GL_FLOAT, GL_FALSE, 0, 0);
+    LGL_ERROR;
+    glVertexAttribPointer(attribute_location, 4, GL_FLOAT, GL_FALSE, 0, (void*)0);
+    LGL_ERROR;
     float sx = 2.f / outport_.getData()->getDimension().x;
     float sy = 2.f / outport_.getData()->getDimension().y;
     font_size_ = fontSize_.getSelectedValue();
@@ -259,6 +261,7 @@ void TextOverlayGL::process() {
 
     textShader_->deactivate();
     glDisableVertexAttribArray(attribute_location);
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
     glDisable(GL_BLEND);
     utilgl::deactivateCurrentTarget();
 }
