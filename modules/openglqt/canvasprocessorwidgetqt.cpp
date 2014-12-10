@@ -154,8 +154,11 @@ Canvas* CanvasProcessorWidgetQt::getCanvas() const {
 }
 
 void CanvasProcessorWidgetQt::resizeEvent(QResizeEvent* event) {
-    if (event->spontaneous()) return;
     ivec2 dim(event->size().width(), event->size().height());
+    if (event->spontaneous()) {
+        CanvasProcessorWidget::setDimension(dim);
+        return;
+    }
     CanvasProcessorWidget::setDimension(dim);
     QWidget::resizeEvent(event);
 }

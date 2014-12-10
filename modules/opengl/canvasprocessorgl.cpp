@@ -51,7 +51,7 @@ void CanvasProcessorGL::process() {
 }
 
 void CanvasProcessorGL::doIfNotReady() {
-    CanvasProcessor::process();
+    CanvasProcessor::doIfNotReady();
     //getCanvas()->render(NULL, static_cast<LayerType>(visibleLayer_.get()));
 }
 
