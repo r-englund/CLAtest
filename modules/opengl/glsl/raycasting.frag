@@ -106,8 +106,8 @@ vec4 rayTraversal(vec3 entryPoint, vec3 exitPoint, vec2 texCoords) {
     }
 
     if (tDepth != -1.0) {
-        tDepth = calculateDepthValue(camera_, tDepth, texture(entryDepthTex_, texCoords).z,
-                                     texture(exitDepthTex_, texCoords).z);
+        tDepth = calculateDepthValue(camera_, tDepth, texture(entryDepthTex_, texCoords).x,
+                                     texture(exitDepthTex_, texCoords).x);
     } else {
         tDepth = 1.0;
 	}
