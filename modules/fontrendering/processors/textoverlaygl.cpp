@@ -35,6 +35,11 @@
 #include <modules/opengl/glwrap/shader.h>
 #include <modules/opengl/textureutils.h>
 #include <modules/fontrendering/fontrenderingmodule.h>
+#include <inviwo/core/datastructures/geometry/mesh.h>
+#include <inviwo/core/datastructures/buffer/bufferramprecision.h>
+#include <modules/opengl/glwrap/bufferobjectarray.h>
+#include <modules/opengl/geometry/meshgl.h>
+#include <modules/opengl/buffer/buffergl.h>
 
 namespace inviwo {
 
@@ -102,7 +107,11 @@ void TextOverlayGL::initialize() {
     }
 
     glGenTextures(1, &texCharacter_);
-    glGenBuffers(1, &vboCharacter_);
+    //glGenBuffers(1, &vboCharacter_);
+    //glGenVertexArrays(1, &vaoCharacter_);
+
+    initMesh();
+
 }
 
 void TextOverlayGL::deinitialize() {
@@ -111,7 +120,11 @@ void TextOverlayGL::deinitialize() {
     copyShader_ = NULL;
     textShader_ = NULL;
     glDeleteTextures(1, &texCharacter_);
-    glDeleteBuffers(1, &vboCharacter_);
+    //glDeleteBuffers(1, &vboCharacter_);
+    //glDeleteVertexArrays(1, &vaoCharacter_);
+
+    delete mesh_;
+
     Processor::deinitialize();
 }
 
@@ -166,8 +179,7 @@ vec2 TextOverlayGL::measure_text(const char* text, float sx, float sy) {
 }
 
 
-void TextOverlayGL::render_text(const char* text, float x, float y, float sx, float sy,
-                                unsigned int unitNumber) {
+void TextOverlayGL::render_text(const char* text, float x, float y, float sx, float sy) {
     const char* p;
     FT_Set_Pixel_Sizes(fontface_, 0, fontSize_.get());
 
@@ -176,7 +188,9 @@ void TextOverlayGL::render_text(const char* text, float x, float y, float sx, fl
 
     // TODO: To make things more reliable ask the system for proper ascii
     char lf = (char)0xA;  // Line Feed Ascii for std::endl, \n
-    char tab = (char)0x9;  // Tab Ascii
+    char tab = (char)0x9;  // Tab Ascii 
+    
+    BufferObjectArray rectArray;
 
     for (p = text; *p; p++) {
         if (FT_Load_Char(fontface_, *p, FT_LOAD_RENDER)) {
@@ -184,9 +198,10 @@ void TextOverlayGL::render_text(const char* text, float x, float y, float sx, fl
             continue;
         }
 
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_ALPHA, fontface_->glyph->bitmap.width,
-                     fontface_->glyph->bitmap.rows, 0, GL_ALPHA, GL_UNSIGNED_BYTE,
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RED, fontface_->glyph->bitmap.width,
+                     fontface_->glyph->bitmap.rows, 0, GL_RED, GL_UNSIGNED_BYTE,
                      fontface_->glyph->bitmap.buffer);
+
         float x2 = x + fontface_->glyph->bitmap_left * sx;
         float y2 = -y - fontface_->glyph->bitmap_top * sy;
         float w = fontface_->glyph->bitmap.width * sx;
@@ -207,13 +222,20 @@ void TextOverlayGL::render_text(const char* text, float x, float y, float sx, fl
 
         y2 += offset;
 
-        GLfloat box[4][4] = {
-            {x2, -y2, 0, 0}, {x2 + w, -y2, 1, 0}, {x2, -y2 - h, 0, 1}, {x2 + w, -y2 - h, 1, 1},
-        };
-        textShader_->setUniform("tex", (GLint)unitNumber);
-        textShader_->setUniform("color", color_.get());
-        glBufferData(GL_ARRAY_BUFFER, sizeof(box), box, GL_STREAM_DRAW);
+        Position2dBufferRAM* positions =
+            mesh_->getAttributes(0)->getEditableRepresentation<Position2dBufferRAM>();
+        positions->set(0,vec2(x2, -y2));
+        positions->set(1,vec2(x2 + w, -y2));
+        positions->set(2,vec2(x2, -y2 - h));
+        positions->set(3,vec2(x2 + w, -y2 - h));
+       
+        const MeshGL* meshgl = mesh_->getRepresentation<MeshGL>();
+        rectArray.bind();
+        rectArray.attachBufferObject(meshgl->getBufferGL(0)->getBufferObject(), POSITION_ATTRIB);
+        rectArray.attachBufferObject(meshgl->getBufferGL(1)->getBufferObject(), TEXCOORD_ATTRIB);   
         glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+        rectArray.unbind();
+        
         x += (fontface_->glyph->advance.x >> 6) * sx;
         y += (fontface_->glyph->advance.y >> 6) * sy;
     }
@@ -231,39 +253,66 @@ void TextOverlayGL::process() {
     utilgl::singleDrawImagePlaneRect();
     copyShader_->deactivate();
     
+    glDepthFunc(GL_ALWAYS);
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     TextureUnit texUnit;
     texUnit.activate();
+
     glBindTexture(GL_TEXTURE_2D, texCharacter_);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
-    GLuint attribute_location = 0;
-    glEnableVertexAttribArray(attribute_location);
-    glBindBuffer(GL_ARRAY_BUFFER, vboCharacter_);
-    LGL_ERROR;
-    glVertexAttribPointer(attribute_location, 4, GL_FLOAT, GL_FALSE, 0, (void*)0);
-    LGL_ERROR;
+
     float sx = 2.f / outport_.getData()->getDimension().x;
     float sy = 2.f / outport_.getData()->getDimension().y;
     font_size_ = fontSize_.getSelectedValue();
     xpos_ = fontPos_.get().x * outport_.getData()->getDimension().x;
     ypos_ = fontPos_.get().y * outport_.getData()->getDimension().y + float(font_size_);
     textShader_->activate();
+    textShader_->setUniform("tex", texUnit.getUnitNumber());
+    textShader_->setUniform("color", color_.get());
 
     vec2 size = measure_text(text_.get().c_str(), sx, sy);
     vec2 shift = 0.5f * size * (refPos_.get() + vec2(1.0f,1.0f));
-    render_text(text_.get().c_str(), -1 + xpos_*sx - shift.x, 1 - ypos_*sy + shift.y, sx, sy,
-                texUnit.getUnitNumber());
-
+    render_text(text_.get().c_str(), -1 + xpos_*sx - shift.x, 1 - ypos_*sy + shift.y, sx, sy);
+    
     textShader_->deactivate();
-    glDisableVertexAttribArray(attribute_location);
-    glBindBuffer(GL_ARRAY_BUFFER, 0);
     glDisable(GL_BLEND);
+    glDepthFunc(GL_LESS);
     utilgl::deactivateCurrentTarget();
+}
+
+void TextOverlayGL::initMesh() {
+    Position2dBuffer* verticesBuffer = new Position2dBuffer();
+    Position2dBufferRAM* verticesBufferRAM =
+        verticesBuffer->getEditableRepresentation<Position2dBufferRAM>();
+    verticesBufferRAM->add(vec2(-1.0f, -1.0f));
+    verticesBufferRAM->add(vec2(1.0f, -1.0f));
+    verticesBufferRAM->add(vec2(-1.0f, 1.0f));
+    verticesBufferRAM->add(vec2(1.0f, 1.0f));
+    TexCoord2dBuffer* texCoordsBuffer = new TexCoord2dBuffer();
+    TexCoord2dBufferRAM* texCoordsBufferRAM =
+        texCoordsBuffer->getEditableRepresentation<TexCoord2dBufferRAM>();
+    texCoordsBufferRAM->add(vec2(0.0f, 0.0f));
+    texCoordsBufferRAM->add(vec2(1.0f, 0.0f));
+    texCoordsBufferRAM->add(vec2(0.0f, 1.0f));
+    texCoordsBufferRAM->add(vec2(1.0f, 1.0f));
+
+    IndexBuffer* indices_ = new IndexBuffer();
+    Mesh::AttributesInfo(GeometryEnums::TRIANGLES, GeometryEnums::STRIP);
+    IndexBufferRAM* indexBufferRAM = indices_->getEditableRepresentation<IndexBufferRAM>();
+    indexBufferRAM->add(0);
+    indexBufferRAM->add(1);
+    indexBufferRAM->add(2);
+    indexBufferRAM->add(3);
+
+    mesh_ = new Mesh();
+    mesh_->addAttribute(verticesBuffer);
+    mesh_->addAttribute(texCoordsBuffer);
+    mesh_->addIndicies(Mesh::AttributesInfo(GeometryEnums::TRIANGLES, GeometryEnums::STRIP), indices_);
 }
 
 }  // namespace
