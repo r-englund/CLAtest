@@ -1577,6 +1577,11 @@ void NetworkEditor::onProcessorNetworkDidRemoveLink(PropertyLink* propertyLink) 
     }
 }
 
+void NetworkEditor::onProcessorNetworkChange() {
+    setModified();
+    updateLeds();
+}
+
 void PortInspectorObserver::onProcessorWidgetHide(ProcessorWidget* widget) {
     widget->removeObserver(this);
     QCoreApplication::postEvent(editor_, new PortInspectorEvent(port_), Qt::LowEventPriority);

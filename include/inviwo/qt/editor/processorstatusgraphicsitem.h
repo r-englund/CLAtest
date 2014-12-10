@@ -25,7 +25,7 @@
  * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- * 
+ *
  * Contact: Peter Steneteg
  *
  *********************************************************************************/
@@ -37,16 +37,17 @@
 #include <inviwo/qt/editor/editorgrapicsitem.h>
 #include <inviwo/core/processors/processorwidgetobserver.h>
 #include <QEvent>
-#include <QColor>
+#include <QRectF>
 
 namespace inviwo {
 
 class Processor;
 
-class IVW_QTEDITOR_API ProcessorStatusGraphicsItem : public EditorGraphicsItem, public ProcessorWidgetObserver {
+class IVW_QTEDITOR_API ProcessorStatusGraphicsItem : public EditorGraphicsItem,
+                                                     public ProcessorWidgetObserver {
 public:
     ProcessorStatusGraphicsItem(QGraphicsRectItem* parent, Processor* processor);
-    virtual ~ProcessorStatusGraphicsItem(){}
+    virtual ~ProcessorStatusGraphicsItem() {}
 
     void setRunning(bool);
 
@@ -58,6 +59,8 @@ public:
     virtual void onProcessorWidgetShow(ProcessorWidget*);
     virtual void onProcessorWidgetHide(ProcessorWidget*);
 
+    virtual void update(const QRectF& rect = QRectF());
+
 protected:
     void paint(QPainter* p, const QStyleOptionGraphicsItem* options, QWidget* widget);
 
@@ -65,11 +68,11 @@ private:
     Processor* processor_;
     float size_;
     float lineWidth_;
-    
+
+    bool ready_;
     bool running_;
 };
 
-} // namespace
+}  // namespace
 
-#endif // IVW_PROCESSORSTATUSGRAPHICSITEM_H
-
+#endif  // IVW_PROCESSORSTATUSGRAPHICSITEM_H
