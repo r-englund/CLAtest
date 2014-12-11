@@ -245,4 +245,12 @@ void CanvasGL::disableDrawImagePlaneRect() {
     screenAlignedRectGL_->disable();
 }
 
+void  CanvasGL::setProcessorWidgetOwner(ProcessorWidget* widget) {
+    //Clear internal state
+    image_ = NULL;
+    imageGL_ = NULL;
+    pickingContainer_->setPickingSource(NULL);
+    Canvas::setProcessorWidgetOwner(widget);
+}
+
 }  // namespace
