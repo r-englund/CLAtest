@@ -33,7 +33,7 @@
 #ifndef IVW_VOLUME_RAYCASTER_CL_H
 #define IVW_VOLUME_RAYCASTER_CL_H
 
-#include <modules/opencl/openclmoduledefine.h>
+#include <modules/basecl/baseclmoduledefine.h>
 #include <inviwo/core/common/inviwo.h>
 #include <inviwo/core/ports/imageport.h>
 #include <inviwo/core/ports/volumeport.h>
@@ -67,7 +67,7 @@ namespace inviwo {
  * \brief Perform volume rendering on the input volume. 
  *
  */
-class IVW_MODULE_OPENCL_API VolumeRaycasterCL : public Processor, public ProcessorKernelOwner {
+class IVW_MODULE_BASECL_API VolumeRaycasterCL : public Processor, public ProcessorKernelOwner {
 public:
     VolumeRaycasterCL();
     ~VolumeRaycasterCL();

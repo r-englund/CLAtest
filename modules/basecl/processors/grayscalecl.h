@@ -33,7 +33,7 @@
 #ifndef IVW_GRAYSCALE_CL_H
 #define IVW_GRAYSCALE_CL_H
 
-#include <modules/opencl/openclmoduledefine.h>
+#include <modules/basecl/baseclmoduledefine.h>
 #include <inviwo/core/common/inviwo.h>
 #include <inviwo/core/ports/imageport.h>
 #include <inviwo/core/processors/processor.h>
@@ -63,7 +63,7 @@ namespace inviwo {
  * \brief Turns an image into grayscale.
  *
  */
-class IVW_MODULE_OPENCL_API GrayscaleCL : public Processor, public ProcessorKernelOwner {
+class IVW_MODULE_BASECL_API GrayscaleCL : public Processor, public ProcessorKernelOwner {
 public:
     GrayscaleCL();
     ~GrayscaleCL();

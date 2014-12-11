@@ -33,16 +33,21 @@
 #include <modules/basecl/baseclmodule.h>
 
 #include <modules/basecl/processors/entryexitpointsclprocessor.h>
+#include <modules/basecl/processors/grayscalecl.h>
 #include <modules/basecl/processors/volumefirsthitcl.h>
 #include <modules/basecl/processors/volumemaxcl.h>
+#include <modules/basecl/processors/volumeraycastercl.h>
 
 namespace inviwo {
 
 BaseCLModule::BaseCLModule() : InviwoModule() {
     setIdentifier("BaseCL");
+    // Processors
     registerProcessor(EntryExitPointsCLProcessor);
+    registerProcessor(GrayscaleCL);
     registerProcessor(VolumeFirstHitCL);
     registerProcessor(VolumeMaxCL);
+    registerProcessor(VolumeRaycasterCL);
 }
 
 void BaseCLModule::initialize() {

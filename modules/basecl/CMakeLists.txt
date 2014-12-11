@@ -5,22 +5,26 @@ ivw_module(BaseCL)
 #--------------------------------------------------------------------
 # Add header files
 set(HEADER_FILES
-	${CMAKE_CURRENT_SOURCE_DIR}/meshentryexitpointscl.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/meshentryexitpointscl.h
     ${CMAKE_CURRENT_SOURCE_DIR}/processors/entryexitpointsclprocessor.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/processors/grayscalecl.h
     ${CMAKE_CURRENT_SOURCE_DIR}/processors/volumefirsthitcl.h
-	${CMAKE_CURRENT_SOURCE_DIR}/processors/volumemaxcl.h
-	${CMAKE_CURRENT_SOURCE_DIR}/runningimagemeanandstandarddeviationcl.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/processors/volumemaxcl.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/processors/volumeraycastercl.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/runningimagemeanandstandarddeviationcl.h
 )
 ivw_group("Header Files" ${HEADER_FILES})
 
 #--------------------------------------------------------------------
 # Add source files
 set(SOURCE_FILES
-	${CMAKE_CURRENT_SOURCE_DIR}/meshentryexitpointscl.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/meshentryexitpointscl.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/processors/entryexitpointsclprocessor.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/processors/grayscalecl.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/processors/volumefirsthitcl.cpp
-	${CMAKE_CURRENT_SOURCE_DIR}/processors/volumemaxcl.cpp
-	${CMAKE_CURRENT_SOURCE_DIR}/runningimagemeanandstandarddeviationcl.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/processors/volumemaxcl.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/processors/volumeraycastercl.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/runningimagemeanandstandarddeviationcl.cpp
 )
 ivw_group("Source Files" ${SOURCE_FILES})
 
@@ -28,10 +32,12 @@ ivw_group("Source Files" ${SOURCE_FILES})
 # Add OpenCL files
 set(SHADER_FILES
     ${CMAKE_CURRENT_SOURCE_DIR}/cl/entryexitpoints.cl
-	${CMAKE_CURRENT_SOURCE_DIR}/cl/statistics/runningmeanandstandarddeviation.cl
-	${CMAKE_CURRENT_SOURCE_DIR}/cl/statistics/runningmeanandstandarddeviationkernel.cl
+    ${CMAKE_CURRENT_SOURCE_DIR}/cl/grayscale.cl
+    ${CMAKE_CURRENT_SOURCE_DIR}/cl/statistics/runningmeanandstandarddeviation.cl
+    ${CMAKE_CURRENT_SOURCE_DIR}/cl/statistics/runningmeanandstandarddeviationkernel.cl
     ${CMAKE_CURRENT_SOURCE_DIR}/cl/volumefirsthit.cl
-	${CMAKE_CURRENT_SOURCE_DIR}/cl/volumemax.cl
+    ${CMAKE_CURRENT_SOURCE_DIR}/cl/volumemax.cl
+    ${CMAKE_CURRENT_SOURCE_DIR}/cl/volumeraycaster.cl
 )
 ivw_group("Shader Files" ${SHADER_FILES})
 

@@ -38,8 +38,6 @@
 #include <modules/opencl/image/layerclglconverter.h>
 #include <modules/opencl/openclmodule.h>
 #include <modules/opencl/openclcapabilities.h>
-#include <modules/opencl/processors/grayscalecl.h>
-#include <modules/opencl/processors/volumeraycastercl.h>
 #include <modules/opencl/settings/openclsettings.h>
 #include <modules/opencl/volume/volumeclconverter.h>
 #include <modules/opencl/volume/volumeclglconverter.h>
@@ -103,9 +101,7 @@ OpenCLModule::OpenCLModule() : InviwoModule(), btnOpenCLInfo_("printOpenCLInfo",
     registerRepresentationConverter(new VolumeGL2CLGLConverter());
     registerCapabilities(new OpenCLCapabilities());
     registerSettings(new OpenCLSettings());
-    // Processors
-    registerProcessor(GrayscaleCL);
-    registerProcessor(VolumeRaycasterCL);
+
 }
 
 void OpenCLModule::initialize() {
