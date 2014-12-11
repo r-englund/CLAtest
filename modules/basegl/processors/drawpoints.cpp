@@ -30,7 +30,7 @@
  *
  *********************************************************************************/
 
-#include "drawfreehand.h"
+#include "drawpoints.h"
 #include <inviwo/core/datastructures/buffer/bufferramprecision.h>
 #include <modules/opengl/glwrap/shader.h>
 #include <modules/opengl/textureutils.h>
@@ -38,33 +38,36 @@
 
 namespace inviwo {
 
-ProcessorClassIdentifier(DrawFreeHand, "org.inviwo.DrawFreeHand");
-ProcessorDisplayName(DrawFreeHand,  "Draw Freehand");
-ProcessorTags(DrawFreeHand, Tags::GL);
-ProcessorCategory(DrawFreeHand, "Drawing");
-ProcessorCodeState(DrawFreeHand, CODE_STATE_EXPERIMENTAL);
+ProcessorClassIdentifier(DrawPoints, "org.inviwo.DrawPoints");
+ProcessorDisplayName(DrawPoints,  "Draw Points");
+ProcessorTags(DrawPoints, Tags::GL);
+ProcessorCategory(DrawPoints, "Drawing");
+ProcessorCodeState(DrawPoints, CODE_STATE_STABLE);
 
-DrawFreeHand::DrawFreeHand()
+DrawPoints::DrawPoints()
     : CompositeProcessorGL()
     , inport_("image.inport")
     , outport_("image.outport", COLOR_ONLY) 
     , pointSize_("pointSize", "Point Size", 5, 1, 10)
     , pointColor_("pointColor", "Point Color", vec4(1.f))
-    , clearButton_("clearButton", "Clear Drawing") {
-
+    , clearButton_("clearButton", "Clear Drawing")
+    , points_(NULL)
+    , pointRenderer_(NULL)
+    , pointShader_(NULL)
+{
     addPort(inport_);
     addPort(outport_);
 
     addProperty(pointSize_);
     pointColor_.setSemantics(PropertySemantics::Color);
     addProperty(pointColor_);
-    clearButton_.onChange(this, &DrawFreeHand::clearPoints);
+    clearButton_.onChange(this, &DrawPoints::clearPoints);
     addProperty(clearButton_);
 
-    addInteractionHandler(new DrawFreeHandInteractionHandler(this));
+    addInteractionHandler(new DrawPointsInteractionHandler(this));
 }
 
-DrawFreeHand::~DrawFreeHand() {
+DrawPoints::~DrawPoints() {
     const std::vector<InteractionHandler*>& interactionHandlers = getInteractionHandlers();
     for(size_t i=0; i<interactionHandlers.size(); ++i) {
         InteractionHandler* handler = interactionHandlers[i];
@@ -73,7 +76,7 @@ DrawFreeHand::~DrawFreeHand() {
     }
 }
 
-void DrawFreeHand::initialize() {
+void DrawPoints::initialize() {
     CompositeProcessorGL::initialize();
     pointShader_ = new Shader("img_color.frag");
     points_ = new Mesh(GeometryEnums::POINTS, GeometryEnums::NONE);
@@ -81,15 +84,17 @@ void DrawFreeHand::initialize() {
     pointRenderer_ = new MeshRenderer(points_);
 }
 
-void DrawFreeHand::deinitialize() {
+void DrawPoints::deinitialize() {
     CompositeProcessorGL::deinitialize();
     delete pointShader_;
     pointShader_ = NULL;
     delete pointRenderer_;
+    pointRenderer_ = NULL;
     delete points_;
+    pointRenderer_ = NULL;
 }
 
-void DrawFreeHand::process() {
+void DrawPoints::process() {
     inport_.passOnDataToOutport(&outport_);
 
     utilgl::activateAndClearTarget(outport_);
@@ -103,15 +108,17 @@ void DrawFreeHand::process() {
     compositePortsToOutport(outport_, inport_);
 }
 
-void DrawFreeHand::addPoint(vec2 p) {
-    points_->getAttributes(0)->getEditableRepresentation<Position2dBufferRAM>()->add(p);
+void DrawPoints::addPoint(vec2 p) {
+    if (points_)
+        points_->getAttributes(0)->getEditableRepresentation<Position2dBufferRAM>()->add(p);
 }
 
-void DrawFreeHand::clearPoints() {
-    points_->getAttributes(0)->getEditableRepresentation<Position2dBufferRAM>()->clear();
+void DrawPoints::clearPoints() {
+    if (points_)
+        points_->getAttributes(0)->getEditableRepresentation<Position2dBufferRAM>()->clear();
 }
 
-DrawFreeHand::DrawFreeHandInteractionHandler::DrawFreeHandInteractionHandler(DrawFreeHand* dfh) 
+DrawPoints::DrawPointsInteractionHandler::DrawPointsInteractionHandler(DrawPoints* dfh) 
     : InteractionHandler()
     , drawPosEvent(MouseEvent::MOUSE_BUTTON_LEFT, InteractionEvent::MODIFIER_CTRL)
     , drawEnableEvent_('D', InteractionEvent::MODIFIER_CTRL)
@@ -119,7 +126,7 @@ DrawFreeHand::DrawFreeHandInteractionHandler::DrawFreeHandInteractionHandler(Dra
     , drawModeEnabled_(false) {
 }
 
-void DrawFreeHand::DrawFreeHandInteractionHandler::invokeEvent(Event* event){
+void DrawPoints::DrawPointsInteractionHandler::invokeEvent(Event* event){
     KeyboardEvent* keyEvent = dynamic_cast<KeyboardEvent*>(event);
     if (keyEvent) {
         int button = keyEvent->button();

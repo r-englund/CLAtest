@@ -3,7 +3,7 @@
  * Inviwo - Interactive Visualization Workshop
  * Version 0.6b
  *
- * Copyright (c) 2014 Inviwo Foundation
+ * Copyright (c) 2013-2014 Inviwo Foundation
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -26,58 +26,81 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  * 
- * Contact: Daniel Jönsson
+ * Contact: Erik Sundén
  *
  *********************************************************************************/
 
-#ifndef IVW_VOLUME_FIRST_HIT_CL_H
-#define IVW_VOLUME_FIRST_HIT_CL_H
+#ifndef IVW_POSITIONWIDGETPROCESSOR_H
+#define IVW_POSITIONWIDGETPROCESSOR_H
 
-#include <modules/basecl/baseclmoduledefine.h>
+#include <modules/basegl/baseglmoduledefine.h>
 #include <inviwo/core/common/inviwo.h>
+#include <modules/opengl/inviwoopengl.h>
 #include <inviwo/core/ports/imageport.h>
-#include <inviwo/core/ports/volumeport.h>
-#include <inviwo/core/processors/processor.h>
-#include <inviwo/core/properties/transferfunctionproperty.h>
-#include <inviwo/core/properties/property.h>
-#include <inviwo/core/properties/ordinalproperty.h>
-#include <modules/opencl/inviwoopencl.h>
-#include <modules/opencl/kernelowner.h>
+#include <inviwo/core/ports/geometryport.h>
+#include <modules/opengl/image/compositeprocessorgl.h>
+#include <inviwo/core/interaction/pickingobject.h>
+#include <inviwo/core/properties/cameraproperty.h>
+#include <inviwo/core/interaction/cameratrackball.h>
+
 
 namespace inviwo {
+class Shader;
 
-class IVW_MODULE_BASECL_API VolumeFirstHitCL : public Processor, public ProcessorKernelOwner {
+/** \docpage{org.inviwo.GeometryPicking, Geometry Picking}
+* Composite image with geometry where geometry repositioned through picking
+*
+* Use Left Mouse Button to move the geomtry around in the scene 
+*
+* ### Inports
+*   * __GeometryInport__ The input geometry.
+*   * __ImageInport__ The input image.
+*
+* ### Outports
+*   * __ImageOutport__ The output image.
+*
+* ### Properties
+*   * __Position_ Defines size of all lines.
+*   * __Camera__ Camera of the scene.
+*   * __Trackball__ Camera trackball.
+*/
+
+/**
+* \brief Composite image with geometry where geometry repositioned through picking
+*
+*/
+
+class IVW_MODULE_BASEGL_API GeometryPicking : public CompositeProcessorGL {
 public:
-    VolumeFirstHitCL();
-    ~VolumeFirstHitCL();
-
     InviwoProcessorInfo();
+
+    GeometryPicking();
+    virtual ~GeometryPicking();
 
     void initialize();
     void deinitialize();
 
-protected:
     virtual void process();
+    
+    bool isReady() const { return geometryInport_.isReady(); }
 
-    void firstHit(const cl::Image& volumeCL, const cl::Image& entryPoints,
-                  const cl::Image& exitPoints, const cl::Image& transferFunctionCL,
-                  const cl::Image& output, float stepSize, svec2 outportDim,
-                  svec2 localWorkGroupSize, cl::Event* profilingEvent);
+    void updateWidgetPositionFromPicking(const PickingObject*);
 
 private:
-    VolumeInport volumePort_;
-    ImageInport entryPort_;
-    ImageInport exitPort_;
+    GeometryInport geometryInport_;
+    ImageInport imageInport_;
     ImageOutport outport_;
 
-    FloatProperty samplingRate_;
-    TransferFunctionProperty transferFunction_;
-    IntVec2Property workGroupSize_;
-    BoolProperty useGLSharing_;
+    FloatVec3Property position_;
 
-    cl::Kernel* kernel_;
+    CameraProperty camera_;
+    CameraTrackball trackball_;
+
+    const PickingObject* widgetPickingObject_;
+
+    Shader* shader_;
 };
 
-}  // namespace
+} // namespace
 
-#endif  // IVW_VOLUME_FIRST_HIT_CL_H
+#endif // IVW_POSITIONWIDGETPROCESSOR_H

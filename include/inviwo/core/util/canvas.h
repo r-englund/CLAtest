@@ -71,8 +71,8 @@ public:
     bool isInitialized();
 
     void setEventPropagator(EventPropagator* propagator);
-    ProcessorWidget* getProcessorWidgetOwner() const;
-    void setProcessorWidgetOwner(ProcessorWidget*);
+    virtual ProcessorWidget* getProcessorWidgetOwner() const;
+    virtual void setProcessorWidgetOwner(ProcessorWidget*);
 
     //TODO, this should not be here...
     static DataWriterType<Layer>* generalLayerWriter_;

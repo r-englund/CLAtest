@@ -53,4 +53,9 @@ Geometry* Geometry::clone() const {
     return new Geometry(*this);
 }
 
+const SpatialCameraCoordinateTransformer<3>& Geometry::getCoordinateTransformer(
+    const CameraProperty* camera) const {
+    return SpatialEntity<3>::getCoordinateTransformer(Camera<3>(camera));
+}
+
 }  // namespace

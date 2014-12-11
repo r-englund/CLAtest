@@ -128,7 +128,6 @@ void ImageGL::reAttachAllLayers(bool clearLayers) {
 }
 
 void ImageGL::activateBuffer() {
-    // invalidatePBOs();
     frameBufferObject_->activate();
     frameBufferObject_->defineDrawBuffers();
     uvec2 dim = getDimension();

@@ -3,7 +3,7 @@
  * Inviwo - Interactive Visualization Workshop
  * Version 0.6b
  *
- * Copyright (c) 2013-2014 Inviwo Foundation
+ * Copyright (c) 2014 Inviwo Foundation
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -30,38 +30,59 @@
  *
  *********************************************************************************/
 
-#ifndef IVW_VOLUME_RAYCASTER_CL_H
-#define IVW_VOLUME_RAYCASTER_CL_H
+#ifndef IVW_VOLUME_FIRST_HIT_CL_H
+#define IVW_VOLUME_FIRST_HIT_CL_H
 
-#include <modules/opencl/openclmoduledefine.h>
+#include <modules/basecl/baseclmoduledefine.h>
 #include <inviwo/core/common/inviwo.h>
 #include <inviwo/core/ports/imageport.h>
 #include <inviwo/core/ports/volumeport.h>
 #include <inviwo/core/processors/processor.h>
 #include <inviwo/core/properties/transferfunctionproperty.h>
-
+#include <inviwo/core/properties/property.h>
+#include <inviwo/core/properties/ordinalproperty.h>
 #include <modules/opencl/inviwoopencl.h>
-#include <modules/opencl/image/layerclbase.h>
 #include <modules/opencl/kernelowner.h>
-#include <modules/opencl/volume/volumeclbase.h>
 
 namespace inviwo {
+/** \docpage{org.inviwo.VolumeFirstHitCL, Volume First Hit}
+ * Computes the first point with non-zero opacity within a volume given entry and exit points in texture space. 
+ * ### Inports
+ *   * __VolumeInport__ The volume to intersect.
+ *   * __ImageInport__ The entry point.
+ *   * __ImageInport__ The exit point.
+ *
+ * ### Outports
+ *   * __ImageOutport__ The first hit point.
+ * 
+ * ### Properties
+ *   * __Sampling rate__ Number of sample per voxel to take.
+ *   * __Transfer function__ Transfer function to map data values into color and opacity.
+ *   * __Work group size__ OpenCL work group size (performance)
+ *   * __Use OpenGL sharing__ Share data with OpenGL (performance and compability).
+ */
 
-class IVW_MODULE_OPENCL_API VolumeRaycasterCL : public Processor, public ProcessorKernelOwner {
+/**
+ * \brief Computes the first point with non-zero opacity within a volume given entry and exit points in texture space. 
+ *
+ */
+class IVW_MODULE_BASECL_API VolumeFirstHitCLProcessor : public Processor, public ProcessorKernelOwner {
 public:
-    VolumeRaycasterCL();
-    ~VolumeRaycasterCL();
+    VolumeFirstHitCLProcessor();
+    ~VolumeFirstHitCLProcessor();
 
     InviwoProcessorInfo();
 
     void initialize();
     void deinitialize();
 
-    virtual bool isReady() const;
 protected:
     virtual void process();
 
-    void volumeRaycast(const VolumeCLBase* volumeCL, const vec2& volumeDataOffsetScaling, const LayerCLBase* entryCLGL, const LayerCLBase* exitCLGL, const LayerCLBase* transferFunctionCL, LayerCLBase* outImageCL, svec2 globalWorkGroupSize, svec2 localWorkGroupSize, cl::Event* profilingEvent);
+    void firstHit(const cl::Image& volumeCL, const cl::Image& entryPoints,
+                  const cl::Image& exitPoints, const cl::Image& transferFunctionCL,
+                  const cl::Image& output, float stepSize, svec2 outportDim,
+                  svec2 localWorkGroupSize, cl::Event* profilingEvent);
 
 private:
     VolumeInport volumePort_;
@@ -72,12 +93,11 @@ private:
     FloatProperty samplingRate_;
     TransferFunctionProperty transferFunction_;
     IntVec2Property workGroupSize_;
-
     BoolProperty useGLSharing_;
 
     cl::Kernel* kernel_;
 };
 
-} // namespace
+}  // namespace
 
-#endif // IVW_VOLUME_RAYCASTER_CL_H
+#endif  // IVW_VOLUME_FIRST_HIT_CL_H

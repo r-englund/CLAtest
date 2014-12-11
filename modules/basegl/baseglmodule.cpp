@@ -34,7 +34,7 @@
 #include <modules/opengl/glwrap/shadermanager.h>
 #include <modules/basegl/processors/background.h>
 #include <modules/basegl/processors/drawlines.h>
-#include <modules/basegl/processors/drawfreehand.h>
+#include <modules/basegl/processors/drawpoints.h>
 #include <modules/basegl/processors/entryexitpoints.h>
 #include <modules/basegl/processors/findedges.h>
 #include <modules/basegl/processors/firstivwprocessor.h>
@@ -44,7 +44,7 @@
 #include <modules/basegl/processors/lightvolumegl.h>
 #include <modules/basegl/processors/multichannelraycaster.h>
 #include <modules/basegl/processors/multiplanar.h>
-#include <modules/basegl/processors/positionwidgetprocessor.h>
+#include <modules/basegl/processors/geometrypicking.h>
 #include <modules/basegl/processors/redgreenprocessor.h>
 #include <modules/basegl/processors/simpleraycaster.h>
 #include <modules/basegl/processors/isoraycaster.h>
@@ -62,17 +62,17 @@ BaseGLModule::BaseGLModule() : InviwoModule() {
     
     registerProcessor(Background);
     registerProcessor(DrawLines);
-    registerProcessor(DrawFreeHand);
+    registerProcessor(DrawPoints);
     registerProcessor(EntryExitPoints);
     registerProcessor(FindEdges);
     registerProcessor(FirstIvwProcessor);
+    registerProcessor(GeometryPicking);
     registerProcessor(ImageLayoutGL);
     registerProcessor(ImageMixer);
     registerProcessor(LightingRaycaster);
     registerProcessor(LightVolumeGL);
     registerProcessor(MultichannelRaycaster);
     registerProcessor(MultiPlanar);
-    registerProcessor(PositionWidgetProcessor);
     registerProcessor(RedGreenProcessor);
     registerProcessor(SimpleRaycaster);
     registerProcessor(ISORaycaster);

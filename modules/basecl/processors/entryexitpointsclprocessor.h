@@ -46,8 +46,27 @@
 #include <modules/basecl/meshentryexitpointscl.h>
 
 namespace inviwo {
+/** \docpage{org.inviwo.EntryExitPointsCL, Entry-exit points}
+ * Computes the entry and exit points of a triangle mesh from the camera position in texture space. 
+ * The output color will be zero if no intersection is found, otherwise .
+ * ### Inports
+ *   * __GeometryInport__ The mesh to intersect.
+ *
+ * ### Outports
+ *   * __ImageOutport__ The first hit point.
+ *   * __ImageOutport__ The last hit point.
+ * 
+ * ### Properties
+ *   * __Camera__ Camera of the scene.
+ *   * __Work group size__ OpenCL work group size (performance)
+ *   * __Use OpenGL sharing__ Share data with OpenGL (performance and compability).
+ */
 
-class IVW_MODULE_BASECL_API EntryExitPointsCLProcessor : public Processor, public ProcessorKernelOwner {
+/**
+ * \brief Computes the entry and exit points of a triangle mesh from the camera position in texture space.
+ *
+ */
+class IVW_MODULE_BASECL_API EntryExitPointsCLProcessor : public Processor, public KernelObserver {
 public:
     EntryExitPointsCLProcessor();
     virtual ~EntryExitPointsCLProcessor();
@@ -59,6 +78,7 @@ public:
 
 protected:
     virtual void process();
+    void onKernelCompiled( const cl::Kernel* kernel ) { invalidate(INVALID_RESOURCES); }
 
 
 

@@ -46,22 +46,22 @@ void main() {
     vec2 texCoords = gl_FragCoord.xy * screenDimRCP_;
     vec4 color0 = texture(texColor0_, texCoords);
     vec4 picking0 = texture(texPicking0_, texCoords);
-    float depth0 = texture(texDepth0_, texCoords).z;
+    float depth0 = texture(texDepth0_, texCoords).r;
     vec4 color1 = texture(texColor1_, texCoords);
     vec4 picking1 = texture(texPicking1_, texCoords);
-    float depth1 = texture(texDepth1_, texCoords).z;
+    float depth1 = texture(texDepth1_, texCoords).r;
     vec4 colorOut;
     vec4 pickingOut;
     float depthOut;
 
     if (depth1 <= depth0) {
-        colorOut.rgb = color1.rgb + (1.0-color1.a) * color0.a * color0.rgb;
-        colorOut.a = color1.a + (1.0-color1.a) * color0.a;
+        colorOut.rgb = color1.rgb * color1.a + color0.rgb * (1.0 - color1.a);
+        colorOut.a = color1.a + color0.a * (1.0 - color1.a);
         pickingOut = (picking1.a > 0 ? picking1 : (color1.a < 0.95 ? picking0 : vec4(0.0)));
         depthOut = depth1;
     } else {
-        colorOut.rgb = color0.rgb + (1.0-color0.a) * color1.a * color1.rgb;
-        colorOut.a = color0.a + (1.0-color0.a) * color1.a;
+        colorOut.rgb = color0.rgb * color0.a + color1.rgb * (1.0 - color0.a);
+        colorOut.a = color0.a + color1.a * (1.0 - color0.a);
         pickingOut = (picking0.a > 0 ? picking0 : (color0.a < 0.95 ? picking1 : vec4(0.0)));
         depthOut = depth0;
     }

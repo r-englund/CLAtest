@@ -121,11 +121,11 @@ void testVolumeClone(std::string filename) {
     EXPECT_EQ(dim,dim1);
     EXPECT_EQ(dim,dim2);
 
-    EXPECT_EQ(volume->getBasisAndOffset(), volume1->getBasisAndOffset());
-    EXPECT_EQ(volume->getBasisAndOffset(), volume2->getBasisAndOffset());
+    EXPECT_EQ(volume->getModelMatrix(), volume1->getModelMatrix());
+    EXPECT_EQ(volume->getModelMatrix(), volume2->getModelMatrix());
 
-    EXPECT_EQ(volume->getWorldTransform(), volume1->getWorldTransform());
-    EXPECT_EQ(volume->getWorldTransform(), volume2->getWorldTransform());
+    EXPECT_EQ(volume->getWorldMatrix(), volume1->getWorldMatrix());
+    EXPECT_EQ(volume->getWorldMatrix(), volume2->getWorldMatrix());
 
     MetaDataMap* metadata = volume->getMetaDataMap();
     MetaDataMap* metadata1 = volume1->getMetaDataMap();

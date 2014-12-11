@@ -47,6 +47,7 @@
 namespace inviwo {
 
 class Shader;
+class Mesh;
 
 class IVW_MODULE_FONTRENDERING_API TextOverlayGL : public Processor {
 public:
@@ -61,11 +62,13 @@ public:
     
 protected:
     virtual void process();
-    void render_text(const char* text, float x, float y, float sx, float sy, unsigned int unitNumber);
+    void render_text(const char* text, float x, float y, float sx, float sy);
     vec2 measure_text(const char* text, float sx, float sy);
 
 
 private:
+    void initMesh();
+
     ImageInport inport_;
     ImageOutport outport_;
     FT_Library fontlib_;
@@ -83,8 +86,8 @@ private:
     Shader* copyShader_;
     Shader* textShader_;
 
-    GLuint vboCharacter_;
     GLuint texCharacter_;
+    Mesh* mesh_;
 };
 
 } // namespace

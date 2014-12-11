@@ -530,7 +530,10 @@ void CanvasQt::resize(uvec2 size) {
 }
 
 void CanvasQt::resizeEvent(QResizeEvent* event) {
-    if (event->spontaneous()) return;
+    if (event->spontaneous()) {
+        QGLWindow::resizeEvent(event);
+        return;
+    }
     CanvasGL::resize(uvec2(event->size().width(), event->size().height()));
     QGLWindow::resizeEvent(event);
 }

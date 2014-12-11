@@ -103,8 +103,9 @@ size_t Texture2D::getNumberOfValues() const {
 
 void Texture2D::upload(const void* data) {
     bind();
+    glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
     glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, dimensions_.x, dimensions_.y, format_, dataType_, data);
-    LGL_ERROR;
+    LGL_ERROR_SUPPRESS;
 }
 
 void Texture2D::resize(uvec2 dimension) {

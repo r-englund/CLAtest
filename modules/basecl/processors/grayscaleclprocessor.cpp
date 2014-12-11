@@ -30,7 +30,7 @@
  *
  *********************************************************************************/
 
-#include "grayscalecl.h"
+#include "grayscaleclprocessor.h"
 #include <modules/opencl/inviwoopencl.h>
 #include <modules/opencl/image/imagecl.h>
 #include <modules/opencl/image/imageclgl.h>
@@ -41,28 +41,28 @@
 
 namespace inviwo {
 
-ProcessorClassIdentifier(GrayscaleCL, "org.inviwo.GrayscaleCL");
-ProcessorDisplayName(GrayscaleCL,  "Grayscale");
-ProcessorTags(GrayscaleCL, Tags::CL);
-ProcessorCategory(GrayscaleCL, "Image Operation");
-ProcessorCodeState(GrayscaleCL, CODE_STATE_EXPERIMENTAL);
+ProcessorClassIdentifier(GrayscaleCLProcessor, "org.inviwo.GrayscaleCL");
+ProcessorDisplayName(GrayscaleCLProcessor,  "Image grayscale");
+ProcessorTags(GrayscaleCLProcessor, Tags::CL);
+ProcessorCategory(GrayscaleCLProcessor, "Image Operation");
+ProcessorCodeState(GrayscaleCLProcessor, CODE_STATE_STABLE);
 
-GrayscaleCL::GrayscaleCL()
+GrayscaleCLProcessor::GrayscaleCLProcessor()
     : Processor(), ProcessorKernelOwner(this)
-    , inputPort_("color image")
+    , input_("color image")
     , outport_("outport")
     , useGLSharing_("glsharing", "Use OpenGL sharing", true)
     , kernel_(NULL)
 {
-    addPort(inputPort_, "ImagePortGroup1");
+    addPort(input_, "ImagePortGroup1");
     addPort(outport_, "ImagePortGroup1");
 
     addProperty(useGLSharing_);
 }
 
-GrayscaleCL::~GrayscaleCL() {}
+GrayscaleCLProcessor::~GrayscaleCLProcessor() {}
 
-void GrayscaleCL::initialize() {
+void GrayscaleCLProcessor::initialize() {
     Processor::initialize();
     kernel_ = addKernel("grayscale.cl", "grayscaleKernel");
     if (!InviwoApplication::getPtr()->getSettingsByType<OpenCLSettings>()->isSharingEnabled()) {
@@ -71,11 +71,11 @@ void GrayscaleCL::initialize() {
     }
 }
 
-void GrayscaleCL::deinitialize() {
+void GrayscaleCLProcessor::deinitialize() {
     Processor::deinitialize();
 }
 
-void GrayscaleCL::process() {
+void GrayscaleCLProcessor::process() {
     if (kernel_ == NULL) {
         return;
     }
@@ -84,7 +84,7 @@ void GrayscaleCL::process() {
 
     //outImage->resize(inImage->getDimension());
     uvec2 outportDim = outImage->getDimension();
-    const Image* inImage = inputPort_.getData();
+    const Image* inImage = input_.getData();
     try {
         if (useGLSharing_.get()) {
             SyncCLGL glSync;

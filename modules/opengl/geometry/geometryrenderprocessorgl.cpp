@@ -155,12 +155,8 @@ void GeometryRenderProcessorGL::process() {
     else if (polygonMode_.get()==GL_POINT)
         glPointSize((GLfloat)renderPointSize_.get());
 
-    for (std::vector<GeometryRenderer*>::const_iterator it = renderers_.begin(), endIt = renderers_.end(); it != endIt; ++it) {
-        //utilgl::setShaderUniforms(shader_, camera_, *(*it)->getGeometry());
-        utilgl::setShaderUniforms(shader_, *(*it)->getGeometry(), "geometry_");
-        shader_->setUniform("viewToTexture_", camera_.inverseViewMatrix()*(*it)->getGeometry()->getCoordinateTransformer().getWorldToTextureMatrix());
-        mat4 modelViewMatrix = camera_.viewMatrix()*(*it)->getGeometry()->getWorldTransform()*(*it)->getGeometry()->getBasisAndOffset();
-        shader_->setUniform("modelViewMatrix_", modelViewMatrix);
+    for (std::vector<GeometryRenderer*>::const_iterator it = renderers_.begin(), endIt = renderers_.end(); it != endIt; ++it) {       
+        utilgl::setShaderUniforms(shader_, *(*it)->getGeometry(), "geometry_");                
         (*it)->render();
     }
 
@@ -215,7 +211,7 @@ void GeometryRenderProcessorGL::centerViewOnGeometry() {
         minPos = glm::min(minPos, (*pos)[i]);
     }
 
-    vec3 centerPos = (geom->getWorldTransform()*geom->getBasisAndOffset()*vec4(0.5f*(maxPos+minPos), 1.f)).xyz();
+    vec3 centerPos = (geom->getWorldMatrix()*geom->getModelMatrix()*vec4(0.5f*(maxPos+minPos), 1.f)).xyz();
     vec3 lookFrom = camera_.getLookFrom();
     vec3 dir = centerPos - lookFrom;
 
@@ -228,8 +224,8 @@ void GeometryRenderProcessorGL::centerViewOnGeometry() {
     return;
 
     dir = glm::normalize(dir);
-    vec3 worldMin = (geom->getWorldTransform()*geom->getBasisAndOffset()*vec4(minPos, 1.f)).xyz();
-    vec3 worldMax = (geom->getWorldTransform()*geom->getBasisAndOffset()*vec4(maxPos, 1.f)).xyz();
+    vec3 worldMin = (geom->getWorldMatrix()*geom->getModelMatrix()*vec4(minPos, 1.f)).xyz();
+    vec3 worldMax = (geom->getWorldMatrix()*geom->getModelMatrix()*vec4(maxPos, 1.f)).xyz();
     vec3 newLookFrom = lookFrom -dir*glm::length(worldMax-worldMin);
     camera_.setLook(newLookFrom, centerPos, camera_.getLookUp());
 }

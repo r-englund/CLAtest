@@ -40,6 +40,8 @@
 
 namespace inviwo {
 
+class CameraProperty;
+
 class IVW_CORE_API Geometry : public DataGroup, public SpatialEntity<3> {
 
 public:
@@ -48,6 +50,9 @@ public:
     Geometry& operator=(const Geometry& that);
     virtual Geometry* clone() const;
     virtual ~Geometry();
+
+    virtual const SpatialCameraCoordinateTransformer<3>& getCoordinateTransformer(const CameraProperty* camera) const;
+    using SpatialEntity<3>::getCoordinateTransformer;
 };
 
 } // namespace

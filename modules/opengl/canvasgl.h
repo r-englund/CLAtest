@@ -78,6 +78,8 @@ public:
         disableDrawImagePlaneRect();
     }
 
+    virtual void setProcessorWidgetOwner(ProcessorWidget*);
+
 protected:
     void initializeGLEW();
     virtual void initializeSquare();

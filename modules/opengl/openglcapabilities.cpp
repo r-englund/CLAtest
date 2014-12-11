@@ -42,11 +42,7 @@
 
 namespace inviwo {
 
-#ifdef __APPLE__
 std::string OpenGLCapabilities::preferredProfile_ = "core";
-#else
-std::string OpenGLCapabilities::preferredProfile_ = "compatibility";
-#endif
 
 #define OpenGLInfoNotFound(message) { LogInfoCustom("OpenGLInfo",message << " Info could not be retrieved"); }
 

@@ -138,7 +138,7 @@ public:
     PropertyListWidget* getPropertyListWidget() const;
 
     // Overrides for ProcessorNetworkObserver 
-    virtual void onProcessorNetworkChange() { setModified(); };
+    virtual void onProcessorNetworkChange();
     
     virtual void onProcessorNetworkDidAddProcessor(Processor* processor);
     virtual void onProcessorNetworkWillRemoveProcessor(Processor* processor);

@@ -86,6 +86,7 @@
 #include <glm/gtc/type_ptr.hpp>
 #include <glm/gtx/rotate_vector.hpp>
 #include <glm/gtx/string_cast.hpp>
+#include <glm/gtx/matrix_operation.hpp>
 #include <glm/common.hpp>
 
 typedef glm::ivec2 ivec2;

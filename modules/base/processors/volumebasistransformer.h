@@ -94,8 +94,8 @@ inviwo::BasisTransform<InportType, OutportType>::~BasisTransform() {}
 template <typename InportType, typename OutportType>
 void inviwo::BasisTransform<InportType, OutportType>::process() {
     if (inport_.hasData()) {
-        if (orgBasisAndOffset_ != inport_.getData()->getBasisAndOffset()) {
-            orgBasisAndOffset_ = inport_.getData()->getBasisAndOffset();
+        if (orgBasisAndOffset_ != inport_.getData()->getModelMatrix()) {
+            orgBasisAndOffset_ = inport_.getData()->getModelMatrix();
             //TODO: Can't set these values as deserialization might already have done that.
             //Also not that glm::angle always return radians from now on.
             /*vec3 a(orgBasisAndOffset_[0]);
@@ -138,7 +138,7 @@ void inviwo::BasisTransform<InportType, OutportType>::process() {
             0.0f, 0.0f,              0.0f,                                                               1.0f
         );
 
-       outport_.getData()->setBasisAndOffset(glm::transpose(newBasisAndOffset));
+       outport_.getData()->setModelMatrix(glm::transpose(newBasisAndOffset));
     }
 }
 

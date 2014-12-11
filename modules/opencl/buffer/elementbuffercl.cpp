@@ -30,44 +30,33 @@
  *
  *********************************************************************************/
 
-#ifndef IVW_GRAYSCALE_CL_H
-#define IVW_GRAYSCALE_CL_H
-
-#include <modules/opencl/openclmoduledefine.h>
-#include <inviwo/core/common/inviwo.h>
-#include <inviwo/core/ports/imageport.h>
-#include <inviwo/core/processors/processor.h>
-
-
-
-#include <modules/opencl/inviwoopencl.h>
-#include <modules/opencl/kernelowner.h>
-
+#include <modules/opencl/buffer/elementbuffercl.h>
 
 namespace inviwo {
 
-class IVW_MODULE_OPENCL_API GrayscaleCL : public Processor, public ProcessorKernelOwner {
-public:
-    GrayscaleCL();
-    ~GrayscaleCL();
+ElementBufferCL::ElementBufferCL(size_t size, const DataFormatBase* format, BufferType type, BufferUsage usage, const void* data,
+                   cl_mem_flags readWriteFlag)
+    : BufferCL(size, format, type, usage, data, readWriteFlag)
+{
+}
 
-    InviwoProcessorInfo();
+ElementBufferCL::ElementBufferCL(const ElementBufferCL& rhs)
+    : BufferCL(rhs)
+{
+}
 
-    void initialize();
-    void deinitialize();
+ElementBufferCL::~ElementBufferCL() {
+}
 
-protected:
-    virtual void process();
 
-private:
-    ImageInport inputPort_;
-    ImageOutport outport_;
+} // namespace inviwo
 
-    BoolProperty useGLSharing_;
+namespace cl {
 
-    cl::Kernel* kernel_;
-};
+template <>
+cl_int Kernel::setArg(cl_uint index, const inviwo::ElementBufferCL& value)
+{
+    return setArg(index, value.getBuffer());
+}
 
-} // namespace
-
-#endif // IVW_GRAYSCALE_CL_H
+} // namespace cl

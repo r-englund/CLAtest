@@ -253,8 +253,8 @@ void MarchingTetrahedron::evaluate() {
 
     const Volume *baseVolume = dynamic_cast<const Volume *>(volume->getOwner());
     if (baseVolume) {
-        mesh->setBasisAndOffset(baseVolume->getBasisAndOffset());
-        mesh->setWorldTransform(baseVolume->getWorldTransform());
+        mesh->setModelMatrix(baseVolume->getModelMatrix());
+        mesh->setWorldMatrix(baseVolume->getWorldMatrix());
     }
     setOutput(mesh);
 

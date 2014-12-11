@@ -88,8 +88,6 @@ protected:
 
     void downloadToPBO() const;
 
-    void invalidatePBO();
-
     void setupAsyncReadBackPBO();
 
     void setNChannels();

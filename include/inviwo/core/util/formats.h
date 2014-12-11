@@ -60,6 +60,10 @@ namespace inviwo {
 
 template <unsigned int N, typename T>
 class Matrix {};
+
+template <unsigned int N, typename T>
+class Vector {};
+
 template <typename T>
 class Matrix<4, T> : public glm::detail::tmat4x4<T, glm::defaultp> {
 public:
@@ -71,6 +75,7 @@ public:
             m[3][0], m[3][1], m[3][2], m[3][3]) {};
     Matrix<4, T>(const glm::detail::tmat4x4<T, glm::defaultp>& m) : glm::detail::tmat4x4<T, glm::defaultp>(m) {};
     Matrix<4, T>(T m) : glm::detail::tmat4x4<T, glm::defaultp>(m) {};
+    Matrix<4, T>(Vector<4,T>& m) : glm::detail::tmat4x4<T, glm::defaultp>() {*this = glm::diagonal4x4(m);}
     Matrix<4, T>(T x1, T y1, T z1, T w1,
                  T x2, T y2, T z2, T w2,
                  T x3, T y3, T z3, T w3,
@@ -98,6 +103,7 @@ public:
             m[2][0], m[2][1], m[2][2]) {};
     Matrix<3, T>(const glm::detail::tmat3x3<T, glm::defaultp>& m) : glm::detail::tmat3x3<T, glm::defaultp>(m) {};
     Matrix<3, T>(T m) : glm::detail::tmat3x3<T, glm::defaultp>(m) {};
+    Matrix<3, T>(Vector<3,T>& m) : glm::detail::tmat3x3<T, glm::defaultp>() {*this = glm::diagonal3x3(m);}
     Matrix<3, T>(T x1, T y1, T z1,
                  T x2, T y2, T z2,
                  T x3, T y3, T z3) :
@@ -121,6 +127,7 @@ public:
             m[1][0], m[1][1]) {};
     Matrix<2, T>(const glm::detail::tmat2x2<T, glm::defaultp>& m) : glm::detail::tmat2x2<T, glm::defaultp>(m) {};
     Matrix<2, T>(T m) : glm::detail::tmat2x2<T, glm::defaultp>(m) {};
+    Matrix<2, T>(Vector<2,T>& m) : glm::detail::tmat2x2<T, glm::defaultp>() {*this = glm::diagonal2x2(m);}
     Matrix<2, T>(T x1, T y1,
                  T x2, T y2) :
         glm::detail::tmat2x2<T, glm::defaultp>(x1, y1,
@@ -133,8 +140,25 @@ public:
         return *this;
     };
 };
+
 template <unsigned int N, typename T>
-class Vector {};
+Matrix<N, T> MatrixInvert(const Matrix<N, T>& m) {
+    return glm::inverse(m.getGLM());
+}
+template <typename T>
+Matrix<4, T> MatrixInvert(const glm::detail::tmat4x4<T, glm::defaultp>& m) {
+    return glm::inverse(m);
+}
+template <typename T>
+Matrix<3, T> MatrixInvert(const glm::detail::tmat3x3<T, glm::defaultp>& m) {
+    return glm::inverse(m);
+}
+template <typename T>
+Matrix<2, T> MatrixInvert(const glm::detail::tmat2x2<T, glm::defaultp>& m) {
+    return glm::inverse(m);
+}
+
+
 template <typename T>
 class Vector<4, T> : public glm::detail::tvec4<T, glm::defaultp> {
 public:

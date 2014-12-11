@@ -99,6 +99,7 @@ size_t Texture3D::getNumberOfValues() const {
 
 void Texture3D::upload(const void* data) {
     bind();
+    glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
     glTexSubImage3D(GL_TEXTURE_3D, 0, 0, 0, 0, dimensions_.x, dimensions_.y, dimensions_.z, format_,
                     dataType_, data);
     LGL_ERROR;

@@ -161,7 +161,7 @@ void HeightFieldProcessor::setupLight() {
             }
             const PointLight* pointLight = dynamic_cast<const PointLight*>(inportLightSource_.getData());
             if(pointLight){
-                mat4 toWorld = inport_.getData()->getWorldTransform();
+                mat4 toWorld = inport_.getData()->getWorldMatrix();
                 vec4 volumeCenterWorldW = toWorld * vec4(0.f, 0.f, 0.f, 1.f);
                 vec3 volumeCenterWorld = volumeCenterWorldW.xyz();
                 lightPos_ = pointLight->getPosition();

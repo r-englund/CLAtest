@@ -25,7 +25,7 @@
  * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- * 
+ *
  * Contact: Peter Steneteg
  *
  *********************************************************************************/
@@ -36,27 +36,32 @@
 #include <QPen>
 #include <QPainter>
 #include <QBrush>
+#include <QColor>
 
 namespace inviwo {
 
-ProcessorStatusGraphicsItem::ProcessorStatusGraphicsItem(QGraphicsRectItem* parent, Processor* processor)
-    : EditorGraphicsItem(parent), processor_(processor), size_(10.0f), lineWidth_(3.0f), running_(false) {
-
-
-    setRect(-0.5f * size_ - lineWidth_, -0.5f * size_ - lineWidth_, size_ + 2.0*lineWidth_,
-            size_ + 2.0*lineWidth_);
+ProcessorStatusGraphicsItem::ProcessorStatusGraphicsItem(QGraphicsRectItem* parent,
+                                                         Processor* processor)
+    : EditorGraphicsItem(parent)
+    , processor_(processor)
+    , size_(10.0f)
+    , lineWidth_(3.0f)
+    , ready_(false)
+    , running_(false) {
+    setRect(-0.5f * size_ - lineWidth_, -0.5f * size_ - lineWidth_, size_ + 2.0 * lineWidth_,
+            size_ + 2.0 * lineWidth_);
 
     setCacheMode(QGraphicsItem::DeviceCoordinateCache);
     setPos(QPointF(64.0f, -15.0f));
 }
 
-
-void ProcessorStatusGraphicsItem::setRunning(bool val){
+void ProcessorStatusGraphicsItem::setRunning(bool val) {
     running_ = val;
     update();
 }
 
-void ProcessorStatusGraphicsItem::paint(QPainter* p, const QStyleOptionGraphicsItem* options, QWidget* widget) {
+void ProcessorStatusGraphicsItem::paint(QPainter* p, const QStyleOptionGraphicsItem* options,
+                                        QWidget* widget) {
     qreal ledRadius = size_ / 2.0f;
     QColor baseColor(0, 170, 0);
 
@@ -64,9 +69,11 @@ void ProcessorStatusGraphicsItem::paint(QPainter* p, const QStyleOptionGraphicsI
     QColor borderColor;
 
 
+    ready_ = false;
     if (processor_->isReady()) {
         ledColor = baseColor;
         borderColor = QColor(124, 124, 124);
+        ready_ = true;
     } else if (running_) {
         ledColor = Qt::yellow;
         borderColor = QColor(124, 124, 124);
@@ -103,12 +110,12 @@ void ProcessorStatusGraphicsItem::paint(QPainter* p, const QStyleOptionGraphicsI
     p->restore();
 }
 
-void ProcessorStatusGraphicsItem::onProcessorWidgetShow(ProcessorWidget*) {
-    update();
-}
-void ProcessorStatusGraphicsItem::onProcessorWidgetHide(ProcessorWidget*) {
-    update();
-}
+void ProcessorStatusGraphicsItem::onProcessorWidgetShow(ProcessorWidget*) { update(); }
+void ProcessorStatusGraphicsItem::onProcessorWidgetHide(ProcessorWidget*) { update(); }
 
+void ProcessorStatusGraphicsItem::update(const QRectF& rect) {
+    if (processor_->isReady() != ready_)
+        EditorGraphicsItem::update(rect); 
+}
 
 }  // namespace

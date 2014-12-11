@@ -47,7 +47,7 @@ ProcessorCodeState(EntryExitPointsCLProcessor, CODE_STATE_STABLE);
 
 EntryExitPointsCLProcessor::EntryExitPointsCLProcessor()
     : Processor()
-    , ProcessorKernelOwner(this)
+    , KernelObserver()
     , geometryPort_("geometry")
     , entryPort_(
           "entry-points", COLOR_DEPTH,
@@ -66,6 +66,8 @@ EntryExitPointsCLProcessor::EntryExitPointsCLProcessor()
     addProperty(useGLSharing_);
     addProperty(trackball_);
     entryPort_.addResizeEventListener(&camera_);
+    // Will enable the processor to invalidate when the kernel has recompiled
+    entryExitPoints_.addObserver(this);
 }
 
 EntryExitPointsCLProcessor::~EntryExitPointsCLProcessor() {}

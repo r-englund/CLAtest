@@ -318,13 +318,13 @@ void VolumeSource::process() {
             mat3 basis(overrideA_, overrideB_, overrideC_);
             mat4 basisAndOffset(basis);
             basisAndOffset[3] = offset;
-            loadedData_->setBasisAndOffset(basisAndOffset);
+            loadedData_->setModelMatrix(basisAndOffset);
         } else {
             vec4 offset = vec4(offset_.get(), 1.0f);
             mat3 basis(a_, b_, c_);
             mat4 basisAndOffset(basis);
             basisAndOffset[3] = offset;
-            loadedData_->setBasisAndOffset(basisAndOffset);
+            loadedData_->setModelMatrix(basisAndOffset);
         }
 
         if (loadedData_->dataMap_.dataRange != dataRange_.get() &&

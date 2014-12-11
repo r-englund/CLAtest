@@ -96,10 +96,10 @@ Volume* IvfVolumeReader::readMetaData(std::string filePath)  {
     format_ = DataFormatBase::get(formatFlag);
     mat4 basisAndOffset;
     d.deserialize("BasisAndOffset", basisAndOffset);
-    volume->setBasisAndOffset(basisAndOffset);
+    volume->setModelMatrix(basisAndOffset);
     mat4 worldTransform;
     d.deserialize("WorldTransform", worldTransform);
-    volume->setWorldTransform(worldTransform);
+    volume->setWorldMatrix(worldTransform);
     d.deserialize("Dimension", dimension_);
     volume->setDimension(dimension_);
 

@@ -77,6 +77,7 @@ void EditableLabelQt::generateWidget() {
     
     QSizePolicy labelPol = this->sizePolicy();
     labelPol.setHorizontalStretch(1);
+    labelPol.setVerticalPolicy(QSizePolicy::Fixed);
     this->setSizePolicy(labelPol);
     label_->setSizePolicy(labelPol);
     lineEdit_->setSizePolicy(labelPol);

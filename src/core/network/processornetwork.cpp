@@ -87,12 +87,14 @@ ProcessorNetwork::~ProcessorNetwork() {
 }
 
 void ProcessorNetwork::addProcessor(Processor* processor) {
+    lock();
     notifyObserversProcessorNetworkWillAddProcessor(processor);
     processors_[processor->getIdentifier()] = processor;
     processor->ProcessorObservable::addObserver(this);
     processor->invalidate(INVALID_RESOURCES);
     modified();
     notifyObserversProcessorNetworkDidAddProcessor(processor);
+    unlock();
 }
 
 void ProcessorNetwork::removeProcessor(Processor* processor) {

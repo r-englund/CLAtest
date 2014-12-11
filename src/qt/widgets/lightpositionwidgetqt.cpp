@@ -35,7 +35,7 @@
 namespace inviwo {
 
 
-LightPositionWidgetQt::LightPositionWidgetQt() : mouseDown_(false) {
+LightPositionWidgetQt::LightPositionWidgetQt() : QLabel(), mouseDown_(false) {
     generateWidget();
 }
 
@@ -66,12 +66,12 @@ void LightPositionWidgetQt::mousePressEvent(QMouseEvent* e) {
 
 void LightPositionWidgetQt::mouseMoveEvent(QMouseEvent* e) {
     if (!mouseDown_) return;
-
     setNewPosition(e);
 }
 
 void LightPositionWidgetQt::mouseReleaseEvent(QMouseEvent* e) {
     setNewPosition(e);
+    mouseDown_ = false;
 }
 
 void LightPositionWidgetQt::setNewPosition(QMouseEvent* e) {
@@ -82,22 +82,22 @@ void LightPositionWidgetQt::setNewPosition(QMouseEvent* e) {
     float gradientSpaceRadius = sqrt(x*x+y*y);
 
     // Check if user clicked close to, or outside of radius
-    if (gradientSpaceRadius+3.f > gradient_->radius()) {
+    if (gradientSpaceRadius + 3.f > gradient_->radius()) {
         // User clicked outside of radius so we need to normalize x,y coordinate
         // Add a small number to avoid gradient on the border
-        float normFactor = gradient_->radius()/(3.f+gradientSpaceRadius);
+        float normFactor = gradient_->radius()/(gradientSpaceRadius + 3.f);
         x *= normFactor;
         y *= normFactor;
     }
 
-    float z = sqrt(gradient_->radius()*gradient_->radius()-x*x-y*y);
+    float z = sqrt(gradient_->radius()*gradient_->radius() - x*x - y*y);
     theta_ = acos(z/gradient_->radius());
     phi_ = atan2(y, x);
     // Spherical to cartesian coordinates
-    float x1=sin(theta_)*cos(phi_)*gradient_->radius()+center.x();
-    float y1=sin(theta_)*sin(phi_)*gradient_->radius()+center.y();
-    QPointF newPoint(x1,y1);
-    gradient_->setFocalPoint(newPoint);
+    float x1=sin(theta_)*cos(phi_)*gradient_->radius();
+    float y1=sin(theta_)*sin(phi_)*gradient_->radius();
+    QPointF newPoint(x1, y1);
+    gradient_->setFocalPoint(newPoint + center);
     gradientPixmap_->fill(Qt::transparent);
     painter_->fillRect(0, 0, 100, 100, *gradient_);
     this->setPixmap(*gradientPixmap_);
@@ -106,16 +106,17 @@ void LightPositionWidgetQt::setNewPosition(QMouseEvent* e) {
 
 void LightPositionWidgetQt::setPosition(const vec3& p) {
     radius_ = glm::length(p);
+    radius_ *= p.z < 0.0f ? -1.0f : 1.0f;  
 
     if (radius_==0)
         return;
 
     QPointF center(gradientPixmap_->width()/2, gradientPixmap_->height()/2);
-    theta_ = acos(p.z/radius_);
-    phi_ = atan2(p.y, p.x);
-    float x1=sin(theta_)*cos(phi_)*gradient_->radius()+center.x();
-    float y1=sin(theta_)*sin(phi_)*gradient_->radius()+center.y();
-    float gradientSpaceRadius = sqrt(pow(x1-center.x(),2)+pow(y1-center.y(),2));
+    theta_ = acos(p.z/std::abs(radius_));
+    phi_ = atan2(-p.y, p.x);
+    float x1=sin(theta_)*cos(phi_)*gradient_->radius();
+    float y1=sin(theta_)*sin(phi_)*gradient_->radius();
+    float gradientSpaceRadius = sqrt(pow(x1,2)+pow(y1,2));
 
     // Check if user clicked close to, or outside of radius
     if (gradientSpaceRadius+3.f > gradient_->radius()) {
@@ -125,10 +126,40 @@ void LightPositionWidgetQt::setPosition(const vec3& p) {
     }
 
     QPointF newPoint(x1,y1);
-    gradient_->setFocalPoint(newPoint);
+    gradient_->setFocalPoint(newPoint + center);
     gradientPixmap_->fill(Qt::transparent);
     painter_->fillRect(0, 0, 100, 100, *gradient_);
     this->setPixmap(*gradientPixmap_);
+}
+
+vec3 LightPositionWidgetQt::getPosition() const {
+    return std::abs(radius_ ) * vec3(getX(), getY(), getZ());
+}
+
+void LightPositionWidgetQt::setRadius(float radius) {
+    radius_ = radius; 
+    emit positionChanged();
+}
+
+float LightPositionWidgetQt::getRadius() const {
+    return radius_;
+}
+
+float LightPositionWidgetQt::getX() const {
+    return sin(theta_)*cos(phi_);
+}
+
+float LightPositionWidgetQt::getY() const {
+    return -sin(theta_)*sin(phi_);
+}
+
+float LightPositionWidgetQt::getZ() const {
+    return (radius_ < 0.0f ? -1.0f : 1.0f) * cos(theta_);
+}
+
+void LightPositionWidgetQt::mouseDoubleClickEvent(QMouseEvent* e) {
+    radius_ *= -1.0;
+    emit positionChanged();
 }
 
 }//namespace

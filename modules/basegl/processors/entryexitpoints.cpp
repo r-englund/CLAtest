@@ -33,6 +33,7 @@
 #include "entryexitpoints.h"
 #include <inviwo/core/interaction/cameratrackball.h>
 #include <inviwo/core/rendering/geometryrendererfactory.h>
+#include <inviwo/core/datastructures/coordinatetransformer.h>
 #include <modules/opengl/image/imagegl.h>
 #include <modules/opengl/clockgl.h>
 #include <modules/opengl/textureutils.h>
@@ -107,7 +108,7 @@ void EntryExitPoints::process() {
     glPointSize(1.f);
     glCullFace(GL_FRONT);
     genericShader_->activate();
-    mat4 modelMatrix = geom->getWorldTransform() * geom->getBasisAndOffset();
+    mat4 modelMatrix = geom->getWorldMatrix() * geom->getModelMatrix();
     genericShader_->setUniform("modelViewProjectionMatrix_",
                                camera_.projectionMatrix() * camera_.viewMatrix() * modelMatrix);
     renderer_->render();
@@ -161,10 +162,9 @@ void EntryExitPoints::process() {
         utilgl::setShaderUniforms(capNearClippingPrg_, exitPort_, "exitParameters_");
         // the rendered plane is specified in camera coordinates
         // thus we must transform from camera to world to texture coordinates
-        mat4 worldToTexMat = geom->getCoordinateTransformer().getWorldToTextureMatrix();
-        capNearClippingPrg_->setUniform(
-            "NDCToTextureMat_",
-            worldToTexMat * camera_.inverseViewMatrix() * camera_.inverseProjectionMatrix());
+        mat4 clipToTexMat = geom->getCoordinateTransformer(&camera_).getClipToDataMatrix();       
+        capNearClippingPrg_->setUniform("NDCToTextureMat_", clipToTexMat);
+        
         capNearClippingPrg_->setUniform("nearDist_", camera_.getNearPlaneDist());
         utilgl::singleDrawImagePlaneRect();
         capNearClippingPrg_->deactivate();

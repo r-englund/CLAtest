@@ -175,12 +175,14 @@ void Texture::bindToPBO() const {
 
 void Texture::unbindFromPBO() const {
     glBindBuffer(GL_PIXEL_UNPACK_BUFFER_ARB, 0);
+    //Invalidate PBO, as error might occur in download() otherwise.
+    dataInReadBackPBO_ = false;
     LGL_ERROR;
 }
 
 void Texture::unbindToPBO() const {
     glBindBuffer(GL_PIXEL_PACK_BUFFER_ARB, 0);
-    LGL_ERROR;
+    LGL_ERROR_SUPPRESS;
 }
 
 void Texture::download(void* data) const {
@@ -220,13 +222,9 @@ void Texture::loadFromPBO(const Texture* src) {
     setupAsyncReadBackPBO();
     src->bindFromPBO();
     upload(NULL);
-    unbind();
     src->unbindFromPBO();
+    unbind();
     LGL_ERROR;
-}
-
-void Texture::invalidatePBO() {
-    dataInReadBackPBO_ = false;
 }
 
 void Texture::setupAsyncReadBackPBO() {

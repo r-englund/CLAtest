@@ -36,6 +36,6 @@ uniform vec4 color;
 in vec2 texCoord;
 
 void main(void) {
-    FragData0 = vec4(1.0f, 1.0f, 1.0f, texture(tex, texCoord).a) * color;
+    FragData0 = vec4(1.0, 1.0, 1.0, texture(tex, texCoord).x) * color;
     gl_FragDepth = 0.0;
 }

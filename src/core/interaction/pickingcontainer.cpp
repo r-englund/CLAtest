@@ -68,7 +68,7 @@ bool PickingContainer::performPick(const uvec2& coord) {
                 if (currentPickObj_->readDepth()) {
                     const Layer* depthLayer = src_->getDepthLayer();
 
-                    if (pickingLayer) {
+                    if (depthLayer) {
                         const LayerRAM* depthLayerRAM = depthLayer->getRepresentation<LayerRAM>();
                         double depth = depthLayerRAM->getValueAsSingleDouble(coord);
                         currentPickObj_->setPickingDepth(depth);
