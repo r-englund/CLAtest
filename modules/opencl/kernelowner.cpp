@@ -69,6 +69,7 @@ KernelOwner::~KernelOwner() {
 ProcessorKernelOwner::ProcessorKernelOwner(Processor* processor)
     : KernelObserver()
     , processor_(processor) {
+    kernelOwner.addObserver(this);
 }
 
 void ProcessorKernelOwner::onKernelCompiled( const cl::Kernel* kernel ) {

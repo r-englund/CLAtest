@@ -121,12 +121,12 @@ public:
      * @param defines Defines to be set when building kernel
      * @return bool Kernel if successfully built, otherwise NULL
      */
-    cl::Kernel* addKernel(const std::string& fileName, const std::string& kernelName, const std::string& defines = "") { return kernels_.addKernel(fileName, kernelName, defines); }
+    cl::Kernel* addKernel(const std::string& fileName, const std::string& kernelName, const std::string& defines = "") { return kernelOwner.addKernel(fileName, kernelName, defines); }
 
-    const std::set<cl::Kernel*>& getKernels() const { return kernels_.getKernels(); }
+    const std::set<cl::Kernel*>& getKernels() const { return kernelOwner.getKernels(); }
 protected:
     Processor* processor_;
-    KernelOwner kernels_;
+    KernelOwner kernelOwner;
 };
 
 } // namespace
