@@ -31,16 +31,21 @@
  *********************************************************************************/
 
 #include <modules/opencl/volume/volumeclbase.h>
+#include <inviwo/core/datastructures/buffer/bufferram.h>
+#include <inviwo/core/datastructures/buffer/bufferramprecision.h>
 #include <inviwo/core/datastructures/datamapper.h>
 
 namespace inviwo {
 
 VolumeCLBase::VolumeCLBase()
-    : clImage_(NULL)
+    : clImage_(NULL), volumeStruct_(sizeof(VolumeParameters), DataUINT8::get())
 {
+    volumeStruct_.addRepresentation(new BufferRAMPrecision<glm::u8>(sizeof(VolumeParameters), DataUINT8::get()));
+    ivwAssert(volumeStruct_.getSize() == 512, "VolumeParameters must have a size that is power of two, currently " << volumeStruct_.getSize())
 }
 
-VolumeCLBase::VolumeCLBase(const VolumeCLBase& rhs) {
+VolumeCLBase::VolumeCLBase(const VolumeCLBase& rhs): volumeStruct_(sizeof(VolumeParameters), DataUINT8::get()) {
+    volumeStruct_.addRepresentation(new BufferRAMPrecision<glm::u8>(sizeof(VolumeParameters), DataUINT8::get()));
 }
 
 VolumeCLBase::~VolumeCLBase() { }
@@ -87,6 +92,74 @@ vec2 VolumeCLBase::getVolumeDataOffsetAndScaling(const Volume* volume) const
         break;
     }
     return vec2(offset, scalingFactor);
+}
+
+const Buffer& VolumeCLBase::getVolumeStruct(const Volume* volume) const {
+    // Update data before returning it
+    VolumeParameters* volumeStruct = static_cast<VolumeParameters*>(const_cast<Buffer&>(volumeStruct_).getEditableRepresentation<BufferRAM>()->getData());
+
+    volumeStruct->modelToWorld = volume->getCoordinateTransformer().getModelToWorldMatrix();
+    volumeStruct->worldToModel = volume->getCoordinateTransformer().getWorldToModelMatrix();
+    volumeStruct->worldToTexture = volume->getCoordinateTransformer().getWorldToTextureMatrix();
+    volumeStruct->textureToWorld = volume->getCoordinateTransformer().getTextureToWorldMatrix();
+    volumeStruct->textureToIndex = volume->getCoordinateTransformer().getTextureToIndexMatrix();
+    volumeStruct->indexToTexture = volume->getCoordinateTransformer().getIndexToTextureMatrix();
+    float gradientSpacing = volume->getWorldSpaceGradientSpacing();
+    // Scale the world matrix by the gradient spacing and the transform it to texture space.
+    // Note that since we are dealing with real values we can multiply the scalar after the transform as well
+    volumeStruct->textureSpaceGradientSpacing = glm::scale(volumeStruct->worldToTexture, vec3(gradientSpacing));
+    volumeStruct->worldSpaceGradientSampleSpacing = gradientSpacing;
+
+    // Compute scaling and offset for datatypes that will be sampled 
+    // (for instance 12-bit data)
+    // Note: Basically the same code is used in VolumeGL as well.
+    // Changes here should also be done there.
+    // Compute data scaling based on volume data range
+
+    dvec2 dataRange = volume->dataMap_.dataRange;
+    DataMapper defaultRange(volume->getDataFormat());
+    double typescale = getCLFormats()->getCLFormat(volume->getDataFormat()->getId()).scaling;
+    defaultRange.dataRange *= typescale;
+
+   
+    double formatScalingFactor = 1.0;
+    double signedFormatScalingFactor = 1.0;
+    double formatOffset = 0.0;
+    double signedFormatOffset = 0.0;
+
+    double invRange = 1.0 / (dataRange.y - dataRange.x);
+    double defaultToDataRange = (defaultRange.dataRange.y - defaultRange.dataRange.x) * invRange;
+    double defaultToDataOffset = (dataRange.x - defaultRange.dataRange.x) /
+        (defaultRange.dataRange.y - defaultRange.dataRange.x);
+
+    switch (getCLFormats()->getCLFormat(volume->getDataFormat()->getId()).normalization) {
+    case CLFormats::NONE:
+        formatScalingFactor = invRange;
+        formatOffset = -dataRange.x;
+        signedFormatScalingFactor = formatScalingFactor;
+        signedFormatOffset = formatOffset;
+        break;
+    case CLFormats::NORMALIZED:
+        formatScalingFactor = defaultToDataRange;
+        formatOffset = -defaultToDataOffset;
+        signedFormatScalingFactor = formatScalingFactor;
+        signedFormatOffset = formatOffset;
+        break;
+    case CLFormats::SIGN_NORMALIZED:
+        formatScalingFactor = 0.5 * defaultToDataRange;
+        formatOffset = 1.0 - 2 * defaultToDataOffset;
+        signedFormatScalingFactor = defaultToDataRange;
+        signedFormatOffset = -defaultToDataOffset;
+        break;
+    }
+
+
+    volumeStruct->formatScaling = static_cast<float>(formatScalingFactor);
+    volumeStruct->formatOffset = static_cast<float>(formatOffset);
+    volumeStruct->signedFormatScaling = static_cast<float>(signedFormatScalingFactor);
+    volumeStruct->signedFormatOffset = static_cast<float>(signedFormatOffset);
+
+    return volumeStruct_;
 }
 
 } // namespace
