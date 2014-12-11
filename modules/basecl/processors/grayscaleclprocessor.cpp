@@ -30,7 +30,7 @@
  *
  *********************************************************************************/
 
-#include "grayscalecl.h"
+#include "grayscaleclprocessor.h"
 #include <modules/opencl/inviwoopencl.h>
 #include <modules/opencl/image/imagecl.h>
 #include <modules/opencl/image/imageclgl.h>
@@ -41,13 +41,13 @@
 
 namespace inviwo {
 
-ProcessorClassIdentifier(GrayscaleCL, "org.inviwo.GrayscaleCL");
-ProcessorDisplayName(GrayscaleCL,  "Image grayscale");
-ProcessorTags(GrayscaleCL, Tags::CL);
-ProcessorCategory(GrayscaleCL, "Image Operation");
-ProcessorCodeState(GrayscaleCL, CODE_STATE_STABLE);
+ProcessorClassIdentifier(GrayscaleCLProcessor, "org.inviwo.GrayscaleCL");
+ProcessorDisplayName(GrayscaleCLProcessor,  "Image grayscale");
+ProcessorTags(GrayscaleCLProcessor, Tags::CL);
+ProcessorCategory(GrayscaleCLProcessor, "Image Operation");
+ProcessorCodeState(GrayscaleCLProcessor, CODE_STATE_STABLE);
 
-GrayscaleCL::GrayscaleCL()
+GrayscaleCLProcessor::GrayscaleCLProcessor()
     : Processor(), ProcessorKernelOwner(this)
     , input_("color image")
     , outport_("outport")
@@ -60,9 +60,9 @@ GrayscaleCL::GrayscaleCL()
     addProperty(useGLSharing_);
 }
 
-GrayscaleCL::~GrayscaleCL() {}
+GrayscaleCLProcessor::~GrayscaleCLProcessor() {}
 
-void GrayscaleCL::initialize() {
+void GrayscaleCLProcessor::initialize() {
     Processor::initialize();
     kernel_ = addKernel("grayscale.cl", "grayscaleKernel");
     if (!InviwoApplication::getPtr()->getSettingsByType<OpenCLSettings>()->isSharingEnabled()) {
@@ -71,11 +71,11 @@ void GrayscaleCL::initialize() {
     }
 }
 
-void GrayscaleCL::deinitialize() {
+void GrayscaleCLProcessor::deinitialize() {
     Processor::deinitialize();
 }
 
-void GrayscaleCL::process() {
+void GrayscaleCLProcessor::process() {
     if (kernel_ == NULL) {
         return;
     }

@@ -30,7 +30,7 @@
  *
  *********************************************************************************/
 
-#include <modules/basecl/processors/volumefirsthitcl.h>
+#include <modules/basecl/processors/volumefirsthitclprocessor.h>
 #include <modules/opencl/inviwoopencl.h>
 #include <modules/opencl/syncclgl.h>
 #include <modules/opencl/image/imagecl.h>
@@ -40,13 +40,13 @@
 
 namespace inviwo {
 
-ProcessorClassIdentifier(VolumeFirstHitCL, "org.inviwo.VolumeFirstHitCL");
-ProcessorDisplayName(VolumeFirstHitCL,  "Volume First Hit");
-ProcessorTags(VolumeFirstHitCL, Tags::CL);
-ProcessorCategory(VolumeFirstHitCL, "Volume Rendering");
-ProcessorCodeState(VolumeFirstHitCL, CODE_STATE_EXPERIMENTAL);
+ProcessorClassIdentifier(VolumeFirstHitCLProcessor, "org.inviwo.VolumeFirstHitCL");
+ProcessorDisplayName(VolumeFirstHitCLProcessor,  "Volume First Hit");
+ProcessorTags(VolumeFirstHitCLProcessor, Tags::CL);
+ProcessorCategory(VolumeFirstHitCLProcessor, "Volume Rendering");
+ProcessorCodeState(VolumeFirstHitCLProcessor, CODE_STATE_EXPERIMENTAL);
 
-VolumeFirstHitCL::VolumeFirstHitCL()
+VolumeFirstHitCLProcessor::VolumeFirstHitCLProcessor()
     : Processor()
     , ProcessorKernelOwner(this)
     , volumePort_("volume")
@@ -68,17 +68,17 @@ VolumeFirstHitCL::VolumeFirstHitCL()
     addProperty(useGLSharing_);
 }
 
-VolumeFirstHitCL::~VolumeFirstHitCL() {}
+VolumeFirstHitCLProcessor::~VolumeFirstHitCLProcessor() {}
 
-void VolumeFirstHitCL::initialize() {
+void VolumeFirstHitCLProcessor::initialize() {
     Processor::initialize();
     kernel_ = addKernel("volumefirsthit.cl",
                         "volumeFirstHit");
 }
 
-void VolumeFirstHitCL::deinitialize() { Processor::deinitialize(); }
+void VolumeFirstHitCLProcessor::deinitialize() { Processor::deinitialize(); }
 
-void VolumeFirstHitCL::process() {
+void VolumeFirstHitCLProcessor::process() {
     if (kernel_ == NULL) {
         return;
     }
@@ -138,7 +138,7 @@ void VolumeFirstHitCL::process() {
     
 }
 
-void VolumeFirstHitCL::firstHit(const cl::Image& volumeCL, const cl::Image& entryPoints,
+void VolumeFirstHitCLProcessor::firstHit(const cl::Image& volumeCL, const cl::Image& entryPoints,
                                 const cl::Image& exitPoints, const cl::Image& transferFunctionCL,
                                 const cl::Image& output, float stepSize, svec2 globalWorkGroupSize,
                                 svec2 localWorkGroupSize, cl::Event* profilingEvent) {

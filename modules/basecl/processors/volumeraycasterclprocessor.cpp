@@ -30,7 +30,7 @@
  *
  *********************************************************************************/
 
-#include "volumeraycastercl.h"
+#include "volumeraycasterclprocessor.h"
 #include <modules/opencl/inviwoopencl.h>
 #include <modules/opencl/kernelmanager.h>
 #include <modules/opencl/image/imagecl.h>
@@ -43,13 +43,13 @@
 
 namespace inviwo {
 
-ProcessorClassIdentifier(VolumeRaycasterCL, "org.inviwo.VolumeRaycasterCL");
-ProcessorDisplayName(VolumeRaycasterCL,  "Volume Raycaster");
-ProcessorTags(VolumeRaycasterCL, Tags::CL);
-ProcessorCategory(VolumeRaycasterCL, "Volume Rendering");
-ProcessorCodeState(VolumeRaycasterCL, CODE_STATE_EXPERIMENTAL);
+ProcessorClassIdentifier(VolumeRaycasterCLProcessor, "org.inviwo.VolumeRaycasterCL");
+ProcessorDisplayName(VolumeRaycasterCLProcessor,  "Volume Raycaster");
+ProcessorTags(VolumeRaycasterCLProcessor, Tags::CL);
+ProcessorCategory(VolumeRaycasterCLProcessor, "Volume Rendering");
+ProcessorCodeState(VolumeRaycasterCLProcessor, CODE_STATE_EXPERIMENTAL);
 
-VolumeRaycasterCL::VolumeRaycasterCL()
+VolumeRaycasterCLProcessor::VolumeRaycasterCLProcessor()
     : Processor(), ProcessorKernelOwner(this)
     , volumePort_("volume")
     , entryPort_("entry-points")
@@ -71,9 +71,9 @@ VolumeRaycasterCL::VolumeRaycasterCL()
     addProperty(useGLSharing_);
 }
 
-VolumeRaycasterCL::~VolumeRaycasterCL() {}
+VolumeRaycasterCLProcessor::~VolumeRaycasterCLProcessor() {}
 
-void VolumeRaycasterCL::initialize() {
+void VolumeRaycasterCLProcessor::initialize() {
     Processor::initialize();
     // Will compile kernel and make sure that it it
     // recompiled whenever the file changes
@@ -86,15 +86,15 @@ void VolumeRaycasterCL::initialize() {
     }
 }
 
-void VolumeRaycasterCL::deinitialize() {
+void VolumeRaycasterCLProcessor::deinitialize() {
     Processor::deinitialize();
 }
 
-bool VolumeRaycasterCL::isReady() const {
+bool VolumeRaycasterCLProcessor::isReady() const {
     return Processor::isReady() && kernel_ != NULL;
 }
 
-void VolumeRaycasterCL::process() {
+void VolumeRaycasterCLProcessor::process() {
 
     Image* outImage = outport_.getData();
     uvec2 outportDim = outImage->getDimension();
@@ -145,7 +145,7 @@ void VolumeRaycasterCL::process() {
     }
 }
 
-void VolumeRaycasterCL::volumeRaycast(const VolumeCLBase* volumeCL, const vec2& volumeDataOffsetScaling, const LayerCLBase* entryCLGL, const LayerCLBase* exitCLGL, const LayerCLBase* transferFunctionCL, LayerCLBase* outImageCL, svec2 globalWorkGroupSize, svec2 localWorkGroupSize, cl::Event* profilingEvent)
+void VolumeRaycasterCLProcessor::volumeRaycast(const VolumeCLBase* volumeCL, const vec2& volumeDataOffsetScaling, const LayerCLBase* entryCLGL, const LayerCLBase* exitCLGL, const LayerCLBase* transferFunctionCL, LayerCLBase* outImageCL, svec2 globalWorkGroupSize, svec2 localWorkGroupSize, cl::Event* profilingEvent)
 {
     // Note that the overloaded setArg methods requires 
     // the reference to an object (not the pointer), 

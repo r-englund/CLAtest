@@ -63,10 +63,10 @@ namespace inviwo {
  * \brief Turns an image into grayscale.
  *
  */
-class IVW_MODULE_BASECL_API GrayscaleCL : public Processor, public ProcessorKernelOwner {
+class IVW_MODULE_BASECL_API GrayscaleCLProcessor : public Processor, public ProcessorKernelOwner {
 public:
-    GrayscaleCL();
-    ~GrayscaleCL();
+    GrayscaleCLProcessor();
+    ~GrayscaleCLProcessor();
 
     InviwoProcessorInfo();
 

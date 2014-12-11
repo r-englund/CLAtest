@@ -7,10 +7,10 @@ ivw_module(BaseCL)
 set(HEADER_FILES
     ${CMAKE_CURRENT_SOURCE_DIR}/meshentryexitpointscl.h
     ${CMAKE_CURRENT_SOURCE_DIR}/processors/entryexitpointsclprocessor.h
-    ${CMAKE_CURRENT_SOURCE_DIR}/processors/grayscalecl.h
-    ${CMAKE_CURRENT_SOURCE_DIR}/processors/volumefirsthitcl.h
-    ${CMAKE_CURRENT_SOURCE_DIR}/processors/volumemaxcl.h
-    ${CMAKE_CURRENT_SOURCE_DIR}/processors/volumeraycastercl.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/processors/grayscaleclprocessor.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/processors/volumefirsthitclprocessor.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/processors/volumemaxclprocessor.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/processors/volumeraycasterclprocessor.h
     ${CMAKE_CURRENT_SOURCE_DIR}/runningimagemeanandstandarddeviationcl.h
 )
 ivw_group("Header Files" ${HEADER_FILES})
@@ -20,10 +20,10 @@ ivw_group("Header Files" ${HEADER_FILES})
 set(SOURCE_FILES
     ${CMAKE_CURRENT_SOURCE_DIR}/meshentryexitpointscl.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/processors/entryexitpointsclprocessor.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/processors/grayscalecl.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/processors/volumefirsthitcl.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/processors/volumemaxcl.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/processors/volumeraycastercl.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/processors/grayscaleclprocessor.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/processors/volumefirsthitclprocessor.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/processors/volumemaxclprocessor.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/processors/volumeraycasterclprocessor.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/runningimagemeanandstandarddeviationcl.cpp
 )
 ivw_group("Source Files" ${SOURCE_FILES})

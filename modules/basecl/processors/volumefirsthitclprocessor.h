@@ -66,10 +66,10 @@ namespace inviwo {
  * \brief Computes the first point with non-zero opacity within a volume given entry and exit points in texture space. 
  *
  */
-class IVW_MODULE_BASECL_API VolumeFirstHitCL : public Processor, public ProcessorKernelOwner {
+class IVW_MODULE_BASECL_API VolumeFirstHitCLProcessor : public Processor, public ProcessorKernelOwner {
 public:
-    VolumeFirstHitCL();
-    ~VolumeFirstHitCL();
+    VolumeFirstHitCLProcessor();
+    ~VolumeFirstHitCLProcessor();
 
     InviwoProcessorInfo();
 

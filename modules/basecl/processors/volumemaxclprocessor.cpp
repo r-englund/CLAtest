@@ -30,7 +30,7 @@
  *
  *********************************************************************************/
 
-#include <modules/basecl/processors/volumemaxcl.h>
+#include <modules/basecl/processors/volumemaxclprocessor.h>
 #include <inviwo/core/datastructures/buffer/buffer.h>
 #include <modules/opencl/syncclgl.h>
 #include <modules/opencl/buffer/buffercl.h>
@@ -40,13 +40,13 @@
 
 namespace inviwo {
 
-ProcessorClassIdentifier(VolumeMaxCL, "org.inviwo.VolumeMaxCL");
-ProcessorDisplayName(VolumeMaxCL,  "Volume Max");
-ProcessorTags(VolumeMaxCL, Tags::CL);
-ProcessorCategory(VolumeMaxCL, "Volume Operation");
-ProcessorCodeState(VolumeMaxCL, CODE_STATE_EXPERIMENTAL);
+ProcessorClassIdentifier(VolumeMaxCLProcessor, "org.inviwo.VolumeMaxCL");
+ProcessorDisplayName(VolumeMaxCLProcessor,  "Volume Max");
+ProcessorTags(VolumeMaxCLProcessor, Tags::CL);
+ProcessorCategory(VolumeMaxCLProcessor, "Volume Operation");
+ProcessorCodeState(VolumeMaxCLProcessor, CODE_STATE_EXPERIMENTAL);
 
-VolumeMaxCL::VolumeMaxCL()
+VolumeMaxCLProcessor::VolumeMaxCLProcessor()
     : Processor(), ProcessorKernelOwner(this)
     , inport_("volume")
     , outport_("volume")
@@ -65,18 +65,18 @@ VolumeMaxCL::VolumeMaxCL()
     addProperty(useGLSharing_);
 }
 
-VolumeMaxCL::~VolumeMaxCL() {}
+VolumeMaxCLProcessor::~VolumeMaxCLProcessor() {}
 
-void VolumeMaxCL::initialize() {
+void VolumeMaxCLProcessor::initialize() {
     Processor::initialize();
     buildKernel();
 }
 
-void VolumeMaxCL::deinitialize() {
+void VolumeMaxCLProcessor::deinitialize() {
     Processor::deinitialize();
 }
 
-void VolumeMaxCL::process() {
+void VolumeMaxCLProcessor::process() {
     if (kernel_ == NULL) {
         return;
     }
@@ -122,7 +122,7 @@ void VolumeMaxCL::process() {
 
 }
 
-void VolumeMaxCL::executeVolumeOperation(const VolumeCLBase* volumeCL, VolumeCLBase* volumeOutCL, const uvec3& outDim,
+void VolumeMaxCLProcessor::executeVolumeOperation(const VolumeCLBase* volumeCL, VolumeCLBase* volumeOutCL, const uvec3& outDim,
                                          const svec3& globalWorkGroupSize, const svec3& localWorkgroupSize) {
     cl::Event events[2];
     try {
@@ -171,7 +171,7 @@ void VolumeMaxCL::executeVolumeOperation(const VolumeCLBase* volumeCL, VolumeCLB
 #endif
 }
 
-void VolumeMaxCL::buildKernel() {
+void VolumeMaxCLProcessor::buildKernel() {
     std::stringstream defines;
     std::string extensions = OpenCL::getPtr()->getDevice().getInfo<CL_DEVICE_EXTENSIONS>();
     if (extensions.find("cl_khr_3d_image_writes") != std::string::npos) {
