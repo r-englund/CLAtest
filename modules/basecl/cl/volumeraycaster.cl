@@ -63,7 +63,7 @@ __kernel void raycaster(read_only image3d_t volume, __global VolumeParameters* v
         float4 emissionAbsorption;
         while(t < tEnd) {
             float3 pos = entry.xyz+t*direction;
-            float volumeSample = getVoxelS(volume, as_float4(pos), (float2)(volumeParams[0].formatOffset, volumeParams[0].formatScaling)); 
+            float volumeSample = getNormalizedVoxel(volume, as_float4(pos), (float2)(volumeParams[0].formatOffset, volumeParams[0].formatScaling)); 
             // xyz == emission, w = absorption
             emissionAbsorption = read_imagef(transferFunction, smpNormClampEdgeLinear, (float2)(volumeSample, 0.5f));
             // Taylor expansion approximation

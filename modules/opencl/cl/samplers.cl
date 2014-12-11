@@ -80,16 +80,17 @@ float getVoxelUnorm(read_only image3d_t volume, int4 pos) {
 #endif
 }
 /*
- * Get voxel data with linear interpolation and apply offset and scaling, coordinate in [0 1]^3
+ * Return a value mapped from data range [min,max] to [0,1] using linear interpolation
+ * @param pos Coordinate in [0 1]^3
  */
-float getVoxelS(read_only image3d_t volume, float4 pos, float2 offsetAndScaling) {
+float getNormalizedVoxel(read_only image3d_t volume, float4 pos, float2 offsetAndScaling) {
     return (read_imagef(volume, smpNormClampEdgeLinear, pos).x + offsetAndScaling.x) * offsetAndScaling.y;  
 }
 
 /*
  * Get voxel data in unnormalized coordinates [0 get_image_dim(volume)-1] and apply offset and scaling
  */
-float getVoxelUnormS(read_only image3d_t volume, int4 pos, float2 offsetAndScaling) {
+float getNormalizedVoxelUnorm(read_only image3d_t volume, int4 pos, float2 offsetAndScaling) {
     return (read_imagef(volume, smpUNormNoClampNearest, pos).x + offsetAndScaling.x) * offsetAndScaling.y;  
 }
 

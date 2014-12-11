@@ -71,7 +71,7 @@ __kernel void volumeMaxKernel(read_only image3d_t volumeIn, float2 volumeDataSca
                 //    printf("xyz == %v3i\n", (int3)(x, y, z));
                 //}
                 //if (all((int3)(x, y, z) < get_image_dim(volumeIn).xyz))
-                maxVal = max(maxVal, getVoxelUnormS(volumeIn, (int4)(x, y, z, 0), volumeDataScaling));
+                maxVal = max(maxVal, getNormalizedVoxelUnorm(volumeIn, (int4)(x, y, z, 0), volumeDataScaling));
 
             }
         }
