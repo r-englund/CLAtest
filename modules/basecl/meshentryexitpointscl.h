@@ -53,8 +53,6 @@ public:
     MeshEntryExitPointsCL(const glm::svec2& workGroupSize = svec2(16));
     virtual ~MeshEntryExitPointsCL(){}
 
-    virtual void onKernelCompiled(const cl::Kernel* kernel) {};
-
     /** 
      * \brief Computes entry exit points in texture coordinates
      *

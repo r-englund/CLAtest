@@ -167,7 +167,7 @@ void KernelManager::fileChanged(std::string fileName) {
                     // Notify that kernel has been recompiled
                     std::pair<KernelOwnerMap::iterator, KernelOwnerMap::iterator> kernelOwnerRange = kernelOwners_.equal_range(oldKernelIt->second);
                     for (KernelOwnerMap::iterator kernelOwnerIt = kernelOwnerRange.first; kernelOwnerIt != kernelOwnerRange.second; ++kernelOwnerIt) {
-                        kernelOwnerIt->second->onKernelCompiled(&(*newKernelIt));
+                        kernelOwnerIt->second->notifyObserversKernelCompiled(&(*newKernelIt));
                     }
                 } else {
                     // New kernel, no need to notify KernelOwner since there cannot be any

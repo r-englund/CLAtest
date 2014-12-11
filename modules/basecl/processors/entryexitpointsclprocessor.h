@@ -66,7 +66,7 @@ namespace inviwo {
  * \brief Computes the entry and exit points of a triangle mesh from the camera position in texture space.
  *
  */
-class IVW_MODULE_BASECL_API EntryExitPointsCLProcessor : public Processor, public ProcessorKernelOwner {
+class IVW_MODULE_BASECL_API EntryExitPointsCLProcessor : public Processor, public KernelObserver {
 public:
     EntryExitPointsCLProcessor();
     virtual ~EntryExitPointsCLProcessor();
@@ -78,6 +78,7 @@ public:
 
 protected:
     virtual void process();
+    void onKernelCompiled( const cl::Kernel* kernel ) { invalidate(INVALID_RESOURCES); }
 
 
 
