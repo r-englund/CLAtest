@@ -34,7 +34,7 @@
 #include <modules/opengl/glwrap/shadermanager.h>
 #include <modules/basegl/processors/background.h>
 #include <modules/basegl/processors/drawlines.h>
-#include <modules/basegl/processors/drawfreehand.h>
+#include <modules/basegl/processors/drawpoints.h>
 #include <modules/basegl/processors/entryexitpoints.h>
 #include <modules/basegl/processors/findedges.h>
 #include <modules/basegl/processors/firstivwprocessor.h>
@@ -62,7 +62,7 @@ BaseGLModule::BaseGLModule() : InviwoModule() {
     
     registerProcessor(Background);
     registerProcessor(DrawLines);
-    registerProcessor(DrawFreeHand);
+    registerProcessor(DrawPoints);
     registerProcessor(EntryExitPoints);
     registerProcessor(FindEdges);
     registerProcessor(FirstIvwProcessor);

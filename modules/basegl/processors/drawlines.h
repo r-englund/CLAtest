@@ -49,7 +49,29 @@ namespace inviwo {
 
 class Shader;
 
-//Hold Ctrl+D and click Left Mouse Button to Add Point
+
+/** \docpage{org.inviwo.DrawLines, DrawLines}
+* Interactive 2D line drawing
+*
+* Hold Ctrl+D and click/move Left Mouse Button to Draw
+*
+* ### Inports
+*   * __ImageInport__ The input image.
+*
+* ### Outports
+*   * __ImageOutport__ The output image.
+*
+* ### Properties
+*   * __LineSize_ Defines size of all lines.
+*   * __LineColor_ Defines color of all lines.
+*   * __ClearButton__ Button to clear all lines.
+*/
+
+/**
+* \brief Interactive 2D line drawing
+*
+* Hold Ctrl+D and click/move Left Mouse Button to Draw
+*/
 class IVW_MODULE_BASEGL_API DrawLines : public CompositeProcessorGL {
 public:
     DrawLines();
@@ -88,7 +110,7 @@ private:
     ImageInport inport_;
     ImageOutport outport_;
 
-    IntProperty lineSize_;
+    FloatProperty lineSize_;
     FloatVec4Property lineColor_;
     ButtonProperty clearButton_;
 

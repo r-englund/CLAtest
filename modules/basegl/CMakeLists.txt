@@ -7,7 +7,7 @@ ivw_module(BaseGL)
 set(HEADER_FILES
     ${CMAKE_CURRENT_SOURCE_DIR}/processors/background.h
     ${CMAKE_CURRENT_SOURCE_DIR}/processors/drawlines.h
-    ${CMAKE_CURRENT_SOURCE_DIR}/processors/drawfreehand.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/processors/drawpoints.h
     ${CMAKE_CURRENT_SOURCE_DIR}/processors/entryexitpoints.h
     ${CMAKE_CURRENT_SOURCE_DIR}/processors/findedges.h
     ${CMAKE_CURRENT_SOURCE_DIR}/processors/firstivwprocessor.h
@@ -35,7 +35,7 @@ ivw_group("Header Files" ${HEADER_FILES})
 set(SOURCE_FILES
     ${CMAKE_CURRENT_SOURCE_DIR}/processors/background.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/processors/drawlines.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/processors/drawfreehand.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/processors/drawpoints.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/processors/entryexitpoints.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/processors/findedges.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/processors/firstivwprocessor.cpp

@@ -30,8 +30,8 @@
  *
  *********************************************************************************/
 
-#ifndef IVW_DRAWFREEHAND_H
-#define IVW_DRAWFREEHAND_H
+#ifndef IVW_DRAWPOINTS_H
+#define IVW_DRAWPOINTS_H
 
 #include <modules/basegl/baseglmoduledefine.h>
 #include <inviwo/core/interaction/events/keyboardevent.h>
@@ -46,11 +46,32 @@
 
 namespace inviwo {
 
-//Hold Ctrl+D and click/move Left Mouse Button to Draw
-class IVW_MODULE_BASEGL_API DrawFreeHand : public CompositeProcessorGL {
+/** \docpage{org.inviwo.DrawPoints, DrawPoints}
+ * Interactive 2D point drawing 
+ * 
+ * Hold Ctrl+D and click/move Left Mouse Button to Draw
+ * 
+ * ### Inports
+ *   * __ImageInport__ The input image.
+ *
+ * ### Outports
+ *   * __ImageOutport__ The output image.
+ * 
+ * ### Properties
+ *   * __PointSize_ Defines size of all points.
+ *   * __PointColor_ Defines color of all points.
+ *   * __ClearButton__ Button to clear all points.
+ */
+
+/**
+ * \brief Interactive 2D point drawing
+ *
+ * Hold Ctrl+D and click/move Left Mouse Button to Draw
+ */
+class IVW_MODULE_BASEGL_API DrawPoints : public CompositeProcessorGL {
 public:
-    DrawFreeHand();
-    ~DrawFreeHand();
+    DrawPoints();
+    ~DrawPoints();
 
     InviwoProcessorInfo();
 
@@ -63,10 +84,10 @@ public:
 protected:
     void process();
 
-    class DrawFreeHandInteractionHandler : public InteractionHandler {
+    class DrawPointsInteractionHandler : public InteractionHandler {
     public:
-        DrawFreeHandInteractionHandler(DrawFreeHand* vs);
-        ~DrawFreeHandInteractionHandler(){};
+        DrawPointsInteractionHandler(DrawPoints* vs);
+        ~DrawPointsInteractionHandler(){};
 
         void invokeEvent(Event* event);
     private:
@@ -74,7 +95,7 @@ protected:
 
         KeyboardEvent drawEnableEvent_;
 
-        DrawFreeHand* drawer_;
+        DrawPoints* drawer_;
 
         bool drawModeEnabled_;
     };
@@ -95,4 +116,4 @@ private:
 
 }
 
-#endif //IVW_DRAWFREEHAND_H
+#endif //IVW_DRAWPOINTS_H

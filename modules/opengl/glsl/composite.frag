@@ -55,13 +55,13 @@ void main() {
     float depthOut;
 
     if (depth1 <= depth0) {
-        colorOut.rgb = color1.rgb + (1.0-color1.a) * color0.a * color0.rgb;
-        colorOut.a = color1.a + (1.0-color1.a) * color0.a;
+        colorOut.rgb = color1.rgb * color1.a + color0.rgb * (1.0 - color1.a);
+        colorOut.a = color1.a + color0.a * (1.0 - color1.a);
         pickingOut = (picking1.a > 0 ? picking1 : (color1.a < 0.95 ? picking0 : vec4(0.0)));
         depthOut = depth1;
     } else {
-        colorOut.rgb = color0.rgb + (1.0-color0.a) * color1.a * color1.rgb;
-        colorOut.a = color0.a + (1.0-color0.a) * color1.a;
+        colorOut.rgb = color0.rgb * color0.a + color1.rgb * (1.0 - color0.a);
+        colorOut.a = color0.a + color1.a * (1.0 - color0.a);
         pickingOut = (picking0.a > 0 ? picking0 : (color0.a < 0.95 ? picking1 : vec4(0.0)));
         depthOut = depth0;
     }
