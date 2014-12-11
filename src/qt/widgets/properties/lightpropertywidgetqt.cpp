@@ -32,7 +32,6 @@
 
 #include <inviwo/qt/widgets/properties/lightpropertywidgetqt.h>
 #include <inviwo/qt/widgets/properties/compositepropertywidgetqt.h>
-#include <QGroupBox>
 
 namespace inviwo {
 
@@ -43,24 +42,30 @@ LightPropertyWidgetQt::LightPropertyWidgetQt(FloatVec3Property* property)
     updateFromProperty();
 }
 
-LightPropertyWidgetQt::~LightPropertyWidgetQt() {
-    delete lightWidget_;
-}
+LightPropertyWidgetQt::~LightPropertyWidgetQt() {}
 
 void LightPropertyWidgetQt::generateWidget() {
     QHBoxLayout* hLayout = new QHBoxLayout();
     hLayout->setContentsMargins(0, 0, 0, 0);
     hLayout->setSpacing(7);
+
+    label_ = new EditableLabelQt(this, property_->getDisplayName());
+    connect(label_, SIGNAL(textChanged()), this, SLOT(setPropertyDisplayName()));
     
     lightWidget_ = new LightPositionWidgetQt();
-    label_ = new EditableLabelQt(this,property_->getDisplayName());
+    connect(lightWidget_,SIGNAL(positionChanged()), this, SLOT(onPositionLightWidgetChanged()));
+
     QLabel* radiusLabel = new QLabel(this);
     radiusLabel->setText("Distance");
+    
     QLabel* dirLabel = new QLabel(this);
     dirLabel->setText("Direction");
+    
     radiusSpinBox_ = new CustomDoubleSpinBoxQt(this);
     radiusSpinBox_->setSingleStep(0.1);
     radiusSpinBox_->setKeyboardTracking(false); // don't emit the valueChanged() signal while typing
+    connect(radiusSpinBox_, SIGNAL(valueChanged(double)), this, SLOT(onRadiusSpinBoxChanged(double)));
+   
     // Assuming that minimum value is negative and maximum value is positive
     if (glm::any(glm::greaterThan(property_->getMinValue(), vec3(0)))) {
         LogWarn("Minimum value is assumed to be negative. Widget may produce values out of range.")
@@ -68,17 +73,14 @@ void LightPropertyWidgetQt::generateWidget() {
     if (glm::any(glm::lessThan(property_->getMaxValue(), vec3(0)))) {
         LogWarn("Maximum value is assumed to be positive. Widget may produce values out of range.")
     }
-    // Choose the smallest value as maximum to ensure that values does not go out of range
+  
+
     vec3 maxVal = glm::abs(property_->getMaxValue());
-    radiusSpinBox_->setMinimum(0.f);
-    radiusSpinBox_->setMaximum(std::min(maxVal.z, std::min(maxVal.y, maxVal.x)));
-    connect(label_, SIGNAL(textChanged()), this, SLOT(setPropertyDisplayName()));
-    connect(lightWidget_,SIGNAL(positionChanged()), this, SLOT(onPositionLightWidgetChanged()));
-    connect(radiusSpinBox_, SIGNAL(valueChanged(double)), this, SLOT(onRadiusSpinBoxChanged(double)));
-
-
-    QGroupBox* groupBox = new QGroupBox(this);
-    groupBox->setFlat(true);
+    radiusSpinBox_->setMinimum(-glm::length(maxVal));
+    radiusSpinBox_->setMaximum(glm::length(maxVal));
+    
+    
+    QWidget* groupBox = new QWidget(this);
     QGridLayout* layout = new QGridLayout();
     groupBox->setLayout(layout);
 
@@ -90,14 +92,15 @@ void LightPropertyWidgetQt::generateWidget() {
     layout->addWidget(radiusSpinBox_, 1, 1);
     
     hLayout->addWidget(label_);
-    hLayout->addStretch(1);
     hLayout->addWidget(groupBox);
     
     setLayout(hLayout);
 }
 
 void LightPropertyWidgetQt::onPositionLightWidgetChanged() {
-    property_->set(static_cast<float>(radiusSpinBox_->value())*lightWidget_->getPosition());
+    property_->setInitiatingWidget(this);
+    property_->set(lightWidget_->getPosition());
+    property_->clearInitiatingWidget();
 }
 
 void LightPropertyWidgetQt::onRadiusSpinBoxChanged(double radius) {
@@ -110,8 +113,16 @@ void LightPropertyWidgetQt::updateFromProperty() {
     lightWidget_->blockSignals(true);
     radiusSpinBox_->blockSignals(true);
 
-    lightWidget_->setPosition(property_->get());
-    radiusSpinBox_->setValue(glm::length(property_->get()));
+    float r = glm::length(property_->get());
+    r *= property_->get().z < 0.0f ? -1.0f : 1.0f;
+    if (radiusSpinBox_->value() != r) {
+        radiusSpinBox_->setValue(r);
+    }
+
+    if(lightWidget_->getPosition() != property_->get()) {
+        lightWidget_->setPosition(property_->get());
+    }
+    
 
     lightWidget_->blockSignals(false);
     radiusSpinBox_->blockSignals(false);

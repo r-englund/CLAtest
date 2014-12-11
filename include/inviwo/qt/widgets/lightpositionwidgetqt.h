@@ -50,37 +50,38 @@ namespace inviwo {
 class IVW_QTWIDGETS_API LightPositionWidgetQt : public QLabel {
     Q_OBJECT
 
-protected:
-    void mousePressEvent(QMouseEvent* e);
-    void mouseMoveEvent(QMouseEvent* e);
-    void mouseReleaseEvent(QMouseEvent* e);
 public:
-
     LightPositionWidgetQt();
     void setPosition(const vec3& positionVector);
-    vec3 getPosition() const { return vec3(getX(), getY(), getZ()); }
+    vec3 getPosition() const;
     virtual ~LightPositionWidgetQt();
 
+    float getX() const;;
+    float getY() const;;
+    float getZ() const;;
 
-    float getX() const { return sin(theta_)*cos(phi_); };
-    float getY() const { return sin(theta_)*sin(phi_); };
-    float getZ() const { return cos(theta_); };
-
-    void setRadius(float radius) { radius_ = radius; positionChanged(); }
-    float getRadius() const { return radius_; }
+    void setRadius(float radius);
+    float getRadius() const;
 
 signals:
     void positionChanged();
 
+protected:
+    void mousePressEvent(QMouseEvent* e);
+    void mouseMoveEvent(QMouseEvent* e);
+    void mouseReleaseEvent(QMouseEvent* e);
+    void mouseDoubleClickEvent(QMouseEvent* e);
 
 private:
+    void generateWidget();
+    void setNewPosition(QMouseEvent* event);
+
     QPixmap* gradientPixmap_;
     QRadialGradient* gradient_;
     
     QPainter* painter_;
     bool mouseDown_;
-    void generateWidget();
-    void setNewPosition(QMouseEvent* event);
+
     float radius_;
     float theta_;
     float phi_;
