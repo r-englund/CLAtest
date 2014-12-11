@@ -31,9 +31,9 @@
  *********************************************************************************/
 
 #include "utils/structs.glsl"
-#include "utils/sampler2d.glsl"
 
 uniform sampler2D inputTex_;
+//uniform sampler2D inputDepth_;
 uniform TEXTURE_PARAMETERS outportParameters_;
 
 uniform ivec2 checkerBoardSize_;
@@ -52,7 +52,7 @@ vec4 linearGradient(vec2 texCoords) {
     return texCoords.y * color1_ + (1.0 - texCoords.y) * color2_;
 }
 
-void main() {
+void main() {  
     vec2 texCoords = gl_FragCoord.xy * outportParameters_.dimensionsRCP_;
     vec4 srcColor = SRC_COLOR;
     vec4 backgroundColor = BACKGROUND_STYLE_FUNCTION;
@@ -60,4 +60,6 @@ void main() {
     resultColor.rgb = srcColor.rgb + backgroundColor.rgb * backgroundColor.a * (1.0 - srcColor.a);
     resultColor.a = srcColor.a + backgroundColor.a * (1.0 - srcColor.a);
     FragData0 = resultColor;
+    //gl_FragDepth = texture(inputDepth_, texCoords).x;
+
 }

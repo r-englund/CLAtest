@@ -63,7 +63,6 @@ TextOverlayGL::TextOverlayGL()
     , fontSize_("Font size", "Font size")
     , fontPos_("Position", "Position", vec2(0.0f), vec2(0.0f), vec2(1.0f), vec2(0.01f))
     , refPos_("Reference", "Reference", vec2(-1.0f), vec2(-1.0f), vec2(1.0f), vec2(0.01f))
-    , copyShader_(NULL)
     , textShader_(NULL) {
 
     addPort(inport_);
@@ -89,7 +88,6 @@ TextOverlayGL::~TextOverlayGL() {}
 
 void TextOverlayGL::initialize() {
     Processor::initialize();
-    copyShader_ = new Shader("img_copy.frag", true);
     textShader_ = new Shader("fontrendering_freetype.vert", "fontrendering_freetype.frag", true);
     int error = 0;
 
@@ -113,14 +111,11 @@ void TextOverlayGL::initialize() {
 }
 
 void TextOverlayGL::deinitialize() {
-    delete copyShader_;
     delete textShader_;
-    copyShader_ = NULL;
     textShader_ = NULL;
     glDeleteTextures(1, &texCharacter_);
 
     delete mesh_;
-
     Processor::deinitialize();
 }
 
@@ -237,19 +232,9 @@ void TextOverlayGL::render_text(const char* text, float x, float y, float sx, fl
     }
 }
 
-void TextOverlayGL::process() {
-//     TextureUnit colorUnit, depthUnit, pickingUnit;
-//     utilgl::bindTextures(inport_, colorUnit, depthUnit, pickingUnit);
-// 
-//     utilgl::activateAndClearTarget(outport_);
-//     copyShader_->activate();
-//     copyShader_->setUniform("color_", colorUnit.getUnitNumber());
-//     copyShader_->setUniform("depth_", depthUnit.getUnitNumber());
-//     copyShader_->setUniform("picking_", pickingUnit.getUnitNumber());
-//     utilgl::singleDrawImagePlaneRect();
-//     copyShader_->deactivate();
-    
-    inport_.passOnDataToOutport(&outport_);
+void TextOverlayGL::process() {   
+    inport_.passOnDataToOutport(&outport_);   
+    utilgl::activateTarget(outport_);
 
     glDepthFunc(GL_ALWAYS);
     glEnable(GL_BLEND);
