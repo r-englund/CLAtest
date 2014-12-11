@@ -9,6 +9,7 @@ set(HEADER_FILES
     ${CMAKE_CURRENT_SOURCE_DIR}/processors/drawlines.h
     ${CMAKE_CURRENT_SOURCE_DIR}/processors/drawpoints.h
     ${CMAKE_CURRENT_SOURCE_DIR}/processors/entryexitpoints.h
+	${CMAKE_CURRENT_SOURCE_DIR}/processors/geometrypicking.h
     ${CMAKE_CURRENT_SOURCE_DIR}/processors/findedges.h
     ${CMAKE_CURRENT_SOURCE_DIR}/processors/firstivwprocessor.h
     ${CMAKE_CURRENT_SOURCE_DIR}/processors/imageglprocessor.h
@@ -18,7 +19,6 @@ set(HEADER_FILES
     ${CMAKE_CURRENT_SOURCE_DIR}/processors/lightvolumegl.h
     ${CMAKE_CURRENT_SOURCE_DIR}/processors/multichannelraycaster.h
     ${CMAKE_CURRENT_SOURCE_DIR}/processors/multiplanar.h
-    ${CMAKE_CURRENT_SOURCE_DIR}/processors/positionwidgetprocessor.h
     ${CMAKE_CURRENT_SOURCE_DIR}/processors/redgreenprocessor.h
     ${CMAKE_CURRENT_SOURCE_DIR}/processors/simpleraycaster.h
     ${CMAKE_CURRENT_SOURCE_DIR}/processors/isoraycaster.h
@@ -37,6 +37,7 @@ set(SOURCE_FILES
     ${CMAKE_CURRENT_SOURCE_DIR}/processors/drawlines.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/processors/drawpoints.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/processors/entryexitpoints.cpp
+	${CMAKE_CURRENT_SOURCE_DIR}/processors/geometrypicking.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/processors/findedges.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/processors/firstivwprocessor.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/processors/imageglprocessor.cpp
@@ -46,7 +47,6 @@ set(SOURCE_FILES
     ${CMAKE_CURRENT_SOURCE_DIR}/processors/lightvolumegl.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/processors/multichannelraycaster.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/processors/multiplanar.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/processors/positionwidgetprocessor.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/processors/redgreenprocessor.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/processors/simpleraycaster.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/processors/isoraycaster.cpp
