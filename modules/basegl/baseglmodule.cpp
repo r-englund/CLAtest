@@ -44,7 +44,7 @@
 #include <modules/basegl/processors/lightvolumegl.h>
 #include <modules/basegl/processors/multichannelraycaster.h>
 #include <modules/basegl/processors/multiplanar.h>
-#include <modules/basegl/processors/positionwidgetprocessor.h>
+#include <modules/basegl/processors/geometrypicking.h>
 #include <modules/basegl/processors/redgreenprocessor.h>
 #include <modules/basegl/processors/simpleraycaster.h>
 #include <modules/basegl/processors/isoraycaster.h>
@@ -66,13 +66,13 @@ BaseGLModule::BaseGLModule() : InviwoModule() {
     registerProcessor(EntryExitPoints);
     registerProcessor(FindEdges);
     registerProcessor(FirstIvwProcessor);
+    registerProcessor(GeometryPicking);
     registerProcessor(ImageLayoutGL);
     registerProcessor(ImageMixer);
     registerProcessor(LightingRaycaster);
     registerProcessor(LightVolumeGL);
     registerProcessor(MultichannelRaycaster);
     registerProcessor(MultiPlanar);
-    registerProcessor(PositionWidgetProcessor);
     registerProcessor(RedGreenProcessor);
     registerProcessor(SimpleRaycaster);
     registerProcessor(ISORaycaster);

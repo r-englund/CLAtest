@@ -30,7 +30,7 @@
  *
  *********************************************************************************/
 
-#include "positionwidgetprocessor.h"
+#include "geometrypicking.h"
 
 #include <inviwo/core/interaction/pickingmanager.h>
 #include <inviwo/core/datastructures/geometry/simplemeshcreator.h>
@@ -40,13 +40,13 @@
 
 namespace inviwo {
 
-ProcessorClassIdentifier(PositionWidgetProcessor, "org.inviwo.PositionWidget");
-ProcessorDisplayName(PositionWidgetProcessor, "Position Widget");
-ProcessorTags(PositionWidgetProcessor, Tags::GL);
-ProcessorCategory(PositionWidgetProcessor, "Geometry Rendering");
-ProcessorCodeState(PositionWidgetProcessor, CODE_STATE_EXPERIMENTAL);
+ProcessorClassIdentifier(GeometryPicking, "org.inviwo.GeometryPicking");
+ProcessorDisplayName(GeometryPicking, "Geometry Picking");
+ProcessorTags(GeometryPicking, Tags::GL);
+ProcessorCategory(GeometryPicking, "Geometry Rendering");
+ProcessorCodeState(GeometryPicking, CODE_STATE_STABLE);
 
-PositionWidgetProcessor::PositionWidgetProcessor()
+GeometryPicking::GeometryPicking()
     : CompositeProcessorGL()
     , geometryInport_("geometryInport")
     , imageInport_("imageInport")
@@ -63,23 +63,23 @@ PositionWidgetProcessor::PositionWidgetProcessor()
     addProperty(trackball_);
 }
 
-PositionWidgetProcessor::~PositionWidgetProcessor() {}
+GeometryPicking::~GeometryPicking() {}
 
-void PositionWidgetProcessor::initialize() {
+void GeometryPicking::initialize() {
     CompositeProcessorGL::initialize();
     shader_ = new Shader("standard.vert", "picking.frag");
     widgetPickingObject_ = PickingManager::getPtr()->registerPickingCallback(
-        this, &PositionWidgetProcessor::updateWidgetPositionFromPicking);
+        this, &GeometryPicking::updateWidgetPositionFromPicking);
 }
 
-void PositionWidgetProcessor::deinitialize() {
+void GeometryPicking::deinitialize() {
     CompositeProcessorGL::deinitialize();
     delete shader_;
     shader_ = NULL;
     PickingManager::getPtr()->unregisterPickingObject(widgetPickingObject_);
 }
 
-void PositionWidgetProcessor::updateWidgetPositionFromPicking(const PickingObject* p) {
+void GeometryPicking::updateWidgetPositionFromPicking(const PickingObject* p) {
     vec2 move = p->getPickingMove();
 
     if (move.x == 0.f && move.y == 0.f) return;
@@ -94,7 +94,7 @@ void PositionWidgetProcessor::updateWidgetPositionFromPicking(const PickingObjec
     invalidate(INVALID_OUTPUT);
 }
 
-void PositionWidgetProcessor::process() {
+void GeometryPicking::process() {
     utilgl::activateAndClearTarget(outport_);
     MeshRenderer renderer(static_cast<const Mesh*>(geometryInport_.getData()));
     shader_->activate();

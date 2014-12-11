@@ -50,7 +50,7 @@ namespace inviwo {
 class Shader;
 
 
-/** \docpage{org.inviwo.DrawLines, DrawLines}
+/** \docpage{org.inviwo.DrawLines, Draw Lines}
 * Interactive 2D line drawing
 *
 * Hold Ctrl+D and click/move Left Mouse Button to Draw

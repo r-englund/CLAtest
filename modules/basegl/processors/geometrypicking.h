@@ -47,12 +47,35 @@
 namespace inviwo {
 class Shader;
 
-class IVW_MODULE_BASEGL_API PositionWidgetProcessor : public CompositeProcessorGL {
+/** \docpage{org.inviwo.GeometryPicking, Geometry Picking}
+* Composite image with geometry where geometry repositioned through picking
+*
+* Use Left Mouse Button to move the geomtry around in the scene 
+*
+* ### Inports
+*   * __GeometryInport__ The input geometry.
+*   * __ImageInport__ The input image.
+*
+* ### Outports
+*   * __ImageOutport__ The output image.
+*
+* ### Properties
+*   * __Position_ Defines size of all lines.
+*   * __Camera__ Camera of the scene.
+*   * __Trackball__ Camera trackball.
+*/
+
+/**
+* \brief Composite image with geometry where geometry repositioned through picking
+*
+*/
+
+class IVW_MODULE_BASEGL_API GeometryPicking : public CompositeProcessorGL {
 public:
     InviwoProcessorInfo();
 
-    PositionWidgetProcessor();
-    virtual ~PositionWidgetProcessor();
+    GeometryPicking();
+    virtual ~GeometryPicking();
 
     void initialize();
     void deinitialize();

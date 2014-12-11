@@ -46,7 +46,7 @@
 
 namespace inviwo {
 
-/** \docpage{org.inviwo.DrawPoints, DrawPoints}
+/** \docpage{org.inviwo.DrawPoints, Draw Points}
  * Interactive 2D point drawing 
  * 
  * Hold Ctrl+D and click/move Left Mouse Button to Draw
