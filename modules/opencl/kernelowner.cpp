@@ -38,7 +38,7 @@ namespace inviwo {
 
 void KernelObservable::notifyObserversKernelCompiled(const cl::Kernel* kernel) const {
     // Notify observers
-    for (ObserverSet::const_iterator it = observers_->cbegin(), itEnd = observers_->cend(); it != itEnd; ++it) {
+    for (ObserverSet::const_iterator it = observers_->begin(), itEnd = observers_->end(); it != itEnd; ++it) {
         // static_cast can be used since only template class objects can be added
         static_cast<KernelObserver*>(*it)->onKernelCompiled(kernel);
     }
