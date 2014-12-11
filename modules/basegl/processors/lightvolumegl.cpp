@@ -36,6 +36,7 @@
 #include <modules/opengl/glwrap/shader.h>
 #include <modules/opengl/image/layergl.h>
 #include <modules/opengl/textureutils.h>
+#include <modules/opengl/volumeutils.h>
 #include <inviwo/core/datastructures/light/pointlight.h>
 #include <inviwo/core/datastructures/light/directionallight.h>
 
@@ -215,7 +216,7 @@ void LightVolumeGL::process() {
     propParams_[1].vol->bindTexture(lightVolUnit[1].getEnum());
     propagationShader_->activate();
     propagationShader_->setUniform("volume_", volUnit.getUnitNumber());
-    inVolumeGL->setVolumeUniforms(inport_.getData(), propagationShader_, "volumeParameters_");
+    utilgl::setShaderUniforms(propagationShader_, inport_.getData(), "volumeParameters_");
     propagationShader_->setUniform("transferFunc_", transFuncUnit.getUnitNumber());
     propagationShader_->setUniform("lightVolumeParameters_.dimensions_", volumeDimOutF_);
     propagationShader_->setUniform("lightVolumeParameters_.dimensionsRCP_", volumeDimOutFRCP_);
