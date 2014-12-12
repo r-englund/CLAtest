@@ -30,18 +30,19 @@
  *
  *********************************************************************************/
 
-#include "include/inc_shading.frag"
+#include "utils/shading.glsl"
+
+uniform LIGHT_PARAMETERS light_;
+uniform MODEL_PARAMETERS geometry_;
+uniform CAMERA_PARAMETERS camera_;
 
 uniform sampler2D inportHeightfield_;
 uniform sampler2D inportTexture_;
 uniform sampler2D inportNormalMap_;
 
-//uniform vec3 lightDir_ = vec3(-0.25, -0.25, -0.5);
 uniform int terrainShadingMode_ = 0;
+uniform int normalMapping_ = 0;
 uniform int lighting_ = 0;
-uniform vec3 lightIntensity_ = vec3(1.0);
-
-uniform vec3 cameraPosition_;
 
 in vec4 worldPosition_;
 in vec3 normal_;
@@ -72,14 +73,17 @@ void main() {
     */
     
     // normal mapping
-    vec3 normal = normalize(texture(inportNormalMap_, texCoord_.xy).rgb);
-    //normal = vec3(1.0, 0.0, 0.0);
-        //normal = normalize(normal_);
-    //if (lighting_ > 0) {
-        // sample normal map texture
+    vec3 normal;
+    if (normalMapping_ == 1) {
+        normal = texture(inportNormalMap_, texCoord_.xy).rgb;
+        normal = normalize(geometry_.modelToWorldNormalMatrix_ * normal);
+    }
+    else {
+        normal = normalize(normal_);
+    }
     
-        fragColor.rgb = APPLY_SHADING(fragColor.rgb, fragColor.rgb, fragColor.rgb, worldPosition_.xyz,  normal, lightPosition_, cameraPosition_);
-    //}
+    vec3 toCameraDir_ = camera_.cameraPosition_-worldPosition_.xyz;
+    fragColor.rgb = APPLY_LIGHTING(light_, fragColor.rgb, fragColor.rgb, fragColor.rgb, worldPosition_.xyz, normal, normalize(toCameraDir_));
     
  //   fragColor.rgb = normalize(normal);
  //fragColor.rgb = texCoord_;

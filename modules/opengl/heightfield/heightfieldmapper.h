@@ -46,9 +46,48 @@
 
 namespace inviwo {
 
-// HeightFieldMapper converts an arbitrary input image to grayscale float image to be used 
-// in heightfields. Additionally, data values are mapped to either an user-defined range 
-// or are scaled to fit in a given maximum height based on the sea level.
+namespace HeightFieldScaling {
+    enum Mode {
+        FixedRange, //!< scale to [0:1]
+        DataRange,  //!< scale heights given min/max values
+        SeaLevel,   //!< scale heights around sea level to fit in maxHeight
+    };
+}
+
+/** \docpage{org.inviwo.HeightFieldMapper, Height Field Mapper}
+ * Maps a heightfield onto a geometry and renders it to an image. 
+ * The Height Field Mapper converts an arbitrary 2D input image to a grayscale float 
+ * image to be used in the Height Field Renderer processor. Additionally, data values 
+ * are mapped to either an user-defined range or are scaled to fit in a given maximum 
+ * height based on the sea level.
+ * ![](heightfield.png)
+ * 
+ * 
+ * ### Inports
+ *   * __ImageInport__ The heightfield input. If the image has multiple channels only 
+ *                     the red channel is used.
+ *
+ * ### Outports
+ *   * __ImageOutport__ The scaled height field (single channel).
+ * 
+ * ### Properties
+ *   * __Scaling Mode__    The heightfield is scaled to either a fixed range (0 to 1), to a 
+ *                         user-specified range (__Height Range__), or based on the sea level
+ *                         (__Sea Level__ and __Maximum Height__).
+ *   * __Height Range__    Min/max range for data range scaling.
+ *   * __Maximum Height__  Max height used in sea level scaling.
+ *   * __Sea Level__       Sea level around which the heightfield is scaled.
+ */
+
+/**
+ * \brief Maps a 2D input texture to a single channel heightfield and scales the data values.
+ *
+ * Maps a heightfield onto a geometry and renders it to an image. 
+ * The Height Field Mapper converts an arbitrary 2D input image to a grayscale float 
+ * image to be used in the Height Field Renderer processor. Additionally, data values 
+ * are mapped to either an user-defined range or are scaled to fit in a given maximum 
+ * height based on the sea level.
+ */
 class IVW_MODULE_OPENGL_API HeightFieldMapper : public Processor {
 public:
     HeightFieldMapper();
@@ -66,20 +105,13 @@ private:
     // adjust property visibility with respect to selected scaling mode
     void scalingModeChanged();
 
-    enum ScalingMode {
-        FIXED_RANGE, // scale to [0:1]
-        DATA_RANGE, // scale heights given min/max values
-        SEA_LEVEL,  // scale heights around sea level to fit in maxHeight
-        NUMBER_OF_SCALING_MODES
-    };
-
-    ImageInport inport_;
-    ImageOutport outport_;
+    ImageInport inport_;   //!< inport for the 2D heightfield texture
+    ImageOutport outport_; //!< outport for the scaled heightfield
         
-    OptionPropertyInt scalingModeProp_;
-    FloatMinMaxProperty heightRange_;
-    FloatProperty maxHeight_;
-    FloatProperty seaLevel_;
+    OptionPropertyInt scalingModeProp_; //!< scaling mode
+    FloatMinMaxProperty heightRange_;   //!< min/max range for data range scaling 
+    FloatProperty maxHeight_;           //!< max height used in sea level scaling
+    FloatProperty seaLevel_;            //!< sea level around which the heightfield is scaled
 };
 
 } // namespace

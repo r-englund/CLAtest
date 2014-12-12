@@ -30,14 +30,13 @@
  *
  *********************************************************************************/
 
+#include "utils/structs.glsl"
+
+uniform MODEL_PARAMETERS geometry_;
+uniform CAMERA_PARAMETERS camera_;
+
 uniform sampler2D inportHeightfield_;
 uniform float heightScale_ = 1.0f;
-uniform vec3 lightPos_ = vec3(0.0, 0.0, -1.0);
-uniform vec3 lightPos1_;
-uniform vec3 lightPos2_;
-
-uniform mat4 modelViewMatrix_;
-uniform mat4 projectionMatrix_;
 
 out vec4 worldPosition_;
 out vec3 normal_;
@@ -46,26 +45,7 @@ out vec3 texCoord_;
 
 out float height_;
 
-void main() {
-/*
-    gl_FrontColor = gl_Color;
-    texCoord2D_ = gl_MultiTexCoord0.st;
-    
-    float height = texture2D(inportHeightfield_, texCoord2D_).r;
-    
-    height_ = height * heightScale_;
-    vec4 pos = gl_Vertex + vec4(0.0f, 0.0f, height * heightScale_, 0.0f);
-    vec4 posWorld = gl_ModelViewMatrix * pos;
-    
-    //normal_ = gl_Normal;
-    normal_ = gl_NormalMatrix * gl_Normal;
-    viewDir_ = posWorld.xyz; // posWorld
-    
-    // use directional lighting
-    //lightDir_ = (gl_ModelViewMatrix * vec4(lightPos_, 0.0)).xyz;
-    lightDir_ = lightPos_;
-    */
-    
+void main() {    
     color_ = in_Color;
     texCoord_ = in_TexCoord;
     
@@ -73,7 +53,7 @@ void main() {
     height_ = height * heightScale_;
     vec4 pos = in_Vertex + vec4(0.0f, 0.0f, height * heightScale_, 0.0f);
 
-    worldPosition_ = modelViewMatrix_ * pos;
-    normal_ = (modelViewMatrix_ * vec4(in_Normal,0)).xyz;
-    gl_Position = projectionMatrix_ * worldPosition_;
+    worldPosition_ = geometry_.modelToWorldMatrix_ * pos;
+    normal_ = geometry_.modelToWorldNormalMatrix_ * in_Normal;
+    gl_Position = camera_.worldToClipMatrix_ * worldPosition_;
 }

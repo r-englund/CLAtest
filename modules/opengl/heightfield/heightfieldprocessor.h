@@ -47,6 +47,39 @@
 
 namespace inviwo {
 
+namespace HeightFieldShading {
+    enum Type {
+        ConstantColor,
+        ColorTexture,
+        HeightField,
+    };
+}
+
+/** \docpage{org.inviwo.HeightFieldRenderGL, Height Field Renderer}
+ * Maps a heightfield onto a geometry and renders it to an image. 
+ * ![](heightfield.png)
+ * 
+ * 
+ * ### Inports
+ *   * __GeometryMultiInport__ Input geometry which is modified by the heightfield.
+ *   * __ImageInport__ The heightfield input (single-channel image). If the 
+ *                     image has multiple channels only the red channel is used.
+ *   * __ImageInport__ Color texture for color mapping (optional).
+ *   * __ImageInport__ Normal map input (optional).
+ *
+ * ### Outports
+ *   * __ImageOutport__ The rendered height field.
+ * 
+ * ### Properties
+ *   * __Height Scale__ Scaling factor for the heightfield.
+ *   * __Shading Mode__ Defines the color mapped onto the heightfield using either constant color, 
+ *                      color input texture, or the heightfield texture.
+ */
+
+/**
+ * \brief Maps a heightfield onto a geometry and renders it to an image.
+ *
+ */
 class IVW_MODULE_OPENGL_API HeightFieldProcessor : public GeometryRenderProcessorGL {
 public:
     HeightFieldProcessor();
@@ -65,25 +98,14 @@ protected:
     virtual void process();
 
 private:
-    enum ShadingType { HF_SHADING_FLAT, 
-        HF_SHADING_COLORTEX, 
-        HF_SHADING_HEIGHTFIELD, 
-        NUMBER_OF_HF_SHADING_MODES };
-
-    void setupLight();
-    void lightingChanged();
     void heightfieldChanged();
 
-    ImageInport inportHeightfield_;
-    ImageInport inportTexture_;
-    ImageInport inportNormalMap_;
-    DataInport<LightSource> inportLightSource_;
+    ImageInport inportHeightfield_; //!< inport for the 2D heightfield texture
+    ImageInport inportTexture_;     //!< inport for the 2D color texture (optional)
+    ImageInport inportNormalMap_;   //!< inport for the 2D normal map texture (optional)
 
-    FloatProperty heightScale_; // Scale height of input image
-    OptionPropertyInt terrainShadingMode_;
-    BoolProperty lightingEnabledProperty_;
-
-    bool lighting_;
+    FloatProperty heightScale_;            //!< scaling factor for the input heightfield
+    OptionPropertyInt terrainShadingMode_; //!< shading mode for coloring the heightfield
 };
 
 } // namespace
