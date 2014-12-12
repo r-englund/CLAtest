@@ -37,6 +37,7 @@
 #include <modules/opengl/glwrap/shader.h>
 #include <modules/opengl/glwrap/textureunit.h>
 #include <modules/opengl/textureutils.h>
+#include <modules/opengl/volumeutils.h>
 #include <inviwo/core/datastructures/geometry/mesh.h>
 #include <inviwo/core/datastructures/buffer/bufferramprecision.h>
 #include <inviwo/core/interaction/events/gestureevent.h>
@@ -232,7 +233,7 @@ void VolumeSliceGL::process() {
     }
 
     shader_->setUniform("volume_", volUnit.getUnitNumber());
-    volumeGL->setVolumeUniforms(inport_.getData(), shader_, "volumeParameters_");
+    utilgl::setShaderUniforms(shader_, inport_.getData(), "volumeParameters_");
     shader_->setUniform("dimension_", vec2(1.0f / outport_.getData()->getDimension().x,
                                            1.0f / outport_.getData()->getDimension().y));
     shader_->setUniform("sliceNum_", getNormalizedSliceNumber());

@@ -40,6 +40,23 @@ __constant sampler_t smpNormClampLinear = CLK_NORMALIZED_COORDS_TRUE | CLK_ADDRE
 __constant sampler_t smpNormClampEdgeLinear = CLK_NORMALIZED_COORDS_TRUE | CLK_ADDRESS_CLAMP_TO_EDGE | CLK_FILTER_LINEAR;
 __constant sampler_t smpNormClampEdgeNearest = CLK_NORMALIZED_COORDS_TRUE | CLK_ADDRESS_CLAMP_TO_EDGE | CLK_FILTER_NEAREST;
 
+
+typedef struct VolumeParameters_t {
+    float16 modelToWorld;
+    float16 worldToModel;
+    float16 worldToTexture;
+    float16 textureToWorld;
+    float16 textureToIndex;                 // Transform from [0 1] to [-0.5 dim-0.5]
+    float16 indexToTexture;                 // Transform from [-0.5 dim-0.5] to [0 1]
+    float16 textureSpaceGradientSpacing;    // Maximum possible distance to go without ending up outside of a voxel (half of minimum voxel spacing for volumes with orthogonal basis)
+    float worldSpaceGradientSampleSpacing;  // Spacing between gradient samples in world space 
+    float formatScaling;                    // Scaling of data values.
+    float formatOffset;                     // Offset of data values.
+    float signedFormatScaling;              // Scaling of signed data values.
+    float signedFormatOffset;               // Offset of signed data values.
+    char padding__[44];                     // Padding to align to 512 bytes
+} VolumeParameters;
+
 /*
  * Get voxel data with linear interpolation, coordinate in [0 1]^3
  */
@@ -63,16 +80,17 @@ float getVoxelUnorm(read_only image3d_t volume, int4 pos) {
 #endif
 }
 /*
- * Get voxel data with linear interpolation and apply offset and scaling, coordinate in [0 1]^3
+ * Return a value mapped from data range [min,max] to [0,1] using linear interpolation
+ * @param pos Coordinate in [0 1]^3
  */
-float getVoxelS(read_only image3d_t volume, float4 pos, float2 offsetAndScaling) {
+float getNormalizedVoxel(read_only image3d_t volume, float4 pos, float2 offsetAndScaling) {
     return (read_imagef(volume, smpNormClampEdgeLinear, pos).x + offsetAndScaling.x) * offsetAndScaling.y;  
 }
 
 /*
  * Get voxel data in unnormalized coordinates [0 get_image_dim(volume)-1] and apply offset and scaling
  */
-float getVoxelUnormS(read_only image3d_t volume, int4 pos, float2 offsetAndScaling) {
+float getNormalizedVoxelUnorm(read_only image3d_t volume, int4 pos, float2 offsetAndScaling) {
     return (read_imagef(volume, smpUNormNoClampNearest, pos).x + offsetAndScaling.x) * offsetAndScaling.y;  
 }
 

@@ -34,17 +34,35 @@
 #define IVW_VOLUMECL_BASE_H
 
 #include <inviwo/core/common/inviwo.h>
+#include <inviwo/core/datastructures/buffer/buffer.h>
 #include <inviwo/core/datastructures/image/layerrepresentation.h>
 #include <inviwo/core/datastructures/volume/volume.h>
+
 #include <modules/opencl/inviwoopencl.h>
 #include <modules/opencl/openclmoduledefine.h>
 
 namespace inviwo {
+
 // Parent classes are responsible for creating the appropriate cl::Image type (Image2D, Image3D, Image2DGL/ImageGL and so forth)
 // This class enables inviwo to use cl::Image(s) in a generic way (i.e. not caring if it is an Image2D or Image2DGL/ImageGL).
 class IVW_MODULE_OPENCL_API VolumeCLBase {
 
 public:
+    struct VolumeParameters {
+        mat4 modelToWorld;
+        mat4 worldToModel;
+        mat4 worldToTexture;
+        mat4 textureToWorld;
+        mat4 textureToIndex;                    // Transform from [0 1] to [-0.5 dim-0.5]
+        mat4 indexToTexture;                    // Transform from [-0.5 dim-0.5] to [0 1]
+        mat4 textureSpaceGradientSpacing;       // Maximum possible distance to go without ending up outside of a voxel (half of minimum voxel spacing for volumes with orthogonal basis)
+        float worldSpaceGradientSampleSpacing;  // Spacing between gradient samples in world space 
+        float formatScaling;                    // Scaling of data values.
+        float formatOffset;                     // Offset of data values.
+        float signedFormatScaling;              // Scaling of signed data values.
+        float signedFormatOffset;               // Offset of signed data values.
+        char padding__[44];                     // Padding to align to 512 bytes
+    };
     VolumeCLBase();
     VolumeCLBase(const VolumeCLBase& other);
     virtual ~VolumeCLBase();
@@ -58,9 +76,10 @@ public:
      * @return vec2 Offset in first component and scaling in second.
      */
     virtual vec2 getVolumeDataOffsetAndScaling(const Volume* volume) const;
-
+    const Buffer& getVolumeStruct(const Volume* volume) const;
 protected:
     cl::Image* clImage_;
+    Buffer volumeStruct_;
 };
 
 } // namespace

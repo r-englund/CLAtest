@@ -61,8 +61,6 @@ public:
     Texture3D* getTexture();
     const Texture3D* getTexture() const;
 
-    void setVolumeUniforms(const Volume* volume, Shader* shader, const std::string& samplerID) const;
-
 private:
     Texture3D* volumeTexture_;
 };

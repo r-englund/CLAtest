@@ -222,8 +222,8 @@ void Texture::loadFromPBO(const Texture* src) {
     setupAsyncReadBackPBO();
     src->bindFromPBO();
     upload(NULL);
-    src->unbindFromPBO();
     unbind();
+    src->unbindFromPBO();
     LGL_ERROR;
 }
 

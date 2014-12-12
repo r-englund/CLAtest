@@ -80,30 +80,30 @@ private:
 };
 
 template<typename T, size_t B, BufferType A>
-class Attributes : public Buffer {
+class BufferPrecision : public Buffer {
 
 public:
-    Attributes(size_t size = 0, BufferUsage usage = STATIC)
+    BufferPrecision(size_t size = 0, BufferUsage usage = STATIC)
         : Buffer(size, DataFormat<T,B>::get(), A, usage) {
     }
-    Attributes(BufferUsage usage)
+    BufferPrecision(BufferUsage usage)
         : Buffer(0, DataFormat<T,B>::get(), A, usage) {
     }
-    Attributes(const Attributes& rhs)
+    BufferPrecision(const BufferPrecision& rhs)
         : Buffer(rhs) {
     }
-    Attributes& operator=(const Attributes& that) {
+    BufferPrecision& operator=(const BufferPrecision& that) {
         if (this != &that) {
             Buffer::operator=(that);
         }
 
         return *this;
     }
-    virtual Attributes<T, B, A>* clone() const {
-        return new Attributes<T, B, A>(*this);
+    virtual BufferPrecision<T, B, A>* clone() const {
+        return new BufferPrecision<T, B, A>(*this);
     }
 
-    virtual ~Attributes() { }
+    virtual ~BufferPrecision() { }
 
 private:
     static const DataFormatBase* defaultformat() {
@@ -112,7 +112,7 @@ private:
 
 };
 
-#define DataFormatBuffers(D, BUFFER_TYPE) Attributes<D::type, D::bits, BUFFER_TYPE>
+#define DataFormatBuffers(D, BUFFER_TYPE) BufferPrecision<D::type, D::bits, BUFFER_TYPE>
 
 typedef DataFormatBuffers(DataVec2FLOAT32, POSITION_ATTRIB) Position2dBuffer;
 typedef DataFormatBuffers(DataVec2FLOAT32, TEXCOORD_ATTRIB) TexCoord2dBuffer;
@@ -123,7 +123,7 @@ typedef DataFormatBuffers(DataVec3FLOAT32, TEXCOORD_ATTRIB) TexCoord3dBuffer;
 typedef DataFormatBuffers(DataFLOAT32, CURVATURE_ATTRIB) CurvatureBuffer;
 typedef DataFormatBuffers(DataUINT32, INDEX_ATTRIB) IndexBuffer;
 
-#define DataFormatIdMacro(i) typedef Attributes<Data##i::type, Data##i::bits, POSITION_ATTRIB> Buffer_##i;
+#define DataFormatIdMacro(i) typedef BufferPrecision<Data##i::type, Data##i::bits, POSITION_ATTRIB> Buffer_##i;
 #include <inviwo/core/util/formatsdefinefunc.h>
 
 
