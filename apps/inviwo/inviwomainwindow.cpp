@@ -104,10 +104,9 @@ void InviwoMainWindow::initialize() {
     settingsWidget_->hide();
 
     helpWidget_ = new HelpWidget(this);
-    addDockWidget(Qt::RightDockWidgetArea, helpWidget_);
-
     processorTreeWidget_ = new ProcessorTreeWidget(this, helpWidget_);
     addDockWidget(Qt::LeftDockWidgetArea, processorTreeWidget_);
+    addDockWidget(Qt::LeftDockWidgetArea, helpWidget_, Qt::Vertical);
 
     propertyListWidget_ = new PropertyListWidget(this);
     addDockWidget(Qt::RightDockWidgetArea, propertyListWidget_);
