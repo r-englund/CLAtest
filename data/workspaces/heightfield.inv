@@ -36,10 +36,10 @@
                         <Property type="org.inviwo.IntVec2Property" identifier="customInputDimensions" displayName="Input Image Dimensions" key="customInputDimensions">
                             <visible content="0" />
                             <readonly content="1" />
-                            <value x="750" y="750" />
+                            <value x="505" y="565" />
                         </Property>
                         <Property type="org.inviwo.IntVec2Property" identifier="dimensions" displayName="Dimensions" key="dimensions">
-                            <value x="505" y="565" />
+                            <value x="512" y="512" />
                         </Property>
                         <Property type="org.inviwo.BoolProperty" identifier="enableCustomInputDimensions" displayName="Enable Custom Input Dimensions" key="enableCustomInputDimensions" />
                         <Property type="org.inviwo.BoolProperty" identifier="keepAspectRatio" displayName="Keep Aspect Ratio" key="keepAspectRatio">
@@ -60,13 +60,13 @@
                     <selection content="0" />
                 </MetaDataItem>
                 <MetaDataItem type="org.inviwo.ProcessorWidgetMetaData" key="ProcessorWidgetMetaData">
-                    <position x="2919" y="207" />
-                    <dimension x="505" y="565" />
+                    <position x="2059" y="495" />
+                    <dimension x="512" y="512" />
                     <visibility content="1" />
                 </MetaDataItem>
             </MetaDataMap>
         </Processor>
-        <Processor type="org.inviwo.ImageSource" identifier="Color" id="ref5">
+        <Processor type="org.inviwo.ImageSource" identifier="Color" id="ref4">
             <Properties>
                 <Property type="org.inviwo.FileProperty" identifier="imageFileName" key="imageFileName">
                     <url content="../images/canyon7.tga" />
@@ -149,13 +149,13 @@
                 </MetaDataItem>
             </MetaDataMap>
         </Processor>
-        <Processor type="org.inviwo.HeightFieldMapper" identifier="Height Field Mapper" id="ref6">
+        <Processor type="org.inviwo.HeightFieldMapper" identifier="Height Field Mapper" id="ref2">
             <Properties>
                 <Property type="org.inviwo.FloatMinMaxProperty" identifier="heightrange" key="heightrange">
                     <visible content="0" />
                 </Property>
                 <Property type="org.inviwo.FloatProperty" identifier="maxheight" key="maxheight">
-                    <value content="0.45500001" />
+                    <value content="0.5" />
                 </Property>
                 <Property type="org.inviwo.OptionPropertyInt" identifier="scalingmode" key="scalingmode">
                     <selectedIdentifier content="scaleSeaLevel" />
@@ -168,30 +168,28 @@
                 <MetaDataItem type="org.inviwo.ProcessorMetaData" key="ProcessorMetaData">
                     <position x="25" y="-50" />
                     <visibility content="1" />
-                    <selection content="0" />
+                    <selection content="1" />
                 </MetaDataItem>
             </MetaDataMap>
         </Processor>
-        <Processor type="org.inviwo.HeightFieldRenderGL" identifier="Height Field Render" id="ref7">
+        <Processor type="org.inviwo.HeightFieldRenderGL" identifier="Height Field Render" id="ref5">
             <Properties>
                 <Property type="org.inviwo.CameraProperty" identifier="camera" key="camera">
                     <Properties>
-                        <Property type="org.inviwo.FloatProperty" identifier="aspectRatio" key="aspectRatio">
-                            <value content="0.89380533" />
-                        </Property>
+                        <Property type="org.inviwo.FloatProperty" identifier="aspectRatio" key="aspectRatio" />
                         <Property type="org.inviwo.FloatProperty" identifier="far" key="far" />
                         <Property type="org.inviwo.BoolProperty" identifier="fitToBasis_" key="fitToBasis_" />
                         <Property type="org.inviwo.FloatProperty" identifier="fov" key="fov">
                             <value content="38" />
                         </Property>
                         <Property type="org.inviwo.FloatVec3Property" identifier="lookFrom" key="lookFrom">
-                            <value x="0.10644867" y="-0.44307315" z="2.143549" />
+                            <value x="1.2269622" y="-0.85852754" z="1.3064115" />
                         </Property>
                         <Property type="org.inviwo.FloatVec3Property" identifier="lookTo" key="lookTo">
-                            <value x="-0.072109513" y="0.1130325" z="-0.19235027" />
+                            <value x="-0.10001745" y="0.16495913" z="-0.12909225" />
                         </Property>
                         <Property type="org.inviwo.FloatVec3Property" identifier="lookUp" key="lookUp">
-                            <value x="-0.75243139" y="0.65841937" z="0.018153472" />
+                            <value x="-0.59736311" y="0.50709522" z="0.6212979" />
                         </Property>
                         <Property type="org.inviwo.FloatProperty" identifier="near" key="near" />
                     </Properties>
@@ -221,7 +219,7 @@
                         <Property type="org.inviwo.FloatVec3Property" identifier="lightColorSpecular" key="lightColorSpecular" />
                         <Property type="org.inviwo.FloatVec3Property" identifier="lightPosition" key="lightPosition">
                             <semantics semantics="LightPosition" />
-                            <value x="0.59999537" y="-0.59999537" z="14.975981" />
+                            <value x="-2.2238264" y="14.084239" z="4.6571221" />
                         </Property>
                         <Property type="org.inviwo.IntProperty" identifier="materialShininess" displayName="Material shininess" key="materialShininess">
                             <value content="180" />
@@ -265,11 +263,11 @@
                 <MetaDataItem type="org.inviwo.ProcessorMetaData" key="ProcessorMetaData">
                     <position x="25" y="50" />
                     <visibility content="1" />
-                    <selection content="1" />
+                    <selection content="0" />
                 </MetaDataItem>
             </MetaDataMap>
         </Processor>
-        <Processor type="org.inviwo.ImageSource" identifier="Heightfield" id="ref4">
+        <Processor type="org.inviwo.ImageSource" identifier="Heightfield" id="ref6">
             <Properties>
                 <Property type="org.inviwo.FileProperty" identifier="imageFileName" key="imageFileName">
                     <url content="../images/canyon7-heightmap.png" />
@@ -352,7 +350,7 @@
                 </MetaDataItem>
             </MetaDataMap>
         </Processor>
-        <Processor type="org.inviwo.MeshCreator" identifier="Mesh Creator" id="ref2">
+        <Processor type="org.inviwo.MeshCreator" identifier="Mesh Creator" id="ref3">
             <Properties>
                 <Property type="org.inviwo.OptionPropertyInt" identifier="meshType" key="meshType">
                     <selectedIdentifier content="plane" />
@@ -373,7 +371,7 @@
                 </MetaDataItem>
             </MetaDataMap>
         </Processor>
-        <Processor type="org.inviwo.ImageSource" identifier="Normal Map" id="ref3">
+        <Processor type="org.inviwo.ImageSource" identifier="Normal Map" id="ref7">
             <Properties>
                 <Property type="org.inviwo.FileProperty" identifier="imageFileName" key="imageFileName">
                     <url content="../images/canyon7-normalmap.png" />
@@ -467,51 +465,51 @@
             </InPort>
         </Connection>
         <Connection>
-            <OutPort identifier="outport">
-                <Processor type="org.inviwo.MeshCreator" identifier="Mesh Creator" reference="ref2" />
-            </OutPort>
-            <InPort identifier="geometry.inport">
-                <Processor type="org.inviwo.HeightFieldRenderGL" identifier="Height Field Render" reference="ref7" />
-            </InPort>
-        </Connection>
-        <Connection>
             <OutPort identifier="image.outport">
-                <Processor type="org.inviwo.ImageSource" identifier="Normal Map" reference="ref3" />
-            </OutPort>
-            <InPort identifier="normalmap.inport">
-                <Processor type="org.inviwo.HeightFieldRenderGL" identifier="Height Field Render" reference="ref7" />
-            </InPort>
-        </Connection>
-        <Connection>
-            <OutPort identifier="image.outport">
-                <Processor type="org.inviwo.ImageSource" identifier="Heightfield" reference="ref4" />
-            </OutPort>
-            <InPort identifier="image.inport">
-                <Processor type="org.inviwo.HeightFieldMapper" identifier="Height Field Mapper" reference="ref6" />
-            </InPort>
-        </Connection>
-        <Connection>
-            <OutPort identifier="image.outport">
-                <Processor type="org.inviwo.ImageSource" identifier="Color" reference="ref5" />
-            </OutPort>
-            <InPort identifier="texture.inport">
-                <Processor type="org.inviwo.HeightFieldRenderGL" identifier="Height Field Render" reference="ref7" />
-            </InPort>
-        </Connection>
-        <Connection>
-            <OutPort identifier="image.outport">
-                <Processor type="org.inviwo.HeightFieldMapper" identifier="Height Field Mapper" reference="ref6" />
+                <Processor type="org.inviwo.HeightFieldMapper" identifier="Height Field Mapper" reference="ref2" />
             </OutPort>
             <InPort identifier="heightfield.inport">
-                <Processor type="org.inviwo.HeightFieldRenderGL" identifier="Height Field Render" reference="ref7" />
+                <Processor type="org.inviwo.HeightFieldRenderGL" identifier="Height Field Render" reference="ref5" />
+            </InPort>
+        </Connection>
+        <Connection>
+            <OutPort identifier="outport">
+                <Processor type="org.inviwo.MeshCreator" identifier="Mesh Creator" reference="ref3" />
+            </OutPort>
+            <InPort identifier="geometry.inport">
+                <Processor type="org.inviwo.HeightFieldRenderGL" identifier="Height Field Render" reference="ref5" />
             </InPort>
         </Connection>
         <Connection>
             <OutPort identifier="image.outport">
-                <Processor type="org.inviwo.HeightFieldRenderGL" identifier="Height Field Render" reference="ref7" />
+                <Processor type="org.inviwo.ImageSource" identifier="Color" reference="ref4" />
+            </OutPort>
+            <InPort identifier="texture.inport">
+                <Processor type="org.inviwo.HeightFieldRenderGL" identifier="Height Field Render" reference="ref5" />
+            </InPort>
+        </Connection>
+        <Connection>
+            <OutPort identifier="image.outport">
+                <Processor type="org.inviwo.HeightFieldRenderGL" identifier="Height Field Render" reference="ref5" />
             </OutPort>
             <InPort identifier="inport">
                 <Processor type="org.inviwo.Background" identifier="Background" reference="ref0" />
+            </InPort>
+        </Connection>
+        <Connection>
+            <OutPort identifier="image.outport">
+                <Processor type="org.inviwo.ImageSource" identifier="Heightfield" reference="ref6" />
+            </OutPort>
+            <InPort identifier="image.inport">
+                <Processor type="org.inviwo.HeightFieldMapper" identifier="Height Field Mapper" reference="ref2" />
+            </InPort>
+        </Connection>
+        <Connection>
+            <OutPort identifier="image.outport">
+                <Processor type="org.inviwo.ImageSource" identifier="Normal Map" reference="ref7" />
+            </OutPort>
+            <InPort identifier="normalmap.inport">
+                <Processor type="org.inviwo.HeightFieldRenderGL" identifier="Height Field Render" reference="ref5" />
             </InPort>
         </Connection>
     </Connections>

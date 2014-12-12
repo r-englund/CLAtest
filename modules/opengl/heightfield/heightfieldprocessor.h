@@ -57,7 +57,7 @@ namespace HeightFieldShading {
 
 /** \docpage{org.inviwo.HeightFieldRenderGL, Height Field Renderer}
  * Maps a heightfield onto a geometry and renders it to an image. 
- * ![](heightfield.png)
+ * ![](heightfieldrenderer.png)
  * 
  * 
  * ### Inports
@@ -74,6 +74,9 @@ namespace HeightFieldShading {
  *   * __Height Scale__ Scaling factor for the heightfield.
  *   * __Shading Mode__ Defines the color mapped onto the heightfield using either constant color, 
  *                      color input texture, or the heightfield texture.
+ *
+ * ### Example Network
+ *   ![](heightfield-network.png)
  */
 
 /**

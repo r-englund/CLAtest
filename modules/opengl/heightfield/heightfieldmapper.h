@@ -60,7 +60,7 @@ namespace HeightFieldScaling {
  * image to be used in the Height Field Renderer processor. Additionally, data values 
  * are mapped to either an user-defined range or are scaled to fit in a given maximum 
  * height based on the sea level.
- * ![](heightfield.png)
+ * ![](heightfieldmapper.png)
  * 
  * 
  * ### Inports
@@ -77,6 +77,9 @@ namespace HeightFieldScaling {
  *   * __Height Range__    Min/max range for data range scaling.
  *   * __Maximum Height__  Max height used in sea level scaling.
  *   * __Sea Level__       Sea level around which the heightfield is scaled.
+ *
+ * ### Example Network
+ *   ![](heightfield-network.png)
  */
 
 /**
