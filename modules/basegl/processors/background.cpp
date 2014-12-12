@@ -130,42 +130,24 @@ void Background::initializeResources() {
 }
 
 void Background::process() {
-    if (inport_.hasData() != hadData_) {
-        initializeResources();
-    }
+    if (inport_.hasData() != hadData_) initializeResources();
 
     if (inport_.hasData()) inport_.passOnDataToOutport(&outport_);
 
     utilgl::activateTarget(outport_);
 
-    LGL_ERROR;
-//    Image* outImage = outport_.getData();
-//    ImageGL* outImageGL = outImage->getEditableRepresentation<ImageGL>();
-//    //outImageGL->activateBuffer();
-//    outImageGL->getFBO()->activate();
-//    std::vector<GLenum> buffs = outImageGL->getFBO()->getDrawBuffers();
-//    glDrawBuffers(1, &buffs[0]);
-//    uvec2 dim = outImageGL->getDimension();
-//    glViewport(0, 0, dim.x, dim.y);
-
-    LGL_ERROR;
-
     TextureUnit srcColorUnit, srcDepthUnit;
-    if (inport_.hasData()) {
-        //utilgl::bindTextures(inport_, srcColorUnit, srcDepthUnit);
-        utilgl::bindColorTexture(inport_, srcColorUnit);
-    }
+    if (inport_.hasData()) utilgl::bindColorTexture(inport_, srcColorUnit);
+    
     shader_->activate();
     utilgl::setShaderUniforms(shader_, outport_, "outportParameters_");
     shader_->setUniform("inputTex_", srcColorUnit.getUnitNumber());
-    //shader_->setUniform("inputDepth_", srcDepthUnit.getUnitNumber());
     shader_->setUniform("color1_", color1_.get());
     shader_->setUniform("color2_", color2_.get());
     shader_->setUniform("checkerBoardSize_", checkerBoardSize_.get());
     
     utilgl::singleDrawImagePlaneRect();
-
-    LGL_ERROR;
+    
     shader_->deactivate();
     utilgl::deactivateCurrentTarget();
 }

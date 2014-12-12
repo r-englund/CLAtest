@@ -299,7 +299,7 @@ void ImageGL::updateExistingLayers() const {
 }
 
 void ImageGL::update(bool editable) {
-    bool reAttachTargets = (!isValid() || colorLayersGL_.empty());
+    //bool reAttachTargets = (!isValid() || colorLayersGL_.empty());
 
     colorLayersGL_.clear();
     depthLayerGL_ = NULL;
