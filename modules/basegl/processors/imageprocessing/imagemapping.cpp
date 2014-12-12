@@ -46,7 +46,7 @@ ProcessorCodeState(ImageMapping, CODE_STATE_STABLE);
 
 ImageMapping::ImageMapping()
     : ImageGLProcessor("img_mapping.frag")
-    , transferFunction_("transferFunction", "Transfer function", TransferFunction()) {
+    , transferFunction_("transferFunction", "Transfer Function", TransferFunction()) {
     addProperty(transferFunction_);
 }
 
