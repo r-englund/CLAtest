@@ -26,29 +26,95 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  * 
- * Contact: Daniel Jönsson
+ * Contact: Martin Falk
  *
  *********************************************************************************/
 
-#include "utils/sampler2d.glsl"
+#include "utils/structs.glsl"
 
-uniform sampler2D inport0_;
+uniform TEXTURE_PARAMETERS outportParameters_;
+
+uniform sampler2D inport_;
 uniform sampler2D inport1_;
-uniform float alpha_;
-uniform vec2 dimension_;
-uniform vec2 screenDimRCP_;
+uniform float weight_ = 0.5;
 
+// make sure there is a fall-back if COLOR_BLENDING wasn't set before
+#ifndef COLOR_BLENDING
+	// if only b is given, regular color mixing will be performed
+#  define COLOR_BLENDING(a, b) (b)
+#endif
+
+/*
 vec4 colorMix(vec4 colorA, vec4 colorB, vec4 param) {
+    // f(a,b) = a * (1 - alpha) + b * alpha
     return mix(colorA, colorB, param);
 }
-vec4 colorAdd(vec4 colorA, vec4 colorB) {
-    return colorA + colorB;
+*/
+
+vec4 over(vec4 colorB, vec4 colorA) {
+	// f(a,b) = b, b over a, regular front-to-back blending
+	vec3 col = mix(colorB.rgb * colorB.a, colorA.rgb, colorA.a);
+	float alpha = colorA.a + (1.0 - colorA.a) * colorB.a;
+	return vec4(col, alpha);
 }
 
+vec4 multiply(vec4 colorA, vec4 colorB) {
+	// f(a,b) = a * b
+    return vec4(colorA.rgb * colorB.rgb, 1.0);
+}
+
+vec4 screen(vec4 colorA, vec4 colorB) {
+	// f(a,b) = 1 - (1 - a) * (1 - b)
+    return vec4(1.0 - (1.0 - colorA.rgb) * (1.0 - colorB.rgb), 1.0);
+}
+
+vec4 overlay(vec4 colorA, vec4 colorB) {
+	// f(a,b) = 2 * a *b, if a < 0.5,   
+	//        = 1 - 2(1 - a)(1 - b), otherwise (combination of Multiply and Screen)
+	bvec3 less = lessThan(colorA.rgb, vec3(0.5));
+	vec3 high =  1.0 - 2.0 * (1.0 - colorA.rgb) * (1.0 - colorB.rgb);
+	vec3 low = 2.0 * colorA.rgb * colorB.rgb;
+
+    return vec4(mix(high, low, less), 1.0);
+}
+
+vec4 divide(vec4 colorA, vec4 colorB) {
+	// f(a,b) = a/b
+    return vec4(colorA.rgb / colorB.rgb, 1.0);
+}
+
+vec4 addition(vec4 colorA, vec4 colorB) {
+	// f(a,b) = a + b, clamped to [0,1]
+    return vec4(min(colorA.rgb + colorB.rgb, 1.0), 1.0);
+}
+
+vec4 subtraction(vec4 colorA, vec4 colorB) {
+	// f(a,b) = a - b, clamped to [0,1]
+    return vec4(max(colorA.rgb - colorB.rgb, 0.0), 1.0);
+}
+
+vec4 difference(vec4 colorA, vec4 colorB) {
+	//  f(a,b) = |a - b|
+    return vec4(abs(colorA.rgb - colorB.rgb), 1.0);
+}
+
+vec4 darkenOnly(vec4 colorA, vec4 colorB) {
+	//  f(a,b) = min(a, b), per component
+    return vec4(min(colorA.rgb, colorB.rgb), 1.0);
+}
+
+vec4 brightenOnly(vec4 colorA, vec4 colorB) {
+	//  f(a,b) = max(a, b), per component
+    return vec4(max(colorA.rgb, colorB.rgb), 1.0);
+}
+
+
 void main() {
-    vec2 texCoords = gl_FragCoord.xy * screenDimRCP_;
-    vec4 color0 = texture(inport0_, texCoords);
+    vec2 texCoords = gl_FragCoord.xy * outportParameters_.dimensionsRCP_;
+    vec4 color0 = texture(inport_, texCoords);
     vec4 color1 = texture(inport1_, texCoords);
-    FragData0 = COLOR_BLENDING(color0, color1, vec4(alpha_));
-    gl_FragDepth = 0.0;
+    vec4 result = COLOR_BLENDING(color0, color1);
+    // mix result with original color,
+    // if (weight_ == 1) the final color will be the result of the blending operation
+    FragData0 = color0 + (result - color0) * weight_;
 }

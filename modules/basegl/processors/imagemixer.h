@@ -26,7 +26,7 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  * 
- * Contact: Timo Ropinski
+ * Contact: Martin Falk
  *
  *********************************************************************************/
 
@@ -35,39 +35,84 @@
 
 #include <modules/basegl/baseglmoduledefine.h>
 #include <inviwo/core/common/inviwo.h>
-#include <inviwo/core/processors/processor.h>
-#include <inviwo/core/ports/imageport.h>
+#include <modules/basegl/processors/imageglprocessor.h>
 #include <inviwo/core/properties/baseoptionproperty.h>
 #include <inviwo/core/properties/ordinalproperty.h>
-#include <modules/opengl/inviwoopengl.h>
-
 
 namespace inviwo {
 
-class Shader;
+namespace BlendModes {
+    enum Mode {
+        Mix, //!< f(a,b) = a * (1 - alpha) + b * alpha
+        Over, //!< f(a,b) = b, b over a, regular front-to-back blending
+        Multiply, //!< f(a,b) = a * b
+        Screen, //!< f(a,b) = 1 - (1 - a) * (1 - b)
+        Overlay, //!< f(a,b) = 2 * a *b, if a < 0.5,   f(a,b) = 1 - 2(1 - a)(1 - b), otherwise (combination of Multiply and Screen)
+        HardLight, //!< Overlay where a and b are swapped
+        Divide, //!< f(a,b) = a/b
+        Addition, //!< f(a,b) = a + b, clamped to [0,1]
+        Subtraction, //!< f(a,b) = a - b, clamped to [0,1]
+        Difference, //!< f(a,b) = |a - b|
+        DarkenOnly, //!< f(a,b) = min(a, b), per component
+        BrightenOnly, //!< f(a,b) = max(a, b), per component
+    };
+}
 
-class IVW_MODULE_BASEGL_API ImageMixer : public Processor {
+/** \docpage{org.inviwo.ImageMixer, Image Mixer}
+ * Mixes two input images according to the chosen blend mode.
+ * ![](imagemixer.png)
+ *
+ * Supported blend modes
+ * <table>
+ *   <tr><td>Mix</td><td><tt>f(a,b) = a * (1 - alpha) + b * alpha</tt></td></tr>
+ *   <tr><td>Over</td><td><tt>f(a,b) = b over a</tt>, regular front-to-back blending</td></tr>
+ *   <tr><td>Multiply</td><td><tt>f(a,b) = a * b</tt></td></tr>
+ *   <tr><td>Screen</td><td><tt>f(a,b) = 1 - (1 - a) * (1 - b)</tt></td></tr>
+ *   <tr><td>Overlay</td><td><tt>f(a,b) = 2 * a *b, if a < 0.5</tt>, and</td></tr>
+ *      <tr><td></td><td><tt>f(a,b) = 1 - 2(1 - a)(1 - b)</tt>, otherwise (combination of Multiply and Screen)</td></tr>
+ *   <tr><td>HardLight</td><td>Overlay where a and b are swapped</td></tr>
+ *   <tr><td>Divide</td><td><tt>f(a,b) = a/b</tt></td></tr>
+ *   <tr><td>Addition</td><td><tt>f(a,b) = a + b</tt>, clamped to [0,1]</td></tr>
+ *   <tr><td>Subtraction</td><td><tt>f(a,b) = a - b</tt>, clamped to [0,1]</td></tr>
+ *   <tr><td>Difference</td><td><tt>f(a,b) = |a - b|</tt></td></tr>
+ *   <tr><td>DarkenOnly</td><td><tt>f(a,b) = min(a, b)</tt>, per component</td></tr>
+ *   <tr><td>BrightenOnly</td><td><tt>f(a,b) = max(a, b)</tt>, per component</td></tr>
+ * </table>
+ * 
+ * ### Inports
+ *   * __ImageInport__ Input image A.
+ *   * __ImageInport__ Input image B.
+ *
+ * ### Outports
+ *   * __ImageOutport__ The output image.
+ * 
+ * ### Properties
+ *   * __Blend Mode__ Blend mode used for mixing the input images.
+ *   * __Weight__     Weighting factor for mixing the blending result with input image A. 
+ */
+
+/*! \class ImageMixer
+ *
+ * \brief Mixes two input images according to the chosen blend mode.
+ */
+class IVW_MODULE_BASEGL_API ImageMixer : public ImageGLProcessor {
 public:
     ImageMixer();
     ~ImageMixer();
-
     InviwoProcessorInfo();
 
-    void initialize();
-    void deinitialize();
+    //virtual void initialize();
 
 protected:
-    virtual void process();
-    void initializeResources();
+    virtual void initializeResources();
+    virtual void preProcess();
+    
 private:
-    ImageInport inport0_;
-    ImageInport inport1_;
-    ImageOutport outport_;
-    FloatProperty alpha_;
+    void inport1Changed();
 
-    OptionPropertyString blendingMode_;
-
-    Shader* shader_;
+    ImageInport inport1_; //!< second input image
+    OptionPropertyInt blendingMode_; //!< blend mode from BlendModes::Mode
+    FloatProperty weight_; //!< weighting factor
 };
 
 } // namespace

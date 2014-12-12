@@ -96,7 +96,6 @@ protected:
 
     Shader* shader_;
 
-private: 
     /*! \brief call-back function for onChange events of the inport
      */
     void inportChanged() {
