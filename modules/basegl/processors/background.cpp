@@ -136,17 +136,17 @@ void Background::process() {
 
     if (inport_.hasData()) inport_.passOnDataToOutport(&outport_);
 
-    //utilgl::activateTarget(outport_);
+    utilgl::activateTarget(outport_);
 
     LGL_ERROR;
-    Image* outImage = outport_.getData();
-    ImageGL* outImageGL = outImage->getEditableRepresentation<ImageGL>();
-    //outImageGL->activateBuffer();
-    outImageGL->getFBO()->activate();
-    std::vector<GLenum> buffs = outImageGL->getFBO()->getDrawBuffers();
-    glDrawBuffers(1, &buffs[0]);
-    uvec2 dim = outImageGL->getDimension();
-    glViewport(0, 0, dim.x, dim.y);
+//    Image* outImage = outport_.getData();
+//    ImageGL* outImageGL = outImage->getEditableRepresentation<ImageGL>();
+//    //outImageGL->activateBuffer();
+//    outImageGL->getFBO()->activate();
+//    std::vector<GLenum> buffs = outImageGL->getFBO()->getDrawBuffers();
+//    glDrawBuffers(1, &buffs[0]);
+//    uvec2 dim = outImageGL->getDimension();
+//    glViewport(0, 0, dim.x, dim.y);
 
     LGL_ERROR;
 

@@ -55,7 +55,7 @@ public:
     void deinitialize();
     virtual ImageGL* clone() const;
 
-    void reAttachAllLayers(bool clearLayers = false);
+    void reAttachAllLayers(bool overRideImageType = false);
 
     void activateBuffer();
     void deactivateBuffer();

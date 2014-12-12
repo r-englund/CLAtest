@@ -72,31 +72,6 @@ Image::Image(const Image& rhs)
     } else {
         pickingLayer_ = NULL;
     }
-
-    if (depthLayer_ && pickingLayer_) {
-        imageType_ = COLOR_DEPTH_PICKING;
-    } else if (depthLayer_ && !pickingLayer_) {
-        imageType_ = COLOR_DEPTH;
-    } else {
-        imageType_ = COLOR_ONLY;
-    }
-
-    /*
-    for (size_t i = 0; i < rhs.representations_.size(); ++i) {
-        if (rhs.representations_[i]->isValid()) {
-            representations_.push_back(rhs.representations_[i]->clone());
-            ImageRepresentation* imRep = dynamic_cast<ImageRepresentation*>(representations_[i]);
-
-            if (imRep) {
-                imRep->setOwner(this);
-                imRep->setAsInvalid();
-                imRep->update(true);
-
-                break;
-            }
-        }
-    }
-    */
 }
 
 Image& Image::operator=(const Image& that) {
@@ -124,32 +99,6 @@ Image& Image::operator=(const Image& that) {
         } else {
             pickingLayer_ = NULL;
         }
-
-        if (depthLayer_ && pickingLayer_) {
-            imageType_ = COLOR_DEPTH_PICKING;
-        } else if (depthLayer_ && !pickingLayer_) {
-            imageType_ = COLOR_DEPTH;
-        } else {
-            imageType_ = COLOR_ONLY;
-        }
-
-        /*
-        for (size_t i = 0; i < that.representations_.size(); ++i) {
-            if (that.representations_[i]->isValid()) {
-                representations_.push_back(that.representations_[i]->clone());
-                ImageRepresentation* imRep =
-                    dynamic_cast<ImageRepresentation*>(representations_[i]);
-
-                if (imRep) {
-                    imRep->setOwner(this);
-                    imRep->setAsInvalid();
-                    imRep->update(true);
-
-                    break;
-                }
-            }
-        }
-        */
     }
 
     return *this;

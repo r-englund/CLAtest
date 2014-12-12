@@ -82,45 +82,28 @@ void ImageGL::deinitialize() {
 
 ImageGL* ImageGL::clone() const { return new ImageGL(*this); }
 
-void ImageGL::reAttachAllLayers(bool clearLayers) {
+void ImageGL::reAttachAllLayers(bool overRideImageType) {
     frameBufferObject_->activate();
     frameBufferObject_->detachAllTextures();
     pickingAttachmentID_ = 0;
-    GLenum id = 0;
 
-    // GLuint clearColor[4] = {0, 0, 0, 0};
     for (size_t i = 0; i < colorLayersGL_.size(); ++i) {
         colorLayersGL_[i]->getTexture()->bind();
-        id = frameBufferObject_->attachColorTexture(colorLayersGL_[i]->getTexture());
-        /*if(clearLayers){
-            glDrawBuffer(id);
-            glClearBufferuiv(GL_COLOR, 0, clearColor);
-        }*/
+        frameBufferObject_->attachColorTexture(colorLayersGL_[i]->getTexture());
     }
 
-    // Layer* depthLayer = this->getOwner()->getDepthLayer();
-    if (depthLayerGL_) {
+    if (depthLayerGL_ && (overRideImageType || typeContainsDepth(this->getOwner()->getImageType()))) {
         depthLayerGL_->getTexture()->bind();
         frameBufferObject_->attachTexture(depthLayerGL_->getTexture(),
                                           static_cast<GLenum>(GL_DEPTH_ATTACHMENT));
-        /*if(clearLayers){
-            id = GL_DEPTH_ATTACHMENT;
-            glDrawBuffer(id);
-            //const GLfloat clearDepth = 0.f;
-            //glClearBufferfv(GL_DEPTH, 0, &clearDepth);
-        }*/
     }
 
-    // Layer* pickingLayer = this->getOwner()->getPickingLayer();
-    if (pickingLayerGL_) {
+    if (pickingLayerGL_ && (overRideImageType || typeContainsPicking(this->getOwner()->getImageType()))) {
         pickingLayerGL_->getTexture()->bind();
-        id = pickingAttachmentID_ =
+        pickingAttachmentID_ =
             frameBufferObject_->attachColorTexture(pickingLayerGL_->getTexture(), 0, true, 1);
-        /*if(clearLayers){
-            glDrawBuffer(id);
-            //glClearBufferuiv(GL_COLOR, 0, clearColor);
-        }*/
     }
+    
     glBindTexture(GL_TEXTURE_2D, 0);
 
     frameBufferObject_->checkStatus();
@@ -132,7 +115,6 @@ void ImageGL::activateBuffer() {
     frameBufferObject_->defineDrawBuffers();
     uvec2 dim = getDimension();
     glViewport(0, 0, dim.x, dim.y);
-    //frameBufferObject_->checkStatus();
 }
 
 void ImageGL::deactivateBuffer() { frameBufferObject_->deactivate(); }
@@ -140,6 +122,8 @@ void ImageGL::deactivateBuffer() { frameBufferObject_->deactivate(); }
 bool ImageGL::copyAndResizeRepresentation(DataRepresentation* targetRep) const {
     const ImageGL* source = this;
     ImageGL* target = dynamic_cast<ImageGL*>(targetRep);
+    target->reAttachAllLayers(true);
+    
     TextureUnit colorUnit, depthUnit, pickingUnit;
     source->getColorLayerGL()->bindTexture(colorUnit.getEnum());
     if (source->getDepthLayerGL()) {
@@ -177,11 +161,14 @@ bool ImageGL::copyAndResizeRepresentation(DataRepresentation* targetRep) const {
     shader_->deactivate();
     target->deactivateBuffer();
     LGL_ERROR;
+    
+    target->reAttachAllLayers(false);
     return true;
 }
 
 bool ImageGL::updateFrom(const ImageGL* source) {
     ImageGL* target = this;
+    target->reAttachAllLayers(true);
     // Primarily Copy by FBO blitting, all from source FBO to target FBO
     const FrameBufferObject* srcFBO = source->getFBO();
     FrameBufferObject* tgtFBO = target->getFBO();
@@ -218,6 +205,8 @@ bool ImageGL::updateFrom(const ImageGL* source) {
     glDrawBuffer(GL_COLOR_ATTACHMENT0_EXT);
     srcFBO->setRead_Blit(false);
     tgtFBO->setDraw_Blit(false);
+    
+    
     LGL_ERROR;
 
     // Secondary copy using PBO
@@ -240,6 +229,9 @@ bool ImageGL::updateFrom(const ImageGL* source) {
         if (sTex && tTex) tTex->loadFromPBO(sTex);
     }
 
+
+    target->reAttachAllLayers(false);
+    
     LGL_ERROR;
     return true;
 }
@@ -350,7 +342,7 @@ void ImageGL::update(bool editable) {
     }
 
     // Attach all targets
-    if (reAttachTargets) reAttachAllLayers(true);
+    /*if (reAttachTargets)*/ reAttachAllLayers(false);
 }
 
 void ImageGL::renderImagePlaneRect() const {
