@@ -57,7 +57,7 @@
             #define DEBUG
         #endif
         #ifndef _DEBUG
-            #define _DEBUG
+            //#define _DEBUG // This flag gives OpenGL errors on OSX. See ticket #699
         #endif
     #endif
 #endif
