@@ -35,13 +35,14 @@
 
 #include <modules/basegl/baseglmoduledefine.h>
 #include <inviwo/core/common/inviwo.h>
-#include <modules/basegl/processors/imageglprocessor.h>
+#include <inviwo/core/processors/processor.h>
+#include <inviwo/core/ports/imageport.h>
 #include <inviwo/core/properties/baseoptionproperty.h>
 #include <inviwo/core/properties/ordinalproperty.h>
 
 namespace inviwo {
 
-class TextureUnit;
+class Shader;
 
 namespace BlendModes {
     enum Mode {
@@ -97,27 +98,30 @@ namespace BlendModes {
  *
  * \brief Mixes two input images according to the chosen blend mode.
  */
-class IVW_MODULE_BASEGL_API ImageMixer : public ImageGLProcessor {
+class IVW_MODULE_BASEGL_API ImageMixer : public Processor {
 public:
     ImageMixer();
     ~ImageMixer();
     InviwoProcessorInfo();
 
-    //virtual void initialize();
+    virtual void initialize();
+    virtual void deinitialize();
+
+    virtual void process();
 
 protected:
     virtual void initializeResources();
-    virtual void preProcess();
-    virtual void postProcess();
     
 private:
-    void inport1Changed();
-
+    ImageInport inport0_; //!< first input image
     ImageInport inport1_; //!< second input image
+
+    ImageOutport outport_; //!< output image
+
+    Shader* shader_;
+
     OptionPropertyInt blendingMode_; //!< blend mode from BlendModes::Mode
     FloatProperty weight_; //!< weighting factor
-
-    TextureUnit *image2TexUnit_;
 };
 
 } // namespace

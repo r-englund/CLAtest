@@ -34,7 +34,7 @@
 
 uniform TEXTURE_PARAMETERS outportParameters_;
 
-uniform sampler2D inport_;
+uniform sampler2D inport0_;
 uniform sampler2D inport1_;
 uniform float weight_ = 0.5;
 
@@ -111,7 +111,7 @@ vec4 brightenOnly(vec4 colorA, vec4 colorB) {
 
 void main() {
     vec2 texCoords = gl_FragCoord.xy * outportParameters_.dimensionsRCP_;
-    vec4 color0 = texture(inport_, texCoords);
+    vec4 color0 = texture(inport0_, texCoords);
     vec4 color1 = texture(inport1_, texCoords);
     vec4 result = COLOR_BLENDING(color0, color1);
     // mix result with original color,

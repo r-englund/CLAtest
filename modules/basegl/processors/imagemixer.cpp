@@ -44,13 +44,17 @@ ProcessorCategory(ImageMixer, "Image Operation");
 ProcessorCodeState(ImageMixer, CODE_STATE_STABLE);
 
 ImageMixer::ImageMixer()
-    : ImageGLProcessor("img_mix.frag")
+    : Processor()
+    , inport0_("inport0")
     , inport1_("inport1")
+    , outport_("outport")
     , blendingMode_("blendMode", "Blend Mode", INVALID_RESOURCES) 
     , weight_("weight", "Weight", 0.5f, 0.0f, 1.0f)
-    , image2TexUnit_(NULL)
+    , shader_(NULL)
 {
+    addPort(inport0_);
     addPort(inport1_);
+    addPort(outport_);
     
     blendingMode_.addOption("mix", "Mix", BlendModes::Mix);
     blendingMode_.addOption("over", "Over", BlendModes::Over);
@@ -69,31 +73,49 @@ ImageMixer::ImageMixer()
     
     addProperty(blendingMode_);
     addProperty(weight_);
-    
-    inport1_.onChange(this,&ImageMixer::inport1Changed);
 }
 
 ImageMixer::~ImageMixer() {
-    delete image2TexUnit_;
 }
 
-void ImageMixer::preProcess() {
-    ivwAssert(inport1_.getData() != 0, "Inport1 empty.");
-    if (!image2TexUnit_) {
-        image2TexUnit_ = new TextureUnit;
+
+void ImageMixer::initialize() {
+    Processor::initialize();
+    delete shader_;
+    shader_ = new Shader("img_mix.frag", true);
+    //internalInvalid_ = true;
+}
+
+void ImageMixer::deinitialize() {
+    Processor::deinitialize();
+    delete shader_;
+}
+
+void ImageMixer::process() {
+    if (/*internalInvalid_ || */inport0_.getInvalidationLevel() >= INVALID_OUTPUT) {
+        //internalInvalid_ = false;
+        const DataFormatBase* format = inport0_.getData()->getDataFormat();
+
+        Image *img = new Image(inport0_.getData()->getDimension(), COLOR_ONLY, format);
+        img->copyMetaDataFrom(*inport0_.getData());
+        outport_.setData(img);
     }
-    utilgl::bindColorTexture(inport1_, *image2TexUnit_);
-    shader_->setUniform("inport1_", image2TexUnit_->getUnitNumber());
+
+    TextureUnit imgUnit0, imgUnit1;    
+    utilgl::bindColorTexture(inport0_, imgUnit0);
+    utilgl::bindColorTexture(inport1_, imgUnit1);
+
+    utilgl::activateTarget(outport_);
+    shader_->activate();
+
+    utilgl::setShaderUniforms(shader_, outport_, "outportParameters_");
+    shader_->setUniform("inport0_", imgUnit0.getUnitNumber());
+    shader_->setUniform("inport1_", imgUnit1.getUnitNumber());
     shader_->setUniform("weight_", weight_.get());
-}
 
-void ImageMixer::postProcess() {
-    delete image2TexUnit_;
-    image2TexUnit_ = NULL;
-}
-
-void ImageMixer::inport1Changed() {
-    ImageGLProcessor::inportChanged();
+    utilgl::singleDrawImagePlaneRect();
+    shader_->deactivate();
+    utilgl::deactivateCurrentTarget();
 }
 
 void ImageMixer::initializeResources() {
