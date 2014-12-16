@@ -58,7 +58,7 @@ bool operator==(const ProcessorPair& p1, const ProcessorPair& p2) {
 }
 
 bool operator<(const ProcessorPair& p1, const ProcessorPair& p2) {
-    if(p1.processor1_ != p2.processor1_) {
+    if (p1.processor1_ != p2.processor1_) {
         return p1.processor1_ < p2.processor1_;
     } else {
         return p1.processor2_ < p2.processor2_;
@@ -246,7 +246,7 @@ PropertyLink* ProcessorNetwork::addLink(Property* sourceProperty, Property* dest
     if (!link) {
         link = new PropertyLink(sourceProperty, destinationProperty);
         notifyObserversProcessorNetworkWillAddLink(link);
-        propertyLinks_[std::make_pair(sourceProperty,destinationProperty)] = link;
+        propertyLinks_[std::make_pair(sourceProperty, destinationProperty)] = link;
         addToPrimaryCache(link); //add to cache
         modified();
         notifyObserversProcessorNetworkDidAddLink(link);
@@ -399,39 +399,66 @@ void ProcessorNetwork::clearSecondaryCache() {
     propertyLinkSecondaryCache_.clear();
 }
 
-std::vector<Property*> ProcessorNetwork::getLinkedProperties(Property* property) {
-
-    //check if link connectivity has been computed and cached already
-    if (propertyLinkSecondaryCache_.find(property)!=propertyLinkSecondaryCache_.end()) {
+std::vector<PropertyLink>& ProcessorNetwork::getTriggerdLinksForProperty(Property* property) {
+    if (propertyLinkSecondaryCache_.find(property) != propertyLinkSecondaryCache_.end()) {
         return propertyLinkSecondaryCache_[property];
+    } else {
+        return addToSecondaryCache(property);
     }
+}
 
-    //compute link connectivity using primary cache
-    std::vector<Property*> properties = propertyLinkPrimaryCache_[property];
-    std::vector<Property*> linkedProperties;
-    while (properties.size()) {
-        std::vector<Property*> tempProperties;
-        for (size_t i=0; i<properties.size(); i++) {
-            if ( std::find(linkedProperties.begin(), linkedProperties.end(),
-                properties[i])==linkedProperties.end() && properties[i]!=property) {
-                    linkedProperties.push_back(properties[i]);
+std::vector<Property*> ProcessorNetwork::getLinkedProperties(Property* property) {
+    // check if link connectivity has been computed and cached already
+    if (propertyLinkSecondaryCache_.find(property) != propertyLinkSecondaryCache_.end()) {
+        const std::vector<PropertyLink>& list = propertyLinkSecondaryCache_[property];
+        std::vector<Property*> pvec;
+        for (std::vector<PropertyLink>::const_iterator it = list.begin(); it!=list.end(); ++it) {
+            pvec.push_back(it->getDestinationProperty());
+        }
+        return pvec;
+    } else {
+        const std::vector<PropertyLink>& list = addToSecondaryCache(property);
+        std::vector<Property*> pvec;
+        for (std::vector<PropertyLink>::const_iterator it = list.begin(); it!=list.end(); ++it) {
+            pvec.push_back(it->getDestinationProperty());
+        }
+        return pvec;
+    }
+}
 
-                    std::vector<Property*> p = propertyLinkPrimaryCache_[properties[i]];
-                    for (size_t j=0; j<p.size(); j++) {
-                        if ( std::find(tempProperties.begin(), tempProperties.end(),
-                            p[j])==tempProperties.end() && p[j]!=property) {
-                                tempProperties.push_back(p[j]);
-                        }
+std::vector<PropertyLink>& ProcessorNetwork::addToSecondaryCache(Property* srcProp) {
+    // compute link connectivity using primary cache
+    std::set<PropertyLink> links;
+    std::pair<std::set<PropertyLink>::iterator, bool> res;
+
+    std::vector<Property*> destPropsVec = propertyLinkPrimaryCache_[srcProp];
+    std::set<Property*> destProps(destPropsVec.begin(), destPropsVec.end());
+    
+    while (destProps.size()) {
+        std::set<Property*> newDestProps;
+
+        for (std::set<Property*>::iterator it = destProps.begin(); it != destProps.end(); ++it) {
+            if (*it != srcProp) {
+                res = links.insert(PropertyLink(srcProp, *it));
+
+                // add new dest properties
+                if (res.second) { // added element
+                    std::vector<Property*> p = propertyLinkPrimaryCache_[*it];
+                    for (size_t j = 0; j < p.size(); j++) {
+                        if (p[j] != srcProp) newDestProps.insert(p[j]);
                     }
+                }
             }
         }
-        properties = tempProperties;
-    };
+        destProps = newDestProps;
+    }
 
-    //store connectivity in secondary cache so that subsequent call does not recompute connectivity
-    propertyLinkSecondaryCache_[property] = linkedProperties;
-    return linkedProperties;
+    // store connectivity in secondary cache so that subsequent call does not recompute connectivity
+    std::vector<PropertyLink> linkList(links.begin(), links.end());
+    propertyLinkSecondaryCache_[srcProp] = linkList;
+    return propertyLinkSecondaryCache_[srcProp];
 }
+
 
 struct LinkCheck {
     LinkCheck() : linkSettings_(InviwoApplication::getPtr()->getSettingsByType<LinkSettings>()) {}
@@ -658,9 +685,9 @@ void ProcessorNetwork::evaluatePropertyLinks(Property* modifiedProperty) {
     lock();
     linking_ = true;
 
-    std::vector<Property*> destinationProperties = getLinkedProperties(modifiedProperty);
-    for (size_t i=0; i<destinationProperties.size(); i++) {
-        linkEvaluator_->evaluate(modifiedProperty, destinationProperties[i]);
+    const std::vector<PropertyLink>& links = getTriggerdLinksForProperty(modifiedProperty);
+    for (size_t i = 0; i < links.size(); i++) {
+        linkEvaluator_->evaluate(links[i].getSourceProperty(), links[i].getDestinationProperty());
     }
 
     unlock();

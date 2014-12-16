@@ -267,6 +267,8 @@ public:
      * @return std::vector<Property*> List of all properties that are affected by given property
      */
     std::vector<Property*> getLinkedProperties(Property* property);
+    std::vector<PropertyLink>& getTriggerdLinksForProperty(Property* property);
+
 
     Property* getProperty(std::vector<std::string> path) const;
 
@@ -314,6 +316,7 @@ private:
     void performLinkingOnPropertyChange(Property* modifiedProperty);
     void addToPrimaryCache(PropertyLink* propertyLink);
     void removeFromPrimaryCache(PropertyLink* propertyLink);
+    std::vector<PropertyLink>& addToSecondaryCache(Property* property);
     void clearSecondaryCache();
     
     std::vector<Property*> getPropertiesRecursive(PropertyOwner* owner);
@@ -325,7 +328,7 @@ private:
     std::map<Property*, std::vector<Property*> > propertyLinkPrimaryCache_;
     // The secondary link cache is a map with all source properties and a vector of ALL the
     // properties that they link to. Directly or indirectly.
-    std::map<Property*, std::vector<Property*> > propertyLinkSecondaryCache_;
+    std::map<Property*, std::vector<PropertyLink> > propertyLinkSecondaryCache_;
     // A cache of all links between two processors.
     ProcessorLinkMap processorLinksCache_;
 
