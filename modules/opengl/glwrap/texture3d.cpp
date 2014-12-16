@@ -31,6 +31,7 @@
  *********************************************************************************/
 
 #include "texture3d.h"
+#include <modules/opengl/openglcapabilities.h>
 
 namespace inviwo {
 
@@ -49,8 +50,15 @@ Texture3D::Texture3D(uvec3 dimensions, GLint format, GLint internalformat, GLenu
 Texture3D::Texture3D(const Texture3D& rhs) : Texture(rhs), dimensions_(rhs.dimensions_) {
     setTextureParameterFunction(this, &Texture3D::default3DTextureParameterFunction);
     initialize(NULL);
-    //Copy data through PBO
-    loadFromPBO(&rhs);
+    if(OpenGLCapabilities::getOpenGLVersion() >= 430){
+        //GPU memcpy
+        glCopyImageSubData(rhs.getID(), rhs.getTarget(), 0, 0, 0, 0, getID(), 
+            target_, 0, 0, 0, 0, dimensions_.x, dimensions_.y, dimensions_.z);
+    }
+    else{
+        //Copy data through PBO
+        loadFromPBO(&rhs);
+    }
 }
 
 Texture3D& Texture3D::operator=(const Texture3D& rhs) {
@@ -59,8 +67,15 @@ Texture3D& Texture3D::operator=(const Texture3D& rhs) {
         dimensions_ = rhs.dimensions_;
         setTextureParameterFunction(this, &Texture3D::default3DTextureParameterFunction);
         initialize(NULL);
-        //Copy data through PBO
-        loadFromPBO(&rhs);
+        if(OpenGLCapabilities::getOpenGLVersion() >= 430){
+            //GPU memcpy
+            glCopyImageSubData(rhs.getID(), rhs.getTarget(), 0, 0, 0, 0, getID(), 
+                target_, 0, 0, 0, 0, rhs.dimensions_.x, rhs.dimensions_.y, rhs.dimensions_.z);
+        }
+        else{
+            //Copy data through PBO
+            loadFromPBO(&rhs);
+        }
     }
 
     return *this;

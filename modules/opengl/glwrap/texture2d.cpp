@@ -31,6 +31,7 @@
  *********************************************************************************/
 
 #include "texture2d.h"
+#include <modules/opengl/openglcapabilities.h>
 
 namespace inviwo {
 
@@ -54,8 +55,15 @@ Texture2D::Texture2D(const Texture2D& rhs)
 {
     setTextureParameterFunction(this, &Texture2D::default2DTextureParameterFunction);
     initialize(NULL);
-    //Copy data through PBO
-    loadFromPBO(&rhs);
+    if(OpenGLCapabilities::getOpenGLVersion() >= 430){
+        //GPU memcpy
+        glCopyImageSubData(rhs.getID(), rhs.getTarget(), 0, 0, 0, 0, getID(), 
+            target_, 0, 0, 0, 0, dimensions_.x, dimensions_.y, 1);
+    }
+    else{
+        //Copy data through PBO
+        loadFromPBO(&rhs);
+    }
 }
 
 Texture2D& Texture2D::operator=(const Texture2D& rhs) {
@@ -64,8 +72,16 @@ Texture2D& Texture2D::operator=(const Texture2D& rhs) {
         dimensions_ = rhs.dimensions_;
         setTextureParameterFunction(this, &Texture2D::default2DTextureParameterFunction);
         initialize(NULL);
-        //Copy data through PBO
-        loadFromPBO(&rhs);
+
+        if(OpenGLCapabilities::getOpenGLVersion() >= 430){
+            //GPU memcpy
+            glCopyImageSubData(rhs.getID(), rhs.getTarget(), 0, 0, 0, 0, getID(), 
+                target_, 0, 0, 0, 0, rhs.dimensions_.x, rhs.dimensions_.y, 1);
+        }
+        else{
+            //Copy data through PBO
+            loadFromPBO(&rhs);
+        }
     }
 
     return *this;

@@ -84,7 +84,7 @@ public:
 
 protected:
     virtual void process();
-    void executeVolumeOperation(const VolumeCLBase* volumeCL, VolumeCLBase* volumeOutCL, const uvec3& outDim, const svec3& globalWorkGroupSize,
+    void executeVolumeOperation(const Volume* volume, const VolumeCLBase* volumeCL, VolumeCLBase* volumeOutCL, const uvec3& outDim, const svec3& globalWorkGroupSize,
                                 const svec3& localWorkgroupSize);
 private:
     VolumeInport inport_;

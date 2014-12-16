@@ -48,6 +48,7 @@ ImageMixer::ImageMixer()
     , inport1_("inport1")
     , blendingMode_("blendMode", "Blend Mode", INVALID_RESOURCES) 
     , weight_("weight", "Weight", 0.5f, 0.0f, 1.0f)
+    , image2TexUnit_(NULL)
 {
     addPort(inport1_);
     
@@ -72,14 +73,23 @@ ImageMixer::ImageMixer()
     inport1_.onChange(this,&ImageMixer::inport1Changed);
 }
 
-ImageMixer::~ImageMixer() {}
+ImageMixer::~ImageMixer() {
+    delete image2TexUnit_;
+}
 
 void ImageMixer::preProcess() {
     ivwAssert(inport1_.getData() != 0, "Inport1 empty.");
-    TextureUnit image2;
-    utilgl::bindColorTexture(inport1_, image2);
-    shader_->setUniform("inport1_", image2.getUnitNumber());
+    if (!image2TexUnit_) {
+        image2TexUnit_ = new TextureUnit;
+    }
+    utilgl::bindColorTexture(inport1_, *image2TexUnit_);
+    shader_->setUniform("inport1_", image2TexUnit_->getUnitNumber());
     shader_->setUniform("weight_", weight_.get());
+}
+
+void ImageMixer::postProcess() {
+    delete image2TexUnit_;
+    image2TexUnit_ = NULL;
 }
 
 void ImageMixer::inport1Changed() {
