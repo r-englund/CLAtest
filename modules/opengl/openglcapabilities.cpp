@@ -43,6 +43,7 @@
 namespace inviwo {
 
 std::string OpenGLCapabilities::preferredProfile_ = "core";
+int OpenGLCapabilities::glVersion_ = 0;
 
 #define OpenGLInfoNotFound(message) { LogInfoCustom("OpenGLInfo",message << " Info could not be retrieved"); }
 
@@ -211,6 +212,10 @@ uvec3 OpenGLCapabilities::calculateOptimalBrickSize(uvec3 dimensions, size_t for
     }
 
     return currentBrickDimensions;
+}
+
+int OpenGLCapabilities::getOpenGLVersion(){
+    return glVersion_;
 }
 
 bool OpenGLCapabilities::isExtensionSupported(const char* name) {
@@ -413,14 +418,14 @@ void OpenGLCapabilities::retrieveStaticInfo() {
     glRenderStr_ = std::string((glrender!=NULL ? reinterpret_cast<const char*>(glrender) : "INVALID"));
     const GLubyte* glversion = glGetString(GL_VERSION);
     glVersionStr_ = std::string((glversion!=NULL ? reinterpret_cast<const char*>(glversion) : "INVALID"));
-    int glVersion = parseAndRetrieveVersion(glVersionStr_);
+    glVersion_ = parseAndRetrieveVersion(glVersionStr_);
     //GLSL
-    shadersAreSupported_ = (glVersion >= 200);
+    shadersAreSupported_ = (glVersion_ >= 200);
     shadersAreSupportedARB_ = isExtensionSupported("GL_EXT_ARB_fragment_program");
     GLint numberOfSupportedVersions = 0;
     const GLubyte* glslStrByte = NULL;
 #ifdef GL_VERSION_4_3
-    if(glVersion >= 430){
+    if(glVersion_ >= 430){
         glslStrByte = glGetString(GL_SHADING_LANGUAGE_VERSION);
         glslVersionStr_ = std::string((glslStrByte!=NULL ? reinterpret_cast<const char*>(glslStrByte) : "000"));
         glGetIntegerv(GL_NUM_SHADING_LANGUAGE_VERSIONS, &numberOfSupportedVersions);
@@ -532,7 +537,7 @@ void OpenGLCapabilities::retrieveStaticInfo() {
      glGetIntegerv(GL_MAX_VERTEX_ATTRIBS, (GLint*)&maxArrayVertexAttribs_);
 #endif
 #ifdef GL_VERSION_3_0
-    if(glVersion >= 300){
+    if(glVersion_ >= 300){
         texArraySupported_ = true;
         glGetIntegerv(GL_MAX_ARRAY_TEXTURE_LAYERS, (GLint*)&maxArrayTexSize_);
     }

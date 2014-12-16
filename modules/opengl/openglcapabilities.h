@@ -75,8 +75,10 @@ public:
     bool canAllocate(glm::u64 dataSize, glm::u8 percentageOfAvailableMemory = 100);
     uvec3 calculateOptimalBrickSize(uvec3 dimensions, size_t formatSizeInBytes, glm::u8 percentageOfAvailableMemory = 100);
 
-    bool isExtensionSupported(const char*);
-    bool isSupported(const char*);
+    static int getOpenGLVersion();
+
+    static bool isExtensionSupported(const char*);
+    static bool isSupported(const char*);
 
     bool isTexturesSupported();
     bool is3DTexturesSupported();
@@ -119,6 +121,7 @@ protected:
 
 private:
     static std::string preferredProfile_;
+    static int glVersion_;
 
     GlVendor glVendor_;
 
