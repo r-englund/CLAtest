@@ -160,6 +160,7 @@ void TemplateProperty<T>::set(const Property* srcProperty) {
     const TemplateProperty<T>* templatedSrcProp =
         dynamic_cast<const TemplateProperty<T>*>(srcProperty);
     if (templatedSrcProp) {
+        if (this->value_.value == templatedSrcProp->value_.value) return; 
         this->value_.value = templatedSrcProp->value_.value;
     }
 
