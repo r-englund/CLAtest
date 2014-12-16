@@ -112,24 +112,24 @@ void VolumeMaxCLProcessor::process() {
         glSync.addToAquireGLObjectList(volumeOutCL);
         glSync.aquireAllObjects();
         
-        executeVolumeOperation(volumeCL, volumeOutCL, outDim, globalWorkGroupSize, localWorkGroupSize);
+        executeVolumeOperation(volume, volumeCL, volumeOutCL, outDim, globalWorkGroupSize, localWorkGroupSize);
     } else {
         const VolumeCL* volumeCL = volume->getRepresentation<VolumeCL>();
         VolumeCL* volumeOutCL = volumeOut->getEditableRepresentation<VolumeCL>();
-        executeVolumeOperation(volumeCL, volumeOutCL, outDim, globalWorkGroupSize, localWorkGroupSize);
+        executeVolumeOperation(volume, volumeCL, volumeOutCL, outDim, globalWorkGroupSize, localWorkGroupSize);
     }
     
 
 }
 
-void VolumeMaxCLProcessor::executeVolumeOperation(const VolumeCLBase* volumeCL, VolumeCLBase* volumeOutCL, const uvec3& outDim,
+void VolumeMaxCLProcessor::executeVolumeOperation(const Volume* volume, const VolumeCLBase* volumeCL, VolumeCLBase* volumeOutCL, const uvec3& outDim,
                                          const svec3& globalWorkGroupSize, const svec3& localWorkgroupSize) {
     cl::Event events[2];
     try {
         BufferCL* tmpVolumeCL;
         int argIndex = 0;
         kernel_->setArg(argIndex++, *volumeCL);
-        kernel_->setArg(argIndex++, volumeCL->getVolumeDataOffsetAndScaling(inport_.getData()));
+        kernel_->setArg(argIndex++, *(volumeCL->getVolumeStruct(volume).getRepresentation<BufferCL>())); // Scaling for 12-bit data
         if (supportsVolumeWrite_) {
             kernel_->setArg(argIndex++, *volumeOutCL);
         } else {
