@@ -41,6 +41,8 @@
 
 namespace inviwo {
 
+class TextureUnit;
+
 namespace BlendModes {
     enum Mode {
         Mix, //!< f(a,b) = a * (1 - alpha) + b * alpha
@@ -106,6 +108,7 @@ public:
 protected:
     virtual void initializeResources();
     virtual void preProcess();
+    virtual void postProcess();
     
 private:
     void inport1Changed();
@@ -113,6 +116,8 @@ private:
     ImageInport inport1_; //!< second input image
     OptionPropertyInt blendingMode_; //!< blend mode from BlendModes::Mode
     FloatProperty weight_; //!< weighting factor
+
+    TextureUnit *image2TexUnit_;
 };
 
 } // namespace
