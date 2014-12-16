@@ -51,7 +51,7 @@ ProcessorCategory(VolumeRaycasterCLProcessor, "Volume Rendering");
 ProcessorCodeState(VolumeRaycasterCLProcessor, CODE_STATE_EXPERIMENTAL);
 
 VolumeRaycasterCLProcessor::VolumeRaycasterCLProcessor()
-    : Processor(), ProcessorKernelOwner(this)
+    : Processor(), KernelObserver()
     , volumePort_("volume")
     , entryPort_("entry-points")
     , exitPort_("exit-points")
@@ -60,7 +60,6 @@ VolumeRaycasterCLProcessor::VolumeRaycasterCLProcessor()
     , transferFunction_("transferFunction", "Transfer function", TransferFunction())
     , workGroupSize_("wgsize", "Work group size", ivec2(8, 8), ivec2(0), ivec2(256))
     , useGLSharing_("glsharing", "Use OpenGL sharing", true)
-    , kernel_(NULL)
 {
     addPort(volumePort_, "VolumePortGroup");
     addPort(entryPort_, "ImagePortGroup1");
@@ -70,21 +69,25 @@ VolumeRaycasterCLProcessor::VolumeRaycasterCLProcessor()
     addProperty(transferFunction_);
     addProperty(workGroupSize_);
     addProperty(useGLSharing_);
+
+    samplingRate_.onChange(this, &VolumeRaycasterCLProcessor::onParameterChanged);
+    workGroupSize_.onChange(this, &VolumeRaycasterCLProcessor::onParameterChanged);
+    useGLSharing_.onChange(this, &VolumeRaycasterCLProcessor::onParameterChanged);
+
+    volumeRaycaster_.addObserver(this);
 }
 
 VolumeRaycasterCLProcessor::~VolumeRaycasterCLProcessor() {}
 
 void VolumeRaycasterCLProcessor::initialize() {
     Processor::initialize();
-    // Will compile kernel and make sure that it it
-    // recompiled whenever the file changes
-    // If the kernel fails to compile it will be set to NULL
-    kernel_ = addKernel("volumeraycaster.cl", "raycaster");
+
 
     if (!InviwoApplication::getPtr()->getSettingsByType<OpenCLSettings>()->isSharingEnabled()) {
         useGLSharing_.setReadOnly(true);
         useGLSharing_.set(false);
     }
+    onParameterChanged();
 }
 
 void VolumeRaycasterCLProcessor::deinitialize() {
@@ -92,75 +95,29 @@ void VolumeRaycasterCLProcessor::deinitialize() {
 }
 
 bool VolumeRaycasterCLProcessor::isReady() const {
-    return Processor::isReady() && kernel_ != NULL;
+    return Processor::isReady() && volumeRaycaster_.isValid();
 }
 
 void VolumeRaycasterCLProcessor::process() {
 
-    Image* outImage = outport_.getData();
-    uvec2 outportDim = outImage->getDimension();
-    const Volume* volume = volumePort_.getData();
-    //uvec3 volumeDim = volume->getDimension(); //Not used
-    
-    svec2 localWorkGroupSize(workGroupSize_.get());
-    svec2 globalWorkGroupSize(getGlobalWorkGroupSize(outportDim.x, localWorkGroupSize.x), getGlobalWorkGroupSize(outportDim.y,
-        localWorkGroupSize.y));
 
     try {
         // This macro will create an event called profilingEvent if IVW_PROFILING is enabled,
         // otherwise the profilingEvent will be declared as a null pointer
         IVW_OPENCL_PROFILING(profilingEvent, "")
 
-        if (useGLSharing_.get()) {
-            // SyncCLGL will synchronize with OpenGL upon creation and destruction
-            SyncCLGL glSync;
-            const ImageCLGL* entryCL = entryPort_.getData()->getRepresentation<ImageCLGL>();
-            const ImageCLGL* exitCL = exitPort_.getData()->getRepresentation<ImageCLGL>();
-            ImageCLGL* outImageCL = outImage->getEditableRepresentation<ImageCLGL>();
-            const VolumeCLGL* volumeCL = volume->getRepresentation<VolumeCLGL>();
-            const LayerCLGL* transferFunctionCL = transferFunction_.get().getData()->getRepresentation<LayerCLGL>();
-            // Shared objects must be acquired before use.
-            glSync.addToAquireGLObjectList(entryCL);
-            glSync.addToAquireGLObjectList(exitCL);
-            glSync.addToAquireGLObjectList(outImageCL);
-            glSync.addToAquireGLObjectList(volumeCL);
-            glSync.addToAquireGLObjectList(transferFunctionCL);
-            // Acquire all of the objects at once
-            glSync.aquireAllObjects();
 
-            volumeRaycast(volume, volumeCL, entryCL->getLayerCL(), exitCL->getLayerCL(), transferFunctionCL, outImageCL->getLayerCL(), globalWorkGroupSize, localWorkGroupSize, profilingEvent);
-        } else {
-            const ImageCL* entryCL = entryPort_.getData()->getRepresentation<ImageCL>();
-            const ImageCL* exitCL = exitPort_.getData()->getRepresentation<ImageCL>();
-            ImageCL* outImageCL = outImage->getEditableRepresentation<ImageCL>();
-            const VolumeCL* volumeCL = volume->getRepresentation<VolumeCL>();
-            const LayerCL* transferFunctionCL = transferFunction_.get().getData()->getRepresentation<LayerCL>();
-
-            volumeRaycast(volume, volumeCL, entryCL->getLayerCL(), exitCL->getLayerCL(), transferFunctionCL, outImageCL->getLayerCL(), globalWorkGroupSize, localWorkGroupSize, profilingEvent);
-        }
-
-        // This macro will destroy the profiling event and print the timing in the console if IVW_PROFILING is enabled
-        
+        volumeRaycaster_.volumeRaycast(volumePort_.getData(), entryPort_.getData(), exitPort_.getData(), transferFunction_.get().getData(), outport_.getData(), NULL, profilingEvent);
     } catch (cl::Error& err) {
         LogError(getCLErrorString(err));
     }
+
 }
 
-void VolumeRaycasterCLProcessor::volumeRaycast(const Volume* volume, const VolumeCLBase* volumeCL, const LayerCLBase* entryCLGL, const LayerCLBase* exitCLGL, const LayerCLBase* transferFunctionCL, LayerCLBase* outImageCL, svec2 globalWorkGroupSize, svec2 localWorkGroupSize, cl::Event* profilingEvent)
-{
-    // Note that the overloaded setArg methods requires 
-    // the reference to an object (not the pointer), 
-    // which is why we need to dereference the pointers
-    cl_uint arg = 0;
-    kernel_->setArg(arg++, *volumeCL);
-    kernel_->setArg(arg++, *(volumeCL->getVolumeStruct(volume).getRepresentation<BufferCL>())); // Scaling for 12-bit data
-    kernel_->setArg(arg++, *entryCLGL);
-    kernel_->setArg(arg++, *exitCLGL);
-    kernel_->setArg(arg++, *transferFunctionCL);
-    kernel_->setArg(arg++, samplingRate_.get());
-    kernel_->setArg(arg++, *outImageCL);
-    //
-    OpenCL::getPtr()->getQueue().enqueueNDRangeKernel(*kernel_, cl::NullRange, globalWorkGroupSize, localWorkGroupSize, NULL, profilingEvent);
+void VolumeRaycasterCLProcessor::onParameterChanged() {
+    volumeRaycaster_.samplingRate(samplingRate_.get());
+    volumeRaycaster_.workGroupSize(workGroupSize_.get());
+    volumeRaycaster_.useGLSharing(useGLSharing_.get());
 }
 
 } // namespace

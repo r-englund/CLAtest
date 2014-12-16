@@ -30,11 +30,10 @@
  *
  *********************************************************************************/
 
-#ifndef IVW_VOLUMERAYCASTERCLPROCESSOR_H
-#define IVW_VOLUMERAYCASTERCLPROCESSOR_H
+#ifndef IVW_VOLUME_RAYCASTER_CL_H
+#define IVW_VOLUME_RAYCASTER_CL_H
 
 #include <modules/basecl/baseclmoduledefine.h>
-#include <modules/basecl/volumeraycastercl.h>
 #include <inviwo/core/common/inviwo.h>
 #include <inviwo/core/ports/imageport.h>
 #include <inviwo/core/ports/volumeport.h>
@@ -47,61 +46,48 @@
 #include <modules/opencl/volume/volumeclbase.h>
 
 namespace inviwo {
-/** \docpage{org.inviwo.VolumeRaycasterCL, Volume Raycaster}
- * Perform volume rendering on the input volume. 
- * ### Inports
- *   * __VolumeInport__ The volume data to render.
- *   * __ImageInport__ The entry point.
- *   * __ImageInport__ The exit point.
- *
- * ### Outports
- *   * __ImageOutport__ Light reaching the camera through the volume.
- * 
- * ### Properties
- *   * __Sampling rate__ Number of sample per voxel to take.
- *   * __Transfer function__ Transfer function to map data values into color and opacity.
- *   * __Work group size__ OpenCL work group size (performance)
- *   * __Use OpenGL sharing__ Share data with OpenGL (performance and compability).
- */
 
 /**
  * \brief Perform volume rendering on the input volume. 
  *
  */
-class IVW_MODULE_BASECL_API VolumeRaycasterCLProcessor : public Processor, public KernelObserver {
+class IVW_MODULE_BASECL_API VolumeRaycasterCL : public KernelOwner {
 public:
-    VolumeRaycasterCLProcessor();
-    ~VolumeRaycasterCLProcessor();
+    VolumeRaycasterCL();
+    ~VolumeRaycasterCL();
 
-    InviwoProcessorInfo();
+    bool isValid() const { return kernel_ != NULL; }
 
-    void initialize();
-    void deinitialize();
 
-    virtual bool isReady() const;
 
-    void onKernelCompiled( const cl::Kernel* kernel ) {
-        invalidate(INVALID_RESOURCES);
-    }
-protected:
-    virtual void process();
-
+    /** 
+     * \brief Perform volume rendering on the input volume. 
+     * 
+     * @param const Volume * volume 
+     * @param const Image * entryPoints Start point of ray in texture space.
+     * @param const Image * exitPoints End point of ray in texture space.
+     * @param const Layer * transferFunction Transfer function, mapping value to color and opacity.
+     * @param Image * outImage Output image 
+     * @param const VECTOR_CLASS<cl::Event> * waitForEvents 
+     * @param cl::Event * event 
+     */
+    void volumeRaycast(const Volume* volume, const Image* entryPoints, const Image* exitPoints, const Layer* transferFunction, Image* outImage, const VECTOR_CLASS<cl::Event> *waitForEvents = NULL, cl::Event *event = NULL);
+    
+    void volumeRaycast(const Volume* volume, const VolumeCLBase* volumeCL, const LayerCLBase* entryCLGL, const LayerCLBase* exitCLGL, const LayerCLBase* transferFunctionCL, LayerCLBase* outImageCL, svec2 globalWorkGroupSize, svec2 localWorkGroupSize, const VECTOR_CLASS<cl::Event> *waitForEvents = NULL, cl::Event *event = NULL);
+    
+    void samplingRate(float samplingRate);
+    svec2 workGroupSize() const { return workGroupSize_; }
+    void workGroupSize(const svec2& val) { workGroupSize_ = val; }
+    bool useGLSharing() const { return useGLSharing_; }
+    void useGLSharing(bool val) { useGLSharing_ = val; }
 private:
-    void onParameterChanged();
-    VolumeInport volumePort_;
-    ImageInport entryPort_;
-    ImageInport exitPort_;
-    ImageOutport outport_;
 
-    FloatProperty samplingRate_;
-    TransferFunctionProperty transferFunction_;
-    IntVec2Property workGroupSize_;
+    svec2 workGroupSize_;
+    bool useGLSharing_;
 
-    BoolProperty useGLSharing_;
-
-    VolumeRaycasterCL volumeRaycaster_;
+    cl::Kernel* kernel_;
 };
 
 } // namespace
 
-#endif // IVW_VOLUMERAYCASTERCLPROCESSOR_H
+#endif // IVW_VOLUME_RAYCASTER_CL_H
