@@ -48,12 +48,17 @@ VolumeRaycasterCL::VolumeRaycasterCL()
     : KernelOwner()
     , workGroupSize_(svec2(8, 8))
     , useGLSharing_(true)
+    , outputOffset_(0)
+    , outputSize_(1)
     , kernel_(NULL)
 {
     // Will compile kernel and make sure that it it
     // recompiled whenever the file changes
     // If the kernel fails to compile it will be set to NULL
     kernel_ = addKernel("volumeraycaster.cl", "raycaster");
+    outputOffset(outputOffset_);
+    outputSize(outputSize_);
+    samplingRate(1.f); 
 }
 
 VolumeRaycasterCL::~VolumeRaycasterCL() {}
@@ -64,7 +69,7 @@ void VolumeRaycasterCL::volumeRaycast(const Volume* volume, const Image* entryPo
     uvec2 outportDim = outImage->getDimension();
 
     svec2 localWorkGroupSize(workGroupSize_);
-    svec2 globalWorkGroupSize(getGlobalWorkGroupSize(outportDim.x, localWorkGroupSize.x), getGlobalWorkGroupSize(outportDim.y,
+    svec2 globalWorkGroupSize(getGlobalWorkGroupSize(outputSize_.x, localWorkGroupSize.x), getGlobalWorkGroupSize(outputSize_.y,
         localWorkGroupSize.y));
 
     try {
@@ -125,6 +130,18 @@ void VolumeRaycasterCL::volumeRaycast(const Volume* volume, const VolumeCLBase* 
 void VolumeRaycasterCL::samplingRate(float samplingRate) {
     if (kernel_)
         kernel_->setArg(5, samplingRate);
+}
+
+void VolumeRaycasterCL::outputOffset(ivec2 val) {
+    if (kernel_)
+        kernel_->setArg(7, val);
+    outputOffset_ = val;
+}
+
+void VolumeRaycasterCL::outputSize(ivec2 val) {
+    if (kernel_)
+        kernel_->setArg(8, val);
+    outputSize_ = val;
 }
 
 } // namespace

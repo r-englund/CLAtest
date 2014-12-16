@@ -106,7 +106,7 @@ void VolumeRaycasterCLProcessor::process() {
         // otherwise the profilingEvent will be declared as a null pointer
         IVW_OPENCL_PROFILING(profilingEvent, "")
 
-
+        volumeRaycaster_.outputSize(outport_.getDimension());
         volumeRaycaster_.volumeRaycast(volumePort_.getData(), entryPort_.getData(), exitPort_.getData(), transferFunction_.get().getData(), outport_.getData(), NULL, profilingEvent);
     } catch (cl::Error& err) {
         LogError(getCLErrorString(err));

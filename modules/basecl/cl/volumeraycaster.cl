@@ -40,11 +40,13 @@ __kernel void raycaster(read_only image3d_t volume, __constant VolumeParameters*
                         , read_only image2d_t exitPoints
                         , read_only image2d_t transferFunction 
                         , float samplingRate
-                        , write_only image2d_t output) 
+                        , write_only image2d_t output
+                        , int2 outputRegionOffset
+                        , int2 outputRegionSize) 
 {
     int2 globalId = (int2)(get_global_id(0), get_global_id(1));      
 
-    if (any(globalId >= get_image_dim(output))) { 
+    if (any(globalId >= outputRegionSize)) { 
         return;
     }
 
@@ -78,7 +80,7 @@ __kernel void raycaster(read_only image3d_t volume, __constant VolumeParameters*
 
     }
          
-    write_imagef(output, globalId,  result);     
+    write_imagef(output, outputRegionOffset+globalId,  result);     
   
 }
   

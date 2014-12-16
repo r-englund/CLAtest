@@ -76,14 +76,24 @@ public:
     void volumeRaycast(const Volume* volume, const VolumeCLBase* volumeCL, const LayerCLBase* entryCLGL, const LayerCLBase* exitCLGL, const LayerCLBase* transferFunctionCL, LayerCLBase* outImageCL, svec2 globalWorkGroupSize, svec2 localWorkGroupSize, const VECTOR_CLASS<cl::Event> *waitForEvents = NULL, cl::Event *event = NULL);
     
     void samplingRate(float samplingRate);
+
     svec2 workGroupSize() const { return workGroupSize_; }
     void workGroupSize(const svec2& val) { workGroupSize_ = val; }
+
     bool useGLSharing() const { return useGLSharing_; }
     void useGLSharing(bool val) { useGLSharing_ = val; }
+
+    ivec2 outputOffset() const { return outputOffset_; }
+    void outputOffset(ivec2 val);
+    ivec2 outputSize() const { return outputSize_; }
+    void outputSize(ivec2 val);
 private:
 
     svec2 workGroupSize_;
     bool useGLSharing_;
+
+    ivec2 outputOffset_;
+    ivec2 outputSize_;
 
     cl::Kernel* kernel_;
 };
