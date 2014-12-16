@@ -83,15 +83,27 @@ float getVoxelUnorm(read_only image3d_t volume, int4 pos) {
  * Return a value mapped from data range [min,max] to [0,1] using linear interpolation
  * @param pos Coordinate in [0 1]^3
  */
-float getNormalizedVoxel(read_only image3d_t volume, float4 pos, float2 offsetAndScaling) {
-    return (read_imagef(volume, smpNormClampEdgeLinear, pos).x + offsetAndScaling.x) * offsetAndScaling.y;  
+//float getNormalizedVoxel(read_only image3d_t volume, float4 pos, float2 offsetAndScaling) {
+//    return (read_imagef(volume, smpNormClampEdgeLinear, pos).x + offsetAndScaling.x) * offsetAndScaling.y;  
+//}
+float getNormalizedVoxel(read_only image3d_t volume, float4 pos, __constant VolumeParameters* volumeParams) {
+    return (read_imagef(volume, smpNormClampEdgeLinear, pos).x + volumeParams->formatOffset) * volumeParams->formatScaling;  
 }
+
 
 /*
  * Get voxel data in unnormalized coordinates [0 get_image_dim(volume)-1] and apply offset and scaling
  */
 float getNormalizedVoxelUnorm(read_only image3d_t volume, int4 pos, float2 offsetAndScaling) {
     return (read_imagef(volume, smpUNormNoClampNearest, pos).x + offsetAndScaling.x) * offsetAndScaling.y;  
+}
+
+/*
+ * Return a value mapped from data range [min,max] to [0,1] using linear interpolation
+ * @param pos Coordinate in [0 1]^3
+ */
+float getSignNormalizedVoxel(read_only image3d_t volume, float4 pos, __constant VolumeParameters* volumeParams) {
+    return (read_imagef(volume, smpNormClampEdgeLinear, pos).x + volumeParams->signedFormatOffset) * volumeParams->signedFormatScaling;  
 }
 
 #endif // SAMPLERS_CL
