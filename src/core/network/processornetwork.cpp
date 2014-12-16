@@ -426,8 +426,9 @@ std::vector<Property*> ProcessorNetwork::getLinkedProperties(Property* property)
     }
 }
 
-std::vector<PropertyLink>& ProcessorNetwork::addToSecondaryCache(Property* srcProp) {
+std::vector<PropertyLink>& ProcessorNetwork::addToSecondaryCache(Property* src) {
     // compute link connectivity using primary cache
+    /*
     std::set<PropertyLink> links;
     std::pair<std::set<PropertyLink>::iterator, bool> res;
 
@@ -457,8 +458,48 @@ std::vector<PropertyLink>& ProcessorNetwork::addToSecondaryCache(Property* srcPr
     std::vector<PropertyLink> linkList(links.begin(), links.end());
     propertyLinkSecondaryCache_[srcProp] = linkList;
     return propertyLinkSecondaryCache_[srcProp];
+    */
+
+    std::vector<PropertyLink> links;
+    std::vector<Property*> dest = propertyLinkPrimaryCache_[src];
+    for (std::vector<Property*>::iterator it = dest.begin(); it != dest.end(); ++it) {
+        if (src != *it) secondaryCacheHelper(links, src, *it);
+    }
+
+    propertyLinkSecondaryCache_[src] = links;
+    return propertyLinkSecondaryCache_[src];
 }
 
+void ProcessorNetwork::secondaryCacheHelper(std::vector<PropertyLink>& links, Property* src,
+                                            Property* dst) {
+    // Check that we don't use a previous source as destination.
+    if (std::find_if(links.begin(), links.end(), PropertyLinkContainsTest(dst)) == links.end()) {
+        links.push_back(PropertyLink(src, dst));
+
+        Property* newSrc = dst;
+        while (newSrc) {
+            std::vector<Property*> dest = propertyLinkPrimaryCache_[newSrc];
+            for (std::vector<Property*>::iterator it = dest.begin(); it != dest.end(); ++it) {
+                if (newSrc != *it) secondaryCacheHelper(links, newSrc, *it);
+            }
+
+            CompositeProperty* cp = dynamic_cast<CompositeProperty*>(newSrc);
+            if (cp) {
+                std::vector<Property*> srcProps = cp->getProperties();
+                for (std::vector<Property*>::iterator sit = srcProps.begin(); sit != srcProps.end();
+                     ++sit) {
+                    std::vector<Property*> dest = propertyLinkPrimaryCache_[*sit];
+                    for (std::vector<Property*>::iterator it = dest.begin(); it != dest.end();
+                         ++it) {
+                        if (*sit != *it) secondaryCacheHelper(links, *sit, *it);
+                    }
+                }
+            }
+
+            newSrc = dynamic_cast<Property*>(newSrc->getOwner());
+        }
+    }
+}
 
 struct LinkCheck {
     LinkCheck() : linkSettings_(InviwoApplication::getPtr()->getSettingsByType<LinkSettings>()) {}
@@ -690,8 +731,8 @@ void ProcessorNetwork::evaluatePropertyLinks(Property* modifiedProperty) {
         linkEvaluator_->evaluate(links[i].getSourceProperty(), links[i].getDestinationProperty());
     }
 
-    unlock();
     if (isLinking()) linking_ = false;
+    unlock();    
 }
 
 void ProcessorNetwork::serialize(IvwSerializer& s) const {

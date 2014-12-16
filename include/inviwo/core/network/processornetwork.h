@@ -278,6 +278,9 @@ public:
     void setModified(bool modified);
     bool isModified() const;
 
+    bool isEvaluationQueued() const { return evaluationQueued_; }
+    void setEvaluationQueued(bool queued) {evaluationQueued_ = queued; }
+
     bool isLinking() const;
 
     bool isInvalidating() const;
@@ -312,11 +315,26 @@ public:
     void clear();
     
 private:
+
+    class PropertyLinkContainsTest {
+    public:
+        PropertyLinkContainsTest(Property* p) : p_(p) {}
+        bool operator()(const PropertyLink& link) {
+            return link.getSourceProperty() == p_ || link.getDestinationProperty()==p_;
+        }
+    private:
+        Property* p_;
+    };
+
+
     //Property Linking support
     void performLinkingOnPropertyChange(Property* modifiedProperty);
     void addToPrimaryCache(PropertyLink* propertyLink);
     void removeFromPrimaryCache(PropertyLink* propertyLink);
     std::vector<PropertyLink>& addToSecondaryCache(Property* property);
+
+    void secondaryCacheHelper(std::vector<PropertyLink>& links,  Property* src, Property* dst);
+
     void clearSecondaryCache();
     
     std::vector<Property*> getPropertiesRecursive(PropertyOwner* owner);

@@ -303,7 +303,7 @@ void ProcessorNetworkEvaluator::onProcessorInvalidationEnd(Processor* p) {
 }
 
 void ProcessorNetworkEvaluator::onProcessorNetworkEvaluateRequest() {
-    //Direct request, thus we don't want to queue the evaulation anymore
+    //Direct request, thus we don't want to queue the evaluation anymore
     if (evaulationQueued_)
         evaulationQueued_ = false;
 
@@ -312,7 +312,8 @@ void ProcessorNetworkEvaluator::onProcessorNetworkEvaluateRequest() {
 
 void ProcessorNetworkEvaluator::onProcessorNetworkUnlocked() {
     //Only evaluate if an evaluation is queued or the network is modified
-    if (evaulationQueued_ || processorNetwork_->isModified()) {
+    if (evaulationQueued_ || processorNetwork_->isModified() || processorNetwork_->isEvaluationQueued()) {
+        processorNetwork_->setEvaluationQueued(false);
         evaulationQueued_ = false;
         requestEvaluate();
     }
@@ -343,8 +344,8 @@ ProcessorNetworkEvaluator::getProcessorNetworkEvaluatorForProcessorNetwork(
 }
 
 void ProcessorNetworkEvaluator::requestEvaluate() {
-    //evaluation has been triggered but is currently queued
-    //requestEvaluate needs to be called with evaulationQueued_ false to continue.
+    // evaluation has been triggered but is currently queued
+    // requestEvaluate needs to be called with evaulationQueued_ false to continue.
     if (evaulationQueued_ || processorNetwork_->isLinking())
         return;
 
