@@ -207,6 +207,7 @@ set(CPACK_GENERATOR "TGZ")
 endif()
 endif()
 
+install(DIRECTORY ${IVW_ROOT_DIR}/data/help DESTINATION data COMPONENT qt_editor)
 install(DIRECTORY ${IVW_ROOT_DIR}/data/images DESTINATION data COMPONENT images)
 install(DIRECTORY ${IVW_ROOT_DIR}/data/scripts DESTINATION data COMPONENT scripts)
 install(FILES ${IVW_ROOT_DIR}/data/volumes/boron.dat DESTINATION data/volumes COMPONENT volumes)
