@@ -129,7 +129,7 @@ void ProcessorNetwork::removeProcessor(Processor* processor) {
     // SingleInport within the MultiInport. This is not the same port as the connection
     // was made to, hence will will not find it, and can not delete it!
     // TODO when the MultiInport behaves as a standard port, remove this.
-    PortConnectionMap connections = portConnections_;
+    PortConnectionMap connections = portConnectionsMap_;
     for (PortConnectionMap::iterator it = connections.begin(); it != connections.end(); ++it) {
         if(it->second->getInport()->getProcessor() == processor ||
            it->second->getOutport()->getProcessor() == processor) {
@@ -188,7 +188,8 @@ PortConnection* ProcessorNetwork::addConnection(Outport* sourcePort, Inport* des
         notifyObserversProcessorNetworkWillAddConnection(connection);
 
         connection = new PortConnection(sourcePort, destPort);
-        portConnections_[std::make_pair(sourcePort, destPort)] = connection;
+        portConnectionsMap_[std::make_pair(sourcePort, destPort)] = connection;
+        portConnectionsVec_.push_back(connection);
         modified();
         destPort->connectTo(sourcePort);
         
@@ -199,14 +200,20 @@ PortConnection* ProcessorNetwork::addConnection(Outport* sourcePort, Inport* des
 }
 
 void ProcessorNetwork::removeConnection(Outport* sourcePort, Inport* destPort) {
-    PortConnectionMap::iterator it = portConnections_.find(std::make_pair(sourcePort, destPort));
-    if (it != portConnections_.end()) {
-        PortConnection* connection = it->second;
+    PortConnectionMap::iterator itm = portConnectionsMap_.find(std::make_pair(sourcePort, destPort));
+    if (itm != portConnectionsMap_.end()) {
+        PortConnection* connection = itm->second;
         notifyObserversProcessorNetworkWillRemoveConnection(connection);
 
         modified();
         destPort->disconnectFrom(sourcePort);
-        portConnections_.erase(it);
+
+        portConnectionsMap_.erase(itm);
+
+        PortConnectionVector::iterator itv = std::find(portConnectionsVec_.begin(), portConnectionsVec_.end(), connection);
+        if (itv != portConnectionsVec_.end()) {
+            portConnectionsVec_.erase(itv);
+        }
 
         notifyObserversProcessorNetworkDidRemoveConnection(connection);
         delete connection;
@@ -221,20 +228,15 @@ bool ProcessorNetwork::isConnected(Outport* sourcePort, Inport* destPort) {
 }
 
 PortConnection* ProcessorNetwork::getConnection(Outport* sourcePort, Inport* destPort) {
-    PortConnectionMap::iterator it = portConnections_.find(std::make_pair(sourcePort, destPort));
-    if (it != portConnections_.end()) {
+    PortConnectionMap::iterator it = portConnectionsMap_.find(std::make_pair(sourcePort, destPort));
+    if (it != portConnectionsMap_.end()) {
         return it->second;
     }
     return NULL;
 }
 
 std::vector<PortConnection*> ProcessorNetwork::getConnections() const {
-    PortConnectionVector connections_;
-    for (PortConnectionMap::const_iterator it = portConnections_.begin(); it != portConnections_.end();
-         ++it) {
-        connections_.push_back(it->second);
-    }
-    return connections_;
+    return portConnectionsVec_;
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////

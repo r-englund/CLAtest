@@ -350,7 +350,8 @@ private:
     bool modified_;
     unsigned int locked_;
     ProcessorMap processors_;
-    PortConnectionMap portConnections_;
+    PortConnectionMap portConnectionsMap_;
+    PortConnectionVector portConnectionsVec_;
     PropertyLinkMap propertyLinks_;
 
     bool deserializing_;
