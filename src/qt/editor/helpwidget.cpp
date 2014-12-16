@@ -100,6 +100,7 @@ void HelpWidget::setupFinished() {
 }
 
 void HelpWidget::showDocForClassName(std::string classIdentifier) {
+    if (!helpEngine_) return;
     std::string className = joinString(splitString(classIdentifier, '.'), "_8");
 
     QUrl url(
