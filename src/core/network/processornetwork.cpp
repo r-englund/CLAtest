@@ -73,7 +73,6 @@ ProcessorNetwork::ProcessorNetwork()
     , deserializing_(false)
     , invalidating_(false)
     , linkEvaluator_(NULL)
-    , evaluationQueued_(false)
     , linking_(false) {
     linkEvaluator_ = new LinkEvaluator();
 }
@@ -377,22 +376,6 @@ void ProcessorNetwork::updatePropertyLinkCaches() {
          ++it) {
         addToPrimaryCache(it->second);
     }
-
-    /*
-    //Debug info
-    std::string info("Property Link Cache Info: \n");
-    for (std::map<Property*, std::vector<Property*> >::iterator it=propertyLinkPrimaryCache_.begin();
-        it!=propertyLinkPrimaryCache_.end(); ++it) {
-            info += it->first->getIdentifier() + " : ";
-            std::vector<Property*> linkedProperties = getLinkedProperties(it->first) ;
-            for (size_t i=0; i<linkedProperties.size(); i++) {
-                info += linkedProperties[i]->getIdentifier();
-                info += " ";
-            }
-            info += "\n";
-    }
-    LogWarn(info);
-    */
 }
 
 void ProcessorNetwork::clearSecondaryCache() {
@@ -427,39 +410,6 @@ std::vector<Property*> ProcessorNetwork::getLinkedProperties(Property* property)
 }
 
 std::vector<PropertyLink>& ProcessorNetwork::addToSecondaryCache(Property* src) {
-    // compute link connectivity using primary cache
-    /*
-    std::set<PropertyLink> links;
-    std::pair<std::set<PropertyLink>::iterator, bool> res;
-
-    std::vector<Property*> destPropsVec = propertyLinkPrimaryCache_[srcProp];
-    std::set<Property*> destProps(destPropsVec.begin(), destPropsVec.end());
-    
-    while (destProps.size()) {
-        std::set<Property*> newDestProps;
-
-        for (std::set<Property*>::iterator it = destProps.begin(); it != destProps.end(); ++it) {
-            if (*it != srcProp) {
-                res = links.insert(PropertyLink(srcProp, *it));
-
-                // add new dest properties
-                if (res.second) { // added element
-                    std::vector<Property*> p = propertyLinkPrimaryCache_[*it];
-                    for (size_t j = 0; j < p.size(); j++) {
-                        if (p[j] != srcProp) newDestProps.insert(p[j]);
-                    }
-                }
-            }
-        }
-        destProps = newDestProps;
-    }
-
-    // store connectivity in secondary cache so that subsequent call does not recompute connectivity
-    std::vector<PropertyLink> linkList(links.begin(), links.end());
-    propertyLinkSecondaryCache_[srcProp] = linkList;
-    return propertyLinkSecondaryCache_[srcProp];
-    */
-
     std::vector<PropertyLink> links;
     std::vector<Property*> dest = propertyLinkPrimaryCache_[src];
     for (std::vector<Property*>::iterator it = dest.begin(); it != dest.end(); ++it) {
@@ -674,20 +624,12 @@ void ProcessorNetwork::onProcessorInvalidationEnd(Processor* p) {
     if (processorsInvalidating_.empty()) {
         invalidating_ = false;
 
-        if (evaluationQueued_ && !isLinking()) {
-            notifyObserversProcessorNetworkEvaluateRequest();
-            evaluationQueued_ = false;
-        }
+        notifyObserversProcessorNetworkEvaluateRequest();
     }
 }
 
 void ProcessorNetwork::onProcessorRequestEvaluate(Processor*) {
-    if (isLinking() || isInvalidating())
-        evaluationQueued_ = true;
-    else {
-        notifyObserversProcessorNetworkEvaluateRequest();
-        evaluationQueued_ = false;
-    }
+    notifyObserversProcessorNetworkEvaluateRequest();
 }
 
 void ProcessorNetwork::onProcessorIdentifierChange(Processor* processor) {
@@ -730,9 +672,9 @@ void ProcessorNetwork::evaluatePropertyLinks(Property* modifiedProperty) {
     for (size_t i = 0; i < links.size(); i++) {
         linkEvaluator_->evaluate(links[i].getSourceProperty(), links[i].getDestinationProperty());
     }
-
-    if (isLinking()) linking_ = false;
-    unlock();    
+   
+    if (isLinking()) linking_ = false; 
+    unlock();
 }
 
 void ProcessorNetwork::serialize(IvwSerializer& s) const {

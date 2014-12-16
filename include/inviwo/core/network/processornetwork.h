@@ -278,9 +278,6 @@ public:
     void setModified(bool modified);
     bool isModified() const;
 
-    bool isEvaluationQueued() const { return evaluationQueued_; }
-    void setEvaluationQueued(bool queued) {evaluationQueued_ = queued; }
-
     bool isLinking() const;
 
     bool isInvalidating() const;
@@ -361,7 +358,6 @@ private:
     ProcessorVector processorsInvalidating_;
     LinkEvaluator* linkEvaluator_;
 
-    bool evaluationQueued_;
     bool linking_;
     
     class NetworkConverter : public VersionConverter {
