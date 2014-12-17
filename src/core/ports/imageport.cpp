@@ -58,7 +58,7 @@ void ImageInport::connectTo(Outport* outport) {
         ResizeEvent resizeEvent(getDimension());
         ImageOutport* connectedImageOutport = dynamic_cast<ImageOutport*>(outport);
         connectedImageOutport->changeDataDimensions(&resizeEvent);
-    } else {
+    } else if (!isOutportDeterminingSize()) {
         // Resize outport if any outport within the same port dependency set is connected
         std::vector<Port*> portSet = getProcessor()->getPortsByDependencySet(getProcessor()->getPortDependencySet(this));
         for (size_t j = 0; j < portSet.size(); j++) {
@@ -117,7 +117,7 @@ void ImageInport::changeDataDimensions(ResizeEvent* resizeEvent) {
 
 void ImageInport::propagateResizeToPredecessor(ResizeEvent* resizeEvent) {
     ImageOutport* imageOutport = dynamic_cast<ImageOutport*>(getConnectedOutport());
-    if (imageOutport) {
+    if (imageOutport && !isOutportDeterminingSize()) {
         imageOutport->changeDataDimensions(resizeEvent);
     }
 }
@@ -395,7 +395,7 @@ void ImageOutport::changeDataDimensions(ResizeEvent* resizeEvent) {
         }
         // Propagate the resize event
         propagateResizeEventToPredecessor(resizeEvent);
-    }else if(resultImage && resultImage != data_ && data_->getDimension() != uvec2(0)) {
+    } else if (resultImage && resultImage != data_ && data_->getDimension() != uvec2(0)) {
         data_->resizeRepresentations(resultImage, resultImage->getDimension());
     } 
 }
