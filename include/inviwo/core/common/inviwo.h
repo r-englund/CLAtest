@@ -54,7 +54,7 @@
 #ifdef __clang__ // Clang seems to set NDEBUG (when not debuging) not DEBUG
     #ifndef NDEBUG
         #ifndef DEBUG
-            #define DEBUG
+            //#define DEBUG // Leads to errors in OSX lib debugging.h
         #endif
         #ifndef _DEBUG
             //#define _DEBUG // This flag gives OpenGL errors on OSX. See ticket #699
