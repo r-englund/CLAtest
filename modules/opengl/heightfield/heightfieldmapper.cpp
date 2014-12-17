@@ -44,8 +44,8 @@ ProcessorCodeState(HeightFieldMapper, CODE_STATE_EXPERIMENTAL);
 
 HeightFieldMapper::HeightFieldMapper()
     : Processor()
-    , inport_("image.inport", false)
-    , outport_("image.outport", COLOR_ONLY)
+    , inport_("image.inport", true)
+    , outport_("image.outport", COLOR_ONLY, DataFLOAT32::get())
     , scalingModeProp_("scalingmode", "Scaling Mode")
     , heightRange_("heightrange", "Height Range", 0.0f, 1.0f, -1.0e1f, 1.0e1f)
     , maxHeight_("maxheight", "Maximum Height", 1.0f, 0.0f, 1.0e1f)
@@ -96,7 +96,7 @@ void HeightFieldMapper::process() {
     int numInputChannels = format->getComponents();
     glm::uvec2 dim = srcImg->getDimension();
 
-    Image *outImg = 0;
+    Image *outImg = NULL;
 
     // check format of output image
     if (!outImg || (outImg->getDataFormat()->getId() != DataFormatEnums::FLOAT32)) {

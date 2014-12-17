@@ -47,9 +47,9 @@ ProcessorCodeState(HeightFieldProcessor, CODE_STATE_EXPERIMENTAL);
 
 HeightFieldProcessor::HeightFieldProcessor()
     : GeometryRenderProcessorGL()
-    , inportHeightfield_("heightfield.inport", false)
-    , inportTexture_("texture.inport", false)
-    , inportNormalMap_("normalmap.inport", false)
+    , inportHeightfield_("heightfield.inport", true)
+    , inportTexture_("texture.inport", true)
+    , inportNormalMap_("normalmap.inport", true)
     , heightScale_("heightScale", "Height Scale", 1.0f, 0.0f, 10.0f)
     , terrainShadingMode_("terrainShadingMode", "Terrain Shading")
 {
