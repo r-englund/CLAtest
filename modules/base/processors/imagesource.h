@@ -48,9 +48,6 @@ public:
 
     InviwoProcessorInfo();
 
-    virtual void initialize();
-    virtual void deinitialize();
-
     virtual bool isReady() const;
 
 protected:
@@ -63,6 +60,7 @@ protected:
 private:
     ImageOutport outport_;
     FileProperty imageFileName_;
+    IntVec2Property imageDimension_;
 
     bool isDeserializing_;
 };

@@ -25,7 +25,7 @@
  * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- * 
+ *
  * Contact: Erik Sundén
  *
  *********************************************************************************/
@@ -34,23 +34,25 @@
 #include <inviwo/core/common/inviwoapplication.h>
 #include <inviwo/core/datastructures/image/imagedisk.h>
 #include <inviwo/core/datastructures/image/layerdisk.h>
+#include <inviwo/core/datastructures/image/imageram.h>
 #include <inviwo/core/io/datareaderfactory.h>
 #include <inviwo/core/util/filesystem.h>
 
 namespace inviwo {
 
 ProcessorClassIdentifier(ImageSource, "org.inviwo.ImageSource");
-ProcessorDisplayName(ImageSource,  "Image Source");
+ProcessorDisplayName(ImageSource, "Image Source");
 ProcessorTags(ImageSource, Tags::None);
 ProcessorCategory(ImageSource, "Data Input");
 ProcessorCodeState(ImageSource, CODE_STATE_EXPERIMENTAL);
 
 ImageSource::ImageSource()
-    : Processor(),
-     outport_("image.outport", COLOR_ONLY, DataVec4UINT8::get(), INVALID_OUTPUT, false),
-     imageFileName_("imageFileName", "Image file name", "" , "image"),
-     isDeserializing_(false)
-{
+    : Processor()
+    , outport_("image.outport", COLOR_ONLY, DataVec4UINT8::get(), INVALID_OUTPUT, false)
+    , imageFileName_("imageFileName", "Image file name", "", "image")
+    , imageDimension_("imageDimension_", "Image Dimension", ivec2(0), ivec2(0), ivec2(10000),
+                      ivec2(1), VALID, PropertySemantics("Text"))
+    , isDeserializing_(false) {
     addPort(outport_);
 
     imageFileName_.onChange(this, &ImageSource::load);
@@ -62,21 +64,14 @@ ImageSource::ImageSource()
     }
 
     addProperty(imageFileName_);
+
+    imageDimension_.setReadOnly(true);
+    addProperty(imageDimension_);
 }
 
 ImageSource::~ImageSource() {}
 
-void ImageSource::initialize() {
-    Processor::initialize();
-}
-
-void ImageSource::deinitialize() {
-    Processor::deinitialize();
-}
-
-bool ImageSource::isReady() const {
-    return filesystem::fileExists(imageFileName_.get());
-}
+bool ImageSource::isReady() const { return filesystem::fileExists(imageFileName_.get()); }
 
 void ImageSource::process() {}
 
@@ -86,15 +81,23 @@ void ImageSource::load() {
     }
 
     std::string fileExtension = filesystem::getFileExtension(imageFileName_.get());
-    DataReaderType<Layer>* reader = DataReaderFactory::getPtr()->getReaderForTypeAndExtension<Layer>(fileExtension);
+    DataReaderType<Layer>* reader =
+        DataReaderFactory::getPtr()->getReaderForTypeAndExtension<Layer>(fileExtension);
 
     if (reader) {
         try {
             Layer* outLayer = reader->readMetaData(imageFileName_.get());
+            // Call getRepresentation here to force read a ram representation.
+            // Otherwise the default image size, i.e. 256x265, will be reported 
+            // until you do the conversion. Since the LayerDisk does not have any metadata.
+            outLayer->getRepresentation<LayerRAM>();
             Image* outImage = new Image(outLayer);
+            outImage->getRepresentation<ImageRAM>();
+
             outport_.setData(outImage);
-        }
-        catch (DataReaderException const& e) {
+            imageDimension_.set(outLayer->getDimension());
+
+        } catch (DataReaderException const& e) {
             LogError("Could not load data: " << imageFileName_.get() << ", " << e.getMessage());
             imageFileName_.set("");
         }
@@ -114,4 +117,4 @@ void ImageSource::deserialize(IvwDeserializer& d) {
     load();
 }
 
-} // namespace
+}  // namespace
