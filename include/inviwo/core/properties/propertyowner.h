@@ -66,9 +66,9 @@ public:
     template <class T>
     std::vector<T*> getPropertiesByType(bool recursiveSearch = false) const;
 
-    bool isValid() { return (invalidationLevel_ == VALID); }
+    bool isValid() const { return (invalidationLevel_ == VALID); }
     virtual void setValid();
-    InvalidationLevel getInvalidationLevel() { return invalidationLevel_; }
+    InvalidationLevel getInvalidationLevel() const { return invalidationLevel_; }
     virtual void invalidate(InvalidationLevel invalidationLevel,
                             Property* modifiedProperty = NULL);
 
