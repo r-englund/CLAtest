@@ -57,7 +57,11 @@ void testVolumeLoad(std::string filename) {
     Volume* volume = reader->readMetaData(file);
     const VolumeRAMPrecision<T>* volumeRAM =
         static_cast<const VolumeRAMPrecision<T>*>(volume->getRepresentation<VolumeRAM>());
+    ASSERT_TRUE(volumeRAM != NULL);
+    
     const T* data = static_cast<const T*>(volumeRAM->getData());
+    ASSERT_TRUE(data != NULL);
+
     uvec3 dim = volume->getDimension();
     long long ref0;
     double ref1;
