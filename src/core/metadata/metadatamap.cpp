@@ -38,8 +38,11 @@ namespace inviwo {
 MetaDataMap::MetaDataMap() {}
 
 MetaDataMap::MetaDataMap(const MetaDataMap& inMap) {
-    for (cIterator cIt = inMap.metaData_.begin(); cIt!=inMap.metaData_.end(); ++cIt)
-        metaData_[cIt->first] = cIt->second->clone();
+    for (cIterator cIt = inMap.metaData_.begin(); cIt!=inMap.metaData_.end(); ++cIt) {
+        if (cIt->second) {
+            metaData_[cIt->first] = cIt->second->clone();
+        }
+    }
 }
 
 MetaDataMap::~MetaDataMap() {
