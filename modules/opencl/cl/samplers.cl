@@ -83,15 +83,33 @@ float getVoxelUnorm(read_only image3d_t volume, int4 pos) {
  * Return a value mapped from data range [min,max] to [0,1] using linear interpolation
  * @param pos Coordinate in [0 1]^3
  */
-float getNormalizedVoxel(read_only image3d_t volume, float4 pos, float2 offsetAndScaling) {
-    return (read_imagef(volume, smpNormClampEdgeLinear, pos).x + offsetAndScaling.x) * offsetAndScaling.y;  
+float4 getNormalizedVoxel(read_only image3d_t volume, __constant VolumeParameters* volumeParams, float4 pos) {
+    return (read_imagef(volume, smpNormClampEdgeLinear, pos) + volumeParams->formatOffset) * volumeParams->formatScaling;  
+}
+
+
+/*
+ * Return a value mapped from data range [min,max] to [0,1] using nearest neighbor interpolation
+ * @param pos Coordinate in [0 get_image_dim(volume)-1]
+ */
+float4 getNormalizedVoxelUnorm(read_only image3d_t volume, __constant VolumeParameters* volumeParams, int4 pos) {
+    return (read_imagef(volume, smpUNormNoClampNearest, pos) + volumeParams->formatOffset) * volumeParams->formatScaling;  
 }
 
 /*
- * Get voxel data in unnormalized coordinates [0 get_image_dim(volume)-1] and apply offset and scaling
+ * Return a value mapped from data range [min,max] to [-1,1] using linear interpolation
+ * @param pos Coordinate in [0 1]^3
  */
-float getNormalizedVoxelUnorm(read_only image3d_t volume, int4 pos, float2 offsetAndScaling) {
-    return (read_imagef(volume, smpUNormNoClampNearest, pos).x + offsetAndScaling.x) * offsetAndScaling.y;  
+float4 getSignNormalizedVoxel(read_only image3d_t volume, __constant VolumeParameters* volumeParams, float4 pos) {
+    return (read_imagef(volume, smpNormClampEdgeLinear, pos) + volumeParams->signedFormatOffset) * volumeParams->signedFormatScaling;  
+}
+
+/*
+ * Return a value mapped from data range [min,max] to [-1,1] using nearest neighbor interpolation
+ * @param pos Coordinate in [0 get_image_dim(volume)-1]
+ */
+float4 getSignNormalizedVoxelUnorm(read_only image3d_t volume, __constant VolumeParameters* volumeParams, int4 pos) {
+    return (read_imagef(volume, smpUNormNoClampNearest, pos) + volumeParams->signedFormatOffset) * volumeParams->signedFormatScaling;  
 }
 
 #endif // SAMPLERS_CL

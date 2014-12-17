@@ -163,6 +163,7 @@ void CanvasProcessor::sizeChanged() {
     inputSize_.invalidate(VALID, &customInputDimensions_);
 
     inport_.changeDataDimensions(resizeEvent);
+    delete resizeEvent;
     InviwoApplication::getPtr()->getProcessorNetwork()->unlock();
 }
 

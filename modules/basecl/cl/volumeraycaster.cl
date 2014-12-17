@@ -35,18 +35,21 @@
 __constant float REF_SAMPLING_INTERVAL = 150.f;
 #define ERT_THRESHOLD 1.0
 
-__kernel void raycaster(read_only image3d_t volume, __global VolumeParameters* volumeParams
+__kernel void raycaster(read_only image3d_t volume, __constant VolumeParameters* volumeParams
                         , read_only image2d_t entryPoints 
                         , read_only image2d_t exitPoints
                         , read_only image2d_t transferFunction 
                         , float samplingRate
-                        , write_only image2d_t output) 
+                        , write_only image2d_t output
+                        , int2 outputRegionOffset
+                        , int2 outputRegionSize) 
 {
     int2 globalId = (int2)(get_global_id(0), get_global_id(1));      
 
-    if (any(globalId >= get_image_dim(output))) { 
+    if (any(globalId >= outputRegionSize)) { 
         return;
     }
+
     float4 entry = read_imagef(entryPoints, smpUNormNoClampNearest, globalId);   
     float4 exit = read_imagef(exitPoints, smpUNormNoClampNearest, globalId);
     float3 direction = exit.xyz - entry.xyz;   
@@ -63,7 +66,7 @@ __kernel void raycaster(read_only image3d_t volume, __global VolumeParameters* v
         float4 emissionAbsorption;
         while(t < tEnd) {
             float3 pos = entry.xyz+t*direction;
-            float volumeSample = getNormalizedVoxel(volume, as_float4(pos), (float2)(volumeParams[0].formatOffset, volumeParams[0].formatScaling)); 
+            float volumeSample = getNormalizedVoxel(volume, volumeParams, as_float4(pos)).x; 
             // xyz == emission, w = absorption
             emissionAbsorption = read_imagef(transferFunction, smpNormClampEdgeLinear, (float2)(volumeSample, 0.5f));
             // Taylor expansion approximation
@@ -77,7 +80,7 @@ __kernel void raycaster(read_only image3d_t volume, __global VolumeParameters* v
 
     }
          
-    write_imagef(output, globalId,  result);     
+    write_imagef(output, outputRegionOffset+globalId,  result);     
   
 }
   

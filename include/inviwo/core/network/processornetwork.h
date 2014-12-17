@@ -267,6 +267,8 @@ public:
      * @return std::vector<Property*> List of all properties that are affected by given property
      */
     std::vector<Property*> getLinkedProperties(Property* property);
+    std::vector<PropertyLink>& getTriggerdLinksForProperty(Property* property);
+
 
     Property* getProperty(std::vector<std::string> path) const;
 
@@ -310,10 +312,26 @@ public:
     void clear();
     
 private:
+
+    class PropertyLinkContainsTest {
+    public:
+        PropertyLinkContainsTest(Property* p) : p_(p) {}
+        bool operator()(const PropertyLink& link) {
+            return link.getSourceProperty() == p_ || link.getDestinationProperty()==p_;
+        }
+    private:
+        Property* p_;
+    };
+
+
     //Property Linking support
     void performLinkingOnPropertyChange(Property* modifiedProperty);
     void addToPrimaryCache(PropertyLink* propertyLink);
     void removeFromPrimaryCache(PropertyLink* propertyLink);
+    std::vector<PropertyLink>& addToSecondaryCache(Property* property);
+
+    void secondaryCacheHelper(std::vector<PropertyLink>& links,  Property* src, Property* dst);
+
     void clearSecondaryCache();
     
     std::vector<Property*> getPropertiesRecursive(PropertyOwner* owner);
@@ -325,14 +343,15 @@ private:
     std::map<Property*, std::vector<Property*> > propertyLinkPrimaryCache_;
     // The secondary link cache is a map with all source properties and a vector of ALL the
     // properties that they link to. Directly or indirectly.
-    std::map<Property*, std::vector<Property*> > propertyLinkSecondaryCache_;
+    std::map<Property*, std::vector<PropertyLink> > propertyLinkSecondaryCache_;
     // A cache of all links between two processors.
     ProcessorLinkMap processorLinksCache_;
 
     bool modified_;
     unsigned int locked_;
     ProcessorMap processors_;
-    PortConnectionMap portConnections_;
+    PortConnectionMap portConnectionsMap_;
+    PortConnectionVector portConnectionsVec_;
     PropertyLinkMap propertyLinks_;
 
     bool deserializing_;
@@ -340,7 +359,6 @@ private:
     ProcessorVector processorsInvalidating_;
     LinkEvaluator* linkEvaluator_;
 
-    bool evaluationQueued_;
     bool linking_;
     
     class NetworkConverter : public VersionConverter {

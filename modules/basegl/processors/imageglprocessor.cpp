@@ -42,7 +42,6 @@ ImageGLProcessor::ImageGLProcessor(std::string fragmentShader)
     : Processor()
     , inport_(fragmentShader + "inport")
     , outport_(fragmentShader + "outport")
-    , dataFormat_(NULL)
     , internalInvalid_(false)
     , fragmentShader_(fragmentShader)
     , shader_(NULL)
@@ -70,10 +69,7 @@ void ImageGLProcessor::deinitialize() {
 void ImageGLProcessor::process() {
     if (internalInvalid_ || inport_.getInvalidationLevel() >= INVALID_OUTPUT) {
         internalInvalid_ = false;
-        const DataFormatBase* format = dataFormat_;
-        if (format == NULL) {
-            format = inport_.getData()->getDataFormat();
-        }
+        const DataFormatBase* format = inport_.getData()->getDataFormat();
 
         Image *img = new Image(inport_.getData()->getDimension(), COLOR_ONLY, format);
         img->copyMetaDataFrom(*inport_.getData());

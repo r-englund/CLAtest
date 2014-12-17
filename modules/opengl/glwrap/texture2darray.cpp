@@ -31,6 +31,7 @@
  *********************************************************************************/
 
 #include "texture2darray.h"
+#include <modules/opengl/openglcapabilities.h>
 
 namespace inviwo {
 
@@ -54,9 +55,15 @@ Texture2DArray::Texture2DArray(const Texture2DArray& rhs)
 {
     setTextureParameterFunction(this, &Texture2DArray::default2DArrayTextureParameterFunction);
     initialize(NULL);
-    // TODO: Copy texture from other
-    // bind();
-    // glCopyTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, 0, dimensions_.x, dimensions_.y);
+    if(OpenGLCapabilities::getOpenGLVersion() >= 430){
+        //GPU memcpy
+        glCopyImageSubData(rhs.getID(), rhs.getTarget(), 0, 0, 0, 0, getID(), 
+            target_, 0, 0, 0, 0, dimensions_.x, dimensions_.y, dimensions_.z);
+    }
+    else{
+        //Copy data through PBO
+        loadFromPBO(&rhs);
+    }
 }
 
 Texture2DArray& Texture2DArray::operator=(const Texture2DArray& rhs) {
@@ -65,7 +72,15 @@ Texture2DArray& Texture2DArray::operator=(const Texture2DArray& rhs) {
         dimensions_ = rhs.dimensions_;
         setTextureParameterFunction(this, &Texture2DArray::default2DArrayTextureParameterFunction);
         initialize(NULL);
-        // TODO: Copy other texture content
+        if(OpenGLCapabilities::getOpenGLVersion() >= 430){
+            //GPU memcpy
+            glCopyImageSubData(rhs.getID(), rhs.getTarget(), 0, 0, 0, 0, getID(), 
+                target_, 0, 0, 0, 0, rhs.dimensions_.x, rhs.dimensions_.y, rhs.dimensions_.z);
+        }
+        else{
+            //Copy data through PBO
+            loadFromPBO(&rhs);
+        }
     }
 
     return *this;

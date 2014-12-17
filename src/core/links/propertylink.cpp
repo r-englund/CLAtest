@@ -59,5 +59,20 @@ void PropertyLink::deserialize(IvwDeserializer& d) {
     dstProperty_ = linkedProperties[1];
 }
 
+bool operator==(const PropertyLink& lhs, const PropertyLink& rhs) {
+    return lhs.srcProperty_ == rhs.srcProperty_ && lhs.dstProperty_ == rhs.dstProperty_;
+}
+bool operator!=(const PropertyLink& lhs, const PropertyLink& rhs) {
+    return !operator==(lhs, rhs);
+}
+
+bool  operator<(const PropertyLink& lhs, const PropertyLink& rhs) {
+    if (lhs.srcProperty_ != rhs.srcProperty_) {
+        return lhs.srcProperty_ < rhs.srcProperty_;
+    } else {
+        return lhs.dstProperty_ < rhs.dstProperty_;
+    }
+}
+
 } // namespace
 

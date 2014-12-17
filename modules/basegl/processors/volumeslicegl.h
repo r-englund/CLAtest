@@ -37,9 +37,6 @@
 
 #include <inviwo/core/common/inviwo.h>
 #include <inviwo/core/datastructures/geometry/geometrytype.h>
-#include <inviwo/core/interaction/events/keyboardevent.h>
-#include <inviwo/core/interaction/events/mouseevent.h>
-#include <inviwo/core/interaction/interactionhandler.h>
 #include <inviwo/core/ports/imageport.h>
 #include <inviwo/core/ports/volumeport.h>
 #include <inviwo/core/processors/processor.h>
@@ -48,6 +45,7 @@
 #include <inviwo/core/properties/compositeproperty.h>
 #include <inviwo/core/properties/ordinalproperty.h>
 #include <inviwo/core/properties/transferfunctionproperty.h>
+#include <inviwo/core/properties/eventproperty.h>
 #include <modules/opengl/inviwoopengl.h>
 
 namespace inviwo {
@@ -65,31 +63,14 @@ public:
     void initialize();
     void deinitialize();
 
-    void shiftSlice(int);
-    // updates the selected position, pos is given in normalized viewport coordinates, i.e. [0,1]
-    void setVolPosFromScreenPos(vec2 pos);
+    virtual void invokeInteractionEvent(Event* event);
 
     bool positionModeEnabled() const { return posPicking_.get(); }
 
 protected:
     void process();
 
-    class VolumeSliceGLInteractionHandler : public InteractionHandler {
-    public:
-        VolumeSliceGLInteractionHandler(VolumeSliceGL* vs);
-        ~VolumeSliceGLInteractionHandler() {};
-
-        void invokeEvent(Event* event);
-
-    private:
-        MouseEvent wheelEvent_;
-        MouseEvent mousePressEvent_;  // used for position selection
-
-        KeyboardEvent upEvent_;
-        KeyboardEvent downEvent_;
-
-        VolumeSliceGL* slicer_;
-    };
+    void shiftSlice(int);
 
     void sliceAxisChanged();
     void planeSettingsChanged();
@@ -101,6 +82,8 @@ protected:
     void updateIndicatorMesh();
     void updateReadOnlyStates();
 
+    // updates the selected position, pos is given in normalized viewport coordinates, i.e. [0,1]
+    void setVolPosFromScreenPos(vec2 pos);
     vec2 getScreenPosFromVolPos();
 
     void invalidateMesh();
@@ -123,7 +106,13 @@ protected:
     }
 
 private:
-    void updatePos(); 
+    void updatePos();
+
+    void eventShiftSlice(Event* event);
+    void eventSetMarker(Event* event);
+    void eventStepSliceUp(Event* event);
+    void eventStepSliceDown(Event* event);
+    void eventGestureShiftSlice(Event* event);
 
     VolumeInport inport_;
     ImageOutport outport_;
@@ -156,6 +145,14 @@ private:
     FloatProperty tfAlphaOffset_;
 
     BoolProperty handleInteractionEvents_;
+
+    EventProperty mouseShiftSlice_;
+    EventProperty mouseSetMarker_;
+
+    EventProperty stepSliceUp_;
+    EventProperty stepSliceDown_;
+
+    EventProperty gestureShiftSlice_;
 
     Shader* shader_;
     Shader* indicatorShader_;

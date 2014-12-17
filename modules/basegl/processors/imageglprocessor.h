@@ -87,16 +87,13 @@ protected:
 
     ImageInport inport_;
     ImageOutport outport_;
-
-    const DataFormatBase* dataFormat_;
-
+    
     bool internalInvalid_;
 
     std::string fragmentShader_;
 
     Shader* shader_;
 
-private: 
     /*! \brief call-back function for onChange events of the inport
      */
     void inportChanged() {

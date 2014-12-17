@@ -30,10 +30,11 @@
  *
  *********************************************************************************/
 
-#ifndef IVW_VOLUME_RAYCASTER_CL_H
-#define IVW_VOLUME_RAYCASTER_CL_H
+#ifndef IVW_VOLUMERAYCASTERCLPROCESSOR_H
+#define IVW_VOLUMERAYCASTERCLPROCESSOR_H
 
 #include <modules/basecl/baseclmoduledefine.h>
+#include <modules/basecl/volumeraycastercl.h>
 #include <inviwo/core/common/inviwo.h>
 #include <inviwo/core/ports/imageport.h>
 #include <inviwo/core/ports/volumeport.h>
@@ -67,7 +68,7 @@ namespace inviwo {
  * \brief Perform volume rendering on the input volume. 
  *
  */
-class IVW_MODULE_BASECL_API VolumeRaycasterCLProcessor : public Processor, public ProcessorKernelOwner {
+class IVW_MODULE_BASECL_API VolumeRaycasterCLProcessor : public Processor, public KernelObserver {
 public:
     VolumeRaycasterCLProcessor();
     ~VolumeRaycasterCLProcessor();
@@ -78,12 +79,15 @@ public:
     void deinitialize();
 
     virtual bool isReady() const;
+
+    void onKernelCompiled( const cl::Kernel* kernel ) {
+        invalidate(INVALID_RESOURCES);
+    }
 protected:
     virtual void process();
 
-    void volumeRaycast(const Volume* volume, const VolumeCLBase* volumeCL, const LayerCLBase* entryCLGL, const LayerCLBase* exitCLGL, const LayerCLBase* transferFunctionCL, LayerCLBase* outImageCL, svec2 globalWorkGroupSize, svec2 localWorkGroupSize, cl::Event* profilingEvent);
-
 private:
+    void onParameterChanged();
     VolumeInport volumePort_;
     ImageInport entryPort_;
     ImageInport exitPort_;
@@ -95,9 +99,9 @@ private:
 
     BoolProperty useGLSharing_;
 
-    cl::Kernel* kernel_;
+    VolumeRaycasterCL volumeRaycaster_;
 };
 
 } // namespace
 
-#endif // IVW_VOLUME_RAYCASTER_CL_H
+#endif // IVW_VOLUMERAYCASTERCLPROCESSOR_H

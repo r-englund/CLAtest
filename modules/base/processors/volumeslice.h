@@ -39,11 +39,9 @@
 #include <inviwo/core/ports/imageport.h>
 #include <inviwo/core/processors/processor.h>
 #include <inviwo/core/properties/baseoptionproperty.h>
+#include <inviwo/core/properties/boolproperty.h>
 #include <inviwo/core/properties/ordinalproperty.h>
-#include <inviwo/core/datastructures/volume/volumeramslice.h>
-#include <inviwo/core/interaction/events/mouseevent.h>
-#include <inviwo/core/interaction/interactionhandler.h>
-#include <inviwo/core/interaction/events/keyboardevent.h>
+#include <inviwo/core/properties/eventproperty.h>
 
 namespace inviwo {
 
@@ -57,32 +55,33 @@ public:
     void initialize();
     void deinitialize();
 
-    void shiftSlice(int);
+    virtual void invokeInteractionEvent(Event* event);
 
 protected:
     virtual void process();
 
-    class VolumeSliceInteractionHandler : public InteractionHandler {
-    public:
-        VolumeSliceInteractionHandler(VolumeSlice* vs);
-        ~VolumeSliceInteractionHandler(){};
-
-        void invokeEvent(Event* event);
-    private:
-        MouseEvent wheelEvent_;
-
-        KeyboardEvent upEvent_;
-        KeyboardEvent downEvent_;
-
-        VolumeSlice* slicer_;
-    };
+    void shiftSlice(int);
 
 private:
+    void eventShiftSlice(Event* event);
+    void eventStepSliceUp(Event* event);
+    void eventStepSliceDown(Event* event);
+    void eventGestureShiftSlice(Event* event);
+
     VolumeInport inport_;
     ImageOutport outport_;
 
     OptionPropertyInt sliceAlongAxis_;
     IntProperty sliceNumber_;
+
+    BoolProperty handleInteractionEvents_;
+
+    EventProperty mouseShiftSlice_;
+
+    EventProperty stepSliceUp_;
+    EventProperty stepSliceDown_;
+
+    EventProperty gestureShiftSlice_;
 };
 
 }

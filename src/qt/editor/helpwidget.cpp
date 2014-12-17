@@ -41,6 +41,7 @@
 #include <QMap>
 #include <QString>
 #include <QUrl>
+#include <QFile>
 #include <QByteArray>
 #include <QCoreApplication>
 
@@ -99,6 +100,7 @@ void HelpWidget::setupFinished() {
 }
 
 void HelpWidget::showDocForClassName(std::string classIdentifier) {
+    if (!helpEngine_) return;
     std::string className = joinString(splitString(classIdentifier, '.'), "_8");
 
     QUrl url(
@@ -130,6 +132,21 @@ HelpWidget::HelpBrowser::~HelpBrowser() {}
 QVariant HelpWidget::HelpBrowser::loadResource(int type, const QUrl& name) {
     QUrl url(name);
     if (name.isRelative()) url = source().resolved(url);
+
+#ifdef DEBUG // Look for the html in the doc-qt folder.
+    if (type == QTextDocument::HtmlResource || type == QTextDocument::ImageResource) {
+        std::string docbase = InviwoApplication::getPtr()->getPath(InviwoApplication::PATH_DATA,
+                                                         "../tools/doxygen/doc-qt/html");
+        QString file = name.toString();
+        file.replace("qthelp://org.inviwo/doc", QString::fromStdString(docbase));
+        QFile newfile(file);
+
+        if (newfile.exists() && newfile.open(QIODevice::ReadOnly)) {
+            QByteArray data = newfile.readAll();
+            return data;
+        }
+    }
+#endif
 
     QByteArray data = helpEngine_->fileData(url);
     switch (type) {

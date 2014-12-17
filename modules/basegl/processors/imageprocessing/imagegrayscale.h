@@ -51,6 +51,35 @@ namespace LuminanceModels {
     };
 }
 
+/** \docpage{org.inviwo.ImageGrayscale, Image Grayscale}
+ * Compute a gray-scale image from a color input image. The alpha channel is not touched.
+ * ![](imagegamma.png)
+ * The input image is converted to gray-scale as follows
+ * 
+ *     grayValue = l.r * in.r + l.g * in.g + l.b * in.b
+ *     out.rgb = vec3(grayValue)
+ *     out.a = in.a
+ *
+ * The color conversion factor _l_ depends on the chosen luminance model:
+ *   * _perceived_ l.rgb = vec3(0.299, 0.587, 0.114)
+ *   * _relative_ l.rgb = vec3(0.2126, 0.7152, 0.0722), XYZ color space
+ *   * _average_ l.rgb = vec3(1/3, 1/3, 1/3)
+ *   * _red_ l.rgb = vec3(1/3, 0, 0)
+ *   * _green_ l.rgb = vec3(0, 1/3, 0)
+ *   * _blue_ l.rgb = vec3(0, 0, 1/3)
+ *
+ * ### Inports
+ *   * __ImageInport__ The input image.
+ *
+ * ### Outports
+ *   * __ImageOutport__ The grayscale output image.
+ *
+ * ### Properties
+ *   * __Luminance Model__ Model for converting the input to grayscale. Options are
+ *                         perceived (default), relative, average, red only, green only, 
+ *                         and blue only.
+ */
+
 /*! \class ImageGrayscale
  *
  * \brief Compute a gray-scale image from color input. Alpha channel is not touched.

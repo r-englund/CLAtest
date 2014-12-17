@@ -44,17 +44,26 @@ class IVW_CORE_API PropertyLink : public IvwSerializable {
 public :
     PropertyLink();
     PropertyLink(Property* srcProperty, Property* dstProperty);
-    virtual ~PropertyLink();
 
+    virtual ~PropertyLink();
+    
     Property* getSourceProperty() const { return srcProperty_; }
     Property* getDestinationProperty() const { return dstProperty_; }    
     virtual void serialize(IvwSerializer& s) const;
     virtual void deserialize(IvwDeserializer& d);
 
+    friend bool IVW_CORE_API operator==(const PropertyLink& lhs, const PropertyLink& rhs);
+    friend bool IVW_CORE_API operator<(const PropertyLink& lhs, const PropertyLink& rhs);
+
 private:
     Property* srcProperty_;
     Property* dstProperty_;
 };
+
+bool IVW_CORE_API operator==(const PropertyLink& lhs, const PropertyLink& rhs);
+bool IVW_CORE_API operator!=(const PropertyLink& lhs, const PropertyLink& rhs);
+
+bool IVW_CORE_API operator<(const PropertyLink& lhs, const PropertyLink& rhs);
 
 } // namespace
 

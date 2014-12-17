@@ -38,7 +38,7 @@
 #pragma OPENCL_EXTENSION cl_khr_3d_image_writes : enable
 #endif
 
-__kernel void volumeMaxKernel(read_only image3d_t volumeIn, float2 volumeDataScaling
+__kernel void volumeMaxKernel(read_only image3d_t volumeIn, __constant VolumeParameters* volumeParams
 #ifdef SUPPORTS_VOLUME_WRITE
     , write_only image3d_t volumeOut
 #else
@@ -71,7 +71,7 @@ __kernel void volumeMaxKernel(read_only image3d_t volumeIn, float2 volumeDataSca
                 //    printf("xyz == %v3i\n", (int3)(x, y, z));
                 //}
                 //if (all((int3)(x, y, z) < get_image_dim(volumeIn).xyz))
-                maxVal = max(maxVal, getNormalizedVoxelUnorm(volumeIn, (int4)(x, y, z, 0), volumeDataScaling));
+                maxVal = max(maxVal, getNormalizedVoxelUnorm(volumeIn, volumeParams, (int4)(x, y, z, 0)).x);
 
             }
         }

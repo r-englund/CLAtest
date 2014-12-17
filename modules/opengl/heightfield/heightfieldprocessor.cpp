@@ -40,7 +40,7 @@
 namespace inviwo {
 
 ProcessorClassIdentifier(HeightFieldProcessor, "org.inviwo.HeightFieldRenderGL");
-ProcessorDisplayName(HeightFieldProcessor,  "Height Field Render");
+ProcessorDisplayName(HeightFieldProcessor,  "Height Field Renderer");
 ProcessorTags(HeightFieldProcessor, Tags::GL); 
 ProcessorCategory(HeightFieldProcessor, "Heightfield");
 ProcessorCodeState(HeightFieldProcessor, CODE_STATE_EXPERIMENTAL); 
@@ -50,32 +50,25 @@ HeightFieldProcessor::HeightFieldProcessor()
     , inportHeightfield_("heightfield.inport", false)
     , inportTexture_("texture.inport", false)
     , inportNormalMap_("normalmap.inport", false)
-    , inportLightSource_("lightsource.inport")
     , heightScale_("heightScale", "Height Scale", 1.0f, 0.0f, 10.0f)
     , terrainShadingMode_("terrainShadingMode", "Terrain Shading")
-    , lightingEnabledProperty_("lighting", "Lighting", false)
-    , lighting_(false)
 {
     inportHeightfield_.onChange(this, &HeightFieldProcessor::heightfieldChanged);
     addPort(inportHeightfield_);
     addPort(inportTexture_);
     addPort(inportNormalMap_);
-    addPort(inportLightSource_);
     
     addProperty(heightScale_);
 
-    terrainShadingMode_.addOption("shadingFlat", "Flat Shading", HF_SHADING_FLAT);
-    terrainShadingMode_.addOption("shadingColorTex", "Color Texture", HF_SHADING_COLORTEX);
-    terrainShadingMode_.addOption("shadingHeightField", "Heightfield Texture", HF_SHADING_HEIGHTFIELD);
-    terrainShadingMode_.set(HF_SHADING_FLAT);
+    terrainShadingMode_.addOption("shadingConstant", "Constant Color", HeightFieldShading::ConstantColor);
+    terrainShadingMode_.addOption("shadingColorTex", "Color Texture", HeightFieldShading::ColorTexture);
+    terrainShadingMode_.addOption("shadingHeightField", "Heightfield Texture", HeightFieldShading::HeightField);
+    terrainShadingMode_.set(HeightFieldShading::ConstantColor);
     terrainShadingMode_.setCurrentStateAsDefault();
     addProperty(terrainShadingMode_);
-
-    //lightingEnabledProperty_.onChange(this, &HeightFieldProcessor::lightingChanged);
 }
 
-HeightFieldProcessor::~HeightFieldProcessor() 
-{
+HeightFieldProcessor::~HeightFieldProcessor() {
 }
 
 void HeightFieldProcessor::initialize() {
@@ -90,7 +83,6 @@ void HeightFieldProcessor::initialize() {
 void HeightFieldProcessor::process() {
     int terrainShadingMode = terrainShadingMode_.get();
 
-    bool lighting = (lightingEnabledProperty_.get() && inportLightSource_.isReady());
     shader_->activate();
 
     // bind input textures
@@ -98,105 +90,34 @@ void HeightFieldProcessor::process() {
 
     if (inportHeightfield_.isReady()) {
         utilgl::bindColorTexture(inportHeightfield_, heightFieldUnit.getEnum());
-    } else if (terrainShadingMode == HF_SHADING_HEIGHTFIELD) {
+    } else if (terrainShadingMode == HeightFieldShading::HeightField) {
         // switch to flat shading since color texture is not available
-        terrainShadingMode = HF_SHADING_FLAT;
+        terrainShadingMode = HeightFieldShading::ConstantColor;
     }
 
     if (inportTexture_.isReady()) {
         utilgl::bindColorTexture(inportTexture_, colorTexUnit.getEnum());
-    } else if (terrainShadingMode == HF_SHADING_COLORTEX) {
+    } else if (terrainShadingMode == HeightFieldShading::ColorTexture) {
         // switch to flat shading since heightfield texture is not available
-        terrainShadingMode = HF_SHADING_FLAT;
+        terrainShadingMode = HeightFieldShading::ConstantColor;
     }
 
-    if (inportNormalMap_.isReady()) {
+    bool normalMapping = inportNormalMap_.isReady();
+    if (normalMapping) {
         utilgl::bindColorTexture(inportNormalMap_, normalTexUnit.getEnum());
-    } else {
-        // switch of lighting
-        lighting = false;
     }
-
-    //bool lightColorChanged = false;
-    //if(inportLightSource_.getInvalidationLevel() >= INVALID_OUTPUT) {
-    //    lightColorChanged = lightSourceChanged();
-    //}
 
     shader_->setUniform("inportHeightfield_", heightFieldUnit.getUnitNumber());
     shader_->setUniform("inportTexture_", colorTexUnit.getUnitNumber());
     shader_->setUniform("inportNormalMap_", normalTexUnit.getUnitNumber());
     shader_->setUniform("terrainShadingMode_", terrainShadingMode);
+    shader_->setUniform("normalMapping_", (normalMapping ? 1 : 0));
     shader_->setUniform("heightScale_", heightScale_.get());
 
     // render mesh
     GeometryRenderProcessorGL::process();
     TextureUnit::setZeroUnit();
 }
-
-void HeightFieldProcessor::setupLight() {
-    /*
-    glm::vec3 color = glm::vec3(1.f);
-    switch(inportLightSource_.getData()->getLightSourceType())
-    {
-        case LightSourceType::LIGHT_DIRECTIONAL:{
-            if(lightType_ != LightSourceType::LIGHT_DIRECTIONAL){
-                lightType_ = LightSourceType::LIGHT_DIRECTIONAL;
-                shader_->getFragmentShaderObject()->removeShaderDefine("POINT_LIGHT");
-                shader_->getFragmentShaderObject()->build();
-                shader_->link();
-            }
-            const DirectionalLight* directionLight = dynamic_cast<const DirectionalLight*>(inportLightSource_.getData());
-            if(directionLight){
-                directionToCenterOfVolume = directionLight->getDirection();
-                color = directionLight->getIntensity();
-            }
-            break;
-        }
-        case LightSourceType::LIGHT_POINT:{
-            if(lightType_ != LightSourceType::LIGHT_POINT){
-                lightType_ = LightSourceType::LIGHT_POINT;
-                shader_->getFragmentShaderObject()->addShaderDefine("POINT_LIGHT");
-                shader_->getFragmentShaderObject()->build();
-                shader_->link();
-            }
-            const PointLight* pointLight = dynamic_cast<const PointLight*>(inportLightSource_.getData());
-            if(pointLight){
-                mat4 toWorld = inport_.getData()->getWorldMatrix();
-                vec4 volumeCenterWorldW = toWorld * vec4(0.f, 0.f, 0.f, 1.f);
-                vec3 volumeCenterWorld = volumeCenterWorldW.xyz();
-                lightPos_ = pointLight->getPosition();
-                directionToCenterOfVolume = glm::normalize(volumeCenterWorld - lightPos_);
-                color = pointLight->getIntensity();
-            }
-            break;
-        }
-        default:
-            LogWarn("Light source not supported, can only handle Directional or Point Light");
-            break;
-    }
-
-    bool lightColorChanged = false;
-    if(color.r != lightColor_.r){
-        lightColor_.r = color.r;
-        lightColorChanged = true;
-    }
-    if(color.g != lightColor_.g){
-        lightColor_.g = color.g;
-        lightColorChanged = true;
-    }
-    if(color.b != lightColor_.b){
-        lightColor_.b = color.b;
-        lightColorChanged = true;
-    }
-    */
-}
-
-void HeightFieldProcessor::lightingChanged() {
-    if (lighting_ != lightingEnabledProperty_.get()) {
-        // state of lighting changed, adjust shader
-    }
-}
-
 
 void HeightFieldProcessor::heightfieldChanged() {
     if (!inportHeightfield_.isConnected())
@@ -218,6 +139,5 @@ void HeightFieldProcessor::heightfieldChanged() {
 
     //LogInfo(str.str());
 }
-
 
 } // namespace
