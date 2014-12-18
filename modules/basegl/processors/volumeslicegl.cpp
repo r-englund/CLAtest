@@ -81,7 +81,7 @@ VolumeSliceGL::VolumeSliceGL()
     VALID)
     , mouseShiftSlice_("mouseShiftSlice", "Mouse Slice Shift",
     new MouseEvent(MouseEvent::MOUSE_BUTTON_NONE, InteractionEvent::MODIFIER_NONE,
-    MouseEvent::MOUSE_STATE_WHEEL),
+    MouseEvent::MOUSE_STATE_WHEEL, MouseEvent::MOUSE_WHEEL_ANY),
     new Action(this, &VolumeSliceGL::eventShiftSlice))
     , mouseSetMarker_("mouseSetMarker", "Mouse Set Marker",
     new MouseEvent(MouseEvent::MOUSE_BUTTON_LEFT, InteractionEvent::MODIFIER_NONE,

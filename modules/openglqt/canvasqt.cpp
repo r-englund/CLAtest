@@ -311,8 +311,20 @@ void CanvasQt::wheelEvent(QWheelEvent* e){
         orientation = MouseEvent::MOUSE_WHEEL_VERTICAL;
     }
 
-    int numDegrees = e->delta() / 8;
-    int numSteps = numDegrees / 15;
+#if (QT_VERSION >= QT_VERSION_CHECK(5, 0, 0))
+    QPoint numPixels = e->pixelDelta();
+    QPoint numDegrees = e->angleDelta() / 8 / 15;
+#else
+    QPoint numPixels;
+    QPoint numDegrees = QPoint(0, e->delta() / 8 / 15);
+#endif
+
+    int numSteps;
+    if (!numPixels.isNull()) {
+        numSteps = (orientation==MouseEvent::MOUSE_WHEEL_HORIZONTAL? numPixels.x() : numPixels.y()) / 5;
+    } else if (!numDegrees.isNull()) {
+        numSteps = (orientation==MouseEvent::MOUSE_WHEEL_HORIZONTAL? numDegrees.x() : numDegrees.y());
+    }
 
     MouseEvent mouseEvent(ivec2(e->pos().x(), e->pos().y()), numSteps,
         EventConverterQt::getMouseWheelButton(e), MouseEvent::MOUSE_STATE_WHEEL, orientation,
