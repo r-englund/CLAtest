@@ -66,8 +66,6 @@ VolumeRaycasterCL::~VolumeRaycasterCL() {}
 
 void VolumeRaycasterCL::volumeRaycast(const Volume* volume, const Image* entryPoints, const Image* exitPoints, const Layer* transferFunction, Image* outImage, const VECTOR_CLASS<cl::Event> *waitForEvents /*= NULL*/, cl::Event *event /*= NULL*/) {
 
-    uvec2 outportDim = outImage->getDimension();
-
     svec2 localWorkGroupSize(workGroupSize_);
     svec2 globalWorkGroupSize(getGlobalWorkGroupSize(outputSize_.x, localWorkGroupSize.x), getGlobalWorkGroupSize(outputSize_.y,
         localWorkGroupSize.y));

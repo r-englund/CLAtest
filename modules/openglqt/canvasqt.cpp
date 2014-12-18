@@ -319,7 +319,7 @@ void CanvasQt::wheelEvent(QWheelEvent* e){
     QPoint numDegrees = QPoint(0, e->delta() / 8 / 15);
 #endif
 
-    int numSteps;
+    int numSteps = 0;
     if (!numPixels.isNull()) {
         numSteps = (orientation==MouseEvent::MOUSE_WHEEL_HORIZONTAL? numPixels.x() : numPixels.y()) / 5;
     } else if (!numDegrees.isNull()) {

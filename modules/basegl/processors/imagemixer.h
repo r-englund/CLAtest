@@ -118,10 +118,9 @@ private:
 
     ImageOutport outport_; //!< output image
 
-    Shader* shader_;
-
     OptionPropertyInt blendingMode_; //!< blend mode from BlendModes::Mode
     FloatProperty weight_; //!< weighting factor
+    Shader* shader_;
 };
 
 } // namespace

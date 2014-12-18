@@ -83,7 +83,6 @@ private:
     OptionPropertyInt fontSize_;
     FloatVec2Property fontPos_;
     FloatVec2Property refPos_;
-    Shader* copyShader_;
     Shader* textShader_;
 
     GLuint texCharacter_;
