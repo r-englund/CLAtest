@@ -1,7 +1,7 @@
 <?xml version="1.0" ?>
 <InviwoTreeData version="1.0">
     <!-- Don't edit the following code -->
-    <ObjectFileName content="testdata.INT64.LittleEndian.raw" />
+    <RawFile content="testdata.INT64.LittleEndian.raw" />
     <Format content="INT64" />
     <BasisAndOffset>
         <row0 x="2" y="0" z="0" w="0" />
