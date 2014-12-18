@@ -111,14 +111,6 @@ set(SHADER_FILES
     ${CMAKE_CURRENT_SOURCE_DIR}/glsl/img_noise.frag
     ${CMAKE_CURRENT_SOURCE_DIR}/glsl/img_texturequad.frag
     ${CMAKE_CURRENT_SOURCE_DIR}/glsl/img_texturequad.vert
-    ${CMAKE_CURRENT_SOURCE_DIR}/glsl/include/inc_classification.frag
-    ${CMAKE_CURRENT_SOURCE_DIR}/glsl/include/inc_compositing.frag
-    ${CMAKE_CURRENT_SOURCE_DIR}/glsl/include/inc_depth.frag
-    ${CMAKE_CURRENT_SOURCE_DIR}/glsl/include/inc_gradients.frag
-    ${CMAKE_CURRENT_SOURCE_DIR}/glsl/include/inc_raycasting.frag
-    ${CMAKE_CURRENT_SOURCE_DIR}/glsl/include/inc_sampler2d.frag
-    ${CMAKE_CURRENT_SOURCE_DIR}/glsl/include/inc_sampler3d.frag
-    ${CMAKE_CURRENT_SOURCE_DIR}/glsl/include/inc_shading.frag
     ${CMAKE_CURRENT_SOURCE_DIR}/glsl/isoraycasting.frag
     ${CMAKE_CURRENT_SOURCE_DIR}/glsl/minimal.vert
     ${CMAKE_CURRENT_SOURCE_DIR}/glsl/picking.frag
