@@ -47,7 +47,7 @@ OrdinalPropertyAnimator::OrdinalPropertyAnimator()
     , type_("property", "Property")
     , delay_("delay", "Delay (ms)", 50, 1, 10000, 1)
     , pbc_("pbc", "Periodic", true)
-    , active_("active", "Active", true) 
+    , active_("active", "Active", false) 
 {
     
     timer_ = InviwoApplication::getPtr()->createTimer();
@@ -98,7 +98,6 @@ OrdinalPropertyAnimator::OrdinalPropertyAnimator()
     active_.onChange(this, &OrdinalPropertyAnimator::changeActive);
 
     changeProperty();
-    updateTimerInterval();
 
     setAllPropertiesCurrentStateAsDefault();
 }
