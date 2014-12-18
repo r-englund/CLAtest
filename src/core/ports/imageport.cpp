@@ -316,11 +316,8 @@ void ImageOutport::changeDataDimensions(ResizeEvent* resizeEvent) {
     if (imageDataMap_.find(reqDimensionString) != imageDataMap_.end())
         resultImage = imageDataMap_[reqDimensionString];
 
-    bool invalidPort = false;
-
     // requiredDimension does not exist
     if (!resultImage) {
-        invalidPort = true;
 
         // Decide whether to resize data with previousDimensions
         bool canResize = false;
@@ -333,7 +330,8 @@ void ImageOutport::changeDataDimensions(ResizeEvent* resizeEvent) {
         if (imageDataMap_.find(prevDimensionString) != imageDataMap_.end())
             resultImage = imageDataMap_[prevDimensionString];
 
-        if (canResize && resultImage) {
+        // make sure not to resize data that is not owned
+        if (canResize && resultImage && (isDataOwner() || ( !isDataOwner() && resultImage != data_))) {
             // previousDimensions exist. It is no longer needed. So it can be resized.
             // Remove old entry in map( later make new entry)
             imageDataMap_.erase(prevDimensionString);
@@ -342,7 +340,9 @@ void ImageOutport::changeDataDimensions(ResizeEvent* resizeEvent) {
             resultImage = static_cast<Image*>(data_->clone());
         }
 
-        // Resize the result image
+        // Resize the result image, Note that this will likely destroy all the data in the image.
+        // we will fill the image with data later. either by running processor::process agaion or
+        // by data_->resizeRepresentations(resultImage, resultImage->getDimension());
         resultImage->resize(requiredDimensions);
         
         // Make new entry
@@ -362,29 +362,33 @@ void ImageOutport::changeDataDimensions(ResizeEvent* resizeEvent) {
     if (imageDataMap_.size() > 1) {
         for (size_t i = 0; i < invalidImageDataStrings.size(); i++) {
             Image* invalidImage = imageDataMap_[invalidImageDataStrings[i]];
-            imageDataMap_.erase(invalidImageDataStrings[i]);
-            delete invalidImage;
+            
+            //Make sure you don't delete data thats not owned
+            if (isDataOwner() || invalidImage != data_) {
+                imageDataMap_.erase(invalidImageDataStrings[i]);
+                delete invalidImage;
+            }
         }
     }
 
-    //uvec2 largestDim = glm::max(getDimension(), requiredDimensions);
-    uvec2 largestDim = getDimension();
+    uvec2 outDim;
 
     //Don't continue is outport determine output size
     if (handleResizeEvents_) {
+        outDim = getDimension();
         // Set largest data
         setLargestImageData(resizeEvent);
-    }
-    else{
+    } else {
         // Send update to listeners
         if (data_->getDimension() != dimensions_) broadcast(resizeEvent);
 
         dimensions_ = data_->getDimension();
+        outDim = dimensions_;
     }
 
     // Stop resize propagation if outport change hasn't change.
     // Invalid to output new size
-    if (largestDim != getDimension()) {
+    if (outDim != getDimension()) {
         // Make sure that all ImageOutports in the same group (dependency set) that has the same size.
         std::vector<Port*> portSet = getProcessor()->getPortsByDependencySet(getProcessor()->getPortDependencySet(this));
         for (size_t j = 0; j < portSet.size(); j++) {
@@ -400,7 +404,9 @@ void ImageOutport::changeDataDimensions(ResizeEvent* resizeEvent) {
     } 
 }
 
-uvec2 ImageOutport::getDimension() const { return dimensions_; }
+uvec2 ImageOutport::getDimension() const { 
+    return dimensions_; 
+}
 
 Image* ImageOutport::getResizedImageData(uvec2 requiredDimensions) {
     if (mapDataInvalid_) {
