@@ -32,9 +32,10 @@
 
 #include "drawpoints.h"
 #include <inviwo/core/datastructures/buffer/bufferramprecision.h>
+#include <inviwo/core/interaction/events/keyboardevent.h>
+#include <inviwo/core/interaction/events/mouseevent.h>
 #include <modules/opengl/glwrap/shader.h>
 #include <modules/opengl/textureutils.h>
-#include <inviwo/core/interaction/interactionhandler.h>
 
 namespace inviwo {
 
@@ -51,9 +52,17 @@ DrawPoints::DrawPoints()
     , pointSize_("pointSize", "Point Size", 5, 1, 10)
     , pointColor_("pointColor", "Point Color", vec4(1.f))
     , clearButton_("clearButton", "Clear Drawing")
+    , mouseDraw_("mouseDraw", "Draw Point",
+    new MouseEvent(MouseEvent::MOUSE_BUTTON_LEFT, InteractionEvent::MODIFIER_CTRL,
+    MouseEvent::MOUSE_STATE_ANY),
+    new Action(this, &DrawPoints::eventDraw))
+    , keyEnableDraw_("keyEnableDraw", "Enable Draw", 
+    new KeyboardEvent('D', InteractionEvent::MODIFIER_CTRL, KeyboardEvent::KEY_STATE_ANY),
+    new Action(this, &DrawPoints::eventEnableDraw))
     , points_(NULL)
     , pointRenderer_(NULL)
     , pointShader_(NULL)
+    , drawModeEnabled_(false)
 {
     addPort(inport_);
     addPort(outport_);
@@ -64,17 +73,11 @@ DrawPoints::DrawPoints()
     clearButton_.onChange(this, &DrawPoints::clearPoints);
     addProperty(clearButton_);
 
-    addInteractionHandler(new DrawPointsInteractionHandler(this));
+    addProperty(mouseDraw_);
+    addProperty(keyEnableDraw_);
 }
 
-DrawPoints::~DrawPoints() {
-    const std::vector<InteractionHandler*>& interactionHandlers = getInteractionHandlers();
-    for(size_t i=0; i<interactionHandlers.size(); ++i) {
-        InteractionHandler* handler = interactionHandlers[i];
-        removeInteractionHandler(handler);
-        delete handler;
-    }
-}
+DrawPoints::~DrawPoints() {}
 
 void DrawPoints::initialize() {
     CompositeProcessorGL::initialize();
@@ -118,45 +121,22 @@ void DrawPoints::clearPoints() {
         points_->getAttributes(0)->getEditableRepresentation<Position2dBufferRAM>()->clear();
 }
 
-DrawPoints::DrawPointsInteractionHandler::DrawPointsInteractionHandler(DrawPoints* dfh) 
-    : InteractionHandler()
-    , drawPosEvent(MouseEvent::MOUSE_BUTTON_LEFT, InteractionEvent::MODIFIER_CTRL)
-    , drawEnableEvent_('D', InteractionEvent::MODIFIER_CTRL)
-    , drawer_(dfh)
-    , drawModeEnabled_(false) {
+void DrawPoints::eventDraw(Event* event){
+    if (!drawModeEnabled_)
+        return;
+
+    MouseEvent* mouseEvent = static_cast<MouseEvent*>(event);
+    vec2 point = mouseEvent->posNormalized();
+    point *= 2.f;
+    point -= 1.f;
+    point.y = -point.y;
+    addPoint(point);
+    invalidate(INVALID_OUTPUT);
 }
 
-void DrawPoints::DrawPointsInteractionHandler::invokeEvent(Event* event){
-    KeyboardEvent* keyEvent = dynamic_cast<KeyboardEvent*>(event);
-    if (keyEvent) {
-        int button = keyEvent->button();
-        int state = keyEvent->state();
-        int modifier = keyEvent->modifiers();
-
-        if (button == drawEnableEvent_.button() && modifier == drawEnableEvent_.modifiers()){
-            if(state == KeyboardEvent::KEY_STATE_PRESS){
-                drawModeEnabled_ = true;
-            }
-            else if(state == KeyboardEvent::KEY_STATE_RELEASE){
-                drawModeEnabled_ = false;
-            }
-        }
-        return;
-    }
-
-    MouseEvent* mouseEvent = dynamic_cast<MouseEvent*>(event);
-    if (drawModeEnabled_ && mouseEvent) {
-        if (mouseEvent->modifiers() == drawPosEvent.modifiers()
-            && mouseEvent->button() == drawPosEvent.button()) {
-                vec2 point = mouseEvent->posNormalized();
-                point *= 2.f;
-                point -= 1.f;
-                point.y = -point.y;
-                drawer_->addPoint(point);
-                drawer_->invalidate(INVALID_OUTPUT);
-        }
-        return;
-    }
+void DrawPoints::eventEnableDraw(Event* event){
+    KeyboardEvent* keyEvent = static_cast<KeyboardEvent*>(event);
+    drawModeEnabled_ = (keyEvent->state() != KeyboardEvent::KEY_STATE_RELEASE);
 }
 
 } // inviwo namespace

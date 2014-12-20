@@ -34,16 +34,13 @@
 #define IVW_DRAWLINES_H
 
 #include <modules/basegl/baseglmoduledefine.h>
-#include <inviwo/core/interaction/events/keyboardevent.h>
-#include <inviwo/core/interaction/events/mouseevent.h>
 #include <inviwo/core/ports/imageport.h>
 #include <modules/opengl/image/compositeprocessorgl.h>
 #include <inviwo/core/datastructures/geometry/mesh.h>
 #include <modules/opengl/rendering/meshrenderer.h>
 #include <inviwo/core/properties/ordinalproperty.h>
 #include <inviwo/core/properties/buttonproperty.h>
-#include <inviwo/core/interaction/interactionhandler.h>
-
+#include <inviwo/core/properties/eventproperty.h>
 
 namespace inviwo {
 
@@ -90,23 +87,10 @@ protected:
 
     void process();
 
-    class DrawLinesInteractionHandler : public InteractionHandler {
-    public:
-        DrawLinesInteractionHandler(DrawLines* vs);
-        ~DrawLinesInteractionHandler(){};
-
-        void invokeEvent(Event* event);
-    private:
-        MouseEvent drawPosEvent;
-
-        KeyboardEvent drawEnableEvent_;
-
-        DrawLines* drawer_;
-
-        bool drawModeEnabled_;
-    };
-
 private:
+    void eventDraw(Event*);
+    void eventEnableDraw(Event*);
+
     ImageInport inport_;
     ImageOutport outport_;
 
@@ -114,10 +98,15 @@ private:
     FloatVec4Property lineColor_;
     ButtonProperty clearButton_;
 
+    EventProperty mouseDraw_;
+    EventProperty keyEnableDraw_;
+
     Mesh* lines_;
     MeshRenderer* lineRenderer_;
 
     Shader* lineShader_;
+
+    bool drawModeEnabled_;
 };
 
 } // namespace

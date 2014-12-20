@@ -149,11 +149,11 @@ void VolumeSlice::eventShiftSlice(Event* event){
     shiftSlice(steps);
 }
 
-void VolumeSlice::eventStepSliceUp(Event* event){
+void VolumeSlice::eventStepSliceUp(Event*){
     shiftSlice(1);
 }
 
-void VolumeSlice::eventStepSliceDown(Event* event){
+void VolumeSlice::eventStepSliceDown(Event*){
     shiftSlice(-1);
 }
 

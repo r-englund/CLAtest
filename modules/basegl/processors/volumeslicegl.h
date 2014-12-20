@@ -63,7 +63,7 @@ public:
     void initialize();
     void deinitialize();
 
-    virtual void invokeInteractionEvent(Event* event);
+    virtual void invokeInteractionEvent(Event*);
 
     bool positionModeEnabled() const { return posPicking_.get(); }
 
@@ -108,11 +108,11 @@ protected:
 private:
     void updatePos();
 
-    void eventShiftSlice(Event* event);
-    void eventSetMarker(Event* event);
-    void eventStepSliceUp(Event* event);
-    void eventStepSliceDown(Event* event);
-    void eventGestureShiftSlice(Event* event);
+    void eventShiftSlice(Event*);
+    void eventSetMarker(Event*);
+    void eventStepSliceUp(Event*);
+    void eventStepSliceDown(Event*);
+    void eventGestureShiftSlice(Event*);
 
     VolumeInport inport_;
     ImageOutport outport_;

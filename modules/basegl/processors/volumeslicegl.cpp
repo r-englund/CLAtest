@@ -680,11 +680,11 @@ void VolumeSliceGL::eventSetMarker(Event* event){
     setVolPosFromScreenPos(vec2(mousePos.x, 1.0f - mousePos.y));
 }
 
-void VolumeSliceGL::eventStepSliceUp(Event* event){
+void VolumeSliceGL::eventStepSliceUp(Event*){
     shiftSlice(1);
 }
 
-void VolumeSliceGL::eventStepSliceDown(Event* event){
+void VolumeSliceGL::eventStepSliceDown(Event*){
     shiftSlice(-1);
 }
 

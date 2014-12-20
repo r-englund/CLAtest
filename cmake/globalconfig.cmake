@@ -65,6 +65,10 @@ include(${CMAKE_CURRENT_LIST_DIR}/globalmacros.cmake)
 set(IVW_EXTERNAL_MODULES "" CACHE STRING "Paths to directory containing external modules")
 
 #--------------------------------------------------------------------
+# Add parameter for paths to external projects
+set(IVW_EXTERNAL_PROJECTS "" CACHE STRING "Paths to directory containing external projects")
+
+#--------------------------------------------------------------------
 # Output paths for the executables, runtimes, archives and libraries
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin CACHE PATH
    "Single Directory for all Executables.")

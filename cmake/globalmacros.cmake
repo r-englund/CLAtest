@@ -498,6 +498,15 @@ macro(add_external_modules)
 endmacro()
 
 #--------------------------------------------------------------------
+# Add all external modules specified in cmake string IVW_EXTERNAL_MODULES
+macro(add_external_projects)
+    foreach(project_root_path ${IVW_EXTERNAL_PROJECTS})
+        get_filename_component(FOLDER_NAME ${project_root_path} NAME)
+        add_subdirectory(${project_root_path} ${CMAKE_CURRENT_BINARY_DIR}/ext_${FOLDER_NAME})
+    endforeach()
+endmacro()
+
+#--------------------------------------------------------------------
 # Turn On Dependent Module Options
 macro(resolve_module_dependencies module_root_path)   
     #Reverse list (as it is depend sorted) and go over dependencies one more time

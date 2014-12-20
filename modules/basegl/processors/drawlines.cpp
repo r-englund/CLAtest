@@ -32,6 +32,8 @@
 
 #include "drawlines.h"
 #include <inviwo/core/datastructures/buffer/bufferramprecision.h>
+#include <inviwo/core/interaction/events/keyboardevent.h>
+#include <inviwo/core/interaction/events/mouseevent.h>
 #include <modules/opengl/glwrap/shader.h>
 #include <modules/opengl/textureutils.h>
 
@@ -50,6 +52,13 @@ DrawLines::DrawLines()
     , lineSize_("lineSize", "Line Size", 1.f, 1.f, 10.f)
     , lineColor_("lineColor", "Line Color", vec4(1.f))
     , clearButton_("clearButton", "Clear Lines")
+    , mouseDraw_("mouseDraw", "Draw Line",
+    new MouseEvent(MouseEvent::MOUSE_BUTTON_LEFT, InteractionEvent::MODIFIER_CTRL,
+    MouseEvent::MOUSE_STATE_ANY),
+    new Action(this, &DrawLines::eventDraw))
+    , keyEnableDraw_("keyEnableDraw", "Enable Draw", 
+    new KeyboardEvent('D', InteractionEvent::MODIFIER_CTRL, KeyboardEvent::KEY_STATE_ANY),
+    new Action(this, &DrawLines::eventEnableDraw))
     , lines_(NULL)
     , lineRenderer_(NULL) 
     , lineShader_(NULL)
@@ -63,17 +72,11 @@ DrawLines::DrawLines()
     clearButton_.onChange(this, &DrawLines::clearLines);
     addProperty(clearButton_);
 
-    addInteractionHandler(new DrawLinesInteractionHandler(this));
+    addProperty(mouseDraw_);
+    addProperty(keyEnableDraw_);
 }
 
-DrawLines::~DrawLines() {
-    const std::vector<InteractionHandler*>& interactionHandlers = getInteractionHandlers();
-    for (size_t i = 0; i < interactionHandlers.size(); ++i) {
-        InteractionHandler* handler = interactionHandlers[i];
-        removeInteractionHandler(handler);
-        delete handler;
-    }
-}
+DrawLines::~DrawLines() {}
 
 void DrawLines::initialize() {
     CompositeProcessorGL::initialize();
@@ -131,43 +134,22 @@ void DrawLines::clearLines() {
         lines_->getAttributes(0)->getEditableRepresentation<Position2dBufferRAM>()->clear();
 }
 
-DrawLines::DrawLinesInteractionHandler::DrawLinesInteractionHandler(DrawLines* dfh)
-    : InteractionHandler()
-    , drawPosEvent(MouseEvent::MOUSE_BUTTON_LEFT, InteractionEvent::MODIFIER_CTRL)
-    , drawEnableEvent_('D', InteractionEvent::MODIFIER_CTRL)
-    , drawer_(dfh)
-    , drawModeEnabled_(false) {}
-
-void DrawLines::DrawLinesInteractionHandler::invokeEvent(Event* event) {
-    KeyboardEvent* keyEvent = dynamic_cast<KeyboardEvent*>(event);
-    if (keyEvent) {
-        int button = keyEvent->button();
-        int state = keyEvent->state();
-        int modifier = keyEvent->modifiers();
-
-        if (button == drawEnableEvent_.button() && modifier == drawEnableEvent_.modifiers()) {
-            if (state == KeyboardEvent::KEY_STATE_PRESS) {
-                drawModeEnabled_ = true;
-            } else if (state == KeyboardEvent::KEY_STATE_RELEASE) {
-                drawModeEnabled_ = false;
-            }
-        }
+void DrawLines::eventDraw(Event* event){
+    if (!drawModeEnabled_)
         return;
-    }
 
-    MouseEvent* mouseEvent = dynamic_cast<MouseEvent*>(event);
-    if (drawModeEnabled_ && mouseEvent) {
-        if (mouseEvent->modifiers() == drawPosEvent.modifiers() 
-            && mouseEvent->button() == drawPosEvent.button()) {
-                vec2 line = mouseEvent->posNormalized();
-                line *= 2.f;
-                line -= 1.f;
-                line.y = -line.y;
-                drawer_->addPoint(line);
-                drawer_->invalidate(INVALID_OUTPUT);
-        }
-        return;
-    }
+    MouseEvent* mouseEvent = static_cast<MouseEvent*>(event);
+    vec2 line = mouseEvent->posNormalized();
+    line *= 2.f;
+    line -= 1.f;
+    line.y = -line.y;
+    addPoint(line);
+    invalidate(INVALID_OUTPUT);
+}
+
+void DrawLines::eventEnableDraw(Event* event){
+    KeyboardEvent* keyEvent = static_cast<KeyboardEvent*>(event);
+    drawModeEnabled_ = (keyEvent->state() != KeyboardEvent::KEY_STATE_RELEASE);
 }
 
 }  // namespace

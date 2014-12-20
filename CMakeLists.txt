@@ -77,5 +77,9 @@ end_add_modules()
 add_subdirectory(apps)
 
 #--------------------------------------------------------------------
+# Add external projects
+add_external_projects()
+
+#--------------------------------------------------------------------
 # Package creation
 include(cmake/packaging.cmake)

@@ -45,6 +45,23 @@
 
 namespace inviwo {
 
+/** \docpage{org.inviwo.VolumeSlice, Volume Slice}
+ * Outputs a slice from a volume, CPU-based
+ * 
+ * ### Inports
+ *   * __VolumeInport__ The input volume.
+ *
+ * ### Outports
+ *   * __ImageOutport__ The output image.
+ * 
+ * ### Properties
+ *   * __sliceAlongAxis_ Defines the volume axis for the output slice.
+ *   * __sliceNumber_ Defines the slice number for the output slice.
+ */
+
+/**
+ * \brief Outputs a slice from a volume, CPU-based
+ */
 class IVW_MODULE_BASE_API VolumeSlice : public Processor {
 public:
     VolumeSlice();
@@ -63,10 +80,10 @@ protected:
     void shiftSlice(int);
 
 private:
-    void eventShiftSlice(Event* event);
-    void eventStepSliceUp(Event* event);
-    void eventStepSliceDown(Event* event);
-    void eventGestureShiftSlice(Event* event);
+    void eventShiftSlice(Event*);
+    void eventStepSliceUp(Event*);
+    void eventStepSliceDown(Event*);
+    void eventGestureShiftSlice(Event*);
 
     VolumeInport inport_;
     ImageOutport outport_;

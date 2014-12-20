@@ -34,7 +34,6 @@
 #define IVW_TRACKBALL_H
 
 #include <inviwo/core/common/inviwocoredefine.h>
-#include <inviwo/core/interaction/interactionhandler.h>
 #include <inviwo/core/interaction/events/event.h>
 #include <inviwo/core/interaction/events/gestureevent.h>
 #include <inviwo/core/interaction/events/mouseevent.h>
