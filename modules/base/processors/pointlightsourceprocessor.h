@@ -36,6 +36,7 @@
 #include <inviwo/core/common/inviwo.h>
 #include <inviwo/core/datastructures/baselightsource.h>
 #include <inviwo/core/interaction/trackball.h>
+#include <inviwo/core/interaction/interactionhandler.h>
 #include <inviwo/core/ports/dataoutport.h>
 #include <inviwo/core/processors/processor.h>
 #include <inviwo/core/properties/boolproperty.h>
