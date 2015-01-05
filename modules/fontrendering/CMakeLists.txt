@@ -3,8 +3,8 @@ if(IVW_MODULE_FONTRENDERING)
 endif(IVW_MODULE_FONTRENDERING)
 
 #--------------------------------------------------------------------
-# Inviwo Fontrendering Module
-ivw_module(Fontrendering)
+# Inviwo FontRendering Module
+ivw_module(FontRendering)
 
 #--------------------------------------------------------------------
 # Set include directories
@@ -34,6 +34,10 @@ set(SHADER_FILES
     ${CMAKE_CURRENT_SOURCE_DIR}/glsl/fontrendering_freetype.vert
 )
 ivw_group("Shader Files" ${SHADER_FILES})
+
+#--------------------------------------------------------------------
+# Disable Pre-compiled headers as file is not generated properly on CMake 3.1 ->
+ivw_set_pch_disabled_for_module()
 
 #--------------------------------------------------------------------
 # Create module

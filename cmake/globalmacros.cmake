@@ -54,6 +54,7 @@ macro(ivw_project project_name)
   set(_allLinkFlags "")
   set(_allPchDirs "")
   set(_cpackName modules)
+  set(_pchDisabledForThisModule FALSE)
   string(TOUPPER ${project_name} u_project_name)
   if(u_project_name MATCHES "QT+")
     set(_cpackName qt_modules)
@@ -754,15 +755,33 @@ macro(ivw_add_pch_path)
 endmacro()
 
 #--------------------------------------------------------------------
+# Creates project with initial variables
+macro(ivw_set_pch_disabled_for_module)
+  set(_pchDisabledForThisModule TRUE)
+endmacro()
+
+#--------------------------------------------------------------------
 # Optimize compilation with pre-compilied headers from inviwo core
 macro(ivw_compile_optimize_inviwo_core)
-      #set_target_properties(${_projectName} PROPERTIES COTIRE_ENABLE_PRECOMPILED_HEADER FALSE)
       if(PRECOMPILED_HEADERS)
-		  set_target_properties(${_projectName} PROPERTIES COTIRE_ADD_UNITY_BUILD FALSE)
-		  get_target_property(_prefixHeader inviwo-core COTIRE_CXX_PREFIX_HEADER)
-		  set_target_properties(${_projectName} PROPERTIES COTIRE_CXX_PREFIX_HEADER_INIT "${_prefixHeader}")
-		  cotire(${_projectName})
+		if(_pchDisabledForThisModule)
+			set_target_properties(${_projectName} PROPERTIES COTIRE_ENABLE_PRECOMPILED_HEADER FALSE)
+		endif()
+		 set_target_properties(${_projectName} PROPERTIES COTIRE_ADD_UNITY_BUILD FALSE)
+		 get_target_property(_prefixHeader inviwo-core COTIRE_CXX_PREFIX_HEADER)
+		 set_target_properties(${_projectName} PROPERTIES COTIRE_CXX_PREFIX_HEADER_INIT "${_prefixHeader}")
+		 cotire(${_projectName})
       endif()
+	  # else()
+			# get_target_property(_pchFile inviwo-core COTIRE_CXX_PRECOMPILED_HEADER)
+			# cotire_setup_pch_file_inclusion(
+					# ${_language} ${_target} ${_wholeTarget} "${_prefixFile}" "${_pchFile}" ${_sourceFiles})
+			# get_filename_component(pchFileDir ${_pchFile} PATH)
+			# file(GLOB PDB_FILES "${pchFileDir}/*.pdb")
+			# file(COPY ${PDB_FILES} DESTINATION ${_target})
+			# file(GLOB IDB_FILES "${pchFileDir}/*.idb")
+			# file(COPY ${IDB_FILES} DESTINATION ${_target})
+		# endif()
 endmacro()
 
 #--------------------------------------------------------------------

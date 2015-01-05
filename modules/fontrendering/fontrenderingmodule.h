@@ -38,10 +38,10 @@
 
 namespace inviwo {
 
-class IVW_MODULE_FONTRENDERING_API FontrenderingModule : public InviwoModule {
+class IVW_MODULE_FONTRENDERING_API FontRenderingModule : public InviwoModule {
 
 public:
-    FontrenderingModule();
+    FontRenderingModule();
 
 };
 

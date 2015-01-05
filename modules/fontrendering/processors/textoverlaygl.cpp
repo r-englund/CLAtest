@@ -94,7 +94,7 @@ void TextOverlayGL::initialize() {
     if (FT_Init_FreeType(&fontlib_)) LogWarn("FreeType: Major error.");
 
     std::string arialfont = InviwoApplication::getPtr()
-                                ->getModuleByType<FontrenderingModule>()
+                                ->getModuleByType<FontRenderingModule>()
                                 ->getPath() + "/fonts/arial.ttf";
 
     error = FT_New_Face(fontlib_, arialfont.c_str(), 0, &fontface_);

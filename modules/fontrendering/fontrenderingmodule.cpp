@@ -36,8 +36,8 @@
 
 namespace inviwo {
 
-FontrenderingModule::FontrenderingModule() : InviwoModule() {
-    setIdentifier("Fontrendering");
+FontRenderingModule::FontRenderingModule() : InviwoModule() {
+    setIdentifier("FontRendering");
     ShaderManager::getPtr()->addShaderSearchPath(InviwoApplication::PATH_MODULES, "fontrendering/glsl");
     
     registerProcessor(TextOverlayGL);
