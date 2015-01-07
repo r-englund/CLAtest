@@ -99,7 +99,7 @@ void LayerCLGL2GLConverter::update(const DataRepresentation* source, DataReprese
 }
 
 DataRepresentation* LayerCLGL2CLConverter::createFrom(const DataRepresentation* source) {
-#ifdef _DEBUG
+#ifdef IVW_DEBUG
     LogWarn("Performance warning: Use shared CLGL representation instead of CL ");
 #endif
     DataRepresentation* destination = 0;

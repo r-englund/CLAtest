@@ -35,14 +35,14 @@
 
 #pragma warning(disable: 4290)
 
-//#pragma warning(default: 4640) //non thread safe construction of object
-#pragma warning(default: 4514) //never used function
+//#pragma warning(default: 4640) // non thread safe construction of object
+#pragma warning(default: 4514) // never used function
 #pragma warning(default: 4296) // expression is always false
-#pragma warning(default: 4061) //enum
-#pragma warning(default: 4062) //enum
-#pragma warning(default: 4266) //warn if no overide of function in baseclass
+#pragma warning(default: 4061) // enum
+#pragma warning(default: 4062) // enum
+#pragma warning(default: 4266) // warn if no overide of function in baseclass
 #pragma warning(default: 4265) // warn if non-virtual destructor
-#pragma warning(default: 4263) //warn for virtual functions that do not overide something in baseclass
+#pragma warning(default: 4263) // warn for virtual functions that do not overide something in baseclass
 
 #define NOMINMAX
 
@@ -51,17 +51,24 @@
 #include <windows.h>
 #endif
 
-#ifdef __clang__ // Clang seems to set NDEBUG (when not debuging) not DEBUG
+// Define a debug flag for inviwo called IVW_DEBUG
+#ifdef __clang__ // Clang sets NDEBUG when not debugging
     #ifndef NDEBUG
-        #ifndef DEBUG
-            //#define DEBUG // Leads to errors in OSX lib debugging.h
-        #endif
-        #ifndef _DEBUG
-            //#define _DEBUG // This flag gives OpenGL errors on OSX. See ticket #699
+        #ifndef IVW_DEBUG
+            #define IVW_DEBUG
         #endif
     #endif
 #endif
 
+#ifdef _MSC_VER
+    #ifdef _DEBUG /// MVS sets _DEBUG when debugging
+        #ifndef IVW_DEBUG
+            #define IVW_DEBUG
+        #endif
+    #endif
+#endif
+
+// Convenience macros for clang warning pragmas
 #ifdef __clang__
 #define STARTCLANGIGNORESTR(X) #X
 #define STARTCLANGIGNORE(X) \

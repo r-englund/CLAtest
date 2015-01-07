@@ -32,7 +32,7 @@
 
 #ifndef IVW_INVIWOOPENGL_H
 #define IVW_INVIWOOPENGL_H
-
+#include <inviwo/core/common/inviwo.h>
 #include <modules/opengl/openglmoduledefine.h>
 
 #ifdef WIN32
@@ -58,7 +58,7 @@
 
 IVW_MODULE_OPENGL_API void LogGLError(const char* fileName, const char* functionName, int lineNumber);
 
-#if defined(_DEBUG)
+#if defined(IVW_DEBUG)
 #define LGL_ERROR LogGLError(__FILE__, __FUNCTION__, __LINE__)
 #define LGL_ERROR_SUPPRESS glGetError()
 #else

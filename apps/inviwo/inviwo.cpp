@@ -31,7 +31,7 @@
  *********************************************************************************/
 
 #ifdef _MSC_VER
-#ifdef _DEBUG
+#ifdef IVW_DEBUG
 #pragma comment(linker, "/SUBSYSTEM:CONSOLE")
 #else
 #pragma comment(linker, "/SUBSYSTEM:WINDOWS /ENTRY:mainCRTStartup")
