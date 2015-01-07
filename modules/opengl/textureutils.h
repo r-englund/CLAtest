@@ -38,7 +38,6 @@
 #include <inviwo/core/datastructures/volume/volume.h>
 #include <inviwo/core/ports/imageport.h>
 #include <inviwo/core/ports/volumeport.h>
-#include <modules/opengl/portgroup.h>
 #include <modules/opengl/inviwoopengl.h>
 #include <modules/opengl/glwrap/shader.h>
 #include <modules/opengl/glwrap/textureunit.h>
@@ -55,7 +54,6 @@ IVW_MODULE_OPENGL_API void activateTarget(ImageOutport& outport);
 IVW_MODULE_OPENGL_API void deactivateCurrentTarget();
 
 IVW_MODULE_OPENGL_API void activateAndClearTarget(ImageOutport& outport);
-IVW_MODULE_OPENGL_API void activateAndClearTargets(PortGroup& portGroup);
 IVW_MODULE_OPENGL_API void clearCurrentTarget();
 
 IVW_MODULE_OPENGL_API void updateAndActivateTarget(ImageOutport& outport, ImageInport& inport);

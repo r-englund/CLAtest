@@ -55,11 +55,6 @@ void activateAndClearTarget(ImageOutport& outport) {
     clearCurrentTarget();
 }
 
-void activateAndClearTargets(PortGroup& portGroup) {
-    portGroup.activate();
-    clearCurrentTarget();
-}
-
 void updateAndActivateTarget(ImageOutport& outport, ImageInport& inport) {
     Image* outImage = outport.getData();
     ImageGL* outImageGL = outImage->getEditableRepresentation<ImageGL>();
