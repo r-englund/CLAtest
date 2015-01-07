@@ -34,7 +34,7 @@
 
 uniform sampler2D inputTex_;
 //uniform sampler2D inputDepth_;
-uniform TEXTURE_PARAMETERS outportParameters_;
+uniform ImageParameters outportParameters_;
 
 uniform ivec2 checkerBoardSize_;
 uniform vec4 color1_;
@@ -53,7 +53,7 @@ vec4 linearGradient(vec2 texCoords) {
 }
 
 void main() {  
-    vec2 texCoords = gl_FragCoord.xy * outportParameters_.dimensionsRCP_;
+    vec2 texCoords = gl_FragCoord.xy * outportParameters_.reciprocalDimensions;
     vec4 srcColor = SRC_COLOR;
     vec4 backgroundColor = BACKGROUND_STYLE_FUNCTION;
     vec4 resultColor;

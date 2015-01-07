@@ -253,9 +253,25 @@ void unbindTextures(const ImageOutport& outport) {
 }
 
 void setShaderUniforms(Shader* shader, const Image* image, const std::string samplerID) {
+    shader->setUniform(samplerID + ".modelToWorld",
+                       image->getColorLayer()->getCoordinateTransformer().getModelToWorldMatrix());
+    shader->setUniform(samplerID + ".worldToModel",
+                       image->getColorLayer()->getCoordinateTransformer().getWorldToModelMatrix());
+
+    shader->setUniform(samplerID + ".worldToTexture",
+                       image->getColorLayer()->getCoordinateTransformer().getWorldToTextureMatrix());
+    shader->setUniform(samplerID + ".textureToWorld",
+                       image->getColorLayer()->getCoordinateTransformer().getTextureToWorldMatrix());
+
+    shader->setUniform(samplerID + ".textureToIndex",
+                       image->getColorLayer()->getCoordinateTransformer().getTextureToIndexMatrix());
+    shader->setUniform(samplerID + ".indexToTexture",
+                       image->getColorLayer()->getCoordinateTransformer().getIndexToTextureMatrix());
+    
+    
     vec2 dimensions = vec2(image->getDimension());
-    shader->setUniform(samplerID + ".dimensions_", dimensions);
-    shader->setUniform(samplerID + ".dimensionsRCP_", vec2(1.0f) / dimensions);
+    shader->setUniform(samplerID + ".dimensions", dimensions);
+    shader->setUniform(samplerID + ".reciprocalDimensions", vec2(1.0f) / dimensions);
 }
 
 void setShaderUniforms(Shader* shader, const ImageInport& inport,

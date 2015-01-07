@@ -33,12 +33,12 @@
 #include "utils/structs.glsl"
 #include "utils/sampler2d.glsl"
 
-uniform TEXTURE_TYPE entryColorTex_;
-uniform TEXTURE_TYPE entryDepthTex_;
-uniform TEXTURE_PARAMETERS entryParameters_;
-uniform TEXTURE_TYPE exitColorTex_;
-uniform TEXTURE_TYPE exitDepthTex_;
-uniform TEXTURE_PARAMETERS exitParameters_;
+uniform sampler2D entryColorTex_;
+uniform sampler2D entryDepthTex_;
+uniform ImageParameters entryParameters_;
+uniform sampler2D exitColorTex_;
+uniform sampler2D exitDepthTex_;
+uniform ImageParameters exitParameters_;
 
 uniform mat4 NDCToTextureMat_; // Normalized device coordinates to volume texture coordinates
 uniform float nearDist_;

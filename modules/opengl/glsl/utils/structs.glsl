@@ -85,17 +85,26 @@ struct VolumeParameters {
     float signedFormatOffset;
 };
 
+
+
+struct ImageParameters {
+    mat3 modelToWorld;
+    mat3 worldToModel;
+    mat3 worldToTexture;
+    mat3 textureToWorld;
+    mat3 textureToIndex;  // Transform from [0 1] to [-0.5 dim-0.5]
+    mat3 indexToTexture; // Transform from [-0.5 dim-0.5] to [0 1]
+    vec2 dimensions;
+    vec2 reciprocalDimensions;
+};
+
+
 struct LIGHT_PARAMETERS {
     vec3 position_; 
     vec3 ambientColor_;
     vec3 diffuseColor_; 
     vec3 specularColor_;
     int specularExponent_;
-};
-
-struct TEXTURE_PARAMETERS {
-    vec2 dimensions_;
-    vec2 dimensionsRCP_;
 };
 
 
@@ -128,6 +137,10 @@ struct VOLUME_PARAMETERS {
     float signedFormatOffset_;
 };
 
+struct TEXTURE_PARAMETERS {
+    vec2 dimensions_;
+    vec2 dimensionsRCP_;
+};
 */
 
 #endif // IVW_STRUCTS_GLSL

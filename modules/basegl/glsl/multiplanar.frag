@@ -33,8 +33,8 @@
 #include "utils/structs.glsl"
 #include "utils/sampler2d.glsl"
 
-uniform TEXTURE_TYPE sliceTex_;
-uniform TEXTURE_PARAMETERS sliceTexParameters_;
+uniform sampler2D sliceTex_;
+uniform VolumeParameters sliceTexParameters_;
 
 in vec3 texCoord_;
 

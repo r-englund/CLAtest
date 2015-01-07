@@ -46,15 +46,15 @@ uniform sampler3D volume_;
 
 uniform sampler2D transferFunc_;
 
-uniform TEXTURE_PARAMETERS entryParameters_;
+uniform VolumeParameters entryParameters_;
 uniform sampler2D entryColorTex_;
 uniform sampler2D entryDepthTex_;
 
-uniform TEXTURE_PARAMETERS exitParameters_;
+uniform VolumeParameters exitParameters_;
 uniform sampler2D exitColorTex_;
 uniform sampler2D exitDepthTex_;
 
-uniform TEXTURE_PARAMETERS outportParameters_;
+uniform VolumeParameters outportParameters_;
 
 uniform LIGHT_PARAMETERS light_;
 uniform CameraParameters camera_;
@@ -113,7 +113,7 @@ vec4 rayTraversal(vec3 entryPoint, vec3 exitPoint, vec2 texCoords) {
 }
 
 void main() {
-    vec2 texCoords = gl_FragCoord.xy * outportParameters_.dimensionsRCP_;
+    vec2 texCoords = gl_FragCoord.xy * outportParameters_.reciprocalDimensions;
     vec3 entryPoint = texture(entryColorTex_, texCoords).rgb;
     vec3 exitPoint = texture(exitColorTex_, texCoords).rgb;
 

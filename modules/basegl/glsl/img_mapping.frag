@@ -33,13 +33,13 @@
 #include "utils/structs.glsl"
 #include "utils/classification.glsl"
 
-uniform TEXTURE_PARAMETERS outportParameters_;
+uniform ImageParameters outportParameters_;
 
 uniform sampler2D transferFunc_;
 uniform sampler2D inport_;
 
 void main() {
-    vec2 texCoords = gl_FragCoord.xy * outportParameters_.dimensionsRCP_;
+    vec2 texCoords = gl_FragCoord.xy * outportParameters_.reciprocalDimensions;
     vec4 value = texture(inport_, texCoords);
     vec4 color = applyTF(transferFunc_, value);
     FragData0 = color;

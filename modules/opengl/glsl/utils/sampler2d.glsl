@@ -32,10 +32,10 @@
 
 #include "utils/structs.glsl"
 
-vec4 textureLookup2Dnormalized(TEXTURE_TYPE tex, TEXTURE_PARAMETERS textureParams, vec2 samplePos) {
+vec4 textureLookup2Dnormalized(sampler2D tex, ImageParameters textureParams, vec2 samplePos) {
     return texture(tex, samplePos);
 }
 
-vec4 textureLookup2Dscreen(TEXTURE_TYPE tex, TEXTURE_PARAMETERS textureParams, vec2 samplePos) {
-    return texture(tex, samplePos*textureParams.dimensionsRCP_);
+vec4 textureLookup2Dscreen(sampler2D tex, ImageParameters textureParams, vec2 samplePos) {
+    return texture(tex, samplePos*textureParams.reciprocalDimensions);
 }

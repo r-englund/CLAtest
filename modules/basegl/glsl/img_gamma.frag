@@ -32,13 +32,13 @@
 
 #include "utils/structs.glsl"
 
-uniform TEXTURE_PARAMETERS outportParameters_;
+uniform ImageParameters outportParameters_;
 
 uniform sampler2D inport_;
 uniform float gamma_;
 
 void main() {
-    vec2 texCoords = gl_FragCoord.xy * outportParameters_.dimensionsRCP_;
+    vec2 texCoords = gl_FragCoord.xy * outportParameters_.reciprocalDimensions;
     vec4 inputColor = texture(inport_, texCoords);
     vec4 dstColor = vec4(pow(inputColor.rgb, vec3(gamma_)), inputColor.a);
     FragData0 = dstColor;
