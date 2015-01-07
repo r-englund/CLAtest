@@ -107,6 +107,14 @@ struct LightParameters {
     int specularExponent;
 };
 
+// Combined matrices for the current geometry and camera
+struct GeometryCameraParameters {
+    mat4 modelToView; // Equivalent to modelView
+    mat4 viewToModel; // Equivalent to modelViewInverse
+    mat4 modelToClip; // Equivalent to modelViewProjection
+    mat4 clipToModel; // Equivalent to modelViewProjectionInverse
+};
+
 
 // Depricated...
 /*

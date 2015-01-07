@@ -25,12 +25,13 @@
  * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- * 
+ *
  * Contact: Erik Sundén
  *
  *********************************************************************************/
 
 #include "shaderutils.h"
+#include <inviwo/core/datastructures/coordinatetransformer.h>
 
 namespace inviwo {
 
@@ -39,29 +40,35 @@ namespace utilgl {
 void addShaderDefines(Shader* shader, const SimpleLightingProperty& property) {
     // implementations in  modules/opengl/glsl/utils/shading.glsl
     std::string shadingKey =
-        "APPLY_LIGHTING(lighting, materialAmbientColor, materialDiffuseColor, materialSpecularColor, position, normal, toCameraDir)";
+        "APPLY_LIGHTING(lighting, materialAmbientColor, materialDiffuseColor, "
+        "materialSpecularColor, position, normal, toCameraDir)";
     std::string shadingValue = "";
 
-    switch(property.shadingMode_.get()) {
-    case ShadingMode::Ambient:
-        shadingValue = "shadeAmbient(lighting, materialAmbientColor);";
-        break;
-    case ShadingMode::Diffuse:
-        shadingValue = "shadeDiffuse(lighting, materialDiffuseColor, position, normal);";
-        break;
-    case ShadingMode::Specular:
-        shadingValue = "shadeSpecular(lighting, materialSpecularColor, position, normal, toCameraDir);";
-        break;
-    case ShadingMode::BlinnPhong:
-        shadingValue = "shadeBlinnPhong(lighting, materialAmbientColor, materialDiffuseColor, materialSpecularColor, position, normal, toCameraDir);";
-        break;
-    case ShadingMode::Phong:
-        shadingValue = "shadePhong(lighting, materialAmbientColor, materialDiffuseColor, materialSpecularColor, position, normal, toCameraDir);";
-        break;
-    case ShadingMode::None:
-    default:
-        shadingValue = "materialAmbientColor;";
-        break;
+    switch (property.shadingMode_.get()) {
+        case ShadingMode::Ambient:
+            shadingValue = "shadeAmbient(lighting, materialAmbientColor);";
+            break;
+        case ShadingMode::Diffuse:
+            shadingValue = "shadeDiffuse(lighting, materialDiffuseColor, position, normal);";
+            break;
+        case ShadingMode::Specular:
+            shadingValue =
+                "shadeSpecular(lighting, materialSpecularColor, position, normal, toCameraDir);";
+            break;
+        case ShadingMode::BlinnPhong:
+            shadingValue =
+                "shadeBlinnPhong(lighting, materialAmbientColor, materialDiffuseColor, "
+                "materialSpecularColor, position, normal, toCameraDir);";
+            break;
+        case ShadingMode::Phong:
+            shadingValue =
+                "shadePhong(lighting, materialAmbientColor, materialDiffuseColor, "
+                "materialSpecularColor, position, normal, toCameraDir);";
+            break;
+        case ShadingMode::None:
+        default:
+            shadingValue = "materialAmbientColor;";
+            break;
     }
 
     shader->getFragmentShaderObject()->addShaderDefine(shadingKey, shadingValue);
@@ -83,14 +90,14 @@ void setShaderUniforms(Shader* shader, const SimpleLightingProperty& property, s
     shader->setUniform(name + ".specularExponent_", property.specularExponent_.get());
 }
 
-void addShaderDefines(Shader* shader, const CameraProperty& property) {
-}
+void addShaderDefines(Shader* shader, const CameraProperty& property) {}
 
 void setShaderUniforms(Shader* shader, const CameraProperty& property) {
     shader->setUniform("worldToView", property.viewMatrix());
     shader->setUniform("viewToWorld", property.inverseViewMatrix());
     shader->setUniform("worldToClip", property.projectionMatrix() * property.viewMatrix());
-    shader->setUniform("clipToWorld", property.inverseViewMatrix() * property.inverseProjectionMatrix()); 
+    shader->setUniform("clipToWorld",
+                       property.inverseViewMatrix() * property.inverseProjectionMatrix());
     shader->setUniform("nearPlane", property.getNearPlaneDist());
     shader->setUniform("farPlane", property.getFarPlaneDist());
 }
@@ -99,62 +106,82 @@ void setShaderUniforms(Shader* shader, const CameraProperty& property, std::stri
     shader->setUniform(name + ".worldToView", property.viewMatrix());
     shader->setUniform(name + ".viewToWorld", property.inverseViewMatrix());
     shader->setUniform(name + ".worldToClip", property.projectionMatrix() * property.viewMatrix());
-    shader->setUniform(name + ".clipToWorld", property.inverseViewMatrix() * property.inverseProjectionMatrix());
+    shader->setUniform(name + ".clipToWorld",
+                       property.inverseViewMatrix() * property.inverseProjectionMatrix());
     shader->setUniform(name + ".nearPlane", property.getNearPlaneDist());
     shader->setUniform(name + ".farPlane", property.getFarPlaneDist());
 }
 
+void setShaderUniforms(Shader* shader, const CameraProperty& property,
+                       const SpatialEntity<3>& object) {
+    const SpatialCameraCoordinateTransformer<3>& ct =
+        object.getCoordinateTransformer(Camera<3>(&property));
 
-void setShaderUniforms(Shader* shader, const CameraProperty& property, const SpatialEntity<3>& object) {
-    mat4 modelViewMatrix = property.viewMatrix()*object.getCoordinateTransformer().getDataToWorldMatrix();
-    shader->setUniform("modelToViewMatrix_", modelViewMatrix);
-    shader->setUniform("modelToClipMatrix_", property.projectionMatrix()*modelViewMatrix);
-    shader->setUniform("modelToViewNormalMatrix_", glm::mat3(glm::transpose(glm::inverse(modelViewMatrix))));
+    mat4 modelViewMatrix = ct.getModelToViewMatrix();
+    shader->setUniform("modelToView", modelViewMatrix);
+    shader->setUniform("viewToModel", ct.getViewToModelMatrix());
+    shader->setUniform("modelToViewNormalMatrix_",
+                       glm::mat3(glm::transpose(glm::inverse(modelViewMatrix))));
+    shader->setUniform("modelToClip", ct.getModelToClipMatrix());
+    shader->setUniform("clipToModel", ct.getClipToModelMatrix());
 }
 
+void setShaderUniforms(Shader* shader, const CameraProperty& property,
+                       const SpatialEntity<3>& object, std::string name) {
+    const SpatialCameraCoordinateTransformer<3>& ct =
+        object.getCoordinateTransformer(Camera<3>(&property));
+
+    mat4 modelViewMatrix = ct.getModelToViewMatrix();
+    shader->setUniform(name + ".modelToView", modelViewMatrix);
+    shader->setUniform(name + ".viewToModel", ct.getViewToModelMatrix());
+    shader->setUniform(name + ".modelToViewNormalMatrix_",
+                       glm::mat3(glm::transpose(glm::inverse(modelViewMatrix))));
+    shader->setUniform(name + ".modelToClip", ct.getModelToClipMatrix());
+    shader->setUniform(name + ".clipToModel", ct.getClipToModelMatrix());
+}
 
 void setShaderUniforms(Shader* shader, const SpatialEntity<3>& object) {
     mat4 modelToWorldMatrix = object.getCoordinateTransformer().getDataToWorldMatrix();
     shader->setUniform("modelToWorld", modelToWorldMatrix);
     shader->setUniform("worldToModel", object.getCoordinateTransformer().getWorldToModelMatrix());
-    shader->setUniform("modelToWorldNormalMatrix", glm::mat3(glm::transpose(glm::inverse(modelToWorldMatrix))));
+    shader->setUniform("modelToWorldNormalMatrix",
+                       glm::mat3(glm::transpose(glm::inverse(modelToWorldMatrix))));
 }
 
 void setShaderUniforms(Shader* shader, const SpatialEntity<3>& object, const std::string& name) {
     mat4 modelToWorldMatrix = object.getCoordinateTransformer().getDataToWorldMatrix();
     shader->setUniform(name + ".modelToWorld", modelToWorldMatrix);
-    shader->setUniform(name + ".worldToModel", object.getCoordinateTransformer().getWorldToModelMatrix());
-    shader->setUniform(name + ".modelToWorldNormalMatrix", glm::mat3(glm::transpose(glm::inverse(modelToWorldMatrix))));
+    shader->setUniform(name + ".worldToModel",
+                       object.getCoordinateTransformer().getWorldToModelMatrix());
+    shader->setUniform(name + ".modelToWorldNormalMatrix",
+                       glm::mat3(glm::transpose(glm::inverse(modelToWorldMatrix))));
 }
-
 
 void addShaderDefines(Shader* shader, const SimpleRaycastingProperty& property) {
     std::string gradientComputationKey = "";
     std::string gradientComputationValue = "";
 
     // Compute the gradient for channel 1;
-    gradientComputationKey =
-        "COMPUTE_GRADIENT(voxel, volume, volumeParams, samplePos)";
+    gradientComputationKey = "COMPUTE_GRADIENT(voxel, volume, volumeParams, samplePos)";
     gradientComputationValue = "";
 
     if (property.gradientComputationMode_.isSelectedIdentifier("none"))
         gradientComputationValue = "voxel.xyz;";
     else if (property.gradientComputationMode_.isSelectedIdentifier("forward"))
         gradientComputationValue =
-        "gradientForwardDiff(voxel, volume, volumeParams, samplePos, 0);";
+            "gradientForwardDiff(voxel, volume, volumeParams, samplePos, 0);";
     else if (property.gradientComputationMode_.isSelectedIdentifier("central"))
         gradientComputationValue =
-        "gradientCentralDiff(voxel, volume, volumeParams, samplePos, 0);";
+            "gradientCentralDiff(voxel, volume, volumeParams, samplePos, 0);";
     else if (property.gradientComputationMode_.isSelectedIdentifier("central-higher"))
         gradientComputationValue =
-        "gradientCentralDiffH(voxel, volume, volumeParams, samplePos, 0);";
+            "gradientCentralDiffH(voxel, volume, volumeParams, samplePos, 0);";
     else if (property.gradientComputationMode_.isSelectedIdentifier("backward"))
         gradientComputationValue =
-        "gradientBackwardDiff(voxel, volume, volumeParams, samplePos, 0);";
+            "gradientBackwardDiff(voxel, volume, volumeParams, samplePos, 0);";
 
     shader->getFragmentShaderObject()->addShaderDefine(gradientComputationKey,
                                                        gradientComputationValue);
-
 
     gradientComputationKey =
         "COMPUTE_GRADIENT_FOR_CHANNEL(voxel, volume, volumeParams, samplePos, channel)";
@@ -164,41 +191,38 @@ void addShaderDefines(Shader* shader, const SimpleRaycastingProperty& property) 
         gradientComputationValue = "voxel.xyz;";
     else if (property.gradientComputationMode_.isSelectedIdentifier("forward"))
         gradientComputationValue =
-        "gradientForwardDiff(voxel, volume, volumeParams, samplePos, channel);";
+            "gradientForwardDiff(voxel, volume, volumeParams, samplePos, channel);";
     else if (property.gradientComputationMode_.isSelectedIdentifier("central"))
         gradientComputationValue =
-        "gradientCentralDiff(voxel, volume, volumeParams, samplePos, channel);";
+            "gradientCentralDiff(voxel, volume, volumeParams, samplePos, channel);";
     else if (property.gradientComputationMode_.isSelectedIdentifier("central-higher"))
         gradientComputationValue =
-        "gradientCentralDiffH(voxel, volume, volumeParams, samplePos, channel);";
+            "gradientCentralDiffH(voxel, volume, volumeParams, samplePos, channel);";
     else if (property.gradientComputationMode_.isSelectedIdentifier("backward"))
         gradientComputationValue =
-        "gradientBackwardDiff(voxel, volume, volumeParams, samplePos, channel);";
+            "gradientBackwardDiff(voxel, volume, volumeParams, samplePos, channel);";
     shader->getFragmentShaderObject()->addShaderDefine(gradientComputationKey,
-                                                        gradientComputationValue);
+                                                       gradientComputationValue);
 
-
-    gradientComputationKey =
-        "COMPUTE_ALL_GRADIENTS(voxel, volume, volumeParams, samplePos)";
+    gradientComputationKey = "COMPUTE_ALL_GRADIENTS(voxel, volume, volumeParams, samplePos)";
     gradientComputationValue = "";
 
     if (property.gradientComputationMode_.isSelectedIdentifier("none"))
         gradientComputationValue = "mat4x3(0)";
     else if (property.gradientComputationMode_.isSelectedIdentifier("forward"))
         gradientComputationValue =
-        "gradientAllForwardDiff(voxel, volume, volumeParams, samplePos);";
+            "gradientAllForwardDiff(voxel, volume, volumeParams, samplePos);";
     else if (property.gradientComputationMode_.isSelectedIdentifier("central"))
         gradientComputationValue =
-        "gradientAllCentralDiff(voxel, volume, volumeParams, samplePos);";
+            "gradientAllCentralDiff(voxel, volume, volumeParams, samplePos);";
     else if (property.gradientComputationMode_.isSelectedIdentifier("central-higher"))
         gradientComputationValue =
-        "gradientAllCentralDiffH(voxel, volume, volumeParams, samplePos);";
+            "gradientAllCentralDiffH(voxel, volume, volumeParams, samplePos);";
     else if (property.gradientComputationMode_.isSelectedIdentifier("backward"))
         gradientComputationValue =
-        "gradientAllBackwardDiff(voxel, volume, volumeParams, samplePos);";
+            "gradientAllBackwardDiff(voxel, volume, volumeParams, samplePos);";
     shader->getFragmentShaderObject()->addShaderDefine(gradientComputationKey,
                                                        gradientComputationValue);
-
 
     // classification defines
     std::string classificationKey = "APPLY_CLASSIFICATION(transferFunc, voxel)";
@@ -211,7 +235,8 @@ void addShaderDefines(Shader* shader, const SimpleRaycastingProperty& property) 
 
     // compositing defines
     std::string compositingKey =
-        "APPLY_COMPOSITING(result, color, samplePos, voxel, gradient, camera, isoValue, t, tDepth, tIncr)";
+        "APPLY_COMPOSITING(result, color, samplePos, voxel, gradient, camera, isoValue, t, tDepth, "
+        "tIncr)";
     std::string compositingValue;
 
     if (property.compositingMode_.isSelectedIdentifier("dvr"))
@@ -238,6 +263,6 @@ void setShaderUniforms(Shader* shader, const SimpleRaycastingProperty& property)
     shader->setUniform("isoValue_", property.isoValue_.get());
 }
 
-} // namspace utilgl
+}  // namspace utilgl
 
 }  // namespace

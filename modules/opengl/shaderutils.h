@@ -25,7 +25,7 @@
  * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- * 
+ *
  * Contact: Erik Sundén
  *
  *********************************************************************************/
@@ -47,32 +47,32 @@ namespace inviwo {
 namespace utilgl {
 
 // SimpleLightingProperty
-IVW_MODULE_OPENGL_API void addShaderDefines(Shader* shader,
-                                              const SimpleLightingProperty& property);
+IVW_MODULE_OPENGL_API void addShaderDefines(Shader* shader, const SimpleLightingProperty& property);
 IVW_MODULE_OPENGL_API void setShaderUniforms(Shader* shader,
-                                               const SimpleLightingProperty& property);
-IVW_MODULE_OPENGL_API void setShaderUniforms(Shader* shader,
-                                               const SimpleLightingProperty& property,
-                                               std::string name);
+                                             const SimpleLightingProperty& property);
+IVW_MODULE_OPENGL_API void setShaderUniforms(Shader* shader, const SimpleLightingProperty& property,
+                                             std::string name);
 
 // CameraProperty
 IVW_MODULE_OPENGL_API void addShaderDefines(Shader* shader, const CameraProperty& property);
 IVW_MODULE_OPENGL_API void setShaderUniforms(Shader* shader, const CameraProperty& property);
 IVW_MODULE_OPENGL_API void setShaderUniforms(Shader* shader, const CameraProperty& property,
-                                               std::string name);
+                                             std::string name);
 
 IVW_MODULE_OPENGL_API void setShaderUniforms(Shader* shader, const SpatialEntity<3>& object);
-IVW_MODULE_OPENGL_API void setShaderUniforms(Shader* shader, const SpatialEntity<3>& object, const std::string& name);
+IVW_MODULE_OPENGL_API void setShaderUniforms(Shader* shader, const SpatialEntity<3>& object,
+                                             const std::string& name);
 IVW_MODULE_OPENGL_API void setShaderUniforms(Shader* shader, const CameraProperty& property,
                                              const SpatialEntity<3>& object);
+IVW_MODULE_OPENGL_API void setShaderUniforms(Shader* shader, const CameraProperty& property,
+                                             const SpatialEntity<3>& object,
+                                             const std::string& name);
 
 // SimpleRaycastingProperty
 IVW_MODULE_OPENGL_API void addShaderDefines(Shader* shader,
-                                              const SimpleRaycastingProperty& property);
+                                            const SimpleRaycastingProperty& property);
 IVW_MODULE_OPENGL_API void setShaderUniforms(Shader* shader,
-                                               const SimpleRaycastingProperty& property);
-
-
+                                             const SimpleRaycastingProperty& property);
 
 }  // namspace utilgl
 
