@@ -32,7 +32,9 @@
 
 #include <modules/openglqt/canvasqt.h>
 #include <modules/opengl/openglcapabilities.h>
-#ifdef USE_QWINDOW
+#if defined(USE_NEW_OPENGLWIDGET)
+#include <QOpenGLContext>
+#elif defined(USE_QWINDOW)
 #include <QtGui/QOpenGLContext>
 #endif
 
@@ -46,7 +48,7 @@ namespace inviwo {
 
 inline QGLContextFormat GetQGLFormat() {
   QGLContextFormat sharedFormat = QGLContextFormat(
-#ifndef USE_QWINDOW
+#if !defined(USE_QWINDOW) && !defined(USE_NEW_OPENGLWIDGET)
       QGL::Rgba | QGL::DoubleBuffer | QGL::AlphaChannel | QGL::DepthBuffer | QGL::StencilBuffer
 #endif
       );
@@ -60,11 +62,45 @@ inline QGLContextFormat GetQGLFormat() {
 QGLContextFormat CanvasQt::sharedFormat_ = GetQGLFormat();
 CanvasQt* CanvasQt::sharedCanvas_ = NULL;
 
-#ifdef USE_QWINDOW
+#if defined(USE_NEW_OPENGLWIDGET)
+QGLWindow* CanvasQt::sharedGLContext_ = NULL;
+
+CanvasQt::CanvasQt(QGLParent* parent, uvec2 dim)
+    : QGLWindow(parent)
+    , CanvasGL(dim)
+    , swapBuffersAllowed_(false)
+#ifndef QT_NO_GESTURES
+    , gestureMode_(false)
+    , lastType_(Qt::CustomGesture)
+    , lastNumFingers_(0)
+    , screenPositionNormalized_(vec2(0.f))
+#endif
+{
+    setFormat(sharedFormat_);
+
+    if (sharedGLContext_) {
+        this->context()->setShareContext(sharedGLContext_->context());
+    }
+    create();
+
+    setFocusPolicy(Qt::StrongFocus);
+
+#ifndef QT_NO_GESTURES
+    grabGesture(Qt::PanGesture);
+    grabGesture(Qt::PinchGesture);
+#endif
+    QGLWindow::resizeEvent(&QResizeEvent(QSize(dim.x, dim.y), QSize(width(), height())));
+    if (!sharedGLContext_) {
+        sharedFormat_ = this->format();
+        sharedGLContext_ = this;
+        sharedCanvas_ = this;
+    }
+}
+#elif defined(USE_QWINDOW)
 QOpenGLContext* CanvasQt::sharedGLContext_ = NULL;
 
-CanvasQt::CanvasQt(QWindow* parent, uvec2 dim)
-    : QWindow(parent)
+CanvasQt::CanvasQt(QGLParent* parent, uvec2 dim)
+    : QGLWindow(parent)
     , CanvasGL(dim)
     , thisGLContext_(NULL)
     , swapBuffersAllowed_(false)
@@ -110,11 +146,10 @@ CanvasQt::CanvasQt(QWindow* parent, uvec2 dim)
     }
 }
 #else
+QGLWindow* CanvasQt::sharedGLContext_ = NULL;
 
-QGLWidget* CanvasQt::sharedGLContext_ = NULL;
-
-CanvasQt::CanvasQt(QWidget* parent, uvec2 dim)
-    : QGLWidget(sharedFormat_, parent, sharedGLContext_)
+CanvasQt::CanvasQt(QGLParent* parent, uvec2 dim)
+    : QGLWindow(sharedFormat_, parent, sharedGLContext_)
       , CanvasGL(dim)
       , swapBuffersAllowed_(false)
 #ifndef QT_NO_GESTURES
@@ -131,7 +166,7 @@ CanvasQt::CanvasQt(QWidget* parent, uvec2 dim)
         sharedFormat_ = this->format();
         sharedGLContext_ = this;
         sharedCanvas_ = this;
-        QGLWidget::glInit();
+        QGLWindow::glInit();
     }
 
     setAutoBufferSwap(false);
@@ -181,7 +216,7 @@ void CanvasQt::activate() {
 void CanvasQt::initializeGL() {
     initializeGLEW();
 #ifndef USE_QWINDOW
-    QGLWidget::initializeGL();
+    QGLWindow::initializeGL();
     activate();
 #endif
 }
@@ -189,10 +224,12 @@ void CanvasQt::initializeGL() {
 void CanvasQt::glSwapBuffers() {
     if (swapBuffersAllowed_) {
         activate();
-#ifdef USE_QWINDOW
+#if defined(USE_NEW_OPENGLWIDGET)
+        this->context()->swapBuffers(this->context()->surface());
+#elif defined(USE_QWINDOW)
         thisGLContext_->swapBuffers(this);
 #else
-        QGLWidget::swapBuffers();
+        QGLWindow::swapBuffers();
 #endif
     }
 }
@@ -202,8 +239,8 @@ void CanvasQt::update() {
 }
 
 void CanvasQt::repaint() {
-#ifndef USE_QWINDOW
-    QGLWidget::updateGL();
+#if !defined(USE_QWINDOW) && !defined(USE_NEW_OPENGLWIDGET)
+    QGLWindow::updateGL();
 #endif
 }
 
@@ -339,7 +376,7 @@ void CanvasQt::keyPressEvent(QKeyEvent* keyEvent) {
 #else
     QWidget* parent = this->parentWidget();
 #endif
-	if (parent && keyEvent->key() == Qt::Key_F && keyEvent->modifiers() == Qt::ShiftModifier){
+    if (parent && keyEvent->key() == Qt::Key_F && keyEvent->modifiers() == Qt::ShiftModifier){
         if(parent->windowState() == Qt::WindowFullScreen) {
             parent->showNormal();
         } else {
@@ -347,18 +384,18 @@ void CanvasQt::keyPressEvent(QKeyEvent* keyEvent) {
         }
     }
     KeyboardEvent pressKeyEvent(EventConverterQt::getKeyButton(keyEvent),
-		                         EventConverterQt::getModifier(keyEvent),
+                                 EventConverterQt::getModifier(keyEvent),
                                  KeyboardEvent::KEY_STATE_PRESS);
-	keyEvent->accept();
-	Canvas::keyPressEvent(&pressKeyEvent);
+    keyEvent->accept();
+    Canvas::keyPressEvent(&pressKeyEvent);
 }
 
 void CanvasQt::keyReleaseEvent(QKeyEvent* keyEvent) {
     KeyboardEvent releaseKeyEvent(EventConverterQt::getKeyButton(keyEvent),
-		                          EventConverterQt::getModifier(keyEvent),
+                                  EventConverterQt::getModifier(keyEvent),
                                   KeyboardEvent::KEY_STATE_RELEASE);
-	keyEvent->accept();
-	Canvas::keyReleaseEvent(&releaseKeyEvent);
+    keyEvent->accept();
+    Canvas::keyReleaseEvent(&releaseKeyEvent);
 }
 
 CanvasQt* CanvasQt::getSharedCanvas() { 
@@ -385,7 +422,7 @@ void CanvasQt::touchEvent(QTouchEvent* touch) {
     {
     case Qt::TouchPointPressed:
         touchState = TouchEvent::TOUCH_STATE_STARTED;
-    	break;
+        break;
     case Qt::TouchPointMoved:
         touchState = TouchEvent::TOUCH_STATE_UPDATED;
         break;

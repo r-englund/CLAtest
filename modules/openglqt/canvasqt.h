@@ -52,7 +52,16 @@
 #include <QPinchGesture>
 #endif
 
-#ifdef USE_QWINDOW
+//#if (QT_VERSION >= QT_VERSION_CHECK(5, 4, 0))
+//#define USE_NEW_OPENGLWIDGET
+//#endif
+
+#ifdef USE_NEW_OPENGLWIDGET
+#include <QOpenGLWidget>
+#define QGLWindow QOpenGLWidget
+#define QGLParent QWidget
+#define QGLContextFormat QSurfaceFormat
+#elif USE_QWINDOW
 #include <QtGui/QWindow>
 #include <QtGui/QSurfaceFormat>
 class QOpenGLContext;
@@ -115,7 +124,7 @@ private:
     static QOpenGLContext* sharedGLContext_; //For rendering-context sharing
 #else
 private:
-    static QGLWidget* sharedGLContext_; //For rendering-context sharing
+    static QGLWindow* sharedGLContext_; //For rendering-context sharing
 
 #endif
     static CanvasQt* sharedCanvas_;

@@ -184,6 +184,8 @@ void CanvasGL::renderLayer() {
 }
 
 void CanvasGL::renderNoise() {
+    if (!noiseShader_)
+        return;
     activate();
     glViewport(0, 0, getScreenDimension().x, getScreenDimension().y);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
@@ -195,6 +197,8 @@ void CanvasGL::renderNoise() {
 }
 
 void CanvasGL::renderTexture(int unitNumber) {
+    if (!shader_)
+        return;
     activate();
     glViewport(0, 0, getScreenDimension().x, getScreenDimension().y);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
@@ -238,7 +242,7 @@ void CanvasGL::checkChannels(int channels) {
 }
 
 void CanvasGL::enableDrawImagePlaneRect() {
-	    screenAlignedRectGL_->enable();
+        screenAlignedRectGL_->enable();
 }
 
 void CanvasGL::disableDrawImagePlaneRect() {
