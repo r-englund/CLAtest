@@ -36,6 +36,32 @@
 #define VOLUME_TYPE sampler3D
 #define TEXTURE_TYPE sampler2D
 
+struct CameraParameters {
+   mat4 worldToView; // Equivalent to view
+   mat4 viewToWorld; // Equivalent to viewInverse
+   mat4 worldToClip; // Equivalent to viewProjection
+   mat4 clipToWorld; // Equivalent to viewProjectionInverse
+   float nearPlane;  // zNear
+   float farPlane;   // zFar
+};
+// Convenience functions to retrieve camera parameters
+/* lookAt(vec3 eye, vec3 center, vec3 up) {
+    vec3 cameraDir(normalize(center - eye));
+    vec3 right(normalize(cross(cameraDir, up)));
+    up = (cross(right, cameraDir));
+    vec3 lookFrom(dot(right, eye), dot(up, eye), -dot(cameraDir, eye));
+    [  right[0], up[0], -cameraDir[0], -lookFrom[0] ] 
+    [  right[1], up[1], -cameraDir[1], -lookFrom[1] ] 
+    [  right[2], up[2], -cameraDir[2], -lookFrom[2] ] 
+    [         0,     0,         0,       1     ] */
+
+vec3 right(in CameraParameters camera) { return camera.worldToView[0].xyz; }
+vec3 up(in CameraParameters camera) { return camera.worldToView[1].xyz; }
+vec3 direction(in CameraParameters camera) { return -camera.worldToView[2].xyz; }
+vec3 position(in CameraParameters camera) { return -camera.worldToView[3].xyz; }
+
+
+
 struct LIGHT_PARAMETERS {
     vec3 position_; 
     vec3 ambientColor_;
@@ -68,6 +94,10 @@ struct MODEL_PARAMETERS {
     mat3 modelToWorldNormalMatrix_;
 };
 
+
+
+// Depricated...
+
 struct CAMERA_PARAMETERS {
     mat4 viewMatrix_;
     mat4 projectionMatrix_; // view to clip
@@ -76,5 +106,6 @@ struct CAMERA_PARAMETERS {
 	float zNear_;
 	float zFar_;
 };
+
 
 #endif // IVW_STRUCTS_GLSL

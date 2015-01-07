@@ -33,7 +33,7 @@
 #include "utils/shading.glsl"
 
 uniform LIGHT_PARAMETERS light_;
-uniform CAMERA_PARAMETERS camera_;
+uniform CameraParameters camera_;
 
 in vec4 worldPosition_;
 in vec3 normal_;
@@ -41,7 +41,7 @@ in vec4 color_;
 
 void main() {
     vec4 fragColor = vec4(1.0);
-    vec3 toCameraDir_ = camera_.cameraPosition_-worldPosition_.xyz;
+    vec3 toCameraDir_ = position(camera_) - worldPosition_.xyz;
     fragColor.rgb = APPLY_LIGHTING(light_, color_.rgb, color_.rgb, vec3(1.0), worldPosition_.xyz, normalize(normal_), normalize(toCameraDir_));
 
     FragData0 = fragColor;

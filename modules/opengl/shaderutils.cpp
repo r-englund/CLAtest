@@ -87,21 +87,21 @@ void addShaderDefines(Shader* shader, const CameraProperty& property) {
 }
 
 void setShaderUniforms(Shader* shader, const CameraProperty& property) {
-    shader->setUniform("viewMatrix_", property.viewMatrix());
-    shader->setUniform("projectionMatrix_", property.projectionMatrix());
-    shader->setUniform("worldToClipMatrix_", property.projectionMatrix()*property.viewMatrix()); 
-    shader->setUniform("cameraPosition_", property.getLookFrom());
-    shader->setUniform("zNear_", property.getNearPlaneDist());
-    shader->setUniform("zFar_", property.getFarPlaneDist());
+    shader->setUniform("worldToView", property.viewMatrix());
+    shader->setUniform("viewToWorld", property.inverseViewMatrix());
+    shader->setUniform("worldToClip", property.projectionMatrix() * property.viewMatrix());
+    shader->setUniform("clipToWorld", property.inverseViewMatrix() * property.inverseProjectionMatrix()); 
+    shader->setUniform("nearPlane", property.getNearPlaneDist());
+    shader->setUniform("farPlane", property.getFarPlaneDist());
 }
 
 void setShaderUniforms(Shader* shader, const CameraProperty& property, std::string name) {
-    shader->setUniform(name + ".viewMatrix_", property.viewMatrix());
-    shader->setUniform(name + ".projectionMatrix_", property.projectionMatrix());
-    shader->setUniform(name + ".worldToClipMatrix_", property.projectionMatrix()*property.viewMatrix()); 
-    shader->setUniform(name + ".cameraPosition_", property.getLookFrom());
-    shader->setUniform(name + ".zNear_", property.getNearPlaneDist());
-    shader->setUniform(name + ".zFar_", property.getFarPlaneDist());
+    shader->setUniform(name + ".worldToView", property.viewMatrix());
+    shader->setUniform(name + ".viewToWorld", property.inverseViewMatrix());
+    shader->setUniform(name + ".worldToClip", property.projectionMatrix() * property.viewMatrix());
+    shader->setUniform(name + ".clipToWorld", property.inverseViewMatrix() * property.inverseProjectionMatrix());
+    shader->setUniform(name + ".nearPlane", property.getNearPlaneDist());
+    shader->setUniform(name + ".farPlane", property.getFarPlaneDist());
 }
 
 

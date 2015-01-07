@@ -81,7 +81,7 @@ vec4 compositeFHN(in vec4 curResult, in vec4 color, in vec3 gradient, in float t
 }
 
 vec4 compositeFHN_VS(in vec4 curResult, in vec4 color, in vec3 gradient, in float t,
-                     in CAMERA_PARAMETERS camera, inout float tDepth) {
+                     in CameraParameters camera, inout float tDepth) {
     vec4 result = curResult;
 
     if (result == vec4(0.0) && color.a > 0.0) {
@@ -90,7 +90,7 @@ vec4 compositeFHN_VS(in vec4 curResult, in vec4 color, in vec3 gradient, in floa
         // TODO: This transformation is incorrect
         // should be transpose(mat3(viewToWorld))* fh_normal
         // https://cloud.githubusercontent.com/assets/9251300/4753062/34392416-5ab3-11e4-9569-026a8ec9687a.png
-        vec4 transformed_normal = camera.viewMatrix_ * fh_normal;
+        vec4 transformed_normal = camera.worldToView * fh_normal;
         result = vec4(normalize(transformed_normal.xyz) * 0.5 + 0.5, 1.0);
     }
 

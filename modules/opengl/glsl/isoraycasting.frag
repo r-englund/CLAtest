@@ -56,7 +56,7 @@ uniform TEXTURE_PARAMETERS exitParameters_;
 uniform TEXTURE_PARAMETERS outportParameters_;
 
 uniform LIGHT_PARAMETERS light_;
-uniform CAMERA_PARAMETERS camera_;
+uniform CameraParameters camera_;
 uniform int channel_;
 
 uniform float samplingRate_;
@@ -86,7 +86,7 @@ vec4 rayTraversal(vec3 entryPoint, vec3 exitPoint, vec2 texCoords) {
     samplePos = entryPoint + t * rayDirection;
     bool outside = getNormalizedVoxel(volume_, volumeParameters_, samplePos)[channel_] < isoValue_;
     t += tIncr;
-    vec3 toCameraDir = normalize(camera_.cameraPosition_ - (volumeParameters_.textureToWorld_*vec4(entryPoint, 1.0)).xyz);
+    vec3 toCameraDir = normalize(position(camera_) - (volumeParameters_.textureToWorld_*vec4(entryPoint, 1.0)).xyz);
     int stop = 1000;
     while (t < tEnd && stop-- > 0) {
         samplePos = entryPoint + t * rayDirection;

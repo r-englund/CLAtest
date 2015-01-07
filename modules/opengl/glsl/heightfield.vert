@@ -33,7 +33,7 @@
 #include "utils/structs.glsl"
 
 uniform MODEL_PARAMETERS geometry_;
-uniform CAMERA_PARAMETERS camera_;
+uniform CameraParameters camera_;
 
 uniform sampler2D inportHeightfield_;
 uniform float heightScale_ = 1.0f;
@@ -55,5 +55,5 @@ void main() {
 
     worldPosition_ = geometry_.modelToWorldMatrix_ * pos;
     normal_ = geometry_.modelToWorldNormalMatrix_ * in_Normal;
-    gl_Position = camera_.worldToClipMatrix_ * worldPosition_;
+    gl_Position = camera_.worldToClip * worldPosition_;
 }

@@ -34,7 +34,7 @@
 
 
 uniform MODEL_PARAMETERS geometry_;
-uniform CAMERA_PARAMETERS camera_;
+uniform CameraParameters camera_;
 
 out vec4 worldPosition_;
 out vec3 normal_;
@@ -46,5 +46,5 @@ void main() {
     texCoord_ = in_TexCoord;
     worldPosition_ = geometry_.modelToWorldMatrix_ * in_Vertex;
     normal_ = geometry_.modelToWorldNormalMatrix_ * in_Normal;
-    gl_Position = camera_.worldToClipMatrix_ * worldPosition_;
+    gl_Position = camera_.worldToClip * worldPosition_;
 }

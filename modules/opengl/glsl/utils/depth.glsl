@@ -30,21 +30,21 @@
  *
  *********************************************************************************/
 
-float convertScreenToEye(CAMERA_PARAMETERS camera, float depthScreen) {
+float convertScreenToEye(CameraParameters camera, float depthScreen) {
     float depthNDC = 2.0 * depthScreen - 1.0;
-    float depthEye = 2.0 * camera.zNear_ * camera.zFar_ /
-                     (camera.zFar_ + camera.zNear_ - depthNDC * (camera.zFar_ - camera.zNear_));
+    float depthEye = 2.0 * camera.nearPlane * camera.farPlane /
+                     (camera.farPlane + camera.nearPlane - depthNDC * (camera.farPlane - camera.nearPlane));
     return depthEye;
 }
 
-float convertEyeToScreen(CAMERA_PARAMETERS camera, float depthEye) {
-    float A = -(camera.zFar_+camera.zNear_)/(camera.zFar_-camera.zNear_);
-    float B = (-2.0*camera.zFar_*camera.zNear_) / (camera.zFar_-camera.zNear_);
+float convertEyeToScreen(CameraParameters camera, float depthEye) {
+    float A = -(camera.farPlane+camera.nearPlane)/(camera.farPlane-camera.nearPlane);
+    float B = (-2.0*camera.farPlane*camera.nearPlane) / (camera.farPlane-camera.nearPlane);
     float depthScreen = 0.5*(-A*depthEye + B) / depthEye + 0.5;
     return depthScreen;
 }
 
-float calculateDepthValue(CAMERA_PARAMETERS camera, float t, float entryDepthScreen, float exitDepthScreen) {
+float calculateDepthValue(CameraParameters camera, float t, float entryDepthScreen, float exitDepthScreen) {
     // to calculate the correct depth values, which are not linear in the deph buffer,
     // we must first convert our screen space coordinates into eye coordinates and interpolate there.
     // transform into eye space
