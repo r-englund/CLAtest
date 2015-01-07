@@ -66,6 +66,25 @@ struct GeometryParameters {
     mat3 modelToWorldNormalMatrix; // Equivalent to normalMatrix
 };
 
+struct VolumeParameters {
+    mat4 modelToWorld;
+    mat4 worldToModel;
+    mat4 worldToTexture;
+    mat4 textureToWorld;
+    mat4 textureToIndex;                   // Transform from [0 1] to [-0.5 dim-0.5]
+    mat4 indexToTexture;                   // Transform from [-0.5 dim-0.5] to [0 1]
+    mat3 textureSpaceGradientSpacing;      // Maximum possible distance to go without ending up 
+										   // outside of a voxel (half of minimum voxel spacing 
+										   // for volumes with orthogonal basis)
+    vec3 dimensions;		               // Number of voxels (dim) per axis 
+    vec3 reciprocalDimensions;             // 1 over the number of voxels
+    float worldSpaceGradientSpacing;       // Spacing between gradient samples in world space 
+    float formatScaling;                   // Map value from data range [min,max] to [0,1]
+    float formatOffset;
+    float signedFormatScaling;             // Map value from data range [min,max] to [-1,1]
+    float signedFormatOffset;
+};
+
 struct LIGHT_PARAMETERS {
     vec3 position_; 
     vec3 ambientColor_;
@@ -77,19 +96,6 @@ struct LIGHT_PARAMETERS {
 struct TEXTURE_PARAMETERS {
     vec2 dimensions_;
     vec2 dimensionsRCP_;
-};
-
-struct VOLUME_PARAMETERS {
-    vec3 dimensions_;
-    vec3 dimensionsRCP_;
-    mat4 worldToTexture_;
-    mat4 textureToWorld_;
-    mat3 textureSpaceGradientSpacing_; // Maximum distance we can without going outside a voxel from the center of it (half of minimum voxel spacing for volumes with orthogonal basis)
-    float worldSpaceGradientSpacing_;  // Gradients are returned in world space and hence we need this to get correct length
-    float formatScaling_; //Reversed, meaning scaling = (1-bitScaling_), as 0 is default for single uniforms.
-    float formatOffset_;
-    float signedFormatScaling_; //Reversed, meaning scaling = (1-bitScaling_), as 0 is default for single uniforms.
-    float signedFormatOffset_;
 };
 
 
@@ -108,6 +114,20 @@ struct MODEL_PARAMETERS {
     mat4 modelToWorldMatrix_;
     mat3 modelToWorldNormalMatrix_;
 };
+
+struct VOLUME_PARAMETERS {
+    vec3 dimensions_;
+    vec3 dimensionsRCP_;
+    mat4 worldToTexture_;
+    mat4 textureToWorld_;
+    mat3 textureSpaceGradientSpacing_; // Maximum distance we can without going outside a voxel from the center of it (half of minimum voxel spacing for volumes with orthogonal basis)
+    float worldSpaceGradientSpacing_;  // Gradients are returned in world space and hence we need this to get correct length
+    float formatScaling_; //Reversed, meaning scaling = (1-bitScaling_), as 0 is default for single uniforms.
+    float formatOffset_;
+    float signedFormatScaling_; //Reversed, meaning scaling = (1-bitScaling_), as 0 is default for single uniforms.
+    float signedFormatOffset_;
+};
+
 */
 
 #endif // IVW_STRUCTS_GLSL

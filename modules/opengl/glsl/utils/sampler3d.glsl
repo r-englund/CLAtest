@@ -37,18 +37,18 @@
 //
 
 // Return a the raw texture
-vec4 getVoxel(sampler3D volume, VOLUME_PARAMETERS volumeParams, vec3 samplePos) {
+vec4 getVoxel(sampler3D volume, VolumeParameters volumeParams, vec3 samplePos) {
     return (texture(volume, samplePos));
 }
 // Return a value mapped from data range [min,max] to [0,1]
-vec4 getNormalizedVoxel(sampler3D volume, VOLUME_PARAMETERS volumeParams, vec3 samplePos) {
-    return (texture(volume, samplePos) + volumeParams.formatOffset_)
-        * (1.0 - volumeParams.formatScaling_);
+vec4 getNormalizedVoxel(sampler3D volume, VolumeParameters volumeParams, vec3 samplePos) {
+    return (texture(volume, samplePos) + volumeParams.formatOffset)
+        * (1.0 - volumeParams.formatScaling);
 }
 // Return a value mapped from data range [min,max] to [-1,1]
-vec4 getSignNormalizedVoxel(sampler3D volume, VOLUME_PARAMETERS volumeParams, vec3 samplePos) {
-    return (texture(volume, samplePos) + volumeParams.signedFormatOffset_)
-        * (1.0 - volumeParams.signedFormatScaling_);
+vec4 getSignNormalizedVoxel(sampler3D volume, VolumeParameters volumeParams, vec3 samplePos) {
+    return (texture(volume, samplePos) + volumeParams.signedFormatOffset)
+        * (1.0 - volumeParams.signedFormatScaling);
 }
 
 
@@ -57,32 +57,32 @@ vec4 getSignNormalizedVoxel(sampler3D volume, VOLUME_PARAMETERS volumeParams, ve
 //
 
 // Return a the raw texture
-vec4 getVoxel(sampler3D volume, VOLUME_PARAMETERS volumeParams, ivec3 samplePos) {
+vec4 getVoxel(sampler3D volume, VolumeParameters volumeParams, ivec3 samplePos) {
 #ifdef GLSL_VERSION_140
-    return (texelFetch(volume, samplePos, 0) + volumeParams.formatOffset_)
-               * (1.0-volumeParams.formatScaling_);
+    return (texelFetch(volume, samplePos, 0) + volumeParams.formatOffset)
+               * (1.0-volumeParams.formatScaling);
 #else
-    return (texture(volume, samplePos) + volumeParams.formatOffset_)
-               * (1.0-volumeParams.formatScaling_);
+    return (texture(volume, samplePos) + volumeParams.formatOffset)
+               * (1.0-volumeParams.formatScaling);
 #endif
 }
 // Return a value mapped from data range [min,max] to [0,1]
-vec4 getNormalizedVoxel(sampler3D volume, VOLUME_PARAMETERS volumeParams, ivec3 samplePos) {
+vec4 getNormalizedVoxel(sampler3D volume, VolumeParameters volumeParams, ivec3 samplePos) {
 #ifdef GLSL_VERSION_140
-    return (texelFetch(volume, samplePos, 0) + volumeParams.formatOffset_)
-        * (1.0 - volumeParams.formatScaling_);
+    return (texelFetch(volume, samplePos, 0) + volumeParams.formatOffset)
+        * (1.0 - volumeParams.formatScaling);
 #else
-    return (texture(volume, samplePos) + volumeParams.formatOffset_)
-        * (1.0 - volumeParams.formatScaling_);
+    return (texture(volume, samplePos) + volumeParams.formatOffset)
+        * (1.0 - volumeParams.formatScaling);
 #endif
 }
 // Return a value mapped from data range [min,max] to [-1,1]
-vec4 getSignNormalizedVoxel(sampler3D volume, VOLUME_PARAMETERS volumeParams, ivec3 samplePos) {
+vec4 getSignNormalizedVoxel(sampler3D volume, VolumeParameters volumeParams, ivec3 samplePos) {
 #ifdef GLSL_VERSION_140
-    return (texelFetch(volume, samplePos, 0) + volumeParams.signedFormatOffset_)
-        * (1.0 - volumeParams.signedFormatScaling_);
+    return (texelFetch(volume, samplePos, 0) + volumeParams.signedFormatOffset)
+        * (1.0 - volumeParams.signedFormatScaling);
 #else
-    return (texture(volume, samplePos) + volumeParams.signedFormatOffset_)
-        * (1.0 - volumeParams.signedFormatScaling_);
+    return (texture(volume, samplePos) + volumeParams.signedFormatOffset)
+        * (1.0 - volumeParams.signedFormatScaling);
 #endif
 }

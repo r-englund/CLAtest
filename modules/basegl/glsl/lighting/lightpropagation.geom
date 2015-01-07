@@ -41,7 +41,7 @@
 layout(triangles) in;
 layout(triangle_strip, max_vertices = 3) out;
 
-uniform VOLUME_PARAMETERS lightVolumeParameters_;
+uniform VolumeParameters lightVolumeParameters_;
 
 uniform mat4 permutationMatrix_;
 
@@ -53,7 +53,7 @@ out vec4 permutedTexCoord_;
 
 void main() {
     int i;
-    texCoord_.z = (instanceID_[0] * lightVolumeParameters_.dimensionsRCP_.z) + (0.5 * lightVolumeParameters_.dimensionsRCP_.z);
+    texCoord_.z = (instanceID_[0] * lightVolumeParameters_.reciprocalDimensions.z) + (0.5 * lightVolumeParameters_.reciprocalDimensions.z);
     texCoord_.w = 1.f;
 
     for (i = 0; i<gl_in.length(); ++i) {

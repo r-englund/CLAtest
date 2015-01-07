@@ -40,7 +40,7 @@
 #include "utils/gradients.glsl"
 #include "utils/shading.glsl"
 
-uniform VOLUME_PARAMETERS volumeParameters_;
+uniform VolumeParameters volumeParameters_;
 uniform sampler3D volume_;
 
 uniform sampler2D transferFunc_;
@@ -68,7 +68,7 @@ vec4 rayTraversal(vec3 entryPoint, vec3 exitPoint, vec2 texCoords) {
     vec4 result = vec4(0.0);
     vec3 rayDirection = exitPoint - entryPoint;
     float tEnd = length(rayDirection);
-    float tIncr = min(tEnd, tEnd / (samplingRate_*length(rayDirection*volumeParameters_.dimensions_)));
+    float tIncr = min(tEnd, tEnd / (samplingRate_*length(rayDirection*volumeParameters_.dimensions)));
     float samples = ceil(tEnd/tIncr);
     tIncr = tEnd/samples;
     float t = 0.5f*tIncr; 
@@ -86,7 +86,7 @@ vec4 rayTraversal(vec3 entryPoint, vec3 exitPoint, vec2 texCoords) {
     samplePos = entryPoint + t * rayDirection;
     bool outside = getNormalizedVoxel(volume_, volumeParameters_, samplePos)[channel_] < isoValue_;
     t += tIncr;
-    vec3 toCameraDir = normalize(position(camera_) - (volumeParameters_.textureToWorld_*vec4(entryPoint, 1.0)).xyz);
+    vec3 toCameraDir = normalize(position(camera_) - (volumeParameters_.textureToWorld*vec4(entryPoint, 1.0)).xyz);
     int stop = 1000;
     while (t < tEnd && stop-- > 0) {
         samplePos = entryPoint + t * rayDirection;
@@ -100,7 +100,7 @@ vec4 rayTraversal(vec3 entryPoint, vec3 exitPoint, vec2 texCoords) {
             gradient = normalize(gradient);
 
             // World space position
-            vec3 worldSpacePosition = (volumeParameters_.textureToWorld_*vec4(samplePos, 1.0)).xyz;
+            vec3 worldSpacePosition = (volumeParameters_.textureToWorld*vec4(samplePos, 1.0)).xyz;
             // Note that the gradient is reversed since we define the normal of a surface as
             // the direction towards a lower intensity medium (gradient points in the inreasing direction)
             result.rgb = APPLY_LIGHTING(light_, color.rgb, color.rgb, vec3(1.0), worldSpacePosition, -gradient, toCameraDir);

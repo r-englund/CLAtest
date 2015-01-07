@@ -42,17 +42,31 @@ namespace inviwo {
 namespace utilgl {
 
 void setShaderUniforms(Shader* shader, const Volume* volume, const std::string& samplerID) {
-    vec3 dimF = static_cast<vec3>(volume->getDimension());
-    shader->setUniform(samplerID + ".dimensions_", dimF);
-    shader->setUniform(samplerID + ".dimensionsRCP_", vec3(1.f) / dimF);
-    shader->setUniform(samplerID + ".worldToTexture_",
+    shader->setUniform(samplerID + ".modelToWorld",
+                       volume->getCoordinateTransformer().getModelToWorldMatrix());
+    shader->setUniform(samplerID + ".worldToModel",
+                       volume->getCoordinateTransformer().getWorldToModelMatrix());
+
+    shader->setUniform(samplerID + ".worldToTexture",
                        volume->getCoordinateTransformer().getWorldToTextureMatrix());
-    shader->setUniform(samplerID + ".textureToWorld_", volume->getCoordinateTransformer().getTextureToWorldMatrix());
+    shader->setUniform(samplerID + ".textureToWorld", 
+                       volume->getCoordinateTransformer().getTextureToWorldMatrix());
+
+    shader->setUniform(samplerID + ".textureToIndex",
+                       volume->getCoordinateTransformer().getTextureToIndexMatrix());
+    shader->setUniform(samplerID + ".indexToTexture",
+                       volume->getCoordinateTransformer().getIndexToTextureMatrix());
+
     float gradientSpacing = volume->getWorldSpaceGradientSpacing();
     // Scale the world matrix by the gradient spacing and the transform it to texture space.
     // Note that since we are dealing with real values we can multiply the scalar after the transform as well
-    shader->setUniform(samplerID + ".textureSpaceGradientSpacing_", gradientSpacing*mat3(volume->getCoordinateTransformer().getWorldToTextureMatrix()));
-    shader->setUniform(samplerID + ".worldSpaceGradientSpacing_", gradientSpacing);
+    shader->setUniform(samplerID + ".textureSpaceGradientSpacing", gradientSpacing*mat3(volume->getCoordinateTransformer().getWorldToTextureMatrix()));
+ 
+    vec3 dimF = static_cast<vec3>(volume->getDimension());
+    shader->setUniform(samplerID + ".dimensions", dimF);
+    shader->setUniform(samplerID + ".reciprocalDimensions", vec3(1.f) / dimF);
+
+    shader->setUniform(samplerID + ".worldSpaceGradientSpacing", gradientSpacing);
 
     dvec2 dataRange = volume->dataMap_.dataRange;
     DataMapper defaultRange(volume->getDataFormat());
@@ -91,12 +105,12 @@ void setShaderUniforms(Shader* shader, const Volume* volume, const std::string& 
             break;
     }
     // offset scaling because of reversed scaling in the shader, i.e. (1 - formatScaling_)
-    shader->setUniform(samplerID + ".formatScaling_", static_cast<float>(1.0 - scalingFactor));
-    shader->setUniform(samplerID + ".formatOffset_", static_cast<float>(offset));
+    shader->setUniform(samplerID + ".formatScaling", static_cast<float>(1.0 - scalingFactor));
+    shader->setUniform(samplerID + ".formatOffset", static_cast<float>(offset));
 
-    shader->setUniform(samplerID + ".signedFormatScaling_",
+    shader->setUniform(samplerID + ".signedFormatScaling",
                        static_cast<float>(1.0 - signedScalingFactor));
-    shader->setUniform(samplerID + ".signedFormatOffset_", static_cast<float>(signedOffset));
+    shader->setUniform(samplerID + ".signedFormatOffset", static_cast<float>(signedOffset));
 }
 
 void setShaderUniforms(Shader* shader, const VolumeInport& port, const std::string& samplerID) {

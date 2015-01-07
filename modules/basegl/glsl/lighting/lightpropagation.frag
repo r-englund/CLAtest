@@ -35,11 +35,11 @@
 #include "utils/sampler3d.glsl"
 #include "utils/classification.glsl"
 
-uniform VOLUME_TYPE volume_;
-uniform VOLUME_PARAMETERS volumeParameters_;
+uniform sampler3D volume_;
+uniform VolumeParameters volumeParameters_;
 
-uniform VOLUME_TYPE lightVolume_;
-uniform VOLUME_PARAMETERS lightVolumeParameters_;
+uniform sampler3D lightVolume_;
+uniform VolumeParameters lightVolumeParameters_;
 
 uniform sampler2D transferFunc_;
 
@@ -61,11 +61,11 @@ vec4 propagateLight(in vec3 coord, in vec3 coordPerm) {
     //Calculate previous permuted coordinate
 #ifdef POINT_LIGHT
     vec4 permLightDir = permutedLightMatrix_ * vec4(normalize(coordPerm - lightPos_), 1.0);
-    vec3 previousPermutedCoord = vec3(coord.xy - permLightDir.xy * lightVolumeParameters_.dimensionsRCP_.z/max(1e-4,abs(permLightDir.z),
-                                      coord.z - lightVolumeParameters_.dimensionsRCP_.z);
+    vec3 previousPermutedCoord = vec3(coord.xy - permLightDir.xy * lightVolumeParameters_.reciprocalDimensions.z/max(1e-4,abs(permLightDir.z),
+                                      coord.z - lightVolumeParameters_.reciprocalDimensions.z);
 #else
-    vec3 previousPermutedCoord = vec3(coord.xy - permutedLightDirection_.xy * lightVolumeParameters_.dimensionsRCP_.z/max(1e-4,abs(permutedLightDirection_.z)),
-                                      coord.z - lightVolumeParameters_.dimensionsRCP_.z);
+    vec3 previousPermutedCoord = vec3(coord.xy - permutedLightDirection_.xy * lightVolumeParameters_.reciprocalDimensions.z/max(1e-4,abs(permutedLightDirection_.z)),
+                                      coord.z - lightVolumeParameters_.reciprocalDimensions.z);
 #endif
     //Retrieve previous light value
     vec4 lightVoxel = getNormalizedVoxel(lightVolume_, lightVolumeParameters_, previousPermutedCoord);

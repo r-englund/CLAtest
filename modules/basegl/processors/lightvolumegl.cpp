@@ -218,8 +218,8 @@ void LightVolumeGL::process() {
     propagationShader_->setUniform("volume_", volUnit.getUnitNumber());
     utilgl::setShaderUniforms(propagationShader_, inport_.getData(), "volumeParameters_");
     propagationShader_->setUniform("transferFunc_", transFuncUnit.getUnitNumber());
-    propagationShader_->setUniform("lightVolumeParameters_.dimensions_", volumeDimOutF_);
-    propagationShader_->setUniform("lightVolumeParameters_.dimensionsRCP_", volumeDimOutFRCP_);
+    propagationShader_->setUniform("lightVolumeParameters_.dimensions", volumeDimOutF_);
+    propagationShader_->setUniform("lightVolumeParameters_.reciprocalDimensions", volumeDimOutFRCP_);
 
     BufferObjectArray* rectArray = utilgl::enableImagePlaneRect();
 
@@ -258,8 +258,8 @@ void LightVolumeGL::process() {
     mergeShader_->activate();
     mergeShader_->setUniform("lightVolume_", lightVolUnit[0].getUnitNumber());
     mergeShader_->setUniform("lightVolumeSec_", lightVolUnit[1].getUnitNumber());
-    mergeShader_->setUniform("lightVolumeParameters_.dimensions_", volumeDimOutF_);
-    mergeShader_->setUniform("lightVolumeParameters_.dimensionsRCP_", volumeDimOutFRCP_);
+    mergeShader_->setUniform("lightVolumeParameters_.dimensions", volumeDimOutF_);
+    mergeShader_->setUniform("lightVolumeParameters_.reciprocalDimensions", volumeDimOutFRCP_);
     mergeShader_->setUniform("permMatInv_", propParams_[0].axisPermutationINV);
     mergeShader_->setUniform("permMatInvSec_", propParams_[1].axisPermutationINV);
     mergeShader_->setUniform("blendingFactor_", blendingFactor_);

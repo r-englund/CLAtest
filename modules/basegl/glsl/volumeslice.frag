@@ -35,7 +35,7 @@
 #include "utils/classification.glsl"
 
 uniform VOLUME_TYPE volume_;
-uniform VOLUME_PARAMETERS volumeParameters_;
+uniform VolumeParameters volumeParameters_;
 
 uniform sampler2D transferFunc_;
 

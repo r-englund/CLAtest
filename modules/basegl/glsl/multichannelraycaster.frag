@@ -41,7 +41,7 @@
 #include "utils/shading.glsl"
 
 
-uniform VOLUME_PARAMETERS volumeParameters_;
+uniform VolumeParameters volumeParameters_;
 uniform sampler3D volume_;
 
 uniform sampler2D transferFunc_;
@@ -72,7 +72,7 @@ vec4 rayTraversal(vec3 entryPoint, vec3 exitPoint, vec2 texCoords) {
     vec3 rayDirection = exitPoint - entryPoint;
     float tEnd = length(rayDirection);
     float tIncr =
-        min(tEnd, tEnd / (samplingRate_ * length(rayDirection * volumeParameters_.dimensions_)));
+        min(tEnd, tEnd / (samplingRate_ * length(rayDirection * volumeParameters_.dimensions)));
     float samples = ceil(tEnd / tIncr);
     tIncr = tEnd / samples;
     float t = 0.5f * tIncr;
@@ -82,14 +82,14 @@ vec4 rayTraversal(vec3 entryPoint, vec3 exitPoint, vec2 texCoords) {
     vec4 voxel;
     vec3 samplePos;
     mat4x3 gradients;
-    vec3 toCameraDir = normalize(position(camera_) - (volumeParameters_.textureToWorld_*vec4(entryPoint, 1.0)).xyz);
+    vec3 toCameraDir = normalize(position(camera_) - (volumeParameters_.textureToWorld * vec4(entryPoint, 1.0)).xyz);
     while (t < tEnd) {
         samplePos = entryPoint + t * rayDirection;
         voxel = getNormalizedVoxel(volume_, volumeParameters_, samplePos);
         
 		gradients = COMPUTE_ALL_GRADIENTS(voxel, volume_, volumeParameters_, samplePos);
         // World space position
-        vec3 worldSpacePosition = (volumeParameters_.textureToWorld_*vec4(samplePos, 1.0)).xyz;
+        vec3 worldSpacePosition = (volumeParameters_.textureToWorld * vec4(samplePos, 1.0)).xyz;
         // macro defined in MultichannelRaycaster::initializeResources()            
 		SAMPLE_CHANNELS
 

@@ -33,10 +33,10 @@
 #include "utils/structs.glsl"
 #include "utils/sampler3d.glsl"
 
-uniform VOLUME_TYPE lightVolume_;
-uniform VOLUME_TYPE lightVolumeSec_;
+uniform sampler3D lightVolume_;
+uniform sampler3D lightVolumeSec_;
 
-uniform VOLUME_PARAMETERS lightVolumeParameters_;
+uniform VolumeParameters lightVolumeParameters_;
 
 uniform float blendingFactor_;
 
