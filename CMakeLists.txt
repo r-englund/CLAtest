@@ -38,6 +38,7 @@ build_module(Base)
 build_module(BaseGL)
 build_module(FreeImage)
 build_module(OpenGL)
+build_module(PVM)
 
 # OpenGL Context created with GLFW or Qt within Inviwo by default
 if(IVW_USE_GLFW_NOT_OPENGLQT)
