@@ -60,7 +60,11 @@ vec3 up(in CameraParameters camera) { return camera.worldToView[1].xyz; }
 vec3 direction(in CameraParameters camera) { return -camera.worldToView[2].xyz; }
 vec3 position(in CameraParameters camera) { return -camera.worldToView[3].xyz; }
 
-
+struct GeometryParameters {
+    mat4 modelToWorld;
+    mat4 worldToModel;
+    mat3 modelToWorldNormalMatrix; // Equivalent to normalMatrix
+};
 
 struct LIGHT_PARAMETERS {
     vec3 position_; 
@@ -89,15 +93,8 @@ struct VOLUME_PARAMETERS {
 };
 
 
-struct MODEL_PARAMETERS {
-    mat4 modelToWorldMatrix_;
-    mat3 modelToWorldNormalMatrix_;
-};
-
-
-
 // Depricated...
-
+/*
 struct CAMERA_PARAMETERS {
     mat4 viewMatrix_;
     mat4 projectionMatrix_; // view to clip
@@ -107,5 +104,10 @@ struct CAMERA_PARAMETERS {
 	float zFar_;
 };
 
+struct MODEL_PARAMETERS {
+    mat4 modelToWorldMatrix_;
+    mat3 modelToWorldNormalMatrix_;
+};
+*/
 
 #endif // IVW_STRUCTS_GLSL

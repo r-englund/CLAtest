@@ -33,7 +33,7 @@
 #include "utils/shading.glsl"
 
 uniform LIGHT_PARAMETERS light_;
-uniform MODEL_PARAMETERS geometry_;
+uniform GeometryParameters geometry_;
 uniform CameraParameters camera_;
 
 uniform sampler2D inportHeightfield_;
@@ -76,7 +76,7 @@ void main() {
     vec3 normal;
     if (normalMapping_ == 1) {
         normal = texture(inportNormalMap_, texCoord_.xy).rgb;
-        normal = normalize(geometry_.modelToWorldNormalMatrix_ * normal);
+        normal = normalize(geometry_.modelToWorldNormalMatrix * normal);
     }
     else {
         normal = normalize(normal_);

@@ -33,7 +33,7 @@
 #include "utils/structs.glsl"
 
 
-uniform MODEL_PARAMETERS geometry_;
+uniform GeometryParameters geometry_;
 uniform CameraParameters camera_;
 
 out vec4 worldPosition_;
@@ -44,7 +44,7 @@ out vec3 texCoord_;
 void main() {
     color_ = in_Color;
     texCoord_ = in_TexCoord;
-    worldPosition_ = geometry_.modelToWorldMatrix_ * in_Vertex;
-    normal_ = geometry_.modelToWorldNormalMatrix_ * in_Normal;
+    worldPosition_ = geometry_.modelToWorld * in_Vertex;
+    normal_ = geometry_.modelToWorldNormalMatrix * in_Normal;
     gl_Position = camera_.worldToClip * worldPosition_;
 }

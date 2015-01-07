@@ -68,7 +68,6 @@ public:
 protected:
     virtual void process();
     void centerViewOnGeometry();
-    void setGlobalShaderParameters(Shader*);
     void resetViewParams();
 
     void updateRenderers();

@@ -113,20 +113,19 @@ void setShaderUniforms(Shader* shader, const CameraProperty& property, const Spa
 }
 
 
-IVW_MODULE_OPENGL_API void setShaderUniforms(Shader* shader, const SpatialEntity<3>& object) {
+void setShaderUniforms(Shader* shader, const SpatialEntity<3>& object) {
     mat4 modelToWorldMatrix = object.getCoordinateTransformer().getDataToWorldMatrix();
-    shader->setUniform("modelToWorldMatrix_", modelToWorldMatrix);
-    shader->setUniform("modelToWorldNormalMatrix_", glm::mat3(glm::transpose(glm::inverse(modelToWorldMatrix))));
+    shader->setUniform("modelToWorld", modelToWorldMatrix);
+    shader->setUniform("worldToModel", object.getCoordinateTransformer().getWorldToModelMatrix());
+    shader->setUniform("modelToWorldNormalMatrix", glm::mat3(glm::transpose(glm::inverse(modelToWorldMatrix))));
 }
 
-IVW_MODULE_OPENGL_API void setShaderUniforms(Shader* shader, const SpatialEntity<3>& object, const std::string& name) {
+void setShaderUniforms(Shader* shader, const SpatialEntity<3>& object, const std::string& name) {
     mat4 modelToWorldMatrix = object.getCoordinateTransformer().getDataToWorldMatrix();
-    shader->setUniform(name + ".modelToWorldMatrix_", modelToWorldMatrix);
-    shader->setUniform(name + ".modelToWorldNormalMatrix_", glm::mat3(glm::transpose(glm::inverse(modelToWorldMatrix))));
+    shader->setUniform(name + ".modelToWorld", modelToWorldMatrix);
+    shader->setUniform(name + ".worldToModel", object.getCoordinateTransformer().getWorldToModelMatrix());
+    shader->setUniform(name + ".modelToWorldNormalMatrix", glm::mat3(glm::transpose(glm::inverse(modelToWorldMatrix))));
 }
-
-
-
 
 
 void addShaderDefines(Shader* shader, const SimpleRaycastingProperty& property) {

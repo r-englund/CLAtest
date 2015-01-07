@@ -72,7 +72,7 @@ GeometryRenderProcessorGL::GeometryRenderProcessorGL()
     resetViewParams_.onChange(this, &GeometryRenderProcessorGL::resetViewParams);
     addProperty(resetViewParams_);
     outport_.addResizeEventListener(&camera_);
-    inport_.onChange(this,&GeometryRenderProcessorGL::updateRenderers);
+    inport_.onChange(this, &GeometryRenderProcessorGL::updateRenderers);
 
     cullFace_.addOption("culldisable", "Disable", 0);
     cullFace_.addOption("cullfront", "Front", GL_FRONT);
@@ -137,7 +137,6 @@ void GeometryRenderProcessorGL::process() {
     utilgl::activateAndClearTarget(outport_);
 
     shader_->activate();
-    setGlobalShaderParameters(shader_);
     utilgl::setShaderUniforms(shader_, camera_, "camera_");
     utilgl::setShaderUniforms(shader_, lightingProperty_, "light_");
 
@@ -229,15 +228,6 @@ void GeometryRenderProcessorGL::centerViewOnGeometry() {
     vec3 worldMax = (geom->getWorldMatrix()*geom->getModelMatrix()*vec4(maxPos, 1.f)).xyz();
     vec3 newLookFrom = lookFrom -dir*glm::length(worldMax-worldMin);
     camera_.setLook(newLookFrom, centerPos, camera_.getLookUp());
-}
-
-void GeometryRenderProcessorGL::setGlobalShaderParameters(Shader* shader) {
-    vec2 dim = static_cast<vec2>(outport_.getDimension());
-    shader_->setUniform("screenDim_", dim);
-    shader_->setUniform("screenDimRCP_", vec2(1.0f, 1.0f) / dim);
-    // camera uniform
-    shader->setUniform("viewMatrix_", camera_.viewMatrix());
-    shader->setUniform("cameraPosition_", camera_.getLookFrom());
 }
 
 void GeometryRenderProcessorGL::updateRenderers() {
