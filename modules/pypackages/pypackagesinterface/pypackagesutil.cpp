@@ -139,6 +139,39 @@ PyObject* py_getBufferData(PyObject* /*self*/, PyObject* args) {
                                 default: break;
                             }
                         }
+                        else if (rawBuffer->getDataFormat()->getComponents()==2) {
+
+                            #define RETURN_PYOBJECT(i) \
+                            case DataFormatEnums::Vec2##i: return PyPackageParser::toPyObject<DataVec2##i>(bufferData, bufferSize);
+                            #include <modules/pypackages/pypackagesformatsmacro.h>
+
+                            switch (rawBuffer->getDataFormat()->getId()) {
+                                PYPACKAGES_FORMAT_MACRO_EXPANDER(RETURN_PYOBJECT)
+                            default: break;
+                            }
+                        }
+                        else if (rawBuffer->getDataFormat()->getComponents()==3) {
+
+                            #define RETURN_PYOBJECT(i) \
+                            case DataFormatEnums::Vec3##i: return PyPackageParser::toPyObject<DataVec3##i>(bufferData, bufferSize);
+                            #include <modules/pypackages/pypackagesformatsmacro.h>
+
+                            switch (rawBuffer->getDataFormat()->getId()) {
+                                PYPACKAGES_FORMAT_MACRO_EXPANDER(RETURN_PYOBJECT)
+                            default: break;
+                            }
+                        }
+                        else if (rawBuffer->getDataFormat()->getComponents()==4) {
+
+                            #define RETURN_PYOBJECT(i) \
+                            case DataFormatEnums::Vec4##i: return PyPackageParser::toPyObject<DataVec4##i>(bufferData, bufferSize);
+                            #include <modules/pypackages/pypackagesformatsmacro.h>
+
+                            switch (rawBuffer->getDataFormat()->getId()) {
+                                PYPACKAGES_FORMAT_MACRO_EXPANDER(RETURN_PYOBJECT)
+                            default: break;
+                            }
+                        }
                         else
                             std::cout << "Invalid number of components" << std::endl;
                     }

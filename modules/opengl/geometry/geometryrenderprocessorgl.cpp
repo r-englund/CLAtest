@@ -211,10 +211,11 @@ void GeometryRenderProcessorGL::centerViewOnGeometry() {
         minPos = glm::min(minPos, (*pos)[i]);
     }
 
-    vec3 centerPos = (geom->getWorldMatrix()*geom->getModelMatrix()*vec4(0.5f*(maxPos+minPos), 1.f)).xyz();
+    mat4 modelMatrix = geom->getModelMatrix();
+    mat4 worldMatrix = geom->getWorldMatrix();
+    vec3 centerPos = (worldMatrix*modelMatrix*vec4(0.5f*(maxPos+minPos), 1.f)).xyz();
     vec3 lookFrom = camera_.getLookFrom();
     vec3 dir = centerPos - lookFrom;
-
 
     if (glm::length(dir) < glm::epsilon<float>()) {
         dir = vec3(0.f, 0.f, -1.f);

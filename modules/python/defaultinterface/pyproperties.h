@@ -59,8 +59,7 @@ public:
     virtual std::string getDesc()const {return "Assigns a value to a processor property. The value has to be passed as scalar or tuple, depending on the property's cardinality. Camera properties take a 3-tuple of 3-tuples, containing the position, focus and up vectors. Option properties expect an option key.";}
     virtual PyCFunction getFunc() {return py_setPropertyValue;}
 private:
-    PyParamString processor_;
-    PyParamString property_;
+    PyParamString path_;
     PyParamVarious value_;
 };
 
@@ -73,8 +72,7 @@ public:
     virtual std::string getDesc()const {return "Defines the max value for a property.";}
     virtual PyCFunction getFunc() {return py_setPropertyMaxValue;}
 private:
-    PyParamString processor_;
-    PyParamString property_;
+    PyParamString path_;
     PyParamVarious maxValue_;
 };
 
@@ -87,8 +85,7 @@ public:
     virtual std::string getDesc()const {return "Defines the min value for a property.";}
     virtual PyCFunction getFunc() {return py_setPropertyMinValue;}
 private:
-    PyParamString processor_;
-    PyParamString property_;
+    PyParamString path_;
     PyParamVarious minValue_;
 };
 
@@ -101,8 +98,7 @@ public:
     virtual std::string getDesc()const {return "Returns the current value of a processor property (scalar or tuple).";}
     virtual PyCFunction getFunc() {return py_getPropertyValue;}
 private:
-    PyParamString processor_;
-    PyParamString property_;
+    PyParamString path_;
 };
 
 class IVW_MODULE_PYTHON_API PyGetPropertyMaxValueMethod : public PyMethod {
@@ -114,8 +110,7 @@ public:
     virtual std::string getDesc()const {return "Returns the max value for a property (scalar or tuple).";}
     virtual PyCFunction getFunc() {return py_getPropertyMaxValue;}
 private:
-    PyParamString processor_;
-    PyParamString property_;
+    PyParamString path_;
 };
 
 class IVW_MODULE_PYTHON_API PyGetPropertyMinValueMethod : public PyMethod {
@@ -127,8 +122,7 @@ public:
     virtual std::string getDesc()const {return "Returns the min value for a property (scalar or tuple).";}
     virtual PyCFunction getFunc() {return py_getPropertyMinValue;}
 private:
-    PyParamString processor_;
-    PyParamString property_;
+    PyParamString path_;
 };
 
 class IVW_MODULE_PYTHON_API PyClickButtonMethod : public PyMethod {
@@ -140,8 +134,7 @@ public:
     virtual std::string getDesc()const {return "Simulates a click on a button property.";}
     virtual PyCFunction getFunc() {return py_clickButton;}
 private:
-    PyParamString processor_;
-    PyParamString property_;
+    PyParamString path_;
 };
 
 } //namespace

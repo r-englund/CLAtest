@@ -56,22 +56,13 @@ PyObject* py_setPropertyValue(PyObject* self, PyObject* args) {
 
     if (!p.testParams(args))
         return 0;
+    std::string path = std::string(PyValueParser::parse<std::string>(PyTuple_GetItem(args, 0)));
+    PyObject* parameter = PyTuple_GetItem(args, 1);
 
-    std::string processorName = std::string(PyValueParser::parse<std::string>(PyTuple_GetItem(args, 0)));
-    std::string propertyID = std::string(PyValueParser::parse<std::string>(PyTuple_GetItem(args, 1)));
-    PyObject* parameter = PyTuple_GetItem(args, 2);
-    Processor* processor = InviwoApplication::getPtr()->getProcessorNetwork()->getProcessorByIdentifier(processorName);
-
-    if (!processor) {
-        std::string msg = std::string("setPropertyValue() no processor with name: ") + processorName;
-        PyErr_SetString(PyExc_TypeError, msg.c_str());
-        return 0;
-    }
-
-    Property* theProperty = processor->getPropertyByIdentifier(propertyID);
+    Property* theProperty = InviwoApplication::getPtr()->getProcessorNetwork()->getProperty(splitString(path, '.'));
 
     if (!theProperty) {
-        std::string msg = std::string("setPropertyValue() no property with id: ") + propertyID;
+        std::string msg = std::string("setPropertyValue() no property with path: ") + path;
         PyErr_SetString(PyExc_TypeError, msg.c_str());
         return 0;
     }
@@ -81,29 +72,19 @@ PyObject* py_setPropertyValue(PyObject* self, PyObject* args) {
 }
 
 
-
-
-
 PyObject* py_setPropertyMaxValue(PyObject* /*self*/, PyObject* args) {
     static PySetPropertyMaxValueMethod p;
 
     if (!p.testParams(args))
         return 0;
 
-    std::string processorName = std::string(PyValueParser::parse<std::string>(PyTuple_GetItem(args, 0)));
-    std::string propertyID = std::string(PyValueParser::parse<std::string>(PyTuple_GetItem(args, 1)));
-    Processor* processor = InviwoApplication::getPtr()->getProcessorNetwork()->getProcessorByIdentifier(processorName);
+    std::string path = std::string(PyValueParser::parse<std::string>(PyTuple_GetItem(args, 0)));
+    PyObject* parameter = PyTuple_GetItem(args, 1);
 
-    if (!processor) {
-        std::string msg = std::string("setPropertyMaxValue() no processor with name: ") + processorName;
-        PyErr_SetString(PyExc_TypeError, msg.c_str());
-        return 0;
-    }
-
-    Property* theProperty = processor->getPropertyByIdentifier(propertyID);
+    Property* theProperty = InviwoApplication::getPtr()->getProcessorNetwork()->getProperty(splitString(path, '.'));
 
     if (!theProperty) {
-        std::string msg = std::string("setPropertyMaxValue() no property with id: ") + propertyID;
+        std::string msg = std::string("setPropertyValue() no property with path: ") + path;
         PyErr_SetString(PyExc_TypeError, msg.c_str());
         return 0;
     }
@@ -121,29 +102,29 @@ PyObject* py_setPropertyMaxValue(PyObject* /*self*/, PyObject* args) {
     OrdinalProperty<vec4>*  ordinalVec4  = dynamic_cast<OrdinalProperty<vec4> *>(theProperty);
 
     if (ordinalFloat) {
-        ordinalFloat->setMaxValue(PyValueParser::parse<float>(args));
+        ordinalFloat->setMaxValue(PyValueParser::parse<float>(parameter));
     } else if (ordinalInt) {
-        ordinalInt->setMaxValue(PyValueParser::parse<int>(args));
+        ordinalInt->setMaxValue(PyValueParser::parse<int>(parameter));
     } else if (ordinalIvec2) {
-        ordinalIvec2->setMaxValue(PyValueParser::parse<ivec2>(args));
+        ordinalIvec2->setMaxValue(PyValueParser::parse<ivec2>(parameter));
     } else if (ordinalIvec3) {
-        ordinalIvec3->setMaxValue(PyValueParser::parse<ivec3>(args));
+        ordinalIvec3->setMaxValue(PyValueParser::parse<ivec3>(parameter));
     } else if (ordinalIvec4) {
-        ordinalIvec4->setMaxValue(PyValueParser::parse<ivec4>(args));
+        ordinalIvec4->setMaxValue(PyValueParser::parse<ivec4>(parameter));
     } else if (ordinalMat2) {
-        ordinalMat2->setMaxValue(PyValueParser::parse<mat2>(args));
+        ordinalMat2->setMaxValue(PyValueParser::parse<mat2>(parameter));
     } else if (ordinalMat3) {
-        ordinalMat3->setMaxValue(PyValueParser::parse<mat3>(args));
+        ordinalMat3->setMaxValue(PyValueParser::parse<mat3>(parameter));
     } else if (ordinalMat4) {
-        ordinalMat4->setMaxValue(PyValueParser::parse<mat4>(args));
+        ordinalMat4->setMaxValue(PyValueParser::parse<mat4>(parameter));
     } else if (ordinalVec2) {
-        ordinalVec2->setMaxValue(PyValueParser::parse<vec2>(args));
+        ordinalVec2->setMaxValue(PyValueParser::parse<vec2>(parameter));
     } else if (ordinalVec3) {
-        ordinalVec3->setMaxValue(PyValueParser::parse<vec3>(args));
+        ordinalVec3->setMaxValue(PyValueParser::parse<vec3>(parameter));
     } else if (ordinalVec4) {
-        ordinalVec4->setMaxValue(PyValueParser::parse<vec4>(args));
+        ordinalVec4->setMaxValue(PyValueParser::parse<vec4>(parameter));
     } else {
-        LogErrorCustom("inviwo_setPropertyMaxValue","Unknown parameter type");
+        LogErrorCustom("inviwo_setPropertyMaxValue","Unknown parameter type: " << theProperty->getClassIdentifier());
     }
 
     Py_RETURN_NONE;
@@ -157,20 +138,13 @@ PyObject* py_setPropertyMinValue(PyObject* /*self*/, PyObject* args) {
     if (!p.testParams(args))
         return 0;
 
-    std::string processorName = std::string(PyValueParser::parse<std::string>(PyTuple_GetItem(args, 0)));
-    std::string propertyID = std::string(PyValueParser::parse<std::string>(PyTuple_GetItem(args, 1)));
-    Processor* processor = InviwoApplication::getPtr()->getProcessorNetwork()->getProcessorByIdentifier(processorName);
+    std::string path = std::string(PyValueParser::parse<std::string>(PyTuple_GetItem(args, 0)));
+    PyObject* parameter = PyTuple_GetItem(args, 1);
 
-    if (!processor) {
-        std::string msg = std::string("setPropertyMinValue() no processor with name: ") + processorName;
-        PyErr_SetString(PyExc_TypeError, msg.c_str());
-        return 0;
-    }
-
-    Property* theProperty = processor->getPropertyByIdentifier(propertyID);
+    Property* theProperty = InviwoApplication::getPtr()->getProcessorNetwork()->getProperty(splitString(path, '.'));
 
     if (!theProperty) {
-        std::string msg = std::string("setPropertyMinValue() no property with id: ") + propertyID;
+        std::string msg = std::string("setPropertyValue() no property with path: ") + path;
         PyErr_SetString(PyExc_TypeError, msg.c_str());
         return 0;
     }
@@ -188,27 +162,27 @@ PyObject* py_setPropertyMinValue(PyObject* /*self*/, PyObject* args) {
     OrdinalProperty<vec4>*  ordinalVec4  = dynamic_cast<OrdinalProperty<vec4> *>(theProperty);
 
     if (ordinalFloat) {
-        ordinalFloat->setMinValue(PyValueParser::parse<float>(args));
+        ordinalFloat->setMinValue(PyValueParser::parse<float>(parameter));
     } else if (ordinalInt) {
-        ordinalInt->setMinValue(PyValueParser::parse<int>(args));
+        ordinalInt->setMinValue(PyValueParser::parse<int>(parameter));
     } else if (ordinalIvec2) {
-        ordinalIvec2->setMinValue(PyValueParser::parse<ivec2>(args));
+        ordinalIvec2->setMinValue(PyValueParser::parse<ivec2>(parameter));
     } else if (ordinalIvec3) {
-        ordinalIvec3->setMinValue(PyValueParser::parse<ivec3>(args));
+        ordinalIvec3->setMinValue(PyValueParser::parse<ivec3>(parameter));
     } else if (ordinalIvec4) {
-        ordinalIvec4->setMinValue(PyValueParser::parse<ivec4>(args));
+        ordinalIvec4->setMinValue(PyValueParser::parse<ivec4>(parameter));
     } else if (ordinalMat2) {
-        ordinalMat2->setMinValue(PyValueParser::parse<mat2>(args));
+        ordinalMat2->setMinValue(PyValueParser::parse<mat2>(parameter));
     } else if (ordinalMat3) {
-        ordinalMat3->setMinValue(PyValueParser::parse<mat3>(args));
+        ordinalMat3->setMinValue(PyValueParser::parse<mat3>(parameter));
     } else if (ordinalMat4) {
-        ordinalMat4->setMinValue(PyValueParser::parse<mat4>(args));
+        ordinalMat4->setMinValue(PyValueParser::parse<mat4>(parameter));
     } else if (ordinalVec2) {
-        ordinalVec2->setMinValue(PyValueParser::parse<vec2>(args));
+        ordinalVec2->setMinValue(PyValueParser::parse<vec2>(parameter));
     } else if (ordinalVec3) {
-        ordinalVec3->setMinValue(PyValueParser::parse<vec3>(args));
+        ordinalVec3->setMinValue(PyValueParser::parse<vec3>(parameter));
     } else if (ordinalVec4) {
-        ordinalVec4->setMinValue(PyValueParser::parse<vec4>(args));
+        ordinalVec4->setMinValue(PyValueParser::parse<vec4>(parameter));
     } else {
         LogErrorCustom("inviwo_setPropertyMinValue","Unknown parameter type");
     }
@@ -225,20 +199,12 @@ PyObject* py_getPropertyValue(PyObject* /*self*/, PyObject* args) {
     if (!p.testParams(args))
         return 0;
 
-    std::string processorName = std::string(PyValueParser::parse<std::string>(PyTuple_GetItem(args, 0)));
-    std::string propertyID = std::string(PyValueParser::parse<std::string>(PyTuple_GetItem(args, 1)));
-    Processor* processor = InviwoApplication::getPtr()->getProcessorNetwork()->getProcessorByIdentifier(processorName);
+    std::string path = std::string(PyValueParser::parse<std::string>(PyTuple_GetItem(args, 0)));
 
-    if (!processor) {
-        std::string msg = std::string("getPropertyValue() no processor with name: ") + processorName;
-        PyErr_SetString(PyExc_TypeError, msg.c_str());
-        return 0;
-    }
-
-    Property* theProperty = processor->getPropertyByIdentifier(propertyID);
+    Property* theProperty = InviwoApplication::getPtr()->getProcessorNetwork()->getProperty(splitString(path, '.'));
 
     if (!theProperty) {
-        std::string msg = std::string("getPropertyValue() no property with id: ") + propertyID;
+        std::string msg = std::string("setPropertyValue() no property with path: ") + path;
         PyErr_SetString(PyExc_TypeError, msg.c_str());
         return 0;
     }
@@ -255,20 +221,12 @@ PyObject* py_getPropertyMaxValue(PyObject* /*self*/, PyObject* args) {
     if (!p.testParams(args))
         return 0;
 
-    std::string processorName = std::string(PyValueParser::parse<std::string>(PyTuple_GetItem(args, 0)));
-    std::string propertyID = std::string(PyValueParser::parse<std::string>(PyTuple_GetItem(args, 1)));
-    Processor* processor = InviwoApplication::getPtr()->getProcessorNetwork()->getProcessorByIdentifier(processorName);
+    std::string path = std::string(PyValueParser::parse<std::string>(PyTuple_GetItem(args, 0)));
 
-    if (!processor) {
-        std::string msg = std::string("getPropertyMaxValue() no processor with name: ") + processorName;
-        PyErr_SetString(PyExc_TypeError, msg.c_str());
-        return 0;
-    }
-
-    Property* theProperty = processor->getPropertyByIdentifier(propertyID);
+    Property* theProperty = InviwoApplication::getPtr()->getProcessorNetwork()->getProperty(splitString(path, '.'));
 
     if (!theProperty) {
-        std::string msg = std::string("getPropertyMaxValue() no property with id: ") + propertyID;
+        std::string msg = std::string("setPropertyValue() no property with path: ") + path;
         PyErr_SetString(PyExc_TypeError, msg.c_str());
         return 0;
     }
@@ -296,20 +254,12 @@ PyObject* py_getPropertyMinValue(PyObject* /*self*/, PyObject* args) {
     if (!p.testParams(args))
         return 0;
 
-    std::string processorName = std::string(PyValueParser::parse<std::string>(PyTuple_GetItem(args, 0)));
-    std::string propertyID = std::string(PyValueParser::parse<std::string>(PyTuple_GetItem(args, 1)));
-    Processor* processor = InviwoApplication::getPtr()->getProcessorNetwork()->getProcessorByIdentifier(processorName);
+    std::string path = std::string(PyValueParser::parse<std::string>(PyTuple_GetItem(args, 0)));
 
-    if (!processor) {
-        std::string msg = std::string("getPropertyMinValue() no processor with name: ") + processorName;
-        PyErr_SetString(PyExc_TypeError, msg.c_str());
-        return 0;
-    }
-
-    Property* theProperty = processor->getPropertyByIdentifier(propertyID);
+    Property* theProperty = InviwoApplication::getPtr()->getProcessorNetwork()->getProperty(splitString(path, '.'));
 
     if (!theProperty) {
-        std::string msg = std::string("getPropertyMinValue() no property with id: ") + propertyID;
+        std::string msg = std::string("setPropertyValue() no property with path: ") + path;
         PyErr_SetString(PyExc_TypeError, msg.c_str());
         return 0;
     }
@@ -337,20 +287,12 @@ PyObject* py_clickButton(PyObject* /*self*/, PyObject* args) {
     if (!p.testParams(args))
         return 0;
 
-    std::string processorName = std::string(PyValueParser::parse<std::string>(PyTuple_GetItem(args, 0)));
-    std::string propertyID = std::string(PyValueParser::parse<std::string>(PyTuple_GetItem(args, 1)));
-    Processor* processor = InviwoApplication::getPtr()->getProcessorNetwork()->getProcessorByIdentifier(processorName);
+    std::string path = std::string(PyValueParser::parse<std::string>(PyTuple_GetItem(args, 0)));
 
-    if (!processor) {
-        std::string msg = std::string("clickButton() no processor with name: ") + processorName;
-        PyErr_SetString(PyExc_TypeError, msg.c_str());
-        return 0;
-    }
-
-    Property* theProperty = processor->getPropertyByIdentifier(propertyID);
+    Property* theProperty = InviwoApplication::getPtr()->getProcessorNetwork()->getProperty(splitString(path, '.'));
 
     if (!theProperty) {
-        std::string msg = std::string("clickButton() no property with id: ") + propertyID;
+        std::string msg = std::string("setPropertyValue() no property with path: ") + path;
         PyErr_SetString(PyExc_TypeError, msg.c_str());
         return 0;
     }
@@ -358,8 +300,7 @@ PyObject* py_clickButton(PyObject* /*self*/, PyObject* args) {
     ButtonProperty* button = dynamic_cast<ButtonProperty*>(theProperty);
 
     if (!button) {
-        std::string msg = std::string("clickButton() no button property with id: ") + propertyID + ", ("+propertyID  +" is of type "+
-                          theProperty->getClassIdentifier() +  ")";
+        std::string msg = std::string("clickButton() found property is not a ButtonProperty: ") + theProperty->getClassIdentifier();
         PyErr_SetString(PyExc_TypeError, msg.c_str());
         return 0;
     }
@@ -370,66 +311,52 @@ PyObject* py_clickButton(PyObject* /*self*/, PyObject* args) {
 
 
 PySetPropertyValueMethod::PySetPropertyValueMethod()
-    : processor_("processor")
-    , property_("property")
+    : path_("path")
     , value_("value")
 {
-    addParam(&processor_);
-    addParam(&property_);
+    addParam(&path_);
     addParam(&value_);
 }
 
 PySetPropertyMaxValueMethod::PySetPropertyMaxValueMethod()
-    : processor_("processor")
-    , property_("property")
+    : path_("path")
     , maxValue_("maxValue")
 {
-    addParam(&processor_);
-    addParam(&property_);
+    addParam(&path_);
     addParam(&maxValue_);
 }
 
 PySetPropertyMinValueMethod::PySetPropertyMinValueMethod()
-    : processor_("processor")
-    , property_("property")
+    : path_("path")
     , minValue_("minValue")
 {
-    addParam(&processor_);
-    addParam(&property_);
+    addParam(&path_);
     addParam(&minValue_);
 }
 
 PyGetPropertyValueMethod::PyGetPropertyValueMethod()
-    : processor_("processor")
-    , property_("property")
+    : path_("path")
 {
-    addParam(&processor_);
-    addParam(&property_);
+    addParam(&path_);
 }
 
 PyGetPropertyMaxValueMethod::PyGetPropertyMaxValueMethod()
-    : processor_("processor")
-    , property_("property")
+    : path_("path")
 {
-    addParam(&processor_);
-    addParam(&property_);
+    addParam(&path_);
 }
 
 PyGetPropertyMinValueMethod::PyGetPropertyMinValueMethod()
-    : processor_("processor")
-    , property_("property")
+    : path_("path")
 {
-    addParam(&processor_);
-    addParam(&property_);
+    addParam(&path_);
 }
 
 PyClickButtonMethod::PyClickButtonMethod()
-    : processor_("processor")
-    , property_("property")
+    : path_("path")
 {
-    addParam(&processor_);
-    addParam(&property_);
-}
+    addParam(&path_);
+    }
 
 
 

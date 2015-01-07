@@ -30,6 +30,8 @@
  *
  *********************************************************************************/
 
+#include "utils/structs.glsl"
+
 //
 // Fetch texture data using texture coordinates [0,1]
 //
