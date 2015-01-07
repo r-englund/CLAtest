@@ -99,12 +99,12 @@ struct ImageParameters {
 };
 
 
-struct LIGHT_PARAMETERS {
-    vec3 position_; 
-    vec3 ambientColor_;
-    vec3 diffuseColor_; 
-    vec3 specularColor_;
-    int specularExponent_;
+struct LightParameters {
+    vec3 position; 
+    vec3 ambientColor;
+    vec3 diffuseColor; 
+    vec3 specularColor;
+    int specularExponent;
 };
 
 
@@ -140,6 +140,14 @@ struct VOLUME_PARAMETERS {
 struct TEXTURE_PARAMETERS {
     vec2 dimensions_;
     vec2 dimensionsRCP_;
+};
+
+struct LIGHT_PARAMETERS {
+    vec3 position_; 
+    vec3 ambientColor_;
+    vec3 diffuseColor_; 
+    vec3 specularColor_;
+    int specularExponent_;
 };
 */
 

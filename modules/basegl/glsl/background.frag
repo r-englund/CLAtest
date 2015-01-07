@@ -42,7 +42,7 @@ uniform vec4 color2_;
 
 vec4 checkerBoard(vec2 texCoords) {
     int a = int(gl_FragCoord.x) / checkerBoardSize_.x;
-    int b = int(outportParameters_.dimensions_.y - gl_FragCoord.y) / checkerBoardSize_.y;
+    int b = int(outportParameters_.dimensions.y - gl_FragCoord.y) / checkerBoardSize_.y;
     
     return  (((a + 1) % 2)*((b + 1) % 2) + (a % 2)*(b % 2)) * color1_ +
             (((a + 1) % 2)*(b % 2) + (a % 2)*((b + 1) % 2)) * color2_;

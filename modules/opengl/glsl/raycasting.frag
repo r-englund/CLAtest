@@ -56,7 +56,7 @@ uniform sampler2D exitDepthTex_;
 
 uniform ImageParameters outportParameters_;
 
-uniform LIGHT_PARAMETERS light_;
+uniform LightParameters light_;
 uniform CameraParameters camera_;
 uniform int channel_;
 

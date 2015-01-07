@@ -58,7 +58,7 @@ uniform sampler2D exitColorTex_;
 uniform sampler2D exitDepthTex_;
 uniform ImageParameters exitParameters_;
 
-uniform LIGHT_PARAMETERS light_;
+uniform LightParameters light_;
 uniform CameraParameters camera_;
 
 uniform float samplingRate_;

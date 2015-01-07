@@ -32,7 +32,7 @@
 
 #include "utils/shading.glsl"
 
-uniform LIGHT_PARAMETERS light_;
+uniform LightParameters light_;
 uniform GeometryParameters geometry_;
 uniform CameraParameters camera_;
 

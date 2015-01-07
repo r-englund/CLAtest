@@ -32,7 +32,7 @@
 
 #include "utils/shading.glsl"
 
-uniform LIGHT_PARAMETERS light_;
+uniform LightParameters light_;
 uniform CameraParameters camera_;
 
 in vec4 worldPosition_;
