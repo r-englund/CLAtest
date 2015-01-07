@@ -33,7 +33,7 @@ def downloadAndCompareReferenceImage(ws,i):
    ivwRef.downloadInviwoReferenceImage(ws,refFolder + ws + str(i+1)+ ".png",i+1)
    comparisionStatus = filecmp.cmp(imgFolder + ws + str(i+1)+ ".png",refFolder + ws + str(i+1)+ ".png")
    if comparisionStatus==False:
-      print ws + ' canvassnapshot-' + str(i+1) + ' FAILED'
+      print(ws + ' canvassnapshot-' + str(i+1) + ' FAILED')
 
 
 
@@ -52,19 +52,19 @@ def workspace(f,ws):
       ########## Enable this for comparing with reference image
       downloadAndCompareReferenceImage(ws,i)
 
-print "Mem at start: " + str(inviwo.getMemoryUsage() / (1024.0*1024.0)) + " M"
-print workspaceFolder
+print("Mem at start: " + str(inviwo.getMemoryUsage() / (1024.0*1024.0)) + " M")
+print(workspaceFolder)
 for filename in os.listdir(workspaceFolder):
     if filename.endswith(".inv"):
         if filename.startswith("vrn"):
             continue
         if "gromac" in filename:
             continue
-        print "Loading " + filename + ", " + str(inviwo.getMemoryUsage() / (1024.0*1024.0)) + " M"
+        print("Loading " + filename + ", " + str(inviwo.getMemoryUsage() / (1024.0*1024.0)) + " M")
         workspace(workspaceFolder + filename,filename)
-        print " "
+        print(" ")
     
 end = time.clock()
 
-print "Mem at end: " + str(inviwo.getMemoryUsage() / (1024.0*1024.0)) + " M"
-print str(end - start) + " sec"
+print("Mem at end: " + str(inviwo.getMemoryUsage() / (1024.0*1024.0)) + " M")
+print(str(end - start) + " sec")
