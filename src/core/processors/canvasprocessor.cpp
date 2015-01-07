@@ -196,7 +196,7 @@ void CanvasProcessor::saveImageLayer() {
 void CanvasProcessor::saveImageLayer(std::string snapshotPath) {
     const Image* image = inport_.getData();
     if (image) {
-        const Layer* layer = image->getColorLayer();
+        const Layer* layer = image->getLayer(static_cast<LayerType>(visibleLayer_.get()));
         if (layer){
             std::string fileExtension = filesystem::getFileExtension(snapshotPath);
             DataWriterType<Layer>* writer = NULL;
