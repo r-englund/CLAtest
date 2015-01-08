@@ -100,12 +100,13 @@ Volume* PVMVolumeReader::readMetaData(std::string filePath) {
         filePath);
 
     if (format == DataUINT16::get()){
-        DataUINT16::type* d = reinterpret_cast<DataUINT16::type*>(data);
-        DataUINT16::type m = 0;
-        for (int i = 0; i < dim.x*dim.y*dim.z; i++) {
-            d[i] = (d[i] >> 8) | (d[i] << 8);
-            if (d[i] > m)
-                m = d[i];
+        size_t bytes = format->getBytesAllocated();
+        size_t size = dim.x*dim.y*dim.z*bytes;
+        swapbytes(data, static_cast<unsigned int>(size));
+        DataUINT16::type m = 0, c = 0;
+        for (size_t i = 0; i < size; i += bytes) {
+            c = (data[i+1] << 8) | data[i];
+            if (c > m) m = c;
         }
         if (m <= DataUINT12::max()) {
             format = DataUINT12::get();
@@ -119,28 +120,28 @@ Volume* PVMVolumeReader::readMetaData(std::string filePath) {
 
     if (description){
         ss << description;
-        volume->setMetaData<StringMetaData>("Description", ss.str());
+        volume->setMetaData<StringMetaData>("description", ss.str());
     }
 
     if (courtesy){
         ss.clear();
         ss.str("");
         ss << courtesy;
-        volume->setMetaData<StringMetaData>("Courtesy", ss.str());
+        volume->setMetaData<StringMetaData>("courtesy", ss.str());
     }
 
     if (parameter){
         ss.clear();
         ss.str("");
         ss << parameter;
-        volume->setMetaData<StringMetaData>("Parameter", ss.str());
+        volume->setMetaData<StringMetaData>("parameter", ss.str());
     }
 
     if (comment){
         ss.clear();
         ss.str("");
         ss << comment;
-        volume->setMetaData<StringMetaData>("Comment", ss.str());
+        volume->setMetaData<StringMetaData>("comment", ss.str());
     }
 
     if (spacing != vec3(0.0f)) {
@@ -165,10 +166,10 @@ Volume* PVMVolumeReader::readMetaData(std::string filePath) {
     size_t bytes = dim.x * dim.y * dim.z * (format->getBytesAllocated());
     std::string size = formatBytesToString(bytes);
     LogInfo("Loaded volume: " << filePath << " size: " << size);
-    printMetaInfo(volume, "Description");
-    printMetaInfo(volume, "Courtesy");
-    printMetaInfo(volume, "Parameter");
-    printMetaInfo(volume, "Comment");
+    printMetaInfo(volume, "description");
+    printMetaInfo(volume, "courtesy");
+    printMetaInfo(volume, "parameter");
+    printMetaInfo(volume, "comment");
 
     return volume;
 }
@@ -186,6 +187,7 @@ void PVMVolumeReader::printMetaInfo(MetaDataOwner* metaDataOwner, std::string ke
     if (metaData){
         std::string metaStr = metaData->get();
         replaceInString(metaStr, "\n", ", ");
+        key[0] = toupper(key[0]);
         LogInfo(key << ": " << metaStr);
     }
 }

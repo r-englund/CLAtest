@@ -75,13 +75,13 @@ TIDDS_API unsigned char *readPVMvolume(const char *filename,
                              unsigned char **parameter=NULL,
                              unsigned char **comment=NULL);
 
-unsigned int checksum(unsigned const char *data,unsigned int bytes);
+TIDDS_API unsigned int checksum(unsigned const char *data, unsigned int bytes);
 
-void swapbytes(unsigned char *data,unsigned int bytes);
-void convbytes(unsigned char *data,unsigned int bytes);
-void convfloat(unsigned char *data,unsigned int bytes);
+TIDDS_API void swapbytes(unsigned char *data, unsigned int bytes);
+TIDDS_API void convbytes(unsigned char *data, unsigned int bytes);
+TIDDS_API void convfloat(unsigned char *data, unsigned int bytes);
 
-unsigned char *quantize(unsigned char *volume,
+TIDDS_API unsigned char *quantize(unsigned char *volume,
                         unsigned int width,unsigned int height,unsigned int depth,
                         BOOLINT nofree=FALSE,
                         BOOLINT linear=FALSE,
