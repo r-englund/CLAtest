@@ -115,7 +115,7 @@ ProcessorGraphicsItem::ProcessorGraphicsItem(Processor* processor)
     classLabel_->setText(QString::fromStdString(processor_->getDisplayName()));
     processor_->ProcessorObservable::addObserver(this);
 
-    processorMeta_ = processor->getMetaData<ProcessorMetaData>("ProcessorMetaData");
+    processorMeta_ = processor->getMetaData<ProcessorMetaData>(ProcessorMetaData::CLASS_IDENTIFIER);
 
     linkItem_ = new ProcessorLinkGraphicsItem(this);
 

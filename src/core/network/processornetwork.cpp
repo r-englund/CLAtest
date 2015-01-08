@@ -495,7 +495,7 @@ private:
     }
 
     vec2 getPosition(const Processor *processor) {
-        ProcessorMetaData *meta = processor->getMetaData<ProcessorMetaData>("ProcessorMetaData");
+        ProcessorMetaData *meta = processor->getMetaData<ProcessorMetaData>(ProcessorMetaData::CLASS_IDENTIFIER);
         if (meta) {
             return static_cast<vec2>(meta->getPosition());
         } else {
@@ -798,7 +798,7 @@ Property* ProcessorNetwork::getProperty(std::vector<std::string> path) const {
     return NULL;
 }
 
-const int ProcessorNetwork::processorNetworkVersion_ = 6;
+const int ProcessorNetwork::processorNetworkVersion_ = 7;
 
 
 ProcessorNetwork::NetworkConverter::NetworkConverter(int from)
@@ -818,6 +818,8 @@ bool ProcessorNetwork::NetworkConverter::convert(TxElement* root) {
             traverseNodes(root, &ProcessorNetwork::NetworkConverter::updateCameraToComposite);
         case 5:
             traverseNodes(root, &ProcessorNetwork::NetworkConverter::updateMetaDataType);
+        case 6:
+            traverseNodes(root, &ProcessorNetwork::NetworkConverter::updateMetaDataKeys);
         default:
             break;
     }
@@ -1045,8 +1047,26 @@ void ProcessorNetwork::NetworkConverter::updateCameraToComposite(TxElement* node
 
           LogWarn("Camera property updated to composite property. Workspace requires resave")
         }
+    }
+}
 
+void ProcessorNetwork::NetworkConverter::updateMetaDataKeys(TxElement* node) {
+    std::string renamed[] = {
+        "PositionMetaData",
+        "ProcessorMetaData",
+        "ProcessorWidgetMetaData",
+        "PropertyEditorWidgetMetaData"
+    };
 
+    std::string key;
+    node->GetValue(&key);
+
+    if (key == "MetaDataItem") {
+        std::string keyname = node->GetAttributeOrDefault("key", "");
+        int size = sizeof(renamed) / sizeof(std::string);
+        if (std::find(renamed, renamed + size, keyname) != renamed + size) {
+            node->SetAttribute("key", "org.inviwo." + keyname);
+        }
     }
 }
 

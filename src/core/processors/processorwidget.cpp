@@ -46,7 +46,8 @@ ProcessorWidget::~ProcessorWidget() {
 }
 
 void ProcessorWidget::initialize() {
-    metaData_ = processor_->createMetaData<ProcessorWidgetMetaData>("ProcessorWidgetMetaData");
+    metaData_ = processor_->createMetaData<ProcessorWidgetMetaData>(
+        ProcessorWidgetMetaData::CLASS_IDENTIFIER);
 }
 
 void ProcessorWidget::deinitialize() { metaData_ = NULL; }

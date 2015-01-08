@@ -112,9 +112,9 @@ void CanvasProcessor::initialize() {
 void CanvasProcessor::deinitialize() {
     if (processorWidget_) {
         processorWidget_->hide();
-        canvasWidget_ = dynamic_cast<CanvasProcessorWidget*>(processorWidget_);
         canvasWidget_->getCanvas()->setEventPropagator(NULL);
     }
+    canvasWidget_ = NULL;
     Processor::deinitialize();
 }
 

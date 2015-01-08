@@ -291,8 +291,16 @@ bool NetworkEditor::addPortInspector(Outport* port, QPointF pos) {
         network->lock();
         // Add processors to the network
         CanvasProcessor* canvasProcessor = portInspector->getCanvasProcessor();
+        canvasProcessor->deinitialize();
         std::vector<Processor*> processors = portInspector->getProcessors();
-        for (size_t i = 0; i < processors.size(); i++) network->addProcessor(processors[i]);
+        for (size_t i = 0; i < processors.size(); i++) {
+            // For Debugging
+            //ProcessorMetaData* meta = processors[i]->getMetaData<ProcessorMetaData>(ProcessorMetaData::CLASS_IDENTIFIER);
+            //meta->setVisibile(true);
+            network->addProcessor(processors[i]);
+        }
+        canvasProcessor->initialize(); // This is needed since, we need to call initialize after we
+                                       // add the canvas to the processor.
 
         // Connect the port to inspect to the inports of the inspector network
         Outport* outport = dynamic_cast<Outport*>(port);
@@ -379,6 +387,9 @@ std::vector<unsigned char>* NetworkEditor::renderPortInspectorImage(Port* port, 
             network->addProcessor(processors[i]);
         }
 
+        canvasProcessor->initialize(); // This is needed since, we need to call initialize after we
+                                       // add the canvas to the processor.
+
         // Connect the port to inspect to the inports of the inspector network
         Outport* outport = dynamic_cast<Outport*>(port);
         std::vector<Inport*> inports = portInspector->getInports();
@@ -460,7 +471,7 @@ void NetworkEditor::addExternalNetwork(std::string fileName, std::string identif
     for (size_t i = 0; i < processors.size(); i++) {
         std::string newIdentifier = identifierPrefix + "_" + processors[i]->getIdentifier();
         processors[i]->setIdentifier(newIdentifier);
-        ProcessorMetaData* meta = processors[i]->getMetaData<ProcessorMetaData>("ProcessorMetaData");
+        ProcessorMetaData* meta = processors[i]->getMetaData<ProcessorMetaData>(ProcessorMetaData::CLASS_IDENTIFIER);
         meta->setPosition(meta->getPosition() + pos);
         network->addProcessor(processors[i]);
     }
@@ -814,7 +825,7 @@ void NetworkEditor::contextMenuEvent(QGraphicsSceneContextMenuEvent* e) {
         ProcessorOutportGraphicsItem* outport =
             qgraphicsitem_cast<ProcessorOutportGraphicsItem*>(graphicsItems[i]);
         if (outport) {
-            QAction* showPortInsector = menu.addAction(tr("Show Port Inspector"));
+            QAction* showPortInsector = menu.addAction(tr("Port Inspector"));
             showPortInsector->setCheckable(true);
             if (portInspectors_.find(outport->getPort()) != portInspectors_.end()) {
                 showPortInsector->setChecked(true);
@@ -828,7 +839,7 @@ void NetworkEditor::contextMenuEvent(QGraphicsSceneContextMenuEvent* e) {
         ProcessorInportGraphicsItem* inport =
             qgraphicsitem_cast<ProcessorInportGraphicsItem*>(graphicsItems[i]);
         if (inport) {
-            QAction* showPortInsector = menu.addAction(tr("Show Port Inspector"));
+            QAction* showPortInsector = menu.addAction(tr("Port Inspector"));
             showPortInsector->setCheckable(true);
             if (portInspectors_.find(inport->getPort()->getConnectedOutport()) !=
                 portInspectors_.end()) {
@@ -1008,7 +1019,7 @@ void NetworkEditor::dropEvent(QGraphicsSceneDragDropEvent* e) {
 
             clearSelection();
 
-            ProcessorMetaData* meta = processor->getMetaData<ProcessorMetaData>("ProcessorMetaData");
+            ProcessorMetaData* meta = processor->getMetaData<ProcessorMetaData>(ProcessorMetaData::CLASS_IDENTIFIER);
 
             if (oldProcessorTarget_) {
                 meta->setPosition(
@@ -1518,19 +1529,22 @@ void NetworkEditor::contextMenuResetTimeMeasurements(EditorGraphicsItem* item) {
 
 void NetworkEditor::onProcessorNetworkDidAddProcessor(Processor* processor) {
     setModified(true);
-    ProcessorMetaData* meta = processor->getMetaData<ProcessorMetaData>("ProcessorMetaData");
+    ProcessorMetaData* meta =
+        processor->getMetaData<ProcessorMetaData>(ProcessorMetaData::CLASS_IDENTIFIER);
 
     addProcessorRepresentations(processor, QPointF(meta->getPosition().x, meta->getPosition().y),
-        meta->isVisible(), meta->isSelected());
-    
+                                meta->isVisible(), meta->isSelected());
+
     // Workaround: Do not cache if invisible. The renderPortInspectorImage will remove widgets,
-    // before the event has add time to add them... 
-    if (!meta->isSelected() && meta->isVisible()){
-        // Create a delay object whoes only job it is to post an cache event, and then delete itself.
+    // before the event has add time to add them...
+    if (!meta->isSelected() && meta->isVisible()) {
+        // Create a delay object whoes only job it is to post an cache event, and then delete
+        // itself.
         CacheDelay* delay = new CacheDelay(processor->getIdentifier(), propertyListWidget_);
         QTimer::singleShot(2000, delay, SLOT(postEvent()));
     }
 }
+
 void NetworkEditor::onProcessorNetworkWillRemoveProcessor(Processor* processor) {
     setModified(true);
     

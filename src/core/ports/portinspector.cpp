@@ -137,7 +137,7 @@ void PortInspector::initialize() {
                 if (!inports[i]->isConnected()) inPorts_.push_back(inports[i]);
             }
 
-            ProcessorMetaData* meta = processor->getMetaData<ProcessorMetaData>("ProcessorMetaData");
+            ProcessorMetaData* meta = processor->getMetaData<ProcessorMetaData>(ProcessorMetaData::CLASS_IDENTIFIER);
             meta->setVisibile(false);
             meta->setSelected(false);
            

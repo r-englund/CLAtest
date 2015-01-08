@@ -25,7 +25,7 @@
  * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- * 
+ *
  * Contact: Rickard Englund
  *
  *********************************************************************************/
@@ -38,30 +38,30 @@
 #include <inviwo/core/metadata/metadata.h>
 #include <inviwo/core/metadata/positionmetadata.h>
 
-
 namespace inviwo {
 
 class IVW_CORE_API ProcessorMetaData : public MetaData {
-
 public:
     ProcessorMetaData();
     ProcessorMetaData(const ProcessorMetaData& rhs);
     ProcessorMetaData& operator=(const ProcessorMetaData& that);
     virtual ~ProcessorMetaData();
 
-    virtual std::string getClassIdentifier() const { return "org.inviwo.ProcessorMetaData"; }
+    virtual std::string getClassIdentifier() const { return CLASS_IDENTIFIER; }
     virtual ProcessorMetaData* clone() const;
 
     virtual void serialize(IvwSerializer& s) const;
     virtual void deserialize(IvwDeserializer& d);
     virtual bool equal(const MetaData& rhs) const;
 
-    void setPosition(const ivec2 &pos);
-    ivec2 getPosition()const;
+    void setPosition(const ivec2& pos);
+    ivec2 getPosition() const;
     void setVisibile(bool visibility);
-    bool isVisible()const;
+    bool isVisible() const;
     void setSelected(bool selection);
-    bool isSelected()const;
+    bool isSelected() const;
+
+    static const std::string CLASS_IDENTIFIER;
 
 private:
     ivec2 position_;
@@ -69,6 +69,6 @@ private:
     bool selection_;
 };
 
-} // namespace
+}  // namespace
 
-#endif // IVW_PROCESSORMETADATA_H
+#endif  // IVW_PROCESSORMETADATA_H
