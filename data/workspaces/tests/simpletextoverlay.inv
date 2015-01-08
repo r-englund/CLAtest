@@ -1,9 +1,9 @@
 <?xml version="1.0" ?>
 <InviwoTreeData version="1.0">
     <!-- Don't edit the following code -->
-    <ProcessorNetworkVersion content="6" />
+    <ProcessorNetworkVersion content="7" />
     <Processors>
-        <Processor type="org.inviwo.CanvasGL" identifier="CanvasGL" id="ref1">
+        <Processor type="org.inviwo.CanvasGL" identifier="CanvasGL" id="ref3">
             <Properties>
                 <Property type="org.inviwo.CompositeProperty" identifier="inputSize" key="inputSize">
                     <Properties>
@@ -28,33 +28,33 @@
                 <Property type="org.inviwo.OptionPropertyInt" identifier="visibleLayer" key="visibleLayer" />
             </Properties>
             <MetaDataMap>
-                <MetaDataItem type="org.inviwo.ProcessorMetaData" key="ProcessorMetaData">
+                <MetaDataItem type="org.inviwo.ProcessorMetaData" key="org.inviwo.ProcessorMetaData">
                     <position x="-625" y="-450" />
                     <visibility content="1" />
                     <selection content="0" />
                 </MetaDataItem>
-                <MetaDataItem type="org.inviwo.ProcessorWidgetMetaData" key="ProcessorWidgetMetaData">
-                    <position x="235" y="469" />
+                <MetaDataItem type="org.inviwo.ProcessorWidgetMetaData" key="org.inviwo.ProcessorWidgetMetaData">
+                    <position x="235" y="465" />
                     <dimension x="256" y="256" />
                     <visibility content="1" />
                 </MetaDataItem>
             </MetaDataMap>
         </Processor>
-        <Processor type="org.inviwo.FirstIVWProcessor" identifier="FirstIVWProcessor" id="ref0">
+        <Processor type="org.inviwo.FirstIVWProcessor" identifier="FirstIVWProcessor" id="ref2">
             <Properties>
                 <Property type="org.inviwo.FloatVec3Property" identifier="color" key="color">
                     <value x="1" y="0.60000002" z="1" />
                 </Property>
             </Properties>
             <MetaDataMap>
-                <MetaDataItem type="org.inviwo.ProcessorMetaData" key="ProcessorMetaData">
+                <MetaDataItem type="org.inviwo.ProcessorMetaData" key="org.inviwo.ProcessorMetaData">
                     <position x="-625" y="-675" />
                     <visibility content="1" />
                     <selection content="0" />
                 </MetaDataItem>
             </MetaDataMap>
         </Processor>
-        <Processor type="org.inviwo.TextOverlayGL" identifier="TextOverlayGL" id="ref2">
+        <Processor type="org.inviwo.TextOverlayGL" identifier="TextOverlayGL" id="ref1">
             <Properties>
                 <Property type="org.inviwo.OptionPropertyInt" identifier="Font size" key="Font size" />
                 <Property type="org.inviwo.FloatVec2Property" identifier="Position" key="Position">
@@ -69,14 +69,14 @@
                 </Property>
             </Properties>
             <MetaDataMap>
-                <MetaDataItem type="org.inviwo.ProcessorMetaData" key="ProcessorMetaData">
+                <MetaDataItem type="org.inviwo.ProcessorMetaData" key="org.inviwo.ProcessorMetaData">
                     <position x="-625" y="-600" />
                     <visibility content="1" />
                     <selection content="0" />
                 </MetaDataItem>
             </MetaDataMap>
         </Processor>
-        <Processor type="org.inviwo.TextOverlayGL" identifier="TextOverlayGL1" id="ref3">
+        <Processor type="org.inviwo.TextOverlayGL" identifier="TextOverlayGL1" id="ref0">
             <Properties>
                 <Property type="org.inviwo.OptionPropertyInt" identifier="Font size" key="Font size" />
                 <Property type="org.inviwo.FloatVec2Property" identifier="Position" key="Position">
@@ -91,7 +91,7 @@
                 </Property>
             </Properties>
             <MetaDataMap>
-                <MetaDataItem type="org.inviwo.ProcessorMetaData" key="ProcessorMetaData">
+                <MetaDataItem type="org.inviwo.ProcessorMetaData" key="org.inviwo.ProcessorMetaData">
                     <position x="-625" y="-525" />
                     <visibility content="1" />
                     <selection content="0" />
@@ -102,26 +102,26 @@
     <Connections>
         <Connection>
             <OutPort identifier="outport">
-                <Processor type="org.inviwo.TextOverlayGL" identifier="TextOverlayGL1" reference="ref3" />
+                <Processor type="org.inviwo.TextOverlayGL" identifier="TextOverlayGL1" reference="ref0" />
             </OutPort>
             <InPort identifier="inport">
-                <Processor type="org.inviwo.CanvasGL" identifier="CanvasGL" reference="ref1" />
+                <Processor type="org.inviwo.CanvasGL" identifier="CanvasGL" reference="ref3" />
             </InPort>
         </Connection>
         <Connection>
             <OutPort identifier="outport">
-                <Processor type="org.inviwo.TextOverlayGL" identifier="TextOverlayGL" reference="ref2" />
+                <Processor type="org.inviwo.TextOverlayGL" identifier="TextOverlayGL" reference="ref1" />
             </OutPort>
             <InPort identifier="inport">
-                <Processor type="org.inviwo.TextOverlayGL" identifier="TextOverlayGL1" reference="ref3" />
+                <Processor type="org.inviwo.TextOverlayGL" identifier="TextOverlayGL1" reference="ref0" />
             </InPort>
         </Connection>
         <Connection>
             <OutPort identifier="outport">
-                <Processor type="org.inviwo.FirstIVWProcessor" identifier="FirstIVWProcessor" reference="ref0" />
+                <Processor type="org.inviwo.FirstIVWProcessor" identifier="FirstIVWProcessor" reference="ref2" />
             </OutPort>
             <InPort identifier="inport">
-                <Processor type="org.inviwo.TextOverlayGL" identifier="TextOverlayGL" reference="ref2" />
+                <Processor type="org.inviwo.TextOverlayGL" identifier="TextOverlayGL" reference="ref1" />
             </InPort>
         </Connection>
     </Connections>

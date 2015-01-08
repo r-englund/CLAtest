@@ -1,123 +1,75 @@
 <?xml version="1.0" ?>
 <InviwoTreeData version="1.0">
     <!-- Don't edit the following code -->
-    <ProcessorNetworkVersion content="4" />
+    <ProcessorNetworkVersion content="7" />
     <Processors>
-        <Processor type="org.inviwo.Background" identifier="Background" id="ref1">
+        <Processor type="org.inviwo.Background" identifier="Background" id="ref0">
             <Properties>
-                <Property type="org.inviwo.ButtonProperty" identifier="Switch colors" displayName="switch colors" key="Switch colors">
-                    <usageMode content="0" />
-                    <visible content="1" />
-                    <MetaDataMap />
-                </Property>
-                <Property type="org.inviwo.OptionPropertyInt" identifier="backgroundStyle" displayName="Style" key="backgroundStyle">
-                    <usageMode content="0" />
-                    <visible content="1" />
-                    <MetaDataMap />
-                </Property>
-                <Property type="org.inviwo.IntVec2Property" identifier="checkerBoardSize" displayName="Checker Board Size" key="checkerBoardSize">
-                    <usageMode content="0" />
+                <Property type="org.inviwo.ButtonProperty" identifier="Switch colors" key="Switch colors" />
+                <Property type="org.inviwo.OptionPropertyInt" identifier="backgroundStyle" key="backgroundStyle" />
+                <Property type="org.inviwo.IntVec2Property" identifier="checkerBoardSize" key="checkerBoardSize">
                     <visible content="0" />
-                    <MetaDataMap />
                 </Property>
-                <Property type="org.inviwo.FloatVec4Property" identifier="color1" displayName="Color 1" key="color1">
+                <Property type="org.inviwo.FloatVec4Property" identifier="color1" key="color1">
                     <semantics semantics="Color" />
-                    <usageMode content="0" />
-                    <visible content="1" />
-                    <MetaDataMap />
                     <value x="0.24705882" y="0.26274511" z="0.33333334" w="1" />
                 </Property>
-                <Property type="org.inviwo.FloatVec4Property" identifier="color2" displayName="Color 2" key="color2">
+                <Property type="org.inviwo.FloatVec4Property" identifier="color2" key="color2">
                     <semantics semantics="Color" />
-                    <usageMode content="0" />
-                    <visible content="1" />
-                    <MetaDataMap />
                     <value x="1" y="0.26666668" z="0.17254902" w="1" />
                 </Property>
             </Properties>
             <MetaDataMap>
-                <MetaDataItem type="ProcessorMetaData" key="ProcessorMetaData">
+                <MetaDataItem type="org.inviwo.ProcessorMetaData" key="org.inviwo.ProcessorMetaData">
                     <position x="-650" y="-675" />
                     <visibility content="1" />
                     <selection content="0" />
                 </MetaDataItem>
             </MetaDataMap>
         </Processor>
-        <Processor type="org.inviwo.CanvasGL" identifier="Canvas" id="ref0">
+        <Processor type="org.inviwo.CanvasGL" identifier="Canvas" id="ref2">
             <Properties>
-                <Property type="org.inviwo.CompositeProperty" identifier="inputSize" displayName="Input Dimension Parameters" key="inputSize">
-                    <usageMode content="0" />
-                    <visible content="1" />
-                    <MetaDataMap />
+                <Property type="org.inviwo.CompositeProperty" identifier="inputSize" key="inputSize">
                     <Properties>
                         <Property type="org.inviwo.FloatProperty" identifier="aspectRatioScaling" displayName="Aspect Ratio Scaling" key="aspectRatioScaling">
-                            <usageMode content="0" />
                             <visible content="0" />
-                            <MetaDataMap />
                         </Property>
                         <Property type="org.inviwo.IntVec2Property" identifier="customInputDimensions" displayName="Input Image Dimensions" key="customInputDimensions">
-                            <usageMode content="0" />
                             <visible content="0" />
                             <readonly content="1" />
-                            <MetaDataMap />
                         </Property>
-                        <Property type="org.inviwo.IntVec2Property" identifier="dimensions" displayName="Dimensions" key="dimensions">
-                            <usageMode content="0" />
-                            <visible content="1" />
-                            <MetaDataMap />
-                        </Property>
-                        <Property type="org.inviwo.BoolProperty" identifier="enableCustomInputDimensions" displayName="Enable Custom Input Dimensions" key="enableCustomInputDimensions">
-                            <usageMode content="0" />
-                            <visible content="1" />
-                            <MetaDataMap />
-                        </Property>
+                        <Property type="org.inviwo.IntVec2Property" identifier="dimensions" displayName="Dimensions" key="dimensions" />
+                        <Property type="org.inviwo.BoolProperty" identifier="enableCustomInputDimensions" displayName="Enable Custom Input Dimensions" key="enableCustomInputDimensions" />
                         <Property type="org.inviwo.BoolProperty" identifier="keepAspectRatio" displayName="Keep Aspect Ratio" key="keepAspectRatio">
-                            <usageMode content="0" />
                             <visible content="0" />
-                            <MetaDataMap />
                         </Property>
                     </Properties>
                 </Property>
-                <Property type="org.inviwo.DirectoryProperty" identifier="layerDir" displayName="Output Directory" key="layerDir">
-                    <usageMode content="0" />
-                    <visible content="1" />
-                    <MetaDataMap />
+                <Property type="org.inviwo.DirectoryProperty" identifier="layerDir" key="layerDir">
                     <directory content="../../../../../../" />
                 </Property>
-                <Property type="org.inviwo.ButtonProperty" identifier="saveLayer" displayName="Save Image Layer" key="saveLayer">
-                    <usageMode content="0" />
-                    <visible content="1" />
-                    <MetaDataMap />
-                </Property>
-                <Property type="org.inviwo.OptionPropertyInt" identifier="visibleLayer" displayName="Visible Layer" key="visibleLayer">
-                    <usageMode content="0" />
-                    <visible content="1" />
-                    <MetaDataMap />
-                </Property>
+                <Property type="org.inviwo.ButtonProperty" identifier="saveLayer" key="saveLayer" />
+                <Property type="org.inviwo.OptionPropertyInt" identifier="visibleLayer" key="visibleLayer" />
             </Properties>
             <MetaDataMap>
-                <MetaDataItem type="ProcessorMetaData" key="ProcessorMetaData">
+                <MetaDataItem type="org.inviwo.ProcessorMetaData" key="org.inviwo.ProcessorMetaData">
                     <position x="-650" y="-525" />
                     <visibility content="1" />
-                    <selection content="1" />
+                    <selection content="0" />
                 </MetaDataItem>
-                <MetaDataItem type="ProcessorWidgetMetaData" key="ProcessorWidgetMetaData">
-                    <position x="390" y="162" />
+                <MetaDataItem type="org.inviwo.ProcessorWidgetMetaData" key="org.inviwo.ProcessorWidgetMetaData">
+                    <position x="390" y="158" />
                     <dimension x="256" y="256" />
                     <visibility content="1" />
                 </MetaDataItem>
             </MetaDataMap>
         </Processor>
-        <Processor type="org.inviwo.GrayscaleCL" identifier="Grayscale" id="ref2">
+        <Processor type="org.inviwo.GrayscaleCL" identifier="Grayscale" id="ref1">
             <Properties>
-                <Property type="org.inviwo.BoolProperty" identifier="glsharing" displayName="Use OpenGL sharing" key="glsharing">
-                    <usageMode content="0" />
-                    <visible content="1" />
-                    <MetaDataMap />
-                </Property>
+                <Property type="org.inviwo.BoolProperty" identifier="glsharing" key="glsharing" />
             </Properties>
             <MetaDataMap>
-                <MetaDataItem type="ProcessorMetaData" key="ProcessorMetaData">
+                <MetaDataItem type="org.inviwo.ProcessorMetaData" key="org.inviwo.ProcessorMetaData">
                     <position x="-650" y="-600" />
                     <visibility content="1" />
                     <selection content="0" />
@@ -128,18 +80,18 @@
     <Connections>
         <Connection>
             <OutPort identifier="outport">
-                <Processor type="org.inviwo.Background" identifier="Background" reference="ref1" />
+                <Processor type="org.inviwo.Background" identifier="Background" reference="ref0" />
             </OutPort>
             <InPort identifier="color image">
-                <Processor type="org.inviwo.GrayscaleCL" identifier="Grayscale" reference="ref2" />
+                <Processor type="org.inviwo.GrayscaleCL" identifier="Grayscale" reference="ref1" />
             </InPort>
         </Connection>
         <Connection>
             <OutPort identifier="outport">
-                <Processor type="org.inviwo.GrayscaleCL" identifier="Grayscale" reference="ref2" />
+                <Processor type="org.inviwo.GrayscaleCL" identifier="Grayscale" reference="ref1" />
             </OutPort>
             <InPort identifier="inport">
-                <Processor type="org.inviwo.CanvasGL" identifier="Canvas" reference="ref0" />
+                <Processor type="org.inviwo.CanvasGL" identifier="Canvas" reference="ref2" />
             </InPort>
         </Connection>
     </Connections>
