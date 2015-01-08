@@ -1,9 +1,9 @@
 <?xml version="1.0" ?>
 <InviwoTreeData version="1.0">
     <!-- Don't edit the following code -->
-    <ProcessorNetworkVersion content="6" />
+    <ProcessorNetworkVersion content="7" />
     <Processors>
-        <Processor type="org.inviwo.DepthOfField" identifier="DepthOfField" id="ref0">
+        <Processor type="org.inviwo.DepthOfField" identifier="DepthOfField" id="ref1">
             <Properties>
                 <Property type="org.inviwo.CameraProperty" identifier="cameraProperty" key="cameraProperty">
                     <Properties>
@@ -92,10 +92,10 @@
                 </Property>
                 <Property type="org.inviwo.TransferFunctionProperty" identifier="transferFunction" key="transferFunction">
                     <MetaDataMap>
-                        <MetaDataItem type="org.inviwo.PropertyEditorWidgetMetaData" key="PropertyEditorWidgetMetaData">
-                            <position x="983" y="856" />
+                        <MetaDataItem type="org.inviwo.PropertyEditorWidgetMetaData" key="org.inviwo.PropertyEditorWidgetMetaData">
+                            <position x="-257" y="790" />
                             <dimension x="534" y="392" />
-                            <visibility content="1" />
+                            <visibility content="0" />
                             <dockstatus content="Floating" />
                         </MetaDataItem>
                     </MetaDataMap>
@@ -145,14 +145,14 @@
                 </Property>
             </Properties>
             <MetaDataMap>
-                <MetaDataItem type="org.inviwo.ProcessorMetaData" key="ProcessorMetaData">
+                <MetaDataItem type="org.inviwo.ProcessorMetaData" key="org.inviwo.ProcessorMetaData">
                     <position x="-625" y="-625" />
                     <visibility content="1" />
                     <selection content="0" />
                 </MetaDataItem>
             </MetaDataMap>
         </Processor>
-        <Processor type="org.inviwo.CanvasGL" identifier="DepthOfField2" id="ref1">
+        <Processor type="org.inviwo.CanvasGL" identifier="DepthOfField2" id="ref0">
             <Properties>
                 <Property type="org.inviwo.CompositeProperty" identifier="inputSize" key="inputSize">
                     <Properties>
@@ -162,6 +162,7 @@
                         <Property type="org.inviwo.IntVec2Property" identifier="customInputDimensions" key="customInputDimensions">
                             <visible content="0" />
                             <readonly content="1" />
+                            <value x="471" y="395" />
                         </Property>
                         <Property type="org.inviwo.IntVec2Property" identifier="dimensions" key="dimensions">
                             <value x="471" y="395" />
@@ -179,13 +180,13 @@
                 <Property type="org.inviwo.OptionPropertyInt" identifier="visibleLayer" key="visibleLayer" />
             </Properties>
             <MetaDataMap>
-                <MetaDataItem type="org.inviwo.ProcessorMetaData" key="ProcessorMetaData">
+                <MetaDataItem type="org.inviwo.ProcessorMetaData" key="org.inviwo.ProcessorMetaData">
                     <position x="-625" y="-525" />
                     <visibility content="1" />
                     <selection content="0" />
                 </MetaDataItem>
-                <MetaDataItem type="org.inviwo.ProcessorWidgetMetaData" key="ProcessorWidgetMetaData">
-                    <position x="496" y="652" />
+                <MetaDataItem type="org.inviwo.ProcessorWidgetMetaData" key="org.inviwo.ProcessorWidgetMetaData">
+                    <position x="496" y="648" />
                     <dimension x="471" y="395" />
                     <visibility content="1" />
                 </MetaDataItem>
@@ -345,7 +346,7 @@
                 </Property>
             </Properties>
             <MetaDataMap>
-                <MetaDataItem type="org.inviwo.ProcessorMetaData" key="ProcessorMetaData">
+                <MetaDataItem type="org.inviwo.ProcessorMetaData" key="org.inviwo.ProcessorMetaData">
                     <position x="-625" y="-700" />
                     <visibility content="1" />
                     <selection content="0" />
@@ -356,10 +357,10 @@
     <Connections>
         <Connection>
             <OutPort identifier="outport">
-                <Processor type="org.inviwo.DepthOfField" identifier="DepthOfField" reference="ref0" />
+                <Processor type="org.inviwo.DepthOfField" identifier="DepthOfField" reference="ref1" />
             </OutPort>
             <InPort identifier="inport">
-                <Processor type="org.inviwo.CanvasGL" identifier="DepthOfField2" reference="ref1" />
+                <Processor type="org.inviwo.CanvasGL" identifier="DepthOfField2" reference="ref0" />
             </InPort>
         </Connection>
         <Connection>
@@ -367,7 +368,7 @@
                 <Processor type="org.inviwo.VolumeSource" identifier="VolumeSource" reference="ref2" />
             </OutPort>
             <InPort identifier="volumePort">
-                <Processor type="org.inviwo.DepthOfField" identifier="DepthOfField" reference="ref0" />
+                <Processor type="org.inviwo.DepthOfField" identifier="DepthOfField" reference="ref1" />
             </InPort>
         </Connection>
     </Connections>

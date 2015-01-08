@@ -1,9 +1,9 @@
 <?xml version="1.0" ?>
 <InviwoTreeData version="1.0">
     <!-- Don't edit the following code -->
-    <ProcessorNetworkVersion content="6" />
+    <ProcessorNetworkVersion content="7" />
     <Processors>
-        <Processor type="org.inviwo.CanvasGL" identifier="CanvasGL" id="ref4">
+        <Processor type="org.inviwo.CanvasGL" identifier="CanvasGL" id="ref0">
             <Properties>
                 <Property type="org.inviwo.CompositeProperty" identifier="inputSize" key="inputSize">
                     <Properties>
@@ -13,6 +13,7 @@
                         <Property type="org.inviwo.IntVec2Property" identifier="customInputDimensions" key="customInputDimensions">
                             <visible content="0" />
                             <readonly content="1" />
+                            <value x="552" y="554" />
                         </Property>
                         <Property type="org.inviwo.IntVec2Property" identifier="dimensions" key="dimensions">
                             <value x="552" y="554" />
@@ -30,19 +31,19 @@
                 <Property type="org.inviwo.OptionPropertyInt" identifier="visibleLayer" key="visibleLayer" />
             </Properties>
             <MetaDataMap>
-                <MetaDataItem type="org.inviwo.ProcessorMetaData" key="ProcessorMetaData">
+                <MetaDataItem type="org.inviwo.ProcessorMetaData" key="org.inviwo.ProcessorMetaData">
                     <position x="-625" y="-350" />
                     <visibility content="1" />
                     <selection content="0" />
                 </MetaDataItem>
-                <MetaDataItem type="org.inviwo.ProcessorWidgetMetaData" key="ProcessorWidgetMetaData">
-                    <position x="128" y="299" />
+                <MetaDataItem type="org.inviwo.ProcessorWidgetMetaData" key="org.inviwo.ProcessorWidgetMetaData">
+                    <position x="128" y="295" />
                     <dimension x="552" y="554" />
                     <visibility content="1" />
                 </MetaDataItem>
             </MetaDataMap>
         </Processor>
-        <Processor type="org.inviwo.CubeProxyGeometry" identifier="CubeProxyGeometry" id="ref2">
+        <Processor type="org.inviwo.CubeProxyGeometry" identifier="CubeProxyGeometry" id="ref5">
             <Properties>
                 <Property type="org.inviwo.IntMinMaxProperty" identifier="clipX" displayName="Clip X Slices" key="clipX">
                     <semantics semantics="Default" />
@@ -77,16 +78,16 @@
                 <Property type="org.inviwo.BoolProperty" identifier="clippingEnabled" key="clippingEnabled" />
             </Properties>
             <MetaDataMap>
-                <MetaDataItem type="org.inviwo.ProcessorMetaData" key="ProcessorMetaData">
+                <MetaDataItem type="org.inviwo.ProcessorMetaData" key="org.inviwo.ProcessorMetaData">
                     <position x="-600" y="-625" />
                     <visibility content="1" />
                     <selection content="0" />
                 </MetaDataItem>
             </MetaDataMap>
         </Processor>
-        <Processor type="org.inviwo.EntryExitPoints" identifier="EntryExitPoints" id="ref5">
+        <Processor type="org.inviwo.EntryExitPoints" identifier="EntryExitPoints" id="ref1">
             <Properties>
-                <Property type="org.inviwo.CameraProperty" identifier="camera" key="camera" id="ref6">
+                <Property type="org.inviwo.CameraProperty" identifier="camera" key="camera" id="ref2">
                     <Properties>
                         <Property type="org.inviwo.FloatProperty" identifier="aspectRatio" key="aspectRatio">
                             <minvalue content="0" />
@@ -149,16 +150,16 @@
                 </Property>
             </Properties>
             <MetaDataMap>
-                <MetaDataItem type="org.inviwo.ProcessorMetaData" key="ProcessorMetaData">
+                <MetaDataItem type="org.inviwo.ProcessorMetaData" key="org.inviwo.ProcessorMetaData">
                     <position x="-600" y="-550" />
                     <visibility content="1" />
                     <selection content="0" />
                 </MetaDataItem>
             </MetaDataMap>
         </Processor>
-        <Processor type="org.inviwo.MultichannelRaycaster" identifier="MultichannelRaycaster2" id="ref0">
+        <Processor type="org.inviwo.MultichannelRaycaster" identifier="MultichannelRaycaster2" id="ref3">
             <Properties>
-                <Property type="org.inviwo.CameraProperty" identifier="camera" key="camera" id="ref1">
+                <Property type="org.inviwo.CameraProperty" identifier="camera" key="camera" id="ref4">
                     <Properties>
                         <Property type="org.inviwo.FloatProperty" identifier="aspectRatio" key="aspectRatio">
                             <minvalue content="0" />
@@ -228,7 +229,7 @@
                     <Properties>
                         <Property type="org.inviwo.TransferFunctionProperty" identifier="transferFunction1" key="transferFunction1">
                             <MetaDataMap>
-                                <MetaDataItem type="org.inviwo.PropertyEditorWidgetMetaData" key="PropertyEditorWidgetMetaData">
+                                <MetaDataItem type="org.inviwo.PropertyEditorWidgetMetaData" key="org.inviwo.PropertyEditorWidgetMetaData">
                                     <position x="8" y="301" />
                                     <dimension x="534" y="392" />
                                     <visibility content="0" />
@@ -255,7 +256,7 @@
                         </Property>
                         <Property type="org.inviwo.TransferFunctionProperty" identifier="transferFunction2" key="transferFunction2">
                             <MetaDataMap>
-                                <MetaDataItem type="org.inviwo.PropertyEditorWidgetMetaData" key="PropertyEditorWidgetMetaData">
+                                <MetaDataItem type="org.inviwo.PropertyEditorWidgetMetaData" key="org.inviwo.PropertyEditorWidgetMetaData">
                                     <position x="8" y="695" />
                                     <dimension x="534" y="392" />
                                     <visibility content="0" />
@@ -282,7 +283,7 @@
                         <Property type="org.inviwo.TransferFunctionProperty" identifier="transferFunction3" key="transferFunction3">
                             <visible content="0" />
                             <MetaDataMap>
-                                <MetaDataItem type="org.inviwo.PropertyEditorWidgetMetaData" key="PropertyEditorWidgetMetaData">
+                                <MetaDataItem type="org.inviwo.PropertyEditorWidgetMetaData" key="org.inviwo.PropertyEditorWidgetMetaData">
                                     <position x="0" y="0" />
                                     <dimension x="256" y="256" />
                                     <visibility content="0" />
@@ -308,7 +309,7 @@
                         <Property type="org.inviwo.TransferFunctionProperty" identifier="transferFunction4" key="transferFunction4">
                             <visible content="0" />
                             <MetaDataMap>
-                                <MetaDataItem type="org.inviwo.PropertyEditorWidgetMetaData" key="PropertyEditorWidgetMetaData">
+                                <MetaDataItem type="org.inviwo.PropertyEditorWidgetMetaData" key="org.inviwo.PropertyEditorWidgetMetaData">
                                     <position x="0" y="0" />
                                     <dimension x="256" y="256" />
                                     <visibility content="0" />
@@ -335,14 +336,14 @@
                 </Property>
             </Properties>
             <MetaDataMap>
-                <MetaDataItem type="org.inviwo.ProcessorMetaData" key="ProcessorMetaData">
+                <MetaDataItem type="org.inviwo.ProcessorMetaData" key="org.inviwo.ProcessorMetaData">
                     <position x="-625" y="-450" />
                     <visibility content="1" />
                     <selection content="1" />
                 </MetaDataItem>
             </MetaDataMap>
         </Processor>
-        <Processor type="org.inviwo.VolumeSource" identifier="VolumeSource" id="ref3">
+        <Processor type="org.inviwo.VolumeSource" identifier="VolumeSource" id="ref6">
             <Properties>
                 <Property type="org.inviwo.CompositeProperty" identifier="Basis" key="Basis">
                     <Properties>
@@ -496,7 +497,7 @@
                 </Property>
             </Properties>
             <MetaDataMap>
-                <MetaDataItem type="org.inviwo.ProcessorMetaData" key="ProcessorMetaData">
+                <MetaDataItem type="org.inviwo.ProcessorMetaData" key="org.inviwo.ProcessorMetaData">
                     <position x="-625" y="-700" />
                     <visibility content="1" />
                     <selection content="0" />
@@ -507,64 +508,64 @@
     <Connections>
         <Connection>
             <OutPort identifier="outport">
-                <Processor type="org.inviwo.MultichannelRaycaster" identifier="MultichannelRaycaster2" reference="ref0" />
+                <Processor type="org.inviwo.MultichannelRaycaster" identifier="MultichannelRaycaster2" reference="ref3" />
             </OutPort>
             <InPort identifier="inport">
-                <Processor type="org.inviwo.CanvasGL" identifier="CanvasGL" reference="ref4" />
+                <Processor type="org.inviwo.CanvasGL" identifier="CanvasGL" reference="ref0" />
             </InPort>
         </Connection>
         <Connection>
             <OutPort identifier="geometry.outport">
-                <Processor type="org.inviwo.CubeProxyGeometry" identifier="CubeProxyGeometry" reference="ref2" />
+                <Processor type="org.inviwo.CubeProxyGeometry" identifier="CubeProxyGeometry" reference="ref5" />
             </OutPort>
             <InPort identifier="geometry">
-                <Processor type="org.inviwo.EntryExitPoints" identifier="EntryExitPoints" reference="ref5" />
+                <Processor type="org.inviwo.EntryExitPoints" identifier="EntryExitPoints" reference="ref1" />
             </InPort>
         </Connection>
         <Connection>
             <OutPort identifier="data">
-                <Processor type="org.inviwo.VolumeSource" identifier="VolumeSource" reference="ref3" />
+                <Processor type="org.inviwo.VolumeSource" identifier="VolumeSource" reference="ref6" />
             </OutPort>
             <InPort identifier="volume">
-                <Processor type="org.inviwo.MultichannelRaycaster" identifier="MultichannelRaycaster2" reference="ref0" />
+                <Processor type="org.inviwo.MultichannelRaycaster" identifier="MultichannelRaycaster2" reference="ref3" />
             </InPort>
         </Connection>
         <Connection>
             <OutPort identifier="data">
-                <Processor type="org.inviwo.VolumeSource" identifier="VolumeSource" reference="ref3" />
+                <Processor type="org.inviwo.VolumeSource" identifier="VolumeSource" reference="ref6" />
             </OutPort>
             <InPort identifier="volume.inport">
-                <Processor type="org.inviwo.CubeProxyGeometry" identifier="CubeProxyGeometry" reference="ref2" />
+                <Processor type="org.inviwo.CubeProxyGeometry" identifier="CubeProxyGeometry" reference="ref5" />
             </InPort>
         </Connection>
         <Connection>
             <OutPort identifier="entry-points">
-                <Processor type="org.inviwo.EntryExitPoints" identifier="EntryExitPoints" reference="ref5" />
+                <Processor type="org.inviwo.EntryExitPoints" identifier="EntryExitPoints" reference="ref1" />
             </OutPort>
             <InPort identifier="entry-points">
-                <Processor type="org.inviwo.MultichannelRaycaster" identifier="MultichannelRaycaster2" reference="ref0" />
+                <Processor type="org.inviwo.MultichannelRaycaster" identifier="MultichannelRaycaster2" reference="ref3" />
             </InPort>
         </Connection>
         <Connection>
             <OutPort identifier="exit-points">
-                <Processor type="org.inviwo.EntryExitPoints" identifier="EntryExitPoints" reference="ref5" />
+                <Processor type="org.inviwo.EntryExitPoints" identifier="EntryExitPoints" reference="ref1" />
             </OutPort>
             <InPort identifier="exit-points">
-                <Processor type="org.inviwo.MultichannelRaycaster" identifier="MultichannelRaycaster2" reference="ref0" />
+                <Processor type="org.inviwo.MultichannelRaycaster" identifier="MultichannelRaycaster2" reference="ref3" />
             </InPort>
         </Connection>
     </Connections>
     <PropertyLinks>
         <PropertyLink>
             <Properties>
-                <Property type="org.inviwo.CameraProperty" identifier="camera" key="camera" reference="ref1" />
-                <Property type="org.inviwo.CameraProperty" identifier="camera" key="camera" reference="ref6" />
+                <Property type="org.inviwo.CameraProperty" identifier="camera" key="camera" reference="ref2" />
+                <Property type="org.inviwo.CameraProperty" identifier="camera" key="camera" reference="ref4" />
             </Properties>
         </PropertyLink>
         <PropertyLink>
             <Properties>
-                <Property type="org.inviwo.CameraProperty" identifier="camera" key="camera" reference="ref6" />
-                <Property type="org.inviwo.CameraProperty" identifier="camera" key="camera" reference="ref1" />
+                <Property type="org.inviwo.CameraProperty" identifier="camera" key="camera" reference="ref4" />
+                <Property type="org.inviwo.CameraProperty" identifier="camera" key="camera" reference="ref2" />
             </Properties>
         </PropertyLink>
     </PropertyLinks>

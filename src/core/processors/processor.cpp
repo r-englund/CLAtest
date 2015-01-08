@@ -55,7 +55,7 @@ Processor::Processor()
     , initialized_(false)
     , invalidationEnabled_(true)
     , invalidationRequestLevel_(VALID) {
-    createMetaData<ProcessorMetaData>("ProcessorMetaData");
+    createMetaData<ProcessorMetaData>(ProcessorMetaData::CLASS_IDENTIFIER);
 }
 
 Processor::~Processor() {

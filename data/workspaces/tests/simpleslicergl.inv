@@ -1,7 +1,7 @@
 <?xml version="1.0" ?>
 <InviwoTreeData version="1.0">
     <!-- Don't edit the following code -->
-    <ProcessorNetworkVersion content="6" />
+    <ProcessorNetworkVersion content="7" />
     <Processors>
         <Processor type="org.inviwo.CanvasGL" identifier="CanvasGL" id="ref2">
             <Properties>
@@ -28,24 +28,28 @@
                 <Property type="org.inviwo.OptionPropertyInt" identifier="visibleLayer" key="visibleLayer" />
             </Properties>
             <MetaDataMap>
-                <MetaDataItem type="org.inviwo.ProcessorMetaData" key="ProcessorMetaData">
+                <MetaDataItem type="org.inviwo.ProcessorMetaData" key="org.inviwo.ProcessorMetaData">
                     <position x="-625" y="-400" />
                     <visibility content="1" />
                     <selection content="0" />
                 </MetaDataItem>
-                <MetaDataItem type="org.inviwo.ProcessorWidgetMetaData" key="ProcessorWidgetMetaData">
-                    <position x="652" y="308" />
+                <MetaDataItem type="org.inviwo.ProcessorWidgetMetaData" key="org.inviwo.ProcessorWidgetMetaData">
+                    <position x="652" y="304" />
                     <dimension x="256" y="256" />
                     <visibility content="1" />
                 </MetaDataItem>
             </MetaDataMap>
         </Processor>
         <Processor type="org.inviwo.VolumeSliceGL" identifier="VolumeSliceGL" id="ref0">
-            <InteractonHandlers>
-                <InteractionHandler type="undefined" />
-            </InteractonHandlers>
             <Properties>
+                <Property type="org.inviwo.EventProperty" identifier="gestureShiftSlice" key="gestureShiftSlice">
+                    <visible content="0" />
+                </Property>
                 <Property type="org.inviwo.BoolProperty" identifier="handleEvents" key="handleEvents" />
+                <Property type="org.inviwo.EventProperty" identifier="mouseSetMarker" key="mouseSetMarker" />
+                <Property type="org.inviwo.EventProperty" identifier="mouseShiftSlice" key="mouseShiftSlice">
+                    <visible content="0" />
+                </Property>
                 <Property type="org.inviwo.CompositeProperty" identifier="pickGroup" key="pickGroup">
                     <Properties>
                         <Property type="org.inviwo.FloatVec4Property" identifier="indicatorColor" key="indicatorColor">
@@ -81,17 +85,19 @@
                     <maxvalue content="128" />
                     <value content="64" />
                 </Property>
+                <Property type="org.inviwo.EventProperty" identifier="stepSliceDown" key="stepSliceDown" />
+                <Property type="org.inviwo.EventProperty" identifier="stepSliceUp" key="stepSliceUp" />
                 <Property type="org.inviwo.CompositeProperty" identifier="tfGroup" key="tfGroup">
                     <Properties>
                         <Property type="org.inviwo.FloatProperty" identifier="alphaOffset" key="alphaOffset" />
                         <Property type="org.inviwo.BoolProperty" identifier="tfMappingEnabled" key="tfMappingEnabled" />
                         <Property type="org.inviwo.TransferFunctionProperty" identifier="transferFunction" key="transferFunction">
                             <MetaDataMap>
-                                <MetaDataItem type="org.inviwo.PropertyEditorWidgetMetaData" key="PropertyEditorWidgetMetaData">
+                                <MetaDataItem type="org.inviwo.PropertyEditorWidgetMetaData" key="org.inviwo.PropertyEditorWidgetMetaData">
                                     <position x="1343" y="464" />
                                     <dimension x="577" y="392" />
                                     <visibility content="0" />
-                                    <dockstatus content="DockedRight" />
+                                    <dockstatus content="Floating" />
                                 </MetaDataItem>
                             </MetaDataMap>
                             <transferFunction>
@@ -131,7 +137,7 @@
                 <Property type="org.inviwo.FloatVec3Property" identifier="worldPosition_" key="worldPosition_" />
             </Properties>
             <MetaDataMap>
-                <MetaDataItem type="org.inviwo.ProcessorMetaData" key="ProcessorMetaData">
+                <MetaDataItem type="org.inviwo.ProcessorMetaData" key="org.inviwo.ProcessorMetaData">
                     <position x="-625" y="-525" />
                     <visibility content="1" />
                     <selection content="0" />
@@ -292,7 +298,7 @@
                 </Property>
             </Properties>
             <MetaDataMap>
-                <MetaDataItem type="org.inviwo.ProcessorMetaData" key="ProcessorMetaData">
+                <MetaDataItem type="org.inviwo.ProcessorMetaData" key="org.inviwo.ProcessorMetaData">
                     <position x="-625" y="-675" />
                     <visibility content="1" />
                     <selection content="0" />

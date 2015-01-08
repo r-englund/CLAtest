@@ -66,7 +66,7 @@ PropertyEditorWidget::PropertyEditorWidget() : metaData_(0) {}
 PropertyEditorWidget::~PropertyEditorWidget() {}
 
 void PropertyEditorWidget::initialize(Property* property) {
-    metaData_ = property->createMetaData<PropertyEditorWidgetMetaData>("PropertyEditorWidgetMetaData");
+    metaData_ = property->createMetaData<PropertyEditorWidgetMetaData>(PropertyEditorWidgetMetaData::CLASS_IDENTIFIER);
 }
 
 void PropertyEditorWidget::deinitialize() {}

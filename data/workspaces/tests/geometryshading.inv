@@ -1,9 +1,9 @@
 <?xml version="1.0" ?>
 <InviwoTreeData version="1.0">
     <!-- Don't edit the following code -->
-    <ProcessorNetworkVersion content="6" />
+    <ProcessorNetworkVersion content="7" />
     <Processors>
-        <Processor type="org.inviwo.CanvasGL" identifier="Canvas" id="ref2">
+        <Processor type="org.inviwo.CanvasGL" identifier="Canvas" id="ref1">
             <Properties>
                 <Property type="org.inviwo.CompositeProperty" identifier="inputSize" key="inputSize">
                     <Properties>
@@ -28,19 +28,19 @@
                 <Property type="org.inviwo.OptionPropertyInt" identifier="visibleLayer" key="visibleLayer" />
             </Properties>
             <MetaDataMap>
-                <MetaDataItem type="org.inviwo.ProcessorMetaData" key="ProcessorMetaData">
+                <MetaDataItem type="org.inviwo.ProcessorMetaData" key="org.inviwo.ProcessorMetaData">
                     <position x="150" y="-125" />
                     <visibility content="1" />
                     <selection content="0" />
                 </MetaDataItem>
-                <MetaDataItem type="org.inviwo.ProcessorWidgetMetaData" key="ProcessorWidgetMetaData">
-                    <position x="-1193" y="364" />
+                <MetaDataItem type="org.inviwo.ProcessorWidgetMetaData" key="org.inviwo.ProcessorWidgetMetaData">
+                    <position x="-667" y="490" />
                     <dimension x="256" y="256" />
                     <visibility content="1" />
                 </MetaDataItem>
             </MetaDataMap>
         </Processor>
-        <Processor type="org.inviwo.GeometryRenderGL" identifier="Geometry Renderer" id="ref1">
+        <Processor type="org.inviwo.GeometryRenderGL" identifier="Geometry Renderer" id="ref2">
             <Properties>
                 <Property type="org.inviwo.CameraProperty" identifier="camera" key="camera">
                     <Properties>
@@ -120,7 +120,7 @@
                 </Property>
             </Properties>
             <MetaDataMap>
-                <MetaDataItem type="org.inviwo.ProcessorMetaData" key="ProcessorMetaData">
+                <MetaDataItem type="org.inviwo.ProcessorMetaData" key="org.inviwo.ProcessorMetaData">
                     <position x="150" y="-200" />
                     <visibility content="1" />
                     <selection content="1" />
@@ -137,7 +137,7 @@
                 <Property type="org.inviwo.FloatProperty" identifier="scale" key="scale" />
             </Properties>
             <MetaDataMap>
-                <MetaDataItem type="org.inviwo.ProcessorMetaData" key="ProcessorMetaData">
+                <MetaDataItem type="org.inviwo.ProcessorMetaData" key="org.inviwo.ProcessorMetaData">
                     <position x="150" y="-275" />
                     <visibility content="1" />
                     <selection content="0" />
@@ -148,10 +148,10 @@
     <Connections>
         <Connection>
             <OutPort identifier="image.outport">
-                <Processor type="org.inviwo.GeometryRenderGL" identifier="Geometry Renderer" reference="ref1" />
+                <Processor type="org.inviwo.GeometryRenderGL" identifier="Geometry Renderer" reference="ref2" />
             </OutPort>
             <InPort identifier="inport">
-                <Processor type="org.inviwo.CanvasGL" identifier="Canvas" reference="ref2" />
+                <Processor type="org.inviwo.CanvasGL" identifier="Canvas" reference="ref1" />
             </InPort>
         </Connection>
         <Connection>
@@ -159,7 +159,7 @@
                 <Processor type="org.inviwo.MeshCreator" identifier="Mesh Creator" reference="ref0" />
             </OutPort>
             <InPort identifier="geometry.inport">
-                <Processor type="org.inviwo.GeometryRenderGL" identifier="Geometry Renderer" reference="ref1" />
+                <Processor type="org.inviwo.GeometryRenderGL" identifier="Geometry Renderer" reference="ref2" />
             </InPort>
         </Connection>
     </Connections>

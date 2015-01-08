@@ -68,7 +68,7 @@ public:
     PropertyEditorWidgetMetaData& operator=(const PropertyEditorWidgetMetaData& that);
     virtual ~PropertyEditorWidgetMetaData();
 
-    virtual std::string getClassIdentifier() const { return "org.inviwo.PropertyEditorWidgetMetaData"; }
+    virtual std::string getClassIdentifier() const { return CLASS_IDENTIFIER; }
     virtual PropertyEditorWidgetMetaData* clone() const;
 
     virtual void serialize(IvwSerializer& s) const;
@@ -83,6 +83,8 @@ public:
     bool isVisible() const;
     void setDockStatus(PropertyEditorWidgetDockStatus& dockStatus);
     const PropertyEditorWidgetDockStatus getDocStatus() const;
+
+    static const std::string CLASS_IDENTIFIER;
 
 private:
     ivec2 position_;

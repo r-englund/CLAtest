@@ -47,7 +47,7 @@ public:
     PositionMetaData(int x, int y);
     virtual ~PositionMetaData();
 
-    virtual std::string getClassIdentifier() const { return "org.inviwo.PositionMetaData"; }
+    virtual std::string getClassIdentifier() const { return CLASS_IDENTIFIER; }
     virtual PositionMetaData* clone() const;
 
     virtual void serialize(IvwSerializer& s) const;
@@ -62,6 +62,7 @@ public:
     int getY();
     void setY(const int& y);
 
+    static const std::string CLASS_IDENTIFIER;
 };
 
 } // namespace

@@ -104,14 +104,12 @@ bool ProcessorMetaData::equal(const MetaData& rhs) const {
         return  tmp->position_ == position_ 
             && tmp->visibility_ == visibility_ 
             && tmp->selection_ == selection_;
-
-//         return operator==<ivec2>(tmp->position_, position_)
-//             && operator==<bool>(tmp->visibility_, visibility_)
-//             && operator==<bool>(tmp->selection_, selection_);
     } else {
         return false;
     }
 }
+
+const std::string ProcessorMetaData::CLASS_IDENTIFIER = "org.inviwo.ProcessorMetaData";
 
 
 

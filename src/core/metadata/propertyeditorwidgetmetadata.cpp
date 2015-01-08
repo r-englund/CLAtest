@@ -160,4 +160,6 @@ bool PropertyEditorWidgetMetaData::equal(const MetaData& rhs) const {
     }
 }
 
+const std::string PropertyEditorWidgetMetaData::CLASS_IDENTIFIER = "org.inviwo.PropertyEditorWidgetMetaData";
+
 } // namespace
