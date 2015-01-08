@@ -26,25 +26,35 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  * 
- * Contact: Erik Sundén
+ * Contact: Peter Steneteg
  *
  *********************************************************************************/
 
-#ifndef IVW_PVMMODULE_H
-#define IVW_PVMMODULE_H
+#ifndef IVW_PVMVOLUMEWRITER_H
+#define IVW_PVMVOLUMEWRITER_H
 
 #include <modules/pvm/pvmmoduledefine.h>
-#include <inviwo/core/common/inviwomodule.h>
+#include <inviwo/core/common/inviwo.h>
+#include <inviwo/core/io/datawriter.h>
+#include <inviwo/core/datastructures/volume/volume.h>
 
 namespace inviwo {
 
-class IVW_MODULE_PVM_API PVMModule : public InviwoModule {
-
+/** \brief Writer for *.pvm files
+ *
+ *  Format designed by Stefan Roettger
+ */
+class IVW_MODULE_PVM_API PVMVolumeWriter : public DataWriterType<Volume> {
 public:
-    PVMModule();
+    PVMVolumeWriter();
+    PVMVolumeWriter(const PVMVolumeWriter& rhs);
+    PVMVolumeWriter& operator=(const PVMVolumeWriter& that);
+    virtual PVMVolumeWriter* clone() const;
+    virtual ~PVMVolumeWriter() {};
 
+    virtual void writeData(const Volume* data, const std::string filePath) const;
 };
 
 } // namespace
 
-#endif // IVW_PVMMODULE_H
+#endif // IVW_PVMVOLUMEWRITER_H

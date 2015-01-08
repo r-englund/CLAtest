@@ -3,7 +3,7 @@
  * Inviwo - Interactive Visualization Workshop
  * Version 0.6b
  *
- * Copyright (c) 2013-2014 Inviwo Foundation
+ * Copyright (c) 2015 Inviwo Foundation
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -31,8 +31,7 @@
  *********************************************************************************/
 
 #include <modules/pvm/pvmvolumereader.h>
-#include <inviwo/core/datastructures/volume/volumedisk.h>
-#include <inviwo/core/datastructures/volume/volumeramprecision.h>
+#include <inviwo/core/datastructures/volume/volumeram.h>
 #include <inviwo/core/datastructures/volume/volumetypeclassification.h>
 #include <inviwo/core/util/filesystem.h>
 #include <inviwo/core/util/formatconversion.h>
@@ -42,30 +41,15 @@
 namespace inviwo {
 
 PVMVolumeReader::PVMVolumeReader()
-    : DataReaderType<Volume>()
-    , rawFile_("")
-    , filePos_(0)
-    , littleEndian_(true)
-    , dimension_(uvec3(0, 0, 0))
-    , format_(NULL) {
+    : DataReaderType<Volume>() {
     addExtension(FileExtension("pvm", "PVM file format"));
 }
 
 PVMVolumeReader::PVMVolumeReader(const PVMVolumeReader& rhs)
-    : DataReaderType<Volume>(rhs)
-    , rawFile_(rhs.rawFile_)
-    , filePos_(rhs.filePos_)
-    , littleEndian_(rhs.littleEndian_)
-    , dimension_(rhs.dimension_)
-    , format_(rhs.format_) {};
+    : DataReaderType<Volume>(rhs) {};
 
 PVMVolumeReader& PVMVolumeReader::operator=(const PVMVolumeReader& that) {
     if (this != &that) {
-        rawFile_ = that.rawFile_;
-        filePos_ = that.filePos_;
-        littleEndian_ = that.littleEndian_;
-        dimension_ = that.dimension_;
-        format_ = that.format_;
         DataReaderType<Volume>::operator=(that);
     }
 
@@ -86,41 +70,10 @@ Volume* PVMVolumeReader::readMetaData(std::string filePath) {
         }
     }
 
-    
-    Volume* volume = new UniformRectiLinearVolume();
+    glm::uvec3 dim(0);
     glm::mat3 basis(2.0f);
     glm::vec3 spacing(0.0f);
     glm::vec3 a(0.0f), b(0.0f), c(0.0f);
-
-    //Check PVM version
-    std::istream* f = new std::ifstream(filePath.c_str());
-    std::string textLine;
-    getline(*f, textLine);
-    textLine = trim(textLine);
-
-    int pvmVersion = 0;
-    int ddsVersion = 0;
-
-    if (textLine == "PVM")
-        pvmVersion = 1;
-    else if (textLine == "PVM2")
-        pvmVersion = 2;
-    else if (textLine == "PVM3")
-        pvmVersion = 3;
-    else if (textLine == "DDS v3d"){
-        pvmVersion = 3;
-        ddsVersion = 1;
-    }
-    else if (textLine == "DDS v3e"){
-        pvmVersion = 3;
-        ddsVersion = 2;
-    }
-
-    delete f;
-
-    if (pvmVersion == 0)
-        throw DataReaderException("Error: Unsupported PVM version " + textLine + " in file: " +
-        filePath);
 
     // Reading PVM volume
     unsigned char* data = NULL;
@@ -130,7 +83,7 @@ Volume* PVMVolumeReader::readMetaData(std::string filePath) {
     unsigned char *parameter;
     unsigned char *comment;
 
-    data = readPVMvolume(filePath.c_str(), &dimension_.x, &dimension_.y, &dimension_.z,
+    data = readPVMvolume(filePath.c_str(), &dim.x, &dim.y, &dim.z,
         &bytesPerVoxel, &spacing.x, &spacing.y, &spacing.z, &description, &courtesy,
         &parameter, &comment);
 
@@ -138,60 +91,60 @@ Volume* PVMVolumeReader::readMetaData(std::string filePath) {
         throw DataReaderException("Error: Could not read data in PVM file: " +
         filePath);
 
-    format_ = DataFormatBase::get(DataFormatEnums::UNSIGNED_INTEGER_TYPE, 1, bytesPerVoxel * 8);
+    const DataFormatBase* format = DataFormatBase::get(DataFormatEnums::UNSIGNED_INTEGER_TYPE, 1, bytesPerVoxel * 8);
 
-    if (format_ == NULL)
+    if (format == NULL)
         throw DataReaderException("Error: Unable to find bytes per voxel in .pvm file: " + filePath);
 
-    if (dimension_ == uvec3(0))
+    if (dim == uvec3(0))
         throw DataReaderException("Error: Unable to find dimensions in .pvm file: " +
         filePath);
 
-    if (format_ == DataUINT16::get()){
+    if (format == DataUINT16::get()){
         DataUINT16::type* d = reinterpret_cast<DataUINT16::type*>(data);
         DataUINT16::type m = 0;
-        for (int i = 0; i < dimension_.x*dimension_.y*dimension_.z; i++) {
+        for (int i = 0; i < dim.x*dim.y*dim.z; i++) {
             d[i] = (d[i] >> 8) | (d[i] << 8);
             if (d[i] > m)
                 m = d[i];
         }
         if (m <= DataUINT12::max()) {
-            format_ = DataUINT12::get();
+            format = DataUINT12::get();
         }
     }
 
+    Volume* volume = new UniformRectiLinearVolume();
+
     // Additional information
-    if (pvmVersion > 2){
-        std::stringstream ss;
+    std::stringstream ss;
 
-        if (description){
-            ss << description;
-            volume->setMetaData<StringMetaData>("Description", ss.str());
-        }
+    if (description){
+        ss << description;
+        volume->setMetaData<StringMetaData>("Description", ss.str());
+    }
 
-        if (courtesy){
-            ss.clear();
-            ss << courtesy;
-            volume->setMetaData<StringMetaData>("Courtesy", ss.str());
-        }
+    if (courtesy){
+        ss.clear();
+        ss << courtesy;
+        volume->setMetaData<StringMetaData>("Courtesy", ss.str());
+    }
 
-        if (parameter){
-            ss.clear();
-            ss << parameter;
-            volume->setMetaData<StringMetaData>("Parameter", ss.str());
-        }
+    if (parameter){
+        ss.clear();
+        ss << parameter;
+        volume->setMetaData<StringMetaData>("Parameter", ss.str());
+    }
 
-        if (comment){
-            ss.clear();
-            ss << comment;
-            volume->setMetaData<StringMetaData>("Comment", ss.str());
-        }
+    if (comment){
+        ss.clear();
+        ss << comment;
+        volume->setMetaData<StringMetaData>("Comment", ss.str());
     }
 
     if (spacing != vec3(0.0f)) {
-        basis[0][0] = dimension_.x * spacing.x;
-        basis[1][1] = dimension_.y * spacing.y;
-        basis[2][2] = dimension_.z * spacing.z;
+        basis[0][0] = dim.x * spacing.x;
+        basis[1][1] = dim.y * spacing.y;
+        basis[2][2] = dim.z * spacing.z;
     }
 
     if (a != vec3(0.0f) && b != vec3(0.0f) && c != vec3(0.0f)) {
@@ -207,26 +160,24 @@ Volume* PVMVolumeReader::readMetaData(std::string filePath) {
     }
 
     volume->setBasis(basis);
-    volume->setDimension(dimension_);
+    volume->setDimension(dim);
 
-    volume->dataMap_.initWithFormat(format_);
+    volume->dataMap_.initWithFormat(format);
 
-    volume->setDataFormat(format_);
+    volume->setDataFormat(format);
 
     // Create RAM volume s all data has already is in memory
-    VolumeRAM* volRAM = createVolumeRAM(dimension_, format_, data);
+    VolumeRAM* volRAM = createVolumeRAM(dim, format, data);
     volume->addRepresentation(volRAM);
 
     // Print information
-    size_t bytes = dimension_.x * dimension_.y * dimension_.z * (format_->getBytesAllocated());
+    size_t bytes = dim.x * dim.y * dim.z * (format->getBytesAllocated());
     std::string size = formatBytesToString(bytes);
     LogInfo("Loaded volume: " << filePath << " size: " << size);
-    if (pvmVersion > 2){
-        if (description) LogInfo("Description: " << volume->getMetaData<StringMetaData>("Description")->get());
-        if (courtesy) LogInfo("Courtesy: " << volume->getMetaData<StringMetaData>("Courtesy")->get());
-        if (parameter) LogInfo("Parameter: " << volume->getMetaData<StringMetaData>("Parameter")->get());
-        if (comment) LogInfo("Comment: " << volume->getMetaData<StringMetaData>("Comment")->get());
-    }
+    if (description) LogInfo("Description: " << volume->getMetaData<StringMetaData>("Description")->get());
+    if (courtesy) LogInfo("Courtesy: " << volume->getMetaData<StringMetaData>("Courtesy")->get());
+    if (parameter) LogInfo("Parameter: " << volume->getMetaData<StringMetaData>("Parameter")->get());
+    if (comment) LogInfo("Comment: " << volume->getMetaData<StringMetaData>("Comment")->get());
 
     return volume;
 }

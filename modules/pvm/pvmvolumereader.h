@@ -3,7 +3,7 @@
  * Inviwo - Interactive Visualization Workshop
  * Version 0.6b
  *
- * Copyright (c) 2013-2014 Inviwo Foundation
+ * Copyright (c) 2015 Inviwo Foundation
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -43,10 +43,8 @@ namespace inviwo {
 /** \brief Reader for *.pvm files
  *
  *  Format designed by Stefan Roettger
- *  Description by Paul Bourke
- *  http://paulbourke.net/dataformats/pvm/
  */
-    class IVW_MODULE_PVM_API PVMVolumeReader : public DataReaderType<Volume> {
+ class IVW_MODULE_PVM_API PVMVolumeReader : public DataReaderType<Volume> {
 public:
     PVMVolumeReader();
     PVMVolumeReader(const PVMVolumeReader& rhs);
@@ -58,15 +56,6 @@ public:
     virtual void* readData() const;
     virtual void readDataInto(void* dest) const;
 
-protected:
-    
-
-private:
-    std::string rawFile_;
-    size_t filePos_;
-    bool littleEndian_;
-    glm::uvec3 dimension_;
-    const DataFormatBase* format_;
 };
 
 }  // namespace

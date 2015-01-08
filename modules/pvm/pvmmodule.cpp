@@ -3,7 +3,7 @@
  * Inviwo - Interactive Visualization Workshop
  * Version 0.6b
  *
- * Copyright (c) 2012-2014 Inviwo Foundation
+ * Copyright (c) 2015 Inviwo Foundation
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -32,12 +32,14 @@
 
 #include <modules/pvm/pvmmodule.h>
 #include <modules/pvm/pvmvolumereader.h>
+#include <modules/pvm/pvmvolumewriter.h>
 
 namespace inviwo {
 
 PVMModule::PVMModule() : InviwoModule() {
     setIdentifier("PVM");
     registerDataReader(new PVMVolumeReader());
+    registerDataWriter(new PVMVolumeWriter());
 }
 
 } // namespace
