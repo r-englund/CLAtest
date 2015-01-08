@@ -253,22 +253,24 @@ void unbindTextures(const ImageOutport& outport) {
 }
 
 void setShaderUniforms(Shader* shader, const Image* image, const std::string samplerID) {
-    shader->setUniform(samplerID + ".modelToWorld",
-                       image->getColorLayer()->getCoordinateTransformer().getModelToWorldMatrix());
-    shader->setUniform(samplerID + ".worldToModel",
-                       image->getColorLayer()->getCoordinateTransformer().getWorldToModelMatrix());
+    const StructuredCoordinateTransformer<2>& ct =
+        image->getColorLayer()->getCoordinateTransformer();
 
-    shader->setUniform(samplerID + ".worldToTexture",
-                       image->getColorLayer()->getCoordinateTransformer().getWorldToTextureMatrix());
-    shader->setUniform(samplerID + ".textureToWorld",
-                       image->getColorLayer()->getCoordinateTransformer().getTextureToWorldMatrix());
+    shader->setUniform(samplerID + ".dataToModel", ct.getDataToModelMatrix());
+    shader->setUniform(samplerID + ".modelToData", ct.getModelToDataMatrix());
 
-    shader->setUniform(samplerID + ".textureToIndex",
-                       image->getColorLayer()->getCoordinateTransformer().getTextureToIndexMatrix());
-    shader->setUniform(samplerID + ".indexToTexture",
-                       image->getColorLayer()->getCoordinateTransformer().getIndexToTextureMatrix());
-    
-    
+    shader->setUniform(samplerID + ".dataToWorld", ct.getDataToWorldMatrix());
+    shader->setUniform(samplerID + ".worldToData", ct.getWorldToDataMatrix());
+
+    shader->setUniform(samplerID + ".modelToWorld", ct.getModelToWorldMatrix());
+    shader->setUniform(samplerID + ".worldToModel", ct.getWorldToModelMatrix());
+
+    shader->setUniform(samplerID + ".worldToTexture", ct.getWorldToTextureMatrix());
+    shader->setUniform(samplerID + ".textureToWorld", ct.getTextureToWorldMatrix());
+
+    shader->setUniform(samplerID + ".textureToIndex", ct.getTextureToIndexMatrix());
+    shader->setUniform(samplerID + ".indexToTexture", ct.getIndexToTextureMatrix());
+
     vec2 dimensions = vec2(image->getDimension());
     shader->setUniform(samplerID + ".dimensions", dimensions);
     shader->setUniform(samplerID + ".reciprocalDimensions", vec2(1.0f) / dimensions);

@@ -61,12 +61,21 @@ vec3 direction(in CameraParameters camera) { return -camera.worldToView[2].xyz; 
 vec3 position(in CameraParameters camera) { return -camera.worldToView[3].xyz; }
 
 struct GeometryParameters {
+    mat4 dataToModel;
+    mat4 modelToData;
+    mat4 dataToWorld;
+    mat4 worldToData;
     mat4 modelToWorld;
     mat4 worldToModel;
     mat3 modelToWorldNormalMatrix; // Equivalent to normalMatrix
+    mat3 dataToWorldNormalMatrix;  // Equivalent to normalMatrix
 };
 
 struct VolumeParameters {
+    mat4 dataToModel;
+    mat4 modelToData;
+    mat4 dataToWorld;
+    mat4 worldToData;
     mat4 modelToWorld;
     mat4 worldToModel;
     mat4 worldToTexture;
@@ -88,6 +97,10 @@ struct VolumeParameters {
 
 
 struct ImageParameters {
+    mat4 dataToModel;
+    mat4 modelToData;
+    mat4 dataToWorld;
+    mat4 worldToData;
     mat3 modelToWorld;
     mat3 worldToModel;
     mat3 worldToTexture;
@@ -106,57 +119,5 @@ struct LightParameters {
     vec3 specularColor;
     int specularExponent;
 };
-
-// Combined matrices for the current geometry and camera
-struct GeometryCameraParameters {
-    mat4 modelToView; // Equivalent to modelView
-    mat4 viewToModel; // Equivalent to modelViewInverse
-    mat4 modelToClip; // Equivalent to modelViewProjection
-    mat4 clipToModel; // Equivalent to modelViewProjectionInverse
-};
-
-
-// Depricated...
-/*
-struct CAMERA_PARAMETERS {
-    mat4 viewMatrix_;
-    mat4 projectionMatrix_; // view to clip
-    mat4 worldToClipMatrix_; // view*projection
-    vec3 cameraPosition_;
-	float zNear_;
-	float zFar_;
-};
-
-struct MODEL_PARAMETERS {
-    mat4 modelToWorldMatrix_;
-    mat3 modelToWorldNormalMatrix_;
-};
-
-struct VOLUME_PARAMETERS {
-    vec3 dimensions_;
-    vec3 dimensionsRCP_;
-    mat4 worldToTexture_;
-    mat4 textureToWorld_;
-    mat3 textureSpaceGradientSpacing_; // Maximum distance we can without going outside a voxel from the center of it (half of minimum voxel spacing for volumes with orthogonal basis)
-    float worldSpaceGradientSpacing_;  // Gradients are returned in world space and hence we need this to get correct length
-    float formatScaling_; //Reversed, meaning scaling = (1-bitScaling_), as 0 is default for single uniforms.
-    float formatOffset_;
-    float signedFormatScaling_; //Reversed, meaning scaling = (1-bitScaling_), as 0 is default for single uniforms.
-    float signedFormatOffset_;
-};
-
-struct TEXTURE_PARAMETERS {
-    vec2 dimensions_;
-    vec2 dimensionsRCP_;
-};
-
-struct LIGHT_PARAMETERS {
-    vec3 position_; 
-    vec3 ambientColor_;
-    vec3 diffuseColor_; 
-    vec3 specularColor_;
-    int specularExponent_;
-};
-*/
 
 #endif // IVW_STRUCTS_GLSL

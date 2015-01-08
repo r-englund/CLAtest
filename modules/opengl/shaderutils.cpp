@@ -112,48 +112,24 @@ void setShaderUniforms(Shader* shader, const CameraProperty& property, std::stri
     shader->setUniform(name + ".farPlane", property.getFarPlaneDist());
 }
 
-void setShaderUniforms(Shader* shader, const CameraProperty& property,
-                       const SpatialEntity<3>& object) {
-    const SpatialCameraCoordinateTransformer<3>& ct =
-        object.getCoordinateTransformer(Camera<3>(&property));
-
-    mat4 modelViewMatrix = ct.getModelToViewMatrix();
-    shader->setUniform("modelToView", modelViewMatrix);
-    shader->setUniform("viewToModel", ct.getViewToModelMatrix());
-    shader->setUniform("modelToViewNormalMatrix_",
-                       glm::mat3(glm::transpose(glm::inverse(modelViewMatrix))));
-    shader->setUniform("modelToClip", ct.getModelToClipMatrix());
-    shader->setUniform("clipToModel", ct.getClipToModelMatrix());
-}
-
-void setShaderUniforms(Shader* shader, const CameraProperty& property,
-                       const SpatialEntity<3>& object, std::string name) {
-    const SpatialCameraCoordinateTransformer<3>& ct =
-        object.getCoordinateTransformer(Camera<3>(&property));
-
-    mat4 modelViewMatrix = ct.getModelToViewMatrix();
-    shader->setUniform(name + ".modelToView", modelViewMatrix);
-    shader->setUniform(name + ".viewToModel", ct.getViewToModelMatrix());
-    shader->setUniform(name + ".modelToViewNormalMatrix_",
-                       glm::mat3(glm::transpose(glm::inverse(modelViewMatrix))));
-    shader->setUniform(name + ".modelToClip", ct.getModelToClipMatrix());
-    shader->setUniform(name + ".clipToModel", ct.getClipToModelMatrix());
-}
-
-void setShaderUniforms(Shader* shader, const SpatialEntity<3>& object) {
-    mat4 modelToWorldMatrix = object.getCoordinateTransformer().getDataToWorldMatrix();
-    shader->setUniform("modelToWorld", modelToWorldMatrix);
-    shader->setUniform("worldToModel", object.getCoordinateTransformer().getWorldToModelMatrix());
-    shader->setUniform("modelToWorldNormalMatrix",
-                       glm::mat3(glm::transpose(glm::inverse(modelToWorldMatrix))));
-}
-
 void setShaderUniforms(Shader* shader, const SpatialEntity<3>& object, const std::string& name) {
-    mat4 modelToWorldMatrix = object.getCoordinateTransformer().getDataToWorldMatrix();
+    const SpatialCoordinateTransformer<3>& ct = object.getCoordinateTransformer();
+
+    mat4 dataToWorldMatrix = ct.getDataToWorldMatrix();
+    mat4 modelToWorldMatrix = ct.getModelToWorldMatrix();
+
+    shader->setUniform(name + ".dataToModel", ct.getDataToModelMatrix());
+    shader->setUniform(name + ".modelToData", ct.getModelToDataMatrix());
+
+    shader->setUniform(name + ".dataToWorld", dataToWorldMatrix);
+    shader->setUniform(name + ".worldToData", ct.getWorldToDataMatrix());
+
     shader->setUniform(name + ".modelToWorld", modelToWorldMatrix);
-    shader->setUniform(name + ".worldToModel",
-                       object.getCoordinateTransformer().getWorldToModelMatrix());
+    shader->setUniform(name + ".worldToModel", ct.getWorldToModelMatrix());
     shader->setUniform(name + ".modelToWorldNormalMatrix",
+                       glm::mat3(glm::transpose(glm::inverse(modelToWorldMatrix))));
+
+    shader->setUniform(name + ".dataToWorldNormalMatrix",
                        glm::mat3(glm::transpose(glm::inverse(modelToWorldMatrix))));
 }
 

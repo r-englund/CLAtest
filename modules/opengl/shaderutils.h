@@ -59,13 +59,8 @@ IVW_MODULE_OPENGL_API void setShaderUniforms(Shader* shader, const CameraPropert
 IVW_MODULE_OPENGL_API void setShaderUniforms(Shader* shader, const CameraProperty& property,
                                              std::string name);
 
-IVW_MODULE_OPENGL_API void setShaderUniforms(Shader* shader, const SpatialEntity<3>& object);
+
 IVW_MODULE_OPENGL_API void setShaderUniforms(Shader* shader, const SpatialEntity<3>& object,
-                                             const std::string& name);
-IVW_MODULE_OPENGL_API void setShaderUniforms(Shader* shader, const CameraProperty& property,
-                                             const SpatialEntity<3>& object);
-IVW_MODULE_OPENGL_API void setShaderUniforms(Shader* shader, const CameraProperty& property,
-                                             const SpatialEntity<3>& object,
                                              const std::string& name);
 
 // SimpleRaycastingProperty

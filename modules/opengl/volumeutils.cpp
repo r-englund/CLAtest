@@ -42,26 +42,31 @@ namespace inviwo {
 namespace utilgl {
 
 void setShaderUniforms(Shader* shader, const Volume* volume, const std::string& samplerID) {
-    shader->setUniform(samplerID + ".modelToWorld",
-                       volume->getCoordinateTransformer().getModelToWorldMatrix());
-    shader->setUniform(samplerID + ".worldToModel",
-                       volume->getCoordinateTransformer().getWorldToModelMatrix());
+    const StructuredCoordinateTransformer<3>& ct = volume->getCoordinateTransformer();
 
-    shader->setUniform(samplerID + ".worldToTexture",
-                       volume->getCoordinateTransformer().getWorldToTextureMatrix());
-    shader->setUniform(samplerID + ".textureToWorld", 
-                       volume->getCoordinateTransformer().getTextureToWorldMatrix());
+    shader->setUniform(samplerID + ".dataToModel", ct.getDataToModelMatrix());
+    shader->setUniform(samplerID + ".modelToData", ct.getModelToDataMatrix());
 
-    shader->setUniform(samplerID + ".textureToIndex",
-                       volume->getCoordinateTransformer().getTextureToIndexMatrix());
-    shader->setUniform(samplerID + ".indexToTexture",
-                       volume->getCoordinateTransformer().getIndexToTextureMatrix());
+    shader->setUniform(samplerID + ".dataToWorld", ct.getDataToWorldMatrix());
+    shader->setUniform(samplerID + ".worldToData", ct.getWorldToDataMatrix());
+
+    shader->setUniform(samplerID + ".modelToWorld", ct.getModelToWorldMatrix());
+    shader->setUniform(samplerID + ".worldToModel", ct.getWorldToModelMatrix());
+
+    shader->setUniform(samplerID + ".worldToTexture", ct.getWorldToTextureMatrix());
+    shader->setUniform(samplerID + ".textureToWorld", ct.getTextureToWorldMatrix());
+
+    shader->setUniform(samplerID + ".textureToIndex", ct.getTextureToIndexMatrix());
+    shader->setUniform(samplerID + ".indexToTexture", ct.getIndexToTextureMatrix());
 
     float gradientSpacing = volume->getWorldSpaceGradientSpacing();
     // Scale the world matrix by the gradient spacing and the transform it to texture space.
-    // Note that since we are dealing with real values we can multiply the scalar after the transform as well
-    shader->setUniform(samplerID + ".textureSpaceGradientSpacing", gradientSpacing*mat3(volume->getCoordinateTransformer().getWorldToTextureMatrix()));
- 
+    // Note that since we are dealing with real values we can multiply the scalar after the
+    // transform as well
+    shader->setUniform(
+        samplerID + ".textureSpaceGradientSpacing",
+        gradientSpacing * mat3(ct.getWorldToTextureMatrix()));
+
     vec3 dimF = static_cast<vec3>(volume->getDimension());
     shader->setUniform(samplerID + ".dimensions", dimF);
     shader->setUniform(samplerID + ".reciprocalDimensions", vec3(1.f) / dimF);
