@@ -33,13 +33,13 @@
 #include "utils/structs.glsl"
 #include "utils/sampler2d.glsl"
 
-uniform TEXTURE_TYPE texColor0_;
-uniform TEXTURE_TYPE texDepth0_;
-uniform TEXTURE_TYPE texPicking0_;
+uniform sampler2D texColor0_;
+uniform sampler2D texDepth0_;
+uniform sampler2D texPicking0_;
 
-uniform TEXTURE_TYPE texColor1_;
-uniform TEXTURE_TYPE texDepth1_;
-uniform TEXTURE_TYPE texPicking1_;
+uniform sampler2D texColor1_;
+uniform sampler2D texDepth1_;
+uniform sampler2D texPicking1_;
 uniform vec2 screenDimRCP_;
 
 void main() {

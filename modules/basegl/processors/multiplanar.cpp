@@ -165,11 +165,9 @@ void MultiPlanar::process() {
     shader_->activate();
 
     vec2 dim = static_cast<vec2>(outport_.getDimension());
-    shader_->setUniform("screenDim_", dim);
-    shader_->setUniform("screenDimRCP_", vec2(1.0f, 1.0f) / dim);
 
     mat4 modelMatrix = mat4(1.0f);
-    shader_->setUniform("modelViewProjectionMatrix_",
+    shader_->setUniform("dataToClip_",
                         camera_.projectionMatrix() * camera_.viewMatrix() * modelMatrix);
 
     TextureUnit sliceUnit;

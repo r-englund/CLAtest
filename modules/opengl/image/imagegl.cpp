@@ -152,7 +152,7 @@ bool ImageGL::copyAndResizeRepresentation(DataRepresentation* targetRep) const {
     if (source->getPickingLayerGL()) {
         shader_->setUniform("picking_", pickingUnit.getUnitNumber());
     }
-    shader_->setUniform("modelViewProjectionMatrix_", scale);
+    shader_->setUniform("dataToClip_", scale);
     glDepthMask(GL_TRUE);
     LGL_ERROR;
     //target->frameBufferObject_->checkStatus();

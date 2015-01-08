@@ -33,9 +33,6 @@
 #ifndef IVW_STRUCTS_GLSL
 #define IVW_STRUCTS_GLSL
 
-#define VOLUME_TYPE sampler3D
-#define TEXTURE_TYPE sampler2D
-
 struct CameraParameters {
    mat4 worldToView; // Equivalent to view
    mat4 viewToWorld; // Equivalent to viewInverse
@@ -94,8 +91,6 @@ struct VolumeParameters {
     float signedFormatOffset;
 };
 
-
-
 struct ImageParameters {
     mat4 dataToModel;
     mat4 modelToData;
@@ -110,7 +105,6 @@ struct ImageParameters {
     vec2 dimensions;
     vec2 reciprocalDimensions;
 };
-
 
 struct LightParameters {
     vec3 position; 

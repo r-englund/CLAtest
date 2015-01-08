@@ -100,13 +100,15 @@ void GeometryPicking::process() {
     shader_->activate();
     shader_->setUniform("pickingColor_", widgetPickingObject_->getPickingColor());
 
-    mat4 modelViewProjectionMatrix_ = camera_.projectionMatrix() * camera_.viewMatrix() *
-                                      glm::translate(position_.get()) *
-                                      geometryInport_.getData()->getWorldMatrix() *
-                                      geometryInport_.getData()->getModelMatrix();
-    shader_->setUniform("modelViewProjectionMatrix_", modelViewProjectionMatrix_);
+    const SpatialCameraCoordinateTransformer<3>& ct =
+        geometryInport_.getData()->getCoordinateTransformer(&camera_);
 
-    glEnable(GL_CULL_FACE); 
+    mat4 dataToClip_ =
+        ct.getWorldToClipMatrix() * glm::translate(position_.get()) * ct.getDataToWorldMatrix();
+
+    shader_->setUniform("dataToClip_", dataToClip_);
+
+    glEnable(GL_CULL_FACE);
     glCullFace(GL_BACK);
     glDepthFunc(GL_ALWAYS);
     renderer.render();
@@ -117,6 +119,5 @@ void GeometryPicking::process() {
     utilgl::deactivateCurrentTarget();
     compositePortsToOutport(outport_, imageInport_);
 }
-
 
 }  // namespace

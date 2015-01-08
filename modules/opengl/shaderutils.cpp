@@ -74,33 +74,15 @@ void addShaderDefines(Shader* shader, const SimpleLightingProperty& property) {
     shader->getFragmentShaderObject()->addShaderDefine(shadingKey, shadingValue);
 }
 
-void setShaderUniforms(Shader* shader, const SimpleLightingProperty& property) {
-    shader->setUniform("lightPosition_", property.lightPosition_.get());
-    shader->setUniform("lightAmbientColor_", property.ambientColor_.get());
-    shader->setUniform("lightDiffuseColor_", property.diffuseColor_.get());
-    shader->setUniform("lightSpecularColor_", property.specularColor_.get());
-    shader->setUniform("lightSpecularExponent_", property.specularExponent_.get());
-}
-
 void setShaderUniforms(Shader* shader, const SimpleLightingProperty& property, std::string name) {
-    shader->setUniform(name + ".position_", property.lightPosition_.get());
-    shader->setUniform(name + ".ambientColor_", property.ambientColor_.get());
-    shader->setUniform(name + ".diffuseColor_", property.diffuseColor_.get());
-    shader->setUniform(name + ".specularColor_", property.specularColor_.get());
-    shader->setUniform(name + ".specularExponent_", property.specularExponent_.get());
+    shader->setUniform(name + ".position", property.lightPosition_.get());
+    shader->setUniform(name + ".ambientColor", property.ambientColor_.get());
+    shader->setUniform(name + ".diffuseColor", property.diffuseColor_.get());
+    shader->setUniform(name + ".specularColor", property.specularColor_.get());
+    shader->setUniform(name + ".specularExponent", property.specularExponent_.get());
 }
 
 void addShaderDefines(Shader* shader, const CameraProperty& property) {}
-
-void setShaderUniforms(Shader* shader, const CameraProperty& property) {
-    shader->setUniform("worldToView", property.viewMatrix());
-    shader->setUniform("viewToWorld", property.inverseViewMatrix());
-    shader->setUniform("worldToClip", property.projectionMatrix() * property.viewMatrix());
-    shader->setUniform("clipToWorld",
-                       property.inverseViewMatrix() * property.inverseProjectionMatrix());
-    shader->setUniform("nearPlane", property.getNearPlaneDist());
-    shader->setUniform("farPlane", property.getFarPlaneDist());
-}
 
 void setShaderUniforms(Shader* shader, const CameraProperty& property, std::string name) {
     shader->setUniform(name + ".worldToView", property.viewMatrix());
@@ -130,7 +112,7 @@ void setShaderUniforms(Shader* shader, const SpatialEntity<3>& object, const std
                        glm::mat3(glm::transpose(glm::inverse(modelToWorldMatrix))));
 
     shader->setUniform(name + ".dataToWorldNormalMatrix",
-                       glm::mat3(glm::transpose(glm::inverse(modelToWorldMatrix))));
+                       glm::mat3(glm::transpose(glm::inverse(dataToWorldMatrix))));
 }
 
 void addShaderDefines(Shader* shader, const SimpleRaycastingProperty& property) {

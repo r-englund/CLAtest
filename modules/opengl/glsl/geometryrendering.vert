@@ -44,7 +44,7 @@ out vec3 texCoord_;
 void main() {
     color_ = in_Color;
     texCoord_ = in_TexCoord;
-    worldPosition_ = geometry_.modelToWorld * in_Vertex;
-    normal_ = geometry_.modelToWorldNormalMatrix * in_Normal;
+    worldPosition_ = geometry_.dataToWorld * in_Vertex;
+    normal_ = geometry_.dataToWorldNormalMatrix * in_Normal;
     gl_Position = camera_.worldToClip * worldPosition_;
 }

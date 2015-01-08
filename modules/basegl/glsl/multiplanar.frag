@@ -34,7 +34,7 @@
 #include "utils/sampler2d.glsl"
 
 uniform sampler2D sliceTex_;
-uniform VolumeParameters sliceTexParameters_;
+uniform ImageParameters sliceTexParameters_;
 
 in vec3 texCoord_;
 

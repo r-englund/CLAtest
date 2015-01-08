@@ -108,9 +108,10 @@ void EntryExitPoints::process() {
     glPointSize(1.f);
     glCullFace(GL_FRONT);
     genericShader_->activate();
-    mat4 modelMatrix = geom->getWorldMatrix() * geom->getModelMatrix();
-    genericShader_->setUniform("modelViewProjectionMatrix_",
-                               camera_.projectionMatrix() * camera_.viewMatrix() * modelMatrix);
+
+    mat4 modelMatrix = geom->getCoordinateTransformer(&camera_).getDataToClipMatrix();
+    genericShader_->setUniform("dataToClip_", modelMatrix);
+
     renderer_->render();
     utilgl::deactivateCurrentTarget();
     // generate entry points

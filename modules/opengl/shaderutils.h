@@ -48,18 +48,15 @@ namespace utilgl {
 
 // SimpleLightingProperty
 IVW_MODULE_OPENGL_API void addShaderDefines(Shader* shader, const SimpleLightingProperty& property);
-IVW_MODULE_OPENGL_API void setShaderUniforms(Shader* shader,
-                                             const SimpleLightingProperty& property);
 IVW_MODULE_OPENGL_API void setShaderUniforms(Shader* shader, const SimpleLightingProperty& property,
                                              std::string name);
 
 // CameraProperty
 IVW_MODULE_OPENGL_API void addShaderDefines(Shader* shader, const CameraProperty& property);
-IVW_MODULE_OPENGL_API void setShaderUniforms(Shader* shader, const CameraProperty& property);
 IVW_MODULE_OPENGL_API void setShaderUniforms(Shader* shader, const CameraProperty& property,
                                              std::string name);
 
-
+// SpatialEntity
 IVW_MODULE_OPENGL_API void setShaderUniforms(Shader* shader, const SpatialEntity<3>& object,
                                              const std::string& name);
 

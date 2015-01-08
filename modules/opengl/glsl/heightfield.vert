@@ -53,7 +53,7 @@ void main() {
     height_ = height * heightScale_;
     vec4 pos = in_Vertex + vec4(0.0f, 0.0f, height * heightScale_, 0.0f);
 
-    worldPosition_ = geometry_.modelToWorld * pos;
-    normal_ = geometry_.modelToWorldNormalMatrix * in_Normal;
+    worldPosition_ = geometry_.dataToWorld * pos;
+    normal_ = geometry_.dataToWorldNormalMatrix * in_Normal;
     gl_Position = camera_.worldToClip * worldPosition_;
 }
