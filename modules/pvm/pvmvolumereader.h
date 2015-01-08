@@ -56,6 +56,9 @@ public:
     virtual void* readData() const;
     virtual void readDataInto(void* dest) const;
 
+ protected:
+     void printMetaInfo(MetaDataOwner*, std::string);
+
 };
 
 }  // namespace

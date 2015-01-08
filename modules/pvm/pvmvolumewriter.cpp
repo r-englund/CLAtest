@@ -65,6 +65,7 @@ void PVMVolumeWriter::writeData(const Volume* data, const std::string filePath) 
     {
     case inviwo::DataFormatEnums::UINT8:
         components = 1;
+        break;
     case inviwo::DataFormatEnums::UINT12:
     case inviwo::DataFormatEnums::UINT16:
         components = 2;
@@ -73,51 +74,71 @@ void PVMVolumeWriter::writeData(const Volume* data, const std::string filePath) 
         break;
     }
 
-    if(components == 0)
+    if (components == 0)
         throw DataWriterException("Error: Output format " + std::string(format->getString()) + " not support by PVM writer");
 
     const VolumeRAM* vr = data->getRepresentation<VolumeRAM>();
-
-    unsigned const char *dataPtr = (unsigned const char *)vr->getData();;
-    if(components == 2){
-        //TODO: Might need swap fixes for PVM writing
-        /*DataUINT16::type* d = reinterpret_cast<DataUINT16::type*>(data);
-        DataUINT16::type m = 0;
-        for (int i = 0; i < dim.x*dim.y*dim.z; i++) {
-            d[i] = (d[i] >> 8) | (d[i] << 8);
-        }*/
-    }
+    unsigned const char *dataPtr = (unsigned const char *)vr->getData();
 
     uvec3 dim = vr->getDimension();
     uvec3 scale(1.f);
 
-    unsigned const char *description = NULL;
+    unsigned char *data2Ptr = NULL;
+    if (components == 2){
+        size_t dimXYZ = dim.x*dim.y*dim.z;
+        data2Ptr = new unsigned char[dimXYZ * 2];
+        memcpy(data2Ptr, dataPtr, dimXYZ * 2 * sizeof(unsigned char));
+        DataUINT16::type* d2 = reinterpret_cast<DataUINT16::type*>(data2Ptr);
+        for (int i = 0; i < dimXYZ; i++) {
+            d2[i] = (d2[i] >> 8) | (d2[i] << 8);
+        }
+        //TODO: Only 8-bit works at the moment
+        //dataPtr = data2Ptr;
+    }
+
+    unsigned char *description = NULL;
     StringMetaData* descMetaData = data->getMetaData<StringMetaData>("Description");
-    if(descMetaData)
-        description = (unsigned const char *)descMetaData->get().c_str();
+    if (descMetaData){
+        description = new unsigned char[descMetaData->get().size() + 1];
+        description = (unsigned char *)malloc((descMetaData->get().size() + 1) * sizeof(unsigned char));
+        strncpy((char *)description, descMetaData->get().c_str(), descMetaData->get().size());
+        description[descMetaData->get().size()] = '\0';
+    }
 
-    unsigned const char *courtesy = NULL;
+    unsigned char *courtesy = NULL;
     StringMetaData* courMetaData = data->getMetaData<StringMetaData>("Courtesy");
-    if(courMetaData)
-        courtesy = (unsigned const char *)courMetaData->get().c_str();
+    if (courMetaData){
+        courtesy = new unsigned char[courMetaData->get().size() + 1];
+        strncpy((char *)courtesy, courMetaData->get().c_str(), courMetaData->get().size());
+        courtesy[courMetaData->get().size()] = '\0';
+    }
 
-    unsigned const char *parameter = NULL;
+    unsigned char *parameter = NULL;
     StringMetaData* paraMetaData = data->getMetaData<StringMetaData>("Parameter");
-    if(paraMetaData)
-        parameter = (unsigned const char *)paraMetaData->get().c_str();
+    if (paraMetaData){
+        parameter = new unsigned char[paraMetaData->get().size() + 1];
+        strncpy((char *)parameter, paraMetaData->get().c_str(), paraMetaData->get().size());
+        parameter[paraMetaData->get().size()] = '\0';
+    }
 
-    unsigned const char *comment = NULL;
+    unsigned char *comment = NULL;
     StringMetaData* commMetaData = data->getMetaData<StringMetaData>("Comment");
-    if(commMetaData)
-        comment = (unsigned const char *)commMetaData->get().c_str();
+    if (commMetaData){
+        comment = new unsigned char[commMetaData->get().size() + 1];
+        strncpy((char *)comment, commMetaData->get().c_str(), commMetaData->get().size());
+        comment[commMetaData->get().size()] = '\0';
+    }
 
-    writePVMvolume(filePath.c_str(), dataPtr,
-        dim.x,dim.y,dim.z, components,
-        scale.x, scale.y, scale.z,
-        description,
-        courtesy,
-        parameter,
-        comment);
+
+    writePVMvolume(filePath.c_str(), dataPtr, dim.x, dim.y, dim.z, 
+        components, scale.x, scale.y, scale.z,
+        description, courtesy, parameter, comment);
+
+    if (data2Ptr) delete data2Ptr;
+    if (description) delete description;
+    if (courtesy) delete courtesy;
+    if (parameter) delete parameter;
+    if (comment) delete comment;
 }
 
 } // namespace

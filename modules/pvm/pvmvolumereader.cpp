@@ -165,10 +165,10 @@ Volume* PVMVolumeReader::readMetaData(std::string filePath) {
     size_t bytes = dim.x * dim.y * dim.z * (format->getBytesAllocated());
     std::string size = formatBytesToString(bytes);
     LogInfo("Loaded volume: " << filePath << " size: " << size);
-    if (description) LogInfo("Description: " << volume->getMetaData<StringMetaData>("Description")->get());
-    if (courtesy) LogInfo("Courtesy: " << volume->getMetaData<StringMetaData>("Courtesy")->get());
-    if (parameter) LogInfo("Parameter: " << volume->getMetaData<StringMetaData>("Parameter")->get());
-    if (comment) LogInfo("Comment: " << volume->getMetaData<StringMetaData>("Comment")->get());
+    printMetaInfo(volume, "Description");
+    printMetaInfo(volume, "Courtesy");
+    printMetaInfo(volume, "Parameter");
+    printMetaInfo(volume, "Comment");
 
     return volume;
 }
@@ -179,6 +179,15 @@ void PVMVolumeReader::readDataInto(void*) const {
 
 void* PVMVolumeReader::readData() const {
     return NULL;
+}
+
+void PVMVolumeReader::printMetaInfo(MetaDataOwner* metaDataOwner, std::string key){
+    StringMetaData* metaData = metaDataOwner->getMetaData<StringMetaData>(key);
+    if (metaData){
+        std::string metaStr = metaData->get();
+        replaceInString(metaStr, "\n", ", ");
+        LogInfo(key << ": " << metaStr);
+    }
 }
 
 }  // namespace
