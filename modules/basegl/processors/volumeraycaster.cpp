@@ -30,7 +30,7 @@
  *
  *********************************************************************************/
 
-#include "simpleraycaster.h"
+#include "volumeraycaster.h"
 #include <inviwo/core/ports/imageport.h>
 #include <inviwo/core/io/serialization/ivwserialization.h>
 #include <inviwo/core/io/serialization/versionconverter.h>
@@ -44,13 +44,13 @@
 
 namespace inviwo {
 
-ProcessorClassIdentifier(SimpleRaycaster,  "org.inviwo.SimpleRaycaster");
-ProcessorDisplayName(SimpleRaycaster,  "Simple Raycaster");
-ProcessorTags(SimpleRaycaster, Tags::GL);
-ProcessorCategory(SimpleRaycaster, "Volume Rendering");
-ProcessorCodeState(SimpleRaycaster, CODE_STATE_STABLE);
+ProcessorClassIdentifier(VolumeRaycaster,  "org.inviwo.VolumeRaycaster");
+ProcessorDisplayName(VolumeRaycaster,  "Volume Raycaster");
+ProcessorTags(VolumeRaycaster, Tags::GL);
+ProcessorCategory(VolumeRaycaster, "Volume Rendering");
+ProcessorCodeState(VolumeRaycaster, CODE_STATE_STABLE);
 
-SimpleRaycaster::SimpleRaycaster()
+VolumeRaycaster::VolumeRaycaster()
     : Processor()
     , volumePort_("volume")
     , entryPort_("entry-points")
@@ -63,7 +63,7 @@ SimpleRaycaster::SimpleRaycaster()
     , lighting_("lighting", "Lighting")
     , toggleShading_("toggleShading", "Toggle Shading",
         new KeyboardEvent('L'), 
-        new Action(this, &SimpleRaycaster::toggleShading)) {
+        new Action(this, &VolumeRaycaster::toggleShading)) {
     
     addPort(volumePort_, "VolumePortGroup");
     addPort(entryPort_, "ImagePortGroup1");
@@ -73,7 +73,7 @@ SimpleRaycaster::SimpleRaycaster()
     channel_.addOption("Channel 1", "Channel 1", 0);
     channel_.setCurrentStateAsDefault();
     
-    volumePort_.onChange(this, &SimpleRaycaster::onVolumeChange);
+    volumePort_.onChange(this, &VolumeRaycaster::onVolumeChange);
 
     addProperty(channel_);
     addProperty(transferFunction_);
@@ -83,29 +83,29 @@ SimpleRaycaster::SimpleRaycaster()
     addProperty(toggleShading_);
 }
 
-SimpleRaycaster::~SimpleRaycaster() {
+VolumeRaycaster::~VolumeRaycaster() {
 }
 
-void SimpleRaycaster::initialize() {
+void VolumeRaycaster::initialize() {
     Processor::initialize();
     shader_ = new Shader("raycasting.frag", false);
     initializeResources();
 }
 
-void SimpleRaycaster::deinitialize() {
+void VolumeRaycaster::deinitialize() {
     if (shader_) delete shader_;
     shader_ = NULL;
     Processor::deinitialize();
 }
 
-void SimpleRaycaster::initializeResources() {
+void VolumeRaycaster::initializeResources() {
     utilgl::addShaderDefines(shader_, raycasting_);
     utilgl::addShaderDefines(shader_, camera_);
     utilgl::addShaderDefines(shader_, lighting_);
     shader_->build();
 }
 
-void SimpleRaycaster::onVolumeChange() {
+void VolumeRaycaster::onVolumeChange() {
     if (volumePort_.hasData()){
         int channels = volumePort_.getData()->getDataFormat()->getComponents();
 
@@ -122,7 +122,7 @@ void SimpleRaycaster::onVolumeChange() {
     }
 }
 
-void SimpleRaycaster::process() {
+void VolumeRaycaster::process() {
     entryPort_.passOnDataToOutport(&outport_);
 
     TextureUnit tfUnit, entryColorUnit, entryDepthUnit, exitColorUnit, exitDepthUnit, volUnit;
@@ -155,7 +155,7 @@ void SimpleRaycaster::process() {
     utilgl::deactivateCurrentTarget();
 }
 
-void SimpleRaycaster::toggleShading(Event*) {
+void VolumeRaycaster::toggleShading(Event*) {
     if (lighting_.shadingMode_.get() ==  ShadingMode::None) {
         lighting_.shadingMode_.set(ShadingMode::Phong);
     } else {

@@ -51,10 +51,10 @@ namespace inviwo {
 
 class Shader;
 
-class IVW_MODULE_BASEGL_API SimpleRaycaster : public Processor {
+class IVW_MODULE_BASEGL_API VolumeRaycaster : public Processor {
 public:
-    SimpleRaycaster();
-    virtual ~SimpleRaycaster();
+    VolumeRaycaster();
+    virtual ~VolumeRaycaster();
 
     InviwoProcessorInfo();
 

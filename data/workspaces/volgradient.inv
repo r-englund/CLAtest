@@ -238,7 +238,7 @@
                 </MetaDataItem>
             </MetaDataMap>
         </Processor>
-        <Processor type="org.inviwo.SimpleRaycaster" identifier="RefRaycaster" id="ref10">
+        <Processor type="org.inviwo.VolumeRaycaster" identifier="RefRaycaster" id="ref10">
             <Properties>
                 <Property type="org.inviwo.CameraProperty" identifier="camera" key="camera">
                     <Properties>
@@ -656,7 +656,7 @@
                 <Processor type="org.inviwo.EntryExitPoints" identifier="EntryExitPoints2" reference="ref6" />
             </OutPort>
             <InPort identifier="entry-points">
-                <Processor type="org.inviwo.SimpleRaycaster" identifier="RefRaycaster" reference="ref10" />
+                <Processor type="org.inviwo.VolumeRaycaster" identifier="RefRaycaster" reference="ref10" />
             </InPort>
         </Connection>
         <Connection>
@@ -664,7 +664,7 @@
                 <Processor type="org.inviwo.EntryExitPoints" identifier="EntryExitPoints2" reference="ref6" />
             </OutPort>
             <InPort identifier="exit-points">
-                <Processor type="org.inviwo.SimpleRaycaster" identifier="RefRaycaster" reference="ref10" />
+                <Processor type="org.inviwo.VolumeRaycaster" identifier="RefRaycaster" reference="ref10" />
             </InPort>
         </Connection>
         <Connection>
@@ -693,7 +693,7 @@
         </Connection>
         <Connection>
             <OutPort identifier="outport">
-                <Processor type="org.inviwo.SimpleRaycaster" identifier="RefRaycaster" reference="ref10" />
+                <Processor type="org.inviwo.VolumeRaycaster" identifier="RefRaycaster" reference="ref10" />
             </OutPort>
             <InPort identifier="inport">
                 <Processor type="org.inviwo.Background" identifier="Background2" reference="ref9" />
@@ -720,7 +720,7 @@
                 <Processor type="org.inviwo.VolumeGradientMagnitude" identifier="Volume Gradient Magnitude" reference="ref12" />
             </OutPort>
             <InPort identifier="volume">
-                <Processor type="org.inviwo.SimpleRaycaster" identifier="RefRaycaster" reference="ref10" />
+                <Processor type="org.inviwo.VolumeRaycaster" identifier="RefRaycaster" reference="ref10" />
             </InPort>
         </Connection>
         <Connection>

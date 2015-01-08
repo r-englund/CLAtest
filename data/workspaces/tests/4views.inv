@@ -171,7 +171,7 @@
                 </MetaDataItem>
             </MetaDataMap>
         </Processor>
-        <Processor type="org.inviwo.SimpleRaycaster" identifier="SimpleRaycaster" id="ref3">
+        <Processor type="org.inviwo.VolumeRaycaster" identifier="VolumeRaycaster" id="ref3">
             <Properties>
                 <Property type="org.inviwo.CameraProperty" identifier="camera" key="camera" id="ref4">
                     <Properties>
@@ -730,7 +730,7 @@
                 <Processor type="org.inviwo.EntryExitPoints" identifier="EntryExitPoints" reference="ref12" />
             </OutPort>
             <InPort identifier="entry-points">
-                <Processor type="org.inviwo.SimpleRaycaster" identifier="SimpleRaycaster" reference="ref3" />
+                <Processor type="org.inviwo.VolumeRaycaster" identifier="VolumeRaycaster" reference="ref3" />
             </InPort>
         </Connection>
         <Connection>
@@ -754,7 +754,7 @@
                 <Processor type="org.inviwo.VolumeSource" identifier="VolumeSource" reference="ref5" />
             </OutPort>
             <InPort identifier="volume">
-                <Processor type="org.inviwo.SimpleRaycaster" identifier="SimpleRaycaster" reference="ref3" />
+                <Processor type="org.inviwo.VolumeRaycaster" identifier="VolumeRaycaster" reference="ref3" />
             </InPort>
         </Connection>
         <Connection>
@@ -762,7 +762,7 @@
                 <Processor type="org.inviwo.EntryExitPoints" identifier="EntryExitPoints" reference="ref12" />
             </OutPort>
             <InPort identifier="exit-points">
-                <Processor type="org.inviwo.SimpleRaycaster" identifier="SimpleRaycaster" reference="ref3" />
+                <Processor type="org.inviwo.VolumeRaycaster" identifier="VolumeRaycaster" reference="ref3" />
             </InPort>
         </Connection>
         <Connection>
@@ -815,7 +815,7 @@
         </Connection>
         <Connection>
             <OutPort identifier="outport">
-                <Processor type="org.inviwo.SimpleRaycaster" identifier="SimpleRaycaster" reference="ref3" />
+                <Processor type="org.inviwo.VolumeRaycaster" identifier="VolumeRaycaster" reference="ref3" />
             </OutPort>
             <InPort identifier="multiinport">
                 <Processor type="org.inviwo.ImageLayoutGL" identifier="Image Layout" reference="ref7" />
