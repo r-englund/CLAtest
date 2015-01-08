@@ -73,7 +73,6 @@ Volume* PVMVolumeReader::readMetaData(std::string filePath) {
     glm::uvec3 dim(0);
     glm::mat3 basis(2.0f);
     glm::vec3 spacing(0.0f);
-    glm::vec3 a(0.0f), b(0.0f), c(0.0f);
 
     // Reading PVM volume
     unsigned char* data = NULL;
@@ -125,18 +124,21 @@ Volume* PVMVolumeReader::readMetaData(std::string filePath) {
 
     if (courtesy){
         ss.clear();
+        ss.str("");
         ss << courtesy;
         volume->setMetaData<StringMetaData>("Courtesy", ss.str());
     }
 
     if (parameter){
         ss.clear();
+        ss.str("");
         ss << parameter;
         volume->setMetaData<StringMetaData>("Parameter", ss.str());
     }
 
     if (comment){
         ss.clear();
+        ss.str("");
         ss << comment;
         volume->setMetaData<StringMetaData>("Comment", ss.str());
     }
@@ -147,19 +149,8 @@ Volume* PVMVolumeReader::readMetaData(std::string filePath) {
         basis[2][2] = dim.z * spacing.z;
     }
 
-    if (a != vec3(0.0f) && b != vec3(0.0f) && c != vec3(0.0f)) {
-        basis[0][0] = a.x;
-        basis[1][0] = a.y;
-        basis[2][0] = a.z;
-        basis[0][1] = b.x;
-        basis[1][1] = b.y;
-        basis[2][1] = b.z;
-        basis[0][2] = c.x;
-        basis[1][2] = c.y;
-        basis[2][2] = c.z;
-    }
-
     volume->setBasis(basis);
+    volume->setOffset(-0.5f*(basis[0]+basis[1]+basis[2]));
     volume->setDimension(dim);
 
     volume->dataMap_.initWithFormat(format);
