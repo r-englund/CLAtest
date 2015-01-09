@@ -46,15 +46,15 @@ uniform sampler3D volume_;
 
 uniform sampler2D transferFunc_;
 
-uniform VolumeParameters entryParameters_;
+uniform ImageParameters entryParameters_;
 uniform sampler2D entryColorTex_;
 uniform sampler2D entryDepthTex_;
 
-uniform VolumeParameters exitParameters_;
+uniform ImageParameters exitParameters_;
 uniform sampler2D exitColorTex_;
 uniform sampler2D exitDepthTex_;
 
-uniform VolumeParameters outportParameters_;
+uniform ImageParameters outportParameters_;
 
 uniform LightParameters light_;
 uniform CameraParameters camera_;
