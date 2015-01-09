@@ -168,6 +168,7 @@ void InviwoApplicationQt::wait(int ms) {
 void InviwoApplicationQt::logQtMessages(QtMsgType type, const QMessageLogContext &context,
                                         const QString &msg) {
 
+    #ifdef IVW_DEBUG
     QByteArray localMsg = msg.toLocal8Bit();
     switch (type) {
         case QtDebugMsg:
@@ -199,6 +200,7 @@ void InviwoApplicationQt::logQtMessages(QtMsgType type, const QMessageLogContext
                     context.line, context.function);
             abort();
     }
+    #endif
 }
 #endif
 
