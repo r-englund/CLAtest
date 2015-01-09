@@ -62,12 +62,14 @@ namespace BlendModes {
 }
 
 /** \docpage{org.inviwo.ImageMixer, Image Mixer}
- * Mixes two input images according to the chosen blend mode.
+ * Mixes two input images according to the chosen blend mode. 
  * ![](imagemixer.png)
+ * The result is blended with the input image A according to 
+ * <tt>mix(a,b) = a * (1 - weight) + f(a,b) * weight</tt>,
+ * where f(a,b) is given by the blend mode.
  *
- * Supported blend modes
+ * Supported blend modes for determining <tt>f(a,b)</tt>
  * <table>
- *   <tr><td>Mix</td><td><tt>f(a,b) = a * (1 - alpha) + b * alpha</tt></td></tr>
  *   <tr><td>Over</td><td><tt>f(a,b) = b over a</tt>, regular front-to-back blending</td></tr>
  *   <tr><td>Multiply</td><td><tt>f(a,b) = a * b</tt></td></tr>
  *   <tr><td>Screen</td><td><tt>f(a,b) = 1 - (1 - a) * (1 - b)</tt></td></tr>
@@ -87,7 +89,7 @@ namespace BlendModes {
  *   * __ImageInport__ Input image B.
  *
  * ### Outports
- *   * __ImageOutport__ The output image.
+ *   * __ImageOutport__ The output image. <tt>mix(a,b) = a * (1 - weight) + f(a,b) * weight</tt>
  * 
  * ### Properties
  *   * __Blend Mode__ Blend mode used for mixing the input images.

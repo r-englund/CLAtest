@@ -53,7 +53,7 @@ namespace LuminanceModels {
 
 /** \docpage{org.inviwo.ImageGrayscale, Image Grayscale}
  * Compute a gray-scale image from a color input image. The alpha channel is not touched.
- * ![](imagegamma.png)
+ * ![](imagegrayscale.png)
  * The input image is converted to gray-scale as follows
  * 
  *     grayValue = l.r * in.r + l.g * in.g + l.b * in.b
