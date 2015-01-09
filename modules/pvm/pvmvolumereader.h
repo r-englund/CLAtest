@@ -56,6 +56,8 @@ public:
     virtual void* readData() const;
     virtual void readDataInto(void* dest) const;
 
+    static Volume* readPVMData(std::string filePath);
+
  protected:
      void printMetaInfo(MetaDataOwner*, std::string);
 

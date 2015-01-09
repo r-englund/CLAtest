@@ -36,6 +36,7 @@
 #include <inviwo/core/util/filesystem.h>
 #include <inviwo/core/util/formatconversion.h>
 #include <inviwo/core/util/stringconversion.h>
+#include <exception>
 #include "ext/tidds/ddsbase.h"
 
 namespace inviwo {
@@ -58,7 +59,34 @@ PVMVolumeReader& PVMVolumeReader::operator=(const PVMVolumeReader& that) {
 
 PVMVolumeReader* PVMVolumeReader::clone() const { return new PVMVolumeReader(*this); }
 
-Volume* PVMVolumeReader::readMetaData(std::string filePath) {
+Volume* PVMVolumeReader::readMetaData(const std::string filePath) {
+    Volume* volume = readPVMData(filePath);
+
+    if (!volume)
+        return NULL;
+
+    // Print information
+    uvec3 dim = volume->getDimension();
+    size_t bytes = dim.x * dim.y * dim.z * (volume->getDataFormat()->getBytesAllocated());
+    std::string size = formatBytesToString(bytes);
+    LogInfo("Loaded volume: " << filePath << " size: " << size);
+    printMetaInfo(volume, "description");
+    printMetaInfo(volume, "courtesy");
+    printMetaInfo(volume, "parameter");
+    printMetaInfo(volume, "comment");
+
+    return volume;
+}
+
+void PVMVolumeReader::readDataInto(void*) const {
+    return;
+}
+
+void* PVMVolumeReader::readData() const {
+    return NULL;
+}
+
+Volume* PVMVolumeReader::readPVMData(std::string filePath){
     if (!filesystem::fileExists(filePath)) {
         std::string newPath = filesystem::addBasePath(filePath);
 
@@ -74,7 +102,7 @@ Volume* PVMVolumeReader::readMetaData(std::string filePath) {
     glm::mat3 basis(2.0f);
     glm::vec3 spacing(0.0f);
 
-    // Reading PVM volume
+    // Reading MPVM volume
     unsigned char* data = NULL;
     unsigned int bytesPerVoxel;
     unsigned char *description;
@@ -82,9 +110,17 @@ Volume* PVMVolumeReader::readMetaData(std::string filePath) {
     unsigned char *parameter;
     unsigned char *comment;
 
-    data = readPVMvolume(filePath.c_str(), &dim.x, &dim.y, &dim.z,
-        &bytesPerVoxel, &spacing.x, &spacing.y, &spacing.z, &description, &courtesy,
-        &parameter, &comment);
+    try
+    {
+        data = readPVMvolume(filePath.c_str(), &dim.x, &dim.y, &dim.z,
+            &bytesPerVoxel, &spacing.x, &spacing.y, &spacing.z, &description, &courtesy,
+            &parameter, &comment);
+
+    }
+    catch (Exception& e)
+    {
+        LogErrorCustom("PVMVolumeReader", e.what());
+    }
 
     if (data == NULL)
         throw DataReaderException("Error: Could not read data in PVM file: " +
@@ -105,7 +141,7 @@ Volume* PVMVolumeReader::readMetaData(std::string filePath) {
         swapbytes(data, static_cast<unsigned int>(size));
         DataUINT16::type m = 0, c = 0;
         for (size_t i = 0; i < size; i += bytes) {
-            c = (data[i+1] << 8) | data[i];
+            c = (data[i + 1] << 8) | data[i];
             if (c > m) m = c;
         }
         if (m <= DataUINT12::max()) {
@@ -151,7 +187,7 @@ Volume* PVMVolumeReader::readMetaData(std::string filePath) {
     }
 
     volume->setBasis(basis);
-    volume->setOffset(-0.5f*(basis[0]+basis[1]+basis[2]));
+    volume->setOffset(-0.5f*(basis[0] + basis[1] + basis[2]));
     volume->setDimension(dim);
 
     volume->dataMap_.initWithFormat(format);
@@ -162,24 +198,7 @@ Volume* PVMVolumeReader::readMetaData(std::string filePath) {
     VolumeRAM* volRAM = createVolumeRAM(dim, format, data);
     volume->addRepresentation(volRAM);
 
-    // Print information
-    size_t bytes = dim.x * dim.y * dim.z * (format->getBytesAllocated());
-    std::string size = formatBytesToString(bytes);
-    LogInfo("Loaded volume: " << filePath << " size: " << size);
-    printMetaInfo(volume, "description");
-    printMetaInfo(volume, "courtesy");
-    printMetaInfo(volume, "parameter");
-    printMetaInfo(volume, "comment");
-
     return volume;
-}
-
-void PVMVolumeReader::readDataInto(void*) const {
-    return;
-}
-
-void* PVMVolumeReader::readData() const {
-    return NULL;
 }
 
 void PVMVolumeReader::printMetaInfo(MetaDataOwner* metaDataOwner, std::string key){

@@ -110,12 +110,31 @@ Volume* DatVolumeReader::readMetaData(std::string filePath) {
         getline(*f, textLine);
 
         textLine = trim(textLine);
-        if (textLine == "" || textLine[0] == '#' || textLine[0] == '/') continue;
-        parts = splitString(splitString(textLine,'#')[0], ':');
-        if (parts.size() != 2) continue;
 
-        key = toLower(trim(parts[0]));
-        value = trim(parts[1]);
+        if (textLine == "::START::"){
+            getline(*f, textLine);
+            key = toLower(trim(textLine));
+            value = "";
+            getline(*f, textLine);
+            bool read = true;
+            while (read){
+                value += textLine;
+                getline(*f, textLine);
+                if (textLine == "::END::")
+                    read = false;
+                else
+                    value += "\n";
+            }
+        }
+        else{
+            if (textLine == "" || textLine[0] == '#' || textLine[0] == '/') continue;
+            parts = splitString(splitString(textLine, '#')[0], ':');
+            if (parts.size() != 2) continue;
+
+            key = toLower(trim(parts[0]));
+            value = trim(parts[1]);
+        }
+
         std::stringstream ss(value);
 
         if (key == "objectfilename" || key == "rawfile") {

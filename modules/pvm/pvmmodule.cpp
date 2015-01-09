@@ -33,6 +33,7 @@
 #include <modules/pvm/pvmmodule.h>
 #include <modules/pvm/pvmvolumereader.h>
 #include <modules/pvm/pvmvolumewriter.h>
+#include <modules/pvm/mpvmvolumereader.h>
 
 namespace inviwo {
 
@@ -40,6 +41,8 @@ PVMModule::PVMModule() : InviwoModule() {
     setIdentifier("PVM");
     registerDataReader(new PVMVolumeReader());
     registerDataWriter(new PVMVolumeWriter());
+
+    registerDataReader(new MPVMVolumeReader());
 }
 
 } // namespace
