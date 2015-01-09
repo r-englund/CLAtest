@@ -56,7 +56,7 @@ public:
     void bind() const;
     void unbind() const;
 
-    void clear();
+    void clear(); // Make sure the buffer is bound before calling clear.
 
     /* 
     *  Attach buffer object to generic location based on Buffer::BufferType

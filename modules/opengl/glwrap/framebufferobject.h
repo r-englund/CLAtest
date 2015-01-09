@@ -140,7 +140,6 @@ private:
     bool hasDepthAttachment_;
     bool hasStencilAttachment_;
 
-    //GLenum* drawBuffers_;
     std::vector<GLenum> drawBuffers_;
     std::vector<bool> buffersInUse_;
     int maxColorattachments_;

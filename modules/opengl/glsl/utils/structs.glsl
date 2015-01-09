@@ -92,10 +92,10 @@ struct VolumeParameters {
 };
 
 struct ImageParameters {
-    mat4 dataToModel;
-    mat4 modelToData;
-    mat4 dataToWorld;
-    mat4 worldToData;
+    mat3 dataToModel;
+    mat3 modelToData;
+    mat3 dataToWorld;
+    mat3 worldToData;
     mat3 modelToWorld;
     mat3 worldToModel;
     mat3 worldToTexture;
