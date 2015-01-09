@@ -101,6 +101,8 @@ protected:
     virtual void moveEvent(QMoveEvent*);
 
 private:
+    void setColorDialogColor(QColor c);
+
     const int sliderRange_;
 
     TransferFunctionProperty* tfProperty_;  ///< Pointer to property, for get and invalidation in the widget

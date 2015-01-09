@@ -25,7 +25,7 @@
  * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- * 
+ *
  * Contact: Sathish Kottravel
  *
  *********************************************************************************/
@@ -45,11 +45,9 @@
 namespace inviwo {
 
 class IVW_QTWIDGETS_API ColorPropertyWidgetQt : public PropertyWidgetQt {
-
     Q_OBJECT
 
 public:
-
     ColorPropertyWidgetQt(Property* property);
     virtual ~ColorPropertyWidgetQt();
 
@@ -71,6 +69,6 @@ public slots:
     void setPropertyDisplayName();
 };
 
-}//namespace
+}  // namespace
 
-#endif //IVW_COLORPROPERTYWIDGETQT_H
+#endif  // IVW_COLORPROPERTYWIDGETQT_H

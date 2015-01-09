@@ -57,7 +57,11 @@ void ColorPropertyWidgetQt::generateWidget() {
     
     currentColor_ = new QColor();
     colorDialog_ = new QColorDialog(this);
+    colorDialog_->hide();
     colorDialog_->setOption(QColorDialog::ShowAlphaChannel, true);
+    colorDialog_->setOption(QColorDialog::NoButtons, true);
+    colorDialog_->setWindowFlags(Qt::WindowStaysOnTopHint);
+    colorDialog_->setWindowModality(Qt::NonModal);
     btnColor_ = new IvwPushButton(this);
     btnColor_->setEnabled(!property_->getReadOnly());
 
@@ -167,7 +171,9 @@ void ColorPropertyWidgetQt::setPropertyValue() {
 }
 
 void ColorPropertyWidgetQt::openColorDialog() {
-    colorDialog_->open();
+    colorDialog_->hide(); // Bug workaround
+    updateFromProperty();
+    colorDialog_->show();
 }
 
 void ColorPropertyWidgetQt::setPropertyDisplayName() {

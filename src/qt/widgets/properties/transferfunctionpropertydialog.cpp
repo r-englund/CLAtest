@@ -164,7 +164,11 @@ void TransferFunctionPropertyDialog::generateWidget() {
     connect(pointMoveMode_, SIGNAL(currentIndexChanged(int)), this, SLOT(changeMoveMode(int)));
 
     colorDialog_ = new QColorDialog();
+    colorDialog_->hide();
+    colorDialog_->setOption(QColorDialog::ShowAlphaChannel, true);
+    colorDialog_->setOption(QColorDialog::NoButtons, true);
     colorDialog_->setWindowFlags(Qt::WindowStaysOnTopHint);
+    colorDialog_->setWindowModality(Qt::NonModal);
     connect(colorDialog_, SIGNAL(currentColorChanged(QColor)),
             this, SLOT(setPointColorDialog(QColor)));
     
@@ -308,9 +312,7 @@ void TransferFunctionPropertyDialog::updateColorWheel() {
             colorWheel_->setColor(QColor(color.r, color.g, color.b, color.a));
             colorWheel_->blockSignals(false);
 
-            colorDialog_->blockSignals(true);
-            colorDialog_->setCurrentColor(QColor(color.r, color.g, color.b, color.a));
-            colorDialog_->blockSignals(false);
+            setColorDialogColor(QColor(color.r, color.g, color.b, color.a));
         }
     }
 }
@@ -319,6 +321,7 @@ void TransferFunctionPropertyDialog::updateColorWheel() {
 void TransferFunctionPropertyDialog::showColorDialog() {
     QList<QGraphicsItem*> selection = tfEditor_->selectedItems();
     if (selection.size() > 0) {
+        colorDialog_->hide(); // Bug workaround
         colorDialog_->show();
     }
 }
@@ -330,10 +333,8 @@ void TransferFunctionPropertyDialog::setPointColor(QColor color) {
     vec3 newRgb = vec3(color.redF(), color.greenF(), color.blueF());
 
     // update Color dialog to reflect the color changes
-    colorDialog_->blockSignals(true);
-    colorDialog_->setCurrentColor(color);
-    colorDialog_->blockSignals(false);
-
+    setColorDialogColor(color);
+    
     for (int i=0; i<selection.size(); i++) {
         TransferFunctionEditorControlPoint* tfcp =
             qgraphicsitem_cast<TransferFunctionEditorControlPoint*>(selection.at(i));
@@ -526,6 +527,12 @@ TransferFunctionEditorView* TransferFunctionPropertyDialog::getEditorView() {
 
 void TransferFunctionPropertyDialog::changeMoveMode(int i) {
     tfEditor_->setMoveMode(i);
+}
+
+void TransferFunctionPropertyDialog::setColorDialogColor(QColor c) {
+    colorDialog_->blockSignals(true);
+    colorDialog_->setCurrentColor(c);
+    colorDialog_->blockSignals(false);
 }
 
 } // namespace
