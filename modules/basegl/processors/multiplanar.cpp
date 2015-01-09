@@ -164,8 +164,6 @@ void MultiPlanar::process() {
 
     shader_->activate();
 
-    vec2 dim = static_cast<vec2>(outport_.getDimension());
-
     mat4 modelMatrix = mat4(1.0f);
     shader_->setUniform("dataToClip_",
                         camera_.projectionMatrix() * camera_.viewMatrix() * modelMatrix);
