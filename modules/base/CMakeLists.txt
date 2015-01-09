@@ -20,6 +20,7 @@ set(HEADER_FILES
     ${CMAKE_CURRENT_SOURCE_DIR}/processors/pixeltobufferprocessor.h
     ${CMAKE_CURRENT_SOURCE_DIR}/processors/pointlightsourceprocessor.h
     ${CMAKE_CURRENT_SOURCE_DIR}/processors/spotlightsourceprocessor.h
+	${CMAKE_CURRENT_SOURCE_DIR}/processors/volumecombine.h
     ${CMAKE_CURRENT_SOURCE_DIR}/processors/volumebasistransformer.h
     ${CMAKE_CURRENT_SOURCE_DIR}/processors/volumeexport.h
     ${CMAKE_CURRENT_SOURCE_DIR}/processors/volumeslice.h
@@ -47,6 +48,7 @@ set(SOURCE_FILES
     ${CMAKE_CURRENT_SOURCE_DIR}/processors/pixeltobufferprocessor.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/processors/pointlightsourceprocessor.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/processors/spotlightsourceprocessor.cpp
+	${CMAKE_CURRENT_SOURCE_DIR}/processors/volumecombine.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/processors/volumebasistransformer.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/processors/volumeexport.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/processors/volumeslice.cpp
