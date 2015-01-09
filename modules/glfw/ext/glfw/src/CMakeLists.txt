@@ -59,6 +59,10 @@ if (APPLE)
     set_source_files_properties(${glfw_SOURCES} PROPERTIES LANGUAGE C)
 endif()
 
+if(CMAKE_VERSION VERSION_GREATER "3.0.0")
+	cmake_policy(SET CMP0042 OLD) # MacOSX rpath policy.
+endif()
+
 add_library(glfw ${glfw_SOURCES} ${glfw_HEADERS})
 set_target_properties(glfw PROPERTIES OUTPUT_NAME "${GLFW_LIB_NAME}")
 
