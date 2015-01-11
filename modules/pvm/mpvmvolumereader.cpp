@@ -118,12 +118,14 @@ Volume* MPVMVolumeReader::readMetaData(std::string filePath) {
     uvec3 mdim = volumes[0]->getDimension();
     bool returnFirst = false;
     for (int i = 1; i < volumes.size(); i++){
-        if (format != volumes[i]->getDataFormat())
-            if (format == DataUINT12::get() && volumes[i]->getDataFormat() == DataUINT16::get()
-                || format == DataUINT16::get() && volumes[i]->getDataFormat() == DataUINT12::get())
+        if (format != volumes[i]->getDataFormat()) {
+            if ((format == DataUINT12::get() && volumes[i]->getDataFormat() == DataUINT16::get())
+                || (format == DataUINT16::get() && volumes[i]->getDataFormat() == DataUINT12::get())) {
                 format = DataUINT16::get();
-            else
+            } else {
                 returnFirst = true;
+            }
+        }
 
         if (mdim != volumes[i]->getDimension())
             returnFirst = true;
