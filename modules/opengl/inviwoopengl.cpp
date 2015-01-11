@@ -57,7 +57,7 @@ void LogGLError(const char* fileName, const char* functionName, int lineNumber) 
                 errorString = "INVALID_FRAMEBUFFER_OPERATION";
                 break;
         }
-        errorMessage << (errorString.empty() ? errorString.c_str() : "undefined");
+        errorMessage << (!errorString.empty() ? errorString.c_str() : "undefined");
 #else
         const GLubyte* errorString = gluErrorString(err);
         errorMessage << (errorString ? (const char*)errorString : "undefined");
