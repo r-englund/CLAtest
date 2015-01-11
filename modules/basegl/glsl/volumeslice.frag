@@ -39,7 +39,6 @@ uniform VolumeParameters volumeParameters_;
 
 uniform sampler2D transferFunc_;
 
-uniform vec2 dimension_;
 uniform float sliceNum_;
 
 uniform mat4 sliceAxisRotationMatrix_; // Rotates around slice axis (offset to center point)

@@ -252,9 +252,6 @@ void VolumeSliceGL::process() {
 
     utilgl::activateAndClearTarget(outport_);
     shader_->activate();
-    vec2 dim = static_cast<vec2>(outport_.getDimension());
-    shader_->setUniform("screenDim_", dim);
-    shader_->setUniform("screenDimRCP_", vec2(1.0f, 1.0f) / dim);
 
     if (tfMappingEnabled_.get()) {
         shader_->setUniform("transferFunc_", transFuncUnit.getUnitNumber());
@@ -263,8 +260,7 @@ void VolumeSliceGL::process() {
 
     shader_->setUniform("volume_", volUnit.getUnitNumber());
     utilgl::setShaderUniforms(shader_, inport_.getData(), "volumeParameters_");
-    shader_->setUniform("dimension_", vec2(1.0f / outport_.getData()->getDimension().x,
-                                           1.0f / outport_.getData()->getDimension().y));
+
     shader_->setUniform("sliceNum_", getNormalizedSliceNumber());
     utilgl::singleDrawImagePlaneRect();
     shader_->deactivate();
@@ -317,10 +313,6 @@ void VolumeSliceGL::renderPositionIndicator() {
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     glLineWidth(2.5f);
     indicatorShader_->activate();
-
-    vec2 dim = static_cast<vec2>(outport_.getDimension());
-    indicatorShader_->setUniform("screenDim_", dim);
-    indicatorShader_->setUniform("screenDimRCP_", vec2(1.0f, 1.0f) / dim);
 
     glDepthFunc(GL_ALWAYS);
     renderer.render();
