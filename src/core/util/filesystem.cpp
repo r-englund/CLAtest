@@ -89,7 +89,7 @@ std::string getParentFolderPath(const std::string& basePath, const std::string& 
         std::string moduleDirectory = fileDirectory + "/" + parentFolder;
         bool exists = directoryExists(moduleDirectory);
 
-        if (exists) return fileDirectory + "/";
+        if (exists) return fileDirectory;
     } while ((pos = fileDirectory.find_last_of("\\/")) != std::string::npos);
 
     return basePath;
@@ -102,8 +102,9 @@ std::string findBasePath() {
         inviwo::filesystem::getParentFolderPath(inviwo::filesystem::getWorkingDirectory(), "data");
 
     // If we did not find "data" in basepath, check CMake source path.
-    if (!directoryExists(basePath + "/modules") && directoryExists(IVW_TRUNK + "/modules"))
+    if (!directoryExists(basePath + "/data") && directoryExists(IVW_TRUNK + "/data")){
         basePath = IVW_TRUNK;
+    }
 
     return basePath;
 }
