@@ -121,8 +121,9 @@ static unsigned int readbits(FILE *file,int bits)
       value=DDS_shiftl(DDS_buffer,bits-DDS_bufsize);
       DDS_buffer=0;
       if( fread(&DDS_buffer,1,4,file) <= 0 )
-          ::exit( EXIT_FAILURE );
-      DDS_swapuint(&DDS_buffer);
+        DDS_buffer=0;
+      else
+        DDS_swapuint(&DDS_buffer);
       DDS_bufsize+=32-bits;
       value|=DDS_shiftr(DDS_buffer,DDS_bufsize);
       }

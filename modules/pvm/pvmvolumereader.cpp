@@ -126,10 +126,22 @@ Volume* PVMVolumeReader::readPVMData(std::string filePath){
         throw DataReaderException("Error: Could not read data in PVM file: " +
         filePath);
 
-    const DataFormatBase* format = DataFormatBase::get(DataFormatEnums::UNSIGNED_INTEGER_TYPE, 1, bytesPerVoxel * 8);
+    const DataFormatBase* format = NULL;
 
-    if (format == NULL)
-        throw DataReaderException("Error: Unable to find bytes per voxel in .pvm file: " + filePath);
+    switch (bytesPerVoxel)
+    {
+    case 1:
+        format = DataUINT8::get();
+        break;
+    case 2:
+        format = DataUINT16::get();
+        break;
+    case 3:
+        format = DataVec3UINT8::get();
+        break;
+    default:
+        throw DataReaderException("Error: Unsupported format (bytes per voxel) in .pvm file: " + filePath);
+    }
 
     if (dim == uvec3(0))
         throw DataReaderException("Error: Unable to find dimensions in .pvm file: " +
