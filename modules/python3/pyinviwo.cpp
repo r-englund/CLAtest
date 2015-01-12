@@ -156,7 +156,7 @@ void PyInviwo::initPythonCInterface() {
         PyObject* pMod = PyImport_ImportModule("builtins");
         if (NULL != pMod) PyDict_SetItemString(mainDict_, "__builtins__", pMod);
     }
-    addModulePath(InviwoApplication::getPtr()->getBasePath() + "modules/python3/scripts");
+    addModulePath(InviwoApplication::getPtr()->getBasePath() + "/modules/python3/scripts");
 
     initDefaultInterfaces();
 
