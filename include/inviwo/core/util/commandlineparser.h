@@ -84,9 +84,11 @@ public:
     const std::string getScreenGrabName() const;
     bool getRunPythonScriptAfterStartup() const;
     const std::string getPythonScriptName() const;
+    const std::string getLogToFileFileName() const;
     bool getQuitApplicationAfterStartup() const;
     bool getLoadWorkspaceFromArg() const;
     bool getShowSplashScreen() const;
+    bool getLogToFile() const;
 
     int getARGC()const {return argc_;}
     char** getARGV()const {return argv_;}
@@ -100,6 +102,7 @@ private:
     TCLAP::ValueArg<std::string>* snapshotArg_;
     TCLAP::ValueArg<std::string>* screenGrabArg_;
     TCLAP::ValueArg<std::string>* pythonScriptArg_;
+    TCLAP::ValueArg<std::string>* logToFileArg_;
     TCLAP::SwitchArg* noSplashScreenArg_;
     TCLAP::SwitchArg* quitArg_;
     std::string workspaceName_;

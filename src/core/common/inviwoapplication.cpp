@@ -83,6 +83,9 @@ InviwoApplication::InviwoApplication(int argc, char** argv,
     commandLineParser_ = new CommandLineParser(argc, argv);
     commandLineParser_->initialize();
     commandLineParser_->parse();
+    if (commandLineParser_->getLogToFile()){
+        LogCentral::getPtr()->registerLogger(new FileLogger(commandLineParser_->getLogToFileFileName()));
+    }
     processorNetwork_ = new ProcessorNetwork();
     processorNetworkEvaluator_ = new ProcessorNetworkEvaluator(processorNetwork_);
     init(this);
@@ -248,6 +251,7 @@ std::string InviwoApplication::getPath(PathType pathType, const std::string& suf
 
 void InviwoApplication::printApplicationInfo() {
     LogInfoCustom("InviwoInfo", "Inviwo Version: " << IVW_VERSION);
+    LogInfoCustom("InviwoInfo", "Base Path: " << getBasePath());
     std::string config = "";
 #ifdef CMAKE_GENERATOR
     config += std::string(CMAKE_GENERATOR);

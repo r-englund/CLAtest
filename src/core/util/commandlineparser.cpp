@@ -55,6 +55,7 @@ CommandLineParser::~CommandLineParser() {
     delete pythonScriptArg_;
     delete noSplashScreenArg_;
     delete quitArg_;
+    delete logToFileArg_;
 }
 
 void CommandLineParser::initialize() {
@@ -90,6 +91,12 @@ void CommandLineParser::initialize() {
                 false,
                 "",
                 "");
+        logToFileArg_ = new TCLAP::ValueArg<std::string>("l",
+                "logtofile",
+                "Write log messages to file.",
+                false,
+                "",
+                "");
         quitArg_ = new TCLAP::SwitchArg("q", "quit",
                                         "Pass this flag if you want to close inviwo after startup.");
         noSplashScreenArg_ = new TCLAP::SwitchArg("n", "nosplash",
@@ -101,6 +108,7 @@ void CommandLineParser::initialize() {
         cmd_->add(*screenGrabArg_);
         cmd_->add(*quitArg_);
         cmd_->add(*noSplashScreenArg_);
+        cmd_->add(*logToFileArg_);
     } catch (TCLAP::ArgException& e) {
         LogError(e.error() << " for arg " << e.argId());
     }
@@ -167,6 +175,13 @@ const std::string CommandLineParser::getPythonScriptName() const {
     return "";
 }
 
+const std::string CommandLineParser::getLogToFileFileName() const {
+    if (logToFileArg_->isSet())
+        return (logToFileArg_->getValue());
+
+    return "";
+}
+
 bool CommandLineParser::getQuitApplicationAfterStartup() const {
     return quitArg_->getValue();
 }
@@ -178,6 +193,16 @@ bool CommandLineParser::getShowSplashScreen() const {
 bool CommandLineParser::getLoadWorkspaceFromArg() const {
     if (workspaceValueArg_->isSet()) {
         std::string values = workspaceValueArg_->getValue();
+        assert(values.size() != 0);
+        return true;
+    }
+
+    return false;
+}
+
+bool CommandLineParser::getLogToFile() const {
+    if (logToFileArg_->isSet()) {
+        std::string values = logToFileArg_->getValue();
         assert(values.size() != 0);
         return true;
     }

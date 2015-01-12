@@ -33,6 +33,7 @@
 #include <inviwo/core/util/logcentral.h>
 #include <inviwo/core/util/stacktrace.h>
 
+
 namespace inviwo {
 
 ConsoleLogger::ConsoleLogger() : Logger() {}
@@ -50,7 +51,13 @@ void ConsoleLogger::log(std::string logSource, unsigned int logLevel, const char
 FileLogger::FileLogger(std::string logPath)
     : Logger()
 {
-    fileStream_ = new std::ofstream(logPath.append("/inviwo-log.html").c_str());
+    const static std::string ending = ".html";
+    if (std::equal(ending.rbegin(), ending.rend(), logPath.rbegin())){
+        fileStream_ = new std::ofstream(logPath.c_str());
+    }
+    else{
+        fileStream_ = new std::ofstream(logPath.append("/inviwo-log.html").c_str());
+    }
     (*fileStream_) << "<p><font size='+1'>Inviwo (V " << IVW_VERSION << ") Log File</font></p><br>" << std::endl;
     (*fileStream_) << "<p>" << std::endl;
 }
