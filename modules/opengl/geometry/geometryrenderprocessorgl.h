@@ -69,6 +69,7 @@ protected:
     virtual void process();
     void centerViewOnGeometry();
     void resetViewParams();
+    void changeRenderMode();
 
     void updateRenderers();
 
@@ -86,6 +87,7 @@ protected:
     OptionPropertyInt cullFace_;
     OptionPropertyInt polygonMode_;
     FloatProperty renderPointSize_;
+    FloatProperty renderLineWidth_;
     SimpleLightingProperty lightingProperty_;
 
     Shader* shader_;

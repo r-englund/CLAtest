@@ -311,7 +311,14 @@ void VolumeSliceGL::renderPositionIndicator() {
     glEnable(GL_LINE_SMOOTH);
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-    glLineWidth(2.5f);
+
+    float s_sizes[2];
+    float width = 2.5f;
+    glGetFloatv(GL_SMOOTH_LINE_WIDTH_RANGE, s_sizes);
+    width = std::max(width, s_sizes[0]);
+    width = std::min(width, s_sizes[1]);
+    glLineWidth(width);
+    
     indicatorShader_->activate();
 
     glDepthFunc(GL_ALWAYS);

@@ -61,6 +61,7 @@ GeometryRenderProcessorGL::GeometryRenderProcessorGL()
     , cullFace_("cullFace", "Cull Face")
     , polygonMode_("polygonMode", "Polygon Mode")
     , renderPointSize_("renderPointSize", "Point Size", 1.0f, 0.001f, 15.0f, 0.001f)
+    , renderLineWidth_("renderLineWidth", "Line Width", 1.0f, 0.001f, 15.0f, 0.001f)
     , lightingProperty_("lighting", "Lighting")
 {
     
@@ -74,20 +75,33 @@ GeometryRenderProcessorGL::GeometryRenderProcessorGL()
     outport_.addResizeEventListener(&camera_);
     inport_.onChange(this, &GeometryRenderProcessorGL::updateRenderers);
 
-    cullFace_.addOption("culldisable", "Disable", 0);
+    cullFace_.addOption("culldisable", "Disable", GL_NONE);
     cullFace_.addOption("cullfront", "Front", GL_FRONT);
     cullFace_.addOption("cullback", "Back", GL_BACK);
     cullFace_.addOption("cullfrontback", "Front & Back", GL_FRONT_AND_BACK);
-    cullFace_.set(0);
+    cullFace_.set(GL_NONE);
 
     polygonMode_.addOption("polypoint", "Points", GL_POINT);
     polygonMode_.addOption("polyline", "Lines", GL_LINE);
     polygonMode_.addOption("polyfill", "Fill", GL_FILL);
     polygonMode_.set(GL_FILL);
+    polygonMode_.onChange(this, &GeometryRenderProcessorGL::changeRenderMode);
 
     geomProperties_.addProperty(cullFace_);
     geomProperties_.addProperty(polygonMode_);
     geomProperties_.addProperty(renderPointSize_);
+    geomProperties_.addProperty(renderLineWidth_);
+
+    float lineWidthRange[2];
+    float increment;
+    glGetFloatv(GL_LINE_WIDTH_RANGE, lineWidthRange);
+    glGetFloatv(GL_LINE_WIDTH_GRANULARITY, &increment);
+    renderLineWidth_.setMinValue(lineWidthRange[0]);
+    renderLineWidth_.setMaxValue(lineWidthRange[1]);
+    renderLineWidth_.setIncrement(increment);
+    
+    renderLineWidth_.setVisible(false);
+    renderPointSize_.setVisible(false);
 
     addProperty(geomProperties_);
     addProperty(lightingProperty_);
@@ -121,6 +135,27 @@ void GeometryRenderProcessorGL::initializeResources() {
     shader_->build();
 }
 
+void GeometryRenderProcessorGL::changeRenderMode() {
+    switch(polygonMode_.get()) {
+        case GL_FILL : {
+            renderLineWidth_.setVisible(false);
+            renderPointSize_.setVisible(false);
+            break;
+        }
+        case GL_LINE : {
+            renderLineWidth_.setVisible(true);
+            renderPointSize_.setVisible(false);
+            break;
+        }
+        case GL_POINT : {
+            renderLineWidth_.setVisible(false);
+            renderPointSize_.setVisible(true);
+            break;
+        }
+    }
+}
+
+
 void GeometryRenderProcessorGL::process() {
     if (!inport_.hasData()) {
         return;
@@ -140,7 +175,7 @@ void GeometryRenderProcessorGL::process() {
     utilgl::setShaderUniforms(shader_, camera_, "camera_");
     utilgl::setShaderUniforms(shader_, lightingProperty_, "light_");
 
-    bool culling = (cullFace_.get() != 0);
+    bool culling = (cullFace_.get() != GL_NONE);
     if (culling) {
         glEnable(GL_CULL_FACE); 
         glCullFace(cullFace_.get());
@@ -149,7 +184,7 @@ void GeometryRenderProcessorGL::process() {
     if (polygonMode_.get()==GL_LINE) {
         // FIX: disabled line smoothing to avoid blending artifacts with background (issue #611)
         //glEnable(GL_LINE_SMOOTH);
-        glLineWidth((GLfloat)renderPointSize_.get());
+        glLineWidth((GLfloat)renderLineWidth_.get());
     }
     else if (polygonMode_.get()==GL_POINT)
         glPointSize((GLfloat)renderPointSize_.get());
