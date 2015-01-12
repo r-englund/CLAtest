@@ -60,6 +60,7 @@ vec3 shadeSpecularPhongCalculation(LightParameters light_, vec3 materialSpecular
     // Compute reflection (not that glsl uses incident direction)
     // Equivalent to: 2.0*dot(toLightDir, normal)*normal - toLightDir;
     vec3 r = reflect(-toLightDir, normal);
+   
     return materialSpecularColor * light_.specularColor *
            pow(max(dot(r, toCameraDir), 0.0), light_.specularExponent * 0.25);
 }

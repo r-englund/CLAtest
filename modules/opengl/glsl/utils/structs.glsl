@@ -38,6 +38,7 @@ struct CameraParameters {
    mat4 viewToWorld; // Equivalent to viewInverse
    mat4 worldToClip; // Equivalent to viewProjection
    mat4 clipToWorld; // Equivalent to viewProjectionInverse
+   vec3 position;
    float nearPlane;  // zNear
    float farPlane;   // zFar
 };
@@ -52,10 +53,10 @@ struct CameraParameters {
     [  right[2], up[2], -cameraDir[2], -lookFrom[2] ] 
     [         0,     0,         0,       1     ] */
 
+// Does this work??
 vec3 right(in CameraParameters camera) { return camera.worldToView[0].xyz; }
 vec3 up(in CameraParameters camera) { return camera.worldToView[1].xyz; }
 vec3 direction(in CameraParameters camera) { return -camera.worldToView[2].xyz; }
-vec3 position(in CameraParameters camera) { return -camera.worldToView[3].xyz; }
 
 struct GeometryParameters {
     mat4 dataToModel;

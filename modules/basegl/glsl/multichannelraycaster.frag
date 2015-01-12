@@ -82,7 +82,7 @@ vec4 rayTraversal(vec3 entryPoint, vec3 exitPoint, vec2 texCoords) {
     vec4 voxel;
     vec3 samplePos;
     mat4x3 gradients;
-    vec3 toCameraDir = normalize(position(camera_) - (volumeParameters_.textureToWorld * vec4(entryPoint, 1.0)).xyz);
+    vec3 toCameraDir = normalize(camera_.position - (volumeParameters_.textureToWorld * vec4(entryPoint, 1.0)).xyz);
     while (t < tEnd) {
         samplePos = entryPoint + t * rayDirection;
         voxel = getNormalizedVoxel(volume_, volumeParameters_, samplePos);

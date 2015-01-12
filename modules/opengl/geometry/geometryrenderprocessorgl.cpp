@@ -218,14 +218,14 @@ void GeometryRenderProcessorGL::centerViewOnGeometry() {
     std::vector<const Geometry*> geometries = inport_.getData();
     if (geometries.empty()) return;
 
-
     const Mesh* geom = dynamic_cast<const Mesh*>(geometries[0]);
 
     if (geom == NULL) {
         return;
     }
 
-    const Position3dBufferRAM* posBuffer = dynamic_cast<const Position3dBufferRAM*>(geom->getAttributes(0)->getRepresentation<BufferRAM>());
+    const Position3dBufferRAM* posBuffer = dynamic_cast<const Position3dBufferRAM*>(
+        geom->getAttributes(0)->getRepresentation<BufferRAM>());
 
     if (posBuffer == NULL) {
         return;
@@ -247,7 +247,7 @@ void GeometryRenderProcessorGL::centerViewOnGeometry() {
 
     mat4 modelMatrix = geom->getModelMatrix();
     mat4 worldMatrix = geom->getWorldMatrix();
-    vec3 centerPos = (worldMatrix*modelMatrix*vec4(0.5f*(maxPos+minPos), 1.f)).xyz();
+    vec3 centerPos = (worldMatrix * modelMatrix * vec4(0.5f * (maxPos + minPos), 1.f)).xyz();
     vec3 lookFrom = camera_.getLookFrom();
     vec3 dir = centerPos - lookFrom;
 
@@ -259,9 +259,9 @@ void GeometryRenderProcessorGL::centerViewOnGeometry() {
     return;
 
     dir = glm::normalize(dir);
-    vec3 worldMin = (geom->getWorldMatrix()*geom->getModelMatrix()*vec4(minPos, 1.f)).xyz();
-    vec3 worldMax = (geom->getWorldMatrix()*geom->getModelMatrix()*vec4(maxPos, 1.f)).xyz();
-    vec3 newLookFrom = lookFrom -dir*glm::length(worldMax-worldMin);
+    vec3 worldMin = (geom->getWorldMatrix() * geom->getModelMatrix() * vec4(minPos, 1.f)).xyz();
+    vec3 worldMax = (geom->getWorldMatrix() * geom->getModelMatrix() * vec4(maxPos, 1.f)).xyz();
+    vec3 newLookFrom = lookFrom - dir * glm::length(worldMax - worldMin);
     camera_.setLook(newLookFrom, centerPos, camera_.getLookUp());
 }
 

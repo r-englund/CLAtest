@@ -82,7 +82,7 @@ void main() {
         normal = normalize(normal_);
     }
     
-    vec3 toCameraDir_ = position(camera_) - worldPosition_.xyz;
+    vec3 toCameraDir_ = camera_.position - worldPosition_.xyz;
     fragColor.rgb = APPLY_LIGHTING(light_, fragColor.rgb, fragColor.rgb, fragColor.rgb, worldPosition_.xyz, normal, normalize(toCameraDir_));
     
  //   fragColor.rgb = normalize(normal);
