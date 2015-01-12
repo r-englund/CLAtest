@@ -270,7 +270,8 @@ void IvwDeserializer::deserialize(const std::string& key, glm::detail::tvec2<T, 
 template<class T>
 void IvwDeserializer::deserialize(const std::string& key, glm::detail::tmat4x4<T, glm::defaultp>& data) {
     try {
-        TxElement* keyNode = rootElement_->FirstChildElement(key);
+        TxElement* keyNode = rootElement_->FirstChildElement(key, false);
+        if(!keyNode) return;
         NodeSwitch tempNodeSwitch(*this, keyNode);
         glm::detail::tvec4<T, glm::defaultp> rowVec;
 
@@ -288,7 +289,8 @@ void IvwDeserializer::deserialize(const std::string& key, glm::detail::tmat4x4<T
 template<class T>
 void IvwDeserializer::deserialize(const std::string& key, glm::detail::tmat3x3<T, glm::defaultp>& data) {
     try {
-        TxElement* keyNode = rootElement_->FirstChildElement(key);
+        TxElement* keyNode = rootElement_->FirstChildElement(key, false);
+        if(!keyNode) return;
         NodeSwitch tempNodeSwitch(*this, keyNode);
         glm::detail::tvec3<T, glm::defaultp> rowVec;
 
@@ -305,7 +307,8 @@ void IvwDeserializer::deserialize(const std::string& key, glm::detail::tmat3x3<T
 template<class T>
 void IvwDeserializer::deserialize(const std::string& key, glm::detail::tmat2x2<T, glm::defaultp>& data) {
     try {
-        TxElement* keyNode = rootElement_->FirstChildElement(key);
+        TxElement* keyNode = rootElement_->FirstChildElement(key, false);
+        if(!keyNode) return;
         NodeSwitch tempNodeSwitch(*this, keyNode);
         glm::detail::tvec2<T, glm::defaultp> rowVec;
 
@@ -324,7 +327,8 @@ void IvwDeserializer::deserialize(const std::string& key,
                                   std::vector<T*>& sVector,
                                   const std::string& itemKey) {
     try {
-        TxElement* keyNode = rootElement_->FirstChildElement(key);
+        TxElement* keyNode = rootElement_->FirstChildElement(key, false);
+        if(!keyNode) return;
         NodeSwitch tempNodeSwitch(*this, keyNode);
         unsigned int i=0;
         TxEIt child(itemKey);
@@ -347,7 +351,8 @@ void IvwDeserializer::deserialize(const std::string& key,
                                   std::vector<T>& sVector,
                                   const std::string& itemKey) {
     try {
-        TxElement* keyNode = rootElement_->FirstChildElement(key);
+        TxElement* keyNode = rootElement_->FirstChildElement(key, false);
+        if(!keyNode) return;
         NodeSwitch tempNodeSwitch(*this, keyNode);
         unsigned int i = 0;
         TxEIt child(itemKey);
@@ -375,7 +380,8 @@ void IvwDeserializer::deserialize(const std::string& key,
         throw SerializationException("Error: map key has to be a primitive type");
 
     try {
-        TxElement* keyNode = rootElement_->FirstChildElement(key);
+        TxElement* keyNode = rootElement_->FirstChildElement(key, false);
+        if(!keyNode) return;
         NodeSwitch tempNodeSwitch(*this, keyNode);
         TxEIt child(itemKey);
 
