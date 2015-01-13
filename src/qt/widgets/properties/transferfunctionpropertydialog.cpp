@@ -167,8 +167,8 @@ void TransferFunctionPropertyDialog::generateWidget() {
     colorDialog_->hide();
     colorDialog_->setOption(QColorDialog::ShowAlphaChannel, true);
     colorDialog_->setOption(QColorDialog::NoButtons, true);
-    colorDialog_->setWindowFlags(Qt::WindowStaysOnTopHint);
     colorDialog_->setWindowModality(Qt::NonModal);
+    colorDialog_->setWindowTitle(QString::fromStdString(tfProperty_->getDisplayName()));
     connect(colorDialog_, SIGNAL(currentColorChanged(QColor)),
             this, SLOT(setPointColorDialog(QColor)));
     
