@@ -47,9 +47,11 @@
 #include <moduleregistration.h>
 
 int main(int argc, char** argv) {
+    inviwo::LogCentral::init();
+    inviwo::LogCentral::getPtr()->registerLogger(new inviwo::ConsoleLogger());
     std::string basePath = inviwo::filesystem::findBasePath();
     //inviwo::FileLogger fileLogger(basePath);
-    inviwo::LogCentral::init();
+    
     inviwo::LogCentral::getPtr()->registerLogger(new inviwo::FileLogger(basePath));
     inviwo::InviwoApplicationQt inviwoApp("Inviwo "+IVW_VERSION, basePath, argc, argv);
     inviwoApp.setWindowIcon(QIcon(":/icons/inviwo_light.png"));
