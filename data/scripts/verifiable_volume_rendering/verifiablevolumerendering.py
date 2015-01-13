@@ -26,8 +26,6 @@
 # * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 # * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 # *
-# * Main file author: Daniel J?nsson
-# *
 # *********************************************************************************/
 
 # Script to generate images for convergence test of volume renderer
