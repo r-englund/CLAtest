@@ -123,6 +123,7 @@ set(SHADER_FILES
     ${CMAKE_CURRENT_SOURCE_DIR}/glsl/utils/sampler3d.glsl
     ${CMAKE_CURRENT_SOURCE_DIR}/glsl/utils/shading.glsl
     ${CMAKE_CURRENT_SOURCE_DIR}/glsl/utils/structs.glsl
+	${CMAKE_CURRENT_SOURCE_DIR}/glsl/utils/raycastgeometry.glsl
 )
 ivw_group("Shader Files" ${SHADER_FILES})
 
