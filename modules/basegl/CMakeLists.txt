@@ -9,24 +9,25 @@ set(HEADER_FILES
     ${CMAKE_CURRENT_SOURCE_DIR}/processors/drawlines.h
     ${CMAKE_CURRENT_SOURCE_DIR}/processors/drawpoints.h
     ${CMAKE_CURRENT_SOURCE_DIR}/processors/entryexitpoints.h
-	${CMAKE_CURRENT_SOURCE_DIR}/processors/geometrypicking.h
     ${CMAKE_CURRENT_SOURCE_DIR}/processors/findedges.h
     ${CMAKE_CURRENT_SOURCE_DIR}/processors/firstivwprocessor.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/processors/geometrypicking.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/processors/imagecompositeprocessorgl.h
     ${CMAKE_CURRENT_SOURCE_DIR}/processors/imageglprocessor.h
     ${CMAKE_CURRENT_SOURCE_DIR}/processors/imagelayoutgl.h
     ${CMAKE_CURRENT_SOURCE_DIR}/processors/imagemixer.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/processors/imageprocessing/imagegamma.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/processors/imageprocessing/imagegrayscale.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/processors/imageprocessing/imageinvert.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/processors/imageprocessing/imagemapping.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/processors/isoraycaster.h
     ${CMAKE_CURRENT_SOURCE_DIR}/processors/lightingraycaster.h
     ${CMAKE_CURRENT_SOURCE_DIR}/processors/lightvolumegl.h
     ${CMAKE_CURRENT_SOURCE_DIR}/processors/multichannelraycaster.h
     ${CMAKE_CURRENT_SOURCE_DIR}/processors/multiplanar.h
     ${CMAKE_CURRENT_SOURCE_DIR}/processors/redgreenprocessor.h
-    ${CMAKE_CURRENT_SOURCE_DIR}/processors/isoraycaster.h
-	${CMAKE_CURRENT_SOURCE_DIR}/processors/volumeraycaster.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/processors/volumeraycaster.h
     ${CMAKE_CURRENT_SOURCE_DIR}/processors/volumeslicegl.h
-    ${CMAKE_CURRENT_SOURCE_DIR}/processors/imageprocessing/imagegamma.h
-    ${CMAKE_CURRENT_SOURCE_DIR}/processors/imageprocessing/imagegrayscale.h
-    ${CMAKE_CURRENT_SOURCE_DIR}/processors/imageprocessing/imageinvert.h
-    ${CMAKE_CURRENT_SOURCE_DIR}/processors/imageprocessing/imagemapping.h
 )
 ivw_group("Header Files" ${HEADER_FILES})
 
@@ -37,24 +38,25 @@ set(SOURCE_FILES
     ${CMAKE_CURRENT_SOURCE_DIR}/processors/drawlines.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/processors/drawpoints.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/processors/entryexitpoints.cpp
-	${CMAKE_CURRENT_SOURCE_DIR}/processors/geometrypicking.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/processors/findedges.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/processors/firstivwprocessor.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/processors/geometrypicking.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/processors/imagecompositeprocessorgl.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/processors/imageglprocessor.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/processors/imagelayoutgl.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/processors/imagemixer.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/processors/imageprocessing/imagegamma.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/processors/imageprocessing/imagegrayscale.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/processors/imageprocessing/imageinvert.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/processors/imageprocessing/imagemapping.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/processors/isoraycaster.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/processors/lightingraycaster.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/processors/lightvolumegl.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/processors/multichannelraycaster.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/processors/multiplanar.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/processors/redgreenprocessor.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/processors/isoraycaster.cpp
-	${CMAKE_CURRENT_SOURCE_DIR}/processors/volumeraycaster.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/processors/volumeraycaster.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/processors/volumeslicegl.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/processors/imageprocessing/imagegamma.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/processors/imageprocessing/imagegrayscale.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/processors/imageprocessing/imageinvert.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/processors/imageprocessing/imagemapping.cpp
 )
 ivw_group("Source Files" ${SOURCE_FILES})
 

@@ -38,6 +38,7 @@
 #include <modules/basegl/processors/entryexitpoints.h>
 #include <modules/basegl/processors/findedges.h>
 #include <modules/basegl/processors/firstivwprocessor.h>
+#include <modules/basegl/processors/imagecompositeprocessorgl.h>
 #include <modules/basegl/processors/imagelayoutgl.h>
 #include <modules/basegl/processors/imagemixer.h>
 #include <modules/basegl/processors/lightingraycaster.h>
@@ -67,6 +68,7 @@ BaseGLModule::BaseGLModule() : InviwoModule() {
     registerProcessor(FindEdges);
     registerProcessor(FirstIvwProcessor);
     registerProcessor(GeometryPicking);
+    registerProcessor(ImageCompositeProcessorGL);
     registerProcessor(ImageLayoutGL);
     registerProcessor(ImageMixer);
     registerProcessor(LightingRaycaster);
