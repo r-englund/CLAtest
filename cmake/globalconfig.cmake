@@ -1,7 +1,7 @@
  #################################################################################
  #
  # Inviwo - Interactive Visualization Workshop
- # Version 0.6b
+ # Version 0.9
  #
  # Copyright (c) 2013-2015 Inviwo Foundation
  # All rights reserved.
@@ -28,7 +28,7 @@
  # 
  #################################################################################
  
-set(IVW_VERSION 0.6b)
+set(IVW_VERSION 0.9)
 set(IVW_MAJOR_VERSION 0)
 set(IVW_MINOR_VERSION 6)
  
