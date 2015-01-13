@@ -51,8 +51,7 @@ void ConsoleLogger::log(std::string logSource, unsigned int logLevel, const char
 FileLogger::FileLogger(std::string logPath)
     : Logger()
 {
-    const static std::string ending = ".html";
-    if (std::equal(ending.rbegin(), ending.rend(), logPath.rbegin())){
+    if (filesystem::getFileExtension(logPath) != ""){
         fileStream_ = new std::ofstream(logPath.c_str());
     }
     else{
