@@ -151,19 +151,23 @@ std::vector<std::string> ShaderManager::getShaderSearchPaths() {
 }
 
 void ShaderManager::addShaderSearchPath(std::string shaderSearchPath) {
-    if(filesystem::directoryExists(shaderSearchPath))
-        shaderSearchPaths_.push_back(shaderSearchPath);
+    if (!addShaderSearchPathImpl(shaderSearchPath)){
+        LogWarn("Failed to add shader search path: " << shaderSearchPath);
+    }
 }
 
 void ShaderManager::addShaderSearchPath(InviwoApplication::PathType pathType, std::string relativeShaderSearchPath) {
-    addShaderSearchPath(InviwoApplication::getPtr()->getPath(pathType) + relativeShaderSearchPath);
+    bool added = addShaderSearchPathImpl(InviwoApplication::getPtr()->getPath(pathType) + relativeShaderSearchPath);
 #ifdef IVW_EXTERNAL_MODULES_PATH_COUNT
     if(pathType == InviwoApplication::PATH_MODULES){
         for(int i=0; i < IVW_EXTERNAL_MODULES_PATH_COUNT; ++i){
-            addShaderSearchPath(externalModulePaths_[i] + "/" + relativeShaderSearchPath);
+            added |= addShaderSearchPathImpl(externalModulePaths_[i] + "/" + relativeShaderSearchPath);
         }
     }
 #endif
+    if (!added){
+        LogWarn("Failed to add shader search path: " << relativeShaderSearchPath);
+    }
 }
 
 OpenGLCapabilities* ShaderManager::getOpenGLCapabilitiesObject(){
@@ -184,6 +188,14 @@ void ShaderManager::rebuildAllShaders(){
         (*it)->rebuild();
     }
     LogInfo("Rebuild of all shaders completed");
+}
+
+bool ShaderManager::addShaderSearchPathImpl(const std::string &shaderSearchPath){
+    if (filesystem::directoryExists(shaderSearchPath)) {
+        shaderSearchPaths_.push_back(shaderSearchPath);
+        return true;
+    }
+    return false;
 }
 
 } // namespace

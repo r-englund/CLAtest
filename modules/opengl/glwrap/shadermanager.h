@@ -72,6 +72,7 @@ protected:
     OpenGLCapabilities* getOpenGLCapabilitiesObject();
 
 private:
+    bool addShaderSearchPathImpl(const std::string &);
     std::vector<Shader*> shaders_;
     OpenGLCapabilities* openGLInfoRef_;
     std::vector<std::string> shaderSearchPaths_;
