@@ -98,18 +98,13 @@ std::string getParentFolderPath(const std::string& basePath, const std::string& 
 std::string findBasePath() {
     // Search for directory containing data folder to find application basepath.
     // Working directory will be used if data folder is not found in parent directories.
+    static const std::string lookFor = "/data/workspaces";
     std::string basePath =
-        inviwo::filesystem::getParentFolderPath(inviwo::filesystem::getWorkingDirectory(), "data/workspaces");
+        inviwo::filesystem::getParentFolderPath(inviwo::filesystem::getWorkingDirectory(), lookFor);
 
     // If we did not find "data" in basepath, check CMake source path.
-    if (!directoryExists(basePath + "/data/workspaces")) {
-        if (directoryExists(IVW_TRUNK + "/data/workspaces")) {
+    if (!directoryExists(basePath + lookFor) && directoryExists(IVW_TRUNK + lookFor)){
             basePath = IVW_TRUNK;
-            LogInfoCustom("findBasePath","Failed to fund base path based from wokring directory, using inviwo trunk: " << IVW_TRUNK);
-        } else {
-            LogWarnCustom("findBasePath" , "Failed to find basepath, using current directory as basepath: " << basePath);
-            LogWarnCustom("findBasePath" , "IVW_TRUNK: " << IVW_TRUNK);
-        }
     }
 
     return basePath;
