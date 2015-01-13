@@ -32,6 +32,7 @@
 
 #include <inviwo/core/util/logcentral.h>
 #include <inviwo/core/util/stacktrace.h>
+#include <inviwo/core/util/filesystem.h>
 
 
 namespace inviwo {
