@@ -81,7 +81,7 @@ void FileLogger::log(std::string logSource, unsigned int logLevel, const char* f
             break;
 
         case inviwo::Warn:
-            (*fileStream_) << "<font color='#FFFF00'>Warn: ";
+            (*fileStream_) << "<font color='#FF8000'>Warn: ";
             break;
 
         case inviwo::Error:
@@ -89,7 +89,7 @@ void FileLogger::log(std::string logSource, unsigned int logLevel, const char* f
             break;
     }
 
-    (*fileStream_) << "(" << logSource << ") " << logMsg;
+    (*fileStream_) << "(" << logSource << ":" << lineNumber << ") " << logMsg;
     (*fileStream_) << "</font><br>" << std::endl;
 }
 
