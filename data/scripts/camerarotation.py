@@ -25,6 +25,7 @@ for i in range(0, steps):
 end = time.clock()
 fps = 2*steps / (end - start)
 
-fps = round(fps,2)
+fps = round(fps,3)
 
-print("fps: " + str(fps))
+print("Frames per second: " + str(fps))
+print("Time per frame: " + str(round(1000/fps,1)) + " ms")
