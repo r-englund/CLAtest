@@ -87,6 +87,10 @@ public:
     static BasicMesh* colorsphere(const vec3& center,
                                   const float& radius);
 
+    static BasicMesh* square(const vec3& pos, const vec3& normal, const glm::vec2& extent,
+                            const vec4& color = vec4(1,1,1,1), const ivec2& res = ivec2(1));
+
+
     static BasicMesh* box(const mat4& orientation, const vec4 &color = vec4(1,1,1,1));
 
     static BasicMesh* coordindicator(const vec3& center,

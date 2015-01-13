@@ -73,10 +73,14 @@ private:
     };
 
     GeometryOutport outport_;
-    FloatProperty meshScale_; // Scale size of mesh
-    IntProperty meshResX_; // horizontal mesh resolution
-    IntProperty meshResY_; // vertical mesh resolution
+    
+    FloatVec3Property position1_;
+    FloatVec3Property position2_;
+    FloatVec3Property normal_;
+    FloatVec4Property color_;
 
+    FloatProperty meshScale_; // Scale size of mesh
+    IntVec2Property meshRes_; // mesh resolution
     OptionPropertyInt meshType_;
 };
 
