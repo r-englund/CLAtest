@@ -26,8 +26,6 @@
  # (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  # SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  # 
- # Contact: Erik Sundén
- #
  #################################################################################
 
 include(${CMAKE_CURRENT_LIST_DIR}/clean_library_list.cmake)

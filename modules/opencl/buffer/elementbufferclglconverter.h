@@ -26,8 +26,6 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  * 
- * Contact: Daniel Jönsson
- *
  *********************************************************************************/
 
 #ifndef IVW_ELEMENT_BUFFER_CLGL_CONVERTER_H

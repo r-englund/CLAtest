@@ -26,8 +26,6 @@
  # (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  # SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  # 
- # Contact: Erik Sundén
- #
  #################################################################################
  
 set(IVW_VERSION 0.6b)
