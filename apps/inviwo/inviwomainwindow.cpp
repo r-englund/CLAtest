@@ -602,10 +602,8 @@ void InviwoMainWindow::showAboutBox() {
                      visualizations.<br>It is licensed under the Simplified BSD license.</p>");
     aboutText.append("<p><b>Core Team:</b><br>");
     aboutText.append(
-        "Erik Sund&eacute;n, Daniel J&ouml;nsson, Peter Steneteg, Rickard Englund,<br>"
+        "Erik Sund&eacute;n, Daniel J&ouml;nsson, Martin Falk, Peter Steneteg, Rickard Englund,<br>"
         "Sathish Kottravel, Timo Ropinski</p>");
-    aboutText.append("<p><b>Additional Developers:</b><br>");
-    aboutText.append("Martin Falk</p>");
     aboutText.append("<p><b>Former Developers:</b><br>");
     aboutText.append("Alexander Johansson, Andreas Valter, Johan Nor&eacute;n, Emanuel Winblad, "
         "Hans-Christian Helltegen, Viktor Axelsson</p>");
