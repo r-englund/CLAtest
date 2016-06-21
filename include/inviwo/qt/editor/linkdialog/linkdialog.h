@@ -37,11 +37,13 @@
 #include <warn/ignore/all>
 #include <QComboBox>
 #include <QEventLoop>
+#include <QCheckBox>
+#include <memory>
 #include <warn/pop>
 
-class QStandardItemModel;
 class QStandardItem;
 class QPushButton;
+class QStandardItemModel;
 
 namespace inviwo {
 
@@ -65,7 +67,7 @@ public slots:
     void onSmartLinkOptionChecked(const QModelIndex&, const QModelIndex&);
 
 private:
-    QStandardItemModel* stdandardModel_;
+    std::unique_ptr<QStandardItemModel> stdandardModel_;
     std::vector<QStandardItem*> standardItems_;
     std::string widgetName_;
 };
@@ -77,11 +79,11 @@ class IVW_QTEDITOR_API LinkDialog : public InviwoDockWidget {
 #include <warn/pop>
 public:
     LinkDialog(Processor* src, Processor* dest, QWidget* parent);
+    virtual ~LinkDialog() = default;
 
     virtual void closeEvent(QCloseEvent* event);
     int exec();
     virtual QSize sizeHint() const;
-    virtual ~LinkDialog();
 
 private slots:
     void closeLinkDialog();
@@ -94,6 +96,7 @@ private:
     LinkDialogGraphicsScene* linkDialogScene_;
     QPushButton* smartLinkPushButton_;
     CheckableQComboBox* smartLinkOptions_;
+    QCheckBox* showHidden_;
     QPushButton* expandCompositeButton_;
     QPushButton* deleteAllLinkPushButton_;
     Processor* src_;

@@ -2,7 +2,7 @@
  *
  * Inviwo - Interactive Visualization Workshop
  *
- * Copyright (c) 2013-2016 Inviwo Foundation
+ * Copyright (c) 2016 Inviwo Foundation
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,36 +24,19 @@
  * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- * 
+ *
  *********************************************************************************/
 
-#include "exampleprocessor.h"
-
 namespace inviwo {
+namespace buildinfo {
 
-const ProcessorInfo ExampleProcessor::processorInfo_{
-    "org.inviwo.ExampleProcessor",  // Class identifier
-    "Example Processor",            // Display name
-    "Geometry Creation",            // Category
-    CodeState::Experimental,        // Code state
-    Tags::None,                     // Tags
-};
-const ProcessorInfo ExampleProcessor::getProcessorInfo() const {
-    return processorInfo_;
-}
+const std::vector<std::pair<std::string,std::string>> githashes = @HASHES@;
+const int year = @YEAR@;
+const int month = @MONTH@; 
+const int day = @DAY@;
+const int hour = @HOUR@;
+const int minute = @MINUTE@;
+const int second  = @SECOND@;
 
-ExampleProcessor::ExampleProcessor()
-    : Processor()
-    , inport_("inputVolume")
-    , outport_("outputMesh") {
-
-    addPort(inport_);
-    addPort(outport_);
-}
-
-ExampleProcessor::~ExampleProcessor() = default;
-
-void ExampleProcessor::process() {
-}
-} // namespace
-
+}  // namespace
+}  // namespace

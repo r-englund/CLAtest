@@ -217,10 +217,10 @@ void ProcessorNetwork::removeLink(Property* src, Property* dst) {
 
 void ProcessorNetwork::onWillRemoveProperty(Property* property, size_t index) {
     if (auto comp = dynamic_cast<PropertyOwner*>(property)) {
-        size_t index = 0;
+        size_t i = 0;
         for (auto p : comp->getProperties()) {
-            onWillRemoveProperty(p, index);
-            index++;
+            onWillRemoveProperty(p, i);
+            i++;
         }
     }
 
@@ -347,7 +347,7 @@ void ProcessorNetwork::removePropertyOwnerObservation(PropertyOwner* po) {
     }
 }
 
-const int ProcessorNetwork::processorNetworkVersion_ = 12;
+const int ProcessorNetwork::processorNetworkVersion_ = 13;
 
 void ProcessorNetwork::deserialize(Deserializer& d) {
     NetworkLock lock(this);
