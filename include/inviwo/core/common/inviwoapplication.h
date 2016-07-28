@@ -112,10 +112,11 @@ public:
     std::string getDisplayName() const;
 
     /**
-     * Get basePath +  pathType + suffix.
+     * Get basePath + pathType + suffix.
      * @see PathType
      * @param pathType Enum for type of path
      * @param suffix Path extension
+     * @param createFolder whether to create the folder if it does not exist.
      * @return basePath +  pathType + suffix
      */
     std::string getPath(PathType pathType, const std::string& suffix = "",
@@ -204,7 +205,7 @@ protected:
     };
 
     std::string displayName_;
-
+    std::shared_ptr<FileLogger> filelogger_;
     std::function<void(std::string)> progressCallback_;
     CommandLineParser commandLineParser_;
     ThreadPool pool_;

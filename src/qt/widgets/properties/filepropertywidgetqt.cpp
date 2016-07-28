@@ -31,7 +31,6 @@
 #include <inviwo/core/util/filesystem.h>
 #include <inviwo/qt/widgets/properties/filepropertywidgetqt.h>
 #include <inviwo/qt/widgets/inviwofiledialog.h>
-#include <inviwo/core/util/tooltiphelper.h>
 #include <inviwo/core/properties/propertyowner.h>
 
 #include <warn/push>
@@ -246,37 +245,6 @@ void FilePropertyWidgetQt::dragMoveEvent(QDragMoveEvent *event) {
 bool FilePropertyWidgetQt::requestFile() {
    setPropertyValue();
    return !property_->get().empty();
-}
-
-std::string FilePropertyWidgetQt::getToolTipText() {
-    if (property_) {
-        ToolTipHelper t(property_->getDisplayName());
-        t.tableTop();
-        t.row("Identifier", property_->getIdentifier());
-        t.row("Path", joinString(property_->getPath(), "."));
-        t.row("Semantics", property_->getSemantics().getString());
-        t.row("Validation Level",
-              PropertyOwner::invalidationLevelToString(property_->getInvalidationLevel()));
-
-        switch (property_->getFileMode()) {
-            case FileProperty::FileMode::AnyFile:
-            case FileProperty::FileMode::ExistingFile:
-            case FileProperty::FileMode::ExistingFiles: {
-                t.row("File", property_->get());
-                break;
-            }
-
-            case FileProperty::FileMode::Directory:
-            case FileProperty::FileMode::DirectoryOnly: {
-                t.row("Directory", property_->get());
-                break;
-            }
-        }
-        t.tableBottom();
-        return t;
-    } else {
-        return "";
-    }
 }
 
 void FilePropertyWidgetQt::updateFromProperty() {

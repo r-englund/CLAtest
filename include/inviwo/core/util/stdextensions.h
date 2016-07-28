@@ -43,6 +43,7 @@
 #include <vector>
 #include <type_traits>
 #include <future>
+#include <utility>
 #include <warn/pop>
 
 namespace inviwo {
@@ -122,9 +123,26 @@ struct is_string<T, typename void_helper<typename T::value_type, typename T::tra
 template <typename T>
 struct is_string : detail::is_string<T> {};
 
+// https://isocpp.org/blog/2015/01/for-each-arg-eric-niebler
 template <class F, class... Args>
-void for_each_argument(F f, Args&&... args) {
-    [](...){}((f(std::forward<Args>(args)), 0)...);
+auto for_each_argument(F&& f, Args&&... args) {
+    return (void)std::initializer_list<int>{0, (f(std::forward<Args>(args)), 0)...},
+           std::forward<F>(f);
+}
+
+namespace detail {
+
+template <typename F, typename T, size_t... Is>
+auto for_each_in_tuple_impl(F&& f, T&& t, std::index_sequence<Is...>) {
+    return (void)std::initializer_list<int>{0, (f(std::get<Is>(t)), 0)...}, std::forward<F>(f);
+}
+
+}  // namespace
+
+template <typename F, typename... Ts>
+void for_each_in_tuple(F&& f, std::tuple<Ts...>&& t) {
+    detail::for_each_in_tuple_impl(std::forward<F>(f), std::forward<std::tuple<Ts...>>(t),
+                                   std::index_sequence_for<Ts...>{});
 }
 
 template <typename T, typename V>
@@ -402,13 +420,15 @@ bool is_future_ready(const std::future<T>& future) {
  * This is a slightly modified version to avoid constexpr.
  *
  * Requirements on Container T:
- * T::iterator = T::begin();
- * T::iterator = T::end();
- * T::const_iterator = T::begin() const;
- * T::const_iterator = T::end() const;
+ * \code{.cpp}
+ *     T::iterator = T::begin();
+ *     T::iterator = T::end();
+ *     T::const_iterator = T::begin() const;
+ *     T::const_iterator = T::end() const;
  * 
- * *T::iterator = T::value_type &
- * *T::const_iterator = T::value_type const &
+ *     *T::iterator = T::value_type &
+ *     *T::const_iterator = T::value_type const &
+ * \endcode
  */
 
 template <typename T>

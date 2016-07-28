@@ -34,12 +34,16 @@
 #include <inviwo/core/common/inviwo.h>
 #include <inviwo/core/datastructures/image/layerrepresentation.h>
 #include <modules/opengl/inviwoopengl.h>
+#include <modules/opengl/texture/textureunit.h>
 
 namespace inviwo {
 
 class Shader;
 class Texture2D;
 
+/**
+ * \ingroup datastructures	
+ */
 class IVW_MODULE_OPENGL_API LayerGL : public LayerRepresentation {
 public:
     LayerGL(size2_t dimensions = size2_t(256, 256), LayerType type = LayerType::Color,
@@ -52,6 +56,7 @@ public:
     virtual void setDimensions(size2_t dimensions) override;
 
     void bindTexture(GLenum texUnit) const;
+    void bindTexture(const TextureUnit &texUnit) const;
     void unbindTexture() const;
 
     virtual bool copyRepresentationsTo(DataRepresentation*) const override;

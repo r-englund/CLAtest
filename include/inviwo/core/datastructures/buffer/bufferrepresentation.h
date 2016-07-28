@@ -37,10 +37,13 @@
 
 namespace inviwo {
 
+/**
+ * \ingroup datastructures	
+ */
 class IVW_CORE_API BufferRepresentation : public DataRepresentation {
 public:
     BufferRepresentation(const DataFormatBase* format = DataFormatBase::get(),
-                         BufferUsage usage = BufferUsage::Static);
+                         BufferUsage usage = BufferUsage::Static, BufferTarget target = BufferTarget::Data);
 
     BufferRepresentation(const BufferRepresentation& rhs) = default;
     BufferRepresentation& operator=(const BufferRepresentation& that) = default;
@@ -57,9 +60,11 @@ public:
      */
     virtual size_t getSizeOfElement() const;
     BufferUsage getBufferUsage() const;
+    BufferTarget getBufferTarget() const;
 
 protected:
     BufferUsage usage_;
+    BufferTarget target_;
 };
 
 }  // namespace

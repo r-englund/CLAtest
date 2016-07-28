@@ -38,7 +38,7 @@
 
 namespace inviwo {
 
-/** \class BaseOptionProperty
+/** 
  *  Base class for the option properties
  *  @see TemplateOptionProperty
  */
@@ -100,11 +100,6 @@ struct OptionPropertyOption : public Serializable {
     bool operator!=(const OptionPropertyOption<T>& rhs) const { return !operator==(rhs); }
 };
 
-/** \class TemplateOptionProperty
- *  Template class for option properties
- *  @see OptionProperties
- *  @see BaseOptionProperty
- */
 template <typename T>
 class BaseTemplateOptionProperty : public BaseOptionProperty {
 
@@ -158,9 +153,6 @@ public:
      *
      * Adds a option to the property and stores it as a struct in the options_
      * The option name is the name of the option that will be displayed in the widget.
-     *
-     * @param identifier identifier name
-     * @param value the value of the option
      */
     virtual void addOption(std::string identifier, std::string displayName, T value);
     virtual void removeOption(size_t index);
@@ -204,6 +196,8 @@ public:
     virtual void serialize(Serializer& s) const override;
     virtual void deserialize(Deserializer& d) override;
 
+    virtual Document getDescription() const override;
+
 protected:
     size_t selectedIndex_;
     std::vector<OptionPropertyOption<T>> options_;
@@ -213,6 +207,12 @@ private:
     std::vector<OptionPropertyOption<T>> defaultOptions_;
 };
 
+/**
+ * \ingroup properties
+ * Template class for option properties
+ * @see OptionProperties
+ * @see BaseOptionProperty
+ */
 template <typename T>
 class TemplateOptionProperty : public BaseTemplateOptionProperty<T> {
 public:
@@ -650,6 +650,22 @@ TemplateOptionProperty<T>& TemplateOptionProperty<T>::operator=(
         BaseTemplateOptionProperty<T>::operator=(that);
     }
     return *this;
+}
+
+template <typename T>
+Document BaseTemplateOptionProperty<T>::getDescription() const {
+    using P = Document::PathComponent;
+    using H = utildoc::TableBuilder::Header;
+
+    Document doc = BaseOptionProperty::getDescription();
+
+    auto table = doc.get({P("html"), P("body"), P("table", {{"identifier", "propertyInfo"}})});
+    utildoc::TableBuilder tb(table);
+    tb(H("Selected Index"), selectedIndex_);
+    tb(H("Selected Name"), options_[selectedIndex_].name_);
+    tb(H("Selected Value"), options_[selectedIndex_].value_);
+
+    return doc;
 }
 
 // template <typename T>

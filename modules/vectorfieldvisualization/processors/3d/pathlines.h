@@ -43,6 +43,7 @@
 
 #include <modules/vectorfieldvisualization/ports/seedpointsport.h>
 #include <modules/vectorfieldvisualization/properties/pathlineproperties.h>
+#include <modules/vectorfieldvisualization/datastructures/integrallineset.h>
 
 namespace inviwo {
 
@@ -59,13 +60,6 @@ namespace inviwo {
  * ### Properties
  *   * __<Prop1>__ <description>.
  *   * __<Prop2>__ <description>
- */
-
-
-/**
- * \class PathLines
- * \brief <brief description> 
- * <Detailed description from a developer prespective>
  */
 class IVW_MODULE_VECTORFIELDVISUALIZATION_API PathLines : public Processor { 
 public:
@@ -106,6 +100,7 @@ private:
     SeedPointsInport seedPoints_;
     DataInport<std::vector<vec4>> colors_;
     VolumeSequenceInport volume_;
+    IntegralLineSetOutport lines_;
 
 
     MeshOutport linesStripsMesh_;

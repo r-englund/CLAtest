@@ -71,25 +71,31 @@ set(HEADER_FILES
     ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/volume/volumeramhistogram.h
     ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/volume/volumeramprecision.h
     ${IVW_INCLUDE_DIR}/inviwo/core/datastructures/volume/volumerepresentation.h
-    ${IVW_INCLUDE_DIR}/inviwo/core/interaction/action.h
     ${IVW_INCLUDE_DIR}/inviwo/core/interaction/cameratrackball.h
     ${IVW_INCLUDE_DIR}/inviwo/core/interaction/events/event.h
     ${IVW_INCLUDE_DIR}/inviwo/core/interaction/events/eventhandler.h
     ${IVW_INCLUDE_DIR}/inviwo/core/interaction/events/eventlistener.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/interaction/events/eventmatcher.h
     ${IVW_INCLUDE_DIR}/inviwo/core/interaction/events/eventpropagator.h
     ${IVW_INCLUDE_DIR}/inviwo/core/interaction/events/gestureevent.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/interaction/events/gesturestate.h
     ${IVW_INCLUDE_DIR}/inviwo/core/interaction/events/interactionevent.h
     ${IVW_INCLUDE_DIR}/inviwo/core/interaction/events/keyboardevent.h
     ${IVW_INCLUDE_DIR}/inviwo/core/interaction/events/keyboardkeys.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/interaction/events/mousebuttons.h
     ${IVW_INCLUDE_DIR}/inviwo/core/interaction/events/mouseevent.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/interaction/events/mouseinteractionevent.h
     ${IVW_INCLUDE_DIR}/inviwo/core/interaction/events/resizeevent.h
     ${IVW_INCLUDE_DIR}/inviwo/core/interaction/events/touchevent.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/interaction/events/touchstate.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/interaction/events/wheelevent.h
     ${IVW_INCLUDE_DIR}/inviwo/core/interaction/interactionhandler.h
     ${IVW_INCLUDE_DIR}/inviwo/core/interaction/interactionstatemanager.h
     ${IVW_INCLUDE_DIR}/inviwo/core/interaction/pickingcontainer.h
     ${IVW_INCLUDE_DIR}/inviwo/core/interaction/pickingmanager.h
     ${IVW_INCLUDE_DIR}/inviwo/core/interaction/pickingmapper.h
     ${IVW_INCLUDE_DIR}/inviwo/core/interaction/pickingobject.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/interaction/pickingstate.h
     ${IVW_INCLUDE_DIR}/inviwo/core/interaction/trackball.h
     ${IVW_INCLUDE_DIR}/inviwo/core/interaction/trackballobject.h
     ${IVW_INCLUDE_DIR}/inviwo/core/io/bytereaderutil.h
@@ -222,11 +228,13 @@ set(HEADER_FILES
     ${IVW_INCLUDE_DIR}/inviwo/core/util/colorbrewer.h
     ${IVW_INCLUDE_DIR}/inviwo/core/util/colorconversion.h
     ${IVW_INCLUDE_DIR}/inviwo/core/util/commandlineparser.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/util/constexprhash.h
     ${IVW_INCLUDE_DIR}/inviwo/core/util/datetime.h
     ${IVW_INCLUDE_DIR}/inviwo/core/util/dialog.h
     ${IVW_INCLUDE_DIR}/inviwo/core/util/dialogfactory.h
     ${IVW_INCLUDE_DIR}/inviwo/core/util/dialogfactoryobject.h
     ${IVW_INCLUDE_DIR}/inviwo/core/util/dispatcher.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/util/document.h
     ${IVW_INCLUDE_DIR}/inviwo/core/util/exception.h
     ${IVW_INCLUDE_DIR}/inviwo/core/util/factory.h
     ${IVW_INCLUDE_DIR}/inviwo/core/util/fileextension.h
@@ -237,6 +245,7 @@ set(HEADER_FILES
     ${IVW_INCLUDE_DIR}/inviwo/core/util/formatsdefinefunc.h
     ${IVW_INCLUDE_DIR}/inviwo/core/util/glm.h
     ${IVW_INCLUDE_DIR}/inviwo/core/util/imagecache.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/util/imageramutils.h
     ${IVW_INCLUDE_DIR}/inviwo/core/util/imagesampler.h
     ${IVW_INCLUDE_DIR}/inviwo/core/util/indexmapper.h
     ${IVW_INCLUDE_DIR}/inviwo/core/util/interpolation.h
@@ -247,6 +256,7 @@ set(HEADER_FILES
     ${IVW_INCLUDE_DIR}/inviwo/core/util/logcentral.h
     ${IVW_INCLUDE_DIR}/inviwo/core/util/logerrorcounter.h
     ${IVW_INCLUDE_DIR}/inviwo/core/util/observer.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/util/ostreamjoiner.h
     ${IVW_INCLUDE_DIR}/inviwo/core/util/pathtype.h
     ${IVW_INCLUDE_DIR}/inviwo/core/util/raiiutils.h
     ${IVW_INCLUDE_DIR}/inviwo/core/util/rendercontext.h
@@ -261,15 +271,16 @@ set(HEADER_FILES
     ${IVW_INCLUDE_DIR}/inviwo/core/util/stdextensions.h
     ${IVW_INCLUDE_DIR}/inviwo/core/util/stringconversion.h
     ${IVW_INCLUDE_DIR}/inviwo/core/util/systemcapabilities.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/util/templatesampler.h
     ${IVW_INCLUDE_DIR}/inviwo/core/util/threadpool.h
     ${IVW_INCLUDE_DIR}/inviwo/core/util/timer.h
     ${IVW_INCLUDE_DIR}/inviwo/core/util/tinydirinterface.h
-    ${IVW_INCLUDE_DIR}/inviwo/core/util/tooltiphelper.h
     ${IVW_INCLUDE_DIR}/inviwo/core/util/utilities.h
     ${IVW_INCLUDE_DIR}/inviwo/core/util/vectoroperations.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/util/volumeramutils.h
     ${IVW_INCLUDE_DIR}/inviwo/core/util/volumesampler.h
-    ${IVW_INCLUDE_DIR}/inviwo/core/util/volumesequenceutils.h
     ${IVW_INCLUDE_DIR}/inviwo/core/util/volumesequencesampler.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/util/volumesequenceutils.h
 )
 ivw_group("Header Files" ${HEADER_FILES})
 
@@ -326,18 +337,20 @@ set(SOURCE_FILES
     datastructures/volume/volumeramconverter.cpp
     datastructures/volume/volumeramprecision.cpp
     datastructures/volume/volumerepresentation.cpp
-    interaction/action.cpp
     interaction/cameratrackball.cpp
     interaction/events/event.cpp
     interaction/events/eventhandler.cpp
     interaction/events/eventlistener.cpp
+    interaction/events/eventmatcher.cpp
     interaction/events/eventpropagator.cpp
     interaction/events/gestureevent.cpp
     interaction/events/interactionevent.cpp
     interaction/events/keyboardevent.cpp
     interaction/events/mouseevent.cpp
+    interaction/events/mouseinteractionevent.cpp
     interaction/events/resizeevent.cpp
     interaction/events/touchevent.cpp
+    interaction/events/wheelevent.cpp
     interaction/interactionhandler.cpp
     interaction/interactionstatemanager.cpp
     interaction/pickingcontainer.cpp
@@ -449,6 +462,7 @@ set(SOURCE_FILES
     util/commandlineparser.cpp
     util/dialogfactory.cpp
     util/dialogfactoryobject.cpp
+    util/document.cpp
     util/exception.cpp
     util/fileextension.cpp
     util/fileobserver.cpp
@@ -457,8 +471,6 @@ set(SOURCE_FILES
     util/formats.cpp
     util/imagecache.cpp
     util/imagesampler.cpp
-    util/intersection/rayplaneintersection.cpp
-    util/intersection/raysphereintersection.cpp
     util/introspection.cpp
     util/inviwosetupinfo.cpp
     util/logcentral.cpp
@@ -476,14 +488,13 @@ set(SOURCE_FILES
     util/stdextensions.cpp
     util/stringconversion.cpp
     util/systemcapabilities.cpp
+    util/threadpool.cpp
     util/timer.cpp
     util/tinydirinterface.cpp
-    util/tooltiphelper.cpp
-    util/threadpool.cpp
     util/utilities.cpp
     util/volumesampler.cpp
-    util/volumesequenceutils.cpp
     util/volumesequencesampler.cpp
+    util/volumesequenceutils.cpp
 )
 ivw_group("Source Files" ${SOURCE_FILES})
 
@@ -509,6 +520,7 @@ set(TEST_FILES
     tests/unittests/filesystem-test.cpp
     tests/unittests/volumesequenceutils-tests.cpp
     tests/unittests/conversion-test.cpp
+    tests/unittests/document-test.cpp
     tests/unittests/glm-test.cpp
 )
 ivw_add_unittest(${TEST_FILES})
@@ -547,21 +559,14 @@ endif()
 ivw_include_directories(${CMAKE_BINARY_DIR}/modules/_generated)
 
 # Add core dependencies to this list
-ivw_add_dependencies(
-    TiCPP
-)
+ivw_add_dependencies(TiCPP)
+
 if(IVW_SIGAR)
-ivw_add_dependencies(
-    Sigar
-)
+    ivw_add_dependencies(Sigar)
 endif()
-
 if(WIN32)
-ivw_add_dependencies(
-    stackwalker
-)
+    ivw_add_dependencies(stackwalker)
 endif()
-
 if(APPLE)
    find_library(CORESERVICES_LIBRARY CoreServices)
    mark_as_advanced(CORESERVICES_LIBRARY)

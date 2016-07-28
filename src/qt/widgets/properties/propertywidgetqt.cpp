@@ -37,7 +37,6 @@
 #include <inviwo/core/network/networklock.h>
 #include <inviwo/qt/widgets/inviwoapplicationqt.h>
 #include <inviwo/qt/widgets/inviwoqtutils.h>
-#include <inviwo/core/util/tooltiphelper.h>
 #include <inviwo/core/common/moduleaction.h>
 
 #include <inviwo/qt/widgets/propertylistwidget.h>
@@ -107,7 +106,7 @@ PropertyWidgetQt::PropertyWidgetQt()
     , nestedDepth_(0) {
     applicationUsageMode_ = &(InviwoApplication::getPtr()
                                   ->getSettingsByType<SystemSettings>()
-                                  ->applicationUsageModeProperty_);
+                                  ->applicationUsageMode_);
     setNestedDepth(nestedDepth_);
     setObjectName("PropertyWidget");
     setContextMenuPolicy(Qt::CustomContextMenu);
@@ -134,7 +133,7 @@ PropertyWidgetQt::PropertyWidgetQt(Property* property)
     property_->addObserver(this);
     applicationUsageMode_ = &(InviwoApplication::getPtr()
                                   ->getSettingsByType<SystemSettings>()
-                                  ->applicationUsageModeProperty_);
+                                  ->applicationUsageMode_);
 
     appModeCallback_ =
         applicationUsageMode_->onChange([this]() { onSetUsageMode(property_->getUsageMode()); });
@@ -434,7 +433,7 @@ void PropertyWidgetQt::setApplicationUsageMode(bool value) {
 }
 
 UsageMode PropertyWidgetQt::getApplicationUsageMode() {
-    return static_cast<UsageMode>(applicationUsageMode_->get());
+    return applicationUsageMode_->get();
 }
 
 void PropertyWidgetQt::moduleAction() {
@@ -477,28 +476,13 @@ void PropertyWidgetQt::updateContextMenu() {
 }
 
 bool PropertyWidgetQt::event(QEvent* event) {
-    if (event->type() == QEvent::ToolTip) {
+    if (event->type() == QEvent::ToolTip && property_) {
         auto helpEvent = static_cast<QHelpEvent*>(event);
-        QToolTip::showText(helpEvent->globalPos(), utilqt::toLocalQString(getToolTipText()));
+        QToolTip::showText(helpEvent->globalPos(),
+                           utilqt::toLocalQString(property_->getDescription()));
         return true;
     } else {
         return QWidget::event(event);
-    }
-}
-
-std::string PropertyWidgetQt::getToolTipText() {
-    if (property_) {
-        ToolTipHelper t(property_->getDisplayName());
-        t.tableTop();
-        t.row("Identifier", property_->getIdentifier());
-        t.row("Path", joinString(property_->getPath(), "."));
-        t.row("Semantics", property_->getSemantics().getString());
-        t.row("Validation Level",
-              PropertyOwner::invalidationLevelToString(property_->getInvalidationLevel()));
-        t.tableBottom();
-        return t;
-    } else {
-        return "";
     }
 }
 

@@ -36,7 +36,6 @@
 #include <inviwo/qt/widgets/properties/propertysettingswidgetqt.h>
 #include <inviwo/qt/widgets/editablelabelqt.h>
 #include <inviwo/qt/widgets/ordinaleditorwidget.h>
-#include <inviwo/core/util/tooltiphelper.h>
 #include <inviwo/core/properties/minmaxproperty.h>
 #include <inviwo/core/properties/propertyowner.h>
 #include <inviwo/core/util/stringconversion.h>
@@ -95,7 +94,6 @@ public:
     
 protected:
     virtual void makeEditorWidgets() override;
-    virtual std::string getToolTipText() override;
 
     virtual void showSettings() override {
         if (!this->settingsWidget_) {
@@ -204,30 +202,6 @@ void OrdinalMinMaxTextPropertyWidgetQt<BT, T>::updateFromMax() {
         minMaxProperty_->set(range);
         minMaxProperty_->clearInitiatingWidget();
     }
-}
-
-template <typename BT, typename T>
-std::string OrdinalMinMaxTextPropertyWidgetQt<BT, T>::getToolTipText() {
-
-    ToolTipHelper t(this->minMaxProperty_->getDisplayName());
-
-    t.tableTop();
-    t.row("Identifier", this->minMaxProperty_->getIdentifier());
-    t.row("Path", joinString(this->minMaxProperty_->getPath(),"."));
-    t.row("Semantics", this->minMaxProperty_->getSemantics().getString());
-    t.row("Validation Level", PropertyOwner::invalidationLevelToString(
-                                             this->minMaxProperty_->getInvalidationLevel()));
-
-    t.row("Minimum Bound", minMaxProperty_->getRangeMin());
-    t.row("Start", minMaxProperty_->get().x);
-    t.row("End", minMaxProperty_->get().y);
-    t.row("Maximum Bound", minMaxProperty_->getRangeMax());
-    t.row("Increment", minMaxProperty_->getIncrement());
-    t.row("Separation", minMaxProperty_->getMinSeparation());
-
-    t.tableBottom();
-
-    return t;
 }
 
 } // namespace

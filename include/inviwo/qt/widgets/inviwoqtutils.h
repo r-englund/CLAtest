@@ -32,6 +32,7 @@
 
 #include <inviwo/qt/widgets/inviwoqtwidgetsdefine.h>
 #include <inviwo/core/common/inviwo.h>
+#include <inviwo/core/util/document.h>
 
 #include <locale>
 #include <ios>
@@ -46,6 +47,8 @@
 #include <warn/pop>
 
 namespace inviwo {
+
+class Property;
 
 namespace utilqt {
     

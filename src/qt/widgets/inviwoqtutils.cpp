@@ -28,6 +28,9 @@
  *********************************************************************************/
 
 #include <inviwo/qt/widgets/inviwoqtutils.h>
+#include <inviwo/core/util/document.h>
+#include <inviwo/core/properties/property.h>
+
 #include <inviwo/core/util/logcentral.h>
 #include <warn/push>
 #include <warn/ignore/all>

@@ -3,12 +3,9 @@
 ivw_project(inviwo)
 
 find_package(Qt5Core QUIET REQUIRED)
+find_package(Qt5Gui QUIET REQUIRED)
 find_package(Qt5Widgets QUIET REQUIRED)
-
-if(POLICY CMP0043)
-    cmake_policy(SET CMP0043 OLD) # Ignore compile definitions.
-endif()
-
+find_package(Qt5Help QUIET REQUIRED)
 
 #--------------------------------------------------------------------
 # Add MOC files
@@ -65,14 +62,15 @@ set(RES_FILES "")
 if(WIN32)
     set(RES_FILES ${RES_FILES} "${IVW_RESOURCES_DIR}/inviwo.rc")
 elseif(APPLE)
+    string(TIMESTAMP YEAR "%Y")
     set(MACOSX_BUNDLE_BUNDLE_NAME          Inviwo)
     set(MACOSX_BUNDLE_GUI_IDENTIFIER       "Inviwo")
     set(MACOSX_BUNDLE_ICON_FILE            inviwo_light.icns)
-    set(MACOSX_BUNDLE_INFO_STRING          "Inviwo ${IVW_VERSION}, Copyright (c) 2012-2016 Inviwo Foundation")
+    set(MACOSX_BUNDLE_INFO_STRING          "Inviwo ${IVW_VERSION}, Copyright (c) 2012-${YEAR} Inviwo Foundation")
     set(MACOSX_BUNDLE_SHORT_VERSION_STRING "${IVW_VERSION}")
     set(MACOSX_BUNDLE_LONG_VERSION_STRING  "${IVW_VERSION}.")
     set(MACOSX_BUNDLE_BUNDLE_VERSION       "${IVW_VERSION}")
-    set(MACOSX_BUNDLE_COPYRIGHT            "(C) 2012-2016 Inviwo Foundation")
+    set(MACOSX_BUNDLE_COPYRIGHT            "(C) 2012-${YEAR} Inviwo Foundation")
     set_source_files_properties(${IVW_ROOT_DIR}/resources/icons/inviwo_light.icns PROPERTIES MACOSX_PACKAGE_LOCATION Resources)
     set(RES_FILES ${RES_FILES} ${IVW_ROOT_DIR}/resources/icons/inviwo_light.icns)
 endif()
@@ -159,10 +157,10 @@ ivw_add_dependencies(${package_list})
 ivw_memleak_setup(inviwo)
 
 #--------------------------------------------------------------------
-# and a console version of inviwo.exe called inviwo-cli.exe
+# add a console version of inviwo.exe called inviwo-cli.exe
 if(WIN32)
-    set_target_properties(inviwo PROPERTIES LINK_FLAGS 
-        "/SUBSYSTEM:WINDOWS /ENTRY:mainCRTStartup")
+    set_property(TARGET inviwo APPEND_STRING PROPERTY LINK_FLAGS 
+        " /SUBSYSTEM:WINDOWS /ENTRY:mainCRTStartup")
 
     ivw_project(inviwo-cli)
 
@@ -173,13 +171,13 @@ if(WIN32)
         ${QRC_FILE} 
         ${RES_FILES})
 
-    set_target_properties(inviwo-cli PROPERTIES LINK_FLAGS 
-        "/SUBSYSTEM:CONSOLE /ENTRY:mainCRTStartup")
-    
     add_dependencies(inviwo-cli inviwo)
 
     ivw_define_standard_definitions(inviwo-cli inviwo-cli)
     ivw_define_standard_properties(inviwo-cli)
     ivw_add_dependencies(${package_list})
     ivw_memleak_setup(inviwo-cli)
+
+    set_property(TARGET inviwo-cli APPEND_STRING PROPERTY LINK_FLAGS 
+        " /SUBSYSTEM:CONSOLE /ENTRY:mainCRTStartup")
 endif()

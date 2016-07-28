@@ -28,15 +28,15 @@
  *********************************************************************************/
 
 #include <inviwo/core/datastructures/geometry/mesh.h>
-#include <inviwo/core/util/tooltiphelper.h>
+#include <inviwo/core/util/document.h>
 
 namespace inviwo {
 
 Mesh::Mesh(DrawType dt, ConnectivityType ct)
-    : DataGroup(), SpatialEntity<3>(), defaultMeshInfo_(MeshInfo(dt, ct)) {}
+    : DataGroup(), SpatialEntity<3>(), meshInfo_(MeshInfo(dt, ct)) {}
 
 Mesh::Mesh(const Mesh& rhs)
-    : DataGroup(rhs), SpatialEntity<3>(rhs), defaultMeshInfo_(rhs.defaultMeshInfo_) {
+    : DataGroup(rhs), SpatialEntity<3>(rhs), meshInfo_(rhs.meshInfo_) {
     for (const auto& elem : rhs.buffers_) {
         buffers_.emplace_back(elem.first, std::shared_ptr<BufferBase>(elem.second->clone()));
     }
@@ -62,7 +62,7 @@ Mesh& Mesh::operator=(const Mesh& that) {
 
         std::swap(buffers, buffers_);
         std::swap(indices, indices_);
-        defaultMeshInfo_ = that.defaultMeshInfo_;
+        meshInfo_ = that.meshInfo_;
     }
     return *this;
 }
@@ -73,13 +73,17 @@ const Mesh::BufferVector& Mesh::getBuffers() const { return buffers_; }
 
 const Mesh::IndexVector& Mesh::getIndexBuffers() const { return indices_; }
 
-void Mesh::addBuffer(BufferType type, std::shared_ptr<BufferBase> att) {
-    buffers_.emplace_back(type, att);
+void Mesh::addBuffer(BufferInfo info, std::shared_ptr<BufferBase> att) {
+    buffers_.emplace_back(info, att);
 }
 
-void Mesh::setBuffer(size_t idx, BufferType type, std::shared_ptr<BufferBase> att) {
+void Mesh::addBuffer(BufferType type, std::shared_ptr<BufferBase> att) {
+    buffers_.emplace_back(BufferInfo(type), att);
+}
+
+void Mesh::setBuffer(size_t idx, BufferInfo info, std::shared_ptr<BufferBase> att) {
     if (idx < buffers_.size()) {
-        buffers_[idx] = std::make_pair(type, att);
+        buffers_[idx] = std::make_pair(info, att);
     }
 }
 
@@ -87,15 +91,17 @@ void Mesh::addIndicies(MeshInfo info, std::shared_ptr<IndexBuffer> ind) {
     indices_.push_back(std::make_pair(info, ind));
 }
 
+void Mesh::reserveIndexBuffers(size_t size) { indices_.reserve(size); }
+
 const BufferBase* Mesh::getBuffer(size_t idx) const { return buffers_[idx].second.get(); }
 
-const IndexBuffer* Mesh::getIndicies(size_t idx) const { return indices_[idx].second.get(); }
+const IndexBuffer* Mesh::getIndices(size_t idx) const { return indices_[idx].second.get(); }
 
 BufferBase* Mesh::getBuffer(size_t idx) { return buffers_[idx].second.get(); }
 
-IndexBuffer* Mesh::getIndicies(size_t idx) { return indices_[idx].second.get(); }
+IndexBuffer* Mesh::getIndices(size_t idx) { return indices_[idx].second.get(); }
 
-Mesh::MeshInfo Mesh::getDefaultMeshInfo() const { return defaultMeshInfo_; }
+Mesh::MeshInfo Mesh::getDefaultMeshInfo() const { return meshInfo_; }
 
 Mesh::MeshInfo Mesh::getIndexMeshInfo(size_t idx) const { return indices_[idx].first; }
 
@@ -113,25 +119,26 @@ inviwo::uvec3 Mesh::COLOR_CODE = uvec3(188, 188, 101);
 const std::string Mesh::CLASS_IDENTIFIER = "org.inviwo.Mesh";
 
 std::string Mesh::getDataInfo() const {
-    ToolTipHelper t("Mesh");
-    t.tableTop();
+    using P = Document::PathComponent;
+    using H = utildoc::TableBuilder::Header;
+    Document doc;
+    doc.append("b", "Mesh", {{"style", "color:white;"}});
+    utildoc::TableBuilder tb(doc.handle(), P::end());
 
     for (const auto& elem : indices_) {
         std::stringstream ss;
         ss << elem.first.dt << " " << elem.first.ct;
         ss << " (" << elem.second->getSize() << ")";
-        t.row("IndexBuffer", ss.str());
+        tb(H("IndexBuffer"), ss.str());
     }
 
     for (const auto& elem : buffers_) {
         std::stringstream ss;
         ss << elem.first << " " << elem.second->getBufferUsage();
         ss << " (" << elem.second->getSize() << ")";
-        t.row("Buffer", ss.str());
+        tb(H("Buffer"), ss.str());
     }
-
-    t.tableBottom();
-    return t;
+    return doc;
 }
 
 }  // namespace

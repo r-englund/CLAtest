@@ -54,13 +54,6 @@ namespace inviwo {
  *   * __<Prop1>__ <description>.
  *   * __<Prop2>__ <description>
  */
-
-
-/**
- * \class SingleVoxel
- * \brief <brief description> 
- * <Detailed description from a developer prespective>
- */
 class IVW_MODULE_BASE_API SingleVoxel : public Processor { 
 public:
     SingleVoxel();
@@ -72,14 +65,14 @@ public:
     static const ProcessorInfo processorInfo_;
 private:
     VolumeInport volume_;
-    FloatVec3Property position_;
+    DoubleVec3Property position_;
 
     DoubleProperty doubleProperty_;
     DoubleVec2Property dvec2Property_;
     DoubleVec3Property dvec3Property_;
     DoubleVec4Property dvec4Property_;
 
-    TemplateOptionProperty<SpatialCoordinateTransformer<3>::Space> space_;
+    TemplateOptionProperty<CoordinateSpace> space_;
 };
 
 } // namespace

@@ -39,9 +39,20 @@
 
 namespace inviwo {
 
-/** @brief Inviwo Module Assimp
-*
-*  A GeometryReader (DataReaderType<Geometry>) using the Assimp Library.*/
+enum class IVW_MODULE_ASSIMP_API AssimpLogLevel : int {
+    None,
+    Error,
+    Warn,
+    Info,
+    Debug
+};  // increased verbosity
+
+/** 
+ * \ingroup dataio
+ * \brief Inviwo Module Assimp
+ *
+ *  A GeometryReader (DataReaderType<Geometry>) using the Assimp Library.
+ */
 class IVW_MODULE_ASSIMP_API AssimpReader : public DataReaderType<Mesh> {
 public:
     AssimpReader();
@@ -50,12 +61,28 @@ public:
     virtual AssimpReader* clone() const override;
     virtual ~AssimpReader() = default;
 
+    void setLogLevel(AssimpLogLevel level, bool verbose = false);
+    AssimpLogLevel getLogLevel() const;
+
+    void setFixInvalidDataFlag(bool enable);
+    bool getFixInvalidDataFlag() const;
+
     virtual std::shared_ptr<Mesh> readData(const std::string filePath) override;
+
+private:
+    AssimpLogLevel
+        logLevel_;  //!< determines the verbosity of the logging during data import (default = Warn)
+    bool verboseLog_;
+    bool fixInvalidData_;  //!< if true, the imported data will be checked for invalid data, e.g.
+                           //!< invalid normals or UV coords, which might be fixed or removed by
+                           //!< Assimp
 };
 
-/** @brief Assimp LogStream => Inviwo LogCentral
-*
-*  derive Assimp::LogStream to forward logged messages from the library to Inviwos LogCentral.*/
+/** 
+ * \brief Assimp LogStream => Inviwo LogCentral 
+ *
+ *  Derive Assimp::LogStream to forward logged messages from the library to Inviwos LogCentral.
+ */
 class InviwoAssimpLogStream : public Assimp::LogStream {
 private:
     LogLevel loglevel;

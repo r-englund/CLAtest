@@ -282,25 +282,14 @@ void PropertyOwner::resetAllPoperties(){
     for (auto& elem : properties_) (elem)->resetToDefaultState();
 }
 
-std::string PropertyOwner::invalidationLevelToString(InvalidationLevel level) {
-    switch (level) {
-        case InvalidationLevel::Valid: return "Valid";
-        case InvalidationLevel::InvalidOutput: return "Invalid output";
-        case InvalidationLevel::InvalidResources: return "Invalid resources";
-        default: return "Unknown";
-    }
-}
-
 std::vector<std::string> PropertyOwner::getPath() const {
     return std::vector<std::string>();
 }
 
 void PropertyOwner::invokeEvent(Event* event) {
     for (auto elem : eventProperties_) {
-        if (elem->getEvent()->matching(event)) {
-            elem->getAction()->invoke(event);
-            if (event->hasBeenUsed()) return;
-        }
+        elem->invokeEvent(event);
+        if (event->hasBeenUsed()) return;
     }
     for (auto elem : compositeProperties_) {
         elem->invokeEvent(event);

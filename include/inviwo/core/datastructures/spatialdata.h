@@ -36,8 +36,9 @@
 
 namespace inviwo {
 
-/** \brief A convenience class to generate transformation matrices between
- *         the different coordinate systems in use.
+/** 
+ * \brief A convenience class to generate transformation matrices between
+ *        the different coordinate systems in use.
  *
  *  Spatial meta data in Inviwo uses 4 different coordinate systems, they are defined as
  *  - Index - The voxel indices in the data
@@ -68,7 +69,7 @@ namespace inviwo {
  *
  *      1  0  0 dx
  *      0  1  0 dy
- *      0  0  0 dz
+ *      0  0  1 dz
  *      0  0  0  1
  *
  *  That means that in c/c++ you would create a transposed matrix like:
@@ -283,7 +284,7 @@ void SpatialEntity<N>::setWorldMatrix(const Matrix<N + 1, float>& worldMatrix) {
 
 template <unsigned int N>
 const SpatialCoordinateTransformer<N>& SpatialEntity<N>::getCoordinateTransformer() const {
-    if (!transformer_) transformer_ = new SpatialCoordinateTransformerImpl<N>(this);
+    if (!transformer_) transformer_ = new SpatialCoordinateTransformerImpl<N>(*this);
     return *transformer_;
 }
 
@@ -291,7 +292,7 @@ template <unsigned int N>
 const SpatialCameraCoordinateTransformer<N>& inviwo::SpatialEntity<N>::getCoordinateTransformer(
     const CameraND<N>& camera) const {
     if (!cameraTransformer_)
-        cameraTransformer_ = new SpatialCameraCoordinateTransformerImpl<N>(this, camera);
+        cameraTransformer_ = new SpatialCameraCoordinateTransformerImpl<N>(*this, camera);
     static_cast<SpatialCameraCoordinateTransformerImpl<N>*>(cameraTransformer_)->setCamera(camera);
     return *cameraTransformer_;
 }
@@ -377,7 +378,7 @@ Matrix<N + 1, float> StructuredGridEntity<N>::getIndexMatrix() const {
 
 template <unsigned int N>
 const StructuredCoordinateTransformer<N>& StructuredGridEntity<N>::getCoordinateTransformer() const {
-    if (!this->transformer_) this->transformer_ = new StructuredCoordinateTransformerImpl<N>(this);
+    if (!this->transformer_) this->transformer_ = new StructuredCoordinateTransformerImpl<N>(*this);
     return *static_cast<StructuredCoordinateTransformer<N>*>(this->transformer_);
 }
 
@@ -385,7 +386,7 @@ template <unsigned int N>
 const StructuredCameraCoordinateTransformer<N>& inviwo::StructuredGridEntity<N>::getCoordinateTransformer(
     const CameraND<N>& camera) const {
     if (!this->cameraTransformer_)
-        this->cameraTransformer_ = new StructuredCameraCoordinateTransformerImpl<N>(this, camera);
+        this->cameraTransformer_ = new StructuredCameraCoordinateTransformerImpl<N>(*this, camera);
     static_cast<StructuredCameraCoordinateTransformerImpl<N>*>(this->cameraTransformer_)->setCamera(camera);
     return *static_cast<StructuredCameraCoordinateTransformer<N>*>(this->cameraTransformer_);
 }

@@ -89,9 +89,13 @@ set(HEADER_FILES
     ${CMAKE_CURRENT_SOURCE_DIR}/defaultinterface/pycamera.h
     ${CMAKE_CURRENT_SOURCE_DIR}/defaultinterface/pycanvas.h
     ${CMAKE_CURRENT_SOURCE_DIR}/defaultinterface/pylist.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/defaultinterface/pynetwork.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/defaultinterface/pyprocessor.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/defaultinterface/pyprocessorwidget.h
     ${CMAKE_CURRENT_SOURCE_DIR}/defaultinterface/pyproperties.h
     ${CMAKE_CURRENT_SOURCE_DIR}/defaultinterface/pyutil.h
     ${CMAKE_CURRENT_SOURCE_DIR}/defaultinterface/pyvolume.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/defaultinterface/utilities.h
     ${CMAKE_CURRENT_SOURCE_DIR}/pyinviwo.h
     ${CMAKE_CURRENT_SOURCE_DIR}/pythonexecutionoutputobservable.h
     ${CMAKE_CURRENT_SOURCE_DIR}/pythonincluder.h
@@ -108,9 +112,13 @@ set(SOURCE_FILES
     ${CMAKE_CURRENT_SOURCE_DIR}/defaultinterface/pycamera.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/defaultinterface/pycanvas.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/defaultinterface/pylist.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/defaultinterface/pynetwork.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/defaultinterface/pyprocessor.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/defaultinterface/pyprocessorwidget.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/defaultinterface/pyproperties.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/defaultinterface/pyutil.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/defaultinterface/pyvolume.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/defaultinterface/utilities.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/pyinviwo.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/pythonexecutionoutputobservable.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/pythoninterface/pythonparameterparser.cpp

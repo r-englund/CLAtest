@@ -90,10 +90,10 @@ InviwoMainWindow::InviwoMainWindow(InviwoApplicationQt* app)
                      "file name")
     , eventFilter_(app->getInteractionStateManager())
     , undoManager_(this) {
-    networkEditor_ = new NetworkEditor(this);
+
+    networkEditor_ = std::make_shared<NetworkEditor>(this);
     // initialize console widget first to receive log messages
-    consoleWidget_ = new ConsoleWidget(this);
-    // LogCentral takes ownership of logger
+    consoleWidget_ = std::make_shared<ConsoleWidget>(this);
     LogCentral::getPtr()->registerLogger(consoleWidget_);
     currentWorkspaceFileName_ = "";
 
@@ -128,14 +128,11 @@ InviwoMainWindow::InviwoMainWindow(InviwoApplicationQt* app)
                                     1000);
 }
 
-InviwoMainWindow::~InviwoMainWindow() {
-    LogCentral::getPtr()->unregisterLogger(consoleWidget_);
-    delete networkEditor_;
-}
+InviwoMainWindow::~InviwoMainWindow() = default;
 
 void InviwoMainWindow::initialize() {
-    networkEditorView_ = new NetworkEditorView(networkEditor_, this);
-    NetworkEditorObserver::addObservation(networkEditor_);
+    networkEditorView_ = new NetworkEditorView(networkEditor_.get(), this);
+    NetworkEditorObserver::addObservation(networkEditor_.get());
     setCentralWidget(networkEditorView_);
 
     resourceManagerWidget_ = new ResourceManagerWidget(this);
@@ -155,7 +152,7 @@ void InviwoMainWindow::initialize() {
     propertyListWidget_ = new PropertyListWidget(this);
     addDockWidget(Qt::RightDockWidgetArea, propertyListWidget_);
 
-    addDockWidget(Qt::BottomDockWidgetArea, consoleWidget_);
+    addDockWidget(Qt::BottomDockWidgetArea, consoleWidget_.get());
     // load settings and restore window state
     QSettings settings("Inviwo", "Inviwo");
     settings.beginGroup("mainwindow");
@@ -296,6 +293,44 @@ void InviwoMainWindow::addActions() {
             new QAction(QIcon(":/icons/saveas.png"), tr("&Save Workspace As Copy"), this);
         connect(workspaceActionSaveAsCopy, SIGNAL(triggered()), this, SLOT(saveWorkspaceAsCopy()));
         fileMenuItem->addAction(workspaceActionSaveAsCopy);
+    }
+
+    {
+        connect(fileMenuItem->addAction("Save Network Image"), &QAction::triggered,
+            [&](bool state) {
+            InviwoFileDialog saveFileDialog(this, "Save Network Image ...", "image");
+            saveFileDialog.setFileMode(QFileDialog::AnyFile);
+            saveFileDialog.setAcceptMode(QFileDialog::AcceptSave);
+            saveFileDialog.setConfirmOverwrite(true);
+
+            saveFileDialog.addSidebarPath(PathType::Workspaces);
+            saveFileDialog.addSidebarPath(workspaceFileDir_);
+
+            saveFileDialog.addExtension("png", "PNG");
+            saveFileDialog.addExtension("jpg", "JPEG");
+            saveFileDialog.addExtension("bmp", "BMP");
+
+            if (saveFileDialog.exec()) {
+                QString path = saveFileDialog.selectedFiles().at(0);
+
+                auto rect = networkEditor_->itemsBoundingRect();
+
+                QPointF margins(25, 25);
+                auto TL = rect.topLeft() - margins;
+                auto BR = rect.bottomRight() + margins;
+                QRect rect2(TL.toPoint(), BR.toPoint());
+                QRect sourceRect(QPoint(0, 0), rect2.size());
+
+                QImage image(sourceRect.size(), QImage::Format_ARGB32);
+                QPainter painter(&image);
+                painter.setRenderHint(QPainter::Antialiasing);
+                networkEditor_->render(&painter, sourceRect, rect2);
+                image.save(saveFileDialog.selectedFiles().at(0));
+                LogInfo("Saved image of network as "
+                    << saveFileDialog.selectedFiles().at(0).toLocal8Bit().constData());
+            }
+
+        });
     }
 
     {
@@ -456,11 +491,20 @@ void InviwoMainWindow::addActions() {
 
         appUsageModeProp_ = &InviwoApplication::getPtr()
                                  ->getSettingsByType<SystemSettings>()
-                                 ->applicationUsageModeProperty_;
-        appUsageModeProp_->onChange(this, &InviwoMainWindow::visibilityModeChangedInSettings);
+                                 ->applicationUsageMode_;
 
-        connect(visibilityModeAction_, SIGNAL(triggered(bool)), this,
-                SLOT(setVisibilityMode(bool)));
+        appUsageModeProp_->onChange([&](){visibilityModeChangedInSettings();});
+
+        connect(visibilityModeAction_, &QAction::triggered, [&](bool appView) {
+            auto selectedIdx = appUsageModeProp_->getSelectedValue();
+            if (appView) {
+                if (selectedIdx != UsageMode::Application)
+                    appUsageModeProp_->setSelectedValue(UsageMode::Application);
+            } else {
+                if (selectedIdx != UsageMode::Development)
+                    appUsageModeProp_->setSelectedValue(UsageMode::Development);
+            }
+        });
 
         visibilityModeChangedInSettings();
     }
@@ -763,6 +807,7 @@ void InviwoMainWindow::newWorkspace() {
 
 void InviwoMainWindow::openWorkspace(QString workspaceFileName) {
     std::string fileName{workspaceFileName.toStdString()};
+    fileName = filesystem::cleanupPath(fileName);
 
     if (!filesystem::fileExists(fileName)) {
         LogError("Could not find workspace file: " << fileName);
@@ -796,6 +841,7 @@ void InviwoMainWindow::onNetworkEditorFileChanged(const std::string& filename) {
 void InviwoMainWindow::onModifiedStatusChanged(const bool& newStatus) { updateWindowTitle(); }
 
 void InviwoMainWindow::openLastWorkspace(std::string workspace) {
+    workspace = filesystem::cleanupPath(workspace);
     if (!workspace.empty()) {
         openWorkspace(QString::fromStdString(workspace));
     } else if (!workspaceOnLastSuccessfulExit_.isEmpty()) {
@@ -986,52 +1032,44 @@ void InviwoMainWindow::showAboutBox() {
 
 void InviwoMainWindow::visibilityModeChangedInSettings() {
     if (appUsageModeProp_) {
-        auto selectedIdx = static_cast<UsageMode>(appUsageModeProp_->getSelectedIndex());
-        if (selectedIdx == UsageMode::Development) {
-
-            for (auto &p : applicationModeSelectedProcessors_) {
-                auto md = p->getMetaData<ProcessorMetaData>(ProcessorMetaData::CLASS_IDENTIFIER);
-                md->setSelected(false);
-            }
-
-            if (visibilityModeAction_->isChecked()) {
-                visibilityModeAction_->setChecked(false);
-            }
-            networkEditorView_->hideNetwork(false);
-        }
-        else if (selectedIdx == UsageMode::Application) {
-            if (!visibilityModeAction_->isChecked()) {
-                visibilityModeAction_->setChecked(true);
-            }
-            networkEditorView_->hideNetwork(true);
-
-            applicationModeSelectedProcessors_.clear();
-            for(auto &p : getInviwoApplication()->getProcessorNetwork()->getProcessors()){
-                auto md =  p->getMetaData<ProcessorMetaData>(ProcessorMetaData::CLASS_IDENTIFIER);
-                if (!md->isSelected()) {
-                    md->setSelected(true);
-                    applicationModeSelectedProcessors_.push_back(p);
+        auto network = getInviwoApplication()->getProcessorNetwork();
+        switch (appUsageModeProp_->getSelectedValue()) {
+            case UsageMode::Development: {
+                for (auto& p : network->getProcessors()) {
+                    auto md =
+                        p->getMetaData<ProcessorMetaData>(ProcessorMetaData::CLASS_IDENTIFIER);
+                    if (md->isSelected()) {
+                        propertyListWidget_->addProcessorProperties(p);
+                    } else {
+                        propertyListWidget_->removeProcessorProperties(p);
+                    }
                 }
+
+
+                if (visibilityModeAction_->isChecked()) {
+                    visibilityModeAction_->setChecked(false);
+                }
+                networkEditorView_->hideNetwork(false);
+                break;
             }
-            
+            case UsageMode::Application: {
+                if (!visibilityModeAction_->isChecked()) {
+                    visibilityModeAction_->setChecked(true);
+                }
+                networkEditorView_->hideNetwork(true);
+
+                for (auto& p : network->getProcessors()) {
+                    propertyListWidget_->addProcessorProperties(p);
+                }
+                break;
+            }
         }
+
         updateWindowTitle();
     }
 }
 
-NetworkEditor* InviwoMainWindow::getNetworkEditor() const { return networkEditor_; }
-
-// False == Development, True = Application
-void InviwoMainWindow::setVisibilityMode(bool applicationView) {
-    auto selectedIdx = static_cast<UsageMode>(appUsageModeProp_->getSelectedIndex());
-    if (applicationView) {
-        if (selectedIdx != UsageMode::Application)
-            appUsageModeProp_->setSelectedIndex(static_cast<int>(UsageMode::Application));
-    } else {
-        if (selectedIdx != UsageMode::Development)
-            appUsageModeProp_->setSelectedIndex(static_cast<int>(UsageMode::Development));
-    }
-}
+NetworkEditor* InviwoMainWindow::getNetworkEditor() const { return networkEditor_.get(); }
 
 void InviwoMainWindow::exitInviwo(bool saveIfModified) {
     if(!saveIfModified) getNetworkEditor()->setModified(false);
@@ -1055,6 +1093,9 @@ void InviwoMainWindow::closeEvent(QCloseEvent* event) {
         event->ignore();
         return;
     }
+
+    emit closingMainWindow();
+
     QString loadedNetwork = currentWorkspaceFileName_;
     getNetworkEditor()->clearNetwork();
     // save window state
@@ -1123,7 +1164,7 @@ ProcessorTreeWidget* InviwoMainWindow::getProcessorTreeWidget() const {
 
 PropertyListWidget* InviwoMainWindow::getPropertyListWidget() const { return propertyListWidget_; }
 
-ConsoleWidget* InviwoMainWindow::getConsoleWidget() const { return consoleWidget_; }
+ConsoleWidget* InviwoMainWindow::getConsoleWidget() const { return consoleWidget_.get(); }
 
 ResourceManagerWidget* InviwoMainWindow::getResourceManagerWidget() const {
     return resourceManagerWidget_;

@@ -40,6 +40,10 @@
 
 namespace inviwo {
 
+/**
+ * \ingroup properties
+ * A CompositeProperty holding properties to show a information about a volume
+ */
 class IVW_MODULE_BASE_API VolumeInformationProperty : public CompositeProperty {
 public:
     InviwoPropertyInfo();
@@ -55,13 +59,18 @@ public:
     void updateVolume(Volume& volume);
 
     // Read only used to show information
-    StringProperty dimensions_;
+    IntSize3Property dimensions_;
     StringProperty format_;
+    IntSizeTProperty channels_;
+    IntSizeTProperty numVoxels_;
 
     // read / write
     DoubleMinMaxProperty dataRange_;
     DoubleMinMaxProperty valueRange_;
     StringProperty valueUnit_;
+
+private:
+    auto props();
 };
 
 }  // namespace

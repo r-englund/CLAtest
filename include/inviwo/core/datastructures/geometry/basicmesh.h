@@ -38,6 +38,9 @@
 
 namespace inviwo {
 
+/**
+ * \ingroup datastructures	
+ */
 class IVW_CORE_API BasicMesh : public Mesh {
 public:
     BasicMesh();
@@ -69,6 +72,11 @@ public:
     const Buffer<vec4>* getColors() const;
     const Buffer<vec3>* getNormals() const;
 
+    Buffer<vec3>* getEditableVertices();
+    Buffer<vec3>* getEditableTexCoords();
+    Buffer<vec4>* getEditableColors();
+    Buffer<vec3>* getEditableNormals();
+
     void append(const BasicMesh* mesh);
 
     static std::shared_ptr<BasicMesh> disk(const vec3& center, const vec3& normal,
@@ -95,10 +103,10 @@ public:
     static std::shared_ptr<BasicMesh> colorsphere(const vec3& center, const float& radius);
     static std::shared_ptr<BasicMesh> sphere(const vec3& center, const float& radius, const vec4 &color);
 
-    static std::shared_ptr<BasicMesh> square(const vec3& pos, const vec3& normal,
-                                             const glm::vec2& extent,
+    static std::shared_ptr<BasicMesh> square(const vec3& center, const vec3& normal,
+                                             const vec2& extent,
                                              const vec4& color = vec4(1, 1, 1, 1),
-                                             const ivec2& res = ivec2(1));
+                                             const ivec2& segments = ivec2(1));
 
     static std::shared_ptr<BasicMesh> cube(const mat4& orientation,
                                            const vec4& color = vec4(1, 1, 1, 1));

@@ -52,8 +52,10 @@ class ProcessorNetwork;
 
 /**
  * \defgroup processors Processors
- * \class Processor
- *
+ */
+
+/**
+ * \ingroup processors
  * \brief A processor generally performs operation on input data and outputs the new result.
  *
  * It can hold arbitrary number of inports and outports, as well as properties which can be used
@@ -61,6 +63,7 @@ class ProcessorNetwork;
  *
  * A typical flow for processing Processor 1 is shown below.
  *
+ * \verbatim
  *     ┌─────────────┐
  *     │             │
  *     │ Processor 2 │
@@ -155,7 +158,7 @@ class ProcessorNetwork;
  *           ◀───────Done───────┤                  │                  │
  *           ▼                  ▼                  ▼                  ▼
  *
- *
+ * \endverbatim
  */
 class IVW_CORE_API Processor : public PropertyOwner,
                                public MetaDataOwner,
@@ -271,7 +274,6 @@ public:
 
     // Overridden from EventPropagator.
     virtual void propagateEvent(Event* event, Outport* source) override;
-    virtual void propagateResizeEvent(ResizeEvent* event, Outport* source) override;
 
     // Override from the property owner
     virtual Processor* getProcessor() override { return this; }
