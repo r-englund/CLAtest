@@ -34,6 +34,6 @@ uniform vec4 highlightColor = vec4(1.0, 0.0, 0.0, 1.0);
 in vec4 color_;
 
 void main() {
-    FragData0 = highlight? highlightColor : color_;
+    FragData0 = highlight ? highlightColor : color_;
     PickingData = vec4(pickingColor, 1.0);
 }

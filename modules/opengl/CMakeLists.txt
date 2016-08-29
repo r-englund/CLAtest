@@ -9,9 +9,6 @@ set(HEADER_FILES
     ${CMAKE_CURRENT_SOURCE_DIR}/buffer/bufferglconverter.h
     ${CMAKE_CURRENT_SOURCE_DIR}/buffer/bufferobject.h
     ${CMAKE_CURRENT_SOURCE_DIR}/buffer/bufferobjectarray.h
-    ${CMAKE_CURRENT_SOURCE_DIR}/buffer/elementbuffergl.h
-    ${CMAKE_CURRENT_SOURCE_DIR}/buffer/elementbufferglconverter.h
-    ${CMAKE_CURRENT_SOURCE_DIR}/buffer/elementbufferobject.h
     ${CMAKE_CURRENT_SOURCE_DIR}/buffer/framebufferobject.h
     ${CMAKE_CURRENT_SOURCE_DIR}/buffer/renderbufferobject.h
     ${CMAKE_CURRENT_SOURCE_DIR}/canvasgl.h
@@ -59,9 +56,6 @@ set(SOURCE_FILES
     ${CMAKE_CURRENT_SOURCE_DIR}/buffer/bufferglconverter.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/buffer/bufferobject.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/buffer/bufferobjectarray.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/buffer/elementbuffergl.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/buffer/elementbufferglconverter.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/buffer/elementbufferobject.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/buffer/framebufferobject.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/buffer/renderbufferobject.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/canvasgl.cpp
@@ -126,6 +120,7 @@ set(SHADER_FILES
     ${CMAKE_CURRENT_SOURCE_DIR}/glsl/utils/depth.glsl
     ${CMAKE_CURRENT_SOURCE_DIR}/glsl/utils/gradients.glsl
     ${CMAKE_CURRENT_SOURCE_DIR}/glsl/utils/intersection.glsl
+    ${CMAKE_CURRENT_SOURCE_DIR}/glsl/utils/pickingutils.glsl
     ${CMAKE_CURRENT_SOURCE_DIR}/glsl/utils/raycastgeometry.glsl
     ${CMAKE_CURRENT_SOURCE_DIR}/glsl/utils/sampler2d.glsl
     ${CMAKE_CURRENT_SOURCE_DIR}/glsl/utils/sampler3d.glsl
