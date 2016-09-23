@@ -33,46 +33,36 @@
 #include <modules/base/basemoduledefine.h>
 #include <inviwo/core/common/inviwo.h>
 #include <inviwo/core/processors/processor.h>
+#include <modules/base/processors/dataexport.h>
+#include <inviwo/core/datastructures/volume/volume.h>
 #include <inviwo/core/ports/volumeport.h>
-#include <inviwo/core/properties/fileproperty.h>
-#include <inviwo/core/properties/buttonproperty.h>
-#include <inviwo/core/properties/boolproperty.h>
 
 namespace inviwo {
 
 /** \docpage{org.inviwo.VolumeExport, Volume Export}
  * ![](org.inviwo.VolumeExport.png?classIdentifier=org.inviwo.VolumeExport)
  *
- * ...
+ * Export volumes
  * 
  * ### Inports
- *   * __volume__ ...
- * 
- * 
+ *   * __Volume__ Volume to export
+ *
  * ### Properties
- *   * __Export Volume__ ...
- *   * __Overwrite__ ...
- *   * __Volume file name__ ...
+ *   * __Volume file name__ File to export to
+ *   * __Export Volume__ Button to execute export
+ *   * __Overwrite__ Should existing files be overwritten
  *
  */
-class IVW_MODULE_BASE_API VolumeExport : public Processor {
+class IVW_MODULE_BASE_API VolumeExport : public DataExport<Volume, VolumeInport> {
 public:
-    VolumeExport();
-    ~VolumeExport();
+    VolumeExport() = default;
+    virtual ~VolumeExport() = default;
 
     virtual const ProcessorInfo getProcessorInfo() const override;
     static const ProcessorInfo processorInfo_;
 
-    void exportVolume();
-
 protected:
-    virtual void process() override;
-
-private:
-    VolumeInport volumePort_;
-    FileProperty volumeFile_;
-    ButtonProperty exportVolumeButton_;
-    BoolProperty overwrite_;
+    virtual const Volume* getData() override;
 };
 
 } // namespace

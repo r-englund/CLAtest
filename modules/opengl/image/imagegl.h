@@ -42,6 +42,7 @@
 namespace inviwo {
 
 class Shader;
+class Image;
 
 /**
  * \ingroup datastructures	
@@ -98,7 +99,7 @@ private:
     GLenum pickingAttachmentID_;
     mutable Shader shader_;
     mutable size_t colorLayerCopyCount_;
-    mutable bool singleChanelCopy_;
+    mutable bool singleChannelCopy_;
 
     GLboolean prevDepthTest_;
     GLboolean prevDepthMask_;

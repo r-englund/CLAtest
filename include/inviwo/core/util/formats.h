@@ -360,7 +360,8 @@ public:
 /*---------------Single Value Formats------------------*/
 
 // Floats
-typedef DataFormat<half_float::half> DataFloat16;
+typedef half_float::half f16;
+typedef DataFormat<f16> DataFloat16;
 typedef DataFormat<glm::f32> DataFloat32;
 typedef DataFormat<glm::f64> DataFloat64;
 
@@ -677,6 +678,11 @@ DEFAULTVALUES(unsigned int, uvec2(1, 1), "UInt", 0, 0, 100, 1)
 DEFAULTVALUES(uvec2, uvec2(2, 1), "UIntVec2", uvec2(0), uvec2(0), uvec2(10), uvec2(1))
 DEFAULTVALUES(uvec3, uvec2(3, 1), "UIntVec3", uvec3(0), uvec3(0), uvec3(10), uvec3(1))
 DEFAULTVALUES(uvec4, uvec2(4, 1), "UIntVec4", uvec4(0), uvec4(0), uvec4(10), uvec4(1))
+
+//DEFAULTVALUES(glm::uint64, uvec2(1,1), "UInt64", 0, 0, 100, 1)
+//DEFAULTVALUES(u64vec2, uvec2(2, 1), "UInt64Vec2", uvec2(0), uvec2(0), uvec2(10), uvec2(1))
+//DEFAULTVALUES(u64vec3, uvec2(3, 1), "UInt64Vec3", uvec3(0), uvec3(0), uvec3(10), uvec3(1))
+//DEFAULTVALUES(u64vec4, uvec2(4, 1), "UInt64Vec4", uvec4(0), uvec4(0), uvec4(10), uvec4(1))
 
 #if !defined(ENVIRONMENT32)
 DEFAULTVALUES(size_t, uvec2(1, 1), "Size_t", 0, 0, 100, 1)

@@ -34,6 +34,7 @@
 #include <inviwo/core/common/inviwocoredefine.h>
 #include <inviwo/core/ports/inport.h>
 #include <inviwo/core/ports/outport.h>
+#include <inviwo/core/ports/dataoutport.h>
 #include <inviwo/core/ports/outportiterable.h>
 #include <inviwo/core/ports/inportiterable.h>
 #include <inviwo/core/datastructures/data.h>
@@ -43,9 +44,6 @@
 #include <iterator>
 
 namespace inviwo {
-
-template <typename T>
-class DataOutport;
 
 /**
  * \ingroup ports
@@ -121,7 +119,7 @@ template <typename T, size_t N, bool Flat>
 bool DataInport<T, N, Flat>::canConnectTo(const Port* port) const {
     if (!port || port->getProcessor() == getProcessor()) return false;
 
-    // Check for cicular depends.
+    // Check for circular depends.
     auto pd = util::getPredecessors(port->getProcessor());
     if (pd.find(getProcessor()) != pd.end()) return false;
 

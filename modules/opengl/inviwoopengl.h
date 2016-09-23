@@ -29,10 +29,12 @@
 
 #ifndef IVW_INVIWOOPENGL_H
 #define IVW_INVIWOOPENGL_H
-#include <inviwo/core/common/inviwo.h>
+
 #include <modules/opengl/openglmoduledefine.h>
 
 #ifdef WIN32
+#define NOMINMAX
+#define WIN32_LEAN_AND_MEAN
 #include <windows.h>
 #endif
 
@@ -48,14 +50,11 @@
 //#include <modules/opengl/ext/glew/include/GL/glxew.h>
 #endif
 
-#include <iostream>
-#include <sstream>
-
-#include "glformats.h"
+#include <string>
 
 namespace inviwo {
 
-/** \brief Returns a readable interpreation of the OpenGL error.
+/** \brief Returns a readable interpretation of the OpenGL error.
  *
  * @param err OpenGL error enum, GLenum err = glGetError();
  * @return Returns "No error" if err == GL_NO_ERROR, otherwise the name of the error.

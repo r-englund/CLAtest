@@ -67,6 +67,7 @@ class LinkConnectionGraphicsItem;
 class LinkConnectionDragGraphicsItem;
 class LinkDialog;
 class InviwoMainWindow;
+class Image;
 
 /**
  * The NetworkEditor supports interactive editing of a ProcessorNetwork. Processors can be added
@@ -136,8 +137,7 @@ public:
     // Port inspectors
     bool addPortInspector(Outport* port, QPointF pos);
     void removePortInspector(Outport* port);
-    std::unique_ptr<std::vector<unsigned char>> renderPortInspectorImage(Outport* port,
-                                                                         std::string& type);
+    std::shared_ptr<const Image> renderPortInspectorImage(Outport* port);
 
     void updateLeds();
     bool doingContextMenu() const;
