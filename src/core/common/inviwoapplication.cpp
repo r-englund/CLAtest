@@ -32,7 +32,6 @@
 #include <inviwo/core/common/inviwomodule.h>
 #include <inviwo/core/common/moduleaction.h>
 #include <inviwo/core/datastructures/camerafactory.h>
-#include <inviwo/core/datastructures/representationconverterfactory.h>
 #include <inviwo/core/interaction/pickingmanager.h>
 #include <inviwo/core/io/datareaderfactory.h>
 #include <inviwo/core/io/datawriterfactory.h>
@@ -84,7 +83,7 @@ InviwoApplication::InviwoApplication(int argc, char** argv, std::string displayN
     , propertyConverterManager_{util::make_unique<PropertyConverterManager>()}
     , propertyFactory_{util::make_unique<PropertyFactory>()}
     , propertyWidgetFactory_{util::make_unique<PropertyWidgetFactory>()}
-    , representationConverterFactory_{util::make_unique<RepresentationConverterFactory>()}
+    , representationConverterMetaFactory_{util::make_unique<RepresentationConverterMetaFactory>()}
 
     , modules_()
     , clearModules_([&]() {
@@ -120,11 +119,8 @@ InviwoApplication::InviwoApplication(int argc, char** argv, std::string displayN
 
     // Create and register core
     auto ivwCore = util::make_unique<InviwoCore>(this);
-    // Load settings from core
-    auto coreSettings = ivwCore->getSettings();
     registerModule(std::move(ivwCore));
-    
-    for (auto setting : coreSettings) setting->loadFromDisk();
+
     auto sys = getSettingsByType<SystemSettings>();
     if (sys && !commandLineParser_.getQuitApplicationAfterStartup()) {
         resizePool(static_cast<size_t>(sys->poolSize_.get()));
@@ -203,11 +199,6 @@ void InviwoApplication::registerModules(RegisterModuleFunc regModuleFunc) {
             elem->printInfo();
         }
     }
-
-    // Load settings from other modules
-    postProgress("Loading Settings");
-    auto settings = getModuleSettings(1);
-    for (auto setting : settings) setting->loadFromDisk();
 }
 
 std::string InviwoApplication::getBasePath() const { return filesystem::findBasePath(); }
@@ -309,7 +300,11 @@ std::vector<Settings*> InviwoApplication::getModuleSettings(size_t startIdx) {
     return allModuleSettings;
 }
 
-void InviwoApplication::cleanupSingletons() { SingletonBase::deleteAllSingeltons(); }
+void InviwoApplication::cleanupSingletons() {
+    PickingManager::deleteInstance();
+    ResourceManager::deleteInstance();
+    RenderContext::deleteInstance();
+}
 
 void InviwoApplication::resizePool(size_t newSize) {
     size_t size = pool_.trySetSize(newSize);

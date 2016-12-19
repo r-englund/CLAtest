@@ -81,6 +81,15 @@ public:
     OptionPropertyOption() = default;
     OptionPropertyOption(const std::string& id, const std::string& name, T value)
         : id_(id), name_(name), value_(value) {}
+    template <typename U = T,
+              class = typename std::enable_if<std::is_same<U, std::string>::value, void>::type>
+    OptionPropertyOption(const std::string& id, const std::string& name)
+        : id_(id), name_(name), value_(id) {}
+
+    template <typename U = T,
+        class = typename std::enable_if<util::is_stream_insertable<U>::value, void>::type>
+        OptionPropertyOption(const T& val)
+        : id_(toString(val)), name_(camelCaseToHeader(toString(val))), value_(val) {}
 
     std::string id_;
     std::string name_;
@@ -249,12 +258,14 @@ std::string TemplateOptionProperty<T>::getClassIdentifierForWidget() const {
 }
 
 
+using OptionPropertyUInt = TemplateOptionProperty<unsigned int>;
 using OptionPropertyInt = TemplateOptionProperty<int>;
 using OptionPropertySize_t = TemplateOptionProperty<size_t>;
 using OptionPropertyFloat = TemplateOptionProperty<float>;
 using OptionPropertyDouble = TemplateOptionProperty<double>;
 using OptionPropertyString = TemplateOptionProperty<std::string>;
 
+using OptionPropertyUIntOption = OptionPropertyOption<unsigned int>;
 using OptionPropertyIntOption = OptionPropertyOption<int>;
 using OptionPropertySize_tOption = OptionPropertyOption<size_t>;
 using OptionPropertyFloatOption = OptionPropertyOption<float>;

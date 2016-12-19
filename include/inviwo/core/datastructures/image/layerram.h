@@ -52,7 +52,7 @@ public:
     /**
      * Copy and resize the representations of this onto the target.
      */
-    virtual bool copyRepresentationsTo(DataRepresentation*) const override;
+    virtual bool copyRepresentationsTo(LayerRepresentation*) const override;
 
     virtual void* getData() = 0;
     virtual const void* getData() const = 0;
@@ -156,16 +156,16 @@ class LayerRAMPrecision;
 namespace detail {
 struct LayerRamDispatcher {
     template <typename Result, typename Format, typename Callable, typename... Args>
-    Result operator()(Callable&& obj, LayerRAM* volumeram, Args... args) {
-        return obj(static_cast<LayerRAMPrecision<typename Format::type>*>(volumeram),
+    Result operator()(Callable&& obj, LayerRAM* layerram, Args... args) {
+        return obj(static_cast<LayerRAMPrecision<typename Format::type>*>(layerram),
                    std::forward<Args>(args)...);
     }
 };
 
 struct LayerRamConstDispatcher {
     template <typename Result, typename Format, typename Callable, typename... Args>
-    Result operator()(Callable&& obj, const LayerRAM* volumeram, Args... args) {
-        return obj(static_cast<const LayerRAMPrecision<typename Format::type>*>(volumeram),
+    Result operator()(Callable&& obj, const LayerRAM* layerram, Args... args) {
+        return obj(static_cast<const LayerRAMPrecision<typename Format::type>*>(layerram),
                    std::forward<Args>(args)...);
     }
 };

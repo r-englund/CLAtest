@@ -35,18 +35,20 @@
 #include <inviwo/core/common/inviwo.h>
 #include <inviwo/core/network/processornetwork.h>
 #include <inviwo/core/util/utilities.h>
-#include <inviwo/qt/widgets/inviwoapplicationqt.h>
+#include <inviwo/core/util/raiiutils.h>
+#include <inviwo/qt/applicationbase/inviwoapplicationqt.h>
 #include <moduleregistration.h>
 
 using namespace inviwo;
 
 int main(int argc, char** argv) {
     LogCentral::init();
+    inviwo::util::OnScopeExit deleteLogcentral([]() { inviwo::LogCentral::deleteInstance(); });
     auto logger = std::make_shared<inviwo::ConsoleLogger>();
     LogCentral::getPtr()->registerLogger(logger);
 
     std::string appName = "Inviwo v" + IVW_VERSION + " - QtApp";
-    InviwoApplicationQt inviwoApp(appName, argc, argv, false);
+    InviwoApplicationQt inviwoApp(appName, argc, argv);
     inviwoApp.setAttribute(Qt::AA_NativeWindows);
     inviwoApp.setProgressCallback([](std::string m) {
         LogCentral::getPtr()->log("InviwoApplication", LogLevel::Info, LogAudience::User, "", "", 0, m);

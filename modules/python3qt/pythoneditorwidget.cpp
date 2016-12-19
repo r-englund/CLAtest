@@ -35,10 +35,10 @@
 #include <inviwo/core/util/filesystem.h>
 #include <modules/python3/python3module.h>
 #include <inviwo/core/util/clock.h>
-#include <inviwo/qt/widgets/properties/syntaxhighlighter.h>
-#include <inviwo/qt/editor/inviwomainwindow.h>
+#include <modules/qtwidgets/properties/syntaxhighlighter.h>
+#include <modules/qtwidgets/inviwoqtutils.h>
 
-#include <inviwo/qt/widgets/inviwofiledialog.h>
+#include <modules/qtwidgets/inviwofiledialog.h>
 #include <inviwo/core/util/settings/systemsettings.h>
 #include <modules/python3/pyinviwo.h>
 
@@ -66,8 +66,8 @@ const static std::string defaultSource =
 "#Inviwo Python script \nimport inviwo \nimport inviwoqt \n\nhelp('inviwo') \nhelp('inviwoqt') "
     "\n";
 
-PythonEditorWidget::PythonEditorWidget(InviwoMainWindow* ivwwin, InviwoApplication* app)
-    : InviwoDockWidget(tr("Python Editor"), ivwwin)
+PythonEditorWidget::PythonEditorWidget(QWidget* parent, InviwoApplication* app)
+    : InviwoDockWidget(tr("Python Editor"), parent)
     , settings_("Inviwo", "Inviwo")
     , infoTextColor_(153, 153, 153)
     , errorTextColor_(255, 107, 107)
@@ -75,15 +75,12 @@ PythonEditorWidget::PythonEditorWidget(InviwoMainWindow* ivwwin, InviwoApplicati
     , script_()
     , unsavedChanges_(false)
     , app_(app)
-    , appendLog_(true)
+    , appendLog_(nullptr)
 {
 
     setObjectName("PythonEditor");
-    settings_.beginGroup("PythonEditor");
-    QString lastFile = settings_.value("lastScript", "").toString();
-    appendLog_ = settings_.value("appendLog", appendLog_).toBool();
-    settings_.endGroup();
     setVisible(false);
+    setSticky(false);
     setWindowIcon(QIcon(":/icons/python.png"));
 
     QMainWindow* mainWindow = new QMainWindow();
@@ -140,24 +137,18 @@ PythonEditorWidget::PythonEditorWidget(InviwoMainWindow* ivwwin, InviwoApplicati
         icon.addFile(":/icons/log-append.png", QSize(), QIcon::Normal, QIcon::On);
         icon.addFile(":/icons/log-clearonrun.png", QSize(), QIcon::Normal, QIcon::Off);
 
-        QString str = (appendLog_ ? "Append Log" : "Clear Log on Run");
-        auto action = toolBar->addAction(icon, str);
-        action->setShortcut(Qt::ControlModifier + Qt::Key_E);
-        action->setShortcutContext(Qt::WidgetWithChildrenShortcut);
-        action->setCheckable(true);
-        action->setChecked(appendLog_);
-        action->setToolTip(appendLog_ ? "Append Log" : "Clear Log on Run");
-        mainWindow->addAction(action);
-        connect(action, &QAction::toggled, [this, action](bool toggle) { 
-            appendLog_ = toggle; 
+        appendLog_ = toolBar->addAction(icon, "Append Log");
+        appendLog_->setShortcut(Qt::ControlModifier + Qt::Key_E);
+        appendLog_->setShortcutContext(Qt::WidgetWithChildrenShortcut);
+        appendLog_->setCheckable(true);
+        appendLog_->setChecked(true);
+        appendLog_->setToolTip("Append Log");
+        mainWindow->addAction(appendLog_);
+        connect(appendLog_, &QAction::toggled, [this](bool toggle) { 
             // update tooltip and menu entry
             QString tglstr = (toggle ? "Append Log" : "Clear Log on Run");
-            action->setText(tglstr);
-            action->setToolTip(tglstr);
-            // update settings
-            settings_.beginGroup("PythonEditor");
-            settings_.setValue("appendLog", appendLog_);
-            settings_.endGroup();
+            appendLog_->setText(tglstr);
+            appendLog_->setToolTip(tglstr);
         });
     }
     {
@@ -194,12 +185,9 @@ PythonEditorWidget::PythonEditorWidget(InviwoMainWindow* ivwwin, InviwoApplicati
     mainWindow->setCentralWidget(splitter);
 
     QObject::connect(pythonCode_, SIGNAL(textChanged()), this, SLOT(onTextChange()));
-    // close this window before the main window is closed
-    QObject::connect(ivwwin, &InviwoMainWindow::closingMainWindow, [this]() { delete this; });
 
     this->updateStyle();
 
-    
     this->resize(500, 700);
 
     if (app_) {
@@ -211,32 +199,71 @@ PythonEditorWidget::PythonEditorWidget(InviwoMainWindow* ivwwin, InviwoApplicati
     }
     unsavedChanges_ = false;
 
-    if (lastFile.size() != 0) loadFile(lastFile.toLocal8Bit().constData(), false);
-
     setAllowedAreas(Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea);
     setFloating(true);
-}
 
+    {
+        // Restore state
+        settings_.beginGroup("PythonEditor");
+        QString lastFile = settings_.value("lastScript", "").toString();
+        if (!lastFile.isEmpty()) loadFile(lastFile.toLocal8Bit().constData(), false);
+        
+        auto append = settings_.value("appendLog", appendLog_->isCheckable()).toBool();
+        appendLog_->setChecked(append);
+        
+        restoreGeometry(settings_.value("geometry", saveGeometry()).toByteArray());
+        setSticky(settings_.value("isSticky", InviwoDockWidget::isSticky()).toBool());
+        settings_.endGroup();
+    }
 
-void PythonEditorWidget::updateStyle() {
-    auto color = InviwoApplication::getPtr()->getSettingsByType<SystemSettings>()->pyBGColor_.get();
-    auto size = InviwoApplication::getPtr()->getSettingsByType<SystemSettings>()->pyFontSize_.get();
-    std::stringstream ss;
-    ss << "background-color: rgb(" << color.r << ", " << color.g << ", " << color.b << ");"
-       << std::endl;
-    ss << "font-size: " << size << "px;";
-    pythonCode_->setStyleSheet(ss.str().c_str());
-    syntaxHighligther_->rehighlight();
+    auto newPos =
+        utilqt::movePointOntoDesktop(InviwoDockWidget::pos(), InviwoDockWidget::size(), false);
+    if (!(newPos.x() == 0 && newPos.y() == 0)) {
+        InviwoDockWidget::move(newPos);
+    } else if (auto ivwMW = utilqt::getApplicationMainWindow()) {
+        // We assume that this is a new widget and give it a new position
+        newPos = ivwMW->pos();
+        newPos += utilqt::offsetWidget();
+        InviwoDockWidget::move(newPos);
+    }
 }
 
 PythonEditorWidget::~PythonEditorWidget() {
+    if (app_) {
+        app_->unRegisterFileObserver(this);
+    }
+}
+
+void PythonEditorWidget::closeEvent(QCloseEvent* event) {
     if (unsavedChanges_) {
         int ret =
             QMessageBox::question(this, "Python Editor", "Do you want to save unsaved changes?",
                                      "Save", "Discard");
         if (ret == 0) save();
     }
+
+    settings_.beginGroup("PythonEditor");
+    settings_.setValue("appendLog", appendLog_->isChecked());
+    settings_.setValue("lastScript", scriptFileName_.c_str());
+    settings_.setValue("geometry", saveGeometry());
+    settings_.setValue("isSticky",isSticky());
+    settings_.endGroup();
+
+
+    InviwoDockWidget::closeEvent(event);
 }
+
+void PythonEditorWidget::updateStyle() {
+    auto color = InviwoApplication::getPtr()->getSettingsByType<SystemSettings>()->pyBGColor_.get();
+    auto size = InviwoApplication::getPtr()->getSettingsByType<SystemSettings>()->pyFontSize_.get();
+    std::stringstream ss;
+    ss << "background-color: rgb(" << color.r << ", " << color.g << ", " << color.b << ");"
+        << std::endl;
+    ss << "font-size: " << size << "px;";
+    pythonCode_->setStyleSheet(ss.str().c_str());
+    syntaxHighligther_->rehighlight();
+}
+
 
 void PythonEditorWidget::appendToOutput(const std::string& msg, bool error) {
     pythonOutput_->setTextColor(error ? errorTextColor_ : infoTextColor_);
@@ -268,9 +295,6 @@ void PythonEditorWidget::loadFile(std::string fileName, bool askForSave) {
             return;
     }
     setFileName(fileName);    
-    settings_.beginGroup("PythonEditor");
-    settings_.setValue("lastScript", scriptFileName_.c_str());
-    settings_.endGroup();
     readFile();
 }
 
@@ -291,9 +315,6 @@ void PythonEditorWidget::save() {
         file.close();
         startFileObservation(scriptFileName_);
         LogInfo("Python Script saved(" << scriptFileName_ << ")");
-        settings_.beginGroup("PythonEditor");
-        settings_.setValue("lastScript", scriptFileName_.c_str());
-        settings_.endGroup();
         unsavedChanges_ = false;
         updateTitleBar();
     }
@@ -375,9 +396,6 @@ void PythonEditorWidget::open() {
         unsavedChanges_ = false;
         stopFileObservation(scriptFileName_);
         setFileName(openFileDialog.selectedFiles().at(0).toLocal8Bit().constData());
-        settings_.beginGroup("PythonEditor");
-        settings_.setValue("lastScript", scriptFileName_.c_str());
-        settings_.endGroup();
         startFileObservation(scriptFileName_);
         readFile();
     }
@@ -392,7 +410,7 @@ void PythonEditorWidget::run() {
         runAction_->setEnabled(true);
     });
     PyInviwo::getPtr()->addObserver(this);
-    if (!appendLog_) {
+    if (!appendLog_->isChecked()) {
         clearOutput();
     }
 
@@ -436,9 +454,6 @@ void PythonEditorWidget::setDefaultText() {
     script_.setSource(defaultSource);
     stopFileObservation(scriptFileName_);
     setFileName("");
-    settings_.beginGroup("PythonEditor");
-    settings_.setValue("lastScript", scriptFileName_.c_str());
-    settings_.endGroup();
 }
 
 void PythonEditorWidget::clearOutput() { pythonOutput_->setText(""); }

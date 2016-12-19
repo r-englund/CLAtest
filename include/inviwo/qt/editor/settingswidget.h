@@ -32,7 +32,7 @@
 
 #include <inviwo/qt/editor/inviwoqteditordefine.h>
 #include <inviwo/qt/editor/inviwomainwindow.h>
-#include <inviwo/qt/widgets/inviwodockwidget.h>
+#include <modules/qtwidgets/inviwodockwidget.h>
 
 #include <warn/push>
 #include <warn/ignore/all>
@@ -59,6 +59,7 @@ public:
 
 public slots:
     void updatePropertyWidgetSemantics(PropertyWidgetQt*);
+    virtual void closeEvent(QCloseEvent *event) override;
 
 protected:
     InviwoMainWindow* mainwindow_;

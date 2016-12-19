@@ -76,9 +76,11 @@ void PickingController::propagateEvent(MouseInteractionEvent* e, EventPropagator
     // Check if we have switched picking id, if so send a Finished event
     if (mstate_.previousPickingAction.action &&
         pa.index != mstate_.previousPickingAction.index) {
+        auto localId = mstate_.previousPickingAction.action->getLocalPickingId(
+            mstate_.previousPickingAction.index);
         PickingEvent pickingEvent(mstate_.previousPickingAction.action,
                                   PickingState::Finished, e, mstate_.pressNDC,
-                                  mstate_.previousNDC, mstate_.previousPickingAction.index);
+                                  mstate_.previousNDC, localId);
         propagator->propagateEvent(&pickingEvent, nullptr);
     }
 
@@ -87,8 +89,8 @@ void PickingController::propagateEvent(MouseInteractionEvent* e, EventPropagator
         auto ps = pa.index == mstate_.previousPickingAction.index ? PickingState::Updated
             : PickingState::Started;
 
-        PickingEvent pickingEvent(pa.action, ps, e, mstate_.pressNDC, mstate_.previousNDC,
-                                  pa.index);
+        auto localId = pa.action->getLocalPickingId(pa.index);
+        PickingEvent pickingEvent(pa.action, ps, e, mstate_.pressNDC, mstate_.previousNDC, localId);
         propagator->propagateEvent(&pickingEvent, nullptr);
         if (pickingEvent.hasBeenUsed()) e->markAsUsed();
     }
@@ -130,9 +132,10 @@ void PickingController::propagateEvent(TouchEvent* e, EventPropagator* propagato
 
         TouchEvent te(points);
         auto prevPos = te.centerNDC(); // Need so save here since te might be modified
+        auto localId = pickingIdToAction[pickingId]->getLocalPickingId(pickingId);
         PickingEvent pickingEvent(pickingIdToAction[pickingId], ps, &te,
                                   tstate_.pickingIdToPressNDC[pickingId],
-                                  tstate_.pickingIdToPreviousNDC[pickingId], pickingId);
+                                  tstate_.pickingIdToPreviousNDC[pickingId], localId);
         propagator->propagateEvent(&pickingEvent, nullptr);
         if (pickingEvent.hasBeenUsed() || te.hasBeenUsed()) {
             for (const auto& p : points) usedPointIds.push_back(p.id());
@@ -170,14 +173,9 @@ void PickingController::setPickingSource(const std::shared_ptr<const Image>& src
 
 PickingManager::Result PickingController::findPickingAction(const uvec2& coord) {
     if (src_ && pickingEnabled()) {
-        if (const auto pickingLayer = src_->getPickingLayer()) {
-            if (const auto pickingLayerRAM = pickingLayer->getRepresentation<LayerRAM>()) {
-                const auto value = pickingLayerRAM->getAsNormalizedDVec4(coord);
-                if (value.a > 0.0) {
-                    return PickingManager::getPtr()->getPickingActionFromColor(
-                        uvec3(value.rgb() * 255.0));
-                }
-            }
+        auto value = src_->readPixel(size2_t(coord), LayerType::Picking);
+        if (value.a > 0.0) {
+            return PickingManager::getPtr()->getPickingActionFromColor(uvec3(value.rgb()));
         }
     }
     return {0, nullptr};

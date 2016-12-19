@@ -107,6 +107,7 @@ void CanvasQGLWidget::update() {
 }
 
 void CanvasQGLWidget::paintGL() {
+    makeCurrent();
     CanvasGL::update();
 }
 
@@ -117,6 +118,10 @@ void CanvasQGLWidget::resize(size2_t size) {
 
 Canvas::ContextID CanvasQGLWidget::activeContext() const {
     return static_cast<ContextID>(QGLContext::currentContext());
+}
+
+Canvas::ContextID CanvasQGLWidget::contextId() const {
+    return static_cast<ContextID>(context());
 }
 
 void CanvasQGLWidget::resizeEvent(QResizeEvent* event) {

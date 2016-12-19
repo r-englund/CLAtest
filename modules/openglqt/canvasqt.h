@@ -32,16 +32,18 @@
 
 #include <modules/openglqt/openglqtmoduledefine.h>
 #include <inviwo/core/common/inviwo.h>
+#include <inviwo/core/util/rendercontext.h>
 #include <modules/openglqt/hiddencanvasqt.h>
 #include <inviwo/core/interaction/events/mouseevent.h>
 #include <inviwo/core/interaction/events/wheelevent.h>
 #include <inviwo/core/interaction/events/keyboardevent.h>
 #include <inviwo/core/interaction/events/touchevent.h>
 #include <inviwo/core/interaction/events/gestureevent.h>
-#include <inviwo/qt/widgets/eventconverterqt.h>
-#include <inviwo/qt/widgets/inviwoqtutils.h>
+#include <modules/qtwidgets/eventconverterqt.h>
+#include <modules/qtwidgets/inviwoqtutils.h>
 
 #include <modules/opengl/canvasgl.h>
+#include <modules/opengl/debugmessages.h>
 #include <modules/openglqt/canvasqglwidget.h>
 //#include <modules/openglqt/canvasqwindow.h>
 //#include <modules/openglqt/canvasqopenglwidget.h>
@@ -65,8 +67,8 @@ class CanvasQtBase : public T {
 public:
     using QtBase = typename T::QtBase;
 
-    explicit CanvasQtBase(size2_t dim = size2_t(256,256));
-    virtual ~CanvasQtBase() = default;
+    explicit CanvasQtBase(size2_t dim = size2_t(256,256), const std::string& name = "Canvas");
+    virtual ~CanvasQtBase();
 
     virtual void render(std::shared_ptr<const Image> image, LayerType layerType = LayerType::Color,
                         size_t idx = 0) override;
@@ -107,8 +109,18 @@ using CanvasQt = CanvasQtBase<CanvasQGLWidget>;
 //using CanvasQt = CanvasQtBase<CanvasQWindow>;
 //using CanvasQt = CanvasQtBase<CanvasQOpenGLWidget>;
 
+
 template <typename T>
-CanvasQtBase<T>::CanvasQtBase(size2_t dim) : T(nullptr, dim) {}
+CanvasQtBase<T>::CanvasQtBase(size2_t dim, const std::string& name) : T(nullptr, dim) {
+    QtBase::makeCurrent();
+    RenderContext::getPtr()->registerContext(this, name);
+    utilgl::handleOpenGLDebugMode(this->activeContext());
+}
+
+template <typename T>
+CanvasQtBase<T>::~CanvasQtBase() {
+    RenderContext::getPtr()->unRegisterContext(this);
+}
 
 template <typename T>
 std::unique_ptr<Canvas> CanvasQtBase<T>::createHiddenCanvas() {
@@ -120,7 +132,11 @@ std::unique_ptr<Canvas> CanvasQtBase<T>::createHiddenCanvas() {
         canvas->context()->moveToThread(thread);
         return canvas;
     });
-    return res.get();
+
+    auto newContext = res.get();
+    RenderContext::getPtr()->setContextThreadId(newContext->contextId(),
+                                                std::this_thread::get_id());
+    return std::move(newContext);
 }
 
 template <typename T>
@@ -236,13 +252,9 @@ bool CanvasQtBase<T>::mapMouseMoveEvent(QMouseEvent* e) {
 
     const auto pos{normalPos(utilqt::toGLM(e->localPos()))};
 
-    // Optimization, do not sample depth value when hovering,
-    // i.e. move without holding a mouse button
-    const auto buttons = utilqt::getMouseButtons(e);
-    const auto depth = buttons != MouseButton::None ? this->getDepthValueAtNormalizedCoord(pos) : 1.0;
-
-    MouseEvent mouseEvent(MouseButton::None, MouseState::Move, buttons,
-                          utilqt::getModifiers(e), pos, this->getImageDimensions(), depth);
+    MouseEvent mouseEvent(MouseButton::None, MouseState::Move, utilqt::getMouseButtons(e),
+                          utilqt::getModifiers(e), pos, this->getImageDimensions(),
+                          this->getDepthValueAtNormalizedCoord(pos));
     e->accept();
     Canvas::propagateEvent(&mouseEvent);
     return true;

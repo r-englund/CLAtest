@@ -40,33 +40,60 @@ OpenGLSettings::OpenGLSettings()
     : Settings("OpenGL Settings")
     , shaderReloadingProperty_("shaderReloading", "Automatically reload shaders", true)
     , btnOpenGLInfo_("printOpenGLInfo", "Print OpenGL Info")
-    , selectedOpenGLProfile_("selectedOpenGLProfile", "OpenGL Profile")
-    , uniformWarnings_("uniformWarnings", "Uniform Warnings")
-    , shaderObjectErrors_("compileWarnings", "Shader Errors") {
-    
-    selectedOpenGLProfile_.addOption("core", "Core");
-    selectedOpenGLProfile_.addOption("compatibility", "Compatibility");
-    selectedOpenGLProfile_.setSelectedIndex(0);
-    selectedOpenGLProfile_.setCurrentStateAsDefault();
-
-    uniformWarnings_.addOption("ignore", "Ignore missing locations", Shader::UniformWarning::Ignore);
-    uniformWarnings_.addOption("warn", "Print warning", Shader::UniformWarning::Warn);
-    uniformWarnings_.addOption("throw", "Throw error", Shader::UniformWarning::Throw);
-    uniformWarnings_.setSelectedIndex(0);
-    uniformWarnings_.setCurrentStateAsDefault();
-
-    shaderObjectErrors_.addOption("warn", "Print warning", Shader::OnError::Warn);
-    shaderObjectErrors_.addOption("throw", "Throw error", Shader::OnError::Throw);
-    shaderObjectErrors_.setSelectedIndex(0);
-    shaderObjectErrors_.setCurrentStateAsDefault();
+    , selectedOpenGLProfile_("selectedOpenGLProfile", "OpenGL Profile",
+                             {{"core", "Core"}, {"compatibility", "Compatibility"}}, 0)
+    , uniformWarnings_("uniformWarnings", "Uniform Warnings",
+                       {{"ignore", "Ignore missing locations", Shader::UniformWarning::Ignore},
+                        {"warn", "Print warning", Shader::UniformWarning::Warn},
+                        {"throw", "Throw error", Shader::UniformWarning::Throw}},
+                       0)
+    , shaderObjectErrors_("compileWarnings", "Shader Errors",
+                          {{"warn", "Print warning", Shader::OnError::Warn},
+                           {"throw", "Throw error", Shader::OnError::Throw}},
+                          0)
+    , debugMessages_("debugMessages", "Debug", {{utilgl::debug::Mode::Off},
+                                                {utilgl::debug::Mode::Debug},
+                                                {utilgl::debug::Mode::DebugSynchronous}},
+                     0)
+    , debugSeverity_("debugSeverity", "Severity", {{utilgl::debug::Severity::Notification},
+                                                   {utilgl::debug::Severity::Low},
+                                                   {utilgl::debug::Severity::Medium},
+                                                   {utilgl::debug::Severity::High}},
+                     2)
+    , breakOnMessage_("breakOnMessage", "Break on Message",
+                      {{utilgl::debug::BreakLevel::Off},
+                       {utilgl::debug::BreakLevel::High},
+                       {utilgl::debug::BreakLevel::Medium},
+                       {utilgl::debug::BreakLevel::Low},
+                       {utilgl::debug::BreakLevel::Notification}},
+                      0) {
 
     addProperty(shaderReloadingProperty_);
     addProperty(btnOpenGLInfo_);
     addProperty(selectedOpenGLProfile_);
     addProperty(uniformWarnings_);
     addProperty(shaderObjectErrors_);
-    
-    loadFromDisk();
+    addProperty(debugMessages_);
+    addProperty(debugSeverity_);
+    addProperty(breakOnMessage_);
+
+    breakOnMessage_.setVisible(false);
+
+    debugSeverity_.onChange([&](){
+        utilgl::handleOpenGLDebugMessagesChange(debugSeverity_.getSelectedValue());
+    });
+
+    debugMessages_.onChange([this]() {
+        if (debugMessages_.getSelectedValue() == utilgl::debug::Mode::DebugSynchronous) {
+            breakOnMessage_.setVisible(true);
+        } else {
+            breakOnMessage_.setVisible(false);
+        }
+        utilgl::handleOpenGLDebugModeChange(debugMessages_.getSelectedValue(),
+                                            debugSeverity_.getSelectedValue());
+    });
+
+    load();
 }
 
 } // namespace

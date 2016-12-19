@@ -28,9 +28,9 @@
  *********************************************************************************/
 
 #include <inviwo/qt/editor/settingswidget.h>
-#include <inviwo/qt/widgets/properties/propertywidgetqt.h>
-#include <inviwo/qt/widgets/propertylistwidget.h>
-#include <inviwo/qt/widgets/properties/collapsiblegroupboxwidgetqt.h>
+#include <modules/qtwidgets/properties/propertywidgetqt.h>
+#include <modules/qtwidgets/propertylistwidget.h>
+#include <modules/qtwidgets/properties/collapsiblegroupboxwidgetqt.h>
 #include <inviwo/core/properties/propertywidgetfactory.h>
 #include <inviwo/core/common/inviwoapplication.h>
 #include <inviwo/core/util/settings/settings.h>
@@ -68,7 +68,7 @@ SettingsWidget::SettingsWidget(QString title, InviwoMainWindow* mainwindow)
 SettingsWidget::SettingsWidget(InviwoMainWindow* mainwindow)
     : SettingsWidget(tr("Settings"), mainwindow) {}
 
-SettingsWidget::~SettingsWidget() {}
+SettingsWidget::~SettingsWidget() = default;
 
 void SettingsWidget::updateSettingsWidget() {
     auto settings = mainwindow_->getInviwoApplication()->getModuleSettings();
@@ -101,7 +101,7 @@ void SettingsWidget::updateSettingsWidget() {
 void SettingsWidget::saveSettings() {
     const auto settings = mainwindow_->getInviwoApplication()->getModuleSettings();
     for (auto& setting : settings) {
-        setting->saveToDisk();
+        setting->save();
     }
 }
 
@@ -129,6 +129,11 @@ void SettingsWidget::updatePropertyWidgetSemantics(PropertyWidgetQt* widget) {
     } else {
         LogWarn("Could not change semantic for property: " << prop->getClassIdentifier());
     }
+}
+
+void SettingsWidget::closeEvent(QCloseEvent *event) {
+    saveSettings();
+    InviwoDockWidget::closeEvent(event);
 }
 
 }  // namespace

@@ -36,6 +36,7 @@
 #include <inviwo/core/properties/boolproperty.h>
 #include <inviwo/core/properties/buttonproperty.h>
 #include <modules/opengl/openglcapabilities.h>
+#include <modules/opengl/debugmessages.h>
 #include <modules/opengl/shader/shader.h>
 
 namespace inviwo {
@@ -50,6 +51,10 @@ public:
     OptionPropertyString selectedOpenGLProfile_;
     TemplateOptionProperty<Shader::UniformWarning> uniformWarnings_;
     TemplateOptionProperty<Shader::OnError> shaderObjectErrors_;
+
+    TemplateOptionProperty<utilgl::debug::Mode> debugMessages_;
+    TemplateOptionProperty<utilgl::debug::Severity> debugSeverity_;
+    TemplateOptionProperty<utilgl::debug::BreakLevel> breakOnMessage_;
 };
 
 } // namespace
