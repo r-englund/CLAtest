@@ -28,12 +28,10 @@
  *********************************************************************************/
 
 #include <modules/base/algorithm/volume/volumeminmax.h>
+#include <inviwo/core/datastructures/volume/volumeram.h>
 
 namespace inviwo {
 
-std::pair<dvec4, dvec4> util::volumeMinMax(const VolumeRAM* volume) {
-    detail::VolumeMinMaxDispatcher disp;
-    return volume->getDataFormat()->dispatch(disp, volume);
-}
+
 
 }  // namespace

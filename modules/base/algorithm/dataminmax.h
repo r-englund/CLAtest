@@ -27,40 +27,47 @@
  *
  *********************************************************************************/
 
-#ifndef IVW_STLWRITER_H
-#define IVW_STLWRITER_H
+#ifndef IVW_DATAMINMAX_H
+#define IVW_DATAMINMAX_H
 
 #include <modules/base/basemoduledefine.h>
 #include <inviwo/core/common/inviwo.h>
-#include <inviwo/core/io/datawriter.h>
-#include <inviwo/core/datastructures/geometry/mesh.h>
-
-#include <ostream>
+#include <modules/base/algorithm/algorithmoptions.h>
 
 namespace inviwo {
 
+class VolumeRAM;
+class LayerRAM;
+class BufferRAM;
 
-/**
- * \class StlWriter
- * \brief Export Meshes in the STL format
- */
-class IVW_MODULE_BASE_API StlWriter : public DataWriterType<Mesh> {
-public:
-    StlWriter();
-    StlWriter(const StlWriter&) = default;
-    StlWriter& operator=(const StlWriter&) = default;
-    virtual StlWriter* clone() const override;
-    virtual ~StlWriter() = default;
+class Volume;
+class Layer;
+class BufferBase;
 
-    virtual void writeData(const Mesh* data, const std::string filePath) const override;
-    virtual std::unique_ptr<std::vector<unsigned char>> writeDataToBuffer(
-        const Mesh* data, const std::string& fileExtension) const override;
+namespace util {
 
-private:
-    void writeData(const Mesh* data, std::ostream& os) const;
-};
+IVW_MODULE_BASE_API std::pair<dvec4, dvec4> volumeMinMax(
+    const VolumeRAM* volume, IgnoreSpecialValues ignore = IgnoreSpecialValues::No);
+
+IVW_MODULE_BASE_API std::pair<dvec4, dvec4> layerMinMax(
+    const LayerRAM* layer, IgnoreSpecialValues ignore = IgnoreSpecialValues::No);
+
+IVW_MODULE_BASE_API std::pair<dvec4, dvec4> bufferMinMax(
+    const BufferRAM* layer, IgnoreSpecialValues ignore = IgnoreSpecialValues::No);
+
+
+IVW_MODULE_BASE_API std::pair<dvec4, dvec4> volumeMinMax(
+    const Volume* volume, IgnoreSpecialValues ignore = IgnoreSpecialValues::No);
+
+IVW_MODULE_BASE_API std::pair<dvec4, dvec4> layerMinMax(
+    const Layer* layer, IgnoreSpecialValues ignore = IgnoreSpecialValues::No);
+
+IVW_MODULE_BASE_API std::pair<dvec4, dvec4> bufferMinMax(
+    const BufferBase* buffer, IgnoreSpecialValues ignore = IgnoreSpecialValues::No);
+
+}  // namespace
 
 } // namespace
 
-#endif // IVW_STLWRITER_H
+#endif // IVW_DATAMINMAX_H
 

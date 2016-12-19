@@ -27,56 +27,43 @@
  *
  *********************************************************************************/
 
-#ifndef IVW_LAYERMINMAX_H
-#define IVW_LAYERMINMAX_H
+#ifndef IVW_MESHSEQUENCEELEMENTSELECTORPROCESSOR_H
+#define IVW_MESHSEQUENCEELEMENTSELECTORPROCESSOR_H
 
 #include <modules/base/basemoduledefine.h>
 #include <inviwo/core/common/inviwo.h>
-#include <inviwo/core/datastructures/image/layerram.h>
+#include <inviwo/core/datastructures/geometry/mesh.h>
+#include <inviwo/core/ports/meshport.h>
+#include <modules/base/processors/vectorelementselectorprocessor.h>
+
 
 namespace inviwo {
 
-namespace util {
+/** \docpage{org.inviwo.MeshTimeStepSelector, Mesh Sequence Element Selector}
+ * ![](org.inviwo.MeshTimeStepSelector.png?classIdentifier=org.inviwo.MeshTimeStepSelector)
+ *
+ * Select a specific volume out of a sequence of meshs
+ *
+ * ### Inport
+ *   * __inport__ Sequence of meshs
+ * ### Outport
+ *   * __outport__ Selected mesh
+ *
+ * ### Properties
+ *   * __Step__ The mesh sequence index to extract
+ */
 
-namespace detail {
+class IVW_MODULE_BASE_API MeshSequenceElementSelectorProcessor
+    : public VectorElementSelectorProcessor<Mesh, MeshOutport> {
+public:
+    MeshSequenceElementSelectorProcessor();
+    virtual ~MeshSequenceElementSelectorProcessor() = default;
 
-struct LayerMinMaxDispatcher {
-    using type = std::pair<dvec4, dvec4>;
-
-    template <typename T>
-    std::pair<dvec4, dvec4> dispatch(const LayerRAM* layer) {
-        using dataType = typename T::type;
-        auto data = static_cast<const dataType*>(layer->getData());
-        auto df = layer->getDataFormat();
-
-// Visual studio warns here even with the static casts, bug?
-#include <warn/push>
-#include <warn/ignore/conversion>
-        auto minV = static_cast<dataType>(df->getMax());
-        auto maxV = static_cast<dataType>(df->getLowest());
-#include <warn/pop>
-
-        const auto dim = layer->getDimensions();
-        const auto size = dim.x * dim.y;
-
-        for (size_t i = 0; i < size; i++) {
-            auto v = data[i];
-
-            if (util::all(v != v + dataType(1))) {
-                minV = glm::min(minV, v);
-                maxV = glm::max(maxV, v);
-            }
-        }
-
-        return {util::glm_convert<dvec4>(minV), util::glm_convert<dvec4>(maxV)};
-    }
+    virtual const ProcessorInfo getProcessorInfo() const override;
+    static const ProcessorInfo processorInfo_;
 };
-}  // namespace
 
-IVW_MODULE_BASE_API std::pair<dvec4, dvec4> layerMinMax(const LayerRAM* layer);
+} // namespace
 
-}  // namespace
+#endif // IVW_MESHSEQUENCEELEMENTSELECTORPROCESSOR_H
 
-}  // namespace
-
-#endif  // IVW_LAYERMINMAX_H

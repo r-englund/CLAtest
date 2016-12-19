@@ -192,11 +192,13 @@ void IntegralLineVectorToMesh::process() {
         auto indexBuffer =
             mesh->addIndexBuffer(DrawType::Lines, ConnectivityType::StripAdjacency);
 
-        indexBuffer->getDataContainer()->reserve(size + 2);
+        indexBuffer->getDataContainer().reserve(size + 2);
 
         vec4 c(1, 1, 1, 1);
 
-        indexBuffer->add(vertices.size() - 1);
+        auto vSize = vertices.size();
+        if (vSize != 0) vSize--;
+        indexBuffer->add(static_cast<uint32_t>( vSize));
 
 
         bool first = true;
