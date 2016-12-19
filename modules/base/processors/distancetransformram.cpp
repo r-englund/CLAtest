@@ -29,6 +29,7 @@
 
 #include "distancetransformram.h"
 #include <modules/base/algorithm/dataminmax.h>
+#include <modules/base/algorithm/volume/volumeramdistancetransform.h>
 
 namespace inviwo {
 
@@ -47,117 +48,149 @@ DistanceTransformRAM::DistanceTransformRAM()
     : Processor()
     , volumePort_("inputVolume")
     , outport_("outputVolume")
-    , transformEnabled_("transformActive", "Enabled", true)
-    , resultSquaredDist_("distSquared", "Squared Distance", true)
+    , threshold_("threshold", "Threshold", 0.5, 0.0, 1.0)
+    , flip_("flip", "Flip", false)
+    , normalize_("normalize", "Use normalized threshold", true)
     , resultDistScale_("distScale", "Scaling Factor", 1.0f, 0.0f, 1.0e3, 0.05f)
+    , resultSquaredDist_("distSquared", "Squared Distance", false)
+    , upsample_("upsample", "Up sample", size3_t(1), size3_t(1), size3_t(10))
+    , dataRange_("dataRange", "Data Range", 0.0, 1.0, 0.0, std::numeric_limits<double>::max(), 0.01,
+                 0.0, InvalidationLevel::Valid, PropertySemantics::Text)
+    , dataRangeMode_("dataRangeMode", "Data Range",
+                     {DataRangeMode::Diagonal, DataRangeMode::MinMax, DataRangeMode::Custom}, 0)
+    , customDataRange_("customDataRange", "Custom Data Range", 0.0, 1.0, 0.0,
+                       std::numeric_limits<double>::max(), 0.01, 0.0,
+                       InvalidationLevel::InvalidOutput, PropertySemantics::Text)
     , btnForceUpdate_("forceUpdate", "Update Distance Map")
-    , volDim_(1u)
-    , dirty_(true)
     , distTransformDirty_(true)
-    , numThreads_(8) {
+    , hasNewData_(false) {
+
     addPort(volumePort_);
     addPort(outport_);
 
-    addProperty(transformEnabled_);
-    addProperty(resultSquaredDist_);
+    addProperty(threshold_);
+    addProperty(flip_);
+    addProperty(normalize_);
     addProperty(resultDistScale_);
+    addProperty(resultSquaredDist_);
+    addProperty(upsample_);
+
+    dataRange_.setSerializationMode(PropertySerializationMode::None);
+    dataRange_.setReadOnly(true);
+
+    addProperty(dataRange_);
+    addProperty(dataRangeMode_);
+
+    addProperty(customDataRange_);
+
+    dataRangeMode_.onChange([&](){
+        customDataRange_.setReadOnly(dataRangeMode_.getSelectedValue() != DataRangeMode::Custom);
+    });
+
     addProperty(btnForceUpdate_);
 
-    transformEnabled_.onChange(this, &DistanceTransformRAM::paramChanged);
     btnForceUpdate_.onChange(this, &DistanceTransformRAM::paramChanged);
 
     progressBar_.hide();
-
-#ifndef __clang__
-    if (numThreads_ == 0) numThreads_ = 2 * omp_get_max_threads();
-    LogInfo("max available threads (OpenMP): " << omp_get_max_threads());
-
-    omp_set_num_threads(numThreads_);
-    int id;
-#pragma omp parallel
-    {
-        id = omp_get_thread_num();
-        if (id == 0) {
-            LogInfo("Threads used: " << omp_get_num_threads());
-        }
-    }
-#endif
 }
 
-DistanceTransformRAM::~DistanceTransformRAM() {}
+DistanceTransformRAM::~DistanceTransformRAM() = default;
+
+void DistanceTransformRAM::invalidate(InvalidationLevel invalidationLevel, Property* source) {
+    notifyObserversInvalidationBegin(this);
+    PropertyOwner::invalidate(invalidationLevel, source);
+    if (!isValid() && hasNewData_) {
+        for (auto& port : getOutports()) port->invalidate(InvalidationLevel::InvalidOutput);
+    }
+    notifyObserversInvalidationEnd(this);
+
+    if (!isValid() && isSink()) {
+        performEvaluateRequest();
+    }
+}
 
 void DistanceTransformRAM::process() {
-    if (!transformEnabled_.get()) {
-        // copy inport to outport
-        outport_.setData(volumePort_.getData());
-        return;
-    }
-
-    if (dirty_ || volumePort_.isChanged()) {
-        dirty_ = false;
-
-        std::shared_ptr<const Volume> srcVolume = volumePort_.getData();
-        volDim_ = glm::max(srcVolume->getDimensions(), size3_t(1u));
-
-        if (!volDist_ || (volDist_->getDimensions() != volDim_) || (volDist_ == srcVolume)) {
-            // Volume* volume = new Volume(volDim_, DataUInt32::get());
-            volDist_ = std::make_shared<Volume>(volDim_, DataUInt16::get());
-            volDist_->setModelMatrix(srcVolume->getModelMatrix());
-            volDist_->setWorldMatrix(srcVolume->getWorldMatrix());
-            // pass meta data on
-            volDist_->copyMetaDataFrom(*srcVolume);
-            outport_.setData(volDist_);
+    if (util::is_future_ready(newVolume_)) {
+        auto vol = newVolume_.get();
+        dataRange_.set(vol->dataMap_.dataRange);
+        outport_.setData(vol);
+        hasNewData_ = false;
+        btnForceUpdate_.setDisplayName("Update Distance Map");
+    } else if (!newVolume_.valid()) {  // We are not waiting for a calculation
+        btnForceUpdate_.setDisplayName("Update Distance Map (dirty)");
+        if (volumePort_.isChanged() || distTransformDirty_) {
+            updateOutport();
         }
-
-        
-    }
-
-    if (!dirty_ && distTransformDirty_) {
-        // progressBar_.resetProgress();
-        // progressBar_.show();
-
-        volDist_->dataMap_.dataRange = volDist_->dataMap_.valueRange = dvec2(DataUInt16::min(), DataUInt16::max());
-        distTransformDirty_ = true;
-        updateOutport();
-
-        // progressBar_.finishProgress();
-        // progressBar_.hide();
     }
 }
 
 void DistanceTransformRAM::updateOutport() {
-    VolumeRAM* vol = volDist_->getEditableRepresentation<VolumeRAM>();
-    DataFormatId dataFormat = vol->getDataFormat()->getId();
-#include <warn/push>
-#include <warn/ignore/switch-enum>
-    switch (dataFormat) {
-        case DataFormatId::NotSpecialized:
-            break;
-//#define DataFormatIdMacro(i) case i: computeDistanceTransform<Data##i::type, Data##i::bits>();
-//break;
-//#include <inviwo/core/util/formatsdefinefunc.h>
-#define DataFormatIdMacro(i) case DataFormatId::i: computeDistanceTransform<Data##i::type>(); break;
-DataFormatIdMacro(Float16)
-DataFormatIdMacro(Float32)
-DataFormatIdMacro(Float64)
-DataFormatIdMacro(Int8)
-DataFormatIdMacro(Int16)
-DataFormatIdMacro(Int32)
-DataFormatIdMacro(Int64)
-DataFormatIdMacro(UInt8)
-DataFormatIdMacro(UInt16)
-DataFormatIdMacro(UInt32)
-DataFormatIdMacro(UInt64)
-#undef DataFormatIdMacro
+    auto done = [this]() {
+        dispatchFront([this]() { 
+            distTransformDirty_ = false;
+            hasNewData_ = true;
+            invalidate(InvalidationLevel::InvalidOutput); 
+        });
+    };
 
-    default:
-        break;
-    }
-#include <warn/pop>
-    distTransformDirty_ = false;
+    auto calc =
+        [
+          pb = &progressBar_, upsample = upsample_.get(), threshold = threshold_.get(),
+          normalize = normalize_.get(), flip = flip_.get(), square = resultSquaredDist_.get(),
+          scale = resultDistScale_.get(), dataRangeMode = dataRangeMode_.get(),
+          customDataRange = customDataRange_.get(), done
+        ](std::shared_ptr<const Volume> volume)
+            ->std::shared_ptr<const Volume> {
 
-    auto minMax = util::volumeMinMax(vol, IgnoreSpecialValues::Yes);
-    volDist_->dataMap_.dataRange = volDist_->dataMap_.valueRange = dvec2(minMax.first.x, minMax.second.x);
+        auto volDim = glm::max(volume->getDimensions(), size3_t(1u));
+        auto dstRepr = std::make_shared<VolumeRAMPrecision<float>>(upsample * volDim);
+
+        const auto progress = [pb](double f) {
+            dispatchFront([f, pb]() {
+                f < 1.0 ? pb->show() : pb->hide();
+                pb->updateProgress(f);
+            });
+        };
+        util::volumeDistanceTransform(volume.get(), dstRepr.get(), upsample, threshold, normalize,
+                                      flip, square, scale, progress);
+
+        auto dstVol = std::make_shared<Volume>(dstRepr);
+        // pass meta data on
+        dstVol->setModelMatrix(volume->getModelMatrix());
+        dstVol->setWorldMatrix(volume->getWorldMatrix());
+        dstVol->copyMetaDataFrom(*volume);
+
+        switch (dataRangeMode) {
+            case DistanceTransformRAM::DataRangeMode::Diagonal: {
+                const auto basis = volume->getBasis();
+                const auto diagonal = basis[0]+basis[1]+basis[2];
+                const auto maxDist = square ? glm::length2(diagonal) : glm::length(diagonal);
+                dstVol->dataMap_.dataRange = dvec2(0.0, maxDist);
+                dstVol->dataMap_.valueRange = dvec2(0.0, maxDist);
+                break;
+            }
+            case DistanceTransformRAM::DataRangeMode::MinMax: {
+                auto minmax = util::dataMinMax(dstRepr->getDataTyped(),
+                                               glm::compMul(dstRepr->getDimensions()));
+
+                dstVol->dataMap_.dataRange = dvec2(minmax.first[0], minmax.second[0]);
+                dstVol->dataMap_.valueRange = dvec2(minmax.first[0], minmax.second[0]);
+                break;
+            }
+            case DistanceTransformRAM::DataRangeMode::Custom: {
+                dstVol->dataMap_.dataRange = customDataRange;
+                dstVol->dataMap_.valueRange = customDataRange;
+                break;
+            }
+            default:
+                break;
+        }
+
+        done();
+        return dstVol;
+    };
+
+    newVolume_ = dispatchPool(calc, volumePort_.getData());
 }
 
 void DistanceTransformRAM::paramChanged() { distTransformDirty_ = true; }
