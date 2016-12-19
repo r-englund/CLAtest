@@ -27,57 +27,47 @@
  *
  *********************************************************************************/
 
-#include <modules/buildinfo/buildinfo.h>
+#include <modules/base/algorithm/convexhullmesh.h>
 
-#include <inviwo_buildinfo.h>
+#include <inviwo/core/datastructures/geometry/mesh.h>
+#include <inviwo/core/datastructures/buffer/bufferram.h>
 
-#include <sstream>
-#include <iomanip>
+#include <algorithm>
 
 namespace inviwo {
 
-namespace buildinfo {
+namespace util {
+
+std::shared_ptr<Mesh> convertHullToMesh(const std::vector<vec2> &hull, bool useIndices) {
+    auto mesh = std::make_shared<Mesh>(DrawType::Lines, ConnectivityType::Loop);
+
+    if (hull.empty()) {
+        return mesh;
+    }
+    auto vertices = std::make_shared<Buffer<vec2> >();
+    auto vBuffer = vertices->getEditableRAMRepresentation();
+
+    vBuffer->append(&hull);
 
 
-std::string getBuildDateString() {
-    std::stringstream ss;
-    ss << buildinfo::year << "-" << std::setfill('0') << std::setw(2) << buildinfo::month
-        << "-" << std::setfill('0') << std::setw(2) << buildinfo::day << " "
-        << std::setfill('0') << std::setw(2) << buildinfo::hour << ":" << std::setfill('0')
-        << std::setw(2) << buildinfo::minute << ":" << std::setfill('0') << std::setw(2)
-        << buildinfo::second;
-    return ss.str();
+    mesh->addBuffer(BufferType::PositionAttrib, vertices);
+
+    if (useIndices) {
+        auto indices = std::make_shared<IndexBuffer>();
+        auto indexBuffer = indices->getEditableRAMRepresentation();
+        
+        std::vector<uint32_t> seq(hull.size());
+        // create a sequence of increasing numbers
+        std::iota(seq.begin(), seq.end(), 0);
+
+        indexBuffer->append(&seq);
+
+        mesh->addIndicies(Mesh::MeshInfo(DrawType::Lines, ConnectivityType::Loop), indices);
+    }
+
+    return mesh;
 }
 
-const int getBuildTimeYear() {
-    return buildinfo::year;
-}
-
-const int getBuildTimeMonth() {
-    return buildinfo::month;
-}
-
-const int getBuildTimeDay() {
-    return buildinfo::day;
-}
-
-const int getBuildTimeHour() {
-    return buildinfo::hour;
-}
-
-const int getBuildTimeMinute() {
-    return buildinfo::minute;
-}
-
-const int getBuildTimeSecond() {
-    return buildinfo::second;
-}
-
-const std::vector<std::pair<std::string, std::string>>& getGitHashes() {
-    return buildinfo::githashes;
-}
-
-} // namespace buildinfo
+} // namespace util
 
 } // namespace inviwo
-

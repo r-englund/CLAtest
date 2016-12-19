@@ -27,18 +27,42 @@
  *
  *********************************************************************************/
 
-#ifndef IVW_VOLUMEMINMAX_H
-#define IVW_VOLUMEMINMAX_H
+#ifndef IVW_VOLUMEUTILS_H
+#define IVW_VOLUMEUTILS_H
 
-#include <modules/base/basemoduledefine.h>
+#include <inviwo/core/common/inviwocoredefine.h>
 #include <inviwo/core/common/inviwo.h>
 
+#include <tuple>
 
 namespace inviwo {
 
+class Volume;
 
+namespace util {
 
-}  // namespace
+bool IVW_CORE_API hasMargins(const std::shared_ptr<const Volume> &volume);
 
-#endif // IVW_VOLUMEMINMAX_H
+bool IVW_CORE_API isBricked(const std::shared_ptr<const Volume> &volume);
 
+size3_t IVW_CORE_API getBrickDimensions(const std::shared_ptr<const Volume> &volume);
+
+/**
+* \brief return the margins of a volume, in normalized texture coordinates [0,1]
+*
+* @return pair of margins from the bottom left corner and the top right corner
+*/
+std::pair<vec3, vec3> IVW_CORE_API getVolumeMargins(const std::shared_ptr<const Volume> &volume);
+
+/**
+* \brief returns the true volume dimensions considering volume margins and bricking
+*
+* @return true volume dimensions
+*/
+size3_t IVW_CORE_API getVolumeDimensions(const std::shared_ptr<const Volume> &volume);
+
+} // namespace util
+
+}  // namespace inviwo
+
+#endif // IVW_VOLUMEUTILS_H

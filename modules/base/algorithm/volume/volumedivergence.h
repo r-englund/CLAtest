@@ -27,19 +27,22 @@
  *
  *********************************************************************************/
 
-#ifndef IVW_BUILDINFOMODULE_H
-#define IVW_BUILDINFOMODULE_H
+#ifndef IVW_VOLUMEDIVERGENCE_H
+#define IVW_VOLUMEDIVERGENCE_H
 
-#include <modules/buildinfo/buildinfomoduledefine.h>
-#include <inviwo/core/common/inviwomodule.h>
+#include <modules/base/basemoduledefine.h>
+#include <inviwo/core/common/inviwo.h>
+#include <inviwo/core/datastructures/volume/volume.h>
 
 namespace inviwo {
 
-class IVW_MODULE_BUILDINFO_API BuildInfoModule : public InviwoModule {
-public:
-    BuildInfoModule(InviwoApplication* app);
-};
+namespace util {
 
-} // namespace
+IVW_MODULE_BASE_API std::shared_ptr<Volume> divergenceVolume(std::shared_ptr<const Volume> volume);
 
-#endif // IVW_BUILDINFOMODULE_H
+}  // namespace
+
+}  // namespace
+
+#endif // IVW_VOLUMECURL_H
+

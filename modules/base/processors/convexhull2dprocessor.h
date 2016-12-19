@@ -24,40 +24,57 @@
  * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- *
+ * 
  *********************************************************************************/
 
-#ifndef IVW_BUILDINFO_H
-#define IVW_BUILDINFO_H
+#ifndef IVW_CONVEXHULL2DPROCESSOR_H
+#define IVW_CONVEXHULL2DPROCESSOR_H
 
-#include <modules/buildinfo/buildinfomoduledefine.h>
+#include <modules/base/basemoduledefine.h>
 #include <inviwo/core/common/inviwo.h>
-
-#include <vector>
-#include <utility>
+#include <inviwo/core/processors/processor.h>
+#include <inviwo/core/properties/ordinalproperty.h>
+#include <inviwo/core/ports/meshport.h>
 
 namespace inviwo {
 
-namespace buildinfo {
+/** \docpage{org.inviwo.ConvexHull2DProcessor, Convex Hull2DProcessor}
+ * ![](org.inviwo.ConvexHull2DProcessor.png?classIdentifier=org.inviwo.ConvexHull2DProcessor)
+ * Computes the convex hull of a 2D mesh.
+ *
+ * ### Inports
+ *   * __Inport__  Input geometry, only the first two dimensions are considered
+ *
+ * ### Outports
+ *   * __Geometry__ 2D convex hull of the input geometry
+ * 
+ * ### Properties
+ *   * __Normal__ Normal of the plane onto which all points are projected prior to computing the convex hull
+ */
 
-IVW_MODULE_BUILDINFO_API std::string getBuildDateString();
 
-IVW_MODULE_BUILDINFO_API const int getBuildTimeYear();
+/**
+ * \class ConvexHull2DProcessor
+ * \brief Processor computing the convex hull of a given 2D input geometry
+ */
+class IVW_MODULE_BASE_API ConvexHull2DProcessor : public Processor { 
+public:
+    ConvexHull2DProcessor();
+    virtual ~ConvexHull2DProcessor() = default;
+     
+    virtual void process() override;
 
-IVW_MODULE_BUILDINFO_API const int getBuildTimeMonth();
+    virtual const ProcessorInfo getProcessorInfo() const override;
+    static const ProcessorInfo processorInfo_;
 
-IVW_MODULE_BUILDINFO_API const int getBuildTimeDay();
+private:
+    static std::shared_ptr<Mesh> convertHullToMesh(const std::vector<dvec2> hull);
 
-IVW_MODULE_BUILDINFO_API const int getBuildTimeHour();
-
-IVW_MODULE_BUILDINFO_API const int getBuildTimeMinute();
-
-IVW_MODULE_BUILDINFO_API const int getBuildTimeSecond();
-
-IVW_MODULE_BUILDINFO_API const std::vector<std::pair<std::string, std::string>>& getGitHashes();
-
-} // namespace buildinfo
+    MeshInport inport_;
+    MeshOutport outport_;
+    FloatVec3Property normal_;
+};
 
 } // namespace inviwo
 
-#endif // IVW_BUILDINFO_H
+#endif // IVW_CONVEXHULL2DPROCESSOR_H

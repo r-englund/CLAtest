@@ -24,49 +24,35 @@
  * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- *
+ * 
  *********************************************************************************/
 
-#include <modules/buildinfo/buildinfomodule.h>
+#ifndef IVW_VOLUMEDIVERGENCECPUPROCESSOR_H
+#define IVW_VOLUMEDIVERGENCECPUPROCESSOR_H
+
+#include <modules/base/basemoduledefine.h>
+#include <inviwo/core/common/inviwo.h>
+#include <inviwo/core/processors/processor.h>
+#include <inviwo/core/properties/ordinalproperty.h>
+#include <inviwo/core/ports/volumeport.h>
 
 namespace inviwo {
 
-BuildInfoModule::BuildInfoModule(InviwoApplication* app) : InviwoModule(app, "BuildInfo") {   
-    // Add a directory to the search path of the Shadermanager
-    // ShaderManager::getPtr()->addShaderSearchPath(getPath(ModulePath::GLSL));
+class IVW_MODULE_BASE_API VolumeDivergenceCPUProcessor : public Processor { 
+public:
+    VolumeDivergenceCPUProcessor();
+    virtual ~VolumeDivergenceCPUProcessor() = default;
+     
+    virtual void process() override;
 
-    // Register objects that can be shared with the rest of inviwo here:
-    
-    // Processors
-    // registerProcessor<BuildInfoProcessor>();
-    
-    // Properties
-    // registerProperty<BuildInfoProperty>();
-    
-    // Readers and writes
-    // registerDataReader(util::make_unique<BuildInfoReader>());
-    // registerDataWriter(util::make_unique<BuildInfoWriter>());
-    
-    // Data converters
-    // registerRepresentationConverter(util::make_unique<BuildInfoDisk2RAMConverter>());
-
-    // Ports
-    // registerPort<BuildInfoOutport>("BuildInfoOutport");
-    // registerPort<BuildInfoInport>("BuildInfoInport");
-
-    // PropertyWidgets
-    // registerPropertyWidget<BuildInfoPropertyWidget, BuildInfoProperty>("Default");
-    
-    // Dialogs
-    // registerDialog<BuildInfoDialog>(BuildInfoOutport);
-    
-    // Other varius things
-    // registerCapabilities(util::make_unique<BuildInfoCapabilities>());
-    // registerSettings(util::make_unique<BuildInfoSettings>());
-    // registerMetaData(util::make_unique<BuildInfoMetaData>());   
-    // registerPortInspector("BuildInfoOutport", "path/workspace.inv");
-    // registerProcessorWidget(std::string processorClassName, std::unique_ptr<ProcessorWidget> processorWidget);
-    // registerDrawer(util::make_unique_ptr<BuildInfoDrawer>());  
-}
+    virtual const ProcessorInfo getProcessorInfo() const override;
+    static const ProcessorInfo processorInfo_;
+private:
+    VolumeInport inport_;
+    VolumeOutport outport_;
+};
 
 } // namespace
+
+#endif // IVW_VOLUMECURLCPUPROCESSOR_H
+

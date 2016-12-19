@@ -2,7 +2,7 @@
  *
  * Inviwo - Interactive Visualization Workshop
  *
- * Copyright (c) 2012-2016 Inviwo Foundation
+ * Copyright (c) 2016 Inviwo Foundation
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -27,62 +27,65 @@
  * 
  *********************************************************************************/
 
-#ifndef IVW_CUBEPROXYGEOMETRY_H
-#define IVW_CUBEPROXYGEOMETRY_H
+#ifndef IVW_IMAGESCALING_H
+#define IVW_IMAGESCALING_H
 
-#include <modules/base/basemoduledefine.h>
+#include <modules/basegl/baseglmoduledefine.h>
 #include <inviwo/core/common/inviwo.h>
 #include <inviwo/core/processors/processor.h>
-#include <inviwo/core/ports/meshport.h>
-#include <inviwo/core/ports/volumeport.h>
 #include <inviwo/core/properties/boolproperty.h>
-#include <inviwo/core/properties/minmaxproperty.h>
+#include <inviwo/core/properties/ordinalproperty.h>
+#include <inviwo/core/properties/optionproperty.h>
+#include <inviwo/core/ports/imageport.h>
+
 
 namespace inviwo {
-/** \docpage{org.inviwo.CubeProxyGeometry, Cube Proxy Geometry}
- * ![](org.inviwo.CubeProxyGeometry.png?classIdentifier=org.inviwo.CubeProxyGeometry)
+
+/** \docpage{org.inviwo.ImageScaling, Image Scaling}
+ * ![](org.inviwo.ImageScaling.png?classIdentifier=org.inviwo.ImageScaling)
+ * This processor provides functionality for up-scaling or down-scaling an image with respect to the
+ * size of the input image.
  *
- * Constructs a proxy geometry based on the model and world matrix of the input volume. 
- * The gemetry will be shaped as a parallelepiped. If clipping is enabled the geometry
- * will be cut along the corresponding axes. 
- * 
  * ### Inports
- *   * __Inport__ Input Volume
+ *   * __Source Image__ The mixed image
  *
  * ### Outports
- *   * __Outport__ Output proxy geometry.
- * 
+ *   * __Output Image__ The scaled image
+ *
  * ### Properties
- *   * __Enable Clipping__ Enable axis aligned clipping of the mesh
- *   * __Clip X Slices__ Clip X axis
- *   * __Clip Y Slices__ Clip Y axis
- *   * __Clip Z Slices__ Clip Z axis
+ *   * __Enabled__   Enables or disables scaling of the input image
+ *   * __Scaling Factor__
  */
 
-class IVW_MODULE_BASE_API CubeProxyGeometry : public Processor {
+/**
+ * \class ImageScaling
+ * \brief Processor for up-scaling or down-scaling an image. Modifies the resize events by scaling
+ * them before they are propagated further.
+ */
+class IVW_MODULE_BASEGL_API ImageScaling : public Processor { 
 public:
-    CubeProxyGeometry();
-    ~CubeProxyGeometry();
+    ImageScaling();
+    virtual ~ImageScaling() = default;
+     
+    virtual void process() override;
+
+    virtual void propagateEvent(Event*, Outport* source) override;
 
     virtual const ProcessorInfo getProcessorInfo() const override;
     static const ProcessorInfo processorInfo_;
 
-protected:
-    virtual void process() override;
-
-    void onVolumeChange();
-
 private:
-    VolumeInport inport_;
-    MeshOutport outport_;
+    size2_t calcInputImageSize() const;
 
-    BoolProperty clippingEnabled_;
+    ImageInport inport_;
+    ImageOutport outport_;
 
-    IntMinMaxProperty clipX_;
-    IntMinMaxProperty clipY_;
-    IntMinMaxProperty clipZ_;
+    BoolProperty enabled_;
+    OptionPropertyDouble scalingFactor_; //<! if negative, use custom scaling factor
+    DoubleProperty customFactor_;
 };
 
 } // namespace
 
-#endif // IVW_CUBEPROXYGEOMETRY_H
+#endif // IVW_IMAGESCALING_H
+
