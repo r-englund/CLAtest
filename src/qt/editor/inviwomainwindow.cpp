@@ -93,7 +93,7 @@ InviwoMainWindow::InviwoMainWindow(InviwoApplicationQt* app)
     , eventFilter_(app->getInteractionStateManager())
     , undoManager_(this) {
 
-    // make sure, tooltips are always shown (this includes prot inspectors as well)
+    // make sure, tooltips are always shown (this includes port inspectors as well)
     this->setAttribute(Qt::WA_AlwaysShowToolTips, true);
 
     networkEditor_ = std::make_shared<NetworkEditor>(this);
@@ -304,8 +304,8 @@ void InviwoMainWindow::addActions() {
         connect(fileMenuItem->addAction("Save Network Image"), &QAction::triggered,
             [&](bool state) {
             InviwoFileDialog saveFileDialog(this, "Save Network Image ...", "image");
-            saveFileDialog.setFileMode(QFileDialog::AnyFile);
-            saveFileDialog.setAcceptMode(QFileDialog::AcceptSave);
+            saveFileDialog.setFileMode(FileMode::AnyFile);
+            saveFileDialog.setAcceptMode(AcceptMode::Save);
             saveFileDialog.setConfirmOverwrite(true);
 
             saveFileDialog.addSidebarPath(PathType::Workspaces);
@@ -406,6 +406,7 @@ void InviwoMainWindow::addActions() {
         actions_["Copy"] = copyAction;
         copyAction->setShortcut(QKeySequence::Copy);
         editMenuItem->addAction(copyAction);
+        consoleWidget_->view()->addAction(copyAction);
         copyAction->setEnabled(false);
     }
 
@@ -457,11 +458,9 @@ void InviwoMainWindow::addActions() {
     editMenuItem->addSeparator();
 
     {
-        auto clearLogAction = new QAction(tr("&Clear Log"), this);
+        auto clearLogAction = consoleWidget_->getClearAction();
         actions_["Clear Log"] = clearLogAction;
-        clearLogAction->setShortcut(Qt::ControlModifier + Qt::Key_E);
         editMenuItem->addAction(clearLogAction);
-        connect(clearLogAction, &QAction::triggered, [&]() { consoleWidget_->clear(); });
     }
 
     // View
@@ -865,7 +864,7 @@ void InviwoMainWindow::openWorkspace() {
 
         openFileDialog.addExtension("inv", "Inviwo File");
 
-        openFileDialog.setFileMode(QFileDialog::AnyFile);
+        openFileDialog.setFileMode(FileMode::AnyFile);
 
         if (openFileDialog.exec()) {
             QString path = openFileDialog.selectedFiles().at(0);
@@ -911,23 +910,12 @@ void InviwoMainWindow::saveWorkspace() {
         getNetworkEditor()->saveNetwork(currentWorkspaceFileName_.toLocal8Bit().constData());
         updateWindowTitle();
     }
-
-    /*
-    // The following code snippet allows to reload the Qt style sheets during runtime,
-    // which is handy while we change them. once the style sheets have been finalized,
-    // this code should be removed.
-    QFile styleSheetFile("C:/inviwo/resources/stylesheets/inviwo.qss");
-    styleSheetFile.open(QFile::ReadOnly);
-    QString styleSheet = QLatin1String(styleSheetFile.readAll());
-    dynamic_cast<InviwoApplicationQt*>(InviwoApplication::getPtr())->setStyleSheet(styleSheet);
-    styleSheetFile.close();
-    */
 }
 
 void InviwoMainWindow::saveWorkspaceAs() {
     InviwoFileDialog saveFileDialog(this, "Save Workspace ...", "workspace");
-    saveFileDialog.setFileMode(QFileDialog::AnyFile);
-    saveFileDialog.setAcceptMode(QFileDialog::AcceptSave);
+    saveFileDialog.setFileMode(FileMode::AnyFile);
+    saveFileDialog.setAcceptMode(AcceptMode::Save);
     saveFileDialog.setConfirmOverwrite(true);
 
     saveFileDialog.addSidebarPath(PathType::Workspaces);
@@ -949,8 +937,8 @@ void InviwoMainWindow::saveWorkspaceAs() {
 
 void InviwoMainWindow::saveWorkspaceAsCopy() {
     InviwoFileDialog saveFileDialog(this, "Save Workspace ...", "workspace");
-    saveFileDialog.setFileMode(QFileDialog::AnyFile);
-    saveFileDialog.setAcceptMode(QFileDialog::AcceptSave);
+    saveFileDialog.setFileMode(FileMode::AnyFile);
+    saveFileDialog.setAcceptMode(AcceptMode::Save);
     saveFileDialog.setConfirmOverwrite(true);
 
     saveFileDialog.addSidebarPath(PathType::Workspaces);
@@ -1114,6 +1102,8 @@ void InviwoMainWindow::closeEvent(QCloseEvent* event) {
         settings.setValue("workspaceOnLastSuccessfulExit", "");
     }
     settings.endGroup();
+
+    consoleWidget_->close();
 
     QMainWindow::closeEvent(event);
 }

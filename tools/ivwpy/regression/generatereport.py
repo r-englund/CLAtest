@@ -37,6 +37,7 @@ import contextlib
 import lesscpy
 import json
 import itertools
+import html
 
 # Beautiful Soup 4 for dom manipulation
 import bs4
@@ -144,8 +145,8 @@ def getDiffLink(start, stop):
 def commitInfo(commit):
 	doc, tag, text = yattag.Doc().tagtext()
 	with tag('ul'):
-		val = commit.message
-		vabr = abr(val)
+		val = html.escape(commit.message)
+		vabr = html.escape(abr(commit.message))
 		gdate = commit.date.strftime('%Y-%m-%d %H:%M:%S')
 
 		doc.asis(listItem(keyval("Message", vabr), val, toggle = vabr != val))
@@ -158,18 +159,21 @@ def commitInfo(commit):
 
 def formatLog(file):
 	doc, tag, text = yattag.Doc().tagtext()
-	with open(file, 'r') as f:
-		loghtml = f.read()
-		err  = loghtml.count("Error:")
-		warn = loghtml.count("Warn:")
-		info = loghtml.count("Info:")
-		short = "Error: {}, Warnings: {}, Information: {}".format(err, warn, info)
+	try:
+		with open(file, 'r') as f:
+			loghtml = f.read()
+			err  = loghtml.count("Error:")
+			warn = loghtml.count("Warn:")
+			info = loghtml.count("Info:")
+			short = "Error: {}, Warnings: {}, Information: {}".format(err, warn, info)
 				
-		def log(doc, tag, text): 
-			with tag('div', klass='log'): 
-				doc.asis(loghtml)
+			def log(doc, tag, text): 
+				with tag('div', klass='log'): 
+					doc.asis(loghtml)
 
-		doc.asis(listItem(keyval("Log", short), log, status = "ok" if err == 0 else "fail")) 
+			doc.asis(listItem(keyval("Log", short), log, status = "ok" if err == 0 else "fail")) 
+	except FileNotFoundError as e:
+		doc.asis(listItem(keyval("Log", "Logfile missing"), str(e), status = "fail"))
 	return doc.getvalue()
 
 def image(path, **opts):
@@ -233,7 +237,7 @@ class TestRun:
 
 				self.testRunInfo("Current Version", testrun)
 				if self.totalstatus() != "ok":
-					self.testRunInfo("Last Succsess", lastSuccess)
+					self.testRunInfo("Last Success", lastSuccess)
 					self.testRunInfo("First Failure", firstFailure)
 					self.gitDiff(lastSuccess, firstFailure)
 				
@@ -305,7 +309,7 @@ class TestRun:
 	def testRunInfo(self, key, testrun):
 		if testrun is not None:
 			date = testrun.commit.date.strftime('%Y-%m-%d %H:%M:%S')
-			self.doc.asis(listItem(keyval(key, date + " " + abr(testrun.commit.message, 50)),
+			self.doc.asis(listItem(keyval(key, date + " " + html.escape(abr(testrun.commit.message, 50))),
 				commitInfo(testrun.commit)))
 		else:
 			self.doc.asis(listItem(keyval(key, "None"), toggle=False)) 	
