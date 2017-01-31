@@ -2,7 +2,7 @@
  *
  * Inviwo - Interactive Visualization Workshop
  *
- * Copyright (c) 2014-2016 Inviwo Foundation
+ * Copyright (c) 2016 Inviwo Foundation
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -27,77 +27,53 @@
  * 
  *********************************************************************************/
 
-#ifndef IVW_ISORAYCASTER_H
-#define IVW_ISORAYCASTER_H
+#ifndef IVW_RANDOMMESHGENERATOR_H
+#define IVW_RANDOMMESHGENERATOR_H
 
-#include <modules/basegl/baseglmoduledefine.h>
+#include <modules/base/basemoduledefine.h>
 #include <inviwo/core/common/inviwo.h>
 #include <inviwo/core/processors/processor.h>
-#include <inviwo/core/properties/optionproperty.h>
-#include <inviwo/core/properties/transferfunctionproperty.h>
-#include <inviwo/core/properties/cameraproperty.h>
-#include <inviwo/core/ports/imageport.h>
-#include <inviwo/core/ports/volumeport.h>
-#include <inviwo/core/properties/simpleraycastingproperty.h>
-#include <inviwo/core/properties/simplelightingproperty.h>
-#include <modules/opengl/shader/shader.h>
-#include <modules/opengl/inviwoopengl.h>
+#include <inviwo/core/ports/meshport.h>
+#include <inviwo/core/properties/buttonproperty.h>
+#include <inviwo/core/properties/ordinalproperty.h>
+#include <random>
 
 namespace inviwo {
 
-/** \docpage{org.inviwo.ISORaycaster, ISO Raycaster}
- * ![](org.inviwo.ISORaycaster.png?classIdentifier=org.inviwo.ISORaycaster)
- *
- * ...
- * 
- * ### Inports
- *   * __volume__ ...
- *   * __exit-points__ ...
- *   * __entry-points__ ...
- * 
- * ### Outports
- *   * __outport__ ...
- * 
- * ### Properties
- *   * __Raycasting__ ...
- *   * __Lighting__ ...
- *   * __Render Channel__ ...
- *   * __Camera__ ...
- *
- */
-class IVW_MODULE_BASEGL_API ISORaycaster : public Processor {
+
+
+class IVW_MODULE_BASE_API RandomMeshGenerator : public Processor { 
 public:
-    ISORaycaster();
+    RandomMeshGenerator();
+    virtual ~RandomMeshGenerator() = default;
+     
+    virtual void process() override;
 
     virtual const ProcessorInfo getProcessorInfo() const override;
     static const ProcessorInfo processorInfo_;
-
-    virtual void initializeResources() override;
-    
-    // override to do member renaming.
-    virtual void deserialize(Deserializer& d) override;
-protected:
-    virtual void process() override;
-    Shader shader_;
-
 private:
-    void onVolumeChange();
 
-    VolumeInport volumePort_;
-    ImageInport entryPort_;
-    ImageInport exitPort_;
-    ImageInport backgroundPort_;
-    ImageOutport outport_;
+    float randD();
+    float randD(const float min, const float max);
+    vec4 randColor();
+    vec3 randVec3(const float min = 0, const float max = 1);
 
-    OptionPropertyInt channel_;
-    
-    SimpleRaycastingProperty raycasting_;
-    SimpleLightingProperty lighting_;
+    MeshOutport mesh_;
 
-    CameraProperty camera_;
-private:
+    std::mt19937 rand_;
+    std::uniform_real_distribution<float> dis_;
+
+    Int64Property seed_;
+    ButtonProperty reseed_;
+
+    IntProperty numberOfBoxes_;
+    IntProperty numberOfSpheres_;
+    IntProperty numberOfCylinders_;
+    IntProperty numberOfCones_;
+    IntProperty numberOfToruses_;
 };
 
 } // namespace
 
-#endif // IVW_SIMPLERAYCASTER_H
+#endif // IVW_RANDOMMESHGENERATOR_H
+
