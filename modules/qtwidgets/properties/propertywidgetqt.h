@@ -106,7 +106,6 @@ public slots:
     virtual void setApplicationUsageMode(bool value);
     virtual void changeSemantics(QAction* action);
 
-    void moduleAction();
 signals:
     void updateSemantics(PropertyWidgetQt*);
 
@@ -142,7 +141,7 @@ private:
     TemplateOptionProperty<UsageMode>* applicationUsageMode_;
     const BaseCallBack* appModeCallback_;
     QMenu* contextMenu_;
-    QMap<QString, QMenu*> moduleSubMenus_;
+    std::unordered_map<std::string, std::unique_ptr<QMenu>> moduleSubMenus_;
 
     const int maxNumNestedShades_;  //< This number has do match the number of shades in the qss.
     int nestedDepth_;
