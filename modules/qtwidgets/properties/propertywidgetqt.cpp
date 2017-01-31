@@ -2,7 +2,7 @@
  *
  * Inviwo - Interactive Visualization Workshop
  *
- * Copyright (c) 2012-2016 Inviwo Foundation
+ * Copyright (c) 2012-2017 Inviwo Foundation
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -373,10 +373,10 @@ void PropertyWidgetQt::generateModuleMenuActions() {
                     InviwoApplication* app = InviwoApplication::getPtr();
                     const auto& moduleActions = app->getCallbackActions();
 
-                    for (auto& moduleAction : moduleActions) {
-                        if (moduleAction->getActionName() == actionName) {
-                            moduleAction->getCallBack().invoke(property);
-                            action->setChecked(moduleAction->getActionState() ==
+                    for (auto& mAction : moduleActions) {
+                        if (mAction->getActionName() == actionName) {
+                            mAction->getCallBack().invoke(property);
+                            action->setChecked(mAction->getActionState() ==
                                                ModuleCallBackActionState::Enabled);
                         }
                     }

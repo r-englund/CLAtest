@@ -2,7 +2,7 @@
  *
  * Inviwo - Interactive Visualization Workshop
  *
- * Copyright (c) 2014-2016 Inviwo Foundation
+ * Copyright (c) 2014-2017 Inviwo Foundation
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -79,7 +79,7 @@ void activateTargetAndCopySource(Image& targetImage, ImageInport& sourceInport, 
     auto outImageGL = targetImage.getEditableRepresentation<ImageGL>();
 
     if (auto inImage = sourceInport.getData()) {
-        auto inImageGL = inImage->getRepresentation<ImageGL>()->copyRepresentationsTo(outImageGL);
+        inImage->getRepresentation<ImageGL>()->copyRepresentationsTo(outImageGL);
     } else {
         LogWarnCustom("TextureUtils", "Trying to copy empty image inport: \""
                                           << sourceInport.getIdentifier() << "\" in processor: \""
