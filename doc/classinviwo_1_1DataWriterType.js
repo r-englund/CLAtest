@@ -1,11 +1,12 @@
 var classinviwo_1_1DataWriterType =
 [
-    [ "DataWriterType", "classinviwo_1_1DataWriterType.html#a6ab9520d864e398bcffc1bb54d122840", null ],
-    [ "DataWriterType", "classinviwo_1_1DataWriterType.html#a5a3e98bf597a7b73b8bfb436cc17e316", null ],
-    [ "~DataWriterType", "classinviwo_1_1DataWriterType.html#a2e8bbff8a15637165d678482a2309575", null ],
+    [ "repr", "classinviwo_1_1DataWriterType.html#ae87e37eb68e61c294455470d34c1138a", null ],
+    [ "DataWriterType", "classinviwo_1_1DataWriterType.html#acbbdbe2e788e3206d40672688d6b830a", null ],
+    [ "DataWriterType", "classinviwo_1_1DataWriterType.html#a72de1c0d02ddd1072327bbb2747a2186", null ],
+    [ "~DataWriterType", "classinviwo_1_1DataWriterType.html#a68a14baf7a8f8ed1a37cecc09f4ffbd3", null ],
     [ "clone", "classinviwo_1_1DataWriterType.html#a66d66a245779607ba82f2536121b532b", null ],
-    [ "operator=", "classinviwo_1_1DataWriterType.html#ad627518662f8907afefde2beb3ea8516", null ],
+    [ "operator=", "classinviwo_1_1DataWriterType.html#aa1fd6c7f55316918b33ff418c882946c", null ],
     [ "writeData", "classinviwo_1_1DataWriterType.html#af4965a14744d67446ad483c12efe0b03", null ],
-    [ "writeDataToBuffer", "classinviwo_1_1DataWriterType.html#a096ec0bb5651b641fe8e6fe1d768d6e4", null ],
-    [ "writeDataToRepresentation", "classinviwo_1_1DataWriterType.html#ac5077cf4d03bd2dd3a9cb5e7965c25e8", null ]
+    [ "writeDataToBuffer", "classinviwo_1_1DataWriterType.html#a416df56c47725d0ad55a7690eba80516", null ],
+    [ "writeDataToRepresentation", "classinviwo_1_1DataWriterType.html#a4cdbb446dd5e40fb1cf437b21530e983", null ]
 ];

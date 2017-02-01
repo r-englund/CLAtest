@@ -1,5 +1,6 @@
 var classinviwo_1_1VolumeRAMPrecision =
 [
+    [ "type", "classinviwo_1_1VolumeRAMPrecision.html#ae37d35d8f55d5271c189e3572287e363", null ],
     [ "VolumeRAMPrecision", "classinviwo_1_1VolumeRAMPrecision.html#ae89329dd8c37f7663e918304538b4f84", null ],
     [ "VolumeRAMPrecision", "classinviwo_1_1VolumeRAMPrecision.html#a163c04ef9ce56a87f371a5365f24ec39", null ],
     [ "VolumeRAMPrecision", "classinviwo_1_1VolumeRAMPrecision.html#a6cd6de3b5a30d2eeddb163fb8ef1108f", null ],
@@ -18,6 +19,8 @@ var classinviwo_1_1VolumeRAMPrecision =
     [ "getData", "classinviwo_1_1VolumeRAMPrecision.html#a8011dc204f3d69e258167e1e155fc599", null ],
     [ "getData", "classinviwo_1_1VolumeRAMPrecision.html#adccb442f0cf60996fae9c00eb05729f1", null ],
     [ "getData", "classinviwo_1_1VolumeRAMPrecision.html#a6bcd2f483803be35c36c288dff8ef383", null ],
+    [ "getDataTyped", "classinviwo_1_1VolumeRAMPrecision.html#aa2cf87cb49310ea79ece6b8f13db2298", null ],
+    [ "getDataTyped", "classinviwo_1_1VolumeRAMPrecision.html#a8313dd3dbeaa5d452ede546fd46ff0f8", null ],
     [ "getDimensions", "classinviwo_1_1VolumeRAMPrecision.html#a803c690ae3e42cc1cec1edb4e1efa53a", null ],
     [ "getHistograms", "classinviwo_1_1VolumeRAMPrecision.html#af1431a30ebb1de56cb5344768c7b91b3", null ],
     [ "getHistograms", "classinviwo_1_1VolumeRAMPrecision.html#a06896c33819d1c6138de8548d96a27a6", null ],

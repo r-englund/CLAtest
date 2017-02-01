@@ -5,8 +5,8 @@ var classinviwo_1_1Settings =
     [ "addProperty", "classinviwo_1_1Settings.html#a4ec2be947c34691eade16eaecf5355f6", null ],
     [ "addProperty", "classinviwo_1_1Settings.html#a26bd271b43fa0ce704623e964d9dc6d6", null ],
     [ "getIdentifier", "classinviwo_1_1Settings.html#aa5f580fe12eda69d7435135103cb860d", null ],
-    [ "loadFromDisk", "classinviwo_1_1Settings.html#af0bf9a7b43ae4cf9406a510725e4479f", null ],
-    [ "saveToDisk", "classinviwo_1_1Settings.html#a901a97010b7d477a3f0b28efb4f02e73", null ],
+    [ "load", "classinviwo_1_1Settings.html#a399a5222d0a245366715317953d24350", null ],
+    [ "save", "classinviwo_1_1Settings.html#a58e660e86fe12e6c7559f2c613d2e1cd", null ],
     [ "identifier_", "classinviwo_1_1Settings.html#a8efcdf0984514fe005c124b39c06e301", null ],
     [ "isDeserializing_", "classinviwo_1_1Settings.html#a931c50e46356e8cc28922e49a10f27c6", null ]
 ];

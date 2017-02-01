@@ -7,5 +7,5 @@ var classinviwo_1_1CLFormats =
       [ "SignNormalized", "classinviwo_1_1CLFormats.html#a741de012c71aca35cf0d595a6547c255a8625ea72722b86245ec53a6dc039501f", null ]
     ] ],
     [ "CLFormats", "classinviwo_1_1CLFormats.html#aee94313f22e17a1af29f825dd0a2b46f", null ],
-    [ "getCLFormat", "classinviwo_1_1CLFormats.html#a74f5cc106a8351658a6bb1db6a4f5934", null ]
+    [ "getCLFormat", "classinviwo_1_1CLFormats.html#a5d879159abda96b4f30d1ab2ce27488e", null ]
 ];

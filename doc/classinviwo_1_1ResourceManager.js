@@ -8,7 +8,7 @@ var classinviwo_1_1ResourceManager =
     [ "getResource", "classinviwo_1_1ResourceManager.html#a2e39897ea701026dbb5f8d70dce58dab", null ],
     [ "getResourceAs", "classinviwo_1_1ResourceManager.html#a4ed0a08996b5fffec0228bccc2c41a67", null ],
     [ "getResources", "classinviwo_1_1ResourceManager.html#a6c6ff0f4b856276903db6ea28edf4f5c", null ],
-    [ "getResourcesByType", "classinviwo_1_1ResourceManager.html#a17fd70032932904656a1c059c588e01d", null ],
+    [ "getResourcesByType", "classinviwo_1_1ResourceManager.html#adede7ad7d45670833d0bc4f694fd77ee", null ],
     [ "hasResource", "classinviwo_1_1ResourceManager.html#a7238657bce28ad970c9ccb07c0889703", null ],
     [ "operator=", "classinviwo_1_1ResourceManager.html#a4f32e2741189554c5fa298dc48684abc", null ],
     [ "removeResource", "classinviwo_1_1ResourceManager.html#a5887a2d0ea0462e5d8fe0e6123049268", null ],

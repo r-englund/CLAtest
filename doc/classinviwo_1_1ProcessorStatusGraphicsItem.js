@@ -4,7 +4,7 @@ var classinviwo_1_1ProcessorStatusGraphicsItem =
     [ "ProcessorStatusGraphicsItem", "classinviwo_1_1ProcessorStatusGraphicsItem.html#a15dd1a37309bc541005a05c1b21fcf0d", null ],
     [ "~ProcessorStatusGraphicsItem", "classinviwo_1_1ProcessorStatusGraphicsItem.html#aed1447314e8c7878b8331b0259c58364", null ],
     [ "activityIndicatorChanged", "classinviwo_1_1ProcessorStatusGraphicsItem.html#af0d4c3efa0e173ce2b6c35e475891ce4", null ],
-    [ "onProcessorAboutToProcess", "classinviwo_1_1ProcessorStatusGraphicsItem.html#a210fd460e4946aacb1e87e2eb0f90e78", null ],
+    [ "onProcessorNetworkEvaluationEnd", "classinviwo_1_1ProcessorStatusGraphicsItem.html#ad1e24908f7767ee41a938ea38c5acad3", null ],
     [ "onProcessorWidgetHide", "classinviwo_1_1ProcessorStatusGraphicsItem.html#a7270e3f1abbf83acef8e694937d1f7e1", null ],
     [ "onProcessorWidgetShow", "classinviwo_1_1ProcessorStatusGraphicsItem.html#a72b546cae87a5c6afc29293fd961ae62", null ],
     [ "paint", "classinviwo_1_1ProcessorStatusGraphicsItem.html#abbc2b4a5282e6d28a85f6aa4c06b50ec", null ],

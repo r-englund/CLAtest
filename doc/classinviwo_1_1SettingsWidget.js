@@ -3,6 +3,7 @@ var classinviwo_1_1SettingsWidget =
     [ "SettingsWidget", "classinviwo_1_1SettingsWidget.html#aa757416cbc65c6e553929f931abcbd7b", null ],
     [ "SettingsWidget", "classinviwo_1_1SettingsWidget.html#a485b9c128d9d35fad5c92c64044f3b80", null ],
     [ "~SettingsWidget", "classinviwo_1_1SettingsWidget.html#a963578475ffc0b3ebfe00f27c935f029", null ],
+    [ "closeEvent", "classinviwo_1_1SettingsWidget.html#a1ec5c89cb21724dd7fe98e4bfc7ef1dc", null ],
     [ "saveSettings", "classinviwo_1_1SettingsWidget.html#a6da2f18a5e9ad2d7a68b2b27b95c6a76", null ],
     [ "updatePropertyWidgetSemantics", "classinviwo_1_1SettingsWidget.html#a1eee5d88dde91feee162304aeb250d58", null ],
     [ "updateSettingsWidget", "classinviwo_1_1SettingsWidget.html#ae65781844f864f0e521c65cac3603bee", null ],

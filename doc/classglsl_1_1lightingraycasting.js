@@ -1,7 +1,11 @@
 var classglsl_1_1lightingraycasting =
 [
     [ "main", "classglsl_1_1lightingraycasting.html#a640033e776069914d4e4a06b8741aaa4", null ],
-    [ "rayTraversal", "classglsl_1_1lightingraycasting.html#a10e96d515ebdcf0fb27238be498b3512", null ],
+    [ "rayTraversal", "classglsl_1_1lightingraycasting.html#ac3938fa89dfb1ffcb50ecd1bd9ec9371", null ],
+    [ "bgColor", "classglsl_1_1lightingraycasting.html#a2ac75998c81ac74fad4e89a18031d403", null ],
+    [ "bgDepth", "classglsl_1_1lightingraycasting.html#a7fbc2a74a861c1e1ba4af04cb13dc362", null ],
+    [ "bgParameters", "classglsl_1_1lightingraycasting.html#aca33bcdfe04caf575a46a8c983847e6b", null ],
+    [ "bgPicking", "classglsl_1_1lightingraycasting.html#ad1b4ddf85ce35ee568923d901a76970e", null ],
     [ "camera", "classglsl_1_1lightingraycasting.html#a9d65310fe7a03b1a6b5472683b65d2c1", null ],
     [ "channel", "classglsl_1_1lightingraycasting.html#a830a1bf66a7d2cbe8b9d4e56fa312953", null ],
     [ "entryColor", "classglsl_1_1lightingraycasting.html#a1224423a447c5966a9c237feadb855ca", null ],

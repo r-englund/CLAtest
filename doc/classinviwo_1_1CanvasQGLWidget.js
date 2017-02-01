@@ -5,6 +5,7 @@ var classinviwo_1_1CanvasQGLWidget =
     [ "~CanvasQGLWidget", "classinviwo_1_1CanvasQGLWidget.html#a9b3b0449975c5266335be7724025497f", null ],
     [ "activate", "classinviwo_1_1CanvasQGLWidget.html#a344e7933639971e75e7b2c9c89c212e2", null ],
     [ "activeContext", "classinviwo_1_1CanvasQGLWidget.html#aaca420d2d0c7b00260c634864a6cb862", null ],
+    [ "contextId", "classinviwo_1_1CanvasQGLWidget.html#ac92f143ae2a241d2e9e7830a2d4d0cc0", null ],
     [ "glSwapBuffers", "classinviwo_1_1CanvasQGLWidget.html#a2062d07aab9c5811517832e09d4c7169", null ],
     [ "initializeGL", "classinviwo_1_1CanvasQGLWidget.html#a0d0ace0fe8abc0db53b039b56d893f93", null ],
     [ "paintGL", "classinviwo_1_1CanvasQGLWidget.html#a886ec07107e07d24e534d1d710180259", null ],

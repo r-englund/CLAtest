@@ -3,6 +3,7 @@ var classinviwo_1_1ImageGLProcessor =
     [ "ImageGLProcessor", "classinviwo_1_1ImageGLProcessor.html#aa58e68800494d13528da672c46d0f805", null ],
     [ "~ImageGLProcessor", "classinviwo_1_1ImageGLProcessor.html#a17913a9218cac03421fb52990c1654ea", null ],
     [ "afterInportChanged", "classinviwo_1_1ImageGLProcessor.html#ae1eb80e4d20074c67b00b4bc7fcf1712", null ],
+    [ "calcOutputDimensions", "classinviwo_1_1ImageGLProcessor.html#ac2a0da39fec27d0188faa5f68f337937", null ],
     [ "initializeResources", "classinviwo_1_1ImageGLProcessor.html#a0caec0d137cc8b12884ab83eab7b5636", null ],
     [ "inportChanged", "classinviwo_1_1ImageGLProcessor.html#a169afbadea74d78f351719e2ede31015", null ],
     [ "markInvalid", "classinviwo_1_1ImageGLProcessor.html#a81b7be2000c621920a0ac38180057c90", null ],
@@ -14,5 +15,6 @@ var classinviwo_1_1ImageGLProcessor =
     [ "inport_", "classinviwo_1_1ImageGLProcessor.html#a588ee55a4713cc8a90ed4a1b79cd9ff8", null ],
     [ "internalInvalid_", "classinviwo_1_1ImageGLProcessor.html#adcef3462e3861793e801512e9d1e12d2", null ],
     [ "outport_", "classinviwo_1_1ImageGLProcessor.html#a07261877cb9bc0007f618598b1972e06", null ],
-    [ "shader_", "classinviwo_1_1ImageGLProcessor.html#ab58474e968d15893921a5034e09098fb", null ]
+    [ "shader_", "classinviwo_1_1ImageGLProcessor.html#ab58474e968d15893921a5034e09098fb", null ],
+    [ "swizzleMask_", "classinviwo_1_1ImageGLProcessor.html#a89e2b7af140908e483e542a841d5f46e", null ]
 ];

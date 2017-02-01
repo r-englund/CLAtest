@@ -1,7 +1,11 @@
 var classglsl_1_1multichannelraycaster =
 [
     [ "main", "classglsl_1_1multichannelraycaster.html#ad36d313084ac0e5341690e93af11f669", null ],
-    [ "rayTraversal", "classglsl_1_1multichannelraycaster.html#a3c2d49fd6b771dbc832c39e4f659a4e3", null ],
+    [ "rayTraversal", "classglsl_1_1multichannelraycaster.html#aed628285e85132da9484d8baf3535ead", null ],
+    [ "bgColor", "classglsl_1_1multichannelraycaster.html#ae1bd3a30417904708cd31a0acb6c28be", null ],
+    [ "bgDepth", "classglsl_1_1multichannelraycaster.html#ac3b9e2bb5ad9ca65a943038d1f03d251", null ],
+    [ "bgParameters", "classglsl_1_1multichannelraycaster.html#a5f11cdcd2ca56cffa632945cfdf12f76", null ],
+    [ "bgPicking", "classglsl_1_1multichannelraycaster.html#a396fc7f4611041aba559c3ef5a6130fc", null ],
     [ "camera", "classglsl_1_1multichannelraycaster.html#a677ef76da6582cee467941aaaef6a095", null ],
     [ "entryColor", "classglsl_1_1multichannelraycaster.html#ab8fbdb99d2f0fc8e7154bc4893809eda", null ],
     [ "entryDepth", "classglsl_1_1multichannelraycaster.html#ad487bfcfb6764d020f1054a8966a0872", null ],

@@ -8,6 +8,7 @@ var classinviwo_1_1VolumeRaycaster =
     [ "onVolumeChange", "classinviwo_1_1VolumeRaycaster.html#adbde1d3eed1a06d1ebb4c32dd5180f94", null ],
     [ "process", "classinviwo_1_1VolumeRaycaster.html#a52be4455f6edb6f793ccdd468bbe49dd", null ],
     [ "toggleShading", "classinviwo_1_1VolumeRaycaster.html#aca124944f4cc487fc376c1463ad1e34c", null ],
+    [ "backgroundPort_", "classinviwo_1_1VolumeRaycaster.html#ae77791840879b439f257abf3358b17da", null ],
     [ "camera_", "classinviwo_1_1VolumeRaycaster.html#ae59efdb2fc739f7cc558ee8007d5a975", null ],
     [ "channel_", "classinviwo_1_1VolumeRaycaster.html#ae542a994d7f93a67cfb999b609a20bbb", null ],
     [ "entryPort_", "classinviwo_1_1VolumeRaycaster.html#aac9591a9a3ebb84a1b8c0341e157d883", null ],

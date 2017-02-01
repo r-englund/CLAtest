@@ -1,11 +1,12 @@
 var classinviwo_1_1PythonEditorWidget =
 [
-    [ "PythonEditorWidget", "classinviwo_1_1PythonEditorWidget.html#aa8a2bb29f7f5f1de6bfeb9c8cdc7ec75", null ],
+    [ "PythonEditorWidget", "classinviwo_1_1PythonEditorWidget.html#a08b9f02bed75cd2f06b4fd3a782a5461", null ],
     [ "~PythonEditorWidget", "classinviwo_1_1PythonEditorWidget.html#aa74dcbb931c84f5cdae7e4f58b3ef4e6", null ],
     [ "appendToOutput", "classinviwo_1_1PythonEditorWidget.html#a65e6c61f33590fc10053d1bd8bed2846", null ],
     [ "clearOutput", "classinviwo_1_1PythonEditorWidget.html#a8f8e742711f394b34b490a3ff12ea958", null ],
+    [ "closeEvent", "classinviwo_1_1PythonEditorWidget.html#a2bd466b4221e23f9be4f370c4a9b01cf", null ],
     [ "fileChanged", "classinviwo_1_1PythonEditorWidget.html#ab2239f75e6fde6916814182ee8bb077c", null ],
-    [ "hasFocus", "classinviwo_1_1PythonEditorWidget.html#a1d858092899ead4c703d537862526e81", null ],
+    [ "hasFocus", "classinviwo_1_1PythonEditorWidget.html#a70833dd8a916d206af391614f59242f8", null ],
     [ "loadFile", "classinviwo_1_1PythonEditorWidget.html#a403bcc1663087f7a813eeedf31f57099", null ],
     [ "onPyhonExecutionOutput", "classinviwo_1_1PythonEditorWidget.html#a7430fef67e0f57a5a458e5f0c2828d13", null ],
     [ "onTextChange", "classinviwo_1_1PythonEditorWidget.html#aef5f08acb4667926857f46c54852acab", null ],

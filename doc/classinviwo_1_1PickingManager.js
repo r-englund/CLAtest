@@ -1,13 +1,13 @@
 var classinviwo_1_1PickingManager =
 [
-    [ "PickingManager", "classinviwo_1_1PickingManager.html#a2d5a2b1f18f7c02b3b2e566f0fb6a4eb", null ],
+    [ "Result", "structinviwo_1_1PickingManager_1_1Result.html", "structinviwo_1_1PickingManager_1_1Result" ],
+    [ "PickingManager", "classinviwo_1_1PickingManager.html#a439c735ce553b8bc78f7303ba8e70293", null ],
     [ "PickingManager", "classinviwo_1_1PickingManager.html#af1d99dc6892fd30e1efc75406cad0d64", null ],
     [ "~PickingManager", "classinviwo_1_1PickingManager.html#afe25877fbae2923462b49697ce144dfc", null ],
-    [ "getPickingObjectFromColor", "classinviwo_1_1PickingManager.html#afcc454d5074d803244d322d8fb1c1d6c", null ],
+    [ "getPickingActionFromColor", "classinviwo_1_1PickingManager.html#ac602d244c78cfce89644ba2b16f65701", null ],
     [ "operator=", "classinviwo_1_1PickingManager.html#a9dbd7d316767803c11e516796d41f373", null ],
     [ "pickingEnabled", "classinviwo_1_1PickingManager.html#a0f7ab9b340cdc44bc79e50d4f6d55bac", null ],
-    [ "registerPickingCallback", "classinviwo_1_1PickingManager.html#a5e0fc9ec15e00d2b64f391bee4a12fdc", null ],
-    [ "registerPickingCallback", "classinviwo_1_1PickingManager.html#aab678bc8bf43a4edb571cd9637e26b46", null ],
-    [ "unregisterPickingObject", "classinviwo_1_1PickingManager.html#acc0d38399718b655940cc09ad4cd1aa6", null ],
-    [ "PickingContainer", "classinviwo_1_1PickingManager.html#a4677f7af6505666bcbef3631afd16312", null ]
+    [ "registerPickingAction", "classinviwo_1_1PickingManager.html#adaba3ce9ff179e5cbdfa35ae43892b4b", null ],
+    [ "registerPickingAction", "classinviwo_1_1PickingManager.html#a6d97a86bdab8b47d783f36e3b387ec96", null ],
+    [ "unregisterPickingAction", "classinviwo_1_1PickingManager.html#aaa0fcbe85d21e4d3054dbd223db3561e", null ]
 ];

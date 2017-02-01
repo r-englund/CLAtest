@@ -1,15 +1,18 @@
 var classinviwo_1_1ViewManager =
 [
+    [ "View", "structinviwo_1_1ViewManager_1_1View.html", "structinviwo_1_1ViewManager_1_1View" ],
+    [ "Propagator", "classinviwo_1_1ViewManager.html#aa52cb599e17de124da948e94d2fab990", null ],
+    [ "ViewId", "classinviwo_1_1ViewManager.html#a8659492782eceebcc5063520c4099d8b", null ],
+    [ "ViewList", "classinviwo_1_1ViewManager.html#a64985bd9cdc9df196c8e3da5c89d5ed4", null ],
     [ "ViewManager", "classinviwo_1_1ViewManager.html#a67be90021e77ae351ac69d266687aa1a", null ],
     [ "clear", "classinviwo_1_1ViewManager.html#abd2332e29affcc10f2dd21259a20fc30", null ],
-    [ "erase", "classinviwo_1_1ViewManager.html#abc6d4d238049b2e6c85961947235b49d", null ],
-    [ "erase", "classinviwo_1_1ViewManager.html#a2e16afc404eada6b2f513f37c1ecb6d1", null ],
-    [ "getActivePosition", "classinviwo_1_1ViewManager.html#a8dab6db0631a3515512501b5619a5585", null ],
-    [ "getActiveView", "classinviwo_1_1ViewManager.html#a17e2a8f660f754cb8cb6160e7c6849b9", null ],
-    [ "getViews", "classinviwo_1_1ViewManager.html#a0cfd5d125f4f7021b8353727348934b5", null ],
-    [ "operator[]", "classinviwo_1_1ViewManager.html#afbc35aacad4f83b11c0403cd51eb0194", null ],
-    [ "push_back", "classinviwo_1_1ViewManager.html#abec3160f77e9fe9f4d39d835abae12e2", null ],
-    [ "registerEvent", "classinviwo_1_1ViewManager.html#a8c0126b710ebf2e4e4975b1f3894408b", null ],
-    [ "replace", "classinviwo_1_1ViewManager.html#ad47ecf682abfb42ffa1b78e307bb8023", null ],
-    [ "size", "classinviwo_1_1ViewManager.html#a088cdaa8812342137b2ecdeadbdff3b0", null ]
+    [ "erase", "classinviwo_1_1ViewManager.html#a90612d5f1a1ae588b8891da1f92208f8", null ],
+    [ "erase", "classinviwo_1_1ViewManager.html#a3fdf9811beced9bf29a3389c3599cb44", null ],
+    [ "getSelectedView", "classinviwo_1_1ViewManager.html#aefc9079e49e1c1cd1ca8a9078abbdace", null ],
+    [ "getViews", "classinviwo_1_1ViewManager.html#ab435fde9a02984c914a3dc888a4e39ff", null ],
+    [ "operator[]", "classinviwo_1_1ViewManager.html#ac8ab876695de1f877b6906c70652276b", null ],
+    [ "propagateEvent", "classinviwo_1_1ViewManager.html#aa6837a9a61d4c7bfa039c8fef2fb307a", null ],
+    [ "push_back", "classinviwo_1_1ViewManager.html#a03b33d969761141d199e665271cb25f8", null ],
+    [ "replace", "classinviwo_1_1ViewManager.html#a7c25b79905f94aa30551e677d8dfbf20", null ],
+    [ "size", "classinviwo_1_1ViewManager.html#afe3b4ef650d01fb70ae707baf3e94101", null ]
 ];

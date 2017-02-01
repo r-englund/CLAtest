@@ -6,13 +6,9 @@ var classinviwo_1_1TransferFunctionPropertyDialog =
     [ "changeMask", "classinviwo_1_1TransferFunctionPropertyDialog.html#a9668003b62ec8eb3dac0c5009fa0c83a", null ],
     [ "changeMoveMode", "classinviwo_1_1TransferFunctionPropertyDialog.html#a1fad83a58fd247db41ed05121d159e9f", null ],
     [ "changeVerticalZoom", "classinviwo_1_1TransferFunctionPropertyDialog.html#a6f5ba769304fbcbc6e14f756d1eba200", null ],
-    [ "closeEvent", "classinviwo_1_1TransferFunctionPropertyDialog.html#a77bce7ab8d2141d3624033843621fb0c", null ],
-    [ "dockLocationChanged", "classinviwo_1_1TransferFunctionPropertyDialog.html#af0593299d0e3940b4da229e75525d568", null ],
     [ "exportTransferFunction", "classinviwo_1_1TransferFunctionPropertyDialog.html#a19094e30b524eab4028316cc38e30a84", null ],
-    [ "getEditorView", "classinviwo_1_1TransferFunctionPropertyDialog.html#a6199cf7b5ff319763e9f3e994fc13c87", null ],
-    [ "getTFGradient", "classinviwo_1_1TransferFunctionPropertyDialog.html#a3e4f61f69caf7ff61fe2790a746540c8", null ],
+    [ "getEditorView", "classinviwo_1_1TransferFunctionPropertyDialog.html#add72a19a7c4c5f6ae54ad88fac72fa46", null ],
     [ "importTransferFunction", "classinviwo_1_1TransferFunctionPropertyDialog.html#ad74d1e07155bef76725ceca0e9039949", null ],
-    [ "moveEvent", "classinviwo_1_1TransferFunctionPropertyDialog.html#ae85d47d37fd87de00710b738c351a04d", null ],
     [ "onControlPointAdded", "classinviwo_1_1TransferFunctionPropertyDialog.html#a404e8cc385a9025a29870f22b8775464", null ],
     [ "onControlPointChanged", "classinviwo_1_1TransferFunctionPropertyDialog.html#a32d5d246f0f1bb9315f4829d67c5aa7e", null ],
     [ "onControlPointRemoved", "classinviwo_1_1TransferFunctionPropertyDialog.html#ae6388d03666b00838b3b42348947fa38", null ],
@@ -22,7 +18,6 @@ var classinviwo_1_1TransferFunctionPropertyDialog =
     [ "showColorDialog", "classinviwo_1_1TransferFunctionPropertyDialog.html#af635e50e55437a52acc65b5e25229b90", null ],
     [ "showEvent", "classinviwo_1_1TransferFunctionPropertyDialog.html#a406dc8875578acaeb4500261c14b5dbd", null ],
     [ "showHistogram", "classinviwo_1_1TransferFunctionPropertyDialog.html#ad439768e066b10bfb5702cec2cf90e8f", null ],
-    [ "switchInterpolationType", "classinviwo_1_1TransferFunctionPropertyDialog.html#a157b0c6b944e1065c51af0c23800a8d7", null ],
     [ "updateColorWheel", "classinviwo_1_1TransferFunctionPropertyDialog.html#aa5ba274d055dd2ca85c19549df83ece9", null ],
     [ "updateFromProperty", "classinviwo_1_1TransferFunctionPropertyDialog.html#a2579fb8750ce7f5b4dcc381d56c152a5", null ]
 ];

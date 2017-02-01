@@ -11,5 +11,6 @@ var classinviwo_1_1LIC2D =
     [ "samples_", "classinviwo_1_1LIC2D.html#ac470a64e1c1a9230f65ed244aba90e87", null ],
     [ "shader_", "classinviwo_1_1LIC2D.html#a3c76d621b03bcf2cf278bea5e4b55736", null ],
     [ "stepLength_", "classinviwo_1_1LIC2D.html#a32db250858087fd07c6cf4eeb51df719", null ],
+    [ "useRK4_", "classinviwo_1_1LIC2D.html#a25adfe0f1a3a7b8fd330b876896eb9c9", null ],
     [ "vectorField_", "classinviwo_1_1LIC2D.html#acd6c651196a45c107b2dbc005c73c145", null ]
 ];

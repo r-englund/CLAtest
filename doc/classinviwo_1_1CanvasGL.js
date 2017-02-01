@@ -2,11 +2,9 @@ var classinviwo_1_1CanvasGL =
 [
     [ "CanvasGL", "classinviwo_1_1CanvasGL.html#a405503a873f77949dbd76bf6b1b14f35", null ],
     [ "~CanvasGL", "classinviwo_1_1CanvasGL.html#af4a63c9ec64705e454a6d4426bf8f3b8", null ],
-    [ "checkChannels", "classinviwo_1_1CanvasGL.html#a49d74434dc4093700462f2f4ae03f4ec", null ],
     [ "drawSquare", "classinviwo_1_1CanvasGL.html#af953ce9ae8fbc11e15ecd62577df449c", null ],
-    [ "getDepthLayerRAM", "classinviwo_1_1CanvasGL.html#aa586bfdbb06eb5fe736f0bbfae0172d1", null ],
-    [ "getDepthValueAtCoord", "classinviwo_1_1CanvasGL.html#aad7fb38d88edce54f6631569fcd7eac1", null ],
-    [ "getDepthValueAtNormalizedCoord", "classinviwo_1_1CanvasGL.html#a45229733987594e877d7cc7f588a29fd", null ],
+    [ "getDepthValueAtCoord", "classinviwo_1_1CanvasGL.html#ac2ec6f954670bd27086f380b2a95aa5a", null ],
+    [ "getDepthValueAtNormalizedCoord", "classinviwo_1_1CanvasGL.html#a7953d1edd7e5f0fc00bf9292024ae1a2", null ],
     [ "getImageDimensions", "classinviwo_1_1CanvasGL.html#aae92bad9afaf776cbc96d26b5b342f95", null ],
     [ "glSwapBuffers", "classinviwo_1_1CanvasGL.html#ab0c510db51ebaf96fae90a27b9d353fe", null ],
     [ "render", "classinviwo_1_1CanvasGL.html#a3a1a8a939f6fd8249ab115ab1bd7bcd4", null ],

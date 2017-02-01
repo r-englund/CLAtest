@@ -7,5 +7,5 @@ var classinviwo_1_1GLFormats =
       [ "SignNormalized", "classinviwo_1_1GLFormats.html#a774582122c29a46c929446b2c0323ae6a8625ea72722b86245ec53a6dc039501f", null ]
     ] ],
     [ "GLFormats", "classinviwo_1_1GLFormats.html#a247cfaf5792da74757c022b7be09dc22", null ],
-    [ "getGLFormat", "classinviwo_1_1GLFormats.html#a8e0f89c4262863e0b0d46fdf82e5ee71", null ]
+    [ "getGLFormat", "classinviwo_1_1GLFormats.html#afa5ccb9628629d8ce48cf4ff98905da9", null ]
 ];

@@ -1,17 +1,21 @@
 var classinviwo_1_1ProcessorGraphicsItem =
 [
     [ "Type", "classinviwo_1_1ProcessorGraphicsItem.html#a1e61bb5df39453fd7359ed2bb146beaea41669aa4eda06eeff6c44fe328876c73", null ],
+    [ "PortType", "classinviwo_1_1ProcessorGraphicsItem.html#a6eb1d54f130143263acd014387e2c0fd", [
+      [ "In", "classinviwo_1_1ProcessorGraphicsItem.html#a6eb1d54f130143263acd014387e2c0fdaefeb369cccbd560588a756610865664c", null ],
+      [ "Out", "classinviwo_1_1ProcessorGraphicsItem.html#a6eb1d54f130143263acd014387e2c0fda7c147cda9e49590f6abe83d118b7353b", null ]
+    ] ],
     [ "ProcessorGraphicsItem", "classinviwo_1_1ProcessorGraphicsItem.html#afcfd436a4298feb1c521cf2abf291f30", null ],
     [ "~ProcessorGraphicsItem", "classinviwo_1_1ProcessorGraphicsItem.html#a59cd17b839fa88b02f3951c14e29581f", null ],
     [ "addInport", "classinviwo_1_1ProcessorGraphicsItem.html#a528a77b976e83424e8065021db04e5b7", null ],
     [ "addOutport", "classinviwo_1_1ProcessorGraphicsItem.html#a40c90849c039e0deb28769492e4b0ce5", null ],
     [ "editProcessorName", "classinviwo_1_1ProcessorGraphicsItem.html#af29ef255a8592231ab6d01ab2581a4db", null ],
-    [ "getIdentifier", "classinviwo_1_1ProcessorGraphicsItem.html#ad9ebbb8f263c96091a7bfd1e4e64f059", null ],
+    [ "getIdentifier", "classinviwo_1_1ProcessorGraphicsItem.html#a4135081ffae17d8c62885a5e3b774b53", null ],
     [ "getInportGraphicsItem", "classinviwo_1_1ProcessorGraphicsItem.html#a91a7e9276b67cd01d3ad67bc6be903e1", null ],
-    [ "getLinkGraphicsItem", "classinviwo_1_1ProcessorGraphicsItem.html#a3d42e83a306e0541aa6e4f4bcdbb2a48", null ],
+    [ "getLinkGraphicsItem", "classinviwo_1_1ProcessorGraphicsItem.html#adb6948c4e00294dbea2a2f534d926009", null ],
     [ "getOutportGraphicsItem", "classinviwo_1_1ProcessorGraphicsItem.html#a58d8f503a929d4520247abe1cbbcb99c", null ],
-    [ "getProcessor", "classinviwo_1_1ProcessorGraphicsItem.html#af9b7cb2bb5f4b4a4f175b14a677f8e2e", null ],
-    [ "getStatusItem", "classinviwo_1_1ProcessorGraphicsItem.html#ab551607f0f023d488649bceb7233aa8c", null ],
+    [ "getProcessor", "classinviwo_1_1ProcessorGraphicsItem.html#a49a4cf340c95a87dd61cf7f6d3bf4e87", null ],
+    [ "getStatusItem", "classinviwo_1_1ProcessorGraphicsItem.html#a689b37ca2d04b8a8331f5087e5b00dcf", null ],
     [ "isEditingProcessorName", "classinviwo_1_1ProcessorGraphicsItem.html#a09f8ea083e85a6290eaf6503ab8da8a6", null ],
     [ "itemChange", "classinviwo_1_1ProcessorGraphicsItem.html#a908ed83629b27d75b64af0112e07aa2c", null ],
     [ "onLabelGraphicsItemChange", "classinviwo_1_1ProcessorGraphicsItem.html#a6946931b4f894f98d3d62256c1baf901", null ],
@@ -22,6 +26,7 @@ var classinviwo_1_1ProcessorGraphicsItem =
     [ "onProcessorPortAdded", "classinviwo_1_1ProcessorGraphicsItem.html#a07149e50325294151e558d25fa57c392", null ],
     [ "onProcessorPortRemoved", "classinviwo_1_1ProcessorGraphicsItem.html#ab9764e77d0b9ad721e65bd4780f870ce", null ],
     [ "paint", "classinviwo_1_1ProcessorGraphicsItem.html#a089b6b3761feda19fc3c75c6e28f1726", null ],
+    [ "portPosition", "classinviwo_1_1ProcessorGraphicsItem.html#a7b0f734017f73259d1c85ade594d330e", null ],
     [ "removeInport", "classinviwo_1_1ProcessorGraphicsItem.html#afb8bfdc58605240b990cd4504786161f", null ],
     [ "removeOutport", "classinviwo_1_1ProcessorGraphicsItem.html#a13ee61ec334be71be38af55ddc1cf41a", null ],
     [ "setHighlight", "classinviwo_1_1ProcessorGraphicsItem.html#a7f68e1839a34987b4aa06a75845636b3", null ],

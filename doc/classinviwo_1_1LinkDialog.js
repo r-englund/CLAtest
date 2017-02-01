@@ -4,5 +4,5 @@ var classinviwo_1_1LinkDialog =
     [ "~LinkDialog", "classinviwo_1_1LinkDialog.html#a23fb816d23375459704a51b974d014c9", null ],
     [ "closeEvent", "classinviwo_1_1LinkDialog.html#abaee6808e2ffe6c21c573d38ea0416de", null ],
     [ "exec", "classinviwo_1_1LinkDialog.html#a34fe535d96f6eb33807576a5255d2d32", null ],
-    [ "sizeHint", "classinviwo_1_1LinkDialog.html#a42682c26e723b229c7852dfad4c275fc", null ]
+    [ "sizeHint", "classinviwo_1_1LinkDialog.html#a3329fc1fb470e523d9db680f41c17421", null ]
 ];

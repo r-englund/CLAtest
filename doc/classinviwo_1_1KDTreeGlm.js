@@ -7,6 +7,6 @@ var classinviwo_1_1KDTreeGlm =
     [ "find", "classinviwo_1_1KDTreeGlm.html#a65b61c24880ae84c4814de3baea58064", null ],
     [ "findCloseTo", "classinviwo_1_1KDTreeGlm.html#ac579fed929d856bee149d0f617d4605d", null ],
     [ "findNearest", "classinviwo_1_1KDTreeGlm.html#a8c0a14a5275efdd28222d22436774cee", null ],
-    [ "findNearest", "classinviwo_1_1KDTreeGlm.html#ac541b8c241f8615171fc30bd4bddbfa0", null ],
+    [ "findNNearest", "classinviwo_1_1KDTreeGlm.html#aaed76752066b2d7792b2bd6b9a3a034b", null ],
     [ "insert", "classinviwo_1_1KDTreeGlm.html#a511fa4c9a4d54d428757db720c916ecb", null ]
 ];

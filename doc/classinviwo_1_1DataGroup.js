@@ -1,15 +1,17 @@
 var classinviwo_1_1DataGroup =
 [
-    [ "DataGroup", "classinviwo_1_1DataGroup.html#a371e1da9e87cd249a9395f2c435a1a67", null ],
-    [ "DataGroup", "classinviwo_1_1DataGroup.html#a927e62411fc370c865934130061c1bad", null ],
-    [ "~DataGroup", "classinviwo_1_1DataGroup.html#a82460023b9a8d5e73435ff343e9d196f", null ],
-    [ "clearRepresentations", "classinviwo_1_1DataGroup.html#a63a1e8f19ab3f140adb949a6c153ab24", null ],
-    [ "clone", "classinviwo_1_1DataGroup.html#a16d7acdf6608a17756d56e6ed95e31da", null ],
-    [ "getEditableRepresentation", "classinviwo_1_1DataGroup.html#ae591b16851be6a2a4a470b63b3689c04", null ],
-    [ "getRepresentation", "classinviwo_1_1DataGroup.html#a4839957bbed9601912a79e249849fa4c", null ],
-    [ "hasRepresentation", "classinviwo_1_1DataGroup.html#a644e6db33383126cc8926b95dc41dce7", null ],
-    [ "hasRepresentations", "classinviwo_1_1DataGroup.html#a85b1c26246cceeceb239a2732f0085d0", null ],
-    [ "operator=", "classinviwo_1_1DataGroup.html#a2e13d7c83b49e1fa209f84ece9c8701c", null ],
-    [ "mutex_", "classinviwo_1_1DataGroup.html#a2d4576ae54abf9a1bd3310cbf7a364e8", null ],
-    [ "representations_", "classinviwo_1_1DataGroup.html#afd258a6baceaecdaab8def15bcb10470", null ]
+    [ "repr", "classinviwo_1_1DataGroup.html#a7fdec101fb11da40899944c6cb3500b4", null ],
+    [ "self", "classinviwo_1_1DataGroup.html#a1f50a41de06f1edb1ffc7568ef78538a", null ],
+    [ "~DataGroup", "classinviwo_1_1DataGroup.html#a55f4bce21e32e663a647053bdea18c53", null ],
+    [ "DataGroup", "classinviwo_1_1DataGroup.html#af1a04d8f76bbd90251ed7e6b7aafafce", null ],
+    [ "DataGroup", "classinviwo_1_1DataGroup.html#a611c2ef101607dad0139bfae2d7c8ac8", null ],
+    [ "clearRepresentations", "classinviwo_1_1DataGroup.html#a27b5a26ae55d7f5ee0841856baf7ca61", null ],
+    [ "clone", "classinviwo_1_1DataGroup.html#ab1b9e0cac690529a615292f0f3881d46", null ],
+    [ "getEditableRepresentation", "classinviwo_1_1DataGroup.html#ac2c91a7cb4a615816ffbed4988f0572c", null ],
+    [ "getRepresentation", "classinviwo_1_1DataGroup.html#ac959940db890702ec71329130d03ee49", null ],
+    [ "hasRepresentation", "classinviwo_1_1DataGroup.html#a753204297227b7fddc1842c7d232f717", null ],
+    [ "hasRepresentations", "classinviwo_1_1DataGroup.html#ab6dad252cf13fbd2240c49e838f753a2", null ],
+    [ "operator=", "classinviwo_1_1DataGroup.html#adb5fc013145545b67612d259a4bfee60", null ],
+    [ "mutex_", "classinviwo_1_1DataGroup.html#a77fa251c18259f9b64038ca7a5eb9016", null ],
+    [ "representations_", "classinviwo_1_1DataGroup.html#a5276a0d1a40d23efa744431ba34712e6", null ]
 ];

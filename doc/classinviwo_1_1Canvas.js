@@ -5,10 +5,11 @@ var classinviwo_1_1Canvas =
     [ "~Canvas", "classinviwo_1_1Canvas.html#a64359c2f67d2b0abd472fbbc712a3e1b", null ],
     [ "activate", "classinviwo_1_1Canvas.html#a9283b84cab5e11f48ba8e74dc15c264f", null ],
     [ "activeContext", "classinviwo_1_1Canvas.html#af5f463adf9ff419443fa0955041f9069", null ],
+    [ "contextId", "classinviwo_1_1Canvas.html#afa81586338be09a3764dd94970df0651", null ],
     [ "createHiddenCanvas", "classinviwo_1_1Canvas.html#a91f0d96e986e0a64fe774c6cb480ef26", null ],
-    [ "getCanvasDimensions", "classinviwo_1_1Canvas.html#a43ba652ac010c1334bf3e7209c6376df", null ],
+    [ "getCanvasDimensions", "classinviwo_1_1Canvas.html#ad64586b8cc61df46bebfe485c1088444", null ],
     [ "getImageDimensions", "classinviwo_1_1Canvas.html#a51ee68376198b1a14d5126ebbfcfee59", null ],
-    [ "getProcessorWidgetOwner", "classinviwo_1_1Canvas.html#adf08f79abb12dfb04d643d338d8126fd", null ],
+    [ "getProcessorWidgetOwner", "classinviwo_1_1Canvas.html#a6d2089d38b8d0706dc4647668815e228", null ],
     [ "isFullScreen", "classinviwo_1_1Canvas.html#af9dad89bb4f7374260f9d9af036db83f", null ],
     [ "propagateEvent", "classinviwo_1_1Canvas.html#af35a5ec96cece443da8e7cf32b90f9a2", null ],
     [ "releaseContext", "classinviwo_1_1Canvas.html#ae8c53b28da3070ded27c9cf97c6aa13b", null ],
@@ -19,7 +20,7 @@ var classinviwo_1_1Canvas =
     [ "setProcessorWidgetOwner", "classinviwo_1_1Canvas.html#a00d02a091c042b545a0e47d5c6e36b84", null ],
     [ "update", "classinviwo_1_1Canvas.html#a08144f2e1f543309ce462a93d6eb2c98", null ],
     [ "ownerWidget_", "classinviwo_1_1Canvas.html#ade6cce016b1691a1e61c8a5ec397ab64", null ],
-    [ "pickingContainer_", "classinviwo_1_1Canvas.html#ab38758bb368fada18ac981106e6c194e", null ],
+    [ "pickingController_", "classinviwo_1_1Canvas.html#ac56618dec39967c0d438a94f16e3288a", null ],
     [ "propagator_", "classinviwo_1_1Canvas.html#a5f2dc4b6e1c09ca74e38e0a6aa445a5b", null ],
     [ "screenDimensions_", "classinviwo_1_1Canvas.html#a780cfb1e1399d3147b944c8185b3b41b", null ]
 ];

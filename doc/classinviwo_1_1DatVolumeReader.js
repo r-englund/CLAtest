@@ -1,6 +1,6 @@
 var classinviwo_1_1DatVolumeReader =
 [
-    [ "VolumeSequence", "classinviwo_1_1DatVolumeReader.html#a6e139d220e5fc39dce9fca35262804af", null ],
+    [ "VolumeSequence", "classinviwo_1_1DatVolumeReader.html#a270dca49b9aeb4c6c096830f2758d486", null ],
     [ "DatVolumeReader", "classinviwo_1_1DatVolumeReader.html#ab9d650e0818b1fa6ecdb084c56b4d0e7", null ],
     [ "DatVolumeReader", "classinviwo_1_1DatVolumeReader.html#ab419e95bf1b575e3ba0e3b5b42ba1f5f", null ],
     [ "~DatVolumeReader", "classinviwo_1_1DatVolumeReader.html#a8dbfb03238c485696a5929c2f9b6988a", null ],

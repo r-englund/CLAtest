@@ -1,12 +1,13 @@
 var classinviwo_1_1RepresentationConverterFactory =
 [
-    [ "ConverterID", "classinviwo_1_1RepresentationConverterFactory.html#a25b57257cb7aac8cb51501543fa07b37", null ],
-    [ "PackageMap", "classinviwo_1_1RepresentationConverterFactory.html#a0700117a8b89dd0c9941ae1e7e75f60c", null ],
-    [ "RepMap", "classinviwo_1_1RepresentationConverterFactory.html#a5754644fe703a4412f4ce0269bb88db4", null ],
-    [ "RepresentationConverterFactory", "classinviwo_1_1RepresentationConverterFactory.html#af43699766e4ee3384e00c3d3a2629bb7", null ],
-    [ "~RepresentationConverterFactory", "classinviwo_1_1RepresentationConverterFactory.html#aaed2d5a209c2ebda274281a80dfaf867", null ],
-    [ "getRepresentationConverter", "classinviwo_1_1RepresentationConverterFactory.html#a051d010453e31d1a620b4179356ff07b", null ],
-    [ "getRepresentationConverter", "classinviwo_1_1RepresentationConverterFactory.html#a7ed1e715b9b984a6c227c720ca1bd3d0", null ],
-    [ "registerObject", "classinviwo_1_1RepresentationConverterFactory.html#ac9abc55450df31380c64a9f664991834", null ],
-    [ "unRegisterObject", "classinviwo_1_1RepresentationConverterFactory.html#a8964cf88379566858845ae1185e490be", null ]
+    [ "ConverterID", "classinviwo_1_1RepresentationConverterFactory.html#a61e16d172cb4b7cee03f4453685cfb4a", null ],
+    [ "PackageMap", "classinviwo_1_1RepresentationConverterFactory.html#a305bd45faa689aa238c2b40c26c64fba", null ],
+    [ "RepMap", "classinviwo_1_1RepresentationConverterFactory.html#a5ebf2e08cbbf016e8e158adbad9afe9f", null ],
+    [ "RepresentationConverterFactory", "classinviwo_1_1RepresentationConverterFactory.html#a163ff59b15d19dc2a79b6fcd21743b01", null ],
+    [ "~RepresentationConverterFactory", "classinviwo_1_1RepresentationConverterFactory.html#a6bfdb649f509151e928a72ea4598d5f0", null ],
+    [ "getBaseReprId", "classinviwo_1_1RepresentationConverterFactory.html#aff2b1716e7a01c13e12cc256a4dfaba0", null ],
+    [ "getRepresentationConverter", "classinviwo_1_1RepresentationConverterFactory.html#a8d120568714bda17982c22aecf6c3d7e", null ],
+    [ "getRepresentationConverter", "classinviwo_1_1RepresentationConverterFactory.html#ac9272b150e7e08862e3b741657b59415", null ],
+    [ "registerObject", "classinviwo_1_1RepresentationConverterFactory.html#af6cd8be60344021953627e7ecdee7955", null ],
+    [ "unRegisterObject", "classinviwo_1_1RepresentationConverterFactory.html#a723261ffa2498602bacaebcb8c50393d", null ]
 ];

@@ -30,6 +30,6 @@ var classglsl_1_1tuberendering =
     [ "vColor_", "classglsl_1_1tuberendering.html#a3d5f85147b903831099b3dc5988c4d70", null ],
     [ "worldPos_", "classglsl_1_1tuberendering.html#a54d5c76a06a312023d4146c63fe3766e", null ],
     [ "worldPos_", "classglsl_1_1tuberendering.html#ac6d64c4cb282c0248c0d9d39cf1e6d56", null ],
-    [ "worldPosition_", "classglsl_1_1tuberendering.html#a724c4a609c8e27fa212c697b36c1b0fe", null ],
+    [ "worldPosition_", "classglsl_1_1tuberendering.html#a09bf9b957a1cbdd294534c0a6f2f1d45", null ],
     [ "worldPosition_", "classglsl_1_1tuberendering.html#a265a72dd1c5b4f7040520ad2e41f8274", null ]
 ];

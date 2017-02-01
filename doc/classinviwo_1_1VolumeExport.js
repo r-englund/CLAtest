@@ -1,8 +1,7 @@
 var classinviwo_1_1VolumeExport =
 [
-    [ "VolumeExport", "classinviwo_1_1VolumeExport.html#ab578da674be67295a18a2fb1f0a11919", null ],
-    [ "~VolumeExport", "classinviwo_1_1VolumeExport.html#a5fd1353a36010fdd8079e0ebf721c847", null ],
-    [ "exportVolume", "classinviwo_1_1VolumeExport.html#abbae5d585dd86171828fcf05f721ebda", null ],
-    [ "getProcessorInfo", "classinviwo_1_1VolumeExport.html#a3eea649f2cf03d73616819823e7b2fa3", null ],
-    [ "process", "classinviwo_1_1VolumeExport.html#af8a6bbf663ab26ec1736f11ac50637b8", null ]
+    [ "VolumeExport", "classinviwo_1_1VolumeExport.html#a2fbe6dc5670e79a9103621ea66c18a9e", null ],
+    [ "~VolumeExport", "classinviwo_1_1VolumeExport.html#a97a4292f4224af88df8231ca6b1c0e0f", null ],
+    [ "getData", "classinviwo_1_1VolumeExport.html#ac0edc54919ebd8a489dfb42ba498ff0c", null ],
+    [ "getProcessorInfo", "classinviwo_1_1VolumeExport.html#a3eea649f2cf03d73616819823e7b2fa3", null ]
 ];

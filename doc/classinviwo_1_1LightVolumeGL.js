@@ -1,5 +1,6 @@
 var classinviwo_1_1LightVolumeGL =
 [
+    [ "PropagationParameters", "structinviwo_1_1LightVolumeGL_1_1PropagationParameters.html", "structinviwo_1_1LightVolumeGL_1_1PropagationParameters" ],
     [ "LightVolumeGL", "classinviwo_1_1LightVolumeGL.html#a20cbb3bf45fa2c8aead79e107c01bc53", null ],
     [ "~LightVolumeGL", "classinviwo_1_1LightVolumeGL.html#aaefe5f051a9fe2fea3efb7e251871658", null ],
     [ "borderColorTextureParameterFunction", "classinviwo_1_1LightVolumeGL.html#a3407bef192da7d32a28f810cbb179d9f", null ],

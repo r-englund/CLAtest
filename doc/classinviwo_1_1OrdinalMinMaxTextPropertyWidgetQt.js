@@ -1,6 +1,6 @@
 var classinviwo_1_1OrdinalMinMaxTextPropertyWidgetQt =
 [
-    [ "V", "classinviwo_1_1OrdinalMinMaxTextPropertyWidgetQt.html#a1d197f1212b58c1eb35d643dcaae0327", null ],
+    [ "V", "classinviwo_1_1OrdinalMinMaxTextPropertyWidgetQt.html#af6fca70fb0aae29931ca3fea05aa86d2", null ],
     [ "OrdinalMinMaxTextPropertyWidgetQt", "classinviwo_1_1OrdinalMinMaxTextPropertyWidgetQt.html#a09957efa3deb7630e44f9c07155910c8", null ],
     [ "~OrdinalMinMaxTextPropertyWidgetQt", "classinviwo_1_1OrdinalMinMaxTextPropertyWidgetQt.html#a61cd6eca4cae24ffd0e13535c8aadda1", null ],
     [ "makeEditorWidgets", "classinviwo_1_1OrdinalMinMaxTextPropertyWidgetQt.html#a31126cc77c4ba366111e43d9b5cb70fc", null ],

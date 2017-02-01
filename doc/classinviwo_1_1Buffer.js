@@ -8,6 +8,6 @@ var classinviwo_1_1Buffer =
     [ "clone", "classinviwo_1_1Buffer.html#a5668ea7faa6d1d48cb1011e3580c9ae6", null ],
     [ "createDefaultRepresentation", "classinviwo_1_1Buffer.html#a573506af79aa878c9914f745ff11b78b", null ],
     [ "getEditableRAMRepresentation", "classinviwo_1_1Buffer.html#a0bfa0671f294349ad40f0f587d5e3db6", null ],
-    [ "getRAMRepresentation", "classinviwo_1_1Buffer.html#aa9f586aadf6bad5a6c7a8a4bf42dd4b0", null ],
+    [ "getRAMRepresentation", "classinviwo_1_1Buffer.html#a555aa704e3e8584a826f90e89d54ea8c", null ],
     [ "operator=", "classinviwo_1_1Buffer.html#a22df61b22917d3d3bde87192d79e03e8", null ]
 ];

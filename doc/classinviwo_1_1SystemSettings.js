@@ -2,7 +2,7 @@ var classinviwo_1_1SystemSettings =
 [
     [ "SystemSettings", "classinviwo_1_1SystemSettings.html#a7edafd2d0a9fa44e4b53a6ad63baec1f", null ],
     [ "allocationTest", "classinviwo_1_1SystemSettings.html#a26c610731c5b0ebfa021dc19f7fe7eb6", null ],
-    [ "getApplicationUsageMode", "classinviwo_1_1SystemSettings.html#ac630a019a45162c28adc62821120ace4", null ],
+    [ "getApplicationUsageMode", "classinviwo_1_1SystemSettings.html#a59c8e3edfba2f6b4ba6a651036be6b7e", null ],
     [ "logStacktraceCallback", "classinviwo_1_1SystemSettings.html#aff4292861621241ef621783d29ed5781", null ],
     [ "allocTest_", "classinviwo_1_1SystemSettings.html#a9dc73c918e9191878a81f0715b9d8a3c", null ],
     [ "applicationUsageMode_", "classinviwo_1_1SystemSettings.html#af661376a6890463d2b6f6bed99cda12e", null ],
@@ -13,6 +13,7 @@ var classinviwo_1_1SystemSettings =
     [ "enablePortInspectors_", "classinviwo_1_1SystemSettings.html#ac368a67ec943ad6a7bc64230c4f27280", null ],
     [ "enableSoundProperty_", "classinviwo_1_1SystemSettings.html#ad7f999d4b37df89ed1ccd5bc8fd6a7c6", null ],
     [ "enableTouchProperty_", "classinviwo_1_1SystemSettings.html#ae1422315edbd93d3038f0b1ea3616436", null ],
+    [ "followObjectDuringRotation_", "classinviwo_1_1SystemSettings.html#a43f19f8218506a90ffb808c1ac33cd34", null ],
     [ "glslBackgroundColor_", "classinviwo_1_1SystemSettings.html#a76c22f6e48b988aed46903e9330ac396", null ],
     [ "glslBuiltinsColor_", "classinviwo_1_1SystemSettings.html#a2904d7429fc4f7ae431775ac0055c583", null ],
     [ "glslCommentColor_", "classinviwo_1_1SystemSettings.html#a8a65cf5b0329bdeec6eed8ac28aaaff0", null ],

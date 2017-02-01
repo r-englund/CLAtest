@@ -1,5 +1,6 @@
 var classinviwo_1_1SystemCapabilities =
 [
+    [ "BuildInfo", "structinviwo_1_1SystemCapabilities_1_1BuildInfo.html", "structinviwo_1_1SystemCapabilities_1_1BuildInfo" ],
     [ "CPUInfo", "structinviwo_1_1SystemCapabilities_1_1CPUInfo.html", "structinviwo_1_1SystemCapabilities_1_1CPUInfo" ],
     [ "DiskInfo", "structinviwo_1_1SystemCapabilities_1_1DiskInfo.html", "structinviwo_1_1SystemCapabilities_1_1DiskInfo" ],
     [ "MemoryInfo", "structinviwo_1_1SystemCapabilities_1_1MemoryInfo.html", "structinviwo_1_1SystemCapabilities_1_1MemoryInfo" ],
@@ -10,8 +11,17 @@ var classinviwo_1_1SystemCapabilities =
     [ "calculateOptimalBrickSize", "classinviwo_1_1SystemCapabilities.html#a33d40b77356544726f8b53eb3aeab9c6", null ],
     [ "canAllocate", "classinviwo_1_1SystemCapabilities.html#a1d11d82f999b2d6e0e6e8b24b84924ae", null ],
     [ "getAvailableMemory", "classinviwo_1_1SystemCapabilities.html#af1cbefc6eb8f76b96294adda8c005910", null ],
+    [ "getBuildDateString", "classinviwo_1_1SystemCapabilities.html#a65e4461ba09ca75c80f84b90bafd4864", null ],
+    [ "getBuildTimeDay", "classinviwo_1_1SystemCapabilities.html#a3482a12395e4a628493937aa25dc3da6", null ],
+    [ "getBuildTimeHour", "classinviwo_1_1SystemCapabilities.html#a605f78a7217d0a20cdfeaa666875a9d4", null ],
+    [ "getBuildTimeMinute", "classinviwo_1_1SystemCapabilities.html#adc7b33bedd7fc3b96e4b45694c442024", null ],
+    [ "getBuildTimeMonth", "classinviwo_1_1SystemCapabilities.html#a0aa474876889df67d5fd9282bcced021", null ],
+    [ "getBuildTimeSecond", "classinviwo_1_1SystemCapabilities.html#a3aba3d057feb0b69a71f7212214b937c", null ],
+    [ "getBuildTimeYear", "classinviwo_1_1SystemCapabilities.html#a192caa1f3883c860ace42195bcae8f79", null ],
     [ "getCurrentResidentMemoryUsage", "classinviwo_1_1SystemCapabilities.html#a842e63458c8fcf5305471ff194192518", null ],
-    [ "numberOfCores", "classinviwo_1_1SystemCapabilities.html#ad293866d214a476b64743259b49b7f26", null ],
+    [ "getGitHash", "classinviwo_1_1SystemCapabilities.html#a9b0a8cd699c0cea1f35f224cd45b86ea", null ],
+    [ "getGitNumberOfHashes", "classinviwo_1_1SystemCapabilities.html#af512925c677b6bb24347b132e89538e6", null ],
+    [ "numberOfCores", "classinviwo_1_1SystemCapabilities.html#a44de17b3c89490e37c589dd90d51015a", null ],
     [ "printInfo", "classinviwo_1_1SystemCapabilities.html#ae1defba456cf4b0b8918e1678478f8b5", null ],
     [ "retrieveDynamicInfo", "classinviwo_1_1SystemCapabilities.html#a1877809388778872dd4e9ca7abb68cb9", null ],
     [ "retrieveStaticInfo", "classinviwo_1_1SystemCapabilities.html#a6e0504cb2a70e8b5b08f8b580f1f16e4", null ]

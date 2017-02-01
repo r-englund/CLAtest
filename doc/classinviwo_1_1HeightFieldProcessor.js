@@ -3,6 +3,5 @@ var classinviwo_1_1HeightFieldProcessor =
     [ "HeightFieldProcessor", "classinviwo_1_1HeightFieldProcessor.html#a778283462d1c6181909108dfb77911f7", null ],
     [ "~HeightFieldProcessor", "classinviwo_1_1HeightFieldProcessor.html#a6cce48861c376307126594857eeb6c50", null ],
     [ "getProcessorInfo", "classinviwo_1_1HeightFieldProcessor.html#a5a2b9d07c32b9be8ae6915aedfea0f95", null ],
-    [ "isReady", "classinviwo_1_1HeightFieldProcessor.html#a57f8e0f8761523f748deddb6a7458675", null ],
     [ "process", "classinviwo_1_1HeightFieldProcessor.html#a49d4f2665a4f556d0b96dbb1be6ffe0c", null ]
 ];

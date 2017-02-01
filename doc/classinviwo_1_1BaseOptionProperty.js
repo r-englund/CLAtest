@@ -1,7 +1,7 @@
 var classinviwo_1_1BaseOptionProperty =
 [
     [ "BaseOptionProperty", "classinviwo_1_1BaseOptionProperty.html#ac1873baf6643021dd17d02453a3852d7", null ],
-    [ "BaseOptionProperty", "classinviwo_1_1BaseOptionProperty.html#a3d1be37e212b12533edad4c62af49fd0", null ],
+    [ "BaseOptionProperty", "classinviwo_1_1BaseOptionProperty.html#ad3920eaf409a99b6146d955440effe71", null ],
     [ "~BaseOptionProperty", "classinviwo_1_1BaseOptionProperty.html#a924720462658e78bb55ca5687a4c3a64", null ],
     [ "clearOptions", "classinviwo_1_1BaseOptionProperty.html#a54263e271e61e3fba4935c9a6e59977a", null ],
     [ "getClassIdentifier", "classinviwo_1_1BaseOptionProperty.html#a9a485a7709fd18ebbf11d8bf3979766c", null ],
@@ -13,6 +13,7 @@ var classinviwo_1_1BaseOptionProperty =
     [ "isSelectedDisplayName", "classinviwo_1_1BaseOptionProperty.html#ab9cf1743ff0410263edd879e6becd93d", null ],
     [ "isSelectedIdentifier", "classinviwo_1_1BaseOptionProperty.html#a54a2b41ccb4fc904d5440edb926672d7", null ],
     [ "isSelectedIndex", "classinviwo_1_1BaseOptionProperty.html#a99085aa06b98098504c8a1ffc3e99b50", null ],
+    [ "operator=", "classinviwo_1_1BaseOptionProperty.html#aad9ef2c7b5ad16c943694502fb815f52", null ],
     [ "set", "classinviwo_1_1BaseOptionProperty.html#a672258383c0fd84d769ad0b2041c958f", null ],
     [ "setSelectedDisplayName", "classinviwo_1_1BaseOptionProperty.html#a47eaf5567eb933e511e38c0ba02ef1d8", null ],
     [ "setSelectedIdentifier", "classinviwo_1_1BaseOptionProperty.html#a339c800a84debc8a62df598653df8482", null ],
