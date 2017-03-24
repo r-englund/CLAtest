@@ -2,7 +2,7 @@
  *
  * Inviwo - Interactive Visualization Workshop
  *
- * Copyright (c) 2014-2017 Inviwo Foundation
+ * Copyright (c) 2017 Inviwo Foundation
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -27,50 +27,66 @@
  *
  *********************************************************************************/
 
-#ifndef IVW_ABUFFER_GEOMETRYGL_RENDERING_PROCESSOR_H
-#define IVW_ABUFFER_GEOMETRYGL_RENDERING_PROCESSOR_H
+#ifndef IVW_EIGENNORMALIZE_H
+#define IVW_EIGENNORMALIZE_H
 
-#include <modules/abuffergl/abufferglmoduledefine.h>
+#include <modules/eigenutils/eigenutilsmoduledefine.h>
 #include <inviwo/core/common/inviwo.h>
-#include <modules/opengl/inviwoopengl.h>
+#include <inviwo/core/processors/processor.h>
+#include <inviwo/core/properties/ordinalproperty.h>
 #include <inviwo/core/ports/imageport.h>
-#include <inviwo/core/ports/volumeport.h>
-#include <inviwo/core/ports/meshport.h>
-#include <inviwo/core/properties/cameraproperty.h>
-#include <inviwo/core/properties/minmaxproperty.h>
-#include <inviwo/core/interaction/trackball.h>
-#include <modules/basegl/processors/meshrenderprocessorgl.h>
-#include <modules/opengl/image/imagegl.h>
-#include <modules/opengl/texture/textureunit.h>
-#include <inviwo/core/interaction/interactionhandler.h>
-#include <inviwo/core/properties/boolproperty.h>
-
-#include <modules/abuffergl/abufferglhelpers/abuffergl.h>
+#include <modules/eigenutils/eigenports.h>
+#include <inviwo/core/properties/optionproperty.h>
 
 namespace inviwo {
 
-class IVW_MODULE_ABUFFERGL_API ABufferGeometryGLProcessor : public MeshRenderProcessorGL {
+/** \docpage{org.inviwo.EigenNormalize, Matrix Normalization}
+* ![](org.inviwo.Normalize.png?classIdentifier=org.inviwo.EigenNormalize)
+*
+* A processor to normalize an Eigen::MatrixXf, supports following methods:
+* * MaxElement: Divide in element in the matrix by the value of the largest element
+* * MniMaxElement: Normalize each element based on the min and max value of the matrix
+* * Normalize: Uses the Eigens provided normalization method
+*
+*
+* ### Inports
+*   * __in__ Unnormalized matrix
+*
+* ### Outports
+*   * __out__ Normalized matrix
+*
+* ### Properties
+*   * __Method__ Select which method to use (see above)
+*
+*/
+
+/**
+ * \class EigenNormalize
+ * \brief A processor to normalize an Eigen::MatrixXf
+ * A processor to normalize an Eigen::MatrixXf, supports following methods:
+ * * MaxElement: Divide in element in the matrix by the value of the largest element
+ * * MniMaxElement: Normalize each element based on the min and max value of the matrix
+ * * Normalize: Uses the Eigens provided normalization method
+ */
+class IVW_MODULE_EIGENUTILS_API EigenNormalize : public Processor {
 public:
-    ABufferGeometryGLProcessor();
-    virtual ~ABufferGeometryGLProcessor();
+    enum class Method { MaxElement, MinMaxElement, Normalize };
+
+    EigenNormalize();
+    virtual ~EigenNormalize() = default;
+
+    virtual void process() override;
+
     virtual const ProcessorInfo getProcessorInfo() const override;
     static const ProcessorInfo processorInfo_;
 
-protected:
-    virtual void initializeResources();
-    virtual void process();
-    void onAbufferSettingChanged();
-    void onAbufferTransparencyChanged();
-
 private:
-    void geometryRender();
-    Inviwo_ABufferGL4 abuffer_;
-    FloatProperty transparency_;
-    BoolProperty verboseLogging_;
-    bool updateRequried_;
-    Shader abufferGeometryShader_;
+    EigenMatrixInport in_;
+    EigenMatrixOutport out_;
+
+    TemplateOptionProperty<Method> method_;
 };
 
 }  // namespace
 
-#endif  // IVW_ABUFFER_GEOMETRYGL_RENDERING_PROCESSOR_H
+#endif  // IVW_EIGENNORMALIZE_H

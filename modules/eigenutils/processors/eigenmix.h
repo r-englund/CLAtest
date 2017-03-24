@@ -2,7 +2,7 @@
  *
  * Inviwo - Interactive Visualization Workshop
  *
- * Copyright (c) 2015-2017 Inviwo Foundation
+ * Copyright (c) 2017 Inviwo Foundation
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -27,62 +27,58 @@
  *
  *********************************************************************************/
 
-#ifndef IVW_VECTORFIELDGENERATOR3D_H
-#define IVW_VECTORFIELDGENERATOR3D_H
+#ifndef IVW_EIGENMIX_H
+#define IVW_EIGENMIX_H
 
-#include <modules/vectorfieldvisualizationgl/vectorfieldvisualizationglmoduledefine.h>
+#include <modules/eigenutils/eigenutilsmoduledefine.h>
 #include <inviwo/core/common/inviwo.h>
-
-#include <inviwo/core/ports/volumeport.h>
 #include <inviwo/core/processors/processor.h>
-#include <modules/basegl/processors/volumeprocessing/volumeglprocessor.h>
-#include <modules/opengl/shader/shader.h>
-#include <modules/opengl/buffer/framebufferobject.h>
 #include <inviwo/core/properties/ordinalproperty.h>
-#include <inviwo/core/properties/stringproperty.h>
-#include <inviwo/core/properties/minmaxproperty.h>
+#include <inviwo/core/ports/imageport.h>
+#include <modules/eigenutils/eigenports.h>
 
 namespace inviwo {
 
+/** \docpage{org.inviwo.EigenMix, Mix}
+* ![](org.inviwo.EigenMix.png?classIdentifier=org.inviwo.EigenMix)
+*
+* Creates a linear mix of matrix A and B such that Cij = Aij + w (Bij-Aij)
+*
+*
+* ### Inports
+*   * __a__ Matrix A
+*   * __b__ Matrix B
+*
+* ### Outports
+*   * __res__ Lineart mix of Matrix A and B
+*
+* ### Properties
+*   * __Mix factor__ Weighting factor, a low value favors A and high value favors B
+*
+*/
+
 /**
- * \class VectorFieldGenerator3D
- * \brief VERY_BRIEFLY_DESCRIBE_THE_CLASS
- * DESCRIBE_THE_CLASS
+ * \class Mix
+ * \brief Creates a linear mix of matrix A and B such that Cij = Aij + w (Bij-Aij)
  */
-    class IVW_MODULE_VECTORFIELDVISUALIZATIONGL_API VectorFieldGenerator3D : public Processor {
-    public:
-        VectorFieldGenerator3D();
-        virtual ~VectorFieldGenerator3D();
+class IVW_MODULE_EIGENUTILS_API EigenMix : public Processor {
+public:
+    EigenMix();
+    virtual ~EigenMix() = default;
 
-        virtual const ProcessorInfo getProcessorInfo() const override;
-        static const ProcessorInfo processorInfo_;
+    virtual void process() override;
 
-        virtual void initializeResources()override;
+    virtual const ProcessorInfo getProcessorInfo() const override;
+    static const ProcessorInfo processorInfo_;
 
+private:
+    EigenMatrixInport a_;
+    EigenMatrixInport b_;
+    EigenMatrixOutport res_;
 
-    protected:
-        virtual void process() override;
+    FloatProperty w_;
+};
 
+}  // namespace
 
-        VolumeOutport outport_;
-        std::shared_ptr<Volume> volume_;
-
-        OrdinalProperty<size3_t> size_;
-
-        FloatMinMaxProperty xRange_;
-        FloatMinMaxProperty yRange_;
-        FloatMinMaxProperty zRange_;
-
-        StringProperty xValue_;
-        StringProperty yValue_;
-        StringProperty zValue_;
-
-        Shader shader_;
-        FrameBufferObject fbo_;
-
-    };
-
-} // namespace
-
-#endif // IVW_VECTORFIELDGENERATOR3D_H
-
+#endif  // IVW_MIX_H

@@ -2,7 +2,7 @@
  *
  * Inviwo - Interactive Visualization Workshop
  *
- * Copyright (c) 2015-2017 Inviwo Foundation
+ * Copyright (c) 2017 Inviwo Foundation
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,65 +24,36 @@
  * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- * 
+ *
  *********************************************************************************/
 
-#ifndef IVW_LIC2D_H
-#define IVW_LIC2D_H
-
-#include <modules/vectorfieldvisualizationgl/vectorfieldvisualizationglmoduledefine.h>
-#include <inviwo/core/common/inviwo.h>
-#include <inviwo/core/processors/processor.h>
-#include <inviwo/core/ports/imageport.h>
-#include <inviwo/core/properties/ordinalproperty.h>
-#include <inviwo/core/properties/boolproperty.h>
-#include <modules/opengl/shader/shader.h>
+#include <modules/eigenutils/processors/eigenmix.h>
 
 namespace inviwo {
 
-/** \docpage{<classIdentifier>, LIC2D}
- * Explanation of how to use the processor.
- *
- * ### Inports
- *   * __<Inport1>__ <description>.
- *
- * ### Outports
- *   * __<Outport1>__ <description>.
- * 
- * ### Properties
- *   * __<Prop1>__ <description>.
- *   * __<Prop2>__ <description>
- */
-class IVW_MODULE_VECTORFIELDVISUALIZATIONGL_API LIC2D : public Processor {
-public:
-    virtual const ProcessorInfo getProcessorInfo() const override;
-    static const ProcessorInfo processorInfo_;
-    LIC2D();
-    virtual ~LIC2D(){}
-     
-    virtual void process() override;
-    
-protected:
-
-    ImageInport vectorField_;
-    ImageInport noiseTexture_;
-    ImageOutport LIC2D_;
-
-
-    IntProperty samples_;
-    FloatProperty stepLength_;
-    BoolProperty normalizeVectors_;
-    BoolProperty intensityMapping_;
-    BoolProperty useRK4_;
-
-    Shader shader_;
-
-
-private:
-
+// The Class Identifier has to be globally unique. Use a reverse DNS naming scheme
+const ProcessorInfo EigenMix::processorInfo_{
+    "org.inviwo.EigenMix",    // Class identifier
+    "Matrix Mix",             // Display name
+    "Eigen",                  // Category
+    CodeState::Experimental,  // Code state
+    "Eigen",                  // Tags
 };
+const ProcessorInfo EigenMix::getProcessorInfo() const { return processorInfo_; }
 
-} // namespace
+EigenMix::EigenMix()
+    : Processor(), a_("a"), b_("b"), res_("res"), w_("w", "Mix factor", 0.5f, 0.f, 1.f, 0.1f) {
 
-#endif // IVW_LIC2D_H
+    addPort(a_);
+    addPort(b_);
+    addPort(res_);
+    addProperty(w_);
+}
 
+void EigenMix::process() {
+    auto A = a_.getData();
+    auto B = b_.getData();
+    res_.setData(std::make_shared<Eigen::MatrixXf>((*A) + w_.get() * ((*B) - (*A))));
+}
+
+}  // namespace
