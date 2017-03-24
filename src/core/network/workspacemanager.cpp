@@ -87,7 +87,7 @@ private:
 
 struct ErrorHandle {
     ErrorHandle(const InviwoSetupInfo& info, const std::string& filename)
-        : info_(info), filename_(filename){};
+        : info_(info), filename_(filename){}
 
     ~ErrorHandle() {
         if (!messages.empty()) {
@@ -123,7 +123,7 @@ struct ErrorHandle {
 };
 
 
-WorkspaceManager::WorkspaceManager(InviwoApplication* app) : app_(app) {};
+WorkspaceManager::WorkspaceManager(InviwoApplication* app) : app_(app) {}
 
 WorkspaceManager::~WorkspaceManager() = default;
 

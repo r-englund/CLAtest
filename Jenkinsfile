@@ -65,6 +65,9 @@ node {
                               -DIVW_MODULE_GLFW=ON \
                               -DIVW_TINY_GLFW_APPLICATION=ON \
                               -DIVW_TINY_QT_APPLICATION=ON \
+                              -DIVW_MODULE_ABUFFERGL=ON \
+                              -DIVW_MODULE_ANIMATION=ON \
+                              -DIVW_MODULE_ANIMATIONQT=ON \
                               ../inviwo
  
                         make -j 6
