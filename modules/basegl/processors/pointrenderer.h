@@ -2,7 +2,7 @@
  *
  * Inviwo - Interactive Visualization Workshop
  *
- * Copyright (c) 2013-2017 Inviwo Foundation
+ * Copyright (c) 2017 Inviwo Foundation
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -27,79 +27,74 @@
  *
  *********************************************************************************/
 
-#ifndef IVW_VOLUMESLICE_H
-#define IVW_VOLUMESLICE_H
+#ifndef IVW_POINTRENDERER_H
+#define IVW_POINTRENDERER_H
 
-#include <modules/base/basemoduledefine.h>
+#include <modules/basegl/baseglmoduledefine.h>
 #include <inviwo/core/common/inviwo.h>
-#include <inviwo/core/ports/volumeport.h>
-#include <inviwo/core/ports/imageport.h>
 #include <inviwo/core/processors/processor.h>
-#include <inviwo/core/properties/optionproperty.h>
-#include <inviwo/core/properties/boolproperty.h>
+#include <inviwo/core/interaction/cameratrackball.h>
+#include <inviwo/core/ports/meshport.h>
+#include <inviwo/core/ports/imageport.h>
+#include <inviwo/core/properties/cameraproperty.h>
 #include <inviwo/core/properties/ordinalproperty.h>
-#include <inviwo/core/properties/eventproperty.h>
-#include <inviwo/core/datastructures/geometry/geometrytype.h>
-#include <modules/base/datastructures/imagereusecache.h>
+#include <inviwo/core/properties/compositeproperty.h>
+#include <modules/opengl/shader/shader.h>
+#include <vector>
 
 namespace inviwo {
 
-/** \docpage{org.inviwo.VolumeSlice, Volume Slice}
- * ![](org.inviwo.VolumeSlice.png?classIdentifier=org.inviwo.VolumeSlice)
- * This processor extracts an axis aligned 2D slice from an input volume.
+/** \docpage{org.inviwo.PointRenderer, Point Renderer}
+ * ![](org.inviwo.PointRenderer.png?classIdentifier=org.inviwo.PointRenderer)
+ * This processor renders a set of meshes as points using OpenGL.
  *
  * ### Inports
- *   * __VolumeInport__ The input volume
+ *   * __geometry__ Input meshes
+ *   * __imageInport__ Optional background image
  *
  * ### Outports
- *   * __ImageOutport__ The extracted volume slice
+ *   * __image__ output image containing the rendered mesh and the optional input image
  *
  * ### Properties
- *   * __sliceAlongAxis_ Defines the volume axis for the output slice
- *   * __sliceNumber_ Defines the slice number for the output slice
+ *   * __Point Size__  size of the rendered points (in pixel)
+ *   * __Border Width__  width of the border
+ *   * __Border Color__  color of the border
+ *   * __Antialising__ width of the antialised point edge (in pixel), this determines the
+ *                     softness along the outer edge of the point
  */
 
 /**
- * \brief Outputs a slice from a volume, CPU-based
+ * \class PointRenderer
+ * \brief Renders input geometry with 2D points
  */
-class IVW_MODULE_BASE_API VolumeSlice : public Processor {
+class IVW_MODULE_BASEGL_API PointRenderer : public Processor {
 public:
-    VolumeSlice();
-    ~VolumeSlice();
+    PointRenderer();
+    virtual ~PointRenderer() = default;
+
+    virtual void process() override;
 
     virtual const ProcessorInfo getProcessorInfo() const override;
     static const ProcessorInfo processorInfo_;
 
-    virtual void invokeEvent(Event* event) override;
-
-protected:
-    virtual void process() override;
-
-    void shiftSlice(int);
-
 private:
-    void eventShiftSlice(Event*);
-    void eventStepSliceUp(Event*);
-    void eventStepSliceDown(Event*);
-    void eventGestureShiftSlice(Event*);
+    void drawMeshes();
 
-    VolumeInport inport_;
+    MeshFlatMultiInport inport_;
+    ImageInport imageInport_;
     ImageOutport outport_;
 
-    ImageReuseCache imageCache_;
+    FloatProperty pointSize_;
+    FloatProperty borderWidth_;
+    FloatVec4Property borderColor_;
+    FloatProperty antialising_;
 
-    TemplateOptionProperty<CartesianCoordinateAxis> sliceAlongAxis_;
-    IntSizeTProperty sliceNumber_;
+    CameraProperty camera_;
+    CameraTrackball trackball_;
 
-    BoolProperty handleInteractionEvents_;
-
-    EventProperty mouseShiftSlice_;
-
-    EventProperty stepSliceUp_;
-    EventProperty stepSliceDown_;
-
-    EventProperty gestureShiftSlice_;
+    Shader shader_;
 };
 
-}
-#endif  // IVW_VOLUMESLICE_H
+}  // namespace inviwo
+
+#endif  // IVW_POINTRENDERER_H

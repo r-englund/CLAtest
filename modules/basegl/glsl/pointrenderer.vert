@@ -24,61 +24,28 @@
  * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- *
+ * 
  *********************************************************************************/
 
-#ifndef IVW_EIGENMIX_H
-#define IVW_EIGENMIX_H
+#include "utils/structs.glsl"
 
-#include <modules/eigenutils/eigenutilsmoduledefine.h>
-#include <inviwo/core/common/inviwo.h>
-#include <inviwo/core/processors/processor.h>
-#include <inviwo/core/properties/ordinalproperty.h>
-#include <inviwo/core/ports/imageport.h>
-#include <modules/eigenutils/eigenports.h>
+uniform GeometryParameters geometry_;
+uniform CameraParameters camera_;
 
-namespace inviwo {
+uniform float pointSize_ = 5.0; // [pixel]
+uniform float borderWidth_ = 1.0; // [pixel]
 
-/** \docpage{org.inviwo.EigenMix, EigenMix}
-* ![](org.inviwo.EigenMix.png?classIdentifier=org.inviwo.EigenMix)
-*
-* Creates a linear mix of matrix A and B such that Cij = Aij + w (Bij-Aij)
-*
-*
-* ### Inports
-*   * __a__ Matrix A
-*   * __b__ Matrix B
-*
-* ### Outports
-*   * __res__ Lineart mix of Matrix A and B
-*
-* ### Properties
-*   * __Mix factor__ Weighting factor, a low value favors A and high value favors B
-*
-*/
+out vec4 worldPosition_;
+out vec3 normal_;
+out vec4 color_;
 
-/**
- * \class EigenMix
- * \brief Creates a linear mix of matrix A and B such that Cij = Aij + w (Bij-Aij)
- */
-class IVW_MODULE_EIGENUTILS_API EigenMix : public Processor {
-public:
-    EigenMix();
-    virtual ~EigenMix() = default;
+void main() {
+    worldPosition_ = geometry_.dataToWorld * in_Vertex;
 
-    virtual void process() override;
+    color_ = in_Color;
 
-    virtual const ProcessorInfo getProcessorInfo() const override;
-    static const ProcessorInfo processorInfo_;
+    normal_ = geometry_.dataToWorldNormalMatrix * in_Normal;
+    gl_Position = camera_.worldToClip * worldPosition_;
 
-private:
-    EigenMatrixInport a_;
-    EigenMatrixInport b_;
-    EigenMatrixOutport res_;
-
-    FloatProperty w_;
-};
-
-}  // namespace
-
-#endif  // IVW_MIX_H
+    gl_PointSize = (pointSize_ + 2 * borderWidth_);
+}  

@@ -27,58 +27,25 @@
  *
  *********************************************************************************/
 
-#ifndef IVW_EIGENMIX_H
-#define IVW_EIGENMIX_H
-
-#include <modules/eigenutils/eigenutilsmoduledefine.h>
-#include <inviwo/core/common/inviwo.h>
-#include <inviwo/core/processors/processor.h>
-#include <inviwo/core/properties/ordinalproperty.h>
-#include <inviwo/core/ports/imageport.h>
-#include <modules/eigenutils/eigenports.h>
+#include <modules/base/datastructures/imagereusecache.h>
 
 namespace inviwo {
 
-/** \docpage{org.inviwo.EigenMix, EigenMix}
-* ![](org.inviwo.EigenMix.png?classIdentifier=org.inviwo.EigenMix)
-*
-* Creates a linear mix of matrix A and B such that Cij = Aij + w (Bij-Aij)
-*
-*
-* ### Inports
-*   * __a__ Matrix A
-*   * __b__ Matrix B
-*
-* ### Outports
-*   * __res__ Lineart mix of Matrix A and B
-*
-* ### Properties
-*   * __Mix factor__ Weighting factor, a low value favors A and high value favors B
-*
-*/
+std::shared_ptr<Image> ImageReuseCache::getUnused() {
+    auto it = std::find_if(imageCache_.begin(), imageCache_.end(),
+                           [](const auto& elem) { return elem.use_count() == 1; });
+    if (it != imageCache_.end()) {
+        auto res = *it;
+        imageCache_.erase(it);
+        return res;
+    } else {
+        return nullptr;
+    }
+}
 
-/**
- * \class EigenMix
- * \brief Creates a linear mix of matrix A and B such that Cij = Aij + w (Bij-Aij)
- */
-class IVW_MODULE_EIGENUTILS_API EigenMix : public Processor {
-public:
-    EigenMix();
-    virtual ~EigenMix() = default;
+void ImageReuseCache::add(std::shared_ptr<Image> image) {
+    imageCache_.push_back(image);
+}
 
-    virtual void process() override;
+} // namespace
 
-    virtual const ProcessorInfo getProcessorInfo() const override;
-    static const ProcessorInfo processorInfo_;
-
-private:
-    EigenMatrixInport a_;
-    EigenMatrixInport b_;
-    EigenMatrixOutport res_;
-
-    FloatProperty w_;
-};
-
-}  // namespace
-
-#endif  // IVW_MIX_H

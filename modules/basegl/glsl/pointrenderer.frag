@@ -24,61 +24,44 @@
  * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- *
+ * 
  *********************************************************************************/
 
-#ifndef IVW_EIGENMIX_H
-#define IVW_EIGENMIX_H
+#include "utils/structs.glsl"
 
-#include <modules/eigenutils/eigenutilsmoduledefine.h>
-#include <inviwo/core/common/inviwo.h>
-#include <inviwo/core/processors/processor.h>
-#include <inviwo/core/properties/ordinalproperty.h>
-#include <inviwo/core/ports/imageport.h>
-#include <modules/eigenutils/eigenports.h>
+uniform float pointSize_; // [pixel]
+uniform float borderWidth_; // [pixel]
+uniform float antialias_ = 1.5; // [pixel]
 
-namespace inviwo {
+uniform vec4 borderColor_ = vec4(1.0, 0.0, 0.0, 1.0);
 
-/** \docpage{org.inviwo.EigenMix, EigenMix}
-* ![](org.inviwo.EigenMix.png?classIdentifier=org.inviwo.EigenMix)
-*
-* Creates a linear mix of matrix A and B such that Cij = Aij + w (Bij-Aij)
-*
-*
-* ### Inports
-*   * __a__ Matrix A
-*   * __b__ Matrix B
-*
-* ### Outports
-*   * __res__ Lineart mix of Matrix A and B
-*
-* ### Properties
-*   * __Mix factor__ Weighting factor, a low value favors A and high value favors B
-*
-*/
+in vec4 worldPosition_;
+in vec3 normal_;
+in vec4 color_;
 
-/**
- * \class EigenMix
- * \brief Creates a linear mix of matrix A and B such that Cij = Aij + w (Bij-Aij)
- */
-class IVW_MODULE_EIGENUTILS_API EigenMix : public Processor {
-public:
-    EigenMix();
-    virtual ~EigenMix() = default;
+void main() {
+    // calculate normal from texture coordinates
+    vec3 normal;
+    normal.xy = gl_PointCoord * vec2(2.0, -2.0) + vec2(-1.0, 1.0);
+    float r = sqrt(dot(normal.xy, normal.xy));
+    if (r > 1.0) {
+       discard;   // kill pixels outside circle
+    }
+    normal.z = sqrt(1.0 - r);
 
-    virtual void process() override;
+    float glyphRadius = pointSize_ * 0.5;
+    
+    r *= pointSize_ * 0.5 + borderWidth_;
 
-    virtual const ProcessorInfo getProcessorInfo() const override;
-    static const ProcessorInfo processorInfo_;
+    // pseudo antialiasing with the help of the alpha channel
+    // i.e. smooth transition between center and border, and smooth alpha fall-off at the outer rim
+    float outerglyphRadius = glyphRadius + borderWidth_ - antialias_; // used for adjusting the alpha value of the outer rim
 
-private:
-    EigenMatrixInport a_;
-    EigenMatrixInport b_;
-    EigenMatrixOutport res_;
+    float borderValue = clamp(mix(0.0, 1.0, (r - glyphRadius + 1) / 2), 0.0, 1.0);
+    float borderAlpha = clamp(mix(1.0, 0.0, (r - outerglyphRadius) / (glyphRadius + borderWidth_ - outerglyphRadius)), 0.0, 1.0);
 
-    FloatProperty w_;
-};
+    vec4 color = mix(color_, borderColor_, borderValue);
 
-}  // namespace
-
-#endif  // IVW_MIX_H
+    FragData0 = vec4(vec3(borderValue), 1.0);
+    FragData0 = vec4(color.rgb, color.a * borderAlpha);
+}

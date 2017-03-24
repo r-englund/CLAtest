@@ -27,58 +27,55 @@
  *
  *********************************************************************************/
 
-#ifndef IVW_EIGENMIX_H
-#define IVW_EIGENMIX_H
+#ifndef IVW_BASE_DATASTRUCTUES_IMAGECACHE_H
+#define IVW_BASE_DATASTRUCTUES_IMAGECACHE_H
 
-#include <modules/eigenutils/eigenutilsmoduledefine.h>
+#include <modules/base/basemoduledefine.h>
 #include <inviwo/core/common/inviwo.h>
-#include <inviwo/core/processors/processor.h>
-#include <inviwo/core/properties/ordinalproperty.h>
-#include <inviwo/core/ports/imageport.h>
-#include <modules/eigenutils/eigenports.h>
+
+#include <inviwo/core/datastructures/image/image.h>
+#include <inviwo/core/datastructures/image/layer.h>
+#include <inviwo/core/datastructures/image/layerram.h>
+#include <inviwo/core/datastructures/image/layerramprecision.h>
 
 namespace inviwo {
 
-/** \docpage{org.inviwo.EigenMix, EigenMix}
-* ![](org.inviwo.EigenMix.png?classIdentifier=org.inviwo.EigenMix)
-*
-* Creates a linear mix of matrix A and B such that Cij = Aij + w (Bij-Aij)
-*
-*
-* ### Inports
-*   * __a__ Matrix A
-*   * __b__ Matrix B
-*
-* ### Outports
-*   * __res__ Lineart mix of Matrix A and B
-*
-* ### Properties
-*   * __Mix factor__ Weighting factor, a low value favors A and high value favors B
-*
-*/
-
-/**
- * \class EigenMix
- * \brief Creates a linear mix of matrix A and B such that Cij = Aij + w (Bij-Aij)
- */
-class IVW_MODULE_EIGENUTILS_API EigenMix : public Processor {
+class IVW_MODULE_BASE_API ImageReuseCache { 
 public:
-    EigenMix();
-    virtual ~EigenMix() = default;
+    ImageReuseCache() = default;
 
-    virtual void process() override;
+    std::shared_ptr<Image> getUnused();
 
-    virtual const ProcessorInfo getProcessorInfo() const override;
-    static const ProcessorInfo processorInfo_;
+    template <typename T>
+    std::pair<std::shared_ptr<Image>, LayerRAMPrecision<T>*> getTypedUnused(const size2_t& dim);
+    void add(std::shared_ptr<Image> image);
 
 private:
-    EigenMatrixInport a_;
-    EigenMatrixInport b_;
-    EigenMatrixOutport res_;
-
-    FloatProperty w_;
+    std::vector<std::shared_ptr<Image>> imageCache_;
 };
 
-}  // namespace
+template <typename T>
+std::pair<std::shared_ptr<Image>, LayerRAMPrecision<T>*> ImageReuseCache::getTypedUnused(
+    const size2_t& dim) {
 
-#endif  // IVW_MIX_H
+    std::pair<std::shared_ptr<Image>, LayerRAMPrecision<T>*> res;
+
+    auto reuse = getUnused();
+
+    if (reuse && reuse->getDataFormat() == DataFormat<T>::get() && reuse->getDimensions() == dim) {
+        res.first = reuse;
+        res.second = static_cast<LayerRAMPrecision<T>*>(
+            reuse->getColorLayer()->getEditableRepresentation<LayerRAM>());
+    } else {
+        auto sDstRepr = std::make_shared<LayerRAMPrecision<T>>(dim);
+        auto dstLayer = std::make_shared<Layer>(sDstRepr);
+        res.second = sDstRepr.get();
+        res.first = std::make_shared<Image>(dstLayer);
+    }
+    return res;
+}
+
+} // namespace
+
+#endif // IVW_BASE_DATASTRUCTUES_IMAGECACHE_H
+

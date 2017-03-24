@@ -27,58 +27,10 @@
  *
  *********************************************************************************/
 
-#ifndef IVW_EIGENMIX_H
-#define IVW_EIGENMIX_H
-
-#include <modules/eigenutils/eigenutilsmoduledefine.h>
-#include <inviwo/core/common/inviwo.h>
-#include <inviwo/core/processors/processor.h>
-#include <inviwo/core/properties/ordinalproperty.h>
-#include <inviwo/core/ports/imageport.h>
-#include <modules/eigenutils/eigenports.h>
+#include <modules/base/algorithm/image/layerramdistancetransform.h>
 
 namespace inviwo {
 
-/** \docpage{org.inviwo.EigenMix, EigenMix}
-* ![](org.inviwo.EigenMix.png?classIdentifier=org.inviwo.EigenMix)
-*
-* Creates a linear mix of matrix A and B such that Cij = Aij + w (Bij-Aij)
-*
-*
-* ### Inports
-*   * __a__ Matrix A
-*   * __b__ Matrix B
-*
-* ### Outports
-*   * __res__ Lineart mix of Matrix A and B
-*
-* ### Properties
-*   * __Mix factor__ Weighting factor, a low value favors A and high value favors B
-*
-*/
 
-/**
- * \class EigenMix
- * \brief Creates a linear mix of matrix A and B such that Cij = Aij + w (Bij-Aij)
- */
-class IVW_MODULE_EIGENUTILS_API EigenMix : public Processor {
-public:
-    EigenMix();
-    virtual ~EigenMix() = default;
+} // namespace
 
-    virtual void process() override;
-
-    virtual const ProcessorInfo getProcessorInfo() const override;
-    static const ProcessorInfo processorInfo_;
-
-private:
-    EigenMatrixInport a_;
-    EigenMatrixInport b_;
-    EigenMatrixOutport res_;
-
-    FloatProperty w_;
-};
-
-}  // namespace
-
-#endif  // IVW_MIX_H
