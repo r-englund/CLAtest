@@ -2,7 +2,7 @@
  *
  * Inviwo - Interactive Visualization Workshop
  *
- * Copyright (c) 2014-2017 Inviwo Foundation
+ * Copyright (c) 2016 Inviwo Foundation
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,53 +24,37 @@
  * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- * 
+ *
  *********************************************************************************/
 
-#ifndef IVW_PORTINSPECTOR_H
-#define IVW_PORTINSPECTOR_H
-
-#include <inviwo/core/common/inviwocoredefine.h>
-#include <inviwo/core/common/inviwo.h>
-#include <inviwo/core/io/serialization/serializable.h>
-#include <inviwo/core/network/processornetwork.h>
-#include <inviwo/core/network/portconnection.h>
-#include <inviwo/core/ports/inport.h>
-#include <inviwo/core/processors/canvasprocessor.h>
-#include <string.h>
+#include <modules/postprocessing/processors/imagehuesaturationluminance.h>
+#include <modules/opengl/shader/shaderutils.h>
 
 namespace inviwo {
 
-class IVW_CORE_API PortInspector : public Serializable {
-public:
-    PortInspector(); // Should only be used for deserialization.
-    PortInspector(std::string portClassIdentifier, std::string inspectorWorkspaceFileName);
-    virtual ~PortInspector();
-
-    const std::string& getInspectorNetworkFileName() const;
-    const std::string& getPortClassName() const;
-
-    const std::vector<Processor*>& getProcessors() const;
-    const std::vector<Inport*>& getInports() const;
-    CanvasProcessor* getCanvasProcessor() const;
-    const std::vector<PortConnection>& getConnections() const;
-    const std::vector<PropertyLink>& getPropertyLinks() const;
-
-    virtual void serialize(Serializer& s) const override;
-
-    virtual void deserialize(Deserializer& d) override;
-
-private:
-    std::string inspectorNetworkFileName_;
-    std::string portClassIdentifier_;
-
-    std::vector<Processor*> processors_;
-    std::vector<Inport*> inports_;
-    std::vector<PortConnection> connections_;
-    std::vector<PropertyLink> propertyLinks_;
-    CanvasProcessor* canvasProcessor_ = nullptr;
+// The Class Identifier has to be globally unique. Use a reverse DNS naming scheme
+const ProcessorInfo ImageHueSaturationLuminance::processorInfo_{
+    "org.inviwo.ImageHueSaturationLuminance",  // Class identifier
+    "Image Hue Saturation Luminance",          // Display name
+    "Image Operation",                         // Category
+    CodeState::Stable,                         // Code state
+    Tags::None,                                // Tags
 };
+const ProcessorInfo ImageHueSaturationLuminance::getProcessorInfo() const { return processorInfo_; }
+
+ImageHueSaturationLuminance::ImageHueSaturationLuminance()
+    : ImageGLProcessor("huesaturationluminance.frag")
+    , hue_("hue", "Hue", 0.f, 0.f, 1.f, .01f)
+    , saturation_("sat", "Saturation", 0.f, -1.f, 1.f, .01f)
+    , luminance_("lum", "Luminance", 0.f, -1.f, 1.f, .01f) {
+
+    addProperty(hue_);
+    addProperty(saturation_);
+    addProperty(luminance_);
+}
+
+void ImageHueSaturationLuminance::preProcess(TextureUnitContainer &cont) {
+    utilgl::setUniforms(shader_, hue_, saturation_, luminance_);
+}
 
 }  // namespace
-
-#endif  // IVW_PORTINSPECTOR_H

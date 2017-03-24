@@ -2,7 +2,7 @@
  *
  * Inviwo - Interactive Visualization Workshop
  *
- * Copyright (c) 2016-2017 Inviwo Foundation
+ * Copyright (c) 2017 Inviwo Foundation
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,78 +24,38 @@
  * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- * 
+ *
  *********************************************************************************/
 
-#ifndef IVW_FXAA_H
-#define IVW_FXAA_H
+#ifndef IVW_EIGENMATRIXTOIMAGE_H
+#define IVW_EIGENMATRIXTOIMAGE_H
 
-#include <modules/postprocessing/postprocessingmoduledefine.h>
+#include <modules/eigenutils/eigenutilsmoduledefine.h>
 #include <inviwo/core/common/inviwo.h>
 #include <inviwo/core/processors/processor.h>
-#include <inviwo/core/properties/ordinalproperty.h>
-#include <inviwo/core/properties/optionproperty.h>
 #include <inviwo/core/ports/imageport.h>
-#include <modules/opengl/inviwoopengl.h>
-#include <modules/opengl/shader/shader.h>
+#include <inviwo/core/properties/boolproperty.h>
+#include <modules/eigenutils/ports.h>
 
 namespace inviwo {
 
-/** \docpage{org.inviwo.FXAA, FXAA}
- * ![](org.inviwo.FXAA.png?classIdentifier=org.inviwo.FXAA)
- * Applies Fast approximate anti-aliasing (FXAA) as a postprocessing operation
- * 
- *
- * ### Inports
- *   * __ImageInport__ Input image.
- *
- * ### Outports
- *   * __ImageOutport__ Output image.
- * 
- * ### Properties
- *   * __Dither__ Sets amount of dithering.
- *   * __Quality__ Sets the quality (number of samples) used. Performance vs. Quality
- */
-
-
-/**
- * \class FXAA
- * \brief Anti-aliasing post process
- */
-class IVW_MODULE_POSTPROCESSING_API FXAA : public Processor { 
+class IVW_MODULE_EIGENUTILS_API EigenMatrixToImage : public Processor {
 public:
-    FXAA();
-    virtual ~FXAA();
-    
-    virtual void initializeResources() override;
+    EigenMatrixToImage();
+    virtual ~EigenMatrixToImage() = default;
+
     virtual void process() override;
 
     virtual const ProcessorInfo getProcessorInfo() const override;
     static const ProcessorInfo processorInfo_;
 
 private:
-    void initFramebuffer(int width, int height);
+    EigenMatrixInport matrix_;
+    ImageOutport image_;
 
-    ImageInport inport_;
-    ImageOutport outport_;
-
-    BoolProperty enable_;
-
-    OptionPropertyInt dither_;
-    FloatProperty quality_;
-
-    Shader fxaa_;
-    Shader prepass_;
-    
-    struct {
-        GLuint fbo = 0;
-        GLuint tex = 0;
-        int width = 0;
-        int height = 0;
-    } prepassFbo_;
+    BoolProperty flipY_;
 };
 
-} // namespace
+}  // namespace
 
-#endif // IVW_FXAA_H
-
+#endif  // IVW_EIGENMATRIXTOIMAGE_H

@@ -2,7 +2,7 @@
  *
  * Inviwo - Interactive Visualization Workshop
  *
- * Copyright (c) 2014-2017 Inviwo Foundation
+ * Copyright (c) 2017 Inviwo Foundation
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -27,8 +27,31 @@
  *
  *********************************************************************************/
 
-#include <inviwo/core/ports/portinspectorfactory.h>
+#include <modules/eigenutils/processors/eigenmatrixtoimage.h>
 
 namespace inviwo {
+
+// The Class Identifier has to be globally unique. Use a reverse DNS naming scheme
+const ProcessorInfo EigenMatrixToImage::processorInfo_{
+    "org.inviwo.EigenMatrixToImage",  // Class identifier
+    "Eigen Matrix To Image",          // Display name
+    "Eigen",                          // Category
+    CodeState::Experimental,          // Code state
+    Tags::None,                       // Tags
+};
+const ProcessorInfo EigenMatrixToImage::getProcessorInfo() const { return processorInfo_; }
+
+EigenMatrixToImage::EigenMatrixToImage()
+    : Processor(), matrix_("matrix"), image_("image"), flipY_("flipy", "Flip Y-axis", true) {
+
+    addPort(matrix_);
+    addPort(image_);
+
+    addProperty(flipY_);
+}
+
+void EigenMatrixToImage::process() {
+    image_.setData(util::eigenMatToImage(*matrix_.getData(), flipY_.get()));
+}
 
 }  // namespace

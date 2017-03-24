@@ -2,7 +2,7 @@
  *
  * Inviwo - Interactive Visualization Workshop
  *
- * Copyright (c) 2014-2017 Inviwo Foundation
+ * Copyright (c) 2017 Inviwo Foundation
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,53 +24,32 @@
  * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- * 
+ *
  *********************************************************************************/
 
-#ifndef IVW_PORTINSPECTOR_H
-#define IVW_PORTINSPECTOR_H
+#ifndef IVW_EIGENPORTS_H
+#define IVW_EIGENPORTS_H
 
-#include <inviwo/core/common/inviwocoredefine.h>
+#include <modules/eigenutils/eigenutilsmoduledefine.h>
 #include <inviwo/core/common/inviwo.h>
-#include <inviwo/core/io/serialization/serializable.h>
-#include <inviwo/core/network/processornetwork.h>
-#include <inviwo/core/network/portconnection.h>
-#include <inviwo/core/ports/inport.h>
-#include <inviwo/core/processors/canvasprocessor.h>
-#include <string.h>
+#include <modules/eigenutils/eigenutils.h>
 
 namespace inviwo {
 
-class IVW_CORE_API PortInspector : public Serializable {
-public:
-    PortInspector(); // Should only be used for deserialization.
-    PortInspector(std::string portClassIdentifier, std::string inspectorWorkspaceFileName);
-    virtual ~PortInspector();
+using EigenMatrixOutport = DataOutport<Eigen::MatrixXf>;
+using EigenMatrixInport = DataInport<Eigen::MatrixXf>;
 
-    const std::string& getInspectorNetworkFileName() const;
-    const std::string& getPortClassName() const;
-
-    const std::vector<Processor*>& getProcessors() const;
-    const std::vector<Inport*>& getInports() const;
-    CanvasProcessor* getCanvasProcessor() const;
-    const std::vector<PortConnection>& getConnections() const;
-    const std::vector<PropertyLink>& getPropertyLinks() const;
-
-    virtual void serialize(Serializer& s) const override;
-
-    virtual void deserialize(Deserializer& d) override;
-
-private:
-    std::string inspectorNetworkFileName_;
-    std::string portClassIdentifier_;
-
-    std::vector<Processor*> processors_;
-    std::vector<Inport*> inports_;
-    std::vector<PortConnection> connections_;
-    std::vector<PropertyLink> propertyLinks_;
-    CanvasProcessor* canvasProcessor_ = nullptr;
+template <>
+struct port_traits<Eigen::MatrixXf> {
+    static std::string class_identifier() { return "EigenMatrixXf"; }
+    static uvec3 color_code() { return uvec3(141, 211, 199); }
+    static std::string data_info(const Eigen::MatrixXf* data) {
+        std::ostringstream oss;
+        oss << "Eigen MatrixXf " << data->rows() << "-by-" << data->cols();
+        return oss.str();
+    }
 };
 
 }  // namespace
 
-#endif  // IVW_PORTINSPECTOR_H
+#endif  // IVW_PORTS_H

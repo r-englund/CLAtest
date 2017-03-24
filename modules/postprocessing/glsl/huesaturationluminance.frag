@@ -2,7 +2,7 @@
  *
  * Inviwo - Interactive Visualization Workshop
  *
- * Copyright (c) 2014-2017 Inviwo Foundation
+ * Copyright (c) 2013-2016 Inviwo Foundation
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,11 +24,28 @@
  * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- *
+ * 
  *********************************************************************************/
 
-#include <inviwo/core/ports/portinspectorfactory.h>
+#include "utils/structs.glsl"
+#include "colortools.glsl"
 
-namespace inviwo {
+uniform sampler2D inport_;
+uniform ImageParameters outportParameters_;
 
-}  // namespace
+uniform float hue;
+uniform float sat;
+uniform float lum;
+
+void main() {
+    vec2 texCoords = gl_FragCoord.xy * outportParameters_.reciprocalDimensions;
+    vec4 inColor = texture(inport_, texCoords);
+    
+    vec3 hslColor = rgb2hsl(inColor.rgb);
+
+    hslColor.r = mod(hslColor.r + hue, 1.0);
+    hslColor.g = clamp(hslColor.g + sat, 0.0, 1.0);
+    hslColor.b = clamp(hslColor.b + lum, 0.0, 1.0);
+    
+    FragData0 = vec4(hsl2rgb(hslColor), inColor.a);
+}
