@@ -59,10 +59,8 @@ namespace inviwo {
 
         virtual void initializeResources()override;
 
-
     protected:
         virtual void process() override;
-
 
         VolumeOutport outport_;
         std::shared_ptr<Volume> volume_;
