@@ -27,10 +27,11 @@
  * 
  *********************************************************************************/
 
+
 #include "utils/shading.glsl"
 
-uniform LightParameters light_;
-uniform CameraParameters camera_;
+uniform LightParameters lighting;
+uniform CameraParameters camera;
 
 uniform vec4 overrideColor;
 
@@ -39,17 +40,18 @@ in vec3 normal_;
 in vec3 viewNormal_;
 in vec3 texCoord_;
 in vec4 color_;
+flat in vec4 pickColor_;
 
 void main() {
     vec4 fragColor = vec4(1.0);
-    vec3 toCameraDir_ = camera_.position - worldPosition_.xyz;
+    vec3 toCameraDir_ = camera.position - worldPosition_.xyz;
     #ifdef OVERRIDE_COLOR_BUFFER
     vec4 color = overrideColor;
     #else
     vec4 color = color_;
     #endif
 
-    fragColor.rgb = APPLY_LIGHTING(light_, color.rgb, color.rgb, vec3(1.0f), worldPosition_.xyz,
+    fragColor.rgb = APPLY_LIGHTING(lighting, color.rgb, color.rgb, vec3(1.0f), worldPosition_.xyz,
                                    normalize(normal_), normalize(toCameraDir_));
 
 #ifdef COLOR_LAYER
@@ -64,4 +66,7 @@ void main() {
 #ifdef VIEW_NORMALS_LAYER
     view_normals_out = vec4((normalize(viewNormal_)+1.0)*0.5,1.0f);
 #endif
+
+    PickingData = pickColor_;
+
 }
