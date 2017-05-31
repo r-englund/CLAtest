@@ -2,7 +2,7 @@
  *
  * Inviwo - Interactive Visualization Workshop
  *
- * Copyright (c) 2015-2017 Inviwo Foundation
+ * Copyright (c) 2017 Inviwo Foundation
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -27,13 +27,39 @@
  *
  *********************************************************************************/
 
-#include <inviwo/core/network/networklock.h>
-#include <inviwo/core/common/inviwoapplication.h>
+#include <inviwo/core/network/evaluationerrorhandler.h>
+#include <inviwo/core/processors/processor.h>
 
 namespace inviwo {
 
-NetworkLock::NetworkLock() : network_(InviwoApplication::getPtr()->getProcessorNetwork()) {
-    if (network_) network_->lock();
+void StandardEvaluationErrorHandler::operator()(Processor* processor, EvaluationType type,
+                                                ExceptionContext context) {
+    const std::string id = processor->getIdentifier();
+    const std::string func = [&]() {
+        switch (type) {
+            case EvaluationType::InitResource:
+                return "InitializeResources";
+            case EvaluationType::Process:
+                return "Process";
+            case EvaluationType::NotReady:
+                return "DoIfNotReady";
+            default:
+                return "Unknown";
+        }
+    }();
+
+    try {
+        throw;
+    } catch (Exception& e) {
+        util::log(e.getContext(), id + " Error in " + func + ": " + e.getMessage(),
+                  LogLevel::Error);
+    } catch (std::exception& e) {
+        util::log(context, id + " Error in " + func + ": " + std::string(e.what()),
+                  LogLevel::Error);
+    } catch (...) {
+        util::log(context, id + " Error in " + func + ": " + "Unknown error", LogLevel::Error);
+    }
 }
 
-}  // namespace
+} // namespace
+
