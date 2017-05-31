@@ -2,7 +2,7 @@
  *
  * Inviwo - Interactive Visualization Workshop
  *
- * Copyright (c) 2014-2017 Inviwo Foundation
+ * Copyright (c) 2013-2017 Inviwo Foundation
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -27,39 +27,38 @@
  *
  *********************************************************************************/
 
-/**
-This complete file is auto-generated with python script 
-tools/codegen/colorbrewer/colorbrewer.py
-**/
- 
-#ifndef IWW_COLORBREWER_H
-#define IWW_COLORBREWER_H
+#ifdef _MSC_VER
+#pragma comment(linker, "/SUBSYSTEM:CONSOLE")
+#endif
 
-#include <inviwo/core/common/inviwocoredefine.h>
 #include <inviwo/core/common/inviwo.h>
-#include <vector>
-#include <ostream>
+#include <inviwo/core/common/inviwoapplication.h>
+#include <inviwo/core/util/logcentral.h>
 
-namespace inviwo{
-namespace colorbrewer {
+#include <warn/push>
+#include <warn/ignore/all>
+#include <gtest/gtest.h>
+#include <warn/pop>
 
-##PLACEHOLDER##
+using namespace inviwo;
 
-IVW_CORE_API const std::vector<dvec4> &colormap(Colormap colormap);
+int main(int argc, char** argv) {
 
-template <class Elem, class Traits>
-std::basic_ostream<Elem, Traits>& operator<<(std::basic_ostream<Elem, Traits>& os, Colormap colormap){
-    switch(colormap){
-##PLACEHOLDER_NAMES##
+    inviwo::LogCentral::init();
+    InviwoApplication app(argc, argv, "inviwo");
+
+    int ret = -1;
+    {
+
+#ifdef IVW_ENABLE_MSVC_MEM_LEAK_TEST
+        VLDDisable();
+        ::testing::InitGoogleTest(&argc, argv);
+        VLDEnable();
+#else
+        ::testing::InitGoogleTest(&argc, argv);
+#endif
+        ret = RUN_ALL_TESTS();
     }
 
-    return os;
+    return ret;
 }
-
-} // namespace
-
-
-}
-#endif // COLORBREWER_H
-
-

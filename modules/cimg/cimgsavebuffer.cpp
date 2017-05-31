@@ -2,7 +2,7 @@
  *
  * Inviwo - Interactive Visualization Workshop
  *
- * Copyright (c) 2014-2017 Inviwo Foundation
+ * Copyright (c) 2017 Inviwo Foundation
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -27,39 +27,9 @@
  *
  *********************************************************************************/
 
-/**
-This complete file is auto-generated with python script 
-tools/codegen/colorbrewer/colorbrewer.py
-**/
- 
-#ifndef IWW_COLORBREWER_H
-#define IWW_COLORBREWER_H
+#include <modules/cimg/cimgsavebuffer.h>
 
-#include <inviwo/core/common/inviwocoredefine.h>
-#include <inviwo/core/common/inviwo.h>
-#include <vector>
-#include <ostream>
-
-namespace inviwo{
-namespace colorbrewer {
-
-##PLACEHOLDER##
-
-IVW_CORE_API const std::vector<dvec4> &colormap(Colormap colormap);
-
-template <class Elem, class Traits>
-std::basic_ostream<Elem, Traits>& operator<<(std::basic_ostream<Elem, Traits>& os, Colormap colormap){
-    switch(colormap){
-##PLACEHOLDER_NAMES##
-    }
-
-    return os;
-}
+namespace inviwo {
 
 } // namespace
-
-
-}
-#endif // COLORBREWER_H
-
 
