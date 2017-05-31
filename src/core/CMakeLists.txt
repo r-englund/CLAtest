@@ -121,6 +121,7 @@ set(HEADER_FILES
     ${IVW_INCLUDE_DIR}/inviwo/core/io/serialization/serializer.h
     ${IVW_INCLUDE_DIR}/inviwo/core/io/serialization/ticpp.h
     ${IVW_INCLUDE_DIR}/inviwo/core/io/serialization/versionconverter.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/io/tempfilehandle.h
     ${IVW_INCLUDE_DIR}/inviwo/core/io/textfilereader.h
     ${IVW_INCLUDE_DIR}/inviwo/core/links/linkconditions.h
     ${IVW_INCLUDE_DIR}/inviwo/core/links/linkevaluator.h
@@ -143,6 +144,7 @@ set(HEADER_FILES
     ${IVW_INCLUDE_DIR}/inviwo/core/network/processornetworkevaluator.h
     ${IVW_INCLUDE_DIR}/inviwo/core/network/processornetworkobserver.h
     ${IVW_INCLUDE_DIR}/inviwo/core/network/workspacemanager.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/network/workspaceutils.h
     ${IVW_INCLUDE_DIR}/inviwo/core/ports/bufferport.h
     ${IVW_INCLUDE_DIR}/inviwo/core/ports/datainport.h
     ${IVW_INCLUDE_DIR}/inviwo/core/ports/dataoutport.h
@@ -233,6 +235,7 @@ set(HEADER_FILES
     ${IVW_INCLUDE_DIR}/inviwo/core/util/colorbrewer.h
     ${IVW_INCLUDE_DIR}/inviwo/core/util/colorconversion.h
     ${IVW_INCLUDE_DIR}/inviwo/core/util/commandlineparser.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/util/consolelogger.h
     ${IVW_INCLUDE_DIR}/inviwo/core/util/constexprhash.h
     ${IVW_INCLUDE_DIR}/inviwo/core/util/datetime.h
     ${IVW_INCLUDE_DIR}/inviwo/core/util/dialog.h
@@ -245,6 +248,7 @@ set(HEADER_FILES
     ${IVW_INCLUDE_DIR}/inviwo/core/util/filedialog.h
     ${IVW_INCLUDE_DIR}/inviwo/core/util/filedialogstate.h
     ${IVW_INCLUDE_DIR}/inviwo/core/util/fileextension.h
+    ${IVW_INCLUDE_DIR}/inviwo/core/util/filelogger.h
     ${IVW_INCLUDE_DIR}/inviwo/core/util/fileobserver.h
     ${IVW_INCLUDE_DIR}/inviwo/core/util/filesystem.h
     ${IVW_INCLUDE_DIR}/inviwo/core/util/formatconversion.h
@@ -380,6 +384,7 @@ set(SOURCE_FILES
     io/serialization/serializeconstants.cpp
     io/serialization/serializer.cpp
     io/serialization/versionconverter.cpp
+    io/tempfilehandle.cpp
     io/textfilereader.cpp
     links/linkconditions.cpp
     links/linkevaluator.cpp
@@ -400,6 +405,7 @@ set(SOURCE_FILES
     network/processornetworkevaluator.cpp
     network/processornetworkobserver.cpp
     network/workspacemanager.cpp
+    network/workspaceutils.cpp
     ports/imageport.cpp
     ports/inport.cpp
     ports/outport.cpp
@@ -465,12 +471,14 @@ set(SOURCE_FILES
     util/colorbrewer.cpp
     util/colorconversion.cpp
     util/commandlineparser.cpp
+    util/consolelogger.cpp
     util/dialogfactory.cpp
     util/dialogfactoryobject.cpp
     util/document.cpp
     util/exception.cpp
     util/filedialog.cpp
     util/fileextension.cpp
+    util/filelogger.cpp
     util/fileobserver.cpp
     util/filesystem.cpp
     util/formatconversion.cpp
