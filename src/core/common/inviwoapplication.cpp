@@ -61,12 +61,12 @@
 #include <inviwo/core/util/vectoroperations.h>
 #include <inviwo/core/util/consolelogger.h>
 #include <inviwo/core/util/filelogger.h>
+#include <inviwo/core/util/timer.h>
 
 namespace inviwo {
 
 InviwoApplication::InviwoApplication(int argc, char** argv, std::string displayName)
     : displayName_(displayName)
-    , binaryPath_(argv ? filesystem::getFileDirectory(argv[0]) : "")
     , progressCallback_()
     , commandLineParser_(argc, argv)
     , pool_(0, []() {}, []() { RenderContext::getPtr()->clearContext(); })
@@ -327,8 +327,6 @@ void InviwoApplication::setPostEnqueueFront(std::function<void()> func) {
 
 const std::string& InviwoApplication::getDisplayName() const { return displayName_; }
 
-const std::string& InviwoApplication::getBinaryPath() const { return binaryPath_; }
-
 void InviwoApplication::addCallbackAction(ModuleCallbackAction* callbackAction) {
     moudleCallbackActions_.emplace_back(callbackAction);
 }
@@ -406,6 +404,14 @@ void InviwoApplication::waitForPool() {
     resizePool(old_size);
 }
 
+
+TimerThread& InviwoApplication::getTimerThread() {
+    if(!timerThread_) {
+        timerThread_ = util::make_unique<TimerThread>();
+    }
+    return *timerThread_;
+}
+
 void InviwoApplication::closeInviwoApplication() {
     LogWarn("this application have not implemented the closeInviwoApplication function");
 }
@@ -423,10 +429,6 @@ void InviwoApplication::stopFileObservation(std::string fileName) {
 }
 void InviwoApplication::playSound(Message soundID) {
     LogWarn("this application have not implemented the playSound function");
-}
-
-InteractionStateManager& InviwoApplication::getInteractionStateManager() {
-    return interactionState_;
 }
 
 }  // namespace
