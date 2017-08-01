@@ -32,6 +32,7 @@
 #include <inviwo/core/properties/stringproperty.h>
 #include <modules/qtwidgets/editablelabelqt.h>
 #include <modules/qtwidgets/lineeditqt.h>
+#include <modules/qtwidgets/inviwoqtutils.h>
 
 #include <warn/push>
 #include <warn/ignore/all>
@@ -77,14 +78,15 @@ StringPropertyWidgetQt::StringPropertyWidgetQt(StringProperty* property)
 }
 
 void StringPropertyWidgetQt::setPropertyValue() {
-    std::string valueStr = lineEdit_->text().toLocal8Bit().constData();
+    std::string valueStr = utilqt::fromQString(lineEdit_->text());
     property_->setInitiatingWidget(this);
     property_->set(valueStr);
     property_->clearInitiatingWidget();
 }
 
 void StringPropertyWidgetQt::updateFromProperty() {
-    lineEdit_->setText(QString::fromStdString(property_->get()));
+    QSignalBlocker blocker(lineEdit_);
+    lineEdit_->setText(utilqt::toQString(property_->get()));
     lineEdit_->setCursorPosition(0);
 }
 

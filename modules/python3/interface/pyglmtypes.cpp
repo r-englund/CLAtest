@@ -2,7 +2,7 @@
  *
  * Inviwo - Interactive Visualization Workshop
  *
- * Copyright (c) 2014-2016 Inviwo Foundation
+ * Copyright (c) 2014-2017 Inviwo Foundation
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -63,8 +63,7 @@ template <typename T, typename GLM>
 void common(py::module &m, py::class_<GLM> &pyc, std::string name) {
     pyc.def(py::init<T>())
         .def(py::init<>())
-        .def("__repr__", [](GLM &v) { return glm::to_string(v); })
-
+        
         .def(py::self + py::self)
         .def(py::self - py::self)
         .def(py::self += py::self)
