@@ -2,7 +2,7 @@
  *
  * Inviwo - Interactive Visualization Workshop
  *
- * Copyright (c) 2012-2017 Inviwo Foundation
+ * Copyright (c) 2017 Inviwo Foundation
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -27,33 +27,36 @@
  *
  *********************************************************************************/
 
-#ifndef IVW_UTILITIES_H
-#define IVW_UTILITIES_H
+#ifndef IVW_FONTPROPERTY_H
+#define IVW_FONTPROPERTY_H
 
-#include <inviwo/core/common/inviwocoredefine.h>
-#include <inviwo/core/util/exception.h>
-#include <string>
+#include <modules/fontrendering/fontrenderingmoduledefine.h>
+#include <inviwo/core/common/inviwo.h>
+
+#include <inviwo/core/properties/compositeproperty.h>
+#include <inviwo/core/properties/optionproperty.h>
+#include <inviwo/core/properties/ordinalproperty.h>
+#include <inviwo/core/properties/stringproperty.h>
 
 namespace inviwo {
 
-class ProcessorNetwork;
+class IVW_MODULE_FONTRENDERING_API FontProperty : public CompositeProperty {
+public:
+    InviwoPropertyInfo();
 
-namespace util {
+    FontProperty(const std::string& identifier, const std::string& displayName,
+                 InvalidationLevel invalidationLevel = InvalidationLevel::InvalidOutput,
+                 PropertySemantics semantics = PropertySemantics::Default);
+    FontProperty(const FontProperty& rhs);
+    FontProperty& operator=(const FontProperty& rhs) = default;
+    virtual FontProperty* clone() const override;
+    virtual ~FontProperty() = default;
 
-IVW_CORE_API void saveNetwork(ProcessorNetwork* network, std::string filename);
+    OptionPropertyString fontFace_;
+    OptionPropertyInt fontSize_;
+    FloatVec2Property anchorPos_;
+};
 
+}  // namespace inviwo
 
-IVW_CORE_API void saveAllCanvases(ProcessorNetwork* network, std::string dir,
-                                  std::string name = "UPN", std::string ext = ".png");
-
-IVW_CORE_API bool isValidIdentifierCharacter(char c, const std::string& extra = "");
-
-IVW_CORE_API void validateIdentifier(const std::string& identifier, const std::string& type,
-                                     ExceptionContext context, const std::string& extra = "");
-
-IVW_CORE_API std::string stripIdentifier(std::string identifier);
-}
-
-}  // namespace
-
-#endif  // IVW_UTILITIES_H
+#endif  // IVW_FONTPROPERTY_H

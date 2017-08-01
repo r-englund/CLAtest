@@ -2,7 +2,7 @@
  *
  * Inviwo - Interactive Visualization Workshop
  *
- * Copyright (c) 2015-2017 Inviwo Foundation
+ * Copyright (c) 2017 Inviwo Foundation
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -27,51 +27,43 @@
  *
  *********************************************************************************/
 
-#ifndef IVW_PROCESSORNETWORKCONVERTER_H
-#define IVW_PROCESSORNETWORKCONVERTER_H
+#ifndef IVW_STIPPLINGPROPERTY_H
+#define IVW_STIPPLINGPROPERTY_H
 
 #include <inviwo/core/common/inviwocoredefine.h>
 #include <inviwo/core/common/inviwo.h>
-#include <inviwo/core/io/serialization/versionconverter.h>
 
-#include <set>
+#include <inviwo/core/properties/compositeproperty.h>
+#include <inviwo/core/properties/optionproperty.h>
+#include <inviwo/core/properties/ordinalproperty.h>
 
 namespace inviwo {
 
-/**
- * \class ProcessorNetworkConverter
- * \brief A utility to handle conversion of ProcessorNetwork versions.
- */
-class IVW_CORE_API ProcessorNetworkConverter : public VersionConverter {
-    public:
-        typedef void (ProcessorNetworkConverter::*updateType)(TxElement*);
-        ProcessorNetworkConverter(int from);
-        virtual bool convert(TxElement* root);
-        int from_;
-    private:
-        void updateProcessorType(TxElement* node);
-        void updateMetaDataTree(TxElement* node);
-        void updatePropertType(TxElement* node);
-        void updateMetaDataType(TxElement* node);
-        void updateMetaDataKeys(TxElement* node);
-        void updateShadingMode(TxElement* node);
-        void updateCameraToComposite(TxElement* node);
-        void updateDimensionTag(TxElement* node);
-        void updatePropertyLinks(TxElement* node);
-        void updatePortsInProcessors(TxElement* node);
-        void updateNoSpaceInProcessorClassIdentifers(TxElement* node);
-        void updateDisplayName(TxElement* node);
-        void updateProcessorIdentifiers(TxElement* node);
-        void updateTransferfunctions(TxElement* node);
-
-        void updateProcessorIdentifiersStriped(TxElement *node);
-
-        void traverseNodes(TxElement* node, updateType update);
-
-        std::set<std::string> usedIdentifier_;
+class IVW_CORE_API StipplingProperty : public CompositeProperty { 
+public:
+    enum class Mode {
+        None,
+        ScreenSpace,
+        WorldSpace
     };
 
-} // namespace
+    InviwoPropertyInfo();
 
-#endif // IVW_PROCESSORNETWORKCONVERTER_H
+    StipplingProperty(const std::string& identifier, const std::string& displayName,
+                 InvalidationLevel invalidationLevel = InvalidationLevel::InvalidResources,
+                 PropertySemantics semantics = PropertySemantics::Default);
+    StipplingProperty(const StipplingProperty& rhs);
+    StipplingProperty& operator=(const StipplingProperty& rhs) = default;
+    virtual StipplingProperty* clone() const override;
+    virtual ~StipplingProperty() = default;
 
+    TemplateOptionProperty<Mode> mode_;
+    FloatProperty length_;
+    FloatProperty spacing_;
+    FloatProperty offset_;
+    FloatProperty worldScale_;
+};
+
+} // namespace inviwo
+
+#endif // IVW_STIPPLINGPROPERTY_H
