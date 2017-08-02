@@ -92,23 +92,36 @@ $(document).ready(function(){initNavTree('classinviwo_1_1PythonScript.html','');
 <div class="contents">
 
 <p><code>#include &lt;pythonscript.h&gt;</code></p>
+<div id="dynsection-0" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-0-trigger" src="closed.png" alt="+"/> Inheritance diagram for inviwo::PythonScript:</div>
+<div id="dynsection-0-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-0-content" class="dyncontent" style="display:none;">
+<div class="center"><img src="classinviwo_1_1PythonScript__inherit__graph.png" border="0" usemap="#inviwo_1_1PythonScript_inherit__map" alt="Inheritance graph"/></div>
+<map name="inviwo_1_1PythonScript_inherit__map" id="inviwo_1_1PythonScript_inherit__map">
+<area shape="rect" id="node2" href="classinviwo_1_1PythonScriptDisk.html" title="inviwo::PythonScriptDisk" alt="" coords="5,80,171,107"/>
+</map>
+<center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-types"></a>
 Public Types</h2></td></tr>
-<tr class="memitem:a3b4169b76ad7980eb046309ac4865add"><td class="memItemLeft" align="right" valign="top"><a id="a3b4169b76ad7980eb046309ac4865add"></a>
-using&#160;</td><td class="memItemRight" valign="bottom"><b>VariableMap</b> = std::unordered_map&lt; std::string, PyObject * &gt;</td></tr>
-<tr class="separator:a3b4169b76ad7980eb046309ac4865add"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af4f500eed2d53e7a00653fece05864d2"><td class="memItemLeft" align="right" valign="top"><a id="af4f500eed2d53e7a00653fece05864d2"></a>
+using&#160;</td><td class="memItemRight" valign="bottom"><b>VariableMap</b> = std::unordered_map&lt; std::string, pybind11::object &gt;</td></tr>
+<tr class="separator:af4f500eed2d53e7a00653fece05864d2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:ad15e78b76dca29ab28aaabecba032aa0"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classinviwo_1_1PythonScript.html#ad15e78b76dca29ab28aaabecba032aa0">~PythonScript</a> ()</td></tr>
+<tr class="memitem:ad15e78b76dca29ab28aaabecba032aa0"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classinviwo_1_1PythonScript.html#ad15e78b76dca29ab28aaabecba032aa0">~PythonScript</a> ()</td></tr>
 <tr class="separator:ad15e78b76dca29ab28aaabecba032aa0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab935f541b435a393fe9772e107afc30b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classinviwo_1_1PythonScript.html#ab935f541b435a393fe9772e107afc30b">setSource</a> (const std::string &amp;source)</td></tr>
 <tr class="separator:ab935f541b435a393fe9772e107afc30b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad71ff1ffbabfd9c701e9240ab26f40c0"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classinviwo_1_1PythonScript.html#ad71ff1ffbabfd9c701e9240ab26f40c0">getSource</a> () const</td></tr>
 <tr class="separator:ad71ff1ffbabfd9c701e9240ab26f40c0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a32e7d991ac05b46ef64b00071f966150"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classinviwo_1_1PythonScript.html#a32e7d991ac05b46ef64b00071f966150">run</a> (const VariableMap &amp;extraLocalVariables=VariableMap(), std::function&lt; void(PyObject *)&gt; callback=[](PyObject *obj) {})</td></tr>
-<tr class="separator:a32e7d991ac05b46ef64b00071f966150"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1d601ec2cbc8d1efbabbcc8f29a35867"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classinviwo_1_1PythonScript.html#a1d601ec2cbc8d1efbabbcc8f29a35867">run</a> (const VariableMap &amp;extraLocalVariables=VariableMap(), std::function&lt; void(pybind11::dict)&gt; callback=[](pybind11::dict dict) {})</td></tr>
+<tr class="separator:a1d601ec2cbc8d1efbabbcc8f29a35867"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a91dbd6a74df4f2ebe8eb74426aaa9682"><td class="memItemLeft" align="right" valign="top"><a id="a91dbd6a74df4f2ebe8eb74426aaa9682"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>run</b> (std::function&lt; void(pybind11::dict)&gt; callback)</td></tr>
+<tr class="separator:a91dbd6a74df4f2ebe8eb74426aaa9682"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9eab09a3d0c9b75809892e634c5995a4"><td class="memItemLeft" align="right" valign="top"><a id="a9eab09a3d0c9b75809892e634c5995a4"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>setFilename</b> (std::string filename)</td></tr>
 <tr class="separator:a9eab09a3d0c9b75809892e634c5995a4"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -121,6 +134,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>setFilename</b> (std:
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">inviwo::PythonScript::~PythonScript </td>
@@ -129,6 +145,11 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>setFilename</b> (std:
           <td></td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 <p>Frees the stored byte code. Make sure that the Python interpreter is still initialized when deleting the script. </p>
 
@@ -153,8 +174,8 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>setFilename</b> (std:
 
 </div>
 </div>
-<a id="a32e7d991ac05b46ef64b00071f966150"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a32e7d991ac05b46ef64b00071f966150">&#9670;&nbsp;</a></span>run()</h2>
+<a id="a1d601ec2cbc8d1efbabbcc8f29a35867"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1d601ec2cbc8d1efbabbcc8f29a35867">&#9670;&nbsp;</a></span>run()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -168,8 +189,8 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>setFilename</b> (std:
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">std::function&lt; void(PyObject *)&gt;&#160;</td>
-          <td class="paramname"><em>callback</em> = <code>[](PyObject*&#160;obj)&#160;{}</code>&#160;</td>
+          <td class="paramtype">std::function&lt; void(pybind11::dict)&gt;&#160;</td>
+          <td class="paramname"><em>callback</em> = <code>[](pybind11::dict&#160;dict)&#160;{}</code>&#160;</td>
         </tr>
         <tr>
           <td></td>

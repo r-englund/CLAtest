@@ -9,7 +9,7 @@ var classinviwo_1_1StreamLines =
     [ "linesStripsMesh_", "classinviwo_1_1StreamLines.html#a77dcd9a3fbadd5dc3ed7aadf8aa44f34", null ],
     [ "maxVelocity_", "classinviwo_1_1StreamLines.html#a7160cf42e8bafeab7f76f604806a7d99", null ],
     [ "sampler_", "classinviwo_1_1StreamLines.html#ae1ff3ee16bce3e328f17d4eb2bf4a87e", null ],
-    [ "seedPoints_", "classinviwo_1_1StreamLines.html#ae5d69e7e0560588c1a059b59e5677ca2", null ],
+    [ "seedPoints_", "classinviwo_1_1StreamLines.html#ae1df28109305e91b18d5cd999e2c7562", null ],
     [ "streamLineProperties_", "classinviwo_1_1StreamLines.html#ae9d8d05435e750345c55f9b916c30691", null ],
     [ "tf_", "classinviwo_1_1StreamLines.html#acd55da4abe6232ef8bf44aa8e1af2402", null ],
     [ "useOpenMP_", "classinviwo_1_1StreamLines.html#a76625666aed35654f2c3737e07291796", null ],

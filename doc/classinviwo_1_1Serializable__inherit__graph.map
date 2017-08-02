@@ -1,0 +1,194 @@
+<map id="inviwo::Serializable" name="inviwo::Serializable">
+<area shape="rect" id="node2" href="$classinviwo_1_1animation_1_1Animation.html" title="inviwo::animation::\lAnimation" alt="" coords="231,73,359,114"/>
+<area shape="rect" id="node3" href="$classinviwo_1_1animation_1_1Interpolation.html" title="inviwo::animation::\lInterpolation" alt="" coords="231,138,359,179"/>
+<area shape="rect" id="node6" href="$classinviwo_1_1animation_1_1Keyframe.html" title="inviwo::animation::\lKeyframe" alt="" coords="231,203,359,245"/>
+<area shape="rect" id="node8" href="$classinviwo_1_1animation_1_1KeyframeSequence.html" title="inviwo::animation::\lKeyframeSequence" alt="" coords="228,269,363,310"/>
+<area shape="rect" id="node10" href="$classinviwo_1_1animation_1_1Track.html" title="inviwo::animation::\lTrack" alt="" coords="231,334,359,375"/>
+<area shape="rect" id="node13" href="$classinviwo_1_1Camera.html" title="Base class for cameras. Override this class to set your own projection matrix. " alt="" coords="241,400,350,427"/>
+<area shape="rect" id="node17" href="$classinviwo_1_1EventMatcher.html" title="A class to represent a event matcher for use in event properties. " alt="" coords="224,585,367,612"/>
+<area shape="rect" id="node23" href="$classinviwo_1_1FileExtension.html" title="inviwo::FileExtension" alt="" coords="224,905,367,932"/>
+<area shape="rect" id="node24" href="$classinviwo_1_1ImageLabel.html" title="inviwo::ImageLabel" alt="" coords="230,956,361,983"/>
+<area shape="rect" id="node25" href="$classinviwo_1_1InteractionHandler.html" title="inviwo::InteractionHandler" alt="" coords="211,1007,379,1033"/>
+<area shape="rect" id="node28" href="$structinviwo_1_1InviwoSetupInfo.html" title="inviwo::InviwoSetupInfo" alt="" coords="219,1057,371,1084"/>
+<area shape="rect" id="node29" href="$structinviwo_1_1InviwoSetupInfo_1_1ModuleSetupInfo.html" title="inviwo::InviwoSetupInfo\l::ModuleSetupInfo" alt="" coords="219,1109,371,1150"/>
+<area shape="rect" id="node30" href="$classinviwo_1_1MetaData.html" title="inviwo::MetaData" alt="" coords="235,1175,355,1201"/>
+<area shape="rect" id="node43" href="$classinviwo_1_1MetaDataMap.html" title="inviwo::MetaDataMap" alt="" coords="223,1225,368,1252"/>
+<area shape="rect" id="node44" href="$classinviwo_1_1OptionPropertyOption.html" title="inviwo::OptionPropertyOption\&lt; T \&gt;" alt="" coords="185,2880,405,2907"/>
+<area shape="rect" id="node45" href="$classinviwo_1_1OptionPropertyOption.html" title="inviwo::OptionPropertyOption\l\&lt; utilgl::debug::Severity \&gt;" alt="" coords="662,1390,851,1431"/>
+<area shape="rect" id="node46" href="$classinviwo_1_1OptionPropertyOption.html" title="inviwo::OptionPropertyOption\l\&lt; Mode \&gt;" alt="" coords="662,1455,851,1497"/>
+<area shape="rect" id="node47" href="$classinviwo_1_1OptionPropertyOption.html" title="inviwo::OptionPropertyOption\l\&lt; double \&gt;" alt="" coords="662,1521,851,1562"/>
+<area shape="rect" id="node48" href="$classinviwo_1_1OptionPropertyOption.html" title="inviwo::OptionPropertyOption\l\&lt; IntegralLineProperties\l::IntegrationScheme \&gt;" alt="" coords="662,1587,851,1643"/>
+<area shape="rect" id="node49" href="$classinviwo_1_1OptionPropertyOption.html" title="inviwo::OptionPropertyOption\l\&lt; Positioning \&gt;" alt="" coords="662,1667,851,1709"/>
+<area shape="rect" id="node50" href="$classinviwo_1_1OptionPropertyOption.html" title="inviwo::OptionPropertyOption\l\&lt; Location \&gt;" alt="" coords="662,1733,851,1774"/>
+<area shape="rect" id="node51" href="$classinviwo_1_1OptionPropertyOption.html" title="inviwo::OptionPropertyOption\l\&lt; LineDrawMode \&gt;" alt="" coords="662,1810,851,1851"/>
+<area shape="rect" id="node52" href="$classinviwo_1_1OptionPropertyOption.html" title="inviwo::OptionPropertyOption\l\&lt; DataRangeMode \&gt;" alt="" coords="662,1875,851,1917"/>
+<area shape="rect" id="node53" href="$classinviwo_1_1OptionPropertyOption.html" title="inviwo::OptionPropertyOption\l\&lt; std::string \&gt;" alt="" coords="662,1941,851,1982"/>
+<area shape="rect" id="node54" href="$classinviwo_1_1OptionPropertyOption.html" title="inviwo::OptionPropertyOption\l\&lt; IntegralLineProperties\l::Direction \&gt;" alt="" coords="662,2008,851,2064"/>
+<area shape="rect" id="node55" href="$classinviwo_1_1OptionPropertyOption.html" title="inviwo::OptionPropertyOption\l\&lt; Operator \&gt;" alt="" coords="662,2090,851,2131"/>
+<area shape="rect" id="node56" href="$classinviwo_1_1OptionPropertyOption.html" title="inviwo::OptionPropertyOption\l\&lt; Method \&gt;" alt="" coords="662,2158,851,2199"/>
+<area shape="rect" id="node57" href="$classinviwo_1_1OptionPropertyOption.html" title="inviwo::OptionPropertyOption\l\&lt; int \&gt;" alt="" coords="662,2225,851,2266"/>
+<area shape="rect" id="node58" href="$classinviwo_1_1OptionPropertyOption.html" title="inviwo::OptionPropertyOption\l\&lt; MeshType \&gt;" alt="" coords="662,2295,851,2337"/>
+<area shape="rect" id="node59" href="$classinviwo_1_1OptionPropertyOption.html" title="inviwo::OptionPropertyOption\l\&lt; BackgroundStyle \&gt;" alt="" coords="662,2371,851,2413"/>
+<area shape="rect" id="node60" href="$classinviwo_1_1OptionPropertyOption.html" title="inviwo::OptionPropertyOption\l\&lt; GlyphClippingMode \&gt;" alt="" coords="662,2454,851,2495"/>
+<area shape="rect" id="node61" href="$classinviwo_1_1OptionPropertyOption.html" title="inviwo::OptionPropertyOption\l\&lt; NoiseType \&gt;" alt="" coords="662,2541,851,2582"/>
+<area shape="rect" id="node62" href="$classinviwo_1_1OptionPropertyOption.html" title="inviwo::OptionPropertyOption\l\&lt; BlendMode \&gt;" alt="" coords="662,2617,851,2658"/>
+<area shape="rect" id="node63" href="$classinviwo_1_1OptionPropertyOption.html" title="inviwo::OptionPropertyOption\l\&lt; Shader::OnError \&gt;" alt="" coords="662,2693,851,2734"/>
+<area shape="rect" id="node64" href="$classinviwo_1_1OptionPropertyOption.html" title="inviwo::OptionPropertyOption\l\&lt; utilgl::debug::BreakLevel \&gt;" alt="" coords="662,3725,851,3766"/>
+<area shape="rect" id="node65" href="$classinviwo_1_1OptionPropertyOption.html" title="inviwo::OptionPropertyOption\l\&lt; utilgl::debug::Mode \&gt;" alt="" coords="662,3873,851,3914"/>
+<area shape="rect" id="node66" href="$classinviwo_1_1OptionPropertyOption.html" title="inviwo::OptionPropertyOption\l\&lt; InputType \&gt;" alt="" coords="662,2779,851,2821"/>
+<area shape="rect" id="node67" href="$classinviwo_1_1OptionPropertyOption.html" title="inviwo::OptionPropertyOption\l\&lt; UsageMode \&gt;" alt="" coords="662,2875,851,2917"/>
+<area shape="rect" id="node68" href="$classinviwo_1_1OptionPropertyOption.html" title="inviwo::OptionPropertyOption\l\&lt; ColoringMethod \&gt;" alt="" coords="662,2943,851,2985"/>
+<area shape="rect" id="node69" href="$classinviwo_1_1OptionPropertyOption.html" title="inviwo::OptionPropertyOption\l\&lt; LayerType \&gt;" alt="" coords="662,3011,851,3053"/>
+<area shape="rect" id="node70" href="$classinviwo_1_1OptionPropertyOption.html" title="inviwo::OptionPropertyOption\l\&lt; size_t \&gt;" alt="" coords="662,3082,851,3123"/>
+<area shape="rect" id="node71" href="$classinviwo_1_1OptionPropertyOption.html" title="inviwo::OptionPropertyOption\l\&lt; BoundaryType \&gt;" alt="" coords="662,3181,851,3222"/>
+<area shape="rect" id="node72" href="$classinviwo_1_1OptionPropertyOption.html" title="inviwo::OptionPropertyOption\l\&lt; LabelPosition \&gt;" alt="" coords="662,3253,851,3294"/>
+<area shape="rect" id="node73" href="$classinviwo_1_1OptionPropertyOption.html" title="inviwo::OptionPropertyOption\l\&lt; TickStyle \&gt;" alt="" coords="662,3325,851,3366"/>
+<area shape="rect" id="node74" href="$classinviwo_1_1OptionPropertyOption.html" title="inviwo::OptionPropertyOption\l\&lt; Layout \&gt;" alt="" coords="662,3403,851,3445"/>
+<area shape="rect" id="node75" href="$classinviwo_1_1OptionPropertyOption.html" title="inviwo::OptionPropertyOption\l\&lt; CartesianCoordinateAxis \&gt;" alt="" coords="662,3482,851,3523"/>
+<area shape="rect" id="node76" href="$classinviwo_1_1OptionPropertyOption.html" title="inviwo::OptionPropertyOption\l\&lt; CoordinateSpace \&gt;" alt="" coords="662,3558,851,3599"/>
+<area shape="rect" id="node77" href="$classinviwo_1_1OptionPropertyOption.html" title="inviwo::OptionPropertyOption\l\&lt; Shader::UniformWarning \&gt;" alt="" coords="662,3633,851,3674"/>
+<area shape="rect" id="node78" href="$classinviwo_1_1OptionPropertyOption.html" title="inviwo::OptionPropertyOption\l\&lt; Placement \&gt;" alt="" coords="662,3799,851,3841"/>
+<area shape="rect" id="node79" href="$classinviwo_1_1OptionPropertyOption.html" title="inviwo::OptionPropertyOption\l\&lt; OutputType \&gt;" alt="" coords="662,3947,851,3989"/>
+<area shape="rect" id="node80" href="$classinviwo_1_1OptionPropertyOption.html" title="inviwo::OptionPropertyOption\l\&lt; Orientation \&gt;" alt="" coords="662,4015,851,4057"/>
+<area shape="rect" id="node81" href="$classinviwo_1_1OptionPropertyOption.html" title="inviwo::OptionPropertyOption\l\&lt; AxisRangeMode \&gt;" alt="" coords="662,4081,851,4122"/>
+<area shape="rect" id="node82" href="$classinviwo_1_1OptionPropertyOption.html" title="inviwo::OptionPropertyOption\l\&lt; GlyphType \&gt;" alt="" coords="662,4146,851,4187"/>
+<area shape="rect" id="node83" href="$classinviwo_1_1OptionPropertyOption.html" title="inviwo::OptionPropertyOption\l\&lt; RenderMode \&gt;" alt="" coords="662,4211,851,4253"/>
+<area shape="rect" id="node84" href="$classinviwo_1_1OptionPropertyOption.html" title="inviwo::OptionPropertyOption\l\&lt; util::VolumeLaplacianPostProcessing \&gt;" alt="" coords="625,4277,888,4318"/>
+<area shape="rect" id="node85" href="$classinviwo_1_1Port.html" title="A abstract base class for all ports. " alt="" coords="251,4476,339,4503"/>
+<area shape="rect" id="node132" href="$classinviwo_1_1PortConnection.html" title="inviwo::PortConnection" alt="" coords="219,4527,372,4553"/>
+<area shape="rect" id="node133" href="$classinviwo_1_1PortInspector.html" title="inviwo::PortInspector" alt="" coords="225,4577,366,4604"/>
+<area shape="rect" id="node134" href="$classinviwo_1_1PortInspectorManager.html" title="Keep track of which port has port inspectors on them. " alt="" coords="200,4628,391,4655"/>
+<area shape="rect" id="node135" href="$classinviwo_1_1ProcessorNetwork.html" title="inviwo::ProcessorNetwork" alt="" coords="210,4679,381,4705"/>
+<area shape="rect" id="node136" href="$classinviwo_1_1ProgressBar.html" title="inviwo::ProgressBar" alt="" coords="227,4729,363,4756"/>
+<area shape="rect" id="node137" href="$classinviwo_1_1Property.html" title="A Property represents a parameter to a processor. " alt="" coords="239,8205,352,8232"/>
+<area shape="rect" id="node189" href="$classinviwo_1_1PropertyLink.html" title="inviwo::PropertyLink" alt="" coords="227,8256,364,8283"/>
+<area shape="rect" id="node190" href="$classinviwo_1_1PropertyOwner.html" title="inviwo::PropertyOwner" alt="" coords="220,5940,371,5967"/>
+<area shape="rect" id="node193" href="$classinviwo_1_1PropertySemantics.html" title="inviwo::PropertySemantics" alt="" coords="208,8307,383,8333"/>
+<area shape="rect" id="node194" href="$classinviwo_1_1TransferFunction.html" title="for holding transfer function data. This class holds transfer function data, currently one parameter ..." alt="" coords="215,8357,375,8384"/>
+<area shape="rect" id="node195" href="$classinviwo_1_1TransferFunctionDataPoint.html" title="inviwo::TransferFunction\lDataPoint" alt="" coords="215,8409,375,8450"/>
+<area shape="rect" id="node196" href="$structinviwo_1_1util_1_1detail_1_1PartialConnection.html" title="inviwo::util::detail\l::PartialConnection" alt="" coords="229,8474,361,8515"/>
+<area shape="rect" id="node197" href="$structinviwo_1_1util_1_1detail_1_1PartialDstLink.html" title="inviwo::util::detail\l::PartialDstLink" alt="" coords="235,8539,355,8581"/>
+<area shape="rect" id="node198" href="$structinviwo_1_1util_1_1detail_1_1PartialProcessorNetwork.html" title="inviwo::util::detail\l::PartialProcessorNetwork" alt="" coords="209,8605,382,8646"/>
+<area shape="rect" id="node199" href="$structinviwo_1_1util_1_1detail_1_1PartialSrcLink.html" title="inviwo::util::detail\l::PartialSrcLink" alt="" coords="235,8670,355,8711"/>
+<area shape="rect" id="node4" href="$classinviwo_1_1animation_1_1InterpolationTyped.html" title="inviwo::animation::\lInterpolationTyped\&lt; Key \&gt;" alt="" coords="669,13,844,54"/>
+<area shape="rect" id="node5" href="$classinviwo_1_1animation_1_1LinearInterpolation.html" title="inviwo::animation::\lLinearInterpolation\l\&lt; Key \&gt;" alt="" coords="1119,5,1247,61"/>
+<area shape="rect" id="node7" href="$classinviwo_1_1animation_1_1ValueKeyframe.html" title="inviwo::animation::\lValueKeyframe\&lt; T \&gt;" alt="" coords="686,78,827,119"/>
+<area shape="rect" id="node9" href="$classinviwo_1_1animation_1_1KeyframeSequenceTyped.html" title="inviwo::animation::\lKeyframeSequenceTyped\l\&lt; Key \&gt;" alt="" coords="671,144,842,200"/>
+<area shape="rect" id="node11" href="$classinviwo_1_1animation_1_1TrackTyped.html" title="inviwo::animation::\lTrackTyped\&lt; Key \&gt;" alt="" coords="689,225,825,266"/>
+<area shape="rect" id="node12" href="$classinviwo_1_1animation_1_1PropertyTrack.html" title="inviwo::animation::\lPropertyTrack\&lt; Key \&gt;" alt="" coords="1107,225,1258,266"/>
+<area shape="rect" id="node14" href="$classinviwo_1_1OrthographicCamera.html" title="Camera with no perspective projection. Objects far away will appear as large as objects close..." alt="" coords="665,291,848,317"/>
+<area shape="rect" id="node15" href="$classinviwo_1_1PerspectiveCamera.html" title="inviwo::PerspectiveCamera" alt="" coords="669,341,845,368"/>
+<area shape="rect" id="node16" href="$classinviwo_1_1SkewedPerspectiveCamera.html" title="Camera with off axis perspective projection. " alt="" coords="668,393,845,434"/>
+<area shape="rect" id="node18" href="$classinviwo_1_1GeneralEventMatcher.html" title="inviwo::GeneralEventMatcher" alt="" coords="663,459,851,485"/>
+<area shape="rect" id="node19" href="$classinviwo_1_1GestureEventMatcher.html" title="inviwo::GestureEventMatcher" alt="" coords="662,509,851,536"/>
+<area shape="rect" id="node20" href="$classinviwo_1_1KeyboardEventMatcher.html" title="inviwo::KeyboardEventMatcher" alt="" coords="657,560,856,587"/>
+<area shape="rect" id="node21" href="$classinviwo_1_1MouseEventMatcher.html" title="inviwo::MouseEventMatcher" alt="" coords="665,611,848,637"/>
+<area shape="rect" id="node22" href="$classinviwo_1_1WheelEventMatcher.html" title="inviwo::WheelEventMatcher" alt="" coords="667,661,847,688"/>
+<area shape="rect" id="node26" href="$classinviwo_1_1Inviwo__ABufferGL4_1_1ABufferGLInteractionHandler.html" title="inviwo::Inviwo_ABufferGL4\l::ABufferGLInteractionHandler" alt="" coords="660,713,853,754"/>
+<area shape="rect" id="node27" href="$classinviwo_1_1PointLightInteractionHandler.html" title="inviwo::PointLightInteraction\lHandler" alt="" coords="665,778,848,819"/>
+<area shape="rect" id="node31" href="$classinviwo_1_1MetaDataPrimitiveType.html" title="inviwo::MetaDataPrimitive\lType\&lt; T, N, M \&gt;" alt="" coords="672,1194,841,1235"/>
+<area shape="rect" id="node33" href="$classinviwo_1_1MetaDataPrimitiveType_3_01T_00_010_00_010_01_4.html" title="inviwo::MetaDataPrimitive\lType\&lt; T, 0, 0 \&gt;" alt="" coords="672,1259,841,1301"/>
+<area shape="rect" id="node34" href="$classinviwo_1_1MetaDataPrimitiveType_3_01T_00_01N_00_010_01_4.html" title="inviwo::MetaDataPrimitive\lType\&lt; T, N, 0 \&gt;" alt="" coords="672,1325,841,1366"/>
+<area shape="rect" id="node36" href="$classinviwo_1_1MetaDataPrimitiveType_3_01T_00_01N_00_01N_01_4.html" title="inviwo::MetaDataPrimitive\lType\&lt; T, N, N \&gt;" alt="" coords="672,843,841,885"/>
+<area shape="rect" id="node38" href="$classinviwo_1_1ProcessorMetaData.html" title="inviwo::ProcessorMetaData" alt="" coords="667,909,846,936"/>
+<area shape="rect" id="node39" href="$classinviwo_1_1ProcessorWidgetMetaData.html" title="inviwo::ProcessorWidgetMetaData" alt="" coords="647,960,867,987"/>
+<area shape="rect" id="node40" href="$classinviwo_1_1PropertyEditorWidgetMetaData.html" title="inviwo::PropertyEditorWidget\lMetaData" alt="" coords="663,1011,851,1053"/>
+<area shape="rect" id="node41" href="$classinviwo_1_1StdUnorderedMapMetaData.html" title="inviwo::StdUnorderedMapMeta\lData\&lt; K, T \&gt;" alt="" coords="658,1077,855,1118"/>
+<area shape="rect" id="node42" href="$classinviwo_1_1StdVectorMetaData.html" title="inviwo::StdVectorMetaData\&lt; T \&gt;" alt="" coords="652,1143,861,1169"/>
+<area shape="rect" id="node32" href="$classinviwo_1_1PositionMetaData.html" title="inviwo::PositionMetaData\l\&lt; ivec2, 0, 0 \&gt;" alt="" coords="1099,1194,1266,1235"/>
+<area shape="rect" id="node35" href="$classinviwo_1_1VectorMetaData.html" title="inviwo::VectorMetaData\l\&lt; N, T \&gt;" alt="" coords="1103,1325,1262,1366"/>
+<area shape="rect" id="node37" href="$classinviwo_1_1MatrixMetaData.html" title="inviwo::MatrixMetaData\l\&lt; N, T \&gt;" alt="" coords="1105,843,1261,885"/>
+<area shape="rect" id="node86" href="$classinviwo_1_1Inport.html" title="Abstract base class for all inports An Inport can be connected to an Outport. The approved connection..." alt="" coords="709,4343,805,4369"/>
+<area shape="rect" id="node112" href="$classinviwo_1_1Outport.html" title="Abstract base class for all outports The Outport can be connected to an arbitrary number of Inports..." alt="" coords="703,5493,810,5520"/>
+<area shape="rect" id="node87" href="$classinviwo_1_1DataInport.html" title="inviwo::DataInport\l\&lt; BrushingAndLinkingManager \&gt;" alt="" coords="1545,3334,1755,3375"/>
+<area shape="rect" id="node88" href="$classinviwo_1_1DataInport.html" title="inviwo::DataInport\l\&lt; DataFrame \&gt;" alt="" coords="1589,4283,1711,4325"/>
+<area shape="rect" id="node89" href="$classinviwo_1_1DataInport.html" title="inviwo::DataInport\l\&lt; Eigen::MatrixXf \&gt;" alt="" coords="1583,4519,1717,4561"/>
+<area shape="rect" id="node90" href="$classinviwo_1_1DataInport.html" title="inviwo::DataInport\l\&lt; Handle \&gt;" alt="" coords="1589,4661,1711,4702"/>
+<area shape="rect" id="node91" href="$classinviwo_1_1DataInport.html" title="inviwo::DataInport\l\&lt; Image, N \&gt;" alt="" coords="1589,4811,1711,4853"/>
+<area shape="rect" id="node92" href="$classinviwo_1_1DataInport.html" title="inviwo::DataInport\l\&lt; IntegralLineSet \&gt;" alt="" coords="1584,3725,1716,3766"/>
+<area shape="rect" id="node93" href="$classinviwo_1_1DataInport.html" title="inviwo::DataInport\l\&lt; inviwo::LightSource \&gt;" alt="" coords="1571,4002,1729,4043"/>
+<area shape="rect" id="node94" href="$classinviwo_1_1DataInport.html" title="inviwo::DataInport\l\&lt; inviwo::plot::DataFrame \&gt;" alt="" coords="1559,4362,1741,4403"/>
+<area shape="rect" id="node95" href="$classinviwo_1_1DataInport.html" title="inviwo::DataInport\l\&lt; inviwo::Spatial4DSampler\l\&lt; 3, double \&gt; \&gt;" alt="" coords="1560,3052,1740,3108"/>
+<area shape="rect" id="node96" href="$classinviwo_1_1DataInport.html" title="inviwo::DataInport\l\&lt; inviwo::SpatialSampler\l\&lt; 3, 3, double \&gt; \&gt;" alt="" coords="1568,3151,1732,3207"/>
+<area shape="rect" id="node97" href="$classinviwo_1_1DataInport.html" title="inviwo::DataInport\l\&lt; inviwo::Volume, 0 \&gt;" alt="" coords="1577,4589,1723,4630"/>
+<area shape="rect" id="node98" href="$classinviwo_1_1DataInport.html" title="inviwo::DataInport\l\&lt; Mesh \&gt;" alt="" coords="1589,3581,1711,3622"/>
+<area shape="rect" id="node99" href="$classinviwo_1_1DataInport.html" title="inviwo::DataInport\l\&lt; Mesh, 0, true \&gt;" alt="" coords="1589,2962,1711,3003"/>
+<area shape="rect" id="node100" href="$classinviwo_1_1DataInport.html" title="inviwo::DataInport\l\&lt; SeedPoint3DVector, 0 \&gt;" alt="" coords="1563,3414,1737,3455"/>
+<area shape="rect" id="node101" href="$classinviwo_1_1DataInport.html" title="inviwo::DataInport\l\&lt; SeedPointVector, 0 \&gt;" alt="" coords="1571,4103,1729,4145"/>
+<area shape="rect" id="node102" href="$classinviwo_1_1DataInport.html" title="inviwo::DataInport\l\&lt; std::vector\&lt; std::\lshared_ptr\&lt; Image \&gt; \&gt; \&gt;" alt="" coords="1567,4729,1733,4785"/>
+<area shape="rect" id="node103" href="$classinviwo_1_1DataInport.html" title="inviwo::DataInport\l\&lt; std::vector\&lt; std::\lshared_ptr\&lt; inviwo::Volume \&gt; \&gt; \&gt;" alt="" coords="1541,4189,1759,4245"/>
+<area shape="rect" id="node104" href="$classinviwo_1_1DataInport.html" title="inviwo::DataInport\l\&lt; std::vector\&lt; std::\lshared_ptr\&lt; Mesh \&gt; \&gt; \&gt;" alt="" coords="1569,3237,1731,3293"/>
+<area shape="rect" id="node105" href="$classinviwo_1_1DataInport.html" title="inviwo::DataInport\l\&lt; std::vector\&lt; std::\lshared_ptr\&lt; T \&gt; \&gt; \&gt;" alt="" coords="1581,3892,1719,3948"/>
+<area shape="rect" id="node106" href="$classinviwo_1_1DataInport.html" title="inviwo::DataInport\l\&lt; std::vector\&lt; std::\lshared_ptr\&lt; Volume \&gt; \&gt; \&gt;" alt="" coords="1563,3497,1737,3553"/>
+<area shape="rect" id="node107" href="$classinviwo_1_1DataInport.html" title="inviwo::DataInport\l\&lt; std::vector\&lt; vec4 \&gt; \&gt;" alt="" coords="1572,2869,1728,2910"/>
+<area shape="rect" id="node108" href="$classinviwo_1_1DataInport.html" title="inviwo::DataInport\&lt; T \&gt;" alt="" coords="1573,3800,1727,3827"/>
+<area shape="rect" id="node109" href="$classinviwo_1_1DataInport.html" title="inviwo::DataInport\l\&lt; Volume \&gt;" alt="" coords="1589,4441,1711,4482"/>
+<area shape="rect" id="node110" href="$classinviwo_1_1DataInport.html" title="inviwo::DataInport\l\&lt; VolumeSequence \&gt;" alt="" coords="1576,3650,1724,3691"/>
+<area shape="rect" id="node111" href="$classinviwo_1_1DataInport.html" title="inviwo::DataInport\l\&lt; T, N, Flat \&gt;" alt="" coords="1121,3862,1244,3903"/>
+<area shape="rect" id="node113" href="$classinviwo_1_1DataOutport.html" title="inviwo::DataOutport\l\&lt; BrushingAndLinkingManager \&gt;" alt="" coords="1545,5894,1755,5935"/>
+<area shape="rect" id="node114" href="$classinviwo_1_1DataOutport.html" title="inviwo::DataOutport\l\&lt; BufferBase \&gt;" alt="" coords="1583,5522,1717,5563"/>
+<area shape="rect" id="node115" href="$classinviwo_1_1DataOutport.html" title="inviwo::DataOutport\l\&lt; container \&gt;" alt="" coords="1583,5794,1717,5835"/>
+<area shape="rect" id="node116" href="$classinviwo_1_1DataOutport.html" title="inviwo::DataOutport\l\&lt; Eigen::MatrixXf \&gt;" alt="" coords="1583,5451,1717,5493"/>
+<area shape="rect" id="node117" href="$classinviwo_1_1DataOutport.html" title="inviwo::DataOutport\l\&lt; Handle \&gt;" alt="" coords="1583,4979,1717,5021"/>
+<area shape="rect" id="node118" href="$classinviwo_1_1DataOutport.html" title="inviwo::DataOutport\l\&lt; Image \&gt;" alt="" coords="1583,5375,1717,5417"/>
+<area shape="rect" id="node119" href="$classinviwo_1_1DataOutport.html" title="inviwo::DataOutport\l\&lt; IntegralLineSet \&gt;" alt="" coords="1583,5151,1717,5193"/>
+<area shape="rect" id="node120" href="$classinviwo_1_1DataOutport.html" title="inviwo::DataOutport\l\&lt; inviwo::LightSource \&gt;" alt="" coords="1571,6073,1729,6114"/>
+<area shape="rect" id="node121" href="$classinviwo_1_1DataOutport.html" title="inviwo::DataOutport\l\&lt; inviwo::plot::DataFrame \&gt;" alt="" coords="1559,6138,1741,6179"/>
+<area shape="rect" id="node122" href="$classinviwo_1_1DataOutport.html" title="inviwo::DataOutport\l\&lt; inviwo::Spatial4DSampler\l\&lt; 3, double \&gt; \&gt;" alt="" coords="1560,6269,1740,6325"/>
+<area shape="rect" id="node123" href="$classinviwo_1_1DataOutport.html" title="inviwo::DataOutport\l\&lt; inviwo::SpatialSampler\l\&lt; 3, 3, double \&gt; \&gt;" alt="" coords="1568,5055,1732,5111"/>
+<area shape="rect" id="node124" href="$classinviwo_1_1DataOutport.html" title="inviwo::DataOutport\l\&lt; Mesh \&gt;" alt="" coords="1583,4897,1717,4938"/>
+<area shape="rect" id="node125" href="$classinviwo_1_1DataOutport.html" title="inviwo::DataOutport\l\&lt; SeedPoint3DVector \&gt;" alt="" coords="1570,5223,1730,5265"/>
+<area shape="rect" id="node126" href="$classinviwo_1_1DataOutport.html" title="inviwo::DataOutport\l\&lt; SeedPoint4DVector \&gt;" alt="" coords="1570,6203,1730,6245"/>
+<area shape="rect" id="node127" href="$classinviwo_1_1DataOutport.html" title="inviwo::DataOutport\l\&lt; std::vector\&lt; std::\lshared_ptr\&lt; inviwo::Mesh \&gt; \&gt; \&gt;" alt="" coords="1547,5980,1753,6036"/>
+<area shape="rect" id="node128" href="$classinviwo_1_1DataOutport.html" title="inviwo::DataOutport\l\&lt; std::vector\&lt; vec4 \&gt; \&gt;" alt="" coords="1572,5702,1728,5743"/>
+<area shape="rect" id="node129" href="$classinviwo_1_1DataOutport.html" title="inviwo::DataOutport\l\&lt; Volume \&gt;" alt="" coords="1583,5307,1717,5349"/>
+<area shape="rect" id="node130" href="$classinviwo_1_1DataOutport.html" title="inviwo::DataOutport\l\&lt; VolumeSequence \&gt;" alt="" coords="1576,5597,1724,5638"/>
+<area shape="rect" id="node131" href="$classinviwo_1_1DataOutport.html" title="inviwo::DataOutport\&lt; T \&gt;" alt="" coords="1100,5584,1265,5611"/>
+<area shape="rect" id="node138" href="$classinviwo_1_1BaseOptionProperty.html" title="inviwo::BaseOptionProperty" alt="" coords="666,7107,847,7133"/>
+<area shape="rect" id="node158" href="$classinviwo_1_1ButtonProperty.html" title="The Button property class provides buttons that you can bind functions to. " alt="" coords="681,7777,832,7804"/>
+<area shape="rect" id="node159" href="$classinviwo_1_1CompositeProperty.html" title="inviwo::CompositeProperty" alt="" coords="669,6320,844,6347"/>
+<area shape="rect" id="node160" href="$classinviwo_1_1EventProperty.html" title="inviwo::EventProperty" alt="" coords="684,8020,829,8047"/>
+<area shape="rect" id="node161" href="$classinviwo_1_1TemplateProperty.html" title="inviwo::TemplateProperty\&lt; T \&gt;" alt="" coords="658,8724,855,8751"/>
+<area shape="rect" id="node163" href="$classinviwo_1_1TemplateProperty.html" title="inviwo::TemplateProperty\l\&lt; size3_t \&gt;" alt="" coords="1099,8983,1266,9025"/>
+<area shape="rect" id="node164" href="$classinviwo_1_1TemplateProperty.html" title="inviwo::TemplateProperty\l\&lt; TransferFunction \&gt;" alt="" coords="1099,8677,1266,8718"/>
+<area shape="rect" id="node165" href="$classinviwo_1_1TemplateProperty.html" title="inviwo::TemplateProperty\l\&lt; double \&gt;" alt="" coords="1099,9393,1266,9434"/>
+<area shape="rect" id="node168" href="$classinviwo_1_1TemplateProperty.html" title="inviwo::TemplateProperty\l\&lt; size4_t \&gt;" alt="" coords="1099,7906,1266,7947"/>
+<area shape="rect" id="node169" href="$classinviwo_1_1TemplateProperty.html" title="inviwo::TemplateProperty\l\&lt; std::string \&gt;" alt="" coords="1099,8151,1266,8193"/>
+<area shape="rect" id="node170" href="$classinviwo_1_1TemplateProperty.html" title="inviwo::TemplateProperty\l\&lt; float \&gt;" alt="" coords="1099,7837,1266,7878"/>
+<area shape="rect" id="node171" href="$classinviwo_1_1TemplateProperty.html" title="inviwo::TemplateProperty\l\&lt; std::vector\&lt; std::string \&gt; \&gt;" alt="" coords="1089,8863,1277,8905"/>
+<area shape="rect" id="node172" href="$classinviwo_1_1TemplateProperty.html" title="inviwo::TemplateProperty\l\&lt; dvec4 \&gt;" alt="" coords="1099,9218,1266,9259"/>
+<area shape="rect" id="node173" href="$classinviwo_1_1TemplateProperty.html" title="inviwo::TemplateProperty\l\&lt; size2_t \&gt;" alt="" coords="1099,9543,1266,9585"/>
+<area shape="rect" id="node174" href="$classinviwo_1_1TemplateProperty.html" title="inviwo::TemplateProperty\l\&lt; int \&gt;" alt="" coords="1099,9139,1266,9181"/>
+<area shape="rect" id="node176" href="$classinviwo_1_1TemplateProperty.html" title="inviwo::TemplateProperty\l\&lt; vec4 \&gt;" alt="" coords="1099,9303,1266,9345"/>
+<area shape="rect" id="node178" href="$classinviwo_1_1TemplateProperty.html" title="inviwo::TemplateProperty\l\&lt; vec3 \&gt;" alt="" coords="1099,9627,1266,9669"/>
+<area shape="rect" id="node179" href="$classinviwo_1_1TemplateProperty.html" title="inviwo::TemplateProperty\l\&lt; dvec2 \&gt;" alt="" coords="1099,9781,1266,9822"/>
+<area shape="rect" id="node180" href="$classinviwo_1_1TemplateProperty.html" title="inviwo::TemplateProperty\l\&lt; dvec3 \&gt;" alt="" coords="1099,8373,1266,8414"/>
+<area shape="rect" id="node181" href="$classinviwo_1_1TemplateProperty.html" title="inviwo::TemplateProperty\l\&lt; vec2 \&gt;" alt="" coords="1099,8058,1266,8099"/>
+<area shape="rect" id="node182" href="$classinviwo_1_1TemplateProperty.html" title="inviwo::TemplateProperty\l\&lt; size_t \&gt;" alt="" coords="1099,7978,1266,8019"/>
+<area shape="rect" id="node184" href="$classinviwo_1_1TemplateProperty.html" title="inviwo::TemplateProperty\l\&lt; mat4 \&gt;" alt="" coords="1099,8451,1266,8493"/>
+<area shape="rect" id="node185" href="$classinviwo_1_1TemplateProperty.html" title="inviwo::TemplateProperty\l\&lt; ivec4 \&gt;" alt="" coords="1099,8301,1266,8342"/>
+<area shape="rect" id="node186" href="$classinviwo_1_1TemplateProperty.html" title="inviwo::TemplateProperty\l\&lt; bool \&gt;" alt="" coords="1099,9067,1266,9109"/>
+<area shape="rect" id="node187" href="$classinviwo_1_1TemplateProperty.html" title="inviwo::TemplateProperty\l\&lt; ivec2 \&gt;" alt="" coords="1099,8225,1266,8266"/>
+<area shape="rect" id="node188" href="$classinviwo_1_1TemplateProperty.html" title="inviwo::TemplateProperty\l\&lt; ivec3 \&gt;" alt="" coords="1099,9855,1266,9897"/>
+<area shape="rect" id="node139" href="$classinviwo_1_1TemplateOptionProperty.html" title="inviwo::TemplateOptionProperty\&lt; T \&gt;" alt="" coords="1065,7055,1300,7081"/>
+<area shape="rect" id="node140" href="$classinviwo_1_1TemplateOptionProperty.html" title="inviwo::TemplateOptionProperty\l\&lt; double \&gt;" alt="" coords="1548,7278,1752,7319"/>
+<area shape="rect" id="node141" href="$classinviwo_1_1TemplateOptionProperty.html" title="inviwo::TemplateOptionProperty\l\&lt; IntegralLineProperties::\lIntegrationScheme \&gt;" alt="" coords="1548,7067,1752,7123"/>
+<area shape="rect" id="node142" href="$classinviwo_1_1TemplateOptionProperty.html" title="inviwo::TemplateOptionProperty\l\&lt; DataRangeMode \&gt;" alt="" coords="1548,7478,1752,7519"/>
+<area shape="rect" id="node143" href="$classinviwo_1_1TemplateOptionProperty.html" title="inviwo::TemplateOptionProperty\l\&lt; IntegralLineProperties::\lDirection \&gt;" alt="" coords="1548,7197,1752,7253"/>
+<area shape="rect" id="node144" href="$classinviwo_1_1TemplateOptionProperty.html" title="inviwo::TemplateOptionProperty\l\&lt; int \&gt;" alt="" coords="1548,6522,1752,6563"/>
+<area shape="rect" id="node145" href="$classinviwo_1_1TemplateOptionProperty.html" title="inviwo::TemplateOptionProperty\l\&lt; BackgroundStyle \&gt;" alt="" coords="1548,6607,1752,6649"/>
+<area shape="rect" id="node146" href="$classinviwo_1_1TemplateOptionProperty.html" title="inviwo::TemplateOptionProperty\l\&lt; GlyphClippingMode \&gt;" alt="" coords="1548,6674,1752,6715"/>
+<area shape="rect" id="node147" href="$classinviwo_1_1TemplateOptionProperty.html" title="inviwo::TemplateOptionProperty\l\&lt; BlendMode \&gt;" alt="" coords="1548,7410,1752,7451"/>
+<area shape="rect" id="node148" href="$classinviwo_1_1TemplateOptionProperty.html" title="inviwo::TemplateOptionProperty\l\&lt; InputType \&gt;" alt="" coords="1548,7343,1752,7385"/>
+<area shape="rect" id="node149" href="$classinviwo_1_1TemplateOptionProperty.html" title="inviwo::TemplateOptionProperty\l\&lt; ColoringMethod \&gt;" alt="" coords="1548,7549,1752,7590"/>
+<area shape="rect" id="node150" href="$classinviwo_1_1TemplateOptionProperty.html" title="inviwo::TemplateOptionProperty\l\&lt; LayerType \&gt;" alt="" coords="1548,6742,1752,6783"/>
+<area shape="rect" id="node151" href="$classinviwo_1_1TemplateOptionProperty.html" title="inviwo::TemplateOptionProperty\l\&lt; BoundaryType \&gt;" alt="" coords="1548,6811,1752,6853"/>
+<area shape="rect" id="node152" href="$classinviwo_1_1TemplateOptionProperty.html" title="inviwo::TemplateOptionProperty\l\&lt; LabelPosition \&gt;" alt="" coords="1548,6885,1752,6926"/>
+<area shape="rect" id="node153" href="$classinviwo_1_1TemplateOptionProperty.html" title="inviwo::TemplateOptionProperty\l\&lt; Layout \&gt;" alt="" coords="1548,6966,1752,7007"/>
+<area shape="rect" id="node154" href="$classinviwo_1_1TemplateOptionProperty.html" title="inviwo::TemplateOptionProperty\l\&lt; CartesianCoordinateAxis \&gt;" alt="" coords="1548,7623,1752,7665"/>
+<area shape="rect" id="node155" href="$classinviwo_1_1TemplateOptionProperty.html" title="inviwo::TemplateOptionProperty\l\&lt; CoordinateSpace \&gt;" alt="" coords="1548,7709,1752,7750"/>
+<area shape="rect" id="node156" href="$classinviwo_1_1TemplateOptionProperty.html" title="inviwo::TemplateOptionProperty\l\&lt; AxisRangeMode \&gt;" alt="" coords="1548,6443,1752,6485"/>
+<area shape="rect" id="node157" href="$classinviwo_1_1TemplateOptionProperty.html" title="inviwo::TemplateOptionProperty\l\&lt; GlyphType \&gt;" alt="" coords="1548,6371,1752,6413"/>
+<area shape="rect" id="node191" href="$classinviwo_1_1Processor.html" title="A processor generally performs operation on input data and outputs the new result. " alt="" coords="695,5915,818,5941"/>
+<area shape="rect" id="node192" href="$classinviwo_1_1Settings.html" title="inviwo::Settings" alt="" coords="701,5965,813,5992"/>
+</map>

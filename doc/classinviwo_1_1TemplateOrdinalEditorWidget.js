@@ -1,7 +1,7 @@
 var classinviwo_1_1TemplateOrdinalEditorWidget =
 [
     [ "TemplateOrdinalEditorWidget", "classinviwo_1_1TemplateOrdinalEditorWidget.html#ade3d15287d4565b44e89b163ccc1ae7a", null ],
-    [ "~TemplateOrdinalEditorWidget", "classinviwo_1_1TemplateOrdinalEditorWidget.html#ac202b367a18f22f11f6f7f77e4fe32db", null ],
+    [ "~TemplateOrdinalEditorWidget", "classinviwo_1_1TemplateOrdinalEditorWidget.html#aabd7fddc72b524e2f93e9505484f2cc3", null ],
     [ "editorToRepr", "classinviwo_1_1TemplateOrdinalEditorWidget.html#a49939109ac632dd9871139d724d0f7c7", null ],
     [ "getValue", "classinviwo_1_1TemplateOrdinalEditorWidget.html#a8ccb9ba635fc568617bf8a732bf8620d", null ],
     [ "initValue", "classinviwo_1_1TemplateOrdinalEditorWidget.html#a5ccaf76fe1df14fdf4bab91d373e48a5", null ],

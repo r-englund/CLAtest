@@ -1,6 +1,7 @@
 var classinviwo_1_1TransferFunctionProperty =
 [
-    [ "TransferFunctionProperty", "classinviwo_1_1TransferFunctionProperty.html#a1ffad0207d51d54bcc97e735a7fd04d6", null ],
+    [ "TransferFunctionProperty", "classinviwo_1_1TransferFunctionProperty.html#a61b8dc6a429666ff33248436f50069d2", null ],
+    [ "TransferFunctionProperty", "classinviwo_1_1TransferFunctionProperty.html#ac4f0ee9fb1faf7cd631acba974663ae5", null ],
     [ "TransferFunctionProperty", "classinviwo_1_1TransferFunctionProperty.html#a306222282b5840a68420e1f95d9a3e0b", null ],
     [ "~TransferFunctionProperty", "classinviwo_1_1TransferFunctionProperty.html#a68c5ae38c2c577bc592634a03479d6e6", null ],
     [ "clone", "classinviwo_1_1TransferFunctionProperty.html#ab92a4952b46cc8e0965fb79e15dec234", null ],

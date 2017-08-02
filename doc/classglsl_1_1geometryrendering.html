@@ -96,18 +96,15 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:af3d2e40199e2a09cf2e00004afc3a63e"><td class="memItemLeft" align="right" valign="top"><a id="af3d2e40199e2a09cf2e00004afc3a63e"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>main</b> ()</td></tr>
 <tr class="separator:af3d2e40199e2a09cf2e00004afc3a63e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af3d2e40199e2a09cf2e00004afc3a63e"><td class="memItemLeft" align="right" valign="top"><a id="af3d2e40199e2a09cf2e00004afc3a63e"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>main</b> ()</td></tr>
-<tr class="separator:af3d2e40199e2a09cf2e00004afc3a63e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
-<tr class="memitem:a833a7c8be9d6ba654afaa0d566cc1723"><td class="memItemLeft" align="right" valign="top"><a id="a833a7c8be9d6ba654afaa0d566cc1723"></a>
-uniform LightParameters&#160;</td><td class="memItemRight" valign="bottom"><b>light_</b></td></tr>
-<tr class="separator:a833a7c8be9d6ba654afaa0d566cc1723"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3f79ab3b2e7888625042bca69d65c86e"><td class="memItemLeft" align="right" valign="top"><a id="a3f79ab3b2e7888625042bca69d65c86e"></a>
-uniform CameraParameters&#160;</td><td class="memItemRight" valign="bottom"><b>camera_</b></td></tr>
-<tr class="separator:a3f79ab3b2e7888625042bca69d65c86e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a78665e72e0c8e6b539149a8d2a3e3cf1"><td class="memItemLeft" align="right" valign="top"><a id="a78665e72e0c8e6b539149a8d2a3e3cf1"></a>
+uniform LightParameters&#160;</td><td class="memItemRight" valign="bottom"><b>lighting</b></td></tr>
+<tr class="separator:a78665e72e0c8e6b539149a8d2a3e3cf1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a76f526cb74128dfedc084747ecc947a2"><td class="memItemLeft" align="right" valign="top"><a id="a76f526cb74128dfedc084747ecc947a2"></a>
+uniform CameraParameters&#160;</td><td class="memItemRight" valign="bottom"><b>camera</b></td></tr>
+<tr class="separator:a76f526cb74128dfedc084747ecc947a2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a03163f009a0824d83ca9da4c8b3177eb"><td class="memItemLeft" align="right" valign="top"><a id="a03163f009a0824d83ca9da4c8b3177eb"></a>
 uniform vec4&#160;</td><td class="memItemRight" valign="bottom"><b>overrideColor</b></td></tr>
 <tr class="separator:a03163f009a0824d83ca9da4c8b3177eb"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -126,32 +123,14 @@ in vec3&#160;</td><td class="memItemRight" valign="bottom"><b>texCoord_</b></td>
 <tr class="memitem:a9daeb6ca53c6d84b68004312b96eba1a"><td class="memItemLeft" align="right" valign="top"><a id="a9daeb6ca53c6d84b68004312b96eba1a"></a>
 in vec4&#160;</td><td class="memItemRight" valign="bottom"><b>color_</b></td></tr>
 <tr class="separator:a9daeb6ca53c6d84b68004312b96eba1a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a79b11c4826cb9faf13a201fb282802cd"><td class="memItemLeft" align="right" valign="top"><a id="a79b11c4826cb9faf13a201fb282802cd"></a>
-uniform GeometryParameters&#160;</td><td class="memItemRight" valign="bottom"><b>geometry_</b></td></tr>
-<tr class="separator:a79b11c4826cb9faf13a201fb282802cd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aaf25506ab220508fe69b5bc14c14ad6f"><td class="memItemLeft" align="right" valign="top"><a id="aaf25506ab220508fe69b5bc14c14ad6f"></a>
-out vec4&#160;</td><td class="memItemRight" valign="bottom"><b>worldPosition_</b></td></tr>
-<tr class="separator:aaf25506ab220508fe69b5bc14c14ad6f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5b1ebfb8ef2f3fbd6fbca1d1b684bb7a"><td class="memItemLeft" align="right" valign="top"><a id="a5b1ebfb8ef2f3fbd6fbca1d1b684bb7a"></a>
-out vec3&#160;</td><td class="memItemRight" valign="bottom"><b>normal_</b></td></tr>
-<tr class="separator:a5b1ebfb8ef2f3fbd6fbca1d1b684bb7a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab8c31fa10e5acf1148961d88d7f26e5c"><td class="memItemLeft" align="right" valign="top"><a id="ab8c31fa10e5acf1148961d88d7f26e5c"></a>
-out vec3&#160;</td><td class="memItemRight" valign="bottom"><b>viewNormal_</b></td></tr>
-<tr class="separator:ab8c31fa10e5acf1148961d88d7f26e5c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a09d61214a5d4348ae8e21eb789673ff6"><td class="memItemLeft" align="right" valign="top"><a id="a09d61214a5d4348ae8e21eb789673ff6"></a>
-out vec4&#160;</td><td class="memItemRight" valign="bottom"><b>color_</b></td></tr>
-<tr class="separator:a09d61214a5d4348ae8e21eb789673ff6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9ec96d3a04172aaea6895973065cdac1"><td class="memItemLeft" align="right" valign="top"><a id="a9ec96d3a04172aaea6895973065cdac1"></a>
-out vec3&#160;</td><td class="memItemRight" valign="bottom"><b>texCoord_</b></td></tr>
-<tr class="separator:a9ec96d3a04172aaea6895973065cdac1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afd5817299074b8a3b4aefc438b6a46ee"><td class="memItemLeft" align="right" valign="top"><a id="afd5817299074b8a3b4aefc438b6a46ee"></a>
+flat in vec4&#160;</td><td class="memItemRight" valign="bottom"><b>pickColor_</b></td></tr>
+<tr class="separator:afd5817299074b8a3b4aefc438b6a46ee"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><dl class="section remark"><dt>Remarks</dt><dd><b>Fragment-Shader</b></dd>
-<dd>
-<b>Vertex-Shader</b> </dd></dl>
-</div><hr/>The documentation for this class was generated from the following files:<ul>
+<div class="textblock"><dl class="section remark"><dt>Remarks</dt><dd><b>Fragment-Shader</b> </dd></dl>
+</div><hr/>The documentation for this class was generated from the following file:<ul>
 <li>geometryrendering.frag</li>
-<li>geometryrendering.vert</li>
 </ul>
 </div><!-- contents -->
 </div><!-- doc-content -->

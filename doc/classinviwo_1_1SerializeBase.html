@@ -94,6 +94,17 @@ $(document).ready(function(){initNavTree('classinviwo_1_1SerializeBase.html','')
 <div class="title">inviwo::SerializeBase Class Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
+<div id="dynsection-0" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-0-trigger" src="closed.png" alt="+"/> Inheritance diagram for inviwo::SerializeBase:</div>
+<div id="dynsection-0-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-0-content" class="dyncontent" style="display:none;">
+<div class="center"><img src="classinviwo_1_1SerializeBase__inherit__graph.png" border="0" usemap="#inviwo_1_1SerializeBase_inherit__map" alt="Inheritance graph"/></div>
+<map name="inviwo_1_1SerializeBase_inherit__map" id="inviwo_1_1SerializeBase_inherit__map">
+<area shape="rect" id="node2" href="classinviwo_1_1Deserializer.html" title="inviwo::Deserializer" alt="" coords="5,80,137,107"/>
+<area shape="rect" id="node3" href="classinviwo_1_1Serializer.html" title="inviwo::Serializer" alt="" coords="161,80,280,107"/>
+</map>
+<center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
 Classes</h2></td></tr>
@@ -104,34 +115,36 @@ Classes</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-types"></a>
 Public Types</h2></td></tr>
-<tr class="memitem:afafa48fcf25cb3bde296b47c61cb0a27"><td class="memItemLeft" align="right" valign="top"><a id="afafa48fcf25cb3bde296b47c61cb0a27"></a>
-typedef std::pair&lt; const void *, <a class="el" href="structinviwo_1_1SerializeBase_1_1ReferenceData.html">SerializeBase::ReferenceData</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>RefDataPair</b></td></tr>
-<tr class="separator:afafa48fcf25cb3bde296b47c61cb0a27"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7cc716021582de097c947da43136d3c3"><td class="memItemLeft" align="right" valign="top"><a id="a7cc716021582de097c947da43136d3c3"></a>
-typedef std::multimap&lt; const void *, <a class="el" href="structinviwo_1_1SerializeBase_1_1ReferenceData.html">ReferenceData</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>RefMap</b></td></tr>
-<tr class="separator:a7cc716021582de097c947da43136d3c3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad1242e405584c7d17737da1d749f0b1c"><td class="memItemLeft" align="right" valign="top"><a id="ad1242e405584c7d17737da1d749f0b1c"></a>
-typedef std::vector&lt; <a class="el" href="structinviwo_1_1SerializeBase_1_1ReferenceData.html">SerializeBase::ReferenceData</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>RefDataList</b></td></tr>
-<tr class="separator:ad1242e405584c7d17737da1d749f0b1c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5fe96c118e632122477b9db166cb9948"><td class="memItemLeft" align="right" valign="top"><a id="a5fe96c118e632122477b9db166cb9948"></a>
+using&#160;</td><td class="memItemRight" valign="bottom"><b>RefDataPair</b> = std::pair&lt; const void *, <a class="el" href="structinviwo_1_1SerializeBase_1_1ReferenceData.html">SerializeBase::ReferenceData</a> &gt;</td></tr>
+<tr class="separator:a5fe96c118e632122477b9db166cb9948"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5a117c58fe80db2e5fd216a1977c30c2"><td class="memItemLeft" align="right" valign="top"><a id="a5a117c58fe80db2e5fd216a1977c30c2"></a>
+using&#160;</td><td class="memItemRight" valign="bottom"><b>RefMap</b> = std::multimap&lt; const void *, <a class="el" href="structinviwo_1_1SerializeBase_1_1ReferenceData.html">ReferenceData</a> &gt;</td></tr>
+<tr class="separator:a5a117c58fe80db2e5fd216a1977c30c2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a3bb3dcf0d06861406d28c362ecda48e3"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classinviwo_1_1SerializeBase.html#a3bb3dcf0d06861406d28c362ecda48e3">SerializeBase</a> (bool allowReference=true)</td></tr>
 <tr class="memdesc:a3bb3dcf0d06861406d28c362ecda48e3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Base class for <a class="el" href="classinviwo_1_1Serializer.html">Serializer</a> and <a class="el" href="classinviwo_1_1Deserializer.html">Deserializer</a>.  <a href="#a3bb3dcf0d06861406d28c362ecda48e3">More...</a><br /></td></tr>
 <tr class="separator:a3bb3dcf0d06861406d28c362ecda48e3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7d84be1ed39f3f82e417e5e529531037"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classinviwo_1_1SerializeBase.html#a7d84be1ed39f3f82e417e5e529531037">SerializeBase</a> (<a class="el" href="classinviwo_1_1SerializeBase.html">SerializeBase</a> &amp;s, bool allowReference=true)</td></tr>
-<tr class="memdesc:a7d84be1ed39f3f82e417e5e529531037"><td class="mdescLeft">&#160;</td><td class="mdescRight">Base class for <a class="el" href="classinviwo_1_1Serializer.html">Serializer</a> and <a class="el" href="classinviwo_1_1Deserializer.html">Deserializer</a>.  <a href="#a7d84be1ed39f3f82e417e5e529531037">More...</a><br /></td></tr>
-<tr class="separator:a7d84be1ed39f3f82e417e5e529531037"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae8455f32b9ca1758477a1ffafbaf995e"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classinviwo_1_1SerializeBase.html#ae8455f32b9ca1758477a1ffafbaf995e">SerializeBase</a> (std::string fileName, bool allowReference=true)</td></tr>
 <tr class="memdesc:ae8455f32b9ca1758477a1ffafbaf995e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Base class for <a class="el" href="classinviwo_1_1Serializer.html">Serializer</a> and <a class="el" href="classinviwo_1_1Deserializer.html">Deserializer</a>.  <a href="#ae8455f32b9ca1758477a1ffafbaf995e">More...</a><br /></td></tr>
 <tr class="separator:ae8455f32b9ca1758477a1ffafbaf995e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a66ae57926aae944cf66d92114247e647"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classinviwo_1_1SerializeBase.html#a66ae57926aae944cf66d92114247e647">SerializeBase</a> (std::istream &amp;stream, const std::string &amp;path, bool allowReference=true)</td></tr>
 <tr class="memdesc:a66ae57926aae944cf66d92114247e647"><td class="mdescLeft">&#160;</td><td class="mdescRight">Base class for <a class="el" href="classinviwo_1_1Serializer.html">Serializer</a> and <a class="el" href="classinviwo_1_1Deserializer.html">Deserializer</a>.  <a href="#a66ae57926aae944cf66d92114247e647">More...</a><br /></td></tr>
 <tr class="separator:a66ae57926aae944cf66d92114247e647"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a40fc8b58b1b01626c40c0a8453a3b436"><td class="memItemLeft" align="right" valign="top"><a id="a40fc8b58b1b01626c40c0a8453a3b436"></a>
-virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classinviwo_1_1SerializeBase.html#a40fc8b58b1b01626c40c0a8453a3b436">~SerializeBase</a> ()</td></tr>
-<tr class="memdesc:a40fc8b58b1b01626c40c0a8453a3b436"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destructor. <br /></td></tr>
-<tr class="separator:a40fc8b58b1b01626c40c0a8453a3b436"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1fae766ef5dd554372b7a680951ef942"><td class="memItemLeft" align="right" valign="top"><a id="a1fae766ef5dd554372b7a680951ef942"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>SerializeBase</b> (const <a class="el" href="classinviwo_1_1SerializeBase.html">SerializeBase</a> &amp;rhs)=delete</td></tr>
+<tr class="separator:a1fae766ef5dd554372b7a680951ef942"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a47f607ba95e6fb0877aa714fa04f1bdc"><td class="memItemLeft" align="right" valign="top"><a id="a47f607ba95e6fb0877aa714fa04f1bdc"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>SerializeBase</b> (<a class="el" href="classinviwo_1_1SerializeBase.html">SerializeBase</a> &amp;&amp;rhs)=default</td></tr>
+<tr class="separator:a47f607ba95e6fb0877aa714fa04f1bdc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a16f6b32884874b79eec6fc3f8a026e4f"><td class="memItemLeft" align="right" valign="top"><a id="a16f6b32884874b79eec6fc3f8a026e4f"></a>
+<a class="el" href="classinviwo_1_1SerializeBase.html">SerializeBase</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator=</b> (const <a class="el" href="classinviwo_1_1SerializeBase.html">SerializeBase</a> &amp;)=delete</td></tr>
+<tr class="separator:a16f6b32884874b79eec6fc3f8a026e4f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6f2facba2318062f4ab2fd920b45ffbf"><td class="memItemLeft" align="right" valign="top"><a id="a6f2facba2318062f4ab2fd920b45ffbf"></a>
+<a class="el" href="classinviwo_1_1SerializeBase.html">SerializeBase</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator=</b> (<a class="el" href="classinviwo_1_1SerializeBase.html">SerializeBase</a> &amp;&amp;)=default</td></tr>
+<tr class="separator:a6f2facba2318062f4ab2fd920b45ffbf"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acdabd6bd3cac2f4dcf075333397f65cd"><td class="memItemLeft" align="right" valign="top"><a id="acdabd6bd3cac2f4dcf075333397f65cd"></a>
 virtual const std::string &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classinviwo_1_1SerializeBase.html#acdabd6bd3cac2f4dcf075333397f65cd">getFileName</a> () const</td></tr>
 <tr class="memdesc:acdabd6bd3cac2f4dcf075333397f65cd"><td class="mdescLeft">&#160;</td><td class="mdescRight">gets the xml file name. <br /></td></tr>
@@ -175,7 +188,7 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>NodeSwitch</b></td><
 </table>
 <h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a3bb3dcf0d06861406d28c362ecda48e3"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3bb3dcf0d06861406d28c362ecda48e3">&#9670;&nbsp;</a></span>SerializeBase() <span class="overload">[1/4]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a3bb3dcf0d06861406d28c362ecda48e3">&#9670;&nbsp;</a></span>SerializeBase() <span class="overload">[1/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -201,46 +214,8 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>NodeSwitch</b></td><
 
 </div>
 </div>
-<a id="a7d84be1ed39f3f82e417e5e529531037"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7d84be1ed39f3f82e417e5e529531037">&#9670;&nbsp;</a></span>SerializeBase() <span class="overload">[2/4]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">inviwo::SerializeBase::SerializeBase </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="classinviwo_1_1SerializeBase.html">SerializeBase</a> &amp;&#160;</td>
-          <td class="paramname"><em>s</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">bool&#160;</td>
-          <td class="paramname"><em>allowReference</em> = <code>true</code>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Base class for <a class="el" href="classinviwo_1_1Serializer.html">Serializer</a> and <a class="el" href="classinviwo_1_1Deserializer.html">Deserializer</a>. </p>
-<p>This class consists of features that are common to both serializer and de-serializer. Some of them are reference data manager, (ticpp::Node) node switch and factory registration.</p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">s</td><td>object of similar type. </td></tr>
-    <tr><td class="paramname">allowReference</td><td>disables or enables reference management schemes. </td></tr>
-  </table>
-  </dd>
-</dl>
-
-</div>
-</div>
 <a id="ae8455f32b9ca1758477a1ffafbaf995e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae8455f32b9ca1758477a1ffafbaf995e">&#9670;&nbsp;</a></span>SerializeBase() <span class="overload">[3/4]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ae8455f32b9ca1758477a1ffafbaf995e">&#9670;&nbsp;</a></span>SerializeBase() <span class="overload">[2/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -278,7 +253,7 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>NodeSwitch</b></td><
 </div>
 </div>
 <a id="a66ae57926aae944cf66d92114247e647"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a66ae57926aae944cf66d92114247e647">&#9670;&nbsp;</a></span>SerializeBase() <span class="overload">[4/4]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a66ae57926aae944cf66d92114247e647">&#9670;&nbsp;</a></span>SerializeBase() <span class="overload">[3/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">

@@ -12,6 +12,7 @@ var classinviwo_1_1AxisAlignedCutPlane =
     [ "boundingBoxMesh_", "classinviwo_1_1AxisAlignedCutPlane.html#ae49e82abe433615d1cf485482ca64805", null ],
     [ "boundingBoxShader_", "classinviwo_1_1AxisAlignedCutPlane.html#ae3e4a39507b41f834ebf87e0524af878", null ],
     [ "camera_", "classinviwo_1_1AxisAlignedCutPlane.html#a5c8e4b728cc16cedfa52a02cfd733d81", null ],
+    [ "channel_", "classinviwo_1_1AxisAlignedCutPlane.html#aa9afc76a0e770ec9d84e8165bb945a77", null ],
     [ "disableTF_", "classinviwo_1_1AxisAlignedCutPlane.html#a6bcd39e7cf58e0a248b88250cf40c6d1", null ],
     [ "imageInport_", "classinviwo_1_1AxisAlignedCutPlane.html#a0de8f80973f9aa0ba96292cbbda8d085", null ],
     [ "nearestInterpolation_", "classinviwo_1_1AxisAlignedCutPlane.html#a332af7013dd0f8dcfdb5a2c6e792a886", null ],

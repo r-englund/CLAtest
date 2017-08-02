@@ -7,7 +7,7 @@ var classinviwo_1_1AssimpReader =
     [ "getFixInvalidDataFlag", "classinviwo_1_1AssimpReader.html#a0d4b5a4a025226906edcc763590b1d95", null ],
     [ "getLogLevel", "classinviwo_1_1AssimpReader.html#acea62a45cad7fd0a8723e037a6df492e", null ],
     [ "operator=", "classinviwo_1_1AssimpReader.html#a8e2a31a57693383d538a78112180d023", null ],
-    [ "readData", "classinviwo_1_1AssimpReader.html#a0c2e092e5eb680f9ddff3c5591af1eea", null ],
+    [ "readData", "classinviwo_1_1AssimpReader.html#a57108488199f1ad939fdd03caa4f8f54", null ],
     [ "setFixInvalidDataFlag", "classinviwo_1_1AssimpReader.html#acb4f4d432909da3d0c36de60e23b8641", null ],
     [ "setLogLevel", "classinviwo_1_1AssimpReader.html#af240d9924230978df23a0d52645221ea", null ]
 ];

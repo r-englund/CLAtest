@@ -97,18 +97,37 @@ $(document).ready(function(){initNavTree('classinviwo_1_1TransferFunction.html',
  <a href="classinviwo_1_1TransferFunction.html#details">More...</a></p>
 
 <p><code>#include &lt;transferfunction.h&gt;</code></p>
+<div id="dynsection-0" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-0-trigger" src="closed.png" alt="+"/> Inheritance diagram for inviwo::TransferFunction:</div>
+<div id="dynsection-0-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-0-content" class="dyncontent" style="display:none;">
+<div class="center"><img src="classinviwo_1_1TransferFunction__inherit__graph.png" border="0" usemap="#inviwo_1_1TransferFunction_inherit__map" alt="Inheritance graph"/></div>
+<map name="inviwo_1_1TransferFunction_inherit__map" id="inviwo_1_1TransferFunction_inherit__map">
+<area shape="rect" id="node2" href="classinviwo_1_1Serializable.html" title="inviwo::Serializable" alt="" coords="872,5,1003,32"/>
+<area shape="rect" id="node3" href="classinviwo_1_1TransferFunctionObservable.html" title="inviwo::TransferFunction\lObservable" alt="" coords="857,57,1017,98"/>
+<area shape="rect" id="node4" href="classinviwo_1_1Observable.html" title="inviwo::Observable\l\&lt; TransferFunctionObserver \&gt;" alt="" coords="615,57,808,98"/>
+<area shape="rect" id="node5" href="classinviwo_1_1ObservableInterface.html" title="inviwo::ObservableInterface" alt="" coords="5,68,183,95"/>
+<area shape="rect" id="node6" href="classinviwo_1_1Observable.html" title="inviwo::Observable\&lt; T \&gt;" alt="" coords="232,97,391,124"/>
+<area shape="rect" id="node7" href="classinviwo_1_1TransferFunctionPointObserver.html" title="inviwo::TransferFunction\lPointObserver" alt="" coords="857,122,1017,163"/>
+<area shape="rect" id="node8" href="classinviwo_1_1Observer.html" title="inviwo::Observer" alt="" coords="654,129,769,156"/>
+</map>
+<center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-types"></a>
 Public Types</h2></td></tr>
-<tr class="memitem:a51eceafee081c44086b3408f6d7fb7c4"><td class="memItemLeft" align="right" valign="top"><a id="a51eceafee081c44086b3408f6d7fb7c4"></a>
-using&#160;</td><td class="memItemRight" valign="bottom"><b>TFPoints</b> = std::vector&lt; std::unique_ptr&lt; <a class="el" href="classinviwo_1_1TransferFunctionDataPoint.html">TransferFunctionDataPoint</a> &gt; &gt;</td></tr>
-<tr class="separator:a51eceafee081c44086b3408f6d7fb7c4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa2043999e90a67dc3cae38aa779f6788"><td class="memItemLeft" align="right" valign="top"><a id="aa2043999e90a67dc3cae38aa779f6788"></a>
+using&#160;</td><td class="memItemRight" valign="bottom"><b>Point</b> = <a class="el" href="structinviwo_1_1TransferFunctionDataPoint_1_1Point.html">TransferFunctionDataPoint::Point</a></td></tr>
+<tr class="separator:aa2043999e90a67dc3cae38aa779f6788"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a03c78c879c30c85816a06299c73d88b6"><td class="memItemLeft" align="right" valign="top"><a id="a03c78c879c30c85816a06299c73d88b6"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>TransferFunction</b> (int textureSize=1024)</td></tr>
-<tr class="separator:a03c78c879c30c85816a06299c73d88b6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6356aa70565bceb956f5531554552536"><td class="memItemLeft" align="right" valign="top"><a id="a6356aa70565bceb956f5531554552536"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>TransferFunction</b> (size_t textureSize=1024)</td></tr>
+<tr class="separator:a6356aa70565bceb956f5531554552536"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aefd0178a73b4823a8f9adfc400ada012"><td class="memItemLeft" align="right" valign="top"><a id="aefd0178a73b4823a8f9adfc400ada012"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>TransferFunction</b> (const std::vector&lt; <a class="el" href="structinviwo_1_1TransferFunctionDataPoint_1_1Point.html">Point</a> &gt; &amp;points, size_t textureSize=1024)</td></tr>
+<tr class="separator:aefd0178a73b4823a8f9adfc400ada012"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7bea4c6309c60387cf91938d64d48f19"><td class="memItemLeft" align="right" valign="top"><a id="a7bea4c6309c60387cf91938d64d48f19"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>TransferFunction</b> (const <a class="el" href="classinviwo_1_1TransferFunction.html">TransferFunction</a> &amp;rhs)</td></tr>
 <tr class="separator:a7bea4c6309c60387cf91938d64d48f19"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -118,24 +137,28 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a5b249a8ba796588f9bd32a842e644b2c"><td class="memItemLeft" align="right" valign="top"><a id="a5b249a8ba796588f9bd32a842e644b2c"></a>
 const <a class="el" href="classinviwo_1_1Layer.html">Layer</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>getData</b> () const</td></tr>
 <tr class="separator:a5b249a8ba796588f9bd32a842e644b2c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab03206ba69c8cea37a2bf12dfb92ac9a"><td class="memItemLeft" align="right" valign="top"><a id="ab03206ba69c8cea37a2bf12dfb92ac9a"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><b>getNumPoints</b> () const</td></tr>
-<tr class="separator:ab03206ba69c8cea37a2bf12dfb92ac9a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:adbe4b4489e157f8392e2ddbc842d2a20"><td class="memItemLeft" align="right" valign="top"><a id="adbe4b4489e157f8392e2ddbc842d2a20"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><b>getTextureSize</b> ()</td></tr>
-<tr class="separator:adbe4b4489e157f8392e2ddbc842d2a20"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a59ef3bd5616dbb4dc56d87cffb4570e8"><td class="memItemLeft" align="right" valign="top"><a id="a59ef3bd5616dbb4dc56d87cffb4570e8"></a>
+size_t&#160;</td><td class="memItemRight" valign="bottom"><b>getNumPoints</b> () const</td></tr>
+<tr class="separator:a59ef3bd5616dbb4dc56d87cffb4570e8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8129357f07f248b4107e47b30489a5e9"><td class="memItemLeft" align="right" valign="top"><a id="a8129357f07f248b4107e47b30489a5e9"></a>
+size_t&#160;</td><td class="memItemRight" valign="bottom"><b>getTextureSize</b> ()</td></tr>
+<tr class="separator:a8129357f07f248b4107e47b30489a5e9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad80a289556c8caafd73181619fb76504"><td class="memItemLeft" align="right" valign="top"><a id="ad80a289556c8caafd73181619fb76504"></a>
 <a class="el" href="classinviwo_1_1TransferFunctionDataPoint.html">TransferFunctionDataPoint</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>getPoint</b> (size_t i)</td></tr>
 <tr class="separator:ad80a289556c8caafd73181619fb76504"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3b9f9a703777077c934d55fbb4420254"><td class="memItemLeft" align="right" valign="top"><a id="a3b9f9a703777077c934d55fbb4420254"></a>
 const <a class="el" href="classinviwo_1_1TransferFunctionDataPoint.html">TransferFunctionDataPoint</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>getPoint</b> (size_t i) const</td></tr>
 <tr class="separator:a3b9f9a703777077c934d55fbb4420254"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a54d2067aee153e2f5f274a9fdb2e403e"><td class="memItemLeft" align="right" valign="top"><a id="a54d2067aee153e2f5f274a9fdb2e403e"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>addPoint</b> (const vec2 &amp;pos, const vec4 &amp;color)</td></tr>
-<tr class="separator:a54d2067aee153e2f5f274a9fdb2e403e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a35df185e5ae025681af4181f91c43371"><td class="memItemLeft" align="right" valign="top"><a id="a35df185e5ae025681af4181f91c43371"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>addPoint</b> (const vec2 &amp;pos)</td></tr>
+<tr class="memitem:a5373189282f8800178ebaabf332f125d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classinviwo_1_1TransferFunction.html#a5373189282f8800178ebaabf332f125d">addPoint</a> (const float &amp;pos, const vec4 &amp;color)</td></tr>
+<tr class="separator:a5373189282f8800178ebaabf332f125d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a37e042ccec7c5d9ecb879411f05a913f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classinviwo_1_1TransferFunction.html#a37e042ccec7c5d9ecb879411f05a913f">addPoint</a> (const <a class="el" href="structinviwo_1_1TransferFunctionDataPoint_1_1Point.html">Point</a> &amp;point)</td></tr>
+<tr class="separator:a37e042ccec7c5d9ecb879411f05a913f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a35df185e5ae025681af4181f91c43371"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classinviwo_1_1TransferFunction.html#a35df185e5ae025681af4181f91c43371">addPoint</a> (const vec2 &amp;pos)</td></tr>
 <tr class="separator:a35df185e5ae025681af4181f91c43371"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4d44a29588796a76e8945ead5d23b0cc"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classinviwo_1_1TransferFunction.html#a4d44a29588796a76e8945ead5d23b0cc">addPoints</a> (const std::vector&lt; <a class="el" href="structinviwo_1_1TransferFunctionDataPoint_1_1Point.html">Point</a> &gt; &amp;points)</td></tr>
+<tr class="separator:a4d44a29588796a76e8945ead5d23b0cc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a54d2067aee153e2f5f274a9fdb2e403e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classinviwo_1_1TransferFunction.html#a54d2067aee153e2f5f274a9fdb2e403e">addPoint</a> (const vec2 &amp;pos, const vec4 &amp;color)</td></tr>
+<tr class="separator:a54d2067aee153e2f5f274a9fdb2e403e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a47b49adc53674b425e2a6fd1ff78a65f"><td class="memItemLeft" align="right" valign="top"><a id="a47b49adc53674b425e2a6fd1ff78a65f"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>removePoint</b> (<a class="el" href="classinviwo_1_1TransferFunctionDataPoint.html">TransferFunctionDataPoint</a> *dataPoint)</td></tr>
 <tr class="separator:a47b49adc53674b425e2a6fd1ff78a65f"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -228,6 +251,12 @@ Protected Member Functions</h2></td></tr>
 <tr class="memitem:a897cb9c570e1bc9ad9f4c657762e0020"><td class="memItemLeft" align="right" valign="top"><a id="a897cb9c570e1bc9ad9f4c657762e0020"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>addPoint</b> (std::unique_ptr&lt; <a class="el" href="classinviwo_1_1TransferFunctionDataPoint.html">TransferFunctionDataPoint</a> &gt; dataPoint)</td></tr>
 <tr class="separator:a897cb9c570e1bc9ad9f4c657762e0020"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af981bea3009e6330c6ceb43cf2042a98"><td class="memItemLeft" align="right" valign="top"><a id="af981bea3009e6330c6ceb43cf2042a98"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>removePoint</b> (std::vector&lt; std::unique_ptr&lt; <a class="el" href="classinviwo_1_1TransferFunctionDataPoint.html">TransferFunctionDataPoint</a> &gt;&gt;::iterator pos)</td></tr>
+<tr class="separator:af981bea3009e6330c6ceb43cf2042a98"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5ed7d3f3de91c4cfb6954fc5a47b1171"><td class="memItemLeft" align="right" valign="top"><a id="a5ed7d3f3de91c4cfb6954fc5a47b1171"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>sort</b> ()</td></tr>
+<tr class="separator:a5ed7d3f3de91c4cfb6954fc5a47b1171"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5b56669c0857dc539d1464eb1078c749"><td class="memItemLeft" align="right" valign="top"><a id="a5b56669c0857dc539d1464eb1078c749"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>calcTransferValues</b> () const</td></tr>
 <tr class="separator:a5b56669c0857dc539d1464eb1078c749"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -276,6 +305,121 @@ ObservableSet&#160;</td><td class="memItemRight" valign="bottom"><b>observables_
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>for holding transfer function data. This class holds transfer function data, currently one parameter in the variable data_. </p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
+<a id="a5373189282f8800178ebaabf332f125d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5373189282f8800178ebaabf332f125d">&#9670;&nbsp;</a></span>addPoint() <span class="overload">[1/4]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void inviwo::TransferFunction::addPoint </td>
+          <td>(</td>
+          <td class="paramtype">const float &amp;&#160;</td>
+          <td class="paramname"><em>pos</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const vec4 &amp;&#160;</td>
+          <td class="paramname"><em>color</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Add a transfer function point at pos with value color </p>
+
+</div>
+</div>
+<a id="a37e042ccec7c5d9ecb879411f05a913f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a37e042ccec7c5d9ecb879411f05a913f">&#9670;&nbsp;</a></span>addPoint() <span class="overload">[2/4]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void inviwo::TransferFunction::addPoint </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structinviwo_1_1TransferFunctionDataPoint_1_1Point.html">Point</a> &amp;&#160;</td>
+          <td class="paramname"><em>point</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Add a transfer function point </p>
+
+</div>
+</div>
+<a id="a35df185e5ae025681af4181f91c43371"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a35df185e5ae025681af4181f91c43371">&#9670;&nbsp;</a></span>addPoint() <span class="overload">[3/4]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void inviwo::TransferFunction::addPoint </td>
+          <td>(</td>
+          <td class="paramtype">const vec2 &amp;&#160;</td>
+          <td class="paramname"><em>pos</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Add a transfer function point at pos.x() with alpha from pos.y and color interpolated from neighbors </p>
+
+</div>
+</div>
+<a id="a54d2067aee153e2f5f274a9fdb2e403e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a54d2067aee153e2f5f274a9fdb2e403e">&#9670;&nbsp;</a></span>addPoint() <span class="overload">[4/4]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void inviwo::TransferFunction::addPoint </td>
+          <td>(</td>
+          <td class="paramtype">const vec2 &amp;&#160;</td>
+          <td class="paramname"><em>pos</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const vec4 &amp;&#160;</td>
+          <td class="paramname"><em>color</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Depricated. Add a transfer function point at pos.x() with value color, pos.y is not used. </p>
+
+</div>
+</div>
+<a id="a4d44a29588796a76e8945ead5d23b0cc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4d44a29588796a76e8945ead5d23b0cc">&#9670;&nbsp;</a></span>addPoints()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void inviwo::TransferFunction::addPoints </td>
+          <td>(</td>
+          <td class="paramtype">const std::vector&lt; <a class="el" href="structinviwo_1_1TransferFunctionDataPoint_1_1Point.html">Point</a> &gt; &amp;&#160;</td>
+          <td class="paramname"><em>points</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Add a transfer function points </p>
+
+</div>
+</div>
 <a id="afe3d9d262b92d6881212ca2e16730474"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#afe3d9d262b92d6881212ca2e16730474">&#9670;&nbsp;</a></span>invalidate()</h2>
 

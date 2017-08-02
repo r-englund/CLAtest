@@ -11,6 +11,7 @@ var classinviwo_1_1Mesh =
     [ "addBuffer", "classinviwo_1_1Mesh.html#a42959ebc45a4c5fc6d4d5117db5ae987", null ],
     [ "addBuffer", "classinviwo_1_1Mesh.html#a04d3ac1ac6c3d148bab0d8b7bd589ffd", null ],
     [ "addIndicies", "classinviwo_1_1Mesh.html#a9f62ca71ce78d1843c419eb937f144dc", null ],
+    [ "append", "classinviwo_1_1Mesh.html#adecd7912703c869a82b24f6e16f44d7a", null ],
     [ "clone", "classinviwo_1_1Mesh.html#a3955339562df663185896ec63209283b", null ],
     [ "getBuffer", "classinviwo_1_1Mesh.html#a5dff15bc3cc3e7959097baa2c3cbac28", null ],
     [ "getBuffer", "classinviwo_1_1Mesh.html#aa54f43698a74914968fef6da9373f79a", null ],

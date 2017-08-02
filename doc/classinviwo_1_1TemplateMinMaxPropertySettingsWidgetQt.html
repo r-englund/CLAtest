@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.13"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Inviwo: inviwo::TemplateMinMaxPropertySettingsWidgetQt&lt; BT, T &gt; Class Template Reference</title>
+<title>Inviwo: inviwo::TemplateMinMaxPropertySettingsWidgetQt&lt; T &gt; Class Template Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -85,57 +85,49 @@ $(document).ready(function(){initNavTree('classinviwo_1_1TemplateMinMaxPropertyS
   <div class="summary">
 <a href="#pub-types">Public Types</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pro-methods">Protected Member Functions</a> &#124;
 <a href="classinviwo_1_1TemplateMinMaxPropertySettingsWidgetQt-members.html">List of all members</a>  </div>
   <div class="headertitle">
-<div class="title">inviwo::TemplateMinMaxPropertySettingsWidgetQt&lt; BT, T &gt; Class Template Reference</div>  </div>
+<div class="title">inviwo::TemplateMinMaxPropertySettingsWidgetQt&lt; T &gt; Class Template Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
+<div id="dynsection-0" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-0-trigger" src="closed.png" alt="+"/> Inheritance diagram for inviwo::TemplateMinMaxPropertySettingsWidgetQt&lt; T &gt;:</div>
+<div id="dynsection-0-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-0-content" class="dyncontent" style="display:none;">
+<div class="center"><img src="classinviwo_1_1TemplateMinMaxPropertySettingsWidgetQt__inherit__graph.png" border="0" usemap="#inviwo_1_1TemplateMinMaxPropertySettingsWidgetQt_3_01T_01_4_inherit__map" alt="Inheritance graph"/></div>
+<map name="inviwo_1_1TemplateMinMaxPropertySettingsWidgetQt_3_01T_01_4_inherit__map" id="inviwo_1_1TemplateMinMaxPropertySettingsWidgetQt_3_01T_01_4_inherit__map">
+<area shape="rect" id="node3" href="classinviwo_1_1PropertyWidget.html" title="inviwo::PropertyWidget" alt="" coords="102,5,257,32"/>
+</map>
+<center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-types"></a>
 Public Types</h2></td></tr>
-<tr class="memitem:a79e69e3758b90b85e5a12a325fe85e2e"><td class="memItemLeft" align="right" valign="top"><a id="a79e69e3758b90b85e5a12a325fe85e2e"></a>
-typedef glm::tvec2&lt; T, glm::defaultp &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>V</b></td></tr>
-<tr class="separator:a79e69e3758b90b85e5a12a325fe85e2e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa6bac75b4de86772971ead73a6a57b52"><td class="memItemLeft" align="right" valign="top"><a id="aa6bac75b4de86772971ead73a6a57b52"></a>
+using&#160;</td><td class="memItemRight" valign="bottom"><b>BT</b> = typename <a class="el" href="structinviwo_1_1util_1_1value__type.html">util::value_type</a>&lt; T &gt;::type</td></tr>
+<tr class="separator:aa6bac75b4de86772971ead73a6a57b52"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6bbf54a89fe8a412b0b5b04041f57e21"><td class="memItemLeft" align="right" valign="top"><a id="a6bbf54a89fe8a412b0b5b04041f57e21"></a>
+using&#160;</td><td class="memItemRight" valign="bottom"><b>V</b> = glm::tvec2&lt; T, glm::defaultp &gt;</td></tr>
+<tr class="separator:a6bbf54a89fe8a412b0b5b04041f57e21"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a364f45f3e4d265c76013ee64063521cd"><td class="memItemLeft" align="right" valign="top"><a id="a364f45f3e4d265c76013ee64063521cd"></a>
+<tr class="memitem:a839d5c9b2b9c94825491bea415fd31ad"><td class="memItemLeft" align="right" valign="top"><a id="a839d5c9b2b9c94825491bea415fd31ad"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>TemplateMinMaxPropertySettingsWidgetQt</b> (<a class="el" href="classinviwo_1_1MinMaxProperty.html">MinMaxProperty</a>&lt; T &gt; *property, QWidget *widget)</td></tr>
-<tr class="separator:a364f45f3e4d265c76013ee64063521cd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a365f5587ed3fef06e85b8dc33341a98b"><td class="memItemLeft" align="right" valign="top"><a id="a365f5587ed3fef06e85b8dc33341a98b"></a>
-virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>generateWidget</b> ()</td></tr>
-<tr class="separator:a365f5587ed3fef06e85b8dc33341a98b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2a0f21579bb0242a595e80513a8d8d05"><td class="memItemLeft" align="right" valign="top"><a id="a2a0f21579bb0242a595e80513a8d8d05"></a>
-virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>save</b> ()</td></tr>
-<tr class="separator:a2a0f21579bb0242a595e80513a8d8d05"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2d22cd30331e9cf5a01ad48e49bb7f2f"><td class="memItemLeft" align="right" valign="top"><a id="a2d22cd30331e9cf5a01ad48e49bb7f2f"></a>
-virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>apply</b> ()</td></tr>
-<tr class="separator:a2d22cd30331e9cf5a01ad48e49bb7f2f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7434bc95c11798e0a7725c127d55d8cd"><td class="memItemLeft" align="right" valign="top"><a id="a7434bc95c11798e0a7725c127d55d8cd"></a>
-virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>reload</b> ()</td></tr>
-<tr class="separator:a7434bc95c11798e0a7725c127d55d8cd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aeccbaeba9059945cf17544121ae2c003"><td class="memItemLeft" align="right" valign="top"><a id="aeccbaeba9059945cf17544121ae2c003"></a>
-virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>cancel</b> ()</td></tr>
-<tr class="separator:aeccbaeba9059945cf17544121ae2c003"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="inherit_header pub_methods_classinviwo_1_1PropertySettingsWidgetQt"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classinviwo_1_1PropertySettingsWidgetQt')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classinviwo_1_1PropertySettingsWidgetQt.html">inviwo::PropertySettingsWidgetQt</a></td></tr>
-<tr class="memitem:a2596161c009d550ad42db92aed8b9622 inherit pub_methods_classinviwo_1_1PropertySettingsWidgetQt"><td class="memItemLeft" align="right" valign="top"><a id="a2596161c009d550ad42db92aed8b9622"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>PropertySettingsWidgetQt</b> (<a class="el" href="classinviwo_1_1Property.html">Property</a> *property, QWidget *)</td></tr>
-<tr class="separator:a2596161c009d550ad42db92aed8b9622 inherit pub_methods_classinviwo_1_1PropertySettingsWidgetQt"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad12afa96aab5904cc2e94af86cf2bbb5 inherit pub_methods_classinviwo_1_1PropertySettingsWidgetQt"><td class="memItemLeft" align="right" valign="top"><a id="ad12afa96aab5904cc2e94af86cf2bbb5"></a>
-virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>updateFromProperty</b> ()</td></tr>
-<tr class="separator:ad12afa96aab5904cc2e94af86cf2bbb5 inherit pub_methods_classinviwo_1_1PropertySettingsWidgetQt"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a25cb5cf14d8c8899abb40270a54bba1f inherit pub_methods_classinviwo_1_1PropertySettingsWidgetQt"><td class="memItemLeft" align="right" valign="top"><a id="a25cb5cf14d8c8899abb40270a54bba1f"></a>
-virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>showWidget</b> ()</td></tr>
-<tr class="separator:a25cb5cf14d8c8899abb40270a54bba1f inherit pub_methods_classinviwo_1_1PropertySettingsWidgetQt"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5616bf9e99b154272fdf9f8b64581ba4 inherit pub_methods_classinviwo_1_1PropertySettingsWidgetQt"><td class="memItemLeft" align="right" valign="top"><a id="a5616bf9e99b154272fdf9f8b64581ba4"></a>
-virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>hideWidget</b> ()</td></tr>
-<tr class="separator:a5616bf9e99b154272fdf9f8b64581ba4 inherit pub_methods_classinviwo_1_1PropertySettingsWidgetQt"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5883d3e693da77a977a7c53a3b6ba927 inherit pub_methods_classinviwo_1_1PropertySettingsWidgetQt"><td class="memItemLeft" align="right" valign="top"><a id="a5883d3e693da77a977a7c53a3b6ba927"></a>
-virtual UsageMode&#160;</td><td class="memItemRight" valign="bottom"><b>getUsageMode</b> () const</td></tr>
-<tr class="separator:a5883d3e693da77a977a7c53a3b6ba927 inherit pub_methods_classinviwo_1_1PropertySettingsWidgetQt"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae36d7015a146043a5971725fa3ef0911 inherit pub_methods_classinviwo_1_1PropertySettingsWidgetQt"><td class="memItemLeft" align="right" valign="top"><a id="ae36d7015a146043a5971725fa3ef0911"></a>
-virtual bool&#160;</td><td class="memItemRight" valign="bottom"><b>getVisible</b> () const</td></tr>
-<tr class="separator:ae36d7015a146043a5971725fa3ef0911 inherit pub_methods_classinviwo_1_1PropertySettingsWidgetQt"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="separator:a839d5c9b2b9c94825491bea415fd31ad"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6bf41a002ae2bc6824067e3cbd0e47af"><td class="memItemLeft" align="right" valign="top"><a id="a6bf41a002ae2bc6824067e3cbd0e47af"></a>
+virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>updateFromProperty</b> () override</td></tr>
+<tr class="separator:a6bf41a002ae2bc6824067e3cbd0e47af"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aac964f4f3bafd85bbd02979a1e46b414"><td class="memItemLeft" align="right" valign="top"><a id="aac964f4f3bafd85bbd02979a1e46b414"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>showWidget</b> ()</td></tr>
+<tr class="separator:aac964f4f3bafd85bbd02979a1e46b414"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4a3428a1e9248b936d89ae72d7cf396d"><td class="memItemLeft" align="right" valign="top"><a id="a4a3428a1e9248b936d89ae72d7cf396d"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>hideWidget</b> ()</td></tr>
+<tr class="separator:a4a3428a1e9248b936d89ae72d7cf396d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae8798327ce4f3ed4345a35d1fce374c8"><td class="memItemLeft" align="right" valign="top"><a id="ae8798327ce4f3ed4345a35d1fce374c8"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>getVisible</b> () const</td></tr>
+<tr class="separator:ae8798327ce4f3ed4345a35d1fce374c8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classinviwo_1_1PropertyWidget"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classinviwo_1_1PropertyWidget')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classinviwo_1_1PropertyWidget.html">inviwo::PropertyWidget</a></td></tr>
 <tr class="memitem:a97feb62f4addae4e0f4c15425e25a002 inherit pub_methods_classinviwo_1_1PropertyWidget"><td class="memItemLeft" align="right" valign="top"><a id="a97feb62f4addae4e0f4c15425e25a002"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>PropertyWidget</b> (<a class="el" href="classinviwo_1_1Property.html">Property</a> *property)</td></tr>
@@ -150,32 +142,14 @@ virtual bool&#160;</td><td class="memItemRight" valign="bottom"><b>hasEditorWidg
 virtual <a class="el" href="classinviwo_1_1Property.html">Property</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>getProperty</b> ()</td></tr>
 <tr class="separator:a1d4125ef25ff4dd25ab5d75671de2271 inherit pub_methods_classinviwo_1_1PropertyWidget"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-methods"></a>
+Protected Member Functions</h2></td></tr>
+<tr class="memitem:ac32535f5f92cdcb12b33b28be28c8ff8"><td class="memItemLeft" align="right" valign="top"><a id="ac32535f5f92cdcb12b33b28be28c8ff8"></a>
+virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>keyPressEvent</b> (QKeyEvent *event) override</td></tr>
+<tr class="separator:ac32535f5f92cdcb12b33b28be28c8ff8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="inherited"></a>
 Additional Inherited Members</h2></td></tr>
-<tr class="inherit_header pub_slots_classinviwo_1_1PropertySettingsWidgetQt"><td colspan="2" onclick="javascript:toggleInherit('pub_slots_classinviwo_1_1PropertySettingsWidgetQt')"><img src="closed.png" alt="-"/>&#160;Public Slots inherited from <a class="el" href="classinviwo_1_1PropertySettingsWidgetQt.html">inviwo::PropertySettingsWidgetQt</a></td></tr>
-<tr class="inherit_header pro_methods_classinviwo_1_1PropertySettingsWidgetQt"><td colspan="2" onclick="javascript:toggleInherit('pro_methods_classinviwo_1_1PropertySettingsWidgetQt')"><img src="closed.png" alt="-"/>&#160;Protected Member Functions inherited from <a class="el" href="classinviwo_1_1PropertySettingsWidgetQt.html">inviwo::PropertySettingsWidgetQt</a></td></tr>
-<tr class="memitem:acd3c3b45f87c7404c9af26cd3c4ed97a inherit pro_methods_classinviwo_1_1PropertySettingsWidgetQt"><td class="memItemLeft" align="right" valign="top"><a id="acd3c3b45f87c7404c9af26cd3c4ed97a"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>keyPressEvent</b> (QKeyEvent *event)</td></tr>
-<tr class="separator:acd3c3b45f87c7404c9af26cd3c4ed97a inherit pro_methods_classinviwo_1_1PropertySettingsWidgetQt"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8e647ca24ea5dc46b5aec68659e2f5d1 inherit pro_methods_classinviwo_1_1PropertySettingsWidgetQt"><td class="memItemLeft" align="right" valign="top"><a id="a8e647ca24ea5dc46b5aec68659e2f5d1"></a>
-virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>initializeEditorWidgetsMetaData</b> ()</td></tr>
-<tr class="separator:a8e647ca24ea5dc46b5aec68659e2f5d1 inherit pro_methods_classinviwo_1_1PropertySettingsWidgetQt"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="inherit_header pro_attribs_classinviwo_1_1PropertySettingsWidgetQt"><td colspan="2" onclick="javascript:toggleInherit('pro_attribs_classinviwo_1_1PropertySettingsWidgetQt')"><img src="closed.png" alt="-"/>&#160;Protected Attributes inherited from <a class="el" href="classinviwo_1_1PropertySettingsWidgetQt.html">inviwo::PropertySettingsWidgetQt</a></td></tr>
-<tr class="memitem:a7c6e16e75c074d23cc256002535cbfe4 inherit pro_attribs_classinviwo_1_1PropertySettingsWidgetQt"><td class="memItemLeft" align="right" valign="top"><a id="a7c6e16e75c074d23cc256002535cbfe4"></a>
-QGridLayout *&#160;</td><td class="memItemRight" valign="bottom"><b>gridLayout_</b></td></tr>
-<tr class="separator:a7c6e16e75c074d23cc256002535cbfe4 inherit pro_attribs_classinviwo_1_1PropertySettingsWidgetQt"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a766bb32a0ac091082c4a3660d6c4cbbc inherit pro_attribs_classinviwo_1_1PropertySettingsWidgetQt"><td class="memItemLeft" align="right" valign="top"><a id="a766bb32a0ac091082c4a3660d6c4cbbc"></a>
-QPushButton&#160;</td><td class="memItemRight" valign="bottom"><b>btnApply_</b></td></tr>
-<tr class="separator:a766bb32a0ac091082c4a3660d6c4cbbc inherit pro_attribs_classinviwo_1_1PropertySettingsWidgetQt"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a87db0ca9bec897ed9650f1e9dd21fc89 inherit pro_attribs_classinviwo_1_1PropertySettingsWidgetQt"><td class="memItemLeft" align="right" valign="top"><a id="a87db0ca9bec897ed9650f1e9dd21fc89"></a>
-QPushButton&#160;</td><td class="memItemRight" valign="bottom"><b>btnOk_</b></td></tr>
-<tr class="separator:a87db0ca9bec897ed9650f1e9dd21fc89 inherit pro_attribs_classinviwo_1_1PropertySettingsWidgetQt"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad0800fad2535c68b8d6b5ec11e996777 inherit pro_attribs_classinviwo_1_1PropertySettingsWidgetQt"><td class="memItemLeft" align="right" valign="top"><a id="ad0800fad2535c68b8d6b5ec11e996777"></a>
-QPushButton&#160;</td><td class="memItemRight" valign="bottom"><b>btnCancel_</b></td></tr>
-<tr class="separator:ad0800fad2535c68b8d6b5ec11e996777 inherit pro_attribs_classinviwo_1_1PropertySettingsWidgetQt"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a64b975e6a644e70f5abf396469554b9f inherit pro_attribs_classinviwo_1_1PropertySettingsWidgetQt"><td class="memItemLeft" align="right" valign="top"><a id="a64b975e6a644e70f5abf396469554b9f"></a>
-std::vector&lt; <a class="el" href="structinviwo_1_1SinglePropertySetting.html">SinglePropertySetting</a> * &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>settings_</b></td></tr>
-<tr class="separator:a64b975e6a644e70f5abf396469554b9f inherit pro_attribs_classinviwo_1_1PropertySettingsWidgetQt"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pro_attribs_classinviwo_1_1PropertyWidget"><td colspan="2" onclick="javascript:toggleInherit('pro_attribs_classinviwo_1_1PropertyWidget')"><img src="closed.png" alt="-"/>&#160;Protected Attributes inherited from <a class="el" href="classinviwo_1_1PropertyWidget.html">inviwo::PropertyWidget</a></td></tr>
 <tr class="memitem:ab9797df00372ade54e08032bcf6095c4 inherit pro_attribs_classinviwo_1_1PropertyWidget"><td class="memItemLeft" align="right" valign="top"><a id="ab9797df00372ade54e08032bcf6095c4"></a>
 <a class="el" href="classinviwo_1_1Property.html">Property</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>property_</b> = nullptr</td></tr>

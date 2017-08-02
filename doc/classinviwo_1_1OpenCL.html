@@ -92,9 +92,26 @@ $(document).ready(function(){initNavTree('classinviwo_1_1OpenCL.html','');});
 <div class="contents">
 
 <p><code>#include &lt;inviwoopencl.h&gt;</code></p>
+<div id="dynsection-0" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-0-trigger" src="closed.png" alt="+"/> Inheritance diagram for inviwo::OpenCL:</div>
+<div id="dynsection-0-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-0-content" class="dyncontent" style="display:none;">
+<div class="center"><img src="classinviwo_1_1OpenCL__inherit__graph.png" border="0" usemap="#inviwo_1_1OpenCL_inherit__map" alt="Inheritance graph"/></div>
+<map name="inviwo_1_1OpenCL_inherit__map" id="inviwo_1_1OpenCL_inherit__map">
+<area shape="rect" id="node2" href="classinviwo_1_1Singleton.html" title="inviwo::Singleton\&lt;\l OpenCL \&gt;" alt="" coords="17,95,143,136"/>
+<area shape="rect" id="node3" href="classinviwo_1_1Singleton.html" title="inviwo::Singleton\&lt; T \&gt;" alt="" coords="5,5,155,32"/>
+</map>
+<center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
+<tr class="memitem:ad908f29454ee4b767c71a0d0b770187e"><td class="memItemLeft" align="right" valign="top"><a id="ad908f29454ee4b767c71a0d0b770187e"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>OpenCL</b> (<a class="el" href="classinviwo_1_1OpenCL.html">OpenCL</a> const &amp;)=delete</td></tr>
+<tr class="separator:ad908f29454ee4b767c71a0d0b770187e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab3c6c12c7589f4f223266bd5725dbabc"><td class="memItemLeft" align="right" valign="top"><a id="ab3c6c12c7589f4f223266bd5725dbabc"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>operator=</b> (<a class="el" href="classinviwo_1_1OpenCL.html">OpenCL</a> const &amp;)=delete</td></tr>
+<tr class="separator:ab3c6c12c7589f4f223266bd5725dbabc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a62d2e75948c9568e8df72772107cd5fa"><td class="memItemLeft" align="right" valign="top">const cl::CommandQueue &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classinviwo_1_1OpenCL.html#a62d2e75948c9568e8df72772107cd5fa">getQueue</a> () const</td></tr>
 <tr class="separator:a62d2e75948c9568e8df72772107cd5fa"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a431e69390111939d22af442bfa31b061"><td class="memItemLeft" align="right" valign="top">const cl::CommandQueue &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classinviwo_1_1OpenCL.html#a431e69390111939d22af442bfa31b061">getAsyncQueue</a> () const</td></tr>
@@ -161,7 +178,7 @@ static void&#160;</td><td class="memItemRight" valign="bottom"><b>deleteInstance
 <tr class="separator:a63e430e61d8a718cb4592799378b08cf inherit pub_static_methods_classinviwo_1_1Singleton"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p><a class="el" href="classinviwo_1_1Singleton.html">Singleton</a> class that manages <a class="el" href="classinviwo_1_1OpenCL.html">OpenCL</a> context and queues. </p>
+<div class="textblock"><p>This macro will create an <a class="el" href="classinviwo_1_1OpenCL.html">OpenCL</a> event called "profilingEvent" that should be used when executing the kernel. If IVW_PROFILING is defined it will call LogInfo with the execution time. Example: IVW_OPENCL_PROFILING(profilingEvent, "") OpenCL::getPtr()-&gt;<a class="el" href="classinviwo_1_1OpenCL.html#a62d2e75948c9568e8df72772107cd5fa">getQueue()</a>.enqueueNDRangeKernel(*ernel_, cl::NullRange, globalWorkGroupSize, localWorkGroupSize, nullptr, profilingEvent); <a class="el" href="classinviwo_1_1Singleton.html">Singleton</a> class that manages <a class="el" href="classinviwo_1_1OpenCL.html">OpenCL</a> context and queues. </p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
 <a id="acfb357ea73d1ee3c6651a0784a70c214"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#acfb357ea73d1ee3c6651a0784a70c214">&#9670;&nbsp;</a></span>addCommonIncludeDirectory()</h2>

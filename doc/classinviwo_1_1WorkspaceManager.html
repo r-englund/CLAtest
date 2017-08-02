@@ -137,6 +137,8 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:ad63095cda583b85b7dd7c937b758ab6a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a37c01880a5705834847dadb6ef7ab545"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classinviwo_1_1WorkspaceManager.html#a37c01880a5705834847dadb6ef7ab545">registerFactory</a> (<a class="el" href="classinviwo_1_1FactoryBase.html">FactoryBase</a> *factory)</td></tr>
 <tr class="separator:a37c01880a5705834847dadb6ef7ab545"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae02a52e43475a54a43cd18bc49391a70"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classinviwo_1_1Deserializer.html">Deserializer</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classinviwo_1_1WorkspaceManager.html#ae02a52e43475a54a43cd18bc49391a70">createWorkspaceDeserializer</a> (std::istream &amp;stream, const std::string &amp;refPath) const</td></tr>
+<tr class="separator:ae02a52e43475a54a43cd18bc49391a70"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>The <a class="el" href="classinviwo_1_1WorkspaceManager.html">WorkspaceManager</a> is responsible for clearing, loading, and saving a workspace. Different items such as the processor network can register callbacks for clearing, loading, or saving a workspace. Other object can also register callbacks. It also responsible for keeping a list of factories to use while deserializing. Other module can register factories that should be used while deserializing. The user interface should use the Workspace Manager to clear, load, and save workspaces. instead of calling the <a class="el" href="classinviwo_1_1Processor.html" title="A processor generally performs operation on input data and outputs the new result. ">Processor</a> Network directly. The workspace manager is owned by the <a class="el" href="classinviwo_1_1InviwoApplication.html" title="The main application which holds the instances of all modules. ">InviwoApplication</a>. </p>
@@ -156,6 +158,35 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <p>Clear the current workspace. This will invoke all the clear callback that have been added. </p>
+
+</div>
+</div>
+<a id="ae02a52e43475a54a43cd18bc49391a70"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae02a52e43475a54a43cd18bc49391a70">&#9670;&nbsp;</a></span>createWorkspaceDeserializer()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classinviwo_1_1Deserializer.html">Deserializer</a> inviwo::WorkspaceManager::createWorkspaceDeserializer </td>
+          <td>(</td>
+          <td class="paramtype">std::istream &amp;&#160;</td>
+          <td class="paramname"><em>stream</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>refPath</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Create a deserializer for a workspace stream, and apply all needed version updates. </p>
 
 </div>
 </div>

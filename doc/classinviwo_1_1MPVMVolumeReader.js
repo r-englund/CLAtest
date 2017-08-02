@@ -7,5 +7,5 @@ var classinviwo_1_1MPVMVolumeReader =
     [ "operator=", "classinviwo_1_1MPVMVolumeReader.html#ad664d419f2f90c71230dafed7b31cec1", null ],
     [ "printMetaInfo", "classinviwo_1_1MPVMVolumeReader.html#a15a8c3a4a857f71d0e1678680d085fad", null ],
     [ "printPVMMeta", "classinviwo_1_1MPVMVolumeReader.html#a168dbca84e33d755fa4e6a74dfa63d95", null ],
-    [ "readData", "classinviwo_1_1MPVMVolumeReader.html#ac45194440bb141f9d8f2cf40e7ddb741", null ]
+    [ "readData", "classinviwo_1_1MPVMVolumeReader.html#ab95a463a754be37602f0155d433b8167", null ]
 ];

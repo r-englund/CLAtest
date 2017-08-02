@@ -1,7 +1,6 @@
 var classinviwo_1_1SimpleWithRectangleLabel =
 [
     [ "SimpleWithRectangleLabel", "classinviwo_1_1SimpleWithRectangleLabel.html#a3946c1416eaf194aeb7c62376a985a6c", null ],
-    [ "SimpleWithRectangleLabel", "classinviwo_1_1SimpleWithRectangleLabel.html#af41b09a978103775ac697c82a63fc3eb", null ],
     [ "~SimpleWithRectangleLabel", "classinviwo_1_1SimpleWithRectangleLabel.html#a1d32ec9114933dc068235fa08900c673", null ],
     [ "editLabel", "classinviwo_1_1SimpleWithRectangleLabel.html#a5ce05688d5f20f77ee1339b4fb5e4a54", null ],
     [ "getIndex", "classinviwo_1_1SimpleWithRectangleLabel.html#aac3900a582254068e31d38b5c5b18b92", null ],

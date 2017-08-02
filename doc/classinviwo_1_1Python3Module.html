@@ -83,18 +83,42 @@ $(document).ready(function(){initNavTree('classinviwo_1_1Python3Module.html','')
 
 <div class="header">
   <div class="summary">
+<a href="#pub-types">Public Types</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#friends">Friends</a> &#124;
 <a href="classinviwo_1_1Python3Module-members.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">inviwo::Python3Module Class Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
+<div id="dynsection-0" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-0-trigger" src="closed.png" alt="+"/> Inheritance diagram for inviwo::Python3Module:</div>
+<div id="dynsection-0-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-0-content" class="dyncontent" style="display:none;">
+<div class="center"><img src="classinviwo_1_1Python3Module__inherit__graph.png" border="0" usemap="#inviwo_1_1Python3Module_inherit__map" alt="Inheritance graph"/></div>
+<map name="inviwo_1_1Python3Module_inherit__map" id="inviwo_1_1Python3Module_inherit__map">
+<area shape="rect" id="node2" href="classinviwo_1_1InviwoModule.html" title="A module class contains registrations of functionality, such as processors, ports, properties etc. " alt="" coords="13,5,153,32"/>
+</map>
+<center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-types"></a>
+Public Types</h2></td></tr>
+<tr class="memitem:ab2ea8cb3b34e1e69c5f59301bccd91fe"><td class="memItemLeft" align="right" valign="top"><a id="ab2ea8cb3b34e1e69c5f59301bccd91fe"></a>
+using&#160;</td><td class="memItemRight" valign="bottom"><b>PythonInitCallback</b> = std::function&lt; void(pybind11::module *module)&gt;</td></tr>
+<tr class="separator:ab2ea8cb3b34e1e69c5f59301bccd91fe"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a8be1a9215e94caff38ee9f77ff0c7b3f"><td class="memItemLeft" align="right" valign="top"><a id="a8be1a9215e94caff38ee9f77ff0c7b3f"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>Python3Module</b> (<a class="el" href="classinviwo_1_1InviwoApplication.html">InviwoApplication</a> *app)</td></tr>
 <tr class="separator:a8be1a9215e94caff38ee9f77ff0c7b3f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4e0d90997d789b22b1c9b73b73e7939e"><td class="memItemLeft" align="right" valign="top"><a id="a4e0d90997d789b22b1c9b73b73e7939e"></a>
+<a class="el" href="classinviwo_1_1PythonInterpreter.html">PythonInterpreter</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>getPythonInterpreter</b> ()</td></tr>
+<tr class="separator:a4e0d90997d789b22b1c9b73b73e7939e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1fa74e3d8e5de5c1a507ef24ff56a56e"><td class="memItemLeft" align="right" valign="top"><a id="a1fa74e3d8e5de5c1a507ef24ff56a56e"></a>
+std::shared_ptr&lt; pybind11::module &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>getInviwopyModule</b> ()</td></tr>
+<tr class="separator:a1fa74e3d8e5de5c1a507ef24ff56a56e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classinviwo_1_1InviwoModule"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classinviwo_1_1InviwoModule')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classinviwo_1_1InviwoModule.html">inviwo::InviwoModule</a></td></tr>
 <tr class="memitem:aa7b513b98e1e6365d1728bc25cb438bc inherit pub_methods_classinviwo_1_1InviwoModule"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classinviwo_1_1InviwoModule.html#aa7b513b98e1e6365d1728bc25cb438bc">InviwoModule</a> (<a class="el" href="classinviwo_1_1InviwoApplication.html">InviwoApplication</a> *app, const std::string &amp;identifier)</td></tr>
 <tr class="separator:aa7b513b98e1e6365d1728bc25cb438bc inherit pub_methods_classinviwo_1_1InviwoModule"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -173,6 +197,12 @@ const std::vector&lt; <a class="el" href="classinviwo_1_1Resource.html">Resource
 <tr class="memitem:a2f0986138fe3cc197383bfe09d81f237 inherit pub_methods_classinviwo_1_1InviwoModule"><td class="memItemLeft" align="right" valign="top"><a id="a2f0986138fe3cc197383bfe09d81f237"></a>
 const std::vector&lt; <a class="el" href="classinviwo_1_1Settings.html">Settings</a> * &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>getSettings</b> () const</td></tr>
 <tr class="separator:a2f0986138fe3cc197383bfe09d81f237 inherit pub_methods_classinviwo_1_1InviwoModule"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="friends"></a>
+Friends</h2></td></tr>
+<tr class="memitem:a841ce083b14761aa036dafd82f1acd99"><td class="memItemLeft" align="right" valign="top"><a id="a841ce083b14761aa036dafd82f1acd99"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>setInviwopyModule</b> (<a class="el" href="classinviwo_1_1Python3Module.html">Python3Module</a> *ivwmodule, pybind11::module pymodule)</td></tr>
+<tr class="separator:a841ce083b14761aa036dafd82f1acd99"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="inherited"></a>
 Additional Inherited Members</h2></td></tr>

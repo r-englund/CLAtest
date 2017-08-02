@@ -7,6 +7,7 @@ var classinviwo_1_1BufferObject =
     [ "bind", "classinviwo_1_1BufferObject.html#addb025738c00dfe99620f4907aed0697", null ],
     [ "clone", "classinviwo_1_1BufferObject.html#af6ea3f70349c68f9ec449bf5ef1ea228", null ],
     [ "download", "classinviwo_1_1BufferObject.html#af56baa1d4101323b6a170c5c97657a80", null ],
+    [ "getDataFormat", "classinviwo_1_1BufferObject.html#a8e3915b91215e7c1710dee01d6ba4019", null ],
     [ "getFormatType", "classinviwo_1_1BufferObject.html#a7fc5d3016c25d554abb90636cfae4040", null ],
     [ "getGLFormat", "classinviwo_1_1BufferObject.html#a1c11ab6c7aef300e71da483e8b493f9d", null ],
     [ "getId", "classinviwo_1_1BufferObject.html#a25f5b14f215a10d00fa2d5e7f79b1845", null ],

@@ -14,5 +14,6 @@ var classinviwo_1_1ABufferGLCompositeProperty =
     [ "abufferReSize_", "classinviwo_1_1ABufferGLCompositeProperty.html#ae3ddb2ff0cc13849362e90d84f8331c7", null ],
     [ "abufferWriteABufferInfoToFile_", "classinviwo_1_1ABufferGLCompositeProperty.html#a35375befcd85722fcfe6ed98cd788c34", null ],
     [ "bgColor_", "classinviwo_1_1ABufferGLCompositeProperty.html#a6d5474247d3ffd2162efb18e7d3b98c1", null ],
-    [ "sharedPoolSize_", "classinviwo_1_1ABufferGLCompositeProperty.html#af5fd8aa0e46020a80979b048eec22185", null ]
+    [ "sharedPoolSize_", "classinviwo_1_1ABufferGLCompositeProperty.html#af5fd8aa0e46020a80979b048eec22185", null ],
+    [ "verboseLogging_", "classinviwo_1_1ABufferGLCompositeProperty.html#a599fa130e9eeb211553af32a1c7f90c2", null ]
 ];

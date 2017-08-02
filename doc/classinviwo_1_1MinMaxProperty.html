@@ -94,16 +94,32 @@ $(document).ready(function(){initNavTree('classinviwo_1_1MinMaxProperty.html',''
 <div class="contents">
 
 <p><code>#include &lt;minmaxproperty.h&gt;</code></p>
+<div id="dynsection-0" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-0-trigger" src="closed.png" alt="+"/> Inheritance diagram for inviwo::MinMaxProperty&lt; T &gt;:</div>
+<div id="dynsection-0-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-0-content" class="dyncontent" style="display:none;">
+<div class="center"><img src="classinviwo_1_1MinMaxProperty__inherit__graph.png" border="0" usemap="#inviwo_1_1MinMaxProperty_3_01T_01_4_inherit__map" alt="Inheritance graph"/></div>
+<map name="inviwo_1_1MinMaxProperty_3_01T_01_4_inherit__map" id="inviwo_1_1MinMaxProperty_3_01T_01_4_inherit__map">
+<area shape="rect" id="node11" href="classinviwo_1_1MinMaxProperty.html" title="inviwo::MinMaxProperty\l\&lt; double \&gt;" alt="" coords="2096,5,2255,47"/>
+<area shape="rect" id="node12" href="classinviwo_1_1MinMaxProperty.html" title="inviwo::MinMaxProperty\l\&lt; float \&gt;" alt="" coords="2096,71,2255,112"/>
+<area shape="rect" id="node13" href="classinviwo_1_1MinMaxProperty.html" title="inviwo::MinMaxProperty\l\&lt; int \&gt;" alt="" coords="2096,136,2255,177"/>
+<area shape="rect" id="node3" href="classinviwo_1_1Property.html" title="A Property represents a parameter to a processor. " alt="" coords="991,70,1104,97"/>
+<area shape="rect" id="node10" href="classinviwo_1_1TemplateProperty.html" title="inviwo::TemplateProperty\&lt; T \&gt;" alt="" coords="1153,103,1351,130"/>
+<area shape="rect" id="node4" href="classinviwo_1_1PropertyObservable.html" title="inviwo::PropertyObservable" alt="" coords="764,19,941,46"/>
+<area shape="rect" id="node5" href="classinviwo_1_1Observable.html" title="inviwo::Observable\l\&lt; PropertyObserver \&gt;" alt="" coords="568,12,715,53"/>
+<area shape="rect" id="node6" href="classinviwo_1_1ObservableInterface.html" title="inviwo::ObservableInterface" alt="" coords="5,23,183,50"/>
+<area shape="rect" id="node7" href="classinviwo_1_1Observable.html" title="inviwo::Observable\&lt; T \&gt;" alt="" coords="232,53,391,79"/>
+<area shape="rect" id="node8" href="classinviwo_1_1Serializable.html" title="inviwo::Serializable" alt="" coords="787,70,918,97"/>
+<area shape="rect" id="node9" href="classinviwo_1_1MetaDataOwner.html" title="Holds metadata and access functionality for set/get. " alt="" coords="774,121,931,147"/>
+</map>
+<center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-types"></a>
 Public Types</h2></td></tr>
 <tr class="memitem:ab6509e85437086a24551a0fd39adf47f"><td class="memItemLeft" align="right" valign="top"><a id="ab6509e85437086a24551a0fd39adf47f"></a>
 typedef glm::tvec2&lt; T, glm::defaultp &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>range_type</b></td></tr>
 <tr class="separator:ab6509e85437086a24551a0fd39adf47f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="inherit_header pub_types_classinviwo_1_1TemplateProperty"><td colspan="2" onclick="javascript:toggleInherit('pub_types_classinviwo_1_1TemplateProperty')"><img src="closed.png" alt="-"/>&#160;Public Types inherited from <a class="el" href="classinviwo_1_1TemplateProperty.html">inviwo::TemplateProperty&lt; glm::tvec2&lt; T, glm::defaultp &gt; &gt;</a></td></tr>
-<tr class="memitem:ac0789affb87c3b964ab4efa21beea025 inherit pub_types_classinviwo_1_1TemplateProperty"><td class="memItemLeft" align="right" valign="top"><a id="ac0789affb87c3b964ab4efa21beea025"></a>
-typedef glm::tvec2&lt; T, glm::defaultp &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>value_type</b></td></tr>
-<tr class="separator:ac0789affb87c3b964ab4efa21beea025 inherit pub_types_classinviwo_1_1TemplateProperty"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
@@ -137,6 +153,12 @@ T&#160;</td><td class="memItemRight" valign="bottom"><b>getIncrement</b> () cons
 <tr class="memitem:a8411af7ddb625098a7e2136fbe344205"><td class="memItemLeft" align="right" valign="top"><a id="a8411af7ddb625098a7e2136fbe344205"></a>
 T&#160;</td><td class="memItemRight" valign="bottom"><b>getMinSeparation</b> () const</td></tr>
 <tr class="separator:a8411af7ddb625098a7e2136fbe344205"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a09b21cc11a82edc92f432f81ab293c08"><td class="memItemLeft" align="right" valign="top"><a id="a09b21cc11a82edc92f432f81ab293c08"></a>
+T&#160;</td><td class="memItemRight" valign="bottom"><b>getStart</b> () const</td></tr>
+<tr class="separator:a09b21cc11a82edc92f432f81ab293c08"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a25fdfaa4d423b7bdb306b90ef1064126"><td class="memItemLeft" align="right" valign="top"><a id="a25fdfaa4d423b7bdb306b90ef1064126"></a>
+T&#160;</td><td class="memItemRight" valign="bottom"><b>getEnd</b> () const</td></tr>
+<tr class="separator:a25fdfaa4d423b7bdb306b90ef1064126"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a404b2a30e24e22c0038ad4604adfadc0"><td class="memItemLeft" align="right" valign="top"><a id="a404b2a30e24e22c0038ad4604adfadc0"></a>
 range_type&#160;</td><td class="memItemRight" valign="bottom"><b>getRange</b> () const</td></tr>
 <tr class="separator:a404b2a30e24e22c0038ad4604adfadc0"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -146,6 +168,12 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>set</b> (cons
 <tr class="memitem:a8f74e8aea95dd93cdbb5789f3a70e932"><td class="memItemLeft" align="right" valign="top"><a id="a8f74e8aea95dd93cdbb5789f3a70e932"></a>
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>set</b> (const <a class="el" href="classinviwo_1_1Property.html">Property</a> *srcProperty) override</td></tr>
 <tr class="separator:a8f74e8aea95dd93cdbb5789f3a70e932"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3e52c335a2f15632ebaf4bfebb44cd8e"><td class="memItemLeft" align="right" valign="top"><a id="a3e52c335a2f15632ebaf4bfebb44cd8e"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>setStart</b> (const T &amp;value)</td></tr>
+<tr class="separator:a3e52c335a2f15632ebaf4bfebb44cd8e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9bfdce73ba843e45f9644c09ac14660c"><td class="memItemLeft" align="right" valign="top"><a id="a9bfdce73ba843e45f9644c09ac14660c"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>setEnd</b> (const T &amp;value)</td></tr>
+<tr class="separator:a9bfdce73ba843e45f9644c09ac14660c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aaa05c878a194694831e20332799ea3cb"><td class="memItemLeft" align="right" valign="top"><a id="aaa05c878a194694831e20332799ea3cb"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>setRangeMin</b> (const T &amp;value)</td></tr>
 <tr class="separator:aaa05c878a194694831e20332799ea3cb"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -183,28 +211,6 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>deserialize</
 <tr class="memitem:a53c0183756381225422269a77927839e"><td class="memItemLeft" align="right" valign="top"><a id="a53c0183756381225422269a77927839e"></a>
 virtual <a class="el" href="classinviwo_1_1Document.html">Document</a>&#160;</td><td class="memItemRight" valign="bottom"><b>getDescription</b> () const override</td></tr>
 <tr class="separator:a53c0183756381225422269a77927839e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="inherit_header pub_methods_classinviwo_1_1TemplateProperty"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classinviwo_1_1TemplateProperty')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classinviwo_1_1TemplateProperty.html">inviwo::TemplateProperty&lt; glm::tvec2&lt; T, glm::defaultp &gt; &gt;</a></td></tr>
-<tr class="memitem:a6b25eb2597986a5e4a211201a648e4be inherit pub_methods_classinviwo_1_1TemplateProperty"><td class="memItemLeft" align="right" valign="top"><a id="a6b25eb2597986a5e4a211201a648e4be"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>TemplateProperty</b> (const std::string &amp;identifier, const std::string &amp;displayName, const glm::tvec2&lt; T, glm::defaultp &gt; &amp;value=glm::tvec2&lt; T, glm::defaultp &gt;(), <a class="el" href="namespaceinviwo.html#ae0b7ff1e08626f6ee58e561ef4c9ffba">InvalidationLevel</a> invalidationLevel=InvalidationLevel::InvalidOutput, <a class="el" href="classinviwo_1_1PropertySemantics.html">PropertySemantics</a> semantics=PropertySemantics::Default)</td></tr>
-<tr class="separator:a6b25eb2597986a5e4a211201a648e4be inherit pub_methods_classinviwo_1_1TemplateProperty"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6534f8d9dc406eceef41c52e2f1d7bf9 inherit pub_methods_classinviwo_1_1TemplateProperty"><td class="memItemLeft" align="right" valign="top"><a id="a6534f8d9dc406eceef41c52e2f1d7bf9"></a>
-<a class="el" href="classinviwo_1_1TemplateProperty.html">TemplateProperty</a>&lt; glm::tvec2&lt; T, glm::defaultp &gt; &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator=</b> (const glm::tvec2&lt; T, glm::defaultp &gt; &amp;value)</td></tr>
-<tr class="separator:a6534f8d9dc406eceef41c52e2f1d7bf9 inherit pub_methods_classinviwo_1_1TemplateProperty"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa587c34dfac0d3e05332ee451428a972 inherit pub_methods_classinviwo_1_1TemplateProperty"><td class="memItemLeft" align="right" valign="top"><a id="aa587c34dfac0d3e05332ee451428a972"></a>
-virtual&#160;</td><td class="memItemRight" valign="bottom"><b>operator glm::tvec2&lt; T, glm::defaultp &gt; &amp;</b> ()</td></tr>
-<tr class="separator:aa587c34dfac0d3e05332ee451428a972 inherit pub_methods_classinviwo_1_1TemplateProperty"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9f55f152a7b011a9ce87e27e3c0704e4 inherit pub_methods_classinviwo_1_1TemplateProperty"><td class="memItemLeft" align="right" valign="top"><a id="a9f55f152a7b011a9ce87e27e3c0704e4"></a>
-virtual&#160;</td><td class="memItemRight" valign="bottom"><b>operator const glm::tvec2&lt; T, glm::defaultp &gt; &amp;</b> () const</td></tr>
-<tr class="separator:a9f55f152a7b011a9ce87e27e3c0704e4 inherit pub_methods_classinviwo_1_1TemplateProperty"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a536c01f3397ce9aa6d95741f3ce048a7 inherit pub_methods_classinviwo_1_1TemplateProperty"><td class="memItemLeft" align="right" valign="top"><a id="a536c01f3397ce9aa6d95741f3ce048a7"></a>
-virtual glm::tvec2&lt; T, glm::defaultp &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>get</b> ()</td></tr>
-<tr class="separator:a536c01f3397ce9aa6d95741f3ce048a7 inherit pub_methods_classinviwo_1_1TemplateProperty"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a53a837de13522d115b6f42d8a65e2578 inherit pub_methods_classinviwo_1_1TemplateProperty"><td class="memItemLeft" align="right" valign="top"><a id="a53a837de13522d115b6f42d8a65e2578"></a>
-virtual const glm::tvec2&lt; T, glm::defaultp &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>get</b> () const</td></tr>
-<tr class="separator:a53a837de13522d115b6f42d8a65e2578 inherit pub_methods_classinviwo_1_1TemplateProperty"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6dd5a931e42263b23fc177b4e5ccfbe9 inherit pub_methods_classinviwo_1_1TemplateProperty"><td class="memItemLeft" align="right" valign="top"><a id="a6dd5a931e42263b23fc177b4e5ccfbe9"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>set</b> (const <a class="el" href="classinviwo_1_1TemplateProperty.html">TemplateProperty</a>&lt; glm::tvec2&lt; T, glm::defaultp &gt; &gt; *srcProperty)</td></tr>
-<tr class="separator:a6dd5a931e42263b23fc177b4e5ccfbe9 inherit pub_methods_classinviwo_1_1TemplateProperty"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classinviwo_1_1Property"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classinviwo_1_1Property')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classinviwo_1_1Property.html">inviwo::Property</a></td></tr>
 <tr class="memitem:a9e8adf6c3b4d545774cf98e87dd49bfe inherit pub_methods_classinviwo_1_1Property"><td class="memItemLeft" align="right" valign="top"><a id="a9e8adf6c3b4d545774cf98e87dd49bfe"></a>
 virtual std::string&#160;</td><td class="memItemRight" valign="bottom"><b>getClassIdentifier</b> () const =0</td></tr>
@@ -415,13 +421,6 @@ Protected Member Functions</h2></td></tr>
 <tr class="memitem:ac6c35458556450cff796a061f22de9d8"><td class="memItemLeft" align="right" valign="top"><a id="ac6c35458556450cff796a061f22de9d8"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>validateValues</b> ()</td></tr>
 <tr class="separator:ac6c35458556450cff796a061f22de9d8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="inherit_header pro_methods_classinviwo_1_1TemplateProperty"><td colspan="2" onclick="javascript:toggleInherit('pro_methods_classinviwo_1_1TemplateProperty')"><img src="closed.png" alt="-"/>&#160;Protected Member Functions inherited from <a class="el" href="classinviwo_1_1TemplateProperty.html">inviwo::TemplateProperty&lt; glm::tvec2&lt; T, glm::defaultp &gt; &gt;</a></td></tr>
-<tr class="memitem:a26fbb8fff1ab08679c50bb997505b7b6 inherit pro_methods_classinviwo_1_1TemplateProperty"><td class="memItemLeft" align="right" valign="top"><a id="a26fbb8fff1ab08679c50bb997505b7b6"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>TemplateProperty</b> (const <a class="el" href="classinviwo_1_1TemplateProperty.html">TemplateProperty</a> &amp;rhs)=default</td></tr>
-<tr class="separator:a26fbb8fff1ab08679c50bb997505b7b6 inherit pro_methods_classinviwo_1_1TemplateProperty"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a36749d3e305de9224e3222817ac96e3e inherit pro_methods_classinviwo_1_1TemplateProperty"><td class="memItemLeft" align="right" valign="top"><a id="a36749d3e305de9224e3222817ac96e3e"></a>
-<a class="el" href="classinviwo_1_1TemplateProperty.html">TemplateProperty</a>&lt; glm::tvec2&lt; T, glm::defaultp &gt; &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator=</b> (const <a class="el" href="classinviwo_1_1TemplateProperty.html">TemplateProperty</a>&lt; glm::tvec2&lt; T, glm::defaultp &gt; &gt; &amp;that)=default</td></tr>
-<tr class="separator:a36749d3e305de9224e3222817ac96e3e inherit pro_methods_classinviwo_1_1TemplateProperty"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pro_methods_classinviwo_1_1Property"><td colspan="2" onclick="javascript:toggleInherit('pro_methods_classinviwo_1_1Property')"><img src="closed.png" alt="-"/>&#160;Protected Member Functions inherited from <a class="el" href="classinviwo_1_1Property.html">inviwo::Property</a></td></tr>
 <tr class="memitem:a7387df70147c540ee4f5f388796bae32 inherit pro_methods_classinviwo_1_1Property"><td class="memItemLeft" align="right" valign="top"><a id="a7387df70147c540ee4f5f388796bae32"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>Property</b> (const <a class="el" href="classinviwo_1_1Property.html">Property</a> &amp;rhs)</td></tr>
@@ -465,10 +464,6 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>removeObservationHelp
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="inherited"></a>
 Additional Inherited Members</h2></td></tr>
-<tr class="inherit_header pro_attribs_classinviwo_1_1TemplateProperty"><td colspan="2" onclick="javascript:toggleInherit('pro_attribs_classinviwo_1_1TemplateProperty')"><img src="closed.png" alt="-"/>&#160;Protected Attributes inherited from <a class="el" href="classinviwo_1_1TemplateProperty.html">inviwo::TemplateProperty&lt; glm::tvec2&lt; T, glm::defaultp &gt; &gt;</a></td></tr>
-<tr class="memitem:ad13562bc1095d1f9ed873939b9dcc001 inherit pro_attribs_classinviwo_1_1TemplateProperty"><td class="memItemLeft" align="right" valign="top"><a id="ad13562bc1095d1f9ed873939b9dcc001"></a>
-<a class="el" href="structinviwo_1_1ValueWrapper.html">ValueWrapper</a>&lt; glm::tvec2&lt; T, glm::defaultp &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>value_</b></td></tr>
-<tr class="separator:ad13562bc1095d1f9ed873939b9dcc001 inherit pro_attribs_classinviwo_1_1TemplateProperty"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pro_attribs_classinviwo_1_1Property"><td colspan="2" onclick="javascript:toggleInherit('pro_attribs_classinviwo_1_1Property')"><img src="closed.png" alt="-"/>&#160;Protected Attributes inherited from <a class="el" href="classinviwo_1_1Property.html">inviwo::Property</a></td></tr>
 <tr class="memitem:adb37aa029eae03ea00940d95ae869ca0 inherit pro_attribs_classinviwo_1_1Property"><td class="memItemLeft" align="right" valign="top"><a id="adb37aa029eae03ea00940d95ae869ca0"></a>
 <a class="el" href="classinviwo_1_1CallBackList.html">CallBackList</a>&#160;</td><td class="memItemRight" valign="bottom"><b>onChangeCallback_</b></td></tr>

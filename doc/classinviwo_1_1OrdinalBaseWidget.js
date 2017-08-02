@@ -1,6 +1,6 @@
 var classinviwo_1_1OrdinalBaseWidget =
 [
-    [ "~OrdinalBaseWidget", "classinviwo_1_1OrdinalBaseWidget.html#a895a9a2436b1289df1021b8a9a513667", null ],
+    [ "~OrdinalBaseWidget", "classinviwo_1_1OrdinalBaseWidget.html#a81c0213bcd1463da3ff8995fcfec5f76", null ],
     [ "getValue", "classinviwo_1_1OrdinalBaseWidget.html#a9eb46e6c88c49d07a237b2fea7f8d987", null ],
     [ "initValue", "classinviwo_1_1OrdinalBaseWidget.html#a21f5e62c633b6b57e22f2518a0e0d052", null ],
     [ "setIncrement", "classinviwo_1_1OrdinalBaseWidget.html#ae7885f1afda10bc3cf4b09cc5532f982", null ],

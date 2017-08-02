@@ -1,11 +1,12 @@
 var classinviwo_1_1TemplateMinMaxPropertySettingsWidgetQt =
 [
-    [ "V", "classinviwo_1_1TemplateMinMaxPropertySettingsWidgetQt.html#a79e69e3758b90b85e5a12a325fe85e2e", null ],
-    [ "TemplateMinMaxPropertySettingsWidgetQt", "classinviwo_1_1TemplateMinMaxPropertySettingsWidgetQt.html#a364f45f3e4d265c76013ee64063521cd", null ],
-    [ "~TemplateMinMaxPropertySettingsWidgetQt", "classinviwo_1_1TemplateMinMaxPropertySettingsWidgetQt.html#a28d55c00b69839e67ab2696e74d24e4c", null ],
-    [ "apply", "classinviwo_1_1TemplateMinMaxPropertySettingsWidgetQt.html#a2d22cd30331e9cf5a01ad48e49bb7f2f", null ],
-    [ "cancel", "classinviwo_1_1TemplateMinMaxPropertySettingsWidgetQt.html#aeccbaeba9059945cf17544121ae2c003", null ],
-    [ "generateWidget", "classinviwo_1_1TemplateMinMaxPropertySettingsWidgetQt.html#a365f5587ed3fef06e85b8dc33341a98b", null ],
-    [ "reload", "classinviwo_1_1TemplateMinMaxPropertySettingsWidgetQt.html#a7434bc95c11798e0a7725c127d55d8cd", null ],
-    [ "save", "classinviwo_1_1TemplateMinMaxPropertySettingsWidgetQt.html#a2a0f21579bb0242a595e80513a8d8d05", null ]
+    [ "BT", "classinviwo_1_1TemplateMinMaxPropertySettingsWidgetQt.html#aa6bac75b4de86772971ead73a6a57b52", null ],
+    [ "V", "classinviwo_1_1TemplateMinMaxPropertySettingsWidgetQt.html#a6bbf54a89fe8a412b0b5b04041f57e21", null ],
+    [ "TemplateMinMaxPropertySettingsWidgetQt", "classinviwo_1_1TemplateMinMaxPropertySettingsWidgetQt.html#a839d5c9b2b9c94825491bea415fd31ad", null ],
+    [ "~TemplateMinMaxPropertySettingsWidgetQt", "classinviwo_1_1TemplateMinMaxPropertySettingsWidgetQt.html#adf665f804c734441c2be42a788823ec0", null ],
+    [ "getVisible", "classinviwo_1_1TemplateMinMaxPropertySettingsWidgetQt.html#ae8798327ce4f3ed4345a35d1fce374c8", null ],
+    [ "hideWidget", "classinviwo_1_1TemplateMinMaxPropertySettingsWidgetQt.html#a4a3428a1e9248b936d89ae72d7cf396d", null ],
+    [ "keyPressEvent", "classinviwo_1_1TemplateMinMaxPropertySettingsWidgetQt.html#ac32535f5f92cdcb12b33b28be28c8ff8", null ],
+    [ "showWidget", "classinviwo_1_1TemplateMinMaxPropertySettingsWidgetQt.html#aac964f4f3bafd85bbd02979a1e46b414", null ],
+    [ "updateFromProperty", "classinviwo_1_1TemplateMinMaxPropertySettingsWidgetQt.html#a6bf41a002ae2bc6824067e3cbd0e47af", null ]
 ];

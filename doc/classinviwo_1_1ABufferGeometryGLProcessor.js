@@ -6,5 +6,6 @@ var classinviwo_1_1ABufferGeometryGLProcessor =
     [ "initializeResources", "classinviwo_1_1ABufferGeometryGLProcessor.html#a83404c671fd72c208d7469e0922f98a4", null ],
     [ "onAbufferSettingChanged", "classinviwo_1_1ABufferGeometryGLProcessor.html#a316ff56715a78fea98dfc5e3a709eed7", null ],
     [ "onAbufferTransparencyChanged", "classinviwo_1_1ABufferGeometryGLProcessor.html#ad147a6515beba03b137e94e2f8cc2359", null ],
-    [ "process", "classinviwo_1_1ABufferGeometryGLProcessor.html#ad7f3b12d2dcad8923c4b463407487294", null ]
+    [ "process", "classinviwo_1_1ABufferGeometryGLProcessor.html#ad7f3b12d2dcad8923c4b463407487294", null ],
+    [ "updateDrawers", "classinviwo_1_1ABufferGeometryGLProcessor.html#aaab27291286ecf020d3ccaa84fed99e2", null ]
 ];

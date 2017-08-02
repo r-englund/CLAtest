@@ -6,5 +6,5 @@ var classinviwo_1_1DatVolumeReader =
     [ "~DatVolumeReader", "classinviwo_1_1DatVolumeReader.html#a8dbfb03238c485696a5929c2f9b6988a", null ],
     [ "clone", "classinviwo_1_1DatVolumeReader.html#a6b461f59650e543bcfa708579df8a84b", null ],
     [ "operator=", "classinviwo_1_1DatVolumeReader.html#aa7ac31ca8b4de2c0c9f691244b6a615b", null ],
-    [ "readData", "classinviwo_1_1DatVolumeReader.html#aba4eb0d1fc22e1a1a1049a6886a2eb4b", null ]
+    [ "readData", "classinviwo_1_1DatVolumeReader.html#abc96c9f5a39b723e37318b5cbaab94bd", null ]
 ];

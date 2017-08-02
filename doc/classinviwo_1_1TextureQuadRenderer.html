@@ -109,36 +109,66 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a1b67405d7701cd7031f6a4c884877fe2"><td class="memItemLeft" align="right" valign="top"><a id="a1b67405d7701cd7031f6a4c884877fe2"></a>
 const <a class="el" href="classinviwo_1_1Shader.html">Shader</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>getShader</b> () const</td></tr>
 <tr class="separator:a1b67405d7701cd7031f6a4c884877fe2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae2de402e7fe238b6fc2498a1f75c7885"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classinviwo_1_1TextureQuadRenderer.html#ae2de402e7fe238b6fc2498a1f75c7885">render</a> (const std::shared_ptr&lt; <a class="el" href="classinviwo_1_1Image.html">Image</a> &gt; &amp;image, const ivec2 &amp;pos, const size2_t &amp;canvasSize, LayerType layerType=LayerType::Color)</td></tr>
-<tr class="memdesc:ae2de402e7fe238b6fc2498a1f75c7885"><td class="mdescLeft">&#160;</td><td class="mdescRight">renders an image at position pos onto the current canvas. The image dimensions determine the covered area in pixel. The anchor point of the image is in the lower left corner. By default, the first color layer is rendered.  <a href="#ae2de402e7fe238b6fc2498a1f75c7885">More...</a><br /></td></tr>
-<tr class="separator:ae2de402e7fe238b6fc2498a1f75c7885"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5e228b54546ebabbda67984df89d6483"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classinviwo_1_1TextureQuadRenderer.html#a5e228b54546ebabbda67984df89d6483">render</a> (const std::shared_ptr&lt; <a class="el" href="classinviwo_1_1Image.html">Image</a> &gt; &amp;image, const ivec2 &amp;pos, const size2_t &amp;canvasSize, std::size_t colorLayerIndex)</td></tr>
-<tr class="memdesc:a5e228b54546ebabbda67984df89d6483"><td class="mdescLeft">&#160;</td><td class="mdescRight">renders a color layer of an image at position pos onto the current canvas. The layer dimensions determine the covered area in pixel. The anchor point of the image is in the lower left corner. By default, the first color layer is rendered.  <a href="#a5e228b54546ebabbda67984df89d6483">More...</a><br /></td></tr>
-<tr class="separator:a5e228b54546ebabbda67984df89d6483"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a85e69672d62be092f055b19c1d0892ac"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classinviwo_1_1TextureQuadRenderer.html#a85e69672d62be092f055b19c1d0892ac">render</a> (const std::shared_ptr&lt; <a class="el" href="classinviwo_1_1Layer.html">Layer</a> &gt; &amp;image, const ivec2 &amp;pos, const size2_t &amp;canvasSize)</td></tr>
-<tr class="memdesc:a85e69672d62be092f055b19c1d0892ac"><td class="mdescLeft">&#160;</td><td class="mdescRight">renders a layer at position pos onto the current canvas. The layer dimensions determine the covered area in pixel. The anchor point of the image is in the lower left corner.  <a href="#a85e69672d62be092f055b19c1d0892ac">More...</a><br /></td></tr>
-<tr class="separator:a85e69672d62be092f055b19c1d0892ac"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a15ae8fb1780598729908ae5acda4d270"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classinviwo_1_1TextureQuadRenderer.html#a15ae8fb1780598729908ae5acda4d270">render</a> (const std::shared_ptr&lt; <a class="el" href="classinviwo_1_1Texture2D.html">Texture2D</a> &gt; &amp;texture, const ivec2 &amp;pos, const size2_t &amp;canvasSize)</td></tr>
-<tr class="memdesc:a15ae8fb1780598729908ae5acda4d270"><td class="mdescLeft">&#160;</td><td class="mdescRight">renders a texture at position pos onto the current canvas. The texture dimensions determine the covered area in pixel. The anchor point of the texture is in the lower left corner.  <a href="#a15ae8fb1780598729908ae5acda4d270">More...</a><br /></td></tr>
-<tr class="separator:a15ae8fb1780598729908ae5acda4d270"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a967bb604434687863f28cbb8a47614d8"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classinviwo_1_1TextureQuadRenderer.html#a967bb604434687863f28cbb8a47614d8">renderToRect</a> (const std::shared_ptr&lt; <a class="el" href="classinviwo_1_1Image.html">Image</a> &gt; &amp;image, const ivec2 &amp;pos, const ivec2 &amp;extent, const size2_t &amp;canvasSize, LayerType layerType=LayerType::Color)</td></tr>
-<tr class="memdesc:a967bb604434687863f28cbb8a47614d8"><td class="mdescLeft">&#160;</td><td class="mdescRight">renders an image at position pos onto the current canvas with the given extent. The covered area is defined by the extent (in pixel). The anchor point of the image is in the lower left corner. By default, the first color layer is rendered.  <a href="#a967bb604434687863f28cbb8a47614d8">More...</a><br /></td></tr>
-<tr class="separator:a967bb604434687863f28cbb8a47614d8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a625248a76c833c18c4a278e2f85efdbd"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classinviwo_1_1TextureQuadRenderer.html#a625248a76c833c18c4a278e2f85efdbd">renderToRect</a> (const std::shared_ptr&lt; <a class="el" href="classinviwo_1_1Image.html">Image</a> &gt; &amp;image, const ivec2 &amp;pos, const ivec2 &amp;extent, const size2_t &amp;canvasSize, std::size_t colorLayerIndex)</td></tr>
-<tr class="memdesc:a625248a76c833c18c4a278e2f85efdbd"><td class="mdescLeft">&#160;</td><td class="mdescRight">renders a color layer of an image at position pos onto the current canvas with the given extent. The covered area is defined by the extent (in pixel). The anchor point of the image is in the lower left corner. By default, the first color layer is rendered.  <a href="#a625248a76c833c18c4a278e2f85efdbd">More...</a><br /></td></tr>
-<tr class="separator:a625248a76c833c18c4a278e2f85efdbd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9bc0571d04a2457905e2a740045eced8"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classinviwo_1_1TextureQuadRenderer.html#a9bc0571d04a2457905e2a740045eced8">renderToRect</a> (const std::shared_ptr&lt; <a class="el" href="classinviwo_1_1Layer.html">Layer</a> &gt; &amp;image, const ivec2 &amp;pos, const ivec2 &amp;extent, const size2_t &amp;canvasSize)</td></tr>
-<tr class="memdesc:a9bc0571d04a2457905e2a740045eced8"><td class="mdescLeft">&#160;</td><td class="mdescRight">renders a layer at position pos onto the current canvas with the given extent. The covered area is defined by the extent (in pixel). The anchor point of the layer is in the lower left corner.  <a href="#a9bc0571d04a2457905e2a740045eced8">More...</a><br /></td></tr>
-<tr class="separator:a9bc0571d04a2457905e2a740045eced8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9057b6069a17e8a1274f0f20dddd07d5"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classinviwo_1_1TextureQuadRenderer.html#a9057b6069a17e8a1274f0f20dddd07d5">renderToRect</a> (const std::shared_ptr&lt; <a class="el" href="classinviwo_1_1Texture2D.html">Texture2D</a> &gt; &amp;texture, const ivec2 &amp;pos, const ivec2 &amp;extent, const size2_t &amp;canvasSize)</td></tr>
-<tr class="memdesc:a9057b6069a17e8a1274f0f20dddd07d5"><td class="mdescLeft">&#160;</td><td class="mdescRight">renders a texture at position pos onto the current canvas with the given extent. The covered area is defined by the extent (in pixel). The anchor point of the texture is in the lower left corner.  <a href="#a9057b6069a17e8a1274f0f20dddd07d5">More...</a><br /></td></tr>
-<tr class="separator:a9057b6069a17e8a1274f0f20dddd07d5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a448c69c56a53e755fec00c498496edad"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classinviwo_1_1TextureQuadRenderer.html#a448c69c56a53e755fec00c498496edad">render</a> (const std::shared_ptr&lt; <a class="el" href="classinviwo_1_1Image.html">Image</a> &gt; &amp;image, const ivec2 &amp;pos, const size2_t &amp;canvasSize, LayerType layerType=LayerType::Color, const mat4 &amp;transformation=mat4(1), const mat4 &amp;texTransform=mat4(1))</td></tr>
+<tr class="memdesc:a448c69c56a53e755fec00c498496edad"><td class="mdescLeft">&#160;</td><td class="mdescRight">renders an image at position pos onto the current canvas. The image dimensions determine the covered area in pixel. The anchor point of the image is in the lower left corner. By default, the first color layer is rendered.  <a href="#a448c69c56a53e755fec00c498496edad">More...</a><br /></td></tr>
+<tr class="separator:a448c69c56a53e755fec00c498496edad"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6fea6f86da741bb5d80e482e86b6aeb6"><td class="memItemLeft" align="right" valign="top"><a id="a6fea6f86da741bb5d80e482e86b6aeb6"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>render</b> (const std::shared_ptr&lt; <a class="el" href="classinviwo_1_1Image.html">Image</a> &gt; &amp;image, const std::vector&lt; ivec2 &gt; &amp;pos, const std::vector&lt; mat4 &gt; &amp;texTransform, const size2_t &amp;canvasSize, LayerType layerType=LayerType::Color, const mat4 &amp;transformation=mat4(1))</td></tr>
+<tr class="separator:a6fea6f86da741bb5d80e482e86b6aeb6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab4b7351df055fa7d231e330cb794afba"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classinviwo_1_1TextureQuadRenderer.html#ab4b7351df055fa7d231e330cb794afba">render</a> (const std::shared_ptr&lt; <a class="el" href="classinviwo_1_1Image.html">Image</a> &gt; &amp;image, const ivec2 &amp;pos, const size2_t &amp;canvasSize, std::size_t colorLayerIndex, const mat4 &amp;transformation=mat4(1), const mat4 &amp;texTransform=mat4(1))</td></tr>
+<tr class="memdesc:ab4b7351df055fa7d231e330cb794afba"><td class="mdescLeft">&#160;</td><td class="mdescRight">renders a color layer of an image at position pos onto the current canvas. The layer dimensions determine the covered area in pixel. The anchor point of the image is in the lower left corner. By default, the first color layer is rendered.  <a href="#ab4b7351df055fa7d231e330cb794afba">More...</a><br /></td></tr>
+<tr class="separator:ab4b7351df055fa7d231e330cb794afba"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5300db22b196db102977dc4cf6c4b834"><td class="memItemLeft" align="right" valign="top"><a id="a5300db22b196db102977dc4cf6c4b834"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>render</b> (const std::shared_ptr&lt; <a class="el" href="classinviwo_1_1Image.html">Image</a> &gt; &amp;image, const std::vector&lt; ivec2 &gt; &amp;pos, const std::vector&lt; mat4 &gt; &amp;texTransform, const size2_t &amp;canvasSize, std::size_t colorLayerIndex, const mat4 &amp;transformation=mat4(1))</td></tr>
+<tr class="separator:a5300db22b196db102977dc4cf6c4b834"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a018197abfe951bacded4b7ad23ee8af5"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classinviwo_1_1TextureQuadRenderer.html#a018197abfe951bacded4b7ad23ee8af5">render</a> (const std::shared_ptr&lt; <a class="el" href="classinviwo_1_1Layer.html">Layer</a> &gt; &amp;image, const ivec2 &amp;pos, const size2_t &amp;canvasSize, const mat4 &amp;transformation=mat4(1), const mat4 &amp;texTransform=mat4(1))</td></tr>
+<tr class="memdesc:a018197abfe951bacded4b7ad23ee8af5"><td class="mdescLeft">&#160;</td><td class="mdescRight">renders a layer at position pos onto the current canvas. The layer dimensions determine the covered area in pixel. The anchor point of the image is in the lower left corner.  <a href="#a018197abfe951bacded4b7ad23ee8af5">More...</a><br /></td></tr>
+<tr class="separator:a018197abfe951bacded4b7ad23ee8af5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9db248b90fbf2f244ab6a7b457baa35f"><td class="memItemLeft" align="right" valign="top"><a id="a9db248b90fbf2f244ab6a7b457baa35f"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>render</b> (const std::shared_ptr&lt; <a class="el" href="classinviwo_1_1Layer.html">Layer</a> &gt; &amp;image, const std::vector&lt; ivec2 &gt; &amp;pos, const std::vector&lt; mat4 &gt; &amp;texTransform, const size2_t &amp;canvasSize, const mat4 &amp;transformation=mat4(1))</td></tr>
+<tr class="separator:a9db248b90fbf2f244ab6a7b457baa35f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac7e02ebbbc5c7df3bd0244267c33e6db"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classinviwo_1_1TextureQuadRenderer.html#ac7e02ebbbc5c7df3bd0244267c33e6db">render</a> (const std::shared_ptr&lt; <a class="el" href="classinviwo_1_1Texture2D.html">Texture2D</a> &gt; &amp;texture, const ivec2 &amp;pos, const size2_t &amp;canvasSize, const mat4 &amp;transformation=mat4(1), const mat4 &amp;texTransform=mat4(1))</td></tr>
+<tr class="memdesc:ac7e02ebbbc5c7df3bd0244267c33e6db"><td class="mdescLeft">&#160;</td><td class="mdescRight">renders a texture at position pos onto the current canvas. The texture dimensions determine the covered area in pixel. The anchor point of the texture is in the lower left corner.  <a href="#ac7e02ebbbc5c7df3bd0244267c33e6db">More...</a><br /></td></tr>
+<tr class="separator:ac7e02ebbbc5c7df3bd0244267c33e6db"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9169d6018968d49c57f91f386ad4529a"><td class="memItemLeft" align="right" valign="top"><a id="a9169d6018968d49c57f91f386ad4529a"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>render</b> (const std::shared_ptr&lt; <a class="el" href="classinviwo_1_1Texture2D.html">Texture2D</a> &gt; &amp;texture, const std::vector&lt; ivec2 &gt; &amp;pos, const std::vector&lt; mat4 &gt; &amp;texTransform, const size2_t &amp;canvasSize, const mat4 &amp;transformation=mat4(1))</td></tr>
+<tr class="separator:a9169d6018968d49c57f91f386ad4529a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a534bbfd7a582bd79ac250c3e82d3c601"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classinviwo_1_1TextureQuadRenderer.html#a534bbfd7a582bd79ac250c3e82d3c601">renderToRect</a> (const std::shared_ptr&lt; <a class="el" href="classinviwo_1_1Image.html">Image</a> &gt; &amp;image, const ivec2 &amp;pos, const ivec2 &amp;extent, const size2_t &amp;canvasSize, LayerType layerType=LayerType::Color, const mat4 &amp;transformation=mat4(1), const mat4 &amp;texTransform=mat4(1))</td></tr>
+<tr class="memdesc:a534bbfd7a582bd79ac250c3e82d3c601"><td class="mdescLeft">&#160;</td><td class="mdescRight">renders an image at position pos onto the current canvas with the given extent. The covered area is defined by the extent (in pixel). The anchor point of the image is in the lower left corner. By default, the first color layer is rendered.  <a href="#a534bbfd7a582bd79ac250c3e82d3c601">More...</a><br /></td></tr>
+<tr class="separator:a534bbfd7a582bd79ac250c3e82d3c601"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7e12be3a113ef61ca9e2520651eca1a3"><td class="memItemLeft" align="right" valign="top"><a id="a7e12be3a113ef61ca9e2520651eca1a3"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>renderToRect</b> (const std::shared_ptr&lt; <a class="el" href="classinviwo_1_1Image.html">Image</a> &gt; &amp;image, const std::vector&lt; ivec2 &gt; &amp;pos, const std::vector&lt; ivec2 &gt; &amp;extent, const std::vector&lt; mat4 &gt; &amp;texTransform, const size2_t &amp;canvasSize, LayerType layerType=LayerType::Color, const mat4 &amp;transformation=mat4(1))</td></tr>
+<tr class="separator:a7e12be3a113ef61ca9e2520651eca1a3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6fdb0cd9c6de68ca3b98076bd2d81af4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classinviwo_1_1TextureQuadRenderer.html#a6fdb0cd9c6de68ca3b98076bd2d81af4">renderToRect</a> (const std::shared_ptr&lt; <a class="el" href="classinviwo_1_1Image.html">Image</a> &gt; &amp;image, const ivec2 &amp;pos, const ivec2 &amp;extent, const size2_t &amp;canvasSize, std::size_t colorLayerIndex, const mat4 &amp;transformation=mat4(1), const mat4 &amp;texTransform=mat4(1))</td></tr>
+<tr class="memdesc:a6fdb0cd9c6de68ca3b98076bd2d81af4"><td class="mdescLeft">&#160;</td><td class="mdescRight">renders a color layer of an image at position pos onto the current canvas with the given extent. The covered area is defined by the extent (in pixel). The anchor point of the image is in the lower left corner. By default, the first color layer is rendered.  <a href="#a6fdb0cd9c6de68ca3b98076bd2d81af4">More...</a><br /></td></tr>
+<tr class="separator:a6fdb0cd9c6de68ca3b98076bd2d81af4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adb2b00caeacddac758f6984e94c4066c"><td class="memItemLeft" align="right" valign="top"><a id="adb2b00caeacddac758f6984e94c4066c"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>renderToRect</b> (const std::shared_ptr&lt; <a class="el" href="classinviwo_1_1Image.html">Image</a> &gt; &amp;image, const std::vector&lt; ivec2 &gt; &amp;pos, const std::vector&lt; ivec2 &gt; &amp;extent, const std::vector&lt; mat4 &gt; &amp;texTransform, const size2_t &amp;canvasSize, std::size_t colorLayerIndex, const mat4 &amp;transformation=mat4(1))</td></tr>
+<tr class="separator:adb2b00caeacddac758f6984e94c4066c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0d12604c45651e9c00a01f6301239b4d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classinviwo_1_1TextureQuadRenderer.html#a0d12604c45651e9c00a01f6301239b4d">renderToRect</a> (const std::shared_ptr&lt; <a class="el" href="classinviwo_1_1Layer.html">Layer</a> &gt; &amp;image, const ivec2 &amp;pos, const ivec2 &amp;extent, const size2_t &amp;canvasSize, const mat4 &amp;transformation=mat4(1), const mat4 &amp;texTransform=mat4(1))</td></tr>
+<tr class="memdesc:a0d12604c45651e9c00a01f6301239b4d"><td class="mdescLeft">&#160;</td><td class="mdescRight">renders a layer at position pos onto the current canvas with the given extent. The covered area is defined by the extent (in pixel). The anchor point of the layer is in the lower left corner.  <a href="#a0d12604c45651e9c00a01f6301239b4d">More...</a><br /></td></tr>
+<tr class="separator:a0d12604c45651e9c00a01f6301239b4d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7c7de1a6b7464d0fb3442feb28a72ce8"><td class="memItemLeft" align="right" valign="top"><a id="a7c7de1a6b7464d0fb3442feb28a72ce8"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>renderToRect</b> (const std::shared_ptr&lt; <a class="el" href="classinviwo_1_1Layer.html">Layer</a> &gt; &amp;image, const std::vector&lt; ivec2 &gt; &amp;pos, const std::vector&lt; ivec2 &gt; &amp;extent, const std::vector&lt; mat4 &gt; &amp;texTransform, const size2_t &amp;canvasSize, const mat4 &amp;transformation=mat4(1))</td></tr>
+<tr class="separator:a7c7de1a6b7464d0fb3442feb28a72ce8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af49e5bb66ca598b8bb138fb954d4a033"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classinviwo_1_1TextureQuadRenderer.html#af49e5bb66ca598b8bb138fb954d4a033">renderToRect</a> (const std::shared_ptr&lt; <a class="el" href="classinviwo_1_1Texture2D.html">Texture2D</a> &gt; &amp;texture, const ivec2 &amp;pos, const ivec2 &amp;extent, const size2_t &amp;canvasSize, const mat4 &amp;transformation=mat4(1), const mat4 &amp;texTransform=mat4(1))</td></tr>
+<tr class="memdesc:af49e5bb66ca598b8bb138fb954d4a033"><td class="mdescLeft">&#160;</td><td class="mdescRight">renders a texture at position pos onto the current canvas with the given extent. The covered area is defined by the extent (in pixel). The anchor point of the texture is in the lower left corner.  <a href="#af49e5bb66ca598b8bb138fb954d4a033">More...</a><br /></td></tr>
+<tr class="separator:af49e5bb66ca598b8bb138fb954d4a033"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a902f03d06ccdddc8f02fee4b672e6334"><td class="memItemLeft" align="right" valign="top"><a id="a902f03d06ccdddc8f02fee4b672e6334"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>renderToRect</b> (const std::shared_ptr&lt; <a class="el" href="classinviwo_1_1Texture2D.html">Texture2D</a> &gt; &amp;texture, const std::vector&lt; ivec2 &gt; &amp;pos, const std::vector&lt; ivec2 &gt; &amp;extent, const std::vector&lt; mat4 &gt; &amp;texTransform, const size2_t &amp;canvasSize, const mat4 &amp;transformation=mat4(1))</td></tr>
+<tr class="separator:a902f03d06ccdddc8f02fee4b672e6334"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a655b5846732d9cb920a9139cfdd6ac01"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classinviwo_1_1TextureQuadRenderer.html#a655b5846732d9cb920a9139cfdd6ac01">renderToRect3D</a> (const <a class="el" href="classinviwo_1_1Camera.html">Camera</a> &amp;camera, const std::shared_ptr&lt; <a class="el" href="classinviwo_1_1Texture2D.html">Texture2D</a> &gt; &amp;texture, const vec3 &amp;pos, const ivec2 &amp;extent, const size2_t &amp;canvasSize, const vec2 &amp;anchor=vec2(-1.0f), const mat4 &amp;transformation=mat4(1), const mat4 &amp;texTransform=mat4(1))</td></tr>
+<tr class="memdesc:a655b5846732d9cb920a9139cfdd6ac01"><td class="mdescLeft">&#160;</td><td class="mdescRight">renders a texture at world position pos onto the current canvas with the given extent. The covered area is defined by the extent (in pixel). The anchor point of the texture is defined by anchor (-1 to 1).  <a href="#a655b5846732d9cb920a9139cfdd6ac01">More...</a><br /></td></tr>
+<tr class="separator:a655b5846732d9cb920a9139cfdd6ac01"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad37a59c346acd473712e232f0b35510a"><td class="memItemLeft" align="right" valign="top"><a id="ad37a59c346acd473712e232f0b35510a"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>renderToRect3D</b> (const <a class="el" href="classinviwo_1_1Camera.html">Camera</a> &amp;camera, const std::shared_ptr&lt; <a class="el" href="classinviwo_1_1Texture2D.html">Texture2D</a> &gt; &amp;texture, const std::vector&lt; vec3 &gt; &amp;pos, const std::vector&lt; ivec2 &gt; &amp;extent, const std::vector&lt; mat4 &gt; &amp;texTransform, const size2_t &amp;canvasSize, const vec2 &amp;anchor=vec2(-1.0f), const mat4 &amp;transformation=mat4(1))</td></tr>
+<tr class="separator:ad37a59c346acd473712e232f0b35510a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>This class provides functionality for rendering an image, a layer, or a texture onto the current render target. </p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
-<a id="ae2de402e7fe238b6fc2498a1f75c7885"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae2de402e7fe238b6fc2498a1f75c7885">&#9670;&nbsp;</a></span>render() <span class="overload">[1/4]</span></h2>
+<a id="a448c69c56a53e755fec00c498496edad"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a448c69c56a53e755fec00c498496edad">&#9670;&nbsp;</a></span>render() <span class="overload">[1/4]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -165,7 +195,19 @@ const <a class="el" href="classinviwo_1_1Shader.html">Shader</a> &amp;&#160;</td
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">LayerType&#160;</td>
-          <td class="paramname"><em>layerType</em> = <code>LayerType::Color</code>&#160;</td>
+          <td class="paramname"><em>layerType</em> = <code>LayerType::Color</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const mat4 &amp;&#160;</td>
+          <td class="paramname"><em>transformation</em> = <code>mat4(1)</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const mat4 &amp;&#160;</td>
+          <td class="paramname"><em>texTransform</em> = <code>mat4(1)</code>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -182,14 +224,16 @@ const <a class="el" href="classinviwo_1_1Shader.html">Shader</a> &amp;&#160;</td
     <tr><td class="paramname">pos</td><td>position of lower left corner in screen space coordinates </td></tr>
     <tr><td class="paramname">canvasSize</td><td>dimensions of the current render target </td></tr>
     <tr><td class="paramname">layerType</td><td>defines which layer of the input image will be rendered, i.e. Color, Depth, or Picking </td></tr>
+    <tr><td class="paramname">transformation</td><td>additional transformation matrix to be applied before rendering. (For example a rotation matrix to rotate the quad) </td></tr>
+    <tr><td class="paramname">texTransform</td><td>optional transformation for texture coordinates, e.g. for rendering a sub region of the input </td></tr>
   </table>
   </dd>
 </dl>
 
 </div>
 </div>
-<a id="a5e228b54546ebabbda67984df89d6483"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5e228b54546ebabbda67984df89d6483">&#9670;&nbsp;</a></span>render() <span class="overload">[2/4]</span></h2>
+<a id="ab4b7351df055fa7d231e330cb794afba"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab4b7351df055fa7d231e330cb794afba">&#9670;&nbsp;</a></span>render() <span class="overload">[2/4]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -216,7 +260,19 @@ const <a class="el" href="classinviwo_1_1Shader.html">Shader</a> &amp;&#160;</td
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">std::size_t&#160;</td>
-          <td class="paramname"><em>colorLayerIndex</em>&#160;</td>
+          <td class="paramname"><em>colorLayerIndex</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const mat4 &amp;&#160;</td>
+          <td class="paramname"><em>transformation</em> = <code>mat4(1)</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const mat4 &amp;&#160;</td>
+          <td class="paramname"><em>texTransform</em> = <code>mat4(1)</code>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -233,14 +289,16 @@ const <a class="el" href="classinviwo_1_1Shader.html">Shader</a> &amp;&#160;</td
     <tr><td class="paramname">pos</td><td>position of lower left corner in screen space coordinates </td></tr>
     <tr><td class="paramname">canvasSize</td><td>dimensions of the current render target </td></tr>
     <tr><td class="paramname">colorLayerIndex</td><td>defines which color layer of the input image will be rendered. </td></tr>
+    <tr><td class="paramname">transformation</td><td>additional transformation matrix to be applied before rendering. (For example a rotation matrix to rotate the quad) </td></tr>
+    <tr><td class="paramname">texTransform</td><td>optional transformation for texture coordinates, e.g. for rendering a sub region of the input </td></tr>
   </table>
   </dd>
 </dl>
 
 </div>
 </div>
-<a id="a85e69672d62be092f055b19c1d0892ac"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a85e69672d62be092f055b19c1d0892ac">&#9670;&nbsp;</a></span>render() <span class="overload">[3/4]</span></h2>
+<a id="a018197abfe951bacded4b7ad23ee8af5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a018197abfe951bacded4b7ad23ee8af5">&#9670;&nbsp;</a></span>render() <span class="overload">[3/4]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -261,7 +319,19 @@ const <a class="el" href="classinviwo_1_1Shader.html">Shader</a> &amp;&#160;</td
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">const size2_t &amp;&#160;</td>
-          <td class="paramname"><em>canvasSize</em>&#160;</td>
+          <td class="paramname"><em>canvasSize</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const mat4 &amp;&#160;</td>
+          <td class="paramname"><em>transformation</em> = <code>mat4(1)</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const mat4 &amp;&#160;</td>
+          <td class="paramname"><em>texTransform</em> = <code>mat4(1)</code>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -277,14 +347,16 @@ const <a class="el" href="classinviwo_1_1Shader.html">Shader</a> &amp;&#160;</td
     <tr><td class="paramname">layer</td><td>layer which is to be rendered onto the current render target </td></tr>
     <tr><td class="paramname">pos</td><td>position of lower left corner in screen space coordinates </td></tr>
     <tr><td class="paramname">canvasSize</td><td>dimensions of the current render target </td></tr>
+    <tr><td class="paramname">transformation</td><td>additional transformation matrix to be applied before rendering. (For example a rotation matrix to rotate the quad) </td></tr>
+    <tr><td class="paramname">texTransform</td><td>optional transformation for texture coordinates, e.g. for rendering a sub region of the input </td></tr>
   </table>
   </dd>
 </dl>
 
 </div>
 </div>
-<a id="a15ae8fb1780598729908ae5acda4d270"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a15ae8fb1780598729908ae5acda4d270">&#9670;&nbsp;</a></span>render() <span class="overload">[4/4]</span></h2>
+<a id="ac7e02ebbbc5c7df3bd0244267c33e6db"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac7e02ebbbc5c7df3bd0244267c33e6db">&#9670;&nbsp;</a></span>render() <span class="overload">[4/4]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -305,7 +377,19 @@ const <a class="el" href="classinviwo_1_1Shader.html">Shader</a> &amp;&#160;</td
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">const size2_t &amp;&#160;</td>
-          <td class="paramname"><em>canvasSize</em>&#160;</td>
+          <td class="paramname"><em>canvasSize</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const mat4 &amp;&#160;</td>
+          <td class="paramname"><em>transformation</em> = <code>mat4(1)</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const mat4 &amp;&#160;</td>
+          <td class="paramname"><em>texTransform</em> = <code>mat4(1)</code>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -321,14 +405,16 @@ const <a class="el" href="classinviwo_1_1Shader.html">Shader</a> &amp;&#160;</td
     <tr><td class="paramname">texture</td><td>texture which is to be rendered onto the current render target </td></tr>
     <tr><td class="paramname">pos</td><td>position of lower left corner in screen space coordinates </td></tr>
     <tr><td class="paramname">canvasSize</td><td>dimensions of the current render target </td></tr>
+    <tr><td class="paramname">transformation</td><td>additional transformation matrix to be applied before rendering. (For example a rotation matrix to rotate the quad) </td></tr>
+    <tr><td class="paramname">texTransform</td><td>optional transformation for texture coordinates, e.g. for rendering a sub region of the input </td></tr>
   </table>
   </dd>
 </dl>
 
 </div>
 </div>
-<a id="a967bb604434687863f28cbb8a47614d8"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a967bb604434687863f28cbb8a47614d8">&#9670;&nbsp;</a></span>renderToRect() <span class="overload">[1/4]</span></h2>
+<a id="a534bbfd7a582bd79ac250c3e82d3c601"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a534bbfd7a582bd79ac250c3e82d3c601">&#9670;&nbsp;</a></span>renderToRect() <span class="overload">[1/4]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -361,7 +447,19 @@ const <a class="el" href="classinviwo_1_1Shader.html">Shader</a> &amp;&#160;</td
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">LayerType&#160;</td>
-          <td class="paramname"><em>layerType</em> = <code>LayerType::Color</code>&#160;</td>
+          <td class="paramname"><em>layerType</em> = <code>LayerType::Color</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const mat4 &amp;&#160;</td>
+          <td class="paramname"><em>transformation</em> = <code>mat4(1)</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const mat4 &amp;&#160;</td>
+          <td class="paramname"><em>texTransform</em> = <code>mat4(1)</code>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -379,14 +477,16 @@ const <a class="el" href="classinviwo_1_1Shader.html">Shader</a> &amp;&#160;</td
     <tr><td class="paramname">extent</td><td>extent covered by the rendered texture in screen space coordinates </td></tr>
     <tr><td class="paramname">canvasSize</td><td>dimensions of the current render target </td></tr>
     <tr><td class="paramname">layerType</td><td>defines which layer of the input image will be rendered, i.e. Color, Depth, or Picking </td></tr>
+    <tr><td class="paramname">transformation</td><td>additional transformation matrix to be applied before rendering. (For example a rotation matrix to rotate the quad) </td></tr>
+    <tr><td class="paramname">texTransform</td><td>optional transformation for texture coordinates, e.g. for rendering a sub region of the input </td></tr>
   </table>
   </dd>
 </dl>
 
 </div>
 </div>
-<a id="a625248a76c833c18c4a278e2f85efdbd"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a625248a76c833c18c4a278e2f85efdbd">&#9670;&nbsp;</a></span>renderToRect() <span class="overload">[2/4]</span></h2>
+<a id="a6fdb0cd9c6de68ca3b98076bd2d81af4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6fdb0cd9c6de68ca3b98076bd2d81af4">&#9670;&nbsp;</a></span>renderToRect() <span class="overload">[2/4]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -419,7 +519,19 @@ const <a class="el" href="classinviwo_1_1Shader.html">Shader</a> &amp;&#160;</td
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">std::size_t&#160;</td>
-          <td class="paramname"><em>colorLayerIndex</em>&#160;</td>
+          <td class="paramname"><em>colorLayerIndex</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const mat4 &amp;&#160;</td>
+          <td class="paramname"><em>transformation</em> = <code>mat4(1)</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const mat4 &amp;&#160;</td>
+          <td class="paramname"><em>texTransform</em> = <code>mat4(1)</code>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -437,14 +549,16 @@ const <a class="el" href="classinviwo_1_1Shader.html">Shader</a> &amp;&#160;</td
     <tr><td class="paramname">extent</td><td>extent covered by the rendered texture in screen space coordinates </td></tr>
     <tr><td class="paramname">canvasSize</td><td>dimensions of the current render target </td></tr>
     <tr><td class="paramname">colorLayerIndex</td><td>defines which color layer of the input image will be rendered. </td></tr>
+    <tr><td class="paramname">transformation</td><td>additional transformation matrix to be applied before rendering. (For example a rotation matrix to rotate the quad) </td></tr>
+    <tr><td class="paramname">texTransform</td><td>optional transformation for texture coordinates, e.g. for rendering a sub region of the input </td></tr>
   </table>
   </dd>
 </dl>
 
 </div>
 </div>
-<a id="a9bc0571d04a2457905e2a740045eced8"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9bc0571d04a2457905e2a740045eced8">&#9670;&nbsp;</a></span>renderToRect() <span class="overload">[3/4]</span></h2>
+<a id="a0d12604c45651e9c00a01f6301239b4d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0d12604c45651e9c00a01f6301239b4d">&#9670;&nbsp;</a></span>renderToRect() <span class="overload">[3/4]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -471,7 +585,19 @@ const <a class="el" href="classinviwo_1_1Shader.html">Shader</a> &amp;&#160;</td
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">const size2_t &amp;&#160;</td>
-          <td class="paramname"><em>canvasSize</em>&#160;</td>
+          <td class="paramname"><em>canvasSize</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const mat4 &amp;&#160;</td>
+          <td class="paramname"><em>transformation</em> = <code>mat4(1)</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const mat4 &amp;&#160;</td>
+          <td class="paramname"><em>texTransform</em> = <code>mat4(1)</code>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -488,14 +614,16 @@ const <a class="el" href="classinviwo_1_1Shader.html">Shader</a> &amp;&#160;</td
     <tr><td class="paramname">pos</td><td>position of lower left corner in screen space coordinates </td></tr>
     <tr><td class="paramname">extent</td><td>extent covered by the rendered texture in screen space coordinates </td></tr>
     <tr><td class="paramname">canvasSize</td><td>dimensions of the current render target </td></tr>
+    <tr><td class="paramname">transformation</td><td>additional transformation matrix to be applied before rendering. (For example a rotation matrix to rotate the quad) </td></tr>
+    <tr><td class="paramname">texTransform</td><td>optional transformation for texture coordinates, e.g. for rendering a sub region of the input </td></tr>
   </table>
   </dd>
 </dl>
 
 </div>
 </div>
-<a id="a9057b6069a17e8a1274f0f20dddd07d5"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9057b6069a17e8a1274f0f20dddd07d5">&#9670;&nbsp;</a></span>renderToRect() <span class="overload">[4/4]</span></h2>
+<a id="af49e5bb66ca598b8bb138fb954d4a033"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af49e5bb66ca598b8bb138fb954d4a033">&#9670;&nbsp;</a></span>renderToRect() <span class="overload">[4/4]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -522,7 +650,19 @@ const <a class="el" href="classinviwo_1_1Shader.html">Shader</a> &amp;&#160;</td
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">const size2_t &amp;&#160;</td>
-          <td class="paramname"><em>canvasSize</em>&#160;</td>
+          <td class="paramname"><em>canvasSize</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const mat4 &amp;&#160;</td>
+          <td class="paramname"><em>transformation</em> = <code>mat4(1)</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const mat4 &amp;&#160;</td>
+          <td class="paramname"><em>texTransform</em> = <code>mat4(1)</code>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -539,6 +679,87 @@ const <a class="el" href="classinviwo_1_1Shader.html">Shader</a> &amp;&#160;</td
     <tr><td class="paramname">pos</td><td>position of lower left corner in screen space coordinates </td></tr>
     <tr><td class="paramname">extent</td><td>extent covered by the rendered texture in screen space coordinates </td></tr>
     <tr><td class="paramname">canvasSize</td><td>dimensions of the current render target </td></tr>
+    <tr><td class="paramname">transformation</td><td>additional transformation matrix to be applied before rendering. (For example a rotation matrix to rotate the quad) </td></tr>
+    <tr><td class="paramname">texTransform</td><td>optional transformation for texture coordinates, e.g. for rendering a sub region of the input </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a655b5846732d9cb920a9139cfdd6ac01"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a655b5846732d9cb920a9139cfdd6ac01">&#9670;&nbsp;</a></span>renderToRect3D()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void inviwo::TextureQuadRenderer::renderToRect3D </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classinviwo_1_1Camera.html">Camera</a> &amp;&#160;</td>
+          <td class="paramname"><em>camera</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::shared_ptr&lt; <a class="el" href="classinviwo_1_1Texture2D.html">Texture2D</a> &gt; &amp;&#160;</td>
+          <td class="paramname"><em>texture</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const vec3 &amp;&#160;</td>
+          <td class="paramname"><em>pos</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const ivec2 &amp;&#160;</td>
+          <td class="paramname"><em>extent</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const size2_t &amp;&#160;</td>
+          <td class="paramname"><em>canvasSize</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const vec2 &amp;&#160;</td>
+          <td class="paramname"><em>anchor</em> = <code>vec2(-1.0f)</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const mat4 &amp;&#160;</td>
+          <td class="paramname"><em>transformation</em> = <code>mat4(1)</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const mat4 &amp;&#160;</td>
+          <td class="paramname"><em>texTransform</em> = <code>mat4(1)</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>renders a texture at world position pos onto the current canvas with the given extent. The covered area is defined by the extent (in pixel). The anchor point of the texture is defined by anchor (-1 to 1). </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">camera</td><td>camera used for determining the screen position </td></tr>
+    <tr><td class="paramname">texture</td><td>texture which is to be rendered onto the current render target </td></tr>
+    <tr><td class="paramname">pos</td><td>position in world coordinates </td></tr>
+    <tr><td class="paramname">extent</td><td>extent covered by the rendered texture in screen space coordinates </td></tr>
+    <tr><td class="paramname">canvasSize</td><td>dimensions of the current render target </td></tr>
+    <tr><td class="paramname">anchor</td><td>anchor position of texture (default lower left, i.e. (-1,-1)) </td></tr>
+    <tr><td class="paramname">transformation</td><td>additional transformation matrix to be applied before rendering. (For example a rotation matrix to rotate the quad) </td></tr>
+    <tr><td class="paramname">texTransform</td><td>optional transformation for texture coordinates, e.g. for rendering a sub region of the input </td></tr>
   </table>
   </dd>
 </dl>

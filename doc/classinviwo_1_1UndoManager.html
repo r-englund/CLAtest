@@ -84,26 +84,41 @@ $(document).ready(function(){initNavTree('classinviwo_1_1UndoManager.html','');}
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pro-methods">Protected Member Functions</a> &#124;
 <a href="classinviwo_1_1UndoManager-members.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">inviwo::UndoManager Class Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
+<div id="dynsection-0" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-0-trigger" src="closed.png" alt="+"/> Inheritance diagram for inviwo::UndoManager:</div>
+<div id="dynsection-0-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-0-content" class="dyncontent" style="display:none;">
+<div class="center"><img src="classinviwo_1_1UndoManager__inherit__graph.png" border="0" usemap="#inviwo_1_1UndoManager_inherit__map" alt="Inheritance graph"/></div>
+<map name="inviwo_1_1UndoManager_inherit__map" id="inviwo_1_1UndoManager_inherit__map">
+<area shape="rect" id="node3" href="classinviwo_1_1ProcessorNetworkObserver.html" title="inviwo::ProcessorNetwork\lObserver" alt="" coords="101,80,271,121"/>
+<area shape="rect" id="node4" href="classinviwo_1_1Observer.html" title="inviwo::Observer" alt="" coords="129,5,243,32"/>
+</map>
+<center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a7b4b2dd5792688581e5deb04fa32da6f"><td class="memItemLeft" align="right" valign="top"><a id="a7b4b2dd5792688581e5deb04fa32da6f"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>UndoManager</b> (<a class="el" href="classinviwo_1_1InviwoMainWindow.html">InviwoMainWindow</a> *mainWindow)</td></tr>
 <tr class="separator:a7b4b2dd5792688581e5deb04fa32da6f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab95fe00f5658759ad210d7daeb1ed7a5"><td class="memItemLeft" align="right" valign="top"><a id="ab95fe00f5658759ad210d7daeb1ed7a5"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>pushState</b> (bool force=false)</td></tr>
-<tr class="separator:ab95fe00f5658759ad210d7daeb1ed7a5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aef78f187e518bf5ede7bdde05cf73066"><td class="memItemLeft" align="right" valign="top"><a id="aef78f187e518bf5ede7bdde05cf73066"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>pushState</b> ()</td></tr>
+<tr class="separator:aef78f187e518bf5ede7bdde05cf73066"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa2d9f1e25cd89316304a28c552d5ae61"><td class="memItemLeft" align="right" valign="top"><a id="aa2d9f1e25cd89316304a28c552d5ae61"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>undoState</b> ()</td></tr>
 <tr class="separator:aa2d9f1e25cd89316304a28c552d5ae61"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa74cd7b210e6497eebe465cb19648a0c"><td class="memItemLeft" align="right" valign="top"><a id="aa74cd7b210e6497eebe465cb19648a0c"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>redoState</b> ()</td></tr>
 <tr class="separator:aa74cd7b210e6497eebe465cb19648a0c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abfcb0ed2ac2e0cf433e82f915cbbc5c5"><td class="memItemLeft" align="right" valign="top"><a id="abfcb0ed2ac2e0cf433e82f915cbbc5c5"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>clear</b> ()</td></tr>
+<tr class="separator:abfcb0ed2ac2e0cf433e82f915cbbc5c5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5a0f8f4ef81f3595de3a3398f8b4afd1"><td class="memItemLeft" align="right" valign="top"><a id="a5a0f8f4ef81f3595de3a3398f8b4afd1"></a>
 QAction *&#160;</td><td class="memItemRight" valign="bottom"><b>getUndoAction</b> () const</td></tr>
 <tr class="separator:a5a0f8f4ef81f3595de3a3398f8b4afd1"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -114,6 +129,9 @@ QAction *&#160;</td><td class="memItemRight" valign="bottom"><b>getRedoAction</b
 <tr class="memitem:ae3096d847ac1cd0e63b3461284f401fc inherit pub_methods_classinviwo_1_1ProcessorNetworkObserver"><td class="memItemLeft" align="right" valign="top"><a id="ae3096d847ac1cd0e63b3461284f401fc"></a>
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>onProcessorNetworkEvaluateRequest</b> ()</td></tr>
 <tr class="separator:ae3096d847ac1cd0e63b3461284f401fc inherit pub_methods_classinviwo_1_1ProcessorNetworkObserver"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a51701cae874861f2a3e9a512e5eaaa1d inherit pub_methods_classinviwo_1_1ProcessorNetworkObserver"><td class="memItemLeft" align="right" valign="top"><a id="a51701cae874861f2a3e9a512e5eaaa1d"></a>
+virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>onProcessorNetworkUnlocked</b> ()</td></tr>
+<tr class="separator:a51701cae874861f2a3e9a512e5eaaa1d inherit pub_methods_classinviwo_1_1ProcessorNetworkObserver"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af10052ef52c263bb82cc6d742ff2f11a inherit pub_methods_classinviwo_1_1ProcessorNetworkObserver"><td class="memItemLeft" align="right" valign="top"><a id="af10052ef52c263bb82cc6d742ff2f11a"></a>
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>onProcessorNetworkWillAddProcessor</b> (<a class="el" href="classinviwo_1_1Processor.html">Processor</a> *processor)</td></tr>
 <tr class="separator:af10052ef52c263bb82cc6d742ff2f11a inherit pub_methods_classinviwo_1_1ProcessorNetworkObserver"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -153,6 +171,15 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>onProcessorNe
 void&#160;</td><td class="memItemRight" valign="bottom"><b>removeObservations</b> ()</td></tr>
 <tr class="separator:a73d692ac9fc055d97af7e7ce6f8f14b1 inherit pub_methods_classinviwo_1_1Observer"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-methods"></a>
+Protected Member Functions</h2></td></tr>
+<tr class="memitem:a5b49c8abf883512354eedfe2124f72cf"><td class="memItemLeft" align="right" valign="top"><a id="a5b49c8abf883512354eedfe2124f72cf"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>eventFilter</b> (QObject *obj, QEvent *event) override</td></tr>
+<tr class="separator:a5b49c8abf883512354eedfe2124f72cf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pro_methods_classinviwo_1_1Observer"><td colspan="2" onclick="javascript:toggleInherit('pro_methods_classinviwo_1_1Observer')"><img src="closed.png" alt="-"/>&#160;Protected Member Functions inherited from <a class="el" href="classinviwo_1_1Observer.html">inviwo::Observer</a></td></tr>
+<tr class="memitem:aa62add49e9cc4b358f61aa9d38aee991 inherit pro_methods_classinviwo_1_1Observer"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classinviwo_1_1Observer.html#aa62add49e9cc4b358f61aa9d38aee991">addObservation</a> (<a class="el" href="classinviwo_1_1ObservableInterface.html">ObservableInterface</a> *observable)</td></tr>
+<tr class="separator:aa62add49e9cc4b358f61aa9d38aee991 inherit pro_methods_classinviwo_1_1Observer"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="inherited"></a>
 Additional Inherited Members</h2></td></tr>
 <tr class="inherit_header pub_attribs_classinviwo_1_1ProcessorNetworkObserver"><td colspan="2" onclick="javascript:toggleInherit('pub_attribs_classinviwo_1_1ProcessorNetworkObserver')"><img src="closed.png" alt="-"/>&#160;Public Attributes inherited from <a class="el" href="classinviwo_1_1ProcessorNetworkObserver.html">inviwo::ProcessorNetworkObserver</a></td></tr>
@@ -163,9 +190,6 @@ friend&#160;</td><td class="memItemRight" valign="bottom"><b>ProcessorNetworkObs
 <tr class="memitem:a124f32d3b813b989230bb01a0c4da5ee inherit pro_types_classinviwo_1_1Observer"><td class="memItemLeft" align="right" valign="top"><a id="a124f32d3b813b989230bb01a0c4da5ee"></a>
 using&#160;</td><td class="memItemRight" valign="bottom"><b>ObservableSet</b> = std::unordered_set&lt; <a class="el" href="classinviwo_1_1ObservableInterface.html">ObservableInterface</a> * &gt;</td></tr>
 <tr class="separator:a124f32d3b813b989230bb01a0c4da5ee inherit pro_types_classinviwo_1_1Observer"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="inherit_header pro_methods_classinviwo_1_1Observer"><td colspan="2" onclick="javascript:toggleInherit('pro_methods_classinviwo_1_1Observer')"><img src="closed.png" alt="-"/>&#160;Protected Member Functions inherited from <a class="el" href="classinviwo_1_1Observer.html">inviwo::Observer</a></td></tr>
-<tr class="memitem:aa62add49e9cc4b358f61aa9d38aee991 inherit pro_methods_classinviwo_1_1Observer"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classinviwo_1_1Observer.html#aa62add49e9cc4b358f61aa9d38aee991">addObservation</a> (<a class="el" href="classinviwo_1_1ObservableInterface.html">ObservableInterface</a> *observable)</td></tr>
-<tr class="separator:aa62add49e9cc4b358f61aa9d38aee991 inherit pro_methods_classinviwo_1_1Observer"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pro_attribs_classinviwo_1_1Observer"><td colspan="2" onclick="javascript:toggleInherit('pro_attribs_classinviwo_1_1Observer')"><img src="closed.png" alt="-"/>&#160;Protected Attributes inherited from <a class="el" href="classinviwo_1_1Observer.html">inviwo::Observer</a></td></tr>
 <tr class="memitem:a7fe9c0fe6259d4944da4bdafc826c442 inherit pro_attribs_classinviwo_1_1Observer"><td class="memItemLeft" align="right" valign="top"><a id="a7fe9c0fe6259d4944da4bdafc826c442"></a>
 ObservableSet&#160;</td><td class="memItemRight" valign="bottom"><b>observables_</b></td></tr>

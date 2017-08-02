@@ -1,10 +1,10 @@
 var classinviwo_1_1TransferFunctionEditor =
 [
-    [ "TransferFunctionEditor", "classinviwo_1_1TransferFunctionEditor.html#a96560471899d9c6c33f5a7dfd9ed00b4", null ],
+    [ "TransferFunctionEditor", "classinviwo_1_1TransferFunctionEditor.html#a6b2e089a5f614a1bbaf63329eb0c25ef", null ],
     [ "~TransferFunctionEditor", "classinviwo_1_1TransferFunctionEditor.html#a36a3c7766584e867e92a7dd90de551bf", null ],
     [ "addControlPoint", "classinviwo_1_1TransferFunctionEditor.html#aee74a7593a6a33a9a23c9f794bfd9005", null ],
     [ "addControlPoint", "classinviwo_1_1TransferFunctionEditor.html#a4e02cbebfd1c6bd7dd9b019598bddb62", null ],
-    [ "doubleClick", "classinviwo_1_1TransferFunctionEditor.html#a46139df25cb97f8f0ac5bbc9ab2a642a", null ],
+    [ "colorChanged", "classinviwo_1_1TransferFunctionEditor.html#a3d4c594930d0f7768df9a95266863277", null ],
     [ "getControlPointGraphicsItemAt", "classinviwo_1_1TransferFunctionEditor.html#a1590d851c92313e85fbf2916d4879ae0", null ],
     [ "getControlPointSize", "classinviwo_1_1TransferFunctionEditor.html#a2c94c96bb2ab6191fd62b6499d0f1055", null ],
     [ "getMoveMode", "classinviwo_1_1TransferFunctionEditor.html#a2e9ccdca4313c5d9eab31f49df14ff18", null ],
@@ -24,6 +24,7 @@ var classinviwo_1_1TransferFunctionEditor =
     [ "resetTransferFunction", "classinviwo_1_1TransferFunctionEditor.html#a5ff49d23cf8832f1b89453d9ff1571c8", null ],
     [ "setControlPointSize", "classinviwo_1_1TransferFunctionEditor.html#aa2436ef690e62ffe7561305f6a94be07", null ],
     [ "setMoveMode", "classinviwo_1_1TransferFunctionEditor.html#a36cb16dfc9bd2b68158c561ab6618f06", null ],
+    [ "setPointColor", "classinviwo_1_1TransferFunctionEditor.html#ad26650d9348ae6e5d8d55622e7055b1e", null ],
     [ "setZoomRangeXMax", "classinviwo_1_1TransferFunctionEditor.html#a71db3fd0925fdcb5c3497fb0589bf2c3", null ],
     [ "setZoomRangeXMin", "classinviwo_1_1TransferFunctionEditor.html#ac1e603b81a2fe3016b8b1a0ffb09c4e9", null ],
     [ "setZoomRangeYMax", "classinviwo_1_1TransferFunctionEditor.html#a5c5ff5546a169b15ea971d44bdee6c2e", null ],

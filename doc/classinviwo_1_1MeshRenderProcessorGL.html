@@ -95,6 +95,27 @@ $(document).ready(function(){initNavTree('classinviwo_1_1MeshRenderProcessorGL.h
 <div class="contents">
 
 <p><code>#include &lt;meshrenderprocessorgl.h&gt;</code></p>
+<div id="dynsection-0" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-0-trigger" src="closed.png" alt="+"/> Inheritance diagram for inviwo::MeshRenderProcessorGL:</div>
+<div id="dynsection-0-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-0-content" class="dyncontent" style="display:none;">
+<div class="center"><img src="classinviwo_1_1MeshRenderProcessorGL__inherit__graph.png" border="0" usemap="#inviwo_1_1MeshRenderProcessorGL_inherit__map" alt="Inheritance graph"/></div>
+<map name="inviwo_1_1MeshRenderProcessorGL_inherit__map" id="inviwo_1_1MeshRenderProcessorGL_inherit__map">
+<area shape="rect" id="node2" href="classinviwo_1_1Processor.html" title="A processor generally performs operation on input data and outputs the new result. " alt="" coords="1493,134,1616,161"/>
+<area shape="rect" id="node3" href="classinviwo_1_1PropertyOwner.html" title="inviwo::PropertyOwner" alt="" coords="1289,105,1440,131"/>
+<area shape="rect" id="node4" href="classinviwo_1_1PropertyOwnerObservable.html" title="inviwo::PropertyOwnerObservable" alt="" coords="836,73,1051,99"/>
+<area shape="rect" id="node5" href="classinviwo_1_1Observable.html" title="inviwo::Observable\l\&lt; PropertyOwnerObserver \&gt;" alt="" coords="604,71,787,112"/>
+<area shape="rect" id="node6" href="classinviwo_1_1ObservableInterface.html" title="inviwo::ObservableInterface" alt="" coords="5,50,183,77"/>
+<area shape="rect" id="node7" href="classinviwo_1_1Observable.html" title="inviwo::Observable\&lt; T \&gt;" alt="" coords="232,50,391,77"/>
+<area shape="rect" id="node12" href="classinviwo_1_1Observable.html" title="inviwo::Observable\l\&lt; ProcessorObserver \&gt;" alt="" coords="617,5,773,47"/>
+<area shape="rect" id="node8" href="classinviwo_1_1Serializable.html" title="inviwo::Serializable" alt="" coords="878,174,1009,201"/>
+<area shape="rect" id="node9" href="classinviwo_1_1EventListener.html" title="inviwo::EventListener" alt="" coords="872,123,1015,150"/>
+<area shape="rect" id="node10" href="classinviwo_1_1MetaDataOwner.html" title="Holds metadata and access functionality for set/get. " alt="" coords="1286,155,1443,182"/>
+<area shape="rect" id="node11" href="classinviwo_1_1ProcessorObservable.html" title="inviwo::ProcessorObservable" alt="" coords="1075,37,1261,63"/>
+<area shape="rect" id="node13" href="classinviwo_1_1EventPropagator.html" title="Abstract base class for a event propagator. " alt="" coords="1285,206,1444,233"/>
+</map>
+<center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
@@ -423,18 +444,15 @@ Protected Member Functions</h2></td></tr>
 <tr class="memitem:a0f34c0e2d564d6261ef123447268b09c"><td class="memItemLeft" align="right" valign="top"><a id="a0f34c0e2d564d6261ef123447268b09c"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>centerViewOnGeometry</b> ()</td></tr>
 <tr class="separator:a0f34c0e2d564d6261ef123447268b09c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a31b64c4619731ed61a21f8501d7b3fde"><td class="memItemLeft" align="right" valign="top"><a id="a31b64c4619731ed61a21f8501d7b3fde"></a>
+std::pair&lt; vec3, vec3 &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>calcWorldBoundingBox</b> () const</td></tr>
+<tr class="separator:a31b64c4619731ed61a21f8501d7b3fde"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a379bbd74d1a7043a763cd963f9889ad0"><td class="memItemLeft" align="right" valign="top"><a id="a379bbd74d1a7043a763cd963f9889ad0"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>setNearFarPlane</b> ()</td></tr>
 <tr class="separator:a379bbd74d1a7043a763cd963f9889ad0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad2e2756a75f84e54ce2676b9d4ea376e"><td class="memItemLeft" align="right" valign="top"><a id="ad2e2756a75f84e54ce2676b9d4ea376e"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>changeRenderMode</b> ()</td></tr>
-<tr class="separator:ad2e2756a75f84e54ce2676b9d4ea376e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a48b12f3f045ebd6f9f11caf85253dd49"><td class="memItemLeft" align="right" valign="top"><a id="a48b12f3f045ebd6f9f11caf85253dd49"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>updateDrawers</b> ()</td></tr>
 <tr class="separator:a48b12f3f045ebd6f9f11caf85253dd49"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6051d821eda502df636f98aced34fb7b"><td class="memItemLeft" align="right" valign="top"><a id="a6051d821eda502df636f98aced34fb7b"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>addCommonShaderDefines</b> (<a class="el" href="classinviwo_1_1Shader.html">Shader</a> &amp;shader)</td></tr>
-<tr class="separator:a6051d821eda502df636f98aced34fb7b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pro_methods_classinviwo_1_1Processor"><td colspan="2" onclick="javascript:toggleInherit('pro_methods_classinviwo_1_1Processor')"><img src="closed.png" alt="-"/>&#160;Protected Member Functions inherited from <a class="el" href="classinviwo_1_1Processor.html">inviwo::Processor</a></td></tr>
 <tr class="memitem:a8789ed504b9d8e5b5ae0adea0683b214 inherit pro_methods_classinviwo_1_1Processor"><td class="memItemLeft" align="right" valign="top"><a id="a8789ed504b9d8e5b5ae0adea0683b214"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>addPort</b> (<a class="el" href="classinviwo_1_1Inport.html">Inport</a> &amp;port, const std::string &amp;portGroup=&quot;default&quot;)</td></tr>
@@ -542,15 +560,6 @@ Protected Attributes</h2></td></tr>
 <tr class="memitem:ac3c69159c49f18d42a696e8f196451e0"><td class="memItemLeft" align="right" valign="top"><a id="ac3c69159c49f18d42a696e8f196451e0"></a>
 <a class="el" href="classinviwo_1_1TemplateOptionProperty.html">OptionPropertyInt</a>&#160;</td><td class="memItemRight" valign="bottom"><b>cullFace_</b></td></tr>
 <tr class="separator:ac3c69159c49f18d42a696e8f196451e0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab8e6c1679209d8358c88e5576e048782"><td class="memItemLeft" align="right" valign="top"><a id="ab8e6c1679209d8358c88e5576e048782"></a>
-<a class="el" href="classinviwo_1_1TemplateOptionProperty.html">OptionPropertyInt</a>&#160;</td><td class="memItemRight" valign="bottom"><b>polygonMode_</b></td></tr>
-<tr class="separator:ab8e6c1679209d8358c88e5576e048782"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5dac0495c336999142bd7170570743ae"><td class="memItemLeft" align="right" valign="top"><a id="a5dac0495c336999142bd7170570743ae"></a>
-<a class="el" href="classinviwo_1_1OrdinalProperty.html">FloatProperty</a>&#160;</td><td class="memItemRight" valign="bottom"><b>renderPointSize_</b></td></tr>
-<tr class="separator:a5dac0495c336999142bd7170570743ae"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9906a5b708a71eb1aa0ce8517c924a28"><td class="memItemLeft" align="right" valign="top"><a id="a9906a5b708a71eb1aa0ce8517c924a28"></a>
-<a class="el" href="classinviwo_1_1OrdinalProperty.html">FloatProperty</a>&#160;</td><td class="memItemRight" valign="bottom"><b>renderLineWidth_</b></td></tr>
-<tr class="separator:a9906a5b708a71eb1aa0ce8517c924a28"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a94e7be694fc3a5f77b47e8a908e9851c"><td class="memItemLeft" align="right" valign="top"><a id="a94e7be694fc3a5f77b47e8a908e9851c"></a>
 <a class="el" href="classinviwo_1_1BoolProperty.html">BoolProperty</a>&#160;</td><td class="memItemRight" valign="bottom"><b>enableDepthTest_</b></td></tr>
 <tr class="separator:a94e7be694fc3a5f77b47e8a908e9851c"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -686,8 +695,6 @@ static const std::string&#160;</td><td class="memItemRight" valign="bottom"><b>g
 
 <p>Reimplemented from <a class="el" href="classinviwo_1_1Processor.html#a9ca0ca1407ee6e9f0c5e3a9b1a453dd1">inviwo::Processor</a>.</p>
 
-<p>Reimplemented in <a class="el" href="classinviwo_1_1ABufferGeometryGLProcessor.html#a83404c671fd72c208d7469e0922f98a4">inviwo::ABufferGeometryGLProcessor</a>.</p>
-
 </div>
 </div>
 <a id="a90e793825149d3e5c19da1f049bf714d"></a>
@@ -715,8 +722,6 @@ static const std::string&#160;</td><td class="memItemRight" valign="bottom"><b>g
 <p>Called when the network is evaluated and the processor is ready and not valid. The work of the processor should be done here. </p>
 
 <p>Reimplemented from <a class="el" href="classinviwo_1_1Processor.html#a8aec4f59f1cccfa4f37993958f095359">inviwo::Processor</a>.</p>
-
-<p>Reimplemented in <a class="el" href="classinviwo_1_1HeightFieldProcessor.html#a49d4f2665a4f556d0b96dbb1be6ffe0c">inviwo::HeightFieldProcessor</a>, and <a class="el" href="classinviwo_1_1ABufferGeometryGLProcessor.html#ad7f3b12d2dcad8923c4b463407487294">inviwo::ABufferGeometryGLProcessor</a>.</p>
 
 </div>
 </div>

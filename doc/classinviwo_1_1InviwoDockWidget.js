@@ -8,6 +8,5 @@ var classinviwo_1_1InviwoDockWidget =
     [ "setContents", "classinviwo_1_1InviwoDockWidget.html#adf9c1d3ec5656cd76fac16f88312f438", null ],
     [ "setSticky", "classinviwo_1_1InviwoDockWidget.html#a1516c20d795e7faab094fc74ab77bcbf", null ],
     [ "showEvent", "classinviwo_1_1InviwoDockWidget.html#a63e1d7c684afc1e224320cda38a0a505", null ],
-    [ "stickyFlagChanged", "classinviwo_1_1InviwoDockWidget.html#aad6a34dc8ca3a76872c8e7a536c58b19", null ],
-    [ "updateWindowTitle", "classinviwo_1_1InviwoDockWidget.html#a61288d4fda701df428165bfa65a2425f", null ]
+    [ "stickyFlagChanged", "classinviwo_1_1InviwoDockWidget.html#aad6a34dc8ca3a76872c8e7a536c58b19", null ]
 ];

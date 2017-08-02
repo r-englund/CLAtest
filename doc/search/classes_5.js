@@ -50,6 +50,8 @@ var searchData=
   ['float3s',['Float3s',['../structinviwo_1_1dispatching_1_1filter_1_1Float3s.html',1,'inviwo::dispatching::filter']]],
   ['float4s',['Float4s',['../structinviwo_1_1dispatching_1_1filter_1_1Float4s.html',1,'inviwo::dispatching::filter']]],
   ['floats',['Floats',['../structinviwo_1_1dispatching_1_1filter_1_1Floats.html',1,'inviwo::dispatching::filter']]],
+  ['fontcache',['FontCache',['../structinviwo_1_1TextRenderer_1_1FontCache.html',1,'inviwo::TextRenderer']]],
+  ['fontproperty',['FontProperty',['../classinviwo_1_1FontProperty.html',1,'inviwo']]],
   ['fontrendering_5ffreetype',['fontrendering_freetype',['../classglsl_1_1fontrendering__freetype.html',1,'glsl']]],
   ['fontrenderingmodule',['FontRenderingModule',['../classinviwo_1_1FontRenderingModule.html',1,'inviwo']]],
   ['for_5feach_5ftype',['for_each_type',['../structinviwo_1_1util_1_1for__each__type.html',1,'inviwo::util']]],

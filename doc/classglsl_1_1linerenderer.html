@@ -93,30 +93,30 @@ $(document).ready(function(){initNavTree('classglsl_1_1linerenderer.html','');})
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:ad0fb71c0aeecd48a4076ea515ce1d6b1"><td class="memItemLeft" align="right" valign="top"><a id="ad0fb71c0aeecd48a4076ea515ce1d6b1"></a>
-float&#160;</td><td class="memItemRight" valign="bottom"><b>reconstructDepth</b> (float z)</td></tr>
-<tr class="separator:ad0fb71c0aeecd48a4076ea515ce1d6b1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a837e65bf4c6d66e9038a6c129415296a"><td class="memItemLeft" align="right" valign="top"><a id="a837e65bf4c6d66e9038a6c129415296a"></a>
-float&#160;</td><td class="memItemRight" valign="bottom"><b>computeDepth</b> (float z)</td></tr>
-<tr class="separator:a837e65bf4c6d66e9038a6c129415296a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4a509fce62b85a37e15bc3dfde4e90f2"><td class="memItemLeft" align="right" valign="top"><a id="a4a509fce62b85a37e15bc3dfde4e90f2"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>main</b> ()</td></tr>
 <tr class="separator:a4a509fce62b85a37e15bc3dfde4e90f2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1d9c914546d83f351cf523181181d490"><td class="memItemLeft" align="right" valign="top"><a id="a1d9c914546d83f351cf523181181d490"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>layout</b> (lines_adjacency) in</td></tr>
-<tr class="separator:a1d9c914546d83f351cf523181181d490"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aba3fee1a8e77d1503210462e0a10c127"><td class="memItemLeft" align="right" valign="top"><a id="aba3fee1a8e77d1503210462e0a10c127"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>layout</b> (lines) in</td></tr>
+<tr class="separator:aba3fee1a8e77d1503210462e0a10c127"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad2be34429bfbb438f9c675f886f8f389"><td class="memItemLeft" align="right" valign="top"><a id="ad2be34429bfbb438f9c675f886f8f389"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>layout</b> (triangle_strip, max_vertices=5) out</td></tr>
 <tr class="separator:ad2be34429bfbb438f9c675f886f8f389"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aac926ada5cf3c1564d83a6ffdd5df089"><td class="memItemLeft" align="right" valign="top"><a id="aac926ada5cf3c1564d83a6ffdd5df089"></a>
 float&#160;</td><td class="memItemRight" valign="bottom"><b>projectedDistance</b> (vec2 p0, vec2 p1, vec2 p)</td></tr>
 <tr class="separator:aac926ada5cf3c1564d83a6ffdd5df089"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5e16444a47367cc88c4fd18b6da804ef"><td class="memItemLeft" align="right" valign="top"><a id="a5e16444a47367cc88c4fd18b6da804ef"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>emit</b> (in vec4 pos, in vec2 texCoord, in vec4 color, in float ndcToWorldFactor)</td></tr>
-<tr class="separator:a5e16444a47367cc88c4fd18b6da804ef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1e222f339c2c0c3f550b1098b7587e2b"><td class="memItemLeft" align="right" valign="top"><a id="a1e222f339c2c0c3f550b1098b7587e2b"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>renderLineWithoutJoints</b> ()</td></tr>
-<tr class="separator:a1e222f339c2c0c3f550b1098b7587e2b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a57708c9271026e4d02d9a0eb2864794e"><td class="memItemLeft" align="right" valign="top"><a id="a57708c9271026e4d02d9a0eb2864794e"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>emit</b> (in vec4 pos, in vec2 texCoord, in vec4 color, in float screenToWorldFactor)</td></tr>
+<tr class="separator:a57708c9271026e4d02d9a0eb2864794e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a55fa73b36d27e920f0beef0f83b51d64"><td class="memItemLeft" align="right" valign="top"><a id="a55fa73b36d27e920f0beef0f83b51d64"></a>
+vec2&#160;</td><td class="memItemRight" valign="bottom"><b>convertNDCToScreen</b> (vec2 v)</td></tr>
+<tr class="separator:a55fa73b36d27e920f0beef0f83b51d64"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac04350c8c52325c2301b65f85ad431ea"><td class="memItemLeft" align="right" valign="top"><a id="ac04350c8c52325c2301b65f85ad431ea"></a>
+vec4&#160;</td><td class="memItemRight" valign="bottom"><b>convertScreenToNDC</b> (vec2 v, float z)</td></tr>
+<tr class="separator:ac04350c8c52325c2301b65f85ad431ea"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae9dc6c512e27581f4f4c497e9e875ed8"><td class="memItemLeft" align="right" valign="top"><a id="ae9dc6c512e27581f4f4c497e9e875ed8"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>homogeneousClip</b> (inout vec4 p1, inout vec4 p2, int axis, float sign, inout bool p1Clipped, inout bool p2Clipped)</td></tr>
+<tr class="separator:ae9dc6c512e27581f4f4c497e9e875ed8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:addb7bdc353d310085473b5a0c0388932"><td class="memItemLeft" align="right" valign="top"><a id="addb7bdc353d310085473b5a0c0388932"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>main</b> (void)</td></tr>
 <tr class="separator:addb7bdc353d310085473b5a0c0388932"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -126,36 +126,41 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>main</b> ()</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
-<tr class="memitem:a4c19f4bd8a4ce9dab92cee66151217bc"><td class="memItemLeft" align="right" valign="top"><a id="a4c19f4bd8a4ce9dab92cee66151217bc"></a>
-uniform vec2&#160;</td><td class="memItemRight" valign="bottom"><b>screenDim_</b> = vec2(512, 512)</td></tr>
-<tr class="separator:a4c19f4bd8a4ce9dab92cee66151217bc"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad3c84b575139e66cf32d301805acf887"><td class="memItemLeft" align="right" valign="top"><a id="ad3c84b575139e66cf32d301805acf887"></a>
-uniform float&#160;</td><td class="memItemRight" valign="bottom"><b>antialias_</b> = 1.0</td></tr>
-<tr class="separator:ad3c84b575139e66cf32d301805acf887"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2e2d1c44efc6aaf35f66766db16b2e82"><td class="memItemLeft" align="right" valign="top"><a id="a2e2d1c44efc6aaf35f66766db16b2e82"></a>
-uniform float&#160;</td><td class="memItemRight" valign="bottom"><b>lineWidth_</b> = 2.0</td></tr>
-<tr class="separator:a2e2d1c44efc6aaf35f66766db16b2e82"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a41dd2ccb994ee7452af80465cb484e79"><td class="memItemLeft" align="right" valign="top"><a id="a41dd2ccb994ee7452af80465cb484e79"></a>
-uniform CameraParameters&#160;</td><td class="memItemRight" valign="bottom"><b>camera_</b></td></tr>
-<tr class="separator:a41dd2ccb994ee7452af80465cb484e79"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1eae8c403140ca9c49695cb112b16f5b"><td class="memItemLeft" align="right" valign="top"><a id="a1eae8c403140ca9c49695cb112b16f5b"></a>
+uniform vec2&#160;</td><td class="memItemRight" valign="bottom"><b>screenDim</b> = vec2(512, 512)</td></tr>
+<tr class="separator:a1eae8c403140ca9c49695cb112b16f5b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aaaf3755913dd596eb2e068b54d946dad"><td class="memItemLeft" align="right" valign="top"><a id="aaaf3755913dd596eb2e068b54d946dad"></a>
+uniform float&#160;</td><td class="memItemRight" valign="bottom"><b>antialiasing</b> = 0.5</td></tr>
+<tr class="separator:aaaf3755913dd596eb2e068b54d946dad"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a62c0cfe69bfea92060d2c27f43eb3332"><td class="memItemLeft" align="right" valign="top"><a id="a62c0cfe69bfea92060d2c27f43eb3332"></a>
+uniform float&#160;</td><td class="memItemRight" valign="bottom"><b>lineWidth</b> = 2.0</td></tr>
+<tr class="separator:a62c0cfe69bfea92060d2c27f43eb3332"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9195dd8e07e332eb448026f3bfe379cf"><td class="memItemLeft" align="right" valign="top">uniform CameraParameters&#160;</td><td class="memItemRight" valign="bottom"><b>camera</b></td></tr>
+<tr class="separator:a9195dd8e07e332eb448026f3bfe379cf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ade5abd63cb4952474cc76e4435a59b10"><td class="memItemLeft" align="right" valign="top"><a id="ade5abd63cb4952474cc76e4435a59b10"></a>
+uniform StipplingParameters&#160;</td><td class="memItemRight" valign="bottom"><b>stippling</b> = StipplingParameters(30.0, 10.0, 0.0, 4.0)</td></tr>
+<tr class="separator:ade5abd63cb4952474cc76e4435a59b10"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3d05756612fef100e366d89278542399"><td class="memItemLeft" align="right" valign="top"><a id="a3d05756612fef100e366d89278542399"></a>
 in float&#160;</td><td class="memItemRight" valign="bottom"><b>segmentLength_</b></td></tr>
 <tr class="separator:a3d05756612fef100e366d89278542399"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3d639e301aef453b7d4de5080ffe523d"><td class="memItemLeft" align="right" valign="top"><a id="a3d639e301aef453b7d4de5080ffe523d"></a>
-in float&#160;</td><td class="memItemRight" valign="bottom"><b>objectLength_</b></td></tr>
-<tr class="separator:a3d639e301aef453b7d4de5080ffe523d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a412aca4dce884e621c3678a7a55a5d3f"><td class="memItemLeft" align="right" valign="top"><a id="a412aca4dce884e621c3678a7a55a5d3f"></a>
+in float&#160;</td><td class="memItemRight" valign="bottom"><b>lineLengthWorld_</b></td></tr>
+<tr class="separator:a412aca4dce884e621c3678a7a55a5d3f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae1154cd277e085d7160e40685c1f4aba"><td class="memItemLeft" align="right" valign="top"><a id="ae1154cd277e085d7160e40685c1f4aba"></a>
+in float&#160;</td><td class="memItemRight" valign="bottom"><b>distanceWorld_</b></td></tr>
+<tr class="separator:ae1154cd277e085d7160e40685c1f4aba"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aae2d8c05b11221e331cac4839e6083cc"><td class="memItemLeft" align="right" valign="top"><a id="aae2d8c05b11221e331cac4839e6083cc"></a>
 in vec2&#160;</td><td class="memItemRight" valign="bottom"><b>texCoord_</b></td></tr>
 <tr class="separator:aae2d8c05b11221e331cac4839e6083cc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0a4cc1e45bb8910a83971ded9f8f894d"><td class="memItemLeft" align="right" valign="top"><a id="a0a4cc1e45bb8910a83971ded9f8f894d"></a>
 in vec4&#160;</td><td class="memItemRight" valign="bottom"><b>color_</b></td></tr>
 <tr class="separator:a0a4cc1e45bb8910a83971ded9f8f894d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abdba7a0d70d25ad334d151add1d5b2ef"><td class="memItemLeft" align="right" valign="top"><a id="abdba7a0d70d25ad334d151add1d5b2ef"></a>
-uniform GeometryParameters&#160;</td><td class="memItemRight" valign="bottom"><b>geometry_</b></td></tr>
-<tr class="separator:abdba7a0d70d25ad334d151add1d5b2ef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a69fb49ab1c26c6206362d0abc216f069"><td class="memItemLeft" align="right" valign="top"><a id="a69fb49ab1c26c6206362d0abc216f069"></a>
-uniform float&#160;</td><td class="memItemRight" valign="bottom"><b>miterLimit_</b> = 0.8</td></tr>
-<tr class="separator:a69fb49ab1c26c6206362d0abc216f069"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a08b922570ecad4e344c1f542f49c2bfe"><td class="memItemLeft" align="right" valign="top"><a id="a08b922570ecad4e344c1f542f49c2bfe"></a>
+uniform float&#160;</td><td class="memItemRight" valign="bottom"><b>miterLimit</b> = 0.8</td></tr>
+<tr class="separator:a08b922570ecad4e344c1f542f49c2bfe"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2cd74a576117415a8e8b675f7694cb5b"><td class="memItemLeft" align="right" valign="top"><a id="a2cd74a576117415a8e8b675f7694cb5b"></a>
+uniform bool&#160;</td><td class="memItemRight" valign="bottom"><b>roundCaps</b> = false</td></tr>
+<tr class="separator:a2cd74a576117415a8e8b675f7694cb5b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5829617d4dee3053e93235371a5dc33b"><td class="memItemLeft" align="right" valign="top"><a id="a5829617d4dee3053e93235371a5dc33b"></a>
 in vec4&#160;</td><td class="memItemRight" valign="bottom"><b>vertexColor_</b> []</td></tr>
 <tr class="separator:a5829617d4dee3053e93235371a5dc33b"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -165,15 +170,21 @@ in vec4&#160;</td><td class="memItemRight" valign="bottom"><b>worldPosition_</b>
 <tr class="memitem:ad60bec176e5f5c6e51532687993e9ad0"><td class="memItemLeft" align="right" valign="top"><a id="ad60bec176e5f5c6e51532687993e9ad0"></a>
 out float&#160;</td><td class="memItemRight" valign="bottom"><b>segmentLength_</b></td></tr>
 <tr class="separator:ad60bec176e5f5c6e51532687993e9ad0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab1fbd7986a851ec20529aec840957506"><td class="memItemLeft" align="right" valign="top"><a id="ab1fbd7986a851ec20529aec840957506"></a>
-out float&#160;</td><td class="memItemRight" valign="bottom"><b>objectLength_</b></td></tr>
-<tr class="separator:ab1fbd7986a851ec20529aec840957506"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0ff8989f83bb8cd667fb68bc9d413c56"><td class="memItemLeft" align="right" valign="top"><a id="a0ff8989f83bb8cd667fb68bc9d413c56"></a>
+out float&#160;</td><td class="memItemRight" valign="bottom"><b>lineLengthWorld_</b></td></tr>
+<tr class="separator:a0ff8989f83bb8cd667fb68bc9d413c56"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a24a574437686536fefbb360f86663ea4"><td class="memItemLeft" align="right" valign="top"><a id="a24a574437686536fefbb360f86663ea4"></a>
+out float&#160;</td><td class="memItemRight" valign="bottom"><b>distanceWorld_</b></td></tr>
+<tr class="separator:a24a574437686536fefbb360f86663ea4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a712064d6de608a0350f1e8e2a6c7f83d"><td class="memItemLeft" align="right" valign="top"><a id="a712064d6de608a0350f1e8e2a6c7f83d"></a>
 out vec2&#160;</td><td class="memItemRight" valign="bottom"><b>texCoord_</b></td></tr>
 <tr class="separator:a712064d6de608a0350f1e8e2a6c7f83d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acd3174cf3fb31de6f3502b5482f95f2a"><td class="memItemLeft" align="right" valign="top"><a id="acd3174cf3fb31de6f3502b5482f95f2a"></a>
 out vec4&#160;</td><td class="memItemRight" valign="bottom"><b>color_</b></td></tr>
 <tr class="separator:acd3174cf3fb31de6f3502b5482f95f2a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7677fa4626437fdae27af4ae9f21dad9"><td class="memItemLeft" align="right" valign="top"><a id="a7677fa4626437fdae27af4ae9f21dad9"></a>
+uniform GeometryParameters&#160;</td><td class="memItemRight" valign="bottom"><b>geometry</b></td></tr>
+<tr class="separator:a7677fa4626437fdae27af4ae9f21dad9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2db20689801f086771634b52a77a6707"><td class="memItemLeft" align="right" valign="top"><a id="a2db20689801f086771634b52a77a6707"></a>
 out vec4&#160;</td><td class="memItemRight" valign="bottom"><b>worldPosition_</b></td></tr>
 <tr class="separator:a2db20689801f086771634b52a77a6707"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -196,7 +207,22 @@ out vec3&#160;</td><td class="memItemRight" valign="bottom"><b>texCoord_</b></td
 <b>Geometry-Shader</b></dd>
 <dd>
 <b>Vertex-Shader</b> </dd></dl>
-</div><hr/>The documentation for this class was generated from the following files:<ul>
+</div><h2 class="groupheader">Member Data Documentation</h2>
+<a id="a9195dd8e07e332eb448026f3bfe379cf"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9195dd8e07e332eb448026f3bfe379cf">&#9670;&nbsp;</a></span>camera</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">uniform CameraParameters glsl::linerenderer::camera</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<b>Initial value:</b><div class="fragment"><div class="line">= CameraParameters( mat4(1), mat4(1), mat4(1), mat4(1),</div><div class="line">                                    mat4(1), mat4(1), vec3(0), 0, 1)</div></div><!-- fragment -->
+</div>
+</div>
+<hr/>The documentation for this class was generated from the following files:<ul>
 <li>linerenderer.frag</li>
 <li>linerenderer.geom</li>
 <li>linerenderer.vert</li>

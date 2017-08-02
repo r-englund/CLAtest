@@ -90,29 +90,30 @@ $(document).ready(function(){initNavTree('classinviwo_1_1Delay.html','');});
 <div class="title">inviwo::Delay Class Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
+
+<p><code>#include &lt;timer.h&gt;</code></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-types"></a>
 Public Types</h2></td></tr>
-<tr class="memitem:a22f67d5a3ceff2d5bec4ef0d8a8c0b4a"><td class="memItemLeft" align="right" valign="top"><a id="a22f67d5a3ceff2d5bec4ef0d8a8c0b4a"></a>
-using&#160;</td><td class="memItemRight" valign="bottom"><b>duration_t</b> = std::chrono::milliseconds</td></tr>
-<tr class="separator:a22f67d5a3ceff2d5bec4ef0d8a8c0b4a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a93556d2e53462217f76a6e0add3d9e9a"><td class="memItemLeft" align="right" valign="top"><a id="a93556d2e53462217f76a6e0add3d9e9a"></a>
+using&#160;</td><td class="memItemRight" valign="bottom"><b>Milliseconds</b> = std::chrono::milliseconds</td></tr>
+<tr class="separator:a93556d2e53462217f76a6e0add3d9e9a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a5a5ca626ffacd490bea868e643e929d1"><td class="memItemLeft" align="right" valign="top"><a id="a5a5ca626ffacd490bea868e643e929d1"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>Delay</b> (size_t interval, std::function&lt; void()&gt; callback)</td></tr>
-<tr class="separator:a5a5ca626ffacd490bea868e643e929d1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a853c1ee0dc20d343cda4700332ec2f58"><td class="memItemLeft" align="right" valign="top"><a id="a853c1ee0dc20d343cda4700332ec2f58"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>Delay</b> (duration_t interval, std::function&lt; void()&gt; callback)</td></tr>
-<tr class="separator:a853c1ee0dc20d343cda4700332ec2f58"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acc74facd91d3f742ad796056aff30561"><td class="memItemLeft" align="right" valign="top"><a id="acc74facd91d3f742ad796056aff30561"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>Delay</b> (Milliseconds delay, std::function&lt; void()&gt; callback, <a class="el" href="classinviwo_1_1TimerThread.html">TimerThread</a> &amp;thread=util::getDefaultTimerThread())</td></tr>
+<tr class="separator:acc74facd91d3f742ad796056aff30561"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab03f402361cff23bc2b9e3ec9c919d0a"><td class="memItemLeft" align="right" valign="top"><a id="ab03f402361cff23bc2b9e3ec9c919d0a"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>start</b> ()</td></tr>
 <tr class="separator:ab03f402361cff23bc2b9e3ec9c919d0a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a60b1b6aa2616eebd4d67da863564c7b4"><td class="memItemLeft" align="right" valign="top"><a id="a60b1b6aa2616eebd4d67da863564c7b4"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>stop</b> ()</td></tr>
-<tr class="separator:a60b1b6aa2616eebd4d67da863564c7b4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0bc1ee42e4bbe5b5190a82520661a7e1"><td class="memItemLeft" align="right" valign="top"><a id="a0bc1ee42e4bbe5b5190a82520661a7e1"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>cancel</b> ()</td></tr>
+<tr class="separator:a0bc1ee42e4bbe5b5190a82520661a7e1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<hr/>The documentation for this class was generated from the following files:<ul>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>A one time delay. </p>
+</div><hr/>The documentation for this class was generated from the following files:<ul>
 <li>timer.h</li>
 <li>timer.cpp</li>
 </ul>

@@ -1,9 +1,7 @@
 var classinviwo_1_1ColorPropertyWidgetQt =
 [
-    [ "ColorPropertyWidgetQt", "classinviwo_1_1ColorPropertyWidgetQt.html#a068a55adc2361353492815eebc1dff30", null ],
-    [ "~ColorPropertyWidgetQt", "classinviwo_1_1ColorPropertyWidgetQt.html#a77101c4cd5b547d85a81573be2e93a17", null ],
-    [ "getCurrentColor", "classinviwo_1_1ColorPropertyWidgetQt.html#a5f3917bdff9ed7a3b67ce7025427e461", null ],
-    [ "openColorDialog", "classinviwo_1_1ColorPropertyWidgetQt.html#adea09f62c96ce0fb5418a8026c73a6ac", null ],
-    [ "setPropertyValue", "classinviwo_1_1ColorPropertyWidgetQt.html#a2ce34e8dfff2a008d8a997bdbbb5df4c", null ],
-    [ "updateFromProperty", "classinviwo_1_1ColorPropertyWidgetQt.html#a0f03b3d4fa503398009d00caa9e15379", null ]
+    [ "ColorPropertyWidgetQt", "classinviwo_1_1ColorPropertyWidgetQt.html#a2470f39339a3476432052ff4e3ef2656", null ],
+    [ "~ColorPropertyWidgetQt", "classinviwo_1_1ColorPropertyWidgetQt.html#a44f8a8e02a40c8ca7562fda4b101797d", null ],
+    [ "getCurrentColor", "classinviwo_1_1ColorPropertyWidgetQt.html#a3ce0951fbe0900bcf8b07419bb4d3666", null ],
+    [ "updateFromProperty", "classinviwo_1_1ColorPropertyWidgetQt.html#addae7de13bbc9647f19201dd7cab9aeb", null ]
 ];

@@ -6,5 +6,5 @@ var classinviwo_1_1CImgVolumeReader =
     [ "clone", "classinviwo_1_1CImgVolumeReader.html#a1f683be9f34206f2b6183424c307db82", null ],
     [ "operator=", "classinviwo_1_1CImgVolumeReader.html#a13a6709ba655469a2193b816d4b1051f", null ],
     [ "printMetaInfo", "classinviwo_1_1CImgVolumeReader.html#a75973ba3fd3d2f28bc8487d92129aa6d", null ],
-    [ "readData", "classinviwo_1_1CImgVolumeReader.html#abde2847b4212eaa2f74bfdc3c707042b", null ]
+    [ "readData", "classinviwo_1_1CImgVolumeReader.html#a19a4a7006905af7b358ab585877aebb0", null ]
 ];

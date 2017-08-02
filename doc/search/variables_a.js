@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['seed_5f',['seed_',['../classinviwo_1_1NoiseProcessor.html#a507231143a78e9e693c6755340cce91e',1,'inviwo::NoiseProcessor']]],
-  ['size_5f',['size_',['../classinviwo_1_1NoiseProcessor.html#ad3baf3c5d37f70e20fbbcec8117fc83c',1,'inviwo::NoiseProcessor']]],
-  ['squaregl_5f',['squareGL_',['../classinviwo_1_1CanvasGL.html#a437a2f4ff36685129ccfcaac704fb277',1,'inviwo::CanvasGL']]]
+  ['r2',['r2',['../structinviwo_1_1statsutil_1_1RegresionResult.html#a607fa956c5d2416235f2202020e0ed39',1,'inviwo::statsutil::RegresionResult']]],
+  ['radius',['radius',['../classinviwo_1_1Trackball.html#a67757c732fd1a9faeac9534d0d2e5585',1,'inviwo::Trackball']]],
+  ['range_5f',['range_',['../classinviwo_1_1NoiseProcessor.html#a68376173b75052f765afb7cf6c8ce26c',1,'inviwo::NoiseProcessor']]]
 ];

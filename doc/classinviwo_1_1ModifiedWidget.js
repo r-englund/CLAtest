@@ -1,12 +1,9 @@
 var classinviwo_1_1ModifiedWidget =
 [
-    [ "ModifiedWidget", "classinviwo_1_1ModifiedWidget.html#ad35aaa05b84330ee166ba4dafe0e3dc6", null ],
-    [ "closeEvent", "classinviwo_1_1ModifiedWidget.html#ac7c1f89cda883cc272ed9e5b4e3df4ca", null ],
-    [ "generateWidget", "classinviwo_1_1ModifiedWidget.html#acd8df4799e04839ba657d4b8d9712cd6", null ],
+    [ "ModifiedWidget", "classinviwo_1_1ModifiedWidget.html#a24b129f9514dcae6cc9d401d62154343", null ],
+    [ "closeEvent", "classinviwo_1_1ModifiedWidget.html#a57ac363798e18d297c67bb1c667ca83b", null ],
     [ "getSyntaxHighligther", "classinviwo_1_1ModifiedWidget.html#af922a25c270626e138bb993842cd928c", null ],
-    [ "saveDialog", "classinviwo_1_1ModifiedWidget.html#a2703d9dfe127a21a1c4af31aa85f57fa", null ],
-    [ "setParent", "classinviwo_1_1ModifiedWidget.html#a344666c0697279a5d1812e66aa5869a7", null ],
-    [ "textHasChanged", "classinviwo_1_1ModifiedWidget.html#a3a8b320ec1e32639fbb008df1cf74345", null ],
+    [ "onSetDisplayName", "classinviwo_1_1ModifiedWidget.html#a784a410e6a0aa938a3c510f9eed44f5d", null ],
     [ "file_", "classinviwo_1_1ModifiedWidget.html#ac11c80afafdb0a4a360ccf4214659266", null ],
     [ "mainParentWidget_", "classinviwo_1_1ModifiedWidget.html#a7a54bd6c4a09ea156bc7eb63b111983d", null ],
     [ "reDoButton_", "classinviwo_1_1ModifiedWidget.html#ae47bc2cd4e47407e31865d256bdb3750", null ],

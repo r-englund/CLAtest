@@ -83,7 +83,9 @@ $(document).ready(function(){initNavTree('classinviwo_1_1TextRenderer.html','');
 
 <div class="header">
   <div class="summary">
+<a href="#nested-classes">Classes</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pro-types">Protected Types</a> &#124;
 <a href="#pro-methods">Protected Member Functions</a> &#124;
 <a href="#pro-attribs">Protected Attributes</a> &#124;
 <a href="classinviwo_1_1TextRenderer-members.html">List of all members</a>  </div>
@@ -97,6 +99,13 @@ $(document).ready(function(){initNavTree('classinviwo_1_1TextRenderer.html','');
 
 <p><code>#include &lt;textrenderer.h&gt;</code></p>
 <table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
+Classes</h2></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structinviwo_1_1TextRenderer_1_1FontCache.html">FontCache</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structinviwo_1_1TextRenderer_1_1GlyphEntry.html">GlyphEntry</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a7e6bf51d836f087b972127aba751abc7"><td class="memItemLeft" align="right" valign="top"><a id="a7e6bf51d836f087b972127aba751abc7"></a>
@@ -105,12 +114,24 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:aef0e70efc54a80b6d3eb8c20df447766"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classinviwo_1_1TextRenderer.html#aef0e70efc54a80b6d3eb8c20df447766">setFont</a> (const std::string &amp;fontPath)</td></tr>
 <tr class="memdesc:aef0e70efc54a80b6d3eb8c20df447766"><td class="mdescLeft">&#160;</td><td class="mdescRight">replace the currently loaded font face with a new one  <a href="#aef0e70efc54a80b6d3eb8c20df447766">More...</a><br /></td></tr>
 <tr class="separator:aef0e70efc54a80b6d3eb8c20df447766"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8156d8e1d9d7bd387984356933c81364"><td class="memItemLeft" align="right" valign="top"><a id="a8156d8e1d9d7bd387984356933c81364"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>render</b> (const std::string &amp;str, const vec2 &amp;posf, const vec2 &amp;scale, const vec4 &amp;color)</td></tr>
+<tr class="separator:a8156d8e1d9d7bd387984356933c81364"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a320c1c768b293cb16ba0b61f5b1fd82c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classinviwo_1_1TextRenderer.html#a320c1c768b293cb16ba0b61f5b1fd82c">render</a> (const std::string &amp;str, float x, float y, const vec2 &amp;scale, const vec4 &amp;color)</td></tr>
 <tr class="memdesc:a320c1c768b293cb16ba0b61f5b1fd82c"><td class="mdescLeft">&#160;</td><td class="mdescRight">renders the given string with the specified color at position x, y in normalized device coordinates [-1,1] using the scaling factor.  <a href="#a320c1c768b293cb16ba0b61f5b1fd82c">More...</a><br /></td></tr>
 <tr class="separator:a320c1c768b293cb16ba0b61f5b1fd82c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0bfcdce0d2e09573a5982e0e4a9d6b40"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classinviwo_1_1TextRenderer.html#a0bfcdce0d2e09573a5982e0e4a9d6b40">renderToTexture</a> (std::shared_ptr&lt; <a class="el" href="classinviwo_1_1Texture2D.html">Texture2D</a> &gt; texture, const std::string &amp;str, const vec4 &amp;color)</td></tr>
-<tr class="memdesc:a0bfcdce0d2e09573a5982e0e4a9d6b40"><td class="mdescLeft">&#160;</td><td class="mdescRight">renders the given string with the specified color into a texture.  <a href="#a0bfcdce0d2e09573a5982e0e4a9d6b40">More...</a><br /></td></tr>
-<tr class="separator:a0bfcdce0d2e09573a5982e0e4a9d6b40"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad2d1525cf5ffdc7b0fe0dca6fcbe7f91"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classinviwo_1_1TextRenderer.html#ad2d1525cf5ffdc7b0fe0dca6fcbe7f91">renderToTexture</a> (std::shared_ptr&lt; <a class="el" href="classinviwo_1_1Texture2D.html">Texture2D</a> &gt; texture, const std::string &amp;str, const vec4 &amp;color, bool clearTexture=true)</td></tr>
+<tr class="memdesc:ad2d1525cf5ffdc7b0fe0dca6fcbe7f91"><td class="mdescLeft">&#160;</td><td class="mdescRight">renders the given string with the specified color into a texture.  <a href="#ad2d1525cf5ffdc7b0fe0dca6fcbe7f91">More...</a><br /></td></tr>
+<tr class="separator:ad2d1525cf5ffdc7b0fe0dca6fcbe7f91"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7f9876752a8b00eb76bba4a8a15b1970"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classinviwo_1_1TextRenderer.html#a7f9876752a8b00eb76bba4a8a15b1970">renderToTexture</a> (std::shared_ptr&lt; <a class="el" href="classinviwo_1_1Texture2D.html">Texture2D</a> &gt; texture, const size2_t &amp;origin, const size2_t &amp;size, const std::string &amp;str, const vec4 &amp;color, bool clearTexture=true)</td></tr>
+<tr class="memdesc:a7f9876752a8b00eb76bba4a8a15b1970"><td class="mdescLeft">&#160;</td><td class="mdescRight">renders the given string with the specified color into a subregion of the texture.  <a href="#a7f9876752a8b00eb76bba4a8a15b1970">More...</a><br /></td></tr>
+<tr class="separator:a7f9876752a8b00eb76bba4a8a15b1970"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a92bb74d1df34ea501232de5e86dab408"><td class="memItemLeft" align="right" valign="top"><a id="a92bb74d1df34ea501232de5e86dab408"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>renderToTexture</b> (std::shared_ptr&lt; <a class="el" href="classinviwo_1_1Texture2D.html">Texture2D</a> &gt; texture, const std::vector&lt; size2_t &gt; &amp;origin, const std::vector&lt; size2_t &gt; &amp;size, const std::vector&lt; std::string &gt; &amp;str, const vec4 &amp;color, bool clearTexture=true)</td></tr>
+<tr class="separator:a92bb74d1df34ea501232de5e86dab408"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a59fe648c9ac1177ec495a61981c0e8f7"><td class="memItemLeft" align="right" valign="top"><a id="a59fe648c9ac1177ec495a61981c0e8f7"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>renderToTexture</b> (std::shared_ptr&lt; <a class="el" href="classinviwo_1_1Texture2D.html">Texture2D</a> &gt; texture, const std::vector&lt; <a class="el" href="structinviwo_1_1TexAtlasEntry.html">TexAtlasEntry</a> &gt; &amp;entries, bool clearTexture=true)</td></tr>
+<tr class="separator:a59fe648c9ac1177ec495a61981c0e8f7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8abe4ba940e69670be37b589f93f6095"><td class="memItemLeft" align="right" valign="top">vec2&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classinviwo_1_1TextRenderer.html#a8abe4ba940e69670be37b589f93f6095">computeTextSize</a> (const std::string &amp;str, const vec2 &amp;scale)</td></tr>
 <tr class="memdesc:a8abe4ba940e69670be37b589f93f6095"><td class="mdescLeft">&#160;</td><td class="mdescRight">computes the bounding box of a given string in normalized device coordinates using the scaling factor. The vertical height of the bounding box will be equal to (ascend + descend) + (number of lines - 1) times line height.  <a href="#a8abe4ba940e69670be37b589f93f6095">More...</a><br /></td></tr>
 <tr class="separator:a8abe4ba940e69670be37b589f93f6095"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -142,20 +163,50 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>getLineHeight</b> () c
 <tr class="memdesc:a3a7851a041a612c7e2a94db0d64e90a2"><td class="mdescLeft">&#160;</td><td class="mdescRight">returns the size of the font part below the baseline, which corresponds to descent  <a href="#a3a7851a041a612c7e2a94db0d64e90a2">More...</a><br /></td></tr>
 <tr class="separator:a3a7851a041a612c7e2a94db0d64e90a2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-types"></a>
+Protected Types</h2></td></tr>
+<tr class="memitem:a6845da44b081b100f23176f18bd20773"><td class="memItemLeft" align="right" valign="top"><a id="a6845da44b081b100f23176f18bd20773"></a>
+using&#160;</td><td class="memItemRight" valign="bottom"><b>FontFamilyStyle</b> = std::tuple&lt; std::string, std::string, int &gt;</td></tr>
+<tr class="separator:a6845da44b081b100f23176f18bd20773"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a47b1037294b948eb68cc586ccaedb49e"><td class="memItemLeft" align="right" valign="top"><a id="a47b1037294b948eb68cc586ccaedb49e"></a>
+using&#160;</td><td class="memItemRight" valign="bottom"><b>GlyphMap</b> = std::map&lt; unsigned int, <a class="el" href="structinviwo_1_1TextRenderer_1_1GlyphEntry.html">GlyphEntry</a> &gt;</td></tr>
+<tr class="separator:a47b1037294b948eb68cc586ccaedb49e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-methods"></a>
 Protected Member Functions</h2></td></tr>
-<tr class="memitem:aaaa4a44d58a3fb57eceb0e96b47b094c"><td class="memItemLeft" align="right" valign="top"><a id="aaaa4a44d58a3fb57eceb0e96b47b094c"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>initMesh</b> ()</td></tr>
-<tr class="separator:aaaa4a44d58a3fb57eceb0e96b47b094c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8d0b4cd7c38f177224e7b67d8966654f"><td class="memItemLeft" align="right" valign="top"><a id="a8d0b4cd7c38f177224e7b67d8966654f"></a>
 double&#160;</td><td class="memItemRight" valign="bottom"><b>getFontAscent</b> () const</td></tr>
 <tr class="separator:a8d0b4cd7c38f177224e7b67d8966654f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1502f710bb3200cc163e130a5eb65966"><td class="memItemLeft" align="right" valign="top"><a id="a1502f710bb3200cc163e130a5eb65966"></a>
 double&#160;</td><td class="memItemRight" valign="bottom"><b>getFontDescent</b> () const</td></tr>
 <tr class="separator:a1502f710bb3200cc163e130a5eb65966"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae16fb408482d444ac5bfc44423ea702b"><td class="memItemLeft" align="right" valign="top">std::pair&lt; bool, <a class="el" href="structinviwo_1_1TextRenderer_1_1GlyphEntry.html">GlyphEntry</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classinviwo_1_1TextRenderer.html#ae16fb408482d444ac5bfc44423ea702b">requestGlyph</a> (<a class="el" href="structinviwo_1_1TextRenderer_1_1FontCache.html">FontCache</a> &amp;fc, unsigned int glyph)</td></tr>
+<tr class="memdesc:ae16fb408482d444ac5bfc44423ea702b"><td class="mdescLeft">&#160;</td><td class="mdescRight">request glyph information from the texture atlas. The glyph will be added to the atlas if it isn't registered yet and there is space left in the atlas.  <a href="#ae16fb408482d444ac5bfc44423ea702b">More...</a><br /></td></tr>
+<tr class="separator:ae16fb408482d444ac5bfc44423ea702b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad9f0235e087633e3924b33b17576a864"><td class="memItemLeft" align="right" valign="top"><a id="ad9f0235e087633e3924b33b17576a864"></a>
+std::pair&lt; bool, <a class="el" href="structinviwo_1_1TextRenderer_1_1GlyphEntry.html">GlyphEntry</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>addGlyph</b> (<a class="el" href="structinviwo_1_1TextRenderer_1_1FontCache.html">FontCache</a> &amp;fc, unsigned int glyph)</td></tr>
+<tr class="separator:ad9f0235e087633e3924b33b17576a864"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a87f56775a608b46d35f6da139c5c0f73"><td class="memItemLeft" align="right" valign="top"><a id="a87f56775a608b46d35f6da139c5c0f73"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>uploadGlyph</b> (<a class="el" href="structinviwo_1_1TextRenderer_1_1FontCache.html">FontCache</a> &amp;fc, unsigned int glyph)</td></tr>
+<tr class="separator:a87f56775a608b46d35f6da139c5c0f73"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa1f4d14f8cec0faf58322d4868bbf444"><td class="memItemLeft" align="right" valign="top"><a id="aa1f4d14f8cec0faf58322d4868bbf444"></a>
+<a class="el" href="structinviwo_1_1TextRenderer_1_1FontCache.html">FontCache</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>getFontCache</b> ()</td></tr>
+<tr class="separator:aa1f4d14f8cec0faf58322d4868bbf444"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4bd94b76555f5d76ffe5956ac4ad8210"><td class="memItemLeft" align="right" valign="top"><a id="a4bd94b76555f5d76ffe5956ac4ad8210"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>createDefaultGlyphAtlas</b> ()</td></tr>
+<tr class="separator:a4bd94b76555f5d76ffe5956ac4ad8210"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aceb4f35cfb5c0422f29712c771483db5"><td class="memItemLeft" align="right" valign="top"><a id="aceb4f35cfb5c0422f29712c771483db5"></a>
+std::shared_ptr&lt; <a class="el" href="classinviwo_1_1Texture2D.html">Texture2D</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>createAtlasTexture</b> (<a class="el" href="structinviwo_1_1TextRenderer_1_1FontCache.html">FontCache</a> &amp;fc)</td></tr>
+<tr class="separator:aceb4f35cfb5c0422f29712c771483db5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad93cace23a19d9c615a6a6c8b67cf4f4"><td class="memItemLeft" align="right" valign="top"><a id="ad93cace23a19d9c615a6a6c8b67cf4f4"></a>
+FontFamilyStyle&#160;</td><td class="memItemRight" valign="bottom"><b>getFontTuple</b> () const</td></tr>
+<tr class="separator:ad93cace23a19d9c615a6a6c8b67cf4f4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-attribs"></a>
 Protected Attributes</h2></td></tr>
+<tr class="memitem:aede8fa59b02d3217b529a9504b15d528"><td class="memItemLeft" align="right" valign="top"><a id="aede8fa59b02d3217b529a9504b15d528"></a>
+std::unordered_map&lt; FontFamilyStyle, <a class="el" href="structinviwo_1_1TextRenderer_1_1FontCache.html">FontCache</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>glyphAtlas_</b></td></tr>
+<tr class="separator:aede8fa59b02d3217b529a9504b15d528"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a886e7790d9b60b4c1feb61aefb31f807"><td class="memItemLeft" align="right" valign="top"><a id="a886e7790d9b60b4c1feb61aefb31f807"></a>
 FT_Library&#160;</td><td class="memItemRight" valign="bottom"><b>fontlib_</b></td></tr>
 <tr class="separator:a886e7790d9b60b4c1feb61aefb31f807"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -169,18 +220,12 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>fontSize_</b></td></tr
 double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classinviwo_1_1TextRenderer.html#ac60efadbceeefbee54d206c31854642d">lineSpacing_</a></td></tr>
 <tr class="memdesc:ac60efadbceeefbee54d206c31854642d"><td class="mdescLeft">&#160;</td><td class="mdescRight">spacing between two lines in percent (default = 0.2) <br /></td></tr>
 <tr class="separator:ac60efadbceeefbee54d206c31854642d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac33036d694d23c058e4ed5eef97c7569"><td class="memItemLeft" align="right" valign="top"><a id="ac33036d694d23c058e4ed5eef97c7569"></a>
-<a class="el" href="classinviwo_1_1Shader.html">Shader</a>&#160;</td><td class="memItemRight" valign="bottom"><b>textShader_</b></td></tr>
-<tr class="separator:ac33036d694d23c058e4ed5eef97c7569"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aee56cf878e2ef2bd655cca5ff69c7ea7"><td class="memItemLeft" align="right" valign="top"><a id="aee56cf878e2ef2bd655cca5ff69c7ea7"></a>
-GLuint&#160;</td><td class="memItemRight" valign="bottom"><b>texCharacter_</b></td></tr>
-<tr class="separator:aee56cf878e2ef2bd655cca5ff69c7ea7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab9879cd37d98479fa9cb594d0b446374"><td class="memItemLeft" align="right" valign="top"><a id="ab9879cd37d98479fa9cb594d0b446374"></a>
-std::unique_ptr&lt; <a class="el" href="classinviwo_1_1Mesh.html">Mesh</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>mesh_</b></td></tr>
-<tr class="separator:ab9879cd37d98479fa9cb594d0b446374"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a88db467f007df90c5ebc84115f7803b8"><td class="memItemLeft" align="right" valign="top"><a id="a88db467f007df90c5ebc84115f7803b8"></a>
-std::unique_ptr&lt; <a class="el" href="classinviwo_1_1MeshDrawerGL.html">MeshDrawerGL</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>drawer_</b></td></tr>
-<tr class="separator:a88db467f007df90c5ebc84115f7803b8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a417631a40d542dd4d406856a7cc7d865"><td class="memItemLeft" align="right" valign="top"><a id="a417631a40d542dd4d406856a7cc7d865"></a>
+const int&#160;</td><td class="memItemRight" valign="bottom"><b>glyphMargin_</b></td></tr>
+<tr class="separator:a417631a40d542dd4d406856a7cc7d865"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5f394357d661aecc04b0d9eccb10a6ac"><td class="memItemLeft" align="right" valign="top"><a id="a5f394357d661aecc04b0d9eccb10a6ac"></a>
+<a class="el" href="classinviwo_1_1Shader.html">Shader</a>&#160;</td><td class="memItemRight" valign="bottom"><b>shader_</b></td></tr>
+<tr class="separator:a5f394357d661aecc04b0d9eccb10a6ac"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5f23118d3132fdd6854b88396ee4ba7f"><td class="memItemLeft" align="right" valign="top"><a id="a5f23118d3132fdd6854b88396ee4ba7f"></a>
 <a class="el" href="classinviwo_1_1FrameBufferObject.html">FrameBufferObject</a>&#160;</td><td class="memItemRight" valign="bottom"><b>fbo_</b></td></tr>
 <tr class="separator:a5f23118d3132fdd6854b88396ee4ba7f"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -385,8 +430,8 @@ std::shared_ptr&lt; <a class="el" href="classinviwo_1_1Texture2D.html">Texture2D
 
 </div>
 </div>
-<a id="a0bfcdce0d2e09573a5982e0e4a9d6b40"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0bfcdce0d2e09573a5982e0e4a9d6b40">&#9670;&nbsp;</a></span>renderToTexture()</h2>
+<a id="ad2d1525cf5ffdc7b0fe0dca6fcbe7f91"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad2d1525cf5ffdc7b0fe0dca6fcbe7f91">&#9670;&nbsp;</a></span>renderToTexture() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -407,7 +452,13 @@ std::shared_ptr&lt; <a class="el" href="classinviwo_1_1Texture2D.html">Texture2D
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">const vec4 &amp;&#160;</td>
-          <td class="paramname"><em>color</em>&#160;</td>
+          <td class="paramname"><em>color</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>clearTexture</em> = <code>true</code>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -420,11 +471,124 @@ std::shared_ptr&lt; <a class="el" href="classinviwo_1_1Texture2D.html">Texture2D
 <p>renders the given string with the specified color into a texture. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
+    <tr><td class="paramname">texture</td><td>the text will be rendered into this texture </td></tr>
     <tr><td class="paramname">str</td><td>input string </td></tr>
     <tr><td class="paramname">color</td><td>color of rendered text </td></tr>
+    <tr><td class="paramname">clearTexture</td><td>if true, the texture is cleared before rendering the text </td></tr>
   </table>
   </dd>
 </dl>
+
+</div>
+</div>
+<a id="a7f9876752a8b00eb76bba4a8a15b1970"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7f9876752a8b00eb76bba4a8a15b1970">&#9670;&nbsp;</a></span>renderToTexture() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void inviwo::TextRenderer::renderToTexture </td>
+          <td>(</td>
+          <td class="paramtype">std::shared_ptr&lt; <a class="el" href="classinviwo_1_1Texture2D.html">Texture2D</a> &gt;&#160;</td>
+          <td class="paramname"><em>texture</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const size2_t &amp;&#160;</td>
+          <td class="paramname"><em>origin</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const size2_t &amp;&#160;</td>
+          <td class="paramname"><em>size</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>str</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const vec4 &amp;&#160;</td>
+          <td class="paramname"><em>color</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>clearTexture</em> = <code>true</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>renders the given string with the specified color into a subregion of the texture. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">texture</td><td>the text will be rendered into this texture </td></tr>
+    <tr><td class="paramname">origin</td><td>origin of sub region within the texture (lower left corner, in pixel) </td></tr>
+    <tr><td class="paramname">extent</td><td>extent of sub region (in pixel) </td></tr>
+    <tr><td class="paramname">str</td><td>input string </td></tr>
+    <tr><td class="paramname">color</td><td>color of rendered text </td></tr>
+    <tr><td class="paramname">clearTexture</td><td>if true, the texture is cleared before rendering the text </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="ae16fb408482d444ac5bfc44423ea702b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae16fb408482d444ac5bfc44423ea702b">&#9670;&nbsp;</a></span>requestGlyph()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::pair&lt; bool, <a class="el" href="structinviwo_1_1TextRenderer_1_1GlyphEntry.html">TextRenderer::GlyphEntry</a> &gt; inviwo::TextRenderer::requestGlyph </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structinviwo_1_1TextRenderer_1_1FontCache.html">FontCache</a> &amp;&#160;</td>
+          <td class="paramname"><em>fc</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">unsigned int&#160;</td>
+          <td class="paramname"><em>glyph</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>request glyph information from the texture atlas. The glyph will be added to the atlas if it isn't registered yet and there is space left in the atlas. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">fc</td><td>font cache for the currently selected font, style, and size </td></tr>
+    <tr><td class="paramname">glyph</td><td>character code of the glyph </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>std::pair&lt;bool, GlyphEntry&gt; where pair.first is true if the glyph exists and <a class="el" href="structinviwo_1_1TextRenderer_1_1GlyphEntry.html">GlyphEntry</a> refers to the respective glyph </dd></dl>
 
 </div>
 </div>

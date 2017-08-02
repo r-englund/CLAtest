@@ -7,6 +7,6 @@ var classinviwo_1_1RawVolumeReader =
     [ "getFormat", "classinviwo_1_1RawVolumeReader.html#ade7090cf3e0d5d4bb08af7fb10c5defa", null ],
     [ "haveReadLittleEndian", "classinviwo_1_1RawVolumeReader.html#a51d546b346995afe6329f990fbe8845a", null ],
     [ "operator=", "classinviwo_1_1RawVolumeReader.html#a07acd908c928ccf2cd0aaae57f803e06", null ],
-    [ "readData", "classinviwo_1_1RawVolumeReader.html#a14b678896f2df45d3621aeb48619f331", null ],
+    [ "readData", "classinviwo_1_1RawVolumeReader.html#abda50421672b115cb059537f9b87a9d3", null ],
     [ "setParameters", "classinviwo_1_1RawVolumeReader.html#a287175cbcd9242be37e02ea927422f0a", null ]
 ];

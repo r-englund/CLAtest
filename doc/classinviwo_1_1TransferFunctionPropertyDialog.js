@@ -13,11 +13,7 @@ var classinviwo_1_1TransferFunctionPropertyDialog =
     [ "onControlPointChanged", "classinviwo_1_1TransferFunctionPropertyDialog.html#a32d5d246f0f1bb9315f4829d67c5aa7e", null ],
     [ "onControlPointRemoved", "classinviwo_1_1TransferFunctionPropertyDialog.html#ae6388d03666b00838b3b42348947fa38", null ],
     [ "resizeEvent", "classinviwo_1_1TransferFunctionPropertyDialog.html#a4c2fe83db37989896e1369b74c2cc5a4", null ],
-    [ "setPointColor", "classinviwo_1_1TransferFunctionPropertyDialog.html#a823a9bfc85c5af7ec5020d174a41f19b", null ],
-    [ "setPointColorDialog", "classinviwo_1_1TransferFunctionPropertyDialog.html#acb183896acf8e24ba3fb9c70379dbfb8", null ],
-    [ "showColorDialog", "classinviwo_1_1TransferFunctionPropertyDialog.html#af635e50e55437a52acc65b5e25229b90", null ],
     [ "showEvent", "classinviwo_1_1TransferFunctionPropertyDialog.html#a406dc8875578acaeb4500261c14b5dbd", null ],
     [ "showHistogram", "classinviwo_1_1TransferFunctionPropertyDialog.html#ad439768e066b10bfb5702cec2cf90e8f", null ],
-    [ "updateColorWheel", "classinviwo_1_1TransferFunctionPropertyDialog.html#aa5ba274d055dd2ca85c19549df83ece9", null ],
     [ "updateFromProperty", "classinviwo_1_1TransferFunctionPropertyDialog.html#a2579fb8750ce7f5b4dcc381d56c152a5", null ]
 ];

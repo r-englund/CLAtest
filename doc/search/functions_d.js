@@ -15,7 +15,8 @@ var searchData=
   ['onwilladdproperty',['onWillAddProperty',['../classinviwo_1_1PropertyOwnerObserver.html#a15c98a6824f62a641738c5d422077686',1,'inviwo::PropertyOwnerObserver']]],
   ['open',['open',['../classinviwo_1_1TinyDirInterface.html#aff9c54ed282460cba0762ec25bb7bd69',1,'inviwo::TinyDirInterface']]],
   ['operator_20bool',['operator bool',['../classinviwo_1_1PropertyLink.html#a062c2c43d68536cf7a3722f3ffbe9d0a',1,'inviwo::PropertyLink::operator bool()'],['../classinviwo_1_1PortConnection.html#a74368c6a956dd3ab7d7a4c9cd1be8458',1,'inviwo::PortConnection::operator bool()']]],
+  ['operator_21_3d',['operator!=',['../structinviwo_1_1util_1_1detailzip_1_1zipIterator.html#aef834383dddbb6c00b6927cbfc25d952',1,'inviwo::util::detailzip::zipIterator']]],
   ['operator_28_29',['operator()',['../classinviwo_1_1algorithm_1_1EntryExitPointsHelper.html#a58cc7bfb2fdbca1b1a5744dfee70a58b',1,'inviwo::algorithm::EntryExitPointsHelper::operator()()'],['../classinviwo_1_1animation_1_1PropertyTrack.html#a4d27b468c59904c0761e767be29794aa',1,'inviwo::animation::PropertyTrack::operator()()']]],
-  ['operator_3d_3d',['operator==',['../classinviwo_1_1Resource.html#a3bb203044de29c11be9f97aab1d6b78f',1,'inviwo::Resource']]],
+  ['operator_3d_3d',['operator==',['../classinviwo_1_1Resource.html#a3bb203044de29c11be9f97aab1d6b78f',1,'inviwo::Resource::operator==()'],['../structinviwo_1_1util_1_1detailzip_1_1zipIterator.html#acf049f070fb78feefe03fb0c4802ce47',1,'inviwo::util::detailzip::zipIterator::operator==()']]],
   ['operator_5b_5d',['operator[]',['../classinviwo_1_1ViewManager.html#ac8ab876695de1f877b6906c70652276b',1,'inviwo::ViewManager']]]
 ];

@@ -1,7 +1,7 @@
 var classinviwo_1_1ImageLabelWidget =
 [
     [ "ImageLabelWidget", "classinviwo_1_1ImageLabelWidget.html#a4cec1db385b74fa451763bfc6739155e", null ],
-    [ "~ImageLabelWidget", "classinviwo_1_1ImageLabelWidget.html#ae19a712940f3807c8c800a989b5a6466", null ],
+    [ "~ImageLabelWidget", "classinviwo_1_1ImageLabelWidget.html#a97ca04767d3848cd21a64f34857b0b9f", null ],
     [ "addBackGroundImage", "classinviwo_1_1ImageLabelWidget.html#a2d5db193800897df4c894cfe36baf137", null ],
     [ "addRectangleTest", "classinviwo_1_1ImageLabelWidget.html#aabb446dceccd9537c4aa072866d4c6a1", null ],
     [ "closeEvent", "classinviwo_1_1ImageLabelWidget.html#a13599111c75ad1d29087ae2f8222dc58", null ],
@@ -12,7 +12,6 @@ var classinviwo_1_1ImageLabelWidget =
     [ "hideLabels", "classinviwo_1_1ImageLabelWidget.html#afa437a5fb0d0d852d8e33074033565e4", null ],
     [ "onCurrentItemPositionChange", "classinviwo_1_1ImageLabelWidget.html#a99b7eb0bc1ecf226e8a6e972d9901293", null ],
     [ "rectItemPositionChanged", "classinviwo_1_1ImageLabelWidget.html#aecdb373792579ba0a7e551c78e8639be", null ],
-    [ "saveDialog", "classinviwo_1_1ImageLabelWidget.html#adf51d82defa5c9fa3f34d9698da42930", null ],
     [ "setParent", "classinviwo_1_1ImageLabelWidget.html#a6848183fb96c3090fee9144fe73cc6d3", null ],
     [ "setReadOnly", "classinviwo_1_1ImageLabelWidget.html#a0ed9b981b76211cc9ebe62a193333b9c", null ],
     [ "setSceneScaling", "classinviwo_1_1ImageLabelWidget.html#a0a9bd1da6f3ee3db345927cad44ff85e", null ],

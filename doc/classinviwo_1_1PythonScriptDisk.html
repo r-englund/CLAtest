@@ -91,6 +91,18 @@ $(document).ready(function(){initNavTree('classinviwo_1_1PythonScriptDisk.html',
 <div class="contents">
 
 <p><code>#include &lt;pythonscript.h&gt;</code></p>
+<div id="dynsection-0" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-0-trigger" src="closed.png" alt="+"/> Inheritance diagram for inviwo::PythonScriptDisk:</div>
+<div id="dynsection-0-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-0-content" class="dyncontent" style="display:none;">
+<div class="center"><img src="classinviwo_1_1PythonScriptDisk__inherit__graph.png" border="0" usemap="#inviwo_1_1PythonScriptDisk_inherit__map" alt="Inheritance graph"/></div>
+<map name="inviwo_1_1PythonScriptDisk_inherit__map" id="inviwo_1_1PythonScriptDisk_inherit__map">
+<area shape="rect" id="node2" href="classinviwo_1_1PythonScript.html" title="inviwo::PythonScript" alt="" coords="5,80,144,107"/>
+<area shape="rect" id="node3" href="classinviwo_1_1SingleFileObserver.html" title="SingleFileObserver observes a single file for changes on disk. SingleFileObserver observes a single f..." alt="" coords="169,80,341,107"/>
+<area shape="rect" id="node4" href="classinviwo_1_1FileObserver.html" title="inviwo::FileObserver" alt="" coords="187,5,323,32"/>
+</map>
+<center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
@@ -98,14 +110,17 @@ Public Member Functions</h2></td></tr>
 &#160;</td><td class="memItemRight" valign="bottom"><b>PythonScriptDisk</b> (std::string filename)</td></tr>
 <tr class="separator:a517bbea43413f4d27796bf21f3119d0d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classinviwo_1_1PythonScript"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classinviwo_1_1PythonScript')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classinviwo_1_1PythonScript.html">inviwo::PythonScript</a></td></tr>
-<tr class="memitem:ad15e78b76dca29ab28aaabecba032aa0 inherit pub_methods_classinviwo_1_1PythonScript"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classinviwo_1_1PythonScript.html#ad15e78b76dca29ab28aaabecba032aa0">~PythonScript</a> ()</td></tr>
+<tr class="memitem:ad15e78b76dca29ab28aaabecba032aa0 inherit pub_methods_classinviwo_1_1PythonScript"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classinviwo_1_1PythonScript.html#ad15e78b76dca29ab28aaabecba032aa0">~PythonScript</a> ()</td></tr>
 <tr class="separator:ad15e78b76dca29ab28aaabecba032aa0 inherit pub_methods_classinviwo_1_1PythonScript"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab935f541b435a393fe9772e107afc30b inherit pub_methods_classinviwo_1_1PythonScript"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classinviwo_1_1PythonScript.html#ab935f541b435a393fe9772e107afc30b">setSource</a> (const std::string &amp;source)</td></tr>
 <tr class="separator:ab935f541b435a393fe9772e107afc30b inherit pub_methods_classinviwo_1_1PythonScript"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad71ff1ffbabfd9c701e9240ab26f40c0 inherit pub_methods_classinviwo_1_1PythonScript"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classinviwo_1_1PythonScript.html#ad71ff1ffbabfd9c701e9240ab26f40c0">getSource</a> () const</td></tr>
 <tr class="separator:ad71ff1ffbabfd9c701e9240ab26f40c0 inherit pub_methods_classinviwo_1_1PythonScript"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a32e7d991ac05b46ef64b00071f966150 inherit pub_methods_classinviwo_1_1PythonScript"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classinviwo_1_1PythonScript.html#a32e7d991ac05b46ef64b00071f966150">run</a> (const VariableMap &amp;extraLocalVariables=VariableMap(), std::function&lt; void(PyObject *)&gt; callback=[](PyObject *obj) {})</td></tr>
-<tr class="separator:a32e7d991ac05b46ef64b00071f966150 inherit pub_methods_classinviwo_1_1PythonScript"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1d601ec2cbc8d1efbabbcc8f29a35867 inherit pub_methods_classinviwo_1_1PythonScript"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classinviwo_1_1PythonScript.html#a1d601ec2cbc8d1efbabbcc8f29a35867">run</a> (const VariableMap &amp;extraLocalVariables=VariableMap(), std::function&lt; void(pybind11::dict)&gt; callback=[](pybind11::dict dict) {})</td></tr>
+<tr class="separator:a1d601ec2cbc8d1efbabbcc8f29a35867 inherit pub_methods_classinviwo_1_1PythonScript"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a91dbd6a74df4f2ebe8eb74426aaa9682 inherit pub_methods_classinviwo_1_1PythonScript"><td class="memItemLeft" align="right" valign="top"><a id="a91dbd6a74df4f2ebe8eb74426aaa9682"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>run</b> (std::function&lt; void(pybind11::dict)&gt; callback)</td></tr>
+<tr class="separator:a91dbd6a74df4f2ebe8eb74426aaa9682 inherit pub_methods_classinviwo_1_1PythonScript"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9eab09a3d0c9b75809892e634c5995a4 inherit pub_methods_classinviwo_1_1PythonScript"><td class="memItemLeft" align="right" valign="top"><a id="a9eab09a3d0c9b75809892e634c5995a4"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>setFilename</b> (std::string filename)</td></tr>
 <tr class="separator:a9eab09a3d0c9b75809892e634c5995a4 inherit pub_methods_classinviwo_1_1PythonScript"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -140,9 +155,9 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>isObserved</b> (const
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="inherited"></a>
 Additional Inherited Members</h2></td></tr>
 <tr class="inherit_header pub_types_classinviwo_1_1PythonScript"><td colspan="2" onclick="javascript:toggleInherit('pub_types_classinviwo_1_1PythonScript')"><img src="closed.png" alt="-"/>&#160;Public Types inherited from <a class="el" href="classinviwo_1_1PythonScript.html">inviwo::PythonScript</a></td></tr>
-<tr class="memitem:a3b4169b76ad7980eb046309ac4865add inherit pub_types_classinviwo_1_1PythonScript"><td class="memItemLeft" align="right" valign="top"><a id="a3b4169b76ad7980eb046309ac4865add"></a>
-using&#160;</td><td class="memItemRight" valign="bottom"><b>VariableMap</b> = std::unordered_map&lt; std::string, PyObject * &gt;</td></tr>
-<tr class="separator:a3b4169b76ad7980eb046309ac4865add inherit pub_types_classinviwo_1_1PythonScript"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af4f500eed2d53e7a00653fece05864d2 inherit pub_types_classinviwo_1_1PythonScript"><td class="memItemLeft" align="right" valign="top"><a id="af4f500eed2d53e7a00653fece05864d2"></a>
+using&#160;</td><td class="memItemRight" valign="bottom"><b>VariableMap</b> = std::unordered_map&lt; std::string, pybind11::object &gt;</td></tr>
+<tr class="separator:af4f500eed2d53e7a00653fece05864d2 inherit pub_types_classinviwo_1_1PythonScript"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Class for handling PythonScripts that exists as files on disk. <a class="el" href="classinviwo_1_1PythonScriptDisk.html">PythonScriptDisk</a> will observe the file and reload it from disk when it detects it has changed.</p>

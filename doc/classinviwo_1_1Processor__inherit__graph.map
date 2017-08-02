@@ -1,0 +1,180 @@
+<map id="inviwo::Processor" name="inviwo::Processor">
+<area shape="rect" id="node13" href="$classinviwo_1_1DataExport.html" title="inviwo::DataExport\l\&lt; Layer, ImageInport \&gt;" alt="" coords="2150,27,2303,68"/>
+<area shape="rect" id="node15" href="$classinviwo_1_1DataExport.html" title="inviwo::DataExport\l\&lt; Mesh, MeshInport \&gt;" alt="" coords="2151,99,2302,140"/>
+<area shape="rect" id="node17" href="$classinviwo_1_1DataExport.html" title="inviwo::DataExport\l\&lt; Volume, VolumeInport \&gt;" alt="" coords="2139,219,2314,260"/>
+<area shape="rect" id="node19" href="$classinviwo_1_1DataSource.html" title="inviwo::DataSource\l\&lt; Mesh, MeshOutport \&gt;" alt="" coords="2146,303,2307,344"/>
+<area shape="rect" id="node21" href="$classinviwo_1_1ABufferGeometryGLProcessor.html" title="inviwo::ABufferGeometryGLProcessor" alt="" coords="1667,401,1906,428"/>
+<area shape="rect" id="node22" href="$classinviwo_1_1AxisAlignedCutPlane.html" title="inviwo::AxisAlignedCutPlane" alt="" coords="1693,452,1880,478"/>
+<area shape="rect" id="node23" href="$classinviwo_1_1Background.html" title="Adds a background to an image. " alt="" coords="1720,502,1853,529"/>
+<area shape="rect" id="node24" href="$classinviwo_1_1BasisTransform.html" title="inviwo::BasisTransform\&lt; T \&gt;" alt="" coords="1694,553,1879,580"/>
+<area shape="rect" id="node25" href="$classinviwo_1_1BrushingAndLinkingProcessor.html" title="inviwo::BrushingAndLinking\lProcessor" alt="" coords="1697,604,1876,646"/>
+<area shape="rect" id="node26" href="$classinviwo_1_1CanvasProcessor.html" title="inviwo::CanvasProcessor" alt="" coords="1704,670,1869,697"/>
+<area shape="rect" id="node28" href="$classinviwo_1_1ConvexHull2DProcessor.html" title="Processor computing the convex hull of a given 2D input geometry. " alt="" coords="1685,721,1888,748"/>
+<area shape="rect" id="node29" href="$classinviwo_1_1CubeProxyGeometry.html" title="inviwo::CubeProxyGeometry" alt="" coords="1694,772,1879,798"/>
+<area shape="rect" id="node30" href="$classinviwo_1_1CubeRenderer.html" title="Renders input geometry with 3D cube glyphs using OpenGL shaders. " alt="" coords="1713,822,1860,849"/>
+<area shape="rect" id="node31" href="$classinviwo_1_1DataExport.html" title="inviwo::DataExport\l\&lt; DataType, PortType \&gt;" alt="" coords="1706,99,1867,140"/>
+<area shape="rect" id="node32" href="$classinviwo_1_1DataSource.html" title="inviwo::DataSource\l\&lt; DataType, PortType \&gt;" alt="" coords="1706,335,1867,376"/>
+<area shape="rect" id="node33" href="$classinviwo_1_1DepthDarkening.html" title="inviwo::DepthDarkening" alt="" coords="1709,873,1865,900"/>
+<area shape="rect" id="node34" href="$classinviwo_1_1DiffuseLightSourceProcessor.html" title="inviwo::DiffuseLightSource\lProcessor" alt="" coords="1701,924,1873,966"/>
+<area shape="rect" id="node35" href="$classinviwo_1_1DirectionalLightSourceProcessor.html" title="inviwo::DirectionalLight\lSourceProcessor" alt="" coords="1710,990,1863,1031"/>
+<area shape="rect" id="node36" href="$classinviwo_1_1DiscardShortLines.html" title="VERY_BRIEFLY_DESCRIBE_THE_PROCESSOR DESCRIBE_THE_PROCESSOR_FROM_A_DEVELOPER_PERSPECTIVE. " alt="" coords="1701,1056,1872,1082"/>
+<area shape="rect" id="node37" href="$classinviwo_1_1DistanceTransformRAM.html" title="inviwo::DistanceTransformRAM" alt="" coords="1686,1106,1887,1133"/>
+<area shape="rect" id="node38" href="$classinviwo_1_1DrawLines.html" title="Interactive 2D line drawing. " alt="" coords="1725,1157,1849,1184"/>
+<area shape="rect" id="node39" href="$classinviwo_1_1DrawPoints.html" title="Interactive 2D point drawing. " alt="" coords="1721,1208,1852,1234"/>
+<area shape="rect" id="node40" href="$classinviwo_1_1EigenMatrixToImage.html" title="inviwo::EigenMatrixToImage" alt="" coords="1695,1258,1878,1285"/>
+<area shape="rect" id="node41" href="$classinviwo_1_1EigenMix.html" title="Creates a linear mix of matrix A and B such that Cij = Aij + w (Bij&#45;Aij) " alt="" coords="1727,1309,1846,1336"/>
+<area shape="rect" id="node42" href="$classinviwo_1_1EigenNormalize.html" title="A processor to normalize an Eigen::MatrixXf A processor to normalize an Eigen::MatrixXf, supports following methods: " alt="" coords="1709,1360,1864,1386"/>
+<area shape="rect" id="node43" href="$classinviwo_1_1EntryExitPoints.html" title="inviwo::EntryExitPoints" alt="" coords="1709,1410,1864,1437"/>
+<area shape="rect" id="node44" href="$classinviwo_1_1EntryExitPointsCLProcessor.html" title="Computes the entry and exit points of a triangle mesh from the camera position in texture space..." alt="" coords="1671,1461,1902,1488"/>
+<area shape="rect" id="node45" href="$classinviwo_1_1FirstIvwProcessor.html" title="inviwo::FirstIvwProcessor" alt="" coords="1703,1512,1870,1538"/>
+<area shape="rect" id="node46" href="$classinviwo_1_1FXAA.html" title="Anti&#45;aliasing post process. " alt="" coords="1738,1562,1835,1589"/>
+<area shape="rect" id="node47" href="$classinviwo_1_1GrayscaleCLProcessor.html" title="Turns an image into grayscale. " alt="" coords="1687,1613,1886,1640"/>
+<area shape="rect" id="node48" href="$classinviwo_1_1hdf5_1_1HDF5ToVolume.html" title="inviwo::hdf5::HDF5ToVolume" alt="" coords="1693,1664,1880,1690"/>
+<area shape="rect" id="node49" href="$classinviwo_1_1hdf5_1_1PathSelection.html" title="inviwo::hdf5::PathSelection" alt="" coords="1698,1714,1875,1741"/>
+<area shape="rect" id="node50" href="$classinviwo_1_1hdf5_1_1Source.html" title="inviwo::hdf5::Source" alt="" coords="1718,1765,1855,1792"/>
+<area shape="rect" id="node51" href="$classinviwo_1_1HedgeHog2D.html" title="VERY_BRIEFLY_DESCRIBE_THE_CLASS. " alt="" coords="1717,1816,1857,1842"/>
+<area shape="rect" id="node52" href="$classinviwo_1_1HeightFieldMapper.html" title="Maps a 2D input texture to a single channel heightfield and scales the data values. " alt="" coords="1701,1866,1873,1893"/>
+<area shape="rect" id="node53" href="$classinviwo_1_1HeightFieldProcessor.html" title="Maps a heightfield onto a geometry and renders it to an image. " alt="" coords="1693,1917,1881,1944"/>
+<area shape="rect" id="node54" href="$classinviwo_1_1ImageCompositeProcessorGL.html" title="inviwo::ImageCompositeProcessorGL" alt="" coords="1668,1968,1905,1994"/>
+<area shape="rect" id="node55" href="$classinviwo_1_1ImageContourProcessor.html" title="inviwo::ImageContourProcessor" alt="" coords="1685,2018,1888,2045"/>
+<area shape="rect" id="node56" href="$classinviwo_1_1ImageGLProcessor.html" title="Base class for image processing on the GPU using OpenGL. " alt="" coords="1699,2069,1874,2096"/>
+<area shape="rect" id="node72" href="$classinviwo_1_1ImageLayoutGL.html" title="inviwo::ImageLayoutGL" alt="" coords="1709,2120,1864,2146"/>
+<area shape="rect" id="node73" href="$classinviwo_1_1ImageLowPass.html" title="Applies a low pass filter on the input image using either constant weight or Gaussian weights..." alt="" coords="1711,2170,1863,2197"/>
+<area shape="rect" id="node74" href="$classinviwo_1_1ImageMixer.html" title="Mixes two input images according to the chosen blend mode. " alt="" coords="1721,2221,1852,2248"/>
+<area shape="rect" id="node75" href="$classinviwo_1_1ImageOverlayGL.html" title="Places one or more input images on top of the source image. " alt="" coords="1707,2272,1866,2298"/>
+<area shape="rect" id="node76" href="$classinviwo_1_1ImageScaling.html" title="Processor for up&#45;scaling or down&#45;scaling an image. Modifies the resize events by scaling them before ..." alt="" coords="1715,2322,1858,2349"/>
+<area shape="rect" id="node77" href="$classinviwo_1_1ImageSnapshot.html" title="inviwo::ImageSnapshot" alt="" coords="1709,2373,1864,2400"/>
+<area shape="rect" id="node78" href="$classinviwo_1_1ImageSource.html" title="inviwo::ImageSource" alt="" coords="1717,2424,1857,2450"/>
+<area shape="rect" id="node79" href="$classinviwo_1_1ImageSourceSeries.html" title="inviwo::ImageSourceSeries" alt="" coords="1698,2474,1875,2501"/>
+<area shape="rect" id="node80" href="$classinviwo_1_1InputSelector.html" title="processor for selecting one of n connected inputs " alt="" coords="1717,2526,1857,2567"/>
+<area shape="rect" id="node81" href="$classinviwo_1_1IntegralLineVectorToMesh.html" title="inviwo::IntegralLineVector\lToMesh" alt="" coords="1703,2591,1871,2632"/>
+<area shape="rect" id="node82" href="$classinviwo_1_1ISORaycaster.html" title="inviwo::ISORaycaster" alt="" coords="1714,2657,1859,2684"/>
+<area shape="rect" id="node83" href="$classinviwo_1_1LayerDistanceTransformRAM.html" title="inviwo::LayerDistanceTransformRAM" alt="" coords="1670,2708,1903,2734"/>
+<area shape="rect" id="node84" href="$classinviwo_1_1LIC2D.html" title="inviwo::LIC2D" alt="" coords="1737,2758,1836,2785"/>
+<area shape="rect" id="node85" href="$classinviwo_1_1LightingRaycaster.html" title="inviwo::LightingRaycaster" alt="" coords="1703,2809,1871,2836"/>
+<area shape="rect" id="node86" href="$classinviwo_1_1LightVolumeGL.html" title="inviwo::LightVolumeGL" alt="" coords="1710,2860,1863,2886"/>
+<area shape="rect" id="node87" href="$classinviwo_1_1LineRenderer.html" title="Renders input geometry with 2D lines. " alt="" coords="1717,2910,1857,2937"/>
+<area shape="rect" id="node88" href="$classinviwo_1_1LorenzSystem.html" title="VERY_BRIEFLY_DESCRIBE_THE_CLASS. " alt="" coords="1713,2961,1861,2988"/>
+<area shape="rect" id="node89" href="$classinviwo_1_1Mesh2DRenderProcessorGL.html" title="inviwo::Mesh2DRenderProcessorGL" alt="" coords="1672,3012,1901,3038"/>
+<area shape="rect" id="node90" href="$classinviwo_1_1MeshClipping.html" title="inviwo::MeshClipping" alt="" coords="1715,3062,1858,3089"/>
+<area shape="rect" id="node91" href="$classinviwo_1_1MeshCreator.html" title="inviwo::MeshCreator" alt="" coords="1717,3113,1856,3140"/>
+<area shape="rect" id="node92" href="$classinviwo_1_1MeshPicking.html" title="Composite image with geometry where geometry repositioned through picking. " alt="" coords="1717,3164,1856,3190"/>
+<area shape="rect" id="node93" href="$classinviwo_1_1MeshRenderProcessorGL.html" title="inviwo::MeshRenderProcessorGL" alt="" coords="1680,3214,1893,3241"/>
+<area shape="rect" id="node94" href="$classinviwo_1_1MultichannelRaycaster.html" title="inviwo::MultichannelRaycaster" alt="" coords="1689,3265,1885,3292"/>
+<area shape="rect" id="node95" href="$classinviwo_1_1NoiseProcessor.html" title="A processor to generate a noise image. " alt="" coords="1709,3316,1865,3342"/>
+<area shape="rect" id="node96" href="$classinviwo_1_1NoiseVolumeProcessor.html" title="inviwo::NoiseVolumeProcessor" alt="" coords="1687,3366,1887,3393"/>
+<area shape="rect" id="node97" href="$classinviwo_1_1NumpyMandelbrot.html" title="&lt;brief description&gt;=&quot;&quot;&gt; &lt;Detailed description=&quot;&quot; from=&quot;&quot; a=&quot;&quot; developer=&quot;&quot; prespective&gt;=&quot;&quot;&gt; ..." alt="" coords="1702,3417,1871,3444"/>
+<area shape="rect" id="node98" href="$classinviwo_1_1NumPyMeshCreateTest.html" title="inviwo::NumPyMeshCreateTest" alt="" coords="1685,3468,1888,3494"/>
+<area shape="rect" id="node99" href="$classinviwo_1_1NumPyVolume.html" title="&lt;brief description&gt;=&quot;&quot;&gt; &lt;Detailed description=&quot;&quot; from=&quot;&quot; a=&quot;&quot; developer=&quot;&quot; prespective&gt;=&quot;&quot;&gt; ..." alt="" coords="1711,3518,1862,3545"/>
+<area shape="rect" id="node100" href="$classinviwo_1_1OrdinalPropertyAnimator.html" title="inviwo::OrdinalPropertyAnimator" alt="" coords="1683,3569,1890,3596"/>
+<area shape="rect" id="node101" href="$classinviwo_1_1OrientationIndicator.html" title="inviwo::OrientationIndicator" alt="" coords="1699,3620,1875,3646"/>
+<area shape="rect" id="node102" href="$classinviwo_1_1PathLines.html" title="inviwo::PathLines" alt="" coords="1725,3670,1848,3697"/>
+<area shape="rect" id="node103" href="$classinviwo_1_1PixelToBufferProcessor.html" title="inviwo::PixelToBufferProcessor" alt="" coords="1687,3721,1886,3748"/>
+<area shape="rect" id="node104" href="$classinviwo_1_1PixelValue.html" title="inviwo::PixelValue" alt="" coords="1723,3772,1850,3798"/>
+<area shape="rect" id="node105" href="$classinviwo_1_1plot_1_1AxisRenderProcessor.html" title="Test processor for axis rendering. " alt="" coords="1707,3823,1867,3864"/>
+<area shape="rect" id="node106" href="$classinviwo_1_1plot_1_1CSVSource.html" title="inviwo::plot::CSVSource" alt="" coords="1706,3889,1867,3916"/>
+<area shape="rect" id="node107" href="$classinviwo_1_1plot_1_1DataFrameColumnToColorVector.html" title="inviwo::plot::DataFrameColumn\lToColorVector" alt="" coords="1686,3940,1887,3982"/>
+<area shape="rect" id="node108" href="$classinviwo_1_1plot_1_1ParallelCoordinates.html" title="inviwo::plot::ParallelCoordinates" alt="" coords="1684,4006,1889,4033"/>
+<area shape="rect" id="node109" href="$classinviwo_1_1plot_1_1ScatterPlotMatrixProcessor.html" title="inviwo::plot::ScatterPlot\lMatrixProcessor" alt="" coords="1707,4058,1866,4099"/>
+<area shape="rect" id="node110" href="$classinviwo_1_1plot_1_1ScatterPlotProcessor.html" title="inviwo::plot::ScatterPlot\lProcessor" alt="" coords="1707,4123,1866,4164"/>
+<area shape="rect" id="node111" href="$classinviwo_1_1plot_1_1SyntheticDataFrame.html" title="inviwo::plot::SyntheticData\lFrame" alt="" coords="1699,4188,1874,4230"/>
+<area shape="rect" id="node112" href="$classinviwo_1_1plot_1_1VolumeAxis.html" title="Processor for rendering axis annotations next to a volume. " alt="" coords="1705,4254,1868,4281"/>
+<area shape="rect" id="node113" href="$classinviwo_1_1PointLightSourceProcessor.html" title="inviwo::PointLightSource\lProcessor" alt="" coords="1705,4306,1868,4347"/>
+<area shape="rect" id="node114" href="$classinviwo_1_1PointRenderer.html" title="Renders input geometry with 2D points. " alt="" coords="1713,4372,1860,4398"/>
+<area shape="rect" id="node115" href="$classinviwo_1_1RandomMeshGenerator.html" title="inviwo::RandomMeshGenerator" alt="" coords="1686,4422,1887,4449"/>
+<area shape="rect" id="node116" href="$classinviwo_1_1RandomSphereGenerator.html" title="inviwo::RandomSphereGenerator" alt="" coords="1681,4473,1892,4500"/>
+<area shape="rect" id="node117" href="$classinviwo_1_1RBFVectorFieldGenerator2D.html" title="VERY_BRIEFLY_DESCRIBE_THE_CLASS. " alt="" coords="1672,4524,1901,4550"/>
+<area shape="rect" id="node118" href="$classinviwo_1_1RBFVectorFieldGenerator3D.html" title="VERY_BRIEFLY_DESCRIBE_THE_CLASS. " alt="" coords="1672,4574,1901,4601"/>
+<area shape="rect" id="node119" href="$classinviwo_1_1RedGreenProcessor.html" title="inviwo::RedGreenProcessor" alt="" coords="1696,4625,1877,4652"/>
+<area shape="rect" id="node120" href="$classinviwo_1_1Seed3Dto4D.html" title="VERY_BRIEFLY_DESCRIBE_THE_PROCESSOR DESCRIBE_THE_PROCESSOR_FROM_A_DEVELOPER_PERSPECTIVE. " alt="" coords="1718,4676,1855,4702"/>
+<area shape="rect" id="node121" href="$classinviwo_1_1SeedPointGenerator.html" title="inviwo::SeedPointGenerator" alt="" coords="1696,4726,1877,4753"/>
+<area shape="rect" id="node122" href="$classinviwo_1_1SeedPointsFromMask.html" title="inviwo::SeedPointsFromMask" alt="" coords="1690,4777,1883,4804"/>
+<area shape="rect" id="node123" href="$classinviwo_1_1SeedsFromMaskSequence.html" title="VERY_BRIEFLY_DESCRIBE_THE_PROCESSOR DESCRIBE_THE_PROCESSOR_FROM_A_DEVELOPER_PERSPECTIVE. " alt="" coords="1676,4828,1897,4854"/>
+<area shape="rect" id="node124" href="$classinviwo_1_1SingleVoxel.html" title="inviwo::SingleVoxel" alt="" coords="1720,4878,1853,4905"/>
+<area shape="rect" id="node125" href="$classinviwo_1_1SphereRenderer.html" title="Renders input geometry with 3D sphere glyphs using OpenGL shaders. " alt="" coords="1708,4929,1865,4956"/>
+<area shape="rect" id="node126" href="$classinviwo_1_1SpotLightSourceProcessor.html" title="inviwo::SpotLightSourceProcessor" alt="" coords="1677,4980,1896,5006"/>
+<area shape="rect" id="node127" href="$classinviwo_1_1SSAO.html" title="Screen space ambient occlusion post process. (Computed using depth layer) " alt="" coords="1736,5030,1837,5057"/>
+<area shape="rect" id="node128" href="$classinviwo_1_1StereoCameraSyncer.html" title="A processor linking a left and right camera. " alt="" coords="1693,5081,1881,5108"/>
+<area shape="rect" id="node129" href="$classinviwo_1_1StreamLines.html" title="inviwo::StreamLines" alt="" coords="1718,5132,1855,5158"/>
+<area shape="rect" id="node130" href="$classinviwo_1_1StreamRibbons.html" title="inviwo::StreamRibbons" alt="" coords="1710,5182,1863,5209"/>
+<area shape="rect" id="node131" href="$classinviwo_1_1SurfaceExtraction.html" title="inviwo::SurfaceExtraction" alt="" coords="1703,5233,1870,5260"/>
+<area shape="rect" id="node132" href="$classinviwo_1_1TextOverlayGL.html" title="inviwo::TextOverlayGL" alt="" coords="1712,5284,1861,5310"/>
+<area shape="rect" id="node133" href="$classinviwo_1_1TMIP.html" title="inviwo::TMIP" alt="" coords="1739,5334,1834,5361"/>
+<area shape="rect" id="node134" href="$classinviwo_1_1TubeRendering.html" title="inviwo::TubeRendering" alt="" coords="1711,5385,1862,5412"/>
+<area shape="rect" id="node135" href="$classinviwo_1_1Vector2DCurl.html" title="inviwo::Vector2DCurl" alt="" coords="1716,5436,1857,5462"/>
+<area shape="rect" id="node136" href="$classinviwo_1_1Vector2DDivergence.html" title="inviwo::Vector2DDivergence" alt="" coords="1696,5486,1877,5513"/>
+<area shape="rect" id="node137" href="$classinviwo_1_1Vector2DMagnitude.html" title="inviwo::Vector2DMagnitude" alt="" coords="1697,5537,1876,5564"/>
+<area shape="rect" id="node138" href="$classinviwo_1_1VectorElementSelectorProcessor.html" title="inviwo::VectorElementSelector\lProcessor\&lt; T, OutportType \&gt;" alt="" coords="1687,5639,1886,5680"/>
+<area shape="rect" id="node139" href="$classinviwo_1_1VectorElementSelectorProcessor.html" title="inviwo::VectorElementSelector\lProcessor\&lt; Volume \&gt;" alt="" coords="2127,5552,2326,5594"/>
+<area shape="rect" id="node141" href="$classinviwo_1_1VectorElementSelectorProcessor.html" title="inviwo::VectorElementSelector\lProcessor\&lt; Image, ImageOutport \&gt;" alt="" coords="2113,5654,2340,5695"/>
+<area shape="rect" id="node143" href="$classinviwo_1_1VectorElementSelectorProcessor.html" title="inviwo::VectorElementSelector\lProcessor\&lt; Mesh, MeshOutport \&gt;" alt="" coords="2117,5734,2337,5775"/>
+<area shape="rect" id="node145" href="$classinviwo_1_1VectorFieldGenerator2D.html" title="inviwo::VectorFieldGenerator2D" alt="" coords="1685,5806,1888,5833"/>
+<area shape="rect" id="node146" href="$classinviwo_1_1VectorFieldGenerator3D.html" title="inviwo::VectorFieldGenerator3D" alt="" coords="1685,5857,1888,5884"/>
+<area shape="rect" id="node147" href="$classinviwo_1_1VectorFieldGenerator4D.html" title="inviwo::VectorFieldGenerator4D" alt="" coords="1685,5908,1888,5934"/>
+<area shape="rect" id="node148" href="$classinviwo_1_1VolumeBoundingBox.html" title="inviwo::VolumeBoundingBox" alt="" coords="1694,5958,1879,5985"/>
+<area shape="rect" id="node149" href="$classinviwo_1_1VolumeCombiner.html" title="Combines two volumes. " alt="" coords="1705,6009,1868,6036"/>
+<area shape="rect" id="node150" href="$classinviwo_1_1VolumeCurlCPUProcessor.html" title="inviwo::VolumeCurlCPUProcessor" alt="" coords="1678,6060,1895,6086"/>
+<area shape="rect" id="node151" href="$classinviwo_1_1VolumeDivergenceCPUProcessor.html" title="inviwo::VolumeDivergence\lCPUProcessor" alt="" coords="1701,6111,1872,6152"/>
+<area shape="rect" id="node152" href="$classinviwo_1_1VolumeFirstHitCLProcessor.html" title="Computes the first point with non&#45;zero opacity within a volume given entry and exit points in texture..." alt="" coords="1674,6177,1899,6204"/>
+<area shape="rect" id="node153" href="$classinviwo_1_1VolumeGLProcessor.html" title="Base class for volume processing on the GPU using OpenGL. " alt="" coords="1695,6228,1879,6254"/>
+<area shape="rect" id="node166" href="$classinviwo_1_1VolumeGradientCPUProcessor.html" title="inviwo::VolumeGradientCPUProcessor" alt="" coords="1665,6278,1908,6305"/>
+<area shape="rect" id="node167" href="$classinviwo_1_1VolumeLaplacianProcessor.html" title="inviwo::VolumeLaplacianProcessor" alt="" coords="1675,6329,1898,6356"/>
+<area shape="rect" id="node168" href="$classinviwo_1_1VolumeMaxCLProcessor.html" title="Computes the maximum data value for each sub&#45;region of the input volume. " alt="" coords="1683,6380,1891,6406"/>
+<area shape="rect" id="node169" href="$classinviwo_1_1VolumeRaycaster.html" title="inviwo::VolumeRaycaster" alt="" coords="1703,6430,1870,6457"/>
+<area shape="rect" id="node170" href="$classinviwo_1_1VolumeRaycasterCLProcessor.html" title="Perform volume rendering on the input volume. " alt="" coords="1665,6481,1908,6508"/>
+<area shape="rect" id="node171" href="$classinviwo_1_1VolumeSequenceSource.html" title="Loads a vector of volumes. " alt="" coords="1683,6532,1890,6558"/>
+<area shape="rect" id="node172" href="$classinviwo_1_1VolumeSequenceToSpatial4DSampler.html" title="inviwo::VolumeSequenceTo\lSpatial4DSampler" alt="" coords="1697,6583,1877,6624"/>
+<area shape="rect" id="node173" href="$classinviwo_1_1VolumeSlice.html" title="Outputs a slice from a volume, CPU&#45;based. " alt="" coords="1718,6649,1855,6676"/>
+<area shape="rect" id="node174" href="$classinviwo_1_1VolumeSliceGL.html" title="extracts an arbitrary 2D slice from an input volume " alt="" coords="1709,6700,1864,6726"/>
+<area shape="rect" id="node175" href="$classinviwo_1_1VolumeSource.html" title="inviwo::VolumeSource" alt="" coords="1712,6750,1861,6777"/>
+<area shape="rect" id="node176" href="$classinviwo_1_1VolumeSubsample.html" title="inviwo::VolumeSubsample" alt="" coords="1700,6801,1873,6828"/>
+<area shape="rect" id="node177" href="$classinviwo_1_1VolumeSubset.html" title="inviwo::VolumeSubset" alt="" coords="1712,6852,1861,6878"/>
+<area shape="rect" id="node178" href="$classinviwo_1_1VolumeToSpatialSampler.html" title="inviwo::VolumeToSpatialSampler" alt="" coords="1681,6902,1892,6929"/>
+<area shape="rect" id="node179" href="$classinviwo_1_1WorldTransform.html" title="inviwo::WorldTransform\&lt; T \&gt;" alt="" coords="1693,6953,1880,6980"/>
+<area shape="rect" id="node2" href="$classinviwo_1_1PropertyOwner.html" title="inviwo::PropertyOwner" alt="" coords="1289,3417,1440,3444"/>
+<area shape="rect" id="node3" href="$classinviwo_1_1PropertyOwnerObservable.html" title="inviwo::PropertyOwnerObservable" alt="" coords="836,3366,1051,3393"/>
+<area shape="rect" id="node4" href="$classinviwo_1_1Observable.html" title="inviwo::Observable\l\&lt; PropertyOwnerObserver \&gt;" alt="" coords="604,3380,787,3422"/>
+<area shape="rect" id="node5" href="$classinviwo_1_1ObservableInterface.html" title="inviwo::ObservableInterface" alt="" coords="5,3450,183,3477"/>
+<area shape="rect" id="node6" href="$classinviwo_1_1Observable.html" title="inviwo::Observable\&lt; T \&gt;" alt="" coords="232,3450,391,3477"/>
+<area shape="rect" id="node11" href="$classinviwo_1_1Observable.html" title="inviwo::Observable\l\&lt; ProcessorObserver \&gt;" alt="" coords="617,3504,773,3546"/>
+<area shape="rect" id="node7" href="$classinviwo_1_1Serializable.html" title="inviwo::Serializable" alt="" coords="878,3417,1009,3444"/>
+<area shape="rect" id="node8" href="$classinviwo_1_1EventListener.html" title="inviwo::EventListener" alt="" coords="872,3468,1015,3494"/>
+<area shape="rect" id="node9" href="$classinviwo_1_1MetaDataOwner.html" title="Holds metadata and access functionality for set/get. " alt="" coords="1286,3468,1443,3494"/>
+<area shape="rect" id="node10" href="$classinviwo_1_1ProcessorObservable.html" title="inviwo::ProcessorObservable" alt="" coords="1075,3518,1261,3545"/>
+<area shape="rect" id="node12" href="$classinviwo_1_1EventPropagator.html" title="Abstract base class for a event propagator. " alt="" coords="1285,3569,1444,3596"/>
+<area shape="rect" id="node14" href="$classinviwo_1_1ImageExport.html" title="inviwo::ImageExport" alt="" coords="2428,34,2565,61"/>
+<area shape="rect" id="node16" href="$classinviwo_1_1MeshExport.html" title="inviwo::MeshExport" alt="" coords="2429,106,2564,133"/>
+<area shape="rect" id="node18" href="$classinviwo_1_1VolumeExport.html" title="inviwo::VolumeExport" alt="" coords="2423,226,2570,253"/>
+<area shape="rect" id="node20" href="$classinviwo_1_1MeshSource.html" title="inviwo::MeshSource" alt="" coords="2428,310,2565,337"/>
+<area shape="rect" id="node27" href="$classinviwo_1_1CanvasProcessorGL.html" title="Takes an Image Inport and renders it into a OpenGL window i.e. a canvas. " alt="" coords="2135,670,2318,697"/>
+<area shape="rect" id="node57" href="$classinviwo_1_1FindEdges.html" title="inviwo::FindEdges" alt="" coords="2163,2018,2290,2045"/>
+<area shape="rect" id="node58" href="$classinviwo_1_1ImageBinary.html" title="computes a binary image of the input image using a threshold. " alt="" coords="2159,2069,2295,2096"/>
+<area shape="rect" id="node59" href="$classinviwo_1_1ImageBrightnessContrast.html" title="Controls brightness and contrast of an image. " alt="" coords="2121,2120,2332,2146"/>
+<area shape="rect" id="node60" href="$classinviwo_1_1ImageGamma.html" title="Apply gamma correction to an image. Alpha channel is not touched. " alt="" coords="2154,2170,2299,2197"/>
+<area shape="rect" id="node61" href="$classinviwo_1_1ImageGradient.html" title="Computes the gradient of one channel of the input image. " alt="" coords="2153,2221,2301,2248"/>
+<area shape="rect" id="node62" href="$classinviwo_1_1ImageGrayscale.html" title="Compute a gray&#45;scale image from color input. Alpha channel is not touched. " alt="" coords="2147,2272,2306,2298"/>
+<area shape="rect" id="node63" href="$classinviwo_1_1ImageHighPass.html" title="Applies a high pass filter on the input image. " alt="" coords="2149,2322,2304,2349"/>
+<area shape="rect" id="node64" href="$classinviwo_1_1ImageHueSaturationLuminance.html" title="Controls hue, saturation and luminance of an image. " alt="" coords="2136,2374,2317,2415"/>
+<area shape="rect" id="node65" href="$classinviwo_1_1ImageInvert.html" title="Create the invert image of an input image. Alpha channel is not touched. " alt="" coords="2162,2440,2291,2466"/>
+<area shape="rect" id="node66" href="$classinviwo_1_1ImageMapping.html" title="Maps the input image to an output with the help of a transfer function. " alt="" coords="2153,1698,2301,1725"/>
+<area shape="rect" id="node67" href="$classinviwo_1_1ImageNormalizationProcessor.html" title="inviwo::ImageNormalization\lProcessor" alt="" coords="2137,1750,2316,1791"/>
+<area shape="rect" id="node68" href="$classinviwo_1_1ImageOpacity.html" title="Controls an image&#39;s opacity. " alt="" coords="2155,1816,2299,1842"/>
+<area shape="rect" id="node69" href="$classinviwo_1_1ImageResample.html" title="Resamples the input image, which corresponds to upscaling or downscaling to the respective target res..." alt="" coords="2148,1866,2305,1893"/>
+<area shape="rect" id="node70" href="$classinviwo_1_1ImageSharpen.html" title="Applies a laplacian filter to the input image. " alt="" coords="2153,1917,2300,1944"/>
+<area shape="rect" id="node71" href="$classinviwo_1_1Jacobian2D.html" title="Computes the Jacobian of a two channel image. " alt="" coords="2161,1968,2292,1994"/>
+<area shape="rect" id="node140" href="$classinviwo_1_1VolumeSequenceElementSelectorProcessor.html" title="inviwo::VolumeSequenceElement\lSelectorProcessor" alt="" coords="2389,5552,2604,5594"/>
+<area shape="rect" id="node142" href="$classinviwo_1_1ImageSequenceElementSelectorProcessor.html" title="inviwo::ImageSequenceElement\lSelectorProcessor" alt="" coords="2394,5654,2599,5695"/>
+<area shape="rect" id="node144" href="$classinviwo_1_1MeshSequenceElementSelectorProcessor.html" title="inviwo::MeshSequenceElement\lSelectorProcessor" alt="" coords="2395,5734,2598,5775"/>
+<area shape="rect" id="node154" href="$classinviwo_1_1LIC3D.html" title="inviwo::LIC3D" alt="" coords="2177,6253,2276,6280"/>
+<area shape="rect" id="node155" href="$classinviwo_1_1Vector3DCurl.html" title="inviwo::Vector3DCurl" alt="" coords="2156,6304,2297,6330"/>
+<area shape="rect" id="node156" href="$classinviwo_1_1Vector3DDivergence.html" title="inviwo::Vector3DDivergence" alt="" coords="2136,6354,2317,6381"/>
+<area shape="rect" id="node157" href="$classinviwo_1_1VectorMagnitudeProcessor.html" title="takes and ImageInport and renders it into a OpenGL window i.e. a canvas. " alt="" coords="2116,6405,2337,6432"/>
+<area shape="rect" id="node158" href="$classinviwo_1_1VolumeBinary.html" title="computes a binary volume of the input volume using a threshold. " alt="" coords="2154,6456,2299,6482"/>
+<area shape="rect" id="node159" href="$classinviwo_1_1VolumeDiff.html" title="inviwo::VolumeDiff" alt="" coords="2163,6506,2290,6533"/>
+<area shape="rect" id="node160" href="$classinviwo_1_1VolumeGradientMagnitude.html" title="Computes the gradient magnitude of a 3D scalar field and outputs it as float volume. " alt="" coords="2118,5949,2335,5976"/>
+<area shape="rect" id="node161" href="$classinviwo_1_1VolumeGradientProcessor.html" title="computes the gradient of a 3D scalar field. " alt="" coords="2119,6000,2335,6026"/>
+<area shape="rect" id="node162" href="$classinviwo_1_1VolumeLowPass.html" title="inviwo::VolumeLowPass" alt="" coords="2146,6050,2307,6077"/>
+<area shape="rect" id="node163" href="$classinviwo_1_1VolumeMapping.html" title="inviwo::VolumeMapping" alt="" coords="2148,6101,2305,6128"/>
+<area shape="rect" id="node164" href="$classinviwo_1_1VolumeMerger.html" title="merges up to four single&#45;channel volumes into a single volume " alt="" coords="2153,6152,2301,6178"/>
+<area shape="rect" id="node165" href="$classinviwo_1_1VolumeShader.html" title="inviwo::VolumeShader" alt="" coords="2152,6202,2301,6229"/>
+</map>

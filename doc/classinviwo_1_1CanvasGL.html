@@ -92,6 +92,20 @@ $(document).ready(function(){initNavTree('classinviwo_1_1CanvasGL.html','');});
 <div class="title">inviwo::CanvasGL Class Reference<span class="mlabels"><span class="mlabel">abstract</span></span></div>  </div>
 </div><!--header-->
 <div class="contents">
+<div id="dynsection-0" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-0-trigger" src="closed.png" alt="+"/> Inheritance diagram for inviwo::CanvasGL:</div>
+<div id="dynsection-0-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-0-content" class="dyncontent" style="display:none;">
+<div class="center"><img src="classinviwo_1_1CanvasGL__inherit__graph.png" border="0" usemap="#inviwo_1_1CanvasGL_inherit__map" alt="Inheritance graph"/></div>
+<map name="inviwo_1_1CanvasGL_inherit__map" id="inviwo_1_1CanvasGL_inherit__map">
+<area shape="rect" id="node3" href="classinviwo_1_1CanvasGLFW.html" title="inviwo::CanvasGLFW" alt="" coords="361,5,505,32"/>
+<area shape="rect" id="node4" href="classinviwo_1_1CanvasQGLWidget.html" title="inviwo::CanvasQGLWidget" alt="" coords="346,56,521,83"/>
+<area shape="rect" id="node5" href="classinviwo_1_1CanvasQOpenGLWidget.html" title="inviwo::CanvasQOpenGLWidget" alt="" coords="331,107,536,133"/>
+<area shape="rect" id="node6" href="classinviwo_1_1CanvasQWindow.html" title="inviwo::CanvasQWindow" alt="" coords="352,157,515,184"/>
+<area shape="rect" id="node2" href="classinviwo_1_1Canvas.html" title="inviwo::Canvas" alt="" coords="5,81,112,108"/>
+</map>
+<center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
@@ -177,6 +191,8 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>drawSquare</b> ()</td
 <tr class="memitem:ad2316013919a738eaa8423d0cfe09786"><td class="memItemLeft" align="right" valign="top"><a id="ad2316013919a738eaa8423d0cfe09786"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>renderTexture</b> (int)</td></tr>
 <tr class="separator:ad2316013919a738eaa8423d0cfe09786"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8b5502ae2c6e8677d492f7348ae2acc6"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classinviwo_1_1CanvasGL.html#a8b5502ae2c6e8677d492f7348ae2acc6">ready</a> ()</td></tr>
+<tr class="separator:a8b5502ae2c6e8677d492f7348ae2acc6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pro_methods_classinviwo_1_1Canvas"><td colspan="2" onclick="javascript:toggleInherit('pro_methods_classinviwo_1_1Canvas')"><img src="closed.png" alt="-"/>&#160;Protected Member Functions inherited from <a class="el" href="classinviwo_1_1Canvas.html">inviwo::Canvas</a></td></tr>
 <tr class="memitem:af35a5ec96cece443da8e7cf32b90f9a2 inherit pro_methods_classinviwo_1_1Canvas"><td class="memItemLeft" align="right" valign="top"><a id="af35a5ec96cece443da8e7cf32b90f9a2"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>propagateEvent</b> (<a class="el" href="classinviwo_1_1Event.html">Event</a> *e)</td></tr>
@@ -196,6 +212,23 @@ std::unique_ptr&lt; <a class="el" href="classinviwo_1_1Mesh.html">Mesh</a> &gt;&
 <tr class="memitem:a437a2f4ff36685129ccfcaac704fb277"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classinviwo_1_1MeshGL.html">MeshGL</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classinviwo_1_1CanvasGL.html#a437a2f4ff36685129ccfcaac704fb277">squareGL_</a> = nullptr</td></tr>
 <tr class="memdesc:a437a2f4ff36685129ccfcaac704fb277"><td class="mdescLeft">&#160;</td><td class="mdescRight">Non-owning reference.  <a href="#a437a2f4ff36685129ccfcaac704fb277">More...</a><br /></td></tr>
 <tr class="separator:a437a2f4ff36685129ccfcaac704fb277"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adbc24d7d3883626cc265b54814d45714"><td class="memItemLeft" align="right" valign="top"><a id="adbc24d7d3883626cc265b54814d45714"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>ready_</b> = false</td></tr>
+<tr class="separator:adbc24d7d3883626cc265b54814d45714"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aaa9929cbff7db16cb4e734f5a597eacc"><td class="memItemLeft" align="right" valign="top"><a id="aaa9929cbff7db16cb4e734f5a597eacc"></a>
+LayerType&#160;</td><td class="memItemRight" valign="bottom"><b>layerType_</b> = LayerType::Color</td></tr>
+<tr class="separator:aaa9929cbff7db16cb4e734f5a597eacc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afa2e8cd6118d9aa1841ee289d1f68c2d"><td class="memItemLeft" align="right" valign="top"><a id="afa2e8cd6118d9aa1841ee289d1f68c2d"></a>
+<a class="el" href="classinviwo_1_1Shader.html">Shader</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classinviwo_1_1CanvasGL.html#afa2e8cd6118d9aa1841ee289d1f68c2d">textureShader_</a> = nullptr</td></tr>
+<tr class="memdesc:afa2e8cd6118d9aa1841ee289d1f68c2d"><td class="mdescLeft">&#160;</td><td class="mdescRight">non-owning reference <br /></td></tr>
+<tr class="separator:afa2e8cd6118d9aa1841ee289d1f68c2d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a43b258bd6442a6d35fa83b4475bcd1e2"><td class="memItemLeft" align="right" valign="top"><a id="a43b258bd6442a6d35fa83b4475bcd1e2"></a>
+<a class="el" href="classinviwo_1_1Shader.html">Shader</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classinviwo_1_1CanvasGL.html#a43b258bd6442a6d35fa83b4475bcd1e2">noiseShader_</a> = nullptr</td></tr>
+<tr class="memdesc:a43b258bd6442a6d35fa83b4475bcd1e2"><td class="mdescLeft">&#160;</td><td class="mdescRight">non-owning reference <br /></td></tr>
+<tr class="separator:a43b258bd6442a6d35fa83b4475bcd1e2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4d7f140a92f8031f1c1784c4a3f489c4"><td class="memItemLeft" align="right" valign="top"><a id="a4d7f140a92f8031f1c1784c4a3f489c4"></a>
+size_t&#160;</td><td class="memItemRight" valign="bottom"><b>activeRenderLayerIdx_</b> = 0</td></tr>
+<tr class="separator:a4d7f140a92f8031f1c1784c4a3f489c4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pro_attribs_classinviwo_1_1Canvas"><td colspan="2" onclick="javascript:toggleInherit('pro_attribs_classinviwo_1_1Canvas')"><img src="closed.png" alt="-"/>&#160;Protected Attributes inherited from <a class="el" href="classinviwo_1_1Canvas.html">inviwo::Canvas</a></td></tr>
 <tr class="memitem:a780cfb1e1399d3147b944c8185b3b41b inherit pro_attribs_classinviwo_1_1Canvas"><td class="memItemLeft" align="right" valign="top"><a id="a780cfb1e1399d3147b944c8185b3b41b"></a>
 size2_t&#160;</td><td class="memItemRight" valign="bottom"><b>screenDimensions_</b></td></tr>
@@ -243,6 +276,32 @@ using&#160;</td><td class="memItemRight" valign="bottom"><b>ContextID</b> = cons
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>NDC depth in [-1 1], 1 if no depth value exist. </dd></dl>
+
+</div>
+</div>
+<a id="a8b5502ae2c6e8677d492f7348ae2acc6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8b5502ae2c6e8677d492f7348ae2acc6">&#9670;&nbsp;</a></span>ready()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool inviwo::CanvasGL::ready </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Sometime on OSX in renderNoise when on the first time using a canvas we get a INVALID_FRAMEBUFFER_OPERATION error to avoid this we have this ready flag to check that the frame buffer is complete. </p>
 
 </div>
 </div>

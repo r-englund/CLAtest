@@ -6,7 +6,9 @@ var classinviwo_1_1ImageLayoutGL =
       [ "VerticalSplit", "classinviwo_1_1ImageLayoutGL.html#a76a176a4be2258a7df1d20a85844bd0dac2a6301de132dd56b32c5b0c55c9c011", null ],
       [ "CrossSplit", "classinviwo_1_1ImageLayoutGL.html#a76a176a4be2258a7df1d20a85844bd0da415f35e9c4cd32bf838faa8fc6748183", null ],
       [ "ThreeLeftOneRight", "classinviwo_1_1ImageLayoutGL.html#a76a176a4be2258a7df1d20a85844bd0da738e6443bad4964edb4b8cbfd37f79c0", null ],
-      [ "ThreeRightOneLeft", "classinviwo_1_1ImageLayoutGL.html#a76a176a4be2258a7df1d20a85844bd0daeb12929ebd861c4e2422fe17ff1c25e2", null ]
+      [ "ThreeRightOneLeft", "classinviwo_1_1ImageLayoutGL.html#a76a176a4be2258a7df1d20a85844bd0daeb12929ebd861c4e2422fe17ff1c25e2", null ],
+      [ "HorizontalSplitMultiple", "classinviwo_1_1ImageLayoutGL.html#a76a176a4be2258a7df1d20a85844bd0da6140ae133a4e0e5ac00da1c52f95d535", null ],
+      [ "VerticalSplitMultiple", "classinviwo_1_1ImageLayoutGL.html#a76a176a4be2258a7df1d20a85844bd0dafd2869f1182ca2d20e746e9ee0ff5e79", null ]
     ] ],
     [ "ImageLayoutGL", "classinviwo_1_1ImageLayoutGL.html#a926febe89d1213405e2b23e334caa206", null ],
     [ "~ImageLayoutGL", "classinviwo_1_1ImageLayoutGL.html#aed64ca27d6a78a6d2d4ff94632f0aa67", null ],

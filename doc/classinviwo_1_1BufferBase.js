@@ -3,6 +3,7 @@ var classinviwo_1_1BufferBase =
     [ "BufferBase", "classinviwo_1_1BufferBase.html#a9ced2e77a25e3da4b0eede4d809e80f9", null ],
     [ "BufferBase", "classinviwo_1_1BufferBase.html#ae1cba90529dca4e71f24be143d06c05c", null ],
     [ "~BufferBase", "classinviwo_1_1BufferBase.html#a7baea342bbf87758c188f3d5b02052bf", null ],
+    [ "append", "classinviwo_1_1BufferBase.html#a5166ed5de5aaac6d24fbdf6dd16bc2cb", null ],
     [ "clone", "classinviwo_1_1BufferBase.html#a3a571c83e2cc05932de68c2046063823", null ],
     [ "getBufferTarget", "classinviwo_1_1BufferBase.html#a4a55593d136d9c9977a861a2e75292cc", null ],
     [ "getBufferUsage", "classinviwo_1_1BufferBase.html#a9241b2fcb502dabd6cdd3494dbefe247", null ],

@@ -1,7 +1,7 @@
 var classinviwo_1_1PropertyTransformer =
 [
     [ "PropertyTransformer", "classinviwo_1_1PropertyTransformer.html#adbb287ff037533d130c06de88d805cfc", null ],
-    [ "~PropertyTransformer", "classinviwo_1_1PropertyTransformer.html#a6b0147b063b5b0e7e7c1222f9cdcdb74", null ],
+    [ "~PropertyTransformer", "classinviwo_1_1PropertyTransformer.html#a9418d9e97e196827f455624cc6cb7785", null ],
     [ "inc", "classinviwo_1_1PropertyTransformer.html#a7e383b7703013604567c62b5fd5aeefe", null ],
     [ "invInc", "classinviwo_1_1PropertyTransformer.html#a9f5d7085706487f354c25f0645ebc7a3", null ],
     [ "invMax", "classinviwo_1_1PropertyTransformer.html#a3b39e3352333be880b64eb716f9c0305", null ],

@@ -13,11 +13,13 @@ var classinviwo_1_1Inviwo__ABufferGL4 =
     [ "abuffer_isMemoryPoolExpansionRequired", "classinviwo_1_1Inviwo__ABufferGL4.html#a7188710f1eee885174e9fbc67767dae0", null ],
     [ "aBuffer_isMemoryReallocationRequired", "classinviwo_1_1Inviwo__ABufferGL4.html#af92787de30ca57881f1243e1ad18677a", null ],
     [ "abuffer_printDebugInfo", "classinviwo_1_1Inviwo__ABufferGL4.html#adf1ea1a277d8f1972358e7ea4994d1a9", null ],
-    [ "aBuffer_resetLinkList", "classinviwo_1_1Inviwo__ABufferGL4.html#a1c486946a6c0c132d955a9909afc2426", null ],
-    [ "aBuffer_resolveLinkList", "classinviwo_1_1Inviwo__ABufferGL4.html#a8d435c6b668fae683d824e06eea04a07", null ],
+    [ "aBuffer_resetLinkList", "classinviwo_1_1Inviwo__ABufferGL4.html#a4c56c4eede9978b79981c88e7cbc5476", null ],
+    [ "aBuffer_resolveLinkList", "classinviwo_1_1Inviwo__ABufferGL4.html#a997267902a943b1f8d6f0681d6e7c835", null ],
     [ "abuffer_textureInfo", "classinviwo_1_1Inviwo__ABufferGL4.html#accda8e3adbfef59b8895fac01bdfd072", null ],
     [ "aBuffer_unbind", "classinviwo_1_1Inviwo__ABufferGL4.html#a343c239ff1d46a4c26e848eccd9f40b8", null ],
+    [ "getLogStatus", "classinviwo_1_1Inviwo__ABufferGL4.html#a0f2a59c8017b66fc60d382a74b70341b", null ],
     [ "init", "classinviwo_1_1Inviwo__ABufferGL4.html#a304a6f185c0078b2655d4ff353875b87", null ],
+    [ "setLogStatus", "classinviwo_1_1Inviwo__ABufferGL4.html#a1bce423e3c39d91adf5224ed13d635f1", null ],
     [ "abufferFragCountImgTexture_", "classinviwo_1_1Inviwo__ABufferGL4.html#a6d61a63bb37c916e6665b512a696b51e", null ],
     [ "abufferPageIdxImgTexture_", "classinviwo_1_1Inviwo__ABufferGL4.html#a06dcc6afc2319cfd003d38e3c6fdc880", null ],
     [ "abuffInteractionHandler_", "classinviwo_1_1Inviwo__ABufferGL4.html#a89d1c6c33cd0a23529008ec265a62945", null ],
@@ -34,5 +36,6 @@ var classinviwo_1_1Inviwo__ABufferGL4 =
     [ "shared_RGBA_DataListBuffID_", "classinviwo_1_1Inviwo__ABufferGL4.html#ae2ab2e08b16150ffcc9cabb8a8fe8d3e", null ],
     [ "sharedLinkListAddress_", "classinviwo_1_1Inviwo__ABufferGL4.html#a85096034724175008418672c8793060c", null ],
     [ "sharedLinkListBuffID_", "classinviwo_1_1Inviwo__ABufferGL4.html#aadedd00016181e8f4fd33e8c46ca5d49", null ],
-    [ "texUnits_", "classinviwo_1_1Inviwo__ABufferGL4.html#a40179722dd94b497b69a54879a5d0427", null ]
+    [ "texUnits_", "classinviwo_1_1Inviwo__ABufferGL4.html#a40179722dd94b497b69a54879a5d0427", null ],
+    [ "verboseLogging_", "classinviwo_1_1Inviwo__ABufferGL4.html#ae4bdecc30f798f02104da080a03e873c", null ]
 ];

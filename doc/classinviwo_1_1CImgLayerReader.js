@@ -5,5 +5,5 @@ var classinviwo_1_1CImgLayerReader =
     [ "~CImgLayerReader", "classinviwo_1_1CImgLayerReader.html#a318a2558f12a9120ccd83bf2206ad285", null ],
     [ "clone", "classinviwo_1_1CImgLayerReader.html#aa2f65011fa34e0528f6e7b93434bee47", null ],
     [ "operator=", "classinviwo_1_1CImgLayerReader.html#ab57692a730b3c7dcdf1e5fa6f3315716", null ],
-    [ "readData", "classinviwo_1_1CImgLayerReader.html#af33b09ee5f507c582ecd501cf5e04bce", null ]
+    [ "readData", "classinviwo_1_1CImgLayerReader.html#ab786c55802d9310c9318e24f5431f951", null ]
 ];

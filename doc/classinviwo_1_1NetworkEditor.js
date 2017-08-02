@@ -13,7 +13,6 @@ var classinviwo_1_1NetworkEditor =
     [ "dragEnterEvent", "classinviwo_1_1NetworkEditor.html#a9722db1b7a91ee8aa67d67189192364b", null ],
     [ "dragMoveEvent", "classinviwo_1_1NetworkEditor.html#a8e1af92ebfe7ca9f2089cdf51de91c62", null ],
     [ "dropEvent", "classinviwo_1_1NetworkEditor.html#a225b90d9ca6a9b7ad5f9eaa7804eb46c", null ],
-    [ "event", "classinviwo_1_1NetworkEditor.html#aaa59f6139df90174429600bb74138937", null ],
     [ "getCurrentFilename", "classinviwo_1_1NetworkEditor.html#a84ca14dbb9b9232be67be17f989e8e61", null ],
     [ "helpEvent", "classinviwo_1_1NetworkEditor.html#a1d8f3ddfef0d79c55ad2b56e9eb0311b", null ],
     [ "initiateConnection", "classinviwo_1_1NetworkEditor.html#a659bf1b9f226a89cffd9e09188ae1534", null ],

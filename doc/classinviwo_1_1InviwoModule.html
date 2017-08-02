@@ -96,6 +96,42 @@ $(document).ready(function(){initNavTree('classinviwo_1_1InviwoModule.html','');
  <a href="classinviwo_1_1InviwoModule.html#details">More...</a></p>
 
 <p><code>#include &lt;inviwomodule.h&gt;</code></p>
+<div id="dynsection-0" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-0-trigger" src="closed.png" alt="+"/> Inheritance diagram for inviwo::InviwoModule:</div>
+<div id="dynsection-0-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-0-content" class="dyncontent" style="display:none;">
+<div class="center"><img src="classinviwo_1_1InviwoModule__inherit__graph.png" border="0" usemap="#inviwo_1_1InviwoModule_inherit__map" alt="Inheritance graph"/></div>
+<map name="inviwo_1_1InviwoModule_inherit__map" id="inviwo_1_1InviwoModule_inherit__map">
+<area shape="rect" id="node2" href="classinviwo_1_1ABufferGLModule.html" title="inviwo::ABufferGLModule" alt="" coords="213,5,378,32"/>
+<area shape="rect" id="node3" href="classinviwo_1_1AnimationModule.html" title="inviwo::AnimationModule" alt="" coords="213,56,377,83"/>
+<area shape="rect" id="node4" href="classinviwo_1_1AnimationQtModule.html" title="inviwo::AnimationQtModule" alt="" coords="206,107,385,133"/>
+<area shape="rect" id="node5" href="classinviwo_1_1AssimpModule.html" title="inviwo::AssimpModule" alt="" coords="220,157,371,184"/>
+<area shape="rect" id="node6" href="classinviwo_1_1BaseCLModule.html" title="inviwo::BaseCLModule" alt="" coords="219,208,371,235"/>
+<area shape="rect" id="node7" href="classinviwo_1_1BaseGLModule.html" title="inviwo::BaseGLModule" alt="" coords="219,259,372,285"/>
+<area shape="rect" id="node8" href="classinviwo_1_1BaseModule.html" title="inviwo::BaseModule" alt="" coords="227,309,363,336"/>
+<area shape="rect" id="node9" href="classinviwo_1_1BrushingAndLinkingModule.html" title="inviwo::BrushingAndLinking\lModule" alt="" coords="206,361,385,402"/>
+<area shape="rect" id="node10" href="classinviwo_1_1CImgModule.html" title="inviwo::CImgModule" alt="" coords="227,427,363,453"/>
+<area shape="rect" id="node11" href="classinviwo_1_1EigenUtilsModule.html" title="inviwo::EigenUtilsModule" alt="" coords="213,477,378,504"/>
+<area shape="rect" id="node12" href="classinviwo_1_1FontRenderingModule.html" title="inviwo::FontRenderingModule" alt="" coords="200,528,391,555"/>
+<area shape="rect" id="node13" href="classinviwo_1_1GLFWModule.html" title="inviwo::GLFWModule" alt="" coords="223,579,367,605"/>
+<area shape="rect" id="node14" href="classinviwo_1_1HDF5Module.html" title="inviwo::HDF5Module" alt="" coords="226,629,365,656"/>
+<area shape="rect" id="node15" href="classinviwo_1_1InviwoCore.html" title="Module which registers all module related functionality available in the core. " alt="" coords="233,680,358,707"/>
+<area shape="rect" id="node16" href="classinviwo_1_1NiftiModule.html" title="inviwo::NiftiModule" alt="" coords="231,731,359,757"/>
+<area shape="rect" id="node17" href="classinviwo_1_1OpenCLModule.html" title="inviwo::OpenCLModule" alt="" coords="219,781,372,808"/>
+<area shape="rect" id="node18" href="classinviwo_1_1OpenGLModule.html" title="inviwo::OpenGLModule" alt="" coords="218,832,373,859"/>
+<area shape="rect" id="node19" href="classinviwo_1_1OpenGLQtModule.html" title="inviwo::OpenGLQtModule" alt="" coords="211,883,379,909"/>
+<area shape="rect" id="node20" href="classinviwo_1_1PlottingGLModule.html" title="inviwo::PlottingGLModule" alt="" coords="212,933,379,960"/>
+<area shape="rect" id="node21" href="classinviwo_1_1PlottingModule.html" title="inviwo::PlottingModule" alt="" coords="220,984,371,1011"/>
+<area shape="rect" id="node22" href="classinviwo_1_1PostProcessingModule.html" title="inviwo::PostProcessingModule" alt="" coords="196,1035,395,1061"/>
+<area shape="rect" id="node23" href="classinviwo_1_1PVMModule.html" title="inviwo::PVMModule" alt="" coords="228,1085,363,1112"/>
+<area shape="rect" id="node24" href="classinviwo_1_1Python3Module.html" title="inviwo::Python3Module" alt="" coords="218,1136,373,1163"/>
+<area shape="rect" id="node25" href="classinviwo_1_1Python3QtModule.html" title="inviwo::Python3QtModule" alt="" coords="211,1187,379,1213"/>
+<area shape="rect" id="node26" href="classinviwo_1_1QtWidgetsModule.html" title="inviwo::QtWidgetsModule" alt="" coords="211,1237,379,1264"/>
+<area shape="rect" id="node27" href="classinviwo_1_1VectorFieldVisualizationGLModule.html" title="inviwo::VectorFieldVisualization\lGLModule" alt="" coords="193,1289,397,1330"/>
+<area shape="rect" id="node28" href="classinviwo_1_1VectorFieldVisualizationModule.html" title="inviwo::VectorFieldVisualization\lModule" alt="" coords="193,1354,397,1395"/>
+</map>
+<center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
@@ -316,7 +352,7 @@ Protected Attributes</h2></td></tr>
 </div><div class="memdoc">
 <p>Should return a converter that updates a processor network from the oldModuleVersion to the current module version returned by getVersion. You need to overload this together with getVersion to implement conversioning for the module. This is needed whenever you modify a processor in such a was as breaking the deserialization of a old network. For example by changing the identifier of a property. By the default it will return a nullptr. Since there is no need to convert to version 0. Look at <a class="el" href="classinviwo_1_1BaseModule.html">BaseModule</a> for an example of this in use. </p>
 
-<p>Reimplemented in <a class="el" href="classinviwo_1_1VectorFieldVisualizationModule.html#a647f7a4892f434db0014a9c757133b16">inviwo::VectorFieldVisualizationModule</a>, <a class="el" href="classinviwo_1_1BaseCLModule.html#a006e369792716a8320b703804a069042">inviwo::BaseCLModule</a>, <a class="el" href="classinviwo_1_1VectorFieldVisualizationGLModule.html#a5e56e4ec8e0801d315b5f10e048fd8b4">inviwo::VectorFieldVisualizationGLModule</a>, <a class="el" href="classinviwo_1_1BaseModule.html#a7acc8d8af8de34575931bbd0dcc8841a">inviwo::BaseModule</a>, <a class="el" href="classinviwo_1_1BaseGLModule.html#a0e1a5fbcb849bac2ec51101c8dd2b2f1">inviwo::BaseGLModule</a>, <a class="el" href="classinviwo_1_1ABufferGLModule.html#adad0e1c91847dccfce110e73b55076d8">inviwo::ABufferGLModule</a>, and <a class="el" href="classinviwo_1_1FontRenderingModule.html#a5db16e04d7c55e0c3ce401e9d8a1f3d8">inviwo::FontRenderingModule</a>.</p>
+<p>Reimplemented in <a class="el" href="classinviwo_1_1BaseModule.html#a7acc8d8af8de34575931bbd0dcc8841a">inviwo::BaseModule</a>, <a class="el" href="classinviwo_1_1VectorFieldVisualizationModule.html#a647f7a4892f434db0014a9c757133b16">inviwo::VectorFieldVisualizationModule</a>, <a class="el" href="classinviwo_1_1BaseCLModule.html#a006e369792716a8320b703804a069042">inviwo::BaseCLModule</a>, <a class="el" href="classinviwo_1_1VectorFieldVisualizationGLModule.html#a5e56e4ec8e0801d315b5f10e048fd8b4">inviwo::VectorFieldVisualizationGLModule</a>, <a class="el" href="classinviwo_1_1BaseGLModule.html#a0e1a5fbcb849bac2ec51101c8dd2b2f1">inviwo::BaseGLModule</a>, <a class="el" href="classinviwo_1_1ABufferGLModule.html#adad0e1c91847dccfce110e73b55076d8">inviwo::ABufferGLModule</a>, and <a class="el" href="classinviwo_1_1FontRenderingModule.html#a5db16e04d7c55e0c3ce401e9d8a1f3d8">inviwo::FontRenderingModule</a>.</p>
 
 </div>
 </div>
@@ -373,7 +409,7 @@ Protected Attributes</h2></td></tr>
 The returned directory might not exist in the case that the app is deployed and the module does not contain any resources. </dd></dl>
 <dl class="section return"><dt>Returns</dt><dd>std::string Path to module directory </dd></dl>
 
-<p>Reimplemented in <a class="el" href="classinviwo_1_1InviwoCore.html#a4694b0fe3c72a3a97d61b8d41b1620bc">inviwo::InviwoCore</a>, and <a class="el" href="classinviwo_1_1QtWidgetsModule.html#a1a9effc4c0326149ae90a905eba8cae2">inviwo::QtWidgetsModule</a>.</p>
+<p>Reimplemented in <a class="el" href="classinviwo_1_1InviwoCore.html#a4694b0fe3c72a3a97d61b8d41b1620bc">inviwo::InviwoCore</a>.</p>
 
 </div>
 </div>
@@ -401,7 +437,7 @@ The returned directory might not exist in the case that the app is deployed and 
 </div><div class="memdoc">
 <p>Returns the module version. This is used for converting old processor networks in connection with the getConverter function. By default it will return 0. Overload this function to return a larger value when you need to update the module version. </p>
 
-<p>Reimplemented in <a class="el" href="classinviwo_1_1VectorFieldVisualizationModule.html#aada42e4f66cd6e2cbb6f8eb8b9eab267">inviwo::VectorFieldVisualizationModule</a>, <a class="el" href="classinviwo_1_1BaseCLModule.html#ab53742efeaf8b67f197764ed3345d764">inviwo::BaseCLModule</a>, <a class="el" href="classinviwo_1_1VectorFieldVisualizationGLModule.html#a78ebacd4b5fac10bdd4d9fcad21a5093">inviwo::VectorFieldVisualizationGLModule</a>, <a class="el" href="classinviwo_1_1BaseModule.html#aadd69f1b95f43db76e0403942f33715e">inviwo::BaseModule</a>, <a class="el" href="classinviwo_1_1BaseGLModule.html#af55f3c7b064a62d81c8c464934f55b26">inviwo::BaseGLModule</a>, <a class="el" href="classinviwo_1_1ABufferGLModule.html#a6a5070a9b587a2e5f4f73e1d05035e01">inviwo::ABufferGLModule</a>, and <a class="el" href="classinviwo_1_1FontRenderingModule.html#a4cc99267e4fabadbe57d168e683accac">inviwo::FontRenderingModule</a>.</p>
+<p>Reimplemented in <a class="el" href="classinviwo_1_1BaseModule.html#aadd69f1b95f43db76e0403942f33715e">inviwo::BaseModule</a>, <a class="el" href="classinviwo_1_1VectorFieldVisualizationModule.html#aada42e4f66cd6e2cbb6f8eb8b9eab267">inviwo::VectorFieldVisualizationModule</a>, <a class="el" href="classinviwo_1_1BaseCLModule.html#ab53742efeaf8b67f197764ed3345d764">inviwo::BaseCLModule</a>, <a class="el" href="classinviwo_1_1VectorFieldVisualizationGLModule.html#a78ebacd4b5fac10bdd4d9fcad21a5093">inviwo::VectorFieldVisualizationGLModule</a>, <a class="el" href="classinviwo_1_1BaseGLModule.html#af55f3c7b064a62d81c8c464934f55b26">inviwo::BaseGLModule</a>, <a class="el" href="classinviwo_1_1ABufferGLModule.html#a6a5070a9b587a2e5f4f73e1d05035e01">inviwo::ABufferGLModule</a>, and <a class="el" href="classinviwo_1_1FontRenderingModule.html#a4cc99267e4fabadbe57d168e683accac">inviwo::FontRenderingModule</a>.</p>
 
 </div>
 </div>

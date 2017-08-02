@@ -2,6 +2,8 @@ var classinviwo_1_1Deserializer =
 [
     [ "Deserializer", "classinviwo_1_1Deserializer.html#a4982043878f2096e9087248c6ae7d233", null ],
     [ "Deserializer", "classinviwo_1_1Deserializer.html#aa6078a255ad55551d7d290079fbe9a15", null ],
+    [ "Deserializer", "classinviwo_1_1Deserializer.html#aceffe5a1ff620974454b8b7433894229", null ],
+    [ "Deserializer", "classinviwo_1_1Deserializer.html#ab468cd4833f9c509b35b462a757dc94c", null ],
     [ "~Deserializer", "classinviwo_1_1Deserializer.html#ae4ce49f156fd42119b9308ffe24472ac", null ],
     [ "convertVersion", "classinviwo_1_1Deserializer.html#a8bfc06ac56e6a8c68c886aaae8479ae7", null ],
     [ "deserialize", "classinviwo_1_1Deserializer.html#aca27dc9dbc30bdf6db08b5fb2b10b49c", null ],
@@ -29,6 +31,8 @@ var classinviwo_1_1Deserializer =
     [ "getInviwoWorkspaceVersion", "classinviwo_1_1Deserializer.html#ab689bdb44bc14764e1316701a8c40b37", null ],
     [ "getNonRegisteredType", "classinviwo_1_1Deserializer.html#ab91ea1b30c11cd38abd34e65bdcb774c", null ],
     [ "getRegisteredType", "classinviwo_1_1Deserializer.html#a8a2221125708f1dcf729cc6305782f6b", null ],
+    [ "operator=", "classinviwo_1_1Deserializer.html#a43e59ed79519f5541fba2d011c090226", null ],
+    [ "operator=", "classinviwo_1_1Deserializer.html#a33ef68c8240e2cdfec51ecdb9fa67260", null ],
     [ "registerFactory", "classinviwo_1_1Deserializer.html#a38dab8da316afea4ed0d5fba8b06633d", null ],
     [ "setExceptionHandler", "classinviwo_1_1Deserializer.html#a94294c166876e9c7a5d91eff84fea9ff", null ],
     [ "ContainerWrapper", "classinviwo_1_1Deserializer.html#a2113059f838d01a9934ce5cc2beb382c", null ],

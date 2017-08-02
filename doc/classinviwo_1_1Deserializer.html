@@ -90,6 +90,16 @@ $(document).ready(function(){initNavTree('classinviwo_1_1Deserializer.html','');
 <div class="title">inviwo::Deserializer Class Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
+<div id="dynsection-0" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-0-trigger" src="closed.png" alt="+"/> Inheritance diagram for inviwo::Deserializer:</div>
+<div id="dynsection-0-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-0-content" class="dyncontent" style="display:none;">
+<div class="center"><img src="classinviwo_1_1Deserializer__inherit__graph.png" border="0" usemap="#inviwo_1_1Deserializer_inherit__map" alt="Inheritance graph"/></div>
+<map name="inviwo_1_1Deserializer_inherit__map" id="inviwo_1_1Deserializer_inherit__map">
+<area shape="rect" id="node2" href="classinviwo_1_1SerializeBase.html" title="inviwo::SerializeBase" alt="" coords="5,5,149,32"/>
+</map>
+<center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
@@ -99,6 +109,18 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:aa6078a255ad55551d7d290079fbe9a15"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classinviwo_1_1Deserializer.html#aa6078a255ad55551d7d290079fbe9a15">Deserializer</a> (std::istream &amp;stream, const std::string &amp;refPath, bool allowReference=true)</td></tr>
 <tr class="memdesc:aa6078a255ad55551d7d290079fbe9a15"><td class="mdescLeft">&#160;</td><td class="mdescRight">Deserializes content from the stream using refPath to calculate relative paths to data.  <a href="#aa6078a255ad55551d7d290079fbe9a15">More...</a><br /></td></tr>
 <tr class="separator:aa6078a255ad55551d7d290079fbe9a15"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aceffe5a1ff620974454b8b7433894229"><td class="memItemLeft" align="right" valign="top"><a id="aceffe5a1ff620974454b8b7433894229"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>Deserializer</b> (const <a class="el" href="classinviwo_1_1Deserializer.html">Deserializer</a> &amp;)=delete</td></tr>
+<tr class="separator:aceffe5a1ff620974454b8b7433894229"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab468cd4833f9c509b35b462a757dc94c"><td class="memItemLeft" align="right" valign="top"><a id="ab468cd4833f9c509b35b462a757dc94c"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>Deserializer</b> (<a class="el" href="classinviwo_1_1Deserializer.html">Deserializer</a> &amp;&amp;)=default</td></tr>
+<tr class="separator:ab468cd4833f9c509b35b462a757dc94c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a43e59ed79519f5541fba2d011c090226"><td class="memItemLeft" align="right" valign="top"><a id="a43e59ed79519f5541fba2d011c090226"></a>
+<a class="el" href="classinviwo_1_1Deserializer.html">Deserializer</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator=</b> (const <a class="el" href="classinviwo_1_1Deserializer.html">Deserializer</a> &amp;that)=delete</td></tr>
+<tr class="separator:a43e59ed79519f5541fba2d011c090226"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a33ef68c8240e2cdfec51ecdb9fa67260"><td class="memItemLeft" align="right" valign="top"><a id="a33ef68c8240e2cdfec51ecdb9fa67260"></a>
+<a class="el" href="classinviwo_1_1Deserializer.html">Deserializer</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator=</b> (<a class="el" href="classinviwo_1_1Deserializer.html">Deserializer</a> &amp;&amp;that)=default</td></tr>
+<tr class="separator:a33ef68c8240e2cdfec51ecdb9fa67260"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aca27dc9dbc30bdf6db08b5fb2b10b49c"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
 <tr class="memitem:aca27dc9dbc30bdf6db08b5fb2b10b49c"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classinviwo_1_1Deserializer.html#aca27dc9dbc30bdf6db08b5fb2b10b49c">deserialize</a> (const std::string &amp;key, std::vector&lt; T *&gt; &amp;sVector, const std::string &amp;itemKey=&quot;item&quot;)</td></tr>
 <tr class="memdesc:aca27dc9dbc30bdf6db08b5fb2b10b49c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Deserialize a vector.  <a href="#aca27dc9dbc30bdf6db08b5fb2b10b49c">More...</a><br /></td></tr>
@@ -209,19 +231,24 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>getInviwoWorkspaceVers
 <tr class="memitem:a3bb3dcf0d06861406d28c362ecda48e3 inherit pub_methods_classinviwo_1_1SerializeBase"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classinviwo_1_1SerializeBase.html#a3bb3dcf0d06861406d28c362ecda48e3">SerializeBase</a> (bool allowReference=true)</td></tr>
 <tr class="memdesc:a3bb3dcf0d06861406d28c362ecda48e3 inherit pub_methods_classinviwo_1_1SerializeBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Base class for <a class="el" href="classinviwo_1_1Serializer.html">Serializer</a> and <a class="el" href="classinviwo_1_1Deserializer.html">Deserializer</a>.  <a href="classinviwo_1_1SerializeBase.html#a3bb3dcf0d06861406d28c362ecda48e3">More...</a><br /></td></tr>
 <tr class="separator:a3bb3dcf0d06861406d28c362ecda48e3 inherit pub_methods_classinviwo_1_1SerializeBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7d84be1ed39f3f82e417e5e529531037 inherit pub_methods_classinviwo_1_1SerializeBase"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classinviwo_1_1SerializeBase.html#a7d84be1ed39f3f82e417e5e529531037">SerializeBase</a> (<a class="el" href="classinviwo_1_1SerializeBase.html">SerializeBase</a> &amp;s, bool allowReference=true)</td></tr>
-<tr class="memdesc:a7d84be1ed39f3f82e417e5e529531037 inherit pub_methods_classinviwo_1_1SerializeBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Base class for <a class="el" href="classinviwo_1_1Serializer.html">Serializer</a> and <a class="el" href="classinviwo_1_1Deserializer.html">Deserializer</a>.  <a href="classinviwo_1_1SerializeBase.html#a7d84be1ed39f3f82e417e5e529531037">More...</a><br /></td></tr>
-<tr class="separator:a7d84be1ed39f3f82e417e5e529531037 inherit pub_methods_classinviwo_1_1SerializeBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae8455f32b9ca1758477a1ffafbaf995e inherit pub_methods_classinviwo_1_1SerializeBase"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classinviwo_1_1SerializeBase.html#ae8455f32b9ca1758477a1ffafbaf995e">SerializeBase</a> (std::string fileName, bool allowReference=true)</td></tr>
 <tr class="memdesc:ae8455f32b9ca1758477a1ffafbaf995e inherit pub_methods_classinviwo_1_1SerializeBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Base class for <a class="el" href="classinviwo_1_1Serializer.html">Serializer</a> and <a class="el" href="classinviwo_1_1Deserializer.html">Deserializer</a>.  <a href="classinviwo_1_1SerializeBase.html#ae8455f32b9ca1758477a1ffafbaf995e">More...</a><br /></td></tr>
 <tr class="separator:ae8455f32b9ca1758477a1ffafbaf995e inherit pub_methods_classinviwo_1_1SerializeBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a66ae57926aae944cf66d92114247e647 inherit pub_methods_classinviwo_1_1SerializeBase"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classinviwo_1_1SerializeBase.html#a66ae57926aae944cf66d92114247e647">SerializeBase</a> (std::istream &amp;stream, const std::string &amp;path, bool allowReference=true)</td></tr>
 <tr class="memdesc:a66ae57926aae944cf66d92114247e647 inherit pub_methods_classinviwo_1_1SerializeBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Base class for <a class="el" href="classinviwo_1_1Serializer.html">Serializer</a> and <a class="el" href="classinviwo_1_1Deserializer.html">Deserializer</a>.  <a href="classinviwo_1_1SerializeBase.html#a66ae57926aae944cf66d92114247e647">More...</a><br /></td></tr>
 <tr class="separator:a66ae57926aae944cf66d92114247e647 inherit pub_methods_classinviwo_1_1SerializeBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a40fc8b58b1b01626c40c0a8453a3b436 inherit pub_methods_classinviwo_1_1SerializeBase"><td class="memItemLeft" align="right" valign="top"><a id="a40fc8b58b1b01626c40c0a8453a3b436"></a>
-virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classinviwo_1_1SerializeBase.html#a40fc8b58b1b01626c40c0a8453a3b436">~SerializeBase</a> ()</td></tr>
-<tr class="memdesc:a40fc8b58b1b01626c40c0a8453a3b436 inherit pub_methods_classinviwo_1_1SerializeBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destructor. <br /></td></tr>
-<tr class="separator:a40fc8b58b1b01626c40c0a8453a3b436 inherit pub_methods_classinviwo_1_1SerializeBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1fae766ef5dd554372b7a680951ef942 inherit pub_methods_classinviwo_1_1SerializeBase"><td class="memItemLeft" align="right" valign="top"><a id="a1fae766ef5dd554372b7a680951ef942"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>SerializeBase</b> (const <a class="el" href="classinviwo_1_1SerializeBase.html">SerializeBase</a> &amp;rhs)=delete</td></tr>
+<tr class="separator:a1fae766ef5dd554372b7a680951ef942 inherit pub_methods_classinviwo_1_1SerializeBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a47f607ba95e6fb0877aa714fa04f1bdc inherit pub_methods_classinviwo_1_1SerializeBase"><td class="memItemLeft" align="right" valign="top"><a id="a47f607ba95e6fb0877aa714fa04f1bdc"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>SerializeBase</b> (<a class="el" href="classinviwo_1_1SerializeBase.html">SerializeBase</a> &amp;&amp;rhs)=default</td></tr>
+<tr class="separator:a47f607ba95e6fb0877aa714fa04f1bdc inherit pub_methods_classinviwo_1_1SerializeBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a16f6b32884874b79eec6fc3f8a026e4f inherit pub_methods_classinviwo_1_1SerializeBase"><td class="memItemLeft" align="right" valign="top"><a id="a16f6b32884874b79eec6fc3f8a026e4f"></a>
+<a class="el" href="classinviwo_1_1SerializeBase.html">SerializeBase</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator=</b> (const <a class="el" href="classinviwo_1_1SerializeBase.html">SerializeBase</a> &amp;)=delete</td></tr>
+<tr class="separator:a16f6b32884874b79eec6fc3f8a026e4f inherit pub_methods_classinviwo_1_1SerializeBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6f2facba2318062f4ab2fd920b45ffbf inherit pub_methods_classinviwo_1_1SerializeBase"><td class="memItemLeft" align="right" valign="top"><a id="a6f2facba2318062f4ab2fd920b45ffbf"></a>
+<a class="el" href="classinviwo_1_1SerializeBase.html">SerializeBase</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator=</b> (<a class="el" href="classinviwo_1_1SerializeBase.html">SerializeBase</a> &amp;&amp;)=default</td></tr>
+<tr class="separator:a6f2facba2318062f4ab2fd920b45ffbf inherit pub_methods_classinviwo_1_1SerializeBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acdabd6bd3cac2f4dcf075333397f65cd inherit pub_methods_classinviwo_1_1SerializeBase"><td class="memItemLeft" align="right" valign="top"><a id="acdabd6bd3cac2f4dcf075333397f65cd"></a>
 virtual const std::string &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classinviwo_1_1SerializeBase.html#acdabd6bd3cac2f4dcf075333397f65cd">getFileName</a> () const</td></tr>
 <tr class="memdesc:acdabd6bd3cac2f4dcf075333397f65cd inherit pub_methods_classinviwo_1_1SerializeBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">gets the xml file name. <br /></td></tr>
@@ -243,15 +270,12 @@ template&lt;typename T , typename K &gt; </td></tr>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="inherited"></a>
 Additional Inherited Members</h2></td></tr>
 <tr class="inherit_header pub_types_classinviwo_1_1SerializeBase"><td colspan="2" onclick="javascript:toggleInherit('pub_types_classinviwo_1_1SerializeBase')"><img src="closed.png" alt="-"/>&#160;Public Types inherited from <a class="el" href="classinviwo_1_1SerializeBase.html">inviwo::SerializeBase</a></td></tr>
-<tr class="memitem:afafa48fcf25cb3bde296b47c61cb0a27 inherit pub_types_classinviwo_1_1SerializeBase"><td class="memItemLeft" align="right" valign="top"><a id="afafa48fcf25cb3bde296b47c61cb0a27"></a>
-typedef std::pair&lt; const void *, <a class="el" href="structinviwo_1_1SerializeBase_1_1ReferenceData.html">SerializeBase::ReferenceData</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>RefDataPair</b></td></tr>
-<tr class="separator:afafa48fcf25cb3bde296b47c61cb0a27 inherit pub_types_classinviwo_1_1SerializeBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7cc716021582de097c947da43136d3c3 inherit pub_types_classinviwo_1_1SerializeBase"><td class="memItemLeft" align="right" valign="top"><a id="a7cc716021582de097c947da43136d3c3"></a>
-typedef std::multimap&lt; const void *, <a class="el" href="structinviwo_1_1SerializeBase_1_1ReferenceData.html">ReferenceData</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>RefMap</b></td></tr>
-<tr class="separator:a7cc716021582de097c947da43136d3c3 inherit pub_types_classinviwo_1_1SerializeBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad1242e405584c7d17737da1d749f0b1c inherit pub_types_classinviwo_1_1SerializeBase"><td class="memItemLeft" align="right" valign="top"><a id="ad1242e405584c7d17737da1d749f0b1c"></a>
-typedef std::vector&lt; <a class="el" href="structinviwo_1_1SerializeBase_1_1ReferenceData.html">SerializeBase::ReferenceData</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>RefDataList</b></td></tr>
-<tr class="separator:ad1242e405584c7d17737da1d749f0b1c inherit pub_types_classinviwo_1_1SerializeBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5fe96c118e632122477b9db166cb9948 inherit pub_types_classinviwo_1_1SerializeBase"><td class="memItemLeft" align="right" valign="top"><a id="a5fe96c118e632122477b9db166cb9948"></a>
+using&#160;</td><td class="memItemRight" valign="bottom"><b>RefDataPair</b> = std::pair&lt; const void *, <a class="el" href="structinviwo_1_1SerializeBase_1_1ReferenceData.html">SerializeBase::ReferenceData</a> &gt;</td></tr>
+<tr class="separator:a5fe96c118e632122477b9db166cb9948 inherit pub_types_classinviwo_1_1SerializeBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5a117c58fe80db2e5fd216a1977c30c2 inherit pub_types_classinviwo_1_1SerializeBase"><td class="memItemLeft" align="right" valign="top"><a id="a5a117c58fe80db2e5fd216a1977c30c2"></a>
+using&#160;</td><td class="memItemRight" valign="bottom"><b>RefMap</b> = std::multimap&lt; const void *, <a class="el" href="structinviwo_1_1SerializeBase_1_1ReferenceData.html">ReferenceData</a> &gt;</td></tr>
+<tr class="separator:a5a117c58fe80db2e5fd216a1977c30c2 inherit pub_types_classinviwo_1_1SerializeBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_static_methods_classinviwo_1_1SerializeBase"><td colspan="2" onclick="javascript:toggleInherit('pub_static_methods_classinviwo_1_1SerializeBase')"><img src="closed.png" alt="-"/>&#160;Static Public Member Functions inherited from <a class="el" href="classinviwo_1_1SerializeBase.html">inviwo::SerializeBase</a></td></tr>
 <tr class="memitem:a2401eb871c1f7155d64b54ae85e80097 inherit pub_static_methods_classinviwo_1_1SerializeBase"><td class="memItemLeft" align="right" valign="top"><a id="a2401eb871c1f7155d64b54ae85e80097"></a>
 static std::string&#160;</td><td class="memItemRight" valign="bottom"><b>nodeToString</b> (const TxElement &amp;node)</td></tr>

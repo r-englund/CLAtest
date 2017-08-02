@@ -15,7 +15,7 @@ var group__dataio =
       [ "~DataReaderType", "classinviwo_1_1DataReaderType.html#a94bd543fdc0923a41eebeba6932cbc8d", null ],
       [ "clone", "classinviwo_1_1DataReaderType.html#a5c5b77180672e03d23e162103268a982", null ],
       [ "operator=", "classinviwo_1_1DataReaderType.html#a14e3c93563d3a39f7a6dd1203f880e51", null ],
-      [ "readData", "classinviwo_1_1DataReaderType.html#a606f24a5a2580755b29fee36b22347e1", null ]
+      [ "readData", "classinviwo_1_1DataReaderType.html#ae65db61c3474fcf8ed5f3947e4e19394", null ]
     ] ],
     [ "DataWriter", "classinviwo_1_1DataWriter.html", [
       [ "DataWriter", "classinviwo_1_1DataWriter.html#accd116afe7171b1f287e859650de58db", null ],
@@ -47,7 +47,7 @@ var group__dataio =
       [ "~DatVolumeReader", "classinviwo_1_1DatVolumeReader.html#a8dbfb03238c485696a5929c2f9b6988a", null ],
       [ "clone", "classinviwo_1_1DatVolumeReader.html#a6b461f59650e543bcfa708579df8a84b", null ],
       [ "operator=", "classinviwo_1_1DatVolumeReader.html#aa7ac31ca8b4de2c0c9f691244b6a615b", null ],
-      [ "readData", "classinviwo_1_1DatVolumeReader.html#aba4eb0d1fc22e1a1a1049a6886a2eb4b", null ]
+      [ "readData", "classinviwo_1_1DatVolumeReader.html#abc96c9f5a39b723e37318b5cbaab94bd", null ]
     ] ],
     [ "DatVolumeWriter", "classinviwo_1_1DatVolumeWriter.html", [
       [ "DatVolumeWriter", "classinviwo_1_1DatVolumeWriter.html#a6166b90f63c31352b9c39ac43f8cc058", null ],
@@ -63,7 +63,7 @@ var group__dataio =
       [ "~IvfVolumeReader", "classinviwo_1_1IvfVolumeReader.html#ac4b98a723309c2d190e4f6d6f3b04ab3", null ],
       [ "clone", "classinviwo_1_1IvfVolumeReader.html#ae511100b5b8fb7362d4895635ff6b934", null ],
       [ "operator=", "classinviwo_1_1IvfVolumeReader.html#a299af71e71a9622de0b6d0290a8517f8", null ],
-      [ "readData", "classinviwo_1_1IvfVolumeReader.html#a29bb891f4f77835b55b8ef624ecaedbf", null ]
+      [ "readData", "classinviwo_1_1IvfVolumeReader.html#a3b17950e8eb6469e5368e9ddd55206f6", null ]
     ] ],
     [ "IvfVolumeWriter", "classinviwo_1_1IvfVolumeWriter.html", [
       [ "IvfVolumeWriter", "classinviwo_1_1IvfVolumeWriter.html#a3a31fe7f30fbb721dabb27494759da0b", null ],
@@ -81,7 +81,7 @@ var group__dataio =
       [ "getFormat", "classinviwo_1_1RawVolumeReader.html#ade7090cf3e0d5d4bb08af7fb10c5defa", null ],
       [ "haveReadLittleEndian", "classinviwo_1_1RawVolumeReader.html#a51d546b346995afe6329f990fbe8845a", null ],
       [ "operator=", "classinviwo_1_1RawVolumeReader.html#a07acd908c928ccf2cd0aaae57f803e06", null ],
-      [ "readData", "classinviwo_1_1RawVolumeReader.html#a14b678896f2df45d3621aeb48619f331", null ],
+      [ "readData", "classinviwo_1_1RawVolumeReader.html#abda50421672b115cb059537f9b87a9d3", null ],
       [ "setParameters", "classinviwo_1_1RawVolumeReader.html#a287175cbcd9242be37e02ea927422f0a", null ]
     ] ],
     [ "TextFileReader", "classinviwo_1_1TextFileReader.html", [
@@ -100,7 +100,7 @@ var group__dataio =
       [ "getFixInvalidDataFlag", "classinviwo_1_1AssimpReader.html#a0d4b5a4a025226906edcc763590b1d95", null ],
       [ "getLogLevel", "classinviwo_1_1AssimpReader.html#acea62a45cad7fd0a8723e037a6df492e", null ],
       [ "operator=", "classinviwo_1_1AssimpReader.html#a8e2a31a57693383d538a78112180d023", null ],
-      [ "readData", "classinviwo_1_1AssimpReader.html#a0c2e092e5eb680f9ddff3c5591af1eea", null ],
+      [ "readData", "classinviwo_1_1AssimpReader.html#a57108488199f1ad939fdd03caa4f8f54", null ],
       [ "setFixInvalidDataFlag", "classinviwo_1_1AssimpReader.html#acb4f4d432909da3d0c36de60e23b8641", null ],
       [ "setLogLevel", "classinviwo_1_1AssimpReader.html#af240d9924230978df23a0d52645221ea", null ]
     ] ],
@@ -110,7 +110,7 @@ var group__dataio =
       [ "~CImgLayerReader", "classinviwo_1_1CImgLayerReader.html#a318a2558f12a9120ccd83bf2206ad285", null ],
       [ "clone", "classinviwo_1_1CImgLayerReader.html#aa2f65011fa34e0528f6e7b93434bee47", null ],
       [ "operator=", "classinviwo_1_1CImgLayerReader.html#ab57692a730b3c7dcdf1e5fa6f3315716", null ],
-      [ "readData", "classinviwo_1_1CImgLayerReader.html#af33b09ee5f507c582ecd501cf5e04bce", null ]
+      [ "readData", "classinviwo_1_1CImgLayerReader.html#ab786c55802d9310c9318e24f5431f951", null ]
     ] ],
     [ "CImgLayerWriter", "classinviwo_1_1CImgLayerWriter.html", [
       [ "CImgLayerWriter", "classinviwo_1_1CImgLayerWriter.html#af277e6e4fcda593673a90d3ce97e5a6c", null ],
@@ -129,6 +129,18 @@ var group__dataio =
       [ "clone", "classinviwo_1_1CImgVolumeReader.html#a1f683be9f34206f2b6183424c307db82", null ],
       [ "operator=", "classinviwo_1_1CImgVolumeReader.html#a13a6709ba655469a2193b816d4b1051f", null ],
       [ "printMetaInfo", "classinviwo_1_1CImgVolumeReader.html#a75973ba3fd3d2f28bc8487d92129aa6d", null ],
-      [ "readData", "classinviwo_1_1CImgVolumeReader.html#abde2847b4212eaa2f74bfdc3c707042b", null ]
+      [ "readData", "classinviwo_1_1CImgVolumeReader.html#a19a4a7006905af7b358ab585877aebb0", null ]
+    ] ],
+    [ "CSVReader", "classinviwo_1_1CSVReader.html", [
+      [ "CSVReader", "classinviwo_1_1CSVReader.html#a6da77c09eec1c1158efae54ce5bb9de1", null ],
+      [ "CSVReader", "classinviwo_1_1CSVReader.html#ad5ff1580caf792a72d3227493fce9a4e", null ],
+      [ "CSVReader", "classinviwo_1_1CSVReader.html#a21463a01d2fa3c47b2fbb384b6126953", null ],
+      [ "~CSVReader", "classinviwo_1_1CSVReader.html#acf2f064e4685eabf82cb9598f91bbd3c", null ],
+      [ "clone", "classinviwo_1_1CSVReader.html#a9b16e560681e07ee59014f402603a9fc", null ],
+      [ "operator=", "classinviwo_1_1CSVReader.html#a1b0ef6809209d6670a6475e1fbb55126", null ],
+      [ "operator=", "classinviwo_1_1CSVReader.html#a13fd353edaab1161f89327011808ef20", null ],
+      [ "readData", "classinviwo_1_1CSVReader.html#aaa07ae9157a167977b021b3816af58ac", null ],
+      [ "setDelimiters", "classinviwo_1_1CSVReader.html#a295b8a5a5c12f1c5461231c256090e2e", null ],
+      [ "setFirstRowHeader", "classinviwo_1_1CSVReader.html#a55157d55354cf8d63eea31b287a3470d", null ]
     ] ]
 ];

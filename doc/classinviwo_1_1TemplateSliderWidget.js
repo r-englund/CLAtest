@@ -1,7 +1,7 @@
 var classinviwo_1_1TemplateSliderWidget =
 [
     [ "TemplateSliderWidget", "classinviwo_1_1TemplateSliderWidget.html#afefeb9cd59efc9a1ee8feb8451a82697", null ],
-    [ "~TemplateSliderWidget", "classinviwo_1_1TemplateSliderWidget.html#a1dee3471b9907d35a135fea698eb4b78", null ],
+    [ "~TemplateSliderWidget", "classinviwo_1_1TemplateSliderWidget.html#ad0e2274d1384c5feaa3d6a3fa1eeb66a", null ],
     [ "getValue", "classinviwo_1_1TemplateSliderWidget.html#a618df35bf7d92a09f685edb06bb8a1be", null ],
     [ "initValue", "classinviwo_1_1TemplateSliderWidget.html#ac2a5492a2790277bf7087210345ab8c5", null ],
     [ "newSliderValue", "classinviwo_1_1TemplateSliderWidget.html#ac132760df26bbff856f3fdeb178fcaf2", null ],

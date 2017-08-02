@@ -3,6 +3,7 @@ var classinviwo_1_1PropertyEditorWidgetQt =
     [ "PropertyEditorWidgetQt", "classinviwo_1_1PropertyEditorWidgetQt.html#a1f4770cfc9c9b724203af3855ee57090", null ],
     [ "~PropertyEditorWidgetQt", "classinviwo_1_1PropertyEditorWidgetQt.html#aea8e71df48e1f751f156923f1c0d768d", null ],
     [ "closeEvent", "classinviwo_1_1PropertyEditorWidgetQt.html#a6427de22520fbe281fc9305e37c45897", null ],
+    [ "isVisible", "classinviwo_1_1PropertyEditorWidgetQt.html#afbe518fd31ef24fdf4779b94005d3af8", null ],
     [ "moveEvent", "classinviwo_1_1PropertyEditorWidgetQt.html#ad3e9868c39bb3cbf7d565494037b0eb5", null ],
     [ "resizeEvent", "classinviwo_1_1PropertyEditorWidgetQt.html#a0a797f7deb9ca80ed0105f011187d76d", null ],
     [ "setDimensions", "classinviwo_1_1PropertyEditorWidgetQt.html#a0a15a18e19aec5df0c3af497a1123beb", null ],

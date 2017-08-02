@@ -200,11 +200,13 @@ var group__properties =
       [ "clone", "classinviwo_1_1MinMaxProperty.html#a70f9e8f339a39957629d0b98fe7be7e5", null ],
       [ "deserialize", "classinviwo_1_1MinMaxProperty.html#aafaa865a562c4202763927b47d6cb333", null ],
       [ "getDescription", "classinviwo_1_1MinMaxProperty.html#a53c0183756381225422269a77927839e", null ],
+      [ "getEnd", "classinviwo_1_1MinMaxProperty.html#a25fdfaa4d423b7bdb306b90ef1064126", null ],
       [ "getIncrement", "classinviwo_1_1MinMaxProperty.html#a987a4683ec200718aca30df009feb2e5", null ],
       [ "getMinSeparation", "classinviwo_1_1MinMaxProperty.html#a8411af7ddb625098a7e2136fbe344205", null ],
       [ "getRange", "classinviwo_1_1MinMaxProperty.html#a404b2a30e24e22c0038ad4604adfadc0", null ],
       [ "getRangeMax", "classinviwo_1_1MinMaxProperty.html#ac559e7b08013f8603a3b98c4c5977ccc", null ],
       [ "getRangeMin", "classinviwo_1_1MinMaxProperty.html#ad151cf3ae4ea0cabb2429d6f2f684d5d", null ],
+      [ "getStart", "classinviwo_1_1MinMaxProperty.html#a09b21cc11a82edc92f432f81ab293c08", null ],
       [ "InviwoPropertyInfo", "classinviwo_1_1MinMaxProperty.html#a3f87ce2e3e54ebadb166ce64f30e68c8", null ],
       [ "onRangeChange", "classinviwo_1_1MinMaxProperty.html#ac5beae7db7b9ae7d1bf6937c3363c2f7", null ],
       [ "operator=", "classinviwo_1_1MinMaxProperty.html#a018c8eff94ef4f7cc49be16b0b252c97", null ],
@@ -215,12 +217,14 @@ var group__properties =
       [ "set", "classinviwo_1_1MinMaxProperty.html#a67f6ac45808a1bbf20c75912bc00219b", null ],
       [ "set", "classinviwo_1_1MinMaxProperty.html#a8f74e8aea95dd93cdbb5789f3a70e932", null ],
       [ "setCurrentStateAsDefault", "classinviwo_1_1MinMaxProperty.html#a90e719f5733813bbfb849e8326ab8d64", null ],
+      [ "setEnd", "classinviwo_1_1MinMaxProperty.html#a9bfdce73ba843e45f9644c09ac14660c", null ],
       [ "setIncrement", "classinviwo_1_1MinMaxProperty.html#a8b6f431360faad60e71ec4d86b02b343", null ],
       [ "setMinSeparation", "classinviwo_1_1MinMaxProperty.html#a570c88f3d16b7edc2167ca4728f7f3d3", null ],
       [ "setRange", "classinviwo_1_1MinMaxProperty.html#a88798ce6b33333326a0ef5dddc1ad26e", null ],
       [ "setRangeMax", "classinviwo_1_1MinMaxProperty.html#ae5144afdab83f61cefbe6b42d9f91237", null ],
       [ "setRangeMin", "classinviwo_1_1MinMaxProperty.html#aaa05c878a194694831e20332799ea3cb", null ],
       [ "setRangeNormalized", "classinviwo_1_1MinMaxProperty.html#a64c81f15b7e6cab67f7b30f1171ccefb", null ],
+      [ "setStart", "classinviwo_1_1MinMaxProperty.html#a3e52c335a2f15632ebaf4bfebb44cd8e", null ],
       [ "validateValues", "classinviwo_1_1MinMaxProperty.html#ac6c35458556450cff796a061f22de9d8", null ]
     ] ],
     [ "MultiFileProperty", "classinviwo_1_1MultiFileProperty.html", [
@@ -433,7 +437,8 @@ var group__properties =
       [ "value_", "classinviwo_1_1TemplateProperty.html#ad13562bc1095d1f9ed873939b9dcc001", null ]
     ] ],
     [ "TransferFunctionProperty", "classinviwo_1_1TransferFunctionProperty.html", [
-      [ "TransferFunctionProperty", "classinviwo_1_1TransferFunctionProperty.html#a1ffad0207d51d54bcc97e735a7fd04d6", null ],
+      [ "TransferFunctionProperty", "classinviwo_1_1TransferFunctionProperty.html#a61b8dc6a429666ff33248436f50069d2", null ],
+      [ "TransferFunctionProperty", "classinviwo_1_1TransferFunctionProperty.html#ac4f0ee9fb1faf7cd631acba974663ae5", null ],
       [ "TransferFunctionProperty", "classinviwo_1_1TransferFunctionProperty.html#a306222282b5840a68420e1f95d9a3e0b", null ],
       [ "~TransferFunctionProperty", "classinviwo_1_1TransferFunctionProperty.html#a68c5ae38c2c577bc592634a03479d6e6", null ],
       [ "clone", "classinviwo_1_1TransferFunctionProperty.html#ab92a4952b46cc8e0965fb79e15dec234", null ],
