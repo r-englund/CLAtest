@@ -2,7 +2,7 @@
  *
  * Inviwo - Interactive Visualization Workshop
  *
- * Copyright (c) 2016-2017 Inviwo Foundation
+ * Copyright (c) 2013-2016 Inviwo Foundation
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,41 +24,55 @@
  * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- *
+ * 
  *********************************************************************************/
 
-#include <modules/postprocessing/processors/imagesharpen.h>
-#include <modules/opengl/shader/shaderutils.h>
+#include "utils/structs.glsl"
 
-namespace inviwo {
+uniform sampler2D inport_;
+uniform ImageParameters outportParameters_;
+uniform float intensity;
+uniform bool darken;
 
-// The Class Identifier has to be globally unique. Use a reverse DNS naming scheme
-const ProcessorInfo ImageSharpen::processorInfo_{
-    "org.inviwo.ImageSharpen",  // Class identifier
-    "Image Sharpen",            // Display name
-    "Image Operation",          // Category
-    CodeState::Experimental,    // Code state
-    Tags::None,                 // Tags
-};
-const ProcessorInfo ImageSharpen::getProcessorInfo() const { return processorInfo_; }
+vec2 iResolution = outportParameters_.dimensions.xy;
 
-ImageSharpen::ImageSharpen()
-    : ImageGLProcessor("imagesharpen.frag")
-    , kernel_("kernel", "Kernel", kernels_[0])
-    , sharpen_("sharpen", "Sharpen", true)
-    , filter_("filter", "Filter", {{"filter1", "Kernel 1", 0}, {"filter2", "Kernel 2", 1}}, 0) {
-
-    addProperty(sharpen_);
-    addProperty(filter_);
-
-    kernel_.setReadOnly(true);
-    kernel_.setCurrentStateAsDefault();
-    addProperty(kernel_);
+float lookup(vec2 p, float dx, float dy) {
+    vec2 uv = (p.xy + vec2(dx * intensity, dy * intensity)) / iResolution.xy;
+    vec4 c = texture(inport_, uv.xy);
+	
+	// return as luma
+    return 0.2126*c.r + 0.7152*c.g + 0.0722*c.b;
 }
 
-void ImageSharpen::preProcess(TextureUnitContainer &cont) {
-    kernel_.set(kernels_[filter_.get()]);
-    utilgl::setUniforms(shader_, sharpen_);
-    shader_.setUniform("kernel", kernels_[filter_.get()]);
+void main() {
+    if(!darken){
+        FragData0 = texture(inport_, gl_FragCoord.xy/ iResolution.xy);
+        return;
+    }
+
+    vec2 p = gl_FragCoord.xy;
+    
+	// simple sobel edge detection
+    float gx = 0.0;
+    gx += -1.0 * lookup(p, -1.0, -1.0);
+    gx += -2.0 * lookup(p, -1.0,  0.0);
+    gx += -1.0 * lookup(p, -1.0,  1.0);
+    gx +=  1.0 * lookup(p,  1.0, -1.0);
+    gx +=  2.0 * lookup(p,  1.0,  0.0);
+    gx +=  1.0 * lookup(p,  1.0,  1.0);
+    
+    float gy = 0.0;
+    gy += -1.0 * lookup(p, -1.0, -1.0);
+    gy += -2.0 * lookup(p,  0.0, -1.0);
+    gy += -1.0 * lookup(p,  1.0, -1.0);
+    gy +=  1.0 * lookup(p, -1.0,  1.0);
+    gy +=  2.0 * lookup(p,  0.0,  1.0);
+    gy +=  1.0 * lookup(p,  1.0,  1.0);
+    
+    float g = gx*gx + gy*gy;
+    
+    vec4 col = texture(inport_, p / iResolution.xy);
+    col.xyz *= vec3(1.0) - vec3(0.6) * g;
+    
+    FragData0 = col;
 }
-}  // namespace inviwo

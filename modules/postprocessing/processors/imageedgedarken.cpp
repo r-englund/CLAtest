@@ -2,7 +2,7 @@
  *
  * Inviwo - Interactive Visualization Workshop
  *
- * Copyright (c) 2016-2017 Inviwo Foundation
+ * Copyright (c) 2016 Inviwo Foundation
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -27,38 +27,35 @@
  *
  *********************************************************************************/
 
-#include <modules/postprocessing/processors/imagesharpen.h>
+#include <modules/postprocessing/processors/imageedgedarken.h>
 #include <modules/opengl/shader/shaderutils.h>
 
 namespace inviwo {
 
 // The Class Identifier has to be globally unique. Use a reverse DNS naming scheme
-const ProcessorInfo ImageSharpen::processorInfo_{
-    "org.inviwo.ImageSharpen",  // Class identifier
-    "Image Sharpen",            // Display name
-    "Image Operation",          // Category
-    CodeState::Experimental,    // Code state
-    Tags::None,                 // Tags
+const ProcessorInfo ImageEdgeDarken::processorInfo_{
+    "org.inviwo.ImageEdgeDarken",      // Class identifier
+    "Image Edge Darken",                // Display name
+    "Image Operation",              // Category
+    CodeState::Stable,  // Code state
+    Tags::GL,               // Tags
 };
-const ProcessorInfo ImageSharpen::getProcessorInfo() const { return processorInfo_; }
-
-ImageSharpen::ImageSharpen()
-    : ImageGLProcessor("imagesharpen.frag")
-    , kernel_("kernel", "Kernel", kernels_[0])
-    , sharpen_("sharpen", "Sharpen", true)
-    , filter_("filter", "Filter", {{"filter1", "Kernel 1", 0}, {"filter2", "Kernel 2", 1}}, 0) {
-
-    addProperty(sharpen_);
-    addProperty(filter_);
-
-    kernel_.setReadOnly(true);
-    kernel_.setCurrentStateAsDefault();
-    addProperty(kernel_);
+const ProcessorInfo ImageEdgeDarken::getProcessorInfo() const {
+    return processorInfo_;
 }
 
-void ImageSharpen::preProcess(TextureUnitContainer &cont) {
-    kernel_.set(kernels_[filter_.get()]);
-    utilgl::setUniforms(shader_, sharpen_);
-    shader_.setUniform("kernel", kernels_[filter_.get()]);
+ImageEdgeDarken::ImageEdgeDarken()
+    : ImageGLProcessor("edgedarken.frag")
+    , darken_("darken","Darken",true)
+    , intensity_("intensity", "Intensity", 1.f, 0.f, 2.f, 0.01f) {
+
+    addProperty(darken_);
+    addProperty(intensity_);
 }
-}  // namespace inviwo
+    
+void ImageEdgeDarken::preProcess(TextureUnitContainer &cont) {
+    utilgl::setUniforms(shader_, darken_, intensity_);
+}
+
+} // namespace
+
