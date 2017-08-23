@@ -2,7 +2,7 @@
  *
  * Inviwo - Interactive Visualization Workshop
  *
- * Copyright (c) 2015-2017 Inviwo Foundation
+ * Copyright (c) 2016-2017 Inviwo Foundation
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -27,52 +27,36 @@
  *
  *********************************************************************************/
 
-#include "vector2dmagnitude.h"
-#include <modules/opengl/texture/textureunit.h>
-#include <modules/opengl/texture/textureutils.h>
-#include <modules/opengl/image/imagegl.h>
-#include <modules/opengl/shader/shaderutils.h>
+#ifndef KERNEL_RADIUS
+#define KERNEL_RADIUS 3
+#endif
 
-namespace inviwo {
+uniform vec2 direction;
+uniform sampler2D texSource;
 
-// The Class Identifier has to be globally unique. Use a reverse DNS naming scheme
-const ProcessorInfo Vector2DMagnitude::processorInfo_{
-    "org.inviwo.Vector2DMagnitude",  // Class identifier
-    "Vector 2D Magnitude",           // Display name
-    "Vector Field Visualization",         // Category
-    CodeState::Experimental,         // Code state
-    Tags::GL,                        // Tags
-};
-const ProcessorInfo Vector2DMagnitude::getProcessorInfo() const {
-    return processorInfo_;
+in vec2 texCoord;
+layout(location = 0, index = 0) out vec4 outColor;
+
+//-------------------------------------------------------------------------
+
+float gaussianPdf(in float x) {
+    const float sigma = float(KERNEL_RADIUS);
+    return 0.39894 * exp(-0.5 * x * x / (sigma * sigma)) / sigma;
 }
 
-Vector2DMagnitude::Vector2DMagnitude()
-    : Processor()
-    , inport_("inport",true)
-    , outport_("outport",DataFloat32::get())
-    , shader_("vector2dmagnitude.frag")
-{
-    
-    addPort(inport_);
-    addPort(outport_);
+void main() {
+    float weightSum = gaussianPdf(0.0);
+    vec4 diffuseSum = texture(texSource, texCoord) * weightSum;
 
+    for (int i = 1; i < KERNEL_RADIUS; i++) {
+        float x = float(i);
+        float w = gaussianPdf(x);
+        vec2 offset = direction * x;
+        vec4 sample1 = texture(texSource, texCoord + offset);
+        vec4 sample2 = texture(texSource, texCoord - offset);
+        diffuseSum += (sample1 + sample2) * w;
+        weightSum += 2.0 * w;
+    }
+
+    outColor = diffuseSum / weightSum;
 }
-    
-void Vector2DMagnitude::process() {
-    utilgl::activateAndClearTarget(outport_);
-    outport_.getEditableData()->getColorLayer()->setSwizzleMask(swizzlemasks::luminance);
-
-    shader_.activate();
-    TextureUnitContainer units;
-    utilgl::bindAndSetUniforms(shader_, units, inport_, ImageType::ColorOnly);
-
-
-    utilgl::singleDrawImagePlaneRect();
-    shader_.deactivate();
-    utilgl::deactivateCurrentTarget();
-}
-
-} // namespace
-
-

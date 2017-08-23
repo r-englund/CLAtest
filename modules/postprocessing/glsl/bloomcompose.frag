@@ -2,7 +2,7 @@
  *
  * Inviwo - Interactive Visualization Workshop
  *
- * Copyright (c) 2015-2017 Inviwo Foundation
+ * Copyright (c) 2016-2017 Inviwo Foundation
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -27,52 +27,33 @@
  *
  *********************************************************************************/
 
-#include "vector2dmagnitude.h"
-#include <modules/opengl/texture/textureunit.h>
-#include <modules/opengl/texture/textureutils.h>
-#include <modules/opengl/image/imagegl.h>
-#include <modules/opengl/shader/shaderutils.h>
+const int Levels = 5;
 
-namespace inviwo {
+uniform sampler2D tex0;
+uniform sampler2D tex1;
+uniform sampler2D tex2;
+uniform sampler2D tex3;
+uniform sampler2D tex4;
+uniform float bloomStrength;
+uniform float bloomRadius;
+uniform float bloomFactors[5] = float[5](1.0, 0.8, 0.6, 0.4, 0.2);
 
-// The Class Identifier has to be globally unique. Use a reverse DNS naming scheme
-const ProcessorInfo Vector2DMagnitude::processorInfo_{
-    "org.inviwo.Vector2DMagnitude",  // Class identifier
-    "Vector 2D Magnitude",           // Display name
-    "Vector Field Visualization",         // Category
-    CodeState::Experimental,         // Code state
-    Tags::GL,                        // Tags
-};
-const ProcessorInfo Vector2DMagnitude::getProcessorInfo() const {
-    return processorInfo_;
+in vec2 texCoord;
+
+layout(location = 0, index = 0) out vec4 outColor;
+
+//-------------------------------------------------------------------------
+
+float lerpBloomFactor(const in float factor) {
+    float mirrorFactor = 1.2 - factor;
+    return mix(factor, mirrorFactor, bloomRadius);
 }
 
-Vector2DMagnitude::Vector2DMagnitude()
-    : Processor()
-    , inport_("inport",true)
-    , outport_("outport",DataFloat32::get())
-    , shader_("vector2dmagnitude.frag")
-{
-    
-    addPort(inport_);
-    addPort(outport_);
-
+void main() {
+    outColor = bloomStrength * (lerpBloomFactor(bloomFactors[0]) * texture(tex0, texCoord) +
+                                lerpBloomFactor(bloomFactors[1]) * texture(tex1, texCoord) +
+                                lerpBloomFactor(bloomFactors[2]) * texture(tex2, texCoord) +
+                                lerpBloomFactor(bloomFactors[3]) * texture(tex3, texCoord) +
+                                lerpBloomFactor(bloomFactors[4]) * texture(tex4, texCoord));
+    outColor.a = clamp(outColor.a, 0.0, 1.0);
 }
-    
-void Vector2DMagnitude::process() {
-    utilgl::activateAndClearTarget(outport_);
-    outport_.getEditableData()->getColorLayer()->setSwizzleMask(swizzlemasks::luminance);
-
-    shader_.activate();
-    TextureUnitContainer units;
-    utilgl::bindAndSetUniforms(shader_, units, inport_, ImageType::ColorOnly);
-
-
-    utilgl::singleDrawImagePlaneRect();
-    shader_.deactivate();
-    utilgl::deactivateCurrentTarget();
-}
-
-} // namespace
-
-

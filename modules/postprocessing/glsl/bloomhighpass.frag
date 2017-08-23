@@ -2,7 +2,7 @@
  *
  * Inviwo - Interactive Visualization Workshop
  *
- * Copyright (c) 2015-2017 Inviwo Foundation
+ * Copyright (c) 2016-2017 Inviwo Foundation
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -27,52 +27,29 @@
  *
  *********************************************************************************/
 
-#include "vector2dmagnitude.h"
-#include <modules/opengl/texture/textureunit.h>
-#include <modules/opengl/texture/textureutils.h>
-#include <modules/opengl/image/imagegl.h>
-#include <modules/opengl/shader/shaderutils.h>
+// Source from
+// (https://github.com/mrdoob/three.js/blob/master/examples/webgl_postprocessing_unreal_bloom.html)
+// Bloom pass by <a href="http://eduperiment.com" target="_blank">Prashant Sharma</a> and <a
+// href="https://clara.io" target="_blank">Ben Houston</a><br/><br/>
+// This Bloom Pass is inspired by the bloom pass of the Unreal Engine. It creates a mip map chain of
+// bloom textures and blur them <br>
+// with different radii. Because of the weigted combination of mips, and since larger blurs are done
+// on higher mips this bloom <br>
+// is better in quality and performance.
 
-namespace inviwo {
+uniform sampler2D texSource;
+uniform float threshold;
+uniform float smoothWidth = 0.01;
 
-// The Class Identifier has to be globally unique. Use a reverse DNS naming scheme
-const ProcessorInfo Vector2DMagnitude::processorInfo_{
-    "org.inviwo.Vector2DMagnitude",  // Class identifier
-    "Vector 2D Magnitude",           // Display name
-    "Vector Field Visualization",         // Category
-    CodeState::Experimental,         // Code state
-    Tags::GL,                        // Tags
-};
-const ProcessorInfo Vector2DMagnitude::getProcessorInfo() const {
-    return processorInfo_;
+in vec2 texCoord;
+layout(location = 0, index = 0) out vec4 outColor;
+
+//-------------------------------------------------------------------------
+
+void main() {
+    vec4 texel = texture(texSource, texCoord);
+    vec3 luma = vec3(0.299, 0.587, 0.114);
+    float v = dot(texel.xyz, luma);
+    float alpha = smoothstep(threshold, threshold + smoothWidth, v);
+    outColor = mix(vec4(0), texel, alpha);
 }
-
-Vector2DMagnitude::Vector2DMagnitude()
-    : Processor()
-    , inport_("inport",true)
-    , outport_("outport",DataFloat32::get())
-    , shader_("vector2dmagnitude.frag")
-{
-    
-    addPort(inport_);
-    addPort(outport_);
-
-}
-    
-void Vector2DMagnitude::process() {
-    utilgl::activateAndClearTarget(outport_);
-    outport_.getEditableData()->getColorLayer()->setSwizzleMask(swizzlemasks::luminance);
-
-    shader_.activate();
-    TextureUnitContainer units;
-    utilgl::bindAndSetUniforms(shader_, units, inport_, ImageType::ColorOnly);
-
-
-    utilgl::singleDrawImagePlaneRect();
-    shader_.deactivate();
-    utilgl::deactivateCurrentTarget();
-}
-
-} // namespace
-
-

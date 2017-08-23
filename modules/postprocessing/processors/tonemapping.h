@@ -2,7 +2,7 @@
  *
  * Inviwo - Interactive Visualization Workshop
  *
- * Copyright (c) 2015-2017 Inviwo Foundation
+ * Copyright (c) 2016 Inviwo Foundation
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,55 +24,60 @@
  * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- *
+ * 
  *********************************************************************************/
 
-#include "vector2dmagnitude.h"
-#include <modules/opengl/texture/textureunit.h>
-#include <modules/opengl/texture/textureutils.h>
-#include <modules/opengl/image/imagegl.h>
-#include <modules/opengl/shader/shaderutils.h>
+#ifndef IVW_TONEMAPPING_H
+#define IVW_TONEMAPPING_H
+
+#include <modules/postprocessing/postprocessingmoduledefine.h>
+#include <inviwo/core/common/inviwo.h>
+#include <modules/basegl/processors/imageprocessing/imageglprocessor.h>
+#include <inviwo/core/properties/optionproperty.h>
+#include <inviwo/core/properties/ordinalproperty.h>
+#include <inviwo/core/properties/compositeproperty.h>
 
 namespace inviwo {
 
-// The Class Identifier has to be globally unique. Use a reverse DNS naming scheme
-const ProcessorInfo Vector2DMagnitude::processorInfo_{
-    "org.inviwo.Vector2DMagnitude",  // Class identifier
-    "Vector 2D Magnitude",           // Display name
-    "Vector Field Visualization",         // Category
-    CodeState::Experimental,         // Code state
-    Tags::GL,                        // Tags
+/** \docpage{org.inviwo.Tonemapper, Tonemapping operator}
+ * ![](org.inviwo.Tonemapper.png?classIdentifier=org.inviwo.Tonemapper)
+ * Applies some tonemapping operation on the input image
+ *
+ * ### Inports
+ *   * __ImageInport__ Input image.
+ *
+ * ### Outports
+ *   * __ImageOutport__ Output image.
+ * 
+ * ### Properties
+ *   * __Exposure__ Controls exposure if the image.
+ *   * __Gamma__ Controls the gamma (1.0 / gamma) (default is 2.2).
+ */
+
+/**
+ * \class ImageBrightnessContrast
+ * \brief Controls brightness and contrast of an image.
+ */
+class IVW_MODULE_POSTPROCESSING_API Tonemapping : public ImageGLProcessor { 
+public:
+	Tonemapping();
+    virtual ~Tonemapping() = default;
+    
+    virtual const ProcessorInfo getProcessorInfo() const override;
+    static const ProcessorInfo processorInfo_;
+
+	virtual void initializeResources() override;
+
+protected:
+    virtual void preProcess(TextureUnitContainer &cont) override;
+
+private:
+	OptionPropertyInt method_;
+	FloatProperty exposure_;
+	FloatProperty gamma_;
 };
-const ProcessorInfo Vector2DMagnitude::getProcessorInfo() const {
-    return processorInfo_;
-}
-
-Vector2DMagnitude::Vector2DMagnitude()
-    : Processor()
-    , inport_("inport",true)
-    , outport_("outport",DataFloat32::get())
-    , shader_("vector2dmagnitude.frag")
-{
-    
-    addPort(inport_);
-    addPort(outport_);
-
-}
-    
-void Vector2DMagnitude::process() {
-    utilgl::activateAndClearTarget(outport_);
-    outport_.getEditableData()->getColorLayer()->setSwizzleMask(swizzlemasks::luminance);
-
-    shader_.activate();
-    TextureUnitContainer units;
-    utilgl::bindAndSetUniforms(shader_, units, inport_, ImageType::ColorOnly);
-
-
-    utilgl::singleDrawImagePlaneRect();
-    shader_.deactivate();
-    utilgl::deactivateCurrentTarget();
-}
 
 } // namespace
 
+#endif // IVW_TONEMAPPING_H
 
