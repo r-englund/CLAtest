@@ -27,20 +27,32 @@
  *
  *********************************************************************************/
 
-#if !defined(WARN_INCLUDE_PUSH)
-#   error "`warn/ignore/shift-sign-overflow` used without `warn/push`"
-#endif
+#include <modules/userinterfacegl/userinterfaceglmodule.h>
 
-#if defined(WARN_IGNORE_SHIFT_SIGN_OVERFLOW)
-#   error "`warn/ignore/shift-sign-overflow` already included"
-#endif
+#include <modules/userinterfacegl/processors/camerawidget.h>
+#include <modules/userinterfacegl/processors/cropwidget.h>
+#include <modules/userinterfacegl/processors/presentationprocessor.h>
 
-#define WARN_IGNORE_SHIFT_SIGN_OVERFLOW
+#include <modules/opengl/shader/shadermanager.h>
 
-#if defined(__clang__)
-//  Not available
-#elif defined(__GNUC__)
-//  Not available
-#elif defined(_MSC_VER)
-//  Not available
-#endif
+namespace inviwo {
+
+UserInterfaceGLModule::UserInterfaceGLModule(InviwoApplication* app) : InviwoModule(app, "UserInterfaceGL") {   
+    // Add a directory to the search path of the Shadermanager
+    ShaderManager::getPtr()->addShaderSearchPath(getPath(ModulePath::GLSL));
+
+    // Register objects that can be shared with the rest of inviwo here:
+    
+    // Processors
+    registerProcessor<CameraWidget>();
+    registerProcessor<CropWidget>();
+    registerProcessor<PresentationProcessor>();
+    
+    // Properties
+    // registerProperty<UserInterfaceGLProperty>();
+    
+    // PropertyWidgets
+    // registerPropertyWidget<UserInterfaceGLPropertyWidget, UserInterfaceGLProperty>("Default");
+}
+
+} // namespace inviwo

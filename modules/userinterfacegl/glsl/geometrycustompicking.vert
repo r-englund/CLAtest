@@ -2,7 +2,7 @@
  *
  * Inviwo - Interactive Visualization Workshop
  *
- * Copyright (c) 2017 Inviwo Foundation
+ * Copyright (c) 2016-2017 Inviwo Foundation
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,23 +24,48 @@
  * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- *
+ * 
  *********************************************************************************/
 
-#if !defined(WARN_INCLUDE_PUSH)
-#   error "`warn/ignore/disabled-macro-expansion` used without `warn/push`"
-#endif
+#include "utils/structs.glsl"
+#include "utils/pickingutils.glsl"
 
-#if defined(WARN_IGNORE_DISABLED_MACRO_EXPANSION)
-#   error "`warn/ignore/disabled-macro-expansion` already included"
-#endif
+uniform GeometryParameters geometry;
+uniform CameraParameters camera;
 
-#define WARN_IGNORE_DISABLED_MACRO_EXPANSION
+uniform bool pickingEnabled = true;
 
-#if defined(__clang__)
-//  Not available
-#elif defined(__GNUC__)
-//  Not available
-#elif defined(_MSC_VER)
-//  Not available
-#endif
+uniform vec4 overrideColor = vec4(-1.0);
+
+uniform vec2 scaling = vec2(1.0);
+uniform vec2 offset = vec2(0.0);
+
+uniform uint pickId = 0;
+
+out vec4 worldPosition_;
+out vec3 normal_;
+out vec3 viewNormal_;
+out vec4 color_;
+out vec3 texCoord_;
+flat out vec4 pickColor_;
+ 
+void main() {
+    color_ = in_Color;
+    texCoord_ = in_TexCoord;
+
+    worldPosition_ = geometry.dataToWorld * in_Vertex;
+    normal_ = geometry.dataToWorldNormalMatrix * in_Normal * vec3(1.0);
+    viewNormal_ = (camera.worldToView * vec4(normal_,0)).xyz;
+    gl_Position = camera.worldToClip * worldPosition_;
+
+    // move mesh into correct 2D position on screen and scale it accordingly    
+    gl_Position /= gl_Position.w;
+    gl_Position.xy *= scaling;
+    gl_Position.xy += offset;
+    
+    if (overrideColor.a > -0.1) {
+        color_ = overrideColor;
+    }
+
+    pickColor_ = vec4(pickingIndexToColor(pickId), pickingEnabled ? 1.0 : 0.0);
+}

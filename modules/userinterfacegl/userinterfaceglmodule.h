@@ -27,22 +27,20 @@
  *
  *********************************************************************************/
 
-#if !defined(WARN_INCLUDE_PUSH)
-#   error "`warn/ignore/missing-prototypes` used without `warn/push`"
-#endif
+#ifndef IVW_USERINTERFACEGLMODULE_H
+#define IVW_USERINTERFACEGLMODULE_H
 
-#if defined(WARN_IGNORE_MISSING_PROTOTYPES)
-#   error "`warn/ignore/missing-prototypes` already included"
-#endif
+#include <modules/userinterfacegl/userinterfaceglmoduledefine.h>
+#include <inviwo/core/common/inviwomodule.h>
 
-#define WARN_IGNORE_MISSING_PROTOTYPES
+namespace inviwo {
 
-#if defined(__clang__)
-//  Not available
-#elif defined(__GNUC__)
-#   if __GNUC__ > 3 || (__GNUC__ == 3  && __GNUC_MINOR__ > 4)
-#       pragma GCC diagnostic ignored "-Wmissing-prototypes"
-#   endif
-#elif defined(_MSC_VER)
-//  Not available
-#endif
+class IVW_MODULE_USERINTERFACEGL_API UserInterfaceGLModule : public InviwoModule {
+public:
+    UserInterfaceGLModule(InviwoApplication* app);
+    virtual ~UserInterfaceGLModule() = default;
+};
+
+} // namespace
+
+#endif // IVW_USERINTERFACEGLMODULE_H
