@@ -30,3 +30,5 @@ Below follow some general information about the framework:
  - The project and module configuration/generation is performed through CMake (>= 3.2.0).
  - Inviwo has been compiled in Visual Studio (>= 2015), XCode (>= 5), KDevelop (>= 4), Make.
  - C++14 Required
+
+test
